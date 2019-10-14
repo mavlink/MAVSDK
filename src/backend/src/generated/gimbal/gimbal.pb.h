@@ -88,16 +88,16 @@ namespace rpc {
 namespace gimbal {
 
 enum GimbalResult_Result : int {
-  GimbalResult_Result_SUCCESS = 0,
-  GimbalResult_Result_ERROR = 1,
-  GimbalResult_Result_TIMEOUT = 2,
-  GimbalResult_Result_UNKNOWN = 1000,
+  GimbalResult_Result_UNKNOWN = 0,
+  GimbalResult_Result_SUCCESS = 1,
+  GimbalResult_Result_ERROR = 2,
+  GimbalResult_Result_TIMEOUT = 3,
   GimbalResult_Result_GimbalResult_Result_INT_MIN_SENTINEL_DO_NOT_USE_ = std::numeric_limits<::PROTOBUF_NAMESPACE_ID::int32>::min(),
   GimbalResult_Result_GimbalResult_Result_INT_MAX_SENTINEL_DO_NOT_USE_ = std::numeric_limits<::PROTOBUF_NAMESPACE_ID::int32>::max()
 };
 bool GimbalResult_Result_IsValid(int value);
-constexpr GimbalResult_Result GimbalResult_Result_Result_MIN = GimbalResult_Result_SUCCESS;
-constexpr GimbalResult_Result GimbalResult_Result_Result_MAX = GimbalResult_Result_UNKNOWN;
+constexpr GimbalResult_Result GimbalResult_Result_Result_MIN = GimbalResult_Result_UNKNOWN;
+constexpr GimbalResult_Result GimbalResult_Result_Result_MAX = GimbalResult_Result_TIMEOUT;
 constexpr int GimbalResult_Result_Result_ARRAYSIZE = GimbalResult_Result_Result_MAX + 1;
 
 const ::PROTOBUF_NAMESPACE_ID::EnumDescriptor* GimbalResult_Result_descriptor();
@@ -785,14 +785,14 @@ class GimbalResult :
   // nested types ----------------------------------------------------
 
   typedef GimbalResult_Result Result;
+  static constexpr Result UNKNOWN =
+    GimbalResult_Result_UNKNOWN;
   static constexpr Result SUCCESS =
     GimbalResult_Result_SUCCESS;
   static constexpr Result ERROR =
     GimbalResult_Result_ERROR;
   static constexpr Result TIMEOUT =
     GimbalResult_Result_TIMEOUT;
-  static constexpr Result UNKNOWN =
-    GimbalResult_Result_UNKNOWN;
   static inline bool Result_IsValid(int value) {
     return GimbalResult_Result_IsValid(value);
   }

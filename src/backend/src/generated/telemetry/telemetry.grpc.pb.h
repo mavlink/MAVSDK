@@ -11,10 +11,13 @@
 #include <grpcpp/impl/codegen/async_stream.h>
 #include <grpcpp/impl/codegen/async_unary_call.h>
 #include <grpcpp/impl/codegen/client_callback.h>
+#include <grpcpp/impl/codegen/client_context.h>
+#include <grpcpp/impl/codegen/completion_queue.h>
 #include <grpcpp/impl/codegen/method_handler_impl.h>
 #include <grpcpp/impl/codegen/proto_utils.h>
 #include <grpcpp/impl/codegen/rpc_method.h>
 #include <grpcpp/impl/codegen/server_callback.h>
+#include <grpcpp/impl/codegen/server_context.h>
 #include <grpcpp/impl/codegen/service_type.h>
 #include <grpcpp/impl/codegen/status.h>
 #include <grpcpp/impl/codegen/stub_options.h>
@@ -703,7 +706,7 @@ class TelemetryService final {
   template <class BaseClass>
   class WithAsyncMethod_SubscribePosition : public BaseClass {
    private:
-    void BaseClassMustBeDerivedFromService(const Service *service) {}
+    void BaseClassMustBeDerivedFromService(const Service* /*service*/) {}
    public:
     WithAsyncMethod_SubscribePosition() {
       ::grpc::Service::MarkMethodAsync(0);
@@ -712,7 +715,7 @@ class TelemetryService final {
       BaseClassMustBeDerivedFromService(this);
     }
     // disable synchronous version of this method
-    ::grpc::Status SubscribePosition(::grpc::ServerContext* context, const ::mavsdk::rpc::telemetry::SubscribePositionRequest* request, ::grpc::ServerWriter< ::mavsdk::rpc::telemetry::PositionResponse>* writer) override {
+    ::grpc::Status SubscribePosition(::grpc::ServerContext* /*context*/, const ::mavsdk::rpc::telemetry::SubscribePositionRequest* /*request*/, ::grpc::ServerWriter< ::mavsdk::rpc::telemetry::PositionResponse>* /*writer*/) override {
       abort();
       return ::grpc::Status(::grpc::StatusCode::UNIMPLEMENTED, "");
     }
@@ -723,7 +726,7 @@ class TelemetryService final {
   template <class BaseClass>
   class WithAsyncMethod_SubscribeHome : public BaseClass {
    private:
-    void BaseClassMustBeDerivedFromService(const Service *service) {}
+    void BaseClassMustBeDerivedFromService(const Service* /*service*/) {}
    public:
     WithAsyncMethod_SubscribeHome() {
       ::grpc::Service::MarkMethodAsync(1);
@@ -732,7 +735,7 @@ class TelemetryService final {
       BaseClassMustBeDerivedFromService(this);
     }
     // disable synchronous version of this method
-    ::grpc::Status SubscribeHome(::grpc::ServerContext* context, const ::mavsdk::rpc::telemetry::SubscribeHomeRequest* request, ::grpc::ServerWriter< ::mavsdk::rpc::telemetry::HomeResponse>* writer) override {
+    ::grpc::Status SubscribeHome(::grpc::ServerContext* /*context*/, const ::mavsdk::rpc::telemetry::SubscribeHomeRequest* /*request*/, ::grpc::ServerWriter< ::mavsdk::rpc::telemetry::HomeResponse>* /*writer*/) override {
       abort();
       return ::grpc::Status(::grpc::StatusCode::UNIMPLEMENTED, "");
     }
@@ -743,7 +746,7 @@ class TelemetryService final {
   template <class BaseClass>
   class WithAsyncMethod_SubscribeInAir : public BaseClass {
    private:
-    void BaseClassMustBeDerivedFromService(const Service *service) {}
+    void BaseClassMustBeDerivedFromService(const Service* /*service*/) {}
    public:
     WithAsyncMethod_SubscribeInAir() {
       ::grpc::Service::MarkMethodAsync(2);
@@ -752,7 +755,7 @@ class TelemetryService final {
       BaseClassMustBeDerivedFromService(this);
     }
     // disable synchronous version of this method
-    ::grpc::Status SubscribeInAir(::grpc::ServerContext* context, const ::mavsdk::rpc::telemetry::SubscribeInAirRequest* request, ::grpc::ServerWriter< ::mavsdk::rpc::telemetry::InAirResponse>* writer) override {
+    ::grpc::Status SubscribeInAir(::grpc::ServerContext* /*context*/, const ::mavsdk::rpc::telemetry::SubscribeInAirRequest* /*request*/, ::grpc::ServerWriter< ::mavsdk::rpc::telemetry::InAirResponse>* /*writer*/) override {
       abort();
       return ::grpc::Status(::grpc::StatusCode::UNIMPLEMENTED, "");
     }
@@ -763,7 +766,7 @@ class TelemetryService final {
   template <class BaseClass>
   class WithAsyncMethod_SubscribeLandedState : public BaseClass {
    private:
-    void BaseClassMustBeDerivedFromService(const Service *service) {}
+    void BaseClassMustBeDerivedFromService(const Service* /*service*/) {}
    public:
     WithAsyncMethod_SubscribeLandedState() {
       ::grpc::Service::MarkMethodAsync(3);
@@ -772,7 +775,7 @@ class TelemetryService final {
       BaseClassMustBeDerivedFromService(this);
     }
     // disable synchronous version of this method
-    ::grpc::Status SubscribeLandedState(::grpc::ServerContext* context, const ::mavsdk::rpc::telemetry::SubscribeLandedStateRequest* request, ::grpc::ServerWriter< ::mavsdk::rpc::telemetry::LandedStateResponse>* writer) override {
+    ::grpc::Status SubscribeLandedState(::grpc::ServerContext* /*context*/, const ::mavsdk::rpc::telemetry::SubscribeLandedStateRequest* /*request*/, ::grpc::ServerWriter< ::mavsdk::rpc::telemetry::LandedStateResponse>* /*writer*/) override {
       abort();
       return ::grpc::Status(::grpc::StatusCode::UNIMPLEMENTED, "");
     }
@@ -783,7 +786,7 @@ class TelemetryService final {
   template <class BaseClass>
   class WithAsyncMethod_SubscribeArmed : public BaseClass {
    private:
-    void BaseClassMustBeDerivedFromService(const Service *service) {}
+    void BaseClassMustBeDerivedFromService(const Service* /*service*/) {}
    public:
     WithAsyncMethod_SubscribeArmed() {
       ::grpc::Service::MarkMethodAsync(4);
@@ -792,7 +795,7 @@ class TelemetryService final {
       BaseClassMustBeDerivedFromService(this);
     }
     // disable synchronous version of this method
-    ::grpc::Status SubscribeArmed(::grpc::ServerContext* context, const ::mavsdk::rpc::telemetry::SubscribeArmedRequest* request, ::grpc::ServerWriter< ::mavsdk::rpc::telemetry::ArmedResponse>* writer) override {
+    ::grpc::Status SubscribeArmed(::grpc::ServerContext* /*context*/, const ::mavsdk::rpc::telemetry::SubscribeArmedRequest* /*request*/, ::grpc::ServerWriter< ::mavsdk::rpc::telemetry::ArmedResponse>* /*writer*/) override {
       abort();
       return ::grpc::Status(::grpc::StatusCode::UNIMPLEMENTED, "");
     }
@@ -803,7 +806,7 @@ class TelemetryService final {
   template <class BaseClass>
   class WithAsyncMethod_SubscribeAttitudeQuaternion : public BaseClass {
    private:
-    void BaseClassMustBeDerivedFromService(const Service *service) {}
+    void BaseClassMustBeDerivedFromService(const Service* /*service*/) {}
    public:
     WithAsyncMethod_SubscribeAttitudeQuaternion() {
       ::grpc::Service::MarkMethodAsync(5);
@@ -812,7 +815,7 @@ class TelemetryService final {
       BaseClassMustBeDerivedFromService(this);
     }
     // disable synchronous version of this method
-    ::grpc::Status SubscribeAttitudeQuaternion(::grpc::ServerContext* context, const ::mavsdk::rpc::telemetry::SubscribeAttitudeQuaternionRequest* request, ::grpc::ServerWriter< ::mavsdk::rpc::telemetry::AttitudeQuaternionResponse>* writer) override {
+    ::grpc::Status SubscribeAttitudeQuaternion(::grpc::ServerContext* /*context*/, const ::mavsdk::rpc::telemetry::SubscribeAttitudeQuaternionRequest* /*request*/, ::grpc::ServerWriter< ::mavsdk::rpc::telemetry::AttitudeQuaternionResponse>* /*writer*/) override {
       abort();
       return ::grpc::Status(::grpc::StatusCode::UNIMPLEMENTED, "");
     }
@@ -823,7 +826,7 @@ class TelemetryService final {
   template <class BaseClass>
   class WithAsyncMethod_SubscribeAttitudeEuler : public BaseClass {
    private:
-    void BaseClassMustBeDerivedFromService(const Service *service) {}
+    void BaseClassMustBeDerivedFromService(const Service* /*service*/) {}
    public:
     WithAsyncMethod_SubscribeAttitudeEuler() {
       ::grpc::Service::MarkMethodAsync(6);
@@ -832,7 +835,7 @@ class TelemetryService final {
       BaseClassMustBeDerivedFromService(this);
     }
     // disable synchronous version of this method
-    ::grpc::Status SubscribeAttitudeEuler(::grpc::ServerContext* context, const ::mavsdk::rpc::telemetry::SubscribeAttitudeEulerRequest* request, ::grpc::ServerWriter< ::mavsdk::rpc::telemetry::AttitudeEulerResponse>* writer) override {
+    ::grpc::Status SubscribeAttitudeEuler(::grpc::ServerContext* /*context*/, const ::mavsdk::rpc::telemetry::SubscribeAttitudeEulerRequest* /*request*/, ::grpc::ServerWriter< ::mavsdk::rpc::telemetry::AttitudeEulerResponse>* /*writer*/) override {
       abort();
       return ::grpc::Status(::grpc::StatusCode::UNIMPLEMENTED, "");
     }
@@ -843,7 +846,7 @@ class TelemetryService final {
   template <class BaseClass>
   class WithAsyncMethod_SubscribeAttitudeAngularVelocityBody : public BaseClass {
    private:
-    void BaseClassMustBeDerivedFromService(const Service *service) {}
+    void BaseClassMustBeDerivedFromService(const Service* /*service*/) {}
    public:
     WithAsyncMethod_SubscribeAttitudeAngularVelocityBody() {
       ::grpc::Service::MarkMethodAsync(7);
@@ -852,7 +855,7 @@ class TelemetryService final {
       BaseClassMustBeDerivedFromService(this);
     }
     // disable synchronous version of this method
-    ::grpc::Status SubscribeAttitudeAngularVelocityBody(::grpc::ServerContext* context, const ::mavsdk::rpc::telemetry::SubscribeAttitudeAngularVelocityBodyRequest* request, ::grpc::ServerWriter< ::mavsdk::rpc::telemetry::AttitudeAngularVelocityBodyResponse>* writer) override {
+    ::grpc::Status SubscribeAttitudeAngularVelocityBody(::grpc::ServerContext* /*context*/, const ::mavsdk::rpc::telemetry::SubscribeAttitudeAngularVelocityBodyRequest* /*request*/, ::grpc::ServerWriter< ::mavsdk::rpc::telemetry::AttitudeAngularVelocityBodyResponse>* /*writer*/) override {
       abort();
       return ::grpc::Status(::grpc::StatusCode::UNIMPLEMENTED, "");
     }
@@ -863,7 +866,7 @@ class TelemetryService final {
   template <class BaseClass>
   class WithAsyncMethod_SubscribeCameraAttitudeQuaternion : public BaseClass {
    private:
-    void BaseClassMustBeDerivedFromService(const Service *service) {}
+    void BaseClassMustBeDerivedFromService(const Service* /*service*/) {}
    public:
     WithAsyncMethod_SubscribeCameraAttitudeQuaternion() {
       ::grpc::Service::MarkMethodAsync(8);
@@ -872,7 +875,7 @@ class TelemetryService final {
       BaseClassMustBeDerivedFromService(this);
     }
     // disable synchronous version of this method
-    ::grpc::Status SubscribeCameraAttitudeQuaternion(::grpc::ServerContext* context, const ::mavsdk::rpc::telemetry::SubscribeCameraAttitudeQuaternionRequest* request, ::grpc::ServerWriter< ::mavsdk::rpc::telemetry::CameraAttitudeQuaternionResponse>* writer) override {
+    ::grpc::Status SubscribeCameraAttitudeQuaternion(::grpc::ServerContext* /*context*/, const ::mavsdk::rpc::telemetry::SubscribeCameraAttitudeQuaternionRequest* /*request*/, ::grpc::ServerWriter< ::mavsdk::rpc::telemetry::CameraAttitudeQuaternionResponse>* /*writer*/) override {
       abort();
       return ::grpc::Status(::grpc::StatusCode::UNIMPLEMENTED, "");
     }
@@ -883,7 +886,7 @@ class TelemetryService final {
   template <class BaseClass>
   class WithAsyncMethod_SubscribeCameraAttitudeEuler : public BaseClass {
    private:
-    void BaseClassMustBeDerivedFromService(const Service *service) {}
+    void BaseClassMustBeDerivedFromService(const Service* /*service*/) {}
    public:
     WithAsyncMethod_SubscribeCameraAttitudeEuler() {
       ::grpc::Service::MarkMethodAsync(9);
@@ -892,7 +895,7 @@ class TelemetryService final {
       BaseClassMustBeDerivedFromService(this);
     }
     // disable synchronous version of this method
-    ::grpc::Status SubscribeCameraAttitudeEuler(::grpc::ServerContext* context, const ::mavsdk::rpc::telemetry::SubscribeCameraAttitudeEulerRequest* request, ::grpc::ServerWriter< ::mavsdk::rpc::telemetry::CameraAttitudeEulerResponse>* writer) override {
+    ::grpc::Status SubscribeCameraAttitudeEuler(::grpc::ServerContext* /*context*/, const ::mavsdk::rpc::telemetry::SubscribeCameraAttitudeEulerRequest* /*request*/, ::grpc::ServerWriter< ::mavsdk::rpc::telemetry::CameraAttitudeEulerResponse>* /*writer*/) override {
       abort();
       return ::grpc::Status(::grpc::StatusCode::UNIMPLEMENTED, "");
     }
@@ -903,7 +906,7 @@ class TelemetryService final {
   template <class BaseClass>
   class WithAsyncMethod_SubscribeGroundSpeedNed : public BaseClass {
    private:
-    void BaseClassMustBeDerivedFromService(const Service *service) {}
+    void BaseClassMustBeDerivedFromService(const Service* /*service*/) {}
    public:
     WithAsyncMethod_SubscribeGroundSpeedNed() {
       ::grpc::Service::MarkMethodAsync(10);
@@ -912,7 +915,7 @@ class TelemetryService final {
       BaseClassMustBeDerivedFromService(this);
     }
     // disable synchronous version of this method
-    ::grpc::Status SubscribeGroundSpeedNed(::grpc::ServerContext* context, const ::mavsdk::rpc::telemetry::SubscribeGroundSpeedNedRequest* request, ::grpc::ServerWriter< ::mavsdk::rpc::telemetry::GroundSpeedNedResponse>* writer) override {
+    ::grpc::Status SubscribeGroundSpeedNed(::grpc::ServerContext* /*context*/, const ::mavsdk::rpc::telemetry::SubscribeGroundSpeedNedRequest* /*request*/, ::grpc::ServerWriter< ::mavsdk::rpc::telemetry::GroundSpeedNedResponse>* /*writer*/) override {
       abort();
       return ::grpc::Status(::grpc::StatusCode::UNIMPLEMENTED, "");
     }
@@ -923,7 +926,7 @@ class TelemetryService final {
   template <class BaseClass>
   class WithAsyncMethod_SubscribeGpsInfo : public BaseClass {
    private:
-    void BaseClassMustBeDerivedFromService(const Service *service) {}
+    void BaseClassMustBeDerivedFromService(const Service* /*service*/) {}
    public:
     WithAsyncMethod_SubscribeGpsInfo() {
       ::grpc::Service::MarkMethodAsync(11);
@@ -932,7 +935,7 @@ class TelemetryService final {
       BaseClassMustBeDerivedFromService(this);
     }
     // disable synchronous version of this method
-    ::grpc::Status SubscribeGpsInfo(::grpc::ServerContext* context, const ::mavsdk::rpc::telemetry::SubscribeGpsInfoRequest* request, ::grpc::ServerWriter< ::mavsdk::rpc::telemetry::GpsInfoResponse>* writer) override {
+    ::grpc::Status SubscribeGpsInfo(::grpc::ServerContext* /*context*/, const ::mavsdk::rpc::telemetry::SubscribeGpsInfoRequest* /*request*/, ::grpc::ServerWriter< ::mavsdk::rpc::telemetry::GpsInfoResponse>* /*writer*/) override {
       abort();
       return ::grpc::Status(::grpc::StatusCode::UNIMPLEMENTED, "");
     }
@@ -943,7 +946,7 @@ class TelemetryService final {
   template <class BaseClass>
   class WithAsyncMethod_SubscribeBattery : public BaseClass {
    private:
-    void BaseClassMustBeDerivedFromService(const Service *service) {}
+    void BaseClassMustBeDerivedFromService(const Service* /*service*/) {}
    public:
     WithAsyncMethod_SubscribeBattery() {
       ::grpc::Service::MarkMethodAsync(12);
@@ -952,7 +955,7 @@ class TelemetryService final {
       BaseClassMustBeDerivedFromService(this);
     }
     // disable synchronous version of this method
-    ::grpc::Status SubscribeBattery(::grpc::ServerContext* context, const ::mavsdk::rpc::telemetry::SubscribeBatteryRequest* request, ::grpc::ServerWriter< ::mavsdk::rpc::telemetry::BatteryResponse>* writer) override {
+    ::grpc::Status SubscribeBattery(::grpc::ServerContext* /*context*/, const ::mavsdk::rpc::telemetry::SubscribeBatteryRequest* /*request*/, ::grpc::ServerWriter< ::mavsdk::rpc::telemetry::BatteryResponse>* /*writer*/) override {
       abort();
       return ::grpc::Status(::grpc::StatusCode::UNIMPLEMENTED, "");
     }
@@ -963,7 +966,7 @@ class TelemetryService final {
   template <class BaseClass>
   class WithAsyncMethod_SubscribeFlightMode : public BaseClass {
    private:
-    void BaseClassMustBeDerivedFromService(const Service *service) {}
+    void BaseClassMustBeDerivedFromService(const Service* /*service*/) {}
    public:
     WithAsyncMethod_SubscribeFlightMode() {
       ::grpc::Service::MarkMethodAsync(13);
@@ -972,7 +975,7 @@ class TelemetryService final {
       BaseClassMustBeDerivedFromService(this);
     }
     // disable synchronous version of this method
-    ::grpc::Status SubscribeFlightMode(::grpc::ServerContext* context, const ::mavsdk::rpc::telemetry::SubscribeFlightModeRequest* request, ::grpc::ServerWriter< ::mavsdk::rpc::telemetry::FlightModeResponse>* writer) override {
+    ::grpc::Status SubscribeFlightMode(::grpc::ServerContext* /*context*/, const ::mavsdk::rpc::telemetry::SubscribeFlightModeRequest* /*request*/, ::grpc::ServerWriter< ::mavsdk::rpc::telemetry::FlightModeResponse>* /*writer*/) override {
       abort();
       return ::grpc::Status(::grpc::StatusCode::UNIMPLEMENTED, "");
     }
@@ -983,7 +986,7 @@ class TelemetryService final {
   template <class BaseClass>
   class WithAsyncMethod_SubscribeHealth : public BaseClass {
    private:
-    void BaseClassMustBeDerivedFromService(const Service *service) {}
+    void BaseClassMustBeDerivedFromService(const Service* /*service*/) {}
    public:
     WithAsyncMethod_SubscribeHealth() {
       ::grpc::Service::MarkMethodAsync(14);
@@ -992,7 +995,7 @@ class TelemetryService final {
       BaseClassMustBeDerivedFromService(this);
     }
     // disable synchronous version of this method
-    ::grpc::Status SubscribeHealth(::grpc::ServerContext* context, const ::mavsdk::rpc::telemetry::SubscribeHealthRequest* request, ::grpc::ServerWriter< ::mavsdk::rpc::telemetry::HealthResponse>* writer) override {
+    ::grpc::Status SubscribeHealth(::grpc::ServerContext* /*context*/, const ::mavsdk::rpc::telemetry::SubscribeHealthRequest* /*request*/, ::grpc::ServerWriter< ::mavsdk::rpc::telemetry::HealthResponse>* /*writer*/) override {
       abort();
       return ::grpc::Status(::grpc::StatusCode::UNIMPLEMENTED, "");
     }
@@ -1003,7 +1006,7 @@ class TelemetryService final {
   template <class BaseClass>
   class WithAsyncMethod_SubscribeRcStatus : public BaseClass {
    private:
-    void BaseClassMustBeDerivedFromService(const Service *service) {}
+    void BaseClassMustBeDerivedFromService(const Service* /*service*/) {}
    public:
     WithAsyncMethod_SubscribeRcStatus() {
       ::grpc::Service::MarkMethodAsync(15);
@@ -1012,7 +1015,7 @@ class TelemetryService final {
       BaseClassMustBeDerivedFromService(this);
     }
     // disable synchronous version of this method
-    ::grpc::Status SubscribeRcStatus(::grpc::ServerContext* context, const ::mavsdk::rpc::telemetry::SubscribeRcStatusRequest* request, ::grpc::ServerWriter< ::mavsdk::rpc::telemetry::RcStatusResponse>* writer) override {
+    ::grpc::Status SubscribeRcStatus(::grpc::ServerContext* /*context*/, const ::mavsdk::rpc::telemetry::SubscribeRcStatusRequest* /*request*/, ::grpc::ServerWriter< ::mavsdk::rpc::telemetry::RcStatusResponse>* /*writer*/) override {
       abort();
       return ::grpc::Status(::grpc::StatusCode::UNIMPLEMENTED, "");
     }
@@ -1023,7 +1026,7 @@ class TelemetryService final {
   template <class BaseClass>
   class WithAsyncMethod_SubscribeStatusText : public BaseClass {
    private:
-    void BaseClassMustBeDerivedFromService(const Service *service) {}
+    void BaseClassMustBeDerivedFromService(const Service* /*service*/) {}
    public:
     WithAsyncMethod_SubscribeStatusText() {
       ::grpc::Service::MarkMethodAsync(16);
@@ -1032,7 +1035,7 @@ class TelemetryService final {
       BaseClassMustBeDerivedFromService(this);
     }
     // disable synchronous version of this method
-    ::grpc::Status SubscribeStatusText(::grpc::ServerContext* context, const ::mavsdk::rpc::telemetry::SubscribeStatusTextRequest* request, ::grpc::ServerWriter< ::mavsdk::rpc::telemetry::StatusTextResponse>* writer) override {
+    ::grpc::Status SubscribeStatusText(::grpc::ServerContext* /*context*/, const ::mavsdk::rpc::telemetry::SubscribeStatusTextRequest* /*request*/, ::grpc::ServerWriter< ::mavsdk::rpc::telemetry::StatusTextResponse>* /*writer*/) override {
       abort();
       return ::grpc::Status(::grpc::StatusCode::UNIMPLEMENTED, "");
     }
@@ -1043,7 +1046,7 @@ class TelemetryService final {
   template <class BaseClass>
   class WithAsyncMethod_SubscribeActuatorControlTarget : public BaseClass {
    private:
-    void BaseClassMustBeDerivedFromService(const Service *service) {}
+    void BaseClassMustBeDerivedFromService(const Service* /*service*/) {}
    public:
     WithAsyncMethod_SubscribeActuatorControlTarget() {
       ::grpc::Service::MarkMethodAsync(17);
@@ -1052,7 +1055,7 @@ class TelemetryService final {
       BaseClassMustBeDerivedFromService(this);
     }
     // disable synchronous version of this method
-    ::grpc::Status SubscribeActuatorControlTarget(::grpc::ServerContext* context, const ::mavsdk::rpc::telemetry::SubscribeActuatorControlTargetRequest* request, ::grpc::ServerWriter< ::mavsdk::rpc::telemetry::ActuatorControlTargetResponse>* writer) override {
+    ::grpc::Status SubscribeActuatorControlTarget(::grpc::ServerContext* /*context*/, const ::mavsdk::rpc::telemetry::SubscribeActuatorControlTargetRequest* /*request*/, ::grpc::ServerWriter< ::mavsdk::rpc::telemetry::ActuatorControlTargetResponse>* /*writer*/) override {
       abort();
       return ::grpc::Status(::grpc::StatusCode::UNIMPLEMENTED, "");
     }
@@ -1063,7 +1066,7 @@ class TelemetryService final {
   template <class BaseClass>
   class WithAsyncMethod_SubscribeActuatorOutputStatus : public BaseClass {
    private:
-    void BaseClassMustBeDerivedFromService(const Service *service) {}
+    void BaseClassMustBeDerivedFromService(const Service* /*service*/) {}
    public:
     WithAsyncMethod_SubscribeActuatorOutputStatus() {
       ::grpc::Service::MarkMethodAsync(18);
@@ -1072,7 +1075,7 @@ class TelemetryService final {
       BaseClassMustBeDerivedFromService(this);
     }
     // disable synchronous version of this method
-    ::grpc::Status SubscribeActuatorOutputStatus(::grpc::ServerContext* context, const ::mavsdk::rpc::telemetry::SubscribeActuatorOutputStatusRequest* request, ::grpc::ServerWriter< ::mavsdk::rpc::telemetry::ActuatorOutputStatusResponse>* writer) override {
+    ::grpc::Status SubscribeActuatorOutputStatus(::grpc::ServerContext* /*context*/, const ::mavsdk::rpc::telemetry::SubscribeActuatorOutputStatusRequest* /*request*/, ::grpc::ServerWriter< ::mavsdk::rpc::telemetry::ActuatorOutputStatusResponse>* /*writer*/) override {
       abort();
       return ::grpc::Status(::grpc::StatusCode::UNIMPLEMENTED, "");
     }
@@ -1083,7 +1086,7 @@ class TelemetryService final {
   template <class BaseClass>
   class WithAsyncMethod_SubscribeOdometry : public BaseClass {
    private:
-    void BaseClassMustBeDerivedFromService(const Service *service) {}
+    void BaseClassMustBeDerivedFromService(const Service* /*service*/) {}
    public:
     WithAsyncMethod_SubscribeOdometry() {
       ::grpc::Service::MarkMethodAsync(19);
@@ -1092,7 +1095,7 @@ class TelemetryService final {
       BaseClassMustBeDerivedFromService(this);
     }
     // disable synchronous version of this method
-    ::grpc::Status SubscribeOdometry(::grpc::ServerContext* context, const ::mavsdk::rpc::telemetry::SubscribeOdometryRequest* request, ::grpc::ServerWriter< ::mavsdk::rpc::telemetry::OdometryResponse>* writer) override {
+    ::grpc::Status SubscribeOdometry(::grpc::ServerContext* /*context*/, const ::mavsdk::rpc::telemetry::SubscribeOdometryRequest* /*request*/, ::grpc::ServerWriter< ::mavsdk::rpc::telemetry::OdometryResponse>* /*writer*/) override {
       abort();
       return ::grpc::Status(::grpc::StatusCode::UNIMPLEMENTED, "");
     }
@@ -1104,448 +1107,448 @@ class TelemetryService final {
   template <class BaseClass>
   class ExperimentalWithCallbackMethod_SubscribePosition : public BaseClass {
    private:
-    void BaseClassMustBeDerivedFromService(const Service *service) {}
+    void BaseClassMustBeDerivedFromService(const Service* /*service*/) {}
    public:
     ExperimentalWithCallbackMethod_SubscribePosition() {
       ::grpc::Service::experimental().MarkMethodCallback(0,
-        new ::grpc::internal::CallbackServerStreamingHandler< ::mavsdk::rpc::telemetry::SubscribePositionRequest, ::mavsdk::rpc::telemetry::PositionResponse>(
+        new ::grpc_impl::internal::CallbackServerStreamingHandler< ::mavsdk::rpc::telemetry::SubscribePositionRequest, ::mavsdk::rpc::telemetry::PositionResponse>(
           [this] { return this->SubscribePosition(); }));
     }
     ~ExperimentalWithCallbackMethod_SubscribePosition() override {
       BaseClassMustBeDerivedFromService(this);
     }
     // disable synchronous version of this method
-    ::grpc::Status SubscribePosition(::grpc::ServerContext* context, const ::mavsdk::rpc::telemetry::SubscribePositionRequest* request, ::grpc::ServerWriter< ::mavsdk::rpc::telemetry::PositionResponse>* writer) override {
+    ::grpc::Status SubscribePosition(::grpc::ServerContext* /*context*/, const ::mavsdk::rpc::telemetry::SubscribePositionRequest* /*request*/, ::grpc::ServerWriter< ::mavsdk::rpc::telemetry::PositionResponse>* /*writer*/) override {
       abort();
       return ::grpc::Status(::grpc::StatusCode::UNIMPLEMENTED, "");
     }
     virtual ::grpc::experimental::ServerWriteReactor< ::mavsdk::rpc::telemetry::SubscribePositionRequest, ::mavsdk::rpc::telemetry::PositionResponse>* SubscribePosition() {
-      return new ::grpc::internal::UnimplementedWriteReactor<
+      return new ::grpc_impl::internal::UnimplementedWriteReactor<
         ::mavsdk::rpc::telemetry::SubscribePositionRequest, ::mavsdk::rpc::telemetry::PositionResponse>;}
   };
   template <class BaseClass>
   class ExperimentalWithCallbackMethod_SubscribeHome : public BaseClass {
    private:
-    void BaseClassMustBeDerivedFromService(const Service *service) {}
+    void BaseClassMustBeDerivedFromService(const Service* /*service*/) {}
    public:
     ExperimentalWithCallbackMethod_SubscribeHome() {
       ::grpc::Service::experimental().MarkMethodCallback(1,
-        new ::grpc::internal::CallbackServerStreamingHandler< ::mavsdk::rpc::telemetry::SubscribeHomeRequest, ::mavsdk::rpc::telemetry::HomeResponse>(
+        new ::grpc_impl::internal::CallbackServerStreamingHandler< ::mavsdk::rpc::telemetry::SubscribeHomeRequest, ::mavsdk::rpc::telemetry::HomeResponse>(
           [this] { return this->SubscribeHome(); }));
     }
     ~ExperimentalWithCallbackMethod_SubscribeHome() override {
       BaseClassMustBeDerivedFromService(this);
     }
     // disable synchronous version of this method
-    ::grpc::Status SubscribeHome(::grpc::ServerContext* context, const ::mavsdk::rpc::telemetry::SubscribeHomeRequest* request, ::grpc::ServerWriter< ::mavsdk::rpc::telemetry::HomeResponse>* writer) override {
+    ::grpc::Status SubscribeHome(::grpc::ServerContext* /*context*/, const ::mavsdk::rpc::telemetry::SubscribeHomeRequest* /*request*/, ::grpc::ServerWriter< ::mavsdk::rpc::telemetry::HomeResponse>* /*writer*/) override {
       abort();
       return ::grpc::Status(::grpc::StatusCode::UNIMPLEMENTED, "");
     }
     virtual ::grpc::experimental::ServerWriteReactor< ::mavsdk::rpc::telemetry::SubscribeHomeRequest, ::mavsdk::rpc::telemetry::HomeResponse>* SubscribeHome() {
-      return new ::grpc::internal::UnimplementedWriteReactor<
+      return new ::grpc_impl::internal::UnimplementedWriteReactor<
         ::mavsdk::rpc::telemetry::SubscribeHomeRequest, ::mavsdk::rpc::telemetry::HomeResponse>;}
   };
   template <class BaseClass>
   class ExperimentalWithCallbackMethod_SubscribeInAir : public BaseClass {
    private:
-    void BaseClassMustBeDerivedFromService(const Service *service) {}
+    void BaseClassMustBeDerivedFromService(const Service* /*service*/) {}
    public:
     ExperimentalWithCallbackMethod_SubscribeInAir() {
       ::grpc::Service::experimental().MarkMethodCallback(2,
-        new ::grpc::internal::CallbackServerStreamingHandler< ::mavsdk::rpc::telemetry::SubscribeInAirRequest, ::mavsdk::rpc::telemetry::InAirResponse>(
+        new ::grpc_impl::internal::CallbackServerStreamingHandler< ::mavsdk::rpc::telemetry::SubscribeInAirRequest, ::mavsdk::rpc::telemetry::InAirResponse>(
           [this] { return this->SubscribeInAir(); }));
     }
     ~ExperimentalWithCallbackMethod_SubscribeInAir() override {
       BaseClassMustBeDerivedFromService(this);
     }
     // disable synchronous version of this method
-    ::grpc::Status SubscribeInAir(::grpc::ServerContext* context, const ::mavsdk::rpc::telemetry::SubscribeInAirRequest* request, ::grpc::ServerWriter< ::mavsdk::rpc::telemetry::InAirResponse>* writer) override {
+    ::grpc::Status SubscribeInAir(::grpc::ServerContext* /*context*/, const ::mavsdk::rpc::telemetry::SubscribeInAirRequest* /*request*/, ::grpc::ServerWriter< ::mavsdk::rpc::telemetry::InAirResponse>* /*writer*/) override {
       abort();
       return ::grpc::Status(::grpc::StatusCode::UNIMPLEMENTED, "");
     }
     virtual ::grpc::experimental::ServerWriteReactor< ::mavsdk::rpc::telemetry::SubscribeInAirRequest, ::mavsdk::rpc::telemetry::InAirResponse>* SubscribeInAir() {
-      return new ::grpc::internal::UnimplementedWriteReactor<
+      return new ::grpc_impl::internal::UnimplementedWriteReactor<
         ::mavsdk::rpc::telemetry::SubscribeInAirRequest, ::mavsdk::rpc::telemetry::InAirResponse>;}
   };
   template <class BaseClass>
   class ExperimentalWithCallbackMethod_SubscribeLandedState : public BaseClass {
    private:
-    void BaseClassMustBeDerivedFromService(const Service *service) {}
+    void BaseClassMustBeDerivedFromService(const Service* /*service*/) {}
    public:
     ExperimentalWithCallbackMethod_SubscribeLandedState() {
       ::grpc::Service::experimental().MarkMethodCallback(3,
-        new ::grpc::internal::CallbackServerStreamingHandler< ::mavsdk::rpc::telemetry::SubscribeLandedStateRequest, ::mavsdk::rpc::telemetry::LandedStateResponse>(
+        new ::grpc_impl::internal::CallbackServerStreamingHandler< ::mavsdk::rpc::telemetry::SubscribeLandedStateRequest, ::mavsdk::rpc::telemetry::LandedStateResponse>(
           [this] { return this->SubscribeLandedState(); }));
     }
     ~ExperimentalWithCallbackMethod_SubscribeLandedState() override {
       BaseClassMustBeDerivedFromService(this);
     }
     // disable synchronous version of this method
-    ::grpc::Status SubscribeLandedState(::grpc::ServerContext* context, const ::mavsdk::rpc::telemetry::SubscribeLandedStateRequest* request, ::grpc::ServerWriter< ::mavsdk::rpc::telemetry::LandedStateResponse>* writer) override {
+    ::grpc::Status SubscribeLandedState(::grpc::ServerContext* /*context*/, const ::mavsdk::rpc::telemetry::SubscribeLandedStateRequest* /*request*/, ::grpc::ServerWriter< ::mavsdk::rpc::telemetry::LandedStateResponse>* /*writer*/) override {
       abort();
       return ::grpc::Status(::grpc::StatusCode::UNIMPLEMENTED, "");
     }
     virtual ::grpc::experimental::ServerWriteReactor< ::mavsdk::rpc::telemetry::SubscribeLandedStateRequest, ::mavsdk::rpc::telemetry::LandedStateResponse>* SubscribeLandedState() {
-      return new ::grpc::internal::UnimplementedWriteReactor<
+      return new ::grpc_impl::internal::UnimplementedWriteReactor<
         ::mavsdk::rpc::telemetry::SubscribeLandedStateRequest, ::mavsdk::rpc::telemetry::LandedStateResponse>;}
   };
   template <class BaseClass>
   class ExperimentalWithCallbackMethod_SubscribeArmed : public BaseClass {
    private:
-    void BaseClassMustBeDerivedFromService(const Service *service) {}
+    void BaseClassMustBeDerivedFromService(const Service* /*service*/) {}
    public:
     ExperimentalWithCallbackMethod_SubscribeArmed() {
       ::grpc::Service::experimental().MarkMethodCallback(4,
-        new ::grpc::internal::CallbackServerStreamingHandler< ::mavsdk::rpc::telemetry::SubscribeArmedRequest, ::mavsdk::rpc::telemetry::ArmedResponse>(
+        new ::grpc_impl::internal::CallbackServerStreamingHandler< ::mavsdk::rpc::telemetry::SubscribeArmedRequest, ::mavsdk::rpc::telemetry::ArmedResponse>(
           [this] { return this->SubscribeArmed(); }));
     }
     ~ExperimentalWithCallbackMethod_SubscribeArmed() override {
       BaseClassMustBeDerivedFromService(this);
     }
     // disable synchronous version of this method
-    ::grpc::Status SubscribeArmed(::grpc::ServerContext* context, const ::mavsdk::rpc::telemetry::SubscribeArmedRequest* request, ::grpc::ServerWriter< ::mavsdk::rpc::telemetry::ArmedResponse>* writer) override {
+    ::grpc::Status SubscribeArmed(::grpc::ServerContext* /*context*/, const ::mavsdk::rpc::telemetry::SubscribeArmedRequest* /*request*/, ::grpc::ServerWriter< ::mavsdk::rpc::telemetry::ArmedResponse>* /*writer*/) override {
       abort();
       return ::grpc::Status(::grpc::StatusCode::UNIMPLEMENTED, "");
     }
     virtual ::grpc::experimental::ServerWriteReactor< ::mavsdk::rpc::telemetry::SubscribeArmedRequest, ::mavsdk::rpc::telemetry::ArmedResponse>* SubscribeArmed() {
-      return new ::grpc::internal::UnimplementedWriteReactor<
+      return new ::grpc_impl::internal::UnimplementedWriteReactor<
         ::mavsdk::rpc::telemetry::SubscribeArmedRequest, ::mavsdk::rpc::telemetry::ArmedResponse>;}
   };
   template <class BaseClass>
   class ExperimentalWithCallbackMethod_SubscribeAttitudeQuaternion : public BaseClass {
    private:
-    void BaseClassMustBeDerivedFromService(const Service *service) {}
+    void BaseClassMustBeDerivedFromService(const Service* /*service*/) {}
    public:
     ExperimentalWithCallbackMethod_SubscribeAttitudeQuaternion() {
       ::grpc::Service::experimental().MarkMethodCallback(5,
-        new ::grpc::internal::CallbackServerStreamingHandler< ::mavsdk::rpc::telemetry::SubscribeAttitudeQuaternionRequest, ::mavsdk::rpc::telemetry::AttitudeQuaternionResponse>(
+        new ::grpc_impl::internal::CallbackServerStreamingHandler< ::mavsdk::rpc::telemetry::SubscribeAttitudeQuaternionRequest, ::mavsdk::rpc::telemetry::AttitudeQuaternionResponse>(
           [this] { return this->SubscribeAttitudeQuaternion(); }));
     }
     ~ExperimentalWithCallbackMethod_SubscribeAttitudeQuaternion() override {
       BaseClassMustBeDerivedFromService(this);
     }
     // disable synchronous version of this method
-    ::grpc::Status SubscribeAttitudeQuaternion(::grpc::ServerContext* context, const ::mavsdk::rpc::telemetry::SubscribeAttitudeQuaternionRequest* request, ::grpc::ServerWriter< ::mavsdk::rpc::telemetry::AttitudeQuaternionResponse>* writer) override {
+    ::grpc::Status SubscribeAttitudeQuaternion(::grpc::ServerContext* /*context*/, const ::mavsdk::rpc::telemetry::SubscribeAttitudeQuaternionRequest* /*request*/, ::grpc::ServerWriter< ::mavsdk::rpc::telemetry::AttitudeQuaternionResponse>* /*writer*/) override {
       abort();
       return ::grpc::Status(::grpc::StatusCode::UNIMPLEMENTED, "");
     }
     virtual ::grpc::experimental::ServerWriteReactor< ::mavsdk::rpc::telemetry::SubscribeAttitudeQuaternionRequest, ::mavsdk::rpc::telemetry::AttitudeQuaternionResponse>* SubscribeAttitudeQuaternion() {
-      return new ::grpc::internal::UnimplementedWriteReactor<
+      return new ::grpc_impl::internal::UnimplementedWriteReactor<
         ::mavsdk::rpc::telemetry::SubscribeAttitudeQuaternionRequest, ::mavsdk::rpc::telemetry::AttitudeQuaternionResponse>;}
   };
   template <class BaseClass>
   class ExperimentalWithCallbackMethod_SubscribeAttitudeEuler : public BaseClass {
    private:
-    void BaseClassMustBeDerivedFromService(const Service *service) {}
+    void BaseClassMustBeDerivedFromService(const Service* /*service*/) {}
    public:
     ExperimentalWithCallbackMethod_SubscribeAttitudeEuler() {
       ::grpc::Service::experimental().MarkMethodCallback(6,
-        new ::grpc::internal::CallbackServerStreamingHandler< ::mavsdk::rpc::telemetry::SubscribeAttitudeEulerRequest, ::mavsdk::rpc::telemetry::AttitudeEulerResponse>(
+        new ::grpc_impl::internal::CallbackServerStreamingHandler< ::mavsdk::rpc::telemetry::SubscribeAttitudeEulerRequest, ::mavsdk::rpc::telemetry::AttitudeEulerResponse>(
           [this] { return this->SubscribeAttitudeEuler(); }));
     }
     ~ExperimentalWithCallbackMethod_SubscribeAttitudeEuler() override {
       BaseClassMustBeDerivedFromService(this);
     }
     // disable synchronous version of this method
-    ::grpc::Status SubscribeAttitudeEuler(::grpc::ServerContext* context, const ::mavsdk::rpc::telemetry::SubscribeAttitudeEulerRequest* request, ::grpc::ServerWriter< ::mavsdk::rpc::telemetry::AttitudeEulerResponse>* writer) override {
+    ::grpc::Status SubscribeAttitudeEuler(::grpc::ServerContext* /*context*/, const ::mavsdk::rpc::telemetry::SubscribeAttitudeEulerRequest* /*request*/, ::grpc::ServerWriter< ::mavsdk::rpc::telemetry::AttitudeEulerResponse>* /*writer*/) override {
       abort();
       return ::grpc::Status(::grpc::StatusCode::UNIMPLEMENTED, "");
     }
     virtual ::grpc::experimental::ServerWriteReactor< ::mavsdk::rpc::telemetry::SubscribeAttitudeEulerRequest, ::mavsdk::rpc::telemetry::AttitudeEulerResponse>* SubscribeAttitudeEuler() {
-      return new ::grpc::internal::UnimplementedWriteReactor<
+      return new ::grpc_impl::internal::UnimplementedWriteReactor<
         ::mavsdk::rpc::telemetry::SubscribeAttitudeEulerRequest, ::mavsdk::rpc::telemetry::AttitudeEulerResponse>;}
   };
   template <class BaseClass>
   class ExperimentalWithCallbackMethod_SubscribeAttitudeAngularVelocityBody : public BaseClass {
    private:
-    void BaseClassMustBeDerivedFromService(const Service *service) {}
+    void BaseClassMustBeDerivedFromService(const Service* /*service*/) {}
    public:
     ExperimentalWithCallbackMethod_SubscribeAttitudeAngularVelocityBody() {
       ::grpc::Service::experimental().MarkMethodCallback(7,
-        new ::grpc::internal::CallbackServerStreamingHandler< ::mavsdk::rpc::telemetry::SubscribeAttitudeAngularVelocityBodyRequest, ::mavsdk::rpc::telemetry::AttitudeAngularVelocityBodyResponse>(
+        new ::grpc_impl::internal::CallbackServerStreamingHandler< ::mavsdk::rpc::telemetry::SubscribeAttitudeAngularVelocityBodyRequest, ::mavsdk::rpc::telemetry::AttitudeAngularVelocityBodyResponse>(
           [this] { return this->SubscribeAttitudeAngularVelocityBody(); }));
     }
     ~ExperimentalWithCallbackMethod_SubscribeAttitudeAngularVelocityBody() override {
       BaseClassMustBeDerivedFromService(this);
     }
     // disable synchronous version of this method
-    ::grpc::Status SubscribeAttitudeAngularVelocityBody(::grpc::ServerContext* context, const ::mavsdk::rpc::telemetry::SubscribeAttitudeAngularVelocityBodyRequest* request, ::grpc::ServerWriter< ::mavsdk::rpc::telemetry::AttitudeAngularVelocityBodyResponse>* writer) override {
+    ::grpc::Status SubscribeAttitudeAngularVelocityBody(::grpc::ServerContext* /*context*/, const ::mavsdk::rpc::telemetry::SubscribeAttitudeAngularVelocityBodyRequest* /*request*/, ::grpc::ServerWriter< ::mavsdk::rpc::telemetry::AttitudeAngularVelocityBodyResponse>* /*writer*/) override {
       abort();
       return ::grpc::Status(::grpc::StatusCode::UNIMPLEMENTED, "");
     }
     virtual ::grpc::experimental::ServerWriteReactor< ::mavsdk::rpc::telemetry::SubscribeAttitudeAngularVelocityBodyRequest, ::mavsdk::rpc::telemetry::AttitudeAngularVelocityBodyResponse>* SubscribeAttitudeAngularVelocityBody() {
-      return new ::grpc::internal::UnimplementedWriteReactor<
+      return new ::grpc_impl::internal::UnimplementedWriteReactor<
         ::mavsdk::rpc::telemetry::SubscribeAttitudeAngularVelocityBodyRequest, ::mavsdk::rpc::telemetry::AttitudeAngularVelocityBodyResponse>;}
   };
   template <class BaseClass>
   class ExperimentalWithCallbackMethod_SubscribeCameraAttitudeQuaternion : public BaseClass {
    private:
-    void BaseClassMustBeDerivedFromService(const Service *service) {}
+    void BaseClassMustBeDerivedFromService(const Service* /*service*/) {}
    public:
     ExperimentalWithCallbackMethod_SubscribeCameraAttitudeQuaternion() {
       ::grpc::Service::experimental().MarkMethodCallback(8,
-        new ::grpc::internal::CallbackServerStreamingHandler< ::mavsdk::rpc::telemetry::SubscribeCameraAttitudeQuaternionRequest, ::mavsdk::rpc::telemetry::CameraAttitudeQuaternionResponse>(
+        new ::grpc_impl::internal::CallbackServerStreamingHandler< ::mavsdk::rpc::telemetry::SubscribeCameraAttitudeQuaternionRequest, ::mavsdk::rpc::telemetry::CameraAttitudeQuaternionResponse>(
           [this] { return this->SubscribeCameraAttitudeQuaternion(); }));
     }
     ~ExperimentalWithCallbackMethod_SubscribeCameraAttitudeQuaternion() override {
       BaseClassMustBeDerivedFromService(this);
     }
     // disable synchronous version of this method
-    ::grpc::Status SubscribeCameraAttitudeQuaternion(::grpc::ServerContext* context, const ::mavsdk::rpc::telemetry::SubscribeCameraAttitudeQuaternionRequest* request, ::grpc::ServerWriter< ::mavsdk::rpc::telemetry::CameraAttitudeQuaternionResponse>* writer) override {
+    ::grpc::Status SubscribeCameraAttitudeQuaternion(::grpc::ServerContext* /*context*/, const ::mavsdk::rpc::telemetry::SubscribeCameraAttitudeQuaternionRequest* /*request*/, ::grpc::ServerWriter< ::mavsdk::rpc::telemetry::CameraAttitudeQuaternionResponse>* /*writer*/) override {
       abort();
       return ::grpc::Status(::grpc::StatusCode::UNIMPLEMENTED, "");
     }
     virtual ::grpc::experimental::ServerWriteReactor< ::mavsdk::rpc::telemetry::SubscribeCameraAttitudeQuaternionRequest, ::mavsdk::rpc::telemetry::CameraAttitudeQuaternionResponse>* SubscribeCameraAttitudeQuaternion() {
-      return new ::grpc::internal::UnimplementedWriteReactor<
+      return new ::grpc_impl::internal::UnimplementedWriteReactor<
         ::mavsdk::rpc::telemetry::SubscribeCameraAttitudeQuaternionRequest, ::mavsdk::rpc::telemetry::CameraAttitudeQuaternionResponse>;}
   };
   template <class BaseClass>
   class ExperimentalWithCallbackMethod_SubscribeCameraAttitudeEuler : public BaseClass {
    private:
-    void BaseClassMustBeDerivedFromService(const Service *service) {}
+    void BaseClassMustBeDerivedFromService(const Service* /*service*/) {}
    public:
     ExperimentalWithCallbackMethod_SubscribeCameraAttitudeEuler() {
       ::grpc::Service::experimental().MarkMethodCallback(9,
-        new ::grpc::internal::CallbackServerStreamingHandler< ::mavsdk::rpc::telemetry::SubscribeCameraAttitudeEulerRequest, ::mavsdk::rpc::telemetry::CameraAttitudeEulerResponse>(
+        new ::grpc_impl::internal::CallbackServerStreamingHandler< ::mavsdk::rpc::telemetry::SubscribeCameraAttitudeEulerRequest, ::mavsdk::rpc::telemetry::CameraAttitudeEulerResponse>(
           [this] { return this->SubscribeCameraAttitudeEuler(); }));
     }
     ~ExperimentalWithCallbackMethod_SubscribeCameraAttitudeEuler() override {
       BaseClassMustBeDerivedFromService(this);
     }
     // disable synchronous version of this method
-    ::grpc::Status SubscribeCameraAttitudeEuler(::grpc::ServerContext* context, const ::mavsdk::rpc::telemetry::SubscribeCameraAttitudeEulerRequest* request, ::grpc::ServerWriter< ::mavsdk::rpc::telemetry::CameraAttitudeEulerResponse>* writer) override {
+    ::grpc::Status SubscribeCameraAttitudeEuler(::grpc::ServerContext* /*context*/, const ::mavsdk::rpc::telemetry::SubscribeCameraAttitudeEulerRequest* /*request*/, ::grpc::ServerWriter< ::mavsdk::rpc::telemetry::CameraAttitudeEulerResponse>* /*writer*/) override {
       abort();
       return ::grpc::Status(::grpc::StatusCode::UNIMPLEMENTED, "");
     }
     virtual ::grpc::experimental::ServerWriteReactor< ::mavsdk::rpc::telemetry::SubscribeCameraAttitudeEulerRequest, ::mavsdk::rpc::telemetry::CameraAttitudeEulerResponse>* SubscribeCameraAttitudeEuler() {
-      return new ::grpc::internal::UnimplementedWriteReactor<
+      return new ::grpc_impl::internal::UnimplementedWriteReactor<
         ::mavsdk::rpc::telemetry::SubscribeCameraAttitudeEulerRequest, ::mavsdk::rpc::telemetry::CameraAttitudeEulerResponse>;}
   };
   template <class BaseClass>
   class ExperimentalWithCallbackMethod_SubscribeGroundSpeedNed : public BaseClass {
    private:
-    void BaseClassMustBeDerivedFromService(const Service *service) {}
+    void BaseClassMustBeDerivedFromService(const Service* /*service*/) {}
    public:
     ExperimentalWithCallbackMethod_SubscribeGroundSpeedNed() {
       ::grpc::Service::experimental().MarkMethodCallback(10,
-        new ::grpc::internal::CallbackServerStreamingHandler< ::mavsdk::rpc::telemetry::SubscribeGroundSpeedNedRequest, ::mavsdk::rpc::telemetry::GroundSpeedNedResponse>(
+        new ::grpc_impl::internal::CallbackServerStreamingHandler< ::mavsdk::rpc::telemetry::SubscribeGroundSpeedNedRequest, ::mavsdk::rpc::telemetry::GroundSpeedNedResponse>(
           [this] { return this->SubscribeGroundSpeedNed(); }));
     }
     ~ExperimentalWithCallbackMethod_SubscribeGroundSpeedNed() override {
       BaseClassMustBeDerivedFromService(this);
     }
     // disable synchronous version of this method
-    ::grpc::Status SubscribeGroundSpeedNed(::grpc::ServerContext* context, const ::mavsdk::rpc::telemetry::SubscribeGroundSpeedNedRequest* request, ::grpc::ServerWriter< ::mavsdk::rpc::telemetry::GroundSpeedNedResponse>* writer) override {
+    ::grpc::Status SubscribeGroundSpeedNed(::grpc::ServerContext* /*context*/, const ::mavsdk::rpc::telemetry::SubscribeGroundSpeedNedRequest* /*request*/, ::grpc::ServerWriter< ::mavsdk::rpc::telemetry::GroundSpeedNedResponse>* /*writer*/) override {
       abort();
       return ::grpc::Status(::grpc::StatusCode::UNIMPLEMENTED, "");
     }
     virtual ::grpc::experimental::ServerWriteReactor< ::mavsdk::rpc::telemetry::SubscribeGroundSpeedNedRequest, ::mavsdk::rpc::telemetry::GroundSpeedNedResponse>* SubscribeGroundSpeedNed() {
-      return new ::grpc::internal::UnimplementedWriteReactor<
+      return new ::grpc_impl::internal::UnimplementedWriteReactor<
         ::mavsdk::rpc::telemetry::SubscribeGroundSpeedNedRequest, ::mavsdk::rpc::telemetry::GroundSpeedNedResponse>;}
   };
   template <class BaseClass>
   class ExperimentalWithCallbackMethod_SubscribeGpsInfo : public BaseClass {
    private:
-    void BaseClassMustBeDerivedFromService(const Service *service) {}
+    void BaseClassMustBeDerivedFromService(const Service* /*service*/) {}
    public:
     ExperimentalWithCallbackMethod_SubscribeGpsInfo() {
       ::grpc::Service::experimental().MarkMethodCallback(11,
-        new ::grpc::internal::CallbackServerStreamingHandler< ::mavsdk::rpc::telemetry::SubscribeGpsInfoRequest, ::mavsdk::rpc::telemetry::GpsInfoResponse>(
+        new ::grpc_impl::internal::CallbackServerStreamingHandler< ::mavsdk::rpc::telemetry::SubscribeGpsInfoRequest, ::mavsdk::rpc::telemetry::GpsInfoResponse>(
           [this] { return this->SubscribeGpsInfo(); }));
     }
     ~ExperimentalWithCallbackMethod_SubscribeGpsInfo() override {
       BaseClassMustBeDerivedFromService(this);
     }
     // disable synchronous version of this method
-    ::grpc::Status SubscribeGpsInfo(::grpc::ServerContext* context, const ::mavsdk::rpc::telemetry::SubscribeGpsInfoRequest* request, ::grpc::ServerWriter< ::mavsdk::rpc::telemetry::GpsInfoResponse>* writer) override {
+    ::grpc::Status SubscribeGpsInfo(::grpc::ServerContext* /*context*/, const ::mavsdk::rpc::telemetry::SubscribeGpsInfoRequest* /*request*/, ::grpc::ServerWriter< ::mavsdk::rpc::telemetry::GpsInfoResponse>* /*writer*/) override {
       abort();
       return ::grpc::Status(::grpc::StatusCode::UNIMPLEMENTED, "");
     }
     virtual ::grpc::experimental::ServerWriteReactor< ::mavsdk::rpc::telemetry::SubscribeGpsInfoRequest, ::mavsdk::rpc::telemetry::GpsInfoResponse>* SubscribeGpsInfo() {
-      return new ::grpc::internal::UnimplementedWriteReactor<
+      return new ::grpc_impl::internal::UnimplementedWriteReactor<
         ::mavsdk::rpc::telemetry::SubscribeGpsInfoRequest, ::mavsdk::rpc::telemetry::GpsInfoResponse>;}
   };
   template <class BaseClass>
   class ExperimentalWithCallbackMethod_SubscribeBattery : public BaseClass {
    private:
-    void BaseClassMustBeDerivedFromService(const Service *service) {}
+    void BaseClassMustBeDerivedFromService(const Service* /*service*/) {}
    public:
     ExperimentalWithCallbackMethod_SubscribeBattery() {
       ::grpc::Service::experimental().MarkMethodCallback(12,
-        new ::grpc::internal::CallbackServerStreamingHandler< ::mavsdk::rpc::telemetry::SubscribeBatteryRequest, ::mavsdk::rpc::telemetry::BatteryResponse>(
+        new ::grpc_impl::internal::CallbackServerStreamingHandler< ::mavsdk::rpc::telemetry::SubscribeBatteryRequest, ::mavsdk::rpc::telemetry::BatteryResponse>(
           [this] { return this->SubscribeBattery(); }));
     }
     ~ExperimentalWithCallbackMethod_SubscribeBattery() override {
       BaseClassMustBeDerivedFromService(this);
     }
     // disable synchronous version of this method
-    ::grpc::Status SubscribeBattery(::grpc::ServerContext* context, const ::mavsdk::rpc::telemetry::SubscribeBatteryRequest* request, ::grpc::ServerWriter< ::mavsdk::rpc::telemetry::BatteryResponse>* writer) override {
+    ::grpc::Status SubscribeBattery(::grpc::ServerContext* /*context*/, const ::mavsdk::rpc::telemetry::SubscribeBatteryRequest* /*request*/, ::grpc::ServerWriter< ::mavsdk::rpc::telemetry::BatteryResponse>* /*writer*/) override {
       abort();
       return ::grpc::Status(::grpc::StatusCode::UNIMPLEMENTED, "");
     }
     virtual ::grpc::experimental::ServerWriteReactor< ::mavsdk::rpc::telemetry::SubscribeBatteryRequest, ::mavsdk::rpc::telemetry::BatteryResponse>* SubscribeBattery() {
-      return new ::grpc::internal::UnimplementedWriteReactor<
+      return new ::grpc_impl::internal::UnimplementedWriteReactor<
         ::mavsdk::rpc::telemetry::SubscribeBatteryRequest, ::mavsdk::rpc::telemetry::BatteryResponse>;}
   };
   template <class BaseClass>
   class ExperimentalWithCallbackMethod_SubscribeFlightMode : public BaseClass {
    private:
-    void BaseClassMustBeDerivedFromService(const Service *service) {}
+    void BaseClassMustBeDerivedFromService(const Service* /*service*/) {}
    public:
     ExperimentalWithCallbackMethod_SubscribeFlightMode() {
       ::grpc::Service::experimental().MarkMethodCallback(13,
-        new ::grpc::internal::CallbackServerStreamingHandler< ::mavsdk::rpc::telemetry::SubscribeFlightModeRequest, ::mavsdk::rpc::telemetry::FlightModeResponse>(
+        new ::grpc_impl::internal::CallbackServerStreamingHandler< ::mavsdk::rpc::telemetry::SubscribeFlightModeRequest, ::mavsdk::rpc::telemetry::FlightModeResponse>(
           [this] { return this->SubscribeFlightMode(); }));
     }
     ~ExperimentalWithCallbackMethod_SubscribeFlightMode() override {
       BaseClassMustBeDerivedFromService(this);
     }
     // disable synchronous version of this method
-    ::grpc::Status SubscribeFlightMode(::grpc::ServerContext* context, const ::mavsdk::rpc::telemetry::SubscribeFlightModeRequest* request, ::grpc::ServerWriter< ::mavsdk::rpc::telemetry::FlightModeResponse>* writer) override {
+    ::grpc::Status SubscribeFlightMode(::grpc::ServerContext* /*context*/, const ::mavsdk::rpc::telemetry::SubscribeFlightModeRequest* /*request*/, ::grpc::ServerWriter< ::mavsdk::rpc::telemetry::FlightModeResponse>* /*writer*/) override {
       abort();
       return ::grpc::Status(::grpc::StatusCode::UNIMPLEMENTED, "");
     }
     virtual ::grpc::experimental::ServerWriteReactor< ::mavsdk::rpc::telemetry::SubscribeFlightModeRequest, ::mavsdk::rpc::telemetry::FlightModeResponse>* SubscribeFlightMode() {
-      return new ::grpc::internal::UnimplementedWriteReactor<
+      return new ::grpc_impl::internal::UnimplementedWriteReactor<
         ::mavsdk::rpc::telemetry::SubscribeFlightModeRequest, ::mavsdk::rpc::telemetry::FlightModeResponse>;}
   };
   template <class BaseClass>
   class ExperimentalWithCallbackMethod_SubscribeHealth : public BaseClass {
    private:
-    void BaseClassMustBeDerivedFromService(const Service *service) {}
+    void BaseClassMustBeDerivedFromService(const Service* /*service*/) {}
    public:
     ExperimentalWithCallbackMethod_SubscribeHealth() {
       ::grpc::Service::experimental().MarkMethodCallback(14,
-        new ::grpc::internal::CallbackServerStreamingHandler< ::mavsdk::rpc::telemetry::SubscribeHealthRequest, ::mavsdk::rpc::telemetry::HealthResponse>(
+        new ::grpc_impl::internal::CallbackServerStreamingHandler< ::mavsdk::rpc::telemetry::SubscribeHealthRequest, ::mavsdk::rpc::telemetry::HealthResponse>(
           [this] { return this->SubscribeHealth(); }));
     }
     ~ExperimentalWithCallbackMethod_SubscribeHealth() override {
       BaseClassMustBeDerivedFromService(this);
     }
     // disable synchronous version of this method
-    ::grpc::Status SubscribeHealth(::grpc::ServerContext* context, const ::mavsdk::rpc::telemetry::SubscribeHealthRequest* request, ::grpc::ServerWriter< ::mavsdk::rpc::telemetry::HealthResponse>* writer) override {
+    ::grpc::Status SubscribeHealth(::grpc::ServerContext* /*context*/, const ::mavsdk::rpc::telemetry::SubscribeHealthRequest* /*request*/, ::grpc::ServerWriter< ::mavsdk::rpc::telemetry::HealthResponse>* /*writer*/) override {
       abort();
       return ::grpc::Status(::grpc::StatusCode::UNIMPLEMENTED, "");
     }
     virtual ::grpc::experimental::ServerWriteReactor< ::mavsdk::rpc::telemetry::SubscribeHealthRequest, ::mavsdk::rpc::telemetry::HealthResponse>* SubscribeHealth() {
-      return new ::grpc::internal::UnimplementedWriteReactor<
+      return new ::grpc_impl::internal::UnimplementedWriteReactor<
         ::mavsdk::rpc::telemetry::SubscribeHealthRequest, ::mavsdk::rpc::telemetry::HealthResponse>;}
   };
   template <class BaseClass>
   class ExperimentalWithCallbackMethod_SubscribeRcStatus : public BaseClass {
    private:
-    void BaseClassMustBeDerivedFromService(const Service *service) {}
+    void BaseClassMustBeDerivedFromService(const Service* /*service*/) {}
    public:
     ExperimentalWithCallbackMethod_SubscribeRcStatus() {
       ::grpc::Service::experimental().MarkMethodCallback(15,
-        new ::grpc::internal::CallbackServerStreamingHandler< ::mavsdk::rpc::telemetry::SubscribeRcStatusRequest, ::mavsdk::rpc::telemetry::RcStatusResponse>(
+        new ::grpc_impl::internal::CallbackServerStreamingHandler< ::mavsdk::rpc::telemetry::SubscribeRcStatusRequest, ::mavsdk::rpc::telemetry::RcStatusResponse>(
           [this] { return this->SubscribeRcStatus(); }));
     }
     ~ExperimentalWithCallbackMethod_SubscribeRcStatus() override {
       BaseClassMustBeDerivedFromService(this);
     }
     // disable synchronous version of this method
-    ::grpc::Status SubscribeRcStatus(::grpc::ServerContext* context, const ::mavsdk::rpc::telemetry::SubscribeRcStatusRequest* request, ::grpc::ServerWriter< ::mavsdk::rpc::telemetry::RcStatusResponse>* writer) override {
+    ::grpc::Status SubscribeRcStatus(::grpc::ServerContext* /*context*/, const ::mavsdk::rpc::telemetry::SubscribeRcStatusRequest* /*request*/, ::grpc::ServerWriter< ::mavsdk::rpc::telemetry::RcStatusResponse>* /*writer*/) override {
       abort();
       return ::grpc::Status(::grpc::StatusCode::UNIMPLEMENTED, "");
     }
     virtual ::grpc::experimental::ServerWriteReactor< ::mavsdk::rpc::telemetry::SubscribeRcStatusRequest, ::mavsdk::rpc::telemetry::RcStatusResponse>* SubscribeRcStatus() {
-      return new ::grpc::internal::UnimplementedWriteReactor<
+      return new ::grpc_impl::internal::UnimplementedWriteReactor<
         ::mavsdk::rpc::telemetry::SubscribeRcStatusRequest, ::mavsdk::rpc::telemetry::RcStatusResponse>;}
   };
   template <class BaseClass>
   class ExperimentalWithCallbackMethod_SubscribeStatusText : public BaseClass {
    private:
-    void BaseClassMustBeDerivedFromService(const Service *service) {}
+    void BaseClassMustBeDerivedFromService(const Service* /*service*/) {}
    public:
     ExperimentalWithCallbackMethod_SubscribeStatusText() {
       ::grpc::Service::experimental().MarkMethodCallback(16,
-        new ::grpc::internal::CallbackServerStreamingHandler< ::mavsdk::rpc::telemetry::SubscribeStatusTextRequest, ::mavsdk::rpc::telemetry::StatusTextResponse>(
+        new ::grpc_impl::internal::CallbackServerStreamingHandler< ::mavsdk::rpc::telemetry::SubscribeStatusTextRequest, ::mavsdk::rpc::telemetry::StatusTextResponse>(
           [this] { return this->SubscribeStatusText(); }));
     }
     ~ExperimentalWithCallbackMethod_SubscribeStatusText() override {
       BaseClassMustBeDerivedFromService(this);
     }
     // disable synchronous version of this method
-    ::grpc::Status SubscribeStatusText(::grpc::ServerContext* context, const ::mavsdk::rpc::telemetry::SubscribeStatusTextRequest* request, ::grpc::ServerWriter< ::mavsdk::rpc::telemetry::StatusTextResponse>* writer) override {
+    ::grpc::Status SubscribeStatusText(::grpc::ServerContext* /*context*/, const ::mavsdk::rpc::telemetry::SubscribeStatusTextRequest* /*request*/, ::grpc::ServerWriter< ::mavsdk::rpc::telemetry::StatusTextResponse>* /*writer*/) override {
       abort();
       return ::grpc::Status(::grpc::StatusCode::UNIMPLEMENTED, "");
     }
     virtual ::grpc::experimental::ServerWriteReactor< ::mavsdk::rpc::telemetry::SubscribeStatusTextRequest, ::mavsdk::rpc::telemetry::StatusTextResponse>* SubscribeStatusText() {
-      return new ::grpc::internal::UnimplementedWriteReactor<
+      return new ::grpc_impl::internal::UnimplementedWriteReactor<
         ::mavsdk::rpc::telemetry::SubscribeStatusTextRequest, ::mavsdk::rpc::telemetry::StatusTextResponse>;}
   };
   template <class BaseClass>
   class ExperimentalWithCallbackMethod_SubscribeActuatorControlTarget : public BaseClass {
    private:
-    void BaseClassMustBeDerivedFromService(const Service *service) {}
+    void BaseClassMustBeDerivedFromService(const Service* /*service*/) {}
    public:
     ExperimentalWithCallbackMethod_SubscribeActuatorControlTarget() {
       ::grpc::Service::experimental().MarkMethodCallback(17,
-        new ::grpc::internal::CallbackServerStreamingHandler< ::mavsdk::rpc::telemetry::SubscribeActuatorControlTargetRequest, ::mavsdk::rpc::telemetry::ActuatorControlTargetResponse>(
+        new ::grpc_impl::internal::CallbackServerStreamingHandler< ::mavsdk::rpc::telemetry::SubscribeActuatorControlTargetRequest, ::mavsdk::rpc::telemetry::ActuatorControlTargetResponse>(
           [this] { return this->SubscribeActuatorControlTarget(); }));
     }
     ~ExperimentalWithCallbackMethod_SubscribeActuatorControlTarget() override {
       BaseClassMustBeDerivedFromService(this);
     }
     // disable synchronous version of this method
-    ::grpc::Status SubscribeActuatorControlTarget(::grpc::ServerContext* context, const ::mavsdk::rpc::telemetry::SubscribeActuatorControlTargetRequest* request, ::grpc::ServerWriter< ::mavsdk::rpc::telemetry::ActuatorControlTargetResponse>* writer) override {
+    ::grpc::Status SubscribeActuatorControlTarget(::grpc::ServerContext* /*context*/, const ::mavsdk::rpc::telemetry::SubscribeActuatorControlTargetRequest* /*request*/, ::grpc::ServerWriter< ::mavsdk::rpc::telemetry::ActuatorControlTargetResponse>* /*writer*/) override {
       abort();
       return ::grpc::Status(::grpc::StatusCode::UNIMPLEMENTED, "");
     }
     virtual ::grpc::experimental::ServerWriteReactor< ::mavsdk::rpc::telemetry::SubscribeActuatorControlTargetRequest, ::mavsdk::rpc::telemetry::ActuatorControlTargetResponse>* SubscribeActuatorControlTarget() {
-      return new ::grpc::internal::UnimplementedWriteReactor<
+      return new ::grpc_impl::internal::UnimplementedWriteReactor<
         ::mavsdk::rpc::telemetry::SubscribeActuatorControlTargetRequest, ::mavsdk::rpc::telemetry::ActuatorControlTargetResponse>;}
   };
   template <class BaseClass>
   class ExperimentalWithCallbackMethod_SubscribeActuatorOutputStatus : public BaseClass {
    private:
-    void BaseClassMustBeDerivedFromService(const Service *service) {}
+    void BaseClassMustBeDerivedFromService(const Service* /*service*/) {}
    public:
     ExperimentalWithCallbackMethod_SubscribeActuatorOutputStatus() {
       ::grpc::Service::experimental().MarkMethodCallback(18,
-        new ::grpc::internal::CallbackServerStreamingHandler< ::mavsdk::rpc::telemetry::SubscribeActuatorOutputStatusRequest, ::mavsdk::rpc::telemetry::ActuatorOutputStatusResponse>(
+        new ::grpc_impl::internal::CallbackServerStreamingHandler< ::mavsdk::rpc::telemetry::SubscribeActuatorOutputStatusRequest, ::mavsdk::rpc::telemetry::ActuatorOutputStatusResponse>(
           [this] { return this->SubscribeActuatorOutputStatus(); }));
     }
     ~ExperimentalWithCallbackMethod_SubscribeActuatorOutputStatus() override {
       BaseClassMustBeDerivedFromService(this);
     }
     // disable synchronous version of this method
-    ::grpc::Status SubscribeActuatorOutputStatus(::grpc::ServerContext* context, const ::mavsdk::rpc::telemetry::SubscribeActuatorOutputStatusRequest* request, ::grpc::ServerWriter< ::mavsdk::rpc::telemetry::ActuatorOutputStatusResponse>* writer) override {
+    ::grpc::Status SubscribeActuatorOutputStatus(::grpc::ServerContext* /*context*/, const ::mavsdk::rpc::telemetry::SubscribeActuatorOutputStatusRequest* /*request*/, ::grpc::ServerWriter< ::mavsdk::rpc::telemetry::ActuatorOutputStatusResponse>* /*writer*/) override {
       abort();
       return ::grpc::Status(::grpc::StatusCode::UNIMPLEMENTED, "");
     }
     virtual ::grpc::experimental::ServerWriteReactor< ::mavsdk::rpc::telemetry::SubscribeActuatorOutputStatusRequest, ::mavsdk::rpc::telemetry::ActuatorOutputStatusResponse>* SubscribeActuatorOutputStatus() {
-      return new ::grpc::internal::UnimplementedWriteReactor<
+      return new ::grpc_impl::internal::UnimplementedWriteReactor<
         ::mavsdk::rpc::telemetry::SubscribeActuatorOutputStatusRequest, ::mavsdk::rpc::telemetry::ActuatorOutputStatusResponse>;}
   };
   template <class BaseClass>
   class ExperimentalWithCallbackMethod_SubscribeOdometry : public BaseClass {
    private:
-    void BaseClassMustBeDerivedFromService(const Service *service) {}
+    void BaseClassMustBeDerivedFromService(const Service* /*service*/) {}
    public:
     ExperimentalWithCallbackMethod_SubscribeOdometry() {
       ::grpc::Service::experimental().MarkMethodCallback(19,
-        new ::grpc::internal::CallbackServerStreamingHandler< ::mavsdk::rpc::telemetry::SubscribeOdometryRequest, ::mavsdk::rpc::telemetry::OdometryResponse>(
+        new ::grpc_impl::internal::CallbackServerStreamingHandler< ::mavsdk::rpc::telemetry::SubscribeOdometryRequest, ::mavsdk::rpc::telemetry::OdometryResponse>(
           [this] { return this->SubscribeOdometry(); }));
     }
     ~ExperimentalWithCallbackMethod_SubscribeOdometry() override {
       BaseClassMustBeDerivedFromService(this);
     }
     // disable synchronous version of this method
-    ::grpc::Status SubscribeOdometry(::grpc::ServerContext* context, const ::mavsdk::rpc::telemetry::SubscribeOdometryRequest* request, ::grpc::ServerWriter< ::mavsdk::rpc::telemetry::OdometryResponse>* writer) override {
+    ::grpc::Status SubscribeOdometry(::grpc::ServerContext* /*context*/, const ::mavsdk::rpc::telemetry::SubscribeOdometryRequest* /*request*/, ::grpc::ServerWriter< ::mavsdk::rpc::telemetry::OdometryResponse>* /*writer*/) override {
       abort();
       return ::grpc::Status(::grpc::StatusCode::UNIMPLEMENTED, "");
     }
     virtual ::grpc::experimental::ServerWriteReactor< ::mavsdk::rpc::telemetry::SubscribeOdometryRequest, ::mavsdk::rpc::telemetry::OdometryResponse>* SubscribeOdometry() {
-      return new ::grpc::internal::UnimplementedWriteReactor<
+      return new ::grpc_impl::internal::UnimplementedWriteReactor<
         ::mavsdk::rpc::telemetry::SubscribeOdometryRequest, ::mavsdk::rpc::telemetry::OdometryResponse>;}
   };
   typedef ExperimentalWithCallbackMethod_SubscribePosition<ExperimentalWithCallbackMethod_SubscribeHome<ExperimentalWithCallbackMethod_SubscribeInAir<ExperimentalWithCallbackMethod_SubscribeLandedState<ExperimentalWithCallbackMethod_SubscribeArmed<ExperimentalWithCallbackMethod_SubscribeAttitudeQuaternion<ExperimentalWithCallbackMethod_SubscribeAttitudeEuler<ExperimentalWithCallbackMethod_SubscribeAttitudeAngularVelocityBody<ExperimentalWithCallbackMethod_SubscribeCameraAttitudeQuaternion<ExperimentalWithCallbackMethod_SubscribeCameraAttitudeEuler<ExperimentalWithCallbackMethod_SubscribeGroundSpeedNed<ExperimentalWithCallbackMethod_SubscribeGpsInfo<ExperimentalWithCallbackMethod_SubscribeBattery<ExperimentalWithCallbackMethod_SubscribeFlightMode<ExperimentalWithCallbackMethod_SubscribeHealth<ExperimentalWithCallbackMethod_SubscribeRcStatus<ExperimentalWithCallbackMethod_SubscribeStatusText<ExperimentalWithCallbackMethod_SubscribeActuatorControlTarget<ExperimentalWithCallbackMethod_SubscribeActuatorOutputStatus<ExperimentalWithCallbackMethod_SubscribeOdometry<Service > > > > > > > > > > > > > > > > > > > > ExperimentalCallbackService;
   template <class BaseClass>
   class WithGenericMethod_SubscribePosition : public BaseClass {
    private:
-    void BaseClassMustBeDerivedFromService(const Service *service) {}
+    void BaseClassMustBeDerivedFromService(const Service* /*service*/) {}
    public:
     WithGenericMethod_SubscribePosition() {
       ::grpc::Service::MarkMethodGeneric(0);
@@ -1554,7 +1557,7 @@ class TelemetryService final {
       BaseClassMustBeDerivedFromService(this);
     }
     // disable synchronous version of this method
-    ::grpc::Status SubscribePosition(::grpc::ServerContext* context, const ::mavsdk::rpc::telemetry::SubscribePositionRequest* request, ::grpc::ServerWriter< ::mavsdk::rpc::telemetry::PositionResponse>* writer) override {
+    ::grpc::Status SubscribePosition(::grpc::ServerContext* /*context*/, const ::mavsdk::rpc::telemetry::SubscribePositionRequest* /*request*/, ::grpc::ServerWriter< ::mavsdk::rpc::telemetry::PositionResponse>* /*writer*/) override {
       abort();
       return ::grpc::Status(::grpc::StatusCode::UNIMPLEMENTED, "");
     }
@@ -1562,7 +1565,7 @@ class TelemetryService final {
   template <class BaseClass>
   class WithGenericMethod_SubscribeHome : public BaseClass {
    private:
-    void BaseClassMustBeDerivedFromService(const Service *service) {}
+    void BaseClassMustBeDerivedFromService(const Service* /*service*/) {}
    public:
     WithGenericMethod_SubscribeHome() {
       ::grpc::Service::MarkMethodGeneric(1);
@@ -1571,7 +1574,7 @@ class TelemetryService final {
       BaseClassMustBeDerivedFromService(this);
     }
     // disable synchronous version of this method
-    ::grpc::Status SubscribeHome(::grpc::ServerContext* context, const ::mavsdk::rpc::telemetry::SubscribeHomeRequest* request, ::grpc::ServerWriter< ::mavsdk::rpc::telemetry::HomeResponse>* writer) override {
+    ::grpc::Status SubscribeHome(::grpc::ServerContext* /*context*/, const ::mavsdk::rpc::telemetry::SubscribeHomeRequest* /*request*/, ::grpc::ServerWriter< ::mavsdk::rpc::telemetry::HomeResponse>* /*writer*/) override {
       abort();
       return ::grpc::Status(::grpc::StatusCode::UNIMPLEMENTED, "");
     }
@@ -1579,7 +1582,7 @@ class TelemetryService final {
   template <class BaseClass>
   class WithGenericMethod_SubscribeInAir : public BaseClass {
    private:
-    void BaseClassMustBeDerivedFromService(const Service *service) {}
+    void BaseClassMustBeDerivedFromService(const Service* /*service*/) {}
    public:
     WithGenericMethod_SubscribeInAir() {
       ::grpc::Service::MarkMethodGeneric(2);
@@ -1588,7 +1591,7 @@ class TelemetryService final {
       BaseClassMustBeDerivedFromService(this);
     }
     // disable synchronous version of this method
-    ::grpc::Status SubscribeInAir(::grpc::ServerContext* context, const ::mavsdk::rpc::telemetry::SubscribeInAirRequest* request, ::grpc::ServerWriter< ::mavsdk::rpc::telemetry::InAirResponse>* writer) override {
+    ::grpc::Status SubscribeInAir(::grpc::ServerContext* /*context*/, const ::mavsdk::rpc::telemetry::SubscribeInAirRequest* /*request*/, ::grpc::ServerWriter< ::mavsdk::rpc::telemetry::InAirResponse>* /*writer*/) override {
       abort();
       return ::grpc::Status(::grpc::StatusCode::UNIMPLEMENTED, "");
     }
@@ -1596,7 +1599,7 @@ class TelemetryService final {
   template <class BaseClass>
   class WithGenericMethod_SubscribeLandedState : public BaseClass {
    private:
-    void BaseClassMustBeDerivedFromService(const Service *service) {}
+    void BaseClassMustBeDerivedFromService(const Service* /*service*/) {}
    public:
     WithGenericMethod_SubscribeLandedState() {
       ::grpc::Service::MarkMethodGeneric(3);
@@ -1605,7 +1608,7 @@ class TelemetryService final {
       BaseClassMustBeDerivedFromService(this);
     }
     // disable synchronous version of this method
-    ::grpc::Status SubscribeLandedState(::grpc::ServerContext* context, const ::mavsdk::rpc::telemetry::SubscribeLandedStateRequest* request, ::grpc::ServerWriter< ::mavsdk::rpc::telemetry::LandedStateResponse>* writer) override {
+    ::grpc::Status SubscribeLandedState(::grpc::ServerContext* /*context*/, const ::mavsdk::rpc::telemetry::SubscribeLandedStateRequest* /*request*/, ::grpc::ServerWriter< ::mavsdk::rpc::telemetry::LandedStateResponse>* /*writer*/) override {
       abort();
       return ::grpc::Status(::grpc::StatusCode::UNIMPLEMENTED, "");
     }
@@ -1613,7 +1616,7 @@ class TelemetryService final {
   template <class BaseClass>
   class WithGenericMethod_SubscribeArmed : public BaseClass {
    private:
-    void BaseClassMustBeDerivedFromService(const Service *service) {}
+    void BaseClassMustBeDerivedFromService(const Service* /*service*/) {}
    public:
     WithGenericMethod_SubscribeArmed() {
       ::grpc::Service::MarkMethodGeneric(4);
@@ -1622,7 +1625,7 @@ class TelemetryService final {
       BaseClassMustBeDerivedFromService(this);
     }
     // disable synchronous version of this method
-    ::grpc::Status SubscribeArmed(::grpc::ServerContext* context, const ::mavsdk::rpc::telemetry::SubscribeArmedRequest* request, ::grpc::ServerWriter< ::mavsdk::rpc::telemetry::ArmedResponse>* writer) override {
+    ::grpc::Status SubscribeArmed(::grpc::ServerContext* /*context*/, const ::mavsdk::rpc::telemetry::SubscribeArmedRequest* /*request*/, ::grpc::ServerWriter< ::mavsdk::rpc::telemetry::ArmedResponse>* /*writer*/) override {
       abort();
       return ::grpc::Status(::grpc::StatusCode::UNIMPLEMENTED, "");
     }
@@ -1630,7 +1633,7 @@ class TelemetryService final {
   template <class BaseClass>
   class WithGenericMethod_SubscribeAttitudeQuaternion : public BaseClass {
    private:
-    void BaseClassMustBeDerivedFromService(const Service *service) {}
+    void BaseClassMustBeDerivedFromService(const Service* /*service*/) {}
    public:
     WithGenericMethod_SubscribeAttitudeQuaternion() {
       ::grpc::Service::MarkMethodGeneric(5);
@@ -1639,7 +1642,7 @@ class TelemetryService final {
       BaseClassMustBeDerivedFromService(this);
     }
     // disable synchronous version of this method
-    ::grpc::Status SubscribeAttitudeQuaternion(::grpc::ServerContext* context, const ::mavsdk::rpc::telemetry::SubscribeAttitudeQuaternionRequest* request, ::grpc::ServerWriter< ::mavsdk::rpc::telemetry::AttitudeQuaternionResponse>* writer) override {
+    ::grpc::Status SubscribeAttitudeQuaternion(::grpc::ServerContext* /*context*/, const ::mavsdk::rpc::telemetry::SubscribeAttitudeQuaternionRequest* /*request*/, ::grpc::ServerWriter< ::mavsdk::rpc::telemetry::AttitudeQuaternionResponse>* /*writer*/) override {
       abort();
       return ::grpc::Status(::grpc::StatusCode::UNIMPLEMENTED, "");
     }
@@ -1647,7 +1650,7 @@ class TelemetryService final {
   template <class BaseClass>
   class WithGenericMethod_SubscribeAttitudeEuler : public BaseClass {
    private:
-    void BaseClassMustBeDerivedFromService(const Service *service) {}
+    void BaseClassMustBeDerivedFromService(const Service* /*service*/) {}
    public:
     WithGenericMethod_SubscribeAttitudeEuler() {
       ::grpc::Service::MarkMethodGeneric(6);
@@ -1656,7 +1659,7 @@ class TelemetryService final {
       BaseClassMustBeDerivedFromService(this);
     }
     // disable synchronous version of this method
-    ::grpc::Status SubscribeAttitudeEuler(::grpc::ServerContext* context, const ::mavsdk::rpc::telemetry::SubscribeAttitudeEulerRequest* request, ::grpc::ServerWriter< ::mavsdk::rpc::telemetry::AttitudeEulerResponse>* writer) override {
+    ::grpc::Status SubscribeAttitudeEuler(::grpc::ServerContext* /*context*/, const ::mavsdk::rpc::telemetry::SubscribeAttitudeEulerRequest* /*request*/, ::grpc::ServerWriter< ::mavsdk::rpc::telemetry::AttitudeEulerResponse>* /*writer*/) override {
       abort();
       return ::grpc::Status(::grpc::StatusCode::UNIMPLEMENTED, "");
     }
@@ -1664,7 +1667,7 @@ class TelemetryService final {
   template <class BaseClass>
   class WithGenericMethod_SubscribeAttitudeAngularVelocityBody : public BaseClass {
    private:
-    void BaseClassMustBeDerivedFromService(const Service *service) {}
+    void BaseClassMustBeDerivedFromService(const Service* /*service*/) {}
    public:
     WithGenericMethod_SubscribeAttitudeAngularVelocityBody() {
       ::grpc::Service::MarkMethodGeneric(7);
@@ -1673,7 +1676,7 @@ class TelemetryService final {
       BaseClassMustBeDerivedFromService(this);
     }
     // disable synchronous version of this method
-    ::grpc::Status SubscribeAttitudeAngularVelocityBody(::grpc::ServerContext* context, const ::mavsdk::rpc::telemetry::SubscribeAttitudeAngularVelocityBodyRequest* request, ::grpc::ServerWriter< ::mavsdk::rpc::telemetry::AttitudeAngularVelocityBodyResponse>* writer) override {
+    ::grpc::Status SubscribeAttitudeAngularVelocityBody(::grpc::ServerContext* /*context*/, const ::mavsdk::rpc::telemetry::SubscribeAttitudeAngularVelocityBodyRequest* /*request*/, ::grpc::ServerWriter< ::mavsdk::rpc::telemetry::AttitudeAngularVelocityBodyResponse>* /*writer*/) override {
       abort();
       return ::grpc::Status(::grpc::StatusCode::UNIMPLEMENTED, "");
     }
@@ -1681,7 +1684,7 @@ class TelemetryService final {
   template <class BaseClass>
   class WithGenericMethod_SubscribeCameraAttitudeQuaternion : public BaseClass {
    private:
-    void BaseClassMustBeDerivedFromService(const Service *service) {}
+    void BaseClassMustBeDerivedFromService(const Service* /*service*/) {}
    public:
     WithGenericMethod_SubscribeCameraAttitudeQuaternion() {
       ::grpc::Service::MarkMethodGeneric(8);
@@ -1690,7 +1693,7 @@ class TelemetryService final {
       BaseClassMustBeDerivedFromService(this);
     }
     // disable synchronous version of this method
-    ::grpc::Status SubscribeCameraAttitudeQuaternion(::grpc::ServerContext* context, const ::mavsdk::rpc::telemetry::SubscribeCameraAttitudeQuaternionRequest* request, ::grpc::ServerWriter< ::mavsdk::rpc::telemetry::CameraAttitudeQuaternionResponse>* writer) override {
+    ::grpc::Status SubscribeCameraAttitudeQuaternion(::grpc::ServerContext* /*context*/, const ::mavsdk::rpc::telemetry::SubscribeCameraAttitudeQuaternionRequest* /*request*/, ::grpc::ServerWriter< ::mavsdk::rpc::telemetry::CameraAttitudeQuaternionResponse>* /*writer*/) override {
       abort();
       return ::grpc::Status(::grpc::StatusCode::UNIMPLEMENTED, "");
     }
@@ -1698,7 +1701,7 @@ class TelemetryService final {
   template <class BaseClass>
   class WithGenericMethod_SubscribeCameraAttitudeEuler : public BaseClass {
    private:
-    void BaseClassMustBeDerivedFromService(const Service *service) {}
+    void BaseClassMustBeDerivedFromService(const Service* /*service*/) {}
    public:
     WithGenericMethod_SubscribeCameraAttitudeEuler() {
       ::grpc::Service::MarkMethodGeneric(9);
@@ -1707,7 +1710,7 @@ class TelemetryService final {
       BaseClassMustBeDerivedFromService(this);
     }
     // disable synchronous version of this method
-    ::grpc::Status SubscribeCameraAttitudeEuler(::grpc::ServerContext* context, const ::mavsdk::rpc::telemetry::SubscribeCameraAttitudeEulerRequest* request, ::grpc::ServerWriter< ::mavsdk::rpc::telemetry::CameraAttitudeEulerResponse>* writer) override {
+    ::grpc::Status SubscribeCameraAttitudeEuler(::grpc::ServerContext* /*context*/, const ::mavsdk::rpc::telemetry::SubscribeCameraAttitudeEulerRequest* /*request*/, ::grpc::ServerWriter< ::mavsdk::rpc::telemetry::CameraAttitudeEulerResponse>* /*writer*/) override {
       abort();
       return ::grpc::Status(::grpc::StatusCode::UNIMPLEMENTED, "");
     }
@@ -1715,7 +1718,7 @@ class TelemetryService final {
   template <class BaseClass>
   class WithGenericMethod_SubscribeGroundSpeedNed : public BaseClass {
    private:
-    void BaseClassMustBeDerivedFromService(const Service *service) {}
+    void BaseClassMustBeDerivedFromService(const Service* /*service*/) {}
    public:
     WithGenericMethod_SubscribeGroundSpeedNed() {
       ::grpc::Service::MarkMethodGeneric(10);
@@ -1724,7 +1727,7 @@ class TelemetryService final {
       BaseClassMustBeDerivedFromService(this);
     }
     // disable synchronous version of this method
-    ::grpc::Status SubscribeGroundSpeedNed(::grpc::ServerContext* context, const ::mavsdk::rpc::telemetry::SubscribeGroundSpeedNedRequest* request, ::grpc::ServerWriter< ::mavsdk::rpc::telemetry::GroundSpeedNedResponse>* writer) override {
+    ::grpc::Status SubscribeGroundSpeedNed(::grpc::ServerContext* /*context*/, const ::mavsdk::rpc::telemetry::SubscribeGroundSpeedNedRequest* /*request*/, ::grpc::ServerWriter< ::mavsdk::rpc::telemetry::GroundSpeedNedResponse>* /*writer*/) override {
       abort();
       return ::grpc::Status(::grpc::StatusCode::UNIMPLEMENTED, "");
     }
@@ -1732,7 +1735,7 @@ class TelemetryService final {
   template <class BaseClass>
   class WithGenericMethod_SubscribeGpsInfo : public BaseClass {
    private:
-    void BaseClassMustBeDerivedFromService(const Service *service) {}
+    void BaseClassMustBeDerivedFromService(const Service* /*service*/) {}
    public:
     WithGenericMethod_SubscribeGpsInfo() {
       ::grpc::Service::MarkMethodGeneric(11);
@@ -1741,7 +1744,7 @@ class TelemetryService final {
       BaseClassMustBeDerivedFromService(this);
     }
     // disable synchronous version of this method
-    ::grpc::Status SubscribeGpsInfo(::grpc::ServerContext* context, const ::mavsdk::rpc::telemetry::SubscribeGpsInfoRequest* request, ::grpc::ServerWriter< ::mavsdk::rpc::telemetry::GpsInfoResponse>* writer) override {
+    ::grpc::Status SubscribeGpsInfo(::grpc::ServerContext* /*context*/, const ::mavsdk::rpc::telemetry::SubscribeGpsInfoRequest* /*request*/, ::grpc::ServerWriter< ::mavsdk::rpc::telemetry::GpsInfoResponse>* /*writer*/) override {
       abort();
       return ::grpc::Status(::grpc::StatusCode::UNIMPLEMENTED, "");
     }
@@ -1749,7 +1752,7 @@ class TelemetryService final {
   template <class BaseClass>
   class WithGenericMethod_SubscribeBattery : public BaseClass {
    private:
-    void BaseClassMustBeDerivedFromService(const Service *service) {}
+    void BaseClassMustBeDerivedFromService(const Service* /*service*/) {}
    public:
     WithGenericMethod_SubscribeBattery() {
       ::grpc::Service::MarkMethodGeneric(12);
@@ -1758,7 +1761,7 @@ class TelemetryService final {
       BaseClassMustBeDerivedFromService(this);
     }
     // disable synchronous version of this method
-    ::grpc::Status SubscribeBattery(::grpc::ServerContext* context, const ::mavsdk::rpc::telemetry::SubscribeBatteryRequest* request, ::grpc::ServerWriter< ::mavsdk::rpc::telemetry::BatteryResponse>* writer) override {
+    ::grpc::Status SubscribeBattery(::grpc::ServerContext* /*context*/, const ::mavsdk::rpc::telemetry::SubscribeBatteryRequest* /*request*/, ::grpc::ServerWriter< ::mavsdk::rpc::telemetry::BatteryResponse>* /*writer*/) override {
       abort();
       return ::grpc::Status(::grpc::StatusCode::UNIMPLEMENTED, "");
     }
@@ -1766,7 +1769,7 @@ class TelemetryService final {
   template <class BaseClass>
   class WithGenericMethod_SubscribeFlightMode : public BaseClass {
    private:
-    void BaseClassMustBeDerivedFromService(const Service *service) {}
+    void BaseClassMustBeDerivedFromService(const Service* /*service*/) {}
    public:
     WithGenericMethod_SubscribeFlightMode() {
       ::grpc::Service::MarkMethodGeneric(13);
@@ -1775,7 +1778,7 @@ class TelemetryService final {
       BaseClassMustBeDerivedFromService(this);
     }
     // disable synchronous version of this method
-    ::grpc::Status SubscribeFlightMode(::grpc::ServerContext* context, const ::mavsdk::rpc::telemetry::SubscribeFlightModeRequest* request, ::grpc::ServerWriter< ::mavsdk::rpc::telemetry::FlightModeResponse>* writer) override {
+    ::grpc::Status SubscribeFlightMode(::grpc::ServerContext* /*context*/, const ::mavsdk::rpc::telemetry::SubscribeFlightModeRequest* /*request*/, ::grpc::ServerWriter< ::mavsdk::rpc::telemetry::FlightModeResponse>* /*writer*/) override {
       abort();
       return ::grpc::Status(::grpc::StatusCode::UNIMPLEMENTED, "");
     }
@@ -1783,7 +1786,7 @@ class TelemetryService final {
   template <class BaseClass>
   class WithGenericMethod_SubscribeHealth : public BaseClass {
    private:
-    void BaseClassMustBeDerivedFromService(const Service *service) {}
+    void BaseClassMustBeDerivedFromService(const Service* /*service*/) {}
    public:
     WithGenericMethod_SubscribeHealth() {
       ::grpc::Service::MarkMethodGeneric(14);
@@ -1792,7 +1795,7 @@ class TelemetryService final {
       BaseClassMustBeDerivedFromService(this);
     }
     // disable synchronous version of this method
-    ::grpc::Status SubscribeHealth(::grpc::ServerContext* context, const ::mavsdk::rpc::telemetry::SubscribeHealthRequest* request, ::grpc::ServerWriter< ::mavsdk::rpc::telemetry::HealthResponse>* writer) override {
+    ::grpc::Status SubscribeHealth(::grpc::ServerContext* /*context*/, const ::mavsdk::rpc::telemetry::SubscribeHealthRequest* /*request*/, ::grpc::ServerWriter< ::mavsdk::rpc::telemetry::HealthResponse>* /*writer*/) override {
       abort();
       return ::grpc::Status(::grpc::StatusCode::UNIMPLEMENTED, "");
     }
@@ -1800,7 +1803,7 @@ class TelemetryService final {
   template <class BaseClass>
   class WithGenericMethod_SubscribeRcStatus : public BaseClass {
    private:
-    void BaseClassMustBeDerivedFromService(const Service *service) {}
+    void BaseClassMustBeDerivedFromService(const Service* /*service*/) {}
    public:
     WithGenericMethod_SubscribeRcStatus() {
       ::grpc::Service::MarkMethodGeneric(15);
@@ -1809,7 +1812,7 @@ class TelemetryService final {
       BaseClassMustBeDerivedFromService(this);
     }
     // disable synchronous version of this method
-    ::grpc::Status SubscribeRcStatus(::grpc::ServerContext* context, const ::mavsdk::rpc::telemetry::SubscribeRcStatusRequest* request, ::grpc::ServerWriter< ::mavsdk::rpc::telemetry::RcStatusResponse>* writer) override {
+    ::grpc::Status SubscribeRcStatus(::grpc::ServerContext* /*context*/, const ::mavsdk::rpc::telemetry::SubscribeRcStatusRequest* /*request*/, ::grpc::ServerWriter< ::mavsdk::rpc::telemetry::RcStatusResponse>* /*writer*/) override {
       abort();
       return ::grpc::Status(::grpc::StatusCode::UNIMPLEMENTED, "");
     }
@@ -1817,7 +1820,7 @@ class TelemetryService final {
   template <class BaseClass>
   class WithGenericMethod_SubscribeStatusText : public BaseClass {
    private:
-    void BaseClassMustBeDerivedFromService(const Service *service) {}
+    void BaseClassMustBeDerivedFromService(const Service* /*service*/) {}
    public:
     WithGenericMethod_SubscribeStatusText() {
       ::grpc::Service::MarkMethodGeneric(16);
@@ -1826,7 +1829,7 @@ class TelemetryService final {
       BaseClassMustBeDerivedFromService(this);
     }
     // disable synchronous version of this method
-    ::grpc::Status SubscribeStatusText(::grpc::ServerContext* context, const ::mavsdk::rpc::telemetry::SubscribeStatusTextRequest* request, ::grpc::ServerWriter< ::mavsdk::rpc::telemetry::StatusTextResponse>* writer) override {
+    ::grpc::Status SubscribeStatusText(::grpc::ServerContext* /*context*/, const ::mavsdk::rpc::telemetry::SubscribeStatusTextRequest* /*request*/, ::grpc::ServerWriter< ::mavsdk::rpc::telemetry::StatusTextResponse>* /*writer*/) override {
       abort();
       return ::grpc::Status(::grpc::StatusCode::UNIMPLEMENTED, "");
     }
@@ -1834,7 +1837,7 @@ class TelemetryService final {
   template <class BaseClass>
   class WithGenericMethod_SubscribeActuatorControlTarget : public BaseClass {
    private:
-    void BaseClassMustBeDerivedFromService(const Service *service) {}
+    void BaseClassMustBeDerivedFromService(const Service* /*service*/) {}
    public:
     WithGenericMethod_SubscribeActuatorControlTarget() {
       ::grpc::Service::MarkMethodGeneric(17);
@@ -1843,7 +1846,7 @@ class TelemetryService final {
       BaseClassMustBeDerivedFromService(this);
     }
     // disable synchronous version of this method
-    ::grpc::Status SubscribeActuatorControlTarget(::grpc::ServerContext* context, const ::mavsdk::rpc::telemetry::SubscribeActuatorControlTargetRequest* request, ::grpc::ServerWriter< ::mavsdk::rpc::telemetry::ActuatorControlTargetResponse>* writer) override {
+    ::grpc::Status SubscribeActuatorControlTarget(::grpc::ServerContext* /*context*/, const ::mavsdk::rpc::telemetry::SubscribeActuatorControlTargetRequest* /*request*/, ::grpc::ServerWriter< ::mavsdk::rpc::telemetry::ActuatorControlTargetResponse>* /*writer*/) override {
       abort();
       return ::grpc::Status(::grpc::StatusCode::UNIMPLEMENTED, "");
     }
@@ -1851,7 +1854,7 @@ class TelemetryService final {
   template <class BaseClass>
   class WithGenericMethod_SubscribeActuatorOutputStatus : public BaseClass {
    private:
-    void BaseClassMustBeDerivedFromService(const Service *service) {}
+    void BaseClassMustBeDerivedFromService(const Service* /*service*/) {}
    public:
     WithGenericMethod_SubscribeActuatorOutputStatus() {
       ::grpc::Service::MarkMethodGeneric(18);
@@ -1860,7 +1863,7 @@ class TelemetryService final {
       BaseClassMustBeDerivedFromService(this);
     }
     // disable synchronous version of this method
-    ::grpc::Status SubscribeActuatorOutputStatus(::grpc::ServerContext* context, const ::mavsdk::rpc::telemetry::SubscribeActuatorOutputStatusRequest* request, ::grpc::ServerWriter< ::mavsdk::rpc::telemetry::ActuatorOutputStatusResponse>* writer) override {
+    ::grpc::Status SubscribeActuatorOutputStatus(::grpc::ServerContext* /*context*/, const ::mavsdk::rpc::telemetry::SubscribeActuatorOutputStatusRequest* /*request*/, ::grpc::ServerWriter< ::mavsdk::rpc::telemetry::ActuatorOutputStatusResponse>* /*writer*/) override {
       abort();
       return ::grpc::Status(::grpc::StatusCode::UNIMPLEMENTED, "");
     }
@@ -1868,7 +1871,7 @@ class TelemetryService final {
   template <class BaseClass>
   class WithGenericMethod_SubscribeOdometry : public BaseClass {
    private:
-    void BaseClassMustBeDerivedFromService(const Service *service) {}
+    void BaseClassMustBeDerivedFromService(const Service* /*service*/) {}
    public:
     WithGenericMethod_SubscribeOdometry() {
       ::grpc::Service::MarkMethodGeneric(19);
@@ -1877,7 +1880,7 @@ class TelemetryService final {
       BaseClassMustBeDerivedFromService(this);
     }
     // disable synchronous version of this method
-    ::grpc::Status SubscribeOdometry(::grpc::ServerContext* context, const ::mavsdk::rpc::telemetry::SubscribeOdometryRequest* request, ::grpc::ServerWriter< ::mavsdk::rpc::telemetry::OdometryResponse>* writer) override {
+    ::grpc::Status SubscribeOdometry(::grpc::ServerContext* /*context*/, const ::mavsdk::rpc::telemetry::SubscribeOdometryRequest* /*request*/, ::grpc::ServerWriter< ::mavsdk::rpc::telemetry::OdometryResponse>* /*writer*/) override {
       abort();
       return ::grpc::Status(::grpc::StatusCode::UNIMPLEMENTED, "");
     }
@@ -1885,7 +1888,7 @@ class TelemetryService final {
   template <class BaseClass>
   class WithRawMethod_SubscribePosition : public BaseClass {
    private:
-    void BaseClassMustBeDerivedFromService(const Service *service) {}
+    void BaseClassMustBeDerivedFromService(const Service* /*service*/) {}
    public:
     WithRawMethod_SubscribePosition() {
       ::grpc::Service::MarkMethodRaw(0);
@@ -1894,7 +1897,7 @@ class TelemetryService final {
       BaseClassMustBeDerivedFromService(this);
     }
     // disable synchronous version of this method
-    ::grpc::Status SubscribePosition(::grpc::ServerContext* context, const ::mavsdk::rpc::telemetry::SubscribePositionRequest* request, ::grpc::ServerWriter< ::mavsdk::rpc::telemetry::PositionResponse>* writer) override {
+    ::grpc::Status SubscribePosition(::grpc::ServerContext* /*context*/, const ::mavsdk::rpc::telemetry::SubscribePositionRequest* /*request*/, ::grpc::ServerWriter< ::mavsdk::rpc::telemetry::PositionResponse>* /*writer*/) override {
       abort();
       return ::grpc::Status(::grpc::StatusCode::UNIMPLEMENTED, "");
     }
@@ -1905,7 +1908,7 @@ class TelemetryService final {
   template <class BaseClass>
   class WithRawMethod_SubscribeHome : public BaseClass {
    private:
-    void BaseClassMustBeDerivedFromService(const Service *service) {}
+    void BaseClassMustBeDerivedFromService(const Service* /*service*/) {}
    public:
     WithRawMethod_SubscribeHome() {
       ::grpc::Service::MarkMethodRaw(1);
@@ -1914,7 +1917,7 @@ class TelemetryService final {
       BaseClassMustBeDerivedFromService(this);
     }
     // disable synchronous version of this method
-    ::grpc::Status SubscribeHome(::grpc::ServerContext* context, const ::mavsdk::rpc::telemetry::SubscribeHomeRequest* request, ::grpc::ServerWriter< ::mavsdk::rpc::telemetry::HomeResponse>* writer) override {
+    ::grpc::Status SubscribeHome(::grpc::ServerContext* /*context*/, const ::mavsdk::rpc::telemetry::SubscribeHomeRequest* /*request*/, ::grpc::ServerWriter< ::mavsdk::rpc::telemetry::HomeResponse>* /*writer*/) override {
       abort();
       return ::grpc::Status(::grpc::StatusCode::UNIMPLEMENTED, "");
     }
@@ -1925,7 +1928,7 @@ class TelemetryService final {
   template <class BaseClass>
   class WithRawMethod_SubscribeInAir : public BaseClass {
    private:
-    void BaseClassMustBeDerivedFromService(const Service *service) {}
+    void BaseClassMustBeDerivedFromService(const Service* /*service*/) {}
    public:
     WithRawMethod_SubscribeInAir() {
       ::grpc::Service::MarkMethodRaw(2);
@@ -1934,7 +1937,7 @@ class TelemetryService final {
       BaseClassMustBeDerivedFromService(this);
     }
     // disable synchronous version of this method
-    ::grpc::Status SubscribeInAir(::grpc::ServerContext* context, const ::mavsdk::rpc::telemetry::SubscribeInAirRequest* request, ::grpc::ServerWriter< ::mavsdk::rpc::telemetry::InAirResponse>* writer) override {
+    ::grpc::Status SubscribeInAir(::grpc::ServerContext* /*context*/, const ::mavsdk::rpc::telemetry::SubscribeInAirRequest* /*request*/, ::grpc::ServerWriter< ::mavsdk::rpc::telemetry::InAirResponse>* /*writer*/) override {
       abort();
       return ::grpc::Status(::grpc::StatusCode::UNIMPLEMENTED, "");
     }
@@ -1945,7 +1948,7 @@ class TelemetryService final {
   template <class BaseClass>
   class WithRawMethod_SubscribeLandedState : public BaseClass {
    private:
-    void BaseClassMustBeDerivedFromService(const Service *service) {}
+    void BaseClassMustBeDerivedFromService(const Service* /*service*/) {}
    public:
     WithRawMethod_SubscribeLandedState() {
       ::grpc::Service::MarkMethodRaw(3);
@@ -1954,7 +1957,7 @@ class TelemetryService final {
       BaseClassMustBeDerivedFromService(this);
     }
     // disable synchronous version of this method
-    ::grpc::Status SubscribeLandedState(::grpc::ServerContext* context, const ::mavsdk::rpc::telemetry::SubscribeLandedStateRequest* request, ::grpc::ServerWriter< ::mavsdk::rpc::telemetry::LandedStateResponse>* writer) override {
+    ::grpc::Status SubscribeLandedState(::grpc::ServerContext* /*context*/, const ::mavsdk::rpc::telemetry::SubscribeLandedStateRequest* /*request*/, ::grpc::ServerWriter< ::mavsdk::rpc::telemetry::LandedStateResponse>* /*writer*/) override {
       abort();
       return ::grpc::Status(::grpc::StatusCode::UNIMPLEMENTED, "");
     }
@@ -1965,7 +1968,7 @@ class TelemetryService final {
   template <class BaseClass>
   class WithRawMethod_SubscribeArmed : public BaseClass {
    private:
-    void BaseClassMustBeDerivedFromService(const Service *service) {}
+    void BaseClassMustBeDerivedFromService(const Service* /*service*/) {}
    public:
     WithRawMethod_SubscribeArmed() {
       ::grpc::Service::MarkMethodRaw(4);
@@ -1974,7 +1977,7 @@ class TelemetryService final {
       BaseClassMustBeDerivedFromService(this);
     }
     // disable synchronous version of this method
-    ::grpc::Status SubscribeArmed(::grpc::ServerContext* context, const ::mavsdk::rpc::telemetry::SubscribeArmedRequest* request, ::grpc::ServerWriter< ::mavsdk::rpc::telemetry::ArmedResponse>* writer) override {
+    ::grpc::Status SubscribeArmed(::grpc::ServerContext* /*context*/, const ::mavsdk::rpc::telemetry::SubscribeArmedRequest* /*request*/, ::grpc::ServerWriter< ::mavsdk::rpc::telemetry::ArmedResponse>* /*writer*/) override {
       abort();
       return ::grpc::Status(::grpc::StatusCode::UNIMPLEMENTED, "");
     }
@@ -1985,7 +1988,7 @@ class TelemetryService final {
   template <class BaseClass>
   class WithRawMethod_SubscribeAttitudeQuaternion : public BaseClass {
    private:
-    void BaseClassMustBeDerivedFromService(const Service *service) {}
+    void BaseClassMustBeDerivedFromService(const Service* /*service*/) {}
    public:
     WithRawMethod_SubscribeAttitudeQuaternion() {
       ::grpc::Service::MarkMethodRaw(5);
@@ -1994,7 +1997,7 @@ class TelemetryService final {
       BaseClassMustBeDerivedFromService(this);
     }
     // disable synchronous version of this method
-    ::grpc::Status SubscribeAttitudeQuaternion(::grpc::ServerContext* context, const ::mavsdk::rpc::telemetry::SubscribeAttitudeQuaternionRequest* request, ::grpc::ServerWriter< ::mavsdk::rpc::telemetry::AttitudeQuaternionResponse>* writer) override {
+    ::grpc::Status SubscribeAttitudeQuaternion(::grpc::ServerContext* /*context*/, const ::mavsdk::rpc::telemetry::SubscribeAttitudeQuaternionRequest* /*request*/, ::grpc::ServerWriter< ::mavsdk::rpc::telemetry::AttitudeQuaternionResponse>* /*writer*/) override {
       abort();
       return ::grpc::Status(::grpc::StatusCode::UNIMPLEMENTED, "");
     }
@@ -2005,7 +2008,7 @@ class TelemetryService final {
   template <class BaseClass>
   class WithRawMethod_SubscribeAttitudeEuler : public BaseClass {
    private:
-    void BaseClassMustBeDerivedFromService(const Service *service) {}
+    void BaseClassMustBeDerivedFromService(const Service* /*service*/) {}
    public:
     WithRawMethod_SubscribeAttitudeEuler() {
       ::grpc::Service::MarkMethodRaw(6);
@@ -2014,7 +2017,7 @@ class TelemetryService final {
       BaseClassMustBeDerivedFromService(this);
     }
     // disable synchronous version of this method
-    ::grpc::Status SubscribeAttitudeEuler(::grpc::ServerContext* context, const ::mavsdk::rpc::telemetry::SubscribeAttitudeEulerRequest* request, ::grpc::ServerWriter< ::mavsdk::rpc::telemetry::AttitudeEulerResponse>* writer) override {
+    ::grpc::Status SubscribeAttitudeEuler(::grpc::ServerContext* /*context*/, const ::mavsdk::rpc::telemetry::SubscribeAttitudeEulerRequest* /*request*/, ::grpc::ServerWriter< ::mavsdk::rpc::telemetry::AttitudeEulerResponse>* /*writer*/) override {
       abort();
       return ::grpc::Status(::grpc::StatusCode::UNIMPLEMENTED, "");
     }
@@ -2025,7 +2028,7 @@ class TelemetryService final {
   template <class BaseClass>
   class WithRawMethod_SubscribeAttitudeAngularVelocityBody : public BaseClass {
    private:
-    void BaseClassMustBeDerivedFromService(const Service *service) {}
+    void BaseClassMustBeDerivedFromService(const Service* /*service*/) {}
    public:
     WithRawMethod_SubscribeAttitudeAngularVelocityBody() {
       ::grpc::Service::MarkMethodRaw(7);
@@ -2034,7 +2037,7 @@ class TelemetryService final {
       BaseClassMustBeDerivedFromService(this);
     }
     // disable synchronous version of this method
-    ::grpc::Status SubscribeAttitudeAngularVelocityBody(::grpc::ServerContext* context, const ::mavsdk::rpc::telemetry::SubscribeAttitudeAngularVelocityBodyRequest* request, ::grpc::ServerWriter< ::mavsdk::rpc::telemetry::AttitudeAngularVelocityBodyResponse>* writer) override {
+    ::grpc::Status SubscribeAttitudeAngularVelocityBody(::grpc::ServerContext* /*context*/, const ::mavsdk::rpc::telemetry::SubscribeAttitudeAngularVelocityBodyRequest* /*request*/, ::grpc::ServerWriter< ::mavsdk::rpc::telemetry::AttitudeAngularVelocityBodyResponse>* /*writer*/) override {
       abort();
       return ::grpc::Status(::grpc::StatusCode::UNIMPLEMENTED, "");
     }
@@ -2045,7 +2048,7 @@ class TelemetryService final {
   template <class BaseClass>
   class WithRawMethod_SubscribeCameraAttitudeQuaternion : public BaseClass {
    private:
-    void BaseClassMustBeDerivedFromService(const Service *service) {}
+    void BaseClassMustBeDerivedFromService(const Service* /*service*/) {}
    public:
     WithRawMethod_SubscribeCameraAttitudeQuaternion() {
       ::grpc::Service::MarkMethodRaw(8);
@@ -2054,7 +2057,7 @@ class TelemetryService final {
       BaseClassMustBeDerivedFromService(this);
     }
     // disable synchronous version of this method
-    ::grpc::Status SubscribeCameraAttitudeQuaternion(::grpc::ServerContext* context, const ::mavsdk::rpc::telemetry::SubscribeCameraAttitudeQuaternionRequest* request, ::grpc::ServerWriter< ::mavsdk::rpc::telemetry::CameraAttitudeQuaternionResponse>* writer) override {
+    ::grpc::Status SubscribeCameraAttitudeQuaternion(::grpc::ServerContext* /*context*/, const ::mavsdk::rpc::telemetry::SubscribeCameraAttitudeQuaternionRequest* /*request*/, ::grpc::ServerWriter< ::mavsdk::rpc::telemetry::CameraAttitudeQuaternionResponse>* /*writer*/) override {
       abort();
       return ::grpc::Status(::grpc::StatusCode::UNIMPLEMENTED, "");
     }
@@ -2065,7 +2068,7 @@ class TelemetryService final {
   template <class BaseClass>
   class WithRawMethod_SubscribeCameraAttitudeEuler : public BaseClass {
    private:
-    void BaseClassMustBeDerivedFromService(const Service *service) {}
+    void BaseClassMustBeDerivedFromService(const Service* /*service*/) {}
    public:
     WithRawMethod_SubscribeCameraAttitudeEuler() {
       ::grpc::Service::MarkMethodRaw(9);
@@ -2074,7 +2077,7 @@ class TelemetryService final {
       BaseClassMustBeDerivedFromService(this);
     }
     // disable synchronous version of this method
-    ::grpc::Status SubscribeCameraAttitudeEuler(::grpc::ServerContext* context, const ::mavsdk::rpc::telemetry::SubscribeCameraAttitudeEulerRequest* request, ::grpc::ServerWriter< ::mavsdk::rpc::telemetry::CameraAttitudeEulerResponse>* writer) override {
+    ::grpc::Status SubscribeCameraAttitudeEuler(::grpc::ServerContext* /*context*/, const ::mavsdk::rpc::telemetry::SubscribeCameraAttitudeEulerRequest* /*request*/, ::grpc::ServerWriter< ::mavsdk::rpc::telemetry::CameraAttitudeEulerResponse>* /*writer*/) override {
       abort();
       return ::grpc::Status(::grpc::StatusCode::UNIMPLEMENTED, "");
     }
@@ -2085,7 +2088,7 @@ class TelemetryService final {
   template <class BaseClass>
   class WithRawMethod_SubscribeGroundSpeedNed : public BaseClass {
    private:
-    void BaseClassMustBeDerivedFromService(const Service *service) {}
+    void BaseClassMustBeDerivedFromService(const Service* /*service*/) {}
    public:
     WithRawMethod_SubscribeGroundSpeedNed() {
       ::grpc::Service::MarkMethodRaw(10);
@@ -2094,7 +2097,7 @@ class TelemetryService final {
       BaseClassMustBeDerivedFromService(this);
     }
     // disable synchronous version of this method
-    ::grpc::Status SubscribeGroundSpeedNed(::grpc::ServerContext* context, const ::mavsdk::rpc::telemetry::SubscribeGroundSpeedNedRequest* request, ::grpc::ServerWriter< ::mavsdk::rpc::telemetry::GroundSpeedNedResponse>* writer) override {
+    ::grpc::Status SubscribeGroundSpeedNed(::grpc::ServerContext* /*context*/, const ::mavsdk::rpc::telemetry::SubscribeGroundSpeedNedRequest* /*request*/, ::grpc::ServerWriter< ::mavsdk::rpc::telemetry::GroundSpeedNedResponse>* /*writer*/) override {
       abort();
       return ::grpc::Status(::grpc::StatusCode::UNIMPLEMENTED, "");
     }
@@ -2105,7 +2108,7 @@ class TelemetryService final {
   template <class BaseClass>
   class WithRawMethod_SubscribeGpsInfo : public BaseClass {
    private:
-    void BaseClassMustBeDerivedFromService(const Service *service) {}
+    void BaseClassMustBeDerivedFromService(const Service* /*service*/) {}
    public:
     WithRawMethod_SubscribeGpsInfo() {
       ::grpc::Service::MarkMethodRaw(11);
@@ -2114,7 +2117,7 @@ class TelemetryService final {
       BaseClassMustBeDerivedFromService(this);
     }
     // disable synchronous version of this method
-    ::grpc::Status SubscribeGpsInfo(::grpc::ServerContext* context, const ::mavsdk::rpc::telemetry::SubscribeGpsInfoRequest* request, ::grpc::ServerWriter< ::mavsdk::rpc::telemetry::GpsInfoResponse>* writer) override {
+    ::grpc::Status SubscribeGpsInfo(::grpc::ServerContext* /*context*/, const ::mavsdk::rpc::telemetry::SubscribeGpsInfoRequest* /*request*/, ::grpc::ServerWriter< ::mavsdk::rpc::telemetry::GpsInfoResponse>* /*writer*/) override {
       abort();
       return ::grpc::Status(::grpc::StatusCode::UNIMPLEMENTED, "");
     }
@@ -2125,7 +2128,7 @@ class TelemetryService final {
   template <class BaseClass>
   class WithRawMethod_SubscribeBattery : public BaseClass {
    private:
-    void BaseClassMustBeDerivedFromService(const Service *service) {}
+    void BaseClassMustBeDerivedFromService(const Service* /*service*/) {}
    public:
     WithRawMethod_SubscribeBattery() {
       ::grpc::Service::MarkMethodRaw(12);
@@ -2134,7 +2137,7 @@ class TelemetryService final {
       BaseClassMustBeDerivedFromService(this);
     }
     // disable synchronous version of this method
-    ::grpc::Status SubscribeBattery(::grpc::ServerContext* context, const ::mavsdk::rpc::telemetry::SubscribeBatteryRequest* request, ::grpc::ServerWriter< ::mavsdk::rpc::telemetry::BatteryResponse>* writer) override {
+    ::grpc::Status SubscribeBattery(::grpc::ServerContext* /*context*/, const ::mavsdk::rpc::telemetry::SubscribeBatteryRequest* /*request*/, ::grpc::ServerWriter< ::mavsdk::rpc::telemetry::BatteryResponse>* /*writer*/) override {
       abort();
       return ::grpc::Status(::grpc::StatusCode::UNIMPLEMENTED, "");
     }
@@ -2145,7 +2148,7 @@ class TelemetryService final {
   template <class BaseClass>
   class WithRawMethod_SubscribeFlightMode : public BaseClass {
    private:
-    void BaseClassMustBeDerivedFromService(const Service *service) {}
+    void BaseClassMustBeDerivedFromService(const Service* /*service*/) {}
    public:
     WithRawMethod_SubscribeFlightMode() {
       ::grpc::Service::MarkMethodRaw(13);
@@ -2154,7 +2157,7 @@ class TelemetryService final {
       BaseClassMustBeDerivedFromService(this);
     }
     // disable synchronous version of this method
-    ::grpc::Status SubscribeFlightMode(::grpc::ServerContext* context, const ::mavsdk::rpc::telemetry::SubscribeFlightModeRequest* request, ::grpc::ServerWriter< ::mavsdk::rpc::telemetry::FlightModeResponse>* writer) override {
+    ::grpc::Status SubscribeFlightMode(::grpc::ServerContext* /*context*/, const ::mavsdk::rpc::telemetry::SubscribeFlightModeRequest* /*request*/, ::grpc::ServerWriter< ::mavsdk::rpc::telemetry::FlightModeResponse>* /*writer*/) override {
       abort();
       return ::grpc::Status(::grpc::StatusCode::UNIMPLEMENTED, "");
     }
@@ -2165,7 +2168,7 @@ class TelemetryService final {
   template <class BaseClass>
   class WithRawMethod_SubscribeHealth : public BaseClass {
    private:
-    void BaseClassMustBeDerivedFromService(const Service *service) {}
+    void BaseClassMustBeDerivedFromService(const Service* /*service*/) {}
    public:
     WithRawMethod_SubscribeHealth() {
       ::grpc::Service::MarkMethodRaw(14);
@@ -2174,7 +2177,7 @@ class TelemetryService final {
       BaseClassMustBeDerivedFromService(this);
     }
     // disable synchronous version of this method
-    ::grpc::Status SubscribeHealth(::grpc::ServerContext* context, const ::mavsdk::rpc::telemetry::SubscribeHealthRequest* request, ::grpc::ServerWriter< ::mavsdk::rpc::telemetry::HealthResponse>* writer) override {
+    ::grpc::Status SubscribeHealth(::grpc::ServerContext* /*context*/, const ::mavsdk::rpc::telemetry::SubscribeHealthRequest* /*request*/, ::grpc::ServerWriter< ::mavsdk::rpc::telemetry::HealthResponse>* /*writer*/) override {
       abort();
       return ::grpc::Status(::grpc::StatusCode::UNIMPLEMENTED, "");
     }
@@ -2185,7 +2188,7 @@ class TelemetryService final {
   template <class BaseClass>
   class WithRawMethod_SubscribeRcStatus : public BaseClass {
    private:
-    void BaseClassMustBeDerivedFromService(const Service *service) {}
+    void BaseClassMustBeDerivedFromService(const Service* /*service*/) {}
    public:
     WithRawMethod_SubscribeRcStatus() {
       ::grpc::Service::MarkMethodRaw(15);
@@ -2194,7 +2197,7 @@ class TelemetryService final {
       BaseClassMustBeDerivedFromService(this);
     }
     // disable synchronous version of this method
-    ::grpc::Status SubscribeRcStatus(::grpc::ServerContext* context, const ::mavsdk::rpc::telemetry::SubscribeRcStatusRequest* request, ::grpc::ServerWriter< ::mavsdk::rpc::telemetry::RcStatusResponse>* writer) override {
+    ::grpc::Status SubscribeRcStatus(::grpc::ServerContext* /*context*/, const ::mavsdk::rpc::telemetry::SubscribeRcStatusRequest* /*request*/, ::grpc::ServerWriter< ::mavsdk::rpc::telemetry::RcStatusResponse>* /*writer*/) override {
       abort();
       return ::grpc::Status(::grpc::StatusCode::UNIMPLEMENTED, "");
     }
@@ -2205,7 +2208,7 @@ class TelemetryService final {
   template <class BaseClass>
   class WithRawMethod_SubscribeStatusText : public BaseClass {
    private:
-    void BaseClassMustBeDerivedFromService(const Service *service) {}
+    void BaseClassMustBeDerivedFromService(const Service* /*service*/) {}
    public:
     WithRawMethod_SubscribeStatusText() {
       ::grpc::Service::MarkMethodRaw(16);
@@ -2214,7 +2217,7 @@ class TelemetryService final {
       BaseClassMustBeDerivedFromService(this);
     }
     // disable synchronous version of this method
-    ::grpc::Status SubscribeStatusText(::grpc::ServerContext* context, const ::mavsdk::rpc::telemetry::SubscribeStatusTextRequest* request, ::grpc::ServerWriter< ::mavsdk::rpc::telemetry::StatusTextResponse>* writer) override {
+    ::grpc::Status SubscribeStatusText(::grpc::ServerContext* /*context*/, const ::mavsdk::rpc::telemetry::SubscribeStatusTextRequest* /*request*/, ::grpc::ServerWriter< ::mavsdk::rpc::telemetry::StatusTextResponse>* /*writer*/) override {
       abort();
       return ::grpc::Status(::grpc::StatusCode::UNIMPLEMENTED, "");
     }
@@ -2225,7 +2228,7 @@ class TelemetryService final {
   template <class BaseClass>
   class WithRawMethod_SubscribeActuatorControlTarget : public BaseClass {
    private:
-    void BaseClassMustBeDerivedFromService(const Service *service) {}
+    void BaseClassMustBeDerivedFromService(const Service* /*service*/) {}
    public:
     WithRawMethod_SubscribeActuatorControlTarget() {
       ::grpc::Service::MarkMethodRaw(17);
@@ -2234,7 +2237,7 @@ class TelemetryService final {
       BaseClassMustBeDerivedFromService(this);
     }
     // disable synchronous version of this method
-    ::grpc::Status SubscribeActuatorControlTarget(::grpc::ServerContext* context, const ::mavsdk::rpc::telemetry::SubscribeActuatorControlTargetRequest* request, ::grpc::ServerWriter< ::mavsdk::rpc::telemetry::ActuatorControlTargetResponse>* writer) override {
+    ::grpc::Status SubscribeActuatorControlTarget(::grpc::ServerContext* /*context*/, const ::mavsdk::rpc::telemetry::SubscribeActuatorControlTargetRequest* /*request*/, ::grpc::ServerWriter< ::mavsdk::rpc::telemetry::ActuatorControlTargetResponse>* /*writer*/) override {
       abort();
       return ::grpc::Status(::grpc::StatusCode::UNIMPLEMENTED, "");
     }
@@ -2245,7 +2248,7 @@ class TelemetryService final {
   template <class BaseClass>
   class WithRawMethod_SubscribeActuatorOutputStatus : public BaseClass {
    private:
-    void BaseClassMustBeDerivedFromService(const Service *service) {}
+    void BaseClassMustBeDerivedFromService(const Service* /*service*/) {}
    public:
     WithRawMethod_SubscribeActuatorOutputStatus() {
       ::grpc::Service::MarkMethodRaw(18);
@@ -2254,7 +2257,7 @@ class TelemetryService final {
       BaseClassMustBeDerivedFromService(this);
     }
     // disable synchronous version of this method
-    ::grpc::Status SubscribeActuatorOutputStatus(::grpc::ServerContext* context, const ::mavsdk::rpc::telemetry::SubscribeActuatorOutputStatusRequest* request, ::grpc::ServerWriter< ::mavsdk::rpc::telemetry::ActuatorOutputStatusResponse>* writer) override {
+    ::grpc::Status SubscribeActuatorOutputStatus(::grpc::ServerContext* /*context*/, const ::mavsdk::rpc::telemetry::SubscribeActuatorOutputStatusRequest* /*request*/, ::grpc::ServerWriter< ::mavsdk::rpc::telemetry::ActuatorOutputStatusResponse>* /*writer*/) override {
       abort();
       return ::grpc::Status(::grpc::StatusCode::UNIMPLEMENTED, "");
     }
@@ -2265,7 +2268,7 @@ class TelemetryService final {
   template <class BaseClass>
   class WithRawMethod_SubscribeOdometry : public BaseClass {
    private:
-    void BaseClassMustBeDerivedFromService(const Service *service) {}
+    void BaseClassMustBeDerivedFromService(const Service* /*service*/) {}
    public:
     WithRawMethod_SubscribeOdometry() {
       ::grpc::Service::MarkMethodRaw(19);
@@ -2274,7 +2277,7 @@ class TelemetryService final {
       BaseClassMustBeDerivedFromService(this);
     }
     // disable synchronous version of this method
-    ::grpc::Status SubscribeOdometry(::grpc::ServerContext* context, const ::mavsdk::rpc::telemetry::SubscribeOdometryRequest* request, ::grpc::ServerWriter< ::mavsdk::rpc::telemetry::OdometryResponse>* writer) override {
+    ::grpc::Status SubscribeOdometry(::grpc::ServerContext* /*context*/, const ::mavsdk::rpc::telemetry::SubscribeOdometryRequest* /*request*/, ::grpc::ServerWriter< ::mavsdk::rpc::telemetry::OdometryResponse>* /*writer*/) override {
       abort();
       return ::grpc::Status(::grpc::StatusCode::UNIMPLEMENTED, "");
     }
@@ -2285,448 +2288,448 @@ class TelemetryService final {
   template <class BaseClass>
   class ExperimentalWithRawCallbackMethod_SubscribePosition : public BaseClass {
    private:
-    void BaseClassMustBeDerivedFromService(const Service *service) {}
+    void BaseClassMustBeDerivedFromService(const Service* /*service*/) {}
    public:
     ExperimentalWithRawCallbackMethod_SubscribePosition() {
       ::grpc::Service::experimental().MarkMethodRawCallback(0,
-        new ::grpc::internal::CallbackServerStreamingHandler< ::grpc::ByteBuffer, ::grpc::ByteBuffer>(
+        new ::grpc_impl::internal::CallbackServerStreamingHandler< ::grpc::ByteBuffer, ::grpc::ByteBuffer>(
           [this] { return this->SubscribePosition(); }));
     }
     ~ExperimentalWithRawCallbackMethod_SubscribePosition() override {
       BaseClassMustBeDerivedFromService(this);
     }
     // disable synchronous version of this method
-    ::grpc::Status SubscribePosition(::grpc::ServerContext* context, const ::mavsdk::rpc::telemetry::SubscribePositionRequest* request, ::grpc::ServerWriter< ::mavsdk::rpc::telemetry::PositionResponse>* writer) override {
+    ::grpc::Status SubscribePosition(::grpc::ServerContext* /*context*/, const ::mavsdk::rpc::telemetry::SubscribePositionRequest* /*request*/, ::grpc::ServerWriter< ::mavsdk::rpc::telemetry::PositionResponse>* /*writer*/) override {
       abort();
       return ::grpc::Status(::grpc::StatusCode::UNIMPLEMENTED, "");
     }
     virtual ::grpc::experimental::ServerWriteReactor< ::grpc::ByteBuffer, ::grpc::ByteBuffer>* SubscribePosition() {
-      return new ::grpc::internal::UnimplementedWriteReactor<
+      return new ::grpc_impl::internal::UnimplementedWriteReactor<
         ::grpc::ByteBuffer, ::grpc::ByteBuffer>;}
   };
   template <class BaseClass>
   class ExperimentalWithRawCallbackMethod_SubscribeHome : public BaseClass {
    private:
-    void BaseClassMustBeDerivedFromService(const Service *service) {}
+    void BaseClassMustBeDerivedFromService(const Service* /*service*/) {}
    public:
     ExperimentalWithRawCallbackMethod_SubscribeHome() {
       ::grpc::Service::experimental().MarkMethodRawCallback(1,
-        new ::grpc::internal::CallbackServerStreamingHandler< ::grpc::ByteBuffer, ::grpc::ByteBuffer>(
+        new ::grpc_impl::internal::CallbackServerStreamingHandler< ::grpc::ByteBuffer, ::grpc::ByteBuffer>(
           [this] { return this->SubscribeHome(); }));
     }
     ~ExperimentalWithRawCallbackMethod_SubscribeHome() override {
       BaseClassMustBeDerivedFromService(this);
     }
     // disable synchronous version of this method
-    ::grpc::Status SubscribeHome(::grpc::ServerContext* context, const ::mavsdk::rpc::telemetry::SubscribeHomeRequest* request, ::grpc::ServerWriter< ::mavsdk::rpc::telemetry::HomeResponse>* writer) override {
+    ::grpc::Status SubscribeHome(::grpc::ServerContext* /*context*/, const ::mavsdk::rpc::telemetry::SubscribeHomeRequest* /*request*/, ::grpc::ServerWriter< ::mavsdk::rpc::telemetry::HomeResponse>* /*writer*/) override {
       abort();
       return ::grpc::Status(::grpc::StatusCode::UNIMPLEMENTED, "");
     }
     virtual ::grpc::experimental::ServerWriteReactor< ::grpc::ByteBuffer, ::grpc::ByteBuffer>* SubscribeHome() {
-      return new ::grpc::internal::UnimplementedWriteReactor<
+      return new ::grpc_impl::internal::UnimplementedWriteReactor<
         ::grpc::ByteBuffer, ::grpc::ByteBuffer>;}
   };
   template <class BaseClass>
   class ExperimentalWithRawCallbackMethod_SubscribeInAir : public BaseClass {
    private:
-    void BaseClassMustBeDerivedFromService(const Service *service) {}
+    void BaseClassMustBeDerivedFromService(const Service* /*service*/) {}
    public:
     ExperimentalWithRawCallbackMethod_SubscribeInAir() {
       ::grpc::Service::experimental().MarkMethodRawCallback(2,
-        new ::grpc::internal::CallbackServerStreamingHandler< ::grpc::ByteBuffer, ::grpc::ByteBuffer>(
+        new ::grpc_impl::internal::CallbackServerStreamingHandler< ::grpc::ByteBuffer, ::grpc::ByteBuffer>(
           [this] { return this->SubscribeInAir(); }));
     }
     ~ExperimentalWithRawCallbackMethod_SubscribeInAir() override {
       BaseClassMustBeDerivedFromService(this);
     }
     // disable synchronous version of this method
-    ::grpc::Status SubscribeInAir(::grpc::ServerContext* context, const ::mavsdk::rpc::telemetry::SubscribeInAirRequest* request, ::grpc::ServerWriter< ::mavsdk::rpc::telemetry::InAirResponse>* writer) override {
+    ::grpc::Status SubscribeInAir(::grpc::ServerContext* /*context*/, const ::mavsdk::rpc::telemetry::SubscribeInAirRequest* /*request*/, ::grpc::ServerWriter< ::mavsdk::rpc::telemetry::InAirResponse>* /*writer*/) override {
       abort();
       return ::grpc::Status(::grpc::StatusCode::UNIMPLEMENTED, "");
     }
     virtual ::grpc::experimental::ServerWriteReactor< ::grpc::ByteBuffer, ::grpc::ByteBuffer>* SubscribeInAir() {
-      return new ::grpc::internal::UnimplementedWriteReactor<
+      return new ::grpc_impl::internal::UnimplementedWriteReactor<
         ::grpc::ByteBuffer, ::grpc::ByteBuffer>;}
   };
   template <class BaseClass>
   class ExperimentalWithRawCallbackMethod_SubscribeLandedState : public BaseClass {
    private:
-    void BaseClassMustBeDerivedFromService(const Service *service) {}
+    void BaseClassMustBeDerivedFromService(const Service* /*service*/) {}
    public:
     ExperimentalWithRawCallbackMethod_SubscribeLandedState() {
       ::grpc::Service::experimental().MarkMethodRawCallback(3,
-        new ::grpc::internal::CallbackServerStreamingHandler< ::grpc::ByteBuffer, ::grpc::ByteBuffer>(
+        new ::grpc_impl::internal::CallbackServerStreamingHandler< ::grpc::ByteBuffer, ::grpc::ByteBuffer>(
           [this] { return this->SubscribeLandedState(); }));
     }
     ~ExperimentalWithRawCallbackMethod_SubscribeLandedState() override {
       BaseClassMustBeDerivedFromService(this);
     }
     // disable synchronous version of this method
-    ::grpc::Status SubscribeLandedState(::grpc::ServerContext* context, const ::mavsdk::rpc::telemetry::SubscribeLandedStateRequest* request, ::grpc::ServerWriter< ::mavsdk::rpc::telemetry::LandedStateResponse>* writer) override {
+    ::grpc::Status SubscribeLandedState(::grpc::ServerContext* /*context*/, const ::mavsdk::rpc::telemetry::SubscribeLandedStateRequest* /*request*/, ::grpc::ServerWriter< ::mavsdk::rpc::telemetry::LandedStateResponse>* /*writer*/) override {
       abort();
       return ::grpc::Status(::grpc::StatusCode::UNIMPLEMENTED, "");
     }
     virtual ::grpc::experimental::ServerWriteReactor< ::grpc::ByteBuffer, ::grpc::ByteBuffer>* SubscribeLandedState() {
-      return new ::grpc::internal::UnimplementedWriteReactor<
+      return new ::grpc_impl::internal::UnimplementedWriteReactor<
         ::grpc::ByteBuffer, ::grpc::ByteBuffer>;}
   };
   template <class BaseClass>
   class ExperimentalWithRawCallbackMethod_SubscribeArmed : public BaseClass {
    private:
-    void BaseClassMustBeDerivedFromService(const Service *service) {}
+    void BaseClassMustBeDerivedFromService(const Service* /*service*/) {}
    public:
     ExperimentalWithRawCallbackMethod_SubscribeArmed() {
       ::grpc::Service::experimental().MarkMethodRawCallback(4,
-        new ::grpc::internal::CallbackServerStreamingHandler< ::grpc::ByteBuffer, ::grpc::ByteBuffer>(
+        new ::grpc_impl::internal::CallbackServerStreamingHandler< ::grpc::ByteBuffer, ::grpc::ByteBuffer>(
           [this] { return this->SubscribeArmed(); }));
     }
     ~ExperimentalWithRawCallbackMethod_SubscribeArmed() override {
       BaseClassMustBeDerivedFromService(this);
     }
     // disable synchronous version of this method
-    ::grpc::Status SubscribeArmed(::grpc::ServerContext* context, const ::mavsdk::rpc::telemetry::SubscribeArmedRequest* request, ::grpc::ServerWriter< ::mavsdk::rpc::telemetry::ArmedResponse>* writer) override {
+    ::grpc::Status SubscribeArmed(::grpc::ServerContext* /*context*/, const ::mavsdk::rpc::telemetry::SubscribeArmedRequest* /*request*/, ::grpc::ServerWriter< ::mavsdk::rpc::telemetry::ArmedResponse>* /*writer*/) override {
       abort();
       return ::grpc::Status(::grpc::StatusCode::UNIMPLEMENTED, "");
     }
     virtual ::grpc::experimental::ServerWriteReactor< ::grpc::ByteBuffer, ::grpc::ByteBuffer>* SubscribeArmed() {
-      return new ::grpc::internal::UnimplementedWriteReactor<
+      return new ::grpc_impl::internal::UnimplementedWriteReactor<
         ::grpc::ByteBuffer, ::grpc::ByteBuffer>;}
   };
   template <class BaseClass>
   class ExperimentalWithRawCallbackMethod_SubscribeAttitudeQuaternion : public BaseClass {
    private:
-    void BaseClassMustBeDerivedFromService(const Service *service) {}
+    void BaseClassMustBeDerivedFromService(const Service* /*service*/) {}
    public:
     ExperimentalWithRawCallbackMethod_SubscribeAttitudeQuaternion() {
       ::grpc::Service::experimental().MarkMethodRawCallback(5,
-        new ::grpc::internal::CallbackServerStreamingHandler< ::grpc::ByteBuffer, ::grpc::ByteBuffer>(
+        new ::grpc_impl::internal::CallbackServerStreamingHandler< ::grpc::ByteBuffer, ::grpc::ByteBuffer>(
           [this] { return this->SubscribeAttitudeQuaternion(); }));
     }
     ~ExperimentalWithRawCallbackMethod_SubscribeAttitudeQuaternion() override {
       BaseClassMustBeDerivedFromService(this);
     }
     // disable synchronous version of this method
-    ::grpc::Status SubscribeAttitudeQuaternion(::grpc::ServerContext* context, const ::mavsdk::rpc::telemetry::SubscribeAttitudeQuaternionRequest* request, ::grpc::ServerWriter< ::mavsdk::rpc::telemetry::AttitudeQuaternionResponse>* writer) override {
+    ::grpc::Status SubscribeAttitudeQuaternion(::grpc::ServerContext* /*context*/, const ::mavsdk::rpc::telemetry::SubscribeAttitudeQuaternionRequest* /*request*/, ::grpc::ServerWriter< ::mavsdk::rpc::telemetry::AttitudeQuaternionResponse>* /*writer*/) override {
       abort();
       return ::grpc::Status(::grpc::StatusCode::UNIMPLEMENTED, "");
     }
     virtual ::grpc::experimental::ServerWriteReactor< ::grpc::ByteBuffer, ::grpc::ByteBuffer>* SubscribeAttitudeQuaternion() {
-      return new ::grpc::internal::UnimplementedWriteReactor<
+      return new ::grpc_impl::internal::UnimplementedWriteReactor<
         ::grpc::ByteBuffer, ::grpc::ByteBuffer>;}
   };
   template <class BaseClass>
   class ExperimentalWithRawCallbackMethod_SubscribeAttitudeEuler : public BaseClass {
    private:
-    void BaseClassMustBeDerivedFromService(const Service *service) {}
+    void BaseClassMustBeDerivedFromService(const Service* /*service*/) {}
    public:
     ExperimentalWithRawCallbackMethod_SubscribeAttitudeEuler() {
       ::grpc::Service::experimental().MarkMethodRawCallback(6,
-        new ::grpc::internal::CallbackServerStreamingHandler< ::grpc::ByteBuffer, ::grpc::ByteBuffer>(
+        new ::grpc_impl::internal::CallbackServerStreamingHandler< ::grpc::ByteBuffer, ::grpc::ByteBuffer>(
           [this] { return this->SubscribeAttitudeEuler(); }));
     }
     ~ExperimentalWithRawCallbackMethod_SubscribeAttitudeEuler() override {
       BaseClassMustBeDerivedFromService(this);
     }
     // disable synchronous version of this method
-    ::grpc::Status SubscribeAttitudeEuler(::grpc::ServerContext* context, const ::mavsdk::rpc::telemetry::SubscribeAttitudeEulerRequest* request, ::grpc::ServerWriter< ::mavsdk::rpc::telemetry::AttitudeEulerResponse>* writer) override {
+    ::grpc::Status SubscribeAttitudeEuler(::grpc::ServerContext* /*context*/, const ::mavsdk::rpc::telemetry::SubscribeAttitudeEulerRequest* /*request*/, ::grpc::ServerWriter< ::mavsdk::rpc::telemetry::AttitudeEulerResponse>* /*writer*/) override {
       abort();
       return ::grpc::Status(::grpc::StatusCode::UNIMPLEMENTED, "");
     }
     virtual ::grpc::experimental::ServerWriteReactor< ::grpc::ByteBuffer, ::grpc::ByteBuffer>* SubscribeAttitudeEuler() {
-      return new ::grpc::internal::UnimplementedWriteReactor<
+      return new ::grpc_impl::internal::UnimplementedWriteReactor<
         ::grpc::ByteBuffer, ::grpc::ByteBuffer>;}
   };
   template <class BaseClass>
   class ExperimentalWithRawCallbackMethod_SubscribeAttitudeAngularVelocityBody : public BaseClass {
    private:
-    void BaseClassMustBeDerivedFromService(const Service *service) {}
+    void BaseClassMustBeDerivedFromService(const Service* /*service*/) {}
    public:
     ExperimentalWithRawCallbackMethod_SubscribeAttitudeAngularVelocityBody() {
       ::grpc::Service::experimental().MarkMethodRawCallback(7,
-        new ::grpc::internal::CallbackServerStreamingHandler< ::grpc::ByteBuffer, ::grpc::ByteBuffer>(
+        new ::grpc_impl::internal::CallbackServerStreamingHandler< ::grpc::ByteBuffer, ::grpc::ByteBuffer>(
           [this] { return this->SubscribeAttitudeAngularVelocityBody(); }));
     }
     ~ExperimentalWithRawCallbackMethod_SubscribeAttitudeAngularVelocityBody() override {
       BaseClassMustBeDerivedFromService(this);
     }
     // disable synchronous version of this method
-    ::grpc::Status SubscribeAttitudeAngularVelocityBody(::grpc::ServerContext* context, const ::mavsdk::rpc::telemetry::SubscribeAttitudeAngularVelocityBodyRequest* request, ::grpc::ServerWriter< ::mavsdk::rpc::telemetry::AttitudeAngularVelocityBodyResponse>* writer) override {
+    ::grpc::Status SubscribeAttitudeAngularVelocityBody(::grpc::ServerContext* /*context*/, const ::mavsdk::rpc::telemetry::SubscribeAttitudeAngularVelocityBodyRequest* /*request*/, ::grpc::ServerWriter< ::mavsdk::rpc::telemetry::AttitudeAngularVelocityBodyResponse>* /*writer*/) override {
       abort();
       return ::grpc::Status(::grpc::StatusCode::UNIMPLEMENTED, "");
     }
     virtual ::grpc::experimental::ServerWriteReactor< ::grpc::ByteBuffer, ::grpc::ByteBuffer>* SubscribeAttitudeAngularVelocityBody() {
-      return new ::grpc::internal::UnimplementedWriteReactor<
+      return new ::grpc_impl::internal::UnimplementedWriteReactor<
         ::grpc::ByteBuffer, ::grpc::ByteBuffer>;}
   };
   template <class BaseClass>
   class ExperimentalWithRawCallbackMethod_SubscribeCameraAttitudeQuaternion : public BaseClass {
    private:
-    void BaseClassMustBeDerivedFromService(const Service *service) {}
+    void BaseClassMustBeDerivedFromService(const Service* /*service*/) {}
    public:
     ExperimentalWithRawCallbackMethod_SubscribeCameraAttitudeQuaternion() {
       ::grpc::Service::experimental().MarkMethodRawCallback(8,
-        new ::grpc::internal::CallbackServerStreamingHandler< ::grpc::ByteBuffer, ::grpc::ByteBuffer>(
+        new ::grpc_impl::internal::CallbackServerStreamingHandler< ::grpc::ByteBuffer, ::grpc::ByteBuffer>(
           [this] { return this->SubscribeCameraAttitudeQuaternion(); }));
     }
     ~ExperimentalWithRawCallbackMethod_SubscribeCameraAttitudeQuaternion() override {
       BaseClassMustBeDerivedFromService(this);
     }
     // disable synchronous version of this method
-    ::grpc::Status SubscribeCameraAttitudeQuaternion(::grpc::ServerContext* context, const ::mavsdk::rpc::telemetry::SubscribeCameraAttitudeQuaternionRequest* request, ::grpc::ServerWriter< ::mavsdk::rpc::telemetry::CameraAttitudeQuaternionResponse>* writer) override {
+    ::grpc::Status SubscribeCameraAttitudeQuaternion(::grpc::ServerContext* /*context*/, const ::mavsdk::rpc::telemetry::SubscribeCameraAttitudeQuaternionRequest* /*request*/, ::grpc::ServerWriter< ::mavsdk::rpc::telemetry::CameraAttitudeQuaternionResponse>* /*writer*/) override {
       abort();
       return ::grpc::Status(::grpc::StatusCode::UNIMPLEMENTED, "");
     }
     virtual ::grpc::experimental::ServerWriteReactor< ::grpc::ByteBuffer, ::grpc::ByteBuffer>* SubscribeCameraAttitudeQuaternion() {
-      return new ::grpc::internal::UnimplementedWriteReactor<
+      return new ::grpc_impl::internal::UnimplementedWriteReactor<
         ::grpc::ByteBuffer, ::grpc::ByteBuffer>;}
   };
   template <class BaseClass>
   class ExperimentalWithRawCallbackMethod_SubscribeCameraAttitudeEuler : public BaseClass {
    private:
-    void BaseClassMustBeDerivedFromService(const Service *service) {}
+    void BaseClassMustBeDerivedFromService(const Service* /*service*/) {}
    public:
     ExperimentalWithRawCallbackMethod_SubscribeCameraAttitudeEuler() {
       ::grpc::Service::experimental().MarkMethodRawCallback(9,
-        new ::grpc::internal::CallbackServerStreamingHandler< ::grpc::ByteBuffer, ::grpc::ByteBuffer>(
+        new ::grpc_impl::internal::CallbackServerStreamingHandler< ::grpc::ByteBuffer, ::grpc::ByteBuffer>(
           [this] { return this->SubscribeCameraAttitudeEuler(); }));
     }
     ~ExperimentalWithRawCallbackMethod_SubscribeCameraAttitudeEuler() override {
       BaseClassMustBeDerivedFromService(this);
     }
     // disable synchronous version of this method
-    ::grpc::Status SubscribeCameraAttitudeEuler(::grpc::ServerContext* context, const ::mavsdk::rpc::telemetry::SubscribeCameraAttitudeEulerRequest* request, ::grpc::ServerWriter< ::mavsdk::rpc::telemetry::CameraAttitudeEulerResponse>* writer) override {
+    ::grpc::Status SubscribeCameraAttitudeEuler(::grpc::ServerContext* /*context*/, const ::mavsdk::rpc::telemetry::SubscribeCameraAttitudeEulerRequest* /*request*/, ::grpc::ServerWriter< ::mavsdk::rpc::telemetry::CameraAttitudeEulerResponse>* /*writer*/) override {
       abort();
       return ::grpc::Status(::grpc::StatusCode::UNIMPLEMENTED, "");
     }
     virtual ::grpc::experimental::ServerWriteReactor< ::grpc::ByteBuffer, ::grpc::ByteBuffer>* SubscribeCameraAttitudeEuler() {
-      return new ::grpc::internal::UnimplementedWriteReactor<
+      return new ::grpc_impl::internal::UnimplementedWriteReactor<
         ::grpc::ByteBuffer, ::grpc::ByteBuffer>;}
   };
   template <class BaseClass>
   class ExperimentalWithRawCallbackMethod_SubscribeGroundSpeedNed : public BaseClass {
    private:
-    void BaseClassMustBeDerivedFromService(const Service *service) {}
+    void BaseClassMustBeDerivedFromService(const Service* /*service*/) {}
    public:
     ExperimentalWithRawCallbackMethod_SubscribeGroundSpeedNed() {
       ::grpc::Service::experimental().MarkMethodRawCallback(10,
-        new ::grpc::internal::CallbackServerStreamingHandler< ::grpc::ByteBuffer, ::grpc::ByteBuffer>(
+        new ::grpc_impl::internal::CallbackServerStreamingHandler< ::grpc::ByteBuffer, ::grpc::ByteBuffer>(
           [this] { return this->SubscribeGroundSpeedNed(); }));
     }
     ~ExperimentalWithRawCallbackMethod_SubscribeGroundSpeedNed() override {
       BaseClassMustBeDerivedFromService(this);
     }
     // disable synchronous version of this method
-    ::grpc::Status SubscribeGroundSpeedNed(::grpc::ServerContext* context, const ::mavsdk::rpc::telemetry::SubscribeGroundSpeedNedRequest* request, ::grpc::ServerWriter< ::mavsdk::rpc::telemetry::GroundSpeedNedResponse>* writer) override {
+    ::grpc::Status SubscribeGroundSpeedNed(::grpc::ServerContext* /*context*/, const ::mavsdk::rpc::telemetry::SubscribeGroundSpeedNedRequest* /*request*/, ::grpc::ServerWriter< ::mavsdk::rpc::telemetry::GroundSpeedNedResponse>* /*writer*/) override {
       abort();
       return ::grpc::Status(::grpc::StatusCode::UNIMPLEMENTED, "");
     }
     virtual ::grpc::experimental::ServerWriteReactor< ::grpc::ByteBuffer, ::grpc::ByteBuffer>* SubscribeGroundSpeedNed() {
-      return new ::grpc::internal::UnimplementedWriteReactor<
+      return new ::grpc_impl::internal::UnimplementedWriteReactor<
         ::grpc::ByteBuffer, ::grpc::ByteBuffer>;}
   };
   template <class BaseClass>
   class ExperimentalWithRawCallbackMethod_SubscribeGpsInfo : public BaseClass {
    private:
-    void BaseClassMustBeDerivedFromService(const Service *service) {}
+    void BaseClassMustBeDerivedFromService(const Service* /*service*/) {}
    public:
     ExperimentalWithRawCallbackMethod_SubscribeGpsInfo() {
       ::grpc::Service::experimental().MarkMethodRawCallback(11,
-        new ::grpc::internal::CallbackServerStreamingHandler< ::grpc::ByteBuffer, ::grpc::ByteBuffer>(
+        new ::grpc_impl::internal::CallbackServerStreamingHandler< ::grpc::ByteBuffer, ::grpc::ByteBuffer>(
           [this] { return this->SubscribeGpsInfo(); }));
     }
     ~ExperimentalWithRawCallbackMethod_SubscribeGpsInfo() override {
       BaseClassMustBeDerivedFromService(this);
     }
     // disable synchronous version of this method
-    ::grpc::Status SubscribeGpsInfo(::grpc::ServerContext* context, const ::mavsdk::rpc::telemetry::SubscribeGpsInfoRequest* request, ::grpc::ServerWriter< ::mavsdk::rpc::telemetry::GpsInfoResponse>* writer) override {
+    ::grpc::Status SubscribeGpsInfo(::grpc::ServerContext* /*context*/, const ::mavsdk::rpc::telemetry::SubscribeGpsInfoRequest* /*request*/, ::grpc::ServerWriter< ::mavsdk::rpc::telemetry::GpsInfoResponse>* /*writer*/) override {
       abort();
       return ::grpc::Status(::grpc::StatusCode::UNIMPLEMENTED, "");
     }
     virtual ::grpc::experimental::ServerWriteReactor< ::grpc::ByteBuffer, ::grpc::ByteBuffer>* SubscribeGpsInfo() {
-      return new ::grpc::internal::UnimplementedWriteReactor<
+      return new ::grpc_impl::internal::UnimplementedWriteReactor<
         ::grpc::ByteBuffer, ::grpc::ByteBuffer>;}
   };
   template <class BaseClass>
   class ExperimentalWithRawCallbackMethod_SubscribeBattery : public BaseClass {
    private:
-    void BaseClassMustBeDerivedFromService(const Service *service) {}
+    void BaseClassMustBeDerivedFromService(const Service* /*service*/) {}
    public:
     ExperimentalWithRawCallbackMethod_SubscribeBattery() {
       ::grpc::Service::experimental().MarkMethodRawCallback(12,
-        new ::grpc::internal::CallbackServerStreamingHandler< ::grpc::ByteBuffer, ::grpc::ByteBuffer>(
+        new ::grpc_impl::internal::CallbackServerStreamingHandler< ::grpc::ByteBuffer, ::grpc::ByteBuffer>(
           [this] { return this->SubscribeBattery(); }));
     }
     ~ExperimentalWithRawCallbackMethod_SubscribeBattery() override {
       BaseClassMustBeDerivedFromService(this);
     }
     // disable synchronous version of this method
-    ::grpc::Status SubscribeBattery(::grpc::ServerContext* context, const ::mavsdk::rpc::telemetry::SubscribeBatteryRequest* request, ::grpc::ServerWriter< ::mavsdk::rpc::telemetry::BatteryResponse>* writer) override {
+    ::grpc::Status SubscribeBattery(::grpc::ServerContext* /*context*/, const ::mavsdk::rpc::telemetry::SubscribeBatteryRequest* /*request*/, ::grpc::ServerWriter< ::mavsdk::rpc::telemetry::BatteryResponse>* /*writer*/) override {
       abort();
       return ::grpc::Status(::grpc::StatusCode::UNIMPLEMENTED, "");
     }
     virtual ::grpc::experimental::ServerWriteReactor< ::grpc::ByteBuffer, ::grpc::ByteBuffer>* SubscribeBattery() {
-      return new ::grpc::internal::UnimplementedWriteReactor<
+      return new ::grpc_impl::internal::UnimplementedWriteReactor<
         ::grpc::ByteBuffer, ::grpc::ByteBuffer>;}
   };
   template <class BaseClass>
   class ExperimentalWithRawCallbackMethod_SubscribeFlightMode : public BaseClass {
    private:
-    void BaseClassMustBeDerivedFromService(const Service *service) {}
+    void BaseClassMustBeDerivedFromService(const Service* /*service*/) {}
    public:
     ExperimentalWithRawCallbackMethod_SubscribeFlightMode() {
       ::grpc::Service::experimental().MarkMethodRawCallback(13,
-        new ::grpc::internal::CallbackServerStreamingHandler< ::grpc::ByteBuffer, ::grpc::ByteBuffer>(
+        new ::grpc_impl::internal::CallbackServerStreamingHandler< ::grpc::ByteBuffer, ::grpc::ByteBuffer>(
           [this] { return this->SubscribeFlightMode(); }));
     }
     ~ExperimentalWithRawCallbackMethod_SubscribeFlightMode() override {
       BaseClassMustBeDerivedFromService(this);
     }
     // disable synchronous version of this method
-    ::grpc::Status SubscribeFlightMode(::grpc::ServerContext* context, const ::mavsdk::rpc::telemetry::SubscribeFlightModeRequest* request, ::grpc::ServerWriter< ::mavsdk::rpc::telemetry::FlightModeResponse>* writer) override {
+    ::grpc::Status SubscribeFlightMode(::grpc::ServerContext* /*context*/, const ::mavsdk::rpc::telemetry::SubscribeFlightModeRequest* /*request*/, ::grpc::ServerWriter< ::mavsdk::rpc::telemetry::FlightModeResponse>* /*writer*/) override {
       abort();
       return ::grpc::Status(::grpc::StatusCode::UNIMPLEMENTED, "");
     }
     virtual ::grpc::experimental::ServerWriteReactor< ::grpc::ByteBuffer, ::grpc::ByteBuffer>* SubscribeFlightMode() {
-      return new ::grpc::internal::UnimplementedWriteReactor<
+      return new ::grpc_impl::internal::UnimplementedWriteReactor<
         ::grpc::ByteBuffer, ::grpc::ByteBuffer>;}
   };
   template <class BaseClass>
   class ExperimentalWithRawCallbackMethod_SubscribeHealth : public BaseClass {
    private:
-    void BaseClassMustBeDerivedFromService(const Service *service) {}
+    void BaseClassMustBeDerivedFromService(const Service* /*service*/) {}
    public:
     ExperimentalWithRawCallbackMethod_SubscribeHealth() {
       ::grpc::Service::experimental().MarkMethodRawCallback(14,
-        new ::grpc::internal::CallbackServerStreamingHandler< ::grpc::ByteBuffer, ::grpc::ByteBuffer>(
+        new ::grpc_impl::internal::CallbackServerStreamingHandler< ::grpc::ByteBuffer, ::grpc::ByteBuffer>(
           [this] { return this->SubscribeHealth(); }));
     }
     ~ExperimentalWithRawCallbackMethod_SubscribeHealth() override {
       BaseClassMustBeDerivedFromService(this);
     }
     // disable synchronous version of this method
-    ::grpc::Status SubscribeHealth(::grpc::ServerContext* context, const ::mavsdk::rpc::telemetry::SubscribeHealthRequest* request, ::grpc::ServerWriter< ::mavsdk::rpc::telemetry::HealthResponse>* writer) override {
+    ::grpc::Status SubscribeHealth(::grpc::ServerContext* /*context*/, const ::mavsdk::rpc::telemetry::SubscribeHealthRequest* /*request*/, ::grpc::ServerWriter< ::mavsdk::rpc::telemetry::HealthResponse>* /*writer*/) override {
       abort();
       return ::grpc::Status(::grpc::StatusCode::UNIMPLEMENTED, "");
     }
     virtual ::grpc::experimental::ServerWriteReactor< ::grpc::ByteBuffer, ::grpc::ByteBuffer>* SubscribeHealth() {
-      return new ::grpc::internal::UnimplementedWriteReactor<
+      return new ::grpc_impl::internal::UnimplementedWriteReactor<
         ::grpc::ByteBuffer, ::grpc::ByteBuffer>;}
   };
   template <class BaseClass>
   class ExperimentalWithRawCallbackMethod_SubscribeRcStatus : public BaseClass {
    private:
-    void BaseClassMustBeDerivedFromService(const Service *service) {}
+    void BaseClassMustBeDerivedFromService(const Service* /*service*/) {}
    public:
     ExperimentalWithRawCallbackMethod_SubscribeRcStatus() {
       ::grpc::Service::experimental().MarkMethodRawCallback(15,
-        new ::grpc::internal::CallbackServerStreamingHandler< ::grpc::ByteBuffer, ::grpc::ByteBuffer>(
+        new ::grpc_impl::internal::CallbackServerStreamingHandler< ::grpc::ByteBuffer, ::grpc::ByteBuffer>(
           [this] { return this->SubscribeRcStatus(); }));
     }
     ~ExperimentalWithRawCallbackMethod_SubscribeRcStatus() override {
       BaseClassMustBeDerivedFromService(this);
     }
     // disable synchronous version of this method
-    ::grpc::Status SubscribeRcStatus(::grpc::ServerContext* context, const ::mavsdk::rpc::telemetry::SubscribeRcStatusRequest* request, ::grpc::ServerWriter< ::mavsdk::rpc::telemetry::RcStatusResponse>* writer) override {
+    ::grpc::Status SubscribeRcStatus(::grpc::ServerContext* /*context*/, const ::mavsdk::rpc::telemetry::SubscribeRcStatusRequest* /*request*/, ::grpc::ServerWriter< ::mavsdk::rpc::telemetry::RcStatusResponse>* /*writer*/) override {
       abort();
       return ::grpc::Status(::grpc::StatusCode::UNIMPLEMENTED, "");
     }
     virtual ::grpc::experimental::ServerWriteReactor< ::grpc::ByteBuffer, ::grpc::ByteBuffer>* SubscribeRcStatus() {
-      return new ::grpc::internal::UnimplementedWriteReactor<
+      return new ::grpc_impl::internal::UnimplementedWriteReactor<
         ::grpc::ByteBuffer, ::grpc::ByteBuffer>;}
   };
   template <class BaseClass>
   class ExperimentalWithRawCallbackMethod_SubscribeStatusText : public BaseClass {
    private:
-    void BaseClassMustBeDerivedFromService(const Service *service) {}
+    void BaseClassMustBeDerivedFromService(const Service* /*service*/) {}
    public:
     ExperimentalWithRawCallbackMethod_SubscribeStatusText() {
       ::grpc::Service::experimental().MarkMethodRawCallback(16,
-        new ::grpc::internal::CallbackServerStreamingHandler< ::grpc::ByteBuffer, ::grpc::ByteBuffer>(
+        new ::grpc_impl::internal::CallbackServerStreamingHandler< ::grpc::ByteBuffer, ::grpc::ByteBuffer>(
           [this] { return this->SubscribeStatusText(); }));
     }
     ~ExperimentalWithRawCallbackMethod_SubscribeStatusText() override {
       BaseClassMustBeDerivedFromService(this);
     }
     // disable synchronous version of this method
-    ::grpc::Status SubscribeStatusText(::grpc::ServerContext* context, const ::mavsdk::rpc::telemetry::SubscribeStatusTextRequest* request, ::grpc::ServerWriter< ::mavsdk::rpc::telemetry::StatusTextResponse>* writer) override {
+    ::grpc::Status SubscribeStatusText(::grpc::ServerContext* /*context*/, const ::mavsdk::rpc::telemetry::SubscribeStatusTextRequest* /*request*/, ::grpc::ServerWriter< ::mavsdk::rpc::telemetry::StatusTextResponse>* /*writer*/) override {
       abort();
       return ::grpc::Status(::grpc::StatusCode::UNIMPLEMENTED, "");
     }
     virtual ::grpc::experimental::ServerWriteReactor< ::grpc::ByteBuffer, ::grpc::ByteBuffer>* SubscribeStatusText() {
-      return new ::grpc::internal::UnimplementedWriteReactor<
+      return new ::grpc_impl::internal::UnimplementedWriteReactor<
         ::grpc::ByteBuffer, ::grpc::ByteBuffer>;}
   };
   template <class BaseClass>
   class ExperimentalWithRawCallbackMethod_SubscribeActuatorControlTarget : public BaseClass {
    private:
-    void BaseClassMustBeDerivedFromService(const Service *service) {}
+    void BaseClassMustBeDerivedFromService(const Service* /*service*/) {}
    public:
     ExperimentalWithRawCallbackMethod_SubscribeActuatorControlTarget() {
       ::grpc::Service::experimental().MarkMethodRawCallback(17,
-        new ::grpc::internal::CallbackServerStreamingHandler< ::grpc::ByteBuffer, ::grpc::ByteBuffer>(
+        new ::grpc_impl::internal::CallbackServerStreamingHandler< ::grpc::ByteBuffer, ::grpc::ByteBuffer>(
           [this] { return this->SubscribeActuatorControlTarget(); }));
     }
     ~ExperimentalWithRawCallbackMethod_SubscribeActuatorControlTarget() override {
       BaseClassMustBeDerivedFromService(this);
     }
     // disable synchronous version of this method
-    ::grpc::Status SubscribeActuatorControlTarget(::grpc::ServerContext* context, const ::mavsdk::rpc::telemetry::SubscribeActuatorControlTargetRequest* request, ::grpc::ServerWriter< ::mavsdk::rpc::telemetry::ActuatorControlTargetResponse>* writer) override {
+    ::grpc::Status SubscribeActuatorControlTarget(::grpc::ServerContext* /*context*/, const ::mavsdk::rpc::telemetry::SubscribeActuatorControlTargetRequest* /*request*/, ::grpc::ServerWriter< ::mavsdk::rpc::telemetry::ActuatorControlTargetResponse>* /*writer*/) override {
       abort();
       return ::grpc::Status(::grpc::StatusCode::UNIMPLEMENTED, "");
     }
     virtual ::grpc::experimental::ServerWriteReactor< ::grpc::ByteBuffer, ::grpc::ByteBuffer>* SubscribeActuatorControlTarget() {
-      return new ::grpc::internal::UnimplementedWriteReactor<
+      return new ::grpc_impl::internal::UnimplementedWriteReactor<
         ::grpc::ByteBuffer, ::grpc::ByteBuffer>;}
   };
   template <class BaseClass>
   class ExperimentalWithRawCallbackMethod_SubscribeActuatorOutputStatus : public BaseClass {
    private:
-    void BaseClassMustBeDerivedFromService(const Service *service) {}
+    void BaseClassMustBeDerivedFromService(const Service* /*service*/) {}
    public:
     ExperimentalWithRawCallbackMethod_SubscribeActuatorOutputStatus() {
       ::grpc::Service::experimental().MarkMethodRawCallback(18,
-        new ::grpc::internal::CallbackServerStreamingHandler< ::grpc::ByteBuffer, ::grpc::ByteBuffer>(
+        new ::grpc_impl::internal::CallbackServerStreamingHandler< ::grpc::ByteBuffer, ::grpc::ByteBuffer>(
           [this] { return this->SubscribeActuatorOutputStatus(); }));
     }
     ~ExperimentalWithRawCallbackMethod_SubscribeActuatorOutputStatus() override {
       BaseClassMustBeDerivedFromService(this);
     }
     // disable synchronous version of this method
-    ::grpc::Status SubscribeActuatorOutputStatus(::grpc::ServerContext* context, const ::mavsdk::rpc::telemetry::SubscribeActuatorOutputStatusRequest* request, ::grpc::ServerWriter< ::mavsdk::rpc::telemetry::ActuatorOutputStatusResponse>* writer) override {
+    ::grpc::Status SubscribeActuatorOutputStatus(::grpc::ServerContext* /*context*/, const ::mavsdk::rpc::telemetry::SubscribeActuatorOutputStatusRequest* /*request*/, ::grpc::ServerWriter< ::mavsdk::rpc::telemetry::ActuatorOutputStatusResponse>* /*writer*/) override {
       abort();
       return ::grpc::Status(::grpc::StatusCode::UNIMPLEMENTED, "");
     }
     virtual ::grpc::experimental::ServerWriteReactor< ::grpc::ByteBuffer, ::grpc::ByteBuffer>* SubscribeActuatorOutputStatus() {
-      return new ::grpc::internal::UnimplementedWriteReactor<
+      return new ::grpc_impl::internal::UnimplementedWriteReactor<
         ::grpc::ByteBuffer, ::grpc::ByteBuffer>;}
   };
   template <class BaseClass>
   class ExperimentalWithRawCallbackMethod_SubscribeOdometry : public BaseClass {
    private:
-    void BaseClassMustBeDerivedFromService(const Service *service) {}
+    void BaseClassMustBeDerivedFromService(const Service* /*service*/) {}
    public:
     ExperimentalWithRawCallbackMethod_SubscribeOdometry() {
       ::grpc::Service::experimental().MarkMethodRawCallback(19,
-        new ::grpc::internal::CallbackServerStreamingHandler< ::grpc::ByteBuffer, ::grpc::ByteBuffer>(
+        new ::grpc_impl::internal::CallbackServerStreamingHandler< ::grpc::ByteBuffer, ::grpc::ByteBuffer>(
           [this] { return this->SubscribeOdometry(); }));
     }
     ~ExperimentalWithRawCallbackMethod_SubscribeOdometry() override {
       BaseClassMustBeDerivedFromService(this);
     }
     // disable synchronous version of this method
-    ::grpc::Status SubscribeOdometry(::grpc::ServerContext* context, const ::mavsdk::rpc::telemetry::SubscribeOdometryRequest* request, ::grpc::ServerWriter< ::mavsdk::rpc::telemetry::OdometryResponse>* writer) override {
+    ::grpc::Status SubscribeOdometry(::grpc::ServerContext* /*context*/, const ::mavsdk::rpc::telemetry::SubscribeOdometryRequest* /*request*/, ::grpc::ServerWriter< ::mavsdk::rpc::telemetry::OdometryResponse>* /*writer*/) override {
       abort();
       return ::grpc::Status(::grpc::StatusCode::UNIMPLEMENTED, "");
     }
     virtual ::grpc::experimental::ServerWriteReactor< ::grpc::ByteBuffer, ::grpc::ByteBuffer>* SubscribeOdometry() {
-      return new ::grpc::internal::UnimplementedWriteReactor<
+      return new ::grpc_impl::internal::UnimplementedWriteReactor<
         ::grpc::ByteBuffer, ::grpc::ByteBuffer>;}
   };
   typedef Service StreamedUnaryService;
   template <class BaseClass>
   class WithSplitStreamingMethod_SubscribePosition : public BaseClass {
    private:
-    void BaseClassMustBeDerivedFromService(const Service *service) {}
+    void BaseClassMustBeDerivedFromService(const Service* /*service*/) {}
    public:
     WithSplitStreamingMethod_SubscribePosition() {
       ::grpc::Service::MarkMethodStreamed(0,
@@ -2736,7 +2739,7 @@ class TelemetryService final {
       BaseClassMustBeDerivedFromService(this);
     }
     // disable regular version of this method
-    ::grpc::Status SubscribePosition(::grpc::ServerContext* context, const ::mavsdk::rpc::telemetry::SubscribePositionRequest* request, ::grpc::ServerWriter< ::mavsdk::rpc::telemetry::PositionResponse>* writer) override {
+    ::grpc::Status SubscribePosition(::grpc::ServerContext* /*context*/, const ::mavsdk::rpc::telemetry::SubscribePositionRequest* /*request*/, ::grpc::ServerWriter< ::mavsdk::rpc::telemetry::PositionResponse>* /*writer*/) override {
       abort();
       return ::grpc::Status(::grpc::StatusCode::UNIMPLEMENTED, "");
     }
@@ -2746,7 +2749,7 @@ class TelemetryService final {
   template <class BaseClass>
   class WithSplitStreamingMethod_SubscribeHome : public BaseClass {
    private:
-    void BaseClassMustBeDerivedFromService(const Service *service) {}
+    void BaseClassMustBeDerivedFromService(const Service* /*service*/) {}
    public:
     WithSplitStreamingMethod_SubscribeHome() {
       ::grpc::Service::MarkMethodStreamed(1,
@@ -2756,7 +2759,7 @@ class TelemetryService final {
       BaseClassMustBeDerivedFromService(this);
     }
     // disable regular version of this method
-    ::grpc::Status SubscribeHome(::grpc::ServerContext* context, const ::mavsdk::rpc::telemetry::SubscribeHomeRequest* request, ::grpc::ServerWriter< ::mavsdk::rpc::telemetry::HomeResponse>* writer) override {
+    ::grpc::Status SubscribeHome(::grpc::ServerContext* /*context*/, const ::mavsdk::rpc::telemetry::SubscribeHomeRequest* /*request*/, ::grpc::ServerWriter< ::mavsdk::rpc::telemetry::HomeResponse>* /*writer*/) override {
       abort();
       return ::grpc::Status(::grpc::StatusCode::UNIMPLEMENTED, "");
     }
@@ -2766,7 +2769,7 @@ class TelemetryService final {
   template <class BaseClass>
   class WithSplitStreamingMethod_SubscribeInAir : public BaseClass {
    private:
-    void BaseClassMustBeDerivedFromService(const Service *service) {}
+    void BaseClassMustBeDerivedFromService(const Service* /*service*/) {}
    public:
     WithSplitStreamingMethod_SubscribeInAir() {
       ::grpc::Service::MarkMethodStreamed(2,
@@ -2776,7 +2779,7 @@ class TelemetryService final {
       BaseClassMustBeDerivedFromService(this);
     }
     // disable regular version of this method
-    ::grpc::Status SubscribeInAir(::grpc::ServerContext* context, const ::mavsdk::rpc::telemetry::SubscribeInAirRequest* request, ::grpc::ServerWriter< ::mavsdk::rpc::telemetry::InAirResponse>* writer) override {
+    ::grpc::Status SubscribeInAir(::grpc::ServerContext* /*context*/, const ::mavsdk::rpc::telemetry::SubscribeInAirRequest* /*request*/, ::grpc::ServerWriter< ::mavsdk::rpc::telemetry::InAirResponse>* /*writer*/) override {
       abort();
       return ::grpc::Status(::grpc::StatusCode::UNIMPLEMENTED, "");
     }
@@ -2786,7 +2789,7 @@ class TelemetryService final {
   template <class BaseClass>
   class WithSplitStreamingMethod_SubscribeLandedState : public BaseClass {
    private:
-    void BaseClassMustBeDerivedFromService(const Service *service) {}
+    void BaseClassMustBeDerivedFromService(const Service* /*service*/) {}
    public:
     WithSplitStreamingMethod_SubscribeLandedState() {
       ::grpc::Service::MarkMethodStreamed(3,
@@ -2796,7 +2799,7 @@ class TelemetryService final {
       BaseClassMustBeDerivedFromService(this);
     }
     // disable regular version of this method
-    ::grpc::Status SubscribeLandedState(::grpc::ServerContext* context, const ::mavsdk::rpc::telemetry::SubscribeLandedStateRequest* request, ::grpc::ServerWriter< ::mavsdk::rpc::telemetry::LandedStateResponse>* writer) override {
+    ::grpc::Status SubscribeLandedState(::grpc::ServerContext* /*context*/, const ::mavsdk::rpc::telemetry::SubscribeLandedStateRequest* /*request*/, ::grpc::ServerWriter< ::mavsdk::rpc::telemetry::LandedStateResponse>* /*writer*/) override {
       abort();
       return ::grpc::Status(::grpc::StatusCode::UNIMPLEMENTED, "");
     }
@@ -2806,7 +2809,7 @@ class TelemetryService final {
   template <class BaseClass>
   class WithSplitStreamingMethod_SubscribeArmed : public BaseClass {
    private:
-    void BaseClassMustBeDerivedFromService(const Service *service) {}
+    void BaseClassMustBeDerivedFromService(const Service* /*service*/) {}
    public:
     WithSplitStreamingMethod_SubscribeArmed() {
       ::grpc::Service::MarkMethodStreamed(4,
@@ -2816,7 +2819,7 @@ class TelemetryService final {
       BaseClassMustBeDerivedFromService(this);
     }
     // disable regular version of this method
-    ::grpc::Status SubscribeArmed(::grpc::ServerContext* context, const ::mavsdk::rpc::telemetry::SubscribeArmedRequest* request, ::grpc::ServerWriter< ::mavsdk::rpc::telemetry::ArmedResponse>* writer) override {
+    ::grpc::Status SubscribeArmed(::grpc::ServerContext* /*context*/, const ::mavsdk::rpc::telemetry::SubscribeArmedRequest* /*request*/, ::grpc::ServerWriter< ::mavsdk::rpc::telemetry::ArmedResponse>* /*writer*/) override {
       abort();
       return ::grpc::Status(::grpc::StatusCode::UNIMPLEMENTED, "");
     }
@@ -2826,7 +2829,7 @@ class TelemetryService final {
   template <class BaseClass>
   class WithSplitStreamingMethod_SubscribeAttitudeQuaternion : public BaseClass {
    private:
-    void BaseClassMustBeDerivedFromService(const Service *service) {}
+    void BaseClassMustBeDerivedFromService(const Service* /*service*/) {}
    public:
     WithSplitStreamingMethod_SubscribeAttitudeQuaternion() {
       ::grpc::Service::MarkMethodStreamed(5,
@@ -2836,7 +2839,7 @@ class TelemetryService final {
       BaseClassMustBeDerivedFromService(this);
     }
     // disable regular version of this method
-    ::grpc::Status SubscribeAttitudeQuaternion(::grpc::ServerContext* context, const ::mavsdk::rpc::telemetry::SubscribeAttitudeQuaternionRequest* request, ::grpc::ServerWriter< ::mavsdk::rpc::telemetry::AttitudeQuaternionResponse>* writer) override {
+    ::grpc::Status SubscribeAttitudeQuaternion(::grpc::ServerContext* /*context*/, const ::mavsdk::rpc::telemetry::SubscribeAttitudeQuaternionRequest* /*request*/, ::grpc::ServerWriter< ::mavsdk::rpc::telemetry::AttitudeQuaternionResponse>* /*writer*/) override {
       abort();
       return ::grpc::Status(::grpc::StatusCode::UNIMPLEMENTED, "");
     }
@@ -2846,7 +2849,7 @@ class TelemetryService final {
   template <class BaseClass>
   class WithSplitStreamingMethod_SubscribeAttitudeEuler : public BaseClass {
    private:
-    void BaseClassMustBeDerivedFromService(const Service *service) {}
+    void BaseClassMustBeDerivedFromService(const Service* /*service*/) {}
    public:
     WithSplitStreamingMethod_SubscribeAttitudeEuler() {
       ::grpc::Service::MarkMethodStreamed(6,
@@ -2856,7 +2859,7 @@ class TelemetryService final {
       BaseClassMustBeDerivedFromService(this);
     }
     // disable regular version of this method
-    ::grpc::Status SubscribeAttitudeEuler(::grpc::ServerContext* context, const ::mavsdk::rpc::telemetry::SubscribeAttitudeEulerRequest* request, ::grpc::ServerWriter< ::mavsdk::rpc::telemetry::AttitudeEulerResponse>* writer) override {
+    ::grpc::Status SubscribeAttitudeEuler(::grpc::ServerContext* /*context*/, const ::mavsdk::rpc::telemetry::SubscribeAttitudeEulerRequest* /*request*/, ::grpc::ServerWriter< ::mavsdk::rpc::telemetry::AttitudeEulerResponse>* /*writer*/) override {
       abort();
       return ::grpc::Status(::grpc::StatusCode::UNIMPLEMENTED, "");
     }
@@ -2866,7 +2869,7 @@ class TelemetryService final {
   template <class BaseClass>
   class WithSplitStreamingMethod_SubscribeAttitudeAngularVelocityBody : public BaseClass {
    private:
-    void BaseClassMustBeDerivedFromService(const Service *service) {}
+    void BaseClassMustBeDerivedFromService(const Service* /*service*/) {}
    public:
     WithSplitStreamingMethod_SubscribeAttitudeAngularVelocityBody() {
       ::grpc::Service::MarkMethodStreamed(7,
@@ -2876,7 +2879,7 @@ class TelemetryService final {
       BaseClassMustBeDerivedFromService(this);
     }
     // disable regular version of this method
-    ::grpc::Status SubscribeAttitudeAngularVelocityBody(::grpc::ServerContext* context, const ::mavsdk::rpc::telemetry::SubscribeAttitudeAngularVelocityBodyRequest* request, ::grpc::ServerWriter< ::mavsdk::rpc::telemetry::AttitudeAngularVelocityBodyResponse>* writer) override {
+    ::grpc::Status SubscribeAttitudeAngularVelocityBody(::grpc::ServerContext* /*context*/, const ::mavsdk::rpc::telemetry::SubscribeAttitudeAngularVelocityBodyRequest* /*request*/, ::grpc::ServerWriter< ::mavsdk::rpc::telemetry::AttitudeAngularVelocityBodyResponse>* /*writer*/) override {
       abort();
       return ::grpc::Status(::grpc::StatusCode::UNIMPLEMENTED, "");
     }
@@ -2886,7 +2889,7 @@ class TelemetryService final {
   template <class BaseClass>
   class WithSplitStreamingMethod_SubscribeCameraAttitudeQuaternion : public BaseClass {
    private:
-    void BaseClassMustBeDerivedFromService(const Service *service) {}
+    void BaseClassMustBeDerivedFromService(const Service* /*service*/) {}
    public:
     WithSplitStreamingMethod_SubscribeCameraAttitudeQuaternion() {
       ::grpc::Service::MarkMethodStreamed(8,
@@ -2896,7 +2899,7 @@ class TelemetryService final {
       BaseClassMustBeDerivedFromService(this);
     }
     // disable regular version of this method
-    ::grpc::Status SubscribeCameraAttitudeQuaternion(::grpc::ServerContext* context, const ::mavsdk::rpc::telemetry::SubscribeCameraAttitudeQuaternionRequest* request, ::grpc::ServerWriter< ::mavsdk::rpc::telemetry::CameraAttitudeQuaternionResponse>* writer) override {
+    ::grpc::Status SubscribeCameraAttitudeQuaternion(::grpc::ServerContext* /*context*/, const ::mavsdk::rpc::telemetry::SubscribeCameraAttitudeQuaternionRequest* /*request*/, ::grpc::ServerWriter< ::mavsdk::rpc::telemetry::CameraAttitudeQuaternionResponse>* /*writer*/) override {
       abort();
       return ::grpc::Status(::grpc::StatusCode::UNIMPLEMENTED, "");
     }
@@ -2906,7 +2909,7 @@ class TelemetryService final {
   template <class BaseClass>
   class WithSplitStreamingMethod_SubscribeCameraAttitudeEuler : public BaseClass {
    private:
-    void BaseClassMustBeDerivedFromService(const Service *service) {}
+    void BaseClassMustBeDerivedFromService(const Service* /*service*/) {}
    public:
     WithSplitStreamingMethod_SubscribeCameraAttitudeEuler() {
       ::grpc::Service::MarkMethodStreamed(9,
@@ -2916,7 +2919,7 @@ class TelemetryService final {
       BaseClassMustBeDerivedFromService(this);
     }
     // disable regular version of this method
-    ::grpc::Status SubscribeCameraAttitudeEuler(::grpc::ServerContext* context, const ::mavsdk::rpc::telemetry::SubscribeCameraAttitudeEulerRequest* request, ::grpc::ServerWriter< ::mavsdk::rpc::telemetry::CameraAttitudeEulerResponse>* writer) override {
+    ::grpc::Status SubscribeCameraAttitudeEuler(::grpc::ServerContext* /*context*/, const ::mavsdk::rpc::telemetry::SubscribeCameraAttitudeEulerRequest* /*request*/, ::grpc::ServerWriter< ::mavsdk::rpc::telemetry::CameraAttitudeEulerResponse>* /*writer*/) override {
       abort();
       return ::grpc::Status(::grpc::StatusCode::UNIMPLEMENTED, "");
     }
@@ -2926,7 +2929,7 @@ class TelemetryService final {
   template <class BaseClass>
   class WithSplitStreamingMethod_SubscribeGroundSpeedNed : public BaseClass {
    private:
-    void BaseClassMustBeDerivedFromService(const Service *service) {}
+    void BaseClassMustBeDerivedFromService(const Service* /*service*/) {}
    public:
     WithSplitStreamingMethod_SubscribeGroundSpeedNed() {
       ::grpc::Service::MarkMethodStreamed(10,
@@ -2936,7 +2939,7 @@ class TelemetryService final {
       BaseClassMustBeDerivedFromService(this);
     }
     // disable regular version of this method
-    ::grpc::Status SubscribeGroundSpeedNed(::grpc::ServerContext* context, const ::mavsdk::rpc::telemetry::SubscribeGroundSpeedNedRequest* request, ::grpc::ServerWriter< ::mavsdk::rpc::telemetry::GroundSpeedNedResponse>* writer) override {
+    ::grpc::Status SubscribeGroundSpeedNed(::grpc::ServerContext* /*context*/, const ::mavsdk::rpc::telemetry::SubscribeGroundSpeedNedRequest* /*request*/, ::grpc::ServerWriter< ::mavsdk::rpc::telemetry::GroundSpeedNedResponse>* /*writer*/) override {
       abort();
       return ::grpc::Status(::grpc::StatusCode::UNIMPLEMENTED, "");
     }
@@ -2946,7 +2949,7 @@ class TelemetryService final {
   template <class BaseClass>
   class WithSplitStreamingMethod_SubscribeGpsInfo : public BaseClass {
    private:
-    void BaseClassMustBeDerivedFromService(const Service *service) {}
+    void BaseClassMustBeDerivedFromService(const Service* /*service*/) {}
    public:
     WithSplitStreamingMethod_SubscribeGpsInfo() {
       ::grpc::Service::MarkMethodStreamed(11,
@@ -2956,7 +2959,7 @@ class TelemetryService final {
       BaseClassMustBeDerivedFromService(this);
     }
     // disable regular version of this method
-    ::grpc::Status SubscribeGpsInfo(::grpc::ServerContext* context, const ::mavsdk::rpc::telemetry::SubscribeGpsInfoRequest* request, ::grpc::ServerWriter< ::mavsdk::rpc::telemetry::GpsInfoResponse>* writer) override {
+    ::grpc::Status SubscribeGpsInfo(::grpc::ServerContext* /*context*/, const ::mavsdk::rpc::telemetry::SubscribeGpsInfoRequest* /*request*/, ::grpc::ServerWriter< ::mavsdk::rpc::telemetry::GpsInfoResponse>* /*writer*/) override {
       abort();
       return ::grpc::Status(::grpc::StatusCode::UNIMPLEMENTED, "");
     }
@@ -2966,7 +2969,7 @@ class TelemetryService final {
   template <class BaseClass>
   class WithSplitStreamingMethod_SubscribeBattery : public BaseClass {
    private:
-    void BaseClassMustBeDerivedFromService(const Service *service) {}
+    void BaseClassMustBeDerivedFromService(const Service* /*service*/) {}
    public:
     WithSplitStreamingMethod_SubscribeBattery() {
       ::grpc::Service::MarkMethodStreamed(12,
@@ -2976,7 +2979,7 @@ class TelemetryService final {
       BaseClassMustBeDerivedFromService(this);
     }
     // disable regular version of this method
-    ::grpc::Status SubscribeBattery(::grpc::ServerContext* context, const ::mavsdk::rpc::telemetry::SubscribeBatteryRequest* request, ::grpc::ServerWriter< ::mavsdk::rpc::telemetry::BatteryResponse>* writer) override {
+    ::grpc::Status SubscribeBattery(::grpc::ServerContext* /*context*/, const ::mavsdk::rpc::telemetry::SubscribeBatteryRequest* /*request*/, ::grpc::ServerWriter< ::mavsdk::rpc::telemetry::BatteryResponse>* /*writer*/) override {
       abort();
       return ::grpc::Status(::grpc::StatusCode::UNIMPLEMENTED, "");
     }
@@ -2986,7 +2989,7 @@ class TelemetryService final {
   template <class BaseClass>
   class WithSplitStreamingMethod_SubscribeFlightMode : public BaseClass {
    private:
-    void BaseClassMustBeDerivedFromService(const Service *service) {}
+    void BaseClassMustBeDerivedFromService(const Service* /*service*/) {}
    public:
     WithSplitStreamingMethod_SubscribeFlightMode() {
       ::grpc::Service::MarkMethodStreamed(13,
@@ -2996,7 +2999,7 @@ class TelemetryService final {
       BaseClassMustBeDerivedFromService(this);
     }
     // disable regular version of this method
-    ::grpc::Status SubscribeFlightMode(::grpc::ServerContext* context, const ::mavsdk::rpc::telemetry::SubscribeFlightModeRequest* request, ::grpc::ServerWriter< ::mavsdk::rpc::telemetry::FlightModeResponse>* writer) override {
+    ::grpc::Status SubscribeFlightMode(::grpc::ServerContext* /*context*/, const ::mavsdk::rpc::telemetry::SubscribeFlightModeRequest* /*request*/, ::grpc::ServerWriter< ::mavsdk::rpc::telemetry::FlightModeResponse>* /*writer*/) override {
       abort();
       return ::grpc::Status(::grpc::StatusCode::UNIMPLEMENTED, "");
     }
@@ -3006,7 +3009,7 @@ class TelemetryService final {
   template <class BaseClass>
   class WithSplitStreamingMethod_SubscribeHealth : public BaseClass {
    private:
-    void BaseClassMustBeDerivedFromService(const Service *service) {}
+    void BaseClassMustBeDerivedFromService(const Service* /*service*/) {}
    public:
     WithSplitStreamingMethod_SubscribeHealth() {
       ::grpc::Service::MarkMethodStreamed(14,
@@ -3016,7 +3019,7 @@ class TelemetryService final {
       BaseClassMustBeDerivedFromService(this);
     }
     // disable regular version of this method
-    ::grpc::Status SubscribeHealth(::grpc::ServerContext* context, const ::mavsdk::rpc::telemetry::SubscribeHealthRequest* request, ::grpc::ServerWriter< ::mavsdk::rpc::telemetry::HealthResponse>* writer) override {
+    ::grpc::Status SubscribeHealth(::grpc::ServerContext* /*context*/, const ::mavsdk::rpc::telemetry::SubscribeHealthRequest* /*request*/, ::grpc::ServerWriter< ::mavsdk::rpc::telemetry::HealthResponse>* /*writer*/) override {
       abort();
       return ::grpc::Status(::grpc::StatusCode::UNIMPLEMENTED, "");
     }
@@ -3026,7 +3029,7 @@ class TelemetryService final {
   template <class BaseClass>
   class WithSplitStreamingMethod_SubscribeRcStatus : public BaseClass {
    private:
-    void BaseClassMustBeDerivedFromService(const Service *service) {}
+    void BaseClassMustBeDerivedFromService(const Service* /*service*/) {}
    public:
     WithSplitStreamingMethod_SubscribeRcStatus() {
       ::grpc::Service::MarkMethodStreamed(15,
@@ -3036,7 +3039,7 @@ class TelemetryService final {
       BaseClassMustBeDerivedFromService(this);
     }
     // disable regular version of this method
-    ::grpc::Status SubscribeRcStatus(::grpc::ServerContext* context, const ::mavsdk::rpc::telemetry::SubscribeRcStatusRequest* request, ::grpc::ServerWriter< ::mavsdk::rpc::telemetry::RcStatusResponse>* writer) override {
+    ::grpc::Status SubscribeRcStatus(::grpc::ServerContext* /*context*/, const ::mavsdk::rpc::telemetry::SubscribeRcStatusRequest* /*request*/, ::grpc::ServerWriter< ::mavsdk::rpc::telemetry::RcStatusResponse>* /*writer*/) override {
       abort();
       return ::grpc::Status(::grpc::StatusCode::UNIMPLEMENTED, "");
     }
@@ -3046,7 +3049,7 @@ class TelemetryService final {
   template <class BaseClass>
   class WithSplitStreamingMethod_SubscribeStatusText : public BaseClass {
    private:
-    void BaseClassMustBeDerivedFromService(const Service *service) {}
+    void BaseClassMustBeDerivedFromService(const Service* /*service*/) {}
    public:
     WithSplitStreamingMethod_SubscribeStatusText() {
       ::grpc::Service::MarkMethodStreamed(16,
@@ -3056,7 +3059,7 @@ class TelemetryService final {
       BaseClassMustBeDerivedFromService(this);
     }
     // disable regular version of this method
-    ::grpc::Status SubscribeStatusText(::grpc::ServerContext* context, const ::mavsdk::rpc::telemetry::SubscribeStatusTextRequest* request, ::grpc::ServerWriter< ::mavsdk::rpc::telemetry::StatusTextResponse>* writer) override {
+    ::grpc::Status SubscribeStatusText(::grpc::ServerContext* /*context*/, const ::mavsdk::rpc::telemetry::SubscribeStatusTextRequest* /*request*/, ::grpc::ServerWriter< ::mavsdk::rpc::telemetry::StatusTextResponse>* /*writer*/) override {
       abort();
       return ::grpc::Status(::grpc::StatusCode::UNIMPLEMENTED, "");
     }
@@ -3066,7 +3069,7 @@ class TelemetryService final {
   template <class BaseClass>
   class WithSplitStreamingMethod_SubscribeActuatorControlTarget : public BaseClass {
    private:
-    void BaseClassMustBeDerivedFromService(const Service *service) {}
+    void BaseClassMustBeDerivedFromService(const Service* /*service*/) {}
    public:
     WithSplitStreamingMethod_SubscribeActuatorControlTarget() {
       ::grpc::Service::MarkMethodStreamed(17,
@@ -3076,7 +3079,7 @@ class TelemetryService final {
       BaseClassMustBeDerivedFromService(this);
     }
     // disable regular version of this method
-    ::grpc::Status SubscribeActuatorControlTarget(::grpc::ServerContext* context, const ::mavsdk::rpc::telemetry::SubscribeActuatorControlTargetRequest* request, ::grpc::ServerWriter< ::mavsdk::rpc::telemetry::ActuatorControlTargetResponse>* writer) override {
+    ::grpc::Status SubscribeActuatorControlTarget(::grpc::ServerContext* /*context*/, const ::mavsdk::rpc::telemetry::SubscribeActuatorControlTargetRequest* /*request*/, ::grpc::ServerWriter< ::mavsdk::rpc::telemetry::ActuatorControlTargetResponse>* /*writer*/) override {
       abort();
       return ::grpc::Status(::grpc::StatusCode::UNIMPLEMENTED, "");
     }
@@ -3086,7 +3089,7 @@ class TelemetryService final {
   template <class BaseClass>
   class WithSplitStreamingMethod_SubscribeActuatorOutputStatus : public BaseClass {
    private:
-    void BaseClassMustBeDerivedFromService(const Service *service) {}
+    void BaseClassMustBeDerivedFromService(const Service* /*service*/) {}
    public:
     WithSplitStreamingMethod_SubscribeActuatorOutputStatus() {
       ::grpc::Service::MarkMethodStreamed(18,
@@ -3096,7 +3099,7 @@ class TelemetryService final {
       BaseClassMustBeDerivedFromService(this);
     }
     // disable regular version of this method
-    ::grpc::Status SubscribeActuatorOutputStatus(::grpc::ServerContext* context, const ::mavsdk::rpc::telemetry::SubscribeActuatorOutputStatusRequest* request, ::grpc::ServerWriter< ::mavsdk::rpc::telemetry::ActuatorOutputStatusResponse>* writer) override {
+    ::grpc::Status SubscribeActuatorOutputStatus(::grpc::ServerContext* /*context*/, const ::mavsdk::rpc::telemetry::SubscribeActuatorOutputStatusRequest* /*request*/, ::grpc::ServerWriter< ::mavsdk::rpc::telemetry::ActuatorOutputStatusResponse>* /*writer*/) override {
       abort();
       return ::grpc::Status(::grpc::StatusCode::UNIMPLEMENTED, "");
     }
@@ -3106,7 +3109,7 @@ class TelemetryService final {
   template <class BaseClass>
   class WithSplitStreamingMethod_SubscribeOdometry : public BaseClass {
    private:
-    void BaseClassMustBeDerivedFromService(const Service *service) {}
+    void BaseClassMustBeDerivedFromService(const Service* /*service*/) {}
    public:
     WithSplitStreamingMethod_SubscribeOdometry() {
       ::grpc::Service::MarkMethodStreamed(19,
@@ -3116,7 +3119,7 @@ class TelemetryService final {
       BaseClassMustBeDerivedFromService(this);
     }
     // disable regular version of this method
-    ::grpc::Status SubscribeOdometry(::grpc::ServerContext* context, const ::mavsdk::rpc::telemetry::SubscribeOdometryRequest* request, ::grpc::ServerWriter< ::mavsdk::rpc::telemetry::OdometryResponse>* writer) override {
+    ::grpc::Status SubscribeOdometry(::grpc::ServerContext* /*context*/, const ::mavsdk::rpc::telemetry::SubscribeOdometryRequest* /*request*/, ::grpc::ServerWriter< ::mavsdk::rpc::telemetry::OdometryResponse>* /*writer*/) override {
       abort();
       return ::grpc::Status(::grpc::StatusCode::UNIMPLEMENTED, "");
     }
