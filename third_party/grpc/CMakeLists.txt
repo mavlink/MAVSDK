@@ -40,7 +40,7 @@ elseif(IOS)
         "-DPLATFORM=${PLATFORM}"
         "-DgRPC_BUILD_CODEGEN=OFF"
         )
-elseif(MANYLINUX)
+elseif(MANYLINUX1)
     list(APPEND CMAKE_ARGS
         "-DCMAKE_CXX_FLAGS=-DGPR_MANYLINUX1=1"
         )
