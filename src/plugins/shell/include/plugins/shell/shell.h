@@ -49,6 +49,9 @@ public:
      * @brief Shell requests results type.
      */
     struct Result {
+        /**
+         * @brief Shell Resul Code enum
+         */
         enum class ResultCode {
             UNKNOWN = 0, /**< @brief Unknown error. */
             SUCCESS, /**< @brief %Request succeeded. */
@@ -87,7 +90,7 @@ public:
      *
      * @param callback Function to call with responses.
      */
-    void shell_message_response_async(result_callback_t callback);
+    void shell_command_response_async(result_callback_t callback);
 
     /**
      * @brief Copy constructor (object is not copyable).

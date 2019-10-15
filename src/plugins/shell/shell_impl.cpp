@@ -34,13 +34,15 @@ ShellImpl::~ShellImpl()
     _parent->unregister_plugin(this);
 }
 
-void ShellImpl::shell_message_response_async(Shell::result_callback_t callback)
+void ShellImpl::shell_command_response_async(Shell::result_callback_t& callback)
 {
+    std::lock_guard<std::mutex> lock_subscription(_result_subscription_mutex);
     _result_subscription = callback;
 }
 
 void ShellImpl::shell_command(const Shell::ShellMessage& shell_message)
 {
+    std::lock_guard<std::mutex> lock_subscription(_result_subscription_mutex);
     if (!_parent->is_connected()) {
         if (_result_subscription) {
             auto callback = _result_subscription;
@@ -50,9 +52,10 @@ void ShellImpl::shell_command(const Shell::ShellMessage& shell_message)
         }
     }
 
-    _shell_message_mutex.lock();
-    _shell_message = shell_message;
-    _shell_message_mutex.unlock();
+    {
+        std::lock_guard<std::mutex> lock(_shell_message_mutex);
+        _shell_message = shell_message;
+    }
 
     if (!send_shell_message_mavlink()) {
         if (_result_subscription) {
@@ -68,13 +71,14 @@ void ShellImpl::shell_command(const Shell::ShellMessage& shell_message)
             Shell::Result arg{Shell::Result::ResultCode::SUCCESS, {}};
             _parent->call_user_callback([callback, arg]() { callback(arg); });
         } else {
+            std::lock_guard<std::mutex> lock_cookie(_shell_message_timeout_cookie_mutex);
             if (_shell_message_timeout_cookie) {
                 _parent->unregister_timeout_handler(_shell_message_timeout_cookie);
                 _shell_message_timeout_cookie = nullptr;
             }
             _parent->register_timeout_handler(
                 std::bind(&ShellImpl::receive_shell_message_timeout, this),
-                shell_message.timeout / 1000,
+                shell_message.timeout / 1000.0,
                 &_shell_message_timeout_cookie);
         }
     }
@@ -83,6 +87,8 @@ void ShellImpl::shell_command(const Shell::ShellMessage& shell_message)
 void ShellImpl::receive_shell_message_timeout()
 {
     std::lock_guard<std::mutex> lock_result(_result_mutex);
+    std::lock_guard<std::mutex> lock_subscription(_result_subscription_mutex);
+    std::lock_guard<std::mutex> lock_cookie(_shell_message_timeout_cookie_mutex);
 
     if (_result_subscription) {
         auto callback = _result_subscription;
@@ -97,11 +103,13 @@ void ShellImpl::receive_shell_message_timeout()
 
 bool ShellImpl::send_shell_message_mavlink()
 {
-    _shell_message_mutex.lock();
-    auto shell_message = _shell_message;
-    _shell_message_mutex.unlock();
-
     mavlink_message_t message;
+    Shell::ShellMessage shell_message{};
+
+    {
+        std::lock_guard<std::mutex> lock(_shell_message_mutex);
+        shell_message = _shell_message;
+    }
 
     while (shell_message.data.length() > MAVLINK_MSG_SERIAL_CONTROL_FIELD_DATA_LEN) {
         mavlink_msg_serial_control_pack(
@@ -145,6 +153,8 @@ void ShellImpl::process_shell_message(const mavlink_message_t& message)
     uint8_t data[MAVLINK_MSG_SERIAL_CONTROL_FIELD_DATA_LEN + 1]{0};
 
     std::lock_guard<std::mutex> lock_result(_result_mutex);
+    std::lock_guard<std::mutex> lock_subscription(_result_subscription_mutex);
+    std::lock_guard<std::mutex> lock_cookie(_shell_message_timeout_cookie_mutex);
 
     _result.result_code = Shell::Result::ResultCode::SUCCESS;
 

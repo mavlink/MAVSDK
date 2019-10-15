@@ -25,7 +25,7 @@ public:
 
     void shell_command(const Shell::ShellMessage& shell_message);
 
-    void shell_message_response_async(Shell::result_callback_t callback);
+    void shell_command_response_async(Shell::result_callback_t& callback);
     ShellImpl(const ShellImpl&) = delete;
     ShellImpl& operator=(const ShellImpl&) = delete;
 
@@ -36,8 +36,10 @@ private:
 
     void receive_shell_message_timeout();
 
+    mutable std::mutex _shell_message_timeout_cookie_mutex{};
     void* _shell_message_timeout_cookie{nullptr};
 
+    mutable std::mutex _result_subscription_mutex{};
     Shell::result_callback_t _result_subscription{nullptr};
 
     mutable std::mutex _shell_message_mutex{};

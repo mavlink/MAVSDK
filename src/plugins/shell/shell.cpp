@@ -35,9 +35,9 @@ const char* Shell::result_code_str(Result::ResultCode result)
     }
 }
 
-void Shell::shell_message_response_async(result_callback_t callback)
+void Shell::shell_command_response_async(result_callback_t callback)
 {
-    _impl->shell_message_response_async(callback);
+    _impl->shell_command_response_async(callback);
 }
 
 bool operator==(const Shell::ShellMessage& lhs, const Shell::ShellMessage& rhs)

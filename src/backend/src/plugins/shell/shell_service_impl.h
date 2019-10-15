@@ -28,7 +28,7 @@ public:
         shell_message.timeout = rpc_shell_message_request->shell_message().timeout_ms();
         shell_message.data = rpc_shell_message_request->shell_message().data();
 
-        _shell.shell_message_response_async(
+        _shell.shell_command_response_async(
             [this, &response, &response_message_received_promise, is_finished](
                 mavsdk::Shell::Result result) {
                 auto rpc_shell_result = new rpc::shell::ShellResult();
@@ -41,7 +41,7 @@ public:
                 std::lock_guard<std::mutex> lock(_subscribe_mutex);
                 if (!*is_finished) {
                     response->set_allocated_shell_result(rpc_shell_result);
-                    _shell.shell_message_response_async(nullptr);
+                    _shell.shell_command_response_async(nullptr);
                     *is_finished = true;
                     response_message_received_promise.set_value();
                 }
