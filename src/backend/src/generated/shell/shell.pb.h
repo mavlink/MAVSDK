@@ -497,7 +497,7 @@ class ShellMessage :
   enum : int {
     kDataFieldNumber = 3,
     kNeedResponseFieldNumber = 1,
-    kTimeoutFieldNumber = 2,
+    kTimeoutMsFieldNumber = 2,
   };
   // string data = 3;
   void clear_data();
@@ -520,10 +520,10 @@ class ShellMessage :
   bool need_response() const;
   void set_need_response(bool value);
 
-  // uint32 timeout = 2;
-  void clear_timeout();
-  ::PROTOBUF_NAMESPACE_ID::uint32 timeout() const;
-  void set_timeout(::PROTOBUF_NAMESPACE_ID::uint32 value);
+  // uint32 timeout_ms = 2;
+  void clear_timeout_ms();
+  ::PROTOBUF_NAMESPACE_ID::uint32 timeout_ms() const;
+  void set_timeout_ms(::PROTOBUF_NAMESPACE_ID::uint32 value);
 
   // @@protoc_insertion_point(class_scope:mavsdk.rpc.shell.ShellMessage)
  private:
@@ -532,7 +532,7 @@ class ShellMessage :
   ::PROTOBUF_NAMESPACE_ID::internal::InternalMetadataWithArena _internal_metadata_;
   ::PROTOBUF_NAMESPACE_ID::internal::ArenaStringPtr data_;
   bool need_response_;
-  ::PROTOBUF_NAMESPACE_ID::uint32 timeout_;
+  ::PROTOBUF_NAMESPACE_ID::uint32 timeout_ms_;
   mutable ::PROTOBUF_NAMESPACE_ID::internal::CachedSize _cached_size_;
   friend struct ::TableStruct_shell_2fshell_2eproto;
 };
@@ -688,7 +688,7 @@ class ShellResult :
 
   enum : int {
     kResultStrFieldNumber = 2,
-    kResponseShellMessageFieldNumber = 3,
+    kResponseDataFieldNumber = 3,
     kResultFieldNumber = 1,
   };
   // string result_str = 2;
@@ -707,16 +707,21 @@ class ShellResult :
   std::string* _internal_mutable_result_str();
   public:
 
-  // .mavsdk.rpc.shell.ShellMessage response_shell_message = 3;
-  bool has_response_shell_message() const;
+  // string response_data = 3;
+  void clear_response_data();
+  const std::string& response_data() const;
+  void set_response_data(const std::string& value);
+  void set_response_data(std::string&& value);
+  void set_response_data(const char* value);
+  void set_response_data(const char* value, size_t size);
+  std::string* mutable_response_data();
+  std::string* release_response_data();
+  void set_allocated_response_data(std::string* response_data);
   private:
-  bool _internal_has_response_shell_message() const;
+  const std::string& _internal_response_data() const;
+  void _internal_set_response_data(const std::string& value);
+  std::string* _internal_mutable_response_data();
   public:
-  void clear_response_shell_message();
-  const ::mavsdk::rpc::shell::ShellMessage& response_shell_message() const;
-  ::mavsdk::rpc::shell::ShellMessage* release_response_shell_message();
-  ::mavsdk::rpc::shell::ShellMessage* mutable_response_shell_message();
-  void set_allocated_response_shell_message(::mavsdk::rpc::shell::ShellMessage* response_shell_message);
 
   // .mavsdk.rpc.shell.ShellResult.Result result = 1;
   void clear_result();
@@ -729,7 +734,7 @@ class ShellResult :
 
   ::PROTOBUF_NAMESPACE_ID::internal::InternalMetadataWithArena _internal_metadata_;
   ::PROTOBUF_NAMESPACE_ID::internal::ArenaStringPtr result_str_;
-  ::mavsdk::rpc::shell::ShellMessage* response_shell_message_;
+  ::PROTOBUF_NAMESPACE_ID::internal::ArenaStringPtr response_data_;
   int result_;
   mutable ::PROTOBUF_NAMESPACE_ID::internal::CachedSize _cached_size_;
   friend struct ::TableStruct_shell_2fshell_2eproto;
@@ -869,18 +874,18 @@ inline void ShellMessage::set_need_response(bool value) {
   // @@protoc_insertion_point(field_set:mavsdk.rpc.shell.ShellMessage.need_response)
 }
 
-// uint32 timeout = 2;
-inline void ShellMessage::clear_timeout() {
-  timeout_ = 0u;
+// uint32 timeout_ms = 2;
+inline void ShellMessage::clear_timeout_ms() {
+  timeout_ms_ = 0u;
 }
-inline ::PROTOBUF_NAMESPACE_ID::uint32 ShellMessage::timeout() const {
-  // @@protoc_insertion_point(field_get:mavsdk.rpc.shell.ShellMessage.timeout)
-  return timeout_;
+inline ::PROTOBUF_NAMESPACE_ID::uint32 ShellMessage::timeout_ms() const {
+  // @@protoc_insertion_point(field_get:mavsdk.rpc.shell.ShellMessage.timeout_ms)
+  return timeout_ms_;
 }
-inline void ShellMessage::set_timeout(::PROTOBUF_NAMESPACE_ID::uint32 value) {
+inline void ShellMessage::set_timeout_ms(::PROTOBUF_NAMESPACE_ID::uint32 value) {
   
-  timeout_ = value;
-  // @@protoc_insertion_point(field_set:mavsdk.rpc.shell.ShellMessage.timeout)
+  timeout_ms_ = value;
+  // @@protoc_insertion_point(field_set:mavsdk.rpc.shell.ShellMessage.timeout_ms)
 }
 
 // string data = 3;
@@ -1021,55 +1026,64 @@ inline void ShellResult::set_allocated_result_str(std::string* result_str) {
   // @@protoc_insertion_point(field_set_allocated:mavsdk.rpc.shell.ShellResult.result_str)
 }
 
-// .mavsdk.rpc.shell.ShellMessage response_shell_message = 3;
-inline bool ShellResult::has_response_shell_message() const {
-  return this != internal_default_instance() && response_shell_message_ != nullptr;
+// string response_data = 3;
+inline void ShellResult::clear_response_data() {
+  response_data_.ClearToEmptyNoArena(&::PROTOBUF_NAMESPACE_ID::internal::GetEmptyStringAlreadyInited());
 }
-inline void ShellResult::clear_response_shell_message() {
-  if (GetArenaNoVirtual() == nullptr && response_shell_message_ != nullptr) {
-    delete response_shell_message_;
-  }
-  response_shell_message_ = nullptr;
+inline const std::string& ShellResult::response_data() const {
+  // @@protoc_insertion_point(field_get:mavsdk.rpc.shell.ShellResult.response_data)
+  return _internal_response_data();
 }
-inline const ::mavsdk::rpc::shell::ShellMessage& ShellResult::response_shell_message() const {
-  const ::mavsdk::rpc::shell::ShellMessage* p = response_shell_message_;
-  // @@protoc_insertion_point(field_get:mavsdk.rpc.shell.ShellResult.response_shell_message)
-  return p != nullptr ? *p : *reinterpret_cast<const ::mavsdk::rpc::shell::ShellMessage*>(
-      &::mavsdk::rpc::shell::_ShellMessage_default_instance_);
+inline void ShellResult::set_response_data(const std::string& value) {
+  _internal_set_response_data(value);
+  // @@protoc_insertion_point(field_set:mavsdk.rpc.shell.ShellResult.response_data)
 }
-inline ::mavsdk::rpc::shell::ShellMessage* ShellResult::release_response_shell_message() {
-  // @@protoc_insertion_point(field_release:mavsdk.rpc.shell.ShellResult.response_shell_message)
+inline std::string* ShellResult::mutable_response_data() {
+  // @@protoc_insertion_point(field_mutable:mavsdk.rpc.shell.ShellResult.response_data)
+  return _internal_mutable_response_data();
+}
+inline const std::string& ShellResult::_internal_response_data() const {
+  return response_data_.GetNoArena();
+}
+inline void ShellResult::_internal_set_response_data(const std::string& value) {
   
-  ::mavsdk::rpc::shell::ShellMessage* temp = response_shell_message_;
-  response_shell_message_ = nullptr;
-  return temp;
+  response_data_.SetNoArena(&::PROTOBUF_NAMESPACE_ID::internal::GetEmptyStringAlreadyInited(), value);
 }
-inline ::mavsdk::rpc::shell::ShellMessage* ShellResult::mutable_response_shell_message() {
+inline void ShellResult::set_response_data(std::string&& value) {
   
-  if (response_shell_message_ == nullptr) {
-    auto* p = CreateMaybeMessage<::mavsdk::rpc::shell::ShellMessage>(GetArenaNoVirtual());
-    response_shell_message_ = p;
-  }
-  // @@protoc_insertion_point(field_mutable:mavsdk.rpc.shell.ShellResult.response_shell_message)
-  return response_shell_message_;
+  response_data_.SetNoArena(
+    &::PROTOBUF_NAMESPACE_ID::internal::GetEmptyStringAlreadyInited(), ::std::move(value));
+  // @@protoc_insertion_point(field_set_rvalue:mavsdk.rpc.shell.ShellResult.response_data)
 }
-inline void ShellResult::set_allocated_response_shell_message(::mavsdk::rpc::shell::ShellMessage* response_shell_message) {
-  ::PROTOBUF_NAMESPACE_ID::Arena* message_arena = GetArenaNoVirtual();
-  if (message_arena == nullptr) {
-    delete response_shell_message_;
-  }
-  if (response_shell_message) {
-    ::PROTOBUF_NAMESPACE_ID::Arena* submessage_arena = nullptr;
-    if (message_arena != submessage_arena) {
-      response_shell_message = ::PROTOBUF_NAMESPACE_ID::internal::GetOwnedMessage(
-          message_arena, response_shell_message, submessage_arena);
-    }
+inline void ShellResult::set_response_data(const char* value) {
+  GOOGLE_DCHECK(value != nullptr);
+  
+  response_data_.SetNoArena(&::PROTOBUF_NAMESPACE_ID::internal::GetEmptyStringAlreadyInited(), ::std::string(value));
+  // @@protoc_insertion_point(field_set_char:mavsdk.rpc.shell.ShellResult.response_data)
+}
+inline void ShellResult::set_response_data(const char* value, size_t size) {
+  
+  response_data_.SetNoArena(&::PROTOBUF_NAMESPACE_ID::internal::GetEmptyStringAlreadyInited(),
+      ::std::string(reinterpret_cast<const char*>(value), size));
+  // @@protoc_insertion_point(field_set_pointer:mavsdk.rpc.shell.ShellResult.response_data)
+}
+inline std::string* ShellResult::_internal_mutable_response_data() {
+  
+  return response_data_.MutableNoArena(&::PROTOBUF_NAMESPACE_ID::internal::GetEmptyStringAlreadyInited());
+}
+inline std::string* ShellResult::release_response_data() {
+  // @@protoc_insertion_point(field_release:mavsdk.rpc.shell.ShellResult.response_data)
+  
+  return response_data_.ReleaseNoArena(&::PROTOBUF_NAMESPACE_ID::internal::GetEmptyStringAlreadyInited());
+}
+inline void ShellResult::set_allocated_response_data(std::string* response_data) {
+  if (response_data != nullptr) {
     
   } else {
     
   }
-  response_shell_message_ = response_shell_message;
-  // @@protoc_insertion_point(field_set_allocated:mavsdk.rpc.shell.ShellResult.response_shell_message)
+  response_data_.SetAllocatedNoArena(&::PROTOBUF_NAMESPACE_ID::internal::GetEmptyStringAlreadyInited(), response_data);
+  // @@protoc_insertion_point(field_set_allocated:mavsdk.rpc.shell.ShellResult.response_data)
 }
 
 #ifdef __GNUC__

@@ -25,7 +25,7 @@ public:
         mavsdk::Shell::ShellMessage shell_message{};
 
         shell_message.need_response = rpc_shell_message_request->shell_message().need_response();
-        shell_message.timeout = rpc_shell_message_request->shell_message().timeout();
+        shell_message.timeout = rpc_shell_message_request->shell_message().timeout_ms();
         shell_message.data = rpc_shell_message_request->shell_message().data();
 
         _shell.shell_message_response_async(
@@ -36,11 +36,7 @@ public:
                     static_cast<rpc::shell::ShellResult::Result>(result.result_code));
                 rpc_shell_result->set_result_str(_shell.result_code_str(result.result_code));
 
-                auto rpc_response_shell_message = new rpc::shell::ShellMessage();
-                rpc_response_shell_message->set_need_response(result.response.need_response);
-                rpc_response_shell_message->set_timeout(result.response.timeout);
-                rpc_response_shell_message->set_data(result.response.data);
-                rpc_shell_result->set_allocated_response_shell_message(rpc_response_shell_message);
+                rpc_shell_result->set_response_data(result.response.data);
 
                 std::lock_guard<std::mutex> lock(_subscribe_mutex);
                 if (!*is_finished) {
