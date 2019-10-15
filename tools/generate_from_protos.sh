@@ -6,7 +6,7 @@ script_dir="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 
 proto_dir="${script_dir}/../proto/protos"
 backend_generated_dir="${script_dir}/../src/backend/src/generated"
-third_party_dir="${script_dir}/../build/default/third_party"
+third_party_dir="${script_dir}/../build/shell/third_party"
 protoc_binary="${third_party_dir}/install/bin/protoc"
 protoc_grpc_binary="${third_party_dir}/install/bin/grpc_cpp_plugin"
 
@@ -24,7 +24,7 @@ command -v ${protoc_binary} && command -v ${protoc_grpc_binary} || {
     exit 1
 }
 
-plugin_list="action calibration geofence gimbal camera core info mission offboard param telemetry"
+plugin_list="action calibration gimbal camera core info mission offboard param shell telemetry"
 
 echo ""
 echo "-------------------------------"
