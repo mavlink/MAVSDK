@@ -18,15 +18,21 @@ void ShellImpl::init()
         this);
 }
 
-void ShellImpl::deinit() {}
+void ShellImpl::deinit()
+{
+    _parent->unregister_all_mavlink_message_handlers(this);
+}
 
 void ShellImpl::enable() {}
 
 void ShellImpl::disable() {}
 
-ShellImpl::ShellImpl(System& system) : PluginImplBase(system)
+ShellImpl::ShellImpl(System& system) :
+    PluginImplBase(system),
+    _transfer_closed_future(_transfer_closed_promise.get_future())
 {
     _parent->register_plugin(this);
+    _transfer_closed_promise.set_value();
 }
 
 ShellImpl::~ShellImpl()
@@ -34,44 +40,64 @@ ShellImpl::~ShellImpl()
     _parent->unregister_plugin(this);
 }
 
+bool ShellImpl::is_transfer_in_progress()
+{
+    if (!_transfer_closed_future.valid()) {
+        return true;
+    }
+    return _transfer_closed_future.wait_for(std::chrono::seconds(0)) != std::future_status::ready;
+}
+
 void ShellImpl::shell_command_response_async(Shell::result_callback_t& callback)
 {
-    std::lock_guard<std::mutex> lock_subscription(_result_subscription_mutex);
+    {
+        std::lock_guard<std::mutex> lock(_future_mutex);
+        if (is_transfer_in_progress()) {
+            return;
+        }
+    }
     _result_subscription = callback;
+}
+
+void ShellImpl::send_to_subscription(Shell::Result arg)
+{
+    if (_result_subscription) {
+        auto callback = _result_subscription;
+        _parent->call_user_callback([callback, arg]() { callback(arg); });
+    }
 }
 
 void ShellImpl::shell_command(const Shell::ShellMessage& shell_message)
 {
-    std::lock_guard<std::mutex> lock_subscription(_result_subscription_mutex);
-    if (!_parent->is_connected()) {
-        if (_result_subscription) {
-            auto callback = _result_subscription;
-            Shell::Result arg{Shell::Result::ResultCode::NO_SYSTEM, {}};
-            _parent->call_user_callback([callback, arg]() { callback(arg); });
+    {
+        std::lock_guard<std::mutex> lock(_future_mutex);
+        if (is_transfer_in_progress()) {
             return;
         }
+
+        _transfer_closed_promise = std::promise<void>();
+        _transfer_closed_future = _transfer_closed_promise.get_future();
     }
 
-    {
-        std::lock_guard<std::mutex> lock(_shell_message_mutex);
-        _shell_message = shell_message;
+    if (!_parent->is_connected()) {
+        send_to_subscription(Shell::Result{Shell::Result::ResultCode::NO_SYSTEM, {}});
+        _transfer_closed_promise.set_value();
+        return;
     }
+
+    _shell_message = shell_message;
 
     if (!send_shell_message_mavlink()) {
-        if (_result_subscription) {
-            auto callback = _result_subscription;
-            Shell::Result arg{Shell::Result::ResultCode::CONNECTION_ERROR, {}};
-            _parent->call_user_callback([callback, arg]() { callback(arg); });
-            return;
-        }
+        send_to_subscription(Shell::Result{Shell::Result::ResultCode::CONNECTION_ERROR, {}});
+        _transfer_closed_promise.set_value();
+        return;
     }
+
     if (_result_subscription) {
         if (!shell_message.need_response) {
-            auto callback = _result_subscription;
-            Shell::Result arg{Shell::Result::ResultCode::SUCCESS, {}};
-            _parent->call_user_callback([callback, arg]() { callback(arg); });
+            send_to_subscription(Shell::Result{Shell::Result::ResultCode::SUCCESS, {}});
+            _transfer_closed_promise.set_value();
         } else {
-            std::lock_guard<std::mutex> lock_cookie(_shell_message_timeout_cookie_mutex);
             if (_shell_message_timeout_cookie) {
                 _parent->unregister_timeout_handler(_shell_message_timeout_cookie);
                 _shell_message_timeout_cookie = nullptr;
@@ -81,24 +107,22 @@ void ShellImpl::shell_command(const Shell::ShellMessage& shell_message)
                 shell_message.timeout / 1000.0,
                 &_shell_message_timeout_cookie);
         }
+    } else {
+        _transfer_closed_promise.set_value();
     }
 }
 
 void ShellImpl::receive_shell_message_timeout()
 {
-    std::lock_guard<std::mutex> lock_result(_result_mutex);
-    std::lock_guard<std::mutex> lock_subscription(_result_subscription_mutex);
-    std::lock_guard<std::mutex> lock_cookie(_shell_message_timeout_cookie_mutex);
-
-    if (_result_subscription) {
-        auto callback = _result_subscription;
-        Shell::Result arg = _result;
-        _parent->call_user_callback([callback, arg]() { callback(arg); });
-    }
+    send_to_subscription(_result);
     _parent->unregister_timeout_handler(_shell_message_timeout_cookie);
     _shell_message_timeout_cookie = nullptr;
     _result.result_code = Shell::Result::ResultCode::NO_RESPONSE;
     _result.response = Shell::ShellMessage{};
+
+    if (is_transfer_in_progress()) {
+        _transfer_closed_promise.set_value();
+    }
 }
 
 bool ShellImpl::send_shell_message_mavlink()
@@ -106,10 +130,7 @@ bool ShellImpl::send_shell_message_mavlink()
     mavlink_message_t message;
     Shell::ShellMessage shell_message{};
 
-    {
-        std::lock_guard<std::mutex> lock(_shell_message_mutex);
-        shell_message = _shell_message;
-    }
+    shell_message = _shell_message;
 
     while (shell_message.data.length() > MAVLINK_MSG_SERIAL_CONTROL_FIELD_DATA_LEN) {
         mavlink_msg_serial_control_pack(
@@ -149,12 +170,11 @@ bool ShellImpl::send_shell_message_mavlink()
 
 void ShellImpl::process_shell_message(const mavlink_message_t& message)
 {
+    if (!is_transfer_in_progress()) { // Skip symbols after ESC
+        return;
+    }
     int count = 0;
     uint8_t data[MAVLINK_MSG_SERIAL_CONTROL_FIELD_DATA_LEN + 1]{0};
-
-    std::lock_guard<std::mutex> lock_result(_result_mutex);
-    std::lock_guard<std::mutex> lock_subscription(_result_subscription_mutex);
-    std::lock_guard<std::mutex> lock_cookie(_shell_message_timeout_cookie_mutex);
 
     _result.result_code = Shell::Result::ResultCode::SUCCESS;
 
@@ -167,21 +187,22 @@ void ShellImpl::process_shell_message(const mavlink_message_t& message)
     data[count] = '\0';
     _result.response.data += std::string((char*)data);
 
-    // In fact max bytes amount is 69.
-    // See implementation of read()
-    // https://github.com/PX4/Firmware/blob/master/src/modules/mavlink/mavlink_shell.h#L73
-    if (count < (MAVLINK_MSG_SERIAL_CONTROL_FIELD_DATA_LEN - 1)) {
-        if (_result_subscription) {
-            auto callback = _result_subscription;
-            Shell::Result arg = _result;
-            _parent->call_user_callback([callback, arg]() { callback(arg); });
-        }
+    size_t escape_pos = _result.response.data.find('\e'); // Find termination (ESC)
+    if (escape_pos != std::string::npos) {
+        _result.response.data.erase(
+            _result.response.data.begin() + escape_pos, _result.response.data.end());
+
+        send_to_subscription(_result);
         if (_shell_message_timeout_cookie) {
             _parent->unregister_timeout_handler(_shell_message_timeout_cookie);
             _shell_message_timeout_cookie = nullptr;
         }
         _result.result_code = Shell::Result::ResultCode::NO_RESPONSE;
         _result.response = Shell::ShellMessage{};
+
+        if (is_transfer_in_progress()) {
+            _transfer_closed_promise.set_value();
+        }
     } else {
         if (_shell_message_timeout_cookie) {
             _parent->refresh_timeout_handler(_shell_message_timeout_cookie);

@@ -1,6 +1,5 @@
 #pragma once
 
-#include <atomic>
 #include <mutex>
 
 #include "plugins/shell/shell.h"
@@ -36,16 +35,21 @@ private:
 
     void receive_shell_message_timeout();
 
-    mutable std::mutex _shell_message_timeout_cookie_mutex{};
+    bool is_transfer_in_progress();
+
+    std::promise<void> _transfer_closed_promise{};
+    std::future<void> _transfer_closed_future{};
+
+    std::mutex _future_mutex{};
+
     void* _shell_message_timeout_cookie{nullptr};
 
-    mutable std::mutex _result_subscription_mutex{};
     Shell::result_callback_t _result_subscription{nullptr};
 
-    mutable std::mutex _shell_message_mutex{};
+    void send_to_subscription(Shell::Result arg);
+
     Shell::ShellMessage _shell_message{};
 
-    mutable std::mutex _result_mutex{};
     Shell::Result _result{};
 };
 } // namespace mavsdk
