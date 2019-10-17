@@ -138,7 +138,9 @@ bool UdpConnection::send_message(const mavlink_message_t& message)
     // on the matching link.
     const mavlink_msg_entry_t* entry = mavlink_get_msg_entry(message.msgid);
     const uint8_t target_system_id =
-        (entry ? reinterpret_cast<const uint8_t*>(message.payload64)[entry->target_system_ofs] : 0);
+        (entry && (entry->flags & MAV_MSG_ENTRY_FLAG_HAVE_TARGET_SYSTEM) ?
+             reinterpret_cast<const uint8_t*>(message.payload64)[entry->target_system_ofs] :
+             0);
 
     bool send_successful = true;
     for (auto& remote : _remotes) {
@@ -173,6 +175,36 @@ bool UdpConnection::send_message(const mavlink_message_t& message)
     return send_successful;
 }
 
+void UdpConnection::add_remote(const std::string& remote_ip, const int remote_port)
+{
+    add_remote_with_remote_sysid(remote_ip, remote_port, 0);
+}
+
+void UdpConnection::add_remote_with_remote_sysid(
+    const std::string& remote_ip, const int remote_port, const uint8_t remote_sysid)
+{
+    std::lock_guard<std::mutex> lock(_remote_mutex);
+    Remote new_remote;
+    new_remote.ip = remote_ip;
+    new_remote.port_number = remote_port;
+    new_remote.system_id = remote_sysid;
+
+    auto existing_remote =
+        std::find_if(_remotes.begin(), _remotes.end(), [&new_remote](Remote& remote) {
+            return (remote.ip == new_remote.ip && remote.port_number == new_remote.port_number);
+        });
+
+    if (existing_remote == _remotes.end()) {
+        LogInfo() << "New system on: " << new_remote.ip << ":" << new_remote.port_number;
+        _remotes.push_back(new_remote);
+    } else if (existing_remote->system_id != new_remote.system_id) {
+        LogWarn() << "System on: " << new_remote.ip << ":" << new_remote.port_number
+                  << " changed system ID (" << int(existing_remote->system_id) << " to "
+                  << int(new_remote.system_id) << ")";
+        existing_remote->system_id = new_remote.system_id;
+    }
+}
+
 void UdpConnection::receive()
 {
     // Enough for MTU 1500 bytes.
@@ -196,7 +228,7 @@ void UdpConnection::receive()
         }
 
         if (recv_len < 0) {
-            // This happens on desctruction when close(_socket_fd) is called,
+            // This happens on destruction when close(_socket_fd) is called,
             // therefore be quiet.
             // LogErr() << "recvfrom error: " << GET_ERROR(errno);
             continue;
@@ -213,30 +245,33 @@ void UdpConnection::receive()
             // FIXME: We ignore messages from QGC (255) for now.
             if (!saved_remote && sysid != 0 && sysid != 255) {
                 saved_remote = true;
+                {
+                    std::lock_guard<std::mutex> lock(_remote_mutex);
+                    Remote new_remote;
+                    new_remote.ip = inet_ntoa(src_addr.sin_addr);
+                    new_remote.port_number = ntohs(src_addr.sin_port);
+                    new_remote.system_id = sysid;
 
-                std::lock_guard<std::mutex> lock(_remote_mutex);
-                Remote new_remote;
-                new_remote.ip = inet_ntoa(src_addr.sin_addr);
-                new_remote.port_number = ntohs(src_addr.sin_port);
-                new_remote.system_id = sysid;
+                    auto existing_remote = std::find_if(
+                        _remotes.begin(), _remotes.end(), [&new_remote](Remote& remote) {
+                            return (
+                                remote.ip == new_remote.ip &&
+                                remote.port_number == new_remote.port_number);
+                        });
 
-                auto existing_remote =
-                    std::find_if(_remotes.begin(), _remotes.end(), [&new_remote](Remote& remote) {
-                        return (
-                            remote.ip == new_remote.ip &&
-                            remote.port_number == new_remote.port_number);
-                    });
-
-                if (existing_remote == _remotes.end()) {
-                    LogInfo() << "New system on: " << new_remote.ip << ":"
-                              << new_remote.port_number;
-                    _remotes.push_back(new_remote);
-                } else if (existing_remote->system_id != new_remote.system_id) {
-                    LogWarn() << "System on: " << new_remote.ip << ":" << new_remote.port_number
-                              << " changed system ID (" << int(existing_remote->system_id) << " to "
-                              << int(new_remote.system_id) << ")";
-                    existing_remote->system_id = new_remote.system_id;
+                    if (existing_remote == _remotes.end()) {
+                        LogInfo() << "New system on: " << new_remote.ip << ":"
+                                  << new_remote.port_number;
+                        _remotes.push_back(new_remote);
+                    } else if (existing_remote->system_id != new_remote.system_id) {
+                        LogWarn() << "System on: " << new_remote.ip << ":" << new_remote.port_number
+                                  << " changed system ID (" << int(existing_remote->system_id)
+                                  << " to " << int(new_remote.system_id) << ")";
+                        existing_remote->system_id = new_remote.system_id;
+                    }
                 }
+                add_remote_with_remote_sysid(
+                    inet_ntoa(src_addr.sin_addr), ntohs(src_addr.sin_port), sysid);
             }
 
             receive_message(_mavlink_receiver->get_last_message());

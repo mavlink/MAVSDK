@@ -3,6 +3,8 @@
 #include <functional>
 #include <memory>
 #include <string>
+#include <array>
+#include <limits>
 
 #include "plugin_base.h"
 
@@ -88,11 +90,40 @@ public:
      *
      * For more info see: https://en.wikipedia.org/wiki/Quaternion
      */
-    struct Quaternion {
-        float w; /**< @brief Quaternion entry 0 also denoted as a. */
-        float x; /**< @brief Quaternion entry 1 also denoted as b. */
-        float y; /**< @brief Quaternion entry 2 also denoted as c. */
-        float z; /**< @brief Quaternion entry 3 also denoted as d. */
+    union Quaternion {
+        struct {
+            float w; /**< @brief Quaternion entry 0 also denoted as a. */
+            float x; /**< @brief Quaternion entry 1 also denoted as b. */
+            float y; /**< @brief Quaternion entry 2 also denoted as c. */
+            float z; /**< @brief Quaternion entry 3 also denoted as d. */
+        };
+
+        Quaternion() : a{0.0f} {}; /**< @brief Constructor */
+        Quaternion(float val) : a{val} {}; /**< @brief Constructor */
+        Quaternion(float w_, float x_, float y_, float z_) :
+            w(w_),
+            x(x_),
+            y(y_),
+            z(z_){}; /**< @brief Constructor */
+
+        float operator[](int i) const { return a.at(i); }; /**< @brief Operator [] */
+        float& operator[](int i) { return a.at(i); } /**< @brief Operator &[] */
+
+        /**
+         * @brief Cast to float C-style float array
+         */
+        operator float*() { return a.data(); };
+        /**
+         * @brief Cast to float array
+         */
+        operator std::array<float, 4>&() { return a; };
+        /**
+         * @brief Cast to float array
+         */
+        operator std::array<float, 4>() { return a; };
+
+    private:
+        std::array<float, 4> a;
     };
 
     /**
@@ -107,6 +138,17 @@ public:
         float roll_deg; /**< @brief Roll angle in degrees, positive is banking to the right. */
         float pitch_deg; /**< @brief Pitch angle in degrees, positive is pitching nose up. */
         float yaw_deg; /**< @brief Yaw angle in degrees, positive is clock-wise seen from above. */
+    };
+
+    /**
+     * @brief Angular velocity type.
+     *
+     * The angular velocity of vehicle body in radians/second.
+     */
+    struct AngularVelocityBody {
+        float roll_rad_s; /**< @brief Roll angular velocity */
+        float pitch_rad_s; /**< @brief Pitch angular velocity */
+        float yaw_rad_s; /**< @brief Yaw angular velocity */
     };
 
     /**
@@ -227,6 +269,17 @@ public:
     static std::string flight_mode_str(FlightMode flight_mode);
 
     /**
+     *@brief LandedState.
+     * Enumeration of landed detector states
+     */
+    enum class LandedState { UNKNOWN, ON_GROUND, IN_AIR, TAKING_OFF, LANDING };
+
+    /**
+     * @brief Get a human readable English string for a landed state.
+     */
+    static std::string landed_state_str(LandedState landed_state);
+
+    /**
      * @brief Various health flags.
      */
     struct Health {
@@ -249,7 +302,106 @@ public:
         bool available_once; /**< @brief true if an RC signal has been available once. */
         bool available; /**< @brief true if the RC signal is available now. */
         float signal_strength_percent; /**< @brief Signal strength as a percentage (range: 0 to
-                                          100). */
+                                  100). */
+    };
+
+    /**
+     * @brief The vehicle actuator's rate control type.
+     *
+     * An actuator's control group is e.g. attitude, for the core flight controls, or gimbal for
+     * payload. For more information about PX4 groups, check out
+     * https://dev.px4.io/v1.9.0/en/concept/mixing.html#control-pipeline
+     *
+     * Actuator controls normed to -1..+1 where 0 is neutral position. Throttle for single rotation
+     * direction motors is 0..1, negative range for reverse direction.
+     *
+     * For more information about controls, check out
+     * https://mavlink.io/en/messages/common.html#SET_ACTUATOR_CONTROL_TARGET
+     *
+     */
+    struct ActuatorControlTarget {
+        uint8_t group; /**< @brief Actuator group. */
+        float controls[8]; /**< @brief Actuator controls. */
+    };
+
+    /**
+     * @brief The raw values of the actuator outputs type.
+     */
+    struct ActuatorOutputStatus {
+        uint32_t active; /**< @brief Active outputs */
+        float actuator[32]; /**< @brief Servo / motor output array values. */
+    };
+
+    /**
+     * @brief Velocity type.
+     *
+     * The velocity of vehicle body in metres/second.
+     */
+    struct SpeedBody {
+        float x_m_s; /**< @brief Velocity in X in metres/second. */
+        float y_m_s; /**< @brief Velocity in Y in metres/second. */
+        float z_m_s; /**< @brief Velocity in Z in metres/second. */
+    };
+
+    /**
+     * @brief Position type.
+     *
+     * The position of vehicle body.
+     */
+    struct PositionBody {
+        float x_m; /**< @brief  X Position in metres. */
+        float y_m; /**< @brief  Y Position in metres. */
+        float z_m; /**< @brief  Z Position in metres. */
+    };
+
+    /**
+     * @brief Odometry information with an external interface type.
+     */
+    struct Odometry {
+        /**
+         * @brief Mavlink frame id Odometry subset
+         */
+        enum class MavFrame {
+            UNDEF = 0, /**< @brief Stub */
+            BODY_NED = 8, /**< @brief Setpoint in body NED frame.
+                             This makes sense if all position control is externalized -
+                             e.g. useful to command 2 m/s^2 acceleration to the right. */
+            VISION_NED = 16, /**< @brief Odometry local coordinate frame of data
+                                given by a vision estimation system, Z-down (x: north,
+                                y: east, z: down). */
+            ESTIM_NED = 18, /**< @brief Odometry local coordinate frame of data given
+                               by an estimator running onboard the vehicle, Z-down
+                               (x: north, y: east, z: down). */
+        };
+
+        uint64_t time_usec; /**< @brief Timestamp (0 to use Backend timestamp). */
+        MavFrame frame_id; /**< @brief Coordinate frame of reference for the pose data. */
+        MavFrame child_frame_id; /**< @brief Coordinate frame of reference for the velocity in free
+                                    space (twist) data. */
+        PositionBody position_body; /**< @brief Position. */
+        Quaternion q; /**< @brief Quaternion components, w, x, y, z
+                         (1 0 0 0 is the null-rotation). */
+        SpeedBody velocity_body; /**< @brief Linear speed (m/s). */
+        AngularVelocityBody angular_velocity_body; /**< @brief Angular body speed (rad/s). */
+        std::array<float, 21> pose_covariance; /**< @brief Row-major representation of a 6x6 pose
+                                                  cross-covariance matrix upper right triangle.
+                                                  Leave empty if unknown. */
+        std::array<float, 21> velocity_covariance; /**< @brief Row-major representation of a 6x6
+                                                      velocity cross-covariance matrix upper right
+                                                      triangle. Leave empty if unknown. */
+        uint8_t reset_counter; /**< @brief Estimate reset counter. */
+
+        Odometry() :
+            time_usec(0),
+            frame_id(MavFrame::UNDEF),
+            child_frame_id(MavFrame::UNDEF),
+            position_body{0.0f, 0.0f, 0.0f},
+            q{0.0f},
+            velocity_body{0.0f, 0.0f, 0.0f},
+            angular_velocity_body{0.0f, 0.0f, 0.0f},
+            pose_covariance{std::numeric_limits<float>::quiet_NaN()},
+            velocity_covariance{std::numeric_limits<float>::quiet_NaN()},
+            reset_counter(0){};
     };
 
     /**
@@ -281,6 +433,8 @@ public:
     /**
      * @brief Set rate of kinematic (position and velocity) updates (synchronous).
      *
+     * @note To stop sending it completely, use a rate_hz of -1, for default rate use 0.
+     *
      * @see PositionVelocityNED
      * @param rate_hz Rate in Hz.
      * @return Result of request.
@@ -290,6 +444,8 @@ public:
     /**
      * @brief Set rate of position updates (synchronous).
      *
+     * @note To stop sending it completely, use a rate_hz of -1, for default rate use 0.
+     *
      * @param rate_hz Rate in Hz.
      * @return Result of request.
      */
@@ -297,6 +453,8 @@ public:
 
     /**
      * @brief Set rate of home position updates (synchronous).
+     *
+     * @note To stop sending it completely, use a rate_hz of -1, for default rate use 0.
      *
      * @param rate_hz Rate in Hz.
      * @return Result of request.
@@ -306,6 +464,8 @@ public:
     /**
      * @brief Set rate of in-air status updates (synchronous).
      *
+     * @note To stop sending it completely, use a rate_hz of -1, for default rate use 0.
+     *
      * @param rate_hz Rate in Hz.
      * @return Result of request.
      */
@@ -313,6 +473,8 @@ public:
 
     /**
      * @brief Set rate of attitude updates (synchronous).
+     *
+     * @note To stop sending it completely, use a rate_hz of -1, for default rate use 0.
      *
      * @param rate_hz Rate in Hz.
      * @return Result of request.
@@ -322,6 +484,8 @@ public:
     /**
      * @brief Set rate of camera attitude updates (synchronous).
      *
+     * @note To stop sending it completely, use a rate_hz of -1, for default rate use 0.
+     *
      * @param rate_hz Rate in Hz.
      * @return Result of request.
      */
@@ -329,6 +493,8 @@ public:
 
     /**
      * @brief Set rate of ground speed (NED) updates (synchronous).
+     *
+     * @note To stop sending it completely, use a rate_hz of -1, for default rate use 0.
      *
      * @param rate_hz Rate in Hz.
      * @return Result of request.
@@ -338,6 +504,8 @@ public:
     /**
      * @brief Set rate of IMU reading (NED) updates (synchronous).
      *
+     * @note To stop sending it completely, use a rate_hz of -1, for default rate use 0.
+     *
      * @param rate_hz Rate in Hz.
      * @return Result of request.
      */
@@ -345,6 +513,8 @@ public:
 
     /**
      * @brief Set rate of GPS information updates (synchronous).
+     *
+     * @note To stop sending it completely, use a rate_hz of -1, for default rate use 0.
      *
      * @param rate_hz Rate in Hz.
      * @return Result of request.
@@ -354,6 +524,8 @@ public:
     /**
      * @brief Set rate of battery status updates (synchronous).
      *
+     * @note To stop sending it completely, use a rate_hz of -1, for default rate use 0.
+     *
      * @param rate_hz Rate in Hz.
      * @return Result of request.
      */
@@ -362,13 +534,47 @@ public:
     /**
      * @brief Set rate of RC status updates (synchronous).
      *
+     * @note To stop sending it completely, use a rate_hz of -1, for default rate use 0.
+     *
      * @param rate_hz Rate in Hz.
      * @return Result of request.
      */
     Result set_rate_rc_status(double rate_hz);
 
     /**
+     * @brief Set rate of actuator controls updates (synchronous).
+     *
+     * @note To stop sending it completely, use a rate_hz of -1, for default rate use 0.
+     *
+     * @param rate_hz Rate in Hz.
+     * @return Result of request.
+     */
+    Result set_rate_actuator_control_target(double rate_hz);
+
+    /**
+     * @brief Set rate of actuator output status updates (synchronous).
+     *
+     * @note To stop sending it completely, use a rate_hz of -1, for default rate use 0.
+     *
+     * @param rate_hz Rate in Hz.
+     * @return Result of request.
+     */
+    Result set_rate_actuator_output_status(double rate_hz);
+
+    /**
+     * @brief Set rate of odometry updates (synchronous).
+     *
+     * @note To stop sending it completely, use a rate_hz of -1, for default rate use 0.
+     *
+     * @param rate_hz Rate in Hz.
+     * @return Result of request.
+     */
+    Result set_rate_odometry(double rate_hz);
+
+    /**
      * @brief Set rate of kinematic (position and velocity) updates (asynchronous).
+     *
+     * @note To stop sending it completely, use a rate_hz of -1, for default rate use 0.
      *
      * @see PositionVelocityNED
      * @param rate_hz Rate in Hz.
@@ -379,6 +585,8 @@ public:
     /**
      * @brief Set rate of position updates (asynchronous).
      *
+     * @note To stop sending it completely, use a rate_hz of -1, for default rate use 0.
+     *
      * @param rate_hz Rate in Hz.
      * @param callback Callback to receive request result.
      */
@@ -386,6 +594,8 @@ public:
 
     /**
      * @brief Set rate of home position updates (asynchronous).
+     *
+     * @note To stop sending it completely, use a rate_hz of -1, for default rate use 0.
      *
      * @param rate_hz Rate in Hz.
      * @param callback Callback to receive request result.
@@ -395,6 +605,8 @@ public:
     /**
      * @brief Set rate of in-air status updates (asynchronous).
      *
+     * @note To stop sending it completely, use a rate_hz of -1, for default rate use 0.
+     *
      * @param rate_hz Rate in Hz.
      * @param callback Callback to receive request result.
      */
@@ -402,6 +614,8 @@ public:
 
     /**
      * @brief Set rate of attitude updates (asynchronous).
+     *
+     * @note To stop sending it completely, use a rate_hz of -1, for default rate use 0.
      *
      * @param rate_hz Rate in Hz.
      * @param callback Callback to receive request result.
@@ -411,6 +625,8 @@ public:
     /**
      * @brief Set rate of camera attitude updates (asynchronous).
      *
+     * @note To stop sending it completely, use a rate_hz of -1, for default rate use 0.
+     *
      * @param rate_hz Rate in Hz.
      * @param callback Callback to receive request result.
      */
@@ -418,6 +634,8 @@ public:
 
     /**
      * @brief Set rate of ground speed (NED) updates (asynchronous).
+     *
+     * @note To stop sending it completely, use a rate_hz of -1, for default rate use 0.
      *
      * @param rate_hz Rate in Hz.
      * @param callback Callback to receive request result.
@@ -427,12 +645,16 @@ public:
     /**
      * @brief Set rate of IMU reading (NED) updates (asynchronous).
      *
+     * @note To stop sending it completely, use a rate_hz of -1, for default rate use 0.
+     *
      * @param rate_hz Rate in Hz.
      * @param callback Cabllback to receive request result.
      */
     void set_rate_imu_reading_ned_async(double rate_hz, result_callback_t callback);
     /**
      * @brief Set rate of GPS information updates (asynchronous).
+     *
+     * @note To stop sending it completely, use a rate_hz of -1, for default rate use 0.
      *
      * @param rate_hz Rate in Hz.
      * @param callback Callback to receive request result.
@@ -442,6 +664,8 @@ public:
     /**
      * @brief Set rate of battery status updates (asynchronous).
      *
+     * @note To stop sending it completely, use a rate_hz of -1, for default rate use 0.
+     *
      * @param rate_hz Rate in Hz.
      * @param callback Callback to receive request result.
      */
@@ -450,10 +674,50 @@ public:
     /**
      * @brief Set rate of RC status updates (asynchronous).
      *
+     * @note To stop sending it completely, use a rate_hz of -1, for default rate use 0.
+     *
      * @param rate_hz Rate in Hz.
      * @param callback Callback to receive request result.
      */
     void set_rate_rc_status_async(double rate_hz, result_callback_t callback);
+
+    /**
+     * @brief Set rate of actuator control target updates (asynchronous).
+     *
+     * @note To stop sending it completely, use a rate_hz of -1, for default rate use 0.
+     *
+     * @param rate_hz Rate in Hz.
+     * @param callback Callback to receive request result.
+     */
+    void set_rate_actuator_control_target_async(double rate_hz, result_callback_t callback);
+
+    /**
+     * @brief Set rate of actuator control target updates (asynchronous).
+     *
+     * @note To stop sending it completely, use a rate_hz of -1, for default rate use 0.
+     *
+     * @param rate_hz Rate in Hz.
+     * @param callback Callback to receive request result.
+     */
+    void set_rate_actuator_output_status_async(double rate_hz, result_callback_t callback);
+
+    /**
+     * @brief Set rate of odometry updates (asynchronous).
+     *
+     * @note To stop sending it completely, use a rate_hz of -1, for default rate use 0.
+     *
+     * @param rate_hz Rate in Hz.
+     * @param callback Callback to receive request result.
+     */
+    void set_rate_odometry_async(double rate_hz, result_callback_t callback);
+
+    /**
+     * @brief Set rate of Unix Epoch Time update (asynchronous).
+     *
+     * @param rate_hz Rate in Hz.
+     * @param callback Callback to receive request result.
+     */
+    void set_unix_epoch_time_async(double rate_hz, result_callback_t callback);
 
     /**
      * @brief Get the current kinematic (position and velocity) in NED frame (synchronous).
@@ -491,6 +755,13 @@ public:
     bool in_air() const;
 
     /**
+     * @brief Get the landed state status (synchronous).
+     *
+     * @return Landed state.
+     */
+    LandedState landed_state() const;
+
+    /**
      * @brief Get the arming status (synchronous).
      *
      * @return true if armed (propellers spinning).
@@ -510,6 +781,13 @@ public:
      * @return Attitude as Euler angle.
      */
     EulerAngle attitude_euler_angle() const;
+
+    /**
+     * @brief Get the current angular speed in rad/s (synchronous).
+     *
+     * @return Angular speed.
+     */
+    AngularVelocityBody attitude_angular_velocity_body() const;
 
     /**
      * @brief Get the camera's attitude in quaternions (synchronous).
@@ -582,6 +860,20 @@ public:
      * @return RC status.
      */
     RCStatus rc_status() const;
+
+    /**
+     * @brief Get the actuator control target (synchronous).
+     *
+     * @return Actuator control target
+     */
+    ActuatorControlTarget actuator_control_target() const;
+
+    /**
+     * @brief Get the actuator output status (synchronous).
+     *
+     * @return Actuator output status
+     */
+    ActuatorOutputStatus actuator_output_status() const;
 
     /**
      * @brief Callback type for kinematic (position and velocity) updates.
@@ -685,6 +977,21 @@ public:
      * @param callback Function to call with updates.
      */
     void attitude_euler_angle_async(attitude_euler_angle_callback_t callback);
+
+    /**
+     * @brief Callback type for angular velocity updates in quaternion.
+     *
+     * @param angular_velocity_body Angular velocity.
+     */
+    typedef std::function<void(AngularVelocityBody angular_velocity_body)>
+        attitude_angular_velocity_body_callback_t;
+
+    /**
+     * @brief Subscribe to attitude updates in angular velocity (asynchronous).
+     *
+     * @param callback Function to call with updates.
+     */
+    void attitude_angular_velocity_body_async(attitude_angular_velocity_body_callback_t callback);
 
     /**
      * @brief Subscribe to camera attitude updates in quaternion (asynchronous).
@@ -805,6 +1112,20 @@ public:
     void health_all_ok_async(health_all_ok_callback_t callback);
 
     /**
+     * @brief Callback type for landed state updates.
+     *
+     * @param LandedState enumeration.
+     */
+    typedef std::function<void(LandedState landed_state)> landed_state_callback_t;
+
+    /**
+     * @brief Subscribe to Landed state updates (asynchronous).
+     *
+     * @param callback Function to call with updates.
+     */
+    void landed_state_async(landed_state_callback_t callback);
+
+    /**
      * @brief Callback type for RC status updates.
      *
      * @param rc_status RC status.
@@ -812,11 +1133,69 @@ public:
     typedef std::function<void(RCStatus rc_status)> rc_status_callback_t;
 
     /**
+     * @brief Callback type for Unix Epoch Time updates.
+     *
+     * @param uint64_t Epoch time [us].
+     */
+    typedef std::function<void(uint64_t time_us)> unix_epoch_time_callback_t;
+
+    /**
+     * @brief Callback type for actuator control target updates (asynchronous).
+     *
+     * @param actuator_control_target Actuator control target.
+     */
+    typedef std::function<void(ActuatorControlTarget actuator_control_target)>
+        actuator_control_target_callback_t;
+
+    /**
+     * @brief Subscribe to actuator control target updates (asynchronous).
+     *
+     * @param callback Function to call with updates.
+     */
+    void actuator_control_target_async(actuator_control_target_callback_t callback);
+
+    /**
+     * @brief Callback type for actuator output status target updates (asynchronous).
+     *
+     * @param callback Function to call with updates.
+     */
+    typedef std::function<void(ActuatorOutputStatus actuator_output_status)>
+        actuator_output_status_callback_t;
+
+    /**
+     * @brief Callback type for odometry updates (asynchronous).
+     *
+     * @param callback Function to call with updates.
+     */
+    typedef std::function<void(Odometry odometry)> odometry_callback_t;
+
+    /**
+     * @brief Subscribe to actuator output status target updates (asynchronous).
+     *
+     * @param callback Function to call with updates.
+     */
+    void actuator_output_status_async(actuator_output_status_callback_t callback);
+
+    /**
+     * @brief Subscribe to odometry updates (asynchronous).
+     *
+     * @param callback Function to call with updates.
+     */
+    void odometry_async(odometry_callback_t callback);
+
+    /**
      * @brief Subscribe to RC status updates (asynchronous).
      *
      * @param callback Function to call with updates.
      */
     void rc_status_async(rc_status_callback_t callback);
+
+    /**
+     * @brief Subscribe to Unix Epoch Time updates (asynchronous).
+     *
+     * @param callback Function to call with updates.
+     */
+    void unix_epoch_time_async(unix_epoch_time_callback_t callback);
 
     /**
      * @brief Copy constructor (object is not copyable).
@@ -963,6 +1342,13 @@ std::ostream& operator<<(std::ostream& str, Telemetry::Battery const& battery);
 bool operator==(const Telemetry::Quaternion& lhs, const Telemetry::Quaternion& rhs);
 
 /**
+ * @brief NOT Equal operator to compare two `Telemetry::Quaternion` objects.
+ *
+ * @return `true` if items are equal.
+ */
+bool operator!=(const Telemetry::Quaternion& lhs, const Telemetry::Quaternion& rhs);
+
+/**
  * @brief Stream operator to print information about a `Telemetry::Quaternion`.
  *
  * @return A reference to the stream.
@@ -982,6 +1368,30 @@ bool operator==(const Telemetry::EulerAngle& lhs, const Telemetry::EulerAngle& r
  * @return A reference to the stream.
  */
 std::ostream& operator<<(std::ostream& str, Telemetry::EulerAngle const& euler_angle);
+
+/**
+ * @brief Equal operator to compare two `Telemetry::AngularVelocityBody` objects.
+ *
+ * @return `true` if items are equal.
+ */
+bool operator==(
+    const Telemetry::AngularVelocityBody& lhs, const Telemetry::AngularVelocityBody& rhs);
+
+/**
+ * @brief NOT Equal operator to compare two `Telemetry::AngularVelocityBody` objects.
+ *
+ * @return `true` if items are equal.
+ */
+bool operator!=(
+    const Telemetry::AngularVelocityBody& lhs, const Telemetry::AngularVelocityBody& rhs);
+
+/**
+ * @brief Stream operator to print information about a `Telemetry::AngularVelocityBody`.
+ *
+ * @return A reference to the stream.
+ */
+std::ostream&
+operator<<(std::ostream& str, Telemetry::AngularVelocityBody const& angular_velocity_body);
 
 /**
  * @brief Equal operator to compare two `Telemetry::GroundSpeedNED` objects.
@@ -1017,5 +1427,107 @@ std::ostream& operator<<(std::ostream& str, Telemetry::RCStatus const& rc_status
  * @returns A reference to the stream.
  */
 std::ostream& operator<<(std::ostream& str, Telemetry::StatusText const& status_text);
+
+/**
+ * @brief Equal operator to compare two `Telemetry::ActuatorControlTarget` objects.
+ *
+ * @return `true` if items are equal.
+ */
+bool operator==(
+    const Telemetry::ActuatorControlTarget& lhs, const Telemetry::ActuatorControlTarget& rhs);
+
+/**
+ * @brief Stream operator to print information about a `Telemetry::ActuatorControlTarget`.
+ *
+ * @returns A reference to the stream.
+ */
+std::ostream&
+operator<<(std::ostream& str, Telemetry::ActuatorControlTarget const& actuator_control_target);
+
+/**
+ * @brief Equal operator to compare two `Telemetry::ActuatorOutputStatus` objects.
+ *
+ * @return `true` if items are equal.
+ */
+bool operator==(
+    const Telemetry::ActuatorOutputStatus& lhs, const Telemetry::ActuatorOutputStatus& rhs);
+
+/**
+ * @brief Stream operator to print information about a `Telemetry::ActuatorControlTarget`.
+ *
+ * @returns A reference to the stream.
+ */
+std::ostream&
+operator<<(std::ostream& str, Telemetry::ActuatorOutputStatus const& actuator_output_status);
+
+/**
+ * @brief Equal operator to compare two `Telemetry::PositionBody` objects.
+ *
+ * @return `true` if items are equal.
+ */
+bool operator==(const Telemetry::PositionBody& lhs, const Telemetry::PositionBody& rhs);
+
+/**
+ * @brief NOT Equal operator to compare two `Telemetry::PositionBody` objects.
+ *
+ * @return `true` if items are equal.
+ */
+bool operator!=(const Telemetry::PositionBody& lhs, const Telemetry::PositionBody& rhs);
+
+/**
+ * @brief Stream operator to print information about a `Telemetry::PositionBody`.
+ *
+ * @returns A reference to the stream.
+ */
+std::ostream& operator<<(std::ostream& str, Telemetry::PositionBody const& position_body);
+
+/**
+ * @brief Equal operator to compare two `Telemetry::SpeedBody` objects.
+ *
+ * @return `true` if items are equal.
+ */
+bool operator==(const Telemetry::SpeedBody& lhs, const Telemetry::SpeedBody& rhs);
+
+/**
+ * @brief NOT Equal operator to compare two `Telemetry::SpeedBody` objects.
+ *
+ * @return `true` if items are equal.
+ */
+bool operator!=(const Telemetry::SpeedBody& lhs, const Telemetry::SpeedBody& rhs);
+
+/**
+ * @brief Stream operator to print information about a `Telemetry::SpeedBody`.
+ *
+ * @returns A reference to the stream.
+ */
+std::ostream& operator<<(std::ostream& str, Telemetry::SpeedBody const& speed_body);
+
+/**
+ * @brief Equal operator to compare two `Telemetry::Odometry` objects.
+ *
+ * @return `true` if items are equal.
+ */
+bool operator==(const Telemetry::Odometry& lhs, const Telemetry::Odometry& rhs);
+
+/**
+ * @brief Stream operator to print information about a `Telemetry::Odometry`.
+ *
+ * @returns A reference to the stream.
+ */
+std::ostream& operator<<(std::ostream& str, Telemetry::Odometry const& odometry);
+
+/**
+ * @brief Stream operator to print information about a `Telemetry::FlightMode`.
+ *
+ * @returns A reference to the stream.
+ */
+std::ostream& operator<<(std::ostream& str, Telemetry::FlightMode const& flight_mode);
+
+/**
+ * @brief Stream operator to print information about a `Telemetry::LandedState`.
+ *
+ * @returns A reference to the stream.
+ */
+std::ostream& operator<<(std::ostream& str, Telemetry::LandedState const& landed_state);
 
 } // namespace mavsdk

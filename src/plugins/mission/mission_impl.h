@@ -1,6 +1,6 @@
 #pragma once
 
-#include <json11.hpp>
+#include <json/json.h>
 #include <map>
 #include <memory>
 #include <mutex>
@@ -9,8 +9,6 @@
 #include "plugins/mission/mission.h"
 #include "plugin_impl_base.h"
 #include "system.h"
-
-using namespace json11;
 
 namespace mavsdk {
 
@@ -38,6 +36,9 @@ public:
 
     void start_mission_async(const Mission::result_callback_t& callback);
     void pause_mission_async(const Mission::result_callback_t& callback);
+    void clear_mission_async(const Mission::result_callback_t& callback);
+
+    void clear_mission();
 
     void set_current_mission_item_async(int current, Mission::result_callback_t& callback);
 
@@ -87,8 +88,11 @@ private:
 
     void assemble_mission_items();
 
-    static Mission::Result
-    import_mission_items(Mission::mission_items_t& mission_items, const Json& mission_json);
+    void reset_mission_progress();
+
+    static Mission::Result import_mission_items(
+        Mission::mission_items_t& all_mission_items, const Json::Value& qgc_plan_json);
+
     static Mission::Result build_mission_items(
         MAV_CMD command,
         std::vector<double> params,
@@ -105,7 +109,8 @@ private:
             GET_MISSION_LIST,
             GET_MISSION_REQUEST,
             ABORTED,
-            SEND_COMMAND
+            SEND_COMMAND,
+            MISSION_CLEAR
         } state{Activity::State::NONE};
     } _activity{};
 

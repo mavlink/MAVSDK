@@ -4,10 +4,11 @@ project(external-protobuf)
 include(ExternalProject)
 
 list(APPEND CMAKE_ARGS
+    "${CL_ARGS}"
     "-DCMAKE_INSTALL_PREFIX:PATH=${CMAKE_INSTALL_PREFIX}"
-    "-DCMAKE_PREFIX_PATH=${CMAKE_PREFIX_PATH}"
-    "-DCMAKE_TOOLCHAIN_FILE:PATH=${CMAKE_TOOLCHAIN_FILE}"
+    "-DCMAKE_PREFIX_PATH:PATH=${CMAKE_PREFIX_PATH}"
     "-Dprotobuf_BUILD_TESTS=OFF"
+    "-Dprotobuf_BUILD_SHARED_LIBS=OFF"
     "-Dprotobuf_MODULE_COMPATIBLE=ON"
     "-Dprotobuf_MSVC_STATIC_RUNTIME=OFF"
     "-DCMAKE_POSITION_INDEPENDENT_CODE=ON"
@@ -16,22 +17,6 @@ list(APPEND CMAKE_ARGS
 if(CMAKE_CROSSCOMPILING)
     list(APPEND CMAKE_ARGS
         "-Dprotobuf_BUILD_PROTOC_BINARIES=OFF"
-        )
-endif()
-
-if(ANDROID)
-    list(APPEND CMAKE_ARGS
-        "-DANDROID_ABI:STRING=${ANDROID_ABI}"
-        "-DANDROID_STL:STRING=${ANDROID_STL}"
-        "-DANDROID_PLATFORM=${ANDROID_PLATFORM}"
-        )
-elseif(IOS)
-    list(APPEND CMAKE_ARGS
-        "-DPLATFORM=${PLATFORM}"
-        "-Dprotobuf_BUILD_PROTOC_BINARIES=OFF"
-        "-Dprotobuf_BUILD_TESTS=OFF"
-        "-Dprotobuf_BUILD_SHARED_LIBS=OFF"
-        "-Dprotobuf_MODULE_COMPATIBLE=ON"
         )
 endif()
 
@@ -47,7 +32,9 @@ endif()
 
 ExternalProject_add(
     protobuf
-    URL https://github.com/protocolbuffers/protobuf/releases/download/v3.7.1/protobuf-cpp-3.7.1.tar.gz
+    GIT_REPOSITORY https://github.com/protocolbuffers/protobuf
+    GIT_TAG ee4f2492ea4e7ff120f68a792af870ee30435aa5
+    #URL https://github.com/protocolbuffers/protobuf/releases/download/v3.7.1/protobuf-cpp-3.7.1.tar.gz
     PREFIX protobuf
     CONFIGURE_COMMAND ${CMAKE_COMMAND} "${CMAKE_GENERATOR_PARAM}" "${CMAKE_ARGS}" <SOURCE_DIR>/cmake
     # CMAKE_ARGS + SOURCE_SUBDIR are more elegant than CONFIGURE_COMMAND,

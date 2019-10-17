@@ -65,6 +65,21 @@ Telemetry::Result Telemetry::set_rate_rc_status(double rate_hz)
     return _impl->set_rate_rc_status(rate_hz);
 }
 
+Telemetry::Result Telemetry::set_rate_actuator_control_target(double rate_hz)
+{
+    return _impl->set_rate_actuator_control_target(rate_hz);
+}
+
+Telemetry::Result Telemetry::set_rate_actuator_output_status(double rate_hz)
+{
+    return _impl->set_rate_actuator_output_status(rate_hz);
+}
+
+Telemetry::Result Telemetry::set_rate_odometry(double rate_hz)
+{
+    return _impl->set_rate_odometry(rate_hz);
+}
+
 void Telemetry::set_rate_position_velocity_ned_async(double rate_hz, result_callback_t callback)
 {
     _impl->set_rate_position_velocity_ned_async(rate_hz, callback);
@@ -120,6 +135,26 @@ void Telemetry::set_rate_rc_status_async(double rate_hz, result_callback_t callb
     _impl->set_rate_rc_status_async(rate_hz, callback);
 }
 
+void Telemetry::set_unix_epoch_time_async(double rate_hz, result_callback_t callback)
+{
+    _impl->set_rate_unix_epoch_time_async(rate_hz, callback);
+}
+
+void Telemetry::set_rate_actuator_control_target_async(double rate_hz, result_callback_t callback)
+{
+    _impl->set_rate_actuator_control_target_async(rate_hz, callback);
+}
+
+void Telemetry::set_rate_actuator_output_status_async(double rate_hz, result_callback_t callback)
+{
+    _impl->set_rate_actuator_output_status_async(rate_hz, callback);
+}
+
+void Telemetry::set_rate_odometry_async(double rate_hz, result_callback_t callback)
+{
+    _impl->set_rate_odometry_async(rate_hz, callback);
+}
+
 Telemetry::PositionVelocityNED Telemetry::position_velocity_ned() const
 {
     return _impl->get_position_velocity_ned();
@@ -140,6 +175,33 @@ bool Telemetry::in_air() const
     return _impl->in_air();
 }
 
+Telemetry::LandedState Telemetry::landed_state() const
+{
+    return _impl->get_landed_state();
+}
+
+void Telemetry::landed_state_async(landed_state_callback_t callback)
+{
+    _impl->landed_state_async(callback);
+}
+
+std::string Telemetry::landed_state_str(LandedState landed_state)
+{
+    switch (landed_state) {
+        case LandedState::ON_GROUND:
+            return "On ground";
+        case LandedState::IN_AIR:
+            return "In air";
+        case LandedState::TAKING_OFF:
+            return "Taking off";
+        case LandedState::LANDING:
+            return "Landing";
+        case LandedState::UNKNOWN:
+        default:
+            return "Unknown";
+    }
+}
+
 Telemetry::StatusText Telemetry::status_text() const
 {
     return _impl->get_status_text();
@@ -158,6 +220,11 @@ Telemetry::Quaternion Telemetry::attitude_quaternion() const
 Telemetry::EulerAngle Telemetry::attitude_euler_angle() const
 {
     return _impl->get_attitude_euler_angle();
+}
+
+Telemetry::AngularVelocityBody Telemetry::attitude_angular_velocity_body() const
+{
+    return _impl->get_attitude_angular_velocity_body();
 }
 
 Telemetry::Quaternion Telemetry::camera_attitude_quaternion() const
@@ -210,6 +277,16 @@ Telemetry::RCStatus Telemetry::rc_status() const
     return _impl->get_rc_status();
 }
 
+Telemetry::ActuatorControlTarget Telemetry::actuator_control_target() const
+{
+    return _impl->get_actuator_control_target();
+}
+
+Telemetry::ActuatorOutputStatus Telemetry::actuator_output_status() const
+{
+    return _impl->get_actuator_output_status();
+}
+
 void Telemetry::position_velocity_ned_async(position_velocity_ned_callback_t callback)
 {
     return _impl->position_velocity_ned_async(callback);
@@ -250,6 +327,12 @@ void Telemetry::attitude_euler_angle_async(attitude_euler_angle_callback_t callb
     return _impl->attitude_euler_angle_async(callback);
 }
 
+void Telemetry::attitude_angular_velocity_body_async(
+    attitude_angular_velocity_body_callback_t callback)
+{
+    return _impl->attitude_angular_velocity_body_async(callback);
+}
+
 void Telemetry::camera_attitude_quaternion_async(attitude_quaternion_callback_t callback)
 {
     return _impl->camera_attitude_quaternion_async(callback);
@@ -283,6 +366,21 @@ void Telemetry::battery_async(battery_callback_t callback)
 void Telemetry::flight_mode_async(flight_mode_callback_t callback)
 {
     return _impl->flight_mode_async(callback);
+}
+
+void Telemetry::actuator_control_target_async(actuator_control_target_callback_t callback)
+{
+    return _impl->actuator_control_target_async(callback);
+}
+
+void Telemetry::actuator_output_status_async(actuator_output_status_callback_t callback)
+{
+    return _impl->actuator_output_status_async(callback);
+}
+
+void Telemetry::odometry_async(odometry_callback_t callback)
+{
+    return _impl->odometry_async(callback);
 }
 
 std::string Telemetry::flight_mode_str(FlightMode flight_mode)
@@ -323,6 +421,11 @@ void Telemetry::health_all_ok_async(health_all_ok_callback_t callback)
 void Telemetry::rc_status_async(rc_status_callback_t callback)
 {
     return _impl->rc_status_async(callback);
+}
+
+void Telemetry::unix_epoch_time_async(unix_epoch_time_callback_t callback)
+{
+    return _impl->unix_epoch_time_async(callback);
 }
 
 const char* Telemetry::result_str(Result result)
@@ -518,6 +621,11 @@ bool operator==(const Telemetry::Quaternion& lhs, const Telemetry::Quaternion& r
     return lhs.w == rhs.w && lhs.x == rhs.x && lhs.y == rhs.y && lhs.z == rhs.z;
 }
 
+bool operator!=(const Telemetry::Quaternion& lhs, const Telemetry::Quaternion& rhs)
+{
+    return !(lhs == rhs);
+}
+
 std::ostream& operator<<(std::ostream& str, Telemetry::Quaternion const& quaternion)
 {
     return str << "[w: " << quaternion.w << ", x: " << quaternion.x << ", y: " << quaternion.y
@@ -534,6 +642,27 @@ std::ostream& operator<<(std::ostream& str, Telemetry::EulerAngle const& euler_a
 {
     return str << "[roll_deg: " << euler_angle.roll_deg << ", pitch_deg: " << euler_angle.pitch_deg
                << ", yaw_deg: " << euler_angle.yaw_deg << "]";
+}
+
+bool operator==(
+    const Telemetry::AngularVelocityBody& lhs, const Telemetry::AngularVelocityBody& rhs)
+{
+    return lhs.roll_rad_s == rhs.roll_rad_s && lhs.pitch_rad_s == rhs.pitch_rad_s &&
+           lhs.yaw_rad_s == rhs.yaw_rad_s;
+}
+
+bool operator!=(
+    const Telemetry::AngularVelocityBody& lhs, const Telemetry::AngularVelocityBody& rhs)
+{
+    return !(lhs == rhs);
+}
+
+std::ostream&
+operator<<(std::ostream& str, Telemetry::AngularVelocityBody const& angular_velocity_body)
+{
+    return str << "[angular_velocity_body_roll_rad_s: " << angular_velocity_body.roll_rad_s
+               << ", angular_velocity_body_pitch_rad_s: " << angular_velocity_body.pitch_rad_s
+               << ", angular_velocity_body_yaw_rad_s: " << angular_velocity_body.yaw_rad_s << "]";
 }
 
 bool operator==(const Telemetry::GroundSpeedNED& lhs, const Telemetry::GroundSpeedNED& rhs)
@@ -571,6 +700,179 @@ bool operator==(const Telemetry::StatusText& lhs, const Telemetry::StatusText& r
 std::ostream& operator<<(std::ostream& str, Telemetry::StatusText const& status_text)
 {
     return str << "[statustext: " << status_text.text << "]";
+}
+
+bool operator==(
+    const Telemetry::ActuatorControlTarget& lhs, const Telemetry::ActuatorControlTarget& rhs)
+{
+    if (lhs.group != rhs.group)
+        return false;
+    for (int i = 0; i < 8; i++) {
+        if (lhs.controls[i] != rhs.controls[i])
+            return false;
+    }
+    return true;
+}
+
+std::ostream&
+operator<<(std::ostream& str, Telemetry::ActuatorControlTarget const& actuator_control_target)
+{
+    str << "Group:  " << static_cast<int>(actuator_control_target.group) << ", Controls: [";
+    for (int i = 0; i < 8; i++) {
+        str << actuator_control_target.controls[i];
+        if (i != 7) {
+            str << ", ";
+        } else {
+            str << "]";
+        }
+    }
+    return str;
+}
+
+bool operator==(
+    const Telemetry::ActuatorOutputStatus& lhs, const Telemetry::ActuatorOutputStatus& rhs)
+{
+    if (lhs.active != rhs.active)
+        return false;
+    for (unsigned i = 0; i < lhs.active; i++) {
+        if (lhs.actuator[i] != rhs.actuator[i])
+            return false;
+    }
+    return true;
+}
+
+std::ostream&
+operator<<(std::ostream& str, Telemetry::ActuatorOutputStatus const& actuator_output_status)
+{
+    str << "Active:  " << actuator_output_status.active << ", Actuators: [";
+    for (unsigned i = 0; i < actuator_output_status.active; i++) {
+        str << actuator_output_status.actuator[i];
+        if (i != (actuator_output_status.active - 1)) {
+            str << ", ";
+        } else {
+            str << "]" << std::endl;
+        }
+    }
+    return str;
+}
+
+bool operator==(const Telemetry::PositionBody& lhs, const Telemetry::PositionBody& rhs)
+{
+    return (
+        std::abs(lhs.x_m - rhs.x_m) > std::numeric_limits<float>::epsilon() ||
+        std::abs(lhs.y_m - rhs.y_m) > std::numeric_limits<float>::epsilon() ||
+        std::abs(lhs.z_m - rhs.z_m) > std::numeric_limits<float>::epsilon());
+}
+
+bool operator!=(const Telemetry::PositionBody& lhs, const Telemetry::PositionBody& rhs)
+{
+    return !(lhs == rhs);
+}
+
+std::ostream& operator<<(std::ostream& str, Telemetry::PositionBody const& position_body)
+{
+    return str << "[x_m: " << position_body.x_m << ", y_m: " << position_body.y_m
+               << ", z_m: " << position_body.z_m << "]";
+}
+
+bool operator==(const Telemetry::SpeedBody& lhs, const Telemetry::SpeedBody& rhs)
+{
+    return (
+        std::abs(lhs.x_m_s - rhs.x_m_s) > std::numeric_limits<float>::epsilon() ||
+        std::abs(lhs.y_m_s - rhs.y_m_s) > std::numeric_limits<float>::epsilon() ||
+        std::abs(lhs.z_m_s - rhs.z_m_s) > std::numeric_limits<float>::epsilon());
+}
+
+bool operator!=(const Telemetry::SpeedBody& lhs, const Telemetry::SpeedBody& rhs)
+{
+    return !(lhs == rhs);
+}
+
+std::ostream& operator<<(std::ostream& str, Telemetry::SpeedBody const& speed_body)
+{
+    return str << "[x_m_s: " << speed_body.x_m_s << ", y_m_s: " << speed_body.y_m_s
+               << ", z_m_s: " << speed_body.z_m_s << "]";
+}
+
+bool operator==(const Telemetry::Odometry& lhs, const Telemetry::Odometry& rhs)
+{
+    // FixMe: Should we check time_usec, reset_counter equality?
+    if (lhs.time_usec != rhs.time_usec || lhs.frame_id != rhs.frame_id ||
+        lhs.child_frame_id != rhs.child_frame_id || lhs.reset_counter != rhs.reset_counter ||
+        lhs.position_body != rhs.position_body || lhs.q != rhs.q ||
+        lhs.velocity_body != rhs.velocity_body ||
+        lhs.angular_velocity_body != rhs.angular_velocity_body)
+        return false;
+
+    const bool lhs_pose_cov_nan = std::isnan(lhs.pose_covariance[0]);
+    const bool rhs_pose_cov_nan = std::isnan(rhs.pose_covariance[0]);
+
+    if (lhs_pose_cov_nan != rhs_pose_cov_nan)
+        return false;
+
+    if (!lhs_pose_cov_nan) {
+        for (int i = 0; i < 21; i++) {
+            if (std::abs(lhs.pose_covariance[i] - rhs.pose_covariance[i]) >
+                std::numeric_limits<float>::epsilon())
+                return false;
+        }
+    }
+
+    const bool lhs_velocity_cov_nan = std::isnan(lhs.velocity_covariance[0]);
+    const bool rhs_velocity_cov_nan = std::isnan(rhs.velocity_covariance[0]);
+
+    if (lhs_velocity_cov_nan != rhs_velocity_cov_nan)
+        return false;
+
+    if (!lhs_velocity_cov_nan) {
+        for (int i = 0; i < 21; i++) {
+            if (std::abs(lhs.velocity_covariance[i] - rhs.velocity_covariance[i]) >
+                std::numeric_limits<float>::epsilon())
+                return false;
+        }
+    }
+
+    return true;
+}
+
+std::ostream& operator<<(std::ostream& str, Telemetry::Odometry const& odometry)
+{
+    str << "[time_usec: " << odometry.time_usec
+        << ", frame_id: " << static_cast<int>(odometry.frame_id)
+        << ", child_frame_id: " << static_cast<int>(odometry.child_frame_id);
+    str << ", position_body: " << odometry.position_body << ", q: " << odometry.q
+        << ", velocity_body: " << odometry.velocity_body
+        << ", angular_velocity_body: " << odometry.angular_velocity_body;
+    str << ", pose_covariance: [";
+    for (unsigned i = 0; i < 21; i++) {
+        str << odometry.pose_covariance[i];
+        if (i != 20) {
+            str << ", ";
+        } else {
+            str << "]";
+        }
+    }
+    str << ", velocity_covariance: [";
+    for (unsigned i = 0; i < 21; i++) {
+        str << odometry.velocity_covariance[i];
+        if (i != 20) {
+            str << ", ";
+        } else {
+            str << "]";
+        }
+    }
+    str << ", reset_counter: " << static_cast<int>(odometry.reset_counter);
+    return str;
+}
+
+std::ostream& operator<<(std::ostream& str, Telemetry::FlightMode const& flight_mode)
+{
+    return str << Telemetry::flight_mode_str(flight_mode);
+}
+
+std::ostream& operator<<(std::ostream& str, Telemetry::LandedState const& landed_state)
+{
+    return str << Telemetry::landed_state_str(landed_state);
 }
 
 } // namespace mavsdk

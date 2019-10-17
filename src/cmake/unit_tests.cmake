@@ -17,7 +17,6 @@ target_link_libraries(unit_tests_runner
     mavsdk_camera
     mavsdk_calibration
     CURL::libcurl
-    tinyxml2::tinyxml2
     gtest
     gtest_main
     gmock

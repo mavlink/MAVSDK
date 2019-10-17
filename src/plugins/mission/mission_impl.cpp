@@ -158,12 +158,19 @@ void MissionImpl::process_mission_ack(const mavlink_message_t& message)
             return;
         }
 
+        if (_activity.state == Activity::State::NONE) {
+            LogWarn() << "Mission ack ignored";
+            return;
+        }
+
         // We got some response, so it wasn't a timeout and we can remove it.
         _parent->unregister_timeout_handler(_timeout_cookie);
 
         if (mission_ack.type == MAV_MISSION_ACCEPTED) {
             report_mission_result(temp_callback, Mission::Result::SUCCESS);
             LogInfo() << "Mission accepted";
+
+            reset_mission_progress();
 
         } else if (mission_ack.type == MAV_MISSION_NO_SPACE) {
             LogErr() << "Error: too many waypoints: " << int(mission_ack.type);
@@ -182,6 +189,15 @@ void MissionImpl::process_mission_ack(const mavlink_message_t& message)
         // We need to stop after this, no matter what.
         _activity.state = Activity::State::NONE;
     }
+}
+
+void MissionImpl::reset_mission_progress()
+{
+    std::lock_guard<std::recursive_mutex> lock(_mission_data.mutex);
+    _mission_data.last_current_mavlink_mission_item = -1;
+    _mission_data.last_reached_mavlink_mission_item = -1;
+    _mission_data.last_current_reported_mission_item = -1;
+    _mission_data.last_total_reported_mission_item = -1;
 }
 
 void MissionImpl::process_mission_current(const mavlink_message_t& message)
@@ -1063,6 +1079,59 @@ void MissionImpl::pause_mission_async(const Mission::result_callback_t& callback
         std::bind(&MissionImpl::receive_command_result, this, std::placeholders::_1, callback));
 }
 
+void MissionImpl::clear_mission_async(const Mission::result_callback_t& callback)
+{
+    bool should_report_mission_result = false;
+    {
+        std::lock_guard<std::mutex> lock(_activity.mutex);
+        if (_activity.state == Activity::State::ABORTED) {
+            _activity.state = Activity::State::NONE;
+        }
+
+        if (_activity.state != Activity::State::NONE) {
+            should_report_mission_result = true;
+        }
+    }
+
+    if (should_report_mission_result) {
+        report_mission_result(callback, Mission::Result::BUSY);
+        return;
+    }
+
+    _parent->register_timeout_handler(
+        std::bind(&MissionImpl::process_timeout, this), RETRY_TIMEOUT_S, &_timeout_cookie);
+
+    {
+        std::lock_guard<std::mutex> lock(_activity.mutex);
+        _activity.state = Activity::State::MISSION_CLEAR;
+    }
+    {
+        std::lock_guard<std::recursive_mutex> lock(_mission_data.mutex);
+        _mission_data.result_callback = callback;
+        _mission_data.retries = 0;
+    }
+
+    clear_mission();
+}
+
+void MissionImpl::clear_mission()
+{
+    mavlink_message_t message;
+    mavlink_msg_mission_clear_all_pack(
+        _parent->get_own_system_id(),
+        _parent->get_own_component_id(),
+        &message,
+        _parent->get_system_id(),
+        _parent->get_autopilot_id(),
+        MAV_MISSION_TYPE_MISSION);
+
+    if (!_parent->send_message(message)) {
+        std::lock_guard<std::recursive_mutex> lock(_mission_data.mutex);
+        report_mission_result(_mission_data.result_callback, Mission::Result::ERROR);
+        return;
+    }
+}
+
 void MissionImpl::set_current_mission_item_async(int current, Mission::result_callback_t& callback)
 {
     bool should_report_mission_result = false;
@@ -1364,26 +1433,29 @@ Mission::Result MissionImpl::import_qgroundcontrol_mission(
     Mission::mission_items_t& mission_items, const std::string& qgc_plan_file)
 {
     std::ifstream file(qgc_plan_file);
-    if (!file) { // File open error
+    if (!file) {
         return Mission::Result::FAILED_TO_OPEN_QGC_PLAN;
     }
 
-    // Read QGC plan into a string stream
     std::stringstream ss;
     ss << file.rdbuf();
     file.close();
+    const auto raw_json = ss.str();
 
-    std::string err;
-    const auto parsed_plan = Json::parse(ss.str(), err); // parse QGC plan
-    if (!err.empty()) { // Parse error
+    Json::CharReaderBuilder builder;
+    const std::unique_ptr<Json::CharReader> reader(builder.newCharReader());
+    Json::Value root;
+    JSONCPP_STRING err;
+    const bool ok =
+        reader->parse(raw_json.c_str(), raw_json.c_str() + raw_json.length(), &root, &err);
+    if (!ok) {
+        LogErr() << "Parse error: " << err;
         return Mission::Result::FAILED_TO_PARSE_QGC_PLAN;
     }
 
-    // Clear old mission items
     mission_items.clear();
 
-    // Import mission items
-    return import_mission_items(mission_items, parsed_plan);
+    return import_mission_items(mission_items, root);
 }
 
 // Build a mission item out of command, params and add them to the mission vector.
@@ -1474,36 +1546,36 @@ Mission::Result MissionImpl::build_mission_items(
 }
 
 Mission::Result MissionImpl::import_mission_items(
-    Mission::mission_items_t& all_mission_items, const Json& qgc_plan_json)
+    Mission::mission_items_t& all_mission_items, const Json::Value& qgc_plan_json)
 {
     const auto json_mission_items = qgc_plan_json["mission"];
-    Mission::Result result = Mission::Result::SUCCESS;
     auto new_mission_item = std::make_shared<MissionItem>();
 
-    // Iterate JSON mission items and build Mavsdk mission items
-    for (auto& json_mission_item : json_mission_items["items"].array_items()) {
+    // Iterate mission items and build Mavsdk mission items.
+    for (auto& json_mission_item : json_mission_items["items"]) {
         // Parameters of Mission item & MAV command of it.
-        MAV_CMD command = static_cast<MAV_CMD>(json_mission_item["command"].int_value());
+        MAV_CMD command = static_cast<MAV_CMD>(json_mission_item["command"].asInt());
 
         // Extract parameters of each mission item
         std::vector<double> params;
-        for (auto& p : json_mission_item["params"].array_items()) {
-            if (p.is_null()) {
+        for (auto& p : json_mission_item["params"]) {
+            if (p.type() == Json::nullValue) {
                 // QGC sets params as `null` if they should be unchanged.
                 params.push_back(double(NAN));
             } else {
-                params.push_back(p.number_value());
+                params.push_back(p.asDouble());
             }
         }
 
-        result = build_mission_items(command, params, new_mission_item, all_mission_items);
+        Mission::Result result =
+            build_mission_items(command, params, new_mission_item, all_mission_items);
         if (result != Mission::Result::SUCCESS) {
             break;
         }
     }
     // Don't forget to add the last mission which possibly didn't have position set.
     all_mission_items.push_back(new_mission_item);
-    return result;
+    return Mission::Result::SUCCESS;
 }
 
 } // namespace mavsdk

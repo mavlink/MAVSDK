@@ -28,20 +28,10 @@ option(CMAKE_POSITION_INDEPENDENT_CODE "Position independent code" ON)
 
 include(cmake/compiler_flags.cmake)
 
-find_package(CURL REQUIRED CONFIG)
-find_package(tinyxml2 REQUIRED)
+list(APPEND CMAKE_MODULE_PATH "${CMAKE_CURRENT_SOURCE_DIR}/cmake/Modules")
 
-if(NOT MSVC AND NOT MINGW)
-    cmake_policy(SET CMP0058 NEW)
-    include(${CMAKE_CURRENT_SOURCE_DIR}/third_party/cpp_rsc/cmake/modules/cpp_resource.cmake)
-    if(NOT ANDROID AND NOT IOS)
-        # If not cross-compiling, we can build cpp_rsc.
-        add_subdirectory(third_party/cpp_rsc/src EXCLUDE_FROM_ALL)
-    else()
-        # For cross-compilation, re-use the binary from default.
-        set_property(GLOBAL PROPERTY CPPRSC_CMD ${CMAKE_CURRENT_BINARY_DIR}/../../default/src/third_party/cpp_rsc/src/cpp_rsc)
-    endif()
-endif()
+find_package(CURL REQUIRED)
+find_package(tinyxml2 REQUIRED)
 
 if(BUILD_TESTS AND (IOS OR ANDROID))
     message(STATUS "Building for iOS or Android: forcing BUILD_TESTS to FALSE...")
@@ -67,9 +57,7 @@ execute_process(
 )
 
 STRING(REGEX REPLACE v\([0-9]+.[0-9]+.[0-9]+.*$\) \\1 VERSION_STR "${VERSION_STR}")
-
 message(STATUS "Version: ${VERSION_STR}")
-add_definitions(-DDRONECODE_SDK_VERSION="${VERSION_STR}")
 
 add_subdirectory(core)
 add_subdirectory(plugins)

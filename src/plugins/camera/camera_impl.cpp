@@ -3,9 +3,7 @@
 #include "system.h"
 #include "global_include.h"
 #include "http_loader.h"
-#if !defined(WINDOWS)
 #include "camera_definition_files.h"
-#endif
 #include <functional>
 #include <cmath>
 #include <sstream>
@@ -905,7 +903,6 @@ void CameraImpl::process_camera_information(const mavlink_message_t& message)
     std::string content{};
     bool found_content = false;
 
-#if !defined(WINDOWS)
     // TODO: we might also try to support the correct version of the xml files.
     if (strcmp((const char*)(camera_information.vendor_name), "Yuneec") == 0) {
         if (strcmp((const char*)(camera_information.model_name), "E90") == 0) {
@@ -926,13 +923,10 @@ void CameraImpl::process_camera_information(const mavlink_message_t& message)
             found_content = true;
         }
     } else {
-#endif
         content = camera_information.cam_definition_uri;
         LogDebug() << "downloading camera definition file from: " << content;
         found_content = load_definition_file(camera_information.cam_definition_uri, content);
-#if !defined(WINDOWS)
     }
-#endif
 
     if (found_content) {
         _camera_definition.reset(new CameraDefinition());
@@ -1221,11 +1215,18 @@ bool CameraImpl::get_possible_options(
         ss << value;
         Camera::Option option{};
         option.option_id = ss.str();
-        get_option_str(setting_id, option.option_id, option.option_description);
+        if (!is_setting_range(setting_id)) {
+            get_option_str(setting_id, option.option_id, option.option_description);
+        }
         options.push_back(option);
     }
 
     return options.size() > 0;
+}
+
+bool CameraImpl::is_setting_range(const std::string& setting_id)
+{
+    return _camera_definition->is_setting_range(setting_id);
 }
 
 void CameraImpl::set_option_async(
@@ -1243,27 +1244,60 @@ void CameraImpl::set_option_async(
 
     // We get it first so that we have the type of the param value.
     MAVLinkParameters::ParamValue value;
-    if (!_camera_definition->get_option_value(setting_id, option.option_id, value)) {
-        if (callback) {
-            callback(Camera::Result::ERROR);
-        }
-        return;
-    }
 
-    std::vector<MAVLinkParameters::ParamValue> possible_values;
-    _camera_definition->get_possible_options(setting_id, possible_values);
-    bool allowed = false;
-    for (const auto& possible_value : possible_values) {
-        if (value == possible_value) {
-            allowed = true;
+    if (_camera_definition->is_setting_range(setting_id)) {
+        // TODO: Get type from minimum.
+        std::vector<MAVLinkParameters::ParamValue> all_values;
+        if (!_camera_definition->get_all_options(setting_id, all_values)) {
+            if (callback) {
+                LogErr() << "Could not get all options to get type for range param.";
+                callback(Camera::Result::ERROR);
+            }
+            return;
         }
-    }
-    if (!allowed) {
-        LogErr() << "Setting " << setting_id << "(" << option.option_id << ") not allowed";
-        if (callback) {
-            callback(Camera::Result::ERROR);
+
+        if (all_values.size() == 0) {
+            if (callback) {
+                LogErr() << "Could not get any options to get type for range param.";
+                callback(Camera::Result::ERROR);
+            }
+            return;
         }
-        return;
+        value = all_values[0];
+        // Now re-use that type.
+        // FIXME: this is quite ugly, we should do better than that.
+        if (!value.set_as_same_type(option.option_id)) {
+            if (callback) {
+                LogErr() << "Could not set option value to given type.";
+                callback(Camera::Result::ERROR);
+            }
+            return;
+        }
+
+    } else {
+        if (!_camera_definition->get_option_value(setting_id, option.option_id, value)) {
+            if (callback) {
+                LogErr() << "Could not get option value.";
+                callback(Camera::Result::ERROR);
+            }
+            return;
+        }
+
+        std::vector<MAVLinkParameters::ParamValue> possible_values;
+        _camera_definition->get_possible_options(setting_id, possible_values);
+        bool allowed = false;
+        for (const auto& possible_value : possible_values) {
+            if (value == possible_value) {
+                allowed = true;
+            }
+        }
+        if (!allowed) {
+            LogErr() << "Setting " << setting_id << "(" << option.option_id << ") not allowed";
+            if (callback) {
+                callback(Camera::Result::ERROR);
+            }
+            return;
+        }
     }
 
     _parent->set_param_async(
@@ -1328,7 +1362,9 @@ void CameraImpl::get_option_async(
         if (callback) {
             Camera::Option new_option{};
             new_option.option_id = value.get_string();
-            get_option_str(setting_id, new_option.option_id, new_option.option_description);
+            if (!is_setting_range(setting_id)) {
+                get_option_str(setting_id, new_option.option_id, new_option.option_description);
+            }
             callback(Camera::Result::SUCCESS, new_option);
         }
     } else {
@@ -1387,10 +1423,15 @@ void CameraImpl::notify_current_settings()
         if (_camera_definition->get_setting(possible_setting, value)) {
             Camera::Setting setting{};
             setting.setting_id = possible_setting;
+            setting.is_range = is_setting_range(possible_setting);
             get_setting_str(setting.setting_id, setting.setting_description);
             setting.option.option_id = value.get_string();
-            get_option_str(
-                setting.setting_id, setting.option.option_id, setting.option.option_description);
+            if (!is_setting_range(possible_setting)) {
+                get_option_str(
+                    setting.setting_id,
+                    setting.option.option_id,
+                    setting.option.option_description);
+            }
             current_settings.push_back(setting);
         }
     }
@@ -1428,6 +1469,7 @@ void CameraImpl::notify_possible_setting_options()
     for (auto& possible_setting : possible_settings) {
         Camera::SettingOptions setting_options{};
         setting_options.setting_id = possible_setting;
+        setting_options.is_range = _camera_definition->is_setting_range(possible_setting);
         get_setting_str(setting_options.setting_id, setting_options.setting_description);
         get_possible_options(possible_setting, setting_options.options);
         possible_setting_options.push_back(setting_options);

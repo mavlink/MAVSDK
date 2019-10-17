@@ -4,9 +4,9 @@ project(external-curl)
 include(ExternalProject)
 
 list(APPEND CMAKE_ARGS
-    "-DCMAKE_PREFIX_PATH=${CMAKE_BINARY_DIR}/install"
+    "${CL_ARGS}"
     "-DCMAKE_INSTALL_PREFIX:PATH=${CMAKE_INSTALL_PREFIX}"
-    "-DCMAKE_TOOLCHAIN_FILE:PATH=${CMAKE_TOOLCHAIN_FILE}"
+    "-DCMAKE_PREFIX_PATH=${CMAKE_PREFIX_PATH}"
     "-DCMAKE_POSITION_INDEPENDENT_CODE=ON"
     "-DCMAKE_USE_OPENSSL=OFF"
     "-DCMAKE_USE_LIBSSH2=OFF"
@@ -20,14 +20,10 @@ list(APPEND CMAKE_ARGS
 
 if(ANDROID)
     list(APPEND CMAKE_ARGS
-        "-DANDROID_ABI:STRING=${ANDROID_ABI}"
-        "-DANDROID_STL:STRING=${ANDROID_STL}"
-        "-DANDROID_PLATFORM=${ANDROID_PLATFORM}"
         "-DBUILD_CURL_EXE=OFF"
         )
 elseif(IOS)
     list(APPEND CMAKE_ARGS
-        "-DPLATFORM=${PLATFORM}"
         "-DBUILD_CURL_EXE=OFF"
         )
 endif()
@@ -39,9 +35,7 @@ endforeach()
 
 ExternalProject_add(
     curl
-    GIT_REPOSITORY https://github.com/curl/curl
-    GIT_TAG curl-7_65_0
+    URL https://github.com/curl/curl/archive/curl-7_66_0.zip
     PREFIX curl
-    PATCH_COMMAND git apply ${PROJECT_SOURCE_DIR}/sizeof.patch
     CMAKE_ARGS "${CMAKE_ARGS}"
     )

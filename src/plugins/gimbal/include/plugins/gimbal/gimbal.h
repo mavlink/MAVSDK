@@ -46,6 +46,14 @@ public:
     };
 
     /**
+     * @brief Gimbal mode type.
+     */
+    enum class GimbalMode {
+        YAW_FOLLOW, /**< @brief Yaw follow mode. */
+        YAW_LOCK /**< @brief Yaw lock mode. */
+    };
+
+    /**
      * @brief Returns a human-readable English string for Gimbal::Result.
      *
      * @param result The enum value for which a human readable string is required.
@@ -67,6 +75,8 @@ public:
      *
      * @param pitch_deg The pitch angle in degrees. Negative to point down.
      * @param yaw_deg The yaw angle in degrees. Positive for clock-wise, range -180..180 or 0..360.
+     * The yaw angle is relative to vehicle heading if the `GimbalMode` is `YAW_FOLLOW` and relative
+     * to absolute North if the `GimbalMode` is `YAW_LOCK`.
      * @return Result of request.
      */
     Result set_pitch_and_yaw(float pitch_deg, float yaw_deg);
@@ -80,9 +90,39 @@ public:
      *
      * @param pitch_deg The pitch angle in degrees. Negative to point down.
      * @param yaw_deg The yaw angle in degrees. Positive for clock-wise, range -180..180 or 0..360.
+     * The yaw angle is relative to vehicle heading if the `GimbalMode` is `YAW_FOLLOW` and relative
+     * to absolute North if the `GimbalMode` is `YAW_LOCK`.
      * @param callback Function to call with result of request.
      */
     void set_pitch_and_yaw_async(float pitch_deg, float yaw_deg, result_callback_t callback);
+
+    /**
+     * @brief Set gimbal mode (synchronous).
+     *
+     * This sets the desired yaw mode of a gimbal.
+     * The function will return when the command is accepted, however, it might
+     * take the gimbal longer to actually be set to the new angles.
+     *
+     * @param gimbal_mode The mode to be set. Either yaw lock or yaw follow.
+     * Yaw lock will fix the gimbal poiting to an absolute direction.
+     * Yaw follow will point the gimbal to the vehicle heading.
+     * @return Result of request.
+     */
+    Result set_gimbal_mode(const Gimbal::GimbalMode gimbal_mode);
+
+    /**
+     * @brief Set gimbal mode (asynchronous).
+     *
+     * This sets the desired yaw mode of a gimbal.
+     * The function will return when the command is accepted, however, it might
+     * take the gimbal longer to actually be set to the new angles.
+     *
+     * @param gimbal_mode The mode to be set. Either yaw lock or yaw follow.
+     * Yaw lock will fix the gimbal poiting to an absolute direction.
+     * Yaw follow will point the gimbal to the vehicle heading.
+     * @param callback Function to call with result of request.
+     */
+    void set_gimbal_mode_async(const Gimbal::GimbalMode gimbal_mode, result_callback_t callback);
 
     /**
      * @brief Set gimbal region of interest (ROI).

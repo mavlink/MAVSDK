@@ -29,6 +29,11 @@ ConnectionResult Mavsdk::add_udp_connection(const std::string& local_bind_ip, co
     return _impl->add_udp_connection(local_bind_ip, local_port);
 }
 
+ConnectionResult Mavsdk::setup_udp_remote(const std::string& remote_ip, int remote_port)
+{
+    return _impl->setup_udp_remote(remote_ip, remote_port);
+}
+
 ConnectionResult Mavsdk::add_tcp_connection(const std::string& remote_ip, const int remote_port)
 {
     return _impl->add_tcp_connection(remote_ip, remote_port);
