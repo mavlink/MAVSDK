@@ -22,9 +22,9 @@ public:
     void enable() override;
     void disable() override;
 
-    void shell_command(const Shell::ShellMessage& shell_message);
+    Shell::Result shell_command(const Shell::ShellMessage& shell_message);
 
-    void shell_command_response_async(Shell::result_callback_t& callback);
+    Shell::Result shell_command_response_async(Shell::result_callback_t& callback);
     ShellImpl(const ShellImpl&) = delete;
     ShellImpl& operator=(const ShellImpl&) = delete;
 
@@ -46,10 +46,10 @@ private:
 
     Shell::result_callback_t _result_subscription{nullptr};
 
-    void finish_transfer(Shell::Result result);
+    void finish_transfer(Shell::Result result, Shell::ShellMessage response_shell_message);
 
     Shell::ShellMessage _shell_message{};
 
-    Shell::Result _result{};
+    Shell::ShellMessage _response{};
 };
 } // namespace mavsdk

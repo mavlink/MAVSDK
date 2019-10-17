@@ -46,23 +46,15 @@ public:
     };
 
     /**
-     * @brief Shell requests results type.
+     * @brief Shell Result Code enum
      */
-    struct Result {
-        /**
-         * @brief Shell Resul Code enum
-         */
-        enum class ResultCode {
-            UNKNOWN = 0, /**< @brief Unknown error. */
-            SUCCESS, /**< @brief %Request succeeded. */
-            NO_SYSTEM, /**< @brief No system connected. */
-            CONNECTION_ERROR, /**< @brief %Connection error. */
-            DATA_TOO_LONG, /**< @brief Request Data too long. */
-            NO_RESPONSE /**< @brief Response does not received */
-        };
-
-        ResultCode result_code; /**< @brief Result code. */
-        ShellMessage response; /**< @brief Response (nullptr if not presented). */
+    enum class Result {
+        UNKNOWN = 0, /**< @brief Unknown error. */
+        SUCCESS, /**< @brief %Request succeeded. */
+        NO_SYSTEM, /**< @brief No system connected. */
+        CONNECTION_ERROR, /**< @brief %Connection error. */
+        NO_RESPONSE, /**< @brief Response does not received */
+        BUSY, /**< @brief Shell busy (transfer in progress) */
     };
 
     /**
@@ -71,26 +63,26 @@ public:
      * @param result The enum value for which string is needed.
      * @return Human readable string for the Shell::Result::ResultCode.
      */
-    static const char* result_code_str(Result::ResultCode result);
+    static const char* result_code_str(Result result);
 
     /**
      * @brief Send the shell message.
      *
      * @param shell_message Shell `struct`.
      */
-    void shell_command(ShellMessage shell_message);
+    Shell::Result shell_command(ShellMessage shell_message);
 
     /**
      * @brief Callback type for shell requests.
      */
-    typedef std::function<void(Result)> result_callback_t;
+    typedef std::function<void(Result result, ShellMessage response)> result_callback_t;
 
     /**
      * @brief Set Shell message Response callback (asynchronous).
      *
      * @param callback Function to call with responses.
      */
-    void shell_command_response_async(result_callback_t callback);
+    Shell::Result shell_command_response_async(result_callback_t callback);
 
     /**
      * @brief Copy constructor (object is not copyable).

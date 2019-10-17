@@ -11,33 +11,33 @@ Shell::Shell(System& system) : PluginBase(), _impl{new ShellImpl(system)} {}
 
 Shell::~Shell() {}
 
-void Shell::shell_command(Shell::ShellMessage shell_message)
+Shell::Result Shell::shell_command(Shell::ShellMessage shell_message)
 {
-    _impl->shell_command(shell_message);
+    return _impl->shell_command(shell_message);
 }
 
-const char* Shell::result_code_str(Result::ResultCode result)
+const char* Shell::result_code_str(Result result)
 {
     switch (result) {
-        case Result::ResultCode::SUCCESS:
+        case Result::SUCCESS:
             return "Success";
-        case Result::ResultCode::NO_SYSTEM:
+        case Result::NO_SYSTEM:
             return "No system";
-        case Result::ResultCode::CONNECTION_ERROR:
+        case Result::CONNECTION_ERROR:
             return "Connection error";
-        case Result::ResultCode::NO_RESPONSE:
+        case Result::NO_RESPONSE:
             return "Response does not received";
-        case Result::ResultCode::DATA_TOO_LONG:
-            return "Request Data too long";
-        case Result::ResultCode::UNKNOWN:
+        case Result::BUSY:
+            return "Shell busy (transfer in progress)";
+        case Result::UNKNOWN:
         default:
             return "Unknown";
     }
 }
 
-void Shell::shell_command_response_async(result_callback_t callback)
+Shell::Result Shell::shell_command_response_async(result_callback_t callback)
 {
-    _impl->shell_command_response_async(callback);
+    return _impl->shell_command_response_async(callback);
 }
 
 bool operator==(const Shell::ShellMessage& lhs, const Shell::ShellMessage& rhs)

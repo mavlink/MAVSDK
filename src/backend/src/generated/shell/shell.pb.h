@@ -88,14 +88,14 @@ enum ShellResult_Result : int {
   ShellResult_Result_SUCCESS = 1,
   ShellResult_Result_NO_SYSTEM = 2,
   ShellResult_Result_CONNECTION_ERROR = 3,
-  ShellResult_Result_DATA_TOO_LONG = 4,
-  ShellResult_Result_NO_RESPONSE = 5,
+  ShellResult_Result_NO_RESPONSE = 4,
+  ShellResult_Result_BUSY = 5,
   ShellResult_Result_ShellResult_Result_INT_MIN_SENTINEL_DO_NOT_USE_ = std::numeric_limits<::PROTOBUF_NAMESPACE_ID::int32>::min(),
   ShellResult_Result_ShellResult_Result_INT_MAX_SENTINEL_DO_NOT_USE_ = std::numeric_limits<::PROTOBUF_NAMESPACE_ID::int32>::max()
 };
 bool ShellResult_Result_IsValid(int value);
 constexpr ShellResult_Result ShellResult_Result_Result_MIN = ShellResult_Result_UNKNOWN;
-constexpr ShellResult_Result ShellResult_Result_Result_MAX = ShellResult_Result_NO_RESPONSE;
+constexpr ShellResult_Result ShellResult_Result_Result_MAX = ShellResult_Result_BUSY;
 constexpr int ShellResult_Result_Result_ARRAYSIZE = ShellResult_Result_Result_MAX + 1;
 
 const ::PROTOBUF_NAMESPACE_ID::EnumDescriptor* ShellResult_Result_descriptor();
@@ -360,8 +360,25 @@ class SetShellMessageResponse :
   // accessors -------------------------------------------------------
 
   enum : int {
+    kResponseDataFieldNumber = 2,
     kShellResultFieldNumber = 1,
   };
+  // string response_data = 2;
+  void clear_response_data();
+  const std::string& response_data() const;
+  void set_response_data(const std::string& value);
+  void set_response_data(std::string&& value);
+  void set_response_data(const char* value);
+  void set_response_data(const char* value, size_t size);
+  std::string* mutable_response_data();
+  std::string* release_response_data();
+  void set_allocated_response_data(std::string* response_data);
+  private:
+  const std::string& _internal_response_data() const;
+  void _internal_set_response_data(const std::string& value);
+  std::string* _internal_mutable_response_data();
+  public:
+
   // .mavsdk.rpc.shell.ShellResult shell_result = 1;
   bool has_shell_result() const;
   private:
@@ -378,6 +395,7 @@ class SetShellMessageResponse :
   class _Internal;
 
   ::PROTOBUF_NAMESPACE_ID::internal::InternalMetadataWithArena _internal_metadata_;
+  ::PROTOBUF_NAMESPACE_ID::internal::ArenaStringPtr response_data_;
   ::mavsdk::rpc::shell::ShellResult* shell_result_;
   mutable ::PROTOBUF_NAMESPACE_ID::internal::CachedSize _cached_size_;
   friend struct ::TableStruct_shell_2fshell_2eproto;
@@ -655,10 +673,10 @@ class ShellResult :
     ShellResult_Result_NO_SYSTEM;
   static constexpr Result CONNECTION_ERROR =
     ShellResult_Result_CONNECTION_ERROR;
-  static constexpr Result DATA_TOO_LONG =
-    ShellResult_Result_DATA_TOO_LONG;
   static constexpr Result NO_RESPONSE =
     ShellResult_Result_NO_RESPONSE;
+  static constexpr Result BUSY =
+    ShellResult_Result_BUSY;
   static inline bool Result_IsValid(int value) {
     return ShellResult_Result_IsValid(value);
   }
@@ -854,6 +872,66 @@ inline void SetShellMessageResponse::set_allocated_shell_result(::mavsdk::rpc::s
   }
   shell_result_ = shell_result;
   // @@protoc_insertion_point(field_set_allocated:mavsdk.rpc.shell.SetShellMessageResponse.shell_result)
+}
+
+// string response_data = 2;
+inline void SetShellMessageResponse::clear_response_data() {
+  response_data_.ClearToEmptyNoArena(&::PROTOBUF_NAMESPACE_ID::internal::GetEmptyStringAlreadyInited());
+}
+inline const std::string& SetShellMessageResponse::response_data() const {
+  // @@protoc_insertion_point(field_get:mavsdk.rpc.shell.SetShellMessageResponse.response_data)
+  return _internal_response_data();
+}
+inline void SetShellMessageResponse::set_response_data(const std::string& value) {
+  _internal_set_response_data(value);
+  // @@protoc_insertion_point(field_set:mavsdk.rpc.shell.SetShellMessageResponse.response_data)
+}
+inline std::string* SetShellMessageResponse::mutable_response_data() {
+  // @@protoc_insertion_point(field_mutable:mavsdk.rpc.shell.SetShellMessageResponse.response_data)
+  return _internal_mutable_response_data();
+}
+inline const std::string& SetShellMessageResponse::_internal_response_data() const {
+  return response_data_.GetNoArena();
+}
+inline void SetShellMessageResponse::_internal_set_response_data(const std::string& value) {
+  
+  response_data_.SetNoArena(&::PROTOBUF_NAMESPACE_ID::internal::GetEmptyStringAlreadyInited(), value);
+}
+inline void SetShellMessageResponse::set_response_data(std::string&& value) {
+  
+  response_data_.SetNoArena(
+    &::PROTOBUF_NAMESPACE_ID::internal::GetEmptyStringAlreadyInited(), ::std::move(value));
+  // @@protoc_insertion_point(field_set_rvalue:mavsdk.rpc.shell.SetShellMessageResponse.response_data)
+}
+inline void SetShellMessageResponse::set_response_data(const char* value) {
+  GOOGLE_DCHECK(value != nullptr);
+  
+  response_data_.SetNoArena(&::PROTOBUF_NAMESPACE_ID::internal::GetEmptyStringAlreadyInited(), ::std::string(value));
+  // @@protoc_insertion_point(field_set_char:mavsdk.rpc.shell.SetShellMessageResponse.response_data)
+}
+inline void SetShellMessageResponse::set_response_data(const char* value, size_t size) {
+  
+  response_data_.SetNoArena(&::PROTOBUF_NAMESPACE_ID::internal::GetEmptyStringAlreadyInited(),
+      ::std::string(reinterpret_cast<const char*>(value), size));
+  // @@protoc_insertion_point(field_set_pointer:mavsdk.rpc.shell.SetShellMessageResponse.response_data)
+}
+inline std::string* SetShellMessageResponse::_internal_mutable_response_data() {
+  
+  return response_data_.MutableNoArena(&::PROTOBUF_NAMESPACE_ID::internal::GetEmptyStringAlreadyInited());
+}
+inline std::string* SetShellMessageResponse::release_response_data() {
+  // @@protoc_insertion_point(field_release:mavsdk.rpc.shell.SetShellMessageResponse.response_data)
+  
+  return response_data_.ReleaseNoArena(&::PROTOBUF_NAMESPACE_ID::internal::GetEmptyStringAlreadyInited());
+}
+inline void SetShellMessageResponse::set_allocated_response_data(std::string* response_data) {
+  if (response_data != nullptr) {
+    
+  } else {
+    
+  }
+  response_data_.SetAllocatedNoArena(&::PROTOBUF_NAMESPACE_ID::internal::GetEmptyStringAlreadyInited(), response_data);
+  // @@protoc_insertion_point(field_set_allocated:mavsdk.rpc.shell.SetShellMessageResponse.response_data)
 }
 
 // -------------------------------------------------------------------

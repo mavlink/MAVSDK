@@ -1,6 +1,3 @@
-#include <cmath>
-#include <array>
-#include <limits>
 #include "shell/shell.grpc.pb.h"
 #include "plugins/shell/shell.h"
 
@@ -28,15 +25,10 @@ public:
         shell_message.timeout = rpc_shell_message_request->shell_message().timeout_ms();
         shell_message.data = rpc_shell_message_request->shell_message().data();
 
-        _shell.shell_command_response_async(
+        mavsdk::Shell::Result set_callback_result = _shell.shell_command_response_async(
             [this, &response, &response_message_received_promise, is_finished](
-                mavsdk::Shell::Result result) {
-                auto rpc_shell_result = new rpc::shell::ShellResult();
-                rpc_shell_result->set_result(
-                    static_cast<rpc::shell::ShellResult::Result>(result.result_code));
-                rpc_shell_result->set_result_str(_shell.result_code_str(result.result_code));
-
-                rpc_shell_result->set_response_data(result.response.data);
+                mavsdk::Shell::Result result, mavsdk::Shell::ShellMessage shell_response) {
+                auto rpc_shell_result = get_allocated_shell_result(result, shell_response);
 
                 std::lock_guard<std::mutex> lock(_subscribe_mutex);
                 if (!*is_finished) {
@@ -47,11 +39,35 @@ public:
                 }
             });
 
-        _shell.shell_command(shell_message);
+        if (set_callback_result != mavsdk::Shell::Result::SUCCESS) {
+            auto rpc_shell_result =
+                get_allocated_shell_result(set_callback_result, mavsdk::Shell::ShellMessage{});
+            response->set_allocated_shell_result(rpc_shell_result);
+            return grpc::Status::OK;
+        }
+
+        mavsdk::Shell::Result shell_comand_result = _shell.shell_command(shell_message);
+
+        if (shell_comand_result != mavsdk::Shell::Result::SUCCESS) {
+            auto rpc_shell_result =
+                get_allocated_shell_result(shell_comand_result, mavsdk::Shell::ShellMessage{});
+            response->set_allocated_shell_result(rpc_shell_result);
+            return grpc::Status::OK;
+        }
 
         response_message_received_future.wait();
 
         return grpc::Status::OK;
+    }
+
+    rpc::shell::ShellResult* get_allocated_shell_result(
+        mavsdk::Shell::Result result, mavsdk::Shell::ShellMessage shell_response)
+    {
+        auto rpc_shell_result = new rpc::shell::ShellResult();
+        rpc_shell_result->set_result(static_cast<rpc::shell::ShellResult::Result>(result));
+        rpc_shell_result->set_result_str(_shell.result_code_str(result));
+        rpc_shell_result->set_response_data(shell_response.data);
+        return rpc_shell_result;
     }
 
     void stop() {}
