@@ -29,10 +29,10 @@ void ShellImpl::disable() {}
 
 ShellImpl::ShellImpl(System& system) :
     PluginImplBase(system),
-    _transfer_closed_future(_transfer_closed_promise.get_future())
+    _transfer_finished_future(_transfer_finished_promise.get_future())
 {
     _parent->register_plugin(this);
-    _transfer_closed_promise.set_value();
+    _transfer_finished_promise.set_value();
 }
 
 ShellImpl::~ShellImpl()
@@ -42,87 +42,81 @@ ShellImpl::~ShellImpl()
 
 bool ShellImpl::is_transfer_in_progress()
 {
-    if (!_transfer_closed_future.valid()) {
+    if (!_transfer_finished_future.valid()) {
         return true;
     }
-    return _transfer_closed_future.wait_for(std::chrono::seconds(0)) != std::future_status::ready;
+    return _transfer_finished_future.wait_for(std::chrono::seconds(0)) != std::future_status::ready;
 }
 
 void ShellImpl::shell_command_response_async(Shell::result_callback_t& callback)
 {
-    {
-        std::lock_guard<std::mutex> lock(_future_mutex);
-        if (is_transfer_in_progress()) {
-            return;
-        }
+    std::lock_guard<std::mutex> lock(_transfer_mutex);
+    if (is_transfer_in_progress()) {
+        return;
     }
     _result_subscription = callback;
 }
 
-void ShellImpl::send_to_subscription(Shell::Result arg)
+void ShellImpl::finish_transfer(Shell::Result result)
 {
+    std::lock_guard<std::mutex> lock(_transfer_mutex);
+    if (!is_transfer_in_progress()) {
+        return;
+    }
     if (_result_subscription) {
         auto callback = _result_subscription;
-        _parent->call_user_callback([callback, arg]() { callback(arg); });
+        _parent->call_user_callback([callback, result]() { callback(result); });
     }
+    _transfer_finished_promise.set_value();
 }
 
 void ShellImpl::shell_command(const Shell::ShellMessage& shell_message)
 {
     {
-        std::lock_guard<std::mutex> lock(_future_mutex);
+        std::lock_guard<std::mutex> lock(_transfer_mutex);
         if (is_transfer_in_progress()) {
             return;
         }
 
-        _transfer_closed_promise = std::promise<void>();
-        _transfer_closed_future = _transfer_closed_promise.get_future();
+        _transfer_finished_promise = std::promise<void>();
+        _transfer_finished_future = _transfer_finished_promise.get_future();
     }
 
     if (!_parent->is_connected()) {
-        send_to_subscription(Shell::Result{Shell::Result::ResultCode::NO_SYSTEM, {}});
-        _transfer_closed_promise.set_value();
+        finish_transfer(Shell::Result{Shell::Result::ResultCode::NO_SYSTEM, {}});
         return;
     }
 
     _shell_message = shell_message;
 
     if (!send_shell_message_mavlink()) {
-        send_to_subscription(Shell::Result{Shell::Result::ResultCode::CONNECTION_ERROR, {}});
-        _transfer_closed_promise.set_value();
+        finish_transfer(Shell::Result{Shell::Result::ResultCode::CONNECTION_ERROR, {}});
         return;
     }
 
-    if (_result_subscription) {
-        if (!shell_message.need_response) {
-            send_to_subscription(Shell::Result{Shell::Result::ResultCode::SUCCESS, {}});
-            _transfer_closed_promise.set_value();
-        } else {
-            if (_shell_message_timeout_cookie) {
-                _parent->unregister_timeout_handler(_shell_message_timeout_cookie);
-                _shell_message_timeout_cookie = nullptr;
-            }
-            _parent->register_timeout_handler(
-                std::bind(&ShellImpl::receive_shell_message_timeout, this),
-                shell_message.timeout / 1000.0,
-                &_shell_message_timeout_cookie);
-        }
-    } else {
-        _transfer_closed_promise.set_value();
+    if (!_result_subscription || !shell_message.need_response) {
+        finish_transfer(Shell::Result{Shell::Result::ResultCode::SUCCESS, {}});
+        return;
     }
+
+    _result.result_code = Shell::Result::ResultCode::NO_RESPONSE;
+    _result.response = Shell::ShellMessage{};
+
+    if (_shell_message_timeout_cookie) {
+        _parent->unregister_timeout_handler(_shell_message_timeout_cookie);
+        _shell_message_timeout_cookie = nullptr;
+    }
+    _parent->register_timeout_handler(
+        std::bind(&ShellImpl::receive_shell_message_timeout, this),
+        shell_message.timeout / 1000.0,
+        &_shell_message_timeout_cookie);
 }
 
 void ShellImpl::receive_shell_message_timeout()
 {
-    send_to_subscription(_result);
+    finish_transfer(_result);
     _parent->unregister_timeout_handler(_shell_message_timeout_cookie);
     _shell_message_timeout_cookie = nullptr;
-    _result.result_code = Shell::Result::ResultCode::NO_RESPONSE;
-    _result.response = Shell::ShellMessage{};
-
-    if (is_transfer_in_progress()) {
-        _transfer_closed_promise.set_value();
-    }
 }
 
 bool ShellImpl::send_shell_message_mavlink()
@@ -170,6 +164,7 @@ bool ShellImpl::send_shell_message_mavlink()
 
 void ShellImpl::process_shell_message(const mavlink_message_t& message)
 {
+    std::lock_guard<std::mutex> lock(_transfer_mutex);
     if (!is_transfer_in_progress()) { // Skip symbols after ESC
         return;
     }
@@ -189,20 +184,20 @@ void ShellImpl::process_shell_message(const mavlink_message_t& message)
 
     size_t escape_pos = _result.response.data.find('\e'); // Find termination (ESC)
     if (escape_pos != std::string::npos) {
-        _result.response.data.erase(
-            _result.response.data.begin() + escape_pos, _result.response.data.end());
-
-        send_to_subscription(_result);
         if (_shell_message_timeout_cookie) {
             _parent->unregister_timeout_handler(_shell_message_timeout_cookie);
             _shell_message_timeout_cookie = nullptr;
         }
-        _result.result_code = Shell::Result::ResultCode::NO_RESPONSE;
-        _result.response = Shell::ShellMessage{};
 
-        if (is_transfer_in_progress()) {
-            _transfer_closed_promise.set_value();
+        _result.response.data.erase(
+            _result.response.data.begin() + escape_pos, _result.response.data.end());
+
+        if (_result_subscription) {
+            auto callback = _result_subscription;
+            Shell::Result arg = _result;
+            _parent->call_user_callback([callback, arg]() { callback(arg); });
         }
+        _transfer_finished_promise.set_value();
     } else {
         if (_shell_message_timeout_cookie) {
             _parent->refresh_timeout_handler(_shell_message_timeout_cookie);

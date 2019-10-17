@@ -37,16 +37,16 @@ private:
 
     bool is_transfer_in_progress();
 
-    std::promise<void> _transfer_closed_promise{};
-    std::future<void> _transfer_closed_future{};
+    std::promise<void> _transfer_finished_promise{};
+    std::future<void> _transfer_finished_future{};
 
-    std::mutex _future_mutex{};
+    std::mutex _transfer_mutex{};
 
     void* _shell_message_timeout_cookie{nullptr};
 
     Shell::result_callback_t _result_subscription{nullptr};
 
-    void send_to_subscription(Shell::Result arg);
+    void finish_transfer(Shell::Result result);
 
     Shell::ShellMessage _shell_message{};
 
