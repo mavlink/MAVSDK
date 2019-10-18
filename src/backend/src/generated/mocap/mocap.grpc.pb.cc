@@ -43,27 +43,27 @@ MocapService::Stub::Stub(const std::shared_ptr< ::grpc::ChannelInterface>& chann
 }
 
 void MocapService::Stub::experimental_async::SetVisionPositionEstimate(::grpc::ClientContext* context, const ::mavsdk::rpc::mocap::SetVisionPositionEstimateRequest* request, ::mavsdk::rpc::mocap::SetVisionPositionEstimateResponse* response, std::function<void(::grpc::Status)> f) {
-  ::grpc::internal::CallbackUnaryCall(stub_->channel_.get(), stub_->rpcmethod_SetVisionPositionEstimate_, context, request, response, std::move(f));
+  ::grpc_impl::internal::CallbackUnaryCall(stub_->channel_.get(), stub_->rpcmethod_SetVisionPositionEstimate_, context, request, response, std::move(f));
 }
 
 void MocapService::Stub::experimental_async::SetVisionPositionEstimate(::grpc::ClientContext* context, const ::grpc::ByteBuffer* request, ::mavsdk::rpc::mocap::SetVisionPositionEstimateResponse* response, std::function<void(::grpc::Status)> f) {
-  ::grpc::internal::CallbackUnaryCall(stub_->channel_.get(), stub_->rpcmethod_SetVisionPositionEstimate_, context, request, response, std::move(f));
+  ::grpc_impl::internal::CallbackUnaryCall(stub_->channel_.get(), stub_->rpcmethod_SetVisionPositionEstimate_, context, request, response, std::move(f));
 }
 
 void MocapService::Stub::experimental_async::SetVisionPositionEstimate(::grpc::ClientContext* context, const ::mavsdk::rpc::mocap::SetVisionPositionEstimateRequest* request, ::mavsdk::rpc::mocap::SetVisionPositionEstimateResponse* response, ::grpc::experimental::ClientUnaryReactor* reactor) {
-  ::grpc::internal::ClientCallbackUnaryFactory::Create(stub_->channel_.get(), stub_->rpcmethod_SetVisionPositionEstimate_, context, request, response, reactor);
+  ::grpc_impl::internal::ClientCallbackUnaryFactory::Create(stub_->channel_.get(), stub_->rpcmethod_SetVisionPositionEstimate_, context, request, response, reactor);
 }
 
 void MocapService::Stub::experimental_async::SetVisionPositionEstimate(::grpc::ClientContext* context, const ::grpc::ByteBuffer* request, ::mavsdk::rpc::mocap::SetVisionPositionEstimateResponse* response, ::grpc::experimental::ClientUnaryReactor* reactor) {
-  ::grpc::internal::ClientCallbackUnaryFactory::Create(stub_->channel_.get(), stub_->rpcmethod_SetVisionPositionEstimate_, context, request, response, reactor);
+  ::grpc_impl::internal::ClientCallbackUnaryFactory::Create(stub_->channel_.get(), stub_->rpcmethod_SetVisionPositionEstimate_, context, request, response, reactor);
 }
 
 ::grpc::ClientAsyncResponseReader< ::mavsdk::rpc::mocap::SetVisionPositionEstimateResponse>* MocapService::Stub::AsyncSetVisionPositionEstimateRaw(::grpc::ClientContext* context, const ::mavsdk::rpc::mocap::SetVisionPositionEstimateRequest& request, ::grpc::CompletionQueue* cq) {
-  return ::grpc::internal::ClientAsyncResponseReaderFactory< ::mavsdk::rpc::mocap::SetVisionPositionEstimateResponse>::Create(channel_.get(), cq, rpcmethod_SetVisionPositionEstimate_, context, request, true);
+  return ::grpc_impl::internal::ClientAsyncResponseReaderFactory< ::mavsdk::rpc::mocap::SetVisionPositionEstimateResponse>::Create(channel_.get(), cq, rpcmethod_SetVisionPositionEstimate_, context, request, true);
 }
 
 ::grpc::ClientAsyncResponseReader< ::mavsdk::rpc::mocap::SetVisionPositionEstimateResponse>* MocapService::Stub::PrepareAsyncSetVisionPositionEstimateRaw(::grpc::ClientContext* context, const ::mavsdk::rpc::mocap::SetVisionPositionEstimateRequest& request, ::grpc::CompletionQueue* cq) {
-  return ::grpc::internal::ClientAsyncResponseReaderFactory< ::mavsdk::rpc::mocap::SetVisionPositionEstimateResponse>::Create(channel_.get(), cq, rpcmethod_SetVisionPositionEstimate_, context, request, false);
+  return ::grpc_impl::internal::ClientAsyncResponseReaderFactory< ::mavsdk::rpc::mocap::SetVisionPositionEstimateResponse>::Create(channel_.get(), cq, rpcmethod_SetVisionPositionEstimate_, context, request, false);
 }
 
 ::grpc::Status MocapService::Stub::SetAttitudePositionMocap(::grpc::ClientContext* context, const ::mavsdk::rpc::mocap::SetAttitudePositionMocapRequest& request, ::mavsdk::rpc::mocap::SetAttitudePositionMocapResponse* response) {
@@ -71,27 +71,27 @@ void MocapService::Stub::experimental_async::SetVisionPositionEstimate(::grpc::C
 }
 
 void MocapService::Stub::experimental_async::SetAttitudePositionMocap(::grpc::ClientContext* context, const ::mavsdk::rpc::mocap::SetAttitudePositionMocapRequest* request, ::mavsdk::rpc::mocap::SetAttitudePositionMocapResponse* response, std::function<void(::grpc::Status)> f) {
-  ::grpc::internal::CallbackUnaryCall(stub_->channel_.get(), stub_->rpcmethod_SetAttitudePositionMocap_, context, request, response, std::move(f));
+  ::grpc_impl::internal::CallbackUnaryCall(stub_->channel_.get(), stub_->rpcmethod_SetAttitudePositionMocap_, context, request, response, std::move(f));
 }
 
 void MocapService::Stub::experimental_async::SetAttitudePositionMocap(::grpc::ClientContext* context, const ::grpc::ByteBuffer* request, ::mavsdk::rpc::mocap::SetAttitudePositionMocapResponse* response, std::function<void(::grpc::Status)> f) {
-  ::grpc::internal::CallbackUnaryCall(stub_->channel_.get(), stub_->rpcmethod_SetAttitudePositionMocap_, context, request, response, std::move(f));
+  ::grpc_impl::internal::CallbackUnaryCall(stub_->channel_.get(), stub_->rpcmethod_SetAttitudePositionMocap_, context, request, response, std::move(f));
 }
 
 void MocapService::Stub::experimental_async::SetAttitudePositionMocap(::grpc::ClientContext* context, const ::mavsdk::rpc::mocap::SetAttitudePositionMocapRequest* request, ::mavsdk::rpc::mocap::SetAttitudePositionMocapResponse* response, ::grpc::experimental::ClientUnaryReactor* reactor) {
-  ::grpc::internal::ClientCallbackUnaryFactory::Create(stub_->channel_.get(), stub_->rpcmethod_SetAttitudePositionMocap_, context, request, response, reactor);
+  ::grpc_impl::internal::ClientCallbackUnaryFactory::Create(stub_->channel_.get(), stub_->rpcmethod_SetAttitudePositionMocap_, context, request, response, reactor);
 }
 
 void MocapService::Stub::experimental_async::SetAttitudePositionMocap(::grpc::ClientContext* context, const ::grpc::ByteBuffer* request, ::mavsdk::rpc::mocap::SetAttitudePositionMocapResponse* response, ::grpc::experimental::ClientUnaryReactor* reactor) {
-  ::grpc::internal::ClientCallbackUnaryFactory::Create(stub_->channel_.get(), stub_->rpcmethod_SetAttitudePositionMocap_, context, request, response, reactor);
+  ::grpc_impl::internal::ClientCallbackUnaryFactory::Create(stub_->channel_.get(), stub_->rpcmethod_SetAttitudePositionMocap_, context, request, response, reactor);
 }
 
 ::grpc::ClientAsyncResponseReader< ::mavsdk::rpc::mocap::SetAttitudePositionMocapResponse>* MocapService::Stub::AsyncSetAttitudePositionMocapRaw(::grpc::ClientContext* context, const ::mavsdk::rpc::mocap::SetAttitudePositionMocapRequest& request, ::grpc::CompletionQueue* cq) {
-  return ::grpc::internal::ClientAsyncResponseReaderFactory< ::mavsdk::rpc::mocap::SetAttitudePositionMocapResponse>::Create(channel_.get(), cq, rpcmethod_SetAttitudePositionMocap_, context, request, true);
+  return ::grpc_impl::internal::ClientAsyncResponseReaderFactory< ::mavsdk::rpc::mocap::SetAttitudePositionMocapResponse>::Create(channel_.get(), cq, rpcmethod_SetAttitudePositionMocap_, context, request, true);
 }
 
 ::grpc::ClientAsyncResponseReader< ::mavsdk::rpc::mocap::SetAttitudePositionMocapResponse>* MocapService::Stub::PrepareAsyncSetAttitudePositionMocapRaw(::grpc::ClientContext* context, const ::mavsdk::rpc::mocap::SetAttitudePositionMocapRequest& request, ::grpc::CompletionQueue* cq) {
-  return ::grpc::internal::ClientAsyncResponseReaderFactory< ::mavsdk::rpc::mocap::SetAttitudePositionMocapResponse>::Create(channel_.get(), cq, rpcmethod_SetAttitudePositionMocap_, context, request, false);
+  return ::grpc_impl::internal::ClientAsyncResponseReaderFactory< ::mavsdk::rpc::mocap::SetAttitudePositionMocapResponse>::Create(channel_.get(), cq, rpcmethod_SetAttitudePositionMocap_, context, request, false);
 }
 
 ::grpc::Status MocapService::Stub::SetOdometry(::grpc::ClientContext* context, const ::mavsdk::rpc::mocap::SetOdometryRequest& request, ::mavsdk::rpc::mocap::SetOdometryResponse* response) {
@@ -99,27 +99,27 @@ void MocapService::Stub::experimental_async::SetAttitudePositionMocap(::grpc::Cl
 }
 
 void MocapService::Stub::experimental_async::SetOdometry(::grpc::ClientContext* context, const ::mavsdk::rpc::mocap::SetOdometryRequest* request, ::mavsdk::rpc::mocap::SetOdometryResponse* response, std::function<void(::grpc::Status)> f) {
-  ::grpc::internal::CallbackUnaryCall(stub_->channel_.get(), stub_->rpcmethod_SetOdometry_, context, request, response, std::move(f));
+  ::grpc_impl::internal::CallbackUnaryCall(stub_->channel_.get(), stub_->rpcmethod_SetOdometry_, context, request, response, std::move(f));
 }
 
 void MocapService::Stub::experimental_async::SetOdometry(::grpc::ClientContext* context, const ::grpc::ByteBuffer* request, ::mavsdk::rpc::mocap::SetOdometryResponse* response, std::function<void(::grpc::Status)> f) {
-  ::grpc::internal::CallbackUnaryCall(stub_->channel_.get(), stub_->rpcmethod_SetOdometry_, context, request, response, std::move(f));
+  ::grpc_impl::internal::CallbackUnaryCall(stub_->channel_.get(), stub_->rpcmethod_SetOdometry_, context, request, response, std::move(f));
 }
 
 void MocapService::Stub::experimental_async::SetOdometry(::grpc::ClientContext* context, const ::mavsdk::rpc::mocap::SetOdometryRequest* request, ::mavsdk::rpc::mocap::SetOdometryResponse* response, ::grpc::experimental::ClientUnaryReactor* reactor) {
-  ::grpc::internal::ClientCallbackUnaryFactory::Create(stub_->channel_.get(), stub_->rpcmethod_SetOdometry_, context, request, response, reactor);
+  ::grpc_impl::internal::ClientCallbackUnaryFactory::Create(stub_->channel_.get(), stub_->rpcmethod_SetOdometry_, context, request, response, reactor);
 }
 
 void MocapService::Stub::experimental_async::SetOdometry(::grpc::ClientContext* context, const ::grpc::ByteBuffer* request, ::mavsdk::rpc::mocap::SetOdometryResponse* response, ::grpc::experimental::ClientUnaryReactor* reactor) {
-  ::grpc::internal::ClientCallbackUnaryFactory::Create(stub_->channel_.get(), stub_->rpcmethod_SetOdometry_, context, request, response, reactor);
+  ::grpc_impl::internal::ClientCallbackUnaryFactory::Create(stub_->channel_.get(), stub_->rpcmethod_SetOdometry_, context, request, response, reactor);
 }
 
 ::grpc::ClientAsyncResponseReader< ::mavsdk::rpc::mocap::SetOdometryResponse>* MocapService::Stub::AsyncSetOdometryRaw(::grpc::ClientContext* context, const ::mavsdk::rpc::mocap::SetOdometryRequest& request, ::grpc::CompletionQueue* cq) {
-  return ::grpc::internal::ClientAsyncResponseReaderFactory< ::mavsdk::rpc::mocap::SetOdometryResponse>::Create(channel_.get(), cq, rpcmethod_SetOdometry_, context, request, true);
+  return ::grpc_impl::internal::ClientAsyncResponseReaderFactory< ::mavsdk::rpc::mocap::SetOdometryResponse>::Create(channel_.get(), cq, rpcmethod_SetOdometry_, context, request, true);
 }
 
 ::grpc::ClientAsyncResponseReader< ::mavsdk::rpc::mocap::SetOdometryResponse>* MocapService::Stub::PrepareAsyncSetOdometryRaw(::grpc::ClientContext* context, const ::mavsdk::rpc::mocap::SetOdometryRequest& request, ::grpc::CompletionQueue* cq) {
-  return ::grpc::internal::ClientAsyncResponseReaderFactory< ::mavsdk::rpc::mocap::SetOdometryResponse>::Create(channel_.get(), cq, rpcmethod_SetOdometry_, context, request, false);
+  return ::grpc_impl::internal::ClientAsyncResponseReaderFactory< ::mavsdk::rpc::mocap::SetOdometryResponse>::Create(channel_.get(), cq, rpcmethod_SetOdometry_, context, request, false);
 }
 
 MocapService::Service::Service() {

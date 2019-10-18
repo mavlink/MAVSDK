@@ -164,29 +164,20 @@ public:
                                MAV_FRAME_MOCAP_NED, MAV_FRAME_VISION_NED, MAV_FRAME_ESTIM_NED. */
         };
 
-        uint64_t time_usec; /**< @brief Timestamp (0 to use Backend timestamp). */
-        MavFrame frame_id; /**< @brief Coordinate frame of reference for the pose data. */
-        PositionBody position_body; /**< @brief Body position. */
-        Quaternion q; /**< @brief Quaternion components, w, x, y, z
+        uint64_t time_usec{}; /**< @brief Timestamp (0 to use Backend timestamp). */
+        MavFrame frame_id{}; /**< @brief Coordinate frame of reference for the pose data. */
+        PositionBody position_body{}; /**< @brief Body position. */
+        Quaternion q{}; /**< @brief Quaternion components, w, x, y, z
                          (1 0 0 0 is the null-rotation). */
-        SpeedBody speed_body; /**< @brief Body linear speed (m/s). */
-        AngularVelocityBody angular_velocity_body; /**< @brief Body angular speed (rad/s). */
-        Covariance pose_covariance; /**< @brief Row-major representation of a 6x6
-                                       pose cross-covariance matrix upper right triangle.
-                                       Leave empty if unknown. */
-        Covariance velocity_covariance; /**< @brief Row-major representation of a 6x6
-                                           velocity cross-covariance matrix upper right
-                                           triangle. Leave empty if unknown. */
-
-        Odometry() :
-            time_usec(0),
-            frame_id(MavFrame::LOCAL_FRD),
-            position_body{0.0f, 0.0f, 0.0f},
-            q{0.0f},
-            speed_body{0.0f, 0.0f, 0.0f},
-            angular_velocity_body{0.0f, 0.0f, 0.0f},
-            pose_covariance{std::numeric_limits<float>::quiet_NaN()},
-            velocity_covariance{std::numeric_limits<float>::quiet_NaN()} {};
+        SpeedBody speed_body{}; /**< @brief Body linear speed (m/s). */
+        AngularVelocityBody angular_velocity_body{}; /**< @brief Body angular speed (rad/s). */
+        Covariance pose_covariance{std::numeric_limits<float>::quiet_NaN()}; /**< @brief Row-major
+                                       representation of a 6x6 pose cross-covariance matrix upper
+                                       right triangle. Leave empty if unknown. */
+        Covariance velocity_covariance{
+            std::numeric_limits<float>::quiet_NaN()}; /**< @brief Row-major representation of a 6x6
+                                                         velocity cross-covariance matrix upper
+                                                         right triangle. Leave empty if unknown. */
     };
 
     /**

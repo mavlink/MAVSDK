@@ -93,7 +93,6 @@ operator<<(std::ostream& str, Mocap::AttitudePositionMocap const& attitude_posit
 
 bool operator==(const Mocap::Odometry& lhs, const Mocap::Odometry& rhs)
 {
-    // FixMe: Should we check time_usec, equality?
     return (
         lhs.time_usec == rhs.time_usec && lhs.frame_id == rhs.frame_id &&
         lhs.position_body == rhs.position_body && lhs.q == rhs.q &&
@@ -176,8 +175,9 @@ bool operator==(const Mocap::Covariance& lhs, const Mocap::Covariance& rhs)
     const bool lhs_first_nan = std::isnan(lhs[0]);
     const bool rhs_first_nan = std::isnan(rhs[0]);
 
-    if (lhs_first_nan != rhs_first_nan)
+    if (lhs_first_nan != rhs_first_nan) {
         return false;
+    }
 
     if (!lhs_first_nan) {
         for (int i = 0; i < 21; i++) {

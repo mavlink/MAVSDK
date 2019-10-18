@@ -11,10 +11,13 @@
 #include <grpcpp/impl/codegen/async_stream.h>
 #include <grpcpp/impl/codegen/async_unary_call.h>
 #include <grpcpp/impl/codegen/client_callback.h>
+#include <grpcpp/impl/codegen/client_context.h>
+#include <grpcpp/impl/codegen/completion_queue.h>
 #include <grpcpp/impl/codegen/method_handler_impl.h>
 #include <grpcpp/impl/codegen/proto_utils.h>
 #include <grpcpp/impl/codegen/rpc_method.h>
 #include <grpcpp/impl/codegen/server_callback.h>
+#include <grpcpp/impl/codegen/server_context.h>
 #include <grpcpp/impl/codegen/service_type.h>
 #include <grpcpp/impl/codegen/status.h>
 #include <grpcpp/impl/codegen/stub_options.h>
@@ -177,7 +180,7 @@ class MocapService final {
   template <class BaseClass>
   class WithAsyncMethod_SetVisionPositionEstimate : public BaseClass {
    private:
-    void BaseClassMustBeDerivedFromService(const Service *service) {}
+    void BaseClassMustBeDerivedFromService(const Service* /*service*/) {}
    public:
     WithAsyncMethod_SetVisionPositionEstimate() {
       ::grpc::Service::MarkMethodAsync(0);
@@ -186,7 +189,7 @@ class MocapService final {
       BaseClassMustBeDerivedFromService(this);
     }
     // disable synchronous version of this method
-    ::grpc::Status SetVisionPositionEstimate(::grpc::ServerContext* context, const ::mavsdk::rpc::mocap::SetVisionPositionEstimateRequest* request, ::mavsdk::rpc::mocap::SetVisionPositionEstimateResponse* response) override {
+    ::grpc::Status SetVisionPositionEstimate(::grpc::ServerContext* /*context*/, const ::mavsdk::rpc::mocap::SetVisionPositionEstimateRequest* /*request*/, ::mavsdk::rpc::mocap::SetVisionPositionEstimateResponse* /*response*/) override {
       abort();
       return ::grpc::Status(::grpc::StatusCode::UNIMPLEMENTED, "");
     }
@@ -197,7 +200,7 @@ class MocapService final {
   template <class BaseClass>
   class WithAsyncMethod_SetAttitudePositionMocap : public BaseClass {
    private:
-    void BaseClassMustBeDerivedFromService(const Service *service) {}
+    void BaseClassMustBeDerivedFromService(const Service* /*service*/) {}
    public:
     WithAsyncMethod_SetAttitudePositionMocap() {
       ::grpc::Service::MarkMethodAsync(1);
@@ -206,7 +209,7 @@ class MocapService final {
       BaseClassMustBeDerivedFromService(this);
     }
     // disable synchronous version of this method
-    ::grpc::Status SetAttitudePositionMocap(::grpc::ServerContext* context, const ::mavsdk::rpc::mocap::SetAttitudePositionMocapRequest* request, ::mavsdk::rpc::mocap::SetAttitudePositionMocapResponse* response) override {
+    ::grpc::Status SetAttitudePositionMocap(::grpc::ServerContext* /*context*/, const ::mavsdk::rpc::mocap::SetAttitudePositionMocapRequest* /*request*/, ::mavsdk::rpc::mocap::SetAttitudePositionMocapResponse* /*response*/) override {
       abort();
       return ::grpc::Status(::grpc::StatusCode::UNIMPLEMENTED, "");
     }
@@ -217,7 +220,7 @@ class MocapService final {
   template <class BaseClass>
   class WithAsyncMethod_SetOdometry : public BaseClass {
    private:
-    void BaseClassMustBeDerivedFromService(const Service *service) {}
+    void BaseClassMustBeDerivedFromService(const Service* /*service*/) {}
    public:
     WithAsyncMethod_SetOdometry() {
       ::grpc::Service::MarkMethodAsync(2);
@@ -226,7 +229,7 @@ class MocapService final {
       BaseClassMustBeDerivedFromService(this);
     }
     // disable synchronous version of this method
-    ::grpc::Status SetOdometry(::grpc::ServerContext* context, const ::mavsdk::rpc::mocap::SetOdometryRequest* request, ::mavsdk::rpc::mocap::SetOdometryResponse* response) override {
+    ::grpc::Status SetOdometry(::grpc::ServerContext* /*context*/, const ::mavsdk::rpc::mocap::SetOdometryRequest* /*request*/, ::mavsdk::rpc::mocap::SetOdometryResponse* /*response*/) override {
       abort();
       return ::grpc::Status(::grpc::StatusCode::UNIMPLEMENTED, "");
     }
@@ -238,11 +241,11 @@ class MocapService final {
   template <class BaseClass>
   class ExperimentalWithCallbackMethod_SetVisionPositionEstimate : public BaseClass {
    private:
-    void BaseClassMustBeDerivedFromService(const Service *service) {}
+    void BaseClassMustBeDerivedFromService(const Service* /*service*/) {}
    public:
     ExperimentalWithCallbackMethod_SetVisionPositionEstimate() {
       ::grpc::Service::experimental().MarkMethodCallback(0,
-        new ::grpc::internal::CallbackUnaryHandler< ::mavsdk::rpc::mocap::SetVisionPositionEstimateRequest, ::mavsdk::rpc::mocap::SetVisionPositionEstimateResponse>(
+        new ::grpc_impl::internal::CallbackUnaryHandler< ::mavsdk::rpc::mocap::SetVisionPositionEstimateRequest, ::mavsdk::rpc::mocap::SetVisionPositionEstimateResponse>(
           [this](::grpc::ServerContext* context,
                  const ::mavsdk::rpc::mocap::SetVisionPositionEstimateRequest* request,
                  ::mavsdk::rpc::mocap::SetVisionPositionEstimateResponse* response,
@@ -252,7 +255,7 @@ class MocapService final {
     }
     void SetMessageAllocatorFor_SetVisionPositionEstimate(
         ::grpc::experimental::MessageAllocator< ::mavsdk::rpc::mocap::SetVisionPositionEstimateRequest, ::mavsdk::rpc::mocap::SetVisionPositionEstimateResponse>* allocator) {
-      static_cast<::grpc::internal::CallbackUnaryHandler< ::mavsdk::rpc::mocap::SetVisionPositionEstimateRequest, ::mavsdk::rpc::mocap::SetVisionPositionEstimateResponse>*>(
+      static_cast<::grpc_impl::internal::CallbackUnaryHandler< ::mavsdk::rpc::mocap::SetVisionPositionEstimateRequest, ::mavsdk::rpc::mocap::SetVisionPositionEstimateResponse>*>(
           ::grpc::Service::experimental().GetHandler(0))
               ->SetMessageAllocator(allocator);
     }
@@ -260,20 +263,20 @@ class MocapService final {
       BaseClassMustBeDerivedFromService(this);
     }
     // disable synchronous version of this method
-    ::grpc::Status SetVisionPositionEstimate(::grpc::ServerContext* context, const ::mavsdk::rpc::mocap::SetVisionPositionEstimateRequest* request, ::mavsdk::rpc::mocap::SetVisionPositionEstimateResponse* response) override {
+    ::grpc::Status SetVisionPositionEstimate(::grpc::ServerContext* /*context*/, const ::mavsdk::rpc::mocap::SetVisionPositionEstimateRequest* /*request*/, ::mavsdk::rpc::mocap::SetVisionPositionEstimateResponse* /*response*/) override {
       abort();
       return ::grpc::Status(::grpc::StatusCode::UNIMPLEMENTED, "");
     }
-    virtual void SetVisionPositionEstimate(::grpc::ServerContext* context, const ::mavsdk::rpc::mocap::SetVisionPositionEstimateRequest* request, ::mavsdk::rpc::mocap::SetVisionPositionEstimateResponse* response, ::grpc::experimental::ServerCallbackRpcController* controller) { controller->Finish(::grpc::Status(::grpc::StatusCode::UNIMPLEMENTED, "")); }
+    virtual void SetVisionPositionEstimate(::grpc::ServerContext* /*context*/, const ::mavsdk::rpc::mocap::SetVisionPositionEstimateRequest* /*request*/, ::mavsdk::rpc::mocap::SetVisionPositionEstimateResponse* /*response*/, ::grpc::experimental::ServerCallbackRpcController* controller) { controller->Finish(::grpc::Status(::grpc::StatusCode::UNIMPLEMENTED, "")); }
   };
   template <class BaseClass>
   class ExperimentalWithCallbackMethod_SetAttitudePositionMocap : public BaseClass {
    private:
-    void BaseClassMustBeDerivedFromService(const Service *service) {}
+    void BaseClassMustBeDerivedFromService(const Service* /*service*/) {}
    public:
     ExperimentalWithCallbackMethod_SetAttitudePositionMocap() {
       ::grpc::Service::experimental().MarkMethodCallback(1,
-        new ::grpc::internal::CallbackUnaryHandler< ::mavsdk::rpc::mocap::SetAttitudePositionMocapRequest, ::mavsdk::rpc::mocap::SetAttitudePositionMocapResponse>(
+        new ::grpc_impl::internal::CallbackUnaryHandler< ::mavsdk::rpc::mocap::SetAttitudePositionMocapRequest, ::mavsdk::rpc::mocap::SetAttitudePositionMocapResponse>(
           [this](::grpc::ServerContext* context,
                  const ::mavsdk::rpc::mocap::SetAttitudePositionMocapRequest* request,
                  ::mavsdk::rpc::mocap::SetAttitudePositionMocapResponse* response,
@@ -283,7 +286,7 @@ class MocapService final {
     }
     void SetMessageAllocatorFor_SetAttitudePositionMocap(
         ::grpc::experimental::MessageAllocator< ::mavsdk::rpc::mocap::SetAttitudePositionMocapRequest, ::mavsdk::rpc::mocap::SetAttitudePositionMocapResponse>* allocator) {
-      static_cast<::grpc::internal::CallbackUnaryHandler< ::mavsdk::rpc::mocap::SetAttitudePositionMocapRequest, ::mavsdk::rpc::mocap::SetAttitudePositionMocapResponse>*>(
+      static_cast<::grpc_impl::internal::CallbackUnaryHandler< ::mavsdk::rpc::mocap::SetAttitudePositionMocapRequest, ::mavsdk::rpc::mocap::SetAttitudePositionMocapResponse>*>(
           ::grpc::Service::experimental().GetHandler(1))
               ->SetMessageAllocator(allocator);
     }
@@ -291,20 +294,20 @@ class MocapService final {
       BaseClassMustBeDerivedFromService(this);
     }
     // disable synchronous version of this method
-    ::grpc::Status SetAttitudePositionMocap(::grpc::ServerContext* context, const ::mavsdk::rpc::mocap::SetAttitudePositionMocapRequest* request, ::mavsdk::rpc::mocap::SetAttitudePositionMocapResponse* response) override {
+    ::grpc::Status SetAttitudePositionMocap(::grpc::ServerContext* /*context*/, const ::mavsdk::rpc::mocap::SetAttitudePositionMocapRequest* /*request*/, ::mavsdk::rpc::mocap::SetAttitudePositionMocapResponse* /*response*/) override {
       abort();
       return ::grpc::Status(::grpc::StatusCode::UNIMPLEMENTED, "");
     }
-    virtual void SetAttitudePositionMocap(::grpc::ServerContext* context, const ::mavsdk::rpc::mocap::SetAttitudePositionMocapRequest* request, ::mavsdk::rpc::mocap::SetAttitudePositionMocapResponse* response, ::grpc::experimental::ServerCallbackRpcController* controller) { controller->Finish(::grpc::Status(::grpc::StatusCode::UNIMPLEMENTED, "")); }
+    virtual void SetAttitudePositionMocap(::grpc::ServerContext* /*context*/, const ::mavsdk::rpc::mocap::SetAttitudePositionMocapRequest* /*request*/, ::mavsdk::rpc::mocap::SetAttitudePositionMocapResponse* /*response*/, ::grpc::experimental::ServerCallbackRpcController* controller) { controller->Finish(::grpc::Status(::grpc::StatusCode::UNIMPLEMENTED, "")); }
   };
   template <class BaseClass>
   class ExperimentalWithCallbackMethod_SetOdometry : public BaseClass {
    private:
-    void BaseClassMustBeDerivedFromService(const Service *service) {}
+    void BaseClassMustBeDerivedFromService(const Service* /*service*/) {}
    public:
     ExperimentalWithCallbackMethod_SetOdometry() {
       ::grpc::Service::experimental().MarkMethodCallback(2,
-        new ::grpc::internal::CallbackUnaryHandler< ::mavsdk::rpc::mocap::SetOdometryRequest, ::mavsdk::rpc::mocap::SetOdometryResponse>(
+        new ::grpc_impl::internal::CallbackUnaryHandler< ::mavsdk::rpc::mocap::SetOdometryRequest, ::mavsdk::rpc::mocap::SetOdometryResponse>(
           [this](::grpc::ServerContext* context,
                  const ::mavsdk::rpc::mocap::SetOdometryRequest* request,
                  ::mavsdk::rpc::mocap::SetOdometryResponse* response,
@@ -314,7 +317,7 @@ class MocapService final {
     }
     void SetMessageAllocatorFor_SetOdometry(
         ::grpc::experimental::MessageAllocator< ::mavsdk::rpc::mocap::SetOdometryRequest, ::mavsdk::rpc::mocap::SetOdometryResponse>* allocator) {
-      static_cast<::grpc::internal::CallbackUnaryHandler< ::mavsdk::rpc::mocap::SetOdometryRequest, ::mavsdk::rpc::mocap::SetOdometryResponse>*>(
+      static_cast<::grpc_impl::internal::CallbackUnaryHandler< ::mavsdk::rpc::mocap::SetOdometryRequest, ::mavsdk::rpc::mocap::SetOdometryResponse>*>(
           ::grpc::Service::experimental().GetHandler(2))
               ->SetMessageAllocator(allocator);
     }
@@ -322,17 +325,17 @@ class MocapService final {
       BaseClassMustBeDerivedFromService(this);
     }
     // disable synchronous version of this method
-    ::grpc::Status SetOdometry(::grpc::ServerContext* context, const ::mavsdk::rpc::mocap::SetOdometryRequest* request, ::mavsdk::rpc::mocap::SetOdometryResponse* response) override {
+    ::grpc::Status SetOdometry(::grpc::ServerContext* /*context*/, const ::mavsdk::rpc::mocap::SetOdometryRequest* /*request*/, ::mavsdk::rpc::mocap::SetOdometryResponse* /*response*/) override {
       abort();
       return ::grpc::Status(::grpc::StatusCode::UNIMPLEMENTED, "");
     }
-    virtual void SetOdometry(::grpc::ServerContext* context, const ::mavsdk::rpc::mocap::SetOdometryRequest* request, ::mavsdk::rpc::mocap::SetOdometryResponse* response, ::grpc::experimental::ServerCallbackRpcController* controller) { controller->Finish(::grpc::Status(::grpc::StatusCode::UNIMPLEMENTED, "")); }
+    virtual void SetOdometry(::grpc::ServerContext* /*context*/, const ::mavsdk::rpc::mocap::SetOdometryRequest* /*request*/, ::mavsdk::rpc::mocap::SetOdometryResponse* /*response*/, ::grpc::experimental::ServerCallbackRpcController* controller) { controller->Finish(::grpc::Status(::grpc::StatusCode::UNIMPLEMENTED, "")); }
   };
   typedef ExperimentalWithCallbackMethod_SetVisionPositionEstimate<ExperimentalWithCallbackMethod_SetAttitudePositionMocap<ExperimentalWithCallbackMethod_SetOdometry<Service > > > ExperimentalCallbackService;
   template <class BaseClass>
   class WithGenericMethod_SetVisionPositionEstimate : public BaseClass {
    private:
-    void BaseClassMustBeDerivedFromService(const Service *service) {}
+    void BaseClassMustBeDerivedFromService(const Service* /*service*/) {}
    public:
     WithGenericMethod_SetVisionPositionEstimate() {
       ::grpc::Service::MarkMethodGeneric(0);
@@ -341,7 +344,7 @@ class MocapService final {
       BaseClassMustBeDerivedFromService(this);
     }
     // disable synchronous version of this method
-    ::grpc::Status SetVisionPositionEstimate(::grpc::ServerContext* context, const ::mavsdk::rpc::mocap::SetVisionPositionEstimateRequest* request, ::mavsdk::rpc::mocap::SetVisionPositionEstimateResponse* response) override {
+    ::grpc::Status SetVisionPositionEstimate(::grpc::ServerContext* /*context*/, const ::mavsdk::rpc::mocap::SetVisionPositionEstimateRequest* /*request*/, ::mavsdk::rpc::mocap::SetVisionPositionEstimateResponse* /*response*/) override {
       abort();
       return ::grpc::Status(::grpc::StatusCode::UNIMPLEMENTED, "");
     }
@@ -349,7 +352,7 @@ class MocapService final {
   template <class BaseClass>
   class WithGenericMethod_SetAttitudePositionMocap : public BaseClass {
    private:
-    void BaseClassMustBeDerivedFromService(const Service *service) {}
+    void BaseClassMustBeDerivedFromService(const Service* /*service*/) {}
    public:
     WithGenericMethod_SetAttitudePositionMocap() {
       ::grpc::Service::MarkMethodGeneric(1);
@@ -358,7 +361,7 @@ class MocapService final {
       BaseClassMustBeDerivedFromService(this);
     }
     // disable synchronous version of this method
-    ::grpc::Status SetAttitudePositionMocap(::grpc::ServerContext* context, const ::mavsdk::rpc::mocap::SetAttitudePositionMocapRequest* request, ::mavsdk::rpc::mocap::SetAttitudePositionMocapResponse* response) override {
+    ::grpc::Status SetAttitudePositionMocap(::grpc::ServerContext* /*context*/, const ::mavsdk::rpc::mocap::SetAttitudePositionMocapRequest* /*request*/, ::mavsdk::rpc::mocap::SetAttitudePositionMocapResponse* /*response*/) override {
       abort();
       return ::grpc::Status(::grpc::StatusCode::UNIMPLEMENTED, "");
     }
@@ -366,7 +369,7 @@ class MocapService final {
   template <class BaseClass>
   class WithGenericMethod_SetOdometry : public BaseClass {
    private:
-    void BaseClassMustBeDerivedFromService(const Service *service) {}
+    void BaseClassMustBeDerivedFromService(const Service* /*service*/) {}
    public:
     WithGenericMethod_SetOdometry() {
       ::grpc::Service::MarkMethodGeneric(2);
@@ -375,7 +378,7 @@ class MocapService final {
       BaseClassMustBeDerivedFromService(this);
     }
     // disable synchronous version of this method
-    ::grpc::Status SetOdometry(::grpc::ServerContext* context, const ::mavsdk::rpc::mocap::SetOdometryRequest* request, ::mavsdk::rpc::mocap::SetOdometryResponse* response) override {
+    ::grpc::Status SetOdometry(::grpc::ServerContext* /*context*/, const ::mavsdk::rpc::mocap::SetOdometryRequest* /*request*/, ::mavsdk::rpc::mocap::SetOdometryResponse* /*response*/) override {
       abort();
       return ::grpc::Status(::grpc::StatusCode::UNIMPLEMENTED, "");
     }
@@ -383,7 +386,7 @@ class MocapService final {
   template <class BaseClass>
   class WithRawMethod_SetVisionPositionEstimate : public BaseClass {
    private:
-    void BaseClassMustBeDerivedFromService(const Service *service) {}
+    void BaseClassMustBeDerivedFromService(const Service* /*service*/) {}
    public:
     WithRawMethod_SetVisionPositionEstimate() {
       ::grpc::Service::MarkMethodRaw(0);
@@ -392,7 +395,7 @@ class MocapService final {
       BaseClassMustBeDerivedFromService(this);
     }
     // disable synchronous version of this method
-    ::grpc::Status SetVisionPositionEstimate(::grpc::ServerContext* context, const ::mavsdk::rpc::mocap::SetVisionPositionEstimateRequest* request, ::mavsdk::rpc::mocap::SetVisionPositionEstimateResponse* response) override {
+    ::grpc::Status SetVisionPositionEstimate(::grpc::ServerContext* /*context*/, const ::mavsdk::rpc::mocap::SetVisionPositionEstimateRequest* /*request*/, ::mavsdk::rpc::mocap::SetVisionPositionEstimateResponse* /*response*/) override {
       abort();
       return ::grpc::Status(::grpc::StatusCode::UNIMPLEMENTED, "");
     }
@@ -403,7 +406,7 @@ class MocapService final {
   template <class BaseClass>
   class WithRawMethod_SetAttitudePositionMocap : public BaseClass {
    private:
-    void BaseClassMustBeDerivedFromService(const Service *service) {}
+    void BaseClassMustBeDerivedFromService(const Service* /*service*/) {}
    public:
     WithRawMethod_SetAttitudePositionMocap() {
       ::grpc::Service::MarkMethodRaw(1);
@@ -412,7 +415,7 @@ class MocapService final {
       BaseClassMustBeDerivedFromService(this);
     }
     // disable synchronous version of this method
-    ::grpc::Status SetAttitudePositionMocap(::grpc::ServerContext* context, const ::mavsdk::rpc::mocap::SetAttitudePositionMocapRequest* request, ::mavsdk::rpc::mocap::SetAttitudePositionMocapResponse* response) override {
+    ::grpc::Status SetAttitudePositionMocap(::grpc::ServerContext* /*context*/, const ::mavsdk::rpc::mocap::SetAttitudePositionMocapRequest* /*request*/, ::mavsdk::rpc::mocap::SetAttitudePositionMocapResponse* /*response*/) override {
       abort();
       return ::grpc::Status(::grpc::StatusCode::UNIMPLEMENTED, "");
     }
@@ -423,7 +426,7 @@ class MocapService final {
   template <class BaseClass>
   class WithRawMethod_SetOdometry : public BaseClass {
    private:
-    void BaseClassMustBeDerivedFromService(const Service *service) {}
+    void BaseClassMustBeDerivedFromService(const Service* /*service*/) {}
    public:
     WithRawMethod_SetOdometry() {
       ::grpc::Service::MarkMethodRaw(2);
@@ -432,7 +435,7 @@ class MocapService final {
       BaseClassMustBeDerivedFromService(this);
     }
     // disable synchronous version of this method
-    ::grpc::Status SetOdometry(::grpc::ServerContext* context, const ::mavsdk::rpc::mocap::SetOdometryRequest* request, ::mavsdk::rpc::mocap::SetOdometryResponse* response) override {
+    ::grpc::Status SetOdometry(::grpc::ServerContext* /*context*/, const ::mavsdk::rpc::mocap::SetOdometryRequest* /*request*/, ::mavsdk::rpc::mocap::SetOdometryResponse* /*response*/) override {
       abort();
       return ::grpc::Status(::grpc::StatusCode::UNIMPLEMENTED, "");
     }
@@ -443,11 +446,11 @@ class MocapService final {
   template <class BaseClass>
   class ExperimentalWithRawCallbackMethod_SetVisionPositionEstimate : public BaseClass {
    private:
-    void BaseClassMustBeDerivedFromService(const Service *service) {}
+    void BaseClassMustBeDerivedFromService(const Service* /*service*/) {}
    public:
     ExperimentalWithRawCallbackMethod_SetVisionPositionEstimate() {
       ::grpc::Service::experimental().MarkMethodRawCallback(0,
-        new ::grpc::internal::CallbackUnaryHandler< ::grpc::ByteBuffer, ::grpc::ByteBuffer>(
+        new ::grpc_impl::internal::CallbackUnaryHandler< ::grpc::ByteBuffer, ::grpc::ByteBuffer>(
           [this](::grpc::ServerContext* context,
                  const ::grpc::ByteBuffer* request,
                  ::grpc::ByteBuffer* response,
@@ -459,20 +462,20 @@ class MocapService final {
       BaseClassMustBeDerivedFromService(this);
     }
     // disable synchronous version of this method
-    ::grpc::Status SetVisionPositionEstimate(::grpc::ServerContext* context, const ::mavsdk::rpc::mocap::SetVisionPositionEstimateRequest* request, ::mavsdk::rpc::mocap::SetVisionPositionEstimateResponse* response) override {
+    ::grpc::Status SetVisionPositionEstimate(::grpc::ServerContext* /*context*/, const ::mavsdk::rpc::mocap::SetVisionPositionEstimateRequest* /*request*/, ::mavsdk::rpc::mocap::SetVisionPositionEstimateResponse* /*response*/) override {
       abort();
       return ::grpc::Status(::grpc::StatusCode::UNIMPLEMENTED, "");
     }
-    virtual void SetVisionPositionEstimate(::grpc::ServerContext* context, const ::grpc::ByteBuffer* request, ::grpc::ByteBuffer* response, ::grpc::experimental::ServerCallbackRpcController* controller) { controller->Finish(::grpc::Status(::grpc::StatusCode::UNIMPLEMENTED, "")); }
+    virtual void SetVisionPositionEstimate(::grpc::ServerContext* /*context*/, const ::grpc::ByteBuffer* /*request*/, ::grpc::ByteBuffer* /*response*/, ::grpc::experimental::ServerCallbackRpcController* controller) { controller->Finish(::grpc::Status(::grpc::StatusCode::UNIMPLEMENTED, "")); }
   };
   template <class BaseClass>
   class ExperimentalWithRawCallbackMethod_SetAttitudePositionMocap : public BaseClass {
    private:
-    void BaseClassMustBeDerivedFromService(const Service *service) {}
+    void BaseClassMustBeDerivedFromService(const Service* /*service*/) {}
    public:
     ExperimentalWithRawCallbackMethod_SetAttitudePositionMocap() {
       ::grpc::Service::experimental().MarkMethodRawCallback(1,
-        new ::grpc::internal::CallbackUnaryHandler< ::grpc::ByteBuffer, ::grpc::ByteBuffer>(
+        new ::grpc_impl::internal::CallbackUnaryHandler< ::grpc::ByteBuffer, ::grpc::ByteBuffer>(
           [this](::grpc::ServerContext* context,
                  const ::grpc::ByteBuffer* request,
                  ::grpc::ByteBuffer* response,
@@ -484,20 +487,20 @@ class MocapService final {
       BaseClassMustBeDerivedFromService(this);
     }
     // disable synchronous version of this method
-    ::grpc::Status SetAttitudePositionMocap(::grpc::ServerContext* context, const ::mavsdk::rpc::mocap::SetAttitudePositionMocapRequest* request, ::mavsdk::rpc::mocap::SetAttitudePositionMocapResponse* response) override {
+    ::grpc::Status SetAttitudePositionMocap(::grpc::ServerContext* /*context*/, const ::mavsdk::rpc::mocap::SetAttitudePositionMocapRequest* /*request*/, ::mavsdk::rpc::mocap::SetAttitudePositionMocapResponse* /*response*/) override {
       abort();
       return ::grpc::Status(::grpc::StatusCode::UNIMPLEMENTED, "");
     }
-    virtual void SetAttitudePositionMocap(::grpc::ServerContext* context, const ::grpc::ByteBuffer* request, ::grpc::ByteBuffer* response, ::grpc::experimental::ServerCallbackRpcController* controller) { controller->Finish(::grpc::Status(::grpc::StatusCode::UNIMPLEMENTED, "")); }
+    virtual void SetAttitudePositionMocap(::grpc::ServerContext* /*context*/, const ::grpc::ByteBuffer* /*request*/, ::grpc::ByteBuffer* /*response*/, ::grpc::experimental::ServerCallbackRpcController* controller) { controller->Finish(::grpc::Status(::grpc::StatusCode::UNIMPLEMENTED, "")); }
   };
   template <class BaseClass>
   class ExperimentalWithRawCallbackMethod_SetOdometry : public BaseClass {
    private:
-    void BaseClassMustBeDerivedFromService(const Service *service) {}
+    void BaseClassMustBeDerivedFromService(const Service* /*service*/) {}
    public:
     ExperimentalWithRawCallbackMethod_SetOdometry() {
       ::grpc::Service::experimental().MarkMethodRawCallback(2,
-        new ::grpc::internal::CallbackUnaryHandler< ::grpc::ByteBuffer, ::grpc::ByteBuffer>(
+        new ::grpc_impl::internal::CallbackUnaryHandler< ::grpc::ByteBuffer, ::grpc::ByteBuffer>(
           [this](::grpc::ServerContext* context,
                  const ::grpc::ByteBuffer* request,
                  ::grpc::ByteBuffer* response,
@@ -509,16 +512,16 @@ class MocapService final {
       BaseClassMustBeDerivedFromService(this);
     }
     // disable synchronous version of this method
-    ::grpc::Status SetOdometry(::grpc::ServerContext* context, const ::mavsdk::rpc::mocap::SetOdometryRequest* request, ::mavsdk::rpc::mocap::SetOdometryResponse* response) override {
+    ::grpc::Status SetOdometry(::grpc::ServerContext* /*context*/, const ::mavsdk::rpc::mocap::SetOdometryRequest* /*request*/, ::mavsdk::rpc::mocap::SetOdometryResponse* /*response*/) override {
       abort();
       return ::grpc::Status(::grpc::StatusCode::UNIMPLEMENTED, "");
     }
-    virtual void SetOdometry(::grpc::ServerContext* context, const ::grpc::ByteBuffer* request, ::grpc::ByteBuffer* response, ::grpc::experimental::ServerCallbackRpcController* controller) { controller->Finish(::grpc::Status(::grpc::StatusCode::UNIMPLEMENTED, "")); }
+    virtual void SetOdometry(::grpc::ServerContext* /*context*/, const ::grpc::ByteBuffer* /*request*/, ::grpc::ByteBuffer* /*response*/, ::grpc::experimental::ServerCallbackRpcController* controller) { controller->Finish(::grpc::Status(::grpc::StatusCode::UNIMPLEMENTED, "")); }
   };
   template <class BaseClass>
   class WithStreamedUnaryMethod_SetVisionPositionEstimate : public BaseClass {
    private:
-    void BaseClassMustBeDerivedFromService(const Service *service) {}
+    void BaseClassMustBeDerivedFromService(const Service* /*service*/) {}
    public:
     WithStreamedUnaryMethod_SetVisionPositionEstimate() {
       ::grpc::Service::MarkMethodStreamed(0,
@@ -528,7 +531,7 @@ class MocapService final {
       BaseClassMustBeDerivedFromService(this);
     }
     // disable regular version of this method
-    ::grpc::Status SetVisionPositionEstimate(::grpc::ServerContext* context, const ::mavsdk::rpc::mocap::SetVisionPositionEstimateRequest* request, ::mavsdk::rpc::mocap::SetVisionPositionEstimateResponse* response) override {
+    ::grpc::Status SetVisionPositionEstimate(::grpc::ServerContext* /*context*/, const ::mavsdk::rpc::mocap::SetVisionPositionEstimateRequest* /*request*/, ::mavsdk::rpc::mocap::SetVisionPositionEstimateResponse* /*response*/) override {
       abort();
       return ::grpc::Status(::grpc::StatusCode::UNIMPLEMENTED, "");
     }
@@ -538,7 +541,7 @@ class MocapService final {
   template <class BaseClass>
   class WithStreamedUnaryMethod_SetAttitudePositionMocap : public BaseClass {
    private:
-    void BaseClassMustBeDerivedFromService(const Service *service) {}
+    void BaseClassMustBeDerivedFromService(const Service* /*service*/) {}
    public:
     WithStreamedUnaryMethod_SetAttitudePositionMocap() {
       ::grpc::Service::MarkMethodStreamed(1,
@@ -548,7 +551,7 @@ class MocapService final {
       BaseClassMustBeDerivedFromService(this);
     }
     // disable regular version of this method
-    ::grpc::Status SetAttitudePositionMocap(::grpc::ServerContext* context, const ::mavsdk::rpc::mocap::SetAttitudePositionMocapRequest* request, ::mavsdk::rpc::mocap::SetAttitudePositionMocapResponse* response) override {
+    ::grpc::Status SetAttitudePositionMocap(::grpc::ServerContext* /*context*/, const ::mavsdk::rpc::mocap::SetAttitudePositionMocapRequest* /*request*/, ::mavsdk::rpc::mocap::SetAttitudePositionMocapResponse* /*response*/) override {
       abort();
       return ::grpc::Status(::grpc::StatusCode::UNIMPLEMENTED, "");
     }
@@ -558,7 +561,7 @@ class MocapService final {
   template <class BaseClass>
   class WithStreamedUnaryMethod_SetOdometry : public BaseClass {
    private:
-    void BaseClassMustBeDerivedFromService(const Service *service) {}
+    void BaseClassMustBeDerivedFromService(const Service* /*service*/) {}
    public:
     WithStreamedUnaryMethod_SetOdometry() {
       ::grpc::Service::MarkMethodStreamed(2,
@@ -568,7 +571,7 @@ class MocapService final {
       BaseClassMustBeDerivedFromService(this);
     }
     // disable regular version of this method
-    ::grpc::Status SetOdometry(::grpc::ServerContext* context, const ::mavsdk::rpc::mocap::SetOdometryRequest* request, ::mavsdk::rpc::mocap::SetOdometryResponse* response) override {
+    ::grpc::Status SetOdometry(::grpc::ServerContext* /*context*/, const ::mavsdk::rpc::mocap::SetOdometryRequest* /*request*/, ::mavsdk::rpc::mocap::SetOdometryResponse* /*response*/) override {
       abort();
       return ::grpc::Status(::grpc::StatusCode::UNIMPLEMENTED, "");
     }
