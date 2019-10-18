@@ -58,12 +58,12 @@ extern const ::PROTOBUF_NAMESPACE_ID::internal::DescriptorTable descriptor_table
 namespace mavsdk {
 namespace rpc {
 namespace shell {
-class SetShellMessageRequest;
-class SetShellMessageRequestDefaultTypeInternal;
-extern SetShellMessageRequestDefaultTypeInternal _SetShellMessageRequest_default_instance_;
-class SetShellMessageResponse;
-class SetShellMessageResponseDefaultTypeInternal;
-extern SetShellMessageResponseDefaultTypeInternal _SetShellMessageResponse_default_instance_;
+class SendRequest;
+class SendRequestDefaultTypeInternal;
+extern SendRequestDefaultTypeInternal _SendRequest_default_instance_;
+class SendResponse;
+class SendResponseDefaultTypeInternal;
+extern SendResponseDefaultTypeInternal _SendResponse_default_instance_;
 class ShellMessage;
 class ShellMessageDefaultTypeInternal;
 extern ShellMessageDefaultTypeInternal _ShellMessage_default_instance_;
@@ -74,8 +74,8 @@ extern ShellResultDefaultTypeInternal _ShellResult_default_instance_;
 }  // namespace rpc
 }  // namespace mavsdk
 PROTOBUF_NAMESPACE_OPEN
-template<> ::mavsdk::rpc::shell::SetShellMessageRequest* Arena::CreateMaybeMessage<::mavsdk::rpc::shell::SetShellMessageRequest>(Arena*);
-template<> ::mavsdk::rpc::shell::SetShellMessageResponse* Arena::CreateMaybeMessage<::mavsdk::rpc::shell::SetShellMessageResponse>(Arena*);
+template<> ::mavsdk::rpc::shell::SendRequest* Arena::CreateMaybeMessage<::mavsdk::rpc::shell::SendRequest>(Arena*);
+template<> ::mavsdk::rpc::shell::SendResponse* Arena::CreateMaybeMessage<::mavsdk::rpc::shell::SendResponse>(Arena*);
 template<> ::mavsdk::rpc::shell::ShellMessage* Arena::CreateMaybeMessage<::mavsdk::rpc::shell::ShellMessage>(Arena*);
 template<> ::mavsdk::rpc::shell::ShellResult* Arena::CreateMaybeMessage<::mavsdk::rpc::shell::ShellResult>(Arena*);
 PROTOBUF_NAMESPACE_CLOSE
@@ -114,23 +114,23 @@ inline bool ShellResult_Result_Parse(
 }
 // ===================================================================
 
-class SetShellMessageRequest :
-    public ::PROTOBUF_NAMESPACE_ID::Message /* @@protoc_insertion_point(class_definition:mavsdk.rpc.shell.SetShellMessageRequest) */ {
+class SendRequest :
+    public ::PROTOBUF_NAMESPACE_ID::Message /* @@protoc_insertion_point(class_definition:mavsdk.rpc.shell.SendRequest) */ {
  public:
-  SetShellMessageRequest();
-  virtual ~SetShellMessageRequest();
+  SendRequest();
+  virtual ~SendRequest();
 
-  SetShellMessageRequest(const SetShellMessageRequest& from);
-  SetShellMessageRequest(SetShellMessageRequest&& from) noexcept
-    : SetShellMessageRequest() {
+  SendRequest(const SendRequest& from);
+  SendRequest(SendRequest&& from) noexcept
+    : SendRequest() {
     *this = ::std::move(from);
   }
 
-  inline SetShellMessageRequest& operator=(const SetShellMessageRequest& from) {
+  inline SendRequest& operator=(const SendRequest& from) {
     CopyFrom(from);
     return *this;
   }
-  inline SetShellMessageRequest& operator=(SetShellMessageRequest&& from) noexcept {
+  inline SendRequest& operator=(SendRequest&& from) noexcept {
     if (GetArenaNoVirtual() == from.GetArenaNoVirtual()) {
       if (this != &from) InternalSwap(&from);
     } else {
@@ -148,37 +148,37 @@ class SetShellMessageRequest :
   static const ::PROTOBUF_NAMESPACE_ID::Reflection* GetReflection() {
     return GetMetadataStatic().reflection;
   }
-  static const SetShellMessageRequest& default_instance();
+  static const SendRequest& default_instance();
 
   static void InitAsDefaultInstance();  // FOR INTERNAL USE ONLY
-  static inline const SetShellMessageRequest* internal_default_instance() {
-    return reinterpret_cast<const SetShellMessageRequest*>(
-               &_SetShellMessageRequest_default_instance_);
+  static inline const SendRequest* internal_default_instance() {
+    return reinterpret_cast<const SendRequest*>(
+               &_SendRequest_default_instance_);
   }
   static constexpr int kIndexInFileMessages =
     0;
 
-  friend void swap(SetShellMessageRequest& a, SetShellMessageRequest& b) {
+  friend void swap(SendRequest& a, SendRequest& b) {
     a.Swap(&b);
   }
-  inline void Swap(SetShellMessageRequest* other) {
+  inline void Swap(SendRequest* other) {
     if (other == this) return;
     InternalSwap(other);
   }
 
   // implements Message ----------------------------------------------
 
-  inline SetShellMessageRequest* New() const final {
-    return CreateMaybeMessage<SetShellMessageRequest>(nullptr);
+  inline SendRequest* New() const final {
+    return CreateMaybeMessage<SendRequest>(nullptr);
   }
 
-  SetShellMessageRequest* New(::PROTOBUF_NAMESPACE_ID::Arena* arena) const final {
-    return CreateMaybeMessage<SetShellMessageRequest>(arena);
+  SendRequest* New(::PROTOBUF_NAMESPACE_ID::Arena* arena) const final {
+    return CreateMaybeMessage<SendRequest>(arena);
   }
   void CopyFrom(const ::PROTOBUF_NAMESPACE_ID::Message& from) final;
   void MergeFrom(const ::PROTOBUF_NAMESPACE_ID::Message& from) final;
-  void CopyFrom(const SetShellMessageRequest& from);
-  void MergeFrom(const SetShellMessageRequest& from);
+  void CopyFrom(const SendRequest& from);
+  void MergeFrom(const SendRequest& from);
   PROTOBUF_ATTRIBUTE_REINITIALIZES void Clear() final;
   bool IsInitialized() const final;
 
@@ -197,10 +197,10 @@ class SetShellMessageRequest :
   inline void SharedCtor();
   inline void SharedDtor();
   void SetCachedSize(int size) const final;
-  void InternalSwap(SetShellMessageRequest* other);
+  void InternalSwap(SendRequest* other);
   friend class ::PROTOBUF_NAMESPACE_ID::internal::AnyMetadata;
   static ::PROTOBUF_NAMESPACE_ID::StringPiece FullMessageName() {
-    return "mavsdk.rpc.shell.SetShellMessageRequest";
+    return "mavsdk.rpc.shell.SendRequest";
   }
   private:
   inline ::PROTOBUF_NAMESPACE_ID::Arena* GetArenaNoVirtual() const {
@@ -238,7 +238,7 @@ class SetShellMessageRequest :
   ::mavsdk::rpc::shell::ShellMessage* mutable_shell_message();
   void set_allocated_shell_message(::mavsdk::rpc::shell::ShellMessage* shell_message);
 
-  // @@protoc_insertion_point(class_scope:mavsdk.rpc.shell.SetShellMessageRequest)
+  // @@protoc_insertion_point(class_scope:mavsdk.rpc.shell.SendRequest)
  private:
   class _Internal;
 
@@ -249,23 +249,23 @@ class SetShellMessageRequest :
 };
 // -------------------------------------------------------------------
 
-class SetShellMessageResponse :
-    public ::PROTOBUF_NAMESPACE_ID::Message /* @@protoc_insertion_point(class_definition:mavsdk.rpc.shell.SetShellMessageResponse) */ {
+class SendResponse :
+    public ::PROTOBUF_NAMESPACE_ID::Message /* @@protoc_insertion_point(class_definition:mavsdk.rpc.shell.SendResponse) */ {
  public:
-  SetShellMessageResponse();
-  virtual ~SetShellMessageResponse();
+  SendResponse();
+  virtual ~SendResponse();
 
-  SetShellMessageResponse(const SetShellMessageResponse& from);
-  SetShellMessageResponse(SetShellMessageResponse&& from) noexcept
-    : SetShellMessageResponse() {
+  SendResponse(const SendResponse& from);
+  SendResponse(SendResponse&& from) noexcept
+    : SendResponse() {
     *this = ::std::move(from);
   }
 
-  inline SetShellMessageResponse& operator=(const SetShellMessageResponse& from) {
+  inline SendResponse& operator=(const SendResponse& from) {
     CopyFrom(from);
     return *this;
   }
-  inline SetShellMessageResponse& operator=(SetShellMessageResponse&& from) noexcept {
+  inline SendResponse& operator=(SendResponse&& from) noexcept {
     if (GetArenaNoVirtual() == from.GetArenaNoVirtual()) {
       if (this != &from) InternalSwap(&from);
     } else {
@@ -283,37 +283,37 @@ class SetShellMessageResponse :
   static const ::PROTOBUF_NAMESPACE_ID::Reflection* GetReflection() {
     return GetMetadataStatic().reflection;
   }
-  static const SetShellMessageResponse& default_instance();
+  static const SendResponse& default_instance();
 
   static void InitAsDefaultInstance();  // FOR INTERNAL USE ONLY
-  static inline const SetShellMessageResponse* internal_default_instance() {
-    return reinterpret_cast<const SetShellMessageResponse*>(
-               &_SetShellMessageResponse_default_instance_);
+  static inline const SendResponse* internal_default_instance() {
+    return reinterpret_cast<const SendResponse*>(
+               &_SendResponse_default_instance_);
   }
   static constexpr int kIndexInFileMessages =
     1;
 
-  friend void swap(SetShellMessageResponse& a, SetShellMessageResponse& b) {
+  friend void swap(SendResponse& a, SendResponse& b) {
     a.Swap(&b);
   }
-  inline void Swap(SetShellMessageResponse* other) {
+  inline void Swap(SendResponse* other) {
     if (other == this) return;
     InternalSwap(other);
   }
 
   // implements Message ----------------------------------------------
 
-  inline SetShellMessageResponse* New() const final {
-    return CreateMaybeMessage<SetShellMessageResponse>(nullptr);
+  inline SendResponse* New() const final {
+    return CreateMaybeMessage<SendResponse>(nullptr);
   }
 
-  SetShellMessageResponse* New(::PROTOBUF_NAMESPACE_ID::Arena* arena) const final {
-    return CreateMaybeMessage<SetShellMessageResponse>(arena);
+  SendResponse* New(::PROTOBUF_NAMESPACE_ID::Arena* arena) const final {
+    return CreateMaybeMessage<SendResponse>(arena);
   }
   void CopyFrom(const ::PROTOBUF_NAMESPACE_ID::Message& from) final;
   void MergeFrom(const ::PROTOBUF_NAMESPACE_ID::Message& from) final;
-  void CopyFrom(const SetShellMessageResponse& from);
-  void MergeFrom(const SetShellMessageResponse& from);
+  void CopyFrom(const SendResponse& from);
+  void MergeFrom(const SendResponse& from);
   PROTOBUF_ATTRIBUTE_REINITIALIZES void Clear() final;
   bool IsInitialized() const final;
 
@@ -332,10 +332,10 @@ class SetShellMessageResponse :
   inline void SharedCtor();
   inline void SharedDtor();
   void SetCachedSize(int size) const final;
-  void InternalSwap(SetShellMessageResponse* other);
+  void InternalSwap(SendResponse* other);
   friend class ::PROTOBUF_NAMESPACE_ID::internal::AnyMetadata;
   static ::PROTOBUF_NAMESPACE_ID::StringPiece FullMessageName() {
-    return "mavsdk.rpc.shell.SetShellMessageResponse";
+    return "mavsdk.rpc.shell.SendResponse";
   }
   private:
   inline ::PROTOBUF_NAMESPACE_ID::Arena* GetArenaNoVirtual() const {
@@ -360,23 +360,23 @@ class SetShellMessageResponse :
   // accessors -------------------------------------------------------
 
   enum : int {
-    kResponseDataFieldNumber = 2,
+    kResponseMessageDataFieldNumber = 2,
     kShellResultFieldNumber = 1,
   };
-  // string response_data = 2;
-  void clear_response_data();
-  const std::string& response_data() const;
-  void set_response_data(const std::string& value);
-  void set_response_data(std::string&& value);
-  void set_response_data(const char* value);
-  void set_response_data(const char* value, size_t size);
-  std::string* mutable_response_data();
-  std::string* release_response_data();
-  void set_allocated_response_data(std::string* response_data);
+  // string response_message_data = 2;
+  void clear_response_message_data();
+  const std::string& response_message_data() const;
+  void set_response_message_data(const std::string& value);
+  void set_response_message_data(std::string&& value);
+  void set_response_message_data(const char* value);
+  void set_response_message_data(const char* value, size_t size);
+  std::string* mutable_response_message_data();
+  std::string* release_response_message_data();
+  void set_allocated_response_message_data(std::string* response_message_data);
   private:
-  const std::string& _internal_response_data() const;
-  void _internal_set_response_data(const std::string& value);
-  std::string* _internal_mutable_response_data();
+  const std::string& _internal_response_message_data() const;
+  void _internal_set_response_message_data(const std::string& value);
+  std::string* _internal_mutable_response_message_data();
   public:
 
   // .mavsdk.rpc.shell.ShellResult shell_result = 1;
@@ -390,12 +390,12 @@ class SetShellMessageResponse :
   ::mavsdk::rpc::shell::ShellResult* mutable_shell_result();
   void set_allocated_shell_result(::mavsdk::rpc::shell::ShellResult* shell_result);
 
-  // @@protoc_insertion_point(class_scope:mavsdk.rpc.shell.SetShellMessageResponse)
+  // @@protoc_insertion_point(class_scope:mavsdk.rpc.shell.SendResponse)
  private:
   class _Internal;
 
   ::PROTOBUF_NAMESPACE_ID::internal::InternalMetadataWithArena _internal_metadata_;
-  ::PROTOBUF_NAMESPACE_ID::internal::ArenaStringPtr response_data_;
+  ::PROTOBUF_NAMESPACE_ID::internal::ArenaStringPtr response_message_data_;
   ::mavsdk::rpc::shell::ShellResult* shell_result_;
   mutable ::PROTOBUF_NAMESPACE_ID::internal::CachedSize _cached_size_;
   friend struct ::TableStruct_shell_2fshell_2eproto;
@@ -706,7 +706,6 @@ class ShellResult :
 
   enum : int {
     kResultStrFieldNumber = 2,
-    kResponseDataFieldNumber = 3,
     kResultFieldNumber = 1,
   };
   // string result_str = 2;
@@ -725,22 +724,6 @@ class ShellResult :
   std::string* _internal_mutable_result_str();
   public:
 
-  // string response_data = 3;
-  void clear_response_data();
-  const std::string& response_data() const;
-  void set_response_data(const std::string& value);
-  void set_response_data(std::string&& value);
-  void set_response_data(const char* value);
-  void set_response_data(const char* value, size_t size);
-  std::string* mutable_response_data();
-  std::string* release_response_data();
-  void set_allocated_response_data(std::string* response_data);
-  private:
-  const std::string& _internal_response_data() const;
-  void _internal_set_response_data(const std::string& value);
-  std::string* _internal_mutable_response_data();
-  public:
-
   // .mavsdk.rpc.shell.ShellResult.Result result = 1;
   void clear_result();
   ::mavsdk::rpc::shell::ShellResult_Result result() const;
@@ -752,7 +735,6 @@ class ShellResult :
 
   ::PROTOBUF_NAMESPACE_ID::internal::InternalMetadataWithArena _internal_metadata_;
   ::PROTOBUF_NAMESPACE_ID::internal::ArenaStringPtr result_str_;
-  ::PROTOBUF_NAMESPACE_ID::internal::ArenaStringPtr response_data_;
   int result_;
   mutable ::PROTOBUF_NAMESPACE_ID::internal::CachedSize _cached_size_;
   friend struct ::TableStruct_shell_2fshell_2eproto;
@@ -766,41 +748,41 @@ class ShellResult :
   #pragma GCC diagnostic push
   #pragma GCC diagnostic ignored "-Wstrict-aliasing"
 #endif  // __GNUC__
-// SetShellMessageRequest
+// SendRequest
 
 // .mavsdk.rpc.shell.ShellMessage shell_message = 1;
-inline bool SetShellMessageRequest::has_shell_message() const {
+inline bool SendRequest::has_shell_message() const {
   return this != internal_default_instance() && shell_message_ != nullptr;
 }
-inline void SetShellMessageRequest::clear_shell_message() {
+inline void SendRequest::clear_shell_message() {
   if (GetArenaNoVirtual() == nullptr && shell_message_ != nullptr) {
     delete shell_message_;
   }
   shell_message_ = nullptr;
 }
-inline const ::mavsdk::rpc::shell::ShellMessage& SetShellMessageRequest::shell_message() const {
+inline const ::mavsdk::rpc::shell::ShellMessage& SendRequest::shell_message() const {
   const ::mavsdk::rpc::shell::ShellMessage* p = shell_message_;
-  // @@protoc_insertion_point(field_get:mavsdk.rpc.shell.SetShellMessageRequest.shell_message)
+  // @@protoc_insertion_point(field_get:mavsdk.rpc.shell.SendRequest.shell_message)
   return p != nullptr ? *p : *reinterpret_cast<const ::mavsdk::rpc::shell::ShellMessage*>(
       &::mavsdk::rpc::shell::_ShellMessage_default_instance_);
 }
-inline ::mavsdk::rpc::shell::ShellMessage* SetShellMessageRequest::release_shell_message() {
-  // @@protoc_insertion_point(field_release:mavsdk.rpc.shell.SetShellMessageRequest.shell_message)
+inline ::mavsdk::rpc::shell::ShellMessage* SendRequest::release_shell_message() {
+  // @@protoc_insertion_point(field_release:mavsdk.rpc.shell.SendRequest.shell_message)
   
   ::mavsdk::rpc::shell::ShellMessage* temp = shell_message_;
   shell_message_ = nullptr;
   return temp;
 }
-inline ::mavsdk::rpc::shell::ShellMessage* SetShellMessageRequest::mutable_shell_message() {
+inline ::mavsdk::rpc::shell::ShellMessage* SendRequest::mutable_shell_message() {
   
   if (shell_message_ == nullptr) {
     auto* p = CreateMaybeMessage<::mavsdk::rpc::shell::ShellMessage>(GetArenaNoVirtual());
     shell_message_ = p;
   }
-  // @@protoc_insertion_point(field_mutable:mavsdk.rpc.shell.SetShellMessageRequest.shell_message)
+  // @@protoc_insertion_point(field_mutable:mavsdk.rpc.shell.SendRequest.shell_message)
   return shell_message_;
 }
-inline void SetShellMessageRequest::set_allocated_shell_message(::mavsdk::rpc::shell::ShellMessage* shell_message) {
+inline void SendRequest::set_allocated_shell_message(::mavsdk::rpc::shell::ShellMessage* shell_message) {
   ::PROTOBUF_NAMESPACE_ID::Arena* message_arena = GetArenaNoVirtual();
   if (message_arena == nullptr) {
     delete shell_message_;
@@ -816,46 +798,46 @@ inline void SetShellMessageRequest::set_allocated_shell_message(::mavsdk::rpc::s
     
   }
   shell_message_ = shell_message;
-  // @@protoc_insertion_point(field_set_allocated:mavsdk.rpc.shell.SetShellMessageRequest.shell_message)
+  // @@protoc_insertion_point(field_set_allocated:mavsdk.rpc.shell.SendRequest.shell_message)
 }
 
 // -------------------------------------------------------------------
 
-// SetShellMessageResponse
+// SendResponse
 
 // .mavsdk.rpc.shell.ShellResult shell_result = 1;
-inline bool SetShellMessageResponse::has_shell_result() const {
+inline bool SendResponse::has_shell_result() const {
   return this != internal_default_instance() && shell_result_ != nullptr;
 }
-inline void SetShellMessageResponse::clear_shell_result() {
+inline void SendResponse::clear_shell_result() {
   if (GetArenaNoVirtual() == nullptr && shell_result_ != nullptr) {
     delete shell_result_;
   }
   shell_result_ = nullptr;
 }
-inline const ::mavsdk::rpc::shell::ShellResult& SetShellMessageResponse::shell_result() const {
+inline const ::mavsdk::rpc::shell::ShellResult& SendResponse::shell_result() const {
   const ::mavsdk::rpc::shell::ShellResult* p = shell_result_;
-  // @@protoc_insertion_point(field_get:mavsdk.rpc.shell.SetShellMessageResponse.shell_result)
+  // @@protoc_insertion_point(field_get:mavsdk.rpc.shell.SendResponse.shell_result)
   return p != nullptr ? *p : *reinterpret_cast<const ::mavsdk::rpc::shell::ShellResult*>(
       &::mavsdk::rpc::shell::_ShellResult_default_instance_);
 }
-inline ::mavsdk::rpc::shell::ShellResult* SetShellMessageResponse::release_shell_result() {
-  // @@protoc_insertion_point(field_release:mavsdk.rpc.shell.SetShellMessageResponse.shell_result)
+inline ::mavsdk::rpc::shell::ShellResult* SendResponse::release_shell_result() {
+  // @@protoc_insertion_point(field_release:mavsdk.rpc.shell.SendResponse.shell_result)
   
   ::mavsdk::rpc::shell::ShellResult* temp = shell_result_;
   shell_result_ = nullptr;
   return temp;
 }
-inline ::mavsdk::rpc::shell::ShellResult* SetShellMessageResponse::mutable_shell_result() {
+inline ::mavsdk::rpc::shell::ShellResult* SendResponse::mutable_shell_result() {
   
   if (shell_result_ == nullptr) {
     auto* p = CreateMaybeMessage<::mavsdk::rpc::shell::ShellResult>(GetArenaNoVirtual());
     shell_result_ = p;
   }
-  // @@protoc_insertion_point(field_mutable:mavsdk.rpc.shell.SetShellMessageResponse.shell_result)
+  // @@protoc_insertion_point(field_mutable:mavsdk.rpc.shell.SendResponse.shell_result)
   return shell_result_;
 }
-inline void SetShellMessageResponse::set_allocated_shell_result(::mavsdk::rpc::shell::ShellResult* shell_result) {
+inline void SendResponse::set_allocated_shell_result(::mavsdk::rpc::shell::ShellResult* shell_result) {
   ::PROTOBUF_NAMESPACE_ID::Arena* message_arena = GetArenaNoVirtual();
   if (message_arena == nullptr) {
     delete shell_result_;
@@ -871,67 +853,67 @@ inline void SetShellMessageResponse::set_allocated_shell_result(::mavsdk::rpc::s
     
   }
   shell_result_ = shell_result;
-  // @@protoc_insertion_point(field_set_allocated:mavsdk.rpc.shell.SetShellMessageResponse.shell_result)
+  // @@protoc_insertion_point(field_set_allocated:mavsdk.rpc.shell.SendResponse.shell_result)
 }
 
-// string response_data = 2;
-inline void SetShellMessageResponse::clear_response_data() {
-  response_data_.ClearToEmptyNoArena(&::PROTOBUF_NAMESPACE_ID::internal::GetEmptyStringAlreadyInited());
+// string response_message_data = 2;
+inline void SendResponse::clear_response_message_data() {
+  response_message_data_.ClearToEmptyNoArena(&::PROTOBUF_NAMESPACE_ID::internal::GetEmptyStringAlreadyInited());
 }
-inline const std::string& SetShellMessageResponse::response_data() const {
-  // @@protoc_insertion_point(field_get:mavsdk.rpc.shell.SetShellMessageResponse.response_data)
-  return _internal_response_data();
+inline const std::string& SendResponse::response_message_data() const {
+  // @@protoc_insertion_point(field_get:mavsdk.rpc.shell.SendResponse.response_message_data)
+  return _internal_response_message_data();
 }
-inline void SetShellMessageResponse::set_response_data(const std::string& value) {
-  _internal_set_response_data(value);
-  // @@protoc_insertion_point(field_set:mavsdk.rpc.shell.SetShellMessageResponse.response_data)
+inline void SendResponse::set_response_message_data(const std::string& value) {
+  _internal_set_response_message_data(value);
+  // @@protoc_insertion_point(field_set:mavsdk.rpc.shell.SendResponse.response_message_data)
 }
-inline std::string* SetShellMessageResponse::mutable_response_data() {
-  // @@protoc_insertion_point(field_mutable:mavsdk.rpc.shell.SetShellMessageResponse.response_data)
-  return _internal_mutable_response_data();
+inline std::string* SendResponse::mutable_response_message_data() {
+  // @@protoc_insertion_point(field_mutable:mavsdk.rpc.shell.SendResponse.response_message_data)
+  return _internal_mutable_response_message_data();
 }
-inline const std::string& SetShellMessageResponse::_internal_response_data() const {
-  return response_data_.GetNoArena();
+inline const std::string& SendResponse::_internal_response_message_data() const {
+  return response_message_data_.GetNoArena();
 }
-inline void SetShellMessageResponse::_internal_set_response_data(const std::string& value) {
+inline void SendResponse::_internal_set_response_message_data(const std::string& value) {
   
-  response_data_.SetNoArena(&::PROTOBUF_NAMESPACE_ID::internal::GetEmptyStringAlreadyInited(), value);
+  response_message_data_.SetNoArena(&::PROTOBUF_NAMESPACE_ID::internal::GetEmptyStringAlreadyInited(), value);
 }
-inline void SetShellMessageResponse::set_response_data(std::string&& value) {
+inline void SendResponse::set_response_message_data(std::string&& value) {
   
-  response_data_.SetNoArena(
+  response_message_data_.SetNoArena(
     &::PROTOBUF_NAMESPACE_ID::internal::GetEmptyStringAlreadyInited(), ::std::move(value));
-  // @@protoc_insertion_point(field_set_rvalue:mavsdk.rpc.shell.SetShellMessageResponse.response_data)
+  // @@protoc_insertion_point(field_set_rvalue:mavsdk.rpc.shell.SendResponse.response_message_data)
 }
-inline void SetShellMessageResponse::set_response_data(const char* value) {
+inline void SendResponse::set_response_message_data(const char* value) {
   GOOGLE_DCHECK(value != nullptr);
   
-  response_data_.SetNoArena(&::PROTOBUF_NAMESPACE_ID::internal::GetEmptyStringAlreadyInited(), ::std::string(value));
-  // @@protoc_insertion_point(field_set_char:mavsdk.rpc.shell.SetShellMessageResponse.response_data)
+  response_message_data_.SetNoArena(&::PROTOBUF_NAMESPACE_ID::internal::GetEmptyStringAlreadyInited(), ::std::string(value));
+  // @@protoc_insertion_point(field_set_char:mavsdk.rpc.shell.SendResponse.response_message_data)
 }
-inline void SetShellMessageResponse::set_response_data(const char* value, size_t size) {
+inline void SendResponse::set_response_message_data(const char* value, size_t size) {
   
-  response_data_.SetNoArena(&::PROTOBUF_NAMESPACE_ID::internal::GetEmptyStringAlreadyInited(),
+  response_message_data_.SetNoArena(&::PROTOBUF_NAMESPACE_ID::internal::GetEmptyStringAlreadyInited(),
       ::std::string(reinterpret_cast<const char*>(value), size));
-  // @@protoc_insertion_point(field_set_pointer:mavsdk.rpc.shell.SetShellMessageResponse.response_data)
+  // @@protoc_insertion_point(field_set_pointer:mavsdk.rpc.shell.SendResponse.response_message_data)
 }
-inline std::string* SetShellMessageResponse::_internal_mutable_response_data() {
+inline std::string* SendResponse::_internal_mutable_response_message_data() {
   
-  return response_data_.MutableNoArena(&::PROTOBUF_NAMESPACE_ID::internal::GetEmptyStringAlreadyInited());
+  return response_message_data_.MutableNoArena(&::PROTOBUF_NAMESPACE_ID::internal::GetEmptyStringAlreadyInited());
 }
-inline std::string* SetShellMessageResponse::release_response_data() {
-  // @@protoc_insertion_point(field_release:mavsdk.rpc.shell.SetShellMessageResponse.response_data)
+inline std::string* SendResponse::release_response_message_data() {
+  // @@protoc_insertion_point(field_release:mavsdk.rpc.shell.SendResponse.response_message_data)
   
-  return response_data_.ReleaseNoArena(&::PROTOBUF_NAMESPACE_ID::internal::GetEmptyStringAlreadyInited());
+  return response_message_data_.ReleaseNoArena(&::PROTOBUF_NAMESPACE_ID::internal::GetEmptyStringAlreadyInited());
 }
-inline void SetShellMessageResponse::set_allocated_response_data(std::string* response_data) {
-  if (response_data != nullptr) {
+inline void SendResponse::set_allocated_response_message_data(std::string* response_message_data) {
+  if (response_message_data != nullptr) {
     
   } else {
     
   }
-  response_data_.SetAllocatedNoArena(&::PROTOBUF_NAMESPACE_ID::internal::GetEmptyStringAlreadyInited(), response_data);
-  // @@protoc_insertion_point(field_set_allocated:mavsdk.rpc.shell.SetShellMessageResponse.response_data)
+  response_message_data_.SetAllocatedNoArena(&::PROTOBUF_NAMESPACE_ID::internal::GetEmptyStringAlreadyInited(), response_message_data);
+  // @@protoc_insertion_point(field_set_allocated:mavsdk.rpc.shell.SendResponse.response_message_data)
 }
 
 // -------------------------------------------------------------------
@@ -1102,66 +1084,6 @@ inline void ShellResult::set_allocated_result_str(std::string* result_str) {
   }
   result_str_.SetAllocatedNoArena(&::PROTOBUF_NAMESPACE_ID::internal::GetEmptyStringAlreadyInited(), result_str);
   // @@protoc_insertion_point(field_set_allocated:mavsdk.rpc.shell.ShellResult.result_str)
-}
-
-// string response_data = 3;
-inline void ShellResult::clear_response_data() {
-  response_data_.ClearToEmptyNoArena(&::PROTOBUF_NAMESPACE_ID::internal::GetEmptyStringAlreadyInited());
-}
-inline const std::string& ShellResult::response_data() const {
-  // @@protoc_insertion_point(field_get:mavsdk.rpc.shell.ShellResult.response_data)
-  return _internal_response_data();
-}
-inline void ShellResult::set_response_data(const std::string& value) {
-  _internal_set_response_data(value);
-  // @@protoc_insertion_point(field_set:mavsdk.rpc.shell.ShellResult.response_data)
-}
-inline std::string* ShellResult::mutable_response_data() {
-  // @@protoc_insertion_point(field_mutable:mavsdk.rpc.shell.ShellResult.response_data)
-  return _internal_mutable_response_data();
-}
-inline const std::string& ShellResult::_internal_response_data() const {
-  return response_data_.GetNoArena();
-}
-inline void ShellResult::_internal_set_response_data(const std::string& value) {
-  
-  response_data_.SetNoArena(&::PROTOBUF_NAMESPACE_ID::internal::GetEmptyStringAlreadyInited(), value);
-}
-inline void ShellResult::set_response_data(std::string&& value) {
-  
-  response_data_.SetNoArena(
-    &::PROTOBUF_NAMESPACE_ID::internal::GetEmptyStringAlreadyInited(), ::std::move(value));
-  // @@protoc_insertion_point(field_set_rvalue:mavsdk.rpc.shell.ShellResult.response_data)
-}
-inline void ShellResult::set_response_data(const char* value) {
-  GOOGLE_DCHECK(value != nullptr);
-  
-  response_data_.SetNoArena(&::PROTOBUF_NAMESPACE_ID::internal::GetEmptyStringAlreadyInited(), ::std::string(value));
-  // @@protoc_insertion_point(field_set_char:mavsdk.rpc.shell.ShellResult.response_data)
-}
-inline void ShellResult::set_response_data(const char* value, size_t size) {
-  
-  response_data_.SetNoArena(&::PROTOBUF_NAMESPACE_ID::internal::GetEmptyStringAlreadyInited(),
-      ::std::string(reinterpret_cast<const char*>(value), size));
-  // @@protoc_insertion_point(field_set_pointer:mavsdk.rpc.shell.ShellResult.response_data)
-}
-inline std::string* ShellResult::_internal_mutable_response_data() {
-  
-  return response_data_.MutableNoArena(&::PROTOBUF_NAMESPACE_ID::internal::GetEmptyStringAlreadyInited());
-}
-inline std::string* ShellResult::release_response_data() {
-  // @@protoc_insertion_point(field_release:mavsdk.rpc.shell.ShellResult.response_data)
-  
-  return response_data_.ReleaseNoArena(&::PROTOBUF_NAMESPACE_ID::internal::GetEmptyStringAlreadyInited());
-}
-inline void ShellResult::set_allocated_response_data(std::string* response_data) {
-  if (response_data != nullptr) {
-    
-  } else {
-    
-  }
-  response_data_.SetAllocatedNoArena(&::PROTOBUF_NAMESPACE_ID::internal::GetEmptyStringAlreadyInited(), response_data);
-  // @@protoc_insertion_point(field_set_allocated:mavsdk.rpc.shell.ShellResult.response_data)
 }
 
 #ifdef __GNUC__

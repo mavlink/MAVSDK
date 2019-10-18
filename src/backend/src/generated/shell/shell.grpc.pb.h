@@ -51,44 +51,44 @@ class ShellService final {
    public:
     virtual ~StubInterface() {}
     // Communicate with a vehicle's Shell.
-    virtual ::grpc::Status SetShellMessage(::grpc::ClientContext* context, const ::mavsdk::rpc::shell::SetShellMessageRequest& request, ::mavsdk::rpc::shell::SetShellMessageResponse* response) = 0;
-    std::unique_ptr< ::grpc::ClientAsyncResponseReaderInterface< ::mavsdk::rpc::shell::SetShellMessageResponse>> AsyncSetShellMessage(::grpc::ClientContext* context, const ::mavsdk::rpc::shell::SetShellMessageRequest& request, ::grpc::CompletionQueue* cq) {
-      return std::unique_ptr< ::grpc::ClientAsyncResponseReaderInterface< ::mavsdk::rpc::shell::SetShellMessageResponse>>(AsyncSetShellMessageRaw(context, request, cq));
+    virtual ::grpc::Status Send(::grpc::ClientContext* context, const ::mavsdk::rpc::shell::SendRequest& request, ::mavsdk::rpc::shell::SendResponse* response) = 0;
+    std::unique_ptr< ::grpc::ClientAsyncResponseReaderInterface< ::mavsdk::rpc::shell::SendResponse>> AsyncSend(::grpc::ClientContext* context, const ::mavsdk::rpc::shell::SendRequest& request, ::grpc::CompletionQueue* cq) {
+      return std::unique_ptr< ::grpc::ClientAsyncResponseReaderInterface< ::mavsdk::rpc::shell::SendResponse>>(AsyncSendRaw(context, request, cq));
     }
-    std::unique_ptr< ::grpc::ClientAsyncResponseReaderInterface< ::mavsdk::rpc::shell::SetShellMessageResponse>> PrepareAsyncSetShellMessage(::grpc::ClientContext* context, const ::mavsdk::rpc::shell::SetShellMessageRequest& request, ::grpc::CompletionQueue* cq) {
-      return std::unique_ptr< ::grpc::ClientAsyncResponseReaderInterface< ::mavsdk::rpc::shell::SetShellMessageResponse>>(PrepareAsyncSetShellMessageRaw(context, request, cq));
+    std::unique_ptr< ::grpc::ClientAsyncResponseReaderInterface< ::mavsdk::rpc::shell::SendResponse>> PrepareAsyncSend(::grpc::ClientContext* context, const ::mavsdk::rpc::shell::SendRequest& request, ::grpc::CompletionQueue* cq) {
+      return std::unique_ptr< ::grpc::ClientAsyncResponseReaderInterface< ::mavsdk::rpc::shell::SendResponse>>(PrepareAsyncSendRaw(context, request, cq));
     }
     class experimental_async_interface {
      public:
       virtual ~experimental_async_interface() {}
       // Communicate with a vehicle's Shell.
-      virtual void SetShellMessage(::grpc::ClientContext* context, const ::mavsdk::rpc::shell::SetShellMessageRequest* request, ::mavsdk::rpc::shell::SetShellMessageResponse* response, std::function<void(::grpc::Status)>) = 0;
-      virtual void SetShellMessage(::grpc::ClientContext* context, const ::grpc::ByteBuffer* request, ::mavsdk::rpc::shell::SetShellMessageResponse* response, std::function<void(::grpc::Status)>) = 0;
-      virtual void SetShellMessage(::grpc::ClientContext* context, const ::mavsdk::rpc::shell::SetShellMessageRequest* request, ::mavsdk::rpc::shell::SetShellMessageResponse* response, ::grpc::experimental::ClientUnaryReactor* reactor) = 0;
-      virtual void SetShellMessage(::grpc::ClientContext* context, const ::grpc::ByteBuffer* request, ::mavsdk::rpc::shell::SetShellMessageResponse* response, ::grpc::experimental::ClientUnaryReactor* reactor) = 0;
+      virtual void Send(::grpc::ClientContext* context, const ::mavsdk::rpc::shell::SendRequest* request, ::mavsdk::rpc::shell::SendResponse* response, std::function<void(::grpc::Status)>) = 0;
+      virtual void Send(::grpc::ClientContext* context, const ::grpc::ByteBuffer* request, ::mavsdk::rpc::shell::SendResponse* response, std::function<void(::grpc::Status)>) = 0;
+      virtual void Send(::grpc::ClientContext* context, const ::mavsdk::rpc::shell::SendRequest* request, ::mavsdk::rpc::shell::SendResponse* response, ::grpc::experimental::ClientUnaryReactor* reactor) = 0;
+      virtual void Send(::grpc::ClientContext* context, const ::grpc::ByteBuffer* request, ::mavsdk::rpc::shell::SendResponse* response, ::grpc::experimental::ClientUnaryReactor* reactor) = 0;
     };
     virtual class experimental_async_interface* experimental_async() { return nullptr; }
   private:
-    virtual ::grpc::ClientAsyncResponseReaderInterface< ::mavsdk::rpc::shell::SetShellMessageResponse>* AsyncSetShellMessageRaw(::grpc::ClientContext* context, const ::mavsdk::rpc::shell::SetShellMessageRequest& request, ::grpc::CompletionQueue* cq) = 0;
-    virtual ::grpc::ClientAsyncResponseReaderInterface< ::mavsdk::rpc::shell::SetShellMessageResponse>* PrepareAsyncSetShellMessageRaw(::grpc::ClientContext* context, const ::mavsdk::rpc::shell::SetShellMessageRequest& request, ::grpc::CompletionQueue* cq) = 0;
+    virtual ::grpc::ClientAsyncResponseReaderInterface< ::mavsdk::rpc::shell::SendResponse>* AsyncSendRaw(::grpc::ClientContext* context, const ::mavsdk::rpc::shell::SendRequest& request, ::grpc::CompletionQueue* cq) = 0;
+    virtual ::grpc::ClientAsyncResponseReaderInterface< ::mavsdk::rpc::shell::SendResponse>* PrepareAsyncSendRaw(::grpc::ClientContext* context, const ::mavsdk::rpc::shell::SendRequest& request, ::grpc::CompletionQueue* cq) = 0;
   };
   class Stub final : public StubInterface {
    public:
     Stub(const std::shared_ptr< ::grpc::ChannelInterface>& channel);
-    ::grpc::Status SetShellMessage(::grpc::ClientContext* context, const ::mavsdk::rpc::shell::SetShellMessageRequest& request, ::mavsdk::rpc::shell::SetShellMessageResponse* response) override;
-    std::unique_ptr< ::grpc::ClientAsyncResponseReader< ::mavsdk::rpc::shell::SetShellMessageResponse>> AsyncSetShellMessage(::grpc::ClientContext* context, const ::mavsdk::rpc::shell::SetShellMessageRequest& request, ::grpc::CompletionQueue* cq) {
-      return std::unique_ptr< ::grpc::ClientAsyncResponseReader< ::mavsdk::rpc::shell::SetShellMessageResponse>>(AsyncSetShellMessageRaw(context, request, cq));
+    ::grpc::Status Send(::grpc::ClientContext* context, const ::mavsdk::rpc::shell::SendRequest& request, ::mavsdk::rpc::shell::SendResponse* response) override;
+    std::unique_ptr< ::grpc::ClientAsyncResponseReader< ::mavsdk::rpc::shell::SendResponse>> AsyncSend(::grpc::ClientContext* context, const ::mavsdk::rpc::shell::SendRequest& request, ::grpc::CompletionQueue* cq) {
+      return std::unique_ptr< ::grpc::ClientAsyncResponseReader< ::mavsdk::rpc::shell::SendResponse>>(AsyncSendRaw(context, request, cq));
     }
-    std::unique_ptr< ::grpc::ClientAsyncResponseReader< ::mavsdk::rpc::shell::SetShellMessageResponse>> PrepareAsyncSetShellMessage(::grpc::ClientContext* context, const ::mavsdk::rpc::shell::SetShellMessageRequest& request, ::grpc::CompletionQueue* cq) {
-      return std::unique_ptr< ::grpc::ClientAsyncResponseReader< ::mavsdk::rpc::shell::SetShellMessageResponse>>(PrepareAsyncSetShellMessageRaw(context, request, cq));
+    std::unique_ptr< ::grpc::ClientAsyncResponseReader< ::mavsdk::rpc::shell::SendResponse>> PrepareAsyncSend(::grpc::ClientContext* context, const ::mavsdk::rpc::shell::SendRequest& request, ::grpc::CompletionQueue* cq) {
+      return std::unique_ptr< ::grpc::ClientAsyncResponseReader< ::mavsdk::rpc::shell::SendResponse>>(PrepareAsyncSendRaw(context, request, cq));
     }
     class experimental_async final :
       public StubInterface::experimental_async_interface {
      public:
-      void SetShellMessage(::grpc::ClientContext* context, const ::mavsdk::rpc::shell::SetShellMessageRequest* request, ::mavsdk::rpc::shell::SetShellMessageResponse* response, std::function<void(::grpc::Status)>) override;
-      void SetShellMessage(::grpc::ClientContext* context, const ::grpc::ByteBuffer* request, ::mavsdk::rpc::shell::SetShellMessageResponse* response, std::function<void(::grpc::Status)>) override;
-      void SetShellMessage(::grpc::ClientContext* context, const ::mavsdk::rpc::shell::SetShellMessageRequest* request, ::mavsdk::rpc::shell::SetShellMessageResponse* response, ::grpc::experimental::ClientUnaryReactor* reactor) override;
-      void SetShellMessage(::grpc::ClientContext* context, const ::grpc::ByteBuffer* request, ::mavsdk::rpc::shell::SetShellMessageResponse* response, ::grpc::experimental::ClientUnaryReactor* reactor) override;
+      void Send(::grpc::ClientContext* context, const ::mavsdk::rpc::shell::SendRequest* request, ::mavsdk::rpc::shell::SendResponse* response, std::function<void(::grpc::Status)>) override;
+      void Send(::grpc::ClientContext* context, const ::grpc::ByteBuffer* request, ::mavsdk::rpc::shell::SendResponse* response, std::function<void(::grpc::Status)>) override;
+      void Send(::grpc::ClientContext* context, const ::mavsdk::rpc::shell::SendRequest* request, ::mavsdk::rpc::shell::SendResponse* response, ::grpc::experimental::ClientUnaryReactor* reactor) override;
+      void Send(::grpc::ClientContext* context, const ::grpc::ByteBuffer* request, ::mavsdk::rpc::shell::SendResponse* response, ::grpc::experimental::ClientUnaryReactor* reactor) override;
      private:
       friend class Stub;
       explicit experimental_async(Stub* stub): stub_(stub) { }
@@ -100,9 +100,9 @@ class ShellService final {
    private:
     std::shared_ptr< ::grpc::ChannelInterface> channel_;
     class experimental_async async_stub_{this};
-    ::grpc::ClientAsyncResponseReader< ::mavsdk::rpc::shell::SetShellMessageResponse>* AsyncSetShellMessageRaw(::grpc::ClientContext* context, const ::mavsdk::rpc::shell::SetShellMessageRequest& request, ::grpc::CompletionQueue* cq) override;
-    ::grpc::ClientAsyncResponseReader< ::mavsdk::rpc::shell::SetShellMessageResponse>* PrepareAsyncSetShellMessageRaw(::grpc::ClientContext* context, const ::mavsdk::rpc::shell::SetShellMessageRequest& request, ::grpc::CompletionQueue* cq) override;
-    const ::grpc::internal::RpcMethod rpcmethod_SetShellMessage_;
+    ::grpc::ClientAsyncResponseReader< ::mavsdk::rpc::shell::SendResponse>* AsyncSendRaw(::grpc::ClientContext* context, const ::mavsdk::rpc::shell::SendRequest& request, ::grpc::CompletionQueue* cq) override;
+    ::grpc::ClientAsyncResponseReader< ::mavsdk::rpc::shell::SendResponse>* PrepareAsyncSendRaw(::grpc::ClientContext* context, const ::mavsdk::rpc::shell::SendRequest& request, ::grpc::CompletionQueue* cq) override;
+    const ::grpc::internal::RpcMethod rpcmethod_Send_;
   };
   static std::unique_ptr<Stub> NewStub(const std::shared_ptr< ::grpc::ChannelInterface>& channel, const ::grpc::StubOptions& options = ::grpc::StubOptions());
 
@@ -111,146 +111,146 @@ class ShellService final {
     Service();
     virtual ~Service();
     // Communicate with a vehicle's Shell.
-    virtual ::grpc::Status SetShellMessage(::grpc::ServerContext* context, const ::mavsdk::rpc::shell::SetShellMessageRequest* request, ::mavsdk::rpc::shell::SetShellMessageResponse* response);
+    virtual ::grpc::Status Send(::grpc::ServerContext* context, const ::mavsdk::rpc::shell::SendRequest* request, ::mavsdk::rpc::shell::SendResponse* response);
   };
   template <class BaseClass>
-  class WithAsyncMethod_SetShellMessage : public BaseClass {
+  class WithAsyncMethod_Send : public BaseClass {
    private:
     void BaseClassMustBeDerivedFromService(const Service* /*service*/) {}
    public:
-    WithAsyncMethod_SetShellMessage() {
+    WithAsyncMethod_Send() {
       ::grpc::Service::MarkMethodAsync(0);
     }
-    ~WithAsyncMethod_SetShellMessage() override {
+    ~WithAsyncMethod_Send() override {
       BaseClassMustBeDerivedFromService(this);
     }
     // disable synchronous version of this method
-    ::grpc::Status SetShellMessage(::grpc::ServerContext* /*context*/, const ::mavsdk::rpc::shell::SetShellMessageRequest* /*request*/, ::mavsdk::rpc::shell::SetShellMessageResponse* /*response*/) override {
+    ::grpc::Status Send(::grpc::ServerContext* /*context*/, const ::mavsdk::rpc::shell::SendRequest* /*request*/, ::mavsdk::rpc::shell::SendResponse* /*response*/) override {
       abort();
       return ::grpc::Status(::grpc::StatusCode::UNIMPLEMENTED, "");
     }
-    void RequestSetShellMessage(::grpc::ServerContext* context, ::mavsdk::rpc::shell::SetShellMessageRequest* request, ::grpc::ServerAsyncResponseWriter< ::mavsdk::rpc::shell::SetShellMessageResponse>* response, ::grpc::CompletionQueue* new_call_cq, ::grpc::ServerCompletionQueue* notification_cq, void *tag) {
+    void RequestSend(::grpc::ServerContext* context, ::mavsdk::rpc::shell::SendRequest* request, ::grpc::ServerAsyncResponseWriter< ::mavsdk::rpc::shell::SendResponse>* response, ::grpc::CompletionQueue* new_call_cq, ::grpc::ServerCompletionQueue* notification_cq, void *tag) {
       ::grpc::Service::RequestAsyncUnary(0, context, request, response, new_call_cq, notification_cq, tag);
     }
   };
-  typedef WithAsyncMethod_SetShellMessage<Service > AsyncService;
+  typedef WithAsyncMethod_Send<Service > AsyncService;
   template <class BaseClass>
-  class ExperimentalWithCallbackMethod_SetShellMessage : public BaseClass {
+  class ExperimentalWithCallbackMethod_Send : public BaseClass {
    private:
     void BaseClassMustBeDerivedFromService(const Service* /*service*/) {}
    public:
-    ExperimentalWithCallbackMethod_SetShellMessage() {
+    ExperimentalWithCallbackMethod_Send() {
       ::grpc::Service::experimental().MarkMethodCallback(0,
-        new ::grpc_impl::internal::CallbackUnaryHandler< ::mavsdk::rpc::shell::SetShellMessageRequest, ::mavsdk::rpc::shell::SetShellMessageResponse>(
+        new ::grpc_impl::internal::CallbackUnaryHandler< ::mavsdk::rpc::shell::SendRequest, ::mavsdk::rpc::shell::SendResponse>(
           [this](::grpc::ServerContext* context,
-                 const ::mavsdk::rpc::shell::SetShellMessageRequest* request,
-                 ::mavsdk::rpc::shell::SetShellMessageResponse* response,
+                 const ::mavsdk::rpc::shell::SendRequest* request,
+                 ::mavsdk::rpc::shell::SendResponse* response,
                  ::grpc::experimental::ServerCallbackRpcController* controller) {
-                   return this->SetShellMessage(context, request, response, controller);
+                   return this->Send(context, request, response, controller);
                  }));
     }
-    void SetMessageAllocatorFor_SetShellMessage(
-        ::grpc::experimental::MessageAllocator< ::mavsdk::rpc::shell::SetShellMessageRequest, ::mavsdk::rpc::shell::SetShellMessageResponse>* allocator) {
-      static_cast<::grpc_impl::internal::CallbackUnaryHandler< ::mavsdk::rpc::shell::SetShellMessageRequest, ::mavsdk::rpc::shell::SetShellMessageResponse>*>(
+    void SetMessageAllocatorFor_Send(
+        ::grpc::experimental::MessageAllocator< ::mavsdk::rpc::shell::SendRequest, ::mavsdk::rpc::shell::SendResponse>* allocator) {
+      static_cast<::grpc_impl::internal::CallbackUnaryHandler< ::mavsdk::rpc::shell::SendRequest, ::mavsdk::rpc::shell::SendResponse>*>(
           ::grpc::Service::experimental().GetHandler(0))
               ->SetMessageAllocator(allocator);
     }
-    ~ExperimentalWithCallbackMethod_SetShellMessage() override {
+    ~ExperimentalWithCallbackMethod_Send() override {
       BaseClassMustBeDerivedFromService(this);
     }
     // disable synchronous version of this method
-    ::grpc::Status SetShellMessage(::grpc::ServerContext* /*context*/, const ::mavsdk::rpc::shell::SetShellMessageRequest* /*request*/, ::mavsdk::rpc::shell::SetShellMessageResponse* /*response*/) override {
+    ::grpc::Status Send(::grpc::ServerContext* /*context*/, const ::mavsdk::rpc::shell::SendRequest* /*request*/, ::mavsdk::rpc::shell::SendResponse* /*response*/) override {
       abort();
       return ::grpc::Status(::grpc::StatusCode::UNIMPLEMENTED, "");
     }
-    virtual void SetShellMessage(::grpc::ServerContext* /*context*/, const ::mavsdk::rpc::shell::SetShellMessageRequest* /*request*/, ::mavsdk::rpc::shell::SetShellMessageResponse* /*response*/, ::grpc::experimental::ServerCallbackRpcController* controller) { controller->Finish(::grpc::Status(::grpc::StatusCode::UNIMPLEMENTED, "")); }
+    virtual void Send(::grpc::ServerContext* /*context*/, const ::mavsdk::rpc::shell::SendRequest* /*request*/, ::mavsdk::rpc::shell::SendResponse* /*response*/, ::grpc::experimental::ServerCallbackRpcController* controller) { controller->Finish(::grpc::Status(::grpc::StatusCode::UNIMPLEMENTED, "")); }
   };
-  typedef ExperimentalWithCallbackMethod_SetShellMessage<Service > ExperimentalCallbackService;
+  typedef ExperimentalWithCallbackMethod_Send<Service > ExperimentalCallbackService;
   template <class BaseClass>
-  class WithGenericMethod_SetShellMessage : public BaseClass {
+  class WithGenericMethod_Send : public BaseClass {
    private:
     void BaseClassMustBeDerivedFromService(const Service* /*service*/) {}
    public:
-    WithGenericMethod_SetShellMessage() {
+    WithGenericMethod_Send() {
       ::grpc::Service::MarkMethodGeneric(0);
     }
-    ~WithGenericMethod_SetShellMessage() override {
+    ~WithGenericMethod_Send() override {
       BaseClassMustBeDerivedFromService(this);
     }
     // disable synchronous version of this method
-    ::grpc::Status SetShellMessage(::grpc::ServerContext* /*context*/, const ::mavsdk::rpc::shell::SetShellMessageRequest* /*request*/, ::mavsdk::rpc::shell::SetShellMessageResponse* /*response*/) override {
+    ::grpc::Status Send(::grpc::ServerContext* /*context*/, const ::mavsdk::rpc::shell::SendRequest* /*request*/, ::mavsdk::rpc::shell::SendResponse* /*response*/) override {
       abort();
       return ::grpc::Status(::grpc::StatusCode::UNIMPLEMENTED, "");
     }
   };
   template <class BaseClass>
-  class WithRawMethod_SetShellMessage : public BaseClass {
+  class WithRawMethod_Send : public BaseClass {
    private:
     void BaseClassMustBeDerivedFromService(const Service* /*service*/) {}
    public:
-    WithRawMethod_SetShellMessage() {
+    WithRawMethod_Send() {
       ::grpc::Service::MarkMethodRaw(0);
     }
-    ~WithRawMethod_SetShellMessage() override {
+    ~WithRawMethod_Send() override {
       BaseClassMustBeDerivedFromService(this);
     }
     // disable synchronous version of this method
-    ::grpc::Status SetShellMessage(::grpc::ServerContext* /*context*/, const ::mavsdk::rpc::shell::SetShellMessageRequest* /*request*/, ::mavsdk::rpc::shell::SetShellMessageResponse* /*response*/) override {
+    ::grpc::Status Send(::grpc::ServerContext* /*context*/, const ::mavsdk::rpc::shell::SendRequest* /*request*/, ::mavsdk::rpc::shell::SendResponse* /*response*/) override {
       abort();
       return ::grpc::Status(::grpc::StatusCode::UNIMPLEMENTED, "");
     }
-    void RequestSetShellMessage(::grpc::ServerContext* context, ::grpc::ByteBuffer* request, ::grpc::ServerAsyncResponseWriter< ::grpc::ByteBuffer>* response, ::grpc::CompletionQueue* new_call_cq, ::grpc::ServerCompletionQueue* notification_cq, void *tag) {
+    void RequestSend(::grpc::ServerContext* context, ::grpc::ByteBuffer* request, ::grpc::ServerAsyncResponseWriter< ::grpc::ByteBuffer>* response, ::grpc::CompletionQueue* new_call_cq, ::grpc::ServerCompletionQueue* notification_cq, void *tag) {
       ::grpc::Service::RequestAsyncUnary(0, context, request, response, new_call_cq, notification_cq, tag);
     }
   };
   template <class BaseClass>
-  class ExperimentalWithRawCallbackMethod_SetShellMessage : public BaseClass {
+  class ExperimentalWithRawCallbackMethod_Send : public BaseClass {
    private:
     void BaseClassMustBeDerivedFromService(const Service* /*service*/) {}
    public:
-    ExperimentalWithRawCallbackMethod_SetShellMessage() {
+    ExperimentalWithRawCallbackMethod_Send() {
       ::grpc::Service::experimental().MarkMethodRawCallback(0,
         new ::grpc_impl::internal::CallbackUnaryHandler< ::grpc::ByteBuffer, ::grpc::ByteBuffer>(
           [this](::grpc::ServerContext* context,
                  const ::grpc::ByteBuffer* request,
                  ::grpc::ByteBuffer* response,
                  ::grpc::experimental::ServerCallbackRpcController* controller) {
-                   this->SetShellMessage(context, request, response, controller);
+                   this->Send(context, request, response, controller);
                  }));
     }
-    ~ExperimentalWithRawCallbackMethod_SetShellMessage() override {
+    ~ExperimentalWithRawCallbackMethod_Send() override {
       BaseClassMustBeDerivedFromService(this);
     }
     // disable synchronous version of this method
-    ::grpc::Status SetShellMessage(::grpc::ServerContext* /*context*/, const ::mavsdk::rpc::shell::SetShellMessageRequest* /*request*/, ::mavsdk::rpc::shell::SetShellMessageResponse* /*response*/) override {
+    ::grpc::Status Send(::grpc::ServerContext* /*context*/, const ::mavsdk::rpc::shell::SendRequest* /*request*/, ::mavsdk::rpc::shell::SendResponse* /*response*/) override {
       abort();
       return ::grpc::Status(::grpc::StatusCode::UNIMPLEMENTED, "");
     }
-    virtual void SetShellMessage(::grpc::ServerContext* /*context*/, const ::grpc::ByteBuffer* /*request*/, ::grpc::ByteBuffer* /*response*/, ::grpc::experimental::ServerCallbackRpcController* controller) { controller->Finish(::grpc::Status(::grpc::StatusCode::UNIMPLEMENTED, "")); }
+    virtual void Send(::grpc::ServerContext* /*context*/, const ::grpc::ByteBuffer* /*request*/, ::grpc::ByteBuffer* /*response*/, ::grpc::experimental::ServerCallbackRpcController* controller) { controller->Finish(::grpc::Status(::grpc::StatusCode::UNIMPLEMENTED, "")); }
   };
   template <class BaseClass>
-  class WithStreamedUnaryMethod_SetShellMessage : public BaseClass {
+  class WithStreamedUnaryMethod_Send : public BaseClass {
    private:
     void BaseClassMustBeDerivedFromService(const Service* /*service*/) {}
    public:
-    WithStreamedUnaryMethod_SetShellMessage() {
+    WithStreamedUnaryMethod_Send() {
       ::grpc::Service::MarkMethodStreamed(0,
-        new ::grpc::internal::StreamedUnaryHandler< ::mavsdk::rpc::shell::SetShellMessageRequest, ::mavsdk::rpc::shell::SetShellMessageResponse>(std::bind(&WithStreamedUnaryMethod_SetShellMessage<BaseClass>::StreamedSetShellMessage, this, std::placeholders::_1, std::placeholders::_2)));
+        new ::grpc::internal::StreamedUnaryHandler< ::mavsdk::rpc::shell::SendRequest, ::mavsdk::rpc::shell::SendResponse>(std::bind(&WithStreamedUnaryMethod_Send<BaseClass>::StreamedSend, this, std::placeholders::_1, std::placeholders::_2)));
     }
-    ~WithStreamedUnaryMethod_SetShellMessage() override {
+    ~WithStreamedUnaryMethod_Send() override {
       BaseClassMustBeDerivedFromService(this);
     }
     // disable regular version of this method
-    ::grpc::Status SetShellMessage(::grpc::ServerContext* /*context*/, const ::mavsdk::rpc::shell::SetShellMessageRequest* /*request*/, ::mavsdk::rpc::shell::SetShellMessageResponse* /*response*/) override {
+    ::grpc::Status Send(::grpc::ServerContext* /*context*/, const ::mavsdk::rpc::shell::SendRequest* /*request*/, ::mavsdk::rpc::shell::SendResponse* /*response*/) override {
       abort();
       return ::grpc::Status(::grpc::StatusCode::UNIMPLEMENTED, "");
     }
     // replace default version of method with streamed unary
-    virtual ::grpc::Status StreamedSetShellMessage(::grpc::ServerContext* context, ::grpc::ServerUnaryStreamer< ::mavsdk::rpc::shell::SetShellMessageRequest,::mavsdk::rpc::shell::SetShellMessageResponse>* server_unary_streamer) = 0;
+    virtual ::grpc::Status StreamedSend(::grpc::ServerContext* context, ::grpc::ServerUnaryStreamer< ::mavsdk::rpc::shell::SendRequest,::mavsdk::rpc::shell::SendResponse>* server_unary_streamer) = 0;
   };
-  typedef WithStreamedUnaryMethod_SetShellMessage<Service > StreamedUnaryService;
+  typedef WithStreamedUnaryMethod_Send<Service > StreamedUnaryService;
   typedef Service SplitStreamedService;
-  typedef WithStreamedUnaryMethod_SetShellMessage<Service > StreamedService;
+  typedef WithStreamedUnaryMethod_Send<Service > StreamedService;
 };
 
 }  // namespace shell
