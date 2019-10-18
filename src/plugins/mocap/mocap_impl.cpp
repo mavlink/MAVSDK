@@ -115,12 +115,18 @@ bool MocapImpl::send_attitude_position_mocap()
     }
     mavlink_message_t message;
 
+    std::array<float, 4> q{};
+    q[0] = attitude_position_mocap.q.w;
+    q[1] = attitude_position_mocap.q.x;
+    q[2] = attitude_position_mocap.q.y;
+    q[3] = attitude_position_mocap.q.z;
+
     mavlink_msg_att_pos_mocap_pack(
         _parent->get_own_system_id(),
         _parent->get_own_component_id(),
         &message,
         attitude_position_mocap.time_usec,
-        attitude_position_mocap.q,
+        q.data(),
         attitude_position_mocap.position_body.x_m,
         attitude_position_mocap.position_body.y_m,
         attitude_position_mocap.position_body.z_m,
@@ -140,6 +146,12 @@ bool MocapImpl::send_odometry()
     }
     mavlink_message_t message;
 
+    std::array<float, 4> q{};
+    q[0] = odometry.q.w;
+    q[1] = odometry.q.x;
+    q[2] = odometry.q.y;
+    q[3] = odometry.q.z;
+
     mavlink_msg_odometry_pack(
         _parent->get_own_system_id(),
         _parent->get_own_component_id(),
@@ -150,7 +162,7 @@ bool MocapImpl::send_odometry()
         odometry.position_body.x_m,
         odometry.position_body.y_m,
         odometry.position_body.z_m,
-        odometry.q,
+        q.data(),
         odometry.speed_body.x_m_s,
         odometry.speed_body.y_m_s,
         odometry.speed_body.z_m_s,

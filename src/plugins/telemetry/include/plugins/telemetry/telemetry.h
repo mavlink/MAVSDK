@@ -90,40 +90,11 @@ public:
      *
      * For more info see: https://en.wikipedia.org/wiki/Quaternion
      */
-    union Quaternion {
-        struct {
-            float w; /**< @brief Quaternion entry 0 also denoted as a. */
-            float x; /**< @brief Quaternion entry 1 also denoted as b. */
-            float y; /**< @brief Quaternion entry 2 also denoted as c. */
-            float z; /**< @brief Quaternion entry 3 also denoted as d. */
-        };
-
-        Quaternion() : a{0.0f} {}; /**< @brief Constructor */
-        Quaternion(float val) : a{val} {}; /**< @brief Constructor */
-        Quaternion(float w_, float x_, float y_, float z_) :
-            w(w_),
-            x(x_),
-            y(y_),
-            z(z_){}; /**< @brief Constructor */
-
-        float operator[](int i) const { return a.at(i); }; /**< @brief Operator [] */
-        float& operator[](int i) { return a.at(i); } /**< @brief Operator &[] */
-
-        /**
-         * @brief Cast to float C-style float array
-         */
-        operator float*() { return a.data(); };
-        /**
-         * @brief Cast to float array
-         */
-        operator std::array<float, 4>&() { return a; };
-        /**
-         * @brief Cast to float array
-         */
-        operator std::array<float, 4>() { return a; };
-
-    private:
-        std::array<float, 4> a;
+    struct Quaternion {
+        float w; /**< @brief Quaternion entry 0 also denoted as a. */
+        float x; /**< @brief Quaternion entry 1 also denoted as b. */
+        float y; /**< @brief Quaternion entry 2 also denoted as c. */
+        float z; /**< @brief Quaternion entry 3 also denoted as d. */
     };
 
     /**
