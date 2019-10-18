@@ -1,0 +1,43 @@
+syntax = "proto3";
+
+package mavsdk.rpc.shell;
+
+option java_package = "io.mavsdk.shell";
+option java_outer_classname = "ShellProto";
+
+/**
+ * Allow to communicate with the vehicle's system shell.
+ */
+service ShellService {
+    // Communicate with a vehicle's Shell.
+    rpc Send(SendRequest) returns(SendResponse) {}
+}
+
+message SendRequest {
+    ShellMessage shell_message = 1;
+}
+message SendResponse {
+    ShellResult shell_result = 1;
+    string response_message_data = 2; // Response message data (if available)
+}
+
+message ShellMessage {
+    bool need_response = 1; // Set if the sender wants the receiver to send a response.
+    uint32 timeout_ms = 2; // Timeout (ms).
+    string data = 3; // Serial data.
+}
+
+message ShellResult {
+    // Possible results returned for shell requests
+    enum Result {
+        UNKNOWN = 0; // Unknown error
+        SUCCESS = 1; // Request succeeded
+        NO_SYSTEM = 2; // No system is connected
+        CONNECTION_ERROR = 3; // Connection error
+        NO_RESPONSE = 4; // Response was not received
+        BUSY = 5; // Shell busy (transfer in progress)
+    }
+
+    Result result = 1; // Result enum value
+    string result_str = 2; // Human-readable English string describing the result
+}
