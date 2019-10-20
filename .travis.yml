@@ -9,6 +9,12 @@ matrix:
       compiler: gcc
       env:
       - MATRIX_EVAL="BUILD_TARGET=coverage_build && SUPERBUILD=ON"
+      addons:
+        apt:
+          sources:
+            - ubuntu-toolchain-r-test
+          packages:
+            - g++-6
     - os: linux
       name: "ubuntu 18.04 (superbuild)"
       dist: bionic
