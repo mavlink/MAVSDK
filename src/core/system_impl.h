@@ -14,6 +14,7 @@
 #include <vector>
 #include <unordered_set>
 #include <map>
+#include <optional>
 #include <thread>
 #include <mutex>
 #include <future>
@@ -229,12 +230,10 @@ private:
     void system_thread();
     void send_heartbeat();
 
-    // We use std::pair instead of a std::optional.
-    std::pair<MAVLinkCommands::Result, MAVLinkCommands::CommandLong>
+    std::optional<MAVLinkCommands::CommandLong>
     make_command_flight_mode(FlightMode mode, uint8_t component_id);
 
-    // We use std::pair instead of a std::optional.
-    std::pair<MAVLinkCommands::Result, MAVLinkCommands::CommandLong>
+    MAVLinkCommands::CommandLong
     make_command_msg_rate(uint16_t message_id, double rate_hz, uint8_t component_id);
 
     static void receive_float_param(
