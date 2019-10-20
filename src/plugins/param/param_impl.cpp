@@ -59,15 +59,15 @@ Param::AllParams ParamImpl::get_all_params()
     Param::AllParams res{};
 
     for (auto const& parampair : tmp) {
-        if (parampair.second.is_float()) {
+        if (parampair.second.is<float>()) {
             Param::FloatParam tmp_param;
             tmp_param.name = parampair.first;
-            tmp_param.value = parampair.second.get_float();
+            tmp_param.value = parampair.second.get<float>();
             res.float_params.push_back(tmp_param);
-        } else if (parampair.second.is_int32()) {
+        } else if (parampair.second.is<int32_t>()) {
             Param::IntParam tmp_param;
             tmp_param.name = parampair.first;
-            tmp_param.value = parampair.second.get_int32();
+            tmp_param.value = parampair.second.get<int32_t>();
             res.int_params.push_back(tmp_param);
         }
     }

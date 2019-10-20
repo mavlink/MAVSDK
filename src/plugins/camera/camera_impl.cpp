@@ -593,29 +593,29 @@ void CameraImpl::save_camera_mode(const float mavlink_camera_mode)
     // never sent by the camera.
     MAVLinkParameters::ParamValue value;
     if (_camera_definition->get_setting("CAM_MODE", value)) {
-        if (value.is_uint8()) {
-            value.set_uint8(uint8_t(mavlink_camera_mode));
-        } else if (value.is_int8()) {
-            value.set_int8(int8_t(mavlink_camera_mode));
-        } else if (value.is_uint16()) {
-            value.set_uint16(uint16_t(mavlink_camera_mode));
-        } else if (value.is_int16()) {
-            value.set_int16(int16_t(mavlink_camera_mode));
-        } else if (value.is_uint32()) {
-            value.set_uint32(uint32_t(mavlink_camera_mode));
-        } else if (value.is_int32()) {
-            value.set_int32(int32_t(mavlink_camera_mode));
-        } else if (value.is_uint64()) {
-            value.set_uint64(uint64_t(mavlink_camera_mode));
-        } else if (value.is_int64()) {
-            value.set_int64(int64_t(mavlink_camera_mode));
-        } else if (value.is_float()) {
-            value.set_float(float(mavlink_camera_mode));
-        } else if (value.is_double()) {
-            value.set_double(double(mavlink_camera_mode));
+        if (value.is<uint8_t>()) {
+            value.set<uint8_t>(static_cast<uint8_t>(mavlink_camera_mode));
+        } else if (value.is<int8_t>()) {
+            value.set<int8_t>(static_cast<int8_t>(mavlink_camera_mode));
+        } else if (value.is<uint16_t>()) {
+            value.set<uint16_t>(static_cast<uint16_t>(mavlink_camera_mode));
+        } else if (value.is<int16_t>()) {
+            value.set<int16_t>(static_cast<int16_t>(mavlink_camera_mode));
+        } else if (value.is<uint32_t>()) {
+            value.set<uint32_t>(static_cast<uint32_t>(mavlink_camera_mode));
+        } else if (value.is<int32_t>()) {
+            value.set<int32_t>(static_cast<int32_t>(mavlink_camera_mode));
+        } else if (value.is<uint64_t>()) {
+            value.set<uint64_t>(static_cast<uint64_t>(mavlink_camera_mode));
+        } else if (value.is<int64_t>()) {
+            value.set<int64_t>(static_cast<int64_t>(mavlink_camera_mode));
+        } else if (value.is<float>()) {
+            value.set<float>(static_cast<float>(mavlink_camera_mode));
+        } else if (value.is<double>()) {
+            value.set<double>(static_cast<double>(mavlink_camera_mode));
         }
     } else {
-        value.set_uint32(uint32_t(mavlink_camera_mode));
+        value.set<uint32_t>(static_cast<uint32_t>(mavlink_camera_mode));
     }
 
     _camera_definition->set_setting("CAM_MODE", value);

@@ -111,7 +111,6 @@ list(APPEND UNIT_TEST_SOURCES
     ${PROJECT_SOURCE_DIR}/core/timeout_handler_test.cpp
     ${PROJECT_SOURCE_DIR}/core/call_every_handler_test.cpp
     ${PROJECT_SOURCE_DIR}/core/curl_test.cpp
-    ${PROJECT_SOURCE_DIR}/core/any_test.cpp
     ${PROJECT_SOURCE_DIR}/core/cli_arg_test.cpp
     ${PROJECT_SOURCE_DIR}/core/locked_queue_test.cpp
     ${PROJECT_SOURCE_DIR}/core/safe_queue_test.cpp
