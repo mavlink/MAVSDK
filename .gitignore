@@ -14,3 +14,6 @@ CMakeLists.txt.user*
 
 # windows swap files
 *~
+
+# dockcross helpers
+dockcross-*
