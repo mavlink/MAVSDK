@@ -30,11 +30,11 @@ matrix:
           - libcurl4-openssl-dev
           - libtinyxml2-dev
     - os: linux
-      name: "manylinux1-x64"
+      name: "manylinux2010-x64"
       services:
         - docker
       env:
-      - MATRIX_EVAL="BUILD_TARGET=manylinux1-x64"
+      - MATRIX_EVAL="BUILD_TARGET=manylinux2010-x64"
     - os: linux
       name: "linux-armv7"
       services:
@@ -61,20 +61,14 @@ matrix:
       env:
       - MATRIX_EVAL="BUILD_TARGET=windows"
 
-before_install:
-- eval "${MATRIX_EVAL}"
-- if [[ "${BUILD_TARGET}" = "manylinux1-x64" ]]; then
-    docker build -t manylinux1-x64-custom -f docker/Dockerfile.manylinux1-x64-custom .;
-  fi
-
 install:
 - set -e
 - if [[ "${BUILD_TARGET}" = "coverage_build" ]]; then
     pip install --user cpp-coveralls;
   fi
-- if [[ "${BUILD_TARGET}" = "manylinux1-x64" ]]; then
-    docker run --rm manylinux1-x64-custom > ./dockcross-manylinux1-x64;
-    chmod +x ./dockcross-manylinux1-x64;
+- if [[ "${BUILD_TARGET}" = "manylinux2010-x64" ]]; then
+    docker run --rm dockcross/manylinux2010-x64 > ./dockcross-manylinux2010-x64;
+    chmod +x ./dockcross-manylinux2010-x64;
   fi
 - if [[ "${BUILD_TARGET}" = "linux-armv7" ]]; then
     docker run --rm dockcross/linux-armv7 > ./dockcross-linux-armv7;
@@ -96,9 +90,9 @@ script:
     cmake --build build;
     ./build/src/unit_tests_runner;
   fi
-- if [[ "${BUILD_TARGET}" = "manylinux1-x64" ]]; then
-    ./dockcross-manylinux1-x64 cmake -DCMAKE_BUILD_TYPE=Release -DCMAKE_INSTALL_PREFIX=build/manylinux1-x64/install -DBUILD_BACKEND=ON -DBUILD_SHARED_LIBS=OFF -Bbuild/manylinux1-x64 -H.;
-    ./dockcross-manylinux1-x64 cmake --build build/manylinux1-x64 --target install;
+- if [[ "${BUILD_TARGET}" = "manylinux2010-x64" ]]; then
+    ./dockcross-manylinux2010-x64 cmake -DCMAKE_BUILD_TYPE=Release -DCMAKE_INSTALL_PREFIX=build/manylinux2010-x64/install -DBUILD_BACKEND=ON -DBUILD_SHARED_LIBS=OFF -Bbuild/manylinux2010-x64 -H.;
+    ./dockcross-manylinux2010-x64 cmake --build build/manylinux2010-x64 --target install;
   fi
 - if [[ "${BUILD_TARGET}" = "linux-armv7" ]]; then
     ./dockcross-linux-armv7 cmake -DCMAKE_BUILD_TYPE=Release -DCMAKE_INSTALL_PREFIX=build/linux-armv7/install -DBUILD_BACKEND=ON -DBUILD_SHARED_LIBS=OFF -Bbuild/linux-armv7 -H.;
@@ -140,8 +134,8 @@ before_deploy:
 - if ! [ "$BEFORE_DEPLOY_RUN" ]; then
       export BEFORE_DEPLOY_RUN=1;
 
-      if [[ "${BUILD_TARGET}" = "manylinux1-x64" ]]; then
-          mv build/manylinux1-x64/install/bin/mavsdk_server build/manylinux1-x64/install/bin/mavsdk_server_manylinux1-x64;
+      if [[ "${BUILD_TARGET}" = "manylinux2010-x64" ]]; then
+          mv build/manylinux2010-x64/install/bin/mavsdk_server build/manylinux2010-x64/install/bin/mavsdk_server_manylinux2010-x64;
       fi;
       if [[ "${BUILD_TARGET}" = "linux-armv7" ]]; then
           mv build/linux-armv7/install/bin/mavsdk_server build/linux-armv7/install/bin/mavsdk_server_linux-armv7;
@@ -157,9 +151,9 @@ deploy:
   api_key:
       secure: hBX3pFWNZiDbz4yKnOjhLg3QS9Ubn1XePxSeIt2Btq5GzbomOPDCgpIFijBppliwj9oKc302EMnZSg2QWeAzFKn9UnmIflJ0E4iymYgwWdTJv+bSnYALJEmO8F6gF9FgRlPk8FCtZiECoTsa75w5TrEZKZpFpmzVYRiDu0eo6sEjW7UJPC0A2KSTXLrBCHSIZy/iasbGmuur4brG7NO0QdMOvDXvhsYfkXDRJFMTtTHvLiKJcqiunPfqARzf1H4x4iczRYscKu5Vn8Kmw3NANGkcIDvEj4ooih831EXxACRZw0VgycgNHOKRXKC9pZ4hLQMon+jxpQX+X8k/K5161oEkF/gCVKyFb31Pk/4Uwe81p1GJY2lAC7MDUxA98RKXhdvVYF2Cp44+IbF0YVoWRUtVAhknXRQ3Weg25kyVSu83q2nN2nZq2qGTnpNIbdN56s/F+uaFtipGEh+vmiv8rNUz+Z5MFrY2FQaSvBTFw9K4tNs9uc+VQd1bE7X5wh0yywEqUEw2nzqTB2xR+OubygUASbk2GLNdc254P0lrzCHbNM62Y7sRX06CM7hPlwhELEkVtUXZWJ0KuhQyLvRh3aPJ3Jj30EswTt/FGT1gzSP1FjjHBRZCK4P2D2rwJ5TMn2JrZKfPxmEd3kVmn6h80+gBbKgonGmZspd2SvPEI5g=
   file_glob: true
-  file: "build/manylinux1-x64/install/bin/mavsdk_server_manylinux1-x64"
+  file: "build/manylinux2010-x64/install/bin/mavsdk_server_manylinux2010-x64"
   on:
-    condition: ${BUILD_TARGET} = manylinux1-x64
+    condition: ${BUILD_TARGET} = manylinux2010-x64
     repo: mavlink/MAVSDK
     tags: true
 - provider: releases
