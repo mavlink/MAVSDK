@@ -338,18 +338,18 @@ void MAVLinkParameters::process_param_ext_value(const mavlink_message_t& message
                 if (work->get_param_callback) {
                     work->get_param_callback(MAVLinkParameters::Result::SUCCESS, value);
                 }
-            } else if (value.is_uint8() && work->param_value.is_uint16()) {
+            } else if (value.is<uint8_t>() && work->param_value.is<uint16_t>()) {
                 // FIXME: workaround for mismatching type uint8_t which should be uint16_t.
                 ParamValue correct_type_value;
-                correct_type_value.set_uint16(static_cast<uint16_t>(value.get_uint8()));
+                correct_type_value.set<uint16_t>(static_cast<uint16_t>(value.get<uint8_t>()));
                 if (work->get_param_callback) {
                     work->get_param_callback(
                         MAVLinkParameters::Result::SUCCESS, correct_type_value);
                 }
-            } else if (value.is_uint8() && work->param_value.is_uint32()) {
+            } else if (value.is<uint8_t>() && work->param_value.is<uint32_t>()) {
                 // FIXME: workaround for mismatching type uint8_t which should be uint32_t.
                 ParamValue correct_type_value;
-                correct_type_value.set_uint32(static_cast<uint32_t>(value.get_uint8()));
+                correct_type_value.set<uint32_t>(static_cast<uint32_t>(value.get<uint8_t>()));
                 if (work->get_param_callback) {
                     work->get_param_callback(
                         MAVLinkParameters::Result::SUCCESS, correct_type_value);

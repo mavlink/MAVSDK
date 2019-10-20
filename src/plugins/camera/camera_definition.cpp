@@ -537,9 +537,9 @@ bool CameraDefinition::set_setting(
         name.compare("CAM_PHOTOFMT") == 0 || name.compare("CAM_PHOTOQUAL") == 0 ||
         name.compare("CAM_VIDRES") == 0 || name.compare("CAM_WBMODE") == 0 ||
         name.compare("CAM_COLORENCODE") == 0 || name.compare("CAM_FLICKER") == 0) {
-        if (changed_value.is_uint8()) {
-            uint8_t temp = changed_value.get_uint8();
-            changed_value.set_uint32(uint32_t(temp));
+        if (changed_value.is<uint8_t>()) {
+            uint8_t temp = changed_value.get<uint8_t>();
+            changed_value.set<uint32_t>(static_cast<uint32_t>(temp));
         }
     }
 

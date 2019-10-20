@@ -619,7 +619,7 @@ void CameraImpl::save_camera_mode(const float mavlink_camera_mode)
     }
 
     MAVLinkParameters::ParamValue value;
-    value.set_uint32(uint32_t(mavlink_camera_mode));
+    value.set<uint32_t>(static_cast<uint32_t>(mavlink_camera_mode));
     _camera_definition->set_setting("CAM_MODE", value);
     refresh_params();
 }
