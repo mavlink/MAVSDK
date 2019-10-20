@@ -6,6 +6,7 @@
 #include <memory>
 #include <map>
 #include <mutex>
+#include <optional>
 #include <string>
 #include <tuple>
 #include <utility>
@@ -82,9 +83,7 @@ private:
 
     bool parse_xml();
 
-    // Until we have std::optional we need to use std::pair to return something that might be
-    // nothing.
-    std::pair<bool, std::vector<std::shared_ptr<Option>>> parse_options(
+    std::optional<std::vector<std::shared_ptr<Option>>> parse_options(
         const tinyxml2::XMLElement* options_handle,
         const std::string& param_name,
         std::map<std::string, std::string>& type_map);

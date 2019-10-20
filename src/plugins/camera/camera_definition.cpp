@@ -200,10 +200,10 @@ bool CameraDefinition::parse_xml()
         auto e_options = e_parameter->FirstChildElement("options");
         if (e_options) {
             auto maybe_options = parse_options(e_options, param_name, type_map);
-            if (!maybe_options.first) {
+            if (!maybe_options) {
                 continue;
             }
-            new_parameter->options = maybe_options.second;
+            new_parameter->options = *maybe_options;
 
             auto maybe_default = find_default(new_parameter->options, default_str);
 
@@ -236,7 +236,7 @@ bool CameraDefinition::parse_xml()
     return true;
 }
 
-std::pair<bool, std::vector<std::shared_ptr<CameraDefinition::Option>>>
+std::optional<std::vector<std::shared_ptr<CameraDefinition::Option>>>
 CameraDefinition::parse_options(
     const tinyxml2::XMLElement* options_handle,
     const std::string& param_name,
@@ -249,13 +249,13 @@ CameraDefinition::parse_options(
         const char* option_name = e_option->Attribute("name");
         if (!option_name) {
             LogErr() << "no option name given";
-            return std::make_pair<>(false, options);
+            return {};
         }
 
         const char* option_value = e_option->Attribute("value");
         if (!option_value) {
             LogErr() << "no option value given";
-            return std::make_pair<>(false, options);
+            return {};
         }
 
         auto new_option = std::make_shared<Option>();
@@ -283,7 +283,7 @@ CameraDefinition::parse_options(
                 const char* roption_parameter_str = e_parameterrange->Attribute("parameter");
                 if (!roption_parameter_str) {
                     LogErr() << "missing roption parameter name";
-                    return std::make_pair<>(false, options);
+                    return {};
                 }
 
                 parameter_range_t new_parameter_range;
@@ -294,18 +294,18 @@ CameraDefinition::parse_options(
                     const char* roption_name_str = e_roption->Attribute("name");
                     if (!roption_name_str) {
                         LogErr() << "missing roption name attribute";
-                        return std::make_pair<>(false, options);
+                        return {};
                     }
 
                     const char* roption_value_str = e_roption->Attribute("value");
                     if (!roption_value_str) {
                         LogErr() << "missing roption value attribute";
-                        return std::make_pair<>(false, options);
+                        return {};
                     }
 
                     if (type_map.find(roption_parameter_str) == type_map.end()) {
                         LogErr() << "unknown roption type";
-                        return std::make_pair<>(false, options);
+                        return {};
                     }
 
                     MAVLinkParameters::ParamValue new_param_value;
@@ -328,7 +328,7 @@ CameraDefinition::parse_options(
 
         options.push_back(new_option);
     }
-    return std::make_pair<>(true, options);
+    return {options};
 }
 
 std::tuple<bool, std::vector<std::shared_ptr<CameraDefinition::Option>>, CameraDefinition::Option>
