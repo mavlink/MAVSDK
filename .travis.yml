@@ -97,12 +97,10 @@ script:
     ./build/release/src/backend/test/unit_tests_backend;
   fi
 - if [[ "${BUILD_TARGET}" = "ios_build" ]]; then
-    cmake -DCMAKE_BUILD_TYPE=Release -DBUILD_BACKEND=ON -DBUILD_SHARED_LIBS=OFF -Bbuild/default -H.;
     cmake -DCMAKE_BUILD_TYPE=Release -DCMAKE_TOOLCHAIN_FILE=${TRAVIS_BUILD_DIR}/tools/ios.toolchain.cmake -DPLATFORM=OS -DBUILD_BACKEND=ON -DBUILD_SHARED_LIBS=OFF -Bbuild/ios -H.;
     make -Cbuild/ios -j4;
   fi
 - if [[ "${BUILD_TARGET}" = "ios_simulator_build" ]]; then
-    cmake -DCMAKE_BUILD_TYPE=Release -DBUILD_BACKEND=ON -DBUILD_SHARED_LIBS=OFF -Bbuild/default -H.;
     cmake -DCMAKE_BUILD_TYPE=Release -DCMAKE_TOOLCHAIN_FILE=${TRAVIS_BUILD_DIR}/tools/ios.toolchain.cmake -DPLATFORM=SIMULATOR64 -DBUILD_BACKEND=ON -DBUILD_SHARED_LIBS=OFF -Bbuild/ios_simulator -H.;
     make -Cbuild/ios_simulator -j4;
   fi
