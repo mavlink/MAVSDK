@@ -3,7 +3,7 @@
 
 namespace mavsdk {
 
-Param::Param(System& system) : PluginBase(), _impl{new ParamImpl(system)} {}
+Param::Param(System& system) : PluginBase(), _impl(std::make_unique<ParamImpl>(system)) {}
 
 Param::~Param() {}
 

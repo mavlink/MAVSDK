@@ -3,7 +3,7 @@
 
 namespace mavsdk {
 
-Logging::Logging(System& system) : PluginBase(), _impl{new LoggingImpl(system)} {}
+Logging::Logging(System& system) : PluginBase(), _impl(std::make_unique<LoggingImpl>(system)) {}
 
 Logging::~Logging() {}
 

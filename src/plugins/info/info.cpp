@@ -3,7 +3,7 @@
 
 namespace mavsdk {
 
-Info::Info(System& system) : PluginBase(), _impl{new InfoImpl(system)} {}
+Info::Info(System& system) : PluginBase(), _impl(std::make_unique<InfoImpl>(system)) {}
 
 Info::~Info() {}
 

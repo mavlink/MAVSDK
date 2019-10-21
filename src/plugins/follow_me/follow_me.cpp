@@ -3,7 +3,7 @@
 
 namespace mavsdk {
 
-FollowMe::FollowMe(System& system) : PluginBase(), _impl{new FollowMeImpl(system)} {}
+FollowMe::FollowMe(System& system) : PluginBase(), _impl(std::make_unique<FollowMeImpl>(system)) {}
 
 FollowMe::~FollowMe() {}
 

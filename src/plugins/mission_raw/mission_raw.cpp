@@ -5,7 +5,10 @@
 
 namespace mavsdk {
 
-MissionRaw::MissionRaw(System& system) : PluginBase(), _impl{new MissionRawImpl(system)} {}
+MissionRaw::MissionRaw(System& system) :
+    PluginBase(),
+    _impl(std::make_unique<MissionRawImpl>(system))
+{}
 
 MissionRaw::~MissionRaw() {}
 

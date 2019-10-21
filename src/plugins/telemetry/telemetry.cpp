@@ -6,7 +6,8 @@
 
 namespace mavsdk {
 
-Telemetry::Telemetry(System& system) : PluginBase(), _impl{new TelemetryImpl(system)} {}
+Telemetry::Telemetry(System& system) : PluginBase(), _impl(std::make_unique<TelemetryImpl>(system))
+{}
 
 Telemetry::~Telemetry() {}
 

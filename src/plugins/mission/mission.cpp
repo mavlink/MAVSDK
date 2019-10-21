@@ -7,7 +7,7 @@
 
 namespace mavsdk {
 
-Mission::Mission(System& system) : PluginBase(), _impl{new MissionImpl(system)} {}
+Mission::Mission(System& system) : PluginBase(), _impl(std::make_unique<MissionImpl>(system)) {}
 
 Mission::~Mission() {}
 

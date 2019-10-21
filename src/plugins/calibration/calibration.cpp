@@ -5,12 +5,12 @@
 
 namespace mavsdk {
 
-Calibration::Calibration(System& system) : PluginBase(), _impl(new CalibrationImpl(system)) {}
+Calibration::Calibration(System& system) :
+    PluginBase(),
+    _impl(std::make_unique<CalibrationImpl>(system))
+{}
 
-Calibration::~Calibration()
-{
-    delete _impl;
-}
+Calibration::~Calibration() {}
 
 void Calibration::calibrate_gyro_async(calibration_callback_t callback)
 {

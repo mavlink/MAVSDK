@@ -3,7 +3,7 @@
 
 namespace mavsdk {
 
-Camera::Camera(System& system) : PluginBase(), _impl{new CameraImpl(system)} {}
+Camera::Camera(System& system) : PluginBase(), _impl(std::make_unique<CameraImpl>(system)) {}
 
 Camera::~Camera() {}
 

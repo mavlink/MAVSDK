@@ -1,6 +1,7 @@
 #pragma once
 
 #include <functional>
+#include <memory>
 #include <string>
 
 #include "plugin_base.h"
@@ -141,7 +142,7 @@ public:
 
 private:
     /** @private Underlying implementation, set at instantiation */
-    CalibrationImpl* _impl;
+    std::unique_ptr<CalibrationImpl> _impl;
 };
 
 } // namespace mavsdk

@@ -3,7 +3,7 @@
 
 namespace mavsdk {
 
-Gimbal::Gimbal(System& system) : PluginBase(), _impl{new GimbalImpl(system)} {}
+Gimbal::Gimbal(System& system) : PluginBase(), _impl(std::make_unique<GimbalImpl>(system)) {}
 
 Gimbal::~Gimbal() {}
 

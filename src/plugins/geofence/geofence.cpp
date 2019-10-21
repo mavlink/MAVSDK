@@ -4,7 +4,7 @@
 
 namespace mavsdk {
 
-Geofence::Geofence(System& system) : PluginBase(), _impl{new GeofenceImpl(system)} {}
+Geofence::Geofence(System& system) : PluginBase(), _impl(std::make_unique<GeofenceImpl>(system)) {}
 
 Geofence::~Geofence() {}
 

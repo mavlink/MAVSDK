@@ -5,7 +5,7 @@ namespace mavsdk {
 
 MavlinkPassthrough::MavlinkPassthrough(System& system) :
     PluginBase(),
-    _impl{new MavlinkPassthroughImpl(system)}
+    _impl(std::make_unique<MavlinkPassthroughImpl>(system))
 {}
 
 MavlinkPassthrough::~MavlinkPassthrough() {}

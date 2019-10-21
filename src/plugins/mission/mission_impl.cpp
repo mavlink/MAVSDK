@@ -728,7 +728,7 @@ void MissionImpl::assemble_mavlink_messages()
 
                 uint8_t autocontinue = 1;
 
-                std::shared_ptr<mavlink_message_t> message_delay(new mavlink_message_t());
+                auto message_delay = std::make_shared<mavlink_message_t>();
                 mavlink_msg_mission_item_int_pack(
                     _parent->get_own_system_id(),
                     _parent->get_own_component_id(),

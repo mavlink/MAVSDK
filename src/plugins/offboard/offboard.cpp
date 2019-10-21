@@ -4,7 +4,7 @@
 
 namespace mavsdk {
 
-Offboard::Offboard(System& system) : PluginBase(), _impl{new OffboardImpl(system)} {}
+Offboard::Offboard(System& system) : PluginBase(), _impl(std::make_unique<OffboardImpl>(system)) {}
 
 Offboard::~Offboard() {}
 

@@ -3,7 +3,10 @@
 
 namespace mavsdk {
 
-MavlinkFTP::MavlinkFTP(System& system) : PluginBase(), _impl{new MavlinkFTPImpl(system)} {}
+MavlinkFTP::MavlinkFTP(System& system) :
+    PluginBase(),
+    _impl(std::make_unique<MavlinkFTPImpl>(system))
+{}
 
 MavlinkFTP::~MavlinkFTP() {}
 

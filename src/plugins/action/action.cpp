@@ -3,7 +3,7 @@
 
 namespace mavsdk {
 
-Action::Action(System& system) : PluginBase(), _impl{new ActionImpl(system)} {}
+Action::Action(System& system) : PluginBase(), _impl(std::make_unique<ActionImpl>(system)) {}
 
 Action::~Action() {}
 

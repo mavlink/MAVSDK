@@ -3,7 +3,7 @@
 
 namespace mavsdk {
 
-LogFiles::LogFiles(System& system) : PluginBase(), _impl{new LogFilesImpl(system)} {}
+LogFiles::LogFiles(System& system) : PluginBase(), _impl(std::make_unique<LogFilesImpl>(system)) {}
 
 LogFiles::~LogFiles() {}
 
