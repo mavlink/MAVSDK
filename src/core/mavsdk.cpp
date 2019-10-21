@@ -5,7 +5,7 @@
 
 namespace mavsdk {
 
-Mavsdk::Mavsdk() : _impl{new MavsdkImpl()} {}
+Mavsdk::Mavsdk() : _impl(std::make_unique<MavsdkImpl>()) {}
 
 Mavsdk::~Mavsdk() {}
 

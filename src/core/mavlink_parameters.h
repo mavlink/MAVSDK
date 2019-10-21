@@ -22,7 +22,6 @@ public:
 
     class ParamValue {
     public:
-
         void set_from_mavlink_param_value(mavlink_param_value_t mavlink_value)
         {
             union {
