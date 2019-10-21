@@ -8,7 +8,7 @@ matrix:
       dist: xenial
       compiler: gcc
       env:
-      - MATRIX_EVAL="BUILD_TARGET=coverage_build && SUPERBUILD=ON"
+      - MATRIX_EVAL="BUILD_TARGET=coverage_build && SUPERBUILD=ON && CC=/usr/bin/gcc-7 && CXX=/usr/bin/g++-7"
       addons:
         apt:
           sources:
