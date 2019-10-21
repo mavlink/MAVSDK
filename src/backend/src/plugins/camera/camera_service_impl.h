@@ -30,11 +30,12 @@ public:
     {
         auto rpc_result = static_cast<rpc::camera::CameraResult::Result>(camera_result);
 
-        auto* rpc_camera_result = new rpc::camera::CameraResult();
+        auto rpc_camera_result =
+            std::make_unique<rpc::camera::CameraResult>(rpc::camera::CameraResult());
         rpc_camera_result->set_result(rpc_result);
         rpc_camera_result->set_result_str(mavsdk::Camera::result_str(camera_result));
 
-        response->set_allocated_camera_result(rpc_camera_result);
+        response->set_allocated_camera_result(rpc_camera_result.release());
     }
 
     grpc::Status StartPhotoInterval(
@@ -199,8 +200,8 @@ public:
     static std::unique_ptr<rpc::camera::VideoStreamSettings>
     translateVideoStreamSettings(const mavsdk::Camera::VideoStreamSettings video_stream_settings)
     {
-        auto rpc_video_stream_settings = std::unique_ptr<rpc::camera::VideoStreamSettings>(
-            new rpc::camera::VideoStreamSettings());
+        auto rpc_video_stream_settings =
+            std::make_unique<rpc::camera::VideoStreamSettings>(rpc::camera::VideoStreamSettings());
         rpc_video_stream_settings->set_frame_rate_hz(video_stream_settings.frame_rate_hz);
         rpc_video_stream_settings->set_horizontal_resolution_pix(
             video_stream_settings.horizontal_resolution_pix);
@@ -233,7 +234,7 @@ public:
     translateVideoStreamInfo(const mavsdk::Camera::VideoStreamInfo& video_stream_info)
     {
         auto rpc_video_stream_info =
-            std::unique_ptr<rpc::camera::VideoStreamInfo>(new rpc::camera::VideoStreamInfo());
+            std::make_unique<rpc::camera::VideoStreamInfo>(rpc::camera::VideoStreamInfo());
 
         auto rpc_video_stream_settings = translateVideoStreamSettings(video_stream_info.settings);
         rpc_video_stream_info->set_allocated_video_stream_settings(
@@ -344,7 +345,7 @@ public:
     translateCaptureInfo(const mavsdk::Camera::CaptureInfo& capture_info)
     {
         auto rpc_capture_info =
-            std::unique_ptr<rpc::camera::CaptureInfo>(new rpc::camera::CaptureInfo());
+            std::make_unique<rpc::camera::CaptureInfo>(rpc::camera::CaptureInfo());
         rpc_capture_info->set_allocated_position(
             translatePosition(capture_info.position).release());
         rpc_capture_info->set_allocated_attitude_quaternion(
@@ -362,7 +363,7 @@ public:
     static std::unique_ptr<rpc::camera::Position>
     translatePosition(const mavsdk::Camera::CaptureInfo::Position& position)
     {
-        auto rpc_position = std::unique_ptr<rpc::camera::Position>(new rpc::camera::Position());
+        auto rpc_position = std::make_unique<rpc::camera::Position>(rpc::camera::Position());
         rpc_position->set_latitude_deg(position.latitude_deg);
         rpc_position->set_longitude_deg(position.longitude_deg);
         rpc_position->set_absolute_altitude_m(position.absolute_altitude_m);
@@ -374,8 +375,7 @@ public:
     static std::unique_ptr<rpc::camera::Quaternion>
     translateAttitudeQuaternion(const mavsdk::Camera::CaptureInfo::Quaternion& attitude_quaternion)
     {
-        auto rpc_quaternion =
-            std::unique_ptr<rpc::camera::Quaternion>(new rpc::camera::Quaternion());
+        auto rpc_quaternion = std::make_unique<rpc::camera::Quaternion>(rpc::camera::Quaternion());
         rpc_quaternion->set_w(attitude_quaternion.w);
         rpc_quaternion->set_x(attitude_quaternion.x);
         rpc_quaternion->set_y(attitude_quaternion.y);
@@ -387,8 +387,7 @@ public:
     static std::unique_ptr<rpc::camera::EulerAngle>
     translateAttitudeEulerAngle(const mavsdk::Camera::CaptureInfo::EulerAngle& attitude_euler_angle)
     {
-        auto rpc_euler_angle =
-            std::unique_ptr<rpc::camera::EulerAngle>(new rpc::camera::EulerAngle());
+        auto rpc_euler_angle = std::make_unique<rpc::camera::EulerAngle>(rpc::camera::EulerAngle());
         rpc_euler_angle->set_yaw_deg(attitude_euler_angle.yaw_deg);
         rpc_euler_angle->set_pitch_deg(attitude_euler_angle.pitch_deg);
         rpc_euler_angle->set_roll_deg(attitude_euler_angle.roll_deg);
@@ -480,7 +479,7 @@ public:
     static std::unique_ptr<rpc::camera::CameraStatus>
     translateCameraStatus(const mavsdk::Camera::Status& camera_status)
     {
-        auto status = std::unique_ptr<rpc::camera::CameraStatus>(new rpc::camera::CameraStatus());
+        auto status = std::make_unique<rpc::camera::CameraStatus>(rpc::camera::CameraStatus());
         status->set_video_on(camera_status.video_on);
         status->set_photo_interval_on(camera_status.photo_interval_on);
         status->set_storage_status(translateStorageStatus(camera_status.storage_status));
@@ -580,7 +579,7 @@ public:
 
     static std::unique_ptr<rpc::camera::Option> translateOption(const mavsdk::Camera::Option option)
     {
-        auto rpc_option = std::unique_ptr<rpc::camera::Option>(new rpc::camera::Option);
+        auto rpc_option = std::make_unique<rpc::camera::Option>(rpc::camera::Option());
         rpc_option->set_option_id(option.option_id);
         rpc_option->set_option_description(option.option_description);
 

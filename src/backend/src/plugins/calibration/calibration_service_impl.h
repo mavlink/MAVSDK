@@ -14,8 +14,8 @@ public:
     static std::unique_ptr<rpc::calibration::CalibrationResult>
     translateCalibrationResult(const mavsdk::Calibration::Result& calibration_result)
     {
-        auto rpc_calibration_result = std::unique_ptr<rpc::calibration::CalibrationResult>(
-            new rpc::calibration::CalibrationResult());
+        auto rpc_calibration_result = std::make_unique<rpc::calibration::CalibrationResult>(
+            rpc::calibration::CalibrationResult());
 
         auto rpc_result =
             static_cast<rpc::calibration::CalibrationResult::Result>(calibration_result);
@@ -29,7 +29,7 @@ public:
     translateProgressData(const mavsdk::Calibration::ProgressData& progress_data)
     {
         auto rpc_progress_data =
-            std::unique_ptr<rpc::calibration::ProgressData>(new rpc::calibration::ProgressData());
+            std::make_unique<rpc::calibration::ProgressData>(rpc::calibration::ProgressData());
 
         rpc_progress_data->set_has_progress(progress_data.has_progress);
         rpc_progress_data->set_progress(progress_data.progress);

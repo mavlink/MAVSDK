@@ -22,7 +22,7 @@ public:
 
     void startGRPCServer()
     {
-        _server = std::unique_ptr<GRPCServer>(new GRPCServer(_dc));
+        _server = std::make_unique<GRPCServer>(_dc);
         _server->run();
     }
 
@@ -34,7 +34,7 @@ private:
     std::unique_ptr<GRPCServer> _server;
 };
 
-MavsdkBackend::MavsdkBackend() : _impl(new Impl()) {}
+MavsdkBackend::MavsdkBackend() : _impl(std::make_unique<Impl>()) {}
 MavsdkBackend::~MavsdkBackend() = default;
 
 void MavsdkBackend::startGRPCServer()

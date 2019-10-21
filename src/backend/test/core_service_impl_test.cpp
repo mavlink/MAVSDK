@@ -27,6 +27,7 @@ class CoreServiceImplTest : public ::testing::Test {
 protected:
     virtual void SetUp()
     {
+        // Somehow std::make_unique does not work below.
         _dc = std::unique_ptr<MockMavsdk>(new MockMavsdk());
         _core_service = std::unique_ptr<CoreServiceImpl>(new CoreServiceImpl(*_dc));
 
