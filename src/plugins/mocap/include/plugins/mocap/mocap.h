@@ -142,13 +142,12 @@ public:
                          (1 0 0 0 is the null-rotation). */
         SpeedBody speed_body{}; /**< @brief Body linear speed (m/s). */
         AngularVelocityBody angular_velocity_body{}; /**< @brief Body angular speed (rad/s). */
-        Covariance pose_covariance{std::numeric_limits<float>::quiet_NaN()}; /**< @brief Row-major
-                                       representation of a 6x6 pose cross-covariance matrix upper
-                                       right triangle. Leave empty if unknown. */
-        Covariance velocity_covariance{
-            std::numeric_limits<float>::quiet_NaN()}; /**< @brief Row-major representation of a 6x6
-                                                         velocity cross-covariance matrix upper
-                                                         right triangle. Leave empty if unknown. */
+        Covariance pose_covariance{}; /**< @brief Row-major representation of a 6x6 pose
+                                         cross-covariance matrix upper right triangle.
+                                         Set first to NaN if unknown. */
+        Covariance velocity_covariance{}; /**< @brief Row-major representation of a 6x6 velocity
+                                             cross-covariance matrix upper right triangle.
+                                             Set first to NaN if unknown. */
     };
 
     /**

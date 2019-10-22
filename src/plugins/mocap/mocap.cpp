@@ -1,7 +1,5 @@
 #include <cmath>
 #include <limits>
-#include <array>
-
 #include "plugins/mocap/mocap.h"
 #include "mocap_impl.h"
 

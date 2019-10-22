@@ -2,8 +2,6 @@
 #include "system.h"
 #include "global_include.h"
 #include "px4_custom_mode.h"
-#include <cmath>
-#include <functional>
 #include <array>
 
 namespace mavsdk {
