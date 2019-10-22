@@ -60,7 +60,7 @@ TEST_F(SitlTest, MavlinkPassthrough)
 
                 LogInfo() << "HIGHRES_IMU.temperature [1] (" << counter << ")"
                           << highres_imu.temperature << " degrees C";
-                if (++counter > 100) {
+                if (++counter == 100) {
                     EXPECT_FALSE(stopped);
                     if (!stopped) {
                         stopped = true;
