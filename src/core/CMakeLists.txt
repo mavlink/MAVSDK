@@ -37,8 +37,6 @@ target_link_libraries(mavsdk
     ${CMAKE_THREAD_LIBS_INIT}
 )
 
-target_compile_features(mavsdk PRIVATE cxx_std_17)
-
 if (IOS)
     target_link_libraries(mavsdk
         PUBLIC
