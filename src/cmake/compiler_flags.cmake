@@ -53,6 +53,7 @@ endif()
 
 if(IOS)
     add_definitions("-DIOS")
+    set(warnings "${warnings} -Wno-aligned-allocation-unavailable")
 endif()
 
 if(UNIX AND NOT APPLE)
