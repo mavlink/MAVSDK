@@ -5,7 +5,7 @@ project(geofence_inclusion)
 if(MSVC)
     add_definitions("-std=c++11 -WX -W2")
 else()
-    add_definitions("-std=c++11 -Wall -Wextra -Werror")
+    add_definitions("-std=c++11 -Wall -Wextra")
 endif()
 
 find_package(MAVSDK REQUIRED)

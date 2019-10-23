@@ -3,6 +3,10 @@ project(mavsdk_examples)
 
 # This allows to build all examples at once.
 
+if (WERROR)
+    add_compile_options(-Werror)
+endif()
+
 add_subdirectory(battery)
 add_subdirectory(calibrate)
 add_subdirectory(fly_mission)

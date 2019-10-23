@@ -3,7 +3,7 @@ cmake_minimum_required(VERSION 2.8.12)
 project(battery)
 
 if(NOT MSVC)
-    add_definitions("-std=c++11 -Wall -Wextra -Werror ")
+    add_definitions("-std=c++11 -Wall -Wextra ")
     # This warning is triggered by the MAVLink includes.
     add_definitions("-Wno-address-of-packed-member")
 else()
