@@ -53,16 +53,15 @@ void ActionImpl::disable() {}
 
 Action::Result ActionImpl::arm() const
 {
-    Action::Result ret = arming_allowed();
-    if (ret != Action::Result::SUCCESS) {
-        return ret;
-    }
+    if (_parent->get_flight_mode() == SystemImpl::FlightMode::MISSION ||
+        _parent->get_flight_mode() == SystemImpl::FlightMode::RETURN_TO_LAUNCH) {
+        // Go to HOLD mode first to prevent the drone shooting up on arming.
+        Action::Result ret = action_result_from_command_result(
+            _parent->set_flight_mode(SystemImpl::FlightMode::HOLD));
 
-    // Go to LOITER mode first. // For No GPS mode with vision system comment the next 5 lines.
-    ret = action_result_from_command_result(_parent->set_flight_mode(SystemImpl::FlightMode::HOLD));
-
-    if (ret != Action::Result::SUCCESS) {
-        return ret;
+        if (ret != Action::Result::SUCCESS) {
+            return ret;
+        }
     }
 
     MAVLinkCommands::CommandLong command{};
@@ -257,20 +256,14 @@ void ActionImpl::transition_to_multicopter_async(const Action::result_callback_t
 
 void ActionImpl::arm_async(const Action::result_callback_t& callback)
 {
-    // Funny enough the call `arming_allowed()` is sync, so we need to
-    // queue it on the thread pool which confusingly is called
-    // `call_user_callback`.
-    _parent->call_user_callback([this, callback]() {
-        Action::Result ret = arming_allowed();
-        if (ret != Action::Result::SUCCESS) {
-            if (callback) {
-                callback(ret);
-            }
-            return;
-        }
-
-        loiter_before_arm_async(callback);
-    });
+    if (_parent->get_flight_mode() == SystemImpl::FlightMode::MISSION ||
+        _parent->get_flight_mode() == SystemImpl::FlightMode::RETURN_TO_LAUNCH) {
+        _parent->set_flight_mode_async(
+            SystemImpl::FlightMode::HOLD,
+            std::bind(&ActionImpl::arm_async_continued, this, _1, callback));
+    } else {
+        arm_async_continued(MAVLinkCommands::Result::SUCCESS, callback);
+    }
 }
 
 void ActionImpl::arm_async_continued(
@@ -377,29 +370,6 @@ void ActionImpl::return_to_launch_async(const Action::result_callback_t& callbac
         std::bind(&ActionImpl::command_result_callback, _1, callback));
 }
 
-Action::Result ActionImpl::arming_allowed() const
-{
-    // We want to wait up to 1.5 second, maybe we find out about the
-    // in-air state and can continue. If not, we need to give up.
-    unsigned tries = 0;
-    while (true) {
-        if (_in_air_state_known) {
-            if (!_in_air) {
-                return Action::Result::SUCCESS;
-            } else {
-                return Action::Result::COMMAND_DENIED_NOT_LANDED;
-            }
-        }
-
-        if (tries++ > 30) {
-            break;
-        }
-        std::this_thread::sleep_for(std::chrono::milliseconds(50));
-    }
-
-    return Action::Result::COMMAND_DENIED_LANDED_STATE_UNKNOWN;
-}
-
 Action::Result ActionImpl::taking_off_allowed() const
 {
     if (!_in_air_state_known) {
@@ -452,13 +422,6 @@ void ActionImpl::loiter_before_takeoff_async(const Action::result_callback_t& ca
     _parent->set_flight_mode_async(
         SystemImpl::FlightMode::HOLD,
         std::bind(&ActionImpl::takeoff_async_continued, this, _1, callback));
-}
-
-void ActionImpl::loiter_before_arm_async(const Action::result_callback_t& callback)
-{
-    _parent->set_flight_mode_async(
-        SystemImpl::FlightMode::HOLD,
-        std::bind(&ActionImpl::arm_async_continued, this, _1, callback));
 }
 
 Action::Result ActionImpl::set_takeoff_altitude(float relative_altitude_m)
