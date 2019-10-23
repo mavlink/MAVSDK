@@ -50,9 +50,6 @@ public:
     std::pair<Action::Result, float> get_return_to_launch_return_altitude() const;
 
 private:
-    void loiter_before_takeoff_async(const Action::result_callback_t& callback);
-    void takeoff_async_continued(
-        MAVLinkCommands::Result previous_result, const Action::result_callback_t& callback);
     void arm_async_continued(
         MAVLinkCommands::Result previous_result, const Action::result_callback_t& callback);
 

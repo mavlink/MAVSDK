@@ -117,14 +117,6 @@ Action::Result ActionImpl::reboot() const
 
 Action::Result ActionImpl::takeoff() const
 {
-    Action::Result ret = taking_off_allowed();
-    if (ret != Action::Result::SUCCESS) {
-        return ret;
-    }
-
-    // Go to LOITER mode first.
-    ret = action_result_from_command_result(_parent->set_flight_mode(SystemImpl::FlightMode::HOLD));
-
     MAVLinkCommands::CommandLong command{};
 
     command.command = MAV_CMD_NAV_TAKEOFF;
@@ -318,30 +310,6 @@ void ActionImpl::kill_async(const Action::result_callback_t& callback)
 
 void ActionImpl::takeoff_async(const Action::result_callback_t& callback)
 {
-    // Funny enough the call `takeof_off_allowed()` is sync, so we need to
-    // queue it on the thread pool which confusingly is called
-    // `call_user_callback`.
-    _parent->call_user_callback([this, callback]() {
-        Action::Result ret = taking_off_allowed();
-        if (ret != Action::Result::SUCCESS) {
-            if (callback) {
-                callback(ret);
-            }
-            return;
-        }
-    });
-
-    loiter_before_takeoff_async(callback);
-}
-
-void ActionImpl::takeoff_async_continued(
-    MAVLinkCommands::Result previous_result, const Action::result_callback_t& callback)
-{
-    if (previous_result != MAVLinkCommands::Result::SUCCESS) {
-        command_result_callback(previous_result, callback);
-        return;
-    }
-
     MAVLinkCommands::CommandLong command{};
 
     command.command = MAV_CMD_NAV_TAKEOFF;
@@ -368,19 +336,6 @@ void ActionImpl::return_to_launch_async(const Action::result_callback_t& callbac
     _parent->set_flight_mode_async(
         SystemImpl::FlightMode::RETURN_TO_LAUNCH,
         std::bind(&ActionImpl::command_result_callback, _1, callback));
-}
-
-Action::Result ActionImpl::taking_off_allowed() const
-{
-    if (!_in_air_state_known) {
-        return Action::Result::COMMAND_DENIED_LANDED_STATE_UNKNOWN;
-    }
-
-    if (_in_air) {
-        return Action::Result::COMMAND_DENIED_NOT_LANDED;
-    }
-
-    return Action::Result::SUCCESS;
 }
 
 Action::Result ActionImpl::disarming_allowed() const
@@ -415,13 +370,6 @@ void ActionImpl::process_extended_sys_state(const mavlink_message_t& message)
         _vtol_transition_possible = false;
     }
     _vtol_transition_support_known = true;
-}
-
-void ActionImpl::loiter_before_takeoff_async(const Action::result_callback_t& callback)
-{
-    _parent->set_flight_mode_async(
-        SystemImpl::FlightMode::HOLD,
-        std::bind(&ActionImpl::takeoff_async_continued, this, _1, callback));
 }
 
 Action::Result ActionImpl::set_takeoff_altitude(float relative_altitude_m)
