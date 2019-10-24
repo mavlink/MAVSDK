@@ -12,13 +12,13 @@ ENV DEBIAN_FRONTEND noninteractive
 
 RUN apt-get update \
     && apt-get -y --quiet --no-install-recommends install \
+        apt-transport-https \
         autoconf \
         automake \
         autotools-dev \
         build-essential \
         ca-certificates \
         ccache \
-        cmake \
         colordiff \
         doxygen \
         git \
@@ -51,6 +51,12 @@ RUN add-apt-repository ppa:ubuntu-toolchain-r/test \
     && apt-get install -y gcc-7 g++-7 \
     && rm -rf /var/lib/apt/lists/{apt,dpkg,cache,log} /tmp/* /var/tmp/* \
     && update-alternatives --install /usr/bin/gcc gcc /usr/bin/gcc-7 60 --slave /usr/bin/g++ g++ /usr/bin/g++-7
+
+RUN wget -O - https://apt.kitware.com/keys/kitware-archive-latest.asc 2>/dev/null | apt-key add - \
+    && apt-add-repository 'deb https://apt.kitware.com/ubuntu/ xenial main' \
+    && apt-get update \
+    && apt-get install -y cmake \
+    && rm -rf /var/lib/apt/lists/{apt,dpkg,cache,log} /tmp/* /var/tmp/*
 
 RUN gem install --no-document fpm;
 
