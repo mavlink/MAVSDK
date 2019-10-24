@@ -2,7 +2,6 @@
 #include "system.h"
 #include "math_conversions.h"
 #include "global_include.h"
-#include "px4_custom_mode.h"
 #include <cmath>
 #include <functional>
 #include <string>
@@ -657,15 +656,13 @@ void TelemetryImpl::process_heartbeat(const mavlink_message_t& message)
         _parent->call_user_callback([callback, arg]() { callback(arg); });
     }
 
-    if (heartbeat.base_mode & MAV_MODE_FLAG_CUSTOM_MODE_ENABLED) {
-        Telemetry::FlightMode flight_mode = to_flight_mode_from_custom_mode(heartbeat.custom_mode);
-        set_flight_mode(flight_mode);
-
-        if (_flight_mode_subscription) {
-            auto callback = _flight_mode_subscription;
-            auto arg = get_flight_mode();
-            _parent->call_user_callback([callback, arg]() { callback(arg); });
-        }
+    if (_flight_mode_subscription) {
+        auto callback = _flight_mode_subscription;
+        // The flight mode is already parsed in SystemImpl, so we can take it
+        // from there.  This assumes that SystemImpl gets called first because
+        // it's earlier in the callback list.
+        auto arg = telemetry_flight_mode_from_flight_mode(_parent->get_flight_mode());
+        _parent->call_user_callback([callback, arg]() { callback(arg); });
     }
 
     if (_health_subscription) {
@@ -822,38 +819,6 @@ void TelemetryImpl::process_odometry(const mavlink_message_t& message)
     }
 }
 
-Telemetry::FlightMode TelemetryImpl::to_flight_mode_from_custom_mode(uint32_t custom_mode)
-{
-    px4::px4_custom_mode px4_custom_mode;
-    px4_custom_mode.data = custom_mode;
-
-    switch (px4_custom_mode.main_mode) {
-        case px4::PX4_CUSTOM_MAIN_MODE_OFFBOARD:
-            return Telemetry::FlightMode::OFFBOARD;
-        case px4::PX4_CUSTOM_MAIN_MODE_AUTO:
-            switch (px4_custom_mode.sub_mode) {
-                case px4::PX4_CUSTOM_SUB_MODE_AUTO_READY:
-                    return Telemetry::FlightMode::READY;
-                case px4::PX4_CUSTOM_SUB_MODE_AUTO_TAKEOFF:
-                    return Telemetry::FlightMode::TAKEOFF;
-                case px4::PX4_CUSTOM_SUB_MODE_AUTO_LOITER:
-                    return Telemetry::FlightMode::HOLD;
-                case px4::PX4_CUSTOM_SUB_MODE_AUTO_MISSION:
-                    return Telemetry::FlightMode::MISSION;
-                case px4::PX4_CUSTOM_SUB_MODE_AUTO_RTL:
-                    return Telemetry::FlightMode::RETURN_TO_LAUNCH;
-                case px4::PX4_CUSTOM_SUB_MODE_AUTO_LAND:
-                    return Telemetry::FlightMode::LAND;
-                case px4::PX4_CUSTOM_SUB_MODE_AUTO_FOLLOW_TARGET:
-                    return Telemetry::FlightMode::FOLLOW_ME;
-                default:
-                    return Telemetry::FlightMode::UNKNOWN;
-            }
-        default:
-            return Telemetry::FlightMode::UNKNOWN;
-    }
-}
-
 Telemetry::LandedState
 TelemetryImpl::to_landed_state(mavlink_extended_sys_state_t extended_sys_state)
 {
@@ -868,6 +833,31 @@ TelemetryImpl::to_landed_state(mavlink_extended_sys_state_t extended_sys_state)
             return Telemetry::LandedState::ON_GROUND;
         default:
             return Telemetry::LandedState::UNKNOWN;
+    }
+}
+
+Telemetry::FlightMode
+TelemetryImpl::telemetry_flight_mode_from_flight_mode(SystemImpl::FlightMode flight_mode)
+{
+    switch (flight_mode) {
+        case SystemImpl::FlightMode::READY:
+            return Telemetry::FlightMode::READY;
+        case SystemImpl::FlightMode::TAKEOFF:
+            return Telemetry::FlightMode::TAKEOFF;
+        case SystemImpl::FlightMode::HOLD:
+            return Telemetry::FlightMode::HOLD;
+        case SystemImpl::FlightMode::MISSION:
+            return Telemetry::FlightMode::MISSION;
+        case SystemImpl::FlightMode::RETURN_TO_LAUNCH:
+            return Telemetry::FlightMode::RETURN_TO_LAUNCH;
+        case SystemImpl::FlightMode::LAND:
+            return Telemetry::FlightMode::LAND;
+        case SystemImpl::FlightMode::OFFBOARD:
+            return Telemetry::FlightMode::OFFBOARD;
+        case SystemImpl::FlightMode::FOLLOW_ME:
+            return Telemetry::FlightMode::FOLLOW_ME;
+        default:
+            return Telemetry::FlightMode::UNKNOWN;
     }
 }
 
@@ -1128,14 +1118,7 @@ void TelemetryImpl::set_battery(Telemetry::Battery battery)
 
 Telemetry::FlightMode TelemetryImpl::get_flight_mode() const
 {
-    std::lock_guard<std::mutex> lock(_flight_mode_mutex);
-    return _flight_mode;
-}
-
-void TelemetryImpl::set_flight_mode(Telemetry::FlightMode flight_mode)
-{
-    std::lock_guard<std::mutex> lock(_flight_mode_mutex);
-    _flight_mode = flight_mode;
+    return telemetry_flight_mode_from_flight_mode(_parent->get_flight_mode());
 }
 
 Telemetry::Health TelemetryImpl::get_health() const

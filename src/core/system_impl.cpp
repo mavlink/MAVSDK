@@ -209,6 +209,10 @@ void SystemImpl::process_heartbeat(const mavlink_message_t& message)
     if (message.compid == MAVLinkCommands::DEFAULT_COMPONENT_ID_AUTOPILOT) {
         _armed = ((heartbeat.base_mode & MAV_MODE_FLAG_SAFETY_ARMED) ? true : false);
         _hitl_enabled = ((heartbeat.base_mode & MAV_MODE_FLAG_HIL_ENABLED) ? true : false);
+
+        if (heartbeat.base_mode & MAV_MODE_FLAG_CUSTOM_MODE_ENABLED) {
+            _flight_mode = to_flight_mode_from_custom_mode(heartbeat.custom_mode);
+        }
     }
 
     // We do not call on_discovery here but wait with the notification until we know the UUID.
@@ -921,6 +925,43 @@ SystemImpl::make_command_flight_mode(FlightMode flight_mode, uint8_t component_i
     command.target_component_id = component_id;
 
     return std::make_pair<>(MAVLinkCommands::Result::SUCCESS, command);
+}
+
+SystemImpl::FlightMode SystemImpl::get_flight_mode() const
+{
+    return _flight_mode;
+}
+
+SystemImpl::FlightMode SystemImpl::to_flight_mode_from_custom_mode(uint32_t custom_mode)
+{
+    px4::px4_custom_mode px4_custom_mode;
+    px4_custom_mode.data = custom_mode;
+
+    switch (px4_custom_mode.main_mode) {
+        case px4::PX4_CUSTOM_MAIN_MODE_OFFBOARD:
+            return FlightMode::OFFBOARD;
+        case px4::PX4_CUSTOM_MAIN_MODE_AUTO:
+            switch (px4_custom_mode.sub_mode) {
+                case px4::PX4_CUSTOM_SUB_MODE_AUTO_READY:
+                    return FlightMode::READY;
+                case px4::PX4_CUSTOM_SUB_MODE_AUTO_TAKEOFF:
+                    return FlightMode::TAKEOFF;
+                case px4::PX4_CUSTOM_SUB_MODE_AUTO_LOITER:
+                    return FlightMode::HOLD;
+                case px4::PX4_CUSTOM_SUB_MODE_AUTO_MISSION:
+                    return FlightMode::MISSION;
+                case px4::PX4_CUSTOM_SUB_MODE_AUTO_RTL:
+                    return FlightMode::RETURN_TO_LAUNCH;
+                case px4::PX4_CUSTOM_SUB_MODE_AUTO_LAND:
+                    return FlightMode::LAND;
+                case px4::PX4_CUSTOM_SUB_MODE_AUTO_FOLLOW_TARGET:
+                    return FlightMode::FOLLOW_ME;
+                default:
+                    return FlightMode::UNKNOWN;
+            }
+        default:
+            return FlightMode::UNKNOWN;
+    }
 }
 
 MAVLinkCommands::Result SystemImpl::set_flight_mode(FlightMode system_mode, uint8_t component_id)
