@@ -1,10 +1,10 @@
 #pragma once
 
-#include <cstdint>
-
 #include "mavlink_include.h"
 #include "plugins/action/action.h"
 #include "plugin_impl_base.h"
+#include <atomic>
+#include <cstdint>
 
 namespace mavsdk {
 
@@ -31,14 +31,14 @@ public:
     Action::Result transition_to_fixedwing() const;
     Action::Result transition_to_multicopter() const;
 
-    void arm_async(const Action::result_callback_t& callback);
-    void disarm_async(const Action::result_callback_t& callback);
-    void kill_async(const Action::result_callback_t& callback);
-    void takeoff_async(const Action::result_callback_t& callback);
-    void land_async(const Action::result_callback_t& callback);
-    void return_to_launch_async(const Action::result_callback_t& callback);
-    void transition_to_fixedwing_async(const Action::result_callback_t& callback);
-    void transition_to_multicopter_async(const Action::result_callback_t& callback);
+    void arm_async(const Action::result_callback_t& callback) const;
+    void disarm_async(const Action::result_callback_t& callback) const;
+    void kill_async(const Action::result_callback_t& callback) const;
+    void takeoff_async(const Action::result_callback_t& callback) const;
+    void land_async(const Action::result_callback_t& callback) const;
+    void return_to_launch_async(const Action::result_callback_t& callback) const;
+    void transition_to_fixedwing_async(const Action::result_callback_t& callback) const;
+    void transition_to_multicopter_async(const Action::result_callback_t& callback) const;
 
     Action::Result set_takeoff_altitude(float relative_altitude_m);
     std::pair<Action::Result, float> get_takeoff_altitude() const;
@@ -50,15 +50,6 @@ public:
     std::pair<Action::Result, float> get_return_to_launch_return_altitude() const;
 
 private:
-    void loiter_before_takeoff_async(const Action::result_callback_t& callback);
-    void loiter_before_arm_async(const Action::result_callback_t& callback);
-
-    void takeoff_async_continued(
-        MAVLinkCommands::Result previous_result, const Action::result_callback_t& callback);
-    void arm_async_continued(
-        MAVLinkCommands::Result previous_result, const Action::result_callback_t& callback);
-
-    Action::Result arming_allowed() const;
     Action::Result disarming_allowed() const;
     Action::Result taking_off_allowed() const;
 
@@ -66,8 +57,8 @@ private:
 
     static Action::Result action_result_from_command_result(MAVLinkCommands::Result result);
 
-    static void command_result_callback(
-        MAVLinkCommands::Result command_result, const Action::result_callback_t& callback);
+    void command_result_callback(
+        MAVLinkCommands::Result command_result, const Action::result_callback_t& callback) const;
 
     std::atomic<bool> _in_air_state_known{false};
     std::atomic<bool> _in_air{false};
