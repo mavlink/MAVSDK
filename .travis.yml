@@ -35,6 +35,12 @@ matrix:
         - docker
       env:
       - MATRIX_EVAL="BUILD_TARGET=manylinux1-x64"
+    - os: linux
+      name: "linux-armv7"
+      services:
+        - docker
+      env:
+      - MATRIX_EVAL="BUILD_TARGET=linux-armv7"
     - os: osx
       name: "macOS"
       osx_image: xcode10.1
@@ -70,6 +76,10 @@ install:
     docker run --rm manylinux1-x64-custom > ./dockcross-manylinux1-x64;
     chmod +x ./dockcross-manylinux1-x64;
   fi
+- if [[ "${BUILD_TARGET}" = "linux-armv7" ]]; then
+    docker run --rm dockcross/linux-armv7 > ./dockcross-linux-armv7;
+    chmod +x ./dockcross-linux-armv7;
+  fi
 
 script:
 - set -e
@@ -89,6 +99,10 @@ script:
 - if [[ "${BUILD_TARGET}" = "manylinux1-x64" ]]; then
     ./dockcross-manylinux1-x64 cmake -DCMAKE_BUILD_TYPE=Release -DCMAKE_INSTALL_PREFIX=build/manylinux1-x64/install -DBUILD_BACKEND=ON -DBUILD_SHARED_LIBS=OFF -Bbuild/manylinux1-x64 -H.;
     ./dockcross-manylinux1-x64 cmake --build build/manylinux1-x64 --target install;
+  fi
+- if [[ "${BUILD_TARGET}" = "linux-armv7" ]]; then
+    ./dockcross-linux-armv7 cmake -DCMAKE_BUILD_TYPE=Release -DCMAKE_INSTALL_PREFIX=build/linux-armv7/install -DBUILD_BACKEND=ON -DBUILD_SHARED_LIBS=OFF -Bbuild/linux-armv7 -H.;
+    ./dockcross-linux-armv7 cmake --build build/linux-armv7 --target install;
   fi
 - if [[ "${BUILD_TARGET}" = "osx_build" ]]; then
     cmake -DCMAKE_BUILD_TYPE=Release -DCMAKE_INSTALL_PREFIX=build/release/install -DBUILD_BACKEND=ON -DBUILD_SHARED_LIBS=OFF -Bbuild/release -H.;
@@ -129,6 +143,9 @@ before_deploy:
       if [[ "${BUILD_TARGET}" = "manylinux1-x64" ]]; then
           mv build/manylinux1-x64/install/bin/mavsdk_server build/manylinux1-x64/install/bin/mavsdk_server_manylinux1-x64;
       fi;
+      if [[ "${BUILD_TARGET}" = "linux-armv7" ]]; then
+          mv build/linux-armv7/install/bin/mavsdk_server build/linux-armv7/install/bin/mavsdk_server_linux-armv7;
+      fi;
       if [[ "${BUILD_TARGET}" = "osx_build" ]]; then
           mv build/release/install/bin/mavsdk_server build/release/install/bin/mavsdk_server_macos;
       fi;
@@ -143,6 +160,16 @@ deploy:
   file: "build/manylinux1-x64/install/bin/mavsdk_server_manylinux1-x64"
   on:
     condition: ${BUILD_TARGET} = manylinux1-x64
+    repo: mavlink/MAVSDK
+    tags: true
+- provider: releases
+  skip_cleanup: true
+  api_key:
+      secure: hBX3pFWNZiDbz4yKnOjhLg3QS9Ubn1XePxSeIt2Btq5GzbomOPDCgpIFijBppliwj9oKc302EMnZSg2QWeAzFKn9UnmIflJ0E4iymYgwWdTJv+bSnYALJEmO8F6gF9FgRlPk8FCtZiECoTsa75w5TrEZKZpFpmzVYRiDu0eo6sEjW7UJPC0A2KSTXLrBCHSIZy/iasbGmuur4brG7NO0QdMOvDXvhsYfkXDRJFMTtTHvLiKJcqiunPfqARzf1H4x4iczRYscKu5Vn8Kmw3NANGkcIDvEj4ooih831EXxACRZw0VgycgNHOKRXKC9pZ4hLQMon+jxpQX+X8k/K5161oEkF/gCVKyFb31Pk/4Uwe81p1GJY2lAC7MDUxA98RKXhdvVYF2Cp44+IbF0YVoWRUtVAhknXRQ3Weg25kyVSu83q2nN2nZq2qGTnpNIbdN56s/F+uaFtipGEh+vmiv8rNUz+Z5MFrY2FQaSvBTFw9K4tNs9uc+VQd1bE7X5wh0yywEqUEw2nzqTB2xR+OubygUASbk2GLNdc254P0lrzCHbNM62Y7sRX06CM7hPlwhELEkVtUXZWJ0KuhQyLvRh3aPJ3Jj30EswTt/FGT1gzSP1FjjHBRZCK4P2D2rwJ5TMn2JrZKfPxmEd3kVmn6h80+gBbKgonGmZspd2SvPEI5g=
+  file_glob: true
+  file: "build/linux-armv7/install/bin/mavsdk_server_linux-armv7"
+  on:
+    condition: ${BUILD_TARGET} = linux-armv7
     repo: mavlink/MAVSDK
     tags: true
 - provider: releases

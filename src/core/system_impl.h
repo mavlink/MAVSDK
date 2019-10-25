@@ -28,13 +28,15 @@ class PluginImplBase;
 class SystemImpl {
 public:
     enum class FlightMode {
-        HOLD = 0,
-        RETURN_TO_LAUNCH,
+        UNKNOWN,
+        READY,
         TAKEOFF,
-        LAND,
+        HOLD,
         MISSION,
-        FOLLOW_ME,
+        RETURN_TO_LAUNCH,
+        LAND,
         OFFBOARD,
+        FOLLOW_ME,
     };
 
     explicit SystemImpl(
@@ -61,6 +63,8 @@ public:
     void remove_call_every(const void* cookie);
 
     bool send_message(mavlink_message_t& message);
+
+    static FlightMode to_flight_mode_from_custom_mode(uint32_t custom_mode);
 
     typedef std::function<void(MAVLinkCommands::Result, float)> command_result_callback_t;
 
@@ -123,6 +127,8 @@ public:
         const std::string& name, float value, success_t callback, const void* cookie);
     void set_param_ext_int_async(
         const std::string& name, int32_t value, success_t callback, const void* cookie);
+
+    FlightMode get_flight_mode() const;
 
     MAVLinkCommands::Result
     set_flight_mode(FlightMode mode, uint8_t component_id = MAV_COMP_ID_AUTOPILOT1);
@@ -306,6 +312,8 @@ private:
 
     std::function<bool(mavlink_message_t&)> _incoming_messages_intercept_callback{nullptr};
     std::function<bool(mavlink_message_t&)> _outgoing_messages_intercept_callback{nullptr};
+
+    std::atomic<FlightMode> _flight_mode{FlightMode::UNKNOWN};
 };
 
 } // namespace mavsdk

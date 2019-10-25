@@ -130,7 +130,6 @@ private:
     void set_imu_reading_ned(Telemetry::IMUReadingNED imu_reading_ned);
     void set_gps_info(Telemetry::GPSInfo gps_info);
     void set_battery(Telemetry::Battery battery);
-    void set_flight_mode(Telemetry::FlightMode flight_mode);
     void set_health_local_position(bool ok);
     void set_health_global_position(bool ok);
     void set_health_home_position(bool ok);
@@ -180,9 +179,10 @@ private:
     static void command_result_callback(
         MAVLinkCommands::Result command_result, const Telemetry::result_callback_t& callback);
 
-    static Telemetry::FlightMode to_flight_mode_from_custom_mode(uint32_t custom_mode);
-
     static Telemetry::LandedState to_landed_state(mavlink_extended_sys_state_t extended_sys_state);
+
+    static Telemetry::FlightMode
+    telemetry_flight_mode_from_flight_mode(SystemImpl::FlightMode flight_mode);
 
     // Make all fields thread-safe using mutexs
     // The mutexs are mutable so that the lock can get aqcuired in
@@ -224,9 +224,6 @@ private:
 
     mutable std::mutex _battery_mutex{};
     Telemetry::Battery _battery{NAN, NAN};
-
-    mutable std::mutex _flight_mode_mutex{};
-    Telemetry::FlightMode _flight_mode{Telemetry::FlightMode::UNKNOWN};
 
     mutable std::mutex _health_mutex{};
     Telemetry::Health _health{false, false, false, false, false, false, false};

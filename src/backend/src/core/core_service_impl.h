@@ -56,6 +56,7 @@ public:
                                         "gimbal",
                                         "info",
                                         "mission",
+                                        "mocap",
                                         "offboard",
                                         "param",
                                         "shell",

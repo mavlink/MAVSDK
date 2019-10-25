@@ -26,6 +26,8 @@
 #include "offboard/offboard_service_impl.h"
 #include "plugins/shell/shell.h"
 #include "shell/shell_service_impl.h"
+#include "plugins/mocap/mocap.h"
+#include "mocap/mocap_service_impl.h"
 
 namespace mavsdk {
 namespace backend {
@@ -56,7 +58,9 @@ public:
         _param(_dc.system()),
         _param_service(_param),
         _shell(_dc.system()),
-        _shell_service(_shell)
+        _shell_service(_shell),
+        _mocap(_dc.system()),
+        _mocap_service(_mocap)
     {}
 
     void run();
@@ -90,6 +94,8 @@ private:
     ParamServiceImpl<> _param_service;
     Shell _shell;
     ShellServiceImpl<> _shell_service;
+    Mocap _mocap;
+    MocapServiceImpl<> _mocap_service;
 
     std::unique_ptr<grpc::Server> _server;
 };
