@@ -24,6 +24,7 @@ void GRPCServer::run()
     builder.RegisterService(&_telemetry_service);
     builder.RegisterService(&_info_service);
     builder.RegisterService(&_param_service);
+    builder.RegisterService(&_mocap_service);
 
     _server = builder.BuildAndStart();
     LogInfo() << "Server started";

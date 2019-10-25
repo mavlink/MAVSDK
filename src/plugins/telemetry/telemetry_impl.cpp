@@ -795,7 +795,12 @@ void TelemetryImpl::process_odometry(const mavlink_message_t& message)
     odometry.position_body.y_m = mavlink_msg_odometry_get_y(&message);
     odometry.position_body.z_m = mavlink_msg_odometry_get_z(&message);
 
-    mavlink_msg_odometry_get_q(&message, odometry.q);
+    std::array<float, 4> q{};
+    mavlink_msg_odometry_get_q(&message, q.data());
+    odometry.q.w = q[0];
+    odometry.q.x = q[1];
+    odometry.q.y = q[2];
+    odometry.q.z = q[3];
 
     odometry.velocity_body.x_m_s = mavlink_msg_odometry_get_vx(&message);
     odometry.velocity_body.y_m_s = mavlink_msg_odometry_get_vy(&message);
