@@ -8,6 +8,7 @@
 namespace mavsdk {
 
 using std::chrono::steady_clock;
+using std::chrono::system_clock;
 
 Time::Time() {}
 Time::~Time() {}
@@ -15,6 +16,11 @@ Time::~Time() {}
 dl_time_t Time::steady_time()
 {
     return steady_clock::now();
+}
+
+dl_stime_t Time::system_time()
+{
+    return system_clock::now();
 }
 
 double Time::elapsed_s()
@@ -156,6 +162,20 @@ bool are_equal(float one, float two)
 bool are_equal(double one, double two)
 {
     return (std::fabs(one - two) < std::numeric_limits<double>::epsilon());
+}
+
+FCUTime::FCUTime() {}
+FCUTime::~FCUTime() {}
+
+dl_stime_t FCUTime::system_time()
+{
+    return system_clock::now();
+}
+
+dl_fcu_time_t FCUTime::now()
+{
+    std::lock_guard<std::mutex> lock(_fcu_system_time_offset_mutex);
+    return dl_fcu_time_t(system_time() + _fcu_time_offset);
 }
 
 } // namespace mavsdk

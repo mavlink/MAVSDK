@@ -21,6 +21,7 @@ SystemImpl::SystemImpl(MavsdkImpl& parent, uint8_t system_id, uint8_t comp_id, b
     _parent(parent),
     _params(*this),
     _commands(*this),
+    _timesync(*this),
     _timeout_handler(_time),
     _call_every_handler(_time)
 {
@@ -330,6 +331,7 @@ void SystemImpl::system_thread()
         _timeout_handler.run_once();
         _params.do_work();
         _commands.do_work();
+        _timesync.do_work();
 
         if (_connected) {
             // Work fairly fast if we're connected.
