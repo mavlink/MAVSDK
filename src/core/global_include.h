@@ -26,8 +26,8 @@ constexpr float M_PI_F = float(M_PI);
 namespace mavsdk {
 
 typedef std::chrono::time_point<std::chrono::steady_clock> dl_time_t;
-typedef std::chrono::time_point<std::chrono::system_clock> dl_stime_t;
-typedef std::chrono::time_point<std::chrono::system_clock> dl_fcu_time_t;
+typedef std::chrono::time_point<std::chrono::system_clock> dl_system_time_t;
+typedef std::chrono::time_point<std::chrono::system_clock> dl_autopilot_time_t;
 
 class Time {
 public:
@@ -35,7 +35,7 @@ public:
     virtual ~Time();
 
     virtual dl_time_t steady_time();
-    virtual dl_stime_t system_time();
+    virtual dl_system_time_t system_time();
     double elapsed_s();
     double elapsed_since_s(const dl_time_t& since);
     dl_time_t steady_time_in_future(double duration_s);
@@ -67,30 +67,22 @@ private:
     void add_overhead();
 };
 
-class FCUTime {
+class AutopilotTime {
 public:
-    FCUTime();
-    virtual ~FCUTime();
+    AutopilotTime();
+    virtual ~AutopilotTime();
 
-    dl_fcu_time_t now();
+    dl_autopilot_time_t now();
 
-    template<typename T> void shift_fcu_time_by(T offset)
-    {
-        std::lock_guard<std::mutex> lock(_fcu_system_time_offset_mutex);
-        _fcu_time_offset = std::chrono::duration_cast<std::chrono::nanoseconds>(offset);
-    };
+    void shift_time_by(std::chrono::nanoseconds offset);
 
-    template<typename T> inline dl_fcu_time_t time_in(T local_system_time_point)
-    {
-        std::lock_guard<std::mutex> lock(_fcu_system_time_offset_mutex);
-        return dl_fcu_time_t(local_system_time_point + std::chrono::duration_cast<T>(_fcu_time_offset));
-    };
+    dl_autopilot_time_t time_in(dl_system_time_t local_system_time_point);
 
 private:
-    mutable std::mutex _fcu_system_time_offset_mutex{};
-    std::chrono::nanoseconds _fcu_time_offset{};
+    mutable std::mutex _autopilot_system_time_offset_mutex{};
+    std::chrono::nanoseconds _autopilot_time_offset{};
 
-    virtual dl_stime_t system_time();
+    virtual dl_system_time_t system_time();
 };
 
 double to_rad_from_deg(double deg);

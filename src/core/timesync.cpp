@@ -1,10 +1,6 @@
 #include "timesync.h"
-#include "system_impl.h"
 #include "log.h"
-#include <cmath>
-#include <functional>
-#include <string>
-#include <array>
+#include "system_impl.h"
 
 // Partially based on: https://github.com/mavlink/mavros/blob/master/mavros/src/plugins/sys_time.cpp
 
@@ -42,13 +38,12 @@ void Timesync::process_timesync(const mavlink_message_t& message)
 
     mavlink_msg_timesync_decode(&message, &timesync);
 
-    uint64_t now_ns = std::chrono::duration_cast<std::chrono::nanoseconds>(
-                          _parent.get_time().system_time().time_since_epoch())
-                          .count();
+    int64_t now_ns = std::chrono::duration_cast<std::chrono::nanoseconds>(
+                         _parent.get_time().system_time().time_since_epoch())
+                         .count();
 
     if (timesync.tc1 == 0) {
         send_timesync(now_ns, timesync.ts1);
-        return;
     } else if (timesync.tc1 > 0) {
         // Time offset between this system and the remote system is calculated assuming RTT for
         // the timesync packet is roughly equal both ways.
@@ -65,7 +60,7 @@ void Timesync::send_timesync(uint64_t tc1, uint64_t ts1)
     _parent.send_message(message);
 }
 
-void Timesync::set_timesync_offset(int64_t offset_ns, uint64_t local_time_ns)
+void Timesync::set_timesync_offset(int64_t offset_ns, uint64_t start_transfer_local_time_ns)
 {
     uint64_t now_ns = std::chrono::duration_cast<std::chrono::nanoseconds>(
                           _parent.get_time().system_time().time_since_epoch())
@@ -73,13 +68,12 @@ void Timesync::set_timesync_offset(int64_t offset_ns, uint64_t local_time_ns)
 
     // Calculate the round trip time (RTT) it took the timesync packet to bounce back to us from
     // remote system
-    uint64_t rtt_ns = now_ns - local_time_ns;
+    uint64_t rtt_ns = now_ns - start_transfer_local_time_ns;
 
     if (rtt_ns < _MAX_RTT_SAMPLE_MS * 1000000ULL) { // Only use samples with low RTT
 
         // Save time offset for other components to use
-        _parent.get_fcu_time().shift_fcu_time_by(
-            std::chrono::nanoseconds(static_cast<int64_t>(offset_ns)));
+        _parent.get_autopilot_time().shift_time_by(std::chrono::nanoseconds(offset_ns));
 
         // Reset high RTT count after filter update
         _high_rtt_count = 0;
