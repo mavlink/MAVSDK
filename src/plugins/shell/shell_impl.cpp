@@ -36,8 +36,8 @@ ShellImpl::~ShellImpl()
 
 bool ShellImpl::is_transfer_in_progress()
 {
-    if (!_transfer_finished_future.valid()) {
-        return true;
+    if (!_transfer_finished_future.valid()) { // Should never happen
+        return false;
     }
     return _transfer_finished_future.wait_for(std::chrono::seconds(0)) != std::future_status::ready;
 }
