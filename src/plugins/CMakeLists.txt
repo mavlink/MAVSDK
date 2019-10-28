@@ -18,6 +18,7 @@ add_subdirectory(mission_raw)
 add_subdirectory(mocap)
 add_subdirectory(offboard)
 add_subdirectory(param)
+add_subdirectory(shell)
 add_subdirectory(telemetry)
 add_subdirectory(tune)
 

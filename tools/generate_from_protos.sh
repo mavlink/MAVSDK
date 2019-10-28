@@ -24,7 +24,7 @@ command -v ${protoc_binary} && command -v ${protoc_grpc_binary} || {
     exit 1
 }
 
-plugin_list="action calibration geofence gimbal camera core info mission mocap offboard param telemetry"
+plugin_list="action calibration geofence gimbal camera core info mission mocap offboard param shell telemetry"
 
 echo ""
 echo "-------------------------------"

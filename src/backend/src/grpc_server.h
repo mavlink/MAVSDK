@@ -24,6 +24,8 @@
 #include "param/param_service_impl.h"
 #include "plugins/offboard/offboard.h"
 #include "offboard/offboard_service_impl.h"
+#include "plugins/shell/shell.h"
+#include "shell/shell_service_impl.h"
 #include "plugins/mocap/mocap.h"
 #include "mocap/mocap_service_impl.h"
 
@@ -55,6 +57,8 @@ public:
         _info_service(_info),
         _param(_dc.system()),
         _param_service(_param),
+        _shell(_dc.system()),
+        _shell_service(_shell),
         _mocap(_dc.system()),
         _mocap_service(_mocap)
     {}
@@ -88,6 +92,8 @@ private:
     InfoServiceImpl<> _info_service;
     Param _param;
     ParamServiceImpl<> _param_service;
+    Shell _shell;
+    ShellServiceImpl<> _shell_service;
     Mocap _mocap;
     MocapServiceImpl<> _mocap_service;
 

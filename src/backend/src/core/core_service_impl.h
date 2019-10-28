@@ -49,7 +49,7 @@ public:
         const rpc::core::ListRunningPluginsRequest* /* request */,
         mavsdk::rpc::core::ListRunningPluginsResponse* response) override
     {
-        std::string plugin_names[11] = {"action",
+        std::string plugin_names[12] = {"action",
                                         "calibration",
                                         "camera",
                                         "core",
@@ -59,6 +59,7 @@ public:
                                         "mocap",
                                         "offboard",
                                         "param",
+                                        "shell",
                                         "telemetry"};
 
         for (const auto plugin_name : plugin_names) {
