@@ -90,40 +90,11 @@ public:
      *
      * For more info see: https://en.wikipedia.org/wiki/Quaternion
      */
-    union Quaternion {
-        struct {
-            float w; /**< @brief Quaternion entry 0 also denoted as a. */
-            float x; /**< @brief Quaternion entry 1 also denoted as b. */
-            float y; /**< @brief Quaternion entry 2 also denoted as c. */
-            float z; /**< @brief Quaternion entry 3 also denoted as d. */
-        };
-
-        Quaternion() : a{0.0f} {}; /**< @brief Constructor */
-        Quaternion(float val) : a{val} {}; /**< @brief Constructor */
-        Quaternion(float w_, float x_, float y_, float z_) :
-            w(w_),
-            x(x_),
-            y(y_),
-            z(z_){}; /**< @brief Constructor */
-
-        float operator[](int i) const { return a.at(i); }; /**< @brief Operator [] */
-        float& operator[](int i) { return a.at(i); } /**< @brief Operator &[] */
-
-        /**
-         * @brief Cast to float C-style float array
-         */
-        operator float*() { return a.data(); };
-        /**
-         * @brief Cast to float array
-         */
-        operator std::array<float, 4>&() { return a; };
-        /**
-         * @brief Cast to float array
-         */
-        operator std::array<float, 4>() { return a; };
-
-    private:
-        std::array<float, 4> a;
+    struct Quaternion {
+        float w; /**< @brief Quaternion entry 0 also denoted as a. */
+        float x; /**< @brief Quaternion entry 1 also denoted as b. */
+        float y; /**< @brief Quaternion entry 2 also denoted as c. */
+        float z; /**< @brief Quaternion entry 3 also denoted as d. */
     };
 
     /**
@@ -374,34 +345,22 @@ public:
                                (x: north, y: east, z: down). */
         };
 
-        uint64_t time_usec; /**< @brief Timestamp (0 to use Backend timestamp). */
-        MavFrame frame_id; /**< @brief Coordinate frame of reference for the pose data. */
-        MavFrame child_frame_id; /**< @brief Coordinate frame of reference for the velocity in free
-                                    space (twist) data. */
-        PositionBody position_body; /**< @brief Position. */
-        Quaternion q; /**< @brief Quaternion components, w, x, y, z
+        uint64_t time_usec{}; /**< @brief Timestamp (0 to use Backend timestamp). */
+        MavFrame frame_id{}; /**< @brief Coordinate frame of reference for the pose data. */
+        MavFrame child_frame_id{}; /**< @brief Coordinate frame of reference for the velocity in
+                                    free space (twist) data. */
+        PositionBody position_body{}; /**< @brief Position. */
+        Quaternion q{}; /**< @brief Quaternion components, w, x, y, z
                          (1 0 0 0 is the null-rotation). */
-        SpeedBody velocity_body; /**< @brief Linear speed (m/s). */
-        AngularVelocityBody angular_velocity_body; /**< @brief Angular body speed (rad/s). */
-        std::array<float, 21> pose_covariance; /**< @brief Row-major representation of a 6x6 pose
-                                                  cross-covariance matrix upper right triangle.
-                                                  Leave empty if unknown. */
-        std::array<float, 21> velocity_covariance; /**< @brief Row-major representation of a 6x6
-                                                      velocity cross-covariance matrix upper right
-                                                      triangle. Leave empty if unknown. */
-        uint8_t reset_counter; /**< @brief Estimate reset counter. */
-
-        Odometry() :
-            time_usec(0),
-            frame_id(MavFrame::UNDEF),
-            child_frame_id(MavFrame::UNDEF),
-            position_body{0.0f, 0.0f, 0.0f},
-            q{0.0f},
-            velocity_body{0.0f, 0.0f, 0.0f},
-            angular_velocity_body{0.0f, 0.0f, 0.0f},
-            pose_covariance{std::numeric_limits<float>::quiet_NaN()},
-            velocity_covariance{std::numeric_limits<float>::quiet_NaN()},
-            reset_counter(0){};
+        SpeedBody velocity_body{}; /**< @brief Linear speed (m/s). */
+        AngularVelocityBody angular_velocity_body{}; /**< @brief Angular body speed (rad/s). */
+        std::array<float, 21> pose_covariance{}; /**< @brief Row-major representation of a 6x6
+                                                    pose cross-covariance matrix upper right
+                                                    triangle. NaN if unknown. */
+        std::array<float, 21> velocity_covariance{}; /**< @brief Row-major representation of a 6x6
+                                                        velocity cross-covariance matrix upper
+                                                        right triangle. NaN if unknown. */
+        uint8_t reset_counter{}; /**< @brief Estimate reset counter. */
     };
 
     /**
