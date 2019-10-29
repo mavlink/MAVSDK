@@ -119,7 +119,8 @@ script:
     make -Cbuild/ios_simulator -j4;
   fi
 - if [[ "${BUILD_TARGET}" = "windows" ]]; then
-    cmake -G "Visual Studio 15 2017" -DCMAKE_INSTALL_PREFIX=${TRAVIS_BUILD_DIR}/build/debug/install -DBUILD_BACKEND=ON -DBUILD_SHARED_LIBS=OFF -Bbuild/debug -H${TRAVIS_BUILD_DIR};
+    cmake -G "Visual Studio 15 2017" -DCMAKE_BUILD_TYPE=Release -DCMAKE_INSTALL_PREFIX=${TRAVIS_BUILD_DIR}/build/release/install -DBUILD_BACKEND=ON -DBUILD_SHARED_LIBS=OFF -Bbuild/release -H${TRAVIS_BUILD_DIR};
+    cmake --build build/release -j4;
   fi
 
 after_success:
