@@ -116,6 +116,10 @@ private:
     static constexpr auto DIRENT_DIR = "D"; ///< Identifies Directory returned from List command
     static constexpr auto DIRENT_SKIP = "S"; ///< Identifies Skipped entry from List command
 
+
+    /// @brief Maximum data size in RequestHeader::data
+    static constexpr uint8_t max_data_length = 239;
+
     /// @brief This is the payload which is in mavlink_file_transfer_protocol_t.payload.
     /// This needs to be packed, because it's typecasted from
     /// mavlink_file_transfer_protocol_t.payload, which starts at a 3 byte offset, causing an
@@ -130,12 +134,8 @@ private:
                                 ///< packets complete, 0: More burst packets coming.
         uint8_t padding; ///< 32 bit alignment padding
         uint32_t offset; ///< Offsets for List and Read commands
-        uint8_t data[]; ///< command data, varies by Opcode
+        uint8_t data[max_data_length]; ///< command data, varies by Opcode
     });
-
-    /// @brief Maximum data size in RequestHeader::data
-    static const uint8_t max_data_length =
-        MAVLINK_MSG_FILE_TRANSFER_PROTOCOL_FIELD_PAYLOAD_LEN - sizeof(PayloadHeader);
 
     struct SessionInfo {
         int fd{-1};
