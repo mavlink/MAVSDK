@@ -1,7 +1,11 @@
 #include <functional>
 #include <iostream>
 
+#if defined(WINDOWS)
+#include "tronkko_dirent.h"
+#else
 #include <dirent.h>
+#endif
 #include <fcntl.h>
 #include <sys/stat.h>
 #include <unistd.h>
