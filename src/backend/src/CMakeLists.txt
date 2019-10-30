@@ -114,6 +114,3 @@ else()
     endif()
 endif()
 
-if (MSVC)
-    add_definitions(-D_WIN32_WINNT=0x0600)
-endif()
