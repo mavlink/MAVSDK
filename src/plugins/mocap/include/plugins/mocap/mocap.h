@@ -127,6 +127,7 @@ public:
          * @brief Mavlink frame id
          */
         enum class MavFrame {
+            UNKNOWN = 0, /**< @brief Unknown frame. */
             MOCAP_NED = 14, /**< @brief Odometry local coordinate frame of data given
                                by a motion capture system, Z-down (x: north, y: east, z: down). */
             LOCAL_FRD = 20, /**< @brief  Forward, Right, Down coordinate frame. This is a local
