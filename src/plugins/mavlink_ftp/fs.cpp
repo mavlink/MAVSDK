@@ -1,4 +1,11 @@
+#if defined(WINDOWS)
+#include "tronkko_dirent.h"
+#include <direct.h>
+#define mkdir(D, M) _mkdir(D)
+#else
 #include <dirent.h>
+#endif
+
 #include <fcntl.h>
 #include <sys/types.h>
 #include <sys/stat.h>
@@ -10,11 +17,6 @@
 
 #ifndef PATH_MAX
 #define PATH_MAX 4096
-#endif
-
-#ifdef _WIN32
-#include <direct.h>
-#define mkdir(D, M) _mkdir(D)
 #endif
 
 bool fs_exists(const std::string& filename)
