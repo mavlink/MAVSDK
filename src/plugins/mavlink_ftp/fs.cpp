@@ -1,17 +1,19 @@
 #if defined(WINDOWS)
 #include "tronkko_dirent.h"
+#include "stackoverflow_unistd.h"
 #include <direct.h>
 #define mkdir(D, M) _mkdir(D)
 #else
 #include <dirent.h>
+#include <unistd.h>
 #endif
+
 
 #include <fcntl.h>
 #include <sys/types.h>
 #include <sys/stat.h>
 #include <stack>
 #include <stdio.h>
-#include <unistd.h>
 
 #include "fs.h"
 
