@@ -216,10 +216,15 @@ int main(int argc, char** argv)
     Mavsdk dc;
     std::string connection_url;
     ConnectionResult connection_result;
-
+    std::string mode;
+    
     if (argc == 2) {
         connection_url = argv[1];
         connection_result = dc.add_any_connection(connection_url);
+    } else if (argc == 3) {
+        connection_url = argv[1];
+        connection_result = dc.add_any_connection(connection_url);
+	mode = argv[2];    
     } else {
         usage(argv[0]);
         return 1;
@@ -256,9 +261,23 @@ int main(int argc, char** argv)
 
     Action::Result takeoff_result = action->takeoff();
     action_error_exit(takeoff_result, "Takeoff failed");
-    std::cout << "In Air..." << std::endl;
-    sleep_for(seconds(5));
-
+    if (mode == "landed_state") {
+      while (true) {
+	std::this_thread::sleep_for(std::chrono::milliseconds(5));
+	if (telemetry->landed_state()
+	    == Telemetry::LandedState::TAKING_OFF) 
+	  std::cout << "Taking off..." << std::endl;
+	break;
+      }
+    } else if (mode == "flight_mode") {      
+      while (true) {
+	std::this_thread::sleep_for(std::chrono::milliseconds(5));
+	if (telemetry->flight_mode()
+	    == Telemetry::FlightMode::TAKEOFF) 
+	  std::cout << "Taking off..." << std::endl;
+	break;
+      }
+    }
     //  using attitude control
     bool ret = offb_ctrl_attitude(offboard);
     if (ret == false) {
