@@ -3,7 +3,7 @@
 
 #if defined(WINDOWS)
 #include "tronkko_dirent.h"
-#include <io.h>
+#include "stackoverflow_unistd.h"
 #else
 #include <dirent.h>
 #include <unistd.h>
