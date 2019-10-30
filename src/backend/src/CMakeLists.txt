@@ -115,6 +115,5 @@ else()
 endif()
 
 if (MSVC)
-    target_compile_options(mavsdk_server
-        PRIVATE -D_WIN32_WINNT=0x0600)
+    add_definitions(-D_WIN32_WINNT=0x0600)
 endif()
