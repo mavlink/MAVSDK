@@ -11,7 +11,6 @@
 #include <fcntl.h>
 #include <sys/stat.h>
 
-
 #include "crc32.h"
 #include "fs.h"
 #include "mavlink_ftp_impl.h"

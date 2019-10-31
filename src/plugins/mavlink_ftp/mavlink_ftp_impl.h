@@ -11,9 +11,9 @@
 // As found in
 // https://stackoverflow.com/questions/1537964#answer-3312896
 #ifdef _MSC_VER // MSVC
-#define PACK( __Declaration__ ) __pragma( pack(push, 1) ) __Declaration__ __pragma( pack(pop))
+#define PACK(__Declaration__) __pragma(pack(push, 1)) __Declaration__ __pragma(pack(pop))
 #else
-#define PACK( __Declaration__ ) __Declaration__ __attribute__((__packed__))
+#define PACK(__Declaration__) __Declaration__ __attribute__((__packed__))
 #endif
 
 namespace mavsdk {
@@ -115,7 +115,6 @@ private:
     static constexpr auto DIRENT_FILE = "F"; ///< Identifies File returned from List command
     static constexpr auto DIRENT_DIR = "D"; ///< Identifies Directory returned from List command
     static constexpr auto DIRENT_SKIP = "S"; ///< Identifies Skipped entry from List command
-
 
     /// @brief Maximum data size in RequestHeader::data
     static constexpr uint8_t max_data_length = 239;
