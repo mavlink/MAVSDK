@@ -34,10 +34,9 @@ void reset_server(std::shared_ptr<MavlinkFTP>& mavlink_ftp)
 
 void create_test_file(std::string file_name, uint32_t size)
 {
-    char data[size];
-    std::memset(data, 'X', size);
+    std::string str(size, 'X');
     std::ofstream of(file_name, std::fstream::trunc | std::fstream::binary);
-    of.write(data, size);
+    of << str;
     of.close();
 }
 

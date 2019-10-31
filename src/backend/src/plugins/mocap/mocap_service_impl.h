@@ -129,6 +129,8 @@ public:
                 return mavsdk::Mocap::Odometry::MavFrame::MOCAP_NED;
             case mavsdk::rpc::mocap::Odometry::MavFrame::Odometry_MavFrame_LOCAL_FRD:
                 return mavsdk::Mocap::Odometry::MavFrame::LOCAL_FRD;
+            default:
+                return mavsdk::Mocap::Odometry::MavFrame::UNKNOWN;
         }
     }
 
