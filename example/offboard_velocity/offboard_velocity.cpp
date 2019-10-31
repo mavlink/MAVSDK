@@ -262,20 +262,24 @@ int main(int argc, char** argv)
     Action::Result takeoff_result = action->takeoff();
     action_error_exit(takeoff_result, "Takeoff failed");
     if (mode == "landed_state") {
+      std::cout << "Landed state..." << std::endl;
       while (true) {
-	std::this_thread::sleep_for(std::chrono::milliseconds(5));
+	//	std::this_thread::sleep_for(std::chrono::milliseconds(5));
 	if (telemetry->landed_state()
-	    == Telemetry::LandedState::TAKING_OFF) 
+	    == Telemetry::LandedState::TAKING_OFF) {
 	  std::cout << "Taking off..." << std::endl;
 	break;
+	}
       }
-    } else if (mode == "flight_mode") {      
+    } else if (mode == "flight_mode") {
+      std::cout << "flight mode..." << std::endl;
       while (true) {
-	std::this_thread::sleep_for(std::chrono::milliseconds(5));
+	//	std::this_thread::sleep_for(std::chrono::milliseconds(5));
 	if (telemetry->flight_mode()
-	    == Telemetry::FlightMode::TAKEOFF) 
+	    == Telemetry::FlightMode::TAKEOFF) {
 	  std::cout << "Taking off..." << std::endl;
 	break;
+	}
       }
     }
     //  using attitude control
