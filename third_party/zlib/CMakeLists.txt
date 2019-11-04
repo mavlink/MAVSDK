@@ -18,9 +18,7 @@ ExternalProject_add(
     zlib
     GIT_REPOSITORY https://github.com/madler/zlib
     GIT_TAG v1.2.11
-    # Patch taken from: https://github.com/madler/zlib/pull/337/files
-    # Thanks to @Mizux
-    PATCH_COMMAND git apply ${PROJECT_SOURCE_DIR}/pr-337-cmake-update.patch
+    PREFIX zlib
+    PATCH_COMMAND git apply ${PROJECT_SOURCE_DIR}/build_shared_libs.patch
     CMAKE_ARGS "${CMAKE_ARGS}"
     )
-
