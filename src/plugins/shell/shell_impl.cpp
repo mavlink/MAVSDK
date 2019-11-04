@@ -189,7 +189,7 @@ void ShellImpl::process_shell_message(const mavlink_message_t& message)
     data[count] = '\0';
     _response.data += std::string((char*)data);
 
-    size_t escape_pos = _response.data.find('\e'); // Find termination (ESC)
+    size_t escape_pos = _response.data.find(27); // Find termination (ESC)
     if (escape_pos != std::string::npos) {
         if (_shell_message_timeout_cookie) {
             _parent->unregister_timeout_handler(_shell_message_timeout_cookie);

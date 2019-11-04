@@ -310,7 +310,7 @@ void print_position_velocity_ned(Telemetry::PositionVelocityNED position_velocit
 
 void print_unix_epoch_time_us(uint64_t time_us)
 {
-    std::time_t time = time_us / 10E5;
+    std::time_t time = time_us / 1000000;
 #if __GNUC__ > 4
     LogInfo() << "UTC (" << time << "): " << std::put_time(std::gmtime(&time), "%c %Z");
 #else

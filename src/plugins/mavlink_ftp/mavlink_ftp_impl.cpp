@@ -1,10 +1,15 @@
 #include <functional>
 #include <iostream>
 
+#if defined(WINDOWS)
+#include "tronkko_dirent.h"
+#include "stackoverflow_unistd.h"
+#else
 #include <dirent.h>
+#include <unistd.h>
+#endif
 #include <fcntl.h>
 #include <sys/stat.h>
-#include <unistd.h>
 
 #include "crc32.h"
 #include "fs.h"

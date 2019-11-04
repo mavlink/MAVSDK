@@ -1,2 +1,4 @@
 src/backend/src/generated
 src/plugins/camera/camera_definition_files/generated
+src/plugins/mavlink_ftp/stackoverflow_unistd.h
+src/plugins/mavlink_ftp/tronkko_dirent.h

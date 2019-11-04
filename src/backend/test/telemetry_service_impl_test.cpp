@@ -1794,7 +1794,7 @@ void TelemetryServiceImplTest::checkSendsActuatorOutputStatusEvents(
 TEST_F(TelemetryServiceImplTest, sendsMultipleActuatorControlTargetEvents)
 {
     std::vector<ActuatorControlTarget> actuator_control_target_events;
-    std::vector<float> controls{0.0f, 0.1, 0.2f, 0.3f, 0.4f, 0.5f, 0.6f, 0.7f};
+    std::vector<float> controls{0.0f, 0.1f, 0.2f, 0.3f, 0.4f, 0.5f, 0.6f, 0.7f};
     actuator_control_target_events.push_back(createActuatorControlTarget(0, controls));
     actuator_control_target_events.push_back(createActuatorControlTarget(1, controls));
     actuator_control_target_events.push_back(createActuatorControlTarget(2, controls));
@@ -1809,7 +1809,7 @@ TEST_F(TelemetryServiceImplTest, sendsMultipleActuatorOutputStatusEvents)
 
     std::vector<float> actuators;
     for (int i = 0; i < 32; i++) {
-        actuators.push_back(i * 2);
+        actuators.push_back(i * 2.0f);
     };
 
     actuator_output_status_events.push_back(createActuatorOutputStatus(actuators));

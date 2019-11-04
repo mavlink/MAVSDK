@@ -8,6 +8,14 @@
 #include "plugins/mavlink_ftp/mavlink_ftp.h"
 #include "plugin_impl_base.h"
 
+// As found in
+// https://stackoverflow.com/questions/1537964#answer-3312896
+#ifdef _MSC_VER // MSVC
+#define PACK(__Declaration__) __pragma(pack(push, 1)) __Declaration__ __pragma(pack(pop))
+#else
+#define PACK(__Declaration__) __Declaration__ __attribute__((__packed__))
+#endif
+
 namespace mavsdk {
 
 class MavlinkFTPImpl : public PluginImplBase {
@@ -108,11 +116,14 @@ private:
     static constexpr auto DIRENT_DIR = "D"; ///< Identifies Directory returned from List command
     static constexpr auto DIRENT_SKIP = "S"; ///< Identifies Skipped entry from List command
 
+    /// @brief Maximum data size in RequestHeader::data
+    static constexpr uint8_t max_data_length = 239;
+
     /// @brief This is the payload which is in mavlink_file_transfer_protocol_t.payload.
     /// This needs to be packed, because it's typecasted from
     /// mavlink_file_transfer_protocol_t.payload, which starts at a 3 byte offset, causing an
     /// unaligned access to seq_number and offset
-    struct __attribute__((__packed__)) PayloadHeader {
+    PACK(struct PayloadHeader {
         uint16_t seq_number; ///< sequence number for message
         uint8_t session; ///< Session id for read and write commands
         uint8_t opcode; ///< Command opcode
@@ -122,12 +133,8 @@ private:
                                 ///< packets complete, 0: More burst packets coming.
         uint8_t padding; ///< 32 bit alignment padding
         uint32_t offset; ///< Offsets for List and Read commands
-        uint8_t data[]; ///< command data, varies by Opcode
-    };
-
-    /// @brief Maximum data size in RequestHeader::data
-    static const uint8_t max_data_length =
-        MAVLINK_MSG_FILE_TRANSFER_PROTOCOL_FIELD_PAYLOAD_LEN - sizeof(PayloadHeader);
+        uint8_t data[max_data_length]; ///< command data, varies by Opcode
+    });
 
     struct SessionInfo {
         int fd{-1};
