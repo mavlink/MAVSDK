@@ -44,10 +44,6 @@ void ActionImpl::enable()
         1.0,
         nullptr,
         MAVLinkCommands::DEFAULT_COMPONENT_ID_AUTOPILOT);
-
-    _parent->get_param_float_async(TAKEOFF_ALT_PARAM, nullptr, this);
-    _parent->get_param_float_async(MAX_SPEED_PARAM, nullptr, this);
-    _parent->get_param_float_async(TAKEOFF_ALT_PARAM, nullptr, this);
 }
 
 void ActionImpl::disable() {}
