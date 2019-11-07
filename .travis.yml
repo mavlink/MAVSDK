@@ -1,4 +1,5 @@
 language: cpp
+cache: ccache
 
 matrix:
   fast_finish: true
@@ -79,6 +80,10 @@ install:
 - if [[ "${BUILD_TARGET}" = "linux-armv7" ]]; then
     docker run --rm dockcross/linux-armv7 > ./dockcross-linux-armv7;
     chmod +x ./dockcross-linux-armv7;
+  fi
+- if [[ "${BUILD_TARGET}" = "osx_build" ]] || [[ "${BUILD_TARGET}" = "ios_build" ]] || [[ "${BUILD_TARGET}" = "ios_simulator_build" ]]; then
+    brew install ccache;
+    export PATH="/usr/local/opt/ccache/libexec:$PATH";
   fi
 
 script:
