@@ -89,17 +89,21 @@ install:
 script:
 - set -e
 - if [[ "${BUILD_TARGET}" = "gcc_build" ]]; then
+    ccache --show-stats;
     cmake -DCMAKE_BUILD_TYPE=Debug -DSUPERBUILD=${SUPERBUILD} -j 2 -Bbuild/debug -H.;
     cmake --build build/debug -j 2;
     ./build/debug/src/unit_tests_runner;
     cmake -DCMAKE_BUILD_TYPE=Release -j 2 -Bbuild/release -H.;
     cmake --build build/release -j 2;
     ./build/release/src/unit_tests_runner;
+    ccache --show-stats;
   fi
 - if [[ "${BUILD_TARGET}" = "coverage_build" ]]; then
+    ccache --show-stats;
     cmake -DCMAKE_BUILD_TYPE=Coverage -j 2 -Bbuild -H.;
     cmake --build build -j 2;
     ./build/src/unit_tests_runner;
+    ccache --show-stats;
   fi
 - if [[ "${BUILD_TARGET}" = "manylinux1-x64" ]]; then
     ./dockcross-manylinux1-x64 cmake -DCMAKE_BUILD_TYPE=Release -DCMAKE_INSTALL_PREFIX=build/manylinux1-x64/install -DBUILD_BACKEND=ON -DBUILD_SHARED_LIBS=OFF -j 2 -Bbuild/manylinux1-x64 -H.;
@@ -110,18 +114,24 @@ script:
     ./dockcross-linux-armv7 cmake --build build/linux-armv7 -j 2 --target install;
   fi
 - if [[ "${BUILD_TARGET}" = "osx_build" ]]; then
+    ccache --show-stats;
     cmake -DCMAKE_BUILD_TYPE=Release -DCMAKE_INSTALL_PREFIX=build/release/install -DBUILD_BACKEND=ON -DBUILD_SHARED_LIBS=OFF -j 2 -Bbuild/release -H.;
     cmake --build build/release -j 2 --target install;
     ./build/release/src/unit_tests_runner;
     ./build/release/src/backend/test/unit_tests_backend;
+    ccache --show-stats;
   fi
 - if [[ "${BUILD_TARGET}" = "ios_build" ]]; then
+    ccache --show-stats;
     cmake -DCMAKE_BUILD_TYPE=Release -DCMAKE_TOOLCHAIN_FILE=${TRAVIS_BUILD_DIR}/tools/ios.toolchain.cmake -DPLATFORM=OS -DBUILD_BACKEND=ON -DBUILD_SHARED_LIBS=OFF -j 2 -Bbuild/ios -H.;
     cmake --build build/ios -j 2;
+    ccache --show-stats;
   fi
 - if [[ "${BUILD_TARGET}" = "ios_simulator_build" ]]; then
+    ccache --show-stats;
     cmake -DCMAKE_BUILD_TYPE=Release -DCMAKE_TOOLCHAIN_FILE=${TRAVIS_BUILD_DIR}/tools/ios.toolchain.cmake -DPLATFORM=SIMULATOR64 -DBUILD_BACKEND=ON -DBUILD_SHARED_LIBS=OFF -j 2 -Bbuild/ios_simulator -H.;
     cmake --build build/ios_simulator -j 2;
+    ccache --show-stats;
   fi
 - if [[ "${BUILD_TARGET}" = "windows" ]]; then
     cmake -G "Visual Studio 15 2017" -DCMAKE_BUILD_TYPE=Release -DCMAKE_INSTALL_PREFIX=${TRAVIS_BUILD_DIR}/build/release/install -DBUILD_BACKEND=ON -DBUILD_SHARED_LIBS=OFF -j 2 -Bbuild/release -H${TRAVIS_BUILD_DIR};
