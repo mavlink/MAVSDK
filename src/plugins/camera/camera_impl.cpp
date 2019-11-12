@@ -1325,20 +1325,40 @@ void CameraImpl::set_option_async(
         value,
         [this, callback, setting_id, value](MAVLinkParameters::Result result) {
             if (result == MAVLinkParameters::Result::SUCCESS) {
-                if (this->_camera_definition) {
-                    _camera_definition->set_setting(setting_id, value);
-                    refresh_params();
+
+                if (!this->_camera_definition) {
+                    if (callback) {
+                        const auto temp_callback = callback;
+                        _parent->call_user_callback([temp_callback]() {
+                            temp_callback(Camera::Result::ERROR);
+                        });
+                    }
+                    return;
                 }
-                if (callback) {
-                    callback(Camera::Result::SUCCESS);
+
+                if (!_camera_definition->set_setting(setting_id, value)) {
+                    if (callback) {
+                        const auto temp_callback = callback;
+                        _parent->call_user_callback([temp_callback]() {
+                            temp_callback(Camera::Result::ERROR);
+                        });
+                    }
+                    return;
                 }
-            } else {
+
                 if (callback) {
                     const auto temp_callback = callback;
                     _parent->call_user_callback([temp_callback]() {
                         temp_callback(Camera::Result::SUCCESS);
                     });
                 }
+
+                // FIXME: We are already holding the lock when this lambda is run and need to
+                //        schedule the refresh_params() for later.
+                //        We (ab)use the thread pool for the user callbacks for this.
+                _parent->call_user_callback([this]() {
+                    refresh_params();
+                });
             }
         },
         this,
@@ -1551,7 +1571,10 @@ void CameraImpl::refresh_params()
                 if (!this->_camera_definition) {
                     return;
                 }
-                this->_camera_definition->set_setting(param_name, value);
+
+                if (!this->_camera_definition->set_setting(param_name, value)) {
+                    return;
+                }
 
                 if (is_last) {
                     notify_current_settings();
