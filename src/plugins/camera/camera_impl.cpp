@@ -391,11 +391,10 @@ void CameraImpl::start_photo_interval_async(
     float interval_s, const Camera::result_callback_t& callback)
 {
     if (!interval_valid(interval_s)) {
-        if (callback) {
-            const auto temp_callback = callback;
-            _parent->call_user_callback(
-                [temp_callback]() { temp_callback(Camera::Result::WRONG_ARGUMENT); });
-        }
+        const auto temp_callback = callback;
+        _parent->call_user_callback([temp_callback]() {
+            temp_callback(Camera::Result::WRONG_ARGUMENT);
+        });
         return;
     }
 
@@ -1096,7 +1095,10 @@ void CameraImpl::receive_set_mode_command_result(
     Camera::Result camera_result = camera_result_from_command_result(command_result);
 
     if (callback) {
-        callback(camera_result, mode);
+        const auto temp_callback = callback;
+        _parent->call_user_callback([temp_callback, camera_result, mode]() {
+            temp_callback(camera_result, mode);
+        });
     }
 
     if (command_result == MAVLinkCommands::Result::SUCCESS && _camera_definition) {
@@ -1237,7 +1239,10 @@ void CameraImpl::set_option_async(
     if (!_camera_definition) {
         LogWarn() << "Error: no camera defnition available yet.";
         if (callback) {
-            callback(Camera::Result::ERROR);
+            const auto temp_callback = callback;
+            _parent->call_user_callback([temp_callback]() {
+                temp_callback(Camera::Result::ERROR);
+            });
         }
         return;
     }
@@ -1251,7 +1256,10 @@ void CameraImpl::set_option_async(
         if (!_camera_definition->get_all_options(setting_id, all_values)) {
             if (callback) {
                 LogErr() << "Could not get all options to get type for range param.";
-                callback(Camera::Result::ERROR);
+                const auto temp_callback = callback;
+                _parent->call_user_callback([temp_callback]() {
+                    temp_callback(Camera::Result::ERROR);
+                });
             }
             return;
         }
@@ -1259,7 +1267,10 @@ void CameraImpl::set_option_async(
         if (all_values.size() == 0) {
             if (callback) {
                 LogErr() << "Could not get any options to get type for range param.";
-                callback(Camera::Result::ERROR);
+                const auto temp_callback = callback;
+                _parent->call_user_callback([temp_callback]() {
+                    temp_callback(Camera::Result::ERROR);
+                });
             }
             return;
         }
@@ -1269,7 +1280,10 @@ void CameraImpl::set_option_async(
         if (!value.set_as_same_type(option.option_id)) {
             if (callback) {
                 LogErr() << "Could not set option value to given type.";
-                callback(Camera::Result::ERROR);
+                const auto temp_callback = callback;
+                _parent->call_user_callback([temp_callback]() {
+                    temp_callback(Camera::Result::ERROR);
+                });
             }
             return;
         }
@@ -1278,7 +1292,10 @@ void CameraImpl::set_option_async(
         if (!_camera_definition->get_option_value(setting_id, option.option_id, value)) {
             if (callback) {
                 LogErr() << "Could not get option value.";
-                callback(Camera::Result::ERROR);
+                const auto temp_callback = callback;
+                _parent->call_user_callback([temp_callback]() {
+                    temp_callback(Camera::Result::ERROR);
+                });
             }
             return;
         }
@@ -1294,7 +1311,10 @@ void CameraImpl::set_option_async(
         if (!allowed) {
             LogErr() << "Setting " << setting_id << "(" << option.option_id << ") not allowed";
             if (callback) {
-                callback(Camera::Result::ERROR);
+                const auto temp_callback = callback;
+                _parent->call_user_callback([temp_callback]() {
+                    temp_callback(Camera::Result::ERROR);
+                });
             }
             return;
         }
@@ -1314,7 +1334,10 @@ void CameraImpl::set_option_async(
                 }
             } else {
                 if (callback) {
-                    callback(Camera::Result::ERROR);
+                    const auto temp_callback = callback;
+                    _parent->call_user_callback([temp_callback]() {
+                        temp_callback(Camera::Result::SUCCESS);
+                    });
                 }
             }
         },
@@ -1351,7 +1374,10 @@ void CameraImpl::get_option_async(
         LogWarn() << "Error: no camera defnition available yet.";
         if (callback) {
             Camera::Option empty_option{};
-            callback(Camera::Result::ERROR, empty_option);
+            const auto temp_callback = callback;
+            _parent->call_user_callback([temp_callback, empty_option]() {
+                temp_callback(Camera::Result::ERROR, empty_option);
+            });
         }
         return;
     }
@@ -1365,14 +1391,20 @@ void CameraImpl::get_option_async(
             if (!is_setting_range(setting_id)) {
                 get_option_str(setting_id, new_option.option_id, new_option.option_description);
             }
-            callback(Camera::Result::SUCCESS, new_option);
+            const auto temp_callback = callback;
+            _parent->call_user_callback([temp_callback, new_option]() {
+                temp_callback(Camera::Result::SUCCESS, new_option);
+            });
         }
     } else {
         // If this still happens, we request the param, but also complain.
         LogWarn() << "Setting '" << setting_id << "' not found.";
         if (callback) {
             Camera::Option no_option{};
-            callback(Camera::Result::ERROR, no_option);
+            const auto temp_callback = callback;
+            _parent->call_user_callback([temp_callback, no_option]() {
+                temp_callback(Camera::Result::ERROR, no_option);
+            });
         }
     }
 }
