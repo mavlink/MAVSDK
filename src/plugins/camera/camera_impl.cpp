@@ -392,9 +392,8 @@ void CameraImpl::start_photo_interval_async(
 {
     if (!interval_valid(interval_s)) {
         const auto temp_callback = callback;
-        _parent->call_user_callback([temp_callback]() {
-            temp_callback(Camera::Result::WRONG_ARGUMENT);
-        });
+        _parent->call_user_callback(
+            [temp_callback]() { temp_callback(Camera::Result::WRONG_ARGUMENT); });
         return;
     }
 
@@ -1096,9 +1095,8 @@ void CameraImpl::receive_set_mode_command_result(
 
     if (callback) {
         const auto temp_callback = callback;
-        _parent->call_user_callback([temp_callback, camera_result, mode]() {
-            temp_callback(camera_result, mode);
-        });
+        _parent->call_user_callback(
+            [temp_callback, camera_result, mode]() { temp_callback(camera_result, mode); });
     }
 
     if (command_result == MAVLinkCommands::Result::SUCCESS && _camera_definition) {
@@ -1240,9 +1238,8 @@ void CameraImpl::set_option_async(
         LogWarn() << "Error: no camera defnition available yet.";
         if (callback) {
             const auto temp_callback = callback;
-            _parent->call_user_callback([temp_callback]() {
-                temp_callback(Camera::Result::ERROR);
-            });
+            _parent->call_user_callback(
+                [temp_callback]() { temp_callback(Camera::Result::ERROR); });
         }
         return;
     }
@@ -1257,9 +1254,8 @@ void CameraImpl::set_option_async(
             if (callback) {
                 LogErr() << "Could not get all options to get type for range param.";
                 const auto temp_callback = callback;
-                _parent->call_user_callback([temp_callback]() {
-                    temp_callback(Camera::Result::ERROR);
-                });
+                _parent->call_user_callback(
+                    [temp_callback]() { temp_callback(Camera::Result::ERROR); });
             }
             return;
         }
@@ -1268,9 +1264,8 @@ void CameraImpl::set_option_async(
             if (callback) {
                 LogErr() << "Could not get any options to get type for range param.";
                 const auto temp_callback = callback;
-                _parent->call_user_callback([temp_callback]() {
-                    temp_callback(Camera::Result::ERROR);
-                });
+                _parent->call_user_callback(
+                    [temp_callback]() { temp_callback(Camera::Result::ERROR); });
             }
             return;
         }
@@ -1281,9 +1276,8 @@ void CameraImpl::set_option_async(
             if (callback) {
                 LogErr() << "Could not set option value to given type.";
                 const auto temp_callback = callback;
-                _parent->call_user_callback([temp_callback]() {
-                    temp_callback(Camera::Result::ERROR);
-                });
+                _parent->call_user_callback(
+                    [temp_callback]() { temp_callback(Camera::Result::ERROR); });
             }
             return;
         }
@@ -1293,9 +1287,8 @@ void CameraImpl::set_option_async(
             if (callback) {
                 LogErr() << "Could not get option value.";
                 const auto temp_callback = callback;
-                _parent->call_user_callback([temp_callback]() {
-                    temp_callback(Camera::Result::ERROR);
-                });
+                _parent->call_user_callback(
+                    [temp_callback]() { temp_callback(Camera::Result::ERROR); });
             }
             return;
         }
@@ -1312,9 +1305,8 @@ void CameraImpl::set_option_async(
             LogErr() << "Setting " << setting_id << "(" << option.option_id << ") not allowed";
             if (callback) {
                 const auto temp_callback = callback;
-                _parent->call_user_callback([temp_callback]() {
-                    temp_callback(Camera::Result::ERROR);
-                });
+                _parent->call_user_callback(
+                    [temp_callback]() { temp_callback(Camera::Result::ERROR); });
             }
             return;
         }
@@ -1325,13 +1317,11 @@ void CameraImpl::set_option_async(
         value,
         [this, callback, setting_id, value](MAVLinkParameters::Result result) {
             if (result == MAVLinkParameters::Result::SUCCESS) {
-
                 if (!this->_camera_definition) {
                     if (callback) {
                         const auto temp_callback = callback;
-                        _parent->call_user_callback([temp_callback]() {
-                            temp_callback(Camera::Result::ERROR);
-                        });
+                        _parent->call_user_callback(
+                            [temp_callback]() { temp_callback(Camera::Result::ERROR); });
                     }
                     return;
                 }
@@ -1339,26 +1329,22 @@ void CameraImpl::set_option_async(
                 if (!_camera_definition->set_setting(setting_id, value)) {
                     if (callback) {
                         const auto temp_callback = callback;
-                        _parent->call_user_callback([temp_callback]() {
-                            temp_callback(Camera::Result::ERROR);
-                        });
+                        _parent->call_user_callback(
+                            [temp_callback]() { temp_callback(Camera::Result::ERROR); });
                     }
                     return;
                 }
 
                 if (callback) {
                     const auto temp_callback = callback;
-                    _parent->call_user_callback([temp_callback]() {
-                        temp_callback(Camera::Result::SUCCESS);
-                    });
+                    _parent->call_user_callback(
+                        [temp_callback]() { temp_callback(Camera::Result::SUCCESS); });
                 }
 
                 // FIXME: We are already holding the lock when this lambda is run and need to
                 //        schedule the refresh_params() for later.
                 //        We (ab)use the thread pool for the user callbacks for this.
-                _parent->call_user_callback([this]() {
-                    refresh_params();
-                });
+                _parent->call_user_callback([this]() { refresh_params(); });
             }
         },
         this,
@@ -1422,9 +1408,8 @@ void CameraImpl::get_option_async(
         if (callback) {
             Camera::Option no_option{};
             const auto temp_callback = callback;
-            _parent->call_user_callback([temp_callback, no_option]() {
-                temp_callback(Camera::Result::ERROR, no_option);
-            });
+            _parent->call_user_callback(
+                [temp_callback, no_option]() { temp_callback(Camera::Result::ERROR, no_option); });
         }
     }
 }
