@@ -39,10 +39,10 @@ public:
      * @brief Possible results returned for gimbal commands.
      */
     enum class Result {
-        SUCCESS = 0, /**< @brief Success. The gimbal command was accepted. */
+        UNKNOWN = 0, /**< @brief Unspecified error. */
+        SUCCESS, /**< @brief Success. The gimbal command was accepted. */
         ERROR, /**< @brief Error. An error occured sending the command. */
-        TIMEOUT, /**< @brief Timeout. A timeout occured sending the command. */
-        UNKNOWN /**< @brief Unspecified error. */
+        TIMEOUT /**< @brief Timeout. A timeout occured sending the command. */
     };
 
     /**
