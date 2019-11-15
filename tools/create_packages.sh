@@ -38,7 +38,7 @@ common_args="--chdir ${working_dir}/install \
              --name mavsdk \
              --version ${version} \
              --maintainer julian@oes.ch \
-             --url https://sdk.dronecode.org \
+             --url https://mavsdk.mavlink.io \
              --license BSD-3-Clause \
              --after-install ${working_dir}/run_ldconfig \
              --after-remove ${working_dir}/run_ldconfig \
