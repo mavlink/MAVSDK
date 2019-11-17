@@ -126,10 +126,12 @@ script:
 - if [[ "${BUILD_TARGET}" = "deb-x64" ]]; then
     docker run -it -v $TRAVIS_BUILD_DIR:/home/user/MAVSDK:rw ${DOCKER_REPO} cmake -DCMAKE_BUILD_TYPE=Release -DBUILD_BACKEND=OFF -DBUILD_SHARED_LIBS=ON -DCMAKE_INSTALL_PREFIX=./install -Bbuild/release -H.;
     docker run -it -v $TRAVIS_BUILD_DIR:/home/user/MAVSDK:rw ${DOCKER_REPO} cmake --build build/release --target install -- -j2;
+    docker run -it -v $TRAVIS_BUILD_DIR:/home/user/MAVSDK:rw ${DOCKER_REPO} tools/create_packages.sh ./install .;
   fi
 - if [[ "${BUILD_TARGET}" = "rpm-x64" ]]; then
     docker run -it -v $TRAVIS_BUILD_DIR:/home/user/MAVSDK:rw ${DOCKER_REPO} cmake -DCMAKE_BUILD_TYPE=Release -DBUILD_BACKEND=OFF -DBUILD_SHARED_LIBS=ON -DCMAKE_INSTALL_PREFIX=./install -Bbuild/release -H.;
     docker run -it -v $TRAVIS_BUILD_DIR:/home/user/MAVSDK:rw ${DOCKER_REPO} cmake --build build/release --target install -- -j2;
+    docker run -it -v $TRAVIS_BUILD_DIR:/home/user/MAVSDK:rw ${DOCKER_REPO} tools/create_packages.sh ./install .;
   fi
 - if [[ "${BUILD_TARGET}" = "manylinux1-x64" ]]; then
     ./dockcross-manylinux1-x64 cmake -DCMAKE_BUILD_TYPE=Release -DCMAKE_INSTALL_PREFIX=build/manylinux1-x64/install -DBUILD_BACKEND=ON -DBUILD_SHARED_LIBS=OFF -j 2 -Bbuild/manylinux1-x64 -H.;
@@ -175,10 +177,6 @@ after_success:
 before_deploy:
 - if ! [ "$BEFORE_DEPLOY_RUN" ]; then
       export BEFORE_DEPLOY_RUN=1;
-
-      if [[ "${BUILD_TARGET}" = "deb-x64" ]] || [[ "${BUILD_TARGET}" = "rpm-x64" ]]; then
-        tools/create_packages.sh install .;
-      fi;
       if [[ "${BUILD_TARGET}" = "manylinux1-x64" ]]; then
           mv build/manylinux1-x64/install/bin/mavsdk_server build/manylinux1-x64/install/bin/mavsdk_server_manylinux1-x64;
       fi;
