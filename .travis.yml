@@ -30,6 +30,12 @@ matrix:
           - libcurl4-openssl-dev
           - libtinyxml2-dev
     - os: linux
+      name: "docker-ubuntu-1804-PX4-SITL"
+      services:
+        - docker
+      env:
+      - MATRIX_EVAL="BUILD_TARGET=px4-sitl && DOCKER_REPO=mavsdk/mavsdk-ubuntu-18.04-px4-sitl"
+    - os: linux
       name: "docker-ubuntu-1604"
       services:
         - docker
@@ -122,6 +128,11 @@ script:
     cmake -DCMAKE_BUILD_TYPE=Coverage -j 2 -Bbuild -H.;
     cmake --build build -j 2;
     ./build/src/unit_tests_runner;
+  fi
+- if [[ "${BUILD_TARGET}" = "px4-sitl" ]]; then
+    docker run -it -v $TRAVIS_BUILD_DIR:/home/user/MAVSDK:rw ${DOCKER_REPO} cmake -DCMAKE_BUILD_TYPE=Debug -DBUILD_BACKEND=OFF -DBUILD_SHARED_LIBS=ON -DCMAKE_INSTALL_PREFIX=./install -Bbuild/debug -H.;
+    docker run -it -v $TRAVIS_BUILD_DIR:/home/user/MAVSDK:rw ${DOCKER_REPO} cmake --build build/debug --target install -- -j2;
+    docker run -it -v $TRAVIS_BUILD_DIR:/home/user/MAVSDK:rw ${DOCKER_REPO} PX4_SIM_SPEED_FACTOR=10 AUTOSTART_SITL=1 PX4_FIRMWARE_DIR=/home/user/Firmware HEADLESS=1 build/debug/src/integration_tests/integration_tests_runner --gtest_filter="SitlTest.*"';
   fi
 - if [[ "${BUILD_TARGET}" = "deb-x64" ]]; then
     docker run -it -v $TRAVIS_BUILD_DIR:/home/user/MAVSDK:rw ${DOCKER_REPO} cmake -DCMAKE_BUILD_TYPE=Release -DBUILD_BACKEND=OFF -DBUILD_SHARED_LIBS=ON -DCMAKE_INSTALL_PREFIX=./install -Bbuild/release -H.;
