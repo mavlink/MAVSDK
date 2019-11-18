@@ -1,5 +1,11 @@
 language: cpp
 
+branches:
+  only:
+  - master
+  - develop
+  - /^v\d+\.\d+\.\d+$/
+
 matrix:
   fast_finish: true
   include:
