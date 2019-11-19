@@ -28,7 +28,6 @@ public:
         mavsdk::Shell::Result set_callback_result = _shell.shell_command_response_async(
             [this, &response, &response_message_received_promise, is_finished](
                 mavsdk::Shell::Result result, mavsdk::Shell::ShellMessage shell_response) {
-
                 std::lock_guard<std::mutex> lock(_subscribe_mutex);
                 if (!*is_finished) {
                     auto rpc_shell_result = get_allocated_shell_result(result);
