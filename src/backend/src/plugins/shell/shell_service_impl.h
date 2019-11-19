@@ -28,10 +28,10 @@ public:
         mavsdk::Shell::Result set_callback_result = _shell.shell_command_response_async(
             [this, &response, &response_message_received_promise, is_finished](
                 mavsdk::Shell::Result result, mavsdk::Shell::ShellMessage shell_response) {
-                auto rpc_shell_result = get_allocated_shell_result(result);
 
                 std::lock_guard<std::mutex> lock(_subscribe_mutex);
                 if (!*is_finished) {
+                    auto rpc_shell_result = get_allocated_shell_result(result);
                     response->set_allocated_shell_result(rpc_shell_result);
                     response->set_response_message_data(shell_response.data);
                     _shell.shell_command_response_async(nullptr);
@@ -41,16 +41,24 @@ public:
             });
 
         if (set_callback_result != mavsdk::Shell::Result::SUCCESS) {
-            auto rpc_shell_result = get_allocated_shell_result(set_callback_result);
-            response->set_allocated_shell_result(rpc_shell_result);
+            std::lock_guard<std::mutex> lock(_subscribe_mutex);
+            if (!*is_finished) {
+                auto rpc_shell_result = get_allocated_shell_result(set_callback_result);
+                response->set_allocated_shell_result(rpc_shell_result);
+                *is_finished = true;
+            }
             return grpc::Status::OK;
         }
 
-        mavsdk::Shell::Result shell_comand_result = _shell.shell_command(shell_message);
+        mavsdk::Shell::Result shell_command_result = _shell.shell_command(shell_message);
 
-        if (shell_comand_result != mavsdk::Shell::Result::SUCCESS) {
-            auto rpc_shell_result = get_allocated_shell_result(shell_comand_result);
-            response->set_allocated_shell_result(rpc_shell_result);
+        if (shell_command_result != mavsdk::Shell::Result::SUCCESS) {
+            std::lock_guard<std::mutex> lock(_subscribe_mutex);
+            if (!*is_finished) {
+                auto rpc_shell_result = get_allocated_shell_result(shell_command_result);
+                response->set_allocated_shell_result(rpc_shell_result);
+                *is_finished = true;
+            }
             return grpc::Status::OK;
         }
 
