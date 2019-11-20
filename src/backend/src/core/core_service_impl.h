@@ -83,12 +83,11 @@ private:
     static mavsdk::rpc::core::ConnectionStateResponse
     createRpcConnectionStateResponse(const uint64_t uuid, const bool is_connected)
     {
-        auto rpc_connection_state = new rpc::core::ConnectionState();
+        mavsdk::rpc::core::ConnectionStateResponse rpc_connection_state_response;
+
+        auto* rpc_connection_state = rpc_connection_state_response.mutable_connection_state();
         rpc_connection_state->set_uuid(uuid);
         rpc_connection_state->set_is_connected(is_connected);
-
-        mavsdk::rpc::core::ConnectionStateResponse rpc_connection_state_response;
-        rpc_connection_state_response.set_allocated_connection_state(rpc_connection_state);
 
         return rpc_connection_state_response;
     }
