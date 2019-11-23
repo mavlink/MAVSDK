@@ -551,6 +551,18 @@ void SystemImpl::send_autopilot_version_request()
     send_command_async(command, nullptr);
 }
 
+void SystemImpl::send_flight_information_request()
+{
+    // We don't care about an answer, we mostly care about receiving FLIGHT_INFORMATION.
+    MAVLinkCommands::CommandLong command{};
+
+    command.command = MAV_CMD_REQUEST_FLIGHT_INFORMATION;
+    command.params.param1 = 1.0f;
+    command.target_component_id = get_autopilot_id();
+
+    send_command_async(command, nullptr);
+}
+
 void SystemImpl::set_connected()
 {
     bool enable_needed = false;

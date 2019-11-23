@@ -22,6 +22,11 @@ std::pair<Info::Result, Info::Product> Info::get_product() const
     return _impl->get_product();
 }
 
+std::pair<Info::Result, Info::FlightInfo> Info::get_flight_information() const
+{
+    return _impl->get_flight_information();
+}
+
 std::string Info::result_str(Result result)
 {
     switch (result) {

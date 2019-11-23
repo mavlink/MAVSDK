@@ -24,6 +24,11 @@ void InfoImpl::init()
         MAVLINK_MSG_ID_AUTOPILOT_VERSION,
         std::bind(&InfoImpl::process_autopilot_version, this, _1),
         this);
+
+    _parent->register_mavlink_message_handler(
+        MAVLINK_MSG_ID_FLIGHT_INFORMATION,
+        std::bind(&InfoImpl::process_flight_information, this, _1),
+        this);
 }
 
 void InfoImpl::deinit()
@@ -36,19 +41,28 @@ void InfoImpl::enable()
     // We can't rely on System to request the autopilot_version,
     // so we do it here, anyway.
     _parent->send_autopilot_version_request();
+    _parent->send_flight_information_request();
 
     // We're going to retry until we have the version.
     _parent->add_call_every(
         std::bind(&InfoImpl::request_version_again, this), 1.0f, &_call_every_cookie);
+
+    // We're going to periodically ask for the flight information
+    _parent->add_call_every(
+        std::bind(&InfoImpl::request_flight_information, this),
+        1.0f,
+        &_flight_info_call_every_cookie);
 }
 
 void InfoImpl::disable()
 {
     _parent->remove_call_every(_call_every_cookie);
+    _parent->remove_call_every(_flight_info_call_every_cookie);
 
     {
         std::lock_guard<std::mutex> lock(_mutex);
         _information_received = false;
+        _flight_information_received = false;
     }
 }
 
@@ -63,6 +77,18 @@ void InfoImpl::request_version_again()
     }
 
     _parent->send_autopilot_version_request();
+}
+
+void InfoImpl::request_flight_information()
+{
+    // We will request new flight information from the autopilot only if
+    // we go from an armed to disarmed state or if we haven't received any
+    // information yet
+    if ((_was_armed && !_parent->is_armed()) || !_flight_information_received) {
+        _parent->send_flight_information_request();
+    }
+
+    _was_armed = _parent->is_armed();
 }
 
 void InfoImpl::process_autopilot_version(const mavlink_message_t& message)
@@ -128,6 +154,19 @@ void InfoImpl::process_autopilot_version(const mavlink_message_t& message)
     _information_received = true;
 }
 
+void InfoImpl::process_flight_information(const mavlink_message_t& message)
+{
+    std::lock_guard<std::mutex> lock(_mutex);
+
+    mavlink_flight_information_t flight_information;
+    mavlink_msg_flight_information_decode(&message, &flight_information);
+
+    _flight_info.time_boot_ms = flight_information.time_boot_ms;
+    _flight_info.flight_uid = flight_information.flight_uuid;
+
+    _flight_information_received = true;
+}
+
 void InfoImpl::translate_binary_to_str(
     uint8_t* binary, unsigned binary_len, char* str, unsigned str_len)
 {
@@ -163,6 +202,15 @@ std::pair<Info::Result, Info::Product> InfoImpl::get_product() const
         (_information_received ? Info::Result::SUCCESS :
                                  Info::Result::INFORMATION_NOT_RECEIVED_YET),
         _product);
+}
+
+std::pair<Info::Result, Info::FlightInfo> InfoImpl::get_flight_information() const
+{
+    std::lock_guard<std::mutex> lock(_mutex);
+    return std::make_pair<>(
+        (_flight_information_received ? Info::Result::SUCCESS :
+                                        Info::Result::INFORMATION_NOT_RECEIVED_YET),
+        _flight_info);
 }
 
 const char* InfoImpl::vendor_id_str(uint16_t vendor_id)
