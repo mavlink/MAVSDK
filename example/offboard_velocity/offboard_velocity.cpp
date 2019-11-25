@@ -203,12 +203,17 @@ bool offb_ctrl_attitude(std::shared_ptr<mavsdk::Offboard> offboard)
 
 void usage(std::string bin_name)
 {
-    std::cout << NORMAL_CONSOLE_TEXT << "Usage : " << bin_name << " <connection_url>" << std::endl
-              << "Connection URL format should be :" << std::endl
-              << " For TCP : tcp://[server_host][:server_port]" << std::endl
-              << " For UDP : udp://[bind_host][:bind_port]" << std::endl
-              << " For Serial : serial:///path/to/serial/dev[:baudrate]" << std::endl
-              << "For example, to connect to the simulator use URL: udp://:14540" << std::endl;
+    std::cout
+        << NORMAL_CONSOLE_TEXT << "Usage : " << bin_name << " <connection_url>"
+        << "<flight_mode> OR <landed_state>" << std::endl
+        << "Connection URL format should be :" << std::endl
+        << " For TCP : tcp://[server_host][:server_port]" << std::endl
+        << " For UDP : udp://[bind_host][:bind_port]" << std::endl
+        << " For Serial : serial:///path/to/serial/dev[:baudrate]" << std::endl
+        << "User needs to specify whether to use flight mode or landed state for the takeoff process"
+        << std::endl
+        << "For example, to connect to the simulator use URL: udp://:14540 flight_mode"
+        << std::endl;
 }
 
 int main(int argc, char** argv)
@@ -217,14 +222,14 @@ int main(int argc, char** argv)
     std::string connection_url;
     ConnectionResult connection_result;
     std::string mode;
-    
+
     if (argc == 2) {
         connection_url = argv[1];
         connection_result = dc.add_any_connection(connection_url);
     } else if (argc == 3) {
         connection_url = argv[1];
         connection_result = dc.add_any_connection(connection_url);
-	mode = argv[2];    
+        mode = argv[2];
     } else {
         usage(argv[0]);
         return 1;
@@ -261,26 +266,25 @@ int main(int argc, char** argv)
 
     Action::Result takeoff_result = action->takeoff();
     action_error_exit(takeoff_result, "Takeoff failed");
+
+    // Users can chose either flight mode or landed state to wait for take off process to finish,
+    // This will ensure not switch to offboard mode until take off has finished completely
     if (mode == "landed_state") {
-      std::cout << "Landed state..." << std::endl;
-      while (true) {
-	//	std::this_thread::sleep_for(std::chrono::milliseconds(5));
-	if (telemetry->landed_state()
-	    == Telemetry::LandedState::TAKING_OFF) {
-	  std::cout << "Taking off..." << std::endl;
-	break;
-	}
-      }
+        std::cout << "Landed state..." << std::endl;
+        while (true) {
+            if (telemetry->landed_state() == Telemetry::LandedState::TAKING_OFF) {
+                std::cout << "Taking off..." << std::endl;
+                break;
+            }
+        }
     } else if (mode == "flight_mode") {
-      std::cout << "flight mode..." << std::endl;
-      while (true) {
-	//	std::this_thread::sleep_for(std::chrono::milliseconds(5));
-	if (telemetry->flight_mode()
-	    == Telemetry::FlightMode::TAKEOFF) {
-	  std::cout << "Taking off..." << std::endl;
-	break;
-	}
-      }
+        std::cout << "flight mode..." << std::endl;
+        while (true) {
+            if (telemetry->flight_mode() == Telemetry::FlightMode::TAKEOFF) {
+                std::cout << "Taking off..." << std::endl;
+                break;
+            }
+        }
     }
     //  using attitude control
     bool ret = offb_ctrl_attitude(offboard);
