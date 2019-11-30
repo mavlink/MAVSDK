@@ -76,6 +76,18 @@ TEST_F(SitlTest, Info)
                       << Info::result_str(identification_result.first);
         }
 
+        std::pair<Info::Result, Info::FlightInfo> flight_info_result =
+            info->get_flight_information();
+        EXPECT_EQ(flight_info_result.first, Info::Result::SUCCESS);
+
+        if (flight_info_result.first == Info::Result::SUCCESS) {
+            std::cout << "Time since boot (ms): "
+                      << std::to_string(flight_info_result.second.time_boot_ms) << std::endl;
+            std::cout << "Flight UID: " << flight_info_result.second.flight_uid << std::endl;
+        } else {
+            LogWarn() << "Product request result: " << Info::result_str(flight_info_result.first);
+        }
+
         std::this_thread::sleep_for(std::chrono::seconds(1));
     }
 }
