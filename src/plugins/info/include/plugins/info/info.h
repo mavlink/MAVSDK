@@ -83,6 +83,15 @@ public:
     };
 
     /**
+     * @brief Type containing system flight information.
+     */
+    struct FlightInfo {
+        uint32_t time_boot_ms; /**< @brief Time since system boot. */
+        uint64_t flight_uid; /**< @brief Flight counter. Starts from zero, is incremented by 1
+                                  at every disarm and is never reset even after reboots.*/
+    };
+
+    /**
      * @brief Type containing identification.
      */
     struct Identification {
@@ -115,6 +124,14 @@ public:
      * the product information about the system.
      */
     std::pair<Result, Product> get_product() const;
+
+    /**
+     * @brief Get system flight information.
+     *
+     * @return a pair containing the result of the request and if successful,
+     * the flight information about the system.
+     */
+    std::pair<Result, FlightInfo> get_flight_information() const;
 
     /**
      * @brief Returns a human-readable English string for an Result.

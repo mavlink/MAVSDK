@@ -199,6 +199,7 @@ public:
     void call_user_callback(const std::function<void()>& func);
 
     void send_autopilot_version_request();
+    void send_flight_information_request();
 
     void intercept_incoming_messages(std::function<bool(mavlink_message_t&)> callback);
     void intercept_outgoing_messages(std::function<bool(mavlink_message_t&)> callback);
