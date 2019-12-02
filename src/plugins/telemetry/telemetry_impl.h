@@ -146,6 +146,7 @@ private:
     void process_position_velocity_ned(const mavlink_message_t& message);
     void process_global_position_int(const mavlink_message_t& message);
     void process_home_position(const mavlink_message_t& message);
+    void process_attitude(const mavlink_message_t& message);
     void process_attitude_quaternion(const mavlink_message_t& message);
     void process_mount_orientation(const mavlink_message_t& message);
     void process_imu_reading_ned(const mavlink_message_t& message);

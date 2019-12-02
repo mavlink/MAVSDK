@@ -39,6 +39,11 @@ void TelemetryImpl::init()
         this);
 
     _parent->register_mavlink_message_handler(
+        MAVLINK_MSG_ID_ATTITUDE,
+        std::bind(&TelemetryImpl::process_attitude, this, _1),
+        this);
+
+    _parent->register_mavlink_message_handler(
         MAVLINK_MSG_ID_ATTITUDE_QUATERNION,
         std::bind(&TelemetryImpl::process_attitude_quaternion, this, _1),
         this);
@@ -483,6 +488,42 @@ void TelemetryImpl::process_home_position(const mavlink_message_t& message)
     if (_home_position_subscription) {
         auto callback = _home_position_subscription;
         auto arg = get_home_position();
+        _parent->call_user_callback([callback, arg]() { callback(arg); });
+    }
+}
+
+void TelemetryImpl::process_attitude(const mavlink_message_t& message)
+{
+    mavlink_attitude_t attitude;
+    mavlink_msg_attitude_decode(&message, &attitude);
+
+    Telemetry::EulerAngle euler_angle{attitude.roll,
+                                      attitude.pitch,
+                                      attitude.yaw};
+
+    Telemetry::AngularVelocityBody angular_velocity_body{attitude.rollspeed,
+                                                         attitude.pitchspeed,
+                                                         attitude.yawspeed};
+    set_attitude_angular_velocity_body(angular_velocity_body);
+
+    auto quaternion = mavsdk::to_quaternion_from_euler_angle(euler_angle);
+    set_attitude_quaternion(quaternion);
+
+    if (_attitude_quaternion_subscription) {
+        auto callback = _attitude_quaternion_subscription;
+        auto arg = get_attitude_quaternion();
+        _parent->call_user_callback([callback, arg]() { callback(arg); });
+    }
+
+    if (_attitude_euler_angle_subscription) {
+        auto callback = _attitude_euler_angle_subscription;
+        auto arg = get_attitude_euler_angle();
+        _parent->call_user_callback([callback, arg]() { callback(arg); });
+    }
+
+    if (_attitude_angular_velocity_body_subscription) {
+        auto callback = _attitude_angular_velocity_body_subscription;
+        auto arg = get_attitude_angular_velocity_body();
         _parent->call_user_callback([callback, arg]() { callback(arg); });
     }
 }
