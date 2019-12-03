@@ -147,7 +147,7 @@ public:
             } else if (strcmp(type_str.c_str(), "uint64") == 0) {
                 uint64_t temp = std::stoll(value_str.c_str());
                 _value = temp;
-            } else if (strcmp(type_str.c_str(), "uint64") == 0) {
+            } else if (strcmp(type_str.c_str(), "int64") == 0) {
                 int64_t temp = std::stoll(value_str.c_str());
                 _value = temp;
             } else if (strcmp(type_str.c_str(), "float") == 0) {
@@ -179,7 +179,7 @@ public:
                 _value = int32_t(0);
             } else if (strcmp(type_str.c_str(), "uint64") == 0) {
                 _value = uint64_t(0);
-            } else if (strcmp(type_str.c_str(), "uint64") == 0) {
+            } else if (strcmp(type_str.c_str(), "int64") == 0) {
                 _value = int64_t(0);
             } else if (strcmp(type_str.c_str(), "float") == 0) {
                 _value = 0.0f;
