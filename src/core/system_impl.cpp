@@ -449,10 +449,8 @@ bool SystemImpl::has_camera(int camera_id) const
     int camera_comp_id = (camera_id == -1) ? camera_id : (MAV_COMP_ID_CAMERA + camera_id);
 
     if (camera_comp_id == -1) { // Check whether the system has any camera.
-        for (auto compid : _components) {
-            if (is_camera(compid)) {
-                return true;
-            }
+        if (std::any_of(_components.begin(), _components.end(), is_camera)) {
+            return true;
         }
     } else { // Look for the camera whose id is `camera_id`.
         for (auto compid : _components) {
