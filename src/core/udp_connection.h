@@ -17,10 +17,10 @@ public:
         const std::string& local_ip,
         int local_port);
     ~UdpConnection();
-    ConnectionResult start();
-    ConnectionResult stop();
+    ConnectionResult start() override;
+    ConnectionResult stop() override;
 
-    bool send_message(const mavlink_message_t& message);
+    bool send_message(const mavlink_message_t& message) override;
 
     void add_remote(const std::string& remote_ip, const int remote_port);
 
