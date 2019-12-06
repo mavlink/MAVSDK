@@ -135,6 +135,7 @@ public:
      * @brief Possible configurations.
      */
     enum class Configuration {
+        Autopilot, /**< @brief SDK is used as an autopilot. */
         GroundStation, /**< @brief SDK is used as a ground station. */
         CompanionComputer /**< @brief SDK is used on a companion computer onboard the system (e.g.
                              drone). */
