@@ -14,11 +14,11 @@ class SerialConnection : public Connection {
 public:
     explicit SerialConnection(
         Connection::receiver_callback_t receiver_callback, const std::string& path, int baudrate);
-    ConnectionResult start();
-    ConnectionResult stop();
+    ConnectionResult start() override;
+    ConnectionResult stop() override;
     ~SerialConnection();
 
-    bool send_message(const mavlink_message_t& message);
+    bool send_message(const mavlink_message_t& message) override;
 
     // Non-copyable
     SerialConnection(const SerialConnection&) = delete;
