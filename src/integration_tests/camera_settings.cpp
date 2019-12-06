@@ -234,7 +234,7 @@ TEST(CameraTest, SetSettings)
 }
 
 static void
-receive_current_settings(bool& subscription_called, const std::vector<Camera::Setting> settings)
+receive_current_settings(bool& subscription_called, const std::vector<Camera::Setting>& settings)
 {
     LogDebug() << "Received current options:";
     EXPECT_TRUE(settings.size() > 0);
@@ -287,7 +287,7 @@ TEST(CameraTest, SubscribeCurrentSettings)
 }
 
 static void receive_possible_setting_options(
-    bool& subscription_called, const std::vector<Camera::SettingOptions> settings_options)
+    bool& subscription_called, const std::vector<Camera::SettingOptions>& settings_options)
 {
     LogDebug() << "Received possible options:";
     EXPECT_TRUE(settings_options.size() > 0);

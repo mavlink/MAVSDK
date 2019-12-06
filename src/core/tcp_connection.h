@@ -22,10 +22,10 @@ public:
         const std::string& remote_ip,
         int remote_port);
     ~TcpConnection();
-    ConnectionResult start();
-    ConnectionResult stop();
+    ConnectionResult start() override;
+    ConnectionResult stop() override;
 
-    bool send_message(const mavlink_message_t& message);
+    bool send_message(const mavlink_message_t& message) override;
 
     // Non-copyable
     TcpConnection(const TcpConnection&) = delete;

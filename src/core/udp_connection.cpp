@@ -190,7 +190,7 @@ void UdpConnection::add_remote_with_remote_sysid(
     new_remote.system_id = remote_sysid;
 
     auto existing_remote =
-        std::find_if(_remotes.begin(), _remotes.end(), [&new_remote](Remote& remote) {
+        std::find_if(_remotes.begin(), _remotes.end(), [&new_remote](const Remote& remote) {
             return (remote.ip == new_remote.ip && remote.port_number == new_remote.port_number);
         });
 
@@ -253,7 +253,7 @@ void UdpConnection::receive()
                     new_remote.system_id = sysid;
 
                     auto existing_remote = std::find_if(
-                        _remotes.begin(), _remotes.end(), [&new_remote](Remote& remote) {
+                        _remotes.begin(), _remotes.end(), [&new_remote](const Remote& remote) {
                             return (
                                 remote.ip == new_remote.ip &&
                                 remote.port_number == new_remote.port_number);
