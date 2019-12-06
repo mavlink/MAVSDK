@@ -311,6 +311,9 @@ System& MavsdkImpl::get_system(const uint64_t uuid)
 uint8_t MavsdkImpl::get_own_system_id() const
 {
     switch (_configuration.load()) {
+        case Mavsdk::Configuration::Autopilot:
+            return 1;
+
         case Mavsdk::Configuration::GroundStation:
             return MAV_COMP_ID_MISSIONPLANNER;
 
@@ -328,6 +331,9 @@ uint8_t MavsdkImpl::get_own_system_id() const
 uint8_t MavsdkImpl::get_own_component_id() const
 {
     switch (_configuration.load()) {
+        case Mavsdk::Configuration::Autopilot:
+            return MAV_COMP_ID_AUTOPILOT1;
+
         case Mavsdk::Configuration::GroundStation:
             // FIXME: For now we increment by 1 to avoid conflicts with others.
             return MAV_COMP_ID_MISSIONPLANNER + 1;
@@ -345,10 +351,15 @@ uint8_t MavsdkImpl::get_own_component_id() const
 uint8_t MavsdkImpl::get_mav_type() const
 {
     switch (_configuration.load()) {
+        case Mavsdk::Configuration::Autopilot:
+            return MAV_TYPE_GENERIC;
+
         case Mavsdk::Configuration::GroundStation:
             return MAV_TYPE_GCS;
+
         case Mavsdk::Configuration::CompanionComputer:
             return MAV_TYPE_ONBOARD_CONTROLLER;
+
         default:
             LogErr() << "Unknown configuration";
             return 0;

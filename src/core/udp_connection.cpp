@@ -195,7 +195,7 @@ void UdpConnection::add_remote_with_remote_sysid(
         });
 
     if (existing_remote == _remotes.end()) {
-        LogInfo() << "New system on: " << new_remote.ip << ":" << new_remote.port_number;
+        LogInfo() << "New system on: " << new_remote.ip << ":" << new_remote.port_number << " (with sysid: " << (int)new_remote.system_id << ")";
         _remotes.push_back(new_remote);
     } else if (existing_remote->system_id != new_remote.system_id) {
         LogWarn() << "System on: " << new_remote.ip << ":" << new_remote.port_number
