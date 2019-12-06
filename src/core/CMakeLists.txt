@@ -29,6 +29,7 @@ add_library(mavsdk
     cli_arg.cpp
     thread_pool.cpp
     geometry.cpp
+    timesync.cpp
 )
 
 target_link_libraries(mavsdk

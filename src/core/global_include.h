@@ -4,6 +4,7 @@
 
 #include <chrono>
 #include <thread>
+#include <mutex>
 
 // Instead of using the constant from math.h or cmath we define it ourselves. This way
 // we don't import all the other C math functions and make sure to use the C++ functions
@@ -25,6 +26,8 @@ constexpr float M_PI_F = float(M_PI);
 namespace mavsdk {
 
 typedef std::chrono::time_point<std::chrono::steady_clock> dl_time_t;
+typedef std::chrono::time_point<std::chrono::system_clock> dl_system_time_t;
+typedef std::chrono::time_point<std::chrono::system_clock> dl_autopilot_time_t;
 
 class Time {
 public:
@@ -32,6 +35,7 @@ public:
     virtual ~Time();
 
     virtual dl_time_t steady_time();
+    virtual dl_system_time_t system_time();
     double elapsed_s();
     double elapsed_since_s(const dl_time_t& since);
     dl_time_t steady_time_in_future(double duration_s);
@@ -61,6 +65,24 @@ public:
 private:
     std::chrono::time_point<std::chrono::steady_clock, std::chrono::nanoseconds> _current{};
     void add_overhead();
+};
+
+class AutopilotTime {
+public:
+    AutopilotTime();
+    virtual ~AutopilotTime();
+
+    dl_autopilot_time_t now();
+
+    void shift_time_by(std::chrono::nanoseconds offset);
+
+    dl_autopilot_time_t time_in(dl_system_time_t local_system_time_point);
+
+private:
+    mutable std::mutex _autopilot_system_time_offset_mutex{};
+    std::chrono::nanoseconds _autopilot_time_offset{};
+
+    virtual dl_system_time_t system_time();
 };
 
 double to_rad_from_deg(double deg);

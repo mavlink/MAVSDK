@@ -7,6 +7,7 @@
 #include "timeout_handler.h"
 #include "call_every_handler.h"
 #include "thread_pool.h"
+#include "timesync.h"
 #include "system.h"
 #include <cstdint>
 #include <functional>
@@ -192,6 +193,7 @@ public:
     bool is_connected() const;
 
     Time& get_time() { return _time; };
+    AutopilotTime& get_autopilot_time() { return _autopilot_time; };
 
     void register_plugin(PluginImplBase* plugin_impl);
     void unregister_plugin(PluginImplBase* plugin_impl);
@@ -293,10 +295,13 @@ private:
 
     MAVLinkCommands _commands;
 
+    Timesync _timesync;
+
     TimeoutHandler _timeout_handler;
     CallEveryHandler _call_every_handler;
 
     Time _time{};
+    AutopilotTime _autopilot_time{};
 
     std::mutex _plugin_impls_mutex{};
     std::vector<PluginImplBase*> _plugin_impls{};
