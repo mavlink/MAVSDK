@@ -3,6 +3,7 @@
 #include "global_include.h"
 #include "px4_custom_mode.h"
 #include <array>
+#include <ctime>
 
 namespace mavsdk {
 
@@ -77,10 +78,17 @@ bool MocapImpl::send_vision_position_estimate()
     auto vision_position_estimate = _vision_position_estimate;
     _visual_position_estimate_mutex.unlock();
 
-    if (!vision_position_estimate.time_usec) {
-        vision_position_estimate.time_usec =
-            static_cast<uint64_t>(_parent->get_time().elapsed_s() * 1e3);
-    }
+    const uint64_t autopilot_time_usec =
+        (!vision_position_estimate.time_usec) ?
+            std::chrono::duration_cast<std::chrono::microseconds>(
+                _parent->get_autopilot_time().now().time_since_epoch())
+                .count() :
+            std::chrono::duration_cast<std::chrono::microseconds>(
+                _parent->get_autopilot_time()
+                    .time_in(dl_system_time_t(
+                        std::chrono::microseconds(vision_position_estimate.time_usec)))
+                    .time_since_epoch())
+                .count();
 
     mavlink_message_t message;
 
@@ -88,7 +96,7 @@ bool MocapImpl::send_vision_position_estimate()
         _parent->get_own_system_id(),
         _parent->get_own_component_id(),
         &message,
-        vision_position_estimate.time_usec,
+        autopilot_time_usec,
         vision_position_estimate.position_body.x_m,
         vision_position_estimate.position_body.y_m,
         vision_position_estimate.position_body.z_m,
@@ -107,10 +115,18 @@ bool MocapImpl::send_attitude_position_mocap()
     auto attitude_position_mocap = _attitude_position_mocap;
     _attitude_position_mocap_mutex.unlock();
 
-    if (!attitude_position_mocap.time_usec) {
-        attitude_position_mocap.time_usec =
-            static_cast<uint64_t>(_parent->get_time().elapsed_s() * 1e3);
-    }
+    const uint64_t autopilot_time_usec =
+        (!attitude_position_mocap.time_usec) ?
+            std::chrono::duration_cast<std::chrono::microseconds>(
+                _parent->get_autopilot_time().now().time_since_epoch())
+                .count() :
+            std::chrono::duration_cast<std::chrono::microseconds>(
+                _parent->get_autopilot_time()
+                    .time_in(dl_system_time_t(
+                        std::chrono::microseconds(attitude_position_mocap.time_usec)))
+                    .time_since_epoch())
+                .count();
+
     mavlink_message_t message;
 
     std::array<float, 4> q{};
@@ -123,7 +139,7 @@ bool MocapImpl::send_attitude_position_mocap()
         _parent->get_own_system_id(),
         _parent->get_own_component_id(),
         &message,
-        attitude_position_mocap.time_usec,
+        autopilot_time_usec,
         q.data(),
         attitude_position_mocap.position_body.x_m,
         attitude_position_mocap.position_body.y_m,
@@ -139,9 +155,17 @@ bool MocapImpl::send_odometry()
     auto odometry = _odometry;
     _odometry_mutex.unlock();
 
-    if (!odometry.time_usec) {
-        odometry.time_usec = static_cast<uint64_t>(_parent->get_time().elapsed_s() * 1e3);
-    }
+    const uint64_t autopilot_time_usec =
+        (!odometry.time_usec) ?
+            std::chrono::duration_cast<std::chrono::microseconds>(
+                _parent->get_autopilot_time().now().time_since_epoch())
+                .count() :
+            std::chrono::duration_cast<std::chrono::microseconds>(
+                _parent->get_autopilot_time()
+                    .time_in(dl_system_time_t(std::chrono::microseconds(odometry.time_usec)))
+                    .time_since_epoch())
+                .count();
+
     mavlink_message_t message;
 
     std::array<float, 4> q{};
@@ -154,7 +178,7 @@ bool MocapImpl::send_odometry()
         _parent->get_own_system_id(),
         _parent->get_own_component_id(),
         &message,
-        odometry.time_usec,
+        autopilot_time_usec,
         static_cast<uint8_t>(odometry.frame_id),
         static_cast<uint8_t>(MAV_FRAME_BODY_FRD),
         odometry.position_body.x_m,

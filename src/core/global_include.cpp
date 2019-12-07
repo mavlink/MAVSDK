@@ -4,10 +4,12 @@
 #include <cstdint>
 #include <limits>
 #include <cmath>
+#include <chrono>
 
 namespace mavsdk {
 
 using std::chrono::steady_clock;
+using std::chrono::system_clock;
 
 Time::Time() {}
 Time::~Time() {}
@@ -15,6 +17,11 @@ Time::~Time() {}
 dl_time_t Time::steady_time()
 {
     return steady_clock::now();
+}
+
+dl_system_time_t Time::system_time()
+{
+    return system_clock::now();
 }
 
 double Time::elapsed_s()
@@ -157,5 +164,33 @@ bool are_equal(double one, double two)
 {
     return (std::fabs(one - two) < std::numeric_limits<double>::epsilon());
 }
+
+AutopilotTime::AutopilotTime() {}
+AutopilotTime::~AutopilotTime() {}
+
+dl_system_time_t AutopilotTime::system_time()
+{
+    return system_clock::now();
+}
+
+dl_autopilot_time_t AutopilotTime::now()
+{
+    std::lock_guard<std::mutex> lock(_autopilot_system_time_offset_mutex);
+    return dl_autopilot_time_t(std::chrono::duration_cast<std::chrono::microseconds>(
+        system_time().time_since_epoch() + _autopilot_time_offset));
+}
+
+void AutopilotTime::shift_time_by(std::chrono::nanoseconds offset)
+{
+    std::lock_guard<std::mutex> lock(_autopilot_system_time_offset_mutex);
+    _autopilot_time_offset = offset;
+};
+
+dl_autopilot_time_t AutopilotTime::time_in(dl_system_time_t local_system_time_point)
+{
+    std::lock_guard<std::mutex> lock(_autopilot_system_time_offset_mutex);
+    return dl_autopilot_time_t(std::chrono::duration_cast<std::chrono::microseconds>(
+        local_system_time_point.time_since_epoch() + _autopilot_time_offset));
+};
 
 } // namespace mavsdk
