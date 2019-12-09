@@ -20,10 +20,11 @@ public:
         _connection_initiator.wait();
     }
 
-    void startGRPCServer()
+    int startGRPCServer(const int port)
     {
         _server = std::unique_ptr<GRPCServer>(new GRPCServer(_dc));
-        _server->run();
+        _server->set_port(port);
+        return _server->run();
     }
 
     void wait() { _server->wait(); }
@@ -37,9 +38,9 @@ private:
 MavsdkBackend::MavsdkBackend() : _impl(new Impl()) {}
 MavsdkBackend::~MavsdkBackend() = default;
 
-void MavsdkBackend::startGRPCServer()
+int MavsdkBackend::startGRPCServer(const int port)
 {
-    _impl->startGRPCServer();
+    return _impl->startGRPCServer(port);
 }
 void MavsdkBackend::connect(const std::string& connection_url)
 {

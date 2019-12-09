@@ -35,6 +35,7 @@ namespace backend {
 class GRPCServer {
 public:
     GRPCServer(Mavsdk& dc) :
+        _port(0),
         _dc(dc),
         _core(_dc),
         _action(_dc.system()),
@@ -63,7 +64,8 @@ public:
         _mocap_service(_mocap)
     {}
 
-    void run();
+    void set_port(int port);
+    int run();
     void wait();
 
 private:
@@ -98,6 +100,9 @@ private:
     MocapServiceImpl<> _mocap_service;
 
     std::unique_ptr<grpc::Server> _server;
+
+    int _port;
+    int _bound_port = 0;
 };
 
 } // namespace backend

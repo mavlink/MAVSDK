@@ -8,7 +8,12 @@
 namespace mavsdk {
 namespace backend {
 
-void GRPCServer::run()
+void GRPCServer::set_port(const int port)
+{
+    _port = port;
+}
+
+int GRPCServer::run()
 {
     grpc::ServerBuilder builder;
     setup_port(builder);
@@ -28,7 +33,15 @@ void GRPCServer::run()
     builder.RegisterService(&_mocap_service);
 
     _server = builder.BuildAndStart();
-    LogInfo() << "Server started";
+
+    if (_bound_port != 0) {
+        LogInfo() << "Server started";
+        LogInfo() << "Server set to listen on 0.0.0.0:" << _bound_port;
+    } else {
+        LogErr() << "Failed to bind server to port " << _port;
+    }
+
+    return _bound_port;
 }
 
 void GRPCServer::wait()
@@ -42,9 +55,8 @@ void GRPCServer::wait()
 
 void GRPCServer::setup_port(grpc::ServerBuilder& builder)
 {
-    std::string server_address("0.0.0.0:50051");
-    builder.AddListeningPort(server_address, grpc::InsecureServerCredentials());
-    LogInfo() << "Server set to listen on " << server_address;
+    const std::string server_address("0.0.0.0:" + std::to_string(_port));
+    builder.AddListeningPort(server_address, grpc::InsecureServerCredentials(), &_bound_port);
 }
 
 } // namespace backend
