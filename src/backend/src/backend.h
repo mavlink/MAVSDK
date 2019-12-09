@@ -13,7 +13,7 @@ public:
     MavsdkBackend(MavsdkBackend&&) = delete;
     MavsdkBackend& operator=(MavsdkBackend&&) = delete;
 
-    void startGRPCServer();
+    int startGRPCServer(int port);
     void connect(const std::string& connection_url = "udp://");
     void wait();
 

@@ -19,6 +19,7 @@ public:
         init_mutex();
         init_timeout_logging(dc);
 
+        LogInfo() << "Waiting to discover system on " << connection_url << "...";
         _discovery_future = wrapped_register_on_discover(dc);
 
         if (!add_any_connection(dc, connection_url)) {
@@ -54,8 +55,6 @@ private:
     std::future<uint64_t> wrapped_register_on_discover(Mavsdk& dc)
     {
         auto future = _discovery_promise->get_future();
-
-        LogInfo() << "Waiting to discover system...";
 
         dc.register_on_discover([this](uint64_t uuid) {
             std::call_once(_discovery_flag, [this, uuid]() {
