@@ -155,6 +155,11 @@ void Telemetry::set_rate_odometry_async(double rate_hz, result_callback_t callba
     _impl->set_rate_odometry_async(rate_hz, callback);
 }
 
+void Telemetry::set_rate_distance_sensor_async(double rate_hz, result_callback_t callback)
+{
+    _impl->set_rate_distance_sensor_async(rate_hz, callback);
+}
+
 Telemetry::PositionVelocityNED Telemetry::position_velocity_ned() const
 {
     return _impl->get_position_velocity_ned();

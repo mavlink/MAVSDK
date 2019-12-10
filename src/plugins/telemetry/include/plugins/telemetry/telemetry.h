@@ -364,6 +364,99 @@ public:
     };
 
     /**
+     * @brief Distance sensor information type.
+     *
+     * The updates from distance sensors.
+     */
+    struct DistanceSensor {
+        /**
+         * @brief Distance sensor types
+         */
+        enum class SensorType {
+            LASER = 0, /**< @brief Laser rangefinder, e.g. LightWare SF02/F or PulsedLight units. */
+            ULTRASOUND = 1, /**< @brief Ultrasound rangefinder, e.g. MaxBotix units. */
+            INFRARED = 2, /**< @brief Infrared rangefinder, e.g. Sharp units. */
+            RADAR = 3, /**< @brief Radar type, e.g. uLanding units. */
+            UNKNOWN = 4, /**< @brief Broken or unknown type, e.g. analog units. */
+        };
+
+        /**
+         * @brief Sensor orientation, according to its rotations
+         */
+        enum class SensorOrientation {
+            ROTATION_NONE = 0, /**< @brief Roll: 0, Pitch: 0, Yaw: 0 */
+            ROTATION_YAW_45 = 1, /**< @brief Roll: 0, Pitch: 0, Yaw: 45 */
+            ROTATION_YAW_90 = 2, /**< @brief Roll: 0, Pitch: 0, Yaw: 90 */
+            ROTATION_YAW_135 = 3, /**< @brief Roll: 0, Pitch: 0, Yaw: 135 */
+            ROTATION_YAW_180 = 4, /**< @brief Roll: 0, Pitch: 0, Yaw: 180 */
+            ROTATION_YAW_225 = 5, /**< @brief Roll: 0, Pitch: 0, Yaw: 225 */
+            ROTATION_YAW_270 = 6, /**< @brief Roll: 0, Pitch: 0, Yaw: 270 */
+            ROTATION_YAW_315 = 7, /**< @brief Roll: 0, Pitch: 0, Yaw: 315 */
+            ROTATION_ROLL_180 = 8, /**< @brief Roll: 180, Pitch: 0, Yaw: 0 */
+            ROTATION_ROLL_180_YAW_45 = 9, /**< @brief Roll: 180, Pitch: 0, Yaw: 45 */
+            ROTATION_ROLL_180_YAW_90 = 10, /**< @brief Roll: 180, Pitch: 0, Yaw: 90 */
+            ROTATION_ROLL_180_YAW_135 = 11, /**< @brief Roll: 180, Pitch: 0, Yaw: 135 */
+            ROTATION_PITCH_180 = 12, /**< @brief Roll: 0, Pitch: 180, Yaw: 0 */
+            ROTATION_ROLL_180_YAW_225 = 13, /**< @brief Roll: 180, Pitch: 0, Yaw: 225 */
+            ROTATION_ROLL_180_YAW_270 = 14, /**< @brief Roll: 180, Pitch: 0, Yaw: 270 */
+            ROTATION_ROLL_180_YAW_315 = 15, /**< @brief Roll: 180, Pitch: 0, Yaw: 315 */
+            ROTATION_ROLL_90 = 16, /**< @brief Roll: 90, Pitch: 0, Yaw: 0 */
+            ROTATION_ROLL_90_YAW_45 = 17, /**< @brief Roll: 90, Pitch: 0, Yaw: 45 */
+            ROTATION_ROLL_90_YAW_90 = 18, /**< @brief Roll: 90, Pitch: 0, Yaw: 90 */
+            ROTATION_ROLL_90_YAW_135 = 19, /**< @brief Roll: 90, Pitch: 0, Yaw: 135 */
+            ROTATION_ROLL_270 = 20, /**< @brief Roll: 270, Pitch: 0, Yaw: 0 */
+            ROTATION_ROLL_270_YAW_45 = 21, /**< @brief Roll: 270, Pitch: 0, Yaw: 45 */
+            ROTATION_ROLL_270_YAW_90 = 22, /**< @brief Roll: 270, Pitch: 0, Yaw: 90 */
+            ROTATION_ROLL_270_YAW_135 = 23, /**< @brief Roll: 270, Pitch: 0, Yaw: 135 */
+            ROTATION_PITCH_90 = 24, /**< @brief Roll: 0, Pitch: 90, Yaw: 0 */
+            ROTATION_PITCH_270 = 25, /**< @brief Roll: 0, Pitch: 270, Yaw: 0 */
+            ROTATION_PITCH_180_YAW_90 = 26, /**< @brief Roll: 0, Pitch: 180, Yaw: 90 */
+            ROTATION_PITCH_180_YAW_270 = 27, /**< @brief Roll: 0, Pitch: 180, Yaw: 270 */
+            ROTATION_ROLL_90_PITCH_90 = 28, /**< @brief Roll: 90, Pitch: 90, Yaw: 0 */
+            ROTATION_ROLL_180_PITCH_90 = 29, /**< @brief Roll: 180, Pitch: 90, Yaw: 0 */
+            ROTATION_ROLL_270_PITCH_90 = 30, /**< @brief Roll: 270, Pitch: 90, Yaw: 0 */
+            ROTATION_ROLL_90_PITCH_180 = 31, /**< @brief Roll: 90, Pitch: 180, Yaw: 0 */
+            ROTATION_ROLL_270_PITCH_180 = 32, /**< @brief Roll: 270, Pitch: 180, Yaw: 0 */
+            ROTATION_ROLL_90_PITCH_270 = 33, /**< @brief Roll: 90, Pitch: 270, Yaw: 0 */
+            ROTATION_ROLL_180_PITCH_270 = 34, /**< @brief Roll: 180, Pitch: 270, Yaw: 0 */
+            ROTATION_ROLL_270_PITCH_270 = 35, /**< @brief Roll: 270, Pitch: 270, Yaw: 0 */
+            ROTATION_ROLL_90_PITCH_180_YAW_90 = 36, /**< @brief Roll: 90, Pitch: 180, Yaw: 90 */
+            ROTATION_ROLL_90_YAW_270 = 37, /**< @brief Roll: 90, Pitch: 0, Yaw: 270 */
+            ROTATION_ROLL_90_PITCH_68_YAW_293 = 38, /**< @brief Roll: 90, Pitch: 68, Yaw: 293 */
+            ROTATION_PITCH_315 = 39, /**< @brief Pitch: 315 */
+            ROTATION_ROLL_90_PITCH_315 = 40, /**< @brief Roll: 90, Pitch: 315 */
+            ROTATION_CUSTOM = 100, /**< @brief Custom orientation */
+        };
+
+        uint32_t time_boot_ms; /**< @brief  Timestamp (time since system boot). */
+        uint16_t min_distance; /**< @brief  Minimum distance the sensor can measure. */
+        uint16_t max_distance; /**< @brief  Maximum distance the sensor can measure. */
+        uint16_t current_distance; /**< @brief Current distance reading. */
+        SensorType type; /**< @brief Type of distance sensor. */
+        uint8_t id; /**< @brief Onboard ID of the sensor. */
+        SensorOrientation orientation; /**< @brief Direction the sensor faces.
+                                                downward-facing: ROTATION_PITCH_270,
+                                                upward-facing: ROTATION_PITCH_90,
+                                                backward-facing: ROTATION_PITCH_180,
+                                                forward-facing: ROTATION_NONE,
+                                                left-facing: ROTATION_YAW_90,
+                                                right-facing: ROTATION_YAW_270. */
+        uint8_t covariance; /**< @brief Measurement variance. Max standard deviation is 6cm. 255 if
+                               unknown. */
+        float horizontal_fov; /**< @brief Horizontal Field of View (angle) where the distance
+                                 measurement is valid and the field of view is known. Otherwise this
+                                 is set to 0. */
+        float
+            vertical_fov; /**< @brief Vertical Field of View (angle) where the distance measurement
+                             is valid and the field of view is known. Otherwise this is set to 0. */
+        Quaternion
+            quaternion; /**< @brief Quaternion of the sensor orientation in vehicle body frame (w,
+                           x, y, z order, zero-rotation is 1, 0, 0, 0). Zero-rotation is along the
+                           vehicle body x-axis. This field is required if the orientation is set to
+                           MAV_SENSOR_ROTATION_CUSTOM. Set it to 0 if invalid." */
+    };
+
+    /**
      * @brief Results enum for telemetry requests.
      */
     enum class Result {
@@ -669,6 +762,16 @@ public:
      * @param callback Callback to receive request result.
      */
     void set_rate_odometry_async(double rate_hz, result_callback_t callback);
+
+    /**
+     * @brief Set rate of distance sensors updates (asynchronous).
+     *
+     * @note To stop sending it completely, use a rate_hz of -1, for default rate use 0.
+     *
+     * @param rate_hz Rate in Hz.
+     * @param callback Callback to receive request result.
+     */
+    void set_rate_distance_sensor_async(double rate_hz, result_callback_t callback);
 
     /**
      * @brief Set rate of Unix Epoch Time update (asynchronous).
@@ -1127,6 +1230,13 @@ public:
      * @param callback Function to call with updates.
      */
     typedef std::function<void(Odometry odometry)> odometry_callback_t;
+
+    /**
+     * @brief Callback type for distance sensor updates (asynchronous).
+     *
+     * @param callback Function to call with updates.
+     */
+    typedef std::function<void(DistanceSensor distance_sensor)> distance_sensor_callback_t;
 
     /**
      * @brief Subscribe to actuator output status target updates (asynchronous).
