@@ -385,47 +385,12 @@ public:
          */
         enum class SensorOrientation {
             ROTATION_NONE = 0, /**< @brief Roll: 0, Pitch: 0, Yaw: 0 */
-            ROTATION_YAW_45 = 1, /**< @brief Roll: 0, Pitch: 0, Yaw: 45 */
             ROTATION_YAW_90 = 2, /**< @brief Roll: 0, Pitch: 0, Yaw: 90 */
-            ROTATION_YAW_135 = 3, /**< @brief Roll: 0, Pitch: 0, Yaw: 135 */
-            ROTATION_YAW_180 = 4, /**< @brief Roll: 0, Pitch: 0, Yaw: 180 */
-            ROTATION_YAW_225 = 5, /**< @brief Roll: 0, Pitch: 0, Yaw: 225 */
             ROTATION_YAW_270 = 6, /**< @brief Roll: 0, Pitch: 0, Yaw: 270 */
-            ROTATION_YAW_315 = 7, /**< @brief Roll: 0, Pitch: 0, Yaw: 315 */
-            ROTATION_ROLL_180 = 8, /**< @brief Roll: 180, Pitch: 0, Yaw: 0 */
-            ROTATION_ROLL_180_YAW_45 = 9, /**< @brief Roll: 180, Pitch: 0, Yaw: 45 */
-            ROTATION_ROLL_180_YAW_90 = 10, /**< @brief Roll: 180, Pitch: 0, Yaw: 90 */
-            ROTATION_ROLL_180_YAW_135 = 11, /**< @brief Roll: 180, Pitch: 0, Yaw: 135 */
             ROTATION_PITCH_180 = 12, /**< @brief Roll: 0, Pitch: 180, Yaw: 0 */
-            ROTATION_ROLL_180_YAW_225 = 13, /**< @brief Roll: 180, Pitch: 0, Yaw: 225 */
-            ROTATION_ROLL_180_YAW_270 = 14, /**< @brief Roll: 180, Pitch: 0, Yaw: 270 */
-            ROTATION_ROLL_180_YAW_315 = 15, /**< @brief Roll: 180, Pitch: 0, Yaw: 315 */
-            ROTATION_ROLL_90 = 16, /**< @brief Roll: 90, Pitch: 0, Yaw: 0 */
-            ROTATION_ROLL_90_YAW_45 = 17, /**< @brief Roll: 90, Pitch: 0, Yaw: 45 */
-            ROTATION_ROLL_90_YAW_90 = 18, /**< @brief Roll: 90, Pitch: 0, Yaw: 90 */
-            ROTATION_ROLL_90_YAW_135 = 19, /**< @brief Roll: 90, Pitch: 0, Yaw: 135 */
-            ROTATION_ROLL_270 = 20, /**< @brief Roll: 270, Pitch: 0, Yaw: 0 */
-            ROTATION_ROLL_270_YAW_45 = 21, /**< @brief Roll: 270, Pitch: 0, Yaw: 45 */
-            ROTATION_ROLL_270_YAW_90 = 22, /**< @brief Roll: 270, Pitch: 0, Yaw: 90 */
-            ROTATION_ROLL_270_YAW_135 = 23, /**< @brief Roll: 270, Pitch: 0, Yaw: 135 */
             ROTATION_PITCH_90 = 24, /**< @brief Roll: 0, Pitch: 90, Yaw: 0 */
             ROTATION_PITCH_270 = 25, /**< @brief Roll: 0, Pitch: 270, Yaw: 0 */
-            ROTATION_PITCH_180_YAW_90 = 26, /**< @brief Roll: 0, Pitch: 180, Yaw: 90 */
-            ROTATION_PITCH_180_YAW_270 = 27, /**< @brief Roll: 0, Pitch: 180, Yaw: 270 */
-            ROTATION_ROLL_90_PITCH_90 = 28, /**< @brief Roll: 90, Pitch: 90, Yaw: 0 */
-            ROTATION_ROLL_180_PITCH_90 = 29, /**< @brief Roll: 180, Pitch: 90, Yaw: 0 */
-            ROTATION_ROLL_270_PITCH_90 = 30, /**< @brief Roll: 270, Pitch: 90, Yaw: 0 */
-            ROTATION_ROLL_90_PITCH_180 = 31, /**< @brief Roll: 90, Pitch: 180, Yaw: 0 */
-            ROTATION_ROLL_270_PITCH_180 = 32, /**< @brief Roll: 270, Pitch: 180, Yaw: 0 */
-            ROTATION_ROLL_90_PITCH_270 = 33, /**< @brief Roll: 90, Pitch: 270, Yaw: 0 */
-            ROTATION_ROLL_180_PITCH_270 = 34, /**< @brief Roll: 180, Pitch: 270, Yaw: 0 */
-            ROTATION_ROLL_270_PITCH_270 = 35, /**< @brief Roll: 270, Pitch: 270, Yaw: 0 */
-            ROTATION_ROLL_90_PITCH_180_YAW_90 = 36, /**< @brief Roll: 90, Pitch: 180, Yaw: 90 */
-            ROTATION_ROLL_90_YAW_270 = 37, /**< @brief Roll: 90, Pitch: 0, Yaw: 270 */
-            ROTATION_ROLL_90_PITCH_68_YAW_293 = 38, /**< @brief Roll: 90, Pitch: 68, Yaw: 293 */
-            ROTATION_PITCH_315 = 39, /**< @brief Pitch: 315 */
-            ROTATION_ROLL_90_PITCH_315 = 40, /**< @brief Roll: 90, Pitch: 315 */
-            ROTATION_CUSTOM = 100, /**< @brief Custom orientation */
+            ROTATION_CUSTOM = 100 /**< @brief Custom orientation */
         };
 
         uint32_t time_boot_ms; /**< @brief  Timestamp (time since system boot). */
