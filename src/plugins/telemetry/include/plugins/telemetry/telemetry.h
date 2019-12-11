@@ -380,32 +380,12 @@ public:
             UNKNOWN = 4, /**< @brief Broken or unknown type, e.g. analog units. */
         };
 
-        /**
-         * @brief Sensor orientation, according to its rotations
-         */
-        enum class SensorOrientation {
-            ROTATION_NONE = 0, /**< @brief Roll: 0, Pitch: 0, Yaw: 0 */
-            ROTATION_YAW_90 = 2, /**< @brief Roll: 0, Pitch: 0, Yaw: 90 */
-            ROTATION_YAW_270 = 6, /**< @brief Roll: 0, Pitch: 0, Yaw: 270 */
-            ROTATION_PITCH_180 = 12, /**< @brief Roll: 0, Pitch: 180, Yaw: 0 */
-            ROTATION_PITCH_90 = 24, /**< @brief Roll: 0, Pitch: 90, Yaw: 0 */
-            ROTATION_PITCH_270 = 25, /**< @brief Roll: 0, Pitch: 270, Yaw: 0 */
-            ROTATION_CUSTOM = 100 /**< @brief Custom orientation */
-        };
-
         uint32_t time_boot_ms; /**< @brief  Timestamp (time since system boot). */
         uint16_t min_distance; /**< @brief  Minimum distance the sensor can measure. */
         uint16_t max_distance; /**< @brief  Maximum distance the sensor can measure. */
         uint16_t current_distance; /**< @brief Current distance reading. */
         SensorType type; /**< @brief Type of distance sensor. */
         uint8_t id; /**< @brief Onboard ID of the sensor. */
-        SensorOrientation orientation; /**< @brief Direction the sensor faces.
-                                                downward-facing: ROTATION_PITCH_270,
-                                                upward-facing: ROTATION_PITCH_90,
-                                                backward-facing: ROTATION_PITCH_180,
-                                                forward-facing: ROTATION_NONE,
-                                                left-facing: ROTATION_YAW_90,
-                                                right-facing: ROTATION_YAW_270. */
         uint8_t covariance; /**< @brief Measurement variance. Max standard deviation is 6cm. 255 if
                                unknown. */
         float horizontal_fov; /**< @brief Horizontal Field of View (angle) where the distance

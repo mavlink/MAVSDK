@@ -892,17 +892,45 @@ void TelemetryImpl::process_distance_sensor(const mavlink_message_t& message)
     distance_sensor.current_distance = mavlink_msg_distance_sensor_get_current_distance(&message);
     distance_sensor.type = static_cast<Telemetry::DistanceSensor::SensorType>(mavlink_msg_distance_sensor_get_type(&message));
     distance_sensor.id = mavlink_msg_distance_sensor_get_id(&message);
-    distance_sensor.orientation = static_cast<Telemetry::DistanceSensor::SensorOrientation>(mavlink_msg_distance_sensor_get_orientation(&message));
     distance_sensor.covariance = mavlink_msg_distance_sensor_get_covariance(&message);
     distance_sensor.horizontal_fov = mavlink_msg_distance_sensor_get_horizontal_fov(&message);
     distance_sensor.vertical_fov = mavlink_msg_distance_sensor_get_vertical_fov(&message);
 
-    std::array<float, 4> q{};
-    mavlink_msg_distance_sensor_get_quaternion(&message, q.data());
-    distance_sensor.quaternion.w = q[0];
-    distance_sensor.quaternion.x = q[1];
-    distance_sensor.quaternion.y = q[2];
-    distance_sensor.quaternion.z = q[3];
+    Telemetry::Quaternion quaternion{};
+    auto sensor_orientation = static_cast<MAV_SENSOR_ORIENTATION>(mavlink_msg_distance_sensor_get_orientation(&message));
+    switch (sensor_orientation) {
+        case MAV_SENSOR_ROTATION_NONE:
+            quaternion = {1, 0, 0, 0};
+            break;
+        case MAV_SENSOR_ROTATION_YAW_90:
+            quaternion = {std::sqrt(0.5f), 0, 0, std::sqrt(0.5f)};
+            break;
+        case MAV_SENSOR_ROTATION_YAW_270:
+            quaternion = {std::sqrt(0.5f), 0, 0, -1 * std::sqrt(0.5f)};
+            break;
+        case MAV_SENSOR_ROTATION_PITCH_180:
+            quaternion = {0, 0, 1, 0};
+            break;
+        case MAV_SENSOR_ROTATION_PITCH_90:
+            quaternion = {std::sqrt(0.5f), 0, std::sqrt(0.5f), 0};
+            break;
+        case MAV_SENSOR_ROTATION_PITCH_270:
+            quaternion = {std::sqrt(0.5f), 0, -1 * std::sqrt(0.5f), 0};
+            break;
+        case MAV_SENSOR_ROTATION_CUSTOM:
+        default:
+        {
+            std::array<float, 4> q{};
+            mavlink_msg_distance_sensor_get_quaternion(&message, q.data());
+            quaternion.w = q[0];
+            quaternion.x = q[1];
+            quaternion.y = q[2];
+            quaternion.z = q[3];
+            break;
+        }
+    }
+
+    distance_sensor.quaternion = quaternion;
 
     set_distance_sensor(distance_sensor);
 
