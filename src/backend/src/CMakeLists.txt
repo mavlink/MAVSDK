@@ -33,7 +33,7 @@ if(IOS)
     list(APPEND BACKEND_SOURCES module.modulemap)
 endif()
 
-if(IOS)
+if(IOS OR ANDROID)
     add_library(mavsdk_server SHARED ${BACKEND_SOURCES})
 else()
     add_library(mavsdk_server ${BACKEND_SOURCES})
@@ -77,7 +77,7 @@ if(IOS)
         #XCODE_ATTRIBUTE_CODE_SIGN_IDENTITY "iPhone Developer"
         MACOSX_FRAMEWORK_INFO_PLIST ${PROJECT_SOURCE_DIR}/backend/cmake/MacOSXFrameworkInfo.plist.in
     )
-else()
+elseif(NOT ANDROID)
     add_executable(mavsdk_server_bin
         mavsdk_server.cpp
     )
