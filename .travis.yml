@@ -236,25 +236,25 @@ before_deploy:
     export BEFORE_DEPLOY_RUN=1;
     if [[ "${BUILD_TARGET}" = "manylinux1-x64" ]]; then
       mv build/manylinux1-x64/install/bin/mavsdk_server build/manylinux1-x64/install/bin/mavsdk_server_manylinux1-x64;
-    fi
+    fi;
     if [[ "${BUILD_TARGET}" = "android-arm64" ]]; then
       mv build/android-arm64/install/lib/libmavsdk_server.so build/android-arm64/install/lib/libmavsdk_server_android-arm64.so;
-    fi
+    fi;
     if [[ "${BUILD_TARGET}" = "android-arm" ]]; then
       mv build/android-arm/install/lib/libmavsdk_server.so build/android-arm/install/lib/libmavsdk_server_android-arm.so;
-    fi
+    fi;
     if [[ "${BUILD_TARGET}" = "linux-armv7" ]]; then
       mv build/linux-armv7/install/bin/mavsdk_server build/linux-armv7/install/bin/mavsdk_server_linux-armv7;
-    fi
+    fi;
     if [[ "${BUILD_TARGET}" = "linux-arm64" ]]; then
       mv build/linux-arm64/install/bin/mavsdk_server build/linux-arm64/install/bin/mavsdk_server_linux-arm64;
-    fi
+    fi;
     if [[ "${BUILD_TARGET}" = "osx_build" ]]; then
       mv build/release/install/bin/mavsdk_server build/release/install/bin/mavsdk_server_macos;
-    fi
+    fi;
     if [[ "${BUILD_TARGET}" = "windows" ]]; then
       mv build/release/install/bin/mavsdk_server_bin.exe build/release/install/bin/mavsdk_server_win32.exe;
-    fi
+    fi;
   fi
 
 deploy:
@@ -263,88 +263,16 @@ deploy:
   api_key:
       secure: hBX3pFWNZiDbz4yKnOjhLg3QS9Ubn1XePxSeIt2Btq5GzbomOPDCgpIFijBppliwj9oKc302EMnZSg2QWeAzFKn9UnmIflJ0E4iymYgwWdTJv+bSnYALJEmO8F6gF9FgRlPk8FCtZiECoTsa75w5TrEZKZpFpmzVYRiDu0eo6sEjW7UJPC0A2KSTXLrBCHSIZy/iasbGmuur4brG7NO0QdMOvDXvhsYfkXDRJFMTtTHvLiKJcqiunPfqARzf1H4x4iczRYscKu5Vn8Kmw3NANGkcIDvEj4ooih831EXxACRZw0VgycgNHOKRXKC9pZ4hLQMon+jxpQX+X8k/K5161oEkF/gCVKyFb31Pk/4Uwe81p1GJY2lAC7MDUxA98RKXhdvVYF2Cp44+IbF0YVoWRUtVAhknXRQ3Weg25kyVSu83q2nN2nZq2qGTnpNIbdN56s/F+uaFtipGEh+vmiv8rNUz+Z5MFrY2FQaSvBTFw9K4tNs9uc+VQd1bE7X5wh0yywEqUEw2nzqTB2xR+OubygUASbk2GLNdc254P0lrzCHbNM62Y7sRX06CM7hPlwhELEkVtUXZWJ0KuhQyLvRh3aPJ3Jj30EswTt/FGT1gzSP1FjjHBRZCK4P2D2rwJ5TMn2JrZKfPxmEd3kVmn6h80+gBbKgonGmZspd2SvPEI5g=
   file_glob: true
-  file: "build/manylinux1-x64/install/bin/mavsdk_server_manylinux1-x64"
-  on:
-    condition: ${BUILD_TARGET} = manylinux1-x64
-    repo: mavlink/MAVSDK
-    tags: true
-- provider: releases
-  skip_cleanup: true
-  api_key:
-      secure: hBX3pFWNZiDbz4yKnOjhLg3QS9Ubn1XePxSeIt2Btq5GzbomOPDCgpIFijBppliwj9oKc302EMnZSg2QWeAzFKn9UnmIflJ0E4iymYgwWdTJv+bSnYALJEmO8F6gF9FgRlPk8FCtZiECoTsa75w5TrEZKZpFpmzVYRiDu0eo6sEjW7UJPC0A2KSTXLrBCHSIZy/iasbGmuur4brG7NO0QdMOvDXvhsYfkXDRJFMTtTHvLiKJcqiunPfqARzf1H4x4iczRYscKu5Vn8Kmw3NANGkcIDvEj4ooih831EXxACRZw0VgycgNHOKRXKC9pZ4hLQMon+jxpQX+X8k/K5161oEkF/gCVKyFb31Pk/4Uwe81p1GJY2lAC7MDUxA98RKXhdvVYF2Cp44+IbF0YVoWRUtVAhknXRQ3Weg25kyVSu83q2nN2nZq2qGTnpNIbdN56s/F+uaFtipGEh+vmiv8rNUz+Z5MFrY2FQaSvBTFw9K4tNs9uc+VQd1bE7X5wh0yywEqUEw2nzqTB2xR+OubygUASbk2GLNdc254P0lrzCHbNM62Y7sRX06CM7hPlwhELEkVtUXZWJ0KuhQyLvRh3aPJ3Jj30EswTt/FGT1gzSP1FjjHBRZCK4P2D2rwJ5TMn2JrZKfPxmEd3kVmn6h80+gBbKgonGmZspd2SvPEI5g=
-  file_glob: true
-  file: "build/linux-armv7/install/bin/mavsdk_server_linux-armv7"
-  on:
-    condition: ${BUILD_TARGET} = linux-armv7
-    repo: mavlink/MAVSDK
-    tags: true
-- provider: releases
-  skip_cleanup: true
-  api_key:
-      secure: hBX3pFWNZiDbz4yKnOjhLg3QS9Ubn1XePxSeIt2Btq5GzbomOPDCgpIFijBppliwj9oKc302EMnZSg2QWeAzFKn9UnmIflJ0E4iymYgwWdTJv+bSnYALJEmO8F6gF9FgRlPk8FCtZiECoTsa75w5TrEZKZpFpmzVYRiDu0eo6sEjW7UJPC0A2KSTXLrBCHSIZy/iasbGmuur4brG7NO0QdMOvDXvhsYfkXDRJFMTtTHvLiKJcqiunPfqARzf1H4x4iczRYscKu5Vn8Kmw3NANGkcIDvEj4ooih831EXxACRZw0VgycgNHOKRXKC9pZ4hLQMon+jxpQX+X8k/K5161oEkF/gCVKyFb31Pk/4Uwe81p1GJY2lAC7MDUxA98RKXhdvVYF2Cp44+IbF0YVoWRUtVAhknXRQ3Weg25kyVSu83q2nN2nZq2qGTnpNIbdN56s/F+uaFtipGEh+vmiv8rNUz+Z5MFrY2FQaSvBTFw9K4tNs9uc+VQd1bE7X5wh0yywEqUEw2nzqTB2xR+OubygUASbk2GLNdc254P0lrzCHbNM62Y7sRX06CM7hPlwhELEkVtUXZWJ0KuhQyLvRh3aPJ3Jj30EswTt/FGT1gzSP1FjjHBRZCK4P2D2rwJ5TMn2JrZKfPxmEd3kVmn6h80+gBbKgonGmZspd2SvPEI5g=
-  file_glob: true
-  file: "build/linux-arm64/install/bin/mavsdk_server_linux-arm64"
-  on:
-    condition: ${BUILD_TARGET} = linux-arm64
-    repo: mavlink/MAVSDK
-    tags: true
-- provider: releases
-  skip_cleanup: true
-  api_key:
-      secure: hBX3pFWNZiDbz4yKnOjhLg3QS9Ubn1XePxSeIt2Btq5GzbomOPDCgpIFijBppliwj9oKc302EMnZSg2QWeAzFKn9UnmIflJ0E4iymYgwWdTJv+bSnYALJEmO8F6gF9FgRlPk8FCtZiECoTsa75w5TrEZKZpFpmzVYRiDu0eo6sEjW7UJPC0A2KSTXLrBCHSIZy/iasbGmuur4brG7NO0QdMOvDXvhsYfkXDRJFMTtTHvLiKJcqiunPfqARzf1H4x4iczRYscKu5Vn8Kmw3NANGkcIDvEj4ooih831EXxACRZw0VgycgNHOKRXKC9pZ4hLQMon+jxpQX+X8k/K5161oEkF/gCVKyFb31Pk/4Uwe81p1GJY2lAC7MDUxA98RKXhdvVYF2Cp44+IbF0YVoWRUtVAhknXRQ3Weg25kyVSu83q2nN2nZq2qGTnpNIbdN56s/F+uaFtipGEh+vmiv8rNUz+Z5MFrY2FQaSvBTFw9K4tNs9uc+VQd1bE7X5wh0yywEqUEw2nzqTB2xR+OubygUASbk2GLNdc254P0lrzCHbNM62Y7sRX06CM7hPlwhELEkVtUXZWJ0KuhQyLvRh3aPJ3Jj30EswTt/FGT1gzSP1FjjHBRZCK4P2D2rwJ5TMn2JrZKfPxmEd3kVmn6h80+gBbKgonGmZspd2SvPEI5g=
-  file_glob: true
-  file: "build/release/install/bin/mavsdk_server_macos"
-  on:
-    condition: ${BUILD_TARGET} = osx_build
-    repo: mavlink/MAVSDK
-    tags: true
-- provider: releases
-  skip_cleanup: true
-  api_key:
-      secure: hBX3pFWNZiDbz4yKnOjhLg3QS9Ubn1XePxSeIt2Btq5GzbomOPDCgpIFijBppliwj9oKc302EMnZSg2QWeAzFKn9UnmIflJ0E4iymYgwWdTJv+bSnYALJEmO8F6gF9FgRlPk8FCtZiECoTsa75w5TrEZKZpFpmzVYRiDu0eo6sEjW7UJPC0A2KSTXLrBCHSIZy/iasbGmuur4brG7NO0QdMOvDXvhsYfkXDRJFMTtTHvLiKJcqiunPfqARzf1H4x4iczRYscKu5Vn8Kmw3NANGkcIDvEj4ooih831EXxACRZw0VgycgNHOKRXKC9pZ4hLQMon+jxpQX+X8k/K5161oEkF/gCVKyFb31Pk/4Uwe81p1GJY2lAC7MDUxA98RKXhdvVYF2Cp44+IbF0YVoWRUtVAhknXRQ3Weg25kyVSu83q2nN2nZq2qGTnpNIbdN56s/F+uaFtipGEh+vmiv8rNUz+Z5MFrY2FQaSvBTFw9K4tNs9uc+VQd1bE7X5wh0yywEqUEw2nzqTB2xR+OubygUASbk2GLNdc254P0lrzCHbNM62Y7sRX06CM7hPlwhELEkVtUXZWJ0KuhQyLvRh3aPJ3Jj30EswTt/FGT1gzSP1FjjHBRZCK4P2D2rwJ5TMn2JrZKfPxmEd3kVmn6h80+gBbKgonGmZspd2SvPEI5g=
-  file_glob: true
   file:
-  - "*.deb"
-  - "*.rpm"
+    - "*.rpm"
+    - "*.deb"
+    - "build/manylinux1-x64/install/bin/mavsdk_server_manylinux1-x64"
+    - "build/linux-armv7/install/bin/mavsdk_server_linux-armv7"
+    - "build/linux-arm64/install/bin/mavsdk_server_linux-arm64"
+    - "build/release/install/bin/mavsdk_server_macos"
+    - "build/release/install/bin/mavsdk_server_win32.exe"
+    - "build/android-arm64/install/lib/libmavsdk_server_android-arm64.so"
+    - "build/android-arm/install/lib/libmavsdk_server_android-arm.so"
   on:
     repo: mavlink/MAVSDK
     tags: true
-- provider: releases
-  skip_cleanup: true
-  api_key:
-      secure: hBX3pFWNZiDbz4yKnOjhLg3QS9Ubn1XePxSeIt2Btq5GzbomOPDCgpIFijBppliwj9oKc302EMnZSg2QWeAzFKn9UnmIflJ0E4iymYgwWdTJv+bSnYALJEmO8F6gF9FgRlPk8FCtZiECoTsa75w5TrEZKZpFpmzVYRiDu0eo6sEjW7UJPC0A2KSTXLrBCHSIZy/iasbGmuur4brG7NO0QdMOvDXvhsYfkXDRJFMTtTHvLiKJcqiunPfqARzf1H4x4iczRYscKu5Vn8Kmw3NANGkcIDvEj4ooih831EXxACRZw0VgycgNHOKRXKC9pZ4hLQMon+jxpQX+X8k/K5161oEkF/gCVKyFb31Pk/4Uwe81p1GJY2lAC7MDUxA98RKXhdvVYF2Cp44+IbF0YVoWRUtVAhknXRQ3Weg25kyVSu83q2nN2nZq2qGTnpNIbdN56s/F+uaFtipGEh+vmiv8rNUz+Z5MFrY2FQaSvBTFw9K4tNs9uc+VQd1bE7X5wh0yywEqUEw2nzqTB2xR+OubygUASbk2GLNdc254P0lrzCHbNM62Y7sRX06CM7hPlwhELEkVtUXZWJ0KuhQyLvRh3aPJ3Jj30EswTt/FGT1gzSP1FjjHBRZCK4P2D2rwJ5TMn2JrZKfPxmEd3kVmn6h80+gBbKgonGmZspd2SvPEI5g=
-  file_glob: true
-  file:
-  - "build/release/install/bin/mavsdk_server_win32.exe"
-  on:
-    repo: mavlink/MAVSDK
-    tags: true
-env:
-  global:
-  - secure: XifWUJ9By+R5snSRycmNc24yFJ4g4crAPPotHHnChZg3qSR+vvQEYwsprvy1rodKbs8Q6im8DIJzqn1+IQo3ygeh0Lb/OaqpoJbCvXVi2ejLNOWrTBdnO6enJI3pzFgcO6Kav4uvU8rZCenH6EwbZ3IW2ttq6THBxtBEiwCgGE4Msl3BtRmRlkhYohU2Mx8SyuPqsITsA4OS6y/gWI/hBWJRgCgx9SBzRSktYB5Uw7gEZC7Ysd0ao6jYcweIWHyCKEr2X2REZY5LIUtnpMCw92u+ALUf9y53vBrUdUX8miWNPrsIlKSUXzdUKiGE6GhZh4of28ile66LK229aKbJKWlUcUw6lCl4WdD7e+FxdnqOkXdYDy/xElsvUjNwa6rr4jfi7azdAYRv8gItJLKTtIyE6y5lJT6P4Katt4AxcOSMhsvqmjRZAMCzCNj5h6TULRps+pppeawKf5j8o1Q0tHPSm6BXhSy1gmIsxJcYcxESxi7auMeXvQ/mW9AfBjmd8iIxI6qi8uxyzXEtGFRKeW+rXBhqkdln+l52faAUW8vMAopgi/8eC+eARomQGoiqTTdWPiyTZjVrExMPRrXK1rr2rxOa9vKN9SbBw0HygsJ32KD0M0S5OgK69vhtgAkZROJMByWVMki/Zjq82TItpX2/u2LO/l8DP6xaWmdNdu4=
-- provider: releases
-  skip_cleanup: true
-  api_key:
-      secure: hBX3pFWNZiDbz4yKnOjhLg3QS9Ubn1XePxSeIt2Btq5GzbomOPDCgpIFijBppliwj9oKc302EMnZSg2QWeAzFKn9UnmIflJ0E4iymYgwWdTJv+bSnYALJEmO8F6gF9FgRlPk8FCtZiECoTsa75w5TrEZKZpFpmzVYRiDu0eo6sEjW7UJPC0A2KSTXLrBCHSIZy/iasbGmuur4brG7NO0QdMOvDXvhsYfkXDRJFMTtTHvLiKJcqiunPfqARzf1H4x4iczRYscKu5Vn8Kmw3NANGkcIDvEj4ooih831EXxACRZw0VgycgNHOKRXKC9pZ4hLQMon+jxpQX+X8k/K5161oEkF/gCVKyFb31Pk/4Uwe81p1GJY2lAC7MDUxA98RKXhdvVYF2Cp44+IbF0YVoWRUtVAhknXRQ3Weg25kyVSu83q2nN2nZq2qGTnpNIbdN56s/F+uaFtipGEh+vmiv8rNUz+Z5MFrY2FQaSvBTFw9K4tNs9uc+VQd1bE7X5wh0yywEqUEw2nzqTB2xR+OubygUASbk2GLNdc254P0lrzCHbNM62Y7sRX06CM7hPlwhELEkVtUXZWJ0KuhQyLvRh3aPJ3Jj30EswTt/FGT1gzSP1FjjHBRZCK4P2D2rwJ5TMn2JrZKfPxmEd3kVmn6h80+gBbKgonGmZspd2SvPEI5g=
-  file_glob: true
-  file:
-  - "build/release/install/lib/libmavsdk_server_android-arm64.so"
-  on:
-    repo: mavlink/MAVSDK
-    tags: true
-env:
-  global:
-  - secure: XifWUJ9By+R5snSRycmNc24yFJ4g4crAPPotHHnChZg3qSR+vvQEYwsprvy1rodKbs8Q6im8DIJzqn1+IQo3ygeh0Lb/OaqpoJbCvXVi2ejLNOWrTBdnO6enJI3pzFgcO6Kav4uvU8rZCenH6EwbZ3IW2ttq6THBxtBEiwCgGE4Msl3BtRmRlkhYohU2Mx8SyuPqsITsA4OS6y/gWI/hBWJRgCgx9SBzRSktYB5Uw7gEZC7Ysd0ao6jYcweIWHyCKEr2X2REZY5LIUtnpMCw92u+ALUf9y53vBrUdUX8miWNPrsIlKSUXzdUKiGE6GhZh4of28ile66LK229aKbJKWlUcUw6lCl4WdD7e+FxdnqOkXdYDy/xElsvUjNwa6rr4jfi7azdAYRv8gItJLKTtIyE6y5lJT6P4Katt4AxcOSMhsvqmjRZAMCzCNj5h6TULRps+pppeawKf5j8o1Q0tHPSm6BXhSy1gmIsxJcYcxESxi7auMeXvQ/mW9AfBjmd8iIxI6qi8uxyzXEtGFRKeW+rXBhqkdln+l52faAUW8vMAopgi/8eC+eARomQGoiqTTdWPiyTZjVrExMPRrXK1rr2rxOa9vKN9SbBw0HygsJ32KD0M0S5OgK69vhtgAkZROJMByWVMki/Zjq82TItpX2/u2LO/l8DP6xaWmdNdu4=
-- provider: releases
-  skip_cleanup: true
-  api_key:
-      secure: hBX3pFWNZiDbz4yKnOjhLg3QS9Ubn1XePxSeIt2Btq5GzbomOPDCgpIFijBppliwj9oKc302EMnZSg2QWeAzFKn9UnmIflJ0E4iymYgwWdTJv+bSnYALJEmO8F6gF9FgRlPk8FCtZiECoTsa75w5TrEZKZpFpmzVYRiDu0eo6sEjW7UJPC0A2KSTXLrBCHSIZy/iasbGmuur4brG7NO0QdMOvDXvhsYfkXDRJFMTtTHvLiKJcqiunPfqARzf1H4x4iczRYscKu5Vn8Kmw3NANGkcIDvEj4ooih831EXxACRZw0VgycgNHOKRXKC9pZ4hLQMon+jxpQX+X8k/K5161oEkF/gCVKyFb31Pk/4Uwe81p1GJY2lAC7MDUxA98RKXhdvVYF2Cp44+IbF0YVoWRUtVAhknXRQ3Weg25kyVSu83q2nN2nZq2qGTnpNIbdN56s/F+uaFtipGEh+vmiv8rNUz+Z5MFrY2FQaSvBTFw9K4tNs9uc+VQd1bE7X5wh0yywEqUEw2nzqTB2xR+OubygUASbk2GLNdc254P0lrzCHbNM62Y7sRX06CM7hPlwhELEkVtUXZWJ0KuhQyLvRh3aPJ3Jj30EswTt/FGT1gzSP1FjjHBRZCK4P2D2rwJ5TMn2JrZKfPxmEd3kVmn6h80+gBbKgonGmZspd2SvPEI5g=
-  file_glob: true
-  file:
-  - "build/release/install/lib/libmavsdk_server_android-arm.so"
-  on:
-    repo: mavlink/MAVSDK
-    tags: true
-env:
-  global:
-  - secure: XifWUJ9By+R5snSRycmNc24yFJ4g4crAPPotHHnChZg3qSR+vvQEYwsprvy1rodKbs8Q6im8DIJzqn1+IQo3ygeh0Lb/OaqpoJbCvXVi2ejLNOWrTBdnO6enJI3pzFgcO6Kav4uvU8rZCenH6EwbZ3IW2ttq6THBxtBEiwCgGE4Msl3BtRmRlkhYohU2Mx8SyuPqsITsA4OS6y/gWI/hBWJRgCgx9SBzRSktYB5Uw7gEZC7Ysd0ao6jYcweIWHyCKEr2X2REZY5LIUtnpMCw92u+ALUf9y53vBrUdUX8miWNPrsIlKSUXzdUKiGE6GhZh4of28ile66LK229aKbJKWlUcUw6lCl4WdD7e+FxdnqOkXdYDy/xElsvUjNwa6rr4jfi7azdAYRv8gItJLKTtIyE6y5lJT6P4Katt4AxcOSMhsvqmjRZAMCzCNj5h6TULRps+pppeawKf5j8o1Q0tHPSm6BXhSy1gmIsxJcYcxESxi7auMeXvQ/mW9AfBjmd8iIxI6qi8uxyzXEtGFRKeW+rXBhqkdln+l52faAUW8vMAopgi/8eC+eARomQGoiqTTdWPiyTZjVrExMPRrXK1rr2rxOa9vKN9SbBw0HygsJ32KD0M0S5OgK69vhtgAkZROJMByWVMki/Zjq82TItpX2/u2LO/l8DP6xaWmdNdu4=
