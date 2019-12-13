@@ -72,6 +72,12 @@ matrix:
       env:
       - MATRIX_EVAL="BUILD_TARGET=manylinux1-x64"
     - os: linux
+      name: "android-arm64"
+      services:
+        - docker
+      env:
+      - MATRIX_EVAL="BUILD_TARGET=android-arm64"
+    - os: linux
       name: "linux-armv7"
       services:
         - docker
@@ -121,6 +127,10 @@ install:
     docker run --rm manylinux1-x64-custom > ./dockcross-manylinux1-x64;
     chmod +x ./dockcross-manylinux1-x64;
   fi
+- if [[ "${BUILD_TARGET}" = "android-arm64" ]]; then
+    docker run --rm dockcross/android-arm64 > ./dockcross-android-arm64;
+    chmod +x ./dockcross-android-arm64;
+  fi
 - if [[ "${BUILD_TARGET}" = "linux-armv7" ]]; then
     docker run --rm dockcross/linux-armv7 > ./dockcross-linux-armv7;
     chmod +x ./dockcross-linux-armv7;
@@ -161,6 +171,10 @@ script:
 - if [[ "${BUILD_TARGET}" = "manylinux1-x64" ]]; then
     ./dockcross-manylinux1-x64 cmake -DCMAKE_BUILD_TYPE=Release -DCMAKE_INSTALL_PREFIX=build/manylinux1-x64/install -DBUILD_BACKEND=ON -DBUILD_SHARED_LIBS=OFF -j 2 -Bbuild/manylinux1-x64 -H.;
     ./dockcross-manylinux1-x64 cmake --build build/manylinux1-x64 -j 2 --target install;
+  fi
+- if [[ "${BUILD_TARGET}" = "android-arm64" ]]; then
+    ./dockcross-android-arm64 cmake -DCMAKE_BUILD_TYPE=Release -DCMAKE_INSTALL_PREFIX=build/android-arm64/install -BBUILD_BACKEND=ON -DBUILD_SHARED_LIBS=OFF -DANDROID_STL="c++_static" -j 2 -Bbuild/android-arm64 -H.;
+    ./dockcross-android-arm64 cmake --build build/android-arm64 -j 2 --target install;
   fi
 - if [[ "${BUILD_TARGET}" = "linux-armv7" ]]; then
     ./dockcross-linux-armv7 cmake -DCMAKE_BUILD_TYPE=Release -DCMAKE_INSTALL_PREFIX=build/linux-armv7/install -DBUILD_BACKEND=ON -DBUILD_SHARED_LIBS=OFF -j 2 -Bbuild/linux-armv7 -H.;
@@ -205,22 +219,25 @@ after_success:
 
 before_deploy:
 - if ! [ "$BEFORE_DEPLOY_RUN" ]; then
-      export BEFORE_DEPLOY_RUN=1;
-      if [[ "${BUILD_TARGET}" = "manylinux1-x64" ]]; then
-          mv build/manylinux1-x64/install/bin/mavsdk_server build/manylinux1-x64/install/bin/mavsdk_server_manylinux1-x64;
-      fi;
-      if [[ "${BUILD_TARGET}" = "linux-armv7" ]]; then
-          mv build/linux-armv7/install/bin/mavsdk_server build/linux-armv7/install/bin/mavsdk_server_linux-armv7;
-      fi;
-      if [[ "${BUILD_TARGET}" = "linux-arm64" ]]; then
-          mv build/linux-arm64/install/bin/mavsdk_server build/linux-arm64/install/bin/mavsdk_server_linux-arm64;
-      fi;
-      if [[ "${BUILD_TARGET}" = "osx_build" ]]; then
-          mv build/release/install/bin/mavsdk_server build/release/install/bin/mavsdk_server_macos;
-      fi;
-      if [[ "${BUILD_TARGET}" = "windows" ]]; then
-          mv build/release/install/bin/mavsdk_server_bin.exe build/release/install/bin/mavsdk_server_win32.exe;
-      fi;
+    export BEFORE_DEPLOY_RUN=1;
+    if [[ "${BUILD_TARGET}" = "manylinux1-x64" ]]; then
+      mv build/manylinux1-x64/install/bin/mavsdk_server build/manylinux1-x64/install/bin/mavsdk_server_manylinux1-x64;
+    fi
+    if [[ "${BUILD_TARGET}" = "android-arm64" ]]; then
+      mv build/android-arm64/install/lib/libmavsdk_server.so build/android-arm64/lib/libmavsdk_server_android-arm64.so;
+    fi
+    if [[ "${BUILD_TARGET}" = "linux-armv7" ]]; then
+      mv build/linux-armv7/install/bin/mavsdk_server build/linux-armv7/install/bin/mavsdk_server_linux-armv7;
+    fi
+    if [[ "${BUILD_TARGET}" = "linux-arm64" ]]; then
+      mv build/linux-arm64/install/bin/mavsdk_server build/linux-arm64/install/bin/mavsdk_server_linux-arm64;
+    fi
+    if [[ "${BUILD_TARGET}" = "osx_build" ]]; then
+      mv build/release/install/bin/mavsdk_server build/release/install/bin/mavsdk_server_macos;
+    fi
+    if [[ "${BUILD_TARGET}" = "windows" ]]; then
+      mv build/release/install/bin/mavsdk_server_bin.exe build/release/install/bin/mavsdk_server_win32.exe;
+    fi
   fi
 
 deploy:
