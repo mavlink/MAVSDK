@@ -78,6 +78,12 @@ matrix:
       env:
       - MATRIX_EVAL="BUILD_TARGET=android-arm64"
     - os: linux
+      name: "android-arm"
+      services:
+        - docker
+      env:
+      - MATRIX_EVAL="BUILD_TARGET=android-arm"
+    - os: linux
       name: "linux-armv7"
       services:
         - docker
@@ -131,6 +137,10 @@ install:
     docker run --rm dockcross/android-arm64 > ./dockcross-android-arm64;
     chmod +x ./dockcross-android-arm64;
   fi
+- if [[ "${BUILD_TARGET}" = "android-arm" ]]; then
+    docker run --rm dockcross/android-arm > ./dockcross-android-arm;
+    chmod +x ./dockcross-android-arm;
+  fi
 - if [[ "${BUILD_TARGET}" = "linux-armv7" ]]; then
     docker run --rm dockcross/linux-armv7 > ./dockcross-linux-armv7;
     chmod +x ./dockcross-linux-armv7;
@@ -173,8 +183,12 @@ script:
     ./dockcross-manylinux1-x64 cmake --build build/manylinux1-x64 -j 2 --target install;
   fi
 - if [[ "${BUILD_TARGET}" = "android-arm64" ]]; then
-    ./dockcross-android-arm64 cmake -DCMAKE_BUILD_TYPE=Release -DCMAKE_INSTALL_PREFIX=build/android-arm64/install -BBUILD_BACKEND=ON -DBUILD_SHARED_LIBS=OFF -DANDROID_STL="c++_static" -j 2 -Bbuild/android-arm64 -H.;
+    ./dockcross-android-arm64 cmake -DCMAKE_BUILD_TYPE=Release -DCMAKE_INSTALL_PREFIX=build/android-arm64/install -DBUILD_BACKEND=ON -DBUILD_SHARED_LIBS=OFF -DANDROID_STL="c++_static" -j 2 -Bbuild/android-arm64 -H.;
     ./dockcross-android-arm64 cmake --build build/android-arm64 -j 2 --target install;
+  fi
+- if [[ "${BUILD_TARGET}" = "android-arm" ]]; then
+    ./dockcross-android-arm cmake -DCMAKE_BUILD_TYPE=Release -DCMAKE_INSTALL_PREFIX=build/android-arm/install -DBUILD_BACKEND=ON -DBUILD_SHARED_LIBS=OFF -DANDROID_STL="c++_static" -j 2 -Bbuild/android-arm -H.;
+    ./dockcross-android-arm cmake --build build/android-arm -j 2 --target install;
   fi
 - if [[ "${BUILD_TARGET}" = "linux-armv7" ]]; then
     ./dockcross-linux-armv7 cmake -DCMAKE_BUILD_TYPE=Release -DCMAKE_INSTALL_PREFIX=build/linux-armv7/install -DBUILD_BACKEND=ON -DBUILD_SHARED_LIBS=OFF -j 2 -Bbuild/linux-armv7 -H.;
@@ -224,7 +238,10 @@ before_deploy:
       mv build/manylinux1-x64/install/bin/mavsdk_server build/manylinux1-x64/install/bin/mavsdk_server_manylinux1-x64;
     fi
     if [[ "${BUILD_TARGET}" = "android-arm64" ]]; then
-      mv build/android-arm64/install/lib/libmavsdk_server.so build/android-arm64/lib/libmavsdk_server_android-arm64.so;
+      mv build/android-arm64/install/lib/libmavsdk_server.so build/android-arm64/install/lib/libmavsdk_server_android-arm64.so;
+    fi
+    if [[ "${BUILD_TARGET}" = "android-arm" ]]; then
+      mv build/android-arm/install/lib/libmavsdk_server.so build/android-arm/install/lib/libmavsdk_server_android-arm.so;
     fi
     if [[ "${BUILD_TARGET}" = "linux-armv7" ]]; then
       mv build/linux-armv7/install/bin/mavsdk_server build/linux-armv7/install/bin/mavsdk_server_linux-armv7;
@@ -299,6 +316,32 @@ deploy:
   file_glob: true
   file:
   - "build/release/install/bin/mavsdk_server_win32.exe"
+  on:
+    repo: mavlink/MAVSDK
+    tags: true
+env:
+  global:
+  - secure: XifWUJ9By+R5snSRycmNc24yFJ4g4crAPPotHHnChZg3qSR+vvQEYwsprvy1rodKbs8Q6im8DIJzqn1+IQo3ygeh0Lb/OaqpoJbCvXVi2ejLNOWrTBdnO6enJI3pzFgcO6Kav4uvU8rZCenH6EwbZ3IW2ttq6THBxtBEiwCgGE4Msl3BtRmRlkhYohU2Mx8SyuPqsITsA4OS6y/gWI/hBWJRgCgx9SBzRSktYB5Uw7gEZC7Ysd0ao6jYcweIWHyCKEr2X2REZY5LIUtnpMCw92u+ALUf9y53vBrUdUX8miWNPrsIlKSUXzdUKiGE6GhZh4of28ile66LK229aKbJKWlUcUw6lCl4WdD7e+FxdnqOkXdYDy/xElsvUjNwa6rr4jfi7azdAYRv8gItJLKTtIyE6y5lJT6P4Katt4AxcOSMhsvqmjRZAMCzCNj5h6TULRps+pppeawKf5j8o1Q0tHPSm6BXhSy1gmIsxJcYcxESxi7auMeXvQ/mW9AfBjmd8iIxI6qi8uxyzXEtGFRKeW+rXBhqkdln+l52faAUW8vMAopgi/8eC+eARomQGoiqTTdWPiyTZjVrExMPRrXK1rr2rxOa9vKN9SbBw0HygsJ32KD0M0S5OgK69vhtgAkZROJMByWVMki/Zjq82TItpX2/u2LO/l8DP6xaWmdNdu4=
+- provider: releases
+  skip_cleanup: true
+  api_key:
+      secure: hBX3pFWNZiDbz4yKnOjhLg3QS9Ubn1XePxSeIt2Btq5GzbomOPDCgpIFijBppliwj9oKc302EMnZSg2QWeAzFKn9UnmIflJ0E4iymYgwWdTJv+bSnYALJEmO8F6gF9FgRlPk8FCtZiECoTsa75w5TrEZKZpFpmzVYRiDu0eo6sEjW7UJPC0A2KSTXLrBCHSIZy/iasbGmuur4brG7NO0QdMOvDXvhsYfkXDRJFMTtTHvLiKJcqiunPfqARzf1H4x4iczRYscKu5Vn8Kmw3NANGkcIDvEj4ooih831EXxACRZw0VgycgNHOKRXKC9pZ4hLQMon+jxpQX+X8k/K5161oEkF/gCVKyFb31Pk/4Uwe81p1GJY2lAC7MDUxA98RKXhdvVYF2Cp44+IbF0YVoWRUtVAhknXRQ3Weg25kyVSu83q2nN2nZq2qGTnpNIbdN56s/F+uaFtipGEh+vmiv8rNUz+Z5MFrY2FQaSvBTFw9K4tNs9uc+VQd1bE7X5wh0yywEqUEw2nzqTB2xR+OubygUASbk2GLNdc254P0lrzCHbNM62Y7sRX06CM7hPlwhELEkVtUXZWJ0KuhQyLvRh3aPJ3Jj30EswTt/FGT1gzSP1FjjHBRZCK4P2D2rwJ5TMn2JrZKfPxmEd3kVmn6h80+gBbKgonGmZspd2SvPEI5g=
+  file_glob: true
+  file:
+  - "build/release/install/lib/libmavsdk_server_android-arm64.so"
+  on:
+    repo: mavlink/MAVSDK
+    tags: true
+env:
+  global:
+  - secure: XifWUJ9By+R5snSRycmNc24yFJ4g4crAPPotHHnChZg3qSR+vvQEYwsprvy1rodKbs8Q6im8DIJzqn1+IQo3ygeh0Lb/OaqpoJbCvXVi2ejLNOWrTBdnO6enJI3pzFgcO6Kav4uvU8rZCenH6EwbZ3IW2ttq6THBxtBEiwCgGE4Msl3BtRmRlkhYohU2Mx8SyuPqsITsA4OS6y/gWI/hBWJRgCgx9SBzRSktYB5Uw7gEZC7Ysd0ao6jYcweIWHyCKEr2X2REZY5LIUtnpMCw92u+ALUf9y53vBrUdUX8miWNPrsIlKSUXzdUKiGE6GhZh4of28ile66LK229aKbJKWlUcUw6lCl4WdD7e+FxdnqOkXdYDy/xElsvUjNwa6rr4jfi7azdAYRv8gItJLKTtIyE6y5lJT6P4Katt4AxcOSMhsvqmjRZAMCzCNj5h6TULRps+pppeawKf5j8o1Q0tHPSm6BXhSy1gmIsxJcYcxESxi7auMeXvQ/mW9AfBjmd8iIxI6qi8uxyzXEtGFRKeW+rXBhqkdln+l52faAUW8vMAopgi/8eC+eARomQGoiqTTdWPiyTZjVrExMPRrXK1rr2rxOa9vKN9SbBw0HygsJ32KD0M0S5OgK69vhtgAkZROJMByWVMki/Zjq82TItpX2/u2LO/l8DP6xaWmdNdu4=
+- provider: releases
+  skip_cleanup: true
+  api_key:
+      secure: hBX3pFWNZiDbz4yKnOjhLg3QS9Ubn1XePxSeIt2Btq5GzbomOPDCgpIFijBppliwj9oKc302EMnZSg2QWeAzFKn9UnmIflJ0E4iymYgwWdTJv+bSnYALJEmO8F6gF9FgRlPk8FCtZiECoTsa75w5TrEZKZpFpmzVYRiDu0eo6sEjW7UJPC0A2KSTXLrBCHSIZy/iasbGmuur4brG7NO0QdMOvDXvhsYfkXDRJFMTtTHvLiKJcqiunPfqARzf1H4x4iczRYscKu5Vn8Kmw3NANGkcIDvEj4ooih831EXxACRZw0VgycgNHOKRXKC9pZ4hLQMon+jxpQX+X8k/K5161oEkF/gCVKyFb31Pk/4Uwe81p1GJY2lAC7MDUxA98RKXhdvVYF2Cp44+IbF0YVoWRUtVAhknXRQ3Weg25kyVSu83q2nN2nZq2qGTnpNIbdN56s/F+uaFtipGEh+vmiv8rNUz+Z5MFrY2FQaSvBTFw9K4tNs9uc+VQd1bE7X5wh0yywEqUEw2nzqTB2xR+OubygUASbk2GLNdc254P0lrzCHbNM62Y7sRX06CM7hPlwhELEkVtUXZWJ0KuhQyLvRh3aPJ3Jj30EswTt/FGT1gzSP1FjjHBRZCK4P2D2rwJ5TMn2JrZKfPxmEd3kVmn6h80+gBbKgonGmZspd2SvPEI5g=
+  file_glob: true
+  file:
+  - "build/release/install/lib/libmavsdk_server_android-arm.so"
   on:
     repo: mavlink/MAVSDK
     tags: true
