@@ -238,10 +238,18 @@ before_deploy:
       mv build/manylinux1-x64/install/bin/mavsdk_server build/manylinux1-x64/install/bin/mavsdk_server_manylinux1-x64;
     fi;
     if [[ "${BUILD_TARGET}" = "android-arm64" ]]; then
-      mv build/android-arm64/install/lib/libmavsdk_server.so build/android-arm64/install/lib/libmavsdk_server_android-arm64.so;
+      mkdir -p build/android-arm64/export/include;
+      cp build/android-arm64/install/include/mavsdk/backend/backend_api.h build/android-arm64/export/include;
+      mkdir -p build/android-arm64/export/arm64-v8a;
+      cp build/android-arm64/install/lib/libmavsdk_server.so build/android-arm64/export/arm64-v8a;
+      tar -C build/android-arm64/export -cf build/android-arm64/export/mavsdk_server_android-arm64.tar arm64-v8a include;
     fi;
     if [[ "${BUILD_TARGET}" = "android-arm" ]]; then
-      mv build/android-arm/install/lib/libmavsdk_server.so build/android-arm/install/lib/libmavsdk_server_android-arm.so;
+      mkdir -p build/android-arm/export/include;
+      cp build/android-arm/install/include/mavsdk/backend/backend_api.h build/android-arm/export/include;
+      mkdir -p build/android-arm/export/armeabi-v7a;
+      cp build/android-arm/install/lib/libmavsdk_server.so build/android-arm/export/armeabi-v7a;
+      tar -C build/android-arm/export -cf build/android-arm/export/mavsdk_server_android-arm.tar armeabi-v7a include;
     fi;
     if [[ "${BUILD_TARGET}" = "linux-armv7" ]]; then
       mv build/linux-armv7/install/bin/mavsdk_server build/linux-armv7/install/bin/mavsdk_server_linux-armv7;
@@ -271,8 +279,8 @@ deploy:
     - "build/linux-arm64/install/bin/mavsdk_server_linux-arm64"
     - "build/release/install/bin/mavsdk_server_macos"
     - "build/release/install/bin/mavsdk_server_win32.exe"
-    - "build/android-arm64/install/lib/libmavsdk_server_android-arm64.so"
-    - "build/android-arm/install/lib/libmavsdk_server_android-arm.so"
+    - "build/android-arm64/export/mavsdk_server_android-arm64.tar"
+    - "build/android-arm/export/mavsdk_server_android-arm.tar"
   on:
     repo: mavlink/MAVSDK
     tags: true
