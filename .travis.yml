@@ -183,11 +183,11 @@ script:
     ./dockcross-manylinux1-x64 cmake --build build/manylinux1-x64 -j 2 --target install;
   fi
 - if [[ "${BUILD_TARGET}" = "android-arm64" ]]; then
-    ./dockcross-android-arm64 cmake -DCMAKE_BUILD_TYPE=Release -DCMAKE_INSTALL_PREFIX=build/android-arm64/install -DBUILD_BACKEND=ON -DBUILD_SHARED_LIBS=OFF -DANDROID_STL="c++_static" -j 2 -Bbuild/android-arm64 -H.;
+    ./dockcross-android-arm64 cmake -DCMAKE_BUILD_TYPE=Release -DCMAKE_INSTALL_PREFIX=build/android-arm64/install -DBUILD_BACKEND=ON -DBUILD_SHARED_LIBS=OFF -j 2 -Bbuild/android-arm64 -H.;
     ./dockcross-android-arm64 cmake --build build/android-arm64 -j 2 --target install;
   fi
 - if [[ "${BUILD_TARGET}" = "android-arm" ]]; then
-    ./dockcross-android-arm cmake -DCMAKE_BUILD_TYPE=Release -DCMAKE_INSTALL_PREFIX=build/android-arm/install -DBUILD_BACKEND=ON -DBUILD_SHARED_LIBS=OFF -DANDROID_STL="c++_static" -j 2 -Bbuild/android-arm -H.;
+    ./dockcross-android-arm cmake -DCMAKE_BUILD_TYPE=Release -DCMAKE_INSTALL_PREFIX=build/android-arm/install -DBUILD_BACKEND=ON -DBUILD_SHARED_LIBS=OFF -j 2 -Bbuild/android-arm -H.;
     ./dockcross-android-arm cmake --build build/android-arm -j 2 --target install;
   fi
 - if [[ "${BUILD_TARGET}" = "linux-armv7" ]]; then
