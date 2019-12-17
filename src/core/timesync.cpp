@@ -24,7 +24,7 @@ void Timesync::do_work()
     if (_parent.get_time().elapsed_since_s(_last_time) >= _TIMESYNC_SEND_INTERVAL_S) {
         if (_parent.is_connected()) {
             uint64_t now_ns = std::chrono::duration_cast<std::chrono::nanoseconds>(
-                                  _parent.get_time().system_time().time_since_epoch())
+                                  _parent.get_autopilot_time().now().time_since_epoch())
                                   .count();
             send_timesync(0, now_ns);
         }
@@ -34,15 +34,16 @@ void Timesync::do_work()
 
 void Timesync::process_timesync(const mavlink_message_t& message)
 {
-    mavlink_timesync_t timesync;
+    mavlink_timesync_t timesync{};
 
     mavlink_msg_timesync_decode(&message, &timesync);
 
     int64_t now_ns = std::chrono::duration_cast<std::chrono::nanoseconds>(
-                         _parent.get_time().system_time().time_since_epoch())
+                         _parent.get_autopilot_time().now().time_since_epoch())
                          .count();
 
     if (timesync.tc1 == 0) {
+        // Send synced time to remote system
         send_timesync(now_ns, timesync.ts1);
     } else if (timesync.tc1 > 0) {
         // Time offset between this system and the remote system is calculated assuming RTT for
@@ -63,7 +64,7 @@ void Timesync::send_timesync(uint64_t tc1, uint64_t ts1)
 void Timesync::set_timesync_offset(int64_t offset_ns, uint64_t start_transfer_local_time_ns)
 {
     uint64_t now_ns = std::chrono::duration_cast<std::chrono::nanoseconds>(
-                          _parent.get_time().system_time().time_since_epoch())
+                          _parent.get_autopilot_time().now().time_since_epoch())
                           .count();
 
     // Calculate the round trip time (RTT) it took the timesync packet to bounce back to us from
