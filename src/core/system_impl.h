@@ -311,8 +311,6 @@ private:
 
     ThreadPool _thread_pool{3};
 
-    bool _iterator_invalidated{false};
-
     std::mutex _param_changed_callbacks_mutex{};
     std::map<const void*, param_changed_callback_t> _param_changed_callbacks{};
 
