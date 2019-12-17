@@ -183,7 +183,7 @@ dl_autopilot_time_t AutopilotTime::now()
 void AutopilotTime::shift_time_by(std::chrono::nanoseconds offset)
 {
     std::lock_guard<std::mutex> lock(_autopilot_system_time_offset_mutex);
-    _autopilot_time_offset = offset;
+    _autopilot_time_offset+= offset;
 };
 
 dl_autopilot_time_t AutopilotTime::time_in(dl_system_time_t local_system_time_point)
