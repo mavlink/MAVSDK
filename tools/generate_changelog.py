@@ -6,6 +6,8 @@ from gql.transport.requests import RequestsHTTPTransport
 import argparse
 import json
 
+debug = False
+
 def create_gql_client(token):
     transport = RequestsHTTPTransport(url='https://api.github.com/graphql', use_json=True)
     transport.headers = { "Authorization": "Bearer {}".format(token) }
@@ -106,6 +108,14 @@ def query_pull_requests(gql_client, releases, release_tag, debug=False):
     return result_pull_requests
 
 def filter_by_label(pull_requests, label):
+    if debug:
+        print(json.dumps(pull_requests, indent=2))
+
+    for pull_request in pull_requests:
+        if (len(pull_request["labels"]["edges"]) == 0):
+            print(f"ERROR: PR is missing a label: {pull_request['url']}")
+            exit(1)
+
     return list(filter(lambda pull_request: pull_request["labels"]["edges"][0]["node"]["name"] == label, pull_requests))
 
 def collect_contributors(pull_requests):
