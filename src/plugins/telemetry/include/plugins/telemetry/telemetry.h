@@ -231,7 +231,13 @@ public:
         LAND, /**< @brief Landing. */
         OFFBOARD, /**< @brief Offboard mode. */
         FOLLOW_ME, /**< @brief FollowMe mode. */
-        UNKNOWN /**< @brief Mode not known. */
+        UNKNOWN, /**< @brief Mode not known. */
+        MANUAL, /**< @brief Manual mode. */
+        POSCTL, /**< @brief Position mode. */
+        ALTCTL, /**< @brief Altitude mode. */
+        RATTITUDE, /**< @brief Mode not known. */
+        ACRO, /**< @brief Acro mode. */
+        STABILIZED /**< @brief Stabilize mode. */
     };
 
     /**
