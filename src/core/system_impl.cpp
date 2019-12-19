@@ -905,6 +905,24 @@ SystemImpl::make_command_flight_mode(FlightMode flight_mode, uint8_t component_i
         case FlightMode::OFFBOARD:
             custom_mode = px4::PX4_CUSTOM_MAIN_MODE_OFFBOARD;
             break;
+        case FlightMode::MANUAL:
+            custom_mode = px4::PX4_CUSTOM_MAIN_MODE_MANUAL;
+            break;
+        case FlightMode::POSITION:
+            custom_mode = px4::PX4_CUSTOM_MAIN_MODE_POSCTL;
+            break;
+        case FlightMode::ALTITUDE:
+            custom_mode = px4::PX4_CUSTOM_MAIN_MODE_ALTCTL;
+            break;
+        case FlightMode::RATTITUDE:
+            custom_mode = px4::PX4_CUSTOM_MAIN_MODE_RATTITUDE;
+            break;
+        case FlightMode::ACRO:
+            custom_mode = px4::PX4_CUSTOM_MAIN_MODE_ACRO;
+            break;
+        case FlightMode::STABILIZED:
+            custom_mode = px4::PX4_CUSTOM_MAIN_MODE_STABILIZED;
+            break;
         default:
             LogErr() << "Unknown Flight mode.";
             MAVLinkCommands::CommandLong empty_command{};
@@ -935,6 +953,18 @@ SystemImpl::FlightMode SystemImpl::to_flight_mode_from_custom_mode(uint32_t cust
     switch (px4_custom_mode.main_mode) {
         case px4::PX4_CUSTOM_MAIN_MODE_OFFBOARD:
             return FlightMode::OFFBOARD;
+        case px4::PX4_CUSTOM_MAIN_MODE_MANUAL:
+            return Telemetry::FlightMode::MANUAL;
+        case px4::PX4_CUSTOM_MAIN_MODE_POSCTL:
+            return Telemetry::FlightMode::POSCTL;
+        case px4::PX4_CUSTOM_MAIN_MODE_ALTCTL:
+            return Telemetry::FlightMode::ALTCTL;
+        case px4::PX4_CUSTOM_MAIN_MODE_RATTITUDE:
+            return Telemetry::FlightMode::RATTITUDE;
+        case px4::PX4_CUSTOM_MAIN_MODE_ACRO:
+            return Telemetry::FlightMode::ACRO;
+        case px4::PX4_CUSTOM_MAIN_MODE_STABILIZED:
+            return Telemetry::FlightMode::STABILIZED;
         case px4::PX4_CUSTOM_MAIN_MODE_AUTO:
             switch (px4_custom_mode.sub_mode) {
                 case px4::PX4_CUSTOM_SUB_MODE_AUTO_READY:
