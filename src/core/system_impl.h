@@ -38,6 +38,12 @@ public:
         LAND,
         OFFBOARD,
         FOLLOW_ME,
+        MANUAL,
+        POSITION,
+        ALTITUDE,
+        RATTITUDE,
+        ACRO,
+        STABILIZED,
     };
 
     explicit SystemImpl(
