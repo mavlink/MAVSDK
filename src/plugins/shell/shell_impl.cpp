@@ -86,6 +86,10 @@ Shell::Result ShellImpl::shell_command(const Shell::ShellMessage& shell_message)
 
     _shell_message = shell_message;
 
+    if (_shell_message.data.back() != '\n') {
+        _shell_message.data.append(1, '\n');
+    }
+
     if (!send_shell_message_mavlink()) {
         finish_transfer(Shell::Result::CONNECTION_ERROR, Shell::ShellMessage{});
         return Shell::Result::CONNECTION_ERROR;
