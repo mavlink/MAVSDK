@@ -68,6 +68,8 @@ public:
     /**
      * @brief Send the shell message.
      *
+     * If shell_message.data string have not trailing '\n' symbol - it will be added.
+     *
      * @param shell_message Shell `struct`.
      */
     Shell::Result shell_command(ShellMessage shell_message);
