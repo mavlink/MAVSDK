@@ -44,6 +44,8 @@ public:
         RATTITUDE,
         ACRO,
         STABILIZED,
+        ALTCTL,
+        POSCTL
     };
 
     explicit SystemImpl(
