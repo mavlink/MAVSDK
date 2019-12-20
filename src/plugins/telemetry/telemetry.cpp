@@ -413,7 +413,7 @@ std::string Telemetry::flight_mode_str(FlightMode flight_mode)
         case FlightMode::ACRO:
             return "Acro";
         case FlightMode::STABILIZED:
-            return "Stabilize";
+            return "Stabilized";
         case FlightMode::UNKNOWN:
             return "Unknown";
         default:
