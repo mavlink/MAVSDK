@@ -70,6 +70,8 @@ public:
      *
      * If shell_message.data string have not trailing '\n' symbol - it will be added.
      *
+     * If response data looks like not completed try to increase timeout value in request.
+     *
      * @param shell_message Shell `struct`.
      */
     Shell::Result shell_command(ShellMessage shell_message);
