@@ -39,13 +39,11 @@ public:
         OFFBOARD,
         FOLLOW_ME,
         MANUAL,
-        POSITION,
-        ALTITUDE,
-        RATTITUDE,
-        ACRO,
-        STABILIZED,
         ALTCTL,
-        POSCTL
+        POSCTL,
+        ACRO,
+        RATTITUDE,
+        STABILIZED,
     };
 
     explicit SystemImpl(
