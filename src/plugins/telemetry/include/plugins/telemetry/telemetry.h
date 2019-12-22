@@ -223,6 +223,7 @@ public:
      * https://docs.px4.io/en/config/flight_mode.html.
      */
     enum class FlightMode {
+        UNKNOWN, /**< @brief Mode not known. */
         READY, /**< @brief Armed and ready to take off. */
         TAKEOFF, /**< @brief Taking off. */
         HOLD, /**< @brief Hold mode (hovering in place (or circling for fixed-wing vehicles). */
@@ -231,13 +232,12 @@ public:
         LAND, /**< @brief Landing. */
         OFFBOARD, /**< @brief Offboard mode. */
         FOLLOW_ME, /**< @brief FollowMe mode. */
-        UNKNOWN, /**< @brief Mode not known. */
         MANUAL, /**< @brief Manual mode. */
-        POSCTL, /**< @brief Position mode. */
         ALTCTL, /**< @brief Altitude mode. */
-        RATTITUDE, /**< @brief Mode not known. */
+        POSCTL, /**< @brief Position mode. */
         ACRO, /**< @brief Acro mode. */
-        STABILIZED /**< @brief Stabilize mode. */
+        STABILIZED, /**< @brief Stabilize mode. */
+        RATTITUDE /**< @brief Rattitude mode. */
     };
 
     /**
