@@ -908,10 +908,10 @@ SystemImpl::make_command_flight_mode(FlightMode flight_mode, uint8_t component_i
         case FlightMode::MANUAL:
             custom_mode = px4::PX4_CUSTOM_MAIN_MODE_MANUAL;
             break;
-        case FlightMode::POSITION:
+        case FlightMode::POSCTL:
             custom_mode = px4::PX4_CUSTOM_MAIN_MODE_POSCTL;
             break;
-        case FlightMode::ALTITUDE:
+        case FlightMode::ALTCTL:
             custom_mode = px4::PX4_CUSTOM_MAIN_MODE_ALTCTL;
             break;
         case FlightMode::RATTITUDE:
