@@ -244,6 +244,12 @@ enum FlightMode {
     LAND = 6; // Landing
     OFFBOARD = 7; // In 'offboard' mode
     FOLLOW_ME = 8; // In 'follow-me' mode
+    MANUAL = 9; // In 'Manual' mode
+    ALTCTL = 10; // In 'Altitude Control' mode
+    POSCTL = 11; // In 'Position Control' mode
+    ACRO = 12; // In 'Acro' mode
+    STABILIZED = 13; // In 'Stabilize' mode
+    RATTITUDE = 14; // In 'Rattitude' mode
 }
 
 // Health type.
