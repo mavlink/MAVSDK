@@ -390,7 +390,6 @@ enum FlightMode : int {
   ACRO = 12,
   STABILIZED = 13,
   RATTITUDE = 14,
-
   FlightMode_INT_MIN_SENTINEL_DO_NOT_USE_ = std::numeric_limits<::PROTOBUF_NAMESPACE_ID::int32>::min(),
   FlightMode_INT_MAX_SENTINEL_DO_NOT_USE_ = std::numeric_limits<::PROTOBUF_NAMESPACE_ID::int32>::max()
 };
