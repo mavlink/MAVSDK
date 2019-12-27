@@ -395,7 +395,7 @@ enum FlightMode : int {
 };
 bool FlightMode_IsValid(int value);
 constexpr FlightMode FlightMode_MIN = UNKNOWN;
-constexpr FlightMode FlightMode_MAX = FOLLOW_ME;
+constexpr FlightMode FlightMode_MAX = RATTITUDE;
 constexpr int FlightMode_ARRAYSIZE = FlightMode_MAX + 1;
 
 const ::PROTOBUF_NAMESPACE_ID::EnumDescriptor* FlightMode_descriptor();
