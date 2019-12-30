@@ -41,7 +41,7 @@ namespace rpc {
 namespace shell {
 
 // *
-// Shell Service allow to communicate with vehicle's system shell.
+// Allow to communicate with the vehicle's system shell.
 class ShellService final {
  public:
   static constexpr char const* service_full_name() {
