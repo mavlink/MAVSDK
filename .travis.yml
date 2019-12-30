@@ -166,7 +166,7 @@ script:
     ./build/src/unit_tests_runner;
   fi
 - if [[ "${BUILD_TARGET}" = "px4-sitl" ]]; then
-    docker run -it -v $TRAVIS_BUILD_DIR:/home/user/MAVSDK:rw ${DOCKER_REPO} tools/run-sitl-tests.sh;
+    docker run -it -v $TRAVIS_BUILD_DIR:/home/user/MAVSDK:rw ${DOCKER_REPO} tools/run-sitl-tests.sh /home/user/Firmware;
   fi
 - if [[ "${BUILD_TARGET}" = "deb-x64" ]]; then
     docker run -it -v $TRAVIS_BUILD_DIR:/home/user/MAVSDK:rw ${DOCKER_REPO} cmake -DCMAKE_BUILD_TYPE=Release -DBUILD_BACKEND=OFF -DBUILD_SHARED_LIBS=ON -DCMAKE_INSTALL_PREFIX=./install -Bbuild/release -H.;
