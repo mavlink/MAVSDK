@@ -2,12 +2,12 @@
 
 set -e
 
-PWD=$(pwd)
-
-if [ -z ${PX4_FIRMWARE_DIR+x} ]; then
-    PX4_FIRMWARE_DIR=$PWD/../Firmware
+if [ "$#" -ne 1 ]; then
+    echo "Usage: $0 <path/to/Firmware>"
+    exit 1
 fi
 
+PX4_FIRMWARE_DIR=$1
 NPROCS=$(nproc --all)
 
 cmake -DCMAKE_BUILD_TYPE=Debug -DBUILD_BACKEND=OFF -DBUILD_SHARED_LIBS=ON -Bbuild/debug -H.;

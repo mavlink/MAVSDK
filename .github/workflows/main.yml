@@ -1,0 +1,138 @@
+name: C/C++ CI
+
+on: [push]
+
+jobs:
+  coverage:
+    name: coverage (ubuntu-18.04)
+    runs-on: ubuntu-18.04
+    steps:
+      - uses: actions/checkout@v1
+        with:
+          submodules: recursive
+      - name: configure
+        run: cmake -DCMAKE_BUILD_TYPE=Coverage -j 2 -Bbuild -H.
+      - name: build
+        run: cmake --build build -j 2
+
+  ubuntu18-non-superbuild:
+    name: ubuntu-18.04 (non-backend, non-superbuild)
+    runs-on: ubuntu-18.04
+    steps:
+      - uses: actions/checkout@v1
+        with:
+          submodules: recursive
+      - name: install
+        run: sudo apt-get install -y libjsoncpp-dev libcurl4-openssl-dev libtinyxml2-dev
+      - name: configure
+        run: cmake -DCMAKE_BUILD_TYPE=Release -DSUPERBUILD=OFF -j 2 -Bbuild/release -H.
+      - name: build
+        run: cmake --build build/release -j 2
+      - name: test
+        run: ./build/release/src/unit_tests_runner
+
+  ubuntu18-superbuild:
+    name: ubuntu-18.04 (backend, superbuild)
+    runs-on: ubuntu-18.04
+    steps:
+      - uses: actions/checkout@v1
+        with:
+          submodules: recursive
+      - name: configure
+        run: cmake -DCMAKE_BUILD_TYPE=Release -DSUPERBUILD=ON -DBUILD_BACKEND=ON -j 2 -Bbuild/release -H.
+      - name: build
+        run: cmake --build build/release -j 2
+      - name: test
+        run: ./build/release/src/unit_tests_runner
+
+  px4-sitl:
+    name: PX4 SITL (ubuntu-18.04)
+    runs-on: ubuntu-18.04
+    container: mavsdk/mavsdk-ubuntu-18.04-px4-sitl
+    steps:
+      - uses: actions/checkout@v1
+        with:
+          submodules: recursive
+      - name: test
+        run: tools/run-sitl-tests.sh /home/user/Firmware
+
+  deb-rpm-package:
+    name: ${{ matrix.container_name }} (package, non-backend)
+    runs-on: ubuntu-18.04
+    container: mavsdk/mavsdk-${{ matrix.container_name }}
+    strategy:
+      matrix:
+        container_name: [ubuntu-16.04, ubuntu-18.04, fedora-29, fedora-30]
+    steps:
+      - uses: actions/checkout@v1
+        with:
+          submodules: recursive
+      - name: configure
+        run: cmake -DCMAKE_BUILD_TYPE=Release -DBUILD_BACKEND=OFF -DBUILD_SHARED_LIBS=ON -DCMAKE_INSTALL_PREFIX=install -Bbuild/release -H.
+      - name: build
+        run: cmake --build build/release --target install -- -j2
+      - name: package
+        run: tools/create_packages.sh ./install .
+
+  dockcross:
+    name: ${{ matrix.arch_name }}
+    runs-on: ubuntu-18.04
+    strategy:
+      matrix:
+        arch_name: [android-arm64, android-arm, linux-armv6, linux-armv7, linux-arm64, manylinux2010-x64]
+    steps:
+      - uses: actions/checkout@v1
+        with:
+          submodules: recursive
+      - name: setup dockcross
+        run: docker run --rm dockcross/${{ matrix.arch_name }} > ./dockcross-${{ matrix.arch_name }}; chmod +x ./dockcross-${{ matrix.arch_name }}
+      - name: configure
+        run: ./dockcross-${{ matrix.arch_name }} cmake -DCMAKE_BUILD_TYPE=Release -DCMAKE_INSTALL_PREFIX=build/${{ matrix.arch_name }}/install -DBUILD_BACKEND=ON -DBUILD_SHARED_LIBS=OFF -j 2 -Bbuild/${{ matrix.arch_name }} -H.
+      - name: build
+        run: ./dockcross-${{ matrix.arch_name }} cmake --build build/${{ matrix.arch_name }} -j 2 --target install
+
+  macOS:
+    name: macOS
+    runs-on: macos-latest
+    steps:
+      - uses: actions/checkout@v1
+        with:
+          submodules: recursive
+      - name: configure
+        run: cmake -DCMAKE_BUILD_TYPE=Release -DCMAKE_INSTALL_PREFIX=build/release/install -DBUILD_BACKEND=ON -DBUILD_SHARED_LIBS=OFF -j 2 -Bbuild/release -H.
+      - name: build
+        run: cmake --build build/release -j 2 --target install
+      - name: test (core)
+        run: ./build/release/src/unit_tests_runner
+      - name: test (mavsdk_server)
+        run: ./build/release/src/backend/test/unit_tests_backend
+
+  iOS:
+    name: iOS
+    runs-on: macos-latest
+    steps:
+      - uses: actions/checkout@v1
+        with:
+          submodules: recursive
+      - name: configure (ios)
+        run: cmake -DCMAKE_BUILD_TYPE=Release -DCMAKE_TOOLCHAIN_FILE=$(pwd)/tools/ios.toolchain.cmake -DPLATFORM=OS -DBUILD_BACKEND=ON -DBUILD_SHARED_LIBS=OFF -j 2 -Bbuild/ios -H.
+      - name: build (ios)
+        run: cmake --build build/ios -j 2
+      - name: configure (ios_simulator)
+        run: cmake -DCMAKE_BUILD_TYPE=Release -DCMAKE_TOOLCHAIN_FILE=$(pwd)/tools/ios.toolchain.cmake -DPLATFORM=SIMULATOR64 -DBUILD_BACKEND=ON -DBUILD_SHARED_LIBS=OFF -j 2 -Bbuild/ios_simulator -H.
+      - name: build (ios_simulator)
+        run: cmake --build build/ios_simulator -j 2
+      - name: package
+        run: bash ./src/backend/tools/package_backend_framework.bash
+
+  Windows:
+    name: Windows
+    runs-on: windows-latest
+    steps:
+      - uses: actions/checkout@v1
+        with:
+          submodules: recursive
+      - name: configure
+        run: cmake -G "Visual Studio 16 2019" -DCMAKE_BUILD_TYPE=Release -DCMAKE_INSTALL_PREFIX=build/release/install -DBUILD_BACKEND=ON -DBUILD_SHARED_LIBS=OFF -j 2 -Bbuild/release -S.
+      - name: build
+        run: cmake --build build/release -j 2 --config Release --target install
