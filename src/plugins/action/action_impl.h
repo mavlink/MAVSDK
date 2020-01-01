@@ -23,6 +23,7 @@ public:
     Action::Result disarm() const;
     Action::Result kill() const;
     Action::Result reboot() const;
+    Action::Result shutdown() const;
     Action::Result takeoff() const;
     Action::Result land() const;
     Action::Result return_to_launch() const;
