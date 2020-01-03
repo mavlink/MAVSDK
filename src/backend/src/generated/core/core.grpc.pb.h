@@ -13,10 +13,11 @@
 #include <grpcpp/impl/codegen/client_callback.h>
 #include <grpcpp/impl/codegen/client_context.h>
 #include <grpcpp/impl/codegen/completion_queue.h>
-#include <grpcpp/impl/codegen/method_handler_impl.h>
+#include <grpcpp/impl/codegen/method_handler.h>
 #include <grpcpp/impl/codegen/proto_utils.h>
 #include <grpcpp/impl/codegen/rpc_method.h>
 #include <grpcpp/impl/codegen/server_callback.h>
+#include <grpcpp/impl/codegen/server_callback_handlers.h>
 #include <grpcpp/impl/codegen/server_context.h>
 #include <grpcpp/impl/codegen/service_type.h>
 #include <grpcpp/impl/codegen/status.h>
@@ -192,7 +193,7 @@ class CoreService final {
     ExperimentalWithCallbackMethod_SubscribeConnectionState() {
       ::grpc::Service::experimental().MarkMethodCallback(0,
         new ::grpc_impl::internal::CallbackServerStreamingHandler< ::mavsdk::rpc::core::SubscribeConnectionStateRequest, ::mavsdk::rpc::core::ConnectionStateResponse>(
-          [this] { return this->SubscribeConnectionState(); }));
+          [this](::grpc::experimental::CallbackServerContext* context, const ::mavsdk::rpc::core::SubscribeConnectionStateRequest* request) { return this->SubscribeConnectionState(context, request); }));
     }
     ~ExperimentalWithCallbackMethod_SubscribeConnectionState() override {
       BaseClassMustBeDerivedFromService(this);
@@ -202,9 +203,7 @@ class CoreService final {
       abort();
       return ::grpc::Status(::grpc::StatusCode::UNIMPLEMENTED, "");
     }
-    virtual ::grpc::experimental::ServerWriteReactor< ::mavsdk::rpc::core::SubscribeConnectionStateRequest, ::mavsdk::rpc::core::ConnectionStateResponse>* SubscribeConnectionState() {
-      return new ::grpc_impl::internal::UnimplementedWriteReactor<
-        ::mavsdk::rpc::core::SubscribeConnectionStateRequest, ::mavsdk::rpc::core::ConnectionStateResponse>;}
+    virtual ::grpc::experimental::ServerWriteReactor< ::mavsdk::rpc::core::ConnectionStateResponse>* SubscribeConnectionState(::grpc::experimental::CallbackServerContext* /*context*/, const ::mavsdk::rpc::core::SubscribeConnectionStateRequest* /*request*/) { return nullptr; }
   };
   template <class BaseClass>
   class ExperimentalWithCallbackMethod_ListRunningPlugins : public BaseClass {
@@ -214,13 +213,7 @@ class CoreService final {
     ExperimentalWithCallbackMethod_ListRunningPlugins() {
       ::grpc::Service::experimental().MarkMethodCallback(1,
         new ::grpc_impl::internal::CallbackUnaryHandler< ::mavsdk::rpc::core::ListRunningPluginsRequest, ::mavsdk::rpc::core::ListRunningPluginsResponse>(
-          [this](::grpc::ServerContext* context,
-                 const ::mavsdk::rpc::core::ListRunningPluginsRequest* request,
-                 ::mavsdk::rpc::core::ListRunningPluginsResponse* response,
-                 ::grpc::experimental::ServerCallbackRpcController* controller) {
-                   return this->ListRunningPlugins(context, request, response, controller);
-                 }));
-    }
+          [this](::grpc::experimental::CallbackServerContext* context, const ::mavsdk::rpc::core::ListRunningPluginsRequest* request, ::mavsdk::rpc::core::ListRunningPluginsResponse* response) { return this->ListRunningPlugins(context, request, response); }));}
     void SetMessageAllocatorFor_ListRunningPlugins(
         ::grpc::experimental::MessageAllocator< ::mavsdk::rpc::core::ListRunningPluginsRequest, ::mavsdk::rpc::core::ListRunningPluginsResponse>* allocator) {
       static_cast<::grpc_impl::internal::CallbackUnaryHandler< ::mavsdk::rpc::core::ListRunningPluginsRequest, ::mavsdk::rpc::core::ListRunningPluginsResponse>*>(
@@ -235,7 +228,7 @@ class CoreService final {
       abort();
       return ::grpc::Status(::grpc::StatusCode::UNIMPLEMENTED, "");
     }
-    virtual void ListRunningPlugins(::grpc::ServerContext* /*context*/, const ::mavsdk::rpc::core::ListRunningPluginsRequest* /*request*/, ::mavsdk::rpc::core::ListRunningPluginsResponse* /*response*/, ::grpc::experimental::ServerCallbackRpcController* controller) { controller->Finish(::grpc::Status(::grpc::StatusCode::UNIMPLEMENTED, "")); }
+    virtual ::grpc::experimental::ServerUnaryReactor* ListRunningPlugins(::grpc::experimental::CallbackServerContext* /*context*/, const ::mavsdk::rpc::core::ListRunningPluginsRequest* /*request*/, ::mavsdk::rpc::core::ListRunningPluginsResponse* /*response*/) { return nullptr; }
   };
   typedef ExperimentalWithCallbackMethod_SubscribeConnectionState<ExperimentalWithCallbackMethod_ListRunningPlugins<Service > > ExperimentalCallbackService;
   template <class BaseClass>
@@ -320,7 +313,7 @@ class CoreService final {
     ExperimentalWithRawCallbackMethod_SubscribeConnectionState() {
       ::grpc::Service::experimental().MarkMethodRawCallback(0,
         new ::grpc_impl::internal::CallbackServerStreamingHandler< ::grpc::ByteBuffer, ::grpc::ByteBuffer>(
-          [this] { return this->SubscribeConnectionState(); }));
+          [this](::grpc::experimental::CallbackServerContext* context, const::grpc::ByteBuffer* request) { return this->SubscribeConnectionState(context, request); }));
     }
     ~ExperimentalWithRawCallbackMethod_SubscribeConnectionState() override {
       BaseClassMustBeDerivedFromService(this);
@@ -330,9 +323,7 @@ class CoreService final {
       abort();
       return ::grpc::Status(::grpc::StatusCode::UNIMPLEMENTED, "");
     }
-    virtual ::grpc::experimental::ServerWriteReactor< ::grpc::ByteBuffer, ::grpc::ByteBuffer>* SubscribeConnectionState() {
-      return new ::grpc_impl::internal::UnimplementedWriteReactor<
-        ::grpc::ByteBuffer, ::grpc::ByteBuffer>;}
+    virtual ::grpc::experimental::ServerWriteReactor< ::grpc::ByteBuffer>* SubscribeConnectionState(::grpc::experimental::CallbackServerContext* /*context*/, const ::grpc::ByteBuffer* /*request*/) { return nullptr; }
   };
   template <class BaseClass>
   class ExperimentalWithRawCallbackMethod_ListRunningPlugins : public BaseClass {
@@ -342,12 +333,7 @@ class CoreService final {
     ExperimentalWithRawCallbackMethod_ListRunningPlugins() {
       ::grpc::Service::experimental().MarkMethodRawCallback(1,
         new ::grpc_impl::internal::CallbackUnaryHandler< ::grpc::ByteBuffer, ::grpc::ByteBuffer>(
-          [this](::grpc::ServerContext* context,
-                 const ::grpc::ByteBuffer* request,
-                 ::grpc::ByteBuffer* response,
-                 ::grpc::experimental::ServerCallbackRpcController* controller) {
-                   this->ListRunningPlugins(context, request, response, controller);
-                 }));
+          [this](::grpc::experimental::CallbackServerContext* context, const ::grpc::ByteBuffer* request, ::grpc::ByteBuffer* response) { return this->ListRunningPlugins(context, request, response); }));
     }
     ~ExperimentalWithRawCallbackMethod_ListRunningPlugins() override {
       BaseClassMustBeDerivedFromService(this);
@@ -357,7 +343,7 @@ class CoreService final {
       abort();
       return ::grpc::Status(::grpc::StatusCode::UNIMPLEMENTED, "");
     }
-    virtual void ListRunningPlugins(::grpc::ServerContext* /*context*/, const ::grpc::ByteBuffer* /*request*/, ::grpc::ByteBuffer* /*response*/, ::grpc::experimental::ServerCallbackRpcController* controller) { controller->Finish(::grpc::Status(::grpc::StatusCode::UNIMPLEMENTED, "")); }
+    virtual ::grpc::experimental::ServerUnaryReactor* ListRunningPlugins(::grpc::experimental::CallbackServerContext* /*context*/, const ::grpc::ByteBuffer* /*request*/, ::grpc::ByteBuffer* /*response*/) { return nullptr; }
   };
   template <class BaseClass>
   class WithStreamedUnaryMethod_ListRunningPlugins : public BaseClass {

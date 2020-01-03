@@ -13,10 +13,11 @@
 #include <grpcpp/impl/codegen/client_callback.h>
 #include <grpcpp/impl/codegen/client_context.h>
 #include <grpcpp/impl/codegen/completion_queue.h>
-#include <grpcpp/impl/codegen/method_handler_impl.h>
+#include <grpcpp/impl/codegen/method_handler.h>
 #include <grpcpp/impl/codegen/proto_utils.h>
 #include <grpcpp/impl/codegen/rpc_method.h>
 #include <grpcpp/impl/codegen/server_callback.h>
+#include <grpcpp/impl/codegen/server_callback_handlers.h>
 #include <grpcpp/impl/codegen/server_context.h>
 #include <grpcpp/impl/codegen/service_type.h>
 #include <grpcpp/impl/codegen/status.h>
@@ -246,13 +247,7 @@ class MocapService final {
     ExperimentalWithCallbackMethod_SetVisionPositionEstimate() {
       ::grpc::Service::experimental().MarkMethodCallback(0,
         new ::grpc_impl::internal::CallbackUnaryHandler< ::mavsdk::rpc::mocap::SetVisionPositionEstimateRequest, ::mavsdk::rpc::mocap::SetVisionPositionEstimateResponse>(
-          [this](::grpc::ServerContext* context,
-                 const ::mavsdk::rpc::mocap::SetVisionPositionEstimateRequest* request,
-                 ::mavsdk::rpc::mocap::SetVisionPositionEstimateResponse* response,
-                 ::grpc::experimental::ServerCallbackRpcController* controller) {
-                   return this->SetVisionPositionEstimate(context, request, response, controller);
-                 }));
-    }
+          [this](::grpc::experimental::CallbackServerContext* context, const ::mavsdk::rpc::mocap::SetVisionPositionEstimateRequest* request, ::mavsdk::rpc::mocap::SetVisionPositionEstimateResponse* response) { return this->SetVisionPositionEstimate(context, request, response); }));}
     void SetMessageAllocatorFor_SetVisionPositionEstimate(
         ::grpc::experimental::MessageAllocator< ::mavsdk::rpc::mocap::SetVisionPositionEstimateRequest, ::mavsdk::rpc::mocap::SetVisionPositionEstimateResponse>* allocator) {
       static_cast<::grpc_impl::internal::CallbackUnaryHandler< ::mavsdk::rpc::mocap::SetVisionPositionEstimateRequest, ::mavsdk::rpc::mocap::SetVisionPositionEstimateResponse>*>(
@@ -267,7 +262,7 @@ class MocapService final {
       abort();
       return ::grpc::Status(::grpc::StatusCode::UNIMPLEMENTED, "");
     }
-    virtual void SetVisionPositionEstimate(::grpc::ServerContext* /*context*/, const ::mavsdk::rpc::mocap::SetVisionPositionEstimateRequest* /*request*/, ::mavsdk::rpc::mocap::SetVisionPositionEstimateResponse* /*response*/, ::grpc::experimental::ServerCallbackRpcController* controller) { controller->Finish(::grpc::Status(::grpc::StatusCode::UNIMPLEMENTED, "")); }
+    virtual ::grpc::experimental::ServerUnaryReactor* SetVisionPositionEstimate(::grpc::experimental::CallbackServerContext* /*context*/, const ::mavsdk::rpc::mocap::SetVisionPositionEstimateRequest* /*request*/, ::mavsdk::rpc::mocap::SetVisionPositionEstimateResponse* /*response*/) { return nullptr; }
   };
   template <class BaseClass>
   class ExperimentalWithCallbackMethod_SetAttitudePositionMocap : public BaseClass {
@@ -277,13 +272,7 @@ class MocapService final {
     ExperimentalWithCallbackMethod_SetAttitudePositionMocap() {
       ::grpc::Service::experimental().MarkMethodCallback(1,
         new ::grpc_impl::internal::CallbackUnaryHandler< ::mavsdk::rpc::mocap::SetAttitudePositionMocapRequest, ::mavsdk::rpc::mocap::SetAttitudePositionMocapResponse>(
-          [this](::grpc::ServerContext* context,
-                 const ::mavsdk::rpc::mocap::SetAttitudePositionMocapRequest* request,
-                 ::mavsdk::rpc::mocap::SetAttitudePositionMocapResponse* response,
-                 ::grpc::experimental::ServerCallbackRpcController* controller) {
-                   return this->SetAttitudePositionMocap(context, request, response, controller);
-                 }));
-    }
+          [this](::grpc::experimental::CallbackServerContext* context, const ::mavsdk::rpc::mocap::SetAttitudePositionMocapRequest* request, ::mavsdk::rpc::mocap::SetAttitudePositionMocapResponse* response) { return this->SetAttitudePositionMocap(context, request, response); }));}
     void SetMessageAllocatorFor_SetAttitudePositionMocap(
         ::grpc::experimental::MessageAllocator< ::mavsdk::rpc::mocap::SetAttitudePositionMocapRequest, ::mavsdk::rpc::mocap::SetAttitudePositionMocapResponse>* allocator) {
       static_cast<::grpc_impl::internal::CallbackUnaryHandler< ::mavsdk::rpc::mocap::SetAttitudePositionMocapRequest, ::mavsdk::rpc::mocap::SetAttitudePositionMocapResponse>*>(
@@ -298,7 +287,7 @@ class MocapService final {
       abort();
       return ::grpc::Status(::grpc::StatusCode::UNIMPLEMENTED, "");
     }
-    virtual void SetAttitudePositionMocap(::grpc::ServerContext* /*context*/, const ::mavsdk::rpc::mocap::SetAttitudePositionMocapRequest* /*request*/, ::mavsdk::rpc::mocap::SetAttitudePositionMocapResponse* /*response*/, ::grpc::experimental::ServerCallbackRpcController* controller) { controller->Finish(::grpc::Status(::grpc::StatusCode::UNIMPLEMENTED, "")); }
+    virtual ::grpc::experimental::ServerUnaryReactor* SetAttitudePositionMocap(::grpc::experimental::CallbackServerContext* /*context*/, const ::mavsdk::rpc::mocap::SetAttitudePositionMocapRequest* /*request*/, ::mavsdk::rpc::mocap::SetAttitudePositionMocapResponse* /*response*/) { return nullptr; }
   };
   template <class BaseClass>
   class ExperimentalWithCallbackMethod_SetOdometry : public BaseClass {
@@ -308,13 +297,7 @@ class MocapService final {
     ExperimentalWithCallbackMethod_SetOdometry() {
       ::grpc::Service::experimental().MarkMethodCallback(2,
         new ::grpc_impl::internal::CallbackUnaryHandler< ::mavsdk::rpc::mocap::SetOdometryRequest, ::mavsdk::rpc::mocap::SetOdometryResponse>(
-          [this](::grpc::ServerContext* context,
-                 const ::mavsdk::rpc::mocap::SetOdometryRequest* request,
-                 ::mavsdk::rpc::mocap::SetOdometryResponse* response,
-                 ::grpc::experimental::ServerCallbackRpcController* controller) {
-                   return this->SetOdometry(context, request, response, controller);
-                 }));
-    }
+          [this](::grpc::experimental::CallbackServerContext* context, const ::mavsdk::rpc::mocap::SetOdometryRequest* request, ::mavsdk::rpc::mocap::SetOdometryResponse* response) { return this->SetOdometry(context, request, response); }));}
     void SetMessageAllocatorFor_SetOdometry(
         ::grpc::experimental::MessageAllocator< ::mavsdk::rpc::mocap::SetOdometryRequest, ::mavsdk::rpc::mocap::SetOdometryResponse>* allocator) {
       static_cast<::grpc_impl::internal::CallbackUnaryHandler< ::mavsdk::rpc::mocap::SetOdometryRequest, ::mavsdk::rpc::mocap::SetOdometryResponse>*>(
@@ -329,7 +312,7 @@ class MocapService final {
       abort();
       return ::grpc::Status(::grpc::StatusCode::UNIMPLEMENTED, "");
     }
-    virtual void SetOdometry(::grpc::ServerContext* /*context*/, const ::mavsdk::rpc::mocap::SetOdometryRequest* /*request*/, ::mavsdk::rpc::mocap::SetOdometryResponse* /*response*/, ::grpc::experimental::ServerCallbackRpcController* controller) { controller->Finish(::grpc::Status(::grpc::StatusCode::UNIMPLEMENTED, "")); }
+    virtual ::grpc::experimental::ServerUnaryReactor* SetOdometry(::grpc::experimental::CallbackServerContext* /*context*/, const ::mavsdk::rpc::mocap::SetOdometryRequest* /*request*/, ::mavsdk::rpc::mocap::SetOdometryResponse* /*response*/) { return nullptr; }
   };
   typedef ExperimentalWithCallbackMethod_SetVisionPositionEstimate<ExperimentalWithCallbackMethod_SetAttitudePositionMocap<ExperimentalWithCallbackMethod_SetOdometry<Service > > > ExperimentalCallbackService;
   template <class BaseClass>
@@ -451,12 +434,7 @@ class MocapService final {
     ExperimentalWithRawCallbackMethod_SetVisionPositionEstimate() {
       ::grpc::Service::experimental().MarkMethodRawCallback(0,
         new ::grpc_impl::internal::CallbackUnaryHandler< ::grpc::ByteBuffer, ::grpc::ByteBuffer>(
-          [this](::grpc::ServerContext* context,
-                 const ::grpc::ByteBuffer* request,
-                 ::grpc::ByteBuffer* response,
-                 ::grpc::experimental::ServerCallbackRpcController* controller) {
-                   this->SetVisionPositionEstimate(context, request, response, controller);
-                 }));
+          [this](::grpc::experimental::CallbackServerContext* context, const ::grpc::ByteBuffer* request, ::grpc::ByteBuffer* response) { return this->SetVisionPositionEstimate(context, request, response); }));
     }
     ~ExperimentalWithRawCallbackMethod_SetVisionPositionEstimate() override {
       BaseClassMustBeDerivedFromService(this);
@@ -466,7 +444,7 @@ class MocapService final {
       abort();
       return ::grpc::Status(::grpc::StatusCode::UNIMPLEMENTED, "");
     }
-    virtual void SetVisionPositionEstimate(::grpc::ServerContext* /*context*/, const ::grpc::ByteBuffer* /*request*/, ::grpc::ByteBuffer* /*response*/, ::grpc::experimental::ServerCallbackRpcController* controller) { controller->Finish(::grpc::Status(::grpc::StatusCode::UNIMPLEMENTED, "")); }
+    virtual ::grpc::experimental::ServerUnaryReactor* SetVisionPositionEstimate(::grpc::experimental::CallbackServerContext* /*context*/, const ::grpc::ByteBuffer* /*request*/, ::grpc::ByteBuffer* /*response*/) { return nullptr; }
   };
   template <class BaseClass>
   class ExperimentalWithRawCallbackMethod_SetAttitudePositionMocap : public BaseClass {
@@ -476,12 +454,7 @@ class MocapService final {
     ExperimentalWithRawCallbackMethod_SetAttitudePositionMocap() {
       ::grpc::Service::experimental().MarkMethodRawCallback(1,
         new ::grpc_impl::internal::CallbackUnaryHandler< ::grpc::ByteBuffer, ::grpc::ByteBuffer>(
-          [this](::grpc::ServerContext* context,
-                 const ::grpc::ByteBuffer* request,
-                 ::grpc::ByteBuffer* response,
-                 ::grpc::experimental::ServerCallbackRpcController* controller) {
-                   this->SetAttitudePositionMocap(context, request, response, controller);
-                 }));
+          [this](::grpc::experimental::CallbackServerContext* context, const ::grpc::ByteBuffer* request, ::grpc::ByteBuffer* response) { return this->SetAttitudePositionMocap(context, request, response); }));
     }
     ~ExperimentalWithRawCallbackMethod_SetAttitudePositionMocap() override {
       BaseClassMustBeDerivedFromService(this);
@@ -491,7 +464,7 @@ class MocapService final {
       abort();
       return ::grpc::Status(::grpc::StatusCode::UNIMPLEMENTED, "");
     }
-    virtual void SetAttitudePositionMocap(::grpc::ServerContext* /*context*/, const ::grpc::ByteBuffer* /*request*/, ::grpc::ByteBuffer* /*response*/, ::grpc::experimental::ServerCallbackRpcController* controller) { controller->Finish(::grpc::Status(::grpc::StatusCode::UNIMPLEMENTED, "")); }
+    virtual ::grpc::experimental::ServerUnaryReactor* SetAttitudePositionMocap(::grpc::experimental::CallbackServerContext* /*context*/, const ::grpc::ByteBuffer* /*request*/, ::grpc::ByteBuffer* /*response*/) { return nullptr; }
   };
   template <class BaseClass>
   class ExperimentalWithRawCallbackMethod_SetOdometry : public BaseClass {
@@ -501,12 +474,7 @@ class MocapService final {
     ExperimentalWithRawCallbackMethod_SetOdometry() {
       ::grpc::Service::experimental().MarkMethodRawCallback(2,
         new ::grpc_impl::internal::CallbackUnaryHandler< ::grpc::ByteBuffer, ::grpc::ByteBuffer>(
-          [this](::grpc::ServerContext* context,
-                 const ::grpc::ByteBuffer* request,
-                 ::grpc::ByteBuffer* response,
-                 ::grpc::experimental::ServerCallbackRpcController* controller) {
-                   this->SetOdometry(context, request, response, controller);
-                 }));
+          [this](::grpc::experimental::CallbackServerContext* context, const ::grpc::ByteBuffer* request, ::grpc::ByteBuffer* response) { return this->SetOdometry(context, request, response); }));
     }
     ~ExperimentalWithRawCallbackMethod_SetOdometry() override {
       BaseClassMustBeDerivedFromService(this);
@@ -516,7 +484,7 @@ class MocapService final {
       abort();
       return ::grpc::Status(::grpc::StatusCode::UNIMPLEMENTED, "");
     }
-    virtual void SetOdometry(::grpc::ServerContext* /*context*/, const ::grpc::ByteBuffer* /*request*/, ::grpc::ByteBuffer* /*response*/, ::grpc::experimental::ServerCallbackRpcController* controller) { controller->Finish(::grpc::Status(::grpc::StatusCode::UNIMPLEMENTED, "")); }
+    virtual ::grpc::experimental::ServerUnaryReactor* SetOdometry(::grpc::experimental::CallbackServerContext* /*context*/, const ::grpc::ByteBuffer* /*request*/, ::grpc::ByteBuffer* /*response*/) { return nullptr; }
   };
   template <class BaseClass>
   class WithStreamedUnaryMethod_SetVisionPositionEstimate : public BaseClass {
