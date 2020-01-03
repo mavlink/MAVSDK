@@ -13,10 +13,11 @@
 #include <grpcpp/impl/codegen/client_callback.h>
 #include <grpcpp/impl/codegen/client_context.h>
 #include <grpcpp/impl/codegen/completion_queue.h>
-#include <grpcpp/impl/codegen/method_handler_impl.h>
+#include <grpcpp/impl/codegen/method_handler.h>
 #include <grpcpp/impl/codegen/proto_utils.h>
 #include <grpcpp/impl/codegen/rpc_method.h>
 #include <grpcpp/impl/codegen/server_callback.h>
+#include <grpcpp/impl/codegen/server_callback_handlers.h>
 #include <grpcpp/impl/codegen/server_context.h>
 #include <grpcpp/impl/codegen/service_type.h>
 #include <grpcpp/impl/codegen/status.h>
@@ -330,13 +331,7 @@ class ParamService final {
     ExperimentalWithCallbackMethod_GetIntParam() {
       ::grpc::Service::experimental().MarkMethodCallback(0,
         new ::grpc_impl::internal::CallbackUnaryHandler< ::mavsdk::rpc::param::GetIntParamRequest, ::mavsdk::rpc::param::GetIntParamResponse>(
-          [this](::grpc::ServerContext* context,
-                 const ::mavsdk::rpc::param::GetIntParamRequest* request,
-                 ::mavsdk::rpc::param::GetIntParamResponse* response,
-                 ::grpc::experimental::ServerCallbackRpcController* controller) {
-                   return this->GetIntParam(context, request, response, controller);
-                 }));
-    }
+          [this](::grpc::experimental::CallbackServerContext* context, const ::mavsdk::rpc::param::GetIntParamRequest* request, ::mavsdk::rpc::param::GetIntParamResponse* response) { return this->GetIntParam(context, request, response); }));}
     void SetMessageAllocatorFor_GetIntParam(
         ::grpc::experimental::MessageAllocator< ::mavsdk::rpc::param::GetIntParamRequest, ::mavsdk::rpc::param::GetIntParamResponse>* allocator) {
       static_cast<::grpc_impl::internal::CallbackUnaryHandler< ::mavsdk::rpc::param::GetIntParamRequest, ::mavsdk::rpc::param::GetIntParamResponse>*>(
@@ -351,7 +346,7 @@ class ParamService final {
       abort();
       return ::grpc::Status(::grpc::StatusCode::UNIMPLEMENTED, "");
     }
-    virtual void GetIntParam(::grpc::ServerContext* /*context*/, const ::mavsdk::rpc::param::GetIntParamRequest* /*request*/, ::mavsdk::rpc::param::GetIntParamResponse* /*response*/, ::grpc::experimental::ServerCallbackRpcController* controller) { controller->Finish(::grpc::Status(::grpc::StatusCode::UNIMPLEMENTED, "")); }
+    virtual ::grpc::experimental::ServerUnaryReactor* GetIntParam(::grpc::experimental::CallbackServerContext* /*context*/, const ::mavsdk::rpc::param::GetIntParamRequest* /*request*/, ::mavsdk::rpc::param::GetIntParamResponse* /*response*/) { return nullptr; }
   };
   template <class BaseClass>
   class ExperimentalWithCallbackMethod_SetIntParam : public BaseClass {
@@ -361,13 +356,7 @@ class ParamService final {
     ExperimentalWithCallbackMethod_SetIntParam() {
       ::grpc::Service::experimental().MarkMethodCallback(1,
         new ::grpc_impl::internal::CallbackUnaryHandler< ::mavsdk::rpc::param::SetIntParamRequest, ::mavsdk::rpc::param::SetIntParamResponse>(
-          [this](::grpc::ServerContext* context,
-                 const ::mavsdk::rpc::param::SetIntParamRequest* request,
-                 ::mavsdk::rpc::param::SetIntParamResponse* response,
-                 ::grpc::experimental::ServerCallbackRpcController* controller) {
-                   return this->SetIntParam(context, request, response, controller);
-                 }));
-    }
+          [this](::grpc::experimental::CallbackServerContext* context, const ::mavsdk::rpc::param::SetIntParamRequest* request, ::mavsdk::rpc::param::SetIntParamResponse* response) { return this->SetIntParam(context, request, response); }));}
     void SetMessageAllocatorFor_SetIntParam(
         ::grpc::experimental::MessageAllocator< ::mavsdk::rpc::param::SetIntParamRequest, ::mavsdk::rpc::param::SetIntParamResponse>* allocator) {
       static_cast<::grpc_impl::internal::CallbackUnaryHandler< ::mavsdk::rpc::param::SetIntParamRequest, ::mavsdk::rpc::param::SetIntParamResponse>*>(
@@ -382,7 +371,7 @@ class ParamService final {
       abort();
       return ::grpc::Status(::grpc::StatusCode::UNIMPLEMENTED, "");
     }
-    virtual void SetIntParam(::grpc::ServerContext* /*context*/, const ::mavsdk::rpc::param::SetIntParamRequest* /*request*/, ::mavsdk::rpc::param::SetIntParamResponse* /*response*/, ::grpc::experimental::ServerCallbackRpcController* controller) { controller->Finish(::grpc::Status(::grpc::StatusCode::UNIMPLEMENTED, "")); }
+    virtual ::grpc::experimental::ServerUnaryReactor* SetIntParam(::grpc::experimental::CallbackServerContext* /*context*/, const ::mavsdk::rpc::param::SetIntParamRequest* /*request*/, ::mavsdk::rpc::param::SetIntParamResponse* /*response*/) { return nullptr; }
   };
   template <class BaseClass>
   class ExperimentalWithCallbackMethod_GetFloatParam : public BaseClass {
@@ -392,13 +381,7 @@ class ParamService final {
     ExperimentalWithCallbackMethod_GetFloatParam() {
       ::grpc::Service::experimental().MarkMethodCallback(2,
         new ::grpc_impl::internal::CallbackUnaryHandler< ::mavsdk::rpc::param::GetFloatParamRequest, ::mavsdk::rpc::param::GetFloatParamResponse>(
-          [this](::grpc::ServerContext* context,
-                 const ::mavsdk::rpc::param::GetFloatParamRequest* request,
-                 ::mavsdk::rpc::param::GetFloatParamResponse* response,
-                 ::grpc::experimental::ServerCallbackRpcController* controller) {
-                   return this->GetFloatParam(context, request, response, controller);
-                 }));
-    }
+          [this](::grpc::experimental::CallbackServerContext* context, const ::mavsdk::rpc::param::GetFloatParamRequest* request, ::mavsdk::rpc::param::GetFloatParamResponse* response) { return this->GetFloatParam(context, request, response); }));}
     void SetMessageAllocatorFor_GetFloatParam(
         ::grpc::experimental::MessageAllocator< ::mavsdk::rpc::param::GetFloatParamRequest, ::mavsdk::rpc::param::GetFloatParamResponse>* allocator) {
       static_cast<::grpc_impl::internal::CallbackUnaryHandler< ::mavsdk::rpc::param::GetFloatParamRequest, ::mavsdk::rpc::param::GetFloatParamResponse>*>(
@@ -413,7 +396,7 @@ class ParamService final {
       abort();
       return ::grpc::Status(::grpc::StatusCode::UNIMPLEMENTED, "");
     }
-    virtual void GetFloatParam(::grpc::ServerContext* /*context*/, const ::mavsdk::rpc::param::GetFloatParamRequest* /*request*/, ::mavsdk::rpc::param::GetFloatParamResponse* /*response*/, ::grpc::experimental::ServerCallbackRpcController* controller) { controller->Finish(::grpc::Status(::grpc::StatusCode::UNIMPLEMENTED, "")); }
+    virtual ::grpc::experimental::ServerUnaryReactor* GetFloatParam(::grpc::experimental::CallbackServerContext* /*context*/, const ::mavsdk::rpc::param::GetFloatParamRequest* /*request*/, ::mavsdk::rpc::param::GetFloatParamResponse* /*response*/) { return nullptr; }
   };
   template <class BaseClass>
   class ExperimentalWithCallbackMethod_SetFloatParam : public BaseClass {
@@ -423,13 +406,7 @@ class ParamService final {
     ExperimentalWithCallbackMethod_SetFloatParam() {
       ::grpc::Service::experimental().MarkMethodCallback(3,
         new ::grpc_impl::internal::CallbackUnaryHandler< ::mavsdk::rpc::param::SetFloatParamRequest, ::mavsdk::rpc::param::SetFloatParamResponse>(
-          [this](::grpc::ServerContext* context,
-                 const ::mavsdk::rpc::param::SetFloatParamRequest* request,
-                 ::mavsdk::rpc::param::SetFloatParamResponse* response,
-                 ::grpc::experimental::ServerCallbackRpcController* controller) {
-                   return this->SetFloatParam(context, request, response, controller);
-                 }));
-    }
+          [this](::grpc::experimental::CallbackServerContext* context, const ::mavsdk::rpc::param::SetFloatParamRequest* request, ::mavsdk::rpc::param::SetFloatParamResponse* response) { return this->SetFloatParam(context, request, response); }));}
     void SetMessageAllocatorFor_SetFloatParam(
         ::grpc::experimental::MessageAllocator< ::mavsdk::rpc::param::SetFloatParamRequest, ::mavsdk::rpc::param::SetFloatParamResponse>* allocator) {
       static_cast<::grpc_impl::internal::CallbackUnaryHandler< ::mavsdk::rpc::param::SetFloatParamRequest, ::mavsdk::rpc::param::SetFloatParamResponse>*>(
@@ -444,7 +421,7 @@ class ParamService final {
       abort();
       return ::grpc::Status(::grpc::StatusCode::UNIMPLEMENTED, "");
     }
-    virtual void SetFloatParam(::grpc::ServerContext* /*context*/, const ::mavsdk::rpc::param::SetFloatParamRequest* /*request*/, ::mavsdk::rpc::param::SetFloatParamResponse* /*response*/, ::grpc::experimental::ServerCallbackRpcController* controller) { controller->Finish(::grpc::Status(::grpc::StatusCode::UNIMPLEMENTED, "")); }
+    virtual ::grpc::experimental::ServerUnaryReactor* SetFloatParam(::grpc::experimental::CallbackServerContext* /*context*/, const ::mavsdk::rpc::param::SetFloatParamRequest* /*request*/, ::mavsdk::rpc::param::SetFloatParamResponse* /*response*/) { return nullptr; }
   };
   typedef ExperimentalWithCallbackMethod_GetIntParam<ExperimentalWithCallbackMethod_SetIntParam<ExperimentalWithCallbackMethod_GetFloatParam<ExperimentalWithCallbackMethod_SetFloatParam<Service > > > > ExperimentalCallbackService;
   template <class BaseClass>
@@ -603,12 +580,7 @@ class ParamService final {
     ExperimentalWithRawCallbackMethod_GetIntParam() {
       ::grpc::Service::experimental().MarkMethodRawCallback(0,
         new ::grpc_impl::internal::CallbackUnaryHandler< ::grpc::ByteBuffer, ::grpc::ByteBuffer>(
-          [this](::grpc::ServerContext* context,
-                 const ::grpc::ByteBuffer* request,
-                 ::grpc::ByteBuffer* response,
-                 ::grpc::experimental::ServerCallbackRpcController* controller) {
-                   this->GetIntParam(context, request, response, controller);
-                 }));
+          [this](::grpc::experimental::CallbackServerContext* context, const ::grpc::ByteBuffer* request, ::grpc::ByteBuffer* response) { return this->GetIntParam(context, request, response); }));
     }
     ~ExperimentalWithRawCallbackMethod_GetIntParam() override {
       BaseClassMustBeDerivedFromService(this);
@@ -618,7 +590,7 @@ class ParamService final {
       abort();
       return ::grpc::Status(::grpc::StatusCode::UNIMPLEMENTED, "");
     }
-    virtual void GetIntParam(::grpc::ServerContext* /*context*/, const ::grpc::ByteBuffer* /*request*/, ::grpc::ByteBuffer* /*response*/, ::grpc::experimental::ServerCallbackRpcController* controller) { controller->Finish(::grpc::Status(::grpc::StatusCode::UNIMPLEMENTED, "")); }
+    virtual ::grpc::experimental::ServerUnaryReactor* GetIntParam(::grpc::experimental::CallbackServerContext* /*context*/, const ::grpc::ByteBuffer* /*request*/, ::grpc::ByteBuffer* /*response*/) { return nullptr; }
   };
   template <class BaseClass>
   class ExperimentalWithRawCallbackMethod_SetIntParam : public BaseClass {
@@ -628,12 +600,7 @@ class ParamService final {
     ExperimentalWithRawCallbackMethod_SetIntParam() {
       ::grpc::Service::experimental().MarkMethodRawCallback(1,
         new ::grpc_impl::internal::CallbackUnaryHandler< ::grpc::ByteBuffer, ::grpc::ByteBuffer>(
-          [this](::grpc::ServerContext* context,
-                 const ::grpc::ByteBuffer* request,
-                 ::grpc::ByteBuffer* response,
-                 ::grpc::experimental::ServerCallbackRpcController* controller) {
-                   this->SetIntParam(context, request, response, controller);
-                 }));
+          [this](::grpc::experimental::CallbackServerContext* context, const ::grpc::ByteBuffer* request, ::grpc::ByteBuffer* response) { return this->SetIntParam(context, request, response); }));
     }
     ~ExperimentalWithRawCallbackMethod_SetIntParam() override {
       BaseClassMustBeDerivedFromService(this);
@@ -643,7 +610,7 @@ class ParamService final {
       abort();
       return ::grpc::Status(::grpc::StatusCode::UNIMPLEMENTED, "");
     }
-    virtual void SetIntParam(::grpc::ServerContext* /*context*/, const ::grpc::ByteBuffer* /*request*/, ::grpc::ByteBuffer* /*response*/, ::grpc::experimental::ServerCallbackRpcController* controller) { controller->Finish(::grpc::Status(::grpc::StatusCode::UNIMPLEMENTED, "")); }
+    virtual ::grpc::experimental::ServerUnaryReactor* SetIntParam(::grpc::experimental::CallbackServerContext* /*context*/, const ::grpc::ByteBuffer* /*request*/, ::grpc::ByteBuffer* /*response*/) { return nullptr; }
   };
   template <class BaseClass>
   class ExperimentalWithRawCallbackMethod_GetFloatParam : public BaseClass {
@@ -653,12 +620,7 @@ class ParamService final {
     ExperimentalWithRawCallbackMethod_GetFloatParam() {
       ::grpc::Service::experimental().MarkMethodRawCallback(2,
         new ::grpc_impl::internal::CallbackUnaryHandler< ::grpc::ByteBuffer, ::grpc::ByteBuffer>(
-          [this](::grpc::ServerContext* context,
-                 const ::grpc::ByteBuffer* request,
-                 ::grpc::ByteBuffer* response,
-                 ::grpc::experimental::ServerCallbackRpcController* controller) {
-                   this->GetFloatParam(context, request, response, controller);
-                 }));
+          [this](::grpc::experimental::CallbackServerContext* context, const ::grpc::ByteBuffer* request, ::grpc::ByteBuffer* response) { return this->GetFloatParam(context, request, response); }));
     }
     ~ExperimentalWithRawCallbackMethod_GetFloatParam() override {
       BaseClassMustBeDerivedFromService(this);
@@ -668,7 +630,7 @@ class ParamService final {
       abort();
       return ::grpc::Status(::grpc::StatusCode::UNIMPLEMENTED, "");
     }
-    virtual void GetFloatParam(::grpc::ServerContext* /*context*/, const ::grpc::ByteBuffer* /*request*/, ::grpc::ByteBuffer* /*response*/, ::grpc::experimental::ServerCallbackRpcController* controller) { controller->Finish(::grpc::Status(::grpc::StatusCode::UNIMPLEMENTED, "")); }
+    virtual ::grpc::experimental::ServerUnaryReactor* GetFloatParam(::grpc::experimental::CallbackServerContext* /*context*/, const ::grpc::ByteBuffer* /*request*/, ::grpc::ByteBuffer* /*response*/) { return nullptr; }
   };
   template <class BaseClass>
   class ExperimentalWithRawCallbackMethod_SetFloatParam : public BaseClass {
@@ -678,12 +640,7 @@ class ParamService final {
     ExperimentalWithRawCallbackMethod_SetFloatParam() {
       ::grpc::Service::experimental().MarkMethodRawCallback(3,
         new ::grpc_impl::internal::CallbackUnaryHandler< ::grpc::ByteBuffer, ::grpc::ByteBuffer>(
-          [this](::grpc::ServerContext* context,
-                 const ::grpc::ByteBuffer* request,
-                 ::grpc::ByteBuffer* response,
-                 ::grpc::experimental::ServerCallbackRpcController* controller) {
-                   this->SetFloatParam(context, request, response, controller);
-                 }));
+          [this](::grpc::experimental::CallbackServerContext* context, const ::grpc::ByteBuffer* request, ::grpc::ByteBuffer* response) { return this->SetFloatParam(context, request, response); }));
     }
     ~ExperimentalWithRawCallbackMethod_SetFloatParam() override {
       BaseClassMustBeDerivedFromService(this);
@@ -693,7 +650,7 @@ class ParamService final {
       abort();
       return ::grpc::Status(::grpc::StatusCode::UNIMPLEMENTED, "");
     }
-    virtual void SetFloatParam(::grpc::ServerContext* /*context*/, const ::grpc::ByteBuffer* /*request*/, ::grpc::ByteBuffer* /*response*/, ::grpc::experimental::ServerCallbackRpcController* controller) { controller->Finish(::grpc::Status(::grpc::StatusCode::UNIMPLEMENTED, "")); }
+    virtual ::grpc::experimental::ServerUnaryReactor* SetFloatParam(::grpc::experimental::CallbackServerContext* /*context*/, const ::grpc::ByteBuffer* /*request*/, ::grpc::ByteBuffer* /*response*/) { return nullptr; }
   };
   template <class BaseClass>
   class WithStreamedUnaryMethod_GetIntParam : public BaseClass {

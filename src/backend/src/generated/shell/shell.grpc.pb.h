@@ -13,10 +13,11 @@
 #include <grpcpp/impl/codegen/client_callback.h>
 #include <grpcpp/impl/codegen/client_context.h>
 #include <grpcpp/impl/codegen/completion_queue.h>
-#include <grpcpp/impl/codegen/method_handler_impl.h>
+#include <grpcpp/impl/codegen/method_handler.h>
 #include <grpcpp/impl/codegen/proto_utils.h>
 #include <grpcpp/impl/codegen/rpc_method.h>
 #include <grpcpp/impl/codegen/server_callback.h>
+#include <grpcpp/impl/codegen/server_callback_handlers.h>
 #include <grpcpp/impl/codegen/server_context.h>
 #include <grpcpp/impl/codegen/service_type.h>
 #include <grpcpp/impl/codegen/status.h>
@@ -142,13 +143,7 @@ class ShellService final {
     ExperimentalWithCallbackMethod_Send() {
       ::grpc::Service::experimental().MarkMethodCallback(0,
         new ::grpc_impl::internal::CallbackUnaryHandler< ::mavsdk::rpc::shell::SendRequest, ::mavsdk::rpc::shell::SendResponse>(
-          [this](::grpc::ServerContext* context,
-                 const ::mavsdk::rpc::shell::SendRequest* request,
-                 ::mavsdk::rpc::shell::SendResponse* response,
-                 ::grpc::experimental::ServerCallbackRpcController* controller) {
-                   return this->Send(context, request, response, controller);
-                 }));
-    }
+          [this](::grpc::experimental::CallbackServerContext* context, const ::mavsdk::rpc::shell::SendRequest* request, ::mavsdk::rpc::shell::SendResponse* response) { return this->Send(context, request, response); }));}
     void SetMessageAllocatorFor_Send(
         ::grpc::experimental::MessageAllocator< ::mavsdk::rpc::shell::SendRequest, ::mavsdk::rpc::shell::SendResponse>* allocator) {
       static_cast<::grpc_impl::internal::CallbackUnaryHandler< ::mavsdk::rpc::shell::SendRequest, ::mavsdk::rpc::shell::SendResponse>*>(
@@ -163,7 +158,7 @@ class ShellService final {
       abort();
       return ::grpc::Status(::grpc::StatusCode::UNIMPLEMENTED, "");
     }
-    virtual void Send(::grpc::ServerContext* /*context*/, const ::mavsdk::rpc::shell::SendRequest* /*request*/, ::mavsdk::rpc::shell::SendResponse* /*response*/, ::grpc::experimental::ServerCallbackRpcController* controller) { controller->Finish(::grpc::Status(::grpc::StatusCode::UNIMPLEMENTED, "")); }
+    virtual ::grpc::experimental::ServerUnaryReactor* Send(::grpc::experimental::CallbackServerContext* /*context*/, const ::mavsdk::rpc::shell::SendRequest* /*request*/, ::mavsdk::rpc::shell::SendResponse* /*response*/) { return nullptr; }
   };
   typedef ExperimentalWithCallbackMethod_Send<Service > ExperimentalCallbackService;
   template <class BaseClass>
@@ -211,12 +206,7 @@ class ShellService final {
     ExperimentalWithRawCallbackMethod_Send() {
       ::grpc::Service::experimental().MarkMethodRawCallback(0,
         new ::grpc_impl::internal::CallbackUnaryHandler< ::grpc::ByteBuffer, ::grpc::ByteBuffer>(
-          [this](::grpc::ServerContext* context,
-                 const ::grpc::ByteBuffer* request,
-                 ::grpc::ByteBuffer* response,
-                 ::grpc::experimental::ServerCallbackRpcController* controller) {
-                   this->Send(context, request, response, controller);
-                 }));
+          [this](::grpc::experimental::CallbackServerContext* context, const ::grpc::ByteBuffer* request, ::grpc::ByteBuffer* response) { return this->Send(context, request, response); }));
     }
     ~ExperimentalWithRawCallbackMethod_Send() override {
       BaseClassMustBeDerivedFromService(this);
@@ -226,7 +216,7 @@ class ShellService final {
       abort();
       return ::grpc::Status(::grpc::StatusCode::UNIMPLEMENTED, "");
     }
-    virtual void Send(::grpc::ServerContext* /*context*/, const ::grpc::ByteBuffer* /*request*/, ::grpc::ByteBuffer* /*response*/, ::grpc::experimental::ServerCallbackRpcController* controller) { controller->Finish(::grpc::Status(::grpc::StatusCode::UNIMPLEMENTED, "")); }
+    virtual ::grpc::experimental::ServerUnaryReactor* Send(::grpc::experimental::CallbackServerContext* /*context*/, const ::grpc::ByteBuffer* /*request*/, ::grpc::ByteBuffer* /*response*/) { return nullptr; }
   };
   template <class BaseClass>
   class WithStreamedUnaryMethod_Send : public BaseClass {
