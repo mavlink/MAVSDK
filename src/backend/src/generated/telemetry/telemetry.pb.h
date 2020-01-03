@@ -384,12 +384,18 @@ enum FlightMode : int {
   LAND = 6,
   OFFBOARD = 7,
   FOLLOW_ME = 8,
+  MANUAL = 9,
+  ALTCTL = 10,
+  POSCTL = 11,
+  ACRO = 12,
+  STABILIZED = 13,
+  RATTITUDE = 14,
   FlightMode_INT_MIN_SENTINEL_DO_NOT_USE_ = std::numeric_limits<::PROTOBUF_NAMESPACE_ID::int32>::min(),
   FlightMode_INT_MAX_SENTINEL_DO_NOT_USE_ = std::numeric_limits<::PROTOBUF_NAMESPACE_ID::int32>::max()
 };
 bool FlightMode_IsValid(int value);
 constexpr FlightMode FlightMode_MIN = UNKNOWN;
-constexpr FlightMode FlightMode_MAX = FOLLOW_ME;
+constexpr FlightMode FlightMode_MAX = RATTITUDE;
 constexpr int FlightMode_ARRAYSIZE = FlightMode_MAX + 1;
 
 const ::PROTOBUF_NAMESPACE_ID::EnumDescriptor* FlightMode_descriptor();
