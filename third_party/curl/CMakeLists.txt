@@ -35,7 +35,7 @@ endforeach()
 
 ExternalProject_add(
     curl
-    URL https://github.com/curl/curl/archive/curl-7_66_0.zip
+    URL https://github.com/curl/curl/archive/curl-7_67_0.zip
     PREFIX curl
     CMAKE_ARGS "${CMAKE_ARGS}"
     )

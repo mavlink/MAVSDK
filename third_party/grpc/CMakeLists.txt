@@ -41,7 +41,7 @@ endforeach()
 ExternalProject_add(
     grpc
     GIT_REPOSITORY https://github.com/grpc/grpc
-    GIT_TAG v1.24.0
+    GIT_TAG v1.26.0
     PREFIX grpc
     CMAKE_ARGS "${CMAKE_ARGS}"
     )
