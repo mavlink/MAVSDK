@@ -3,7 +3,7 @@ cmake_minimum_required(VERSION 3.1)
 project(external-libressl)
 include(ExternalProject)
 
-set(LIBRESSL_VERSION 3.0.1)
+set(LIBRESSL_VERSION 3.0.2)
 
 list(APPEND CMAKE_ARGS
     "${CL_ARGS}"
