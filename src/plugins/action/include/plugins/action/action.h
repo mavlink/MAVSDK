@@ -102,7 +102,18 @@ public:
      *
      * @return Action::Result of request.
      */
-    Action::Result reboot() const;
+    Result reboot() const;
+
+    /**
+     * @brief Send command to *shut down* the drone components.
+     *
+     * This will shut down the autopilot, onboard computer, camera and gimbal.
+     * This command should only be used when the autopilot is disarmed and autopilots commonly
+     * reject it if they are not already ready to shut down.
+     *
+     * @return Action::Result of request.
+     */
+    Result shutdown() const;
 
     /**
      * @brief Send command to *take off and hover* (synchronous).

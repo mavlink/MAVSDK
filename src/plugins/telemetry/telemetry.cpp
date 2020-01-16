@@ -407,7 +407,20 @@ std::string Telemetry::flight_mode_str(FlightMode flight_mode)
             return "Offboard";
         case FlightMode::FOLLOW_ME:
             return "FollowMe";
+        case FlightMode::MANUAL:
+            return "Manual";
+        case FlightMode::POSCTL:
+            return "Position";
+        case FlightMode::ALTCTL:
+            return "Altitude";
+        case FlightMode::RATTITUDE:
+            return "Rattitude";
+        case FlightMode::ACRO:
+            return "Acro";
+        case FlightMode::STABILIZED:
+            return "Stabilized";
         case FlightMode::UNKNOWN:
+            return "Unknown";
         default:
             return "Unknown";
     }

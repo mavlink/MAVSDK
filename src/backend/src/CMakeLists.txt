@@ -33,7 +33,7 @@ if(IOS)
     list(APPEND BACKEND_SOURCES module.modulemap)
 endif()
 
-if(IOS)
+if(IOS OR ANDROID)
     add_library(mavsdk_server SHARED ${BACKEND_SOURCES})
 else()
     add_library(mavsdk_server ${BACKEND_SOURCES})
@@ -68,16 +68,8 @@ target_include_directories(mavsdk_server
     $<INSTALL_INTERFACE:include>
 )
 
-if(IOS)
-    set_target_properties(mavsdk_server PROPERTIES
-        FRAMEWORK TRUE
-        BUILD_WITH_INSTALL_RPATH TRUE
-        INSTALL_NAME_DIR @rpath
-        PUBLIC_HEADER backend_api.h
-        #XCODE_ATTRIBUTE_CODE_SIGN_IDENTITY "iPhone Developer"
-        MACOSX_FRAMEWORK_INFO_PLIST ${PROJECT_SOURCE_DIR}/backend/cmake/MacOSXFrameworkInfo.plist.in
-    )
-else()
+# Build and install mavsdk_server for all but iOS and Android
+if(NOT IOS AND NOT ANDROID)
     add_executable(mavsdk_server_bin
         mavsdk_server.cpp
     )
@@ -100,8 +92,24 @@ else()
         EXPORT mavsdk-targets
         RUNTIME DESTINATION ${CMAKE_INSTALL_BINDIR}
     )
+endif()
 
-    if(BUILD_SHARED_LIBS)
+# iOS builds mavsdk_server.framework
+if(IOS)
+    set_target_properties(mavsdk_server PROPERTIES
+        FRAMEWORK TRUE
+        BUILD_WITH_INSTALL_RPATH TRUE
+        INSTALL_NAME_DIR @rpath
+        PUBLIC_HEADER backend_api.h
+        #XCODE_ATTRIBUTE_CODE_SIGN_IDENTITY "iPhone Developer"
+        MACOSX_FRAMEWORK_INFO_PLIST ${PROJECT_SOURCE_DIR}/backend/cmake/MacOSXFrameworkInfo.plist.in
+    )
+endif()
+
+if(NOT IOS)
+    # Install libmavsdk_server when built as a shared lib. This happens when
+    # BUILD_SHARED_LIBS is set to 'ON', and it always happens on ANDROID.
+    if(ANDROID OR BUILD_SHARED_LIBS)
         install(TARGETS mavsdk_server
             EXPORT mavsdk-targets
             LIBRARY DESTINATION ${CMAKE_INSTALL_LIBDIR}

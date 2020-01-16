@@ -13,10 +13,11 @@
 #include <grpcpp/impl/codegen/client_callback.h>
 #include <grpcpp/impl/codegen/client_context.h>
 #include <grpcpp/impl/codegen/completion_queue.h>
-#include <grpcpp/impl/codegen/method_handler_impl.h>
+#include <grpcpp/impl/codegen/method_handler.h>
 #include <grpcpp/impl/codegen/proto_utils.h>
 #include <grpcpp/impl/codegen/rpc_method.h>
 #include <grpcpp/impl/codegen/server_callback.h>
+#include <grpcpp/impl/codegen/server_callback_handlers.h>
 #include <grpcpp/impl/codegen/server_context.h>
 #include <grpcpp/impl/codegen/service_type.h>
 #include <grpcpp/impl/codegen/status.h>
@@ -990,13 +991,7 @@ class ActionService final {
     ExperimentalWithCallbackMethod_Arm() {
       ::grpc::Service::experimental().MarkMethodCallback(0,
         new ::grpc_impl::internal::CallbackUnaryHandler< ::mavsdk::rpc::action::ArmRequest, ::mavsdk::rpc::action::ArmResponse>(
-          [this](::grpc::ServerContext* context,
-                 const ::mavsdk::rpc::action::ArmRequest* request,
-                 ::mavsdk::rpc::action::ArmResponse* response,
-                 ::grpc::experimental::ServerCallbackRpcController* controller) {
-                   return this->Arm(context, request, response, controller);
-                 }));
-    }
+          [this](::grpc::experimental::CallbackServerContext* context, const ::mavsdk::rpc::action::ArmRequest* request, ::mavsdk::rpc::action::ArmResponse* response) { return this->Arm(context, request, response); }));}
     void SetMessageAllocatorFor_Arm(
         ::grpc::experimental::MessageAllocator< ::mavsdk::rpc::action::ArmRequest, ::mavsdk::rpc::action::ArmResponse>* allocator) {
       static_cast<::grpc_impl::internal::CallbackUnaryHandler< ::mavsdk::rpc::action::ArmRequest, ::mavsdk::rpc::action::ArmResponse>*>(
@@ -1011,7 +1006,7 @@ class ActionService final {
       abort();
       return ::grpc::Status(::grpc::StatusCode::UNIMPLEMENTED, "");
     }
-    virtual void Arm(::grpc::ServerContext* /*context*/, const ::mavsdk::rpc::action::ArmRequest* /*request*/, ::mavsdk::rpc::action::ArmResponse* /*response*/, ::grpc::experimental::ServerCallbackRpcController* controller) { controller->Finish(::grpc::Status(::grpc::StatusCode::UNIMPLEMENTED, "")); }
+    virtual ::grpc::experimental::ServerUnaryReactor* Arm(::grpc::experimental::CallbackServerContext* /*context*/, const ::mavsdk::rpc::action::ArmRequest* /*request*/, ::mavsdk::rpc::action::ArmResponse* /*response*/) { return nullptr; }
   };
   template <class BaseClass>
   class ExperimentalWithCallbackMethod_Disarm : public BaseClass {
@@ -1021,13 +1016,7 @@ class ActionService final {
     ExperimentalWithCallbackMethod_Disarm() {
       ::grpc::Service::experimental().MarkMethodCallback(1,
         new ::grpc_impl::internal::CallbackUnaryHandler< ::mavsdk::rpc::action::DisarmRequest, ::mavsdk::rpc::action::DisarmResponse>(
-          [this](::grpc::ServerContext* context,
-                 const ::mavsdk::rpc::action::DisarmRequest* request,
-                 ::mavsdk::rpc::action::DisarmResponse* response,
-                 ::grpc::experimental::ServerCallbackRpcController* controller) {
-                   return this->Disarm(context, request, response, controller);
-                 }));
-    }
+          [this](::grpc::experimental::CallbackServerContext* context, const ::mavsdk::rpc::action::DisarmRequest* request, ::mavsdk::rpc::action::DisarmResponse* response) { return this->Disarm(context, request, response); }));}
     void SetMessageAllocatorFor_Disarm(
         ::grpc::experimental::MessageAllocator< ::mavsdk::rpc::action::DisarmRequest, ::mavsdk::rpc::action::DisarmResponse>* allocator) {
       static_cast<::grpc_impl::internal::CallbackUnaryHandler< ::mavsdk::rpc::action::DisarmRequest, ::mavsdk::rpc::action::DisarmResponse>*>(
@@ -1042,7 +1031,7 @@ class ActionService final {
       abort();
       return ::grpc::Status(::grpc::StatusCode::UNIMPLEMENTED, "");
     }
-    virtual void Disarm(::grpc::ServerContext* /*context*/, const ::mavsdk::rpc::action::DisarmRequest* /*request*/, ::mavsdk::rpc::action::DisarmResponse* /*response*/, ::grpc::experimental::ServerCallbackRpcController* controller) { controller->Finish(::grpc::Status(::grpc::StatusCode::UNIMPLEMENTED, "")); }
+    virtual ::grpc::experimental::ServerUnaryReactor* Disarm(::grpc::experimental::CallbackServerContext* /*context*/, const ::mavsdk::rpc::action::DisarmRequest* /*request*/, ::mavsdk::rpc::action::DisarmResponse* /*response*/) { return nullptr; }
   };
   template <class BaseClass>
   class ExperimentalWithCallbackMethod_Takeoff : public BaseClass {
@@ -1052,13 +1041,7 @@ class ActionService final {
     ExperimentalWithCallbackMethod_Takeoff() {
       ::grpc::Service::experimental().MarkMethodCallback(2,
         new ::grpc_impl::internal::CallbackUnaryHandler< ::mavsdk::rpc::action::TakeoffRequest, ::mavsdk::rpc::action::TakeoffResponse>(
-          [this](::grpc::ServerContext* context,
-                 const ::mavsdk::rpc::action::TakeoffRequest* request,
-                 ::mavsdk::rpc::action::TakeoffResponse* response,
-                 ::grpc::experimental::ServerCallbackRpcController* controller) {
-                   return this->Takeoff(context, request, response, controller);
-                 }));
-    }
+          [this](::grpc::experimental::CallbackServerContext* context, const ::mavsdk::rpc::action::TakeoffRequest* request, ::mavsdk::rpc::action::TakeoffResponse* response) { return this->Takeoff(context, request, response); }));}
     void SetMessageAllocatorFor_Takeoff(
         ::grpc::experimental::MessageAllocator< ::mavsdk::rpc::action::TakeoffRequest, ::mavsdk::rpc::action::TakeoffResponse>* allocator) {
       static_cast<::grpc_impl::internal::CallbackUnaryHandler< ::mavsdk::rpc::action::TakeoffRequest, ::mavsdk::rpc::action::TakeoffResponse>*>(
@@ -1073,7 +1056,7 @@ class ActionService final {
       abort();
       return ::grpc::Status(::grpc::StatusCode::UNIMPLEMENTED, "");
     }
-    virtual void Takeoff(::grpc::ServerContext* /*context*/, const ::mavsdk::rpc::action::TakeoffRequest* /*request*/, ::mavsdk::rpc::action::TakeoffResponse* /*response*/, ::grpc::experimental::ServerCallbackRpcController* controller) { controller->Finish(::grpc::Status(::grpc::StatusCode::UNIMPLEMENTED, "")); }
+    virtual ::grpc::experimental::ServerUnaryReactor* Takeoff(::grpc::experimental::CallbackServerContext* /*context*/, const ::mavsdk::rpc::action::TakeoffRequest* /*request*/, ::mavsdk::rpc::action::TakeoffResponse* /*response*/) { return nullptr; }
   };
   template <class BaseClass>
   class ExperimentalWithCallbackMethod_Land : public BaseClass {
@@ -1083,13 +1066,7 @@ class ActionService final {
     ExperimentalWithCallbackMethod_Land() {
       ::grpc::Service::experimental().MarkMethodCallback(3,
         new ::grpc_impl::internal::CallbackUnaryHandler< ::mavsdk::rpc::action::LandRequest, ::mavsdk::rpc::action::LandResponse>(
-          [this](::grpc::ServerContext* context,
-                 const ::mavsdk::rpc::action::LandRequest* request,
-                 ::mavsdk::rpc::action::LandResponse* response,
-                 ::grpc::experimental::ServerCallbackRpcController* controller) {
-                   return this->Land(context, request, response, controller);
-                 }));
-    }
+          [this](::grpc::experimental::CallbackServerContext* context, const ::mavsdk::rpc::action::LandRequest* request, ::mavsdk::rpc::action::LandResponse* response) { return this->Land(context, request, response); }));}
     void SetMessageAllocatorFor_Land(
         ::grpc::experimental::MessageAllocator< ::mavsdk::rpc::action::LandRequest, ::mavsdk::rpc::action::LandResponse>* allocator) {
       static_cast<::grpc_impl::internal::CallbackUnaryHandler< ::mavsdk::rpc::action::LandRequest, ::mavsdk::rpc::action::LandResponse>*>(
@@ -1104,7 +1081,7 @@ class ActionService final {
       abort();
       return ::grpc::Status(::grpc::StatusCode::UNIMPLEMENTED, "");
     }
-    virtual void Land(::grpc::ServerContext* /*context*/, const ::mavsdk::rpc::action::LandRequest* /*request*/, ::mavsdk::rpc::action::LandResponse* /*response*/, ::grpc::experimental::ServerCallbackRpcController* controller) { controller->Finish(::grpc::Status(::grpc::StatusCode::UNIMPLEMENTED, "")); }
+    virtual ::grpc::experimental::ServerUnaryReactor* Land(::grpc::experimental::CallbackServerContext* /*context*/, const ::mavsdk::rpc::action::LandRequest* /*request*/, ::mavsdk::rpc::action::LandResponse* /*response*/) { return nullptr; }
   };
   template <class BaseClass>
   class ExperimentalWithCallbackMethod_Reboot : public BaseClass {
@@ -1114,13 +1091,7 @@ class ActionService final {
     ExperimentalWithCallbackMethod_Reboot() {
       ::grpc::Service::experimental().MarkMethodCallback(4,
         new ::grpc_impl::internal::CallbackUnaryHandler< ::mavsdk::rpc::action::RebootRequest, ::mavsdk::rpc::action::RebootResponse>(
-          [this](::grpc::ServerContext* context,
-                 const ::mavsdk::rpc::action::RebootRequest* request,
-                 ::mavsdk::rpc::action::RebootResponse* response,
-                 ::grpc::experimental::ServerCallbackRpcController* controller) {
-                   return this->Reboot(context, request, response, controller);
-                 }));
-    }
+          [this](::grpc::experimental::CallbackServerContext* context, const ::mavsdk::rpc::action::RebootRequest* request, ::mavsdk::rpc::action::RebootResponse* response) { return this->Reboot(context, request, response); }));}
     void SetMessageAllocatorFor_Reboot(
         ::grpc::experimental::MessageAllocator< ::mavsdk::rpc::action::RebootRequest, ::mavsdk::rpc::action::RebootResponse>* allocator) {
       static_cast<::grpc_impl::internal::CallbackUnaryHandler< ::mavsdk::rpc::action::RebootRequest, ::mavsdk::rpc::action::RebootResponse>*>(
@@ -1135,7 +1106,7 @@ class ActionService final {
       abort();
       return ::grpc::Status(::grpc::StatusCode::UNIMPLEMENTED, "");
     }
-    virtual void Reboot(::grpc::ServerContext* /*context*/, const ::mavsdk::rpc::action::RebootRequest* /*request*/, ::mavsdk::rpc::action::RebootResponse* /*response*/, ::grpc::experimental::ServerCallbackRpcController* controller) { controller->Finish(::grpc::Status(::grpc::StatusCode::UNIMPLEMENTED, "")); }
+    virtual ::grpc::experimental::ServerUnaryReactor* Reboot(::grpc::experimental::CallbackServerContext* /*context*/, const ::mavsdk::rpc::action::RebootRequest* /*request*/, ::mavsdk::rpc::action::RebootResponse* /*response*/) { return nullptr; }
   };
   template <class BaseClass>
   class ExperimentalWithCallbackMethod_Kill : public BaseClass {
@@ -1145,13 +1116,7 @@ class ActionService final {
     ExperimentalWithCallbackMethod_Kill() {
       ::grpc::Service::experimental().MarkMethodCallback(5,
         new ::grpc_impl::internal::CallbackUnaryHandler< ::mavsdk::rpc::action::KillRequest, ::mavsdk::rpc::action::KillResponse>(
-          [this](::grpc::ServerContext* context,
-                 const ::mavsdk::rpc::action::KillRequest* request,
-                 ::mavsdk::rpc::action::KillResponse* response,
-                 ::grpc::experimental::ServerCallbackRpcController* controller) {
-                   return this->Kill(context, request, response, controller);
-                 }));
-    }
+          [this](::grpc::experimental::CallbackServerContext* context, const ::mavsdk::rpc::action::KillRequest* request, ::mavsdk::rpc::action::KillResponse* response) { return this->Kill(context, request, response); }));}
     void SetMessageAllocatorFor_Kill(
         ::grpc::experimental::MessageAllocator< ::mavsdk::rpc::action::KillRequest, ::mavsdk::rpc::action::KillResponse>* allocator) {
       static_cast<::grpc_impl::internal::CallbackUnaryHandler< ::mavsdk::rpc::action::KillRequest, ::mavsdk::rpc::action::KillResponse>*>(
@@ -1166,7 +1131,7 @@ class ActionService final {
       abort();
       return ::grpc::Status(::grpc::StatusCode::UNIMPLEMENTED, "");
     }
-    virtual void Kill(::grpc::ServerContext* /*context*/, const ::mavsdk::rpc::action::KillRequest* /*request*/, ::mavsdk::rpc::action::KillResponse* /*response*/, ::grpc::experimental::ServerCallbackRpcController* controller) { controller->Finish(::grpc::Status(::grpc::StatusCode::UNIMPLEMENTED, "")); }
+    virtual ::grpc::experimental::ServerUnaryReactor* Kill(::grpc::experimental::CallbackServerContext* /*context*/, const ::mavsdk::rpc::action::KillRequest* /*request*/, ::mavsdk::rpc::action::KillResponse* /*response*/) { return nullptr; }
   };
   template <class BaseClass>
   class ExperimentalWithCallbackMethod_ReturnToLaunch : public BaseClass {
@@ -1176,13 +1141,7 @@ class ActionService final {
     ExperimentalWithCallbackMethod_ReturnToLaunch() {
       ::grpc::Service::experimental().MarkMethodCallback(6,
         new ::grpc_impl::internal::CallbackUnaryHandler< ::mavsdk::rpc::action::ReturnToLaunchRequest, ::mavsdk::rpc::action::ReturnToLaunchResponse>(
-          [this](::grpc::ServerContext* context,
-                 const ::mavsdk::rpc::action::ReturnToLaunchRequest* request,
-                 ::mavsdk::rpc::action::ReturnToLaunchResponse* response,
-                 ::grpc::experimental::ServerCallbackRpcController* controller) {
-                   return this->ReturnToLaunch(context, request, response, controller);
-                 }));
-    }
+          [this](::grpc::experimental::CallbackServerContext* context, const ::mavsdk::rpc::action::ReturnToLaunchRequest* request, ::mavsdk::rpc::action::ReturnToLaunchResponse* response) { return this->ReturnToLaunch(context, request, response); }));}
     void SetMessageAllocatorFor_ReturnToLaunch(
         ::grpc::experimental::MessageAllocator< ::mavsdk::rpc::action::ReturnToLaunchRequest, ::mavsdk::rpc::action::ReturnToLaunchResponse>* allocator) {
       static_cast<::grpc_impl::internal::CallbackUnaryHandler< ::mavsdk::rpc::action::ReturnToLaunchRequest, ::mavsdk::rpc::action::ReturnToLaunchResponse>*>(
@@ -1197,7 +1156,7 @@ class ActionService final {
       abort();
       return ::grpc::Status(::grpc::StatusCode::UNIMPLEMENTED, "");
     }
-    virtual void ReturnToLaunch(::grpc::ServerContext* /*context*/, const ::mavsdk::rpc::action::ReturnToLaunchRequest* /*request*/, ::mavsdk::rpc::action::ReturnToLaunchResponse* /*response*/, ::grpc::experimental::ServerCallbackRpcController* controller) { controller->Finish(::grpc::Status(::grpc::StatusCode::UNIMPLEMENTED, "")); }
+    virtual ::grpc::experimental::ServerUnaryReactor* ReturnToLaunch(::grpc::experimental::CallbackServerContext* /*context*/, const ::mavsdk::rpc::action::ReturnToLaunchRequest* /*request*/, ::mavsdk::rpc::action::ReturnToLaunchResponse* /*response*/) { return nullptr; }
   };
   template <class BaseClass>
   class ExperimentalWithCallbackMethod_TransitionToFixedWing : public BaseClass {
@@ -1207,13 +1166,7 @@ class ActionService final {
     ExperimentalWithCallbackMethod_TransitionToFixedWing() {
       ::grpc::Service::experimental().MarkMethodCallback(7,
         new ::grpc_impl::internal::CallbackUnaryHandler< ::mavsdk::rpc::action::TransitionToFixedWingRequest, ::mavsdk::rpc::action::TransitionToFixedWingResponse>(
-          [this](::grpc::ServerContext* context,
-                 const ::mavsdk::rpc::action::TransitionToFixedWingRequest* request,
-                 ::mavsdk::rpc::action::TransitionToFixedWingResponse* response,
-                 ::grpc::experimental::ServerCallbackRpcController* controller) {
-                   return this->TransitionToFixedWing(context, request, response, controller);
-                 }));
-    }
+          [this](::grpc::experimental::CallbackServerContext* context, const ::mavsdk::rpc::action::TransitionToFixedWingRequest* request, ::mavsdk::rpc::action::TransitionToFixedWingResponse* response) { return this->TransitionToFixedWing(context, request, response); }));}
     void SetMessageAllocatorFor_TransitionToFixedWing(
         ::grpc::experimental::MessageAllocator< ::mavsdk::rpc::action::TransitionToFixedWingRequest, ::mavsdk::rpc::action::TransitionToFixedWingResponse>* allocator) {
       static_cast<::grpc_impl::internal::CallbackUnaryHandler< ::mavsdk::rpc::action::TransitionToFixedWingRequest, ::mavsdk::rpc::action::TransitionToFixedWingResponse>*>(
@@ -1228,7 +1181,7 @@ class ActionService final {
       abort();
       return ::grpc::Status(::grpc::StatusCode::UNIMPLEMENTED, "");
     }
-    virtual void TransitionToFixedWing(::grpc::ServerContext* /*context*/, const ::mavsdk::rpc::action::TransitionToFixedWingRequest* /*request*/, ::mavsdk::rpc::action::TransitionToFixedWingResponse* /*response*/, ::grpc::experimental::ServerCallbackRpcController* controller) { controller->Finish(::grpc::Status(::grpc::StatusCode::UNIMPLEMENTED, "")); }
+    virtual ::grpc::experimental::ServerUnaryReactor* TransitionToFixedWing(::grpc::experimental::CallbackServerContext* /*context*/, const ::mavsdk::rpc::action::TransitionToFixedWingRequest* /*request*/, ::mavsdk::rpc::action::TransitionToFixedWingResponse* /*response*/) { return nullptr; }
   };
   template <class BaseClass>
   class ExperimentalWithCallbackMethod_TransitionToMulticopter : public BaseClass {
@@ -1238,13 +1191,7 @@ class ActionService final {
     ExperimentalWithCallbackMethod_TransitionToMulticopter() {
       ::grpc::Service::experimental().MarkMethodCallback(8,
         new ::grpc_impl::internal::CallbackUnaryHandler< ::mavsdk::rpc::action::TransitionToMulticopterRequest, ::mavsdk::rpc::action::TransitionToMulticopterResponse>(
-          [this](::grpc::ServerContext* context,
-                 const ::mavsdk::rpc::action::TransitionToMulticopterRequest* request,
-                 ::mavsdk::rpc::action::TransitionToMulticopterResponse* response,
-                 ::grpc::experimental::ServerCallbackRpcController* controller) {
-                   return this->TransitionToMulticopter(context, request, response, controller);
-                 }));
-    }
+          [this](::grpc::experimental::CallbackServerContext* context, const ::mavsdk::rpc::action::TransitionToMulticopterRequest* request, ::mavsdk::rpc::action::TransitionToMulticopterResponse* response) { return this->TransitionToMulticopter(context, request, response); }));}
     void SetMessageAllocatorFor_TransitionToMulticopter(
         ::grpc::experimental::MessageAllocator< ::mavsdk::rpc::action::TransitionToMulticopterRequest, ::mavsdk::rpc::action::TransitionToMulticopterResponse>* allocator) {
       static_cast<::grpc_impl::internal::CallbackUnaryHandler< ::mavsdk::rpc::action::TransitionToMulticopterRequest, ::mavsdk::rpc::action::TransitionToMulticopterResponse>*>(
@@ -1259,7 +1206,7 @@ class ActionService final {
       abort();
       return ::grpc::Status(::grpc::StatusCode::UNIMPLEMENTED, "");
     }
-    virtual void TransitionToMulticopter(::grpc::ServerContext* /*context*/, const ::mavsdk::rpc::action::TransitionToMulticopterRequest* /*request*/, ::mavsdk::rpc::action::TransitionToMulticopterResponse* /*response*/, ::grpc::experimental::ServerCallbackRpcController* controller) { controller->Finish(::grpc::Status(::grpc::StatusCode::UNIMPLEMENTED, "")); }
+    virtual ::grpc::experimental::ServerUnaryReactor* TransitionToMulticopter(::grpc::experimental::CallbackServerContext* /*context*/, const ::mavsdk::rpc::action::TransitionToMulticopterRequest* /*request*/, ::mavsdk::rpc::action::TransitionToMulticopterResponse* /*response*/) { return nullptr; }
   };
   template <class BaseClass>
   class ExperimentalWithCallbackMethod_GetTakeoffAltitude : public BaseClass {
@@ -1269,13 +1216,7 @@ class ActionService final {
     ExperimentalWithCallbackMethod_GetTakeoffAltitude() {
       ::grpc::Service::experimental().MarkMethodCallback(9,
         new ::grpc_impl::internal::CallbackUnaryHandler< ::mavsdk::rpc::action::GetTakeoffAltitudeRequest, ::mavsdk::rpc::action::GetTakeoffAltitudeResponse>(
-          [this](::grpc::ServerContext* context,
-                 const ::mavsdk::rpc::action::GetTakeoffAltitudeRequest* request,
-                 ::mavsdk::rpc::action::GetTakeoffAltitudeResponse* response,
-                 ::grpc::experimental::ServerCallbackRpcController* controller) {
-                   return this->GetTakeoffAltitude(context, request, response, controller);
-                 }));
-    }
+          [this](::grpc::experimental::CallbackServerContext* context, const ::mavsdk::rpc::action::GetTakeoffAltitudeRequest* request, ::mavsdk::rpc::action::GetTakeoffAltitudeResponse* response) { return this->GetTakeoffAltitude(context, request, response); }));}
     void SetMessageAllocatorFor_GetTakeoffAltitude(
         ::grpc::experimental::MessageAllocator< ::mavsdk::rpc::action::GetTakeoffAltitudeRequest, ::mavsdk::rpc::action::GetTakeoffAltitudeResponse>* allocator) {
       static_cast<::grpc_impl::internal::CallbackUnaryHandler< ::mavsdk::rpc::action::GetTakeoffAltitudeRequest, ::mavsdk::rpc::action::GetTakeoffAltitudeResponse>*>(
@@ -1290,7 +1231,7 @@ class ActionService final {
       abort();
       return ::grpc::Status(::grpc::StatusCode::UNIMPLEMENTED, "");
     }
-    virtual void GetTakeoffAltitude(::grpc::ServerContext* /*context*/, const ::mavsdk::rpc::action::GetTakeoffAltitudeRequest* /*request*/, ::mavsdk::rpc::action::GetTakeoffAltitudeResponse* /*response*/, ::grpc::experimental::ServerCallbackRpcController* controller) { controller->Finish(::grpc::Status(::grpc::StatusCode::UNIMPLEMENTED, "")); }
+    virtual ::grpc::experimental::ServerUnaryReactor* GetTakeoffAltitude(::grpc::experimental::CallbackServerContext* /*context*/, const ::mavsdk::rpc::action::GetTakeoffAltitudeRequest* /*request*/, ::mavsdk::rpc::action::GetTakeoffAltitudeResponse* /*response*/) { return nullptr; }
   };
   template <class BaseClass>
   class ExperimentalWithCallbackMethod_SetTakeoffAltitude : public BaseClass {
@@ -1300,13 +1241,7 @@ class ActionService final {
     ExperimentalWithCallbackMethod_SetTakeoffAltitude() {
       ::grpc::Service::experimental().MarkMethodCallback(10,
         new ::grpc_impl::internal::CallbackUnaryHandler< ::mavsdk::rpc::action::SetTakeoffAltitudeRequest, ::mavsdk::rpc::action::SetTakeoffAltitudeResponse>(
-          [this](::grpc::ServerContext* context,
-                 const ::mavsdk::rpc::action::SetTakeoffAltitudeRequest* request,
-                 ::mavsdk::rpc::action::SetTakeoffAltitudeResponse* response,
-                 ::grpc::experimental::ServerCallbackRpcController* controller) {
-                   return this->SetTakeoffAltitude(context, request, response, controller);
-                 }));
-    }
+          [this](::grpc::experimental::CallbackServerContext* context, const ::mavsdk::rpc::action::SetTakeoffAltitudeRequest* request, ::mavsdk::rpc::action::SetTakeoffAltitudeResponse* response) { return this->SetTakeoffAltitude(context, request, response); }));}
     void SetMessageAllocatorFor_SetTakeoffAltitude(
         ::grpc::experimental::MessageAllocator< ::mavsdk::rpc::action::SetTakeoffAltitudeRequest, ::mavsdk::rpc::action::SetTakeoffAltitudeResponse>* allocator) {
       static_cast<::grpc_impl::internal::CallbackUnaryHandler< ::mavsdk::rpc::action::SetTakeoffAltitudeRequest, ::mavsdk::rpc::action::SetTakeoffAltitudeResponse>*>(
@@ -1321,7 +1256,7 @@ class ActionService final {
       abort();
       return ::grpc::Status(::grpc::StatusCode::UNIMPLEMENTED, "");
     }
-    virtual void SetTakeoffAltitude(::grpc::ServerContext* /*context*/, const ::mavsdk::rpc::action::SetTakeoffAltitudeRequest* /*request*/, ::mavsdk::rpc::action::SetTakeoffAltitudeResponse* /*response*/, ::grpc::experimental::ServerCallbackRpcController* controller) { controller->Finish(::grpc::Status(::grpc::StatusCode::UNIMPLEMENTED, "")); }
+    virtual ::grpc::experimental::ServerUnaryReactor* SetTakeoffAltitude(::grpc::experimental::CallbackServerContext* /*context*/, const ::mavsdk::rpc::action::SetTakeoffAltitudeRequest* /*request*/, ::mavsdk::rpc::action::SetTakeoffAltitudeResponse* /*response*/) { return nullptr; }
   };
   template <class BaseClass>
   class ExperimentalWithCallbackMethod_GetMaximumSpeed : public BaseClass {
@@ -1331,13 +1266,7 @@ class ActionService final {
     ExperimentalWithCallbackMethod_GetMaximumSpeed() {
       ::grpc::Service::experimental().MarkMethodCallback(11,
         new ::grpc_impl::internal::CallbackUnaryHandler< ::mavsdk::rpc::action::GetMaximumSpeedRequest, ::mavsdk::rpc::action::GetMaximumSpeedResponse>(
-          [this](::grpc::ServerContext* context,
-                 const ::mavsdk::rpc::action::GetMaximumSpeedRequest* request,
-                 ::mavsdk::rpc::action::GetMaximumSpeedResponse* response,
-                 ::grpc::experimental::ServerCallbackRpcController* controller) {
-                   return this->GetMaximumSpeed(context, request, response, controller);
-                 }));
-    }
+          [this](::grpc::experimental::CallbackServerContext* context, const ::mavsdk::rpc::action::GetMaximumSpeedRequest* request, ::mavsdk::rpc::action::GetMaximumSpeedResponse* response) { return this->GetMaximumSpeed(context, request, response); }));}
     void SetMessageAllocatorFor_GetMaximumSpeed(
         ::grpc::experimental::MessageAllocator< ::mavsdk::rpc::action::GetMaximumSpeedRequest, ::mavsdk::rpc::action::GetMaximumSpeedResponse>* allocator) {
       static_cast<::grpc_impl::internal::CallbackUnaryHandler< ::mavsdk::rpc::action::GetMaximumSpeedRequest, ::mavsdk::rpc::action::GetMaximumSpeedResponse>*>(
@@ -1352,7 +1281,7 @@ class ActionService final {
       abort();
       return ::grpc::Status(::grpc::StatusCode::UNIMPLEMENTED, "");
     }
-    virtual void GetMaximumSpeed(::grpc::ServerContext* /*context*/, const ::mavsdk::rpc::action::GetMaximumSpeedRequest* /*request*/, ::mavsdk::rpc::action::GetMaximumSpeedResponse* /*response*/, ::grpc::experimental::ServerCallbackRpcController* controller) { controller->Finish(::grpc::Status(::grpc::StatusCode::UNIMPLEMENTED, "")); }
+    virtual ::grpc::experimental::ServerUnaryReactor* GetMaximumSpeed(::grpc::experimental::CallbackServerContext* /*context*/, const ::mavsdk::rpc::action::GetMaximumSpeedRequest* /*request*/, ::mavsdk::rpc::action::GetMaximumSpeedResponse* /*response*/) { return nullptr; }
   };
   template <class BaseClass>
   class ExperimentalWithCallbackMethod_SetMaximumSpeed : public BaseClass {
@@ -1362,13 +1291,7 @@ class ActionService final {
     ExperimentalWithCallbackMethod_SetMaximumSpeed() {
       ::grpc::Service::experimental().MarkMethodCallback(12,
         new ::grpc_impl::internal::CallbackUnaryHandler< ::mavsdk::rpc::action::SetMaximumSpeedRequest, ::mavsdk::rpc::action::SetMaximumSpeedResponse>(
-          [this](::grpc::ServerContext* context,
-                 const ::mavsdk::rpc::action::SetMaximumSpeedRequest* request,
-                 ::mavsdk::rpc::action::SetMaximumSpeedResponse* response,
-                 ::grpc::experimental::ServerCallbackRpcController* controller) {
-                   return this->SetMaximumSpeed(context, request, response, controller);
-                 }));
-    }
+          [this](::grpc::experimental::CallbackServerContext* context, const ::mavsdk::rpc::action::SetMaximumSpeedRequest* request, ::mavsdk::rpc::action::SetMaximumSpeedResponse* response) { return this->SetMaximumSpeed(context, request, response); }));}
     void SetMessageAllocatorFor_SetMaximumSpeed(
         ::grpc::experimental::MessageAllocator< ::mavsdk::rpc::action::SetMaximumSpeedRequest, ::mavsdk::rpc::action::SetMaximumSpeedResponse>* allocator) {
       static_cast<::grpc_impl::internal::CallbackUnaryHandler< ::mavsdk::rpc::action::SetMaximumSpeedRequest, ::mavsdk::rpc::action::SetMaximumSpeedResponse>*>(
@@ -1383,7 +1306,7 @@ class ActionService final {
       abort();
       return ::grpc::Status(::grpc::StatusCode::UNIMPLEMENTED, "");
     }
-    virtual void SetMaximumSpeed(::grpc::ServerContext* /*context*/, const ::mavsdk::rpc::action::SetMaximumSpeedRequest* /*request*/, ::mavsdk::rpc::action::SetMaximumSpeedResponse* /*response*/, ::grpc::experimental::ServerCallbackRpcController* controller) { controller->Finish(::grpc::Status(::grpc::StatusCode::UNIMPLEMENTED, "")); }
+    virtual ::grpc::experimental::ServerUnaryReactor* SetMaximumSpeed(::grpc::experimental::CallbackServerContext* /*context*/, const ::mavsdk::rpc::action::SetMaximumSpeedRequest* /*request*/, ::mavsdk::rpc::action::SetMaximumSpeedResponse* /*response*/) { return nullptr; }
   };
   template <class BaseClass>
   class ExperimentalWithCallbackMethod_GetReturnToLaunchAltitude : public BaseClass {
@@ -1393,13 +1316,7 @@ class ActionService final {
     ExperimentalWithCallbackMethod_GetReturnToLaunchAltitude() {
       ::grpc::Service::experimental().MarkMethodCallback(13,
         new ::grpc_impl::internal::CallbackUnaryHandler< ::mavsdk::rpc::action::GetReturnToLaunchAltitudeRequest, ::mavsdk::rpc::action::GetReturnToLaunchAltitudeResponse>(
-          [this](::grpc::ServerContext* context,
-                 const ::mavsdk::rpc::action::GetReturnToLaunchAltitudeRequest* request,
-                 ::mavsdk::rpc::action::GetReturnToLaunchAltitudeResponse* response,
-                 ::grpc::experimental::ServerCallbackRpcController* controller) {
-                   return this->GetReturnToLaunchAltitude(context, request, response, controller);
-                 }));
-    }
+          [this](::grpc::experimental::CallbackServerContext* context, const ::mavsdk::rpc::action::GetReturnToLaunchAltitudeRequest* request, ::mavsdk::rpc::action::GetReturnToLaunchAltitudeResponse* response) { return this->GetReturnToLaunchAltitude(context, request, response); }));}
     void SetMessageAllocatorFor_GetReturnToLaunchAltitude(
         ::grpc::experimental::MessageAllocator< ::mavsdk::rpc::action::GetReturnToLaunchAltitudeRequest, ::mavsdk::rpc::action::GetReturnToLaunchAltitudeResponse>* allocator) {
       static_cast<::grpc_impl::internal::CallbackUnaryHandler< ::mavsdk::rpc::action::GetReturnToLaunchAltitudeRequest, ::mavsdk::rpc::action::GetReturnToLaunchAltitudeResponse>*>(
@@ -1414,7 +1331,7 @@ class ActionService final {
       abort();
       return ::grpc::Status(::grpc::StatusCode::UNIMPLEMENTED, "");
     }
-    virtual void GetReturnToLaunchAltitude(::grpc::ServerContext* /*context*/, const ::mavsdk::rpc::action::GetReturnToLaunchAltitudeRequest* /*request*/, ::mavsdk::rpc::action::GetReturnToLaunchAltitudeResponse* /*response*/, ::grpc::experimental::ServerCallbackRpcController* controller) { controller->Finish(::grpc::Status(::grpc::StatusCode::UNIMPLEMENTED, "")); }
+    virtual ::grpc::experimental::ServerUnaryReactor* GetReturnToLaunchAltitude(::grpc::experimental::CallbackServerContext* /*context*/, const ::mavsdk::rpc::action::GetReturnToLaunchAltitudeRequest* /*request*/, ::mavsdk::rpc::action::GetReturnToLaunchAltitudeResponse* /*response*/) { return nullptr; }
   };
   template <class BaseClass>
   class ExperimentalWithCallbackMethod_SetReturnToLaunchAltitude : public BaseClass {
@@ -1424,13 +1341,7 @@ class ActionService final {
     ExperimentalWithCallbackMethod_SetReturnToLaunchAltitude() {
       ::grpc::Service::experimental().MarkMethodCallback(14,
         new ::grpc_impl::internal::CallbackUnaryHandler< ::mavsdk::rpc::action::SetReturnToLaunchAltitudeRequest, ::mavsdk::rpc::action::SetReturnToLaunchAltitudeResponse>(
-          [this](::grpc::ServerContext* context,
-                 const ::mavsdk::rpc::action::SetReturnToLaunchAltitudeRequest* request,
-                 ::mavsdk::rpc::action::SetReturnToLaunchAltitudeResponse* response,
-                 ::grpc::experimental::ServerCallbackRpcController* controller) {
-                   return this->SetReturnToLaunchAltitude(context, request, response, controller);
-                 }));
-    }
+          [this](::grpc::experimental::CallbackServerContext* context, const ::mavsdk::rpc::action::SetReturnToLaunchAltitudeRequest* request, ::mavsdk::rpc::action::SetReturnToLaunchAltitudeResponse* response) { return this->SetReturnToLaunchAltitude(context, request, response); }));}
     void SetMessageAllocatorFor_SetReturnToLaunchAltitude(
         ::grpc::experimental::MessageAllocator< ::mavsdk::rpc::action::SetReturnToLaunchAltitudeRequest, ::mavsdk::rpc::action::SetReturnToLaunchAltitudeResponse>* allocator) {
       static_cast<::grpc_impl::internal::CallbackUnaryHandler< ::mavsdk::rpc::action::SetReturnToLaunchAltitudeRequest, ::mavsdk::rpc::action::SetReturnToLaunchAltitudeResponse>*>(
@@ -1445,7 +1356,7 @@ class ActionService final {
       abort();
       return ::grpc::Status(::grpc::StatusCode::UNIMPLEMENTED, "");
     }
-    virtual void SetReturnToLaunchAltitude(::grpc::ServerContext* /*context*/, const ::mavsdk::rpc::action::SetReturnToLaunchAltitudeRequest* /*request*/, ::mavsdk::rpc::action::SetReturnToLaunchAltitudeResponse* /*response*/, ::grpc::experimental::ServerCallbackRpcController* controller) { controller->Finish(::grpc::Status(::grpc::StatusCode::UNIMPLEMENTED, "")); }
+    virtual ::grpc::experimental::ServerUnaryReactor* SetReturnToLaunchAltitude(::grpc::experimental::CallbackServerContext* /*context*/, const ::mavsdk::rpc::action::SetReturnToLaunchAltitudeRequest* /*request*/, ::mavsdk::rpc::action::SetReturnToLaunchAltitudeResponse* /*response*/) { return nullptr; }
   };
   typedef ExperimentalWithCallbackMethod_Arm<ExperimentalWithCallbackMethod_Disarm<ExperimentalWithCallbackMethod_Takeoff<ExperimentalWithCallbackMethod_Land<ExperimentalWithCallbackMethod_Reboot<ExperimentalWithCallbackMethod_Kill<ExperimentalWithCallbackMethod_ReturnToLaunch<ExperimentalWithCallbackMethod_TransitionToFixedWing<ExperimentalWithCallbackMethod_TransitionToMulticopter<ExperimentalWithCallbackMethod_GetTakeoffAltitude<ExperimentalWithCallbackMethod_SetTakeoffAltitude<ExperimentalWithCallbackMethod_GetMaximumSpeed<ExperimentalWithCallbackMethod_SetMaximumSpeed<ExperimentalWithCallbackMethod_GetReturnToLaunchAltitude<ExperimentalWithCallbackMethod_SetReturnToLaunchAltitude<Service > > > > > > > > > > > > > > > ExperimentalCallbackService;
   template <class BaseClass>
@@ -2011,12 +1922,7 @@ class ActionService final {
     ExperimentalWithRawCallbackMethod_Arm() {
       ::grpc::Service::experimental().MarkMethodRawCallback(0,
         new ::grpc_impl::internal::CallbackUnaryHandler< ::grpc::ByteBuffer, ::grpc::ByteBuffer>(
-          [this](::grpc::ServerContext* context,
-                 const ::grpc::ByteBuffer* request,
-                 ::grpc::ByteBuffer* response,
-                 ::grpc::experimental::ServerCallbackRpcController* controller) {
-                   this->Arm(context, request, response, controller);
-                 }));
+          [this](::grpc::experimental::CallbackServerContext* context, const ::grpc::ByteBuffer* request, ::grpc::ByteBuffer* response) { return this->Arm(context, request, response); }));
     }
     ~ExperimentalWithRawCallbackMethod_Arm() override {
       BaseClassMustBeDerivedFromService(this);
@@ -2026,7 +1932,7 @@ class ActionService final {
       abort();
       return ::grpc::Status(::grpc::StatusCode::UNIMPLEMENTED, "");
     }
-    virtual void Arm(::grpc::ServerContext* /*context*/, const ::grpc::ByteBuffer* /*request*/, ::grpc::ByteBuffer* /*response*/, ::grpc::experimental::ServerCallbackRpcController* controller) { controller->Finish(::grpc::Status(::grpc::StatusCode::UNIMPLEMENTED, "")); }
+    virtual ::grpc::experimental::ServerUnaryReactor* Arm(::grpc::experimental::CallbackServerContext* /*context*/, const ::grpc::ByteBuffer* /*request*/, ::grpc::ByteBuffer* /*response*/) { return nullptr; }
   };
   template <class BaseClass>
   class ExperimentalWithRawCallbackMethod_Disarm : public BaseClass {
@@ -2036,12 +1942,7 @@ class ActionService final {
     ExperimentalWithRawCallbackMethod_Disarm() {
       ::grpc::Service::experimental().MarkMethodRawCallback(1,
         new ::grpc_impl::internal::CallbackUnaryHandler< ::grpc::ByteBuffer, ::grpc::ByteBuffer>(
-          [this](::grpc::ServerContext* context,
-                 const ::grpc::ByteBuffer* request,
-                 ::grpc::ByteBuffer* response,
-                 ::grpc::experimental::ServerCallbackRpcController* controller) {
-                   this->Disarm(context, request, response, controller);
-                 }));
+          [this](::grpc::experimental::CallbackServerContext* context, const ::grpc::ByteBuffer* request, ::grpc::ByteBuffer* response) { return this->Disarm(context, request, response); }));
     }
     ~ExperimentalWithRawCallbackMethod_Disarm() override {
       BaseClassMustBeDerivedFromService(this);
@@ -2051,7 +1952,7 @@ class ActionService final {
       abort();
       return ::grpc::Status(::grpc::StatusCode::UNIMPLEMENTED, "");
     }
-    virtual void Disarm(::grpc::ServerContext* /*context*/, const ::grpc::ByteBuffer* /*request*/, ::grpc::ByteBuffer* /*response*/, ::grpc::experimental::ServerCallbackRpcController* controller) { controller->Finish(::grpc::Status(::grpc::StatusCode::UNIMPLEMENTED, "")); }
+    virtual ::grpc::experimental::ServerUnaryReactor* Disarm(::grpc::experimental::CallbackServerContext* /*context*/, const ::grpc::ByteBuffer* /*request*/, ::grpc::ByteBuffer* /*response*/) { return nullptr; }
   };
   template <class BaseClass>
   class ExperimentalWithRawCallbackMethod_Takeoff : public BaseClass {
@@ -2061,12 +1962,7 @@ class ActionService final {
     ExperimentalWithRawCallbackMethod_Takeoff() {
       ::grpc::Service::experimental().MarkMethodRawCallback(2,
         new ::grpc_impl::internal::CallbackUnaryHandler< ::grpc::ByteBuffer, ::grpc::ByteBuffer>(
-          [this](::grpc::ServerContext* context,
-                 const ::grpc::ByteBuffer* request,
-                 ::grpc::ByteBuffer* response,
-                 ::grpc::experimental::ServerCallbackRpcController* controller) {
-                   this->Takeoff(context, request, response, controller);
-                 }));
+          [this](::grpc::experimental::CallbackServerContext* context, const ::grpc::ByteBuffer* request, ::grpc::ByteBuffer* response) { return this->Takeoff(context, request, response); }));
     }
     ~ExperimentalWithRawCallbackMethod_Takeoff() override {
       BaseClassMustBeDerivedFromService(this);
@@ -2076,7 +1972,7 @@ class ActionService final {
       abort();
       return ::grpc::Status(::grpc::StatusCode::UNIMPLEMENTED, "");
     }
-    virtual void Takeoff(::grpc::ServerContext* /*context*/, const ::grpc::ByteBuffer* /*request*/, ::grpc::ByteBuffer* /*response*/, ::grpc::experimental::ServerCallbackRpcController* controller) { controller->Finish(::grpc::Status(::grpc::StatusCode::UNIMPLEMENTED, "")); }
+    virtual ::grpc::experimental::ServerUnaryReactor* Takeoff(::grpc::experimental::CallbackServerContext* /*context*/, const ::grpc::ByteBuffer* /*request*/, ::grpc::ByteBuffer* /*response*/) { return nullptr; }
   };
   template <class BaseClass>
   class ExperimentalWithRawCallbackMethod_Land : public BaseClass {
@@ -2086,12 +1982,7 @@ class ActionService final {
     ExperimentalWithRawCallbackMethod_Land() {
       ::grpc::Service::experimental().MarkMethodRawCallback(3,
         new ::grpc_impl::internal::CallbackUnaryHandler< ::grpc::ByteBuffer, ::grpc::ByteBuffer>(
-          [this](::grpc::ServerContext* context,
-                 const ::grpc::ByteBuffer* request,
-                 ::grpc::ByteBuffer* response,
-                 ::grpc::experimental::ServerCallbackRpcController* controller) {
-                   this->Land(context, request, response, controller);
-                 }));
+          [this](::grpc::experimental::CallbackServerContext* context, const ::grpc::ByteBuffer* request, ::grpc::ByteBuffer* response) { return this->Land(context, request, response); }));
     }
     ~ExperimentalWithRawCallbackMethod_Land() override {
       BaseClassMustBeDerivedFromService(this);
@@ -2101,7 +1992,7 @@ class ActionService final {
       abort();
       return ::grpc::Status(::grpc::StatusCode::UNIMPLEMENTED, "");
     }
-    virtual void Land(::grpc::ServerContext* /*context*/, const ::grpc::ByteBuffer* /*request*/, ::grpc::ByteBuffer* /*response*/, ::grpc::experimental::ServerCallbackRpcController* controller) { controller->Finish(::grpc::Status(::grpc::StatusCode::UNIMPLEMENTED, "")); }
+    virtual ::grpc::experimental::ServerUnaryReactor* Land(::grpc::experimental::CallbackServerContext* /*context*/, const ::grpc::ByteBuffer* /*request*/, ::grpc::ByteBuffer* /*response*/) { return nullptr; }
   };
   template <class BaseClass>
   class ExperimentalWithRawCallbackMethod_Reboot : public BaseClass {
@@ -2111,12 +2002,7 @@ class ActionService final {
     ExperimentalWithRawCallbackMethod_Reboot() {
       ::grpc::Service::experimental().MarkMethodRawCallback(4,
         new ::grpc_impl::internal::CallbackUnaryHandler< ::grpc::ByteBuffer, ::grpc::ByteBuffer>(
-          [this](::grpc::ServerContext* context,
-                 const ::grpc::ByteBuffer* request,
-                 ::grpc::ByteBuffer* response,
-                 ::grpc::experimental::ServerCallbackRpcController* controller) {
-                   this->Reboot(context, request, response, controller);
-                 }));
+          [this](::grpc::experimental::CallbackServerContext* context, const ::grpc::ByteBuffer* request, ::grpc::ByteBuffer* response) { return this->Reboot(context, request, response); }));
     }
     ~ExperimentalWithRawCallbackMethod_Reboot() override {
       BaseClassMustBeDerivedFromService(this);
@@ -2126,7 +2012,7 @@ class ActionService final {
       abort();
       return ::grpc::Status(::grpc::StatusCode::UNIMPLEMENTED, "");
     }
-    virtual void Reboot(::grpc::ServerContext* /*context*/, const ::grpc::ByteBuffer* /*request*/, ::grpc::ByteBuffer* /*response*/, ::grpc::experimental::ServerCallbackRpcController* controller) { controller->Finish(::grpc::Status(::grpc::StatusCode::UNIMPLEMENTED, "")); }
+    virtual ::grpc::experimental::ServerUnaryReactor* Reboot(::grpc::experimental::CallbackServerContext* /*context*/, const ::grpc::ByteBuffer* /*request*/, ::grpc::ByteBuffer* /*response*/) { return nullptr; }
   };
   template <class BaseClass>
   class ExperimentalWithRawCallbackMethod_Kill : public BaseClass {
@@ -2136,12 +2022,7 @@ class ActionService final {
     ExperimentalWithRawCallbackMethod_Kill() {
       ::grpc::Service::experimental().MarkMethodRawCallback(5,
         new ::grpc_impl::internal::CallbackUnaryHandler< ::grpc::ByteBuffer, ::grpc::ByteBuffer>(
-          [this](::grpc::ServerContext* context,
-                 const ::grpc::ByteBuffer* request,
-                 ::grpc::ByteBuffer* response,
-                 ::grpc::experimental::ServerCallbackRpcController* controller) {
-                   this->Kill(context, request, response, controller);
-                 }));
+          [this](::grpc::experimental::CallbackServerContext* context, const ::grpc::ByteBuffer* request, ::grpc::ByteBuffer* response) { return this->Kill(context, request, response); }));
     }
     ~ExperimentalWithRawCallbackMethod_Kill() override {
       BaseClassMustBeDerivedFromService(this);
@@ -2151,7 +2032,7 @@ class ActionService final {
       abort();
       return ::grpc::Status(::grpc::StatusCode::UNIMPLEMENTED, "");
     }
-    virtual void Kill(::grpc::ServerContext* /*context*/, const ::grpc::ByteBuffer* /*request*/, ::grpc::ByteBuffer* /*response*/, ::grpc::experimental::ServerCallbackRpcController* controller) { controller->Finish(::grpc::Status(::grpc::StatusCode::UNIMPLEMENTED, "")); }
+    virtual ::grpc::experimental::ServerUnaryReactor* Kill(::grpc::experimental::CallbackServerContext* /*context*/, const ::grpc::ByteBuffer* /*request*/, ::grpc::ByteBuffer* /*response*/) { return nullptr; }
   };
   template <class BaseClass>
   class ExperimentalWithRawCallbackMethod_ReturnToLaunch : public BaseClass {
@@ -2161,12 +2042,7 @@ class ActionService final {
     ExperimentalWithRawCallbackMethod_ReturnToLaunch() {
       ::grpc::Service::experimental().MarkMethodRawCallback(6,
         new ::grpc_impl::internal::CallbackUnaryHandler< ::grpc::ByteBuffer, ::grpc::ByteBuffer>(
-          [this](::grpc::ServerContext* context,
-                 const ::grpc::ByteBuffer* request,
-                 ::grpc::ByteBuffer* response,
-                 ::grpc::experimental::ServerCallbackRpcController* controller) {
-                   this->ReturnToLaunch(context, request, response, controller);
-                 }));
+          [this](::grpc::experimental::CallbackServerContext* context, const ::grpc::ByteBuffer* request, ::grpc::ByteBuffer* response) { return this->ReturnToLaunch(context, request, response); }));
     }
     ~ExperimentalWithRawCallbackMethod_ReturnToLaunch() override {
       BaseClassMustBeDerivedFromService(this);
@@ -2176,7 +2052,7 @@ class ActionService final {
       abort();
       return ::grpc::Status(::grpc::StatusCode::UNIMPLEMENTED, "");
     }
-    virtual void ReturnToLaunch(::grpc::ServerContext* /*context*/, const ::grpc::ByteBuffer* /*request*/, ::grpc::ByteBuffer* /*response*/, ::grpc::experimental::ServerCallbackRpcController* controller) { controller->Finish(::grpc::Status(::grpc::StatusCode::UNIMPLEMENTED, "")); }
+    virtual ::grpc::experimental::ServerUnaryReactor* ReturnToLaunch(::grpc::experimental::CallbackServerContext* /*context*/, const ::grpc::ByteBuffer* /*request*/, ::grpc::ByteBuffer* /*response*/) { return nullptr; }
   };
   template <class BaseClass>
   class ExperimentalWithRawCallbackMethod_TransitionToFixedWing : public BaseClass {
@@ -2186,12 +2062,7 @@ class ActionService final {
     ExperimentalWithRawCallbackMethod_TransitionToFixedWing() {
       ::grpc::Service::experimental().MarkMethodRawCallback(7,
         new ::grpc_impl::internal::CallbackUnaryHandler< ::grpc::ByteBuffer, ::grpc::ByteBuffer>(
-          [this](::grpc::ServerContext* context,
-                 const ::grpc::ByteBuffer* request,
-                 ::grpc::ByteBuffer* response,
-                 ::grpc::experimental::ServerCallbackRpcController* controller) {
-                   this->TransitionToFixedWing(context, request, response, controller);
-                 }));
+          [this](::grpc::experimental::CallbackServerContext* context, const ::grpc::ByteBuffer* request, ::grpc::ByteBuffer* response) { return this->TransitionToFixedWing(context, request, response); }));
     }
     ~ExperimentalWithRawCallbackMethod_TransitionToFixedWing() override {
       BaseClassMustBeDerivedFromService(this);
@@ -2201,7 +2072,7 @@ class ActionService final {
       abort();
       return ::grpc::Status(::grpc::StatusCode::UNIMPLEMENTED, "");
     }
-    virtual void TransitionToFixedWing(::grpc::ServerContext* /*context*/, const ::grpc::ByteBuffer* /*request*/, ::grpc::ByteBuffer* /*response*/, ::grpc::experimental::ServerCallbackRpcController* controller) { controller->Finish(::grpc::Status(::grpc::StatusCode::UNIMPLEMENTED, "")); }
+    virtual ::grpc::experimental::ServerUnaryReactor* TransitionToFixedWing(::grpc::experimental::CallbackServerContext* /*context*/, const ::grpc::ByteBuffer* /*request*/, ::grpc::ByteBuffer* /*response*/) { return nullptr; }
   };
   template <class BaseClass>
   class ExperimentalWithRawCallbackMethod_TransitionToMulticopter : public BaseClass {
@@ -2211,12 +2082,7 @@ class ActionService final {
     ExperimentalWithRawCallbackMethod_TransitionToMulticopter() {
       ::grpc::Service::experimental().MarkMethodRawCallback(8,
         new ::grpc_impl::internal::CallbackUnaryHandler< ::grpc::ByteBuffer, ::grpc::ByteBuffer>(
-          [this](::grpc::ServerContext* context,
-                 const ::grpc::ByteBuffer* request,
-                 ::grpc::ByteBuffer* response,
-                 ::grpc::experimental::ServerCallbackRpcController* controller) {
-                   this->TransitionToMulticopter(context, request, response, controller);
-                 }));
+          [this](::grpc::experimental::CallbackServerContext* context, const ::grpc::ByteBuffer* request, ::grpc::ByteBuffer* response) { return this->TransitionToMulticopter(context, request, response); }));
     }
     ~ExperimentalWithRawCallbackMethod_TransitionToMulticopter() override {
       BaseClassMustBeDerivedFromService(this);
@@ -2226,7 +2092,7 @@ class ActionService final {
       abort();
       return ::grpc::Status(::grpc::StatusCode::UNIMPLEMENTED, "");
     }
-    virtual void TransitionToMulticopter(::grpc::ServerContext* /*context*/, const ::grpc::ByteBuffer* /*request*/, ::grpc::ByteBuffer* /*response*/, ::grpc::experimental::ServerCallbackRpcController* controller) { controller->Finish(::grpc::Status(::grpc::StatusCode::UNIMPLEMENTED, "")); }
+    virtual ::grpc::experimental::ServerUnaryReactor* TransitionToMulticopter(::grpc::experimental::CallbackServerContext* /*context*/, const ::grpc::ByteBuffer* /*request*/, ::grpc::ByteBuffer* /*response*/) { return nullptr; }
   };
   template <class BaseClass>
   class ExperimentalWithRawCallbackMethod_GetTakeoffAltitude : public BaseClass {
@@ -2236,12 +2102,7 @@ class ActionService final {
     ExperimentalWithRawCallbackMethod_GetTakeoffAltitude() {
       ::grpc::Service::experimental().MarkMethodRawCallback(9,
         new ::grpc_impl::internal::CallbackUnaryHandler< ::grpc::ByteBuffer, ::grpc::ByteBuffer>(
-          [this](::grpc::ServerContext* context,
-                 const ::grpc::ByteBuffer* request,
-                 ::grpc::ByteBuffer* response,
-                 ::grpc::experimental::ServerCallbackRpcController* controller) {
-                   this->GetTakeoffAltitude(context, request, response, controller);
-                 }));
+          [this](::grpc::experimental::CallbackServerContext* context, const ::grpc::ByteBuffer* request, ::grpc::ByteBuffer* response) { return this->GetTakeoffAltitude(context, request, response); }));
     }
     ~ExperimentalWithRawCallbackMethod_GetTakeoffAltitude() override {
       BaseClassMustBeDerivedFromService(this);
@@ -2251,7 +2112,7 @@ class ActionService final {
       abort();
       return ::grpc::Status(::grpc::StatusCode::UNIMPLEMENTED, "");
     }
-    virtual void GetTakeoffAltitude(::grpc::ServerContext* /*context*/, const ::grpc::ByteBuffer* /*request*/, ::grpc::ByteBuffer* /*response*/, ::grpc::experimental::ServerCallbackRpcController* controller) { controller->Finish(::grpc::Status(::grpc::StatusCode::UNIMPLEMENTED, "")); }
+    virtual ::grpc::experimental::ServerUnaryReactor* GetTakeoffAltitude(::grpc::experimental::CallbackServerContext* /*context*/, const ::grpc::ByteBuffer* /*request*/, ::grpc::ByteBuffer* /*response*/) { return nullptr; }
   };
   template <class BaseClass>
   class ExperimentalWithRawCallbackMethod_SetTakeoffAltitude : public BaseClass {
@@ -2261,12 +2122,7 @@ class ActionService final {
     ExperimentalWithRawCallbackMethod_SetTakeoffAltitude() {
       ::grpc::Service::experimental().MarkMethodRawCallback(10,
         new ::grpc_impl::internal::CallbackUnaryHandler< ::grpc::ByteBuffer, ::grpc::ByteBuffer>(
-          [this](::grpc::ServerContext* context,
-                 const ::grpc::ByteBuffer* request,
-                 ::grpc::ByteBuffer* response,
-                 ::grpc::experimental::ServerCallbackRpcController* controller) {
-                   this->SetTakeoffAltitude(context, request, response, controller);
-                 }));
+          [this](::grpc::experimental::CallbackServerContext* context, const ::grpc::ByteBuffer* request, ::grpc::ByteBuffer* response) { return this->SetTakeoffAltitude(context, request, response); }));
     }
     ~ExperimentalWithRawCallbackMethod_SetTakeoffAltitude() override {
       BaseClassMustBeDerivedFromService(this);
@@ -2276,7 +2132,7 @@ class ActionService final {
       abort();
       return ::grpc::Status(::grpc::StatusCode::UNIMPLEMENTED, "");
     }
-    virtual void SetTakeoffAltitude(::grpc::ServerContext* /*context*/, const ::grpc::ByteBuffer* /*request*/, ::grpc::ByteBuffer* /*response*/, ::grpc::experimental::ServerCallbackRpcController* controller) { controller->Finish(::grpc::Status(::grpc::StatusCode::UNIMPLEMENTED, "")); }
+    virtual ::grpc::experimental::ServerUnaryReactor* SetTakeoffAltitude(::grpc::experimental::CallbackServerContext* /*context*/, const ::grpc::ByteBuffer* /*request*/, ::grpc::ByteBuffer* /*response*/) { return nullptr; }
   };
   template <class BaseClass>
   class ExperimentalWithRawCallbackMethod_GetMaximumSpeed : public BaseClass {
@@ -2286,12 +2142,7 @@ class ActionService final {
     ExperimentalWithRawCallbackMethod_GetMaximumSpeed() {
       ::grpc::Service::experimental().MarkMethodRawCallback(11,
         new ::grpc_impl::internal::CallbackUnaryHandler< ::grpc::ByteBuffer, ::grpc::ByteBuffer>(
-          [this](::grpc::ServerContext* context,
-                 const ::grpc::ByteBuffer* request,
-                 ::grpc::ByteBuffer* response,
-                 ::grpc::experimental::ServerCallbackRpcController* controller) {
-                   this->GetMaximumSpeed(context, request, response, controller);
-                 }));
+          [this](::grpc::experimental::CallbackServerContext* context, const ::grpc::ByteBuffer* request, ::grpc::ByteBuffer* response) { return this->GetMaximumSpeed(context, request, response); }));
     }
     ~ExperimentalWithRawCallbackMethod_GetMaximumSpeed() override {
       BaseClassMustBeDerivedFromService(this);
@@ -2301,7 +2152,7 @@ class ActionService final {
       abort();
       return ::grpc::Status(::grpc::StatusCode::UNIMPLEMENTED, "");
     }
-    virtual void GetMaximumSpeed(::grpc::ServerContext* /*context*/, const ::grpc::ByteBuffer* /*request*/, ::grpc::ByteBuffer* /*response*/, ::grpc::experimental::ServerCallbackRpcController* controller) { controller->Finish(::grpc::Status(::grpc::StatusCode::UNIMPLEMENTED, "")); }
+    virtual ::grpc::experimental::ServerUnaryReactor* GetMaximumSpeed(::grpc::experimental::CallbackServerContext* /*context*/, const ::grpc::ByteBuffer* /*request*/, ::grpc::ByteBuffer* /*response*/) { return nullptr; }
   };
   template <class BaseClass>
   class ExperimentalWithRawCallbackMethod_SetMaximumSpeed : public BaseClass {
@@ -2311,12 +2162,7 @@ class ActionService final {
     ExperimentalWithRawCallbackMethod_SetMaximumSpeed() {
       ::grpc::Service::experimental().MarkMethodRawCallback(12,
         new ::grpc_impl::internal::CallbackUnaryHandler< ::grpc::ByteBuffer, ::grpc::ByteBuffer>(
-          [this](::grpc::ServerContext* context,
-                 const ::grpc::ByteBuffer* request,
-                 ::grpc::ByteBuffer* response,
-                 ::grpc::experimental::ServerCallbackRpcController* controller) {
-                   this->SetMaximumSpeed(context, request, response, controller);
-                 }));
+          [this](::grpc::experimental::CallbackServerContext* context, const ::grpc::ByteBuffer* request, ::grpc::ByteBuffer* response) { return this->SetMaximumSpeed(context, request, response); }));
     }
     ~ExperimentalWithRawCallbackMethod_SetMaximumSpeed() override {
       BaseClassMustBeDerivedFromService(this);
@@ -2326,7 +2172,7 @@ class ActionService final {
       abort();
       return ::grpc::Status(::grpc::StatusCode::UNIMPLEMENTED, "");
     }
-    virtual void SetMaximumSpeed(::grpc::ServerContext* /*context*/, const ::grpc::ByteBuffer* /*request*/, ::grpc::ByteBuffer* /*response*/, ::grpc::experimental::ServerCallbackRpcController* controller) { controller->Finish(::grpc::Status(::grpc::StatusCode::UNIMPLEMENTED, "")); }
+    virtual ::grpc::experimental::ServerUnaryReactor* SetMaximumSpeed(::grpc::experimental::CallbackServerContext* /*context*/, const ::grpc::ByteBuffer* /*request*/, ::grpc::ByteBuffer* /*response*/) { return nullptr; }
   };
   template <class BaseClass>
   class ExperimentalWithRawCallbackMethod_GetReturnToLaunchAltitude : public BaseClass {
@@ -2336,12 +2182,7 @@ class ActionService final {
     ExperimentalWithRawCallbackMethod_GetReturnToLaunchAltitude() {
       ::grpc::Service::experimental().MarkMethodRawCallback(13,
         new ::grpc_impl::internal::CallbackUnaryHandler< ::grpc::ByteBuffer, ::grpc::ByteBuffer>(
-          [this](::grpc::ServerContext* context,
-                 const ::grpc::ByteBuffer* request,
-                 ::grpc::ByteBuffer* response,
-                 ::grpc::experimental::ServerCallbackRpcController* controller) {
-                   this->GetReturnToLaunchAltitude(context, request, response, controller);
-                 }));
+          [this](::grpc::experimental::CallbackServerContext* context, const ::grpc::ByteBuffer* request, ::grpc::ByteBuffer* response) { return this->GetReturnToLaunchAltitude(context, request, response); }));
     }
     ~ExperimentalWithRawCallbackMethod_GetReturnToLaunchAltitude() override {
       BaseClassMustBeDerivedFromService(this);
@@ -2351,7 +2192,7 @@ class ActionService final {
       abort();
       return ::grpc::Status(::grpc::StatusCode::UNIMPLEMENTED, "");
     }
-    virtual void GetReturnToLaunchAltitude(::grpc::ServerContext* /*context*/, const ::grpc::ByteBuffer* /*request*/, ::grpc::ByteBuffer* /*response*/, ::grpc::experimental::ServerCallbackRpcController* controller) { controller->Finish(::grpc::Status(::grpc::StatusCode::UNIMPLEMENTED, "")); }
+    virtual ::grpc::experimental::ServerUnaryReactor* GetReturnToLaunchAltitude(::grpc::experimental::CallbackServerContext* /*context*/, const ::grpc::ByteBuffer* /*request*/, ::grpc::ByteBuffer* /*response*/) { return nullptr; }
   };
   template <class BaseClass>
   class ExperimentalWithRawCallbackMethod_SetReturnToLaunchAltitude : public BaseClass {
@@ -2361,12 +2202,7 @@ class ActionService final {
     ExperimentalWithRawCallbackMethod_SetReturnToLaunchAltitude() {
       ::grpc::Service::experimental().MarkMethodRawCallback(14,
         new ::grpc_impl::internal::CallbackUnaryHandler< ::grpc::ByteBuffer, ::grpc::ByteBuffer>(
-          [this](::grpc::ServerContext* context,
-                 const ::grpc::ByteBuffer* request,
-                 ::grpc::ByteBuffer* response,
-                 ::grpc::experimental::ServerCallbackRpcController* controller) {
-                   this->SetReturnToLaunchAltitude(context, request, response, controller);
-                 }));
+          [this](::grpc::experimental::CallbackServerContext* context, const ::grpc::ByteBuffer* request, ::grpc::ByteBuffer* response) { return this->SetReturnToLaunchAltitude(context, request, response); }));
     }
     ~ExperimentalWithRawCallbackMethod_SetReturnToLaunchAltitude() override {
       BaseClassMustBeDerivedFromService(this);
@@ -2376,7 +2212,7 @@ class ActionService final {
       abort();
       return ::grpc::Status(::grpc::StatusCode::UNIMPLEMENTED, "");
     }
-    virtual void SetReturnToLaunchAltitude(::grpc::ServerContext* /*context*/, const ::grpc::ByteBuffer* /*request*/, ::grpc::ByteBuffer* /*response*/, ::grpc::experimental::ServerCallbackRpcController* controller) { controller->Finish(::grpc::Status(::grpc::StatusCode::UNIMPLEMENTED, "")); }
+    virtual ::grpc::experimental::ServerUnaryReactor* SetReturnToLaunchAltitude(::grpc::experimental::CallbackServerContext* /*context*/, const ::grpc::ByteBuffer* /*request*/, ::grpc::ByteBuffer* /*response*/) { return nullptr; }
   };
   template <class BaseClass>
   class WithStreamedUnaryMethod_Arm : public BaseClass {

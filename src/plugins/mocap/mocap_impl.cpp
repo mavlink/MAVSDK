@@ -193,7 +193,8 @@ bool MocapImpl::send_odometry()
         odometry.angular_velocity_body.yaw_rad_s,
         odometry.pose_covariance.data(),
         odometry.velocity_covariance.data(),
-        0);
+        0,
+        MAV_ESTIMATOR_TYPE_MOCAP);
 
     return _parent->send_message(message);
 }

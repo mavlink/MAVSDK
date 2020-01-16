@@ -978,6 +978,18 @@ TelemetryImpl::telemetry_flight_mode_from_flight_mode(SystemImpl::FlightMode fli
             return Telemetry::FlightMode::OFFBOARD;
         case SystemImpl::FlightMode::FOLLOW_ME:
             return Telemetry::FlightMode::FOLLOW_ME;
+        case SystemImpl::FlightMode::MANUAL:
+            return Telemetry::FlightMode::MANUAL;
+        case SystemImpl::FlightMode::POSCTL:
+            return Telemetry::FlightMode::POSCTL;
+        case SystemImpl::FlightMode::ALTCTL:
+            return Telemetry::FlightMode::ALTCTL;
+        case SystemImpl::FlightMode::RATTITUDE:
+            return Telemetry::FlightMode::RATTITUDE;
+        case SystemImpl::FlightMode::ACRO:
+            return Telemetry::FlightMode::ACRO;
+        case SystemImpl::FlightMode::STABILIZED:
+            return Telemetry::FlightMode::STABILIZED;
         default:
             return Telemetry::FlightMode::UNKNOWN;
     }

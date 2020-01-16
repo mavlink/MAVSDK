@@ -38,6 +38,12 @@ public:
         LAND,
         OFFBOARD,
         FOLLOW_ME,
+        MANUAL,
+        ALTCTL,
+        POSCTL,
+        ACRO,
+        RATTITUDE,
+        STABILIZED,
     };
 
     explicit SystemImpl(
@@ -310,8 +316,6 @@ private:
     std::unordered_set<uint8_t> _components{};
 
     ThreadPool _thread_pool{3};
-
-    bool _iterator_invalidated{false};
 
     std::mutex _param_changed_callbacks_mutex{};
     std::map<const void*, param_changed_callback_t> _param_changed_callbacks{};

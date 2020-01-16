@@ -323,6 +323,18 @@ public:
                 return rpc::telemetry::FlightMode::OFFBOARD;
             case mavsdk::Telemetry::FlightMode::FOLLOW_ME:
                 return rpc::telemetry::FlightMode::FOLLOW_ME;
+            case mavsdk::Telemetry::FlightMode::MANUAL:
+            	return rpc::telemetry::FlightMode::MANUAL;
+            case mavsdk::Telemetry::FlightMode::ALTCTL:
+                return rpc::telemetry::FlightMode::ALTCTL;
+            case mavsdk::Telemetry::FlightMode::POSCTL:
+                return rpc::telemetry::FlightMode::POSCTL;
+            case mavsdk::Telemetry::FlightMode::ACRO:
+                return rpc::telemetry::FlightMode::ACRO;
+            case mavsdk::Telemetry::FlightMode::STABILIZED:
+                return rpc::telemetry::FlightMode::STABILIZED;
+            case mavsdk::Telemetry::FlightMode::RATTITUDE:
+                return rpc::telemetry::FlightMode::RATTITUDE;
         }
     }
 
