@@ -96,6 +96,9 @@ void TelemetryImpl::init()
         std::bind(&TelemetryImpl::process_imu_reading_ned, this, _1),
         this);
 
+    _parent->register_mavlink_message_handler(
+        MAVLINK_MSG_ID_VFR_HUD, std::bind(&TelemetryImpl::process_vfr_hud, this, _1), this);
+
     _parent->register_param_changed_handler(
         std::bind(&TelemetryImpl::process_parameter_update, this, _1), this);
 }
@@ -231,6 +234,12 @@ Telemetry::Result TelemetryImpl::set_rate_imu_reading_ned(double rate_hz)
         _parent->set_msg_rate(MAVLINK_MSG_ID_HIGHRES_IMU, rate_hz));
 }
 
+Telemetry::Result TelemetryImpl::set_rate_vfr_hud(double rate_hz)
+{
+    return telemetry_result_from_command_result(
+        _parent->set_msg_rate(MAVLINK_MSG_ID_VFR_HUD, rate_hz));
+}
+
 Telemetry::Result TelemetryImpl::set_rate_gps_info(double rate_hz)
 {
     return telemetry_result_from_command_result(
@@ -338,6 +347,14 @@ void TelemetryImpl::set_rate_imu_reading_ned_async(
 {
     _parent->set_msg_rate_async(
         MAVLINK_MSG_ID_HIGHRES_IMU,
+        rate_hz,
+        std::bind(&TelemetryImpl::command_result_callback, std::placeholders::_1, callback));
+}
+
+void TelemetryImpl::set_rate_vfr_hud_async(double rate_hz, Telemetry::result_callback_t callback)
+{
+    _parent->set_msg_rate_async(
+        MAVLINK_MSG_ID_VFR_HUD,
         rate_hz,
         std::bind(&TelemetryImpl::command_result_callback, std::placeholders::_1, callback));
 }
@@ -497,13 +514,10 @@ void TelemetryImpl::process_attitude(const mavlink_message_t& message)
     mavlink_attitude_t attitude;
     mavlink_msg_attitude_decode(&message, &attitude);
 
-    Telemetry::EulerAngle euler_angle{attitude.roll,
-                                      attitude.pitch,
-                                      attitude.yaw};
+    Telemetry::EulerAngle euler_angle{attitude.roll, attitude.pitch, attitude.yaw};
 
-    Telemetry::AngularVelocityBody angular_velocity_body{attitude.rollspeed,
-                                                         attitude.pitchspeed,
-                                                         attitude.yawspeed};
+    Telemetry::AngularVelocityBody angular_velocity_body{
+        attitude.rollspeed, attitude.pitchspeed, attitude.yawspeed};
     set_attitude_angular_velocity_body(angular_velocity_body);
 
     auto quaternion = mavsdk::to_quaternion_from_euler_angle(euler_angle);
@@ -660,6 +674,19 @@ void TelemetryImpl::process_extended_sys_state(const mavlink_message_t& message)
     if (_in_air_subscription) {
         auto callback = _in_air_subscription;
         auto arg = in_air();
+        _parent->call_user_callback([callback, arg]() { callback(arg); });
+    }
+}
+void TelemetryImpl::process_vfr_hud(const mavlink_message_t& message)
+{
+    mavlink_vfr_hud_t vfr_hud;
+    mavlink_msg_vfr_hud_decode(&message, &vfr_hud);
+
+    set_vfr_hud(Telemetry::VfrHUD({vfr_hud.airspeed, vfr_hud.throttle * 1e-2f, vfr_hud.climb}));
+
+    if (_vfr_hud_subscription) {
+        auto callback = _vfr_hud_subscription;
+        auto arg = get_vfr_hud();
         _parent->call_user_callback([callback, arg]() { callback(arg); });
     }
 }
@@ -1084,6 +1111,12 @@ Telemetry::AngularVelocityBody TelemetryImpl::get_attitude_angular_velocity_body
     return _attitude_angular_velocity_body;
 }
 
+Telemetry::VfrHUD TelemetryImpl::get_vfr_hud() const
+{
+    std::lock_guard<std::mutex> lock(_vfr_hud_mutex);
+    return _vfr_hud;
+}
+
 Telemetry::EulerAngle TelemetryImpl::get_attitude_euler_angle() const
 {
     std::lock_guard<std::mutex> lock(_attitude_quaternion_mutex);
@@ -1103,6 +1136,12 @@ void TelemetryImpl::set_attitude_angular_velocity_body(
 {
     std::lock_guard<std::mutex> lock(_attitude_quaternion_mutex);
     _attitude_angular_velocity_body = angular_velocity_body;
+}
+
+void TelemetryImpl::set_vfr_hud(Telemetry::VfrHUD vfr_hud)
+{
+    std::lock_guard<std::mutex> lock(_vfr_hud_mutex);
+    _vfr_hud = vfr_hud;
 }
 
 Telemetry::Quaternion TelemetryImpl::get_camera_attitude_quaternion() const
@@ -1367,6 +1406,11 @@ void TelemetryImpl::attitude_angular_velocity_body_async(
     Telemetry::attitude_angular_velocity_body_callback_t& callback)
 {
     _attitude_angular_velocity_body_subscription = callback;
+}
+
+void TelemetryImpl::vfr_hud_async(Telemetry::vfr_hud_callback_t& callback)
+{
+    _vfr_hud_subscription = callback;
 }
 
 void TelemetryImpl::camera_attitude_quaternion_async(

@@ -18,6 +18,7 @@ static void print_armed(bool armed);
 static void print_quaternion(Telemetry::Quaternion quaternion);
 static void print_euler_angle(Telemetry::EulerAngle euler_angle);
 static void print_angular_velocity_body(Telemetry::AngularVelocityBody angular_velocity_body);
+static void print_vfr_hud(Telemetry::VfrHUD vfr_hud);
 #if CAMERA_AVAILABLE == 1
 static void print_camera_quaternion(Telemetry::Quaternion quaternion);
 static void print_camera_euler_angle(Telemetry::EulerAngle euler_angle);
@@ -40,6 +41,7 @@ static bool _received_armed = false;
 static bool _received_quaternion = false;
 static bool _received_euler_angle = false;
 static bool _received_angular_velocity_body = false;
+static bool _received_vfr_hud = false;
 #if CAMERA_AVAILABLE == 1
 static bool _received_camera_quaternion = false;
 static bool _received_camera_euler_angle = false;
@@ -104,6 +106,9 @@ TEST_F(SitlTest, TelemetryAsync)
     telemetry->set_rate_actuator_control_target_async(10.0, std::bind(&receive_result, _1));
     std::this_thread::sleep_for(std::chrono::milliseconds(100));
 
+    telemetry->set_rate_vfr_hud_async(10.0, std::bind(&receive_result, _1));
+    std::this_thread::sleep_for(std::chrono::milliseconds(100));
+
     telemetry->position_async(std::bind(&print_position, _1));
 
     telemetry->home_position_async(std::bind(&print_home_position, _1));
@@ -117,6 +122,8 @@ TEST_F(SitlTest, TelemetryAsync)
     telemetry->attitude_euler_angle_async(std::bind(&print_euler_angle, _1));
 
     telemetry->attitude_angular_velocity_body_async(std::bind(&print_angular_velocity_body, _1));
+
+    telemetry->vfr_hud_async(std::bind(&print_vfr_hud, _1));
 
 #if CAMERA_AVAILABLE == 1
     telemetry->camera_attitude_quaternion_async(std::bind(&print_camera_quaternion, _1));
@@ -151,6 +158,7 @@ TEST_F(SitlTest, TelemetryAsync)
     EXPECT_TRUE(_received_armed);
     EXPECT_TRUE(_received_quaternion);
     EXPECT_TRUE(_received_angular_velocity_body);
+    EXPECT_TRUE(_received_vfr_hud);
     EXPECT_TRUE(_received_euler_angle);
 #if CAMERA_AVAILABLE == 1
     EXPECT_TRUE(_received_camera_quaternion);
@@ -226,6 +234,14 @@ void print_angular_velocity_body(Telemetry::AngularVelocityBody angular_velocity
               << " ] rad/s" << std::endl;
 
     _received_angular_velocity_body = true;
+}
+
+void print_vfr_hud(Telemetry::VfrHUD vfr_hud)
+{
+    std::cout << "async Airspeed: " << vfr_hud.airspeed << " m/s, "
+              << "Throttle: " << vfr_hud.throttle << " %, "
+              << "Climb: " << vfr_hud.throttle << " m/s" << std::endl;
+    _received_vfr_hud = true;
 }
 
 #if CAMERA_AVAILABLE == 1

@@ -50,6 +50,11 @@ Telemetry::Result Telemetry::set_rate_imu_reading_ned(double rate_hz)
     return _impl->set_rate_imu_reading_ned(rate_hz);
 }
 
+Telemetry::Result Telemetry::set_rate_vfr_hud(double rate_hz)
+{
+    return _impl->set_rate_vfr_hud(rate_hz);
+}
+
 Telemetry::Result Telemetry::set_rate_gps_info(double rate_hz)
 {
     return _impl->set_rate_gps_info(rate_hz);
@@ -118,6 +123,11 @@ void Telemetry::set_rate_ground_speed_ned_async(double rate_hz, result_callback_
 void Telemetry::set_rate_imu_reading_ned_async(double rate_hz, result_callback_t callback)
 {
     _impl->set_rate_imu_reading_ned_async(rate_hz, callback);
+}
+
+void Telemetry::set_rate_vfr_hud_async(double rate_hz, result_callback_t callback)
+{
+    _impl->set_rate_vfr_hud_async(rate_hz, callback);
 }
 
 void Telemetry::set_rate_gps_info_async(double rate_hz, result_callback_t callback)
@@ -227,6 +237,11 @@ Telemetry::AngularVelocityBody Telemetry::attitude_angular_velocity_body() const
     return _impl->get_attitude_angular_velocity_body();
 }
 
+Telemetry::VfrHUD Telemetry::vfr_hud() const
+{
+    return _impl->get_vfr_hud();
+}
+
 Telemetry::Quaternion Telemetry::camera_attitude_quaternion() const
 {
     return _impl->get_camera_attitude_quaternion();
@@ -331,6 +346,11 @@ void Telemetry::attitude_angular_velocity_body_async(
     attitude_angular_velocity_body_callback_t callback)
 {
     return _impl->attitude_angular_velocity_body_async(callback);
+}
+
+void Telemetry::vfr_hud_async(vfr_hud_callback_t callback)
+{
+    return _impl->vfr_hud_async(callback);
 }
 
 void Telemetry::camera_attitude_quaternion_async(attitude_quaternion_callback_t callback)
@@ -676,6 +696,13 @@ operator<<(std::ostream& str, Telemetry::AngularVelocityBody const& angular_velo
     return str << "[angular_velocity_body_roll_rad_s: " << angular_velocity_body.roll_rad_s
                << ", angular_velocity_body_pitch_rad_s: " << angular_velocity_body.pitch_rad_s
                << ", angular_velocity_body_yaw_rad_s: " << angular_velocity_body.yaw_rad_s << "]";
+}
+
+std::ostream& operator<<(std::ostream& str, Telemetry::VfrHUD const& vfr_hud)
+{
+    return str << "Airspeed: " << vfr_hud.airspeed << " m/s, "
+               << "Throttle: " << vfr_hud.throttle << " %, "
+               << "Climb: " << vfr_hud.throttle << " m/s";
 }
 
 bool operator==(const Telemetry::GroundSpeedNED& lhs, const Telemetry::GroundSpeedNED& rhs)
