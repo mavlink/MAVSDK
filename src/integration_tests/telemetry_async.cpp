@@ -18,7 +18,7 @@ static void print_armed(bool armed);
 static void print_quaternion(Telemetry::Quaternion quaternion);
 static void print_euler_angle(Telemetry::EulerAngle euler_angle);
 static void print_angular_velocity_body(Telemetry::AngularVelocityBody angular_velocity_body);
-static void print_vfr_hud(Telemetry::VfrHUD vfr_hud);
+static void print_vfr_hud(Telemetry::VfrHud vfr_hud);
 #if CAMERA_AVAILABLE == 1
 static void print_camera_quaternion(Telemetry::Quaternion quaternion);
 static void print_camera_euler_angle(Telemetry::EulerAngle euler_angle);
@@ -236,7 +236,7 @@ void print_angular_velocity_body(Telemetry::AngularVelocityBody angular_velocity
     _received_angular_velocity_body = true;
 }
 
-void print_vfr_hud(Telemetry::VfrHUD vfr_hud)
+void print_vfr_hud(Telemetry::VfrHud vfr_hud)
 {
     std::cout << "async Airspeed: " << vfr_hud.airspeed << " m/s, "
               << "Throttle: " << vfr_hud.throttle << " %, "
