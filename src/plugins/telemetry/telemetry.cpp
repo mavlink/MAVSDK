@@ -237,7 +237,7 @@ Telemetry::AngularVelocityBody Telemetry::attitude_angular_velocity_body() const
     return _impl->get_attitude_angular_velocity_body();
 }
 
-Telemetry::VfrHUD Telemetry::vfr_hud() const
+Telemetry::VfrHud Telemetry::vfr_hud() const
 {
     return _impl->get_vfr_hud();
 }
@@ -698,11 +698,11 @@ operator<<(std::ostream& str, Telemetry::AngularVelocityBody const& angular_velo
                << ", angular_velocity_body_yaw_rad_s: " << angular_velocity_body.yaw_rad_s << "]";
 }
 
-std::ostream& operator<<(std::ostream& str, Telemetry::VfrHUD const& vfr_hud)
+std::ostream& operator<<(std::ostream& str, Telemetry::VfrHud const& vfr_hud)
 {
-    return str << "Airspeed: " << vfr_hud.airspeed << " m/s, "
+    return str << "Airspeed: " << vfr_hud.airspeed_m_s << " m/s, "
                << "Throttle: " << vfr_hud.throttle << " %, "
-               << "Climb: " << vfr_hud.throttle << " m/s";
+               << "Climb: " << vfr_hud.climb_m_s << " m/s";
 }
 
 bool operator==(const Telemetry::GroundSpeedNED& lhs, const Telemetry::GroundSpeedNED& rhs)

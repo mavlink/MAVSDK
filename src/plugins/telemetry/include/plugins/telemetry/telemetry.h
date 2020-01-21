@@ -127,10 +127,10 @@ public:
      *
      * Metrics typically displayed on a HUD for fixed wing aircraft.
      */
-    struct VfrHUD {
-        float airspeed; /**< @brief Current indicated airspeed (IAS) in metres/second. */
+    struct VfrHud {
+        float airspeed_m_s; /**< @brief Current indicated airspeed (IAS) in metres/second. */
         float throttle; /**< @brief Current throttle setting (0 to 100). */
-        float climb; /**< @brief Current climb rate in metres/second. */
+        float climb_m_s; /**< @brief Current climb rate in metres/second. */
     };
 
     /**
@@ -791,7 +791,7 @@ public:
      *
      * @return Vfr hud.
      */
-    VfrHUD vfr_hud() const;
+    VfrHud vfr_hud() const;
 
     /**
      * @brief Get the camera's attitude in quaternions (synchronous).
@@ -1000,9 +1000,9 @@ public:
     /**
      * @brief Callback type for vfr hud updates.
      *
-     * @param VfrHUD .
+     * @param VfrHud .
      */
-    typedef std::function<void(VfrHUD vfr_hud)> vfr_hud_callback_t;
+    typedef std::function<void(VfrHud vfr_hud)> vfr_hud_callback_t;
 
     /**
      * @brief Subscribe to vfr hud updates in (asynchronous).
@@ -1311,11 +1311,11 @@ std::ostream&
 operator<<(std::ostream& str, Telemetry::AngularVelocityNED const& angular_velocity_ned);
 
 /**
- * @brief Stream operator to print information about a `Telemetry::VfrHUD`.
+ * @brief Stream operator to print information about a `Telemetry::VfrHud`.
  *
  * @return A reference to the stream.
  */
-std::ostream& operator<<(std::ostream& str, Telemetry::VfrHUD const& vfr_hud);
+std::ostream& operator<<(std::ostream& str, Telemetry::VfrHud const& vfr_hud);
 
 /**
  * @brief Stream operator to print information about a `Telemetry::MagneticFieldNED`.

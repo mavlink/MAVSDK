@@ -73,7 +73,7 @@ public:
     Telemetry::EulerAngle get_attitude_euler_angle() const;
     Telemetry::Quaternion get_attitude_quaternion() const;
     Telemetry::AngularVelocityBody get_attitude_angular_velocity_body() const;
-    Telemetry::VfrHUD get_vfr_hud() const;
+    Telemetry::VfrHud get_vfr_hud() const;
     Telemetry::EulerAngle get_camera_attitude_euler_angle() const;
     Telemetry::Quaternion get_camera_attitude_quaternion() const;
     Telemetry::GroundSpeedNED get_ground_speed_ned() const;
@@ -129,7 +129,7 @@ private:
     void set_armed(bool armed);
     void set_attitude_quaternion(Telemetry::Quaternion quaternion);
     void set_attitude_angular_velocity_body(Telemetry::AngularVelocityBody angular_velocity_body);
-    void set_vfr_hud(Telemetry::VfrHUD vfr_hud);
+    void set_vfr_hud(Telemetry::VfrHud vfr_hud);
     void set_camera_attitude_euler_angle(Telemetry::EulerAngle euler_angle);
     void set_ground_speed_ned(Telemetry::GroundSpeedNED ground_speed_ned);
     void set_imu_reading_ned(Telemetry::IMUReadingNED imu_reading_ned);
@@ -220,7 +220,7 @@ private:
     Telemetry::AngularVelocityBody _attitude_angular_velocity_body{NAN, NAN, NAN};
 
     mutable std::mutex _vfr_hud_mutex{};
-    Telemetry::VfrHUD _vfr_hud{NAN, NAN, NAN};
+    Telemetry::VfrHud _vfr_hud{NAN, NAN, NAN};
 
     mutable std::mutex _ground_speed_ned_mutex{};
     Telemetry::GroundSpeedNED _ground_speed_ned{NAN, NAN, NAN};

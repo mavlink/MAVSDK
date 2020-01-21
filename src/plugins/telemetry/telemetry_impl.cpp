@@ -682,7 +682,7 @@ void TelemetryImpl::process_vfr_hud(const mavlink_message_t& message)
     mavlink_vfr_hud_t vfr_hud;
     mavlink_msg_vfr_hud_decode(&message, &vfr_hud);
 
-    set_vfr_hud(Telemetry::VfrHUD({vfr_hud.airspeed, vfr_hud.throttle * 1e-2f, vfr_hud.climb}));
+    set_vfr_hud(Telemetry::VfrHud({vfr_hud.airspeed, vfr_hud.throttle * 1e-2f, vfr_hud.climb}));
 
     if (_vfr_hud_subscription) {
         auto callback = _vfr_hud_subscription;
@@ -1111,7 +1111,7 @@ Telemetry::AngularVelocityBody TelemetryImpl::get_attitude_angular_velocity_body
     return _attitude_angular_velocity_body;
 }
 
-Telemetry::VfrHUD TelemetryImpl::get_vfr_hud() const
+Telemetry::VfrHud TelemetryImpl::get_vfr_hud() const
 {
     std::lock_guard<std::mutex> lock(_vfr_hud_mutex);
     return _vfr_hud;
@@ -1138,7 +1138,7 @@ void TelemetryImpl::set_attitude_angular_velocity_body(
     _attitude_angular_velocity_body = angular_velocity_body;
 }
 
-void TelemetryImpl::set_vfr_hud(Telemetry::VfrHUD vfr_hud)
+void TelemetryImpl::set_vfr_hud(Telemetry::VfrHud vfr_hud)
 {
     std::lock_guard<std::mutex> lock(_vfr_hud_mutex);
     _vfr_hud = vfr_hud;
