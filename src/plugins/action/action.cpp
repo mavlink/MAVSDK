@@ -27,6 +27,11 @@ Action::Result Action::reboot() const
     return _impl->reboot();
 }
 
+Action::Result Action::shutdown() const
+{
+    return _impl->shutdown();
+}
+
 Action::Result Action::takeoff() const
 {
     return _impl->takeoff();

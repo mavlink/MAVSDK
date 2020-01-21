@@ -1486,15 +1486,12 @@ void TakePhotoRequest::Clear() {
   _internal_metadata_.Clear();
 }
 
-#if GOOGLE_PROTOBUF_ENABLE_EXPERIMENTAL_PARSER
 const char* TakePhotoRequest::_InternalParse(const char* ptr, ::PROTOBUF_NAMESPACE_ID::internal::ParseContext* ctx) {
 #define CHK_(x) if (PROTOBUF_PREDICT_FALSE(!(x))) goto failure
   while (!ctx->Done(&ptr)) {
     ::PROTOBUF_NAMESPACE_ID::uint32 tag;
     ptr = ::PROTOBUF_NAMESPACE_ID::internal::ReadTag(ptr, &tag);
     CHK_(ptr);
-    switch (tag >> 3) {
-      default: {
         if ((tag & 7) == 4 || tag == 0) {
           ctx->SetLastTag(tag);
           goto success;
@@ -1502,8 +1499,6 @@ const char* TakePhotoRequest::_InternalParse(const char* ptr, ::PROTOBUF_NAMESPA
         ptr = UnknownFieldParse(tag, &_internal_metadata_, ptr, ctx);
         CHK_(ptr != nullptr);
         continue;
-      }
-    }  // switch
   }  // while
 success:
   return ptr;
@@ -1512,34 +1507,8 @@ failure:
   goto success;
 #undef CHK_
 }
-#else  // GOOGLE_PROTOBUF_ENABLE_EXPERIMENTAL_PARSER
-bool TakePhotoRequest::MergePartialFromCodedStream(
-    ::PROTOBUF_NAMESPACE_ID::io::CodedInputStream* input) {
-#define DO_(EXPRESSION) if (!PROTOBUF_PREDICT_TRUE(EXPRESSION)) goto failure
-  ::PROTOBUF_NAMESPACE_ID::uint32 tag;
-  // @@protoc_insertion_point(parse_start:mavsdk.rpc.camera.TakePhotoRequest)
-  for (;;) {
-    ::std::pair<::PROTOBUF_NAMESPACE_ID::uint32, bool> p = input->ReadTagWithCutoffNoLastTag(127u);
-    tag = p.first;
-    if (!p.second) goto handle_unusual;
-  handle_unusual:
-    if (tag == 0) {
-      goto success;
-    }
-    DO_(::PROTOBUF_NAMESPACE_ID::internal::WireFormat::SkipField(
-          input, tag, _internal_metadata_.mutable_unknown_fields()));
-  }
-success:
-  // @@protoc_insertion_point(parse_success:mavsdk.rpc.camera.TakePhotoRequest)
-  return true;
-failure:
-  // @@protoc_insertion_point(parse_failure:mavsdk.rpc.camera.TakePhotoRequest)
-  return false;
-#undef DO_
-}
-#endif  // GOOGLE_PROTOBUF_ENABLE_EXPERIMENTAL_PARSER
 
-::PROTOBUF_NAMESPACE_ID::uint8* TakePhotoRequest::InternalSerializeWithCachedSizesToArray(
+::PROTOBUF_NAMESPACE_ID::uint8* TakePhotoRequest::_InternalSerialize(
     ::PROTOBUF_NAMESPACE_ID::uint8* target, ::PROTOBUF_NAMESPACE_ID::io::EpsCopyOutputStream* stream) const {
   // @@protoc_insertion_point(serialize_to_array_start:mavsdk.rpc.camera.TakePhotoRequest)
   ::PROTOBUF_NAMESPACE_ID::uint32 cached_has_bits = 0;
@@ -1646,7 +1615,7 @@ TakePhotoResponse::TakePhotoResponse(const TakePhotoResponse& from)
   : ::PROTOBUF_NAMESPACE_ID::Message(),
       _internal_metadata_(nullptr) {
   _internal_metadata_.MergeFrom(from._internal_metadata_);
-  if (from.has_camera_result()) {
+  if (from._internal_has_camera_result()) {
     camera_result_ = new ::mavsdk::rpc::camera::CameraResult(*from.camera_result_);
   } else {
     camera_result_ = nullptr;
@@ -1690,7 +1659,6 @@ void TakePhotoResponse::Clear() {
   _internal_metadata_.Clear();
 }
 
-#if GOOGLE_PROTOBUF_ENABLE_EXPERIMENTAL_PARSER
 const char* TakePhotoResponse::_InternalParse(const char* ptr, ::PROTOBUF_NAMESPACE_ID::internal::ParseContext* ctx) {
 #define CHK_(x) if (PROTOBUF_PREDICT_FALSE(!(x))) goto failure
   while (!ctx->Done(&ptr)) {
@@ -1701,7 +1669,7 @@ const char* TakePhotoResponse::_InternalParse(const char* ptr, ::PROTOBUF_NAMESP
       // .mavsdk.rpc.camera.CameraResult camera_result = 1;
       case 1:
         if (PROTOBUF_PREDICT_TRUE(static_cast<::PROTOBUF_NAMESPACE_ID::uint8>(tag) == 10)) {
-          ptr = ctx->ParseMessage(mutable_camera_result(), ptr);
+          ptr = ctx->ParseMessage(_internal_mutable_camera_result(), ptr);
           CHK_(ptr);
         } else goto handle_unusual;
         continue;
@@ -1724,50 +1692,8 @@ failure:
   goto success;
 #undef CHK_
 }
-#else  // GOOGLE_PROTOBUF_ENABLE_EXPERIMENTAL_PARSER
-bool TakePhotoResponse::MergePartialFromCodedStream(
-    ::PROTOBUF_NAMESPACE_ID::io::CodedInputStream* input) {
-#define DO_(EXPRESSION) if (!PROTOBUF_PREDICT_TRUE(EXPRESSION)) goto failure
-  ::PROTOBUF_NAMESPACE_ID::uint32 tag;
-  // @@protoc_insertion_point(parse_start:mavsdk.rpc.camera.TakePhotoResponse)
-  for (;;) {
-    ::std::pair<::PROTOBUF_NAMESPACE_ID::uint32, bool> p = input->ReadTagWithCutoffNoLastTag(127u);
-    tag = p.first;
-    if (!p.second) goto handle_unusual;
-    switch (::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::GetTagFieldNumber(tag)) {
-      // .mavsdk.rpc.camera.CameraResult camera_result = 1;
-      case 1: {
-        if (static_cast< ::PROTOBUF_NAMESPACE_ID::uint8>(tag) == (10 & 0xFF)) {
-          DO_(::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::ReadMessage(
-               input, mutable_camera_result()));
-        } else {
-          goto handle_unusual;
-        }
-        break;
-      }
 
-      default: {
-      handle_unusual:
-        if (tag == 0) {
-          goto success;
-        }
-        DO_(::PROTOBUF_NAMESPACE_ID::internal::WireFormat::SkipField(
-              input, tag, _internal_metadata_.mutable_unknown_fields()));
-        break;
-      }
-    }
-  }
-success:
-  // @@protoc_insertion_point(parse_success:mavsdk.rpc.camera.TakePhotoResponse)
-  return true;
-failure:
-  // @@protoc_insertion_point(parse_failure:mavsdk.rpc.camera.TakePhotoResponse)
-  return false;
-#undef DO_
-}
-#endif  // GOOGLE_PROTOBUF_ENABLE_EXPERIMENTAL_PARSER
-
-::PROTOBUF_NAMESPACE_ID::uint8* TakePhotoResponse::InternalSerializeWithCachedSizesToArray(
+::PROTOBUF_NAMESPACE_ID::uint8* TakePhotoResponse::_InternalSerialize(
     ::PROTOBUF_NAMESPACE_ID::uint8* target, ::PROTOBUF_NAMESPACE_ID::io::EpsCopyOutputStream* stream) const {
   // @@protoc_insertion_point(serialize_to_array_start:mavsdk.rpc.camera.TakePhotoResponse)
   ::PROTOBUF_NAMESPACE_ID::uint32 cached_has_bits = 0;
@@ -1775,9 +1701,9 @@ failure:
 
   // .mavsdk.rpc.camera.CameraResult camera_result = 1;
   if (this->has_camera_result()) {
-    stream->EnsureSpace(&target);
+    target = stream->EnsureSpace(target);
     target = ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::
-      InternalWriteMessageToArray(
+      InternalWriteMessage(
         1, _Internal::camera_result(this), target, stream);
   }
 
@@ -1836,7 +1762,7 @@ void TakePhotoResponse::MergeFrom(const TakePhotoResponse& from) {
   (void) cached_has_bits;
 
   if (from.has_camera_result()) {
-    mutable_camera_result()->::mavsdk::rpc::camera::CameraResult::MergeFrom(from.camera_result());
+    _internal_mutable_camera_result()->::mavsdk::rpc::camera::CameraResult::MergeFrom(from._internal_camera_result());
   }
 }
 
@@ -1921,7 +1847,6 @@ void StartPhotoIntervalRequest::Clear() {
   _internal_metadata_.Clear();
 }
 
-#if GOOGLE_PROTOBUF_ENABLE_EXPERIMENTAL_PARSER
 const char* StartPhotoIntervalRequest::_InternalParse(const char* ptr, ::PROTOBUF_NAMESPACE_ID::internal::ParseContext* ctx) {
 #define CHK_(x) if (PROTOBUF_PREDICT_FALSE(!(x))) goto failure
   while (!ctx->Done(&ptr)) {
@@ -1955,52 +1880,8 @@ failure:
   goto success;
 #undef CHK_
 }
-#else  // GOOGLE_PROTOBUF_ENABLE_EXPERIMENTAL_PARSER
-bool StartPhotoIntervalRequest::MergePartialFromCodedStream(
-    ::PROTOBUF_NAMESPACE_ID::io::CodedInputStream* input) {
-#define DO_(EXPRESSION) if (!PROTOBUF_PREDICT_TRUE(EXPRESSION)) goto failure
-  ::PROTOBUF_NAMESPACE_ID::uint32 tag;
-  // @@protoc_insertion_point(parse_start:mavsdk.rpc.camera.StartPhotoIntervalRequest)
-  for (;;) {
-    ::std::pair<::PROTOBUF_NAMESPACE_ID::uint32, bool> p = input->ReadTagWithCutoffNoLastTag(127u);
-    tag = p.first;
-    if (!p.second) goto handle_unusual;
-    switch (::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::GetTagFieldNumber(tag)) {
-      // float interval_s = 1;
-      case 1: {
-        if (static_cast< ::PROTOBUF_NAMESPACE_ID::uint8>(tag) == (13 & 0xFF)) {
 
-          DO_((::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::ReadPrimitive<
-                   float, ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::TYPE_FLOAT>(
-                 input, &interval_s_)));
-        } else {
-          goto handle_unusual;
-        }
-        break;
-      }
-
-      default: {
-      handle_unusual:
-        if (tag == 0) {
-          goto success;
-        }
-        DO_(::PROTOBUF_NAMESPACE_ID::internal::WireFormat::SkipField(
-              input, tag, _internal_metadata_.mutable_unknown_fields()));
-        break;
-      }
-    }
-  }
-success:
-  // @@protoc_insertion_point(parse_success:mavsdk.rpc.camera.StartPhotoIntervalRequest)
-  return true;
-failure:
-  // @@protoc_insertion_point(parse_failure:mavsdk.rpc.camera.StartPhotoIntervalRequest)
-  return false;
-#undef DO_
-}
-#endif  // GOOGLE_PROTOBUF_ENABLE_EXPERIMENTAL_PARSER
-
-::PROTOBUF_NAMESPACE_ID::uint8* StartPhotoIntervalRequest::InternalSerializeWithCachedSizesToArray(
+::PROTOBUF_NAMESPACE_ID::uint8* StartPhotoIntervalRequest::_InternalSerialize(
     ::PROTOBUF_NAMESPACE_ID::uint8* target, ::PROTOBUF_NAMESPACE_ID::io::EpsCopyOutputStream* stream) const {
   // @@protoc_insertion_point(serialize_to_array_start:mavsdk.rpc.camera.StartPhotoIntervalRequest)
   ::PROTOBUF_NAMESPACE_ID::uint32 cached_has_bits = 0;
@@ -2008,8 +1889,8 @@ failure:
 
   // float interval_s = 1;
   if (!(this->interval_s() <= 0 && this->interval_s() >= 0)) {
-    stream->EnsureSpace(&target);
-    target = ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::WriteFloatToArray(1, this->interval_s(), target);
+    target = stream->EnsureSpace(target);
+    target = ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::WriteFloatToArray(1, this->_internal_interval_s(), target);
   }
 
   if (PROTOBUF_PREDICT_FALSE(_internal_metadata_.have_unknown_fields())) {
@@ -2065,7 +1946,7 @@ void StartPhotoIntervalRequest::MergeFrom(const StartPhotoIntervalRequest& from)
   (void) cached_has_bits;
 
   if (!(from.interval_s() <= 0 && from.interval_s() >= 0)) {
-    set_interval_s(from.interval_s());
+    _internal_set_interval_s(from._internal_interval_s());
   }
 }
 
@@ -2122,7 +2003,7 @@ StartPhotoIntervalResponse::StartPhotoIntervalResponse(const StartPhotoIntervalR
   : ::PROTOBUF_NAMESPACE_ID::Message(),
       _internal_metadata_(nullptr) {
   _internal_metadata_.MergeFrom(from._internal_metadata_);
-  if (from.has_camera_result()) {
+  if (from._internal_has_camera_result()) {
     camera_result_ = new ::mavsdk::rpc::camera::CameraResult(*from.camera_result_);
   } else {
     camera_result_ = nullptr;
@@ -2166,7 +2047,6 @@ void StartPhotoIntervalResponse::Clear() {
   _internal_metadata_.Clear();
 }
 
-#if GOOGLE_PROTOBUF_ENABLE_EXPERIMENTAL_PARSER
 const char* StartPhotoIntervalResponse::_InternalParse(const char* ptr, ::PROTOBUF_NAMESPACE_ID::internal::ParseContext* ctx) {
 #define CHK_(x) if (PROTOBUF_PREDICT_FALSE(!(x))) goto failure
   while (!ctx->Done(&ptr)) {
@@ -2177,7 +2057,7 @@ const char* StartPhotoIntervalResponse::_InternalParse(const char* ptr, ::PROTOB
       // .mavsdk.rpc.camera.CameraResult camera_result = 1;
       case 1:
         if (PROTOBUF_PREDICT_TRUE(static_cast<::PROTOBUF_NAMESPACE_ID::uint8>(tag) == 10)) {
-          ptr = ctx->ParseMessage(mutable_camera_result(), ptr);
+          ptr = ctx->ParseMessage(_internal_mutable_camera_result(), ptr);
           CHK_(ptr);
         } else goto handle_unusual;
         continue;
@@ -2200,50 +2080,8 @@ failure:
   goto success;
 #undef CHK_
 }
-#else  // GOOGLE_PROTOBUF_ENABLE_EXPERIMENTAL_PARSER
-bool StartPhotoIntervalResponse::MergePartialFromCodedStream(
-    ::PROTOBUF_NAMESPACE_ID::io::CodedInputStream* input) {
-#define DO_(EXPRESSION) if (!PROTOBUF_PREDICT_TRUE(EXPRESSION)) goto failure
-  ::PROTOBUF_NAMESPACE_ID::uint32 tag;
-  // @@protoc_insertion_point(parse_start:mavsdk.rpc.camera.StartPhotoIntervalResponse)
-  for (;;) {
-    ::std::pair<::PROTOBUF_NAMESPACE_ID::uint32, bool> p = input->ReadTagWithCutoffNoLastTag(127u);
-    tag = p.first;
-    if (!p.second) goto handle_unusual;
-    switch (::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::GetTagFieldNumber(tag)) {
-      // .mavsdk.rpc.camera.CameraResult camera_result = 1;
-      case 1: {
-        if (static_cast< ::PROTOBUF_NAMESPACE_ID::uint8>(tag) == (10 & 0xFF)) {
-          DO_(::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::ReadMessage(
-               input, mutable_camera_result()));
-        } else {
-          goto handle_unusual;
-        }
-        break;
-      }
 
-      default: {
-      handle_unusual:
-        if (tag == 0) {
-          goto success;
-        }
-        DO_(::PROTOBUF_NAMESPACE_ID::internal::WireFormat::SkipField(
-              input, tag, _internal_metadata_.mutable_unknown_fields()));
-        break;
-      }
-    }
-  }
-success:
-  // @@protoc_insertion_point(parse_success:mavsdk.rpc.camera.StartPhotoIntervalResponse)
-  return true;
-failure:
-  // @@protoc_insertion_point(parse_failure:mavsdk.rpc.camera.StartPhotoIntervalResponse)
-  return false;
-#undef DO_
-}
-#endif  // GOOGLE_PROTOBUF_ENABLE_EXPERIMENTAL_PARSER
-
-::PROTOBUF_NAMESPACE_ID::uint8* StartPhotoIntervalResponse::InternalSerializeWithCachedSizesToArray(
+::PROTOBUF_NAMESPACE_ID::uint8* StartPhotoIntervalResponse::_InternalSerialize(
     ::PROTOBUF_NAMESPACE_ID::uint8* target, ::PROTOBUF_NAMESPACE_ID::io::EpsCopyOutputStream* stream) const {
   // @@protoc_insertion_point(serialize_to_array_start:mavsdk.rpc.camera.StartPhotoIntervalResponse)
   ::PROTOBUF_NAMESPACE_ID::uint32 cached_has_bits = 0;
@@ -2251,9 +2089,9 @@ failure:
 
   // .mavsdk.rpc.camera.CameraResult camera_result = 1;
   if (this->has_camera_result()) {
-    stream->EnsureSpace(&target);
+    target = stream->EnsureSpace(target);
     target = ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::
-      InternalWriteMessageToArray(
+      InternalWriteMessage(
         1, _Internal::camera_result(this), target, stream);
   }
 
@@ -2312,7 +2150,7 @@ void StartPhotoIntervalResponse::MergeFrom(const StartPhotoIntervalResponse& fro
   (void) cached_has_bits;
 
   if (from.has_camera_result()) {
-    mutable_camera_result()->::mavsdk::rpc::camera::CameraResult::MergeFrom(from.camera_result());
+    _internal_mutable_camera_result()->::mavsdk::rpc::camera::CameraResult::MergeFrom(from._internal_camera_result());
   }
 }
 
@@ -2394,15 +2232,12 @@ void StopPhotoIntervalRequest::Clear() {
   _internal_metadata_.Clear();
 }
 
-#if GOOGLE_PROTOBUF_ENABLE_EXPERIMENTAL_PARSER
 const char* StopPhotoIntervalRequest::_InternalParse(const char* ptr, ::PROTOBUF_NAMESPACE_ID::internal::ParseContext* ctx) {
 #define CHK_(x) if (PROTOBUF_PREDICT_FALSE(!(x))) goto failure
   while (!ctx->Done(&ptr)) {
     ::PROTOBUF_NAMESPACE_ID::uint32 tag;
     ptr = ::PROTOBUF_NAMESPACE_ID::internal::ReadTag(ptr, &tag);
     CHK_(ptr);
-    switch (tag >> 3) {
-      default: {
         if ((tag & 7) == 4 || tag == 0) {
           ctx->SetLastTag(tag);
           goto success;
@@ -2410,8 +2245,6 @@ const char* StopPhotoIntervalRequest::_InternalParse(const char* ptr, ::PROTOBUF
         ptr = UnknownFieldParse(tag, &_internal_metadata_, ptr, ctx);
         CHK_(ptr != nullptr);
         continue;
-      }
-    }  // switch
   }  // while
 success:
   return ptr;
@@ -2420,34 +2253,8 @@ failure:
   goto success;
 #undef CHK_
 }
-#else  // GOOGLE_PROTOBUF_ENABLE_EXPERIMENTAL_PARSER
-bool StopPhotoIntervalRequest::MergePartialFromCodedStream(
-    ::PROTOBUF_NAMESPACE_ID::io::CodedInputStream* input) {
-#define DO_(EXPRESSION) if (!PROTOBUF_PREDICT_TRUE(EXPRESSION)) goto failure
-  ::PROTOBUF_NAMESPACE_ID::uint32 tag;
-  // @@protoc_insertion_point(parse_start:mavsdk.rpc.camera.StopPhotoIntervalRequest)
-  for (;;) {
-    ::std::pair<::PROTOBUF_NAMESPACE_ID::uint32, bool> p = input->ReadTagWithCutoffNoLastTag(127u);
-    tag = p.first;
-    if (!p.second) goto handle_unusual;
-  handle_unusual:
-    if (tag == 0) {
-      goto success;
-    }
-    DO_(::PROTOBUF_NAMESPACE_ID::internal::WireFormat::SkipField(
-          input, tag, _internal_metadata_.mutable_unknown_fields()));
-  }
-success:
-  // @@protoc_insertion_point(parse_success:mavsdk.rpc.camera.StopPhotoIntervalRequest)
-  return true;
-failure:
-  // @@protoc_insertion_point(parse_failure:mavsdk.rpc.camera.StopPhotoIntervalRequest)
-  return false;
-#undef DO_
-}
-#endif  // GOOGLE_PROTOBUF_ENABLE_EXPERIMENTAL_PARSER
 
-::PROTOBUF_NAMESPACE_ID::uint8* StopPhotoIntervalRequest::InternalSerializeWithCachedSizesToArray(
+::PROTOBUF_NAMESPACE_ID::uint8* StopPhotoIntervalRequest::_InternalSerialize(
     ::PROTOBUF_NAMESPACE_ID::uint8* target, ::PROTOBUF_NAMESPACE_ID::io::EpsCopyOutputStream* stream) const {
   // @@protoc_insertion_point(serialize_to_array_start:mavsdk.rpc.camera.StopPhotoIntervalRequest)
   ::PROTOBUF_NAMESPACE_ID::uint32 cached_has_bits = 0;
@@ -2554,7 +2361,7 @@ StopPhotoIntervalResponse::StopPhotoIntervalResponse(const StopPhotoIntervalResp
   : ::PROTOBUF_NAMESPACE_ID::Message(),
       _internal_metadata_(nullptr) {
   _internal_metadata_.MergeFrom(from._internal_metadata_);
-  if (from.has_camera_result()) {
+  if (from._internal_has_camera_result()) {
     camera_result_ = new ::mavsdk::rpc::camera::CameraResult(*from.camera_result_);
   } else {
     camera_result_ = nullptr;
@@ -2598,7 +2405,6 @@ void StopPhotoIntervalResponse::Clear() {
   _internal_metadata_.Clear();
 }
 
-#if GOOGLE_PROTOBUF_ENABLE_EXPERIMENTAL_PARSER
 const char* StopPhotoIntervalResponse::_InternalParse(const char* ptr, ::PROTOBUF_NAMESPACE_ID::internal::ParseContext* ctx) {
 #define CHK_(x) if (PROTOBUF_PREDICT_FALSE(!(x))) goto failure
   while (!ctx->Done(&ptr)) {
@@ -2609,7 +2415,7 @@ const char* StopPhotoIntervalResponse::_InternalParse(const char* ptr, ::PROTOBU
       // .mavsdk.rpc.camera.CameraResult camera_result = 1;
       case 1:
         if (PROTOBUF_PREDICT_TRUE(static_cast<::PROTOBUF_NAMESPACE_ID::uint8>(tag) == 10)) {
-          ptr = ctx->ParseMessage(mutable_camera_result(), ptr);
+          ptr = ctx->ParseMessage(_internal_mutable_camera_result(), ptr);
           CHK_(ptr);
         } else goto handle_unusual;
         continue;
@@ -2632,50 +2438,8 @@ failure:
   goto success;
 #undef CHK_
 }
-#else  // GOOGLE_PROTOBUF_ENABLE_EXPERIMENTAL_PARSER
-bool StopPhotoIntervalResponse::MergePartialFromCodedStream(
-    ::PROTOBUF_NAMESPACE_ID::io::CodedInputStream* input) {
-#define DO_(EXPRESSION) if (!PROTOBUF_PREDICT_TRUE(EXPRESSION)) goto failure
-  ::PROTOBUF_NAMESPACE_ID::uint32 tag;
-  // @@protoc_insertion_point(parse_start:mavsdk.rpc.camera.StopPhotoIntervalResponse)
-  for (;;) {
-    ::std::pair<::PROTOBUF_NAMESPACE_ID::uint32, bool> p = input->ReadTagWithCutoffNoLastTag(127u);
-    tag = p.first;
-    if (!p.second) goto handle_unusual;
-    switch (::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::GetTagFieldNumber(tag)) {
-      // .mavsdk.rpc.camera.CameraResult camera_result = 1;
-      case 1: {
-        if (static_cast< ::PROTOBUF_NAMESPACE_ID::uint8>(tag) == (10 & 0xFF)) {
-          DO_(::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::ReadMessage(
-               input, mutable_camera_result()));
-        } else {
-          goto handle_unusual;
-        }
-        break;
-      }
 
-      default: {
-      handle_unusual:
-        if (tag == 0) {
-          goto success;
-        }
-        DO_(::PROTOBUF_NAMESPACE_ID::internal::WireFormat::SkipField(
-              input, tag, _internal_metadata_.mutable_unknown_fields()));
-        break;
-      }
-    }
-  }
-success:
-  // @@protoc_insertion_point(parse_success:mavsdk.rpc.camera.StopPhotoIntervalResponse)
-  return true;
-failure:
-  // @@protoc_insertion_point(parse_failure:mavsdk.rpc.camera.StopPhotoIntervalResponse)
-  return false;
-#undef DO_
-}
-#endif  // GOOGLE_PROTOBUF_ENABLE_EXPERIMENTAL_PARSER
-
-::PROTOBUF_NAMESPACE_ID::uint8* StopPhotoIntervalResponse::InternalSerializeWithCachedSizesToArray(
+::PROTOBUF_NAMESPACE_ID::uint8* StopPhotoIntervalResponse::_InternalSerialize(
     ::PROTOBUF_NAMESPACE_ID::uint8* target, ::PROTOBUF_NAMESPACE_ID::io::EpsCopyOutputStream* stream) const {
   // @@protoc_insertion_point(serialize_to_array_start:mavsdk.rpc.camera.StopPhotoIntervalResponse)
   ::PROTOBUF_NAMESPACE_ID::uint32 cached_has_bits = 0;
@@ -2683,9 +2447,9 @@ failure:
 
   // .mavsdk.rpc.camera.CameraResult camera_result = 1;
   if (this->has_camera_result()) {
-    stream->EnsureSpace(&target);
+    target = stream->EnsureSpace(target);
     target = ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::
-      InternalWriteMessageToArray(
+      InternalWriteMessage(
         1, _Internal::camera_result(this), target, stream);
   }
 
@@ -2744,7 +2508,7 @@ void StopPhotoIntervalResponse::MergeFrom(const StopPhotoIntervalResponse& from)
   (void) cached_has_bits;
 
   if (from.has_camera_result()) {
-    mutable_camera_result()->::mavsdk::rpc::camera::CameraResult::MergeFrom(from.camera_result());
+    _internal_mutable_camera_result()->::mavsdk::rpc::camera::CameraResult::MergeFrom(from._internal_camera_result());
   }
 }
 
@@ -2826,15 +2590,12 @@ void StartVideoRequest::Clear() {
   _internal_metadata_.Clear();
 }
 
-#if GOOGLE_PROTOBUF_ENABLE_EXPERIMENTAL_PARSER
 const char* StartVideoRequest::_InternalParse(const char* ptr, ::PROTOBUF_NAMESPACE_ID::internal::ParseContext* ctx) {
 #define CHK_(x) if (PROTOBUF_PREDICT_FALSE(!(x))) goto failure
   while (!ctx->Done(&ptr)) {
     ::PROTOBUF_NAMESPACE_ID::uint32 tag;
     ptr = ::PROTOBUF_NAMESPACE_ID::internal::ReadTag(ptr, &tag);
     CHK_(ptr);
-    switch (tag >> 3) {
-      default: {
         if ((tag & 7) == 4 || tag == 0) {
           ctx->SetLastTag(tag);
           goto success;
@@ -2842,8 +2603,6 @@ const char* StartVideoRequest::_InternalParse(const char* ptr, ::PROTOBUF_NAMESP
         ptr = UnknownFieldParse(tag, &_internal_metadata_, ptr, ctx);
         CHK_(ptr != nullptr);
         continue;
-      }
-    }  // switch
   }  // while
 success:
   return ptr;
@@ -2852,34 +2611,8 @@ failure:
   goto success;
 #undef CHK_
 }
-#else  // GOOGLE_PROTOBUF_ENABLE_EXPERIMENTAL_PARSER
-bool StartVideoRequest::MergePartialFromCodedStream(
-    ::PROTOBUF_NAMESPACE_ID::io::CodedInputStream* input) {
-#define DO_(EXPRESSION) if (!PROTOBUF_PREDICT_TRUE(EXPRESSION)) goto failure
-  ::PROTOBUF_NAMESPACE_ID::uint32 tag;
-  // @@protoc_insertion_point(parse_start:mavsdk.rpc.camera.StartVideoRequest)
-  for (;;) {
-    ::std::pair<::PROTOBUF_NAMESPACE_ID::uint32, bool> p = input->ReadTagWithCutoffNoLastTag(127u);
-    tag = p.first;
-    if (!p.second) goto handle_unusual;
-  handle_unusual:
-    if (tag == 0) {
-      goto success;
-    }
-    DO_(::PROTOBUF_NAMESPACE_ID::internal::WireFormat::SkipField(
-          input, tag, _internal_metadata_.mutable_unknown_fields()));
-  }
-success:
-  // @@protoc_insertion_point(parse_success:mavsdk.rpc.camera.StartVideoRequest)
-  return true;
-failure:
-  // @@protoc_insertion_point(parse_failure:mavsdk.rpc.camera.StartVideoRequest)
-  return false;
-#undef DO_
-}
-#endif  // GOOGLE_PROTOBUF_ENABLE_EXPERIMENTAL_PARSER
 
-::PROTOBUF_NAMESPACE_ID::uint8* StartVideoRequest::InternalSerializeWithCachedSizesToArray(
+::PROTOBUF_NAMESPACE_ID::uint8* StartVideoRequest::_InternalSerialize(
     ::PROTOBUF_NAMESPACE_ID::uint8* target, ::PROTOBUF_NAMESPACE_ID::io::EpsCopyOutputStream* stream) const {
   // @@protoc_insertion_point(serialize_to_array_start:mavsdk.rpc.camera.StartVideoRequest)
   ::PROTOBUF_NAMESPACE_ID::uint32 cached_has_bits = 0;
@@ -2986,7 +2719,7 @@ StartVideoResponse::StartVideoResponse(const StartVideoResponse& from)
   : ::PROTOBUF_NAMESPACE_ID::Message(),
       _internal_metadata_(nullptr) {
   _internal_metadata_.MergeFrom(from._internal_metadata_);
-  if (from.has_camera_result()) {
+  if (from._internal_has_camera_result()) {
     camera_result_ = new ::mavsdk::rpc::camera::CameraResult(*from.camera_result_);
   } else {
     camera_result_ = nullptr;
@@ -3030,7 +2763,6 @@ void StartVideoResponse::Clear() {
   _internal_metadata_.Clear();
 }
 
-#if GOOGLE_PROTOBUF_ENABLE_EXPERIMENTAL_PARSER
 const char* StartVideoResponse::_InternalParse(const char* ptr, ::PROTOBUF_NAMESPACE_ID::internal::ParseContext* ctx) {
 #define CHK_(x) if (PROTOBUF_PREDICT_FALSE(!(x))) goto failure
   while (!ctx->Done(&ptr)) {
@@ -3041,7 +2773,7 @@ const char* StartVideoResponse::_InternalParse(const char* ptr, ::PROTOBUF_NAMES
       // .mavsdk.rpc.camera.CameraResult camera_result = 1;
       case 1:
         if (PROTOBUF_PREDICT_TRUE(static_cast<::PROTOBUF_NAMESPACE_ID::uint8>(tag) == 10)) {
-          ptr = ctx->ParseMessage(mutable_camera_result(), ptr);
+          ptr = ctx->ParseMessage(_internal_mutable_camera_result(), ptr);
           CHK_(ptr);
         } else goto handle_unusual;
         continue;
@@ -3064,50 +2796,8 @@ failure:
   goto success;
 #undef CHK_
 }
-#else  // GOOGLE_PROTOBUF_ENABLE_EXPERIMENTAL_PARSER
-bool StartVideoResponse::MergePartialFromCodedStream(
-    ::PROTOBUF_NAMESPACE_ID::io::CodedInputStream* input) {
-#define DO_(EXPRESSION) if (!PROTOBUF_PREDICT_TRUE(EXPRESSION)) goto failure
-  ::PROTOBUF_NAMESPACE_ID::uint32 tag;
-  // @@protoc_insertion_point(parse_start:mavsdk.rpc.camera.StartVideoResponse)
-  for (;;) {
-    ::std::pair<::PROTOBUF_NAMESPACE_ID::uint32, bool> p = input->ReadTagWithCutoffNoLastTag(127u);
-    tag = p.first;
-    if (!p.second) goto handle_unusual;
-    switch (::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::GetTagFieldNumber(tag)) {
-      // .mavsdk.rpc.camera.CameraResult camera_result = 1;
-      case 1: {
-        if (static_cast< ::PROTOBUF_NAMESPACE_ID::uint8>(tag) == (10 & 0xFF)) {
-          DO_(::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::ReadMessage(
-               input, mutable_camera_result()));
-        } else {
-          goto handle_unusual;
-        }
-        break;
-      }
 
-      default: {
-      handle_unusual:
-        if (tag == 0) {
-          goto success;
-        }
-        DO_(::PROTOBUF_NAMESPACE_ID::internal::WireFormat::SkipField(
-              input, tag, _internal_metadata_.mutable_unknown_fields()));
-        break;
-      }
-    }
-  }
-success:
-  // @@protoc_insertion_point(parse_success:mavsdk.rpc.camera.StartVideoResponse)
-  return true;
-failure:
-  // @@protoc_insertion_point(parse_failure:mavsdk.rpc.camera.StartVideoResponse)
-  return false;
-#undef DO_
-}
-#endif  // GOOGLE_PROTOBUF_ENABLE_EXPERIMENTAL_PARSER
-
-::PROTOBUF_NAMESPACE_ID::uint8* StartVideoResponse::InternalSerializeWithCachedSizesToArray(
+::PROTOBUF_NAMESPACE_ID::uint8* StartVideoResponse::_InternalSerialize(
     ::PROTOBUF_NAMESPACE_ID::uint8* target, ::PROTOBUF_NAMESPACE_ID::io::EpsCopyOutputStream* stream) const {
   // @@protoc_insertion_point(serialize_to_array_start:mavsdk.rpc.camera.StartVideoResponse)
   ::PROTOBUF_NAMESPACE_ID::uint32 cached_has_bits = 0;
@@ -3115,9 +2805,9 @@ failure:
 
   // .mavsdk.rpc.camera.CameraResult camera_result = 1;
   if (this->has_camera_result()) {
-    stream->EnsureSpace(&target);
+    target = stream->EnsureSpace(target);
     target = ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::
-      InternalWriteMessageToArray(
+      InternalWriteMessage(
         1, _Internal::camera_result(this), target, stream);
   }
 
@@ -3176,7 +2866,7 @@ void StartVideoResponse::MergeFrom(const StartVideoResponse& from) {
   (void) cached_has_bits;
 
   if (from.has_camera_result()) {
-    mutable_camera_result()->::mavsdk::rpc::camera::CameraResult::MergeFrom(from.camera_result());
+    _internal_mutable_camera_result()->::mavsdk::rpc::camera::CameraResult::MergeFrom(from._internal_camera_result());
   }
 }
 
@@ -3258,15 +2948,12 @@ void StopVideoRequest::Clear() {
   _internal_metadata_.Clear();
 }
 
-#if GOOGLE_PROTOBUF_ENABLE_EXPERIMENTAL_PARSER
 const char* StopVideoRequest::_InternalParse(const char* ptr, ::PROTOBUF_NAMESPACE_ID::internal::ParseContext* ctx) {
 #define CHK_(x) if (PROTOBUF_PREDICT_FALSE(!(x))) goto failure
   while (!ctx->Done(&ptr)) {
     ::PROTOBUF_NAMESPACE_ID::uint32 tag;
     ptr = ::PROTOBUF_NAMESPACE_ID::internal::ReadTag(ptr, &tag);
     CHK_(ptr);
-    switch (tag >> 3) {
-      default: {
         if ((tag & 7) == 4 || tag == 0) {
           ctx->SetLastTag(tag);
           goto success;
@@ -3274,8 +2961,6 @@ const char* StopVideoRequest::_InternalParse(const char* ptr, ::PROTOBUF_NAMESPA
         ptr = UnknownFieldParse(tag, &_internal_metadata_, ptr, ctx);
         CHK_(ptr != nullptr);
         continue;
-      }
-    }  // switch
   }  // while
 success:
   return ptr;
@@ -3284,34 +2969,8 @@ failure:
   goto success;
 #undef CHK_
 }
-#else  // GOOGLE_PROTOBUF_ENABLE_EXPERIMENTAL_PARSER
-bool StopVideoRequest::MergePartialFromCodedStream(
-    ::PROTOBUF_NAMESPACE_ID::io::CodedInputStream* input) {
-#define DO_(EXPRESSION) if (!PROTOBUF_PREDICT_TRUE(EXPRESSION)) goto failure
-  ::PROTOBUF_NAMESPACE_ID::uint32 tag;
-  // @@protoc_insertion_point(parse_start:mavsdk.rpc.camera.StopVideoRequest)
-  for (;;) {
-    ::std::pair<::PROTOBUF_NAMESPACE_ID::uint32, bool> p = input->ReadTagWithCutoffNoLastTag(127u);
-    tag = p.first;
-    if (!p.second) goto handle_unusual;
-  handle_unusual:
-    if (tag == 0) {
-      goto success;
-    }
-    DO_(::PROTOBUF_NAMESPACE_ID::internal::WireFormat::SkipField(
-          input, tag, _internal_metadata_.mutable_unknown_fields()));
-  }
-success:
-  // @@protoc_insertion_point(parse_success:mavsdk.rpc.camera.StopVideoRequest)
-  return true;
-failure:
-  // @@protoc_insertion_point(parse_failure:mavsdk.rpc.camera.StopVideoRequest)
-  return false;
-#undef DO_
-}
-#endif  // GOOGLE_PROTOBUF_ENABLE_EXPERIMENTAL_PARSER
 
-::PROTOBUF_NAMESPACE_ID::uint8* StopVideoRequest::InternalSerializeWithCachedSizesToArray(
+::PROTOBUF_NAMESPACE_ID::uint8* StopVideoRequest::_InternalSerialize(
     ::PROTOBUF_NAMESPACE_ID::uint8* target, ::PROTOBUF_NAMESPACE_ID::io::EpsCopyOutputStream* stream) const {
   // @@protoc_insertion_point(serialize_to_array_start:mavsdk.rpc.camera.StopVideoRequest)
   ::PROTOBUF_NAMESPACE_ID::uint32 cached_has_bits = 0;
@@ -3418,7 +3077,7 @@ StopVideoResponse::StopVideoResponse(const StopVideoResponse& from)
   : ::PROTOBUF_NAMESPACE_ID::Message(),
       _internal_metadata_(nullptr) {
   _internal_metadata_.MergeFrom(from._internal_metadata_);
-  if (from.has_camera_result()) {
+  if (from._internal_has_camera_result()) {
     camera_result_ = new ::mavsdk::rpc::camera::CameraResult(*from.camera_result_);
   } else {
     camera_result_ = nullptr;
@@ -3462,7 +3121,6 @@ void StopVideoResponse::Clear() {
   _internal_metadata_.Clear();
 }
 
-#if GOOGLE_PROTOBUF_ENABLE_EXPERIMENTAL_PARSER
 const char* StopVideoResponse::_InternalParse(const char* ptr, ::PROTOBUF_NAMESPACE_ID::internal::ParseContext* ctx) {
 #define CHK_(x) if (PROTOBUF_PREDICT_FALSE(!(x))) goto failure
   while (!ctx->Done(&ptr)) {
@@ -3473,7 +3131,7 @@ const char* StopVideoResponse::_InternalParse(const char* ptr, ::PROTOBUF_NAMESP
       // .mavsdk.rpc.camera.CameraResult camera_result = 1;
       case 1:
         if (PROTOBUF_PREDICT_TRUE(static_cast<::PROTOBUF_NAMESPACE_ID::uint8>(tag) == 10)) {
-          ptr = ctx->ParseMessage(mutable_camera_result(), ptr);
+          ptr = ctx->ParseMessage(_internal_mutable_camera_result(), ptr);
           CHK_(ptr);
         } else goto handle_unusual;
         continue;
@@ -3496,50 +3154,8 @@ failure:
   goto success;
 #undef CHK_
 }
-#else  // GOOGLE_PROTOBUF_ENABLE_EXPERIMENTAL_PARSER
-bool StopVideoResponse::MergePartialFromCodedStream(
-    ::PROTOBUF_NAMESPACE_ID::io::CodedInputStream* input) {
-#define DO_(EXPRESSION) if (!PROTOBUF_PREDICT_TRUE(EXPRESSION)) goto failure
-  ::PROTOBUF_NAMESPACE_ID::uint32 tag;
-  // @@protoc_insertion_point(parse_start:mavsdk.rpc.camera.StopVideoResponse)
-  for (;;) {
-    ::std::pair<::PROTOBUF_NAMESPACE_ID::uint32, bool> p = input->ReadTagWithCutoffNoLastTag(127u);
-    tag = p.first;
-    if (!p.second) goto handle_unusual;
-    switch (::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::GetTagFieldNumber(tag)) {
-      // .mavsdk.rpc.camera.CameraResult camera_result = 1;
-      case 1: {
-        if (static_cast< ::PROTOBUF_NAMESPACE_ID::uint8>(tag) == (10 & 0xFF)) {
-          DO_(::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::ReadMessage(
-               input, mutable_camera_result()));
-        } else {
-          goto handle_unusual;
-        }
-        break;
-      }
 
-      default: {
-      handle_unusual:
-        if (tag == 0) {
-          goto success;
-        }
-        DO_(::PROTOBUF_NAMESPACE_ID::internal::WireFormat::SkipField(
-              input, tag, _internal_metadata_.mutable_unknown_fields()));
-        break;
-      }
-    }
-  }
-success:
-  // @@protoc_insertion_point(parse_success:mavsdk.rpc.camera.StopVideoResponse)
-  return true;
-failure:
-  // @@protoc_insertion_point(parse_failure:mavsdk.rpc.camera.StopVideoResponse)
-  return false;
-#undef DO_
-}
-#endif  // GOOGLE_PROTOBUF_ENABLE_EXPERIMENTAL_PARSER
-
-::PROTOBUF_NAMESPACE_ID::uint8* StopVideoResponse::InternalSerializeWithCachedSizesToArray(
+::PROTOBUF_NAMESPACE_ID::uint8* StopVideoResponse::_InternalSerialize(
     ::PROTOBUF_NAMESPACE_ID::uint8* target, ::PROTOBUF_NAMESPACE_ID::io::EpsCopyOutputStream* stream) const {
   // @@protoc_insertion_point(serialize_to_array_start:mavsdk.rpc.camera.StopVideoResponse)
   ::PROTOBUF_NAMESPACE_ID::uint32 cached_has_bits = 0;
@@ -3547,9 +3163,9 @@ failure:
 
   // .mavsdk.rpc.camera.CameraResult camera_result = 1;
   if (this->has_camera_result()) {
-    stream->EnsureSpace(&target);
+    target = stream->EnsureSpace(target);
     target = ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::
-      InternalWriteMessageToArray(
+      InternalWriteMessage(
         1, _Internal::camera_result(this), target, stream);
   }
 
@@ -3608,7 +3224,7 @@ void StopVideoResponse::MergeFrom(const StopVideoResponse& from) {
   (void) cached_has_bits;
 
   if (from.has_camera_result()) {
-    mutable_camera_result()->::mavsdk::rpc::camera::CameraResult::MergeFrom(from.camera_result());
+    _internal_mutable_camera_result()->::mavsdk::rpc::camera::CameraResult::MergeFrom(from._internal_camera_result());
   }
 }
 
@@ -3690,15 +3306,12 @@ void StartVideoStreamingRequest::Clear() {
   _internal_metadata_.Clear();
 }
 
-#if GOOGLE_PROTOBUF_ENABLE_EXPERIMENTAL_PARSER
 const char* StartVideoStreamingRequest::_InternalParse(const char* ptr, ::PROTOBUF_NAMESPACE_ID::internal::ParseContext* ctx) {
 #define CHK_(x) if (PROTOBUF_PREDICT_FALSE(!(x))) goto failure
   while (!ctx->Done(&ptr)) {
     ::PROTOBUF_NAMESPACE_ID::uint32 tag;
     ptr = ::PROTOBUF_NAMESPACE_ID::internal::ReadTag(ptr, &tag);
     CHK_(ptr);
-    switch (tag >> 3) {
-      default: {
         if ((tag & 7) == 4 || tag == 0) {
           ctx->SetLastTag(tag);
           goto success;
@@ -3706,8 +3319,6 @@ const char* StartVideoStreamingRequest::_InternalParse(const char* ptr, ::PROTOB
         ptr = UnknownFieldParse(tag, &_internal_metadata_, ptr, ctx);
         CHK_(ptr != nullptr);
         continue;
-      }
-    }  // switch
   }  // while
 success:
   return ptr;
@@ -3716,34 +3327,8 @@ failure:
   goto success;
 #undef CHK_
 }
-#else  // GOOGLE_PROTOBUF_ENABLE_EXPERIMENTAL_PARSER
-bool StartVideoStreamingRequest::MergePartialFromCodedStream(
-    ::PROTOBUF_NAMESPACE_ID::io::CodedInputStream* input) {
-#define DO_(EXPRESSION) if (!PROTOBUF_PREDICT_TRUE(EXPRESSION)) goto failure
-  ::PROTOBUF_NAMESPACE_ID::uint32 tag;
-  // @@protoc_insertion_point(parse_start:mavsdk.rpc.camera.StartVideoStreamingRequest)
-  for (;;) {
-    ::std::pair<::PROTOBUF_NAMESPACE_ID::uint32, bool> p = input->ReadTagWithCutoffNoLastTag(127u);
-    tag = p.first;
-    if (!p.second) goto handle_unusual;
-  handle_unusual:
-    if (tag == 0) {
-      goto success;
-    }
-    DO_(::PROTOBUF_NAMESPACE_ID::internal::WireFormat::SkipField(
-          input, tag, _internal_metadata_.mutable_unknown_fields()));
-  }
-success:
-  // @@protoc_insertion_point(parse_success:mavsdk.rpc.camera.StartVideoStreamingRequest)
-  return true;
-failure:
-  // @@protoc_insertion_point(parse_failure:mavsdk.rpc.camera.StartVideoStreamingRequest)
-  return false;
-#undef DO_
-}
-#endif  // GOOGLE_PROTOBUF_ENABLE_EXPERIMENTAL_PARSER
 
-::PROTOBUF_NAMESPACE_ID::uint8* StartVideoStreamingRequest::InternalSerializeWithCachedSizesToArray(
+::PROTOBUF_NAMESPACE_ID::uint8* StartVideoStreamingRequest::_InternalSerialize(
     ::PROTOBUF_NAMESPACE_ID::uint8* target, ::PROTOBUF_NAMESPACE_ID::io::EpsCopyOutputStream* stream) const {
   // @@protoc_insertion_point(serialize_to_array_start:mavsdk.rpc.camera.StartVideoStreamingRequest)
   ::PROTOBUF_NAMESPACE_ID::uint32 cached_has_bits = 0;
@@ -3850,7 +3435,7 @@ StartVideoStreamingResponse::StartVideoStreamingResponse(const StartVideoStreami
   : ::PROTOBUF_NAMESPACE_ID::Message(),
       _internal_metadata_(nullptr) {
   _internal_metadata_.MergeFrom(from._internal_metadata_);
-  if (from.has_camera_result()) {
+  if (from._internal_has_camera_result()) {
     camera_result_ = new ::mavsdk::rpc::camera::CameraResult(*from.camera_result_);
   } else {
     camera_result_ = nullptr;
@@ -3894,7 +3479,6 @@ void StartVideoStreamingResponse::Clear() {
   _internal_metadata_.Clear();
 }
 
-#if GOOGLE_PROTOBUF_ENABLE_EXPERIMENTAL_PARSER
 const char* StartVideoStreamingResponse::_InternalParse(const char* ptr, ::PROTOBUF_NAMESPACE_ID::internal::ParseContext* ctx) {
 #define CHK_(x) if (PROTOBUF_PREDICT_FALSE(!(x))) goto failure
   while (!ctx->Done(&ptr)) {
@@ -3905,7 +3489,7 @@ const char* StartVideoStreamingResponse::_InternalParse(const char* ptr, ::PROTO
       // .mavsdk.rpc.camera.CameraResult camera_result = 1;
       case 1:
         if (PROTOBUF_PREDICT_TRUE(static_cast<::PROTOBUF_NAMESPACE_ID::uint8>(tag) == 10)) {
-          ptr = ctx->ParseMessage(mutable_camera_result(), ptr);
+          ptr = ctx->ParseMessage(_internal_mutable_camera_result(), ptr);
           CHK_(ptr);
         } else goto handle_unusual;
         continue;
@@ -3928,50 +3512,8 @@ failure:
   goto success;
 #undef CHK_
 }
-#else  // GOOGLE_PROTOBUF_ENABLE_EXPERIMENTAL_PARSER
-bool StartVideoStreamingResponse::MergePartialFromCodedStream(
-    ::PROTOBUF_NAMESPACE_ID::io::CodedInputStream* input) {
-#define DO_(EXPRESSION) if (!PROTOBUF_PREDICT_TRUE(EXPRESSION)) goto failure
-  ::PROTOBUF_NAMESPACE_ID::uint32 tag;
-  // @@protoc_insertion_point(parse_start:mavsdk.rpc.camera.StartVideoStreamingResponse)
-  for (;;) {
-    ::std::pair<::PROTOBUF_NAMESPACE_ID::uint32, bool> p = input->ReadTagWithCutoffNoLastTag(127u);
-    tag = p.first;
-    if (!p.second) goto handle_unusual;
-    switch (::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::GetTagFieldNumber(tag)) {
-      // .mavsdk.rpc.camera.CameraResult camera_result = 1;
-      case 1: {
-        if (static_cast< ::PROTOBUF_NAMESPACE_ID::uint8>(tag) == (10 & 0xFF)) {
-          DO_(::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::ReadMessage(
-               input, mutable_camera_result()));
-        } else {
-          goto handle_unusual;
-        }
-        break;
-      }
 
-      default: {
-      handle_unusual:
-        if (tag == 0) {
-          goto success;
-        }
-        DO_(::PROTOBUF_NAMESPACE_ID::internal::WireFormat::SkipField(
-              input, tag, _internal_metadata_.mutable_unknown_fields()));
-        break;
-      }
-    }
-  }
-success:
-  // @@protoc_insertion_point(parse_success:mavsdk.rpc.camera.StartVideoStreamingResponse)
-  return true;
-failure:
-  // @@protoc_insertion_point(parse_failure:mavsdk.rpc.camera.StartVideoStreamingResponse)
-  return false;
-#undef DO_
-}
-#endif  // GOOGLE_PROTOBUF_ENABLE_EXPERIMENTAL_PARSER
-
-::PROTOBUF_NAMESPACE_ID::uint8* StartVideoStreamingResponse::InternalSerializeWithCachedSizesToArray(
+::PROTOBUF_NAMESPACE_ID::uint8* StartVideoStreamingResponse::_InternalSerialize(
     ::PROTOBUF_NAMESPACE_ID::uint8* target, ::PROTOBUF_NAMESPACE_ID::io::EpsCopyOutputStream* stream) const {
   // @@protoc_insertion_point(serialize_to_array_start:mavsdk.rpc.camera.StartVideoStreamingResponse)
   ::PROTOBUF_NAMESPACE_ID::uint32 cached_has_bits = 0;
@@ -3979,9 +3521,9 @@ failure:
 
   // .mavsdk.rpc.camera.CameraResult camera_result = 1;
   if (this->has_camera_result()) {
-    stream->EnsureSpace(&target);
+    target = stream->EnsureSpace(target);
     target = ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::
-      InternalWriteMessageToArray(
+      InternalWriteMessage(
         1, _Internal::camera_result(this), target, stream);
   }
 
@@ -4040,7 +3582,7 @@ void StartVideoStreamingResponse::MergeFrom(const StartVideoStreamingResponse& f
   (void) cached_has_bits;
 
   if (from.has_camera_result()) {
-    mutable_camera_result()->::mavsdk::rpc::camera::CameraResult::MergeFrom(from.camera_result());
+    _internal_mutable_camera_result()->::mavsdk::rpc::camera::CameraResult::MergeFrom(from._internal_camera_result());
   }
 }
 
@@ -4122,15 +3664,12 @@ void StopVideoStreamingRequest::Clear() {
   _internal_metadata_.Clear();
 }
 
-#if GOOGLE_PROTOBUF_ENABLE_EXPERIMENTAL_PARSER
 const char* StopVideoStreamingRequest::_InternalParse(const char* ptr, ::PROTOBUF_NAMESPACE_ID::internal::ParseContext* ctx) {
 #define CHK_(x) if (PROTOBUF_PREDICT_FALSE(!(x))) goto failure
   while (!ctx->Done(&ptr)) {
     ::PROTOBUF_NAMESPACE_ID::uint32 tag;
     ptr = ::PROTOBUF_NAMESPACE_ID::internal::ReadTag(ptr, &tag);
     CHK_(ptr);
-    switch (tag >> 3) {
-      default: {
         if ((tag & 7) == 4 || tag == 0) {
           ctx->SetLastTag(tag);
           goto success;
@@ -4138,8 +3677,6 @@ const char* StopVideoStreamingRequest::_InternalParse(const char* ptr, ::PROTOBU
         ptr = UnknownFieldParse(tag, &_internal_metadata_, ptr, ctx);
         CHK_(ptr != nullptr);
         continue;
-      }
-    }  // switch
   }  // while
 success:
   return ptr;
@@ -4148,34 +3685,8 @@ failure:
   goto success;
 #undef CHK_
 }
-#else  // GOOGLE_PROTOBUF_ENABLE_EXPERIMENTAL_PARSER
-bool StopVideoStreamingRequest::MergePartialFromCodedStream(
-    ::PROTOBUF_NAMESPACE_ID::io::CodedInputStream* input) {
-#define DO_(EXPRESSION) if (!PROTOBUF_PREDICT_TRUE(EXPRESSION)) goto failure
-  ::PROTOBUF_NAMESPACE_ID::uint32 tag;
-  // @@protoc_insertion_point(parse_start:mavsdk.rpc.camera.StopVideoStreamingRequest)
-  for (;;) {
-    ::std::pair<::PROTOBUF_NAMESPACE_ID::uint32, bool> p = input->ReadTagWithCutoffNoLastTag(127u);
-    tag = p.first;
-    if (!p.second) goto handle_unusual;
-  handle_unusual:
-    if (tag == 0) {
-      goto success;
-    }
-    DO_(::PROTOBUF_NAMESPACE_ID::internal::WireFormat::SkipField(
-          input, tag, _internal_metadata_.mutable_unknown_fields()));
-  }
-success:
-  // @@protoc_insertion_point(parse_success:mavsdk.rpc.camera.StopVideoStreamingRequest)
-  return true;
-failure:
-  // @@protoc_insertion_point(parse_failure:mavsdk.rpc.camera.StopVideoStreamingRequest)
-  return false;
-#undef DO_
-}
-#endif  // GOOGLE_PROTOBUF_ENABLE_EXPERIMENTAL_PARSER
 
-::PROTOBUF_NAMESPACE_ID::uint8* StopVideoStreamingRequest::InternalSerializeWithCachedSizesToArray(
+::PROTOBUF_NAMESPACE_ID::uint8* StopVideoStreamingRequest::_InternalSerialize(
     ::PROTOBUF_NAMESPACE_ID::uint8* target, ::PROTOBUF_NAMESPACE_ID::io::EpsCopyOutputStream* stream) const {
   // @@protoc_insertion_point(serialize_to_array_start:mavsdk.rpc.camera.StopVideoStreamingRequest)
   ::PROTOBUF_NAMESPACE_ID::uint32 cached_has_bits = 0;
@@ -4282,7 +3793,7 @@ StopVideoStreamingResponse::StopVideoStreamingResponse(const StopVideoStreamingR
   : ::PROTOBUF_NAMESPACE_ID::Message(),
       _internal_metadata_(nullptr) {
   _internal_metadata_.MergeFrom(from._internal_metadata_);
-  if (from.has_camera_result()) {
+  if (from._internal_has_camera_result()) {
     camera_result_ = new ::mavsdk::rpc::camera::CameraResult(*from.camera_result_);
   } else {
     camera_result_ = nullptr;
@@ -4326,7 +3837,6 @@ void StopVideoStreamingResponse::Clear() {
   _internal_metadata_.Clear();
 }
 
-#if GOOGLE_PROTOBUF_ENABLE_EXPERIMENTAL_PARSER
 const char* StopVideoStreamingResponse::_InternalParse(const char* ptr, ::PROTOBUF_NAMESPACE_ID::internal::ParseContext* ctx) {
 #define CHK_(x) if (PROTOBUF_PREDICT_FALSE(!(x))) goto failure
   while (!ctx->Done(&ptr)) {
@@ -4337,7 +3847,7 @@ const char* StopVideoStreamingResponse::_InternalParse(const char* ptr, ::PROTOB
       // .mavsdk.rpc.camera.CameraResult camera_result = 1;
       case 1:
         if (PROTOBUF_PREDICT_TRUE(static_cast<::PROTOBUF_NAMESPACE_ID::uint8>(tag) == 10)) {
-          ptr = ctx->ParseMessage(mutable_camera_result(), ptr);
+          ptr = ctx->ParseMessage(_internal_mutable_camera_result(), ptr);
           CHK_(ptr);
         } else goto handle_unusual;
         continue;
@@ -4360,50 +3870,8 @@ failure:
   goto success;
 #undef CHK_
 }
-#else  // GOOGLE_PROTOBUF_ENABLE_EXPERIMENTAL_PARSER
-bool StopVideoStreamingResponse::MergePartialFromCodedStream(
-    ::PROTOBUF_NAMESPACE_ID::io::CodedInputStream* input) {
-#define DO_(EXPRESSION) if (!PROTOBUF_PREDICT_TRUE(EXPRESSION)) goto failure
-  ::PROTOBUF_NAMESPACE_ID::uint32 tag;
-  // @@protoc_insertion_point(parse_start:mavsdk.rpc.camera.StopVideoStreamingResponse)
-  for (;;) {
-    ::std::pair<::PROTOBUF_NAMESPACE_ID::uint32, bool> p = input->ReadTagWithCutoffNoLastTag(127u);
-    tag = p.first;
-    if (!p.second) goto handle_unusual;
-    switch (::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::GetTagFieldNumber(tag)) {
-      // .mavsdk.rpc.camera.CameraResult camera_result = 1;
-      case 1: {
-        if (static_cast< ::PROTOBUF_NAMESPACE_ID::uint8>(tag) == (10 & 0xFF)) {
-          DO_(::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::ReadMessage(
-               input, mutable_camera_result()));
-        } else {
-          goto handle_unusual;
-        }
-        break;
-      }
 
-      default: {
-      handle_unusual:
-        if (tag == 0) {
-          goto success;
-        }
-        DO_(::PROTOBUF_NAMESPACE_ID::internal::WireFormat::SkipField(
-              input, tag, _internal_metadata_.mutable_unknown_fields()));
-        break;
-      }
-    }
-  }
-success:
-  // @@protoc_insertion_point(parse_success:mavsdk.rpc.camera.StopVideoStreamingResponse)
-  return true;
-failure:
-  // @@protoc_insertion_point(parse_failure:mavsdk.rpc.camera.StopVideoStreamingResponse)
-  return false;
-#undef DO_
-}
-#endif  // GOOGLE_PROTOBUF_ENABLE_EXPERIMENTAL_PARSER
-
-::PROTOBUF_NAMESPACE_ID::uint8* StopVideoStreamingResponse::InternalSerializeWithCachedSizesToArray(
+::PROTOBUF_NAMESPACE_ID::uint8* StopVideoStreamingResponse::_InternalSerialize(
     ::PROTOBUF_NAMESPACE_ID::uint8* target, ::PROTOBUF_NAMESPACE_ID::io::EpsCopyOutputStream* stream) const {
   // @@protoc_insertion_point(serialize_to_array_start:mavsdk.rpc.camera.StopVideoStreamingResponse)
   ::PROTOBUF_NAMESPACE_ID::uint32 cached_has_bits = 0;
@@ -4411,9 +3879,9 @@ failure:
 
   // .mavsdk.rpc.camera.CameraResult camera_result = 1;
   if (this->has_camera_result()) {
-    stream->EnsureSpace(&target);
+    target = stream->EnsureSpace(target);
     target = ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::
-      InternalWriteMessageToArray(
+      InternalWriteMessage(
         1, _Internal::camera_result(this), target, stream);
   }
 
@@ -4472,7 +3940,7 @@ void StopVideoStreamingResponse::MergeFrom(const StopVideoStreamingResponse& fro
   (void) cached_has_bits;
 
   if (from.has_camera_result()) {
-    mutable_camera_result()->::mavsdk::rpc::camera::CameraResult::MergeFrom(from.camera_result());
+    _internal_mutable_camera_result()->::mavsdk::rpc::camera::CameraResult::MergeFrom(from._internal_camera_result());
   }
 }
 
@@ -4557,7 +4025,6 @@ void SetModeRequest::Clear() {
   _internal_metadata_.Clear();
 }
 
-#if GOOGLE_PROTOBUF_ENABLE_EXPERIMENTAL_PARSER
 const char* SetModeRequest::_InternalParse(const char* ptr, ::PROTOBUF_NAMESPACE_ID::internal::ParseContext* ctx) {
 #define CHK_(x) if (PROTOBUF_PREDICT_FALSE(!(x))) goto failure
   while (!ctx->Done(&ptr)) {
@@ -4570,7 +4037,7 @@ const char* SetModeRequest::_InternalParse(const char* ptr, ::PROTOBUF_NAMESPACE
         if (PROTOBUF_PREDICT_TRUE(static_cast<::PROTOBUF_NAMESPACE_ID::uint8>(tag) == 8)) {
           ::PROTOBUF_NAMESPACE_ID::uint64 val = ::PROTOBUF_NAMESPACE_ID::internal::ReadVarint(&ptr);
           CHK_(ptr);
-          set_camera_mode(static_cast<::mavsdk::rpc::camera::CameraMode>(val));
+          _internal_set_camera_mode(static_cast<::mavsdk::rpc::camera::CameraMode>(val));
         } else goto handle_unusual;
         continue;
       default: {
@@ -4592,53 +4059,8 @@ failure:
   goto success;
 #undef CHK_
 }
-#else  // GOOGLE_PROTOBUF_ENABLE_EXPERIMENTAL_PARSER
-bool SetModeRequest::MergePartialFromCodedStream(
-    ::PROTOBUF_NAMESPACE_ID::io::CodedInputStream* input) {
-#define DO_(EXPRESSION) if (!PROTOBUF_PREDICT_TRUE(EXPRESSION)) goto failure
-  ::PROTOBUF_NAMESPACE_ID::uint32 tag;
-  // @@protoc_insertion_point(parse_start:mavsdk.rpc.camera.SetModeRequest)
-  for (;;) {
-    ::std::pair<::PROTOBUF_NAMESPACE_ID::uint32, bool> p = input->ReadTagWithCutoffNoLastTag(127u);
-    tag = p.first;
-    if (!p.second) goto handle_unusual;
-    switch (::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::GetTagFieldNumber(tag)) {
-      // .mavsdk.rpc.camera.CameraMode camera_mode = 1;
-      case 1: {
-        if (static_cast< ::PROTOBUF_NAMESPACE_ID::uint8>(tag) == (8 & 0xFF)) {
-          int value = 0;
-          DO_((::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::ReadPrimitive<
-                   int, ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::TYPE_ENUM>(
-                 input, &value)));
-          set_camera_mode(static_cast< ::mavsdk::rpc::camera::CameraMode >(value));
-        } else {
-          goto handle_unusual;
-        }
-        break;
-      }
 
-      default: {
-      handle_unusual:
-        if (tag == 0) {
-          goto success;
-        }
-        DO_(::PROTOBUF_NAMESPACE_ID::internal::WireFormat::SkipField(
-              input, tag, _internal_metadata_.mutable_unknown_fields()));
-        break;
-      }
-    }
-  }
-success:
-  // @@protoc_insertion_point(parse_success:mavsdk.rpc.camera.SetModeRequest)
-  return true;
-failure:
-  // @@protoc_insertion_point(parse_failure:mavsdk.rpc.camera.SetModeRequest)
-  return false;
-#undef DO_
-}
-#endif  // GOOGLE_PROTOBUF_ENABLE_EXPERIMENTAL_PARSER
-
-::PROTOBUF_NAMESPACE_ID::uint8* SetModeRequest::InternalSerializeWithCachedSizesToArray(
+::PROTOBUF_NAMESPACE_ID::uint8* SetModeRequest::_InternalSerialize(
     ::PROTOBUF_NAMESPACE_ID::uint8* target, ::PROTOBUF_NAMESPACE_ID::io::EpsCopyOutputStream* stream) const {
   // @@protoc_insertion_point(serialize_to_array_start:mavsdk.rpc.camera.SetModeRequest)
   ::PROTOBUF_NAMESPACE_ID::uint32 cached_has_bits = 0;
@@ -4646,9 +4068,9 @@ failure:
 
   // .mavsdk.rpc.camera.CameraMode camera_mode = 1;
   if (this->camera_mode() != 0) {
-    stream->EnsureSpace(&target);
+    target = stream->EnsureSpace(target);
     target = ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::WriteEnumToArray(
-      1, this->camera_mode(), target);
+      1, this->_internal_camera_mode(), target);
   }
 
   if (PROTOBUF_PREDICT_FALSE(_internal_metadata_.have_unknown_fields())) {
@@ -4670,7 +4092,7 @@ size_t SetModeRequest::ByteSizeLong() const {
   // .mavsdk.rpc.camera.CameraMode camera_mode = 1;
   if (this->camera_mode() != 0) {
     total_size += 1 +
-      ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::EnumSize(this->camera_mode());
+      ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::EnumSize(this->_internal_camera_mode());
   }
 
   if (PROTOBUF_PREDICT_FALSE(_internal_metadata_.have_unknown_fields())) {
@@ -4705,7 +4127,7 @@ void SetModeRequest::MergeFrom(const SetModeRequest& from) {
   (void) cached_has_bits;
 
   if (from.camera_mode() != 0) {
-    set_camera_mode(from.camera_mode());
+    _internal_set_camera_mode(from._internal_camera_mode());
   }
 }
 
@@ -4762,7 +4184,7 @@ SetModeResponse::SetModeResponse(const SetModeResponse& from)
   : ::PROTOBUF_NAMESPACE_ID::Message(),
       _internal_metadata_(nullptr) {
   _internal_metadata_.MergeFrom(from._internal_metadata_);
-  if (from.has_camera_result()) {
+  if (from._internal_has_camera_result()) {
     camera_result_ = new ::mavsdk::rpc::camera::CameraResult(*from.camera_result_);
   } else {
     camera_result_ = nullptr;
@@ -4806,7 +4228,6 @@ void SetModeResponse::Clear() {
   _internal_metadata_.Clear();
 }
 
-#if GOOGLE_PROTOBUF_ENABLE_EXPERIMENTAL_PARSER
 const char* SetModeResponse::_InternalParse(const char* ptr, ::PROTOBUF_NAMESPACE_ID::internal::ParseContext* ctx) {
 #define CHK_(x) if (PROTOBUF_PREDICT_FALSE(!(x))) goto failure
   while (!ctx->Done(&ptr)) {
@@ -4817,7 +4238,7 @@ const char* SetModeResponse::_InternalParse(const char* ptr, ::PROTOBUF_NAMESPAC
       // .mavsdk.rpc.camera.CameraResult camera_result = 1;
       case 1:
         if (PROTOBUF_PREDICT_TRUE(static_cast<::PROTOBUF_NAMESPACE_ID::uint8>(tag) == 10)) {
-          ptr = ctx->ParseMessage(mutable_camera_result(), ptr);
+          ptr = ctx->ParseMessage(_internal_mutable_camera_result(), ptr);
           CHK_(ptr);
         } else goto handle_unusual;
         continue;
@@ -4840,50 +4261,8 @@ failure:
   goto success;
 #undef CHK_
 }
-#else  // GOOGLE_PROTOBUF_ENABLE_EXPERIMENTAL_PARSER
-bool SetModeResponse::MergePartialFromCodedStream(
-    ::PROTOBUF_NAMESPACE_ID::io::CodedInputStream* input) {
-#define DO_(EXPRESSION) if (!PROTOBUF_PREDICT_TRUE(EXPRESSION)) goto failure
-  ::PROTOBUF_NAMESPACE_ID::uint32 tag;
-  // @@protoc_insertion_point(parse_start:mavsdk.rpc.camera.SetModeResponse)
-  for (;;) {
-    ::std::pair<::PROTOBUF_NAMESPACE_ID::uint32, bool> p = input->ReadTagWithCutoffNoLastTag(127u);
-    tag = p.first;
-    if (!p.second) goto handle_unusual;
-    switch (::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::GetTagFieldNumber(tag)) {
-      // .mavsdk.rpc.camera.CameraResult camera_result = 1;
-      case 1: {
-        if (static_cast< ::PROTOBUF_NAMESPACE_ID::uint8>(tag) == (10 & 0xFF)) {
-          DO_(::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::ReadMessage(
-               input, mutable_camera_result()));
-        } else {
-          goto handle_unusual;
-        }
-        break;
-      }
 
-      default: {
-      handle_unusual:
-        if (tag == 0) {
-          goto success;
-        }
-        DO_(::PROTOBUF_NAMESPACE_ID::internal::WireFormat::SkipField(
-              input, tag, _internal_metadata_.mutable_unknown_fields()));
-        break;
-      }
-    }
-  }
-success:
-  // @@protoc_insertion_point(parse_success:mavsdk.rpc.camera.SetModeResponse)
-  return true;
-failure:
-  // @@protoc_insertion_point(parse_failure:mavsdk.rpc.camera.SetModeResponse)
-  return false;
-#undef DO_
-}
-#endif  // GOOGLE_PROTOBUF_ENABLE_EXPERIMENTAL_PARSER
-
-::PROTOBUF_NAMESPACE_ID::uint8* SetModeResponse::InternalSerializeWithCachedSizesToArray(
+::PROTOBUF_NAMESPACE_ID::uint8* SetModeResponse::_InternalSerialize(
     ::PROTOBUF_NAMESPACE_ID::uint8* target, ::PROTOBUF_NAMESPACE_ID::io::EpsCopyOutputStream* stream) const {
   // @@protoc_insertion_point(serialize_to_array_start:mavsdk.rpc.camera.SetModeResponse)
   ::PROTOBUF_NAMESPACE_ID::uint32 cached_has_bits = 0;
@@ -4891,9 +4270,9 @@ failure:
 
   // .mavsdk.rpc.camera.CameraResult camera_result = 1;
   if (this->has_camera_result()) {
-    stream->EnsureSpace(&target);
+    target = stream->EnsureSpace(target);
     target = ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::
-      InternalWriteMessageToArray(
+      InternalWriteMessage(
         1, _Internal::camera_result(this), target, stream);
   }
 
@@ -4952,7 +4331,7 @@ void SetModeResponse::MergeFrom(const SetModeResponse& from) {
   (void) cached_has_bits;
 
   if (from.has_camera_result()) {
-    mutable_camera_result()->::mavsdk::rpc::camera::CameraResult::MergeFrom(from.camera_result());
+    _internal_mutable_camera_result()->::mavsdk::rpc::camera::CameraResult::MergeFrom(from._internal_camera_result());
   }
 }
 
@@ -5034,15 +4413,12 @@ void SubscribeModeRequest::Clear() {
   _internal_metadata_.Clear();
 }
 
-#if GOOGLE_PROTOBUF_ENABLE_EXPERIMENTAL_PARSER
 const char* SubscribeModeRequest::_InternalParse(const char* ptr, ::PROTOBUF_NAMESPACE_ID::internal::ParseContext* ctx) {
 #define CHK_(x) if (PROTOBUF_PREDICT_FALSE(!(x))) goto failure
   while (!ctx->Done(&ptr)) {
     ::PROTOBUF_NAMESPACE_ID::uint32 tag;
     ptr = ::PROTOBUF_NAMESPACE_ID::internal::ReadTag(ptr, &tag);
     CHK_(ptr);
-    switch (tag >> 3) {
-      default: {
         if ((tag & 7) == 4 || tag == 0) {
           ctx->SetLastTag(tag);
           goto success;
@@ -5050,8 +4426,6 @@ const char* SubscribeModeRequest::_InternalParse(const char* ptr, ::PROTOBUF_NAM
         ptr = UnknownFieldParse(tag, &_internal_metadata_, ptr, ctx);
         CHK_(ptr != nullptr);
         continue;
-      }
-    }  // switch
   }  // while
 success:
   return ptr;
@@ -5060,34 +4434,8 @@ failure:
   goto success;
 #undef CHK_
 }
-#else  // GOOGLE_PROTOBUF_ENABLE_EXPERIMENTAL_PARSER
-bool SubscribeModeRequest::MergePartialFromCodedStream(
-    ::PROTOBUF_NAMESPACE_ID::io::CodedInputStream* input) {
-#define DO_(EXPRESSION) if (!PROTOBUF_PREDICT_TRUE(EXPRESSION)) goto failure
-  ::PROTOBUF_NAMESPACE_ID::uint32 tag;
-  // @@protoc_insertion_point(parse_start:mavsdk.rpc.camera.SubscribeModeRequest)
-  for (;;) {
-    ::std::pair<::PROTOBUF_NAMESPACE_ID::uint32, bool> p = input->ReadTagWithCutoffNoLastTag(127u);
-    tag = p.first;
-    if (!p.second) goto handle_unusual;
-  handle_unusual:
-    if (tag == 0) {
-      goto success;
-    }
-    DO_(::PROTOBUF_NAMESPACE_ID::internal::WireFormat::SkipField(
-          input, tag, _internal_metadata_.mutable_unknown_fields()));
-  }
-success:
-  // @@protoc_insertion_point(parse_success:mavsdk.rpc.camera.SubscribeModeRequest)
-  return true;
-failure:
-  // @@protoc_insertion_point(parse_failure:mavsdk.rpc.camera.SubscribeModeRequest)
-  return false;
-#undef DO_
-}
-#endif  // GOOGLE_PROTOBUF_ENABLE_EXPERIMENTAL_PARSER
 
-::PROTOBUF_NAMESPACE_ID::uint8* SubscribeModeRequest::InternalSerializeWithCachedSizesToArray(
+::PROTOBUF_NAMESPACE_ID::uint8* SubscribeModeRequest::_InternalSerialize(
     ::PROTOBUF_NAMESPACE_ID::uint8* target, ::PROTOBUF_NAMESPACE_ID::io::EpsCopyOutputStream* stream) const {
   // @@protoc_insertion_point(serialize_to_array_start:mavsdk.rpc.camera.SubscribeModeRequest)
   ::PROTOBUF_NAMESPACE_ID::uint32 cached_has_bits = 0;
@@ -5222,7 +4570,6 @@ void ModeResponse::Clear() {
   _internal_metadata_.Clear();
 }
 
-#if GOOGLE_PROTOBUF_ENABLE_EXPERIMENTAL_PARSER
 const char* ModeResponse::_InternalParse(const char* ptr, ::PROTOBUF_NAMESPACE_ID::internal::ParseContext* ctx) {
 #define CHK_(x) if (PROTOBUF_PREDICT_FALSE(!(x))) goto failure
   while (!ctx->Done(&ptr)) {
@@ -5235,7 +4582,7 @@ const char* ModeResponse::_InternalParse(const char* ptr, ::PROTOBUF_NAMESPACE_I
         if (PROTOBUF_PREDICT_TRUE(static_cast<::PROTOBUF_NAMESPACE_ID::uint8>(tag) == 8)) {
           ::PROTOBUF_NAMESPACE_ID::uint64 val = ::PROTOBUF_NAMESPACE_ID::internal::ReadVarint(&ptr);
           CHK_(ptr);
-          set_camera_mode(static_cast<::mavsdk::rpc::camera::CameraMode>(val));
+          _internal_set_camera_mode(static_cast<::mavsdk::rpc::camera::CameraMode>(val));
         } else goto handle_unusual;
         continue;
       default: {
@@ -5257,53 +4604,8 @@ failure:
   goto success;
 #undef CHK_
 }
-#else  // GOOGLE_PROTOBUF_ENABLE_EXPERIMENTAL_PARSER
-bool ModeResponse::MergePartialFromCodedStream(
-    ::PROTOBUF_NAMESPACE_ID::io::CodedInputStream* input) {
-#define DO_(EXPRESSION) if (!PROTOBUF_PREDICT_TRUE(EXPRESSION)) goto failure
-  ::PROTOBUF_NAMESPACE_ID::uint32 tag;
-  // @@protoc_insertion_point(parse_start:mavsdk.rpc.camera.ModeResponse)
-  for (;;) {
-    ::std::pair<::PROTOBUF_NAMESPACE_ID::uint32, bool> p = input->ReadTagWithCutoffNoLastTag(127u);
-    tag = p.first;
-    if (!p.second) goto handle_unusual;
-    switch (::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::GetTagFieldNumber(tag)) {
-      // .mavsdk.rpc.camera.CameraMode camera_mode = 1;
-      case 1: {
-        if (static_cast< ::PROTOBUF_NAMESPACE_ID::uint8>(tag) == (8 & 0xFF)) {
-          int value = 0;
-          DO_((::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::ReadPrimitive<
-                   int, ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::TYPE_ENUM>(
-                 input, &value)));
-          set_camera_mode(static_cast< ::mavsdk::rpc::camera::CameraMode >(value));
-        } else {
-          goto handle_unusual;
-        }
-        break;
-      }
 
-      default: {
-      handle_unusual:
-        if (tag == 0) {
-          goto success;
-        }
-        DO_(::PROTOBUF_NAMESPACE_ID::internal::WireFormat::SkipField(
-              input, tag, _internal_metadata_.mutable_unknown_fields()));
-        break;
-      }
-    }
-  }
-success:
-  // @@protoc_insertion_point(parse_success:mavsdk.rpc.camera.ModeResponse)
-  return true;
-failure:
-  // @@protoc_insertion_point(parse_failure:mavsdk.rpc.camera.ModeResponse)
-  return false;
-#undef DO_
-}
-#endif  // GOOGLE_PROTOBUF_ENABLE_EXPERIMENTAL_PARSER
-
-::PROTOBUF_NAMESPACE_ID::uint8* ModeResponse::InternalSerializeWithCachedSizesToArray(
+::PROTOBUF_NAMESPACE_ID::uint8* ModeResponse::_InternalSerialize(
     ::PROTOBUF_NAMESPACE_ID::uint8* target, ::PROTOBUF_NAMESPACE_ID::io::EpsCopyOutputStream* stream) const {
   // @@protoc_insertion_point(serialize_to_array_start:mavsdk.rpc.camera.ModeResponse)
   ::PROTOBUF_NAMESPACE_ID::uint32 cached_has_bits = 0;
@@ -5311,9 +4613,9 @@ failure:
 
   // .mavsdk.rpc.camera.CameraMode camera_mode = 1;
   if (this->camera_mode() != 0) {
-    stream->EnsureSpace(&target);
+    target = stream->EnsureSpace(target);
     target = ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::WriteEnumToArray(
-      1, this->camera_mode(), target);
+      1, this->_internal_camera_mode(), target);
   }
 
   if (PROTOBUF_PREDICT_FALSE(_internal_metadata_.have_unknown_fields())) {
@@ -5335,7 +4637,7 @@ size_t ModeResponse::ByteSizeLong() const {
   // .mavsdk.rpc.camera.CameraMode camera_mode = 1;
   if (this->camera_mode() != 0) {
     total_size += 1 +
-      ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::EnumSize(this->camera_mode());
+      ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::EnumSize(this->_internal_camera_mode());
   }
 
   if (PROTOBUF_PREDICT_FALSE(_internal_metadata_.have_unknown_fields())) {
@@ -5370,7 +4672,7 @@ void ModeResponse::MergeFrom(const ModeResponse& from) {
   (void) cached_has_bits;
 
   if (from.camera_mode() != 0) {
-    set_camera_mode(from.camera_mode());
+    _internal_set_camera_mode(from._internal_camera_mode());
   }
 }
 
@@ -5452,15 +4754,12 @@ void SubscribeVideoStreamInfoRequest::Clear() {
   _internal_metadata_.Clear();
 }
 
-#if GOOGLE_PROTOBUF_ENABLE_EXPERIMENTAL_PARSER
 const char* SubscribeVideoStreamInfoRequest::_InternalParse(const char* ptr, ::PROTOBUF_NAMESPACE_ID::internal::ParseContext* ctx) {
 #define CHK_(x) if (PROTOBUF_PREDICT_FALSE(!(x))) goto failure
   while (!ctx->Done(&ptr)) {
     ::PROTOBUF_NAMESPACE_ID::uint32 tag;
     ptr = ::PROTOBUF_NAMESPACE_ID::internal::ReadTag(ptr, &tag);
     CHK_(ptr);
-    switch (tag >> 3) {
-      default: {
         if ((tag & 7) == 4 || tag == 0) {
           ctx->SetLastTag(tag);
           goto success;
@@ -5468,8 +4767,6 @@ const char* SubscribeVideoStreamInfoRequest::_InternalParse(const char* ptr, ::P
         ptr = UnknownFieldParse(tag, &_internal_metadata_, ptr, ctx);
         CHK_(ptr != nullptr);
         continue;
-      }
-    }  // switch
   }  // while
 success:
   return ptr;
@@ -5478,34 +4775,8 @@ failure:
   goto success;
 #undef CHK_
 }
-#else  // GOOGLE_PROTOBUF_ENABLE_EXPERIMENTAL_PARSER
-bool SubscribeVideoStreamInfoRequest::MergePartialFromCodedStream(
-    ::PROTOBUF_NAMESPACE_ID::io::CodedInputStream* input) {
-#define DO_(EXPRESSION) if (!PROTOBUF_PREDICT_TRUE(EXPRESSION)) goto failure
-  ::PROTOBUF_NAMESPACE_ID::uint32 tag;
-  // @@protoc_insertion_point(parse_start:mavsdk.rpc.camera.SubscribeVideoStreamInfoRequest)
-  for (;;) {
-    ::std::pair<::PROTOBUF_NAMESPACE_ID::uint32, bool> p = input->ReadTagWithCutoffNoLastTag(127u);
-    tag = p.first;
-    if (!p.second) goto handle_unusual;
-  handle_unusual:
-    if (tag == 0) {
-      goto success;
-    }
-    DO_(::PROTOBUF_NAMESPACE_ID::internal::WireFormat::SkipField(
-          input, tag, _internal_metadata_.mutable_unknown_fields()));
-  }
-success:
-  // @@protoc_insertion_point(parse_success:mavsdk.rpc.camera.SubscribeVideoStreamInfoRequest)
-  return true;
-failure:
-  // @@protoc_insertion_point(parse_failure:mavsdk.rpc.camera.SubscribeVideoStreamInfoRequest)
-  return false;
-#undef DO_
-}
-#endif  // GOOGLE_PROTOBUF_ENABLE_EXPERIMENTAL_PARSER
 
-::PROTOBUF_NAMESPACE_ID::uint8* SubscribeVideoStreamInfoRequest::InternalSerializeWithCachedSizesToArray(
+::PROTOBUF_NAMESPACE_ID::uint8* SubscribeVideoStreamInfoRequest::_InternalSerialize(
     ::PROTOBUF_NAMESPACE_ID::uint8* target, ::PROTOBUF_NAMESPACE_ID::io::EpsCopyOutputStream* stream) const {
   // @@protoc_insertion_point(serialize_to_array_start:mavsdk.rpc.camera.SubscribeVideoStreamInfoRequest)
   ::PROTOBUF_NAMESPACE_ID::uint32 cached_has_bits = 0;
@@ -5612,7 +4883,7 @@ VideoStreamInfoResponse::VideoStreamInfoResponse(const VideoStreamInfoResponse& 
   : ::PROTOBUF_NAMESPACE_ID::Message(),
       _internal_metadata_(nullptr) {
   _internal_metadata_.MergeFrom(from._internal_metadata_);
-  if (from.has_video_stream_info()) {
+  if (from._internal_has_video_stream_info()) {
     video_stream_info_ = new ::mavsdk::rpc::camera::VideoStreamInfo(*from.video_stream_info_);
   } else {
     video_stream_info_ = nullptr;
@@ -5656,7 +4927,6 @@ void VideoStreamInfoResponse::Clear() {
   _internal_metadata_.Clear();
 }
 
-#if GOOGLE_PROTOBUF_ENABLE_EXPERIMENTAL_PARSER
 const char* VideoStreamInfoResponse::_InternalParse(const char* ptr, ::PROTOBUF_NAMESPACE_ID::internal::ParseContext* ctx) {
 #define CHK_(x) if (PROTOBUF_PREDICT_FALSE(!(x))) goto failure
   while (!ctx->Done(&ptr)) {
@@ -5667,7 +4937,7 @@ const char* VideoStreamInfoResponse::_InternalParse(const char* ptr, ::PROTOBUF_
       // .mavsdk.rpc.camera.VideoStreamInfo video_stream_info = 1;
       case 1:
         if (PROTOBUF_PREDICT_TRUE(static_cast<::PROTOBUF_NAMESPACE_ID::uint8>(tag) == 10)) {
-          ptr = ctx->ParseMessage(mutable_video_stream_info(), ptr);
+          ptr = ctx->ParseMessage(_internal_mutable_video_stream_info(), ptr);
           CHK_(ptr);
         } else goto handle_unusual;
         continue;
@@ -5690,50 +4960,8 @@ failure:
   goto success;
 #undef CHK_
 }
-#else  // GOOGLE_PROTOBUF_ENABLE_EXPERIMENTAL_PARSER
-bool VideoStreamInfoResponse::MergePartialFromCodedStream(
-    ::PROTOBUF_NAMESPACE_ID::io::CodedInputStream* input) {
-#define DO_(EXPRESSION) if (!PROTOBUF_PREDICT_TRUE(EXPRESSION)) goto failure
-  ::PROTOBUF_NAMESPACE_ID::uint32 tag;
-  // @@protoc_insertion_point(parse_start:mavsdk.rpc.camera.VideoStreamInfoResponse)
-  for (;;) {
-    ::std::pair<::PROTOBUF_NAMESPACE_ID::uint32, bool> p = input->ReadTagWithCutoffNoLastTag(127u);
-    tag = p.first;
-    if (!p.second) goto handle_unusual;
-    switch (::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::GetTagFieldNumber(tag)) {
-      // .mavsdk.rpc.camera.VideoStreamInfo video_stream_info = 1;
-      case 1: {
-        if (static_cast< ::PROTOBUF_NAMESPACE_ID::uint8>(tag) == (10 & 0xFF)) {
-          DO_(::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::ReadMessage(
-               input, mutable_video_stream_info()));
-        } else {
-          goto handle_unusual;
-        }
-        break;
-      }
 
-      default: {
-      handle_unusual:
-        if (tag == 0) {
-          goto success;
-        }
-        DO_(::PROTOBUF_NAMESPACE_ID::internal::WireFormat::SkipField(
-              input, tag, _internal_metadata_.mutable_unknown_fields()));
-        break;
-      }
-    }
-  }
-success:
-  // @@protoc_insertion_point(parse_success:mavsdk.rpc.camera.VideoStreamInfoResponse)
-  return true;
-failure:
-  // @@protoc_insertion_point(parse_failure:mavsdk.rpc.camera.VideoStreamInfoResponse)
-  return false;
-#undef DO_
-}
-#endif  // GOOGLE_PROTOBUF_ENABLE_EXPERIMENTAL_PARSER
-
-::PROTOBUF_NAMESPACE_ID::uint8* VideoStreamInfoResponse::InternalSerializeWithCachedSizesToArray(
+::PROTOBUF_NAMESPACE_ID::uint8* VideoStreamInfoResponse::_InternalSerialize(
     ::PROTOBUF_NAMESPACE_ID::uint8* target, ::PROTOBUF_NAMESPACE_ID::io::EpsCopyOutputStream* stream) const {
   // @@protoc_insertion_point(serialize_to_array_start:mavsdk.rpc.camera.VideoStreamInfoResponse)
   ::PROTOBUF_NAMESPACE_ID::uint32 cached_has_bits = 0;
@@ -5741,9 +4969,9 @@ failure:
 
   // .mavsdk.rpc.camera.VideoStreamInfo video_stream_info = 1;
   if (this->has_video_stream_info()) {
-    stream->EnsureSpace(&target);
+    target = stream->EnsureSpace(target);
     target = ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::
-      InternalWriteMessageToArray(
+      InternalWriteMessage(
         1, _Internal::video_stream_info(this), target, stream);
   }
 
@@ -5802,7 +5030,7 @@ void VideoStreamInfoResponse::MergeFrom(const VideoStreamInfoResponse& from) {
   (void) cached_has_bits;
 
   if (from.has_video_stream_info()) {
-    mutable_video_stream_info()->::mavsdk::rpc::camera::VideoStreamInfo::MergeFrom(from.video_stream_info());
+    _internal_mutable_video_stream_info()->::mavsdk::rpc::camera::VideoStreamInfo::MergeFrom(from._internal_video_stream_info());
   }
 }
 
@@ -5884,15 +5112,12 @@ void SubscribeCaptureInfoRequest::Clear() {
   _internal_metadata_.Clear();
 }
 
-#if GOOGLE_PROTOBUF_ENABLE_EXPERIMENTAL_PARSER
 const char* SubscribeCaptureInfoRequest::_InternalParse(const char* ptr, ::PROTOBUF_NAMESPACE_ID::internal::ParseContext* ctx) {
 #define CHK_(x) if (PROTOBUF_PREDICT_FALSE(!(x))) goto failure
   while (!ctx->Done(&ptr)) {
     ::PROTOBUF_NAMESPACE_ID::uint32 tag;
     ptr = ::PROTOBUF_NAMESPACE_ID::internal::ReadTag(ptr, &tag);
     CHK_(ptr);
-    switch (tag >> 3) {
-      default: {
         if ((tag & 7) == 4 || tag == 0) {
           ctx->SetLastTag(tag);
           goto success;
@@ -5900,8 +5125,6 @@ const char* SubscribeCaptureInfoRequest::_InternalParse(const char* ptr, ::PROTO
         ptr = UnknownFieldParse(tag, &_internal_metadata_, ptr, ctx);
         CHK_(ptr != nullptr);
         continue;
-      }
-    }  // switch
   }  // while
 success:
   return ptr;
@@ -5910,34 +5133,8 @@ failure:
   goto success;
 #undef CHK_
 }
-#else  // GOOGLE_PROTOBUF_ENABLE_EXPERIMENTAL_PARSER
-bool SubscribeCaptureInfoRequest::MergePartialFromCodedStream(
-    ::PROTOBUF_NAMESPACE_ID::io::CodedInputStream* input) {
-#define DO_(EXPRESSION) if (!PROTOBUF_PREDICT_TRUE(EXPRESSION)) goto failure
-  ::PROTOBUF_NAMESPACE_ID::uint32 tag;
-  // @@protoc_insertion_point(parse_start:mavsdk.rpc.camera.SubscribeCaptureInfoRequest)
-  for (;;) {
-    ::std::pair<::PROTOBUF_NAMESPACE_ID::uint32, bool> p = input->ReadTagWithCutoffNoLastTag(127u);
-    tag = p.first;
-    if (!p.second) goto handle_unusual;
-  handle_unusual:
-    if (tag == 0) {
-      goto success;
-    }
-    DO_(::PROTOBUF_NAMESPACE_ID::internal::WireFormat::SkipField(
-          input, tag, _internal_metadata_.mutable_unknown_fields()));
-  }
-success:
-  // @@protoc_insertion_point(parse_success:mavsdk.rpc.camera.SubscribeCaptureInfoRequest)
-  return true;
-failure:
-  // @@protoc_insertion_point(parse_failure:mavsdk.rpc.camera.SubscribeCaptureInfoRequest)
-  return false;
-#undef DO_
-}
-#endif  // GOOGLE_PROTOBUF_ENABLE_EXPERIMENTAL_PARSER
 
-::PROTOBUF_NAMESPACE_ID::uint8* SubscribeCaptureInfoRequest::InternalSerializeWithCachedSizesToArray(
+::PROTOBUF_NAMESPACE_ID::uint8* SubscribeCaptureInfoRequest::_InternalSerialize(
     ::PROTOBUF_NAMESPACE_ID::uint8* target, ::PROTOBUF_NAMESPACE_ID::io::EpsCopyOutputStream* stream) const {
   // @@protoc_insertion_point(serialize_to_array_start:mavsdk.rpc.camera.SubscribeCaptureInfoRequest)
   ::PROTOBUF_NAMESPACE_ID::uint32 cached_has_bits = 0;
@@ -6044,7 +5241,7 @@ CaptureInfoResponse::CaptureInfoResponse(const CaptureInfoResponse& from)
   : ::PROTOBUF_NAMESPACE_ID::Message(),
       _internal_metadata_(nullptr) {
   _internal_metadata_.MergeFrom(from._internal_metadata_);
-  if (from.has_capture_info()) {
+  if (from._internal_has_capture_info()) {
     capture_info_ = new ::mavsdk::rpc::camera::CaptureInfo(*from.capture_info_);
   } else {
     capture_info_ = nullptr;
@@ -6088,7 +5285,6 @@ void CaptureInfoResponse::Clear() {
   _internal_metadata_.Clear();
 }
 
-#if GOOGLE_PROTOBUF_ENABLE_EXPERIMENTAL_PARSER
 const char* CaptureInfoResponse::_InternalParse(const char* ptr, ::PROTOBUF_NAMESPACE_ID::internal::ParseContext* ctx) {
 #define CHK_(x) if (PROTOBUF_PREDICT_FALSE(!(x))) goto failure
   while (!ctx->Done(&ptr)) {
@@ -6099,7 +5295,7 @@ const char* CaptureInfoResponse::_InternalParse(const char* ptr, ::PROTOBUF_NAME
       // .mavsdk.rpc.camera.CaptureInfo capture_info = 1;
       case 1:
         if (PROTOBUF_PREDICT_TRUE(static_cast<::PROTOBUF_NAMESPACE_ID::uint8>(tag) == 10)) {
-          ptr = ctx->ParseMessage(mutable_capture_info(), ptr);
+          ptr = ctx->ParseMessage(_internal_mutable_capture_info(), ptr);
           CHK_(ptr);
         } else goto handle_unusual;
         continue;
@@ -6122,50 +5318,8 @@ failure:
   goto success;
 #undef CHK_
 }
-#else  // GOOGLE_PROTOBUF_ENABLE_EXPERIMENTAL_PARSER
-bool CaptureInfoResponse::MergePartialFromCodedStream(
-    ::PROTOBUF_NAMESPACE_ID::io::CodedInputStream* input) {
-#define DO_(EXPRESSION) if (!PROTOBUF_PREDICT_TRUE(EXPRESSION)) goto failure
-  ::PROTOBUF_NAMESPACE_ID::uint32 tag;
-  // @@protoc_insertion_point(parse_start:mavsdk.rpc.camera.CaptureInfoResponse)
-  for (;;) {
-    ::std::pair<::PROTOBUF_NAMESPACE_ID::uint32, bool> p = input->ReadTagWithCutoffNoLastTag(127u);
-    tag = p.first;
-    if (!p.second) goto handle_unusual;
-    switch (::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::GetTagFieldNumber(tag)) {
-      // .mavsdk.rpc.camera.CaptureInfo capture_info = 1;
-      case 1: {
-        if (static_cast< ::PROTOBUF_NAMESPACE_ID::uint8>(tag) == (10 & 0xFF)) {
-          DO_(::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::ReadMessage(
-               input, mutable_capture_info()));
-        } else {
-          goto handle_unusual;
-        }
-        break;
-      }
 
-      default: {
-      handle_unusual:
-        if (tag == 0) {
-          goto success;
-        }
-        DO_(::PROTOBUF_NAMESPACE_ID::internal::WireFormat::SkipField(
-              input, tag, _internal_metadata_.mutable_unknown_fields()));
-        break;
-      }
-    }
-  }
-success:
-  // @@protoc_insertion_point(parse_success:mavsdk.rpc.camera.CaptureInfoResponse)
-  return true;
-failure:
-  // @@protoc_insertion_point(parse_failure:mavsdk.rpc.camera.CaptureInfoResponse)
-  return false;
-#undef DO_
-}
-#endif  // GOOGLE_PROTOBUF_ENABLE_EXPERIMENTAL_PARSER
-
-::PROTOBUF_NAMESPACE_ID::uint8* CaptureInfoResponse::InternalSerializeWithCachedSizesToArray(
+::PROTOBUF_NAMESPACE_ID::uint8* CaptureInfoResponse::_InternalSerialize(
     ::PROTOBUF_NAMESPACE_ID::uint8* target, ::PROTOBUF_NAMESPACE_ID::io::EpsCopyOutputStream* stream) const {
   // @@protoc_insertion_point(serialize_to_array_start:mavsdk.rpc.camera.CaptureInfoResponse)
   ::PROTOBUF_NAMESPACE_ID::uint32 cached_has_bits = 0;
@@ -6173,9 +5327,9 @@ failure:
 
   // .mavsdk.rpc.camera.CaptureInfo capture_info = 1;
   if (this->has_capture_info()) {
-    stream->EnsureSpace(&target);
+    target = stream->EnsureSpace(target);
     target = ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::
-      InternalWriteMessageToArray(
+      InternalWriteMessage(
         1, _Internal::capture_info(this), target, stream);
   }
 
@@ -6234,7 +5388,7 @@ void CaptureInfoResponse::MergeFrom(const CaptureInfoResponse& from) {
   (void) cached_has_bits;
 
   if (from.has_capture_info()) {
-    mutable_capture_info()->::mavsdk::rpc::camera::CaptureInfo::MergeFrom(from.capture_info());
+    _internal_mutable_capture_info()->::mavsdk::rpc::camera::CaptureInfo::MergeFrom(from._internal_capture_info());
   }
 }
 
@@ -6316,15 +5470,12 @@ void SubscribeCameraStatusRequest::Clear() {
   _internal_metadata_.Clear();
 }
 
-#if GOOGLE_PROTOBUF_ENABLE_EXPERIMENTAL_PARSER
 const char* SubscribeCameraStatusRequest::_InternalParse(const char* ptr, ::PROTOBUF_NAMESPACE_ID::internal::ParseContext* ctx) {
 #define CHK_(x) if (PROTOBUF_PREDICT_FALSE(!(x))) goto failure
   while (!ctx->Done(&ptr)) {
     ::PROTOBUF_NAMESPACE_ID::uint32 tag;
     ptr = ::PROTOBUF_NAMESPACE_ID::internal::ReadTag(ptr, &tag);
     CHK_(ptr);
-    switch (tag >> 3) {
-      default: {
         if ((tag & 7) == 4 || tag == 0) {
           ctx->SetLastTag(tag);
           goto success;
@@ -6332,8 +5483,6 @@ const char* SubscribeCameraStatusRequest::_InternalParse(const char* ptr, ::PROT
         ptr = UnknownFieldParse(tag, &_internal_metadata_, ptr, ctx);
         CHK_(ptr != nullptr);
         continue;
-      }
-    }  // switch
   }  // while
 success:
   return ptr;
@@ -6342,34 +5491,8 @@ failure:
   goto success;
 #undef CHK_
 }
-#else  // GOOGLE_PROTOBUF_ENABLE_EXPERIMENTAL_PARSER
-bool SubscribeCameraStatusRequest::MergePartialFromCodedStream(
-    ::PROTOBUF_NAMESPACE_ID::io::CodedInputStream* input) {
-#define DO_(EXPRESSION) if (!PROTOBUF_PREDICT_TRUE(EXPRESSION)) goto failure
-  ::PROTOBUF_NAMESPACE_ID::uint32 tag;
-  // @@protoc_insertion_point(parse_start:mavsdk.rpc.camera.SubscribeCameraStatusRequest)
-  for (;;) {
-    ::std::pair<::PROTOBUF_NAMESPACE_ID::uint32, bool> p = input->ReadTagWithCutoffNoLastTag(127u);
-    tag = p.first;
-    if (!p.second) goto handle_unusual;
-  handle_unusual:
-    if (tag == 0) {
-      goto success;
-    }
-    DO_(::PROTOBUF_NAMESPACE_ID::internal::WireFormat::SkipField(
-          input, tag, _internal_metadata_.mutable_unknown_fields()));
-  }
-success:
-  // @@protoc_insertion_point(parse_success:mavsdk.rpc.camera.SubscribeCameraStatusRequest)
-  return true;
-failure:
-  // @@protoc_insertion_point(parse_failure:mavsdk.rpc.camera.SubscribeCameraStatusRequest)
-  return false;
-#undef DO_
-}
-#endif  // GOOGLE_PROTOBUF_ENABLE_EXPERIMENTAL_PARSER
 
-::PROTOBUF_NAMESPACE_ID::uint8* SubscribeCameraStatusRequest::InternalSerializeWithCachedSizesToArray(
+::PROTOBUF_NAMESPACE_ID::uint8* SubscribeCameraStatusRequest::_InternalSerialize(
     ::PROTOBUF_NAMESPACE_ID::uint8* target, ::PROTOBUF_NAMESPACE_ID::io::EpsCopyOutputStream* stream) const {
   // @@protoc_insertion_point(serialize_to_array_start:mavsdk.rpc.camera.SubscribeCameraStatusRequest)
   ::PROTOBUF_NAMESPACE_ID::uint32 cached_has_bits = 0;
@@ -6476,7 +5599,7 @@ CameraStatusResponse::CameraStatusResponse(const CameraStatusResponse& from)
   : ::PROTOBUF_NAMESPACE_ID::Message(),
       _internal_metadata_(nullptr) {
   _internal_metadata_.MergeFrom(from._internal_metadata_);
-  if (from.has_camera_status()) {
+  if (from._internal_has_camera_status()) {
     camera_status_ = new ::mavsdk::rpc::camera::CameraStatus(*from.camera_status_);
   } else {
     camera_status_ = nullptr;
@@ -6520,7 +5643,6 @@ void CameraStatusResponse::Clear() {
   _internal_metadata_.Clear();
 }
 
-#if GOOGLE_PROTOBUF_ENABLE_EXPERIMENTAL_PARSER
 const char* CameraStatusResponse::_InternalParse(const char* ptr, ::PROTOBUF_NAMESPACE_ID::internal::ParseContext* ctx) {
 #define CHK_(x) if (PROTOBUF_PREDICT_FALSE(!(x))) goto failure
   while (!ctx->Done(&ptr)) {
@@ -6531,7 +5653,7 @@ const char* CameraStatusResponse::_InternalParse(const char* ptr, ::PROTOBUF_NAM
       // .mavsdk.rpc.camera.CameraStatus camera_status = 1;
       case 1:
         if (PROTOBUF_PREDICT_TRUE(static_cast<::PROTOBUF_NAMESPACE_ID::uint8>(tag) == 10)) {
-          ptr = ctx->ParseMessage(mutable_camera_status(), ptr);
+          ptr = ctx->ParseMessage(_internal_mutable_camera_status(), ptr);
           CHK_(ptr);
         } else goto handle_unusual;
         continue;
@@ -6554,50 +5676,8 @@ failure:
   goto success;
 #undef CHK_
 }
-#else  // GOOGLE_PROTOBUF_ENABLE_EXPERIMENTAL_PARSER
-bool CameraStatusResponse::MergePartialFromCodedStream(
-    ::PROTOBUF_NAMESPACE_ID::io::CodedInputStream* input) {
-#define DO_(EXPRESSION) if (!PROTOBUF_PREDICT_TRUE(EXPRESSION)) goto failure
-  ::PROTOBUF_NAMESPACE_ID::uint32 tag;
-  // @@protoc_insertion_point(parse_start:mavsdk.rpc.camera.CameraStatusResponse)
-  for (;;) {
-    ::std::pair<::PROTOBUF_NAMESPACE_ID::uint32, bool> p = input->ReadTagWithCutoffNoLastTag(127u);
-    tag = p.first;
-    if (!p.second) goto handle_unusual;
-    switch (::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::GetTagFieldNumber(tag)) {
-      // .mavsdk.rpc.camera.CameraStatus camera_status = 1;
-      case 1: {
-        if (static_cast< ::PROTOBUF_NAMESPACE_ID::uint8>(tag) == (10 & 0xFF)) {
-          DO_(::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::ReadMessage(
-               input, mutable_camera_status()));
-        } else {
-          goto handle_unusual;
-        }
-        break;
-      }
 
-      default: {
-      handle_unusual:
-        if (tag == 0) {
-          goto success;
-        }
-        DO_(::PROTOBUF_NAMESPACE_ID::internal::WireFormat::SkipField(
-              input, tag, _internal_metadata_.mutable_unknown_fields()));
-        break;
-      }
-    }
-  }
-success:
-  // @@protoc_insertion_point(parse_success:mavsdk.rpc.camera.CameraStatusResponse)
-  return true;
-failure:
-  // @@protoc_insertion_point(parse_failure:mavsdk.rpc.camera.CameraStatusResponse)
-  return false;
-#undef DO_
-}
-#endif  // GOOGLE_PROTOBUF_ENABLE_EXPERIMENTAL_PARSER
-
-::PROTOBUF_NAMESPACE_ID::uint8* CameraStatusResponse::InternalSerializeWithCachedSizesToArray(
+::PROTOBUF_NAMESPACE_ID::uint8* CameraStatusResponse::_InternalSerialize(
     ::PROTOBUF_NAMESPACE_ID::uint8* target, ::PROTOBUF_NAMESPACE_ID::io::EpsCopyOutputStream* stream) const {
   // @@protoc_insertion_point(serialize_to_array_start:mavsdk.rpc.camera.CameraStatusResponse)
   ::PROTOBUF_NAMESPACE_ID::uint32 cached_has_bits = 0;
@@ -6605,9 +5685,9 @@ failure:
 
   // .mavsdk.rpc.camera.CameraStatus camera_status = 1;
   if (this->has_camera_status()) {
-    stream->EnsureSpace(&target);
+    target = stream->EnsureSpace(target);
     target = ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::
-      InternalWriteMessageToArray(
+      InternalWriteMessage(
         1, _Internal::camera_status(this), target, stream);
   }
 
@@ -6666,7 +5746,7 @@ void CameraStatusResponse::MergeFrom(const CameraStatusResponse& from) {
   (void) cached_has_bits;
 
   if (from.has_camera_status()) {
-    mutable_camera_status()->::mavsdk::rpc::camera::CameraStatus::MergeFrom(from.camera_status());
+    _internal_mutable_camera_status()->::mavsdk::rpc::camera::CameraStatus::MergeFrom(from._internal_camera_status());
   }
 }
 
@@ -6748,15 +5828,12 @@ void SubscribeCurrentSettingsRequest::Clear() {
   _internal_metadata_.Clear();
 }
 
-#if GOOGLE_PROTOBUF_ENABLE_EXPERIMENTAL_PARSER
 const char* SubscribeCurrentSettingsRequest::_InternalParse(const char* ptr, ::PROTOBUF_NAMESPACE_ID::internal::ParseContext* ctx) {
 #define CHK_(x) if (PROTOBUF_PREDICT_FALSE(!(x))) goto failure
   while (!ctx->Done(&ptr)) {
     ::PROTOBUF_NAMESPACE_ID::uint32 tag;
     ptr = ::PROTOBUF_NAMESPACE_ID::internal::ReadTag(ptr, &tag);
     CHK_(ptr);
-    switch (tag >> 3) {
-      default: {
         if ((tag & 7) == 4 || tag == 0) {
           ctx->SetLastTag(tag);
           goto success;
@@ -6764,8 +5841,6 @@ const char* SubscribeCurrentSettingsRequest::_InternalParse(const char* ptr, ::P
         ptr = UnknownFieldParse(tag, &_internal_metadata_, ptr, ctx);
         CHK_(ptr != nullptr);
         continue;
-      }
-    }  // switch
   }  // while
 success:
   return ptr;
@@ -6774,34 +5849,8 @@ failure:
   goto success;
 #undef CHK_
 }
-#else  // GOOGLE_PROTOBUF_ENABLE_EXPERIMENTAL_PARSER
-bool SubscribeCurrentSettingsRequest::MergePartialFromCodedStream(
-    ::PROTOBUF_NAMESPACE_ID::io::CodedInputStream* input) {
-#define DO_(EXPRESSION) if (!PROTOBUF_PREDICT_TRUE(EXPRESSION)) goto failure
-  ::PROTOBUF_NAMESPACE_ID::uint32 tag;
-  // @@protoc_insertion_point(parse_start:mavsdk.rpc.camera.SubscribeCurrentSettingsRequest)
-  for (;;) {
-    ::std::pair<::PROTOBUF_NAMESPACE_ID::uint32, bool> p = input->ReadTagWithCutoffNoLastTag(127u);
-    tag = p.first;
-    if (!p.second) goto handle_unusual;
-  handle_unusual:
-    if (tag == 0) {
-      goto success;
-    }
-    DO_(::PROTOBUF_NAMESPACE_ID::internal::WireFormat::SkipField(
-          input, tag, _internal_metadata_.mutable_unknown_fields()));
-  }
-success:
-  // @@protoc_insertion_point(parse_success:mavsdk.rpc.camera.SubscribeCurrentSettingsRequest)
-  return true;
-failure:
-  // @@protoc_insertion_point(parse_failure:mavsdk.rpc.camera.SubscribeCurrentSettingsRequest)
-  return false;
-#undef DO_
-}
-#endif  // GOOGLE_PROTOBUF_ENABLE_EXPERIMENTAL_PARSER
 
-::PROTOBUF_NAMESPACE_ID::uint8* SubscribeCurrentSettingsRequest::InternalSerializeWithCachedSizesToArray(
+::PROTOBUF_NAMESPACE_ID::uint8* SubscribeCurrentSettingsRequest::_InternalSerialize(
     ::PROTOBUF_NAMESPACE_ID::uint8* target, ::PROTOBUF_NAMESPACE_ID::io::EpsCopyOutputStream* stream) const {
   // @@protoc_insertion_point(serialize_to_array_start:mavsdk.rpc.camera.SubscribeCurrentSettingsRequest)
   ::PROTOBUF_NAMESPACE_ID::uint32 cached_has_bits = 0;
@@ -6936,7 +5985,6 @@ void CurrentSettingsResponse::Clear() {
   _internal_metadata_.Clear();
 }
 
-#if GOOGLE_PROTOBUF_ENABLE_EXPERIMENTAL_PARSER
 const char* CurrentSettingsResponse::_InternalParse(const char* ptr, ::PROTOBUF_NAMESPACE_ID::internal::ParseContext* ctx) {
 #define CHK_(x) if (PROTOBUF_PREDICT_FALSE(!(x))) goto failure
   while (!ctx->Done(&ptr)) {
@@ -6950,7 +5998,7 @@ const char* CurrentSettingsResponse::_InternalParse(const char* ptr, ::PROTOBUF_
           ptr -= 1;
           do {
             ptr += 1;
-            ptr = ctx->ParseMessage(add_current_settings(), ptr);
+            ptr = ctx->ParseMessage(_internal_add_current_settings(), ptr);
             CHK_(ptr);
             if (!ctx->DataAvailable(ptr)) break;
           } while (::PROTOBUF_NAMESPACE_ID::internal::ExpectTag<10>(ptr));
@@ -6975,61 +6023,19 @@ failure:
   goto success;
 #undef CHK_
 }
-#else  // GOOGLE_PROTOBUF_ENABLE_EXPERIMENTAL_PARSER
-bool CurrentSettingsResponse::MergePartialFromCodedStream(
-    ::PROTOBUF_NAMESPACE_ID::io::CodedInputStream* input) {
-#define DO_(EXPRESSION) if (!PROTOBUF_PREDICT_TRUE(EXPRESSION)) goto failure
-  ::PROTOBUF_NAMESPACE_ID::uint32 tag;
-  // @@protoc_insertion_point(parse_start:mavsdk.rpc.camera.CurrentSettingsResponse)
-  for (;;) {
-    ::std::pair<::PROTOBUF_NAMESPACE_ID::uint32, bool> p = input->ReadTagWithCutoffNoLastTag(127u);
-    tag = p.first;
-    if (!p.second) goto handle_unusual;
-    switch (::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::GetTagFieldNumber(tag)) {
-      // repeated .mavsdk.rpc.camera.Setting current_settings = 1;
-      case 1: {
-        if (static_cast< ::PROTOBUF_NAMESPACE_ID::uint8>(tag) == (10 & 0xFF)) {
-          DO_(::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::ReadMessage(
-                input, add_current_settings()));
-        } else {
-          goto handle_unusual;
-        }
-        break;
-      }
 
-      default: {
-      handle_unusual:
-        if (tag == 0) {
-          goto success;
-        }
-        DO_(::PROTOBUF_NAMESPACE_ID::internal::WireFormat::SkipField(
-              input, tag, _internal_metadata_.mutable_unknown_fields()));
-        break;
-      }
-    }
-  }
-success:
-  // @@protoc_insertion_point(parse_success:mavsdk.rpc.camera.CurrentSettingsResponse)
-  return true;
-failure:
-  // @@protoc_insertion_point(parse_failure:mavsdk.rpc.camera.CurrentSettingsResponse)
-  return false;
-#undef DO_
-}
-#endif  // GOOGLE_PROTOBUF_ENABLE_EXPERIMENTAL_PARSER
-
-::PROTOBUF_NAMESPACE_ID::uint8* CurrentSettingsResponse::InternalSerializeWithCachedSizesToArray(
+::PROTOBUF_NAMESPACE_ID::uint8* CurrentSettingsResponse::_InternalSerialize(
     ::PROTOBUF_NAMESPACE_ID::uint8* target, ::PROTOBUF_NAMESPACE_ID::io::EpsCopyOutputStream* stream) const {
   // @@protoc_insertion_point(serialize_to_array_start:mavsdk.rpc.camera.CurrentSettingsResponse)
   ::PROTOBUF_NAMESPACE_ID::uint32 cached_has_bits = 0;
   (void) cached_has_bits;
 
   // repeated .mavsdk.rpc.camera.Setting current_settings = 1;
-  for (auto it = this->current_settings_.pointer_begin(),
-            end = this->current_settings_.pointer_end(); it < end; ++it) {
-    stream->EnsureSpace(&target);
+  for (unsigned int i = 0,
+      n = static_cast<unsigned int>(this->_internal_current_settings_size()); i < n; i++) {
+    target = stream->EnsureSpace(target);
     target = ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::
-      InternalWriteMessageToArray(1, **it, target, stream);
+      InternalWriteMessage(1, this->_internal_current_settings(i), target, stream);
   }
 
   if (PROTOBUF_PREDICT_FALSE(_internal_metadata_.have_unknown_fields())) {
@@ -7049,7 +6055,7 @@ size_t CurrentSettingsResponse::ByteSizeLong() const {
   (void) cached_has_bits;
 
   // repeated .mavsdk.rpc.camera.Setting current_settings = 1;
-  total_size += 1UL * this->current_settings_size();
+  total_size += 1UL * this->_internal_current_settings_size();
   for (const auto& msg : this->current_settings_) {
     total_size +=
       ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::MessageSize(msg);
@@ -7167,15 +6173,12 @@ void SubscribePossibleSettingOptionsRequest::Clear() {
   _internal_metadata_.Clear();
 }
 
-#if GOOGLE_PROTOBUF_ENABLE_EXPERIMENTAL_PARSER
 const char* SubscribePossibleSettingOptionsRequest::_InternalParse(const char* ptr, ::PROTOBUF_NAMESPACE_ID::internal::ParseContext* ctx) {
 #define CHK_(x) if (PROTOBUF_PREDICT_FALSE(!(x))) goto failure
   while (!ctx->Done(&ptr)) {
     ::PROTOBUF_NAMESPACE_ID::uint32 tag;
     ptr = ::PROTOBUF_NAMESPACE_ID::internal::ReadTag(ptr, &tag);
     CHK_(ptr);
-    switch (tag >> 3) {
-      default: {
         if ((tag & 7) == 4 || tag == 0) {
           ctx->SetLastTag(tag);
           goto success;
@@ -7183,8 +6186,6 @@ const char* SubscribePossibleSettingOptionsRequest::_InternalParse(const char* p
         ptr = UnknownFieldParse(tag, &_internal_metadata_, ptr, ctx);
         CHK_(ptr != nullptr);
         continue;
-      }
-    }  // switch
   }  // while
 success:
   return ptr;
@@ -7193,34 +6194,8 @@ failure:
   goto success;
 #undef CHK_
 }
-#else  // GOOGLE_PROTOBUF_ENABLE_EXPERIMENTAL_PARSER
-bool SubscribePossibleSettingOptionsRequest::MergePartialFromCodedStream(
-    ::PROTOBUF_NAMESPACE_ID::io::CodedInputStream* input) {
-#define DO_(EXPRESSION) if (!PROTOBUF_PREDICT_TRUE(EXPRESSION)) goto failure
-  ::PROTOBUF_NAMESPACE_ID::uint32 tag;
-  // @@protoc_insertion_point(parse_start:mavsdk.rpc.camera.SubscribePossibleSettingOptionsRequest)
-  for (;;) {
-    ::std::pair<::PROTOBUF_NAMESPACE_ID::uint32, bool> p = input->ReadTagWithCutoffNoLastTag(127u);
-    tag = p.first;
-    if (!p.second) goto handle_unusual;
-  handle_unusual:
-    if (tag == 0) {
-      goto success;
-    }
-    DO_(::PROTOBUF_NAMESPACE_ID::internal::WireFormat::SkipField(
-          input, tag, _internal_metadata_.mutable_unknown_fields()));
-  }
-success:
-  // @@protoc_insertion_point(parse_success:mavsdk.rpc.camera.SubscribePossibleSettingOptionsRequest)
-  return true;
-failure:
-  // @@protoc_insertion_point(parse_failure:mavsdk.rpc.camera.SubscribePossibleSettingOptionsRequest)
-  return false;
-#undef DO_
-}
-#endif  // GOOGLE_PROTOBUF_ENABLE_EXPERIMENTAL_PARSER
 
-::PROTOBUF_NAMESPACE_ID::uint8* SubscribePossibleSettingOptionsRequest::InternalSerializeWithCachedSizesToArray(
+::PROTOBUF_NAMESPACE_ID::uint8* SubscribePossibleSettingOptionsRequest::_InternalSerialize(
     ::PROTOBUF_NAMESPACE_ID::uint8* target, ::PROTOBUF_NAMESPACE_ID::io::EpsCopyOutputStream* stream) const {
   // @@protoc_insertion_point(serialize_to_array_start:mavsdk.rpc.camera.SubscribePossibleSettingOptionsRequest)
   ::PROTOBUF_NAMESPACE_ID::uint32 cached_has_bits = 0;
@@ -7355,7 +6330,6 @@ void PossibleSettingOptionsResponse::Clear() {
   _internal_metadata_.Clear();
 }
 
-#if GOOGLE_PROTOBUF_ENABLE_EXPERIMENTAL_PARSER
 const char* PossibleSettingOptionsResponse::_InternalParse(const char* ptr, ::PROTOBUF_NAMESPACE_ID::internal::ParseContext* ctx) {
 #define CHK_(x) if (PROTOBUF_PREDICT_FALSE(!(x))) goto failure
   while (!ctx->Done(&ptr)) {
@@ -7369,7 +6343,7 @@ const char* PossibleSettingOptionsResponse::_InternalParse(const char* ptr, ::PR
           ptr -= 1;
           do {
             ptr += 1;
-            ptr = ctx->ParseMessage(add_setting_options(), ptr);
+            ptr = ctx->ParseMessage(_internal_add_setting_options(), ptr);
             CHK_(ptr);
             if (!ctx->DataAvailable(ptr)) break;
           } while (::PROTOBUF_NAMESPACE_ID::internal::ExpectTag<10>(ptr));
@@ -7394,61 +6368,19 @@ failure:
   goto success;
 #undef CHK_
 }
-#else  // GOOGLE_PROTOBUF_ENABLE_EXPERIMENTAL_PARSER
-bool PossibleSettingOptionsResponse::MergePartialFromCodedStream(
-    ::PROTOBUF_NAMESPACE_ID::io::CodedInputStream* input) {
-#define DO_(EXPRESSION) if (!PROTOBUF_PREDICT_TRUE(EXPRESSION)) goto failure
-  ::PROTOBUF_NAMESPACE_ID::uint32 tag;
-  // @@protoc_insertion_point(parse_start:mavsdk.rpc.camera.PossibleSettingOptionsResponse)
-  for (;;) {
-    ::std::pair<::PROTOBUF_NAMESPACE_ID::uint32, bool> p = input->ReadTagWithCutoffNoLastTag(127u);
-    tag = p.first;
-    if (!p.second) goto handle_unusual;
-    switch (::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::GetTagFieldNumber(tag)) {
-      // repeated .mavsdk.rpc.camera.SettingOptions setting_options = 1;
-      case 1: {
-        if (static_cast< ::PROTOBUF_NAMESPACE_ID::uint8>(tag) == (10 & 0xFF)) {
-          DO_(::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::ReadMessage(
-                input, add_setting_options()));
-        } else {
-          goto handle_unusual;
-        }
-        break;
-      }
 
-      default: {
-      handle_unusual:
-        if (tag == 0) {
-          goto success;
-        }
-        DO_(::PROTOBUF_NAMESPACE_ID::internal::WireFormat::SkipField(
-              input, tag, _internal_metadata_.mutable_unknown_fields()));
-        break;
-      }
-    }
-  }
-success:
-  // @@protoc_insertion_point(parse_success:mavsdk.rpc.camera.PossibleSettingOptionsResponse)
-  return true;
-failure:
-  // @@protoc_insertion_point(parse_failure:mavsdk.rpc.camera.PossibleSettingOptionsResponse)
-  return false;
-#undef DO_
-}
-#endif  // GOOGLE_PROTOBUF_ENABLE_EXPERIMENTAL_PARSER
-
-::PROTOBUF_NAMESPACE_ID::uint8* PossibleSettingOptionsResponse::InternalSerializeWithCachedSizesToArray(
+::PROTOBUF_NAMESPACE_ID::uint8* PossibleSettingOptionsResponse::_InternalSerialize(
     ::PROTOBUF_NAMESPACE_ID::uint8* target, ::PROTOBUF_NAMESPACE_ID::io::EpsCopyOutputStream* stream) const {
   // @@protoc_insertion_point(serialize_to_array_start:mavsdk.rpc.camera.PossibleSettingOptionsResponse)
   ::PROTOBUF_NAMESPACE_ID::uint32 cached_has_bits = 0;
   (void) cached_has_bits;
 
   // repeated .mavsdk.rpc.camera.SettingOptions setting_options = 1;
-  for (auto it = this->setting_options_.pointer_begin(),
-            end = this->setting_options_.pointer_end(); it < end; ++it) {
-    stream->EnsureSpace(&target);
+  for (unsigned int i = 0,
+      n = static_cast<unsigned int>(this->_internal_setting_options_size()); i < n; i++) {
+    target = stream->EnsureSpace(target);
     target = ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::
-      InternalWriteMessageToArray(1, **it, target, stream);
+      InternalWriteMessage(1, this->_internal_setting_options(i), target, stream);
   }
 
   if (PROTOBUF_PREDICT_FALSE(_internal_metadata_.have_unknown_fields())) {
@@ -7468,7 +6400,7 @@ size_t PossibleSettingOptionsResponse::ByteSizeLong() const {
   (void) cached_has_bits;
 
   // repeated .mavsdk.rpc.camera.SettingOptions setting_options = 1;
-  total_size += 1UL * this->setting_options_size();
+  total_size += 1UL * this->_internal_setting_options_size();
   for (const auto& msg : this->setting_options_) {
     total_size +=
       ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::MessageSize(msg);
@@ -7561,7 +6493,7 @@ SetSettingRequest::SetSettingRequest(const SetSettingRequest& from)
   : ::PROTOBUF_NAMESPACE_ID::Message(),
       _internal_metadata_(nullptr) {
   _internal_metadata_.MergeFrom(from._internal_metadata_);
-  if (from.has_setting()) {
+  if (from._internal_has_setting()) {
     setting_ = new ::mavsdk::rpc::camera::Setting(*from.setting_);
   } else {
     setting_ = nullptr;
@@ -7605,7 +6537,6 @@ void SetSettingRequest::Clear() {
   _internal_metadata_.Clear();
 }
 
-#if GOOGLE_PROTOBUF_ENABLE_EXPERIMENTAL_PARSER
 const char* SetSettingRequest::_InternalParse(const char* ptr, ::PROTOBUF_NAMESPACE_ID::internal::ParseContext* ctx) {
 #define CHK_(x) if (PROTOBUF_PREDICT_FALSE(!(x))) goto failure
   while (!ctx->Done(&ptr)) {
@@ -7616,7 +6547,7 @@ const char* SetSettingRequest::_InternalParse(const char* ptr, ::PROTOBUF_NAMESP
       // .mavsdk.rpc.camera.Setting setting = 1;
       case 1:
         if (PROTOBUF_PREDICT_TRUE(static_cast<::PROTOBUF_NAMESPACE_ID::uint8>(tag) == 10)) {
-          ptr = ctx->ParseMessage(mutable_setting(), ptr);
+          ptr = ctx->ParseMessage(_internal_mutable_setting(), ptr);
           CHK_(ptr);
         } else goto handle_unusual;
         continue;
@@ -7639,50 +6570,8 @@ failure:
   goto success;
 #undef CHK_
 }
-#else  // GOOGLE_PROTOBUF_ENABLE_EXPERIMENTAL_PARSER
-bool SetSettingRequest::MergePartialFromCodedStream(
-    ::PROTOBUF_NAMESPACE_ID::io::CodedInputStream* input) {
-#define DO_(EXPRESSION) if (!PROTOBUF_PREDICT_TRUE(EXPRESSION)) goto failure
-  ::PROTOBUF_NAMESPACE_ID::uint32 tag;
-  // @@protoc_insertion_point(parse_start:mavsdk.rpc.camera.SetSettingRequest)
-  for (;;) {
-    ::std::pair<::PROTOBUF_NAMESPACE_ID::uint32, bool> p = input->ReadTagWithCutoffNoLastTag(127u);
-    tag = p.first;
-    if (!p.second) goto handle_unusual;
-    switch (::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::GetTagFieldNumber(tag)) {
-      // .mavsdk.rpc.camera.Setting setting = 1;
-      case 1: {
-        if (static_cast< ::PROTOBUF_NAMESPACE_ID::uint8>(tag) == (10 & 0xFF)) {
-          DO_(::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::ReadMessage(
-               input, mutable_setting()));
-        } else {
-          goto handle_unusual;
-        }
-        break;
-      }
 
-      default: {
-      handle_unusual:
-        if (tag == 0) {
-          goto success;
-        }
-        DO_(::PROTOBUF_NAMESPACE_ID::internal::WireFormat::SkipField(
-              input, tag, _internal_metadata_.mutable_unknown_fields()));
-        break;
-      }
-    }
-  }
-success:
-  // @@protoc_insertion_point(parse_success:mavsdk.rpc.camera.SetSettingRequest)
-  return true;
-failure:
-  // @@protoc_insertion_point(parse_failure:mavsdk.rpc.camera.SetSettingRequest)
-  return false;
-#undef DO_
-}
-#endif  // GOOGLE_PROTOBUF_ENABLE_EXPERIMENTAL_PARSER
-
-::PROTOBUF_NAMESPACE_ID::uint8* SetSettingRequest::InternalSerializeWithCachedSizesToArray(
+::PROTOBUF_NAMESPACE_ID::uint8* SetSettingRequest::_InternalSerialize(
     ::PROTOBUF_NAMESPACE_ID::uint8* target, ::PROTOBUF_NAMESPACE_ID::io::EpsCopyOutputStream* stream) const {
   // @@protoc_insertion_point(serialize_to_array_start:mavsdk.rpc.camera.SetSettingRequest)
   ::PROTOBUF_NAMESPACE_ID::uint32 cached_has_bits = 0;
@@ -7690,9 +6579,9 @@ failure:
 
   // .mavsdk.rpc.camera.Setting setting = 1;
   if (this->has_setting()) {
-    stream->EnsureSpace(&target);
+    target = stream->EnsureSpace(target);
     target = ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::
-      InternalWriteMessageToArray(
+      InternalWriteMessage(
         1, _Internal::setting(this), target, stream);
   }
 
@@ -7751,7 +6640,7 @@ void SetSettingRequest::MergeFrom(const SetSettingRequest& from) {
   (void) cached_has_bits;
 
   if (from.has_setting()) {
-    mutable_setting()->::mavsdk::rpc::camera::Setting::MergeFrom(from.setting());
+    _internal_mutable_setting()->::mavsdk::rpc::camera::Setting::MergeFrom(from._internal_setting());
   }
 }
 
@@ -7808,7 +6697,7 @@ SetSettingResponse::SetSettingResponse(const SetSettingResponse& from)
   : ::PROTOBUF_NAMESPACE_ID::Message(),
       _internal_metadata_(nullptr) {
   _internal_metadata_.MergeFrom(from._internal_metadata_);
-  if (from.has_camera_result()) {
+  if (from._internal_has_camera_result()) {
     camera_result_ = new ::mavsdk::rpc::camera::CameraResult(*from.camera_result_);
   } else {
     camera_result_ = nullptr;
@@ -7852,7 +6741,6 @@ void SetSettingResponse::Clear() {
   _internal_metadata_.Clear();
 }
 
-#if GOOGLE_PROTOBUF_ENABLE_EXPERIMENTAL_PARSER
 const char* SetSettingResponse::_InternalParse(const char* ptr, ::PROTOBUF_NAMESPACE_ID::internal::ParseContext* ctx) {
 #define CHK_(x) if (PROTOBUF_PREDICT_FALSE(!(x))) goto failure
   while (!ctx->Done(&ptr)) {
@@ -7863,7 +6751,7 @@ const char* SetSettingResponse::_InternalParse(const char* ptr, ::PROTOBUF_NAMES
       // .mavsdk.rpc.camera.CameraResult camera_result = 1;
       case 1:
         if (PROTOBUF_PREDICT_TRUE(static_cast<::PROTOBUF_NAMESPACE_ID::uint8>(tag) == 10)) {
-          ptr = ctx->ParseMessage(mutable_camera_result(), ptr);
+          ptr = ctx->ParseMessage(_internal_mutable_camera_result(), ptr);
           CHK_(ptr);
         } else goto handle_unusual;
         continue;
@@ -7886,50 +6774,8 @@ failure:
   goto success;
 #undef CHK_
 }
-#else  // GOOGLE_PROTOBUF_ENABLE_EXPERIMENTAL_PARSER
-bool SetSettingResponse::MergePartialFromCodedStream(
-    ::PROTOBUF_NAMESPACE_ID::io::CodedInputStream* input) {
-#define DO_(EXPRESSION) if (!PROTOBUF_PREDICT_TRUE(EXPRESSION)) goto failure
-  ::PROTOBUF_NAMESPACE_ID::uint32 tag;
-  // @@protoc_insertion_point(parse_start:mavsdk.rpc.camera.SetSettingResponse)
-  for (;;) {
-    ::std::pair<::PROTOBUF_NAMESPACE_ID::uint32, bool> p = input->ReadTagWithCutoffNoLastTag(127u);
-    tag = p.first;
-    if (!p.second) goto handle_unusual;
-    switch (::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::GetTagFieldNumber(tag)) {
-      // .mavsdk.rpc.camera.CameraResult camera_result = 1;
-      case 1: {
-        if (static_cast< ::PROTOBUF_NAMESPACE_ID::uint8>(tag) == (10 & 0xFF)) {
-          DO_(::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::ReadMessage(
-               input, mutable_camera_result()));
-        } else {
-          goto handle_unusual;
-        }
-        break;
-      }
 
-      default: {
-      handle_unusual:
-        if (tag == 0) {
-          goto success;
-        }
-        DO_(::PROTOBUF_NAMESPACE_ID::internal::WireFormat::SkipField(
-              input, tag, _internal_metadata_.mutable_unknown_fields()));
-        break;
-      }
-    }
-  }
-success:
-  // @@protoc_insertion_point(parse_success:mavsdk.rpc.camera.SetSettingResponse)
-  return true;
-failure:
-  // @@protoc_insertion_point(parse_failure:mavsdk.rpc.camera.SetSettingResponse)
-  return false;
-#undef DO_
-}
-#endif  // GOOGLE_PROTOBUF_ENABLE_EXPERIMENTAL_PARSER
-
-::PROTOBUF_NAMESPACE_ID::uint8* SetSettingResponse::InternalSerializeWithCachedSizesToArray(
+::PROTOBUF_NAMESPACE_ID::uint8* SetSettingResponse::_InternalSerialize(
     ::PROTOBUF_NAMESPACE_ID::uint8* target, ::PROTOBUF_NAMESPACE_ID::io::EpsCopyOutputStream* stream) const {
   // @@protoc_insertion_point(serialize_to_array_start:mavsdk.rpc.camera.SetSettingResponse)
   ::PROTOBUF_NAMESPACE_ID::uint32 cached_has_bits = 0;
@@ -7937,9 +6783,9 @@ failure:
 
   // .mavsdk.rpc.camera.CameraResult camera_result = 1;
   if (this->has_camera_result()) {
-    stream->EnsureSpace(&target);
+    target = stream->EnsureSpace(target);
     target = ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::
-      InternalWriteMessageToArray(
+      InternalWriteMessage(
         1, _Internal::camera_result(this), target, stream);
   }
 
@@ -7998,7 +6844,7 @@ void SetSettingResponse::MergeFrom(const SetSettingResponse& from) {
   (void) cached_has_bits;
 
   if (from.has_camera_result()) {
-    mutable_camera_result()->::mavsdk::rpc::camera::CameraResult::MergeFrom(from.camera_result());
+    _internal_mutable_camera_result()->::mavsdk::rpc::camera::CameraResult::MergeFrom(from._internal_camera_result());
   }
 }
 
@@ -8091,7 +6937,6 @@ void CameraResult::Clear() {
   _internal_metadata_.Clear();
 }
 
-#if GOOGLE_PROTOBUF_ENABLE_EXPERIMENTAL_PARSER
 const char* CameraResult::_InternalParse(const char* ptr, ::PROTOBUF_NAMESPACE_ID::internal::ParseContext* ctx) {
 #define CHK_(x) if (PROTOBUF_PREDICT_FALSE(!(x))) goto failure
   while (!ctx->Done(&ptr)) {
@@ -8104,13 +6949,15 @@ const char* CameraResult::_InternalParse(const char* ptr, ::PROTOBUF_NAMESPACE_I
         if (PROTOBUF_PREDICT_TRUE(static_cast<::PROTOBUF_NAMESPACE_ID::uint8>(tag) == 8)) {
           ::PROTOBUF_NAMESPACE_ID::uint64 val = ::PROTOBUF_NAMESPACE_ID::internal::ReadVarint(&ptr);
           CHK_(ptr);
-          set_result(static_cast<::mavsdk::rpc::camera::CameraResult_Result>(val));
+          _internal_set_result(static_cast<::mavsdk::rpc::camera::CameraResult_Result>(val));
         } else goto handle_unusual;
         continue;
       // string result_str = 2;
       case 2:
         if (PROTOBUF_PREDICT_TRUE(static_cast<::PROTOBUF_NAMESPACE_ID::uint8>(tag) == 18)) {
-          ptr = ::PROTOBUF_NAMESPACE_ID::internal::InlineGreedyStringParserUTF8(_internal_mutable_result_str(), ptr, ctx, "mavsdk.rpc.camera.CameraResult.result_str");
+          auto str = _internal_mutable_result_str();
+          ptr = ::PROTOBUF_NAMESPACE_ID::internal::InlineGreedyStringParser(str, ptr, ctx);
+          CHK_(::PROTOBUF_NAMESPACE_ID::internal::VerifyUTF8(str, "mavsdk.rpc.camera.CameraResult.result_str"));
           CHK_(ptr);
         } else goto handle_unusual;
         continue;
@@ -8133,68 +6980,8 @@ failure:
   goto success;
 #undef CHK_
 }
-#else  // GOOGLE_PROTOBUF_ENABLE_EXPERIMENTAL_PARSER
-bool CameraResult::MergePartialFromCodedStream(
-    ::PROTOBUF_NAMESPACE_ID::io::CodedInputStream* input) {
-#define DO_(EXPRESSION) if (!PROTOBUF_PREDICT_TRUE(EXPRESSION)) goto failure
-  ::PROTOBUF_NAMESPACE_ID::uint32 tag;
-  // @@protoc_insertion_point(parse_start:mavsdk.rpc.camera.CameraResult)
-  for (;;) {
-    ::std::pair<::PROTOBUF_NAMESPACE_ID::uint32, bool> p = input->ReadTagWithCutoffNoLastTag(127u);
-    tag = p.first;
-    if (!p.second) goto handle_unusual;
-    switch (::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::GetTagFieldNumber(tag)) {
-      // .mavsdk.rpc.camera.CameraResult.Result result = 1;
-      case 1: {
-        if (static_cast< ::PROTOBUF_NAMESPACE_ID::uint8>(tag) == (8 & 0xFF)) {
-          int value = 0;
-          DO_((::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::ReadPrimitive<
-                   int, ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::TYPE_ENUM>(
-                 input, &value)));
-          set_result(static_cast< ::mavsdk::rpc::camera::CameraResult_Result >(value));
-        } else {
-          goto handle_unusual;
-        }
-        break;
-      }
 
-      // string result_str = 2;
-      case 2: {
-        if (static_cast< ::PROTOBUF_NAMESPACE_ID::uint8>(tag) == (18 & 0xFF)) {
-          DO_(::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::ReadString(
-                input, this->_internal_mutable_result_str()));
-          DO_(::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::VerifyUtf8String(
-            this->_internal_result_str().data(), static_cast<int>(this->_internal_result_str().length()),
-            ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::PARSE,
-            "mavsdk.rpc.camera.CameraResult.result_str"));
-        } else {
-          goto handle_unusual;
-        }
-        break;
-      }
-
-      default: {
-      handle_unusual:
-        if (tag == 0) {
-          goto success;
-        }
-        DO_(::PROTOBUF_NAMESPACE_ID::internal::WireFormat::SkipField(
-              input, tag, _internal_metadata_.mutable_unknown_fields()));
-        break;
-      }
-    }
-  }
-success:
-  // @@protoc_insertion_point(parse_success:mavsdk.rpc.camera.CameraResult)
-  return true;
-failure:
-  // @@protoc_insertion_point(parse_failure:mavsdk.rpc.camera.CameraResult)
-  return false;
-#undef DO_
-}
-#endif  // GOOGLE_PROTOBUF_ENABLE_EXPERIMENTAL_PARSER
-
-::PROTOBUF_NAMESPACE_ID::uint8* CameraResult::InternalSerializeWithCachedSizesToArray(
+::PROTOBUF_NAMESPACE_ID::uint8* CameraResult::_InternalSerialize(
     ::PROTOBUF_NAMESPACE_ID::uint8* target, ::PROTOBUF_NAMESPACE_ID::io::EpsCopyOutputStream* stream) const {
   // @@protoc_insertion_point(serialize_to_array_start:mavsdk.rpc.camera.CameraResult)
   ::PROTOBUF_NAMESPACE_ID::uint32 cached_has_bits = 0;
@@ -8202,9 +6989,9 @@ failure:
 
   // .mavsdk.rpc.camera.CameraResult.Result result = 1;
   if (this->result() != 0) {
-    stream->EnsureSpace(&target);
+    target = stream->EnsureSpace(target);
     target = ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::WriteEnumToArray(
-      1, this->result(), target);
+      1, this->_internal_result(), target);
   }
 
   // string result_str = 2;
@@ -8243,7 +7030,7 @@ size_t CameraResult::ByteSizeLong() const {
   // .mavsdk.rpc.camera.CameraResult.Result result = 1;
   if (this->result() != 0) {
     total_size += 1 +
-      ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::EnumSize(this->result());
+      ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::EnumSize(this->_internal_result());
   }
 
   if (PROTOBUF_PREDICT_FALSE(_internal_metadata_.have_unknown_fields())) {
@@ -8282,7 +7069,7 @@ void CameraResult::MergeFrom(const CameraResult& from) {
     result_str_.AssignWithDefault(&::PROTOBUF_NAMESPACE_ID::internal::GetEmptyStringAlreadyInited(), from.result_str_);
   }
   if (from.result() != 0) {
-    set_result(from.result());
+    _internal_set_result(from._internal_result());
   }
 }
 
@@ -8359,17 +7146,17 @@ CaptureInfo::CaptureInfo(const CaptureInfo& from)
   if (!from._internal_file_url().empty()) {
     file_url_.AssignWithDefault(&::PROTOBUF_NAMESPACE_ID::internal::GetEmptyStringAlreadyInited(), from.file_url_);
   }
-  if (from.has_position()) {
+  if (from._internal_has_position()) {
     position_ = new ::mavsdk::rpc::camera::Position(*from.position_);
   } else {
     position_ = nullptr;
   }
-  if (from.has_attitude_quaternion()) {
+  if (from._internal_has_attitude_quaternion()) {
     attitude_quaternion_ = new ::mavsdk::rpc::camera::Quaternion(*from.attitude_quaternion_);
   } else {
     attitude_quaternion_ = nullptr;
   }
-  if (from.has_attitude_euler_angle()) {
+  if (from._internal_has_attitude_euler_angle()) {
     attitude_euler_angle_ = new ::mavsdk::rpc::camera::EulerAngle(*from.attitude_euler_angle_);
   } else {
     attitude_euler_angle_ = nullptr;
@@ -8434,7 +7221,6 @@ void CaptureInfo::Clear() {
   _internal_metadata_.Clear();
 }
 
-#if GOOGLE_PROTOBUF_ENABLE_EXPERIMENTAL_PARSER
 const char* CaptureInfo::_InternalParse(const char* ptr, ::PROTOBUF_NAMESPACE_ID::internal::ParseContext* ctx) {
 #define CHK_(x) if (PROTOBUF_PREDICT_FALSE(!(x))) goto failure
   while (!ctx->Done(&ptr)) {
@@ -8445,21 +7231,21 @@ const char* CaptureInfo::_InternalParse(const char* ptr, ::PROTOBUF_NAMESPACE_ID
       // .mavsdk.rpc.camera.Position position = 1;
       case 1:
         if (PROTOBUF_PREDICT_TRUE(static_cast<::PROTOBUF_NAMESPACE_ID::uint8>(tag) == 10)) {
-          ptr = ctx->ParseMessage(mutable_position(), ptr);
+          ptr = ctx->ParseMessage(_internal_mutable_position(), ptr);
           CHK_(ptr);
         } else goto handle_unusual;
         continue;
       // .mavsdk.rpc.camera.Quaternion attitude_quaternion = 2;
       case 2:
         if (PROTOBUF_PREDICT_TRUE(static_cast<::PROTOBUF_NAMESPACE_ID::uint8>(tag) == 18)) {
-          ptr = ctx->ParseMessage(mutable_attitude_quaternion(), ptr);
+          ptr = ctx->ParseMessage(_internal_mutable_attitude_quaternion(), ptr);
           CHK_(ptr);
         } else goto handle_unusual;
         continue;
       // .mavsdk.rpc.camera.EulerAngle attitude_euler_angle = 3;
       case 3:
         if (PROTOBUF_PREDICT_TRUE(static_cast<::PROTOBUF_NAMESPACE_ID::uint8>(tag) == 26)) {
-          ptr = ctx->ParseMessage(mutable_attitude_euler_angle(), ptr);
+          ptr = ctx->ParseMessage(_internal_mutable_attitude_euler_angle(), ptr);
           CHK_(ptr);
         } else goto handle_unusual;
         continue;
@@ -8487,7 +7273,9 @@ const char* CaptureInfo::_InternalParse(const char* ptr, ::PROTOBUF_NAMESPACE_ID
       // string file_url = 7;
       case 7:
         if (PROTOBUF_PREDICT_TRUE(static_cast<::PROTOBUF_NAMESPACE_ID::uint8>(tag) == 58)) {
-          ptr = ::PROTOBUF_NAMESPACE_ID::internal::InlineGreedyStringParserUTF8(_internal_mutable_file_url(), ptr, ctx, "mavsdk.rpc.camera.CaptureInfo.file_url");
+          auto str = _internal_mutable_file_url();
+          ptr = ::PROTOBUF_NAMESPACE_ID::internal::InlineGreedyStringParser(str, ptr, ctx);
+          CHK_(::PROTOBUF_NAMESPACE_ID::internal::VerifyUTF8(str, "mavsdk.rpc.camera.CaptureInfo.file_url"));
           CHK_(ptr);
         } else goto handle_unusual;
         continue;
@@ -8510,126 +7298,8 @@ failure:
   goto success;
 #undef CHK_
 }
-#else  // GOOGLE_PROTOBUF_ENABLE_EXPERIMENTAL_PARSER
-bool CaptureInfo::MergePartialFromCodedStream(
-    ::PROTOBUF_NAMESPACE_ID::io::CodedInputStream* input) {
-#define DO_(EXPRESSION) if (!PROTOBUF_PREDICT_TRUE(EXPRESSION)) goto failure
-  ::PROTOBUF_NAMESPACE_ID::uint32 tag;
-  // @@protoc_insertion_point(parse_start:mavsdk.rpc.camera.CaptureInfo)
-  for (;;) {
-    ::std::pair<::PROTOBUF_NAMESPACE_ID::uint32, bool> p = input->ReadTagWithCutoffNoLastTag(127u);
-    tag = p.first;
-    if (!p.second) goto handle_unusual;
-    switch (::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::GetTagFieldNumber(tag)) {
-      // .mavsdk.rpc.camera.Position position = 1;
-      case 1: {
-        if (static_cast< ::PROTOBUF_NAMESPACE_ID::uint8>(tag) == (10 & 0xFF)) {
-          DO_(::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::ReadMessage(
-               input, mutable_position()));
-        } else {
-          goto handle_unusual;
-        }
-        break;
-      }
 
-      // .mavsdk.rpc.camera.Quaternion attitude_quaternion = 2;
-      case 2: {
-        if (static_cast< ::PROTOBUF_NAMESPACE_ID::uint8>(tag) == (18 & 0xFF)) {
-          DO_(::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::ReadMessage(
-               input, mutable_attitude_quaternion()));
-        } else {
-          goto handle_unusual;
-        }
-        break;
-      }
-
-      // .mavsdk.rpc.camera.EulerAngle attitude_euler_angle = 3;
-      case 3: {
-        if (static_cast< ::PROTOBUF_NAMESPACE_ID::uint8>(tag) == (26 & 0xFF)) {
-          DO_(::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::ReadMessage(
-               input, mutable_attitude_euler_angle()));
-        } else {
-          goto handle_unusual;
-        }
-        break;
-      }
-
-      // uint64 time_utc_us = 4;
-      case 4: {
-        if (static_cast< ::PROTOBUF_NAMESPACE_ID::uint8>(tag) == (32 & 0xFF)) {
-
-          DO_((::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::ReadPrimitive<
-                   ::PROTOBUF_NAMESPACE_ID::uint64, ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::TYPE_UINT64>(
-                 input, &time_utc_us_)));
-        } else {
-          goto handle_unusual;
-        }
-        break;
-      }
-
-      // bool is_success = 5;
-      case 5: {
-        if (static_cast< ::PROTOBUF_NAMESPACE_ID::uint8>(tag) == (40 & 0xFF)) {
-
-          DO_((::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::ReadPrimitive<
-                   bool, ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::TYPE_BOOL>(
-                 input, &is_success_)));
-        } else {
-          goto handle_unusual;
-        }
-        break;
-      }
-
-      // int32 index = 6;
-      case 6: {
-        if (static_cast< ::PROTOBUF_NAMESPACE_ID::uint8>(tag) == (48 & 0xFF)) {
-
-          DO_((::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::ReadPrimitive<
-                   ::PROTOBUF_NAMESPACE_ID::int32, ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::TYPE_INT32>(
-                 input, &index_)));
-        } else {
-          goto handle_unusual;
-        }
-        break;
-      }
-
-      // string file_url = 7;
-      case 7: {
-        if (static_cast< ::PROTOBUF_NAMESPACE_ID::uint8>(tag) == (58 & 0xFF)) {
-          DO_(::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::ReadString(
-                input, this->_internal_mutable_file_url()));
-          DO_(::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::VerifyUtf8String(
-            this->_internal_file_url().data(), static_cast<int>(this->_internal_file_url().length()),
-            ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::PARSE,
-            "mavsdk.rpc.camera.CaptureInfo.file_url"));
-        } else {
-          goto handle_unusual;
-        }
-        break;
-      }
-
-      default: {
-      handle_unusual:
-        if (tag == 0) {
-          goto success;
-        }
-        DO_(::PROTOBUF_NAMESPACE_ID::internal::WireFormat::SkipField(
-              input, tag, _internal_metadata_.mutable_unknown_fields()));
-        break;
-      }
-    }
-  }
-success:
-  // @@protoc_insertion_point(parse_success:mavsdk.rpc.camera.CaptureInfo)
-  return true;
-failure:
-  // @@protoc_insertion_point(parse_failure:mavsdk.rpc.camera.CaptureInfo)
-  return false;
-#undef DO_
-}
-#endif  // GOOGLE_PROTOBUF_ENABLE_EXPERIMENTAL_PARSER
-
-::PROTOBUF_NAMESPACE_ID::uint8* CaptureInfo::InternalSerializeWithCachedSizesToArray(
+::PROTOBUF_NAMESPACE_ID::uint8* CaptureInfo::_InternalSerialize(
     ::PROTOBUF_NAMESPACE_ID::uint8* target, ::PROTOBUF_NAMESPACE_ID::io::EpsCopyOutputStream* stream) const {
   // @@protoc_insertion_point(serialize_to_array_start:mavsdk.rpc.camera.CaptureInfo)
   ::PROTOBUF_NAMESPACE_ID::uint32 cached_has_bits = 0;
@@ -8637,44 +7307,44 @@ failure:
 
   // .mavsdk.rpc.camera.Position position = 1;
   if (this->has_position()) {
-    stream->EnsureSpace(&target);
+    target = stream->EnsureSpace(target);
     target = ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::
-      InternalWriteMessageToArray(
+      InternalWriteMessage(
         1, _Internal::position(this), target, stream);
   }
 
   // .mavsdk.rpc.camera.Quaternion attitude_quaternion = 2;
   if (this->has_attitude_quaternion()) {
-    stream->EnsureSpace(&target);
+    target = stream->EnsureSpace(target);
     target = ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::
-      InternalWriteMessageToArray(
+      InternalWriteMessage(
         2, _Internal::attitude_quaternion(this), target, stream);
   }
 
   // .mavsdk.rpc.camera.EulerAngle attitude_euler_angle = 3;
   if (this->has_attitude_euler_angle()) {
-    stream->EnsureSpace(&target);
+    target = stream->EnsureSpace(target);
     target = ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::
-      InternalWriteMessageToArray(
+      InternalWriteMessage(
         3, _Internal::attitude_euler_angle(this), target, stream);
   }
 
   // uint64 time_utc_us = 4;
   if (this->time_utc_us() != 0) {
-    stream->EnsureSpace(&target);
-    target = ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::WriteUInt64ToArray(4, this->time_utc_us(), target);
+    target = stream->EnsureSpace(target);
+    target = ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::WriteUInt64ToArray(4, this->_internal_time_utc_us(), target);
   }
 
   // bool is_success = 5;
   if (this->is_success() != 0) {
-    stream->EnsureSpace(&target);
-    target = ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::WriteBoolToArray(5, this->is_success(), target);
+    target = stream->EnsureSpace(target);
+    target = ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::WriteBoolToArray(5, this->_internal_is_success(), target);
   }
 
   // int32 index = 6;
   if (this->index() != 0) {
-    stream->EnsureSpace(&target);
-    target = ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::WriteInt32ToArray(6, this->index(), target);
+    target = stream->EnsureSpace(target);
+    target = ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::WriteInt32ToArray(6, this->_internal_index(), target);
   }
 
   // string file_url = 7;
@@ -8735,7 +7405,7 @@ size_t CaptureInfo::ByteSizeLong() const {
   if (this->time_utc_us() != 0) {
     total_size += 1 +
       ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::UInt64Size(
-        this->time_utc_us());
+        this->_internal_time_utc_us());
   }
 
   // bool is_success = 5;
@@ -8747,7 +7417,7 @@ size_t CaptureInfo::ByteSizeLong() const {
   if (this->index() != 0) {
     total_size += 1 +
       ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::Int32Size(
-        this->index());
+        this->_internal_index());
   }
 
   if (PROTOBUF_PREDICT_FALSE(_internal_metadata_.have_unknown_fields())) {
@@ -8786,22 +7456,22 @@ void CaptureInfo::MergeFrom(const CaptureInfo& from) {
     file_url_.AssignWithDefault(&::PROTOBUF_NAMESPACE_ID::internal::GetEmptyStringAlreadyInited(), from.file_url_);
   }
   if (from.has_position()) {
-    mutable_position()->::mavsdk::rpc::camera::Position::MergeFrom(from.position());
+    _internal_mutable_position()->::mavsdk::rpc::camera::Position::MergeFrom(from._internal_position());
   }
   if (from.has_attitude_quaternion()) {
-    mutable_attitude_quaternion()->::mavsdk::rpc::camera::Quaternion::MergeFrom(from.attitude_quaternion());
+    _internal_mutable_attitude_quaternion()->::mavsdk::rpc::camera::Quaternion::MergeFrom(from._internal_attitude_quaternion());
   }
   if (from.has_attitude_euler_angle()) {
-    mutable_attitude_euler_angle()->::mavsdk::rpc::camera::EulerAngle::MergeFrom(from.attitude_euler_angle());
+    _internal_mutable_attitude_euler_angle()->::mavsdk::rpc::camera::EulerAngle::MergeFrom(from._internal_attitude_euler_angle());
   }
   if (from.time_utc_us() != 0) {
-    set_time_utc_us(from.time_utc_us());
+    _internal_set_time_utc_us(from._internal_time_utc_us());
   }
   if (from.is_success() != 0) {
-    set_is_success(from.is_success());
+    _internal_set_is_success(from._internal_is_success());
   }
   if (from.index() != 0) {
-    set_index(from.index());
+    _internal_set_index(from._internal_index());
   }
 }
 
@@ -8899,7 +7569,6 @@ void Position::Clear() {
   _internal_metadata_.Clear();
 }
 
-#if GOOGLE_PROTOBUF_ENABLE_EXPERIMENTAL_PARSER
 const char* Position::_InternalParse(const char* ptr, ::PROTOBUF_NAMESPACE_ID::internal::ParseContext* ctx) {
 #define CHK_(x) if (PROTOBUF_PREDICT_FALSE(!(x))) goto failure
   while (!ctx->Done(&ptr)) {
@@ -8954,91 +7623,8 @@ failure:
   goto success;
 #undef CHK_
 }
-#else  // GOOGLE_PROTOBUF_ENABLE_EXPERIMENTAL_PARSER
-bool Position::MergePartialFromCodedStream(
-    ::PROTOBUF_NAMESPACE_ID::io::CodedInputStream* input) {
-#define DO_(EXPRESSION) if (!PROTOBUF_PREDICT_TRUE(EXPRESSION)) goto failure
-  ::PROTOBUF_NAMESPACE_ID::uint32 tag;
-  // @@protoc_insertion_point(parse_start:mavsdk.rpc.camera.Position)
-  for (;;) {
-    ::std::pair<::PROTOBUF_NAMESPACE_ID::uint32, bool> p = input->ReadTagWithCutoffNoLastTag(127u);
-    tag = p.first;
-    if (!p.second) goto handle_unusual;
-    switch (::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::GetTagFieldNumber(tag)) {
-      // double latitude_deg = 1;
-      case 1: {
-        if (static_cast< ::PROTOBUF_NAMESPACE_ID::uint8>(tag) == (9 & 0xFF)) {
 
-          DO_((::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::ReadPrimitive<
-                   double, ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::TYPE_DOUBLE>(
-                 input, &latitude_deg_)));
-        } else {
-          goto handle_unusual;
-        }
-        break;
-      }
-
-      // double longitude_deg = 2;
-      case 2: {
-        if (static_cast< ::PROTOBUF_NAMESPACE_ID::uint8>(tag) == (17 & 0xFF)) {
-
-          DO_((::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::ReadPrimitive<
-                   double, ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::TYPE_DOUBLE>(
-                 input, &longitude_deg_)));
-        } else {
-          goto handle_unusual;
-        }
-        break;
-      }
-
-      // float absolute_altitude_m = 3;
-      case 3: {
-        if (static_cast< ::PROTOBUF_NAMESPACE_ID::uint8>(tag) == (29 & 0xFF)) {
-
-          DO_((::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::ReadPrimitive<
-                   float, ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::TYPE_FLOAT>(
-                 input, &absolute_altitude_m_)));
-        } else {
-          goto handle_unusual;
-        }
-        break;
-      }
-
-      // float relative_altitude_m = 4;
-      case 4: {
-        if (static_cast< ::PROTOBUF_NAMESPACE_ID::uint8>(tag) == (37 & 0xFF)) {
-
-          DO_((::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::ReadPrimitive<
-                   float, ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::TYPE_FLOAT>(
-                 input, &relative_altitude_m_)));
-        } else {
-          goto handle_unusual;
-        }
-        break;
-      }
-
-      default: {
-      handle_unusual:
-        if (tag == 0) {
-          goto success;
-        }
-        DO_(::PROTOBUF_NAMESPACE_ID::internal::WireFormat::SkipField(
-              input, tag, _internal_metadata_.mutable_unknown_fields()));
-        break;
-      }
-    }
-  }
-success:
-  // @@protoc_insertion_point(parse_success:mavsdk.rpc.camera.Position)
-  return true;
-failure:
-  // @@protoc_insertion_point(parse_failure:mavsdk.rpc.camera.Position)
-  return false;
-#undef DO_
-}
-#endif  // GOOGLE_PROTOBUF_ENABLE_EXPERIMENTAL_PARSER
-
-::PROTOBUF_NAMESPACE_ID::uint8* Position::InternalSerializeWithCachedSizesToArray(
+::PROTOBUF_NAMESPACE_ID::uint8* Position::_InternalSerialize(
     ::PROTOBUF_NAMESPACE_ID::uint8* target, ::PROTOBUF_NAMESPACE_ID::io::EpsCopyOutputStream* stream) const {
   // @@protoc_insertion_point(serialize_to_array_start:mavsdk.rpc.camera.Position)
   ::PROTOBUF_NAMESPACE_ID::uint32 cached_has_bits = 0;
@@ -9046,26 +7632,26 @@ failure:
 
   // double latitude_deg = 1;
   if (!(this->latitude_deg() <= 0 && this->latitude_deg() >= 0)) {
-    stream->EnsureSpace(&target);
-    target = ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::WriteDoubleToArray(1, this->latitude_deg(), target);
+    target = stream->EnsureSpace(target);
+    target = ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::WriteDoubleToArray(1, this->_internal_latitude_deg(), target);
   }
 
   // double longitude_deg = 2;
   if (!(this->longitude_deg() <= 0 && this->longitude_deg() >= 0)) {
-    stream->EnsureSpace(&target);
-    target = ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::WriteDoubleToArray(2, this->longitude_deg(), target);
+    target = stream->EnsureSpace(target);
+    target = ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::WriteDoubleToArray(2, this->_internal_longitude_deg(), target);
   }
 
   // float absolute_altitude_m = 3;
   if (!(this->absolute_altitude_m() <= 0 && this->absolute_altitude_m() >= 0)) {
-    stream->EnsureSpace(&target);
-    target = ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::WriteFloatToArray(3, this->absolute_altitude_m(), target);
+    target = stream->EnsureSpace(target);
+    target = ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::WriteFloatToArray(3, this->_internal_absolute_altitude_m(), target);
   }
 
   // float relative_altitude_m = 4;
   if (!(this->relative_altitude_m() <= 0 && this->relative_altitude_m() >= 0)) {
-    stream->EnsureSpace(&target);
-    target = ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::WriteFloatToArray(4, this->relative_altitude_m(), target);
+    target = stream->EnsureSpace(target);
+    target = ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::WriteFloatToArray(4, this->_internal_relative_altitude_m(), target);
   }
 
   if (PROTOBUF_PREDICT_FALSE(_internal_metadata_.have_unknown_fields())) {
@@ -9136,16 +7722,16 @@ void Position::MergeFrom(const Position& from) {
   (void) cached_has_bits;
 
   if (!(from.latitude_deg() <= 0 && from.latitude_deg() >= 0)) {
-    set_latitude_deg(from.latitude_deg());
+    _internal_set_latitude_deg(from._internal_latitude_deg());
   }
   if (!(from.longitude_deg() <= 0 && from.longitude_deg() >= 0)) {
-    set_longitude_deg(from.longitude_deg());
+    _internal_set_longitude_deg(from._internal_longitude_deg());
   }
   if (!(from.absolute_altitude_m() <= 0 && from.absolute_altitude_m() >= 0)) {
-    set_absolute_altitude_m(from.absolute_altitude_m());
+    _internal_set_absolute_altitude_m(from._internal_absolute_altitude_m());
   }
   if (!(from.relative_altitude_m() <= 0 && from.relative_altitude_m() >= 0)) {
-    set_relative_altitude_m(from.relative_altitude_m());
+    _internal_set_relative_altitude_m(from._internal_relative_altitude_m());
   }
 }
 
@@ -9239,7 +7825,6 @@ void Quaternion::Clear() {
   _internal_metadata_.Clear();
 }
 
-#if GOOGLE_PROTOBUF_ENABLE_EXPERIMENTAL_PARSER
 const char* Quaternion::_InternalParse(const char* ptr, ::PROTOBUF_NAMESPACE_ID::internal::ParseContext* ctx) {
 #define CHK_(x) if (PROTOBUF_PREDICT_FALSE(!(x))) goto failure
   while (!ctx->Done(&ptr)) {
@@ -9294,91 +7879,8 @@ failure:
   goto success;
 #undef CHK_
 }
-#else  // GOOGLE_PROTOBUF_ENABLE_EXPERIMENTAL_PARSER
-bool Quaternion::MergePartialFromCodedStream(
-    ::PROTOBUF_NAMESPACE_ID::io::CodedInputStream* input) {
-#define DO_(EXPRESSION) if (!PROTOBUF_PREDICT_TRUE(EXPRESSION)) goto failure
-  ::PROTOBUF_NAMESPACE_ID::uint32 tag;
-  // @@protoc_insertion_point(parse_start:mavsdk.rpc.camera.Quaternion)
-  for (;;) {
-    ::std::pair<::PROTOBUF_NAMESPACE_ID::uint32, bool> p = input->ReadTagWithCutoffNoLastTag(127u);
-    tag = p.first;
-    if (!p.second) goto handle_unusual;
-    switch (::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::GetTagFieldNumber(tag)) {
-      // float w = 1;
-      case 1: {
-        if (static_cast< ::PROTOBUF_NAMESPACE_ID::uint8>(tag) == (13 & 0xFF)) {
 
-          DO_((::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::ReadPrimitive<
-                   float, ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::TYPE_FLOAT>(
-                 input, &w_)));
-        } else {
-          goto handle_unusual;
-        }
-        break;
-      }
-
-      // float x = 2;
-      case 2: {
-        if (static_cast< ::PROTOBUF_NAMESPACE_ID::uint8>(tag) == (21 & 0xFF)) {
-
-          DO_((::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::ReadPrimitive<
-                   float, ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::TYPE_FLOAT>(
-                 input, &x_)));
-        } else {
-          goto handle_unusual;
-        }
-        break;
-      }
-
-      // float y = 3;
-      case 3: {
-        if (static_cast< ::PROTOBUF_NAMESPACE_ID::uint8>(tag) == (29 & 0xFF)) {
-
-          DO_((::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::ReadPrimitive<
-                   float, ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::TYPE_FLOAT>(
-                 input, &y_)));
-        } else {
-          goto handle_unusual;
-        }
-        break;
-      }
-
-      // float z = 4;
-      case 4: {
-        if (static_cast< ::PROTOBUF_NAMESPACE_ID::uint8>(tag) == (37 & 0xFF)) {
-
-          DO_((::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::ReadPrimitive<
-                   float, ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::TYPE_FLOAT>(
-                 input, &z_)));
-        } else {
-          goto handle_unusual;
-        }
-        break;
-      }
-
-      default: {
-      handle_unusual:
-        if (tag == 0) {
-          goto success;
-        }
-        DO_(::PROTOBUF_NAMESPACE_ID::internal::WireFormat::SkipField(
-              input, tag, _internal_metadata_.mutable_unknown_fields()));
-        break;
-      }
-    }
-  }
-success:
-  // @@protoc_insertion_point(parse_success:mavsdk.rpc.camera.Quaternion)
-  return true;
-failure:
-  // @@protoc_insertion_point(parse_failure:mavsdk.rpc.camera.Quaternion)
-  return false;
-#undef DO_
-}
-#endif  // GOOGLE_PROTOBUF_ENABLE_EXPERIMENTAL_PARSER
-
-::PROTOBUF_NAMESPACE_ID::uint8* Quaternion::InternalSerializeWithCachedSizesToArray(
+::PROTOBUF_NAMESPACE_ID::uint8* Quaternion::_InternalSerialize(
     ::PROTOBUF_NAMESPACE_ID::uint8* target, ::PROTOBUF_NAMESPACE_ID::io::EpsCopyOutputStream* stream) const {
   // @@protoc_insertion_point(serialize_to_array_start:mavsdk.rpc.camera.Quaternion)
   ::PROTOBUF_NAMESPACE_ID::uint32 cached_has_bits = 0;
@@ -9386,26 +7888,26 @@ failure:
 
   // float w = 1;
   if (!(this->w() <= 0 && this->w() >= 0)) {
-    stream->EnsureSpace(&target);
-    target = ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::WriteFloatToArray(1, this->w(), target);
+    target = stream->EnsureSpace(target);
+    target = ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::WriteFloatToArray(1, this->_internal_w(), target);
   }
 
   // float x = 2;
   if (!(this->x() <= 0 && this->x() >= 0)) {
-    stream->EnsureSpace(&target);
-    target = ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::WriteFloatToArray(2, this->x(), target);
+    target = stream->EnsureSpace(target);
+    target = ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::WriteFloatToArray(2, this->_internal_x(), target);
   }
 
   // float y = 3;
   if (!(this->y() <= 0 && this->y() >= 0)) {
-    stream->EnsureSpace(&target);
-    target = ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::WriteFloatToArray(3, this->y(), target);
+    target = stream->EnsureSpace(target);
+    target = ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::WriteFloatToArray(3, this->_internal_y(), target);
   }
 
   // float z = 4;
   if (!(this->z() <= 0 && this->z() >= 0)) {
-    stream->EnsureSpace(&target);
-    target = ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::WriteFloatToArray(4, this->z(), target);
+    target = stream->EnsureSpace(target);
+    target = ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::WriteFloatToArray(4, this->_internal_z(), target);
   }
 
   if (PROTOBUF_PREDICT_FALSE(_internal_metadata_.have_unknown_fields())) {
@@ -9476,16 +7978,16 @@ void Quaternion::MergeFrom(const Quaternion& from) {
   (void) cached_has_bits;
 
   if (!(from.w() <= 0 && from.w() >= 0)) {
-    set_w(from.w());
+    _internal_set_w(from._internal_w());
   }
   if (!(from.x() <= 0 && from.x() >= 0)) {
-    set_x(from.x());
+    _internal_set_x(from._internal_x());
   }
   if (!(from.y() <= 0 && from.y() >= 0)) {
-    set_y(from.y());
+    _internal_set_y(from._internal_y());
   }
   if (!(from.z() <= 0 && from.z() >= 0)) {
-    set_z(from.z());
+    _internal_set_z(from._internal_z());
   }
 }
 
@@ -9579,7 +8081,6 @@ void EulerAngle::Clear() {
   _internal_metadata_.Clear();
 }
 
-#if GOOGLE_PROTOBUF_ENABLE_EXPERIMENTAL_PARSER
 const char* EulerAngle::_InternalParse(const char* ptr, ::PROTOBUF_NAMESPACE_ID::internal::ParseContext* ctx) {
 #define CHK_(x) if (PROTOBUF_PREDICT_FALSE(!(x))) goto failure
   while (!ctx->Done(&ptr)) {
@@ -9627,78 +8128,8 @@ failure:
   goto success;
 #undef CHK_
 }
-#else  // GOOGLE_PROTOBUF_ENABLE_EXPERIMENTAL_PARSER
-bool EulerAngle::MergePartialFromCodedStream(
-    ::PROTOBUF_NAMESPACE_ID::io::CodedInputStream* input) {
-#define DO_(EXPRESSION) if (!PROTOBUF_PREDICT_TRUE(EXPRESSION)) goto failure
-  ::PROTOBUF_NAMESPACE_ID::uint32 tag;
-  // @@protoc_insertion_point(parse_start:mavsdk.rpc.camera.EulerAngle)
-  for (;;) {
-    ::std::pair<::PROTOBUF_NAMESPACE_ID::uint32, bool> p = input->ReadTagWithCutoffNoLastTag(127u);
-    tag = p.first;
-    if (!p.second) goto handle_unusual;
-    switch (::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::GetTagFieldNumber(tag)) {
-      // float roll_deg = 1;
-      case 1: {
-        if (static_cast< ::PROTOBUF_NAMESPACE_ID::uint8>(tag) == (13 & 0xFF)) {
 
-          DO_((::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::ReadPrimitive<
-                   float, ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::TYPE_FLOAT>(
-                 input, &roll_deg_)));
-        } else {
-          goto handle_unusual;
-        }
-        break;
-      }
-
-      // float pitch_deg = 2;
-      case 2: {
-        if (static_cast< ::PROTOBUF_NAMESPACE_ID::uint8>(tag) == (21 & 0xFF)) {
-
-          DO_((::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::ReadPrimitive<
-                   float, ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::TYPE_FLOAT>(
-                 input, &pitch_deg_)));
-        } else {
-          goto handle_unusual;
-        }
-        break;
-      }
-
-      // float yaw_deg = 3;
-      case 3: {
-        if (static_cast< ::PROTOBUF_NAMESPACE_ID::uint8>(tag) == (29 & 0xFF)) {
-
-          DO_((::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::ReadPrimitive<
-                   float, ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::TYPE_FLOAT>(
-                 input, &yaw_deg_)));
-        } else {
-          goto handle_unusual;
-        }
-        break;
-      }
-
-      default: {
-      handle_unusual:
-        if (tag == 0) {
-          goto success;
-        }
-        DO_(::PROTOBUF_NAMESPACE_ID::internal::WireFormat::SkipField(
-              input, tag, _internal_metadata_.mutable_unknown_fields()));
-        break;
-      }
-    }
-  }
-success:
-  // @@protoc_insertion_point(parse_success:mavsdk.rpc.camera.EulerAngle)
-  return true;
-failure:
-  // @@protoc_insertion_point(parse_failure:mavsdk.rpc.camera.EulerAngle)
-  return false;
-#undef DO_
-}
-#endif  // GOOGLE_PROTOBUF_ENABLE_EXPERIMENTAL_PARSER
-
-::PROTOBUF_NAMESPACE_ID::uint8* EulerAngle::InternalSerializeWithCachedSizesToArray(
+::PROTOBUF_NAMESPACE_ID::uint8* EulerAngle::_InternalSerialize(
     ::PROTOBUF_NAMESPACE_ID::uint8* target, ::PROTOBUF_NAMESPACE_ID::io::EpsCopyOutputStream* stream) const {
   // @@protoc_insertion_point(serialize_to_array_start:mavsdk.rpc.camera.EulerAngle)
   ::PROTOBUF_NAMESPACE_ID::uint32 cached_has_bits = 0;
@@ -9706,20 +8137,20 @@ failure:
 
   // float roll_deg = 1;
   if (!(this->roll_deg() <= 0 && this->roll_deg() >= 0)) {
-    stream->EnsureSpace(&target);
-    target = ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::WriteFloatToArray(1, this->roll_deg(), target);
+    target = stream->EnsureSpace(target);
+    target = ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::WriteFloatToArray(1, this->_internal_roll_deg(), target);
   }
 
   // float pitch_deg = 2;
   if (!(this->pitch_deg() <= 0 && this->pitch_deg() >= 0)) {
-    stream->EnsureSpace(&target);
-    target = ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::WriteFloatToArray(2, this->pitch_deg(), target);
+    target = stream->EnsureSpace(target);
+    target = ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::WriteFloatToArray(2, this->_internal_pitch_deg(), target);
   }
 
   // float yaw_deg = 3;
   if (!(this->yaw_deg() <= 0 && this->yaw_deg() >= 0)) {
-    stream->EnsureSpace(&target);
-    target = ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::WriteFloatToArray(3, this->yaw_deg(), target);
+    target = stream->EnsureSpace(target);
+    target = ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::WriteFloatToArray(3, this->_internal_yaw_deg(), target);
   }
 
   if (PROTOBUF_PREDICT_FALSE(_internal_metadata_.have_unknown_fields())) {
@@ -9785,13 +8216,13 @@ void EulerAngle::MergeFrom(const EulerAngle& from) {
   (void) cached_has_bits;
 
   if (!(from.roll_deg() <= 0 && from.roll_deg() >= 0)) {
-    set_roll_deg(from.roll_deg());
+    _internal_set_roll_deg(from._internal_roll_deg());
   }
   if (!(from.pitch_deg() <= 0 && from.pitch_deg() >= 0)) {
-    set_pitch_deg(from.pitch_deg());
+    _internal_set_pitch_deg(from._internal_pitch_deg());
   }
   if (!(from.yaw_deg() <= 0 && from.yaw_deg() >= 0)) {
-    set_yaw_deg(from.yaw_deg());
+    _internal_set_yaw_deg(from._internal_yaw_deg());
   }
 }
 
@@ -9892,7 +8323,6 @@ void VideoStreamSettings::Clear() {
   _internal_metadata_.Clear();
 }
 
-#if GOOGLE_PROTOBUF_ENABLE_EXPERIMENTAL_PARSER
 const char* VideoStreamSettings::_InternalParse(const char* ptr, ::PROTOBUF_NAMESPACE_ID::internal::ParseContext* ctx) {
 #define CHK_(x) if (PROTOBUF_PREDICT_FALSE(!(x))) goto failure
   while (!ctx->Done(&ptr)) {
@@ -9938,7 +8368,9 @@ const char* VideoStreamSettings::_InternalParse(const char* ptr, ::PROTOBUF_NAME
       // string uri = 6;
       case 6:
         if (PROTOBUF_PREDICT_TRUE(static_cast<::PROTOBUF_NAMESPACE_ID::uint8>(tag) == 50)) {
-          ptr = ::PROTOBUF_NAMESPACE_ID::internal::InlineGreedyStringParserUTF8(_internal_mutable_uri(), ptr, ctx, "mavsdk.rpc.camera.VideoStreamSettings.uri");
+          auto str = _internal_mutable_uri();
+          ptr = ::PROTOBUF_NAMESPACE_ID::internal::InlineGreedyStringParser(str, ptr, ctx);
+          CHK_(::PROTOBUF_NAMESPACE_ID::internal::VerifyUTF8(str, "mavsdk.rpc.camera.VideoStreamSettings.uri"));
           CHK_(ptr);
         } else goto handle_unusual;
         continue;
@@ -9961,119 +8393,8 @@ failure:
   goto success;
 #undef CHK_
 }
-#else  // GOOGLE_PROTOBUF_ENABLE_EXPERIMENTAL_PARSER
-bool VideoStreamSettings::MergePartialFromCodedStream(
-    ::PROTOBUF_NAMESPACE_ID::io::CodedInputStream* input) {
-#define DO_(EXPRESSION) if (!PROTOBUF_PREDICT_TRUE(EXPRESSION)) goto failure
-  ::PROTOBUF_NAMESPACE_ID::uint32 tag;
-  // @@protoc_insertion_point(parse_start:mavsdk.rpc.camera.VideoStreamSettings)
-  for (;;) {
-    ::std::pair<::PROTOBUF_NAMESPACE_ID::uint32, bool> p = input->ReadTagWithCutoffNoLastTag(127u);
-    tag = p.first;
-    if (!p.second) goto handle_unusual;
-    switch (::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::GetTagFieldNumber(tag)) {
-      // float frame_rate_hz = 1;
-      case 1: {
-        if (static_cast< ::PROTOBUF_NAMESPACE_ID::uint8>(tag) == (13 & 0xFF)) {
 
-          DO_((::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::ReadPrimitive<
-                   float, ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::TYPE_FLOAT>(
-                 input, &frame_rate_hz_)));
-        } else {
-          goto handle_unusual;
-        }
-        break;
-      }
-
-      // uint32 horizontal_resolution_pix = 2;
-      case 2: {
-        if (static_cast< ::PROTOBUF_NAMESPACE_ID::uint8>(tag) == (16 & 0xFF)) {
-
-          DO_((::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::ReadPrimitive<
-                   ::PROTOBUF_NAMESPACE_ID::uint32, ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::TYPE_UINT32>(
-                 input, &horizontal_resolution_pix_)));
-        } else {
-          goto handle_unusual;
-        }
-        break;
-      }
-
-      // uint32 vertical_resolution_pix = 3;
-      case 3: {
-        if (static_cast< ::PROTOBUF_NAMESPACE_ID::uint8>(tag) == (24 & 0xFF)) {
-
-          DO_((::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::ReadPrimitive<
-                   ::PROTOBUF_NAMESPACE_ID::uint32, ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::TYPE_UINT32>(
-                 input, &vertical_resolution_pix_)));
-        } else {
-          goto handle_unusual;
-        }
-        break;
-      }
-
-      // uint32 bit_rate_b_s = 4;
-      case 4: {
-        if (static_cast< ::PROTOBUF_NAMESPACE_ID::uint8>(tag) == (32 & 0xFF)) {
-
-          DO_((::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::ReadPrimitive<
-                   ::PROTOBUF_NAMESPACE_ID::uint32, ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::TYPE_UINT32>(
-                 input, &bit_rate_b_s_)));
-        } else {
-          goto handle_unusual;
-        }
-        break;
-      }
-
-      // uint32 rotation_deg = 5;
-      case 5: {
-        if (static_cast< ::PROTOBUF_NAMESPACE_ID::uint8>(tag) == (40 & 0xFF)) {
-
-          DO_((::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::ReadPrimitive<
-                   ::PROTOBUF_NAMESPACE_ID::uint32, ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::TYPE_UINT32>(
-                 input, &rotation_deg_)));
-        } else {
-          goto handle_unusual;
-        }
-        break;
-      }
-
-      // string uri = 6;
-      case 6: {
-        if (static_cast< ::PROTOBUF_NAMESPACE_ID::uint8>(tag) == (50 & 0xFF)) {
-          DO_(::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::ReadString(
-                input, this->_internal_mutable_uri()));
-          DO_(::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::VerifyUtf8String(
-            this->_internal_uri().data(), static_cast<int>(this->_internal_uri().length()),
-            ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::PARSE,
-            "mavsdk.rpc.camera.VideoStreamSettings.uri"));
-        } else {
-          goto handle_unusual;
-        }
-        break;
-      }
-
-      default: {
-      handle_unusual:
-        if (tag == 0) {
-          goto success;
-        }
-        DO_(::PROTOBUF_NAMESPACE_ID::internal::WireFormat::SkipField(
-              input, tag, _internal_metadata_.mutable_unknown_fields()));
-        break;
-      }
-    }
-  }
-success:
-  // @@protoc_insertion_point(parse_success:mavsdk.rpc.camera.VideoStreamSettings)
-  return true;
-failure:
-  // @@protoc_insertion_point(parse_failure:mavsdk.rpc.camera.VideoStreamSettings)
-  return false;
-#undef DO_
-}
-#endif  // GOOGLE_PROTOBUF_ENABLE_EXPERIMENTAL_PARSER
-
-::PROTOBUF_NAMESPACE_ID::uint8* VideoStreamSettings::InternalSerializeWithCachedSizesToArray(
+::PROTOBUF_NAMESPACE_ID::uint8* VideoStreamSettings::_InternalSerialize(
     ::PROTOBUF_NAMESPACE_ID::uint8* target, ::PROTOBUF_NAMESPACE_ID::io::EpsCopyOutputStream* stream) const {
   // @@protoc_insertion_point(serialize_to_array_start:mavsdk.rpc.camera.VideoStreamSettings)
   ::PROTOBUF_NAMESPACE_ID::uint32 cached_has_bits = 0;
@@ -10081,32 +8402,32 @@ failure:
 
   // float frame_rate_hz = 1;
   if (!(this->frame_rate_hz() <= 0 && this->frame_rate_hz() >= 0)) {
-    stream->EnsureSpace(&target);
-    target = ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::WriteFloatToArray(1, this->frame_rate_hz(), target);
+    target = stream->EnsureSpace(target);
+    target = ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::WriteFloatToArray(1, this->_internal_frame_rate_hz(), target);
   }
 
   // uint32 horizontal_resolution_pix = 2;
   if (this->horizontal_resolution_pix() != 0) {
-    stream->EnsureSpace(&target);
-    target = ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::WriteUInt32ToArray(2, this->horizontal_resolution_pix(), target);
+    target = stream->EnsureSpace(target);
+    target = ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::WriteUInt32ToArray(2, this->_internal_horizontal_resolution_pix(), target);
   }
 
   // uint32 vertical_resolution_pix = 3;
   if (this->vertical_resolution_pix() != 0) {
-    stream->EnsureSpace(&target);
-    target = ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::WriteUInt32ToArray(3, this->vertical_resolution_pix(), target);
+    target = stream->EnsureSpace(target);
+    target = ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::WriteUInt32ToArray(3, this->_internal_vertical_resolution_pix(), target);
   }
 
   // uint32 bit_rate_b_s = 4;
   if (this->bit_rate_b_s() != 0) {
-    stream->EnsureSpace(&target);
-    target = ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::WriteUInt32ToArray(4, this->bit_rate_b_s(), target);
+    target = stream->EnsureSpace(target);
+    target = ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::WriteUInt32ToArray(4, this->_internal_bit_rate_b_s(), target);
   }
 
   // uint32 rotation_deg = 5;
   if (this->rotation_deg() != 0) {
-    stream->EnsureSpace(&target);
-    target = ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::WriteUInt32ToArray(5, this->rotation_deg(), target);
+    target = stream->EnsureSpace(target);
+    target = ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::WriteUInt32ToArray(5, this->_internal_rotation_deg(), target);
   }
 
   // string uri = 6;
@@ -10151,28 +8472,28 @@ size_t VideoStreamSettings::ByteSizeLong() const {
   if (this->horizontal_resolution_pix() != 0) {
     total_size += 1 +
       ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::UInt32Size(
-        this->horizontal_resolution_pix());
+        this->_internal_horizontal_resolution_pix());
   }
 
   // uint32 vertical_resolution_pix = 3;
   if (this->vertical_resolution_pix() != 0) {
     total_size += 1 +
       ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::UInt32Size(
-        this->vertical_resolution_pix());
+        this->_internal_vertical_resolution_pix());
   }
 
   // uint32 bit_rate_b_s = 4;
   if (this->bit_rate_b_s() != 0) {
     total_size += 1 +
       ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::UInt32Size(
-        this->bit_rate_b_s());
+        this->_internal_bit_rate_b_s());
   }
 
   // uint32 rotation_deg = 5;
   if (this->rotation_deg() != 0) {
     total_size += 1 +
       ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::UInt32Size(
-        this->rotation_deg());
+        this->_internal_rotation_deg());
   }
 
   if (PROTOBUF_PREDICT_FALSE(_internal_metadata_.have_unknown_fields())) {
@@ -10211,19 +8532,19 @@ void VideoStreamSettings::MergeFrom(const VideoStreamSettings& from) {
     uri_.AssignWithDefault(&::PROTOBUF_NAMESPACE_ID::internal::GetEmptyStringAlreadyInited(), from.uri_);
   }
   if (!(from.frame_rate_hz() <= 0 && from.frame_rate_hz() >= 0)) {
-    set_frame_rate_hz(from.frame_rate_hz());
+    _internal_set_frame_rate_hz(from._internal_frame_rate_hz());
   }
   if (from.horizontal_resolution_pix() != 0) {
-    set_horizontal_resolution_pix(from.horizontal_resolution_pix());
+    _internal_set_horizontal_resolution_pix(from._internal_horizontal_resolution_pix());
   }
   if (from.vertical_resolution_pix() != 0) {
-    set_vertical_resolution_pix(from.vertical_resolution_pix());
+    _internal_set_vertical_resolution_pix(from._internal_vertical_resolution_pix());
   }
   if (from.bit_rate_b_s() != 0) {
-    set_bit_rate_b_s(from.bit_rate_b_s());
+    _internal_set_bit_rate_b_s(from._internal_bit_rate_b_s());
   }
   if (from.rotation_deg() != 0) {
-    set_rotation_deg(from.rotation_deg());
+    _internal_set_rotation_deg(from._internal_rotation_deg());
   }
 }
 
@@ -10286,7 +8607,7 @@ VideoStreamInfo::VideoStreamInfo(const VideoStreamInfo& from)
   : ::PROTOBUF_NAMESPACE_ID::Message(),
       _internal_metadata_(nullptr) {
   _internal_metadata_.MergeFrom(from._internal_metadata_);
-  if (from.has_video_stream_settings()) {
+  if (from._internal_has_video_stream_settings()) {
     video_stream_settings_ = new ::mavsdk::rpc::camera::VideoStreamSettings(*from.video_stream_settings_);
   } else {
     video_stream_settings_ = nullptr;
@@ -10334,7 +8655,6 @@ void VideoStreamInfo::Clear() {
   _internal_metadata_.Clear();
 }
 
-#if GOOGLE_PROTOBUF_ENABLE_EXPERIMENTAL_PARSER
 const char* VideoStreamInfo::_InternalParse(const char* ptr, ::PROTOBUF_NAMESPACE_ID::internal::ParseContext* ctx) {
 #define CHK_(x) if (PROTOBUF_PREDICT_FALSE(!(x))) goto failure
   while (!ctx->Done(&ptr)) {
@@ -10345,7 +8665,7 @@ const char* VideoStreamInfo::_InternalParse(const char* ptr, ::PROTOBUF_NAMESPAC
       // .mavsdk.rpc.camera.VideoStreamSettings video_stream_settings = 1;
       case 1:
         if (PROTOBUF_PREDICT_TRUE(static_cast<::PROTOBUF_NAMESPACE_ID::uint8>(tag) == 10)) {
-          ptr = ctx->ParseMessage(mutable_video_stream_settings(), ptr);
+          ptr = ctx->ParseMessage(_internal_mutable_video_stream_settings(), ptr);
           CHK_(ptr);
         } else goto handle_unusual;
         continue;
@@ -10354,7 +8674,7 @@ const char* VideoStreamInfo::_InternalParse(const char* ptr, ::PROTOBUF_NAMESPAC
         if (PROTOBUF_PREDICT_TRUE(static_cast<::PROTOBUF_NAMESPACE_ID::uint8>(tag) == 16)) {
           ::PROTOBUF_NAMESPACE_ID::uint64 val = ::PROTOBUF_NAMESPACE_ID::internal::ReadVarint(&ptr);
           CHK_(ptr);
-          set_video_stream_status(static_cast<::mavsdk::rpc::camera::VideoStreamInfo_VideoStreamStatus>(val));
+          _internal_set_video_stream_status(static_cast<::mavsdk::rpc::camera::VideoStreamInfo_VideoStreamStatus>(val));
         } else goto handle_unusual;
         continue;
       default: {
@@ -10376,64 +8696,8 @@ failure:
   goto success;
 #undef CHK_
 }
-#else  // GOOGLE_PROTOBUF_ENABLE_EXPERIMENTAL_PARSER
-bool VideoStreamInfo::MergePartialFromCodedStream(
-    ::PROTOBUF_NAMESPACE_ID::io::CodedInputStream* input) {
-#define DO_(EXPRESSION) if (!PROTOBUF_PREDICT_TRUE(EXPRESSION)) goto failure
-  ::PROTOBUF_NAMESPACE_ID::uint32 tag;
-  // @@protoc_insertion_point(parse_start:mavsdk.rpc.camera.VideoStreamInfo)
-  for (;;) {
-    ::std::pair<::PROTOBUF_NAMESPACE_ID::uint32, bool> p = input->ReadTagWithCutoffNoLastTag(127u);
-    tag = p.first;
-    if (!p.second) goto handle_unusual;
-    switch (::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::GetTagFieldNumber(tag)) {
-      // .mavsdk.rpc.camera.VideoStreamSettings video_stream_settings = 1;
-      case 1: {
-        if (static_cast< ::PROTOBUF_NAMESPACE_ID::uint8>(tag) == (10 & 0xFF)) {
-          DO_(::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::ReadMessage(
-               input, mutable_video_stream_settings()));
-        } else {
-          goto handle_unusual;
-        }
-        break;
-      }
 
-      // .mavsdk.rpc.camera.VideoStreamInfo.VideoStreamStatus video_stream_status = 2;
-      case 2: {
-        if (static_cast< ::PROTOBUF_NAMESPACE_ID::uint8>(tag) == (16 & 0xFF)) {
-          int value = 0;
-          DO_((::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::ReadPrimitive<
-                   int, ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::TYPE_ENUM>(
-                 input, &value)));
-          set_video_stream_status(static_cast< ::mavsdk::rpc::camera::VideoStreamInfo_VideoStreamStatus >(value));
-        } else {
-          goto handle_unusual;
-        }
-        break;
-      }
-
-      default: {
-      handle_unusual:
-        if (tag == 0) {
-          goto success;
-        }
-        DO_(::PROTOBUF_NAMESPACE_ID::internal::WireFormat::SkipField(
-              input, tag, _internal_metadata_.mutable_unknown_fields()));
-        break;
-      }
-    }
-  }
-success:
-  // @@protoc_insertion_point(parse_success:mavsdk.rpc.camera.VideoStreamInfo)
-  return true;
-failure:
-  // @@protoc_insertion_point(parse_failure:mavsdk.rpc.camera.VideoStreamInfo)
-  return false;
-#undef DO_
-}
-#endif  // GOOGLE_PROTOBUF_ENABLE_EXPERIMENTAL_PARSER
-
-::PROTOBUF_NAMESPACE_ID::uint8* VideoStreamInfo::InternalSerializeWithCachedSizesToArray(
+::PROTOBUF_NAMESPACE_ID::uint8* VideoStreamInfo::_InternalSerialize(
     ::PROTOBUF_NAMESPACE_ID::uint8* target, ::PROTOBUF_NAMESPACE_ID::io::EpsCopyOutputStream* stream) const {
   // @@protoc_insertion_point(serialize_to_array_start:mavsdk.rpc.camera.VideoStreamInfo)
   ::PROTOBUF_NAMESPACE_ID::uint32 cached_has_bits = 0;
@@ -10441,17 +8705,17 @@ failure:
 
   // .mavsdk.rpc.camera.VideoStreamSettings video_stream_settings = 1;
   if (this->has_video_stream_settings()) {
-    stream->EnsureSpace(&target);
+    target = stream->EnsureSpace(target);
     target = ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::
-      InternalWriteMessageToArray(
+      InternalWriteMessage(
         1, _Internal::video_stream_settings(this), target, stream);
   }
 
   // .mavsdk.rpc.camera.VideoStreamInfo.VideoStreamStatus video_stream_status = 2;
   if (this->video_stream_status() != 0) {
-    stream->EnsureSpace(&target);
+    target = stream->EnsureSpace(target);
     target = ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::WriteEnumToArray(
-      2, this->video_stream_status(), target);
+      2, this->_internal_video_stream_status(), target);
   }
 
   if (PROTOBUF_PREDICT_FALSE(_internal_metadata_.have_unknown_fields())) {
@@ -10480,7 +8744,7 @@ size_t VideoStreamInfo::ByteSizeLong() const {
   // .mavsdk.rpc.camera.VideoStreamInfo.VideoStreamStatus video_stream_status = 2;
   if (this->video_stream_status() != 0) {
     total_size += 1 +
-      ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::EnumSize(this->video_stream_status());
+      ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::EnumSize(this->_internal_video_stream_status());
   }
 
   if (PROTOBUF_PREDICT_FALSE(_internal_metadata_.have_unknown_fields())) {
@@ -10515,10 +8779,10 @@ void VideoStreamInfo::MergeFrom(const VideoStreamInfo& from) {
   (void) cached_has_bits;
 
   if (from.has_video_stream_settings()) {
-    mutable_video_stream_settings()->::mavsdk::rpc::camera::VideoStreamSettings::MergeFrom(from.video_stream_settings());
+    _internal_mutable_video_stream_settings()->::mavsdk::rpc::camera::VideoStreamSettings::MergeFrom(from._internal_video_stream_settings());
   }
   if (from.video_stream_status() != 0) {
-    set_video_stream_status(from.video_stream_status());
+    _internal_set_video_stream_status(from._internal_video_stream_status());
   }
 }
 
@@ -10618,7 +8882,6 @@ void CameraStatus::Clear() {
   _internal_metadata_.Clear();
 }
 
-#if GOOGLE_PROTOBUF_ENABLE_EXPERIMENTAL_PARSER
 const char* CameraStatus::_InternalParse(const char* ptr, ::PROTOBUF_NAMESPACE_ID::internal::ParseContext* ctx) {
 #define CHK_(x) if (PROTOBUF_PREDICT_FALSE(!(x))) goto failure
   while (!ctx->Done(&ptr)) {
@@ -10671,7 +8934,9 @@ const char* CameraStatus::_InternalParse(const char* ptr, ::PROTOBUF_NAMESPACE_I
       // string media_folder_name = 7;
       case 7:
         if (PROTOBUF_PREDICT_TRUE(static_cast<::PROTOBUF_NAMESPACE_ID::uint8>(tag) == 58)) {
-          ptr = ::PROTOBUF_NAMESPACE_ID::internal::InlineGreedyStringParserUTF8(_internal_mutable_media_folder_name(), ptr, ctx, "mavsdk.rpc.camera.CameraStatus.media_folder_name");
+          auto str = _internal_mutable_media_folder_name();
+          ptr = ::PROTOBUF_NAMESPACE_ID::internal::InlineGreedyStringParser(str, ptr, ctx);
+          CHK_(::PROTOBUF_NAMESPACE_ID::internal::VerifyUTF8(str, "mavsdk.rpc.camera.CameraStatus.media_folder_name"));
           CHK_(ptr);
         } else goto handle_unusual;
         continue;
@@ -10680,7 +8945,7 @@ const char* CameraStatus::_InternalParse(const char* ptr, ::PROTOBUF_NAMESPACE_I
         if (PROTOBUF_PREDICT_TRUE(static_cast<::PROTOBUF_NAMESPACE_ID::uint8>(tag) == 64)) {
           ::PROTOBUF_NAMESPACE_ID::uint64 val = ::PROTOBUF_NAMESPACE_ID::internal::ReadVarint(&ptr);
           CHK_(ptr);
-          set_storage_status(static_cast<::mavsdk::rpc::camera::CameraStatus_StorageStatus>(val));
+          _internal_set_storage_status(static_cast<::mavsdk::rpc::camera::CameraStatus_StorageStatus>(val));
         } else goto handle_unusual;
         continue;
       default: {
@@ -10702,146 +8967,8 @@ failure:
   goto success;
 #undef CHK_
 }
-#else  // GOOGLE_PROTOBUF_ENABLE_EXPERIMENTAL_PARSER
-bool CameraStatus::MergePartialFromCodedStream(
-    ::PROTOBUF_NAMESPACE_ID::io::CodedInputStream* input) {
-#define DO_(EXPRESSION) if (!PROTOBUF_PREDICT_TRUE(EXPRESSION)) goto failure
-  ::PROTOBUF_NAMESPACE_ID::uint32 tag;
-  // @@protoc_insertion_point(parse_start:mavsdk.rpc.camera.CameraStatus)
-  for (;;) {
-    ::std::pair<::PROTOBUF_NAMESPACE_ID::uint32, bool> p = input->ReadTagWithCutoffNoLastTag(127u);
-    tag = p.first;
-    if (!p.second) goto handle_unusual;
-    switch (::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::GetTagFieldNumber(tag)) {
-      // bool video_on = 1;
-      case 1: {
-        if (static_cast< ::PROTOBUF_NAMESPACE_ID::uint8>(tag) == (8 & 0xFF)) {
 
-          DO_((::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::ReadPrimitive<
-                   bool, ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::TYPE_BOOL>(
-                 input, &video_on_)));
-        } else {
-          goto handle_unusual;
-        }
-        break;
-      }
-
-      // bool photo_interval_on = 2;
-      case 2: {
-        if (static_cast< ::PROTOBUF_NAMESPACE_ID::uint8>(tag) == (16 & 0xFF)) {
-
-          DO_((::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::ReadPrimitive<
-                   bool, ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::TYPE_BOOL>(
-                 input, &photo_interval_on_)));
-        } else {
-          goto handle_unusual;
-        }
-        break;
-      }
-
-      // float used_storage_mib = 3;
-      case 3: {
-        if (static_cast< ::PROTOBUF_NAMESPACE_ID::uint8>(tag) == (29 & 0xFF)) {
-
-          DO_((::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::ReadPrimitive<
-                   float, ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::TYPE_FLOAT>(
-                 input, &used_storage_mib_)));
-        } else {
-          goto handle_unusual;
-        }
-        break;
-      }
-
-      // float available_storage_mib = 4;
-      case 4: {
-        if (static_cast< ::PROTOBUF_NAMESPACE_ID::uint8>(tag) == (37 & 0xFF)) {
-
-          DO_((::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::ReadPrimitive<
-                   float, ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::TYPE_FLOAT>(
-                 input, &available_storage_mib_)));
-        } else {
-          goto handle_unusual;
-        }
-        break;
-      }
-
-      // float total_storage_mib = 5;
-      case 5: {
-        if (static_cast< ::PROTOBUF_NAMESPACE_ID::uint8>(tag) == (45 & 0xFF)) {
-
-          DO_((::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::ReadPrimitive<
-                   float, ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::TYPE_FLOAT>(
-                 input, &total_storage_mib_)));
-        } else {
-          goto handle_unusual;
-        }
-        break;
-      }
-
-      // float recording_time_s = 6;
-      case 6: {
-        if (static_cast< ::PROTOBUF_NAMESPACE_ID::uint8>(tag) == (53 & 0xFF)) {
-
-          DO_((::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::ReadPrimitive<
-                   float, ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::TYPE_FLOAT>(
-                 input, &recording_time_s_)));
-        } else {
-          goto handle_unusual;
-        }
-        break;
-      }
-
-      // string media_folder_name = 7;
-      case 7: {
-        if (static_cast< ::PROTOBUF_NAMESPACE_ID::uint8>(tag) == (58 & 0xFF)) {
-          DO_(::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::ReadString(
-                input, this->_internal_mutable_media_folder_name()));
-          DO_(::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::VerifyUtf8String(
-            this->_internal_media_folder_name().data(), static_cast<int>(this->_internal_media_folder_name().length()),
-            ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::PARSE,
-            "mavsdk.rpc.camera.CameraStatus.media_folder_name"));
-        } else {
-          goto handle_unusual;
-        }
-        break;
-      }
-
-      // .mavsdk.rpc.camera.CameraStatus.StorageStatus storage_status = 8;
-      case 8: {
-        if (static_cast< ::PROTOBUF_NAMESPACE_ID::uint8>(tag) == (64 & 0xFF)) {
-          int value = 0;
-          DO_((::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::ReadPrimitive<
-                   int, ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::TYPE_ENUM>(
-                 input, &value)));
-          set_storage_status(static_cast< ::mavsdk::rpc::camera::CameraStatus_StorageStatus >(value));
-        } else {
-          goto handle_unusual;
-        }
-        break;
-      }
-
-      default: {
-      handle_unusual:
-        if (tag == 0) {
-          goto success;
-        }
-        DO_(::PROTOBUF_NAMESPACE_ID::internal::WireFormat::SkipField(
-              input, tag, _internal_metadata_.mutable_unknown_fields()));
-        break;
-      }
-    }
-  }
-success:
-  // @@protoc_insertion_point(parse_success:mavsdk.rpc.camera.CameraStatus)
-  return true;
-failure:
-  // @@protoc_insertion_point(parse_failure:mavsdk.rpc.camera.CameraStatus)
-  return false;
-#undef DO_
-}
-#endif  // GOOGLE_PROTOBUF_ENABLE_EXPERIMENTAL_PARSER
-
-::PROTOBUF_NAMESPACE_ID::uint8* CameraStatus::InternalSerializeWithCachedSizesToArray(
+::PROTOBUF_NAMESPACE_ID::uint8* CameraStatus::_InternalSerialize(
     ::PROTOBUF_NAMESPACE_ID::uint8* target, ::PROTOBUF_NAMESPACE_ID::io::EpsCopyOutputStream* stream) const {
   // @@protoc_insertion_point(serialize_to_array_start:mavsdk.rpc.camera.CameraStatus)
   ::PROTOBUF_NAMESPACE_ID::uint32 cached_has_bits = 0;
@@ -10849,38 +8976,38 @@ failure:
 
   // bool video_on = 1;
   if (this->video_on() != 0) {
-    stream->EnsureSpace(&target);
-    target = ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::WriteBoolToArray(1, this->video_on(), target);
+    target = stream->EnsureSpace(target);
+    target = ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::WriteBoolToArray(1, this->_internal_video_on(), target);
   }
 
   // bool photo_interval_on = 2;
   if (this->photo_interval_on() != 0) {
-    stream->EnsureSpace(&target);
-    target = ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::WriteBoolToArray(2, this->photo_interval_on(), target);
+    target = stream->EnsureSpace(target);
+    target = ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::WriteBoolToArray(2, this->_internal_photo_interval_on(), target);
   }
 
   // float used_storage_mib = 3;
   if (!(this->used_storage_mib() <= 0 && this->used_storage_mib() >= 0)) {
-    stream->EnsureSpace(&target);
-    target = ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::WriteFloatToArray(3, this->used_storage_mib(), target);
+    target = stream->EnsureSpace(target);
+    target = ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::WriteFloatToArray(3, this->_internal_used_storage_mib(), target);
   }
 
   // float available_storage_mib = 4;
   if (!(this->available_storage_mib() <= 0 && this->available_storage_mib() >= 0)) {
-    stream->EnsureSpace(&target);
-    target = ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::WriteFloatToArray(4, this->available_storage_mib(), target);
+    target = stream->EnsureSpace(target);
+    target = ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::WriteFloatToArray(4, this->_internal_available_storage_mib(), target);
   }
 
   // float total_storage_mib = 5;
   if (!(this->total_storage_mib() <= 0 && this->total_storage_mib() >= 0)) {
-    stream->EnsureSpace(&target);
-    target = ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::WriteFloatToArray(5, this->total_storage_mib(), target);
+    target = stream->EnsureSpace(target);
+    target = ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::WriteFloatToArray(5, this->_internal_total_storage_mib(), target);
   }
 
   // float recording_time_s = 6;
   if (!(this->recording_time_s() <= 0 && this->recording_time_s() >= 0)) {
-    stream->EnsureSpace(&target);
-    target = ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::WriteFloatToArray(6, this->recording_time_s(), target);
+    target = stream->EnsureSpace(target);
+    target = ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::WriteFloatToArray(6, this->_internal_recording_time_s(), target);
   }
 
   // string media_folder_name = 7;
@@ -10895,9 +9022,9 @@ failure:
 
   // .mavsdk.rpc.camera.CameraStatus.StorageStatus storage_status = 8;
   if (this->storage_status() != 0) {
-    stream->EnsureSpace(&target);
+    target = stream->EnsureSpace(target);
     target = ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::WriteEnumToArray(
-      8, this->storage_status(), target);
+      8, this->_internal_storage_status(), target);
   }
 
   if (PROTOBUF_PREDICT_FALSE(_internal_metadata_.have_unknown_fields())) {
@@ -10956,7 +9083,7 @@ size_t CameraStatus::ByteSizeLong() const {
   // .mavsdk.rpc.camera.CameraStatus.StorageStatus storage_status = 8;
   if (this->storage_status() != 0) {
     total_size += 1 +
-      ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::EnumSize(this->storage_status());
+      ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::EnumSize(this->_internal_storage_status());
   }
 
   if (PROTOBUF_PREDICT_FALSE(_internal_metadata_.have_unknown_fields())) {
@@ -10995,25 +9122,25 @@ void CameraStatus::MergeFrom(const CameraStatus& from) {
     media_folder_name_.AssignWithDefault(&::PROTOBUF_NAMESPACE_ID::internal::GetEmptyStringAlreadyInited(), from.media_folder_name_);
   }
   if (from.video_on() != 0) {
-    set_video_on(from.video_on());
+    _internal_set_video_on(from._internal_video_on());
   }
   if (from.photo_interval_on() != 0) {
-    set_photo_interval_on(from.photo_interval_on());
+    _internal_set_photo_interval_on(from._internal_photo_interval_on());
   }
   if (!(from.used_storage_mib() <= 0 && from.used_storage_mib() >= 0)) {
-    set_used_storage_mib(from.used_storage_mib());
+    _internal_set_used_storage_mib(from._internal_used_storage_mib());
   }
   if (!(from.available_storage_mib() <= 0 && from.available_storage_mib() >= 0)) {
-    set_available_storage_mib(from.available_storage_mib());
+    _internal_set_available_storage_mib(from._internal_available_storage_mib());
   }
   if (!(from.total_storage_mib() <= 0 && from.total_storage_mib() >= 0)) {
-    set_total_storage_mib(from.total_storage_mib());
+    _internal_set_total_storage_mib(from._internal_total_storage_mib());
   }
   if (!(from.recording_time_s() <= 0 && from.recording_time_s() >= 0)) {
-    set_recording_time_s(from.recording_time_s());
+    _internal_set_recording_time_s(from._internal_recording_time_s());
   }
   if (from.storage_status() != 0) {
-    set_storage_status(from.storage_status());
+    _internal_set_storage_status(from._internal_storage_status());
   }
 }
 
@@ -11086,7 +9213,7 @@ Setting::Setting(const Setting& from)
   if (!from._internal_setting_description().empty()) {
     setting_description_.AssignWithDefault(&::PROTOBUF_NAMESPACE_ID::internal::GetEmptyStringAlreadyInited(), from.setting_description_);
   }
-  if (from.has_option()) {
+  if (from._internal_has_option()) {
     option_ = new ::mavsdk::rpc::camera::Option(*from.option_);
   } else {
     option_ = nullptr;
@@ -11136,7 +9263,6 @@ void Setting::Clear() {
   _internal_metadata_.Clear();
 }
 
-#if GOOGLE_PROTOBUF_ENABLE_EXPERIMENTAL_PARSER
 const char* Setting::_InternalParse(const char* ptr, ::PROTOBUF_NAMESPACE_ID::internal::ParseContext* ctx) {
 #define CHK_(x) if (PROTOBUF_PREDICT_FALSE(!(x))) goto failure
   while (!ctx->Done(&ptr)) {
@@ -11147,21 +9273,25 @@ const char* Setting::_InternalParse(const char* ptr, ::PROTOBUF_NAMESPACE_ID::in
       // string setting_id = 1;
       case 1:
         if (PROTOBUF_PREDICT_TRUE(static_cast<::PROTOBUF_NAMESPACE_ID::uint8>(tag) == 10)) {
-          ptr = ::PROTOBUF_NAMESPACE_ID::internal::InlineGreedyStringParserUTF8(_internal_mutable_setting_id(), ptr, ctx, "mavsdk.rpc.camera.Setting.setting_id");
+          auto str = _internal_mutable_setting_id();
+          ptr = ::PROTOBUF_NAMESPACE_ID::internal::InlineGreedyStringParser(str, ptr, ctx);
+          CHK_(::PROTOBUF_NAMESPACE_ID::internal::VerifyUTF8(str, "mavsdk.rpc.camera.Setting.setting_id"));
           CHK_(ptr);
         } else goto handle_unusual;
         continue;
       // string setting_description = 2;
       case 2:
         if (PROTOBUF_PREDICT_TRUE(static_cast<::PROTOBUF_NAMESPACE_ID::uint8>(tag) == 18)) {
-          ptr = ::PROTOBUF_NAMESPACE_ID::internal::InlineGreedyStringParserUTF8(_internal_mutable_setting_description(), ptr, ctx, "mavsdk.rpc.camera.Setting.setting_description");
+          auto str = _internal_mutable_setting_description();
+          ptr = ::PROTOBUF_NAMESPACE_ID::internal::InlineGreedyStringParser(str, ptr, ctx);
+          CHK_(::PROTOBUF_NAMESPACE_ID::internal::VerifyUTF8(str, "mavsdk.rpc.camera.Setting.setting_description"));
           CHK_(ptr);
         } else goto handle_unusual;
         continue;
       // .mavsdk.rpc.camera.Option option = 3;
       case 3:
         if (PROTOBUF_PREDICT_TRUE(static_cast<::PROTOBUF_NAMESPACE_ID::uint8>(tag) == 26)) {
-          ptr = ctx->ParseMessage(mutable_option(), ptr);
+          ptr = ctx->ParseMessage(_internal_mutable_option(), ptr);
           CHK_(ptr);
         } else goto handle_unusual;
         continue;
@@ -11184,80 +9314,8 @@ failure:
   goto success;
 #undef CHK_
 }
-#else  // GOOGLE_PROTOBUF_ENABLE_EXPERIMENTAL_PARSER
-bool Setting::MergePartialFromCodedStream(
-    ::PROTOBUF_NAMESPACE_ID::io::CodedInputStream* input) {
-#define DO_(EXPRESSION) if (!PROTOBUF_PREDICT_TRUE(EXPRESSION)) goto failure
-  ::PROTOBUF_NAMESPACE_ID::uint32 tag;
-  // @@protoc_insertion_point(parse_start:mavsdk.rpc.camera.Setting)
-  for (;;) {
-    ::std::pair<::PROTOBUF_NAMESPACE_ID::uint32, bool> p = input->ReadTagWithCutoffNoLastTag(127u);
-    tag = p.first;
-    if (!p.second) goto handle_unusual;
-    switch (::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::GetTagFieldNumber(tag)) {
-      // string setting_id = 1;
-      case 1: {
-        if (static_cast< ::PROTOBUF_NAMESPACE_ID::uint8>(tag) == (10 & 0xFF)) {
-          DO_(::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::ReadString(
-                input, this->_internal_mutable_setting_id()));
-          DO_(::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::VerifyUtf8String(
-            this->_internal_setting_id().data(), static_cast<int>(this->_internal_setting_id().length()),
-            ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::PARSE,
-            "mavsdk.rpc.camera.Setting.setting_id"));
-        } else {
-          goto handle_unusual;
-        }
-        break;
-      }
 
-      // string setting_description = 2;
-      case 2: {
-        if (static_cast< ::PROTOBUF_NAMESPACE_ID::uint8>(tag) == (18 & 0xFF)) {
-          DO_(::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::ReadString(
-                input, this->_internal_mutable_setting_description()));
-          DO_(::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::VerifyUtf8String(
-            this->_internal_setting_description().data(), static_cast<int>(this->_internal_setting_description().length()),
-            ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::PARSE,
-            "mavsdk.rpc.camera.Setting.setting_description"));
-        } else {
-          goto handle_unusual;
-        }
-        break;
-      }
-
-      // .mavsdk.rpc.camera.Option option = 3;
-      case 3: {
-        if (static_cast< ::PROTOBUF_NAMESPACE_ID::uint8>(tag) == (26 & 0xFF)) {
-          DO_(::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::ReadMessage(
-               input, mutable_option()));
-        } else {
-          goto handle_unusual;
-        }
-        break;
-      }
-
-      default: {
-      handle_unusual:
-        if (tag == 0) {
-          goto success;
-        }
-        DO_(::PROTOBUF_NAMESPACE_ID::internal::WireFormat::SkipField(
-              input, tag, _internal_metadata_.mutable_unknown_fields()));
-        break;
-      }
-    }
-  }
-success:
-  // @@protoc_insertion_point(parse_success:mavsdk.rpc.camera.Setting)
-  return true;
-failure:
-  // @@protoc_insertion_point(parse_failure:mavsdk.rpc.camera.Setting)
-  return false;
-#undef DO_
-}
-#endif  // GOOGLE_PROTOBUF_ENABLE_EXPERIMENTAL_PARSER
-
-::PROTOBUF_NAMESPACE_ID::uint8* Setting::InternalSerializeWithCachedSizesToArray(
+::PROTOBUF_NAMESPACE_ID::uint8* Setting::_InternalSerialize(
     ::PROTOBUF_NAMESPACE_ID::uint8* target, ::PROTOBUF_NAMESPACE_ID::io::EpsCopyOutputStream* stream) const {
   // @@protoc_insertion_point(serialize_to_array_start:mavsdk.rpc.camera.Setting)
   ::PROTOBUF_NAMESPACE_ID::uint32 cached_has_bits = 0;
@@ -11285,9 +9343,9 @@ failure:
 
   // .mavsdk.rpc.camera.Option option = 3;
   if (this->has_option()) {
-    stream->EnsureSpace(&target);
+    target = stream->EnsureSpace(target);
     target = ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::
-      InternalWriteMessageToArray(
+      InternalWriteMessage(
         3, _Internal::option(this), target, stream);
   }
 
@@ -11368,7 +9426,7 @@ void Setting::MergeFrom(const Setting& from) {
     setting_description_.AssignWithDefault(&::PROTOBUF_NAMESPACE_ID::internal::GetEmptyStringAlreadyInited(), from.setting_description_);
   }
   if (from.has_option()) {
-    mutable_option()->::mavsdk::rpc::camera::Option::MergeFrom(from.option());
+    _internal_mutable_option()->::mavsdk::rpc::camera::Option::MergeFrom(from._internal_option());
   }
 }
 
@@ -11469,7 +9527,6 @@ void Option::Clear() {
   _internal_metadata_.Clear();
 }
 
-#if GOOGLE_PROTOBUF_ENABLE_EXPERIMENTAL_PARSER
 const char* Option::_InternalParse(const char* ptr, ::PROTOBUF_NAMESPACE_ID::internal::ParseContext* ctx) {
 #define CHK_(x) if (PROTOBUF_PREDICT_FALSE(!(x))) goto failure
   while (!ctx->Done(&ptr)) {
@@ -11480,14 +9537,18 @@ const char* Option::_InternalParse(const char* ptr, ::PROTOBUF_NAMESPACE_ID::int
       // string option_id = 1;
       case 1:
         if (PROTOBUF_PREDICT_TRUE(static_cast<::PROTOBUF_NAMESPACE_ID::uint8>(tag) == 10)) {
-          ptr = ::PROTOBUF_NAMESPACE_ID::internal::InlineGreedyStringParserUTF8(_internal_mutable_option_id(), ptr, ctx, "mavsdk.rpc.camera.Option.option_id");
+          auto str = _internal_mutable_option_id();
+          ptr = ::PROTOBUF_NAMESPACE_ID::internal::InlineGreedyStringParser(str, ptr, ctx);
+          CHK_(::PROTOBUF_NAMESPACE_ID::internal::VerifyUTF8(str, "mavsdk.rpc.camera.Option.option_id"));
           CHK_(ptr);
         } else goto handle_unusual;
         continue;
       // string option_description = 2;
       case 2:
         if (PROTOBUF_PREDICT_TRUE(static_cast<::PROTOBUF_NAMESPACE_ID::uint8>(tag) == 18)) {
-          ptr = ::PROTOBUF_NAMESPACE_ID::internal::InlineGreedyStringParserUTF8(_internal_mutable_option_description(), ptr, ctx, "mavsdk.rpc.camera.Option.option_description");
+          auto str = _internal_mutable_option_description();
+          ptr = ::PROTOBUF_NAMESPACE_ID::internal::InlineGreedyStringParser(str, ptr, ctx);
+          CHK_(::PROTOBUF_NAMESPACE_ID::internal::VerifyUTF8(str, "mavsdk.rpc.camera.Option.option_description"));
           CHK_(ptr);
         } else goto handle_unusual;
         continue;
@@ -11510,69 +9571,8 @@ failure:
   goto success;
 #undef CHK_
 }
-#else  // GOOGLE_PROTOBUF_ENABLE_EXPERIMENTAL_PARSER
-bool Option::MergePartialFromCodedStream(
-    ::PROTOBUF_NAMESPACE_ID::io::CodedInputStream* input) {
-#define DO_(EXPRESSION) if (!PROTOBUF_PREDICT_TRUE(EXPRESSION)) goto failure
-  ::PROTOBUF_NAMESPACE_ID::uint32 tag;
-  // @@protoc_insertion_point(parse_start:mavsdk.rpc.camera.Option)
-  for (;;) {
-    ::std::pair<::PROTOBUF_NAMESPACE_ID::uint32, bool> p = input->ReadTagWithCutoffNoLastTag(127u);
-    tag = p.first;
-    if (!p.second) goto handle_unusual;
-    switch (::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::GetTagFieldNumber(tag)) {
-      // string option_id = 1;
-      case 1: {
-        if (static_cast< ::PROTOBUF_NAMESPACE_ID::uint8>(tag) == (10 & 0xFF)) {
-          DO_(::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::ReadString(
-                input, this->_internal_mutable_option_id()));
-          DO_(::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::VerifyUtf8String(
-            this->_internal_option_id().data(), static_cast<int>(this->_internal_option_id().length()),
-            ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::PARSE,
-            "mavsdk.rpc.camera.Option.option_id"));
-        } else {
-          goto handle_unusual;
-        }
-        break;
-      }
 
-      // string option_description = 2;
-      case 2: {
-        if (static_cast< ::PROTOBUF_NAMESPACE_ID::uint8>(tag) == (18 & 0xFF)) {
-          DO_(::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::ReadString(
-                input, this->_internal_mutable_option_description()));
-          DO_(::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::VerifyUtf8String(
-            this->_internal_option_description().data(), static_cast<int>(this->_internal_option_description().length()),
-            ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::PARSE,
-            "mavsdk.rpc.camera.Option.option_description"));
-        } else {
-          goto handle_unusual;
-        }
-        break;
-      }
-
-      default: {
-      handle_unusual:
-        if (tag == 0) {
-          goto success;
-        }
-        DO_(::PROTOBUF_NAMESPACE_ID::internal::WireFormat::SkipField(
-              input, tag, _internal_metadata_.mutable_unknown_fields()));
-        break;
-      }
-    }
-  }
-success:
-  // @@protoc_insertion_point(parse_success:mavsdk.rpc.camera.Option)
-  return true;
-failure:
-  // @@protoc_insertion_point(parse_failure:mavsdk.rpc.camera.Option)
-  return false;
-#undef DO_
-}
-#endif  // GOOGLE_PROTOBUF_ENABLE_EXPERIMENTAL_PARSER
-
-::PROTOBUF_NAMESPACE_ID::uint8* Option::InternalSerializeWithCachedSizesToArray(
+::PROTOBUF_NAMESPACE_ID::uint8* Option::_InternalSerialize(
     ::PROTOBUF_NAMESPACE_ID::uint8* target, ::PROTOBUF_NAMESPACE_ID::io::EpsCopyOutputStream* stream) const {
   // @@protoc_insertion_point(serialize_to_array_start:mavsdk.rpc.camera.Option)
   ::PROTOBUF_NAMESPACE_ID::uint32 cached_has_bits = 0;
@@ -11767,7 +9767,6 @@ void SettingOptions::Clear() {
   _internal_metadata_.Clear();
 }
 
-#if GOOGLE_PROTOBUF_ENABLE_EXPERIMENTAL_PARSER
 const char* SettingOptions::_InternalParse(const char* ptr, ::PROTOBUF_NAMESPACE_ID::internal::ParseContext* ctx) {
 #define CHK_(x) if (PROTOBUF_PREDICT_FALSE(!(x))) goto failure
   while (!ctx->Done(&ptr)) {
@@ -11778,14 +9777,18 @@ const char* SettingOptions::_InternalParse(const char* ptr, ::PROTOBUF_NAMESPACE
       // string setting_id = 1;
       case 1:
         if (PROTOBUF_PREDICT_TRUE(static_cast<::PROTOBUF_NAMESPACE_ID::uint8>(tag) == 10)) {
-          ptr = ::PROTOBUF_NAMESPACE_ID::internal::InlineGreedyStringParserUTF8(_internal_mutable_setting_id(), ptr, ctx, "mavsdk.rpc.camera.SettingOptions.setting_id");
+          auto str = _internal_mutable_setting_id();
+          ptr = ::PROTOBUF_NAMESPACE_ID::internal::InlineGreedyStringParser(str, ptr, ctx);
+          CHK_(::PROTOBUF_NAMESPACE_ID::internal::VerifyUTF8(str, "mavsdk.rpc.camera.SettingOptions.setting_id"));
           CHK_(ptr);
         } else goto handle_unusual;
         continue;
       // string setting_description = 2;
       case 2:
         if (PROTOBUF_PREDICT_TRUE(static_cast<::PROTOBUF_NAMESPACE_ID::uint8>(tag) == 18)) {
-          ptr = ::PROTOBUF_NAMESPACE_ID::internal::InlineGreedyStringParserUTF8(_internal_mutable_setting_description(), ptr, ctx, "mavsdk.rpc.camera.SettingOptions.setting_description");
+          auto str = _internal_mutable_setting_description();
+          ptr = ::PROTOBUF_NAMESPACE_ID::internal::InlineGreedyStringParser(str, ptr, ctx);
+          CHK_(::PROTOBUF_NAMESPACE_ID::internal::VerifyUTF8(str, "mavsdk.rpc.camera.SettingOptions.setting_description"));
           CHK_(ptr);
         } else goto handle_unusual;
         continue;
@@ -11795,7 +9798,7 @@ const char* SettingOptions::_InternalParse(const char* ptr, ::PROTOBUF_NAMESPACE
           ptr -= 1;
           do {
             ptr += 1;
-            ptr = ctx->ParseMessage(add_options(), ptr);
+            ptr = ctx->ParseMessage(_internal_add_options(), ptr);
             CHK_(ptr);
             if (!ctx->DataAvailable(ptr)) break;
           } while (::PROTOBUF_NAMESPACE_ID::internal::ExpectTag<26>(ptr));
@@ -11820,80 +9823,8 @@ failure:
   goto success;
 #undef CHK_
 }
-#else  // GOOGLE_PROTOBUF_ENABLE_EXPERIMENTAL_PARSER
-bool SettingOptions::MergePartialFromCodedStream(
-    ::PROTOBUF_NAMESPACE_ID::io::CodedInputStream* input) {
-#define DO_(EXPRESSION) if (!PROTOBUF_PREDICT_TRUE(EXPRESSION)) goto failure
-  ::PROTOBUF_NAMESPACE_ID::uint32 tag;
-  // @@protoc_insertion_point(parse_start:mavsdk.rpc.camera.SettingOptions)
-  for (;;) {
-    ::std::pair<::PROTOBUF_NAMESPACE_ID::uint32, bool> p = input->ReadTagWithCutoffNoLastTag(127u);
-    tag = p.first;
-    if (!p.second) goto handle_unusual;
-    switch (::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::GetTagFieldNumber(tag)) {
-      // string setting_id = 1;
-      case 1: {
-        if (static_cast< ::PROTOBUF_NAMESPACE_ID::uint8>(tag) == (10 & 0xFF)) {
-          DO_(::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::ReadString(
-                input, this->_internal_mutable_setting_id()));
-          DO_(::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::VerifyUtf8String(
-            this->_internal_setting_id().data(), static_cast<int>(this->_internal_setting_id().length()),
-            ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::PARSE,
-            "mavsdk.rpc.camera.SettingOptions.setting_id"));
-        } else {
-          goto handle_unusual;
-        }
-        break;
-      }
 
-      // string setting_description = 2;
-      case 2: {
-        if (static_cast< ::PROTOBUF_NAMESPACE_ID::uint8>(tag) == (18 & 0xFF)) {
-          DO_(::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::ReadString(
-                input, this->_internal_mutable_setting_description()));
-          DO_(::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::VerifyUtf8String(
-            this->_internal_setting_description().data(), static_cast<int>(this->_internal_setting_description().length()),
-            ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::PARSE,
-            "mavsdk.rpc.camera.SettingOptions.setting_description"));
-        } else {
-          goto handle_unusual;
-        }
-        break;
-      }
-
-      // repeated .mavsdk.rpc.camera.Option options = 3;
-      case 3: {
-        if (static_cast< ::PROTOBUF_NAMESPACE_ID::uint8>(tag) == (26 & 0xFF)) {
-          DO_(::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::ReadMessage(
-                input, add_options()));
-        } else {
-          goto handle_unusual;
-        }
-        break;
-      }
-
-      default: {
-      handle_unusual:
-        if (tag == 0) {
-          goto success;
-        }
-        DO_(::PROTOBUF_NAMESPACE_ID::internal::WireFormat::SkipField(
-              input, tag, _internal_metadata_.mutable_unknown_fields()));
-        break;
-      }
-    }
-  }
-success:
-  // @@protoc_insertion_point(parse_success:mavsdk.rpc.camera.SettingOptions)
-  return true;
-failure:
-  // @@protoc_insertion_point(parse_failure:mavsdk.rpc.camera.SettingOptions)
-  return false;
-#undef DO_
-}
-#endif  // GOOGLE_PROTOBUF_ENABLE_EXPERIMENTAL_PARSER
-
-::PROTOBUF_NAMESPACE_ID::uint8* SettingOptions::InternalSerializeWithCachedSizesToArray(
+::PROTOBUF_NAMESPACE_ID::uint8* SettingOptions::_InternalSerialize(
     ::PROTOBUF_NAMESPACE_ID::uint8* target, ::PROTOBUF_NAMESPACE_ID::io::EpsCopyOutputStream* stream) const {
   // @@protoc_insertion_point(serialize_to_array_start:mavsdk.rpc.camera.SettingOptions)
   ::PROTOBUF_NAMESPACE_ID::uint32 cached_has_bits = 0;
@@ -11920,11 +9851,11 @@ failure:
   }
 
   // repeated .mavsdk.rpc.camera.Option options = 3;
-  for (auto it = this->options_.pointer_begin(),
-            end = this->options_.pointer_end(); it < end; ++it) {
-    stream->EnsureSpace(&target);
+  for (unsigned int i = 0,
+      n = static_cast<unsigned int>(this->_internal_options_size()); i < n; i++) {
+    target = stream->EnsureSpace(target);
     target = ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::
-      InternalWriteMessageToArray(3, **it, target, stream);
+      InternalWriteMessage(3, this->_internal_options(i), target, stream);
   }
 
   if (PROTOBUF_PREDICT_FALSE(_internal_metadata_.have_unknown_fields())) {
@@ -11944,7 +9875,7 @@ size_t SettingOptions::ByteSizeLong() const {
   (void) cached_has_bits;
 
   // repeated .mavsdk.rpc.camera.Option options = 3;
-  total_size += 1UL * this->options_size();
+  total_size += 1UL * this->_internal_options_size();
   for (const auto& msg : this->options_) {
     total_size +=
       ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::MessageSize(msg);
