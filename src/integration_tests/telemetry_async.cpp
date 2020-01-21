@@ -238,9 +238,9 @@ void print_angular_velocity_body(Telemetry::AngularVelocityBody angular_velocity
 
 void print_vfr_hud(Telemetry::VfrHud vfr_hud)
 {
-    std::cout << "async Airspeed: " << vfr_hud.airspeed << " m/s, "
+    std::cout << "async Airspeed: " << vfr_hud.airspeed_m_s << " m/s, "
               << "Throttle: " << vfr_hud.throttle << " %, "
-              << "Climb: " << vfr_hud.throttle << " m/s" << std::endl;
+              << "Climb: " << vfr_hud.climb_m_s << " m/s" << std::endl;
     _received_vfr_hud = true;
 }
 
