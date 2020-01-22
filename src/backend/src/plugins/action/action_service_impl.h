@@ -174,7 +174,15 @@ public:
     {
         if (request != nullptr) {
             const auto requested_altitude = request->altitude();
-            _action.set_takeoff_altitude(requested_altitude);
+            mavsdk::Action::Result action_result = _action.set_takeoff_altitude(requested_altitude);
+
+            if (response != nullptr) {
+                auto* rpc_action_result = new rpc::action::ActionResult();
+                rpc_action_result->set_result(
+                    static_cast<rpc::action::ActionResult::Result>(action_result));
+                rpc_action_result->set_result_str(mavsdk::Action::result_str(action_result));
+                response->set_allocated_action_result(rpc_action_result);
+            }
         }
 
         return grpc::Status::OK;
