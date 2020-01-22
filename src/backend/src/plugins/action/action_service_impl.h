@@ -170,7 +170,7 @@ public:
     grpc::Status SetTakeoffAltitude(
         grpc::ServerContext* /* context */,
         const rpc::action::SetTakeoffAltitudeRequest* request,
-        rpc::action::SetTakeoffAltitudeResponse* /* response */) override
+        rpc::action::SetTakeoffAltitudeResponse* response) override
     {
         if (request != nullptr) {
             const auto requested_altitude = request->altitude();
