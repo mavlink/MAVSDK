@@ -5,7 +5,7 @@
 void runBackend(
     const char* connection_url,
     const int mavsdk_server_port,
-    void (*onServerStarted)(void*),
+    void (*onServerStarted)(void* context, int grpc_port),
     void* context)
 {
     mavsdk::backend::MavsdkBackend backend;
@@ -19,7 +19,7 @@ void runBackend(
     backend.connect(std::string(connection_url));
 
     if (onServerStarted != nullptr) {
-        onServerStarted(context);
+        onServerStarted(context, grpc_port);
     }
 
     backend.wait();

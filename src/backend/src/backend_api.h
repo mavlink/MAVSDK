@@ -13,7 +13,7 @@ extern "C" {
 DLLExport void runBackend(
     const char* system_address,
     const int mavsdk_server_port,
-    void (*onServerStarted)(void*),
+    void (*onServerStarted)(void* context, int grpc_port),
     void* context);
 
 #ifdef __cplusplus
