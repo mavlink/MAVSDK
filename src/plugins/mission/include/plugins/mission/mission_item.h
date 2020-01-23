@@ -3,6 +3,7 @@
 #include <memory>
 #include <ostream>
 #include <string>
+#include <mavlink_include.h>
 
 namespace mavsdk {
 
@@ -27,6 +28,8 @@ public:
      * @brief Destructor (internal use only).
      */
     ~MissionItem();
+
+    void set_cmd(MAV_CMD cmd);
 
     /**
      * @brief Set the position of a mission item.

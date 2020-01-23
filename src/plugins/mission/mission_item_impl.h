@@ -19,6 +19,7 @@ public:
     void set_loiter_time(float loiter_time_s);
     void set_camera_action(MissionItem::CameraAction action);
     void set_camera_photo_interval(double interval_s);
+    void set_cmd(MAV_CMD cmd);
 
     double get_latitude_deg() const { return _latitude_deg; }
     double get_longitude_deg() const { return _longitude_deg; }
@@ -45,6 +46,7 @@ public:
     bool is_position_finite() const;
 
 private:
+    MAV_CMD _command = MAV_CMD(MAV_CMD_NAV_WAYPOINT);
     double _latitude_deg = double(NAN);
     double _longitude_deg = double(NAN);
     float _relative_altitude_m = NAN;

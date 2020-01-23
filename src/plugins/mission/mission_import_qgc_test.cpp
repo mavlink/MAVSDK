@@ -96,7 +96,7 @@ Mission::Result compose_mission_items(
     // Choosen "Do - While(0)" loop for the convenience of using `break` statement.
     do {
         if (command == MAV_CMD_NAV_WAYPOINT || command == MAV_CMD_NAV_TAKEOFF ||
-            command == MAV_CMD_NAV_LAND) {
+            command == MAV_CMD_NAV_LAND || command == MAV_CMD_NAV_VTOL_TAKEOFF || command == MAV_CMD_NAV_VTOL_LAND) {
             if (new_mission_item->has_position_set()) {
                 mission_items.push_back(new_mission_item);
                 new_mission_item = std::make_shared<MissionItem>();
@@ -107,6 +107,7 @@ Mission::Result compose_mission_items(
             }
             auto lat = params[4], lon = params[5];
             new_mission_item->set_position(lat, lon);
+            new_mission_item->set_cmd(command);
 
             auto rel_alt = float(params[6]);
             new_mission_item->set_relative_altitude(rel_alt);

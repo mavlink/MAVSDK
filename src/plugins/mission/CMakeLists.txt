@@ -39,6 +39,17 @@ install(FILES
     DESTINATION ${CMAKE_INSTALL_INCLUDEDIR}/mavsdk/plugins/mission
 )
 
+install(FILES
+        include/plugins/mission/mission.h
+        ../../core/mavlink_include.h
+        DESTINATION ${CMAKE_INSTALL_INCLUDEDIR}/mavsdk/plugins/mission
+        )
+
+install(DIRECTORY
+        ../../third_party/mavlink/include/mavlink
+        DESTINATION ${CMAKE_INSTALL_INCLUDEDIR}/mavsdk/plugins/mission
+        )
+
 list(APPEND UNIT_TEST_SOURCES
     ${CMAKE_CURRENT_SOURCE_DIR}/mission_import_qgc_test.cpp
 )

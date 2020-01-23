@@ -9,6 +9,11 @@ MissionItemImpl::MissionItemImpl() {}
 
 MissionItemImpl::~MissionItemImpl() {}
 
+void MissionItemImpl::set_cmd(MAV_CMD cmd)
+{
+    _command = cmd;
+}
+
 void MissionItemImpl::set_position(double latitude_deg, double longitude_deg)
 {
     _latitude_deg = latitude_deg;
@@ -67,7 +72,7 @@ MAV_FRAME MissionItemImpl::get_mavlink_frame() const
 
 MAV_CMD MissionItemImpl::get_mavlink_cmd() const
 {
-    return MAV_CMD_NAV_WAYPOINT;
+    return _command;
 }
 
 uint8_t MissionItemImpl::get_mavlink_autocontinue() const

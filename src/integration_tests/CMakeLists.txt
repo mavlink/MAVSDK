@@ -47,6 +47,7 @@ add_executable(integration_tests_runner
     mission_cancellation.cpp
     mission_change_speed.cpp
     mission.cpp
+    mission_vtol.cpp
     mission_rtl.cpp
     mission_raw_mission_changed.cpp
     offboard_velocity.cpp
