@@ -495,7 +495,7 @@ public:
      * @param rate_hz Rate in Hz.
      * @return Result of request.
      */
-    Result set_rate_fixed_wing_metrics(double rate_hz);
+    Result set_rate_fixedwing_metrics(double rate_hz);
 
     /**
      * @brief Set rate of GPS information updates (synchronous).
@@ -646,7 +646,7 @@ public:
      * @param rate_hz Rate in Hz.
      * @param callback Cabllback to receive request result.
      */
-    void set_rate_fixed_wing_metrics_async(double rate_hz, result_callback_t callback);
+    void set_rate_fixedwing_metrics_async(double rate_hz, result_callback_t callback);
 
     /**
      * @brief Set rate of GPS information updates (asynchronous).
@@ -787,11 +787,11 @@ public:
     AngularVelocityBody attitude_angular_velocity_body() const;
 
     /**
-     * @brief Get the current fixed_wing_metrics (synchronous).
+     * @brief Get the current fixedwing_metrics (synchronous).
      *
      * @return Fixed wing metrics.
      */
-    FixedwingMetrics fixed_wing_metrics() const;
+    FixedwingMetrics fixedwing_metrics() const;
 
     /**
      * @brief Get the camera's attitude in quaternions (synchronous).
@@ -998,18 +998,18 @@ public:
     void attitude_angular_velocity_body_async(attitude_angular_velocity_body_callback_t callback);
 
     /**
-     * @brief Callback type for fixed_wing_metrics updates.
+     * @brief Callback type for fixedwing_metrics updates.
      *
      * @param FixedwingMetrics .
      */
-    typedef std::function<void(FixedwingMetrics fixed_wing_metrics)> fixed_wing_metrics_callback_t;
+    typedef std::function<void(FixedwingMetrics fixedwing_metrics)> fixedwing_metrics_callback_t;
 
     /**
      * @brief Subscribe to vfr hud updates in (asynchronous).
      *
      * @param callback Function to call with updates.
      */
-    void fixed_wing_metrics_async(fixed_wing_metrics_callback_t callback);
+    void fixedwing_metrics_async(fixedwing_metrics_callback_t callback);
 
     /**
      * @brief Subscribe to camera attitude updates in quaternion (asynchronous).
@@ -1315,7 +1315,7 @@ operator<<(std::ostream& str, Telemetry::AngularVelocityNED const& angular_veloc
  *
  * @return A reference to the stream.
  */
-std::ostream& operator<<(std::ostream& str, Telemetry::FixedwingMetrics const& fixed_wing_metrics);
+std::ostream& operator<<(std::ostream& str, Telemetry::FixedwingMetrics const& fixedwing_metrics);
 
 /**
  * @brief Stream operator to print information about a `Telemetry::MagneticFieldNED`.
