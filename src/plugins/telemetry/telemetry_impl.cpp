@@ -97,7 +97,7 @@ void TelemetryImpl::init()
         this);
 
     _parent->register_mavlink_message_handler(
-        MAVLINK_MSG_ID_VFR_HUD, std::bind(&TelemetryImpl::process_vfr_hud, this, _1), this);
+        MAVLINK_MSG_ID_VFR_HUD, std::bind(&TelemetryImpl::process_fixed_wing_metrics, this, _1), this);
 
     _parent->register_param_changed_handler(
         std::bind(&TelemetryImpl::process_parameter_update, this, _1), this);
@@ -234,7 +234,7 @@ Telemetry::Result TelemetryImpl::set_rate_imu_reading_ned(double rate_hz)
         _parent->set_msg_rate(MAVLINK_MSG_ID_HIGHRES_IMU, rate_hz));
 }
 
-Telemetry::Result TelemetryImpl::set_rate_vfr_hud(double rate_hz)
+Telemetry::Result TelemetryImpl::set_rate_fixed_wing_metrics(double rate_hz)
 {
     return telemetry_result_from_command_result(
         _parent->set_msg_rate(MAVLINK_MSG_ID_VFR_HUD, rate_hz));
@@ -351,7 +351,7 @@ void TelemetryImpl::set_rate_imu_reading_ned_async(
         std::bind(&TelemetryImpl::command_result_callback, std::placeholders::_1, callback));
 }
 
-void TelemetryImpl::set_rate_vfr_hud_async(double rate_hz, Telemetry::result_callback_t callback)
+void TelemetryImpl::set_rate_fixed_wing_metrics_async(double rate_hz, Telemetry::result_callback_t callback)
 {
     _parent->set_msg_rate_async(
         MAVLINK_MSG_ID_VFR_HUD,
@@ -677,16 +677,16 @@ void TelemetryImpl::process_extended_sys_state(const mavlink_message_t& message)
         _parent->call_user_callback([callback, arg]() { callback(arg); });
     }
 }
-void TelemetryImpl::process_vfr_hud(const mavlink_message_t& message)
+void TelemetryImpl::process_fixed_wing_metrics(const mavlink_message_t& message)
 {
     mavlink_vfr_hud_t vfr_hud;
     mavlink_msg_vfr_hud_decode(&message, &vfr_hud);
 
-    set_vfr_hud(Telemetry::VfrHud({vfr_hud.airspeed, vfr_hud.throttle * 1e-2f, vfr_hud.climb}));
+    set_fixed_wing_metrics(Telemetry::FixedwingMetrics({vfr_hud.airspeed, vfr_hud.throttle * 1e-2f, vfr_hud.climb}));
 
-    if (_vfr_hud_subscription) {
-        auto callback = _vfr_hud_subscription;
-        auto arg = get_vfr_hud();
+    if (_fixed_wing_metrics_subscription) {
+        auto callback = _fixed_wing_metrics_subscription;
+        auto arg = get_fixed_wing_metrics();
         _parent->call_user_callback([callback, arg]() { callback(arg); });
     }
 }
@@ -1111,10 +1111,10 @@ Telemetry::AngularVelocityBody TelemetryImpl::get_attitude_angular_velocity_body
     return _attitude_angular_velocity_body;
 }
 
-Telemetry::VfrHud TelemetryImpl::get_vfr_hud() const
+Telemetry::FixedwingMetrics TelemetryImpl::get_fixed_wing_metrics() const
 {
-    std::lock_guard<std::mutex> lock(_vfr_hud_mutex);
-    return _vfr_hud;
+    std::lock_guard<std::mutex> lock(_fixed_wing_metrics_mutex);
+    return _fixed_wing_metrics;
 }
 
 Telemetry::EulerAngle TelemetryImpl::get_attitude_euler_angle() const
@@ -1138,10 +1138,10 @@ void TelemetryImpl::set_attitude_angular_velocity_body(
     _attitude_angular_velocity_body = angular_velocity_body;
 }
 
-void TelemetryImpl::set_vfr_hud(Telemetry::VfrHud vfr_hud)
+void TelemetryImpl::set_fixed_wing_metrics(Telemetry::FixedwingMetrics fixed_wing_metrics)
 {
-    std::lock_guard<std::mutex> lock(_vfr_hud_mutex);
-    _vfr_hud = vfr_hud;
+    std::lock_guard<std::mutex> lock(_fixed_wing_metrics_mutex);
+    _fixed_wing_metrics = fixed_wing_metrics;
 }
 
 Telemetry::Quaternion TelemetryImpl::get_camera_attitude_quaternion() const
@@ -1408,9 +1408,9 @@ void TelemetryImpl::attitude_angular_velocity_body_async(
     _attitude_angular_velocity_body_subscription = callback;
 }
 
-void TelemetryImpl::vfr_hud_async(Telemetry::vfr_hud_callback_t& callback)
+void TelemetryImpl::fixed_wing_metrics_async(Telemetry::fixed_wing_metrics_callback_t& callback)
 {
-    _vfr_hud_subscription = callback;
+    _fixed_wing_metrics_subscription = callback;
 }
 
 void TelemetryImpl::camera_attitude_quaternion_async(

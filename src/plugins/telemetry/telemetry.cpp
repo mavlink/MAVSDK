@@ -50,9 +50,9 @@ Telemetry::Result Telemetry::set_rate_imu_reading_ned(double rate_hz)
     return _impl->set_rate_imu_reading_ned(rate_hz);
 }
 
-Telemetry::Result Telemetry::set_rate_vfr_hud(double rate_hz)
+Telemetry::Result Telemetry::set_rate_fixed_wing_metrics(double rate_hz)
 {
-    return _impl->set_rate_vfr_hud(rate_hz);
+    return _impl->set_rate_fixed_wing_metrics(rate_hz);
 }
 
 Telemetry::Result Telemetry::set_rate_gps_info(double rate_hz)
@@ -125,9 +125,9 @@ void Telemetry::set_rate_imu_reading_ned_async(double rate_hz, result_callback_t
     _impl->set_rate_imu_reading_ned_async(rate_hz, callback);
 }
 
-void Telemetry::set_rate_vfr_hud_async(double rate_hz, result_callback_t callback)
+void Telemetry::set_rate_fixed_wing_metrics_async(double rate_hz, result_callback_t callback)
 {
-    _impl->set_rate_vfr_hud_async(rate_hz, callback);
+    _impl->set_rate_fixed_wing_metrics_async(rate_hz, callback);
 }
 
 void Telemetry::set_rate_gps_info_async(double rate_hz, result_callback_t callback)
@@ -237,9 +237,9 @@ Telemetry::AngularVelocityBody Telemetry::attitude_angular_velocity_body() const
     return _impl->get_attitude_angular_velocity_body();
 }
 
-Telemetry::VfrHud Telemetry::vfr_hud() const
+Telemetry::FixedwingMetrics Telemetry::fixed_wing_metrics() const
 {
-    return _impl->get_vfr_hud();
+    return _impl->get_fixed_wing_metrics();
 }
 
 Telemetry::Quaternion Telemetry::camera_attitude_quaternion() const
@@ -348,9 +348,9 @@ void Telemetry::attitude_angular_velocity_body_async(
     return _impl->attitude_angular_velocity_body_async(callback);
 }
 
-void Telemetry::vfr_hud_async(vfr_hud_callback_t callback)
+void Telemetry::fixed_wing_metrics_async(fixed_wing_metrics_callback_t callback)
 {
-    return _impl->vfr_hud_async(callback);
+    return _impl->fixed_wing_metrics_async(callback);
 }
 
 void Telemetry::camera_attitude_quaternion_async(attitude_quaternion_callback_t callback)
@@ -698,11 +698,11 @@ operator<<(std::ostream& str, Telemetry::AngularVelocityBody const& angular_velo
                << ", angular_velocity_body_yaw_rad_s: " << angular_velocity_body.yaw_rad_s << "]";
 }
 
-std::ostream& operator<<(std::ostream& str, Telemetry::VfrHud const& vfr_hud)
+std::ostream& operator<<(std::ostream& str, Telemetry::FixedwingMetrics const& fixed_wing_metrics)
 {
-    return str << "Airspeed: " << vfr_hud.airspeed_m_s << " m/s, "
-               << "Throttle: " << vfr_hud.throttle << " %, "
-               << "Climb: " << vfr_hud.climb_m_s << " m/s";
+    return str << "Airspeed: " << fixed_wing_metrics.airspeed_m_s << " m/s, "
+               << "Throttle: " << fixed_wing_metrics.throttle_percentage << " %, "
+               << "Climb: " << fixed_wing_metrics.climb_rate_m_s << " m/s";
 }
 
 bool operator==(const Telemetry::GroundSpeedNED& lhs, const Telemetry::GroundSpeedNED& rhs)
