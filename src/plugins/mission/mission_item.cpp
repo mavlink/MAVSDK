@@ -14,6 +14,11 @@ MissionItem::MissionItem() : _impl{new MissionItemImpl()} {}
 
 MissionItem::~MissionItem() {}
 
+void MissionItem::set_cmd(MAV_CMD cmd)
+{
+    _impl->set_cmd(cmd);
+}
+
 void MissionItem::set_position(double latitude_deg, double longitude_deg)
 {
     _impl->set_position(latitude_deg, longitude_deg);
