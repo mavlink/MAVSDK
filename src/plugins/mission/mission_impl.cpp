@@ -1376,16 +1376,30 @@ void MissionImpl::process_timeout()
     {
         std::lock_guard<std::mutex> lock(_activity.mutex);
 
-        if (_activity.state == Activity::State::SET_MISSION_ITEM) {
-            should_retry = true;
-        } else if (_activity.state == Activity::State::SET_MISSION_COUNT) {
-            should_retry = true;
-        } else if (
-            _activity.state == Activity::State::GET_MISSION_LIST ||
-            _activity.state == Activity::State::GET_MISSION_REQUEST) {
-            should_retry = true;
-        } else {
-            LogWarn() << "unknown mission timeout";
+        switch (_activity.state) {
+            case Activity::State::NONE:
+                // FALLTHROUGH
+            case Activity::State::ABORTED:
+                // FALLTHROUGH
+            case Activity::State::SEND_COMMAND:
+                // FALLTHROUGH
+            case Activity::State::SET_CURRENT:
+                break;
+
+            case Activity::State::SET_MISSION_COUNT:
+                // FALLTHROUGH
+            case Activity::State::SET_MISSION_ITEM:
+                // FALLTHROUGH
+            case Activity::State::GET_MISSION_LIST:
+                // FALLTHROUGH
+            case Activity::State::GET_MISSION_REQUEST:
+                // FALLTHROUGH
+            case Activity::State::MISSION_CLEAR:
+                should_retry = true;
+                break;
+            default:
+                LogWarn() << "unknown mission timeout";
+                break;
         }
     }
 
@@ -1393,16 +1407,27 @@ void MissionImpl::process_timeout()
         _mission_data.mutex.lock();
         if (_mission_data.retries++ > MAX_RETRIES) {
             _mission_data.retries = 0;
-            Mission::mission_items_and_result_callback_t temp_callback =
-                _mission_data.mission_items_and_result_callback;
-            _mission_data.mutex.unlock();
-
             {
                 std::lock_guard<std::mutex> lock(_activity.mutex);
                 _activity.state = Activity::State::NONE;
             }
-            LogWarn() << "Mission handling timed out while downloading mission.";
-            report_mission_items_and_result(temp_callback, Mission::Result::TIMEOUT);
+            LogWarn() << "Mission handling timed out.";
+            if (_activity.state == Activity::State::GET_MISSION_LIST ||
+                _activity.state == Activity::State::GET_MISSION_REQUEST) {
+                LogWarn() << "Downloading mission timed out...";
+                report_mission_items_and_result(
+                    _mission_data.mission_items_and_result_callback, Mission::Result::TIMEOUT);
+            } else if (
+                _activity.state == Activity::State::SET_MISSION_COUNT ||
+                _activity.state == Activity::State::SET_MISSION_ITEM) {
+                LogWarn() << "Uploading mission timed out...";
+                report_mission_result(_mission_data.result_callback, Mission::Result::TIMEOUT);
+            } else if (_activity.state == Activity::State::MISSION_CLEAR) {
+                LogWarn() << "Clearing mission timed out...";
+                report_mission_result(_mission_data.result_callback, Mission::Result::TIMEOUT);
+            }
+            _mission_data.mutex.unlock();
+
         } else {
             _mission_data.mutex.unlock();
 
@@ -1423,6 +1448,9 @@ void MissionImpl::process_timeout()
                 } else if (_activity.state == Activity::State::SET_MISSION_ITEM) {
                     LogWarn() << "Retrying send mission count...";
                     upload_mission_item();
+                } else if (_activity.state == Activity::State::MISSION_CLEAR) {
+                    LogWarn() << "Retrying to clear mission...";
+                    clear_mission();
                 }
             }
         }
