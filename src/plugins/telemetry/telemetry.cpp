@@ -50,6 +50,11 @@ Telemetry::Result Telemetry::set_rate_imu_reading_ned(double rate_hz)
     return _impl->set_rate_imu_reading_ned(rate_hz);
 }
 
+Telemetry::Result Telemetry::set_rate_fixedwing_metrics(double rate_hz)
+{
+    return _impl->set_rate_fixedwing_metrics(rate_hz);
+}
+
 Telemetry::Result Telemetry::set_rate_gps_info(double rate_hz)
 {
     return _impl->set_rate_gps_info(rate_hz);
@@ -118,6 +123,11 @@ void Telemetry::set_rate_ground_speed_ned_async(double rate_hz, result_callback_
 void Telemetry::set_rate_imu_reading_ned_async(double rate_hz, result_callback_t callback)
 {
     _impl->set_rate_imu_reading_ned_async(rate_hz, callback);
+}
+
+void Telemetry::set_rate_fixedwing_metrics_async(double rate_hz, result_callback_t callback)
+{
+    _impl->set_rate_fixedwing_metrics_async(rate_hz, callback);
 }
 
 void Telemetry::set_rate_gps_info_async(double rate_hz, result_callback_t callback)
@@ -227,6 +237,11 @@ Telemetry::AngularVelocityBody Telemetry::attitude_angular_velocity_body() const
     return _impl->get_attitude_angular_velocity_body();
 }
 
+Telemetry::FixedwingMetrics Telemetry::fixedwing_metrics() const
+{
+    return _impl->get_fixedwing_metrics();
+}
+
 Telemetry::Quaternion Telemetry::camera_attitude_quaternion() const
 {
     return _impl->get_camera_attitude_quaternion();
@@ -331,6 +346,11 @@ void Telemetry::attitude_angular_velocity_body_async(
     attitude_angular_velocity_body_callback_t callback)
 {
     return _impl->attitude_angular_velocity_body_async(callback);
+}
+
+void Telemetry::fixedwing_metrics_async(fixedwing_metrics_callback_t callback)
+{
+    return _impl->fixedwing_metrics_async(callback);
 }
 
 void Telemetry::camera_attitude_quaternion_async(attitude_quaternion_callback_t callback)
@@ -676,6 +696,13 @@ operator<<(std::ostream& str, Telemetry::AngularVelocityBody const& angular_velo
     return str << "[angular_velocity_body_roll_rad_s: " << angular_velocity_body.roll_rad_s
                << ", angular_velocity_body_pitch_rad_s: " << angular_velocity_body.pitch_rad_s
                << ", angular_velocity_body_yaw_rad_s: " << angular_velocity_body.yaw_rad_s << "]";
+}
+
+std::ostream& operator<<(std::ostream& str, Telemetry::FixedwingMetrics const& fixedwing_metrics)
+{
+    return str << "Airspeed: " << fixedwing_metrics.airspeed_m_s << " m/s, "
+               << "Throttle: " << fixedwing_metrics.throttle_percentage << " %, "
+               << "Climb: " << fixedwing_metrics.climb_rate_m_s << " m/s";
 }
 
 bool operator==(const Telemetry::GroundSpeedNED& lhs, const Telemetry::GroundSpeedNED& rhs)
