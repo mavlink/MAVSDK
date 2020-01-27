@@ -3,8 +3,7 @@
 
 namespace mavsdk {
 
-void MAVLinkMessageHandler::register_one(
-    uint16_t msg_id, Callback callback, const void* cookie)
+void MAVLinkMessageHandler::register_one(uint16_t msg_id, Callback callback, const void* cookie)
 {
     std::lock_guard<std::mutex> lock(_mutex);
 
