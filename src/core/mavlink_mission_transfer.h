@@ -13,31 +13,6 @@ public:
     virtual bool send_message(const mavlink_message_t& message) = 0;
 };
 
-class FakeSender : public Sender {
-public:
-    virtual ~FakeSender() = default;
-
-    bool send_message(const mavlink_message_t& message) override
-    {
-        if (able_to_send) {
-            _last_message = message;
-            return true;
-        } else {
-            return false;
-        }
-    }
-
-    const mavlink_message_t& last_message() const
-    {
-        return _last_message;
-    }
-
-    bool able_to_send {true};
-
-private:
-    mavlink_message_t _last_message {};
-};
-
 class Receiver {
 public:
     virtual ~Receiver() = default;
