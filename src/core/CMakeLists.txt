@@ -21,6 +21,7 @@ add_library(mavsdk
     mavlink_mission_transfer.cpp
     mavlink_parameters.cpp
     mavlink_receiver.cpp
+    mavlink_message_handler.cpp
     plugin_impl_base.cpp
     serial_connection.cpp
     tcp_connection.cpp

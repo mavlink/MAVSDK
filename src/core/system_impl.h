@@ -4,6 +4,7 @@
 #include "mavlink_include.h"
 #include "mavlink_parameters.h"
 #include "mavlink_commands.h"
+#include "mavlink_message_handler.h"
 #include "timeout_handler.h"
 #include "call_every_handler.h"
 #include "thread_pool.h"
@@ -258,15 +259,6 @@ private:
     std::mutex _component_discovered_callback_mutex{};
     discover_callback_t _component_discovered_callback{nullptr};
 
-    struct MAVLinkHandlerTableEntry {
-        uint16_t msg_id;
-        mavlink_message_handler_t callback;
-        const void* cookie; // This is the identification to unregister.
-    };
-
-    std::mutex _mavlink_handler_table_mutex{};
-    std::vector<MAVLinkHandlerTableEntry> _mavlink_handler_table{};
-
     std::atomic<uint8_t> _system_id;
 
     uint64_t _uuid{0};
@@ -300,6 +292,8 @@ private:
     MAVLinkParameters _params;
 
     MAVLinkCommands _commands;
+
+    MAVLinkMessageHandler _message_handler{};
 
     Timesync _timesync;
 
