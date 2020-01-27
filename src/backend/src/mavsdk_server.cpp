@@ -61,7 +61,8 @@ void usage()
               << "  -p          : set the port on which to run the gRPC server" << std::endl;
 }
 
-bool is_integer(const std::string& tested_integer) {
+bool is_integer(const std::string& tested_integer)
+{
     for (const auto& digit : tested_integer) {
         if (!std::isdigit(digit)) {
             return false;

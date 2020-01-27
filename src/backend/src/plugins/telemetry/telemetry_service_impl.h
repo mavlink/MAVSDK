@@ -324,7 +324,7 @@ public:
             case mavsdk::Telemetry::FlightMode::FOLLOW_ME:
                 return rpc::telemetry::FlightMode::FOLLOW_ME;
             case mavsdk::Telemetry::FlightMode::MANUAL:
-            	return rpc::telemetry::FlightMode::MANUAL;
+                return rpc::telemetry::FlightMode::MANUAL;
             case mavsdk::Telemetry::FlightMode::ALTCTL:
                 return rpc::telemetry::FlightMode::ALTCTL;
             case mavsdk::Telemetry::FlightMode::POSCTL:
