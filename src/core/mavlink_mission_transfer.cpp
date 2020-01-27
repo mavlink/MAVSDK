@@ -34,13 +34,13 @@ void MAVLinkMissionTransfer::upload_items_async(
 
     mavlink_message_t message;
     mavlink_msg_mission_count_pack(
-        0,
-        0,
+        _config.own_system_id,
+        _config.own_component_id,
         &message,
-        0,
-        0,
+        _config.target_system_id,
+        _config.target_component_id,
         items.size(),
-        MAV_MISSION_TYPE_MISSION);
+        first_mission_type);
 
     if (!_sender.send_message(message)) {
         _timeout_handler.remove(cookie);

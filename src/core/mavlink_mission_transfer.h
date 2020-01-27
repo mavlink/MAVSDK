@@ -27,6 +27,12 @@ public:
 
 class MAVLinkMissionTransfer {
 public:
+    struct Config {
+        uint8_t own_system_id;
+        uint8_t own_component_id;
+        uint8_t target_system_id;
+        uint8_t target_component_id;
+    };
 
     enum class Result {
         Success,
@@ -64,7 +70,8 @@ public:
 
     using ResultCallback = std::function<void(Result result)>;
 
-    MAVLinkMissionTransfer(Sender& sender, Receiver& receiver, TimeoutHandler& timeout_handler) :
+    MAVLinkMissionTransfer(Config config, Sender& sender, Receiver& receiver, TimeoutHandler& timeout_handler) :
+        _config(config),
         _sender(sender),
         _receiver(receiver),
         _timeout_handler(timeout_handler)
@@ -75,6 +82,7 @@ public:
 
 
 private:
+    Config _config;
     Sender& _sender;
     Receiver& _receiver;
     TimeoutHandler& _timeout_handler;
