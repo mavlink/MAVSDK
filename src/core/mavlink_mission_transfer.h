@@ -35,7 +35,8 @@ public:
         Timeout,
         Unsupported,
         NoMissionAvailable,
-        Cancelled
+        Cancelled,
+        MissionTypeNotConsistent
     };
 
     struct ItemInt {
