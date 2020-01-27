@@ -45,6 +45,18 @@ jobs:
       - name: test
         run: ./build/release/src/unit_tests_runner
 
+  ubuntu18-check-style:
+    name: ubuntu-18.04 (check style)
+    runs-on: ubuntu-18.04
+    steps:
+      - uses: actions/checkout@v1
+        with:
+          submodules: recursive
+      - name: install
+        run: sudo apt-get install -y clang-format
+      - name: check style
+        run: ./tools/fix_style.sh .
+
   px4-sitl:
     name: PX4 SITL (ubuntu-18.04)
     runs-on: ubuntu-18.04
