@@ -5,6 +5,7 @@
 #include <functional>
 #include <vector>
 #include "mavlink_include.h"
+#include "mavlink_message_handler.h"
 #include "timeout_handler.h"
 
 namespace mavsdk {
@@ -13,16 +14,6 @@ class Sender {
 public:
     virtual ~Sender() = default;
     virtual bool send_message(const mavlink_message_t& message) = 0;
-};
-
-class Receiver {
-public:
-    virtual ~Receiver() = default;
-};
-
-class FakeReceiver : public Receiver {
-public:
-    virtual ~FakeReceiver() = default;
 };
 
 class MAVLinkMissionTransfer {
@@ -42,7 +33,9 @@ public:
         Unsupported,
         NoMissionAvailable,
         Cancelled,
-        MissionTypeNotConsistent
+        MissionTypeNotConsistent,
+        WrongSequence,
+        CurrentInvalid,
     };
 
     struct ItemInt {
@@ -70,23 +63,33 @@ public:
 
     using ResultCallback = std::function<void(Result result)>;
 
-    MAVLinkMissionTransfer(Config config, Sender& sender, Receiver& receiver, TimeoutHandler& timeout_handler) :
-        _config(config),
-        _sender(sender),
-        _receiver(receiver),
-        _timeout_handler(timeout_handler)
-    {}
+    MAVLinkMissionTransfer(
+        Config config,
+        Sender& sender,
+        MAVLinkMessageHandler& message_handler,
+        TimeoutHandler& timeout_handler);
 
+    ~MAVLinkMissionTransfer();
 
     void upload_items_async(const std::vector<ItemInt>& items, ResultCallback callback);
 
+    // Non-copyable
+    MAVLinkMissionTransfer(const MAVLinkMissionTransfer&) = delete;
+    const MAVLinkMissionTransfer& operator=(const MAVLinkMissionTransfer&) = delete;
 
 private:
+    void process_mission_request_int(const mavlink_message_t& message);
+    void process_timeout();
+
     Config _config;
     Sender& _sender;
-    Receiver& _receiver;
+    MAVLinkMessageHandler& _message_handler;
     TimeoutHandler& _timeout_handler;
-};
 
+    int _next_sequence_expected{-1};
+    void* _cookie{nullptr};
+    ResultCallback _callback{nullptr};
+    std::vector<ItemInt> _items{};
+};
 
 } // namespace mavsdk

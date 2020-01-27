@@ -23,6 +23,7 @@ public:
     void unregister_one(uint16_t msg_id, const void* cookie);
     void unregister_all(const void* cookie);
     void process_message(const mavlink_message_t& message);
+
 private:
     std::mutex _mutex{};
     std::vector<Entry> _table{};
