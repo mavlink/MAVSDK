@@ -1407,10 +1407,8 @@ void MissionImpl::process_timeout()
         _mission_data.mutex.lock();
         if (_mission_data.retries++ > MAX_RETRIES) {
             _mission_data.retries = 0;
-            {
-                std::lock_guard<std::mutex> lock(_activity.mutex);
-                _activity.state = Activity::State::NONE;
-            }
+
+            std::lock_guard<std::mutex> lock(_activity.mutex);
             LogWarn() << "Mission handling timed out.";
             if (_activity.state == Activity::State::GET_MISSION_LIST ||
                 _activity.state == Activity::State::GET_MISSION_REQUEST) {
@@ -1426,6 +1424,8 @@ void MissionImpl::process_timeout()
                 LogWarn() << "Clearing mission timed out...";
                 report_mission_result(_mission_data.result_callback, Mission::Result::TIMEOUT);
             }
+
+            _activity.state = Activity::State::NONE;
             _mission_data.mutex.unlock();
 
         } else {
