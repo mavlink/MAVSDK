@@ -1,4 +1,7 @@
+#pragma once
+
 #include <cstdint>
+#include <functional>
 #include <vector>
 #include "mavlink_include.h"
 
@@ -90,7 +93,7 @@ public:
         uint8_t mission_type; /**< @brief Mission type. */
     };
 
-    using ResultCallback = void(Result result);
+    using ResultCallback = std::function<void(Result result)>;
 
     MAVLinkMissionTransfer(Sender& sender, Receiver& receiver, Timeouter& timeouter) :
         _sender(sender),
