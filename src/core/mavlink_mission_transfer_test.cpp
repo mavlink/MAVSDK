@@ -11,6 +11,7 @@ using namespace mavsdk;
 using ::testing::_;
 using ::testing::NiceMock;
 using ::testing::Return;
+using ::testing::Truly;
 using MockSender = NiceMock<mavsdk::testing::MockSender>;
 
 using Result = MAVLinkMissionTransfer::Result;
@@ -97,20 +98,28 @@ TEST(MAVLinkMissionTransfer, UploadMissionReturnsConnectionErrorWhenSendMessageF
 
 TEST(MAVLinkMissionTransfer, UploadMissionSendsCount)
 {
-    FakeSender fake_sender;
+    MockSender mock_sender;
     FakeReceiver fake_receiver;
     FakeTimeouter fake_timeouter;
 
-    MAVLinkMissionTransfer mmt(fake_sender, fake_receiver, fake_timeouter);
+    MAVLinkMissionTransfer mmt(mock_sender, fake_receiver, fake_timeouter);
 
     std::vector<MAVLinkMissionTransfer::ItemInt> items;
     items.push_back(make_item());
     items.push_back(make_item());
+
+    ON_CALL(mock_sender, send_message(_))
+        .WillByDefault(Return(true));
+
+    EXPECT_CALL(mock_sender, send_message(Truly(
+                    [](const mavlink_message_t& message) {
+        return (message.msgid == MAVLINK_MSG_ID_MISSION_COUNT);
+    })));
+
     mmt.upload_items_async(items, [](Result result) {
         UNUSED(result);
         EXPECT_TRUE(false);
     });
-    EXPECT_EQ(fake_sender.last_message().msgid, MAVLINK_MSG_ID_MISSION_COUNT);
 }
 
 
