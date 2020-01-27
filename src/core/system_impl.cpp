@@ -954,17 +954,17 @@ SystemImpl::FlightMode SystemImpl::to_flight_mode_from_custom_mode(uint32_t cust
         case px4::PX4_CUSTOM_MAIN_MODE_OFFBOARD:
             return FlightMode::OFFBOARD;
         case px4::PX4_CUSTOM_MAIN_MODE_MANUAL:
-           return FlightMode::MANUAL;
-       case px4::PX4_CUSTOM_MAIN_MODE_POSCTL:
-           return FlightMode::POSCTL;
-       case px4::PX4_CUSTOM_MAIN_MODE_ALTCTL:
-           return FlightMode::ALTCTL;
-       case px4::PX4_CUSTOM_MAIN_MODE_RATTITUDE:
-           return FlightMode::RATTITUDE;
-       case px4::PX4_CUSTOM_MAIN_MODE_ACRO:
-           return FlightMode::ACRO;
-       case px4::PX4_CUSTOM_MAIN_MODE_STABILIZED:
-           return FlightMode::STABILIZED;
+            return FlightMode::MANUAL;
+        case px4::PX4_CUSTOM_MAIN_MODE_POSCTL:
+            return FlightMode::POSCTL;
+        case px4::PX4_CUSTOM_MAIN_MODE_ALTCTL:
+            return FlightMode::ALTCTL;
+        case px4::PX4_CUSTOM_MAIN_MODE_RATTITUDE:
+            return FlightMode::RATTITUDE;
+        case px4::PX4_CUSTOM_MAIN_MODE_ACRO:
+            return FlightMode::ACRO;
+        case px4::PX4_CUSTOM_MAIN_MODE_STABILIZED:
+            return FlightMode::STABILIZED;
         case px4::PX4_CUSTOM_MAIN_MODE_AUTO:
             switch (px4_custom_mode.sub_mode) {
                 case px4::PX4_CUSTOM_SUB_MODE_AUTO_READY:

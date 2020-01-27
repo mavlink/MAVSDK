@@ -39,9 +39,7 @@ void TelemetryImpl::init()
         this);
 
     _parent->register_mavlink_message_handler(
-        MAVLINK_MSG_ID_ATTITUDE,
-        std::bind(&TelemetryImpl::process_attitude, this, _1),
-        this);
+        MAVLINK_MSG_ID_ATTITUDE, std::bind(&TelemetryImpl::process_attitude, this, _1), this);
 
     _parent->register_mavlink_message_handler(
         MAVLINK_MSG_ID_ATTITUDE_QUATERNION,
@@ -97,7 +95,9 @@ void TelemetryImpl::init()
         this);
 
     _parent->register_mavlink_message_handler(
-        MAVLINK_MSG_ID_VFR_HUD, std::bind(&TelemetryImpl::process_fixedwing_metrics, this, _1), this);
+        MAVLINK_MSG_ID_VFR_HUD,
+        std::bind(&TelemetryImpl::process_fixedwing_metrics, this, _1),
+        this);
 
     _parent->register_param_changed_handler(
         std::bind(&TelemetryImpl::process_parameter_update, this, _1), this);
@@ -351,7 +351,8 @@ void TelemetryImpl::set_rate_imu_reading_ned_async(
         std::bind(&TelemetryImpl::command_result_callback, std::placeholders::_1, callback));
 }
 
-void TelemetryImpl::set_rate_fixedwing_metrics_async(double rate_hz, Telemetry::result_callback_t callback)
+void TelemetryImpl::set_rate_fixedwing_metrics_async(
+    double rate_hz, Telemetry::result_callback_t callback)
 {
     _parent->set_msg_rate_async(
         MAVLINK_MSG_ID_VFR_HUD,
@@ -682,7 +683,8 @@ void TelemetryImpl::process_fixedwing_metrics(const mavlink_message_t& message)
     mavlink_vfr_hud_t vfr_hud;
     mavlink_msg_vfr_hud_decode(&message, &vfr_hud);
 
-    set_fixedwing_metrics(Telemetry::FixedwingMetrics({vfr_hud.airspeed, vfr_hud.throttle * 1e-2f, vfr_hud.climb}));
+    set_fixedwing_metrics(
+        Telemetry::FixedwingMetrics({vfr_hud.airspeed, vfr_hud.throttle * 1e-2f, vfr_hud.climb}));
 
     if (_fixedwing_metrics_subscription) {
         auto callback = _fixedwing_metrics_subscription;
