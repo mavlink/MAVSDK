@@ -33,17 +33,17 @@ SystemImpl::SystemImpl(MavsdkImpl& parent, uint8_t system_id, uint8_t comp_id, b
     }
     _system_thread = new std::thread(&SystemImpl::system_thread, this);
 
-    register_mavlink_message_handler(
+    _message_handler.register_one(
         MAVLINK_MSG_ID_HEARTBEAT, std::bind(&SystemImpl::process_heartbeat, this, _1), this);
 
     // We're registering for Autopilot version because it is a good time do so,
     // regardless whether we deal with Autopilot.
-    register_mavlink_message_handler(
+    _message_handler.register_one(
         MAVLINK_MSG_ID_AUTOPILOT_VERSION,
         std::bind(&SystemImpl::process_autopilot_version, this, _1),
         this);
 
-    register_mavlink_message_handler(
+    _message_handler.register_one(
         MAVLINK_MSG_ID_STATUSTEXT, std::bind(&SystemImpl::process_statustext, this, _1), this);
 
     add_new_component(comp_id);
@@ -57,7 +57,7 @@ SystemImpl::SystemImpl(MavsdkImpl& parent, uint8_t system_id, uint8_t comp_id, b
 SystemImpl::~SystemImpl()
 {
     _should_exit = true;
-    unregister_all_mavlink_message_handlers(this);
+    _message_handler.unregister_all(this);
 
     unregister_timeout_handler(_autopilot_version_timed_out_cookie);
     if (!_always_connected) {
@@ -81,38 +81,17 @@ bool SystemImpl::is_connected() const
 void SystemImpl::register_mavlink_message_handler(
     uint16_t msg_id, mavlink_message_handler_t callback, const void* cookie)
 {
-    std::lock_guard<std::mutex> lock(_mavlink_handler_table_mutex);
-
-    MAVLinkHandlerTableEntry entry = {msg_id, callback, cookie};
-    _mavlink_handler_table.push_back(entry);
+    _message_handler.register_one(msg_id, callback, cookie);
 }
 
 void SystemImpl::unregister_mavlink_message_handler(uint16_t msg_id, const void* cookie)
 {
-    std::lock_guard<std::mutex> lock(_mavlink_handler_table_mutex);
-
-    for (auto it = _mavlink_handler_table.begin(); it != _mavlink_handler_table.end();
-         /* no ++it */) {
-        if (it->msg_id == msg_id && it->cookie == cookie) {
-            it = _mavlink_handler_table.erase(it);
-        } else {
-            ++it;
-        }
-    }
+    _message_handler.unregister_one(msg_id, cookie);
 }
 
 void SystemImpl::unregister_all_mavlink_message_handlers(const void* cookie)
 {
-    std::lock_guard<std::mutex> lock(_mavlink_handler_table_mutex);
-
-    for (auto it = _mavlink_handler_table.begin(); it != _mavlink_handler_table.end();
-         /* no ++it */) {
-        if (it->cookie == cookie) {
-            it = _mavlink_handler_table.erase(it);
-        } else {
-            ++it;
-        }
-    }
+    _message_handler.unregister_all(cookie);
 }
 
 void SystemImpl::register_timeout_handler(
@@ -143,26 +122,7 @@ void SystemImpl::process_mavlink_message(mavlink_message_t& message)
         }
     }
 
-    std::lock_guard<std::mutex> lock(_mavlink_handler_table_mutex);
-
-#if MESSAGE_DEBUGGING == 1
-    bool forwarded = false;
-#endif
-    for (auto it = _mavlink_handler_table.begin(); it != _mavlink_handler_table.end(); ++it) {
-        if (it->msg_id == message.msgid) {
-#if MESSAGE_DEBUGGING == 1
-            LogDebug() << "Forwarding msg " << int(message.msgid) << " to " << size_t(it->cookie);
-            forwarded = true;
-#endif
-            it->callback(message);
-        }
-    }
-
-#if MESSAGE_DEBUGGING == 1
-    if (!forwarded) {
-        LogDebug() << "Ignoring msg " << int(message.msgid);
-    }
-#endif
+    _message_handler.process_message(message);
 }
 
 void SystemImpl::add_call_every(std::function<void()> callback, float interval_s, void** cookie)
