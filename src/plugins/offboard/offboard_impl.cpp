@@ -27,6 +27,7 @@ void OffboardImpl::init()
 
 void OffboardImpl::deinit()
 {
+    stop_sending_setpoints();
     _parent->unregister_all_mavlink_message_handlers(this);
 }
 
