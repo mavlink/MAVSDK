@@ -564,7 +564,7 @@ void MissionImpl::assemble_mavlink_messages()
     unsigned item_i = 0;
 
     for (auto item : _mission_data.mission_items) {
-        MissionItemImpl &mission_item_impl = (*(item)->_impl);
+        MissionItemImpl& mission_item_impl = (*(item)->_impl);
 
         if (mission_item_impl.is_position_finite()) {
             // Current is the 0th waypoint
@@ -572,24 +572,24 @@ void MissionImpl::assemble_mavlink_messages()
 
             auto message = std::make_shared<mavlink_message_t>();
             mavlink_msg_mission_item_int_pack(
-                    _parent->get_own_system_id(),
-                    _parent->get_own_component_id(),
-                    message.get(),
-                    _parent->get_system_id(),
-                    _parent->get_autopilot_id(),
-                    _mission_data.mavlink_mission_item_messages.size(),
-                    mission_item_impl.get_mavlink_frame(),
-                    mission_item_impl.get_mavlink_cmd(),
-                    current,
-                    mission_item_impl.get_mavlink_autocontinue(),
-                    mission_item_impl.get_mavlink_param1(),
-                    mission_item_impl.get_mavlink_param2(),
-                    mission_item_impl.get_mavlink_param3(),
-                    mission_item_impl.get_mavlink_param4(),
-                    mission_item_impl.get_mavlink_x(),
-                    mission_item_impl.get_mavlink_y(),
-                    mission_item_impl.get_mavlink_z(),
-                    MAV_MISSION_TYPE_MISSION);
+                _parent->get_own_system_id(),
+                _parent->get_own_component_id(),
+                message.get(),
+                _parent->get_system_id(),
+                _parent->get_autopilot_id(),
+                _mission_data.mavlink_mission_item_messages.size(),
+                mission_item_impl.get_mavlink_frame(),
+                mission_item_impl.get_mavlink_cmd(),
+                current,
+                mission_item_impl.get_mavlink_autocontinue(),
+                mission_item_impl.get_mavlink_param1(),
+                mission_item_impl.get_mavlink_param2(),
+                mission_item_impl.get_mavlink_param3(),
+                mission_item_impl.get_mavlink_param4(),
+                mission_item_impl.get_mavlink_x(),
+                mission_item_impl.get_mavlink_y(),
+                mission_item_impl.get_mavlink_z(),
+                MAV_MISSION_TYPE_MISSION);
 
             last_position_valid = true; // because we checked is_position_finite
             last_x = mission_item_impl.get_mavlink_x();
@@ -598,242 +598,242 @@ void MissionImpl::assemble_mavlink_messages()
             last_frame = mission_item_impl.get_mavlink_frame();
 
             _mission_data.mavlink_mission_item_to_mission_item_indices.insert(std::pair<int, int>{
-                    static_cast<int>(_mission_data.mavlink_mission_item_messages.size()), item_i});
+                static_cast<int>(_mission_data.mavlink_mission_item_messages.size()), item_i});
             _mission_data.mavlink_mission_item_messages.push_back(message);
         }
 
-        //If the waypoint is a land we dno't create extra items
+        //If the waypoint is a land we don't create extra items
         if (mission_item_impl.get_mavlink_cmd() != MAV_CMD_NAV_LAND &&
             mission_item_impl.get_mavlink_cmd() != MAV_CMD_NAV_VTOL_LAND) {
 
 
-        if (std::isfinite(mission_item_impl.get_speed_m_s())) {
-            // The speed has changed, we need to add a speed command.
-
-            // Current is the 0th waypoint
-            uint8_t current = ((_mission_data.mavlink_mission_item_messages.size() == 0) ? 1 : 0);
-
-            uint8_t autocontinue = 1;
-
-            auto message_speed = std::make_shared<mavlink_message_t>();
-            mavlink_msg_mission_item_int_pack(
-                    _parent->get_own_system_id(),
-                    _parent->get_own_component_id(),
-                    message_speed.get(),
-                    _parent->get_system_id(),
-                    _parent->get_autopilot_id(),
-                    _mission_data.mavlink_mission_item_messages.size(),
-                    MAV_FRAME_MISSION,
-                    MAV_CMD_DO_CHANGE_SPEED,
-                    current,
-                    autocontinue,
-                    1.0f, // ground speed
-                    mission_item_impl.get_speed_m_s(),
-                    -1.0f, // no throttle change
-                    0.0f, // absolute
-                    0,
-                    0,
-                    NAN,
-                    MAV_MISSION_TYPE_MISSION);
-
-            _mission_data.mavlink_mission_item_to_mission_item_indices.insert(std::pair<int, int>{
-                    static_cast<int>(_mission_data.mavlink_mission_item_messages.size()), item_i});
-            _mission_data.mavlink_mission_item_messages.push_back(message_speed);
-        }
-
-        if (std::isfinite(mission_item_impl.get_gimbal_yaw_deg()) ||
-            std::isfinite(mission_item_impl.get_gimbal_pitch_deg())) {
-            if (_enable_absolute_gimbal_yaw_angle) {
-                // We need to configure the gimbal to use an absolute angle.
+            if (std::isfinite(mission_item_impl.get_speed_m_s())) {
+                // The speed has changed, we need to add a speed command.
 
                 // Current is the 0th waypoint
-                uint8_t current =
-                        ((_mission_data.mavlink_mission_item_messages.size() == 0) ? 1 : 0);
+                uint8_t current = ((_mission_data.mavlink_mission_item_messages.size() == 0) ? 1 : 0);
 
                 uint8_t autocontinue = 1;
 
-                auto message_gimbal_configure = std::make_shared<mavlink_message_t>();
+                auto message_speed = std::make_shared<mavlink_message_t>();
                 mavlink_msg_mission_item_int_pack(
                         _parent->get_own_system_id(),
                         _parent->get_own_component_id(),
-                        message_gimbal_configure.get(),
+                        message_speed.get(),
                         _parent->get_system_id(),
                         _parent->get_autopilot_id(),
                         _mission_data.mavlink_mission_item_messages.size(),
                         MAV_FRAME_MISSION,
-                        MAV_CMD_DO_MOUNT_CONFIGURE,
+                        MAV_CMD_DO_CHANGE_SPEED,
                         current,
                         autocontinue,
-                        MAV_MOUNT_MODE_MAVLINK_TARGETING,
-                        0.0f, // stabilize roll
-                        0.0f, // stabilize pitch
-                        1.0f, // stabilize yaw, FIXME: for now we use this for an absolute yaw angle,
-                        // because it works.
+                        1.0f, // ground speed
+                        mission_item_impl.get_speed_m_s(),
+                        -1.0f, // no throttle change
+                        0.0f, // absolute
                         0,
                         0,
-                        2.0f, // eventually this is the correct flag to set absolute yaw angle.
+                        NAN,
                         MAV_MISSION_TYPE_MISSION);
 
-                _mission_data.mavlink_mission_item_to_mission_item_indices.insert(
-                        std::pair<int, int>{
-                                static_cast<int>(_mission_data.mavlink_mission_item_messages.size()),
-                                item_i});
-                _mission_data.mavlink_mission_item_messages.push_back(message_gimbal_configure);
+                _mission_data.mavlink_mission_item_to_mission_item_indices.insert(std::pair<int, int>{
+                        static_cast<int>(_mission_data.mavlink_mission_item_messages.size()), item_i});
+                _mission_data.mavlink_mission_item_messages.push_back(message_speed);
             }
 
-            // The gimbal has changed, we need to add a gimbal command.
+            if (std::isfinite(mission_item_impl.get_gimbal_yaw_deg()) ||
+                std::isfinite(mission_item_impl.get_gimbal_pitch_deg())) {
+                if (_enable_absolute_gimbal_yaw_angle) {
+                    // We need to configure the gimbal to use an absolute angle.
 
-            // Current is the 0th waypoint
-            uint8_t current = ((_mission_data.mavlink_mission_item_messages.size() == 0) ? 1 : 0);
+                    // Current is the 0th waypoint
+                    uint8_t current =
+                            ((_mission_data.mavlink_mission_item_messages.size() == 0) ? 1 : 0);
 
-            uint8_t autocontinue = 1;
+                    uint8_t autocontinue = 1;
 
-            auto message_gimbal = std::make_shared<mavlink_message_t>();
-            mavlink_msg_mission_item_int_pack(
-                    _parent->get_own_system_id(),
-                    _parent->get_own_component_id(),
-                    message_gimbal.get(),
-                    _parent->get_system_id(),
-                    _parent->get_autopilot_id(),
-                    _mission_data.mavlink_mission_item_messages.size(),
-                    MAV_FRAME_MISSION,
-                    MAV_CMD_DO_MOUNT_CONTROL,
-                    current,
-                    autocontinue,
-                    mission_item_impl.get_gimbal_pitch_deg(), // pitch
-                    0.0f, // roll (yes it is a weird order)
-                    mission_item_impl.get_gimbal_yaw_deg(), // yaw
-                    NAN,
-                    0,
-                    0,
-                    MAV_MOUNT_MODE_MAVLINK_TARGETING,
-                    MAV_MISSION_TYPE_MISSION);
+                    auto message_gimbal_configure = std::make_shared<mavlink_message_t>();
+                    mavlink_msg_mission_item_int_pack(
+                            _parent->get_own_system_id(),
+                            _parent->get_own_component_id(),
+                            message_gimbal_configure.get(),
+                            _parent->get_system_id(),
+                            _parent->get_autopilot_id(),
+                            _mission_data.mavlink_mission_item_messages.size(),
+                            MAV_FRAME_MISSION,
+                            MAV_CMD_DO_MOUNT_CONFIGURE,
+                            current,
+                            autocontinue,
+                            MAV_MOUNT_MODE_MAVLINK_TARGETING,
+                            0.0f, // stabilize roll
+                            0.0f, // stabilize pitch
+                            1.0f, // stabilize yaw, FIXME: for now we use this for an absolute yaw angle,
+                            // because it works.
+                            0,
+                            0,
+                            2.0f, // eventually this is the correct flag to set absolute yaw angle.
+                            MAV_MISSION_TYPE_MISSION);
 
-            _mission_data.mavlink_mission_item_to_mission_item_indices.insert(std::pair<int, int>{
-                    static_cast<int>(_mission_data.mavlink_mission_item_messages.size()), item_i});
-            _mission_data.mavlink_mission_item_messages.push_back(message_gimbal);
-        }
+                    _mission_data.mavlink_mission_item_to_mission_item_indices.insert(
+                            std::pair<int, int>{
+                                    static_cast<int>(_mission_data.mavlink_mission_item_messages.size()),
+                                    item_i});
+                    _mission_data.mavlink_mission_item_messages.push_back(message_gimbal_configure);
+                }
 
-        // FIXME: It is a bit of a hack to set a LOITER_TIME waypoint to add a delay.
-        //        A better solution would be to properly use NAV_DELAY instead. This
-        //        would not require us to keep the last lat/lon.
-        // A loiter time of NAN is ignored but also a loiter time of 0 doesn't
-        // make any sense and should be discarded.
-        if (std::isfinite(mission_item_impl.get_loiter_time_s()) &&
-            mission_item_impl.get_loiter_time_s() > 0.0f) {
-            if (!last_position_valid) {
-                // In the case where we get a delay without a previous position, we will have to
-                // ignore it.
-                LogErr() << "Can't set camera action delay without previous position set.";
+                // The gimbal has changed, we need to add a gimbal command.
 
-            } else {
                 // Current is the 0th waypoint
-                uint8_t current =
-                        ((_mission_data.mavlink_mission_item_messages.size() == 0) ? 1 : 0);
+                uint8_t current = ((_mission_data.mavlink_mission_item_messages.size() == 0) ? 1 : 0);
 
                 uint8_t autocontinue = 1;
 
-                std::shared_ptr<mavlink_message_t> message_delay(new mavlink_message_t());
+                auto message_gimbal = std::make_shared<mavlink_message_t>();
                 mavlink_msg_mission_item_int_pack(
                         _parent->get_own_system_id(),
                         _parent->get_own_component_id(),
-                        message_delay.get(),
+                        message_gimbal.get(),
                         _parent->get_system_id(),
                         _parent->get_autopilot_id(),
                         _mission_data.mavlink_mission_item_messages.size(),
-                        last_frame,
-                        MAV_CMD_NAV_LOITER_TIME,
+                        MAV_FRAME_MISSION,
+                        MAV_CMD_DO_MOUNT_CONTROL,
                         current,
                         autocontinue,
-                        mission_item_impl.get_loiter_time_s(), // loiter time in seconds
-                        NAN, // empty
-                        0.0f, // radius around waypoint in meters ?
-                        NAN, // don't change yaw
-                        last_x,
-                        last_y,
-                        last_z,
+                        mission_item_impl.get_gimbal_pitch_deg(), // pitch
+                        0.0f, // roll (yes it is a weird order)
+                        mission_item_impl.get_gimbal_yaw_deg(), // yaw
+                        NAN,
+                        0,
+                        0,
+                        MAV_MOUNT_MODE_MAVLINK_TARGETING,
                         MAV_MISSION_TYPE_MISSION);
 
-                _mission_data.mavlink_mission_item_to_mission_item_indices.insert(
-                        std::pair<int, int>{
-                                static_cast<int>(_mission_data.mavlink_mission_item_messages.size()),
-                                item_i});
-                _mission_data.mavlink_mission_item_messages.push_back(message_delay);
+                _mission_data.mavlink_mission_item_to_mission_item_indices.insert(std::pair<int, int>{
+                        static_cast<int>(_mission_data.mavlink_mission_item_messages.size()), item_i});
+                _mission_data.mavlink_mission_item_messages.push_back(message_gimbal);
             }
 
-            if (mission_item_impl.get_fly_through()) {
-                LogWarn() << "Conflicting options set: fly_through=true and loiter_time>0.";
+            // FIXME: It is a bit of a hack to set a LOITER_TIME waypoint to add a delay.
+            //        A better solution would be to properly use NAV_DELAY instead. This
+            //        would not require us to keep the last lat/lon.
+            // A loiter time of NAN is ignored but also a loiter time of 0 doesn't
+            // make any sense and should be discarded.
+            if (std::isfinite(mission_item_impl.get_loiter_time_s()) &&
+                mission_item_impl.get_loiter_time_s() > 0.0f) {
+                if (!last_position_valid) {
+                    // In the case where we get a delay without a previous position, we will have to
+                    // ignore it.
+                    LogErr() << "Can't set camera action delay without previous position set.";
+
+                } else {
+                    // Current is the 0th waypoint
+                    uint8_t current =
+                            ((_mission_data.mavlink_mission_item_messages.size() == 0) ? 1 : 0);
+
+                    uint8_t autocontinue = 1;
+
+                    std::shared_ptr<mavlink_message_t> message_delay(new mavlink_message_t());
+                    mavlink_msg_mission_item_int_pack(
+                            _parent->get_own_system_id(),
+                            _parent->get_own_component_id(),
+                            message_delay.get(),
+                            _parent->get_system_id(),
+                            _parent->get_autopilot_id(),
+                            _mission_data.mavlink_mission_item_messages.size(),
+                            last_frame,
+                            MAV_CMD_NAV_LOITER_TIME,
+                            current,
+                            autocontinue,
+                            mission_item_impl.get_loiter_time_s(), // loiter time in seconds
+                            NAN, // empty
+                            0.0f, // radius around waypoint in meters ?
+                            NAN, // don't change yaw
+                            last_x,
+                            last_y,
+                            last_z,
+                            MAV_MISSION_TYPE_MISSION);
+
+                    _mission_data.mavlink_mission_item_to_mission_item_indices.insert(
+                            std::pair<int, int>{
+                                    static_cast<int>(_mission_data.mavlink_mission_item_messages.size()),
+                                    item_i});
+                    _mission_data.mavlink_mission_item_messages.push_back(message_delay);
+                }
+
+                if (mission_item_impl.get_fly_through()) {
+                    LogWarn() << "Conflicting options set: fly_through=true and loiter_time>0.";
+                }
+            }
+
+            if (mission_item_impl.get_camera_action() != MissionItem::CameraAction::NONE) {
+                // There is a camera action that we need to send.
+
+                // Current is the 0th waypoint
+                uint8_t current = ((_mission_data.mavlink_mission_item_messages.size() == 0) ? 1 : 0);
+
+                uint8_t autocontinue = 1;
+
+                uint16_t command = 0;
+                float param1 = NAN;
+                float param2 = NAN;
+                float param3 = NAN;
+                switch (mission_item_impl.get_camera_action()) {
+                    case MissionItem::CameraAction::TAKE_PHOTO:
+                        command = MAV_CMD_IMAGE_START_CAPTURE;
+                        param1 = 0.0f; // all camera IDs
+                        param2 = 0.0f; // no duration, take only one picture
+                        param3 = 1.0f; // only take one picture
+                        break;
+                    case MissionItem::CameraAction::START_PHOTO_INTERVAL:
+                        command = MAV_CMD_IMAGE_START_CAPTURE;
+                        param1 = 0.0f; // all camera IDs
+                        param2 = mission_item_impl.get_camera_photo_interval_s();
+                        param3 = 0.0f; // unlimited photos
+                        break;
+                    case MissionItem::CameraAction::STOP_PHOTO_INTERVAL:
+                        command = MAV_CMD_IMAGE_STOP_CAPTURE;
+                        param1 = 0.0f; // all camera IDs
+                        break;
+                    case MissionItem::CameraAction::START_VIDEO:
+                        command = MAV_CMD_VIDEO_START_CAPTURE;
+                        param1 = 0.0f; // all camera IDs
+                        break;
+                    case MissionItem::CameraAction::STOP_VIDEO:
+                        command = MAV_CMD_VIDEO_STOP_CAPTURE;
+                        param1 = 0.0f; // all camera IDs
+                        break;
+                    default:
+                        LogErr() << "Error: camera action not supported";
+                        break;
+                }
+
+                auto message_camera = std::make_shared<mavlink_message_t>();
+                mavlink_msg_mission_item_int_pack(
+                        _parent->get_own_system_id(),
+                        _parent->get_own_component_id(),
+                        message_camera.get(),
+                        _parent->get_system_id(),
+                        _parent->get_autopilot_id(),
+                        _mission_data.mavlink_mission_item_messages.size(),
+                        MAV_FRAME_MISSION,
+                        command,
+                        current,
+                        autocontinue,
+                        param1,
+                        param2,
+                        param3,
+                        NAN,
+                        0,
+                        0,
+                        NAN,
+                        MAV_MISSION_TYPE_MISSION);
+
+                _mission_data.mavlink_mission_item_to_mission_item_indices.insert(std::pair<int, int>{
+                        static_cast<int>(_mission_data.mavlink_mission_item_messages.size()), item_i});
+                _mission_data.mavlink_mission_item_messages.push_back(message_camera);
             }
         }
-
-        if (mission_item_impl.get_camera_action() != MissionItem::CameraAction::NONE) {
-            // There is a camera action that we need to send.
-
-            // Current is the 0th waypoint
-            uint8_t current = ((_mission_data.mavlink_mission_item_messages.size() == 0) ? 1 : 0);
-
-            uint8_t autocontinue = 1;
-
-            uint16_t command = 0;
-            float param1 = NAN;
-            float param2 = NAN;
-            float param3 = NAN;
-            switch (mission_item_impl.get_camera_action()) {
-                case MissionItem::CameraAction::TAKE_PHOTO:
-                    command = MAV_CMD_IMAGE_START_CAPTURE;
-                    param1 = 0.0f; // all camera IDs
-                    param2 = 0.0f; // no duration, take only one picture
-                    param3 = 1.0f; // only take one picture
-                    break;
-                case MissionItem::CameraAction::START_PHOTO_INTERVAL:
-                    command = MAV_CMD_IMAGE_START_CAPTURE;
-                    param1 = 0.0f; // all camera IDs
-                    param2 = mission_item_impl.get_camera_photo_interval_s();
-                    param3 = 0.0f; // unlimited photos
-                    break;
-                case MissionItem::CameraAction::STOP_PHOTO_INTERVAL:
-                    command = MAV_CMD_IMAGE_STOP_CAPTURE;
-                    param1 = 0.0f; // all camera IDs
-                    break;
-                case MissionItem::CameraAction::START_VIDEO:
-                    command = MAV_CMD_VIDEO_START_CAPTURE;
-                    param1 = 0.0f; // all camera IDs
-                    break;
-                case MissionItem::CameraAction::STOP_VIDEO:
-                    command = MAV_CMD_VIDEO_STOP_CAPTURE;
-                    param1 = 0.0f; // all camera IDs
-                    break;
-                default:
-                    LogErr() << "Error: camera action not supported";
-                    break;
-            }
-
-            auto message_camera = std::make_shared<mavlink_message_t>();
-            mavlink_msg_mission_item_int_pack(
-                    _parent->get_own_system_id(),
-                    _parent->get_own_component_id(),
-                    message_camera.get(),
-                    _parent->get_system_id(),
-                    _parent->get_autopilot_id(),
-                    _mission_data.mavlink_mission_item_messages.size(),
-                    MAV_FRAME_MISSION,
-                    command,
-                    current,
-                    autocontinue,
-                    param1,
-                    param2,
-                    param3,
-                    NAN,
-                    0,
-                    0,
-                    NAN,
-                    MAV_MISSION_TYPE_MISSION);
-
-            _mission_data.mavlink_mission_item_to_mission_item_indices.insert(std::pair<int, int>{
-                    static_cast<int>(_mission_data.mavlink_mission_item_messages.size()), item_i});
-            _mission_data.mavlink_mission_item_messages.push_back(message_camera);
-        }
-    }
         ++item_i;
     }
 
