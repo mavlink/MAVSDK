@@ -1,9 +1,11 @@
 #pragma once
 
+#include <chrono>
 #include <cstdint>
 #include <functional>
 #include <vector>
 #include "mavlink_include.h"
+#include "timeout_handler.h"
 
 namespace mavsdk {
 
@@ -21,17 +23,6 @@ public:
 class FakeReceiver : public Receiver {
 public:
     virtual ~FakeReceiver() = default;
-};
-
-class Timeouter {
-public:
-    virtual ~Timeouter() = default;
-
-};
-
-class FakeTimeouter : public Timeouter {
-public:
-    virtual ~FakeTimeouter() = default;
 };
 
 class MAVLinkMissionTransfer {
@@ -68,12 +59,14 @@ public:
         uint8_t mission_type; /**< @brief Mission type. */
     };
 
+    static constexpr double timeout_s = 1.0;
+
     using ResultCallback = std::function<void(Result result)>;
 
-    MAVLinkMissionTransfer(Sender& sender, Receiver& receiver, Timeouter& timeouter) :
+    MAVLinkMissionTransfer(Sender& sender, Receiver& receiver, TimeoutHandler& timeout_handler) :
         _sender(sender),
         _receiver(receiver),
-        _timeouter(timeouter)
+        _timeout_handler(timeout_handler)
     {}
 
 
@@ -83,7 +76,7 @@ public:
 private:
     Sender& _sender;
     Receiver& _receiver;
-    Timeouter& _timeouter;
+    TimeoutHandler& _timeout_handler;
 };
 
 

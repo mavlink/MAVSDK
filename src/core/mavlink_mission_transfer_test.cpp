@@ -31,9 +31,10 @@ TEST(MAVLinkMissionTransfer, UploadMissionDoesComplainAboutNoItems)
 {
     MockSender mock_sender;
     FakeReceiver fake_receiver;
-    FakeTimeouter fake_timeouter;
+    FakeTime time;
+    TimeoutHandler timeout_handler(time);
 
-    MAVLinkMissionTransfer mmt(mock_sender, fake_receiver, fake_timeouter);
+    MAVLinkMissionTransfer mmt(mock_sender, fake_receiver, timeout_handler);
 
     std::vector<MAVLinkMissionTransfer::ItemInt> items;
 
@@ -53,9 +54,10 @@ TEST(MAVLinkMissionTransfer, UploadMissionDoesNotCrashIfCallbackIsNull)
 {
     MockSender mock_sender;
     FakeReceiver fake_receiver;
-    FakeTimeouter fake_timeouter;
+    FakeTime time;
+    TimeoutHandler timeout_handler(time);
 
-    MAVLinkMissionTransfer mmt(mock_sender, fake_receiver, fake_timeouter);
+    MAVLinkMissionTransfer mmt(mock_sender, fake_receiver, timeout_handler);
 
     ON_CALL(mock_sender, send_message(_))
         .WillByDefault(Return(false));
@@ -73,9 +75,10 @@ TEST(MAVLinkMissionTransfer, UploadMissionReturnsConnectionErrorWhenSendMessageF
 {
     MockSender mock_sender;
     FakeReceiver fake_receiver;
-    FakeTimeouter fake_timeouter;
+    FakeTime time;
+    TimeoutHandler timeout_handler(time);
 
-    MAVLinkMissionTransfer mmt(mock_sender, fake_receiver, fake_timeouter);
+    MAVLinkMissionTransfer mmt(mock_sender, fake_receiver, timeout_handler);
 
     ON_CALL(mock_sender, send_message(_))
         .WillByDefault(Return(false));
@@ -94,15 +97,22 @@ TEST(MAVLinkMissionTransfer, UploadMissionReturnsConnectionErrorWhenSendMessageF
     });
 
     EXPECT_EQ(fut.wait_for(std::chrono::seconds(1)), std::future_status::ready);
+
+    // We want to be sure a timeout is not still triggered later.
+    time.sleep_for(
+        std::chrono::milliseconds(
+            static_cast<int>(MAVLinkMissionTransfer::timeout_s * 1.1) * 1000));
+    timeout_handler.run_once();
 }
 
 TEST(MAVLinkMissionTransfer, UploadMissionSendsCount)
 {
     MockSender mock_sender;
     FakeReceiver fake_receiver;
-    FakeTimeouter fake_timeouter;
+    FakeTime time;
+    TimeoutHandler timeout_handler(time);
 
-    MAVLinkMissionTransfer mmt(mock_sender, fake_receiver, fake_timeouter);
+    MAVLinkMissionTransfer mmt(mock_sender, fake_receiver, timeout_handler);
 
     std::vector<MAVLinkMissionTransfer::ItemInt> items;
     items.push_back(make_item());
@@ -122,25 +132,37 @@ TEST(MAVLinkMissionTransfer, UploadMissionSendsCount)
     });
 }
 
-
-#if 0
 TEST(MAVLinkMissionTransfer, UploadMissionTimeoutAfterSendCount)
 {
-    FakeSender fake_sender;
+    MockSender mock_sender;
     FakeReceiver fake_receiver;
-    FakeTimeouter fake_timeouter;
+    FakeTime time;
+    TimeoutHandler timeout_handler(time);
 
-    MAVLinkMissionTransfer mmt(fake_sender, fake_receiver, fake_timeouter);
+    MAVLinkMissionTransfer mmt(mock_sender, fake_receiver, timeout_handler);
 
     std::vector<MAVLinkMissionTransfer::ItemInt> items;
     items.push_back(make_item());
     items.push_back(make_item());
-    mmt.upload_items_async(items, [](Result result) {
+
+    ON_CALL(mock_sender, send_message(_))
+        .WillByDefault(Return(true));
+
+    std::promise<void> prom;
+    auto fut = prom.get_future();
+
+    mmt.upload_items_async(items, [&prom](Result result) {
         EXPECT_EQ(result, Result::Timeout);
         ONCE_ONLY;
+        prom.set_value();
     });
 
-    fake_timeouter.set_expired();
-}
+    EXPECT_EQ(fut.wait_for(std::chrono::seconds(0)), std::future_status::timeout);
 
-#endif
+    time.sleep_for(
+        std::chrono::milliseconds(
+            static_cast<int>(MAVLinkMissionTransfer::timeout_s * 1.1) * 1000));
+    timeout_handler.run_once();
+
+    EXPECT_EQ(fut.wait_for(std::chrono::seconds(1)), std::future_status::ready);
+}
