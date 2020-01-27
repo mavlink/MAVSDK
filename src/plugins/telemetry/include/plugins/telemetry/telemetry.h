@@ -123,14 +123,14 @@ public:
     };
 
     /**
-     * @brief Ground speed type.
+     * @brief Fixed wing metrics type.
      *
      * Metrics typically displayed on a HUD for fixed wing aircraft.
      */
-    struct VfrHud {
+    struct FixedwingMetrics {
         float airspeed_m_s; /**< @brief Current indicated airspeed (IAS) in metres/second. */
-        float throttle; /**< @brief Current throttle setting (0 to 100). */
-        float climb_m_s; /**< @brief Current climb rate in metres/second. */
+        float throttle_percentage; /**< @brief Current throttle setting (0 to 100). */
+        float climb_rate_m_s; /**< @brief Current climb rate in metres/second. */
     };
 
     /**
@@ -495,7 +495,7 @@ public:
      * @param rate_hz Rate in Hz.
      * @return Result of request.
      */
-    Result set_rate_vfr_hud(double rate_hz);
+    Result set_rate_fixedwing_metrics(double rate_hz);
 
     /**
      * @brief Set rate of GPS information updates (synchronous).
@@ -646,7 +646,7 @@ public:
      * @param rate_hz Rate in Hz.
      * @param callback Cabllback to receive request result.
      */
-    void set_rate_vfr_hud_async(double rate_hz, result_callback_t callback);
+    void set_rate_fixedwing_metrics_async(double rate_hz, result_callback_t callback);
 
     /**
      * @brief Set rate of GPS information updates (asynchronous).
@@ -787,11 +787,11 @@ public:
     AngularVelocityBody attitude_angular_velocity_body() const;
 
     /**
-     * @brief Get the current vfr hud (synchronous).
+     * @brief Get the current fixedwing_metrics (synchronous).
      *
-     * @return Vfr hud.
+     * @return Fixed wing metrics.
      */
-    VfrHud vfr_hud() const;
+    FixedwingMetrics fixedwing_metrics() const;
 
     /**
      * @brief Get the camera's attitude in quaternions (synchronous).
@@ -998,18 +998,18 @@ public:
     void attitude_angular_velocity_body_async(attitude_angular_velocity_body_callback_t callback);
 
     /**
-     * @brief Callback type for vfr hud updates.
+     * @brief Callback type for fixedwing_metrics updates.
      *
-     * @param VfrHud .
+     * @param FixedwingMetrics .
      */
-    typedef std::function<void(VfrHud vfr_hud)> vfr_hud_callback_t;
+    typedef std::function<void(FixedwingMetrics fixedwing_metrics)> fixedwing_metrics_callback_t;
 
     /**
      * @brief Subscribe to vfr hud updates in (asynchronous).
      *
      * @param callback Function to call with updates.
      */
-    void vfr_hud_async(vfr_hud_callback_t callback);
+    void fixedwing_metrics_async(fixedwing_metrics_callback_t callback);
 
     /**
      * @brief Subscribe to camera attitude updates in quaternion (asynchronous).
@@ -1311,11 +1311,11 @@ std::ostream&
 operator<<(std::ostream& str, Telemetry::AngularVelocityNED const& angular_velocity_ned);
 
 /**
- * @brief Stream operator to print information about a `Telemetry::VfrHud`.
+ * @brief Stream operator to print information about a `Telemetry::FixedwingMetrics`.
  *
  * @return A reference to the stream.
  */
-std::ostream& operator<<(std::ostream& str, Telemetry::VfrHud const& vfr_hud);
+std::ostream& operator<<(std::ostream& str, Telemetry::FixedwingMetrics const& fixedwing_metrics);
 
 /**
  * @brief Stream operator to print information about a `Telemetry::MagneticFieldNED`.
