@@ -1,3 +1,4 @@
+#include <algorithm>
 #include "mavlink_mission_transfer.h"
 
 namespace mavsdk {
@@ -8,6 +9,16 @@ void MAVLinkMissionTransfer::upload_items_async(
     if (items.size() == 0) {
         if (callback) {
             callback(Result::NoMissionAvailable);
+        }
+        return;
+    }
+
+    auto first_mission_type = items[0].mission_type;
+
+    if (std::any_of(items.cbegin(), items.cend(), [first_mission_type](const ItemInt& item) {
+            return item.mission_type != first_mission_type; })) {
+        if (callback) {
+            callback(Result::MissionTypeNotConsistent);
         }
         return;
     }
