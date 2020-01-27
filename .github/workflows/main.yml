@@ -48,6 +48,7 @@ jobs:
   ubuntu18-check-style:
     name: ubuntu-18.04 (check style)
     runs-on: ubuntu-18.04
+    container: mavsdk/mavsdk-ubuntu-18.04
     steps:
       - uses: actions/checkout@v1
         with:
