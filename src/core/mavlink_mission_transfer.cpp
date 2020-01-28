@@ -92,9 +92,7 @@ void MAVLinkMissionTransfer::upload_items_async(
 
     if (!_sender.send_message(message)) {
         _timeout_handler.remove(_cookie);
-        if (callback) {
-            callback(Result::ConnectionError);
-        }
+        callback_and_reset(Result::ConnectionError);
         return;
     }
 }
@@ -136,9 +134,7 @@ void MAVLinkMissionTransfer::process_mission_request_int(const mavlink_message_t
 
     if (!_sender.send_message(new_message)) {
         _timeout_handler.remove(_cookie);
-        if (_callback) {
-            _callback(Result::ConnectionError);
-        }
+        callback_and_reset(Result::ConnectionError);
         return;
     }
 }
@@ -150,22 +146,18 @@ void MAVLinkMissionTransfer::process_mission_ack(const mavlink_message_t& messag
 
     _timeout_handler.remove(_cookie);
 
-    if (!_callback) {
-        return;
-    }
-
     switch (mission_ack.type) {
         case MAV_MISSION_ERROR:
-            _callback(Result::ProtocolError);
+            callback_and_reset(Result::ProtocolError);
             return;
         case MAV_MISSION_UNSUPPORTED_FRAME:
-            _callback(Result::UnsupportedFrame);
+            callback_and_reset(Result::UnsupportedFrame);
             return;
         case MAV_MISSION_UNSUPPORTED:
-            _callback(Result::Unsupported);
+            callback_and_reset(Result::Unsupported);
             return;
         case MAV_MISSION_NO_SPACE:
-            _callback(Result::TooManyMissionItems);
+            callback_and_reset(Result::TooManyMissionItems);
             return;
         case MAV_MISSION_INVALID:
             // FALLTHROUGH
@@ -182,32 +174,38 @@ void MAVLinkMissionTransfer::process_mission_ack(const mavlink_message_t& messag
         case MAV_MISSION_INVALID_PARAM6_Y:
             // FALLTHROUGH
         case MAV_MISSION_INVALID_PARAM7:
-            _callback(Result::InvalidParam);
+            callback_and_reset(Result::InvalidParam);
             return;
         case MAV_MISSION_INVALID_SEQUENCE:
-            _callback(Result::InvalidSequence);
+            callback_and_reset(Result::InvalidSequence);
             return;
         case MAV_MISSION_DENIED:
-            _callback(Result::Denied);
+            callback_and_reset(Result::Denied);
             return;
         case MAV_MISSION_OPERATION_CANCELLED:
-            _callback(Result::Cancelled);
+            callback_and_reset(Result::Cancelled);
             return;
     }
 
     if (_next_sequence_expected == static_cast<int>(_items.size())) {
-        _callback(Result::Success);
+        callback_and_reset(Result::Success);
     } else {
-        _callback(Result::ProtocolError);
+        callback_and_reset(Result::ProtocolError);
     }
 }
 
 void MAVLinkMissionTransfer::process_timeout()
 {
-    if (!_callback) {
-        return;
+    callback_and_reset(Result::Timeout);
+}
+
+void MAVLinkMissionTransfer::callback_and_reset(Result result)
+{
+    if (_callback) {
+        _callback(result);
     }
-    _callback(Result::Timeout);
+    _callback = nullptr;
+    _items.clear();
 }
 
 } // namespace mavsdk
