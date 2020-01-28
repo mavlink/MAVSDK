@@ -39,24 +39,19 @@ public:
     };
 
     struct ItemInt {
-        uint8_t target_system; /**< @brief System ID. */
-        uint8_t target_component; /**< @brief Component ID. */
-        uint16_t seq; /**< @brief Sequence. */
-        uint8_t frame; /**< @brief The coordinate system of the waypoint. */
-        uint16_t command; /**< @brief The scheduled action for the waypoint. */
-        uint8_t current; /**< @brief false:0, true:1. */
-        uint8_t autocontinue; /**< @brief Autocontinue to next waypoint. */
-        float param1; /**< @brief PARAM1, see MAV_CMD enum. */
-        float param2; /**< @brief PARAM2, see MAV_CMD enum. */
-        float param3; /**< @brief PARAM3, see MAV_CMD enum. */
-        float param4; /**< @brief PARAM4, see MAV_CMD enum. */
-        int32_t x; /**< @brief PARAM5 / local: x position in meters * 1e4, global: latitude in
-                      degrees * 10^7. */
-        int32_t y; /**< @brief PARAM6 / y position: local: x position in meters * 1e4, global:
-                      longitude in degrees *10^7. */
-        float z; /**< @brief PARAM7 / local: Z coordinate, global: altitude (relative or absolute,
-                    depending on frame). */
-        uint8_t mission_type; /**< @brief Mission type. */
+        uint16_t seq;
+        uint8_t frame;
+        uint16_t command;
+        uint8_t current;
+        uint8_t autocontinue;
+        float param1;
+        float param2;
+        float param3;
+        float param4;
+        int32_t x;
+        int32_t y;
+        float z;
+        uint8_t mission_type;
     };
 
     static constexpr double timeout_s = 1.0;
