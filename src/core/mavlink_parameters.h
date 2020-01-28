@@ -635,6 +635,9 @@ private:
         int retries_done{0};
         bool already_requested{false};
         const void* cookie{nullptr};
+        int retries_to_do{3};
+        double timeout_s{1.0};
+        mavlink_message_t mavlink_message{};
     };
     LockedQueue<WorkItem> _work_queue{};
 
