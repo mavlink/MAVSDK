@@ -149,8 +149,6 @@ void MAVLinkParameters::do_work()
     char param_id[PARAM_ID_LEN + 1] = {};
     STRNCPY(param_id, work->param_name.c_str(), sizeof(param_id) - 1);
 
-    mavlink_message_t message{};
-
     switch (work->type) {
         case WorkItem::Type::Set: {
             if (work->extended) {
@@ -161,7 +159,7 @@ void MAVLinkParameters::do_work()
                 mavlink_msg_param_ext_set_pack(
                     _parent.get_own_system_id(),
                     _parent.get_own_component_id(),
-                    &message,
+                    &work->mavlink_message,
                     _parent.get_system_id(),
                     MAV_COMP_ID_CAMERA,
                     param_id,
@@ -172,7 +170,7 @@ void MAVLinkParameters::do_work()
                 mavlink_msg_param_set_pack(
                     _parent.get_own_system_id(),
                     _parent.get_own_component_id(),
-                    &message,
+                    &work->mavlink_message,
                     _parent.get_system_id(),
                     _parent.get_autopilot_id(),
                     param_id,
@@ -180,7 +178,7 @@ void MAVLinkParameters::do_work()
                     work->param_value.get_mav_param_type());
             }
 
-            if (!_parent.send_message(message)) {
+            if (!_parent.send_message(work->mavlink_message)) {
                 LogErr() << "Error: Send message failed";
                 if (work->set_param_callback) {
                     work->set_param_callback(MAVLinkParameters::Result::CONNECTION_ERROR);
@@ -206,7 +204,7 @@ void MAVLinkParameters::do_work()
                 mavlink_msg_param_ext_request_read_pack(
                     _parent.get_own_system_id(),
                     _parent.get_own_component_id(),
-                    &message,
+                    &work->mavlink_message,
                     _parent.get_system_id(),
                     MAV_COMP_ID_CAMERA,
                     param_id,
@@ -223,14 +221,14 @@ void MAVLinkParameters::do_work()
                 mavlink_msg_param_request_read_pack(
                     _parent.get_own_system_id(),
                     _parent.get_own_component_id(),
-                    &message,
+                    &work->mavlink_message,
                     _parent.get_system_id(),
                     _parent.get_autopilot_id(),
                     param_id,
                     -1);
             }
 
-            if (!_parent.send_message(message)) {
+            if (!_parent.send_message(work->mavlink_message)) {
                 LogErr() << "Error: Send message failed";
                 if (work->get_param_callback) {
                     ParamValue empty_param;
