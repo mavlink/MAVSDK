@@ -60,7 +60,7 @@ TEST(MAVLinkMissionTransfer, UploadMissionDoesComplainAboutNoItems)
     std::promise<void> prom;
     auto fut = prom.get_future();
 
-    mmt.upload_items_async(items, [&prom](Result result) {
+    mmt.upload_items_async(MAV_MISSION_TYPE_MISSION, items, [&prom](Result result) {
         EXPECT_EQ(result, Result::NoMissionAvailable);
         ONCE_ONLY;
         prom.set_value();
@@ -85,7 +85,7 @@ TEST(MAVLinkMissionTransfer, UploadMissionDoesComplainAboutWrongSequence)
     std::promise<void> prom;
     auto fut = prom.get_future();
 
-    mmt.upload_items_async(items, [&prom](Result result) {
+    mmt.upload_items_async(MAV_MISSION_TYPE_MISSION, items, [&prom](Result result) {
         EXPECT_EQ(result, Result::InvalidSequence);
         ONCE_ONLY;
         prom.set_value();
@@ -94,7 +94,33 @@ TEST(MAVLinkMissionTransfer, UploadMissionDoesComplainAboutWrongSequence)
     EXPECT_EQ(fut.wait_for(std::chrono::seconds(1)), std::future_status::ready);
 }
 
-TEST(MAVLinkMissionTransfer, UploadMissionDoesComplainAboutInconsistentMissionTypes)
+TEST(MAVLinkMissionTransfer, UploadMissionDoesComplainAboutInconsistentMissionTypesInAPI)
+{
+    MockSender mock_sender;
+    MAVLinkMessageHandler message_handler;
+    FakeTime time;
+    TimeoutHandler timeout_handler(time);
+
+    MAVLinkMissionTransfer mmt(config, mock_sender, message_handler, timeout_handler);
+
+    std::vector<MAVLinkMissionTransfer::ItemInt> items;
+    items.push_back(make_item(MAV_MISSION_TYPE_FENCE, 0));
+    items.push_back(make_item(MAV_MISSION_TYPE_FENCE, 1));
+    items.push_back(make_item(MAV_MISSION_TYPE_FENCE, 2));
+
+    std::promise<void> prom;
+    auto fut = prom.get_future();
+
+    mmt.upload_items_async(MAV_MISSION_TYPE_MISSION, items, [&prom](Result result) {
+        EXPECT_EQ(result, Result::MissionTypeNotConsistent);
+        ONCE_ONLY;
+        prom.set_value();
+    });
+
+    EXPECT_EQ(fut.wait_for(std::chrono::seconds(1)), std::future_status::ready);
+}
+
+TEST(MAVLinkMissionTransfer, UploadMissionDoesComplainAboutInconsistentMissionTypesInItems)
 {
     MockSender mock_sender;
     MAVLinkMessageHandler message_handler;
@@ -111,7 +137,7 @@ TEST(MAVLinkMissionTransfer, UploadMissionDoesComplainAboutInconsistentMissionTy
     std::promise<void> prom;
     auto fut = prom.get_future();
 
-    mmt.upload_items_async(items, [&prom](Result result) {
+    mmt.upload_items_async(MAV_MISSION_TYPE_MISSION, items, [&prom](Result result) {
         EXPECT_EQ(result, Result::MissionTypeNotConsistent);
         ONCE_ONLY;
         prom.set_value();
@@ -139,7 +165,7 @@ TEST(MAVLinkMissionTransfer, UploadMissionDoesComplainAboutNoCurrent)
     std::promise<void> prom;
     auto fut = prom.get_future();
 
-    mmt.upload_items_async(items, [&prom](Result result) {
+    mmt.upload_items_async(MAV_MISSION_TYPE_MISSION, items, [&prom](Result result) {
         EXPECT_EQ(result, Result::CurrentInvalid);
         ONCE_ONLY;
         prom.set_value();
@@ -167,7 +193,7 @@ TEST(MAVLinkMissionTransfer, UploadMissionDoesComplainAboutTwoCurrents)
     std::promise<void> prom;
     auto fut = prom.get_future();
 
-    mmt.upload_items_async(items, [&prom](Result result) {
+    mmt.upload_items_async(MAV_MISSION_TYPE_MISSION, items, [&prom](Result result) {
         EXPECT_EQ(result, Result::CurrentInvalid);
         ONCE_ONLY;
         prom.set_value();
@@ -189,16 +215,16 @@ TEST(MAVLinkMissionTransfer, UploadMissionDoesNotCrashIfCallbackIsNull)
 
     // Catch the empty case
     std::vector<MAVLinkMissionTransfer::ItemInt> items;
-    mmt.upload_items_async(items, nullptr);
+    mmt.upload_items_async(MAV_MISSION_TYPE_MISSION, items, nullptr);
 
     items.push_back(make_item(MAV_MISSION_TYPE_MISSION, 0));
     items.push_back(make_item(MAV_MISSION_TYPE_MISSION, 1));
 
-    mmt.upload_items_async(items, nullptr);
+    mmt.upload_items_async(MAV_MISSION_TYPE_MISSION, items, nullptr);
 
     // Catch the WrongSequence case as well.
     items.push_back(make_item(MAV_MISSION_TYPE_MISSION, 3));
-    mmt.upload_items_async(items, nullptr);
+    mmt.upload_items_async(MAV_MISSION_TYPE_MISSION, items, nullptr);
 }
 
 TEST(MAVLinkMissionTransfer, UploadMissionReturnsConnectionErrorWhenSendMessageFails)
@@ -219,7 +245,7 @@ TEST(MAVLinkMissionTransfer, UploadMissionReturnsConnectionErrorWhenSendMessageF
     std::promise<void> prom;
     auto fut = prom.get_future();
 
-    mmt.upload_items_async(items, [&prom](Result result) {
+    mmt.upload_items_async(MAV_MISSION_TYPE_MISSION, items, [&prom](Result result) {
         EXPECT_EQ(result, Result::ConnectionError);
         ONCE_ONLY;
         prom.set_value();
@@ -262,7 +288,7 @@ TEST(MAVLinkMissionTransfer, UploadMissionSendsCount)
                         mission_count.mission_type == items[0].mission_type);
                 })));
 
-    mmt.upload_items_async(items, [](Result result) {
+    mmt.upload_items_async(MAV_MISSION_TYPE_FENCE, items, [](Result result) {
         UNUSED(result);
         EXPECT_TRUE(false);
     });
@@ -286,7 +312,7 @@ TEST(MAVLinkMissionTransfer, UploadMissionTimeoutAfterSendCount)
     std::promise<void> prom;
     auto fut = prom.get_future();
 
-    mmt.upload_items_async(items, [&prom](Result result) {
+    mmt.upload_items_async(MAV_MISSION_TYPE_MISSION, items, [&prom](Result result) {
         EXPECT_EQ(result, Result::Timeout);
         ONCE_ONLY;
         prom.set_value();
@@ -375,7 +401,7 @@ TEST(MAVLinkMissionTransfer, UploadMissionSendsMissionItems)
     std::promise<void> prom;
     auto fut = prom.get_future();
 
-    mmt.upload_items_async(items, [&prom](Result result) {
+    mmt.upload_items_async(MAV_MISSION_TYPE_MISSION, items, [&prom](Result result) {
         EXPECT_EQ(result, Result::Success);
         ONCE_ONLY;
         prom.set_value();
@@ -422,7 +448,7 @@ TEST(MAVLinkMissionTransfer, UploadMissionRetransmitsMissionItems)
     std::promise<void> prom;
     auto fut = prom.get_future();
 
-    mmt.upload_items_async(items, [&prom](Result result) {
+    mmt.upload_items_async(MAV_MISSION_TYPE_MISSION, items, [&prom](Result result) {
         EXPECT_EQ(result, Result::Success);
         ONCE_ONLY;
         prom.set_value();
@@ -472,7 +498,7 @@ TEST(MAVLinkMissionTransfer, UploadMissionAckArrivesTooEarly)
     std::promise<void> prom;
     auto fut = prom.get_future();
 
-    mmt.upload_items_async(items, [&prom](Result result) {
+    mmt.upload_items_async(MAV_MISSION_TYPE_MISSION, items, [&prom](Result result) {
         EXPECT_EQ(result, Result::ProtocolError);
         ONCE_ONLY;
         prom.set_value();
@@ -527,7 +553,7 @@ TEST(MAVLinkMissionTransfer, UploadMissionNacksAreHandled)
         std::promise<void> prom;
         auto fut = prom.get_future();
 
-        mmt.upload_items_async(items, [&prom, &nack_case](Result result) {
+        mmt.upload_items_async(MAV_MISSION_TYPE_MISSION, items, [&prom, &nack_case](Result result) {
             EXPECT_EQ(result, nack_case.second);
             prom.set_value();
         });
@@ -564,7 +590,7 @@ TEST(MAVLinkMissionTransfer, UploadMissionTimeoutNotTriggeredDuringTransfer)
     std::promise<void> prom;
     auto fut = prom.get_future();
 
-    mmt.upload_items_async(items, [&prom](Result result) {
+    mmt.upload_items_async(MAV_MISSION_TYPE_MISSION, items, [&prom](Result result) {
         EXPECT_EQ(result, Result::Success);
         ONCE_ONLY;
         prom.set_value();
@@ -625,7 +651,7 @@ TEST(MAVLinkMissionTransfer, UploadMissionTimeoutAfterSendMissionItem)
     std::promise<void> prom;
     auto fut = prom.get_future();
 
-    mmt.upload_items_async(items, [&prom](Result result) {
+    mmt.upload_items_async(MAV_MISSION_TYPE_MISSION, items, [&prom](Result result) {
         EXPECT_EQ(result, Result::Timeout);
         ONCE_ONLY;
         prom.set_value();

@@ -32,6 +32,7 @@ MAVLinkMissionTransfer::~MAVLinkMissionTransfer()
 }
 
 void MAVLinkMissionTransfer::upload_items_async(
+    uint8_t type,
     const std::vector<ItemInt>& items, ResultCallback callback)
 {
     if (items.size() == 0) {
@@ -62,10 +63,8 @@ void MAVLinkMissionTransfer::upload_items_async(
         return;
     }
 
-    auto first_mission_type = items[0].mission_type;
-
-    if (std::any_of(items.cbegin(), items.cend(), [first_mission_type](const ItemInt& item) {
-            return item.mission_type != first_mission_type;
+    if (std::any_of(items.cbegin(), items.cend(), [type](const ItemInt& item) {
+            return item.mission_type != type;
         })) {
         if (callback) {
             callback(Result::MissionTypeNotConsistent);
@@ -88,7 +87,7 @@ void MAVLinkMissionTransfer::upload_items_async(
         _config.target_system_id,
         _config.target_component_id,
         items.size(),
-        first_mission_type);
+        type);
 
     if (!_sender.send_message(message)) {
         _timeout_handler.remove(_cookie);
