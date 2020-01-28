@@ -15,6 +15,7 @@ using ::testing::Truly;
 using MockSender = NiceMock<mavsdk::testing::MockSender>;
 
 using Result = MAVLinkMissionTransfer::Result;
+using ItemInt = MAVLinkMissionTransfer::ItemInt;
 
 const static MAVLinkMissionTransfer::Config config{.own_system_id = 42,
                                                    .own_component_id = 16,
@@ -26,9 +27,9 @@ const static MAVLinkMissionTransfer::Config config{.own_system_id = 42,
     EXPECT_FALSE(called); \
     called = true;
 
-MAVLinkMissionTransfer::ItemInt make_item(uint8_t type, uint16_t sequence)
+ItemInt make_item(uint8_t type, uint16_t sequence)
 {
-    MAVLinkMissionTransfer::ItemInt item{
+    ItemInt item{
         .seq = sequence,
         .frame = MAV_FRAME_MISSION,
         .command = MAV_CMD_NAV_WAYPOINT,
@@ -55,7 +56,7 @@ TEST(MAVLinkMissionTransfer, UploadMissionDoesComplainAboutNoItems)
 
     MAVLinkMissionTransfer mmt(config, mock_sender, message_handler, timeout_handler);
 
-    std::vector<MAVLinkMissionTransfer::ItemInt> items;
+    std::vector<ItemInt> items;
 
     std::promise<void> prom;
     auto fut = prom.get_future();
@@ -78,7 +79,7 @@ TEST(MAVLinkMissionTransfer, UploadMissionDoesComplainAboutWrongSequence)
 
     MAVLinkMissionTransfer mmt(config, mock_sender, message_handler, timeout_handler);
 
-    std::vector<MAVLinkMissionTransfer::ItemInt> items;
+    std::vector<ItemInt> items;
     items.push_back(make_item(MAV_MISSION_TYPE_MISSION, 0));
     items.push_back(make_item(MAV_MISSION_TYPE_MISSION, 2));
 
@@ -103,7 +104,7 @@ TEST(MAVLinkMissionTransfer, UploadMissionDoesComplainAboutInconsistentMissionTy
 
     MAVLinkMissionTransfer mmt(config, mock_sender, message_handler, timeout_handler);
 
-    std::vector<MAVLinkMissionTransfer::ItemInt> items;
+    std::vector<ItemInt> items;
     items.push_back(make_item(MAV_MISSION_TYPE_FENCE, 0));
     items.push_back(make_item(MAV_MISSION_TYPE_FENCE, 1));
     items.push_back(make_item(MAV_MISSION_TYPE_FENCE, 2));
@@ -129,7 +130,7 @@ TEST(MAVLinkMissionTransfer, UploadMissionDoesComplainAboutInconsistentMissionTy
 
     MAVLinkMissionTransfer mmt(config, mock_sender, message_handler, timeout_handler);
 
-    std::vector<MAVLinkMissionTransfer::ItemInt> items;
+    std::vector<ItemInt> items;
     items.push_back(make_item(MAV_MISSION_TYPE_MISSION, 0));
     items.push_back(make_item(MAV_MISSION_TYPE_FENCE, 1));
     items.push_back(make_item(MAV_MISSION_TYPE_MISSION, 2));
@@ -155,7 +156,7 @@ TEST(MAVLinkMissionTransfer, UploadMissionDoesComplainAboutNoCurrent)
 
     MAVLinkMissionTransfer mmt(config, mock_sender, message_handler, timeout_handler);
 
-    std::vector<MAVLinkMissionTransfer::ItemInt> items;
+    std::vector<ItemInt> items;
     items.push_back(make_item(MAV_MISSION_TYPE_MISSION, 0));
     items.push_back(make_item(MAV_MISSION_TYPE_MISSION, 1));
     items.push_back(make_item(MAV_MISSION_TYPE_MISSION, 2));
@@ -183,7 +184,7 @@ TEST(MAVLinkMissionTransfer, UploadMissionDoesComplainAboutTwoCurrents)
 
     MAVLinkMissionTransfer mmt(config, mock_sender, message_handler, timeout_handler);
 
-    std::vector<MAVLinkMissionTransfer::ItemInt> items;
+    std::vector<ItemInt> items;
     items.push_back(make_item(MAV_MISSION_TYPE_MISSION, 0));
     items.push_back(make_item(MAV_MISSION_TYPE_MISSION, 1));
     items.push_back(make_item(MAV_MISSION_TYPE_MISSION, 2));
@@ -214,7 +215,7 @@ TEST(MAVLinkMissionTransfer, UploadMissionDoesNotCrashIfCallbackIsNull)
     ON_CALL(mock_sender, send_message(_)).WillByDefault(Return(false));
 
     // Catch the empty case
-    std::vector<MAVLinkMissionTransfer::ItemInt> items;
+    std::vector<ItemInt> items;
     mmt.upload_items_async(MAV_MISSION_TYPE_MISSION, items, nullptr);
 
     items.push_back(make_item(MAV_MISSION_TYPE_MISSION, 0));
@@ -238,7 +239,7 @@ TEST(MAVLinkMissionTransfer, UploadMissionReturnsConnectionErrorWhenSendMessageF
 
     ON_CALL(mock_sender, send_message(_)).WillByDefault(Return(false));
 
-    std::vector<MAVLinkMissionTransfer::ItemInt> items;
+    std::vector<ItemInt> items;
     items.push_back(make_item(MAV_MISSION_TYPE_MISSION, 0));
     items.push_back(make_item(MAV_MISSION_TYPE_MISSION, 1));
 
@@ -268,7 +269,7 @@ TEST(MAVLinkMissionTransfer, UploadMissionSendsCount)
 
     MAVLinkMissionTransfer mmt(config, mock_sender, message_handler, timeout_handler);
 
-    std::vector<MAVLinkMissionTransfer::ItemInt> items;
+    std::vector<ItemInt> items;
     items.push_back(make_item(MAV_MISSION_TYPE_FENCE, 0));
     items.push_back(make_item(MAV_MISSION_TYPE_FENCE, 1));
 
@@ -303,7 +304,7 @@ TEST(MAVLinkMissionTransfer, UploadMissionTimeoutAfterSendCount)
 
     MAVLinkMissionTransfer mmt(config, mock_sender, message_handler, timeout_handler);
 
-    std::vector<MAVLinkMissionTransfer::ItemInt> items;
+    std::vector<ItemInt> items;
     items.push_back(make_item(MAV_MISSION_TYPE_MISSION, 0));
     items.push_back(make_item(MAV_MISSION_TYPE_MISSION, 1));
 
@@ -355,7 +356,7 @@ mavlink_message_t make_mission_ack(uint8_t result)
     return message;
 }
 
-bool is_the_same(const MAVLinkMissionTransfer::ItemInt& item, const mavlink_message_t& message)
+bool is_the_same(const ItemInt& item, const mavlink_message_t& message)
 {
     if (message.msgid != MAVLINK_MSG_ID_MISSION_ITEM_INT) {
         return false;
@@ -392,7 +393,7 @@ TEST(MAVLinkMissionTransfer, UploadMissionSendsMissionItems)
 
     MAVLinkMissionTransfer mmt(config, mock_sender, message_handler, timeout_handler);
 
-    std::vector<MAVLinkMissionTransfer::ItemInt> items;
+    std::vector<ItemInt> items;
     items.push_back(make_item(MAV_MISSION_TYPE_MISSION, 0));
     items.push_back(make_item(MAV_MISSION_TYPE_MISSION, 1));
 
@@ -439,7 +440,7 @@ TEST(MAVLinkMissionTransfer, UploadMissionRetransmitsMissionItems)
 
     MAVLinkMissionTransfer mmt(config, mock_sender, message_handler, timeout_handler);
 
-    std::vector<MAVLinkMissionTransfer::ItemInt> items;
+    std::vector<ItemInt> items;
     items.push_back(make_item(MAV_MISSION_TYPE_MISSION, 0));
     items.push_back(make_item(MAV_MISSION_TYPE_MISSION, 1));
 
@@ -489,7 +490,7 @@ TEST(MAVLinkMissionTransfer, UploadMissionAckArrivesTooEarly)
 
     MAVLinkMissionTransfer mmt(config, mock_sender, message_handler, timeout_handler);
 
-    std::vector<MAVLinkMissionTransfer::ItemInt> items;
+    std::vector<ItemInt> items;
     items.push_back(make_item(MAV_MISSION_TYPE_MISSION, 0));
     items.push_back(make_item(MAV_MISSION_TYPE_MISSION, 1));
 
@@ -544,7 +545,7 @@ TEST(MAVLinkMissionTransfer, UploadMissionNacksAreHandled)
 
         MAVLinkMissionTransfer mmt(config, mock_sender, message_handler, timeout_handler);
 
-        std::vector<MAVLinkMissionTransfer::ItemInt> items;
+        std::vector<ItemInt> items;
         items.push_back(make_item(MAV_MISSION_TYPE_MISSION, 0));
         items.push_back(make_item(MAV_MISSION_TYPE_MISSION, 1));
 
@@ -580,7 +581,7 @@ TEST(MAVLinkMissionTransfer, UploadMissionTimeoutNotTriggeredDuringTransfer)
 
     MAVLinkMissionTransfer mmt(config, mock_sender, message_handler, timeout_handler);
 
-    std::vector<MAVLinkMissionTransfer::ItemInt> items;
+    std::vector<ItemInt> items;
     items.push_back(make_item(MAV_MISSION_TYPE_MISSION, 0));
     items.push_back(make_item(MAV_MISSION_TYPE_MISSION, 1));
     items.push_back(make_item(MAV_MISSION_TYPE_MISSION, 2));
@@ -642,7 +643,7 @@ TEST(MAVLinkMissionTransfer, UploadMissionTimeoutAfterSendMissionItem)
 
     MAVLinkMissionTransfer mmt(config, mock_sender, message_handler, timeout_handler);
 
-    std::vector<MAVLinkMissionTransfer::ItemInt> items;
+    std::vector<ItemInt> items;
     items.push_back(make_item(MAV_MISSION_TYPE_MISSION, 0));
     items.push_back(make_item(MAV_MISSION_TYPE_MISSION, 1));
 
@@ -689,4 +690,36 @@ TEST(MAVLinkMissionTransfer, UploadMissionDoesNotCrashOnRandomMessages)
     time.sleep_for(std::chrono::milliseconds(
         static_cast<int>(MAVLinkMissionTransfer::timeout_s * 1.1 * 1000.)));
     timeout_handler.run_once();
+}
+
+TEST(MAVLinkMissionTransfer, DownloadMissionSendsRequestList)
+{
+    MockSender mock_sender;
+    MAVLinkMessageHandler message_handler;
+    FakeTime time;
+    TimeoutHandler timeout_handler(time);
+
+    MAVLinkMissionTransfer mmt(config, mock_sender, message_handler, timeout_handler);
+
+    ON_CALL(mock_sender, send_message(_)).WillByDefault(Return(true));
+
+    EXPECT_CALL(mock_sender, send_message(Truly([](const mavlink_message_t& message) {
+                    mavlink_mission_request_list_t mission_request_list;
+                    mavlink_msg_mission_request_list_decode(&message, &mission_request_list);
+
+                    return (
+                        message.msgid == MAVLINK_MSG_ID_MISSION_REQUEST_LIST &&
+                        message.sysid == config.own_system_id &&
+                        message.compid == config.own_component_id &&
+                        mission_request_list.target_system == config.target_system_id &&
+                        mission_request_list.target_component == config.target_component_id &&
+                        mission_request_list.mission_type == MAV_MISSION_TYPE_MISSION);
+                })));
+
+    mmt.download_items_async(
+        MAV_MISSION_TYPE_MISSION, [](Result result, std::vector<ItemInt> items) {
+            UNUSED(result);
+            UNUSED(items);
+            EXPECT_TRUE(false);
+        });
 }
