@@ -606,3 +606,61 @@ TEST(MAVLinkMissionTransfer, UploadMissionTimeoutNotTriggeredDuringTransfer)
     // We are finished and should have received the successful result.
     EXPECT_EQ(fut.wait_for(std::chrono::seconds(1)), std::future_status::ready);
 }
+
+TEST(MAVLinkMissionTransfer, UploadMissionTimeoutAfterSendMissionItem)
+{
+    MockSender mock_sender;
+    MAVLinkMessageHandler message_handler;
+    FakeTime time;
+    TimeoutHandler timeout_handler(time);
+
+    MAVLinkMissionTransfer mmt(config, mock_sender, message_handler, timeout_handler);
+
+    std::vector<MAVLinkMissionTransfer::ItemInt> items;
+    items.push_back(make_item(MAV_MISSION_TYPE_MISSION, 0));
+    items.push_back(make_item(MAV_MISSION_TYPE_MISSION, 1));
+
+    ON_CALL(mock_sender, send_message(_)).WillByDefault(Return(true));
+
+    std::promise<void> prom;
+    auto fut = prom.get_future();
+
+    mmt.upload_items_async(items, [&prom](Result result) {
+        EXPECT_EQ(result, Result::Timeout);
+        ONCE_ONLY;
+        prom.set_value();
+    });
+
+    EXPECT_CALL(mock_sender, send_message(Truly([&items](const mavlink_message_t& message) {
+                    return is_the_same(items[0], message);
+                })));
+
+    message_handler.process_message(make_mission_item_request(0));
+
+    time.sleep_for(std::chrono::milliseconds(
+        static_cast<int>(MAVLinkMissionTransfer::timeout_s * 1.1 * 1000.)));
+    timeout_handler.run_once();
+
+    EXPECT_EQ(fut.wait_for(std::chrono::seconds(1)), std::future_status::ready);
+
+    // Ignore later (wrong) ack.
+    message_handler.process_message(make_mission_ack(MAV_MISSION_ACCEPTED));
+}
+
+TEST(MAVLinkMissionTransfer, UploadMissionDoesNotCrashOnRandomMessages)
+{
+    MockSender mock_sender;
+    MAVLinkMessageHandler message_handler;
+    FakeTime time;
+    TimeoutHandler timeout_handler(time);
+
+    MAVLinkMissionTransfer mmt(config, mock_sender, message_handler, timeout_handler);
+
+    message_handler.process_message(make_mission_item_request(0));
+
+    message_handler.process_message(make_mission_ack(MAV_MISSION_ACCEPTED));
+
+    time.sleep_for(std::chrono::milliseconds(
+        static_cast<int>(MAVLinkMissionTransfer::timeout_s * 1.1 * 1000.)));
+    timeout_handler.run_once();
+}
