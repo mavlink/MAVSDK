@@ -60,7 +60,6 @@ public:
 
     static constexpr double timeout_s = 1.0;
 
-
     MAVLinkMissionTransfer(
         Config config,
         Sender& sender,
@@ -70,7 +69,11 @@ public:
     ~MAVLinkMissionTransfer();
 
     using ResultCallback = std::function<void(Result result)>;
-    void upload_items_async(uint8_t type, const std::vector<ItemInt>& items, ResultCallback callback);
+    void
+    upload_items_async(uint8_t type, const std::vector<ItemInt>& items, ResultCallback callback);
+
+    using ResultAndItemsCallback = std::function<void(Result result, std::vector<ItemInt> items)>;
+    void download_items_async(uint8_t type, ResultAndItemsCallback callback);
 
     // Non-copyable
     MAVLinkMissionTransfer(const MAVLinkMissionTransfer&) = delete;
@@ -90,6 +93,7 @@ private:
     int _next_sequence_expected{-1};
     void* _cookie{nullptr};
     ResultCallback _callback{nullptr};
+    ResultAndItemsCallback _callback_download{nullptr};
     std::vector<ItemInt> _items{};
 };
 
