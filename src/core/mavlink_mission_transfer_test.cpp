@@ -86,7 +86,7 @@ TEST(MAVLinkMissionTransfer, UploadMissionDoesComplainAboutWrongSequence)
     auto fut = prom.get_future();
 
     mmt.upload_items_async(items, [&prom](Result result) {
-        EXPECT_EQ(result, Result::WrongSequence);
+        EXPECT_EQ(result, Result::InvalidSequence);
         ONCE_ONLY;
         prom.set_value();
     });
@@ -402,4 +402,145 @@ TEST(MAVLinkMissionTransfer, UploadMissionSendsMissionItems)
     time.sleep_for(std::chrono::milliseconds(
         static_cast<int>(MAVLinkMissionTransfer::timeout_s * 1.1) * 1000));
     timeout_handler.run_once();
+}
+
+TEST(MAVLinkMissionTransfer, UploadMissionRetransmitsMissionItems)
+{
+    MockSender mock_sender;
+    MAVLinkMessageHandler message_handler;
+    FakeTime time;
+    TimeoutHandler timeout_handler(time);
+
+    MAVLinkMissionTransfer mmt(config, mock_sender, message_handler, timeout_handler);
+
+    std::vector<MAVLinkMissionTransfer::ItemInt> items;
+    items.push_back(make_item(MAV_MISSION_TYPE_MISSION, 0));
+    items.push_back(make_item(MAV_MISSION_TYPE_MISSION, 1));
+
+    ON_CALL(mock_sender, send_message(_)).WillByDefault(Return(true));
+
+    std::promise<void> prom;
+    auto fut = prom.get_future();
+
+    mmt.upload_items_async(items, [&prom](Result result) {
+        EXPECT_EQ(result, Result::Success);
+        ONCE_ONLY;
+        prom.set_value();
+    });
+
+    EXPECT_CALL(mock_sender, send_message(Truly([&items](const mavlink_message_t& message) {
+                    return is_the_same(items[0], message);
+                })));
+
+    message_handler.process_message(make_mission_item_request(0));
+
+    EXPECT_CALL(mock_sender, send_message(Truly([&items](const mavlink_message_t& message) {
+                    return is_the_same(items[0], message);
+                })));
+
+    // Request 0 again in case it had not arrived.
+    message_handler.process_message(make_mission_item_request(0));
+
+    EXPECT_CALL(mock_sender, send_message(Truly([&items](const mavlink_message_t& message) {
+                    return is_the_same(items[1], message);
+                })));
+
+    // Request 1 finally.
+    message_handler.process_message(make_mission_item_request(1));
+
+    message_handler.process_message(make_mission_ack(MAV_MISSION_ACCEPTED));
+
+    // We are finished and should have received the successful result.
+    EXPECT_EQ(fut.wait_for(std::chrono::seconds(1)), std::future_status::ready);
+}
+
+TEST(MAVLinkMissionTransfer, UploadMissionAckArrivesTooEarly)
+{
+    MockSender mock_sender;
+    MAVLinkMessageHandler message_handler;
+    FakeTime time;
+    TimeoutHandler timeout_handler(time);
+
+    MAVLinkMissionTransfer mmt(config, mock_sender, message_handler, timeout_handler);
+
+    std::vector<MAVLinkMissionTransfer::ItemInt> items;
+    items.push_back(make_item(MAV_MISSION_TYPE_MISSION, 0));
+    items.push_back(make_item(MAV_MISSION_TYPE_MISSION, 1));
+
+    ON_CALL(mock_sender, send_message(_)).WillByDefault(Return(true));
+
+    std::promise<void> prom;
+    auto fut = prom.get_future();
+
+    mmt.upload_items_async(items, [&prom](Result result) {
+        EXPECT_EQ(result, Result::ProtocolError);
+        ONCE_ONLY;
+        prom.set_value();
+    });
+
+    EXPECT_CALL(mock_sender, send_message(Truly([&items](const mavlink_message_t& message) {
+                    return is_the_same(items[0], message);
+                })));
+
+    message_handler.process_message(make_mission_item_request(0));
+
+    // Don't request item 1 but already send ack.
+    message_handler.process_message(make_mission_ack(MAV_MISSION_ACCEPTED));
+
+    EXPECT_EQ(fut.wait_for(std::chrono::seconds(1)), std::future_status::ready);
+}
+
+TEST(MAVLinkMissionTransfer, UploadMissionNacksAreHandled)
+{
+    const std::vector<std::pair<uint8_t, Result>> nack_cases{
+        {MAV_MISSION_ERROR, Result::ProtocolError},
+        {MAV_MISSION_UNSUPPORTED_FRAME, Result::UnsupportedFrame},
+        {MAV_MISSION_UNSUPPORTED, Result::Unsupported},
+        {MAV_MISSION_NO_SPACE, Result::TooManyMissionItems},
+        {MAV_MISSION_INVALID, Result::InvalidParam},
+        {MAV_MISSION_INVALID_PARAM1, Result::InvalidParam},
+        {MAV_MISSION_INVALID_PARAM2, Result::InvalidParam},
+        {MAV_MISSION_INVALID_PARAM3, Result::InvalidParam},
+        {MAV_MISSION_INVALID_PARAM4, Result::InvalidParam},
+        {MAV_MISSION_INVALID_PARAM5_X, Result::InvalidParam},
+        {MAV_MISSION_INVALID_PARAM6_Y, Result::InvalidParam},
+        {MAV_MISSION_INVALID_PARAM7, Result::InvalidParam},
+        {MAV_MISSION_INVALID_SEQUENCE, Result::InvalidSequence},
+        {MAV_MISSION_DENIED, Result::Denied},
+        {MAV_MISSION_OPERATION_CANCELLED, Result::Cancelled},
+    };
+
+    for (const auto& nack_case : nack_cases) {
+        MockSender mock_sender;
+        MAVLinkMessageHandler message_handler;
+        FakeTime time;
+        TimeoutHandler timeout_handler(time);
+
+        MAVLinkMissionTransfer mmt(config, mock_sender, message_handler, timeout_handler);
+
+        std::vector<MAVLinkMissionTransfer::ItemInt> items;
+        items.push_back(make_item(MAV_MISSION_TYPE_MISSION, 0));
+        items.push_back(make_item(MAV_MISSION_TYPE_MISSION, 1));
+
+        ON_CALL(mock_sender, send_message(_)).WillByDefault(Return(true));
+
+        std::promise<void> prom;
+        auto fut = prom.get_future();
+
+        mmt.upload_items_async(items, [&prom, &nack_case](Result result) {
+            EXPECT_EQ(result, nack_case.second);
+            prom.set_value();
+        });
+
+        EXPECT_CALL(mock_sender, send_message(Truly([&items](const mavlink_message_t& message) {
+                        return is_the_same(items[0], message);
+                    })));
+
+        message_handler.process_message(make_mission_item_request(0));
+
+        // Send nack now.
+        message_handler.process_message(make_mission_ack(nack_case.first));
+
+        EXPECT_EQ(fut.wait_for(std::chrono::seconds(1)), std::future_status::ready);
+    }
 }

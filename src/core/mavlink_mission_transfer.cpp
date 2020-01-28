@@ -45,7 +45,7 @@ void MAVLinkMissionTransfer::upload_items_async(
     for (const auto& item : items) {
         if (count++ != item.seq) {
             if (callback) {
-                callback(Result::WrongSequence);
+                callback(Result::InvalidSequence);
             }
             return;
         }
@@ -104,7 +104,7 @@ void MAVLinkMissionTransfer::process_mission_request_int(const mavlink_message_t
     mavlink_mission_request_int_t request_int;
     mavlink_msg_mission_request_int_decode(&message, &request_int);
 
-    if (_next_sequence_expected != request_int.seq) {
+    if (_next_sequence_expected < request_int.seq) {
         LogWarn() << "mission_request_int: sequence incorrect";
         return;
     }
@@ -130,7 +130,7 @@ void MAVLinkMissionTransfer::process_mission_request_int(const mavlink_message_t
         _items[request_int.seq].z,
         MAV_MISSION_TYPE_MISSION);
 
-    ++_next_sequence_expected;
+    _next_sequence_expected = request_int.seq + 1;
 
     if (!_sender.send_message(new_message)) {
         _timeout_handler.remove(_cookie);
@@ -151,7 +151,53 @@ void MAVLinkMissionTransfer::process_mission_ack(const mavlink_message_t& messag
     if (!_callback) {
         return;
     }
-    _callback(Result::Success);
+
+    switch (mission_ack.type) {
+        case MAV_MISSION_ERROR:
+            _callback(Result::ProtocolError);
+            return;
+        case MAV_MISSION_UNSUPPORTED_FRAME:
+            _callback(Result::UnsupportedFrame);
+            return;
+        case MAV_MISSION_UNSUPPORTED:
+            _callback(Result::Unsupported);
+            return;
+        case MAV_MISSION_NO_SPACE:
+            _callback(Result::TooManyMissionItems);
+            return;
+        case MAV_MISSION_INVALID:
+            // FALLTHROUGH
+        case MAV_MISSION_INVALID_PARAM1:
+            // FALLTHROUGH
+        case MAV_MISSION_INVALID_PARAM2:
+            // FALLTHROUGH
+        case MAV_MISSION_INVALID_PARAM3:
+            // FALLTHROUGH
+        case MAV_MISSION_INVALID_PARAM4:
+            // FALLTHROUGH
+        case MAV_MISSION_INVALID_PARAM5_X:
+            // FALLTHROUGH
+        case MAV_MISSION_INVALID_PARAM6_Y:
+            // FALLTHROUGH
+        case MAV_MISSION_INVALID_PARAM7:
+            _callback(Result::InvalidParam);
+            return;
+        case MAV_MISSION_INVALID_SEQUENCE:
+            _callback(Result::InvalidSequence);
+            return;
+        case MAV_MISSION_DENIED:
+            _callback(Result::Denied);
+            return;
+        case MAV_MISSION_OPERATION_CANCELLED:
+            _callback(Result::Cancelled);
+            return;
+    }
+
+    if (_next_sequence_expected == static_cast<int>(_items.size())) {
+        _callback(Result::Success);
+    } else {
+        _callback(Result::ProtocolError);
+    }
 }
 
 void MAVLinkMissionTransfer::process_timeout()

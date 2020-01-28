@@ -28,14 +28,18 @@ public:
     enum class Result {
         Success,
         ConnectionError,
+        Denied,
         TooManyMissionItems,
         Timeout,
         Unsupported,
+        UnsupportedFrame,
         NoMissionAvailable,
         Cancelled,
         MissionTypeNotConsistent,
-        WrongSequence,
+        InvalidSequence,
         CurrentInvalid,
+        ProtocolError,
+        InvalidParam,
     };
 
     struct ItemInt {
