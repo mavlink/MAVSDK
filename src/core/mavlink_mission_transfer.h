@@ -74,6 +74,7 @@ public:
 
 private:
     void process_mission_request_int(const mavlink_message_t& message);
+    void process_mission_ack(const mavlink_message_t& message);
     void process_timeout();
 
     Config _config;

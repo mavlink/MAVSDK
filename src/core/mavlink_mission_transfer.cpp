@@ -18,6 +18,11 @@ MAVLinkMissionTransfer::MAVLinkMissionTransfer(
         MAVLINK_MSG_ID_MISSION_REQUEST_INT,
         [this](const mavlink_message_t& message) { process_mission_request_int(message); },
         this);
+
+    _message_handler.register_one(
+        MAVLINK_MSG_ID_MISSION_ACK,
+        [this](const mavlink_message_t& message) { process_mission_ack(message); },
+        this);
 }
 
 MAVLinkMissionTransfer::~MAVLinkMissionTransfer()
@@ -124,7 +129,8 @@ void MAVLinkMissionTransfer::process_mission_request_int(const mavlink_message_t
         _items[request_int.seq].y,
         _items[request_int.seq].z,
         MAV_MISSION_TYPE_MISSION);
-    LogWarn() << "sending: " << new_message.msgid;
+
+    ++_next_sequence_expected;
 
     if (!_sender.send_message(new_message)) {
         _timeout_handler.remove(_cookie);
@@ -133,6 +139,19 @@ void MAVLinkMissionTransfer::process_mission_request_int(const mavlink_message_t
         }
         return;
     }
+}
+
+void MAVLinkMissionTransfer::process_mission_ack(const mavlink_message_t& message)
+{
+    mavlink_mission_ack_t mission_ack;
+    mavlink_msg_mission_ack_decode(&message, &mission_ack);
+
+    _timeout_handler.remove(_cookie);
+
+    if (!_callback) {
+        return;
+    }
+    _callback(Result::Success);
 }
 
 void MAVLinkMissionTransfer::process_timeout()
