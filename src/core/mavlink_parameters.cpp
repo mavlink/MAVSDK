@@ -149,8 +149,6 @@ void MAVLinkParameters::do_work()
     char param_id[PARAM_ID_LEN + 1] = {};
     STRNCPY(param_id, work->param_name.c_str(), sizeof(param_id) - 1);
 
-    mavlink_message_t message{};
-
     switch (work->type) {
         case WorkItem::Type::Set: {
             if (work->extended) {
@@ -161,7 +159,7 @@ void MAVLinkParameters::do_work()
                 mavlink_msg_param_ext_set_pack(
                     _parent.get_own_system_id(),
                     _parent.get_own_component_id(),
-                    &message,
+                    &work->mavlink_message,
                     _parent.get_system_id(),
                     MAV_COMP_ID_CAMERA,
                     param_id,
@@ -172,7 +170,7 @@ void MAVLinkParameters::do_work()
                 mavlink_msg_param_set_pack(
                     _parent.get_own_system_id(),
                     _parent.get_own_component_id(),
-                    &message,
+                    &work->mavlink_message,
                     _parent.get_system_id(),
                     _parent.get_autopilot_id(),
                     param_id,
@@ -180,7 +178,7 @@ void MAVLinkParameters::do_work()
                     work->param_value.get_mav_param_type());
             }
 
-            if (!_parent.send_message(message)) {
+            if (!_parent.send_message(work->mavlink_message)) {
                 LogErr() << "Error: Send message failed";
                 if (work->set_param_callback) {
                     work->set_param_callback(MAVLinkParameters::Result::CONNECTION_ERROR);
@@ -194,7 +192,9 @@ void MAVLinkParameters::do_work()
 
             // We want to get notified if a timeout happens
             _parent.register_timeout_handler(
-                std::bind(&MAVLinkParameters::receive_timeout, this), 0.5, &_timeout_cookie);
+                std::bind(&MAVLinkParameters::receive_timeout, this),
+                work->timeout_s,
+                &_timeout_cookie);
 
         } break;
 
@@ -204,7 +204,7 @@ void MAVLinkParameters::do_work()
                 mavlink_msg_param_ext_request_read_pack(
                     _parent.get_own_system_id(),
                     _parent.get_own_component_id(),
-                    &message,
+                    &work->mavlink_message,
                     _parent.get_system_id(),
                     MAV_COMP_ID_CAMERA,
                     param_id,
@@ -221,14 +221,14 @@ void MAVLinkParameters::do_work()
                 mavlink_msg_param_request_read_pack(
                     _parent.get_own_system_id(),
                     _parent.get_own_component_id(),
-                    &message,
+                    &work->mavlink_message,
                     _parent.get_system_id(),
                     _parent.get_autopilot_id(),
                     param_id,
                     -1);
             }
 
-            if (!_parent.send_message(message)) {
+            if (!_parent.send_message(work->mavlink_message)) {
                 LogErr() << "Error: Send message failed";
                 if (work->get_param_callback) {
                     ParamValue empty_param;
@@ -245,7 +245,9 @@ void MAVLinkParameters::do_work()
 
             // We want to get notified if a timeout happens
             _parent.register_timeout_handler(
-                std::bind(&MAVLinkParameters::receive_timeout, this), 0.5, &_timeout_cookie);
+                std::bind(&MAVLinkParameters::receive_timeout, this),
+                work->timeout_s,
+                &_timeout_cookie);
 
         } break;
     }
@@ -450,27 +452,55 @@ void MAVLinkParameters::receive_timeout()
 
     switch (work->type) {
         case WorkItem::Type::Get: {
-            if (work->get_param_callback) {
-                ParamValue empty_value;
-                // Notify about timeout
-                LogErr() << "Error: get param busy timeout: " << work->param_name;
-                // LogErr() << "Got it after: " <<
-                // _parent.get_time().elapsed_since_s(_last_request_time);
+            ParamValue empty_value;
+            if (work->retries_to_do > 0) {
+                // We're not sure the command arrived, let's retransmit.
+                LogWarn() << "sending again, retries to do: " << work->retries_to_do << "  ("
+                          << work->param_name << ").";
+                if (!_parent.send_message(work->mavlink_message)) {
+                    LogErr() << "connection send error in retransmit (" << work->param_name << ").";
+                    work_queue_guard.pop_front();
+                    work->get_param_callback(
+                        MAVLinkParameters::Result::CONNECTION_ERROR, empty_value);
+                } else {
+                    --work->retries_to_do;
+                    _parent.register_timeout_handler(
+                        std::bind(&MAVLinkParameters::receive_timeout, this),
+                        work->timeout_s,
+                        &_timeout_cookie);
+                }
+            } else {
+                // We have tried retransmitting, giving up now.
+                LogErr() << "Error: Retrying failed get param busy timeout: " << work->param_name;
+
+                work_queue_guard.pop_front();
+
                 work->get_param_callback(MAVLinkParameters::Result::TIMEOUT, empty_value);
             }
-            // TODO: we should retry!
-            work_queue_guard.pop_front();
         } break;
         case WorkItem::Type::Set: {
-            if (work->set_param_callback) {
-                // Notify about timeout
-                LogErr() << "Error: set param busy timeout: " << work->param_name;
-                // LogErr() << "Got it after: " <<
-                // _parent.get_time().elapsed_since_s(_last_request_time);
+            if (work->retries_to_do > 0) {
+                // We're not sure the command arrived, let's retransmit.
+                LogWarn() << "sending again, retries to do: " << work->retries_to_do << "  ("
+                          << work->param_name << ").";
+                if (!_parent.send_message(work->mavlink_message)) {
+                    LogErr() << "connection send error in retransmit (" << work->param_name << ").";
+                    work_queue_guard.pop_front();
+                    work->set_param_callback(MAVLinkParameters::Result::CONNECTION_ERROR);
+                } else {
+                    --work->retries_to_do;
+                    _parent.register_timeout_handler(
+                        std::bind(&MAVLinkParameters::receive_timeout, this),
+                        work->timeout_s,
+                        &_timeout_cookie);
+                }
+            } else {
+                // We have tried retransmitting, giving up now.
+                LogErr() << "Error: Retrying failed get param busy timeout: " << work->param_name;
+
+                work_queue_guard.pop_front();
                 work->set_param_callback(MAVLinkParameters::Result::TIMEOUT);
             }
-            // TODO: we should retry!
-            work_queue_guard.pop_front();
         } break;
     }
 }

@@ -674,10 +674,9 @@ void TelemetryImpl::process_ground_truth(const mavlink_message_t& message)
     mavlink_hil_state_quaternion_t hil_state_quaternion;
     mavlink_msg_hil_state_quaternion_decode(&message, &hil_state_quaternion);
 
-    set_ground_truth(
-    Telemetry::GroundTruth({hil_state_quaternion.lat * 1e-7,
-                            hil_state_quaternion.lon * 1e-7,
-                            hil_state_quaternion.alt * 1e-3f}));
+    set_ground_truth(Telemetry::GroundTruth({hil_state_quaternion.lat * 1e-7,
+                                             hil_state_quaternion.lon * 1e-7,
+                                             hil_state_quaternion.alt * 1e-3f}));
 
     if (_ground_truth_subscription) {
         auto callback = _ground_truth_subscription;
