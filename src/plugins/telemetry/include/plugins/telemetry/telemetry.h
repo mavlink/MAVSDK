@@ -125,7 +125,7 @@ public:
     /**
      * @brief Ground truth type.
      *
-     * Ground truth position information available in simulation
+     * Ground truth position information available in simulation.
      */
     struct GroundTruth {
         double latitude_deg; /**< @brief Latitude in degrees (range: -90 to +90) */

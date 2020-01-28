@@ -254,9 +254,7 @@ void print_fixedwing_metrics(Telemetry::FixedwingMetrics fixedwing_metrics)
 
 void print_ground_truth(Telemetry::GroundTruth ground_truth)
 {
-    std::cout << "Latitude: " << ground_truth.latitude_deg << " deg, "
-              << "Longitude: " << ground_truth.longitude_deg << " deg, "
-              << "Altitude: " << ground_truth.absolute_altitude_m << " m" << std::endl;
+    std::cout << ground_truth << std::endl;
     _received_ground_truth = true;
 }
 
