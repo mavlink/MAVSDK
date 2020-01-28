@@ -104,6 +104,8 @@ void MAVLinkMissionTransfer::process_mission_request_int(const mavlink_message_t
     mavlink_mission_request_int_t request_int;
     mavlink_msg_mission_request_int_decode(&message, &request_int);
 
+    _timeout_handler.refresh(_cookie);
+
     if (_next_sequence_expected < request_int.seq) {
         LogWarn() << "mission_request_int: sequence incorrect";
         return;
