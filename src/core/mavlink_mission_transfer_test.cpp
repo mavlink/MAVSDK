@@ -315,6 +315,48 @@ mavlink_message_t make_mission_item_request(int sequence)
     return message;
 }
 
+mavlink_message_t make_mission_ack(uint8_t result)
+{
+    mavlink_message_t message;
+    mavlink_msg_mission_ack_pack(
+        config.own_system_id,
+        config.own_component_id,
+        &message,
+        config.target_system_id,
+        config.target_component_id,
+        result,
+        MAV_MISSION_TYPE_MISSION);
+    return message;
+}
+
+bool is_the_same(const MAVLinkMissionTransfer::ItemInt& item, const mavlink_message_t& message)
+{
+    if (message.msgid != MAVLINK_MSG_ID_MISSION_ITEM_INT) {
+        return false;
+    }
+    mavlink_mission_item_int_t mission_item_int;
+    mavlink_msg_mission_item_int_decode(&message, &mission_item_int);
+
+    return (
+        message.sysid == config.own_system_id && //
+        message.compid == config.own_component_id && //
+        mission_item_int.target_system == config.target_system_id && //
+        mission_item_int.target_component == config.target_component_id && //
+        mission_item_int.seq == item.seq && //
+        mission_item_int.frame == item.frame && //
+        mission_item_int.command == item.command && //
+        mission_item_int.current == item.current && //
+        mission_item_int.autocontinue == item.autocontinue && //
+        mission_item_int.param1 == item.param1 && //
+        mission_item_int.param2 == item.param2 && //
+        mission_item_int.param3 == item.param3 && //
+        mission_item_int.param4 == item.param4 && //
+        mission_item_int.x == item.x && //
+        mission_item_int.y == item.y && //
+        mission_item_int.z == item.z && //
+        mission_item_int.mission_type == item.mission_type);
+}
+
 TEST(MAVLinkMissionTransfer, UploadMissionSendsMissionItems)
 {
     MockSender mock_sender;
@@ -340,38 +382,24 @@ TEST(MAVLinkMissionTransfer, UploadMissionSendsMissionItems)
     });
 
     EXPECT_CALL(mock_sender, send_message(Truly([&items](const mavlink_message_t& message) {
-                    mavlink_mission_item_int_t mission_item_int;
-                    mavlink_msg_mission_item_int_decode(&message, &mission_item_int);
-
-                    return (
-                        message.msgid == MAVLINK_MSG_ID_MISSION_ITEM_INT &&
-                        message.sysid == config.own_system_id &&
-                        message.compid == config.own_component_id &&
-                        mission_item_int.target_system == config.target_system_id &&
-                        mission_item_int.target_component == config.target_component_id &&
-                        mission_item_int.seq == 0 && // style
-                        mission_item_int.frame == items[0].frame &&
-                        mission_item_int.command == items[0].command &&
-                        mission_item_int.current == items[0].current &&
-                        mission_item_int.autocontinue == items[0].autocontinue &&
-                        mission_item_int.param1 == items[0].param1 &&
-                        mission_item_int.param2 == items[0].param2 &&
-                        mission_item_int.param3 == items[0].param3 &&
-                        mission_item_int.param4 == items[0].param4 &&
-                        mission_item_int.x == items[0].x && // style
-                        mission_item_int.y == items[0].y && // style
-                        mission_item_int.z == items[0].z &&
-                        mission_item_int.mission_type == items[0].mission_type);
+                    return is_the_same(items[0], message);
                 })));
 
     message_handler.process_message(make_mission_item_request(0));
 
-    // EXPECT_EQ(fut.wait_for(std::chrono::seconds(0)), std::future_status::timeout);
+    EXPECT_CALL(mock_sender, send_message(Truly([&items](const mavlink_message_t& message) {
+                    return is_the_same(items[1], message);
+                })));
 
-    // time.sleep_for(
-    //    std::chrono::milliseconds(
-    //        static_cast<int>(MAVLinkMissionTransfer::timeout_s * 1.1) * 1000));
-    // timeout_handler.run_once();
+    message_handler.process_message(make_mission_item_request(1));
 
-    // EXPECT_EQ(fut.wait_for(std::chrono::seconds(1)), std::future_status::ready);
+    message_handler.process_message(make_mission_ack(MAV_MISSION_ACCEPTED));
+
+    // We are finished and should have received the successful result.
+    EXPECT_EQ(fut.wait_for(std::chrono::seconds(1)), std::future_status::ready);
+
+    // We do not expect a timeout later though.
+    time.sleep_for(std::chrono::milliseconds(
+        static_cast<int>(MAVLinkMissionTransfer::timeout_s * 1.1) * 1000));
+    timeout_handler.run_once();
 }
