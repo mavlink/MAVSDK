@@ -1,0 +1,51 @@
+syntax = "proto3";
+
+package mavsdk.rpc.geofence;
+
+option java_package = "io.mavsdk.tune";
+option java_outer_classname = "TuneProto";
+
+service TuneService {
+  /*
+   * Send a tune to be played by the system.
+   */
+  rpc PlayTune(PlayTuneRequest) returns(PlayTuneResponse) {}
+}
+
+enum SongElement {
+  STYLE_LEGATO = 0;
+  STYLE_NORMAL = 1;
+  STYLE_STACCATO = 2;
+  DURATION_1 = 3;
+  DURATION_2 = 4;
+  DURATION_4 = 5;
+  DURATION_8 = 6;
+  DURATION_16 = 7;
+  DURATION_32 = 8;
+  NOTE_A = 9;
+  NOTE_B = 10;
+  NOTE_C = 11;
+  NOTE_D = 12;
+  NOTE_E = 13;
+  NOTE_F = 14;
+  NOTE_G = 15;
+  NOTE_PAUSE = 16;
+  SHARP = 17;
+  FLAT = 18;
+  OCTAVE_UP = 19;
+  OCTAVE_DOWN = 20;
+}
+
+message PlayTuneRequest {
+  repeated SongElement tune = 1;
+}
+message PlayTuneResponse {
+  TuneResult result = 1;
+}
+
+enum TuneResult {
+  SUCCESS = 0; // request succeeded
+  INVALID_TEMPO = 1; // invalid tempo (range: 32 - 255)
+  TUNE_TOO_LONG = 2; // invalid tune: encoded string must be at most 230 chars
+  ERROR = 3; // failed to send the request
+}
