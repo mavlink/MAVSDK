@@ -194,7 +194,9 @@ void MAVLinkParameters::do_work()
 
             // We want to get notified if a timeout happens
             _parent.register_timeout_handler(
-                std::bind(&MAVLinkParameters::receive_timeout, this), work->timeout_s, &_timeout_cookie);
+                std::bind(&MAVLinkParameters::receive_timeout, this),
+                work->timeout_s,
+                &_timeout_cookie);
 
         } break;
 
@@ -245,7 +247,9 @@ void MAVLinkParameters::do_work()
 
             // We want to get notified if a timeout happens
             _parent.register_timeout_handler(
-                std::bind(&MAVLinkParameters::receive_timeout, this), work->timeout_s, &_timeout_cookie);
+                std::bind(&MAVLinkParameters::receive_timeout, this),
+                work->timeout_s,
+                &_timeout_cookie);
 
         } break;
     }
@@ -454,15 +458,18 @@ void MAVLinkParameters::receive_timeout()
             if (work->retries_to_do > 0) {
                 // We're not sure the command arrived, let's retransmit.
                 LogWarn() << "sending again, retries to do: " << work->retries_to_do << "  ("
-                        << work->param_name << ").";
+                          << work->param_name << ").";
                 if (!_parent.send_message(work->mavlink_message)) {
                     LogErr() << "connection send error in retransmit (" << work->param_name << ").";
                     work_queue_guard.pop_front();
-                    work->get_param_callback(MAVLinkParameters::Result::CONNECTION_ERROR, empty_value);
+                    work->get_param_callback(
+                        MAVLinkParameters::Result::CONNECTION_ERROR, empty_value);
                 } else {
                     --work->retries_to_do;
                     _parent.register_timeout_handler(
-                        std::bind(&MAVLinkParameters::receive_timeout, this), work->timeout_s, &_timeout_cookie);
+                        std::bind(&MAVLinkParameters::receive_timeout, this),
+                        work->timeout_s,
+                        &_timeout_cookie);
                 }
             } else {
                 // We have tried retransmitting, giving up now.
@@ -477,15 +484,17 @@ void MAVLinkParameters::receive_timeout()
             if (work->retries_to_do > 0) {
                 // We're not sure the command arrived, let's retransmit.
                 LogWarn() << "sending again, retries to do: " << work->retries_to_do << "  ("
-                        << work->param_name << ").";
+                          << work->param_name << ").";
                 if (!_parent.send_message(work->mavlink_message)) {
                     LogErr() << "connection send error in retransmit (" << work->param_name << ").";
                     work_queue_guard.pop_front();
-                     work->set_param_callback(MAVLinkParameters::Result::CONNECTION_ERROR);
+                    work->set_param_callback(MAVLinkParameters::Result::CONNECTION_ERROR);
                 } else {
                     --work->retries_to_do;
                     _parent.register_timeout_handler(
-                        std::bind(&MAVLinkParameters::receive_timeout, this), work->timeout_s, &_timeout_cookie);
+                        std::bind(&MAVLinkParameters::receive_timeout, this),
+                        work->timeout_s,
+                        &_timeout_cookie);
                 }
             } else {
                 // We have tried retransmitting, giving up now.
