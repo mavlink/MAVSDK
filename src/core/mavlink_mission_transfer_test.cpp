@@ -26,16 +26,23 @@ const static MAVLinkMissionTransfer::Config config{.own_system_id = 42,
     EXPECT_FALSE(called); \
     called = true;
 
-MAVLinkMissionTransfer::ItemInt make_item(int type, int sequence)
+MAVLinkMissionTransfer::ItemInt make_item(uint8_t type, uint16_t sequence)
 {
-    MAVLinkMissionTransfer::ItemInt item{};
-    item.mission_type = type;
-    item.seq = sequence;
-    if (sequence == 0) {
-        item.current = 1;
-    } else {
-        item.current = 0;
-    }
+    MAVLinkMissionTransfer::ItemInt item{
+        .seq = sequence,
+        .frame = MAV_FRAME_MISSION,
+        .command = MAV_CMD_NAV_WAYPOINT,
+        .current = uint8_t(sequence == 0 ? 1 : 0),
+        .autocontinue = 1,
+        .param1 = 1.0f,
+        .param2 = 2.0f,
+        .param3 = 3.0f,
+        .param4 = 4.0f,
+        .x = 5,
+        .y = 6,
+        .z = 7.0f,
+        .mission_type = type,
+    };
     return item;
 }
 
@@ -342,10 +349,19 @@ TEST(MAVLinkMissionTransfer, UploadMissionSendsMissionItems)
                         message.compid == config.own_component_id &&
                         mission_item_int.target_system == config.target_system_id &&
                         mission_item_int.target_component == config.target_component_id &&
-                        mission_item_int.seq == 0 &&
-                        mission_item_int.mission_type == items[0].mission_type &&
+                        mission_item_int.seq == 0 && // style
                         mission_item_int.frame == items[0].frame &&
-                        mission_item_int.command == items[0].command);
+                        mission_item_int.command == items[0].command &&
+                        mission_item_int.current == items[0].current &&
+                        mission_item_int.autocontinue == items[0].autocontinue &&
+                        mission_item_int.param1 == items[0].param1 &&
+                        mission_item_int.param2 == items[0].param2 &&
+                        mission_item_int.param3 == items[0].param3 &&
+                        mission_item_int.param4 == items[0].param4 &&
+                        mission_item_int.x == items[0].x && // style
+                        mission_item_int.y == items[0].y && // style
+                        mission_item_int.z == items[0].z &&
+                        mission_item_int.mission_type == items[0].mission_type);
                 })));
 
     message_handler.process_message(make_mission_item_request(0));

@@ -116,13 +116,13 @@ void MAVLinkMissionTransfer::process_mission_request_int(const mavlink_message_t
         _items[request_int.seq].command,
         _items[request_int.seq].current,
         _items[request_int.seq].autocontinue,
-        1.0f,
-        NAN,
-        -1.0f,
-        0.0f,
-        0,
-        0,
-        NAN,
+        _items[request_int.seq].param1,
+        _items[request_int.seq].param2,
+        _items[request_int.seq].param3,
+        _items[request_int.seq].param4,
+        _items[request_int.seq].x,
+        _items[request_int.seq].y,
+        _items[request_int.seq].z,
         MAV_MISSION_TYPE_MISSION);
     LogWarn() << "sending: " << new_message.msgid;
 
