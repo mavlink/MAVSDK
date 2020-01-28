@@ -36,6 +36,7 @@ public:
     Telemetry::Result set_rate_ground_speed_ned(double rate_hz);
     Telemetry::Result set_rate_imu_reading_ned(double rate_hz);
     Telemetry::Result set_rate_fixedwing_metrics(double rate_hz);
+    Telemetry::Result set_rate_ground_truth(double rate_hz);
     Telemetry::Result set_rate_gps_info(double rate_hz);
     Telemetry::Result set_rate_battery(double rate_hz);
     Telemetry::Result set_rate_rc_status(double rate_hz);
@@ -53,6 +54,7 @@ public:
     void set_rate_ground_speed_ned_async(double rate_hz, Telemetry::result_callback_t callback);
     void set_rate_imu_reading_ned_async(double rate_hz, Telemetry::result_callback_t callback);
     void set_rate_fixedwing_metrics_async(double rate_hz, Telemetry::result_callback_t callback);
+    void set_rate_ground_truth_async(double rate_hz, Telemetry::result_callback_t callback);
     void set_rate_gps_info_async(double rate_hz, Telemetry::result_callback_t callback);
     void set_rate_battery_async(double rate_hz, Telemetry::result_callback_t callback);
     void set_rate_rc_status_async(double rate_hz, Telemetry::result_callback_t callback);
@@ -73,6 +75,7 @@ public:
     Telemetry::EulerAngle get_attitude_euler_angle() const;
     Telemetry::Quaternion get_attitude_quaternion() const;
     Telemetry::AngularVelocityBody get_attitude_angular_velocity_body() const;
+    Telemetry::GroundTruth get_ground_truth() const;
     Telemetry::FixedwingMetrics get_fixedwing_metrics() const;
     Telemetry::EulerAngle get_camera_attitude_euler_angle() const;
     Telemetry::Quaternion get_camera_attitude_quaternion() const;
@@ -100,6 +103,7 @@ public:
     void attitude_angular_velocity_body_async(
         Telemetry::attitude_angular_velocity_body_callback_t& callback);
     void fixedwing_metrics_async(Telemetry::fixedwing_metrics_callback_t& callback);
+    void ground_truth_async(Telemetry::ground_truth_callback_t& callback);
     void camera_attitude_quaternion_async(Telemetry::attitude_quaternion_callback_t& callback);
     void camera_attitude_euler_angle_async(Telemetry::attitude_euler_angle_callback_t& callback);
     void ground_speed_ned_async(Telemetry::ground_speed_ned_callback_t& callback);
@@ -130,6 +134,7 @@ private:
     void set_attitude_quaternion(Telemetry::Quaternion quaternion);
     void set_attitude_angular_velocity_body(Telemetry::AngularVelocityBody angular_velocity_body);
     void set_fixedwing_metrics(Telemetry::FixedwingMetrics fixedwing_metrics);
+    void set_ground_truth(Telemetry::GroundTruth ground_truth);
     void set_camera_attitude_euler_angle(Telemetry::EulerAngle euler_angle);
     void set_ground_speed_ned(Telemetry::GroundSpeedNED ground_speed_ned);
     void set_imu_reading_ned(Telemetry::IMUReadingNED imu_reading_ned);
@@ -156,6 +161,7 @@ private:
     void process_mount_orientation(const mavlink_message_t& message);
     void process_imu_reading_ned(const mavlink_message_t& message);
     void process_gps_raw_int(const mavlink_message_t& message);
+    void process_ground_truth(const mavlink_message_t& message);
     void process_extended_sys_state(const mavlink_message_t& message);
     void process_fixedwing_metrics(const mavlink_message_t& message);
     void process_sys_status(const mavlink_message_t& message);
@@ -219,6 +225,9 @@ private:
     mutable std::mutex _attitude_angular_velocity_body_mutex{};
     Telemetry::AngularVelocityBody _attitude_angular_velocity_body{NAN, NAN, NAN};
 
+    mutable std::mutex _ground_truth_mutex{};
+    Telemetry::GroundTruth _ground_truth{double(NAN), double(NAN), NAN};
+
     mutable std::mutex _fixedwing_metrics_mutex{};
     Telemetry::FixedwingMetrics _fixedwing_metrics{NAN, NAN, NAN};
 
@@ -267,6 +276,7 @@ private:
     Telemetry::attitude_quaternion_callback_t _attitude_quaternion_subscription{nullptr};
     Telemetry::attitude_angular_velocity_body_callback_t
         _attitude_angular_velocity_body_subscription{nullptr};
+    Telemetry::ground_truth_callback_t _ground_truth_subscription{nullptr};
     Telemetry::fixedwing_metrics_callback_t _fixedwing_metrics_subscription{nullptr};
     Telemetry::attitude_euler_angle_callback_t _attitude_euler_angle_subscription{nullptr};
     Telemetry::attitude_quaternion_callback_t _camera_attitude_quaternion_subscription{nullptr};

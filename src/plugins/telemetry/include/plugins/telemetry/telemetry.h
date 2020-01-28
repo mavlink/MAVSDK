@@ -123,6 +123,17 @@ public:
     };
 
     /**
+     * @brief Ground truth type.
+     *
+     * Ground truth position information available in simulation.
+     */
+    struct GroundTruth {
+        double latitude_deg; /**< @brief Latitude in degrees (range: -90 to +90) */
+        double longitude_deg; /**< @brief Longitude in degrees (range: -180 to 180) */
+        float absolute_altitude_m; /**< @brief Altitude AMSL (above mean sea level) in metres */
+    };
+
+    /**
      * @brief Fixed wing metrics type.
      *
      * Metrics typically displayed on a HUD for fixed wing aircraft.
@@ -498,6 +509,16 @@ public:
     Result set_rate_fixedwing_metrics(double rate_hz);
 
     /**
+     * @brief Set rate of ground truth updates (synchronous).
+     *
+     * @note To stop sending it completely, use a rate_hz of -1, for default rate use 0.
+     *
+     * @param rate_hz Rate in Hz.
+     * @return Result of request.
+     */
+    Result set_rate_ground_truth(double rate_hz);
+
+    /**
      * @brief Set rate of GPS information updates (synchronous).
      *
      * @note To stop sending it completely, use a rate_hz of -1, for default rate use 0.
@@ -634,7 +655,7 @@ public:
      * @note To stop sending it completely, use a rate_hz of -1, for default rate use 0.
      *
      * @param rate_hz Rate in Hz.
-     * @param callback Cabllback to receive request result.
+     * @param callback Callback to receive request result.
      */
     void set_rate_imu_reading_ned_async(double rate_hz, result_callback_t callback);
 
@@ -644,9 +665,19 @@ public:
      * @note To stop sending it completely, use a rate_hz of -1, for default rate use 0.
      *
      * @param rate_hz Rate in Hz.
-     * @param callback Cabllback to receive request result.
+     * @param callback Callback to receive request result.
      */
     void set_rate_fixedwing_metrics_async(double rate_hz, result_callback_t callback);
+
+    /**
+     * @brief Set rate of ground truth updates (asynchronous).
+     *
+     * @note To stop sending it completely, use a rate_hz of -1, for default rate use 0.
+     *
+     * @param rate_hz Rate in Hz.
+     * @param callback Callback to receive request result.
+     */
+    void set_rate_ground_truth_async(double rate_hz, result_callback_t callback);
 
     /**
      * @brief Set rate of GPS information updates (asynchronous).
@@ -792,6 +823,13 @@ public:
      * @return Fixed wing metrics.
      */
     FixedwingMetrics fixedwing_metrics() const;
+
+    /**
+     * @brief Get the current ground truth (synchronous).
+     *
+     * @return Ground truth.
+     */
+    GroundTruth ground_truth() const;
 
     /**
      * @brief Get the camera's attitude in quaternions (synchronous).
@@ -1010,6 +1048,20 @@ public:
      * @param callback Function to call with updates.
      */
     void fixedwing_metrics_async(fixedwing_metrics_callback_t callback);
+
+    /**
+     * @brief Callback type for ground truth updates.
+     *
+     * @param GroundTruth .
+     */
+    typedef std::function<void(GroundTruth ground_truth)> ground_truth_callback_t;
+
+    /**
+     * @brief Subscribe to ground_truth updates in (asynchronous).
+     *
+     * @param callback Function to call with updates.
+     */
+    void ground_truth_async(ground_truth_callback_t callback);
 
     /**
      * @brief Subscribe to camera attitude updates in quaternion (asynchronous).
@@ -1316,6 +1368,13 @@ operator<<(std::ostream& str, Telemetry::AngularVelocityNED const& angular_veloc
  * @return A reference to the stream.
  */
 std::ostream& operator<<(std::ostream& str, Telemetry::FixedwingMetrics const& fixedwing_metrics);
+
+/**
+ * @brief Stream operator to print information about a `Telemetry::GroundTruth`.
+ *
+ * @return A reference to the stream.
+ */
+std::ostream& operator<<(std::ostream& str, Telemetry::GroundTruth const& ground_truth);
 
 /**
  * @brief Stream operator to print information about a `Telemetry::MagneticFieldNED`.

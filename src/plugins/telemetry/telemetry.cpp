@@ -55,6 +55,11 @@ Telemetry::Result Telemetry::set_rate_fixedwing_metrics(double rate_hz)
     return _impl->set_rate_fixedwing_metrics(rate_hz);
 }
 
+Telemetry::Result Telemetry::set_rate_ground_truth(double rate_hz)
+{
+    return _impl->set_rate_ground_truth(rate_hz);
+}
+
 Telemetry::Result Telemetry::set_rate_gps_info(double rate_hz)
 {
     return _impl->set_rate_gps_info(rate_hz);
@@ -128,6 +133,11 @@ void Telemetry::set_rate_imu_reading_ned_async(double rate_hz, result_callback_t
 void Telemetry::set_rate_fixedwing_metrics_async(double rate_hz, result_callback_t callback)
 {
     _impl->set_rate_fixedwing_metrics_async(rate_hz, callback);
+}
+
+void Telemetry::set_rate_ground_truth_async(double rate_hz, result_callback_t callback)
+{
+    _impl->set_rate_ground_truth_async(rate_hz, callback);
 }
 
 void Telemetry::set_rate_gps_info_async(double rate_hz, result_callback_t callback)
@@ -242,6 +252,11 @@ Telemetry::FixedwingMetrics Telemetry::fixedwing_metrics() const
     return _impl->get_fixedwing_metrics();
 }
 
+Telemetry::GroundTruth Telemetry::ground_truth() const
+{
+    return _impl->get_ground_truth();
+}
+
 Telemetry::Quaternion Telemetry::camera_attitude_quaternion() const
 {
     return _impl->get_camera_attitude_quaternion();
@@ -351,6 +366,11 @@ void Telemetry::attitude_angular_velocity_body_async(
 void Telemetry::fixedwing_metrics_async(fixedwing_metrics_callback_t callback)
 {
     return _impl->fixedwing_metrics_async(callback);
+}
+
+void Telemetry::ground_truth_async(ground_truth_callback_t callback)
+{
+    return _impl->ground_truth_async(callback);
 }
 
 void Telemetry::camera_attitude_quaternion_async(attitude_quaternion_callback_t callback)
@@ -703,6 +723,13 @@ std::ostream& operator<<(std::ostream& str, Telemetry::FixedwingMetrics const& f
     return str << "Airspeed: " << fixedwing_metrics.airspeed_m_s << " m/s, "
                << "Throttle: " << fixedwing_metrics.throttle_percentage << " %, "
                << "Climb: " << fixedwing_metrics.climb_rate_m_s << " m/s";
+}
+
+std::ostream& operator<<(std::ostream& str, Telemetry::GroundTruth const& ground_truth)
+{
+    return str << "Latitude: " << ground_truth.latitude_deg << " deg, "
+               << "Longitude: " << ground_truth.longitude_deg << " deg, "
+               << "Altitude: " << ground_truth.absolute_altitude_m << " m";
 }
 
 bool operator==(const Telemetry::GroundSpeedNED& lhs, const Telemetry::GroundSpeedNED& rhs)

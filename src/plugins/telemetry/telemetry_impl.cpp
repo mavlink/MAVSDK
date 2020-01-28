@@ -99,6 +99,11 @@ void TelemetryImpl::init()
         std::bind(&TelemetryImpl::process_fixedwing_metrics, this, _1),
         this);
 
+    _parent->register_mavlink_message_handler(
+        MAVLINK_MSG_ID_HIL_STATE_QUATERNION,
+        std::bind(&TelemetryImpl::process_ground_truth, this, _1),
+        this);
+
     _parent->register_param_changed_handler(
         std::bind(&TelemetryImpl::process_parameter_update, this, _1), this);
 }
@@ -240,6 +245,12 @@ Telemetry::Result TelemetryImpl::set_rate_fixedwing_metrics(double rate_hz)
         _parent->set_msg_rate(MAVLINK_MSG_ID_VFR_HUD, rate_hz));
 }
 
+Telemetry::Result TelemetryImpl::set_rate_ground_truth(double rate_hz)
+{
+    return telemetry_result_from_command_result(
+        _parent->set_msg_rate(MAVLINK_MSG_ID_HIL_STATE_QUATERNION, rate_hz));
+}
+
 Telemetry::Result TelemetryImpl::set_rate_gps_info(double rate_hz)
 {
     return telemetry_result_from_command_result(
@@ -356,6 +367,15 @@ void TelemetryImpl::set_rate_fixedwing_metrics_async(
 {
     _parent->set_msg_rate_async(
         MAVLINK_MSG_ID_VFR_HUD,
+        rate_hz,
+        std::bind(&TelemetryImpl::command_result_callback, std::placeholders::_1, callback));
+}
+
+void TelemetryImpl::set_rate_ground_truth_async(
+    double rate_hz, Telemetry::result_callback_t callback)
+{
+    _parent->set_msg_rate_async(
+        MAVLINK_MSG_ID_HIL_STATE_QUATERNION,
         rate_hz,
         std::bind(&TelemetryImpl::command_result_callback, std::placeholders::_1, callback));
 }
@@ -647,6 +667,23 @@ void TelemetryImpl::process_gps_raw_int(const mavlink_message_t& message)
     }
 
     _parent->refresh_timeout_handler(_gps_raw_timeout_cookie);
+}
+
+void TelemetryImpl::process_ground_truth(const mavlink_message_t& message)
+{
+    mavlink_hil_state_quaternion_t hil_state_quaternion;
+    mavlink_msg_hil_state_quaternion_decode(&message, &hil_state_quaternion);
+
+    set_ground_truth(
+    Telemetry::GroundTruth({hil_state_quaternion.lat * 1e-7,
+                            hil_state_quaternion.lon * 1e-7,
+                            hil_state_quaternion.alt * 1e-3f}));
+
+    if (_ground_truth_subscription) {
+        auto callback = _ground_truth_subscription;
+        auto arg = get_ground_truth();
+        _parent->call_user_callback([callback, arg]() { callback(arg); });
+    }
 }
 
 void TelemetryImpl::process_extended_sys_state(const mavlink_message_t& message)
@@ -1113,6 +1150,12 @@ Telemetry::AngularVelocityBody TelemetryImpl::get_attitude_angular_velocity_body
     return _attitude_angular_velocity_body;
 }
 
+Telemetry::GroundTruth TelemetryImpl::get_ground_truth() const
+{
+    std::lock_guard<std::mutex> lock(_ground_truth_mutex);
+    return _ground_truth;
+}
+
 Telemetry::FixedwingMetrics TelemetryImpl::get_fixedwing_metrics() const
 {
     std::lock_guard<std::mutex> lock(_fixedwing_metrics_mutex);
@@ -1138,6 +1181,12 @@ void TelemetryImpl::set_attitude_angular_velocity_body(
 {
     std::lock_guard<std::mutex> lock(_attitude_quaternion_mutex);
     _attitude_angular_velocity_body = angular_velocity_body;
+}
+
+void TelemetryImpl::set_ground_truth(Telemetry::GroundTruth ground_truth)
+{
+    std::lock_guard<std::mutex> lock(_ground_truth_mutex);
+    _ground_truth = ground_truth;
 }
 
 void TelemetryImpl::set_fixedwing_metrics(Telemetry::FixedwingMetrics fixedwing_metrics)
@@ -1413,6 +1462,11 @@ void TelemetryImpl::attitude_angular_velocity_body_async(
 void TelemetryImpl::fixedwing_metrics_async(Telemetry::fixedwing_metrics_callback_t& callback)
 {
     _fixedwing_metrics_subscription = callback;
+}
+
+void TelemetryImpl::ground_truth_async(Telemetry::ground_truth_callback_t& callback)
+{
+    _ground_truth_subscription = callback;
 }
 
 void TelemetryImpl::camera_attitude_quaternion_async(
