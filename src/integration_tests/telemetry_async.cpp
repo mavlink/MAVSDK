@@ -19,6 +19,7 @@ static void print_quaternion(Telemetry::Quaternion quaternion);
 static void print_euler_angle(Telemetry::EulerAngle euler_angle);
 static void print_angular_velocity_body(Telemetry::AngularVelocityBody angular_velocity_body);
 static void print_fixedwing_metrics(Telemetry::FixedwingMetrics fixedwing_metrics);
+static void print_ground_truth(Telemetry::GroundTruth ground_truth);
 #if CAMERA_AVAILABLE == 1
 static void print_camera_quaternion(Telemetry::Quaternion quaternion);
 static void print_camera_euler_angle(Telemetry::EulerAngle euler_angle);
@@ -42,6 +43,7 @@ static bool _received_quaternion = false;
 static bool _received_euler_angle = false;
 static bool _received_angular_velocity_body = false;
 static bool _received_fixedwing_metrics = false;
+static bool _received_ground_truth = false;
 #if CAMERA_AVAILABLE == 1
 static bool _received_camera_quaternion = false;
 static bool _received_camera_euler_angle = false;
@@ -109,6 +111,9 @@ TEST_F(SitlTest, TelemetryAsync)
     telemetry->set_rate_fixedwing_metrics_async(10.0, std::bind(&receive_result, _1));
     std::this_thread::sleep_for(std::chrono::milliseconds(100));
 
+    telemetry->set_rate_ground_truth_async(10.0, std::bind(&receive_result, _1));
+    std::this_thread::sleep_for(std::chrono::milliseconds(100));
+
     telemetry->position_async(std::bind(&print_position, _1));
 
     telemetry->home_position_async(std::bind(&print_home_position, _1));
@@ -124,6 +129,8 @@ TEST_F(SitlTest, TelemetryAsync)
     telemetry->attitude_angular_velocity_body_async(std::bind(&print_angular_velocity_body, _1));
 
     telemetry->fixedwing_metrics_async(std::bind(&print_fixedwing_metrics, _1));
+
+    telemetry->ground_truth_async(std::bind(&print_ground_truth, _1));
 
 #if CAMERA_AVAILABLE == 1
     telemetry->camera_attitude_quaternion_async(std::bind(&print_camera_quaternion, _1));
@@ -159,6 +166,7 @@ TEST_F(SitlTest, TelemetryAsync)
     EXPECT_TRUE(_received_quaternion);
     EXPECT_TRUE(_received_angular_velocity_body);
     EXPECT_TRUE(_received_fixedwing_metrics);
+    EXPECT_TRUE(_received_ground_truth);
     EXPECT_TRUE(_received_euler_angle);
 #if CAMERA_AVAILABLE == 1
     EXPECT_TRUE(_received_camera_quaternion);
@@ -242,6 +250,14 @@ void print_fixedwing_metrics(Telemetry::FixedwingMetrics fixedwing_metrics)
               << "Throttle: " << fixedwing_metrics.throttle_percentage << " %, "
               << "Climb: " << fixedwing_metrics.climb_rate_m_s << " m/s" << std::endl;
     _received_fixedwing_metrics = true;
+}
+
+void print_ground_truth(Telemetry::GroundTruth ground_truth)
+{
+    std::cout << "Latitude: " << ground_truth.latitude_deg << " deg, "
+              << "Longitude: " << ground_truth.longitude_deg << " deg, "
+              << "Altitude: " << ground_truth.absolute_altitude_m << " m" << std::endl;
+    _received_ground_truth = true;
 }
 
 #if CAMERA_AVAILABLE == 1
