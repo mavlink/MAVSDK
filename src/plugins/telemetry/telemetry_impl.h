@@ -226,7 +226,7 @@ private:
     Telemetry::AngularVelocityBody _attitude_angular_velocity_body{NAN, NAN, NAN};
 
     mutable std::mutex _ground_truth_mutex{};
-    Telemetry::GroundTruth _ground_truth{NAN, NAN, NAN};
+    Telemetry::GroundTruth _ground_truth{double(NAN), double(NAN), NAN};
 
     mutable std::mutex _fixedwing_metrics_mutex{};
     Telemetry::FixedwingMetrics _fixedwing_metrics{NAN, NAN, NAN};
