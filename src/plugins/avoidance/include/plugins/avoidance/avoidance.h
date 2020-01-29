@@ -57,6 +57,7 @@ public:
         float vel_x, vel_y, vel_z;
         float acc_x, acc_x, acc_z;
         float pos_yaw, vel_yaw;
+        uint16_t command;
     }
 
     /**

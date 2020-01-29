@@ -4,6 +4,7 @@ include_directories(
 )
 
 add_subdirectory(action)
+add_subdirectory(avoidance)
 add_subdirectory(calibration)
 add_subdirectory(camera)
 add_subdirectory(follow_me)

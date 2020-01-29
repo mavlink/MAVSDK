@@ -28,6 +28,13 @@ public:
 private:
     void timeout_happened();
 
+    void set_trajectory_representation_waypoints(Avoidance::WaypointsTrajectory trajectory);
+
+    void process_trajectory_representation_waypoints(const mavlink_message_t& message);
+
+    mutable std::mutex _trajectory_representation_waypoints_mutex{};
+    Avoidance::WaypointsTrajectory _trajectory_representation_waypoints_mutex{std::vector<Avoidance::Waypoint>(), Avoidance::WaypointsTrajectory::Direction::RECEIVE};
+
     std::vector<std::shared_ptr<mavlink_message_t>> _mavlink_avoidance_item_messages;
 };
 
