@@ -27,6 +27,8 @@ public:
 
 private:
     void timeout_happened();
+
+    std::vector<std::shared_ptr<mavlink_message_t>> _mavlink_avoidance_item_messages;
 };
 
 } // namespace mavsdk

@@ -50,6 +50,39 @@ public:
     static const char* result_str(Result result);
 
     /**
+     * @brief Avoidance Waypoint type.
+     */
+    struct Waypoint {
+        float pos_x, pos_y, pos_z;
+        float vel_x, vel_y, vel_z;
+        float acc_x, acc_x, acc_z;
+        float pos_yaw, vel_yaw;
+    }
+
+    /**
+     * @brief Trajectory type (waypoints format).
+     */
+    struct WaypointsTrajectory {
+        /**
+         * @brief Trajectory Directions.
+         */
+        enum class Direction { RECEIVE, SEND };
+
+        std::vector<Waypoint> trajectory; /**< @brief Vector of waypoints that make up the trajectory. */
+        Direction direction; /**< @brief Trajectory direction */
+
+        /**
+         * @brief constructor. Creates the Trajectory.
+         */
+        explicit WaypointsTrajectory();
+
+        /**
+         * @brief Destructor (internal use only).
+         */
+        ~WaypointsTrajectory();
+    };
+
+    /**
      * @brief Callback type for trajectory (waypoints format) updates.
      */
     typedef std::function<void(WaypointsTrajectory)>
