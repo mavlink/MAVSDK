@@ -26,6 +26,7 @@ TEST_F(SitlTest, TelemetrySync)
     EXPECT_EQ(telemetry->set_rate_gps_info(10.0), Telemetry::Result::SUCCESS);
     EXPECT_EQ(telemetry->set_rate_battery(10.0), Telemetry::Result::SUCCESS);
     EXPECT_EQ(telemetry->set_rate_actuator_control_target(10.0), Telemetry::Result::SUCCESS);
+    EXPECT_EQ(telemetry->set_rate_fixedwing_metrics(10.0), Telemetry::Result::SUCCESS);
     EXPECT_EQ(telemetry->set_rate_ground_truth(10.0), Telemetry::Result::SUCCESS);
 
     for (unsigned i = 0; i < 10; ++i) {
