@@ -17,10 +17,7 @@ using MockSender = NiceMock<mavsdk::testing::MockSender>;
 using Result = MAVLinkMissionTransfer::Result;
 using ItemInt = MAVLinkMissionTransfer::ItemInt;
 
-const static MAVLinkMissionTransfer::Config config{.own_system_id = 42,
-                                                   .own_component_id = 16,
-                                                   .target_system_id = 99,
-                                                   .target_component_id = 101};
+static MAVLinkMissionTransfer::Config config {42, 16, 99, 101};
 
 #define ONCE_ONLY \
     static bool called = false; \
@@ -29,21 +26,22 @@ const static MAVLinkMissionTransfer::Config config{.own_system_id = 42,
 
 ItemInt make_item(uint8_t type, uint16_t sequence)
 {
-    ItemInt item{
-        .seq = sequence,
-        .frame = MAV_FRAME_MISSION,
-        .command = MAV_CMD_NAV_WAYPOINT,
-        .current = uint8_t(sequence == 0 ? 1 : 0),
-        .autocontinue = 1,
-        .param1 = 1.0f,
-        .param2 = 2.0f,
-        .param3 = 3.0f,
-        .param4 = 4.0f,
-        .x = 5,
-        .y = 6,
-        .z = 7.0f,
-        .mission_type = type,
-    };
+    ItemInt item;
+
+    item.seq = sequence;
+    item.frame = MAV_FRAME_MISSION;
+    item.command = MAV_CMD_NAV_WAYPOINT;
+    item.current = uint8_t(sequence == 0 ? 1 : 0);
+    item.autocontinue = 1;
+    item.param1 = 1.0f;
+    item.param2 = 2.0f;
+    item.param3 = 3.0f;
+    item.param4 = 4.0f;
+    item.x = 5;
+    item.y = 6;
+    item.z = 7.0f;
+    item.mission_type = type;
+
     return item;
 }
 
