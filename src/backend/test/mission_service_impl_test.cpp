@@ -179,7 +179,7 @@ protected:
     std::vector<std::shared_ptr<dc::MissionItem>> _uploaded_mission{};
 };
 
-INSTANTIATE_TEST_CASE_P(
+INSTANTIATE_TEST_SUITE_P(
     MissionResultCorrespondences,
     MissionServiceImplUploadTest,
     ::testing::ValuesIn(generateInputPairs()));
@@ -287,7 +287,7 @@ protected:
     dc::Mission::mission_items_and_result_callback_t _download_callback{};
 };
 
-INSTANTIATE_TEST_CASE_P(
+INSTANTIATE_TEST_SUITE_P(
     MissionResultCorrespondences,
     MissionServiceImplDownloadTest,
     ::testing::ValuesIn(generateInputPairs()));
@@ -368,7 +368,7 @@ protected:
     std::future<void> startMissionAndSaveParams(std::shared_ptr<StartMissionResponse> response);
 };
 
-INSTANTIATE_TEST_CASE_P(
+INSTANTIATE_TEST_SUITE_P(
     MissionResultCorrespondences,
     MissionServiceImplStartTest,
     ::testing::ValuesIn(generateInputPairs()));
@@ -446,7 +446,7 @@ protected:
     std::future<void> pauseMissionAndSaveParams(std::shared_ptr<PauseMissionResponse> response);
 };
 
-INSTANTIATE_TEST_CASE_P(
+INSTANTIATE_TEST_SUITE_P(
     MissionResultCorrespondences,
     MissionServiceImplPauseTest,
     ::testing::ValuesIn(generateInputPairs()));
@@ -485,7 +485,7 @@ TEST_P(MissionServiceImplPauseTest, pauseResultIsTranslatedCorrectly)
 
 class MissionServiceImplSetCurrentTest : public MissionServiceImplTestBase {};
 
-INSTANTIATE_TEST_CASE_P(
+INSTANTIATE_TEST_SUITE_P(
     MissionResultCorrespondences,
     MissionServiceImplSetCurrentTest,
     ::testing::ValuesIn(generateInputPairs()));

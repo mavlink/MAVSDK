@@ -459,7 +459,7 @@ TEST_F(OffboardServiceImplTest, setsVelocityNedCorrectly)
     offboardService.SetVelocityNed(nullptr, &request, nullptr);
 }
 
-INSTANTIATE_TEST_CASE_P(
+INSTANTIATE_TEST_SUITE_P(
     OffboardResultCorrespondences,
     OffboardServiceImplTest,
     ::testing::ValuesIn(generateInputPairs()));
