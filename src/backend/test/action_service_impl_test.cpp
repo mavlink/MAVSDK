@@ -495,7 +495,7 @@ TEST_P(ActionServiceImplTest, setReturnToLaunchAltitudeSetsRightValue)
     actionService.SetReturnToLaunchAltitude(nullptr, &request, nullptr);
 }
 
-INSTANTIATE_TEST_CASE_P(
+INSTANTIATE_TEST_SUITE_P(
     ActionResultCorrespondences, ActionServiceImplTest, ::testing::ValuesIn(generateInputPairs()));
 
 std::vector<InputPair> generateInputPairs()

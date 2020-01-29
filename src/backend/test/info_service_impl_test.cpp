@@ -90,7 +90,7 @@ TEST_F(InfoServiceImplTest, getVersionDoesNotCrashWithNullResponse)
     infoService.GetVersion(nullptr, nullptr, nullptr);
 }
 
-INSTANTIATE_TEST_CASE_P(
+INSTANTIATE_TEST_SUITE_P(
     InfoResultCorrespondences, InfoServiceImplTest, ::testing::ValuesIn(generateInputPairs()));
 
 std::vector<InputPair> generateInputPairs()

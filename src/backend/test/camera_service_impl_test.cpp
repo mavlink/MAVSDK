@@ -1292,7 +1292,7 @@ TEST_F(CameraServiceImplTest, setSettingDoesNotCrashWhenArgsAreNull)
     _camera_service.SetSetting(nullptr, nullptr, nullptr);
 }
 
-INSTANTIATE_TEST_CASE_P(
+INSTANTIATE_TEST_SUITE_P(
     CameraResultCorrespondences, CameraServiceImplTest, ::testing::ValuesIn(generateInputPairs()));
 
 std::vector<InputPair> generateInputPairs()
