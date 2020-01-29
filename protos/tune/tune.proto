@@ -5,23 +5,26 @@ package mavsdk.rpc.geofence;
 option java_package = "io.mavsdk.tune";
 option java_outer_classname = "TuneProto";
 
+// Sends a tune to be played by the vehicle
 service TuneService {
-  /*
-   * Send a tune to be played by the system.
-   */
+  // Send a tune to be played by the system.
   rpc PlayTune(PlayTuneRequest) returns(PlayTuneResponse) {}
 }
 
+// represents an element of the tune
 enum SongElement {
+  // playing styles
   STYLE_LEGATO = 0;
   STYLE_NORMAL = 1;
   STYLE_STACCATO = 2;
+  // note durations (number of beats)
   DURATION_1 = 3;
   DURATION_2 = 4;
   DURATION_4 = 5;
   DURATION_8 = 6;
   DURATION_16 = 7;
   DURATION_32 = 8;
+  // notes
   NOTE_A = 9;
   NOTE_B = 10;
   NOTE_C = 11;
@@ -30,12 +33,15 @@ enum SongElement {
   NOTE_F = 14;
   NOTE_G = 15;
   NOTE_PAUSE = 16;
+  // accidentals (up or down a half step)
   SHARP = 17;
   FLAT = 18;
+  // shifts octave up or down (octave = 8 notes or 12 half steps)
   OCTAVE_UP = 19;
   OCTAVE_DOWN = 20;
 }
 
+// sends a tune to be played asynchronously
 message PlayTuneRequest {
   repeated SongElement tune = 1;
 }
