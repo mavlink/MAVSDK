@@ -52,6 +52,8 @@ jobs:
         run: cmake --build build/release -j 2
       - name: test
         run: ./build/release/src/unit_tests_runner
+      - name: test (mavsdk_server)
+        run: ./build/release/src/backend/test/unit_tests_backend
 
   ubuntu18-check-style:
     name: ubuntu-18.04 (check style)
