@@ -37,6 +37,7 @@ target_link_libraries(unit_tests_backend
     mavsdk_offboard
     mavsdk_telemetry
     gRPC::grpc++
+    protobuf
     gtest
     gmock
     gmock_main
