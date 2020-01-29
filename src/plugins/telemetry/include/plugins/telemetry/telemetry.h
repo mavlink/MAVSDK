@@ -1038,7 +1038,7 @@ public:
     /**
      * @brief Callback type for fixedwing_metrics updates.
      *
-     * @param FixedwingMetrics .
+     * @param fixedwing_metrics Fixed wing metrics.
      */
     typedef std::function<void(FixedwingMetrics fixedwing_metrics)> fixedwing_metrics_callback_t;
 
@@ -1052,7 +1052,7 @@ public:
     /**
      * @brief Callback type for ground truth updates.
      *
-     * @param GroundTruth .
+     * @param ground_truth Ground truth.
      */
     typedef std::function<void(GroundTruth ground_truth)> ground_truth_callback_t;
 
