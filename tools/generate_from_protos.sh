@@ -4,11 +4,19 @@ set -e
 
 script_dir="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 
+
+if [ "$1" == "--no-superbuild" ]; then
+    protoc_binary=$(command -v protoc)
+    protoc_grpc_binary=$(command -v grpc_cpp_plugin)
+else
+    protoc_binary="${third_party_dir}/install/bin/protoc"
+    protoc_grpc_binary="${third_party_dir}/install/bin/grpc_cpp_plugin"
+fi
+
 proto_dir="${script_dir}/../proto/protos"
 backend_generated_dir="${script_dir}/../src/backend/src/generated"
 third_party_dir="${script_dir}/../build/default/third_party"
-protoc_binary="${third_party_dir}/install/bin/protoc"
-protoc_grpc_binary="${third_party_dir}/install/bin/grpc_cpp_plugin"
+
 
 function snake_case_to_camel_case {
     echo $1 | sed -r 's/(^|_)([a-z])/\U\2/g'
@@ -25,6 +33,8 @@ command -v ${protoc_binary} > /dev/null && command -v ${protoc_grpc_binary} > /d
     echo >&2 "You may want to run the CMake configure step first:"
     echo >&2 ""
     echo >&2 "    cmake -DBUILD_BACKEND=ON -Bbuild/default -H."
+    echo >&2 ""
+    echo >&2 "To use protoc and grpc_cpp_plugin from system, use argument '--no-superbuild'"
     exit 1
 }
 
