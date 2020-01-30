@@ -13,32 +13,27 @@ service TuneService {
 
 // represents an element of the tune
 enum SongElement {
-  // playing styles
-  STYLE_LEGATO = 0;
-  STYLE_NORMAL = 1;
-  STYLE_STACCATO = 2;
-  // note durations (number of beats)
-  DURATION_1 = 3;
-  DURATION_2 = 4;
-  DURATION_4 = 5;
-  DURATION_8 = 6;
-  DURATION_16 = 7;
-  DURATION_32 = 8;
-  // notes
-  NOTE_A = 9;
-  NOTE_B = 10;
-  NOTE_C = 11;
-  NOTE_D = 12;
-  NOTE_E = 13;
-  NOTE_F = 14;
-  NOTE_G = 15;
-  NOTE_PAUSE = 16;
-  // accidentals (up or down a half step)
-  SHARP = 17;
-  FLAT = 18;
-  // shifts octave up or down (octave = 8 notes or 12 half steps)
-  OCTAVE_UP = 19;
-  OCTAVE_DOWN = 20;
+  STYLE_LEGATO = 0; // After this element, start playing legato
+  STYLE_NORMAL = 1; // After this element, start playing normal
+  STYLE_STACCATO = 2; // After this element, start playing staccato
+  DURATION_1 = 3; // After this element, set the note duration to 1
+  DURATION_2 = 4; // After this element, set the note duration to 2
+  DURATION_4 = 5; // After this element, set the note duration to 4
+  DURATION_8 = 6; // After this element, set the note duration to 8
+  DURATION_16 = 7; // After this element, set the note duration to 16
+  DURATION_32 = 8; // After this element, set the note duration to 32
+  NOTE_A = 9; // Play note A
+  NOTE_B = 10; // Play note B
+  NOTE_C = 11; // Play note C
+  NOTE_D = 12; // Play note D
+  NOTE_E = 13; // Play note E
+  NOTE_F = 14; // Play note F
+  NOTE_G = 15; // Play note G
+  NOTE_PAUSE = 16; // Play a rest
+  SHARP = 17; // After this element, sharp the note (half a step up)
+  FLAT = 18; // After this element, flat the note (half a step down)
+  OCTAVE_UP = 19; // After this element, shift the note 1 octave up
+  OCTAVE_DOWN = 20; // After this element, shift the note 1 octave down
 }
 
 // sends a tune to be played asynchronously
