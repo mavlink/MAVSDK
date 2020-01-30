@@ -69,7 +69,7 @@ message InAirResponse {
 
 message SubscribeLandedStateRequest {}
 message LandedStateResponse {
-    LandedState landed_state = 1;
+    LandedState landed_state = 1; // The next 'landed' state
 }
 
 message SubscribeArmedRequest {}
@@ -139,17 +139,17 @@ message StatusTextResponse {
 
 message SubscribeActuatorControlTargetRequest {}
 message ActuatorControlTargetResponse {
-    ActuatorControlTarget actuator_control_target = 1; // Actuator control target
+    ActuatorControlTarget actuator_control_target = 1; // The next actuator control target
 }
 
 message SubscribeActuatorOutputStatusRequest {}
 message ActuatorOutputStatusResponse {
-    ActuatorOutputStatus actuator_output_status = 1; // Actuator output status
+    ActuatorOutputStatus actuator_output_status = 1; // The next actuator output status
 }
 
 message SubscribeOdometryRequest {}
 message OdometryResponse {
-    Odometry odometry = 1; // Odometry
+    Odometry odometry = 1; // The next odometry status
 }
 
 // Position type in global coordinates.
@@ -191,7 +191,7 @@ message EulerAngle {
     float yaw_deg = 3; // Yaw angle in degrees, positive is clock-wise seen from above
 }
 
-// Angular velocity type
+// Angular velocity type.
 message AngularVelocityBody {
     float roll_rad_s = 1; // Roll angular velocity
     float pitch_rad_s = 2; // Pitch angular velocity
@@ -211,7 +211,7 @@ message GpsInfo {
     FixType fix_type = 2; // Fix type
 }
 
-// Fix type.
+// GPS fix type.
 enum FixType {
     NO_GPS = 0; // No GPS connected
     NO_FIX = 1; // No position information, GPS is connected
@@ -283,30 +283,31 @@ message StatusText {
     string text = 2; // MAVLink status message
 }
 
+// Actuator control target type.
 message ActuatorControlTarget {
-    int32 group = 1;
-    repeated float controls = 2;
+    int32 group = 1; // TODO
+    repeated float controls = 2; // TODO
 }
 
 message ActuatorOutputStatus {
-    uint32 active = 1;
-    repeated float actuator = 2;
+    uint32 active = 1; // TODO
+    repeated float actuator = 2; // TODO
 }
 
-// Landed State enumeration
-enum LandedState{
-    LANDED_STATE_UNKNOWN = 0;
-    LANDED_STATE_ON_GROUND = 1;
-    LANDED_STATE_IN_AIR = 2;
-    LANDED_STATE_TAKING_OFF = 3;
-    LANDED_STATE_LANDING = 4;
+// Landed State enumeration.
+enum LandedState {
+    LANDED_STATE_UNKNOWN = 0; // Landed state is unknown
+    LANDED_STATE_ON_GROUND = 1; // The vehicle is on the ground
+    LANDED_STATE_IN_AIR = 2; // The vehicle is in the air
+    LANDED_STATE_TAKING_OFF = 3; // The vehicle is taking off
+    LANDED_STATE_LANDING = 4; // The vehicle is landing
 }
 
 // Odometry message type.
 message Odometry {
     // Mavlink frame id
     enum MavFrame {
-        UNDEF = 0;
+        UNDEF = 0; // Frame is undefined.
         BODY_NED = 8; // Setpoint in body NED frame. This makes sense if all position control is externalized - e.g. useful to command 2 m/s^2 acceleration to the right.
         VISION_NED = 16; // Odometry local coordinate frame of data given by a vision estimation system, Z-down (x: north, y: east, z: down).
         ESTIM_NED = 18; // Odometry local coordinate frame of data given by an estimator running onboard the vehicle, Z-down (x: north, y: east, z: down).
@@ -323,13 +324,15 @@ message Odometry {
     Covariance velocity_covariance = 9; // Velocity cross-covariance matrix.
 }
 
-/* Covariance type.
+/* 
+ * Covariance type.
+ *
  * Row-major representation of a 6x6 cross-covariance matrix
  * upper right triangle.
  * Set first to NaN if unknown.
  */
 message Covariance {
-    repeated float covariance_matrix = 1;
+    repeated float covariance_matrix = 1; // Representation of a covariance matrix.
 }
 
 // Speed type, represented in the Body (X Y Z) frame and in metres/second.
