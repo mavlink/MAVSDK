@@ -6,46 +6,44 @@ option java_package = "io.mavsdk.followme";
 option java_outer_classname = "FollowMeProto";
 
 /*
- * Allows users to command the vehicle to follow a specific target via the FollowMe
- * API, as well as commands to configure and start/stop FollowMe mode.
+ * Allow users to command the vehicle to follow a specific target.
  * The target is provided as a GPS coordinate and altitude.
  */
 service FollowMeService {
-  // Gets current FollowMe configuration.
+  // Get current configuration.
   rpc GetConfig(GetConfigRequest) returns(GetConfigResponse) {}
-  // Applies FollowMe configuration by sending it to the system.
+  // Apply configuration by sending it to the system.
   rpc SetConfig(SetConfigRequest) returns(SetConfigResponse) {}
-  // Checks if FollowMe is active.
+  // Check if FollowMe is active.
   rpc IsActive(IsActiveRequest) returns(IsActiveResponse) {}
-  // Sets location of the moving target.
+  // Set location of the moving target.
   rpc SetTargetLocation(SetTargetLocationRequest) returns(SetTargetLocationResponse) {}
-  // Gets the last location of the target.
+  // Get the last location of the target.
   rpc GetLastLocation(GetLastLocationRequest) returns(GetLastLocationResponse) {}
-  // Starts FollowMe mode.
+  // Start FollowMe mode.
   rpc Start(StartRequest) returns(StartResponse) {}
-  // Stops FollowMe mode.
+  // Stop FollowMe mode.
   rpc Stop(StopRequest) returns(StopResponse) {}
 }
 
-
-// FollowMe Config type.
+// Configuration type.
 message Config {
-  // direction relative to the target that the vehicle should follow
+  // Direction relative to the target that the vehicle should follow
   enum FollowDirection {
-    NONE = 0; // do not follow
-    FRONT_RIGHT = 1; // follow from front right
-    FRONT_LEFT = 2; // follow from front left
-    FRONT = 3; // follow from front
-    BEHIND = 4; // folow from behind
+    NONE = 0; // Do not follow
+    FRONT_RIGHT = 1; // Follow from front right
+    FRONT_LEFT = 2; // Follow from front left
+    FRONT = 3; // Follow from front
+    BEHIND = 4; // Folow from behind
   }
 
-  float min_height_m = 1; // minimum height for the vehicle
-  float follow_distance_m = 2; // distance from target for vehicle to follow
-  FollowDirection follow_direction = 3; // direction to follow in
-  float responsiveness = 4; // how responsive the vehicle is to the motion of the target
+  float min_height_m = 1; // Minimum height for the vehicle
+  float follow_distance_m = 2; // Distance from target for vehicle to follow
+  FollowDirection follow_direction = 3; // Direction to follow in
+  float responsiveness = 4; // How responsive the vehicle is to the motion of the target
 }
 
-// target location for the vehicle to follow
+// Target location for the vehicle to follow
 message TargetLocation {
   double latitude_deg = 1; // Target latitude in degrees
   double longitude_deg = 2; // Target longitude in degrees
@@ -55,13 +53,11 @@ message TargetLocation {
   float velocity_z_m_s = 6; // Target velocity in Z axis, in meters per second
 }
 
-// gets the current FollowMe configuration
 message GetConfigRequest {}
 message GetConfigResponse {
   Config config = 1; // The current FollowMe configuration
 }
 
-// sets the FollowMe configuration
 message SetConfigRequest {
   Config config = 1; // The new FollowMe configuration to be set
 }
@@ -69,13 +65,11 @@ message SetConfigResponse {
   FollowMeResult result = 1;
 }
 
-// returns true if FollowMe is currently active
 message IsActiveRequest {}
 message IsActiveResponse {
   bool is_active = 1; // Whether FollowMe is ative or not
 }
 
-// sets the FollowMe target location
 message SetTargetLocationRequest {
   TargetLocation location = 1; // The new TargetLocation to follow
 }
@@ -83,37 +77,34 @@ message SetTargetLocationResponse {
   FollowMeResult result = 1;
 }
 
-// gets the latest FollowMe target location
 message GetLastLocationRequest {}
 message GetLastLocationResponse {
-  TargetLocation location = 1; // The last target location set
+  TargetLocation location = 1; // The last target location that was set
 }
 
-// starts FollowMe mode
 message StartRequest {}
 message StartResponse {
   FollowMeResult result = 1;
 }
 
-// stops FollowMe mode
 message StopRequest {}
 message StopResponse {
   FollowMeResult result = 1;
 }
 
 message FollowMeResult {
-  // possible results returned for followme operations
+  // Possible results returned for followme operations
   enum Result {
-    UNKNOWN = 0; // unkown error
-    NO_SYSTEM = 1; // no system connected
-    CONNECTION_ERROR = 2; // connection error
-    BUSY = 3; // vehicle busy
-    COMMAND_DENIED = 4; // command denied
-    TIMEOUT = 5; // request timeout
-    NOT_ACTIVE = 6; // FollowMe is not activated
-    SET_CONFIG_FAILED = 7; // failed to set FollowMe configuration
+    UNKNOWN = 0; // Unkown error
+    NO_SYSTEM = 1; // No system connected
+    CONNECTION_ERROR = 2; // Connection error
+    BUSY = 3; // Vehicle is busy
+    COMMAND_DENIED = 4; // Command denied
+    TIMEOUT = 5; // Request timed out
+    NOT_ACTIVE = 6; // FollowMe is not active
+    SET_CONFIG_FAILED = 7; // Failed to set FollowMe configuration
   }
 
-  Result result = 1; // result enum value
+  Result result = 1; // Result enum value
   string result_str = 2; // Human-readable English string describing the result
 }
