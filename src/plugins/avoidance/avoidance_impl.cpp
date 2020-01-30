@@ -28,11 +28,6 @@ void AvoidanceImpl::process_trajectory_representation_waypoints(const mavlink_me
     mavlink_msg_trajectory_representation_waypoints_decode(&message, &decoded);
 
     std::vector<Avoidance::Waypoint> waypoints;
-    float pos_x[5], pos_y[5], pos_z[5];
-    float vel_x[5], vel_y[5], vel_z[5];
-    float acc_x[5], acc_y[5], acc_z[5];
-    float pos_yaw[5], vel_yaw[5];
-    uint16_t command[5];
 
     for (int i = 0;i < decoded.valid_points;i++) {
         waypoints.push_back(Avoidance::Waypoint({
@@ -43,9 +38,12 @@ void AvoidanceImpl::process_trajectory_representation_waypoints(const mavlink_me
                     decoded.command[i]}));
     }
 
-    set_trajectory_representation_waypoints(
-            Avoidance::WaypointsTrajectory({waypoints,
-                Avoidance::WaypointsTrajectory::Direction::RECEIVE}));
+    Avoidance::WaypointsTrajectory trajectory;
+    trajectory.trajectory = waypoints;
+    trajectory.direction = Avoidance::WaypointsTrajectory::Direction::RECEIVE;
+    //set_trajectory_representation_waypoints(
+            //Avoidance::WaypointsTrajectory({waypoints,
+                //Avoidance::WaypointsTrajectory::Direction::RECEIVE}));
 
     if (_trajectory_representation_waypoints_subscription) {
         auto callback = _trajectory_representation_waypoints_subscription;
@@ -56,8 +54,8 @@ void AvoidanceImpl::process_trajectory_representation_waypoints(const mavlink_me
 
 void AvoidanceImpl::set_trajectory_representation_waypoints(Avoidance::WaypointsTrajectory waypoints_trajectory)
 {
-    std::lock_guard<std::mutex> lock(_waypoints_trajectory_mutex);
-    _waypoints_trajectory = waypoints_trajectory;
+    std::lock_guard<std::mutex> lock(_trajectory_representation_waypoints_mutex);
+    _trajectory_representation_waypoints = waypoints_trajectory;
 }
 
 Avoidance::WaypointsTrajectory AvoidanceImpl::get_trajectory_representation_waypoints() const
@@ -66,7 +64,7 @@ Avoidance::WaypointsTrajectory AvoidanceImpl::get_trajectory_representation_wayp
     return _trajectory_representation_waypoints;
 }
 
-void AvoidanceImpl::receive_trajectory_representation_waypoints_async(
+void AvoidanceImpl::trajectory_representation_waypoints_async(
     Avoidance::trajectory_representation_waypoints_callback_t& callback)
 {
     _trajectory_representation_waypoints_subscription = callback;

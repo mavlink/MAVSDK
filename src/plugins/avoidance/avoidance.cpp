@@ -8,10 +8,10 @@ Avoidance::Avoidance(System& system) : PluginBase(), _impl{new AvoidanceImpl(sys
 
 Avoidance::~Avoidance() {}
 
-void Avoidance::receive_trajectory_representation_waypoints_async(
+void Avoidance::trajectory_representation_waypoints_async(
     trajectory_representation_waypoints_callback_t callback)
 {
-    return _impl->receive_trajectory_representation_waypoints_async(callback);
+    return _impl->trajectory_representation_waypoints_async(callback);
 }
 
 const char* Avoidance::result_str(Result result)

@@ -55,10 +55,10 @@ public:
     struct Waypoint {
         float pos_x, pos_y, pos_z;
         float vel_x, vel_y, vel_z;
-        float acc_x, acc_x, acc_z;
+        float acc_x, acc_y, acc_z;
         float pos_yaw, vel_yaw;
         uint16_t command;
-    }
+    };
 
     /**
      * @brief Trajectory type (waypoints format).
@@ -94,7 +94,7 @@ public:
      *
      * @param callback Function to call with updates.
      */
-    void receive_trajectory_representation_waypoints_async(
+    void trajectory_representation_waypoints_async(
         trajectory_representation_waypoints_callback_t callback);
 
     /**
