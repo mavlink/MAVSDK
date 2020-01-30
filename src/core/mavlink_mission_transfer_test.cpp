@@ -17,7 +17,7 @@ using MockSender = NiceMock<mavsdk::testing::MockSender>;
 using Result = MAVLinkMissionTransfer::Result;
 using ItemInt = MAVLinkMissionTransfer::ItemInt;
 
-static MAVLinkMissionTransfer::Config config {42, 16, 99, 101};
+static MAVLinkMissionTransfer::Config config{42, 16, 99, 101};
 
 #define ONCE_ONLY \
     static bool called = false; \
@@ -354,7 +354,7 @@ mavlink_message_t make_mission_ack(uint8_t result)
     return message;
 }
 
-bool is_the_same(const ItemInt& item, const mavlink_message_t& message)
+bool is_the_same_mission_item_int(const ItemInt& item, const mavlink_message_t& message)
 {
     if (message.msgid != MAVLINK_MSG_ID_MISSION_ITEM_INT) {
         return false;
@@ -407,13 +407,13 @@ TEST(MAVLinkMissionTransfer, UploadMissionSendsMissionItems)
     });
 
     EXPECT_CALL(mock_sender, send_message(Truly([&items](const mavlink_message_t& message) {
-                    return is_the_same(items[0], message);
+                    return is_the_same_mission_item_int(items[0], message);
                 })));
 
     message_handler.process_message(make_mission_item_request(0));
 
     EXPECT_CALL(mock_sender, send_message(Truly([&items](const mavlink_message_t& message) {
-                    return is_the_same(items[1], message);
+                    return is_the_same_mission_item_int(items[1], message);
                 })));
 
     message_handler.process_message(make_mission_item_request(1));
@@ -454,20 +454,20 @@ TEST(MAVLinkMissionTransfer, UploadMissionRetransmitsMissionItems)
     });
 
     EXPECT_CALL(mock_sender, send_message(Truly([&items](const mavlink_message_t& message) {
-                    return is_the_same(items[0], message);
+                    return is_the_same_mission_item_int(items[0], message);
                 })));
 
     message_handler.process_message(make_mission_item_request(0));
 
     EXPECT_CALL(mock_sender, send_message(Truly([&items](const mavlink_message_t& message) {
-                    return is_the_same(items[0], message);
+                    return is_the_same_mission_item_int(items[0], message);
                 })));
 
     // Request 0 again in case it had not arrived.
     message_handler.process_message(make_mission_item_request(0));
 
     EXPECT_CALL(mock_sender, send_message(Truly([&items](const mavlink_message_t& message) {
-                    return is_the_same(items[1], message);
+                    return is_the_same_mission_item_int(items[1], message);
                 })));
 
     // Request 1 finally.
@@ -504,7 +504,7 @@ TEST(MAVLinkMissionTransfer, UploadMissionAckArrivesTooEarly)
     });
 
     EXPECT_CALL(mock_sender, send_message(Truly([&items](const mavlink_message_t& message) {
-                    return is_the_same(items[0], message);
+                    return is_the_same_mission_item_int(items[0], message);
                 })));
 
     message_handler.process_message(make_mission_item_request(0));
@@ -596,7 +596,7 @@ TEST(MAVLinkMissionTransfer, UploadMissionTimeoutNotTriggeredDuringTransfer)
     });
 
     EXPECT_CALL(mock_sender, send_message(Truly([&items](const mavlink_message_t& message) {
-                    return is_the_same(items[0], message);
+                    return is_the_same_mission_item_int(items[0], message);
                 })));
 
     message_handler.process_message(make_mission_item_request(0));
@@ -607,7 +607,7 @@ TEST(MAVLinkMissionTransfer, UploadMissionTimeoutNotTriggeredDuringTransfer)
     timeout_handler.run_once();
 
     EXPECT_CALL(mock_sender, send_message(Truly([&items](const mavlink_message_t& message) {
-                    return is_the_same(items[1], message);
+                    return is_the_same_mission_item_int(items[1], message);
                 })));
 
     message_handler.process_message(make_mission_item_request(1));
@@ -617,7 +617,7 @@ TEST(MAVLinkMissionTransfer, UploadMissionTimeoutNotTriggeredDuringTransfer)
     timeout_handler.run_once();
 
     EXPECT_CALL(mock_sender, send_message(Truly([&items](const mavlink_message_t& message) {
-                    return is_the_same(items[2], message);
+                    return is_the_same_mission_item_int(items[2], message);
                 })));
 
     message_handler.process_message(make_mission_item_request(2));
@@ -657,7 +657,7 @@ TEST(MAVLinkMissionTransfer, UploadMissionTimeoutAfterSendMissionItem)
     });
 
     EXPECT_CALL(mock_sender, send_message(Truly([&items](const mavlink_message_t& message) {
-                    return is_the_same(items[0], message);
+                    return is_the_same_mission_item_int(items[0], message);
                 })));
 
     message_handler.process_message(make_mission_item_request(0));
@@ -691,6 +691,38 @@ TEST(MAVLinkMissionTransfer, UploadMissionDoesNotCrashOnRandomMessages)
 }
 
 TEST(MAVLinkMissionTransfer, DownloadMissionSendsRequestList)
+{
+    MockSender mock_sender;
+    MAVLinkMessageHandler message_handler;
+    FakeTime time;
+    TimeoutHandler timeout_handler(time);
+
+    MAVLinkMissionTransfer mmt(config, mock_sender, message_handler, timeout_handler);
+
+    ON_CALL(mock_sender, send_message(_)).WillByDefault(Return(true));
+
+    EXPECT_CALL(mock_sender, send_message(Truly([](const mavlink_message_t& message) {
+                    mavlink_mission_request_list_t mission_request_list;
+                    mavlink_msg_mission_request_list_decode(&message, &mission_request_list);
+
+                    return (
+                        message.msgid == MAVLINK_MSG_ID_MISSION_REQUEST_LIST &&
+                        message.sysid == config.own_system_id &&
+                        message.compid == config.own_component_id &&
+                        mission_request_list.target_system == config.target_system_id &&
+                        mission_request_list.target_component == config.target_component_id &&
+                        mission_request_list.mission_type == MAV_MISSION_TYPE_MISSION);
+                })));
+
+    mmt.download_items_async(
+        MAV_MISSION_TYPE_MISSION, [](Result result, std::vector<ItemInt> items) {
+            UNUSED(result);
+            UNUSED(items);
+            EXPECT_TRUE(false);
+        });
+}
+
+TEST(MAVLinkMissionTransfer, DownloadMissionRetransmitsRequestList)
 {
     MockSender mock_sender;
     MAVLinkMessageHandler message_handler;
