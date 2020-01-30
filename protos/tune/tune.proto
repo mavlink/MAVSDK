@@ -1,6 +1,6 @@
 syntax = "proto3";
 
-package mavsdk.rpc.geofence;
+package mavsdk.rpc.tune;
 
 option java_package = "io.mavsdk.tune";
 option java_outer_classname = "TuneProto";
