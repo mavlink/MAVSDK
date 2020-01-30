@@ -56,7 +56,7 @@ jobs:
         run: ./build/release/src/backend/test/unit_tests_backend
 
   ubuntu18-check-style:
-    name: ubuntu-18.04 (check style)
+    name: ubuntu-18.04 (check style and docs)
     runs-on: ubuntu-18.04
     container: mavsdk/mavsdk-ubuntu-18.04
     steps:
@@ -65,6 +65,8 @@ jobs:
           submodules: recursive
       - name: check style
         run: ./tools/fix_style.sh .
+      - name: check docs
+        run: tools/generate_docs.sh
 
   px4-sitl:
     name: PX4 SITL (ubuntu-18.04)
