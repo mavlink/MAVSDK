@@ -275,6 +275,7 @@ void SystemImpl::system_thread()
         _params.do_work();
         _commands.do_work();
         _timesync.do_work();
+        //_mission_transfer.do_work();
 
         if (_connected) {
             // Work fairly fast if we're connected.
