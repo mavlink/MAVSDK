@@ -49,13 +49,13 @@ void MAVLinkParameters::set_param_async(
         return;
     }
 
-    WorkItem new_work{};
-    new_work.type = WorkItem::Type::Set;
-    new_work.set_param_callback = callback;
-    new_work.param_name = name;
-    new_work.param_value = value;
-    new_work.extended = extended;
-    new_work.cookie = cookie;
+    auto new_work = std::make_shared<WorkItem>();
+    new_work->type = WorkItem::Type::Set;
+    new_work->set_param_callback = callback;
+    new_work->param_name = name;
+    new_work->param_value = value;
+    new_work->extended = extended;
+    new_work->cookie = cookie;
 
     _work_queue.push_back(new_work);
 }
@@ -91,13 +91,13 @@ void MAVLinkParameters::get_param_async(
     }
 
     // Otherwise push work onto queue.
-    WorkItem new_work{};
-    new_work.type = WorkItem::Type::Get;
-    new_work.get_param_callback = callback;
-    new_work.param_name = name;
-    new_work.param_value = value_type;
-    new_work.extended = extended;
-    new_work.cookie = cookie;
+    auto new_work = std::make_shared<WorkItem>();
+    new_work->type = WorkItem::Type::Get;
+    new_work->get_param_callback = callback;
+    new_work->param_name = name;
+    new_work->param_value = value_type;
+    new_work->extended = extended;
+    new_work->cookie = cookie;
 
     _work_queue.push_back(new_work);
 }
@@ -125,7 +125,7 @@ void MAVLinkParameters::cancel_all_param(const void* cookie)
     LockedQueue<WorkItem>::Guard work_queue_guard(_work_queue);
 
     for (auto item = _work_queue.begin(); item != _work_queue.end(); /* manual incrementation */) {
-        if (item->get()->cookie == cookie) {
+        if ((*item)->cookie == cookie) {
             item = _work_queue.erase(item);
         } else {
             ++item;

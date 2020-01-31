@@ -64,6 +64,7 @@ TEST(MAVLinkMissionTransfer, UploadMissionDoesComplainAboutNoItems)
         ONCE_ONLY;
         prom.set_value();
     });
+    mmt.do_work();
 
     EXPECT_EQ(fut.wait_for(std::chrono::seconds(1)), std::future_status::ready);
 }
@@ -89,6 +90,7 @@ TEST(MAVLinkMissionTransfer, UploadMissionDoesComplainAboutWrongSequence)
         ONCE_ONLY;
         prom.set_value();
     });
+    mmt.do_work();
 
     EXPECT_EQ(fut.wait_for(std::chrono::seconds(1)), std::future_status::ready);
 }
@@ -115,6 +117,7 @@ TEST(MAVLinkMissionTransfer, UploadMissionDoesComplainAboutInconsistentMissionTy
         ONCE_ONLY;
         prom.set_value();
     });
+    mmt.do_work();
 
     EXPECT_EQ(fut.wait_for(std::chrono::seconds(1)), std::future_status::ready);
 }
@@ -141,6 +144,7 @@ TEST(MAVLinkMissionTransfer, UploadMissionDoesComplainAboutInconsistentMissionTy
         ONCE_ONLY;
         prom.set_value();
     });
+    mmt.do_work();
 
     EXPECT_EQ(fut.wait_for(std::chrono::seconds(1)), std::future_status::ready);
 }
@@ -169,6 +173,7 @@ TEST(MAVLinkMissionTransfer, UploadMissionDoesComplainAboutNoCurrent)
         ONCE_ONLY;
         prom.set_value();
     });
+    mmt.do_work();
 
     EXPECT_EQ(fut.wait_for(std::chrono::seconds(1)), std::future_status::ready);
 }
@@ -197,6 +202,7 @@ TEST(MAVLinkMissionTransfer, UploadMissionDoesComplainAboutTwoCurrents)
         ONCE_ONLY;
         prom.set_value();
     });
+    mmt.do_work();
 
     EXPECT_EQ(fut.wait_for(std::chrono::seconds(1)), std::future_status::ready);
 }
@@ -215,15 +221,18 @@ TEST(MAVLinkMissionTransfer, UploadMissionDoesNotCrashIfCallbackIsNull)
     // Catch the empty case
     std::vector<ItemInt> items;
     mmt.upload_items_async(MAV_MISSION_TYPE_MISSION, items, nullptr);
+    mmt.do_work();
 
     items.push_back(make_item(MAV_MISSION_TYPE_MISSION, 0));
     items.push_back(make_item(MAV_MISSION_TYPE_MISSION, 1));
 
     mmt.upload_items_async(MAV_MISSION_TYPE_MISSION, items, nullptr);
+    mmt.do_work();
 
     // Catch the WrongSequence case as well.
     items.push_back(make_item(MAV_MISSION_TYPE_MISSION, 3));
     mmt.upload_items_async(MAV_MISSION_TYPE_MISSION, items, nullptr);
+    mmt.do_work();
 }
 
 TEST(MAVLinkMissionTransfer, UploadMissionReturnsConnectionErrorWhenSendMessageFails)
@@ -249,6 +258,7 @@ TEST(MAVLinkMissionTransfer, UploadMissionReturnsConnectionErrorWhenSendMessageF
         ONCE_ONLY;
         prom.set_value();
     });
+    mmt.do_work();
 
     EXPECT_EQ(fut.wait_for(std::chrono::seconds(1)), std::future_status::ready);
 
@@ -291,6 +301,7 @@ TEST(MAVLinkMissionTransfer, UploadMissionSendsCount)
         UNUSED(result);
         EXPECT_TRUE(false);
     });
+    mmt.do_work();
 }
 
 TEST(MAVLinkMissionTransfer, UploadMissionTimeoutAfterSendCount)
@@ -316,6 +327,7 @@ TEST(MAVLinkMissionTransfer, UploadMissionTimeoutAfterSendCount)
         ONCE_ONLY;
         prom.set_value();
     });
+    mmt.do_work();
 
     EXPECT_EQ(fut.wait_for(std::chrono::seconds(0)), std::future_status::timeout);
 
@@ -405,6 +417,7 @@ TEST(MAVLinkMissionTransfer, UploadMissionSendsMissionItems)
         ONCE_ONLY;
         prom.set_value();
     });
+    mmt.do_work();
 
     EXPECT_CALL(mock_sender, send_message(Truly([&items](const mavlink_message_t& message) {
                     return is_the_same_mission_item_int(items[0], message);
@@ -452,6 +465,7 @@ TEST(MAVLinkMissionTransfer, UploadMissionRetransmitsMissionItems)
         ONCE_ONLY;
         prom.set_value();
     });
+    mmt.do_work();
 
     EXPECT_CALL(mock_sender, send_message(Truly([&items](const mavlink_message_t& message) {
                     return is_the_same_mission_item_int(items[0], message);
@@ -502,6 +516,7 @@ TEST(MAVLinkMissionTransfer, UploadMissionAckArrivesTooEarly)
         ONCE_ONLY;
         prom.set_value();
     });
+    mmt.do_work();
 
     EXPECT_CALL(mock_sender, send_message(Truly([&items](const mavlink_message_t& message) {
                     return is_the_same_mission_item_int(items[0], message);
@@ -556,6 +571,7 @@ TEST(MAVLinkMissionTransfer, UploadMissionNacksAreHandled)
             EXPECT_EQ(result, nack_case.second);
             prom.set_value();
         });
+        mmt.do_work();
 
         EXPECT_CALL(mock_sender, send_message(Truly([&items](const mavlink_message_t& message) {
                         return is_the_same_mission_item_int(items[0], message);
@@ -594,6 +610,7 @@ TEST(MAVLinkMissionTransfer, UploadMissionTimeoutNotTriggeredDuringTransfer)
         ONCE_ONLY;
         prom.set_value();
     });
+    mmt.do_work();
 
     EXPECT_CALL(mock_sender, send_message(Truly([&items](const mavlink_message_t& message) {
                     return is_the_same_mission_item_int(items[0], message);
@@ -655,6 +672,7 @@ TEST(MAVLinkMissionTransfer, UploadMissionTimeoutAfterSendMissionItem)
         ONCE_ONLY;
         prom.set_value();
     });
+    mmt.do_work();
 
     EXPECT_CALL(mock_sender, send_message(Truly([&items](const mavlink_message_t& message) {
                     return is_the_same_mission_item_int(items[0], message);
@@ -720,6 +738,7 @@ TEST(MAVLinkMissionTransfer, DownloadMissionSendsRequestList)
             UNUSED(items);
             EXPECT_TRUE(false);
         });
+    mmt.do_work();
 }
 
 bool is_correct_mission_request_list(const mavlink_message_t& message)
@@ -756,6 +775,7 @@ TEST(MAVLinkMissionTransfer, DownloadMissionRetransmitsRequestList)
             UNUSED(items);
             EXPECT_TRUE(false);
         });
+    mmt.do_work();
 
     // We want to be sure a timeout is not still triggered later.
     time.sleep_for(std::chrono::milliseconds(

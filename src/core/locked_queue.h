@@ -11,10 +11,10 @@ public:
     LockedQueue(){};
     ~LockedQueue(){};
 
-    void push_back(T item)
+    void push_back(std::shared_ptr<T> item_ptr)
     {
         std::lock_guard<std::mutex> lock(_mutex);
-        _queue.push_back(std::make_shared<T>(item));
+        _queue.push_back(item_ptr);
     }
 
     size_t size()

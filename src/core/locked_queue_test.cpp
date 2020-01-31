@@ -15,10 +15,10 @@ TEST(LockedQueue, FillAndEmpty)
 
     LockedQueue<int> locked_queue{};
 
-    locked_queue.push_back(one);
+    locked_queue.push_back(std::make_shared<int>(one));
     EXPECT_EQ(locked_queue.size(), 1);
-    locked_queue.push_back(two);
-    locked_queue.push_back(three);
+    locked_queue.push_back(std::make_shared<int>(two));
+    locked_queue.push_back(std::make_shared<int>(three));
     EXPECT_EQ(locked_queue.size(), 3);
 
     {
@@ -45,10 +45,10 @@ TEST(LockedQueue, FillAndIterateAndErase)
 
     LockedQueue<int> locked_queue{};
 
-    locked_queue.push_back(one);
+    locked_queue.push_back(std::make_shared<int>(one));
     EXPECT_EQ(locked_queue.size(), 1);
-    locked_queue.push_back(two);
-    locked_queue.push_back(three);
+    locked_queue.push_back(std::make_shared<int>(two));
+    locked_queue.push_back(std::make_shared<int>(three));
     EXPECT_EQ(locked_queue.size(), 3);
 
     unsigned counter = 0;
@@ -88,9 +88,9 @@ TEST(LockedQueue, GuardAndReturn)
 
     LockedQueue<int> locked_queue{};
 
-    locked_queue.push_back(one);
-    locked_queue.push_back(two);
-    locked_queue.push_back(three);
+    locked_queue.push_back(std::make_shared<int>(one));
+    locked_queue.push_back(std::make_shared<int>(two));
+    locked_queue.push_back(std::make_shared<int>(three));
 
     {
         LockedQueue<int>::Guard guard(locked_queue);
@@ -124,8 +124,8 @@ TEST(LockedQueue, ConcurrantAccess)
 
     LockedQueue<int> locked_queue{};
 
-    locked_queue.push_back(one);
-    locked_queue.push_back(two);
+    locked_queue.push_back(std::make_shared<int>(one));
+    locked_queue.push_back(std::make_shared<int>(two));
 
     auto prom = std::promise<void>();
     auto fut = prom.get_future();
@@ -166,7 +166,7 @@ TEST(LockedQueue, ChangeValue)
 
     Item one;
 
-    locked_queue.push_back(one);
+    locked_queue.push_back(std::make_shared<Item>(one));
 
     {
         LockedQueue<Item>::Guard guard(locked_queue);
@@ -190,8 +190,8 @@ TEST(LockedQueue, Guard)
 
     LockedQueue<int> locked_queue{};
 
-    locked_queue.push_back(one);
-    locked_queue.push_back(two);
+    locked_queue.push_back(std::make_shared<int>(one));
+    locked_queue.push_back(std::make_shared<int>(two));
 
     {
         LockedQueue<int>::Guard guard(locked_queue);
