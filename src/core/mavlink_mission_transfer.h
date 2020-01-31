@@ -80,6 +80,7 @@ public:
     const MAVLinkMissionTransfer& operator=(const MAVLinkMissionTransfer&) = delete;
 
 private:
+    void request_list();
     void process_mission_request_int(const mavlink_message_t& message);
     void process_mission_ack(const mavlink_message_t& message);
     void process_timeout();
@@ -90,11 +91,21 @@ private:
     MAVLinkMessageHandler& _message_handler;
     TimeoutHandler& _timeout_handler;
 
+    enum class Activity {
+        None,
+        Upload,
+        Download,
+    };
+
+    Activity _activity {Activity::None};
+
     int _next_sequence_expected{-1};
     void* _cookie{nullptr};
     ResultCallback _callback{nullptr};
-    ResultAndItemsCallback _callback_download{nullptr};
     std::vector<ItemInt> _items{};
+
+    ResultAndItemsCallback _callback_download{nullptr};
+    uint8_t _type {0};
 };
 
 } // namespace mavsdk

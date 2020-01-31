@@ -71,6 +71,7 @@ void MAVLinkMissionTransfer::upload_items_async(
         return;
     }
 
+    _activity = Activity::Upload;
     _callback = callback;
     _items = items;
 
@@ -97,8 +98,17 @@ void MAVLinkMissionTransfer::upload_items_async(
 
 void MAVLinkMissionTransfer::download_items_async(uint8_t type, ResultAndItemsCallback callback)
 {
+    _activity = Activity::Download;
     _callback_download = callback;
+    _type = type;
 
+    _timeout_handler.add([this]() { process_timeout(); }, timeout_s, &_cookie);
+
+    request_list();
+}
+
+void MAVLinkMissionTransfer::request_list()
+{
     mavlink_message_t message;
     mavlink_msg_mission_request_list_pack(
         _config.own_system_id,
@@ -106,7 +116,7 @@ void MAVLinkMissionTransfer::download_items_async(uint8_t type, ResultAndItemsCa
         &message,
         _config.target_system_id,
         _config.target_component_id,
-        type);
+        _type);
 
     if (!_sender.send_message(message)) {
         _timeout_handler.remove(_cookie);
@@ -214,7 +224,12 @@ void MAVLinkMissionTransfer::process_mission_ack(const mavlink_message_t& messag
 
 void MAVLinkMissionTransfer::process_timeout()
 {
-    callback_and_reset(Result::Timeout);
+    if (_activity == Activity::Upload) {
+        callback_and_reset(Result::Timeout);
+    } else if (_activity == Activity::Download) {
+        LogWarn() << "Timeout!";
+        request_list();
+    }
 }
 
 void MAVLinkMissionTransfer::callback_and_reset(Result result)
@@ -224,6 +239,7 @@ void MAVLinkMissionTransfer::callback_and_reset(Result result)
     }
     _callback = nullptr;
     _items.clear();
+    _activity = Activity::None;
 }
 
 } // namespace mavsdk
