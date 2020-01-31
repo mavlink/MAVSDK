@@ -558,7 +558,7 @@ TEST(MAVLinkMissionTransfer, UploadMissionNacksAreHandled)
         });
 
         EXPECT_CALL(mock_sender, send_message(Truly([&items](const mavlink_message_t& message) {
-                        return is_the_same(items[0], message);
+                        return is_the_same_mission_item_int(items[0], message);
                     })));
 
         message_handler.process_message(make_mission_item_request(0));
@@ -722,6 +722,21 @@ TEST(MAVLinkMissionTransfer, DownloadMissionSendsRequestList)
         });
 }
 
+bool is_correct_mission_request_list(const mavlink_message_t& message)
+{
+    if (message.msgid != MAVLINK_MSG_ID_MISSION_REQUEST_LIST) {
+        return false;
+    }
+    mavlink_mission_request_list_t mission_request_list;
+    mavlink_msg_mission_request_list_decode(&message, &mission_request_list);
+
+    return (
+        message.sysid == config.own_system_id && //
+        message.compid == config.own_component_id && //
+        mission_request_list.target_system == config.target_system_id && //
+        mission_request_list.target_component == config.target_component_id);
+}
+
 TEST(MAVLinkMissionTransfer, DownloadMissionRetransmitsRequestList)
 {
     MockSender mock_sender;
@@ -733,18 +748,7 @@ TEST(MAVLinkMissionTransfer, DownloadMissionRetransmitsRequestList)
 
     ON_CALL(mock_sender, send_message(_)).WillByDefault(Return(true));
 
-    EXPECT_CALL(mock_sender, send_message(Truly([](const mavlink_message_t& message) {
-                    mavlink_mission_request_list_t mission_request_list;
-                    mavlink_msg_mission_request_list_decode(&message, &mission_request_list);
-
-                    return (
-                        message.msgid == MAVLINK_MSG_ID_MISSION_REQUEST_LIST &&
-                        message.sysid == config.own_system_id &&
-                        message.compid == config.own_component_id &&
-                        mission_request_list.target_system == config.target_system_id &&
-                        mission_request_list.target_component == config.target_component_id &&
-                        mission_request_list.mission_type == MAV_MISSION_TYPE_MISSION);
-                })));
+    EXPECT_CALL(mock_sender, send_message(Truly(is_correct_mission_request_list))).Times(2);
 
     mmt.download_items_async(
         MAV_MISSION_TYPE_MISSION, [](Result result, std::vector<ItemInt> items) {
@@ -752,4 +756,9 @@ TEST(MAVLinkMissionTransfer, DownloadMissionRetransmitsRequestList)
             UNUSED(items);
             EXPECT_TRUE(false);
         });
+
+    // We want to be sure a timeout is not still triggered later.
+    time.sleep_for(std::chrono::milliseconds(
+        static_cast<int>(MAVLinkMissionTransfer::timeout_s * 1.1 * 1000.)));
+    timeout_handler.run_once();
 }
