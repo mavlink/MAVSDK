@@ -47,6 +47,12 @@ void MAVLinkMissionTransfer::do_work()
     }
 }
 
+bool MAVLinkMissionTransfer::is_idle()
+{
+    LockedQueue<WorkItem>::Guard work_queue_guard(_work_queue);
+    return (work_queue_guard.get_front() == nullptr);
+}
+
 MAVLinkMissionTransfer::WorkItem::WorkItem(
     Config config,
     Sender& sender,
@@ -60,6 +66,9 @@ MAVLinkMissionTransfer::WorkItem::WorkItem(
     _type(type)
 {}
 
+MAVLinkMissionTransfer::WorkItem::~WorkItem() {}
+
+
 bool MAVLinkMissionTransfer::WorkItem::has_started()
 {
     return _started;
@@ -69,8 +78,6 @@ bool MAVLinkMissionTransfer::WorkItem::is_done()
 {
     return _done;
 }
-
-MAVLinkMissionTransfer::WorkItem::~WorkItem() {}
 
 MAVLinkMissionTransfer::UploadWorkItem::UploadWorkItem(
     Config config,
@@ -315,12 +322,8 @@ void MAVLinkMissionTransfer::UploadWorkItem::callback_and_reset(Result result)
     if (_callback) {
         _callback(result);
     }
-
-    _retries_done = 0;
-    _step = Step::SendCount;
     _callback = nullptr;
-    _items.clear();
-    _next_sequence = 0;
+    _done = true;
 }
 
 MAVLinkMissionTransfer::DownloadWorkItem::DownloadWorkItem(
@@ -500,7 +503,7 @@ void MAVLinkMissionTransfer::DownloadWorkItem::callback_and_reset(Result result)
         _callback(result, _items);
     }
     _callback = nullptr;
-    _items.clear();
+    _done = true;
 }
 
 } // namespace mavsdk

@@ -78,6 +78,7 @@ public:
     void download_items_async(uint8_t type, ResultAndItemsCallback callback);
 
     void do_work();
+    bool is_idle();
 
     // Non-copyable
     MAVLinkMissionTransfer(const MAVLinkMissionTransfer&) = delete;

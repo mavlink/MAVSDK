@@ -67,6 +67,9 @@ TEST(MAVLinkMissionTransfer, UploadMissionDoesComplainAboutNoItems)
     mmt.do_work();
 
     EXPECT_EQ(fut.wait_for(std::chrono::seconds(1)), std::future_status::ready);
+
+    mmt.do_work();
+    EXPECT_TRUE(mmt.is_idle());
 }
 
 TEST(MAVLinkMissionTransfer, UploadMissionDoesComplainAboutWrongSequence)
@@ -93,6 +96,9 @@ TEST(MAVLinkMissionTransfer, UploadMissionDoesComplainAboutWrongSequence)
     mmt.do_work();
 
     EXPECT_EQ(fut.wait_for(std::chrono::seconds(1)), std::future_status::ready);
+
+    mmt.do_work();
+    EXPECT_TRUE(mmt.is_idle());
 }
 
 TEST(MAVLinkMissionTransfer, UploadMissionDoesComplainAboutInconsistentMissionTypesInAPI)
@@ -120,6 +126,9 @@ TEST(MAVLinkMissionTransfer, UploadMissionDoesComplainAboutInconsistentMissionTy
     mmt.do_work();
 
     EXPECT_EQ(fut.wait_for(std::chrono::seconds(1)), std::future_status::ready);
+
+    mmt.do_work();
+    EXPECT_TRUE(mmt.is_idle());
 }
 
 TEST(MAVLinkMissionTransfer, UploadMissionDoesComplainAboutInconsistentMissionTypesInItems)
@@ -147,6 +156,9 @@ TEST(MAVLinkMissionTransfer, UploadMissionDoesComplainAboutInconsistentMissionTy
     mmt.do_work();
 
     EXPECT_EQ(fut.wait_for(std::chrono::seconds(1)), std::future_status::ready);
+
+    mmt.do_work();
+    EXPECT_TRUE(mmt.is_idle());
 }
 
 TEST(MAVLinkMissionTransfer, UploadMissionDoesComplainAboutNoCurrent)
@@ -176,6 +188,9 @@ TEST(MAVLinkMissionTransfer, UploadMissionDoesComplainAboutNoCurrent)
     mmt.do_work();
 
     EXPECT_EQ(fut.wait_for(std::chrono::seconds(1)), std::future_status::ready);
+
+    mmt.do_work();
+    EXPECT_TRUE(mmt.is_idle());
 }
 
 TEST(MAVLinkMissionTransfer, UploadMissionDoesComplainAboutTwoCurrents)
@@ -205,6 +220,9 @@ TEST(MAVLinkMissionTransfer, UploadMissionDoesComplainAboutTwoCurrents)
     mmt.do_work();
 
     EXPECT_EQ(fut.wait_for(std::chrono::seconds(1)), std::future_status::ready);
+
+    mmt.do_work();
+    EXPECT_TRUE(mmt.is_idle());
 }
 
 TEST(MAVLinkMissionTransfer, UploadMissionDoesNotCrashIfCallbackIsNull)
@@ -233,6 +251,9 @@ TEST(MAVLinkMissionTransfer, UploadMissionDoesNotCrashIfCallbackIsNull)
     items.push_back(make_item(MAV_MISSION_TYPE_MISSION, 3));
     mmt.upload_items_async(MAV_MISSION_TYPE_MISSION, items, nullptr);
     mmt.do_work();
+
+    mmt.do_work();
+    EXPECT_TRUE(mmt.is_idle());
 }
 
 TEST(MAVLinkMissionTransfer, UploadMissionReturnsConnectionErrorWhenSendMessageFails)
@@ -266,6 +287,9 @@ TEST(MAVLinkMissionTransfer, UploadMissionReturnsConnectionErrorWhenSendMessageF
     time.sleep_for(std::chrono::milliseconds(
         static_cast<int>(MAVLinkMissionTransfer::timeout_s * 1.1 * 1000.)));
     timeout_handler.run_once();
+
+    mmt.do_work();
+    EXPECT_TRUE(mmt.is_idle());
 }
 
 bool is_correct_mission_send_count(uint8_t type, unsigned count, const mavlink_message_t& message)
@@ -488,6 +512,9 @@ TEST(MAVLinkMissionTransfer, UploadMissionSendsMissionItems)
     time.sleep_for(std::chrono::milliseconds(
         static_cast<int>(MAVLinkMissionTransfer::timeout_s * 1.1 * 1000.)));
     timeout_handler.run_once();
+
+    mmt.do_work();
+    EXPECT_TRUE(mmt.is_idle());
 }
 
 TEST(MAVLinkMissionTransfer, UploadMissionResendsMissionItems)
@@ -539,6 +566,9 @@ TEST(MAVLinkMissionTransfer, UploadMissionResendsMissionItems)
 
     // We are finished and should have received the successful result.
     EXPECT_EQ(fut.wait_for(std::chrono::seconds(1)), std::future_status::ready);
+
+    mmt.do_work();
+    EXPECT_TRUE(mmt.is_idle());
 }
 
 TEST(MAVLinkMissionTransfer, UploadMissionResendsMissionItemsButGivesUpAfterSomeRetries)
@@ -581,6 +611,9 @@ TEST(MAVLinkMissionTransfer, UploadMissionResendsMissionItemsButGivesUpAfterSome
 
     // We are finished and should have received the successful result.
     EXPECT_EQ(fut.wait_for(std::chrono::seconds(1)), std::future_status::ready);
+
+    mmt.do_work();
+    EXPECT_TRUE(mmt.is_idle());
 }
 
 TEST(MAVLinkMissionTransfer, UploadMissionAckArrivesTooEarly)
@@ -618,6 +651,9 @@ TEST(MAVLinkMissionTransfer, UploadMissionAckArrivesTooEarly)
     message_handler.process_message(make_mission_ack(MAV_MISSION_ACCEPTED));
 
     EXPECT_EQ(fut.wait_for(std::chrono::seconds(1)), std::future_status::ready);
+
+    mmt.do_work();
+    EXPECT_TRUE(mmt.is_idle());
 }
 
 TEST(MAVLinkMissionTransfer, UploadMissionNacksAreHandled)
@@ -673,6 +709,9 @@ TEST(MAVLinkMissionTransfer, UploadMissionNacksAreHandled)
         message_handler.process_message(make_mission_ack(nack_case.first));
 
         EXPECT_EQ(fut.wait_for(std::chrono::seconds(1)), std::future_status::ready);
+
+        mmt.do_work();
+        EXPECT_TRUE(mmt.is_idle());
     }
 }
 
@@ -737,6 +776,9 @@ TEST(MAVLinkMissionTransfer, UploadMissionTimeoutNotTriggeredDuringTransfer)
 
     // We are finished and should have received the successful result.
     EXPECT_EQ(fut.wait_for(std::chrono::seconds(1)), std::future_status::ready);
+
+    mmt.do_work();
+    EXPECT_TRUE(mmt.is_idle());
 }
 
 TEST(MAVLinkMissionTransfer, UploadMissionTimeoutAfterSendMissionItem)
@@ -778,6 +820,9 @@ TEST(MAVLinkMissionTransfer, UploadMissionTimeoutAfterSendMissionItem)
 
     // Ignore later (wrong) ack.
     message_handler.process_message(make_mission_ack(MAV_MISSION_ACCEPTED));
+
+    mmt.do_work();
+    EXPECT_TRUE(mmt.is_idle());
 }
 
 TEST(MAVLinkMissionTransfer, UploadMissionDoesNotCrashOnRandomMessages)
@@ -796,6 +841,9 @@ TEST(MAVLinkMissionTransfer, UploadMissionDoesNotCrashOnRandomMessages)
     time.sleep_for(std::chrono::milliseconds(
         static_cast<int>(MAVLinkMissionTransfer::timeout_s * 1.1 * 1000.)));
     timeout_handler.run_once();
+
+    mmt.do_work();
+    EXPECT_TRUE(mmt.is_idle());
 }
 
 TEST(MAVLinkMissionTransfer, DownloadMissionSendsRequestList)
@@ -912,6 +960,9 @@ TEST(MAVLinkMissionTransfer, DownloadMissionResendsRequestListButGivesUpAfterSom
     }
 
     EXPECT_EQ(fut.wait_for(std::chrono::seconds(1)), std::future_status::ready);
+
+    mmt.do_work();
+    EXPECT_TRUE(mmt.is_idle());
 }
 
 bool is_correct_mission_request_int(
@@ -1016,6 +1067,9 @@ TEST(MAVLinkMissionTransfer, DownloadMissionResendsMissionRequestsAndTimesOutEve
     }
 
     EXPECT_EQ(fut.wait_for(std::chrono::seconds(1)), std::future_status::ready);
+
+    mmt.do_work();
+    EXPECT_TRUE(mmt.is_idle());
 }
 
 bool is_correct_mission_ack(uint8_t type, uint8_t result, const mavlink_message_t& message)
@@ -1110,6 +1164,9 @@ TEST(MAVLinkMissionTransfer, DownloadMissionSendsAllMissionRequestsAndAck)
     message_handler.process_message(make_mission_item(items, 2));
 
     EXPECT_EQ(fut.wait_for(std::chrono::seconds(1)), std::future_status::ready);
+
+    mmt.do_work();
+    EXPECT_TRUE(mmt.is_idle());
 }
 
 TEST(MAVLinkMissionTransfer, DownloadMissionResendsRequestItemAgainForSecondItem)
@@ -1167,6 +1224,9 @@ TEST(MAVLinkMissionTransfer, DownloadMissionResendsRequestItemAgainForSecondItem
     }
 
     EXPECT_EQ(fut.wait_for(std::chrono::seconds(1)), std::future_status::ready);
+
+    mmt.do_work();
+    EXPECT_TRUE(mmt.is_idle());
 }
 
 TEST(MAVLinkMissionTransfer, DownloadMissionEmptyList)
@@ -1203,6 +1263,9 @@ TEST(MAVLinkMissionTransfer, DownloadMissionEmptyList)
     time.sleep_for(std::chrono::milliseconds(
         static_cast<int>(MAVLinkMissionTransfer::timeout_s * 1.1 * 1000.)));
     timeout_handler.run_once();
+
+    mmt.do_work();
+    EXPECT_TRUE(mmt.is_idle());
 }
 
 TEST(MAVLinkMissionTransfer, DownloadMissionTimeoutNotTriggeredDuringTransfer)
@@ -1257,4 +1320,7 @@ TEST(MAVLinkMissionTransfer, DownloadMissionTimeoutNotTriggeredDuringTransfer)
     message_handler.process_message(make_mission_item(items, 2));
 
     EXPECT_EQ(fut.wait_for(std::chrono::seconds(1)), std::future_status::ready);
+
+    mmt.do_work();
+    EXPECT_TRUE(mmt.is_idle());
 }
