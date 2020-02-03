@@ -3,7 +3,7 @@
 #include <memory>
 #include <ostream>
 #include <string>
-#include <mavlink_include.h>
+#include "mavlink_include.h"
 
 namespace mavsdk {
 
