@@ -581,15 +581,15 @@ TEST(MAVLinkMissionTransfer, UploadMissionResendsMissionItemsButGivesUpAfterSome
     MAVLinkMissionTransfer mmt(config, mock_sender, message_handler, timeout_handler);
 
     std::vector<ItemInt> items;
-    items.push_back(make_item(MAV_MISSION_TYPE_MISSION, 0));
-    items.push_back(make_item(MAV_MISSION_TYPE_MISSION, 1));
+    items.push_back(make_item(MAV_MISSION_TYPE_FENCE, 0));
+    items.push_back(make_item(MAV_MISSION_TYPE_FENCE, 1));
 
     ON_CALL(mock_sender, send_message(_)).WillByDefault(Return(true));
 
     std::promise<void> prom;
     auto fut = prom.get_future();
 
-    mmt.upload_items_async(MAV_MISSION_TYPE_MISSION, items, [&prom](Result result) {
+    mmt.upload_items_async(MAV_MISSION_TYPE_FENCE, items, [&prom](Result result) {
         EXPECT_EQ(result, Result::Timeout);
         ONCE_ONLY;
         prom.set_value();

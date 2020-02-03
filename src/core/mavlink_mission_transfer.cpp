@@ -229,8 +229,7 @@ void MAVLinkMissionTransfer::UploadWorkItem::send_mission_item()
         _items[_next_sequence].x,
         _items[_next_sequence].y,
         _items[_next_sequence].z,
-        MAV_MISSION_TYPE_MISSION);
-    // TODO: above type lacking test
+        _type);
 
     ++_next_sequence;
 
