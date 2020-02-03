@@ -59,7 +59,8 @@ public:
         uint8_t mission_type;
     };
 
-    static constexpr double timeout_s = 1.0;
+    static constexpr double timeout_s = 0.5;
+    static constexpr unsigned retries = 4;
 
     MAVLinkMissionTransfer(
         Config config,
@@ -96,10 +97,10 @@ private:
         bool has_started();
         bool is_done();
 
-        WorkItem(const WorkItem&) = default;
-        WorkItem(WorkItem&&) = default;
-        WorkItem& operator=(const WorkItem&) = default;
-        WorkItem& operator=(WorkItem&&) = default;
+        WorkItem(const WorkItem&) = delete;
+        WorkItem(WorkItem&&) = delete;
+        WorkItem& operator=(const WorkItem&) = delete;
+        WorkItem& operator=(WorkItem&&) = delete;
 
     protected:
         Config _config;
@@ -125,21 +126,29 @@ private:
         virtual ~UploadWorkItem();
         void start() override;
 
-        UploadWorkItem(const UploadWorkItem&) = default;
-        UploadWorkItem(UploadWorkItem&&) = default;
-        UploadWorkItem& operator=(const UploadWorkItem&) = default;
-        UploadWorkItem& operator=(UploadWorkItem&&) = default;
+        UploadWorkItem(const UploadWorkItem&) = delete;
+        UploadWorkItem(UploadWorkItem&&) = delete;
+        UploadWorkItem& operator=(const UploadWorkItem&) = delete;
+        UploadWorkItem& operator=(UploadWorkItem&&) = delete;
 
     private:
+        void send_count();
+        void send_mission_item();
         void process_mission_request_int(const mavlink_message_t& message);
         void process_mission_ack(const mavlink_message_t& message);
         void process_timeout();
         void callback_and_reset(Result result);
 
+        enum class Step {
+            SendCount,
+            SendItems,
+        } _step{Step::SendCount};
+
         std::vector<ItemInt> _items{};
         ResultCallback _callback{nullptr};
-        int _next_sequence_expected{-1};
+        std::size_t _next_sequence{0};
         void* _cookie{nullptr};
+        unsigned _retries_done{0};
     };
 
     class DownloadWorkItem : public WorkItem {
@@ -155,19 +164,31 @@ private:
         virtual ~DownloadWorkItem();
         void start() override;
 
-        DownloadWorkItem(const DownloadWorkItem&) = default;
-        DownloadWorkItem(DownloadWorkItem&&) = default;
-        DownloadWorkItem& operator=(const DownloadWorkItem&) = default;
-        DownloadWorkItem& operator=(DownloadWorkItem&&) = default;
+        DownloadWorkItem(const DownloadWorkItem&) = delete;
+        DownloadWorkItem(DownloadWorkItem&&) = delete;
+        DownloadWorkItem& operator=(const DownloadWorkItem&) = delete;
+        DownloadWorkItem& operator=(DownloadWorkItem&&) = delete;
 
     private:
         void request_list();
+        void request_item();
+        void send_ack_and_finish();
+        void process_mission_count(const mavlink_message_t& message);
+        void process_mission_item_int(const mavlink_message_t& message);
         void process_timeout();
         void callback_and_reset(Result result);
+
+        enum class Step {
+            RequestList,
+            RequestItem,
+        } _step{Step::RequestList};
 
         std::vector<ItemInt> _items{};
         ResultAndItemsCallback _callback{nullptr};
         void* _cookie{nullptr};
+        std::size_t _next_sequence{0};
+        std::size_t _expected_count{0};
+        unsigned _retries_done{0};
     };
 
     Config _config;
