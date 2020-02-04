@@ -68,7 +68,6 @@ MAVLinkMissionTransfer::WorkItem::WorkItem(
 
 MAVLinkMissionTransfer::WorkItem::~WorkItem() {}
 
-
 bool MAVLinkMissionTransfer::WorkItem::has_started()
 {
     return _started;
