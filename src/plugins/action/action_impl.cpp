@@ -452,7 +452,7 @@ void ActionImpl::command_result_callback(
     if (callback) {
         auto temp_callback = callback;
         _parent->call_user_callback(
-            [this, temp_callback, action_result]() { temp_callback(action_result); });
+            [temp_callback, action_result]() { temp_callback(action_result); });
     }
 }
 
