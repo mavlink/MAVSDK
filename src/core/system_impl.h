@@ -259,6 +259,9 @@ private:
     std::mutex _component_discovered_callback_mutex{};
     discover_callback_t _component_discovered_callback{nullptr};
 
+    // Needs to be before anything else because they can depend on it.
+    MAVLinkMessageHandler _message_handler{};
+
     std::atomic<uint8_t> _system_id;
 
     uint64_t _uuid{0};
@@ -290,10 +293,7 @@ private:
     static constexpr double _HEARTBEAT_SEND_INTERVAL_S = 1.0;
 
     MAVLinkParameters _params;
-
     MAVLinkCommands _commands;
-
-    MAVLinkMessageHandler _message_handler{};
 
     Timesync _timesync;
 
