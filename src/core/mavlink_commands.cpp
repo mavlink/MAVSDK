@@ -70,7 +70,7 @@ void MAVLinkCommands::queue_command_async(
     const CommandInt& command, command_result_callback_t callback)
 {
     // LogDebug() << "Command " << (int)(command.command) << " to send to "
-    //  << (int)(command.target_system_id)<< ", " << (int)(command.target_component_id;
+    //  << (int)(command.target_system_id)<< ", " << (int)(command.target_component_id);
 
     auto new_work =  std::make_shared<Work>();
 
@@ -101,7 +101,7 @@ void MAVLinkCommands::queue_command_async(
     const CommandLong& command, command_result_callback_t callback)
 {
     // LogDebug() << "Command " << (int)(command.command) << " to send to "
-    //  << (int)(command.target_system_id)<< ", " << (int)(command.target_component_id;
+    //  << (int)(command.target_system_id)<< ", " << (int)(command.target_component_id);
 
     auto new_work = std::make_shared<Work>();
     mavlink_msg_command_long_pack(
