@@ -30,31 +30,16 @@ public:
 
 private:
     void process_mission_ack(const mavlink_message_t& message);
-    void process_mission_count(const mavlink_message_t& message);
-    void process_mission_item_int(const mavlink_message_t& message);
-    void do_download_step();
-    void request_list();
-    void request_item();
-    void send_ack();
+    MissionRaw::Result convert_result(MAVLinkMissionTransfer::Result result);
+    MissionRaw::MavlinkMissionItemInt
+    convert_item(const MAVLinkMissionTransfer::ItemInt& transfer_item);
+    std::vector<std::shared_ptr<MissionRaw::MavlinkMissionItemInt>>
+    convert_items(const std::vector<MAVLinkMissionTransfer::ItemInt>& transfer_items);
 
     struct MissionChanged {
         std::mutex mutex{};
         MissionRaw::mission_changed_callback_t callback{nullptr};
     } _mission_changed{};
-
-    struct MissionDownload {
-        std::mutex mutex{};
-        enum class State { NONE, REQUEST_LIST, REQUEST_ITEM, SHOULD_ACK } state{State::NONE};
-        unsigned retries{0};
-        std::vector<std::shared_ptr<MissionRaw::MavlinkMissionItemInt>>
-            mavlink_mission_items_downloaded{};
-        MissionRaw::mission_items_and_result_callback_t callback{nullptr};
-        unsigned num_mission_items_to_download{0};
-        unsigned next_mission_item_to_download{0};
-    } _mission_download{};
-
-    void* _timeout_cookie{nullptr};
-    static constexpr double RETRY_TIMEOUT_S = 0.250;
 };
 
 } // namespace mavsdk

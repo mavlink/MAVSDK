@@ -24,7 +24,7 @@ SystemImpl::SystemImpl(MavsdkImpl& parent, uint8_t system_id, uint8_t comp_id, b
     _timesync(*this),
     _timeout_handler(_time),
     _call_every_handler(_time),
-    mission_transfer(*this, _message_handler, _timeout_handler)
+    _mission_transfer(*this, _message_handler, _timeout_handler)
 {
     target_address.system_id = system_id;
     // FIXME: for now use this as a default.
@@ -280,7 +280,7 @@ void SystemImpl::system_thread()
         _params.do_work();
         _commands.do_work();
         _timesync.do_work();
-        //_mission_transfer.do_work();
+        _mission_transfer.do_work();
 
         if (_connected) {
             // Work fairly fast if we're connected.
