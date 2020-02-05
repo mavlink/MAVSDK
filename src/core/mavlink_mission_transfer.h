@@ -20,8 +20,8 @@ public:
     {}
     virtual ~Sender() = default;
     virtual bool send_message(mavlink_message_t& message) = 0;
-    MAVLinkAddress own_address;
-    MAVLinkAddress target_address;
+    MAVLinkAddress& own_address;
+    MAVLinkAddress& target_address;
 };
 
 class MAVLinkMissionTransfer {
