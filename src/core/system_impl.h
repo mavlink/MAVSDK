@@ -1,10 +1,12 @@
 #pragma once
 
 #include "global_include.h"
+#include "mavlink_address.h"
 #include "mavlink_include.h"
 #include "mavlink_parameters.h"
 #include "mavlink_commands.h"
 #include "mavlink_message_handler.h"
+#include "mavlink_mission_transfer.h"
 #include "timeout_handler.h"
 #include "call_every_handler.h"
 #include "thread_pool.h"
@@ -27,7 +29,7 @@ class PluginImplBase;
 
 // This class is the impl of System. This is to hide the private methods
 // and functionality from the public library API.
-class SystemImpl {
+class SystemImpl : public Sender {
 public:
     enum class FlightMode {
         UNKNOWN,
@@ -70,7 +72,7 @@ public:
     void reset_call_every(const void* cookie);
     void remove_call_every(const void* cookie);
 
-    bool send_message(mavlink_message_t& message);
+    bool send_message(mavlink_message_t& message) override;
 
     static FlightMode to_flight_mode_from_custom_mode(uint32_t custom_mode);
 
@@ -217,6 +219,8 @@ public:
     SystemImpl(const SystemImpl&) = delete;
     const SystemImpl& operator=(const SystemImpl&) = delete;
 
+    MAVLinkAddress target_address{};
+
 private:
     // Helper methods added to increase readablity
     static bool is_autopilot(uint8_t comp_id);
@@ -259,10 +263,11 @@ private:
     std::mutex _component_discovered_callback_mutex{};
     discover_callback_t _component_discovered_callback{nullptr};
 
+    Time _time{};
+    AutopilotTime _autopilot_time{};
+
     // Needs to be before anything else because they can depend on it.
     MAVLinkMessageHandler _message_handler{};
-
-    std::atomic<uint8_t> _system_id;
 
     uint64_t _uuid{0};
 
@@ -300,8 +305,7 @@ private:
     TimeoutHandler _timeout_handler;
     CallEveryHandler _call_every_handler;
 
-    Time _time{};
-    AutopilotTime _autopilot_time{};
+    MAVLinkMissionTransfer mission_transfer;
 
     std::mutex _plugin_impls_mutex{};
     std::vector<PluginImplBase*> _plugin_impls{};

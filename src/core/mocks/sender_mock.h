@@ -6,7 +6,10 @@ namespace testing {
 
 class MockSender : public Sender {
 public:
-    MOCK_METHOD(bool, send_message, (const mavlink_message_t&), (override)){};
+    MockSender(MAVLinkAddress& own_address, MAVLinkAddress& target_address) :
+        Sender(own_address, target_address)
+    {}
+    MOCK_METHOD(bool, send_message, (mavlink_message_t&), (override)){};
 };
 
 } // namespace testing

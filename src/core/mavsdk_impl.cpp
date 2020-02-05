@@ -245,7 +245,32 @@ void MavsdkImpl::add_connection(std::shared_ptr<Connection> new_connection)
 
 void MavsdkImpl::set_configuration(Mavsdk::Configuration configuration)
 {
-    _configuration = configuration;
+    switch (configuration) {
+        case Mavsdk::Configuration::Autopilot:
+            own_address.system_id = 1;
+            own_address.component_id = MAV_COMP_ID_AUTOPILOT1;
+            break;
+
+        case Mavsdk::Configuration::GroundStation:
+            // FIXME: this is wrong. It should not be equal to a component ID.
+            own_address.system_id = MAV_COMP_ID_MISSIONPLANNER;
+            // FIXME: For now we increment by 1 to avoid conflicts with others.
+            own_address.component_id = MAV_COMP_ID_MISSIONPLANNER + 1;
+            break;
+
+        case Mavsdk::Configuration::CompanionComputer:
+            // FIXME: This should be the same as the drone but we need to
+            // add auto detection for it.
+            own_address.system_id = 1;
+            own_address.component_id = MAV_COMP_ID_UDP_BRIDGE;
+            break;
+
+        default:
+            LogErr() << "Unknown configuration";
+            own_address.system_id = 0;
+            own_address.component_id = 0;
+            break;
+    }
 }
 
 std::vector<uint64_t> MavsdkImpl::get_system_uuids() const
@@ -310,42 +335,14 @@ System& MavsdkImpl::get_system(const uint64_t uuid)
 
 uint8_t MavsdkImpl::get_own_system_id() const
 {
-    switch (_configuration.load()) {
-        case Mavsdk::Configuration::Autopilot:
-            return 1;
-
-        case Mavsdk::Configuration::GroundStation:
-            return MAV_COMP_ID_MISSIONPLANNER;
-
-        case Mavsdk::Configuration::CompanionComputer:
-            // FIXME: This should be the same as the drone but we need to
-            // add auto detection for it.
-            return 1;
-
-        default:
-            LogErr() << "Unknown configuration";
-            return 0;
-    }
+    // TODO: To be deprecated.
+    return own_address.system_id;
 }
 
 uint8_t MavsdkImpl::get_own_component_id() const
 {
-    switch (_configuration.load()) {
-        case Mavsdk::Configuration::Autopilot:
-            return MAV_COMP_ID_AUTOPILOT1;
-
-        case Mavsdk::Configuration::GroundStation:
-            // FIXME: For now we increment by 1 to avoid conflicts with others.
-            return MAV_COMP_ID_MISSIONPLANNER + 1;
-
-        case Mavsdk::Configuration::CompanionComputer:
-            // It's at least a possibility that we are bridging MAVLink traffic.
-            return MAV_COMP_ID_UDP_BRIDGE;
-
-        default:
-            LogErr() << "Unknown configuration";
-            return 0;
-    }
+    // TODO: To be deprecated.
+    return own_address.component_id;
 }
 
 uint8_t MavsdkImpl::get_mav_type() const
