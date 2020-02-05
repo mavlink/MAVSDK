@@ -212,6 +212,8 @@ public:
     void send_autopilot_version_request();
     void send_flight_information_request();
 
+    MAVLinkMissionTransfer& mission_transfer() { return _mission_transfer; };
+
     void intercept_incoming_messages(std::function<bool(mavlink_message_t&)> callback);
     void intercept_outgoing_messages(std::function<bool(mavlink_message_t&)> callback);
 
@@ -305,7 +307,7 @@ private:
     TimeoutHandler _timeout_handler;
     CallEveryHandler _call_every_handler;
 
-    MAVLinkMissionTransfer mission_transfer;
+    MAVLinkMissionTransfer _mission_transfer;
 
     std::mutex _plugin_impls_mutex{};
     std::vector<PluginImplBase*> _plugin_impls{};
