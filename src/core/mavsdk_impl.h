@@ -9,6 +9,7 @@
 #include "mavsdk.h"
 #include "system.h"
 #include "mavlink_include.h"
+#include "mavlink_address.h"
 
 namespace mavsdk {
 
@@ -48,6 +49,8 @@ public:
 
     void notify_on_discover(uint64_t uuid);
     void notify_on_timeout(uint64_t uuid);
+
+    MAVLinkAddress own_address{};
 
 private:
     void add_connection(std::shared_ptr<Connection>);

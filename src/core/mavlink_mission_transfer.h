@@ -4,6 +4,7 @@
 #include <cstdint>
 #include <functional>
 #include <vector>
+#include "mavlink_address.h"
 #include "mavlink_include.h"
 #include "mavlink_message_handler.h"
 #include "timeout_handler.h"
@@ -13,19 +14,18 @@ namespace mavsdk {
 
 class Sender {
 public:
+    Sender(MAVLinkAddress& own_address, MAVLinkAddress& target_address) :
+        own_address(own_address),
+        target_address(target_address)
+    {}
     virtual ~Sender() = default;
-    virtual bool send_message(const mavlink_message_t& message) = 0;
+    virtual bool send_message(mavlink_message_t& message) = 0;
+    MAVLinkAddress own_address;
+    MAVLinkAddress target_address;
 };
 
 class MAVLinkMissionTransfer {
 public:
-    struct Config {
-        uint8_t own_system_id;
-        uint8_t own_component_id;
-        uint8_t target_system_id;
-        uint8_t target_component_id;
-    };
-
     enum class Result {
         Success,
         ConnectionError,
@@ -63,10 +63,7 @@ public:
     static constexpr unsigned retries = 4;
 
     MAVLinkMissionTransfer(
-        Config config,
-        Sender& sender,
-        MAVLinkMessageHandler& message_handler,
-        TimeoutHandler& timeout_handler);
+        Sender& sender, MAVLinkMessageHandler& message_handler, TimeoutHandler& timeout_handler);
 
     ~MAVLinkMissionTransfer();
 
@@ -88,7 +85,6 @@ private:
     class WorkItem {
     public:
         WorkItem(
-            Config config,
             Sender& sender,
             MAVLinkMessageHandler& message_handler,
             TimeoutHandler& timeout_handler,
@@ -104,7 +100,6 @@ private:
         WorkItem& operator=(WorkItem&&) = delete;
 
     protected:
-        Config _config;
         Sender& _sender;
         MAVLinkMessageHandler& _message_handler;
         TimeoutHandler& _timeout_handler;
@@ -116,7 +111,6 @@ private:
     class UploadWorkItem : public WorkItem {
     public:
         UploadWorkItem(
-            Config config,
             Sender& sender,
             MAVLinkMessageHandler& message_handler,
             TimeoutHandler& timeout_handler,
@@ -155,7 +149,6 @@ private:
     class DownloadWorkItem : public WorkItem {
     public:
         DownloadWorkItem(
-            Config config,
             Sender& sender,
             MAVLinkMessageHandler& message_handler,
             TimeoutHandler& timeout_handler,
@@ -192,7 +185,6 @@ private:
         unsigned _retries_done{0};
     };
 
-    Config _config;
     Sender& _sender;
     MAVLinkMessageHandler& _message_handler;
     TimeoutHandler& _timeout_handler;

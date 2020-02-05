@@ -5,11 +5,7 @@
 namespace mavsdk {
 
 MAVLinkMissionTransfer::MAVLinkMissionTransfer(
-    Config config,
-    Sender& sender,
-    MAVLinkMessageHandler& message_handler,
-    TimeoutHandler& timeout_handler) :
-    _config(config),
+    Sender& sender, MAVLinkMessageHandler& message_handler, TimeoutHandler& timeout_handler) :
     _sender(sender),
     _message_handler(message_handler),
     _timeout_handler(timeout_handler)
@@ -21,13 +17,13 @@ void MAVLinkMissionTransfer::upload_items_async(
     uint8_t type, const std::vector<ItemInt>& items, ResultCallback callback)
 {
     _work_queue.push_back(std::make_shared<UploadWorkItem>(
-        _config, _sender, _message_handler, _timeout_handler, type, items, callback));
+        _sender, _message_handler, _timeout_handler, type, items, callback));
 }
 
 void MAVLinkMissionTransfer::download_items_async(uint8_t type, ResultAndItemsCallback callback)
 {
     _work_queue.push_back(std::make_shared<DownloadWorkItem>(
-        _config, _sender, _message_handler, _timeout_handler, type, callback));
+        _sender, _message_handler, _timeout_handler, type, callback));
 }
 
 void MAVLinkMissionTransfer::do_work()
@@ -54,12 +50,10 @@ bool MAVLinkMissionTransfer::is_idle()
 }
 
 MAVLinkMissionTransfer::WorkItem::WorkItem(
-    Config config,
     Sender& sender,
     MAVLinkMessageHandler& message_handler,
     TimeoutHandler& timeout_handler,
     uint8_t type) :
-    _config(config),
     _sender(sender),
     _message_handler(message_handler),
     _timeout_handler(timeout_handler),
@@ -79,14 +73,13 @@ bool MAVLinkMissionTransfer::WorkItem::is_done()
 }
 
 MAVLinkMissionTransfer::UploadWorkItem::UploadWorkItem(
-    Config config,
     Sender& sender,
     MAVLinkMessageHandler& message_handler,
     TimeoutHandler& timeout_handler,
     uint8_t type,
     const std::vector<ItemInt>& items,
     ResultCallback callback) :
-    WorkItem(config, sender, message_handler, timeout_handler, type),
+    WorkItem(sender, message_handler, timeout_handler, type),
     _items(items),
     _callback(callback)
 {
@@ -152,11 +145,11 @@ void MAVLinkMissionTransfer::UploadWorkItem::send_count()
 {
     mavlink_message_t message;
     mavlink_msg_mission_count_pack(
-        _config.own_system_id,
-        _config.own_component_id,
+        _sender.own_address.system_id,
+        _sender.own_address.component_id,
         &message,
-        _config.target_system_id,
-        _config.target_component_id,
+        _sender.target_address.system_id,
+        _sender.target_address.component_id,
         _items.size(),
         _type);
 
@@ -209,13 +202,13 @@ void MAVLinkMissionTransfer::UploadWorkItem::send_mission_item()
         return;
     }
 
-    mavlink_message_t new_message;
+    mavlink_message_t message;
     mavlink_msg_mission_item_int_pack(
-        _config.own_system_id,
-        _config.own_component_id,
-        &new_message,
-        _config.target_system_id,
-        _config.target_component_id,
+        _sender.own_address.system_id,
+        _sender.own_address.component_id,
+        &message,
+        _sender.target_address.system_id,
+        _sender.target_address.component_id,
         _next_sequence,
         _items[_next_sequence].frame,
         _items[_next_sequence].command,
@@ -232,7 +225,7 @@ void MAVLinkMissionTransfer::UploadWorkItem::send_mission_item()
 
     ++_next_sequence;
 
-    if (!_sender.send_message(new_message)) {
+    if (!_sender.send_message(message)) {
         _timeout_handler.remove(_cookie);
         callback_and_reset(Result::ConnectionError);
         return;
@@ -325,13 +318,12 @@ void MAVLinkMissionTransfer::UploadWorkItem::callback_and_reset(Result result)
 }
 
 MAVLinkMissionTransfer::DownloadWorkItem::DownloadWorkItem(
-    Config config,
     Sender& sender,
     MAVLinkMessageHandler& message_handler,
     TimeoutHandler& timeout_handler,
     uint8_t type,
     ResultAndItemsCallback callback) :
-    WorkItem(config, sender, message_handler, timeout_handler, type),
+    WorkItem(sender, message_handler, timeout_handler, type),
     _callback(callback)
 {
     _message_handler.register_one(
@@ -364,11 +356,11 @@ void MAVLinkMissionTransfer::DownloadWorkItem::request_list()
 {
     mavlink_message_t message;
     mavlink_msg_mission_request_list_pack(
-        _config.own_system_id,
-        _config.own_component_id,
+        _sender.own_address.system_id,
+        _sender.own_address.component_id,
         &message,
-        _config.target_system_id,
-        _config.target_component_id,
+        _sender.target_address.system_id,
+        _sender.target_address.component_id,
         _type);
 
     if (!_sender.send_message(message)) {
@@ -384,11 +376,11 @@ void MAVLinkMissionTransfer::DownloadWorkItem::request_item()
 {
     mavlink_message_t message;
     mavlink_msg_mission_request_int_pack(
-        _config.own_system_id,
-        _config.own_component_id,
+        _sender.own_address.system_id,
+        _sender.own_address.component_id,
         &message,
-        _config.target_system_id,
-        _config.target_component_id,
+        _sender.target_address.system_id,
+        _sender.target_address.component_id,
         _next_sequence,
         _type);
 
@@ -405,11 +397,11 @@ void MAVLinkMissionTransfer::DownloadWorkItem::send_ack_and_finish()
 {
     mavlink_message_t message;
     mavlink_msg_mission_ack_pack(
-        _config.own_system_id,
-        _config.own_component_id,
+        _sender.own_address.system_id,
+        _sender.own_address.component_id,
         &message,
-        _config.target_system_id,
-        _config.target_component_id,
+        _sender.target_address.system_id,
+        _sender.target_address.component_id,
         MAV_MISSION_ACCEPTED,
         _type);
 
