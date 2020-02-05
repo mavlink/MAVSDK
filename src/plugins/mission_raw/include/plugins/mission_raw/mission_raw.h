@@ -68,11 +68,9 @@ public:
     static const char* result_str(Result result);
 
     /**
-     * @brief Mission item identical to MAVLink MISSION_ITEM_INT.
+     * @brief Mission item mostly identical to MAVLink MISSION_ITEM_INT.
      */
     struct MavlinkMissionItemInt {
-        uint8_t target_system; /**< @brief System ID. */
-        uint8_t target_component; /**< @brief Component ID. */
         uint16_t seq; /**< @brief Sequence. */
         uint8_t frame; /**< @brief The coordinate system of the waypoint. */
         uint16_t command; /**< @brief The scheduled action for the waypoint. */
