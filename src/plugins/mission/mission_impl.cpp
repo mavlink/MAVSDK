@@ -137,6 +137,16 @@ void MissionImpl::upload_mission_cancel()
 void MissionImpl::download_mission_async(
     const Mission::mission_items_and_result_callback_t& callback)
 {
+    if (_mission_data.last_download.lock()) {
+        _parent->call_user_callback([callback]() {
+            if (callback) {
+                std::vector<std::shared_ptr<MissionItem>> empty_items;
+                callback(Mission::Result::BUSY, empty_items);
+            }
+        });
+        return;
+    }
+
     _parent->mission_transfer().download_items_async(
         MAV_MISSION_TYPE_MISSION,
         [this, callback](
