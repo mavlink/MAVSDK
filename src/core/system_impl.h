@@ -249,8 +249,7 @@ private:
     std::pair<MAVLinkCommands::Result, MAVLinkCommands::CommandLong>
     make_command_flight_mode(FlightMode mode, uint8_t component_id);
 
-    // We use std::pair instead of a std::optional.
-    std::pair<MAVLinkCommands::Result, MAVLinkCommands::CommandLong>
+    MAVLinkCommands::CommandLong
     make_command_msg_rate(uint16_t message_id, double rate_hz, uint8_t component_id);
 
     static void receive_float_param(
