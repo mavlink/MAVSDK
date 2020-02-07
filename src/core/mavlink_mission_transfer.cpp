@@ -35,6 +35,14 @@ MAVLinkMissionTransfer::download_items_async(uint8_t type, ResultAndItemsCallbac
     return std::weak_ptr<WorkItem>(ptr);
 }
 
+void MAVLinkMissionTransfer::clear_items_async(uint8_t type, ResultCallback callback)
+{
+    auto ptr = std::make_shared<ClearWorkItem>(
+        _sender, _message_handler, _timeout_handler, type, callback);
+
+    _work_queue.push_back(ptr);
+}
+
 void MAVLinkMissionTransfer::do_work()
 {
     LockedQueue<WorkItem>::Guard work_queue_guard(_work_queue);
@@ -554,6 +562,133 @@ void MAVLinkMissionTransfer::DownloadWorkItem::callback_and_reset(Result result)
 {
     if (_callback) {
         _callback(result, _items);
+    }
+    _callback = nullptr;
+    _done = true;
+}
+
+MAVLinkMissionTransfer::ClearWorkItem::ClearWorkItem(
+    Sender& sender,
+    MAVLinkMessageHandler& message_handler,
+    TimeoutHandler& timeout_handler,
+    uint8_t type,
+    ResultCallback callback) :
+    WorkItem(sender, message_handler, timeout_handler, type),
+    _callback(callback)
+{
+    _message_handler.register_one(
+        MAVLINK_MSG_ID_MISSION_ACK,
+        [this](const mavlink_message_t& message) { process_mission_ack(message); },
+        this);
+}
+
+MAVLinkMissionTransfer::ClearWorkItem::~ClearWorkItem()
+{
+    _message_handler.unregister_all(this);
+    _timeout_handler.remove(_cookie);
+}
+
+void MAVLinkMissionTransfer::ClearWorkItem::start()
+{
+    _started = true;
+    _retries_done = 0;
+    _timeout_handler.add([this]() { process_timeout(); }, timeout_s, &_cookie);
+    send_clear();
+}
+
+void MAVLinkMissionTransfer::ClearWorkItem::cancel()
+{
+    _timeout_handler.remove(_cookie);
+    // This is presumably not used or exposed because it is quick.
+}
+
+void MAVLinkMissionTransfer::ClearWorkItem::send_clear()
+{
+    mavlink_message_t message;
+    mavlink_msg_mission_clear_all_pack(
+        _sender.own_address.system_id,
+        _sender.own_address.component_id,
+        &message,
+        _sender.target_address.system_id,
+        _sender.target_address.component_id,
+        _type);
+
+    if (!_sender.send_message(message)) {
+        _timeout_handler.remove(_cookie);
+        callback_and_reset(Result::ConnectionError);
+        return;
+    }
+
+    ++_retries_done;
+}
+
+void MAVLinkMissionTransfer::ClearWorkItem::process_timeout()
+{
+    if (_retries_done >= retries) {
+        callback_and_reset(Result::Timeout);
+        return;
+    }
+
+    _timeout_handler.add([this]() { process_timeout(); }, timeout_s, &_cookie);
+    send_clear();
+}
+
+void MAVLinkMissionTransfer::ClearWorkItem::process_mission_ack(const mavlink_message_t& message)
+{
+    mavlink_mission_ack_t mission_ack;
+    mavlink_msg_mission_ack_decode(&message, &mission_ack);
+
+    _timeout_handler.remove(_cookie);
+
+    switch (mission_ack.type) {
+        case MAV_MISSION_ACCEPTED:
+            callback_and_reset(Result::Success);
+            return;
+        case MAV_MISSION_ERROR:
+            callback_and_reset(Result::ProtocolError);
+            return;
+        case MAV_MISSION_UNSUPPORTED_FRAME:
+            callback_and_reset(Result::UnsupportedFrame);
+            return;
+        case MAV_MISSION_UNSUPPORTED:
+            callback_and_reset(Result::Unsupported);
+            return;
+        case MAV_MISSION_NO_SPACE:
+            callback_and_reset(Result::TooManyMissionItems);
+            return;
+        case MAV_MISSION_INVALID:
+            // FALLTHROUGH
+        case MAV_MISSION_INVALID_PARAM1:
+            // FALLTHROUGH
+        case MAV_MISSION_INVALID_PARAM2:
+            // FALLTHROUGH
+        case MAV_MISSION_INVALID_PARAM3:
+            // FALLTHROUGH
+        case MAV_MISSION_INVALID_PARAM4:
+            // FALLTHROUGH
+        case MAV_MISSION_INVALID_PARAM5_X:
+            // FALLTHROUGH
+        case MAV_MISSION_INVALID_PARAM6_Y:
+            // FALLTHROUGH
+        case MAV_MISSION_INVALID_PARAM7:
+            callback_and_reset(Result::InvalidParam);
+            return;
+        case MAV_MISSION_INVALID_SEQUENCE:
+            callback_and_reset(Result::InvalidSequence);
+            return;
+        case MAV_MISSION_DENIED:
+            callback_and_reset(Result::Denied);
+            return;
+        case MAV_MISSION_OPERATION_CANCELLED:
+            callback_and_reset(Result::Cancelled);
+            return;
+    }
+}
+
+void MAVLinkMissionTransfer::ClearWorkItem::callback_and_reset(Result result)
+{
+    if (_callback) {
+        _callback(result);
     }
     _callback = nullptr;
     _done = true;
