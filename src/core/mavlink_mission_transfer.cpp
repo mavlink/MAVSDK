@@ -13,17 +13,26 @@ MAVLinkMissionTransfer::MAVLinkMissionTransfer(
 
 MAVLinkMissionTransfer::~MAVLinkMissionTransfer() {}
 
-void MAVLinkMissionTransfer::upload_items_async(
+std::weak_ptr<MAVLinkMissionTransfer::WorkItem> MAVLinkMissionTransfer::upload_items_async(
     uint8_t type, const std::vector<ItemInt>& items, ResultCallback callback)
 {
-    _work_queue.push_back(std::make_shared<UploadWorkItem>(
-        _sender, _message_handler, _timeout_handler, type, items, callback));
+    auto ptr = std::make_shared<UploadWorkItem>(
+        _sender, _message_handler, _timeout_handler, type, items, callback);
+
+    _work_queue.push_back(ptr);
+
+    return std::weak_ptr<WorkItem>(ptr);
 }
 
-void MAVLinkMissionTransfer::download_items_async(uint8_t type, ResultAndItemsCallback callback)
+std::weak_ptr<MAVLinkMissionTransfer::WorkItem>
+MAVLinkMissionTransfer::download_items_async(uint8_t type, ResultAndItemsCallback callback)
 {
-    _work_queue.push_back(std::make_shared<DownloadWorkItem>(
-        _sender, _message_handler, _timeout_handler, type, callback));
+    auto ptr = std::make_shared<DownloadWorkItem>(
+        _sender, _message_handler, _timeout_handler, type, callback);
+
+    _work_queue.push_back(ptr);
+
+    return std::weak_ptr<WorkItem>(ptr);
 }
 
 void MAVLinkMissionTransfer::do_work()
@@ -141,6 +150,12 @@ void MAVLinkMissionTransfer::UploadWorkItem::start()
     send_count();
 }
 
+void MAVLinkMissionTransfer::UploadWorkItem::cancel()
+{
+    _timeout_handler.remove(_cookie);
+    send_cancel_and_finish();
+}
+
 void MAVLinkMissionTransfer::UploadWorkItem::send_count()
 {
     mavlink_message_t message;
@@ -160,6 +175,27 @@ void MAVLinkMissionTransfer::UploadWorkItem::send_count()
     }
 
     ++_retries_done;
+}
+
+void MAVLinkMissionTransfer::UploadWorkItem::send_cancel_and_finish()
+{
+    mavlink_message_t message;
+    mavlink_msg_mission_ack_pack(
+        _sender.own_address.system_id,
+        _sender.own_address.component_id,
+        &message,
+        _sender.target_address.system_id,
+        _sender.target_address.component_id,
+        MAV_MISSION_OPERATION_CANCELLED,
+        _type);
+
+    if (!_sender.send_message(message)) {
+        callback_and_reset(Result::ConnectionError);
+        return;
+    }
+
+    // We do not wait on anything coming back after this.
+    callback_and_reset(Result::Cancelled);
 }
 
 void MAVLinkMissionTransfer::UploadWorkItem::process_mission_request_int(
@@ -352,6 +388,12 @@ void MAVLinkMissionTransfer::DownloadWorkItem::start()
     request_list();
 }
 
+void MAVLinkMissionTransfer::DownloadWorkItem::cancel()
+{
+    _timeout_handler.remove(_cookie);
+    send_cancel_and_finish();
+}
+
 void MAVLinkMissionTransfer::DownloadWorkItem::request_list()
 {
     mavlink_message_t message;
@@ -412,6 +454,27 @@ void MAVLinkMissionTransfer::DownloadWorkItem::send_ack_and_finish()
 
     // We do not wait on anything coming back after this.
     callback_and_reset(Result::Success);
+}
+
+void MAVLinkMissionTransfer::DownloadWorkItem::send_cancel_and_finish()
+{
+    mavlink_message_t message;
+    mavlink_msg_mission_ack_pack(
+        _sender.own_address.system_id,
+        _sender.own_address.component_id,
+        &message,
+        _sender.target_address.system_id,
+        _sender.target_address.component_id,
+        MAV_MISSION_OPERATION_CANCELLED,
+        _type);
+
+    if (!_sender.send_message(message)) {
+        callback_and_reset(Result::ConnectionError);
+        return;
+    }
+
+    // We do not wait on anything coming back after this.
+    callback_and_reset(Result::Cancelled);
 }
 
 void MAVLinkMissionTransfer::DownloadWorkItem::process_mission_count(

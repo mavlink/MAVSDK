@@ -3,6 +3,7 @@
 #include <chrono>
 #include <cstdint>
 #include <functional>
+#include <memory>
 #include <vector>
 #include "mavlink_address.h"
 #include "mavlink_include.h"
@@ -69,29 +70,9 @@ public:
         }
     };
 
-    static constexpr double timeout_s = 0.5;
-    static constexpr unsigned retries = 4;
-
-    MAVLinkMissionTransfer(
-        Sender& sender, MAVLinkMessageHandler& message_handler, TimeoutHandler& timeout_handler);
-
-    ~MAVLinkMissionTransfer();
-
     using ResultCallback = std::function<void(Result result)>;
-    void
-    upload_items_async(uint8_t type, const std::vector<ItemInt>& items, ResultCallback callback);
-
     using ResultAndItemsCallback = std::function<void(Result result, std::vector<ItemInt> items)>;
-    void download_items_async(uint8_t type, ResultAndItemsCallback callback);
 
-    void do_work();
-    bool is_idle();
-
-    // Non-copyable
-    MAVLinkMissionTransfer(const MAVLinkMissionTransfer&) = delete;
-    const MAVLinkMissionTransfer& operator=(const MAVLinkMissionTransfer&) = delete;
-
-private:
     class WorkItem {
     public:
         WorkItem(
@@ -101,6 +82,7 @@ private:
             uint8_t type);
         virtual ~WorkItem();
         virtual void start() = 0;
+        virtual void cancel() = 0;
         bool has_started();
         bool is_done();
 
@@ -130,6 +112,7 @@ private:
 
         virtual ~UploadWorkItem();
         void start() override;
+        void cancel() override;
 
         UploadWorkItem(const UploadWorkItem&) = delete;
         UploadWorkItem(UploadWorkItem&&) = delete;
@@ -139,6 +122,7 @@ private:
     private:
         void send_count();
         void send_mission_item();
+        void send_cancel_and_finish();
         void process_mission_request_int(const mavlink_message_t& message);
         void process_mission_ack(const mavlink_message_t& message);
         void process_timeout();
@@ -167,6 +151,7 @@ private:
 
         virtual ~DownloadWorkItem();
         void start() override;
+        void cancel() override;
 
         DownloadWorkItem(const DownloadWorkItem&) = delete;
         DownloadWorkItem(DownloadWorkItem&&) = delete;
@@ -177,6 +162,7 @@ private:
         void request_list();
         void request_item();
         void send_ack_and_finish();
+        void send_cancel_and_finish();
         void process_mission_count(const mavlink_message_t& message);
         void process_mission_item_int(const mavlink_message_t& message);
         void process_timeout();
@@ -195,6 +181,27 @@ private:
         unsigned _retries_done{0};
     };
 
+    static constexpr double timeout_s = 0.5;
+    static constexpr unsigned retries = 4;
+
+    MAVLinkMissionTransfer(
+        Sender& sender, MAVLinkMessageHandler& message_handler, TimeoutHandler& timeout_handler);
+
+    ~MAVLinkMissionTransfer();
+
+    std::weak_ptr<WorkItem>
+    upload_items_async(uint8_t type, const std::vector<ItemInt>& items, ResultCallback callback);
+
+    std::weak_ptr<WorkItem> download_items_async(uint8_t type, ResultAndItemsCallback callback);
+
+    void do_work();
+    bool is_idle();
+
+    // Non-copyable
+    MAVLinkMissionTransfer(const MAVLinkMissionTransfer&) = delete;
+    const MAVLinkMissionTransfer& operator=(const MAVLinkMissionTransfer&) = delete;
+
+private:
     Sender& _sender;
     MAVLinkMessageHandler& _message_handler;
     TimeoutHandler& _timeout_handler;
