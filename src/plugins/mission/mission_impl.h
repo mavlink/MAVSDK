@@ -9,6 +9,7 @@
 #include "plugins/mission/mission.h"
 #include "plugin_impl_base.h"
 #include "system.h"
+#include "mavlink_mission_transfer.h"
 
 namespace mavsdk {
 
@@ -56,39 +57,26 @@ public:
     const MissionImpl& operator=(const MissionImpl&) = delete;
 
 private:
-    void process_mission_request(const mavlink_message_t& message);
-    void process_mission_request_int(const mavlink_message_t& message);
-    void process_mission_ack(const mavlink_message_t& message);
     void process_mission_current(const mavlink_message_t& message);
     void process_mission_item_reached(const mavlink_message_t& message);
-    void process_mission_count(const mavlink_message_t& message);
-    void process_mission_item_int(const mavlink_message_t& message);
 
-    void process_timeout();
-
-    void upload_mission_item();
-
-    void copy_mission_item_vector(const std::vector<std::shared_ptr<MissionItem>>& mission_items);
-
-    void assemble_mavlink_messages();
-
-    void report_mission_result(const Mission::result_callback_t& callback, Mission::Result result);
-
-    void report_mission_items_and_result(
-        const Mission::mission_items_and_result_callback_t& callback, Mission::Result result);
+    std::vector<MAVLinkMissionTransfer::ItemInt>
+    convert_to_int_items(const std::vector<std::shared_ptr<MissionItem>>& mission_items);
 
     void report_progress();
-
-    void receive_command_result(
-        MAVLinkCommands::Result result, const Mission::result_callback_t callback);
-
-    void download_next_mission_item();
-    void request_list();
-    void send_count();
-
-    void assemble_mission_items();
-
     void reset_mission_progress();
+
+    void
+    report_flight_mode_change(Mission::result_callback_t callback, MAVLinkCommands::Result result);
+    static Mission::Result command_result_to_mission_result(MAVLinkCommands::Result result);
+
+    // FIXME: make static
+    std::pair<Mission::Result, std::vector<std::shared_ptr<MissionItem>>>
+    convert_to_result_and_mission_items(
+        MAVLinkMissionTransfer::Result result,
+        const std::vector<MAVLinkMissionTransfer::ItemInt>& int_items);
+
+    static Mission::Result convert_result(MAVLinkMissionTransfer::Result result);
 
     static Mission::Result import_mission_items(
         Mission::mission_items_t& all_mission_items, const Json::Value& qgc_plan_json);
@@ -99,38 +87,21 @@ private:
         std::shared_ptr<MissionItem>& new_mission_item,
         Mission::mission_items_t& all_mission_items);
 
-    struct Activity {
-        mutable std::mutex mutex{};
-        enum class State {
-            NONE,
-            SET_CURRENT,
-            SET_MISSION_COUNT,
-            SET_MISSION_ITEM,
-            GET_MISSION_LIST,
-            GET_MISSION_REQUEST,
-            ABORTED,
-            SEND_COMMAND,
-            MISSION_CLEAR
-        } state{Activity::State::NONE};
-    } _activity{};
-
     struct MissionData {
         mutable std::recursive_mutex mutex{};
-        unsigned retries = 0;
         int last_current_mavlink_mission_item{-1};
         int last_reached_mavlink_mission_item{-1};
-        std::vector<std::shared_ptr<MissionItem>> mission_items{};
-        std::vector<std::shared_ptr<mavlink_message_t>> mavlink_mission_item_messages{};
         std::map<int, int> mavlink_mission_item_to_mission_item_indices{};
         int num_mission_items_to_download{-1};
         int next_mission_item_to_download{-1};
         int last_mission_item_to_upload{-1};
-        std::vector<std::shared_ptr<mavlink_mission_item_int_t>> mavlink_mission_items_downloaded{};
         Mission::result_callback_t result_callback{nullptr};
         Mission::mission_items_and_result_callback_t mission_items_and_result_callback{nullptr};
         Mission::progress_callback_t progress_callback{nullptr};
         int last_current_reported_mission_item{-1};
         int last_total_reported_mission_item{-1};
+        std::weak_ptr<MAVLinkMissionTransfer::WorkItem> last_upload{};
+        std::weak_ptr<MAVLinkMissionTransfer::WorkItem> last_download{};
     } _mission_data{};
 
     void* _timeout_cookie{nullptr};
