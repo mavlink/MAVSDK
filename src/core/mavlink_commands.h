@@ -2,6 +2,7 @@
 
 #include "mavlink_include.h"
 #include "locked_queue.h"
+#include "global_include.h"
 #include <cstdint>
 #include <string>
 #include <functional>
@@ -112,6 +113,7 @@ private:
         bool already_sent{false};
         mavlink_message_t mavlink_message{};
         command_result_callback_t callback{};
+        dl_time_t time_started{};
     };
 
     void receive_command_ack(mavlink_message_t message);
