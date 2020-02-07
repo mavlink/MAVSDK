@@ -618,8 +618,16 @@ Mission::Result MissionImpl::command_result_to_mission_result(MAVLinkCommands::R
 
 void MissionImpl::clear_mission_async(const Mission::result_callback_t& callback)
 {
-    UNUSED(callback);
-    // TODO: implement clear
+    _parent->mission_transfer().clear_items_async(
+        MAV_MISSION_TYPE_MISSION,
+        [this, callback](MAVLinkMissionTransfer::Result result) {
+            auto converted_result = convert_result(result);
+            _parent->call_user_callback([callback, converted_result]() {
+                if (callback) {
+                    callback(converted_result);
+                }
+            });
+        });
 }
 
 void MissionImpl::set_current_mission_item_async(int current, Mission::result_callback_t& callback)
