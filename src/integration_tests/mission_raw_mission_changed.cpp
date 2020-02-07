@@ -36,8 +36,15 @@ TEST_F(SitlTest, MissionRawMissionChanged)
     std::promise<void> prom_changed{};
     std::future<void> fut_changed = prom_changed.get_future();
 
+    std::atomic<bool> called_once{false};
+
     LogInfo() << "Subscribe for mission changed notification";
-    mission_raw->subscribe_mission_changed([&prom_changed]() { prom_changed.set_value(); });
+    mission_raw->subscribe_mission_changed([&prom_changed, &called_once]() {
+        bool flag = false;
+        if (called_once.compare_exchange_strong(flag, true)) {
+            prom_changed.set_value();
+        }
+    });
 
     // The mission change callback should not trigger yet.
     EXPECT_EQ(fut_changed.wait_for(std::chrono::milliseconds(500)), std::future_status::timeout);
