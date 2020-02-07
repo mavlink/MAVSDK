@@ -1422,3 +1422,49 @@ TEST(MAVLinkMissionTransfer, DownloadMissionCanBeCancelled)
     mmt.do_work();
     EXPECT_TRUE(mmt.is_idle());
 }
+
+bool is_correct_mission_clear_all(uint8_t type, const mavlink_message_t& message)
+{
+    if (message.msgid != MAVLINK_MSG_ID_MISSION_CLEAR_ALL) {
+        return false;
+    }
+
+    mavlink_mission_clear_all_t clear_all;
+    mavlink_msg_mission_clear_all_decode(&message, &clear_all);
+    return (
+        message.sysid == own_address.system_id && message.compid == own_address.component_id &&
+        clear_all.target_system == target_address.system_id &&
+        clear_all.target_component == target_address.component_id &&
+        clear_all.mission_type == type);
+}
+
+TEST(MAVLinkMissionTransfer, ClearMissionSendsClear)
+{
+    MockSender mock_sender(own_address, target_address);
+    MAVLinkMessageHandler message_handler;
+    FakeTime time;
+    TimeoutHandler timeout_handler(time);
+
+    MAVLinkMissionTransfer mmt(mock_sender, message_handler, timeout_handler);
+
+    ON_CALL(mock_sender, send_message(_)).WillByDefault(Return(true));
+
+    EXPECT_CALL(mock_sender, send_message(Truly([](const mavlink_message_t& message) {
+                    return is_correct_mission_clear_all(MAV_MISSION_TYPE_MISSION, message);
+                })));
+
+    std::promise<void> prom;
+    auto fut = prom.get_future();
+    mmt.clear_items_async(MAV_MISSION_TYPE_MISSION, [&prom](Result result) {
+        EXPECT_EQ(result, Result::Success);
+        prom.set_value();
+    });
+    mmt.do_work();
+
+    message_handler.process_message(make_mission_ack(MAV_RESULT_ACCEPTED));
+
+    EXPECT_EQ(fut.wait_for(std::chrono::seconds(1)), std::future_status::ready);
+
+    mmt.do_work();
+    EXPECT_TRUE(mmt.is_idle());
+}

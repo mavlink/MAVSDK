@@ -181,6 +181,35 @@ public:
         unsigned _retries_done{0};
     };
 
+    class ClearWorkItem : public WorkItem {
+    public:
+        ClearWorkItem(
+            Sender& sender,
+            MAVLinkMessageHandler& message_handler,
+            TimeoutHandler& timeout_handler,
+            uint8_t type,
+            ResultCallback callback);
+
+        virtual ~ClearWorkItem();
+        void start() override;
+        void cancel() override;
+
+        ClearWorkItem(const ClearWorkItem&) = delete;
+        ClearWorkItem(ClearWorkItem&&) = delete;
+        ClearWorkItem& operator=(const ClearWorkItem&) = delete;
+        ClearWorkItem& operator=(ClearWorkItem&&) = delete;
+
+    private:
+        void send_clear();
+        void process_mission_ack(const mavlink_message_t& message);
+        void process_timeout();
+        void callback_and_reset(Result result);
+
+        ResultCallback _callback{nullptr};
+        void* _cookie{nullptr};
+        unsigned _retries_done{0};
+    };
+
     static constexpr double timeout_s = 0.5;
     static constexpr unsigned retries = 4;
 
@@ -193,6 +222,8 @@ public:
     upload_items_async(uint8_t type, const std::vector<ItemInt>& items, ResultCallback callback);
 
     std::weak_ptr<WorkItem> download_items_async(uint8_t type, ResultAndItemsCallback callback);
+
+    void clear_items_async(uint8_t type, ResultCallback callback);
 
     void do_work();
     bool is_idle();
