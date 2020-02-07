@@ -122,6 +122,7 @@ void MAVLinkCommands::queue_command_async(
 
     new_work->callback = callback;
     new_work->mavlink_command = command.command;
+    new_work->time_started = _parent.get_time().steady_time();
     _work_queue.push_back(new_work);
 }
 
@@ -129,8 +130,6 @@ void MAVLinkCommands::receive_command_ack(mavlink_message_t message)
 {
     mavlink_command_ack_t command_ack;
     mavlink_msg_command_ack_decode(&message, &command_ack);
-
-    // LogDebug() << "We got an ack: " << command_ack.command;
 
     LockedQueue<Work>::Guard work_queue_guard(_work_queue);
     auto work = work_queue_guard.get_front();
@@ -145,6 +144,9 @@ void MAVLinkCommands::receive_command_ack(mavlink_message_t message)
                   << " not matching our current command: " << work->mavlink_command;
         return;
     }
+
+    // LogDebug() << "We got an ack: " << command_ack.command
+    //            << " after: " << _parent.get_time().elapsed_since_s(work->time_started) << " s";
 
     switch (command_ack.result) {
         case MAV_RESULT_ACCEPTED:
@@ -220,8 +222,10 @@ void MAVLinkCommands::receive_timeout()
 
     if (work->retries_to_do > 0) {
         // We're not sure the command arrived, let's retransmit.
-        LogWarn() << "sending again, retries to do: " << work->retries_to_do << "  ("
-                  << work->mavlink_command << ").";
+        LogWarn() << "sending again after "
+                  << _parent.get_time().elapsed_since_s(work->time_started)
+                  << " s, retries to do: " << work->retries_to_do << "  (" << work->mavlink_command
+                  << ").";
         if (!_parent.send_message(work->mavlink_message)) {
             LogErr() << "connection send error in retransmit (" << work->mavlink_command << ").";
             work_queue_guard.pop_front();
@@ -257,6 +261,7 @@ void MAVLinkCommands::do_work()
 
     if (!work->already_sent) {
         // LogDebug() << "sending it the first time (" << work->mavlink_command << ")";
+        work->time_started = _parent.get_time().steady_time();
         if (!_parent.send_message(work->mavlink_message)) {
             LogErr() << "connection send error (" << work->mavlink_command << ")";
             work_queue_guard.pop_front();
