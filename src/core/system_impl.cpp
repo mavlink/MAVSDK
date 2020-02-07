@@ -1093,30 +1093,18 @@ void SystemImpl::send_command_async(
 MAVLinkCommands::Result
 SystemImpl::set_msg_rate(uint16_t message_id, double rate_hz, uint8_t component_id)
 {
-    std::pair<MAVLinkCommands::Result, MAVLinkCommands::CommandLong> result =
-        make_command_msg_rate(message_id, rate_hz, component_id);
-    if (result.first == MAVLinkCommands::Result::SUCCESS) {
-        return send_command(result.second);
-    }
-
-    return result.first;
+    MAVLinkCommands::CommandLong command = make_command_msg_rate(message_id, rate_hz, component_id);
+    return send_command(command);
 }
 
 void SystemImpl::set_msg_rate_async(
     uint16_t message_id, double rate_hz, command_result_callback_t callback, uint8_t component_id)
 {
-    std::pair<MAVLinkCommands::Result, MAVLinkCommands::CommandLong> result =
-        make_command_msg_rate(message_id, rate_hz, component_id);
-    if (result.first == MAVLinkCommands::Result::SUCCESS) {
-        send_command_async(result.second, callback);
-    } else {
-        if (callback) {
-            callback(result.first, NAN);
-        }
-    }
+    MAVLinkCommands::CommandLong command = make_command_msg_rate(message_id, rate_hz, component_id);
+    send_command_async(command, callback);
 }
 
-std::pair<MAVLinkCommands::Result, MAVLinkCommands::CommandLong>
+MAVLinkCommands::CommandLong
 SystemImpl::make_command_msg_rate(uint16_t message_id, double rate_hz, uint8_t component_id)
 {
     MAVLinkCommands::CommandLong command{};
@@ -1136,7 +1124,7 @@ SystemImpl::make_command_msg_rate(uint16_t message_id, double rate_hz, uint8_t c
     command.params.param2 = interval_us;
     command.target_component_id = component_id;
 
-    return std::make_pair<>(MAVLinkCommands::Result::SUCCESS, command);
+    return command;
 }
 
 void SystemImpl::register_plugin(PluginImplBase* plugin_impl)
