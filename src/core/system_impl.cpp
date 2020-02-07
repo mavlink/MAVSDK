@@ -472,20 +472,23 @@ void SystemImpl::request_autopilot_version()
         return;
     }
 
-    _autopilot_version_pending = true;
+    if (!_autopilot_version_pending) {
+        _autopilot_version_pending = true;
+        send_autopilot_version_request();
 
-    send_autopilot_version_request();
+        ++_uuid_retries;
 
-    ++_uuid_retries;
+        // We set a timeout to stay "pending" for half a second. This way, we
+        // don't give up too early e.g. because multiple components might send
+        // heartbeats and we receive them all at once and run out of retries.
+        // Also, with simulation sped up we might get too many heartbeats in
+        // fast succession.
 
-    // We set a timeout to stay "pending" for half a second. This way, we don't give up too
-    // early e.g. because multiple components send heartbeats and we receive them all at once
-    // and run out of retries.
-
-    // We create a temp reference, so we don't need to capture `this`.
-    auto& pending_tmp = _autopilot_version_pending;
-    register_timeout_handler(
-        [&pending_tmp]() { pending_tmp = false; }, 0.5, &_autopilot_version_timed_out_cookie);
+        register_timeout_handler(
+            [this]() { _autopilot_version_pending = false; },
+            0.5,
+            &_autopilot_version_timed_out_cookie);
+    }
 }
 
 void SystemImpl::send_autopilot_version_request()
