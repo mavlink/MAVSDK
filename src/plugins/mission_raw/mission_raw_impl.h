@@ -30,11 +30,12 @@ public:
 
 private:
     void process_mission_ack(const mavlink_message_t& message);
-    MissionRaw::Result convert_result(MAVLinkMissionTransfer::Result result);
-    MissionRaw::MavlinkMissionItemInt
-    convert_item(const MAVLinkMissionTransfer::ItemInt& transfer_item);
-    std::vector<std::shared_ptr<MissionRaw::MavlinkMissionItemInt>>
-    convert_items(const std::vector<MAVLinkMissionTransfer::ItemInt>& transfer_items);
+
+    static MissionRaw::Result convert_result(MAVLinkMissionTransfer::Result result);
+    MissionRaw::MavlinkMissionItemInt static convert_item(
+        const MAVLinkMissionTransfer::ItemInt& transfer_item);
+    std::vector<std::shared_ptr<MissionRaw::MavlinkMissionItemInt>> static convert_items(
+        const std::vector<MAVLinkMissionTransfer::ItemInt>& transfer_items);
 
     struct MissionChanged {
         std::mutex mutex{};
