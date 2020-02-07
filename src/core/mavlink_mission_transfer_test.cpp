@@ -1,3 +1,4 @@
+#include <algorithm>
 #include <chrono>
 #include <future>
 #include <gtest/gtest.h>
@@ -1124,45 +1125,45 @@ TEST(MAVLinkMissionTransfer, DownloadMissionSendsAllMissionRequestsAndAck)
 
     ON_CALL(mock_sender, send_message(_)).WillByDefault(Return(true));
 
+    std::vector<ItemInt> real_items;
+    real_items.push_back(make_item(MAV_MISSION_TYPE_MISSION, 0));
+    real_items.push_back(make_item(MAV_MISSION_TYPE_MISSION, 1));
+    real_items.push_back(make_item(MAV_MISSION_TYPE_MISSION, 2));
+
     std::promise<void> prom;
     auto fut = prom.get_future();
     mmt.download_items_async(
-        MAV_MISSION_TYPE_MISSION, [&prom](Result result, std::vector<ItemInt> items) {
-            UNUSED(items);
+        MAV_MISSION_TYPE_MISSION, [&prom, &real_items](Result result, std::vector<ItemInt> items) {
             EXPECT_EQ(result, Result::Success);
+            EXPECT_EQ(items, real_items);
             prom.set_value();
         });
     mmt.do_work();
-
-    std::vector<ItemInt> items;
-    items.push_back(make_item(MAV_MISSION_TYPE_MISSION, 0));
-    items.push_back(make_item(MAV_MISSION_TYPE_MISSION, 1));
-    items.push_back(make_item(MAV_MISSION_TYPE_MISSION, 2));
 
     EXPECT_CALL(mock_sender, send_message(Truly([](const mavlink_message_t& message) {
                     return is_correct_mission_request_int(MAV_MISSION_TYPE_MISSION, 0, message);
                 })));
 
-    message_handler.process_message(make_mission_count(items.size()));
+    message_handler.process_message(make_mission_count(real_items.size()));
 
     EXPECT_CALL(mock_sender, send_message(Truly([](const mavlink_message_t& message) {
                     return is_correct_mission_request_int(MAV_MISSION_TYPE_MISSION, 1, message);
                 })));
 
-    message_handler.process_message(make_mission_item(items, 0));
+    message_handler.process_message(make_mission_item(real_items, 0));
 
     EXPECT_CALL(mock_sender, send_message(Truly([](const mavlink_message_t& message) {
                     return is_correct_mission_request_int(MAV_MISSION_TYPE_MISSION, 2, message);
                 })));
 
-    message_handler.process_message(make_mission_item(items, 1));
+    message_handler.process_message(make_mission_item(real_items, 1));
 
     EXPECT_CALL(mock_sender, send_message(Truly([](const mavlink_message_t& message) {
                     return is_correct_mission_ack(
                         MAV_MISSION_TYPE_MISSION, MAV_MISSION_ACCEPTED, message);
                 })));
 
-    message_handler.process_message(make_mission_item(items, 2));
+    message_handler.process_message(make_mission_item(real_items, 2));
 
     EXPECT_EQ(fut.wait_for(std::chrono::seconds(1)), std::future_status::ready);
 
@@ -1280,45 +1281,45 @@ TEST(MAVLinkMissionTransfer, DownloadMissionTimeoutNotTriggeredDuringTransfer)
 
     ON_CALL(mock_sender, send_message(_)).WillByDefault(Return(true));
 
+    std::vector<ItemInt> real_items;
+    real_items.push_back(make_item(MAV_MISSION_TYPE_MISSION, 0));
+    real_items.push_back(make_item(MAV_MISSION_TYPE_MISSION, 1));
+    real_items.push_back(make_item(MAV_MISSION_TYPE_MISSION, 2));
+
     std::promise<void> prom;
     auto fut = prom.get_future();
     mmt.download_items_async(
-        MAV_MISSION_TYPE_MISSION, [&prom](Result result, std::vector<ItemInt> items) {
-            UNUSED(items);
+        MAV_MISSION_TYPE_MISSION, [&real_items, &prom](Result result, std::vector<ItemInt> items) {
             EXPECT_EQ(result, Result::Success);
+            EXPECT_EQ(real_items, items);
             prom.set_value();
         });
     mmt.do_work();
-
-    std::vector<ItemInt> items;
-    items.push_back(make_item(MAV_MISSION_TYPE_MISSION, 0));
-    items.push_back(make_item(MAV_MISSION_TYPE_MISSION, 1));
-    items.push_back(make_item(MAV_MISSION_TYPE_MISSION, 2));
 
     // We almost use up the max timeout in each cycle.
     time.sleep_for(std::chrono::milliseconds(static_cast<int>(
         MAVLinkMissionTransfer::timeout_s * MAVLinkMissionTransfer::retries * 0.8 * 1000.)));
     timeout_handler.run_once();
 
-    message_handler.process_message(make_mission_count(items.size()));
+    message_handler.process_message(make_mission_count(real_items.size()));
 
     time.sleep_for(std::chrono::milliseconds(static_cast<int>(
         MAVLinkMissionTransfer::timeout_s * MAVLinkMissionTransfer::retries * 0.8 * 1000.)));
     timeout_handler.run_once();
 
-    message_handler.process_message(make_mission_item(items, 0));
+    message_handler.process_message(make_mission_item(real_items, 0));
 
     time.sleep_for(std::chrono::milliseconds(static_cast<int>(
         MAVLinkMissionTransfer::timeout_s * MAVLinkMissionTransfer::retries * 0.8 * 1000.)));
     timeout_handler.run_once();
 
-    message_handler.process_message(make_mission_item(items, 1));
+    message_handler.process_message(make_mission_item(real_items, 1));
 
     time.sleep_for(std::chrono::milliseconds(static_cast<int>(
         MAVLinkMissionTransfer::timeout_s * MAVLinkMissionTransfer::retries * 0.8 * 1000.)));
     timeout_handler.run_once();
 
-    message_handler.process_message(make_mission_item(items, 2));
+    message_handler.process_message(make_mission_item(real_items, 2));
 
     EXPECT_EQ(fut.wait_for(std::chrono::seconds(1)), std::future_status::ready);
 

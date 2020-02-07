@@ -57,6 +57,16 @@ public:
         int32_t y;
         float z;
         uint8_t mission_type;
+
+        bool operator==(const ItemInt& other) const
+        {
+            return (
+                seq == other.seq && frame == other.frame && command == other.command &&
+                current == other.current && autocontinue == other.autocontinue &&
+                param1 == other.param1 && param2 == other.param2 && param3 == other.param3 &&
+                param4 == other.param4 && x == other.x && y == other.y && z == other.z &&
+                mission_type == other.mission_type);
+        }
     };
 
     static constexpr double timeout_s = 0.5;
