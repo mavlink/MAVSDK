@@ -15,9 +15,9 @@ namespace mavsdk {
 
 class Sender {
 public:
-    Sender(MAVLinkAddress& own_address, MAVLinkAddress& target_address) :
-        own_address(own_address),
-        target_address(target_address)
+    Sender(MAVLinkAddress& new_own_address, MAVLinkAddress& new_target_address) :
+        own_address(new_own_address),
+        target_address(new_target_address)
     {}
     virtual ~Sender() = default;
     virtual bool send_message(mavlink_message_t& message) = 0;

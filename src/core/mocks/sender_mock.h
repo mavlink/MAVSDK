@@ -6,8 +6,8 @@ namespace testing {
 
 class MockSender : public Sender {
 public:
-    MockSender(MAVLinkAddress& own_address, MAVLinkAddress& target_address) :
-        Sender(own_address, target_address)
+    MockSender(MAVLinkAddress& new_own_address, MAVLinkAddress& new_target_address) :
+        Sender(new_own_address, new_target_address)
     {}
     MOCK_METHOD(bool, send_message, (mavlink_message_t&), (override)){};
 };
