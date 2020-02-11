@@ -4,6 +4,7 @@
 #include <cstdint>
 #include <functional>
 #include <memory>
+#include <mutex>
 #include <vector>
 #include "mavlink_address.h"
 #include "mavlink_include.h"
@@ -98,6 +99,7 @@ public:
         uint8_t _type;
         bool _started{false};
         bool _done{false};
+        std::mutex _mutex{};
     };
 
     class UploadWorkItem : public WorkItem {
