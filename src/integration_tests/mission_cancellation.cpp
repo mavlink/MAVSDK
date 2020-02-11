@@ -62,6 +62,9 @@ TEST_F(SitlTest, MissionUploadCancellation)
     EXPECT_EQ(future_status, std::future_status::ready);
     auto future_result = fut.get();
     EXPECT_EQ(future_result, Mission::Result::CANCELLED);
+
+    // FIXME: older PX4 versions don't support CANCEL and need time to timeout.
+    std::this_thread::sleep_for(std::chrono::seconds(5));
 }
 
 TEST_F(SitlTest, MissionDownloadCancellation)
@@ -126,6 +129,9 @@ TEST_F(SitlTest, MissionDownloadCancellation)
         auto future_result = fut.get();
         EXPECT_EQ(future_result, Mission::Result::CANCELLED);
     }
+
+    // FIXME: older PX4 versions don't support CANCEL and need time to timeout.
+    std::this_thread::sleep_for(std::chrono::seconds(5));
 }
 
 std::shared_ptr<MissionItem> add_waypoint(
