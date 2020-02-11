@@ -619,8 +619,7 @@ Mission::Result MissionImpl::command_result_to_mission_result(MAVLinkCommands::R
 void MissionImpl::clear_mission_async(const Mission::result_callback_t& callback)
 {
     _parent->mission_transfer().clear_items_async(
-        MAV_MISSION_TYPE_MISSION,
-        [this, callback](MAVLinkMissionTransfer::Result result) {
+        MAV_MISSION_TYPE_MISSION, [this, callback](MAVLinkMissionTransfer::Result result) {
             auto converted_result = convert_result(result);
             _parent->call_user_callback([callback, converted_result]() {
                 if (callback) {
