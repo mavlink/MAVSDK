@@ -23,6 +23,7 @@ MavsdkImpl::MavsdkImpl() :
     _on_timeout_callback(nullptr)
 {
     LogInfo() << "MAVSDK version: " << mavsdk_version;
+    set_configuration(Mavsdk::Configuration::GroundStation);
 }
 
 MavsdkImpl::~MavsdkImpl()
