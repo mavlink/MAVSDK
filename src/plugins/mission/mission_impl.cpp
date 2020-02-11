@@ -147,7 +147,7 @@ void MissionImpl::download_mission_async(
         return;
     }
 
-    _parent->mission_transfer().download_items_async(
+    _mission_data.last_download = _parent->mission_transfer().download_items_async(
         MAV_MISSION_TYPE_MISSION,
         [this, callback](
             MAVLinkMissionTransfer::Result result,
