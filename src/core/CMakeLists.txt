@@ -1,4 +1,5 @@
 find_package(Threads REQUIRED)
+find_package(OpenSSL REQUIRED)
 
 include_directories(
     SYSTEM ${PROJECT_SOURCE_DIR}/third_party/mavlink/include
@@ -34,6 +35,8 @@ add_library(mavsdk
 
 target_link_libraries(mavsdk
     PRIVATE
+    crypto
+    ssl
     CURL::libcurl
     ${CMAKE_THREAD_LIBS_INIT}
 )

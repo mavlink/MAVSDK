@@ -2,6 +2,9 @@
 #include "global_include.h"
 #include "log.h"
 
+#include <openssl/err.h>
+#include <openssl/ssl.h>
+
 #ifdef WINDOWS
 #ifndef MINGW
 #pragma comment(lib, "Ws2_32.lib") // Without this, Ws2_32.lib is not included in static library.
@@ -54,6 +57,65 @@ ConnectionResult TcpConnection::start()
         return ConnectionResult::CONNECTIONS_EXHAUSTED;
     }
 
+    // ------------- TLS proto
+    const SSL_METHOD* method = TLS_method(); // Create generic TLS method
+    SSL_CTX* ssl_context = SSL_CTX_new(method); // Create context
+    if (ssl_context == nullptr) {
+        ERR_print_errors_fp(stderr);
+        return ConnectionResult::SOCKET_ERROR; // TODO appropriate error
+    }
+
+    if (SSL_CTX_set_min_proto_version(ssl_context, TLS1_2_VERSION) != 1) {
+        // TODO: not sure if this specific error appears in the error stack
+        ERR_print_errors_fp(stderr);
+        return ConnectionResult::SOCKET_ERROR; // TODO appropriate error
+    }
+
+    // Generate self-signed certificate with:
+    // $ openssl req -x509 -newkey rsa:4096 -keyout key.pem -out cert.pem -days 365
+    if (SSL_CTX_use_certificate_chain_file(ssl_context, "/tmp/cert/cert.pem") != 1) {
+        ERR_print_errors_fp(stderr);
+        return ConnectionResult::SOCKET_ERROR; // TODO appropriate error
+    }
+
+    // TODO: This asks for a passphrase. Maybe the key can be loaded differently than with _file, to avoid that?
+    // NOTE: can use $ openssl req -nodes ... above to not encrypt the output key (and therefore not have a passphrase)
+    if (SSL_CTX_use_PrivateKey_file(ssl_context, "/tmp/cert/key.pem", SSL_FILETYPE_PEM) != 1) {
+        ERR_print_errors_fp(stderr);
+        return ConnectionResult::SOCKET_ERROR; // TODO appropriate error
+    }
+
+    if (SSL_CTX_check_private_key(ssl_context) != 1) {
+        ERR_print_errors_fp(stderr);
+        return ConnectionResult::SOCKET_ERROR; // TODO appropriate error
+    }
+
+    BIO* bio = BIO_new_ssl_connect(ssl_context);
+    if (bio == nullptr) {
+        ERR_print_errors_fp(stderr); // Does that work for bio?
+        return ConnectionResult::SOCKET_ERROR; // TODO appropriate error
+    }
+
+    if (!is_server) {
+        std::string hostname = _remote_ip + ":" + std::to_string(_remote_port_number);
+        BIO_set_conn_hostname(bio, hostname.c_str());
+    }
+
+    BIO_get_ssl(bio, &_ssl);
+    if (_ssl == nullptr) {
+        ERR_print_errors_fp(stderr); // Does that work for bio?
+        return ConnectionResult::SOCKET_ERROR; // TODO appropriate error
+    }
+
+    if (is_server) {
+        SSL_set_accept_state(_ssl);
+    } else {
+        SSL_set_connect_state(_ssl);
+        SSL_set_mode(_ssl, SSL_MODE_AUTO_RETRY);
+    }
+
+    // ------------- /TLS proto
+
     const sockaddr_in remote_addr = create_remote_addr();
 
     if (is_server) {
@@ -70,6 +132,14 @@ ConnectionResult TcpConnection::start()
                 _socket_fd = accept(_server_socket, reinterpret_cast<sockaddr*>(&_client_addr), &client_addr_size);
                 if (_socket_fd != -1) {
                     LogErr() << "Sparta - accepted!";
+
+                    SSL_set_fd(_ssl, _socket_fd);
+                    if (SSL_accept(_ssl) <= 0) {
+                        ERR_print_errors_fp(stderr);
+                    } else {
+                        LogErr() << "Sparta - handshake completed!";
+                    }
+
                     _is_ok = true;
                     //return ConnectionResult::SUCCESS;
                 } else {
@@ -80,6 +150,12 @@ ConnectionResult TcpConnection::start()
             return ConnectionResult::SOCKET_CONNECTION_ERROR; // TODO BIND_ERROR?
         }
     } else {
+        if (SSL_connect(_ssl) != 1) {
+            ERR_print_errors_fp(stderr);
+            return ConnectionResult::SOCKET_CONNECTION_ERROR; // TODO more appropriate error?
+        }
+
+        /*
         _socket_fd = create_socket();
         if (_socket_fd < 0) {
             return ConnectionResult::SOCKET_ERROR;
@@ -89,6 +165,9 @@ ConnectionResult TcpConnection::start()
         if (ret != ConnectionResult::SUCCESS) {
             return ret;
         }
+        */
+
+        _is_ok = true;
     }
 
     start_recv_thread();
@@ -203,6 +282,8 @@ bool TcpConnection::send_message(const mavlink_message_t& message)
     // TODO: remove this assert again
     assert(buffer_len <= MAVLINK_MAX_PACKET_LEN);
 
+    const auto send_len = SSL_write(_ssl, buffer, buffer_len);
+    /*
     const auto send_len = sendto(
         _socket_fd,
         reinterpret_cast<char*>(buffer),
@@ -210,6 +291,7 @@ bool TcpConnection::send_message(const mavlink_message_t& message)
         0,
         reinterpret_cast<const sockaddr*>(&dest_addr),
         sizeof(dest_addr));
+        */
 
     if (send_len != buffer_len) {
         LogErr() << "sendto failure: " << GET_ERROR(errno);
@@ -232,7 +314,8 @@ void TcpConnection::receive()
             //TODO connect(_socket_fd);
         }
 
-        const auto recv_len = recv(_socket_fd, buffer, sizeof(buffer), 0);
+        const auto recv_len = SSL_read(_ssl, buffer, sizeof(buffer));
+        //const auto recv_len = recv(_socket_fd, buffer, sizeof(buffer), 0);
 
         if (recv_len == 0) {
             // This can happen when shutdown is called on the socket,

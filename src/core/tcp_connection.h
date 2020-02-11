@@ -1,8 +1,7 @@
 #pragma once
-
 #include <mutex>
 #include <atomic>
-#include "connection.h"
+#include <openssl/ssl.h>
 #include <sys/types.h>
 #ifndef WINDOWS
 #include <netdb.h>
@@ -12,6 +11,8 @@
 #include <Ws2tcpip.h> // For InetPton
 #undef SOCKET_ERROR
 #endif
+
+#include "connection.h"
 
 namespace mavsdk {
 
@@ -46,6 +47,7 @@ private:
     int _socket_fd = -1;
     int _server_socket = -1;
     struct sockaddr_in _client_addr = {};
+    SSL* _ssl = nullptr;
 
     std::thread* _recv_thread = nullptr;
     std::atomic_bool _should_exit;
