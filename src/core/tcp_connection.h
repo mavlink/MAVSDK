@@ -32,7 +32,9 @@ public:
     const TcpConnection& operator=(const TcpConnection&) = delete;
 
 private:
-    ConnectionResult setup_port();
+    int create_socket();
+    sockaddr_in create_remote_addr();
+    ConnectionResult connect(int socket_fd, sockaddr_in remote_addr);
     void start_recv_thread();
     int resolve_address(const std::string& ip_address, int port, struct sockaddr_in* addr);
     void receive();
@@ -42,6 +44,8 @@ private:
 
     std::mutex _mutex = {};
     int _socket_fd = -1;
+    int _server_socket = -1;
+    struct sockaddr_in _client_addr = {};
 
     std::thread* _recv_thread = nullptr;
     std::atomic_bool _should_exit;

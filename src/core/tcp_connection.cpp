@@ -43,13 +43,52 @@ TcpConnection::~TcpConnection()
 
 ConnectionResult TcpConnection::start()
 {
+    bool is_server = false;
+
+    if (_remote_ip == "0.0.0.0") {
+        LogErr() << "Sparta - running as server on port " << _remote_port_number << "!";
+        is_server = true;
+    }
+
     if (!start_mavlink_receiver()) {
         return ConnectionResult::CONNECTIONS_EXHAUSTED;
     }
 
-    ConnectionResult ret = setup_port();
-    if (ret != ConnectionResult::SUCCESS) {
-        return ret;
+    const sockaddr_in remote_addr = create_remote_addr();
+
+    if (is_server) {
+        _server_socket = create_socket();
+        if (_server_socket < 0) {
+            return ConnectionResult::SOCKET_ERROR;
+        }
+
+        if (bind(_server_socket, reinterpret_cast<const sockaddr*>(&remote_addr), sizeof(struct sockaddr_in)) == 0) {
+
+            if (listen(_server_socket, 1) == 0) { // Allow only one connection
+                socklen_t client_addr_size = sizeof(_client_addr);
+
+                _socket_fd = accept(_server_socket, reinterpret_cast<sockaddr*>(&_client_addr), &client_addr_size);
+                if (_socket_fd != -1) {
+                    LogErr() << "Sparta - accepted!";
+                    _is_ok = true;
+                    //return ConnectionResult::SUCCESS;
+                } else {
+                    return ConnectionResult::SOCKET_CONNECTION_ERROR; // TODO more appropriate error?
+                }
+            }
+        } else {
+            return ConnectionResult::SOCKET_CONNECTION_ERROR; // TODO BIND_ERROR?
+        }
+    } else {
+        _socket_fd = create_socket();
+        if (_socket_fd < 0) {
+            return ConnectionResult::SOCKET_ERROR;
+        }
+
+        ConnectionResult ret = connect(_socket_fd, remote_addr);
+        if (ret != ConnectionResult::SUCCESS) {
+            return ret;
+        }
     }
 
     start_recv_thread();
@@ -57,37 +96,47 @@ ConnectionResult TcpConnection::start()
     return ConnectionResult::SUCCESS;
 }
 
-ConnectionResult TcpConnection::setup_port()
+int TcpConnection::create_socket()
 {
 #ifdef WINDOWS
     WSADATA wsa;
     if (WSAStartup(MAKEWORD(2, 2), &wsa) != 0) {
         LogErr() << "Error: Winsock failed, error: %d", WSAGetLastError();
         _is_ok = false;
-        return ConnectionResult::SOCKET_ERROR;
+        return -1;
     }
 #endif
 
-    _socket_fd = socket(AF_INET, SOCK_STREAM, 0);
+    int socket_fd = socket(AF_INET, SOCK_STREAM, 0);
 
-    if (_socket_fd < 0) {
-        LogErr() << "socket error" << GET_ERROR(errno);
+    if (socket_fd < 0) {
+        LogErr() << "socket error " << GET_ERROR(errno);
         _is_ok = false;
-        return ConnectionResult::SOCKET_ERROR;
+        return -1;
     }
 
+    return socket_fd;
+}
+
+sockaddr_in TcpConnection::create_remote_addr() {
     struct sockaddr_in remote_addr {};
     remote_addr.sin_family = AF_INET;
     remote_addr.sin_port = htons(_remote_port_number);
     remote_addr.sin_addr.s_addr = inet_addr(_remote_ip.c_str());
 
-    if (connect(_socket_fd, reinterpret_cast<sockaddr*>(&remote_addr), sizeof(struct sockaddr_in)) <
+    return remote_addr;
+}
+
+ConnectionResult TcpConnection::connect(const int socket_fd, const sockaddr_in remote_addr)
+{
+    if (::connect(socket_fd, reinterpret_cast<const sockaddr*>(&remote_addr), sizeof(struct sockaddr_in)) <
         0) {
         LogErr() << "connect error: " << GET_ERROR(errno);
         _is_ok = false;
         return ConnectionResult::SOCKET_CONNECTION_ERROR;
     }
 
+    LogErr() << "Sparta - client connected!";
     _is_ok = true;
     return ConnectionResult::SUCCESS;
 }
@@ -107,6 +156,7 @@ ConnectionResult TcpConnection::stop()
 
     // But on Mac, closing is also needed to stop blocking recv/recvfrom.
     close(_socket_fd);
+    // TODO _server_socket?
 #else
     shutdown(_socket_fd, SD_BOTH);
 
@@ -178,7 +228,8 @@ void TcpConnection::receive()
         if (!_is_ok) {
             LogErr() << "TCP receive error, trying to reconnect...";
             std::this_thread::sleep_for(std::chrono::seconds(1));
-            setup_port();
+            //TODO _socket_fd = create_socket();
+            //TODO connect(_socket_fd);
         }
 
         const auto recv_len = recv(_socket_fd, buffer, sizeof(buffer), 0);
@@ -186,14 +237,15 @@ void TcpConnection::receive()
         if (recv_len == 0) {
             // This can happen when shutdown is called on the socket,
             // therefore we check _should_exit again.
+            LogErr() << "Sparta - disconnecting because recv_len == 0";
             _is_ok = false;
             continue;
         }
 
         if (recv_len < 0) {
-            // This happens on desctruction when close(_socket_fd) is called,
+            // This happens on destruction when close(_socket_fd) is called,
             // therefore be quiet.
-            // LogErr() << "recvfrom error: " << GET_ERROR(errno);
+            LogErr() << "recvfrom error: " << GET_ERROR(errno);
             // Something went wrong, we should try to re-connect in next iteration.
             _is_ok = false;
             continue;

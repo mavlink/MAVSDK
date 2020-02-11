@@ -244,7 +244,7 @@ void UdpConnection::receive()
             const uint8_t sysid = _mavlink_receiver->get_last_message().sysid;
 
             // FIXME: We ignore messages from QGC (255) for now.
-            if (!saved_remote && sysid != 0 && sysid != 255) {
+            if (!saved_remote && sysid != 0 /*&& sysid != 255*/) {
                 saved_remote = true;
                 {
                     std::lock_guard<std::mutex> lock(_remote_mutex);
