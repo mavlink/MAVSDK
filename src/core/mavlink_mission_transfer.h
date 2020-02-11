@@ -123,6 +123,8 @@ public:
         void send_count();
         void send_mission_item();
         void send_cancel_and_finish();
+
+        void process_mission_request(const mavlink_message_t& message);
         void process_mission_request_int(const mavlink_message_t& message);
         void process_mission_ack(const mavlink_message_t& message);
         void process_timeout();
