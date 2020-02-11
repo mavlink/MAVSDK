@@ -101,6 +101,11 @@ MAVLinkMissionTransfer::UploadWorkItem::UploadWorkItem(
     _callback(callback)
 {
     _message_handler.register_one(
+        MAVLINK_MSG_ID_MISSION_REQUEST,
+        [this](const mavlink_message_t& message) { process_mission_request(message); },
+        this);
+
+    _message_handler.register_one(
         MAVLINK_MSG_ID_MISSION_REQUEST_INT,
         [this](const mavlink_message_t& message) { process_mission_request_int(message); },
         this);
@@ -204,6 +209,31 @@ void MAVLinkMissionTransfer::UploadWorkItem::send_cancel_and_finish()
 
     // We do not wait on anything coming back after this.
     callback_and_reset(Result::Cancelled);
+}
+
+void MAVLinkMissionTransfer::UploadWorkItem::process_mission_request(
+    const mavlink_message_t& unused)
+{
+    // We only support int, so we nack this and thus tell the autopilot to use int.
+    UNUSED(unused);
+
+    mavlink_message_t message;
+    mavlink_msg_mission_ack_pack(
+        _sender.own_address.system_id,
+        _sender.own_address.component_id,
+        &message,
+        _sender.target_address.system_id,
+        _sender.target_address.component_id,
+        MAV_MISSION_UNSUPPORTED,
+        _type);
+
+    if (!_sender.send_message(message)) {
+        _timeout_handler.remove(_cookie);
+        callback_and_reset(Result::ConnectionError);
+        return;
+    }
+
+    _timeout_handler.refresh(_cookie);
 }
 
 void MAVLinkMissionTransfer::UploadWorkItem::process_mission_request_int(

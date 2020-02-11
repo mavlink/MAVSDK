@@ -412,7 +412,7 @@ TEST(MAVLinkMissionTransfer, UploadMissionTimeoutAfterSendCount)
     EXPECT_EQ(fut.wait_for(std::chrono::seconds(1)), std::future_status::ready);
 }
 
-mavlink_message_t make_mission_item_request(int sequence)
+mavlink_message_t make_mission_request_int(uint8_t type, int sequence)
 {
     mavlink_message_t message;
     mavlink_msg_mission_request_int_pack(
@@ -422,11 +422,11 @@ mavlink_message_t make_mission_item_request(int sequence)
         target_address.system_id,
         target_address.component_id,
         sequence,
-        MAV_MISSION_TYPE_MISSION);
+        type);
     return message;
 }
 
-mavlink_message_t make_mission_ack(uint8_t result)
+mavlink_message_t make_mission_ack(uint8_t type, uint8_t result)
 {
     mavlink_message_t message;
     mavlink_msg_mission_ack_pack(
@@ -436,7 +436,7 @@ mavlink_message_t make_mission_ack(uint8_t result)
         target_address.system_id,
         target_address.component_id,
         result,
-        MAV_MISSION_TYPE_MISSION);
+        type);
     return message;
 }
 
@@ -497,15 +497,16 @@ TEST(MAVLinkMissionTransfer, UploadMissionSendsMissionItems)
                     return is_the_same_mission_item_int(items[0], message);
                 })));
 
-    message_handler.process_message(make_mission_item_request(0));
+    message_handler.process_message(make_mission_request_int(MAV_MISSION_TYPE_MISSION, 0));
 
     EXPECT_CALL(mock_sender, send_message(Truly([&items](const mavlink_message_t& message) {
                     return is_the_same_mission_item_int(items[1], message);
                 })));
 
-    message_handler.process_message(make_mission_item_request(1));
+    message_handler.process_message(make_mission_request_int(MAV_MISSION_TYPE_MISSION, 1));
 
-    message_handler.process_message(make_mission_ack(MAV_MISSION_ACCEPTED));
+    message_handler.process_message(
+        make_mission_ack(MAV_MISSION_TYPE_MISSION, MAV_MISSION_ACCEPTED));
 
     // We are finished and should have received the successful result.
     EXPECT_EQ(fut.wait_for(std::chrono::seconds(1)), std::future_status::ready);
@@ -548,23 +549,24 @@ TEST(MAVLinkMissionTransfer, UploadMissionResendsMissionItems)
                     return is_the_same_mission_item_int(items[0], message);
                 })));
 
-    message_handler.process_message(make_mission_item_request(0));
+    message_handler.process_message(make_mission_request_int(MAV_MISSION_TYPE_MISSION, 0));
 
     EXPECT_CALL(mock_sender, send_message(Truly([&items](const mavlink_message_t& message) {
                     return is_the_same_mission_item_int(items[0], message);
                 })));
 
     // Request 0 again in case it had not arrived.
-    message_handler.process_message(make_mission_item_request(0));
+    message_handler.process_message(make_mission_request_int(MAV_MISSION_TYPE_MISSION, 0));
 
     EXPECT_CALL(mock_sender, send_message(Truly([&items](const mavlink_message_t& message) {
                     return is_the_same_mission_item_int(items[1], message);
                 })));
 
     // Request 1 finally.
-    message_handler.process_message(make_mission_item_request(1));
+    message_handler.process_message(make_mission_request_int(MAV_MISSION_TYPE_MISSION, 1));
 
-    message_handler.process_message(make_mission_ack(MAV_MISSION_ACCEPTED));
+    message_handler.process_message(
+        make_mission_ack(MAV_MISSION_TYPE_MISSION, MAV_MISSION_ACCEPTED));
 
     // We are finished and should have received the successful result.
     EXPECT_EQ(fut.wait_for(std::chrono::seconds(1)), std::future_status::ready);
@@ -604,12 +606,12 @@ TEST(MAVLinkMissionTransfer, UploadMissionResendsMissionItemsButGivesUpAfterSome
         .Times(MAVLinkMissionTransfer::retries);
 
     for (unsigned i = 0; i < MAVLinkMissionTransfer::retries; ++i) {
-        message_handler.process_message(make_mission_item_request(0));
+        message_handler.process_message(make_mission_request_int(MAV_MISSION_TYPE_MISSION, 0));
     }
 
     EXPECT_EQ(fut.wait_for(std::chrono::seconds(0)), std::future_status::timeout);
 
-    message_handler.process_message(make_mission_item_request(0));
+    message_handler.process_message(make_mission_request_int(MAV_MISSION_TYPE_MISSION, 0));
 
     // We are finished and should have received the successful result.
     EXPECT_EQ(fut.wait_for(std::chrono::seconds(1)), std::future_status::ready);
@@ -647,10 +649,11 @@ TEST(MAVLinkMissionTransfer, UploadMissionAckArrivesTooEarly)
                     return is_the_same_mission_item_int(items[0], message);
                 })));
 
-    message_handler.process_message(make_mission_item_request(0));
+    message_handler.process_message(make_mission_request_int(MAV_MISSION_TYPE_MISSION, 0));
 
     // Don't request item 1 but already send ack.
-    message_handler.process_message(make_mission_ack(MAV_MISSION_ACCEPTED));
+    message_handler.process_message(
+        make_mission_ack(MAV_MISSION_TYPE_MISSION, MAV_MISSION_ACCEPTED));
 
     EXPECT_EQ(fut.wait_for(std::chrono::seconds(1)), std::future_status::ready);
 
@@ -705,10 +708,11 @@ TEST(MAVLinkMissionTransfer, UploadMissionNacksAreHandled)
                         return is_the_same_mission_item_int(items[0], message);
                     })));
 
-        message_handler.process_message(make_mission_item_request(0));
+        message_handler.process_message(make_mission_request_int(MAV_MISSION_TYPE_MISSION, 0));
 
         // Send nack now.
-        message_handler.process_message(make_mission_ack(nack_case.first));
+        message_handler.process_message(
+            make_mission_ack(MAV_MISSION_TYPE_MISSION, nack_case.first));
 
         EXPECT_EQ(fut.wait_for(std::chrono::seconds(1)), std::future_status::ready);
 
@@ -747,7 +751,7 @@ TEST(MAVLinkMissionTransfer, UploadMissionTimeoutNotTriggeredDuringTransfer)
                     return is_the_same_mission_item_int(items[0], message);
                 })));
 
-    message_handler.process_message(make_mission_item_request(0));
+    message_handler.process_message(make_mission_request_int(MAV_MISSION_TYPE_MISSION, 0));
 
     // We almost use up the max timeout in each cycle.
     time.sleep_for(std::chrono::milliseconds(
@@ -758,7 +762,7 @@ TEST(MAVLinkMissionTransfer, UploadMissionTimeoutNotTriggeredDuringTransfer)
                     return is_the_same_mission_item_int(items[1], message);
                 })));
 
-    message_handler.process_message(make_mission_item_request(1));
+    message_handler.process_message(make_mission_request_int(MAV_MISSION_TYPE_MISSION, 1));
 
     time.sleep_for(std::chrono::milliseconds(
         static_cast<int>(MAVLinkMissionTransfer::timeout_s * 0.8 * 1000.)));
@@ -768,13 +772,14 @@ TEST(MAVLinkMissionTransfer, UploadMissionTimeoutNotTriggeredDuringTransfer)
                     return is_the_same_mission_item_int(items[2], message);
                 })));
 
-    message_handler.process_message(make_mission_item_request(2));
+    message_handler.process_message(make_mission_request_int(MAV_MISSION_TYPE_MISSION, 2));
 
     time.sleep_for(std::chrono::milliseconds(
         static_cast<int>(MAVLinkMissionTransfer::timeout_s * 0.8 * 1000.)));
     timeout_handler.run_once();
 
-    message_handler.process_message(make_mission_ack(MAV_MISSION_ACCEPTED));
+    message_handler.process_message(
+        make_mission_ack(MAV_MISSION_TYPE_MISSION, MAV_MISSION_ACCEPTED));
 
     // We are finished and should have received the successful result.
     EXPECT_EQ(fut.wait_for(std::chrono::seconds(1)), std::future_status::ready);
@@ -812,7 +817,7 @@ TEST(MAVLinkMissionTransfer, UploadMissionTimeoutAfterSendMissionItem)
                     return is_the_same_mission_item_int(items[0], message);
                 })));
 
-    message_handler.process_message(make_mission_item_request(0));
+    message_handler.process_message(make_mission_request_int(MAV_MISSION_TYPE_MISSION, 0));
 
     time.sleep_for(std::chrono::milliseconds(
         static_cast<int>(MAVLinkMissionTransfer::timeout_s * 1.1 * 1000.)));
@@ -821,7 +826,8 @@ TEST(MAVLinkMissionTransfer, UploadMissionTimeoutAfterSendMissionItem)
     EXPECT_EQ(fut.wait_for(std::chrono::seconds(1)), std::future_status::ready);
 
     // Ignore later (wrong) ack.
-    message_handler.process_message(make_mission_ack(MAV_MISSION_ACCEPTED));
+    message_handler.process_message(
+        make_mission_ack(MAV_MISSION_TYPE_MISSION, MAV_MISSION_ACCEPTED));
 
     mmt.do_work();
     EXPECT_TRUE(mmt.is_idle());
@@ -836,9 +842,10 @@ TEST(MAVLinkMissionTransfer, UploadMissionDoesNotCrashOnRandomMessages)
 
     MAVLinkMissionTransfer mmt(mock_sender, message_handler, timeout_handler);
 
-    message_handler.process_message(make_mission_item_request(0));
+    message_handler.process_message(make_mission_request_int(MAV_MISSION_TYPE_MISSION, 0));
 
-    message_handler.process_message(make_mission_ack(MAV_MISSION_ACCEPTED));
+    message_handler.process_message(
+        make_mission_ack(MAV_MISSION_TYPE_MISSION, MAV_MISSION_ACCEPTED));
 
     time.sleep_for(std::chrono::milliseconds(
         static_cast<int>(MAVLinkMissionTransfer::timeout_s * 1.1 * 1000.)));
@@ -888,7 +895,7 @@ TEST(MAVLinkMissionTransfer, UploadMissionCanBeCancelled)
     });
     mmt.do_work();
 
-    message_handler.process_message(make_mission_item_request(0));
+    message_handler.process_message(make_mission_request_int(MAV_MISSION_TYPE_MISSION, 0));
 
     EXPECT_CALL(mock_sender, send_message(Truly([&items](const mavlink_message_t& message) {
                     return is_correct_mission_ack(
@@ -900,6 +907,72 @@ TEST(MAVLinkMissionTransfer, UploadMissionCanBeCancelled)
     if (wptr) {
         wptr->cancel();
     }
+
+    // We are finished and should have received the successful result.
+    EXPECT_EQ(fut.wait_for(std::chrono::seconds(1)), std::future_status::ready);
+
+    // We do not expect a timeout later though.
+    time.sleep_for(std::chrono::milliseconds(
+        static_cast<int>(MAVLinkMissionTransfer::timeout_s * 1.1 * 1000.)));
+    timeout_handler.run_once();
+
+    mmt.do_work();
+    EXPECT_TRUE(mmt.is_idle());
+}
+
+mavlink_message_t make_mission_request(uint8_t type, int sequence)
+{
+    mavlink_message_t message;
+    mavlink_msg_mission_request_pack(
+        own_address.system_id,
+        own_address.component_id,
+        &message,
+        target_address.system_id,
+        target_address.component_id,
+        sequence,
+        type);
+    return message;
+}
+
+TEST(MAVLinkMissionTransfer, UploadMissionNacksNonIntCase)
+{
+    MockSender mock_sender(own_address, target_address);
+    MAVLinkMessageHandler message_handler;
+    FakeTime time;
+    TimeoutHandler timeout_handler(time);
+
+    MAVLinkMissionTransfer mmt(mock_sender, message_handler, timeout_handler);
+
+    std::vector<ItemInt> items;
+    items.push_back(make_item(MAV_MISSION_TYPE_FENCE, 0));
+
+    ON_CALL(mock_sender, send_message(_)).WillByDefault(Return(true));
+
+    std::promise<void> prom;
+    auto fut = prom.get_future();
+
+    mmt.upload_items_async(MAV_MISSION_TYPE_FENCE, items, [&prom](Result result) {
+        EXPECT_EQ(result, Result::Success);
+        ONCE_ONLY;
+        prom.set_value();
+    });
+    mmt.do_work();
+
+    EXPECT_CALL(mock_sender, send_message(Truly([&items](const mavlink_message_t& message) {
+                    return is_correct_mission_ack(
+                        MAV_MISSION_TYPE_FENCE, MAV_MISSION_UNSUPPORTED, message);
+                })))
+        .Times(1);
+
+    // First the non-int wrong case comes in.
+    message_handler.process_message(make_mission_request(MAV_MISSION_TYPE_FENCE, 0));
+
+    EXPECT_CALL(mock_sender, send_message(Truly([&items](const mavlink_message_t& message) {
+                    return is_the_same_mission_item_int(items[0], message);
+                })));
+
+    message_handler.process_message(make_mission_request_int(MAV_MISSION_TYPE_FENCE, 0));
+    message_handler.process_message(make_mission_ack(MAV_MISSION_TYPE_FENCE, MAV_MISSION_ACCEPTED));
 
     // We are finished and should have received the successful result.
     EXPECT_EQ(fut.wait_for(std::chrono::seconds(1)), std::future_status::ready);
@@ -1461,7 +1534,8 @@ TEST(MAVLinkMissionTransfer, ClearMissionSendsClear)
     });
     mmt.do_work();
 
-    message_handler.process_message(make_mission_ack(MAV_RESULT_ACCEPTED));
+    message_handler.process_message(
+        make_mission_ack(MAV_MISSION_TYPE_MISSION, MAV_RESULT_ACCEPTED));
 
     EXPECT_EQ(fut.wait_for(std::chrono::seconds(1)), std::future_status::ready);
 
