@@ -5,6 +5,8 @@ on:
     branches:
     - 'master'
     - 'develop'
+    tags:
+    - 'v*'
   pull_request:
     branches:
     - '*'
@@ -96,6 +98,9 @@ jobs:
         run: cmake --build build/release --target install -- -j2
       - name: package
         run: tools/create_packages.sh ./install .
+      - name: Publish artefacts
+        if: contains(github.ref, 'v')
+        run: ls -l
 
   dockcross:
     name: ${{ matrix.arch_name }}
