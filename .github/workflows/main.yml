@@ -279,7 +279,7 @@ jobs:
         uses: svenstaro/upload-release-action@v1-release
         with:
           repo_token: ${{ secrets.GITHUB_TOKEN }}
-          file: 'build/release/install/bin/mavsdk_server_win32.exe'
+          file: 'build/release/install/bin/mavsdk_server_bin.exe'
           asset_name: 'mavsdk_server_macos'
           tag: ${{ github.ref }}
           overwrite: true
