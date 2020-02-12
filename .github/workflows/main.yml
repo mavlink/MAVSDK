@@ -156,7 +156,7 @@ jobs:
         uses: svenstaro/upload-release-action@v1-release
         with:
           repo_token: ${{ secrets.GITHUB_TOKEN }}
-          file: 'build/${{ matrix.arch_name }}/install/bin/mavsdk_server_${{ matrix.arch_name }}'
+          file: 'build/${{ matrix.arch_name }}/install/bin/mavsdk_server'
           asset_name: 'mavsdk_server_${{ matrix.arch_name }}'
           tag: ${{ github.ref }}
           overwrite: true
