@@ -81,13 +81,13 @@ jobs:
       - name: test
         run: tools/run-sitl-tests.sh /home/user/Firmware
 
-  deb-rpm-package:
+  deb-package:
     name: ${{ matrix.container_name }} (package, non-backend)
     runs-on: ubuntu-18.04
     container: mavsdk/mavsdk-${{ matrix.container_name }}
     strategy:
       matrix:
-        container_name: [ubuntu-16.04, ubuntu-18.04, fedora-29, fedora-30]
+        container_name: [ubuntu-16.04, ubuntu-18.04]
     steps:
       - uses: actions/checkout@v1
         with:
@@ -100,7 +100,40 @@ jobs:
         run: tools/create_packages.sh ./install .
       - name: Publish artefacts
         if: contains(github.ref, 'v')
-        run: ls -l
+        uses: svenstaro/upload-release-action@v1-release
+        with:
+          repo_token: ${{ secrets.GITHUB_TOKEN }}
+          file_glob: true
+          file: '*.deb'
+          tag: ${{ github.ref }}
+          overwrite: true
+
+  rpm-package:
+    name: ${{ matrix.container_name }} (package, non-backend)
+    runs-on: ubuntu-18.04
+    container: mavsdk/mavsdk-${{ matrix.container_name }}
+    strategy:
+      matrix:
+        container_name: [fedora-29, fedora-30]
+    steps:
+      - uses: actions/checkout@v1
+        with:
+          submodules: recursive
+      - name: configure
+        run: cmake -DCMAKE_BUILD_TYPE=Release -DBUILD_BACKEND=OFF -DBUILD_SHARED_LIBS=ON -DCMAKE_INSTALL_PREFIX=install -Bbuild/release -H.
+      - name: build
+        run: cmake --build build/release --target install -- -j2
+      - name: package
+        run: tools/create_packages.sh ./install .
+      - name: Publish artefacts
+        if: contains(github.ref, 'v')
+        uses: svenstaro/upload-release-action@v1-release
+        with:
+          repo_token: ${{ secrets.GITHUB_TOKEN }}
+          file_glob: true
+          file: '*.rpm'
+          tag: ${{ github.ref }}
+          overwrite: true
 
   dockcross:
     name: ${{ matrix.arch_name }}
