@@ -135,12 +135,12 @@ jobs:
           tag: ${{ github.ref }}
           overwrite: true
 
-  dockcross:
+  dockcross-linux:
     name: ${{ matrix.arch_name }}
     runs-on: ubuntu-18.04
     strategy:
       matrix:
-        arch_name: [android-arm64, android-arm, linux-armv6, linux-armv7, linux-arm64, manylinux2010-x64]
+        arch_name: [linux-armv6, linux-armv7, linux-arm64, manylinux2010-x64]
     steps:
       - uses: actions/checkout@v1
         with:
@@ -151,6 +151,41 @@ jobs:
         run: ./dockcross-${{ matrix.arch_name }} cmake -DCMAKE_BUILD_TYPE=Release -DCMAKE_INSTALL_PREFIX=build/${{ matrix.arch_name }}/install -DBUILD_BACKEND=ON -DBUILD_SHARED_LIBS=OFF -j 2 -Bbuild/${{ matrix.arch_name }} -H.
       - name: build
         run: ./dockcross-${{ matrix.arch_name }} cmake --build build/${{ matrix.arch_name }} -j 2 --target install
+      - name: Publish artefacts
+        if: contains(github.ref, 'v')
+        uses: svenstaro/upload-release-action@v1-release
+        with:
+          repo_token: ${{ secrets.GITHUB_TOKEN }}
+          file: 'build/${{ matrix.arch_name }}/install/bin/mavsdk_server_${{ matrix.arch_name }}'
+          asset_name: 'mavsdk_server_${{ matrix.arch_name }}'
+          tag: ${{ github.ref }}
+          overwrite: true
+
+  dockcross-android:
+    name: ${{ matrix.arch_name }}
+    runs-on: ubuntu-18.04
+    strategy:
+      matrix:
+        arch_name: [android-arm64, android-arm]
+    steps:
+      - uses: actions/checkout@v1
+        with:
+          submodules: recursive
+      - name: setup dockcross
+        run: docker run --rm dockcross/${{ matrix.arch_name }} > ./dockcross-${{ matrix.arch_name }}; chmod +x ./dockcross-${{ matrix.arch_name }}
+      - name: configure
+        run: ./dockcross-${{ matrix.arch_name }} cmake -DCMAKE_BUILD_TYPE=Release -DCMAKE_INSTALL_PREFIX=build/${{ matrix.arch_name }}/install -DBUILD_BACKEND=ON -DBUILD_SHARED_LIBS=OFF -j 2 -Bbuild/${{ matrix.arch_name }} -H.
+      - name: build
+        run: ./dockcross-${{ matrix.arch_name }} cmake --build build/${{ matrix.arch_name }} -j 2 --target install
+      - name: Publish artefacts
+        if: contains(github.ref, 'v')
+        uses: svenstaro/upload-release-action@v1-release
+        with:
+          repo_token: ${{ secrets.GITHUB_TOKEN }}
+          file: 'build/${{ matrix.arch_name }}/export/mavsdk_server_${{ matrix.arch_name }}.tar'
+          asset_name: 'mavsdk_server_${{ matrix.arch_name }}.tar'
+          tag: ${{ github.ref }}
+          overwrite: true
 
   macOS:
     name: macOS
@@ -167,6 +202,15 @@ jobs:
         run: ./build/release/src/unit_tests_runner
       - name: test (mavsdk_server)
         run: ./build/release/src/backend/test/unit_tests_backend
+      - name: Publish artefacts
+        if: contains(github.ref, 'v')
+        uses: svenstaro/upload-release-action@v1-release
+        with:
+          repo_token: ${{ secrets.GITHUB_TOKEN }}
+          file: 'build/release/install/bin/mavsdk_server_macos'
+          asset_name: 'mavsdk_server_macos'
+          tag: ${{ github.ref }}
+          overwrite: true
 
   iOS:
     name: iOS
@@ -185,6 +229,15 @@ jobs:
         run: cmake --build build/ios_simulator -j 2
       - name: package
         run: bash ./src/backend/tools/package_backend_framework.bash
+      - name: Publish artefacts
+        if: contains(github.ref, 'v')
+        uses: svenstaro/upload-release-action@v1-release
+        with:
+          repo_token: ${{ secrets.GITHUB_TOKEN }}
+          file: 'build/build/fat_bin/mavsdk_server.framework'
+          asset_name: 'mavsdk_server.framework'
+          tag: ${{ github.ref }}
+          overwrite: true
 
   Windows:
     name: Windows
@@ -197,3 +250,12 @@ jobs:
         run: cmake -G "Visual Studio 16 2019" -DCMAKE_BUILD_TYPE=Release -DCMAKE_INSTALL_PREFIX=build/release/install -DBUILD_BACKEND=ON -DBUILD_SHARED_LIBS=OFF -j 2 -Bbuild/release -S.
       - name: build
         run: cmake --build build/release -j 2 --config Release --target install
+      - name: Publish artefacts
+        if: contains(github.ref, 'v')
+        uses: svenstaro/upload-release-action@v1-release
+        with:
+          repo_token: ${{ secrets.GITHUB_TOKEN }}
+          file: 'build/release/install/bin/mavsdk_server_win32.exe'
+          asset_name: 'mavsdk_server_macos'
+          tag: ${{ github.ref }}
+          overwrite: true
