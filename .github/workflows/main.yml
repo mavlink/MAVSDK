@@ -29,7 +29,7 @@ jobs:
       - name: test
         run: ./build/src/unit_tests_runner
       - name: Upload coverage stats
-        run: coveralls --root . --build-root build --exclude=libs --exclude="plugins" --exclude="/usr/include/" --exclude="core/external/curl-android-ios" --exclude="core/libs/tinyxml2" --exclude="debug_helpers" --exclude="example" --exclude="external_example" --exclude-pattern=".*CMakeFiles.*" --exclude-pattern=".*_test.*";
+        run: ~/.local/bin/coveralls --root . --build-root build --exclude=libs --exclude="plugins" --exclude="/usr/include/" --exclude="core/external/curl-android-ios" --exclude="core/libs/tinyxml2" --exclude="debug_helpers" --exclude="example" --exclude="external_example" --exclude-pattern=".*CMakeFiles.*" --exclude-pattern=".*_test.*";
 
   ubuntu18-non-superbuild:
     name: ubuntu-18.04 (non-backend, non-superbuild)
