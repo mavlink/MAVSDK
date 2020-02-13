@@ -16,22 +16,20 @@ jobs:
   coverage:
     name: coverage (ubuntu-18.04)
     runs-on: ubuntu-18.04
-    env:
-      COVERALLS_REPO_TOKEN: ${{ secrets.COVERALLS_REPO_TOKEN }}
     steps:
       - uses: actions/checkout@v1
         with:
           submodules: recursive
-      - name: Install coveralls tools
-        run: pip install --user wheel && pip install --user cpp-coveralls
       - name: configure
         run: cmake -DCMAKE_BUILD_TYPE=Coverage -j 2 -Bbuild -H.
       - name: build
         run: cmake --build build -j 2
       - name: test
         run: ./build/src/unit_tests_runner
-      - name: Upload coverage stats
-        run: ~/.local/bin/coveralls --root . --build-root build --exclude=libs --exclude="plugins" --exclude="/usr/include/" --exclude="core/external/curl-android-ios" --exclude="core/libs/tinyxml2" --exclude="debug_helpers" --exclude="example" --exclude="external_example" --exclude-pattern=".*CMakeFiles.*" --exclude-pattern=".*_test.*";
+      - name: Coveralls
+        uses: coverallsapp/github-action@master
+        with:
+          github-token: ${{ secrets.GITHUB_TOKEN }}
 
   ubuntu18-non-superbuild:
     name: ubuntu-18.04 (non-backend, non-superbuild)
