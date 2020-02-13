@@ -20,12 +20,16 @@ jobs:
       - uses: actions/checkout@v1
         with:
           submodules: recursive
+      - name: Install lcov
+        run: sudo apt-get install -y lcov
       - name: configure
         run: cmake -DCMAKE_BUILD_TYPE=Coverage -j 2 -Bbuild -H.
       - name: build
         run: cmake --build build -j 2
       - name: test
         run: ./build/src/unit_tests_runner
+      - name: run lcov
+        run: lcov --capture --directory . --output-file lcov.info
       - name: Coveralls
         uses: coverallsapp/github-action@master
         with:
