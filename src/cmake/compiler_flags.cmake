@@ -29,7 +29,7 @@ else()
 
     if(CMAKE_CXX_COMPILER_ID STREQUAL "GNU")
         if(CMAKE_CXX_COMPILER_VERSION VERSION_LESS 5)
-            set(warnings "${warnings} -Wno-shadow")
+            set(warnings "${warnings} -Wno-shadow -Wno-effc++")
         endif()
         if(CMAKE_CXX_COMPILER_VERSION VERSION_GREATER 6)
             set(warnings "${warnings} -Wduplicated-cond -Wnull-dereference")
