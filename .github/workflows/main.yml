@@ -107,10 +107,11 @@ jobs:
         run: cmake -DCMAKE_BUILD_TYPE=Release -DBUILD_BACKEND=OFF -DBUILD_SHARED_LIBS=ON -DCMAKE_INSTALL_PREFIX=install -Bbuild/release -H.
       - name: build
         run: cmake --build build/release --target install -- -j2
-      - name: package
+      - name: Package
+        if: startsWith(github.ref, 'refs/tags/v')
         run: tools/create_packages.sh ./install .
       - name: Publish artefacts
-        if: contains(github.ref, 'v')
+        if: startsWith(github.ref, 'refs/tags/v')
         uses: svenstaro/upload-release-action@v1-release
         with:
           repo_token: ${{ secrets.GITHUB_TOKEN }}
@@ -134,10 +135,11 @@ jobs:
         run: cmake -DCMAKE_BUILD_TYPE=Release -DBUILD_BACKEND=OFF -DBUILD_SHARED_LIBS=ON -DCMAKE_INSTALL_PREFIX=install -Bbuild/release -H.
       - name: build
         run: cmake --build build/release --target install -- -j2
-      - name: package
+      - name: Package
+        if: startsWith(github.ref, 'refs/tags/v')
         run: tools/create_packages.sh ./install .
       - name: Publish artefacts
-        if: contains(github.ref, 'v')
+        if: startsWith(github.ref, 'refs/tags/v')
         uses: svenstaro/upload-release-action@v1-release
         with:
           repo_token: ${{ secrets.GITHUB_TOKEN }}
@@ -163,7 +165,7 @@ jobs:
       - name: build
         run: ./dockcross-${{ matrix.arch_name }} cmake --build build/${{ matrix.arch_name }} -j 2 --target install
       - name: Publish artefacts
-        if: contains(github.ref, 'v')
+        if: startsWith(github.ref, 'refs/tags/v')
         uses: svenstaro/upload-release-action@v1-release
         with:
           repo_token: ${{ secrets.GITHUB_TOKEN }}
@@ -188,7 +190,7 @@ jobs:
       - name: create tar with header and library
         run: mkdir -p build/android-arm/export/include; cp build/android-arm/install/include/mavsdk/backend/backend_api.h build/android-arm/export/include; mkdir -p build/android-arm/export/armeabi-v7a; cp build/android-arm/install/lib/libmavsdk_server.so build/android-arm/export/armeabi-v7a; tar -C build/android-arm/export -cf build/android-arm/export/mavsdk_server_android-arm.tar armeabi-v7a include;
       - name: Publish artefacts
-        if: contains(github.ref, 'v')
+        if: startsWith(github.ref, 'refs/tags/v')
         uses: svenstaro/upload-release-action@v1-release
         with:
           repo_token: ${{ secrets.GITHUB_TOKEN }}
@@ -213,7 +215,7 @@ jobs:
       - name: create tar with header and library
         run: mkdir -p build/android-arm64/export/include; cp build/android-arm64/install/include/mavsdk/backend/backend_api.h build/android-arm64/export/include; mkdir -p build/android-arm64/export/arm64-v8a; cp build/android-arm64/install/lib/libmavsdk_server.so build/android-arm64/export/arm64-v8a; tar -C build/android-arm64/export -cf build/android-arm64/export/mavsdk_server_android-arm64.tar arm64-v8a include;
       - name: Publish artefacts
-        if: contains(github.ref, 'v')
+        if: startsWith(github.ref, 'refs/tags/v')
         uses: svenstaro/upload-release-action@v1-release
         with:
           repo_token: ${{ secrets.GITHUB_TOKEN }}
@@ -238,7 +240,7 @@ jobs:
       - name: test (mavsdk_server)
         run: ./build/release/src/backend/test/unit_tests_backend
       - name: Publish artefacts
-        if: contains(github.ref, 'v')
+        if: startsWith(github.ref, 'refs/tags/v')
         uses: svenstaro/upload-release-action@v1-release
         with:
           repo_token: ${{ secrets.GITHUB_TOKEN }}
@@ -262,10 +264,11 @@ jobs:
         run: cmake -DCMAKE_BUILD_TYPE=Release -DCMAKE_TOOLCHAIN_FILE=$(pwd)/tools/ios.toolchain.cmake -DPLATFORM=SIMULATOR64 -DBUILD_BACKEND=ON -DBUILD_SHARED_LIBS=OFF -j 2 -Bbuild/ios_simulator -H.
       - name: build (ios_simulator)
         run: cmake --build build/ios_simulator -j 2
-      - name: package
+      - name: Package
+        if: startsWith(github.ref, 'refs/tags/v')
         run: bash ./src/backend/tools/package_backend_framework.bash
       - name: Publish artefacts
-        if: contains(github.ref, 'v')
+        if: startsWith(github.ref, 'refs/tags/v')
         uses: svenstaro/upload-release-action@v1-release
         with:
           repo_token: ${{ secrets.GITHUB_TOKEN }}
@@ -286,7 +289,7 @@ jobs:
       - name: build
         run: cmake --build build/release -j 2 --config Release --target install
       - name: Publish artefacts
-        if: contains(github.ref, 'v')
+        if: startsWith(github.ref, 'refs/tags/v')
         uses: svenstaro/upload-release-action@v1-release
         with:
           repo_token: ${{ secrets.GITHUB_TOKEN }}
