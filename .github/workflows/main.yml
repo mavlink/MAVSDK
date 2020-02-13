@@ -21,7 +21,7 @@ jobs:
         with:
           submodules: recursive
       - name: Install coveralls tools
-        run: pip install --user cpp-coveralls
+        run: pip install --user wheel && pip install --user cpp-coveralls
       - name: configure
         run: cmake -DCMAKE_BUILD_TYPE=Coverage -j 2 -Bbuild -H.
       - name: build
