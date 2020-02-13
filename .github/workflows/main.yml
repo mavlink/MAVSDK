@@ -82,9 +82,12 @@ jobs:
         run: tools/generate_docs.sh
 
   px4-sitl:
-    name: PX4 SITL (ubuntu-18.04)
+    name: PX4 SITL ${{ matrix.px4_version }} (ubuntu-18.04)
     runs-on: ubuntu-18.04
-    container: mavsdk/mavsdk-ubuntu-18.04-px4-sitl
+    container: mavsdk/mavsdk-ubuntu-18.04-px4-sitl-${{ matrix.px4_version }}
+    strategy:
+      matrix:
+        px4_version: [v1.9, v1.10]
     steps:
       - uses: actions/checkout@v1
         with:
