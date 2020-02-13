@@ -27,7 +27,7 @@ jobs:
       - name: build
         run: cmake --build build -j 2
       - name: test
-        run: ./build/release/src/unit_tests_runner
+        run: ./build/src/unit_tests_runner
       - name: Upload coverage stats
         run: coveralls --root . --build-root build --exclude=libs --exclude="plugins" --exclude="/usr/include/" --exclude="core/external/curl-android-ios" --exclude="core/libs/tinyxml2" --exclude="debug_helpers" --exclude="example" --exclude="external_example" --exclude-pattern=".*CMakeFiles.*" --exclude-pattern=".*_test.*";
 
