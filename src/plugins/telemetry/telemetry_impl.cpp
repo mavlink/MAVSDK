@@ -855,11 +855,19 @@ void TelemetryImpl::process_unix_epoch_time(const mavlink_message_t& message)
 
 void TelemetryImpl::process_actuator_control_target(const mavlink_message_t& message)
 {
-    uint32_t group;
+    mavlink_set_actuator_control_target_t target;
+    mavlink_msg_set_actuator_control_target_decode(&message, &target);
+
+    uint32_t group = target.group_mlx;
     std::array<float, 8> controls;
 
-    group = mavlink_msg_actuator_control_target_get_group_mlx(&message);
-    mavlink_msg_actuator_control_target_get_controls(&message, controls.data());
+    static_assert(
+        controls.size() == sizeof(target.controls) / sizeof(target.controls[0]),
+        "controls length does not match");
+    // Can't use std::copy because target is packed.
+    for (std::size_t i = 0; i < controls.size(); ++i) {
+        controls[i] = target.controls[i];
+    }
 
     set_actuator_control_target(group, controls);
 
@@ -872,11 +880,19 @@ void TelemetryImpl::process_actuator_control_target(const mavlink_message_t& mes
 
 void TelemetryImpl::process_actuator_output_status(const mavlink_message_t& message)
 {
-    uint32_t active;
+    mavlink_actuator_output_status_t status;
+    mavlink_msg_actuator_output_status_decode(&message, &status);
+
+    uint32_t active = status.active;
     std::array<float, 32> actuators;
 
-    active = mavlink_msg_actuator_output_status_get_active(&message);
-    mavlink_msg_actuator_output_status_get_actuator(&message, actuators.data());
+    static_assert(
+        actuators.size() == sizeof(status.actuator) / sizeof(status.actuator[0]),
+        "actuator length does not match");
+    // Can't use std::copy because status is packed.
+    for (std::size_t i = 0; i < actuators.size(); ++i) {
+        actuators[i] = status.actuator[i];
+    }
 
     set_actuator_output_status(active, actuators);
 
@@ -889,37 +905,52 @@ void TelemetryImpl::process_actuator_output_status(const mavlink_message_t& mess
 
 void TelemetryImpl::process_odometry(const mavlink_message_t& message)
 {
+    mavlink_odometry_t odometry_msg;
+    mavlink_msg_odometry_decode(&message, &odometry_msg);
+
     Telemetry::Odometry odometry{};
 
-    odometry.time_usec = mavlink_msg_odometry_get_time_usec(&message);
-    odometry.frame_id =
-        static_cast<Telemetry::Odometry::MavFrame>(mavlink_msg_odometry_get_frame_id(&message));
-    odometry.child_frame_id = static_cast<Telemetry::Odometry::MavFrame>(
-        mavlink_msg_odometry_get_child_frame_id(&message));
+    odometry.time_usec = odometry_msg.time_usec;
+    odometry.frame_id = static_cast<Telemetry::Odometry::MavFrame>(odometry_msg.frame_id);
+    odometry.child_frame_id =
+        static_cast<Telemetry::Odometry::MavFrame>(odometry_msg.child_frame_id);
 
-    odometry.position_body.x_m = mavlink_msg_odometry_get_x(&message);
-    odometry.position_body.y_m = mavlink_msg_odometry_get_y(&message);
-    odometry.position_body.z_m = mavlink_msg_odometry_get_z(&message);
+    odometry.position_body.x_m = odometry_msg.x;
+    odometry.position_body.y_m = odometry_msg.y;
+    odometry.position_body.z_m = odometry_msg.z;
 
-    std::array<float, 4> q{};
-    mavlink_msg_odometry_get_q(&message, q.data());
-    odometry.q.w = q[0];
-    odometry.q.x = q[1];
-    odometry.q.y = q[2];
-    odometry.q.z = q[3];
+    odometry.q.w = odometry_msg.q[0];
+    odometry.q.x = odometry_msg.q[1];
+    odometry.q.y = odometry_msg.q[2];
+    odometry.q.z = odometry_msg.q[3];
 
-    odometry.velocity_body.x_m_s = mavlink_msg_odometry_get_vx(&message);
-    odometry.velocity_body.y_m_s = mavlink_msg_odometry_get_vy(&message);
-    odometry.velocity_body.z_m_s = mavlink_msg_odometry_get_vz(&message);
+    odometry.velocity_body.x_m_s = odometry_msg.vx;
+    odometry.velocity_body.y_m_s = odometry_msg.vy;
+    odometry.velocity_body.z_m_s = odometry_msg.vz;
 
-    odometry.angular_velocity_body.roll_rad_s = mavlink_msg_odometry_get_rollspeed(&message);
-    odometry.angular_velocity_body.pitch_rad_s = mavlink_msg_odometry_get_pitchspeed(&message);
-    odometry.angular_velocity_body.yaw_rad_s = mavlink_msg_odometry_get_yawspeed(&message);
+    odometry.angular_velocity_body.roll_rad_s = odometry_msg.rollspeed;
+    odometry.angular_velocity_body.pitch_rad_s = odometry_msg.pitchspeed;
+    odometry.angular_velocity_body.yaw_rad_s = odometry_msg.yawspeed;
 
-    mavlink_msg_odometry_get_pose_covariance(&message, odometry.pose_covariance.data());
-    mavlink_msg_odometry_get_velocity_covariance(&message, odometry.velocity_covariance.data());
+    static_assert(
+        odometry.pose_covariance.size() ==
+            sizeof(odometry_msg.pose_covariance) / sizeof(odometry_msg.pose_covariance[0]),
+        "pose_covariance length does not match");
+    // Can't use std::copy because odometry_msg is packed.
+    for (std::size_t i = 0; i < odometry.pose_covariance.size(); ++i) {
+        odometry.pose_covariance[i] = odometry_msg.pose_covariance[i];
+    }
 
-    odometry.reset_counter = mavlink_msg_odometry_get_reset_counter(&message);
+    static_assert(
+        odometry.velocity_covariance.size() ==
+            sizeof(odometry_msg.velocity_covariance) / sizeof(odometry_msg.velocity_covariance[0]),
+        "velocity_covariance length does not match");
+    // Can't use std::copy because odometry_msg is packed.
+    for (std::size_t i = 0; i < odometry.velocity_covariance.size(); ++i) {
+        odometry.velocity_covariance[i] = odometry_msg.velocity_covariance[i];
+    }
+
+    odometry.reset_counter = odometry_msg.reset_counter;
 
     set_odometry(odometry);
 
