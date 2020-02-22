@@ -63,8 +63,8 @@ Steps to run this example:
 as arguments Example: If you have test.plan and test2.plan in "../../../plugins/mission/" and you
 are running two drones in udp://:14540 and udp://:14541 then you run the example as:
 
-./fly_multiple_drones udp://:14540 udp://:14541 ../../../plugins/mission/test.plan
-../../../plugins/mission/test2.plan
+./fly_multiple_drones udp://:14540 udp://:14541 ../../../src/plugins/mission/test.plan
+../../../src/plugins/mission/test2.plan
 
 */
 
