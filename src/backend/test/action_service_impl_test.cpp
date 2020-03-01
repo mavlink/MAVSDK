@@ -36,6 +36,8 @@ std::string
 getReturnToLaunchAltitudeAndGetTranslatedResult(const mavsdk::Action::Result action_result);
 std::string
 setReturnToLaunchAltitudeAndGetTranslatedResult(const mavsdk::Action::Result action_result);
+std::string getTakeoffAltitudeAndGetTranslatedResult(const mavsdk::Action::Result action_result);
+std::string setTakeoffAltitudeAndGetTranslatedResult(const mavsdk::Action::Result action_result);
 
 class ActionServiceImplTest : public ::testing::TestWithParam<InputPair> {};
 
@@ -289,6 +291,25 @@ TEST_F(ActionServiceImplTest, getTakeoffAltitudeDoesNotCrashWithNullResponse)
     actionService.GetTakeoffAltitude(nullptr, nullptr, nullptr);
 }
 
+TEST_P(ActionServiceImplTest, getTakeoffAltitudeResultIsTranslatedCorrectly)
+{
+    const auto rpc_result = getTakeoffAltitudeAndGetTranslatedResult(GetParam().second);
+    EXPECT_EQ(rpc_result, GetParam().first);
+}
+
+std::string getTakeoffAltitudeAndGetTranslatedResult(const mavsdk::Action::Result action_result)
+{
+    MockAction action;
+    const auto return_pair = std::make_pair<>(action_result, ARBITRARY_ALTITUDE);
+    ON_CALL(action, get_takeoff_altitude()).WillByDefault(Return(return_pair));
+    ActionServiceImpl actionService(action);
+    mavsdk::rpc::action::GetTakeoffAltitudeResponse response;
+
+    actionService.GetTakeoffAltitude(nullptr, nullptr, &response);
+
+    return ActionResult::Result_Name(response.action_result().result());
+}
+
 TEST_F(ActionServiceImplTest, setTakeoffAltitudeDoesNotCrashWithNullRequest)
 {
     MockAction action;
@@ -317,6 +338,26 @@ TEST_P(ActionServiceImplTest, setTakeoffAltitudeSetsRightValue)
     request.set_altitude(expected_altitude);
 
     actionService.SetTakeoffAltitude(nullptr, &request, nullptr);
+}
+
+TEST_P(ActionServiceImplTest, setTakeoffAltitudeResultIsTranslatedCorrectly)
+{
+    const auto rpc_result = setTakeoffAltitudeAndGetTranslatedResult(GetParam().second);
+    EXPECT_EQ(rpc_result, GetParam().first);
+}
+
+std::string setTakeoffAltitudeAndGetTranslatedResult(const mavsdk::Action::Result action_result)
+{
+    MockAction action;
+    ON_CALL(action, set_takeoff_altitude(_)).WillByDefault(Return(action_result));
+    ActionServiceImpl actionService(action);
+    mavsdk::rpc::action::SetTakeoffAltitudeRequest request;
+    request.set_altitude(ARBITRARY_ALTITUDE);
+    mavsdk::rpc::action::SetTakeoffAltitudeResponse response;
+
+    actionService.SetTakeoffAltitude(nullptr, &request, &response);
+
+    return ActionResult::Result_Name(response.action_result().result());
 }
 
 TEST_F(ActionServiceImplTest, getMaxSpeedDoesNotCrashWithNullResponse)
