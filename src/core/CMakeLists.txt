@@ -9,6 +9,7 @@ configure_file(version.h.in version.h)
 add_library(mavsdk
     call_every_handler.cpp
     connection.cpp
+    configuration.cpp
     curl_wrapper.cpp
     system.cpp
     system_impl.cpp
@@ -83,6 +84,7 @@ install(TARGETS mavsdk
 
 install(FILES
     connection_result.h
+    configuration.h
     system.h
     mavsdk.h
     plugin_base.h

@@ -10,6 +10,7 @@
 #include "system.h"
 #include "mavlink_include.h"
 #include "mavlink_address.h"
+#include "configuration.h"
 
 namespace mavsdk {
 
@@ -31,7 +32,7 @@ public:
     ConnectionResult add_serial_connection(const std::string& dev_path, int baudrate);
     ConnectionResult setup_udp_remote(const std::string& remote_ip, int remote_port);
 
-    void set_configuration(Mavsdk::Configuration configuration);
+    void set_configuration(Configuration configuration);
 
     std::vector<uint64_t> get_system_uuids() const;
     System& get_system();
@@ -68,7 +69,7 @@ private:
     Mavsdk::event_callback_t _on_discover_callback;
     Mavsdk::event_callback_t _on_timeout_callback;
 
-    std::atomic<Mavsdk::Configuration> _configuration{Mavsdk::Configuration::GroundStation};
+    Configuration _configuration;
     bool _is_single_system{false};
 
     std::atomic<bool> _should_exit = {false};

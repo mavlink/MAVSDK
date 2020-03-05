@@ -7,6 +7,7 @@
 
 #include "system.h"
 #include "connection_result.h"
+#include "configuration.h"
 
 namespace mavsdk {
 
@@ -130,16 +131,6 @@ public:
      */
     ConnectionResult
     add_serial_connection(const std::string& dev_path, int baudrate = DEFAULT_SERIAL_BAUDRATE);
-
-    /**
-     * @brief Possible configurations.
-     */
-    enum class Configuration {
-        Autopilot, /**< @brief SDK is used as an autopilot. */
-        GroundStation, /**< @brief SDK is used as a ground station. */
-        CompanionComputer /**< @brief SDK is used on a companion computer onboard the system (e.g.
-                             drone). */
-    };
 
     /**
      * @brief Set `Configuration` of SDK.
