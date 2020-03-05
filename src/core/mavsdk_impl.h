@@ -10,12 +10,24 @@
 #include "system.h"
 #include "mavlink_include.h"
 #include "mavlink_address.h"
-#include "configuration.h"
 
 namespace mavsdk {
 
 class MavsdkImpl {
 public:
+    /** @brief Default System ID for GCS configuration type. */
+    static constexpr int DEFAULT_SYSTEM_ID_GCS = 245;
+    /** @brief Default Component ID for GCS configuration type. */
+    static constexpr int DEFAULT_COMPONENT_ID_GCS = MAV_COMP_ID_MISSIONPLANNER;
+    /** @brief Default System ID for CompanionComputer configuration type. */
+    static constexpr int DEFAULT_SYSTEM_ID_CC = 1;
+    /** @brief Default Component ID for CompanionComputer configuration type. */
+    static constexpr int DEFAULT_COMPONENT_ID_CC = MAV_COMP_ID_PATHPLANNER;
+    /** @brief Default System ID for Autopilot configuration type. */
+    static constexpr int DEFAULT_SYSTEM_ID_AUTOPILOT = 1;
+    /** @brief Default Component ID for Autopilot configuration type. */
+    static constexpr int DEFAULT_COMPONENT_ID_AUTOPILOT = MAV_COMP_ID_AUTOPILOT1;
+
     MavsdkImpl();
     ~MavsdkImpl();
 
@@ -32,7 +44,7 @@ public:
     ConnectionResult add_serial_connection(const std::string& dev_path, int baudrate);
     ConnectionResult setup_udp_remote(const std::string& remote_ip, int remote_port);
 
-    void set_configuration(Configuration configuration);
+    void set_configuration(Mavsdk::Configuration configuration);
 
     std::vector<uint64_t> get_system_uuids() const;
     System& get_system();
@@ -69,7 +81,7 @@ private:
     Mavsdk::event_callback_t _on_discover_callback;
     Mavsdk::event_callback_t _on_timeout_callback;
 
-    Configuration _configuration;
+    Mavsdk::Configuration _configuration;
     bool _is_single_system{false};
 
     std::atomic<bool> _should_exit = {false};

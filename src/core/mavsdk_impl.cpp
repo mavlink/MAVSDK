@@ -21,11 +21,10 @@ MavsdkImpl::MavsdkImpl() :
     _systems(),
     _on_discover_callback(nullptr),
     _on_timeout_callback(nullptr),
-    _configuration(Configuration::UsageType::GroundStation)
+    _configuration(Mavsdk::Configuration::UsageType::GroundStation)
 {
     LogInfo() << "MAVSDK version: " << mavsdk_version;
-    //Configuration configuration(145, MAV_COMP_ID_MISSIONPLANNER);
-    //set_configuration(configuration);
+    set_configuration(_configuration);
 }
 
 MavsdkImpl::~MavsdkImpl()
@@ -246,7 +245,7 @@ void MavsdkImpl::add_connection(std::shared_ptr<Connection> new_connection)
     _connections.push_back(new_connection);
 }
 
-void MavsdkImpl::set_configuration(Configuration configuration)
+void MavsdkImpl::set_configuration(Mavsdk::Configuration configuration)
 {
     own_address.system_id = configuration.get_system_id();
     own_address.component_id = configuration.get_component_id();
@@ -327,16 +326,16 @@ uint8_t MavsdkImpl::get_own_component_id() const
 uint8_t MavsdkImpl::get_mav_type() const
 {
     switch (_configuration.get_usage_type()) {
-        case Configuration::UsageType::Autopilot:
+        case Mavsdk::Configuration::UsageType::Autopilot:
             return MAV_TYPE_GENERIC;
 
-        case Configuration::UsageType::GroundStation:
+        case Mavsdk::Configuration::UsageType::GroundStation:
             return MAV_TYPE_GCS;
 
-        case Configuration::UsageType::CompanionComputer:
+        case Mavsdk::Configuration::UsageType::CompanionComputer:
             return MAV_TYPE_ONBOARD_CONTROLLER;
         
-        case Configuration::UsageType::Custom:
+        case Mavsdk::Configuration::UsageType::Custom:
             return MAV_TYPE_GENERIC;
 
         default:
