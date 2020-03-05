@@ -214,6 +214,39 @@ public:
         unsigned _retries_done{0};
     };
 
+    class SetCurrentWorkItem : public WorkItem {
+    public:
+        SetCurrentWorkItem(
+            Sender& sender,
+            MAVLinkMessageHandler& message_handler,
+            TimeoutHandler& timeout_handler,
+            uint8_t type,
+            int current,
+            ResultCallback callback);
+
+        virtual ~SetCurrentWorkItem();
+        void start() override;
+        void cancel() override;
+
+        SetCurrentWorkItem(const SetCurrentWorkItem&) = delete;
+        SetCurrentWorkItem(SetCurrentWorkItem&&) = delete;
+        SetCurrentWorkItem& operator=(const SetCurrentWorkItem&) = delete;
+        SetCurrentWorkItem& operator=(SetCurrentWorkItem&&) = delete;
+
+    private:
+        void send_current_mission_item();
+
+        void process_mission_current(const mavlink_message_t& message);
+        void process_status_text(const mavlink_message_t& message);
+        void process_timeout();
+        void callback_and_reset(Result result);
+
+        int _current{0};
+        ResultCallback _callback{nullptr};
+        void* _cookie{nullptr};
+        unsigned _retries_done{0};
+    };
+
     static constexpr double timeout_s = 0.5;
     static constexpr unsigned retries = 4;
 
@@ -228,6 +261,8 @@ public:
     std::weak_ptr<WorkItem> download_items_async(uint8_t type, ResultAndItemsCallback callback);
 
     void clear_items_async(uint8_t type, ResultCallback callback);
+
+    void set_current_item_async(uint8_t type, int &current, ResultCallback callback);
 
     void do_work();
     bool is_idle();

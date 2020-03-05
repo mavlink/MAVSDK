@@ -43,6 +43,14 @@ void MAVLinkMissionTransfer::clear_items_async(uint8_t type, ResultCallback call
     _work_queue.push_back(ptr);
 }
 
+void MAVLinkMissionTransfer::set_current_item_async(uint8_t type, int &current, ResultCallback callback)
+{
+    auto ptr = std::make_shared<SetCurrentWorkItem>(
+        _sender, _message_handler, _timeout_handler, type, current, callback);
+
+    _work_queue.push_back(ptr);
+}
+
 void MAVLinkMissionTransfer::do_work()
 {
     LockedQueue<WorkItem>::Guard work_queue_guard(_work_queue);
@@ -767,4 +775,126 @@ void MAVLinkMissionTransfer::ClearWorkItem::callback_and_reset(Result result)
     _done = true;
 }
 
+MAVLinkMissionTransfer::SetCurrentWorkItem::SetCurrentWorkItem(Sender& sender,
+    MAVLinkMessageHandler& message_handler,
+    TimeoutHandler& timeout_handler,
+    uint8_t type,
+    int current,
+    ResultCallback callback) :
+    WorkItem(sender, message_handler, timeout_handler, type),
+    _current(current),
+    _callback(callback)
+{
+    std::lock_guard<std::mutex> lock(_mutex);
+
+    _message_handler.register_one(
+        MAVLINK_MSG_ID_MISSION_CURRENT,
+        [this](const mavlink_message_t& message) { process_mission_current(message); },
+        this);
+
+    _message_handler.register_one(
+        MAVLINK_MSG_ID_STATUSTEXT,
+        [this](const mavlink_message_t& message) { process_status_text(message); },
+        this);
+}
+
+MAVLinkMissionTransfer::SetCurrentWorkItem::~SetCurrentWorkItem()
+{
+    std::lock_guard<std::mutex> lock(_mutex);
+    _message_handler.unregister_all(this);
+    _timeout_handler.remove(_cookie);
+}
+
+void MAVLinkMissionTransfer::SetCurrentWorkItem::start()
+{
+    std::lock_guard<std::mutex> lock(_mutex);
+
+    _started = true;
+
+    // If we coudln't find it, the requested item is out of range and probably an invalid argument.
+    if (_current < 0) {
+        callback_and_reset(Result::CurrentInvalid);
+        return;
+    }
+
+    _retries_done = 0;
+    _timeout_handler.add([this]() { process_timeout(); }, timeout_s, &_cookie);
+    send_current_mission_item();
+}
+
+void MAVLinkMissionTransfer::SetCurrentWorkItem::cancel()
+{
+    std::lock_guard<std::mutex> lock(_mutex);
+
+    _timeout_handler.remove(_cookie);
+    // This is presumably not used or exposed because it is quick.
+}
+
+void MAVLinkMissionTransfer::SetCurrentWorkItem::send_current_mission_item()
+{    
+    mavlink_message_t message;
+    mavlink_msg_mission_set_current_pack(
+        _sender.own_address.system_id,
+        _sender.own_address.component_id,
+        &message,
+        _sender.target_address.system_id,
+        _sender.target_address.component_id,
+        _current);
+
+    if (!_sender.send_message(message)) {
+        _timeout_handler.remove(_cookie);
+        callback_and_reset(Result::ConnectionError);
+        return;
+    }
+
+    ++_retries_done;
+}
+
+void MAVLinkMissionTransfer::SetCurrentWorkItem::process_mission_current(const mavlink_message_t& message)
+{
+    std::lock_guard<std::mutex> lock(_mutex);
+
+    mavlink_mission_current_t mission_current;
+    mavlink_msg_mission_current_decode(&message,&mission_current);
+
+    _timeout_handler.remove(_cookie);
+    _current = mission_current.seq;
+
+    callback_and_reset(Result::Success);
+}
+
+void MAVLinkMissionTransfer::SetCurrentWorkItem::process_status_text(const mavlink_message_t& message)
+{
+    std::lock_guard<std::mutex> lock(_mutex);
+
+    mavlink_statustext_t status;
+    mavlink_msg_statustext_decode(&message,&status);
+
+    _timeout_handler.remove(_cookie);
+    //TODO status.severity
+
+    callback_and_reset(Result::ProtocolError);
+}
+
+void MAVLinkMissionTransfer::SetCurrentWorkItem::process_timeout()
+{
+    std::lock_guard<std::mutex> lock(_mutex);
+
+    if (_retries_done >= retries) {
+        callback_and_reset(Result::Timeout);
+        return;
+    }
+
+    _timeout_handler.add([this]() { process_timeout(); }, timeout_s, &_cookie);
+    send_current_mission_item();
+}
+
+void MAVLinkMissionTransfer::SetCurrentWorkItem::callback_and_reset(Result result)
+{
+    if (_callback) {
+        _callback(result);
+    }
+    _callback = nullptr;
+    _done = true;
+}
 } // namespace mavsdk

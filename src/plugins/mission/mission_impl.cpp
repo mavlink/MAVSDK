@@ -631,13 +631,6 @@ void MissionImpl::clear_mission_async(const Mission::result_callback_t& callback
 
 void MissionImpl::set_current_mission_item_async(int current, Mission::result_callback_t& callback)
 {
-    bool should_report_mission_result = false;
-
-    if (should_report_mission_result) {
-        // report_mission_result(callback, Mission::Result::BUSY);
-        return;
-    }
-
     int mavlink_index = -1;
     {
         std::lock_guard<std::recursive_mutex> lock(_mission_data.mutex);
@@ -652,30 +645,17 @@ void MissionImpl::set_current_mission_item_async(int current, Mission::result_ca
         }
     }
 
-    // If we coudln't find it, the requested item is out of range and probably an invalid argument.
-    if (mavlink_index < 0) {
-        // report_mission_result(callback, Mission::Result::INVALID_ARGUMENT);
-        return;
-    }
-
-    mavlink_message_t message;
-    mavlink_msg_mission_set_current_pack(
-        _parent->get_own_system_id(),
-        _parent->get_own_component_id(),
-        &message,
-        _parent->get_system_id(),
-        _parent->get_autopilot_id(),
-        mavlink_index);
-
-    if (!_parent->send_message(message)) {
-        // report_mission_result(callback, Mission::Result::ERROR);
-        return;
-    }
-
-    {
-        std::lock_guard<std::recursive_mutex> lock(_mission_data.mutex);
-        _mission_data.result_callback = callback;
-    }
+    _parent->mission_transfer().set_current_item_async(
+            MAV_MISSION_TYPE_MISSION,
+            mavlink_index,
+            [this, callback](MAVLinkMissionTransfer::Result result) {
+                auto converted_result = convert_result(result);
+                _parent->call_user_callback([callback, converted_result]() {
+                    if (callback) {
+                        callback(converted_result);
+                    }
+                });
+            });
 }
 
 void MissionImpl::report_progress()
