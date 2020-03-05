@@ -61,6 +61,10 @@ if(IOS)
     add_definitions("-DIOS")
 endif()
 
+if(ANDROID)
+    add_definitions("-DANDROID")
+endif()
+
 if(UNIX AND NOT APPLE)
     add_definitions("-DLINUX")
 endif()
