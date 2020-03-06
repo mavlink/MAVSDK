@@ -18,7 +18,7 @@ RUN apt-get update \
         build-essential \
         ca-certificates \
         ccache \
-        clang-format \
+        clang-format-9 \
         cmake \
         colordiff \
         doxygen \
@@ -39,8 +39,6 @@ RUN apt-get update \
     && apt-get -y autoremove \
     && apt-get clean autoclean \
     && rm -rf /var/lib/apt/lists/{apt,dpkg,cache,log} /tmp/* /var/tmp/*
-
-RUN update-alternatives --install /usr/bin/clang-format clang-format /usr/bin/clang-format-6.0 1000
 
 RUN gem install --no-document fpm;
 

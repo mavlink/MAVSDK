@@ -40,11 +40,10 @@ RUN apt-get update \
     && rm -rf /var/lib/apt/lists/{apt,dpkg,cache,log} /tmp/* /var/tmp/*
 
 RUN wget -O - https://apt.llvm.org/llvm-snapshot.gpg.key | apt-key add - \
-    && apt-add-repository "deb http://apt.llvm.org/xenial/ llvm-toolchain-xenial-6.0 main" \
+    && apt-add-repository "deb http://apt.llvm.org/xenial/ llvm-toolchain-xenial-9 main" \
     && apt-get update \
-    && apt-get install -y clang-format-6.0 \
-    && rm -rf /var/lib/apt/lists/{apt,dpkg,cache,log} /tmp/* /var/tmp/* \
-    && update-alternatives --install /usr/bin/clang-format clang-format /usr/bin/clang-format-6.0 1000
+    && apt-get install -y clang-format-9 \
+    && rm -rf /var/lib/apt/lists/{apt,dpkg,cache,log} /tmp/* /var/tmp/*
 
 RUN gem install --no-document fpm;
 
