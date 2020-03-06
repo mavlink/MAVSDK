@@ -262,7 +262,7 @@ public:
 
     void clear_items_async(uint8_t type, ResultCallback callback);
 
-    void set_current_item_async(uint8_t type, int &current, ResultCallback callback);
+    void set_current_item_async(uint8_t type, int current, ResultCallback callback);
 
     void do_work();
     bool is_idle();

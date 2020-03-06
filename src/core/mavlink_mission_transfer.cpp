@@ -43,7 +43,7 @@ void MAVLinkMissionTransfer::clear_items_async(uint8_t type, ResultCallback call
     _work_queue.push_back(ptr);
 }
 
-void MAVLinkMissionTransfer::set_current_item_async(uint8_t type, int &current, ResultCallback callback)
+void MAVLinkMissionTransfer::set_current_item_async(uint8_t type, int current, ResultCallback callback)
 {
     auto ptr = std::make_shared<SetCurrentWorkItem>(
         _sender, _message_handler, _timeout_handler, type, current, callback);
