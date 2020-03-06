@@ -855,7 +855,13 @@ void MAVLinkMissionTransfer::SetCurrentWorkItem::process_mission_current(const m
     _timeout_handler.remove(_cookie);
     _current = mission_current.seq;
 
-    callback_and_reset(Result::Success);
+    if (_current >= 0) {
+        callback_and_reset(Result::Success);
+        return;
+    }else{
+        callback_and_reset(Result::CurrentInvalid);
+        return;
+    }
 }
 
 void MAVLinkMissionTransfer::SetCurrentWorkItem::process_timeout()
