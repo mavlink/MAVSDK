@@ -237,7 +237,6 @@ public:
         void send_current_mission_item();
 
         void process_mission_current(const mavlink_message_t& message);
-        void process_status_text(const mavlink_message_t& message);
         void process_timeout();
         void callback_and_reset(Result result);
 

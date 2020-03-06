@@ -791,11 +791,6 @@ MAVLinkMissionTransfer::SetCurrentWorkItem::SetCurrentWorkItem(Sender& sender,
         MAVLINK_MSG_ID_MISSION_CURRENT,
         [this](const mavlink_message_t& message) { process_mission_current(message); },
         this);
-
-    _message_handler.register_one(
-        MAVLINK_MSG_ID_STATUSTEXT,
-        [this](const mavlink_message_t& message) { process_status_text(message); },
-        this);
 }
 
 MAVLinkMissionTransfer::SetCurrentWorkItem::~SetCurrentWorkItem()
@@ -861,19 +856,6 @@ void MAVLinkMissionTransfer::SetCurrentWorkItem::process_mission_current(const m
     _current = mission_current.seq;
 
     callback_and_reset(Result::Success);
-}
-
-void MAVLinkMissionTransfer::SetCurrentWorkItem::process_status_text(const mavlink_message_t& message)
-{
-    std::lock_guard<std::mutex> lock(_mutex);
-
-    mavlink_statustext_t status;
-    mavlink_msg_statustext_decode(&message,&status);
-
-    _timeout_handler.remove(_cookie);
-    //TODO status.severity
-
-    callback_and_reset(Result::ProtocolError);
 }
 
 void MAVLinkMissionTransfer::SetCurrentWorkItem::process_timeout()
