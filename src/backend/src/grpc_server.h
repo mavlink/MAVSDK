@@ -64,9 +64,10 @@ public:
         _mocap_service(_mocap)
     {}
 
-    void set_port(int port);
     int run();
     void wait();
+    void stop();
+    void set_port(int port);
 
 private:
     void setup_port(grpc::ServerBuilder& builder);

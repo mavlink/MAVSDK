@@ -41,7 +41,8 @@ int main(int argc, char** argv)
         }
     }
 
-    runBackend(connection_url.c_str(), mavsdk_server_port, nullptr, nullptr);
+    auto backend = runBackend(connection_url.c_str(), mavsdk_server_port, nullptr, nullptr);
+    attach(backend);
 }
 
 void usage()
