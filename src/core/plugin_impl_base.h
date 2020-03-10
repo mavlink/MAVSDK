@@ -58,7 +58,7 @@ public:
     const PluginImplBase& operator=(const PluginImplBase&) = delete;
 
 protected:
-    std::shared_ptr<SystemImpl> _parent;
+    SystemImpl* _parent;
 };
 
 } // namespace mavsdk

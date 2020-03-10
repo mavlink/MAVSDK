@@ -108,7 +108,8 @@ public:
     const System& operator=(const System&) = delete;
 
 private:
-    std::shared_ptr<SystemImpl> system_impl() { return _system_impl; };
+    std::shared_ptr<SystemImpl> system_impl() { return _system_impl; }
+    SystemImpl* system_impl_raw() { return _system_impl.get(); }
 
     /*
      * MavsdkImpl and PluginImplBase need access to SystemImpl class.
