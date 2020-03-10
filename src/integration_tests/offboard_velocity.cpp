@@ -121,6 +121,11 @@ TEST_F(SitlTest, OffboardVelocityNED)
 
     action_ret = action->land();
     EXPECT_EQ(action_ret, Action::Result::Success);
+
+    while (telemetry->armed()) {
+        // Wait until we're done.
+        std::this_thread::sleep_for(std::chrono::seconds(1));
+    }
 }
 
 TEST_F(SitlTest, OffboardVelocityBody)
@@ -205,4 +210,9 @@ TEST_F(SitlTest, OffboardVelocityBody)
 
     action_ret = action->land();
     EXPECT_EQ(action_ret, Action::Result::Success);
+
+    while (telemetry->armed()) {
+        // Wait until we're done.
+        std::this_thread::sleep_for(std::chrono::seconds(1));
+    }
 }
