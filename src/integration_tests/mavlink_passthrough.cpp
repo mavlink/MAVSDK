@@ -1,5 +1,7 @@
+#include <atomic>
 #include <iostream>
 #include <future>
+#include <memory>
 #include "log.h"
 #include "integration_test_helper.h"
 #include "mavsdk.h"
@@ -47,29 +49,29 @@ TEST_F(SitlTest, MavlinkPassthrough)
     }
 
     {
-        std::promise<void> prom;
-        std::future<void> fut = prom.get_future();
-        unsigned counter = 0;
-        bool stopped = false;
+        auto prom = std::promise<void>();
+        auto fut = prom.get_future();
+
+        auto counter = std::make_shared<int>(0);
+        auto weak = std::weak_ptr<int>{counter};
 
         mavlink_passthrough->subscribe_message_async(
             MAVLINK_MSG_ID_HIGHRES_IMU,
-            [&prom, &counter, &stopped, mavlink_passthrough](const mavlink_message_t& message) {
+            [&prom, weak, mavlink_passthrough](const mavlink_message_t& message) {
                 mavlink_highres_imu_t highres_imu;
                 mavlink_msg_highres_imu_decode(&message, &highres_imu);
 
-                LogInfo() << "HIGHRES_IMU.temperature [1] (" << counter << ")"
-                          << highres_imu.temperature << " degrees C";
-                if (++counter == 100) {
-                    EXPECT_FALSE(stopped);
-                    if (!stopped) {
-                        stopped = true;
+                if (auto counter_handle = weak.lock()) {
+                    LogInfo() << "HIGHRES_IMU.temperature [1] (" << *counter_handle << ")"
+                              << highres_imu.temperature << " degrees C";
+
+                    if ((*counter_handle)++ == 100) {
                         // Unsubscribe again
                         mavlink_passthrough->subscribe_message_async(
                             MAVLINK_MSG_ID_HIGHRES_IMU, nullptr);
                         prom.set_value();
                     }
-                };
+                }
             });
 
         // At 50 Hz we should have received 100 temperature measurements in 2 seconds.
