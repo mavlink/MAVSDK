@@ -1542,3 +1542,55 @@ TEST(MAVLinkMissionTransfer, ClearMissionSendsClear)
     mmt.do_work();
     EXPECT_TRUE(mmt.is_idle());
 }
+
+
+TEST(MAVLinkMissionTransfer, SetCurrentSuccess)
+{
+    MockSender mock_sender(own_address, target_address);
+    MAVLinkMessageHandler message_handler;
+    FakeTime time;
+    TimeoutHandler timeout_handler(time);
+
+    MAVLinkMissionTransfer mmt(mock_sender, message_handler, timeout_handler);
+
+    ON_CALL(mock_sender, send_message(_)).WillByDefault(Return(true));
+
+    std::vector<ItemInt> real_items;
+    real_items.push_back(make_item(MAV_MISSION_TYPE_MISSION, 0));
+    real_items.push_back(make_item(MAV_MISSION_TYPE_MISSION, 1));
+    real_items.push_back(make_item(MAV_MISSION_TYPE_MISSION, 2));
+
+    std::promise<void> prom;
+    auto fut = prom.get_future();
+
+    mmt.upload_items_async(MAV_MISSION_TYPE_MISSION, real_items, [&prom](Result result) {
+        EXPECT_EQ(result, Result::Success);
+        ONCE_ONLY;
+        prom.set_value();
+    });
+    mmt.do_work();
+
+    EXPECT_EQ(fut.wait_for(std::chrono::seconds(1)), std::future_status::ready);
+
+    mmt.set_current_item_async(MAV_MISSION_TYPE_MISSION, 2, [&prom](Result result) {
+        EXPECT_EQ(result, Result::Success);
+        prom.set_value();
+    });
+    mmt.do_work();
+
+    EXPECT_EQ(fut.wait_for(std::chrono::seconds(1)), std::future_status::ready);
+
+    real_items[0].current = 0;
+    real_items[2].current = 1;
+
+    mmt.download_items_async(
+        MAV_MISSION_TYPE_MISSION, [&real_items, &prom](Result result, std::vector<ItemInt> items) {
+            EXPECT_EQ(result, Result::Success);
+            EXPECT_EQ(real_items, items);
+            prom.set_value();
+        });
+    mmt.do_work();
+
+    mmt.do_work();
+    EXPECT_TRUE(mmt.is_idle());
+}
