@@ -631,6 +631,20 @@ void MissionImpl::set_current_mission_item_async(int current, Mission::result_ca
         }
     }
 
+    // If we don't have _mission_data cached from an upload or download,
+    // we have to complain. The exception is current set to 0 because it
+    // means to reset to the beginning.
+
+    if (mavlink_index == -1 && current != 0) {
+        _parent->call_user_callback([callback]() {
+            if (callback) {
+                // FIXME: come up with better error code.
+                callback(Mission::Result::INVALID_ARGUMENT);
+                return;
+            }
+        });
+    }
+
     _parent->mission_transfer().set_current_item_async(
         mavlink_index, [this, callback](MAVLinkMissionTransfer::Result result) {
             auto converted_result = convert_result(result);
