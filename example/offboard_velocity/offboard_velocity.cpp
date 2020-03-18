@@ -258,11 +258,14 @@ int main(int argc, char** argv)
     Action::Result takeoff_result = action->takeoff();
     action_error_exit(takeoff_result, "Takeoff failed");
 
-    // This will ensure not switch to offboard mode until take off has finished completely
     while (true) {
-        if (telemetry->flight_mode() == Telemetry::FlightMode::TAKEOFF) {
+        if (telemetry->landed_state() == Telemetry::LandedState::TAKING_OFF) {
             std::cout << "Taking off..." << std::endl;
-            break;
+            sleep_for(milliseconds(500));
+            if (telemetry->landed_state() != Telemetry::LandedState::TAKING_OFF) {
+                std::cout << "Taking off has finished." << std::endl;
+                break;
+            }
         }
     }
 
