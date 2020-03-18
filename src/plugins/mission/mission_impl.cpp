@@ -63,20 +63,6 @@ void MissionImpl::process_mission_current(const mavlink_message_t& message)
     }
 
     report_progress();
-
-    // We use these flags to make sure we only lock one mutex at a time,
-    // and make sure the scope of the lock is obvious.
-    bool set_current_successful = false;
-    {
-        std::lock_guard<std::recursive_mutex> lock(_mission_data.mutex);
-        if (_mission_data.last_current_mavlink_mission_item == mission_current.seq) {
-            set_current_successful = true;
-        }
-    }
-    if (set_current_successful) {
-        // report_mission_result(_mission_data.result_callback, Mission::Result::SUCCESS);
-        //_parent->unregister_timeout_handler(_timeout_cookie);
-    }
 }
 
 void MissionImpl::process_mission_item_reached(const mavlink_message_t& message)
@@ -646,16 +632,14 @@ void MissionImpl::set_current_mission_item_async(int current, Mission::result_ca
     }
 
     _parent->mission_transfer().set_current_item_async(
-            MAV_MISSION_TYPE_MISSION,
-            mavlink_index,
-            [this, callback](MAVLinkMissionTransfer::Result result) {
-                auto converted_result = convert_result(result);
-                _parent->call_user_callback([callback, converted_result]() {
-                    if (callback) {
-                        callback(converted_result);
-                    }
-                });
+        mavlink_index, [this, callback](MAVLinkMissionTransfer::Result result) {
+            auto converted_result = convert_result(result);
+            _parent->call_user_callback([callback, converted_result]() {
+                if (callback) {
+                    callback(converted_result);
+                }
             });
+        });
 }
 
 void MissionImpl::report_progress()

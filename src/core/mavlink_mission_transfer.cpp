@@ -43,10 +43,10 @@ void MAVLinkMissionTransfer::clear_items_async(uint8_t type, ResultCallback call
     _work_queue.push_back(ptr);
 }
 
-void MAVLinkMissionTransfer::set_current_item_async(uint8_t type, int current, ResultCallback callback)
+void MAVLinkMissionTransfer::set_current_item_async(int current, ResultCallback callback)
 {
     auto ptr = std::make_shared<SetCurrentWorkItem>(
-        _sender, _message_handler, _timeout_handler, type, current, callback);
+        _sender, _message_handler, _timeout_handler, current, callback);
 
     _work_queue.push_back(ptr);
 }
@@ -775,13 +775,13 @@ void MAVLinkMissionTransfer::ClearWorkItem::callback_and_reset(Result result)
     _done = true;
 }
 
-MAVLinkMissionTransfer::SetCurrentWorkItem::SetCurrentWorkItem(Sender& sender,
+MAVLinkMissionTransfer::SetCurrentWorkItem::SetCurrentWorkItem(
+    Sender& sender,
     MAVLinkMessageHandler& message_handler,
     TimeoutHandler& timeout_handler,
-    uint8_t type,
     int current,
     ResultCallback callback) :
-    WorkItem(sender, message_handler, timeout_handler, type),
+    WorkItem(sender, message_handler, timeout_handler, MAV_MISSION_TYPE_MISSION),
     _current(current),
     _callback(callback)
 {
@@ -826,7 +826,7 @@ void MAVLinkMissionTransfer::SetCurrentWorkItem::cancel()
 }
 
 void MAVLinkMissionTransfer::SetCurrentWorkItem::send_current_mission_item()
-{    
+{
     mavlink_message_t message;
     mavlink_msg_mission_set_current_pack(
         _sender.own_address.system_id,
@@ -845,12 +845,13 @@ void MAVLinkMissionTransfer::SetCurrentWorkItem::send_current_mission_item()
     ++_retries_done;
 }
 
-void MAVLinkMissionTransfer::SetCurrentWorkItem::process_mission_current(const mavlink_message_t& message)
+void MAVLinkMissionTransfer::SetCurrentWorkItem::process_mission_current(
+    const mavlink_message_t& message)
 {
     std::lock_guard<std::mutex> lock(_mutex);
 
     mavlink_mission_current_t mission_current;
-    mavlink_msg_mission_current_decode(&message,&mission_current);
+    mavlink_msg_mission_current_decode(&message, &mission_current);
 
     _timeout_handler.remove(_cookie);
     _current = mission_current.seq;
@@ -858,7 +859,7 @@ void MAVLinkMissionTransfer::SetCurrentWorkItem::process_mission_current(const m
     if (_current >= 0) {
         callback_and_reset(Result::Success);
         return;
-    }else{
+    } else {
         callback_and_reset(Result::CurrentInvalid);
         return;
     }
