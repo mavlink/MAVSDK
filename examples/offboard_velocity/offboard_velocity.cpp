@@ -259,6 +259,17 @@ int main(int argc, char** argv)
     std::cout << "In Air..." << std::endl;
     sleep_for(seconds(5));
 
+    while (true) {
+      if (telemetry->landed_state() == Telemetry::LandedState::TAKING_OFF) {
+        std::cout << "Taking off..." << std::endl;
+        sleep_for(milliseconds(500));
+        if (telemetry->landed_state() != Telemetry::LandedState::TAKING_OFF) {
+          std::cout << "Taking off has finished." << std::endl;
+          break;
+        }
+      }
+    }
+
     //  using attitude control
     bool ret = offb_ctrl_attitude(offboard);
     if (ret == false) {
