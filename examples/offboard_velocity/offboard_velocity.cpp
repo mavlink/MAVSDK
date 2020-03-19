@@ -230,6 +230,30 @@ void usage(std::string bin_name)
               << "For example, to connect to the simulator use URL: udp://:14540" << std::endl;
 }
 
+Telemetry::landed_state_callback_t landed_state_callback(std::promise<void>& landed_promise)
+{
+    return [&landed_promise](Telemetry::LandedState landed) {
+        switch (landed) {
+            case Telemetry::LandedState::ON_GROUND:
+                std::cout << "On ground" << std::endl;
+                break;
+            case Telemetry::LandedState::TAKING_OFF:
+                std::cout << "Taking off..." << std::endl;
+                break;
+            case Telemetry::LandedState::LANDING:
+                std::cout << "Landing..." << std::endl;
+                break;
+            case Telemetry::LandedState::IN_AIR:
+                std::cout << "Taking off has finished." << std::endl;
+                landed_promise.set_value_at_thread_exit();
+                break;
+            case Telemetry::LandedState::UNKNOWN:
+                std::cout << "Unknown landed state." << std::endl;
+                break;
+        }
+    };
+}
+
 int main(int argc, char** argv)
 {
     Mavsdk dc;
@@ -276,26 +300,7 @@ int main(int argc, char** argv)
     Action::Result takeoff_result = action->takeoff();
     action_error_exit(takeoff_result, "Takeoff failed");
 
-    telemetry->landed_state_async([&in_air_promise](Telemetry::LandedState landed) {
-        switch (landed) {
-            case Telemetry::LandedState::ON_GROUND:
-                std::cout << "On ground" << std::endl;
-                break;
-            case Telemetry::LandedState::TAKING_OFF:
-                std::cout << "Taking off..." << std::endl;
-                break;
-            case Telemetry::LandedState::LANDING:
-                std::cout << "Landing..." << std::endl;
-                break;
-            case Telemetry::LandedState::IN_AIR:
-                std::cout << "Taking off has finished." << std::endl;
-                in_air_promise.set_value_at_thread_exit();
-                break;
-            case Telemetry::LandedState::UNKNOWN:
-                std::cout << "Unknown landed state." << std::endl;
-                break;
-        }
-    });
+    telemetry->landed_state_async(landed_state_callback(in_air_promise));
 
     in_air_future.wait();
 
