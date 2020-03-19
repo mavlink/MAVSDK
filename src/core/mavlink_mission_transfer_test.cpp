@@ -1598,6 +1598,83 @@ TEST(MAVLinkMissionTransfer, SetCurrentSendsSetCurrent)
     EXPECT_TRUE(mmt.is_idle());
 }
 
+TEST(MAVLinkMissionTransfer, SetCurrentWithRetransmissionAndTimeout)
+{
+    MockSender mock_sender(own_address, target_address);
+    MAVLinkMessageHandler message_handler;
+    FakeTime time;
+    TimeoutHandler timeout_handler(time);
+
+    MAVLinkMissionTransfer mmt(mock_sender, message_handler, timeout_handler);
+
+    ON_CALL(mock_sender, send_message(_)).WillByDefault(Return(true));
+
+    EXPECT_CALL(mock_sender, send_message(Truly([](const mavlink_message_t& message) {
+                    return is_correct_mission_set_current(2, message);
+                })))
+        .Times(MAVLinkMissionTransfer::retries);
+
+    std::promise<void> prom;
+    auto fut = prom.get_future();
+
+    mmt.set_current_item_async(2, [&prom](Result result) {
+        EXPECT_EQ(result, Result::Timeout);
+        prom.set_value();
+    });
+    mmt.do_work();
+
+    for (unsigned i = 0; i < MAVLinkMissionTransfer::retries; ++i) {
+        time.sleep_for(std::chrono::milliseconds(
+            static_cast<int>(MAVLinkMissionTransfer::timeout_s * 1.1 * 1000.)));
+        timeout_handler.run_once();
+    }
+
+    EXPECT_EQ(fut.wait_for(std::chrono::seconds(1)), std::future_status::ready);
+
+    mmt.do_work();
+    EXPECT_TRUE(mmt.is_idle());
+}
+
+TEST(MAVLinkMissionTransfer, SetCurrentWithRetransmissionAndSuccess)
+{
+    MockSender mock_sender(own_address, target_address);
+    MAVLinkMessageHandler message_handler;
+    FakeTime time;
+    TimeoutHandler timeout_handler(time);
+
+    MAVLinkMissionTransfer mmt(mock_sender, message_handler, timeout_handler);
+
+    ON_CALL(mock_sender, send_message(_)).WillByDefault(Return(true));
+
+    EXPECT_CALL(mock_sender, send_message(Truly([](const mavlink_message_t& message) {
+                    return is_correct_mission_set_current(2, message);
+                })))
+        .Times(MAVLinkMissionTransfer::retries - 1);
+
+    std::promise<void> prom;
+    auto fut = prom.get_future();
+
+    mmt.set_current_item_async(2, [&prom](Result result) {
+        EXPECT_EQ(result, Result::Success);
+        prom.set_value();
+    });
+    mmt.do_work();
+
+    for (unsigned i = 0; i < MAVLinkMissionTransfer::retries - 2; ++i) {
+        time.sleep_for(std::chrono::milliseconds(
+            static_cast<int>(MAVLinkMissionTransfer::timeout_s * 1.1 * 1000.)));
+        timeout_handler.run_once();
+    }
+
+    message_handler.process_message(make_mission_current(2));
+    mmt.do_work();
+
+    EXPECT_EQ(fut.wait_for(std::chrono::seconds(1)), std::future_status::ready);
+
+    mmt.do_work();
+    EXPECT_TRUE(mmt.is_idle());
+}
+
 TEST(MAVLinkMissionTransfer, SetCurrentWithInvalidInput)
 {
     MockSender mock_sender(own_address, target_address);
