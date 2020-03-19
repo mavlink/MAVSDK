@@ -1,6 +1,7 @@
 /**
  * @file offboard_velocity.cpp
- * @brief Example that demonstrates offboard velocity control in local NED and body coordinates
+ * @brief Example that demonstrates offboard velocity control in local NED and
+ * body coordinates
  *
  * @authors Author: Julian Oes <julian@oes.ch>,
  *                  Shakthi Prashanth <shakthi.prashanth.m@intel.com>
@@ -9,6 +10,7 @@
 
 #include <chrono>
 #include <cmath>
+#include <future>
 #include <iostream>
 #include <thread>
 
@@ -18,9 +20,9 @@
 #include <mavsdk/plugins/telemetry/telemetry.h>
 
 using namespace mavsdk;
-using std::this_thread::sleep_for;
 using std::chrono::milliseconds;
 using std::chrono::seconds;
+using std::this_thread::sleep_for;
 
 #define ERROR_CONSOLE_TEXT "\033[31m" // Turn text on console red
 #define TELEMETRY_CONSOLE_TEXT "\033[34m" // Turn text on console blue
@@ -65,7 +67,8 @@ inline void offboard_log(const std::string& offb_mode, const std::string msg)
 /**
  * Does Offboard control using NED co-ordinates.
  *
- * returns true if everything went well in Offboard control, exits with a log otherwise.
+ * returns true if everything went well in Offboard control, exits with a log
+ * otherwise.
  */
 bool offb_ctrl_ned(std::shared_ptr<mavsdk::Offboard> offboard)
 {
@@ -117,7 +120,8 @@ bool offb_ctrl_ned(std::shared_ptr<mavsdk::Offboard> offboard)
 /**
  * Does Offboard control using body co-ordinates.
  *
- * returns true if everything went well in Offboard control, exits with a log otherwise.
+ * returns true if everything went well in Offboard control, exits with a log
+ * otherwise.
  */
 bool offb_ctrl_body(std::shared_ptr<mavsdk::Offboard> offboard)
 {
@@ -168,7 +172,8 @@ bool offb_ctrl_body(std::shared_ptr<mavsdk::Offboard> offboard)
 /**
  * Does Offboard control using attitude commands.
  *
- * returns true if everything went well in Offboard control, exits with a log otherwise.
+ * returns true if everything went well in Offboard control, exits with a log
+ * otherwise.
  */
 bool offb_ctrl_attitude(std::shared_ptr<mavsdk::Offboard> offboard)
 {
@@ -199,6 +204,20 @@ bool offb_ctrl_attitude(std::shared_ptr<mavsdk::Offboard> offboard)
     offboard_log(offb_mode, "Offboard stopped");
 
     return true;
+}
+
+void wait_until_discover(Mavsdk& dc)
+{
+    std::cout << "Waiting to discover system..." << std::endl;
+    std::promise<void> discover_promise;
+    auto discover_future = discover_promise.get_future();
+
+    dc.register_on_discover([&discover_promise](uint64_t uuid) {
+        std::cout << "Discovered system with UUID: " << uuid << std::endl;
+        discover_promise.set_value();
+    });
+
+    discover_future.wait();
 }
 
 void usage(std::string bin_name)
@@ -233,10 +252,7 @@ int main(int argc, char** argv)
     }
 
     // Wait for the system to connect via heartbeat
-    while (!dc.is_connected()) {
-        std::cout << "Wait for system to connect via heartbeat" << std::endl;
-        sleep_for(seconds(1));
-    }
+    wait_until_discover(dc);
 
     // System got discovered.
     System& system = dc.system();
@@ -250,25 +266,38 @@ int main(int argc, char** argv)
     }
     std::cout << "System is ready" << std::endl;
 
+    std::promise<void> in_air_promise;
+    auto in_air_future = in_air_promise.get_future();
+
     Action::Result arm_result = action->arm();
     action_error_exit(arm_result, "Arming failed");
     std::cout << "Armed" << std::endl;
 
     Action::Result takeoff_result = action->takeoff();
     action_error_exit(takeoff_result, "Takeoff failed");
-    std::cout << "In Air..." << std::endl;
-    sleep_for(seconds(5));
 
-    while (true) {
-      if (telemetry->landed_state() == Telemetry::LandedState::TAKING_OFF) {
-        std::cout << "Taking off..." << std::endl;
-        sleep_for(milliseconds(500));
-        if (telemetry->landed_state() != Telemetry::LandedState::TAKING_OFF) {
-          std::cout << "Taking off has finished." << std::endl;
-          break;
+    telemetry->landed_state_async([&in_air_promise](Telemetry::LandedState landed) {
+        switch (landed) {
+            case Telemetry::LandedState::ON_GROUND:
+                std::cout << "On ground" << std::endl;
+                break;
+            case Telemetry::LandedState::TAKING_OFF:
+                std::cout << "Taking off..." << std::endl;
+                break;
+            case Telemetry::LandedState::LANDING:
+                std::cout << "Landing..." << std::endl;
+                break;
+            case Telemetry::LandedState::IN_AIR:
+                std::cout << "Taking off has finished." << std::endl;
+                in_air_promise.set_value_at_thread_exit();
+                break;
+            case Telemetry::LandedState::UNKNOWN:
+                std::cout << "Unknown landed state." << std::endl;
+                break;
         }
-      }
-    }
+    });
+
+    in_air_future.wait();
 
     //  using attitude control
     bool ret = offb_ctrl_attitude(offboard);
@@ -298,7 +327,8 @@ int main(int argc, char** argv)
     }
     std::cout << "Landed!" << std::endl;
 
-    // We are relying on auto-disarming but let's keep watching the telemetry for a bit longer.
+    // We are relying on auto-disarming but let's keep watching the telemetry for
+    // a bit longer.
     sleep_for(seconds(3));
     std::cout << "Finished..." << std::endl;
 
