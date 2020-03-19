@@ -198,6 +198,9 @@ public:
      * Note that this is not necessarily true for general missions using MAVLink if loop counters
      * are used.
      *
+     * Also not that the mission items need to be uploaded or downloaded before calling this
+     * method. The exception is current == 0 to reset to the beginning
+     *
      * @param current Index for mission index to go to next (0 based).
      * @param callback Callback to receive result of this request.
      */

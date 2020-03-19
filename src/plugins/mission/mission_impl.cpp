@@ -63,20 +63,6 @@ void MissionImpl::process_mission_current(const mavlink_message_t& message)
     }
 
     report_progress();
-
-    // We use these flags to make sure we only lock one mutex at a time,
-    // and make sure the scope of the lock is obvious.
-    bool set_current_successful = false;
-    {
-        std::lock_guard<std::recursive_mutex> lock(_mission_data.mutex);
-        if (_mission_data.last_current_mavlink_mission_item == mission_current.seq) {
-            set_current_successful = true;
-        }
-    }
-    if (set_current_successful) {
-        // report_mission_result(_mission_data.result_callback, Mission::Result::SUCCESS);
-        //_parent->unregister_timeout_handler(_timeout_cookie);
-    }
 }
 
 void MissionImpl::process_mission_item_reached(const mavlink_message_t& message)
@@ -631,13 +617,6 @@ void MissionImpl::clear_mission_async(const Mission::result_callback_t& callback
 
 void MissionImpl::set_current_mission_item_async(int current, Mission::result_callback_t& callback)
 {
-    bool should_report_mission_result = false;
-
-    if (should_report_mission_result) {
-        // report_mission_result(callback, Mission::Result::BUSY);
-        return;
-    }
-
     int mavlink_index = -1;
     {
         std::lock_guard<std::recursive_mutex> lock(_mission_data.mutex);
@@ -652,30 +631,29 @@ void MissionImpl::set_current_mission_item_async(int current, Mission::result_ca
         }
     }
 
-    // If we coudln't find it, the requested item is out of range and probably an invalid argument.
-    if (mavlink_index < 0) {
-        // report_mission_result(callback, Mission::Result::INVALID_ARGUMENT);
-        return;
+    // If we don't have _mission_data cached from an upload or download,
+    // we have to complain. The exception is current set to 0 because it
+    // means to reset to the beginning.
+
+    if (mavlink_index == -1 && current != 0) {
+        _parent->call_user_callback([callback]() {
+            if (callback) {
+                // FIXME: come up with better error code.
+                callback(Mission::Result::INVALID_ARGUMENT);
+                return;
+            }
+        });
     }
 
-    mavlink_message_t message;
-    mavlink_msg_mission_set_current_pack(
-        _parent->get_own_system_id(),
-        _parent->get_own_component_id(),
-        &message,
-        _parent->get_system_id(),
-        _parent->get_autopilot_id(),
-        mavlink_index);
-
-    if (!_parent->send_message(message)) {
-        // report_mission_result(callback, Mission::Result::ERROR);
-        return;
-    }
-
-    {
-        std::lock_guard<std::recursive_mutex> lock(_mission_data.mutex);
-        _mission_data.result_callback = callback;
-    }
+    _parent->mission_transfer().set_current_item_async(
+        mavlink_index, [this, callback](MAVLinkMissionTransfer::Result result) {
+            auto converted_result = convert_result(result);
+            _parent->call_user_callback([callback, converted_result]() {
+                if (callback) {
+                    callback(converted_result);
+                }
+            });
+        });
 }
 
 void MissionImpl::report_progress()
