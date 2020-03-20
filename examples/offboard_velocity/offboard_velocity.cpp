@@ -230,9 +230,9 @@ void usage(std::string bin_name)
               << "For example, to connect to the simulator use URL: udp://:14540" << std::endl;
 }
 
-Telemetry::landed_state_callback_t landed_state_callback(std::promise<void>& landed_promise)
+Telemetry::landed_state_callback_t landed_state_callback(std::shared_ptr<Telemetry>& telemetry, std::promise<void>& landed_promise)
 {
-    return [&landed_promise](Telemetry::LandedState landed) {
+    return [&landed_promise, &telemetry](Telemetry::LandedState landed) {
         switch (landed) {
             case Telemetry::LandedState::ON_GROUND:
                 std::cout << "On ground" << std::endl;
@@ -246,6 +246,7 @@ Telemetry::landed_state_callback_t landed_state_callback(std::promise<void>& lan
             case Telemetry::LandedState::IN_AIR:
                 std::cout << "Taking off has finished." << std::endl;
                 landed_promise.set_value_at_thread_exit();
+                telemetry->landed_state_async(nullptr);
                 break;
             case Telemetry::LandedState::UNKNOWN:
                 std::cout << "Unknown landed state." << std::endl;
@@ -300,8 +301,7 @@ int main(int argc, char** argv)
     Action::Result takeoff_result = action->takeoff();
     action_error_exit(takeoff_result, "Takeoff failed");
 
-    telemetry->landed_state_async(landed_state_callback(in_air_promise));
-
+    telemetry->landed_state_async(landed_state_callback(telemetry, in_air_promise));
     in_air_future.wait();
 
     //  using attitude control
