@@ -53,6 +53,38 @@ void MissionRawImpl::process_mission_ack(const mavlink_message_t& message)
     }
 }
 
+std::vector<MAVLinkMissionTransfer::ItemInt> MissionRawImpl::convert_to_int_items(const std::vector<std::shared_ptr<MissionRaw::MavlinkMissionItemInt> > &mission_raw)
+{
+    std::vector<MAVLinkMissionTransfer::ItemInt> int_items;
+
+    for (const auto& item : mission_raw) {
+        int_items.push_back(convert_mission_raw(item));
+    }
+
+    return int_items;
+}
+
+MAVLinkMissionTransfer::ItemInt MissionRawImpl::convert_mission_raw(const std::shared_ptr<MissionRaw::MavlinkMissionItemInt> transfer_mission_raw)
+{
+    MAVLinkMissionTransfer::ItemInt new_item_int;
+
+    new_item_int.seq = transfer_mission_raw->seq;
+    new_item_int.frame = transfer_mission_raw->frame;
+    new_item_int.command = transfer_mission_raw->command;
+    new_item_int.current = transfer_mission_raw->current;
+    new_item_int.autocontinue = transfer_mission_raw->autocontinue;
+    new_item_int.param1 = transfer_mission_raw->param1;
+    new_item_int.param2 = transfer_mission_raw->param2;
+    new_item_int.param3 = transfer_mission_raw->param3;
+    new_item_int.param4 = transfer_mission_raw->param4;
+    new_item_int.x = transfer_mission_raw->x;
+    new_item_int.y = transfer_mission_raw->y;
+    new_item_int.z = transfer_mission_raw->z;
+    new_item_int.mission_type = transfer_mission_raw->mission_type;
+
+    return new_item_int;
+}
+
 MissionRaw::Result MissionRawImpl::convert_result(MAVLinkMissionTransfer::Result result)
 {
     switch (result) {
@@ -144,6 +176,30 @@ void MissionRawImpl::download_mission_async(
 void MissionRawImpl::download_mission_cancel()
 {
     // TODO: Implement cancel.
+}
+
+void MissionRawImpl::upload_mission_async(const std::vector<std::shared_ptr<MissionRaw::MavlinkMissionItemInt> > &mission_raw, const MissionRaw::result_callback_t &callback)
+{
+    if (!_parent->does_support_mission_int()) {
+        LogWarn() << "Mission int messages not supported";
+        // report_mission_result(callback, Mission::Result::ERROR);
+        return;
+    }
+
+    const auto int_items = convert_to_int_items(mission_raw);
+
+    _parent->mission_transfer().upload_items_async(
+        MAV_MISSION_TYPE_MISSION,
+        int_items,
+        [this, callback,int_items](MAVLinkMissionTransfer::Result result) {
+            auto converted_result = convert_result(result);
+            auto converted_items = convert_items(int_items);
+            _parent->call_user_callback([callback, converted_result, converted_items]() {
+                if (callback) {
+                    callback(converted_result);
+                }
+            });
+        });
 }
 
 void MissionRawImpl::subscribe_mission_changed(MissionRaw::mission_changed_callback_t callback)

@@ -19,6 +19,12 @@ void MissionRaw::download_mission_cancel()
     _impl->download_mission_cancel();
 }
 
+void MissionRaw::upload_mission_async(
+    const std::vector<std::shared_ptr<MavlinkMissionItemInt> > &mission_raw, result_callback_t callback)
+{
+    _impl->upload_mission_async(mission_raw, callback);
+}
+
 const char* MissionRaw::result_str(Result result)
 {
     switch (result) {
