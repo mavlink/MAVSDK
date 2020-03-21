@@ -1,0 +1,13 @@
+{% if name.upper_camel_case.endswith('Result') -%}
+const char* {{ plugin_name.upper_camel_case }}::result_str({{ plugin_name.upper_camel_case }}::Result result)
+{
+    switch (result) {
+        {%- for value in values %}
+        case {{ plugin_name.upper_camel_case }}::{{ name.upper_camel_case }}::{{ value.name.upper_camel_case }}:
+            return "{{ value.description[1:].rstrip() }}";
+        {%- endfor %}
+        default:
+            return "Unknown";
+    }
+}
+{% endif %}

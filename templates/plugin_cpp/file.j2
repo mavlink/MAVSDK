@@ -1,0 +1,18 @@
+#include "{{ plugin_name.lower_snake_case }}_impl.h"
+#include "plugins/{{ plugin_name.lower_snake_case }}/{{ plugin_name.lower_snake_case }}.h"
+
+namespace mavsdk {
+
+{{ plugin_name.upper_camel_case }}::{{ plugin_name.upper_camel_case }}(System& system) : PluginBase(), _impl{new {{ plugin_name.upper_camel_case }}Impl(system)} {}
+
+{{ plugin_name.upper_camel_case }}::~{{ plugin_name.upper_camel_case }}() {}
+
+{% for method in methods %}
+{{ method }}
+{% endfor %}
+
+{% for struct in structs %}
+{{ struct }}
+{% endfor %}
+
+} // namespace mavsdk
