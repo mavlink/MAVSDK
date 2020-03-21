@@ -42,6 +42,14 @@ service ActionService {
      * This will reboot the autopilot, companion computer, camera and gimbal.
      */
     rpc Reboot(RebootRequest) returns(RebootResponse) {}
+    /**
+     * Send command to shut down the drone components.
+     *
+     * This will shut down the autopilot, onboard computer, camera and gimbal.
+     * This command should only be used when the autopilot is disarmed and autopilots commonly
+     * reject it if they are not already ready to shut down.
+     */
+    rpc Shutdown(ShutdownRequest) returns(ShutdownResponse) {}
     /*
      * Send command to kill the drone. 
      *
@@ -121,6 +129,11 @@ message LandResponse {
 
 message RebootRequest {}
 message RebootResponse {
+    ActionResult action_result = 1;
+}
+
+message ShutdownRequest {}
+message ShutdownResponse {
     ActionResult action_result = 1;
 }
 
