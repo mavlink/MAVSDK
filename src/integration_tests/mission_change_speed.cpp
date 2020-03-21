@@ -68,7 +68,7 @@ TEST_F(SitlTest, MissionChangeSpeed)
     ASSERT_TRUE(_mission_sent_ok);
 
     Action::Result result = action->arm();
-    ASSERT_EQ(result, Action::Result::SUCCESS);
+    ASSERT_EQ(result, Action::Result::Success);
 
     mission->subscribe_progress(std::bind(&receive_mission_progress, _1, _2));
 
@@ -106,7 +106,7 @@ TEST_F(SitlTest, MissionChangeSpeed)
     LogInfo() << "mission done";
 
     result = action->return_to_launch();
-    ASSERT_EQ(result, Action::Result::SUCCESS);
+    ASSERT_EQ(result, Action::Result::Success);
 
     while (!mission->mission_finished()) {
         LogDebug() << "waiting until mission is done";
@@ -119,7 +119,7 @@ TEST_F(SitlTest, MissionChangeSpeed)
     }
 
     result = action->disarm();
-    ASSERT_EQ(result, Action::Result::SUCCESS);
+    ASSERT_EQ(result, Action::Result::Success);
 }
 
 void receive_upload_mission_result(Mission::Result result)

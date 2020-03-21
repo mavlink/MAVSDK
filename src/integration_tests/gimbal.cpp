@@ -70,10 +70,10 @@ TEST(SitlTestGimbal, GimbalTakeoffAndMove)
     }
 
     Action::Result action_result = action->arm();
-    EXPECT_EQ(action_result, Action::Result::SUCCESS);
+    EXPECT_EQ(action_result, Action::Result::Success);
 
     action_result = action->takeoff();
-    EXPECT_EQ(action_result, Action::Result::SUCCESS);
+    EXPECT_EQ(action_result, Action::Result::Success);
 
     telemetry->set_rate_camera_attitude(10.0);
 
@@ -122,10 +122,10 @@ TEST(SitlTestGimbal, GimbalROIOffboard)
         position.absolute_altitude_m + 1.f);
 
     Action::Result action_result = action->arm();
-    EXPECT_EQ(action_result, Action::Result::SUCCESS);
+    EXPECT_EQ(action_result, Action::Result::Success);
 
     action_result = action->takeoff();
-    EXPECT_EQ(action_result, Action::Result::SUCCESS);
+    EXPECT_EQ(action_result, Action::Result::Success);
 
     std::this_thread::sleep_for(std::chrono::seconds(5));
 

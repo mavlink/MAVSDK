@@ -211,7 +211,7 @@ void test_mission(
 
     LogInfo() << "Arming...";
     const Action::Result arm_result = action->arm();
-    EXPECT_EQ(arm_result, Action::Result::SUCCESS);
+    EXPECT_EQ(arm_result, Action::Result::Success);
     LogInfo() << "Armed.";
 
     // Before starting the mission, we want to be sure to subscribe to the mission progress.

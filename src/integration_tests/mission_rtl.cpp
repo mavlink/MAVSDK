@@ -75,7 +75,7 @@ void do_mission_with_rtl(float mission_altitude_m, float return_altitude_m)
     }
 
     LogInfo() << "Setting RTL return altitude to " << return_altitude_m;
-    action->set_return_to_launch_return_altitude(return_altitude_m);
+    action->set_return_to_launch_altitude(return_altitude_m);
 
     LogInfo() << "System ready";
     LogInfo() << "Creating and uploading mission";
@@ -109,7 +109,7 @@ void do_mission_with_rtl(float mission_altitude_m, float return_altitude_m)
 
     LogInfo() << "Arming...";
     const Action::Result arm_result = action->arm();
-    ASSERT_EQ(arm_result, Action::Result::SUCCESS);
+    ASSERT_EQ(arm_result, Action::Result::Success);
     LogInfo() << "Armed.";
 
     // Before starting the mission, we want to be sure to subscribe to the mission progress.
@@ -152,7 +152,7 @@ void do_mission_with_rtl(float mission_altitude_m, float return_altitude_m)
         // We are done, and can do RTL to go home.
         LogInfo() << "Commanding RTL...";
         const Action::Result result = action->return_to_launch();
-        EXPECT_EQ(result, Action::Result::SUCCESS);
+        EXPECT_EQ(result, Action::Result::Success);
         LogInfo() << "Commanded RTL.";
     }
 
