@@ -53,7 +53,8 @@ void MissionRawImpl::process_mission_ack(const mavlink_message_t& message)
     }
 }
 
-std::vector<MAVLinkMissionTransfer::ItemInt> MissionRawImpl::convert_to_int_items(const std::vector<std::shared_ptr<MissionRaw::MavlinkMissionItemInt> > &mission_raw)
+std::vector<MAVLinkMissionTransfer::ItemInt> MissionRawImpl::convert_to_int_items(
+    const std::vector<std::shared_ptr<MissionRaw::MavlinkMissionItemInt>>& mission_raw)
 {
     std::vector<MAVLinkMissionTransfer::ItemInt> int_items;
 
@@ -64,7 +65,8 @@ std::vector<MAVLinkMissionTransfer::ItemInt> MissionRawImpl::convert_to_int_item
     return int_items;
 }
 
-MAVLinkMissionTransfer::ItemInt MissionRawImpl::convert_mission_raw(const std::shared_ptr<MissionRaw::MavlinkMissionItemInt> transfer_mission_raw)
+MAVLinkMissionTransfer::ItemInt MissionRawImpl::convert_mission_raw(
+    const std::shared_ptr<MissionRaw::MavlinkMissionItemInt> transfer_mission_raw)
 {
     MAVLinkMissionTransfer::ItemInt new_item_int;
 
@@ -99,7 +101,7 @@ MissionRaw::Result MissionRawImpl::convert_result(MAVLinkMissionTransfer::Result
         case MAVLinkMissionTransfer::Result::Timeout:
             return MissionRaw::Result::TIMEOUT;
         case MAVLinkMissionTransfer::Result::Unsupported:
-            return MissionRaw::Result::ERROR; // FIXME
+            return MissionRaw::Result::UNSUPPORTED;
         case MAVLinkMissionTransfer::Result::UnsupportedFrame:
             return MissionRaw::Result::ERROR; // FIXME
         case MAVLinkMissionTransfer::Result::NoMissionAvailable:
@@ -178,11 +180,16 @@ void MissionRawImpl::download_mission_cancel()
     // TODO: Implement cancel.
 }
 
-void MissionRawImpl::upload_mission_async(const std::vector<std::shared_ptr<MissionRaw::MavlinkMissionItemInt> > &mission_raw, const MissionRaw::result_callback_t &callback)
+void MissionRawImpl::upload_mission_async(
+    const std::vector<std::shared_ptr<MissionRaw::MavlinkMissionItemInt>>& mission_raw,
+    const MissionRaw::result_callback_t& callback)
 {
     if (!_parent->does_support_mission_int()) {
-        LogWarn() << "Mission int messages not supported";
-        // report_mission_result(callback, Mission::Result::ERROR);
+        _parent->call_user_callback([callback]() {
+            if (callback) {
+                callback(MissionRaw::Result::UNSUPPORTED);
+            }
+        });
         return;
     }
 
@@ -191,7 +198,7 @@ void MissionRawImpl::upload_mission_async(const std::vector<std::shared_ptr<Miss
     _parent->mission_transfer().upload_items_async(
         MAV_MISSION_TYPE_MISSION,
         int_items,
-        [this, callback,int_items](MAVLinkMissionTransfer::Result result) {
+        [this, callback, int_items](MAVLinkMissionTransfer::Result result) {
             auto converted_result = convert_result(result);
             auto converted_items = convert_items(int_items);
             _parent->call_user_callback([callback, converted_result, converted_items]() {

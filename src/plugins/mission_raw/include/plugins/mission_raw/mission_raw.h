@@ -21,9 +21,6 @@ class System;
  *
  * For a tested, simpler subset in mission functionality, it is recommended
  * to use the `Mission` plugin.
- *
- * @note Currently, only downloading the mission items is implemented,
- *       uploading could be added in the future if required.
  */
 class MissionRaw : public PluginBase {
 public:
@@ -54,6 +51,7 @@ public:
         ERROR, /**< @brief Error. */
         BUSY, /**< @brief %Vehicle busy. */
         TIMEOUT, /**< @brief Request timed out. */
+        UNSUPPORTED, /**< @brief The mission downloaded from the system is not supported. */
         INVALID_ARGUMENT, /**< @brief Invalid argument. */
         NO_MISSION_AVAILABLE, /**< @brief No mission available on system. */
         CANCELLED /**< @brief Mission upload or download has been cancelled. */
@@ -88,6 +86,14 @@ public:
                     depending on frame). */
         uint8_t mission_type; /**< @brief Mission type. */
 
+        /**
+         * @brief Equality between two MavlinkMissionItemInt
+         *
+         * @param other Another MavlinkMissionItemInt object
+         *
+         * @return 'true'  If the two MavlinkMissionItemInts are equal
+         *         'false' Otherwise
+         */
         bool operator==(const MavlinkMissionItemInt& other) const
         {
             return (
@@ -134,19 +140,12 @@ public:
      * The mission raw are uploaded to a drone. Once uploaded the mission can be started and
      * executed even if a connection is lost.
      *
-     * @param mission_items Reference to vector of mission items.
+     * @param mission_raw Reference to vector of mission raw.
      * @param callback Callback to receive result of this request.
      */
-    void upload_mission_async(const std::vector<std::shared_ptr<MissionRaw::MavlinkMissionItemInt>>& mission_raw,
-            result_callback_t callback);
-
-    /**
-     * @brief Cancel a mission upload (asynchronous).
-     *
-     * This cancels an ongoing mission upload. The mission upload will fail
-     * with the result `Result::CANCELLED`.
-     */
-    //TODO void upload_mission_cancel();
+    void upload_mission_async(
+        const std::vector<std::shared_ptr<MissionRaw::MavlinkMissionItemInt>>& mission_raw,
+        result_callback_t callback);
 
     /**
      * @brief Callback type to signal if the mission has changed.

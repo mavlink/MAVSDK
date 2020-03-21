@@ -23,9 +23,9 @@ public:
     void download_mission_async(const MissionRaw::mission_items_and_result_callback_t& callback);
     void download_mission_cancel();
 
-    void upload_mission_async(const std::vector<std::shared_ptr<MissionRaw::MavlinkMissionItemInt>>& mission_raw,
-        const MissionRaw::result_callback_t &callback);
-    //TODO void upload_mission_cancel();
+    void upload_mission_async(
+        const std::vector<std::shared_ptr<MissionRaw::MavlinkMissionItemInt>>& mission_raw,
+        const MissionRaw::result_callback_t& callback);
 
     void subscribe_mission_changed(MissionRaw::mission_changed_callback_t callback);
 
@@ -35,10 +35,10 @@ public:
 private:
     void process_mission_ack(const mavlink_message_t& message);
 
-    std::vector<MAVLinkMissionTransfer::ItemInt>
-    convert_to_int_items(const std::vector<std::shared_ptr<MissionRaw::MavlinkMissionItemInt>>& mission_raw);
-    MAVLinkMissionTransfer::ItemInt convert_mission_raw(const std::shared_ptr<MissionRaw::MavlinkMissionItemInt> transfer_mission_raw);
-
+    std::vector<MAVLinkMissionTransfer::ItemInt> convert_to_int_items(
+        const std::vector<std::shared_ptr<MissionRaw::MavlinkMissionItemInt>>& mission_raw);
+    MAVLinkMissionTransfer::ItemInt convert_mission_raw(
+        const std::shared_ptr<MissionRaw::MavlinkMissionItemInt> transfer_mission_raw);
 
     static MissionRaw::Result convert_result(MAVLinkMissionTransfer::Result result);
     MissionRaw::MavlinkMissionItemInt static convert_item(

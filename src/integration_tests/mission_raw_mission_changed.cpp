@@ -50,9 +50,7 @@ TEST_F(SitlTest, MissionRawMissionChanged)
     std::vector<std::shared_ptr<MissionRaw::MavlinkMissionItemInt>> mission_raw_items;
 
     for (unsigned i = 0; i < NUM_SOME_ITEMS; ++i) {
-        auto new_raw_item_nav = std::make_shared<
-            MissionRaw::
-                MavlinkMissionItemInt>(); // std::make_shared<MissionRaw::MavlinkMissionItemInt>();
+        auto new_raw_item_nav = std::make_shared<MissionRaw::MavlinkMissionItemInt>();
         new_raw_item_nav->seq = (i * 2);
         new_raw_item_nav->frame = 6; // MAV_FRAME_GLOBAL_RELATIVE_ALT_INT
         new_raw_item_nav->command = 16; // MAV_CMD_NAV_WAYPOINT
@@ -62,14 +60,13 @@ TEST_F(SitlTest, MissionRawMissionChanged)
         new_raw_item_nav->param2 = 1.0; // Accept Radius
         new_raw_item_nav->param3 = 1.0; // Pass Radius
         new_raw_item_nav->param4 = NAN; // Yaw
-        new_raw_item_nav->x = std::round(SOME_LATITUDES[i] * 1e7);
-        new_raw_item_nav->y = std::round(SOME_LONGITUDES[i] * 1e7);
+        new_raw_item_nav->x = int32_t(std::round(SOME_LATITUDES[i] * 1e7));
+        new_raw_item_nav->y = int32_t(std::round(SOME_LONGITUDES[i] * 1e7));
         new_raw_item_nav->z = SOME_ALTITUDES[i];
         new_raw_item_nav->mission_type = 0; // MAV_MISSION_TYPE_MISSION
 
-        std::shared_ptr<MissionRaw::MavlinkMissionItemInt> new_raw_item_speed = std::make_shared<
-            MissionRaw::
-                MavlinkMissionItemInt>(); // std::make_shared<MissionRaw::MavlinkMissionItemInt>();
+        std::shared_ptr<MissionRaw::MavlinkMissionItemInt> new_raw_item_speed =
+            std::make_shared<MissionRaw::MavlinkMissionItemInt>();
         new_raw_item_speed->seq = (i * 2) + 1;
         new_raw_item_speed->frame = 2; // MAV_FRAME_MISSION
         new_raw_item_speed->command = 178; // MAV_CMD_DO_CHANGE_SPEED
