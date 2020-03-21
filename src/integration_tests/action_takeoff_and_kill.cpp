@@ -50,7 +50,7 @@ TEST_F(SitlTest, ActionTakeoffAndKill)
         std::promise<void> prom;
         std::future<void> fut = prom.get_future();
         action->arm_async([&prom](Action::Result result) {
-            EXPECT_EQ(result, Action::Result::SUCCESS);
+            EXPECT_EQ(result, Action::Result::Success);
             prom.set_value();
         });
         EXPECT_EQ(fut.wait_for(std::chrono::seconds(2)), std::future_status::ready);
@@ -61,7 +61,7 @@ TEST_F(SitlTest, ActionTakeoffAndKill)
         std::promise<void> prom;
         std::future<void> fut = prom.get_future();
         action->takeoff_async([&prom](Action::Result result) {
-            EXPECT_EQ(result, Action::Result::SUCCESS);
+            EXPECT_EQ(result, Action::Result::Success);
             prom.set_value();
         });
         EXPECT_EQ(fut.wait_for(std::chrono::seconds(2)), std::future_status::ready);
@@ -77,7 +77,7 @@ TEST_F(SitlTest, ActionTakeoffAndKill)
         std::promise<void> prom;
         std::future<void> fut = prom.get_future();
         action->kill_async([&prom](Action::Result result) {
-            EXPECT_EQ(result, Action::Result::SUCCESS);
+            EXPECT_EQ(result, Action::Result::Success);
             prom.set_value();
         });
         EXPECT_EQ(fut.wait_for(std::chrono::seconds(2)), std::future_status::ready);

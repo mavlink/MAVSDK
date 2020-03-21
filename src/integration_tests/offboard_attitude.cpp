@@ -55,11 +55,11 @@ TEST_F(SitlTest, OffboardAttitudeRate)
 
 void arm_and_takeoff(std::shared_ptr<Action> action, std::shared_ptr<Telemetry> telemetry)
 {
-    ASSERT_EQ(action->arm(), Action::Result::SUCCESS);
+    ASSERT_EQ(action->arm(), Action::Result::Success);
 
-    ASSERT_EQ(action->set_takeoff_altitude(5.0f), Action::Result::SUCCESS);
+    ASSERT_EQ(action->set_takeoff_altitude(5.0f), Action::Result::Success);
 
-    ASSERT_EQ(action->takeoff(), Action::Result::SUCCESS);
+    ASSERT_EQ(action->takeoff(), Action::Result::Success);
 
     while (telemetry->position().relative_altitude_m < 4.0f) {
         std::this_thread::sleep_for(std::chrono::milliseconds(100));

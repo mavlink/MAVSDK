@@ -47,15 +47,15 @@ void takeoff_and_hover_at_altitude(float altitude_m)
 
     auto action = std::make_shared<Action>(system);
     Action::Result action_ret = action->arm();
-    EXPECT_EQ(action_ret, Action::Result::SUCCESS);
+    EXPECT_EQ(action_ret, Action::Result::Success);
 
-    EXPECT_EQ(Action::Result::SUCCESS, action->set_takeoff_altitude(altitude_m));
+    EXPECT_EQ(Action::Result::Success, action->set_takeoff_altitude(altitude_m));
     auto takeoff_altitude_result = action->get_takeoff_altitude();
-    EXPECT_EQ(takeoff_altitude_result.first, Action::Result::SUCCESS);
+    EXPECT_EQ(takeoff_altitude_result.first, Action::Result::Success);
     EXPECT_FLOAT_EQ(takeoff_altitude_result.second, altitude_m);
 
     action_ret = action->takeoff();
-    EXPECT_EQ(action_ret, Action::Result::SUCCESS);
+    EXPECT_EQ(action_ret, Action::Result::Success);
 
     // TODO: The wait time should not be hard-coded because the
     //       simulation might run faster.
@@ -68,11 +68,11 @@ void takeoff_and_hover_at_altitude(float altitude_m)
     EXPECT_LT(telemetry->position().relative_altitude_m, altitude_m + 0.25f);
 
     action_ret = action->land();
-    EXPECT_EQ(action_ret, Action::Result::SUCCESS);
+    EXPECT_EQ(action_ret, Action::Result::Success);
 
     EXPECT_TRUE(poll_condition_with_timeout(
         [&telemetry]() { return !telemetry->in_air(); }, std::chrono::seconds(wait_time_s)));
 
     action_ret = action->disarm();
-    EXPECT_EQ(action_ret, Action::Result::SUCCESS);
+    EXPECT_EQ(action_ret, Action::Result::Success);
 }
