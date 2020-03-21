@@ -7,7 +7,6 @@ Action::Action(System& system) : PluginBase(), _impl{new ActionImpl(system)} {}
 
 Action::~Action() {}
 
-
 void Action::arm_async(const result_callback_t callback)
 {
     _impl->arm_async(callback);
@@ -88,12 +87,18 @@ Action::Result Action::return_to_launch() const
     return _impl->return_to_launch();
 }
 
-void Action::goto_location_async(double latitude_deg, double longitude_deg, float absolute_altitude_m, float yaw_deg, const result_callback_t callback)
+void Action::goto_location_async(
+    double latitude_deg,
+    double longitude_deg,
+    float absolute_altitude_m,
+    float yaw_deg,
+    const result_callback_t callback)
 {
     _impl->goto_location_async(latitude_deg, longitude_deg, absolute_altitude_m, yaw_deg, callback);
 }
 
-Action::Result Action::goto_location(double latitude_deg, double longitude_deg, float absolute_altitude_m, float yaw_deg) const
+Action::Result Action::goto_location(
+    double latitude_deg, double longitude_deg, float absolute_altitude_m, float yaw_deg) const
 {
     return _impl->goto_location(latitude_deg, longitude_deg, absolute_altitude_m, yaw_deg);
 }
@@ -168,7 +173,8 @@ std::pair<Action::Result, float> Action::get_return_to_launch_altitude() const
     return _impl->get_return_to_launch_altitude();
 }
 
-void Action::set_return_to_launch_altitude_async(float relative_altitude_m, const result_callback_t callback)
+void Action::set_return_to_launch_altitude_async(
+    float relative_altitude_m, const result_callback_t callback)
 {
     _impl->set_return_to_launch_altitude_async(relative_altitude_m, callback);
 }
@@ -177,9 +183,6 @@ Action::Result Action::set_return_to_launch_altitude(float relative_altitude_m) 
 {
     return _impl->set_return_to_launch_altitude(relative_altitude_m);
 }
-
-
-
 
 const char* Action::result_str(Action::Result result)
 {
@@ -212,8 +215,5 @@ const char* Action::result_str(Action::Result result)
             return "Unknown";
     }
 }
-
-
-
 
 } // namespace mavsdk

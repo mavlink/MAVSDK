@@ -27,13 +27,20 @@ mavsdk::Action::Result takeoffAndGetTranslatedResult(mavsdk::Action::Result take
 mavsdk::Action::Result landAndGetTranslatedResult(mavsdk::Action::Result land_result);
 mavsdk::Action::Result killAndGetTranslatedResult(mavsdk::Action::Result kill_result);
 mavsdk::Action::Result returnToLaunchAndGetTranslatedResult(mavsdk::Action::Result rtl_result);
-mavsdk::Action::Result transitionToFWAndGetTranslatedResult(const mavsdk::Action::Result transition_to_fw_result);
-mavsdk::Action::Result transitionToMCAndGetTranslatedResult(const mavsdk::Action::Result transition_to_fw_result);
-mavsdk::Action::Result getReturnToLaunchAltitudeAndGetTranslatedResult(const mavsdk::Action::Result action_result);
-mavsdk::Action::Result setReturnToLaunchAltitudeAndGetTranslatedResult(const mavsdk::Action::Result action_result);
-mavsdk::Action::Result getTakeoffAltitudeAndGetTranslatedResult(const mavsdk::Action::Result action_result);
-mavsdk::Action::Result setTakeoffAltitudeAndGetTranslatedResult(const mavsdk::Action::Result action_result);
-mavsdk::Action::Result translateFromRpcResult(const mavsdk::rpc::action::ActionResult::Result& result);
+mavsdk::Action::Result
+transitionToFWAndGetTranslatedResult(const mavsdk::Action::Result transition_to_fw_result);
+mavsdk::Action::Result
+transitionToMCAndGetTranslatedResult(const mavsdk::Action::Result transition_to_fw_result);
+mavsdk::Action::Result
+getReturnToLaunchAltitudeAndGetTranslatedResult(const mavsdk::Action::Result action_result);
+mavsdk::Action::Result
+setReturnToLaunchAltitudeAndGetTranslatedResult(const mavsdk::Action::Result action_result);
+mavsdk::Action::Result
+getTakeoffAltitudeAndGetTranslatedResult(const mavsdk::Action::Result action_result);
+mavsdk::Action::Result
+setTakeoffAltitudeAndGetTranslatedResult(const mavsdk::Action::Result action_result);
+mavsdk::Action::Result
+translateFromRpcResult(const mavsdk::rpc::action::ActionResult::Result& result);
 
 class ActionServiceImplTest : public ::testing::TestWithParam<mavsdk::Action::Result> {};
 
@@ -293,7 +300,8 @@ TEST_P(ActionServiceImplTest, getTakeoffAltitudeResultIsTranslatedCorrectly)
     EXPECT_EQ(rpc_result, GetParam());
 }
 
-mavsdk::Action::Result getTakeoffAltitudeAndGetTranslatedResult(const mavsdk::Action::Result action_result)
+mavsdk::Action::Result
+getTakeoffAltitudeAndGetTranslatedResult(const mavsdk::Action::Result action_result)
 {
     MockAction action;
     const auto return_pair = std::make_pair<>(action_result, ARBITRARY_ALTITUDE);
@@ -342,7 +350,8 @@ TEST_P(ActionServiceImplTest, setTakeoffAltitudeResultIsTranslatedCorrectly)
     EXPECT_EQ(rpc_result, GetParam());
 }
 
-mavsdk::Action::Result setTakeoffAltitudeAndGetTranslatedResult(const mavsdk::Action::Result action_result)
+mavsdk::Action::Result
+setTakeoffAltitudeAndGetTranslatedResult(const mavsdk::Action::Result action_result)
 {
     MockAction action;
     ON_CALL(action, set_takeoff_altitude(_)).WillByDefault(Return(action_result));
@@ -532,7 +541,8 @@ TEST_P(ActionServiceImplTest, setReturnToLaunchAltitudeSetsRightValue)
     actionService.SetReturnToLaunchAltitude(nullptr, &request, nullptr);
 }
 
-mavsdk::Action::Result translateFromRpcResult(const mavsdk::rpc::action::ActionResult::Result& result)
+mavsdk::Action::Result
+translateFromRpcResult(const mavsdk::rpc::action::ActionResult::Result& result)
 {
     switch (result) {
         case mavsdk::rpc::action::ActionResult_Result_UNKNOWN:

@@ -11,7 +11,6 @@ class ActionServiceImpl final : public rpc::action::ActionService::Service {
 public:
     ActionServiceImpl(Action& action) : _action(action) {}
 
-
     template<typename ResponseType>
     void fillResponseWithResult(ResponseType* response, mavsdk::Action::Result& result) const
     {
@@ -24,9 +23,8 @@ public:
         response->set_allocated_action_result(rpc_action_result);
     }
 
-
-
-    static rpc::action::ActionResult::Result translateToRpcResult(const mavsdk::Action::Result& result)
+    static rpc::action::ActionResult::Result
+    translateToRpcResult(const mavsdk::Action::Result& result)
     {
         switch (result) {
             case mavsdk::Action::Result::Unknown:
@@ -58,16 +56,11 @@ public:
         }
     }
 
-
-
-
-    grpc::Status Arm(
-        grpc::ServerContext* /* context */,
+    grpc::Status
+    Arm(grpc::ServerContext* /* context */,
         const rpc::action::ArmRequest* /* request */,
         rpc::action::ArmResponse* response) override
     {
-        
-
         auto result = _action.arm();
 
         if (response != nullptr) {
@@ -82,8 +75,6 @@ public:
         const rpc::action::DisarmRequest* /* request */,
         rpc::action::DisarmResponse* response) override
     {
-        
-
         auto result = _action.disarm();
 
         if (response != nullptr) {
@@ -98,8 +89,6 @@ public:
         const rpc::action::TakeoffRequest* /* request */,
         rpc::action::TakeoffResponse* response) override
     {
-        
-
         auto result = _action.takeoff();
 
         if (response != nullptr) {
@@ -114,8 +103,6 @@ public:
         const rpc::action::LandRequest* /* request */,
         rpc::action::LandResponse* response) override
     {
-        
-
         auto result = _action.land();
 
         if (response != nullptr) {
@@ -130,8 +117,6 @@ public:
         const rpc::action::RebootRequest* /* request */,
         rpc::action::RebootResponse* response) override
     {
-        
-
         auto result = _action.reboot();
 
         if (response != nullptr) {
@@ -146,8 +131,6 @@ public:
         const rpc::action::ShutdownRequest* /* request */,
         rpc::action::ShutdownResponse* response) override
     {
-        
-
         auto result = _action.shutdown();
 
         if (response != nullptr) {
@@ -162,8 +145,6 @@ public:
         const rpc::action::KillRequest* /* request */,
         rpc::action::KillResponse* response) override
     {
-        
-
         auto result = _action.kill();
 
         if (response != nullptr) {
@@ -178,8 +159,6 @@ public:
         const rpc::action::ReturnToLaunchRequest* /* request */,
         rpc::action::ReturnToLaunchResponse* response) override
     {
-        
-
         auto result = _action.return_to_launch();
 
         if (response != nullptr) {
@@ -199,7 +178,11 @@ public:
             return grpc::Status::OK;
         }
 
-        auto result = _action.goto_location(request->latitude_deg(), request->longitude_deg(), request->absolute_altitude_m(), request->yaw_deg());
+        auto result = _action.goto_location(
+            request->latitude_deg(),
+            request->longitude_deg(),
+            request->absolute_altitude_m(),
+            request->yaw_deg());
 
         if (response != nullptr) {
             fillResponseWithResult(response, result);
@@ -213,8 +196,6 @@ public:
         const rpc::action::TransitionToFixedwingRequest* /* request */,
         rpc::action::TransitionToFixedwingResponse* response) override
     {
-        
-
         auto result = _action.transition_to_fixedwing();
 
         if (response != nullptr) {
@@ -229,8 +210,6 @@ public:
         const rpc::action::TransitionToMulticopterRequest* /* request */,
         rpc::action::TransitionToMulticopterResponse* response) override
     {
-        
-
         auto result = _action.transition_to_multicopter();
 
         if (response != nullptr) {
@@ -241,12 +220,10 @@ public:
     }
 
     grpc::Status GetTakeoffAltitude(
-        grpc::ServerContext * /* context */,
+        grpc::ServerContext* /* context */,
         const rpc::action::GetTakeoffAltitudeRequest* /* request */,
         rpc::action::GetTakeoffAltitudeResponse* response) override
     {
-        
-
         auto result_pair = _action.get_takeoff_altitude();
 
         if (response != nullptr) {
@@ -277,12 +254,10 @@ public:
     }
 
     grpc::Status GetMaximumSpeed(
-        grpc::ServerContext * /* context */,
+        grpc::ServerContext* /* context */,
         const rpc::action::GetMaximumSpeedRequest* /* request */,
         rpc::action::GetMaximumSpeedResponse* response) override
     {
-        
-
         auto result_pair = _action.get_maximum_speed();
 
         if (response != nullptr) {
@@ -313,12 +288,10 @@ public:
     }
 
     grpc::Status GetReturnToLaunchAltitude(
-        grpc::ServerContext * /* context */,
+        grpc::ServerContext* /* context */,
         const rpc::action::GetReturnToLaunchAltitudeRequest* /* request */,
         rpc::action::GetReturnToLaunchAltitudeResponse* response) override
     {
-        
-
         auto result_pair = _action.get_return_to_launch_altitude();
 
         if (response != nullptr) {
@@ -349,7 +322,7 @@ public:
     }
 
 private:
-    Action &_action;
+    Action& _action;
 };
 
 } // namespace backend

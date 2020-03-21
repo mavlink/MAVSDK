@@ -129,12 +129,18 @@ Action::Result ActionImpl::return_to_launch() const
 }
 
 Action::Result ActionImpl::goto_location(
-    const double latitude_deg, const double longitude_deg, const float altitude_amsl_m, const float yaw_deg)
+    const double latitude_deg,
+    const double longitude_deg,
+    const float altitude_amsl_m,
+    const float yaw_deg)
 {
     auto prom = std::promise<Action::Result>();
     auto fut = prom.get_future();
 
-    goto_location_async(latitude_deg, longitude_deg, altitude_amsl_m, yaw_deg, [&prom](Action::Result result) { prom.set_value(result); });
+    goto_location_async(
+        latitude_deg, longitude_deg, altitude_amsl_m, yaw_deg, [&prom](Action::Result result) {
+            prom.set_value(result);
+        });
 
     return fut.get();
 }
@@ -295,7 +301,11 @@ void ActionImpl::return_to_launch_async(const Action::result_callback_t& callbac
 }
 
 void ActionImpl::goto_location_async(
-    const double latitude_deg, const double longitude_deg, const float altitude_amsl_m, const float yaw_deg, const Action::result_callback_t& callback)
+    const double latitude_deg,
+    const double longitude_deg,
+    const float altitude_amsl_m,
+    const float yaw_deg,
+    const Action::result_callback_t& callback)
 {
     MAVLinkCommands::CommandInt command{};
 
@@ -411,7 +421,8 @@ void ActionImpl::process_extended_sys_state(const mavlink_message_t& message)
     _vtol_transition_support_known = true;
 }
 
-void ActionImpl::set_takeoff_altitude_async(const float relative_altitude_m, const Action::result_callback_t& callback) const
+void ActionImpl::set_takeoff_altitude_async(
+    const float relative_altitude_m, const Action::result_callback_t& callback) const
 {
     callback(set_takeoff_altitude(relative_altitude_m));
 }
@@ -424,7 +435,8 @@ Action::Result ActionImpl::set_takeoff_altitude(float relative_altitude_m) const
                                                             Action::Result::ParameterError;
 }
 
-void ActionImpl::get_takeoff_altitude_async(const Action::relative_altitude_m_callback_t& callback) const
+void ActionImpl::get_takeoff_altitude_async(
+    const Action::relative_altitude_m_callback_t& callback) const
 {
     auto altitude_result = get_takeoff_altitude();
     callback(altitude_result.first, altitude_result.second);
@@ -439,7 +451,8 @@ std::pair<Action::Result, float> ActionImpl::get_takeoff_altitude() const
         result.second);
 }
 
-void ActionImpl::set_maximum_speed_async(const float speed_m_s, const Action::result_callback_t& callback) const
+void ActionImpl::set_maximum_speed_async(
+    const float speed_m_s, const Action::result_callback_t& callback) const
 {
     callback(set_maximum_speed(speed_m_s));
 }
@@ -466,7 +479,8 @@ std::pair<Action::Result, float> ActionImpl::get_maximum_speed() const
         result.second);
 }
 
-void ActionImpl::set_return_to_launch_altitude_async(const float relative_altitude_m, const Action::result_callback_t& callback) const
+void ActionImpl::set_return_to_launch_altitude_async(
+    const float relative_altitude_m, const Action::result_callback_t& callback) const
 {
     callback(set_return_to_launch_altitude(relative_altitude_m));
 }
@@ -479,7 +493,8 @@ Action::Result ActionImpl::set_return_to_launch_altitude(const float relative_al
                                                             Action::Result::ParameterError;
 }
 
-void ActionImpl::get_return_to_launch_altitude_async(const Action::relative_altitude_m_callback_t& callback) const
+void ActionImpl::get_return_to_launch_altitude_async(
+    const Action::relative_altitude_m_callback_t& callback) const
 {
     const auto get_result = get_return_to_launch_altitude();
     callback(get_result.first, get_result.second);
