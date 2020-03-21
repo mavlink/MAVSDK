@@ -28,27 +28,39 @@ public:
     Action::Result land() const;
     Action::Result return_to_launch() const;
     Action::Result
-    goto_location(double latitude_deg, double longitude_deg, float altitude_amsl_m, float yaw_deg);
+    goto_location(const double latitude_deg, const double longitude_deg, const float altitude_amsl_m, const float yaw_deg);
     Action::Result transition_to_fixedwing() const;
     Action::Result transition_to_multicopter() const;
 
     void arm_async(const Action::result_callback_t& callback) const;
     void disarm_async(const Action::result_callback_t& callback) const;
     void kill_async(const Action::result_callback_t& callback) const;
+    void reboot_async(const Action::result_callback_t& callback) const;
+    void shutdown_async(const Action::result_callback_t& callback) const;
     void takeoff_async(const Action::result_callback_t& callback) const;
     void land_async(const Action::result_callback_t& callback) const;
     void return_to_launch_async(const Action::result_callback_t& callback) const;
+    void goto_location_async(const double latitude_deg, const double longitude_deg, const float altitude_amsl_m, const float yaw_deg, const Action::result_callback_t& callback);
     void transition_to_fixedwing_async(const Action::result_callback_t& callback) const;
     void transition_to_multicopter_async(const Action::result_callback_t& callback) const;
 
-    Action::Result set_takeoff_altitude(float relative_altitude_m);
+    void set_takeoff_altitude_async(const float relative_altitude_m, const Action::result_callback_t& callback) const;
+    void get_takeoff_altitude_async(const Action::relative_altitude_m_callback_t& callback) const;
+
+    Action::Result set_takeoff_altitude(float relative_altitude_m) const;
     std::pair<Action::Result, float> get_takeoff_altitude() const;
 
-    Action::Result set_max_speed(float speed_m_s);
-    std::pair<Action::Result, float> get_max_speed() const;
+    void set_maximum_speed_async(const float speed_m_s, const Action::result_callback_t& callback) const;
+    void get_maximum_speed_async(const Action::speed_callback_t& callback) const;
 
-    Action::Result set_return_to_launch_return_altitude(float relative_altitude_m);
-    std::pair<Action::Result, float> get_return_to_launch_return_altitude() const;
+    Action::Result set_maximum_speed(float speed_m_s) const;
+    std::pair<Action::Result, float> get_maximum_speed() const;
+
+    void set_return_to_launch_altitude_async(const float relative_altitude_m, const Action::result_callback_t& callback) const;
+    void get_return_to_launch_altitude_async(const Action::relative_altitude_m_callback_t& callback) const;
+
+    Action::Result set_return_to_launch_altitude(const float relative_altitude_m) const;
+    std::pair<Action::Result, float> get_return_to_launch_altitude() const;
 
 private:
     Action::Result disarming_allowed() const;
