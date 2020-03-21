@@ -1,0 +1,8 @@
+/**
+ * @brief {{ enum_description | replace('\n', '\n *')}}
+ */
+enum class {{ name.upper_camel_case }} {
+{%- for value in values %}
+    {{ value.name.upper_camel_case }}, /**< @brief{{ value.description.rstrip() }}. */
+{%- endfor %}
+};
