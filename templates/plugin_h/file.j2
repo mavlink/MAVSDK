@@ -1,0 +1,86 @@
+#pragma once
+
+#include <array>
+#include <functional>
+#include <limits>
+#include <memory>
+#include <string>
+
+#include "plugin_base.h"
+
+namespace mavsdk {
+
+class System;
+class {{ plugin_name.upper_camel_case }}Impl;
+
+/**
+ * @brief {{ class_description | replace('\n', '\n *')}}
+ */
+class {{ plugin_name.upper_camel_case }} : public PluginBase {
+public:
+    /**
+     * @brief Constructor. Creates the plugin for a specific System.
+     *
+     * The plugin is typically created as shown below:
+     *
+     *     ```cpp
+     *     auto {{ plugin_name.lower_snake_case }} = std::make_shared<{{ plugin_name.upper_camel_case }}>(system);
+     *     ```
+     *
+     * @param system The specific system associated with this plugin.
+     */
+    explicit {{ plugin_name.upper_camel_case }}(System& system);
+
+    /**
+     * @brief Destructor (internal use only).
+     */
+    ~{{ plugin_name.upper_camel_case }}();
+
+{%- for struct in structs %}
+{{ indent(struct, 1) }}
+
+{% endfor -%}
+
+{% for enum in enums -%}
+{{ indent(enum, 1) }}
+
+{% endfor %}
+
+{% if has_result %}
+    /**
+     * @brief Callback type for asynchronous {{ plugin_name.upper_camel_case }} calls.
+     */
+    typedef std::function<void(Result)> result_callback_t;
+{% endif %}
+
+{% for method in methods %}
+{{ indent(method, 1) }}
+
+{% endfor %}
+
+{% if has_result %}
+    /**
+     * @brief Returns a human-readable English string for a Result.
+     *
+     * @param result The enum value for which a human readable string is required.
+     * @return Human readable string for the Result.
+     */
+    static const char* result_str(Result result);
+{% endif %}
+
+    /**
+     * @brief Copy constructor (object is not copyable).
+     */
+    {{ plugin_name.upper_camel_case }}(const {{ plugin_name.upper_camel_case }}&) = delete;
+
+    /**
+     * @brief Equality operator (object is not copyable).
+     */
+    const {{ plugin_name.upper_camel_case }}& operator=(const {{ plugin_name.upper_camel_case }}&) = delete;
+
+private:
+    /** @private Underlying implementation, set at instantiation */
+    std::unique_ptr<{{ plugin_name.upper_camel_case }}Impl> _impl;
+};
+
+} // namespace mavsdk

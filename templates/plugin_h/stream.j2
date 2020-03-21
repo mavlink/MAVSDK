@@ -1,0 +1,16 @@
+/**
+* @brief Callback type for {{ name.lower_snake_case }}_async.
+*/
+typedef std::function<void({{ return_type.name }})> {{ return_name.lower_snake_case }}_callback_t;
+
+/**
+ * @brief {{ method_description | replace('\n', '\n *')}}
+ */
+void {{ name.lower_snake_case }}_async({{ return_name.lower_snake_case }}_callback_t callback);
+
+/**
+ * @brief Synchronous wrapper getting one {{ return_type.name }} update.
+ *
+ * @return One {{ return_type.name }} update.
+ */
+{{ return_type.name }} {{ name.lower_snake_case }}() const;
