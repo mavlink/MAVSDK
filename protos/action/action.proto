@@ -81,7 +81,7 @@ service ActionService {
      * command will fail). The command will succeed if called when the vehicle
      * is already in fixedwing mode.
      */
-    rpc TransitionToFixedWing(TransitionToFixedWingRequest) returns(TransitionToFixedWingResponse) {}
+    rpc TransitionToFixedwing(TransitionToFixedwingRequest) returns(TransitionToFixedwingResponse) {}
     /*
      * Send command to transition the drone to multicopter.
      *
@@ -156,8 +156,6 @@ message ReturnToLaunchResponse {
     ActionResult action_result = 1;
 }
 
-message TransitionToFixedWingRequest {}
-message TransitionToFixedWingResponse {
 message GotoLocationRequest {
     double latitude_deg = 1; // Latitude (in degrees)
     double longitude_deg = 2; // Longitude (in degrees)
@@ -167,6 +165,9 @@ message GotoLocationRequest {
 message GotoLocationResponse {
     ActionResult action_result = 1;
 }
+
+message TransitionToFixedwingRequest {}
+message TransitionToFixedwingResponse {
     ActionResult action_result = 1;
 }
 
