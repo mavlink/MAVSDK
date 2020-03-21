@@ -38,3 +38,27 @@ mkdir -p ${backend_generated_dir}
 for plugin in ${plugin_list}; do
     ${protoc_binary} -I ${proto_dir} --cpp_out=${backend_generated_dir} --grpc_out=${backend_generated_dir} --plugin=protoc-gen-grpc=${protoc_grpc_binary} ${proto_dir}/${plugin}/${plugin}.proto
 done
+
+echo ""
+echo "-------------------------------"
+echo " Generating C++ and mavsdk_server files"
+echo "    * protoc --version: $(${protoc_binary} --version)"
+echo "-------------------------------"
+echo ""
+
+tmp_output_dir="$(mktemp -d)"
+protoc_gen_dcsdk=$(which protoc-gen-dcsdk)
+template_path_plugin_h="${script_dir}/../templates/plugin_h"
+template_path_plugin_cpp="${script_dir}/../templates/plugin_cpp"
+template_path_mavsdk_server="${script_dir}/../templates/mavsdk_server"
+
+for plugin in action; do
+    ${protoc_binary} -I ${proto_dir} --custom_out=${tmp_output_dir} --plugin=protoc-gen-custom=${protoc_gen_dcsdk} --custom_opt="file_ext=h,template_path=${template_path_plugin_h}" ${proto_dir}/${plugin}/${plugin}.proto
+    mv ${tmp_output_dir}/${plugin}/${plugin^}.h ${script_dir}/../src/plugins/${plugin}/include/plugins/${plugin}/${plugin}.h
+
+    ${protoc_binary} -I ${proto_dir} --custom_out=${tmp_output_dir} --plugin=protoc-gen-custom=${protoc_gen_dcsdk} --custom_opt="file_ext=cpp,template_path=${template_path_plugin_cpp}" ${proto_dir}/${plugin}/${plugin}.proto
+    mv ${tmp_output_dir}/${plugin}/${plugin^}.cpp ${script_dir}/../src/plugins/${plugin}/${plugin}.cpp
+
+    ${protoc_binary} -I ${proto_dir} --custom_out=${tmp_output_dir} --plugin=protoc-gen-custom=${protoc_gen_dcsdk} --custom_opt="file_ext=h,template_path=${template_path_mavsdk_server}" ${proto_dir}/${plugin}/${plugin}.proto
+    mv ${tmp_output_dir}/${plugin}/${plugin^}.h ${script_dir}/../src/backend/src/plugins/${plugin}/${plugin}_service_impl.h
+done
