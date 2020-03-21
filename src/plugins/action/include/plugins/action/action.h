@@ -46,26 +46,20 @@ public:
         ConnectionError, /**< @brief Connection error. */
         Busy, /**< @brief Vehicle is busy. */
         CommandDenied, /**< @brief Command refused by vehicle. */
-        CommandDeniedLandedStateUnknown, /**< @brief Command refused because landed state is unknown. */
+        CommandDeniedLandedStateUnknown, /**< @brief Command refused because landed state is
+                                            unknown. */
         CommandDeniedNotLanded, /**< @brief Command refused because vehicle not landed. */
         Timeout, /**< @brief Request timed out. */
-        VtolTransitionSupportUnknown, /**< @brief Hybrid/VTOL transition refused because VTOL support is unknown. */
+        VtolTransitionSupportUnknown, /**< @brief Hybrid/VTOL transition refused because VTOL
+                                         support is unknown. */
         NoVtolTransitionSupport, /**< @brief Vehicle does not support hybrid/VTOL transitions. */
         ParameterError, /**< @brief Error getting or setting parameter. */
     };
-
-
-
-
-
-
 
     /**
      * @brief Callback type for asynchronous Action calls.
      */
     typedef std::function<void(Result)> result_callback_t;
-
-
 
     /**
      * @brief Send command to arm the drone.
@@ -82,7 +76,6 @@ public:
      */
     Result arm() const;
 
-
     /**
      * @brief Send command to disarm the drone.
      *
@@ -98,11 +91,10 @@ public:
      */
     Result disarm() const;
 
-
     /**
      * @brief Send command to take off and hover.
      *
-     * This switches the drone into position control mode and commands 
+     * This switches the drone into position control mode and commands
      * it to take off and hover at the takeoff altitude.
      *
      * Note that the vehicle must be armed before it can take off.
@@ -115,7 +107,6 @@ public:
      * @return Result of request.
      */
     Result takeoff() const;
-
 
     /**
      * @brief Send command to land at the current position.
@@ -131,7 +122,6 @@ public:
      */
     Result land() const;
 
-
     /**
      * @brief Send command to reboot the drone components.
      *
@@ -145,7 +135,6 @@ public:
      * @return Result of request.
      */
     Result reboot() const;
-
 
     /**
      * @brief *
@@ -164,9 +153,8 @@ public:
      */
     Result shutdown() const;
 
-
     /**
-     * @brief Send command to kill the drone. 
+     * @brief Send command to kill the drone.
      *
      * This will disarm a drone irrespective of whether it is landed or flying.
      * Note that the drone will fall out of the sky if this command is used while flying.
@@ -179,7 +167,6 @@ public:
      * @return Result of request.
      */
     Result kill() const;
-
 
     /**
      * @brief Send command to return to the launch (takeoff) position and land.
@@ -197,7 +184,6 @@ public:
      */
     Result return_to_launch() const;
 
-
     /**
      * @brief *
      * Send command to move the vehicle to a specific global position.
@@ -207,15 +193,20 @@ public:
      *
      * The yaw angle is in degrees (frame is NED, 0 is North, positive is clockwise).
      */
-    void goto_location_async(double latitude_deg, double longitude_deg, float absolute_altitude_m, float yaw_deg, const result_callback_t callback);
+    void goto_location_async(
+        double latitude_deg,
+        double longitude_deg,
+        float absolute_altitude_m,
+        float yaw_deg,
+        const result_callback_t callback);
 
     /**
      * @brief Synchronous wrapper for goto_location_async().
      *
      * @return Result of request.
      */
-    Result goto_location(double latitude_deg, double longitude_deg, float absolute_altitude_m, float yaw_deg) const;
-
+    Result goto_location(
+        double latitude_deg, double longitude_deg, float absolute_altitude_m, float yaw_deg) const;
 
     /**
      * @brief Send command to transition the drone to fixedwing.
@@ -233,7 +224,6 @@ public:
      */
     Result transition_to_fixedwing() const;
 
-
     /**
      * @brief Send command to transition the drone to multicopter.
      *
@@ -250,10 +240,9 @@ public:
      */
     Result transition_to_multicopter() const;
 
-
     /**
-    * @brief Callback type for get_takeoff_altitude_async.
-    */
+     * @brief Callback type for get_takeoff_altitude_async.
+     */
     typedef std::function<void(Result, float)> altitude_callback_t;
 
     /**
@@ -268,7 +257,6 @@ public:
      */
     std::pair<Result, float> get_takeoff_altitude() const;
 
-
     /**
      * @brief Set takeoff altitude (in meters above ground).
      */
@@ -281,10 +269,9 @@ public:
      */
     Result set_takeoff_altitude(float altitude) const;
 
-
     /**
-    * @brief Callback type for get_maximum_speed_async.
-    */
+     * @brief Callback type for get_maximum_speed_async.
+     */
     typedef std::function<void(Result, float)> speed_callback_t;
 
     /**
@@ -299,7 +286,6 @@ public:
      */
     std::pair<Result, float> get_maximum_speed() const;
 
-
     /**
      * @brief Set vehicle maximum speed (in metres/second).
      */
@@ -312,10 +298,9 @@ public:
      */
     Result set_maximum_speed(float speed) const;
 
-
     /**
-    * @brief Callback type for get_return_to_launch_altitude_async.
-    */
+     * @brief Callback type for get_return_to_launch_altitude_async.
+     */
     typedef std::function<void(Result, float)> relative_altitude_m_callback_t;
 
     /**
@@ -330,11 +315,11 @@ public:
      */
     std::pair<Result, float> get_return_to_launch_altitude() const;
 
-
     /**
      * @brief Set the return to launch minimum return altitude (in meters).
      */
-    void set_return_to_launch_altitude_async(float relative_altitude_m, const result_callback_t callback);
+    void set_return_to_launch_altitude_async(
+        float relative_altitude_m, const result_callback_t callback);
 
     /**
      * @brief Synchronous wrapper for set_return_to_launch_altitude_async().
@@ -343,9 +328,6 @@ public:
      */
     Result set_return_to_launch_altitude(float relative_altitude_m) const;
 
-
-
-
     /**
      * @brief Returns a human-readable English string for a Result.
      *
@@ -353,7 +335,6 @@ public:
      * @return Human readable string for the Result.
      */
     static const char* result_str(Result result);
-
 
     /**
      * @brief Copy constructor (object is not copyable).
