@@ -1,0 +1,21 @@
+grpc::Status {{ name.upper_camel_case }}(
+    grpc::ServerContext * /* context */,
+    const rpc::{{ plugin_name.lower_snake_case }}::{{ name.upper_camel_case }}Request* {% if not params -%} /* request */ {%- else -%} request {%- endif -%},
+    rpc::{{ plugin_name.lower_snake_case }}::{{ name.upper_camel_case }}Response* response) override
+{
+    {% if params -%}
+    if (request == nullptr) {
+        LogWarn() << "{{ name.upper_camel_case }} sent with a null request! Ignoring...";
+        return grpc::Status::OK;
+    }
+    {%- endif %}
+
+    auto result_pair = _{{ plugin_name.lower_snake_case }}.{{ name.lower_snake_case }}({% for param in params %}request->{{ param.name.lower_snake_case() }}(){{ ", " if not loop.last }}{% endfor %});
+
+    if (response != nullptr) {
+        fillResponseWithResult(response, result_pair.first);
+        response->set_{{ return_name.lower_snake_case }}(result_pair.second);
+    }
+
+    return grpc::Status::OK;
+}
