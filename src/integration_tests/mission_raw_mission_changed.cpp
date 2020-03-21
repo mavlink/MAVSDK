@@ -1,6 +1,5 @@
 #include "integration_test_helper.h"
 #include "mavsdk.h"
-#include "plugins/mission/mission.h"
 #include "plugins/mission_raw/mission_raw.h"
 #include <cmath>
 #include <future>
@@ -30,7 +29,6 @@ TEST_F(SitlTest, MissionRawMissionChanged)
     System& system = dc.system();
     ASSERT_TRUE(system.has_autopilot());
 
-    auto mission = std::make_shared<Mission>(system);
     auto mission_raw = std::make_shared<MissionRaw>(system);
 
     std::promise<void> prom_changed{};
@@ -49,15 +47,49 @@ TEST_F(SitlTest, MissionRawMissionChanged)
     // The mission change callback should not trigger yet.
     EXPECT_EQ(fut_changed.wait_for(std::chrono::milliseconds(500)), std::future_status::timeout);
 
-    std::vector<std::shared_ptr<MissionItem>> mission_items;
+    std::vector<std::shared_ptr<MissionRaw::MavlinkMissionItemInt>> mission_raw_items;
 
     for (unsigned i = 0; i < NUM_SOME_ITEMS; ++i) {
-        auto new_item = std::make_shared<MissionItem>();
-        new_item->set_position(SOME_LATITUDES[i], SOME_LONGITUDES[i]);
-        new_item->set_relative_altitude(SOME_ALTITUDES[i]);
-        new_item->set_speed(SOME_SPEEDS[i]);
-        mission_items.push_back(new_item);
+        auto new_raw_item_nav = std::make_shared<
+            MissionRaw::
+                MavlinkMissionItemInt>(); // std::make_shared<MissionRaw::MavlinkMissionItemInt>();
+        new_raw_item_nav->seq = (i * 2);
+        new_raw_item_nav->frame = 6; // MAV_FRAME_GLOBAL_RELATIVE_ALT_INT
+        new_raw_item_nav->command = 16; // MAV_CMD_NAV_WAYPOINT
+        new_raw_item_nav->current = 0;
+        new_raw_item_nav->autocontinue = 1;
+        new_raw_item_nav->param1 = 1.0; // Hold
+        new_raw_item_nav->param2 = 1.0; // Accept Radius
+        new_raw_item_nav->param3 = 1.0; // Pass Radius
+        new_raw_item_nav->param4 = NAN; // Yaw
+        new_raw_item_nav->x = std::round(SOME_LATITUDES[i] * 1e7);
+        new_raw_item_nav->y = std::round(SOME_LONGITUDES[i] * 1e7);
+        new_raw_item_nav->z = SOME_ALTITUDES[i];
+        new_raw_item_nav->mission_type = 0; // MAV_MISSION_TYPE_MISSION
+
+        std::shared_ptr<MissionRaw::MavlinkMissionItemInt> new_raw_item_speed = std::make_shared<
+            MissionRaw::
+                MavlinkMissionItemInt>(); // std::make_shared<MissionRaw::MavlinkMissionItemInt>();
+        new_raw_item_speed->seq = (i * 2) + 1;
+        new_raw_item_speed->frame = 2; // MAV_FRAME_MISSION
+        new_raw_item_speed->command = 178; // MAV_CMD_DO_CHANGE_SPEED
+        new_raw_item_speed->current = 0;
+        new_raw_item_speed->autocontinue = 1;
+        new_raw_item_speed->param1 =
+            1.0f; // Speed type (0=Airspeed, 1=Ground Speed, 2=Climb Speed, 3=Descent Speed)
+        new_raw_item_speed->param2 = SOME_SPEEDS[i]; // Speed
+        new_raw_item_speed->param3 = -1.0f;
+        new_raw_item_speed->param4 = 0.0f; // Relative	0: absolute, 1: relative
+        new_raw_item_speed->x = 0;
+        new_raw_item_speed->y = 0;
+        new_raw_item_speed->z = NAN;
+        new_raw_item_speed->mission_type = 0; // MAV_MISSION_TYPE_MISSION
+
+        mission_raw_items.push_back(new_raw_item_nav);
+        mission_raw_items.push_back(new_raw_item_speed);
     }
+
+    mission_raw_items[0]->current = 1;
 
     {
         LogInfo() << "Uploading mission...";
@@ -65,8 +97,8 @@ TEST_F(SitlTest, MissionRawMissionChanged)
         // std::future.
         std::promise<void> prom{};
         std::future<void> fut = prom.get_future();
-        mission->upload_mission_async(mission_items, [&prom](Mission::Result result) {
-            ASSERT_EQ(result, Mission::Result::SUCCESS);
+        mission_raw->upload_mission_async(mission_raw_items, [&prom](MissionRaw::Result result) {
+            ASSERT_EQ(result, MissionRaw::Result::SUCCESS);
             prom.set_value();
             LogInfo() << "Mission uploaded.";
         });
