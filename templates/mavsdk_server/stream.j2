@@ -1,0 +1,21 @@
+grpc::Status {{ name.upper_camel_case }}(grpc::ServerContext * /* context */, const rpc::{{ plugin_name.lower_snake_case }}::{{ name.upper_camel_case }}Request {% if params.empty -%} * /* request */ {%- else -%} *request {%- endif -%}, grpc::ServerWriter<rpc::{{ plugin_name.lower_snake_case }}::{{ name.upper_camel_case }}Response> *writer) override
+{
+    std::promise<void> stream_closed_promise;
+    auto stream_closed_future = stream_closed_promise.get_future();
+
+    bool is_finished = false;
+
+    _{{ plugin_name.lower_snake_case }}.{{ name.lower_snake_case }}_async([this, &writer, &stream_closed_promise, &is_finished](const {{ package.lower_snake_case.split('.')[0] }}::{{ plugin_name.upper_camel_case }}::Result result, const float progress, const std::string &status_text) {
+        rpc::{{ plugin_name.lower_snake_case }}::{{ name.upper_camel_case }}Response rpc_response;
+        rpc_response.set_allocated_{{ plugin_name.lower_snake_case }}_result(translate{{ plugin_name.upper_camel_case }}Result(result).get());
+
+        std::lock_guard<std::mutex> lock(_subscribe_mutex);
+        if (!writer->Write(rpc_response) && !is_finished) {
+            is_finished = true;
+            stream_closed_promise.set_value();
+        }
+    });
+
+    stream_closed_future.wait();
+    return grpc::Status::OK;
+}
