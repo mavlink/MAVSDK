@@ -65,6 +65,15 @@ service ActionService {
      * back to the launch (takeoff) position and land there.
      */
     rpc ReturnToLaunch(ReturnToLaunchRequest) returns(ReturnToLaunchResponse) {}
+    /**
+     * Send command to move the vehicle to a specific global position.
+     *
+     * The latitude and longitude are given in degrees (WGS84 frame) and the altitude
+     * in meters AMSL (above mean sea level).
+     *
+     * The yaw angle is in degrees (frame is NED, 0 is North, positive is clockwise).
+     */
+    rpc GotoLocation(GotoLocationRequest) returns(GotoLocationResponse) {}
     /*
      * Send command to transition the drone to fixedwing.
      *
@@ -149,6 +158,15 @@ message ReturnToLaunchResponse {
 
 message TransitionToFixedWingRequest {}
 message TransitionToFixedWingResponse {
+message GotoLocationRequest {
+    double latitude_deg = 1; // Latitude (in degrees)
+    double longitude_deg = 2; // Longitude (in degrees)
+    float absolute_altitude_m = 3; // Altitude AMSL (in meters)
+    float yaw_deg = 4; // Yaw angle (in degrees, frame is NED, 0 is North, positive is clockwise)
+}
+message GotoLocationResponse {
+    ActionResult action_result = 1;
+}
     ActionResult action_result = 1;
 }
 
