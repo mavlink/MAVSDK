@@ -1,0 +1,9 @@
+void {{ plugin_name.upper_camel_case }}::{{ name.lower_snake_case }}_async({{ return_name.lower_snake_case }}_callback_t callback)
+{
+    _impl->{{ name.lower_snake_case }}_async(callback);
+}
+
+{{ plugin_name.upper_camel_case }}::{{ return_type.name }} {{ plugin_name.upper_camel_case }}::{{ name.lower_snake_case }}() const
+{
+    return _impl->{{ name.lower_snake_case }}();
+}
