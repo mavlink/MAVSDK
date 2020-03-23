@@ -140,7 +140,7 @@ public:
     /**
      * @brief Send command to *return to the launch* (takeoff) position and *land* (asynchronous).
      *
-     * This switches the drone into [RTL mode](https://docs.px4.io/en/flight_modes/rtl.html) which
+     * This switches the drone into [Return mode](https://docs.px4.io/master/en/flight_modes/return.html) which
      * generally means it will rise up to a certain altitude to clear any obstacles before heading
      * back to the launch (takeoff) position and land there.
      *
