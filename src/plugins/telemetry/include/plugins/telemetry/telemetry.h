@@ -242,7 +242,7 @@ public:
      * @brief Flight modes.
      *
      * For more information about flight modes, check out
-     * https://docs.px4.io/en/config/flight_mode.html.
+     * https://docs.px4.io/master/en/config/flight_mode.html.
      */
     enum class FlightMode {
         UNKNOWN, /**< @brief Mode not known. */
@@ -309,7 +309,7 @@ public:
      *
      * An actuator's control group is e.g. attitude, for the core flight controls, or gimbal for
      * payload. For more information about PX4 groups, check out
-     * https://dev.px4.io/v1.9.0/en/concept/mixing.html#control-pipeline
+     * https://dev.px4.io/master/en/concept/mixing.html#control-pipeline
      *
      * Actuator controls normed to -1..+1 where 0 is neutral position. Throttle for single rotation
      * direction motors is 0..1, negative range for reverse direction.
