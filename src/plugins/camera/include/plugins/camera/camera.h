@@ -25,7 +25,7 @@ class System;
 
 /**
  * @brief The Camera class can be used to manage cameras that implement the
- * MAVLink Camera Protocol: https://mavlink.io/en/protocol/camera.html.
+ * MAVLink Camera Protocol: https://mavlink.io/en/services/camera.html.
  *
  * Currently only a single camera is supported.
  * When multiple cameras are supported the plugin will need to be
