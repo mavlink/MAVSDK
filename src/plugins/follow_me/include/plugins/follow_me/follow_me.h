@@ -21,7 +21,7 @@ class System;
  * the vehicle. Applications must get target position information from the underlying platform (or
  * some other source).
  *
- * @sa [Follow Me Mode](https://docs.px4.io/en/flight_modes/follow_me.html) (PX4 User Guide)
+ * @sa [Follow Me Mode](https://docs.px4.io/master/en/flight_modes/follow_me.html) (PX4 User Guide)
  *
  */
 class FollowMe : public PluginBase {
@@ -64,7 +64,7 @@ public:
      * @brief FollowMe Configuration.
      * @sa get_config(), set_config()
      * @sa [Parameter
-     * Reference](https://docs.px4.io/en/advanced_config/parameter_reference.html#follow-target)
+     * Reference](https://docs.px4.io/master/en/advanced_config/parameter_reference.html#follow-target)
      * (PX4 User Guide)
      */
     struct Config {
