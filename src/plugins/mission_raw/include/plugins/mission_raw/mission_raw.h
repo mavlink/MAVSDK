@@ -152,6 +152,14 @@ public:
         result_callback_t callback);
 
     /**
+     * @brief Cancel a mission upload (asynchronous).
+     *
+     * This cancels an ongoing mission upload. The mission upload will fail
+     * with the result `Result::CANCELLED`.
+     */
+    void upload_mission_cancel();
+
+    /**
      * @brief Callback type to signal if the mission has changed.
      */
     typedef std::function<void()> mission_changed_callback_t;
@@ -162,6 +170,93 @@ public:
      * @param callback Callback to receive mission progress.
      */
     void subscribe_mission_changed(mission_changed_callback_t callback);
+
+    /**
+     * @brief Starts the mission (asynchronous).
+     *
+     * Note that the mission must be uploaded to the vehicle using `upload_mission_async()` before
+     * this method is called.
+     *
+     * @param callback callback to receive result of this request.
+     */
+    void start_mission_async(result_callback_t callback);
+
+    /**
+     * @brief Pauses the mission (asynchronous).
+     *
+     * Pausing the mission puts the vehicle into
+     * [HOLD mode](https://docs.px4.io/en/flight_modes/hold.html).
+     * A multicopter should just hover at the spot while a fixedwing vehicle should loiter
+     * around the location where it paused.
+     *
+     * @param callback Callback to receive result of this request.
+     */
+    void pause_mission_async(result_callback_t callback);
+
+    /**
+     * @brief Clears the mission saved on the vehicle (asynchronous).
+     *
+     * @param callback Callback to receive result of this request.
+     */
+    void clear_mission_async(result_callback_t callback);
+
+    /**
+     * @brief Sets the mission item index to go to (asynchronous).
+     *
+     * By setting the current index to 0, the mission is restarted from the beginning. If it is set
+     * to a specific index of a mission item, the mission will be set to this item.
+     *
+     * Note that this is not necessarily true for general missions using MAVLink if loop counters
+     * are used.
+     *
+     * Also not that the mission items need to be uploaded or downloaded before calling this
+     * method. The exception is current == 0 to reset to the beginning
+     *
+     * @param current Index for mission index to go to next (0 based).
+     * @param callback Callback to receive result of this request.
+     */
+    void set_current_mission_item_async(int current, result_callback_t callback);
+
+    /**
+     * @brief Checks if mission has been finished (synchronous).
+     *
+     * @return true if mission is finished and the last mission item has been reached.
+     */
+    bool mission_finished() const;
+
+    /**
+     * @brief Returns the current mavlink mission item index (synchronous).
+     *
+     * If the mission is finished, the current mavlink mission item will be the total number of
+     * mavlink mission items (so the last mission item index + 1).
+     *
+     * @return current mavlink mission item index (0 based).
+     */
+    int current_mavlink_mission_item() const;
+
+    /**
+     * @brief Returns the total number of mavlink mission items (synchronous).
+     *
+     * @return total number of mavlink mission items
+     */
+    int total_mavlink_mission_items() const;
+
+    /**
+     * @brief Callback type to receive mission progress.
+     *
+     * The mission is finished if current == total.
+     *
+     * @param current Current mavlink mission item index (0 based).
+     * @param total Total number of mavlink mission items.
+     */
+    typedef std::function<void(int current, int total)> progress_callback_t;
+
+    /**
+     * @brief Subscribes to mission progress (asynchronous).
+     *
+     * @param callback Callback to receive mission progress.
+     */
+    void subscribe_progress(progress_callback_t callback);
 
     /**
      * @brief Copy constructor (object is not copyable).
