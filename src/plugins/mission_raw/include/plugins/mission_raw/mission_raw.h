@@ -21,9 +21,6 @@ class System;
  *
  * For a tested, simpler subset in mission functionality, it is recommended
  * to use the `Mission` plugin.
- *
- * @note Currently, only downloading the mission items is implemented,
- *       uploading could be added in the future if required.
  */
 class MissionRaw : public PluginBase {
 public:
@@ -54,6 +51,7 @@ public:
         ERROR, /**< @brief Error. */
         BUSY, /**< @brief %Vehicle busy. */
         TIMEOUT, /**< @brief Request timed out. */
+        UNSUPPORTED, /**< @brief The mission downloaded from the system is not supported. */
         INVALID_ARGUMENT, /**< @brief Invalid argument. */
         NO_MISSION_AVAILABLE, /**< @brief No mission available on system. */
         CANCELLED /**< @brief Mission upload or download has been cancelled. */
@@ -68,7 +66,7 @@ public:
     static const char* result_str(Result result);
 
     /**
-     * @brief Mission item mostly identical to MAVLink MISSION_ITEM_INT.
+     * @brief Mission item exactly identical to MAVLink MISSION_ITEM_INT.
      */
     struct MavlinkMissionItemInt {
         uint16_t seq; /**< @brief Sequence. */
@@ -87,7 +85,30 @@ public:
         float z; /**< @brief PARAM7 / local: Z coordinate, global: altitude (relative or absolute,
                     depending on frame). */
         uint8_t mission_type; /**< @brief Mission type. */
+
+        /**
+         * @brief Equality between two MavlinkMissionItemInt
+         *
+         * @param other Another MavlinkMissionItemInt object
+         *
+         * @return 'true'  If the two MavlinkMissionItemInts are equal
+         *         'false' Otherwise
+         */
+        bool operator==(const MavlinkMissionItemInt& other) const
+        {
+            return (
+                seq == other.seq && frame == other.frame && command == other.command &&
+                current == other.current && autocontinue == other.autocontinue &&
+                param1 == other.param1 && param2 == other.param2 && param3 == other.param3 &&
+                param4 == other.param4 && x == other.x && y == other.y && z == other.z &&
+                mission_type == other.mission_type);
+        }
     };
+
+    /**
+     * @brief Callback type for async mission calls.
+     */
+    typedef std::function<void(Result)> result_callback_t;
 
     /**
      * @brief Type for vector of mission items.
@@ -112,6 +133,19 @@ public:
      * with the result `Result::CANCELLED`.
      */
     void download_mission_cancel();
+
+    /**
+     * @brief Uploads a vector of mission raw to the system (asynchronous).
+     *
+     * The mission raw are uploaded to a drone. Once uploaded the mission can be started and
+     * executed even if a connection is lost.
+     *
+     * @param mission_raw Reference to vector of mission raw.
+     * @param callback Callback to receive result of this request.
+     */
+    void upload_mission_async(
+        const std::vector<std::shared_ptr<MissionRaw::MavlinkMissionItemInt>>& mission_raw,
+        result_callback_t callback);
 
     /**
      * @brief Callback type to signal if the mission has changed.
