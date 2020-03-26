@@ -34,15 +34,15 @@ public:
     void pause_mission_async(const MissionRaw::result_callback_t& callback);
     void clear_mission_async(const MissionRaw::result_callback_t& callback);
 
-    void
-    set_current_mission_item_async(int current_mavlink, MissionRaw::result_callback_t& callback);
+    void set_current_mavlink_mission_item_async(
+        int current_mavlink, MissionRaw::result_callback_t& callback);
 
-    bool is_mission_finished() const;
-
+    int reached_mavlink_mission_item() const;
     int current_mavlink_mission_item() const;
     int total_mavlink_mission_items() const;
 
-    void subscribe_progress(MissionRaw::progress_callback_t callback);
+    void subscribe_progress_current(MissionRaw::progress_current_callback_t callback);
+    void subscribe_progress_reached(MissionRaw::progress_reached_callback_t callback);
 
     MissionRawImpl(const MissionRawImpl&) = delete;
     const MissionRawImpl& operator=(const MissionRawImpl&) = delete;
@@ -52,7 +52,8 @@ private:
     void process_mission_current(const mavlink_message_t& message);
     void process_mission_item_reached(const mavlink_message_t& message);
 
-    void report_progress();
+    void report_progress_current();
+    void report_progress_reached();
     void reset_mission_progress();
 
     void report_flight_mode_change(
@@ -75,14 +76,13 @@ private:
         int last_current_mavlink_mission_item{-1};
         int last_reached_mavlink_mission_item{-1};
         int last_total_mavlink_mission_item{-1};
+        int last_reached_reported_mavlink_mission_item{-1};
         int last_current_reported_mavlink_mission_item{-1};
         int last_total_reported_mavlink_mission_item{-1};
-        int num_mission_items_to_download{-1};
-        int next_mission_item_to_download{-1};
-        int last_mission_item_to_upload{-1};
         MissionRaw::result_callback_t result_callback{nullptr};
         MissionRaw::mission_items_and_result_callback_t mission_items_and_result_callback{nullptr};
-        MissionRaw::progress_callback_t progress_callback{nullptr};
+        MissionRaw::progress_current_callback_t progress_current_callback{nullptr};
+        MissionRaw::progress_reached_callback_t progress_reached_callback{nullptr};
         std::weak_ptr<MAVLinkMissionTransfer::WorkItem> last_upload{};
         std::weak_ptr<MAVLinkMissionTransfer::WorkItem> last_download{};
     } _mission_data{};

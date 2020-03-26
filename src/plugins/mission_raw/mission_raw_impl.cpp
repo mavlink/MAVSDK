@@ -84,7 +84,7 @@ void MissionRawImpl::process_mission_current(const mavlink_message_t& message)
         _mission_data.last_current_mavlink_mission_item = mission_current.seq;
     }
 
-    report_progress();
+    report_progress_current();
 }
 
 void MissionRawImpl::process_mission_item_reached(const mavlink_message_t& message)
@@ -97,7 +97,7 @@ void MissionRawImpl::process_mission_item_reached(const mavlink_message_t& messa
         _mission_data.last_reached_mavlink_mission_item = mission_item_reached.seq;
     }
 
-    report_progress();
+    report_progress_reached();
 }
 
 void MissionRawImpl::upload_mission_async(
@@ -318,7 +318,7 @@ void MissionRawImpl::clear_mission_async(const MissionRaw::result_callback_t& ca
         });
 }
 
-void MissionRawImpl::set_current_mission_item_async(
+void MissionRawImpl::set_current_mavlink_mission_item_async(
     int current_mavlink, MissionRaw::result_callback_t& callback)
 {
     if (current_mavlink < 0 && current_mavlink > _mission_data.last_total_mavlink_mission_item) {
@@ -341,9 +341,9 @@ void MissionRawImpl::set_current_mission_item_async(
         });
 }
 
-void MissionRawImpl::report_progress()
+void MissionRawImpl::report_progress_current()
 {
-    const auto temp_callback = _mission_data.progress_callback;
+    const auto temp_callback = _mission_data.progress_current_callback;
     if (temp_callback == nullptr) {
         return;
     }
@@ -367,41 +367,53 @@ void MissionRawImpl::report_progress()
     if (should_report) {
         std::lock_guard<std::mutex> lock(_mission_data.mutex);
         _parent->call_user_callback([temp_callback, current, total]() {
-            LogDebug() << "current: " << current << ", total: " << total;
+            LogDebug() << "mavlink_current: " << current << ", mavlink_total: " << total;
             temp_callback(current, total);
         });
     }
 }
 
-bool MissionRawImpl::is_mission_finished() const
+void MissionRawImpl::report_progress_reached()
+{
+    const auto temp_callback = _mission_data.progress_reached_callback;
+    if (temp_callback == nullptr) {
+        return;
+    }
+
+    int reached = reached_mavlink_mission_item();
+    int total = total_mavlink_mission_items();
+
+    bool should_report = false;
+    {
+        std::lock_guard<std::mutex> lock(_mission_data.mutex);
+        if (_mission_data.last_reached_reported_mavlink_mission_item != reached) {
+            _mission_data.last_reached_reported_mavlink_mission_item = reached;
+            should_report = true;
+        }
+        if (_mission_data.last_total_reported_mavlink_mission_item != total) {
+            _mission_data.last_total_reported_mavlink_mission_item = total;
+            should_report = true;
+        }
+    }
+
+    if (should_report) {
+        std::lock_guard<std::mutex> lock(_mission_data.mutex);
+        _parent->call_user_callback([temp_callback, reached, total]() {
+            LogDebug() << "mavlink_reached: " << reached << ", mavlink_total: " << total;
+            temp_callback(reached, total);
+        });
+    }
+}
+
+int MissionRawImpl::reached_mavlink_mission_item() const
 {
     std::lock_guard<std::mutex> lock(_mission_data.mutex);
 
-    if (_mission_data.last_current_mavlink_mission_item < 0) {
-        return false;
-    }
-
-    if (_mission_data.last_reached_mavlink_mission_item < 0) {
-        return false;
-    }
-
-    if (_mission_data.last_total_mavlink_mission_item < 0) {
-        return false;
-    }
-
-    return (
-        _mission_data.last_reached_mavlink_mission_item ==
-        _mission_data.last_total_mavlink_mission_item);
+    return _mission_data.last_reached_mavlink_mission_item;
 }
 
 int MissionRawImpl::current_mavlink_mission_item() const
 {
-    // If the mission is finished, let's return the total as the current
-    // to signal this.
-    if (is_mission_finished()) {
-        return total_mavlink_mission_items();
-    }
-
     std::lock_guard<std::mutex> lock(_mission_data.mutex);
 
     return _mission_data.last_current_mavlink_mission_item;
@@ -414,10 +426,16 @@ int MissionRawImpl::total_mavlink_mission_items() const
     return _mission_data.last_total_mavlink_mission_item;
 }
 
-void MissionRawImpl::subscribe_progress(MissionRaw::progress_callback_t callback)
+void MissionRawImpl::subscribe_progress_current(MissionRaw::progress_current_callback_t callback)
 {
     std::lock_guard<std::mutex> lock(_mission_data.mutex);
-    _mission_data.progress_callback = callback;
+    _mission_data.progress_current_callback = callback;
+}
+
+void MissionRawImpl::subscribe_progress_reached(MissionRaw::progress_reached_callback_t callback)
+{
+    std::lock_guard<std::mutex> lock(_mission_data.mutex);
+    _mission_data.progress_reached_callback = callback;
 }
 
 void MissionRawImpl::subscribe_mission_changed(MissionRaw::mission_changed_callback_t callback)

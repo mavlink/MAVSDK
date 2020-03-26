@@ -201,7 +201,7 @@ public:
     void clear_mission_async(result_callback_t callback);
 
     /**
-     * @brief Sets the mission item index to go to (asynchronous).
+     * @brief Sets the mavlink mission item index to go to (asynchronous).
      *
      * By setting the current index to 0, the mission is restarted from the beginning. If it is set
      * to a specific index of a mission item, the mission will be set to this item.
@@ -212,23 +212,26 @@ public:
      * Also not that the mission items need to be uploaded or downloaded before calling this
      * method. The exception is current == 0 to reset to the beginning
      *
-     * @param current Index for mission index to go to next (0 based).
+     * @param current_mavlink Index for mission index to go to next (0 based).
      * @param callback Callback to receive result of this request.
      */
-    void set_current_mission_item_async(int current, result_callback_t callback);
+    void set_current_mavlink_mission_item_async(int current_mavlink, result_callback_t callback);
 
     /**
-     * @brief Checks if mission has been finished (synchronous).
+     * @brief Returns the reached mavlink mission item index (synchronous).
      *
-     * @return true if mission is finished and the last mission item has been reached.
+     * The reached mavlink mission item is N and current mavlink mission is N+1
+     * Note that reached and current are equal at the end of the mission.
+     *
+     * @return reached mavlink mission item index (0 based).
      */
-    bool mission_finished() const;
+    int reached_mavlink_mission_item() const;
 
     /**
      * @brief Returns the current mavlink mission item index (synchronous).
      *
-     * If the mission is finished, the current mavlink mission item will be the total number of
-     * mavlink mission items (so the last mission item index + 1).
+     * The reached mavlink mission item is N and current mavlink mission is N+1
+     * Note that reached and current are equal at the end of the mission.
      *
      * @return current mavlink mission item index (0 based).
      */
@@ -242,21 +245,40 @@ public:
     int total_mavlink_mission_items() const;
 
     /**
-     * @brief Callback type to receive mission progress.
+     * @brief Callback type to receive current mission progress.
      *
-     * The mission is finished if current == total.
+     * The mission is finished if (reached + 1) == total.
+     * Note that we never receive a reached for RTL.
      *
-     * @param current Current mavlink mission item index (0 based).
+     * @param current_mavlink Current mavlink mission item index (0 based).
      * @param total Total number of mavlink mission items.
      */
-    typedef std::function<void(int current, int total)> progress_callback_t;
+    typedef std::function<void(int current_mavlink, int total)> progress_current_callback_t;
 
     /**
-     * @brief Subscribes to mission progress (asynchronous).
+     * @brief Subscribes to mission progress current mavlink item(asynchronous).
      *
-     * @param callback Callback to receive mission progress.
+     * @param callback Callback to receive mission progress of current item.
      */
-    void subscribe_progress(progress_callback_t callback);
+    void subscribe_progress_current(progress_current_callback_t callback);
+
+    /**
+     * @brief Callback type to receive reached mission progress.
+     *
+     * The mission is finished if (reached + 1) == total.
+     * Note that we never receive a reached for RTL.
+     *
+     * @param reached_mavlink Reached mavlink mission item index (0 based).
+     * @param total Total number of mavlink mission items.
+     */
+    typedef std::function<void(int reached_mavlink, int total)> progress_reached_callback_t;
+
+    /**
+     * @brief Subscribes to reached mission progress (asynchronous).
+     *
+     * @param callback Callback to receive reached mission progress.
+     */
+    void subscribe_progress_reached(progress_reached_callback_t callback);
 
     /**
      * @brief Copy constructor (object is not copyable).

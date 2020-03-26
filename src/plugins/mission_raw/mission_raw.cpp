@@ -74,14 +74,15 @@ void MissionRaw::clear_mission_async(result_callback_t callback)
     _impl->clear_mission_async(callback);
 }
 
-void MissionRaw::set_current_mission_item_async(int current, result_callback_t callback)
+void MissionRaw::set_current_mavlink_mission_item_async(
+    int current_mavlink, result_callback_t callback)
 {
-    _impl->set_current_mission_item_async(current, callback);
+    _impl->set_current_mavlink_mission_item_async(current_mavlink, callback);
 }
 
-bool MissionRaw::mission_finished() const
+int MissionRaw::reached_mavlink_mission_item() const
 {
-    return _impl->is_mission_finished();
+    return _impl->reached_mavlink_mission_item();
 }
 
 int MissionRaw::current_mavlink_mission_item() const
@@ -94,9 +95,14 @@ int MissionRaw::total_mavlink_mission_items() const
     return _impl->total_mavlink_mission_items();
 }
 
-void MissionRaw::subscribe_progress(progress_callback_t callback)
+void MissionRaw::subscribe_progress_current(progress_current_callback_t callback)
 {
-    _impl->subscribe_progress(callback);
+    _impl->subscribe_progress_current(callback);
+}
+
+void MissionRaw::subscribe_progress_reached(progress_reached_callback_t callback)
+{
+    _impl->subscribe_progress_reached(callback);
 }
 
 } // namespace mavsdk
