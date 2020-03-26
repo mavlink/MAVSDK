@@ -334,7 +334,7 @@ uint8_t MavsdkImpl::get_mav_type() const
 
         case Mavsdk::Configuration::UsageType::CompanionComputer:
             return MAV_TYPE_ONBOARD_CONTROLLER;
-        
+
         case Mavsdk::Configuration::UsageType::Custom:
             return MAV_TYPE_GENERIC;
 
