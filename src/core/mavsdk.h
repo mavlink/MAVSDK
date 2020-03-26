@@ -132,13 +132,58 @@ public:
     add_serial_connection(const std::string& dev_path, int baudrate = DEFAULT_SERIAL_BAUDRATE);
 
     /**
-     * @brief Possible configurations.
+     * @brief Stores the configured system id and component id of the MAVSDK instance
      */
-    enum class Configuration {
-        Autopilot, /**< @brief SDK is used as an autopilot. */
-        GroundStation, /**< @brief SDK is used as a ground station. */
-        CompanionComputer /**< @brief SDK is used on a companion computer onboard the system (e.g.
-                             drone). */
+    class Configuration {
+    public:
+        enum class UsageType;
+
+        /**
+         * @brief Create new Configuration via manually configured
+         * system and component ID.
+         * @param system_id the system id to store in this configuration
+         * @param component_id the component id to store in this configuration
+         */
+        Configuration(uint8_t system_id, uint8_t component_id);
+        /**
+         * @brief Create new Configuration using a usage type.
+         * In this mode, the system and component ID will be automatically chosen.
+         * @param usage_type the usage type, used for automatically choosing ids.
+         */
+        Configuration(UsageType usage_type);
+        ~Configuration();
+
+        /**
+         * @brief Get the system id of this configuration
+         * @return `uint8_t` the system id stored in this configuration, from 1-255
+         */
+        uint8_t get_system_id() const;
+
+        /**
+         * @brief Get the component id of this configuration
+         * @return `uint8_t` the component id stored in this configuration,from 1-255
+         */
+        uint8_t get_component_id() const;
+
+        /**
+         * @brief UsageTypes of configurations, used for automatic ID setting
+         */
+        enum class UsageType {
+            Autopilot, /**< @brief SDK is used as an autopilot. */
+            GroundStation, /**< @brief SDK is used as a ground station. */
+            CompanionComputer, /**< @brief SDK is used as a companion computer on board the MAV. */
+            Custom /**< @brief the SDK is used in a custom configuration, no automatic ID will be
+                      provided */
+        };
+
+        /** @brief Usage type of this configuration, used for automatic ID set */
+        UsageType get_usage_type() const;
+
+    private:
+        uint8_t _system_id;
+        uint8_t _component_id;
+
+        UsageType _usage_type;
     };
 
     /**

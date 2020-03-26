@@ -15,6 +15,19 @@ namespace mavsdk {
 
 class MavsdkImpl {
 public:
+    /** @brief Default System ID for GCS configuration type. */
+    static constexpr int DEFAULT_SYSTEM_ID_GCS = 245;
+    /** @brief Default Component ID for GCS configuration type. */
+    static constexpr int DEFAULT_COMPONENT_ID_GCS = MAV_COMP_ID_MISSIONPLANNER;
+    /** @brief Default System ID for CompanionComputer configuration type. */
+    static constexpr int DEFAULT_SYSTEM_ID_CC = 1;
+    /** @brief Default Component ID for CompanionComputer configuration type. */
+    static constexpr int DEFAULT_COMPONENT_ID_CC = MAV_COMP_ID_PATHPLANNER;
+    /** @brief Default System ID for Autopilot configuration type. */
+    static constexpr int DEFAULT_SYSTEM_ID_AUTOPILOT = 1;
+    /** @brief Default Component ID for Autopilot configuration type. */
+    static constexpr int DEFAULT_COMPONENT_ID_AUTOPILOT = MAV_COMP_ID_AUTOPILOT1;
+
     MavsdkImpl();
     ~MavsdkImpl();
 
@@ -68,7 +81,7 @@ private:
     Mavsdk::event_callback_t _on_discover_callback;
     Mavsdk::event_callback_t _on_timeout_callback;
 
-    std::atomic<Mavsdk::Configuration> _configuration{Mavsdk::Configuration::GroundStation};
+    Mavsdk::Configuration _configuration;
     bool _is_single_system{false};
 
     std::atomic<bool> _should_exit = {false};

@@ -84,4 +84,53 @@ void Mavsdk::register_on_timeout(const event_callback_t callback)
     _impl->register_on_timeout(callback);
 }
 
+Mavsdk::Configuration::Configuration(uint8_t system_id, uint8_t component_id) :
+    _system_id(system_id),
+    _component_id(component_id),
+    _usage_type(Mavsdk::Configuration::UsageType::Custom)
+{}
+
+Mavsdk::Configuration::Configuration(UsageType usage_type) :
+    _system_id(MavsdkImpl::DEFAULT_SYSTEM_ID_GCS),
+    _component_id(MavsdkImpl::DEFAULT_COMPONENT_ID_GCS),
+    _usage_type(usage_type)
+{
+    switch (usage_type) {
+        case Mavsdk::Configuration::UsageType::GroundStation:
+            _system_id = MavsdkImpl::DEFAULT_SYSTEM_ID_GCS;
+            _component_id = MavsdkImpl::DEFAULT_COMPONENT_ID_GCS;
+            break;
+        case Mavsdk::Configuration::UsageType::CompanionComputer:
+            // TODO implement autodetection of system ID - maybe from heartbeats?
+            _system_id = MavsdkImpl::DEFAULT_SYSTEM_ID_CC;
+            _component_id = MavsdkImpl::DEFAULT_COMPONENT_ID_CC;
+            break;
+        case Mavsdk::Configuration::UsageType::Autopilot:
+            _system_id = MavsdkImpl::DEFAULT_SYSTEM_ID_AUTOPILOT;
+            _component_id = MavsdkImpl::DEFAULT_COMPONENT_ID_AUTOPILOT;
+            break;
+        default:
+            _system_id = MavsdkImpl::DEFAULT_SYSTEM_ID_GCS;
+            _component_id = MavsdkImpl::DEFAULT_COMPONENT_ID_GCS;
+            break;
+    }
+}
+
+Mavsdk::Configuration::~Configuration() {}
+
+uint8_t Mavsdk::Configuration::get_system_id() const
+{
+    return _system_id;
+}
+
+uint8_t Mavsdk::Configuration::get_component_id() const
+{
+    return _component_id;
+}
+
+Mavsdk::Configuration::UsageType Mavsdk::Configuration::get_usage_type() const
+{
+    return _usage_type;
+}
+
 } // namespace mavsdk

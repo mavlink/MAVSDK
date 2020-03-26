@@ -20,10 +20,11 @@ MavsdkImpl::MavsdkImpl() :
     _systems_mutex(),
     _systems(),
     _on_discover_callback(nullptr),
-    _on_timeout_callback(nullptr)
+    _on_timeout_callback(nullptr),
+    _configuration(Mavsdk::Configuration::UsageType::GroundStation)
 {
     LogInfo() << "MAVSDK version: " << mavsdk_version;
-    set_configuration(Mavsdk::Configuration::GroundStation);
+    set_configuration(_configuration);
 }
 
 MavsdkImpl::~MavsdkImpl()
@@ -246,32 +247,8 @@ void MavsdkImpl::add_connection(std::shared_ptr<Connection> new_connection)
 
 void MavsdkImpl::set_configuration(Mavsdk::Configuration configuration)
 {
-    switch (configuration) {
-        case Mavsdk::Configuration::Autopilot:
-            own_address.system_id = 1;
-            own_address.component_id = MAV_COMP_ID_AUTOPILOT1;
-            break;
-
-        case Mavsdk::Configuration::GroundStation:
-            // FIXME: this is wrong. It should not be equal to a component ID.
-            own_address.system_id = MAV_COMP_ID_MISSIONPLANNER;
-            // FIXME: For now we increment by 1 to avoid conflicts with others.
-            own_address.component_id = MAV_COMP_ID_MISSIONPLANNER + 1;
-            break;
-
-        case Mavsdk::Configuration::CompanionComputer:
-            // FIXME: This should be the same as the drone but we need to
-            // add auto detection for it.
-            own_address.system_id = 1;
-            own_address.component_id = MAV_COMP_ID_UDP_BRIDGE;
-            break;
-
-        default:
-            LogErr() << "Unknown configuration";
-            own_address.system_id = 0;
-            own_address.component_id = 0;
-            break;
-    }
+    own_address.system_id = configuration.get_system_id();
+    own_address.component_id = configuration.get_component_id();
 }
 
 std::vector<uint64_t> MavsdkImpl::get_system_uuids() const
@@ -348,15 +325,18 @@ uint8_t MavsdkImpl::get_own_component_id() const
 
 uint8_t MavsdkImpl::get_mav_type() const
 {
-    switch (_configuration.load()) {
-        case Mavsdk::Configuration::Autopilot:
+    switch (_configuration.get_usage_type()) {
+        case Mavsdk::Configuration::UsageType::Autopilot:
             return MAV_TYPE_GENERIC;
 
-        case Mavsdk::Configuration::GroundStation:
+        case Mavsdk::Configuration::UsageType::GroundStation:
             return MAV_TYPE_GCS;
 
-        case Mavsdk::Configuration::CompanionComputer:
+        case Mavsdk::Configuration::UsageType::CompanionComputer:
             return MAV_TYPE_ONBOARD_CONTROLLER;
+
+        case Mavsdk::Configuration::UsageType::Custom:
+            return MAV_TYPE_GENERIC;
 
         default:
             LogErr() << "Unknown configuration";

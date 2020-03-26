@@ -306,13 +306,15 @@ TEST(MavlinkFTPTest, TestServer)
     ConnectionResult ret;
 
     Mavsdk mavsdk_gcs;
-    mavsdk_gcs.set_configuration(Mavsdk::Configuration::GroundStation);
+    Mavsdk::Configuration config_gcs(Mavsdk::Configuration::UsageType::GroundStation);
+    mavsdk_gcs.set_configuration(config_gcs);
     ret = mavsdk_gcs.add_udp_connection(24550);
     ASSERT_EQ(ret, ConnectionResult::SUCCESS);
     System& system_gcs = mavsdk_gcs.system();
 
     Mavsdk mavsdk_cc;
-    mavsdk_cc.set_configuration(Mavsdk::Configuration::CompanionComputer);
+    Mavsdk::Configuration config_cc(Mavsdk::Configuration::UsageType::GroundStation);
+    mavsdk_cc.set_configuration(config_cc);
     ret = mavsdk_cc.setup_udp_remote("127.0.0.1", 24550);
     ASSERT_EQ(ret, ConnectionResult::SUCCESS);
     System& system_cc = mavsdk_cc.system();
