@@ -131,26 +131,37 @@ public:
     ConnectionResult
     add_serial_connection(const std::string& dev_path, int baudrate = DEFAULT_SERIAL_BAUDRATE);
 
+    /**
+     * @brief Stores the configured system id and component id of the MAVSDK instance
+     */
     class Configuration {
     public:
         enum class UsageType;
 
+        /**
+         * @brief Create new Configuration via manually configured
+         * system and component ID.
+         * @param system_id the system id to store in this configuration
+         * @param component_id the component id to store in this configuration
+         */
         Configuration(uint8_t system_id, uint8_t component_id);
+        /**
+         * @brief Create new Configuration using a usage type.
+         * In this mode, the system and component ID will be automatically chosen.
+         * @param usage_type the usage type, used for automatically choosing ids.
+         */
         Configuration(UsageType usage_type);
         ~Configuration();
 
-        // Configuration(const Configuration&) = delete;
-        // Configuration& operator=(const Configuration&) = delete;
-
-        /*
+        /**
          * @brief Get the system id of this configuration
-         * @return `integer` system id, between 1 and 255
+         * @return `uint8_t` the system id stored in this configuration, from 1-255
          */
         uint8_t get_system_id() const;
 
-        /*
+        /**
          * @brief Get the component id of this configuration
-         * @return `integer` component id, between 1 and 255
+         * @return `uint8_t` the component id stored in this configuration,from 1-255
          */
         uint8_t get_component_id() const;
 
@@ -165,10 +176,7 @@ public:
                       provided */
         };
 
-        /**
-         * @brief Usage type of this configuration
-         * @return `UsageType` the usage type of this configuration
-         */
+        /** @brief Usage type of this configuration, used for automatic ID set */
         UsageType get_usage_type() const;
 
     private:
