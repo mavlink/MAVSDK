@@ -164,4 +164,30 @@ void GimbalManagerImpl::set_roi_location_async(double latitude_deg, double longi
             command, std::bind(&GimbalManagerImpl::receive_command_result, std::placeholders::_1, callback));
 }
 
+void GimbalManagerImpl::receive_command_result(
+        MAVLinkCommands::Result command_result, const GimbalManager::result_callback_t& callback)
+{
+    GimbalManager::Result gimbal_manager_result = gimbal_manager_result_from_command_result(command_result);
+
+    if (callback) {
+        callback(gimbal_manager_result);
+    }
+}
+
+GimbalManager::Result GimbalManagerImpl::gimbal_manager_result_from_command_result(MAVLinkCommands::Result command_result)
+{
+    switch (command_result) {
+        case MAVLinkCommands::Result::SUCCESS:
+            return GimbalManager::Result::SUCCESS;
+        case MAVLinkCommands::Result::TIMEOUT:
+            return GimbalManager::Result::TIMEOUT;
+        case MAVLinkCommands::Result::NO_SYSTEM:
+        case MAVLinkCommands::Result::CONNECTION_ERROR:
+        case MAVLinkCommands::Result::BUSY:
+        case MAVLinkCommands::Result::COMMAND_DENIED:
+        default:
+            return GimbalManager::Result::ERROR;
+    }
+}
+
 } // namespace mavsdk
