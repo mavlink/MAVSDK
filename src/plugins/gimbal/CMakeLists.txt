@@ -3,6 +3,8 @@ add_library(mavsdk_gimbal
     gimbal_impl.cpp
     gimbal_manager.cpp
     gimbal_manager_impl.cpp
+    gimbal_device.cpp
+    gimbal_device_impl.cpp
 )
 
 target_link_libraries(mavsdk_gimbal
@@ -27,5 +29,6 @@ install(TARGETS mavsdk_gimbal
 install(FILES
     include/plugins/gimbal/gimbal.h
     include/plugins/gimbal/gimbal_manager.h
+    include/plugins/gimbal/gimbal_device.h
     DESTINATION ${CMAKE_INSTALL_INCLUDEDIR}/mavsdk/plugins/gimbal
 )

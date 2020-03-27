@@ -41,7 +41,7 @@ public:
     enum class Capabilities {
         HAS_RETRACT = 1, /**< @brief Supports retracted mode. */
         HAS_NEUTRAL = 2, /**< @brief Supports neutral mode. */
-        HAS_ROLL_AXIS = 4, /**< @brief Allows roll axis control. */
+        HAS_ROLL_AXIS = 4, /**< @brief Supports roll axis control. */
         HAS_ROLL_FOLLOW = 8, /**< @brief Supports follow mode for roll axis. */
         HAS_ROLL_LOCK = 16, /**< @brief Supports lock mode for roll axis. */
         HAS_PITCH_AXIS = 32, /**< @brief Supports pitch axis control. */
@@ -68,7 +68,7 @@ public:
         NEUTRAL = 2, /**< @brief Neutral mode. */
         ROLL_LOCK = 4, /**< @brief Lock roll axis. */
         PITCH_LOCK = 8, /**< @brief Lock pitch axis. */
-        YAW_LOCK = 8, /**< @brief Lock yaw axis. */
+        YAW_LOCK = 16, /**< @brief Lock yaw axis. */
         ANGULAR_VELOCITY_RELATIVE_TO_FOCAL_LENGTH = 1048576, /**< @brief Scale angular velocity relative to focal length. This means the gimbal moves slower if it is zoomed in. */
         NUDGE = 2097152, /**< @brief Interpret attitude control on top of pointing to a location or tracking. If this flag is set, the quaternion is relative to the existing tracking angle. */
         OVERRIDE = 4194304, /**< @brief Completely override pointing to a location or tracking. If this flag is set, the quaternion is (as usual) according to OperationFlags::YAW_LOCK. */
