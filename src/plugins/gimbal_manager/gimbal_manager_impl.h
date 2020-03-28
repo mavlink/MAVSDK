@@ -1,6 +1,6 @@
 #pragma once
 
-#include "plugins/gimbal/gimbal_manager.h"
+#include "plugins/gimbal_manager/gimbal_manager.h"
 #include "plugin_impl_base.h"
 #include "system.h"
 

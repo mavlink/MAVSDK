@@ -17,6 +17,8 @@ public:
     void enable() override;
     void disable() override;
 
+    void set_device_id(uint8_t system_id, uint8_t component_id);
+
     GimbalDevice::Result set_attitude(int operation_flags,
             float quat_w, float quat_x, float quat_y, float quat_z,
             float angular_velocity_x, float angular_velocity_y, float angular_velocity_z);
@@ -40,6 +42,8 @@ private:
 
     static void receive_command_result(
             MAVLinkCommands::Result command_result, const GimbalDevice::result_callback_t& callback);
+
+    MAVLinkAddress _address{1, MAV_COMP_ID_GIMBAL;
 };
 
 } // namespace mavsdk

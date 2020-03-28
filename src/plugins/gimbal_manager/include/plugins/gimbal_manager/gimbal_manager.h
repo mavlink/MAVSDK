@@ -11,9 +11,9 @@ class GimbalManagerImpl;
 class System;
 
 /**
- * @brief The GimbalManager class provides control over a MAVLink gimbal manager.
+ * @brief The GimbalManager class interfaces with a MAVLink gimbal manager.
  *
- * Synchronous and asynchronous variants of the gimbal methods are supplied.
+ * Synchronous and asynchronous variants of the interface methods are supplied.
  */
 class GimbalManager : public PluginBase {
 public:
@@ -94,9 +94,26 @@ public:
     static const char* result_str(Result result);
 
     /**
-     * @brief Callback type for asynchronous Gimbal calls.
+     * @brief Callback type for asynchronous GimbalManager calls.
      */
     typedef std::function<void(Result)> result_callback_t;
+
+    /**
+     * @brief Information type for storing information (capabilities, ID, etc)
+     * about gimbal managers.
+     */
+    struct Information {
+        uint32_t capabilities; /**< @brief Capabilities of the gimbal manager. */
+        uint8_t connected_component; /**< @brief Gimbal component ID this gimbal manager is responsible for. */
+        float tilt_max; /**< @brief Maximum tilt/pitch angle (positive: up, negative: down) */
+        float tilt_min; /**< @brief Minimum tilt/pitch angle (positive: up, negative: down) */
+        float tilt_rate_max; /**< @brief Maximum tilt/pitch angular rate (positive: up, negative: down) */
+        float pan_max; /**< @brief Maximum pan/yaw angle (positive: up, negative: down) */
+        float pan_min; /**< @brief Minimum pan/yaw angle (positive: up, negative: down) */
+        float pan_rate_max; /**< @brief Maximum pan/yaw angular rate (positive: up, negative: down) */
+    };
+
+    Information information;
 
     /**
      * @brief Set gimbal attitude (synchronous).
@@ -152,6 +169,29 @@ public:
                         result_callback_t callback);
 
     /**
+     * @brief Requests information about the gimbal manager.
+     *
+     * This sends a request for gimbal manager information.
+     * The functon will return immediately. To capture the response (information),
+     * see GimbalManager::subscribe_information_async.
+     */
+
+    void request_information();
+
+    /**
+     * @brief Subscribe to gimbal manager information responses.
+     *
+     * To request information from any/all gimbal managers, use GimbalManager::request_information.
+     */
+    void subscribe_information_async(
+            std::function<void(const Information information)> callback);
+
+    /**
+     * @brief Binds the manager class to a specific gimbal manager
+     */
+    void bind();
+
+    /**
      * @brief Track camera point.
      *
      * This commands the specified gimbal to track a point in a camera view.
@@ -165,7 +205,7 @@ public:
      * or 0 to command all connected gimbal devices.
      * @return Result of request.
      */
-    Result track_point(float x, float y, uint8_t id);
+    //Result track_point(float x, float y, uint8_t id);
 
     /**
      * @brief Track camera point.
@@ -181,7 +221,7 @@ public:
      * or 0 to command all connected gimbal devices.
      * @param callback Function to call with result of request.
      */
-    void track_point_async(float x, float y, uint8_t id, result_callback_t callback);
+    //void track_point_async(float x, float y, uint8_t id, result_callback_t callback);
     
     /**
      * @brief Track camera rectangle.
@@ -199,7 +239,7 @@ public:
      * or 0 to command all connected gimbal devices.
      * @return Result of request.
      */
-    Result track_rectangle(float x1, float y1, float x2, float y2, uint8_t id);
+    //Result track_rectangle(float x1, float y1, float x2, float y2, uint8_t id);
 
     /**
      * @brief Track camera rectangle.
@@ -217,7 +257,7 @@ public:
      * or 0 to command all connected gimbal devices.
      * @param callback Function to call with result of request.
      */
-    void track_rectangle_async(float x1, float y1, float x2, float y2, uint8_t id, result_callback_t callback);
+    //void track_rectangle_async(float x1, float y1, float x2, float y2, uint8_t id, result_callback_t callback);
 
     /**
      * @brief Set gimbal region of interest (ROI) (asynchronous).
@@ -233,9 +273,9 @@ public:
      * @param altitude_m Altitude in meters (ASML).
      * @return Result of request.
      */
-
     Result set_roi_location(
         double latitude_deg, double longitude_deg, float altitude_m);
+
     /**
      * @brief Set gimbal region of interest (ROI) (asynchronous).
      *
@@ -250,7 +290,6 @@ public:
      * @param altitude_m Altitude in meters (ASML).
      * @param callback Function to call with result of request.
      */
-
     void set_roi_location_async(
         double latitude_deg, double longitude_deg, float altitude_m, result_callback_t callback);
 

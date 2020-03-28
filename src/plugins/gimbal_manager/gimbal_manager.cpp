@@ -1,4 +1,4 @@
-#include "plugins/gimbal/gimbal_manager.h"
+#include "plugins/gimbal_manager/gimbal_manager.h"
 #include "gimbal_manager_impl.h"
 
 namespace mavsdk {
