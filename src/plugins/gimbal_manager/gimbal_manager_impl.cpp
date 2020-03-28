@@ -23,6 +23,23 @@ void GimbalManagerImpl::enable() {}
 
 void GimbalManagerImpl::disable() {}
 
+void GimbalManagerImpl::request_information()
+{
+    //MAVLinkCommands::CommandLong command{};
+
+    //command.command = MAV_CMD_REQUEST_MESSAGE;
+    //command.params.param1 = MAVLINK_MSG_ID_GIMBAL_MANAGER_INFORMATION;
+    //command.params.param7 = 1;
+
+    //_parent->send_command_async(command, NULL);
+}
+
+void GimbalManagerImpl::subscribe_information_async(
+        std::function<void(const GimbalManager::Information information)> callback)
+{
+    callback = NULL;
+}
+
 GimbalManager::Result GimbalManagerImpl::set_attitude(float tilt_rate, float pan_rate,
         float tilt_deg, float pan_deg, int operation_flags,
         uint8_t id)

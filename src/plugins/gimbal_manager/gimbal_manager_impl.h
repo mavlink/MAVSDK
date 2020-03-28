@@ -17,6 +17,11 @@ public:
     void enable() override;
     void disable() override;
 
+    void request_information();
+
+    void subscribe_information_async(
+            std::function<void(const GimbalManager::Information information)> callback);
+
     GimbalManager::Result set_attitude(float tilt_rate, float pan_rate,
             float tilt_deg, float pan_deg, int operation_flags,
             uint8_t id);

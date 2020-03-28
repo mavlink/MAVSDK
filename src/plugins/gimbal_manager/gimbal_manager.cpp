@@ -3,7 +3,7 @@
 
 namespace mavsdk {
 
-GimbalManager::GimbalManager(System& system) : PluginBase(), _impl{new GimbalManagerImpl(system)} {}
+GimbalManager::GimbalManager(System& system) : PluginBase(), _impl{new GimbalManagerImpl(system)}, _information{} {}
 
 GimbalManager::~GimbalManager() {}
 
@@ -21,25 +21,47 @@ void GimbalManager::set_attitude_async(float tilt_rate, float pan_rate,
     _impl->set_attitude_async(tilt_rate, pan_rate, tilt_deg, pan_deg, operation_flags, id, callback);
 }
 
-GimbalManager::Result GimbalManager::track_point(float x, float y, uint8_t id)
+void GimbalManager::request_information()
 {
-    return _impl->track_point(x, y, id);
+    _impl->request_information();
 }
 
-void GimbalManager::track_point_async(float x, float y, uint8_t id, result_callback_t callback)
+void GimbalManager::subscribe_information_async(
+        std::function<void(const GimbalManager::Information information)> callback)
 {
-    _impl->track_point_async(x, y, id, callback);
+    _impl->subscribe_information_async(callback);
 }
 
-GimbalManager::Result GimbalManager::track_rectangle(float x1, float y1, float x2, float y2, uint8_t id)
+void GimbalManager::bind(GimbalManager::Information information)
 {
-    return _impl->track_rectangle(x1, y1, x2, y2, id);
+    _information = information;
+    _bound = true;
 }
 
-void GimbalManager::track_rectangle_async(float x1, float y1, float x2, float y2, uint8_t id, result_callback_t callback)
+void GimbalManager::unbind()
 {
-    _impl->track_rectangle_async(x1, y1, x2, y2, id, callback);
+    _bound = false;
 }
+
+//GimbalManager::Result GimbalManager::track_point(float x, float y, uint8_t id)
+//{
+    //return _impl->track_point(x, y, id);
+//}
+
+//void GimbalManager::track_point_async(float x, float y, uint8_t id, result_callback_t callback)
+//{
+    //_impl->track_point_async(x, y, id, callback);
+//}
+
+//GimbalManager::Result GimbalManager::track_rectangle(float x1, float y1, float x2, float y2, uint8_t id)
+//{
+    //return _impl->track_rectangle(x1, y1, x2, y2, id);
+//}
+
+//void GimbalManager::track_rectangle_async(float x1, float y1, float x2, float y2, uint8_t id, result_callback_t callback)
+//{
+    //_impl->track_rectangle_async(x1, y1, x2, y2, id, callback);
+//}
 
 GimbalManager::Result GimbalManager::set_roi_location(double latitude_deg, double longitude_deg, float altitude_m)
 {

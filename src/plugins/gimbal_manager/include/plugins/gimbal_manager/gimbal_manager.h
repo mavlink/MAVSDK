@@ -99,12 +99,26 @@ public:
     typedef std::function<void(Result)> result_callback_t;
 
     /**
+     * @brief Id type for storing system/component id of the manager
+     * as well as which gimbal device it is associated with.
+     *
+     * Note that gimbal managers usually don't have their own component,
+     * and are usually hosted on an autopilot, companion computer,
+     * or the gimbal device itself.
+     */
+    struct ManagerId {
+        uint8_t system_id; /**< @brief System ID of gimbal manager. */
+        uint8_t component_id; /**< @brief Component ID of gimbal manager. */
+        uint8_t assoc_device; /*< @brief Gimbal component ID this gimbal manager is responsible for. */
+    };
+
+    /**
      * @brief Information type for storing information (capabilities, ID, etc)
      * about gimbal managers.
      */
     struct Information {
         uint32_t capabilities; /**< @brief Capabilities of the gimbal manager. */
-        uint8_t connected_component; /**< @brief Gimbal component ID this gimbal manager is responsible for. */
+        ManagerId id; /**< @brief Manager identification. */
         float tilt_max; /**< @brief Maximum tilt/pitch angle (positive: up, negative: down) */
         float tilt_min; /**< @brief Minimum tilt/pitch angle (positive: up, negative: down) */
         float tilt_rate_max; /**< @brief Maximum tilt/pitch angular rate (positive: up, negative: down) */
@@ -112,8 +126,6 @@ public:
         float pan_min; /**< @brief Minimum pan/yaw angle (positive: up, negative: down) */
         float pan_rate_max; /**< @brief Maximum pan/yaw angular rate (positive: up, negative: down) */
     };
-
-    Information information;
 
     /**
      * @brief Set gimbal attitude (synchronous).
@@ -180,16 +192,26 @@ public:
 
     /**
      * @brief Subscribe to gimbal manager information responses.
-     *
      * To request information from any/all gimbal managers, use GimbalManager::request_information.
+     * 
+     * Note: This only works if the manager class is not bound to a specific gimbal manager component.
+     *
+     * @param callback Callback to be called when information is received.
      */
     void subscribe_information_async(
             std::function<void(const Information information)> callback);
 
     /**
      * @brief Binds the manager class to a specific gimbal manager
+     *
+     * @param information Information about the connected gimbal manager, includings its system/component ID and associated gimbal device.
      */
-    void bind();
+    void bind(Information information);
+
+    /**
+     * @brief Unbinds the manager class from a specific gimbal manager.
+     */
+    void unbind();
 
     /**
      * @brief Track camera point.
@@ -205,6 +227,7 @@ public:
      * or 0 to command all connected gimbal devices.
      * @return Result of request.
      */
+    // TODO consider adding this back later
     //Result track_point(float x, float y, uint8_t id);
 
     /**
@@ -221,6 +244,7 @@ public:
      * or 0 to command all connected gimbal devices.
      * @param callback Function to call with result of request.
      */
+    // TODO consider adding this back later
     //void track_point_async(float x, float y, uint8_t id, result_callback_t callback);
     
     /**
@@ -239,6 +263,7 @@ public:
      * or 0 to command all connected gimbal devices.
      * @return Result of request.
      */
+    // TODO consider adding this back later
     //Result track_rectangle(float x1, float y1, float x2, float y2, uint8_t id);
 
     /**
@@ -257,6 +282,7 @@ public:
      * or 0 to command all connected gimbal devices.
      * @param callback Function to call with result of request.
      */
+    // TODO consider adding this back later
     //void track_rectangle_async(float x1, float y1, float x2, float y2, uint8_t id, result_callback_t callback);
 
     /**
@@ -306,6 +332,12 @@ public:
 private:
     /** @private Underlying implementation, set at instantiation */
     std::unique_ptr<GimbalManagerImpl> _impl;
+
+    /** @private Information about the gimbal manager this class is connected to. */
+    Information _information;
+
+    /** @private Whether or not this class is currently bound to a gimbal manager. */
+    bool _bound = false;
 };
 
 } // namespace mavsdk

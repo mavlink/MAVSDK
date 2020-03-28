@@ -102,8 +102,8 @@ int main(int argc, char** argv)
 
     MavlinkPassthrough pass(system);
 
-    //pass.subscribe_message_async(MAVLINK_MSG_ID_GIMBAL_MANAGER_INFORMATION, 
-    pass.subscribe_message_async(MAVLINK_MSG_ID_GLOBAL_POSITION_INT,
+    pass.subscribe_message_async(MAVLINK_MSG_ID_COMMAND_LONG,
+    //pass.subscribe_message_async(MAVLINK_MSG_ID_GLOBAL_POSITION_INT,
             [&received_information, &device_id](const mavlink_message_t message) {
         std::cout << "Received" << sizeof(message) << device_id << std::endl;
     });
@@ -115,7 +115,7 @@ int main(int argc, char** argv)
     // publish status messages at 5Hz
     mavlink_message_t status_message;
     while (true) {
-        gettimeofday(&tv,NULL);
+        gettimeofday(&tv, NULL);
         time_in_micros = 1000000 * tv.tv_sec + tv.tv_usec;
 
         mavlink_msg_gimbal_manager_status_pack(manager_sid, manager_cid,

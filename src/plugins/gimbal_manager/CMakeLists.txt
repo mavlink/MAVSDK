@@ -24,5 +24,5 @@ install(TARGETS mavsdk_gimbal_manager
 
 install(FILES
     include/plugins/gimbal_manager/gimbal_manager.h
-    DESTINATION ${CMAKE_INSTALL_INCLUDEDIR}/mavsdk/plugins/gimbal
+    DESTINATION ${CMAKE_INSTALL_INCLUDEDIR}/mavsdk/plugins/gimbal_manager
 )
