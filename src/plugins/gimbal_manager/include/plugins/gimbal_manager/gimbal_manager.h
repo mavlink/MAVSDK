@@ -128,6 +128,29 @@ public:
     };
 
     /**
+     * @brief Requests information about the gimbal manager.
+     *
+     * This sends a request for gimbal manager information.
+     * The functon will return immediately. To capture the response (information),
+     * see GimbalManager::subscribe_information_async.
+     *
+     * @return Result of request.
+     */
+
+    Result request_information();
+
+    /**
+     * @brief Subscribe to gimbal manager information responses.
+     * To request information from any/all gimbal managers, use GimbalManager::request_information.
+     * 
+     * Note: This only works if the manager class is not bound to a specific gimbal manager component.
+     *
+     * @param callback Callback to be called when information is received.
+     */
+    void subscribe_information_async(
+            std::function<void(const Information information)> callback);
+
+    /**
      * @brief Set gimbal attitude (synchronous).
      *
      * This sets the desired attitude of the specified gimbal.
@@ -179,27 +202,6 @@ public:
     void set_attitude_async(float tilt_rate, float pan_rate, float tilt_deg,
                         float pan_deg, int operation_flags, uint8_t id,
                         result_callback_t callback);
-
-    /**
-     * @brief Requests information about the gimbal manager.
-     *
-     * This sends a request for gimbal manager information.
-     * The functon will return immediately. To capture the response (information),
-     * see GimbalManager::subscribe_information_async.
-     */
-
-    void request_information();
-
-    /**
-     * @brief Subscribe to gimbal manager information responses.
-     * To request information from any/all gimbal managers, use GimbalManager::request_information.
-     * 
-     * Note: This only works if the manager class is not bound to a specific gimbal manager component.
-     *
-     * @param callback Callback to be called when information is received.
-     */
-    void subscribe_information_async(
-            std::function<void(const Information information)> callback);
 
     /**
      * @brief Binds the manager class to a specific gimbal manager

@@ -7,6 +7,17 @@ GimbalManager::GimbalManager(System& system) : PluginBase(), _impl{new GimbalMan
 
 GimbalManager::~GimbalManager() {}
 
+GimbalManager::Result GimbalManager::request_information()
+{
+    return _impl->request_information();
+}
+
+void GimbalManager::subscribe_information_async(
+        std::function<void(const GimbalManager::Information information)> callback)
+{
+    _impl->subscribe_information_async(callback);
+}
+
 GimbalManager::Result GimbalManager::set_attitude(float tilt_rate, float pan_rate,
         float tilt_deg, float pan_deg, int operation_flags,
         uint8_t id)
@@ -19,17 +30,6 @@ void GimbalManager::set_attitude_async(float tilt_rate, float pan_rate,
         uint8_t id, result_callback_t callback)
 {
     _impl->set_attitude_async(tilt_rate, pan_rate, tilt_deg, pan_deg, operation_flags, id, callback);
-}
-
-void GimbalManager::request_information()
-{
-    _impl->request_information();
-}
-
-void GimbalManager::subscribe_information_async(
-        std::function<void(const GimbalManager::Information information)> callback)
-{
-    _impl->subscribe_information_async(callback);
 }
 
 void GimbalManager::bind(GimbalManager::Information information)

@@ -23,15 +23,17 @@ void GimbalManagerImpl::enable() {}
 
 void GimbalManagerImpl::disable() {}
 
-void GimbalManagerImpl::request_information()
+GimbalManager::Result GimbalManagerImpl::request_information()
 {
-    //MAVLinkCommands::CommandLong command{};
+    MAVLinkCommands::CommandLong command{};
 
-    //command.command = MAV_CMD_REQUEST_MESSAGE;
-    //command.params.param1 = MAVLINK_MSG_ID_GIMBAL_MANAGER_INFORMATION;
-    //command.params.param7 = 1;
+    command.command = MAV_CMD_REQUEST_MESSAGE;
+    command.params.param1 = MAVLINK_MSG_ID_GIMBAL_MANAGER_INFORMATION;
+    command.params.param7 = 1;
+    
+    command.target_component_id = 0; // broadcast to all connected MAVLink nodes
 
-    //_parent->send_command_async(command, NULL);
+    return gimbal_manager_result_from_command_result(_parent->send_command(command));
 }
 
 void GimbalManagerImpl::subscribe_information_async(
