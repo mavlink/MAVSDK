@@ -112,7 +112,7 @@ int main(int argc, char** argv)
     std::cout << "Arming..." << std::endl;
     const Action::Result arm_result = action->arm();
 
-    if (arm_result != Action::Result::SUCCESS) {
+    if (arm_result != Action::Result::Success) {
         std::cout << ERROR_CONSOLE_TEXT << "Arming failed:" << Action::result_str(arm_result)
                   << NORMAL_CONSOLE_TEXT << std::endl;
         return 1;
@@ -121,7 +121,7 @@ int main(int argc, char** argv)
     // Take off
     std::cout << "Taking off..." << std::endl;
     const Action::Result takeoff_result = action->takeoff();
-    if (takeoff_result != Action::Result::SUCCESS) {
+    if (takeoff_result != Action::Result::Success) {
         std::cout << ERROR_CONSOLE_TEXT << "Takeoff failed:" << Action::result_str(takeoff_result)
                   << NORMAL_CONSOLE_TEXT << std::endl;
         return 1;
@@ -132,7 +132,7 @@ int main(int argc, char** argv)
 
     std::cout << "Landing..." << std::endl;
     const Action::Result land_result = action->land();
-    if (land_result != Action::Result::SUCCESS) {
+    if (land_result != Action::Result::Success) {
         std::cout << ERROR_CONSOLE_TEXT << "Land failed:" << Action::result_str(land_result)
                   << NORMAL_CONSOLE_TEXT << std::endl;
         return 1;

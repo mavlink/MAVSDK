@@ -274,7 +274,7 @@ int main(int argc, char** argv)
         // We are done, and can do RTL to go home.
         std::cout << "Commanding RTL..." << std::endl;
         const Action::Result result = action->return_to_launch();
-        if (result != Action::Result::SUCCESS) {
+        if (result != Action::Result::Success) {
             std::cout << "Failed to command RTL (" << Action::result_str(result) << ")"
                       << std::endl;
         } else {
@@ -314,7 +314,7 @@ std::shared_ptr<MissionItem> make_mission_item(
 
 inline void handle_action_err_exit(Action::Result result, const std::string& message)
 {
-    if (result != Action::Result::SUCCESS) {
+    if (result != Action::Result::Success) {
         std::cerr << ERROR_CONSOLE_TEXT << message << Action::result_str(result)
                   << NORMAL_CONSOLE_TEXT << std::endl;
         exit(EXIT_FAILURE);

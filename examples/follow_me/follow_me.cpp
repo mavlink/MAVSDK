@@ -148,7 +148,7 @@ int main(int argc, char** argv)
 // Handles Action's result
 inline void action_error_exit(Action::Result result, const std::string& message)
 {
-    if (result != Action::Result::SUCCESS) {
+    if (result != Action::Result::Success) {
         std::cerr << ERROR_CONSOLE_TEXT << message << Action::result_str(result)
                   << NORMAL_CONSOLE_TEXT << std::endl;
         exit(EXIT_FAILURE);
