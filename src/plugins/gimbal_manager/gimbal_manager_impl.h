@@ -17,7 +17,7 @@ public:
     void enable() override;
     void disable() override;
 
-    void request_information();
+    GimbalManager::Result request_information();
 
     void subscribe_information_async(
             std::function<void(const GimbalManager::Information information)> callback);
