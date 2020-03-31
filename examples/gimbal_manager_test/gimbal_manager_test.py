@@ -101,7 +101,7 @@ class DummyGimbalManager(Component):
         if not hasattr(msg, "id"):
             return
 
-        # We don't want to be discovered until we have the gimbal device info
+        We don't want to be discovered until we have the gimbal device info
         if not self.discovered:
             self.mavlink_conn.mav.command_ack_send(msg.id, 5)
             return
@@ -109,8 +109,15 @@ class DummyGimbalManager(Component):
             self.mavlink_conn.mav.command_ack_send(msg.id, 0)
 
         if msg.id == mavutil.mavlink.MAVLINK_MSG_ID_COMMAND_LONG:
+            msg_data = msg.to_dict()
+
+            # We only want to respond to a request to our specific component
+            if msg_data.get("target_system") != self.mavlink_id.system_id or \
+                    msg_data.get("target_component") != self.mavlink_id.component_id:
+                return
+
             if msg.command == mavutil.mavlink.MAV_CMD_REQUEST_MESSAGE and \
-                    msg.to_dict()["param1"] == mavutil.mavlink.MAVLINK_MSG_ID_GIMBAL_MANAGER_INFORMATION:
+                    msg_data["param1"] == mavutil.mavlink.MAVLINK_MSG_ID_GIMBAL_MANAGER_INFORMATION:
                 print("Sending gimbal manager information")
                 self.mavlink_conn.mav.gimbal_manager_information_send(round(1000*(time.time() - self.starttime)),
                                                                       self.gimbal_info["cap_flags"],
@@ -135,6 +142,11 @@ class DummyGimbalManager(Component):
         if msg.id == mavutil.mavlink.MAVLINK_MSG_ID_GIMBAL_MANAGER_SET_ATTITUDE:
             msg_data = msg.to_dict()
 
+            # We only want to respond to a request to our specific component
+            if msg_data.get("target_system") != self.mavlink_id.system_id or \
+                    msg_data.get("target_component") != self.mavlink_id.component_id:
+                return
+
             # TODO: If we feel like it we can implement the more complicated gimbal manager flags
             # However since this is a dummy implementation anyway leaving them unimplemented and
             # falling back to default should be an acceptable approach
@@ -156,6 +168,13 @@ class DummyGimbalManager(Component):
             return
 
         if msg.id == mavutil.mavlink.MAVLINK_MSG_ID_COMMAND_LONG:
+            msg_data = msg.to_dict()
+
+            # We only want to respond to a request to our specific component
+            if msg_data.get("target_system") != self.mavlink_id.system_id or \
+                    msg_data.get("target_component") != self.mavlink_id.component_id:
+                return
+
             if msg.command == mavutil.mavlink.MAV_CMD_DO_GIMBAL_MANAGER_ATTITUDE:
                 print("Received DO_GIMBAL_MANAGER_ATTITUDE! data:", msg.to_dict())
                 self.mavlink_conn.mav.command_ack_send(msg.id, 0)
@@ -169,6 +188,13 @@ class DummyGimbalManager(Component):
             return
 
         if msg.id == mavutil.mavlink.MAVLINK_MSG_ID_COMMAND_LONG:
+            msg_data = msg.to_dict()
+
+            # We only want to respond to a request to our specific component
+            if msg_data.get("target_system") != self.mavlink_id.system_id or \
+                    msg_data.get("target_component") != self.mavlink_id.component_id:
+                return
+
             if msg.command == mavutil.mavlink.MAV_CMD_DO_SET_ROI_LOCATION:
                 print("Received DO_SET_ROI_LOCATION!: data:", msg.to_dict())
                 self.mavlink_conn.mav.command_ack_send(msg.id, 0)
@@ -182,6 +208,13 @@ class DummyGimbalManager(Component):
             return
 
         if msg.id == mavutil.mavlink.MAVLINK_MSG_ID_COMMAND_LONG:
+            msg_data = msg.to_dict()
+
+            # We only want to respond to a request to our specific component
+            if msg_data.get("target_system") != self.mavlink_id.system_id or \
+                    msg_data.get("target_component") != self.mavlink_id.component_id:
+                return
+
             if msg.command == mavutil.mavlink.MAV_CMD_DO_SET_ROI_WPNEXT_OFFSET:
                 print("Received DO_SET_ROI_WPNEXT_OFFSET! data:", msg.to_dict())
                 self.mavlink_conn.mav.command_ack_send(msg.id, 0)
@@ -195,6 +228,13 @@ class DummyGimbalManager(Component):
             return
 
         if msg.id == mavutil.mavlink.MAVLINK_MSG_ID_COMMAND_LONG:
+            msg_data = msg.to_dict()
+
+            # We only want to respond to a request to our specific component
+            if msg_data.get("target_system") != self.mavlink_id.system_id or \
+                    msg_data.get("target_component") != self.mavlink_id.component_id:
+                return
+
             if msg.command == mavutil.mavlink.MAV_CMD_DO_SET_ROI_SYSID:
                 print("Received DO_SET_ROI_SYSID! data:", msg.to_dict())
                 self.mavlink_conn.mav.command_ack_send(msg.id, 0)
@@ -208,6 +248,13 @@ class DummyGimbalManager(Component):
             return
 
         if msg.id == mavutil.mavlink.MAVLINK_MSG_ID_COMMAND_LONG:
+            msg_data = msg.to_dict()
+
+            # We only want to respond to a request to our specific component
+            if msg_data.get("target_system") != self.mavlink_id.system_id or \
+                    msg_data.get("target_component") != self.mavlink_id.component_id:
+                return
+
             if msg.command == mavutil.mavlink.MAV_CMD_DO_SET_ROI_NONE:
                 print("Received DO_SET_ROI_NONE! data:", msg.to_dict())
                 self.mavlink_conn.mav.command_ack_send(msg.id, 0)
@@ -221,6 +268,13 @@ class DummyGimbalManager(Component):
             return
 
         if msg.id == mavutil.mavlink.MAVLINK_MSG_ID_COMMAND_LONG:
+            msg_data = msg.to_dict()
+
+            # We only want to respond to a request to our specific component
+            if msg_data.get("target_system") != self.mavlink_id.system_id or \
+                    msg_data.get("target_component") != self.mavlink_id.component_id:
+                return
+
             if msg.command == mavutil.mavlink.MAV_CMD_DO_GIMBAL_MANAGER_TRACK_POINT:
                 print("Received DO_GIMBAL_MANAGER_TRACK_POINT! data:", msg.to_dict())
                 self.mavlink_conn.mav.command_ack_send(msg.id, 0)
@@ -234,6 +288,13 @@ class DummyGimbalManager(Component):
             return
 
         if msg.id == mavutil.mavlink.MAVLINK_MSG_ID_COMMAND_LONG:
+            msg_data = msg.to_dict()
+
+            # We only want to respond to a request to our specific component
+            if msg_data.get("target_system") != self.mavlink_id.system_id or \
+                    msg_data.get("target_component") != self.mavlink_id.component_id:
+                return
+
             if msg.command == mavutil.mavlink.MAV_CMD_DO_GIMBAL_MANAGER_TRACK_RECTANGLE:
                 print("Received DO_GIMBAL_MANAGER_TRACK_RECTANGLE! data:", msg.to_dict())
                 self.mavlink_conn.mav.command_ack_send(msg.id, 0)
