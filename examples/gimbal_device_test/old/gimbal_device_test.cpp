@@ -1,3 +1,6 @@
+/*
+ * Dummy gimbal device implementing MAVLink Gimbal Protocol v2.
+ */
 #include <cstdint>
 #include <mavsdk/mavsdk.h>
 #include <mavsdk/plugins/mavlink_passthrough/mavlink_passthrough.h>
@@ -34,10 +37,12 @@ int main(int argc, char** argv)
 
     bool discovered_system = false;
     if (argc == 3) {
+        // Connect to the system
         connection_url = argv[1];
         connection_result = dc.add_any_connection(connection_url);
         gimbal_id = std::stoi(argv[2]);
     } else {
+        // Print the usage info if we're missing specified args
         usage(argv[0]);
         return 1;
     }
@@ -51,6 +56,7 @@ int main(int argc, char** argv)
 
     System& system = dc.system();
 
+    // Register system
     std::cout << "Waiting to discover system..." << std::endl;
     dc.register_on_discover([&discovered_system](uint64_t uuid) {
         std::cout << "Discovered system with UUID: " << uuid << std::endl;
@@ -65,10 +71,10 @@ int main(int argc, char** argv)
         return 1;
     }
 
+    // Register callback for when we receive a gimbal device info request
     bool received_information = false;
     MavlinkPassthrough pass(system);
-    pass.subscribe_message_async(MAVLINK_MSG_ID_GIMBAL_DEVICE_INFORMATION, 
-    //pass.subscribe_message_async(MAVLINK_MSG_ID_GLOBAL_POSITION_INT,
+    pass.subscribe_message_async(MAVLINK_MSG_ID_GIMBAL_DEVICE_INFORMATION,
             [&received_information, &gimbal_id](const mavlink_message_t message) {
         std::cout << "Received" << sizeof(message) << gimbal_id << std::endl;
     });

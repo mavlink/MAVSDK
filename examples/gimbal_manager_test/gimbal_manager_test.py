@@ -25,6 +25,7 @@ class DummyGimbalManager(Component):
         super().__init__(mavlink_url, mavlink_id, mavutil.mavlink.MAV_TYPE_ONBOARD_CONTROLLER)
 
         self.discovered = False
+        self.gimbal_discovered = False
         self.starttime = time.time()
         self.device_id = device_id
         self.flags = 8
@@ -49,7 +50,7 @@ class DummyGimbalManager(Component):
         """
         Activate the component.
         """
-        pass
+        super()._activate()
 
     def _deactivate(self, source_id):
         """
@@ -63,14 +64,8 @@ class DummyGimbalManager(Component):
         discovery process outlined in https://mavlink.io/en/services/gimbal_v2.html.
         Will retry at a rate of 1Hz until successful.
         """
-        if not self.discovered and ("prev_rq_time" not in data or time.time() - data["prev_rq_time"] >= 1):
-            print("requesting gimbal information")
-            print(self.device_id.system_id,
-                  self.device_id.component_id,
-                  mavutil.mavlink.MAV_CMD_REQUEST_MESSAGE,
-                  0,
-                  mavutil.mavlink.MAVLINK_MSG_ID_GIMBAL_DEVICE_INFORMATION,
-                  0, 0, 0, 0, 0, 0)
+        if not self.gimbal_discovered and ("prev_rq_time" not in data or time.time() - data["prev_rq_time"] >= 1):
+            print("requesting gimbal information from", self.device_id)
             self.mavlink_conn.mav.command_long_send(self.device_id.system_id,
                                                     self.device_id.component_id,
                                                     mavutil.mavlink.MAV_CMD_REQUEST_MESSAGE,
@@ -90,8 +85,7 @@ class DummyGimbalManager(Component):
             info = msg.to_dict()
             print("gimbaldev", data)
             self.gimbal_info = info
-            self.discovered = True
-            super()._activate() # Indicate that we're ready to do stuff
+            self.gimbal_discovered = True
 
     def _discover_self(self, msg, data):
         """
@@ -101,12 +95,6 @@ class DummyGimbalManager(Component):
         if not hasattr(msg, "id"):
             return
 
-        We don't want to be discovered until we have the gimbal device info
-        if not self.discovered:
-            self.mavlink_conn.mav.command_ack_send(msg.id, 5)
-            return
-        else:
-            self.mavlink_conn.mav.command_ack_send(msg.id, 0)
 
         if msg.id == mavutil.mavlink.MAVLINK_MSG_ID_COMMAND_LONG:
             msg_data = msg.to_dict()
@@ -118,6 +106,13 @@ class DummyGimbalManager(Component):
 
             if msg.command == mavutil.mavlink.MAV_CMD_REQUEST_MESSAGE and \
                     msg_data["param1"] == mavutil.mavlink.MAVLINK_MSG_ID_GIMBAL_MANAGER_INFORMATION:
+                #We don't want to be discovered until we have the gimbal device info
+                if not self.gimbal_discovered:
+                    self.mavlink_conn.mav.command_ack_send(msg.id, 5)
+                    return
+                else:
+                    self.mavlink_conn.mav.command_ack_send(msg.id, 0)
+
                 print("Sending gimbal manager information")
                 self.mavlink_conn.mav.gimbal_manager_information_send(round(1000*(time.time() - self.starttime)),
                                                                       self.gimbal_info["cap_flags"],
@@ -151,13 +146,14 @@ class DummyGimbalManager(Component):
             # However since this is a dummy implementation anyway leaving them unimplemented and
             # falling back to default should be an acceptable approach
             self.flags = msg_data["flags"] if msg_data["flags"] <= 16 else 8
-            self.mavlink__conn.gimbal_device_set_attitude_send(self.device_id.system_id,
-                                                               self.device_id.component_id,
-                                                               self.flags,
-                                                               msg_data["q"],
-                                                               msg_data["angular_velocity_x"],
-                                                               msg_data["angular_velocity_y"],
-                                                               msg_data["angular_velocity_z"])
+            self.mavlink_conn.gimbal_device_set_attitude_send(self.device_id.system_id,
+                                                              self.device_id.component_id,
+                                                              self.flags,
+                                                              msg_data["q"],
+                                                              msg_data["angular_velocity_x"],
+                                                              msg_data["angular_velocity_y"],
+                                                              msg_data["angular_velocity_z"])
+            print("Set attitude! data:", msg_data)
 
     def _do_gimbal_manager_attitude(self, msg, data):
         """
@@ -171,8 +167,7 @@ class DummyGimbalManager(Component):
             msg_data = msg.to_dict()
 
             # We only want to respond to a request to our specific component
-            if msg_data.get("target_system") != self.mavlink_id.system_id or \
-                    msg_data.get("target_component") != self.mavlink_id.component_id:
+            if msg_data.get("param1") != self.device_id.component_id:
                 return
 
             if msg.command == mavutil.mavlink.MAV_CMD_DO_GIMBAL_MANAGER_ATTITUDE:
@@ -191,8 +186,7 @@ class DummyGimbalManager(Component):
             msg_data = msg.to_dict()
 
             # We only want to respond to a request to our specific component
-            if msg_data.get("target_system") != self.mavlink_id.system_id or \
-                    msg_data.get("target_component") != self.mavlink_id.component_id:
+            if msg_data.get("param1") != self.device_id.component_id:
                 return
 
             if msg.command == mavutil.mavlink.MAV_CMD_DO_SET_ROI_LOCATION:
@@ -211,8 +205,7 @@ class DummyGimbalManager(Component):
             msg_data = msg.to_dict()
 
             # We only want to respond to a request to our specific component
-            if msg_data.get("target_system") != self.mavlink_id.system_id or \
-                    msg_data.get("target_component") != self.mavlink_id.component_id:
+            if msg_data.get("param1") != self.device_id.component_id:
                 return
 
             if msg.command == mavutil.mavlink.MAV_CMD_DO_SET_ROI_WPNEXT_OFFSET:
@@ -231,8 +224,7 @@ class DummyGimbalManager(Component):
             msg_data = msg.to_dict()
 
             # We only want to respond to a request to our specific component
-            if msg_data.get("target_system") != self.mavlink_id.system_id or \
-                    msg_data.get("target_component") != self.mavlink_id.component_id:
+            if msg_data.get("param1") != self.device_id.component_id:
                 return
 
             if msg.command == mavutil.mavlink.MAV_CMD_DO_SET_ROI_SYSID:
@@ -251,8 +243,7 @@ class DummyGimbalManager(Component):
             msg_data = msg.to_dict()
 
             # We only want to respond to a request to our specific component
-            if msg_data.get("target_system") != self.mavlink_id.system_id or \
-                    msg_data.get("target_component") != self.mavlink_id.component_id:
+            if msg_data.get("param1") != self.device_id.component_id:
                 return
 
             if msg.command == mavutil.mavlink.MAV_CMD_DO_SET_ROI_NONE:
@@ -271,8 +262,7 @@ class DummyGimbalManager(Component):
             msg_data = msg.to_dict()
 
             # We only want to respond to a request to our specific component
-            if msg_data.get("target_system") != self.mavlink_id.system_id or \
-                    msg_data.get("target_component") != self.mavlink_id.component_id:
+            if msg_data.get("param1") != self.device_id.component_id:
                 return
 
             if msg.command == mavutil.mavlink.MAV_CMD_DO_GIMBAL_MANAGER_TRACK_POINT:
@@ -291,8 +281,7 @@ class DummyGimbalManager(Component):
             msg_data = msg.to_dict()
 
             # We only want to respond to a request to our specific component
-            if msg_data.get("target_system") != self.mavlink_id.system_id or \
-                    msg_data.get("target_component") != self.mavlink_id.component_id:
+            if msg_data.get("param1") != self.device_id.component_id:
                 return
 
             if msg.command == mavutil.mavlink.MAV_CMD_DO_GIMBAL_MANAGER_TRACK_RECTANGLE:
@@ -306,6 +295,7 @@ class DummyGimbalManager(Component):
         if "gm_prev_time" not in data or time.time() - data["gm_prev_time"] >= (1 / 5):
             self.mavlink_conn.mav.gimbal_manager_status_send(round(1000*(time.time() - self.starttime)),
                                                              self.flags)
+            data["gm_prev_time"] = time.time()
 
 
 if __name__ == "__main__":
