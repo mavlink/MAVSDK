@@ -109,7 +109,8 @@ class DummyGimbalManager(Component):
             self.mavlink_conn.mav.command_ack_send(msg.id, 0)
 
         if msg.id == mavutil.mavlink.MAVLINK_MSG_ID_COMMAND_LONG:
-            if msg.command == mavutil.mavlink.MAV_CMD_REQUEST_MESSAGE:
+            if msg.command == mavutil.mavlink.MAV_CMD_REQUEST_MESSAGE and \
+                    msg.to_dict()["param1"] == mavutil.mavlink.MAVLINK_MSG_ID_GIMBAL_MANAGER_INFORMATION:
                 print("Sending gimbal manager information")
                 self.mavlink_conn.mav.gimbal_manager_information_send(round(1000*(time.time() - self.starttime)),
                                                                       self.gimbal_info["cap_flags"],
