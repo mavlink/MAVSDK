@@ -545,29 +545,29 @@ mavsdk::Action::Result
 translateFromRpcResult(const mavsdk::rpc::action::ActionResult::Result& result)
 {
     switch (result) {
-        case mavsdk::rpc::action::ActionResult_Result_UNKNOWN:
+        case mavsdk::rpc::action::ActionResult_Result_RESULT_UNKNOWN:
             return mavsdk::Action::Result::Unknown;
-        case mavsdk::rpc::action::ActionResult_Result_SUCCESS:
+        case mavsdk::rpc::action::ActionResult_Result_RESULT_SUCCESS:
             return mavsdk::Action::Result::Success;
-        case mavsdk::rpc::action::ActionResult_Result_NO_SYSTEM:
+        case mavsdk::rpc::action::ActionResult_Result_RESULT_NO_SYSTEM:
             return mavsdk::Action::Result::NoSystem;
-        case mavsdk::rpc::action::ActionResult_Result_CONNECTION_ERROR:
+        case mavsdk::rpc::action::ActionResult_Result_RESULT_CONNECTION_ERROR:
             return mavsdk::Action::Result::ConnectionError;
-        case mavsdk::rpc::action::ActionResult_Result_BUSY:
+        case mavsdk::rpc::action::ActionResult_Result_RESULT_BUSY:
             return mavsdk::Action::Result::Busy;
-        case mavsdk::rpc::action::ActionResult_Result_COMMAND_DENIED:
+        case mavsdk::rpc::action::ActionResult_Result_RESULT_COMMAND_DENIED:
             return mavsdk::Action::Result::CommandDenied;
-        case mavsdk::rpc::action::ActionResult_Result_COMMAND_DENIED_LANDED_STATE_UNKNOWN:
+        case mavsdk::rpc::action::ActionResult_Result_RESULT_COMMAND_DENIED_LANDED_STATE_UNKNOWN:
             return mavsdk::Action::Result::CommandDeniedLandedStateUnknown;
-        case mavsdk::rpc::action::ActionResult_Result_COMMAND_DENIED_NOT_LANDED:
+        case mavsdk::rpc::action::ActionResult_Result_RESULT_COMMAND_DENIED_NOT_LANDED:
             return mavsdk::Action::Result::CommandDeniedNotLanded;
-        case mavsdk::rpc::action::ActionResult_Result_TIMEOUT:
+        case mavsdk::rpc::action::ActionResult_Result_RESULT_TIMEOUT:
             return mavsdk::Action::Result::Timeout;
-        case mavsdk::rpc::action::ActionResult_Result_VTOL_TRANSITION_SUPPORT_UNKNOWN:
+        case mavsdk::rpc::action::ActionResult_Result_RESULT_VTOL_TRANSITION_SUPPORT_UNKNOWN:
             return mavsdk::Action::Result::VtolTransitionSupportUnknown;
-        case mavsdk::rpc::action::ActionResult_Result_NO_VTOL_TRANSITION_SUPPORT:
+        case mavsdk::rpc::action::ActionResult_Result_RESULT_NO_VTOL_TRANSITION_SUPPORT:
             return mavsdk::Action::Result::NoVtolTransitionSupport;
-        case mavsdk::rpc::action::ActionResult_Result_PARAMETER_ERROR:
+        case mavsdk::rpc::action::ActionResult_Result_RESULT_PARAMETER_ERROR:
             return mavsdk::Action::Result::ParameterError;
         default:
             return mavsdk::Action::Result::Unknown;

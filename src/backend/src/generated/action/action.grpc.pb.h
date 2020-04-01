@@ -77,7 +77,7 @@ class ActionService final {
     //
     // Send command to take off and hover.
     //
-    // This switches the drone into position control mode and commands 
+    // This switches the drone into position control mode and commands
     // it to take off and hover at the takeoff altitude.
     //
     // Note that the vehicle must be armed before it can take off.
@@ -124,7 +124,7 @@ class ActionService final {
       return std::unique_ptr< ::grpc::ClientAsyncResponseReaderInterface< ::mavsdk::rpc::action::ShutdownResponse>>(PrepareAsyncShutdownRaw(context, request, cq));
     }
     //
-    // Send command to kill the drone. 
+    // Send command to kill the drone.
     //
     // This will disarm a drone irrespective of whether it is landed or flying.
     // Note that the drone will fall out of the sky if this command is used while flying.
@@ -138,7 +138,7 @@ class ActionService final {
     //
     // Send command to return to the launch (takeoff) position and land.
     //
-    // This switches the drone into [RTL mode](https://docs.px4.io/en/flight_modes/rtl.html) which
+    // This switches the drone into [Return mode](https://docs.px4.io/master/en/flight_modes/return.html) which
     // generally means it will rise up to a certain altitude to clear any obstacles before heading
     // back to the launch (takeoff) position and land there.
     virtual ::grpc::Status ReturnToLaunch(::grpc::ClientContext* context, const ::mavsdk::rpc::action::ReturnToLaunchRequest& request, ::mavsdk::rpc::action::ReturnToLaunchResponse* response) = 0;
@@ -266,7 +266,7 @@ class ActionService final {
       //
       // Send command to take off and hover.
       //
-      // This switches the drone into position control mode and commands 
+      // This switches the drone into position control mode and commands
       // it to take off and hover at the takeoff altitude.
       //
       // Note that the vehicle must be armed before it can take off.
@@ -301,7 +301,7 @@ class ActionService final {
       virtual void Shutdown(::grpc::ClientContext* context, const ::mavsdk::rpc::action::ShutdownRequest* request, ::mavsdk::rpc::action::ShutdownResponse* response, ::grpc::experimental::ClientUnaryReactor* reactor) = 0;
       virtual void Shutdown(::grpc::ClientContext* context, const ::grpc::ByteBuffer* request, ::mavsdk::rpc::action::ShutdownResponse* response, ::grpc::experimental::ClientUnaryReactor* reactor) = 0;
       //
-      // Send command to kill the drone. 
+      // Send command to kill the drone.
       //
       // This will disarm a drone irrespective of whether it is landed or flying.
       // Note that the drone will fall out of the sky if this command is used while flying.
@@ -312,7 +312,7 @@ class ActionService final {
       //
       // Send command to return to the launch (takeoff) position and land.
       //
-      // This switches the drone into [RTL mode](https://docs.px4.io/en/flight_modes/rtl.html) which
+      // This switches the drone into [Return mode](https://docs.px4.io/master/en/flight_modes/return.html) which
       // generally means it will rise up to a certain altitude to clear any obstacles before heading
       // back to the launch (takeoff) position and land there.
       virtual void ReturnToLaunch(::grpc::ClientContext* context, const ::mavsdk::rpc::action::ReturnToLaunchRequest* request, ::mavsdk::rpc::action::ReturnToLaunchResponse* response, std::function<void(::grpc::Status)>) = 0;
@@ -701,7 +701,7 @@ class ActionService final {
     //
     // Send command to take off and hover.
     //
-    // This switches the drone into position control mode and commands 
+    // This switches the drone into position control mode and commands
     // it to take off and hover at the takeoff altitude.
     //
     // Note that the vehicle must be armed before it can take off.
@@ -724,7 +724,7 @@ class ActionService final {
     // reject it if they are not already ready to shut down.
     virtual ::grpc::Status Shutdown(::grpc::ServerContext* context, const ::mavsdk::rpc::action::ShutdownRequest* request, ::mavsdk::rpc::action::ShutdownResponse* response);
     //
-    // Send command to kill the drone. 
+    // Send command to kill the drone.
     //
     // This will disarm a drone irrespective of whether it is landed or flying.
     // Note that the drone will fall out of the sky if this command is used while flying.
@@ -732,7 +732,7 @@ class ActionService final {
     //
     // Send command to return to the launch (takeoff) position and land.
     //
-    // This switches the drone into [RTL mode](https://docs.px4.io/en/flight_modes/rtl.html) which
+    // This switches the drone into [Return mode](https://docs.px4.io/master/en/flight_modes/return.html) which
     // generally means it will rise up to a certain altitude to clear any obstacles before heading
     // back to the launch (takeoff) position and land there.
     virtual ::grpc::Status ReturnToLaunch(::grpc::ServerContext* context, const ::mavsdk::rpc::action::ReturnToLaunchRequest* request, ::mavsdk::rpc::action::ReturnToLaunchResponse* response);

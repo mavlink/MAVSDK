@@ -54,14 +54,14 @@ public:
 
     void set_takeoff_altitude_async(
         const float relative_altitude_m, const Action::result_callback_t& callback) const;
-    void get_takeoff_altitude_async(const Action::relative_altitude_m_callback_t& callback) const;
+    void get_takeoff_altitude_async(const Action::get_takeoff_altitude_callback_t& callback) const;
 
     Action::Result set_takeoff_altitude(float relative_altitude_m) const;
     std::pair<Action::Result, float> get_takeoff_altitude() const;
 
     void
     set_maximum_speed_async(const float speed_m_s, const Action::result_callback_t& callback) const;
-    void get_maximum_speed_async(const Action::speed_callback_t& callback) const;
+    void get_maximum_speed_async(const Action::get_maximum_speed_callback_t& callback) const;
 
     Action::Result set_maximum_speed(float speed_m_s) const;
     std::pair<Action::Result, float> get_maximum_speed() const;
@@ -69,7 +69,7 @@ public:
     void set_return_to_launch_altitude_async(
         const float relative_altitude_m, const Action::result_callback_t& callback) const;
     void get_return_to_launch_altitude_async(
-        const Action::relative_altitude_m_callback_t& callback) const;
+        const Action::get_return_to_launch_altitude_callback_t& callback) const;
 
     Action::Result set_return_to_launch_altitude(const float relative_altitude_m) const;
     std::pair<Action::Result, float> get_return_to_launch_altitude() const;

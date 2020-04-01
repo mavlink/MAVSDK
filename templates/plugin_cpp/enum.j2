@@ -3,7 +3,7 @@ const char* {{ plugin_name.upper_camel_case }}::result_str({{ plugin_name.upper_
 {
     switch (result) {
         {%- for value in values %}
-        case {{ plugin_name.upper_camel_case }}::{{ name.upper_camel_case }}::{{ value.name.upper_camel_case }}:
+        case {{ plugin_name.upper_camel_case }}::{{ name.upper_camel_case }}::{% set value_without_prefix = value.name.lower_camel_case[name.lower_camel_case|length:] %}{{ value_without_prefix }}:
             return "{{ value.description[1:].rstrip() }}";
         {%- endfor %}
         default:
@@ -11,3 +11,15 @@ const char* {{ plugin_name.upper_camel_case }}::result_str({{ plugin_name.upper_
     }
 }
 {% endif %}
+
+std::ostream& operator<<(std::ostream& str, {{ plugin_name.upper_camel_case }}::{{ name.upper_camel_case }} const& {{ name.lower_snake_case }})
+{
+    switch ({{ name.lower_snake_case }}) {
+        {%- for value in values %}
+        case {{ plugin_name.upper_camel_case }}::{{ name.upper_camel_case }}::{% set value_without_prefix = value.name.lower_camel_case[name.lower_camel_case|length:] %}{{ value_without_prefix }}:
+            return str << "{{ value.name.upper_readable }}";
+        {%- endfor %}
+        default:
+            return str << "Unknown";
+    }
+}

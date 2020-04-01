@@ -27,16 +27,18 @@ void print_health(Telemetry::Health health)
 {
     std::cout << "Got health: " << std::endl;
 
-    std::cout << "Gyro calibration:  " << (health.gyrometer_calibration_ok ? "ok" : "not ok")
+    std::cout << "Gyro calibration:  " << (health.is_gyrometer_calibration_ok ? "ok" : "not ok")
               << std::endl;
-    std::cout << "Accel calibration: " << (health.accelerometer_calibration_ok ? "ok" : "not ok")
+    std::cout << "Accel calibration: " << (health.is_accelerometer_calibration_ok ? "ok" : "not ok")
               << std::endl;
-    std::cout << "Mag calibration:   " << (health.magnetometer_calibration_ok ? "ok" : "not ok")
+    std::cout << "Mag calibration:   " << (health.is_magnetometer_calibration_ok ? "ok" : "not ok")
               << std::endl;
-    std::cout << "Level calibration: " << (health.level_calibration_ok ? "ok" : "not ok")
+    std::cout << "Level calibration: " << (health.is_level_calibration_ok ? "ok" : "not ok")
               << std::endl;
-    std::cout << "Local position:    " << (health.local_position_ok ? "ok" : "not ok") << std::endl;
-    std::cout << "Global position:   " << (health.global_position_ok ? "ok" : "not ok")
+    std::cout << "Local position:    " << (health.is_local_position_ok ? "ok" : "not ok")
               << std::endl;
-    std::cout << "Home position:     " << (health.home_position_ok ? "ok" : "not ok") << std::endl;
+    std::cout << "Global position:   " << (health.is_global_position_ok ? "ok" : "not ok")
+              << std::endl;
+    std::cout << "Home position:     " << (health.is_home_position_ok ? "ok" : "not ok")
+              << std::endl;
 }

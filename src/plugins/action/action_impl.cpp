@@ -436,7 +436,7 @@ Action::Result ActionImpl::set_takeoff_altitude(float relative_altitude_m) const
 }
 
 void ActionImpl::get_takeoff_altitude_async(
-    const Action::relative_altitude_m_callback_t& callback) const
+    const Action::get_takeoff_altitude_callback_t& callback) const
 {
     auto altitude_result = get_takeoff_altitude();
     callback(altitude_result.first, altitude_result.second);
@@ -464,7 +464,7 @@ Action::Result ActionImpl::set_maximum_speed(float speed_m_s) const
                                                             Action::Result::ParameterError;
 }
 
-void ActionImpl::get_maximum_speed_async(const Action::speed_callback_t& callback) const
+void ActionImpl::get_maximum_speed_async(const Action::get_maximum_speed_callback_t& callback) const
 {
     auto speed_result = get_maximum_speed();
     callback(speed_result.first, speed_result.second);
@@ -494,7 +494,7 @@ Action::Result ActionImpl::set_return_to_launch_altitude(const float relative_al
 }
 
 void ActionImpl::get_return_to_launch_altitude_async(
-    const Action::relative_altitude_m_callback_t& callback) const
+    const Action::get_return_to_launch_altitude_callback_t& callback) const
 {
     const auto get_result = get_return_to_launch_altitude();
     callback(get_result.first, get_result.second);

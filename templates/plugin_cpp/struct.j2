@@ -1,3 +1,32 @@
 {% for nested_enum in nested_enums %}
 {{ nested_enums[nested_enum] }}
 {% endfor %}
+
+{% if not name.upper_camel_case.endswith('Result') -%}
+bool operator==(const {{ plugin_name.upper_camel_case }}::{{ name.upper_camel_case }}& lhs, const {{ plugin_name.upper_camel_case }}::{{ name.upper_camel_case }}& rhs)
+{
+    return
+{%- for field in fields %}
+        (rhs.{{ field.name.lower_snake_case }} == lhs.{{ field.name.lower_snake_case }}){% if loop.last %};{% else %} &&{% endif %}
+{% endfor %}
+}
+
+std::ostream& operator<<(std::ostream& str, {{ plugin_name.upper_camel_case }}::{{ name.upper_camel_case }} const& {{ name.lower_snake_case }})
+{
+    str << "{{ name.lower_snake_case }}:" << '\n'
+        << "{\n";
+{%- for field in fields -%}
+{%- if not field.type_info.is_repeated %}
+    str << "    {{ field.name.lower_snake_case }}: " << {{ name.lower_snake_case }}.{{ field.name.lower_snake_case }} << '\n';
+{%- else %}
+    str << "    {{ field.name.lower_snake_case }}: [";
+    for (const auto& elem : {{ name.lower_snake_case }}.{{ field.name.lower_snake_case }}) {
+        str << elem;
+        str << (elem != {{ name.lower_snake_case }}.{{ field.name.lower_snake_case }}.back() ? ", " : "]\n");
+    }
+{%- endif %}
+{% endfor %}
+    str << '}';
+    return str;
+}
+{% endif %}
