@@ -208,24 +208,24 @@ namespace rpc {
 namespace action {
 
 enum ActionResult_Result : int {
-  ActionResult_Result_UNKNOWN = 0,
-  ActionResult_Result_SUCCESS = 1,
-  ActionResult_Result_NO_SYSTEM = 2,
-  ActionResult_Result_CONNECTION_ERROR = 3,
-  ActionResult_Result_BUSY = 4,
-  ActionResult_Result_COMMAND_DENIED = 5,
-  ActionResult_Result_COMMAND_DENIED_LANDED_STATE_UNKNOWN = 6,
-  ActionResult_Result_COMMAND_DENIED_NOT_LANDED = 7,
-  ActionResult_Result_TIMEOUT = 8,
-  ActionResult_Result_VTOL_TRANSITION_SUPPORT_UNKNOWN = 9,
-  ActionResult_Result_NO_VTOL_TRANSITION_SUPPORT = 10,
-  ActionResult_Result_PARAMETER_ERROR = 11,
+  ActionResult_Result_RESULT_UNKNOWN = 0,
+  ActionResult_Result_RESULT_SUCCESS = 1,
+  ActionResult_Result_RESULT_NO_SYSTEM = 2,
+  ActionResult_Result_RESULT_CONNECTION_ERROR = 3,
+  ActionResult_Result_RESULT_BUSY = 4,
+  ActionResult_Result_RESULT_COMMAND_DENIED = 5,
+  ActionResult_Result_RESULT_COMMAND_DENIED_LANDED_STATE_UNKNOWN = 6,
+  ActionResult_Result_RESULT_COMMAND_DENIED_NOT_LANDED = 7,
+  ActionResult_Result_RESULT_TIMEOUT = 8,
+  ActionResult_Result_RESULT_VTOL_TRANSITION_SUPPORT_UNKNOWN = 9,
+  ActionResult_Result_RESULT_NO_VTOL_TRANSITION_SUPPORT = 10,
+  ActionResult_Result_RESULT_PARAMETER_ERROR = 11,
   ActionResult_Result_ActionResult_Result_INT_MIN_SENTINEL_DO_NOT_USE_ = std::numeric_limits<::PROTOBUF_NAMESPACE_ID::int32>::min(),
   ActionResult_Result_ActionResult_Result_INT_MAX_SENTINEL_DO_NOT_USE_ = std::numeric_limits<::PROTOBUF_NAMESPACE_ID::int32>::max()
 };
 bool ActionResult_Result_IsValid(int value);
-constexpr ActionResult_Result ActionResult_Result_Result_MIN = ActionResult_Result_UNKNOWN;
-constexpr ActionResult_Result ActionResult_Result_Result_MAX = ActionResult_Result_PARAMETER_ERROR;
+constexpr ActionResult_Result ActionResult_Result_Result_MIN = ActionResult_Result_RESULT_UNKNOWN;
+constexpr ActionResult_Result ActionResult_Result_Result_MAX = ActionResult_Result_RESULT_PARAMETER_ERROR;
 constexpr int ActionResult_Result_Result_ARRAYSIZE = ActionResult_Result_Result_MAX + 1;
 
 const ::PROTOBUF_NAMESPACE_ID::EnumDescriptor* ActionResult_Result_descriptor();
@@ -4699,30 +4699,30 @@ class ActionResult :
   // nested types ----------------------------------------------------
 
   typedef ActionResult_Result Result;
-  static constexpr Result UNKNOWN =
-    ActionResult_Result_UNKNOWN;
-  static constexpr Result SUCCESS =
-    ActionResult_Result_SUCCESS;
-  static constexpr Result NO_SYSTEM =
-    ActionResult_Result_NO_SYSTEM;
-  static constexpr Result CONNECTION_ERROR =
-    ActionResult_Result_CONNECTION_ERROR;
-  static constexpr Result BUSY =
-    ActionResult_Result_BUSY;
-  static constexpr Result COMMAND_DENIED =
-    ActionResult_Result_COMMAND_DENIED;
-  static constexpr Result COMMAND_DENIED_LANDED_STATE_UNKNOWN =
-    ActionResult_Result_COMMAND_DENIED_LANDED_STATE_UNKNOWN;
-  static constexpr Result COMMAND_DENIED_NOT_LANDED =
-    ActionResult_Result_COMMAND_DENIED_NOT_LANDED;
-  static constexpr Result TIMEOUT =
-    ActionResult_Result_TIMEOUT;
-  static constexpr Result VTOL_TRANSITION_SUPPORT_UNKNOWN =
-    ActionResult_Result_VTOL_TRANSITION_SUPPORT_UNKNOWN;
-  static constexpr Result NO_VTOL_TRANSITION_SUPPORT =
-    ActionResult_Result_NO_VTOL_TRANSITION_SUPPORT;
-  static constexpr Result PARAMETER_ERROR =
-    ActionResult_Result_PARAMETER_ERROR;
+  static constexpr Result RESULT_UNKNOWN =
+    ActionResult_Result_RESULT_UNKNOWN;
+  static constexpr Result RESULT_SUCCESS =
+    ActionResult_Result_RESULT_SUCCESS;
+  static constexpr Result RESULT_NO_SYSTEM =
+    ActionResult_Result_RESULT_NO_SYSTEM;
+  static constexpr Result RESULT_CONNECTION_ERROR =
+    ActionResult_Result_RESULT_CONNECTION_ERROR;
+  static constexpr Result RESULT_BUSY =
+    ActionResult_Result_RESULT_BUSY;
+  static constexpr Result RESULT_COMMAND_DENIED =
+    ActionResult_Result_RESULT_COMMAND_DENIED;
+  static constexpr Result RESULT_COMMAND_DENIED_LANDED_STATE_UNKNOWN =
+    ActionResult_Result_RESULT_COMMAND_DENIED_LANDED_STATE_UNKNOWN;
+  static constexpr Result RESULT_COMMAND_DENIED_NOT_LANDED =
+    ActionResult_Result_RESULT_COMMAND_DENIED_NOT_LANDED;
+  static constexpr Result RESULT_TIMEOUT =
+    ActionResult_Result_RESULT_TIMEOUT;
+  static constexpr Result RESULT_VTOL_TRANSITION_SUPPORT_UNKNOWN =
+    ActionResult_Result_RESULT_VTOL_TRANSITION_SUPPORT_UNKNOWN;
+  static constexpr Result RESULT_NO_VTOL_TRANSITION_SUPPORT =
+    ActionResult_Result_RESULT_NO_VTOL_TRANSITION_SUPPORT;
+  static constexpr Result RESULT_PARAMETER_ERROR =
+    ActionResult_Result_RESULT_PARAMETER_ERROR;
   static inline bool Result_IsValid(int value) {
     return ActionResult_Result_IsValid(value);
   }

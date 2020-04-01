@@ -7,7 +7,7 @@
 using namespace mavsdk;
 
 void print_mode(Telemetry::FlightMode flight_mode);
-static Telemetry::FlightMode _flight_mode = Telemetry::FlightMode::UNKNOWN;
+static Telemetry::FlightMode _flight_mode = Telemetry::FlightMode::Unknown;
 
 TEST_F(SitlTest, TelemetryFlightModes)
 {
@@ -33,14 +33,14 @@ TEST_F(SitlTest, TelemetryFlightModes)
     std::this_thread::sleep_for(std::chrono::seconds(2));
     action->takeoff();
     std::this_thread::sleep_for(std::chrono::seconds(2));
-    ASSERT_EQ(_flight_mode, Telemetry::FlightMode::TAKEOFF);
+    ASSERT_EQ(_flight_mode, Telemetry::FlightMode::Takeoff);
     action->land();
     std::this_thread::sleep_for(std::chrono::seconds(2));
-    ASSERT_EQ(_flight_mode, Telemetry::FlightMode::LAND);
+    ASSERT_EQ(_flight_mode, Telemetry::FlightMode::Land);
 }
 
 void print_mode(Telemetry::FlightMode flight_mode)
 {
-    std::cout << "Got FlightMode: " << Telemetry::flight_mode_str(flight_mode) << std::endl;
+    std::cout << "Got FlightMode: " << flight_mode << std::endl;
     _flight_mode = flight_mode;
 }

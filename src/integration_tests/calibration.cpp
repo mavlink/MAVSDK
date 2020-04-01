@@ -143,7 +143,7 @@ TEST(HardwareTest, CalibrationGyroWithTelemetry)
     // Make sure telemetry reports gyro calibration as false.
     auto telemetry = std::make_shared<Telemetry>(system);
     std::this_thread::sleep_for(std::chrono::seconds(2));
-    ASSERT_FALSE(telemetry->health().gyrometer_calibration_ok);
+    ASSERT_FALSE(telemetry->health().is_gyrometer_calibration_ok);
 
     // Do gyro calibration.
     auto calibration = std::make_shared<Calibration>(system);
@@ -162,7 +162,7 @@ TEST(HardwareTest, CalibrationGyroWithTelemetry)
 
     // Now, telemetry should be updated showing that the gyro calibration is ok.
     std::this_thread::sleep_for(std::chrono::seconds(2));
-    EXPECT_TRUE(telemetry->health().gyrometer_calibration_ok);
+    EXPECT_TRUE(telemetry->health().is_gyrometer_calibration_ok);
 }
 
 TEST(HardwareTest, CalibrationGyroCancelled)

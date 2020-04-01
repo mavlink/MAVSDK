@@ -1006,61 +1006,63 @@ const char descriptor_table_protodef_action_2faction_2eproto[] PROTOBUF_SECTION_
   "uest\022\033\n\023relative_altitude_m\030\001 \001(\002\"[\n!Set"
   "ReturnToLaunchAltitudeResponse\0226\n\raction"
   "_result\030\001 \001(\0132\037.mavsdk.rpc.action.Action"
-  "Result\"\361\002\n\014ActionResult\0226\n\006result\030\001 \001(\0162"
+  "Result\"\305\003\n\014ActionResult\0226\n\006result\030\001 \001(\0162"
   "&.mavsdk.rpc.action.ActionResult.Result\022"
-  "\022\n\nresult_str\030\002 \001(\t\"\224\002\n\006Result\022\013\n\007UNKNOW"
-  "N\020\000\022\013\n\007SUCCESS\020\001\022\r\n\tNO_SYSTEM\020\002\022\024\n\020CONNE"
-  "CTION_ERROR\020\003\022\010\n\004BUSY\020\004\022\022\n\016COMMAND_DENIE"
-  "D\020\005\022\'\n#COMMAND_DENIED_LANDED_STATE_UNKNO"
-  "WN\020\006\022\035\n\031COMMAND_DENIED_NOT_LANDED\020\007\022\013\n\007T"
-  "IMEOUT\020\010\022#\n\037VTOL_TRANSITION_SUPPORT_UNKN"
-  "OWN\020\t\022\036\n\032NO_VTOL_TRANSITION_SUPPORT\020\n\022\023\n"
-  "\017PARAMETER_ERROR\020\0132\341\r\n\rActionService\022F\n\003"
-  "Arm\022\035.mavsdk.rpc.action.ArmRequest\032\036.mav"
-  "sdk.rpc.action.ArmResponse\"\000\022O\n\006Disarm\022 "
-  ".mavsdk.rpc.action.DisarmRequest\032!.mavsd"
-  "k.rpc.action.DisarmResponse\"\000\022R\n\007Takeoff"
-  "\022!.mavsdk.rpc.action.TakeoffRequest\032\".ma"
-  "vsdk.rpc.action.TakeoffResponse\"\000\022I\n\004Lan"
-  "d\022\036.mavsdk.rpc.action.LandRequest\032\037.mavs"
-  "dk.rpc.action.LandResponse\"\000\022O\n\006Reboot\022 "
-  ".mavsdk.rpc.action.RebootRequest\032!.mavsd"
-  "k.rpc.action.RebootResponse\"\000\022U\n\010Shutdow"
-  "n\022\".mavsdk.rpc.action.ShutdownRequest\032#."
-  "mavsdk.rpc.action.ShutdownResponse\"\000\022I\n\004"
-  "Kill\022\036.mavsdk.rpc.action.KillRequest\032\037.m"
-  "avsdk.rpc.action.KillResponse\"\000\022g\n\016Retur"
-  "nToLaunch\022(.mavsdk.rpc.action.ReturnToLa"
-  "unchRequest\032).mavsdk.rpc.action.ReturnTo"
-  "LaunchResponse\"\000\022a\n\014GotoLocation\022&.mavsd"
-  "k.rpc.action.GotoLocationRequest\032\'.mavsd"
-  "k.rpc.action.GotoLocationResponse\"\000\022|\n\025T"
-  "ransitionToFixedwing\022/.mavsdk.rpc.action"
-  ".TransitionToFixedwingRequest\0320.mavsdk.r"
-  "pc.action.TransitionToFixedwingResponse\""
-  "\000\022\202\001\n\027TransitionToMulticopter\0221.mavsdk.r"
-  "pc.action.TransitionToMulticopterRequest"
-  "\0322.mavsdk.rpc.action.TransitionToMultico"
-  "pterResponse\"\000\022s\n\022GetTakeoffAltitude\022,.m"
-  "avsdk.rpc.action.GetTakeoffAltitudeReque"
-  "st\032-.mavsdk.rpc.action.GetTakeoffAltitud"
-  "eResponse\"\000\022s\n\022SetTakeoffAltitude\022,.mavs"
-  "dk.rpc.action.SetTakeoffAltitudeRequest\032"
-  "-.mavsdk.rpc.action.SetTakeoffAltitudeRe"
-  "sponse\"\000\022j\n\017GetMaximumSpeed\022).mavsdk.rpc"
-  ".action.GetMaximumSpeedRequest\032*.mavsdk."
-  "rpc.action.GetMaximumSpeedResponse\"\000\022j\n\017"
-  "SetMaximumSpeed\022).mavsdk.rpc.action.SetM"
-  "aximumSpeedRequest\032*.mavsdk.rpc.action.S"
-  "etMaximumSpeedResponse\"\000\022\210\001\n\031GetReturnTo"
-  "LaunchAltitude\0223.mavsdk.rpc.action.GetRe"
-  "turnToLaunchAltitudeRequest\0324.mavsdk.rpc"
-  ".action.GetReturnToLaunchAltitudeRespons"
-  "e\"\000\022\210\001\n\031SetReturnToLaunchAltitude\0223.mavs"
-  "dk.rpc.action.SetReturnToLaunchAltitudeR"
-  "equest\0324.mavsdk.rpc.action.SetReturnToLa"
-  "unchAltitudeResponse\"\000B\037\n\020io.mavsdk.acti"
-  "onB\013ActionProtob\006proto3"
+  "\022\n\nresult_str\030\002 \001(\t\"\350\002\n\006Result\022\022\n\016RESULT"
+  "_UNKNOWN\020\000\022\022\n\016RESULT_SUCCESS\020\001\022\024\n\020RESULT"
+  "_NO_SYSTEM\020\002\022\033\n\027RESULT_CONNECTION_ERROR\020"
+  "\003\022\017\n\013RESULT_BUSY\020\004\022\031\n\025RESULT_COMMAND_DEN"
+  "IED\020\005\022.\n*RESULT_COMMAND_DENIED_LANDED_ST"
+  "ATE_UNKNOWN\020\006\022$\n RESULT_COMMAND_DENIED_N"
+  "OT_LANDED\020\007\022\022\n\016RESULT_TIMEOUT\020\010\022*\n&RESUL"
+  "T_VTOL_TRANSITION_SUPPORT_UNKNOWN\020\t\022%\n!R"
+  "ESULT_NO_VTOL_TRANSITION_SUPPORT\020\n\022\032\n\026RE"
+  "SULT_PARAMETER_ERROR\020\0132\341\r\n\rActionService"
+  "\022F\n\003Arm\022\035.mavsdk.rpc.action.ArmRequest\032\036"
+  ".mavsdk.rpc.action.ArmResponse\"\000\022O\n\006Disa"
+  "rm\022 .mavsdk.rpc.action.DisarmRequest\032!.m"
+  "avsdk.rpc.action.DisarmResponse\"\000\022R\n\007Tak"
+  "eoff\022!.mavsdk.rpc.action.TakeoffRequest\032"
+  "\".mavsdk.rpc.action.TakeoffResponse\"\000\022I\n"
+  "\004Land\022\036.mavsdk.rpc.action.LandRequest\032\037."
+  "mavsdk.rpc.action.LandResponse\"\000\022O\n\006Rebo"
+  "ot\022 .mavsdk.rpc.action.RebootRequest\032!.m"
+  "avsdk.rpc.action.RebootResponse\"\000\022U\n\010Shu"
+  "tdown\022\".mavsdk.rpc.action.ShutdownReques"
+  "t\032#.mavsdk.rpc.action.ShutdownResponse\"\000"
+  "\022I\n\004Kill\022\036.mavsdk.rpc.action.KillRequest"
+  "\032\037.mavsdk.rpc.action.KillResponse\"\000\022g\n\016R"
+  "eturnToLaunch\022(.mavsdk.rpc.action.Return"
+  "ToLaunchRequest\032).mavsdk.rpc.action.Retu"
+  "rnToLaunchResponse\"\000\022a\n\014GotoLocation\022&.m"
+  "avsdk.rpc.action.GotoLocationRequest\032\'.m"
+  "avsdk.rpc.action.GotoLocationResponse\"\000\022"
+  "|\n\025TransitionToFixedwing\022/.mavsdk.rpc.ac"
+  "tion.TransitionToFixedwingRequest\0320.mavs"
+  "dk.rpc.action.TransitionToFixedwingRespo"
+  "nse\"\000\022\202\001\n\027TransitionToMulticopter\0221.mavs"
+  "dk.rpc.action.TransitionToMulticopterReq"
+  "uest\0322.mavsdk.rpc.action.TransitionToMul"
+  "ticopterResponse\"\000\022s\n\022GetTakeoffAltitude"
+  "\022,.mavsdk.rpc.action.GetTakeoffAltitudeR"
+  "equest\032-.mavsdk.rpc.action.GetTakeoffAlt"
+  "itudeResponse\"\000\022s\n\022SetTakeoffAltitude\022,."
+  "mavsdk.rpc.action.SetTakeoffAltitudeRequ"
+  "est\032-.mavsdk.rpc.action.SetTakeoffAltitu"
+  "deResponse\"\000\022j\n\017GetMaximumSpeed\022).mavsdk"
+  ".rpc.action.GetMaximumSpeedRequest\032*.mav"
+  "sdk.rpc.action.GetMaximumSpeedResponse\"\000"
+  "\022j\n\017SetMaximumSpeed\022).mavsdk.rpc.action."
+  "SetMaximumSpeedRequest\032*.mavsdk.rpc.acti"
+  "on.SetMaximumSpeedResponse\"\000\022\210\001\n\031GetRetu"
+  "rnToLaunchAltitude\0223.mavsdk.rpc.action.G"
+  "etReturnToLaunchAltitudeRequest\0324.mavsdk"
+  ".rpc.action.GetReturnToLaunchAltitudeRes"
+  "ponse\"\000\022\210\001\n\031SetReturnToLaunchAltitude\0223."
+  "mavsdk.rpc.action.SetReturnToLaunchAltit"
+  "udeRequest\0324.mavsdk.rpc.action.SetReturn"
+  "ToLaunchAltitudeResponse\"\000B\037\n\020io.mavsdk."
+  "actionB\013ActionProtob\006proto3"
   ;
 static const ::PROTOBUF_NAMESPACE_ID::internal::DescriptorTable*const descriptor_table_action_2faction_2eproto_deps[1] = {
 };
@@ -1104,7 +1106,7 @@ static ::PROTOBUF_NAMESPACE_ID::internal::SCCInfoBase*const descriptor_table_act
 static ::PROTOBUF_NAMESPACE_ID::internal::once_flag descriptor_table_action_2faction_2eproto_once;
 static bool descriptor_table_action_2faction_2eproto_initialized = false;
 const ::PROTOBUF_NAMESPACE_ID::internal::DescriptorTable descriptor_table_action_2faction_2eproto = {
-  &descriptor_table_action_2faction_2eproto_initialized, descriptor_table_protodef_action_2faction_2eproto, "action/action.proto", 4223,
+  &descriptor_table_action_2faction_2eproto_initialized, descriptor_table_protodef_action_2faction_2eproto, "action/action.proto", 4307,
   &descriptor_table_action_2faction_2eproto_once, descriptor_table_action_2faction_2eproto_sccs, descriptor_table_action_2faction_2eproto_deps, 35, 0,
   schemas, file_default_instances, TableStruct_action_2faction_2eproto::offsets,
   file_level_metadata_action_2faction_2eproto, 35, file_level_enum_descriptors_action_2faction_2eproto, file_level_service_descriptors_action_2faction_2eproto,
@@ -1140,18 +1142,18 @@ bool ActionResult_Result_IsValid(int value) {
 }
 
 #if (__cplusplus < 201703) && (!defined(_MSC_VER) || _MSC_VER >= 1900)
-constexpr ActionResult_Result ActionResult::UNKNOWN;
-constexpr ActionResult_Result ActionResult::SUCCESS;
-constexpr ActionResult_Result ActionResult::NO_SYSTEM;
-constexpr ActionResult_Result ActionResult::CONNECTION_ERROR;
-constexpr ActionResult_Result ActionResult::BUSY;
-constexpr ActionResult_Result ActionResult::COMMAND_DENIED;
-constexpr ActionResult_Result ActionResult::COMMAND_DENIED_LANDED_STATE_UNKNOWN;
-constexpr ActionResult_Result ActionResult::COMMAND_DENIED_NOT_LANDED;
-constexpr ActionResult_Result ActionResult::TIMEOUT;
-constexpr ActionResult_Result ActionResult::VTOL_TRANSITION_SUPPORT_UNKNOWN;
-constexpr ActionResult_Result ActionResult::NO_VTOL_TRANSITION_SUPPORT;
-constexpr ActionResult_Result ActionResult::PARAMETER_ERROR;
+constexpr ActionResult_Result ActionResult::RESULT_UNKNOWN;
+constexpr ActionResult_Result ActionResult::RESULT_SUCCESS;
+constexpr ActionResult_Result ActionResult::RESULT_NO_SYSTEM;
+constexpr ActionResult_Result ActionResult::RESULT_CONNECTION_ERROR;
+constexpr ActionResult_Result ActionResult::RESULT_BUSY;
+constexpr ActionResult_Result ActionResult::RESULT_COMMAND_DENIED;
+constexpr ActionResult_Result ActionResult::RESULT_COMMAND_DENIED_LANDED_STATE_UNKNOWN;
+constexpr ActionResult_Result ActionResult::RESULT_COMMAND_DENIED_NOT_LANDED;
+constexpr ActionResult_Result ActionResult::RESULT_TIMEOUT;
+constexpr ActionResult_Result ActionResult::RESULT_VTOL_TRANSITION_SUPPORT_UNKNOWN;
+constexpr ActionResult_Result ActionResult::RESULT_NO_VTOL_TRANSITION_SUPPORT;
+constexpr ActionResult_Result ActionResult::RESULT_PARAMETER_ERROR;
 constexpr ActionResult_Result ActionResult::Result_MIN;
 constexpr ActionResult_Result ActionResult::Result_MAX;
 constexpr int ActionResult::Result_ARRAYSIZE;

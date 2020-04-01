@@ -49,7 +49,7 @@ TEST_F(SitlTest, FollowMeOneLocation)
         [&](Telemetry::FlightMode flight_mode) {
             const FollowMe::TargetLocation last_location = follow_me->get_last_location();
 
-            std::cout << "[FlightMode: " << Telemetry::flight_mode_str(flight_mode)
+            std::cout << "[FlightMode: " << flight_mode
                       << "] Vehicle is at Lat: " << last_location.latitude_deg << " deg, "
                       << "Lon: " << last_location.longitude_deg << " deg." << std::endl;
         },
@@ -118,7 +118,7 @@ TEST_F(SitlTest, FollowMeMultiLocationWithConfig)
         [&](Telemetry::FlightMode flight_mode) {
             const FollowMe::TargetLocation last_location = follow_me->get_last_location();
 
-            std::cout << "[FlightMode: " << Telemetry::flight_mode_str(flight_mode)
+            std::cout << "[FlightMode: " << flight_mode
                       << "] Vehicle is at Lat: " << last_location.latitude_deg << " deg, "
                       << "Lon: " << last_location.longitude_deg << " deg." << std::endl;
         },

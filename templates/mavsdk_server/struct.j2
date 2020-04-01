@@ -3,14 +3,29 @@
 {% endfor %}
 
 {% if not name.upper_camel_case.endswith('Result') -%}
-static std::unique_ptr<rpc::{{ plugin_name.lower_snake_case }}::{{ name.upper_camel_case }}> translate{{ name.upper_camel_case }}(const {{ package.lower_snake_case.split('.')[0] }}::{{ plugin_name.upper_camel_case }}::{{ name.upper_camel_case }} &{{ name.lower_snake_case }})
+static std::unique_ptr<rpc::{{ plugin_name.lower_snake_case }}::{{ name.upper_camel_case }}> translateToRpc{{ name.upper_camel_case }}(const {{ package.lower_snake_case.split('.')[0] }}::{{ plugin_name.upper_camel_case }}::{{ name.upper_camel_case }} &{{ name.lower_snake_case }})
 {
-    auto rpc_{{ name.lower_snake_case }} = std::unique_ptr<rpc::{{ plugin_name.lower_snake_case }}::{{ name.upper_camel_case }}>(new rpc::{{ plugin_name.lower_snake_case }}::{{ name.upper_camel_case }}());
+    std::unique_ptr<rpc::{{ plugin_name.lower_snake_case }}::{{ name.upper_camel_case }}> rpc_obj(new rpc::{{ plugin_name.lower_snake_case }}::{{ name.upper_camel_case }}());
 
 {% for field in fields %}
-    rpc_{{ name.lower_snake_case }}->set_{{ field.name.lower_snake_case }}({{ name.lower_snake_case }}.{{ field.name.lower_snake_case }});
+    {% if field.type_info.is_primitive %}
+        {% if field.type_info.is_repeated %}
+    for (const auto& elem : {{ name.lower_snake_case }}.{{ field.name.lower_snake_case }}) {
+        rpc_obj->add_{{ field.name.lower_snake_case }}(elem);
+    }
+        {% else %}
+    rpc_obj->set_{{ field.name.lower_snake_case }}({{ name.lower_snake_case }}.{{ field.name.lower_snake_case }});
+        {% endif %}
+    {% else %}
+        {% if field.type_info.is_enum %}
+    rpc_obj->set_{{ field.name.lower_snake_case }}(translateToRpc{{ field.type_info.name }}({{ name.lower_snake_case }}.{{ field.name.lower_snake_case }}));
+        {% else %}
+    rpc_obj->set_allocated_{{ field.name.lower_snake_case }}(translateToRpc{{ field.type_info.name }}({{ name.lower_snake_case }}.{{ field.name.lower_snake_case }}).release());
+        {% endif %}
+    {% endif %}
+
 {%- endfor %}
 
-    return rpc_{{ name.lower_snake_case }};
+    return rpc_obj;
 }
 {% endif %}

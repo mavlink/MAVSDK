@@ -105,13 +105,13 @@ void flip_roll(std::shared_ptr<Offboard> offboard, std::shared_ptr<Telemetry> te
         // sure that we have started turning.
         switch (turning_state) {
             case TurningState::Init:
-                if (telemetry->attitude_euler_angle().roll_deg > 45.0f) {
+                if (telemetry->attitude_euler().roll_deg > 45.0f) {
                     turning_state = TurningState::Turned45;
                 }
                 break;
             case TurningState::Turned45:
-                if (telemetry->attitude_euler_angle().roll_deg > -45.0f &&
-                    telemetry->attitude_euler_angle().roll_deg < 0.0f) {
+                if (telemetry->attitude_euler().roll_deg > -45.0f &&
+                    telemetry->attitude_euler().roll_deg < 0.0f) {
                     turning_state = TurningState::Turned315;
                 }
                 break;
@@ -120,7 +120,7 @@ void flip_roll(std::shared_ptr<Offboard> offboard, std::shared_ptr<Telemetry> te
         }
     }
 
-    while (std::abs(telemetry->attitude_euler_angle().roll_deg) > 3.0f) {
+    while (std::abs(telemetry->attitude_euler().roll_deg) > 3.0f) {
         offboard->set_attitude({0.0f, 0.0f, 0.0f, 0.6f});
         std::this_thread::sleep_for(std::chrono::milliseconds(10));
     }
@@ -151,18 +151,18 @@ void flip_pitch(std::shared_ptr<Offboard> offboard, std::shared_ptr<Telemetry> t
         // degrees before it goes down to 0 and eventually -90.
         switch (turning_state) {
             case TurningState::Init:
-                if (telemetry->attitude_euler_angle().pitch_deg > 45.0f) {
+                if (telemetry->attitude_euler().pitch_deg > 45.0f) {
                     turning_state = TurningState::Turned45;
                 }
                 break;
             case TurningState::Turned45:
-                if (telemetry->attitude_euler_angle().pitch_deg < -60.0f) {
+                if (telemetry->attitude_euler().pitch_deg < -60.0f) {
                     turning_state = TurningState::Turned240;
                 }
                 break;
             case TurningState::Turned240:
-                if (telemetry->attitude_euler_angle().pitch_deg < 0.0f &&
-                    telemetry->attitude_euler_angle().pitch_deg > -45.0f) {
+                if (telemetry->attitude_euler().pitch_deg < 0.0f &&
+                    telemetry->attitude_euler().pitch_deg > -45.0f) {
                     turning_state = TurningState::Turned315;
                 }
                 break;
@@ -175,7 +175,7 @@ void flip_pitch(std::shared_ptr<Offboard> offboard, std::shared_ptr<Telemetry> t
         offboard->set_attitude({0.0f, 0.0f, 0.0f, 0.6f});
         std::this_thread::sleep_for(std::chrono::milliseconds(10));
 
-        if (std::abs(telemetry->attitude_euler_angle().pitch_deg) < 3.0f) {
+        if (std::abs(telemetry->attitude_euler().pitch_deg) < 3.0f) {
             break;
         }
     }

@@ -1,12 +1,12 @@
 /**
 * @brief Callback type for {{ name.lower_snake_case }}_async.
 */
-typedef std::function<void({% if has_result %}Result, {% endif %}{{ return_type.name }})> {{ return_name.lower_snake_case }}_callback_t;
+typedef std::function<void({% if has_result %}Result, {% endif %}{{ return_type.name }})> {{ name.lower_snake_case }}_callback_t;
 
 /**
  * @brief {{ method_description | replace('\n', '\n *')}}
  */
-void {{ name.lower_snake_case }}_async({% for param in params %}{{ param.type_info.name }} {{ param.name.lower_snake_case }}, {% endfor %}const {{ return_name.lower_snake_case }}_callback_t callback);
+void {{ name.lower_snake_case }}_async({% for param in params %}{{ param.type_info.name }} {{ param.name.lower_snake_case }}, {% endfor %}const {{ name.lower_snake_case }}_callback_t callback);
 
 /**
  * @brief Synchronous wrapper for {{ name.lower_snake_case }}_async().
