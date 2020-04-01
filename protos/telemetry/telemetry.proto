@@ -22,13 +22,13 @@ service TelemetryService {
     rpc SubscribeArmed(SubscribeArmedRequest) returns(stream ArmedResponse) {}
     // Subscribe to 'attitude' updates (quaternion).
     rpc SubscribeAttitudeQuaternion(SubscribeAttitudeQuaternionRequest) returns(stream AttitudeQuaternionResponse) {}
-    // Subscribe to 'attitude' updates (euler).
+    // Subscribe to 'attitude' updates (Euler).
     rpc SubscribeAttitudeEuler(SubscribeAttitudeEulerRequest) returns(stream AttitudeEulerResponse) {}
     // Subscribe to 'attitude' updates (angular velocity)
     rpc SubscribeAttitudeAngularVelocityBody(SubscribeAttitudeAngularVelocityBodyRequest) returns(stream AttitudeAngularVelocityBodyResponse) {}
     // Subscribe to 'camera attitude' updates (quaternion).
     rpc SubscribeCameraAttitudeQuaternion(SubscribeCameraAttitudeQuaternionRequest) returns(stream CameraAttitudeQuaternionResponse) {}
-    // Subscribe to 'camera attitude' updates (euler).
+    // Subscribe to 'camera attitude' updates (Euler).
     rpc SubscribeCameraAttitudeEuler(SubscribeCameraAttitudeEulerRequest) returns(stream CameraAttitudeEulerResponse) {}
     // Subscribe to 'ground speed' updates (NED).
     rpc SubscribeGroundSpeedNed(SubscribeGroundSpeedNedRequest) returns(stream GroundSpeedNedResponse) {}
@@ -50,6 +50,55 @@ service TelemetryService {
     rpc SubscribeActuatorOutputStatus(SubscribeActuatorOutputStatusRequest) returns(stream ActuatorOutputStatusResponse) {}
     // Subscribe to 'odometry' updates.
     rpc SubscribeOdometry(SubscribeOdometryRequest) returns(stream OdometryResponse) {}
+    // Subscribe to 'position velocity' updates.
+    rpc SubscribePositionVelocityNed(SubscribePositionVelocityNedRequest) returns(stream PositionVelocityNedResponse) {}
+    // Subscribe to 'ground truth' updates.
+    rpc SubscribeGroundTruth(SubscribeGroundTruthRequest) returns(stream GroundTruthResponse) {}
+    // Subscribe to 'fixedwing metrics' updates.
+    rpc SubscribeFixedwingMetrics(SubscribeFixedwingMetricsRequest) returns(stream FixedwingMetricsResponse) {}
+    // Subscribe to 'IMU' updates.
+    rpc SubscribeImu(SubscribeImuRequest) returns(stream ImuResponse) {}
+    // Subscribe to 'HealthAllOk' updates.
+    rpc SubscribeHealthAllOk(SubscribeHealthAllOkRequest) returns(stream HealthAllOkResponse) {}
+    // Subscribe to 'unix epoch time' updates.
+    rpc SubscribeUnixEpochTime(SubscribeUnixEpochTimeRequest) returns(stream UnixEpochTimeResponse) {}
+
+    // Set rate to 'position' updates.
+    rpc SetRatePosition(SetRatePositionRequest) returns(SetRatePositionResponse) {}
+    // Set rate to 'home position' updates.
+    rpc SetRateHome(SetRateHomeRequest) returns(SetRateHomeResponse) {}
+    // Set rate to in-air updates.
+    rpc SetRateInAir(SetRateInAirRequest) returns(SetRateInAirResponse) {}
+    // Set rate to landed state updates
+    rpc SetRateLandedState(SetRateLandedStateRequest) returns(SetRateLandedStateResponse) {}
+    // Set rate to 'attitude' updates.
+    rpc SetRateAttitude(SetRateAttitudeRequest) returns(SetRateAttitudeResponse) {}
+    // Set rate of camera attitude updates.
+    rpc SetRateCameraAttitude(SetRateCameraAttitudeRequest) returns(SetRateCameraAttitudeResponse) {}
+    // Set rate to 'ground speed' updates (NED).
+    rpc SetRateGroundSpeedNed(SetRateGroundSpeedNedRequest) returns(SetRateGroundSpeedNedResponse) {}
+    // Set rate to 'GPS info' updates.
+    rpc SetRateGpsInfo(SetRateGpsInfoRequest) returns(SetRateGpsInfoResponse) {}
+    // Set rate to 'battery' updates.
+    rpc SetRateBattery(SetRateBatteryRequest) returns(SetRateBatteryResponse) {}
+    // Set rate to 'RC status' updates.
+    rpc SetRateRcStatus(SetRateRcStatusRequest) returns(SetRateRcStatusResponse) {}
+    // Set rate to 'actuator control target' updates.
+    rpc SetRateActuatorControlTarget(SetRateActuatorControlTargetRequest) returns(SetRateActuatorControlTargetResponse) {}
+    // Set rate to 'actuator output status' updates.
+    rpc SetRateActuatorOutputStatus(SetRateActuatorOutputStatusRequest) returns(SetRateActuatorOutputStatusResponse) {}
+    // Set rate to 'odometry' updates.
+    rpc SetRateOdometry(SetRateOdometryRequest) returns(SetRateOdometryResponse) {}
+    // Set rate to 'position velocity' updates.
+    rpc SetRatePositionVelocityNed(SetRatePositionVelocityNedRequest) returns(SetRatePositionVelocityNedResponse) {}
+    // Set rate to 'ground truth' updates.
+    rpc SetRateGroundTruth(SetRateGroundTruthRequest) returns(SetRateGroundTruthResponse) {}
+    // Set rate to 'fixedwing metrics' updates.
+    rpc SetRateFixedwingMetrics(SetRateFixedwingMetricsRequest) returns(SetRateFixedwingMetricsResponse) {}
+    // Set rate to 'IMU' updates.
+    rpc SetRateImu(SetRateImuRequest) returns(SetRateImuResponse) {}
+    // Set rate to 'unix epoch time' updates.
+    rpc SetRateUnixEpochTime(SetRateUnixEpochTimeRequest) returns(SetRateUnixEpochTimeResponse) {}
 }
 
 message SubscribePositionRequest {}
@@ -84,7 +133,7 @@ message AttitudeQuaternionResponse {
 
 message SubscribeAttitudeEulerRequest {}
 message AttitudeEulerResponse {
-    EulerAngle attitude_euler = 1; // The next attitude (euler)
+    EulerAngle attitude_euler = 1; // The next attitude (Euler)
 }
 
 message SubscribeAttitudeAngularVelocityBodyRequest {}
@@ -99,7 +148,7 @@ message CameraAttitudeQuaternionResponse {
 
 message SubscribeCameraAttitudeEulerRequest {}
 message CameraAttitudeEulerResponse {
-    EulerAngle attitude_euler = 1; // The next camera attitude (euler)
+    EulerAngle attitude_euler = 1; // The next camera attitude (Euler)
 }
 
 message SubscribeGroundSpeedNedRequest {}
@@ -150,6 +199,176 @@ message ActuatorOutputStatusResponse {
 message SubscribeOdometryRequest {}
 message OdometryResponse {
     Odometry odometry = 1; // The next odometry status
+}
+
+message SubscribePositionVelocityNedRequest {}
+message PositionVelocityNedResponse {
+    PositionVelocityNed position_velocity_ned = 1; // The next position and velocity status
+}
+
+message SubscribeGroundTruthRequest {}
+message GroundTruthResponse {
+    GroundTruth ground_truth = 1; // Ground truth position information available in simulation
+}
+
+message SubscribeFixedwingMetricsRequest {}
+message FixedwingMetricsResponse {
+    FixedwingMetrics fixedwing_metrics = 1; // The next fixedwing metrics
+}
+
+message SubscribeImuRequest {}
+message ImuResponse {
+    Imu imu = 1; // The next IMU status
+}
+
+message SubscribeHealthAllOkRequest {}
+message HealthAllOkResponse {
+    bool is_health_all_ok = 1; // The next 'health all ok' status
+}
+
+message SubscribeUnixEpochTimeRequest {}
+message UnixEpochTimeResponse {
+    uint64 time_us = 1; // The next 'unix epoch time' status
+}
+
+message SetRatePositionRequest {
+    double rate_hz = 1; // The requested rate (in Hertz)
+}
+message SetRatePositionResponse {
+    TelemetryResult telemetry_result = 1;
+}
+
+message SetRateHomeRequest {
+    double rate_hz = 1; // The requested rate (in Hertz)
+}
+message SetRateHomeResponse {
+    TelemetryResult telemetry_result = 1;
+}
+
+message SetRateInAirRequest {
+    double rate_hz = 1; // The requested rate (in Hertz)
+}
+message SetRateInAirResponse {
+    TelemetryResult telemetry_result = 1;
+}
+
+message SetRateLandedStateRequest {
+    double rate_hz = 1; // The requested rate (in Hertz)
+}
+message SetRateLandedStateResponse {
+    TelemetryResult telemetry_result = 1;
+}
+
+message SetRateAttitudeRequest {
+    double rate_hz = 1; // The requested rate (in Hertz)
+}
+message SetRateAttitudeResponse {
+    TelemetryResult telemetry_result = 1;
+}
+
+message SetRateAttitudeAngularVelocityBodyRequest {
+    double rate_hz = 1; // The requested rate (in Hertz)
+}
+message SetRateAttitudeAngularVelocityBodyResponse {
+    TelemetryResult telemetry_result = 1;
+}
+
+message SetRateCameraAttitudeQuaternionRequest {
+    double rate_hz = 1; // The requested rate (in Hertz)
+}
+message SetRateCameraAttitudeQuaternionResponse {
+    TelemetryResult telemetry_result = 1;
+}
+
+message SetRateCameraAttitudeRequest {
+    double rate_hz = 1; // The requested rate (in Hertz)
+}
+message SetRateCameraAttitudeResponse {
+    TelemetryResult telemetry_result = 1;
+}
+
+message SetRateGroundSpeedNedRequest {
+    double rate_hz = 1; // The requested rate (in Hertz)
+}
+message SetRateGroundSpeedNedResponse {
+    TelemetryResult telemetry_result = 1;
+}
+
+message SetRateGpsInfoRequest {
+    double rate_hz = 1; // The requested rate (in Hertz)
+}
+message SetRateGpsInfoResponse {
+    TelemetryResult telemetry_result = 1;
+}
+
+message SetRateBatteryRequest {
+    double rate_hz = 1; // The requested rate (in Hertz)
+}
+message SetRateBatteryResponse {
+    TelemetryResult telemetry_result = 1;
+}
+
+message SetRateRcStatusRequest {
+    double rate_hz = 1; // The requested rate (in Hertz)
+}
+message SetRateRcStatusResponse {
+    TelemetryResult telemetry_result = 1;
+}
+
+message SetRateActuatorControlTargetRequest {
+    double rate_hz = 1; // The requested rate (in Hertz)
+}
+message SetRateActuatorControlTargetResponse {
+    TelemetryResult telemetry_result = 1;
+}
+
+message SetRateActuatorOutputStatusRequest {
+    double rate_hz = 1; // The requested rate (in Hertz)
+}
+message SetRateActuatorOutputStatusResponse {
+    TelemetryResult telemetry_result = 1;
+}
+
+message SetRateOdometryRequest {
+    double rate_hz = 1; // The requested rate (in Hertz)
+}
+message SetRateOdometryResponse {
+    TelemetryResult telemetry_result = 1;
+}
+
+message SetRatePositionVelocityNedRequest {
+    double rate_hz = 1; // The requested rate (in Hertz)
+}
+message SetRatePositionVelocityNedResponse {
+    TelemetryResult telemetry_result = 1;
+}
+
+message SetRateGroundTruthRequest {
+    double rate_hz = 1; // The requested rate (in Hertz)
+}
+message SetRateGroundTruthResponse {
+    TelemetryResult telemetry_result = 1;
+}
+
+message SetRateFixedwingMetricsRequest {
+    double rate_hz = 1; // The requested rate (in Hertz)
+}
+message SetRateFixedwingMetricsResponse {
+    TelemetryResult telemetry_result = 1;
+}
+
+message SetRateImuRequest {
+    double rate_hz = 1; // The requested rate (in Hertz)
+}
+message SetRateImuResponse {
+    TelemetryResult telemetry_result = 1;
+}
+
+message SetRateUnixEpochTimeRequest {
+    double rate_hz = 1; // The requested rate (in Hertz)
+}
+message SetRateUnixEpochTimeResponse {
+    TelemetryResult telemetry_result = 1;
 }
 
 // Position type in global coordinates.
@@ -303,6 +522,31 @@ enum LandedState {
     LANDED_STATE_LANDING = 4; // The vehicle is landing
 }
 
+/* 
+ * Covariance type.
+ *
+ * Row-major representation of a 6x6 cross-covariance matrix
+ * upper right triangle.
+ * Set first to NaN if unknown.
+ */
+message Covariance {
+    repeated float covariance_matrix = 1; // Representation of a covariance matrix.
+}
+
+// Velocity type, represented in the Body (X Y Z) frame and in metres/second.
+message VelocityBody {
+    float x_m_s = 1; // Velocity in X in metres/second
+    float y_m_s = 2; // Velocity in Y in metres/second
+    float z_m_s = 3; // Velocity in Z in metres/second
+}
+
+// Position type, represented in the Body (X Y Z) frame
+message PositionBody {
+    float x_m = 1; // X Position in metres.
+    float y_m = 2; // Y Position in metres.
+    float z_m = 3; // Z Position in metres.
+}
+
 // Odometry message type.
 message Odometry {
     // Mavlink frame id
@@ -318,33 +562,88 @@ message Odometry {
     MavFrame child_frame_id = 3;  // Coordinate frame of reference for the velocity in free space (twist) data.
     PositionBody position_body = 4; // Position.
     Quaternion q = 5; // Quaternion components, w, x, y, z (1 0 0 0 is the null-rotation).
-    SpeedBody speed_body = 6; // Linear speed (m/s).
-    AngularVelocityBody angular_velocity_body = 7; // Angular speed (rad/s).
+    VelocityBody velocity_body = 6; // Linear velocity (m/s).
+    AngularVelocityBody angular_velocity_body = 7; // Angular velocity (rad/s).
     Covariance pose_covariance = 8; // Pose cross-covariance matrix.
     Covariance velocity_covariance = 9; // Velocity cross-covariance matrix.
 }
 
-/* 
- * Covariance type.
- *
- * Row-major representation of a 6x6 cross-covariance matrix
- * upper right triangle.
- * Set first to NaN if unknown.
- */
-message Covariance {
-    repeated float covariance_matrix = 1; // Representation of a covariance matrix.
+// PositionNed message type.
+message PositionNed {
+    float north_m = 1; // Position along north direction in metres
+    float east_m = 2; // Position along east direction in metres
+    float down_m = 3; // Position along down direction in metres
 }
 
-// Speed type, represented in the Body (X Y Z) frame and in metres/second.
-message SpeedBody {
-    float velocity_x_m_s = 1; // Velocity in X in metres/second
-    float velocity_y_m_s = 2; // Velocity in Y in metres/second
-    float velocity_z_m_s = 3; // Velocity in Z in metres/second
+// VelocityNed message type.
+message VelocityNed {
+    float north_m_s = 1; // Velocity along north direction in metres per second
+    float east_m_s = 2; // Velocity along east direction in metres per second
+    float down_m_s = 3; // Velocity along down direction in metres per second
 }
 
-// Position type, represented in the Body (X Y Z) frame
-message PositionBody {
-    float x_m = 1; // X Position in metres.
-    float y_m = 2; // Y Position in metres.
-    float z_m = 3; // Z Position in metres.
+// PositionVelocityNed message type.
+message PositionVelocityNed {
+    PositionNed position = 1; // Position (NED)
+    VelocityNed velocity = 2; // Velocity (NED)
+}
+
+// GroundTruth message type.
+message GroundTruth {
+    double latitude_deg = 1; // Latitude in degrees (range: -90 to +90)
+    double longitude_deg = 2; // Longitude in degrees (range: -180 to 180)
+    float absolute_altitude_m = 3; // Altitude AMSL (above mean sea level) in metres
+}
+
+// FixedwingMetrics message type.
+message FixedwingMetrics {
+    float airspeed_m_s = 1; // Current indicated airspeed (IAS) in metres per second
+    float throttle_percentage = 2; // Current throttle setting (0 to 100)
+    float climb_rate_m_s = 3; // Current climb rate in metres per second
+}
+
+// AccelerationFrd message type.
+message AccelerationFrd {
+    float forward_m_s2 = 1; // Acceleration in forward direction in metres per second^2
+    float right_m_s2 = 2; // Acceleration in right direction in metres per second^2
+    float down_m_s2 = 3; // Acceleration in down direction in metres per second^2
+}
+
+// AngularVelocityFrd message type.
+message AngularVelocityFrd {
+    float forward_rad_s = 1; // Angular velocity in forward direction in radians per second
+    float right_rad_s = 2; // Angular velocity in right direction in radians per second
+    float down_rad_s = 3; // Angular velocity in Down direction in radians per second
+}
+
+// MagneticFieldFrd message type.
+message MagneticFieldFrd {
+    float forward_gauss = 1; // Magnetic field in forward direction measured in Gauss
+    float right_gauss = 2; // Magnetic field in East direction measured in Gauss
+    float down_gauss = 3; // Magnetic field in Down direction measured in Gauss
+}
+
+// Imu message type.
+message Imu {
+    AccelerationFrd acceleration_frd = 1; // Acceleration
+    AngularVelocityFrd angular_velocity_frd = 2; // Angular velocity
+    MagneticFieldFrd magnetic_field_frd = 3; // Magnetic field
+    float temperature_degc = 4; // Temperature
+}
+
+// Result type.
+message TelemetryResult {
+    // Possible results returned for telemetry requests.
+    enum Result {
+        UNKNOWN = 0; // Unknown error
+        SUCCESS = 1; // Success: the telemetry command was accepted by the vehicle
+        NO_SYSTEM = 2; // No system connected
+        CONNECTION_ERROR = 3; // Connection error
+        BUSY = 4; // Vehicle is busy
+        COMMAND_DENIED = 5; // Command refused by vehicle
+        TIMEOUT = 6; // Request timed out
+    }
+
+    Result result = 1; // Result enum value
+    string result_str = 2; // Human-readable English string describing the result
 }
