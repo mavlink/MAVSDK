@@ -1,5 +1,4 @@
 import json
-from os import environ
 
 
 class TypeInfoFactory:
@@ -99,6 +98,11 @@ class TypeInfo:
         """ Check if the field type is primitive (e.g. bool,
         float) or not (e.g message, enum) """
         return self._field.type not in {11, 14}
+
+    @property
+    def is_enum(self):
+        """ Check if the field type is an enum"""
+        return self._field.type == 14
 
     @property
     def is_repeated(self):

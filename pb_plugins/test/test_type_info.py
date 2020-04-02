@@ -83,6 +83,14 @@ class TestTypeInfo(unittest.TestCase):
             self.assertTrue(primitive_type.is_primitive)
 
     @patch("builtins.open", new_callable=mock_open, read_data=_conversion_dict_data)
+    def test_enum_true_for_enum_type(self, mock_file):
+        type_info_factory = TypeInfoFactory()
+        type_info_factory.set_template_path("random/path")
+
+        enum_type = type_info_factory.create(self.non_primitive_field(14, "SomeNonResultType", self.repeated_label))
+        self.assertTrue(enum_type.is_enum)
+
+    @patch("builtins.open", new_callable=mock_open, read_data=_conversion_dict_data)
     def test_is_result_false_for_primitive_types(self, mock_file):
         type_info_factory = TypeInfoFactory()
         type_info_factory.set_template_path("random/path")
