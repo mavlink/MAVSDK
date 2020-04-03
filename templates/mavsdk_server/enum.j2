@@ -15,17 +15,3 @@ static rpc::{{ plugin_name.lower_snake_case }}::{% if parent_struct %}{{ parent_
         {%- endfor %}
     }
 }
-
-/*
-static mavsdk::{{ plugin_name.upper_camel_case }}::{{ name.upper_camel_case }} translateFromRpc{{ name.upper_camel_case }}(const rpc::{{ plugin_name.lower_snake_case }}::{% if parent_struct %}{{ parent_struct.upper_camel_case }}::{% endif %}{{ name.upper_camel_case }}& {{ name.lower_camel_case }})
-{
-    switch ({{ name.lower_camel_case }}) {
-        {%- for value in values %}
-        case rpc::{{ plugin_name.lower_snake_case }}::{% if parent_struct %}{{ parent_struct.upper_camel_case }}_{% endif %}{{ name.upper_camel_case }}_{{ value.name.uppercase }}:
-            return mavsdk::{{ plugin_name.upper_camel_case }}::{{ name.upper_camel_case }}::{{ value.name.upper_camel_case }};
-        {%- endfor %}
-        default:
-            return mavsdk::{{ plugin_name.upper_camel_case }}::{{ name.upper_camel_case }}::Unknown;
-    }
-}
-*/

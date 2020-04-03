@@ -54,31 +54,6 @@ public:
         }
     }
 
-    /*
-    static mavsdk::Telemetry::FixType translateFromRpcFixType(const rpc::telemetry::FixType&
-    fixType)
-    {
-        switch (fixType) {
-            case rpc::telemetry::FixType_FIX_TYPE_NO_GPS:
-                return mavsdk::Telemetry::FixType::FixTypeNoGps;
-            case rpc::telemetry::FixType_FIX_TYPE_NO_FIX:
-                return mavsdk::Telemetry::FixType::FixTypeNoFix;
-            case rpc::telemetry::FixType_FIX_TYPE_FIX_2D:
-                return mavsdk::Telemetry::FixType::FixTypeFix2D;
-            case rpc::telemetry::FixType_FIX_TYPE_FIX_3D:
-                return mavsdk::Telemetry::FixType::FixTypeFix3D;
-            case rpc::telemetry::FixType_FIX_TYPE_FIX_DGPS:
-                return mavsdk::Telemetry::FixType::FixTypeFixDgps;
-            case rpc::telemetry::FixType_FIX_TYPE_RTK_FLOAT:
-                return mavsdk::Telemetry::FixType::FixTypeRtkFloat;
-            case rpc::telemetry::FixType_FIX_TYPE_RTK_FIXED:
-                return mavsdk::Telemetry::FixType::FixTypeRtkFixed;
-            default:
-                return mavsdk::Telemetry::FixType::Unknown;
-        }
-    }
-    */
-
     static rpc::telemetry::FlightMode
     translateToRpcFlightMode(const mavsdk::Telemetry::FlightMode& flightMode)
     {
@@ -119,47 +94,6 @@ public:
         }
     }
 
-    /*
-    static mavsdk::Telemetry::FlightMode translateFromRpcFlightMode(const
-    rpc::telemetry::FlightMode& flightMode)
-    {
-        switch (flightMode) {
-            case rpc::telemetry::FlightMode_FLIGHT_MODE_UNKNOWN:
-                return mavsdk::Telemetry::FlightMode::FlightModeUnknown;
-            case rpc::telemetry::FlightMode_FLIGHT_MODE_READY:
-                return mavsdk::Telemetry::FlightMode::FlightModeReady;
-            case rpc::telemetry::FlightMode_FLIGHT_MODE_TAKEOFF:
-                return mavsdk::Telemetry::FlightMode::FlightModeTakeoff;
-            case rpc::telemetry::FlightMode_FLIGHT_MODE_HOLD:
-                return mavsdk::Telemetry::FlightMode::FlightModeHold;
-            case rpc::telemetry::FlightMode_FLIGHT_MODE_MISSION:
-                return mavsdk::Telemetry::FlightMode::FlightModeMission;
-            case rpc::telemetry::FlightMode_FLIGHT_MODE_RETURN_TO_LAUNCH:
-                return mavsdk::Telemetry::FlightMode::FlightModeReturnToLaunch;
-            case rpc::telemetry::FlightMode_FLIGHT_MODE_LAND:
-                return mavsdk::Telemetry::FlightMode::FlightModeLand;
-            case rpc::telemetry::FlightMode_FLIGHT_MODE_OFFBOARD:
-                return mavsdk::Telemetry::FlightMode::FlightModeOffboard;
-            case rpc::telemetry::FlightMode_FLIGHT_MODE_FOLLOW_ME:
-                return mavsdk::Telemetry::FlightMode::FlightModeFollowMe;
-            case rpc::telemetry::FlightMode_FLIGHT_MODE_MANUAL:
-                return mavsdk::Telemetry::FlightMode::FlightModeManual;
-            case rpc::telemetry::FlightMode_FLIGHT_MODE_ALTCTL:
-                return mavsdk::Telemetry::FlightMode::FlightModeAltctl;
-            case rpc::telemetry::FlightMode_FLIGHT_MODE_POSCTL:
-                return mavsdk::Telemetry::FlightMode::FlightModePosctl;
-            case rpc::telemetry::FlightMode_FLIGHT_MODE_ACRO:
-                return mavsdk::Telemetry::FlightMode::FlightModeAcro;
-            case rpc::telemetry::FlightMode_FLIGHT_MODE_STABILIZED:
-                return mavsdk::Telemetry::FlightMode::FlightModeStabilized;
-            case rpc::telemetry::FlightMode_FLIGHT_MODE_RATTITUDE:
-                return mavsdk::Telemetry::FlightMode::FlightModeRattitude;
-            default:
-                return mavsdk::Telemetry::FlightMode::Unknown;
-        }
-    }
-    */
-
     static rpc::telemetry::StatusTextType
     translateToRpcStatusTextType(const mavsdk::Telemetry::StatusTextType& statusTextType)
     {
@@ -176,23 +110,6 @@ public:
                 return rpc::telemetry::STATUS_TEXT_TYPE_CRITICAL;
         }
     }
-
-    /*
-    static mavsdk::Telemetry::StatusTextType translateFromRpcStatusTextType(const
-    rpc::telemetry::StatusTextType& statusTextType)
-    {
-        switch (statusTextType) {
-            case rpc::telemetry::StatusTextType_STATUS_TEXT_TYPE_INFO:
-                return mavsdk::Telemetry::StatusTextType::StatusTextTypeInfo;
-            case rpc::telemetry::StatusTextType_STATUS_TEXT_TYPE_WARNING:
-                return mavsdk::Telemetry::StatusTextType::StatusTextTypeWarning;
-            case rpc::telemetry::StatusTextType_STATUS_TEXT_TYPE_CRITICAL:
-                return mavsdk::Telemetry::StatusTextType::StatusTextTypeCritical;
-            default:
-                return mavsdk::Telemetry::StatusTextType::Unknown;
-        }
-    }
-    */
 
     static rpc::telemetry::LandedState
     translateToRpcLandedState(const mavsdk::Telemetry::LandedState& landedState)
@@ -213,27 +130,6 @@ public:
                 return rpc::telemetry::LANDED_STATE_LANDING;
         }
     }
-
-    /*
-    static mavsdk::Telemetry::LandedState translateFromRpcLandedState(const
-    rpc::telemetry::LandedState& landedState)
-    {
-        switch (landedState) {
-            case rpc::telemetry::LandedState_LANDED_STATE_UNKNOWN:
-                return mavsdk::Telemetry::LandedState::LandedStateUnknown;
-            case rpc::telemetry::LandedState_LANDED_STATE_ON_GROUND:
-                return mavsdk::Telemetry::LandedState::LandedStateOnGround;
-            case rpc::telemetry::LandedState_LANDED_STATE_IN_AIR:
-                return mavsdk::Telemetry::LandedState::LandedStateInAir;
-            case rpc::telemetry::LandedState_LANDED_STATE_TAKING_OFF:
-                return mavsdk::Telemetry::LandedState::LandedStateTakingOff;
-            case rpc::telemetry::LandedState_LANDED_STATE_LANDING:
-                return mavsdk::Telemetry::LandedState::LandedStateLanding;
-            default:
-                return mavsdk::Telemetry::LandedState::Unknown;
-        }
-    }
-    */
 
     static std::unique_ptr<rpc::telemetry::Position>
     translateToRpcPosition(const mavsdk::Telemetry::Position& position)
@@ -471,25 +367,6 @@ public:
         }
     }
 
-    /*
-    static mavsdk::Telemetry::MavFrame translateFromRpcMavFrame(const
-    rpc::telemetry::Odometry::MavFrame& mavFrame)
-    {
-        switch (mavFrame) {
-            case rpc::telemetry::Odometry_MavFrame_MAV_FRAME_UNDEF:
-                return mavsdk::Telemetry::MavFrame::MavFrameUndef;
-            case rpc::telemetry::Odometry_MavFrame_MAV_FRAME_BODY_NED:
-                return mavsdk::Telemetry::MavFrame::MavFrameBodyNed;
-            case rpc::telemetry::Odometry_MavFrame_MAV_FRAME_VISION_NED:
-                return mavsdk::Telemetry::MavFrame::MavFrameVisionNed;
-            case rpc::telemetry::Odometry_MavFrame_MAV_FRAME_ESTIM_NED:
-                return mavsdk::Telemetry::MavFrame::MavFrameEstimNed;
-            default:
-                return mavsdk::Telemetry::MavFrame::Unknown;
-        }
-    }
-    */
-
     static std::unique_ptr<rpc::telemetry::Odometry>
     translateToRpcOdometry(const mavsdk::Telemetry::Odometry& odometry)
     {
@@ -679,31 +556,6 @@ public:
                 return rpc::telemetry::TelemetryResult_Result_RESULT_TIMEOUT;
         }
     }
-
-    /*
-    static mavsdk::Telemetry::Result translateFromRpcResult(const
-    rpc::telemetry::TelemetryResult::Result& result)
-    {
-        switch (result) {
-            case rpc::telemetry::TelemetryResult_Result_RESULT_UNKNOWN:
-                return mavsdk::Telemetry::Result::ResultUnknown;
-            case rpc::telemetry::TelemetryResult_Result_RESULT_SUCCESS:
-                return mavsdk::Telemetry::Result::ResultSuccess;
-            case rpc::telemetry::TelemetryResult_Result_RESULT_NO_SYSTEM:
-                return mavsdk::Telemetry::Result::ResultNoSystem;
-            case rpc::telemetry::TelemetryResult_Result_RESULT_CONNECTION_ERROR:
-                return mavsdk::Telemetry::Result::ResultConnectionError;
-            case rpc::telemetry::TelemetryResult_Result_RESULT_BUSY:
-                return mavsdk::Telemetry::Result::ResultBusy;
-            case rpc::telemetry::TelemetryResult_Result_RESULT_COMMAND_DENIED:
-                return mavsdk::Telemetry::Result::ResultCommandDenied;
-            case rpc::telemetry::TelemetryResult_Result_RESULT_TIMEOUT:
-                return mavsdk::Telemetry::Result::ResultTimeout;
-            default:
-                return mavsdk::Telemetry::Result::Unknown;
-        }
-    }
-    */
 
     grpc::Status SubscribePosition(
         grpc::ServerContext* /* context */,
