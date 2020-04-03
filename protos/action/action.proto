@@ -24,7 +24,7 @@ service ActionService {
     /*
      * Send command to take off and hover.
      *
-     * This switches the drone into position control mode and commands 
+     * This switches the drone into position control mode and commands
      * it to take off and hover at the takeoff altitude.
      *
      * Note that the vehicle must be armed before it can take off.
@@ -51,7 +51,7 @@ service ActionService {
      */
     rpc Shutdown(ShutdownRequest) returns(ShutdownResponse) {}
     /*
-     * Send command to kill the drone. 
+     * Send command to kill the drone.
      *
      * This will disarm a drone irrespective of whether it is landed or flying.
      * Note that the drone will fall out of the sky if this command is used while flying.
@@ -219,18 +219,18 @@ message SetReturnToLaunchAltitudeResponse {
 message ActionResult {
     // Possible results returned for action requests.
     enum Result {
-        UNKNOWN = 0; // Unknown error
-        SUCCESS = 1; // Success: the action command was accepted by the vehicle
-        NO_SYSTEM = 2; // No system is connected
-        CONNECTION_ERROR = 3; // Connection error
-        BUSY = 4; // Vehicle is busy
-        COMMAND_DENIED = 5; // Command refused by vehicle
-        COMMAND_DENIED_LANDED_STATE_UNKNOWN = 6; // Command refused because landed state is unknown
-        COMMAND_DENIED_NOT_LANDED = 7; // Command refused because vehicle not landed
-        TIMEOUT = 8; // Request timed out
-        VTOL_TRANSITION_SUPPORT_UNKNOWN = 9; // Hybrid/VTOL transition refused because VTOL support is unknown
-        NO_VTOL_TRANSITION_SUPPORT = 10; // Vehicle does not support hybrid/VTOL transitions
-        PARAMETER_ERROR = 11; // Error getting or setting parameter
+        RESULT_UNKNOWN = 0; // Unknown error
+        RESULT_SUCCESS = 1; // Success: the action command was accepted by the vehicle
+        RESULT_NO_SYSTEM = 2; // No system is connected
+        RESULT_CONNECTION_ERROR = 3; // Connection error
+        RESULT_BUSY = 4; // Vehicle is busy
+        RESULT_COMMAND_DENIED = 5; // Command refused by vehicle
+        RESULT_COMMAND_DENIED_LANDED_STATE_UNKNOWN = 6; // Command refused because landed state is unknown
+        RESULT_COMMAND_DENIED_NOT_LANDED = 7; // Command refused because vehicle not landed
+        RESULT_TIMEOUT = 8; // Request timed out
+        RESULT_VTOL_TRANSITION_SUPPORT_UNKNOWN = 9; // Hybrid/VTOL transition refused because VTOL support is unknown
+        RESULT_NO_VTOL_TRANSITION_SUPPORT = 10; // Vehicle does not support hybrid/VTOL transitions
+        RESULT_PARAMETER_ERROR = 11; // Error getting or setting parameter
     }
 
     Result result = 1; // Result enum value
