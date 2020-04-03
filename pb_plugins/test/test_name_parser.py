@@ -20,6 +20,7 @@ class TestNameParser(unittest.TestCase):
         self.lower_camel_case = "formattedName"
         self.upper_snake_case = "Formatted_Name"
         self.lower_snake_case = "formatted_name"
+        self.upper_readable = "Formatted Name"
 
         self.single_uppercase = "NAME"
         self.single_upper_case = "Name"
@@ -144,6 +145,10 @@ class TestNameParser(unittest.TestCase):
     def test_only_upper_snake_to_lower_snake_case(self):
         name = NameParser(self.only_upper_snake_input, [])
         self.assertEqual(self.lower_snake_case, name.lower_snake_case)
+
+    def test_upper_readable(self):
+        name = NameParser(self.only_upper_snake_input, [])
+        self.assertEqual(self.upper_readable, name.upper_readable)
 
     @patch("builtins.open", new_callable=mock_open)
     def test_no_initialisms_when_no_initialims_file(self, mock_file):

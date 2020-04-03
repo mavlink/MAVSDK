@@ -48,6 +48,10 @@ class NameParser:
         return ''.join(formatted_words)
 
     @property
+    def upper_readable(self):
+        return self.upper_snake_case.replace("_", " ")
+
+    @property
     def lower_camel_case(self):
         formatted_words = list(map(lambda word: word.title(), self._words))
         formatted_words = list(map(lambda word: word.upper() if word.upper() in self._initialisms else word, formatted_words))
