@@ -65,41 +65,6 @@ public:
         }
     }
 
-    /*
-    static mavsdk::Action::Result translateFromRpcResult(const rpc::action::ActionResult::Result&
-    result)
-    {
-        switch (result) {
-            case rpc::action::ActionResult_Result_RESULT_UNKNOWN:
-                return mavsdk::Action::Result::ResultUnknown;
-            case rpc::action::ActionResult_Result_RESULT_SUCCESS:
-                return mavsdk::Action::Result::ResultSuccess;
-            case rpc::action::ActionResult_Result_RESULT_NO_SYSTEM:
-                return mavsdk::Action::Result::ResultNoSystem;
-            case rpc::action::ActionResult_Result_RESULT_CONNECTION_ERROR:
-                return mavsdk::Action::Result::ResultConnectionError;
-            case rpc::action::ActionResult_Result_RESULT_BUSY:
-                return mavsdk::Action::Result::ResultBusy;
-            case rpc::action::ActionResult_Result_RESULT_COMMAND_DENIED:
-                return mavsdk::Action::Result::ResultCommandDenied;
-            case rpc::action::ActionResult_Result_RESULT_COMMAND_DENIED_LANDED_STATE_UNKNOWN:
-                return mavsdk::Action::Result::ResultCommandDeniedLandedStateUnknown;
-            case rpc::action::ActionResult_Result_RESULT_COMMAND_DENIED_NOT_LANDED:
-                return mavsdk::Action::Result::ResultCommandDeniedNotLanded;
-            case rpc::action::ActionResult_Result_RESULT_TIMEOUT:
-                return mavsdk::Action::Result::ResultTimeout;
-            case rpc::action::ActionResult_Result_RESULT_VTOL_TRANSITION_SUPPORT_UNKNOWN:
-                return mavsdk::Action::Result::ResultVtolTransitionSupportUnknown;
-            case rpc::action::ActionResult_Result_RESULT_NO_VTOL_TRANSITION_SUPPORT:
-                return mavsdk::Action::Result::ResultNoVtolTransitionSupport;
-            case rpc::action::ActionResult_Result_RESULT_PARAMETER_ERROR:
-                return mavsdk::Action::Result::ResultParameterError;
-            default:
-                return mavsdk::Action::Result::Unknown;
-        }
-    }
-    */
-
     grpc::Status
     Arm(grpc::ServerContext* /* context */,
         const rpc::action::ArmRequest* /* request */,
