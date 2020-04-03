@@ -504,14 +504,14 @@ message StatusText {
 
 // Actuator control target type.
 message ActuatorControlTarget {
-    int32 group = 1; // TODO
-    repeated float controls = 2; // TODO
+    int32 group = 1; // An actuator control group is e.g. 'attitude' for the core flight controls, or 'gimbal' for a payload.
+    repeated float controls = 2; // Controls normed from -1 to 1, where 0 is neutral position.
 }
 
 // Actuator output status type.
 message ActuatorOutputStatus {
-    uint32 active = 1; // TODO
-    repeated float actuator = 2; // TODO
+    uint32 active = 1; // Active outputs
+    repeated float actuator = 2; // Servo/motor output values
 }
 
 // Landed State enumeration.
