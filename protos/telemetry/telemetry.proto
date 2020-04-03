@@ -432,13 +432,13 @@ message GpsInfo {
 
 // GPS fix type.
 enum FixType {
-    NO_GPS = 0; // No GPS connected
-    NO_FIX = 1; // No position information, GPS is connected
-    FIX_2D = 2; // 2D position
-    FIX_3D = 3; // 3D position
-    FIX_DGPS = 4; // DGPS/SBAS aided 3D position
-    RTK_FLOAT = 5; // RTK float, 3D position
-    RTK_FIXED = 6; // RTK Fixed, 3D position
+    FIX_TYPE_NO_GPS = 0; // No GPS connected
+    FIX_TYPE_NO_FIX = 1; // No position information, GPS is connected
+    FIX_TYPE_FIX_2D = 2; // 2D position
+    FIX_TYPE_FIX_3D = 3; // 3D position
+    FIX_TYPE_FIX_DGPS = 4; // DGPS/SBAS aided 3D position
+    FIX_TYPE_RTK_FLOAT = 5; // RTK float, 3D position
+    FIX_TYPE_RTK_FIXED = 6; // RTK Fixed, 3D position
 }
 
 // Battery type.
@@ -454,21 +454,21 @@ message Battery {
  * https://docs.px4.io/master/en/config/flight_mode.html.
  */
 enum FlightMode {
-    UNKNOWN = 0; // Mode not known
-    READY = 1; // Armed and ready to take off
-    TAKEOFF = 2; // Taking off
-    HOLD = 3; // Holding (hovering in place (or circling for fixed-wing vehicles)
-    MISSION = 4; // In mission
-    RETURN_TO_LAUNCH = 5; // Returning to launch position (then landing)
-    LAND = 6; // Landing
-    OFFBOARD = 7; // In 'offboard' mode
-    FOLLOW_ME = 8; // In 'follow-me' mode
-    MANUAL = 9; // In 'Manual' mode
-    ALTCTL = 10; // In 'Altitude Control' mode
-    POSCTL = 11; // In 'Position Control' mode
-    ACRO = 12; // In 'Acro' mode
-    STABILIZED = 13; // In 'Stabilize' mode
-    RATTITUDE = 14; // In 'Rattitude' mode
+    FLIGHT_MODE_UNKNOWN = 0; // Mode not known
+    FLIGHT_MODE_READY = 1; // Armed and ready to take off
+    FLIGHT_MODE_TAKEOFF = 2; // Taking off
+    FLIGHT_MODE_HOLD = 3; // Holding (hovering in place (or circling for fixed-wing vehicles)
+    FLIGHT_MODE_MISSION = 4; // In mission
+    FLIGHT_MODE_RETURN_TO_LAUNCH = 5; // Returning to launch position (then landing)
+    FLIGHT_MODE_LAND = 6; // Landing
+    FLIGHT_MODE_OFFBOARD = 7; // In 'offboard' mode
+    FLIGHT_MODE_FOLLOW_ME = 8; // In 'follow-me' mode
+    FLIGHT_MODE_MANUAL = 9; // In 'Manual' mode
+    FLIGHT_MODE_ALTCTL = 10; // In 'Altitude Control' mode
+    FLIGHT_MODE_POSCTL = 11; // In 'Position Control' mode
+    FLIGHT_MODE_ACRO = 12; // In 'Acro' mode
+    FLIGHT_MODE_STABILIZED = 13; // In 'Stabilize' mode
+    FLIGHT_MODE_RATTITUDE = 14; // In 'Rattitude' mode
 }
 
 // Health type.
@@ -489,16 +489,16 @@ message RcStatus {
     float signal_strength_percent = 3; // Signal strength (range: 0 to 100)
 }
 
+// Status types.
+enum StatusTextType {
+    STATUS_TEXT_TYPE_INFO = 0; // Information or other
+    STATUS_TEXT_TYPE_WARNING = 1; // Warning
+    STATUS_TEXT_TYPE_CRITICAL = 2; // Critical
+}
+
 // StatusText information type.
 message StatusText {
-    // Status types.
-    enum StatusType {
-        INFO = 0; // Information or other
-        WARNING = 1; // Warning
-        CRITICAL = 2; // Critical
-    }
-
-    StatusType type = 1; // Message type
+    StatusTextType type = 1; // Message type
     string text = 2; // MAVLink status message
 }
 
@@ -522,7 +522,7 @@ enum LandedState {
     LANDED_STATE_LANDING = 4; // The vehicle is landing
 }
 
-/* 
+/*
  * Covariance type.
  *
  * Row-major representation of a 6x6 cross-covariance matrix
@@ -551,10 +551,10 @@ message PositionBody {
 message Odometry {
     // Mavlink frame id
     enum MavFrame {
-        UNDEF = 0; // Frame is undefined.
-        BODY_NED = 8; // Setpoint in body NED frame. This makes sense if all position control is externalized - e.g. useful to command 2 m/s^2 acceleration to the right.
-        VISION_NED = 16; // Odometry local coordinate frame of data given by a vision estimation system, Z-down (x: north, y: east, z: down).
-        ESTIM_NED = 18; // Odometry local coordinate frame of data given by an estimator running onboard the vehicle, Z-down (x: north, y: east, z: down).
+        MAV_FRAME_UNDEF = 0; // Frame is undefined.
+        MAV_FRAME_BODY_NED = 8; // Setpoint in body NED frame. This makes sense if all position control is externalized - e.g. useful to command 2 m/s^2 acceleration to the right.
+        MAV_FRAME_VISION_NED = 16; // Odometry local coordinate frame of data given by a vision estimation system, Z-down (x: north, y: east, z: down).
+        MAV_FRAME_ESTIM_NED = 18; // Odometry local coordinate frame of data given by an estimator running onboard the vehicle, Z-down (x: north, y: east, z: down).
     }
 
     uint64 time_usec = 1; // Timestamp (0 to use Backend timestamp).
@@ -635,13 +635,13 @@ message Imu {
 message TelemetryResult {
     // Possible results returned for telemetry requests.
     enum Result {
-        UNKNOWN = 0; // Unknown error
-        SUCCESS = 1; // Success: the telemetry command was accepted by the vehicle
-        NO_SYSTEM = 2; // No system connected
-        CONNECTION_ERROR = 3; // Connection error
-        BUSY = 4; // Vehicle is busy
-        COMMAND_DENIED = 5; // Command refused by vehicle
-        TIMEOUT = 6; // Request timed out
+        RESULT_UNKNOWN = 0; // Unknown error
+        RESULT_SUCCESS = 1; // Success: the telemetry command was accepted by the vehicle
+        RESULT_NO_SYSTEM = 2; // No system connected
+        RESULT_CONNECTION_ERROR = 3; // Connection error
+        RESULT_BUSY = 4; // Vehicle is busy
+        RESULT_COMMAND_DENIED = 5; // Command refused by vehicle
+        RESULT_TIMEOUT = 6; // Request timed out
     }
 
     Result result = 1; // Result enum value
