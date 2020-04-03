@@ -508,6 +508,7 @@ message ActuatorControlTarget {
     repeated float controls = 2; // TODO
 }
 
+// Actuator output status type.
 message ActuatorOutputStatus {
     uint32 active = 1; // TODO
     repeated float actuator = 2; // TODO
