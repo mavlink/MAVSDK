@@ -353,6 +353,18 @@ private:
         }
     }
 
+    void unregister_stream_stop_promise(std::shared_ptr<std::promise<void>> prom)
+    {
+        for (auto it = _stream_stop_promises.begin(); it != _stream_stop_promises.end();
+             /* ++it */) {
+            if (it->lock() == prom) {
+                it = _stream_stop_promises.erase(it);
+            } else {
+                ++it;
+            }
+        }
+    }
+
     Action& _action;
     std::atomic<bool> _stopped{false};
     std::vector<std::weak_ptr<std::promise<void>>> _stream_stop_promises{};

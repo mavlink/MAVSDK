@@ -581,6 +581,7 @@ public:
                 if (!*is_finished && !writer->Write(rpc_response)) {
                     _telemetry.position_async(nullptr);
                     *is_finished = true;
+                    unregister_stream_stop_promise(stream_closed_promise);
                     stream_closed_promise->set_value();
                 }
             });
@@ -613,6 +614,7 @@ public:
                 if (!*is_finished && !writer->Write(rpc_response)) {
                     _telemetry.home_async(nullptr);
                     *is_finished = true;
+                    unregister_stream_stop_promise(stream_closed_promise);
                     stream_closed_promise->set_value();
                 }
             });
@@ -645,6 +647,7 @@ public:
                 if (!*is_finished && !writer->Write(rpc_response)) {
                     _telemetry.in_air_async(nullptr);
                     *is_finished = true;
+                    unregister_stream_stop_promise(stream_closed_promise);
                     stream_closed_promise->set_value();
                 }
             });
@@ -677,6 +680,7 @@ public:
                 if (!*is_finished && !writer->Write(rpc_response)) {
                     _telemetry.landed_state_async(nullptr);
                     *is_finished = true;
+                    unregister_stream_stop_promise(stream_closed_promise);
                     stream_closed_promise->set_value();
                 }
             });
@@ -709,6 +713,7 @@ public:
                 if (!*is_finished && !writer->Write(rpc_response)) {
                     _telemetry.armed_async(nullptr);
                     *is_finished = true;
+                    unregister_stream_stop_promise(stream_closed_promise);
                     stream_closed_promise->set_value();
                 }
             });
@@ -742,6 +747,7 @@ public:
                 if (!*is_finished && !writer->Write(rpc_response)) {
                     _telemetry.attitude_quaternion_async(nullptr);
                     *is_finished = true;
+                    unregister_stream_stop_promise(stream_closed_promise);
                     stream_closed_promise->set_value();
                 }
             });
@@ -775,6 +781,7 @@ public:
                 if (!*is_finished && !writer->Write(rpc_response)) {
                     _telemetry.attitude_euler_async(nullptr);
                     *is_finished = true;
+                    unregister_stream_stop_promise(stream_closed_promise);
                     stream_closed_promise->set_value();
                 }
             });
@@ -808,6 +815,7 @@ public:
                 if (!*is_finished && !writer->Write(rpc_response)) {
                     _telemetry.attitude_angular_velocity_body_async(nullptr);
                     *is_finished = true;
+                    unregister_stream_stop_promise(stream_closed_promise);
                     stream_closed_promise->set_value();
                 }
             });
@@ -841,6 +849,7 @@ public:
                 if (!*is_finished && !writer->Write(rpc_response)) {
                     _telemetry.camera_attitude_quaternion_async(nullptr);
                     *is_finished = true;
+                    unregister_stream_stop_promise(stream_closed_promise);
                     stream_closed_promise->set_value();
                 }
             });
@@ -874,6 +883,7 @@ public:
                 if (!*is_finished && !writer->Write(rpc_response)) {
                     _telemetry.camera_attitude_euler_async(nullptr);
                     *is_finished = true;
+                    unregister_stream_stop_promise(stream_closed_promise);
                     stream_closed_promise->set_value();
                 }
             });
@@ -907,6 +917,7 @@ public:
                 if (!*is_finished && !writer->Write(rpc_response)) {
                     _telemetry.ground_speed_ned_async(nullptr);
                     *is_finished = true;
+                    unregister_stream_stop_promise(stream_closed_promise);
                     stream_closed_promise->set_value();
                 }
             });
@@ -939,6 +950,7 @@ public:
                 if (!*is_finished && !writer->Write(rpc_response)) {
                     _telemetry.gps_info_async(nullptr);
                     *is_finished = true;
+                    unregister_stream_stop_promise(stream_closed_promise);
                     stream_closed_promise->set_value();
                 }
             });
@@ -971,6 +983,7 @@ public:
                 if (!*is_finished && !writer->Write(rpc_response)) {
                     _telemetry.battery_async(nullptr);
                     *is_finished = true;
+                    unregister_stream_stop_promise(stream_closed_promise);
                     stream_closed_promise->set_value();
                 }
             });
@@ -1003,6 +1016,7 @@ public:
                 if (!*is_finished && !writer->Write(rpc_response)) {
                     _telemetry.flight_mode_async(nullptr);
                     *is_finished = true;
+                    unregister_stream_stop_promise(stream_closed_promise);
                     stream_closed_promise->set_value();
                 }
             });
@@ -1035,6 +1049,7 @@ public:
                 if (!*is_finished && !writer->Write(rpc_response)) {
                     _telemetry.health_async(nullptr);
                     *is_finished = true;
+                    unregister_stream_stop_promise(stream_closed_promise);
                     stream_closed_promise->set_value();
                 }
             });
@@ -1067,6 +1082,7 @@ public:
                 if (!*is_finished && !writer->Write(rpc_response)) {
                     _telemetry.rc_status_async(nullptr);
                     *is_finished = true;
+                    unregister_stream_stop_promise(stream_closed_promise);
                     stream_closed_promise->set_value();
                 }
             });
@@ -1100,6 +1116,7 @@ public:
                 if (!*is_finished && !writer->Write(rpc_response)) {
                     _telemetry.status_text_async(nullptr);
                     *is_finished = true;
+                    unregister_stream_stop_promise(stream_closed_promise);
                     stream_closed_promise->set_value();
                 }
             });
@@ -1133,6 +1150,7 @@ public:
                 if (!*is_finished && !writer->Write(rpc_response)) {
                     _telemetry.actuator_control_target_async(nullptr);
                     *is_finished = true;
+                    unregister_stream_stop_promise(stream_closed_promise);
                     stream_closed_promise->set_value();
                 }
             });
@@ -1166,6 +1184,7 @@ public:
                 if (!*is_finished && !writer->Write(rpc_response)) {
                     _telemetry.actuator_output_status_async(nullptr);
                     *is_finished = true;
+                    unregister_stream_stop_promise(stream_closed_promise);
                     stream_closed_promise->set_value();
                 }
             });
@@ -1198,6 +1217,7 @@ public:
                 if (!*is_finished && !writer->Write(rpc_response)) {
                     _telemetry.odometry_async(nullptr);
                     *is_finished = true;
+                    unregister_stream_stop_promise(stream_closed_promise);
                     stream_closed_promise->set_value();
                 }
             });
@@ -1231,6 +1251,7 @@ public:
                 if (!*is_finished && !writer->Write(rpc_response)) {
                     _telemetry.position_velocity_ned_async(nullptr);
                     *is_finished = true;
+                    unregister_stream_stop_promise(stream_closed_promise);
                     stream_closed_promise->set_value();
                 }
             });
@@ -1264,6 +1285,7 @@ public:
                 if (!*is_finished && !writer->Write(rpc_response)) {
                     _telemetry.ground_truth_async(nullptr);
                     *is_finished = true;
+                    unregister_stream_stop_promise(stream_closed_promise);
                     stream_closed_promise->set_value();
                 }
             });
@@ -1297,6 +1319,7 @@ public:
                 if (!*is_finished && !writer->Write(rpc_response)) {
                     _telemetry.fixedwing_metrics_async(nullptr);
                     *is_finished = true;
+                    unregister_stream_stop_promise(stream_closed_promise);
                     stream_closed_promise->set_value();
                 }
             });
@@ -1328,6 +1351,7 @@ public:
             if (!*is_finished && !writer->Write(rpc_response)) {
                 _telemetry.imu_async(nullptr);
                 *is_finished = true;
+                unregister_stream_stop_promise(stream_closed_promise);
                 stream_closed_promise->set_value();
             }
         });
@@ -1360,6 +1384,7 @@ public:
                 if (!*is_finished && !writer->Write(rpc_response)) {
                     _telemetry.health_all_ok_async(nullptr);
                     *is_finished = true;
+                    unregister_stream_stop_promise(stream_closed_promise);
                     stream_closed_promise->set_value();
                 }
             });
@@ -1392,6 +1417,7 @@ public:
                 if (!*is_finished && !writer->Write(rpc_response)) {
                     _telemetry.unix_epoch_time_async(nullptr);
                     *is_finished = true;
+                    unregister_stream_stop_promise(stream_closed_promise);
                     stream_closed_promise->set_value();
                 }
             });
@@ -1762,6 +1788,18 @@ private:
             }
         } else {
             _stream_stop_promises.push_back(prom);
+        }
+    }
+
+    void unregister_stream_stop_promise(std::shared_ptr<std::promise<void>> prom)
+    {
+        for (auto it = _stream_stop_promises.begin(); it != _stream_stop_promises.end();
+             /* ++it */) {
+            if (it->lock() == prom) {
+                it = _stream_stop_promises.erase(it);
+            } else {
+                ++it;
+            }
         }
     }
 
