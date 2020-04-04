@@ -5,7 +5,6 @@
 
 #include "plugins/mission/mission.h"
 #include "mission/mission.grpc.pb.h"
-#include "plugins/mission/mission_item.h"
 
 namespace mavsdk {
 namespace backend {
@@ -50,7 +49,7 @@ public:
         _mission.download_mission_async(
             [this, response, &result_promise](
                 const mavsdk::Mission::Result result,
-                const std::vector<std::shared_ptr<MissionItem>> mission_items) {
+                const std::vector<mavsdk::Mission::MissionItem> mission_items) {
                 if (response != nullptr) {
                     auto rpc_mission_result = generateRPCMissionResult(result);
                     response->set_allocated_mission_result(rpc_mission_result);
@@ -242,87 +241,86 @@ public:
     }
 
     static void translateMissionItem(
-        const std::shared_ptr<MissionItem> mission_item,
+        const mavsdk::Mission::MissionItem mission_item,
         rpc::mission::MissionItem* rpc_mission_item)
     {
-        rpc_mission_item->set_latitude_deg(mission_item->get_latitude_deg());
-        rpc_mission_item->set_longitude_deg(mission_item->get_longitude_deg());
-        rpc_mission_item->set_relative_altitude_m(mission_item->get_relative_altitude_m());
-        rpc_mission_item->set_speed_m_s(mission_item->get_speed_m_s());
-        rpc_mission_item->set_is_fly_through(mission_item->get_fly_through());
-        rpc_mission_item->set_gimbal_pitch_deg(mission_item->get_gimbal_pitch_deg());
-        rpc_mission_item->set_gimbal_yaw_deg(mission_item->get_gimbal_yaw_deg());
-        rpc_mission_item->set_camera_action(
-            translateCameraAction(mission_item->get_camera_action()));
-        rpc_mission_item->set_loiter_time_s(mission_item->get_loiter_time_s());
-        rpc_mission_item->set_camera_photo_interval_s(mission_item->get_camera_photo_interval_s());
+        rpc_mission_item->set_latitude_deg(mission_item.latitude_deg);
+        rpc_mission_item->set_longitude_deg(mission_item.longitude_deg);
+        rpc_mission_item->set_relative_altitude_m(mission_item.relative_altitude_m);
+        rpc_mission_item->set_speed_m_s(mission_item.speed_m_s);
+        rpc_mission_item->set_is_fly_through(mission_item.fly_through);
+        rpc_mission_item->set_gimbal_pitch_deg(mission_item.gimbal_pitch_deg);
+        rpc_mission_item->set_gimbal_yaw_deg(mission_item.gimbal_yaw_deg);
+        rpc_mission_item->set_camera_action(translateCameraAction(mission_item.camera_action));
+        rpc_mission_item->set_loiter_time_s(mission_item.loiter_time_s);
+        rpc_mission_item->set_camera_photo_interval_s(mission_item.camera_photo_interval_s);
     }
 
     static rpc::mission::MissionItem::CameraAction
-    translateCameraAction(const MissionItem::CameraAction camera_action)
+    translateCameraAction(const mavsdk::Mission::CameraAction camera_action)
     {
         switch (camera_action) {
-            case MissionItem::CameraAction::TAKE_PHOTO:
+            case mavsdk::Mission::CameraAction::TAKE_PHOTO:
                 return rpc::mission::MissionItem_CameraAction_TAKE_PHOTO;
-            case MissionItem::CameraAction::START_PHOTO_INTERVAL:
+            case mavsdk::Mission::CameraAction::START_PHOTO_INTERVAL:
                 return rpc::mission::MissionItem_CameraAction_START_PHOTO_INTERVAL;
-            case MissionItem::CameraAction::STOP_PHOTO_INTERVAL:
+            case mavsdk::Mission::CameraAction::STOP_PHOTO_INTERVAL:
                 return rpc::mission::MissionItem_CameraAction_STOP_PHOTO_INTERVAL;
-            case MissionItem::CameraAction::START_VIDEO:
+            case mavsdk::Mission::CameraAction::START_VIDEO:
                 return rpc::mission::MissionItem_CameraAction_START_VIDEO;
-            case MissionItem::CameraAction::STOP_VIDEO:
+            case mavsdk::Mission::CameraAction::STOP_VIDEO:
                 return rpc::mission::MissionItem_CameraAction_STOP_VIDEO;
-            case MissionItem::CameraAction::NONE:
+            case mavsdk::Mission::CameraAction::NONE:
             default:
                 return rpc::mission::MissionItem_CameraAction_NONE;
         }
     }
 
-    static std::shared_ptr<MissionItem>
+    static mavsdk::Mission::MissionItem
     translateRPCMissionItem(const rpc::mission::MissionItem& rpc_mission_item)
     {
-        auto mission_item = std::make_shared<MissionItem>();
-        mission_item->set_position(
-            rpc_mission_item.latitude_deg(), rpc_mission_item.longitude_deg());
-        mission_item->set_relative_altitude(rpc_mission_item.relative_altitude_m());
-        mission_item->set_speed(rpc_mission_item.speed_m_s());
-        mission_item->set_fly_through(rpc_mission_item.is_fly_through());
-        mission_item->set_gimbal_pitch_and_yaw(
-            rpc_mission_item.gimbal_pitch_deg(), rpc_mission_item.gimbal_yaw_deg());
-        mission_item->set_camera_action(translateRPCCameraAction(rpc_mission_item.camera_action()));
-        mission_item->set_camera_photo_interval(rpc_mission_item.camera_photo_interval_s());
-        mission_item->set_loiter_time(rpc_mission_item.loiter_time_s());
+        mavsdk::Mission::MissionItem mission_item{};
+        mission_item.latitude_deg = rpc_mission_item.latitude_deg();
+        mission_item.longitude_deg = rpc_mission_item.longitude_deg();
+        mission_item.relative_altitude_m = rpc_mission_item.relative_altitude_m();
+        mission_item.speed_m_s = rpc_mission_item.speed_m_s();
+        mission_item.fly_through = rpc_mission_item.is_fly_through();
+        mission_item.gimbal_pitch_deg = rpc_mission_item.gimbal_pitch_deg();
+        mission_item.gimbal_yaw_deg = rpc_mission_item.gimbal_yaw_deg();
+        mission_item.camera_action = translateRPCCameraAction(rpc_mission_item.camera_action());
+        mission_item.camera_photo_interval_s = rpc_mission_item.camera_photo_interval_s();
+        mission_item.loiter_time_s = rpc_mission_item.loiter_time_s();
 
         return mission_item;
     }
 
-    static MissionItem::CameraAction
+    static mavsdk::Mission::CameraAction
     translateRPCCameraAction(const rpc::mission::MissionItem::CameraAction rpc_camera_action)
     {
         switch (rpc_camera_action) {
             case rpc::mission::MissionItem::CameraAction::MissionItem_CameraAction_TAKE_PHOTO:
-                return MissionItem::CameraAction::TAKE_PHOTO;
+                return mavsdk::Mission::CameraAction::TAKE_PHOTO;
             case rpc::mission::MissionItem::CameraAction::
                 MissionItem_CameraAction_START_PHOTO_INTERVAL:
-                return MissionItem::CameraAction::START_PHOTO_INTERVAL;
+                return mavsdk::Mission::CameraAction::START_PHOTO_INTERVAL;
             case rpc::mission::MissionItem::CameraAction::
                 MissionItem_CameraAction_STOP_PHOTO_INTERVAL:
-                return MissionItem::CameraAction::STOP_PHOTO_INTERVAL;
+                return mavsdk::Mission::CameraAction::STOP_PHOTO_INTERVAL;
             case rpc::mission::MissionItem::CameraAction::MissionItem_CameraAction_START_VIDEO:
-                return MissionItem::CameraAction::START_VIDEO;
+                return mavsdk::Mission::CameraAction::START_VIDEO;
             case rpc::mission::MissionItem::CameraAction::MissionItem_CameraAction_STOP_VIDEO:
-                return MissionItem::CameraAction::STOP_VIDEO;
+                return mavsdk::Mission::CameraAction::STOP_VIDEO;
             case rpc::mission::MissionItem::CameraAction::MissionItem_CameraAction_NONE:
             default:
-                return MissionItem::CameraAction::NONE;
+                return mavsdk::Mission::CameraAction::NONE;
         }
     }
 
 private:
-    std::vector<std::shared_ptr<MissionItem>>
+    std::vector<mavsdk::Mission::MissionItem>
     extractMissionItems(const rpc::mission::UploadMissionRequest* request) const
     {
-        std::vector<std::shared_ptr<MissionItem>> mission_items;
+        std::vector<mavsdk::Mission::MissionItem> mission_items;
 
         if (request != nullptr) {
             for (auto rpc_mission_item : request->mission_items()) {
@@ -334,7 +332,7 @@ private:
     }
 
     void uploadMissionItems(
-        const std::vector<std::shared_ptr<MissionItem>>& mission_items,
+        const std::vector<mavsdk::Mission::MissionItem>& mission_items,
         rpc::mission::UploadMissionResponse* response,
         std::promise<void>& result_promise) const
     {
