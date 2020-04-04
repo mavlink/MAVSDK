@@ -1,11 +1,11 @@
 #pragma once
 
+#include <cmath>
 #include <vector>
 #include <memory>
 #include <functional>
 
 #include "plugin_base.h"
-#include "mission_item.h"
 
 #ifdef ERROR
 #undef ERROR
@@ -56,6 +56,42 @@ public:
         FAILED_TO_PARSE_QGC_PLAN, /**< @brief Failed to parse QGroundControl plan. */
         UNSUPPORTED_MISSION_CMD, /**< @brief Unsupported mission command. */
         CANCELLED /**< @brief Mission upload or download has been cancelled. */
+    };
+
+    /**
+     * @brief Possible camera actions at a mission item.
+     * @sa to_str()
+     */
+    enum class CameraAction {
+        NONE, /**< @brief No action. */
+        TAKE_PHOTO, /**< @brief Take single photo. */
+        START_PHOTO_INTERVAL, /**< @brief Start capturing photos at regular intervals - see
+                                 set_camera_photo_interval(). */
+        STOP_PHOTO_INTERVAL, /**< @brief Stop capturing photos at regular intervals. */
+        START_VIDEO, /**< @brief Start capturing video. */
+        STOP_VIDEO, /**< @brief Stop capturing video. */
+    };
+
+    /**
+     * @brief A mission item containing a position and/or actions.
+     *
+     * Mission items are building blocks to assemble a mission.
+     */
+    struct MissionItem {
+        double latitude_deg{NAN}; /**< @brief Latitude in degrees (range: -90 to +90). */
+        double longitude_deg{NAN}; /**< @brief Longitude in degrees (range: -180 to +180). */
+        float relative_altitude_m{
+            NAN}; /**< @brief // Altitude relative to takeoff altitude in metres. */
+        float speed_m_s{
+            NAN}; /**< @brief Speed to use after this mission item (in metres/second). */
+        bool fly_through{false}; /**< @brief True will make the drone fly through without stopping,
+                                    while false will make the drone stop on the waypoint. */
+        float gimbal_pitch_deg{NAN}; /**< @brief Gimbal pitch (in degrees). */
+        float gimbal_yaw_deg{NAN}; /**< @brief Gimbal yaw (in degrees). */
+        float loiter_time_s = {NAN}; /**< @brief Loiter time (in seconds). */
+        CameraAction camera_action{}; /**< @brief Camera action to trigger at this mission item. */
+        double camera_photo_interval_s =
+            1.0; /**< @brief Camera photo interval to use after this mission item (in seconds). */
     };
 
     /**

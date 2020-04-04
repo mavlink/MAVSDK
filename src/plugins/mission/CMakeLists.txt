@@ -3,8 +3,6 @@ find_package(JsonCpp REQUIRED)
 add_library(mavsdk_mission
     mission.cpp
     mission_impl.cpp
-    mission_item.cpp
-    mission_item_impl.cpp
 )
 
 include_directories(
@@ -35,7 +33,6 @@ install(TARGETS mavsdk_mission
 
 install(FILES
     include/plugins/mission/mission.h
-    include/plugins/mission/mission_item.h
     DESTINATION ${CMAKE_INSTALL_INCLUDEDIR}/mavsdk/plugins/mission
 )
 
