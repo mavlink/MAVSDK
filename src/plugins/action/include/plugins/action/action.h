@@ -149,8 +149,7 @@ public:
     Result reboot() const;
 
     /**
-     * @brief *
-     * Send command to shut down the drone components.
+     * @brief Send command to shut down the drone components.
      *
      * This will shut down the autopilot, onboard computer, camera and gimbal.
      * This command should only be used when the autopilot is disarmed and autopilots commonly
@@ -198,8 +197,7 @@ public:
     Result return_to_launch() const;
 
     /**
-     * @brief *
-     * Send command to move the vehicle to a specific global position.
+     * @brief Send command to move the vehicle to a specific global position.
      *
      * The latitude and longitude are given in degrees (WGS84 frame) and the altitude
      * in meters AMSL (above mean sea level).
