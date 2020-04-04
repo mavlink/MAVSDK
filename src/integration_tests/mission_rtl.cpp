@@ -80,13 +80,13 @@ void do_mission_with_rtl(float mission_altitude_m, float return_altitude_m)
     LogInfo() << "System ready";
     LogInfo() << "Creating and uploading mission";
 
-    auto new_item = std::make_shared<Mission::MissionItem>();
+    Mission::MissionItem new_item{};
 
-    new_item->latitude_deg = 47.398170327054473;
-    new_item->longitude_deg = 8.5456490218639658;
-    new_item->relative_altitude_m = mission_altitude_m;
+    new_item.latitude_deg = 47.398170327054473;
+    new_item.longitude_deg = 8.5456490218639658;
+    new_item.relative_altitude_m = mission_altitude_m;
 
-    std::vector<std::shared_ptr<Mission::MissionItem>> mission_items;
+    std::vector<Mission::MissionItem> mission_items;
     mission_items.push_back(new_item);
 
     {

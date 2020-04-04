@@ -25,7 +25,7 @@ public:
     void disable() override;
 
     void upload_mission_async(
-        const std::vector<std::shared_ptr<Mission::MissionItem>>& mission_items,
+        const std::vector<Mission::MissionItem>& mission_items,
         const Mission::result_callback_t& callback);
     void upload_mission_cancel();
 
@@ -65,7 +65,7 @@ private:
     static float acceptance_radius(const Mission::MissionItem& item);
 
     std::vector<MAVLinkMissionTransfer::ItemInt>
-    convert_to_int_items(const std::vector<std::shared_ptr<Mission::MissionItem>>& mission_items);
+    convert_to_int_items(const std::vector<Mission::MissionItem>& mission_items);
 
     void report_progress();
     void reset_mission_progress();
@@ -75,7 +75,7 @@ private:
     static Mission::Result command_result_to_mission_result(MAVLinkCommands::Result result);
 
     // FIXME: make static
-    std::pair<Mission::Result, std::vector<std::shared_ptr<Mission::MissionItem>>>
+    std::pair<Mission::Result, std::vector<Mission::MissionItem>>
     convert_to_result_and_mission_items(
         MAVLinkMissionTransfer::Result result,
         const std::vector<MAVLinkMissionTransfer::ItemInt>& int_items);
@@ -88,7 +88,7 @@ private:
     static Mission::Result build_mission_items(
         MAV_CMD command,
         std::vector<double> params,
-        std::shared_ptr<Mission::MissionItem>& new_mission_item,
+        Mission::MissionItem& new_mission_item,
         Mission::mission_items_t& all_mission_items);
 
     struct MissionData {

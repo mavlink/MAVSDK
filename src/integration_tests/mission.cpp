@@ -18,7 +18,7 @@ static void test_mission(
     std::shared_ptr<Mission> mission,
     std::shared_ptr<Action> action);
 
-static std::shared_ptr<Mission::MissionItem> add_mission_item(
+static Mission::MissionItem add_mission_item(
     double latitude_deg,
     double longitude_deg,
     float relative_altitude_m,
@@ -29,9 +29,8 @@ static std::shared_ptr<Mission::MissionItem> add_mission_item(
     float loiter_time_s,
     Mission::CameraAction camera_action);
 
-static void compare_mission_items(
-    const std::shared_ptr<Mission::MissionItem> original,
-    const std::shared_ptr<Mission::MissionItem> downloaded);
+static void
+compare_mission_items(const Mission::MissionItem original, const Mission::MissionItem downloaded);
 
 static void pause_and_resume(std::shared_ptr<Mission> mission);
 
@@ -89,7 +88,7 @@ void test_mission(
     LogInfo() << "System ready";
     LogInfo() << "Creating and uploading mission";
 
-    std::vector<std::shared_ptr<Mission::MissionItem>> mission_items;
+    std::vector<Mission::MissionItem> mission_items;
 
     while (mission_items.size() < NUM_MISSION_ITEMS) {
         mission_items.push_back(add_mission_item(
@@ -189,7 +188,7 @@ void test_mission(
         mission->download_mission_async(
             [prom, mission_items](
                 Mission::Result result,
-                std::vector<std::shared_ptr<Mission::MissionItem>> mission_items_downloaded) {
+                std::vector<Mission::MissionItem> mission_items_downloaded) {
                 EXPECT_EQ(result, Mission::Result::SUCCESS);
                 prom->set_value();
                 LogInfo() << "Mission downloaded (to check it).";
@@ -268,7 +267,7 @@ void test_mission(
     }
 }
 
-std::shared_ptr<Mission::MissionItem> add_mission_item(
+Mission::MissionItem add_mission_item(
     double latitude_deg,
     double longitude_deg,
     float relative_altitude_m,
@@ -279,28 +278,27 @@ std::shared_ptr<Mission::MissionItem> add_mission_item(
     float loiter_time_s,
     Mission::CameraAction camera_action)
 {
-    auto new_item = std::make_shared<Mission::MissionItem>();
-    new_item->latitude_deg = latitude_deg;
-    new_item->longitude_deg = longitude_deg;
-    new_item->relative_altitude_m = relative_altitude_m;
-    new_item->speed_m_s = speed_m_s;
-    new_item->fly_through = is_fly_through;
-    new_item->gimbal_pitch_deg = gimbal_pitch_deg;
-    new_item->gimbal_yaw_deg = gimbal_yaw_deg;
-    new_item->loiter_time_s = loiter_time_s;
-    new_item->camera_action = camera_action;
+    Mission::MissionItem new_item{};
+    new_item.latitude_deg = latitude_deg;
+    new_item.longitude_deg = longitude_deg;
+    new_item.relative_altitude_m = relative_altitude_m;
+    new_item.speed_m_s = speed_m_s;
+    new_item.fly_through = is_fly_through;
+    new_item.gimbal_pitch_deg = gimbal_pitch_deg;
+    new_item.gimbal_yaw_deg = gimbal_yaw_deg;
+    new_item.loiter_time_s = loiter_time_s;
+    new_item.camera_action = camera_action;
 
     // In order to test setting the interval, add it here.
     if (camera_action == Mission::CameraAction::START_PHOTO_INTERVAL) {
-        new_item->camera_photo_interval_s = 1.5;
+        new_item.camera_photo_interval_s = 1.5;
     }
 
     return new_item;
 }
 
 void compare_mission_items(
-    const std::shared_ptr<Mission::MissionItem> original,
-    const std::shared_ptr<Mission::MissionItem> downloaded)
+    const Mission::MissionItem original, const Mission::MissionItem downloaded)
 {
     // FIXME: add back in
     UNUSED(original);

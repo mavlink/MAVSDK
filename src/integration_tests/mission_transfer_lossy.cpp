@@ -10,15 +10,12 @@
 using namespace mavsdk;
 
 static void set_link_lossy(std::shared_ptr<MavlinkPassthrough> mavlink_passthrough);
-static std::vector<std::shared_ptr<Mission::MissionItem>> create_mission_items();
+static std::vector<Mission::MissionItem> create_mission_items();
 static void upload_mission(
-    std::shared_ptr<Mission> mission,
-    const std::vector<std::shared_ptr<Mission::MissionItem>>& mission_items);
-static std::vector<std::shared_ptr<Mission::MissionItem>>
-download_mission(std::shared_ptr<Mission> mission);
+    std::shared_ptr<Mission> mission, const std::vector<Mission::MissionItem>& mission_items);
+static std::vector<Mission::MissionItem> download_mission(std::shared_ptr<Mission> mission);
 static void compare_mission(
-    const std::vector<std::shared_ptr<Mission::MissionItem>>& a,
-    const std::vector<std::shared_ptr<Mission::MissionItem>>& b);
+    const std::vector<Mission::MissionItem>& a, const std::vector<Mission::MissionItem>& b);
 
 static bool should_keep_message(const mavlink_message_t& message);
 
@@ -76,24 +73,23 @@ bool should_keep_message(const mavlink_message_t& message)
     return should_keep;
 }
 
-std::vector<std::shared_ptr<Mission::MissionItem>> create_mission_items()
+std::vector<Mission::MissionItem> create_mission_items()
 {
-    std::vector<std::shared_ptr<Mission::MissionItem>> mission_items;
+    std::vector<Mission::MissionItem> mission_items;
 
     for (unsigned i = 0; i < 20; ++i) {
-        auto new_item = std::make_shared<Mission::MissionItem>();
-        new_item->latitude_deg = 47.398170327054473 + (i * 1e-6);
-        new_item->longitude_deg = 8.5456490218639658 + (i * 1e-6);
-        new_item->relative_altitude_m = 10.0f + (i * 0.2f);
-        new_item->speed_m_s = 5.0f + (i * 0.1f);
+        Mission::MissionItem new_item{};
+        new_item.latitude_deg = 47.398170327054473 + (i * 1e-6);
+        new_item.longitude_deg = 8.5456490218639658 + (i * 1e-6);
+        new_item.relative_altitude_m = 10.0f + (i * 0.2f);
+        new_item.speed_m_s = 5.0f + (i * 0.1f);
         mission_items.push_back(new_item);
     }
     return mission_items;
 }
 
 void upload_mission(
-    std::shared_ptr<Mission> mission,
-    const std::vector<std::shared_ptr<Mission::MissionItem>>& mission_items)
+    std::shared_ptr<Mission> mission, const std::vector<Mission::MissionItem>& mission_items)
 {
     LogInfo() << "Uploading mission...";
     auto prom = std::promise<void>{};
@@ -109,19 +105,17 @@ void upload_mission(
     fut.get();
 }
 
-std::vector<std::shared_ptr<Mission::MissionItem>>
-download_mission(std::shared_ptr<Mission> mission)
+std::vector<Mission::MissionItem> download_mission(std::shared_ptr<Mission> mission)
 {
     LogInfo() << "Downloading mission...";
     auto prom = std::promise<void>();
     auto fut = prom.get_future();
 
-    std::vector<std::shared_ptr<Mission::MissionItem>> mission_items;
+    std::vector<Mission::MissionItem> mission_items;
 
     mission->download_mission_async(
-        [&prom, &mission_items](
-            Mission::Result result,
-            std::vector<std::shared_ptr<Mission::MissionItem>> mission_items_) {
+        [&prom,
+         &mission_items](Mission::Result result, std::vector<Mission::MissionItem> mission_items_) {
             EXPECT_EQ(result, Mission::Result::SUCCESS);
             mission_items = mission_items_;
             prom.set_value();
@@ -136,8 +130,7 @@ download_mission(std::shared_ptr<Mission> mission)
 }
 
 void compare_mission(
-    const std::vector<std::shared_ptr<Mission::MissionItem>>& a,
-    const std::vector<std::shared_ptr<Mission::MissionItem>>& b)
+    const std::vector<Mission::MissionItem>& a, const std::vector<Mission::MissionItem>& b)
 {
     EXPECT_EQ(a.size(), b.size());
 
