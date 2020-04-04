@@ -110,7 +110,7 @@ public:
     /**
      * @brief Type for vector of mission items.
      */
-    typedef std::vector<std::shared_ptr<MissionItem>> mission_items_t;
+    typedef std::vector<MissionItem> mission_items_t;
 
     /**
      * @brief Imports a **QGroundControl** (QGC) mission plan.
@@ -140,8 +140,8 @@ public:
      * @param mission_items Reference to vector of mission items.
      * @param callback Callback to receive result of this request.
      */
-    void upload_mission_async(
-        const std::vector<std::shared_ptr<MissionItem>>& mission_items, result_callback_t callback);
+    void
+    upload_mission_async(const std::vector<MissionItem>& mission_items, result_callback_t callback);
 
     /**
      * @brief Cancel a mission upload (asynchronous).
@@ -154,7 +154,7 @@ public:
     /**
      * @brief Callback type for `download_mission_async()` call to get mission items and result.
      */
-    typedef std::function<void(Result, std::vector<std::shared_ptr<MissionItem>>)>
+    typedef std::function<void(Result, std::vector<MissionItem>)>
         mission_items_and_result_callback_t;
 
     /**

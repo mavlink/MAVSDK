@@ -16,8 +16,8 @@ static void receive_upload_mission_result(Mission::Result result);
 static void receive_start_mission_result(Mission::Result result);
 static void receive_mission_progress(int current, int total);
 
-std::shared_ptr<Mission::MissionItem> only_set_speed(float speed_m_s);
-std::shared_ptr<Mission::MissionItem>
+Mission::MissionItem only_set_speed(float speed_m_s);
+Mission::MissionItem
 add_waypoint(double latitude_deg, double longitude_deg, float relative_altitude_m, float speed_m_s);
 
 float current_speed(std::shared_ptr<Telemetry>& telemetry);
@@ -56,7 +56,7 @@ TEST_F(SitlTest, MissionChangeSpeed)
 
     LogInfo() << "System ready, let's start";
 
-    std::vector<std::shared_ptr<Mission::MissionItem>> mission_items;
+    std::vector<Mission::MissionItem> mission_items;
 
     mission_items.push_back(only_set_speed(speeds[0]));
     mission_items.push_back(add_waypoint(47.398262509933957, 8.5456324815750122, 10, speeds[1]));
@@ -144,21 +144,21 @@ void receive_start_mission_result(Mission::Result result)
     }
 }
 
-std::shared_ptr<Mission::MissionItem> only_set_speed(float speed_m_s)
+Mission::MissionItem only_set_speed(float speed_m_s)
 {
-    auto new_item = std::make_shared<Mission::MissionItem>();
-    new_item->speed_m_s = speed_m_s;
+    Mission::MissionItem new_item = {};
+    new_item.speed_m_s = speed_m_s;
     return new_item;
 }
 
-std::shared_ptr<Mission::MissionItem>
+Mission::MissionItem
 add_waypoint(double latitude_deg, double longitude_deg, float relative_altitude_m, float speed_m_s)
 {
-    auto new_item = std::make_shared<Mission::MissionItem>();
-    new_item->latitude_deg = latitude_deg;
-    new_item->longitude_deg = longitude_deg;
-    new_item->relative_altitude_m = relative_altitude_m;
-    new_item->speed_m_s = speed_m_s;
+    Mission::MissionItem new_item = {};
+    new_item.latitude_deg = latitude_deg;
+    new_item.longitude_deg = longitude_deg;
+    new_item.relative_altitude_m = relative_altitude_m;
+    new_item.speed_m_s = speed_m_s;
     return new_item;
 }
 

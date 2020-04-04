@@ -12,7 +12,7 @@ Mission::Mission(System& system) : PluginBase(), _impl{new MissionImpl(system)} 
 Mission::~Mission() {}
 
 void Mission::upload_mission_async(
-    const std::vector<std::shared_ptr<MissionItem>>& mission_items, result_callback_t callback)
+    const std::vector<MissionItem>& mission_items, result_callback_t callback)
 {
     _impl->upload_mission_async(mission_items, callback);
 }
