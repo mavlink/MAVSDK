@@ -457,12 +457,8 @@ Telemetry::Result Telemetry::set_rate_unix_epoch_time(double rate_hz) const
 
 bool operator==(const Telemetry::Position& lhs, const Telemetry::Position& rhs)
 {
-    return (rhs.latitude_deg == lhs.latitude_deg) &&
-
-           (rhs.longitude_deg == lhs.longitude_deg) &&
-
+    return (rhs.latitude_deg == lhs.latitude_deg) && (rhs.longitude_deg == lhs.longitude_deg) &&
            (rhs.absolute_altitude_m == lhs.absolute_altitude_m) &&
-
            (rhs.relative_altitude_m == lhs.relative_altitude_m);
 }
 
@@ -470,49 +466,32 @@ std::ostream& operator<<(std::ostream& str, Telemetry::Position const& position)
 {
     str << "position:" << '\n' << "{\n";
     str << "    latitude_deg: " << position.latitude_deg << '\n';
-
     str << "    longitude_deg: " << position.longitude_deg << '\n';
-
     str << "    absolute_altitude_m: " << position.absolute_altitude_m << '\n';
-
     str << "    relative_altitude_m: " << position.relative_altitude_m << '\n';
-
     str << '}';
     return str;
 }
 
 bool operator==(const Telemetry::Quaternion& lhs, const Telemetry::Quaternion& rhs)
 {
-    return (rhs.w == lhs.w) &&
-
-           (rhs.x == lhs.x) &&
-
-           (rhs.y == lhs.y) &&
-
-           (rhs.z == lhs.z);
+    return (rhs.w == lhs.w) && (rhs.x == lhs.x) && (rhs.y == lhs.y) && (rhs.z == lhs.z);
 }
 
 std::ostream& operator<<(std::ostream& str, Telemetry::Quaternion const& quaternion)
 {
     str << "quaternion:" << '\n' << "{\n";
     str << "    w: " << quaternion.w << '\n';
-
     str << "    x: " << quaternion.x << '\n';
-
     str << "    y: " << quaternion.y << '\n';
-
     str << "    z: " << quaternion.z << '\n';
-
     str << '}';
     return str;
 }
 
 bool operator==(const Telemetry::EulerAngle& lhs, const Telemetry::EulerAngle& rhs)
 {
-    return (rhs.roll_deg == lhs.roll_deg) &&
-
-           (rhs.pitch_deg == lhs.pitch_deg) &&
-
+    return (rhs.roll_deg == lhs.roll_deg) && (rhs.pitch_deg == lhs.pitch_deg) &&
            (rhs.yaw_deg == lhs.yaw_deg);
 }
 
@@ -520,11 +499,8 @@ std::ostream& operator<<(std::ostream& str, Telemetry::EulerAngle const& euler_a
 {
     str << "euler_angle:" << '\n' << "{\n";
     str << "    roll_deg: " << euler_angle.roll_deg << '\n';
-
     str << "    pitch_deg: " << euler_angle.pitch_deg << '\n';
-
     str << "    yaw_deg: " << euler_angle.yaw_deg << '\n';
-
     str << '}';
     return str;
 }
@@ -532,10 +508,7 @@ std::ostream& operator<<(std::ostream& str, Telemetry::EulerAngle const& euler_a
 bool operator==(
     const Telemetry::AngularVelocityBody& lhs, const Telemetry::AngularVelocityBody& rhs)
 {
-    return (rhs.roll_rad_s == lhs.roll_rad_s) &&
-
-           (rhs.pitch_rad_s == lhs.pitch_rad_s) &&
-
+    return (rhs.roll_rad_s == lhs.roll_rad_s) && (rhs.pitch_rad_s == lhs.pitch_rad_s) &&
            (rhs.yaw_rad_s == lhs.yaw_rad_s);
 }
 
@@ -544,11 +517,8 @@ operator<<(std::ostream& str, Telemetry::AngularVelocityBody const& angular_velo
 {
     str << "angular_velocity_body:" << '\n' << "{\n";
     str << "    roll_rad_s: " << angular_velocity_body.roll_rad_s << '\n';
-
     str << "    pitch_rad_s: " << angular_velocity_body.pitch_rad_s << '\n';
-
     str << "    yaw_rad_s: " << angular_velocity_body.yaw_rad_s << '\n';
-
     str << '}';
     return str;
 }
@@ -556,9 +526,7 @@ operator<<(std::ostream& str, Telemetry::AngularVelocityBody const& angular_velo
 bool operator==(const Telemetry::SpeedNed& lhs, const Telemetry::SpeedNed& rhs)
 {
     return (rhs.velocity_north_m_s == lhs.velocity_north_m_s) &&
-
            (rhs.velocity_east_m_s == lhs.velocity_east_m_s) &&
-
            (rhs.velocity_down_m_s == lhs.velocity_down_m_s);
 }
 
@@ -566,47 +534,36 @@ std::ostream& operator<<(std::ostream& str, Telemetry::SpeedNed const& speed_ned
 {
     str << "speed_ned:" << '\n' << "{\n";
     str << "    velocity_north_m_s: " << speed_ned.velocity_north_m_s << '\n';
-
     str << "    velocity_east_m_s: " << speed_ned.velocity_east_m_s << '\n';
-
     str << "    velocity_down_m_s: " << speed_ned.velocity_down_m_s << '\n';
-
     str << '}';
     return str;
 }
 
 bool operator==(const Telemetry::GpsInfo& lhs, const Telemetry::GpsInfo& rhs)
 {
-    return (rhs.num_satellites == lhs.num_satellites) &&
-
-           (rhs.fix_type == lhs.fix_type);
+    return (rhs.num_satellites == lhs.num_satellites) && (rhs.fix_type == lhs.fix_type);
 }
 
 std::ostream& operator<<(std::ostream& str, Telemetry::GpsInfo const& gps_info)
 {
     str << "gps_info:" << '\n' << "{\n";
     str << "    num_satellites: " << gps_info.num_satellites << '\n';
-
     str << "    fix_type: " << gps_info.fix_type << '\n';
-
     str << '}';
     return str;
 }
 
 bool operator==(const Telemetry::Battery& lhs, const Telemetry::Battery& rhs)
 {
-    return (rhs.voltage_v == lhs.voltage_v) &&
-
-           (rhs.remaining_percent == lhs.remaining_percent);
+    return (rhs.voltage_v == lhs.voltage_v) && (rhs.remaining_percent == lhs.remaining_percent);
 }
 
 std::ostream& operator<<(std::ostream& str, Telemetry::Battery const& battery)
 {
     str << "battery:" << '\n' << "{\n";
     str << "    voltage_v: " << battery.voltage_v << '\n';
-
     str << "    remaining_percent: " << battery.remaining_percent << '\n';
-
     str << '}';
     return str;
 }
@@ -614,17 +571,11 @@ std::ostream& operator<<(std::ostream& str, Telemetry::Battery const& battery)
 bool operator==(const Telemetry::Health& lhs, const Telemetry::Health& rhs)
 {
     return (rhs.is_gyrometer_calibration_ok == lhs.is_gyrometer_calibration_ok) &&
-
            (rhs.is_accelerometer_calibration_ok == lhs.is_accelerometer_calibration_ok) &&
-
            (rhs.is_magnetometer_calibration_ok == lhs.is_magnetometer_calibration_ok) &&
-
            (rhs.is_level_calibration_ok == lhs.is_level_calibration_ok) &&
-
            (rhs.is_local_position_ok == lhs.is_local_position_ok) &&
-
            (rhs.is_global_position_ok == lhs.is_global_position_ok) &&
-
            (rhs.is_home_position_ok == lhs.is_home_position_ok);
 }
 
@@ -632,20 +583,13 @@ std::ostream& operator<<(std::ostream& str, Telemetry::Health const& health)
 {
     str << "health:" << '\n' << "{\n";
     str << "    is_gyrometer_calibration_ok: " << health.is_gyrometer_calibration_ok << '\n';
-
     str << "    is_accelerometer_calibration_ok: " << health.is_accelerometer_calibration_ok
         << '\n';
-
     str << "    is_magnetometer_calibration_ok: " << health.is_magnetometer_calibration_ok << '\n';
-
     str << "    is_level_calibration_ok: " << health.is_level_calibration_ok << '\n';
-
     str << "    is_local_position_ok: " << health.is_local_position_ok << '\n';
-
     str << "    is_global_position_ok: " << health.is_global_position_ok << '\n';
-
     str << "    is_home_position_ok: " << health.is_home_position_ok << '\n';
-
     str << '}';
     return str;
 }
@@ -653,9 +597,7 @@ std::ostream& operator<<(std::ostream& str, Telemetry::Health const& health)
 bool operator==(const Telemetry::RcStatus& lhs, const Telemetry::RcStatus& rhs)
 {
     return (rhs.was_available_once == lhs.was_available_once) &&
-
            (rhs.is_available == lhs.is_available) &&
-
            (rhs.signal_strength_percent == lhs.signal_strength_percent);
 }
 
@@ -663,29 +605,22 @@ std::ostream& operator<<(std::ostream& str, Telemetry::RcStatus const& rc_status
 {
     str << "rc_status:" << '\n' << "{\n";
     str << "    was_available_once: " << rc_status.was_available_once << '\n';
-
     str << "    is_available: " << rc_status.is_available << '\n';
-
     str << "    signal_strength_percent: " << rc_status.signal_strength_percent << '\n';
-
     str << '}';
     return str;
 }
 
 bool operator==(const Telemetry::StatusText& lhs, const Telemetry::StatusText& rhs)
 {
-    return (rhs.type == lhs.type) &&
-
-           (rhs.text == lhs.text);
+    return (rhs.type == lhs.type) && (rhs.text == lhs.text);
 }
 
 std::ostream& operator<<(std::ostream& str, Telemetry::StatusText const& status_text)
 {
     str << "status_text:" << '\n' << "{\n";
     str << "    type: " << status_text.type << '\n';
-
     str << "    text: " << status_text.text << '\n';
-
     str << '}';
     return str;
 }
@@ -693,9 +628,7 @@ std::ostream& operator<<(std::ostream& str, Telemetry::StatusText const& status_
 bool operator==(
     const Telemetry::ActuatorControlTarget& lhs, const Telemetry::ActuatorControlTarget& rhs)
 {
-    return (rhs.group == lhs.group) &&
-
-           (rhs.controls == lhs.controls);
+    return (rhs.group == lhs.group) && (rhs.controls == lhs.controls);
 }
 
 std::ostream&
@@ -703,13 +636,11 @@ operator<<(std::ostream& str, Telemetry::ActuatorControlTarget const& actuator_c
 {
     str << "actuator_control_target:" << '\n' << "{\n";
     str << "    group: " << actuator_control_target.group << '\n';
-
     str << "    controls: [";
     for (const auto& elem : actuator_control_target.controls) {
         str << elem;
         str << (elem != actuator_control_target.controls.back() ? ", " : "]\n");
     }
-
     str << '}';
     return str;
 }
@@ -717,9 +648,7 @@ operator<<(std::ostream& str, Telemetry::ActuatorControlTarget const& actuator_c
 bool operator==(
     const Telemetry::ActuatorOutputStatus& lhs, const Telemetry::ActuatorOutputStatus& rhs)
 {
-    return (rhs.active == lhs.active) &&
-
-           (rhs.actuator == lhs.actuator);
+    return (rhs.active == lhs.active) && (rhs.actuator == lhs.actuator);
 }
 
 std::ostream&
@@ -727,13 +656,11 @@ operator<<(std::ostream& str, Telemetry::ActuatorOutputStatus const& actuator_ou
 {
     str << "actuator_output_status:" << '\n' << "{\n";
     str << "    active: " << actuator_output_status.active << '\n';
-
     str << "    actuator: [";
     for (const auto& elem : actuator_output_status.actuator) {
         str << elem;
         str << (elem != actuator_output_status.actuator.back() ? ", " : "]\n");
     }
-
     str << '}';
     return str;
 }
@@ -751,51 +678,36 @@ std::ostream& operator<<(std::ostream& str, Telemetry::Covariance const& covaria
         str << elem;
         str << (elem != covariance.covariance_matrix.back() ? ", " : "]\n");
     }
-
     str << '}';
     return str;
 }
 
 bool operator==(const Telemetry::VelocityBody& lhs, const Telemetry::VelocityBody& rhs)
 {
-    return (rhs.x_m_s == lhs.x_m_s) &&
-
-           (rhs.y_m_s == lhs.y_m_s) &&
-
-           (rhs.z_m_s == lhs.z_m_s);
+    return (rhs.x_m_s == lhs.x_m_s) && (rhs.y_m_s == lhs.y_m_s) && (rhs.z_m_s == lhs.z_m_s);
 }
 
 std::ostream& operator<<(std::ostream& str, Telemetry::VelocityBody const& velocity_body)
 {
     str << "velocity_body:" << '\n' << "{\n";
     str << "    x_m_s: " << velocity_body.x_m_s << '\n';
-
     str << "    y_m_s: " << velocity_body.y_m_s << '\n';
-
     str << "    z_m_s: " << velocity_body.z_m_s << '\n';
-
     str << '}';
     return str;
 }
 
 bool operator==(const Telemetry::PositionBody& lhs, const Telemetry::PositionBody& rhs)
 {
-    return (rhs.x_m == lhs.x_m) &&
-
-           (rhs.y_m == lhs.y_m) &&
-
-           (rhs.z_m == lhs.z_m);
+    return (rhs.x_m == lhs.x_m) && (rhs.y_m == lhs.y_m) && (rhs.z_m == lhs.z_m);
 }
 
 std::ostream& operator<<(std::ostream& str, Telemetry::PositionBody const& position_body)
 {
     str << "position_body:" << '\n' << "{\n";
     str << "    x_m: " << position_body.x_m << '\n';
-
     str << "    y_m: " << position_body.y_m << '\n';
-
     str << "    z_m: " << position_body.z_m << '\n';
-
     str << '}';
     return str;
 }
@@ -815,25 +727,13 @@ std::ostream& operator<<(std::ostream& str, Telemetry::MavFrame const& mav_frame
             return str << "Unknown";
     }
 }
-
 bool operator==(const Telemetry::Odometry& lhs, const Telemetry::Odometry& rhs)
 {
-    return (rhs.time_usec == lhs.time_usec) &&
-
-           (rhs.frame_id == lhs.frame_id) &&
-
-           (rhs.child_frame_id == lhs.child_frame_id) &&
-
-           (rhs.position_body == lhs.position_body) &&
-
-           (rhs.q == lhs.q) &&
-
-           (rhs.velocity_body == lhs.velocity_body) &&
-
+    return (rhs.time_usec == lhs.time_usec) && (rhs.frame_id == lhs.frame_id) &&
+           (rhs.child_frame_id == lhs.child_frame_id) && (rhs.position_body == lhs.position_body) &&
+           (rhs.q == lhs.q) && (rhs.velocity_body == lhs.velocity_body) &&
            (rhs.angular_velocity_body == lhs.angular_velocity_body) &&
-
            (rhs.pose_covariance == lhs.pose_covariance) &&
-
            (rhs.velocity_covariance == lhs.velocity_covariance);
 }
 
@@ -841,55 +741,36 @@ std::ostream& operator<<(std::ostream& str, Telemetry::Odometry const& odometry)
 {
     str << "odometry:" << '\n' << "{\n";
     str << "    time_usec: " << odometry.time_usec << '\n';
-
     str << "    frame_id: " << odometry.frame_id << '\n';
-
     str << "    child_frame_id: " << odometry.child_frame_id << '\n';
-
     str << "    position_body: " << odometry.position_body << '\n';
-
     str << "    q: " << odometry.q << '\n';
-
     str << "    velocity_body: " << odometry.velocity_body << '\n';
-
     str << "    angular_velocity_body: " << odometry.angular_velocity_body << '\n';
-
     str << "    pose_covariance: " << odometry.pose_covariance << '\n';
-
     str << "    velocity_covariance: " << odometry.velocity_covariance << '\n';
-
     str << '}';
     return str;
 }
 
 bool operator==(const Telemetry::PositionNed& lhs, const Telemetry::PositionNed& rhs)
 {
-    return (rhs.north_m == lhs.north_m) &&
-
-           (rhs.east_m == lhs.east_m) &&
-
-           (rhs.down_m == lhs.down_m);
+    return (rhs.north_m == lhs.north_m) && (rhs.east_m == lhs.east_m) && (rhs.down_m == lhs.down_m);
 }
 
 std::ostream& operator<<(std::ostream& str, Telemetry::PositionNed const& position_ned)
 {
     str << "position_ned:" << '\n' << "{\n";
     str << "    north_m: " << position_ned.north_m << '\n';
-
     str << "    east_m: " << position_ned.east_m << '\n';
-
     str << "    down_m: " << position_ned.down_m << '\n';
-
     str << '}';
     return str;
 }
 
 bool operator==(const Telemetry::VelocityNed& lhs, const Telemetry::VelocityNed& rhs)
 {
-    return (rhs.north_m_s == lhs.north_m_s) &&
-
-           (rhs.east_m_s == lhs.east_m_s) &&
-
+    return (rhs.north_m_s == lhs.north_m_s) && (rhs.east_m_s == lhs.east_m_s) &&
            (rhs.down_m_s == lhs.down_m_s);
 }
 
@@ -897,11 +778,8 @@ std::ostream& operator<<(std::ostream& str, Telemetry::VelocityNed const& veloci
 {
     str << "velocity_ned:" << '\n' << "{\n";
     str << "    north_m_s: " << velocity_ned.north_m_s << '\n';
-
     str << "    east_m_s: " << velocity_ned.east_m_s << '\n';
-
     str << "    down_m_s: " << velocity_ned.down_m_s << '\n';
-
     str << '}';
     return str;
 }
@@ -909,9 +787,7 @@ std::ostream& operator<<(std::ostream& str, Telemetry::VelocityNed const& veloci
 bool operator==(
     const Telemetry::PositionVelocityNed& lhs, const Telemetry::PositionVelocityNed& rhs)
 {
-    return (rhs.position == lhs.position) &&
-
-           (rhs.velocity == lhs.velocity);
+    return (rhs.position == lhs.position) && (rhs.velocity == lhs.velocity);
 }
 
 std::ostream&
@@ -919,19 +795,14 @@ operator<<(std::ostream& str, Telemetry::PositionVelocityNed const& position_vel
 {
     str << "position_velocity_ned:" << '\n' << "{\n";
     str << "    position: " << position_velocity_ned.position << '\n';
-
     str << "    velocity: " << position_velocity_ned.velocity << '\n';
-
     str << '}';
     return str;
 }
 
 bool operator==(const Telemetry::GroundTruth& lhs, const Telemetry::GroundTruth& rhs)
 {
-    return (rhs.latitude_deg == lhs.latitude_deg) &&
-
-           (rhs.longitude_deg == lhs.longitude_deg) &&
-
+    return (rhs.latitude_deg == lhs.latitude_deg) && (rhs.longitude_deg == lhs.longitude_deg) &&
            (rhs.absolute_altitude_m == lhs.absolute_altitude_m);
 }
 
@@ -939,11 +810,8 @@ std::ostream& operator<<(std::ostream& str, Telemetry::GroundTruth const& ground
 {
     str << "ground_truth:" << '\n' << "{\n";
     str << "    latitude_deg: " << ground_truth.latitude_deg << '\n';
-
     str << "    longitude_deg: " << ground_truth.longitude_deg << '\n';
-
     str << "    absolute_altitude_m: " << ground_truth.absolute_altitude_m << '\n';
-
     str << '}';
     return str;
 }
@@ -951,9 +819,7 @@ std::ostream& operator<<(std::ostream& str, Telemetry::GroundTruth const& ground
 bool operator==(const Telemetry::FixedwingMetrics& lhs, const Telemetry::FixedwingMetrics& rhs)
 {
     return (rhs.airspeed_m_s == lhs.airspeed_m_s) &&
-
            (rhs.throttle_percentage == lhs.throttle_percentage) &&
-
            (rhs.climb_rate_m_s == lhs.climb_rate_m_s);
 }
 
@@ -961,21 +827,15 @@ std::ostream& operator<<(std::ostream& str, Telemetry::FixedwingMetrics const& f
 {
     str << "fixedwing_metrics:" << '\n' << "{\n";
     str << "    airspeed_m_s: " << fixedwing_metrics.airspeed_m_s << '\n';
-
     str << "    throttle_percentage: " << fixedwing_metrics.throttle_percentage << '\n';
-
     str << "    climb_rate_m_s: " << fixedwing_metrics.climb_rate_m_s << '\n';
-
     str << '}';
     return str;
 }
 
 bool operator==(const Telemetry::AccelerationFrd& lhs, const Telemetry::AccelerationFrd& rhs)
 {
-    return (rhs.forward_m_s2 == lhs.forward_m_s2) &&
-
-           (rhs.right_m_s2 == lhs.right_m_s2) &&
-
+    return (rhs.forward_m_s2 == lhs.forward_m_s2) && (rhs.right_m_s2 == lhs.right_m_s2) &&
            (rhs.down_m_s2 == lhs.down_m_s2);
 }
 
@@ -983,21 +843,15 @@ std::ostream& operator<<(std::ostream& str, Telemetry::AccelerationFrd const& ac
 {
     str << "acceleration_frd:" << '\n' << "{\n";
     str << "    forward_m_s2: " << acceleration_frd.forward_m_s2 << '\n';
-
     str << "    right_m_s2: " << acceleration_frd.right_m_s2 << '\n';
-
     str << "    down_m_s2: " << acceleration_frd.down_m_s2 << '\n';
-
     str << '}';
     return str;
 }
 
 bool operator==(const Telemetry::AngularVelocityFrd& lhs, const Telemetry::AngularVelocityFrd& rhs)
 {
-    return (rhs.forward_rad_s == lhs.forward_rad_s) &&
-
-           (rhs.right_rad_s == lhs.right_rad_s) &&
-
+    return (rhs.forward_rad_s == lhs.forward_rad_s) && (rhs.right_rad_s == lhs.right_rad_s) &&
            (rhs.down_rad_s == lhs.down_rad_s);
 }
 
@@ -1006,21 +860,15 @@ operator<<(std::ostream& str, Telemetry::AngularVelocityFrd const& angular_veloc
 {
     str << "angular_velocity_frd:" << '\n' << "{\n";
     str << "    forward_rad_s: " << angular_velocity_frd.forward_rad_s << '\n';
-
     str << "    right_rad_s: " << angular_velocity_frd.right_rad_s << '\n';
-
     str << "    down_rad_s: " << angular_velocity_frd.down_rad_s << '\n';
-
     str << '}';
     return str;
 }
 
 bool operator==(const Telemetry::MagneticFieldFrd& lhs, const Telemetry::MagneticFieldFrd& rhs)
 {
-    return (rhs.forward_gauss == lhs.forward_gauss) &&
-
-           (rhs.right_gauss == lhs.right_gauss) &&
-
+    return (rhs.forward_gauss == lhs.forward_gauss) && (rhs.right_gauss == lhs.right_gauss) &&
            (rhs.down_gauss == lhs.down_gauss);
 }
 
@@ -1028,11 +876,8 @@ std::ostream& operator<<(std::ostream& str, Telemetry::MagneticFieldFrd const& m
 {
     str << "magnetic_field_frd:" << '\n' << "{\n";
     str << "    forward_gauss: " << magnetic_field_frd.forward_gauss << '\n';
-
     str << "    right_gauss: " << magnetic_field_frd.right_gauss << '\n';
-
     str << "    down_gauss: " << magnetic_field_frd.down_gauss << '\n';
-
     str << '}';
     return str;
 }
@@ -1040,11 +885,8 @@ std::ostream& operator<<(std::ostream& str, Telemetry::MagneticFieldFrd const& m
 bool operator==(const Telemetry::Imu& lhs, const Telemetry::Imu& rhs)
 {
     return (rhs.acceleration_frd == lhs.acceleration_frd) &&
-
            (rhs.angular_velocity_frd == lhs.angular_velocity_frd) &&
-
            (rhs.magnetic_field_frd == lhs.magnetic_field_frd) &&
-
            (rhs.temperature_degc == lhs.temperature_degc);
 }
 
@@ -1052,13 +894,9 @@ std::ostream& operator<<(std::ostream& str, Telemetry::Imu const& imu)
 {
     str << "imu:" << '\n' << "{\n";
     str << "    acceleration_frd: " << imu.acceleration_frd << '\n';
-
     str << "    angular_velocity_frd: " << imu.angular_velocity_frd << '\n';
-
     str << "    magnetic_field_frd: " << imu.magnetic_field_frd << '\n';
-
     str << "    temperature_degc: " << imu.temperature_degc << '\n';
-
     str << '}';
     return str;
 }

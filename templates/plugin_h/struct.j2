@@ -1,18 +1,17 @@
 {% for nested_enum in nested_enums %}
 {{ nested_enums[nested_enum] }}
-{% endfor %}
+{% endfor -%}
 
 {% if not name.upper_camel_case.endswith('Result') -%}
 /**
  * @brief {{ struct_description | replace('\n', '\n *')}}
  */
 struct {{ name.upper_camel_case }} {
-    {% for field in fields -%}
+    {%- for field in fields %}
     {{ field.type_info.name }} {{ field.name.lower_snake_case }}; /**< @brief{{ field.description.rstrip() }} */
-    {% endfor %}
+    {%- endfor %}
 };
 {% endif %}
-
 {% if not name.upper_camel_case.endswith('Result') -%}
 /**
  * @brief Equal operator to compare two `{{ plugin_name.upper_camel_case }}::{{ name.upper_camel_case }}` objects.
@@ -27,4 +26,4 @@ friend bool operator==(const {{ plugin_name.upper_camel_case }}::{{ name.upper_c
  * @return A reference to the stream.
  */
 friend std::ostream& operator<<(std::ostream& str, {{ plugin_name.upper_camel_case }}::{{ name.upper_camel_case }} const& {{ name.lower_snake_case }});
-{% endif %}
+{% endif -%}
