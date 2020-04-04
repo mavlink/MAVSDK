@@ -110,7 +110,7 @@ class ActionService final {
     std::unique_ptr< ::grpc::ClientAsyncResponseReaderInterface< ::mavsdk::rpc::action::RebootResponse>> PrepareAsyncReboot(::grpc::ClientContext* context, const ::mavsdk::rpc::action::RebootRequest& request, ::grpc::CompletionQueue* cq) {
       return std::unique_ptr< ::grpc::ClientAsyncResponseReaderInterface< ::mavsdk::rpc::action::RebootResponse>>(PrepareAsyncRebootRaw(context, request, cq));
     }
-    // *
+    //
     // Send command to shut down the drone components.
     //
     // This will shut down the autopilot, onboard computer, camera and gimbal.
@@ -148,7 +148,7 @@ class ActionService final {
     std::unique_ptr< ::grpc::ClientAsyncResponseReaderInterface< ::mavsdk::rpc::action::ReturnToLaunchResponse>> PrepareAsyncReturnToLaunch(::grpc::ClientContext* context, const ::mavsdk::rpc::action::ReturnToLaunchRequest& request, ::grpc::CompletionQueue* cq) {
       return std::unique_ptr< ::grpc::ClientAsyncResponseReaderInterface< ::mavsdk::rpc::action::ReturnToLaunchResponse>>(PrepareAsyncReturnToLaunchRaw(context, request, cq));
     }
-    // *
+    //
     // Send command to move the vehicle to a specific global position.
     //
     // The latitude and longitude are given in degrees (WGS84 frame) and the altitude
@@ -290,7 +290,7 @@ class ActionService final {
       virtual void Reboot(::grpc::ClientContext* context, const ::grpc::ByteBuffer* request, ::mavsdk::rpc::action::RebootResponse* response, std::function<void(::grpc::Status)>) = 0;
       virtual void Reboot(::grpc::ClientContext* context, const ::mavsdk::rpc::action::RebootRequest* request, ::mavsdk::rpc::action::RebootResponse* response, ::grpc::experimental::ClientUnaryReactor* reactor) = 0;
       virtual void Reboot(::grpc::ClientContext* context, const ::grpc::ByteBuffer* request, ::mavsdk::rpc::action::RebootResponse* response, ::grpc::experimental::ClientUnaryReactor* reactor) = 0;
-      // *
+      //
       // Send command to shut down the drone components.
       //
       // This will shut down the autopilot, onboard computer, camera and gimbal.
@@ -319,7 +319,7 @@ class ActionService final {
       virtual void ReturnToLaunch(::grpc::ClientContext* context, const ::grpc::ByteBuffer* request, ::mavsdk::rpc::action::ReturnToLaunchResponse* response, std::function<void(::grpc::Status)>) = 0;
       virtual void ReturnToLaunch(::grpc::ClientContext* context, const ::mavsdk::rpc::action::ReturnToLaunchRequest* request, ::mavsdk::rpc::action::ReturnToLaunchResponse* response, ::grpc::experimental::ClientUnaryReactor* reactor) = 0;
       virtual void ReturnToLaunch(::grpc::ClientContext* context, const ::grpc::ByteBuffer* request, ::mavsdk::rpc::action::ReturnToLaunchResponse* response, ::grpc::experimental::ClientUnaryReactor* reactor) = 0;
-      // *
+      //
       // Send command to move the vehicle to a specific global position.
       //
       // The latitude and longitude are given in degrees (WGS84 frame) and the altitude
@@ -716,7 +716,7 @@ class ActionService final {
     //
     // This will reboot the autopilot, companion computer, camera and gimbal.
     virtual ::grpc::Status Reboot(::grpc::ServerContext* context, const ::mavsdk::rpc::action::RebootRequest* request, ::mavsdk::rpc::action::RebootResponse* response);
-    // *
+    //
     // Send command to shut down the drone components.
     //
     // This will shut down the autopilot, onboard computer, camera and gimbal.
@@ -736,7 +736,7 @@ class ActionService final {
     // generally means it will rise up to a certain altitude to clear any obstacles before heading
     // back to the launch (takeoff) position and land there.
     virtual ::grpc::Status ReturnToLaunch(::grpc::ServerContext* context, const ::mavsdk::rpc::action::ReturnToLaunchRequest* request, ::mavsdk::rpc::action::ReturnToLaunchResponse* response);
-    // *
+    //
     // Send command to move the vehicle to a specific global position.
     //
     // The latitude and longitude are given in degrees (WGS84 frame) and the altitude
