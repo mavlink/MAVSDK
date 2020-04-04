@@ -41,14 +41,11 @@ public:
      */
     ~{{ plugin_name.upper_camel_case }}();
 
-{% for enum in enums -%}
+{% for enum in enums %}
 {{ indent(enum, 1) }}
-
 {% endfor %}
-
-{%- for struct in structs %}
+{% for struct in structs %}
 {{ indent(struct, 1) }}
-
 {% endfor -%}
 
 {% if has_result %}
@@ -63,7 +60,7 @@ public:
 
 {% endfor %}
 
-{% if has_result %}
+{%- if has_result %}
     /**
      * @brief Returns a human-readable English string for a Result.
      *
