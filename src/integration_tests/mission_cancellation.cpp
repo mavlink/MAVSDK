@@ -11,7 +11,7 @@
 
 using namespace mavsdk;
 
-static std::shared_ptr<MissionItem> add_waypoint(
+static std::shared_ptr<Mission::MissionItem> add_waypoint(
     double latitude_deg,
     double longitude_deg,
     float relative_altitude_m,
@@ -37,7 +37,7 @@ TEST_F(SitlTest, MissionUploadCancellation)
 
     auto mission = std::make_shared<Mission>(system);
 
-    std::vector<std::shared_ptr<MissionItem>> mission_items;
+    std::vector<std::shared_ptr<Mission::MissionItem>> mission_items;
 
     // We're going to try uploading 100 mission items.
     for (unsigned i = 0; i < 1000; ++i) {
@@ -83,7 +83,7 @@ TEST_F(SitlTest, MissionDownloadCancellation)
 
     auto mission = std::make_shared<Mission>(system);
 
-    std::vector<std::shared_ptr<MissionItem>> mission_items;
+    std::vector<std::shared_ptr<Mission::MissionItem>> mission_items;
 
     // We're going to try uploading 100 mission items.
     for (unsigned i = 0; i < 1000; ++i) {
@@ -113,7 +113,7 @@ TEST_F(SitlTest, MissionDownloadCancellation)
         mission->download_mission_async(
             [&prom](
                 Mission::Result result,
-                std::vector<std::shared_ptr<MissionItem>> received_mission_items) {
+                std::vector<std::shared_ptr<Mission::MissionItem>> received_mission_items) {
                 UNUSED(received_mission_items);
                 LogInfo() << "Download mission result: " << Mission::result_str(result);
                 prom.set_value(result);
@@ -134,7 +134,7 @@ TEST_F(SitlTest, MissionDownloadCancellation)
     std::this_thread::sleep_for(std::chrono::seconds(5));
 }
 
-std::shared_ptr<MissionItem> add_waypoint(
+std::shared_ptr<Mission::MissionItem> add_waypoint(
     double latitude_deg,
     double longitude_deg,
     float relative_altitude_m,
@@ -144,14 +144,17 @@ std::shared_ptr<MissionItem> add_waypoint(
     float gimbal_yaw_deg,
     bool take_photo)
 {
-    std::shared_ptr<MissionItem> new_item(new MissionItem());
-    new_item->set_position(latitude_deg, longitude_deg);
-    new_item->set_relative_altitude(relative_altitude_m);
-    new_item->set_speed(speed_m_s);
-    new_item->set_fly_through(is_fly_through);
-    new_item->set_gimbal_pitch_and_yaw(gimbal_pitch_deg, gimbal_yaw_deg);
+    std::shared_ptr<Mission::MissionItem> new_item(new Mission::MissionItem());
+    new_item->latitude_deg = latitude_deg;
+    new_item->longitude_deg = longitude_deg;
+    new_item->relative_altitude_m = relative_altitude_m;
+    new_item->speed_m_s = speed_m_s;
+    new_item->fly_through = is_fly_through;
+
+    new_item->gimbal_pitch_deg = gimbal_pitch_deg;
+    new_item->gimbal_yaw_deg = gimbal_yaw_deg;
     if (take_photo) {
-        new_item->set_camera_action(MissionItem::CameraAction::TAKE_PHOTO);
+        new_item->camera_action = Mission::CameraAction::TAKE_PHOTO;
     }
     return new_item;
 }

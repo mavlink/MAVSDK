@@ -8,6 +8,8 @@
 #include "plugins/mission/mission.h"
 
 using namespace mavsdk;
+using MissionItem = Mission::MissionItem;
+using CameraAction = Mission::CameraAction;
 
 static const std::string QGC_SAMPLE_PLAN = "src/plugins/mission/qgroundcontrol_sample.plan";
 
@@ -97,37 +99,40 @@ Mission::Result compose_mission_items(
     do {
         if (command == MAV_CMD_NAV_WAYPOINT || command == MAV_CMD_NAV_TAKEOFF ||
             command == MAV_CMD_NAV_LAND) {
-            if (new_mission_item->has_position_set()) {
+            if (std::isfinite(new_mission_item->latitude_deg) &&
+                std::isfinite(new_mission_item->longitude_deg) &&
+                std::isfinite(new_mission_item->relative_altitude_m)) {
                 mission_items.push_back(new_mission_item);
                 new_mission_item = std::make_shared<MissionItem>();
             }
             if (command == MAV_CMD_NAV_WAYPOINT) {
                 auto is_fly_thru = !(int(params[0]) > 0);
-                new_mission_item->set_fly_through(is_fly_thru);
+                new_mission_item->fly_through = is_fly_thru;
             }
             auto lat = params[4], lon = params[5];
-            new_mission_item->set_position(lat, lon);
+            new_mission_item->latitude_deg = lat;
+            new_mission_item->longitude_deg = lon;
 
             auto rel_alt = float(params[6]);
-            new_mission_item->set_relative_altitude(rel_alt);
+            new_mission_item->relative_altitude_m = rel_alt;
 
         } else if (command == MAV_CMD_DO_MOUNT_CONTROL) {
             auto pitch = float(params[0]), yaw = float(params[2]);
-            new_mission_item->set_gimbal_pitch_and_yaw(pitch, yaw);
+            new_mission_item->gimbal_pitch_deg = pitch;
+            new_mission_item->gimbal_yaw_deg = yaw;
 
         } else if (command == MAV_CMD_NAV_LOITER_TIME) {
             auto loiter_time_s = float(params[0]);
-            new_mission_item->set_loiter_time(loiter_time_s);
+            new_mission_item->loiter_time_s = loiter_time_s;
 
         } else if (command == MAV_CMD_IMAGE_START_CAPTURE) {
             auto photo_interval = int(params[1]), photo_count = int(params[2]);
 
             if (photo_interval > 0 && photo_count == 0) {
-                new_mission_item->set_camera_action(
-                    MissionItem::CameraAction::START_PHOTO_INTERVAL);
-                new_mission_item->set_camera_photo_interval(photo_interval);
+                new_mission_item->camera_action = CameraAction::START_PHOTO_INTERVAL;
+                new_mission_item->camera_photo_interval_s = photo_interval;
             } else if (photo_interval == 0 && photo_count == 1) {
-                new_mission_item->set_camera_action(MissionItem::CameraAction::TAKE_PHOTO);
+                new_mission_item->camera_action = CameraAction::TAKE_PHOTO;
             } else {
                 LogErr() << "Mission item START_CAPTURE params unsupported.";
                 result = Mission::Result::UNSUPPORTED;
@@ -135,13 +140,13 @@ Mission::Result compose_mission_items(
             }
 
         } else if (command == MAV_CMD_IMAGE_STOP_CAPTURE) {
-            new_mission_item->set_camera_action(MissionItem::CameraAction::STOP_PHOTO_INTERVAL);
+            new_mission_item->camera_action = CameraAction::STOP_PHOTO_INTERVAL;
 
         } else if (command == MAV_CMD_VIDEO_START_CAPTURE) {
-            new_mission_item->set_camera_action(MissionItem::CameraAction::START_VIDEO);
+            new_mission_item->camera_action = CameraAction::START_VIDEO;
 
         } else if (command == MAV_CMD_VIDEO_STOP_CAPTURE) {
-            new_mission_item->set_camera_action(MissionItem::CameraAction::STOP_VIDEO);
+            new_mission_item->camera_action = CameraAction::STOP_VIDEO;
 
         } else if (command == MAV_CMD_DO_CHANGE_SPEED) {
             enum { AirSpeed, GroundSpeed };
@@ -151,7 +156,7 @@ Mission::Result compose_mission_items(
             auto is_absolute = (params[3] == 0);
 
             if (speed_type == int(GroundSpeed) && throttle < 0 && is_absolute) {
-                new_mission_item->set_speed(speed_m_s);
+                new_mission_item->speed_m_s = speed_m_s;
             } else {
                 LogErr() << command << "Mission item DO_CHANGE_SPEED params unsupported";
                 result = Mission::Result::UNSUPPORTED;
@@ -167,34 +172,33 @@ Mission::Result compose_mission_items(
 
 void compare(const std::shared_ptr<MissionItem> local, const std::shared_ptr<MissionItem> imported)
 {
-    if (local->get_camera_action() == MissionItem::CameraAction::NONE) {
+    if (local->camera_action == CameraAction::NONE) {
         // Non-Camera commands
-        if (std::isfinite(local->get_latitude_deg())) {
-            EXPECT_NEAR(local->get_latitude_deg(), imported->get_latitude_deg(), 1e-6);
+        if (std::isfinite(local->latitude_deg)) {
+            EXPECT_NEAR(local->latitude_deg, imported->latitude_deg, 1e-6);
         }
-        if (std::isfinite(local->get_longitude_deg())) {
-            EXPECT_NEAR(local->get_longitude_deg(), imported->get_longitude_deg(), 1e-6);
+        if (std::isfinite(local->longitude_deg)) {
+            EXPECT_NEAR(local->longitude_deg, imported->longitude_deg, 1e-6);
         }
-        if (std::isfinite(local->get_relative_altitude_m())) {
-            EXPECT_FLOAT_EQ(local->get_relative_altitude_m(), imported->get_relative_altitude_m());
+        if (std::isfinite(local->relative_altitude_m)) {
+            EXPECT_FLOAT_EQ(local->relative_altitude_m, imported->relative_altitude_m);
         }
 
-        EXPECT_EQ(local->get_fly_through(), imported->get_fly_through());
-        if (std::isfinite(local->get_speed_m_s())) {
-            EXPECT_FLOAT_EQ(local->get_speed_m_s(), imported->get_speed_m_s());
+        EXPECT_EQ(local->fly_through, imported->fly_through);
+        if (std::isfinite(local->speed_m_s)) {
+            EXPECT_FLOAT_EQ(local->speed_m_s, imported->speed_m_s);
         }
     }
 
-    EXPECT_EQ(local->get_camera_action(), imported->get_camera_action());
+    EXPECT_EQ(local->camera_action, imported->camera_action);
 
-    if (local->get_camera_action() == MissionItem::CameraAction::START_PHOTO_INTERVAL &&
+    if (local->camera_action == CameraAction::START_PHOTO_INTERVAL &&
         // Camera commands
-        std::isfinite(local->get_camera_photo_interval_s())) {
-        EXPECT_DOUBLE_EQ(
-            local->get_camera_photo_interval_s(), imported->get_camera_photo_interval_s());
+        std::isfinite(local->camera_photo_interval_s)) {
+        EXPECT_DOUBLE_EQ(local->camera_photo_interval_s, imported->camera_photo_interval_s);
     }
 
-    if (std::isfinite(local->get_loiter_time_s())) {
-        EXPECT_FLOAT_EQ(local->get_loiter_time_s(), imported->get_loiter_time_s());
+    if (std::isfinite(local->loiter_time_s)) {
+        EXPECT_FLOAT_EQ(local->loiter_time_s, imported->loiter_time_s);
     }
 }
