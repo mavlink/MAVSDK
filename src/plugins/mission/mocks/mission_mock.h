@@ -3,7 +3,6 @@
 #include <vector>
 
 #include "plugins/mission/mission.h"
-#include "plugins/mission/mission_item.h"
 
 namespace mavsdk {
 namespace testing {
@@ -12,7 +11,7 @@ class MockMission {
 public:
     MOCK_CONST_METHOD2(
         upload_mission_async,
-        void(const std::vector<std::shared_ptr<MissionItem>>&, Mission::result_callback_t)){};
+        void(const std::vector<Mission::MissionItem>&, Mission::result_callback_t)){};
     MOCK_CONST_METHOD1(
         download_mission_async, void(Mission::mission_items_and_result_callback_t)){};
     MOCK_CONST_METHOD0(upload_mission_cancel, void()){};
