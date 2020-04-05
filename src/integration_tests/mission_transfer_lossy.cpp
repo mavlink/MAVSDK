@@ -139,7 +139,6 @@ void compare_mission(
     }
 
     for (unsigned i = 0; i < a.size(); ++i) {
-        // FIXME: enable again
-        // EXPECT_EQ(*a.at(i), *b.at(i));
+        EXPECT_EQ(a.at(i), b.at(i));
     }
 }
