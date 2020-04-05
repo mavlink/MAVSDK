@@ -106,16 +106,22 @@ int main(int argc, char** argv)
     //pass.subscribe_message_async(MAVLINK_MSG_ID_GLOBAL_POSITION_INT,
             [&received_information, &device_id, &manager_sid, &manager_cid, &pass](const mavlink_message_t message) {
         std::cout << "Received" << sizeof(message) << device_id << std::endl;
-        
+
         mavlink_command_long_t cmd;
         mavlink_msg_command_long_decode(&message, &cmd);
 
         //mavlink_message_t ack;
-        //mavlink_msg_command_ack_pack(manager_sid, manager_cid, &ack, 
+        //mavlink_msg_command_ack_pack(manager_sid, manager_cid, &ack,
                 //MAV_CMD_REQUEST_MESSAGE, MAV_RESULT_ACCEPTED, 0, 0, 0, 0);
 
         //pass.send_message(ack);
     });
+
+    pass.subscribe_message_async(MAVLINK_MSG_ID_HEARTBEAT,
+        [&received_information, &device_id, &manager_sid, &manager_cid, &pass](const mavlink_message_t message) {
+            std::cout << "Received" << std::endl;
+        }
+    );
 
     struct timeval tv;
     unsigned long time_in_micros;
