@@ -4,6 +4,7 @@
 #include <vector>
 #include <memory>
 #include <functional>
+#include <string>
 
 #include "plugin_base.h"
 
