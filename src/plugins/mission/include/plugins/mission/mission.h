@@ -283,6 +283,13 @@ public:
      */
     void subscribe_progress(progress_callback_t callback);
 
+    /**
+     * @brief Equal operator to compare two `MissionItem` objects.
+     *
+     * @return `true` if items are equal.
+     */
+    friend bool operator==(const MissionItem& lhs, const MissionItem& rhs);
+
     // Non-copyable
     /**
      * @brief Copy constructor (object is not copyable).

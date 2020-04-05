@@ -300,10 +300,7 @@ Mission::MissionItem add_mission_item(
 void compare_mission_items(
     const Mission::MissionItem original, const Mission::MissionItem downloaded)
 {
-    // FIXME: add back in
-    UNUSED(original);
-    UNUSED(downloaded);
-    // EXPECT_TRUE(*original == *downloaded);
+    EXPECT_TRUE(original == downloaded);
 }
 
 void pause_and_resume(std::shared_ptr<Mission> mission)

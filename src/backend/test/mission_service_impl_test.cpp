@@ -279,8 +279,7 @@ void MissionServiceImplUploadTest::checkItemsAreUploadedCorrectly(
     ASSERT_EQ(mission_items.size(), _uploaded_mission.size());
 
     for (size_t i = 0; i < mission_items.size(); i++) {
-        // FIXME: add this again
-        // EXPECT_EQ(mission_items.at(i), _uploaded_mission.at(i));
+        EXPECT_EQ(mission_items.at(i), _uploaded_mission.at(i));
     }
 }
 
@@ -363,10 +362,9 @@ void MissionServiceImplDownloadTest::checkItemsAreDownloadedCorrectly(
     ASSERT_EQ(mission_items.size(), response->mission_items().size());
 
     for (size_t i = 0; i < mission_items.size(); i++) {
-        // FIXME: add this again
-        // EXPECT_EQ(
-        //     mission_items.at(i),
-        //     MissionServiceImpl::translateRPCMissionItem(response->mission_items().Get(i)));
+        EXPECT_EQ(
+            mission_items.at(i),
+            MissionServiceImpl::translateRPCMissionItem(response->mission_items().Get(i)));
     }
 }
 
