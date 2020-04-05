@@ -78,8 +78,9 @@ public:
      * Mission items are building blocks to assemble a mission.
      */
     struct MissionItem {
-        double latitude_deg{NAN}; /**< @brief Latitude in degrees (range: -90 to +90). */
-        double longitude_deg{NAN}; /**< @brief Longitude in degrees (range: -180 to +180). */
+        double latitude_deg{double(NAN)}; /**< @brief Latitude in degrees (range: -90 to +90). */
+        double longitude_deg{
+            double(NAN)}; /**< @brief Longitude in degrees (range: -180 to +180). */
         float relative_altitude_m{
             NAN}; /**< @brief // Altitude relative to takeoff altitude in metres. */
         float speed_m_s{
