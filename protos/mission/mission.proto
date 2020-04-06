@@ -57,7 +57,7 @@ service MissionService {
      * Note that this is not necessarily true for general missions using MAVLink if loop counters
      * are used.
      */
-    rpc SetCurrentMissionItemIndex(SetCurrentMissionItemIndexRequest) returns(SetCurrentMissionItemIndexResponse) {}
+    rpc SetCurrentMissionItem(SetCurrentMissionItemRequest) returns(SetCurrentMissionItemResponse) {}
     /*
      * Check if the mission has been finished.
      */
@@ -123,10 +123,10 @@ message ClearMissionResponse {
     MissionResult mission_result = 1;
 }
 
-message SetCurrentMissionItemIndexRequest {
+message SetCurrentMissionItemRequest {
     int32 index = 1; // Index of the mission item to be set as the next one (0-based)
 }
-message SetCurrentMissionItemIndexResponse {
+message SetCurrentMissionItemResponse {
     MissionResult mission_result = 1;
 }
 
