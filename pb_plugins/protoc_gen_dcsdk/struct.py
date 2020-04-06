@@ -54,10 +54,14 @@ class Struct(object):
         return self._template.render(plugin_name=self._plugin_name,
                                      package=self._package,
                                      struct_description=self._struct_description,
-                                     name=self._name,
+                                     name=self.name,
                                      fields=self._fields,
                                      nested_enums=self._nested_enums,
                                      nested_structs=self._nested_structs)
+
+    @property
+    def name(self):
+        return self._name
 
     @staticmethod
     def collect_structs(plugin_name, package, structs, template_env, docs):
