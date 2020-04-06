@@ -52,7 +52,7 @@ template_path_plugin_h="${script_dir}/../templates/plugin_h"
 template_path_plugin_cpp="${script_dir}/../templates/plugin_cpp"
 template_path_mavsdk_server="${script_dir}/../templates/mavsdk_server"
 
-for plugin in action telemetry; do
+for plugin in action telemetry mission; do
     ${protoc_binary} -I ${proto_dir} --custom_out=${tmp_output_dir} --plugin=protoc-gen-custom=${protoc_gen_dcsdk} --custom_opt="file_ext=h,template_path=${template_path_plugin_h}" ${proto_dir}/${plugin}/${plugin}.proto
     mv ${tmp_output_dir}/${plugin}/${plugin^}.h ${script_dir}/../src/plugins/${plugin}/include/plugins/${plugin}/${plugin}.h
 

@@ -7,6 +7,32 @@
 
 namespace mavsdk {
 
+using Position = Telemetry::Position;
+using Quaternion = Telemetry::Quaternion;
+using EulerAngle = Telemetry::EulerAngle;
+using AngularVelocityBody = Telemetry::AngularVelocityBody;
+using SpeedNed = Telemetry::SpeedNed;
+using GpsInfo = Telemetry::GpsInfo;
+using Battery = Telemetry::Battery;
+using Health = Telemetry::Health;
+using RcStatus = Telemetry::RcStatus;
+using StatusText = Telemetry::StatusText;
+using ActuatorControlTarget = Telemetry::ActuatorControlTarget;
+using ActuatorOutputStatus = Telemetry::ActuatorOutputStatus;
+using Covariance = Telemetry::Covariance;
+using VelocityBody = Telemetry::VelocityBody;
+using PositionBody = Telemetry::PositionBody;
+using Odometry = Telemetry::Odometry;
+using PositionNed = Telemetry::PositionNed;
+using VelocityNed = Telemetry::VelocityNed;
+using PositionVelocityNed = Telemetry::PositionVelocityNed;
+using GroundTruth = Telemetry::GroundTruth;
+using FixedwingMetrics = Telemetry::FixedwingMetrics;
+using AccelerationFrd = Telemetry::AccelerationFrd;
+using AngularVelocityFrd = Telemetry::AngularVelocityFrd;
+using MagneticFieldFrd = Telemetry::MagneticFieldFrd;
+using Imu = Telemetry::Imu;
+
 Telemetry::Telemetry(System& system) : PluginBase(), _impl{new TelemetryImpl(system)} {}
 
 Telemetry::~Telemetry() {}

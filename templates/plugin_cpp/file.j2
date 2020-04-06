@@ -7,6 +7,12 @@
 
 namespace mavsdk {
 
+{% for struct in structs -%}
+    {% if not struct.name.upper_camel_case.endswith('Result') -%}
+using {{ struct.name.upper_camel_case }} = {{ plugin_name.upper_camel_case }}::{{ struct.name.upper_camel_case }};
+    {%- endif %}
+{% endfor %}
+
 {{ plugin_name.upper_camel_case }}::{{ plugin_name.upper_camel_case }}(System& system) : PluginBase(), _impl{new {{ plugin_name.upper_camel_case }}Impl(system)} {}
 
 {{ plugin_name.upper_camel_case }}::~{{ plugin_name.upper_camel_case }}() {}

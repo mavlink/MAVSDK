@@ -6,6 +6,7 @@
 #include "log.h"
 #include "mavlink_include.h"
 #include "plugins/mission/mission.h"
+#include "mission_impl.h"
 
 using namespace mavsdk;
 using MissionItem = Mission::MissionItem;
@@ -22,7 +23,7 @@ Mission::Result compose_mission_items(
     MAV_CMD command,
     std::vector<double> params,
     MissionItem& new_mission_item,
-    Mission::mission_items_t& mission_items);
+    std::vector<Mission::MissionItem>& mission_items);
 
 static void compare(const MissionItem& local, const MissionItem& imported);
 
@@ -60,29 +61,27 @@ TEST(QGCMissionImport, ValidateQGCMissonItems)
     };
 
     // Build mission items for comparison
-    Mission::mission_items_t mission_items_local;
+    std::vector<Mission::MissionItem> mission_items_local;
     MissionItem new_mission_item{};
-    Mission::Result result = Mission::Result::SUCCESS;
+    Mission::Result result = Mission::Result::Success;
 
     for (auto& qgc_it : items_test) {
         auto command = qgc_it.command;
         auto params = qgc_it.params;
         result = compose_mission_items(command, params, new_mission_item, mission_items_local);
-        EXPECT_EQ(result, Mission::Result::SUCCESS);
+        EXPECT_EQ(result, Mission::Result::Success);
     }
     mission_items_local.push_back(new_mission_item);
 
     // Import Mission items from QGC plan
-    Mission::mission_items_t mission_items_imported;
-    Mission::Result import_result =
-        Mission::import_qgroundcontrol_mission(mission_items_imported, QGC_SAMPLE_PLAN);
-    ASSERT_EQ(import_result, Mission::Result::SUCCESS);
-    EXPECT_NE(mission_items_imported.size(), 0);
+    auto import_result = MissionImpl::import_qgroundcontrol_mission(QGC_SAMPLE_PLAN);
+    ASSERT_EQ(import_result.first, Mission::Result::Success);
+    EXPECT_NE(import_result.second.size(), 0);
 
     // Compare local & parsed mission items
-    ASSERT_EQ(mission_items_local.size(), mission_items_imported.size());
-    for (unsigned i = 0; i < mission_items_imported.size(); ++i) {
-        compare(mission_items_local.at(i), mission_items_imported.at(i));
+    ASSERT_EQ(mission_items_local.size(), import_result.second.size());
+    for (unsigned i = 0; i < import_result.second.size(); ++i) {
+        compare(mission_items_local.at(i), import_result.second.at(i));
     }
 }
 
@@ -90,9 +89,9 @@ Mission::Result compose_mission_items(
     MAV_CMD command,
     std::vector<double> params,
     MissionItem& new_mission_item,
-    Mission::mission_items_t& mission_items)
+    std::vector<Mission::MissionItem>& mission_items)
 {
-    Mission::Result result = Mission::Result::SUCCESS;
+    Mission::Result result = Mission::Result::Success;
 
     // Choosen "Do - While(0)" loop for the convenience of using `break` statement.
     do {
@@ -106,7 +105,7 @@ Mission::Result compose_mission_items(
             }
             if (command == MAV_CMD_NAV_WAYPOINT) {
                 auto is_fly_thru = !(int(params[0]) > 0);
-                new_mission_item.fly_through = is_fly_thru;
+                new_mission_item.is_fly_through = is_fly_thru;
             }
             auto lat = params[4], lon = params[5];
             new_mission_item.latitude_deg = lat;
@@ -128,24 +127,24 @@ Mission::Result compose_mission_items(
             auto photo_interval = int(params[1]), photo_count = int(params[2]);
 
             if (photo_interval > 0 && photo_count == 0) {
-                new_mission_item.camera_action = CameraAction::START_PHOTO_INTERVAL;
+                new_mission_item.camera_action = CameraAction::StartPhotoInterval;
                 new_mission_item.camera_photo_interval_s = photo_interval;
             } else if (photo_interval == 0 && photo_count == 1) {
-                new_mission_item.camera_action = CameraAction::TAKE_PHOTO;
+                new_mission_item.camera_action = CameraAction::TakePhoto;
             } else {
                 LogErr() << "Mission item START_CAPTURE params unsupported.";
-                result = Mission::Result::UNSUPPORTED;
+                result = Mission::Result::Unsupported;
                 break;
             }
 
         } else if (command == MAV_CMD_IMAGE_STOP_CAPTURE) {
-            new_mission_item.camera_action = CameraAction::STOP_PHOTO_INTERVAL;
+            new_mission_item.camera_action = CameraAction::StopPhotoInterval;
 
         } else if (command == MAV_CMD_VIDEO_START_CAPTURE) {
-            new_mission_item.camera_action = CameraAction::START_VIDEO;
+            new_mission_item.camera_action = CameraAction::StartVideo;
 
         } else if (command == MAV_CMD_VIDEO_STOP_CAPTURE) {
-            new_mission_item.camera_action = CameraAction::STOP_VIDEO;
+            new_mission_item.camera_action = CameraAction::StopVideo;
 
         } else if (command == MAV_CMD_DO_CHANGE_SPEED) {
             enum { AirSpeed, GroundSpeed };
@@ -158,7 +157,7 @@ Mission::Result compose_mission_items(
                 new_mission_item.speed_m_s = speed_m_s;
             } else {
                 LogErr() << command << "Mission item DO_CHANGE_SPEED params unsupported";
-                result = Mission::Result::UNSUPPORTED;
+                result = Mission::Result::Unsupported;
                 break;
             }
         } else {
@@ -171,7 +170,7 @@ Mission::Result compose_mission_items(
 
 void compare(const MissionItem& local, const MissionItem& imported)
 {
-    if (local.camera_action == CameraAction::NONE) {
+    if (local.camera_action == CameraAction::None) {
         // Non-Camera commands
         if (std::isfinite(local.latitude_deg)) {
             EXPECT_NEAR(local.latitude_deg, imported.latitude_deg, 1e-6);
@@ -183,7 +182,7 @@ void compare(const MissionItem& local, const MissionItem& imported)
             EXPECT_FLOAT_EQ(local.relative_altitude_m, imported.relative_altitude_m);
         }
 
-        EXPECT_EQ(local.fly_through, imported.fly_through);
+        EXPECT_EQ(local.is_fly_through, imported.is_fly_through);
         if (std::isfinite(local.speed_m_s)) {
             EXPECT_FLOAT_EQ(local.speed_m_s, imported.speed_m_s);
         }
@@ -191,7 +190,7 @@ void compare(const MissionItem& local, const MissionItem& imported)
 
     EXPECT_EQ(local.camera_action, imported.camera_action);
 
-    if (local.camera_action == CameraAction::START_PHOTO_INTERVAL &&
+    if (local.camera_action == CameraAction::StartPhotoInterval &&
         // Camera commands
         std::isfinite(local.camera_photo_interval_s)) {
         EXPECT_DOUBLE_EQ(local.camera_photo_interval_s, imported.camera_photo_interval_s);
