@@ -80,6 +80,13 @@ service MissionService {
      * the mission may have to be uploaded again.
      */
     rpc SetReturnToLaunchAfterMission(SetReturnToLaunchAfterMissionRequest) returns(SetReturnToLaunchAfterMissionResponse) {}
+    /*
+     * Import a QGroundControl (QGC) mission plan.
+     *
+     * The method will fail if any of the imported mission items are not supported
+     * by the MAVSDK API.
+     */
+    rpc ImportQgroundcontrolMission(ImportQgroundcontrolMissionRequest) returns(ImportQgroundcontrolMissionResponse) {}
 }
 
 message UploadMissionRequest {
@@ -143,6 +150,14 @@ message SetReturnToLaunchAfterMissionRequest {
 }
 message SetReturnToLaunchAfterMissionResponse {}
 
+message ImportQgroundcontrolMissionRequest {
+    string qgc_plan_path = 1; // File path of the QGC plan
+}
+message ImportQgroundcontrolMissionResponse {
+    MissionResult mission_result = 1;
+    repeated MissionItem mission_items = 2; // Mission items imported from QGC plan
+}
+
 /*
  * Type representing a mission item.
  *
@@ -165,12 +180,12 @@ message MissionItem {
 
     // Possible camera actions at a mission item.
     enum CameraAction {
-        NONE = 0; // No action
-        TAKE_PHOTO = 1; // Take a single photo
-        START_PHOTO_INTERVAL = 2; // Start capturing photos at regular intervals
-        STOP_PHOTO_INTERVAL = 3; // Stop capturing photos at regular intervals
-        START_VIDEO = 4; // Start capturing video
-        STOP_VIDEO = 5; // Stop capturing video
+        CAMERA_ACTION_NONE = 0; // No action
+        CAMERA_ACTION_TAKE_PHOTO = 1; // Take a single photo
+        CAMERA_ACTION_START_PHOTO_INTERVAL = 2; // Start capturing photos at regular intervals
+        CAMERA_ACTION_STOP_PHOTO_INTERVAL = 3; // Stop capturing photos at regular intervals
+        CAMERA_ACTION_START_VIDEO = 4; // Start capturing video
+        CAMERA_ACTION_STOP_VIDEO = 5; // Stop capturing video
     }
 }
 
@@ -184,19 +199,19 @@ message MissionProgress {
 message MissionResult {
     // Possible results returned for action requests.
     enum Result {
-        UNKNOWN = 0; // Unknown error
-        SUCCESS = 1; // Request succeeded
-        ERROR = 2; // Error
-        TOO_MANY_MISSION_ITEMS = 3; // Too many mission items in the mission
-        BUSY = 4; // Vehicle is busy
-        TIMEOUT = 5; // Request timed out
-        INVALID_ARGUMENT = 6; // Invalid argument
-        UNSUPPORTED = 7; // Mission downloaded from the system is not supported
-        NO_MISSION_AVAILABLE = 8; // No mission available on the system
-        FAILED_TO_OPEN_QGC_PLAN = 9; // Failed to open the QGroundControl plan
-        FAILED_TO_PARSE_QGC_PLAN = 10; // Failed to parse the QGroundControl plan
-        UNSUPPORTED_MISSION_CMD = 11; // Unsupported mission command
-        TRANSFER_CANCELLED = 12; // Mission transfer (upload or download) has been cancelled
+        RESULT_UNKNOWN = 0; // Unknown error
+        RESULT_SUCCESS = 1; // Request succeeded
+        RESULT_ERROR = 2; // Error
+        RESULT_TOO_MANY_MISSION_ITEMS = 3; // Too many mission items in the mission
+        RESULT_BUSY = 4; // Vehicle is busy
+        RESULT_TIMEOUT = 5; // Request timed out
+        RESULT_INVALID_ARGUMENT = 6; // Invalid argument
+        RESULT_UNSUPPORTED = 7; // Mission downloaded from the system is not supported
+        RESULT_NO_MISSION_AVAILABLE = 8; // No mission available on the system
+        RESULT_FAILED_TO_OPEN_QGC_PLAN = 9; // Failed to open the QGroundControl plan
+        RESULT_FAILED_TO_PARSE_QGC_PLAN = 10; // Failed to parse the QGroundControl plan
+        RESULT_UNSUPPORTED_MISSION_CMD = 11; // Unsupported mission command
+        RESULT_TRANSFER_CANCELLED = 12; // Mission transfer (upload or download) has been cancelled
     }
 
     Result result = 1; // Result enum value
