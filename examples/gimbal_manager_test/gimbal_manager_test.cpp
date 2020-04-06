@@ -100,6 +100,7 @@ int main(int argc, char** argv)
 
     mavlink_gimbal_device_information_t gimbal_device_info;
     bool received_information = false;
+    bool discovered = false;
     int manager_flags = GIMBAL_MANAGER_CAP_FLAGS_ENUM_END;
 
     // Here's our actual listening code
@@ -123,8 +124,7 @@ int main(int argc, char** argv)
 
     // Listen for commands
     pass.subscribe_message_async(MAVLINK_MSG_ID_COMMAND_LONG,
-        [&received_information, &device_id, &manager_sid, &manager_cid, &pass, &gimbal_device_info, &time_in_mils, &time_start](const mavlink_message_t message) {
-        std::cout << "Received" << sizeof(message) << device_id << std::endl;
+        [&received_information, &discovered, &device_id, &manager_sid, &manager_cid, &pass, &gimbal_device_info, &time_in_mils, &time_start](const mavlink_message_t message) {
 
         mavlink_command_long_t cmd;
         mavlink_msg_command_long_decode(&message, &cmd);
@@ -146,9 +146,15 @@ int main(int argc, char** argv)
         short unsigned int* command_index = std::find(command_types, command_types+7, cmd.command);
 
         if (cmd.command == MAV_CMD_REQUEST_MESSAGE) {
+            std::cout << "Received request for gimbal manager info!" << std::endl;
             if (cmd.param1 == MAVLINK_MSG_ID_GIMBAL_MANAGER_INFORMATION) {
                 // Respond to requests with gimbal manager info
+
+                // If we're already discovered, don't respond
+                if (discovered) return;
+
                 if (!received_information) {
+                    std::cout << "Gimbal device info not yet received, sending in progress message" << std::endl;
                     mavlink_message_t ack;
                     mavlink_msg_command_ack_pack(manager_sid, manager_cid, &ack,
                         MAV_CMD_REQUEST_MESSAGE, MAV_RESULT_IN_PROGRESS, 0, 0, 0, 0);
@@ -170,6 +176,8 @@ int main(int argc, char** argv)
                             gimbal_device_info.pan_max, gimbal_device_info.pan_min,
                             gimbal_device_info.pan_rate_max);
                     pass.send_message(info);
+                    std::cout << "Sent gimbal info!" << std::endl;
+                    discovered = true;
                 }
             }
         } else if (command_index != command_types+7) {
@@ -178,7 +186,9 @@ int main(int argc, char** argv)
 
             // We only want to respond to requests for our gimbal device; if it's
             // not ours, ignore
-            if (cmd.param1 != device_id) return;
+            // Until SET_ATTITUDE gets a proper device id field we'll have to settle
+            // for testing against component and system id
+            if (cmd.target_system != manager_sid || cmd.target_component != manager_cid) return;
 
             std::cout << "Received " <<  command_names[command_index - command_types] << ", data:"
                       << cmd.param1 << ", "
@@ -204,6 +214,9 @@ int main(int argc, char** argv)
         [&device_id, &manager_sid, &manager_cid, &pass](const mavlink_message_t message) {
         mavlink_gimbal_manager_set_attitude_t set_attitude_manager;
         mavlink_msg_gimbal_manager_set_attitude_decode(&message, &set_attitude_manager);
+
+        // We only want to respond to requests for our gimbal device; if it's
+        // not ours, ignore
 
         if (set_attitude_manager.flags >= 16) {
             // Override manager flags to 8 (default) if flags is greater than 16
@@ -261,6 +274,7 @@ int main(int argc, char** argv)
 
             // Request gimbal info at a rate of 1hz if we don't have it yet
             if (!received_information) {
+                std::cout << "Requesting gimbal device info" << std::endl;
                 mavlink_message_t request_message;
                 mavlink_msg_command_long_pack(manager_sid, manager_cid,
                         &request_message,
