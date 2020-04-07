@@ -29,6 +29,7 @@ class Method(object):
         self._name = name_parser_factory.create(pb_method.name)
         self.extract_params(pb_method, requests)
         self.extract_return_type_and_name(pb_method, responses)
+        self.extract_async_type(pb_method)
 
     def extract_params(self, pb_method, requests):
         method_input = pb_method.input_type.split(".")[-1]
@@ -72,6 +73,18 @@ class Method(object):
             self._return_name = name_parser_factory.create(
                 return_params[0]['field'].json_name)
             self._return_description = return_params[0]['docs']
+
+    def extract_async_type(self, pb_method):
+        self._is_sync = True
+        self._is_async = True
+
+        if "[mavsdk.options.async_type]" in pb_method.options.__str__():
+            async_type = pb_method.options.__str__().split(':')[-1].strip()
+
+            if async_type == "SYNC":
+                self._is_async = False
+            elif async_type == "ASYNC":
+                self._is_sync = False
 
     @property
     def is_stream(self):
@@ -181,7 +194,9 @@ class Call(Method):
                                      plugin_name=self._plugin_name,
                                      package=self._package,
                                      method_description=self._method_description,
-                                     has_result=self._has_result)
+                                     has_result=self._has_result,
+                                     is_async=self._is_async,
+                                     is_sync=self._is_sync)
 
 
 class Request(Method):
@@ -217,7 +232,9 @@ class Request(Method):
             plugin_name=self._plugin_name,
             package=self._package,
             method_description=self._method_description,
-            has_result=self._has_result)
+            has_result=self._has_result,
+            is_async=self._is_async,
+            is_sync=self._is_sync)
 
 
 class Stream(Method):

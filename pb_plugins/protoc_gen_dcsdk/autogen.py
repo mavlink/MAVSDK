@@ -11,6 +11,7 @@ from .utils import (get_template_env,
                     name_parser_factory,
                     type_info_factory)
 
+import protoc_gen_dcsdk.mavsdk_options_pb2
 
 class AutoGen(object):
     """ Autogenerator for the MAVSDK bindings """
@@ -30,6 +31,9 @@ class AutoGen(object):
             package = AutoGen.extract_package(proto_file, is_java)
             plugin_name, plugin_dir = AutoGen.extract_plugin_name_and_dir(
                 proto_file.name, package, is_java)
+
+            if package.startswith("google") or package == "mavsdk.options":
+                continue
 
             docs = Docs.collect_docs(proto_file.source_code_info)
 

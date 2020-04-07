@@ -1,0 +1,19 @@
+syntax = "proto3";
+
+import "google/protobuf/descriptor.proto";
+
+package mavsdk.options;
+
+extend google.protobuf.FieldOptions {
+    string default_value = 50000;
+}
+
+extend google.protobuf.MethodOptions {
+    AsyncType async_type = 50000;
+}
+
+enum AsyncType {
+    ASYNC = 0;
+    SYNC = 1;
+    BOTH = 2;
+}
