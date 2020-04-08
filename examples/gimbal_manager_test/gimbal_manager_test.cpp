@@ -10,6 +10,7 @@
 #include <iostream>
 #include <algorithm>
 #include <thread>
+#include <cmath>
 #include <sys/time.h>
 
 using namespace mavsdk;
@@ -50,6 +51,11 @@ uint8_t parse_component_id(char* raw) {
     }
 }
 
+struct ManagerInfo {
+    float tilt_max, tilt_min, tilt_rate_max;
+    float pan_max, pan_min, pan_rate_max;
+};
+
 int main(int argc, char** argv)
 {
     Mavsdk dc;
@@ -82,12 +88,13 @@ int main(int argc, char** argv)
         return 1;
     }
 
-    System& system = dc.system();
+    System& system = dc.system(5283920058631409231); // this is the UUID of jonasvautherin/px4-gazebo-headless, and potentially other SITL systems
 
     std::cout << "Waiting to discover system..." << std::endl;
     dc.register_on_discover([&discovered_system](uint64_t uuid) {
         std::cout << "Discovered system with UUID: " << uuid << std::endl;
-        discovered_system = true;
+        if (uuid == 5283920058631409231)
+            discovered_system = true;
     });
 
     sleep_for(seconds(2));
@@ -98,10 +105,8 @@ int main(int argc, char** argv)
         return 1;
     }
 
-    mavlink_gimbal_device_information_t gimbal_device_info;
-    bool received_information = false;
-    bool discovered = false;
     int manager_flags = GIMBAL_MANAGER_CAP_FLAGS_ENUM_END;
+    ManagerInfo manager_info {M_PI/2, -M_PI/2, M_PI, M_PI/4, -M_PI/4, M_PI/2};
 
     // Here's our actual listening code
     MavlinkPassthrough pass(system);
@@ -115,16 +120,14 @@ int main(int argc, char** argv)
     unsigned long time_hb_last;
     unsigned long time_start;
 
-    // Discover our gimbal device
-    pass.subscribe_message_async(MAVLINK_MSG_ID_GIMBAL_DEVICE_INFORMATION,
-        [&received_information, &gimbal_device_info, &pass](const mavlink_message_t message) {
-        mavlink_msg_gimbal_device_information_decode(&message, &gimbal_device_info);
-        received_information = true;
+    // Listen for commands
+    pass.subscribe_message_async(MAVLINK_MSG_ID_GLOBAL_POSITION_INT,
+        [](const mavlink_message_t msg) {
+        std::cout << "Received" << std::endl;
     });
 
-    // Listen for commands
     pass.subscribe_message_async(MAVLINK_MSG_ID_COMMAND_LONG,
-        [&received_information, &discovered, &device_id, &manager_sid, &manager_cid, &pass, &gimbal_device_info, &time_in_mils, &time_start](const mavlink_message_t message) {
+        [&device_id, &manager_sid, &manager_cid, &pass, &manager_info, &time_in_mils, &time_start](const mavlink_message_t message) {
 
         mavlink_command_long_t cmd;
         mavlink_msg_command_long_decode(&message, &cmd);
@@ -145,40 +148,28 @@ int main(int argc, char** argv)
                                         "MAV_CMD_DO_GIMBAL_MANAGER_TRACK_RECTANGLE" };
         short unsigned int* command_index = std::find(command_types, command_types+7, cmd.command);
 
+        std::cout << "Yes" << std::endl;
         if (cmd.command == MAV_CMD_REQUEST_MESSAGE) {
-            std::cout << "Received request for gimbal manager info!" << std::endl;
             if (cmd.param1 == MAVLINK_MSG_ID_GIMBAL_MANAGER_INFORMATION) {
+                std::cout << "Received request for gimbal manager info!" << std::endl;
                 // Respond to requests with gimbal manager info
 
-                // If we're already discovered, don't respond
-                if (discovered) return;
-
-                if (!received_information) {
-                    std::cout << "Gimbal device info not yet received, sending in progress message" << std::endl;
-                    mavlink_message_t ack;
-                    mavlink_msg_command_ack_pack(manager_sid, manager_cid, &ack,
-                        MAV_CMD_REQUEST_MESSAGE, MAV_RESULT_IN_PROGRESS, 0, 0, 0, 0);
-
-                    pass.send_message(ack);
-                } else {
-                    mavlink_message_t ack;
-                    mavlink_msg_command_ack_pack(manager_sid, manager_cid, &ack,
+                mavlink_message_t ack;
+                mavlink_msg_command_ack_pack(manager_sid, manager_cid, &ack,
                         MAV_CMD_REQUEST_MESSAGE, MAV_RESULT_ACCEPTED, 0, 0, 0, 0);
-                    pass.send_message(ack);
+                pass.send_message(ack);
 
-                    mavlink_message_t info;
-                    mavlink_msg_gimbal_manager_information_pack(manager_sid, manager_cid,
-                            &info,
-                            time_in_mils - time_start,
-                            manager_sid, device_id,
-                            gimbal_device_info.tilt_max, gimbal_device_info.tilt_min,
-                            gimbal_device_info.tilt_rate_max,
-                            gimbal_device_info.pan_max, gimbal_device_info.pan_min,
-                            gimbal_device_info.pan_rate_max);
-                    pass.send_message(info);
-                    std::cout << "Sent gimbal info!" << std::endl;
-                    discovered = true;
-                }
+                mavlink_message_t info;
+                mavlink_msg_gimbal_manager_information_pack(manager_sid, manager_cid,
+                        &info,
+                        time_in_mils - time_start,
+                        manager_sid, device_id,
+                        manager_info.tilt_max, manager_info.tilt_min,
+                        manager_info.tilt_rate_max,
+                        manager_info.pan_max, manager_info.pan_min,
+                        manager_info.pan_rate_max);
+                pass.send_message(info);
+                std::cout << "Sent gimbal info!" << std::endl;
             }
         } else if (command_index != command_types+7) {
             // Respond to various gimbal manager commands
@@ -272,18 +263,6 @@ int main(int argc, char** argv)
                     0, 0, MAV_STATE_ACTIVE);
             pass.send_message(hb_message);
 
-            // Request gimbal info at a rate of 1hz if we don't have it yet
-            if (!received_information) {
-                std::cout << "Requesting gimbal device info" << std::endl;
-                mavlink_message_t request_message;
-                mavlink_msg_command_long_pack(manager_sid, manager_cid,
-                        &request_message,
-                        manager_sid, device_id,
-                        MAV_CMD_REQUEST_MESSAGE,
-                        0,
-                        MAVLINK_MSG_ID_GIMBAL_DEVICE_INFORMATION,
-                        0, 0, 0, 0, 0, 0);
-            }
             gettimeofday(&tv_hb_last, NULL);
         }
 

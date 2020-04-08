@@ -82,15 +82,16 @@ int main(int argc, char** argv)
         return 1;
     }
 
-    System& system = dc.system();
+    System& system = dc.system(5283920058631409231);
 
     std::cout << "Waiting to discover system..." << std::endl;
     dc.register_on_discover([&discovered_system](uint64_t uuid) {
         std::cout << "Discovered system with UUID: " << uuid << std::endl;
-        discovered_system = true;
+        if (uuid == 5283920058631409231)
+            discovered_system = true;
     });
 
-    sleep_for(seconds(2));
+    sleep_for(seconds(3));
 
     if (!discovered_system) {
         std::cout << ERROR_CONSOLE_TEXT << "No system found, exiting." << NORMAL_CONSOLE_TEXT
@@ -98,17 +99,11 @@ int main(int argc, char** argv)
         return 1;
     }
 
-    //bool received_information = false;
-
     GimbalManager manager(system);
 
+    //sleep_for(seconds(6));
+    std::cout << "sending" << std::endl;
     manager.request_information();
-
-    //pass.subscribe_message_async(MAVLINK_MSG_ID_GIMBAL_MANAGER_INFORMATION, 
-    //pass.subscribe_message_async(MAVLINK_MSG_ID_GLOBAL_POSITION_INT,
-            //[&received_information, &device_id](const mavlink_message_t message) {
-        //std::cout << "Received" << sizeof(message) << device_id << std::endl;
-    //});
 
     return 0;
 }
