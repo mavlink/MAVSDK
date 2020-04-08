@@ -8,26 +8,21 @@
 namespace mavsdk {
 
 using MissionItem = Mission::MissionItem;
+using MissionPlan = Mission::MissionPlan;
 using MissionProgress = Mission::MissionProgress;
 
 Mission::Mission(System& system) : PluginBase(), _impl{new MissionImpl(system)} {}
 
 Mission::~Mission() {}
 
-void Mission::upload_mission_async(
-    std::vector<MissionItem> mission_items, const result_callback_t callback)
+void Mission::upload_mission_async(MissionPlan mission_plan, const result_callback_t callback)
 {
-    _impl->upload_mission_async(mission_items, callback);
+    _impl->upload_mission_async(mission_plan, callback);
 }
 
-Mission::Result Mission::upload_mission(std::vector<MissionItem> mission_items) const
+Mission::Result Mission::upload_mission(MissionPlan mission_plan) const
 {
-    return _impl->upload_mission(mission_items);
-}
-
-void Mission::cancel_mission_upload_async(const result_callback_t callback)
-{
-    _impl->cancel_mission_upload_async(callback);
+    return _impl->upload_mission(mission_plan);
 }
 
 Mission::Result Mission::cancel_mission_upload() const
@@ -40,14 +35,9 @@ void Mission::download_mission_async(const download_mission_callback_t callback)
     _impl->download_mission_async(callback);
 }
 
-std::pair<Mission::Result, std::vector<MissionItem>> Mission::download_mission() const
+std::pair<Mission::Result, MissionPlan> Mission::download_mission() const
 {
     return _impl->download_mission();
-}
-
-void Mission::cancel_mission_download_async(const result_callback_t callback)
-{
-    _impl->cancel_mission_download_async(callback);
 }
 
 Mission::Result Mission::cancel_mission_download() const
@@ -95,11 +85,6 @@ Mission::Result Mission::set_current_mission_item(int32_t index) const
     return _impl->set_current_mission_item(index);
 }
 
-void Mission::is_mission_finished_async(const is_mission_finished_callback_t callback)
-{
-    _impl->is_mission_finished_async(callback);
-}
-
 std::pair<Mission::Result, bool> Mission::is_mission_finished() const
 {
     return _impl->is_mission_finished();
@@ -115,21 +100,9 @@ Mission::MissionProgress Mission::mission_progress() const
     return _impl->mission_progress();
 }
 
-void Mission::get_return_to_launch_after_mission_async(
-    const get_return_to_launch_after_mission_callback_t callback)
-{
-    _impl->get_return_to_launch_after_mission_async(callback);
-}
-
 std::pair<Mission::Result, bool> Mission::get_return_to_launch_after_mission() const
 {
     return _impl->get_return_to_launch_after_mission();
-}
-
-void Mission::set_return_to_launch_after_mission_async(
-    bool enable, const result_callback_t callback)
-{
-    _impl->set_return_to_launch_after_mission_async(enable, callback);
 }
 
 Mission::Result Mission::set_return_to_launch_after_mission(bool enable) const
@@ -143,7 +116,7 @@ void Mission::import_qgroundcontrol_mission_async(
     _impl->import_qgroundcontrol_mission_async(qgc_plan_path, callback);
 }
 
-std::pair<Mission::Result, std::vector<MissionItem>>
+std::pair<Mission::Result, MissionPlan>
 Mission::import_qgroundcontrol_mission(std::string qgc_plan_path) const
 {
     return _impl->import_qgroundcontrol_mission(qgc_plan_path);
@@ -196,17 +169,34 @@ std::ostream& operator<<(std::ostream& str, Mission::MissionItem const& mission_
     return str;
 }
 
+bool operator==(const Mission::MissionPlan& lhs, const Mission::MissionPlan& rhs)
+{
+    return (rhs.mission_items == lhs.mission_items);
+}
+
+std::ostream& operator<<(std::ostream& str, Mission::MissionPlan const& mission_plan)
+{
+    str << "mission_plan:" << '\n' << "{\n";
+    str << "    mission_items: [";
+    for (auto it = mission_plan.mission_items.begin(); it != mission_plan.mission_items.end();
+         ++it) {
+        str << *it;
+        str << (it + 1 != mission_plan.mission_items.end() ? ", " : "]\n");
+    }
+    str << '}';
+    return str;
+}
+
 bool operator==(const Mission::MissionProgress& lhs, const Mission::MissionProgress& rhs)
 {
-    return (rhs.current_item_index == lhs.current_item_index) &&
-           (rhs.mission_count == lhs.mission_count);
+    return (rhs.current == lhs.current) && (rhs.total == lhs.total);
 }
 
 std::ostream& operator<<(std::ostream& str, Mission::MissionProgress const& mission_progress)
 {
     str << "mission_progress:" << '\n' << "{\n";
-    str << "    current_item_index: " << mission_progress.current_item_index << '\n';
-    str << "    mission_count: " << mission_progress.mission_count << '\n';
+    str << "    current: " << mission_progress.current << '\n';
+    str << "    total: " << mission_progress.total << '\n';
     str << '}';
     return str;
 }

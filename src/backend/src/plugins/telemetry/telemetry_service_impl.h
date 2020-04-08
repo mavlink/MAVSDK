@@ -135,35 +135,81 @@ public:
     translateToRpcPosition(const mavsdk::Telemetry::Position& position)
     {
         std::unique_ptr<rpc::telemetry::Position> rpc_obj(new rpc::telemetry::Position());
+
         rpc_obj->set_latitude_deg(position.latitude_deg);
+
         rpc_obj->set_longitude_deg(position.longitude_deg);
+
         rpc_obj->set_absolute_altitude_m(position.absolute_altitude_m);
+
         rpc_obj->set_relative_altitude_m(position.relative_altitude_m);
 
         return rpc_obj;
+    }
+
+    static mavsdk::Telemetry::Position
+    translateFromRpcPosition(const rpc::telemetry::Position& position)
+    {
+        mavsdk::Telemetry::Position obj;
+
+        obj.latitude_deg = position.latitude_deg();
+        obj.longitude_deg = position.longitude_deg();
+        obj.absolute_altitude_m = position.absolute_altitude_m();
+        obj.relative_altitude_m = position.relative_altitude_m();
+        return obj;
     }
 
     static std::unique_ptr<rpc::telemetry::Quaternion>
     translateToRpcQuaternion(const mavsdk::Telemetry::Quaternion& quaternion)
     {
         std::unique_ptr<rpc::telemetry::Quaternion> rpc_obj(new rpc::telemetry::Quaternion());
+
         rpc_obj->set_w(quaternion.w);
+
         rpc_obj->set_x(quaternion.x);
+
         rpc_obj->set_y(quaternion.y);
+
         rpc_obj->set_z(quaternion.z);
 
         return rpc_obj;
+    }
+
+    static mavsdk::Telemetry::Quaternion
+    translateFromRpcQuaternion(const rpc::telemetry::Quaternion& quaternion)
+    {
+        mavsdk::Telemetry::Quaternion obj;
+
+        obj.w = quaternion.w();
+        obj.x = quaternion.x();
+        obj.y = quaternion.y();
+        obj.z = quaternion.z();
+        return obj;
     }
 
     static std::unique_ptr<rpc::telemetry::EulerAngle>
     translateToRpcEulerAngle(const mavsdk::Telemetry::EulerAngle& euler_angle)
     {
         std::unique_ptr<rpc::telemetry::EulerAngle> rpc_obj(new rpc::telemetry::EulerAngle());
+
         rpc_obj->set_roll_deg(euler_angle.roll_deg);
+
         rpc_obj->set_pitch_deg(euler_angle.pitch_deg);
+
         rpc_obj->set_yaw_deg(euler_angle.yaw_deg);
 
         return rpc_obj;
+    }
+
+    static mavsdk::Telemetry::EulerAngle
+    translateFromRpcEulerAngle(const rpc::telemetry::EulerAngle& euler_angle)
+    {
+        mavsdk::Telemetry::EulerAngle obj;
+
+        obj.roll_deg = euler_angle.roll_deg();
+        obj.pitch_deg = euler_angle.pitch_deg();
+        obj.yaw_deg = euler_angle.yaw_deg();
+        return obj;
     }
 
     static std::unique_ptr<rpc::telemetry::AngularVelocityBody> translateToRpcAngularVelocityBody(
@@ -171,78 +217,177 @@ public:
     {
         std::unique_ptr<rpc::telemetry::AngularVelocityBody> rpc_obj(
             new rpc::telemetry::AngularVelocityBody());
+
         rpc_obj->set_roll_rad_s(angular_velocity_body.roll_rad_s);
+
         rpc_obj->set_pitch_rad_s(angular_velocity_body.pitch_rad_s);
+
         rpc_obj->set_yaw_rad_s(angular_velocity_body.yaw_rad_s);
 
         return rpc_obj;
+    }
+
+    static mavsdk::Telemetry::AngularVelocityBody translateFromRpcAngularVelocityBody(
+        const rpc::telemetry::AngularVelocityBody& angular_velocity_body)
+    {
+        mavsdk::Telemetry::AngularVelocityBody obj;
+
+        obj.roll_rad_s = angular_velocity_body.roll_rad_s();
+        obj.pitch_rad_s = angular_velocity_body.pitch_rad_s();
+        obj.yaw_rad_s = angular_velocity_body.yaw_rad_s();
+        return obj;
     }
 
     static std::unique_ptr<rpc::telemetry::SpeedNed>
     translateToRpcSpeedNed(const mavsdk::Telemetry::SpeedNed& speed_ned)
     {
         std::unique_ptr<rpc::telemetry::SpeedNed> rpc_obj(new rpc::telemetry::SpeedNed());
+
         rpc_obj->set_velocity_north_m_s(speed_ned.velocity_north_m_s);
+
         rpc_obj->set_velocity_east_m_s(speed_ned.velocity_east_m_s);
+
         rpc_obj->set_velocity_down_m_s(speed_ned.velocity_down_m_s);
 
         return rpc_obj;
+    }
+
+    static mavsdk::Telemetry::SpeedNed
+    translateFromRpcSpeedNed(const rpc::telemetry::SpeedNed& speed_ned)
+    {
+        mavsdk::Telemetry::SpeedNed obj;
+
+        obj.velocity_north_m_s = speed_ned.velocity_north_m_s();
+        obj.velocity_east_m_s = speed_ned.velocity_east_m_s();
+        obj.velocity_down_m_s = speed_ned.velocity_down_m_s();
+        return obj;
     }
 
     static std::unique_ptr<rpc::telemetry::GpsInfo>
     translateToRpcGpsInfo(const mavsdk::Telemetry::GpsInfo& gps_info)
     {
         std::unique_ptr<rpc::telemetry::GpsInfo> rpc_obj(new rpc::telemetry::GpsInfo());
+
         rpc_obj->set_num_satellites(gps_info.num_satellites);
+
         rpc_obj->set_fix_type(translateToRpcFixType(gps_info.fix_type));
 
         return rpc_obj;
+    }
+
+    static mavsdk::Telemetry::GpsInfo
+    translateFromRpcGpsInfo(const rpc::telemetry::GpsInfo& gps_info)
+    {
+        mavsdk::Telemetry::GpsInfo obj;
+
+        obj.num_satellites = gps_info.num_satellites();
+        obj.fix_type = gps_info.fix_type();
+        return obj;
     }
 
     static std::unique_ptr<rpc::telemetry::Battery>
     translateToRpcBattery(const mavsdk::Telemetry::Battery& battery)
     {
         std::unique_ptr<rpc::telemetry::Battery> rpc_obj(new rpc::telemetry::Battery());
+
         rpc_obj->set_voltage_v(battery.voltage_v);
+
         rpc_obj->set_remaining_percent(battery.remaining_percent);
 
         return rpc_obj;
+    }
+
+    static mavsdk::Telemetry::Battery
+    translateFromRpcBattery(const rpc::telemetry::Battery& battery)
+    {
+        mavsdk::Telemetry::Battery obj;
+
+        obj.voltage_v = battery.voltage_v();
+        obj.remaining_percent = battery.remaining_percent();
+        return obj;
     }
 
     static std::unique_ptr<rpc::telemetry::Health>
     translateToRpcHealth(const mavsdk::Telemetry::Health& health)
     {
         std::unique_ptr<rpc::telemetry::Health> rpc_obj(new rpc::telemetry::Health());
+
         rpc_obj->set_is_gyrometer_calibration_ok(health.is_gyrometer_calibration_ok);
+
         rpc_obj->set_is_accelerometer_calibration_ok(health.is_accelerometer_calibration_ok);
+
         rpc_obj->set_is_magnetometer_calibration_ok(health.is_magnetometer_calibration_ok);
+
         rpc_obj->set_is_level_calibration_ok(health.is_level_calibration_ok);
+
         rpc_obj->set_is_local_position_ok(health.is_local_position_ok);
+
         rpc_obj->set_is_global_position_ok(health.is_global_position_ok);
+
         rpc_obj->set_is_home_position_ok(health.is_home_position_ok);
 
         return rpc_obj;
+    }
+
+    static mavsdk::Telemetry::Health translateFromRpcHealth(const rpc::telemetry::Health& health)
+    {
+        mavsdk::Telemetry::Health obj;
+
+        obj.is_gyrometer_calibration_ok = health.is_gyrometer_calibration_ok();
+        obj.is_accelerometer_calibration_ok = health.is_accelerometer_calibration_ok();
+        obj.is_magnetometer_calibration_ok = health.is_magnetometer_calibration_ok();
+        obj.is_level_calibration_ok = health.is_level_calibration_ok();
+        obj.is_local_position_ok = health.is_local_position_ok();
+        obj.is_global_position_ok = health.is_global_position_ok();
+        obj.is_home_position_ok = health.is_home_position_ok();
+        return obj;
     }
 
     static std::unique_ptr<rpc::telemetry::RcStatus>
     translateToRpcRcStatus(const mavsdk::Telemetry::RcStatus& rc_status)
     {
         std::unique_ptr<rpc::telemetry::RcStatus> rpc_obj(new rpc::telemetry::RcStatus());
+
         rpc_obj->set_was_available_once(rc_status.was_available_once);
+
         rpc_obj->set_is_available(rc_status.is_available);
+
         rpc_obj->set_signal_strength_percent(rc_status.signal_strength_percent);
 
         return rpc_obj;
+    }
+
+    static mavsdk::Telemetry::RcStatus
+    translateFromRpcRcStatus(const rpc::telemetry::RcStatus& rc_status)
+    {
+        mavsdk::Telemetry::RcStatus obj;
+
+        obj.was_available_once = rc_status.was_available_once();
+        obj.is_available = rc_status.is_available();
+        obj.signal_strength_percent = rc_status.signal_strength_percent();
+        return obj;
     }
 
     static std::unique_ptr<rpc::telemetry::StatusText>
     translateToRpcStatusText(const mavsdk::Telemetry::StatusText& status_text)
     {
         std::unique_ptr<rpc::telemetry::StatusText> rpc_obj(new rpc::telemetry::StatusText());
+
         rpc_obj->set_type(translateToRpcStatusTextType(status_text.type));
+
         rpc_obj->set_text(status_text.text);
 
         return rpc_obj;
+    }
+
+    static mavsdk::Telemetry::StatusText
+    translateFromRpcStatusText(const rpc::telemetry::StatusText& status_text)
+    {
+        mavsdk::Telemetry::StatusText obj;
+
+        obj.type = status_text.type();
+        obj.text = status_text.text();
+        return obj;
     }
 
     static std::unique_ptr<rpc::telemetry::ActuatorControlTarget>
@@ -251,7 +396,9 @@ public:
     {
         std::unique_ptr<rpc::telemetry::ActuatorControlTarget> rpc_obj(
             new rpc::telemetry::ActuatorControlTarget());
+
         rpc_obj->set_group(actuator_control_target.group);
+
         for (const auto& elem : actuator_control_target.controls) {
             rpc_obj->add_controls(elem);
         }
@@ -259,12 +406,24 @@ public:
         return rpc_obj;
     }
 
+    static mavsdk::Telemetry::ActuatorControlTarget translateFromRpcActuatorControlTarget(
+        const rpc::telemetry::ActuatorControlTarget& actuator_control_target)
+    {
+        mavsdk::Telemetry::ActuatorControlTarget obj;
+
+        obj.group = actuator_control_target.group();
+        obj.controls = actuator_control_target.controls();
+        return obj;
+    }
+
     static std::unique_ptr<rpc::telemetry::ActuatorOutputStatus> translateToRpcActuatorOutputStatus(
         const mavsdk::Telemetry::ActuatorOutputStatus& actuator_output_status)
     {
         std::unique_ptr<rpc::telemetry::ActuatorOutputStatus> rpc_obj(
             new rpc::telemetry::ActuatorOutputStatus());
+
         rpc_obj->set_active(actuator_output_status.active);
+
         for (const auto& elem : actuator_output_status.actuator) {
             rpc_obj->add_actuator(elem);
         }
@@ -272,10 +431,21 @@ public:
         return rpc_obj;
     }
 
+    static mavsdk::Telemetry::ActuatorOutputStatus translateFromRpcActuatorOutputStatus(
+        const rpc::telemetry::ActuatorOutputStatus& actuator_output_status)
+    {
+        mavsdk::Telemetry::ActuatorOutputStatus obj;
+
+        obj.active = actuator_output_status.active();
+        obj.actuator = actuator_output_status.actuator();
+        return obj;
+    }
+
     static std::unique_ptr<rpc::telemetry::Covariance>
     translateToRpcCovariance(const mavsdk::Telemetry::Covariance& covariance)
     {
         std::unique_ptr<rpc::telemetry::Covariance> rpc_obj(new rpc::telemetry::Covariance());
+
         for (const auto& elem : covariance.covariance_matrix) {
             rpc_obj->add_covariance_matrix(elem);
         }
@@ -283,26 +453,63 @@ public:
         return rpc_obj;
     }
 
+    static mavsdk::Telemetry::Covariance
+    translateFromRpcCovariance(const rpc::telemetry::Covariance& covariance)
+    {
+        mavsdk::Telemetry::Covariance obj;
+
+        obj.covariance_matrix = covariance.covariance_matrix();
+        return obj;
+    }
+
     static std::unique_ptr<rpc::telemetry::VelocityBody>
     translateToRpcVelocityBody(const mavsdk::Telemetry::VelocityBody& velocity_body)
     {
         std::unique_ptr<rpc::telemetry::VelocityBody> rpc_obj(new rpc::telemetry::VelocityBody());
+
         rpc_obj->set_x_m_s(velocity_body.x_m_s);
+
         rpc_obj->set_y_m_s(velocity_body.y_m_s);
+
         rpc_obj->set_z_m_s(velocity_body.z_m_s);
 
         return rpc_obj;
+    }
+
+    static mavsdk::Telemetry::VelocityBody
+    translateFromRpcVelocityBody(const rpc::telemetry::VelocityBody& velocity_body)
+    {
+        mavsdk::Telemetry::VelocityBody obj;
+
+        obj.x_m_s = velocity_body.x_m_s();
+        obj.y_m_s = velocity_body.y_m_s();
+        obj.z_m_s = velocity_body.z_m_s();
+        return obj;
     }
 
     static std::unique_ptr<rpc::telemetry::PositionBody>
     translateToRpcPositionBody(const mavsdk::Telemetry::PositionBody& position_body)
     {
         std::unique_ptr<rpc::telemetry::PositionBody> rpc_obj(new rpc::telemetry::PositionBody());
+
         rpc_obj->set_x_m(position_body.x_m);
+
         rpc_obj->set_y_m(position_body.y_m);
+
         rpc_obj->set_z_m(position_body.z_m);
 
         return rpc_obj;
+    }
+
+    static mavsdk::Telemetry::PositionBody
+    translateFromRpcPositionBody(const rpc::telemetry::PositionBody& position_body)
+    {
+        mavsdk::Telemetry::PositionBody obj;
+
+        obj.x_m = position_body.x_m();
+        obj.y_m = position_body.y_m();
+        obj.z_m = position_body.z_m();
+        return obj;
     }
 
     static rpc::telemetry::Odometry::MavFrame
@@ -327,44 +534,98 @@ public:
     translateToRpcOdometry(const mavsdk::Telemetry::Odometry& odometry)
     {
         std::unique_ptr<rpc::telemetry::Odometry> rpc_obj(new rpc::telemetry::Odometry());
+
         rpc_obj->set_time_usec(odometry.time_usec);
+
         rpc_obj->set_frame_id(translateToRpcMavFrame(odometry.frame_id));
+
         rpc_obj->set_child_frame_id(translateToRpcMavFrame(odometry.child_frame_id));
+
         rpc_obj->set_allocated_position_body(
             translateToRpcPositionBody(odometry.position_body).release());
+
         rpc_obj->set_allocated_q(translateToRpcQuaternion(odometry.q).release());
+
         rpc_obj->set_allocated_velocity_body(
             translateToRpcVelocityBody(odometry.velocity_body).release());
+
         rpc_obj->set_allocated_angular_velocity_body(
             translateToRpcAngularVelocityBody(odometry.angular_velocity_body).release());
+
         rpc_obj->set_allocated_pose_covariance(
             translateToRpcCovariance(odometry.pose_covariance).release());
+
         rpc_obj->set_allocated_velocity_covariance(
             translateToRpcCovariance(odometry.velocity_covariance).release());
 
         return rpc_obj;
     }
 
+    static mavsdk::Telemetry::Odometry
+    translateFromRpcOdometry(const rpc::telemetry::Odometry& odometry)
+    {
+        mavsdk::Telemetry::Odometry obj;
+
+        obj.time_usec = odometry.time_usec();
+        obj.frame_id = odometry.frame_id();
+        obj.child_frame_id = odometry.child_frame_id();
+        obj.position_body = odometry.position_body();
+        obj.q = odometry.q();
+        obj.velocity_body = odometry.velocity_body();
+        obj.angular_velocity_body = odometry.angular_velocity_body();
+        obj.pose_covariance = odometry.pose_covariance();
+        obj.velocity_covariance = odometry.velocity_covariance();
+        return obj;
+    }
+
     static std::unique_ptr<rpc::telemetry::PositionNed>
     translateToRpcPositionNed(const mavsdk::Telemetry::PositionNed& position_ned)
     {
         std::unique_ptr<rpc::telemetry::PositionNed> rpc_obj(new rpc::telemetry::PositionNed());
+
         rpc_obj->set_north_m(position_ned.north_m);
+
         rpc_obj->set_east_m(position_ned.east_m);
+
         rpc_obj->set_down_m(position_ned.down_m);
 
         return rpc_obj;
+    }
+
+    static mavsdk::Telemetry::PositionNed
+    translateFromRpcPositionNed(const rpc::telemetry::PositionNed& position_ned)
+    {
+        mavsdk::Telemetry::PositionNed obj;
+
+        obj.north_m = position_ned.north_m();
+        obj.east_m = position_ned.east_m();
+        obj.down_m = position_ned.down_m();
+        return obj;
     }
 
     static std::unique_ptr<rpc::telemetry::VelocityNed>
     translateToRpcVelocityNed(const mavsdk::Telemetry::VelocityNed& velocity_ned)
     {
         std::unique_ptr<rpc::telemetry::VelocityNed> rpc_obj(new rpc::telemetry::VelocityNed());
+
         rpc_obj->set_north_m_s(velocity_ned.north_m_s);
+
         rpc_obj->set_east_m_s(velocity_ned.east_m_s);
+
         rpc_obj->set_down_m_s(velocity_ned.down_m_s);
 
         return rpc_obj;
+    }
+
+    static mavsdk::Telemetry::VelocityNed
+    translateFromRpcVelocityNed(const rpc::telemetry::VelocityNed& velocity_ned)
+    {
+        mavsdk::Telemetry::VelocityNed obj;
+
+        obj.north_m_s = velocity_ned.north_m_s();
+        obj.east_m_s = velocity_ned.east_m_s();
+        obj.down_m_s = velocity_ned.down_m_s();
+        return obj;
     }
 
     static std::unique_ptr<rpc::telemetry::PositionVelocityNed> translateToRpcPositionVelocityNed(
@@ -372,23 +633,49 @@ public:
     {
         std::unique_ptr<rpc::telemetry::PositionVelocityNed> rpc_obj(
             new rpc::telemetry::PositionVelocityNed());
+
         rpc_obj->set_allocated_position(
             translateToRpcPositionNed(position_velocity_ned.position).release());
+
         rpc_obj->set_allocated_velocity(
             translateToRpcVelocityNed(position_velocity_ned.velocity).release());
 
         return rpc_obj;
     }
 
+    static mavsdk::Telemetry::PositionVelocityNed translateFromRpcPositionVelocityNed(
+        const rpc::telemetry::PositionVelocityNed& position_velocity_ned)
+    {
+        mavsdk::Telemetry::PositionVelocityNed obj;
+
+        obj.position = position_velocity_ned.position();
+        obj.velocity = position_velocity_ned.velocity();
+        return obj;
+    }
+
     static std::unique_ptr<rpc::telemetry::GroundTruth>
     translateToRpcGroundTruth(const mavsdk::Telemetry::GroundTruth& ground_truth)
     {
         std::unique_ptr<rpc::telemetry::GroundTruth> rpc_obj(new rpc::telemetry::GroundTruth());
+
         rpc_obj->set_latitude_deg(ground_truth.latitude_deg);
+
         rpc_obj->set_longitude_deg(ground_truth.longitude_deg);
+
         rpc_obj->set_absolute_altitude_m(ground_truth.absolute_altitude_m);
 
         return rpc_obj;
+    }
+
+    static mavsdk::Telemetry::GroundTruth
+    translateFromRpcGroundTruth(const rpc::telemetry::GroundTruth& ground_truth)
+    {
+        mavsdk::Telemetry::GroundTruth obj;
+
+        obj.latitude_deg = ground_truth.latitude_deg();
+        obj.longitude_deg = ground_truth.longitude_deg();
+        obj.absolute_altitude_m = ground_truth.absolute_altitude_m();
+        return obj;
     }
 
     static std::unique_ptr<rpc::telemetry::FixedwingMetrics>
@@ -396,11 +683,25 @@ public:
     {
         std::unique_ptr<rpc::telemetry::FixedwingMetrics> rpc_obj(
             new rpc::telemetry::FixedwingMetrics());
+
         rpc_obj->set_airspeed_m_s(fixedwing_metrics.airspeed_m_s);
+
         rpc_obj->set_throttle_percentage(fixedwing_metrics.throttle_percentage);
+
         rpc_obj->set_climb_rate_m_s(fixedwing_metrics.climb_rate_m_s);
 
         return rpc_obj;
+    }
+
+    static mavsdk::Telemetry::FixedwingMetrics
+    translateFromRpcFixedwingMetrics(const rpc::telemetry::FixedwingMetrics& fixedwing_metrics)
+    {
+        mavsdk::Telemetry::FixedwingMetrics obj;
+
+        obj.airspeed_m_s = fixedwing_metrics.airspeed_m_s();
+        obj.throttle_percentage = fixedwing_metrics.throttle_percentage();
+        obj.climb_rate_m_s = fixedwing_metrics.climb_rate_m_s();
+        return obj;
     }
 
     static std::unique_ptr<rpc::telemetry::AccelerationFrd>
@@ -408,11 +709,25 @@ public:
     {
         std::unique_ptr<rpc::telemetry::AccelerationFrd> rpc_obj(
             new rpc::telemetry::AccelerationFrd());
+
         rpc_obj->set_forward_m_s2(acceleration_frd.forward_m_s2);
+
         rpc_obj->set_right_m_s2(acceleration_frd.right_m_s2);
+
         rpc_obj->set_down_m_s2(acceleration_frd.down_m_s2);
 
         return rpc_obj;
+    }
+
+    static mavsdk::Telemetry::AccelerationFrd
+    translateFromRpcAccelerationFrd(const rpc::telemetry::AccelerationFrd& acceleration_frd)
+    {
+        mavsdk::Telemetry::AccelerationFrd obj;
+
+        obj.forward_m_s2 = acceleration_frd.forward_m_s2();
+        obj.right_m_s2 = acceleration_frd.right_m_s2();
+        obj.down_m_s2 = acceleration_frd.down_m_s2();
+        return obj;
     }
 
     static std::unique_ptr<rpc::telemetry::AngularVelocityFrd> translateToRpcAngularVelocityFrd(
@@ -420,11 +735,25 @@ public:
     {
         std::unique_ptr<rpc::telemetry::AngularVelocityFrd> rpc_obj(
             new rpc::telemetry::AngularVelocityFrd());
+
         rpc_obj->set_forward_rad_s(angular_velocity_frd.forward_rad_s);
+
         rpc_obj->set_right_rad_s(angular_velocity_frd.right_rad_s);
+
         rpc_obj->set_down_rad_s(angular_velocity_frd.down_rad_s);
 
         return rpc_obj;
+    }
+
+    static mavsdk::Telemetry::AngularVelocityFrd translateFromRpcAngularVelocityFrd(
+        const rpc::telemetry::AngularVelocityFrd& angular_velocity_frd)
+    {
+        mavsdk::Telemetry::AngularVelocityFrd obj;
+
+        obj.forward_rad_s = angular_velocity_frd.forward_rad_s();
+        obj.right_rad_s = angular_velocity_frd.right_rad_s();
+        obj.down_rad_s = angular_velocity_frd.down_rad_s();
+        return obj;
     }
 
     static std::unique_ptr<rpc::telemetry::MagneticFieldFrd>
@@ -432,25 +761,54 @@ public:
     {
         std::unique_ptr<rpc::telemetry::MagneticFieldFrd> rpc_obj(
             new rpc::telemetry::MagneticFieldFrd());
+
         rpc_obj->set_forward_gauss(magnetic_field_frd.forward_gauss);
+
         rpc_obj->set_right_gauss(magnetic_field_frd.right_gauss);
+
         rpc_obj->set_down_gauss(magnetic_field_frd.down_gauss);
 
         return rpc_obj;
     }
 
+    static mavsdk::Telemetry::MagneticFieldFrd
+    translateFromRpcMagneticFieldFrd(const rpc::telemetry::MagneticFieldFrd& magnetic_field_frd)
+    {
+        mavsdk::Telemetry::MagneticFieldFrd obj;
+
+        obj.forward_gauss = magnetic_field_frd.forward_gauss();
+        obj.right_gauss = magnetic_field_frd.right_gauss();
+        obj.down_gauss = magnetic_field_frd.down_gauss();
+        return obj;
+    }
+
     static std::unique_ptr<rpc::telemetry::Imu> translateToRpcImu(const mavsdk::Telemetry::Imu& imu)
     {
         std::unique_ptr<rpc::telemetry::Imu> rpc_obj(new rpc::telemetry::Imu());
+
         rpc_obj->set_allocated_acceleration_frd(
             translateToRpcAccelerationFrd(imu.acceleration_frd).release());
+
         rpc_obj->set_allocated_angular_velocity_frd(
             translateToRpcAngularVelocityFrd(imu.angular_velocity_frd).release());
+
         rpc_obj->set_allocated_magnetic_field_frd(
             translateToRpcMagneticFieldFrd(imu.magnetic_field_frd).release());
+
         rpc_obj->set_temperature_degc(imu.temperature_degc);
 
         return rpc_obj;
+    }
+
+    static mavsdk::Telemetry::Imu translateFromRpcImu(const rpc::telemetry::Imu& imu)
+    {
+        mavsdk::Telemetry::Imu obj;
+
+        obj.acceleration_frd = imu.acceleration_frd();
+        obj.angular_velocity_frd = imu.angular_velocity_frd();
+        obj.magnetic_field_frd = imu.magnetic_field_frd();
+        obj.temperature_degc = imu.temperature_degc();
+        return obj;
     }
 
     static rpc::telemetry::TelemetryResult::Result

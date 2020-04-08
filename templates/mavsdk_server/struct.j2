@@ -7,24 +7,35 @@ static std::unique_ptr<rpc::{{ plugin_name.lower_snake_case }}::{{ name.upper_ca
 {
     std::unique_ptr<rpc::{{ plugin_name.lower_snake_case }}::{{ name.upper_camel_case }}> rpc_obj(new rpc::{{ plugin_name.lower_snake_case }}::{{ name.upper_camel_case }}());
 
-    {%- for field in fields %}
-        {%- if field.type_info.is_primitive %}
-            {%- if field.type_info.is_repeated %}
+{% for field in fields -%}
+    {% if field.type_info.is_primitive %}
+        {% if field.type_info.is_repeated %}
     for (const auto& elem : {{ name.lower_snake_case }}.{{ field.name.lower_snake_case }}) {
         rpc_obj->add_{{ field.name.lower_snake_case }}(elem);
     }
-            {%- else %}
+        {% else %}
     rpc_obj->set_{{ field.name.lower_snake_case }}({{ name.lower_snake_case }}.{{ field.name.lower_snake_case }});
-            {%- endif %}
-        {%- else %}
-            {%- if field.type_info.is_enum %}
+        {% endif %}
+    {% else %}
+        {% if field.type_info.is_enum %}
     rpc_obj->set_{{ field.name.lower_snake_case }}(translateToRpc{{ field.type_info.name }}({{ name.lower_snake_case }}.{{ field.name.lower_snake_case }}));
-            {%- else %}
+        {% else %}
     rpc_obj->set_allocated_{{ field.name.lower_snake_case }}(translateToRpc{{ field.type_info.name }}({{ name.lower_snake_case }}.{{ field.name.lower_snake_case }}).release());
-            {%- endif %}
-        {%- endif %}
-    {%- endfor %}
+        {% endif %}
+    {% endif -%}
+{%- endfor %}
 
     return rpc_obj;
 }
+
+static {{ package.lower_snake_case.split('.')[0] }}::{{ plugin_name.upper_camel_case }}::{{ name.upper_camel_case }} translateFromRpc{{ name.upper_camel_case }}(const rpc::{{ plugin_name.lower_snake_case }}::{{ name.upper_camel_case }}& {{ name.lower_snake_case }})
+{
+    {{ package.lower_snake_case.split('.')[0] }}::{{ plugin_name.upper_camel_case }}::{{ name.upper_camel_case }} obj;
+
+{% for field in fields -%}
+    obj.{{ field.name.lower_snake_case }} = {{ name.lower_snake_case }}.{{ field.name.lower_snake_case }}();
+{%- endfor %}
+    return obj;
+}
+
 {% endif %}

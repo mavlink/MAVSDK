@@ -57,28 +57,88 @@ public:
     translateToRpcMissionItem(const mavsdk::Mission::MissionItem& mission_item)
     {
         std::unique_ptr<rpc::mission::MissionItem> rpc_obj(new rpc::mission::MissionItem());
+
         rpc_obj->set_latitude_deg(mission_item.latitude_deg);
+
         rpc_obj->set_longitude_deg(mission_item.longitude_deg);
+
         rpc_obj->set_relative_altitude_m(mission_item.relative_altitude_m);
+
         rpc_obj->set_speed_m_s(mission_item.speed_m_s);
+
         rpc_obj->set_is_fly_through(mission_item.is_fly_through);
+
         rpc_obj->set_gimbal_pitch_deg(mission_item.gimbal_pitch_deg);
+
         rpc_obj->set_gimbal_yaw_deg(mission_item.gimbal_yaw_deg);
+
         rpc_obj->set_camera_action(translateToRpcCameraAction(mission_item.camera_action));
+
         rpc_obj->set_loiter_time_s(mission_item.loiter_time_s);
+
         rpc_obj->set_camera_photo_interval_s(mission_item.camera_photo_interval_s);
 
         return rpc_obj;
+    }
+
+    static mavsdk::Mission::MissionItem
+    translateFromRpcMissionItem(const rpc::mission::MissionItem& mission_item)
+    {
+        mavsdk::Mission::MissionItem obj;
+
+        obj.latitude_deg = mission_item.latitude_deg();
+        obj.longitude_deg = mission_item.longitude_deg();
+        obj.relative_altitude_m = mission_item.relative_altitude_m();
+        obj.speed_m_s = mission_item.speed_m_s();
+        obj.is_fly_through = mission_item.is_fly_through();
+        obj.gimbal_pitch_deg = mission_item.gimbal_pitch_deg();
+        obj.gimbal_yaw_deg = mission_item.gimbal_yaw_deg();
+        obj.camera_action = mission_item.camera_action();
+        obj.loiter_time_s = mission_item.loiter_time_s();
+        obj.camera_photo_interval_s = mission_item.camera_photo_interval_s();
+        return obj;
+    }
+
+    static std::unique_ptr<rpc::mission::MissionPlan>
+    translateToRpcMissionPlan(const mavsdk::Mission::MissionPlan& mission_plan)
+    {
+        std::unique_ptr<rpc::mission::MissionPlan> rpc_obj(new rpc::mission::MissionPlan());
+
+        rpc_obj->set_allocated_mission_items(
+            translateToRpcstd::vector<MissionItem>(mission_plan.mission_items).release());
+
+        return rpc_obj;
+    }
+
+    static mavsdk::Mission::MissionPlan
+    translateFromRpcMissionPlan(const rpc::mission::MissionPlan& mission_plan)
+    {
+        mavsdk::Mission::MissionPlan obj;
+
+        obj.mission_items = mission_plan.mission_items();
+        return obj;
     }
 
     static std::unique_ptr<rpc::mission::MissionProgress>
     translateToRpcMissionProgress(const mavsdk::Mission::MissionProgress& mission_progress)
     {
         std::unique_ptr<rpc::mission::MissionProgress> rpc_obj(new rpc::mission::MissionProgress());
-        rpc_obj->set_current_item_index(mission_progress.current_item_index);
-        rpc_obj->set_mission_count(mission_progress.mission_count);
+
+        rpc_obj->set_current(mission_progress.current);
+
+        rpc_obj->set_total(mission_progress.total);
 
         return rpc_obj;
+    }
+
+    static mavsdk::Mission::MissionProgress
+    translateFromRpcMissionProgress(const rpc::mission::MissionProgress& mission_progress)
+    {
+        mavsdk::Mission::MissionProgress obj;
+
+        obj.current = mission_progress.current();
+        obj.total = mission_progress.total();
+        return obj;
     }
 
     static rpc::mission::MissionResult::Result
@@ -127,7 +187,7 @@ public:
             return grpc::Status::OK;
         }
 
-        auto result = _mission.upload_mission(request->mission_items());
+        auto result = _mission.upload_mission(request->mission_plan());
 
         if (response != nullptr) {
             fillResponseWithResult(response, result);
@@ -159,7 +219,7 @@ public:
 
         if (response != nullptr) {
             fillResponseWithResult(response, result_pair.first);
-            response->set_mission_items(result_pair.second);
+            translateToRpcMissionPlan(result_pair.second).release()
         }
 
         return grpc::Status::OK;
@@ -249,7 +309,7 @@ public:
 
         if (response != nullptr) {
             fillResponseWithResult(response, result_pair.first);
-            response->set_is_finished(result_pair.second);
+            result_pair.second
         }
 
         return grpc::Status::OK;
@@ -298,7 +358,7 @@ public:
 
         if (response != nullptr) {
             fillResponseWithResult(response, result_pair.first);
-            response->set_enable(result_pair.second);
+            result_pair.second
         }
 
         return grpc::Status::OK;
@@ -337,7 +397,7 @@ public:
 
         if (response != nullptr) {
             fillResponseWithResult(response, result_pair.first);
-            response->set_mission_items(result_pair.second);
+            translateToRpcMissionPlan(result_pair.second).release()
         }
 
         return grpc::Status::OK;

@@ -663,9 +663,11 @@ operator<<(std::ostream& str, Telemetry::ActuatorControlTarget const& actuator_c
     str << "actuator_control_target:" << '\n' << "{\n";
     str << "    group: " << actuator_control_target.group << '\n';
     str << "    controls: [";
-    for (const auto& elem : actuator_control_target.controls) {
-        str << elem;
-        str << (elem != actuator_control_target.controls.back() ? ", " : "]\n");
+    for (auto it = actuator_control_target.controls.begin();
+         it != actuator_control_target.controls.end();
+         ++it) {
+        str << *it;
+        str << (it + 1 != actuator_control_target.controls.end() ? ", " : "]\n");
     }
     str << '}';
     return str;
@@ -683,9 +685,11 @@ operator<<(std::ostream& str, Telemetry::ActuatorOutputStatus const& actuator_ou
     str << "actuator_output_status:" << '\n' << "{\n";
     str << "    active: " << actuator_output_status.active << '\n';
     str << "    actuator: [";
-    for (const auto& elem : actuator_output_status.actuator) {
-        str << elem;
-        str << (elem != actuator_output_status.actuator.back() ? ", " : "]\n");
+    for (auto it = actuator_output_status.actuator.begin();
+         it != actuator_output_status.actuator.end();
+         ++it) {
+        str << *it;
+        str << (it + 1 != actuator_output_status.actuator.end() ? ", " : "]\n");
     }
     str << '}';
     return str;
@@ -700,9 +704,10 @@ std::ostream& operator<<(std::ostream& str, Telemetry::Covariance const& covaria
 {
     str << "covariance:" << '\n' << "{\n";
     str << "    covariance_matrix: [";
-    for (const auto& elem : covariance.covariance_matrix) {
-        str << elem;
-        str << (elem != covariance.covariance_matrix.back() ? ", " : "]\n");
+    for (auto it = covariance.covariance_matrix.begin(); it != covariance.covariance_matrix.end();
+         ++it) {
+        str << *it;
+        str << (it + 1 != covariance.covariance_matrix.end() ? ", " : "]\n");
     }
     str << '}';
     return str;

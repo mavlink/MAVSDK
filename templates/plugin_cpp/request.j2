@@ -1,9 +1,13 @@
+{% if is_async %}
 void {{ plugin_name.upper_camel_case }}::{{ name.lower_snake_case }}_async({% for param in params %}{{ param.type_info.name }} {{ param.name.lower_snake_case }}, {% endfor %}const {{ name.lower_snake_case }}_callback_t callback)
 {
     _impl->{{ name.lower_snake_case }}_async({% for param in params %}{{ param.name.lower_snake_case }}, {% endfor %}callback);
 }
+{% endif %}
 
+{% if is_sync %}
 std::pair<{{ plugin_name.upper_camel_case }}::Result, {{ return_type.name }}> {{ plugin_name.upper_camel_case }}::{{ name.lower_snake_case }}({% for param in params %}{{ param.type_info.name }} {{ param.name.lower_snake_case }}{{ ", " if not loop.last }}{% endfor %}) const
 {
     return _impl->{{ name.lower_snake_case }}({% for param in params %}{{ param.name.lower_snake_case }}{{ ", " if not loop.last }}{% endfor %});
 }
+{% endif %}

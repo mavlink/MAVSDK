@@ -20,9 +20,9 @@ std::ostream& operator<<(std::ostream& str, {{ plugin_name.upper_camel_case }}::
     str << "    {{ field.name.lower_snake_case }}: " << {{ name.lower_snake_case }}.{{ field.name.lower_snake_case }} << '\n';
         {%- else %}
     str << "    {{ field.name.lower_snake_case }}: [";
-    for (const auto& elem : {{ name.lower_snake_case }}.{{ field.name.lower_snake_case }}) {
-        str << elem;
-        str << (elem != {{ name.lower_snake_case }}.{{ field.name.lower_snake_case }}.back() ? ", " : "]\n");
+    for (auto it = {{ name.lower_snake_case }}.{{ field.name.lower_snake_case }}.begin(); it != {{ name.lower_snake_case }}.{{ field.name.lower_snake_case }}.end(); ++it) {
+        str << *it;
+        str << (it + 1 != {{ name.lower_snake_case }}.{{ field.name.lower_snake_case }}.end() ? ", " : "]\n");
     }
         {%- endif %}
     {%- endfor %}

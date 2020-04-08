@@ -79,7 +79,7 @@ void MissionImpl::process_mission_item_reached(const mavlink_message_t& message)
     report_progress();
 }
 
-Mission::Result MissionImpl::upload_mission(const std::vector<Mission::MissionItem>& mission_items)
+Mission::Result MissionImpl::upload_mission(const MissionPlan& mission_plan)
 {
     auto prom = std::promise<Mission::Result>();
     auto fut = prom.get_future();

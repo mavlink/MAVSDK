@@ -97,11 +97,32 @@ public:
     friend std::ostream& operator<<(std::ostream& str, Mission::MissionItem const& mission_item);
 
     /**
+     * @brief Mission plan type
+     */
+    struct MissionPlan {
+        std::vector<MissionItem> mission_items; /**< @brief The mission items */
+    };
+
+    /**
+     * @brief Equal operator to compare two `Mission::MissionPlan` objects.
+     *
+     * @return `true` if items are equal.
+     */
+    friend bool operator==(const Mission::MissionPlan& lhs, const Mission::MissionPlan& rhs);
+
+    /**
+     * @brief Stream operator to print information about a `Mission::MissionPlan`.
+     *
+     * @return A reference to the stream.
+     */
+    friend std::ostream& operator<<(std::ostream& str, Mission::MissionPlan const& mission_plan);
+
+    /**
      * @brief Mission progress type.
      */
     struct MissionProgress {
-        int32_t current_item_index; /**< @brief Current mission item index (0-based) */
-        int32_t mission_count; /**< @brief Total number of mission items */
+        int32_t current; /**< @brief Current mission item index (0-based) */
+        int32_t total; /**< @brief Total number of mission items */
     };
 
     /**
@@ -157,20 +178,14 @@ public:
      * The mission items are uploaded to a drone. Once uploaded the mission can be started and
      * executed even if the connection is lost.
      */
-    void
-    upload_mission_async(std::vector<MissionItem> mission_items, const result_callback_t callback);
+    void upload_mission_async(MissionPlan mission_plan, const result_callback_t callback);
 
     /**
      * @brief Synchronous wrapper for upload_mission_async().
      *
      * @return Result of request.
      */
-    Result upload_mission(std::vector<MissionItem> mission_items) const;
-
-    /**
-     * @brief Cancel an ongoing mission upload.
-     */
-    void cancel_mission_upload_async(const result_callback_t callback);
+    Result upload_mission(MissionPlan mission_plan) const;
 
     /**
      * @brief Synchronous wrapper for cancel_mission_upload_async().
@@ -182,7 +197,7 @@ public:
     /**
      * @brief Callback type for download_mission_async.
      */
-    typedef std::function<void(Result, std::vector<MissionItem>)> download_mission_callback_t;
+    typedef std::function<void(Result, MissionPlan)> download_mission_callback_t;
 
     /**
      * @brief Download a list of mission items from the system (asynchronous).
@@ -197,12 +212,7 @@ public:
      *
      * @return Result of request.
      */
-    std::pair<Result, std::vector<MissionItem>> download_mission() const;
-
-    /**
-     * @brief Cancel an ongoing mission download.
-     */
-    void cancel_mission_download_async(const result_callback_t callback);
+    std::pair<Result, MissionPlan> download_mission() const;
 
     /**
      * @brief Synchronous wrapper for cancel_mission_download_async().
@@ -273,16 +283,6 @@ public:
     Result set_current_mission_item(int32_t index) const;
 
     /**
-     * @brief Callback type for is_mission_finished_async.
-     */
-    typedef std::function<void(bool)> is_mission_finished_callback_t;
-
-    /**
-     * @brief Check if the mission has been finished.
-     */
-    void is_mission_finished_async(const is_mission_finished_callback_t callback);
-
-    /**
      * @brief Synchronous wrapper for is_mission_finished_async().
      *
      * @return Result of request.
@@ -307,33 +307,11 @@ public:
     MissionProgress mission_progress() const;
 
     /**
-     * @brief Callback type for get_return_to_launch_after_mission_async.
-     */
-    typedef std::function<void(bool)> get_return_to_launch_after_mission_callback_t;
-
-    /**
-     * @brief Get whether to trigger Return-to-Launch (RTL) after mission is complete.
-     *
-     * Before getting this option, it needs to be set, or a mission
-     * needs to be downloaded.
-     */
-    void get_return_to_launch_after_mission_async(
-        const get_return_to_launch_after_mission_callback_t callback);
-
-    /**
      * @brief Synchronous wrapper for get_return_to_launch_after_mission_async().
      *
      * @return Result of request.
      */
     std::pair<Result, bool> get_return_to_launch_after_mission() const;
-
-    /**
-     * @brief Set whether to trigger Return-to-Launch (RTL) after the mission is complete.
-     *
-     * This will only take effect for the next mission upload, meaning that
-     * the mission may have to be uploaded again.
-     */
-    void set_return_to_launch_after_mission_async(bool enable, const result_callback_t callback);
 
     /**
      * @brief Synchronous wrapper for set_return_to_launch_after_mission_async().
@@ -345,8 +323,7 @@ public:
     /**
      * @brief Callback type for import_qgroundcontrol_mission_async.
      */
-    typedef std::function<void(Result, std::vector<MissionItem>)>
-        import_qgroundcontrol_mission_callback_t;
+    typedef std::function<void(Result, MissionPlan)> import_qgroundcontrol_mission_callback_t;
 
     /**
      * @brief Import a QGroundControl (QGC) mission plan.
@@ -362,8 +339,7 @@ public:
      *
      * @return Result of request.
      */
-    std::pair<Result, std::vector<MissionItem>>
-    import_qgroundcontrol_mission(std::string qgc_plan_path) const;
+    std::pair<Result, MissionPlan> import_qgroundcontrol_mission(std::string qgc_plan_path) const;
 
     /**
      * @brief Returns a human-readable English string for a Result.

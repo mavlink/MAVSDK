@@ -24,28 +24,23 @@ public:
     void enable() override;
     void disable() override;
 
-    Mission::Result upload_mission(const std::vector<Mission::MissionItem>& mission_items);
+    Mission::Result upload_mission(const Mission::MissionPlan& mission_plan);
 
     void upload_mission_async(
-        const std::vector<Mission::MissionItem>& mission_items,
-        const Mission::result_callback_t& callback);
+        const Mission::MissionPlan& mission_plan, const Mission::result_callback_t& callback);
 
     void cancel_mission_upload_async(const Mission::result_callback_t callback);
     Mission::Result cancel_mission_upload();
 
-    std::pair<Mission::Result, std::vector<Mission::MissionItem>> download_mission();
+    std::pair<Mission::Result, Mission::MissionPlan> download_mission();
     void download_mission_async(const Mission::download_mission_callback_t& callback);
 
     Mission::Result cancel_mission_download();
     void cancel_mission_download_async(const Mission::result_callback_t& callback);
 
     Mission::Result set_return_to_launch_after_mission(bool enable_rtl);
-    void set_return_to_launch_after_mission_async(
-        bool enable_rtl, const Mission::result_callback_t& callback);
 
     std::pair<Mission::Result, bool> get_return_to_launch_after_mission();
-    void get_return_to_launch_after_mission_async(
-        const Mission::get_return_to_launch_after_mission_callback_t& callback);
 
     Mission::Result start_mission();
     void start_mission_async(const Mission::result_callback_t& callback);
@@ -60,7 +55,6 @@ public:
     void set_current_mission_item_async(int current, const Mission::result_callback_t& callback);
 
     std::pair<Mission::Result, bool> is_mission_finished() const;
-    void is_mission_finished_async(const Mission::is_mission_finished_callback_t& callback);
 
     int current_mission_item() const;
     int total_mission_items() const;
@@ -72,7 +66,7 @@ public:
         std::string qgc_plan_path,
         const Mission::import_qgroundcontrol_mission_callback_t callback);
 
-    static std::pair<Mission::Result, std::vector<Mission::MissionItem>>
+    static std::pair<Mission::Result, Mission::MissionPlan>
     import_qgroundcontrol_mission(const std::string& qgc_plan_path);
 
     // Non-copyable

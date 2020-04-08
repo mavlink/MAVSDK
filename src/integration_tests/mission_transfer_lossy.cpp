@@ -95,7 +95,7 @@ void upload_mission(
     auto prom = std::promise<void>{};
     auto fut = prom.get_future();
     mission->upload_mission_async(mission_items, [&prom](Mission::Result result) {
-        ASSERT_EQ(result, Mission::Result::SUCCESS);
+        ASSERT_EQ(result, Mission::Result::Success);
         prom.set_value();
         LogInfo() << "Mission uploaded.";
     });
@@ -116,7 +116,7 @@ std::vector<Mission::MissionItem> download_mission(std::shared_ptr<Mission> miss
     mission->download_mission_async(
         [&prom,
          &mission_items](Mission::Result result, std::vector<Mission::MissionItem> mission_items_) {
-            EXPECT_EQ(result, Mission::Result::SUCCESS);
+            EXPECT_EQ(result, Mission::Result::Success);
             mission_items = mission_items_;
             prom.set_value();
             LogInfo() << "Mission downloaded.";

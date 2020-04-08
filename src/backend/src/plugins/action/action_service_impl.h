@@ -237,7 +237,7 @@ public:
 
         if (response != nullptr) {
             fillResponseWithResult(response, result_pair.first);
-            response->set_altitude(result_pair.second);
+            result_pair.second
         }
 
         return grpc::Status::OK;
@@ -271,7 +271,7 @@ public:
 
         if (response != nullptr) {
             fillResponseWithResult(response, result_pair.first);
-            response->set_speed(result_pair.second);
+            result_pair.second
         }
 
         return grpc::Status::OK;
@@ -305,7 +305,7 @@ public:
 
         if (response != nullptr) {
             fillResponseWithResult(response, result_pair.first);
-            response->set_relative_altitude_m(result_pair.second);
+            result_pair.second
         }
 
         return grpc::Status::OK;

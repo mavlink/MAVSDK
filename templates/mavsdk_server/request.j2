@@ -14,7 +14,7 @@ grpc::Status {{ name.upper_camel_case }}(
 
     if (response != nullptr) {
         fillResponseWithResult(response, result_pair.first);
-        response->set_{{ return_name.lower_snake_case }}(result_pair.second);
+        {% if return_type.is_primitive %}result_pair.second{% else %}translateToRpc{{ return_type.inner_name }}(result_pair.second).release(){% endif %}
     }
 
     return grpc::Status::OK;

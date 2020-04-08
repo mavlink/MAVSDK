@@ -10,7 +10,16 @@ grpc::Status {{ name.upper_camel_case }}(
     }
     {%- endif %}
 
-    auto result = _{{ plugin_name.lower_snake_case }}.{{ name.lower_snake_case }}({% for param in params %}request->{{ param.name.lower_snake_case }}(){{ ", " if not loop.last }}{% endfor %});
+    {%- for param in params %}
+        {% if param.type_info.is_repeated %}
+    std::vector<{{ package.lower_snake_case.split('.')[0] }}::{{ plugin_name.upper_camel_case }}::{{ param.type_info.inner_name }}> {{ param.name.lower_snake_case }}_vec;
+    for (const auto& elem : request->{{ param.name.lower_snake_case }}()) {
+        {{ param.name.lower_snake_case }}_vec.push_back({% if param.type_info.is_primitive %}elem{% else %}translateFromRpc{{ param.type_info.inner_name}}(elem){% endif %});
+    }
+        {% endif %}
+    {% endfor -%}
+
+    auto result = _{{ plugin_name.lower_snake_case }}.{{ name.lower_snake_case }}({% for param in params %}{% if param.type_info.is_repeated %}{{ param.name.lower_snake_case }}_vec{% else %}request->{{ param.name.lower_snake_case }}(){% endif %}{{ ", " if not loop.last }}{% endfor %});
 
     if (response != nullptr) {
         fillResponseWithResult(response, result);
