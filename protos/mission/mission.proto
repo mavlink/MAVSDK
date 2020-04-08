@@ -92,7 +92,7 @@ service MissionService {
 }
 
 message UploadMissionRequest {
-    repeated MissionItem mission_items = 1; // List of mission items
+    MissionPlan mission_plan = 1; // The mission plan
 }
 message UploadMissionResponse {
     MissionResult mission_result = 1;
@@ -104,7 +104,7 @@ message CancelMissionUploadResponse {}
 message DownloadMissionRequest {}
 message DownloadMissionResponse {
     MissionResult mission_result = 1;
-    repeated MissionItem mission_items = 2; // List of downloaded mission items
+    MissionPlan mission_plan = 2; // The mission plan
 }
 
 message CancelMissionDownloadRequest {}
@@ -157,7 +157,7 @@ message ImportQgroundcontrolMissionRequest {
 }
 message ImportQgroundcontrolMissionResponse {
     MissionResult mission_result = 1;
-    repeated MissionItem mission_items = 2; // Mission items imported from QGC plan
+    MissionPlan mission_plan = 2; // The mission plan
 }
 
 /*
@@ -191,10 +191,15 @@ message MissionItem {
     }
 }
 
+// Mission plan type
+message MissionPlan {
+    repeated MissionItem mission_items = 1; // The mission items
+}
+
 // Mission progress type.
 message MissionProgress {
-    int32 current_item_index = 1; // Current mission item index (0-based)
-    int32 mission_count = 2; // Total number of mission items
+    int32 current = 1; // Current mission item index (0-based)
+    int32 total = 2; // Total number of mission items
 }
 
 // Result type.
