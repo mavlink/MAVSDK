@@ -2,6 +2,8 @@ syntax = "proto3";
 
 package mavsdk.rpc.mission;
 
+import "mavsdk_options.proto";
+
 option java_package = "io.mavsdk.mission";
 option java_outer_classname = "MissionProto";
 
@@ -17,7 +19,7 @@ service MissionService {
     /*
      * Cancel an ongoing mission upload.
      */
-    rpc CancelMissionUpload(CancelMissionUploadRequest) returns(CancelMissionUploadResponse) {}
+    rpc CancelMissionUpload(CancelMissionUploadRequest) returns(CancelMissionUploadResponse) { option (mavsdk.options.async_type) = SYNC; }
     /*
      * Download a list of mission items from the system (asynchronous).
      *
@@ -28,7 +30,7 @@ service MissionService {
     /*
      * Cancel an ongoing mission download.
      */
-    rpc CancelMissionDownload(CancelMissionDownloadRequest) returns(CancelMissionDownloadResponse) {}
+    rpc CancelMissionDownload(CancelMissionDownloadRequest) returns(CancelMissionDownloadResponse) { option (mavsdk.options.async_type) = SYNC; }
     /*
      * Start the mission.
      *
@@ -61,7 +63,7 @@ service MissionService {
     /*
      * Check if the mission has been finished.
      */
-    rpc IsMissionFinished(IsMissionFinishedRequest) returns(IsMissionFinishedResponse) {}
+    rpc IsMissionFinished(IsMissionFinishedRequest) returns(IsMissionFinishedResponse) { option (mavsdk.options.async_type) = SYNC; }
     /*
      * Subscribe to mission progress updates.
      */
@@ -72,14 +74,14 @@ service MissionService {
      * Before getting this option, it needs to be set, or a mission
      * needs to be downloaded.
      */
-    rpc GetReturnToLaunchAfterMission(GetReturnToLaunchAfterMissionRequest) returns(GetReturnToLaunchAfterMissionResponse) {}
+    rpc GetReturnToLaunchAfterMission(GetReturnToLaunchAfterMissionRequest) returns(GetReturnToLaunchAfterMissionResponse) { option (mavsdk.options.async_type) = SYNC; }
     /*
      * Set whether to trigger Return-to-Launch (RTL) after the mission is complete.
      *
      * This will only take effect for the next mission upload, meaning that
      * the mission may have to be uploaded again.
      */
-    rpc SetReturnToLaunchAfterMission(SetReturnToLaunchAfterMissionRequest) returns(SetReturnToLaunchAfterMissionResponse) {}
+    rpc SetReturnToLaunchAfterMission(SetReturnToLaunchAfterMissionRequest) returns(SetReturnToLaunchAfterMissionResponse) { option (mavsdk.options.async_type) = SYNC; }
     /*
      * Import a QGroundControl (QGC) mission plan.
      *
