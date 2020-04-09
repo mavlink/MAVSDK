@@ -67,6 +67,10 @@ public:
 
     MAVLinkAddress own_address{};
 
+    // Non-copyable
+    MavsdkImpl(const MavsdkImpl&) = delete;
+    const MavsdkImpl& operator=(const MavsdkImpl&) = delete;
+
 private:
     void add_connection(std::shared_ptr<Connection>);
     void make_system_with_component(uint8_t system_id, uint8_t component_id);
@@ -92,6 +96,17 @@ private:
     bool _is_single_system{false};
 
     std::atomic<bool> _should_exit = {false};
+
+    void system_thread();
+    void send_heartbeat();
+
+    std::thread* _system_thread{nullptr};
+
+    /** @brief Interval in milliseconds to send heartbeat. */
+    // TODO kalyan - make this configurable??
+    static constexpr double _HEARTBEAT_SEND_INTERVAL_S = 1.0;
+
+    Time _time{};
 };
 
 } // namespace mavsdk

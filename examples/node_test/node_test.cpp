@@ -58,7 +58,11 @@ int main(int argc, char** argv)
     }
 
     dc.register_on_discover([](uint8_t system_id, uint8_t component_id) {
-            std::cout << "Discovered system with sid: " << int(system_id) << " cid" << int(component_id) << std::endl;
+            std::cout << "Discovered system with sid: " << int(system_id) << " cid: " << int(component_id) << std::endl;
+    });
+
+    dc.register_on_timeout([](uint8_t system_id, uint8_t component_id) {
+            std::cout << "Lost sid: " << int(system_id) << " cid: " << int(component_id) << std::endl;
     });
 
     sleep_for(seconds(600));

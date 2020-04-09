@@ -29,6 +29,8 @@ MavsdkImpl::MavsdkImpl() :
 {
     LogInfo() << "MAVSDK version: " << mavsdk_version;
     set_configuration(_configuration);
+
+    _system_thread = new std::thread(&MavsdkImpl::system_thread, this);
 }
 
 MavsdkImpl::~MavsdkImpl()
@@ -492,5 +494,35 @@ void MavsdkImpl::register_on_timeout(const Mavsdk::event_callback_t callback)
     _on_timeout_callback = callback;
 }
 
+void MavsdkImpl::system_thread()
+{
+    dl_time_t last_time{};
+
+    while (!_should_exit) {
+        if (_time.elapsed_since_s(last_time) >= MavsdkImpl::_HEARTBEAT_SEND_INTERVAL_S) {
+            send_heartbeat();
+        }
+        last_time = _time.steady_time();
+
+        std::this_thread::sleep_for(std::chrono::milliseconds(50)); // in case we want to do anything else in this thread
+    }
+}
+
+void MavsdkImpl::send_heartbeat()
+{
+    std::cout << "Sending heartbeat" << std::endl;
+    mavlink_message_t message;
+
+    mavlink_msg_heartbeat_pack(
+            get_own_system_id(),
+            get_own_component_id(),
+            &message,
+            get_mav_type(),
+            MAV_AUTOPILOT_INVALID,
+            0,
+            0,
+            0);
+    send_message(message);
+}
 
 } // namespace mavsdk

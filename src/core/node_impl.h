@@ -43,6 +43,10 @@ public:
 
     bool send_message(mavlink_message_t& message) override;
 
+    // Non-copyable
+    NodeImpl(const NodeImpl&) = delete;
+    const NodeImpl& operator=(const NodeImpl&) = delete;
+
 private:
     MavsdkImpl& _parent;
     std::atomic<bool> _should_exit{false};

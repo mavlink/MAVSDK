@@ -265,15 +265,16 @@ void SystemImpl::heartbeats_timed_out()
 
 void SystemImpl::system_thread()
 {
+    // TODO kalyan - scrap
     dl_time_t last_time{};
 
     while (!_should_exit) {
-        if (_time.elapsed_since_s(last_time) >= SystemImpl::_HEARTBEAT_SEND_INTERVAL_S) {
-            if (_parent.is_connected()) {
-                send_heartbeat();
-            }
-            last_time = _time.steady_time();
-        }
+        //if (_time.elapsed_since_s(last_time) >= SystemImpl::_HEARTBEAT_SEND_INTERVAL_S) {
+            //if (_parent.is_connected()) {
+                //send_heartbeat();
+            //}
+            //last_time = _time.steady_time();
+        //}
 
         _call_every_handler.run_once();
         _timeout_handler.run_once();
