@@ -9,9 +9,10 @@ type_info_factory = TypeInfoFactory()
 
 
 class Param:
-    def __init__(self, name, type_info, description):
+    def __init__(self, name, type_info, default_value=None, description=None):
         self.name = name
         self.type_info = type_info
+        self.default_value = default_value
         self.description = description
 
 

@@ -36,10 +36,17 @@ class Struct(object):
 
         field_id = 0
         for field in pb_struct.field:
+
+            default_value = None
+            for field_descriptor in field.options.Extensions:
+                if field_descriptor.name == "default_value":
+                    default_value = field.options.Extensions[field_descriptor]
+
             self._fields.append(
                 Param(name_parser_factory.create(field.json_name),
                       type_info_factory.create(field),
-                      struct_docs['params'][field_id]) if struct_docs else None)
+                      default_value=default_value,
+                      description=struct_docs['params'][field_id]) if struct_docs else None)
 
             field_id += 1
 
