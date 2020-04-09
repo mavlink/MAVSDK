@@ -27,6 +27,8 @@ void Timesync::do_work()
                                   _parent.get_autopilot_time().now().time_since_epoch())
                                   .count();
             send_timesync(0, now_ns);
+        } else {
+            _autopilot_timesync_acquired = false;
         }
         _last_time = _parent.get_time().steady_time();
     }
