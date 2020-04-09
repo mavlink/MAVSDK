@@ -8,6 +8,7 @@
 #include "connection.h"
 #include "mavsdk.h"
 #include "system.h"
+#include "node.h"
 #include "mavlink_include.h"
 #include "mavlink_address.h"
 
@@ -35,6 +36,7 @@ public:
 
     void receive_message(mavlink_message_t& message);
     bool send_message(mavlink_message_t& message);
+    void process_heartbeat(const mavlink_message_t& message);
 
     ConnectionResult add_any_connection(const std::string& connection_url);
     ConnectionResult
@@ -60,23 +62,28 @@ public:
     void register_on_discover(Mavsdk::event_callback_t callback);
     void register_on_timeout(Mavsdk::event_callback_t callback);
 
-    void notify_on_discover(uint64_t uuid);
-    void notify_on_timeout(uint64_t uuid);
+    void notify_on_discover(uint8_t system_id, uint8_t component_id);
+    void notify_on_timeout(uint8_t system_id, uint8_t component_id);
 
     MAVLinkAddress own_address{};
 
 private:
     void add_connection(std::shared_ptr<Connection>);
     void make_system_with_component(uint8_t system_id, uint8_t component_id);
+    void make_node_with_id(uint8_t system_id, uint8_t component_id);
     bool does_system_exist(uint8_t system_id);
 
     using system_entry_t = std::pair<uint8_t, std::shared_ptr<System>>;
+    using node_id_t = uint16_t;
+    using node_entry_t = std::pair<node_id_t, std::shared_ptr<Node>>;
 
     std::mutex _connections_mutex;
     std::vector<std::shared_ptr<Connection>> _connections;
 
     mutable std::recursive_mutex _systems_mutex;
     std::unordered_map<uint8_t, std::shared_ptr<System>> _systems;
+    mutable std::recursive_mutex _nodes_mutex;
+    std::map<uint16_t, std::shared_ptr<Node>> _nodes;
 
     Mavsdk::event_callback_t _on_discover_callback;
     Mavsdk::event_callback_t _on_timeout_callback;

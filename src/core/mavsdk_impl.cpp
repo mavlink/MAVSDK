@@ -8,6 +8,8 @@
 #include "udp_connection.h"
 #include "system.h"
 #include "system_impl.h"
+#include "node.h"
+#include "node_impl.h"
 #include "serial_connection.h"
 #include "cli_arg.h"
 #include "version.h"
@@ -19,6 +21,8 @@ MavsdkImpl::MavsdkImpl() :
     _connections(),
     _systems_mutex(),
     _systems(),
+    _nodes_mutex(),
+    _nodes(),
     _on_discover_callback(nullptr),
     _on_timeout_callback(nullptr),
     _configuration(Mavsdk::Configuration::UsageType::GroundStation)
@@ -34,6 +38,7 @@ MavsdkImpl::~MavsdkImpl()
         _should_exit = true;
 
         _systems.clear();
+        _nodes.clear();
     }
 
     {
@@ -73,32 +78,40 @@ std::string MavsdkImpl::version() const
 void MavsdkImpl::receive_message(mavlink_message_t& message)
 {
     // Don't ever create a system with sysid 0.
+    // TODO kalyan - should we do something with this instead of just dropping it?
     if (message.sysid == 0) {
         return;
     }
 
     std::lock_guard<std::recursive_mutex> lock(_systems_mutex);
 
+    // TODO kalyan - I'm assuming this is how we create systems, and should be checked
     // Change system id of null system
-    if (_systems.find(0) != _systems.end()) {
-        auto null_system = _systems[0];
-        _systems.erase(0);
-        null_system->system_impl()->set_system_id(message.sysid);
-        _systems.insert(system_entry_t(message.sysid, null_system));
-    } else if (_is_single_system) {
-        auto sys = _systems.begin();
-        if (sys->first != message.sysid) {
-            sys->second->system_impl()->set_system_id(message.sysid);
-            _systems.insert(system_entry_t(message.sysid, sys->second));
-            _systems.erase(sys->first);
-        }
+
+    if (message.msgid == MAVLINK_MSG_ID_HEARTBEAT) {
+        std::cout << "Heartbeat: " << std::endl;
+        process_heartbeat(message);
     }
 
-    if (!does_system_exist(message.sysid)) {
-        make_system_with_component(message.sysid, message.compid);
-    } else {
-        _systems.at(message.sysid)->system_impl()->add_new_component(message.compid);
-    }
+    //if (_systems.find(0) != _systems.end()) {
+        //auto null_system = _systems[0];
+        //_systems.erase(0);
+        //null_system->system_impl()->set_system_id(message.sysid);
+        //_systems.insert(system_entry_t(message.sysid, null_system));
+    //} else if (_is_single_system) {
+        //auto sys = _systems.begin();
+        //if (sys->first != message.sysid) {
+            //sys->second->system_impl()->set_system_id(message.sysid);
+            //_systems.insert(system_entry_t(message.sysid, sys->second));
+            //_systems.erase(sys->first);
+        //}
+    //}
+
+    //if (!does_system_exist(message.sysid)) {
+        //make_system_with_component(message.sysid, message.compid);
+    //} else {
+        //_systems.at(message.sysid)->system_impl()->add_new_component(message.compid);
+    //}
 
     if (_should_exit) {
         // Don't try to call at() if systems have already been destroyed
@@ -106,8 +119,13 @@ void MavsdkImpl::receive_message(mavlink_message_t& message)
         return;
     }
 
-    if (_systems.find(message.sysid) != _systems.end()) {
-        _systems.at(message.sysid)->system_impl()->process_mavlink_message(message);
+    //if (_systems.find(message.sysid) != _systems.end()) {
+        //_systems.at(message.sysid)->system_impl()->process_mavlink_message(message);
+    //}
+
+    uint16_t node_id = (message.sysid << 8) | message.compid;
+    if (_nodes.find(node_id) != _nodes.end()) {
+        _nodes.at(node_id)->node_impl()->process_mavlink_message(message);
     }
 }
 
@@ -123,6 +141,19 @@ bool MavsdkImpl::send_message(mavlink_message_t& message)
     }
 
     return true;
+}
+
+void MavsdkImpl::process_heartbeat(const mavlink_message_t& message)
+{
+    std::lock_guard<std::mutex> lock(_connections_mutex);
+
+    uint16_t node_id = (message.sysid << 8) | message.compid;
+    std::cout << "HB Sysid: " << int(message.sysid) << " compid: " << int(message.compid) << std::endl;
+
+    if (_nodes.find(node_id) == _nodes.end()) {
+        std::cout << "Creating node" << std::endl;
+        make_node_with_id(message.sysid, message.compid);
+    }
 }
 
 ConnectionResult MavsdkImpl::add_any_connection(const std::string& connection_url)
@@ -245,6 +276,8 @@ void MavsdkImpl::set_configuration(Mavsdk::Configuration configuration)
 
 std::vector<uint64_t> MavsdkImpl::get_system_uuids() const
 {
+    // TODO kalyan - should probably be replaced with 2 methods, one for getting system/comp ids
+    // and another for uid2
     std::vector<uint64_t> uuids = {};
 
     for (auto it = _systems.begin(); it != _systems.end(); ++it) {
@@ -259,6 +292,7 @@ std::vector<uint64_t> MavsdkImpl::get_system_uuids() const
 
 System& MavsdkImpl::get_system()
 {
+    // TODO kalyan - probably should be scrapped
     {
         std::lock_guard<std::recursive_mutex> lock(_systems_mutex);
         // In get_system without uuid, we expect to have only
@@ -283,6 +317,7 @@ System& MavsdkImpl::get_system()
 
 System& MavsdkImpl::get_system(const uint64_t uuid)
 {
+    // TODO kalyan - do we even need this? Why not just discover?
     {
         std::lock_guard<std::recursive_mutex> lock(_systems_mutex);
         // TODO: make a cache map for this.
@@ -306,13 +341,11 @@ System& MavsdkImpl::get_system(const uint64_t uuid)
 
 uint8_t MavsdkImpl::get_own_system_id() const
 {
-    // TODO: To be deprecated.
     return own_address.system_id;
 }
 
 uint8_t MavsdkImpl::get_own_component_id() const
 {
-    // TODO: To be deprecated.
     return own_address.component_id;
 }
 
@@ -329,6 +362,7 @@ uint8_t MavsdkImpl::get_mav_type() const
             return MAV_TYPE_ONBOARD_CONTROLLER;
 
         case Mavsdk::Configuration::UsageType::Custom:
+            // TODO kalyan - we should probably allow user to set custom mav type
             return MAV_TYPE_GENERIC;
 
         default:
@@ -339,6 +373,7 @@ uint8_t MavsdkImpl::get_mav_type() const
 
 bool MavsdkImpl::is_connected() const
 {
+    // TODO kalyan - don't really like this, should be looked at in detail
     std::lock_guard<std::recursive_mutex> lock(_systems_mutex);
 
     if (_systems.empty()) {
@@ -350,6 +385,7 @@ bool MavsdkImpl::is_connected() const
 
 bool MavsdkImpl::is_connected(const uint64_t uuid) const
 {
+    // TODO kalyan - don't really like this, should be looked at in detail
     std::lock_guard<std::recursive_mutex> lock(_systems_mutex);
 
     for (auto it = _systems.begin(); it != _systems.end(); ++it) {
@@ -376,8 +412,28 @@ void MavsdkImpl::make_system_with_component(uint8_t system_id, uint8_t comp_id)
     _systems.insert(system_entry_t(system_id, new_system));
 }
 
+void MavsdkImpl::make_node_with_id(uint8_t system_id, uint8_t component_id) {
+    std::lock_guard<std::recursive_mutex> lock(_nodes_mutex);
+
+    if (_should_exit) {
+        // When the node got destroyed in the destructor, we have to give up.
+        // TODO kalyan - wait why?
+        return;
+    }
+
+    LogDebug() << "Init new Node: System ID: " << int(system_id) << "Comp Id: " << int(component_id);
+    // Make a node with this id pair
+    uint16_t node_id = (system_id << 8) | (component_id);
+    auto new_node = std::make_shared<Node>(*this, system_id, component_id);
+
+    _nodes.insert(node_entry_t(node_id, new_node));
+
+    notify_on_discover(system_id, component_id);
+}
+
 bool MavsdkImpl::does_system_exist(uint8_t system_id)
 {
+    // TODO kalyan - system ID is not enough to determine connection?
     std::lock_guard<std::recursive_mutex> lock(_systems_mutex);
 
     if (!_should_exit) {
@@ -387,37 +443,44 @@ bool MavsdkImpl::does_system_exist(uint8_t system_id)
     return false;
 }
 
-void MavsdkImpl::notify_on_discover(const uint64_t uuid)
+void MavsdkImpl::notify_on_discover(const uint8_t system_id, const uint8_t component_id)
 {
+    // TODO kalyan - where is this called?
     if (_on_discover_callback != nullptr) {
-        _on_discover_callback(uuid);
+        _on_discover_callback(system_id, component_id);
     }
 }
 
-void MavsdkImpl::notify_on_timeout(const uint64_t uuid)
+void MavsdkImpl::notify_on_timeout(const uint8_t system_id, const uint8_t component_id)
 {
-    LogDebug() << "Lost " << uuid;
+    // TODO kalyan - where is this called?
+    LogDebug() << "Lost " << system_id << " " << component_id;
     if (_on_timeout_callback != nullptr) {
-        _on_timeout_callback(uuid);
+        _on_timeout_callback(system_id, component_id);
     }
 }
 
 void MavsdkImpl::register_on_discover(const Mavsdk::event_callback_t callback)
 {
+    // TODO kalyan - where is this called?
     std::lock_guard<std::recursive_mutex> lock(_systems_mutex);
 
     if (callback) {
-        for (auto const& connected_system : _systems) {
-            // Ignore dummy system with system ID 0.
-            if (connected_system.first == 0) {
-                continue;
-            }
-            // Ignore system if UUID is not initialized yet.
-            if (connected_system.second->get_uuid() == 0) {
-                continue;
-            }
-            callback(connected_system.second->get_uuid());
+        for (auto const& connected_node : _nodes) {
+            callback(connected_node.second->get_system_id(), connected_node.second->get_component_id());
         }
+        //for (auto const& connected_system : _systems) {
+            //// Ignore dummy system with system ID 0.
+            //if (connected_system.first == 0) {
+                //continue;
+            //}
+            //// TODO where will this be called? We shouldn't have a scenario where the uuid isn't init
+            //// Ignore system if UUID is not initialized yet.
+            //if (connected_system.second->get_uuid() == 0) {
+                //continue;
+            //}
+            //callback(connected_system.second->get_uuid());
+        //}
     }
 
     _on_discover_callback = callback;
@@ -425,7 +488,9 @@ void MavsdkImpl::register_on_discover(const Mavsdk::event_callback_t callback)
 
 void MavsdkImpl::register_on_timeout(const Mavsdk::event_callback_t callback)
 {
+    // TODO kalyan - where is this called?
     _on_timeout_callback = callback;
 }
+
 
 } // namespace mavsdk
