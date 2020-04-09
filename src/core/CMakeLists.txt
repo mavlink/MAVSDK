@@ -13,6 +13,8 @@ add_library(mavsdk
     curl_wrapper.cpp
     system.cpp
     system_impl.cpp
+    node.cpp
+    node_impl.cpp
     mavsdk.cpp
     mavsdk_impl.cpp
     global_include.cpp

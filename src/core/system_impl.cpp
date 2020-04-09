@@ -525,7 +525,7 @@ void SystemImpl::set_connected()
             LogDebug() << "Discovered " << _components.size() << " component(s) "
                        << "(UUID: " << _uuid << ")";
 
-            _parent.notify_on_discover(_uuid);
+            //_parent.notify_on_discover(_uuid);
             _connected = true;
 
             if (!_always_connected) {
@@ -560,7 +560,7 @@ void SystemImpl::set_disconnected()
         //_heartbeat_timeout_cookie = nullptr;
 
         _connected = false;
-        _parent.notify_on_timeout(_uuid);
+        //_parent.notify_on_timeout(_uuid);
     }
 
     {

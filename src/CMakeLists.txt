@@ -73,14 +73,15 @@ if(BUILD_TESTS)
     enable_testing()
     add_subdirectory(${CMAKE_CURRENT_SOURCE_DIR}/third_party/gtest EXCLUDE_FROM_ALL)
 
-    add_subdirectory(integration_tests)
+    # TODO kalyan - add this back
+    #add_subdirectory(integration_tests)
 
-    if (DEFINED EXTERNAL_DIR AND NOT EXTERNAL_DIR STREQUAL "")
-        add_subdirectory(${EXTERNAL_DIR}/integration_tests
-            ${CMAKE_CURRENT_BINARY_DIR}/${EXTERNAL_DIR}/integration_tests)
-    endif()
+    #if (DEFINED EXTERNAL_DIR AND NOT EXTERNAL_DIR STREQUAL "")
+        #add_subdirectory(${EXTERNAL_DIR}/integration_tests
+            #${CMAKE_CURRENT_BINARY_DIR}/${EXTERNAL_DIR}/integration_tests)
+    #endif()
 
-    include(cmake/unit_tests.cmake)
+    #include(cmake/unit_tests.cmake)
 endif()
 
 if (BUILD_BACKEND)

@@ -233,7 +233,7 @@ public:
      *
      * @param uuid UUID of system (or MAVLink system ID for systems that don't have a UUID).
      */
-    typedef std::function<void(uint64_t uuid)> event_callback_t;
+    typedef std::function<void(uint8_t system_id, uint8_t component_id)> event_callback_t;
 
     /**
      * @brief Returns `true` if exactly one system is currently connected.
