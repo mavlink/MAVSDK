@@ -133,7 +133,7 @@ class AutoGen(object):
         - For other languages, it comes from the path to the proto file,
           e.g. 'action/action.proto' would become 'action/'. """
         proto_file_path_tree = proto_file_name.split('/')
-        plugin_name = proto_file_path_tree[-1].split('.')[0].capitalize()
+        plugin_name = name_parser_factory.create(proto_file_path_tree[-1].split('.')[0]).upper_camel_case
 
         if is_java:
             plugin_dir = package.replace('.', '/')

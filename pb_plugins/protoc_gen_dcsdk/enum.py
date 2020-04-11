@@ -24,8 +24,18 @@ class Enum(object):
 
         value_id = 0
         for value in pb_enum.value:
-            self._values.append({'name': name_parser_factory.create(
-                value.name), 'description': enum_docs['params'][value_id]})
+            # If the enum value contains the enum name as a prefix, remove it.
+            # For example, if the enum "GpsFix" has a value called "GPS_FIX_NO_GPS",
+            # we remove the prefix and the value becomes "NO_GPS"
+            tmp_value_name = name_parser_factory.create(value.name)
+            if tmp_value_name.upper_camel_case.startswith(self._name.upper_camel_case):
+                value_name = name_parser_factory.create(tmp_value_name.lower_snake_case[len(self._name.lower_snake_case) + 1:])
+                has_prefix = True
+            else:
+                value_name = tmp_value_name
+                has_prefix = False
+
+            self._values.append({'name': value_name, 'description': enum_docs['params'][value_id], 'has_prefix': has_prefix})
             value_id += 1
 
     def __repr__(self):
