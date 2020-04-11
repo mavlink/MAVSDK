@@ -5,6 +5,7 @@
 #pragma once
 
 #include <array>
+#include <cmath>
 #include <functional>
 #include <limits>
 #include <memory>
@@ -132,10 +133,12 @@ public:
      * @brief Position type in global coordinates.
      */
     struct Position {
-        double latitude_deg; /**< @brief Latitude in degrees (range: -90 to +90) */
-        double longitude_deg; /**< @brief Longitude in degrees (range: -180 to +180) */
-        float absolute_altitude_m; /**< @brief Altitude AMSL (above mean sea level) in metres */
-        float relative_altitude_m; /**< @brief Altitude relative to takeoff altitude in metres */
+        double latitude_deg{double(NAN)}; /**< @brief Latitude in degrees (range: -90 to +90) */
+        double longitude_deg{double(NAN)}; /**< @brief Longitude in degrees (range: -180 to +180) */
+        float absolute_altitude_m{
+            float(NAN)}; /**< @brief Altitude AMSL (above mean sea level) in metres */
+        float relative_altitude_m{
+            float(NAN)}; /**< @brief Altitude relative to takeoff altitude in metres */
     };
 
     /**
@@ -163,10 +166,10 @@ public:
      * For more info see: https://en.wikipedia.org/wiki/Quaternion
      */
     struct Quaternion {
-        float w; /**< @brief Quaternion entry 0, also denoted as a */
-        float x; /**< @brief Quaternion entry 1, also denoted as b */
-        float y; /**< @brief Quaternion entry 2, also denoted as c */
-        float z; /**< @brief Quaternion entry 3, also denoted as d */
+        float w{float(NAN)}; /**< @brief Quaternion entry 0, also denoted as a */
+        float x{float(NAN)}; /**< @brief Quaternion entry 1, also denoted as b */
+        float y{float(NAN)}; /**< @brief Quaternion entry 2, also denoted as c */
+        float z{float(NAN)}; /**< @brief Quaternion entry 3, also denoted as d */
     };
 
     /**
@@ -192,9 +195,12 @@ public:
      * For more info see https://en.wikipedia.org/wiki/Euler_angles
      */
     struct EulerAngle {
-        float roll_deg; /**< @brief Roll angle in degrees, positive is banking to the right */
-        float pitch_deg; /**< @brief Pitch angle in degrees, positive is pitching nose up */
-        float yaw_deg; /**< @brief Yaw angle in degrees, positive is clock-wise seen from above */
+        float roll_deg{
+            float(NAN)}; /**< @brief Roll angle in degrees, positive is banking to the right */
+        float pitch_deg{
+            float(NAN)}; /**< @brief Pitch angle in degrees, positive is pitching nose up */
+        float yaw_deg{
+            float(NAN)}; /**< @brief Yaw angle in degrees, positive is clock-wise seen from above */
     };
 
     /**
@@ -215,9 +221,9 @@ public:
      * @brief Angular velocity type.
      */
     struct AngularVelocityBody {
-        float roll_rad_s; /**< @brief Roll angular velocity */
-        float pitch_rad_s; /**< @brief Pitch angular velocity */
-        float yaw_rad_s; /**< @brief Yaw angular velocity */
+        float roll_rad_s{float(NAN)}; /**< @brief Roll angular velocity */
+        float pitch_rad_s{float(NAN)}; /**< @brief Pitch angular velocity */
+        float yaw_rad_s{float(NAN)}; /**< @brief Yaw angular velocity */
     };
 
     /**
@@ -240,9 +246,12 @@ public:
      * @brief Speed type, represented in the NED (North East Down) frame and in metres/second.
      */
     struct SpeedNed {
-        float velocity_north_m_s; /**< @brief Velocity in North direction in metres/second */
-        float velocity_east_m_s; /**< @brief Velocity in East direction in metres/second */
-        float velocity_down_m_s; /**< @brief Velocity in Down direction in metres/second */
+        float velocity_north_m_s{
+            float(NAN)}; /**< @brief Velocity in North direction in metres/second */
+        float velocity_east_m_s{
+            float(NAN)}; /**< @brief Velocity in East direction in metres/second */
+        float velocity_down_m_s{
+            float(NAN)}; /**< @brief Velocity in Down direction in metres/second */
     };
 
     /**
@@ -263,8 +272,8 @@ public:
      * @brief GPS information type.
      */
     struct GpsInfo {
-        int32_t num_satellites; /**< @brief Number of visible satellites in use */
-        FixType fix_type; /**< @brief Fix type */
+        int32_t num_satellites{0}; /**< @brief Number of visible satellites in use */
+        FixType fix_type{}; /**< @brief Fix type */
     };
 
     /**
@@ -285,8 +294,9 @@ public:
      * @brief Battery type.
      */
     struct Battery {
-        float voltage_v; /**< @brief Voltage in volts */
-        float remaining_percent; /**< @brief Estimated battery remaining (range: 0.0 to 1.0) */
+        float voltage_v{float(NAN)}; /**< @brief Voltage in volts */
+        float remaining_percent{
+            float(NAN)}; /**< @brief Estimated battery remaining (range: 0.0 to 1.0) */
     };
 
     /**
@@ -307,17 +317,19 @@ public:
      * @brief Health type.
      */
     struct Health {
-        bool is_gyrometer_calibration_ok; /**< @brief True if the gyrometer is calibrated */
-        bool is_accelerometer_calibration_ok; /**< @brief True if the accelerometer is calibrated */
-        bool is_magnetometer_calibration_ok; /**< @brief True if the magnetometer is calibrated */
-        bool is_level_calibration_ok; /**< @brief True if the vehicle has a valid level calibration
-                                       */
-        bool is_local_position_ok; /**< @brief True if the local position estimate is good enough to
-                                      fly in 'position control' mode */
-        bool is_global_position_ok; /**< @brief True if the global position estimate is good enough
-                                       to fly in 'position control' mode */
-        bool is_home_position_ok; /**< @brief True if the home position has been initialized
-                                     properly */
+        bool is_gyrometer_calibration_ok{false}; /**< @brief True if the gyrometer is calibrated */
+        bool is_accelerometer_calibration_ok{
+            false}; /**< @brief True if the accelerometer is calibrated */
+        bool is_magnetometer_calibration_ok{
+            false}; /**< @brief True if the magnetometer is calibrated */
+        bool is_level_calibration_ok{
+            false}; /**< @brief True if the vehicle has a valid level calibration */
+        bool is_local_position_ok{false}; /**< @brief True if the local position estimate is good
+                                             enough to fly in 'position control' mode */
+        bool is_global_position_ok{false}; /**< @brief True if the global position estimate is good
+                                              enough to fly in 'position control' mode */
+        bool is_home_position_ok{
+            false}; /**< @brief True if the home position has been initialized properly */
     };
 
     /**
@@ -338,9 +350,9 @@ public:
      * @brief Remote control status type.
      */
     struct RcStatus {
-        bool was_available_once; /**< @brief True if an RC signal has been available once */
-        bool is_available; /**< @brief True if the RC signal is available now */
-        float signal_strength_percent; /**< @brief Signal strength (range: 0 to 100) */
+        bool was_available_once{false}; /**< @brief True if an RC signal has been available once */
+        bool is_available{false}; /**< @brief True if the RC signal is available now */
+        float signal_strength_percent{0}; /**< @brief Signal strength (range: 0 to 100) */
     };
 
     /**
@@ -361,8 +373,8 @@ public:
      * @brief StatusText information type.
      */
     struct StatusText {
-        StatusTextType type; /**< @brief Message type */
-        std::string text; /**< @brief MAVLink status message */
+        StatusTextType type{}; /**< @brief Message type */
+        std::string text{}; /**< @brief MAVLink status message */
     };
 
     /**
@@ -383,10 +395,10 @@ public:
      * @brief Actuator control target type.
      */
     struct ActuatorControlTarget {
-        int32_t group; /**< @brief An actuator control group is e.g. 'attitude' for the core flight
-                          controls, or 'gimbal' for a payload. */
-        std::vector<float>
-            controls; /**< @brief Controls normed from -1 to 1, where 0 is neutral position. */
+        int32_t group{0}; /**< @brief An actuator control group is e.g. 'attitude' for the core
+                             flight controls, or 'gimbal' for a payload. */
+        std::vector<float> controls{
+            0}; /**< @brief Controls normed from -1 to 1, where 0 is neutral position. */
     };
 
     /**
@@ -409,8 +421,8 @@ public:
      * @brief Actuator output status type.
      */
     struct ActuatorOutputStatus {
-        uint32_t active; /**< @brief Active outputs */
-        std::vector<float> actuator; /**< @brief Servo/motor output values */
+        uint32_t active{0}; /**< @brief Active outputs */
+        std::vector<float> actuator{0}; /**< @brief Servo/motor output values */
     };
 
     /**
@@ -437,7 +449,8 @@ public:
      * Set first to NaN if unknown.
      */
     struct Covariance {
-        std::vector<float> covariance_matrix; /**< @brief Representation of a covariance matrix. */
+        std::vector<float>
+            covariance_matrix{}; /**< @brief Representation of a covariance matrix. */
     };
 
     /**
@@ -458,9 +471,9 @@ public:
      * @brief Velocity type, represented in the Body (X Y Z) frame and in metres/second.
      */
     struct VelocityBody {
-        float x_m_s; /**< @brief Velocity in X in metres/second */
-        float y_m_s; /**< @brief Velocity in Y in metres/second */
-        float z_m_s; /**< @brief Velocity in Z in metres/second */
+        float x_m_s{}; /**< @brief Velocity in X in metres/second */
+        float y_m_s{}; /**< @brief Velocity in Y in metres/second */
+        float z_m_s{}; /**< @brief Velocity in Z in metres/second */
     };
 
     /**
@@ -482,9 +495,9 @@ public:
      * @brief Position type, represented in the Body (X Y Z) frame
      */
     struct PositionBody {
-        float x_m; /**< @brief X Position in metres. */
-        float y_m; /**< @brief Y Position in metres. */
-        float z_m; /**< @brief Z Position in metres. */
+        float x_m{}; /**< @brief X Position in metres. */
+        float y_m{}; /**< @brief Y Position in metres. */
+        float z_m{}; /**< @brief Z Position in metres. */
     };
 
     /**
@@ -525,17 +538,17 @@ public:
      * @brief Odometry message type.
      */
     struct Odometry {
-        uint64_t time_usec; /**< @brief Timestamp (0 to use Backend timestamp). */
-        MavFrame frame_id; /**< @brief Coordinate frame of reference for the pose data. */
-        MavFrame child_frame_id; /**< @brief Coordinate frame of reference for the velocity in free
-                                    space (twist) data. */
-        PositionBody position_body; /**< @brief Position. */
+        uint64_t time_usec{}; /**< @brief Timestamp (0 to use Backend timestamp). */
+        MavFrame frame_id{}; /**< @brief Coordinate frame of reference for the pose data. */
+        MavFrame child_frame_id{}; /**< @brief Coordinate frame of reference for the velocity in
+                                      free space (twist) data. */
+        PositionBody position_body{}; /**< @brief Position. */
         Quaternion
-            q; /**< @brief Quaternion components, w, x, y, z (1 0 0 0 is the null-rotation). */
-        VelocityBody velocity_body; /**< @brief Linear velocity (m/s). */
-        AngularVelocityBody angular_velocity_body; /**< @brief Angular velocity (rad/s). */
-        Covariance pose_covariance; /**< @brief Pose cross-covariance matrix. */
-        Covariance velocity_covariance; /**< @brief Velocity cross-covariance matrix. */
+            q{}; /**< @brief Quaternion components, w, x, y, z (1 0 0 0 is the null-rotation). */
+        VelocityBody velocity_body{}; /**< @brief Linear velocity (m/s). */
+        AngularVelocityBody angular_velocity_body{}; /**< @brief Angular velocity (rad/s). */
+        Covariance pose_covariance{}; /**< @brief Pose cross-covariance matrix. */
+        Covariance velocity_covariance{}; /**< @brief Velocity cross-covariance matrix. */
     };
 
     /**
@@ -556,9 +569,9 @@ public:
      * @brief PositionNed message type.
      */
     struct PositionNed {
-        float north_m; /**< @brief Position along north direction in metres */
-        float east_m; /**< @brief Position along east direction in metres */
-        float down_m; /**< @brief Position along down direction in metres */
+        float north_m{float(NAN)}; /**< @brief Position along north direction in metres */
+        float east_m{float(NAN)}; /**< @brief Position along east direction in metres */
+        float down_m{float(NAN)}; /**< @brief Position along down direction in metres */
     };
 
     /**
@@ -579,9 +592,9 @@ public:
      * @brief VelocityNed message type.
      */
     struct VelocityNed {
-        float north_m_s; /**< @brief Velocity along north direction in metres per second */
-        float east_m_s; /**< @brief Velocity along east direction in metres per second */
-        float down_m_s; /**< @brief Velocity along down direction in metres per second */
+        float north_m_s{}; /**< @brief Velocity along north direction in metres per second */
+        float east_m_s{}; /**< @brief Velocity along east direction in metres per second */
+        float down_m_s{}; /**< @brief Velocity along down direction in metres per second */
     };
 
     /**
@@ -602,8 +615,8 @@ public:
      * @brief PositionVelocityNed message type.
      */
     struct PositionVelocityNed {
-        PositionNed position; /**< @brief Position (NED) */
-        VelocityNed velocity; /**< @brief Velocity (NED) */
+        PositionNed position{}; /**< @brief Position (NED) */
+        VelocityNed velocity{}; /**< @brief Velocity (NED) */
     };
 
     /**
@@ -626,9 +639,10 @@ public:
      * @brief GroundTruth message type.
      */
     struct GroundTruth {
-        double latitude_deg; /**< @brief Latitude in degrees (range: -90 to +90) */
-        double longitude_deg; /**< @brief Longitude in degrees (range: -180 to 180) */
-        float absolute_altitude_m; /**< @brief Altitude AMSL (above mean sea level) in metres */
+        double latitude_deg{double(NAN)}; /**< @brief Latitude in degrees (range: -90 to +90) */
+        double longitude_deg{double(NAN)}; /**< @brief Longitude in degrees (range: -180 to 180) */
+        float absolute_altitude_m{
+            float(NAN)}; /**< @brief Altitude AMSL (above mean sea level) in metres */
     };
 
     /**
@@ -649,9 +663,10 @@ public:
      * @brief FixedwingMetrics message type.
      */
     struct FixedwingMetrics {
-        float airspeed_m_s; /**< @brief Current indicated airspeed (IAS) in metres per second */
-        float throttle_percentage; /**< @brief Current throttle setting (0 to 100) */
-        float climb_rate_m_s; /**< @brief Current climb rate in metres per second */
+        float airspeed_m_s{
+            float(NAN)}; /**< @brief Current indicated airspeed (IAS) in metres per second */
+        float throttle_percentage{float(NAN)}; /**< @brief Current throttle setting (0 to 100) */
+        float climb_rate_m_s{float(NAN)}; /**< @brief Current climb rate in metres per second */
     };
 
     /**
@@ -674,9 +689,12 @@ public:
      * @brief AccelerationFrd message type.
      */
     struct AccelerationFrd {
-        float forward_m_s2; /**< @brief Acceleration in forward direction in metres per second^2 */
-        float right_m_s2; /**< @brief Acceleration in right direction in metres per second^2 */
-        float down_m_s2; /**< @brief Acceleration in down direction in metres per second^2 */
+        float forward_m_s2{
+            float(NAN)}; /**< @brief Acceleration in forward direction in metres per second^2 */
+        float right_m_s2{
+            float(NAN)}; /**< @brief Acceleration in right direction in metres per second^2 */
+        float down_m_s2{
+            float(NAN)}; /**< @brief Acceleration in down direction in metres per second^2 */
     };
 
     /**
@@ -699,10 +717,12 @@ public:
      * @brief AngularVelocityFrd message type.
      */
     struct AngularVelocityFrd {
-        float forward_rad_s; /**< @brief Angular velocity in forward direction in radians per second
-                              */
-        float right_rad_s; /**< @brief Angular velocity in right direction in radians per second */
-        float down_rad_s; /**< @brief Angular velocity in Down direction in radians per second */
+        float forward_rad_s{
+            float(NAN)}; /**< @brief Angular velocity in forward direction in radians per second */
+        float right_rad_s{
+            float(NAN)}; /**< @brief Angular velocity in right direction in radians per second */
+        float down_rad_s{
+            float(NAN)}; /**< @brief Angular velocity in Down direction in radians per second */
     };
 
     /**
@@ -725,9 +745,12 @@ public:
      * @brief MagneticFieldFrd message type.
      */
     struct MagneticFieldFrd {
-        float forward_gauss; /**< @brief Magnetic field in forward direction measured in Gauss */
-        float right_gauss; /**< @brief Magnetic field in East direction measured in Gauss */
-        float down_gauss; /**< @brief Magnetic field in Down direction measured in Gauss */
+        float forward_gauss{
+            float(NAN)}; /**< @brief Magnetic field in forward direction measured in Gauss */
+        float right_gauss{
+            float(NAN)}; /**< @brief Magnetic field in East direction measured in Gauss */
+        float down_gauss{
+            float(NAN)}; /**< @brief Magnetic field in Down direction measured in Gauss */
     };
 
     /**
@@ -750,10 +773,10 @@ public:
      * @brief Imu message type.
      */
     struct Imu {
-        AccelerationFrd acceleration_frd; /**< @brief Acceleration */
-        AngularVelocityFrd angular_velocity_frd; /**< @brief Angular velocity */
-        MagneticFieldFrd magnetic_field_frd; /**< @brief Magnetic field */
-        float temperature_degc; /**< @brief Temperature */
+        AccelerationFrd acceleration_frd{}; /**< @brief Acceleration */
+        AngularVelocityFrd angular_velocity_frd{}; /**< @brief Angular velocity */
+        MagneticFieldFrd magnetic_field_frd{}; /**< @brief Magnetic field */
+        float temperature_degc{float(NAN)}; /**< @brief Temperature */
     };
 
     /**

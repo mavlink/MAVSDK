@@ -76,12 +76,12 @@ TEST(QGCMissionImport, ValidateQGCMissonItems)
     // Import Mission items from QGC plan
     auto import_result = MissionImpl::import_qgroundcontrol_mission(QGC_SAMPLE_PLAN);
     ASSERT_EQ(import_result.first, Mission::Result::Success);
-    EXPECT_NE(import_result.second.size(), 0);
+    EXPECT_NE(import_result.second.mission_items.size(), 0);
 
     // Compare local & parsed mission items
-    ASSERT_EQ(mission_items_local.size(), import_result.second.size());
-    for (unsigned i = 0; i < import_result.second.size(); ++i) {
-        compare(mission_items_local.at(i), import_result.second.at(i));
+    ASSERT_EQ(mission_items_local.size(), import_result.second.mission_items.size());
+    for (unsigned i = 0; i < import_result.second.mission_items.size(); ++i) {
+        compare(mission_items_local.at(i), import_result.second.mission_items.at(i));
     }
 }
 

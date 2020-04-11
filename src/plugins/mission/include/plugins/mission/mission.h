@@ -5,6 +5,7 @@
 #pragma once
 
 #include <array>
+#include <cmath>
 #include <functional>
 #include <limits>
 #include <memory>
@@ -68,18 +69,21 @@ public:
      * They cannot be used independently.
      */
     struct MissionItem {
-        double latitude_deg; /**< @brief Latitude in degrees (range: -90 to +90) */
-        double longitude_deg; /**< @brief Longitude in degrees (range: -180 to +180) */
-        float relative_altitude_m; /**< @brief Altitude relative to takeoff altitude in metres */
-        float speed_m_s; /**< @brief Speed to use after this mission item (in metres/second) */
-        bool is_fly_through; /**< @brief True will make the drone fly through without stopping,
-                                while false will make the drone stop on the waypoint */
-        float gimbal_pitch_deg; /**< @brief Gimbal pitch (in degrees) */
-        float gimbal_yaw_deg; /**< @brief Gimbal yaw (in degrees) */
-        CameraAction camera_action; /**< @brief Camera action to trigger at this mission item */
-        float loiter_time_s; /**< @brief Loiter time (in seconds) */
-        double camera_photo_interval_s; /**< @brief Camera photo interval to use after this mission
-                                           item (in seconds) */
+        double latitude_deg{double(NAN)}; /**< @brief Latitude in degrees (range: -90 to +90) */
+        double longitude_deg{double(NAN)}; /**< @brief Longitude in degrees (range: -180 to +180) */
+        float relative_altitude_m{
+            float(NAN)}; /**< @brief Altitude relative to takeoff altitude in metres */
+        float speed_m_s{
+            float(NAN)}; /**< @brief Speed to use after this mission item (in metres/second) */
+        bool is_fly_through{
+            false}; /**< @brief True will make the drone fly through without stopping, while false
+                       will make the drone stop on the waypoint */
+        float gimbal_pitch_deg{float(NAN)}; /**< @brief Gimbal pitch (in degrees) */
+        float gimbal_yaw_deg{float(NAN)}; /**< @brief Gimbal yaw (in degrees) */
+        CameraAction camera_action{}; /**< @brief Camera action to trigger at this mission item */
+        float loiter_time_s{float(NAN)}; /**< @brief Loiter time (in seconds) */
+        double camera_photo_interval_s{
+            1.0}; /**< @brief Camera photo interval to use after this mission item (in seconds) */
     };
 
     /**
@@ -100,7 +104,7 @@ public:
      * @brief Mission plan type
      */
     struct MissionPlan {
-        std::vector<MissionItem> mission_items; /**< @brief The mission items */
+        std::vector<MissionItem> mission_items{}; /**< @brief The mission items */
     };
 
     /**
@@ -121,8 +125,8 @@ public:
      * @brief Mission progress type.
      */
     struct MissionProgress {
-        int32_t current; /**< @brief Current mission item index (0-based) */
-        int32_t total; /**< @brief Total number of mission items */
+        int32_t current{}; /**< @brief Current mission item index (0-based) */
+        int32_t total{}; /**< @brief Total number of mission items */
     };
 
     /**

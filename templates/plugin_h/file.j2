@@ -5,6 +5,7 @@
 #pragma once
 
 #include <array>
+#include <cmath>
 #include <functional>
 #include <limits>
 #include <memory>

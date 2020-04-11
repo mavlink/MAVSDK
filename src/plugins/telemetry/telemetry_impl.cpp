@@ -488,12 +488,16 @@ void TelemetryImpl::process_position_velocity_ned(const mavlink_message_t& messa
 {
     mavlink_local_position_ned_t local_position;
     mavlink_msg_local_position_ned_decode(&message, &local_position);
-    set_position_velocity_ned(Telemetry::PositionVelocityNed({local_position.x,
-                                                              local_position.y,
-                                                              local_position.z,
-                                                              local_position.vx,
-                                                              local_position.vy,
-                                                              local_position.vz}));
+
+    Telemetry::PositionVelocityNed position_velocity;
+    position_velocity.position.north_m = local_position.x;
+    position_velocity.position.east_m = local_position.y;
+    position_velocity.position.down_m = local_position.z;
+    position_velocity.velocity.north_m_s = local_position.vx;
+    position_velocity.velocity.east_m_s = local_position.vy;
+    position_velocity.velocity.down_m_s = local_position.vz;
+
+    set_position_velocity_ned(position_velocity);
 
     if (_position_velocity_ned_subscription) {
         auto callback = _position_velocity_ned_subscription;
@@ -506,13 +510,23 @@ void TelemetryImpl::process_global_position_int(const mavlink_message_t& message
 {
     mavlink_global_position_int_t global_position_int;
     mavlink_msg_global_position_int_decode(&message, &global_position_int);
-    set_position(Telemetry::Position({global_position_int.lat * 1e-7,
-                                      global_position_int.lon * 1e-7,
-                                      global_position_int.alt * 1e-3f,
-                                      global_position_int.relative_alt * 1e-3f}));
-    set_ground_speed_ned({global_position_int.vx * 1e-2f,
-                          global_position_int.vy * 1e-2f,
-                          global_position_int.vz * 1e-2f});
+
+    {
+        Telemetry::Position position;
+        position.latitude_deg = global_position_int.lat * 1e-7;
+        position.longitude_deg = global_position_int.lon * 1e-7;
+        position.absolute_altitude_m = global_position_int.alt * 1e-3f;
+        position.relative_altitude_m = global_position_int.relative_alt * 1e-3f;
+        set_position(position);
+    }
+
+    {
+        Telemetry::SpeedNed ground_speed;
+        ground_speed.velocity_north_m_s = global_position_int.vx * 1e-2f;
+        ground_speed.velocity_east_m_s = global_position_int.vy * 1e-2f;
+        ground_speed.velocity_down_m_s = global_position_int.vz * 1e-2f;
+        set_ground_speed_ned(ground_speed);
+    }
 
     if (_position_subscription) {
         auto callback = _position_subscription;

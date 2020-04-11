@@ -33,6 +33,7 @@
 #include <google/protobuf/extension_set.h>  // IWYU pragma: export
 #include <google/protobuf/generated_enum_reflection.h>
 #include <google/protobuf/unknown_field_set.h>
+#include "mavsdk_options.pb.h"
 // @@protoc_insertion_point(includes)
 #include <google/protobuf/port_def.inc>
 #define PROTOBUF_INTERNAL_EXPORT_telemetry_2ftelemetry_2eproto
@@ -12509,7 +12510,7 @@ class Position :
     kAbsoluteAltitudeMFieldNumber = 3,
     kRelativeAltitudeMFieldNumber = 4,
   };
-  // double latitude_deg = 1;
+  // double latitude_deg = 1 [(.mavsdk.options.default_value) = "NaN"];
   void clear_latitude_deg();
   double latitude_deg() const;
   void set_latitude_deg(double value);
@@ -12518,7 +12519,7 @@ class Position :
   void _internal_set_latitude_deg(double value);
   public:
 
-  // double longitude_deg = 2;
+  // double longitude_deg = 2 [(.mavsdk.options.default_value) = "NaN"];
   void clear_longitude_deg();
   double longitude_deg() const;
   void set_longitude_deg(double value);
@@ -12527,7 +12528,7 @@ class Position :
   void _internal_set_longitude_deg(double value);
   public:
 
-  // float absolute_altitude_m = 3;
+  // float absolute_altitude_m = 3 [(.mavsdk.options.default_value) = "NaN"];
   void clear_absolute_altitude_m();
   float absolute_altitude_m() const;
   void set_absolute_altitude_m(float value);
@@ -12536,7 +12537,7 @@ class Position :
   void _internal_set_absolute_altitude_m(float value);
   public:
 
-  // float relative_altitude_m = 4;
+  // float relative_altitude_m = 4 [(.mavsdk.options.default_value) = "NaN"];
   void clear_relative_altitude_m();
   float relative_altitude_m() const;
   void set_relative_altitude_m(float value);
@@ -12670,7 +12671,7 @@ class Quaternion :
     kYFieldNumber = 3,
     kZFieldNumber = 4,
   };
-  // float w = 1;
+  // float w = 1 [(.mavsdk.options.default_value) = "NaN"];
   void clear_w();
   float w() const;
   void set_w(float value);
@@ -12679,7 +12680,7 @@ class Quaternion :
   void _internal_set_w(float value);
   public:
 
-  // float x = 2;
+  // float x = 2 [(.mavsdk.options.default_value) = "NaN"];
   void clear_x();
   float x() const;
   void set_x(float value);
@@ -12688,7 +12689,7 @@ class Quaternion :
   void _internal_set_x(float value);
   public:
 
-  // float y = 3;
+  // float y = 3 [(.mavsdk.options.default_value) = "NaN"];
   void clear_y();
   float y() const;
   void set_y(float value);
@@ -12697,7 +12698,7 @@ class Quaternion :
   void _internal_set_y(float value);
   public:
 
-  // float z = 4;
+  // float z = 4 [(.mavsdk.options.default_value) = "NaN"];
   void clear_z();
   float z() const;
   void set_z(float value);
@@ -12830,7 +12831,7 @@ class EulerAngle :
     kPitchDegFieldNumber = 2,
     kYawDegFieldNumber = 3,
   };
-  // float roll_deg = 1;
+  // float roll_deg = 1 [(.mavsdk.options.default_value) = "NaN"];
   void clear_roll_deg();
   float roll_deg() const;
   void set_roll_deg(float value);
@@ -12839,7 +12840,7 @@ class EulerAngle :
   void _internal_set_roll_deg(float value);
   public:
 
-  // float pitch_deg = 2;
+  // float pitch_deg = 2 [(.mavsdk.options.default_value) = "NaN"];
   void clear_pitch_deg();
   float pitch_deg() const;
   void set_pitch_deg(float value);
@@ -12848,7 +12849,7 @@ class EulerAngle :
   void _internal_set_pitch_deg(float value);
   public:
 
-  // float yaw_deg = 3;
+  // float yaw_deg = 3 [(.mavsdk.options.default_value) = "NaN"];
   void clear_yaw_deg();
   float yaw_deg() const;
   void set_yaw_deg(float value);
@@ -12980,7 +12981,7 @@ class AngularVelocityBody :
     kPitchRadSFieldNumber = 2,
     kYawRadSFieldNumber = 3,
   };
-  // float roll_rad_s = 1;
+  // float roll_rad_s = 1 [(.mavsdk.options.default_value) = "NaN"];
   void clear_roll_rad_s();
   float roll_rad_s() const;
   void set_roll_rad_s(float value);
@@ -12989,7 +12990,7 @@ class AngularVelocityBody :
   void _internal_set_roll_rad_s(float value);
   public:
 
-  // float pitch_rad_s = 2;
+  // float pitch_rad_s = 2 [(.mavsdk.options.default_value) = "NaN"];
   void clear_pitch_rad_s();
   float pitch_rad_s() const;
   void set_pitch_rad_s(float value);
@@ -12998,7 +12999,7 @@ class AngularVelocityBody :
   void _internal_set_pitch_rad_s(float value);
   public:
 
-  // float yaw_rad_s = 3;
+  // float yaw_rad_s = 3 [(.mavsdk.options.default_value) = "NaN"];
   void clear_yaw_rad_s();
   float yaw_rad_s() const;
   void set_yaw_rad_s(float value);
@@ -13130,7 +13131,7 @@ class SpeedNed :
     kVelocityEastMSFieldNumber = 2,
     kVelocityDownMSFieldNumber = 3,
   };
-  // float velocity_north_m_s = 1;
+  // float velocity_north_m_s = 1 [(.mavsdk.options.default_value) = "NaN"];
   void clear_velocity_north_m_s();
   float velocity_north_m_s() const;
   void set_velocity_north_m_s(float value);
@@ -13139,7 +13140,7 @@ class SpeedNed :
   void _internal_set_velocity_north_m_s(float value);
   public:
 
-  // float velocity_east_m_s = 2;
+  // float velocity_east_m_s = 2 [(.mavsdk.options.default_value) = "NaN"];
   void clear_velocity_east_m_s();
   float velocity_east_m_s() const;
   void set_velocity_east_m_s(float value);
@@ -13148,7 +13149,7 @@ class SpeedNed :
   void _internal_set_velocity_east_m_s(float value);
   public:
 
-  // float velocity_down_m_s = 3;
+  // float velocity_down_m_s = 3 [(.mavsdk.options.default_value) = "NaN"];
   void clear_velocity_down_m_s();
   float velocity_down_m_s() const;
   void set_velocity_down_m_s(float value);
@@ -13279,7 +13280,7 @@ class GpsInfo :
     kNumSatellitesFieldNumber = 1,
     kFixTypeFieldNumber = 2,
   };
-  // int32 num_satellites = 1;
+  // int32 num_satellites = 1 [(.mavsdk.options.default_value) = "0"];
   void clear_num_satellites();
   ::PROTOBUF_NAMESPACE_ID::int32 num_satellites() const;
   void set_num_satellites(::PROTOBUF_NAMESPACE_ID::int32 value);
@@ -13418,7 +13419,7 @@ class Battery :
     kVoltageVFieldNumber = 1,
     kRemainingPercentFieldNumber = 2,
   };
-  // float voltage_v = 1;
+  // float voltage_v = 1 [(.mavsdk.options.default_value) = "NaN"];
   void clear_voltage_v();
   float voltage_v() const;
   void set_voltage_v(float value);
@@ -13427,7 +13428,7 @@ class Battery :
   void _internal_set_voltage_v(float value);
   public:
 
-  // float remaining_percent = 2;
+  // float remaining_percent = 2 [(.mavsdk.options.default_value) = "NaN"];
   void clear_remaining_percent();
   float remaining_percent() const;
   void set_remaining_percent(float value);
@@ -13562,7 +13563,7 @@ class Health :
     kIsGlobalPositionOkFieldNumber = 6,
     kIsHomePositionOkFieldNumber = 7,
   };
-  // bool is_gyrometer_calibration_ok = 1;
+  // bool is_gyrometer_calibration_ok = 1 [(.mavsdk.options.default_value) = "false"];
   void clear_is_gyrometer_calibration_ok();
   bool is_gyrometer_calibration_ok() const;
   void set_is_gyrometer_calibration_ok(bool value);
@@ -13571,7 +13572,7 @@ class Health :
   void _internal_set_is_gyrometer_calibration_ok(bool value);
   public:
 
-  // bool is_accelerometer_calibration_ok = 2;
+  // bool is_accelerometer_calibration_ok = 2 [(.mavsdk.options.default_value) = "false"];
   void clear_is_accelerometer_calibration_ok();
   bool is_accelerometer_calibration_ok() const;
   void set_is_accelerometer_calibration_ok(bool value);
@@ -13580,7 +13581,7 @@ class Health :
   void _internal_set_is_accelerometer_calibration_ok(bool value);
   public:
 
-  // bool is_magnetometer_calibration_ok = 3;
+  // bool is_magnetometer_calibration_ok = 3 [(.mavsdk.options.default_value) = "false"];
   void clear_is_magnetometer_calibration_ok();
   bool is_magnetometer_calibration_ok() const;
   void set_is_magnetometer_calibration_ok(bool value);
@@ -13589,7 +13590,7 @@ class Health :
   void _internal_set_is_magnetometer_calibration_ok(bool value);
   public:
 
-  // bool is_level_calibration_ok = 4;
+  // bool is_level_calibration_ok = 4 [(.mavsdk.options.default_value) = "false"];
   void clear_is_level_calibration_ok();
   bool is_level_calibration_ok() const;
   void set_is_level_calibration_ok(bool value);
@@ -13598,7 +13599,7 @@ class Health :
   void _internal_set_is_level_calibration_ok(bool value);
   public:
 
-  // bool is_local_position_ok = 5;
+  // bool is_local_position_ok = 5 [(.mavsdk.options.default_value) = "false"];
   void clear_is_local_position_ok();
   bool is_local_position_ok() const;
   void set_is_local_position_ok(bool value);
@@ -13607,7 +13608,7 @@ class Health :
   void _internal_set_is_local_position_ok(bool value);
   public:
 
-  // bool is_global_position_ok = 6;
+  // bool is_global_position_ok = 6 [(.mavsdk.options.default_value) = "false"];
   void clear_is_global_position_ok();
   bool is_global_position_ok() const;
   void set_is_global_position_ok(bool value);
@@ -13616,7 +13617,7 @@ class Health :
   void _internal_set_is_global_position_ok(bool value);
   public:
 
-  // bool is_home_position_ok = 7;
+  // bool is_home_position_ok = 7 [(.mavsdk.options.default_value) = "false"];
   void clear_is_home_position_ok();
   bool is_home_position_ok() const;
   void set_is_home_position_ok(bool value);
@@ -13752,7 +13753,7 @@ class RcStatus :
     kIsAvailableFieldNumber = 2,
     kSignalStrengthPercentFieldNumber = 3,
   };
-  // bool was_available_once = 1;
+  // bool was_available_once = 1 [(.mavsdk.options.default_value) = "false"];
   void clear_was_available_once();
   bool was_available_once() const;
   void set_was_available_once(bool value);
@@ -13761,7 +13762,7 @@ class RcStatus :
   void _internal_set_was_available_once(bool value);
   public:
 
-  // bool is_available = 2;
+  // bool is_available = 2 [(.mavsdk.options.default_value) = "false"];
   void clear_is_available();
   bool is_available() const;
   void set_is_available(bool value);
@@ -13770,7 +13771,7 @@ class RcStatus :
   void _internal_set_is_available(bool value);
   public:
 
-  // float signal_strength_percent = 3;
+  // float signal_strength_percent = 3 [(.mavsdk.options.default_value) = "0"];
   void clear_signal_strength_percent();
   float signal_strength_percent() const;
   void set_signal_strength_percent(float value);
@@ -14047,7 +14048,7 @@ class ActuatorControlTarget :
     kControlsFieldNumber = 2,
     kGroupFieldNumber = 1,
   };
-  // repeated float controls = 2;
+  // repeated float controls = 2 [(.mavsdk.options.default_value) = "0"];
   int controls_size() const;
   private:
   int _internal_controls_size() const;
@@ -14069,7 +14070,7 @@ class ActuatorControlTarget :
   ::PROTOBUF_NAMESPACE_ID::RepeatedField< float >*
       mutable_controls();
 
-  // int32 group = 1;
+  // int32 group = 1 [(.mavsdk.options.default_value) = "0"];
   void clear_group();
   ::PROTOBUF_NAMESPACE_ID::int32 group() const;
   void set_group(::PROTOBUF_NAMESPACE_ID::int32 value);
@@ -14200,7 +14201,7 @@ class ActuatorOutputStatus :
     kActuatorFieldNumber = 2,
     kActiveFieldNumber = 1,
   };
-  // repeated float actuator = 2;
+  // repeated float actuator = 2 [(.mavsdk.options.default_value) = "0"];
   int actuator_size() const;
   private:
   int _internal_actuator_size() const;
@@ -14222,7 +14223,7 @@ class ActuatorOutputStatus :
   ::PROTOBUF_NAMESPACE_ID::RepeatedField< float >*
       mutable_actuator();
 
-  // uint32 active = 1;
+  // uint32 active = 1 [(.mavsdk.options.default_value) = "0"];
   void clear_active();
   ::PROTOBUF_NAMESPACE_ID::uint32 active() const;
   void set_active(::PROTOBUF_NAMESPACE_ID::uint32 value);
@@ -15082,7 +15083,7 @@ class PositionNed :
     kEastMFieldNumber = 2,
     kDownMFieldNumber = 3,
   };
-  // float north_m = 1;
+  // float north_m = 1 [(.mavsdk.options.default_value) = "NaN"];
   void clear_north_m();
   float north_m() const;
   void set_north_m(float value);
@@ -15091,7 +15092,7 @@ class PositionNed :
   void _internal_set_north_m(float value);
   public:
 
-  // float east_m = 2;
+  // float east_m = 2 [(.mavsdk.options.default_value) = "NaN"];
   void clear_east_m();
   float east_m() const;
   void set_east_m(float value);
@@ -15100,7 +15101,7 @@ class PositionNed :
   void _internal_set_east_m(float value);
   public:
 
-  // float down_m = 3;
+  // float down_m = 3 [(.mavsdk.options.default_value) = "NaN"];
   void clear_down_m();
   float down_m() const;
   void set_down_m(float value);
@@ -15533,7 +15534,7 @@ class GroundTruth :
     kLongitudeDegFieldNumber = 2,
     kAbsoluteAltitudeMFieldNumber = 3,
   };
-  // double latitude_deg = 1;
+  // double latitude_deg = 1 [(.mavsdk.options.default_value) = "NaN"];
   void clear_latitude_deg();
   double latitude_deg() const;
   void set_latitude_deg(double value);
@@ -15542,7 +15543,7 @@ class GroundTruth :
   void _internal_set_latitude_deg(double value);
   public:
 
-  // double longitude_deg = 2;
+  // double longitude_deg = 2 [(.mavsdk.options.default_value) = "NaN"];
   void clear_longitude_deg();
   double longitude_deg() const;
   void set_longitude_deg(double value);
@@ -15551,7 +15552,7 @@ class GroundTruth :
   void _internal_set_longitude_deg(double value);
   public:
 
-  // float absolute_altitude_m = 3;
+  // float absolute_altitude_m = 3 [(.mavsdk.options.default_value) = "NaN"];
   void clear_absolute_altitude_m();
   float absolute_altitude_m() const;
   void set_absolute_altitude_m(float value);
@@ -15683,7 +15684,7 @@ class FixedwingMetrics :
     kThrottlePercentageFieldNumber = 2,
     kClimbRateMSFieldNumber = 3,
   };
-  // float airspeed_m_s = 1;
+  // float airspeed_m_s = 1 [(.mavsdk.options.default_value) = "NaN"];
   void clear_airspeed_m_s();
   float airspeed_m_s() const;
   void set_airspeed_m_s(float value);
@@ -15692,7 +15693,7 @@ class FixedwingMetrics :
   void _internal_set_airspeed_m_s(float value);
   public:
 
-  // float throttle_percentage = 2;
+  // float throttle_percentage = 2 [(.mavsdk.options.default_value) = "NaN"];
   void clear_throttle_percentage();
   float throttle_percentage() const;
   void set_throttle_percentage(float value);
@@ -15701,7 +15702,7 @@ class FixedwingMetrics :
   void _internal_set_throttle_percentage(float value);
   public:
 
-  // float climb_rate_m_s = 3;
+  // float climb_rate_m_s = 3 [(.mavsdk.options.default_value) = "NaN"];
   void clear_climb_rate_m_s();
   float climb_rate_m_s() const;
   void set_climb_rate_m_s(float value);
@@ -15833,7 +15834,7 @@ class AccelerationFrd :
     kRightMS2FieldNumber = 2,
     kDownMS2FieldNumber = 3,
   };
-  // float forward_m_s2 = 1;
+  // float forward_m_s2 = 1 [(.mavsdk.options.default_value) = "NaN"];
   void clear_forward_m_s2();
   float forward_m_s2() const;
   void set_forward_m_s2(float value);
@@ -15842,7 +15843,7 @@ class AccelerationFrd :
   void _internal_set_forward_m_s2(float value);
   public:
 
-  // float right_m_s2 = 2;
+  // float right_m_s2 = 2 [(.mavsdk.options.default_value) = "NaN"];
   void clear_right_m_s2();
   float right_m_s2() const;
   void set_right_m_s2(float value);
@@ -15851,7 +15852,7 @@ class AccelerationFrd :
   void _internal_set_right_m_s2(float value);
   public:
 
-  // float down_m_s2 = 3;
+  // float down_m_s2 = 3 [(.mavsdk.options.default_value) = "NaN"];
   void clear_down_m_s2();
   float down_m_s2() const;
   void set_down_m_s2(float value);
@@ -15983,7 +15984,7 @@ class AngularVelocityFrd :
     kRightRadSFieldNumber = 2,
     kDownRadSFieldNumber = 3,
   };
-  // float forward_rad_s = 1;
+  // float forward_rad_s = 1 [(.mavsdk.options.default_value) = "NaN"];
   void clear_forward_rad_s();
   float forward_rad_s() const;
   void set_forward_rad_s(float value);
@@ -15992,7 +15993,7 @@ class AngularVelocityFrd :
   void _internal_set_forward_rad_s(float value);
   public:
 
-  // float right_rad_s = 2;
+  // float right_rad_s = 2 [(.mavsdk.options.default_value) = "NaN"];
   void clear_right_rad_s();
   float right_rad_s() const;
   void set_right_rad_s(float value);
@@ -16001,7 +16002,7 @@ class AngularVelocityFrd :
   void _internal_set_right_rad_s(float value);
   public:
 
-  // float down_rad_s = 3;
+  // float down_rad_s = 3 [(.mavsdk.options.default_value) = "NaN"];
   void clear_down_rad_s();
   float down_rad_s() const;
   void set_down_rad_s(float value);
@@ -16133,7 +16134,7 @@ class MagneticFieldFrd :
     kRightGaussFieldNumber = 2,
     kDownGaussFieldNumber = 3,
   };
-  // float forward_gauss = 1;
+  // float forward_gauss = 1 [(.mavsdk.options.default_value) = "NaN"];
   void clear_forward_gauss();
   float forward_gauss() const;
   void set_forward_gauss(float value);
@@ -16142,7 +16143,7 @@ class MagneticFieldFrd :
   void _internal_set_forward_gauss(float value);
   public:
 
-  // float right_gauss = 2;
+  // float right_gauss = 2 [(.mavsdk.options.default_value) = "NaN"];
   void clear_right_gauss();
   float right_gauss() const;
   void set_right_gauss(float value);
@@ -16151,7 +16152,7 @@ class MagneticFieldFrd :
   void _internal_set_right_gauss(float value);
   public:
 
-  // float down_gauss = 3;
+  // float down_gauss = 3 [(.mavsdk.options.default_value) = "NaN"];
   void clear_down_gauss();
   float down_gauss() const;
   void set_down_gauss(float value);
@@ -16329,7 +16330,7 @@ class Imu :
   ::mavsdk::rpc::telemetry::MagneticFieldFrd* _internal_mutable_magnetic_field_frd();
   public:
 
-  // float temperature_degc = 4;
+  // float temperature_degc = 4 [(.mavsdk.options.default_value) = "NaN"];
   void clear_temperature_degc();
   float temperature_degc() const;
   void set_temperature_degc(float value);
@@ -19835,7 +19836,7 @@ inline void SetRateUnixEpochTimeResponse::set_allocated_telemetry_result(::mavsd
 
 // Position
 
-// double latitude_deg = 1;
+// double latitude_deg = 1 [(.mavsdk.options.default_value) = "NaN"];
 inline void Position::clear_latitude_deg() {
   latitude_deg_ = 0;
 }
@@ -19855,7 +19856,7 @@ inline void Position::set_latitude_deg(double value) {
   // @@protoc_insertion_point(field_set:mavsdk.rpc.telemetry.Position.latitude_deg)
 }
 
-// double longitude_deg = 2;
+// double longitude_deg = 2 [(.mavsdk.options.default_value) = "NaN"];
 inline void Position::clear_longitude_deg() {
   longitude_deg_ = 0;
 }
@@ -19875,7 +19876,7 @@ inline void Position::set_longitude_deg(double value) {
   // @@protoc_insertion_point(field_set:mavsdk.rpc.telemetry.Position.longitude_deg)
 }
 
-// float absolute_altitude_m = 3;
+// float absolute_altitude_m = 3 [(.mavsdk.options.default_value) = "NaN"];
 inline void Position::clear_absolute_altitude_m() {
   absolute_altitude_m_ = 0;
 }
@@ -19895,7 +19896,7 @@ inline void Position::set_absolute_altitude_m(float value) {
   // @@protoc_insertion_point(field_set:mavsdk.rpc.telemetry.Position.absolute_altitude_m)
 }
 
-// float relative_altitude_m = 4;
+// float relative_altitude_m = 4 [(.mavsdk.options.default_value) = "NaN"];
 inline void Position::clear_relative_altitude_m() {
   relative_altitude_m_ = 0;
 }
@@ -19919,7 +19920,7 @@ inline void Position::set_relative_altitude_m(float value) {
 
 // Quaternion
 
-// float w = 1;
+// float w = 1 [(.mavsdk.options.default_value) = "NaN"];
 inline void Quaternion::clear_w() {
   w_ = 0;
 }
@@ -19939,7 +19940,7 @@ inline void Quaternion::set_w(float value) {
   // @@protoc_insertion_point(field_set:mavsdk.rpc.telemetry.Quaternion.w)
 }
 
-// float x = 2;
+// float x = 2 [(.mavsdk.options.default_value) = "NaN"];
 inline void Quaternion::clear_x() {
   x_ = 0;
 }
@@ -19959,7 +19960,7 @@ inline void Quaternion::set_x(float value) {
   // @@protoc_insertion_point(field_set:mavsdk.rpc.telemetry.Quaternion.x)
 }
 
-// float y = 3;
+// float y = 3 [(.mavsdk.options.default_value) = "NaN"];
 inline void Quaternion::clear_y() {
   y_ = 0;
 }
@@ -19979,7 +19980,7 @@ inline void Quaternion::set_y(float value) {
   // @@protoc_insertion_point(field_set:mavsdk.rpc.telemetry.Quaternion.y)
 }
 
-// float z = 4;
+// float z = 4 [(.mavsdk.options.default_value) = "NaN"];
 inline void Quaternion::clear_z() {
   z_ = 0;
 }
@@ -20003,7 +20004,7 @@ inline void Quaternion::set_z(float value) {
 
 // EulerAngle
 
-// float roll_deg = 1;
+// float roll_deg = 1 [(.mavsdk.options.default_value) = "NaN"];
 inline void EulerAngle::clear_roll_deg() {
   roll_deg_ = 0;
 }
@@ -20023,7 +20024,7 @@ inline void EulerAngle::set_roll_deg(float value) {
   // @@protoc_insertion_point(field_set:mavsdk.rpc.telemetry.EulerAngle.roll_deg)
 }
 
-// float pitch_deg = 2;
+// float pitch_deg = 2 [(.mavsdk.options.default_value) = "NaN"];
 inline void EulerAngle::clear_pitch_deg() {
   pitch_deg_ = 0;
 }
@@ -20043,7 +20044,7 @@ inline void EulerAngle::set_pitch_deg(float value) {
   // @@protoc_insertion_point(field_set:mavsdk.rpc.telemetry.EulerAngle.pitch_deg)
 }
 
-// float yaw_deg = 3;
+// float yaw_deg = 3 [(.mavsdk.options.default_value) = "NaN"];
 inline void EulerAngle::clear_yaw_deg() {
   yaw_deg_ = 0;
 }
@@ -20067,7 +20068,7 @@ inline void EulerAngle::set_yaw_deg(float value) {
 
 // AngularVelocityBody
 
-// float roll_rad_s = 1;
+// float roll_rad_s = 1 [(.mavsdk.options.default_value) = "NaN"];
 inline void AngularVelocityBody::clear_roll_rad_s() {
   roll_rad_s_ = 0;
 }
@@ -20087,7 +20088,7 @@ inline void AngularVelocityBody::set_roll_rad_s(float value) {
   // @@protoc_insertion_point(field_set:mavsdk.rpc.telemetry.AngularVelocityBody.roll_rad_s)
 }
 
-// float pitch_rad_s = 2;
+// float pitch_rad_s = 2 [(.mavsdk.options.default_value) = "NaN"];
 inline void AngularVelocityBody::clear_pitch_rad_s() {
   pitch_rad_s_ = 0;
 }
@@ -20107,7 +20108,7 @@ inline void AngularVelocityBody::set_pitch_rad_s(float value) {
   // @@protoc_insertion_point(field_set:mavsdk.rpc.telemetry.AngularVelocityBody.pitch_rad_s)
 }
 
-// float yaw_rad_s = 3;
+// float yaw_rad_s = 3 [(.mavsdk.options.default_value) = "NaN"];
 inline void AngularVelocityBody::clear_yaw_rad_s() {
   yaw_rad_s_ = 0;
 }
@@ -20131,7 +20132,7 @@ inline void AngularVelocityBody::set_yaw_rad_s(float value) {
 
 // SpeedNed
 
-// float velocity_north_m_s = 1;
+// float velocity_north_m_s = 1 [(.mavsdk.options.default_value) = "NaN"];
 inline void SpeedNed::clear_velocity_north_m_s() {
   velocity_north_m_s_ = 0;
 }
@@ -20151,7 +20152,7 @@ inline void SpeedNed::set_velocity_north_m_s(float value) {
   // @@protoc_insertion_point(field_set:mavsdk.rpc.telemetry.SpeedNed.velocity_north_m_s)
 }
 
-// float velocity_east_m_s = 2;
+// float velocity_east_m_s = 2 [(.mavsdk.options.default_value) = "NaN"];
 inline void SpeedNed::clear_velocity_east_m_s() {
   velocity_east_m_s_ = 0;
 }
@@ -20171,7 +20172,7 @@ inline void SpeedNed::set_velocity_east_m_s(float value) {
   // @@protoc_insertion_point(field_set:mavsdk.rpc.telemetry.SpeedNed.velocity_east_m_s)
 }
 
-// float velocity_down_m_s = 3;
+// float velocity_down_m_s = 3 [(.mavsdk.options.default_value) = "NaN"];
 inline void SpeedNed::clear_velocity_down_m_s() {
   velocity_down_m_s_ = 0;
 }
@@ -20195,7 +20196,7 @@ inline void SpeedNed::set_velocity_down_m_s(float value) {
 
 // GpsInfo
 
-// int32 num_satellites = 1;
+// int32 num_satellites = 1 [(.mavsdk.options.default_value) = "0"];
 inline void GpsInfo::clear_num_satellites() {
   num_satellites_ = 0;
 }
@@ -20239,7 +20240,7 @@ inline void GpsInfo::set_fix_type(::mavsdk::rpc::telemetry::FixType value) {
 
 // Battery
 
-// float voltage_v = 1;
+// float voltage_v = 1 [(.mavsdk.options.default_value) = "NaN"];
 inline void Battery::clear_voltage_v() {
   voltage_v_ = 0;
 }
@@ -20259,7 +20260,7 @@ inline void Battery::set_voltage_v(float value) {
   // @@protoc_insertion_point(field_set:mavsdk.rpc.telemetry.Battery.voltage_v)
 }
 
-// float remaining_percent = 2;
+// float remaining_percent = 2 [(.mavsdk.options.default_value) = "NaN"];
 inline void Battery::clear_remaining_percent() {
   remaining_percent_ = 0;
 }
@@ -20283,7 +20284,7 @@ inline void Battery::set_remaining_percent(float value) {
 
 // Health
 
-// bool is_gyrometer_calibration_ok = 1;
+// bool is_gyrometer_calibration_ok = 1 [(.mavsdk.options.default_value) = "false"];
 inline void Health::clear_is_gyrometer_calibration_ok() {
   is_gyrometer_calibration_ok_ = false;
 }
@@ -20303,7 +20304,7 @@ inline void Health::set_is_gyrometer_calibration_ok(bool value) {
   // @@protoc_insertion_point(field_set:mavsdk.rpc.telemetry.Health.is_gyrometer_calibration_ok)
 }
 
-// bool is_accelerometer_calibration_ok = 2;
+// bool is_accelerometer_calibration_ok = 2 [(.mavsdk.options.default_value) = "false"];
 inline void Health::clear_is_accelerometer_calibration_ok() {
   is_accelerometer_calibration_ok_ = false;
 }
@@ -20323,7 +20324,7 @@ inline void Health::set_is_accelerometer_calibration_ok(bool value) {
   // @@protoc_insertion_point(field_set:mavsdk.rpc.telemetry.Health.is_accelerometer_calibration_ok)
 }
 
-// bool is_magnetometer_calibration_ok = 3;
+// bool is_magnetometer_calibration_ok = 3 [(.mavsdk.options.default_value) = "false"];
 inline void Health::clear_is_magnetometer_calibration_ok() {
   is_magnetometer_calibration_ok_ = false;
 }
@@ -20343,7 +20344,7 @@ inline void Health::set_is_magnetometer_calibration_ok(bool value) {
   // @@protoc_insertion_point(field_set:mavsdk.rpc.telemetry.Health.is_magnetometer_calibration_ok)
 }
 
-// bool is_level_calibration_ok = 4;
+// bool is_level_calibration_ok = 4 [(.mavsdk.options.default_value) = "false"];
 inline void Health::clear_is_level_calibration_ok() {
   is_level_calibration_ok_ = false;
 }
@@ -20363,7 +20364,7 @@ inline void Health::set_is_level_calibration_ok(bool value) {
   // @@protoc_insertion_point(field_set:mavsdk.rpc.telemetry.Health.is_level_calibration_ok)
 }
 
-// bool is_local_position_ok = 5;
+// bool is_local_position_ok = 5 [(.mavsdk.options.default_value) = "false"];
 inline void Health::clear_is_local_position_ok() {
   is_local_position_ok_ = false;
 }
@@ -20383,7 +20384,7 @@ inline void Health::set_is_local_position_ok(bool value) {
   // @@protoc_insertion_point(field_set:mavsdk.rpc.telemetry.Health.is_local_position_ok)
 }
 
-// bool is_global_position_ok = 6;
+// bool is_global_position_ok = 6 [(.mavsdk.options.default_value) = "false"];
 inline void Health::clear_is_global_position_ok() {
   is_global_position_ok_ = false;
 }
@@ -20403,7 +20404,7 @@ inline void Health::set_is_global_position_ok(bool value) {
   // @@protoc_insertion_point(field_set:mavsdk.rpc.telemetry.Health.is_global_position_ok)
 }
 
-// bool is_home_position_ok = 7;
+// bool is_home_position_ok = 7 [(.mavsdk.options.default_value) = "false"];
 inline void Health::clear_is_home_position_ok() {
   is_home_position_ok_ = false;
 }
@@ -20427,7 +20428,7 @@ inline void Health::set_is_home_position_ok(bool value) {
 
 // RcStatus
 
-// bool was_available_once = 1;
+// bool was_available_once = 1 [(.mavsdk.options.default_value) = "false"];
 inline void RcStatus::clear_was_available_once() {
   was_available_once_ = false;
 }
@@ -20447,7 +20448,7 @@ inline void RcStatus::set_was_available_once(bool value) {
   // @@protoc_insertion_point(field_set:mavsdk.rpc.telemetry.RcStatus.was_available_once)
 }
 
-// bool is_available = 2;
+// bool is_available = 2 [(.mavsdk.options.default_value) = "false"];
 inline void RcStatus::clear_is_available() {
   is_available_ = false;
 }
@@ -20467,7 +20468,7 @@ inline void RcStatus::set_is_available(bool value) {
   // @@protoc_insertion_point(field_set:mavsdk.rpc.telemetry.RcStatus.is_available)
 }
 
-// float signal_strength_percent = 3;
+// float signal_strength_percent = 3 [(.mavsdk.options.default_value) = "0"];
 inline void RcStatus::clear_signal_strength_percent() {
   signal_strength_percent_ = 0;
 }
@@ -20575,7 +20576,7 @@ inline void StatusText::set_allocated_text(std::string* text) {
 
 // ActuatorControlTarget
 
-// int32 group = 1;
+// int32 group = 1 [(.mavsdk.options.default_value) = "0"];
 inline void ActuatorControlTarget::clear_group() {
   group_ = 0;
 }
@@ -20595,7 +20596,7 @@ inline void ActuatorControlTarget::set_group(::PROTOBUF_NAMESPACE_ID::int32 valu
   // @@protoc_insertion_point(field_set:mavsdk.rpc.telemetry.ActuatorControlTarget.group)
 }
 
-// repeated float controls = 2;
+// repeated float controls = 2 [(.mavsdk.options.default_value) = "0"];
 inline int ActuatorControlTarget::_internal_controls_size() const {
   return controls_.size();
 }
@@ -20646,7 +20647,7 @@ ActuatorControlTarget::mutable_controls() {
 
 // ActuatorOutputStatus
 
-// uint32 active = 1;
+// uint32 active = 1 [(.mavsdk.options.default_value) = "0"];
 inline void ActuatorOutputStatus::clear_active() {
   active_ = 0u;
 }
@@ -20666,7 +20667,7 @@ inline void ActuatorOutputStatus::set_active(::PROTOBUF_NAMESPACE_ID::uint32 val
   // @@protoc_insertion_point(field_set:mavsdk.rpc.telemetry.ActuatorOutputStatus.active)
 }
 
-// repeated float actuator = 2;
+// repeated float actuator = 2 [(.mavsdk.options.default_value) = "0"];
 inline int ActuatorOutputStatus::_internal_actuator_size() const {
   return actuator_.size();
 }
@@ -21320,7 +21321,7 @@ inline void Odometry::set_allocated_velocity_covariance(::mavsdk::rpc::telemetry
 
 // PositionNed
 
-// float north_m = 1;
+// float north_m = 1 [(.mavsdk.options.default_value) = "NaN"];
 inline void PositionNed::clear_north_m() {
   north_m_ = 0;
 }
@@ -21340,7 +21341,7 @@ inline void PositionNed::set_north_m(float value) {
   // @@protoc_insertion_point(field_set:mavsdk.rpc.telemetry.PositionNed.north_m)
 }
 
-// float east_m = 2;
+// float east_m = 2 [(.mavsdk.options.default_value) = "NaN"];
 inline void PositionNed::clear_east_m() {
   east_m_ = 0;
 }
@@ -21360,7 +21361,7 @@ inline void PositionNed::set_east_m(float value) {
   // @@protoc_insertion_point(field_set:mavsdk.rpc.telemetry.PositionNed.east_m)
 }
 
-// float down_m = 3;
+// float down_m = 3 [(.mavsdk.options.default_value) = "NaN"];
 inline void PositionNed::clear_down_m() {
   down_m_ = 0;
 }
@@ -21572,7 +21573,7 @@ inline void PositionVelocityNed::set_allocated_velocity(::mavsdk::rpc::telemetry
 
 // GroundTruth
 
-// double latitude_deg = 1;
+// double latitude_deg = 1 [(.mavsdk.options.default_value) = "NaN"];
 inline void GroundTruth::clear_latitude_deg() {
   latitude_deg_ = 0;
 }
@@ -21592,7 +21593,7 @@ inline void GroundTruth::set_latitude_deg(double value) {
   // @@protoc_insertion_point(field_set:mavsdk.rpc.telemetry.GroundTruth.latitude_deg)
 }
 
-// double longitude_deg = 2;
+// double longitude_deg = 2 [(.mavsdk.options.default_value) = "NaN"];
 inline void GroundTruth::clear_longitude_deg() {
   longitude_deg_ = 0;
 }
@@ -21612,7 +21613,7 @@ inline void GroundTruth::set_longitude_deg(double value) {
   // @@protoc_insertion_point(field_set:mavsdk.rpc.telemetry.GroundTruth.longitude_deg)
 }
 
-// float absolute_altitude_m = 3;
+// float absolute_altitude_m = 3 [(.mavsdk.options.default_value) = "NaN"];
 inline void GroundTruth::clear_absolute_altitude_m() {
   absolute_altitude_m_ = 0;
 }
@@ -21636,7 +21637,7 @@ inline void GroundTruth::set_absolute_altitude_m(float value) {
 
 // FixedwingMetrics
 
-// float airspeed_m_s = 1;
+// float airspeed_m_s = 1 [(.mavsdk.options.default_value) = "NaN"];
 inline void FixedwingMetrics::clear_airspeed_m_s() {
   airspeed_m_s_ = 0;
 }
@@ -21656,7 +21657,7 @@ inline void FixedwingMetrics::set_airspeed_m_s(float value) {
   // @@protoc_insertion_point(field_set:mavsdk.rpc.telemetry.FixedwingMetrics.airspeed_m_s)
 }
 
-// float throttle_percentage = 2;
+// float throttle_percentage = 2 [(.mavsdk.options.default_value) = "NaN"];
 inline void FixedwingMetrics::clear_throttle_percentage() {
   throttle_percentage_ = 0;
 }
@@ -21676,7 +21677,7 @@ inline void FixedwingMetrics::set_throttle_percentage(float value) {
   // @@protoc_insertion_point(field_set:mavsdk.rpc.telemetry.FixedwingMetrics.throttle_percentage)
 }
 
-// float climb_rate_m_s = 3;
+// float climb_rate_m_s = 3 [(.mavsdk.options.default_value) = "NaN"];
 inline void FixedwingMetrics::clear_climb_rate_m_s() {
   climb_rate_m_s_ = 0;
 }
@@ -21700,7 +21701,7 @@ inline void FixedwingMetrics::set_climb_rate_m_s(float value) {
 
 // AccelerationFrd
 
-// float forward_m_s2 = 1;
+// float forward_m_s2 = 1 [(.mavsdk.options.default_value) = "NaN"];
 inline void AccelerationFrd::clear_forward_m_s2() {
   forward_m_s2_ = 0;
 }
@@ -21720,7 +21721,7 @@ inline void AccelerationFrd::set_forward_m_s2(float value) {
   // @@protoc_insertion_point(field_set:mavsdk.rpc.telemetry.AccelerationFrd.forward_m_s2)
 }
 
-// float right_m_s2 = 2;
+// float right_m_s2 = 2 [(.mavsdk.options.default_value) = "NaN"];
 inline void AccelerationFrd::clear_right_m_s2() {
   right_m_s2_ = 0;
 }
@@ -21740,7 +21741,7 @@ inline void AccelerationFrd::set_right_m_s2(float value) {
   // @@protoc_insertion_point(field_set:mavsdk.rpc.telemetry.AccelerationFrd.right_m_s2)
 }
 
-// float down_m_s2 = 3;
+// float down_m_s2 = 3 [(.mavsdk.options.default_value) = "NaN"];
 inline void AccelerationFrd::clear_down_m_s2() {
   down_m_s2_ = 0;
 }
@@ -21764,7 +21765,7 @@ inline void AccelerationFrd::set_down_m_s2(float value) {
 
 // AngularVelocityFrd
 
-// float forward_rad_s = 1;
+// float forward_rad_s = 1 [(.mavsdk.options.default_value) = "NaN"];
 inline void AngularVelocityFrd::clear_forward_rad_s() {
   forward_rad_s_ = 0;
 }
@@ -21784,7 +21785,7 @@ inline void AngularVelocityFrd::set_forward_rad_s(float value) {
   // @@protoc_insertion_point(field_set:mavsdk.rpc.telemetry.AngularVelocityFrd.forward_rad_s)
 }
 
-// float right_rad_s = 2;
+// float right_rad_s = 2 [(.mavsdk.options.default_value) = "NaN"];
 inline void AngularVelocityFrd::clear_right_rad_s() {
   right_rad_s_ = 0;
 }
@@ -21804,7 +21805,7 @@ inline void AngularVelocityFrd::set_right_rad_s(float value) {
   // @@protoc_insertion_point(field_set:mavsdk.rpc.telemetry.AngularVelocityFrd.right_rad_s)
 }
 
-// float down_rad_s = 3;
+// float down_rad_s = 3 [(.mavsdk.options.default_value) = "NaN"];
 inline void AngularVelocityFrd::clear_down_rad_s() {
   down_rad_s_ = 0;
 }
@@ -21828,7 +21829,7 @@ inline void AngularVelocityFrd::set_down_rad_s(float value) {
 
 // MagneticFieldFrd
 
-// float forward_gauss = 1;
+// float forward_gauss = 1 [(.mavsdk.options.default_value) = "NaN"];
 inline void MagneticFieldFrd::clear_forward_gauss() {
   forward_gauss_ = 0;
 }
@@ -21848,7 +21849,7 @@ inline void MagneticFieldFrd::set_forward_gauss(float value) {
   // @@protoc_insertion_point(field_set:mavsdk.rpc.telemetry.MagneticFieldFrd.forward_gauss)
 }
 
-// float right_gauss = 2;
+// float right_gauss = 2 [(.mavsdk.options.default_value) = "NaN"];
 inline void MagneticFieldFrd::clear_right_gauss() {
   right_gauss_ = 0;
 }
@@ -21868,7 +21869,7 @@ inline void MagneticFieldFrd::set_right_gauss(float value) {
   // @@protoc_insertion_point(field_set:mavsdk.rpc.telemetry.MagneticFieldFrd.right_gauss)
 }
 
-// float down_gauss = 3;
+// float down_gauss = 3 [(.mavsdk.options.default_value) = "NaN"];
 inline void MagneticFieldFrd::clear_down_gauss() {
   down_gauss_ = 0;
 }
@@ -22072,7 +22073,7 @@ inline void Imu::set_allocated_magnetic_field_frd(::mavsdk::rpc::telemetry::Magn
   // @@protoc_insertion_point(field_set_allocated:mavsdk.rpc.telemetry.Imu.magnetic_field_frd)
 }
 
-// float temperature_degc = 4;
+// float temperature_degc = 4 [(.mavsdk.options.default_value) = "NaN"];
 inline void Imu::clear_temperature_degc() {
   temperature_degc_ = 0;
 }

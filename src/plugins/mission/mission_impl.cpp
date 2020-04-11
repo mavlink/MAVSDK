@@ -79,18 +79,17 @@ void MissionImpl::process_mission_item_reached(const mavlink_message_t& message)
     report_progress();
 }
 
-Mission::Result MissionImpl::upload_mission(const MissionPlan& mission_plan)
+Mission::Result MissionImpl::upload_mission(const Mission::MissionPlan& mission_plan)
 {
     auto prom = std::promise<Mission::Result>();
     auto fut = prom.get_future();
 
-    upload_mission_async(
-        mission_items, [&prom](Mission::Result result) { prom.set_value(result); });
+    upload_mission_async(mission_plan, [&prom](Mission::Result result) { prom.set_value(result); });
     return fut.get();
 }
 
 void MissionImpl::upload_mission_async(
-    const std::vector<MissionItem>& mission_items, const Mission::result_callback_t& callback)
+    const Mission::MissionPlan& mission_plan, const Mission::result_callback_t& callback)
 {
     if (_mission_data.last_upload.lock()) {
         _parent->call_user_callback([callback]() {
@@ -107,7 +106,7 @@ void MissionImpl::upload_mission_async(
         return;
     }
 
-    const auto int_items = convert_to_int_items(mission_items);
+    const auto int_items = convert_to_int_items(mission_plan.mission_items);
 
     _mission_data.last_upload = _parent->mission_transfer().upload_items_async(
         MAV_MISSION_TYPE_MISSION,
@@ -133,13 +132,13 @@ Mission::Result MissionImpl::cancel_mission_upload()
     }
 }
 
-std::pair<Mission::Result, std::vector<Mission::MissionItem>> MissionImpl::download_mission()
+std::pair<Mission::Result, Mission::MissionPlan> MissionImpl::download_mission()
 {
-    auto prom = std::promise<std::pair<Mission::Result, std::vector<Mission::MissionItem>>>();
+    auto prom = std::promise<std::pair<Mission::Result, Mission::MissionPlan>>();
     auto fut = prom.get_future();
 
-    download_mission_async([&prom](Mission::Result result, std::vector<MissionItem> items) {
-        prom.set_value(std::make_pair<>(result, items));
+    download_mission_async([&prom](Mission::Result result, Mission::MissionPlan mission_plan) {
+        prom.set_value(std::make_pair<>(result, mission_plan));
     });
     return fut.get();
 }
@@ -149,8 +148,8 @@ void MissionImpl::download_mission_async(const Mission::download_mission_callbac
     if (_mission_data.last_download.lock()) {
         _parent->call_user_callback([callback]() {
             if (callback) {
-                std::vector<MissionItem> empty_items;
-                callback(Mission::Result::Busy, empty_items);
+                Mission::MissionPlan mission_plan{};
+                callback(Mission::Result::Busy, mission_plan);
             }
         });
         return;
@@ -485,12 +484,11 @@ MissionImpl::convert_to_int_items(const std::vector<MissionItem>& mission_items)
     return int_items;
 }
 
-std::pair<Mission::Result, std::vector<MissionItem>>
-MissionImpl::convert_to_result_and_mission_items(
+std::pair<Mission::Result, Mission::MissionPlan> MissionImpl::convert_to_result_and_mission_items(
     MAVLinkMissionTransfer::Result result,
     const std::vector<MAVLinkMissionTransfer::ItemInt>& int_items)
 {
-    std::pair<Mission::Result, std::vector<MissionItem>> result_pair;
+    std::pair<Mission::Result, Mission::MissionPlan> result_pair;
 
     result_pair.first = convert_result(result);
     if (result_pair.first != Mission::Result::Success) {
@@ -518,7 +516,7 @@ MissionImpl::convert_to_result_and_mission_items(
 
                 if (have_set_position) {
                     // When a new position comes in, create next mission item.
-                    result_pair.second.push_back(new_mission_item);
+                    result_pair.second.mission_items.push_back(new_mission_item);
                     new_mission_item = {};
                     have_set_position = false;
                 }
@@ -597,14 +595,14 @@ MissionImpl::convert_to_result_and_mission_items(
                 break;
             }
 
-            _mission_data.mavlink_mission_item_to_mission_item_indices.insert(
-                std::pair<int, int>{mavlink_item_i, static_cast<int>(result_pair.second.size())});
+            _mission_data.mavlink_mission_item_to_mission_item_indices.insert(std::pair<int, int>{
+                mavlink_item_i, static_cast<int>(result_pair.second.mission_items.size())});
 
             ++mavlink_item_i;
         }
 
         // Don't forget to add last mission item.
-        result_pair.second.push_back(new_mission_item);
+        result_pair.second.mission_items.push_back(new_mission_item);
     }
     return result_pair;
 }
@@ -779,7 +777,10 @@ void MissionImpl::report_progress()
         std::lock_guard<std::recursive_mutex> lock(_mission_data.mutex);
         _parent->call_user_callback([temp_callback, current, total]() {
             LogDebug() << "current: " << current << ", total: " << total;
-            temp_callback({current, total});
+            Mission::MissionProgress mission_progress;
+            mission_progress.current = current;
+            mission_progress.total = total;
+            temp_callback(mission_progress);
         });
     }
 }
@@ -846,7 +847,11 @@ int MissionImpl::total_mission_items() const
 
 Mission::MissionProgress MissionImpl::mission_progress()
 {
-    return {current_mission_item(), total_mission_items()};
+    Mission::MissionProgress mission_progress;
+    mission_progress.current = current_mission_item();
+    mission_progress.total = total_mission_items();
+
+    return mission_progress;
 }
 
 void MissionImpl::mission_progress_async(Mission::mission_progress_callback_t callback)
@@ -891,12 +896,12 @@ Mission::Result MissionImpl::convert_result(MAVLinkMissionTransfer::Result resul
     }
 }
 
-std::pair<Mission::Result, std::vector<Mission::MissionItem>>
+std::pair<Mission::Result, Mission::MissionPlan>
 MissionImpl::import_qgroundcontrol_mission(const std::string& qgc_plan_file)
 {
-    std::vector<Mission::MissionItem> items;
-    auto result = std::pair<Mission::Result, std::vector<Mission::MissionItem>>(
-        Mission::Result::Unknown, items);
+    Mission::MissionPlan mission_plan;
+    auto result =
+        std::pair<Mission::Result, Mission::MissionPlan>(Mission::Result::Unknown, mission_plan);
 
     std::ifstream file(qgc_plan_file);
     if (!file) {
@@ -921,7 +926,7 @@ MissionImpl::import_qgroundcontrol_mission(const std::string& qgc_plan_file)
         return result;
     }
 
-    result.first = import_mission_items(result.second, root);
+    result.first = import_mission_items(result.second.mission_items, root);
     return result;
 }
 

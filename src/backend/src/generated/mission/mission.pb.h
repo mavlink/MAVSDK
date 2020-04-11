@@ -3677,7 +3677,7 @@ class MissionItem :
     kCameraPhotoIntervalSFieldNumber = 10,
     kLoiterTimeSFieldNumber = 9,
   };
-  // double latitude_deg = 1;
+  // double latitude_deg = 1 [(.mavsdk.options.default_value) = "NaN"];
   void clear_latitude_deg();
   double latitude_deg() const;
   void set_latitude_deg(double value);
@@ -3686,7 +3686,7 @@ class MissionItem :
   void _internal_set_latitude_deg(double value);
   public:
 
-  // double longitude_deg = 2;
+  // double longitude_deg = 2 [(.mavsdk.options.default_value) = "NaN"];
   void clear_longitude_deg();
   double longitude_deg() const;
   void set_longitude_deg(double value);
@@ -3695,7 +3695,7 @@ class MissionItem :
   void _internal_set_longitude_deg(double value);
   public:
 
-  // float relative_altitude_m = 3;
+  // float relative_altitude_m = 3 [(.mavsdk.options.default_value) = "NaN"];
   void clear_relative_altitude_m();
   float relative_altitude_m() const;
   void set_relative_altitude_m(float value);
@@ -3704,7 +3704,7 @@ class MissionItem :
   void _internal_set_relative_altitude_m(float value);
   public:
 
-  // float speed_m_s = 4;
+  // float speed_m_s = 4 [(.mavsdk.options.default_value) = "NaN"];
   void clear_speed_m_s();
   float speed_m_s() const;
   void set_speed_m_s(float value);
@@ -3713,7 +3713,7 @@ class MissionItem :
   void _internal_set_speed_m_s(float value);
   public:
 
-  // bool is_fly_through = 5;
+  // bool is_fly_through = 5 [(.mavsdk.options.default_value) = "false"];
   void clear_is_fly_through();
   bool is_fly_through() const;
   void set_is_fly_through(bool value);
@@ -3722,7 +3722,7 @@ class MissionItem :
   void _internal_set_is_fly_through(bool value);
   public:
 
-  // float gimbal_pitch_deg = 6;
+  // float gimbal_pitch_deg = 6 [(.mavsdk.options.default_value) = "NaN"];
   void clear_gimbal_pitch_deg();
   float gimbal_pitch_deg() const;
   void set_gimbal_pitch_deg(float value);
@@ -3731,7 +3731,7 @@ class MissionItem :
   void _internal_set_gimbal_pitch_deg(float value);
   public:
 
-  // float gimbal_yaw_deg = 7;
+  // float gimbal_yaw_deg = 7 [(.mavsdk.options.default_value) = "NaN"];
   void clear_gimbal_yaw_deg();
   float gimbal_yaw_deg() const;
   void set_gimbal_yaw_deg(float value);
@@ -3749,7 +3749,7 @@ class MissionItem :
   void _internal_set_camera_action(::mavsdk::rpc::mission::MissionItem_CameraAction value);
   public:
 
-  // double camera_photo_interval_s = 10;
+  // double camera_photo_interval_s = 10 [(.mavsdk.options.default_value) = "1.0"];
   void clear_camera_photo_interval_s();
   double camera_photo_interval_s() const;
   void set_camera_photo_interval_s(double value);
@@ -3758,7 +3758,7 @@ class MissionItem :
   void _internal_set_camera_photo_interval_s(double value);
   public:
 
-  // float loiter_time_s = 9;
+  // float loiter_time_s = 9 [(.mavsdk.options.default_value) = "NaN"];
   void clear_loiter_time_s();
   float loiter_time_s() const;
   void set_loiter_time_s(float value);
@@ -5174,7 +5174,7 @@ inline void ImportQgroundcontrolMissionResponse::set_allocated_mission_plan(::ma
 
 // MissionItem
 
-// double latitude_deg = 1;
+// double latitude_deg = 1 [(.mavsdk.options.default_value) = "NaN"];
 inline void MissionItem::clear_latitude_deg() {
   latitude_deg_ = 0;
 }
@@ -5194,7 +5194,7 @@ inline void MissionItem::set_latitude_deg(double value) {
   // @@protoc_insertion_point(field_set:mavsdk.rpc.mission.MissionItem.latitude_deg)
 }
 
-// double longitude_deg = 2;
+// double longitude_deg = 2 [(.mavsdk.options.default_value) = "NaN"];
 inline void MissionItem::clear_longitude_deg() {
   longitude_deg_ = 0;
 }
@@ -5214,7 +5214,7 @@ inline void MissionItem::set_longitude_deg(double value) {
   // @@protoc_insertion_point(field_set:mavsdk.rpc.mission.MissionItem.longitude_deg)
 }
 
-// float relative_altitude_m = 3;
+// float relative_altitude_m = 3 [(.mavsdk.options.default_value) = "NaN"];
 inline void MissionItem::clear_relative_altitude_m() {
   relative_altitude_m_ = 0;
 }
@@ -5234,7 +5234,7 @@ inline void MissionItem::set_relative_altitude_m(float value) {
   // @@protoc_insertion_point(field_set:mavsdk.rpc.mission.MissionItem.relative_altitude_m)
 }
 
-// float speed_m_s = 4;
+// float speed_m_s = 4 [(.mavsdk.options.default_value) = "NaN"];
 inline void MissionItem::clear_speed_m_s() {
   speed_m_s_ = 0;
 }
@@ -5254,7 +5254,7 @@ inline void MissionItem::set_speed_m_s(float value) {
   // @@protoc_insertion_point(field_set:mavsdk.rpc.mission.MissionItem.speed_m_s)
 }
 
-// bool is_fly_through = 5;
+// bool is_fly_through = 5 [(.mavsdk.options.default_value) = "false"];
 inline void MissionItem::clear_is_fly_through() {
   is_fly_through_ = false;
 }
@@ -5274,7 +5274,7 @@ inline void MissionItem::set_is_fly_through(bool value) {
   // @@protoc_insertion_point(field_set:mavsdk.rpc.mission.MissionItem.is_fly_through)
 }
 
-// float gimbal_pitch_deg = 6;
+// float gimbal_pitch_deg = 6 [(.mavsdk.options.default_value) = "NaN"];
 inline void MissionItem::clear_gimbal_pitch_deg() {
   gimbal_pitch_deg_ = 0;
 }
@@ -5294,7 +5294,7 @@ inline void MissionItem::set_gimbal_pitch_deg(float value) {
   // @@protoc_insertion_point(field_set:mavsdk.rpc.mission.MissionItem.gimbal_pitch_deg)
 }
 
-// float gimbal_yaw_deg = 7;
+// float gimbal_yaw_deg = 7 [(.mavsdk.options.default_value) = "NaN"];
 inline void MissionItem::clear_gimbal_yaw_deg() {
   gimbal_yaw_deg_ = 0;
 }
@@ -5334,7 +5334,7 @@ inline void MissionItem::set_camera_action(::mavsdk::rpc::mission::MissionItem_C
   // @@protoc_insertion_point(field_set:mavsdk.rpc.mission.MissionItem.camera_action)
 }
 
-// float loiter_time_s = 9;
+// float loiter_time_s = 9 [(.mavsdk.options.default_value) = "NaN"];
 inline void MissionItem::clear_loiter_time_s() {
   loiter_time_s_ = 0;
 }
@@ -5354,7 +5354,7 @@ inline void MissionItem::set_loiter_time_s(float value) {
   // @@protoc_insertion_point(field_set:mavsdk.rpc.mission.MissionItem.loiter_time_s)
 }
 
-// double camera_photo_interval_s = 10;
+// double camera_photo_interval_s = 10 [(.mavsdk.options.default_value) = "1.0"];
 inline void MissionItem::clear_camera_photo_interval_s() {
   camera_photo_interval_s_ = 0;
 }

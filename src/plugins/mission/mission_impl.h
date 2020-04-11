@@ -92,8 +92,7 @@ private:
     static Mission::Result command_result_to_mission_result(MAVLinkCommands::Result result);
 
     // FIXME: make static
-    std::pair<Mission::Result, std::vector<Mission::MissionItem>>
-    convert_to_result_and_mission_items(
+    std::pair<Mission::Result, Mission::MissionPlan> convert_to_result_and_mission_items(
         MAVLinkMissionTransfer::Result result,
         const std::vector<MAVLinkMissionTransfer::ItemInt>& int_items);
 
