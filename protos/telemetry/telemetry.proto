@@ -2,6 +2,8 @@ syntax = "proto3";
 
 package mavsdk.rpc.telemetry;
 
+import "mavsdk_options.proto";
+
 option java_package = "io.mavsdk.telemetry";
 option java_outer_classname = "TelemetryProto";
 
@@ -373,10 +375,10 @@ message SetRateUnixEpochTimeResponse {
 
 // Position type in global coordinates.
 message Position {
-    double latitude_deg = 1; // Latitude in degrees (range: -90 to +90)
-    double longitude_deg = 2; // Longitude in degrees (range: -180 to +180)
-    float absolute_altitude_m = 3; // Altitude AMSL (above mean sea level) in metres
-    float relative_altitude_m = 4; // Altitude relative to takeoff altitude in metres
+    double latitude_deg = 1 [(mavsdk.options.default_value)="NaN"]; // Latitude in degrees (range: -90 to +90)
+    double longitude_deg = 2 [(mavsdk.options.default_value)="NaN"]; // Longitude in degrees (range: -180 to +180)
+    float absolute_altitude_m = 3 [(mavsdk.options.default_value)="NaN"]; // Altitude AMSL (above mean sea level) in metres
+    float relative_altitude_m = 4 [(mavsdk.options.default_value)="NaN"]; // Altitude relative to takeoff altitude in metres
 }
 
 /*
@@ -390,10 +392,10 @@ message Position {
  * For more info see: https://en.wikipedia.org/wiki/Quaternion
  */
 message Quaternion {
-    float w = 1; // Quaternion entry 0, also denoted as a
-    float x = 2; // Quaternion entry 1, also denoted as b
-    float y = 3; // Quaternion entry 2, also denoted as c
-    float z = 4; // Quaternion entry 3, also denoted as d
+    float w = 1 [(mavsdk.options.default_value)="NaN"]; // Quaternion entry 0, also denoted as a
+    float x = 2 [(mavsdk.options.default_value)="NaN"]; // Quaternion entry 1, also denoted as b
+    float y = 3 [(mavsdk.options.default_value)="NaN"]; // Quaternion entry 2, also denoted as c
+    float z = 4 [(mavsdk.options.default_value)="NaN"]; // Quaternion entry 3, also denoted as d
 }
 
 /*
@@ -405,28 +407,28 @@ message Quaternion {
  * For more info see https://en.wikipedia.org/wiki/Euler_angles
  */
 message EulerAngle {
-    float roll_deg = 1; // Roll angle in degrees, positive is banking to the right
-    float pitch_deg = 2; // Pitch angle in degrees, positive is pitching nose up
-    float yaw_deg = 3; // Yaw angle in degrees, positive is clock-wise seen from above
+    float roll_deg = 1 [(mavsdk.options.default_value)="NaN"]; // Roll angle in degrees, positive is banking to the right
+    float pitch_deg = 2 [(mavsdk.options.default_value)="NaN"]; // Pitch angle in degrees, positive is pitching nose up
+    float yaw_deg = 3 [(mavsdk.options.default_value)="NaN"]; // Yaw angle in degrees, positive is clock-wise seen from above
 }
 
 // Angular velocity type.
 message AngularVelocityBody {
-    float roll_rad_s = 1; // Roll angular velocity
-    float pitch_rad_s = 2; // Pitch angular velocity
-    float yaw_rad_s = 3; // Yaw angular velocity
+    float roll_rad_s = 1 [(mavsdk.options.default_value)="NaN"]; // Roll angular velocity
+    float pitch_rad_s = 2 [(mavsdk.options.default_value)="NaN"]; // Pitch angular velocity
+    float yaw_rad_s = 3 [(mavsdk.options.default_value)="NaN"]; // Yaw angular velocity
 }
 
 // Speed type, represented in the NED (North East Down) frame and in metres/second.
 message SpeedNed {
-    float velocity_north_m_s = 1; // Velocity in North direction in metres/second
-    float velocity_east_m_s = 2; // Velocity in East direction in metres/second
-    float velocity_down_m_s = 3; // Velocity in Down direction in metres/second
+    float velocity_north_m_s = 1 [(mavsdk.options.default_value)="NaN"]; // Velocity in North direction in metres/second
+    float velocity_east_m_s = 2 [(mavsdk.options.default_value)="NaN"]; // Velocity in East direction in metres/second
+    float velocity_down_m_s = 3 [(mavsdk.options.default_value)="NaN"]; // Velocity in Down direction in metres/second
 }
 
 // GPS information type.
 message GpsInfo {
-    int32 num_satellites = 1; // Number of visible satellites in use
+    int32 num_satellites = 1 [(mavsdk.options.default_value)="0"]; // Number of visible satellites in use
     FixType fix_type = 2; // Fix type
 }
 
@@ -443,8 +445,8 @@ enum FixType {
 
 // Battery type.
 message Battery {
-    float voltage_v = 1; // Voltage in volts
-    float remaining_percent = 2; // Estimated battery remaining (range: 0.0 to 1.0)
+    float voltage_v = 1 [(mavsdk.options.default_value)="NaN"]; // Voltage in volts
+    float remaining_percent = 2 [(mavsdk.options.default_value)="NaN"]; // Estimated battery remaining (range: 0.0 to 1.0)
 }
 
 /*
@@ -473,20 +475,20 @@ enum FlightMode {
 
 // Health type.
 message Health {
-    bool is_gyrometer_calibration_ok = 1; // True if the gyrometer is calibrated
-    bool is_accelerometer_calibration_ok = 2; // True if the accelerometer is calibrated
-    bool is_magnetometer_calibration_ok = 3; // True if the magnetometer is calibrated
-    bool is_level_calibration_ok = 4; // True if the vehicle has a valid level calibration
-    bool is_local_position_ok = 5; // True if the local position estimate is good enough to fly in 'position control' mode
-    bool is_global_position_ok = 6; // True if the global position estimate is good enough to fly in 'position control' mode
-    bool is_home_position_ok = 7; // True if the home position has been initialized properly
+    bool is_gyrometer_calibration_ok = 1 [(mavsdk.options.default_value)="false"]; // True if the gyrometer is calibrated
+    bool is_accelerometer_calibration_ok = 2 [(mavsdk.options.default_value)="false"]; // True if the accelerometer is calibrated
+    bool is_magnetometer_calibration_ok = 3 [(mavsdk.options.default_value)="false"]; // True if the magnetometer is calibrated
+    bool is_level_calibration_ok = 4 [(mavsdk.options.default_value)="false"]; // True if the vehicle has a valid level calibration
+    bool is_local_position_ok = 5 [(mavsdk.options.default_value)="false"]; // True if the local position estimate is good enough to fly in 'position control' mode
+    bool is_global_position_ok = 6 [(mavsdk.options.default_value)="false"]; // True if the global position estimate is good enough to fly in 'position control' mode
+    bool is_home_position_ok = 7 [(mavsdk.options.default_value)="false"]; // True if the home position has been initialized properly
 }
 
 // Remote control status type.
 message RcStatus {
-    bool was_available_once = 1; // True if an RC signal has been available once
-    bool is_available = 2; // True if the RC signal is available now
-    float signal_strength_percent = 3; // Signal strength (range: 0 to 100)
+    bool was_available_once = 1 [(mavsdk.options.default_value)="false"]; // True if an RC signal has been available once
+    bool is_available = 2 [(mavsdk.options.default_value)="false"]; // True if the RC signal is available now
+    float signal_strength_percent = 3 [(mavsdk.options.default_value)="0"]; // Signal strength (range: 0 to 100)
 }
 
 // Status types.
@@ -504,14 +506,14 @@ message StatusText {
 
 // Actuator control target type.
 message ActuatorControlTarget {
-    int32 group = 1; // An actuator control group is e.g. 'attitude' for the core flight controls, or 'gimbal' for a payload.
-    repeated float controls = 2; // Controls normed from -1 to 1, where 0 is neutral position.
+    int32 group = 1 [(mavsdk.options.default_value)="0"]; // An actuator control group is e.g. 'attitude' for the core flight controls, or 'gimbal' for a payload.
+    repeated float controls = 2 [(mavsdk.options.default_value)="0"]; // Controls normed from -1 to 1, where 0 is neutral position.
 }
 
 // Actuator output status type.
 message ActuatorOutputStatus {
-    uint32 active = 1; // Active outputs
-    repeated float actuator = 2; // Servo/motor output values
+    uint32 active = 1 [(mavsdk.options.default_value)="0"]; // Active outputs
+    repeated float actuator = 2 [(mavsdk.options.default_value)="0"]; // Servo/motor output values
 }
 
 // Landed State enumeration.
@@ -571,9 +573,9 @@ message Odometry {
 
 // PositionNed message type.
 message PositionNed {
-    float north_m = 1; // Position along north direction in metres
-    float east_m = 2; // Position along east direction in metres
-    float down_m = 3; // Position along down direction in metres
+    float north_m = 1 [(mavsdk.options.default_value)="NaN"]; // Position along north direction in metres
+    float east_m = 2 [(mavsdk.options.default_value)="NaN"]; // Position along east direction in metres
+    float down_m = 3 [(mavsdk.options.default_value)="NaN"]; // Position along down direction in metres
 }
 
 // VelocityNed message type.
@@ -591,37 +593,37 @@ message PositionVelocityNed {
 
 // GroundTruth message type.
 message GroundTruth {
-    double latitude_deg = 1; // Latitude in degrees (range: -90 to +90)
-    double longitude_deg = 2; // Longitude in degrees (range: -180 to 180)
-    float absolute_altitude_m = 3; // Altitude AMSL (above mean sea level) in metres
+    double latitude_deg = 1 [(mavsdk.options.default_value)="NaN"]; // Latitude in degrees (range: -90 to +90)
+    double longitude_deg = 2 [(mavsdk.options.default_value)="NaN"]; // Longitude in degrees (range: -180 to 180)
+    float absolute_altitude_m = 3 [(mavsdk.options.default_value)="NaN"]; // Altitude AMSL (above mean sea level) in metres
 }
 
 // FixedwingMetrics message type.
 message FixedwingMetrics {
-    float airspeed_m_s = 1; // Current indicated airspeed (IAS) in metres per second
-    float throttle_percentage = 2; // Current throttle setting (0 to 100)
-    float climb_rate_m_s = 3; // Current climb rate in metres per second
+    float airspeed_m_s = 1 [(mavsdk.options.default_value)="NaN"]; // Current indicated airspeed (IAS) in metres per second
+    float throttle_percentage = 2 [(mavsdk.options.default_value)="NaN"]; // Current throttle setting (0 to 100)
+    float climb_rate_m_s = 3 [(mavsdk.options.default_value)="NaN"]; // Current climb rate in metres per second
 }
 
 // AccelerationFrd message type.
 message AccelerationFrd {
-    float forward_m_s2 = 1; // Acceleration in forward direction in metres per second^2
-    float right_m_s2 = 2; // Acceleration in right direction in metres per second^2
-    float down_m_s2 = 3; // Acceleration in down direction in metres per second^2
+    float forward_m_s2 = 1 [(mavsdk.options.default_value)="NaN"]; // Acceleration in forward direction in metres per second^2
+    float right_m_s2 = 2 [(mavsdk.options.default_value)="NaN"]; // Acceleration in right direction in metres per second^2
+    float down_m_s2 = 3 [(mavsdk.options.default_value)="NaN"]; // Acceleration in down direction in metres per second^2
 }
 
 // AngularVelocityFrd message type.
 message AngularVelocityFrd {
-    float forward_rad_s = 1; // Angular velocity in forward direction in radians per second
-    float right_rad_s = 2; // Angular velocity in right direction in radians per second
-    float down_rad_s = 3; // Angular velocity in Down direction in radians per second
+    float forward_rad_s = 1 [(mavsdk.options.default_value)="NaN"]; // Angular velocity in forward direction in radians per second
+    float right_rad_s = 2 [(mavsdk.options.default_value)="NaN"]; // Angular velocity in right direction in radians per second
+    float down_rad_s = 3 [(mavsdk.options.default_value)="NaN"]; // Angular velocity in Down direction in radians per second
 }
 
 // MagneticFieldFrd message type.
 message MagneticFieldFrd {
-    float forward_gauss = 1; // Magnetic field in forward direction measured in Gauss
-    float right_gauss = 2; // Magnetic field in East direction measured in Gauss
-    float down_gauss = 3; // Magnetic field in Down direction measured in Gauss
+    float forward_gauss = 1 [(mavsdk.options.default_value)="NaN"]; // Magnetic field in forward direction measured in Gauss
+    float right_gauss = 2 [(mavsdk.options.default_value)="NaN"]; // Magnetic field in East direction measured in Gauss
+    float down_gauss = 3 [(mavsdk.options.default_value)="NaN"]; // Magnetic field in Down direction measured in Gauss
 }
 
 // Imu message type.
@@ -629,7 +631,7 @@ message Imu {
     AccelerationFrd acceleration_frd = 1; // Acceleration
     AngularVelocityFrd angular_velocity_frd = 2; // Angular velocity
     MagneticFieldFrd magnetic_field_frd = 3; // Magnetic field
-    float temperature_degc = 4; // Temperature
+    float temperature_degc = 4 [(mavsdk.options.default_value)="NaN"]; // Temperature
 }
 
 // Result type.

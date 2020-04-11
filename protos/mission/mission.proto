@@ -169,16 +169,16 @@ message ImportQgroundcontrolMissionResponse {
  * They cannot be used independently.
  */
 message MissionItem {
-    double latitude_deg = 1; // Latitude in degrees (range: -90 to +90)
-    double longitude_deg = 2; // Longitude in degrees (range: -180 to +180)
-    float relative_altitude_m = 3; // Altitude relative to takeoff altitude in metres
-    float speed_m_s = 4; // Speed to use after this mission item (in metres/second)
-    bool is_fly_through = 5; // True will make the drone fly through without stopping, while false will make the drone stop on the waypoint
-    float gimbal_pitch_deg = 6; // Gimbal pitch (in degrees)
-    float gimbal_yaw_deg = 7; // Gimbal yaw (in degrees)
+    double latitude_deg = 1 [(mavsdk.options.default_value)="NaN"]; // Latitude in degrees (range: -90 to +90)
+    double longitude_deg = 2 [(mavsdk.options.default_value)="NaN"]; // Longitude in degrees (range: -180 to +180)
+    float relative_altitude_m = 3 [(mavsdk.options.default_value)="NaN"]; // Altitude relative to takeoff altitude in metres
+    float speed_m_s = 4 [(mavsdk.options.default_value)="NaN"]; // Speed to use after this mission item (in metres/second)
+    bool is_fly_through = 5 [(mavsdk.options.default_value)="false"]; // True will make the drone fly through without stopping, while false will make the drone stop on the waypoint
+    float gimbal_pitch_deg = 6 [(mavsdk.options.default_value)="NaN"]; // Gimbal pitch (in degrees)
+    float gimbal_yaw_deg = 7 [(mavsdk.options.default_value)="NaN"]; // Gimbal yaw (in degrees)
     CameraAction camera_action = 8; // Camera action to trigger at this mission item
-    float loiter_time_s = 9; // Loiter time (in seconds)
-    double camera_photo_interval_s = 10; // Camera photo interval to use after this mission item (in seconds)
+    float loiter_time_s = 9 [(mavsdk.options.default_value)="NaN"]; // Loiter time (in seconds)
+    double camera_photo_interval_s = 10 [(mavsdk.options.default_value)="1.0"]; // Camera photo interval to use after this mission item (in seconds)
 
     // Possible camera actions at a mission item.
     enum CameraAction {
