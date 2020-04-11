@@ -1,0 +1,111 @@
+syntax = "proto3";
+
+package mavsdk.rpc.follow_me;
+
+option java_package = "io.mavsdk.follow_me";
+option java_outer_classname = "FollowMeProto";
+
+/*
+ * Allow users to command the vehicle to follow a specific target.
+ * The target is provided as a GPS coordinate and altitude.
+ */
+service FollowMeService {
+    // Get current configuration.
+    rpc GetConfig(GetConfigRequest) returns(GetConfigResponse) {}
+    // Apply configuration by sending it to the system.
+    rpc SetConfig(SetConfigRequest) returns(SetConfigResponse) {}
+    // Check if FollowMe is active.
+    rpc IsActive(IsActiveRequest) returns(IsActiveResponse) {}
+    // Set location of the moving target.
+    rpc SetTargetLocation(SetTargetLocationRequest) returns(SetTargetLocationResponse) {}
+    // Get the last location of the target.
+    rpc GetLastLocation(GetLastLocationRequest) returns(GetLastLocationResponse) {}
+    // Start FollowMe mode.
+    rpc Start(StartRequest) returns(StartResponse) {}
+    // Stop FollowMe mode.
+    rpc Stop(StopRequest) returns(StopResponse) {}
+}
+
+// Configuration type.
+message Config {
+    // Direction relative to the target that the vehicle should follow
+    enum FollowDirection {
+        NONE = 0; // Do not follow
+        FRONT_RIGHT = 1; // Follow from front right
+        FRONT_LEFT = 2; // Follow from front left
+        FRONT = 3; // Follow from front
+        BEHIND = 4; // Folow from behind
+    }
+
+    float min_height_m = 1; // Minimum height for the vehicle
+    float follow_distance_m = 2; // Distance from target for vehicle to follow
+    FollowDirection follow_direction = 3; // Direction to follow in
+    float responsiveness = 4; // How responsive the vehicle is to the motion of the target
+}
+
+// Target location for the vehicle to follow
+message TargetLocation {
+    double latitude_deg = 1; // Target latitude in degrees
+    double longitude_deg = 2; // Target longitude in degrees
+    double absolute_altitude_m = 3; // Target altitude in meters above MSL
+    float velocity_x_m_s = 4; // Target velocity in X axis, in meters per second
+    float velocity_y_m_s = 5; // Target velocity in Y axis, in meters per second
+    float velocity_z_m_s = 6; // Target velocity in Z axis, in meters per second
+}
+
+message GetConfigRequest {}
+message GetConfigResponse {
+    Config config = 1; // The current FollowMe configuration
+}
+
+message SetConfigRequest {
+    Config config = 1; // The new FollowMe configuration to be set
+}
+message SetConfigResponse {
+    FollowMeResult follow_me_result = 1;
+}
+
+message IsActiveRequest {}
+message IsActiveResponse {
+    bool is_active = 1; // Whether FollowMe is ative or not
+}
+
+message SetTargetLocationRequest {
+    TargetLocation location = 1; // The new TargetLocation to follow
+}
+message SetTargetLocationResponse {
+    FollowMeResult follow_me_result = 1;
+}
+
+message GetLastLocationRequest {}
+message GetLastLocationResponse {
+    TargetLocation location = 1; // The last target location that was set
+}
+
+message StartRequest {}
+message StartResponse {
+    FollowMeResult follow_me_result = 1;
+}
+
+message StopRequest {}
+message StopResponse {
+    FollowMeResult follow_me_result = 1;
+}
+
+message FollowMeResult {
+    // Possible results returned for followme operations
+    enum Result {
+        UNKNOWN = 0; // Unkown error
+        SUCCESS = 1; // Request succeeded
+        NO_SYSTEM = 2; // No system connected
+        CONNECTION_ERROR = 3; // Connection error
+        BUSY = 4; // Vehicle is busy
+        COMMAND_DENIED = 5; // Command denied
+        TIMEOUT = 6; // Request timed out
+        NOT_ACTIVE = 7; // FollowMe is not active
+        SET_CONFIG_FAILED = 8; // Failed to set FollowMe configuration
+    }
+
+    Result result = 1; // Result enum value
+    string result_str = 2; // Human-readable English string describing the result
+}

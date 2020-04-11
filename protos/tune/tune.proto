@@ -40,12 +40,18 @@ message PlayTuneRequest {
   repeated SongElement tune = 1; // The tune to be played
 }
 message PlayTuneResponse {
-  TuneResult result = 1;
+  TuneResult tune_result = 1;
 }
 
-enum TuneResult {
-  SUCCESS = 0; // Request succeeded
-  INVALID_TEMPO = 1; // Invalid tempo (range: 32 - 255)
-  TUNE_TOO_LONG = 2; // Invalid tune: encoded string must be at most 230 chars
-  ERROR = 3; // Failed to send the request
+message TuneResult {
+  // Possible results returned for tune requests.
+  enum Result {
+    SUCCESS = 0; // Request succeeded
+    INVALID_TEMPO = 1; // Invalid tempo (range: 32 - 255)
+    TUNE_TOO_LONG = 2; // Invalid tune: encoded string must be at most 230 chars
+    ERROR = 3; // Failed to send the request
+  }
+
+  Result result = 1; // Result enum value
+  string result_str = 2; // Human-readable English string describing the result
 }
