@@ -545,11 +545,13 @@ void TelemetryImpl::process_home_position(const mavlink_message_t& message)
 {
     mavlink_home_position_t home_position;
     mavlink_msg_home_position_decode(&message, &home_position);
-    set_home_position(Telemetry::Position({home_position.latitude * 1e-7,
-                                           home_position.longitude * 1e-7,
-                                           home_position.altitude * 1e-3f,
-                                           // the relative altitude of home is 0 by definition.
-                                           0.0f}));
+    Telemetry::Position new_pos;
+    new_pos.latitude_deg = home_position.latitude * 1e-7;
+    new_pos.longitude_deg = home_position.longitude * 1e-7;
+    new_pos.absolute_altitude_m = home_position.altitude * 1e-3f;
+    new_pos.relative_altitude_m = 0.0f; // 0 by definition.
+
+    set_home_position(new_pos);
 
     set_health_home_position(true);
 
@@ -565,10 +567,15 @@ void TelemetryImpl::process_attitude(const mavlink_message_t& message)
     mavlink_attitude_t attitude;
     mavlink_msg_attitude_decode(&message, &attitude);
 
-    Telemetry::EulerAngle euler_angle{attitude.roll, attitude.pitch, attitude.yaw};
+    Telemetry::EulerAngle euler_angle;
+    euler_angle.roll_deg = attitude.roll;
+    euler_angle.pitch_deg = attitude.pitch;
+    euler_angle.yaw_deg = attitude.yaw;
 
-    Telemetry::AngularVelocityBody angular_velocity_body{
-        attitude.rollspeed, attitude.pitchspeed, attitude.yawspeed};
+    Telemetry::AngularVelocityBody angular_velocity_body;
+    angular_velocity_body.roll_rad_s = attitude.rollspeed;
+    angular_velocity_body.pitch_rad_s = attitude.pitchspeed;
+    angular_velocity_body.yaw_rad_s = attitude.yawspeed;
     set_attitude_angular_velocity_body(angular_velocity_body);
 
     auto quaternion = mavsdk::to_quaternion_from_euler_angle(euler_angle);
@@ -598,14 +605,16 @@ void TelemetryImpl::process_attitude_quaternion(const mavlink_message_t& message
     mavlink_attitude_quaternion_t mavlink_attitude_quaternion;
     mavlink_msg_attitude_quaternion_decode(&message, &mavlink_attitude_quaternion);
 
-    Telemetry::Quaternion quaternion{mavlink_attitude_quaternion.q1,
-                                     mavlink_attitude_quaternion.q2,
-                                     mavlink_attitude_quaternion.q3,
-                                     mavlink_attitude_quaternion.q4};
+    Telemetry::Quaternion quaternion;
+    quaternion.w = mavlink_attitude_quaternion.q1;
+    quaternion.x = mavlink_attitude_quaternion.q1;
+    quaternion.y = mavlink_attitude_quaternion.q3;
+    quaternion.z = mavlink_attitude_quaternion.q4;
 
-    Telemetry::AngularVelocityBody angular_velocity_body{mavlink_attitude_quaternion.rollspeed,
-                                                         mavlink_attitude_quaternion.pitchspeed,
-                                                         mavlink_attitude_quaternion.yawspeed};
+    Telemetry::AngularVelocityBody angular_velocity_body;
+    angular_velocity_body.roll_rad_s = mavlink_attitude_quaternion.rollspeed;
+    angular_velocity_body.pitch_rad_s = mavlink_attitude_quaternion.pitchspeed;
+    angular_velocity_body.yaw_rad_s = mavlink_attitude_quaternion.yawspeed;
 
     set_attitude_quaternion(quaternion);
 
@@ -635,8 +644,10 @@ void TelemetryImpl::process_mount_orientation(const mavlink_message_t& message)
     mavlink_mount_orientation_t mount_orientation;
     mavlink_msg_mount_orientation_decode(&message, &mount_orientation);
 
-    Telemetry::EulerAngle euler_angle{
-        mount_orientation.roll, mount_orientation.pitch, mount_orientation.yaw_absolute};
+    Telemetry::EulerAngle euler_angle;
+    euler_angle.roll_deg = mount_orientation.roll;
+    euler_angle.pitch_deg = mount_orientation.pitch;
+    euler_angle.yaw_deg = mount_orientation.yaw_absolute;
 
     set_camera_attitude_euler_angle(euler_angle);
 
@@ -657,16 +668,19 @@ void TelemetryImpl::process_imu_reading_ned(const mavlink_message_t& message)
 {
     mavlink_highres_imu_t highres_imu;
     mavlink_msg_highres_imu_decode(&message, &highres_imu);
-    set_imu_reading_ned(Telemetry::Imu({highres_imu.xacc,
-                                        highres_imu.yacc,
-                                        highres_imu.zacc,
-                                        highres_imu.xgyro,
-                                        highres_imu.ygyro,
-                                        highres_imu.zgyro,
-                                        highres_imu.xmag,
-                                        highres_imu.ymag,
-                                        highres_imu.zmag,
-                                        highres_imu.temperature}));
+    Telemetry::Imu new_imu;
+    new_imu.acceleration_frd.forward_m_s2 = highres_imu.xacc;
+    new_imu.acceleration_frd.right_m_s2 = highres_imu.yacc;
+    new_imu.acceleration_frd.down_m_s2 = highres_imu.zacc;
+    new_imu.angular_velocity_frd.forward_rad_s = highres_imu.xgyro;
+    new_imu.angular_velocity_frd.right_rad_s = highres_imu.ygyro;
+    new_imu.angular_velocity_frd.down_rad_s = highres_imu.zgyro;
+    new_imu.magnetic_field_frd.forward_gauss = highres_imu.xmag;
+    new_imu.magnetic_field_frd.right_gauss = highres_imu.ymag;
+    new_imu.magnetic_field_frd.down_gauss = highres_imu.zmag;
+    new_imu.temperature_degc = highres_imu.temperature;
+
+    set_imu_reading_ned(new_imu);
 
     if (_imu_reading_ned_subscription) {
         auto callback = _imu_reading_ned_subscription;
@@ -710,7 +724,10 @@ void TelemetryImpl::process_gps_raw_int(const mavlink_message_t& message)
             break;
     }
 
-    set_gps_info({gps_raw_int.satellites_visible, fix_type});
+    Telemetry::GpsInfo new_gps_info;
+    new_gps_info.num_satellites = gps_raw_int.satellites_visible;
+    new_gps_info.fix_type = fix_type;
+    set_gps_info(new_gps_info);
 
     // TODO: This is just an interim hack, we will have to look at
     //       estimator flags in order to decide if the position
@@ -735,9 +752,12 @@ void TelemetryImpl::process_ground_truth(const mavlink_message_t& message)
     mavlink_hil_state_quaternion_t hil_state_quaternion;
     mavlink_msg_hil_state_quaternion_decode(&message, &hil_state_quaternion);
 
-    set_ground_truth(Telemetry::GroundTruth({hil_state_quaternion.lat * 1e-7,
-                                             hil_state_quaternion.lon * 1e-7,
-                                             hil_state_quaternion.alt * 1e-3f}));
+    Telemetry::GroundTruth new_ground_truth;
+    new_ground_truth.latitude_deg = hil_state_quaternion.lat * 1e-7;
+    new_ground_truth.longitude_deg = hil_state_quaternion.lon * 1e-7;
+    new_ground_truth.absolute_altitude_m = hil_state_quaternion.alt * 1e-3f;
+
+    set_ground_truth(new_ground_truth);
 
     if (_ground_truth_subscription) {
         auto callback = _ground_truth_subscription;
@@ -782,8 +802,12 @@ void TelemetryImpl::process_fixedwing_metrics(const mavlink_message_t& message)
     mavlink_vfr_hud_t vfr_hud;
     mavlink_msg_vfr_hud_decode(&message, &vfr_hud);
 
-    set_fixedwing_metrics(
-        Telemetry::FixedwingMetrics({vfr_hud.airspeed, vfr_hud.throttle * 1e-2f, vfr_hud.climb}));
+    Telemetry::FixedwingMetrics new_fixedwing_metrics;
+    new_fixedwing_metrics.airspeed_m_s = vfr_hud.airspeed;
+    new_fixedwing_metrics.airspeed_m_s = vfr_hud.throttle * 1e-2f;
+    new_fixedwing_metrics.airspeed_m_s = vfr_hud.climb;
+
+    set_fixedwing_metrics(new_fixedwing_metrics);
 
     if (_fixedwing_metrics_subscription) {
         auto callback = _fixedwing_metrics_subscription;
@@ -796,10 +820,13 @@ void TelemetryImpl::process_sys_status(const mavlink_message_t& message)
 {
     mavlink_sys_status_t sys_status;
     mavlink_msg_sys_status_decode(&message, &sys_status);
-    set_battery(Telemetry::Battery(
-        {sys_status.voltage_battery * 1e-3f,
-         // FIXME: it is strange calling it percent when the range goes from 0 to 1.
-         sys_status.battery_remaining * 1e-2f}));
+
+    Telemetry::Battery new_battery;
+    new_battery.voltage_v = sys_status.voltage_battery * 1e-3f;
+    // FIXME: it is strange calling it percent when the range goes from 0 to 1.
+    new_battery.remaining_percent = sys_status.battery_remaining * 1e-2f;
+
+    set_battery(new_battery);
 
     if (_battery_subscription) {
         auto callback = _battery_subscription;
@@ -874,9 +901,11 @@ void TelemetryImpl::process_statustext(const mavlink_message_t& message)
     char text_with_null[sizeof(statustext.text) + 1]{};
     memcpy(text_with_null, statustext.text, sizeof(statustext.text));
 
-    const std::string text = text_with_null;
+    Telemetry::StatusText new_status_text;
+    new_status_text.type = type;
+    new_status_text.text = text_with_null;
 
-    set_status_text({type, text});
+    set_status_text(new_status_text);
 
     if (_status_text_subscription) {
         _status_text_subscription(status_text());
