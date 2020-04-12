@@ -31,11 +31,11 @@ public:
         response->set_allocated_telemetry_result(rpc_telemetry_result);
     }
 
-    static rpc::telemetry::FixType translateToRpcFixType(const mavsdk::Telemetry::FixType& fixType)
+    static rpc::telemetry::FixType translateToRpcFixType(const mavsdk::Telemetry::FixType& fix_type)
     {
-        switch (fixType) {
+        switch (fix_type) {
             default:
-                LogErr() << "Unknown fixType enum value: " << static_cast<int>(fixType);
+                LogErr() << "Unknown fix_type enum value: " << static_cast<int>(fix_type);
             // FALLTHROUGH
             case mavsdk::Telemetry::FixType::NoGps:
                 return rpc::telemetry::FIX_TYPE_NO_GPS;
@@ -54,12 +54,33 @@ public:
         }
     }
 
-    static rpc::telemetry::FlightMode
-    translateToRpcFlightMode(const mavsdk::Telemetry::FlightMode& flightMode)
+    static mavsdk::Telemetry::FixType
+    translateFromRpcFixType(const rpc::telemetry::FixType fix_type)
     {
-        switch (flightMode) {
+        switch (fix_type) {
+            case rpc::telemetry::FIX_TYPE_NO_GPS:
+                return mavsdk::Telemetry::FixType::NoGps;
+            case rpc::telemetry::FIX_TYPE_NO_FIX:
+                return mavsdk::Telemetry::FixType::NoFix;
+            case rpc::telemetry::FIX_TYPE_FIX_2D:
+                return mavsdk::Telemetry::FixType::Fix2D;
+            case rpc::telemetry::FIX_TYPE_FIX_3D:
+                return mavsdk::Telemetry::FixType::Fix3D;
+            case rpc::telemetry::FIX_TYPE_FIX_DGPS:
+                return mavsdk::Telemetry::FixType::FixDgps;
+            case rpc::telemetry::FIX_TYPE_RTK_FLOAT:
+                return mavsdk::Telemetry::FixType::RtkFloat;
+            case rpc::telemetry::FIX_TYPE_RTK_FIXED:
+                return mavsdk::Telemetry::FixType::RtkFixed;
+        }
+    }
+
+    static rpc::telemetry::FlightMode
+    translateToRpcFlightMode(const mavsdk::Telemetry::FlightMode& flight_mode)
+    {
+        switch (flight_mode) {
             default:
-                LogErr() << "Unknown flightMode enum value: " << static_cast<int>(flightMode);
+                LogErr() << "Unknown flight_mode enum value: " << static_cast<int>(flight_mode);
             // FALLTHROUGH
             case mavsdk::Telemetry::FlightMode::Unknown:
                 return rpc::telemetry::FLIGHT_MODE_UNKNOWN;
@@ -94,13 +115,50 @@ public:
         }
     }
 
-    static rpc::telemetry::StatusTextType
-    translateToRpcStatusTextType(const mavsdk::Telemetry::StatusTextType& statusTextType)
+    static mavsdk::Telemetry::FlightMode
+    translateFromRpcFlightMode(const rpc::telemetry::FlightMode flight_mode)
     {
-        switch (statusTextType) {
+        switch (flight_mode) {
+            case rpc::telemetry::FLIGHT_MODE_UNKNOWN:
+                return mavsdk::Telemetry::FlightMode::Unknown;
+            case rpc::telemetry::FLIGHT_MODE_READY:
+                return mavsdk::Telemetry::FlightMode::Ready;
+            case rpc::telemetry::FLIGHT_MODE_TAKEOFF:
+                return mavsdk::Telemetry::FlightMode::Takeoff;
+            case rpc::telemetry::FLIGHT_MODE_HOLD:
+                return mavsdk::Telemetry::FlightMode::Hold;
+            case rpc::telemetry::FLIGHT_MODE_MISSION:
+                return mavsdk::Telemetry::FlightMode::Mission;
+            case rpc::telemetry::FLIGHT_MODE_RETURN_TO_LAUNCH:
+                return mavsdk::Telemetry::FlightMode::ReturnToLaunch;
+            case rpc::telemetry::FLIGHT_MODE_LAND:
+                return mavsdk::Telemetry::FlightMode::Land;
+            case rpc::telemetry::FLIGHT_MODE_OFFBOARD:
+                return mavsdk::Telemetry::FlightMode::Offboard;
+            case rpc::telemetry::FLIGHT_MODE_FOLLOW_ME:
+                return mavsdk::Telemetry::FlightMode::FollowMe;
+            case rpc::telemetry::FLIGHT_MODE_MANUAL:
+                return mavsdk::Telemetry::FlightMode::Manual;
+            case rpc::telemetry::FLIGHT_MODE_ALTCTL:
+                return mavsdk::Telemetry::FlightMode::Altctl;
+            case rpc::telemetry::FLIGHT_MODE_POSCTL:
+                return mavsdk::Telemetry::FlightMode::Posctl;
+            case rpc::telemetry::FLIGHT_MODE_ACRO:
+                return mavsdk::Telemetry::FlightMode::Acro;
+            case rpc::telemetry::FLIGHT_MODE_STABILIZED:
+                return mavsdk::Telemetry::FlightMode::Stabilized;
+            case rpc::telemetry::FLIGHT_MODE_RATTITUDE:
+                return mavsdk::Telemetry::FlightMode::Rattitude;
+        }
+    }
+
+    static rpc::telemetry::StatusTextType
+    translateToRpcStatusTextType(const mavsdk::Telemetry::StatusTextType& status_text_type)
+    {
+        switch (status_text_type) {
             default:
-                LogErr() << "Unknown statusTextType enum value: "
-                         << static_cast<int>(statusTextType);
+                LogErr() << "Unknown status_text_type enum value: "
+                         << static_cast<int>(status_text_type);
             // FALLTHROUGH
             case mavsdk::Telemetry::StatusTextType::Info:
                 return rpc::telemetry::STATUS_TEXT_TYPE_INFO;
@@ -111,12 +169,25 @@ public:
         }
     }
 
-    static rpc::telemetry::LandedState
-    translateToRpcLandedState(const mavsdk::Telemetry::LandedState& landedState)
+    static mavsdk::Telemetry::StatusTextType
+    translateFromRpcStatusTextType(const rpc::telemetry::StatusTextType status_text_type)
     {
-        switch (landedState) {
+        switch (status_text_type) {
+            case rpc::telemetry::STATUS_TEXT_TYPE_INFO:
+                return mavsdk::Telemetry::StatusTextType::Info;
+            case rpc::telemetry::STATUS_TEXT_TYPE_WARNING:
+                return mavsdk::Telemetry::StatusTextType::Warning;
+            case rpc::telemetry::STATUS_TEXT_TYPE_CRITICAL:
+                return mavsdk::Telemetry::StatusTextType::Critical;
+        }
+    }
+
+    static rpc::telemetry::LandedState
+    translateToRpcLandedState(const mavsdk::Telemetry::LandedState& landed_state)
+    {
+        switch (landed_state) {
             default:
-                LogErr() << "Unknown landedState enum value: " << static_cast<int>(landedState);
+                LogErr() << "Unknown landed_state enum value: " << static_cast<int>(landed_state);
             // FALLTHROUGH
             case mavsdk::Telemetry::LandedState::Unknown:
                 return rpc::telemetry::LANDED_STATE_UNKNOWN;
@@ -128,6 +199,23 @@ public:
                 return rpc::telemetry::LANDED_STATE_TAKING_OFF;
             case mavsdk::Telemetry::LandedState::Landing:
                 return rpc::telemetry::LANDED_STATE_LANDING;
+        }
+    }
+
+    static mavsdk::Telemetry::LandedState
+    translateFromRpcLandedState(const rpc::telemetry::LandedState landed_state)
+    {
+        switch (landed_state) {
+            case rpc::telemetry::LANDED_STATE_UNKNOWN:
+                return mavsdk::Telemetry::LandedState::Unknown;
+            case rpc::telemetry::LANDED_STATE_ON_GROUND:
+                return mavsdk::Telemetry::LandedState::OnGround;
+            case rpc::telemetry::LANDED_STATE_IN_AIR:
+                return mavsdk::Telemetry::LandedState::InAir;
+            case rpc::telemetry::LANDED_STATE_TAKING_OFF:
+                return mavsdk::Telemetry::LandedState::TakingOff;
+            case rpc::telemetry::LANDED_STATE_LANDING:
+                return mavsdk::Telemetry::LandedState::Landing;
         }
     }
 
@@ -153,9 +241,13 @@ public:
         mavsdk::Telemetry::Position obj;
 
         obj.latitude_deg = position.latitude_deg();
+
         obj.longitude_deg = position.longitude_deg();
+
         obj.absolute_altitude_m = position.absolute_altitude_m();
+
         obj.relative_altitude_m = position.relative_altitude_m();
+
         return obj;
     }
 
@@ -181,9 +273,13 @@ public:
         mavsdk::Telemetry::Quaternion obj;
 
         obj.w = quaternion.w();
+
         obj.x = quaternion.x();
+
         obj.y = quaternion.y();
+
         obj.z = quaternion.z();
+
         return obj;
     }
 
@@ -207,8 +303,11 @@ public:
         mavsdk::Telemetry::EulerAngle obj;
 
         obj.roll_deg = euler_angle.roll_deg();
+
         obj.pitch_deg = euler_angle.pitch_deg();
+
         obj.yaw_deg = euler_angle.yaw_deg();
+
         return obj;
     }
 
@@ -233,8 +332,11 @@ public:
         mavsdk::Telemetry::AngularVelocityBody obj;
 
         obj.roll_rad_s = angular_velocity_body.roll_rad_s();
+
         obj.pitch_rad_s = angular_velocity_body.pitch_rad_s();
+
         obj.yaw_rad_s = angular_velocity_body.yaw_rad_s();
+
         return obj;
     }
 
@@ -258,8 +360,11 @@ public:
         mavsdk::Telemetry::SpeedNed obj;
 
         obj.velocity_north_m_s = speed_ned.velocity_north_m_s();
+
         obj.velocity_east_m_s = speed_ned.velocity_east_m_s();
+
         obj.velocity_down_m_s = speed_ned.velocity_down_m_s();
+
         return obj;
     }
 
@@ -281,7 +386,9 @@ public:
         mavsdk::Telemetry::GpsInfo obj;
 
         obj.num_satellites = gps_info.num_satellites();
-        obj.fix_type = gps_info.fix_type();
+
+        obj.fix_type = translateFromRpcFixType(gps_info.fix_type());
+
         return obj;
     }
 
@@ -303,7 +410,9 @@ public:
         mavsdk::Telemetry::Battery obj;
 
         obj.voltage_v = battery.voltage_v();
+
         obj.remaining_percent = battery.remaining_percent();
+
         return obj;
     }
 
@@ -334,12 +443,19 @@ public:
         mavsdk::Telemetry::Health obj;
 
         obj.is_gyrometer_calibration_ok = health.is_gyrometer_calibration_ok();
+
         obj.is_accelerometer_calibration_ok = health.is_accelerometer_calibration_ok();
+
         obj.is_magnetometer_calibration_ok = health.is_magnetometer_calibration_ok();
+
         obj.is_level_calibration_ok = health.is_level_calibration_ok();
+
         obj.is_local_position_ok = health.is_local_position_ok();
+
         obj.is_global_position_ok = health.is_global_position_ok();
+
         obj.is_home_position_ok = health.is_home_position_ok();
+
         return obj;
     }
 
@@ -363,8 +479,11 @@ public:
         mavsdk::Telemetry::RcStatus obj;
 
         obj.was_available_once = rc_status.was_available_once();
+
         obj.is_available = rc_status.is_available();
+
         obj.signal_strength_percent = rc_status.signal_strength_percent();
+
         return obj;
     }
 
@@ -385,8 +504,10 @@ public:
     {
         mavsdk::Telemetry::StatusText obj;
 
-        obj.type = status_text.type();
+        obj.type = translateFromRpcType(status_text.type());
+
         obj.text = status_text.text();
+
         return obj;
     }
 
@@ -412,7 +533,9 @@ public:
         mavsdk::Telemetry::ActuatorControlTarget obj;
 
         obj.group = actuator_control_target.group();
+
         obj.controls = actuator_control_target.controls();
+
         return obj;
     }
 
@@ -437,7 +560,9 @@ public:
         mavsdk::Telemetry::ActuatorOutputStatus obj;
 
         obj.active = actuator_output_status.active();
+
         obj.actuator = actuator_output_status.actuator();
+
         return obj;
     }
 
@@ -459,6 +584,7 @@ public:
         mavsdk::Telemetry::Covariance obj;
 
         obj.covariance_matrix = covariance.covariance_matrix();
+
         return obj;
     }
 
@@ -482,8 +608,11 @@ public:
         mavsdk::Telemetry::VelocityBody obj;
 
         obj.x_m_s = velocity_body.x_m_s();
+
         obj.y_m_s = velocity_body.y_m_s();
+
         obj.z_m_s = velocity_body.z_m_s();
+
         return obj;
     }
 
@@ -507,17 +636,20 @@ public:
         mavsdk::Telemetry::PositionBody obj;
 
         obj.x_m = position_body.x_m();
+
         obj.y_m = position_body.y_m();
+
         obj.z_m = position_body.z_m();
+
         return obj;
     }
 
     static rpc::telemetry::Odometry::MavFrame
-    translateToRpcMavFrame(const mavsdk::Telemetry::MavFrame& mavFrame)
+    translateToRpcMavFrame(const mavsdk::Telemetry::MavFrame& mav_frame)
     {
-        switch (mavFrame) {
+        switch (mav_frame) {
             default:
-                LogErr() << "Unknown mavFrame enum value: " << static_cast<int>(mavFrame);
+                LogErr() << "Unknown mav_frame enum value: " << static_cast<int>(mav_frame);
             // FALLTHROUGH
             case mavsdk::Telemetry::MavFrame::Undef:
                 return rpc::telemetry::Odometry_MavFrame_MAV_FRAME_UNDEF;
@@ -527,6 +659,21 @@ public:
                 return rpc::telemetry::Odometry_MavFrame_MAV_FRAME_VISION_NED;
             case mavsdk::Telemetry::MavFrame::EstimNed:
                 return rpc::telemetry::Odometry_MavFrame_MAV_FRAME_ESTIM_NED;
+        }
+    }
+
+    static mavsdk::Telemetry::MavFrame
+    translateFromRpcMavFrame(const rpc::telemetry::Odometry::MavFrame mav_frame)
+    {
+        switch (mav_frame) {
+            case rpc::telemetry::Odometry_MavFrame_MAV_FRAME_UNDEF:
+                return mavsdk::Telemetry::MavFrame::Undef;
+            case rpc::telemetry::Odometry_MavFrame_MAV_FRAME_BODY_NED:
+                return mavsdk::Telemetry::MavFrame::BodyNed;
+            case rpc::telemetry::Odometry_MavFrame_MAV_FRAME_VISION_NED:
+                return mavsdk::Telemetry::MavFrame::VisionNed;
+            case rpc::telemetry::Odometry_MavFrame_MAV_FRAME_ESTIM_NED:
+                return mavsdk::Telemetry::MavFrame::EstimNed;
         }
     }
 
@@ -567,14 +714,25 @@ public:
         mavsdk::Telemetry::Odometry obj;
 
         obj.time_usec = odometry.time_usec();
-        obj.frame_id = odometry.frame_id();
-        obj.child_frame_id = odometry.child_frame_id();
-        obj.position_body = odometry.position_body();
-        obj.q = odometry.q();
-        obj.velocity_body = odometry.velocity_body();
-        obj.angular_velocity_body = odometry.angular_velocity_body();
-        obj.pose_covariance = odometry.pose_covariance();
-        obj.velocity_covariance = odometry.velocity_covariance();
+
+        obj.frame_id = translateFromRpcFrameId(odometry.frame_id());
+
+        obj.child_frame_id = translateFromRpcChildFrameId(odometry.child_frame_id());
+
+        obj.position_body = translateFromRpcPositionBody(odometry.position_body());
+
+        obj.q = translateFromRpcQ(odometry.q());
+
+        obj.velocity_body = translateFromRpcVelocityBody(odometry.velocity_body());
+
+        obj.angular_velocity_body =
+            translateFromRpcAngularVelocityBody(odometry.angular_velocity_body());
+
+        obj.pose_covariance = translateFromRpcPoseCovariance(odometry.pose_covariance());
+
+        obj.velocity_covariance =
+            translateFromRpcVelocityCovariance(odometry.velocity_covariance());
+
         return obj;
     }
 
@@ -598,8 +756,11 @@ public:
         mavsdk::Telemetry::PositionNed obj;
 
         obj.north_m = position_ned.north_m();
+
         obj.east_m = position_ned.east_m();
+
         obj.down_m = position_ned.down_m();
+
         return obj;
     }
 
@@ -623,8 +784,11 @@ public:
         mavsdk::Telemetry::VelocityNed obj;
 
         obj.north_m_s = velocity_ned.north_m_s();
+
         obj.east_m_s = velocity_ned.east_m_s();
+
         obj.down_m_s = velocity_ned.down_m_s();
+
         return obj;
     }
 
@@ -648,8 +812,10 @@ public:
     {
         mavsdk::Telemetry::PositionVelocityNed obj;
 
-        obj.position = position_velocity_ned.position();
-        obj.velocity = position_velocity_ned.velocity();
+        obj.position = translateFromRpcPosition(position_velocity_ned.position());
+
+        obj.velocity = translateFromRpcVelocity(position_velocity_ned.velocity());
+
         return obj;
     }
 
@@ -673,8 +839,11 @@ public:
         mavsdk::Telemetry::GroundTruth obj;
 
         obj.latitude_deg = ground_truth.latitude_deg();
+
         obj.longitude_deg = ground_truth.longitude_deg();
+
         obj.absolute_altitude_m = ground_truth.absolute_altitude_m();
+
         return obj;
     }
 
@@ -699,8 +868,11 @@ public:
         mavsdk::Telemetry::FixedwingMetrics obj;
 
         obj.airspeed_m_s = fixedwing_metrics.airspeed_m_s();
+
         obj.throttle_percentage = fixedwing_metrics.throttle_percentage();
+
         obj.climb_rate_m_s = fixedwing_metrics.climb_rate_m_s();
+
         return obj;
     }
 
@@ -725,8 +897,11 @@ public:
         mavsdk::Telemetry::AccelerationFrd obj;
 
         obj.forward_m_s2 = acceleration_frd.forward_m_s2();
+
         obj.right_m_s2 = acceleration_frd.right_m_s2();
+
         obj.down_m_s2 = acceleration_frd.down_m_s2();
+
         return obj;
     }
 
@@ -751,8 +926,11 @@ public:
         mavsdk::Telemetry::AngularVelocityFrd obj;
 
         obj.forward_rad_s = angular_velocity_frd.forward_rad_s();
+
         obj.right_rad_s = angular_velocity_frd.right_rad_s();
+
         obj.down_rad_s = angular_velocity_frd.down_rad_s();
+
         return obj;
     }
 
@@ -777,8 +955,11 @@ public:
         mavsdk::Telemetry::MagneticFieldFrd obj;
 
         obj.forward_gauss = magnetic_field_frd.forward_gauss();
+
         obj.right_gauss = magnetic_field_frd.right_gauss();
+
         obj.down_gauss = magnetic_field_frd.down_gauss();
+
         return obj;
     }
 
@@ -804,10 +985,14 @@ public:
     {
         mavsdk::Telemetry::Imu obj;
 
-        obj.acceleration_frd = imu.acceleration_frd();
-        obj.angular_velocity_frd = imu.angular_velocity_frd();
-        obj.magnetic_field_frd = imu.magnetic_field_frd();
+        obj.acceleration_frd = translateFromRpcAccelerationFrd(imu.acceleration_frd());
+
+        obj.angular_velocity_frd = translateFromRpcAngularVelocityFrd(imu.angular_velocity_frd());
+
+        obj.magnetic_field_frd = translateFromRpcMagneticFieldFrd(imu.magnetic_field_frd());
+
         obj.temperature_degc = imu.temperature_degc();
+
         return obj;
     }
 
@@ -832,6 +1017,27 @@ public:
                 return rpc::telemetry::TelemetryResult_Result_RESULT_COMMAND_DENIED;
             case mavsdk::Telemetry::Result::Timeout:
                 return rpc::telemetry::TelemetryResult_Result_RESULT_TIMEOUT;
+        }
+    }
+
+    static mavsdk::Telemetry::Result
+    translateFromRpcResult(const rpc::telemetry::TelemetryResult::Result result)
+    {
+        switch (result) {
+            case rpc::telemetry::TelemetryResult_Result_RESULT_UNKNOWN:
+                return mavsdk::Telemetry::Result::Unknown;
+            case rpc::telemetry::TelemetryResult_Result_RESULT_SUCCESS:
+                return mavsdk::Telemetry::Result::Success;
+            case rpc::telemetry::TelemetryResult_Result_RESULT_NO_SYSTEM:
+                return mavsdk::Telemetry::Result::NoSystem;
+            case rpc::telemetry::TelemetryResult_Result_RESULT_CONNECTION_ERROR:
+                return mavsdk::Telemetry::Result::ConnectionError;
+            case rpc::telemetry::TelemetryResult_Result_RESULT_BUSY:
+                return mavsdk::Telemetry::Result::Busy;
+            case rpc::telemetry::TelemetryResult_Result_RESULT_COMMAND_DENIED:
+                return mavsdk::Telemetry::Result::CommandDenied;
+            case rpc::telemetry::TelemetryResult_Result_RESULT_TIMEOUT:
+                return mavsdk::Telemetry::Result::Timeout;
         }
     }
 

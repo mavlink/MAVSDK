@@ -32,11 +32,11 @@ public:
     }
 
     static rpc::mission::MissionItem::CameraAction
-    translateToRpcCameraAction(const mavsdk::Mission::CameraAction& cameraAction)
+    translateToRpcCameraAction(const mavsdk::Mission::CameraAction& camera_action)
     {
-        switch (cameraAction) {
+        switch (camera_action) {
             default:
-                LogErr() << "Unknown cameraAction enum value: " << static_cast<int>(cameraAction);
+                LogErr() << "Unknown camera_action enum value: " << static_cast<int>(camera_action);
             // FALLTHROUGH
             case mavsdk::Mission::CameraAction::None:
                 return rpc::mission::MissionItem_CameraAction_CAMERA_ACTION_NONE;
@@ -50,6 +50,25 @@ public:
                 return rpc::mission::MissionItem_CameraAction_CAMERA_ACTION_START_VIDEO;
             case mavsdk::Mission::CameraAction::StopVideo:
                 return rpc::mission::MissionItem_CameraAction_CAMERA_ACTION_STOP_VIDEO;
+        }
+    }
+
+    static mavsdk::Mission::CameraAction
+    translateFromRpcCameraAction(const rpc::mission::MissionItem::CameraAction camera_action)
+    {
+        switch (camera_action) {
+            case rpc::mission::MissionItem_CameraAction_CAMERA_ACTION_NONE:
+                return mavsdk::Mission::CameraAction::None;
+            case rpc::mission::MissionItem_CameraAction_CAMERA_ACTION_TAKE_PHOTO:
+                return mavsdk::Mission::CameraAction::TakePhoto;
+            case rpc::mission::MissionItem_CameraAction_CAMERA_ACTION_START_PHOTO_INTERVAL:
+                return mavsdk::Mission::CameraAction::StartPhotoInterval;
+            case rpc::mission::MissionItem_CameraAction_CAMERA_ACTION_STOP_PHOTO_INTERVAL:
+                return mavsdk::Mission::CameraAction::StopPhotoInterval;
+            case rpc::mission::MissionItem_CameraAction_CAMERA_ACTION_START_VIDEO:
+                return mavsdk::Mission::CameraAction::StartVideo;
+            case rpc::mission::MissionItem_CameraAction_CAMERA_ACTION_STOP_VIDEO:
+                return mavsdk::Mission::CameraAction::StopVideo;
         }
     }
 
@@ -87,15 +106,25 @@ public:
         mavsdk::Mission::MissionItem obj;
 
         obj.latitude_deg = mission_item.latitude_deg();
+
         obj.longitude_deg = mission_item.longitude_deg();
+
         obj.relative_altitude_m = mission_item.relative_altitude_m();
+
         obj.speed_m_s = mission_item.speed_m_s();
+
         obj.is_fly_through = mission_item.is_fly_through();
+
         obj.gimbal_pitch_deg = mission_item.gimbal_pitch_deg();
+
         obj.gimbal_yaw_deg = mission_item.gimbal_yaw_deg();
-        obj.camera_action = mission_item.camera_action();
+
+        obj.camera_action = translateFromRpcCameraAction(mission_item.camera_action());
+
         obj.loiter_time_s = mission_item.loiter_time_s();
+
         obj.camera_photo_interval_s = mission_item.camera_photo_interval_s();
+
         return obj;
     }
 
@@ -104,8 +133,10 @@ public:
     {
         std::unique_ptr<rpc::mission::MissionPlan> rpc_obj(new rpc::mission::MissionPlan());
 
-        rpc_obj->set_allocated_mission_items(
-            translateToRpcstd::vector<MissionItem>(mission_plan.mission_items).release());
+        for (const auto& elem : mission_plan.mission_items) {
+            auto* ptr = rpc_obj->add_mission_items();
+            ptr = translateToRpcMissionItem(elem).release();
+        }
 
         return rpc_obj;
     }
@@ -115,7 +146,12 @@ public:
     {
         mavsdk::Mission::MissionPlan obj;
 
-        obj.mission_items = mission_plan.mission_items();
+        for (const auto& elem : mission_plan.mission_items()) {
+            // FIXME: stuck because I don't now how to know what the field's type is and whether
+            // it's primitive.
+            obj.mission_items.push_back(translateFromRpc(elem));
+        }
+
         return obj;
     }
 
@@ -137,7 +173,9 @@ public:
         mavsdk::Mission::MissionProgress obj;
 
         obj.current = mission_progress.current();
+
         obj.total = mission_progress.total();
+
         return obj;
     }
 
@@ -177,6 +215,39 @@ public:
         }
     }
 
+    static mavsdk::Mission::Result
+    translateFromRpcResult(const rpc::mission::MissionResult::Result result)
+    {
+        switch (result) {
+            case rpc::mission::MissionResult_Result_RESULT_UNKNOWN:
+                return mavsdk::Mission::Result::Unknown;
+            case rpc::mission::MissionResult_Result_RESULT_SUCCESS:
+                return mavsdk::Mission::Result::Success;
+            case rpc::mission::MissionResult_Result_RESULT_ERROR:
+                return mavsdk::Mission::Result::Error;
+            case rpc::mission::MissionResult_Result_RESULT_TOO_MANY_MISSION_ITEMS:
+                return mavsdk::Mission::Result::TooManyMissionItems;
+            case rpc::mission::MissionResult_Result_RESULT_BUSY:
+                return mavsdk::Mission::Result::Busy;
+            case rpc::mission::MissionResult_Result_RESULT_TIMEOUT:
+                return mavsdk::Mission::Result::Timeout;
+            case rpc::mission::MissionResult_Result_RESULT_INVALID_ARGUMENT:
+                return mavsdk::Mission::Result::InvalidArgument;
+            case rpc::mission::MissionResult_Result_RESULT_UNSUPPORTED:
+                return mavsdk::Mission::Result::Unsupported;
+            case rpc::mission::MissionResult_Result_RESULT_NO_MISSION_AVAILABLE:
+                return mavsdk::Mission::Result::NoMissionAvailable;
+            case rpc::mission::MissionResult_Result_RESULT_FAILED_TO_OPEN_QGC_PLAN:
+                return mavsdk::Mission::Result::FailedToOpenQgcPlan;
+            case rpc::mission::MissionResult_Result_RESULT_FAILED_TO_PARSE_QGC_PLAN:
+                return mavsdk::Mission::Result::FailedToParseQgcPlan;
+            case rpc::mission::MissionResult_Result_RESULT_UNSUPPORTED_MISSION_CMD:
+                return mavsdk::Mission::Result::UnsupportedMissionCmd;
+            case rpc::mission::MissionResult_Result_RESULT_TRANSFER_CANCELLED:
+                return mavsdk::Mission::Result::TransferCancelled;
+        }
+    }
+
     grpc::Status UploadMission(
         grpc::ServerContext* /* context */,
         const rpc::mission::UploadMissionRequest* request,
@@ -187,7 +258,7 @@ public:
             return grpc::Status::OK;
         }
 
-        auto result = _mission.upload_mission(request->mission_plan());
+        auto result = _mission.upload_mission(translateFromRpcMissionPlan(request->mission_plan()));
 
         if (response != nullptr) {
             fillResponseWithResult(response, result);
@@ -219,7 +290,8 @@ public:
 
         if (response != nullptr) {
             fillResponseWithResult(response, result_pair.first);
-            translateToRpcMissionPlan(result_pair.second).release()
+            response->set_allocated_mission_plan(
+                translateToRpcMissionPlan(result_pair.second).release());
         }
 
         return grpc::Status::OK;
@@ -309,7 +381,7 @@ public:
 
         if (response != nullptr) {
             fillResponseWithResult(response, result_pair.first);
-            result_pair.second
+            response->set_is_finished(result_pair.second);
         }
 
         return grpc::Status::OK;
@@ -358,7 +430,7 @@ public:
 
         if (response != nullptr) {
             fillResponseWithResult(response, result_pair.first);
-            result_pair.second
+            response->set_enable(result_pair.second);
         }
 
         return grpc::Status::OK;
@@ -397,7 +469,8 @@ public:
 
         if (response != nullptr) {
             fillResponseWithResult(response, result_pair.first);
-            translateToRpcMissionPlan(result_pair.second).release()
+            response->set_allocated_mission_plan(
+                translateToRpcMissionPlan(result_pair.second).release());
         }
 
         return grpc::Status::OK;

@@ -19,7 +19,7 @@ grpc::Status {{ name.upper_camel_case }}(
         {% endif %}
     {% endfor -%}
 
-    auto result = _{{ plugin_name.lower_snake_case }}.{{ name.lower_snake_case }}({% for param in params %}{% if param.type_info.is_repeated %}{{ param.name.lower_snake_case }}_vec{% else %}request->{{ param.name.lower_snake_case }}(){% endif %}{{ ", " if not loop.last }}{% endfor %});
+    auto result = _{{ plugin_name.lower_snake_case }}.{{ name.lower_snake_case }}({% for param in params %}{% if param.type_info.is_repeated %}{{ param.name.lower_snake_case }}_vec{% else %}{% if param.type_info.is_primitive %}request->{{ param.name.lower_snake_case }}(){% else %}translateFromRpc{{ param.name.upper_camel_case }}(request->{{ param.name.lower_snake_case }}()){% endif %}{% endif %}{{ ", " if not loop.last }}{% endfor %});
 
     if (response != nullptr) {
         fillResponseWithResult(response, result);

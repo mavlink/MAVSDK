@@ -65,6 +65,37 @@ public:
         }
     }
 
+    static mavsdk::Action::Result
+    translateFromRpcResult(const rpc::action::ActionResult::Result result)
+    {
+        switch (result) {
+            case rpc::action::ActionResult_Result_RESULT_UNKNOWN:
+                return mavsdk::Action::Result::Unknown;
+            case rpc::action::ActionResult_Result_RESULT_SUCCESS:
+                return mavsdk::Action::Result::Success;
+            case rpc::action::ActionResult_Result_RESULT_NO_SYSTEM:
+                return mavsdk::Action::Result::NoSystem;
+            case rpc::action::ActionResult_Result_RESULT_CONNECTION_ERROR:
+                return mavsdk::Action::Result::ConnectionError;
+            case rpc::action::ActionResult_Result_RESULT_BUSY:
+                return mavsdk::Action::Result::Busy;
+            case rpc::action::ActionResult_Result_RESULT_COMMAND_DENIED:
+                return mavsdk::Action::Result::CommandDenied;
+            case rpc::action::ActionResult_Result_RESULT_COMMAND_DENIED_LANDED_STATE_UNKNOWN:
+                return mavsdk::Action::Result::CommandDeniedLandedStateUnknown;
+            case rpc::action::ActionResult_Result_RESULT_COMMAND_DENIED_NOT_LANDED:
+                return mavsdk::Action::Result::CommandDeniedNotLanded;
+            case rpc::action::ActionResult_Result_RESULT_TIMEOUT:
+                return mavsdk::Action::Result::Timeout;
+            case rpc::action::ActionResult_Result_RESULT_VTOL_TRANSITION_SUPPORT_UNKNOWN:
+                return mavsdk::Action::Result::VtolTransitionSupportUnknown;
+            case rpc::action::ActionResult_Result_RESULT_NO_VTOL_TRANSITION_SUPPORT:
+                return mavsdk::Action::Result::NoVtolTransitionSupport;
+            case rpc::action::ActionResult_Result_RESULT_PARAMETER_ERROR:
+                return mavsdk::Action::Result::ParameterError;
+        }
+    }
+
     grpc::Status
     Arm(grpc::ServerContext* /* context */,
         const rpc::action::ArmRequest* /* request */,
@@ -237,7 +268,7 @@ public:
 
         if (response != nullptr) {
             fillResponseWithResult(response, result_pair.first);
-            result_pair.second
+            response->set_altitude(result_pair.second);
         }
 
         return grpc::Status::OK;
@@ -271,7 +302,7 @@ public:
 
         if (response != nullptr) {
             fillResponseWithResult(response, result_pair.first);
-            result_pair.second
+            response->set_speed(result_pair.second);
         }
 
         return grpc::Status::OK;
@@ -305,7 +336,7 @@ public:
 
         if (response != nullptr) {
             fillResponseWithResult(response, result_pair.first);
-            result_pair.second
+            response->set_relative_altitude_m(result_pair.second);
         }
 
         return grpc::Status::OK;

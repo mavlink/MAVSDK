@@ -1,10 +1,10 @@
-static rpc::{{ plugin_name.lower_snake_case }}::{% if parent_struct %}{{ parent_struct.upper_camel_case }}::{% endif %}{{ name.upper_camel_case }} translateToRpc{{ name.upper_camel_case }}(const mavsdk::{{ plugin_name.upper_camel_case }}::{{ name.upper_camel_case }}& {{ name.lower_camel_case }})
+static rpc::{{ plugin_name.lower_snake_case }}::{% if parent_struct %}{{ parent_struct.upper_camel_case }}::{% endif %}{{ name.upper_camel_case }} translateToRpc{{ name.upper_camel_case }}(const mavsdk::{{ plugin_name.upper_camel_case }}::{{ name.upper_camel_case }}& {{ name.lower_snake_case }})
 {
-    switch ({{ name.lower_camel_case }}) {
+    switch ({{ name.lower_snake_case }}) {
         {%- for value in values %}
         {%- if loop.first %}
         default:
-            LogErr() << "Unknown {{ name.lower_camel_case }} enum value: " << static_cast<int>({{ name.lower_camel_case }});
+            LogErr() << "Unknown {{ name.lower_snake_case }} enum value: " << static_cast<int>({{ name.lower_snake_case }});
         // FALLTHROUGH
         case mavsdk::{{ plugin_name.upper_camel_case }}::{{ name.upper_camel_case }}::{% set value_without_prefix = value.name.lower_camel_case[name.lower_camel_case|length:] %}{{ value_without_prefix }}:
             return rpc::{{ plugin_name.lower_snake_case }}::{% if parent_struct %}{{ parent_struct.upper_camel_case }}_{{ name.upper_camel_case }}_{% endif %}{{ value.name.uppercase }};
@@ -12,6 +12,16 @@ static rpc::{{ plugin_name.lower_snake_case }}::{% if parent_struct %}{{ parent_
         case mavsdk::{{ plugin_name.upper_camel_case }}::{{ name.upper_camel_case }}::{% set value_without_prefix = value.name.lower_camel_case[name.lower_camel_case|length:] %}{{ value_without_prefix }}:
             return rpc::{{ plugin_name.lower_snake_case }}::{% if parent_struct %}{{ parent_struct.upper_camel_case }}_{{ name.upper_camel_case }}_{% endif %}{{ value.name.uppercase }};
         {%- endif %}
+        {%- endfor %}
+    }
+}
+
+static mavsdk::{{ plugin_name.upper_camel_case }}::{{ name.upper_camel_case }} translateFromRpc{{ name.upper_camel_case }}(const rpc::{{ plugin_name.lower_snake_case }}::{% if parent_struct %}{{ parent_struct.upper_camel_case }}::{% endif %}{{ name.upper_camel_case }} {{ name.lower_snake_case}})
+{
+    switch ({{ name.lower_snake_case }}) {
+        {%- for value in values %}
+        case rpc::{{ plugin_name.lower_snake_case }}::{% if parent_struct %}{{ parent_struct.upper_camel_case }}_{{ name.upper_camel_case }}_{% endif %}{{ value.name.uppercase }}:
+            return mavsdk::{{ plugin_name.upper_camel_case }}::{{ name.upper_camel_case }}::{% set value_without_prefix = value.name.lower_camel_case[name.lower_camel_case|length:] %}{{ value_without_prefix }};
         {%- endfor %}
     }
 }

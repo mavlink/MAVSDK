@@ -20,7 +20,14 @@ static std::unique_ptr<rpc::{{ plugin_name.lower_snake_case }}::{{ name.upper_ca
         {% if field.type_info.is_enum %}
     rpc_obj->set_{{ field.name.lower_snake_case }}(translateToRpc{{ field.type_info.name }}({{ name.lower_snake_case }}.{{ field.name.lower_snake_case }}));
         {% else %}
-    rpc_obj->set_allocated_{{ field.name.lower_snake_case }}(translateToRpc{{ field.type_info.name }}({{ name.lower_snake_case }}.{{ field.name.lower_snake_case }}).release());
+            {% if field.type_info.is_repeated %}
+    for (const auto& elem : {{ name.lower_snake_case }}.{{ field.name.lower_snake_case }}) {
+        auto *ptr = rpc_obj->add_{{ field.name.lower_snake_case }}();
+        ptr = translateToRpc{{ field.type_info.inner_name }}(elem).release();
+    }
+            {% else %}
+    rpc_obj->set_allocated_{{ field.name.lower_snake_case }}(translateToRpc{{ field.type_info.inner_name }}({{ name.lower_snake_case }}.{{ field.name.lower_snake_case }}).release());
+            {% endif %}
         {% endif %}
     {% endif -%}
 {%- endfor %}
@@ -33,7 +40,18 @@ static {{ package.lower_snake_case.split('.')[0] }}::{{ plugin_name.upper_camel_
     {{ package.lower_snake_case.split('.')[0] }}::{{ plugin_name.upper_camel_case }}::{{ name.upper_camel_case }} obj;
 
 {% for field in fields -%}
+    {% if field.type_info.is_primitive %}
     obj.{{ field.name.lower_snake_case }} = {{ name.lower_snake_case }}.{{ field.name.lower_snake_case }}();
+    {% else %}
+        {% if field.type_info.is_repeated %}
+            for (const auto& elem : {{ name.lower_snake_case }}.{{ field.name.lower_snake_case }}()) {
+                // FIXME: stuck because I don't now how to know what the field's type is and whether it's primitive.
+                obj.{{ field.name.lower_snake_case }}.push_back(translateFromRpc{{ field.inner_name }}(elem));
+            }
+        {% else %}
+    obj.{{ field.name.lower_snake_case }} = translateFromRpc{{ field.name.upper_camel_case }}({{ name.lower_snake_case }}.{{ field.name.lower_snake_case }}());
+        {% endif %}
+    {% endif %}
 {%- endfor %}
     return obj;
 }

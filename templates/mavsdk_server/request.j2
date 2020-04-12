@@ -10,11 +10,11 @@ grpc::Status {{ name.upper_camel_case }}(
     }
     {%- endif %}
 
-    auto result_pair = _{{ plugin_name.lower_snake_case }}.{{ name.lower_snake_case }}({% for param in params %}request->{{ param.name.lower_snake_case }}(){{ ", " if not loop.last }}{% endfor %});
+    auto result_pair = _{{ plugin_name.lower_snake_case }}.{{ name.lower_snake_case }}({% for param in params %}{% if not param.type_info.is_primitive %}translateFromRpc{{ param.name.upper_camel_case }}({% endif %}request->{{ param.name.lower_snake_case }}{% if not param.type_info.is_primitive %}){% endif %}(){{ ", " if not loop.last }}{% endfor %});
 
     if (response != nullptr) {
         fillResponseWithResult(response, result_pair.first);
-        {% if return_type.is_primitive %}result_pair.second{% else %}translateToRpc{{ return_type.inner_name }}(result_pair.second).release(){% endif %}
+        response->set_{% if return_type.is_primitive %}{{ return_name.lower_snake_case }}(result_pair.second{% else %}allocated_{{ return_name.lower_snake_case }}(translateToRpc{{ return_type.inner_name }}(result_pair.second).release(){% endif %});
     }
 
     return grpc::Status::OK;
