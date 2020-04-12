@@ -37,18 +37,18 @@ TEST_F(SitlTest, MissionUploadCancellation)
 
     auto mission = std::make_shared<Mission>(system);
 
-    std::vector<Mission::MissionItem> mission_items;
+    Mission::MissionPlan mission_plan{};
 
     // We're going to try uploading 100 mission items.
     for (unsigned i = 0; i < 1000; ++i) {
-        mission_items.push_back(
+        mission_plan.mission_items.push_back(
             add_waypoint(47.3981703270545, 8.54564902186397, 20.0, 3.0, true, -90.0, 0.0, false));
     }
 
     std::promise<Mission::Result> prom{};
     std::future<Mission::Result> fut = prom.get_future();
 
-    mission->upload_mission_async(mission_items, [&prom](Mission::Result result) {
+    mission->upload_mission_async(mission_plan, [&prom](Mission::Result result) {
         LogInfo() << "Upload mission result: " << Mission::result_str(result);
         prom.set_value(result);
     });
@@ -83,11 +83,11 @@ TEST_F(SitlTest, MissionDownloadCancellation)
 
     auto mission = std::make_shared<Mission>(system);
 
-    std::vector<Mission::MissionItem> mission_items;
+    Mission::MissionPlan mission_plan{};
 
     // We're going to try uploading 100 mission items.
     for (unsigned i = 0; i < 1000; ++i) {
-        mission_items.push_back(
+        mission_plan.mission_items.push_back(
             add_waypoint(47.3981703270545, 8.54564902186397, 20.0, 3.0, true, -90.0, 0.0, false));
     }
 
@@ -95,7 +95,7 @@ TEST_F(SitlTest, MissionDownloadCancellation)
         std::promise<Mission::Result> prom{};
         std::future<Mission::Result> fut = prom.get_future();
 
-        mission->upload_mission_async(mission_items, [&prom](Mission::Result result) {
+        mission->upload_mission_async(mission_plan, [&prom](Mission::Result result) {
             LogInfo() << "Upload mission result: " << Mission::result_str(result);
             prom.set_value(result);
         });
@@ -104,16 +104,13 @@ TEST_F(SitlTest, MissionDownloadCancellation)
         EXPECT_EQ(future_result, Mission::Result::Success);
     }
 
-    mission_items.clear();
-
     {
         std::promise<Mission::Result> prom{};
         std::future<Mission::Result> fut = prom.get_future();
 
         mission->download_mission_async(
-            [&prom](
-                Mission::Result result, std::vector<Mission::MissionItem> received_mission_items) {
-                UNUSED(received_mission_items);
+            [&prom](Mission::Result result, Mission::MissionPlan received_mission_plan) {
+                UNUSED(received_mission_plan);
                 LogInfo() << "Download mission result: " << Mission::result_str(result);
                 prom.set_value(result);
             });

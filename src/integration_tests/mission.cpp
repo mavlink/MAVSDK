@@ -88,10 +88,10 @@ void test_mission(
     LogInfo() << "System ready";
     LogInfo() << "Creating and uploading mission";
 
-    std::vector<Mission::MissionItem> mission_items;
+    Mission::MissionPlan mission_plan{};
 
-    while (mission_items.size() < NUM_MISSION_ITEMS) {
-        mission_items.push_back(add_mission_item(
+    while (mission_plan.mission_items.size() < NUM_MISSION_ITEMS) {
+        mission_plan.mission_items.push_back(add_mission_item(
             47.398170327054473,
             8.5456490218639658,
             10.0f,
@@ -102,7 +102,7 @@ void test_mission(
             NAN,
             Mission::CameraAction::None));
 
-        mission_items.push_back(add_mission_item(
+        mission_plan.mission_items.push_back(add_mission_item(
             47.398241338125118,
             8.5455360114574432,
             10.0f,
@@ -113,7 +113,7 @@ void test_mission(
             5.0f,
             Mission::CameraAction::TakePhoto));
 
-        mission_items.push_back(add_mission_item(
+        mission_plan.mission_items.push_back(add_mission_item(
             47.398139363821485,
             8.5453846156597137,
             10.0f,
@@ -124,7 +124,7 @@ void test_mission(
             NAN,
             Mission::CameraAction::StartVideo));
 
-        mission_items.push_back(add_mission_item(
+        mission_plan.mission_items.push_back(add_mission_item(
             47.398058617228855,
             8.5454618036746979,
             10.0f,
@@ -135,7 +135,7 @@ void test_mission(
             NAN,
             Mission::CameraAction::StopVideo));
 
-        mission_items.push_back(add_mission_item(
+        mission_plan.mission_items.push_back(add_mission_item(
             47.398100366082858,
             8.5456969141960144,
             10.0f,
@@ -146,7 +146,7 @@ void test_mission(
             NAN,
             Mission::CameraAction::StartPhotoInterval));
 
-        mission_items.push_back(add_mission_item(
+        mission_plan.mission_items.push_back(add_mission_item(
             47.398001890458097,
             8.5455576181411743,
             10.0f,
@@ -167,7 +167,7 @@ void test_mission(
         // std::future.
         auto prom = std::make_shared<std::promise<void>>();
         auto future_result = prom->get_future();
-        mission->upload_mission_async(mission_items, [prom](Mission::Result result) {
+        mission->upload_mission_async(mission_plan, [prom](Mission::Result result) {
             ASSERT_EQ(result, Mission::Result::Success);
             prom->set_value();
             LogInfo() << "Mission uploaded.";
@@ -185,22 +185,24 @@ void test_mission(
         // std::future.
         auto prom = std::make_shared<std::promise<void>>();
         auto future_result = prom->get_future();
-        mission->download_mission_async(
-            [prom, mission_items](
-                Mission::Result result,
-                std::vector<Mission::MissionItem> mission_items_downloaded) {
-                EXPECT_EQ(result, Mission::Result::Success);
-                prom->set_value();
-                LogInfo() << "Mission downloaded (to check it).";
+        mission->download_mission_async([prom, mission_plan](
+                                            Mission::Result result,
+                                            Mission::MissionPlan mission_plan_downloaded) {
+            EXPECT_EQ(result, Mission::Result::Success);
+            prom->set_value();
+            LogInfo() << "Mission downloaded (to check it).";
 
-                EXPECT_EQ(mission_items.size(), mission_items_downloaded.size());
+            EXPECT_EQ(
+                mission_plan.mission_items.size(), mission_plan_downloaded.mission_items.size());
 
-                if (mission_items.size() == mission_items_downloaded.size()) {
-                    for (unsigned i = 0; i < mission_items.size(); ++i) {
-                        compare_mission_items(mission_items.at(i), mission_items_downloaded.at(i));
-                    }
+            if (mission_plan.mission_items.size() == mission_plan_downloaded.mission_items.size()) {
+                for (unsigned i = 0; i < mission_plan.mission_items.size(); ++i) {
+                    compare_mission_items(
+                        mission_plan.mission_items.at(i),
+                        mission_plan_downloaded.mission_items.at(i));
                 }
-            });
+            }
+        });
 
         auto status = future_result.wait_for(std::chrono::seconds(2));
         ASSERT_EQ(status, std::future_status::ready);

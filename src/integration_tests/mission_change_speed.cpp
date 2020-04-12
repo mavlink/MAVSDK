@@ -56,14 +56,17 @@ TEST_F(SitlTest, MissionChangeSpeed)
 
     LogInfo() << "System ready, let's start";
 
-    std::vector<Mission::MissionItem> mission_items;
+    Mission::MissionPlan mission_plan{};
 
-    mission_items.push_back(only_set_speed(speeds[0]));
-    mission_items.push_back(add_waypoint(47.398262509933957, 8.5456324815750122, 10, speeds[1]));
-    mission_items.push_back(add_waypoint(47.39824201089737, 8.5447561722784542, 10, speeds[2]));
-    mission_items.push_back(add_waypoint(47.397733642793433, 8.5447776308767516, 10, speeds[3]));
+    mission_plan.mission_items.push_back(only_set_speed(speeds[0]));
+    mission_plan.mission_items.push_back(
+        add_waypoint(47.398262509933957, 8.5456324815750122, 10, speeds[1]));
+    mission_plan.mission_items.push_back(
+        add_waypoint(47.39824201089737, 8.5447561722784542, 10, speeds[2]));
+    mission_plan.mission_items.push_back(
+        add_waypoint(47.397733642793433, 8.5447776308767516, 10, speeds[3]));
 
-    mission->upload_mission_async(mission_items, std::bind(&receive_upload_mission_result, _1));
+    mission->upload_mission_async(mission_plan, std::bind(&receive_upload_mission_result, _1));
     std::this_thread::sleep_for(std::chrono::seconds(1));
     ASSERT_TRUE(_mission_sent_ok);
 
@@ -77,7 +80,7 @@ TEST_F(SitlTest, MissionChangeSpeed)
     ASSERT_TRUE(_mission_started_ok);
 
     int last_item = -1;
-    while (_current_item < static_cast<int>(mission_items.size())) {
+    while (_current_item < static_cast<int>(mission_plan.mission_items.size())) {
         if (last_item != _current_item) {
             // Don't check the first because it's just a speed command and neither the second
             // because we're still taking off.

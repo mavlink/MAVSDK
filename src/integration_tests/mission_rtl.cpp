@@ -86,14 +86,14 @@ void do_mission_with_rtl(float mission_altitude_m, float return_altitude_m)
     new_item.longitude_deg = 8.5456490218639658;
     new_item.relative_altitude_m = mission_altitude_m;
 
-    std::vector<Mission::MissionItem> mission_items;
-    mission_items.push_back(new_item);
+    Mission::MissionPlan mission_plan{};
+    mission_plan.mission_items.push_back(new_item);
 
     {
         LogInfo() << "Uploading mission...";
         auto prom = std::make_shared<std::promise<void>>();
         auto future_result = prom->get_future();
-        mission->upload_mission_async(mission_items, [prom](Mission::Result result) {
+        mission->upload_mission_async(mission_plan, [prom](Mission::Result result) {
             ASSERT_EQ(result, Mission::Result::Success);
             prom->set_value();
             LogInfo() << "Mission uploaded.";
