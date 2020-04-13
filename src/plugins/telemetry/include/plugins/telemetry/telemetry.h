@@ -397,8 +397,8 @@ public:
     struct ActuatorControlTarget {
         int32_t group{0}; /**< @brief An actuator control group is e.g. 'attitude' for the core
                              flight controls, or 'gimbal' for a payload. */
-        std::vector<float> controls{
-            0}; /**< @brief Controls normed from -1 to 1, where 0 is neutral position. */
+        std::vector<float>
+            controls{}; /**< @brief Controls normed from -1 to 1, where 0 is neutral position. */
     };
 
     /**
@@ -422,7 +422,7 @@ public:
      */
     struct ActuatorOutputStatus {
         uint32_t active{0}; /**< @brief Active outputs */
-        std::vector<float> actuator{0}; /**< @brief Servo/motor output values */
+        std::vector<float> actuator{}; /**< @brief Servo/motor output values */
     };
 
     /**

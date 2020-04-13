@@ -14048,7 +14048,7 @@ class ActuatorControlTarget :
     kControlsFieldNumber = 2,
     kGroupFieldNumber = 1,
   };
-  // repeated float controls = 2 [(.mavsdk.options.default_value) = "0"];
+  // repeated float controls = 2;
   int controls_size() const;
   private:
   int _internal_controls_size() const;
@@ -14201,7 +14201,7 @@ class ActuatorOutputStatus :
     kActuatorFieldNumber = 2,
     kActiveFieldNumber = 1,
   };
-  // repeated float actuator = 2 [(.mavsdk.options.default_value) = "0"];
+  // repeated float actuator = 2;
   int actuator_size() const;
   private:
   int _internal_actuator_size() const;
@@ -20596,7 +20596,7 @@ inline void ActuatorControlTarget::set_group(::PROTOBUF_NAMESPACE_ID::int32 valu
   // @@protoc_insertion_point(field_set:mavsdk.rpc.telemetry.ActuatorControlTarget.group)
 }
 
-// repeated float controls = 2 [(.mavsdk.options.default_value) = "0"];
+// repeated float controls = 2;
 inline int ActuatorControlTarget::_internal_controls_size() const {
   return controls_.size();
 }
@@ -20667,7 +20667,7 @@ inline void ActuatorOutputStatus::set_active(::PROTOBUF_NAMESPACE_ID::uint32 val
   // @@protoc_insertion_point(field_set:mavsdk.rpc.telemetry.ActuatorOutputStatus.active)
 }
 
-// repeated float actuator = 2 [(.mavsdk.options.default_value) = "0"];
+// repeated float actuator = 2;
 inline int ActuatorOutputStatus::_internal_actuator_size() const {
   return actuator_.size();
 }
