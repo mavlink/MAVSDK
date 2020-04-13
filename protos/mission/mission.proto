@@ -99,7 +99,9 @@ message UploadMissionResponse {
 }
 
 message CancelMissionUploadRequest {}
-message CancelMissionUploadResponse {}
+message CancelMissionUploadResponse {
+    MissionResult mission_result = 1;
+}
 
 message DownloadMissionRequest {}
 message DownloadMissionResponse {
@@ -108,7 +110,9 @@ message DownloadMissionResponse {
 }
 
 message CancelMissionDownloadRequest {}
-message CancelMissionDownloadResponse {}
+message CancelMissionDownloadResponse {
+    MissionResult mission_result = 1;
+}
 
 message StartMissionRequest {}
 message StartMissionResponse {
@@ -134,7 +138,8 @@ message SetCurrentMissionItemResponse {
 
 message IsMissionFinishedRequest {}
 message IsMissionFinishedResponse {
-    bool is_finished = 1; // True if the mission is finished and the last mission item has been reached
+    MissionResult mission_result = 1;
+    bool is_finished = 2; // True if the mission is finished and the last mission item has been reached
 }
 
 message SubscribeMissionProgressRequest {}
@@ -144,13 +149,16 @@ message MissionProgressResponse {
 
 message GetReturnToLaunchAfterMissionRequest {}
 message GetReturnToLaunchAfterMissionResponse {
-    bool enable = 1; // If true, trigger an RTL at the end of the mission
+    MissionResult mission_result = 1;
+    bool enable = 2; // If true, trigger an RTL at the end of the mission
 }
 
 message SetReturnToLaunchAfterMissionRequest {
     bool enable = 1; // If true, trigger an RTL at the end of the mission
 }
-message SetReturnToLaunchAfterMissionResponse {}
+message SetReturnToLaunchAfterMissionResponse {
+    MissionResult mission_result = 1;
+}
 
 message ImportQgroundcontrolMissionRequest {
     string qgc_plan_path = 1; // File path of the QGC plan
