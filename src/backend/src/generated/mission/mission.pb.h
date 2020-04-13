@@ -743,11 +743,30 @@ class CancelMissionUploadResponse :
 
   // accessors -------------------------------------------------------
 
+  enum : int {
+    kMissionResultFieldNumber = 1,
+  };
+  // .mavsdk.rpc.mission.MissionResult mission_result = 1;
+  bool has_mission_result() const;
+  private:
+  bool _internal_has_mission_result() const;
+  public:
+  void clear_mission_result();
+  const ::mavsdk::rpc::mission::MissionResult& mission_result() const;
+  ::mavsdk::rpc::mission::MissionResult* release_mission_result();
+  ::mavsdk::rpc::mission::MissionResult* mutable_mission_result();
+  void set_allocated_mission_result(::mavsdk::rpc::mission::MissionResult* mission_result);
+  private:
+  const ::mavsdk::rpc::mission::MissionResult& _internal_mission_result() const;
+  ::mavsdk::rpc::mission::MissionResult* _internal_mutable_mission_result();
+  public:
+
   // @@protoc_insertion_point(class_scope:mavsdk.rpc.mission.CancelMissionUploadResponse)
  private:
   class _Internal;
 
   ::PROTOBUF_NAMESPACE_ID::internal::InternalMetadataWithArena _internal_metadata_;
+  ::mavsdk::rpc::mission::MissionResult* mission_result_;
   mutable ::PROTOBUF_NAMESPACE_ID::internal::CachedSize _cached_size_;
   friend struct ::TableStruct_mission_2fmission_2eproto;
 };
@@ -1239,11 +1258,30 @@ class CancelMissionDownloadResponse :
 
   // accessors -------------------------------------------------------
 
+  enum : int {
+    kMissionResultFieldNumber = 1,
+  };
+  // .mavsdk.rpc.mission.MissionResult mission_result = 1;
+  bool has_mission_result() const;
+  private:
+  bool _internal_has_mission_result() const;
+  public:
+  void clear_mission_result();
+  const ::mavsdk::rpc::mission::MissionResult& mission_result() const;
+  ::mavsdk::rpc::mission::MissionResult* release_mission_result();
+  ::mavsdk::rpc::mission::MissionResult* mutable_mission_result();
+  void set_allocated_mission_result(::mavsdk::rpc::mission::MissionResult* mission_result);
+  private:
+  const ::mavsdk::rpc::mission::MissionResult& _internal_mission_result() const;
+  ::mavsdk::rpc::mission::MissionResult* _internal_mutable_mission_result();
+  public:
+
   // @@protoc_insertion_point(class_scope:mavsdk.rpc.mission.CancelMissionDownloadResponse)
  private:
   class _Internal;
 
   ::PROTOBUF_NAMESPACE_ID::internal::InternalMetadataWithArena _internal_metadata_;
+  ::mavsdk::rpc::mission::MissionResult* mission_result_;
   mutable ::PROTOBUF_NAMESPACE_ID::internal::CachedSize _cached_size_;
   friend struct ::TableStruct_mission_2fmission_2eproto;
 };
@@ -2479,9 +2517,25 @@ class IsMissionFinishedResponse :
   // accessors -------------------------------------------------------
 
   enum : int {
-    kIsFinishedFieldNumber = 1,
+    kMissionResultFieldNumber = 1,
+    kIsFinishedFieldNumber = 2,
   };
-  // bool is_finished = 1;
+  // .mavsdk.rpc.mission.MissionResult mission_result = 1;
+  bool has_mission_result() const;
+  private:
+  bool _internal_has_mission_result() const;
+  public:
+  void clear_mission_result();
+  const ::mavsdk::rpc::mission::MissionResult& mission_result() const;
+  ::mavsdk::rpc::mission::MissionResult* release_mission_result();
+  ::mavsdk::rpc::mission::MissionResult* mutable_mission_result();
+  void set_allocated_mission_result(::mavsdk::rpc::mission::MissionResult* mission_result);
+  private:
+  const ::mavsdk::rpc::mission::MissionResult& _internal_mission_result() const;
+  ::mavsdk::rpc::mission::MissionResult* _internal_mutable_mission_result();
+  public:
+
+  // bool is_finished = 2;
   void clear_is_finished();
   bool is_finished() const;
   void set_is_finished(bool value);
@@ -2495,6 +2549,7 @@ class IsMissionFinishedResponse :
   class _Internal;
 
   ::PROTOBUF_NAMESPACE_ID::internal::InternalMetadataWithArena _internal_metadata_;
+  ::mavsdk::rpc::mission::MissionResult* mission_result_;
   bool is_finished_;
   mutable ::PROTOBUF_NAMESPACE_ID::internal::CachedSize _cached_size_;
   friend struct ::TableStruct_mission_2fmission_2eproto;
@@ -2971,9 +3026,25 @@ class GetReturnToLaunchAfterMissionResponse :
   // accessors -------------------------------------------------------
 
   enum : int {
-    kEnableFieldNumber = 1,
+    kMissionResultFieldNumber = 1,
+    kEnableFieldNumber = 2,
   };
-  // bool enable = 1;
+  // .mavsdk.rpc.mission.MissionResult mission_result = 1;
+  bool has_mission_result() const;
+  private:
+  bool _internal_has_mission_result() const;
+  public:
+  void clear_mission_result();
+  const ::mavsdk::rpc::mission::MissionResult& mission_result() const;
+  ::mavsdk::rpc::mission::MissionResult* release_mission_result();
+  ::mavsdk::rpc::mission::MissionResult* mutable_mission_result();
+  void set_allocated_mission_result(::mavsdk::rpc::mission::MissionResult* mission_result);
+  private:
+  const ::mavsdk::rpc::mission::MissionResult& _internal_mission_result() const;
+  ::mavsdk::rpc::mission::MissionResult* _internal_mutable_mission_result();
+  public:
+
+  // bool enable = 2;
   void clear_enable();
   bool enable() const;
   void set_enable(bool value);
@@ -2987,6 +3058,7 @@ class GetReturnToLaunchAfterMissionResponse :
   class _Internal;
 
   ::PROTOBUF_NAMESPACE_ID::internal::InternalMetadataWithArena _internal_metadata_;
+  ::mavsdk::rpc::mission::MissionResult* mission_result_;
   bool enable_;
   mutable ::PROTOBUF_NAMESPACE_ID::internal::CachedSize _cached_size_;
   friend struct ::TableStruct_mission_2fmission_2eproto;
@@ -3226,11 +3298,30 @@ class SetReturnToLaunchAfterMissionResponse :
 
   // accessors -------------------------------------------------------
 
+  enum : int {
+    kMissionResultFieldNumber = 1,
+  };
+  // .mavsdk.rpc.mission.MissionResult mission_result = 1;
+  bool has_mission_result() const;
+  private:
+  bool _internal_has_mission_result() const;
+  public:
+  void clear_mission_result();
+  const ::mavsdk::rpc::mission::MissionResult& mission_result() const;
+  ::mavsdk::rpc::mission::MissionResult* release_mission_result();
+  ::mavsdk::rpc::mission::MissionResult* mutable_mission_result();
+  void set_allocated_mission_result(::mavsdk::rpc::mission::MissionResult* mission_result);
+  private:
+  const ::mavsdk::rpc::mission::MissionResult& _internal_mission_result() const;
+  ::mavsdk::rpc::mission::MissionResult* _internal_mutable_mission_result();
+  public:
+
   // @@protoc_insertion_point(class_scope:mavsdk.rpc.mission.SetReturnToLaunchAfterMissionResponse)
  private:
   class _Internal;
 
   ::PROTOBUF_NAMESPACE_ID::internal::InternalMetadataWithArena _internal_metadata_;
+  ::mavsdk::rpc::mission::MissionResult* mission_result_;
   mutable ::PROTOBUF_NAMESPACE_ID::internal::CachedSize _cached_size_;
   friend struct ::TableStruct_mission_2fmission_2eproto;
 };
@@ -4402,6 +4493,66 @@ inline void UploadMissionResponse::set_allocated_mission_result(::mavsdk::rpc::m
 
 // CancelMissionUploadResponse
 
+// .mavsdk.rpc.mission.MissionResult mission_result = 1;
+inline bool CancelMissionUploadResponse::_internal_has_mission_result() const {
+  return this != internal_default_instance() && mission_result_ != nullptr;
+}
+inline bool CancelMissionUploadResponse::has_mission_result() const {
+  return _internal_has_mission_result();
+}
+inline void CancelMissionUploadResponse::clear_mission_result() {
+  if (GetArenaNoVirtual() == nullptr && mission_result_ != nullptr) {
+    delete mission_result_;
+  }
+  mission_result_ = nullptr;
+}
+inline const ::mavsdk::rpc::mission::MissionResult& CancelMissionUploadResponse::_internal_mission_result() const {
+  const ::mavsdk::rpc::mission::MissionResult* p = mission_result_;
+  return p != nullptr ? *p : *reinterpret_cast<const ::mavsdk::rpc::mission::MissionResult*>(
+      &::mavsdk::rpc::mission::_MissionResult_default_instance_);
+}
+inline const ::mavsdk::rpc::mission::MissionResult& CancelMissionUploadResponse::mission_result() const {
+  // @@protoc_insertion_point(field_get:mavsdk.rpc.mission.CancelMissionUploadResponse.mission_result)
+  return _internal_mission_result();
+}
+inline ::mavsdk::rpc::mission::MissionResult* CancelMissionUploadResponse::release_mission_result() {
+  // @@protoc_insertion_point(field_release:mavsdk.rpc.mission.CancelMissionUploadResponse.mission_result)
+  
+  ::mavsdk::rpc::mission::MissionResult* temp = mission_result_;
+  mission_result_ = nullptr;
+  return temp;
+}
+inline ::mavsdk::rpc::mission::MissionResult* CancelMissionUploadResponse::_internal_mutable_mission_result() {
+  
+  if (mission_result_ == nullptr) {
+    auto* p = CreateMaybeMessage<::mavsdk::rpc::mission::MissionResult>(GetArenaNoVirtual());
+    mission_result_ = p;
+  }
+  return mission_result_;
+}
+inline ::mavsdk::rpc::mission::MissionResult* CancelMissionUploadResponse::mutable_mission_result() {
+  // @@protoc_insertion_point(field_mutable:mavsdk.rpc.mission.CancelMissionUploadResponse.mission_result)
+  return _internal_mutable_mission_result();
+}
+inline void CancelMissionUploadResponse::set_allocated_mission_result(::mavsdk::rpc::mission::MissionResult* mission_result) {
+  ::PROTOBUF_NAMESPACE_ID::Arena* message_arena = GetArenaNoVirtual();
+  if (message_arena == nullptr) {
+    delete mission_result_;
+  }
+  if (mission_result) {
+    ::PROTOBUF_NAMESPACE_ID::Arena* submessage_arena = nullptr;
+    if (message_arena != submessage_arena) {
+      mission_result = ::PROTOBUF_NAMESPACE_ID::internal::GetOwnedMessage(
+          message_arena, mission_result, submessage_arena);
+    }
+    
+  } else {
+    
+  }
+  mission_result_ = mission_result;
+  // @@protoc_insertion_point(field_set_allocated:mavsdk.rpc.mission.CancelMissionUploadResponse.mission_result)
+}
+
 // -------------------------------------------------------------------
 
 // DownloadMissionRequest
@@ -4537,6 +4688,66 @@ inline void DownloadMissionResponse::set_allocated_mission_plan(::mavsdk::rpc::m
 // -------------------------------------------------------------------
 
 // CancelMissionDownloadResponse
+
+// .mavsdk.rpc.mission.MissionResult mission_result = 1;
+inline bool CancelMissionDownloadResponse::_internal_has_mission_result() const {
+  return this != internal_default_instance() && mission_result_ != nullptr;
+}
+inline bool CancelMissionDownloadResponse::has_mission_result() const {
+  return _internal_has_mission_result();
+}
+inline void CancelMissionDownloadResponse::clear_mission_result() {
+  if (GetArenaNoVirtual() == nullptr && mission_result_ != nullptr) {
+    delete mission_result_;
+  }
+  mission_result_ = nullptr;
+}
+inline const ::mavsdk::rpc::mission::MissionResult& CancelMissionDownloadResponse::_internal_mission_result() const {
+  const ::mavsdk::rpc::mission::MissionResult* p = mission_result_;
+  return p != nullptr ? *p : *reinterpret_cast<const ::mavsdk::rpc::mission::MissionResult*>(
+      &::mavsdk::rpc::mission::_MissionResult_default_instance_);
+}
+inline const ::mavsdk::rpc::mission::MissionResult& CancelMissionDownloadResponse::mission_result() const {
+  // @@protoc_insertion_point(field_get:mavsdk.rpc.mission.CancelMissionDownloadResponse.mission_result)
+  return _internal_mission_result();
+}
+inline ::mavsdk::rpc::mission::MissionResult* CancelMissionDownloadResponse::release_mission_result() {
+  // @@protoc_insertion_point(field_release:mavsdk.rpc.mission.CancelMissionDownloadResponse.mission_result)
+  
+  ::mavsdk::rpc::mission::MissionResult* temp = mission_result_;
+  mission_result_ = nullptr;
+  return temp;
+}
+inline ::mavsdk::rpc::mission::MissionResult* CancelMissionDownloadResponse::_internal_mutable_mission_result() {
+  
+  if (mission_result_ == nullptr) {
+    auto* p = CreateMaybeMessage<::mavsdk::rpc::mission::MissionResult>(GetArenaNoVirtual());
+    mission_result_ = p;
+  }
+  return mission_result_;
+}
+inline ::mavsdk::rpc::mission::MissionResult* CancelMissionDownloadResponse::mutable_mission_result() {
+  // @@protoc_insertion_point(field_mutable:mavsdk.rpc.mission.CancelMissionDownloadResponse.mission_result)
+  return _internal_mutable_mission_result();
+}
+inline void CancelMissionDownloadResponse::set_allocated_mission_result(::mavsdk::rpc::mission::MissionResult* mission_result) {
+  ::PROTOBUF_NAMESPACE_ID::Arena* message_arena = GetArenaNoVirtual();
+  if (message_arena == nullptr) {
+    delete mission_result_;
+  }
+  if (mission_result) {
+    ::PROTOBUF_NAMESPACE_ID::Arena* submessage_arena = nullptr;
+    if (message_arena != submessage_arena) {
+      mission_result = ::PROTOBUF_NAMESPACE_ID::internal::GetOwnedMessage(
+          message_arena, mission_result, submessage_arena);
+    }
+    
+  } else {
+    
+  }
+  mission_result_ = mission_result;
+  // @@protoc_insertion_point(field_set_allocated:mavsdk.rpc.mission.CancelMissionDownloadResponse.mission_result)
+}
 
 // -------------------------------------------------------------------
 
@@ -4838,7 +5049,67 @@ inline void SetCurrentMissionItemResponse::set_allocated_mission_result(::mavsdk
 
 // IsMissionFinishedResponse
 
-// bool is_finished = 1;
+// .mavsdk.rpc.mission.MissionResult mission_result = 1;
+inline bool IsMissionFinishedResponse::_internal_has_mission_result() const {
+  return this != internal_default_instance() && mission_result_ != nullptr;
+}
+inline bool IsMissionFinishedResponse::has_mission_result() const {
+  return _internal_has_mission_result();
+}
+inline void IsMissionFinishedResponse::clear_mission_result() {
+  if (GetArenaNoVirtual() == nullptr && mission_result_ != nullptr) {
+    delete mission_result_;
+  }
+  mission_result_ = nullptr;
+}
+inline const ::mavsdk::rpc::mission::MissionResult& IsMissionFinishedResponse::_internal_mission_result() const {
+  const ::mavsdk::rpc::mission::MissionResult* p = mission_result_;
+  return p != nullptr ? *p : *reinterpret_cast<const ::mavsdk::rpc::mission::MissionResult*>(
+      &::mavsdk::rpc::mission::_MissionResult_default_instance_);
+}
+inline const ::mavsdk::rpc::mission::MissionResult& IsMissionFinishedResponse::mission_result() const {
+  // @@protoc_insertion_point(field_get:mavsdk.rpc.mission.IsMissionFinishedResponse.mission_result)
+  return _internal_mission_result();
+}
+inline ::mavsdk::rpc::mission::MissionResult* IsMissionFinishedResponse::release_mission_result() {
+  // @@protoc_insertion_point(field_release:mavsdk.rpc.mission.IsMissionFinishedResponse.mission_result)
+  
+  ::mavsdk::rpc::mission::MissionResult* temp = mission_result_;
+  mission_result_ = nullptr;
+  return temp;
+}
+inline ::mavsdk::rpc::mission::MissionResult* IsMissionFinishedResponse::_internal_mutable_mission_result() {
+  
+  if (mission_result_ == nullptr) {
+    auto* p = CreateMaybeMessage<::mavsdk::rpc::mission::MissionResult>(GetArenaNoVirtual());
+    mission_result_ = p;
+  }
+  return mission_result_;
+}
+inline ::mavsdk::rpc::mission::MissionResult* IsMissionFinishedResponse::mutable_mission_result() {
+  // @@protoc_insertion_point(field_mutable:mavsdk.rpc.mission.IsMissionFinishedResponse.mission_result)
+  return _internal_mutable_mission_result();
+}
+inline void IsMissionFinishedResponse::set_allocated_mission_result(::mavsdk::rpc::mission::MissionResult* mission_result) {
+  ::PROTOBUF_NAMESPACE_ID::Arena* message_arena = GetArenaNoVirtual();
+  if (message_arena == nullptr) {
+    delete mission_result_;
+  }
+  if (mission_result) {
+    ::PROTOBUF_NAMESPACE_ID::Arena* submessage_arena = nullptr;
+    if (message_arena != submessage_arena) {
+      mission_result = ::PROTOBUF_NAMESPACE_ID::internal::GetOwnedMessage(
+          message_arena, mission_result, submessage_arena);
+    }
+    
+  } else {
+    
+  }
+  mission_result_ = mission_result;
+  // @@protoc_insertion_point(field_set_allocated:mavsdk.rpc.mission.IsMissionFinishedResponse.mission_result)
+}
+
+// bool is_finished = 2;
 inline void IsMissionFinishedResponse::clear_is_finished() {
   is_finished_ = false;
 }
@@ -4934,7 +5205,67 @@ inline void MissionProgressResponse::set_allocated_mission_progress(::mavsdk::rp
 
 // GetReturnToLaunchAfterMissionResponse
 
-// bool enable = 1;
+// .mavsdk.rpc.mission.MissionResult mission_result = 1;
+inline bool GetReturnToLaunchAfterMissionResponse::_internal_has_mission_result() const {
+  return this != internal_default_instance() && mission_result_ != nullptr;
+}
+inline bool GetReturnToLaunchAfterMissionResponse::has_mission_result() const {
+  return _internal_has_mission_result();
+}
+inline void GetReturnToLaunchAfterMissionResponse::clear_mission_result() {
+  if (GetArenaNoVirtual() == nullptr && mission_result_ != nullptr) {
+    delete mission_result_;
+  }
+  mission_result_ = nullptr;
+}
+inline const ::mavsdk::rpc::mission::MissionResult& GetReturnToLaunchAfterMissionResponse::_internal_mission_result() const {
+  const ::mavsdk::rpc::mission::MissionResult* p = mission_result_;
+  return p != nullptr ? *p : *reinterpret_cast<const ::mavsdk::rpc::mission::MissionResult*>(
+      &::mavsdk::rpc::mission::_MissionResult_default_instance_);
+}
+inline const ::mavsdk::rpc::mission::MissionResult& GetReturnToLaunchAfterMissionResponse::mission_result() const {
+  // @@protoc_insertion_point(field_get:mavsdk.rpc.mission.GetReturnToLaunchAfterMissionResponse.mission_result)
+  return _internal_mission_result();
+}
+inline ::mavsdk::rpc::mission::MissionResult* GetReturnToLaunchAfterMissionResponse::release_mission_result() {
+  // @@protoc_insertion_point(field_release:mavsdk.rpc.mission.GetReturnToLaunchAfterMissionResponse.mission_result)
+  
+  ::mavsdk::rpc::mission::MissionResult* temp = mission_result_;
+  mission_result_ = nullptr;
+  return temp;
+}
+inline ::mavsdk::rpc::mission::MissionResult* GetReturnToLaunchAfterMissionResponse::_internal_mutable_mission_result() {
+  
+  if (mission_result_ == nullptr) {
+    auto* p = CreateMaybeMessage<::mavsdk::rpc::mission::MissionResult>(GetArenaNoVirtual());
+    mission_result_ = p;
+  }
+  return mission_result_;
+}
+inline ::mavsdk::rpc::mission::MissionResult* GetReturnToLaunchAfterMissionResponse::mutable_mission_result() {
+  // @@protoc_insertion_point(field_mutable:mavsdk.rpc.mission.GetReturnToLaunchAfterMissionResponse.mission_result)
+  return _internal_mutable_mission_result();
+}
+inline void GetReturnToLaunchAfterMissionResponse::set_allocated_mission_result(::mavsdk::rpc::mission::MissionResult* mission_result) {
+  ::PROTOBUF_NAMESPACE_ID::Arena* message_arena = GetArenaNoVirtual();
+  if (message_arena == nullptr) {
+    delete mission_result_;
+  }
+  if (mission_result) {
+    ::PROTOBUF_NAMESPACE_ID::Arena* submessage_arena = nullptr;
+    if (message_arena != submessage_arena) {
+      mission_result = ::PROTOBUF_NAMESPACE_ID::internal::GetOwnedMessage(
+          message_arena, mission_result, submessage_arena);
+    }
+    
+  } else {
+    
+  }
+  mission_result_ = mission_result;
+  // @@protoc_insertion_point(field_set_allocated:mavsdk.rpc.mission.GetReturnToLaunchAfterMissionResponse.mission_result)
+}
+
+// bool enable = 2;
 inline void GetReturnToLaunchAfterMissionResponse::clear_enable() {
   enable_ = false;
 }
@@ -4981,6 +5312,66 @@ inline void SetReturnToLaunchAfterMissionRequest::set_enable(bool value) {
 // -------------------------------------------------------------------
 
 // SetReturnToLaunchAfterMissionResponse
+
+// .mavsdk.rpc.mission.MissionResult mission_result = 1;
+inline bool SetReturnToLaunchAfterMissionResponse::_internal_has_mission_result() const {
+  return this != internal_default_instance() && mission_result_ != nullptr;
+}
+inline bool SetReturnToLaunchAfterMissionResponse::has_mission_result() const {
+  return _internal_has_mission_result();
+}
+inline void SetReturnToLaunchAfterMissionResponse::clear_mission_result() {
+  if (GetArenaNoVirtual() == nullptr && mission_result_ != nullptr) {
+    delete mission_result_;
+  }
+  mission_result_ = nullptr;
+}
+inline const ::mavsdk::rpc::mission::MissionResult& SetReturnToLaunchAfterMissionResponse::_internal_mission_result() const {
+  const ::mavsdk::rpc::mission::MissionResult* p = mission_result_;
+  return p != nullptr ? *p : *reinterpret_cast<const ::mavsdk::rpc::mission::MissionResult*>(
+      &::mavsdk::rpc::mission::_MissionResult_default_instance_);
+}
+inline const ::mavsdk::rpc::mission::MissionResult& SetReturnToLaunchAfterMissionResponse::mission_result() const {
+  // @@protoc_insertion_point(field_get:mavsdk.rpc.mission.SetReturnToLaunchAfterMissionResponse.mission_result)
+  return _internal_mission_result();
+}
+inline ::mavsdk::rpc::mission::MissionResult* SetReturnToLaunchAfterMissionResponse::release_mission_result() {
+  // @@protoc_insertion_point(field_release:mavsdk.rpc.mission.SetReturnToLaunchAfterMissionResponse.mission_result)
+  
+  ::mavsdk::rpc::mission::MissionResult* temp = mission_result_;
+  mission_result_ = nullptr;
+  return temp;
+}
+inline ::mavsdk::rpc::mission::MissionResult* SetReturnToLaunchAfterMissionResponse::_internal_mutable_mission_result() {
+  
+  if (mission_result_ == nullptr) {
+    auto* p = CreateMaybeMessage<::mavsdk::rpc::mission::MissionResult>(GetArenaNoVirtual());
+    mission_result_ = p;
+  }
+  return mission_result_;
+}
+inline ::mavsdk::rpc::mission::MissionResult* SetReturnToLaunchAfterMissionResponse::mutable_mission_result() {
+  // @@protoc_insertion_point(field_mutable:mavsdk.rpc.mission.SetReturnToLaunchAfterMissionResponse.mission_result)
+  return _internal_mutable_mission_result();
+}
+inline void SetReturnToLaunchAfterMissionResponse::set_allocated_mission_result(::mavsdk::rpc::mission::MissionResult* mission_result) {
+  ::PROTOBUF_NAMESPACE_ID::Arena* message_arena = GetArenaNoVirtual();
+  if (message_arena == nullptr) {
+    delete mission_result_;
+  }
+  if (mission_result) {
+    ::PROTOBUF_NAMESPACE_ID::Arena* submessage_arena = nullptr;
+    if (message_arena != submessage_arena) {
+      mission_result = ::PROTOBUF_NAMESPACE_ID::internal::GetOwnedMessage(
+          message_arena, mission_result, submessage_arena);
+    }
+    
+  } else {
+    
+  }
+  mission_result_ = mission_result;
+  // @@protoc_insertion_point(field_set_allocated:mavsdk.rpc.mission.SetReturnToLaunchAfterMissionResponse.mission_result)
+}
 
 // -------------------------------------------------------------------
 

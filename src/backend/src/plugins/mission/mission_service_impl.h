@@ -57,18 +57,11 @@ public:
     translateFromRpcCameraAction(const rpc::mission::MissionItem::CameraAction camera_action)
     {
         switch (camera_action) {
+            default:
+                LogErr() << "Unknown camera_action enum value: " << static_cast<int>(camera_action);
+            // FALLTHROUGH
             case rpc::mission::MissionItem_CameraAction_CAMERA_ACTION_NONE:
                 return mavsdk::Mission::CameraAction::None;
-            case rpc::mission::MissionItem_CameraAction_CAMERA_ACTION_TAKE_PHOTO:
-                return mavsdk::Mission::CameraAction::TakePhoto;
-            case rpc::mission::MissionItem_CameraAction_CAMERA_ACTION_START_PHOTO_INTERVAL:
-                return mavsdk::Mission::CameraAction::StartPhotoInterval;
-            case rpc::mission::MissionItem_CameraAction_CAMERA_ACTION_STOP_PHOTO_INTERVAL:
-                return mavsdk::Mission::CameraAction::StopPhotoInterval;
-            case rpc::mission::MissionItem_CameraAction_CAMERA_ACTION_START_VIDEO:
-                return mavsdk::Mission::CameraAction::StartVideo;
-            case rpc::mission::MissionItem_CameraAction_CAMERA_ACTION_STOP_VIDEO:
-                return mavsdk::Mission::CameraAction::StopVideo;
         }
     }
 
@@ -147,9 +140,7 @@ public:
         mavsdk::Mission::MissionPlan obj;
 
         for (const auto& elem : mission_plan.mission_items()) {
-            // FIXME: stuck because I don't now how to know what the field's type is and whether
-            // it's primitive.
-            obj.mission_items.push_back(translateFromRpc(elem));
+            obj.mission_items.push_back(translateFromRpcMissionItem(elem));
         }
 
         return obj;
@@ -219,32 +210,11 @@ public:
     translateFromRpcResult(const rpc::mission::MissionResult::Result result)
     {
         switch (result) {
+            default:
+                LogErr() << "Unknown result enum value: " << static_cast<int>(result);
+            // FALLTHROUGH
             case rpc::mission::MissionResult_Result_RESULT_UNKNOWN:
                 return mavsdk::Mission::Result::Unknown;
-            case rpc::mission::MissionResult_Result_RESULT_SUCCESS:
-                return mavsdk::Mission::Result::Success;
-            case rpc::mission::MissionResult_Result_RESULT_ERROR:
-                return mavsdk::Mission::Result::Error;
-            case rpc::mission::MissionResult_Result_RESULT_TOO_MANY_MISSION_ITEMS:
-                return mavsdk::Mission::Result::TooManyMissionItems;
-            case rpc::mission::MissionResult_Result_RESULT_BUSY:
-                return mavsdk::Mission::Result::Busy;
-            case rpc::mission::MissionResult_Result_RESULT_TIMEOUT:
-                return mavsdk::Mission::Result::Timeout;
-            case rpc::mission::MissionResult_Result_RESULT_INVALID_ARGUMENT:
-                return mavsdk::Mission::Result::InvalidArgument;
-            case rpc::mission::MissionResult_Result_RESULT_UNSUPPORTED:
-                return mavsdk::Mission::Result::Unsupported;
-            case rpc::mission::MissionResult_Result_RESULT_NO_MISSION_AVAILABLE:
-                return mavsdk::Mission::Result::NoMissionAvailable;
-            case rpc::mission::MissionResult_Result_RESULT_FAILED_TO_OPEN_QGC_PLAN:
-                return mavsdk::Mission::Result::FailedToOpenQgcPlan;
-            case rpc::mission::MissionResult_Result_RESULT_FAILED_TO_PARSE_QGC_PLAN:
-                return mavsdk::Mission::Result::FailedToParseQgcPlan;
-            case rpc::mission::MissionResult_Result_RESULT_UNSUPPORTED_MISSION_CMD:
-                return mavsdk::Mission::Result::UnsupportedMissionCmd;
-            case rpc::mission::MissionResult_Result_RESULT_TRANSFER_CANCELLED:
-                return mavsdk::Mission::Result::TransferCancelled;
         }
     }
 
