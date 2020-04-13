@@ -22,8 +22,8 @@ static std::unique_ptr<rpc::{{ plugin_name.lower_snake_case }}::{{ name.upper_ca
         {% else %}
             {% if field.type_info.is_repeated %}
     for (const auto& elem : {{ name.lower_snake_case }}.{{ field.name.lower_snake_case }}) {
-        auto *ptr = rpc_obj->add_{{ field.name.lower_snake_case }}();
-        ptr = translateToRpc{{ field.type_info.inner_name }}(elem).release();
+        auto* ptr = rpc_obj->add_{{ field.name.lower_snake_case }}();
+        ptr->CopyFrom(*translateToRpc{{ field.type_info.inner_name }}(elem).release());
     }
             {% else %}
     rpc_obj->set_allocated_{{ field.name.lower_snake_case }}(translateToRpc{{ field.type_info.inner_name }}({{ name.lower_snake_case }}.{{ field.name.lower_snake_case }}).release());

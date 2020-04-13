@@ -12,7 +12,6 @@
 
 namespace {
 
-namespace dc = mavsdk;
 namespace rpc = mavsdk::rpc::mission;
 
 using testing::_;
@@ -20,64 +19,64 @@ using testing::DoDefault;
 using testing::NiceMock;
 using testing::Return;
 
-using MockMission = NiceMock<dc::testing::MockMission>;
-using MissionServiceImpl = dc::backend::MissionServiceImpl<MockMission>;
-using MissionService = dc::rpc::mission::MissionService;
-using InputPair = std::pair<std::string, dc::Mission::Result>;
+using MockMission = NiceMock<mavsdk::testing::MockMission>;
+using MissionServiceImpl = mavsdk::backend::MissionServiceImpl<MockMission>;
+using MissionService = mavsdk::rpc::mission::MissionService;
+using InputPair = std::pair<std::string, mavsdk::Mission::Result>;
 
-using UploadMissionRequest = dc::rpc::mission::UploadMissionRequest;
-using UploadMissionResponse = dc::rpc::mission::UploadMissionResponse;
+using UploadMissionRequest = mavsdk::rpc::mission::UploadMissionRequest;
+using UploadMissionResponse = mavsdk::rpc::mission::UploadMissionResponse;
 
-using CameraAction = dc::Mission::CameraAction;
-using RPCCameraAction = dc::rpc::mission::MissionItem::CameraAction;
+using CameraAction = mavsdk::Mission::CameraAction;
+using RPCCameraAction = mavsdk::rpc::mission::MissionItem::CameraAction;
 
-using DownloadMissionResponse = dc::rpc::mission::DownloadMissionResponse;
+using DownloadMissionResponse = mavsdk::rpc::mission::DownloadMissionResponse;
 
-using StartMissionRequest = dc::rpc::mission::StartMissionRequest;
-using StartMissionResponse = dc::rpc::mission::StartMissionResponse;
+using StartMissionRequest = mavsdk::rpc::mission::StartMissionRequest;
+using StartMissionResponse = mavsdk::rpc::mission::StartMissionResponse;
 
-using PauseMissionRequest = dc::rpc::mission::PauseMissionRequest;
-using PauseMissionResponse = dc::rpc::mission::PauseMissionResponse;
+using PauseMissionRequest = mavsdk::rpc::mission::PauseMissionRequest;
+using PauseMissionResponse = mavsdk::rpc::mission::PauseMissionResponse;
 
-static constexpr auto ARBITRARY_RESULT = dc::Mission::Result::UNKNOWN;
+static constexpr auto ARBITRARY_RESULT = mavsdk::Mission::Result::Unknown;
 static constexpr auto ARBITRARY_INDEX = 42;
 static constexpr auto ARBITRARY_SMALL_INT = 12;
 
 std::vector<InputPair> generateInputPairs();
 
-std::vector<dc::Mission::MissionItem> generateListOfOneItem()
+mavsdk::Mission::MissionPlan generateListOfOneItem()
 {
-    std::vector<dc::Mission::MissionItem> mission_items;
+    mavsdk::Mission::MissionPlan mission_plan;
 
     mavsdk::Mission::MissionItem mission_item{};
     mission_item.latitude_deg = 41.848695;
     mission_item.longitude_deg = 75.132751;
     mission_item.relative_altitude_m = 50.4f;
     mission_item.speed_m_s = 8.3f;
-    mission_item.fly_through = false;
+    mission_item.is_fly_through = false;
     mission_item.gimbal_pitch_deg = 45.2f;
     mission_item.gimbal_yaw_deg = 90.3f;
-    mission_item.camera_action = CameraAction::NONE;
+    mission_item.camera_action = CameraAction::None;
     mission_item.camera_photo_interval_s = 5;
     mission_item.loiter_time_s = 3.2f;
 
-    mission_items.push_back(mission_item);
-    return mission_items;
+    mission_plan.mission_items.push_back(mission_item);
+    return mission_plan;
 }
 
-std::vector<dc::Mission::MissionItem> generateListOfMultipleItems()
+mavsdk::Mission::MissionPlan generateListOfMultipleItems()
 {
-    std::vector<dc::Mission::MissionItem> mission_items;
+    mavsdk::Mission::MissionPlan mission_plan;
 
     mavsdk::Mission::MissionItem mission_item0{};
     mission_item0.latitude_deg = 41.848695;
     mission_item0.longitude_deg = 75.132751;
     mission_item0.relative_altitude_m = 50.4f;
     mission_item0.speed_m_s = 8.3f;
-    mission_item0.fly_through = false;
+    mission_item0.is_fly_through = false;
     mission_item0.gimbal_pitch_deg = 45.2f;
     mission_item0.gimbal_yaw_deg = 90.3f;
-    mission_item0.camera_action = CameraAction::NONE;
+    mission_item0.camera_action = CameraAction::None;
     mission_item0.loiter_time_s = 1.1f;
 
     mavsdk::Mission::MissionItem mission_item1{};
@@ -85,30 +84,30 @@ std::vector<dc::Mission::MissionItem> generateListOfMultipleItems()
     mission_item1.longitude_deg = 6.635356;
     mission_item1.relative_altitude_m = 76.2f;
     mission_item1.speed_m_s = 6.0f;
-    mission_item1.fly_through = true;
+    mission_item1.is_fly_through = true;
     mission_item1.gimbal_pitch_deg = 41.2f;
     mission_item1.gimbal_yaw_deg = 70.3f;
-    mission_item1.camera_action = CameraAction::TAKE_PHOTO;
+    mission_item1.camera_action = CameraAction::TakePhoto;
 
     mavsdk::Mission::MissionItem mission_item2{};
     mission_item2.latitude_deg = -50.995944711358824;
     mission_item2.longitude_deg = -72.99892046835936;
     mission_item2.relative_altitude_m = 24.0f;
     mission_item2.speed_m_s = 4.2f;
-    mission_item2.fly_through = false;
+    mission_item2.is_fly_through = false;
     mission_item2.gimbal_pitch_deg = 55.0f;
     mission_item2.gimbal_yaw_deg = 68.8f;
-    mission_item2.camera_action = CameraAction::START_PHOTO_INTERVAL;
+    mission_item2.camera_action = CameraAction::StartPhotoInterval;
 
     mavsdk::Mission::MissionItem mission_item3{};
     mission_item3.latitude_deg = 46.522652;
     mission_item3.longitude_deg = 6.621356;
     mission_item3.relative_altitude_m = 71.2f;
     mission_item3.speed_m_s = 7.1f;
-    mission_item3.fly_through = false;
+    mission_item3.is_fly_through = false;
     mission_item3.gimbal_pitch_deg = 11.2f;
     mission_item3.gimbal_yaw_deg = 20.3f;
-    mission_item3.camera_action = CameraAction::STOP_PHOTO_INTERVAL;
+    mission_item3.camera_action = CameraAction::StopPhotoInterval;
     mission_item3.loiter_time_s = 4.4f;
 
     mavsdk::Mission::MissionItem mission_item4{};
@@ -116,29 +115,29 @@ std::vector<dc::Mission::MissionItem> generateListOfMultipleItems()
     mission_item4.longitude_deg = 3.626236;
     mission_item4.relative_altitude_m = 56.9f;
     mission_item4.speed_m_s = 5.4f;
-    mission_item4.fly_through = false;
+    mission_item4.is_fly_through = false;
     mission_item4.gimbal_pitch_deg = 14.6f;
     mission_item4.gimbal_yaw_deg = 31.5f;
-    mission_item4.camera_action = CameraAction::START_VIDEO;
+    mission_item4.camera_action = CameraAction::StartVideo;
 
     mavsdk::Mission::MissionItem mission_item5{};
     mission_item5.latitude_deg = 11.142334;
     mission_item5.longitude_deg = 4.622234;
     mission_item5.relative_altitude_m = 65.3f;
     mission_item5.speed_m_s = 5.7f;
-    mission_item5.fly_through = true;
+    mission_item5.is_fly_through = true;
     mission_item5.gimbal_pitch_deg = 17.2f;
     mission_item5.gimbal_yaw_deg = 90.0f;
-    mission_item5.camera_action = CameraAction::STOP_VIDEO;
+    mission_item5.camera_action = CameraAction::StopVideo;
 
-    mission_items.push_back(mission_item0);
-    mission_items.push_back(mission_item1);
-    mission_items.push_back(mission_item2);
-    mission_items.push_back(mission_item3);
-    mission_items.push_back(mission_item4);
-    mission_items.push_back(mission_item5);
+    mission_plan.mission_items.push_back(mission_item0);
+    mission_plan.mission_items.push_back(mission_item1);
+    mission_plan.mission_items.push_back(mission_item2);
+    mission_plan.mission_items.push_back(mission_item3);
+    mission_plan.mission_items.push_back(mission_item4);
+    mission_plan.mission_items.push_back(mission_item5);
 
-    return mission_items;
+    return mission_plan;
 }
 
 class MissionServiceImplTestBase : public ::testing::TestWithParam<InputPair> {
@@ -155,7 +154,7 @@ protected:
     MissionServiceImpl _mission_service;
 
     /* The mission returns its result through a callback, which is saved in _result_callback. */
-    dc::Mission::result_callback_t _result_callback{};
+    mavsdk::Mission::result_callback_t _result_callback{};
 
     /* The tests need to make sure that _result_callback has been set before calling it, hence the
      * promise. */
@@ -179,16 +178,16 @@ protected:
 
     /* Generate an UploadMissionRequest from a list of mission items. */
     std::shared_ptr<UploadMissionRequest>
-    generateUploadRequest(const std::vector<dc::Mission::MissionItem>& mission_items) const;
+    generateUploadRequest(const mavsdk::Mission::MissionPlan& mission_plan) const;
 
     /**
      * Upload a list of items through gRPC, catch the list that is actually sent by
      * the backend, and verify that it has been sent correctly over gRPC.
      */
-    void checkItemsAreUploadedCorrectly(std::vector<dc::Mission::MissionItem>& mission_items);
+    void checkItemsAreUploadedCorrectly(mavsdk::Mission::MissionPlan& mission_plan);
 
     /* Captures the actual mission sent to mavsdk by the backend. */
-    std::vector<dc::Mission::MissionItem> _uploaded_mission{};
+    mavsdk::Mission::MissionPlan _uploaded_mission{};
 };
 
 INSTANTIATE_TEST_SUITE_P(
@@ -227,8 +226,8 @@ std::future<void> MissionServiceImplUploadTest::uploadMissionAndSaveParams(
 TEST_P(MissionServiceImplUploadTest, uploadResultIsTranslatedCorrectly)
 {
     auto response = std::make_shared<UploadMissionResponse>();
-    std::vector<dc::Mission::MissionItem> mission_items;
-    auto request = generateUploadRequest(mission_items);
+    mavsdk::Mission::MissionPlan mission_plan;
+    auto request = generateUploadRequest(mission_plan);
     auto upload_handle = uploadMissionAndSaveParams(request, response);
 
     _result_callback(GetParam().second);
@@ -239,13 +238,15 @@ TEST_P(MissionServiceImplUploadTest, uploadResultIsTranslatedCorrectly)
 }
 
 std::shared_ptr<UploadMissionRequest> MissionServiceImplUploadTest::generateUploadRequest(
-    const std::vector<dc::Mission::MissionItem>& mission_items) const
+    const mavsdk::Mission::MissionPlan& mission_plan) const
 {
     auto request = std::make_shared<UploadMissionRequest>();
 
-    for (const auto& mission_item : mission_items) {
-        auto rpc_mission_item = request->add_mission_items();
-        MissionServiceImpl::translateMissionItem(mission_item, rpc_mission_item);
+    auto rpc_mission_plan = request->mission_plan();
+    for (const auto& mission_item : mission_plan.mission_items) {
+        auto* rpc_mission_item = rpc_mission_plan.add_mission_items();
+        rpc_mission_item->CopyFrom(
+            *MissionServiceImpl::translateToRpcMissionItem(mission_item).release());
     }
 
     return request;
@@ -258,28 +259,28 @@ TEST_F(MissionServiceImplUploadTest, uploadsEmptyMissionWhenNullRequest)
     _result_callback(ARBITRARY_RESULT);
     upload_handle.wait();
 
-    EXPECT_EQ(0, _uploaded_mission.size());
+    EXPECT_EQ(0, _uploaded_mission.mission_items.size());
 }
 
 TEST_F(MissionServiceImplUploadTest, uploadsOneItemMission)
 {
-    auto mission_items = generateListOfOneItem();
-    checkItemsAreUploadedCorrectly(mission_items);
+    auto mission_plan = generateListOfOneItem();
+    checkItemsAreUploadedCorrectly(mission_plan);
 }
 
 void MissionServiceImplUploadTest::checkItemsAreUploadedCorrectly(
-    std::vector<dc::Mission::MissionItem>& mission_items)
+    mavsdk::Mission::MissionPlan& mission_plan)
 {
-    auto request = generateUploadRequest(mission_items);
+    auto request = generateUploadRequest(mission_plan);
 
     auto upload_handle = uploadMissionAndSaveParams(request, nullptr);
     _result_callback(ARBITRARY_RESULT);
     upload_handle.wait();
 
-    ASSERT_EQ(mission_items.size(), _uploaded_mission.size());
+    ASSERT_EQ(mission_plan.mission_items.size(), _uploaded_mission.mission_items.size());
 
-    for (size_t i = 0; i < mission_items.size(); i++) {
-        EXPECT_EQ(mission_items.at(i), _uploaded_mission.at(i));
+    for (size_t i = 0; i < mission_plan.mission_items.size(); i++) {
+        EXPECT_EQ(mission_plan.mission_items.at(i), _uploaded_mission.mission_items.at(i));
     }
 }
 
@@ -293,9 +294,9 @@ class MissionServiceImplDownloadTest : public MissionServiceImplTestBase {
 protected:
     std::future<void>
     downloadMissionAndSaveParams(std::shared_ptr<DownloadMissionResponse> response);
-    void checkItemsAreDownloadedCorrectly(std::vector<dc::Mission::MissionItem>& mission_items);
+    void checkItemsAreDownloadedCorrectly(mavsdk::Mission::MissionPlan& mission_plan);
 
-    dc::Mission::mission_items_and_result_callback_t _download_callback{};
+    mavsdk::Mission::download_mission_callback_t _download_callback{};
 };
 
 INSTANTIATE_TEST_SUITE_P(
@@ -312,7 +313,7 @@ ACTION_P2(SaveResult, callback, callback_saved_promise)
 TEST_F(MissionServiceImplDownloadTest, doesNotFailWhenArgsAreNull)
 {
     auto download_handle = downloadMissionAndSaveParams(nullptr);
-    std::vector<mavsdk::Mission::MissionItem> arbitrary_mission;
+    mavsdk::Mission::MissionPlan arbitrary_mission;
 
     _download_callback(ARBITRARY_RESULT, arbitrary_mission);
 }
@@ -334,9 +335,9 @@ std::future<void> MissionServiceImplDownloadTest::downloadMissionAndSaveParams(
 TEST_P(MissionServiceImplDownloadTest, downloadResultIsTranslatedCorrectly)
 {
     auto response = std::make_shared<DownloadMissionResponse>();
-    std::vector<dc::Mission::MissionItem> mission_items;
+    std::vector<mavsdk::Mission::MissionItem> mission_items;
     auto download_handle = downloadMissionAndSaveParams(response);
-    std::vector<mavsdk::Mission::MissionItem> arbitrary_mission;
+    mavsdk::Mission::MissionPlan arbitrary_mission;
 
     _download_callback(GetParam().second, arbitrary_mission);
     download_handle.wait();
@@ -347,24 +348,25 @@ TEST_P(MissionServiceImplDownloadTest, downloadResultIsTranslatedCorrectly)
 
 TEST_F(MissionServiceImplDownloadTest, downloadsOneItemMission)
 {
-    auto mission_items = generateListOfOneItem();
-    checkItemsAreDownloadedCorrectly(mission_items);
+    auto mission_plan = generateListOfOneItem();
+    checkItemsAreDownloadedCorrectly(mission_plan);
 }
 
 void MissionServiceImplDownloadTest::checkItemsAreDownloadedCorrectly(
-    std::vector<dc::Mission::MissionItem>& mission_items)
+    mavsdk::Mission::MissionPlan& mission_plan)
 {
     auto response = std::make_shared<DownloadMissionResponse>();
     auto download_handle = downloadMissionAndSaveParams(response);
-    _download_callback(ARBITRARY_RESULT, mission_items);
+    _download_callback(ARBITRARY_RESULT, mission_plan);
     download_handle.wait();
 
-    ASSERT_EQ(mission_items.size(), response->mission_items().size());
+    ASSERT_EQ(mission_plan.mission_items.size(), response->mission_plan().mission_items().size());
 
-    for (size_t i = 0; i < mission_items.size(); i++) {
+    for (size_t i = 0; i < mission_plan.mission_items.size(); i++) {
         EXPECT_EQ(
-            mission_items.at(i),
-            MissionServiceImpl::translateRPCMissionItem(response->mission_items().Get(i)));
+            mission_plan.mission_items.at(i),
+            MissionServiceImpl::translateFromRpcMissionItem(
+                response->mission_plan().mission_items().Get(i)));
     }
 }
 
@@ -407,7 +409,7 @@ std::future<void> MissionServiceImplStartTest::startMissionAndSaveParams(
 TEST_P(MissionServiceImplStartTest, startResultIsTranslatedCorrectly)
 {
     auto response = std::make_shared<StartMissionResponse>();
-    std::vector<dc::Mission::MissionItem> mission_items;
+    std::vector<mavsdk::Mission::MissionItem> mission_items;
     auto start_handle = startMissionAndSaveParams(response);
 
     _result_callback(GetParam().second);
@@ -419,12 +421,13 @@ TEST_P(MissionServiceImplStartTest, startResultIsTranslatedCorrectly)
 
 class MissionServiceImplIsFinishedTest : public MissionServiceImplTestBase {
 protected:
-    void checkReturnsCorrectFinishedStatus(const bool expected_finished_status);
+    void checkReturnsCorrectFinishedStatus(
+        const std::pair<mavsdk::Mission::Result, bool> expected_finished_status);
 };
 
 TEST_F(MissionServiceImplIsFinishedTest, isMissionFinishedCallsGetter)
 {
-    EXPECT_CALL(_mission, mission_finished()).Times(1);
+    EXPECT_CALL(_mission, is_mission_finished()).Times(1);
     mavsdk::rpc::mission::IsMissionFinishedResponse response;
 
     _mission_service.IsMissionFinished(nullptr, nullptr, &response);
@@ -432,19 +435,19 @@ TEST_F(MissionServiceImplIsFinishedTest, isMissionFinishedCallsGetter)
 
 TEST_F(MissionServiceImplIsFinishedTest, isMissionFinishedgetsCorrectValue)
 {
-    checkReturnsCorrectFinishedStatus(false);
-    checkReturnsCorrectFinishedStatus(true);
+    checkReturnsCorrectFinishedStatus(std::make_pair<>(mavsdk::Mission::Result::Success, false));
+    checkReturnsCorrectFinishedStatus(std::make_pair<>(mavsdk::Mission::Result::Success, true));
 }
 
 void MissionServiceImplIsFinishedTest::checkReturnsCorrectFinishedStatus(
-    const bool expected_finished_status)
+    const std::pair<mavsdk::Mission::Result, bool> expected_finished_status)
 {
-    ON_CALL(_mission, mission_finished()).WillByDefault(Return(expected_finished_status));
+    ON_CALL(_mission, is_mission_finished()).WillByDefault(Return(expected_finished_status));
     mavsdk::rpc::mission::IsMissionFinishedResponse response;
 
     _mission_service.IsMissionFinished(nullptr, nullptr, &response);
 
-    EXPECT_EQ(expected_finished_status, response.is_finished());
+    EXPECT_EQ(expected_finished_status.second, response.is_finished());
 }
 
 TEST_F(MissionServiceImplIsFinishedTest, isMissionFinishedDoesNotCrashWithNullResponse)
@@ -509,7 +512,7 @@ ACTION_P2(SaveSetItemCallback, callback, callback_saved_promise)
 
 TEST_F(MissionServiceImplSetCurrentTest, setCurrentItemDoesNotCrashWithNullRequest)
 {
-    _mission_service.SetCurrentMissionItemIndex(nullptr, nullptr, nullptr);
+    _mission_service.SetCurrentMissionItem(nullptr, nullptr, nullptr);
 }
 
 TEST_F(MissionServiceImplSetCurrentTest, setCurrentItemSetsRightValue)
@@ -517,28 +520,28 @@ TEST_F(MissionServiceImplSetCurrentTest, setCurrentItemSetsRightValue)
     const int expected_item_index = ARBITRARY_INDEX;
     EXPECT_CALL(_mission, set_current_mission_item_async(expected_item_index, _))
         .WillOnce(SaveSetItemCallback(&_result_callback, &_callback_saved_promise));
-    mavsdk::rpc::mission::SetCurrentMissionItemIndexRequest request;
+    mavsdk::rpc::mission::SetCurrentMissionItemRequest request;
     request.set_index(expected_item_index);
 
     auto set_current_item_handle = std::async(std::launch::async, [this, &request]() {
-        _mission_service.SetCurrentMissionItemIndex(nullptr, &request, nullptr);
+        _mission_service.SetCurrentMissionItem(nullptr, &request, nullptr);
     });
 
     _callback_saved_future.wait();
-    _result_callback(mavsdk::Mission::Result::SUCCESS);
+    _result_callback(mavsdk::Mission::Result::Success);
     set_current_item_handle.wait();
 }
 
 TEST_P(MissionServiceImplSetCurrentTest, setCurrentItemResultIsTranslatedCorrectly)
 {
-    mavsdk::rpc::mission::SetCurrentMissionItemIndexResponse response;
-    mavsdk::rpc::mission::SetCurrentMissionItemIndexRequest request;
+    mavsdk::rpc::mission::SetCurrentMissionItemResponse response;
+    mavsdk::rpc::mission::SetCurrentMissionItemRequest request;
     request.set_index(ARBITRARY_INDEX);
     EXPECT_CALL(_mission, set_current_mission_item_async(_, _))
         .WillOnce(SaveSetItemCallback(&_result_callback, &_callback_saved_promise));
 
     auto set_current_item_handle = std::async(std::launch::async, [this, &request, &response]() {
-        _mission_service.SetCurrentMissionItemIndex(nullptr, &request, &response);
+        _mission_service.SetCurrentMissionItem(nullptr, &request, &response);
     });
 
     _callback_saved_future.wait();
@@ -573,9 +576,9 @@ protected:
 
 TEST_F(MissionServiceImplProgressTest, registersToMissionProgress)
 {
-    dc::Mission::progress_callback_t progress_callback;
+    mavsdk::Mission::mission_progress_callback_t progress_callback;
     auto context = std::make_shared<grpc::ClientContext>();
-    EXPECT_CALL(_mission, subscribe_progress(_))
+    EXPECT_CALL(_mission, mission_progress_async(_))
         .Times(2)
         .WillOnce(SaveResult(&progress_callback, &_callback_saved_promise))
         .WillOnce(DoDefault());
@@ -583,9 +586,17 @@ TEST_F(MissionServiceImplProgressTest, registersToMissionProgress)
 
     auto progress_events_future = subscribeMissionProgressAsync(progress_events, context);
     _callback_saved_future.wait();
-    progress_callback(0, 1);
+
+    mavsdk::Mission::MissionProgress progress1;
+    progress1.current = 0;
+    progress1.total = 1;
+    progress_callback(progress1);
     context->TryCancel();
-    progress_callback(0, 0); // TryCancel() requires one more event to trigger...
+
+    mavsdk::Mission::MissionProgress progress2;
+    progress2.current = 0;
+    progress2.total = 0;
+    progress_callback(progress2); // TryCancel() requires one more event to trigger...
     progress_events_future.wait();
 }
 
@@ -600,8 +611,7 @@ std::future<void> MissionServiceImplProgressTest::subscribeMissionProgressAsync(
         mavsdk::rpc::mission::MissionProgressResponse response;
         while (response_reader->Read(&response)) {
             auto progress_event = std::make_pair(
-                response.mission_progress().current_item_index(),
-                response.mission_progress().mission_count());
+                response.mission_progress().current(), response.mission_progress().total());
 
             progress_events.push_back(progress_event);
         }
@@ -612,8 +622,8 @@ std::future<void> MissionServiceImplProgressTest::subscribeMissionProgressAsync(
 
 TEST_F(MissionServiceImplProgressTest, SendsMultipleMissionProgressEvents)
 {
-    dc::Mission::progress_callback_t progress_callback;
-    EXPECT_CALL(_mission, subscribe_progress(_))
+    mavsdk::Mission::mission_progress_callback_t progress_callback;
+    EXPECT_CALL(_mission, mission_progress_async(_))
         .Times(2)
         .WillOnce(SaveResult(&progress_callback, &_callback_saved_promise))
         .WillOnce(DoDefault());
@@ -630,10 +640,16 @@ TEST_F(MissionServiceImplProgressTest, SendsMultipleMissionProgressEvents)
     _callback_saved_future.wait();
 
     for (const auto progress_event : expected_progress_events) {
-        progress_callback(progress_event.first, progress_event.second);
+        mavsdk::Mission::MissionProgress progress;
+        progress.current = progress_event.first;
+        progress.total = progress_event.second;
+        progress_callback(progress);
     }
     context->TryCancel();
-    progress_callback(0, 0); // TryCancel() requires one more event to trigger...
+    mavsdk::Mission::MissionProgress progress;
+    progress.current = 0;
+    progress.total = 0;
+    progress_callback(progress); // TryCancel() requires one more event to trigger...
     progress_events_future.wait();
 
     ASSERT_EQ(expected_mission_count, received_progress_events.size());
@@ -642,7 +658,7 @@ TEST_F(MissionServiceImplProgressTest, SendsMultipleMissionProgressEvents)
 
 class MissionServiceImplGetRTLAfterMissionTest : public MissionServiceImplTestBase {
 protected:
-    void checkGetRTLAfterMissionReturns(const bool expected_value);
+    void checkGetRTLAfterMissionReturns(std::pair<mavsdk::Mission::Result, bool> expected_value);
 };
 
 TEST_F(MissionServiceImplGetRTLAfterMissionTest, getRTLAfterMissionDoesNotCrashWithNullResponse)
@@ -652,18 +668,18 @@ TEST_F(MissionServiceImplGetRTLAfterMissionTest, getRTLAfterMissionDoesNotCrashW
 
 TEST_F(MissionServiceImplGetRTLAfterMissionTest, getRTLAfterMissionReturnsCorrectValue)
 {
-    checkGetRTLAfterMissionReturns(true);
-    checkGetRTLAfterMissionReturns(false);
+    checkGetRTLAfterMissionReturns(std::make_pair<>(mavsdk::Mission::Result::Success, true));
+    checkGetRTLAfterMissionReturns(std::make_pair<>(mavsdk::Mission::Result::Success, false));
 }
 
 void MissionServiceImplGetRTLAfterMissionTest::checkGetRTLAfterMissionReturns(
-    const bool expected_value)
+    std::pair<mavsdk::Mission::Result, bool> expected_value)
 {
     mavsdk::rpc::mission::GetReturnToLaunchAfterMissionResponse response;
     ON_CALL(_mission, get_return_to_launch_after_mission()).WillByDefault(Return(expected_value));
 
     _mission_service.GetReturnToLaunchAfterMission(nullptr, nullptr, &response);
-    EXPECT_EQ(expected_value, response.enable());
+    EXPECT_EQ(expected_value.second, response.enable());
 }
 
 class MissionServiceImplSetRTLAfterMissionTest : public MissionServiceImplTestBase {
@@ -695,24 +711,24 @@ void MissionServiceImplSetRTLAfterMissionTest::checkSetRTLAfterMissionSets(
 std::vector<InputPair> generateInputPairs()
 {
     std::vector<InputPair> input_pairs;
-    input_pairs.push_back(std::make_pair("UNKNOWN", dc::Mission::Result::UNKNOWN));
-    input_pairs.push_back(std::make_pair("SUCCESS", dc::Mission::Result::SUCCESS));
-    input_pairs.push_back(std::make_pair("ERROR", dc::Mission::Result::ERROR));
+    input_pairs.push_back(std::make_pair("UNKNOWN", mavsdk::Mission::Result::Unknown));
+    input_pairs.push_back(std::make_pair("SUCCESS", mavsdk::Mission::Result::Success));
+    input_pairs.push_back(std::make_pair("ERROR", mavsdk::Mission::Result::Error));
     input_pairs.push_back(
-        std::make_pair("TOO_MANY_MISSION_ITEMS", dc::Mission::Result::TOO_MANY_MISSION_ITEMS));
-    input_pairs.push_back(std::make_pair("BUSY", dc::Mission::Result::BUSY));
-    input_pairs.push_back(std::make_pair("TIMEOUT", dc::Mission::Result::TIMEOUT));
+        std::make_pair("TOO_MANY_MISSION_ITEMS", mavsdk::Mission::Result::TooManyMissionItems));
+    input_pairs.push_back(std::make_pair("BUSY", mavsdk::Mission::Result::Busy));
+    input_pairs.push_back(std::make_pair("TIMEOUT", mavsdk::Mission::Result::Timeout));
     input_pairs.push_back(
-        std::make_pair("INVALID_ARGUMENT", dc::Mission::Result::INVALID_ARGUMENT));
-    input_pairs.push_back(std::make_pair("UNSUPPORTED", dc::Mission::Result::UNSUPPORTED));
+        std::make_pair("INVALID_ARGUMENT", mavsdk::Mission::Result::InvalidArgument));
+    input_pairs.push_back(std::make_pair("UNSUPPORTED", mavsdk::Mission::Result::Unsupported));
     input_pairs.push_back(
-        std::make_pair("NO_MISSION_AVAILABLE", dc::Mission::Result::NO_MISSION_AVAILABLE));
+        std::make_pair("NO_MISSION_AVAILABLE", mavsdk::Mission::Result::NoMissionAvailable));
     input_pairs.push_back(
-        std::make_pair("FAILED_TO_OPEN_QGC_PLAN", dc::Mission::Result::FAILED_TO_OPEN_QGC_PLAN));
+        std::make_pair("FAILED_TO_OPEN_QGC_PLAN", mavsdk::Mission::Result::FailedToOpenQgcPlan));
     input_pairs.push_back(
-        std::make_pair("FAILED_TO_PARSE_QGC_PLAN", dc::Mission::Result::FAILED_TO_PARSE_QGC_PLAN));
+        std::make_pair("FAILED_TO_PARSE_QGC_PLAN", mavsdk::Mission::Result::FailedToParseQgcPlan));
     input_pairs.push_back(
-        std::make_pair("UNSUPPORTED_MISSION_CMD", dc::Mission::Result::UNSUPPORTED_MISSION_CMD));
+        std::make_pair("UNSUPPORTED_MISSION_CMD", mavsdk::Mission::Result::UnsupportedMissionCmd));
 
     return input_pairs;
 }

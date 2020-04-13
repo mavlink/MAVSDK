@@ -128,7 +128,7 @@ public:
 
         for (const auto& elem : mission_plan.mission_items) {
             auto* ptr = rpc_obj->add_mission_items();
-            ptr = translateToRpcMissionItem(elem).release();
+            ptr->CopyFrom(*translateToRpcMissionItem(elem).release());
         }
 
         return rpc_obj;
