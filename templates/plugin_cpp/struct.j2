@@ -7,7 +7,14 @@ bool operator==(const {{ plugin_name.upper_camel_case }}::{{ name.upper_camel_ca
 {
     return
     {%- for field in fields %}
-        (rhs.{{ field.name.lower_snake_case }} == lhs.{{ field.name.lower_snake_case }}){% if loop.last %};{% else %} &&{% endif %}
+    {%- if field.type_info.name == 'double' %}
+        ((std::isnan(rhs.{{ field.name.lower_snake_case }}) && std::isnan(lhs.{{ field.name.lower_snake_case }})) || (std::abs(rhs.{{ field.name.lower_snake_case }} - lhs.{{ field.name.lower_snake_case }}) < std::numeric_limits<double>::epsilon()))
+    {%- elif field.type_info.name == 'float' %}
+        ((std::isnan(rhs.{{ field.name.lower_snake_case }}) && std::isnan(lhs.{{ field.name.lower_snake_case }})) || (std::abs(rhs.{{ field.name.lower_snake_case }} - lhs.{{ field.name.lower_snake_case }}) < std::numeric_limits<float>::epsilon()))
+    {%- else %}
+        (rhs.{{ field.name.lower_snake_case }} == lhs.{{ field.name.lower_snake_case }})
+    {% endif %}
+    {%- if loop.last %};{% else %} &&{% endif %}
     {%- endfor %}
 }
 

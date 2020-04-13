@@ -7,7 +7,9 @@
 
 #include "log.h"
 #include <atomic>
+#include <cmath>
 #include <future>
+#include <limits>
 #include <memory>
 #include <vector>
 
@@ -63,6 +65,18 @@ public:
             // FALLTHROUGH
             case rpc::telemetry::FIX_TYPE_NO_GPS:
                 return mavsdk::Telemetry::FixType::NoGps;
+            case rpc::telemetry::FIX_TYPE_NO_FIX:
+                return mavsdk::Telemetry::FixType::NoFix;
+            case rpc::telemetry::FIX_TYPE_FIX_2D:
+                return mavsdk::Telemetry::FixType::Fix2D;
+            case rpc::telemetry::FIX_TYPE_FIX_3D:
+                return mavsdk::Telemetry::FixType::Fix3D;
+            case rpc::telemetry::FIX_TYPE_FIX_DGPS:
+                return mavsdk::Telemetry::FixType::FixDgps;
+            case rpc::telemetry::FIX_TYPE_RTK_FLOAT:
+                return mavsdk::Telemetry::FixType::RtkFloat;
+            case rpc::telemetry::FIX_TYPE_RTK_FIXED:
+                return mavsdk::Telemetry::FixType::RtkFixed;
         }
     }
 
@@ -115,6 +129,34 @@ public:
             // FALLTHROUGH
             case rpc::telemetry::FLIGHT_MODE_UNKNOWN:
                 return mavsdk::Telemetry::FlightMode::Unknown;
+            case rpc::telemetry::FLIGHT_MODE_READY:
+                return mavsdk::Telemetry::FlightMode::Ready;
+            case rpc::telemetry::FLIGHT_MODE_TAKEOFF:
+                return mavsdk::Telemetry::FlightMode::Takeoff;
+            case rpc::telemetry::FLIGHT_MODE_HOLD:
+                return mavsdk::Telemetry::FlightMode::Hold;
+            case rpc::telemetry::FLIGHT_MODE_MISSION:
+                return mavsdk::Telemetry::FlightMode::Mission;
+            case rpc::telemetry::FLIGHT_MODE_RETURN_TO_LAUNCH:
+                return mavsdk::Telemetry::FlightMode::ReturnToLaunch;
+            case rpc::telemetry::FLIGHT_MODE_LAND:
+                return mavsdk::Telemetry::FlightMode::Land;
+            case rpc::telemetry::FLIGHT_MODE_OFFBOARD:
+                return mavsdk::Telemetry::FlightMode::Offboard;
+            case rpc::telemetry::FLIGHT_MODE_FOLLOW_ME:
+                return mavsdk::Telemetry::FlightMode::FollowMe;
+            case rpc::telemetry::FLIGHT_MODE_MANUAL:
+                return mavsdk::Telemetry::FlightMode::Manual;
+            case rpc::telemetry::FLIGHT_MODE_ALTCTL:
+                return mavsdk::Telemetry::FlightMode::Altctl;
+            case rpc::telemetry::FLIGHT_MODE_POSCTL:
+                return mavsdk::Telemetry::FlightMode::Posctl;
+            case rpc::telemetry::FLIGHT_MODE_ACRO:
+                return mavsdk::Telemetry::FlightMode::Acro;
+            case rpc::telemetry::FLIGHT_MODE_STABILIZED:
+                return mavsdk::Telemetry::FlightMode::Stabilized;
+            case rpc::telemetry::FLIGHT_MODE_RATTITUDE:
+                return mavsdk::Telemetry::FlightMode::Rattitude;
         }
     }
 
@@ -145,6 +187,10 @@ public:
             // FALLTHROUGH
             case rpc::telemetry::STATUS_TEXT_TYPE_INFO:
                 return mavsdk::Telemetry::StatusTextType::Info;
+            case rpc::telemetry::STATUS_TEXT_TYPE_WARNING:
+                return mavsdk::Telemetry::StatusTextType::Warning;
+            case rpc::telemetry::STATUS_TEXT_TYPE_CRITICAL:
+                return mavsdk::Telemetry::StatusTextType::Critical;
         }
     }
 
@@ -177,6 +223,14 @@ public:
             // FALLTHROUGH
             case rpc::telemetry::LANDED_STATE_UNKNOWN:
                 return mavsdk::Telemetry::LandedState::Unknown;
+            case rpc::telemetry::LANDED_STATE_ON_GROUND:
+                return mavsdk::Telemetry::LandedState::OnGround;
+            case rpc::telemetry::LANDED_STATE_IN_AIR:
+                return mavsdk::Telemetry::LandedState::InAir;
+            case rpc::telemetry::LANDED_STATE_TAKING_OFF:
+                return mavsdk::Telemetry::LandedState::TakingOff;
+            case rpc::telemetry::LANDED_STATE_LANDING:
+                return mavsdk::Telemetry::LandedState::Landing;
         }
     }
 
@@ -495,7 +549,9 @@ public:
 
         obj.group = actuator_control_target.group();
 
-        obj.controls = actuator_control_target.controls();
+        for (const auto& elem : actuator_control_target.controls()) {
+            obj.controls.push_back(elem);
+        }
 
         return obj;
     }
@@ -522,7 +578,9 @@ public:
 
         obj.active = actuator_output_status.active();
 
-        obj.actuator = actuator_output_status.actuator();
+        for (const auto& elem : actuator_output_status.actuator()) {
+            obj.actuator.push_back(elem);
+        }
 
         return obj;
     }
@@ -544,7 +602,9 @@ public:
     {
         mavsdk::Telemetry::Covariance obj;
 
-        obj.covariance_matrix = covariance.covariance_matrix();
+        for (const auto& elem : covariance.covariance_matrix()) {
+            obj.covariance_matrix.push_back(elem);
+        }
 
         return obj;
     }
@@ -632,6 +692,12 @@ public:
             // FALLTHROUGH
             case rpc::telemetry::Odometry_MavFrame_MAV_FRAME_UNDEF:
                 return mavsdk::Telemetry::MavFrame::Undef;
+            case rpc::telemetry::Odometry_MavFrame_MAV_FRAME_BODY_NED:
+                return mavsdk::Telemetry::MavFrame::BodyNed;
+            case rpc::telemetry::Odometry_MavFrame_MAV_FRAME_VISION_NED:
+                return mavsdk::Telemetry::MavFrame::VisionNed;
+            case rpc::telemetry::Odometry_MavFrame_MAV_FRAME_ESTIM_NED:
+                return mavsdk::Telemetry::MavFrame::EstimNed;
         }
     }
 
@@ -986,6 +1052,18 @@ public:
             // FALLTHROUGH
             case rpc::telemetry::TelemetryResult_Result_RESULT_UNKNOWN:
                 return mavsdk::Telemetry::Result::Unknown;
+            case rpc::telemetry::TelemetryResult_Result_RESULT_SUCCESS:
+                return mavsdk::Telemetry::Result::Success;
+            case rpc::telemetry::TelemetryResult_Result_RESULT_NO_SYSTEM:
+                return mavsdk::Telemetry::Result::NoSystem;
+            case rpc::telemetry::TelemetryResult_Result_RESULT_CONNECTION_ERROR:
+                return mavsdk::Telemetry::Result::ConnectionError;
+            case rpc::telemetry::TelemetryResult_Result_RESULT_BUSY:
+                return mavsdk::Telemetry::Result::Busy;
+            case rpc::telemetry::TelemetryResult_Result_RESULT_COMMAND_DENIED:
+                return mavsdk::Telemetry::Result::CommandDenied;
+            case rpc::telemetry::TelemetryResult_Result_RESULT_TIMEOUT:
+                return mavsdk::Telemetry::Result::Timeout;
         }
     }
 

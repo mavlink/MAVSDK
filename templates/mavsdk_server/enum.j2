@@ -26,6 +26,9 @@ static mavsdk::{{ plugin_name.upper_camel_case }}::{{ name.upper_camel_case }} t
         // FALLTHROUGH
         case rpc::{{ plugin_name.lower_snake_case }}::{% if parent_struct %}{{ parent_struct.upper_camel_case }}_{{ name.upper_camel_case }}_{% endif %}{{ value.name.uppercase }}:
             return mavsdk::{{ plugin_name.upper_camel_case }}::{{ name.upper_camel_case }}::{% set value_without_prefix = value.name.lower_camel_case[name.lower_camel_case|length:] %}{{ value_without_prefix }};
+        {%- else %}
+        case rpc::{{ plugin_name.lower_snake_case }}::{% if parent_struct %}{{ parent_struct.upper_camel_case }}_{{ name.upper_camel_case }}_{% endif %}{{ value.name.uppercase }}:
+            return mavsdk::{{ plugin_name.upper_camel_case }}::{{ name.upper_camel_case }}::{% set value_without_prefix = value.name.lower_camel_case[name.lower_camel_case|length:] %}{{ value_without_prefix }};
         {%- endif %}
         {%- endfor %}
     }

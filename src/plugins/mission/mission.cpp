@@ -143,13 +143,31 @@ std::ostream& operator<<(std::ostream& str, Mission::CameraAction const& camera_
 }
 bool operator==(const Mission::MissionItem& lhs, const Mission::MissionItem& rhs)
 {
-    return (rhs.latitude_deg == lhs.latitude_deg) && (rhs.longitude_deg == lhs.longitude_deg) &&
-           (rhs.relative_altitude_m == lhs.relative_altitude_m) &&
-           (rhs.speed_m_s == lhs.speed_m_s) && (rhs.is_fly_through == lhs.is_fly_through) &&
-           (rhs.gimbal_pitch_deg == lhs.gimbal_pitch_deg) &&
-           (rhs.gimbal_yaw_deg == lhs.gimbal_yaw_deg) && (rhs.camera_action == lhs.camera_action) &&
-           (rhs.loiter_time_s == lhs.loiter_time_s) &&
-           (rhs.camera_photo_interval_s == lhs.camera_photo_interval_s);
+    return ((std::isnan(rhs.latitude_deg) && std::isnan(lhs.latitude_deg)) ||
+            (std::abs(rhs.latitude_deg - lhs.latitude_deg) <
+             std::numeric_limits<double>::epsilon())) &&
+           ((std::isnan(rhs.longitude_deg) && std::isnan(lhs.longitude_deg)) ||
+            (std::abs(rhs.longitude_deg - lhs.longitude_deg) <
+             std::numeric_limits<double>::epsilon())) &&
+           ((std::isnan(rhs.relative_altitude_m) && std::isnan(lhs.relative_altitude_m)) ||
+            (std::abs(rhs.relative_altitude_m - lhs.relative_altitude_m) <
+             std::numeric_limits<float>::epsilon())) &&
+           ((std::isnan(rhs.speed_m_s) && std::isnan(lhs.speed_m_s)) ||
+            (std::abs(rhs.speed_m_s - lhs.speed_m_s) < std::numeric_limits<float>::epsilon())) &&
+           (rhs.is_fly_through == lhs.is_fly_through) &&
+           ((std::isnan(rhs.gimbal_pitch_deg) && std::isnan(lhs.gimbal_pitch_deg)) ||
+            (std::abs(rhs.gimbal_pitch_deg - lhs.gimbal_pitch_deg) <
+             std::numeric_limits<float>::epsilon())) &&
+           ((std::isnan(rhs.gimbal_yaw_deg) && std::isnan(lhs.gimbal_yaw_deg)) ||
+            (std::abs(rhs.gimbal_yaw_deg - lhs.gimbal_yaw_deg) <
+             std::numeric_limits<float>::epsilon())) &&
+           (rhs.camera_action == lhs.camera_action) &&
+           ((std::isnan(rhs.loiter_time_s) && std::isnan(lhs.loiter_time_s)) ||
+            (std::abs(rhs.loiter_time_s - lhs.loiter_time_s) <
+             std::numeric_limits<float>::epsilon())) &&
+           ((std::isnan(rhs.camera_photo_interval_s) && std::isnan(lhs.camera_photo_interval_s)) ||
+            (std::abs(rhs.camera_photo_interval_s - lhs.camera_photo_interval_s) <
+             std::numeric_limits<double>::epsilon()));
 }
 
 std::ostream& operator<<(std::ostream& str, Mission::MissionItem const& mission_item)
