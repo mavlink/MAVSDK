@@ -24,6 +24,8 @@ set(BACKEND_SOURCES
     backend_api.cpp
     backend.cpp
     grpc_server.cpp
+    ${CMAKE_CURRENT_SOURCE_DIR}/generated/mavsdk_options.grpc.pb.cc
+    ${CMAKE_CURRENT_SOURCE_DIR}/generated/mavsdk_options.pb.cc
 )
 
 if(IOS)
