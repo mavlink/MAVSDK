@@ -11,12 +11,6 @@ using namespace mavsdk;
 
 static void set_link_lossy(std::shared_ptr<MavlinkPassthrough> mavlink_passthrough);
 static std::vector<Mission::MissionItem> create_mission_items();
-static void upload_mission(
-    std::shared_ptr<Mission> mission, const std::vector<Mission::MissionItem>& mission_items);
-static std::vector<Mission::MissionItem> download_mission(std::shared_ptr<Mission> mission);
-static void compare_mission(
-    const std::vector<Mission::MissionItem>& a, const std::vector<Mission::MissionItem>& b);
-
 static bool should_keep_message(const mavlink_message_t& message);
 
 static std::atomic<unsigned> _lossy_counter{0};
@@ -43,11 +37,15 @@ TEST_F(SitlTest, MissionTransferLossy)
 
     set_link_lossy(mavlink_passthrough);
 
-    auto mission_items = create_mission_items();
+    Mission::MissionPlan mission_plan;
+    mission_plan.mission_items = create_mission_items();
 
-    upload_mission(mission, mission_items);
-    auto downloaded_mission_items = download_mission(mission);
-    compare_mission(mission_items, downloaded_mission_items);
+    ASSERT_EQ(mission->upload_mission(mission_plan), Mission::Result::Success);
+
+    auto result = mission->download_mission();
+    ASSERT_EQ(result.first, Mission::Result::Success);
+
+    EXPECT_EQ(mission_plan, result.second);
 }
 
 void set_link_lossy(std::shared_ptr<MavlinkPassthrough> mavlink_passthrough)
@@ -86,59 +84,4 @@ std::vector<Mission::MissionItem> create_mission_items()
         mission_items.push_back(new_item);
     }
     return mission_items;
-}
-
-void upload_mission(
-    std::shared_ptr<Mission> mission, const std::vector<Mission::MissionItem>& mission_items)
-{
-    LogInfo() << "Uploading mission...";
-    auto prom = std::promise<void>{};
-    auto fut = prom.get_future();
-    mission->upload_mission_async(mission_items, [&prom](Mission::Result result) {
-        ASSERT_EQ(result, Mission::Result::Success);
-        prom.set_value();
-        LogInfo() << "Mission uploaded.";
-    });
-
-    auto status = fut.wait_for(std::chrono::seconds(20));
-    ASSERT_EQ(status, std::future_status::ready);
-    fut.get();
-}
-
-std::vector<Mission::MissionItem> download_mission(std::shared_ptr<Mission> mission)
-{
-    LogInfo() << "Downloading mission...";
-    auto prom = std::promise<void>();
-    auto fut = prom.get_future();
-
-    std::vector<Mission::MissionItem> mission_items;
-
-    mission->download_mission_async(
-        [&prom,
-         &mission_items](Mission::Result result, std::vector<Mission::MissionItem> mission_items_) {
-            EXPECT_EQ(result, Mission::Result::Success);
-            mission_items = mission_items_;
-            prom.set_value();
-            LogInfo() << "Mission downloaded.";
-        });
-
-    auto status = fut.wait_for(std::chrono::seconds(20));
-    EXPECT_EQ(status, std::future_status::ready);
-    fut.get();
-
-    return mission_items;
-}
-
-void compare_mission(
-    const std::vector<Mission::MissionItem>& a, const std::vector<Mission::MissionItem>& b)
-{
-    EXPECT_EQ(a.size(), b.size());
-
-    if (a.size() != b.size()) {
-        return;
-    }
-
-    for (unsigned i = 0; i < a.size(); ++i) {
-        EXPECT_EQ(a.at(i), b.at(i));
-    }
 }
