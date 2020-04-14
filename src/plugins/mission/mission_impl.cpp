@@ -933,7 +933,7 @@ MissionImpl::import_qgroundcontrol_mission(const std::string& qgc_plan_file)
 void MissionImpl::import_qgroundcontrol_mission_async(
     std::string qgc_plan_path, const Mission::import_qgroundcontrol_mission_callback_t callback)
 {
-    std::async([this, callback, qgc_plan_path]() {
+    auto fut = std::async([this, callback, qgc_plan_path]() {
         auto result = MissionImpl::import_qgroundcontrol_mission(qgc_plan_path);
         _parent->call_user_callback([&result, callback]() {
             if (callback) {
@@ -941,6 +941,8 @@ void MissionImpl::import_qgroundcontrol_mission_async(
             }
         });
     });
+
+    UNUSED(fut);
 }
 
 // Build a mission item out of command, params and add them to the mission vector.

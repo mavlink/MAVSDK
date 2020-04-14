@@ -38,9 +38,7 @@ using StartMissionResponse = mavsdk::rpc::mission::StartMissionResponse;
 using PauseMissionRequest = mavsdk::rpc::mission::PauseMissionRequest;
 using PauseMissionResponse = mavsdk::rpc::mission::PauseMissionResponse;
 
-static constexpr auto ARBITRARY_RESULT = mavsdk::Mission::Result::Unknown;
 static constexpr auto ARBITRARY_INDEX = 42;
-static constexpr auto ARBITRARY_SMALL_INT = 12;
 
 mavsdk::Mission::MissionPlan generateListOfOneItem()
 {
