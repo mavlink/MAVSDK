@@ -17,4 +17,4 @@ jobs:
         with:
           submodules: recursive
       - name: Run prototool
-        run: docker run -v "$(pwd):/work" uber/prototool:1.8.1 prototool lint protos
+        run: docker run -v "$(pwd):/work" uber/prototool:1.9.0 prototool lint protos
