@@ -1,5 +1,7 @@
 protoc:
   version: 3.6.1
+  includes:
+    - protos
 lint:
   group: google
   rules:
