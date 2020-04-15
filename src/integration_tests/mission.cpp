@@ -190,9 +190,7 @@ void test_mission(
             LogInfo() << "Mission downloaded (to check it).";
 
             EXPECT_EQ(
-                    mission_plan.mission_items.size(),
-                    mission_plan_downloaded.mission_items.size()
-                    );
+                mission_plan.mission_items.size(), mission_plan_downloaded.mission_items.size());
 
             if (mission_plan.mission_items.size() == mission_plan_downloaded.mission_items.size()) {
                 for (unsigned i = 0; i < mission_plan.mission_items.size(); ++i) {
