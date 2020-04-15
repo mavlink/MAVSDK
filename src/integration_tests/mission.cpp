@@ -29,9 +29,6 @@ static Mission::MissionItem add_mission_item(
     float loiter_time_s,
     Mission::CameraAction camera_action);
 
-static void
-compare_mission_items(const Mission::MissionItem original, const Mission::MissionItem downloaded);
-
 static void pause_and_resume(std::shared_ptr<Mission> mission);
 
 static constexpr int NUM_MISSION_ITEMS = 6;
@@ -193,13 +190,15 @@ void test_mission(
             LogInfo() << "Mission downloaded (to check it).";
 
             EXPECT_EQ(
-                mission_plan.mission_items.size(), mission_plan_downloaded.mission_items.size());
+                    mission_plan.mission_items.size(),
+                    mission_plan_downloaded.mission_items.size()
+                    );
 
             if (mission_plan.mission_items.size() == mission_plan_downloaded.mission_items.size()) {
                 for (unsigned i = 0; i < mission_plan.mission_items.size(); ++i) {
-                    compare_mission_items(
-                        mission_plan.mission_items.at(i),
-                        mission_plan_downloaded.mission_items.at(i));
+                    const auto original = mission_plan.mission_items.at(i);
+                    const auto downloaded = mission_plan_downloaded.mission_items.at(i);
+                    EXPECT_EQ(original, downloaded);
                 }
             }
         });
@@ -297,12 +296,6 @@ Mission::MissionItem add_mission_item(
     }
 
     return new_item;
-}
-
-void compare_mission_items(
-    const Mission::MissionItem original, const Mission::MissionItem downloaded)
-{
-    EXPECT_TRUE(original == downloaded);
 }
 
 void pause_and_resume(std::shared_ptr<Mission> mission)
