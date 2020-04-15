@@ -48,7 +48,7 @@ int main(int argc, char** argv)
             prom.set_value();
             });
 
-    if (fut.wait_for(std::chrono::seconds(2)) != std::future_status::ready) {
+    if (fut.wait_for(std::chrono::seconds(5)) != std::future_status::ready) {
         std::cout << "No device found, exiting." << std::endl;
         return 1;
     }
@@ -121,12 +121,26 @@ void request_params(std::shared_ptr<MavlinkPassthrough> mavlink_passthrough)
 
 void subscribe_to_params(std::shared_ptr<MavlinkPassthrough> mavlink_passthrough, Params& params, std::mutex& params_mutex)
 {
+    static int last_index = -1;
+
     mavlink_passthrough->subscribe_message_async(MAVLINK_MSG_ID_PARAM_VALUE,
             [&params, &params_mutex](const mavlink_message_t& message) {
         mavlink_param_value_t param_value;
         mavlink_msg_param_value_decode(&message, &param_value);
 
+        // Ignore the hash.
+        if (int16_t(param_value.param_index) == -1) {
+            return;
+        }
+
         const std::lock_guard<std::mutex> lock(params_mutex);
+
+        std::cout << "index: " << param_value.param_index << std::endl;
+        const int diff = int(param_value.param_index) - last_index;
+        if (diff > 1) {
+            std::cout << "Missed " << int(diff - 1) << std::endl;
+        }
+        last_index = param_value.param_index;
 
         if (params.size() == 0) {
             params.resize(param_value.param_count, false);
