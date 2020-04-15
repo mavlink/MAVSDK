@@ -177,8 +177,8 @@ message ImportQgroundcontrolMissionResponse {
  * They cannot be used independently.
  */
 message MissionItem {
-    double latitude_deg = 1 [(mavsdk.options.default_value)="NaN"]; // Latitude in degrees (range: -90 to +90)
-    double longitude_deg = 2 [(mavsdk.options.default_value)="NaN"]; // Longitude in degrees (range: -180 to +180)
+    double latitude_deg = 1 [(mavsdk.options.default_value)="NaN", (mavsdk.options.epsilon)=0.0000001]; // Latitude in degrees (range: -90 to +90)
+    double longitude_deg = 2 [(mavsdk.options.default_value)="NaN", (mavsdk.options.epsilon)=0.0000001]; // Longitude in degrees (range: -180 to +180)
     float relative_altitude_m = 3 [(mavsdk.options.default_value)="NaN"]; // Altitude relative to takeoff altitude in metres
     float speed_m_s = 4 [(mavsdk.options.default_value)="NaN"]; // Speed to use after this mission item (in metres/second)
     bool is_fly_through = 5 [(mavsdk.options.default_value)="false"]; // True will make the drone fly through without stopping, while false will make the drone stop on the waypoint

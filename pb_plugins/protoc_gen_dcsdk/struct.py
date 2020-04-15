@@ -37,6 +37,11 @@ class Struct(object):
         field_id = 0
         for field in pb_struct.field:
 
+            epsilon = None
+            for field_descriptor in field.options.Extensions:
+                if field_descriptor.name == "epsilon":
+                    epsilon = field.options.Extensions[field_descriptor]
+
             default_value = None
             for field_descriptor in field.options.Extensions:
                 if field_descriptor.name == "default_value":
@@ -46,6 +51,7 @@ class Struct(object):
                 Param(name_parser_factory.create(field.json_name),
                       type_info_factory.create(field),
                       default_value=default_value,
+                      epsilon=epsilon,
                       description=struct_docs['params'][field_id]) if struct_docs else None)
 
             field_id += 1
