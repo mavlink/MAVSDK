@@ -2,6 +2,8 @@
 // Edits need to be made to the proto files
 // (see https://github.com/mavlink/MAVSDK-Proto/blob/master/protos/telemetry/telemetry.proto)
 
+#include <iomanip>
+
 #include "telemetry_impl.h"
 #include "plugins/telemetry/telemetry.h"
 
@@ -499,6 +501,7 @@ bool operator==(const Telemetry::Position& lhs, const Telemetry::Position& rhs)
 
 std::ostream& operator<<(std::ostream& str, Telemetry::Position const& position)
 {
+    str << std::setprecision(15);
     str << "position:" << '\n' << "{\n";
     str << "    latitude_deg: " << position.latitude_deg << '\n';
     str << "    longitude_deg: " << position.longitude_deg << '\n';
@@ -522,6 +525,7 @@ bool operator==(const Telemetry::Quaternion& lhs, const Telemetry::Quaternion& r
 
 std::ostream& operator<<(std::ostream& str, Telemetry::Quaternion const& quaternion)
 {
+    str << std::setprecision(15);
     str << "quaternion:" << '\n' << "{\n";
     str << "    w: " << quaternion.w << '\n';
     str << "    x: " << quaternion.x << '\n';
@@ -543,6 +547,7 @@ bool operator==(const Telemetry::EulerAngle& lhs, const Telemetry::EulerAngle& r
 
 std::ostream& operator<<(std::ostream& str, Telemetry::EulerAngle const& euler_angle)
 {
+    str << std::setprecision(15);
     str << "euler_angle:" << '\n' << "{\n";
     str << "    roll_deg: " << euler_angle.roll_deg << '\n';
     str << "    pitch_deg: " << euler_angle.pitch_deg << '\n';
@@ -566,6 +571,7 @@ bool operator==(
 std::ostream&
 operator<<(std::ostream& str, Telemetry::AngularVelocityBody const& angular_velocity_body)
 {
+    str << std::setprecision(15);
     str << "angular_velocity_body:" << '\n' << "{\n";
     str << "    roll_rad_s: " << angular_velocity_body.roll_rad_s << '\n';
     str << "    pitch_rad_s: " << angular_velocity_body.pitch_rad_s << '\n';
@@ -589,6 +595,7 @@ bool operator==(const Telemetry::SpeedNed& lhs, const Telemetry::SpeedNed& rhs)
 
 std::ostream& operator<<(std::ostream& str, Telemetry::SpeedNed const& speed_ned)
 {
+    str << std::setprecision(15);
     str << "speed_ned:" << '\n' << "{\n";
     str << "    velocity_north_m_s: " << speed_ned.velocity_north_m_s << '\n';
     str << "    velocity_east_m_s: " << speed_ned.velocity_east_m_s << '\n';
@@ -604,6 +611,7 @@ bool operator==(const Telemetry::GpsInfo& lhs, const Telemetry::GpsInfo& rhs)
 
 std::ostream& operator<<(std::ostream& str, Telemetry::GpsInfo const& gps_info)
 {
+    str << std::setprecision(15);
     str << "gps_info:" << '\n' << "{\n";
     str << "    num_satellites: " << gps_info.num_satellites << '\n';
     str << "    fix_type: " << gps_info.fix_type << '\n';
@@ -622,6 +630,7 @@ bool operator==(const Telemetry::Battery& lhs, const Telemetry::Battery& rhs)
 
 std::ostream& operator<<(std::ostream& str, Telemetry::Battery const& battery)
 {
+    str << std::setprecision(15);
     str << "battery:" << '\n' << "{\n";
     str << "    voltage_v: " << battery.voltage_v << '\n';
     str << "    remaining_percent: " << battery.remaining_percent << '\n';
@@ -642,6 +651,7 @@ bool operator==(const Telemetry::Health& lhs, const Telemetry::Health& rhs)
 
 std::ostream& operator<<(std::ostream& str, Telemetry::Health const& health)
 {
+    str << std::setprecision(15);
     str << "health:" << '\n' << "{\n";
     str << "    is_gyrometer_calibration_ok: " << health.is_gyrometer_calibration_ok << '\n';
     str << "    is_accelerometer_calibration_ok: " << health.is_accelerometer_calibration_ok
@@ -666,6 +676,7 @@ bool operator==(const Telemetry::RcStatus& lhs, const Telemetry::RcStatus& rhs)
 
 std::ostream& operator<<(std::ostream& str, Telemetry::RcStatus const& rc_status)
 {
+    str << std::setprecision(15);
     str << "rc_status:" << '\n' << "{\n";
     str << "    was_available_once: " << rc_status.was_available_once << '\n';
     str << "    is_available: " << rc_status.is_available << '\n';
@@ -681,6 +692,7 @@ bool operator==(const Telemetry::StatusText& lhs, const Telemetry::StatusText& r
 
 std::ostream& operator<<(std::ostream& str, Telemetry::StatusText const& status_text)
 {
+    str << std::setprecision(15);
     str << "status_text:" << '\n' << "{\n";
     str << "    type: " << status_text.type << '\n';
     str << "    text: " << status_text.text << '\n';
@@ -697,6 +709,7 @@ bool operator==(
 std::ostream&
 operator<<(std::ostream& str, Telemetry::ActuatorControlTarget const& actuator_control_target)
 {
+    str << std::setprecision(15);
     str << "actuator_control_target:" << '\n' << "{\n";
     str << "    group: " << actuator_control_target.group << '\n';
     str << "    controls: [";
@@ -719,6 +732,7 @@ bool operator==(
 std::ostream&
 operator<<(std::ostream& str, Telemetry::ActuatorOutputStatus const& actuator_output_status)
 {
+    str << std::setprecision(15);
     str << "actuator_output_status:" << '\n' << "{\n";
     str << "    active: " << actuator_output_status.active << '\n';
     str << "    actuator: [";
@@ -739,6 +753,7 @@ bool operator==(const Telemetry::Covariance& lhs, const Telemetry::Covariance& r
 
 std::ostream& operator<<(std::ostream& str, Telemetry::Covariance const& covariance)
 {
+    str << std::setprecision(15);
     str << "covariance:" << '\n' << "{\n";
     str << "    covariance_matrix: [";
     for (auto it = covariance.covariance_matrix.begin(); it != covariance.covariance_matrix.end();
@@ -762,6 +777,7 @@ bool operator==(const Telemetry::VelocityBody& lhs, const Telemetry::VelocityBod
 
 std::ostream& operator<<(std::ostream& str, Telemetry::VelocityBody const& velocity_body)
 {
+    str << std::setprecision(15);
     str << "velocity_body:" << '\n' << "{\n";
     str << "    x_m_s: " << velocity_body.x_m_s << '\n';
     str << "    y_m_s: " << velocity_body.y_m_s << '\n';
@@ -782,6 +798,7 @@ bool operator==(const Telemetry::PositionBody& lhs, const Telemetry::PositionBod
 
 std::ostream& operator<<(std::ostream& str, Telemetry::PositionBody const& position_body)
 {
+    str << std::setprecision(15);
     str << "position_body:" << '\n' << "{\n";
     str << "    x_m: " << position_body.x_m << '\n';
     str << "    y_m: " << position_body.y_m << '\n';
@@ -817,6 +834,7 @@ bool operator==(const Telemetry::Odometry& lhs, const Telemetry::Odometry& rhs)
 
 std::ostream& operator<<(std::ostream& str, Telemetry::Odometry const& odometry)
 {
+    str << std::setprecision(15);
     str << "odometry:" << '\n' << "{\n";
     str << "    time_usec: " << odometry.time_usec << '\n';
     str << "    frame_id: " << odometry.frame_id << '\n';
@@ -843,6 +861,7 @@ bool operator==(const Telemetry::PositionNed& lhs, const Telemetry::PositionNed&
 
 std::ostream& operator<<(std::ostream& str, Telemetry::PositionNed const& position_ned)
 {
+    str << std::setprecision(15);
     str << "position_ned:" << '\n' << "{\n";
     str << "    north_m: " << position_ned.north_m << '\n';
     str << "    east_m: " << position_ned.east_m << '\n';
@@ -863,6 +882,7 @@ bool operator==(const Telemetry::VelocityNed& lhs, const Telemetry::VelocityNed&
 
 std::ostream& operator<<(std::ostream& str, Telemetry::VelocityNed const& velocity_ned)
 {
+    str << std::setprecision(15);
     str << "velocity_ned:" << '\n' << "{\n";
     str << "    north_m_s: " << velocity_ned.north_m_s << '\n';
     str << "    east_m_s: " << velocity_ned.east_m_s << '\n';
@@ -880,6 +900,7 @@ bool operator==(
 std::ostream&
 operator<<(std::ostream& str, Telemetry::PositionVelocityNed const& position_velocity_ned)
 {
+    str << std::setprecision(15);
     str << "position_velocity_ned:" << '\n' << "{\n";
     str << "    position: " << position_velocity_ned.position << '\n';
     str << "    velocity: " << position_velocity_ned.velocity << '\n';
@@ -902,6 +923,7 @@ bool operator==(const Telemetry::GroundTruth& lhs, const Telemetry::GroundTruth&
 
 std::ostream& operator<<(std::ostream& str, Telemetry::GroundTruth const& ground_truth)
 {
+    str << std::setprecision(15);
     str << "ground_truth:" << '\n' << "{\n";
     str << "    latitude_deg: " << ground_truth.latitude_deg << '\n';
     str << "    longitude_deg: " << ground_truth.longitude_deg << '\n';
@@ -925,6 +947,7 @@ bool operator==(const Telemetry::FixedwingMetrics& lhs, const Telemetry::Fixedwi
 
 std::ostream& operator<<(std::ostream& str, Telemetry::FixedwingMetrics const& fixedwing_metrics)
 {
+    str << std::setprecision(15);
     str << "fixedwing_metrics:" << '\n' << "{\n";
     str << "    airspeed_m_s: " << fixedwing_metrics.airspeed_m_s << '\n';
     str << "    throttle_percentage: " << fixedwing_metrics.throttle_percentage << '\n';
@@ -946,6 +969,7 @@ bool operator==(const Telemetry::AccelerationFrd& lhs, const Telemetry::Accelera
 
 std::ostream& operator<<(std::ostream& str, Telemetry::AccelerationFrd const& acceleration_frd)
 {
+    str << std::setprecision(15);
     str << "acceleration_frd:" << '\n' << "{\n";
     str << "    forward_m_s2: " << acceleration_frd.forward_m_s2 << '\n';
     str << "    right_m_s2: " << acceleration_frd.right_m_s2 << '\n';
@@ -969,6 +993,7 @@ bool operator==(const Telemetry::AngularVelocityFrd& lhs, const Telemetry::Angul
 std::ostream&
 operator<<(std::ostream& str, Telemetry::AngularVelocityFrd const& angular_velocity_frd)
 {
+    str << std::setprecision(15);
     str << "angular_velocity_frd:" << '\n' << "{\n";
     str << "    forward_rad_s: " << angular_velocity_frd.forward_rad_s << '\n';
     str << "    right_rad_s: " << angular_velocity_frd.right_rad_s << '\n';
@@ -991,6 +1016,7 @@ bool operator==(const Telemetry::MagneticFieldFrd& lhs, const Telemetry::Magneti
 
 std::ostream& operator<<(std::ostream& str, Telemetry::MagneticFieldFrd const& magnetic_field_frd)
 {
+    str << std::setprecision(15);
     str << "magnetic_field_frd:" << '\n' << "{\n";
     str << "    forward_gauss: " << magnetic_field_frd.forward_gauss << '\n';
     str << "    right_gauss: " << magnetic_field_frd.right_gauss << '\n';
@@ -1011,6 +1037,7 @@ bool operator==(const Telemetry::Imu& lhs, const Telemetry::Imu& rhs)
 
 std::ostream& operator<<(std::ostream& str, Telemetry::Imu const& imu)
 {
+    str << std::setprecision(15);
     str << "imu:" << '\n' << "{\n";
     str << "    acceleration_frd: " << imu.acceleration_frd << '\n';
     str << "    angular_velocity_frd: " << imu.angular_velocity_frd << '\n';

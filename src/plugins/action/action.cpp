@@ -2,6 +2,8 @@
 // Edits need to be made to the proto files
 // (see https://github.com/mavlink/MAVSDK-Proto/blob/master/protos/action/action.proto)
 
+#include <iomanip>
+
 #include "action_impl.h"
 #include "plugins/action/action.h"
 

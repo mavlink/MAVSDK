@@ -2,6 +2,8 @@
 // Edits need to be made to the proto files
 // (see https://github.com/mavlink/MAVSDK-Proto/blob/master/protos/mission/mission.proto)
 
+#include <iomanip>
+
 #include "mission_impl.h"
 #include "plugins/mission/mission.h"
 
@@ -172,6 +174,7 @@ bool operator==(const Mission::MissionItem& lhs, const Mission::MissionItem& rhs
 
 std::ostream& operator<<(std::ostream& str, Mission::MissionItem const& mission_item)
 {
+    str << std::setprecision(15) << std::hexfloat;
     str << "mission_item:" << '\n' << "{\n";
     str << "    latitude_deg: " << mission_item.latitude_deg << '\n';
     str << "    longitude_deg: " << mission_item.longitude_deg << '\n';
@@ -194,6 +197,7 @@ bool operator==(const Mission::MissionPlan& lhs, const Mission::MissionPlan& rhs
 
 std::ostream& operator<<(std::ostream& str, Mission::MissionPlan const& mission_plan)
 {
+    str << std::setprecision(15);
     str << "mission_plan:" << '\n' << "{\n";
     str << "    mission_items: [";
     for (auto it = mission_plan.mission_items.begin(); it != mission_plan.mission_items.end();
@@ -212,6 +216,7 @@ bool operator==(const Mission::MissionProgress& lhs, const Mission::MissionProgr
 
 std::ostream& operator<<(std::ostream& str, Mission::MissionProgress const& mission_progress)
 {
+    str << std::setprecision(15);
     str << "mission_progress:" << '\n' << "{\n";
     str << "    current: " << mission_progress.current << '\n';
     str << "    total: " << mission_progress.total << '\n';

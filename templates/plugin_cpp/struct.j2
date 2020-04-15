@@ -20,6 +20,7 @@ bool operator==(const {{ plugin_name.upper_camel_case }}::{{ name.upper_camel_ca
 
 std::ostream& operator<<(std::ostream& str, {{ plugin_name.upper_camel_case }}::{{ name.upper_camel_case }} const& {{ name.lower_snake_case }})
 {
+    str << std::setprecision(15);
     str << "{{ name.lower_snake_case }}:" << '\n'
         << "{\n";
     {%- for field in fields -%}
