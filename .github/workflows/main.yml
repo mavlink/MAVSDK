@@ -1,0 +1,20 @@
+name: prototool
+
+on:
+  push:
+    branches:
+    - 'master'
+  pull_request:
+    branches:
+      - '*'
+
+jobs:
+  prototool:
+    name: prototool linter
+    runs-on: ubuntu-18.04
+    steps:
+      - uses: actions/checkout@v1
+        with:
+          submodules: recursive
+      - name: Run prototool
+        run: docker run -v "$(pwd):/work" uber/prototool:1.8.1 prototool lint protos
