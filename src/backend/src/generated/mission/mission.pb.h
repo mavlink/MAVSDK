@@ -3768,7 +3768,7 @@ class MissionItem :
     kCameraPhotoIntervalSFieldNumber = 10,
     kLoiterTimeSFieldNumber = 9,
   };
-  // double latitude_deg = 1 [(.mavsdk.options.default_value) = "NaN"];
+  // double latitude_deg = 1 [(.mavsdk.options.default_value) = "NaN", (.mavsdk.options.epsilon) = 1e-07];
   void clear_latitude_deg();
   double latitude_deg() const;
   void set_latitude_deg(double value);
@@ -3777,7 +3777,7 @@ class MissionItem :
   void _internal_set_latitude_deg(double value);
   public:
 
-  // double longitude_deg = 2 [(.mavsdk.options.default_value) = "NaN"];
+  // double longitude_deg = 2 [(.mavsdk.options.default_value) = "NaN", (.mavsdk.options.epsilon) = 1e-07];
   void clear_longitude_deg();
   double longitude_deg() const;
   void set_longitude_deg(double value);
@@ -5565,7 +5565,7 @@ inline void ImportQgroundcontrolMissionResponse::set_allocated_mission_plan(::ma
 
 // MissionItem
 
-// double latitude_deg = 1 [(.mavsdk.options.default_value) = "NaN"];
+// double latitude_deg = 1 [(.mavsdk.options.default_value) = "NaN", (.mavsdk.options.epsilon) = 1e-07];
 inline void MissionItem::clear_latitude_deg() {
   latitude_deg_ = 0;
 }
@@ -5585,7 +5585,7 @@ inline void MissionItem::set_latitude_deg(double value) {
   // @@protoc_insertion_point(field_set:mavsdk.rpc.mission.MissionItem.latitude_deg)
 }
 
-// double longitude_deg = 2 [(.mavsdk.options.default_value) = "NaN"];
+// double longitude_deg = 2 [(.mavsdk.options.default_value) = "NaN", (.mavsdk.options.epsilon) = 1e-07];
 inline void MissionItem::clear_longitude_deg() {
   longitude_deg_ = 0;
 }

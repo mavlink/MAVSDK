@@ -30,9 +30,10 @@ const char descriptor_table_protodef_mavsdk_5foptions_2eproto[] PROTOBUF_SECTION
   "google/protobuf/descriptor.proto**\n\tAsyn"
   "cType\022\t\n\005ASYNC\020\000\022\010\n\004SYNC\020\001\022\010\n\004BOTH\020\002:6\n\r"
   "default_value\022\035.google.protobuf.FieldOpt"
-  "ions\030\320\206\003 \001(\t:O\n\nasync_type\022\036.google.prot"
-  "obuf.MethodOptions\030\320\206\003 \001(\0162\031.mavsdk.opti"
-  "ons.AsyncTypeb\006proto3"
+  "ions\030\320\206\003 \001(\t:0\n\007epsilon\022\035.google.protobu"
+  "f.FieldOptions\030\321\206\003 \001(\001:O\n\nasync_type\022\036.g"
+  "oogle.protobuf.MethodOptions\030\320\206\003 \001(\0162\031.m"
+  "avsdk.options.AsyncTypeb\006proto3"
   ;
 static const ::PROTOBUF_NAMESPACE_ID::internal::DescriptorTable*const descriptor_table_mavsdk_5foptions_2eproto_deps[1] = {
   &::descriptor_table_google_2fprotobuf_2fdescriptor_2eproto,
@@ -42,7 +43,7 @@ static ::PROTOBUF_NAMESPACE_ID::internal::SCCInfoBase*const descriptor_table_mav
 static ::PROTOBUF_NAMESPACE_ID::internal::once_flag descriptor_table_mavsdk_5foptions_2eproto_once;
 static bool descriptor_table_mavsdk_5foptions_2eproto_initialized = false;
 const ::PROTOBUF_NAMESPACE_ID::internal::DescriptorTable descriptor_table_mavsdk_5foptions_2eproto = {
-  &descriptor_table_mavsdk_5foptions_2eproto_initialized, descriptor_table_protodef_mavsdk_5foptions_2eproto, "mavsdk_options.proto", 261,
+  &descriptor_table_mavsdk_5foptions_2eproto_initialized, descriptor_table_protodef_mavsdk_5foptions_2eproto, "mavsdk_options.proto", 311,
   &descriptor_table_mavsdk_5foptions_2eproto_once, descriptor_table_mavsdk_5foptions_2eproto_sccs, descriptor_table_mavsdk_5foptions_2eproto_deps, 0, 1,
   schemas, file_default_instances, TableStruct_mavsdk_5foptions_2eproto::offsets,
   file_level_metadata_mavsdk_5foptions_2eproto, 0, file_level_enum_descriptors_mavsdk_5foptions_2eproto, file_level_service_descriptors_mavsdk_5foptions_2eproto,
@@ -71,6 +72,9 @@ const std::string default_value_default("");
 ::PROTOBUF_NAMESPACE_ID::internal::ExtensionIdentifier< ::google::protobuf::FieldOptions,
     ::PROTOBUF_NAMESPACE_ID::internal::StringTypeTraits, 9, false >
   default_value(kDefaultValueFieldNumber, default_value_default);
+::PROTOBUF_NAMESPACE_ID::internal::ExtensionIdentifier< ::google::protobuf::FieldOptions,
+    ::PROTOBUF_NAMESPACE_ID::internal::PrimitiveTypeTraits< double >, 1, false >
+  epsilon(kEpsilonFieldNumber, 0);
 ::PROTOBUF_NAMESPACE_ID::internal::ExtensionIdentifier< ::google::protobuf::MethodOptions,
     ::PROTOBUF_NAMESPACE_ID::internal::EnumTypeTraits< ::mavsdk::options::AsyncType, ::mavsdk::options::AsyncType_IsValid>, 14, false >
   async_type(kAsyncTypeFieldNumber, static_cast< ::mavsdk::options::AsyncType >(0));

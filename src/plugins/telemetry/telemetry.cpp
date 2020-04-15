@@ -486,17 +486,13 @@ Telemetry::Result Telemetry::set_rate_unix_epoch_time(double rate_hz) const
 bool operator==(const Telemetry::Position& lhs, const Telemetry::Position& rhs)
 {
     return ((std::isnan(rhs.latitude_deg) && std::isnan(lhs.latitude_deg)) ||
-            (std::abs(rhs.latitude_deg - lhs.latitude_deg) <
-             std::numeric_limits<double>::epsilon())) &&
+            rhs.latitude_deg == lhs.latitude_deg) &&
            ((std::isnan(rhs.longitude_deg) && std::isnan(lhs.longitude_deg)) ||
-            (std::abs(rhs.longitude_deg - lhs.longitude_deg) <
-             std::numeric_limits<double>::epsilon())) &&
+            rhs.longitude_deg == lhs.longitude_deg) &&
            ((std::isnan(rhs.absolute_altitude_m) && std::isnan(lhs.absolute_altitude_m)) ||
-            (std::abs(rhs.absolute_altitude_m - lhs.absolute_altitude_m) <
-             std::numeric_limits<float>::epsilon())) &&
+            rhs.absolute_altitude_m == lhs.absolute_altitude_m) &&
            ((std::isnan(rhs.relative_altitude_m) && std::isnan(lhs.relative_altitude_m)) ||
-            (std::abs(rhs.relative_altitude_m - lhs.relative_altitude_m) <
-             std::numeric_limits<float>::epsilon()));
+            rhs.relative_altitude_m == lhs.relative_altitude_m);
 }
 
 std::ostream& operator<<(std::ostream& str, Telemetry::Position const& position)
@@ -513,14 +509,10 @@ std::ostream& operator<<(std::ostream& str, Telemetry::Position const& position)
 
 bool operator==(const Telemetry::Quaternion& lhs, const Telemetry::Quaternion& rhs)
 {
-    return ((std::isnan(rhs.w) && std::isnan(lhs.w)) ||
-            (std::abs(rhs.w - lhs.w) < std::numeric_limits<float>::epsilon())) &&
-           ((std::isnan(rhs.x) && std::isnan(lhs.x)) ||
-            (std::abs(rhs.x - lhs.x) < std::numeric_limits<float>::epsilon())) &&
-           ((std::isnan(rhs.y) && std::isnan(lhs.y)) ||
-            (std::abs(rhs.y - lhs.y) < std::numeric_limits<float>::epsilon())) &&
-           ((std::isnan(rhs.z) && std::isnan(lhs.z)) ||
-            (std::abs(rhs.z - lhs.z) < std::numeric_limits<float>::epsilon()));
+    return ((std::isnan(rhs.w) && std::isnan(lhs.w)) || rhs.w == lhs.w) &&
+           ((std::isnan(rhs.x) && std::isnan(lhs.x)) || rhs.x == lhs.x) &&
+           ((std::isnan(rhs.y) && std::isnan(lhs.y)) || rhs.y == lhs.y) &&
+           ((std::isnan(rhs.z) && std::isnan(lhs.z)) || rhs.z == lhs.z);
 }
 
 std::ostream& operator<<(std::ostream& str, Telemetry::Quaternion const& quaternion)
@@ -538,11 +530,10 @@ std::ostream& operator<<(std::ostream& str, Telemetry::Quaternion const& quatern
 bool operator==(const Telemetry::EulerAngle& lhs, const Telemetry::EulerAngle& rhs)
 {
     return ((std::isnan(rhs.roll_deg) && std::isnan(lhs.roll_deg)) ||
-            (std::abs(rhs.roll_deg - lhs.roll_deg) < std::numeric_limits<float>::epsilon())) &&
+            rhs.roll_deg == lhs.roll_deg) &&
            ((std::isnan(rhs.pitch_deg) && std::isnan(lhs.pitch_deg)) ||
-            (std::abs(rhs.pitch_deg - lhs.pitch_deg) < std::numeric_limits<float>::epsilon())) &&
-           ((std::isnan(rhs.yaw_deg) && std::isnan(lhs.yaw_deg)) ||
-            (std::abs(rhs.yaw_deg - lhs.yaw_deg) < std::numeric_limits<float>::epsilon()));
+            rhs.pitch_deg == lhs.pitch_deg) &&
+           ((std::isnan(rhs.yaw_deg) && std::isnan(lhs.yaw_deg)) || rhs.yaw_deg == lhs.yaw_deg);
 }
 
 std::ostream& operator<<(std::ostream& str, Telemetry::EulerAngle const& euler_angle)
@@ -560,12 +551,11 @@ bool operator==(
     const Telemetry::AngularVelocityBody& lhs, const Telemetry::AngularVelocityBody& rhs)
 {
     return ((std::isnan(rhs.roll_rad_s) && std::isnan(lhs.roll_rad_s)) ||
-            (std::abs(rhs.roll_rad_s - lhs.roll_rad_s) < std::numeric_limits<float>::epsilon())) &&
+            rhs.roll_rad_s == lhs.roll_rad_s) &&
            ((std::isnan(rhs.pitch_rad_s) && std::isnan(lhs.pitch_rad_s)) ||
-            (std::abs(rhs.pitch_rad_s - lhs.pitch_rad_s) <
-             std::numeric_limits<float>::epsilon())) &&
+            rhs.pitch_rad_s == lhs.pitch_rad_s) &&
            ((std::isnan(rhs.yaw_rad_s) && std::isnan(lhs.yaw_rad_s)) ||
-            (std::abs(rhs.yaw_rad_s - lhs.yaw_rad_s) < std::numeric_limits<float>::epsilon()));
+            rhs.yaw_rad_s == lhs.yaw_rad_s);
 }
 
 std::ostream&
@@ -583,14 +573,11 @@ operator<<(std::ostream& str, Telemetry::AngularVelocityBody const& angular_velo
 bool operator==(const Telemetry::SpeedNed& lhs, const Telemetry::SpeedNed& rhs)
 {
     return ((std::isnan(rhs.velocity_north_m_s) && std::isnan(lhs.velocity_north_m_s)) ||
-            (std::abs(rhs.velocity_north_m_s - lhs.velocity_north_m_s) <
-             std::numeric_limits<float>::epsilon())) &&
+            rhs.velocity_north_m_s == lhs.velocity_north_m_s) &&
            ((std::isnan(rhs.velocity_east_m_s) && std::isnan(lhs.velocity_east_m_s)) ||
-            (std::abs(rhs.velocity_east_m_s - lhs.velocity_east_m_s) <
-             std::numeric_limits<float>::epsilon())) &&
+            rhs.velocity_east_m_s == lhs.velocity_east_m_s) &&
            ((std::isnan(rhs.velocity_down_m_s) && std::isnan(lhs.velocity_down_m_s)) ||
-            (std::abs(rhs.velocity_down_m_s - lhs.velocity_down_m_s) <
-             std::numeric_limits<float>::epsilon()));
+            rhs.velocity_down_m_s == lhs.velocity_down_m_s);
 }
 
 std::ostream& operator<<(std::ostream& str, Telemetry::SpeedNed const& speed_ned)
@@ -622,10 +609,9 @@ std::ostream& operator<<(std::ostream& str, Telemetry::GpsInfo const& gps_info)
 bool operator==(const Telemetry::Battery& lhs, const Telemetry::Battery& rhs)
 {
     return ((std::isnan(rhs.voltage_v) && std::isnan(lhs.voltage_v)) ||
-            (std::abs(rhs.voltage_v - lhs.voltage_v) < std::numeric_limits<float>::epsilon())) &&
+            rhs.voltage_v == lhs.voltage_v) &&
            ((std::isnan(rhs.remaining_percent) && std::isnan(lhs.remaining_percent)) ||
-            (std::abs(rhs.remaining_percent - lhs.remaining_percent) <
-             std::numeric_limits<float>::epsilon()));
+            rhs.remaining_percent == lhs.remaining_percent);
 }
 
 std::ostream& operator<<(std::ostream& str, Telemetry::Battery const& battery)
@@ -670,8 +656,7 @@ bool operator==(const Telemetry::RcStatus& lhs, const Telemetry::RcStatus& rhs)
     return (rhs.was_available_once == lhs.was_available_once) &&
            (rhs.is_available == lhs.is_available) &&
            ((std::isnan(rhs.signal_strength_percent) && std::isnan(lhs.signal_strength_percent)) ||
-            (std::abs(rhs.signal_strength_percent - lhs.signal_strength_percent) <
-             std::numeric_limits<float>::epsilon()));
+            rhs.signal_strength_percent == lhs.signal_strength_percent);
 }
 
 std::ostream& operator<<(std::ostream& str, Telemetry::RcStatus const& rc_status)
@@ -767,12 +752,9 @@ std::ostream& operator<<(std::ostream& str, Telemetry::Covariance const& covaria
 
 bool operator==(const Telemetry::VelocityBody& lhs, const Telemetry::VelocityBody& rhs)
 {
-    return ((std::isnan(rhs.x_m_s) && std::isnan(lhs.x_m_s)) ||
-            (std::abs(rhs.x_m_s - lhs.x_m_s) < std::numeric_limits<float>::epsilon())) &&
-           ((std::isnan(rhs.y_m_s) && std::isnan(lhs.y_m_s)) ||
-            (std::abs(rhs.y_m_s - lhs.y_m_s) < std::numeric_limits<float>::epsilon())) &&
-           ((std::isnan(rhs.z_m_s) && std::isnan(lhs.z_m_s)) ||
-            (std::abs(rhs.z_m_s - lhs.z_m_s) < std::numeric_limits<float>::epsilon()));
+    return ((std::isnan(rhs.x_m_s) && std::isnan(lhs.x_m_s)) || rhs.x_m_s == lhs.x_m_s) &&
+           ((std::isnan(rhs.y_m_s) && std::isnan(lhs.y_m_s)) || rhs.y_m_s == lhs.y_m_s) &&
+           ((std::isnan(rhs.z_m_s) && std::isnan(lhs.z_m_s)) || rhs.z_m_s == lhs.z_m_s);
 }
 
 std::ostream& operator<<(std::ostream& str, Telemetry::VelocityBody const& velocity_body)
@@ -788,12 +770,9 @@ std::ostream& operator<<(std::ostream& str, Telemetry::VelocityBody const& veloc
 
 bool operator==(const Telemetry::PositionBody& lhs, const Telemetry::PositionBody& rhs)
 {
-    return ((std::isnan(rhs.x_m) && std::isnan(lhs.x_m)) ||
-            (std::abs(rhs.x_m - lhs.x_m) < std::numeric_limits<float>::epsilon())) &&
-           ((std::isnan(rhs.y_m) && std::isnan(lhs.y_m)) ||
-            (std::abs(rhs.y_m - lhs.y_m) < std::numeric_limits<float>::epsilon())) &&
-           ((std::isnan(rhs.z_m) && std::isnan(lhs.z_m)) ||
-            (std::abs(rhs.z_m - lhs.z_m) < std::numeric_limits<float>::epsilon()));
+    return ((std::isnan(rhs.x_m) && std::isnan(lhs.x_m)) || rhs.x_m == lhs.x_m) &&
+           ((std::isnan(rhs.y_m) && std::isnan(lhs.y_m)) || rhs.y_m == lhs.y_m) &&
+           ((std::isnan(rhs.z_m) && std::isnan(lhs.z_m)) || rhs.z_m == lhs.z_m);
 }
 
 std::ostream& operator<<(std::ostream& str, Telemetry::PositionBody const& position_body)
@@ -851,12 +830,9 @@ std::ostream& operator<<(std::ostream& str, Telemetry::Odometry const& odometry)
 
 bool operator==(const Telemetry::PositionNed& lhs, const Telemetry::PositionNed& rhs)
 {
-    return ((std::isnan(rhs.north_m) && std::isnan(lhs.north_m)) ||
-            (std::abs(rhs.north_m - lhs.north_m) < std::numeric_limits<float>::epsilon())) &&
-           ((std::isnan(rhs.east_m) && std::isnan(lhs.east_m)) ||
-            (std::abs(rhs.east_m - lhs.east_m) < std::numeric_limits<float>::epsilon())) &&
-           ((std::isnan(rhs.down_m) && std::isnan(lhs.down_m)) ||
-            (std::abs(rhs.down_m - lhs.down_m) < std::numeric_limits<float>::epsilon()));
+    return ((std::isnan(rhs.north_m) && std::isnan(lhs.north_m)) || rhs.north_m == lhs.north_m) &&
+           ((std::isnan(rhs.east_m) && std::isnan(lhs.east_m)) || rhs.east_m == lhs.east_m) &&
+           ((std::isnan(rhs.down_m) && std::isnan(lhs.down_m)) || rhs.down_m == lhs.down_m);
 }
 
 std::ostream& operator<<(std::ostream& str, Telemetry::PositionNed const& position_ned)
@@ -873,11 +849,10 @@ std::ostream& operator<<(std::ostream& str, Telemetry::PositionNed const& positi
 bool operator==(const Telemetry::VelocityNed& lhs, const Telemetry::VelocityNed& rhs)
 {
     return ((std::isnan(rhs.north_m_s) && std::isnan(lhs.north_m_s)) ||
-            (std::abs(rhs.north_m_s - lhs.north_m_s) < std::numeric_limits<float>::epsilon())) &&
+            rhs.north_m_s == lhs.north_m_s) &&
            ((std::isnan(rhs.east_m_s) && std::isnan(lhs.east_m_s)) ||
-            (std::abs(rhs.east_m_s - lhs.east_m_s) < std::numeric_limits<float>::epsilon())) &&
-           ((std::isnan(rhs.down_m_s) && std::isnan(lhs.down_m_s)) ||
-            (std::abs(rhs.down_m_s - lhs.down_m_s) < std::numeric_limits<float>::epsilon()));
+            rhs.east_m_s == lhs.east_m_s) &&
+           ((std::isnan(rhs.down_m_s) && std::isnan(lhs.down_m_s)) || rhs.down_m_s == lhs.down_m_s);
 }
 
 std::ostream& operator<<(std::ostream& str, Telemetry::VelocityNed const& velocity_ned)
@@ -911,14 +886,11 @@ operator<<(std::ostream& str, Telemetry::PositionVelocityNed const& position_vel
 bool operator==(const Telemetry::GroundTruth& lhs, const Telemetry::GroundTruth& rhs)
 {
     return ((std::isnan(rhs.latitude_deg) && std::isnan(lhs.latitude_deg)) ||
-            (std::abs(rhs.latitude_deg - lhs.latitude_deg) <
-             std::numeric_limits<double>::epsilon())) &&
+            rhs.latitude_deg == lhs.latitude_deg) &&
            ((std::isnan(rhs.longitude_deg) && std::isnan(lhs.longitude_deg)) ||
-            (std::abs(rhs.longitude_deg - lhs.longitude_deg) <
-             std::numeric_limits<double>::epsilon())) &&
+            rhs.longitude_deg == lhs.longitude_deg) &&
            ((std::isnan(rhs.absolute_altitude_m) && std::isnan(lhs.absolute_altitude_m)) ||
-            (std::abs(rhs.absolute_altitude_m - lhs.absolute_altitude_m) <
-             std::numeric_limits<float>::epsilon()));
+            rhs.absolute_altitude_m == lhs.absolute_altitude_m);
 }
 
 std::ostream& operator<<(std::ostream& str, Telemetry::GroundTruth const& ground_truth)
@@ -935,14 +907,11 @@ std::ostream& operator<<(std::ostream& str, Telemetry::GroundTruth const& ground
 bool operator==(const Telemetry::FixedwingMetrics& lhs, const Telemetry::FixedwingMetrics& rhs)
 {
     return ((std::isnan(rhs.airspeed_m_s) && std::isnan(lhs.airspeed_m_s)) ||
-            (std::abs(rhs.airspeed_m_s - lhs.airspeed_m_s) <
-             std::numeric_limits<float>::epsilon())) &&
+            rhs.airspeed_m_s == lhs.airspeed_m_s) &&
            ((std::isnan(rhs.throttle_percentage) && std::isnan(lhs.throttle_percentage)) ||
-            (std::abs(rhs.throttle_percentage - lhs.throttle_percentage) <
-             std::numeric_limits<float>::epsilon())) &&
+            rhs.throttle_percentage == lhs.throttle_percentage) &&
            ((std::isnan(rhs.climb_rate_m_s) && std::isnan(lhs.climb_rate_m_s)) ||
-            (std::abs(rhs.climb_rate_m_s - lhs.climb_rate_m_s) <
-             std::numeric_limits<float>::epsilon()));
+            rhs.climb_rate_m_s == lhs.climb_rate_m_s);
 }
 
 std::ostream& operator<<(std::ostream& str, Telemetry::FixedwingMetrics const& fixedwing_metrics)
@@ -959,12 +928,11 @@ std::ostream& operator<<(std::ostream& str, Telemetry::FixedwingMetrics const& f
 bool operator==(const Telemetry::AccelerationFrd& lhs, const Telemetry::AccelerationFrd& rhs)
 {
     return ((std::isnan(rhs.forward_m_s2) && std::isnan(lhs.forward_m_s2)) ||
-            (std::abs(rhs.forward_m_s2 - lhs.forward_m_s2) <
-             std::numeric_limits<float>::epsilon())) &&
+            rhs.forward_m_s2 == lhs.forward_m_s2) &&
            ((std::isnan(rhs.right_m_s2) && std::isnan(lhs.right_m_s2)) ||
-            (std::abs(rhs.right_m_s2 - lhs.right_m_s2) < std::numeric_limits<float>::epsilon())) &&
+            rhs.right_m_s2 == lhs.right_m_s2) &&
            ((std::isnan(rhs.down_m_s2) && std::isnan(lhs.down_m_s2)) ||
-            (std::abs(rhs.down_m_s2 - lhs.down_m_s2) < std::numeric_limits<float>::epsilon()));
+            rhs.down_m_s2 == lhs.down_m_s2);
 }
 
 std::ostream& operator<<(std::ostream& str, Telemetry::AccelerationFrd const& acceleration_frd)
@@ -981,13 +949,11 @@ std::ostream& operator<<(std::ostream& str, Telemetry::AccelerationFrd const& ac
 bool operator==(const Telemetry::AngularVelocityFrd& lhs, const Telemetry::AngularVelocityFrd& rhs)
 {
     return ((std::isnan(rhs.forward_rad_s) && std::isnan(lhs.forward_rad_s)) ||
-            (std::abs(rhs.forward_rad_s - lhs.forward_rad_s) <
-             std::numeric_limits<float>::epsilon())) &&
+            rhs.forward_rad_s == lhs.forward_rad_s) &&
            ((std::isnan(rhs.right_rad_s) && std::isnan(lhs.right_rad_s)) ||
-            (std::abs(rhs.right_rad_s - lhs.right_rad_s) <
-             std::numeric_limits<float>::epsilon())) &&
+            rhs.right_rad_s == lhs.right_rad_s) &&
            ((std::isnan(rhs.down_rad_s) && std::isnan(lhs.down_rad_s)) ||
-            (std::abs(rhs.down_rad_s - lhs.down_rad_s) < std::numeric_limits<float>::epsilon()));
+            rhs.down_rad_s == lhs.down_rad_s);
 }
 
 std::ostream&
@@ -1005,13 +971,11 @@ operator<<(std::ostream& str, Telemetry::AngularVelocityFrd const& angular_veloc
 bool operator==(const Telemetry::MagneticFieldFrd& lhs, const Telemetry::MagneticFieldFrd& rhs)
 {
     return ((std::isnan(rhs.forward_gauss) && std::isnan(lhs.forward_gauss)) ||
-            (std::abs(rhs.forward_gauss - lhs.forward_gauss) <
-             std::numeric_limits<float>::epsilon())) &&
+            rhs.forward_gauss == lhs.forward_gauss) &&
            ((std::isnan(rhs.right_gauss) && std::isnan(lhs.right_gauss)) ||
-            (std::abs(rhs.right_gauss - lhs.right_gauss) <
-             std::numeric_limits<float>::epsilon())) &&
+            rhs.right_gauss == lhs.right_gauss) &&
            ((std::isnan(rhs.down_gauss) && std::isnan(lhs.down_gauss)) ||
-            (std::abs(rhs.down_gauss - lhs.down_gauss) < std::numeric_limits<float>::epsilon()));
+            rhs.down_gauss == lhs.down_gauss);
 }
 
 std::ostream& operator<<(std::ostream& str, Telemetry::MagneticFieldFrd const& magnetic_field_frd)
@@ -1031,8 +995,7 @@ bool operator==(const Telemetry::Imu& lhs, const Telemetry::Imu& rhs)
            (rhs.angular_velocity_frd == lhs.angular_velocity_frd) &&
            (rhs.magnetic_field_frd == lhs.magnetic_field_frd) &&
            ((std::isnan(rhs.temperature_degc) && std::isnan(lhs.temperature_degc)) ||
-            (std::abs(rhs.temperature_degc - lhs.temperature_degc) <
-             std::numeric_limits<float>::epsilon()));
+            rhs.temperature_degc == lhs.temperature_degc);
 }
 
 std::ostream& operator<<(std::ostream& str, Telemetry::Imu const& imu)
