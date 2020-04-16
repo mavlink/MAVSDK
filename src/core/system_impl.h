@@ -82,9 +82,9 @@ public:
     MAVLinkCommands::Result send_command(MAVLinkCommands::CommandInt& command);
 
     void send_command_async(
-        MAVLinkCommands::CommandLong& command, const command_result_callback_t callback);
+        MAVLinkCommands::CommandLong command, const command_result_callback_t callback);
     void send_command_async(
-        MAVLinkCommands::CommandInt& command, const command_result_callback_t callback);
+        MAVLinkCommands::CommandInt command, const command_result_callback_t callback);
 
     MAVLinkCommands::Result set_msg_rate(
         uint16_t message_id, double rate_hz, uint8_t component_id = MAV_COMP_ID_AUTOPILOT1);

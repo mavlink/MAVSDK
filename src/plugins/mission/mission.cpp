@@ -37,7 +37,7 @@ void Mission::download_mission_async(const download_mission_callback_t callback)
     _impl->download_mission_async(callback);
 }
 
-std::pair<Mission::Result, MissionPlan> Mission::download_mission() const
+std::pair<Mission::Result, Mission::MissionPlan> Mission::download_mission() const
 {
     return _impl->download_mission();
 }
@@ -118,26 +118,26 @@ void Mission::import_qgroundcontrol_mission_async(
     _impl->import_qgroundcontrol_mission_async(qgc_plan_path, callback);
 }
 
-std::pair<Mission::Result, MissionPlan>
+std::pair<Mission::Result, Mission::MissionPlan>
 Mission::import_qgroundcontrol_mission(std::string qgc_plan_path) const
 {
     return _impl->import_qgroundcontrol_mission(qgc_plan_path);
 }
 
-std::ostream& operator<<(std::ostream& str, Mission::CameraAction const& camera_action)
+std::ostream& operator<<(std::ostream& str, Mission::MissionItem::CameraAction const& camera_action)
 {
     switch (camera_action) {
-        case Mission::CameraAction::None:
+        case Mission::MissionItem::CameraAction::None:
             return str << "Camera Action None";
-        case Mission::CameraAction::TakePhoto:
+        case Mission::MissionItem::CameraAction::TakePhoto:
             return str << "Camera Action Take Photo";
-        case Mission::CameraAction::StartPhotoInterval:
+        case Mission::MissionItem::CameraAction::StartPhotoInterval:
             return str << "Camera Action Start Photo Interval";
-        case Mission::CameraAction::StopPhotoInterval:
+        case Mission::MissionItem::CameraAction::StopPhotoInterval:
             return str << "Camera Action Stop Photo Interval";
-        case Mission::CameraAction::StartVideo:
+        case Mission::MissionItem::CameraAction::StartVideo:
             return str << "Camera Action Start Video";
-        case Mission::CameraAction::StopVideo:
+        case Mission::MissionItem::CameraAction::StopVideo:
             return str << "Camera Action Stop Video";
         default:
             return str << "Unknown";

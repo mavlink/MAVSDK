@@ -10,7 +10,7 @@
 
 using namespace mavsdk;
 using MissionItem = Mission::MissionItem;
-using CameraAction = Mission::CameraAction;
+using CameraAction = Mission::MissionItem::CameraAction;
 
 static const std::string QGC_SAMPLE_PLAN = "src/plugins/mission/qgroundcontrol_sample.plan";
 

@@ -36,11 +36,11 @@ TEST(CameraTest, TakePhotoSingle)
     std::this_thread::sleep_for(std::chrono::seconds(1));
 
     // We want to take the picture in photo mode.
-    set_mode_async(camera, Camera::Mode::PHOTO);
+    set_mode_async(camera, Camera::Mode::Photo);
 
     std::this_thread::sleep_for(std::chrono::seconds(1));
 
-    camera->subscribe_capture_info(std::bind(&receive_capture_info, _1));
+    camera->capture_info_async(std::bind(&receive_capture_info, _1));
 
     camera->take_photo_async(std::bind(&receive_camera_result, _1));
     std::this_thread::sleep_for(std::chrono::seconds(5));
@@ -64,11 +64,11 @@ TEST(CameraTest, TakePhotosMultiple)
     auto camera = std::make_shared<Camera>(system);
 
     // We want to take the picture in photo mode.
-    set_mode_async(camera, Camera::Mode::PHOTO);
+    set_mode_async(camera, Camera::Mode::Photo);
 
     std::this_thread::sleep_for(std::chrono::seconds(1));
 
-    camera->subscribe_capture_info(std::bind(&receive_capture_info, _1));
+    camera->capture_info_async(std::bind(&receive_capture_info, _1));
 
     for (unsigned i = 0; i < num_photos_to_take; ++i) {
         camera->take_photo_async(std::bind(&receive_camera_result, _1));
@@ -82,7 +82,7 @@ TEST(CameraTest, TakePhotosMultiple)
 void receive_camera_result(Camera::Result result)
 {
     _received_result = true;
-    EXPECT_EQ(result, Camera::Result::SUCCESS);
+    EXPECT_EQ(result, Camera::Result::Success);
 }
 
 void receive_capture_info(Camera::CaptureInfo capture_info)
@@ -95,7 +95,7 @@ void receive_capture_info(Camera::CaptureInfo capture_info)
     LogInfo() << "Attitude: " << capture_info.attitude_quaternion.w << ", "
               << capture_info.attitude_quaternion.x << ", " << capture_info.attitude_quaternion.y
               << ", " << capture_info.attitude_quaternion.z << ".";
-    LogInfo() << "Result: " << (capture_info.success ? "success" : "fail") << ".";
+    LogInfo() << "Result: " << (capture_info.is_success ? "success" : "fail") << ".";
     LogInfo() << "Saved to " << capture_info.file_url << " (" << capture_info.index << ").";
 
     _received_capture_info = true;

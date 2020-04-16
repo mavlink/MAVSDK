@@ -34,28 +34,28 @@ public:
     }
 
     static rpc::mission::MissionItem::CameraAction
-    translateToRpcCameraAction(const mavsdk::Mission::CameraAction& camera_action)
+    translateToRpcCameraAction(const mavsdk::Mission::MissionItem::CameraAction& camera_action)
     {
         switch (camera_action) {
             default:
                 LogErr() << "Unknown camera_action enum value: " << static_cast<int>(camera_action);
             // FALLTHROUGH
-            case mavsdk::Mission::CameraAction::None:
+            case mavsdk::Mission::MissionItem::CameraAction::None:
                 return rpc::mission::MissionItem_CameraAction_CAMERA_ACTION_NONE;
-            case mavsdk::Mission::CameraAction::TakePhoto:
+            case mavsdk::Mission::MissionItem::CameraAction::TakePhoto:
                 return rpc::mission::MissionItem_CameraAction_CAMERA_ACTION_TAKE_PHOTO;
-            case mavsdk::Mission::CameraAction::StartPhotoInterval:
+            case mavsdk::Mission::MissionItem::CameraAction::StartPhotoInterval:
                 return rpc::mission::MissionItem_CameraAction_CAMERA_ACTION_START_PHOTO_INTERVAL;
-            case mavsdk::Mission::CameraAction::StopPhotoInterval:
+            case mavsdk::Mission::MissionItem::CameraAction::StopPhotoInterval:
                 return rpc::mission::MissionItem_CameraAction_CAMERA_ACTION_STOP_PHOTO_INTERVAL;
-            case mavsdk::Mission::CameraAction::StartVideo:
+            case mavsdk::Mission::MissionItem::CameraAction::StartVideo:
                 return rpc::mission::MissionItem_CameraAction_CAMERA_ACTION_START_VIDEO;
-            case mavsdk::Mission::CameraAction::StopVideo:
+            case mavsdk::Mission::MissionItem::CameraAction::StopVideo:
                 return rpc::mission::MissionItem_CameraAction_CAMERA_ACTION_STOP_VIDEO;
         }
     }
 
-    static mavsdk::Mission::CameraAction
+    static mavsdk::Mission::MissionItem::CameraAction
     translateFromRpcCameraAction(const rpc::mission::MissionItem::CameraAction camera_action)
     {
         switch (camera_action) {
@@ -63,17 +63,17 @@ public:
                 LogErr() << "Unknown camera_action enum value: " << static_cast<int>(camera_action);
             // FALLTHROUGH
             case rpc::mission::MissionItem_CameraAction_CAMERA_ACTION_NONE:
-                return mavsdk::Mission::CameraAction::None;
+                return mavsdk::Mission::MissionItem::CameraAction::None;
             case rpc::mission::MissionItem_CameraAction_CAMERA_ACTION_TAKE_PHOTO:
-                return mavsdk::Mission::CameraAction::TakePhoto;
+                return mavsdk::Mission::MissionItem::CameraAction::TakePhoto;
             case rpc::mission::MissionItem_CameraAction_CAMERA_ACTION_START_PHOTO_INTERVAL:
-                return mavsdk::Mission::CameraAction::StartPhotoInterval;
+                return mavsdk::Mission::MissionItem::CameraAction::StartPhotoInterval;
             case rpc::mission::MissionItem_CameraAction_CAMERA_ACTION_STOP_PHOTO_INTERVAL:
-                return mavsdk::Mission::CameraAction::StopPhotoInterval;
+                return mavsdk::Mission::MissionItem::CameraAction::StopPhotoInterval;
             case rpc::mission::MissionItem_CameraAction_CAMERA_ACTION_START_VIDEO:
-                return mavsdk::Mission::CameraAction::StartVideo;
+                return mavsdk::Mission::MissionItem::CameraAction::StartVideo;
             case rpc::mission::MissionItem_CameraAction_CAMERA_ACTION_STOP_VIDEO:
-                return mavsdk::Mission::CameraAction::StopVideo;
+                return mavsdk::Mission::MissionItem::CameraAction::StopVideo;
         }
     }
 
@@ -408,7 +408,7 @@ public:
 
         _mission.mission_progress_async(
             [this, &writer, &stream_closed_promise, is_finished, &subscribe_mutex](
-                const mavsdk::Mission::MissionProgress& mission_progress) {
+                const mavsdk::Mission::MissionProgress mission_progress) {
                 rpc::mission::MissionProgressResponse rpc_response;
 
                 rpc_response.set_allocated_mission_progress(

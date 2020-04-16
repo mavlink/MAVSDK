@@ -150,7 +150,7 @@ Mission::MissionItem add_waypoint(
     new_item.gimbal_pitch_deg = gimbal_pitch_deg;
     new_item.gimbal_yaw_deg = gimbal_yaw_deg;
     if (take_photo) {
-        new_item.camera_action = Mission::CameraAction::TakePhoto;
+        new_item.camera_action = Mission::MissionItem::CameraAction::TakePhoto;
     }
     return new_item;
 }

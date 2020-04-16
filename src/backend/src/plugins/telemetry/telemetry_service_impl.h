@@ -666,24 +666,24 @@ public:
     }
 
     static rpc::telemetry::Odometry::MavFrame
-    translateToRpcMavFrame(const mavsdk::Telemetry::MavFrame& mav_frame)
+    translateToRpcMavFrame(const mavsdk::Telemetry::Odometry::MavFrame& mav_frame)
     {
         switch (mav_frame) {
             default:
                 LogErr() << "Unknown mav_frame enum value: " << static_cast<int>(mav_frame);
             // FALLTHROUGH
-            case mavsdk::Telemetry::MavFrame::Undef:
+            case mavsdk::Telemetry::Odometry::MavFrame::Undef:
                 return rpc::telemetry::Odometry_MavFrame_MAV_FRAME_UNDEF;
-            case mavsdk::Telemetry::MavFrame::BodyNed:
+            case mavsdk::Telemetry::Odometry::MavFrame::BodyNed:
                 return rpc::telemetry::Odometry_MavFrame_MAV_FRAME_BODY_NED;
-            case mavsdk::Telemetry::MavFrame::VisionNed:
+            case mavsdk::Telemetry::Odometry::MavFrame::VisionNed:
                 return rpc::telemetry::Odometry_MavFrame_MAV_FRAME_VISION_NED;
-            case mavsdk::Telemetry::MavFrame::EstimNed:
+            case mavsdk::Telemetry::Odometry::MavFrame::EstimNed:
                 return rpc::telemetry::Odometry_MavFrame_MAV_FRAME_ESTIM_NED;
         }
     }
 
-    static mavsdk::Telemetry::MavFrame
+    static mavsdk::Telemetry::Odometry::MavFrame
     translateFromRpcMavFrame(const rpc::telemetry::Odometry::MavFrame mav_frame)
     {
         switch (mav_frame) {
@@ -691,13 +691,13 @@ public:
                 LogErr() << "Unknown mav_frame enum value: " << static_cast<int>(mav_frame);
             // FALLTHROUGH
             case rpc::telemetry::Odometry_MavFrame_MAV_FRAME_UNDEF:
-                return mavsdk::Telemetry::MavFrame::Undef;
+                return mavsdk::Telemetry::Odometry::MavFrame::Undef;
             case rpc::telemetry::Odometry_MavFrame_MAV_FRAME_BODY_NED:
-                return mavsdk::Telemetry::MavFrame::BodyNed;
+                return mavsdk::Telemetry::Odometry::MavFrame::BodyNed;
             case rpc::telemetry::Odometry_MavFrame_MAV_FRAME_VISION_NED:
-                return mavsdk::Telemetry::MavFrame::VisionNed;
+                return mavsdk::Telemetry::Odometry::MavFrame::VisionNed;
             case rpc::telemetry::Odometry_MavFrame_MAV_FRAME_ESTIM_NED:
-                return mavsdk::Telemetry::MavFrame::EstimNed;
+                return mavsdk::Telemetry::Odometry::MavFrame::EstimNed;
         }
     }
 
@@ -1082,7 +1082,7 @@ public:
 
         _telemetry.position_async(
             [this, &writer, &stream_closed_promise, is_finished, &subscribe_mutex](
-                const mavsdk::Telemetry::Position& position) {
+                const mavsdk::Telemetry::Position position) {
                 rpc::telemetry::PositionResponse rpc_response;
 
                 rpc_response.set_allocated_position(translateToRpcPosition(position).release());
@@ -1115,7 +1115,7 @@ public:
 
         _telemetry.home_async(
             [this, &writer, &stream_closed_promise, is_finished, &subscribe_mutex](
-                const mavsdk::Telemetry::Position& home) {
+                const mavsdk::Telemetry::Position home) {
                 rpc::telemetry::HomeResponse rpc_response;
 
                 rpc_response.set_allocated_home(translateToRpcPosition(home).release());
@@ -1148,7 +1148,7 @@ public:
 
         _telemetry.in_air_async(
             [this, &writer, &stream_closed_promise, is_finished, &subscribe_mutex](
-                const bool& in_air) {
+                const bool in_air) {
                 rpc::telemetry::InAirResponse rpc_response;
 
                 rpc_response.set_is_in_air(in_air);
@@ -1181,7 +1181,7 @@ public:
 
         _telemetry.landed_state_async(
             [this, &writer, &stream_closed_promise, is_finished, &subscribe_mutex](
-                const mavsdk::Telemetry::LandedState& landed_state) {
+                const mavsdk::Telemetry::LandedState landed_state) {
                 rpc::telemetry::LandedStateResponse rpc_response;
 
                 rpc_response.set_landed_state(translateToRpcLandedState(landed_state));
@@ -1214,7 +1214,7 @@ public:
 
         _telemetry.armed_async(
             [this, &writer, &stream_closed_promise, is_finished, &subscribe_mutex](
-                const bool& armed) {
+                const bool armed) {
                 rpc::telemetry::ArmedResponse rpc_response;
 
                 rpc_response.set_is_armed(armed);
@@ -1247,7 +1247,7 @@ public:
 
         _telemetry.attitude_quaternion_async(
             [this, &writer, &stream_closed_promise, is_finished, &subscribe_mutex](
-                const mavsdk::Telemetry::Quaternion& attitude_quaternion) {
+                const mavsdk::Telemetry::Quaternion attitude_quaternion) {
                 rpc::telemetry::AttitudeQuaternionResponse rpc_response;
 
                 rpc_response.set_allocated_attitude_quaternion(
@@ -1281,7 +1281,7 @@ public:
 
         _telemetry.attitude_euler_async(
             [this, &writer, &stream_closed_promise, is_finished, &subscribe_mutex](
-                const mavsdk::Telemetry::EulerAngle& attitude_euler) {
+                const mavsdk::Telemetry::EulerAngle attitude_euler) {
                 rpc::telemetry::AttitudeEulerResponse rpc_response;
 
                 rpc_response.set_allocated_attitude_euler(
@@ -1315,7 +1315,7 @@ public:
 
         _telemetry.attitude_angular_velocity_body_async(
             [this, &writer, &stream_closed_promise, is_finished, &subscribe_mutex](
-                const mavsdk::Telemetry::AngularVelocityBody& attitude_angular_velocity_body) {
+                const mavsdk::Telemetry::AngularVelocityBody attitude_angular_velocity_body) {
                 rpc::telemetry::AttitudeAngularVelocityBodyResponse rpc_response;
 
                 rpc_response.set_allocated_attitude_angular_velocity_body(
@@ -1349,7 +1349,7 @@ public:
 
         _telemetry.camera_attitude_quaternion_async(
             [this, &writer, &stream_closed_promise, is_finished, &subscribe_mutex](
-                const mavsdk::Telemetry::Quaternion& camera_attitude_quaternion) {
+                const mavsdk::Telemetry::Quaternion camera_attitude_quaternion) {
                 rpc::telemetry::CameraAttitudeQuaternionResponse rpc_response;
 
                 rpc_response.set_allocated_attitude_quaternion(
@@ -1383,7 +1383,7 @@ public:
 
         _telemetry.camera_attitude_euler_async(
             [this, &writer, &stream_closed_promise, is_finished, &subscribe_mutex](
-                const mavsdk::Telemetry::EulerAngle& camera_attitude_euler) {
+                const mavsdk::Telemetry::EulerAngle camera_attitude_euler) {
                 rpc::telemetry::CameraAttitudeEulerResponse rpc_response;
 
                 rpc_response.set_allocated_attitude_euler(
@@ -1417,7 +1417,7 @@ public:
 
         _telemetry.ground_speed_ned_async(
             [this, &writer, &stream_closed_promise, is_finished, &subscribe_mutex](
-                const mavsdk::Telemetry::SpeedNed& ground_speed_ned) {
+                const mavsdk::Telemetry::SpeedNed ground_speed_ned) {
                 rpc::telemetry::GroundSpeedNedResponse rpc_response;
 
                 rpc_response.set_allocated_ground_speed_ned(
@@ -1451,7 +1451,7 @@ public:
 
         _telemetry.gps_info_async(
             [this, &writer, &stream_closed_promise, is_finished, &subscribe_mutex](
-                const mavsdk::Telemetry::GpsInfo& gps_info) {
+                const mavsdk::Telemetry::GpsInfo gps_info) {
                 rpc::telemetry::GpsInfoResponse rpc_response;
 
                 rpc_response.set_allocated_gps_info(translateToRpcGpsInfo(gps_info).release());
@@ -1484,7 +1484,7 @@ public:
 
         _telemetry.battery_async(
             [this, &writer, &stream_closed_promise, is_finished, &subscribe_mutex](
-                const mavsdk::Telemetry::Battery& battery) {
+                const mavsdk::Telemetry::Battery battery) {
                 rpc::telemetry::BatteryResponse rpc_response;
 
                 rpc_response.set_allocated_battery(translateToRpcBattery(battery).release());
@@ -1517,7 +1517,7 @@ public:
 
         _telemetry.flight_mode_async(
             [this, &writer, &stream_closed_promise, is_finished, &subscribe_mutex](
-                const mavsdk::Telemetry::FlightMode& flight_mode) {
+                const mavsdk::Telemetry::FlightMode flight_mode) {
                 rpc::telemetry::FlightModeResponse rpc_response;
 
                 rpc_response.set_flight_mode(translateToRpcFlightMode(flight_mode));
@@ -1550,7 +1550,7 @@ public:
 
         _telemetry.health_async(
             [this, &writer, &stream_closed_promise, is_finished, &subscribe_mutex](
-                const mavsdk::Telemetry::Health& health) {
+                const mavsdk::Telemetry::Health health) {
                 rpc::telemetry::HealthResponse rpc_response;
 
                 rpc_response.set_allocated_health(translateToRpcHealth(health).release());
@@ -1583,7 +1583,7 @@ public:
 
         _telemetry.rc_status_async(
             [this, &writer, &stream_closed_promise, is_finished, &subscribe_mutex](
-                const mavsdk::Telemetry::RcStatus& rc_status) {
+                const mavsdk::Telemetry::RcStatus rc_status) {
                 rpc::telemetry::RcStatusResponse rpc_response;
 
                 rpc_response.set_allocated_rc_status(translateToRpcRcStatus(rc_status).release());
@@ -1616,7 +1616,7 @@ public:
 
         _telemetry.status_text_async(
             [this, &writer, &stream_closed_promise, is_finished, &subscribe_mutex](
-                const mavsdk::Telemetry::StatusText& status_text) {
+                const mavsdk::Telemetry::StatusText status_text) {
                 rpc::telemetry::StatusTextResponse rpc_response;
 
                 rpc_response.set_allocated_status_text(
@@ -1650,7 +1650,7 @@ public:
 
         _telemetry.actuator_control_target_async(
             [this, &writer, &stream_closed_promise, is_finished, &subscribe_mutex](
-                const mavsdk::Telemetry::ActuatorControlTarget& actuator_control_target) {
+                const mavsdk::Telemetry::ActuatorControlTarget actuator_control_target) {
                 rpc::telemetry::ActuatorControlTargetResponse rpc_response;
 
                 rpc_response.set_allocated_actuator_control_target(
@@ -1684,7 +1684,7 @@ public:
 
         _telemetry.actuator_output_status_async(
             [this, &writer, &stream_closed_promise, is_finished, &subscribe_mutex](
-                const mavsdk::Telemetry::ActuatorOutputStatus& actuator_output_status) {
+                const mavsdk::Telemetry::ActuatorOutputStatus actuator_output_status) {
                 rpc::telemetry::ActuatorOutputStatusResponse rpc_response;
 
                 rpc_response.set_allocated_actuator_output_status(
@@ -1718,7 +1718,7 @@ public:
 
         _telemetry.odometry_async(
             [this, &writer, &stream_closed_promise, is_finished, &subscribe_mutex](
-                const mavsdk::Telemetry::Odometry& odometry) {
+                const mavsdk::Telemetry::Odometry odometry) {
                 rpc::telemetry::OdometryResponse rpc_response;
 
                 rpc_response.set_allocated_odometry(translateToRpcOdometry(odometry).release());
@@ -1751,7 +1751,7 @@ public:
 
         _telemetry.position_velocity_ned_async(
             [this, &writer, &stream_closed_promise, is_finished, &subscribe_mutex](
-                const mavsdk::Telemetry::PositionVelocityNed& position_velocity_ned) {
+                const mavsdk::Telemetry::PositionVelocityNed position_velocity_ned) {
                 rpc::telemetry::PositionVelocityNedResponse rpc_response;
 
                 rpc_response.set_allocated_position_velocity_ned(
@@ -1785,7 +1785,7 @@ public:
 
         _telemetry.ground_truth_async(
             [this, &writer, &stream_closed_promise, is_finished, &subscribe_mutex](
-                const mavsdk::Telemetry::GroundTruth& ground_truth) {
+                const mavsdk::Telemetry::GroundTruth ground_truth) {
                 rpc::telemetry::GroundTruthResponse rpc_response;
 
                 rpc_response.set_allocated_ground_truth(
@@ -1819,7 +1819,7 @@ public:
 
         _telemetry.fixedwing_metrics_async(
             [this, &writer, &stream_closed_promise, is_finished, &subscribe_mutex](
-                const mavsdk::Telemetry::FixedwingMetrics& fixedwing_metrics) {
+                const mavsdk::Telemetry::FixedwingMetrics fixedwing_metrics) {
                 rpc::telemetry::FixedwingMetricsResponse rpc_response;
 
                 rpc_response.set_allocated_fixedwing_metrics(
@@ -1852,7 +1852,7 @@ public:
         std::mutex subscribe_mutex{};
 
         _telemetry.imu_async([this, &writer, &stream_closed_promise, is_finished, &subscribe_mutex](
-                                 const mavsdk::Telemetry::Imu& imu) {
+                                 const mavsdk::Telemetry::Imu imu) {
             rpc::telemetry::ImuResponse rpc_response;
 
             rpc_response.set_allocated_imu(translateToRpcImu(imu).release());
@@ -1885,7 +1885,7 @@ public:
 
         _telemetry.health_all_ok_async(
             [this, &writer, &stream_closed_promise, is_finished, &subscribe_mutex](
-                const bool& health_all_ok) {
+                const bool health_all_ok) {
                 rpc::telemetry::HealthAllOkResponse rpc_response;
 
                 rpc_response.set_is_health_all_ok(health_all_ok);
@@ -1918,7 +1918,7 @@ public:
 
         _telemetry.unix_epoch_time_async(
             [this, &writer, &stream_closed_promise, is_finished, &subscribe_mutex](
-                const uint64_t& unix_epoch_time) {
+                const uint64_t unix_epoch_time) {
                 rpc::telemetry::UnixEpochTimeResponse rpc_response;
 
                 rpc_response.set_time_us(unix_epoch_time);

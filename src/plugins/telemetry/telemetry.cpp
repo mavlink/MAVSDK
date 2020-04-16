@@ -786,16 +786,16 @@ std::ostream& operator<<(std::ostream& str, Telemetry::PositionBody const& posit
     return str;
 }
 
-std::ostream& operator<<(std::ostream& str, Telemetry::MavFrame const& mav_frame)
+std::ostream& operator<<(std::ostream& str, Telemetry::Odometry::MavFrame const& mav_frame)
 {
     switch (mav_frame) {
-        case Telemetry::MavFrame::Undef:
+        case Telemetry::Odometry::MavFrame::Undef:
             return str << "Mav Frame Undef";
-        case Telemetry::MavFrame::BodyNed:
+        case Telemetry::Odometry::MavFrame::BodyNed:
             return str << "Mav Frame Body Ned";
-        case Telemetry::MavFrame::VisionNed:
+        case Telemetry::Odometry::MavFrame::VisionNed:
             return str << "Mav Frame Vision Ned";
-        case Telemetry::MavFrame::EstimNed:
+        case Telemetry::Odometry::MavFrame::EstimNed:
             return str << "Mav Frame Estim Ned";
         default:
             return str << "Unknown";

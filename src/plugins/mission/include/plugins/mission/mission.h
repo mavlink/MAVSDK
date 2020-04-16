@@ -43,24 +43,6 @@ public:
     ~Mission();
 
     /**
-     * @brief Possible camera actions at a mission item.
-     */
-    enum class CameraAction {
-        None, /**< @brief No action. */
-        TakePhoto, /**< @brief Take a single photo. */
-        StartPhotoInterval, /**< @brief Start capturing photos at regular intervals. */
-        StopPhotoInterval, /**< @brief Stop capturing photos at regular intervals. */
-        StartVideo, /**< @brief Start capturing video. */
-        StopVideo, /**< @brief Stop capturing video. */
-    };
-
-    /**
-     * @brief Stream operator to print information about a `Mission::CameraAction`.
-     *
-     * @return A reference to the stream.
-     */
-    friend std::ostream& operator<<(std::ostream& str, Mission::CameraAction const& camera_action);
-    /**
      * @brief Type representing a mission item.
      *
      * A MissionItem can contain a position and/or actions.
@@ -69,6 +51,26 @@ public:
      * They cannot be used independently.
      */
     struct MissionItem {
+        /**
+         * @brief Possible camera actions at a mission item.
+         */
+        enum class CameraAction {
+            None, /**< @brief No action. */
+            TakePhoto, /**< @brief Take a single photo. */
+            StartPhotoInterval, /**< @brief Start capturing photos at regular intervals. */
+            StopPhotoInterval, /**< @brief Stop capturing photos at regular intervals. */
+            StartVideo, /**< @brief Start capturing video. */
+            StopVideo, /**< @brief Stop capturing video. */
+        };
+
+        /**
+         * @brief Stream operator to print information about a `Mission::CameraAction`.
+         *
+         * @return A reference to the stream.
+         */
+        friend std::ostream&
+        operator<<(std::ostream& str, Mission::MissionItem::CameraAction const& camera_action);
+
         double latitude_deg{double(NAN)}; /**< @brief Latitude in degrees (range: -90 to +90) */
         double longitude_deg{double(NAN)}; /**< @brief Longitude in degrees (range: -180 to +180) */
         float relative_altitude_m{
@@ -216,7 +218,7 @@ public:
      *
      * @return Result of request.
      */
-    std::pair<Result, MissionPlan> download_mission() const;
+    std::pair<Result, Mission::MissionPlan> download_mission() const;
 
     /**
      * @brief Synchronous wrapper for cancel_mission_download_async().
@@ -343,7 +345,8 @@ public:
      *
      * @return Result of request.
      */
-    std::pair<Result, MissionPlan> import_qgroundcontrol_mission(std::string qgc_plan_path) const;
+    std::pair<Result, Mission::MissionPlan>
+    import_qgroundcontrol_mission(std::string qgc_plan_path) const;
 
     /**
      * @brief Returns a human-readable English string for a Result.
