@@ -2,6 +2,8 @@ syntax = "proto3";
 
 package mavsdk.rpc.camera;
 
+import "mavsdk_options.proto";
+
 option java_package = "io.mavsdk.camera";
 option java_outer_classname = "CameraProto";
 
@@ -38,44 +40,75 @@ service CameraService {
     /*
      * Start video streaming.
      */
-    rpc StartVideoStreaming(StartVideoStreamingRequest) returns(StartVideoStreamingResponse) {}
+    rpc StartVideoStreaming(StartVideoStreamingRequest) returns(StartVideoStreamingResponse) { option (mavsdk.options.async_type) = SYNC; }
     /*
      * Stop current video streaming.
      */
-    rpc StopVideoStreaming(StopVideoStreamingRequest) returns(StopVideoStreamingResponse) {}
+    rpc StopVideoStreaming(StopVideoStreamingRequest) returns(StopVideoStreamingResponse) { option (mavsdk.options.async_type) = SYNC; }
     /*
      * Set camera mode.
      */
     rpc SetMode(SetModeRequest) returns(SetModeResponse) {}
     /*
+     * Get camera mode.
+     */
+    //rpc GetMode(GetModeRequest) returns(GetModeResponse) { option (mavsdk.options.async_type) = SYNC; }
+    /*
      * Subscribe to camera mode updates.
      */
-    rpc SubscribeMode(SubscribeModeRequest) returns(stream ModeResponse) {}
+    rpc SubscribeMode(SubscribeModeRequest) returns(stream ModeResponse) { option (mavsdk.options.async_type) = ASYNC; }
     /*
      * Subscribe to video stream info updates.
      */
-    rpc SubscribeVideoStreamInfo(SubscribeVideoStreamInfoRequest) returns(stream VideoStreamInfoResponse) {}
+    rpc SubscribeVideoStreamInfo(SubscribeVideoStreamInfoRequest) returns(stream VideoStreamInfoResponse) { option (mavsdk.options.async_type) = ASYNC; }
+    /*
+     * Get video stream information.
+     */
+    //rpc GetVideoStreamInfo(GetVideoStreamInfoRequest) returns(GetVideoStreamInfoResponse) { option (mavsdk.options.async_type) = SYNC; }
     /*
      * Subscribe to capture info updates.
      */
-    rpc SubscribeCaptureInfo(SubscribeCaptureInfoRequest) returns(stream CaptureInfoResponse) {}
+    rpc SubscribeCaptureInfo(SubscribeCaptureInfoRequest) returns(stream CaptureInfoResponse) { option (mavsdk.options.async_type) = ASYNC; }
     /*
      * Subscribe to camera status updates.
      */
-    rpc SubscribeCameraStatus(SubscribeCameraStatusRequest) returns(stream CameraStatusResponse) {}
+    rpc SubscribeStatus(SubscribeStatusRequest) returns(stream StatusResponse) { option (mavsdk.options.async_type) = ASYNC; }
     /*
      * Get the list of current camera settings.
      */
-    rpc SubscribeCurrentSettings(SubscribeCurrentSettingsRequest) returns(stream CurrentSettingsResponse) {}
+    rpc SubscribeCurrentSettings(SubscribeCurrentSettingsRequest) returns(stream CurrentSettingsResponse) { option (mavsdk.options.async_type) = ASYNC; }
     /*
      * Get the list of settings that can be changed.
      */
     rpc SubscribePossibleSettingOptions(SubscribePossibleSettingOptionsRequest) returns(stream PossibleSettingOptionsResponse) {}
     /*
      * Set a setting to some value.
+     *
+     * Only setting_id of setting and option_id of option needs to be set.
      */
     rpc SetSetting(SetSettingRequest) returns(SetSettingResponse) {}
+    /*
+     * Get a setting.
+     *
+     * Only setting_id of setting needs to be set.
+     */
+    rpc GetSetting(GetSettingRequest) returns(GetSettingResponse) {}
+    /*
+     * Get information about a camera.
+     */
+    //rpc GetInformation(GetInformationRequest) returns(GetInformationResponse) { option (mavsdk.options.async_type) = SYNC; }
+    /*
+     * Get status of a camera.
+     */
+    //rpc GetStatus(GetStatusRequest) returns(GetStatusResponse) { option (mavsdk.options.async_type) = SYNC; }
+    /*
+     * Format storage (e.g. SD card) in camera.
+     *
+     * This will delete all content of the camera storage!
+     */
+     rpc FormatStorage(FormatStorageRequest) returns(FormatStorageResponse) {}
 }
+
 
 message TakePhotoRequest {}
 message TakePhotoResponse {
@@ -115,15 +148,21 @@ message StopVideoStreamingResponse {
 }
 
 message SetModeRequest {
-    CameraMode camera_mode = 1; // Camera mode to set
+    Mode mode = 1; // Camera mode to set
 }
 message SetModeResponse {
     CameraResult camera_result = 1;
 }
 
+//message GetModeRequest {}
+//message GetModeResponse {
+//    CameraResult camera_result = 1;
+//    Mode mode = 2; // Camera mode
+//}
+
 message SubscribeModeRequest {}
 message ModeResponse {
-    CameraMode camera_mode = 1; // Camera mode
+    Mode mode = 1; // Camera mode
 }
 
 message SubscribeVideoStreamInfoRequest {}
@@ -131,14 +170,20 @@ message VideoStreamInfoResponse {
     VideoStreamInfo video_stream_info = 1; // Video stream info
 }
 
+//message GetVideoStreamInfoRequest {}
+//message GetVideoStreamInfoResponse {
+//    CameraResult camera_result = 1;
+//    VideoStreamInfo video_stream_info = 2; // Video stream info
+//}
+
 message SubscribeCaptureInfoRequest {}
 message CaptureInfoResponse {
     CaptureInfo capture_info = 1; // Capture info
 }
 
-message SubscribeCameraStatusRequest {}
-message CameraStatusResponse {
-    CameraStatus camera_status = 1; // Camera status
+message SubscribeStatusRequest {}
+message StatusResponse {
+    Status camera_status = 1; // Camera status
 }
 
 message SubscribeCurrentSettingsRequest {}
@@ -158,18 +203,43 @@ message SetSettingResponse {
     CameraResult camera_result = 1;
 }
 
+message GetSettingRequest {
+    Setting setting = 1; // Requested setting
+}
+message GetSettingResponse {
+    CameraResult camera_result = 1;
+    Setting setting = 2; // Setting
+}
+
+//message GetInformationRequest {}
+//message GetInformationResponse {
+//    CameraResult camera_result = 1;
+//    Information information = 2; // The information
+//}
+
+message GetStatusRequest {}
+message GetStatusResponse {
+    CameraResult camera_result = 1;
+    Status status = 2; // The camera status
+}
+
+message FormatStorageRequest {}
+message FormatStorageResponse {
+    CameraResult camera_result = 1;
+}
+
 // Result type.
 message CameraResult {
     // Possible results returned for camera commands
     enum Result {
-        UNKNOWN = 0; // Unknown error
-        SUCCESS = 1; // Command executed successfully
-        IN_PROGRESS = 2; // Command in progress
-        BUSY = 3; // Camera is busy and rejected command
-        DENIED = 4; // Camera denied the command
-        ERROR = 5; // An error has occured while executing the command
-        TIMEOUT = 6; // Command timed out
-        WRONG_ARGUMENT = 7; // Command has wrong argument(s)
+        RESULT_UNKNOWN = 0; // Unknown error
+        RESULT_SUCCESS = 1; // Command executed successfully
+        RESULT_IN_PROGRESS = 2; // Command in progress
+        RESULT_BUSY = 3; // Camera is busy and rejected command
+        RESULT_DENIED = 4; // Camera denied the command
+        RESULT_ERROR = 5; // An error has occured while executing the command
+        RESULT_TIMEOUT = 6; // Command timed out
+        RESULT_WRONG_ARGUMENT = 7; // Command has wrong argument(s)
     }
 
     Result result = 1; // Result enum value
@@ -177,21 +247,10 @@ message CameraResult {
 }
 
 // Camera mode type.
-enum CameraMode {
-    UNKNOWN = 0; // Unknown
-    PHOTO = 1; // Photo mode
-    VIDEO = 2; // Video mode
-}
-
-// Information about a picture just captured.
-message CaptureInfo {
-    Position position = 1; // Location where the picture was taken
-    Quaternion attitude_quaternion = 2; // Attitude of the camera when the picture was taken (quaternion)
-    EulerAngle attitude_euler_angle = 3; // Attitude of the camera when the picture was taken (euler angle)
-    uint64 time_utc_us = 4; // Timestamp in UTC (since UNIX epoch) in microseconds
-    bool is_success = 5; // True if the capture was successful
-    int32 index = 6; // Zero-based index of this image since vehicle was armed
-    string file_url = 7; // Download URL of this image
+enum Mode {
+    MODE_UNKNOWN = 0; // Unknown
+    MODE_PHOTO = 1; // Photo mode
+    MODE_VIDEO = 2; // Video mode
 }
 
 // Position type in global coordinates.
@@ -233,6 +292,17 @@ message EulerAngle {
     float yaw_deg = 3; // Yaw angle in degrees, positive is clock-wise seen from above
 }
 
+// Information about a picture just captured.
+message CaptureInfo {
+    Position position = 1; // Location where the picture was taken
+    Quaternion attitude_quaternion = 2; // Attitude of the camera when the picture was taken (quaternion)
+    EulerAngle attitude_euler_angle = 3; // Attitude of the camera when the picture was taken (euler angle)
+    uint64 time_utc_us = 4; // Timestamp in UTC (since UNIX epoch) in microseconds
+    bool is_success = 5; // True if the capture was successful
+    int32 index = 6; // Zero-based index of this image since vehicle was armed
+    string file_url = 7; // Download URL of this image
+}
+
 // Type for video stream settings.
 message VideoStreamSettings {
     float frame_rate_hz = 1; // Frames per second
@@ -245,22 +315,23 @@ message VideoStreamSettings {
 
 // Information about the video stream.
 message VideoStreamInfo {
-    enum VideoStreamStatus {
-        NOT_RUNNING = 0; // Video stream is not running.
-        IN_PROGRESS = 1; // Video stream is running.
+    // Video stream status type.
+    enum Status {
+        STATUS_NOT_RUNNING = 0; // Video stream is not running
+        STATUS_IN_PROGRESS = 1; // Video stream is running
     }
 
-    VideoStreamSettings video_stream_settings = 1; // Video stream settings
-    VideoStreamStatus video_stream_status = 2; // Current status of video streaming
+    VideoStreamSettings settings = 1; // Video stream settings
+    Status status = 2; // Current status of video streaming
 }
 
 // Information about the camera status.
-message CameraStatus {
+message Status {
     // Storage status type.
     enum StorageStatus {
-        NOT_AVAILABLE = 0; // Status not available
-        UNFORMATTED = 1; // Storage is not formatted (i.e. has no recognized file system)
-        FORMATTED = 2; // Storage is formatted (i.e. has recognized a file system)
+        STORAGE_STATUS_NOT_AVAILABLE = 0; // Status not available
+        STORAGE_STATUS_UNFORMATTED = 1; // Storage is not formatted (i.e. has no recognized file system)
+        STORAGE_STATUS_FORMATTED = 2; // Storage is formatted (i.e. has recognized a file system)
     }
 
     bool video_on = 1;
@@ -275,22 +346,30 @@ message CameraStatus {
     StorageStatus storage_status = 8; // Storage status
 }
 
-// Type to represent a setting with a selected option.
-message Setting {
-    string setting_id = 1; // Name of a setting (machine readable)
-    string setting_description = 2; // Description of the setting (human readable)
-    Option option = 3; // Selected option
-}
-
 // Type to represent a setting option.
 message Option {
     string option_id = 1; // Name of the option (machine readable)
     string option_description = 2; // Description of the option (human readable)
 }
 
+// Type to represent a setting with a selected option.
+message Setting {
+    string setting_id = 1; // Name of a setting (machine readable)
+    string setting_description = 2; // Description of the setting (human readable)
+    Option option = 3; // Selected option
+    bool is_range = 4; // If option is given as a range
+}
+
 // Type to represent a setting with a list of options to choose from.
 message SettingOptions {
     string setting_id = 1; // Name of the setting (machine readable)
     string setting_description = 2; // Description of the setting (human readable)
-    repeated Option options = 3; // List of options
+    repeated Option options = 3; // List of options or if range [min, max] or [min, max, interval]
+    bool is_range = 4; // If option is given as a range
+}
+
+// Type to represent a camera information.
+message Information {
+    string vendor_name = 1; // Name of the camera vendor
+    string model_name = 2; // Name of the camera model
 }
