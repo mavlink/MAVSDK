@@ -3,7 +3,7 @@
  */
 enum class {{ name.upper_camel_case }} {
 {%- for value in values %}
-    {% set value_without_prefix = value.name.lower_camel_case[name.lower_camel_case|length:] %}{{ value_without_prefix }}, /**< @brief{{ value.description.rstrip() }}. */
+    {{ value.name.upper_camel_case }}, /**< @brief{{ value.description.rstrip() }}. */
 {%- endfor %}
 };
 
