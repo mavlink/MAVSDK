@@ -271,4 +271,6 @@ class Stream(Method):
             plugin_name=self._plugin_name,
             package=self._package,
             method_description=self._method_description,
-            has_result=self._has_result)
+            has_result=self._has_result,
+            is_async=self._is_async,
+            is_sync=self._is_sync)
