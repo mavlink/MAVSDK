@@ -1,3 +1,4 @@
+{% if is_async %}
 /**
 * @brief Callback type for {{ name.lower_snake_case }}_async.
 */
@@ -7,10 +8,13 @@ typedef std::function<void({% if has_result %}{{ plugin_name.upper_camel_case }}
  * @brief {{ method_description | replace('\n', '\n *')}}
  */
 void {{ name.lower_snake_case }}_async({{ name.lower_snake_case }}_callback_t callback);
+{% endif %}
 
+{% if is_sync %}
 /**
  * @brief Synchronous wrapper getting one {{ return_type.name }} update.
  *
  * @return One {{ return_type.name }} update.
  */
 {{ return_type.name }} {{ name.lower_snake_case }}() const;
+{% endif %}

@@ -1,9 +1,13 @@
+{% if is_async %}
 void {{ plugin_name.upper_camel_case }}::{{ name.lower_snake_case }}_async({{ name.lower_snake_case }}_callback_t callback)
 {
     _impl->{{ name.lower_snake_case }}_async(callback);
 }
+{% endif %}
 
+{% if is_sync %}
 {% if not return_type.is_primitive %}{{ plugin_name.upper_camel_case }}::{% endif %}{{ return_type.name }} {{ plugin_name.upper_camel_case }}::{{ name.lower_snake_case }}() const
 {
     return _impl->{{ name.lower_snake_case }}();
 }
+{% endif %}

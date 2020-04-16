@@ -16,5 +16,5 @@ void {{ name.lower_snake_case }}_async({% for param in params %}{{ param.type_in
  *
  * @return Result of request.
  */
-std::pair<Result, {{ return_type.name }}> {{ name.lower_snake_case }}({% for param in params %}{{ param.type_info.name }} {{ param.name.lower_snake_case }}{{ ", " if not loop.last }}{% endfor %}) const;
+std::pair<Result, {{ plugin_name.upper_snake_case }}::{{ return_type.name }}> {{ name.lower_snake_case }}({% for param in params %}{{ param.type_info.name }} {{ param.name.lower_snake_case }}{{ ", " if not loop.last }}{% endfor %}) const;
 {% endif %}
