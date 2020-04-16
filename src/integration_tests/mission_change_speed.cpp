@@ -14,7 +14,7 @@ using namespace std::placeholders; // for `_1`
 
 static void receive_upload_mission_result(Mission::Result result);
 static void receive_start_mission_result(Mission::Result result);
-static void receive_mission_progress(int current, int total);
+static void receive_mission_progress(Mission::MissionProgress progress);
 
 Mission::MissionItem only_set_speed(float speed_m_s);
 Mission::MissionItem
@@ -56,28 +56,31 @@ TEST_F(SitlTest, MissionChangeSpeed)
 
     LogInfo() << "System ready, let's start";
 
-    std::vector<Mission::MissionItem> mission_items;
+    Mission::MissionPlan mission_plan{};
 
-    mission_items.push_back(only_set_speed(speeds[0]));
-    mission_items.push_back(add_waypoint(47.398262509933957, 8.5456324815750122, 10, speeds[1]));
-    mission_items.push_back(add_waypoint(47.39824201089737, 8.5447561722784542, 10, speeds[2]));
-    mission_items.push_back(add_waypoint(47.397733642793433, 8.5447776308767516, 10, speeds[3]));
+    mission_plan.mission_items.push_back(only_set_speed(speeds[0]));
+    mission_plan.mission_items.push_back(
+        add_waypoint(47.398262509933957, 8.5456324815750122, 10, speeds[1]));
+    mission_plan.mission_items.push_back(
+        add_waypoint(47.39824201089737, 8.5447561722784542, 10, speeds[2]));
+    mission_plan.mission_items.push_back(
+        add_waypoint(47.397733642793433, 8.5447776308767516, 10, speeds[3]));
 
-    mission->upload_mission_async(mission_items, std::bind(&receive_upload_mission_result, _1));
+    mission->upload_mission_async(mission_plan, std::bind(&receive_upload_mission_result, _1));
     std::this_thread::sleep_for(std::chrono::seconds(1));
     ASSERT_TRUE(_mission_sent_ok);
 
     Action::Result result = action->arm();
     ASSERT_EQ(result, Action::Result::Success);
 
-    mission->subscribe_progress(std::bind(&receive_mission_progress, _1, _2));
+    mission->mission_progress_async(std::bind(&receive_mission_progress, _1));
 
     mission->start_mission_async(std::bind(&receive_start_mission_result, _1));
     std::this_thread::sleep_for(std::chrono::seconds(1));
     ASSERT_TRUE(_mission_started_ok);
 
     int last_item = -1;
-    while (_current_item < static_cast<int>(mission_items.size())) {
+    while (_current_item < static_cast<int>(mission_plan.mission_items.size())) {
         if (last_item != _current_item) {
             // Don't check the first because it's just a speed command and neither the second
             // because we're still taking off.
@@ -108,7 +111,7 @@ TEST_F(SitlTest, MissionChangeSpeed)
     result = action->return_to_launch();
     ASSERT_EQ(result, Action::Result::Success);
 
-    while (!mission->mission_finished()) {
+    while (!mission->is_mission_finished().second) {
         LogDebug() << "waiting until mission is done";
         std::this_thread::sleep_for(std::chrono::seconds(1));
     }
@@ -124,9 +127,9 @@ TEST_F(SitlTest, MissionChangeSpeed)
 
 void receive_upload_mission_result(Mission::Result result)
 {
-    EXPECT_EQ(result, Mission::Result::SUCCESS);
+    EXPECT_EQ(result, Mission::Result::Success);
 
-    if (result == Mission::Result::SUCCESS) {
+    if (result == Mission::Result::Success) {
         _mission_sent_ok = true;
     } else {
         LogErr() << "Error: mission send result: " << Mission::result_str(result);
@@ -135,9 +138,9 @@ void receive_upload_mission_result(Mission::Result result)
 
 void receive_start_mission_result(Mission::Result result)
 {
-    EXPECT_EQ(result, Mission::Result::SUCCESS);
+    EXPECT_EQ(result, Mission::Result::Success);
 
-    if (result == Mission::Result::SUCCESS) {
+    if (result == Mission::Result::Success) {
         _mission_started_ok = true;
     } else {
         LogErr() << "Error: mission start result: " << Mission::result_str(result);
@@ -171,8 +174,8 @@ float current_speed(std::shared_ptr<Telemetry>& telemetry)
             telemetry->ground_speed_ned().velocity_east_m_s);
 }
 
-void receive_mission_progress(int current, int total)
+void receive_mission_progress(Mission::MissionProgress progress)
 {
-    LogInfo() << "Mission status update: " << current << " / " << total;
-    _current_item = current;
+    LogInfo() << "Mission status update: " << progress.current << " / " << progress.total;
+    _current_item = progress.current;
 }

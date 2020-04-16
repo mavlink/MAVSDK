@@ -204,65 +204,65 @@ private:
     // The mutexs are mutable so that the lock can get aqcuired in
     // methods marked const.
     mutable std::mutex _position_mutex{};
-    Telemetry::Position _position{double(NAN), double(NAN), NAN, NAN};
+    Telemetry::Position _position{};
 
     mutable std::mutex _position_velocity_ned_mutex{};
-    Telemetry::PositionVelocityNed _position_velocity_ned{{NAN, NAN, NAN}, {NAN, NAN, NAN}};
+    Telemetry::PositionVelocityNed _position_velocity_ned{};
 
     mutable std::mutex _home_position_mutex{};
-    Telemetry::Position _home_position{double(NAN), double(NAN), NAN, NAN};
+    Telemetry::Position _home_position{};
 
     // If possible, just use atomic instead of a mutex.
     std::atomic_bool _in_air{false};
     std::atomic_bool _armed{false};
 
     mutable std::mutex _status_text_mutex{};
-    Telemetry::StatusText _status_text{Telemetry::StatusTextType::Info, ""};
+    Telemetry::StatusText _status_text{};
 
     mutable std::mutex _attitude_quaternion_mutex{};
-    Telemetry::Quaternion _attitude_quaternion{NAN, NAN, NAN, NAN};
+    Telemetry::Quaternion _attitude_quaternion{};
 
     mutable std::mutex _camera_attitude_euler_angle_mutex{};
-    Telemetry::EulerAngle _camera_attitude_euler_angle{NAN, NAN, NAN};
+    Telemetry::EulerAngle _camera_attitude_euler_angle{};
 
     mutable std::mutex _attitude_angular_velocity_body_mutex{};
-    Telemetry::AngularVelocityBody _attitude_angular_velocity_body{NAN, NAN, NAN};
+    Telemetry::AngularVelocityBody _attitude_angular_velocity_body{};
 
     mutable std::mutex _ground_truth_mutex{};
-    Telemetry::GroundTruth _ground_truth{double(NAN), double(NAN), NAN};
+    Telemetry::GroundTruth _ground_truth{};
 
     mutable std::mutex _fixedwing_metrics_mutex{};
-    Telemetry::FixedwingMetrics _fixedwing_metrics{NAN, NAN, NAN};
+    Telemetry::FixedwingMetrics _fixedwing_metrics{};
 
     mutable std::mutex _ground_speed_ned_mutex{};
-    Telemetry::SpeedNed _ground_speed_ned{NAN, NAN, NAN};
+    Telemetry::SpeedNed _ground_speed_ned{};
 
     mutable std::mutex _imu_reading_ned_mutex{};
-    Telemetry::Imu _imu_reading_ned{{NAN, NAN, NAN}, {NAN, NAN, NAN}, {NAN, NAN, NAN}, NAN};
+    Telemetry::Imu _imu_reading_ned{};
 
     mutable std::mutex _gps_info_mutex{};
-    Telemetry::GpsInfo _gps_info{0, Telemetry::FixType::NoGps};
+    Telemetry::GpsInfo _gps_info{};
 
     mutable std::mutex _battery_mutex{};
-    Telemetry::Battery _battery{NAN, NAN};
+    Telemetry::Battery _battery{};
 
     mutable std::mutex _health_mutex{};
-    Telemetry::Health _health{false, false, false, false, false, false, false};
+    Telemetry::Health _health{};
 
     mutable std::mutex _landed_state_mutex{};
     Telemetry::LandedState _landed_state{Telemetry::LandedState::Unknown};
 
     mutable std::mutex _rc_status_mutex{};
-    Telemetry::RcStatus _rc_status{false, false, 0.0f};
+    Telemetry::RcStatus _rc_status{};
 
     mutable std::mutex _unix_epoch_time_mutex{};
     uint64_t _unix_epoch_time_us{};
 
     mutable std::mutex _actuator_control_target_mutex{};
-    Telemetry::ActuatorControlTarget _actuator_control_target{0, {0.0f}};
+    Telemetry::ActuatorControlTarget _actuator_control_target{};
 
     mutable std::mutex _actuator_output_status_mutex{};
-    Telemetry::ActuatorOutputStatus _actuator_output_status{0, {0.0f}};
+    Telemetry::ActuatorOutputStatus _actuator_output_status{};
 
     mutable std::mutex _odometry_mutex{};
     Telemetry::Odometry _odometry{};

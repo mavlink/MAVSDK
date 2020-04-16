@@ -79,13 +79,22 @@ void MissionImpl::process_mission_item_reached(const mavlink_message_t& message)
     report_progress();
 }
 
+Mission::Result MissionImpl::upload_mission(const Mission::MissionPlan& mission_plan)
+{
+    auto prom = std::promise<Mission::Result>();
+    auto fut = prom.get_future();
+
+    upload_mission_async(mission_plan, [&prom](Mission::Result result) { prom.set_value(result); });
+    return fut.get();
+}
+
 void MissionImpl::upload_mission_async(
-    const std::vector<MissionItem>& mission_items, const Mission::result_callback_t& callback)
+    const Mission::MissionPlan& mission_plan, const Mission::result_callback_t& callback)
 {
     if (_mission_data.last_upload.lock()) {
         _parent->call_user_callback([callback]() {
             if (callback) {
-                callback(Mission::Result::BUSY);
+                callback(Mission::Result::Busy);
             }
         });
         return;
@@ -93,11 +102,11 @@ void MissionImpl::upload_mission_async(
 
     if (!_parent->does_support_mission_int()) {
         LogWarn() << "Mission int messages not supported";
-        // report_mission_result(callback, Mission::Result::ERROR);
+        // report_mission_result(callback, Mission::Result::Error);
         return;
     }
 
-    const auto int_items = convert_to_int_items(mission_items);
+    const auto int_items = convert_to_int_items(mission_plan.mission_items);
 
     _mission_data.last_upload = _parent->mission_transfer().upload_items_async(
         MAV_MISSION_TYPE_MISSION,
@@ -112,22 +121,35 @@ void MissionImpl::upload_mission_async(
         });
 }
 
-void MissionImpl::upload_mission_cancel()
+Mission::Result MissionImpl::cancel_mission_upload()
 {
     auto ptr = _mission_data.last_upload.lock();
     if (ptr) {
         ptr->cancel();
+        return Mission::Result::Success;
+    } else {
+        return Mission::Result::Error;
     }
 }
 
-void MissionImpl::download_mission_async(
-    const Mission::mission_items_and_result_callback_t& callback)
+std::pair<Mission::Result, Mission::MissionPlan> MissionImpl::download_mission()
+{
+    auto prom = std::promise<std::pair<Mission::Result, Mission::MissionPlan>>();
+    auto fut = prom.get_future();
+
+    download_mission_async([&prom](Mission::Result result, Mission::MissionPlan mission_plan) {
+        prom.set_value(std::make_pair<>(result, mission_plan));
+    });
+    return fut.get();
+}
+
+void MissionImpl::download_mission_async(const Mission::download_mission_callback_t& callback)
 {
     if (_mission_data.last_download.lock()) {
         _parent->call_user_callback([callback]() {
             if (callback) {
-                std::vector<MissionItem> empty_items;
-                callback(Mission::Result::BUSY, empty_items);
+                Mission::MissionPlan mission_plan{};
+                callback(Mission::Result::Busy, mission_plan);
             }
         });
         return;
@@ -145,22 +167,26 @@ void MissionImpl::download_mission_async(
         });
 }
 
-void MissionImpl::download_mission_cancel()
+Mission::Result MissionImpl::cancel_mission_download()
 {
     auto ptr = _mission_data.last_download.lock();
     if (ptr) {
         ptr->cancel();
+        return Mission::Result::Success;
+    } else {
+        return Mission::Result::Error;
     }
 }
 
-void MissionImpl::set_return_to_launch_after_mission(bool enable_rtl)
+Mission::Result MissionImpl::set_return_to_launch_after_mission(bool enable_rtl)
 {
     _enable_return_to_launch_after_mission = enable_rtl;
+    return Mission::Result::Success;
 }
 
-bool MissionImpl::get_return_to_launch_after_mission()
+std::pair<Mission::Result, bool> MissionImpl::get_return_to_launch_after_mission()
 {
-    return _enable_return_to_launch_after_mission;
+    return std::make_pair<>(Mission::Result::Success, _enable_return_to_launch_after_mission);
 }
 
 bool MissionImpl::has_valid_position(const MissionItem& item)
@@ -172,7 +198,7 @@ bool MissionImpl::has_valid_position(const MissionItem& item)
 float MissionImpl::hold_time(const MissionItem& item)
 {
     float hold_time_s;
-    if (item.fly_through) {
+    if (item.is_fly_through) {
         hold_time_s = 0.0f;
     } else {
         hold_time_s = 0.5f;
@@ -184,7 +210,7 @@ float MissionImpl::hold_time(const MissionItem& item)
 float MissionImpl::acceptance_radius(const MissionItem& item)
 {
     float acceptance_radius_m;
-    if (item.fly_through) {
+    if (item.is_fly_through) {
         // _acceptance_radius_m is 0, determine the radius using fly_through
         acceptance_radius_m = 3.0f;
     } else {
@@ -363,12 +389,12 @@ MissionImpl::convert_to_int_items(const std::vector<MissionItem>& mission_items)
                 int_items.push_back(next_item);
             }
 
-            if (item.fly_through) {
+            if (item.is_fly_through) {
                 LogWarn() << "Conflicting options set: fly_through=true and loiter_time>0.";
             }
         }
 
-        if (item.camera_action != CameraAction::NONE) {
+        if (item.camera_action != CameraAction::None) {
             // There is a camera action that we need to send.
 
             // Current is the 0th waypoint
@@ -381,27 +407,27 @@ MissionImpl::convert_to_int_items(const std::vector<MissionItem>& mission_items)
             float param2 = NAN;
             float param3 = NAN;
             switch (item.camera_action) {
-                case CameraAction::TAKE_PHOTO:
+                case CameraAction::TakePhoto:
                     command = MAV_CMD_IMAGE_START_CAPTURE;
                     param1 = 0.0f; // all camera IDs
                     param2 = 0.0f; // no duration, take only one picture
                     param3 = 1.0f; // only take one picture
                     break;
-                case CameraAction::START_PHOTO_INTERVAL:
+                case CameraAction::StartPhotoInterval:
                     command = MAV_CMD_IMAGE_START_CAPTURE;
                     param1 = 0.0f; // all camera IDs
                     param2 = item.camera_photo_interval_s;
                     param3 = 0.0f; // unlimited photos
                     break;
-                case CameraAction::STOP_PHOTO_INTERVAL:
+                case CameraAction::StopPhotoInterval:
                     command = MAV_CMD_IMAGE_STOP_CAPTURE;
                     param1 = 0.0f; // all camera IDs
                     break;
-                case CameraAction::START_VIDEO:
+                case CameraAction::StartVideo:
                     command = MAV_CMD_VIDEO_START_CAPTURE;
                     param1 = 0.0f; // all camera IDs
                     break;
-                case CameraAction::STOP_VIDEO:
+                case CameraAction::StopVideo:
                     command = MAV_CMD_VIDEO_STOP_CAPTURE;
                     param1 = 0.0f; // all camera IDs
                     break;
@@ -458,19 +484,18 @@ MissionImpl::convert_to_int_items(const std::vector<MissionItem>& mission_items)
     return int_items;
 }
 
-std::pair<Mission::Result, std::vector<MissionItem>>
-MissionImpl::convert_to_result_and_mission_items(
+std::pair<Mission::Result, Mission::MissionPlan> MissionImpl::convert_to_result_and_mission_items(
     MAVLinkMissionTransfer::Result result,
     const std::vector<MAVLinkMissionTransfer::ItemInt>& int_items)
 {
-    std::pair<Mission::Result, std::vector<MissionItem>> result_pair;
+    std::pair<Mission::Result, Mission::MissionPlan> result_pair;
 
     result_pair.first = convert_result(result);
-    if (result_pair.first != Mission::Result::SUCCESS) {
+    if (result_pair.first != Mission::Result::Success) {
         return result_pair;
     }
 
-    Mission::mission_items_and_result_callback_t callback;
+    Mission::download_mission_callback_t callback;
     {
         _enable_return_to_launch_after_mission = false;
 
@@ -485,13 +510,13 @@ MissionImpl::convert_to_result_and_mission_items(
             if (int_item.command == MAV_CMD_NAV_WAYPOINT) {
                 if (int_item.frame != MAV_FRAME_GLOBAL_RELATIVE_ALT_INT) {
                     LogErr() << "Waypoint frame not supported unsupported";
-                    result_pair.first = Mission::Result::UNSUPPORTED;
+                    result_pair.first = Mission::Result::Unsupported;
                     break;
                 }
 
                 if (have_set_position) {
                     // When a new position comes in, create next mission item.
-                    result_pair.second.push_back(new_mission_item);
+                    result_pair.second.mission_items.push_back(new_mission_item);
                     new_mission_item = {};
                     have_set_position = false;
                 }
@@ -500,14 +525,14 @@ MissionImpl::convert_to_result_and_mission_items(
                 new_mission_item.longitude_deg = double(int_item.y) * 1e-7;
                 new_mission_item.relative_altitude_m = int_item.z;
 
-                new_mission_item.fly_through = !(int_item.param1 > 0);
+                new_mission_item.is_fly_through = !(int_item.param1 > 0);
 
                 have_set_position = true;
 
             } else if (int_item.command == MAV_CMD_DO_MOUNT_CONTROL) {
                 if (int(int_item.z) != MAV_MOUNT_MODE_MAVLINK_TARGETING) {
                     LogErr() << "Gimbal mount control mode unsupported";
-                    result_pair.first = Mission::Result::UNSUPPORTED;
+                    result_pair.first = Mission::Result::Unsupported;
                     break;
                 }
 
@@ -517,7 +542,7 @@ MissionImpl::convert_to_result_and_mission_items(
             } else if (int_item.command == MAV_CMD_DO_MOUNT_CONFIGURE) {
                 if (int(int_item.param1) != MAV_MOUNT_MODE_MAVLINK_TARGETING) {
                     LogErr() << "Gimbal mount configure mode unsupported";
-                    result_pair.first = Mission::Result::UNSUPPORTED;
+                    result_pair.first = Mission::Result::Unsupported;
                     break;
                 }
 
@@ -531,31 +556,31 @@ MissionImpl::convert_to_result_and_mission_items(
 
             } else if (int_item.command == MAV_CMD_IMAGE_START_CAPTURE) {
                 if (int_item.param2 > 0 && int(int_item.param3) == 0) {
-                    new_mission_item.camera_action = CameraAction::START_PHOTO_INTERVAL;
+                    new_mission_item.camera_action = CameraAction::StartPhotoInterval;
                     new_mission_item.camera_photo_interval_s = double(int_item.param2);
                 } else if (int(int_item.param2) == 0 && int(int_item.param3) == 1) {
-                    new_mission_item.camera_action = CameraAction::TAKE_PHOTO;
+                    new_mission_item.camera_action = CameraAction::TakePhoto;
                 } else {
                     LogErr() << "Mission item START_CAPTURE params unsupported.";
-                    result_pair.first = Mission::Result::UNSUPPORTED;
+                    result_pair.first = Mission::Result::Unsupported;
                     break;
                 }
 
             } else if (int_item.command == MAV_CMD_IMAGE_STOP_CAPTURE) {
-                new_mission_item.camera_action = CameraAction::STOP_PHOTO_INTERVAL;
+                new_mission_item.camera_action = CameraAction::StopPhotoInterval;
 
             } else if (int_item.command == MAV_CMD_VIDEO_START_CAPTURE) {
-                new_mission_item.camera_action = CameraAction::START_VIDEO;
+                new_mission_item.camera_action = CameraAction::StartVideo;
 
             } else if (int_item.command == MAV_CMD_VIDEO_STOP_CAPTURE) {
-                new_mission_item.camera_action = CameraAction::STOP_VIDEO;
+                new_mission_item.camera_action = CameraAction::StopVideo;
 
             } else if (int_item.command == MAV_CMD_DO_CHANGE_SPEED) {
                 if (int(int_item.param1) == 1 && int_item.param3 < 0 && int(int_item.param4) == 0) {
                     new_mission_item.speed_m_s = int_item.param2;
                 } else {
                     LogErr() << "Mission item DO_CHANGE_SPEED params unsupported";
-                    result_pair.first = Mission::Result::UNSUPPORTED;
+                    result_pair.first = Mission::Result::Unsupported;
                 }
 
             } else if (int_item.command == MAV_CMD_NAV_LOITER_TIME) {
@@ -566,20 +591,29 @@ MissionImpl::convert_to_result_and_mission_items(
 
             } else {
                 LogErr() << "UNSUPPORTED mission item command (" << int_item.command << ")";
-                result_pair.first = Mission::Result::UNSUPPORTED;
+                result_pair.first = Mission::Result::Unsupported;
                 break;
             }
 
-            _mission_data.mavlink_mission_item_to_mission_item_indices.insert(
-                std::pair<int, int>{mavlink_item_i, static_cast<int>(result_pair.second.size())});
+            _mission_data.mavlink_mission_item_to_mission_item_indices.insert(std::pair<int, int>{
+                mavlink_item_i, static_cast<int>(result_pair.second.mission_items.size())});
 
             ++mavlink_item_i;
         }
 
         // Don't forget to add last mission item.
-        result_pair.second.push_back(new_mission_item);
+        result_pair.second.mission_items.push_back(new_mission_item);
     }
     return result_pair;
+}
+
+Mission::Result MissionImpl::start_mission()
+{
+    auto prom = std::promise<Mission::Result>();
+    auto fut = prom.get_future();
+
+    start_mission_async([&prom](Mission::Result result) { prom.set_value(result); });
+    return fut.get();
 }
 
 void MissionImpl::start_mission_async(const Mission::result_callback_t& callback)
@@ -588,6 +622,15 @@ void MissionImpl::start_mission_async(const Mission::result_callback_t& callback
         SystemImpl::FlightMode::MISSION, [this, callback](MAVLinkCommands::Result result, float) {
             report_flight_mode_change(callback, result);
         });
+}
+
+Mission::Result MissionImpl::pause_mission()
+{
+    auto prom = std::promise<Mission::Result>();
+    auto fut = prom.get_future();
+
+    pause_mission_async([&prom](Mission::Result result) { prom.set_value(result); });
+    return fut.get();
 }
 
 void MissionImpl::pause_mission_async(const Mission::result_callback_t& callback)
@@ -613,24 +656,33 @@ Mission::Result MissionImpl::command_result_to_mission_result(MAVLinkCommands::R
 {
     switch (result) {
         case MAVLinkCommands::Result::SUCCESS:
-            return Mission::Result::SUCCESS;
+            return Mission::Result::Success;
         case MAVLinkCommands::Result::NO_SYSTEM:
-            return Mission::Result::ERROR; // FIXME
+            return Mission::Result::Error; // FIXME
         case MAVLinkCommands::Result::CONNECTION_ERROR:
-            return Mission::Result::ERROR; // FIXME
+            return Mission::Result::Error; // FIXME
         case MAVLinkCommands::Result::BUSY:
-            return Mission::Result::BUSY;
+            return Mission::Result::Busy;
         case MAVLinkCommands::Result::COMMAND_DENIED:
-            return Mission::Result::ERROR; // FIXME
+            return Mission::Result::Error; // FIXME
         case MAVLinkCommands::Result::TIMEOUT:
-            return Mission::Result::TIMEOUT;
+            return Mission::Result::Timeout;
         case MAVLinkCommands::Result::IN_PROGRESS:
-            return Mission::Result::BUSY; // FIXME
+            return Mission::Result::Busy; // FIXME
         case MAVLinkCommands::Result::UNKNOWN_ERROR:
-            return Mission::Result::UNKNOWN;
+            return Mission::Result::Unknown;
         default:
-            return Mission::Result::UNKNOWN;
+            return Mission::Result::Unknown;
     }
+}
+
+Mission::Result MissionImpl::clear_mission()
+{
+    auto prom = std::promise<Mission::Result>();
+    auto fut = prom.get_future();
+
+    clear_mission_async([&prom](Mission::Result result) { prom.set_value(result); });
+    return fut.get();
 }
 
 void MissionImpl::clear_mission_async(const Mission::result_callback_t& callback)
@@ -646,7 +698,18 @@ void MissionImpl::clear_mission_async(const Mission::result_callback_t& callback
         });
 }
 
-void MissionImpl::set_current_mission_item_async(int current, Mission::result_callback_t& callback)
+Mission::Result MissionImpl::set_current_mission_item(int current)
+{
+    auto prom = std::promise<Mission::Result>();
+    auto fut = prom.get_future();
+
+    set_current_mission_item_async(
+        current, [&prom](Mission::Result result) { prom.set_value(result); });
+    return fut.get();
+}
+
+void MissionImpl::set_current_mission_item_async(
+    int current, const Mission::result_callback_t& callback)
 {
     int mavlink_index = -1;
     {
@@ -670,7 +733,7 @@ void MissionImpl::set_current_mission_item_async(int current, Mission::result_ca
         _parent->call_user_callback([callback]() {
             if (callback) {
                 // FIXME: come up with better error code.
-                callback(Mission::Result::INVALID_ARGUMENT);
+                callback(Mission::Result::InvalidArgument);
                 return;
             }
         });
@@ -689,7 +752,7 @@ void MissionImpl::set_current_mission_item_async(int current, Mission::result_ca
 
 void MissionImpl::report_progress()
 {
-    const auto temp_callback = _mission_data.progress_callback;
+    const auto temp_callback = _mission_data.mission_progress_callback;
     if (temp_callback == nullptr) {
         return;
     }
@@ -714,25 +777,28 @@ void MissionImpl::report_progress()
         std::lock_guard<std::recursive_mutex> lock(_mission_data.mutex);
         _parent->call_user_callback([temp_callback, current, total]() {
             LogDebug() << "current: " << current << ", total: " << total;
-            temp_callback(current, total);
+            Mission::MissionProgress mission_progress;
+            mission_progress.current = current;
+            mission_progress.total = total;
+            temp_callback(mission_progress);
         });
     }
 }
 
-bool MissionImpl::is_mission_finished() const
+std::pair<Mission::Result, bool> MissionImpl::is_mission_finished() const
 {
     std::lock_guard<std::recursive_mutex> lock(_mission_data.mutex);
 
     if (_mission_data.last_current_mavlink_mission_item < 0) {
-        return false;
+        return std::make_pair<Mission::Result, bool>(Mission::Result::Success, false);
     }
 
     if (_mission_data.last_reached_mavlink_mission_item < 0) {
-        return false;
+        return std::make_pair<Mission::Result, bool>(Mission::Result::Success, false);
     }
 
     if (_mission_data.mavlink_mission_item_to_mission_item_indices.size() == 0) {
-        return false;
+        return std::make_pair<Mission::Result, bool>(Mission::Result::Success, false);
     }
 
     // It is not straightforward to look at "current" because it jumps to 0
@@ -742,16 +808,17 @@ bool MissionImpl::is_mission_finished() const
     // a mission, and we need to account for that.
     const unsigned rtl_correction = _enable_return_to_launch_after_mission ? 2 : 1;
 
-    return (
+    return std::make_pair<Mission::Result, bool>(
+        Mission::Result::Success,
         unsigned(_mission_data.last_reached_mavlink_mission_item + rtl_correction) ==
-        _mission_data.mavlink_mission_item_to_mission_item_indices.size());
+            _mission_data.mavlink_mission_item_to_mission_item_indices.size());
 }
 
 int MissionImpl::current_mission_item() const
 {
     // If the mission is finished, let's return the total as the current
     // to signal this.
-    if (is_mission_finished()) {
+    if (is_mission_finished().second) {
         return total_mission_items();
     }
 
@@ -778,54 +845,68 @@ int MissionImpl::total_mission_items() const
         _mission_data.mavlink_mission_item_to_mission_item_indices.rbegin()->second + 1);
 }
 
-void MissionImpl::subscribe_progress(Mission::progress_callback_t callback)
+Mission::MissionProgress MissionImpl::mission_progress()
+{
+    Mission::MissionProgress mission_progress;
+    mission_progress.current = current_mission_item();
+    mission_progress.total = total_mission_items();
+
+    return mission_progress;
+}
+
+void MissionImpl::mission_progress_async(Mission::mission_progress_callback_t callback)
 {
     std::lock_guard<std::recursive_mutex> lock(_mission_data.mutex);
-    _mission_data.progress_callback = callback;
+    _mission_data.mission_progress_callback = callback;
 }
 
 Mission::Result MissionImpl::convert_result(MAVLinkMissionTransfer::Result result)
 {
     switch (result) {
         case MAVLinkMissionTransfer::Result::Success:
-            return Mission::Result::SUCCESS;
+            return Mission::Result::Success;
         case MAVLinkMissionTransfer::Result::ConnectionError:
-            return Mission::Result::ERROR; // FIXME
+            return Mission::Result::Error; // FIXME
         case MAVLinkMissionTransfer::Result::Denied:
-            return Mission::Result::ERROR; // FIXME
+            return Mission::Result::Error; // FIXME
         case MAVLinkMissionTransfer::Result::TooManyMissionItems:
-            return Mission::Result::TOO_MANY_MISSION_ITEMS;
+            return Mission::Result::TooManyMissionItems;
         case MAVLinkMissionTransfer::Result::Timeout:
-            return Mission::Result::TIMEOUT;
+            return Mission::Result::Timeout;
         case MAVLinkMissionTransfer::Result::Unsupported:
-            return Mission::Result::UNSUPPORTED;
+            return Mission::Result::Unsupported;
         case MAVLinkMissionTransfer::Result::UnsupportedFrame:
-            return Mission::Result::UNSUPPORTED;
+            return Mission::Result::Unsupported;
         case MAVLinkMissionTransfer::Result::NoMissionAvailable:
-            return Mission::Result::NO_MISSION_AVAILABLE;
+            return Mission::Result::NoMissionAvailable;
         case MAVLinkMissionTransfer::Result::Cancelled:
-            return Mission::Result::CANCELLED;
+            return Mission::Result::TransferCancelled;
         case MAVLinkMissionTransfer::Result::MissionTypeNotConsistent:
-            return Mission::Result::INVALID_ARGUMENT; // FIXME
+            return Mission::Result::InvalidArgument; // FIXME
         case MAVLinkMissionTransfer::Result::InvalidSequence:
-            return Mission::Result::INVALID_ARGUMENT; // FIXME
+            return Mission::Result::InvalidArgument; // FIXME
         case MAVLinkMissionTransfer::Result::CurrentInvalid:
-            return Mission::Result::INVALID_ARGUMENT; // FIXME
+            return Mission::Result::InvalidArgument; // FIXME
         case MAVLinkMissionTransfer::Result::ProtocolError:
-            return Mission::Result::ERROR; // FIXME
+            return Mission::Result::Error; // FIXME
         case MAVLinkMissionTransfer::Result::InvalidParam:
-            return Mission::Result::INVALID_ARGUMENT; // FIXME
+            return Mission::Result::InvalidArgument; // FIXME
         default:
-            return Mission::Result::UNKNOWN;
+            return Mission::Result::Unknown;
     }
 }
 
-Mission::Result MissionImpl::import_qgroundcontrol_mission(
-    Mission::mission_items_t& mission_items, const std::string& qgc_plan_file)
+std::pair<Mission::Result, Mission::MissionPlan>
+MissionImpl::import_qgroundcontrol_mission(const std::string& qgc_plan_file)
 {
+    Mission::MissionPlan mission_plan;
+    auto result =
+        std::pair<Mission::Result, Mission::MissionPlan>(Mission::Result::Unknown, mission_plan);
+
     std::ifstream file(qgc_plan_file);
     if (!file) {
-        return Mission::Result::FAILED_TO_OPEN_QGC_PLAN;
+        result.first = Mission::Result::FailedToOpenQgcPlan;
+        return result;
     }
 
     std::stringstream ss;
@@ -841,12 +922,27 @@ Mission::Result MissionImpl::import_qgroundcontrol_mission(
         reader->parse(raw_json.c_str(), raw_json.c_str() + raw_json.length(), &root, &err);
     if (!ok) {
         LogErr() << "Parse error: " << err;
-        return Mission::Result::FAILED_TO_PARSE_QGC_PLAN;
+        result.first = Mission::Result::FailedToParseQgcPlan;
+        return result;
     }
 
-    mission_items.clear();
+    result.first = import_mission_items(result.second.mission_items, root);
+    return result;
+}
 
-    return import_mission_items(mission_items, root);
+void MissionImpl::import_qgroundcontrol_mission_async(
+    std::string qgc_plan_path, const Mission::import_qgroundcontrol_mission_callback_t callback)
+{
+    auto fut = std::async([this, callback, qgc_plan_path]() {
+        auto result = MissionImpl::import_qgroundcontrol_mission(qgc_plan_path);
+        _parent->call_user_callback([&result, callback]() {
+            if (callback) {
+                callback(result.first, result.second);
+            }
+        });
+    });
+
+    UNUSED(fut);
 }
 
 // Build a mission item out of command, params and add them to the mission vector.
@@ -854,9 +950,9 @@ Mission::Result MissionImpl::build_mission_items(
     MAV_CMD command,
     std::vector<double> params,
     MissionItem& new_mission_item,
-    Mission::mission_items_t& all_mission_items)
+    std::vector<Mission::MissionItem>& all_mission_items)
 {
-    Mission::Result result = Mission::Result::SUCCESS;
+    Mission::Result result = Mission::Result::Success;
 
     // Choosen "Do-While(0)" loop for the convenience of using `break` statement.
     do {
@@ -874,7 +970,7 @@ Mission::Result MissionImpl::build_mission_items(
 
             if (command == MAV_CMD_NAV_WAYPOINT) {
                 auto is_fly_through = !(int(params[0]) > 0);
-                new_mission_item.fly_through = is_fly_through;
+                new_mission_item.is_fly_through = is_fly_through;
             }
             auto lat = params[4], lon = params[5];
             new_mission_item.latitude_deg = lat;
@@ -895,24 +991,24 @@ Mission::Result MissionImpl::build_mission_items(
             auto photo_interval = int(params[1]), photo_count = int(params[2]);
 
             if (photo_interval > 0 && photo_count == 0) {
-                new_mission_item.camera_action = CameraAction::START_PHOTO_INTERVAL;
+                new_mission_item.camera_action = CameraAction::StartPhotoInterval;
                 new_mission_item.camera_photo_interval_s = photo_interval;
             } else if (photo_interval == 0 && photo_count == 1) {
-                new_mission_item.camera_action = CameraAction::TAKE_PHOTO;
+                new_mission_item.camera_action = CameraAction::TakePhoto;
             } else {
                 LogErr() << "Mission item START_CAPTURE params unsupported.";
-                result = Mission::Result::UNSUPPORTED;
+                result = Mission::Result::Unsupported;
                 break;
             }
 
         } else if (command == MAV_CMD_IMAGE_STOP_CAPTURE) {
-            new_mission_item.camera_action = CameraAction::STOP_PHOTO_INTERVAL;
+            new_mission_item.camera_action = CameraAction::StopPhotoInterval;
 
         } else if (command == MAV_CMD_VIDEO_START_CAPTURE) {
-            new_mission_item.camera_action = CameraAction::START_VIDEO;
+            new_mission_item.camera_action = CameraAction::StartVideo;
 
         } else if (command == MAV_CMD_VIDEO_STOP_CAPTURE) {
-            new_mission_item.camera_action = CameraAction::STOP_VIDEO;
+            new_mission_item.camera_action = CameraAction::StopVideo;
 
         } else if (command == MAV_CMD_DO_CHANGE_SPEED) {
             enum { AirSpeed = 0, GroundSpeed = 1 };
@@ -925,7 +1021,7 @@ Mission::Result MissionImpl::build_mission_items(
                 new_mission_item.speed_m_s = speed_m_s;
             } else {
                 LogErr() << command << "Mission item DO_CHANGE_SPEED params unsupported";
-                result = Mission::Result::UNSUPPORTED;
+                result = Mission::Result::Unsupported;
                 break;
             }
         } else {
@@ -937,7 +1033,7 @@ Mission::Result MissionImpl::build_mission_items(
 }
 
 Mission::Result MissionImpl::import_mission_items(
-    Mission::mission_items_t& all_mission_items, const Json::Value& qgc_plan_json)
+    std::vector<Mission::MissionItem>& all_mission_items, const Json::Value& qgc_plan_json)
 {
     const auto json_mission_items = qgc_plan_json["mission"];
     MissionItem new_mission_item{};
@@ -960,13 +1056,13 @@ Mission::Result MissionImpl::import_mission_items(
 
         Mission::Result result =
             build_mission_items(command, params, new_mission_item, all_mission_items);
-        if (result != Mission::Result::SUCCESS) {
+        if (result != Mission::Result::Success) {
             break;
         }
     }
     // Don't forget to add the last mission which possibly didn't have position set.
     all_mission_items.push_back(new_mission_item);
-    return Mission::Result::SUCCESS;
+    return Mission::Result::Success;
 }
 
 } // namespace mavsdk

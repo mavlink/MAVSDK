@@ -1757,6 +1757,7 @@ void TelemetryServiceImplTest::checkSendsActuatorControlTargetEvents(
     auto actuator_control_target_stream_future =
         subscribeActuatorControlTargetAsync(received_actuator_control_target_events);
     subscription_future.wait();
+
     for (const auto actuator_control_target : actuator_control_target_events) {
         actuator_control_target_callback(actuator_control_target);
     }

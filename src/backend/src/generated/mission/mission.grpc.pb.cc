@@ -30,11 +30,12 @@ static const char* MissionService_method_names[] = {
   "/mavsdk.rpc.mission.MissionService/StartMission",
   "/mavsdk.rpc.mission.MissionService/PauseMission",
   "/mavsdk.rpc.mission.MissionService/ClearMission",
-  "/mavsdk.rpc.mission.MissionService/SetCurrentMissionItemIndex",
+  "/mavsdk.rpc.mission.MissionService/SetCurrentMissionItem",
   "/mavsdk.rpc.mission.MissionService/IsMissionFinished",
   "/mavsdk.rpc.mission.MissionService/SubscribeMissionProgress",
   "/mavsdk.rpc.mission.MissionService/GetReturnToLaunchAfterMission",
   "/mavsdk.rpc.mission.MissionService/SetReturnToLaunchAfterMission",
+  "/mavsdk.rpc.mission.MissionService/ImportQgroundcontrolMission",
 };
 
 std::unique_ptr< MissionService::Stub> MissionService::NewStub(const std::shared_ptr< ::grpc::ChannelInterface>& channel, const ::grpc::StubOptions& options) {
@@ -51,11 +52,12 @@ MissionService::Stub::Stub(const std::shared_ptr< ::grpc::ChannelInterface>& cha
   , rpcmethod_StartMission_(MissionService_method_names[4], ::grpc::internal::RpcMethod::NORMAL_RPC, channel)
   , rpcmethod_PauseMission_(MissionService_method_names[5], ::grpc::internal::RpcMethod::NORMAL_RPC, channel)
   , rpcmethod_ClearMission_(MissionService_method_names[6], ::grpc::internal::RpcMethod::NORMAL_RPC, channel)
-  , rpcmethod_SetCurrentMissionItemIndex_(MissionService_method_names[7], ::grpc::internal::RpcMethod::NORMAL_RPC, channel)
+  , rpcmethod_SetCurrentMissionItem_(MissionService_method_names[7], ::grpc::internal::RpcMethod::NORMAL_RPC, channel)
   , rpcmethod_IsMissionFinished_(MissionService_method_names[8], ::grpc::internal::RpcMethod::NORMAL_RPC, channel)
   , rpcmethod_SubscribeMissionProgress_(MissionService_method_names[9], ::grpc::internal::RpcMethod::SERVER_STREAMING, channel)
   , rpcmethod_GetReturnToLaunchAfterMission_(MissionService_method_names[10], ::grpc::internal::RpcMethod::NORMAL_RPC, channel)
   , rpcmethod_SetReturnToLaunchAfterMission_(MissionService_method_names[11], ::grpc::internal::RpcMethod::NORMAL_RPC, channel)
+  , rpcmethod_ImportQgroundcontrolMission_(MissionService_method_names[12], ::grpc::internal::RpcMethod::NORMAL_RPC, channel)
   {}
 
 ::grpc::Status MissionService::Stub::UploadMission(::grpc::ClientContext* context, const ::mavsdk::rpc::mission::UploadMissionRequest& request, ::mavsdk::rpc::mission::UploadMissionResponse* response) {
@@ -254,32 +256,32 @@ void MissionService::Stub::experimental_async::ClearMission(::grpc::ClientContex
   return ::grpc_impl::internal::ClientAsyncResponseReaderFactory< ::mavsdk::rpc::mission::ClearMissionResponse>::Create(channel_.get(), cq, rpcmethod_ClearMission_, context, request, false);
 }
 
-::grpc::Status MissionService::Stub::SetCurrentMissionItemIndex(::grpc::ClientContext* context, const ::mavsdk::rpc::mission::SetCurrentMissionItemIndexRequest& request, ::mavsdk::rpc::mission::SetCurrentMissionItemIndexResponse* response) {
-  return ::grpc::internal::BlockingUnaryCall(channel_.get(), rpcmethod_SetCurrentMissionItemIndex_, context, request, response);
+::grpc::Status MissionService::Stub::SetCurrentMissionItem(::grpc::ClientContext* context, const ::mavsdk::rpc::mission::SetCurrentMissionItemRequest& request, ::mavsdk::rpc::mission::SetCurrentMissionItemResponse* response) {
+  return ::grpc::internal::BlockingUnaryCall(channel_.get(), rpcmethod_SetCurrentMissionItem_, context, request, response);
 }
 
-void MissionService::Stub::experimental_async::SetCurrentMissionItemIndex(::grpc::ClientContext* context, const ::mavsdk::rpc::mission::SetCurrentMissionItemIndexRequest* request, ::mavsdk::rpc::mission::SetCurrentMissionItemIndexResponse* response, std::function<void(::grpc::Status)> f) {
-  ::grpc_impl::internal::CallbackUnaryCall(stub_->channel_.get(), stub_->rpcmethod_SetCurrentMissionItemIndex_, context, request, response, std::move(f));
+void MissionService::Stub::experimental_async::SetCurrentMissionItem(::grpc::ClientContext* context, const ::mavsdk::rpc::mission::SetCurrentMissionItemRequest* request, ::mavsdk::rpc::mission::SetCurrentMissionItemResponse* response, std::function<void(::grpc::Status)> f) {
+  ::grpc_impl::internal::CallbackUnaryCall(stub_->channel_.get(), stub_->rpcmethod_SetCurrentMissionItem_, context, request, response, std::move(f));
 }
 
-void MissionService::Stub::experimental_async::SetCurrentMissionItemIndex(::grpc::ClientContext* context, const ::grpc::ByteBuffer* request, ::mavsdk::rpc::mission::SetCurrentMissionItemIndexResponse* response, std::function<void(::grpc::Status)> f) {
-  ::grpc_impl::internal::CallbackUnaryCall(stub_->channel_.get(), stub_->rpcmethod_SetCurrentMissionItemIndex_, context, request, response, std::move(f));
+void MissionService::Stub::experimental_async::SetCurrentMissionItem(::grpc::ClientContext* context, const ::grpc::ByteBuffer* request, ::mavsdk::rpc::mission::SetCurrentMissionItemResponse* response, std::function<void(::grpc::Status)> f) {
+  ::grpc_impl::internal::CallbackUnaryCall(stub_->channel_.get(), stub_->rpcmethod_SetCurrentMissionItem_, context, request, response, std::move(f));
 }
 
-void MissionService::Stub::experimental_async::SetCurrentMissionItemIndex(::grpc::ClientContext* context, const ::mavsdk::rpc::mission::SetCurrentMissionItemIndexRequest* request, ::mavsdk::rpc::mission::SetCurrentMissionItemIndexResponse* response, ::grpc::experimental::ClientUnaryReactor* reactor) {
-  ::grpc_impl::internal::ClientCallbackUnaryFactory::Create(stub_->channel_.get(), stub_->rpcmethod_SetCurrentMissionItemIndex_, context, request, response, reactor);
+void MissionService::Stub::experimental_async::SetCurrentMissionItem(::grpc::ClientContext* context, const ::mavsdk::rpc::mission::SetCurrentMissionItemRequest* request, ::mavsdk::rpc::mission::SetCurrentMissionItemResponse* response, ::grpc::experimental::ClientUnaryReactor* reactor) {
+  ::grpc_impl::internal::ClientCallbackUnaryFactory::Create(stub_->channel_.get(), stub_->rpcmethod_SetCurrentMissionItem_, context, request, response, reactor);
 }
 
-void MissionService::Stub::experimental_async::SetCurrentMissionItemIndex(::grpc::ClientContext* context, const ::grpc::ByteBuffer* request, ::mavsdk::rpc::mission::SetCurrentMissionItemIndexResponse* response, ::grpc::experimental::ClientUnaryReactor* reactor) {
-  ::grpc_impl::internal::ClientCallbackUnaryFactory::Create(stub_->channel_.get(), stub_->rpcmethod_SetCurrentMissionItemIndex_, context, request, response, reactor);
+void MissionService::Stub::experimental_async::SetCurrentMissionItem(::grpc::ClientContext* context, const ::grpc::ByteBuffer* request, ::mavsdk::rpc::mission::SetCurrentMissionItemResponse* response, ::grpc::experimental::ClientUnaryReactor* reactor) {
+  ::grpc_impl::internal::ClientCallbackUnaryFactory::Create(stub_->channel_.get(), stub_->rpcmethod_SetCurrentMissionItem_, context, request, response, reactor);
 }
 
-::grpc::ClientAsyncResponseReader< ::mavsdk::rpc::mission::SetCurrentMissionItemIndexResponse>* MissionService::Stub::AsyncSetCurrentMissionItemIndexRaw(::grpc::ClientContext* context, const ::mavsdk::rpc::mission::SetCurrentMissionItemIndexRequest& request, ::grpc::CompletionQueue* cq) {
-  return ::grpc_impl::internal::ClientAsyncResponseReaderFactory< ::mavsdk::rpc::mission::SetCurrentMissionItemIndexResponse>::Create(channel_.get(), cq, rpcmethod_SetCurrentMissionItemIndex_, context, request, true);
+::grpc::ClientAsyncResponseReader< ::mavsdk::rpc::mission::SetCurrentMissionItemResponse>* MissionService::Stub::AsyncSetCurrentMissionItemRaw(::grpc::ClientContext* context, const ::mavsdk::rpc::mission::SetCurrentMissionItemRequest& request, ::grpc::CompletionQueue* cq) {
+  return ::grpc_impl::internal::ClientAsyncResponseReaderFactory< ::mavsdk::rpc::mission::SetCurrentMissionItemResponse>::Create(channel_.get(), cq, rpcmethod_SetCurrentMissionItem_, context, request, true);
 }
 
-::grpc::ClientAsyncResponseReader< ::mavsdk::rpc::mission::SetCurrentMissionItemIndexResponse>* MissionService::Stub::PrepareAsyncSetCurrentMissionItemIndexRaw(::grpc::ClientContext* context, const ::mavsdk::rpc::mission::SetCurrentMissionItemIndexRequest& request, ::grpc::CompletionQueue* cq) {
-  return ::grpc_impl::internal::ClientAsyncResponseReaderFactory< ::mavsdk::rpc::mission::SetCurrentMissionItemIndexResponse>::Create(channel_.get(), cq, rpcmethod_SetCurrentMissionItemIndex_, context, request, false);
+::grpc::ClientAsyncResponseReader< ::mavsdk::rpc::mission::SetCurrentMissionItemResponse>* MissionService::Stub::PrepareAsyncSetCurrentMissionItemRaw(::grpc::ClientContext* context, const ::mavsdk::rpc::mission::SetCurrentMissionItemRequest& request, ::grpc::CompletionQueue* cq) {
+  return ::grpc_impl::internal::ClientAsyncResponseReaderFactory< ::mavsdk::rpc::mission::SetCurrentMissionItemResponse>::Create(channel_.get(), cq, rpcmethod_SetCurrentMissionItem_, context, request, false);
 }
 
 ::grpc::Status MissionService::Stub::IsMissionFinished(::grpc::ClientContext* context, const ::mavsdk::rpc::mission::IsMissionFinishedRequest& request, ::mavsdk::rpc::mission::IsMissionFinishedResponse* response) {
@@ -382,6 +384,34 @@ void MissionService::Stub::experimental_async::SetReturnToLaunchAfterMission(::g
   return ::grpc_impl::internal::ClientAsyncResponseReaderFactory< ::mavsdk::rpc::mission::SetReturnToLaunchAfterMissionResponse>::Create(channel_.get(), cq, rpcmethod_SetReturnToLaunchAfterMission_, context, request, false);
 }
 
+::grpc::Status MissionService::Stub::ImportQgroundcontrolMission(::grpc::ClientContext* context, const ::mavsdk::rpc::mission::ImportQgroundcontrolMissionRequest& request, ::mavsdk::rpc::mission::ImportQgroundcontrolMissionResponse* response) {
+  return ::grpc::internal::BlockingUnaryCall(channel_.get(), rpcmethod_ImportQgroundcontrolMission_, context, request, response);
+}
+
+void MissionService::Stub::experimental_async::ImportQgroundcontrolMission(::grpc::ClientContext* context, const ::mavsdk::rpc::mission::ImportQgroundcontrolMissionRequest* request, ::mavsdk::rpc::mission::ImportQgroundcontrolMissionResponse* response, std::function<void(::grpc::Status)> f) {
+  ::grpc_impl::internal::CallbackUnaryCall(stub_->channel_.get(), stub_->rpcmethod_ImportQgroundcontrolMission_, context, request, response, std::move(f));
+}
+
+void MissionService::Stub::experimental_async::ImportQgroundcontrolMission(::grpc::ClientContext* context, const ::grpc::ByteBuffer* request, ::mavsdk::rpc::mission::ImportQgroundcontrolMissionResponse* response, std::function<void(::grpc::Status)> f) {
+  ::grpc_impl::internal::CallbackUnaryCall(stub_->channel_.get(), stub_->rpcmethod_ImportQgroundcontrolMission_, context, request, response, std::move(f));
+}
+
+void MissionService::Stub::experimental_async::ImportQgroundcontrolMission(::grpc::ClientContext* context, const ::mavsdk::rpc::mission::ImportQgroundcontrolMissionRequest* request, ::mavsdk::rpc::mission::ImportQgroundcontrolMissionResponse* response, ::grpc::experimental::ClientUnaryReactor* reactor) {
+  ::grpc_impl::internal::ClientCallbackUnaryFactory::Create(stub_->channel_.get(), stub_->rpcmethod_ImportQgroundcontrolMission_, context, request, response, reactor);
+}
+
+void MissionService::Stub::experimental_async::ImportQgroundcontrolMission(::grpc::ClientContext* context, const ::grpc::ByteBuffer* request, ::mavsdk::rpc::mission::ImportQgroundcontrolMissionResponse* response, ::grpc::experimental::ClientUnaryReactor* reactor) {
+  ::grpc_impl::internal::ClientCallbackUnaryFactory::Create(stub_->channel_.get(), stub_->rpcmethod_ImportQgroundcontrolMission_, context, request, response, reactor);
+}
+
+::grpc::ClientAsyncResponseReader< ::mavsdk::rpc::mission::ImportQgroundcontrolMissionResponse>* MissionService::Stub::AsyncImportQgroundcontrolMissionRaw(::grpc::ClientContext* context, const ::mavsdk::rpc::mission::ImportQgroundcontrolMissionRequest& request, ::grpc::CompletionQueue* cq) {
+  return ::grpc_impl::internal::ClientAsyncResponseReaderFactory< ::mavsdk::rpc::mission::ImportQgroundcontrolMissionResponse>::Create(channel_.get(), cq, rpcmethod_ImportQgroundcontrolMission_, context, request, true);
+}
+
+::grpc::ClientAsyncResponseReader< ::mavsdk::rpc::mission::ImportQgroundcontrolMissionResponse>* MissionService::Stub::PrepareAsyncImportQgroundcontrolMissionRaw(::grpc::ClientContext* context, const ::mavsdk::rpc::mission::ImportQgroundcontrolMissionRequest& request, ::grpc::CompletionQueue* cq) {
+  return ::grpc_impl::internal::ClientAsyncResponseReaderFactory< ::mavsdk::rpc::mission::ImportQgroundcontrolMissionResponse>::Create(channel_.get(), cq, rpcmethod_ImportQgroundcontrolMission_, context, request, false);
+}
+
 MissionService::Service::Service() {
   AddMethod(new ::grpc::internal::RpcServiceMethod(
       MissionService_method_names[0],
@@ -421,8 +451,8 @@ MissionService::Service::Service() {
   AddMethod(new ::grpc::internal::RpcServiceMethod(
       MissionService_method_names[7],
       ::grpc::internal::RpcMethod::NORMAL_RPC,
-      new ::grpc::internal::RpcMethodHandler< MissionService::Service, ::mavsdk::rpc::mission::SetCurrentMissionItemIndexRequest, ::mavsdk::rpc::mission::SetCurrentMissionItemIndexResponse>(
-          std::mem_fn(&MissionService::Service::SetCurrentMissionItemIndex), this)));
+      new ::grpc::internal::RpcMethodHandler< MissionService::Service, ::mavsdk::rpc::mission::SetCurrentMissionItemRequest, ::mavsdk::rpc::mission::SetCurrentMissionItemResponse>(
+          std::mem_fn(&MissionService::Service::SetCurrentMissionItem), this)));
   AddMethod(new ::grpc::internal::RpcServiceMethod(
       MissionService_method_names[8],
       ::grpc::internal::RpcMethod::NORMAL_RPC,
@@ -443,6 +473,11 @@ MissionService::Service::Service() {
       ::grpc::internal::RpcMethod::NORMAL_RPC,
       new ::grpc::internal::RpcMethodHandler< MissionService::Service, ::mavsdk::rpc::mission::SetReturnToLaunchAfterMissionRequest, ::mavsdk::rpc::mission::SetReturnToLaunchAfterMissionResponse>(
           std::mem_fn(&MissionService::Service::SetReturnToLaunchAfterMission), this)));
+  AddMethod(new ::grpc::internal::RpcServiceMethod(
+      MissionService_method_names[12],
+      ::grpc::internal::RpcMethod::NORMAL_RPC,
+      new ::grpc::internal::RpcMethodHandler< MissionService::Service, ::mavsdk::rpc::mission::ImportQgroundcontrolMissionRequest, ::mavsdk::rpc::mission::ImportQgroundcontrolMissionResponse>(
+          std::mem_fn(&MissionService::Service::ImportQgroundcontrolMission), this)));
 }
 
 MissionService::Service::~Service() {
@@ -497,7 +532,7 @@ MissionService::Service::~Service() {
   return ::grpc::Status(::grpc::StatusCode::UNIMPLEMENTED, "");
 }
 
-::grpc::Status MissionService::Service::SetCurrentMissionItemIndex(::grpc::ServerContext* context, const ::mavsdk::rpc::mission::SetCurrentMissionItemIndexRequest* request, ::mavsdk::rpc::mission::SetCurrentMissionItemIndexResponse* response) {
+::grpc::Status MissionService::Service::SetCurrentMissionItem(::grpc::ServerContext* context, const ::mavsdk::rpc::mission::SetCurrentMissionItemRequest* request, ::mavsdk::rpc::mission::SetCurrentMissionItemResponse* response) {
   (void) context;
   (void) request;
   (void) response;
@@ -526,6 +561,13 @@ MissionService::Service::~Service() {
 }
 
 ::grpc::Status MissionService::Service::SetReturnToLaunchAfterMission(::grpc::ServerContext* context, const ::mavsdk::rpc::mission::SetReturnToLaunchAfterMissionRequest* request, ::mavsdk::rpc::mission::SetReturnToLaunchAfterMissionResponse* response) {
+  (void) context;
+  (void) request;
+  (void) response;
+  return ::grpc::Status(::grpc::StatusCode::UNIMPLEMENTED, "");
+}
+
+::grpc::Status MissionService::Service::ImportQgroundcontrolMission(::grpc::ServerContext* context, const ::mavsdk::rpc::mission::ImportQgroundcontrolMissionRequest* request, ::mavsdk::rpc::mission::ImportQgroundcontrolMissionResponse* response) {
   (void) context;
   (void) request;
   (void) response;
