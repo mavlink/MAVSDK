@@ -12,11 +12,11 @@ const char* {{ plugin_name.upper_camel_case }}::result_str({{ plugin_name.upper_
 }
 {% endif %}
 
-std::ostream& operator<<(std::ostream& str, {{ plugin_name.upper_camel_case }}::{{ name.upper_camel_case }} const& {{ name.lower_snake_case }})
+std::ostream& operator<<(std::ostream& str, {{ plugin_name.upper_camel_case }}::{% if parent_struct and not name.upper_camel_case.endswith("Result") %}{{ parent_struct.upper_camel_case }}::{% endif %}{{ name.upper_camel_case }} const& {{ name.lower_snake_case }})
 {
     switch ({{ name.lower_snake_case }}) {
         {%- for value in values %}
-        case {{ plugin_name.upper_camel_case }}::{{ name.upper_camel_case }}::{{ value.name.upper_camel_case }}:
+        case {{ plugin_name.upper_camel_case }}::{% if parent_struct and not name.upper_camel_case.endswith("Result") %}{{ parent_struct.upper_camel_case }}::{% endif %}{{ name.upper_camel_case }}::{{ value.name.upper_camel_case }}:
             return str << "{{ name.upper_readable }} {{ value.name.upper_readable }}";
         {%- endfor %}
         default:
