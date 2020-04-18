@@ -139,10 +139,10 @@ protected:
         const std::string& setting_description,
         const std::string& option_id,
         const std::string& option_description);
-    std::future<void> setSettingAndSaveParams(
+    void setSettingAndSaveParams(
         const mavsdk::rpc::camera::SetSettingRequest& request,
         std::shared_ptr<mavsdk::rpc::camera::SetSettingResponse> response,
-        mavsdk::Camera::result_callback_t& result_callback);
+        mavsdk::Camera::Result result);
 
     MockCamera _camera{};
     CameraServiceImpl _camera_service;
@@ -207,13 +207,12 @@ TEST_F(CameraServiceImplTest, startsPhotoIntervalWithRightParameter)
     _camera_service.StartPhotoInterval(nullptr, &request, nullptr);
 }
 
-TEST_F(CameraServiceImplTest, startPhotoIntervalReturnsWrongArgumentErrorIfRequestIsNull)
+TEST_F(CameraServiceImplTest, startPhotoIntervalReturnsUnknownErrorIfRequestIsNull)
 {
     mavsdk::rpc::camera::StartPhotoIntervalResponse response;
-
     _camera_service.StartPhotoInterval(nullptr, nullptr, &response);
 
-    EXPECT_EQ("WRONG_ARGUMENT", CameraResult::Result_Name(response.camera_result().result()));
+    EXPECT_EQ("RESULT_UNKNOWN", CameraResult::Result_Name(response.camera_result().result()));
 }
 
 TEST_F(CameraServiceImplTest, startPhotoIntervalDoesNotCrashWhenArgsAreNull)
@@ -1167,7 +1166,6 @@ TEST_F(CameraServiceImplTest, sendsMultiplePossibleSettingOptionss)
 
 TEST_P(CameraServiceImplTest, setSettingResultIsTranslatedCorrectly)
 {
-    mavsdk::Camera::result_callback_t result_callback;
     mavsdk::rpc::camera::SetSettingRequest request;
     request.set_allocated_setting(createRPCSetting(
                                       "arbitrary_setting_id",
@@ -1177,26 +1175,19 @@ TEST_P(CameraServiceImplTest, setSettingResultIsTranslatedCorrectly)
                                       .release());
     auto response = std::make_shared<mavsdk::rpc::camera::SetSettingResponse>();
 
-    auto handle = setSettingAndSaveParams(request, response, result_callback);
-    result_callback(GetParam().second);
+    setSettingAndSaveParams(request, response, GetParam().second);
 
     EXPECT_EQ(GetParam().first, CameraResult::Result_Name(response->camera_result().result()));
 }
 
-std::future<void> CameraServiceImplTest::setSettingAndSaveParams(
+void CameraServiceImplTest::setSettingAndSaveParams(
     const mavsdk::rpc::camera::SetSettingRequest& request,
     std::shared_ptr<mavsdk::rpc::camera::SetSettingResponse> response,
-    mavsdk::Camera::result_callback_t& result_callback)
+    mavsdk::Camera::Result result)
 {
-    EXPECT_CALL(_camera, set_option_async(_, _, _))
-        .WillOnce(SaveResult(&result_callback, &_callback_saved_promise));
+    EXPECT_CALL(_camera, set_setting(_)).WillOnce(Return(result));
 
-    auto handle = std::async(std::launch::async, [this, &request, response]() {
-        _camera_service.SetSetting(nullptr, &request, response.get());
-    });
-
-    _callback_saved_future.wait();
-    return handle;
+    _camera_service.SetSetting(nullptr, &request, response.get());
 }
 
 std::unique_ptr<mavsdk::rpc::camera::Setting> CameraServiceImplTest::createRPCSetting(
@@ -1217,25 +1208,6 @@ std::unique_ptr<mavsdk::rpc::camera::Setting> CameraServiceImplTest::createRPCSe
     return setting;
 }
 
-TEST_F(CameraServiceImplTest, setSettingInProgressResultIsIgnored)
-{
-    mavsdk::Camera::result_callback_t result_callback;
-    mavsdk::rpc::camera::SetSettingRequest request;
-    request.set_allocated_setting(createRPCSetting(
-                                      "arbitrary_setting_id",
-                                      "arbitrary_setting_description",
-                                      "arbitrary_option_id",
-                                      "arbitrary_option_description")
-                                      .release());
-    auto response = std::make_shared<mavsdk::rpc::camera::SetSettingResponse>();
-
-    auto handle = setSettingAndSaveParams(request, response, result_callback);
-    result_callback(mavsdk::Camera::Result::InProgress);
-    result_callback(mavsdk::Camera::Result::Success);
-
-    EXPECT_EQ("SUCCESS", CameraResult::Result_Name(response->camera_result().result()));
-}
-
 TEST_F(CameraServiceImplTest, setsSettingEvenWhenContextAndResponseAreNull)
 {
     mavsdk::Camera::result_callback_t result_callback;
@@ -1248,8 +1220,7 @@ TEST_F(CameraServiceImplTest, setsSettingEvenWhenContextAndResponseAreNull)
                                       .release());
     auto response = std::make_shared<mavsdk::rpc::camera::SetSettingResponse>();
 
-    auto handle = setSettingAndSaveParams(request, nullptr, result_callback);
-    result_callback(ARBITRARY_CAMERA_RESULT);
+    setSettingAndSaveParams(request, nullptr, ARBITRARY_CAMERA_RESULT);
 }
 
 TEST_F(CameraServiceImplTest, setsSettingWithRightParameter)
@@ -1262,18 +1233,16 @@ TEST_F(CameraServiceImplTest, setsSettingWithRightParameter)
                                       ARBITRARY_OPTION_ID,
                                       ARBITRARY_OPTION_DESCRIPTION)
                                       .release());
-    mavsdk::Camera::Option option;
-    option.option_id = ARBITRARY_OPTION_ID;
 
-    EXPECT_CALL(_camera, set_option_async(_, ARBITRARY_SETTING_ID, option))
-        .WillOnce(SaveResult(&result_callback, &_callback_saved_promise));
+    mavsdk::Camera::Setting setting;
+    setting.setting_id = ARBITRARY_SETTING_ID;
+    setting.setting_description = ARBITRARY_SETTING_DESCRIPTION;
+    setting.option.option_id = ARBITRARY_OPTION_ID;
+    setting.option.option_description = ARBITRARY_OPTION_DESCRIPTION;
 
-    auto handle = std::async(std::launch::async, [this, &request]() {
-        _camera_service.SetSetting(nullptr, &request, nullptr);
-    });
+    EXPECT_CALL(_camera, set_setting(setting)).WillOnce(Return(ARBITRARY_CAMERA_RESULT));
 
-    _callback_saved_future.wait();
-    result_callback(ARBITRARY_CAMERA_RESULT);
+    _camera_service.SetSetting(nullptr, &request, nullptr);
 }
 
 TEST_F(CameraServiceImplTest, setSettingReturnsWrongArgumentErrorIfRequestIsNull)
@@ -1282,7 +1251,7 @@ TEST_F(CameraServiceImplTest, setSettingReturnsWrongArgumentErrorIfRequestIsNull
 
     _camera_service.SetSetting(nullptr, nullptr, &response);
 
-    EXPECT_EQ("WRONG_ARGUMENT", CameraResult::Result_Name(response.camera_result().result()));
+    EXPECT_EQ("RESULT_UNKNOWN", CameraResult::Result_Name(response.camera_result().result()));
 }
 
 TEST_F(CameraServiceImplTest, setSettingDoesNotCrashWhenArgsAreNull)
@@ -1296,13 +1265,14 @@ INSTANTIATE_TEST_SUITE_P(
 std::vector<InputPair> generateInputPairs()
 {
     std::vector<InputPair> input_pairs;
-    input_pairs.push_back(std::make_pair("SUCCESS", mavsdk::Camera::Result::Success));
-    input_pairs.push_back(std::make_pair("BUSY", mavsdk::Camera::Result::Busy));
-    input_pairs.push_back(std::make_pair("DENIED", mavsdk::Camera::Result::Denied));
-    input_pairs.push_back(std::make_pair("ERROR", mavsdk::Camera::Result::Error));
-    input_pairs.push_back(std::make_pair("TIMEOUT", mavsdk::Camera::Result::Timeout));
-    input_pairs.push_back(std::make_pair("WRONG_ARGUMENT", mavsdk::Camera::Result::WrongArgument));
-    input_pairs.push_back(std::make_pair("UNKNOWN", mavsdk::Camera::Result::Unknown));
+    input_pairs.push_back(std::make_pair("RESULT_SUCCESS", mavsdk::Camera::Result::Success));
+    input_pairs.push_back(std::make_pair("RESULT_BUSY", mavsdk::Camera::Result::Busy));
+    input_pairs.push_back(std::make_pair("RESULT_DENIED", mavsdk::Camera::Result::Denied));
+    input_pairs.push_back(std::make_pair("RESULT_ERROR", mavsdk::Camera::Result::Error));
+    input_pairs.push_back(std::make_pair("RESULT_TIMEOUT", mavsdk::Camera::Result::Timeout));
+    input_pairs.push_back(
+        std::make_pair("RESULT_WRONG_ARGUMENT", mavsdk::Camera::Result::WrongArgument));
+    input_pairs.push_back(std::make_pair("RESULT_UNKNOWN", mavsdk::Camera::Result::Unknown));
 
     return input_pairs;
 }
