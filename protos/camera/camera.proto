@@ -334,8 +334,8 @@ message Status {
         STORAGE_STATUS_FORMATTED = 2; // Storage is formatted (i.e. has recognized a file system)
     }
 
-    bool video_on = 1;
-    bool photo_interval_on = 2;
+    bool video_on = 1; // Whether video recording is currently in process
+    bool photo_interval_on = 2; // Whether a photo interval is currently in process
 
     float used_storage_mib = 3; // Used storage (in MiB)
     float available_storage_mib = 4; // Available storage (in MiB)
