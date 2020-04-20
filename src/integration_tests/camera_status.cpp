@@ -12,7 +12,6 @@ static void receive_camera_status(const Camera::Status status);
 static void print_camera_status(const Camera::Status status);
 
 static std::atomic<bool> _received_status{false};
-static std::atomic<int> _num_received_status{0};
 
 TEST(CameraTest, Status)
 {
