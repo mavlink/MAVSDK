@@ -286,8 +286,8 @@ public:
         friend std::ostream&
         operator<<(std::ostream& str, Camera::Status::StorageStatus const& storage_status);
 
-        bool video_on{}; /**< @brief */
-        bool photo_interval_on{}; /**< @brief */
+        bool video_on{}; /**< @brief Whether video recording is currently in process */
+        bool photo_interval_on{}; /**< @brief Whether a photo interval is currently in process */
         float used_storage_mib{}; /**< @brief Used storage (in MiB) */
         float available_storage_mib{}; /**< @brief Available storage (in MiB) */
         float total_storage_mib{}; /**< @brief Total storage (in MiB) */
