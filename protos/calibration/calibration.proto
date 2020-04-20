@@ -2,21 +2,23 @@ syntax = "proto3";
 
 package mavsdk.rpc.calibration;
 
+import "mavsdk_options.proto";
+
 option java_package = "io.mavsdk.calibration";
 option java_outer_classname = "CalibrationProto";
 
 // Enable to calibrate sensors of a drone such as gyro, accelerometer, and magnetometer.
 service CalibrationService {
     // Perform gyro calibration.
-    rpc SubscribeCalibrateGyro(SubscribeCalibrateGyroRequest) returns(stream CalibrateGyroResponse) {}
+    rpc SubscribeCalibrateGyro(SubscribeCalibrateGyroRequest) returns(stream CalibrateGyroResponse) { option (mavsdk.options.async_type) = ASYNC; }
     // Perform accelerometer calibration.
-    rpc SubscribeCalibrateAccelerometer(SubscribeCalibrateAccelerometerRequest) returns(stream CalibrateAccelerometerResponse) {}
+    rpc SubscribeCalibrateAccelerometer(SubscribeCalibrateAccelerometerRequest) returns(stream CalibrateAccelerometerResponse) { option (mavsdk.options.async_type) = ASYNC; }
     // Perform magnetometer caliration.
-    rpc SubscribeCalibrateMagnetometer(SubscribeCalibrateMagnetometerRequest) returns(stream CalibrateMagnetometerResponse) {}
+    rpc SubscribeCalibrateMagnetometer(SubscribeCalibrateMagnetometerRequest) returns(stream CalibrateMagnetometerResponse) { option (mavsdk.options.async_type) = ASYNC; }
     // Perform gimbal accelerometer calibration.
-    rpc SubscribeCalibrateGimbalAccelerometer(SubscribeCalibrateGimbalAccelerometerRequest) returns(stream CalibrateGimbalAccelerometerResponse) {}
+    rpc SubscribeCalibrateGimbalAccelerometer(SubscribeCalibrateGimbalAccelerometerRequest) returns(stream CalibrateGimbalAccelerometerResponse) { option (mavsdk.options.async_type) = ASYNC; }
     // Cancel ongoing calibration process.
-    rpc Cancel(CancelRequest) returns(CancelResponse) {}
+    rpc Cancel(CancelRequest) returns(CancelResponse) { option (mavsdk.options.async_type) = SYNC; }
 }
 
 message SubscribeCalibrateGyroRequest {}
@@ -50,17 +52,17 @@ message CancelResponse {}
 message CalibrationResult {
     // Possible results returned for calibration commands
     enum Result {
-        UNKNOWN = 0; // Unknown error
-        SUCCESS = 1; // The calibration process succeeded
-        IN_PROGRESS = 2; // Intermediate message showing progress of the calibration process
-        INSTRUCTION = 3; // Intermediate message giving instructions on the next steps required by the process
-        FAILED = 4; // Calibration failed
-        NO_SYSTEM = 5; // No system is connected
-        CONNECTION_ERROR = 6; // Connection error
-        BUSY = 7; // Vehicle is busy
-        COMMAND_DENIED = 8; // Command refused by vehicle
-        TIMEOUT = 9; // Command timed out
-        CANCELLED = 10; // Calibration process got cancelled
+        RESULT_UNKNOWN = 0; // Unknown error
+        RESULT_SUCCESS = 1; // The calibration process succeeded
+        RESULT_IN_PROGRESS = 2; // Intermediate message showing progress of the calibration process
+        RESULT_INSTRUCTION = 3; // Intermediate message giving instructions on the next steps required by the process
+        RESULT_FAILED = 4; // Calibration failed
+        RESULT_NO_SYSTEM = 5; // No system is connected
+        RESULT_CONNECTION_ERROR = 6; // Connection error
+        RESULT_BUSY = 7; // Vehicle is busy
+        RESULT_COMMAND_DENIED = 8; // Command refused by vehicle
+        RESULT_TIMEOUT = 9; // Command timed out
+        RESULT_CANCELLED = 10; // Calibration process got cancelled
     }
 
     Result result = 1; // Result enum value
@@ -73,9 +75,9 @@ message CalibrationResult {
  * Can be a progress percentage, or an instruction text.
  */
 message ProgressData {
-    bool has_progress = 1;
-    float progress = 2; // Progress (percentage)
+    bool has_progress = 1 [(mavsdk.options.default_value)="false"]; // Whether this ProgressData contains a 'progress' status or not
+    float progress = 2 [(mavsdk.options.default_value)="NaN"]; // Progress (percentage)
 
-    bool has_status_text = 3;
+    bool has_status_text = 3 [(mavsdk.options.default_value)="false"]; // Whether this ProgressData contains a 'status_text' or not
     string status_text = 4; // Instruction text
 }
