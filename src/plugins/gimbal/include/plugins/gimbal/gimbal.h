@@ -5,6 +5,10 @@
 
 #include "plugin_base.h"
 
+#ifdef ERROR
+#undef ERROR
+#endif
+
 namespace mavsdk {
 
 class GimbalImpl;
