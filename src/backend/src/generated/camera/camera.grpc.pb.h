@@ -141,7 +141,7 @@ class CameraService final {
       return std::unique_ptr< ::grpc::ClientAsyncReaderInterface< ::mavsdk::rpc::camera::ModeResponse>>(PrepareAsyncSubscribeModeRaw(context, request, cq));
     }
     //
-    // Subscribe to camera information updates..
+    // Subscribe to camera information updates.
     std::unique_ptr< ::grpc::ClientReaderInterface< ::mavsdk::rpc::camera::InformationResponse>> SubscribeInformation(::grpc::ClientContext* context, const ::mavsdk::rpc::camera::SubscribeInformationRequest& request) {
       return std::unique_ptr< ::grpc::ClientReaderInterface< ::mavsdk::rpc::camera::InformationResponse>>(SubscribeInformationRaw(context, request));
     }
@@ -294,7 +294,7 @@ class CameraService final {
       // Subscribe to camera mode updates.
       virtual void SubscribeMode(::grpc::ClientContext* context, ::mavsdk::rpc::camera::SubscribeModeRequest* request, ::grpc::experimental::ClientReadReactor< ::mavsdk::rpc::camera::ModeResponse>* reactor) = 0;
       //
-      // Subscribe to camera information updates..
+      // Subscribe to camera information updates.
       virtual void SubscribeInformation(::grpc::ClientContext* context, ::mavsdk::rpc::camera::SubscribeInformationRequest* request, ::grpc::experimental::ClientReadReactor< ::mavsdk::rpc::camera::InformationResponse>* reactor) = 0;
       //
       // Subscribe to video stream info updates.
@@ -686,7 +686,7 @@ class CameraService final {
     // Subscribe to camera mode updates.
     virtual ::grpc::Status SubscribeMode(::grpc::ServerContext* context, const ::mavsdk::rpc::camera::SubscribeModeRequest* request, ::grpc::ServerWriter< ::mavsdk::rpc::camera::ModeResponse>* writer);
     //
-    // Subscribe to camera information updates..
+    // Subscribe to camera information updates.
     virtual ::grpc::Status SubscribeInformation(::grpc::ServerContext* context, const ::mavsdk::rpc::camera::SubscribeInformationRequest* request, ::grpc::ServerWriter< ::mavsdk::rpc::camera::InformationResponse>* writer);
     //
     // Subscribe to video stream info updates.

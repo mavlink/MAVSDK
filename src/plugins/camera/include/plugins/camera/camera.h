@@ -338,10 +338,12 @@ public:
      */
     struct Setting {
         std::string setting_id{}; /**< @brief Name of a setting (machine readable) */
-        std::string
-            setting_description{}; /**< @brief Description of the setting (human readable) */
+        std::string setting_description{}; /**< @brief Description of the setting (human readable).
+                                              This field is meant to be read from the drone, ignore
+                                              it when setting. */
         Option option{}; /**< @brief Selected option */
-        bool is_range{}; /**< @brief If option is given as a range */
+        bool is_range{}; /**< @brief If option is given as a range. This field is meant to be read
+                            from the drone, ignore it when setting. */
     };
 
     /**
@@ -521,7 +523,7 @@ public:
     typedef std::function<void(Information)> information_callback_t;
 
     /**
-     * @brief Subscribe to camera information updates..
+     * @brief Subscribe to camera information updates.
      */
     void information_async(information_callback_t callback);
 

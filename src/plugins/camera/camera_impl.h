@@ -142,6 +142,7 @@ private:
     void* _flight_information_call_every_cookie{nullptr};
     void* _check_connection_status_call_every_cookie{nullptr};
 
+    void request_camera_settings();
     void request_camera_information();
     void request_video_stream_info();
     void request_status();
@@ -186,6 +187,7 @@ private:
         std::mutex mutex{};
         Camera::Mode data{};
         Camera::mode_callback_t subscription_callback{nullptr};
+        void* call_every_cookie{nullptr};
     } _mode{};
 
     struct {

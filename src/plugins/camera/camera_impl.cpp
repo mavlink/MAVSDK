@@ -616,8 +616,19 @@ Camera::Mode CameraImpl::mode()
 
 void CameraImpl::mode_async(const Camera::mode_callback_t callback)
 {
-    std::lock_guard<std::mutex> lock(_mode.mutex);
-    _mode.subscription_callback = callback;
+    {
+        std::lock_guard<std::mutex> lock(_mode.mutex);
+        _mode.subscription_callback = callback;
+    }
+
+    notify_mode();
+
+    if (callback) {
+        _parent->add_call_every(
+            [this]() { request_camera_settings(); }, 1.0, &_mode.call_every_cookie);
+    } else {
+        _parent->remove_call_every(_mode.call_every_cookie);
+    }
 }
 
 bool CameraImpl::interval_valid(float interval_s)
@@ -1465,6 +1476,12 @@ bool CameraImpl::get_option_str(
     }
 
     return _camera_definition->get_option_str(setting_id, option_id, description);
+}
+
+void CameraImpl::request_camera_settings()
+{
+    auto command_camera_settings = make_command_request_camera_settings();
+    _parent->send_command_async(command_camera_settings, nullptr);
 }
 
 void CameraImpl::request_flight_information()

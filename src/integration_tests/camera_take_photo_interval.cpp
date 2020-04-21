@@ -33,8 +33,7 @@ TEST(CameraTest, TakePhotoInterval)
     auto camera = std::make_shared<Camera>(system);
 
     // We want to take the pictures in photo mode.
-    set_mode_async(camera, Camera::Mode::Photo);
-    std::this_thread::sleep_for(std::chrono::seconds(1));
+    camera->set_mode(Camera::Mode::Photo);
 
     check_interval_on(camera, false);
 
@@ -72,13 +71,14 @@ void check_interval_on(std::shared_ptr<Camera> camera, bool on)
     auto ret = prom->get_future();
 
     // Check if status is correct
-    camera->status_async([prom, on](Camera::Status status) {
+    camera->status_async([prom, on, camera](Camera::Status status) {
+        camera->status_async(nullptr);
         EXPECT_EQ(status.photo_interval_on, on);
         prom->set_value();
     });
 
     // Block now for a while to wait for result.
-    auto status = ret.wait_for(std::chrono::seconds(1));
+    auto status = ret.wait_for(std::chrono::seconds(2));
 
     EXPECT_EQ(status, std::future_status::ready);
 }
