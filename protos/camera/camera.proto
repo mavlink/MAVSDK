@@ -50,21 +50,17 @@ service CameraService {
      */
     rpc SetMode(SetModeRequest) returns(SetModeResponse) {}
     /*
-     * Get camera mode.
-     */
-    //rpc GetMode(GetModeRequest) returns(GetModeResponse) { option (mavsdk.options.async_type) = SYNC; }
-    /*
      * Subscribe to camera mode updates.
      */
-    rpc SubscribeMode(SubscribeModeRequest) returns(stream ModeResponse) { option (mavsdk.options.async_type) = ASYNC; }
+    rpc SubscribeMode(SubscribeModeRequest) returns(stream ModeResponse) {}
+    /*
+     * Subscribe to camera information updates.
+     */
+    rpc SubscribeInformation(SubscribeInformationRequest) returns(stream InformationResponse) {}
     /*
      * Subscribe to video stream info updates.
      */
-    rpc SubscribeVideoStreamInfo(SubscribeVideoStreamInfoRequest) returns(stream VideoStreamInfoResponse) { option (mavsdk.options.async_type) = ASYNC; }
-    /*
-     * Get video stream information.
-     */
-    //rpc GetVideoStreamInfo(GetVideoStreamInfoRequest) returns(GetVideoStreamInfoResponse) { option (mavsdk.options.async_type) = SYNC; }
+    rpc SubscribeVideoStreamInfo(SubscribeVideoStreamInfoRequest) returns(stream VideoStreamInfoResponse) {}
     /*
      * Subscribe to capture info updates.
      */
@@ -72,7 +68,7 @@ service CameraService {
     /*
      * Subscribe to camera status updates.
      */
-    rpc SubscribeStatus(SubscribeStatusRequest) returns(stream StatusResponse) { option (mavsdk.options.async_type) = ASYNC; }
+    rpc SubscribeStatus(SubscribeStatusRequest) returns(stream StatusResponse) {}
     /*
      * Get the list of current camera settings.
      */
@@ -94,21 +90,12 @@ service CameraService {
      */
     rpc GetSetting(GetSettingRequest) returns(GetSettingResponse) {}
     /*
-     * Get information about a camera.
-     */
-    //rpc GetInformation(GetInformationRequest) returns(GetInformationResponse) { option (mavsdk.options.async_type) = SYNC; }
-    /*
-     * Get status of a camera.
-     */
-    //rpc GetStatus(GetStatusRequest) returns(GetStatusResponse) { option (mavsdk.options.async_type) = SYNC; }
-    /*
      * Format storage (e.g. SD card) in camera.
      *
      * This will delete all content of the camera storage!
      */
      rpc FormatStorage(FormatStorageRequest) returns(FormatStorageResponse) {}
 }
-
 
 message TakePhotoRequest {}
 message TakePhotoResponse {
@@ -154,11 +141,10 @@ message SetModeResponse {
     CameraResult camera_result = 1;
 }
 
-//message GetModeRequest {}
-//message GetModeResponse {
-//    CameraResult camera_result = 1;
-//    Mode mode = 2; // Camera mode
-//}
+message SubscribeInformationRequest {}
+message InformationResponse {
+    Information information = 1; // Camera information
+}
 
 message SubscribeModeRequest {}
 message ModeResponse {
@@ -169,12 +155,6 @@ message SubscribeVideoStreamInfoRequest {}
 message VideoStreamInfoResponse {
     VideoStreamInfo video_stream_info = 1; // Video stream info
 }
-
-//message GetVideoStreamInfoRequest {}
-//message GetVideoStreamInfoResponse {
-//    CameraResult camera_result = 1;
-//    VideoStreamInfo video_stream_info = 2; // Video stream info
-//}
 
 message SubscribeCaptureInfoRequest {}
 message CaptureInfoResponse {
@@ -209,18 +189,6 @@ message GetSettingRequest {
 message GetSettingResponse {
     CameraResult camera_result = 1;
     Setting setting = 2; // Setting
-}
-
-//message GetInformationRequest {}
-//message GetInformationResponse {
-//    CameraResult camera_result = 1;
-//    Information information = 2; // The information
-//}
-
-message GetStatusRequest {}
-message GetStatusResponse {
-    CameraResult camera_result = 1;
-    Status status = 2; // The camera status
 }
 
 message FormatStorageRequest {}
