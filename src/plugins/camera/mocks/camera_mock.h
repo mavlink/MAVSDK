@@ -22,6 +22,7 @@ public:
     MOCK_CONST_METHOD1(video_stream_info_async, void(Camera::video_stream_info_callback_t)){};
     MOCK_CONST_METHOD1(capture_info_async, void(Camera::capture_info_callback_t)){};
     MOCK_CONST_METHOD1(status_async, void(Camera::status_callback_t)){};
+    MOCK_CONST_METHOD1(information_async, void(Camera::information_callback_t)){};
     MOCK_CONST_METHOD1(current_settings_async, void(Camera::current_settings_callback_t)){};
     MOCK_CONST_METHOD1(
         possible_setting_options_async, void(Camera::possible_setting_options_callback_t)){};

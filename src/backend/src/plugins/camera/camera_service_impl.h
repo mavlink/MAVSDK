@@ -696,6 +696,40 @@ public:
         return grpc::Status::OK;
     }
 
+    grpc::Status SubscribeInformation(
+        grpc::ServerContext* /* context */,
+        const mavsdk::rpc::camera::SubscribeInformationRequest* /* request */,
+        grpc::ServerWriter<rpc::camera::InformationResponse>* writer) override
+    {
+        auto stream_closed_promise = std::make_shared<std::promise<void>>();
+        auto stream_closed_future = stream_closed_promise->get_future();
+        register_stream_stop_promise(stream_closed_promise);
+
+        auto is_finished = std::make_shared<bool>(false);
+
+        std::mutex subscribe_mutex{};
+
+        _camera.information_async(
+            [this, &writer, &stream_closed_promise, is_finished, &subscribe_mutex](
+                const mavsdk::Camera::Information information) {
+                rpc::camera::InformationResponse rpc_response;
+
+                rpc_response.set_allocated_information(
+                    translateToRpcInformation(information).release());
+
+                std::lock_guard<std::mutex> lock(subscribe_mutex);
+                if (!*is_finished && !writer->Write(rpc_response)) {
+                    _camera.information_async(nullptr);
+                    *is_finished = true;
+                    unregister_stream_stop_promise(stream_closed_promise);
+                    stream_closed_promise->set_value();
+                }
+            });
+
+        stream_closed_future.wait();
+        return grpc::Status::OK;
+    }
+
     grpc::Status SubscribeVideoStreamInfo(
         grpc::ServerContext* /* context */,
         const mavsdk::rpc::camera::SubscribeVideoStreamInfoRequest* /* request */,

@@ -509,6 +509,30 @@ public:
     void mode_async(mode_callback_t callback);
 
     /**
+     * @brief Synchronous wrapper getting one Mode update.
+     *
+     * @return One Mode update.
+     */
+    Mode mode() const;
+
+    /**
+     * @brief Callback type for information_async.
+     */
+    typedef std::function<void(Information)> information_callback_t;
+
+    /**
+     * @brief Subscribe to camera information updates..
+     */
+    void information_async(information_callback_t callback);
+
+    /**
+     * @brief Synchronous wrapper getting one Information update.
+     *
+     * @return One Information update.
+     */
+    Information information() const;
+
+    /**
      * @brief Callback type for video_stream_info_async.
      */
     typedef std::function<void(VideoStreamInfo)> video_stream_info_callback_t;
@@ -517,6 +541,13 @@ public:
      * @brief Subscribe to video stream info updates.
      */
     void video_stream_info_async(video_stream_info_callback_t callback);
+
+    /**
+     * @brief Synchronous wrapper getting one VideoStreamInfo update.
+     *
+     * @return One VideoStreamInfo update.
+     */
+    VideoStreamInfo video_stream_info() const;
 
     /**
      * @brief Callback type for capture_info_async.
@@ -537,6 +568,13 @@ public:
      * @brief Subscribe to camera status updates.
      */
     void status_async(status_callback_t callback);
+
+    /**
+     * @brief Synchronous wrapper getting one Status update.
+     *
+     * @return One Status update.
+     */
+    Status status() const;
 
     /**
      * @brief Callback type for current_settings_async.
