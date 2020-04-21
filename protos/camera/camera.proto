@@ -323,9 +323,9 @@ message Option {
 // Type to represent a setting with a selected option.
 message Setting {
     string setting_id = 1; // Name of a setting (machine readable)
-    string setting_description = 2; // Description of the setting (human readable)
+    string setting_description = 2; // Description of the setting (human readable). This field is meant to be read from the drone, ignore it when setting.
     Option option = 3; // Selected option
-    bool is_range = 4; // If option is given as a range
+    bool is_range = 4; // If option is given as a range. This field is meant to be read from the drone, ignore it when setting.
 }
 
 // Type to represent a setting with a list of options to choose from.
