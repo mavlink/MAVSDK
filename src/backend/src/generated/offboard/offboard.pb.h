@@ -33,6 +33,7 @@
 #include <google/protobuf/extension_set.h>  // IWYU pragma: export
 #include <google/protobuf/generated_enum_reflection.h>
 #include <google/protobuf/unknown_field_set.h>
+#include "mavsdk_options.pb.h"
 // @@protoc_insertion_point(includes)
 #include <google/protobuf/port_def.inc>
 #define PROTOBUF_INTERNAL_EXPORT_offboard_2foffboard_2eproto
@@ -172,20 +173,20 @@ namespace rpc {
 namespace offboard {
 
 enum OffboardResult_Result : int {
-  OffboardResult_Result_UNKNOWN = 0,
-  OffboardResult_Result_SUCCESS = 1,
-  OffboardResult_Result_NO_SYSTEM = 2,
-  OffboardResult_Result_CONNECTION_ERROR = 3,
-  OffboardResult_Result_BUSY = 4,
-  OffboardResult_Result_COMMAND_DENIED = 5,
-  OffboardResult_Result_TIMEOUT = 6,
-  OffboardResult_Result_NO_SETPOINT_SET = 7,
+  OffboardResult_Result_RESULT_UNKNOWN = 0,
+  OffboardResult_Result_RESULT_SUCCESS = 1,
+  OffboardResult_Result_RESULT_NO_SYSTEM = 2,
+  OffboardResult_Result_RESULT_CONNECTION_ERROR = 3,
+  OffboardResult_Result_RESULT_BUSY = 4,
+  OffboardResult_Result_RESULT_COMMAND_DENIED = 5,
+  OffboardResult_Result_RESULT_TIMEOUT = 6,
+  OffboardResult_Result_RESULT_NO_SETPOINT_SET = 7,
   OffboardResult_Result_OffboardResult_Result_INT_MIN_SENTINEL_DO_NOT_USE_ = std::numeric_limits<::PROTOBUF_NAMESPACE_ID::int32>::min(),
   OffboardResult_Result_OffboardResult_Result_INT_MAX_SENTINEL_DO_NOT_USE_ = std::numeric_limits<::PROTOBUF_NAMESPACE_ID::int32>::max()
 };
 bool OffboardResult_Result_IsValid(int value);
-constexpr OffboardResult_Result OffboardResult_Result_Result_MIN = OffboardResult_Result_UNKNOWN;
-constexpr OffboardResult_Result OffboardResult_Result_Result_MAX = OffboardResult_Result_NO_SETPOINT_SET;
+constexpr OffboardResult_Result OffboardResult_Result_Result_MIN = OffboardResult_Result_RESULT_UNKNOWN;
+constexpr OffboardResult_Result OffboardResult_Result_Result_MAX = OffboardResult_Result_RESULT_NO_SETPOINT_SET;
 constexpr int OffboardResult_Result_Result_ARRAYSIZE = OffboardResult_Result_Result_MAX + 1;
 
 const ::PROTOBUF_NAMESPACE_ID::EnumDescriptor* OffboardResult_Result_descriptor();
@@ -923,9 +924,25 @@ class IsActiveResponse :
   // accessors -------------------------------------------------------
 
   enum : int {
-    kIsActiveFieldNumber = 1,
+    kOffboardResultFieldNumber = 1,
+    kIsActiveFieldNumber = 2,
   };
-  // bool is_active = 1;
+  // .mavsdk.rpc.offboard.OffboardResult offboard_result = 1;
+  bool has_offboard_result() const;
+  private:
+  bool _internal_has_offboard_result() const;
+  public:
+  void clear_offboard_result();
+  const ::mavsdk::rpc::offboard::OffboardResult& offboard_result() const;
+  ::mavsdk::rpc::offboard::OffboardResult* release_offboard_result();
+  ::mavsdk::rpc::offboard::OffboardResult* mutable_offboard_result();
+  void set_allocated_offboard_result(::mavsdk::rpc::offboard::OffboardResult* offboard_result);
+  private:
+  const ::mavsdk::rpc::offboard::OffboardResult& _internal_offboard_result() const;
+  ::mavsdk::rpc::offboard::OffboardResult* _internal_mutable_offboard_result();
+  public:
+
+  // bool is_active = 2;
   void clear_is_active();
   bool is_active() const;
   void set_is_active(bool value);
@@ -939,6 +956,7 @@ class IsActiveResponse :
   class _Internal;
 
   ::PROTOBUF_NAMESPACE_ID::internal::InternalMetadataWithArena _internal_metadata_;
+  ::mavsdk::rpc::offboard::OffboardResult* offboard_result_;
   bool is_active_;
   mutable ::PROTOBUF_NAMESPACE_ID::internal::CachedSize _cached_size_;
   friend struct ::TableStruct_offboard_2foffboard_2eproto;
@@ -1184,11 +1202,30 @@ class SetAttitudeResponse :
 
   // accessors -------------------------------------------------------
 
+  enum : int {
+    kOffboardResultFieldNumber = 1,
+  };
+  // .mavsdk.rpc.offboard.OffboardResult offboard_result = 1;
+  bool has_offboard_result() const;
+  private:
+  bool _internal_has_offboard_result() const;
+  public:
+  void clear_offboard_result();
+  const ::mavsdk::rpc::offboard::OffboardResult& offboard_result() const;
+  ::mavsdk::rpc::offboard::OffboardResult* release_offboard_result();
+  ::mavsdk::rpc::offboard::OffboardResult* mutable_offboard_result();
+  void set_allocated_offboard_result(::mavsdk::rpc::offboard::OffboardResult* offboard_result);
+  private:
+  const ::mavsdk::rpc::offboard::OffboardResult& _internal_offboard_result() const;
+  ::mavsdk::rpc::offboard::OffboardResult* _internal_mutable_offboard_result();
+  public:
+
   // @@protoc_insertion_point(class_scope:mavsdk.rpc.offboard.SetAttitudeResponse)
  private:
   class _Internal;
 
   ::PROTOBUF_NAMESPACE_ID::internal::InternalMetadataWithArena _internal_metadata_;
+  ::mavsdk::rpc::offboard::OffboardResult* offboard_result_;
   mutable ::PROTOBUF_NAMESPACE_ID::internal::CachedSize _cached_size_;
   friend struct ::TableStruct_offboard_2foffboard_2eproto;
 };
@@ -1433,11 +1470,30 @@ class SetActuatorControlResponse :
 
   // accessors -------------------------------------------------------
 
+  enum : int {
+    kOffboardResultFieldNumber = 1,
+  };
+  // .mavsdk.rpc.offboard.OffboardResult offboard_result = 1;
+  bool has_offboard_result() const;
+  private:
+  bool _internal_has_offboard_result() const;
+  public:
+  void clear_offboard_result();
+  const ::mavsdk::rpc::offboard::OffboardResult& offboard_result() const;
+  ::mavsdk::rpc::offboard::OffboardResult* release_offboard_result();
+  ::mavsdk::rpc::offboard::OffboardResult* mutable_offboard_result();
+  void set_allocated_offboard_result(::mavsdk::rpc::offboard::OffboardResult* offboard_result);
+  private:
+  const ::mavsdk::rpc::offboard::OffboardResult& _internal_offboard_result() const;
+  ::mavsdk::rpc::offboard::OffboardResult* _internal_mutable_offboard_result();
+  public:
+
   // @@protoc_insertion_point(class_scope:mavsdk.rpc.offboard.SetActuatorControlResponse)
  private:
   class _Internal;
 
   ::PROTOBUF_NAMESPACE_ID::internal::InternalMetadataWithArena _internal_metadata_;
+  ::mavsdk::rpc::offboard::OffboardResult* offboard_result_;
   mutable ::PROTOBUF_NAMESPACE_ID::internal::CachedSize _cached_size_;
   friend struct ::TableStruct_offboard_2foffboard_2eproto;
 };
@@ -1682,11 +1738,30 @@ class SetAttitudeRateResponse :
 
   // accessors -------------------------------------------------------
 
+  enum : int {
+    kOffboardResultFieldNumber = 1,
+  };
+  // .mavsdk.rpc.offboard.OffboardResult offboard_result = 1;
+  bool has_offboard_result() const;
+  private:
+  bool _internal_has_offboard_result() const;
+  public:
+  void clear_offboard_result();
+  const ::mavsdk::rpc::offboard::OffboardResult& offboard_result() const;
+  ::mavsdk::rpc::offboard::OffboardResult* release_offboard_result();
+  ::mavsdk::rpc::offboard::OffboardResult* mutable_offboard_result();
+  void set_allocated_offboard_result(::mavsdk::rpc::offboard::OffboardResult* offboard_result);
+  private:
+  const ::mavsdk::rpc::offboard::OffboardResult& _internal_offboard_result() const;
+  ::mavsdk::rpc::offboard::OffboardResult* _internal_mutable_offboard_result();
+  public:
+
   // @@protoc_insertion_point(class_scope:mavsdk.rpc.offboard.SetAttitudeRateResponse)
  private:
   class _Internal;
 
   ::PROTOBUF_NAMESPACE_ID::internal::InternalMetadataWithArena _internal_metadata_;
+  ::mavsdk::rpc::offboard::OffboardResult* offboard_result_;
   mutable ::PROTOBUF_NAMESPACE_ID::internal::CachedSize _cached_size_;
   friend struct ::TableStruct_offboard_2foffboard_2eproto;
 };
@@ -1931,11 +2006,30 @@ class SetPositionNedResponse :
 
   // accessors -------------------------------------------------------
 
+  enum : int {
+    kOffboardResultFieldNumber = 1,
+  };
+  // .mavsdk.rpc.offboard.OffboardResult offboard_result = 1;
+  bool has_offboard_result() const;
+  private:
+  bool _internal_has_offboard_result() const;
+  public:
+  void clear_offboard_result();
+  const ::mavsdk::rpc::offboard::OffboardResult& offboard_result() const;
+  ::mavsdk::rpc::offboard::OffboardResult* release_offboard_result();
+  ::mavsdk::rpc::offboard::OffboardResult* mutable_offboard_result();
+  void set_allocated_offboard_result(::mavsdk::rpc::offboard::OffboardResult* offboard_result);
+  private:
+  const ::mavsdk::rpc::offboard::OffboardResult& _internal_offboard_result() const;
+  ::mavsdk::rpc::offboard::OffboardResult* _internal_mutable_offboard_result();
+  public:
+
   // @@protoc_insertion_point(class_scope:mavsdk.rpc.offboard.SetPositionNedResponse)
  private:
   class _Internal;
 
   ::PROTOBUF_NAMESPACE_ID::internal::InternalMetadataWithArena _internal_metadata_;
+  ::mavsdk::rpc::offboard::OffboardResult* offboard_result_;
   mutable ::PROTOBUF_NAMESPACE_ID::internal::CachedSize _cached_size_;
   friend struct ::TableStruct_offboard_2foffboard_2eproto;
 };
@@ -2180,11 +2274,30 @@ class SetVelocityBodyResponse :
 
   // accessors -------------------------------------------------------
 
+  enum : int {
+    kOffboardResultFieldNumber = 1,
+  };
+  // .mavsdk.rpc.offboard.OffboardResult offboard_result = 1;
+  bool has_offboard_result() const;
+  private:
+  bool _internal_has_offboard_result() const;
+  public:
+  void clear_offboard_result();
+  const ::mavsdk::rpc::offboard::OffboardResult& offboard_result() const;
+  ::mavsdk::rpc::offboard::OffboardResult* release_offboard_result();
+  ::mavsdk::rpc::offboard::OffboardResult* mutable_offboard_result();
+  void set_allocated_offboard_result(::mavsdk::rpc::offboard::OffboardResult* offboard_result);
+  private:
+  const ::mavsdk::rpc::offboard::OffboardResult& _internal_offboard_result() const;
+  ::mavsdk::rpc::offboard::OffboardResult* _internal_mutable_offboard_result();
+  public:
+
   // @@protoc_insertion_point(class_scope:mavsdk.rpc.offboard.SetVelocityBodyResponse)
  private:
   class _Internal;
 
   ::PROTOBUF_NAMESPACE_ID::internal::InternalMetadataWithArena _internal_metadata_;
+  ::mavsdk::rpc::offboard::OffboardResult* offboard_result_;
   mutable ::PROTOBUF_NAMESPACE_ID::internal::CachedSize _cached_size_;
   friend struct ::TableStruct_offboard_2foffboard_2eproto;
 };
@@ -2429,11 +2542,30 @@ class SetVelocityNedResponse :
 
   // accessors -------------------------------------------------------
 
+  enum : int {
+    kOffboardResultFieldNumber = 1,
+  };
+  // .mavsdk.rpc.offboard.OffboardResult offboard_result = 1;
+  bool has_offboard_result() const;
+  private:
+  bool _internal_has_offboard_result() const;
+  public:
+  void clear_offboard_result();
+  const ::mavsdk::rpc::offboard::OffboardResult& offboard_result() const;
+  ::mavsdk::rpc::offboard::OffboardResult* release_offboard_result();
+  ::mavsdk::rpc::offboard::OffboardResult* mutable_offboard_result();
+  void set_allocated_offboard_result(::mavsdk::rpc::offboard::OffboardResult* offboard_result);
+  private:
+  const ::mavsdk::rpc::offboard::OffboardResult& _internal_offboard_result() const;
+  ::mavsdk::rpc::offboard::OffboardResult* _internal_mutable_offboard_result();
+  public:
+
   // @@protoc_insertion_point(class_scope:mavsdk.rpc.offboard.SetVelocityNedResponse)
  private:
   class _Internal;
 
   ::PROTOBUF_NAMESPACE_ID::internal::InternalMetadataWithArena _internal_metadata_;
+  ::mavsdk::rpc::offboard::OffboardResult* offboard_result_;
   mutable ::PROTOBUF_NAMESPACE_ID::internal::CachedSize _cached_size_;
   friend struct ::TableStruct_offboard_2foffboard_2eproto;
 };
@@ -3627,22 +3759,22 @@ class OffboardResult :
   // nested types ----------------------------------------------------
 
   typedef OffboardResult_Result Result;
-  static constexpr Result UNKNOWN =
-    OffboardResult_Result_UNKNOWN;
-  static constexpr Result SUCCESS =
-    OffboardResult_Result_SUCCESS;
-  static constexpr Result NO_SYSTEM =
-    OffboardResult_Result_NO_SYSTEM;
-  static constexpr Result CONNECTION_ERROR =
-    OffboardResult_Result_CONNECTION_ERROR;
-  static constexpr Result BUSY =
-    OffboardResult_Result_BUSY;
-  static constexpr Result COMMAND_DENIED =
-    OffboardResult_Result_COMMAND_DENIED;
-  static constexpr Result TIMEOUT =
-    OffboardResult_Result_TIMEOUT;
-  static constexpr Result NO_SETPOINT_SET =
-    OffboardResult_Result_NO_SETPOINT_SET;
+  static constexpr Result RESULT_UNKNOWN =
+    OffboardResult_Result_RESULT_UNKNOWN;
+  static constexpr Result RESULT_SUCCESS =
+    OffboardResult_Result_RESULT_SUCCESS;
+  static constexpr Result RESULT_NO_SYSTEM =
+    OffboardResult_Result_RESULT_NO_SYSTEM;
+  static constexpr Result RESULT_CONNECTION_ERROR =
+    OffboardResult_Result_RESULT_CONNECTION_ERROR;
+  static constexpr Result RESULT_BUSY =
+    OffboardResult_Result_RESULT_BUSY;
+  static constexpr Result RESULT_COMMAND_DENIED =
+    OffboardResult_Result_RESULT_COMMAND_DENIED;
+  static constexpr Result RESULT_TIMEOUT =
+    OffboardResult_Result_RESULT_TIMEOUT;
+  static constexpr Result RESULT_NO_SETPOINT_SET =
+    OffboardResult_Result_RESULT_NO_SETPOINT_SET;
   static inline bool Result_IsValid(int value) {
     return OffboardResult_Result_IsValid(value);
   }
@@ -3860,7 +3992,67 @@ inline void StopResponse::set_allocated_offboard_result(::mavsdk::rpc::offboard:
 
 // IsActiveResponse
 
-// bool is_active = 1;
+// .mavsdk.rpc.offboard.OffboardResult offboard_result = 1;
+inline bool IsActiveResponse::_internal_has_offboard_result() const {
+  return this != internal_default_instance() && offboard_result_ != nullptr;
+}
+inline bool IsActiveResponse::has_offboard_result() const {
+  return _internal_has_offboard_result();
+}
+inline void IsActiveResponse::clear_offboard_result() {
+  if (GetArenaNoVirtual() == nullptr && offboard_result_ != nullptr) {
+    delete offboard_result_;
+  }
+  offboard_result_ = nullptr;
+}
+inline const ::mavsdk::rpc::offboard::OffboardResult& IsActiveResponse::_internal_offboard_result() const {
+  const ::mavsdk::rpc::offboard::OffboardResult* p = offboard_result_;
+  return p != nullptr ? *p : *reinterpret_cast<const ::mavsdk::rpc::offboard::OffboardResult*>(
+      &::mavsdk::rpc::offboard::_OffboardResult_default_instance_);
+}
+inline const ::mavsdk::rpc::offboard::OffboardResult& IsActiveResponse::offboard_result() const {
+  // @@protoc_insertion_point(field_get:mavsdk.rpc.offboard.IsActiveResponse.offboard_result)
+  return _internal_offboard_result();
+}
+inline ::mavsdk::rpc::offboard::OffboardResult* IsActiveResponse::release_offboard_result() {
+  // @@protoc_insertion_point(field_release:mavsdk.rpc.offboard.IsActiveResponse.offboard_result)
+  
+  ::mavsdk::rpc::offboard::OffboardResult* temp = offboard_result_;
+  offboard_result_ = nullptr;
+  return temp;
+}
+inline ::mavsdk::rpc::offboard::OffboardResult* IsActiveResponse::_internal_mutable_offboard_result() {
+  
+  if (offboard_result_ == nullptr) {
+    auto* p = CreateMaybeMessage<::mavsdk::rpc::offboard::OffboardResult>(GetArenaNoVirtual());
+    offboard_result_ = p;
+  }
+  return offboard_result_;
+}
+inline ::mavsdk::rpc::offboard::OffboardResult* IsActiveResponse::mutable_offboard_result() {
+  // @@protoc_insertion_point(field_mutable:mavsdk.rpc.offboard.IsActiveResponse.offboard_result)
+  return _internal_mutable_offboard_result();
+}
+inline void IsActiveResponse::set_allocated_offboard_result(::mavsdk::rpc::offboard::OffboardResult* offboard_result) {
+  ::PROTOBUF_NAMESPACE_ID::Arena* message_arena = GetArenaNoVirtual();
+  if (message_arena == nullptr) {
+    delete offboard_result_;
+  }
+  if (offboard_result) {
+    ::PROTOBUF_NAMESPACE_ID::Arena* submessage_arena = nullptr;
+    if (message_arena != submessage_arena) {
+      offboard_result = ::PROTOBUF_NAMESPACE_ID::internal::GetOwnedMessage(
+          message_arena, offboard_result, submessage_arena);
+    }
+    
+  } else {
+    
+  }
+  offboard_result_ = offboard_result;
+  // @@protoc_insertion_point(field_set_allocated:mavsdk.rpc.offboard.IsActiveResponse.offboard_result)
+}
+
+// bool is_active = 2;
 inline void IsActiveResponse::clear_is_active() {
   is_active_ = false;
 }
@@ -3948,6 +4140,66 @@ inline void SetAttitudeRequest::set_allocated_attitude(::mavsdk::rpc::offboard::
 
 // SetAttitudeResponse
 
+// .mavsdk.rpc.offboard.OffboardResult offboard_result = 1;
+inline bool SetAttitudeResponse::_internal_has_offboard_result() const {
+  return this != internal_default_instance() && offboard_result_ != nullptr;
+}
+inline bool SetAttitudeResponse::has_offboard_result() const {
+  return _internal_has_offboard_result();
+}
+inline void SetAttitudeResponse::clear_offboard_result() {
+  if (GetArenaNoVirtual() == nullptr && offboard_result_ != nullptr) {
+    delete offboard_result_;
+  }
+  offboard_result_ = nullptr;
+}
+inline const ::mavsdk::rpc::offboard::OffboardResult& SetAttitudeResponse::_internal_offboard_result() const {
+  const ::mavsdk::rpc::offboard::OffboardResult* p = offboard_result_;
+  return p != nullptr ? *p : *reinterpret_cast<const ::mavsdk::rpc::offboard::OffboardResult*>(
+      &::mavsdk::rpc::offboard::_OffboardResult_default_instance_);
+}
+inline const ::mavsdk::rpc::offboard::OffboardResult& SetAttitudeResponse::offboard_result() const {
+  // @@protoc_insertion_point(field_get:mavsdk.rpc.offboard.SetAttitudeResponse.offboard_result)
+  return _internal_offboard_result();
+}
+inline ::mavsdk::rpc::offboard::OffboardResult* SetAttitudeResponse::release_offboard_result() {
+  // @@protoc_insertion_point(field_release:mavsdk.rpc.offboard.SetAttitudeResponse.offboard_result)
+  
+  ::mavsdk::rpc::offboard::OffboardResult* temp = offboard_result_;
+  offboard_result_ = nullptr;
+  return temp;
+}
+inline ::mavsdk::rpc::offboard::OffboardResult* SetAttitudeResponse::_internal_mutable_offboard_result() {
+  
+  if (offboard_result_ == nullptr) {
+    auto* p = CreateMaybeMessage<::mavsdk::rpc::offboard::OffboardResult>(GetArenaNoVirtual());
+    offboard_result_ = p;
+  }
+  return offboard_result_;
+}
+inline ::mavsdk::rpc::offboard::OffboardResult* SetAttitudeResponse::mutable_offboard_result() {
+  // @@protoc_insertion_point(field_mutable:mavsdk.rpc.offboard.SetAttitudeResponse.offboard_result)
+  return _internal_mutable_offboard_result();
+}
+inline void SetAttitudeResponse::set_allocated_offboard_result(::mavsdk::rpc::offboard::OffboardResult* offboard_result) {
+  ::PROTOBUF_NAMESPACE_ID::Arena* message_arena = GetArenaNoVirtual();
+  if (message_arena == nullptr) {
+    delete offboard_result_;
+  }
+  if (offboard_result) {
+    ::PROTOBUF_NAMESPACE_ID::Arena* submessage_arena = nullptr;
+    if (message_arena != submessage_arena) {
+      offboard_result = ::PROTOBUF_NAMESPACE_ID::internal::GetOwnedMessage(
+          message_arena, offboard_result, submessage_arena);
+    }
+    
+  } else {
+    
+  }
+  offboard_result_ = offboard_result;
+  // @@protoc_insertion_point(field_set_allocated:mavsdk.rpc.offboard.SetAttitudeResponse.offboard_result)
+}
+
 // -------------------------------------------------------------------
 
 // SetActuatorControlRequest
@@ -4015,6 +4267,66 @@ inline void SetActuatorControlRequest::set_allocated_actuator_control(::mavsdk::
 // -------------------------------------------------------------------
 
 // SetActuatorControlResponse
+
+// .mavsdk.rpc.offboard.OffboardResult offboard_result = 1;
+inline bool SetActuatorControlResponse::_internal_has_offboard_result() const {
+  return this != internal_default_instance() && offboard_result_ != nullptr;
+}
+inline bool SetActuatorControlResponse::has_offboard_result() const {
+  return _internal_has_offboard_result();
+}
+inline void SetActuatorControlResponse::clear_offboard_result() {
+  if (GetArenaNoVirtual() == nullptr && offboard_result_ != nullptr) {
+    delete offboard_result_;
+  }
+  offboard_result_ = nullptr;
+}
+inline const ::mavsdk::rpc::offboard::OffboardResult& SetActuatorControlResponse::_internal_offboard_result() const {
+  const ::mavsdk::rpc::offboard::OffboardResult* p = offboard_result_;
+  return p != nullptr ? *p : *reinterpret_cast<const ::mavsdk::rpc::offboard::OffboardResult*>(
+      &::mavsdk::rpc::offboard::_OffboardResult_default_instance_);
+}
+inline const ::mavsdk::rpc::offboard::OffboardResult& SetActuatorControlResponse::offboard_result() const {
+  // @@protoc_insertion_point(field_get:mavsdk.rpc.offboard.SetActuatorControlResponse.offboard_result)
+  return _internal_offboard_result();
+}
+inline ::mavsdk::rpc::offboard::OffboardResult* SetActuatorControlResponse::release_offboard_result() {
+  // @@protoc_insertion_point(field_release:mavsdk.rpc.offboard.SetActuatorControlResponse.offboard_result)
+  
+  ::mavsdk::rpc::offboard::OffboardResult* temp = offboard_result_;
+  offboard_result_ = nullptr;
+  return temp;
+}
+inline ::mavsdk::rpc::offboard::OffboardResult* SetActuatorControlResponse::_internal_mutable_offboard_result() {
+  
+  if (offboard_result_ == nullptr) {
+    auto* p = CreateMaybeMessage<::mavsdk::rpc::offboard::OffboardResult>(GetArenaNoVirtual());
+    offboard_result_ = p;
+  }
+  return offboard_result_;
+}
+inline ::mavsdk::rpc::offboard::OffboardResult* SetActuatorControlResponse::mutable_offboard_result() {
+  // @@protoc_insertion_point(field_mutable:mavsdk.rpc.offboard.SetActuatorControlResponse.offboard_result)
+  return _internal_mutable_offboard_result();
+}
+inline void SetActuatorControlResponse::set_allocated_offboard_result(::mavsdk::rpc::offboard::OffboardResult* offboard_result) {
+  ::PROTOBUF_NAMESPACE_ID::Arena* message_arena = GetArenaNoVirtual();
+  if (message_arena == nullptr) {
+    delete offboard_result_;
+  }
+  if (offboard_result) {
+    ::PROTOBUF_NAMESPACE_ID::Arena* submessage_arena = nullptr;
+    if (message_arena != submessage_arena) {
+      offboard_result = ::PROTOBUF_NAMESPACE_ID::internal::GetOwnedMessage(
+          message_arena, offboard_result, submessage_arena);
+    }
+    
+  } else {
+    
+  }
+  offboard_result_ = offboard_result;
+  // @@protoc_insertion_point(field_set_allocated:mavsdk.rpc.offboard.SetActuatorControlResponse.offboard_result)
+}
 
 // -------------------------------------------------------------------
 
@@ -4084,6 +4396,66 @@ inline void SetAttitudeRateRequest::set_allocated_attitude_rate(::mavsdk::rpc::o
 
 // SetAttitudeRateResponse
 
+// .mavsdk.rpc.offboard.OffboardResult offboard_result = 1;
+inline bool SetAttitudeRateResponse::_internal_has_offboard_result() const {
+  return this != internal_default_instance() && offboard_result_ != nullptr;
+}
+inline bool SetAttitudeRateResponse::has_offboard_result() const {
+  return _internal_has_offboard_result();
+}
+inline void SetAttitudeRateResponse::clear_offboard_result() {
+  if (GetArenaNoVirtual() == nullptr && offboard_result_ != nullptr) {
+    delete offboard_result_;
+  }
+  offboard_result_ = nullptr;
+}
+inline const ::mavsdk::rpc::offboard::OffboardResult& SetAttitudeRateResponse::_internal_offboard_result() const {
+  const ::mavsdk::rpc::offboard::OffboardResult* p = offboard_result_;
+  return p != nullptr ? *p : *reinterpret_cast<const ::mavsdk::rpc::offboard::OffboardResult*>(
+      &::mavsdk::rpc::offboard::_OffboardResult_default_instance_);
+}
+inline const ::mavsdk::rpc::offboard::OffboardResult& SetAttitudeRateResponse::offboard_result() const {
+  // @@protoc_insertion_point(field_get:mavsdk.rpc.offboard.SetAttitudeRateResponse.offboard_result)
+  return _internal_offboard_result();
+}
+inline ::mavsdk::rpc::offboard::OffboardResult* SetAttitudeRateResponse::release_offboard_result() {
+  // @@protoc_insertion_point(field_release:mavsdk.rpc.offboard.SetAttitudeRateResponse.offboard_result)
+  
+  ::mavsdk::rpc::offboard::OffboardResult* temp = offboard_result_;
+  offboard_result_ = nullptr;
+  return temp;
+}
+inline ::mavsdk::rpc::offboard::OffboardResult* SetAttitudeRateResponse::_internal_mutable_offboard_result() {
+  
+  if (offboard_result_ == nullptr) {
+    auto* p = CreateMaybeMessage<::mavsdk::rpc::offboard::OffboardResult>(GetArenaNoVirtual());
+    offboard_result_ = p;
+  }
+  return offboard_result_;
+}
+inline ::mavsdk::rpc::offboard::OffboardResult* SetAttitudeRateResponse::mutable_offboard_result() {
+  // @@protoc_insertion_point(field_mutable:mavsdk.rpc.offboard.SetAttitudeRateResponse.offboard_result)
+  return _internal_mutable_offboard_result();
+}
+inline void SetAttitudeRateResponse::set_allocated_offboard_result(::mavsdk::rpc::offboard::OffboardResult* offboard_result) {
+  ::PROTOBUF_NAMESPACE_ID::Arena* message_arena = GetArenaNoVirtual();
+  if (message_arena == nullptr) {
+    delete offboard_result_;
+  }
+  if (offboard_result) {
+    ::PROTOBUF_NAMESPACE_ID::Arena* submessage_arena = nullptr;
+    if (message_arena != submessage_arena) {
+      offboard_result = ::PROTOBUF_NAMESPACE_ID::internal::GetOwnedMessage(
+          message_arena, offboard_result, submessage_arena);
+    }
+    
+  } else {
+    
+  }
+  offboard_result_ = offboard_result;
+  // @@protoc_insertion_point(field_set_allocated:mavsdk.rpc.offboard.SetAttitudeRateResponse.offboard_result)
+}
+
 // -------------------------------------------------------------------
 
 // SetPositionNedRequest
@@ -4151,6 +4523,66 @@ inline void SetPositionNedRequest::set_allocated_position_ned_yaw(::mavsdk::rpc:
 // -------------------------------------------------------------------
 
 // SetPositionNedResponse
+
+// .mavsdk.rpc.offboard.OffboardResult offboard_result = 1;
+inline bool SetPositionNedResponse::_internal_has_offboard_result() const {
+  return this != internal_default_instance() && offboard_result_ != nullptr;
+}
+inline bool SetPositionNedResponse::has_offboard_result() const {
+  return _internal_has_offboard_result();
+}
+inline void SetPositionNedResponse::clear_offboard_result() {
+  if (GetArenaNoVirtual() == nullptr && offboard_result_ != nullptr) {
+    delete offboard_result_;
+  }
+  offboard_result_ = nullptr;
+}
+inline const ::mavsdk::rpc::offboard::OffboardResult& SetPositionNedResponse::_internal_offboard_result() const {
+  const ::mavsdk::rpc::offboard::OffboardResult* p = offboard_result_;
+  return p != nullptr ? *p : *reinterpret_cast<const ::mavsdk::rpc::offboard::OffboardResult*>(
+      &::mavsdk::rpc::offboard::_OffboardResult_default_instance_);
+}
+inline const ::mavsdk::rpc::offboard::OffboardResult& SetPositionNedResponse::offboard_result() const {
+  // @@protoc_insertion_point(field_get:mavsdk.rpc.offboard.SetPositionNedResponse.offboard_result)
+  return _internal_offboard_result();
+}
+inline ::mavsdk::rpc::offboard::OffboardResult* SetPositionNedResponse::release_offboard_result() {
+  // @@protoc_insertion_point(field_release:mavsdk.rpc.offboard.SetPositionNedResponse.offboard_result)
+  
+  ::mavsdk::rpc::offboard::OffboardResult* temp = offboard_result_;
+  offboard_result_ = nullptr;
+  return temp;
+}
+inline ::mavsdk::rpc::offboard::OffboardResult* SetPositionNedResponse::_internal_mutable_offboard_result() {
+  
+  if (offboard_result_ == nullptr) {
+    auto* p = CreateMaybeMessage<::mavsdk::rpc::offboard::OffboardResult>(GetArenaNoVirtual());
+    offboard_result_ = p;
+  }
+  return offboard_result_;
+}
+inline ::mavsdk::rpc::offboard::OffboardResult* SetPositionNedResponse::mutable_offboard_result() {
+  // @@protoc_insertion_point(field_mutable:mavsdk.rpc.offboard.SetPositionNedResponse.offboard_result)
+  return _internal_mutable_offboard_result();
+}
+inline void SetPositionNedResponse::set_allocated_offboard_result(::mavsdk::rpc::offboard::OffboardResult* offboard_result) {
+  ::PROTOBUF_NAMESPACE_ID::Arena* message_arena = GetArenaNoVirtual();
+  if (message_arena == nullptr) {
+    delete offboard_result_;
+  }
+  if (offboard_result) {
+    ::PROTOBUF_NAMESPACE_ID::Arena* submessage_arena = nullptr;
+    if (message_arena != submessage_arena) {
+      offboard_result = ::PROTOBUF_NAMESPACE_ID::internal::GetOwnedMessage(
+          message_arena, offboard_result, submessage_arena);
+    }
+    
+  } else {
+    
+  }
+  offboard_result_ = offboard_result;
+  // @@protoc_insertion_point(field_set_allocated:mavsdk.rpc.offboard.SetPositionNedResponse.offboard_result)
+}
 
 // -------------------------------------------------------------------
 
@@ -4220,6 +4652,66 @@ inline void SetVelocityBodyRequest::set_allocated_velocity_body_yawspeed(::mavsd
 
 // SetVelocityBodyResponse
 
+// .mavsdk.rpc.offboard.OffboardResult offboard_result = 1;
+inline bool SetVelocityBodyResponse::_internal_has_offboard_result() const {
+  return this != internal_default_instance() && offboard_result_ != nullptr;
+}
+inline bool SetVelocityBodyResponse::has_offboard_result() const {
+  return _internal_has_offboard_result();
+}
+inline void SetVelocityBodyResponse::clear_offboard_result() {
+  if (GetArenaNoVirtual() == nullptr && offboard_result_ != nullptr) {
+    delete offboard_result_;
+  }
+  offboard_result_ = nullptr;
+}
+inline const ::mavsdk::rpc::offboard::OffboardResult& SetVelocityBodyResponse::_internal_offboard_result() const {
+  const ::mavsdk::rpc::offboard::OffboardResult* p = offboard_result_;
+  return p != nullptr ? *p : *reinterpret_cast<const ::mavsdk::rpc::offboard::OffboardResult*>(
+      &::mavsdk::rpc::offboard::_OffboardResult_default_instance_);
+}
+inline const ::mavsdk::rpc::offboard::OffboardResult& SetVelocityBodyResponse::offboard_result() const {
+  // @@protoc_insertion_point(field_get:mavsdk.rpc.offboard.SetVelocityBodyResponse.offboard_result)
+  return _internal_offboard_result();
+}
+inline ::mavsdk::rpc::offboard::OffboardResult* SetVelocityBodyResponse::release_offboard_result() {
+  // @@protoc_insertion_point(field_release:mavsdk.rpc.offboard.SetVelocityBodyResponse.offboard_result)
+  
+  ::mavsdk::rpc::offboard::OffboardResult* temp = offboard_result_;
+  offboard_result_ = nullptr;
+  return temp;
+}
+inline ::mavsdk::rpc::offboard::OffboardResult* SetVelocityBodyResponse::_internal_mutable_offboard_result() {
+  
+  if (offboard_result_ == nullptr) {
+    auto* p = CreateMaybeMessage<::mavsdk::rpc::offboard::OffboardResult>(GetArenaNoVirtual());
+    offboard_result_ = p;
+  }
+  return offboard_result_;
+}
+inline ::mavsdk::rpc::offboard::OffboardResult* SetVelocityBodyResponse::mutable_offboard_result() {
+  // @@protoc_insertion_point(field_mutable:mavsdk.rpc.offboard.SetVelocityBodyResponse.offboard_result)
+  return _internal_mutable_offboard_result();
+}
+inline void SetVelocityBodyResponse::set_allocated_offboard_result(::mavsdk::rpc::offboard::OffboardResult* offboard_result) {
+  ::PROTOBUF_NAMESPACE_ID::Arena* message_arena = GetArenaNoVirtual();
+  if (message_arena == nullptr) {
+    delete offboard_result_;
+  }
+  if (offboard_result) {
+    ::PROTOBUF_NAMESPACE_ID::Arena* submessage_arena = nullptr;
+    if (message_arena != submessage_arena) {
+      offboard_result = ::PROTOBUF_NAMESPACE_ID::internal::GetOwnedMessage(
+          message_arena, offboard_result, submessage_arena);
+    }
+    
+  } else {
+    
+  }
+  offboard_result_ = offboard_result;
+  // @@protoc_insertion_point(field_set_allocated:mavsdk.rpc.offboard.SetVelocityBodyResponse.offboard_result)
+}
+
 // -------------------------------------------------------------------
 
 // SetVelocityNedRequest
@@ -4287,6 +4779,66 @@ inline void SetVelocityNedRequest::set_allocated_velocity_ned_yaw(::mavsdk::rpc:
 // -------------------------------------------------------------------
 
 // SetVelocityNedResponse
+
+// .mavsdk.rpc.offboard.OffboardResult offboard_result = 1;
+inline bool SetVelocityNedResponse::_internal_has_offboard_result() const {
+  return this != internal_default_instance() && offboard_result_ != nullptr;
+}
+inline bool SetVelocityNedResponse::has_offboard_result() const {
+  return _internal_has_offboard_result();
+}
+inline void SetVelocityNedResponse::clear_offboard_result() {
+  if (GetArenaNoVirtual() == nullptr && offboard_result_ != nullptr) {
+    delete offboard_result_;
+  }
+  offboard_result_ = nullptr;
+}
+inline const ::mavsdk::rpc::offboard::OffboardResult& SetVelocityNedResponse::_internal_offboard_result() const {
+  const ::mavsdk::rpc::offboard::OffboardResult* p = offboard_result_;
+  return p != nullptr ? *p : *reinterpret_cast<const ::mavsdk::rpc::offboard::OffboardResult*>(
+      &::mavsdk::rpc::offboard::_OffboardResult_default_instance_);
+}
+inline const ::mavsdk::rpc::offboard::OffboardResult& SetVelocityNedResponse::offboard_result() const {
+  // @@protoc_insertion_point(field_get:mavsdk.rpc.offboard.SetVelocityNedResponse.offboard_result)
+  return _internal_offboard_result();
+}
+inline ::mavsdk::rpc::offboard::OffboardResult* SetVelocityNedResponse::release_offboard_result() {
+  // @@protoc_insertion_point(field_release:mavsdk.rpc.offboard.SetVelocityNedResponse.offboard_result)
+  
+  ::mavsdk::rpc::offboard::OffboardResult* temp = offboard_result_;
+  offboard_result_ = nullptr;
+  return temp;
+}
+inline ::mavsdk::rpc::offboard::OffboardResult* SetVelocityNedResponse::_internal_mutable_offboard_result() {
+  
+  if (offboard_result_ == nullptr) {
+    auto* p = CreateMaybeMessage<::mavsdk::rpc::offboard::OffboardResult>(GetArenaNoVirtual());
+    offboard_result_ = p;
+  }
+  return offboard_result_;
+}
+inline ::mavsdk::rpc::offboard::OffboardResult* SetVelocityNedResponse::mutable_offboard_result() {
+  // @@protoc_insertion_point(field_mutable:mavsdk.rpc.offboard.SetVelocityNedResponse.offboard_result)
+  return _internal_mutable_offboard_result();
+}
+inline void SetVelocityNedResponse::set_allocated_offboard_result(::mavsdk::rpc::offboard::OffboardResult* offboard_result) {
+  ::PROTOBUF_NAMESPACE_ID::Arena* message_arena = GetArenaNoVirtual();
+  if (message_arena == nullptr) {
+    delete offboard_result_;
+  }
+  if (offboard_result) {
+    ::PROTOBUF_NAMESPACE_ID::Arena* submessage_arena = nullptr;
+    if (message_arena != submessage_arena) {
+      offboard_result = ::PROTOBUF_NAMESPACE_ID::internal::GetOwnedMessage(
+          message_arena, offboard_result, submessage_arena);
+    }
+    
+  } else {
+    
+  }
+  offboard_result_ = offboard_result;
+  // @@protoc_insertion_point(field_set_allocated:mavsdk.rpc.offboard.SetVelocityNedResponse.offboard_result)
+}
 
 // -------------------------------------------------------------------
 

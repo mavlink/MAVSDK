@@ -40,7 +40,7 @@ Offboard::Result OffboardImpl::start()
     {
         std::lock_guard<std::mutex> lock(_mutex);
         if (_mode == Mode::NOT_ACTIVE) {
-            return Offboard::Result::NO_SETPOINT_SET;
+            return Offboard::Result::NoSetpointSet;
         }
         _last_started = _time.steady_time();
     }
@@ -69,7 +69,7 @@ void OffboardImpl::start_async(Offboard::result_callback_t callback)
 
         if (_mode == Mode::NOT_ACTIVE) {
             if (callback) {
-                callback(Offboard::Result::NO_SETPOINT_SET);
+                callback(Offboard::Result::NoSetpointSet);
             }
             return;
         }
@@ -95,10 +95,10 @@ void OffboardImpl::stop_async(Offboard::result_callback_t callback)
         std::bind(&OffboardImpl::receive_command_result, this, std::placeholders::_1, callback));
 }
 
-bool OffboardImpl::is_active() const
+std::pair<Offboard::Result, bool> OffboardImpl::is_active()
 {
     std::lock_guard<std::mutex> lock(_mutex);
-    return (_mode != Mode::NOT_ACTIVE);
+    return std::make_pair<>(Offboard::Result::Success, (_mode != Mode::NOT_ACTIVE));
 }
 
 void OffboardImpl::receive_command_result(
@@ -110,22 +110,22 @@ void OffboardImpl::receive_command_result(
     }
 }
 
-void OffboardImpl::set_position_ned(Offboard::PositionNEDYaw position_ned_yaw)
+Offboard::Result OffboardImpl::set_position_ned(Offboard::PositionNedYaw position_ned_yaw)
 {
     _mutex.lock();
     _position_ned_yaw = position_ned_yaw;
 
-    if (_mode != Mode::POSITION_NED) {
+    if (_mode != Mode::POSITION_Ned) {
         if (_call_every_cookie) {
             // If we're already sending other setpoints, stop that now.
             _parent->remove_call_every(_call_every_cookie);
             _call_every_cookie = nullptr;
         }
-        // We automatically send NED setpoints from now on.
+        // We automatically send Ned setpoints from now on.
         _parent->add_call_every(
             [this]() { send_position_ned(); }, SEND_INTERVAL_S, &_call_every_cookie);
 
-        _mode = Mode::POSITION_NED;
+        _mode = Mode::POSITION_Ned;
     } else {
         // We're already sending these kind of setpoints. Since the setpoint change, let's
         // reschedule the next call, so we don't send setpoints too often.
@@ -134,25 +134,25 @@ void OffboardImpl::set_position_ned(Offboard::PositionNEDYaw position_ned_yaw)
     _mutex.unlock();
 
     // also send it right now to reduce latency
-    send_position_ned();
+    return send_position_ned();
 }
 
-void OffboardImpl::set_velocity_ned(Offboard::VelocityNEDYaw velocity_ned_yaw)
+Offboard::Result OffboardImpl::set_velocity_ned(Offboard::VelocityNedYaw velocity_ned_yaw)
 {
     _mutex.lock();
     _velocity_ned_yaw = velocity_ned_yaw;
 
-    if (_mode != Mode::VELOCITY_NED) {
+    if (_mode != Mode::VELOCITY_Ned) {
         if (_call_every_cookie) {
             // If we're already sending other setpoints, stop that now.
             _parent->remove_call_every(_call_every_cookie);
             _call_every_cookie = nullptr;
         }
-        // We automatically send NED setpoints from now on.
+        // We automatically send Ned setpoints from now on.
         _parent->add_call_every(
             [this]() { send_velocity_ned(); }, SEND_INTERVAL_S, &_call_every_cookie);
 
-        _mode = Mode::VELOCITY_NED;
+        _mode = Mode::VELOCITY_Ned;
     } else {
         // We're already sending these kind of setpoints. Since the setpoint change, let's
         // reschedule the next call, so we don't send setpoints too often.
@@ -161,10 +161,11 @@ void OffboardImpl::set_velocity_ned(Offboard::VelocityNEDYaw velocity_ned_yaw)
     _mutex.unlock();
 
     // also send it right now to reduce latency
-    send_velocity_ned();
+    return send_velocity_ned();
 }
 
-void OffboardImpl::set_velocity_body(Offboard::VelocityBodyYawspeed velocity_body_yawspeed)
+Offboard::Result
+OffboardImpl::set_velocity_body(Offboard::VelocityBodyYawspeed velocity_body_yawspeed)
 {
     _mutex.lock();
     _velocity_body_yawspeed = velocity_body_yawspeed;
@@ -188,10 +189,10 @@ void OffboardImpl::set_velocity_body(Offboard::VelocityBodyYawspeed velocity_bod
     _mutex.unlock();
 
     // also send it right now to reduce latency
-    send_velocity_body();
+    return send_velocity_body();
 }
 
-void OffboardImpl::set_attitude(Offboard::Attitude attitude)
+Offboard::Result OffboardImpl::set_attitude(Offboard::Attitude attitude)
 {
     _mutex.lock();
     _attitude = attitude;
@@ -215,10 +216,10 @@ void OffboardImpl::set_attitude(Offboard::Attitude attitude)
     _mutex.unlock();
 
     // also send it right now to reduce latency
-    send_attitude();
+    return send_attitude();
 }
 
-void OffboardImpl::set_attitude_rate(Offboard::AttitudeRate attitude_rate)
+Offboard::Result OffboardImpl::set_attitude_rate(Offboard::AttitudeRate attitude_rate)
 {
     _mutex.lock();
     _attitude_rate = attitude_rate;
@@ -242,10 +243,10 @@ void OffboardImpl::set_attitude_rate(Offboard::AttitudeRate attitude_rate)
     _mutex.unlock();
 
     // also send it right now to reduce latency
-    send_attitude_rate();
+    return send_attitude_rate();
 }
 
-void OffboardImpl::set_actuator_control(Offboard::ActuatorControl actuator_control)
+Offboard::Result OffboardImpl::set_actuator_control(Offboard::ActuatorControl actuator_control)
 {
     _mutex.lock();
     _actuator_control = actuator_control;
@@ -269,10 +270,10 @@ void OffboardImpl::set_actuator_control(Offboard::ActuatorControl actuator_contr
     _mutex.unlock();
 
     // also send it right now to reduce latency
-    send_actuator_control();
+    return send_actuator_control();
 }
 
-void OffboardImpl::send_position_ned()
+Offboard::Result OffboardImpl::send_position_ned()
 {
     // const static uint16_t IGNORE_X = (1 << 0);
     // const static uint16_t IGNORE_Y = (1 << 1);
@@ -322,10 +323,11 @@ void OffboardImpl::send_position_ned()
         afz,
         yaw,
         yaw_rate);
-    _parent->send_message(message);
+    return _parent->send_message(message) ? Offboard::Result::Success :
+                                            Offboard::Result::ConnectionError;
 }
 
-void OffboardImpl::send_velocity_ned()
+Offboard::Result OffboardImpl::send_velocity_ned()
 {
     const static uint16_t IGNORE_X = (1 << 0);
     const static uint16_t IGNORE_Y = (1 << 1);
@@ -375,10 +377,11 @@ void OffboardImpl::send_velocity_ned()
         afz,
         yaw,
         yaw_rate);
-    _parent->send_message(message);
+    return _parent->send_message(message) ? Offboard::Result::Success :
+                                            Offboard::Result::ConnectionError;
 }
 
-void OffboardImpl::send_velocity_body()
+Offboard::Result OffboardImpl::send_velocity_body()
 {
     const static uint16_t IGNORE_X = (1 << 0);
     const static uint16_t IGNORE_Y = (1 << 1);
@@ -428,10 +431,11 @@ void OffboardImpl::send_velocity_body()
         afz,
         yaw,
         yaw_rate);
-    _parent->send_message(message);
+    return _parent->send_message(message) ? Offboard::Result::Success :
+                                            Offboard::Result::ConnectionError;
 }
 
-void OffboardImpl::send_attitude()
+Offboard::Result OffboardImpl::send_attitude()
 {
     const static uint8_t IGNORE_BODY_ROLL_RATE = (1 << 0);
     const static uint8_t IGNORE_BODY_PITCH_RATE = (1 << 1);
@@ -477,10 +481,11 @@ void OffboardImpl::send_attitude()
         0,
         0,
         thrust);
-    _parent->send_message(message);
+    return _parent->send_message(message) ? Offboard::Result::Success :
+                                            Offboard::Result::ConnectionError;
 }
 
-void OffboardImpl::send_attitude_rate()
+Offboard::Result OffboardImpl::send_attitude_rate()
 {
     // const static uint8_t IGNORE_BODY_ROLL_RATE = (1 << 0);
     // const static uint8_t IGNORE_BODY_PITCH_RATE = (1 << 1);
@@ -512,10 +517,12 @@ void OffboardImpl::send_attitude_rate()
         body_pitch_rate,
         body_yaw_rate,
         thrust);
-    _parent->send_message(message);
+    return _parent->send_message(message) ? Offboard::Result::Success :
+                                            Offboard::Result::ConnectionError;
 }
 
-void OffboardImpl::send_actuator_control_message(const float* controls, uint8_t group_number)
+Offboard::Result
+OffboardImpl::send_actuator_control_message(const float* controls, uint8_t group_number)
 {
     mavlink_message_t message;
     mavlink_msg_set_actuator_control_target_pack(
@@ -527,10 +534,11 @@ void OffboardImpl::send_actuator_control_message(const float* controls, uint8_t 
         _parent->get_system_id(),
         _parent->get_autopilot_id(),
         controls);
-    _parent->send_message(message);
+    return _parent->send_message(message) ? Offboard::Result::Success :
+                                            Offboard::Result::ConnectionError;
 }
 
-void OffboardImpl::send_actuator_control()
+Offboard::Result OffboardImpl::send_actuator_control()
 {
     _mutex.lock();
     Offboard::ActuatorControl actuator_control = _actuator_control;
@@ -545,9 +553,13 @@ void OffboardImpl::send_actuator_control()
             }
         }
         if (nan_count < 8) {
-            send_actuator_control_message(&actuator_control.groups[i].controls[0], i);
+            auto result = send_actuator_control_message(&actuator_control.groups[i].controls[0], i);
+            if (result != Offboard::Result::Success) {
+                return result;
+            }
         }
     }
+    return Offboard::Result::Success;
 }
 
 void OffboardImpl::process_heartbeat(const mavlink_message_t& message)
@@ -595,19 +607,19 @@ Offboard::Result OffboardImpl::offboard_result_from_command_result(MAVLinkComman
 {
     switch (result) {
         case MAVLinkCommands::Result::SUCCESS:
-            return Offboard::Result::SUCCESS;
+            return Offboard::Result::Success;
         case MAVLinkCommands::Result::NO_SYSTEM:
-            return Offboard::Result::NO_SYSTEM;
+            return Offboard::Result::NoSystem;
         case MAVLinkCommands::Result::CONNECTION_ERROR:
-            return Offboard::Result::CONNECTION_ERROR;
+            return Offboard::Result::ConnectionError;
         case MAVLinkCommands::Result::BUSY:
-            return Offboard::Result::BUSY;
+            return Offboard::Result::Busy;
         case MAVLinkCommands::Result::COMMAND_DENIED:
-            return Offboard::Result::COMMAND_DENIED;
+            return Offboard::Result::CommandDenied;
         case MAVLinkCommands::Result::TIMEOUT:
-            return Offboard::Result::TIMEOUT;
+            return Offboard::Result::Timeout;
         default:
-            return Offboard::Result::UNKNOWN;
+            return Offboard::Result::Unknown;
     }
 }
 

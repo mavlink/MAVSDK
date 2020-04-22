@@ -297,7 +297,7 @@ public:
     grpc::Status Cancel(
         grpc::ServerContext* /* context */,
         const rpc::calibration::CancelRequest* /* request */,
-        rpc::calibration::CancelResponse* response) override
+        rpc::calibration::CancelResponse* /* response */) override
     {
         _calibration.cancel();
 
