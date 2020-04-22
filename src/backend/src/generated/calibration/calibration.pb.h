@@ -119,15 +119,14 @@ namespace calibration {
 enum CalibrationResult_Result : int {
   CalibrationResult_Result_RESULT_UNKNOWN = 0,
   CalibrationResult_Result_RESULT_SUCCESS = 1,
-  CalibrationResult_Result_RESULT_IN_PROGRESS = 2,
-  CalibrationResult_Result_RESULT_INSTRUCTION = 3,
-  CalibrationResult_Result_RESULT_FAILED = 4,
-  CalibrationResult_Result_RESULT_NO_SYSTEM = 5,
-  CalibrationResult_Result_RESULT_CONNECTION_ERROR = 6,
-  CalibrationResult_Result_RESULT_BUSY = 7,
-  CalibrationResult_Result_RESULT_COMMAND_DENIED = 8,
-  CalibrationResult_Result_RESULT_TIMEOUT = 9,
-  CalibrationResult_Result_RESULT_CANCELLED = 10,
+  CalibrationResult_Result_RESULT_NEXT = 2,
+  CalibrationResult_Result_RESULT_FAILED = 3,
+  CalibrationResult_Result_RESULT_NO_SYSTEM = 4,
+  CalibrationResult_Result_RESULT_CONNECTION_ERROR = 5,
+  CalibrationResult_Result_RESULT_BUSY = 6,
+  CalibrationResult_Result_RESULT_COMMAND_DENIED = 7,
+  CalibrationResult_Result_RESULT_TIMEOUT = 8,
+  CalibrationResult_Result_RESULT_CANCELLED = 9,
   CalibrationResult_Result_CalibrationResult_Result_INT_MIN_SENTINEL_DO_NOT_USE_ = std::numeric_limits<::PROTOBUF_NAMESPACE_ID::int32>::min(),
   CalibrationResult_Result_CalibrationResult_Result_INT_MAX_SENTINEL_DO_NOT_USE_ = std::numeric_limits<::PROTOBUF_NAMESPACE_ID::int32>::max()
 };
@@ -1554,10 +1553,8 @@ class CalibrationResult :
     CalibrationResult_Result_RESULT_UNKNOWN;
   static constexpr Result RESULT_SUCCESS =
     CalibrationResult_Result_RESULT_SUCCESS;
-  static constexpr Result RESULT_IN_PROGRESS =
-    CalibrationResult_Result_RESULT_IN_PROGRESS;
-  static constexpr Result RESULT_INSTRUCTION =
-    CalibrationResult_Result_RESULT_INSTRUCTION;
+  static constexpr Result RESULT_NEXT =
+    CalibrationResult_Result_RESULT_NEXT;
   static constexpr Result RESULT_FAILED =
     CalibrationResult_Result_RESULT_FAILED;
   static constexpr Result RESULT_NO_SYSTEM =
