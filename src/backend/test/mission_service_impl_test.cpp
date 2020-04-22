@@ -27,7 +27,7 @@ using InputPair = std::pair<std::string, mavsdk::Mission::Result>;
 using UploadMissionRequest = mavsdk::rpc::mission::UploadMissionRequest;
 using UploadMissionResponse = mavsdk::rpc::mission::UploadMissionResponse;
 
-using CameraAction = mavsdk::Mission::CameraAction;
+using CameraAction = mavsdk::Mission::MissionItem::CameraAction;
 using RPCCameraAction = mavsdk::rpc::mission::MissionItem::CameraAction;
 
 using DownloadMissionResponse = mavsdk::rpc::mission::DownloadMissionResponse;

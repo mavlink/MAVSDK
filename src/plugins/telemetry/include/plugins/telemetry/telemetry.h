@@ -516,28 +516,31 @@ public:
     operator<<(std::ostream& str, Telemetry::PositionBody const& position_body);
 
     /**
-     * @brief Mavlink frame id
-     */
-    enum class MavFrame {
-        Undef, /**< @brief Frame is undefined.. */
-        BodyNed, /**< @brief Setpoint in body NED frame. This makes sense if all position control is
-                    externalized - e.g. useful to command 2 m/s^2 acceleration to the right.. */
-        VisionNed, /**< @brief Odometry local coordinate frame of data given by a vision estimation
-                      system, Z-down (x: north, y: east, z: down).. */
-        EstimNed, /**< @brief Odometry local coordinate frame of data given by an estimator running
-                     onboard the vehicle, Z-down (x: north, y: east, z: down).. */
-    };
-
-    /**
-     * @brief Stream operator to print information about a `Telemetry::MavFrame`.
-     *
-     * @return A reference to the stream.
-     */
-    friend std::ostream& operator<<(std::ostream& str, Telemetry::MavFrame const& mav_frame);
-    /**
      * @brief Odometry message type.
      */
     struct Odometry {
+        /**
+         * @brief Mavlink frame id
+         */
+        enum class MavFrame {
+            Undef, /**< @brief Frame is undefined.. */
+            BodyNed, /**< @brief Setpoint in body NED frame. This makes sense if all position
+                        control is externalized - e.g. useful to command 2 m/s^2 acceleration to the
+                        right.. */
+            VisionNed, /**< @brief Odometry local coordinate frame of data given by a vision
+                          estimation system, Z-down (x: north, y: east, z: down).. */
+            EstimNed, /**< @brief Odometry local coordinate frame of data given by an estimator
+                         running onboard the vehicle, Z-down (x: north, y: east, z: down).. */
+        };
+
+        /**
+         * @brief Stream operator to print information about a `Telemetry::MavFrame`.
+         *
+         * @return A reference to the stream.
+         */
+        friend std::ostream&
+        operator<<(std::ostream& str, Telemetry::Odometry::MavFrame const& mav_frame);
+
         uint64_t time_usec{}; /**< @brief Timestamp (0 to use Backend timestamp). */
         MavFrame frame_id{}; /**< @brief Coordinate frame of reference for the pose data. */
         MavFrame child_frame_id{}; /**< @brief Coordinate frame of reference for the velocity in

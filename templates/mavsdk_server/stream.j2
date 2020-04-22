@@ -8,15 +8,20 @@ grpc::Status Subscribe{{ name.upper_camel_case }}(grpc::ServerContext* /* contex
 
     std::mutex subscribe_mutex{};
 
-    _{{ plugin_name.lower_snake_case }}.{{ name.lower_snake_case }}_async([this, &writer, &stream_closed_promise, is_finished, &subscribe_mutex](const {% if not return_type.is_primitive %}{{ package.lower_snake_case.split('.')[0] }}::{{ plugin_name.upper_camel_case }}::{% endif %}{{ return_type.name }}& {{ name.lower_snake_case }}) {
+    _{{ plugin_name.lower_snake_case }}.{{ name.lower_snake_case }}_async([this, &writer, &stream_closed_promise, is_finished, &subscribe_mutex](const {% if return_type.is_repeated %}std::vector<{% if not return_type.is_primitive %}{{ package.lower_snake_case.split('.')[0] }}::{{ plugin_name.upper_camel_case }}::{% endif %}{{ return_type.inner_name }}>{% else %}{%- if not return_type.is_primitive %}{{ package.lower_snake_case.split('.')[0] }}::{{ plugin_name.upper_camel_case }}::{% endif %}{{ return_type.name }}{% endif %} {{ name.lower_snake_case }}) {
 
         rpc::{{ plugin_name.lower_snake_case }}::{{ name.upper_camel_case }}Response rpc_response;
     {% if return_type.is_primitive %}
         rpc_response.set_{{ return_name.lower_snake_case }}({{ name.lower_snake_case }});
     {% elif return_type.is_enum %}
         rpc_response.set_{{ return_name.lower_snake_case }}(translateToRpc{{ return_type.name }}({{ name.lower_snake_case }}));
+    {% elif return_type.is_repeated %}
+        for (const auto& elem : {{ name.lower_snake_case }}) {
+            auto* ptr = rpc_response.add_{{ return_name.lower_snake_case }}();
+            ptr->CopyFrom(*translateToRpc{{ return_type.inner_name }}(elem).release());
+        }
     {% else %}
-        rpc_response.set_allocated_{{ return_name.lower_snake_case }}(translateToRpc{{ return_type.name }}({{ name.lower_snake_case }}).release());
+        rpc_response.set_allocated_{{ return_name.lower_snake_case }}(translateToRpc{{ return_type.inner_name }}({{ name.lower_snake_case }}).release());
     {% endif %}
 
         std::lock_guard<std::mutex> lock(subscribe_mutex);

@@ -22,5 +22,5 @@ TEST(CameraTest, Format)
 
     auto camera = std::make_shared<Camera>(system);
 
-    EXPECT_EQ(Camera::Result::SUCCESS, camera->format_storage());
+    EXPECT_EQ(Camera::Result::Success, camera->format_storage());
 }

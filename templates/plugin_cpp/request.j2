@@ -6,7 +6,7 @@ void {{ plugin_name.upper_camel_case }}::{{ name.lower_snake_case }}_async({% fo
 {% endif %}
 
 {% if is_sync %}
-std::pair<{{ plugin_name.upper_camel_case }}::Result, {{ return_type.name }}> {{ plugin_name.upper_camel_case }}::{{ name.lower_snake_case }}({% for param in params %}{{ param.type_info.name }} {{ param.name.lower_snake_case }}{{ ", " if not loop.last }}{% endfor %}) const
+std::pair<{{ plugin_name.upper_camel_case }}::Result, {% if not return_type.is_primitive %}{{ plugin_name.upper_snake_case }}::{% endif %}{{ return_type.name }}> {{ plugin_name.upper_camel_case }}::{{ name.lower_snake_case }}({% for param in params %}{{ param.type_info.name }} {{ param.name.lower_snake_case }}{{ ", " if not loop.last }}{% endfor %}) const
 {
     return _impl->{{ name.lower_snake_case }}({% for param in params %}{{ param.name.lower_snake_case }}{{ ", " if not loop.last }}{% endfor %});
 }

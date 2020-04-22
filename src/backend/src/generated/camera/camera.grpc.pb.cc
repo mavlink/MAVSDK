@@ -32,12 +32,15 @@ static const char* CameraService_method_names[] = {
   "/mavsdk.rpc.camera.CameraService/StopVideoStreaming",
   "/mavsdk.rpc.camera.CameraService/SetMode",
   "/mavsdk.rpc.camera.CameraService/SubscribeMode",
+  "/mavsdk.rpc.camera.CameraService/SubscribeInformation",
   "/mavsdk.rpc.camera.CameraService/SubscribeVideoStreamInfo",
   "/mavsdk.rpc.camera.CameraService/SubscribeCaptureInfo",
-  "/mavsdk.rpc.camera.CameraService/SubscribeCameraStatus",
+  "/mavsdk.rpc.camera.CameraService/SubscribeStatus",
   "/mavsdk.rpc.camera.CameraService/SubscribeCurrentSettings",
   "/mavsdk.rpc.camera.CameraService/SubscribePossibleSettingOptions",
   "/mavsdk.rpc.camera.CameraService/SetSetting",
+  "/mavsdk.rpc.camera.CameraService/GetSetting",
+  "/mavsdk.rpc.camera.CameraService/FormatStorage",
 };
 
 std::unique_ptr< CameraService::Stub> CameraService::NewStub(const std::shared_ptr< ::grpc::ChannelInterface>& channel, const ::grpc::StubOptions& options) {
@@ -56,12 +59,15 @@ CameraService::Stub::Stub(const std::shared_ptr< ::grpc::ChannelInterface>& chan
   , rpcmethod_StopVideoStreaming_(CameraService_method_names[6], ::grpc::internal::RpcMethod::NORMAL_RPC, channel)
   , rpcmethod_SetMode_(CameraService_method_names[7], ::grpc::internal::RpcMethod::NORMAL_RPC, channel)
   , rpcmethod_SubscribeMode_(CameraService_method_names[8], ::grpc::internal::RpcMethod::SERVER_STREAMING, channel)
-  , rpcmethod_SubscribeVideoStreamInfo_(CameraService_method_names[9], ::grpc::internal::RpcMethod::SERVER_STREAMING, channel)
-  , rpcmethod_SubscribeCaptureInfo_(CameraService_method_names[10], ::grpc::internal::RpcMethod::SERVER_STREAMING, channel)
-  , rpcmethod_SubscribeCameraStatus_(CameraService_method_names[11], ::grpc::internal::RpcMethod::SERVER_STREAMING, channel)
-  , rpcmethod_SubscribeCurrentSettings_(CameraService_method_names[12], ::grpc::internal::RpcMethod::SERVER_STREAMING, channel)
-  , rpcmethod_SubscribePossibleSettingOptions_(CameraService_method_names[13], ::grpc::internal::RpcMethod::SERVER_STREAMING, channel)
-  , rpcmethod_SetSetting_(CameraService_method_names[14], ::grpc::internal::RpcMethod::NORMAL_RPC, channel)
+  , rpcmethod_SubscribeInformation_(CameraService_method_names[9], ::grpc::internal::RpcMethod::SERVER_STREAMING, channel)
+  , rpcmethod_SubscribeVideoStreamInfo_(CameraService_method_names[10], ::grpc::internal::RpcMethod::SERVER_STREAMING, channel)
+  , rpcmethod_SubscribeCaptureInfo_(CameraService_method_names[11], ::grpc::internal::RpcMethod::SERVER_STREAMING, channel)
+  , rpcmethod_SubscribeStatus_(CameraService_method_names[12], ::grpc::internal::RpcMethod::SERVER_STREAMING, channel)
+  , rpcmethod_SubscribeCurrentSettings_(CameraService_method_names[13], ::grpc::internal::RpcMethod::SERVER_STREAMING, channel)
+  , rpcmethod_SubscribePossibleSettingOptions_(CameraService_method_names[14], ::grpc::internal::RpcMethod::SERVER_STREAMING, channel)
+  , rpcmethod_SetSetting_(CameraService_method_names[15], ::grpc::internal::RpcMethod::NORMAL_RPC, channel)
+  , rpcmethod_GetSetting_(CameraService_method_names[16], ::grpc::internal::RpcMethod::NORMAL_RPC, channel)
+  , rpcmethod_FormatStorage_(CameraService_method_names[17], ::grpc::internal::RpcMethod::NORMAL_RPC, channel)
   {}
 
 ::grpc::Status CameraService::Stub::TakePhoto(::grpc::ClientContext* context, const ::mavsdk::rpc::camera::TakePhotoRequest& request, ::mavsdk::rpc::camera::TakePhotoResponse* response) {
@@ -304,6 +310,22 @@ void CameraService::Stub::experimental_async::SubscribeMode(::grpc::ClientContex
   return ::grpc_impl::internal::ClientAsyncReaderFactory< ::mavsdk::rpc::camera::ModeResponse>::Create(channel_.get(), cq, rpcmethod_SubscribeMode_, context, request, false, nullptr);
 }
 
+::grpc::ClientReader< ::mavsdk::rpc::camera::InformationResponse>* CameraService::Stub::SubscribeInformationRaw(::grpc::ClientContext* context, const ::mavsdk::rpc::camera::SubscribeInformationRequest& request) {
+  return ::grpc_impl::internal::ClientReaderFactory< ::mavsdk::rpc::camera::InformationResponse>::Create(channel_.get(), rpcmethod_SubscribeInformation_, context, request);
+}
+
+void CameraService::Stub::experimental_async::SubscribeInformation(::grpc::ClientContext* context, ::mavsdk::rpc::camera::SubscribeInformationRequest* request, ::grpc::experimental::ClientReadReactor< ::mavsdk::rpc::camera::InformationResponse>* reactor) {
+  ::grpc_impl::internal::ClientCallbackReaderFactory< ::mavsdk::rpc::camera::InformationResponse>::Create(stub_->channel_.get(), stub_->rpcmethod_SubscribeInformation_, context, request, reactor);
+}
+
+::grpc::ClientAsyncReader< ::mavsdk::rpc::camera::InformationResponse>* CameraService::Stub::AsyncSubscribeInformationRaw(::grpc::ClientContext* context, const ::mavsdk::rpc::camera::SubscribeInformationRequest& request, ::grpc::CompletionQueue* cq, void* tag) {
+  return ::grpc_impl::internal::ClientAsyncReaderFactory< ::mavsdk::rpc::camera::InformationResponse>::Create(channel_.get(), cq, rpcmethod_SubscribeInformation_, context, request, true, tag);
+}
+
+::grpc::ClientAsyncReader< ::mavsdk::rpc::camera::InformationResponse>* CameraService::Stub::PrepareAsyncSubscribeInformationRaw(::grpc::ClientContext* context, const ::mavsdk::rpc::camera::SubscribeInformationRequest& request, ::grpc::CompletionQueue* cq) {
+  return ::grpc_impl::internal::ClientAsyncReaderFactory< ::mavsdk::rpc::camera::InformationResponse>::Create(channel_.get(), cq, rpcmethod_SubscribeInformation_, context, request, false, nullptr);
+}
+
 ::grpc::ClientReader< ::mavsdk::rpc::camera::VideoStreamInfoResponse>* CameraService::Stub::SubscribeVideoStreamInfoRaw(::grpc::ClientContext* context, const ::mavsdk::rpc::camera::SubscribeVideoStreamInfoRequest& request) {
   return ::grpc_impl::internal::ClientReaderFactory< ::mavsdk::rpc::camera::VideoStreamInfoResponse>::Create(channel_.get(), rpcmethod_SubscribeVideoStreamInfo_, context, request);
 }
@@ -336,20 +358,20 @@ void CameraService::Stub::experimental_async::SubscribeCaptureInfo(::grpc::Clien
   return ::grpc_impl::internal::ClientAsyncReaderFactory< ::mavsdk::rpc::camera::CaptureInfoResponse>::Create(channel_.get(), cq, rpcmethod_SubscribeCaptureInfo_, context, request, false, nullptr);
 }
 
-::grpc::ClientReader< ::mavsdk::rpc::camera::CameraStatusResponse>* CameraService::Stub::SubscribeCameraStatusRaw(::grpc::ClientContext* context, const ::mavsdk::rpc::camera::SubscribeCameraStatusRequest& request) {
-  return ::grpc_impl::internal::ClientReaderFactory< ::mavsdk::rpc::camera::CameraStatusResponse>::Create(channel_.get(), rpcmethod_SubscribeCameraStatus_, context, request);
+::grpc::ClientReader< ::mavsdk::rpc::camera::StatusResponse>* CameraService::Stub::SubscribeStatusRaw(::grpc::ClientContext* context, const ::mavsdk::rpc::camera::SubscribeStatusRequest& request) {
+  return ::grpc_impl::internal::ClientReaderFactory< ::mavsdk::rpc::camera::StatusResponse>::Create(channel_.get(), rpcmethod_SubscribeStatus_, context, request);
 }
 
-void CameraService::Stub::experimental_async::SubscribeCameraStatus(::grpc::ClientContext* context, ::mavsdk::rpc::camera::SubscribeCameraStatusRequest* request, ::grpc::experimental::ClientReadReactor< ::mavsdk::rpc::camera::CameraStatusResponse>* reactor) {
-  ::grpc_impl::internal::ClientCallbackReaderFactory< ::mavsdk::rpc::camera::CameraStatusResponse>::Create(stub_->channel_.get(), stub_->rpcmethod_SubscribeCameraStatus_, context, request, reactor);
+void CameraService::Stub::experimental_async::SubscribeStatus(::grpc::ClientContext* context, ::mavsdk::rpc::camera::SubscribeStatusRequest* request, ::grpc::experimental::ClientReadReactor< ::mavsdk::rpc::camera::StatusResponse>* reactor) {
+  ::grpc_impl::internal::ClientCallbackReaderFactory< ::mavsdk::rpc::camera::StatusResponse>::Create(stub_->channel_.get(), stub_->rpcmethod_SubscribeStatus_, context, request, reactor);
 }
 
-::grpc::ClientAsyncReader< ::mavsdk::rpc::camera::CameraStatusResponse>* CameraService::Stub::AsyncSubscribeCameraStatusRaw(::grpc::ClientContext* context, const ::mavsdk::rpc::camera::SubscribeCameraStatusRequest& request, ::grpc::CompletionQueue* cq, void* tag) {
-  return ::grpc_impl::internal::ClientAsyncReaderFactory< ::mavsdk::rpc::camera::CameraStatusResponse>::Create(channel_.get(), cq, rpcmethod_SubscribeCameraStatus_, context, request, true, tag);
+::grpc::ClientAsyncReader< ::mavsdk::rpc::camera::StatusResponse>* CameraService::Stub::AsyncSubscribeStatusRaw(::grpc::ClientContext* context, const ::mavsdk::rpc::camera::SubscribeStatusRequest& request, ::grpc::CompletionQueue* cq, void* tag) {
+  return ::grpc_impl::internal::ClientAsyncReaderFactory< ::mavsdk::rpc::camera::StatusResponse>::Create(channel_.get(), cq, rpcmethod_SubscribeStatus_, context, request, true, tag);
 }
 
-::grpc::ClientAsyncReader< ::mavsdk::rpc::camera::CameraStatusResponse>* CameraService::Stub::PrepareAsyncSubscribeCameraStatusRaw(::grpc::ClientContext* context, const ::mavsdk::rpc::camera::SubscribeCameraStatusRequest& request, ::grpc::CompletionQueue* cq) {
-  return ::grpc_impl::internal::ClientAsyncReaderFactory< ::mavsdk::rpc::camera::CameraStatusResponse>::Create(channel_.get(), cq, rpcmethod_SubscribeCameraStatus_, context, request, false, nullptr);
+::grpc::ClientAsyncReader< ::mavsdk::rpc::camera::StatusResponse>* CameraService::Stub::PrepareAsyncSubscribeStatusRaw(::grpc::ClientContext* context, const ::mavsdk::rpc::camera::SubscribeStatusRequest& request, ::grpc::CompletionQueue* cq) {
+  return ::grpc_impl::internal::ClientAsyncReaderFactory< ::mavsdk::rpc::camera::StatusResponse>::Create(channel_.get(), cq, rpcmethod_SubscribeStatus_, context, request, false, nullptr);
 }
 
 ::grpc::ClientReader< ::mavsdk::rpc::camera::CurrentSettingsResponse>* CameraService::Stub::SubscribeCurrentSettingsRaw(::grpc::ClientContext* context, const ::mavsdk::rpc::camera::SubscribeCurrentSettingsRequest& request) {
@@ -412,6 +434,62 @@ void CameraService::Stub::experimental_async::SetSetting(::grpc::ClientContext* 
   return ::grpc_impl::internal::ClientAsyncResponseReaderFactory< ::mavsdk::rpc::camera::SetSettingResponse>::Create(channel_.get(), cq, rpcmethod_SetSetting_, context, request, false);
 }
 
+::grpc::Status CameraService::Stub::GetSetting(::grpc::ClientContext* context, const ::mavsdk::rpc::camera::GetSettingRequest& request, ::mavsdk::rpc::camera::GetSettingResponse* response) {
+  return ::grpc::internal::BlockingUnaryCall(channel_.get(), rpcmethod_GetSetting_, context, request, response);
+}
+
+void CameraService::Stub::experimental_async::GetSetting(::grpc::ClientContext* context, const ::mavsdk::rpc::camera::GetSettingRequest* request, ::mavsdk::rpc::camera::GetSettingResponse* response, std::function<void(::grpc::Status)> f) {
+  ::grpc_impl::internal::CallbackUnaryCall(stub_->channel_.get(), stub_->rpcmethod_GetSetting_, context, request, response, std::move(f));
+}
+
+void CameraService::Stub::experimental_async::GetSetting(::grpc::ClientContext* context, const ::grpc::ByteBuffer* request, ::mavsdk::rpc::camera::GetSettingResponse* response, std::function<void(::grpc::Status)> f) {
+  ::grpc_impl::internal::CallbackUnaryCall(stub_->channel_.get(), stub_->rpcmethod_GetSetting_, context, request, response, std::move(f));
+}
+
+void CameraService::Stub::experimental_async::GetSetting(::grpc::ClientContext* context, const ::mavsdk::rpc::camera::GetSettingRequest* request, ::mavsdk::rpc::camera::GetSettingResponse* response, ::grpc::experimental::ClientUnaryReactor* reactor) {
+  ::grpc_impl::internal::ClientCallbackUnaryFactory::Create(stub_->channel_.get(), stub_->rpcmethod_GetSetting_, context, request, response, reactor);
+}
+
+void CameraService::Stub::experimental_async::GetSetting(::grpc::ClientContext* context, const ::grpc::ByteBuffer* request, ::mavsdk::rpc::camera::GetSettingResponse* response, ::grpc::experimental::ClientUnaryReactor* reactor) {
+  ::grpc_impl::internal::ClientCallbackUnaryFactory::Create(stub_->channel_.get(), stub_->rpcmethod_GetSetting_, context, request, response, reactor);
+}
+
+::grpc::ClientAsyncResponseReader< ::mavsdk::rpc::camera::GetSettingResponse>* CameraService::Stub::AsyncGetSettingRaw(::grpc::ClientContext* context, const ::mavsdk::rpc::camera::GetSettingRequest& request, ::grpc::CompletionQueue* cq) {
+  return ::grpc_impl::internal::ClientAsyncResponseReaderFactory< ::mavsdk::rpc::camera::GetSettingResponse>::Create(channel_.get(), cq, rpcmethod_GetSetting_, context, request, true);
+}
+
+::grpc::ClientAsyncResponseReader< ::mavsdk::rpc::camera::GetSettingResponse>* CameraService::Stub::PrepareAsyncGetSettingRaw(::grpc::ClientContext* context, const ::mavsdk::rpc::camera::GetSettingRequest& request, ::grpc::CompletionQueue* cq) {
+  return ::grpc_impl::internal::ClientAsyncResponseReaderFactory< ::mavsdk::rpc::camera::GetSettingResponse>::Create(channel_.get(), cq, rpcmethod_GetSetting_, context, request, false);
+}
+
+::grpc::Status CameraService::Stub::FormatStorage(::grpc::ClientContext* context, const ::mavsdk::rpc::camera::FormatStorageRequest& request, ::mavsdk::rpc::camera::FormatStorageResponse* response) {
+  return ::grpc::internal::BlockingUnaryCall(channel_.get(), rpcmethod_FormatStorage_, context, request, response);
+}
+
+void CameraService::Stub::experimental_async::FormatStorage(::grpc::ClientContext* context, const ::mavsdk::rpc::camera::FormatStorageRequest* request, ::mavsdk::rpc::camera::FormatStorageResponse* response, std::function<void(::grpc::Status)> f) {
+  ::grpc_impl::internal::CallbackUnaryCall(stub_->channel_.get(), stub_->rpcmethod_FormatStorage_, context, request, response, std::move(f));
+}
+
+void CameraService::Stub::experimental_async::FormatStorage(::grpc::ClientContext* context, const ::grpc::ByteBuffer* request, ::mavsdk::rpc::camera::FormatStorageResponse* response, std::function<void(::grpc::Status)> f) {
+  ::grpc_impl::internal::CallbackUnaryCall(stub_->channel_.get(), stub_->rpcmethod_FormatStorage_, context, request, response, std::move(f));
+}
+
+void CameraService::Stub::experimental_async::FormatStorage(::grpc::ClientContext* context, const ::mavsdk::rpc::camera::FormatStorageRequest* request, ::mavsdk::rpc::camera::FormatStorageResponse* response, ::grpc::experimental::ClientUnaryReactor* reactor) {
+  ::grpc_impl::internal::ClientCallbackUnaryFactory::Create(stub_->channel_.get(), stub_->rpcmethod_FormatStorage_, context, request, response, reactor);
+}
+
+void CameraService::Stub::experimental_async::FormatStorage(::grpc::ClientContext* context, const ::grpc::ByteBuffer* request, ::mavsdk::rpc::camera::FormatStorageResponse* response, ::grpc::experimental::ClientUnaryReactor* reactor) {
+  ::grpc_impl::internal::ClientCallbackUnaryFactory::Create(stub_->channel_.get(), stub_->rpcmethod_FormatStorage_, context, request, response, reactor);
+}
+
+::grpc::ClientAsyncResponseReader< ::mavsdk::rpc::camera::FormatStorageResponse>* CameraService::Stub::AsyncFormatStorageRaw(::grpc::ClientContext* context, const ::mavsdk::rpc::camera::FormatStorageRequest& request, ::grpc::CompletionQueue* cq) {
+  return ::grpc_impl::internal::ClientAsyncResponseReaderFactory< ::mavsdk::rpc::camera::FormatStorageResponse>::Create(channel_.get(), cq, rpcmethod_FormatStorage_, context, request, true);
+}
+
+::grpc::ClientAsyncResponseReader< ::mavsdk::rpc::camera::FormatStorageResponse>* CameraService::Stub::PrepareAsyncFormatStorageRaw(::grpc::ClientContext* context, const ::mavsdk::rpc::camera::FormatStorageRequest& request, ::grpc::CompletionQueue* cq) {
+  return ::grpc_impl::internal::ClientAsyncResponseReaderFactory< ::mavsdk::rpc::camera::FormatStorageResponse>::Create(channel_.get(), cq, rpcmethod_FormatStorage_, context, request, false);
+}
+
 CameraService::Service::Service() {
   AddMethod(new ::grpc::internal::RpcServiceMethod(
       CameraService_method_names[0],
@@ -461,33 +539,48 @@ CameraService::Service::Service() {
   AddMethod(new ::grpc::internal::RpcServiceMethod(
       CameraService_method_names[9],
       ::grpc::internal::RpcMethod::SERVER_STREAMING,
+      new ::grpc::internal::ServerStreamingHandler< CameraService::Service, ::mavsdk::rpc::camera::SubscribeInformationRequest, ::mavsdk::rpc::camera::InformationResponse>(
+          std::mem_fn(&CameraService::Service::SubscribeInformation), this)));
+  AddMethod(new ::grpc::internal::RpcServiceMethod(
+      CameraService_method_names[10],
+      ::grpc::internal::RpcMethod::SERVER_STREAMING,
       new ::grpc::internal::ServerStreamingHandler< CameraService::Service, ::mavsdk::rpc::camera::SubscribeVideoStreamInfoRequest, ::mavsdk::rpc::camera::VideoStreamInfoResponse>(
           std::mem_fn(&CameraService::Service::SubscribeVideoStreamInfo), this)));
   AddMethod(new ::grpc::internal::RpcServiceMethod(
-      CameraService_method_names[10],
+      CameraService_method_names[11],
       ::grpc::internal::RpcMethod::SERVER_STREAMING,
       new ::grpc::internal::ServerStreamingHandler< CameraService::Service, ::mavsdk::rpc::camera::SubscribeCaptureInfoRequest, ::mavsdk::rpc::camera::CaptureInfoResponse>(
           std::mem_fn(&CameraService::Service::SubscribeCaptureInfo), this)));
   AddMethod(new ::grpc::internal::RpcServiceMethod(
-      CameraService_method_names[11],
-      ::grpc::internal::RpcMethod::SERVER_STREAMING,
-      new ::grpc::internal::ServerStreamingHandler< CameraService::Service, ::mavsdk::rpc::camera::SubscribeCameraStatusRequest, ::mavsdk::rpc::camera::CameraStatusResponse>(
-          std::mem_fn(&CameraService::Service::SubscribeCameraStatus), this)));
-  AddMethod(new ::grpc::internal::RpcServiceMethod(
       CameraService_method_names[12],
+      ::grpc::internal::RpcMethod::SERVER_STREAMING,
+      new ::grpc::internal::ServerStreamingHandler< CameraService::Service, ::mavsdk::rpc::camera::SubscribeStatusRequest, ::mavsdk::rpc::camera::StatusResponse>(
+          std::mem_fn(&CameraService::Service::SubscribeStatus), this)));
+  AddMethod(new ::grpc::internal::RpcServiceMethod(
+      CameraService_method_names[13],
       ::grpc::internal::RpcMethod::SERVER_STREAMING,
       new ::grpc::internal::ServerStreamingHandler< CameraService::Service, ::mavsdk::rpc::camera::SubscribeCurrentSettingsRequest, ::mavsdk::rpc::camera::CurrentSettingsResponse>(
           std::mem_fn(&CameraService::Service::SubscribeCurrentSettings), this)));
   AddMethod(new ::grpc::internal::RpcServiceMethod(
-      CameraService_method_names[13],
+      CameraService_method_names[14],
       ::grpc::internal::RpcMethod::SERVER_STREAMING,
       new ::grpc::internal::ServerStreamingHandler< CameraService::Service, ::mavsdk::rpc::camera::SubscribePossibleSettingOptionsRequest, ::mavsdk::rpc::camera::PossibleSettingOptionsResponse>(
           std::mem_fn(&CameraService::Service::SubscribePossibleSettingOptions), this)));
   AddMethod(new ::grpc::internal::RpcServiceMethod(
-      CameraService_method_names[14],
+      CameraService_method_names[15],
       ::grpc::internal::RpcMethod::NORMAL_RPC,
       new ::grpc::internal::RpcMethodHandler< CameraService::Service, ::mavsdk::rpc::camera::SetSettingRequest, ::mavsdk::rpc::camera::SetSettingResponse>(
           std::mem_fn(&CameraService::Service::SetSetting), this)));
+  AddMethod(new ::grpc::internal::RpcServiceMethod(
+      CameraService_method_names[16],
+      ::grpc::internal::RpcMethod::NORMAL_RPC,
+      new ::grpc::internal::RpcMethodHandler< CameraService::Service, ::mavsdk::rpc::camera::GetSettingRequest, ::mavsdk::rpc::camera::GetSettingResponse>(
+          std::mem_fn(&CameraService::Service::GetSetting), this)));
+  AddMethod(new ::grpc::internal::RpcServiceMethod(
+      CameraService_method_names[17],
+      ::grpc::internal::RpcMethod::NORMAL_RPC,
+      new ::grpc::internal::RpcMethodHandler< CameraService::Service, ::mavsdk::rpc::camera::FormatStorageRequest, ::mavsdk::rpc::camera::FormatStorageResponse>(
+          std::mem_fn(&CameraService::Service::FormatStorage), this)));
 }
 
 CameraService::Service::~Service() {
@@ -556,6 +649,13 @@ CameraService::Service::~Service() {
   return ::grpc::Status(::grpc::StatusCode::UNIMPLEMENTED, "");
 }
 
+::grpc::Status CameraService::Service::SubscribeInformation(::grpc::ServerContext* context, const ::mavsdk::rpc::camera::SubscribeInformationRequest* request, ::grpc::ServerWriter< ::mavsdk::rpc::camera::InformationResponse>* writer) {
+  (void) context;
+  (void) request;
+  (void) writer;
+  return ::grpc::Status(::grpc::StatusCode::UNIMPLEMENTED, "");
+}
+
 ::grpc::Status CameraService::Service::SubscribeVideoStreamInfo(::grpc::ServerContext* context, const ::mavsdk::rpc::camera::SubscribeVideoStreamInfoRequest* request, ::grpc::ServerWriter< ::mavsdk::rpc::camera::VideoStreamInfoResponse>* writer) {
   (void) context;
   (void) request;
@@ -570,7 +670,7 @@ CameraService::Service::~Service() {
   return ::grpc::Status(::grpc::StatusCode::UNIMPLEMENTED, "");
 }
 
-::grpc::Status CameraService::Service::SubscribeCameraStatus(::grpc::ServerContext* context, const ::mavsdk::rpc::camera::SubscribeCameraStatusRequest* request, ::grpc::ServerWriter< ::mavsdk::rpc::camera::CameraStatusResponse>* writer) {
+::grpc::Status CameraService::Service::SubscribeStatus(::grpc::ServerContext* context, const ::mavsdk::rpc::camera::SubscribeStatusRequest* request, ::grpc::ServerWriter< ::mavsdk::rpc::camera::StatusResponse>* writer) {
   (void) context;
   (void) request;
   (void) writer;
@@ -592,6 +692,20 @@ CameraService::Service::~Service() {
 }
 
 ::grpc::Status CameraService::Service::SetSetting(::grpc::ServerContext* context, const ::mavsdk::rpc::camera::SetSettingRequest* request, ::mavsdk::rpc::camera::SetSettingResponse* response) {
+  (void) context;
+  (void) request;
+  (void) response;
+  return ::grpc::Status(::grpc::StatusCode::UNIMPLEMENTED, "");
+}
+
+::grpc::Status CameraService::Service::GetSetting(::grpc::ServerContext* context, const ::mavsdk::rpc::camera::GetSettingRequest* request, ::mavsdk::rpc::camera::GetSettingResponse* response) {
+  (void) context;
+  (void) request;
+  (void) response;
+  return ::grpc::Status(::grpc::StatusCode::UNIMPLEMENTED, "");
+}
+
+::grpc::Status CameraService::Service::FormatStorage(::grpc::ServerContext* context, const ::mavsdk::rpc::camera::FormatStorageRequest* request, ::mavsdk::rpc::camera::FormatStorageResponse* response) {
   (void) context;
   (void) request;
   (void) response;

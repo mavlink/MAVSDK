@@ -7,19 +7,12 @@ using namespace mavsdk;
 
 Camera::Mode get_mode(std::shared_ptr<Camera> camera)
 {
-    struct PromiseResult {
-        Camera::Result result{};
-        Camera::Mode mode{};
-    };
-
-    auto prom = std::make_shared<std::promise<PromiseResult>>();
+    auto prom = std::make_shared<std::promise<Camera::Mode>>();
     auto ret = prom->get_future();
 
-    camera->get_mode_async([prom](Camera::Result result, Camera::Mode mode) {
-        PromiseResult pr{};
-        pr.result = result;
-        pr.mode = mode;
-        prom->set_value(pr);
+    camera->mode_async([prom, camera](Camera::Mode mode) {
+        prom->set_value(mode);
+        camera->mode_async(nullptr);
     });
 
     auto status = ret.wait_for(std::chrono::seconds(7));
@@ -27,12 +20,11 @@ Camera::Mode get_mode(std::shared_ptr<Camera> camera)
     EXPECT_EQ(status, std::future_status::ready);
 
     if (status == std::future_status::ready) {
-        PromiseResult new_ret = ret.get();
-        EXPECT_EQ(new_ret.result, Camera::Result::SUCCESS);
-        EXPECT_NE(new_ret.mode, Camera::Mode::UNKNOWN);
-        return new_ret.mode;
+        Camera::Mode mode = ret.get();
+        EXPECT_NE(mode, Camera::Mode::Unknown);
+        return mode;
     } else {
-        return Camera::Mode::UNKNOWN;
+        return Camera::Mode::Unknown;
     }
 }
 
@@ -44,9 +36,8 @@ void set_mode_async(std::shared_ptr<Camera> camera, Camera::Mode mode)
     auto prom = std::make_shared<std::promise<void>>();
     auto ret = prom->get_future();
 
-    camera->set_mode_async(mode, [mode, prom](Camera::Result result, Camera::Mode mode_got) {
-        EXPECT_EQ(result, Camera::Result::SUCCESS);
-        EXPECT_EQ(mode, mode_got);
+    camera->set_mode_async(mode, [mode, prom](Camera::Result result) {
+        EXPECT_EQ(result, Camera::Result::Success);
         prom->set_value();
     });
 
@@ -62,54 +53,21 @@ void set_mode_async(std::shared_ptr<Camera> camera, Camera::Mode mode)
     std::this_thread::sleep_for(std::chrono::seconds(1));
 }
 
-Camera::Result
-set_setting(std::shared_ptr<Camera> camera, const std::string& setting, const std::string& option)
+Camera::Result set_setting(
+    std::shared_ptr<Camera> camera, const std::string& setting_id, const std::string& option_id)
 {
-    auto prom = std::make_shared<std::promise<Camera::Result>>();
-    auto ret = prom->get_future();
-
-    Camera::Option new_option{};
-    new_option.option_id = option;
-    camera->set_option_async(
-        [prom](Camera::Result result) { prom->set_value(result); }, setting, new_option);
-
-    auto status = ret.wait_for(std::chrono::seconds(1));
-
-    EXPECT_EQ(status, std::future_status::ready);
-
-    if (status == std::future_status::ready) {
-        return ret.get();
-    }
-    return Camera::Result::TIMEOUT;
+    Camera::Setting new_setting{};
+    new_setting.setting_id = setting_id;
+    new_setting.option.option_id = option_id;
+    return camera->set_setting(new_setting);
 }
 
-mavsdk::Camera::Result
-get_setting(std::shared_ptr<mavsdk::Camera> camera, const std::string& setting, std::string& option)
+mavsdk::Camera::Result get_setting(
+    std::shared_ptr<mavsdk::Camera> camera, const std::string& setting_id, std::string& option_id)
 {
-    struct PromiseResult {
-        Camera::Result result{};
-        Camera::Option option{};
-    };
-
-    auto prom = std::make_shared<std::promise<PromiseResult>>();
-    auto ret = prom->get_future();
-
-    camera->get_option_async(
-        setting, [prom](Camera::Result result, const Camera::Option& gotten_option) {
-            PromiseResult promise_result{};
-            promise_result.result = result;
-            promise_result.option = gotten_option;
-            prom->set_value(promise_result);
-        });
-
-    auto status = ret.wait_for(std::chrono::seconds(1));
-
-    EXPECT_EQ(status, std::future_status::ready);
-
-    if (status == std::future_status::ready) {
-        PromiseResult promise_result = ret.get();
-        option = promise_result.option.option_id;
-        return promise_result.result;
-    }
-    return Camera::Result::TIMEOUT;
+    Camera::Setting new_setting{};
+    new_setting.setting_id = setting_id;
+    auto result_pair = camera->get_setting(new_setting);
+    option_id = result_pair.second.option.option_id;
+    return result_pair.first;
 }

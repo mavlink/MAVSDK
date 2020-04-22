@@ -10,7 +10,7 @@ grpc::Status {{ name.upper_camel_case }}(
     }
     {%- endif %}
 
-    auto result_pair = _{{ plugin_name.lower_snake_case }}.{{ name.lower_snake_case }}({% for param in params %}{% if not param.type_info.is_primitive %}translateFromRpc{{ param.name.upper_camel_case }}({% endif %}request->{{ param.name.lower_snake_case }}{% if not param.type_info.is_primitive %}){% endif %}(){{ ", " if not loop.last }}{% endfor %});
+    auto result_pair = _{{ plugin_name.lower_snake_case }}.{{ name.lower_snake_case }}({% for param in params %}{% if not param.type_info.is_primitive %}translateFromRpc{{ param.name.upper_camel_case }}({% endif %}request->{{ param.name.lower_snake_case }}(){% if not param.type_info.is_primitive %}){% endif %}{{ ", " if not loop.last }}{% endfor %});
 
     if (response != nullptr) {
         fillResponseWithResult(response, result_pair.first);

@@ -9,7 +9,7 @@ namespace mavsdk {
 
 using namespace std::placeholders; // for `_1`
 using MissionItem = Mission::MissionItem;
-using CameraAction = Mission::CameraAction;
+using CameraAction = Mission::MissionItem::CameraAction;
 
 MissionImpl::MissionImpl(System& system) : PluginImplBase(system)
 {

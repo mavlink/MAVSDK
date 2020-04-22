@@ -74,13 +74,11 @@ void CameraImpl::deinit()
 
     {
         std::lock_guard<std::mutex> lock(_status.mutex);
-        _status.status_callback = nullptr;
         _status.subscription_callback = nullptr;
     }
 
     {
         std::lock_guard<std::mutex> lock(_mode.mutex);
-        _mode.callback = nullptr;
         _mode.subscription_callback = nullptr;
     }
 
@@ -91,13 +89,12 @@ void CameraImpl::deinit()
 
     {
         std::lock_guard<std::mutex> lock(_video_stream_info.mutex);
-        _video_stream_info.callback = nullptr;
         _video_stream_info.subscription_callback = nullptr;
     }
 
     {
-        // std::lock_guard<std::mutex> lock(_information.mutex);
-        //_information.callback = nullptr;
+        std::lock_guard<std::mutex> lock(_information.mutex);
+        _information.subscription_callback = nullptr;
     }
 
     {
@@ -137,12 +134,11 @@ void CameraImpl::manual_enable()
 {
     refresh_params();
 
-    LogDebug() << "request camera info";
-    auto command_camera_info = make_command_request_camera_info();
-    _parent->send_command_async(command_camera_info, nullptr);
-
+    request_camera_information();
     request_flight_information();
 
+    _parent->add_call_every(
+        [this]() { request_camera_information(); }, 10.0, &_camera_information_call_every_cookie);
     _parent->add_call_every(
         [this]() { request_flight_information(); }, 10.0, &_flight_information_call_every_cookie);
 }
@@ -157,6 +153,7 @@ void CameraImpl::disable()
 void CameraImpl::manual_disable()
 {
     invalidate_params();
+    _parent->remove_call_every(_camera_information_call_every_cookie);
     _parent->remove_call_every(_flight_information_call_every_cookie);
 
     _camera_found = false;
@@ -167,7 +164,7 @@ Camera::Result CameraImpl::select_camera(unsigned id)
     static constexpr std::size_t MAX_SUPPORTED_ID = 5;
 
     if (id > MAX_SUPPORTED_ID) {
-        return Camera::Result::WRONG_ARGUMENT;
+        return Camera::Result::WrongArgument;
     }
 
     // camera component IDs go from 100 to 105.
@@ -178,7 +175,18 @@ Camera::Result CameraImpl::select_camera(unsigned id)
     manual_disable();
     manual_enable();
 
-    return Camera::Result::SUCCESS;
+    return Camera::Result::Success;
+}
+
+MAVLinkCommands::CommandLong CameraImpl::make_command_request_flight_information()
+{
+    MAVLinkCommands::CommandLong command_flight_information{};
+
+    command_flight_information.command = MAV_CMD_REQUEST_FLIGHT_INFORMATION;
+    command_flight_information.params.param1 = 1.0f; // Request it
+    command_flight_information.target_component_id = MAV_COMP_ID_AUTOPILOT1;
+
+    return command_flight_information;
 }
 
 MAVLinkCommands::CommandLong CameraImpl::make_command_request_camera_info()
@@ -332,7 +340,7 @@ Camera::Result CameraImpl::take_photo()
 Camera::Result CameraImpl::start_photo_interval(float interval_s)
 {
     if (!interval_valid(interval_s)) {
-        return Camera::Result::WRONG_ARGUMENT;
+        return Camera::Result::WrongArgument;
     }
 
     // TODO: check whether we are in photo mode.
@@ -368,7 +376,7 @@ Camera::Result CameraImpl::stop_video()
 
     {
         std::lock_guard<std::mutex> lock(_video_stream_info.mutex);
-        _video_stream_info.info.status = Camera::VideoStreamInfo::Status::NOT_RUNNING;
+        _video_stream_info.data.status = Camera::VideoStreamInfo::Status::NotRunning;
     }
 
     return camera_result_from_command_result(_parent->send_command(cmd_stop_video));
@@ -393,7 +401,7 @@ void CameraImpl::start_photo_interval_async(
     if (!interval_valid(interval_s)) {
         const auto temp_callback = callback;
         _parent->call_user_callback(
-            [temp_callback]() { temp_callback(Camera::Result::WRONG_ARGUMENT); });
+            [temp_callback]() { temp_callback(Camera::Result::WrongArgument); });
         return;
     }
 
@@ -437,11 +445,23 @@ void CameraImpl::stop_video_async(const Camera::result_callback_t& callback)
         cmd_stop_video, std::bind(&CameraImpl::receive_command_result, this, _1, callback));
 }
 
-Camera::Information CameraImpl::get_information()
+Camera::Information CameraImpl::information() const
 {
     std::lock_guard<std::mutex> lock(_information.mutex);
 
     return _information.data;
+}
+
+void CameraImpl::information_async(const Camera::information_callback_t& callback)
+{
+    std::lock_guard<std::mutex> lock(_information.mutex);
+    _information.subscription_callback = callback;
+
+    if (callback) {
+        _parent->add_call_every([this]() { request_status(); }, 1.0, &_status.call_every_cookie);
+    } else {
+        _parent->remove_call_every(_status.call_every_cookie);
+    }
 }
 
 Camera::Result CameraImpl::start_video_streaming()
@@ -449,19 +469,19 @@ Camera::Result CameraImpl::start_video_streaming()
     std::lock_guard<std::mutex> lock(_video_stream_info.mutex);
 
     if (_video_stream_info.available &&
-        _video_stream_info.info.status == Camera::VideoStreamInfo::Status::IN_PROGRESS) {
-        return Camera::Result::IN_PROGRESS;
+        _video_stream_info.data.status == Camera::VideoStreamInfo::Status::InProgress) {
+        return Camera::Result::InProgress;
     }
 
     // TODO Check whether we're in video mode
     auto command = make_command_start_video_streaming();
 
     auto result = camera_result_from_command_result(_parent->send_command(command));
-    if (result == Camera::Result::SUCCESS) {
-        // Cache video stream info; app may query immediately next.
-        // TODO: check if we can/should do that.
-        get_video_stream_info(_video_stream_info.info);
-    }
+    // if (result == Camera::Result::Success) {
+    // Cache video stream info; app may query immediately next.
+    // TODO: check if we can/should do that.
+    // auto info = get_video_stream_info();
+    //}
     return result;
 }
 
@@ -476,96 +496,32 @@ Camera::Result CameraImpl::stop_video_streaming()
     {
         std::lock_guard<std::mutex> lock(_video_stream_info.mutex);
         // TODO: check if we can/should do that.
-        _video_stream_info.info.status = Camera::VideoStreamInfo::Status::NOT_RUNNING;
+        _video_stream_info.data.status = Camera::VideoStreamInfo::Status::NotRunning;
     }
     return result;
 }
 
-Camera::Result CameraImpl::get_video_stream_info(Camera::VideoStreamInfo& info)
+void CameraImpl::request_video_stream_info()
 {
-    auto prom = std::make_shared<std::promise<Camera::Result>>();
-    auto ret = prom->get_future();
-
-    get_video_stream_info_async([prom](Camera::Result result, Camera::VideoStreamInfo info_gotten) {
-        UNUSED(info_gotten);
-        prom->set_value(result);
-    });
-
-    auto status = ret.wait_for(std::chrono::seconds(5));
-
-    if (status == std::future_status::ready) {
-        info = _video_stream_info.info;
-        return Camera::Result::SUCCESS;
-    } else {
-        return Camera::Result::TIMEOUT;
-    }
+    _parent->send_command_async(make_command_request_video_stream_info(), nullptr);
 }
 
-void CameraImpl::get_video_stream_info_async(
-    const Camera::get_video_stream_info_callback_t callback)
+Camera::VideoStreamInfo CameraImpl::video_stream_info()
 {
     std::lock_guard<std::mutex> lock(_video_stream_info.mutex);
-    if (_video_stream_info.callback) {
-        if (callback) {
-            const auto temp_callback = callback;
-            const auto temp_info = _video_stream_info.info;
-            _parent->call_user_callback([temp_callback, temp_info]() {
-                temp_callback(Camera::Result::IN_PROGRESS, temp_info);
-            });
-        }
-        return;
-    }
 
-    _video_stream_info.callback = callback;
-
-    auto command = make_command_request_video_stream_info();
-    _parent->send_command_async(command, [this](MAVLinkCommands::Result result, float progress) {
-        UNUSED(progress);
-        Camera::Result camera_result = camera_result_from_command_result(result);
-        if (camera_result != Camera::Result::SUCCESS) {
-            if (_video_stream_info.callback) {
-                const auto temp_callback = _video_stream_info.callback;
-                const auto temp_info = _video_stream_info.info;
-                _parent->call_user_callback([temp_callback, temp_info, camera_result]() {
-                    temp_callback(camera_result, temp_info);
-                });
-            }
-            return;
-        }
-        _video_stream_info.callback = nullptr;
-        _parent->register_timeout_handler(
-            std::bind(&CameraImpl::get_video_stream_info_timeout, this),
-            1.0,
-            &_video_stream_info.timeout_cookie);
-    });
+    return _video_stream_info.data;
 }
 
-void CameraImpl::get_video_stream_info_timeout()
-{
-    std::lock_guard<std::mutex> lock(_video_stream_info.mutex);
-    LogErr() << "Getting video stream info timed out.";
-
-    _video_stream_info.available = false;
-    if (_video_stream_info.callback) {
-        const auto temp_callback = _video_stream_info.callback;
-        const auto temp_info = _video_stream_info.info;
-        _parent->call_user_callback(
-            [temp_callback, temp_info]() { temp_callback(Camera::Result::TIMEOUT, temp_info); });
-        _video_stream_info.callback = nullptr;
-    }
-}
-
-void CameraImpl::subscribe_video_stream_info(
-    const Camera::subscribe_video_stream_info_callback_t callback)
+void CameraImpl::video_stream_info_async(const Camera::video_stream_info_callback_t callback)
 {
     std::lock_guard<std::mutex> lock(_video_stream_info.mutex);
 
     _video_stream_info.subscription_callback = callback;
+
     if (callback) {
         _parent->add_call_every(
-            [this]() { get_video_stream_info_async(nullptr); },
-            1.0,
-            &_video_stream_info.call_every_cookie);
+            [this]() { request_video_stream_info(); }, 1.0, &_video_stream_info.call_every_cookie);
     } else {
         _parent->remove_call_every(_video_stream_info.call_every_cookie);
     }
@@ -576,19 +532,19 @@ CameraImpl::camera_result_from_command_result(const MAVLinkCommands::Result comm
 {
     switch (command_result) {
         case MAVLinkCommands::Result::SUCCESS:
-            return Camera::Result::SUCCESS;
+            return Camera::Result::Success;
         case MAVLinkCommands::Result::NO_SYSTEM:
         // FALLTHROUGH
         case MAVLinkCommands::Result::CONNECTION_ERROR:
         // FALLTHROUGH
         case MAVLinkCommands::Result::BUSY:
-            return Camera::Result::ERROR;
+            return Camera::Result::Error;
         case MAVLinkCommands::Result::COMMAND_DENIED:
-            return Camera::Result::DENIED;
+            return Camera::Result::Denied;
         case MAVLinkCommands::Result::TIMEOUT:
-            return Camera::Result::TIMEOUT;
+            return Camera::Result::Timeout;
         default:
-            return Camera::Result::UNKNOWN;
+            return Camera::Result::Unknown;
     }
 }
 
@@ -599,8 +555,12 @@ Camera::Result CameraImpl::set_mode(const Camera::Mode mode)
     const auto command_result = _parent->send_command(cmd_set_camera_mode);
     const auto camera_result = camera_result_from_command_result(command_result);
 
-    if (camera_result == Camera::Result::SUCCESS) {
-        notify_mode(mode);
+    if (camera_result == Camera::Result::Success) {
+        {
+            std::lock_guard<std::mutex> lock(_mode.mutex);
+            _mode.data = mode;
+        }
+        notify_mode();
         if (_camera_definition != nullptr) {
             save_camera_mode(mavlink_mode);
         }
@@ -625,52 +585,50 @@ void CameraImpl::save_camera_mode(const float mavlink_camera_mode)
 float CameraImpl::to_mavlink_camera_mode(const Camera::Mode mode) const
 {
     switch (mode) {
-        case Camera::Mode::PHOTO:
+        case Camera::Mode::Photo:
             return CAMERA_MODE_IMAGE;
-        case Camera::Mode::VIDEO:
+        case Camera::Mode::Video:
             return CAMERA_MODE_VIDEO;
         default:
-        case Camera::Mode::UNKNOWN:
+        case Camera::Mode::Unknown:
             return NAN;
     }
 }
 
-void CameraImpl::set_mode_async(const Camera::Mode mode, const Camera::mode_callback_t& callback)
+void CameraImpl::set_mode_async(const Camera::Mode mode, const Camera::result_callback_t& callback)
 {
     const auto mavlink_mode = to_mavlink_camera_mode(mode);
     auto cmd_set_camera_mode = make_command_set_camera_mode(mavlink_mode);
 
     _parent->send_command_async(
         cmd_set_camera_mode,
-        std::bind(&CameraImpl::receive_set_mode_command_result, this, _1, callback, mode));
+        [this, callback, mode](MAVLinkCommands::Result result, float progress) {
+            UNUSED(progress);
+            receive_set_mode_command_result(result, callback, mode);
+        });
 }
 
-void CameraImpl::get_mode_async(Camera::mode_callback_t callback)
+Camera::Mode CameraImpl::mode()
 {
     std::lock_guard<std::mutex> lock(_mode.mutex);
+    return _mode.data;
+}
 
-    if (_mode.callback != nullptr) {
-        if (callback) {
-            const auto temp_callback = callback;
-            _parent->call_user_callback(
-                [temp_callback]() { temp_callback(Camera::Result::BUSY, Camera::Mode::UNKNOWN); });
-            return;
-        }
+void CameraImpl::mode_async(const Camera::mode_callback_t callback)
+{
+    {
+        std::lock_guard<std::mutex> lock(_mode.mutex);
+        _mode.subscription_callback = callback;
     }
-    _mode.callback = callback;
 
-    auto cmd_req_camera_settings = make_command_request_camera_settings();
+    notify_mode();
 
-    _parent->send_command_async(
-        cmd_req_camera_settings, std::bind(&CameraImpl::receive_get_mode_command_result, this, _1));
-    _parent->register_timeout_handler(
-        std::bind(&CameraImpl::get_mode_timeout_happened, this), 1.0, &_mode.timeout_cookie);
-}
-
-void CameraImpl::subscribe_mode(const Camera::subscribe_mode_callback_t callback)
-{
-    std::lock_guard<std::mutex> lock(_mode.mutex);
-    _mode.subscription_callback = callback;
+    if (callback) {
+        _parent->add_call_every(
+            [this]() { request_camera_settings(); }, 1.0, &_mode.call_every_cookie);
+    } else {
+        _parent->remove_call_every(_mode.call_every_cookie);
+    }
 }
 
 bool CameraImpl::interval_valid(float interval_s)
@@ -684,77 +642,32 @@ bool CameraImpl::interval_valid(float interval_s)
     }
 }
 
-void CameraImpl::get_status_async(Camera::get_status_callback_t callback)
+void CameraImpl::request_status()
 {
-    std::lock_guard<std::mutex> lock(_status.mutex);
-
-    // If we're already trying to get the status, we need to wait.
-    if (_status.status_callback != nullptr) {
-        if (callback) {
-            Camera::Status empty_status = {};
-            const auto temp_callback = callback;
-            _parent->call_user_callback([temp_callback, empty_status]() {
-                temp_callback(Camera::Result::BUSY, empty_status);
-            });
-        }
-        return;
-    }
-
-    _status.status_callback = callback;
-
-    auto cmd_req_camera_capture_stat = make_command_request_camera_capture_status();
-    _parent->send_command_async(
-        cmd_req_camera_capture_stat,
-        std::bind(&CameraImpl::receive_camera_capture_status_result, this, _1));
-
-    auto cmd_req_storage_info = make_command_request_storage_info();
-    _parent->send_command_async(
-        cmd_req_storage_info, std::bind(&CameraImpl::receive_storage_information_result, this, _1));
-
-    if (_status.status_callback) {
-        _parent->register_timeout_handler(
-            std::bind(&CameraImpl::status_timeout_happened, this),
-            DEFAULT_TIMEOUT_S,
-            &_status.timeout_cookie);
-    }
+    _parent->send_command_async(make_command_request_camera_capture_status(), nullptr);
+    _parent->send_command_async(make_command_request_storage_info(), nullptr);
 }
 
-void CameraImpl::subscribe_status(const Camera::subscribe_status_callback_t callback)
+void CameraImpl::status_async(const Camera::status_callback_t callback)
 {
     std::lock_guard<std::mutex> lock(_status.mutex);
 
     _status.subscription_callback = callback;
+
     if (callback) {
-        _parent->add_call_every(
-            [this]() { get_status_async(nullptr); }, 1.0, &_status.call_every_cookie);
+        _parent->add_call_every([this]() { request_status(); }, 1.0, &_status.call_every_cookie);
     } else {
         _parent->remove_call_every(_status.call_every_cookie);
     }
 }
 
-void CameraImpl::receive_camera_capture_status_result(MAVLinkCommands::Result result)
+Camera::Status CameraImpl::status()
 {
     std::lock_guard<std::mutex> lock(_status.mutex);
-
-    if (_status.status_callback == nullptr) {
-        // We're not expecting this message, let's ignore it.
-        return;
-    }
-
-    if (result != MAVLinkCommands::Result::SUCCESS) {
-        // Something went wrong, we give up.
-        const auto temp_callback = _status.status_callback;
-        Camera::Status empty_status = {};
-        _parent->call_user_callback([temp_callback, result, empty_status]() {
-            temp_callback(camera_result_from_command_result(result), empty_status);
-        });
-        _status.status_callback = nullptr;
-    }
-
-    _parent->refresh_timeout_handler(_status.timeout_cookie);
+    return _status.data;
 }
 
-void CameraImpl::subscribe_capture_info(Camera::capture_info_callback_t callback)
+void CameraImpl::capture_info_async(Camera::capture_info_callback_t callback)
 {
     std::lock_guard<std::mutex> lock(_capture_info.mutex);
     _capture_info.callback = callback;
@@ -786,11 +699,11 @@ void CameraImpl::process_storage_information(const mavlink_message_t& message)
     {
         std::lock_guard<std::mutex> lock(_status.mutex);
         if (storage_information.status == 0) {
-            _status.data.storage_status = Camera::Status::StorageStatus::NOT_AVAILABLE;
+            _status.data.storage_status = Camera::Status::StorageStatus::NotAvailable;
         } else if (storage_information.status == 1) {
-            _status.data.storage_status = Camera::Status::StorageStatus::UNFORMATTED;
+            _status.data.storage_status = Camera::Status::StorageStatus::Unformatted;
         } else if (storage_information.status == 2) {
-            _status.data.storage_status = Camera::Status::StorageStatus::FORMATTED;
+            _status.data.storage_status = Camera::Status::StorageStatus::Formatted;
         }
         _status.data.available_storage_mib = storage_information.available_capacity;
         _status.data.used_storage_mib = storage_information.used_capacity;
@@ -823,7 +736,7 @@ void CameraImpl::process_camera_image_captured(const mavlink_message_t& message)
             capture_info.attitude_euler_angle =
                 to_euler_angle_from_quaternion(capture_info.attitude_quaternion);
             capture_info.file_url = std::string(image_captured.file_url);
-            capture_info.success = (image_captured.capture_result == 1);
+            capture_info.is_success = (image_captured.capture_result == 1);
             capture_info.index = image_captured.image_index;
 
             const auto temp_callback = _capture_info.callback;
@@ -833,57 +746,47 @@ void CameraImpl::process_camera_image_captured(const mavlink_message_t& message)
     }
 }
 
-Camera::CaptureInfo::EulerAngle
-CameraImpl::to_euler_angle_from_quaternion(Camera::CaptureInfo::Quaternion quaternion)
+Camera::EulerAngle CameraImpl::to_euler_angle_from_quaternion(Camera::Quaternion quaternion)
 {
     auto& q = quaternion;
 
     // FIXME: This is duplicated from telemetry/math_conversions.cpp.
-    Camera::CaptureInfo::EulerAngle euler_angle{
-        to_deg_from_rad(
-            atan2f(2.0f * (q.w * q.x + q.y * q.z), 1.0f - 2.0f * (q.x * q.x + q.y * q.y))),
-        to_deg_from_rad(asinf(2.0f * (q.w * q.y - q.z * q.x))),
-        to_deg_from_rad(
-            atan2f(2.0f * (q.w * q.z + q.x * q.y), 1.0f - 2.0f * (q.y * q.y + q.z * q.z)))};
+    Camera::EulerAngle euler_angle;
+    euler_angle.roll_deg = to_deg_from_rad(
+        atan2f(2.0f * (q.w * q.x + q.y * q.z), 1.0f - 2.0f * (q.x * q.x + q.y * q.y)));
+
+    euler_angle.pitch_deg = to_deg_from_rad(asinf(2.0f * (q.w * q.y - q.z * q.x)));
+    euler_angle.yaw_deg = to_deg_from_rad(
+        atan2f(2.0f * (q.w * q.z + q.x * q.y), 1.0f - 2.0f * (q.y * q.y + q.z * q.z)));
     return euler_angle;
 }
 
 void CameraImpl::process_camera_settings(const mavlink_message_t& message)
 {
-    std::lock_guard<std::mutex> lock(_mode.mutex);
-
-    if (_mode.callback == nullptr) {
-        // It seems that we are not interested.
-        return;
-    }
-
     mavlink_camera_settings_t camera_settings;
     mavlink_msg_camera_settings_decode(&message, &camera_settings);
 
-    const auto mode = to_camera_mode(camera_settings.mode_id);
+    {
+        std::lock_guard<std::mutex> lock(_mode.mutex);
+        _mode.data = to_camera_mode(camera_settings.mode_id);
+    }
+    notify_mode();
 
     if (_camera_definition) {
         // This "parameter" needs to be manually set.
         save_camera_mode(camera_settings.mode_id);
     }
-
-    const auto temp_callback = _mode.callback;
-    _parent->call_user_callback(
-        [temp_callback, mode]() { temp_callback(Camera::Result::SUCCESS, mode); });
-    _mode.callback = nullptr;
-
-    _parent->unregister_timeout_handler(_mode.timeout_cookie);
 }
 
 Camera::Mode CameraImpl::to_camera_mode(const uint8_t mavlink_camera_mode) const
 {
     switch (mavlink_camera_mode) {
         case CAMERA_MODE_IMAGE:
-            return Camera::Mode::PHOTO;
+            return Camera::Mode::Photo;
         case CAMERA_MODE_VIDEO:
-            return Camera::Mode::VIDEO;
+            return Camera::Mode::Video;
         default:
-            return Camera::Mode::UNKNOWN;
+            return Camera::Mode::Unknown;
     }
 }
 
@@ -896,6 +799,13 @@ void CameraImpl::process_camera_information(const mavlink_message_t& message)
         std::lock_guard<std::mutex> lock(_information.mutex);
         _information.data.vendor_name = (char*)(camera_information.vendor_name);
         _information.data.model_name = (char*)(camera_information.model_name);
+
+        if (_information.subscription_callback) {
+            const auto temp_callback = _information.subscription_callback;
+            const auto temp_information = _information.data;
+            _parent->call_user_callback(
+                [temp_callback, temp_information]() { temp_callback(temp_information); });
+        }
     }
 
     std::string content{};
@@ -941,11 +851,11 @@ void CameraImpl::process_video_information(const mavlink_message_t& message)
     {
         std::lock_guard<std::mutex> lock(_video_stream_info.mutex);
         // TODO: use stream_id and count
-        _video_stream_info.info.status =
+        _video_stream_info.data.status =
             (received_video_info.flags & VIDEO_STREAM_STATUS_FLAGS_RUNNING ?
-                 Camera::VideoStreamInfo::Status::IN_PROGRESS :
-                 Camera::VideoStreamInfo::Status::NOT_RUNNING);
-        auto& video_stream_info = _video_stream_info.info.settings;
+                 Camera::VideoStreamInfo::Status::InProgress :
+                 Camera::VideoStreamInfo::Status::NotRunning);
+        auto& video_stream_info = _video_stream_info.data.settings;
         video_stream_info.frame_rate_hz = received_video_info.framerate;
         video_stream_info.horizontal_resolution_pix = received_video_info.resolution_h;
         video_stream_info.vertical_resolution_pix = received_video_info.resolution_v;
@@ -954,15 +864,6 @@ void CameraImpl::process_video_information(const mavlink_message_t& message)
         video_stream_info.uri = received_video_info.uri;
         _video_stream_info.available = true;
 
-        if (_video_stream_info.callback) {
-            _parent->unregister_timeout_handler(_video_stream_info.timeout_cookie);
-            const auto temp_callback = _video_stream_info.callback;
-            const auto temp_info = _video_stream_info.info;
-            _parent->call_user_callback([temp_callback, temp_info]() {
-                temp_callback(Camera::Result::SUCCESS, temp_info);
-            });
-            _video_stream_info.callback = nullptr;
-        }
         notify_video_stream_info();
     }
 }
@@ -1005,7 +906,7 @@ void CameraImpl::notify_video_stream_info()
     std::lock_guard<std::mutex> lock(_video_stream_info.mutex);
     if (_video_stream_info.subscription_callback) {
         const auto temp_callback = _video_stream_info.subscription_callback;
-        const auto temp_info = _video_stream_info.info;
+        const auto temp_info = _video_stream_info.data;
         _parent->call_user_callback([temp_callback, temp_info]() { temp_callback(temp_info); });
     }
 }
@@ -1015,16 +916,6 @@ void CameraImpl::check_status()
     std::lock_guard<std::mutex> lock(_status.mutex);
 
     if (_status.received_camera_capture_status && _status.received_storage_information) {
-        if (_status.status_callback) {
-            const auto temp_callback = _status.status_callback;
-            const auto temp_data = _status.data;
-            _parent->call_user_callback([temp_callback, temp_data]() {
-                temp_callback(Camera::Result::SUCCESS, temp_data);
-            });
-            _status.status_callback = nullptr;
-            _parent->unregister_timeout_handler(_status.timeout_cookie);
-        }
-
         if (_status.subscription_callback) {
             const auto temp_callback = _status.subscription_callback;
             const auto temp_data = _status.data;
@@ -1033,21 +924,6 @@ void CameraImpl::check_status()
 
         _status.received_camera_capture_status = false;
         _status.received_storage_information = false;
-    }
-}
-
-void CameraImpl::status_timeout_happened()
-{
-    std::lock_guard<std::mutex> lock(_status.mutex);
-
-    if (_status.status_callback) {
-        // Send empty settings with timeout error.
-        Camera::Status empty_status = {};
-        const auto temp_callback = _status.status_callback;
-        _parent->call_user_callback([temp_callback, empty_status]() {
-            temp_callback(Camera::Result::TIMEOUT, empty_status);
-        });
-        _status.status_callback = nullptr;
     }
 }
 
@@ -1061,34 +937,9 @@ void CameraImpl::receive_command_result(
     }
 }
 
-void CameraImpl::receive_storage_information_result(MAVLinkCommands::Result result)
-{
-    std::lock_guard<std::mutex> lock(_status.mutex);
-    if (_status.status_callback == nullptr) {
-        // We're not expecting this message, let's ignore it.
-        return;
-    }
-
-    if (result != MAVLinkCommands::Result::SUCCESS) {
-        if (_status.status_callback) {
-            const auto temp_callback = _status.status_callback;
-            Camera::Status empty_status = {};
-            _parent->call_user_callback([temp_callback, result, empty_status]() {
-                temp_callback(camera_result_from_command_result(result), empty_status);
-            });
-        }
-        // Something went wrong, we give up.
-        _status.status_callback = nullptr;
-    }
-
-    // TODO: decode and save values
-
-    _parent->refresh_timeout_handler(_status.timeout_cookie);
-}
-
 void CameraImpl::receive_set_mode_command_result(
     const MAVLinkCommands::Result command_result,
-    const Camera::mode_callback_t& callback,
+    const Camera::result_callback_t callback,
     const Camera::Mode mode)
 {
     Camera::Result camera_result = camera_result_from_command_result(command_result);
@@ -1096,11 +947,15 @@ void CameraImpl::receive_set_mode_command_result(
     if (callback) {
         const auto temp_callback = callback;
         _parent->call_user_callback(
-            [temp_callback, camera_result, mode]() { temp_callback(camera_result, mode); });
+            [temp_callback, camera_result]() { temp_callback(camera_result); });
     }
 
     if (command_result == MAVLinkCommands::Result::SUCCESS && _camera_definition) {
         // This "parameter" needs to be manually set.
+        {
+            std::lock_guard<std::mutex> lock(_mode.mutex);
+            _mode.data = mode;
+        }
 
         const auto mavlink_mode = to_mavlink_camera_mode(mode);
 
@@ -1109,12 +964,12 @@ void CameraImpl::receive_set_mode_command_result(
             return;
         }
 
-        notify_mode(mode);
+        notify_mode();
         save_camera_mode(mavlink_mode);
     }
 }
 
-void CameraImpl::notify_mode(const Camera::Mode mode)
+void CameraImpl::notify_mode()
 {
     // Make a copy because it is passed to the thread pool
     const auto temp_callback = _mode.subscription_callback;
@@ -1123,40 +978,9 @@ void CameraImpl::notify_mode(const Camera::Mode mode)
         return;
     }
 
+    std::lock_guard<std::mutex> lock(_mode.mutex);
+    auto mode = _mode.data;
     _parent->call_user_callback([mode, temp_callback]() { temp_callback(mode); });
-}
-
-void CameraImpl::receive_get_mode_command_result(MAVLinkCommands::Result command_result)
-{
-    Camera::Result camera_result = camera_result_from_command_result(command_result);
-
-    std::lock_guard<std::mutex> lock(_mode.mutex);
-
-    if (camera_result == Camera::Result::SUCCESS) {
-        // SUCCESS is the normal case and means we keep waiting to receive the mode.
-        _parent->refresh_timeout_handler(_mode.timeout_cookie);
-        return;
-    } else {
-        if (_mode.callback) {
-            const auto temp_callback = _mode.callback;
-            Camera::Mode mode = Camera::Mode::UNKNOWN;
-            _parent->call_user_callback(
-                [temp_callback, camera_result, mode]() { temp_callback(camera_result, mode); });
-        }
-        _parent->unregister_timeout_handler(_mode.timeout_cookie);
-    }
-}
-
-void CameraImpl::get_mode_timeout_happened()
-{
-    std::lock_guard<std::mutex> lock(_mode.mutex);
-
-    if (_mode.callback) {
-        const auto temp_callback = _mode.callback;
-        _parent->call_user_callback(
-            [temp_callback]() { temp_callback(Camera::Result::TIMEOUT, Camera::Mode::UNKNOWN); });
-        _mode.callback = nullptr;
-    }
 }
 
 bool CameraImpl::load_definition_file(const std::string& uri, std::string& content)
@@ -1229,6 +1053,22 @@ bool CameraImpl::is_setting_range(const std::string& setting_id)
     return _camera_definition->is_setting_range(setting_id);
 }
 
+Camera::Result CameraImpl::set_setting(Camera::Setting setting)
+{
+    auto prom = std::make_shared<std::promise<Camera::Result>>();
+    auto ret = prom->get_future();
+
+    set_setting_async(setting, [&prom](Camera::Result result) { prom->set_value(result); });
+
+    return ret.get();
+}
+
+void CameraImpl::set_setting_async(
+    Camera::Setting setting, const Camera::result_callback_t callback)
+{
+    set_option_async(setting.setting_id, setting.option, callback);
+}
+
 void CameraImpl::set_option_async(
     const std::string& setting_id,
     const Camera::Option& option,
@@ -1239,7 +1079,7 @@ void CameraImpl::set_option_async(
         if (callback) {
             const auto temp_callback = callback;
             _parent->call_user_callback(
-                [temp_callback]() { temp_callback(Camera::Result::ERROR); });
+                [temp_callback]() { temp_callback(Camera::Result::Error); });
         }
         return;
     }
@@ -1255,7 +1095,7 @@ void CameraImpl::set_option_async(
                 LogErr() << "Could not get all options to get type for range param.";
                 const auto temp_callback = callback;
                 _parent->call_user_callback(
-                    [temp_callback]() { temp_callback(Camera::Result::ERROR); });
+                    [temp_callback]() { temp_callback(Camera::Result::Error); });
             }
             return;
         }
@@ -1265,7 +1105,7 @@ void CameraImpl::set_option_async(
                 LogErr() << "Could not get any options to get type for range param.";
                 const auto temp_callback = callback;
                 _parent->call_user_callback(
-                    [temp_callback]() { temp_callback(Camera::Result::ERROR); });
+                    [temp_callback]() { temp_callback(Camera::Result::Error); });
             }
             return;
         }
@@ -1277,7 +1117,7 @@ void CameraImpl::set_option_async(
                 LogErr() << "Could not set option value to given type.";
                 const auto temp_callback = callback;
                 _parent->call_user_callback(
-                    [temp_callback]() { temp_callback(Camera::Result::ERROR); });
+                    [temp_callback]() { temp_callback(Camera::Result::Error); });
             }
             return;
         }
@@ -1288,7 +1128,7 @@ void CameraImpl::set_option_async(
                 LogErr() << "Could not get option value.";
                 const auto temp_callback = callback;
                 _parent->call_user_callback(
-                    [temp_callback]() { temp_callback(Camera::Result::ERROR); });
+                    [temp_callback]() { temp_callback(Camera::Result::Error); });
             }
             return;
         }
@@ -1306,7 +1146,7 @@ void CameraImpl::set_option_async(
             if (callback) {
                 const auto temp_callback = callback;
                 _parent->call_user_callback(
-                    [temp_callback]() { temp_callback(Camera::Result::ERROR); });
+                    [temp_callback]() { temp_callback(Camera::Result::Error); });
             }
             return;
         }
@@ -1321,7 +1161,7 @@ void CameraImpl::set_option_async(
                     if (callback) {
                         const auto temp_callback = callback;
                         _parent->call_user_callback(
-                            [temp_callback]() { temp_callback(Camera::Result::ERROR); });
+                            [temp_callback]() { temp_callback(Camera::Result::Error); });
                     }
                     return;
                 }
@@ -1330,7 +1170,7 @@ void CameraImpl::set_option_async(
                     if (callback) {
                         const auto temp_callback = callback;
                         _parent->call_user_callback(
-                            [temp_callback]() { temp_callback(Camera::Result::ERROR); });
+                            [temp_callback]() { temp_callback(Camera::Result::Error); });
                     }
                     return;
                 }
@@ -1338,7 +1178,7 @@ void CameraImpl::set_option_async(
                 if (callback) {
                     const auto temp_callback = callback;
                     _parent->call_user_callback(
-                        [temp_callback]() { temp_callback(Camera::Result::SUCCESS); });
+                        [temp_callback]() { temp_callback(Camera::Result::Success); });
                 }
 
                 // FIXME: We are already holding the lock when this lambda is run and need to
@@ -1351,6 +1191,34 @@ void CameraImpl::set_option_async(
         true);
 }
 
+void CameraImpl::get_setting_async(
+    Camera::Setting setting, const Camera::get_setting_callback_t callback)
+{
+    get_option_async(
+        setting.setting_id,
+        [this, setting, callback](Camera::Result result, const Camera::Option& option) {
+            Camera::Setting new_setting{};
+            new_setting.option = option;
+            if (callback) {
+                const auto temp_callback = callback;
+                _parent->call_user_callback(
+                    [temp_callback, result, new_setting]() { temp_callback(result, new_setting); });
+            }
+        });
+}
+
+std::pair<Camera::Result, Camera::Setting> CameraImpl::get_setting(Camera::Setting setting)
+{
+    auto prom = std::make_shared<std::promise<std::pair<Camera::Result, Camera::Setting>>>();
+    auto ret = prom->get_future();
+
+    get_setting_async(setting, [&prom](Camera::Result result, const Camera::Setting& new_setting) {
+        prom->set_value(std::make_pair<>(result, new_setting));
+    });
+
+    return ret.get();
+}
+
 Camera::Result CameraImpl::get_option(const std::string& setting_id, Camera::Option& option)
 {
     auto prom = std::make_shared<std::promise<Camera::Result>>();
@@ -1359,7 +1227,7 @@ Camera::Result CameraImpl::get_option(const std::string& setting_id, Camera::Opt
     get_option_async(
         setting_id, [prom, &option](Camera::Result result, const Camera::Option& option_gotten) {
             prom->set_value(result);
-            if (result == Camera::Result::SUCCESS) {
+            if (result == Camera::Result::Success) {
                 option = option_gotten;
             }
         });
@@ -1367,14 +1235,15 @@ Camera::Result CameraImpl::get_option(const std::string& setting_id, Camera::Opt
     auto status = ret.wait_for(std::chrono::seconds(1));
 
     if (status == std::future_status::ready) {
-        return Camera::Result::SUCCESS;
+        return Camera::Result::Success;
     } else {
-        return Camera::Result::TIMEOUT;
+        return Camera::Result::Timeout;
     }
 }
 
 void CameraImpl::get_option_async(
-    const std::string& setting_id, const Camera::get_option_callback_t& callback)
+    const std::string& setting_id,
+    const std::function<void(Camera::Result, const Camera::Option&)>& callback)
 {
     if (!_camera_definition) {
         LogWarn() << "Error: no camera defnition available yet.";
@@ -1382,7 +1251,7 @@ void CameraImpl::get_option_async(
             Camera::Option empty_option{};
             const auto temp_callback = callback;
             _parent->call_user_callback([temp_callback, empty_option]() {
-                temp_callback(Camera::Result::ERROR, empty_option);
+                temp_callback(Camera::Result::Error, empty_option);
             });
         }
         return;
@@ -1399,7 +1268,7 @@ void CameraImpl::get_option_async(
             }
             const auto temp_callback = callback;
             _parent->call_user_callback([temp_callback, new_option]() {
-                temp_callback(Camera::Result::SUCCESS, new_option);
+                temp_callback(Camera::Result::Success, new_option);
             });
         }
     } else {
@@ -1409,13 +1278,12 @@ void CameraImpl::get_option_async(
             Camera::Option no_option{};
             const auto temp_callback = callback;
             _parent->call_user_callback(
-                [temp_callback, no_option]() { temp_callback(Camera::Result::ERROR, no_option); });
+                [temp_callback, no_option]() { temp_callback(Camera::Result::Error, no_option); });
         }
     }
 }
 
-void CameraImpl::subscribe_current_settings(
-    const Camera::subscribe_current_settings_callback_t& callback)
+void CameraImpl::current_settings_async(const Camera::current_settings_callback_t& callback)
 {
     {
         std::lock_guard<std::mutex> lock(_subscribe_current_settings.mutex);
@@ -1424,8 +1292,8 @@ void CameraImpl::subscribe_current_settings(
     notify_current_settings();
 }
 
-void CameraImpl::subscribe_possible_setting_options(
-    const Camera::subscribe_possible_setting_options_callback_t& callback)
+void CameraImpl::possible_setting_options_async(
+    const Camera::possible_setting_options_callback_t& callback)
 {
     {
         std::lock_guard<std::mutex> lock(_subscribe_possible_setting_options.mutex);
@@ -1495,21 +1363,9 @@ void CameraImpl::notify_possible_setting_options()
         return;
     }
 
-    std::vector<Camera::SettingOptions> possible_setting_options{};
-
-    std::vector<std::string> possible_settings{};
-    if (!get_possible_setting_options(possible_settings)) {
-        LogErr() << "Could not get possible settings in possible options subscription.";
+    auto setting_options = possible_setting_options();
+    if (setting_options.size() == 0) {
         return;
-    }
-
-    for (auto& possible_setting : possible_settings) {
-        Camera::SettingOptions setting_options{};
-        setting_options.setting_id = possible_setting;
-        setting_options.is_range = _camera_definition->is_setting_range(possible_setting);
-        get_setting_str(setting_options.setting_id, setting_options.setting_description);
-        get_possible_options(possible_setting, setting_options.options);
-        possible_setting_options.push_back(setting_options);
     }
 
     const auto temp_callback = _subscribe_possible_setting_options.callback;
@@ -1520,7 +1376,29 @@ void CameraImpl::notify_possible_setting_options()
         [temp_callback](const std::vector<Camera::SettingOptions>& options) {
             temp_callback(options);
         },
-        std::move(possible_setting_options)));
+        std::move(setting_options)));
+}
+
+std::vector<Camera::SettingOptions> CameraImpl::possible_setting_options()
+{
+    std::vector<Camera::SettingOptions> results{};
+
+    std::vector<std::string> possible_settings{};
+    if (!get_possible_setting_options(possible_settings)) {
+        LogErr() << "Could not get possible settings.";
+        return results;
+    }
+
+    for (auto& possible_setting : possible_settings) {
+        Camera::SettingOptions setting_options{};
+        setting_options.setting_id = possible_setting;
+        setting_options.is_range = _camera_definition->is_setting_range(possible_setting);
+        get_setting_str(setting_options.setting_id, setting_options.setting_description);
+        get_possible_options(possible_setting, setting_options.options);
+        results.push_back(setting_options);
+    }
+
+    return results;
 }
 
 void CameraImpl::refresh_params()
@@ -1600,15 +1478,22 @@ bool CameraImpl::get_option_str(
     return _camera_definition->get_option_str(setting_id, option_id, description);
 }
 
+void CameraImpl::request_camera_settings()
+{
+    auto command_camera_settings = make_command_request_camera_settings();
+    _parent->send_command_async(command_camera_settings, nullptr);
+}
+
 void CameraImpl::request_flight_information()
 {
-    MAVLinkCommands::CommandLong command_flight_information{};
-
-    command_flight_information.command = MAV_CMD_REQUEST_FLIGHT_INFORMATION;
-    command_flight_information.params.param1 = 1.0f; // Request it
-    command_flight_information.target_component_id = MAV_COMP_ID_AUTOPILOT1;
-
+    auto command_flight_information = make_command_request_flight_information();
     _parent->send_command_async(command_flight_information, nullptr);
+}
+
+void CameraImpl::request_camera_information()
+{
+    auto command_camera_info = make_command_request_camera_info();
+    _parent->send_command_async(command_camera_info, nullptr);
 }
 
 Camera::Result CameraImpl::format_storage()

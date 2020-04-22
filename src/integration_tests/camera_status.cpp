@@ -8,12 +8,10 @@
 using namespace mavsdk;
 using namespace std::placeholders; // for `_1`
 
-static void receive_camera_status(Camera::Result result, const Camera::Status status);
-static void receive_camera_status_subscription(const Camera::Status status);
+static void receive_camera_status(const Camera::Status status);
 static void print_camera_status(const Camera::Status status);
 
 static std::atomic<bool> _received_status{false};
-static std::atomic<int> _num_received_status{0};
 
 TEST(CameraTest, Status)
 {
@@ -28,41 +26,14 @@ TEST(CameraTest, Status)
     System& system = dc.system();
     auto camera = std::make_shared<Camera>(system);
 
-    camera->get_status_async(std::bind(&receive_camera_status, _1, _2));
+    camera->status_async(std::bind(&receive_camera_status, _1));
     std::this_thread::sleep_for(std::chrono::seconds(5));
     EXPECT_TRUE(_received_status);
 }
 
-TEST(CameraTest, StatusSubscription)
+static void receive_camera_status(const Camera::Status status)
 {
-    Mavsdk dc;
-
-    ConnectionResult ret = dc.add_udp_connection();
-    ASSERT_EQ(ret, ConnectionResult::SUCCESS);
-
-    // Wait for system to connect via heartbeat.
-    std::this_thread::sleep_for(std::chrono::seconds(2));
-
-    System& system = dc.system();
-    auto camera = std::make_shared<Camera>(system);
-
-    camera->subscribe_status(std::bind(&receive_camera_status_subscription, _1));
-    std::this_thread::sleep_for(std::chrono::seconds(5));
-    EXPECT_GT(_num_received_status, 3);
-
-    // TODO: we could also test if it stops when we stop it.
-}
-
-static void receive_camera_status(Camera::Result result, const Camera::Status status)
-{
-    EXPECT_EQ(result, Camera::Result::SUCCESS);
     _received_status = true;
-    print_camera_status(status);
-}
-
-static void receive_camera_status_subscription(const Camera::Status status)
-{
-    ++_num_received_status;
     print_camera_status(status);
 }
 
@@ -70,13 +41,13 @@ static void print_camera_status(const Camera::Status status)
 {
     std::string storage_status_str = "";
     switch (status.storage_status) {
-        case Camera::Status::StorageStatus::NOT_AVAILABLE:
+        case Camera::Status::StorageStatus::NotAvailable:
             storage_status_str = "not available";
             break;
-        case Camera::Status::StorageStatus::UNFORMATTED:
+        case Camera::Status::StorageStatus::Unformatted:
             storage_status_str = "unformatted";
             break;
-        case Camera::Status::StorageStatus::FORMATTED:
+        case Camera::Status::StorageStatus::Formatted:
             storage_status_str = "formatted";
             break;
     }

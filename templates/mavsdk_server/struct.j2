@@ -54,7 +54,7 @@ static {{ package.lower_snake_case.split('.')[0] }}::{{ plugin_name.upper_camel_
                 obj.{{ field.name.lower_snake_case }}.push_back(translateFromRpc{{ field.type_info.inner_name }}(elem));
             }
         {% else %}
-    obj.{{ field.name.lower_snake_case }} = translateFromRpc{{ field.type_info.name }}({{ name.lower_snake_case }}.{{ field.name.lower_snake_case }}());
+    obj.{{ field.name.lower_snake_case }} = translateFromRpc{% if field.parent_struct %}{{ field.parent_struct.name.upper_camel_case }}{% endif%}{{ field.type_info.name }}({{ name.lower_snake_case }}.{{ field.name.lower_snake_case }}());
         {% endif %}
     {% endif %}
 {%- endfor %}

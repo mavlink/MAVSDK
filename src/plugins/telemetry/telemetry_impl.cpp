@@ -999,8 +999,9 @@ void TelemetryImpl::process_odometry(const mavlink_message_t& message)
     Telemetry::Odometry odometry_struct{};
 
     odometry_struct.time_usec = odometry_msg.time_usec;
-    odometry_struct.frame_id = static_cast<Telemetry::MavFrame>(odometry_msg.frame_id);
-    odometry_struct.child_frame_id = static_cast<Telemetry::MavFrame>(odometry_msg.child_frame_id);
+    odometry_struct.frame_id = static_cast<Telemetry::Odometry::MavFrame>(odometry_msg.frame_id);
+    odometry_struct.child_frame_id =
+        static_cast<Telemetry::Odometry::MavFrame>(odometry_msg.child_frame_id);
 
     odometry_struct.position_body.x_m = odometry_msg.x;
     odometry_struct.position_body.y_m = odometry_msg.y;

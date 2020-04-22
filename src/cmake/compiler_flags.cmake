@@ -10,6 +10,9 @@ if(MSVC)
     # Needed by gRPC headers
     add_definitions(-D_WIN32_WINNT=0x0600)
 
+    # Needed by big auto-generated grpc/protobuf header files
+    add_definitions(-bigobj)
+
     # We need this so Windows links to e.g. mavsdk_telemetry.dll.
     # Without this option it will look for mavsdk_telemetry.lib and fail.
     option(CMAKE_WINDOWS_EXPORT_ALL_SYMBOLS "Export all symbols on Windows" ON)

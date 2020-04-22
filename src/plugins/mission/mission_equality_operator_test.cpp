@@ -25,7 +25,7 @@ TEST(MissionOperator, MissionItemEqualsOperatorIsValidForArbitraryItems)
     mission_item1.is_fly_through = 0;
     mission_item1.gimbal_pitch_deg = std::numeric_limits<double>::quiet_NaN();
     mission_item1.gimbal_yaw_deg = std::numeric_limits<double>::quiet_NaN();
-    mission_item1.camera_action = Mission::CameraAction::None;
+    mission_item1.camera_action = Mission::MissionItem::CameraAction::None;
     mission_item1.loiter_time_s = std::numeric_limits<double>::quiet_NaN();
     mission_item1.camera_photo_interval_s = 1;
 
@@ -36,7 +36,7 @@ TEST(MissionOperator, MissionItemEqualsOperatorIsValidForArbitraryItems)
     mission_item2.is_fly_through = 0;
     mission_item2.gimbal_pitch_deg = std::numeric_limits<double>::quiet_NaN();
     mission_item2.gimbal_yaw_deg = std::numeric_limits<double>::quiet_NaN();
-    mission_item2.camera_action = Mission::CameraAction::None;
+    mission_item2.camera_action = Mission::MissionItem::CameraAction::None;
     mission_item2.loiter_time_s = std::numeric_limits<double>::quiet_NaN();
     mission_item2.camera_photo_interval_s = 1;
 
@@ -55,7 +55,7 @@ TEST(MissionOperator, MissionItemEqualsOperatorIsValidForDifferentItems)
     mission_item1.is_fly_through = 0;
     mission_item1.gimbal_pitch_deg = std::numeric_limits<double>::quiet_NaN();
     mission_item1.gimbal_yaw_deg = std::numeric_limits<double>::quiet_NaN();
-    mission_item1.camera_action = Mission::CameraAction::None;
+    mission_item1.camera_action = Mission::MissionItem::CameraAction::None;
     mission_item1.loiter_time_s = std::numeric_limits<double>::quiet_NaN();
     mission_item1.camera_photo_interval_s = 1;
 
@@ -83,7 +83,7 @@ TEST(MissionOperator, MissionItemEqualsOperatorIsValidForVector)
     mission_item1.is_fly_through = 0;
     mission_item1.gimbal_pitch_deg = std::numeric_limits<double>::quiet_NaN();
     mission_item1.gimbal_yaw_deg = std::numeric_limits<double>::quiet_NaN();
-    mission_item1.camera_action = Mission::CameraAction::None;
+    mission_item1.camera_action = Mission::MissionItem::CameraAction::None;
     mission_item1.loiter_time_s = std::numeric_limits<double>::quiet_NaN();
     mission_item1.camera_photo_interval_s = 1;
 
@@ -100,7 +100,7 @@ TEST(MissionOperator, MissionItemEqualsOperatorIsValidForVector)
     mission_item2.is_fly_through = 0;
     mission_item2.gimbal_pitch_deg = std::numeric_limits<double>::quiet_NaN();
     mission_item2.gimbal_yaw_deg = std::numeric_limits<double>::quiet_NaN();
-    mission_item2.camera_action = Mission::CameraAction::None;
+    mission_item2.camera_action = Mission::MissionItem::CameraAction::None;
     mission_item2.loiter_time_s = std::numeric_limits<double>::quiet_NaN();
     mission_item2.camera_photo_interval_s = 1;
 
@@ -124,7 +124,7 @@ TEST(MissionOperator, MissionPlanOperatorIsValidForArbitraryPlans)
     mission_item1.is_fly_through = true;
     mission_item1.gimbal_pitch_deg = 0;
     mission_item1.gimbal_yaw_deg = -60;
-    mission_item1.camera_action = Mission::CameraAction::TakePhoto;
+    mission_item1.camera_action = Mission::MissionItem::CameraAction::TakePhoto;
     mission_item1.loiter_time_s = 5;
     mission_item1.camera_photo_interval_s = 1;
 
@@ -145,7 +145,7 @@ TEST(MissionOperator, MissionPlanOperatorIsValidForArbitraryPlans)
     mission_item2.is_fly_through = true;
     mission_item2.gimbal_pitch_deg = 0;
     mission_item2.gimbal_yaw_deg = -60;
-    mission_item2.camera_action = Mission::CameraAction::TakePhoto;
+    mission_item2.camera_action = Mission::MissionItem::CameraAction::TakePhoto;
     mission_item2.loiter_time_s = 5;
     mission_item2.camera_photo_interval_s = 1;
 
@@ -171,7 +171,7 @@ TEST(MissionOperator, MissionPlanOperatorIsValidForDifferentPlans)
     mission_item1.is_fly_through = true;
     mission_item1.gimbal_pitch_deg = 0;
     mission_item1.gimbal_yaw_deg = -60;
-    mission_item1.camera_action = Mission::CameraAction::TakePhoto;
+    mission_item1.camera_action = Mission::MissionItem::CameraAction::TakePhoto;
     mission_item1.loiter_time_s = 5;
     mission_item1.camera_photo_interval_s = 1;
 
