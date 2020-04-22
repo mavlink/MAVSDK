@@ -69,7 +69,7 @@ public:
      */
     struct Polygon {
         /**
-         * @brief
+         * @brief Geofence polygon types.
          */
         enum class Type {
             Inclusion, /**< @brief Type representing an inclusion fence. */
