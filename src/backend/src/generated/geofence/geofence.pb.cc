@@ -174,24 +174,26 @@ static ::PROTOBUF_NAMESPACE_ID::Message const * const file_default_instances[] =
 const char descriptor_table_protodef_geofence_2fgeofence_2eproto[] PROTOBUF_SECTION_VARIABLE(protodesc_cold) =
   "\n\027geofence/geofence.proto\022\023mavsdk.rpc.ge"
   "ofence\"4\n\005Point\022\024\n\014latitude_deg\030\001 \001(\001\022\025\n"
-  "\rlongitude_deg\030\002 \001(\001\"\214\001\n\007Polygon\022*\n\006poin"
+  "\rlongitude_deg\030\002 \001(\001\"\226\001\n\007Polygon\022*\n\006poin"
   "ts\030\001 \003(\0132\032.mavsdk.rpc.geofence.Point\022/\n\004"
   "type\030\002 \001(\0162!.mavsdk.rpc.geofence.Polygon"
-  ".Type\"$\n\004Type\022\r\n\tINCLUSION\020\000\022\r\n\tEXCLUSIO"
-  "N\020\001\"G\n\025UploadGeofenceRequest\022.\n\010polygons"
-  "\030\001 \003(\0132\034.mavsdk.rpc.geofence.Polygon\"V\n\026"
-  "UploadGeofenceResponse\022<\n\017geofence_resul"
-  "t\030\001 \001(\0132#.mavsdk.rpc.geofence.GeofenceRe"
-  "sult\"\331\001\n\016GeofenceResult\022:\n\006result\030\001 \001(\0162"
-  "*.mavsdk.rpc.geofence.GeofenceResult.Res"
-  "ult\022\022\n\nresult_str\030\002 \001(\t\"w\n\006Result\022\013\n\007UNK"
-  "NOWN\020\000\022\013\n\007SUCCESS\020\001\022\t\n\005ERROR\020\002\022\033\n\027TOO_MA"
-  "NY_GEOFENCE_ITEMS\020\003\022\010\n\004BUSY\020\004\022\013\n\007TIMEOUT"
-  "\020\005\022\024\n\020INVALID_ARGUMENT\020\0062~\n\017GeofenceServ"
-  "ice\022k\n\016UploadGeofence\022*.mavsdk.rpc.geofe"
-  "nce.UploadGeofenceRequest\032+.mavsdk.rpc.g"
-  "eofence.UploadGeofenceResponse\"\000B#\n\022io.m"
-  "avsdk.geofenceB\rGeofenceProtob\006proto3"
+  ".Type\".\n\004Type\022\022\n\016TYPE_INCLUSION\020\000\022\022\n\016TYP"
+  "E_EXCLUSION\020\001\"G\n\025UploadGeofenceRequest\022."
+  "\n\010polygons\030\001 \003(\0132\034.mavsdk.rpc.geofence.P"
+  "olygon\"V\n\026UploadGeofenceResponse\022<\n\017geof"
+  "ence_result\030\001 \001(\0132#.mavsdk.rpc.geofence."
+  "GeofenceResult\"\213\002\n\016GeofenceResult\022:\n\006res"
+  "ult\030\001 \001(\0162*.mavsdk.rpc.geofence.Geofence"
+  "Result.Result\022\022\n\nresult_str\030\002 \001(\t\"\250\001\n\006Re"
+  "sult\022\022\n\016RESULT_UNKNOWN\020\000\022\022\n\016RESULT_SUCCE"
+  "SS\020\001\022\020\n\014RESULT_ERROR\020\002\022\"\n\036RESULT_TOO_MAN"
+  "Y_GEOFENCE_ITEMS\020\003\022\017\n\013RESULT_BUSY\020\004\022\022\n\016R"
+  "ESULT_TIMEOUT\020\005\022\033\n\027RESULT_INVALID_ARGUME"
+  "NT\020\0062~\n\017GeofenceService\022k\n\016UploadGeofenc"
+  "e\022*.mavsdk.rpc.geofence.UploadGeofenceRe"
+  "quest\032+.mavsdk.rpc.geofence.UploadGeofen"
+  "ceResponse\"\000B#\n\022io.mavsdk.geofenceB\rGeof"
+  "enceProtob\006proto3"
   ;
 static const ::PROTOBUF_NAMESPACE_ID::internal::DescriptorTable*const descriptor_table_geofence_2fgeofence_2eproto_deps[1] = {
 };
@@ -205,7 +207,7 @@ static ::PROTOBUF_NAMESPACE_ID::internal::SCCInfoBase*const descriptor_table_geo
 static ::PROTOBUF_NAMESPACE_ID::internal::once_flag descriptor_table_geofence_2fgeofence_2eproto_once;
 static bool descriptor_table_geofence_2fgeofence_2eproto_initialized = false;
 const ::PROTOBUF_NAMESPACE_ID::internal::DescriptorTable descriptor_table_geofence_2fgeofence_2eproto = {
-  &descriptor_table_geofence_2fgeofence_2eproto_initialized, descriptor_table_protodef_geofence_2fgeofence_2eproto, "geofence/geofence.proto", 797,
+  &descriptor_table_geofence_2fgeofence_2eproto_initialized, descriptor_table_protodef_geofence_2fgeofence_2eproto, "geofence/geofence.proto", 857,
   &descriptor_table_geofence_2fgeofence_2eproto_once, descriptor_table_geofence_2fgeofence_2eproto_sccs, descriptor_table_geofence_2fgeofence_2eproto_deps, 5, 0,
   schemas, file_default_instances, TableStruct_geofence_2fgeofence_2eproto::offsets,
   file_level_metadata_geofence_2fgeofence_2eproto, 5, file_level_enum_descriptors_geofence_2fgeofence_2eproto, file_level_service_descriptors_geofence_2fgeofence_2eproto,
@@ -231,8 +233,8 @@ bool Polygon_Type_IsValid(int value) {
 }
 
 #if (__cplusplus < 201703) && (!defined(_MSC_VER) || _MSC_VER >= 1900)
-constexpr Polygon_Type Polygon::INCLUSION;
-constexpr Polygon_Type Polygon::EXCLUSION;
+constexpr Polygon_Type Polygon::TYPE_INCLUSION;
+constexpr Polygon_Type Polygon::TYPE_EXCLUSION;
 constexpr Polygon_Type Polygon::Type_MIN;
 constexpr Polygon_Type Polygon::Type_MAX;
 constexpr int Polygon::Type_ARRAYSIZE;
@@ -257,13 +259,13 @@ bool GeofenceResult_Result_IsValid(int value) {
 }
 
 #if (__cplusplus < 201703) && (!defined(_MSC_VER) || _MSC_VER >= 1900)
-constexpr GeofenceResult_Result GeofenceResult::UNKNOWN;
-constexpr GeofenceResult_Result GeofenceResult::SUCCESS;
-constexpr GeofenceResult_Result GeofenceResult::ERROR;
-constexpr GeofenceResult_Result GeofenceResult::TOO_MANY_GEOFENCE_ITEMS;
-constexpr GeofenceResult_Result GeofenceResult::BUSY;
-constexpr GeofenceResult_Result GeofenceResult::TIMEOUT;
-constexpr GeofenceResult_Result GeofenceResult::INVALID_ARGUMENT;
+constexpr GeofenceResult_Result GeofenceResult::RESULT_UNKNOWN;
+constexpr GeofenceResult_Result GeofenceResult::RESULT_SUCCESS;
+constexpr GeofenceResult_Result GeofenceResult::RESULT_ERROR;
+constexpr GeofenceResult_Result GeofenceResult::RESULT_TOO_MANY_GEOFENCE_ITEMS;
+constexpr GeofenceResult_Result GeofenceResult::RESULT_BUSY;
+constexpr GeofenceResult_Result GeofenceResult::RESULT_TIMEOUT;
+constexpr GeofenceResult_Result GeofenceResult::RESULT_INVALID_ARGUMENT;
 constexpr GeofenceResult_Result GeofenceResult::Result_MIN;
 constexpr GeofenceResult_Result GeofenceResult::Result_MAX;
 constexpr int GeofenceResult::Result_ARRAYSIZE;

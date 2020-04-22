@@ -22,8 +22,10 @@ public:
     void enable() override;
     void disable() override;
 
-    void send_geofence_async(
-        const std::vector<std::shared_ptr<Geofence::Polygon>>& polygons,
+    Geofence::Result upload_geofence(const std::vector<Geofence::Polygon>& polygons);
+
+    void upload_geofence_async(
+        const std::vector<Geofence::Polygon>& polygons,
         const Geofence::result_callback_t& callback);
 
     // Non-copyable
@@ -32,7 +34,7 @@ public:
 
 private:
     std::vector<MAVLinkMissionTransfer::ItemInt>
-    assemble_items(const std::vector<std::shared_ptr<Geofence::Polygon>>& polygons);
+    assemble_items(const std::vector<Geofence::Polygon>& polygons);
 
     static Geofence::Result convert_result(MAVLinkMissionTransfer::Result result);
 };
