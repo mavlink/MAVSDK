@@ -54,7 +54,7 @@ message SetModeResponse {
 message SetRoiLocationRequest {
     double latitude_deg = 1; // Latitude in degrees
     double longitude_deg = 2; // Longitude in degrees
-    float altitude_m = 3; // Altitude in meteres (AMSL)
+    float altitude_m = 3; // Altitude in metres (AMSL)
 }
 message SetRoiLocationResponse {
     GimbalResult gimbal_result = 1;
