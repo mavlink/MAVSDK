@@ -51,18 +51,18 @@ Param::Result ParamImpl::result_from_mavlink_parameters_result(MAVLinkParameters
 {
     switch (result) {
         case MAVLinkParameters::Result::SUCCESS:
-            return Param::Result::SUCCESS;
+            return Param::Result::Success;
         case MAVLinkParameters::Result::TIMEOUT:
-            return Param::Result::TIMEOUT;
+            return Param::Result::Timeout;
         case MAVLinkParameters::Result::PARAM_NAME_TOO_LONG:
-            return Param::Result::PARAM_NAME_TOO_LONG;
+            return Param::Result::ParamNameTooLong;
         case MAVLinkParameters::Result::WRONG_TYPE:
-            return Param::Result::WRONG_TYPE;
+            return Param::Result::WrongType;
         case MAVLinkParameters::Result::CONNECTION_ERROR:
-            return Param::Result::CONNECTION_ERROR;
+            return Param::Result::ConnectionError;
         default:
             LogErr() << "Unknown param error";
-            return Param::Result::UNKNOWN;
+            return Param::Result::Unknown;
     }
 }
 
