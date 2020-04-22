@@ -62,18 +62,18 @@ message SetRoiLocationResponse {
 
 // Gimbal mode type.
 enum GimbalMode {
-    YAW_FOLLOW = 0; // Yaw follow will point the gimbal to the vehicle heading
-    YAW_LOCK = 1; // Yaw lock will fix the gimbal poiting to an absolute direction
+    GIMBAL_MODE_YAW_FOLLOW = 0; // Yaw follow will point the gimbal to the vehicle heading
+    GIMBAL_MODE_YAW_LOCK = 1; // Yaw lock will fix the gimbal poiting to an absolute direction
 }
 
 // Result type.
 message GimbalResult {
     // Possible results returned for gimbal commands.
     enum Result {
-        UNKNOWN = 0; // Unknown error
-        SUCCESS = 1; // Command was accepted
-        ERROR = 2; // Error occurred sending the command
-        TIMEOUT = 3; // Command timed out
+        RESULT_UNKNOWN = 0; // Unknown error
+        RESULT_SUCCESS = 1; // Command was accepted
+        RESULT_ERROR = 2; // Error occurred sending the command
+        RESULT_TIMEOUT = 3; // Command timed out
     }
 
     Result result = 1; // Result enum value
