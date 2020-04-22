@@ -77,6 +77,21 @@ class GimbalService final {
     std::unique_ptr< ::grpc::ClientAsyncResponseReaderInterface< ::mavsdk::rpc::gimbal::SetModeResponse>> PrepareAsyncSetMode(::grpc::ClientContext* context, const ::mavsdk::rpc::gimbal::SetModeRequest& request, ::grpc::CompletionQueue* cq) {
       return std::unique_ptr< ::grpc::ClientAsyncResponseReaderInterface< ::mavsdk::rpc::gimbal::SetModeResponse>>(PrepareAsyncSetModeRaw(context, request, cq));
     }
+    //
+    // Set gimbal region of interest (ROI).
+    //
+    // This sets a region of interest that the gimbal will point to.
+    // The gimbal will continue to point to the specified region until it
+    // receives a new command.
+    // The function will return when the command is accepted, however, it might
+    // take the gimbal longer to actually rotate to the ROI.
+    virtual ::grpc::Status SetRoiLocation(::grpc::ClientContext* context, const ::mavsdk::rpc::gimbal::SetRoiLocationRequest& request, ::mavsdk::rpc::gimbal::SetRoiLocationResponse* response) = 0;
+    std::unique_ptr< ::grpc::ClientAsyncResponseReaderInterface< ::mavsdk::rpc::gimbal::SetRoiLocationResponse>> AsyncSetRoiLocation(::grpc::ClientContext* context, const ::mavsdk::rpc::gimbal::SetRoiLocationRequest& request, ::grpc::CompletionQueue* cq) {
+      return std::unique_ptr< ::grpc::ClientAsyncResponseReaderInterface< ::mavsdk::rpc::gimbal::SetRoiLocationResponse>>(AsyncSetRoiLocationRaw(context, request, cq));
+    }
+    std::unique_ptr< ::grpc::ClientAsyncResponseReaderInterface< ::mavsdk::rpc::gimbal::SetRoiLocationResponse>> PrepareAsyncSetRoiLocation(::grpc::ClientContext* context, const ::mavsdk::rpc::gimbal::SetRoiLocationRequest& request, ::grpc::CompletionQueue* cq) {
+      return std::unique_ptr< ::grpc::ClientAsyncResponseReaderInterface< ::mavsdk::rpc::gimbal::SetRoiLocationResponse>>(PrepareAsyncSetRoiLocationRaw(context, request, cq));
+    }
     class experimental_async_interface {
      public:
       virtual ~experimental_async_interface() {}
@@ -101,6 +116,18 @@ class GimbalService final {
       virtual void SetMode(::grpc::ClientContext* context, const ::grpc::ByteBuffer* request, ::mavsdk::rpc::gimbal::SetModeResponse* response, std::function<void(::grpc::Status)>) = 0;
       virtual void SetMode(::grpc::ClientContext* context, const ::mavsdk::rpc::gimbal::SetModeRequest* request, ::mavsdk::rpc::gimbal::SetModeResponse* response, ::grpc::experimental::ClientUnaryReactor* reactor) = 0;
       virtual void SetMode(::grpc::ClientContext* context, const ::grpc::ByteBuffer* request, ::mavsdk::rpc::gimbal::SetModeResponse* response, ::grpc::experimental::ClientUnaryReactor* reactor) = 0;
+      //
+      // Set gimbal region of interest (ROI).
+      //
+      // This sets a region of interest that the gimbal will point to.
+      // The gimbal will continue to point to the specified region until it
+      // receives a new command.
+      // The function will return when the command is accepted, however, it might
+      // take the gimbal longer to actually rotate to the ROI.
+      virtual void SetRoiLocation(::grpc::ClientContext* context, const ::mavsdk::rpc::gimbal::SetRoiLocationRequest* request, ::mavsdk::rpc::gimbal::SetRoiLocationResponse* response, std::function<void(::grpc::Status)>) = 0;
+      virtual void SetRoiLocation(::grpc::ClientContext* context, const ::grpc::ByteBuffer* request, ::mavsdk::rpc::gimbal::SetRoiLocationResponse* response, std::function<void(::grpc::Status)>) = 0;
+      virtual void SetRoiLocation(::grpc::ClientContext* context, const ::mavsdk::rpc::gimbal::SetRoiLocationRequest* request, ::mavsdk::rpc::gimbal::SetRoiLocationResponse* response, ::grpc::experimental::ClientUnaryReactor* reactor) = 0;
+      virtual void SetRoiLocation(::grpc::ClientContext* context, const ::grpc::ByteBuffer* request, ::mavsdk::rpc::gimbal::SetRoiLocationResponse* response, ::grpc::experimental::ClientUnaryReactor* reactor) = 0;
     };
     virtual class experimental_async_interface* experimental_async() { return nullptr; }
   private:
@@ -108,6 +135,8 @@ class GimbalService final {
     virtual ::grpc::ClientAsyncResponseReaderInterface< ::mavsdk::rpc::gimbal::SetPitchAndYawResponse>* PrepareAsyncSetPitchAndYawRaw(::grpc::ClientContext* context, const ::mavsdk::rpc::gimbal::SetPitchAndYawRequest& request, ::grpc::CompletionQueue* cq) = 0;
     virtual ::grpc::ClientAsyncResponseReaderInterface< ::mavsdk::rpc::gimbal::SetModeResponse>* AsyncSetModeRaw(::grpc::ClientContext* context, const ::mavsdk::rpc::gimbal::SetModeRequest& request, ::grpc::CompletionQueue* cq) = 0;
     virtual ::grpc::ClientAsyncResponseReaderInterface< ::mavsdk::rpc::gimbal::SetModeResponse>* PrepareAsyncSetModeRaw(::grpc::ClientContext* context, const ::mavsdk::rpc::gimbal::SetModeRequest& request, ::grpc::CompletionQueue* cq) = 0;
+    virtual ::grpc::ClientAsyncResponseReaderInterface< ::mavsdk::rpc::gimbal::SetRoiLocationResponse>* AsyncSetRoiLocationRaw(::grpc::ClientContext* context, const ::mavsdk::rpc::gimbal::SetRoiLocationRequest& request, ::grpc::CompletionQueue* cq) = 0;
+    virtual ::grpc::ClientAsyncResponseReaderInterface< ::mavsdk::rpc::gimbal::SetRoiLocationResponse>* PrepareAsyncSetRoiLocationRaw(::grpc::ClientContext* context, const ::mavsdk::rpc::gimbal::SetRoiLocationRequest& request, ::grpc::CompletionQueue* cq) = 0;
   };
   class Stub final : public StubInterface {
    public:
@@ -126,6 +155,13 @@ class GimbalService final {
     std::unique_ptr< ::grpc::ClientAsyncResponseReader< ::mavsdk::rpc::gimbal::SetModeResponse>> PrepareAsyncSetMode(::grpc::ClientContext* context, const ::mavsdk::rpc::gimbal::SetModeRequest& request, ::grpc::CompletionQueue* cq) {
       return std::unique_ptr< ::grpc::ClientAsyncResponseReader< ::mavsdk::rpc::gimbal::SetModeResponse>>(PrepareAsyncSetModeRaw(context, request, cq));
     }
+    ::grpc::Status SetRoiLocation(::grpc::ClientContext* context, const ::mavsdk::rpc::gimbal::SetRoiLocationRequest& request, ::mavsdk::rpc::gimbal::SetRoiLocationResponse* response) override;
+    std::unique_ptr< ::grpc::ClientAsyncResponseReader< ::mavsdk::rpc::gimbal::SetRoiLocationResponse>> AsyncSetRoiLocation(::grpc::ClientContext* context, const ::mavsdk::rpc::gimbal::SetRoiLocationRequest& request, ::grpc::CompletionQueue* cq) {
+      return std::unique_ptr< ::grpc::ClientAsyncResponseReader< ::mavsdk::rpc::gimbal::SetRoiLocationResponse>>(AsyncSetRoiLocationRaw(context, request, cq));
+    }
+    std::unique_ptr< ::grpc::ClientAsyncResponseReader< ::mavsdk::rpc::gimbal::SetRoiLocationResponse>> PrepareAsyncSetRoiLocation(::grpc::ClientContext* context, const ::mavsdk::rpc::gimbal::SetRoiLocationRequest& request, ::grpc::CompletionQueue* cq) {
+      return std::unique_ptr< ::grpc::ClientAsyncResponseReader< ::mavsdk::rpc::gimbal::SetRoiLocationResponse>>(PrepareAsyncSetRoiLocationRaw(context, request, cq));
+    }
     class experimental_async final :
       public StubInterface::experimental_async_interface {
      public:
@@ -137,6 +173,10 @@ class GimbalService final {
       void SetMode(::grpc::ClientContext* context, const ::grpc::ByteBuffer* request, ::mavsdk::rpc::gimbal::SetModeResponse* response, std::function<void(::grpc::Status)>) override;
       void SetMode(::grpc::ClientContext* context, const ::mavsdk::rpc::gimbal::SetModeRequest* request, ::mavsdk::rpc::gimbal::SetModeResponse* response, ::grpc::experimental::ClientUnaryReactor* reactor) override;
       void SetMode(::grpc::ClientContext* context, const ::grpc::ByteBuffer* request, ::mavsdk::rpc::gimbal::SetModeResponse* response, ::grpc::experimental::ClientUnaryReactor* reactor) override;
+      void SetRoiLocation(::grpc::ClientContext* context, const ::mavsdk::rpc::gimbal::SetRoiLocationRequest* request, ::mavsdk::rpc::gimbal::SetRoiLocationResponse* response, std::function<void(::grpc::Status)>) override;
+      void SetRoiLocation(::grpc::ClientContext* context, const ::grpc::ByteBuffer* request, ::mavsdk::rpc::gimbal::SetRoiLocationResponse* response, std::function<void(::grpc::Status)>) override;
+      void SetRoiLocation(::grpc::ClientContext* context, const ::mavsdk::rpc::gimbal::SetRoiLocationRequest* request, ::mavsdk::rpc::gimbal::SetRoiLocationResponse* response, ::grpc::experimental::ClientUnaryReactor* reactor) override;
+      void SetRoiLocation(::grpc::ClientContext* context, const ::grpc::ByteBuffer* request, ::mavsdk::rpc::gimbal::SetRoiLocationResponse* response, ::grpc::experimental::ClientUnaryReactor* reactor) override;
      private:
       friend class Stub;
       explicit experimental_async(Stub* stub): stub_(stub) { }
@@ -152,8 +192,11 @@ class GimbalService final {
     ::grpc::ClientAsyncResponseReader< ::mavsdk::rpc::gimbal::SetPitchAndYawResponse>* PrepareAsyncSetPitchAndYawRaw(::grpc::ClientContext* context, const ::mavsdk::rpc::gimbal::SetPitchAndYawRequest& request, ::grpc::CompletionQueue* cq) override;
     ::grpc::ClientAsyncResponseReader< ::mavsdk::rpc::gimbal::SetModeResponse>* AsyncSetModeRaw(::grpc::ClientContext* context, const ::mavsdk::rpc::gimbal::SetModeRequest& request, ::grpc::CompletionQueue* cq) override;
     ::grpc::ClientAsyncResponseReader< ::mavsdk::rpc::gimbal::SetModeResponse>* PrepareAsyncSetModeRaw(::grpc::ClientContext* context, const ::mavsdk::rpc::gimbal::SetModeRequest& request, ::grpc::CompletionQueue* cq) override;
+    ::grpc::ClientAsyncResponseReader< ::mavsdk::rpc::gimbal::SetRoiLocationResponse>* AsyncSetRoiLocationRaw(::grpc::ClientContext* context, const ::mavsdk::rpc::gimbal::SetRoiLocationRequest& request, ::grpc::CompletionQueue* cq) override;
+    ::grpc::ClientAsyncResponseReader< ::mavsdk::rpc::gimbal::SetRoiLocationResponse>* PrepareAsyncSetRoiLocationRaw(::grpc::ClientContext* context, const ::mavsdk::rpc::gimbal::SetRoiLocationRequest& request, ::grpc::CompletionQueue* cq) override;
     const ::grpc::internal::RpcMethod rpcmethod_SetPitchAndYaw_;
     const ::grpc::internal::RpcMethod rpcmethod_SetMode_;
+    const ::grpc::internal::RpcMethod rpcmethod_SetRoiLocation_;
   };
   static std::unique_ptr<Stub> NewStub(const std::shared_ptr< ::grpc::ChannelInterface>& channel, const ::grpc::StubOptions& options = ::grpc::StubOptions());
 
@@ -176,6 +219,15 @@ class GimbalService final {
     // Will return when the command is accepted. However, it might
     // take the gimbal longer to actually be set to the new angles.
     virtual ::grpc::Status SetMode(::grpc::ServerContext* context, const ::mavsdk::rpc::gimbal::SetModeRequest* request, ::mavsdk::rpc::gimbal::SetModeResponse* response);
+    //
+    // Set gimbal region of interest (ROI).
+    //
+    // This sets a region of interest that the gimbal will point to.
+    // The gimbal will continue to point to the specified region until it
+    // receives a new command.
+    // The function will return when the command is accepted, however, it might
+    // take the gimbal longer to actually rotate to the ROI.
+    virtual ::grpc::Status SetRoiLocation(::grpc::ServerContext* context, const ::mavsdk::rpc::gimbal::SetRoiLocationRequest* request, ::mavsdk::rpc::gimbal::SetRoiLocationResponse* response);
   };
   template <class BaseClass>
   class WithAsyncMethod_SetPitchAndYaw : public BaseClass {
@@ -217,7 +269,27 @@ class GimbalService final {
       ::grpc::Service::RequestAsyncUnary(1, context, request, response, new_call_cq, notification_cq, tag);
     }
   };
-  typedef WithAsyncMethod_SetPitchAndYaw<WithAsyncMethod_SetMode<Service > > AsyncService;
+  template <class BaseClass>
+  class WithAsyncMethod_SetRoiLocation : public BaseClass {
+   private:
+    void BaseClassMustBeDerivedFromService(const Service* /*service*/) {}
+   public:
+    WithAsyncMethod_SetRoiLocation() {
+      ::grpc::Service::MarkMethodAsync(2);
+    }
+    ~WithAsyncMethod_SetRoiLocation() override {
+      BaseClassMustBeDerivedFromService(this);
+    }
+    // disable synchronous version of this method
+    ::grpc::Status SetRoiLocation(::grpc::ServerContext* /*context*/, const ::mavsdk::rpc::gimbal::SetRoiLocationRequest* /*request*/, ::mavsdk::rpc::gimbal::SetRoiLocationResponse* /*response*/) override {
+      abort();
+      return ::grpc::Status(::grpc::StatusCode::UNIMPLEMENTED, "");
+    }
+    void RequestSetRoiLocation(::grpc::ServerContext* context, ::mavsdk::rpc::gimbal::SetRoiLocationRequest* request, ::grpc::ServerAsyncResponseWriter< ::mavsdk::rpc::gimbal::SetRoiLocationResponse>* response, ::grpc::CompletionQueue* new_call_cq, ::grpc::ServerCompletionQueue* notification_cq, void *tag) {
+      ::grpc::Service::RequestAsyncUnary(2, context, request, response, new_call_cq, notification_cq, tag);
+    }
+  };
+  typedef WithAsyncMethod_SetPitchAndYaw<WithAsyncMethod_SetMode<WithAsyncMethod_SetRoiLocation<Service > > > AsyncService;
   template <class BaseClass>
   class ExperimentalWithCallbackMethod_SetPitchAndYaw : public BaseClass {
    private:
@@ -268,7 +340,32 @@ class GimbalService final {
     }
     virtual ::grpc::experimental::ServerUnaryReactor* SetMode(::grpc::experimental::CallbackServerContext* /*context*/, const ::mavsdk::rpc::gimbal::SetModeRequest* /*request*/, ::mavsdk::rpc::gimbal::SetModeResponse* /*response*/) { return nullptr; }
   };
-  typedef ExperimentalWithCallbackMethod_SetPitchAndYaw<ExperimentalWithCallbackMethod_SetMode<Service > > ExperimentalCallbackService;
+  template <class BaseClass>
+  class ExperimentalWithCallbackMethod_SetRoiLocation : public BaseClass {
+   private:
+    void BaseClassMustBeDerivedFromService(const Service* /*service*/) {}
+   public:
+    ExperimentalWithCallbackMethod_SetRoiLocation() {
+      ::grpc::Service::experimental().MarkMethodCallback(2,
+        new ::grpc_impl::internal::CallbackUnaryHandler< ::mavsdk::rpc::gimbal::SetRoiLocationRequest, ::mavsdk::rpc::gimbal::SetRoiLocationResponse>(
+          [this](::grpc::experimental::CallbackServerContext* context, const ::mavsdk::rpc::gimbal::SetRoiLocationRequest* request, ::mavsdk::rpc::gimbal::SetRoiLocationResponse* response) { return this->SetRoiLocation(context, request, response); }));}
+    void SetMessageAllocatorFor_SetRoiLocation(
+        ::grpc::experimental::MessageAllocator< ::mavsdk::rpc::gimbal::SetRoiLocationRequest, ::mavsdk::rpc::gimbal::SetRoiLocationResponse>* allocator) {
+      static_cast<::grpc_impl::internal::CallbackUnaryHandler< ::mavsdk::rpc::gimbal::SetRoiLocationRequest, ::mavsdk::rpc::gimbal::SetRoiLocationResponse>*>(
+          ::grpc::Service::experimental().GetHandler(2))
+              ->SetMessageAllocator(allocator);
+    }
+    ~ExperimentalWithCallbackMethod_SetRoiLocation() override {
+      BaseClassMustBeDerivedFromService(this);
+    }
+    // disable synchronous version of this method
+    ::grpc::Status SetRoiLocation(::grpc::ServerContext* /*context*/, const ::mavsdk::rpc::gimbal::SetRoiLocationRequest* /*request*/, ::mavsdk::rpc::gimbal::SetRoiLocationResponse* /*response*/) override {
+      abort();
+      return ::grpc::Status(::grpc::StatusCode::UNIMPLEMENTED, "");
+    }
+    virtual ::grpc::experimental::ServerUnaryReactor* SetRoiLocation(::grpc::experimental::CallbackServerContext* /*context*/, const ::mavsdk::rpc::gimbal::SetRoiLocationRequest* /*request*/, ::mavsdk::rpc::gimbal::SetRoiLocationResponse* /*response*/) { return nullptr; }
+  };
+  typedef ExperimentalWithCallbackMethod_SetPitchAndYaw<ExperimentalWithCallbackMethod_SetMode<ExperimentalWithCallbackMethod_SetRoiLocation<Service > > > ExperimentalCallbackService;
   template <class BaseClass>
   class WithGenericMethod_SetPitchAndYaw : public BaseClass {
    private:
@@ -299,6 +396,23 @@ class GimbalService final {
     }
     // disable synchronous version of this method
     ::grpc::Status SetMode(::grpc::ServerContext* /*context*/, const ::mavsdk::rpc::gimbal::SetModeRequest* /*request*/, ::mavsdk::rpc::gimbal::SetModeResponse* /*response*/) override {
+      abort();
+      return ::grpc::Status(::grpc::StatusCode::UNIMPLEMENTED, "");
+    }
+  };
+  template <class BaseClass>
+  class WithGenericMethod_SetRoiLocation : public BaseClass {
+   private:
+    void BaseClassMustBeDerivedFromService(const Service* /*service*/) {}
+   public:
+    WithGenericMethod_SetRoiLocation() {
+      ::grpc::Service::MarkMethodGeneric(2);
+    }
+    ~WithGenericMethod_SetRoiLocation() override {
+      BaseClassMustBeDerivedFromService(this);
+    }
+    // disable synchronous version of this method
+    ::grpc::Status SetRoiLocation(::grpc::ServerContext* /*context*/, const ::mavsdk::rpc::gimbal::SetRoiLocationRequest* /*request*/, ::mavsdk::rpc::gimbal::SetRoiLocationResponse* /*response*/) override {
       abort();
       return ::grpc::Status(::grpc::StatusCode::UNIMPLEMENTED, "");
     }
@@ -344,6 +458,26 @@ class GimbalService final {
     }
   };
   template <class BaseClass>
+  class WithRawMethod_SetRoiLocation : public BaseClass {
+   private:
+    void BaseClassMustBeDerivedFromService(const Service* /*service*/) {}
+   public:
+    WithRawMethod_SetRoiLocation() {
+      ::grpc::Service::MarkMethodRaw(2);
+    }
+    ~WithRawMethod_SetRoiLocation() override {
+      BaseClassMustBeDerivedFromService(this);
+    }
+    // disable synchronous version of this method
+    ::grpc::Status SetRoiLocation(::grpc::ServerContext* /*context*/, const ::mavsdk::rpc::gimbal::SetRoiLocationRequest* /*request*/, ::mavsdk::rpc::gimbal::SetRoiLocationResponse* /*response*/) override {
+      abort();
+      return ::grpc::Status(::grpc::StatusCode::UNIMPLEMENTED, "");
+    }
+    void RequestSetRoiLocation(::grpc::ServerContext* context, ::grpc::ByteBuffer* request, ::grpc::ServerAsyncResponseWriter< ::grpc::ByteBuffer>* response, ::grpc::CompletionQueue* new_call_cq, ::grpc::ServerCompletionQueue* notification_cq, void *tag) {
+      ::grpc::Service::RequestAsyncUnary(2, context, request, response, new_call_cq, notification_cq, tag);
+    }
+  };
+  template <class BaseClass>
   class ExperimentalWithRawCallbackMethod_SetPitchAndYaw : public BaseClass {
    private:
     void BaseClassMustBeDerivedFromService(const Service* /*service*/) {}
@@ -382,6 +516,26 @@ class GimbalService final {
       return ::grpc::Status(::grpc::StatusCode::UNIMPLEMENTED, "");
     }
     virtual ::grpc::experimental::ServerUnaryReactor* SetMode(::grpc::experimental::CallbackServerContext* /*context*/, const ::grpc::ByteBuffer* /*request*/, ::grpc::ByteBuffer* /*response*/) { return nullptr; }
+  };
+  template <class BaseClass>
+  class ExperimentalWithRawCallbackMethod_SetRoiLocation : public BaseClass {
+   private:
+    void BaseClassMustBeDerivedFromService(const Service* /*service*/) {}
+   public:
+    ExperimentalWithRawCallbackMethod_SetRoiLocation() {
+      ::grpc::Service::experimental().MarkMethodRawCallback(2,
+        new ::grpc_impl::internal::CallbackUnaryHandler< ::grpc::ByteBuffer, ::grpc::ByteBuffer>(
+          [this](::grpc::experimental::CallbackServerContext* context, const ::grpc::ByteBuffer* request, ::grpc::ByteBuffer* response) { return this->SetRoiLocation(context, request, response); }));
+    }
+    ~ExperimentalWithRawCallbackMethod_SetRoiLocation() override {
+      BaseClassMustBeDerivedFromService(this);
+    }
+    // disable synchronous version of this method
+    ::grpc::Status SetRoiLocation(::grpc::ServerContext* /*context*/, const ::mavsdk::rpc::gimbal::SetRoiLocationRequest* /*request*/, ::mavsdk::rpc::gimbal::SetRoiLocationResponse* /*response*/) override {
+      abort();
+      return ::grpc::Status(::grpc::StatusCode::UNIMPLEMENTED, "");
+    }
+    virtual ::grpc::experimental::ServerUnaryReactor* SetRoiLocation(::grpc::experimental::CallbackServerContext* /*context*/, const ::grpc::ByteBuffer* /*request*/, ::grpc::ByteBuffer* /*response*/) { return nullptr; }
   };
   template <class BaseClass>
   class WithStreamedUnaryMethod_SetPitchAndYaw : public BaseClass {
@@ -423,9 +577,29 @@ class GimbalService final {
     // replace default version of method with streamed unary
     virtual ::grpc::Status StreamedSetMode(::grpc::ServerContext* context, ::grpc::ServerUnaryStreamer< ::mavsdk::rpc::gimbal::SetModeRequest,::mavsdk::rpc::gimbal::SetModeResponse>* server_unary_streamer) = 0;
   };
-  typedef WithStreamedUnaryMethod_SetPitchAndYaw<WithStreamedUnaryMethod_SetMode<Service > > StreamedUnaryService;
+  template <class BaseClass>
+  class WithStreamedUnaryMethod_SetRoiLocation : public BaseClass {
+   private:
+    void BaseClassMustBeDerivedFromService(const Service* /*service*/) {}
+   public:
+    WithStreamedUnaryMethod_SetRoiLocation() {
+      ::grpc::Service::MarkMethodStreamed(2,
+        new ::grpc::internal::StreamedUnaryHandler< ::mavsdk::rpc::gimbal::SetRoiLocationRequest, ::mavsdk::rpc::gimbal::SetRoiLocationResponse>(std::bind(&WithStreamedUnaryMethod_SetRoiLocation<BaseClass>::StreamedSetRoiLocation, this, std::placeholders::_1, std::placeholders::_2)));
+    }
+    ~WithStreamedUnaryMethod_SetRoiLocation() override {
+      BaseClassMustBeDerivedFromService(this);
+    }
+    // disable regular version of this method
+    ::grpc::Status SetRoiLocation(::grpc::ServerContext* /*context*/, const ::mavsdk::rpc::gimbal::SetRoiLocationRequest* /*request*/, ::mavsdk::rpc::gimbal::SetRoiLocationResponse* /*response*/) override {
+      abort();
+      return ::grpc::Status(::grpc::StatusCode::UNIMPLEMENTED, "");
+    }
+    // replace default version of method with streamed unary
+    virtual ::grpc::Status StreamedSetRoiLocation(::grpc::ServerContext* context, ::grpc::ServerUnaryStreamer< ::mavsdk::rpc::gimbal::SetRoiLocationRequest,::mavsdk::rpc::gimbal::SetRoiLocationResponse>* server_unary_streamer) = 0;
+  };
+  typedef WithStreamedUnaryMethod_SetPitchAndYaw<WithStreamedUnaryMethod_SetMode<WithStreamedUnaryMethod_SetRoiLocation<Service > > > StreamedUnaryService;
   typedef Service SplitStreamedService;
-  typedef WithStreamedUnaryMethod_SetPitchAndYaw<WithStreamedUnaryMethod_SetMode<Service > > StreamedService;
+  typedef WithStreamedUnaryMethod_SetPitchAndYaw<WithStreamedUnaryMethod_SetMode<WithStreamedUnaryMethod_SetRoiLocation<Service > > > StreamedService;
 };
 
 }  // namespace gimbal

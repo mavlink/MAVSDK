@@ -178,7 +178,7 @@ void send_new_gimbal_command(std::shared_ptr<Gimbal> gimbal, int i)
 
 void send_gimbal_mode_command(std::shared_ptr<Gimbal> gimbal, const Gimbal::GimbalMode gimbal_mode)
 {
-    gimbal->set_gimbal_mode_async(gimbal_mode, &receive_gimbal_result);
+    gimbal->set_mode_async(gimbal_mode, &receive_gimbal_result);
 }
 
 void send_gimbal_roi_location(
@@ -189,7 +189,7 @@ void send_gimbal_roi_location(
 
 void receive_gimbal_result(Gimbal::Result result)
 {
-    EXPECT_EQ(result, Gimbal::Result::SUCCESS);
+    EXPECT_EQ(result, Gimbal::Result::Success);
 }
 
 void receive_gimbal_attitude_euler_angles(Telemetry::EulerAngle euler_angle)
