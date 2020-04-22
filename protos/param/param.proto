@@ -2,6 +2,8 @@ syntax = "proto3";
 
 package mavsdk.rpc.param;
 
+import "mavsdk_options.proto";
+
 option java_package = "io.mavsdk.param";
 option java_outer_classname = "ParamProto";
 
@@ -12,57 +14,57 @@ service ParamService {
      *
      * If the type is wrong, the result will be `WRONG_TYPE`.
      */
-    rpc GetIntParam(GetIntParamRequest) returns(GetIntParamResponse) {}
+    rpc GetParamInt(GetParamIntRequest) returns(GetParamIntResponse) { option (mavsdk.options.async_type) = SYNC; }
     /*
      * Set an int parameter.
      *
      * If the type is wrong, the result will be `WRONG_TYPE`.
      */
-    rpc SetIntParam(SetIntParamRequest) returns(SetIntParamResponse) {}
+    rpc SetParamInt(SetParamIntRequest) returns(SetParamIntResponse) { option (mavsdk.options.async_type) = SYNC; }
     /*
      * Get a float parameter.
      *
      * If the type is wrong, the result will be `WRONG_TYPE`.
      */
-    rpc GetFloatParam(GetFloatParamRequest) returns(GetFloatParamResponse) {}
+    rpc GetParamFloat(GetParamFloatRequest) returns(GetParamFloatResponse) { option (mavsdk.options.async_type) = SYNC; }
     /*
      * Set a float parameter.
      *
      * If the type is wrong, the result will be `WRONG_TYPE`.
      */
-    rpc SetFloatParam(SetFloatParamRequest) returns(SetFloatParamResponse) {}
+    rpc SetParamFloat(SetParamFloatRequest) returns(SetParamFloatResponse) { option (mavsdk.options.async_type) = SYNC; }
 }
 
-message GetIntParamRequest {
+message GetParamIntRequest {
     string name = 1; // Name of the parameter
 }
 
-message GetIntParamResponse {
+message GetParamIntResponse {
     ParamResult param_result = 1;
     int32 value = 2; // Value of the requested parameter
 }
 
-message SetIntParamRequest {
+message SetParamIntRequest {
     string name = 1; // Name of the parameter to set
     int32 value = 2; // Value the parameter should be set to
 }
-message SetIntParamResponse {
+message SetParamIntResponse {
     ParamResult param_result = 1;
 }
 
-message GetFloatParamRequest {
+message GetParamFloatRequest {
     string name = 1; // Name of the parameter
 }
-message GetFloatParamResponse {
+message GetParamFloatResponse {
     ParamResult param_result = 1;
     float value = 2; // Value of the requested parameter
 }
 
-message SetFloatParamRequest {
+message SetParamFloatRequest {
     string name = 1; // Name of the parameter to set
     float value = 2; // Value the parameter should be set to
 }
-message SetFloatParamResponse {
+message SetParamFloatResponse {
     ParamResult param_result = 1;
 }
 
@@ -70,12 +72,12 @@ message SetFloatParamResponse {
 message ParamResult {
     // Possible results returned for param requests.
     enum Result {
-        UNKNOWN = 0; // Unknown error
-        SUCCESS = 1; // Request succeeded
-        TIMEOUT = 2; // Request timed out
-        CONNECTION_ERROR = 3; // Connection error
-        WRONG_TYPE = 4; // Wrong type
-        PARAM_NAME_TOO_LONG = 5; // Parameter name too long (> 16)
+        RESULT_UNKNOWN = 0; // Unknown error
+        RESULT_SUCCESS = 1; // Request succeeded
+        RESULT_TIMEOUT = 2; // Request timed out
+        RESULT_CONNECTION_ERROR = 3; // Connection error
+        RESULT_WRONG_TYPE = 4; // Wrong type
+        RESULT_PARAM_NAME_TOO_LONG = 5; // Parameter name too long (> 16)
     }
 
     Result result = 1; // Result enum value
