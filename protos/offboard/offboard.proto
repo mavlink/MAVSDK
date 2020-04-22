@@ -2,6 +2,8 @@ syntax = "proto3";
 
 package mavsdk.rpc.offboard;
 
+import "mavsdk_options.proto";
+
 option java_package = "io.mavsdk.offboard";
 option java_outer_classname = "OffboardProto";
 
@@ -32,34 +34,34 @@ service OffboardService {
      * True means that the vehicle is in offboard mode and we are actively sending
      * setpoints.
      */
-    rpc IsActive(IsActiveRequest) returns(IsActiveResponse) {}
+    rpc IsActive(IsActiveRequest) returns(IsActiveResponse) { option (mavsdk.options.async_type) = SYNC; }
     /*
      * Set the attitude in terms of roll, pitch and yaw in degrees with thrust.
      */
-    rpc SetAttitude(SetAttitudeRequest) returns(SetAttitudeResponse) {}
+    rpc SetAttitude(SetAttitudeRequest) returns(SetAttitudeResponse) { option (mavsdk.options.async_type) = SYNC; }
     /*
      * Set direct actuator control values to groups #0 and #1.
      *
      * First 8 controls will go to control group 0, the following 8 controls to control group 1 (if
      * actuator_control.num_controls more than 8).
      */
-    rpc SetActuatorControl(SetActuatorControlRequest) returns(SetActuatorControlResponse) {}
+    rpc SetActuatorControl(SetActuatorControlRequest) returns(SetActuatorControlResponse) { option (mavsdk.options.async_type) = SYNC; }
     /*
      * Set the attitude rate in terms of pitch, roll and yaw angular rate along with thrust.
      */
-    rpc SetAttitudeRate(SetAttitudeRateRequest) returns(SetAttitudeRateResponse) {}
+    rpc SetAttitudeRate(SetAttitudeRateRequest) returns(SetAttitudeRateResponse) { option (mavsdk.options.async_type) = SYNC; }
     /*
      * Set the position in NED coordinates and yaw.
      */
-    rpc SetPositionNed(SetPositionNedRequest) returns(SetPositionNedResponse) {}
+    rpc SetPositionNed(SetPositionNedRequest) returns(SetPositionNedResponse) { option (mavsdk.options.async_type) = SYNC; }
     /*
      * Set the velocity in body coordinates and yaw angular rate.
      */
-    rpc SetVelocityBody(SetVelocityBodyRequest) returns(SetVelocityBodyResponse) {}
+    rpc SetVelocityBody(SetVelocityBodyRequest) returns(SetVelocityBodyResponse) { option (mavsdk.options.async_type) = SYNC; }
     /*
      * Set the velocity in NED coordinates and yaw.
      */
-    rpc SetVelocityNed(SetVelocityNedRequest) returns(SetVelocityNedResponse) {}
+    rpc SetVelocityNed(SetVelocityNedRequest) returns(SetVelocityNedResponse) { option (mavsdk.options.async_type) = SYNC; }
 }
 
 message StartRequest {}
@@ -74,38 +76,51 @@ message StopResponse {
 
 message IsActiveRequest {}
 message IsActiveResponse {
-    bool is_active = 1; // True if offboard is active
+    OffboardResult offboard_result = 1;
+    bool is_active = 2; // True if offboard is active
 }
 
 message SetAttitudeRequest {
     Attitude attitude = 1; // Attitude roll, pitch and yaw along with thrust
 }
-message SetAttitudeResponse {};
+message SetAttitudeResponse {
+    OffboardResult offboard_result = 1;
+};
 
 message SetActuatorControlRequest {
     ActuatorControl actuator_control = 1; // Actuator control values
 }
-message SetActuatorControlResponse {};
+message SetActuatorControlResponse {
+    OffboardResult offboard_result = 1;
+};
 
 message SetAttitudeRateRequest {
     AttitudeRate attitude_rate = 1; // Attitude rate roll, pitch and yaw angular rate along with thrust
 }
-message SetAttitudeRateResponse {}
+message SetAttitudeRateResponse {
+    OffboardResult offboard_result = 1;
+}
 
 message SetPositionNedRequest {
     PositionNedYaw position_ned_yaw = 1; // Position and yaw
 }
-message SetPositionNedResponse {}
+message SetPositionNedResponse {
+    OffboardResult offboard_result = 1;
+}
 
 message SetVelocityBodyRequest {
     VelocityBodyYawspeed velocity_body_yawspeed = 1; // Velocity and yaw angular rate
 }
-message SetVelocityBodyResponse {}
+message SetVelocityBodyResponse {
+    OffboardResult offboard_result = 1;
+}
 
 message SetVelocityNedRequest {
     VelocityNedYaw velocity_ned_yaw = 1; // Velocity and yaw
 }
-message SetVelocityNedResponse {}
+message SetVelocityNedResponse {
+    OffboardResult offboard_result = 1;
+}
 
 // Type for attitude body angles in NED reference frame (roll, pitch, yaw and thrust)
 message Attitude {
@@ -180,14 +195,14 @@ message VelocityNedYaw {
 message OffboardResult {
     // Possible results returned for offboard requests
     enum Result {
-        UNKNOWN = 0; // Unknown error
-        SUCCESS = 1; // Request succeeded
-        NO_SYSTEM = 2; // No system is connected
-        CONNECTION_ERROR = 3; // Connection error
-        BUSY = 4; // Vehicle is busy
-        COMMAND_DENIED = 5; // Command denied
-        TIMEOUT = 6; // Request timed out
-        NO_SETPOINT_SET = 7; // Cannot start without setpoint set
+        RESULT_UNKNOWN = 0; // Unknown error
+        RESULT_SUCCESS = 1; // Request succeeded
+        RESULT_NO_SYSTEM = 2; // No system is connected
+        RESULT_CONNECTION_ERROR = 3; // Connection error
+        RESULT_BUSY = 4; // Vehicle is busy
+        RESULT_COMMAND_DENIED = 5; // Command denied
+        RESULT_TIMEOUT = 6; // Request timed out
+        RESULT_NO_SETPOINT_SET = 7; // Cannot start without setpoint set
     }
 
     Result result = 1; // Result enum value
