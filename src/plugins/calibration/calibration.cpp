@@ -38,7 +38,7 @@ void Calibration::calibrate_gimbal_accelerometer_async(
 
 void Calibration::cancel() const
 {
-    return _impl->cancel();
+    _impl->cancel();
 }
 
 const char* Calibration::result_str(Calibration::Result result)
