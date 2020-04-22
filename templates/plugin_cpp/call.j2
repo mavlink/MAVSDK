@@ -8,6 +8,6 @@ void {{ plugin_name.upper_camel_case }}::{{ name.lower_snake_case }}_async({% fo
 {% if is_sync %}
 {% if has_result %}{{ plugin_name.upper_camel_case }}::Result{% else %}void{% endif %} {{ plugin_name.upper_camel_case }}::{{ name.lower_snake_case }}({% for param in params %}{{ param.type_info.name }} {{ param.name.lower_snake_case }}{{ ", " if not loop.last }}{% endfor %}) const
 {
-    return _impl->{{ name.lower_snake_case }}({% for param in params %}{{ param.name.lower_snake_case }}{{ ", " if not loop.last }}{% endfor %});
+    {% if has_result %}return {% endif %}_impl->{{ name.lower_snake_case }}({% for param in params %}{{ param.name.lower_snake_case }}{{ ", " if not loop.last }}{% endfor %});
 }
 {% endif %}

@@ -1,7 +1,7 @@
 grpc::Status {{ name.upper_camel_case }}(
     grpc::ServerContext* /* context */,
     const rpc::{{ plugin_name.lower_snake_case }}::{{ name.upper_camel_case }}Request* {% if not params -%} /* request */ {%- else -%} request {%- endif -%},
-    rpc::{{ plugin_name.lower_snake_case }}::{{ name.upper_camel_case }}Response* response) override
+    rpc::{{ plugin_name.lower_snake_case }}::{{ name.upper_camel_case }}Response* {% if has_result %}response{% else %}/* response */{% endif %}) override
 {
     {% if params -%}
     if (request == nullptr) {
