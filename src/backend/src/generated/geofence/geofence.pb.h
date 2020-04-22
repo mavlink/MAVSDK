@@ -88,14 +88,14 @@ namespace rpc {
 namespace geofence {
 
 enum Polygon_Type : int {
-  Polygon_Type_INCLUSION = 0,
-  Polygon_Type_EXCLUSION = 1,
+  Polygon_Type_TYPE_INCLUSION = 0,
+  Polygon_Type_TYPE_EXCLUSION = 1,
   Polygon_Type_Polygon_Type_INT_MIN_SENTINEL_DO_NOT_USE_ = std::numeric_limits<::PROTOBUF_NAMESPACE_ID::int32>::min(),
   Polygon_Type_Polygon_Type_INT_MAX_SENTINEL_DO_NOT_USE_ = std::numeric_limits<::PROTOBUF_NAMESPACE_ID::int32>::max()
 };
 bool Polygon_Type_IsValid(int value);
-constexpr Polygon_Type Polygon_Type_Type_MIN = Polygon_Type_INCLUSION;
-constexpr Polygon_Type Polygon_Type_Type_MAX = Polygon_Type_EXCLUSION;
+constexpr Polygon_Type Polygon_Type_Type_MIN = Polygon_Type_TYPE_INCLUSION;
+constexpr Polygon_Type Polygon_Type_Type_MAX = Polygon_Type_TYPE_EXCLUSION;
 constexpr int Polygon_Type_Type_ARRAYSIZE = Polygon_Type_Type_MAX + 1;
 
 const ::PROTOBUF_NAMESPACE_ID::EnumDescriptor* Polygon_Type_descriptor();
@@ -113,19 +113,19 @@ inline bool Polygon_Type_Parse(
     Polygon_Type_descriptor(), name, value);
 }
 enum GeofenceResult_Result : int {
-  GeofenceResult_Result_UNKNOWN = 0,
-  GeofenceResult_Result_SUCCESS = 1,
-  GeofenceResult_Result_ERROR = 2,
-  GeofenceResult_Result_TOO_MANY_GEOFENCE_ITEMS = 3,
-  GeofenceResult_Result_BUSY = 4,
-  GeofenceResult_Result_TIMEOUT = 5,
-  GeofenceResult_Result_INVALID_ARGUMENT = 6,
+  GeofenceResult_Result_RESULT_UNKNOWN = 0,
+  GeofenceResult_Result_RESULT_SUCCESS = 1,
+  GeofenceResult_Result_RESULT_ERROR = 2,
+  GeofenceResult_Result_RESULT_TOO_MANY_GEOFENCE_ITEMS = 3,
+  GeofenceResult_Result_RESULT_BUSY = 4,
+  GeofenceResult_Result_RESULT_TIMEOUT = 5,
+  GeofenceResult_Result_RESULT_INVALID_ARGUMENT = 6,
   GeofenceResult_Result_GeofenceResult_Result_INT_MIN_SENTINEL_DO_NOT_USE_ = std::numeric_limits<::PROTOBUF_NAMESPACE_ID::int32>::min(),
   GeofenceResult_Result_GeofenceResult_Result_INT_MAX_SENTINEL_DO_NOT_USE_ = std::numeric_limits<::PROTOBUF_NAMESPACE_ID::int32>::max()
 };
 bool GeofenceResult_Result_IsValid(int value);
-constexpr GeofenceResult_Result GeofenceResult_Result_Result_MIN = GeofenceResult_Result_UNKNOWN;
-constexpr GeofenceResult_Result GeofenceResult_Result_Result_MAX = GeofenceResult_Result_INVALID_ARGUMENT;
+constexpr GeofenceResult_Result GeofenceResult_Result_Result_MIN = GeofenceResult_Result_RESULT_UNKNOWN;
+constexpr GeofenceResult_Result GeofenceResult_Result_Result_MAX = GeofenceResult_Result_RESULT_INVALID_ARGUMENT;
 constexpr int GeofenceResult_Result_Result_ARRAYSIZE = GeofenceResult_Result_Result_MAX + 1;
 
 const ::PROTOBUF_NAMESPACE_ID::EnumDescriptor* GeofenceResult_Result_descriptor();
@@ -387,10 +387,10 @@ class Polygon :
   // nested types ----------------------------------------------------
 
   typedef Polygon_Type Type;
-  static constexpr Type INCLUSION =
-    Polygon_Type_INCLUSION;
-  static constexpr Type EXCLUSION =
-    Polygon_Type_EXCLUSION;
+  static constexpr Type TYPE_INCLUSION =
+    Polygon_Type_TYPE_INCLUSION;
+  static constexpr Type TYPE_EXCLUSION =
+    Polygon_Type_TYPE_EXCLUSION;
   static inline bool Type_IsValid(int value) {
     return Polygon_Type_IsValid(value);
   }
@@ -836,20 +836,20 @@ class GeofenceResult :
   // nested types ----------------------------------------------------
 
   typedef GeofenceResult_Result Result;
-  static constexpr Result UNKNOWN =
-    GeofenceResult_Result_UNKNOWN;
-  static constexpr Result SUCCESS =
-    GeofenceResult_Result_SUCCESS;
-  static constexpr Result ERROR =
-    GeofenceResult_Result_ERROR;
-  static constexpr Result TOO_MANY_GEOFENCE_ITEMS =
-    GeofenceResult_Result_TOO_MANY_GEOFENCE_ITEMS;
-  static constexpr Result BUSY =
-    GeofenceResult_Result_BUSY;
-  static constexpr Result TIMEOUT =
-    GeofenceResult_Result_TIMEOUT;
-  static constexpr Result INVALID_ARGUMENT =
-    GeofenceResult_Result_INVALID_ARGUMENT;
+  static constexpr Result RESULT_UNKNOWN =
+    GeofenceResult_Result_RESULT_UNKNOWN;
+  static constexpr Result RESULT_SUCCESS =
+    GeofenceResult_Result_RESULT_SUCCESS;
+  static constexpr Result RESULT_ERROR =
+    GeofenceResult_Result_RESULT_ERROR;
+  static constexpr Result RESULT_TOO_MANY_GEOFENCE_ITEMS =
+    GeofenceResult_Result_RESULT_TOO_MANY_GEOFENCE_ITEMS;
+  static constexpr Result RESULT_BUSY =
+    GeofenceResult_Result_RESULT_BUSY;
+  static constexpr Result RESULT_TIMEOUT =
+    GeofenceResult_Result_RESULT_TIMEOUT;
+  static constexpr Result RESULT_INVALID_ARGUMENT =
+    GeofenceResult_Result_RESULT_INVALID_ARGUMENT;
   static inline bool Result_IsValid(int value) {
     return GeofenceResult_Result_IsValid(value);
   }
