@@ -24,6 +24,7 @@ message Point {
 
 // Polygon type.
 message Polygon {
+    // Geofence polygon types.
     enum Type {
         TYPE_INCLUSION = 0; // Type representing an inclusion fence
         TYPE_EXCLUSION = 1; // Type representing an exclusion fence
