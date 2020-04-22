@@ -55,7 +55,7 @@ void GimbalImpl::set_pitch_and_yaw_async(
         command, std::bind(&GimbalImpl::receive_command_result, std::placeholders::_1, callback));
 }
 
-Gimbal::Result GimbalImpl::set_gimbal_mode(const Gimbal::GimbalMode gimbal_mode)
+Gimbal::Result GimbalImpl::set_mode(const Gimbal::GimbalMode gimbal_mode)
 {
     MAVLinkCommands::CommandInt command{};
 
@@ -74,7 +74,7 @@ Gimbal::Result GimbalImpl::set_gimbal_mode(const Gimbal::GimbalMode gimbal_mode)
     return gimbal_result_from_command_result(_parent->send_command(command));
 }
 
-void GimbalImpl::set_gimbal_mode_async(
+void GimbalImpl::set_mode_async(
     const Gimbal::GimbalMode gimbal_mode, Gimbal::result_callback_t callback)
 {
     MAVLinkCommands::CommandInt command{};
@@ -97,9 +97,9 @@ void GimbalImpl::set_gimbal_mode_async(
 float GimbalImpl::to_float_gimbal_mode(const Gimbal::GimbalMode gimbal_mode) const
 {
     switch (gimbal_mode) {
-        case Gimbal::GimbalMode::YAW_FOLLOW:
+        case Gimbal::GimbalMode::YawFollow:
             return 0.0f;
-        case Gimbal::GimbalMode::YAW_LOCK:
+        case Gimbal::GimbalMode::YawLock:
             return 1.0f;
         default:
             return 0.0f;
@@ -149,15 +149,15 @@ Gimbal::Result GimbalImpl::gimbal_result_from_command_result(MAVLinkCommands::Re
 {
     switch (command_result) {
         case MAVLinkCommands::Result::SUCCESS:
-            return Gimbal::Result::SUCCESS;
+            return Gimbal::Result::Success;
         case MAVLinkCommands::Result::TIMEOUT:
-            return Gimbal::Result::TIMEOUT;
+            return Gimbal::Result::Timeout;
         case MAVLinkCommands::Result::NO_SYSTEM:
         case MAVLinkCommands::Result::CONNECTION_ERROR:
         case MAVLinkCommands::Result::BUSY:
         case MAVLinkCommands::Result::COMMAND_DENIED:
         default:
-            return Gimbal::Result::ERROR;
+            return Gimbal::Result::Error;
     }
 }
 

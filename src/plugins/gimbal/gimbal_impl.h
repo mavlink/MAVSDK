@@ -22,10 +22,9 @@ public:
     void
     set_pitch_and_yaw_async(float pitch_deg, float yaw_deg, Gimbal::result_callback_t callback);
 
-    Gimbal::Result set_gimbal_mode(const Gimbal::GimbalMode gimbal_mode);
+    Gimbal::Result set_mode(const Gimbal::GimbalMode gimbal_mode);
 
-    void
-    set_gimbal_mode_async(const Gimbal::GimbalMode gimbal_mode, Gimbal::result_callback_t callback);
+    void set_mode_async(const Gimbal::GimbalMode gimbal_mode, Gimbal::result_callback_t callback);
 
     float to_float_gimbal_mode(const Gimbal::GimbalMode gimbal_mode) const;
 
