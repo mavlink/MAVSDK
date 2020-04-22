@@ -40,14 +40,19 @@ TEST_F(SitlTest, OffboardPositionNED)
 
     std::this_thread::sleep_for(std::chrono::seconds(5));
 
+    Offboard::PositionNedYaw up{};
+    up.down_m = -10.0f;
     // Send it once before starting offboard, otherwise it will be rejected.
-    offboard->set_position_ned({0.0f, 0.0f, -10.0f, 0.0f});
+    offboard->set_position_ned(up);
 
     Offboard::Result offboard_result = offboard->start();
 
-    EXPECT_EQ(offboard_result, Offboard::Result::SUCCESS);
+    EXPECT_EQ(offboard_result, Offboard::Result::Success);
 
-    offboard->set_position_ned({0.0f, 0.0f, -10.0f, 90.0f});
+    Offboard::PositionNedYaw up_and_yaw{};
+    up_and_yaw.down_m = -10.0f;
+    up_and_yaw.yaw_deg = 90.0f;
+    offboard->set_position_ned(up_and_yaw);
     std::this_thread::sleep_for(std::chrono::seconds(1));
 
     {
@@ -56,54 +61,82 @@ TEST_F(SitlTest, OffboardPositionNED)
         for (float angle = 0.0f; angle <= 2.0f * M_PI_F; angle += step) {
             float x = radius * cosf(angle);
             float y = radius * sinf(angle);
-            offboard->set_position_ned({x, y, -10.0f, 90.0f});
+
+            Offboard::PositionNedYaw setpoint{};
+            setpoint.east_m = x;
+            setpoint.north_m = y;
+            setpoint.down_m = -10.0f;
+            setpoint.yaw_deg = 90.0f;
+            offboard->set_position_ned(setpoint);
             std::this_thread::sleep_for(std::chrono::milliseconds(50));
         }
-        offboard->set_position_ned({0.0f, 0.0f, -10.0f, 90.0f});
+        offboard->set_position_ned(up_and_yaw);
     }
 
     // Let's make sure that offboard knows it is active.
-    EXPECT_TRUE(offboard->is_active());
+    EXPECT_TRUE(offboard->is_active().second);
 
     // Then randomly, we just interfere with a mission command to pause it.
     mission->pause_mission_async(nullptr);
     // This needs some time to propagate.
     std::this_thread::sleep_for(std::chrono::seconds(2));
     // Now it should be inactive.
-    EXPECT_FALSE(offboard->is_active());
+    EXPECT_FALSE(offboard->is_active().second);
 
     // So we start it yet again.
     offboard_result = offboard->start();
 
     // It should complain because no setpoint is set.
-    EXPECT_EQ(offboard_result, Offboard::Result::NO_SETPOINT_SET);
+    EXPECT_EQ(offboard_result, Offboard::Result::NoSetpointSet);
 
     // Alright, set one then.
-    offboard->set_position_ned({0.0f, 0.0f, 0.0f, 270.0f});
+    Offboard::PositionNedYaw yaw_west{};
+    yaw_west.north_m = 270.0f;
+    offboard->set_position_ned(yaw_west);
     // And start again.
     offboard_result = offboard->start();
     // Now it should work.
-    EXPECT_EQ(offboard_result, Offboard::Result::SUCCESS);
-    EXPECT_TRUE(offboard->is_active());
+    EXPECT_EQ(offboard_result, Offboard::Result::Success);
+    EXPECT_TRUE(offboard->is_active().second);
 
     // Ok let's carry on.
-    offboard->set_position_ned({10.0f, 0.0f, -10.0f, 270.0f});
+    Offboard::PositionNedYaw setpoint{};
+    setpoint.north_m = 10.0f;
+    setpoint.down_m = -10.0f;
+    setpoint.yaw_deg = 270.0f;
+    offboard->set_position_ned(setpoint);
     std::this_thread::sleep_for(std::chrono::seconds(5));
 
-    offboard->set_position_ned({0.0f, -10.0f, -20.0f, 180.0f});
+    setpoint.north_m = 0.0f;
+    setpoint.east_m = -10.0f;
+    setpoint.down_m = -20.0f;
+    setpoint.yaw_deg = 180.0f;
+    offboard->set_position_ned(setpoint);
     std::this_thread::sleep_for(std::chrono::seconds(5));
 
-    offboard->set_position_ned({-10.0f, 0.0f, -30.0f, 90.0f});
+    setpoint.north_m = -10.0f;
+    setpoint.east_m = 0.0f;
+    setpoint.down_m = -30.0f;
+    setpoint.yaw_deg = 90.0f;
+    offboard->set_position_ned(setpoint);
     std::this_thread::sleep_for(std::chrono::seconds(5));
 
-    offboard->set_position_ned({0.0f, 10.0f, -20.0f, 0.0f});
+    setpoint.north_m = 0.0f;
+    setpoint.east_m = 10.0f;
+    setpoint.down_m = -20.0f;
+    setpoint.yaw_deg = 0.0f;
+    offboard->set_position_ned(setpoint);
     std::this_thread::sleep_for(std::chrono::seconds(5));
 
-    offboard->set_position_ned({0.0f, 00.0f, -10.0f, 0.0f});
+    setpoint.north_m = 0.0f;
+    setpoint.east_m = 0.0f;
+    setpoint.down_m = -10.0f;
+    setpoint.yaw_deg = 0.0f;
+    offboard->set_position_ned(setpoint);
     std::this_thread::sleep_for(std::chrono::seconds(5));
 
     offboard_result = offboard->stop();
-    EXPECT_EQ(offboard_result, Offboard::Result::SUCCESS);
+    EXPECT_EQ(offboard_result, Offboard::Result::Success);
 
     action_ret = action->land();
     EXPECT_EQ(action_ret, Action::Result::Success);

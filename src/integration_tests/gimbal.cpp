@@ -134,15 +134,26 @@ TEST(SitlTestGimbal, GimbalROIOffboard)
     telemetry->camera_attitude_euler_async(&receive_gimbal_attitude_euler_angles);
 
     // Send it once before starting offboard, otherwise it will be rejected.
-    offboard->set_velocity_ned({0.0f, 0.0f, 0.0f, 0.0f});
+    Offboard::VelocityNedYaw still;
+    still.north_m_s = 0.0f;
+    still.east_m_s = 0.0f;
+    still.down_m_s = 0.0f;
+    still.yaw_deg = 0.0f;
+    offboard->set_velocity_ned(still);
     Offboard::Result offboard_result = offboard->start();
-    EXPECT_EQ(offboard_result, Offboard::Result::SUCCESS);
+    EXPECT_EQ(offboard_result, Offboard::Result::Success);
 
     auto fly_straight = [&offboard](int step_count, float max_speed) {
         for (int i = 0; i < step_count; ++i) {
             int k = (i <= step_count / 2) ? i : step_count - i;
             float vy = static_cast<float>(k) / (step_count / 2) * max_speed;
-            offboard->set_velocity_ned({0.0f, vy, 0.0f, 90.0f});
+
+            Offboard::VelocityNedYaw move_east;
+            move_east.north_m_s = 0.0f;
+            move_east.east_m_s = vy;
+            move_east.down_m_s = 0.0f;
+            move_east.yaw_deg = 90.0f;
+            offboard->set_velocity_ned(move_east);
             std::this_thread::sleep_for(std::chrono::milliseconds(10));
         }
     };
@@ -157,7 +168,13 @@ TEST(SitlTestGimbal, GimbalROIOffboard)
 
     for (unsigned i = 0; i < steps; ++i) {
         float vx = 5.0f * sinf(i * step_size);
-        offboard->set_velocity_ned({vx, 0.0f, 0.0f, 90.0f});
+
+        Offboard::VelocityNedYaw move_north;
+        move_north.north_m_s = vx;
+        move_north.east_m_s = 0.0f;
+        move_north.down_m_s = 0.0f;
+        move_north.yaw_deg = 90.0f;
+        offboard->set_velocity_ned(move_north);
         std::this_thread::sleep_for(std::chrono::milliseconds(10));
     }
 

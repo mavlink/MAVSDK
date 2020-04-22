@@ -40,14 +40,19 @@ TEST_F(SitlTest, OffboardVelocityNED)
     std::this_thread::sleep_for(std::chrono::seconds(5));
 
     // Send it once before starting offboard, otherwise it will be rejected.
-    offboard->set_velocity_ned({0.0f, 0.0f, 0.0f, 0.0f});
+    Offboard::VelocityNedYaw still{};
+    offboard->set_velocity_ned(still);
 
     Offboard::Result offboard_result = offboard->start();
 
-    EXPECT_EQ(offboard_result, Offboard::Result::SUCCESS);
+    EXPECT_EQ(offboard_result, Offboard::Result::Success);
 
-    offboard->set_velocity_ned({0.0f, 0.0f, 0.0f, 90.0f});
-    std::this_thread::sleep_for(std::chrono::seconds(1));
+    {
+        Offboard::VelocityNedYaw yaw_right{};
+        yaw_right.yaw_deg = 90.0f;
+        offboard->set_velocity_ned(yaw_right);
+        std::this_thread::sleep_for(std::chrono::seconds(1));
+    }
 
     {
         const float step_size = 0.01f;
@@ -57,50 +62,62 @@ TEST_F(SitlTest, OffboardVelocityNED)
         for (unsigned i = 0; i < steps; ++i) {
             float vx = 5.0f * sinf(i * step_size);
             // std::cout << "vx: " << vx << std::endl;
-            offboard->set_velocity_ned({vx, 0.0f, 0.0f, 90.0f});
+            Offboard::VelocityNedYaw north_and_yaw_right{};
+            north_and_yaw_right.north_m_s = vx;
+            north_and_yaw_right.yaw_deg = 90.0f;
+            offboard->set_velocity_ned(north_and_yaw_right);
             std::this_thread::sleep_for(std::chrono::milliseconds(10));
         }
     }
 
     // Let's make sure that offboard knows it is active.
-    EXPECT_TRUE(offboard->is_active());
+    EXPECT_TRUE(offboard->is_active().second);
 
     // Then randomly, we just interfere with a mission command to pause it.
     mission->pause_mission_async(nullptr);
     // This needs some time to propagate.
     std::this_thread::sleep_for(std::chrono::seconds(2));
     // Now it should be inactive.
-    EXPECT_FALSE(offboard->is_active());
+    EXPECT_FALSE(offboard->is_active().second);
 
     // So we start it yet again.
     offboard_result = offboard->start();
 
     // It should complain because no setpoint is set.
-    EXPECT_EQ(offboard_result, Offboard::Result::NO_SETPOINT_SET);
+    EXPECT_EQ(offboard_result, Offboard::Result::NoSetpointSet);
 
     // Alright, set one then.
-    offboard->set_velocity_ned({0.0f, 0.0f, 0.0f, 270.0f});
+    Offboard::VelocityNedYaw yaw_left{};
+    yaw_left.yaw_deg = 270.0f;
+    offboard->set_velocity_ned(yaw_left);
     // And start again.
     offboard_result = offboard->start();
     // Now it should work.
-    EXPECT_EQ(offboard_result, Offboard::Result::SUCCESS);
-    EXPECT_TRUE(offboard->is_active());
+    EXPECT_EQ(offboard_result, Offboard::Result::Success);
+    EXPECT_TRUE(offboard->is_active().second);
 
     // Ok let's carry on.
-    offboard->set_velocity_ned({0.0f, 0.0f, 0.0f, 270.0f});
+    offboard->set_velocity_ned(yaw_left);
     std::this_thread::sleep_for(std::chrono::seconds(2));
 
-    offboard->set_velocity_ned({0.0f, 0.0f, -2.0f, 180.0f});
+    Offboard::VelocityNedYaw up{};
+    up.down_m_s = -2.0f;
+    up.yaw_deg = 180.0f;
+    offboard->set_velocity_ned(up);
     std::this_thread::sleep_for(std::chrono::seconds(4));
 
-    offboard->set_velocity_ned({0.0f, 0.0f, 0.0f, 90.0f});
+    Offboard::VelocityNedYaw yaw_right{};
+    yaw_right.yaw_deg = 90.0f;
+    offboard->set_velocity_ned(yaw_right);
     std::this_thread::sleep_for(std::chrono::seconds(4));
 
-    offboard->set_velocity_ned({0.0f, 0.0f, 1.0f, 0.0f});
+    Offboard::VelocityNedYaw down{};
+    down.down_m_s = 1.0f;
+    offboard->set_velocity_ned(down);
     std::this_thread::sleep_for(std::chrono::seconds(4));
 
     offboard_result = offboard->stop();
-    EXPECT_EQ(offboard_result, Offboard::Result::SUCCESS);
+    EXPECT_EQ(offboard_result, Offboard::Result::Success);
 
     action_ret = action->land();
     EXPECT_EQ(action_ret, Action::Result::Success);
@@ -137,42 +154,54 @@ TEST_F(SitlTest, OffboardVelocityBody)
     std::this_thread::sleep_for(std::chrono::seconds(5));
 
     // Send it once before starting offboard, otherwise it will be rejected.
-    offboard->set_velocity_body({0.0f, 0.0f, 0.0f, 0.0f});
+    Offboard::VelocityBodyYawspeed still{};
+    offboard->set_velocity_body(still);
 
     Offboard::Result offboard_result = offboard->start();
 
-    EXPECT_EQ(offboard_result, Offboard::Result::SUCCESS);
+    EXPECT_EQ(offboard_result, Offboard::Result::Success);
 
     // Yaw clockwise and climb
-    offboard->set_velocity_body({0.0f, 0.0f, -1.0f, 60.0f});
+    Offboard::VelocityBodyYawspeed yaw_clockwise_and_climb{};
+    yaw_clockwise_and_climb.down_m_s = -1.0f;
+    yaw_clockwise_and_climb.yawspeed_deg_s = 60.0f;
+    offboard->set_velocity_body(yaw_clockwise_and_climb);
     std::this_thread::sleep_for(std::chrono::seconds(5));
 
     // Yaw anti-clockwise
-    offboard->set_velocity_body({0.0f, 0.0f, 0.0f, -60.0f});
+    Offboard::VelocityBodyYawspeed yaw_anticlockwise{};
+    yaw_anticlockwise.yawspeed_deg_s = -60.0f;
+    offboard->set_velocity_body(yaw_anticlockwise);
     std::this_thread::sleep_for(std::chrono::seconds(5));
 
     // Wait for a bit
-    offboard->set_velocity_body({0.0f, 0.0f, 0.0f, 0.0f});
+    offboard->set_velocity_body(still);
     std::this_thread::sleep_for(std::chrono::seconds(2));
 
     // Fly a circle
-    offboard->set_velocity_body({5.0f, 0.0f, 0.0f, 60.0f});
+    Offboard::VelocityBodyYawspeed circle{};
+    circle.forward_m_s = 5.0f;
+    circle.yawspeed_deg_s = 60.0f;
+    offboard->set_velocity_body(circle);
     std::this_thread::sleep_for(std::chrono::seconds(5));
 
     // Wait for a bit
-    offboard->set_velocity_body({0.0f, 0.0f, 0.0f, 0.0f});
+    offboard->set_velocity_body(still);
     std::this_thread::sleep_for(std::chrono::seconds(5));
 
     // Fly a circle sideways
-    offboard->set_velocity_body({0.0f, -5.0f, 0.0f, 60.0f});
+    Offboard::VelocityBodyYawspeed circle_sideways{};
+    circle_sideways.right_m_s = -5.0f;
+    circle_sideways.yawspeed_deg_s = 60.0f;
+    offboard->set_velocity_body(circle_sideways);
     std::this_thread::sleep_for(std::chrono::seconds(5));
 
     // Wait for a bit
-    offboard->set_velocity_body({0.0f, 0.0f, 0.0f, 0.0f});
+    offboard->set_velocity_body(still);
     std::this_thread::sleep_for(std::chrono::seconds(5));
 
     offboard_result = offboard->stop();
-    EXPECT_EQ(offboard_result, Offboard::Result::SUCCESS);
+    EXPECT_EQ(offboard_result, Offboard::Result::Success);
 
     action_ret = action->land();
     EXPECT_EQ(action_ret, Action::Result::Success);
