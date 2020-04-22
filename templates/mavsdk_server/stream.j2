@@ -8,7 +8,10 @@ grpc::Status Subscribe{{ name.upper_camel_case }}(grpc::ServerContext* /* contex
 
     std::mutex subscribe_mutex{};
 
-    _{{ plugin_name.lower_snake_case }}.{{ name.lower_snake_case }}_async([this, &writer, &stream_closed_promise, is_finished, &subscribe_mutex](const {% if return_type.is_repeated %}std::vector<{% if not return_type.is_primitive %}{{ package.lower_snake_case.split('.')[0] }}::{{ plugin_name.upper_camel_case }}::{% endif %}{{ return_type.inner_name }}>{% else %}{%- if not return_type.is_primitive %}{{ package.lower_snake_case.split('.')[0] }}::{{ plugin_name.upper_camel_case }}::{% endif %}{{ return_type.name }}{% endif %} {{ name.lower_snake_case }}) {
+    _{{ plugin_name.lower_snake_case }}.{{ name.lower_snake_case }}_async(
+        [this, &writer, &stream_closed_promise, is_finished, &subscribe_mutex](
+            {%- if has_result -%}mavsdk::{{ plugin_name.upper_camel_case }}::Result result,{%- endif -%}
+            const {% if return_type.is_repeated %}std::vector<{% if not return_type.is_primitive %}{{ package.lower_snake_case.split('.')[0] }}::{{ plugin_name.upper_camel_case }}::{% endif %}{{ return_type.inner_name }}>{% else %}{%- if not return_type.is_primitive %}{{ package.lower_snake_case.split('.')[0] }}::{{ plugin_name.upper_camel_case }}::{% endif %}{{ return_type.name }}{% endif %} {{ name.lower_snake_case }}) {
 
         rpc::{{ plugin_name.lower_snake_case }}::{{ name.upper_camel_case }}Response rpc_response;
     {% if return_type.is_primitive %}
@@ -22,6 +25,14 @@ grpc::Status Subscribe{{ name.upper_camel_case }}(grpc::ServerContext* /* contex
         }
     {% else %}
         rpc_response.set_allocated_{{ return_name.lower_snake_case }}(translateToRpc{{ return_type.inner_name }}({{ name.lower_snake_case }}).release());
+    {% endif %}
+
+    {% if has_result %}
+        auto rpc_result = translateToRpcResult(result);
+        auto* rpc_{{ plugin_name.lower_snake_case }}_result = new rpc::{{ plugin_name.lower_snake_case }}::{{ plugin_name.upper_camel_case }}Result();
+        rpc_{{ plugin_name.lower_snake_case }}_result->set_result(rpc_result);
+        rpc_{{ plugin_name.lower_snake_case }}_result->set_result_str(mavsdk::{{ plugin_name.upper_camel_case }}::result_str(result));
+        rpc_response.set_allocated_{{ plugin_name.lower_snake_case }}_result(rpc_{{ plugin_name.lower_snake_case }}_result);
     {% endif %}
 
         std::lock_guard<std::mutex> lock(subscribe_mutex);

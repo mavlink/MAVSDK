@@ -11,5 +11,5 @@ void {{ name.lower_snake_case }}_async({% for param in params %}{{ param.type_in
  *
  * @return Result of request.
  */
-Result {{ name.lower_snake_case }}({% for param in params %}{{ param.type_info.name }} {{ param.name.lower_snake_case }}{{ ", " if not loop.last }}{% endfor %}) const;
+{% if has_result %}Result{% else %}void{% endif %} {{ name.lower_snake_case }}({% for param in params %}{{ param.type_info.name }} {{ param.name.lower_snake_case }}{{ ", " if not loop.last }}{% endfor %}) const;
 {% endif %}
