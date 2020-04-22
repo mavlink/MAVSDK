@@ -25,8 +25,8 @@ message Point {
 // Polygon type.
 message Polygon {
     enum Type {
-        INCLUSION = 0; // Type representing an inclusion fence
-        EXCLUSION = 1; // Type representing an exclusion fence
+        TYPE_INCLUSION = 0; // Type representing an inclusion fence
+        TYPE_EXCLUSION = 1; // Type representing an exclusion fence
     }
 
     repeated Point points = 1; // Points defining the polygon
@@ -45,13 +45,13 @@ message UploadGeofenceResponse {
 message GeofenceResult {
     // Possible results returned for geofence requests.
     enum Result {
-        UNKNOWN = 0; // Unknown error
-        SUCCESS = 1; // Request succeeded
-        ERROR = 2; // Error
-        TOO_MANY_GEOFENCE_ITEMS = 3; // Too many Polygon objects in the geofence
-        BUSY = 4; // Vehicle is busy
-        TIMEOUT = 5; // Request timed out
-        INVALID_ARGUMENT = 6; // Invalid argument
+        RESULT_UNKNOWN = 0; // Unknown error
+        RESULT_SUCCESS = 1; // Request succeeded
+        RESULT_ERROR = 2; // Error
+        RESULT_TOO_MANY_GEOFENCE_ITEMS = 3; // Too many Polygon objects in the geofence
+        RESULT_BUSY = 4; // Vehicle is busy
+        RESULT_TIMEOUT = 5; // Request timed out
+        RESULT_INVALID_ARGUMENT = 6; // Invalid argument
     }
 
     Result result = 1; // Result enum value
