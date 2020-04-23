@@ -26,6 +26,11 @@ void MissionRaw::upload_mission_async(
     _impl->upload_mission_async(mission_raw, callback);
 }
 
+void MissionRaw::upload_mission_cancel()
+{
+    _impl->upload_mission_cancel();
+}
+
 const char* MissionRaw::result_str(Result result)
 {
     switch (result) {
@@ -52,6 +57,52 @@ const char* MissionRaw::result_str(Result result)
 void MissionRaw::subscribe_mission_changed(mission_changed_callback_t callback)
 {
     _impl->subscribe_mission_changed(callback);
+}
+
+void MissionRaw::start_mission_async(result_callback_t callback)
+{
+    _impl->start_mission_async(callback);
+}
+
+void MissionRaw::pause_mission_async(result_callback_t callback)
+{
+    _impl->pause_mission_async(callback);
+}
+
+void MissionRaw::clear_mission_async(result_callback_t callback)
+{
+    _impl->clear_mission_async(callback);
+}
+
+void MissionRaw::set_current_mavlink_mission_item_async(
+    int current_mavlink, result_callback_t callback)
+{
+    _impl->set_current_mavlink_mission_item_async(current_mavlink, callback);
+}
+
+int MissionRaw::reached_mavlink_mission_item() const
+{
+    return _impl->reached_mavlink_mission_item();
+}
+
+int MissionRaw::current_mavlink_mission_item() const
+{
+    return _impl->current_mavlink_mission_item();
+}
+
+int MissionRaw::total_mavlink_mission_items() const
+{
+    return _impl->total_mavlink_mission_items();
+}
+
+void MissionRaw::subscribe_progress_current(progress_current_callback_t callback)
+{
+    _impl->subscribe_progress_current(callback);
+}
+
+void MissionRaw::subscribe_progress_reached(progress_reached_callback_t callback)
+{
+    _impl->subscribe_progress_reached(callback);
 }
 
 } // namespace mavsdk
