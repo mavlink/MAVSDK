@@ -10,6 +10,11 @@ third_party_dir="${script_dir}/../build/default/third_party"
 protoc_binary="${third_party_dir}/install/bin/protoc"
 protoc_grpc_binary="${third_party_dir}/install/bin/grpc_cpp_plugin"
 
+function snake_case_to_camel_case {
+    echo $1 | sed -r 's/(^|_)([a-z])/\U\2/g'
+}
+
+
 command -v ${protoc_binary} && command -v ${protoc_grpc_binary} || {
     echo "-------------------------------"
     echo " Error"
@@ -56,11 +61,12 @@ template_path_mavsdk_server="${script_dir}/../templates/mavsdk_server"
 
 for plugin in action calibration camera geofence gimbal mission offboard param telemetry; do
     ${protoc_binary} -I ${proto_dir} --custom_out=${tmp_output_dir} --plugin=protoc-gen-custom=${protoc_gen_dcsdk} --custom_opt="file_ext=h,template_path=${template_path_plugin_h}" ${proto_dir}/${plugin}/${plugin}.proto
-    mv ${tmp_output_dir}/${plugin}/${plugin^}.h ${script_dir}/../src/plugins/${plugin}/include/plugins/${plugin}/${plugin}.h
+    mv ${tmp_output_dir}/${plugin}/$(snake_case_to_camel_case ${plugin}).h ${script_dir}/../src/plugins/${plugin}/include/plugins/${plugin}/${plugin}.h
 
     ${protoc_binary} -I ${proto_dir} --custom_out=${tmp_output_dir} --plugin=protoc-gen-custom=${protoc_gen_dcsdk} --custom_opt="file_ext=cpp,template_path=${template_path_plugin_cpp}" ${proto_dir}/${plugin}/${plugin}.proto
-    mv ${tmp_output_dir}/${plugin}/${plugin^}.cpp ${script_dir}/../src/plugins/${plugin}/${plugin}.cpp
+    mv ${tmp_output_dir}/${plugin}/$(snake_case_to_camel_case ${plugin}).cpp ${script_dir}/../src/plugins/${plugin}/${plugin}.cpp
 
     ${protoc_binary} -I ${proto_dir} --custom_out=${tmp_output_dir} --plugin=protoc-gen-custom=${protoc_gen_dcsdk} --custom_opt="file_ext=h,template_path=${template_path_mavsdk_server}" ${proto_dir}/${plugin}/${plugin}.proto
-    mv ${tmp_output_dir}/${plugin}/${plugin^}.h ${script_dir}/../src/backend/src/plugins/${plugin}/${plugin}_service_impl.h
+    mkdir -p ${script_dir}/../src/backend/src/plugins/${plugin}
+    mv ${tmp_output_dir}/${plugin}/$(snake_case_to_camel_case ${plugin}).h ${script_dir}/../src/backend/src/plugins/${plugin}/${plugin}_service_impl.h
 done
