@@ -1,0 +1,168 @@
+syntax = "proto3";
+
+package mavsdk.rpc.mission_raw;
+
+import "mavsdk_options.proto";
+
+option java_package = "io.mavsdk.mission_raw";
+option java_outer_classname = "MissionRawProto";
+
+// Enable raw missions as exposed by MAVLink.
+service MissionRawService {
+    /*
+     * Upload a list of raw mission items to the system.
+     *
+     * The raw mission items are uploaded to a drone. Once uploaded the mission
+     * can be started and executed even if the connection is lost.
+     */
+    rpc UploadMission(UploadMissionRequest) returns(UploadMissionResponse) {}
+    /*
+     * Cancel an ongoing mission upload.
+     */
+    rpc CancelMissionUpload(CancelMissionUploadRequest) returns(CancelMissionUploadResponse) { option (mavsdk.options.async_type) = SYNC; }
+    /*
+     * Download a list of raw mission items from the system (asynchronous).
+     */
+    rpc DownloadMission(DownloadMissionRequest) returns(DownloadMissionResponse) {}
+    /*
+     * Cancel an ongoing mission download.
+     */
+    rpc CancelMissionDownload(CancelMissionDownloadRequest) returns(CancelMissionDownloadResponse) { option (mavsdk.options.async_type) = SYNC; }
+    /*
+     * Start the mission.
+     *
+     * A mission must be uploaded to the vehicle before this can be called.
+     */
+    rpc StartMission(StartMissionRequest) returns(StartMissionResponse) {}
+    /*
+     * Pause the mission.
+     *
+     * Pausing the mission puts the vehicle into
+     * [HOLD mode](https://docs.px4.io/en/flight_modes/hold.html).
+     * A multicopter should just hover at the spot while a fixedwing vehicle should loiter
+     * around the location where it paused.
+     */
+    rpc PauseMission(PauseMissionRequest) returns(PauseMissionResponse) {}
+    /*
+     * Clear the mission saved on the vehicle.
+     */
+    rpc ClearMission(ClearMissionRequest) returns(ClearMissionResponse) {}
+    /*
+     * Sets the raw mission item index to go to.
+     *
+     * By setting the current index to 0, the mission is restarted from the beginning. If it is set
+     * to a specific index of a raw mission item, the mission will be set to this item.
+     */
+    rpc SetCurrentMissionItem(SetCurrentMissionItemRequest) returns(SetCurrentMissionItemResponse) {}
+    /*
+     * Subscribe to mission progress updates.
+     */
+    rpc SubscribeMissionProgress(SubscribeMissionProgressRequest) returns(stream MissionProgressResponse) {}
+    /**
+     * Subscribes to mission changed.
+     *
+     * This notification can be used to be informed if a ground station has
+     * been uploaded or changed by a ground station or companion computer.
+     *
+     * @param callback Callback to notify about change.
+     */
+    rpc SubscribeMissionChanged(SubscribeMissionChangedRequest) returns(stream MissionChangedResponse) { option (mavsdk.options.async_type) = ASYNC; }
+}
+
+message UploadMissionRequest {
+    repeated MissionItem mission_items = 1; // The mission items
+}
+message UploadMissionResponse {
+    MissionResult mission_result = 1;
+}
+
+message CancelMissionUploadRequest {}
+message CancelMissionUploadResponse {
+    MissionResult mission_result = 1;
+}
+
+message DownloadMissionRequest {}
+message DownloadMissionResponse {
+    MissionResult mission_result = 1;
+    repeated MissionItem mission_items = 2; // The mission items
+}
+
+message CancelMissionDownloadRequest {}
+message CancelMissionDownloadResponse {
+    MissionResult mission_result = 1;
+}
+
+message StartMissionRequest {}
+message StartMissionResponse {
+    MissionResult mission_result = 1;
+}
+
+message PauseMissionRequest {}
+message PauseMissionResponse {
+    MissionResult mission_result = 1;
+}
+
+message ClearMissionRequest {}
+message ClearMissionResponse {
+    MissionResult mission_result = 1;
+}
+
+message SetCurrentMissionItemRequest {
+    int32 index = 1; // Index of the mission item to be set as the next one (0-based)
+}
+message SetCurrentMissionItemResponse {
+    MissionResult mission_result = 1;
+}
+
+message SubscribeMissionProgressRequest {}
+message MissionProgressResponse {
+    MissionProgress mission_progress = 1; // Mission progress
+}
+
+message SubscribeMissionChangedRequest {}
+message MissionChangedResponse {
+    bool mission_changed = 1; // Mission has changed
+}
+
+// Mission progress type.
+message MissionProgress {
+    int32 current = 1; // Current mission item index (0-based)
+    int32 total = 2; // Total number of mission items
+}
+
+// Mission item exactly identical to MAVLink MISSION_ITEM_INT.
+message MissionItem {
+    uint32 seq = 1; // Sequence (uint16_t)
+    uint32 frame = 2; // The coordinate system of the waypoint (actually uint8_t)
+    uint32 command = 3; // The scheduled action for the waypoint (actually uint16_t)
+    uint32 current = 4; // false:0, true:1 (actually uint8_t)
+    uint32 autocontinue = 5; // Autocontinue to next waypoint (actually uint8_t)
+    float param1 = 6; // PARAM1, see MAV_CMD enum
+    float param2 = 7; // PARAM2, see MAV_CMD enum
+    float param3 = 8; // PARAM3, see MAV_CMD enum
+    float param4 = 9; // PARAM4, see MAV_CMD enum
+    int32 x = 10; // PARAM5 / local: x position in meters * 1e4, global: latitude in degrees * 10^7
+    int32 y = 11; // PARAM6 / y position: local: x position in meters * 1e4, global: longitude in degrees *10^7
+    float z = 12; // PARAM7 / local: Z coordinate, global: altitude (relative or absolute, depending on frame)
+    uint32 mission_type = 13; // @brief Mission type (actually uint8_t)
+}
+
+// Result type.
+message MissionResult {
+    // Possible results returned for action requests.
+    enum Result {
+        RESULT_UNKNOWN = 0; // Unknown error
+        RESULT_SUCCESS = 1; // Request succeeded
+        RESULT_ERROR = 2; // Error
+        RESULT_TOO_MANY_MISSION_ITEMS = 3; // Too many mission items in the mission
+        RESULT_BUSY = 4; // Vehicle is busy
+        RESULT_TIMEOUT = 5; // Request timed out
+        RESULT_INVALID_ARGUMENT = 6; // Invalid argument
+        RESULT_UNSUPPORTED = 7; // Mission downloaded from the system is not supported
+        RESULT_NO_MISSION_AVAILABLE = 8; // No mission available on the system
+        RESULT_TRANSFER_CANCELLED = 9; // Mission transfer (upload or download) has been cancelled
+    }
+
+    Result result = 1; // Result enum value
+    string result_str = 2; // Human-readable English string describing the result
+}
