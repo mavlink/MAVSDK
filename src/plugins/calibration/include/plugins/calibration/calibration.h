@@ -49,9 +49,8 @@ public:
     enum class Result {
         Unknown, /**< @brief Unknown error. */
         Success, /**< @brief The calibration process succeeded. */
-        InProgress, /**< @brief Intermediate message showing progress of the calibration process. */
-        Instruction, /**< @brief Intermediate message giving instructions on the next steps required
-                        by the process. */
+        Next, /**< @brief Intermediate message showing progress or instructions on the next steps
+                 required by the process. */
         Failed, /**< @brief Calibration failed. */
         NoSystem, /**< @brief No system is connected. */
         ConnectionError, /**< @brief Connection error. */

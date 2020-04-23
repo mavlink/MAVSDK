@@ -252,7 +252,7 @@ CalibrationImpl::calibration_result_from_command_result(MAVLinkCommands::Result 
         case MAVLinkCommands::Result::TIMEOUT:
             return Calibration::Result::Timeout;
         case MAVLinkCommands::Result::IN_PROGRESS:
-            return Calibration::Result::InProgress;
+            return Calibration::Result::Next;
         default:
             return Calibration::Result::Unknown;
     }
@@ -367,7 +367,7 @@ void CalibrationImpl::report_progress(float progress)
     Calibration::ProgressData progress_data;
     progress_data.has_progress = true;
     progress_data.progress = progress;
-    call_user_callback(_calibration_callback, Calibration::Result::InProgress, progress_data);
+    call_user_callback(_calibration_callback, Calibration::Result::Next, progress_data);
 }
 
 void CalibrationImpl::report_instruction(const std::string& instruction)
@@ -375,7 +375,7 @@ void CalibrationImpl::report_instruction(const std::string& instruction)
     Calibration::ProgressData progress_data;
     progress_data.has_status_text = true;
     progress_data.status_text = instruction;
-    call_user_callback(_calibration_callback, Calibration::Result::Instruction, progress_data);
+    call_user_callback(_calibration_callback, Calibration::Result::Next, progress_data);
 }
 
 } // namespace mavsdk

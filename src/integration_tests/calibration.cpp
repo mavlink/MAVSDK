@@ -203,9 +203,9 @@ void receive_calibration_callback(
     const std::string& calibration_type,
     std::promise<Calibration::Result>& prom)
 {
-    if (result == Calibration::Result::InProgress) {
+    if (result == Calibration::Result::Next && progress_data.has_progress) {
         LogInfo() << calibration_type << " calibration in progress: " << progress_data.progress;
-    } else if (result == Calibration::Result::Instruction) {
+    } else if (result == Calibration::Result::Next && progress_data.has_status_text) {
         LogInfo() << calibration_type << " calibration instruction: " << progress_data.status_text;
     } else {
         prom.set_value(result);

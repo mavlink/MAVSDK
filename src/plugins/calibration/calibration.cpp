@@ -48,10 +48,8 @@ const char* Calibration::result_str(Calibration::Result result)
             return "Unknown error";
         case Calibration::Result::Success:
             return "The calibration process succeeded";
-        case Calibration::Result::InProgress:
-            return "Intermediate message showing progress of the calibration process";
-        case Calibration::Result::Instruction:
-            return "Intermediate message giving instructions on the next steps required by the process";
+        case Calibration::Result::Next:
+            return "Intermediate message showing progress or instructions on the next steps required by the process";
         case Calibration::Result::Failed:
             return "Calibration failed";
         case Calibration::Result::NoSystem:
@@ -78,10 +76,8 @@ std::ostream& operator<<(std::ostream& str, Calibration::Result const& result)
             return str << "Result Unknown";
         case Calibration::Result::Success:
             return str << "Result Success";
-        case Calibration::Result::InProgress:
-            return str << "Result In Progress";
-        case Calibration::Result::Instruction:
-            return str << "Result Instruction";
+        case Calibration::Result::Next:
+            return str << "Result Next";
         case Calibration::Result::Failed:
             return str << "Result Failed";
         case Calibration::Result::NoSystem:

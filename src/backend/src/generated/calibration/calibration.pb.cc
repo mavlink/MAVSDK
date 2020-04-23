@@ -380,40 +380,39 @@ const char descriptor_table_protodef_calibration_2fcalibration_2eproto[] PROTOBU
   "\0132).mavsdk.rpc.calibration.CalibrationRe"
   "sult\022;\n\rprogress_data\030\002 \001(\0132$.mavsdk.rpc"
   ".calibration.ProgressData\"\017\n\rCancelReque"
-  "st\"\020\n\016CancelResponse\"\350\002\n\021CalibrationResu"
+  "st\"\020\n\016CancelResponse\"\311\002\n\021CalibrationResu"
   "lt\022@\n\006result\030\001 \001(\01620.mavsdk.rpc.calibrat"
   "ion.CalibrationResult.Result\022\022\n\nresult_s"
-  "tr\030\002 \001(\t\"\374\001\n\006Result\022\022\n\016RESULT_UNKNOWN\020\000\022"
-  "\022\n\016RESULT_SUCCESS\020\001\022\026\n\022RESULT_IN_PROGRES"
-  "S\020\002\022\026\n\022RESULT_INSTRUCTION\020\003\022\021\n\rRESULT_FA"
-  "ILED\020\004\022\024\n\020RESULT_NO_SYSTEM\020\005\022\033\n\027RESULT_C"
-  "ONNECTION_ERROR\020\006\022\017\n\013RESULT_BUSY\020\007\022\031\n\025RE"
-  "SULT_COMMAND_DENIED\020\010\022\022\n\016RESULT_TIMEOUT\020"
-  "\t\022\024\n\020RESULT_CANCELLED\020\n\"\203\001\n\014ProgressData"
-  "\022\037\n\014has_progress\030\001 \001(\010B\t\202\265\030\005false\022\031\n\010pro"
-  "gress\030\002 \001(\002B\007\202\265\030\003NaN\022\"\n\017has_status_text\030"
-  "\003 \001(\010B\t\202\265\030\005false\022\023\n\013status_text\030\004 \001(\t2\367\005"
-  "\n\022CalibrationService\022\206\001\n\026SubscribeCalibr"
-  "ateGyro\0225.mavsdk.rpc.calibration.Subscri"
-  "beCalibrateGyroRequest\032-.mavsdk.rpc.cali"
-  "bration.CalibrateGyroResponse\"\004\200\265\030\0000\001\022\241\001"
-  "\n\037SubscribeCalibrateAccelerometer\022>.mavs"
-  "dk.rpc.calibration.SubscribeCalibrateAcc"
-  "elerometerRequest\0326.mavsdk.rpc.calibrati"
-  "on.CalibrateAccelerometerResponse\"\004\200\265\030\0000"
-  "\001\022\236\001\n\036SubscribeCalibrateMagnetometer\022=.m"
-  "avsdk.rpc.calibration.SubscribeCalibrate"
-  "MagnetometerRequest\0325.mavsdk.rpc.calibra"
-  "tion.CalibrateMagnetometerResponse\"\004\200\265\030\000"
-  "0\001\022\263\001\n%SubscribeCalibrateGimbalAccelerom"
-  "eter\022D.mavsdk.rpc.calibration.SubscribeC"
-  "alibrateGimbalAccelerometerRequest\032<.mav"
-  "sdk.rpc.calibration.CalibrateGimbalAccel"
-  "erometerResponse\"\004\200\265\030\0000\001\022]\n\006Cancel\022%.mav"
-  "sdk.rpc.calibration.CancelRequest\032&.mavs"
-  "dk.rpc.calibration.CancelResponse\"\004\200\265\030\001B"
-  ")\n\025io.mavsdk.calibrationB\020CalibrationPro"
-  "tob\006proto3"
+  "tr\030\002 \001(\t\"\335\001\n\006Result\022\022\n\016RESULT_UNKNOWN\020\000\022"
+  "\022\n\016RESULT_SUCCESS\020\001\022\017\n\013RESULT_NEXT\020\002\022\021\n\r"
+  "RESULT_FAILED\020\003\022\024\n\020RESULT_NO_SYSTEM\020\004\022\033\n"
+  "\027RESULT_CONNECTION_ERROR\020\005\022\017\n\013RESULT_BUS"
+  "Y\020\006\022\031\n\025RESULT_COMMAND_DENIED\020\007\022\022\n\016RESULT"
+  "_TIMEOUT\020\010\022\024\n\020RESULT_CANCELLED\020\t\"\203\001\n\014Pro"
+  "gressData\022\037\n\014has_progress\030\001 \001(\010B\t\202\265\030\005fal"
+  "se\022\031\n\010progress\030\002 \001(\002B\007\202\265\030\003NaN\022\"\n\017has_sta"
+  "tus_text\030\003 \001(\010B\t\202\265\030\005false\022\023\n\013status_text"
+  "\030\004 \001(\t2\367\005\n\022CalibrationService\022\206\001\n\026Subscr"
+  "ibeCalibrateGyro\0225.mavsdk.rpc.calibratio"
+  "n.SubscribeCalibrateGyroRequest\032-.mavsdk"
+  ".rpc.calibration.CalibrateGyroResponse\"\004"
+  "\200\265\030\0000\001\022\241\001\n\037SubscribeCalibrateAcceleromet"
+  "er\022>.mavsdk.rpc.calibration.SubscribeCal"
+  "ibrateAccelerometerRequest\0326.mavsdk.rpc."
+  "calibration.CalibrateAccelerometerRespon"
+  "se\"\004\200\265\030\0000\001\022\236\001\n\036SubscribeCalibrateMagneto"
+  "meter\022=.mavsdk.rpc.calibration.Subscribe"
+  "CalibrateMagnetometerRequest\0325.mavsdk.rp"
+  "c.calibration.CalibrateMagnetometerRespo"
+  "nse\"\004\200\265\030\0000\001\022\263\001\n%SubscribeCalibrateGimbal"
+  "Accelerometer\022D.mavsdk.rpc.calibration.S"
+  "ubscribeCalibrateGimbalAccelerometerRequ"
+  "est\032<.mavsdk.rpc.calibration.CalibrateGi"
+  "mbalAccelerometerResponse\"\004\200\265\030\0000\001\022]\n\006Can"
+  "cel\022%.mavsdk.rpc.calibration.CancelReque"
+  "st\032&.mavsdk.rpc.calibration.CancelRespon"
+  "se\"\004\200\265\030\001B)\n\025io.mavsdk.calibrationB\020Calib"
+  "rationProtob\006proto3"
   ;
 static const ::PROTOBUF_NAMESPACE_ID::internal::DescriptorTable*const descriptor_table_calibration_2fcalibration_2eproto_deps[1] = {
   &::descriptor_table_mavsdk_5foptions_2eproto,
@@ -435,7 +434,7 @@ static ::PROTOBUF_NAMESPACE_ID::internal::SCCInfoBase*const descriptor_table_cal
 static ::PROTOBUF_NAMESPACE_ID::internal::once_flag descriptor_table_calibration_2fcalibration_2eproto_once;
 static bool descriptor_table_calibration_2fcalibration_2eproto_initialized = false;
 const ::PROTOBUF_NAMESPACE_ID::internal::DescriptorTable descriptor_table_calibration_2fcalibration_2eproto = {
-  &descriptor_table_calibration_2fcalibration_2eproto_initialized, descriptor_table_protodef_calibration_2fcalibration_2eproto, "calibration/calibration.proto", 2250,
+  &descriptor_table_calibration_2fcalibration_2eproto_initialized, descriptor_table_protodef_calibration_2fcalibration_2eproto, "calibration/calibration.proto", 2219,
   &descriptor_table_calibration_2fcalibration_2eproto_once, descriptor_table_calibration_2fcalibration_2eproto_sccs, descriptor_table_calibration_2fcalibration_2eproto_deps, 12, 1,
   schemas, file_default_instances, TableStruct_calibration_2fcalibration_2eproto::offsets,
   file_level_metadata_calibration_2fcalibration_2eproto, 12, file_level_enum_descriptors_calibration_2fcalibration_2eproto, file_level_service_descriptors_calibration_2fcalibration_2eproto,
@@ -462,7 +461,6 @@ bool CalibrationResult_Result_IsValid(int value) {
     case 7:
     case 8:
     case 9:
-    case 10:
       return true;
     default:
       return false;
@@ -472,8 +470,7 @@ bool CalibrationResult_Result_IsValid(int value) {
 #if (__cplusplus < 201703) && (!defined(_MSC_VER) || _MSC_VER >= 1900)
 constexpr CalibrationResult_Result CalibrationResult::RESULT_UNKNOWN;
 constexpr CalibrationResult_Result CalibrationResult::RESULT_SUCCESS;
-constexpr CalibrationResult_Result CalibrationResult::RESULT_IN_PROGRESS;
-constexpr CalibrationResult_Result CalibrationResult::RESULT_INSTRUCTION;
+constexpr CalibrationResult_Result CalibrationResult::RESULT_NEXT;
 constexpr CalibrationResult_Result CalibrationResult::RESULT_FAILED;
 constexpr CalibrationResult_Result CalibrationResult::RESULT_NO_SYSTEM;
 constexpr CalibrationResult_Result CalibrationResult::RESULT_CONNECTION_ERROR;

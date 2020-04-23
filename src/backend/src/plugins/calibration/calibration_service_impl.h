@@ -44,10 +44,8 @@ public:
                 return rpc::calibration::CalibrationResult_Result_RESULT_UNKNOWN;
             case mavsdk::Calibration::Result::Success:
                 return rpc::calibration::CalibrationResult_Result_RESULT_SUCCESS;
-            case mavsdk::Calibration::Result::InProgress:
-                return rpc::calibration::CalibrationResult_Result_RESULT_IN_PROGRESS;
-            case mavsdk::Calibration::Result::Instruction:
-                return rpc::calibration::CalibrationResult_Result_RESULT_INSTRUCTION;
+            case mavsdk::Calibration::Result::Next:
+                return rpc::calibration::CalibrationResult_Result_RESULT_NEXT;
             case mavsdk::Calibration::Result::Failed:
                 return rpc::calibration::CalibrationResult_Result_RESULT_FAILED;
             case mavsdk::Calibration::Result::NoSystem:
@@ -76,10 +74,8 @@ public:
                 return mavsdk::Calibration::Result::Unknown;
             case rpc::calibration::CalibrationResult_Result_RESULT_SUCCESS:
                 return mavsdk::Calibration::Result::Success;
-            case rpc::calibration::CalibrationResult_Result_RESULT_IN_PROGRESS:
-                return mavsdk::Calibration::Result::InProgress;
-            case rpc::calibration::CalibrationResult_Result_RESULT_INSTRUCTION:
-                return mavsdk::Calibration::Result::Instruction;
+            case rpc::calibration::CalibrationResult_Result_RESULT_NEXT:
+                return mavsdk::Calibration::Result::Next;
             case rpc::calibration::CalibrationResult_Result_RESULT_FAILED:
                 return mavsdk::Calibration::Result::Failed;
             case rpc::calibration::CalibrationResult_Result_RESULT_NO_SYSTEM:
