@@ -9,15 +9,14 @@ using namespace mavsdk;
 #define TELEMETRY_CONSOLE_TEXT "\033[34m" // Turn text on console blue
 #define NORMAL_CONSOLE_TEXT "\033[0m" // Restore normal console colour
 
-bool are_arguments_valid(const int, char**);
 void print_usage(const std::string& bin_name);
-bool start_discovery(Mavsdk&, const std::string&);
-void wait_until_discover(Mavsdk&);
-void run_interactive_shell(Mavsdk&, const uint16_t);
+bool start_discovery(Mavsdk& mavsdk, const std::string& connection_url);
+void wait_until_discover(Mavsdk& mavsdk);
+void run_interactive_shell(Mavsdk& mavsdk);
 
 int main(int argc, char** argv)
 {
-    if (!are_arguments_valid(argc, argv)) {
+    if (argc != 2) {
         const auto binary_name = argv[0];
         print_usage(binary_name);
         return 1;
@@ -31,14 +30,9 @@ int main(int argc, char** argv)
     }
 
     wait_until_discover(mavsdk);
-    run_interactive_shell(mavsdk, 1000);
+    run_interactive_shell(mavsdk);
 
     return 0;
-}
-
-bool are_arguments_valid(const int argc, char**)
-{
-    return argc == 2;
 }
 
 void print_usage(const std::string& bin_name)
@@ -79,19 +73,11 @@ void wait_until_discover(Mavsdk& mavsdk)
     discover_future.wait();
 }
 
-void run_interactive_shell(Mavsdk& mavsdk, const uint16_t timeout_ms)
+void run_interactive_shell(Mavsdk& mavsdk)
 {
     Shell shell(mavsdk.system());
 
-    shell.shell_command_response_async([](const Shell::Result, const Shell::ShellMessage msg) {
-        std::string output(msg.data);
-
-        if (output.length() > 2 && output.substr(1, output.length() - 2) == "nsh>") {
-            output = "nsh> ";
-        }
-
-        std::cout << output;
-    });
+    shell.receive_async([](const std::string output) { std::cout << output; });
 
     while (true) {
         std::string command;
@@ -101,7 +87,7 @@ void run_interactive_shell(Mavsdk& mavsdk, const uint16_t timeout_ms)
             break;
         }
 
-        Shell::ShellMessage msg{true, timeout_ms, command};
-        shell.shell_command(msg);
+        shell.send(command);
     }
+    std::cout << std::endl;
 }
