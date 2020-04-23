@@ -2,6 +2,8 @@ syntax = "proto3";
 
 package mavsdk.rpc.shell;
 
+import "mavsdk_options.proto";
+
 option java_package = "io.mavsdk.shell";
 option java_outer_classname = "ShellProto";
 
@@ -9,33 +11,40 @@ option java_outer_classname = "ShellProto";
  * Allow to communicate with the vehicle's system shell.
  */
 service ShellService {
-    // Communicate with a vehicle's Shell.
-    rpc Send(SendRequest) returns(SendResponse) {}
+    /*
+     * Send a command line.
+     */
+    rpc Send(SendRequest) returns(SendResponse) { option (mavsdk.options.async_type) = SYNC; }
+    /*
+     * Receive feedback from a sent command line.
+     *
+     * This subscription needs to be made before a command line is sent, otherwise, no response will be sent.
+     */
+    rpc SubscribeReceive(SubscribeReceiveRequest) returns(stream ReceiveResponse) { option (mavsdk.options.async_type) = ASYNC; }
 }
 
 message SendRequest {
-    ShellMessage shell_message = 1;
+    string command = 1; // The command line to send
 }
 message SendResponse {
     ShellResult shell_result = 1;
-    string response_message_data = 2; // Response message data (if available)
 }
 
-message ShellMessage {
-    bool need_response = 1; // Set if the sender wants the receiver to send a response.
-    uint32 timeout_ms = 2; // Timeout (ms).
-    string data = 3; // Serial data.
+message SubscribeReceiveRequest {}
+message ReceiveResponse {
+    string data = 1; // Received data.
 }
 
+// Result type.
 message ShellResult {
     // Possible results returned for shell requests
     enum Result {
-        UNKNOWN = 0; // Unknown error
-        SUCCESS = 1; // Request succeeded
-        NO_SYSTEM = 2; // No system is connected
-        CONNECTION_ERROR = 3; // Connection error
-        NO_RESPONSE = 4; // Response was not received
-        BUSY = 5; // Shell busy (transfer in progress)
+        RESULT_UNKNOWN = 0; // Unknown error
+        RESULT_SUCCESS = 1; // Request succeeded
+        RESULT_NO_SYSTEM = 2; // No system is connected
+        RESULT_CONNECTION_ERROR = 3; // Connection error
+        RESULT_NO_RESPONSE = 4; // Response was not received
+        RESULT_BUSY = 5; // Shell busy (transfer in progress)
     }
 
     Result result = 1; // Result enum value
