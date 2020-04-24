@@ -24,6 +24,7 @@ namespace shell {
 
 static const char* ShellService_method_names[] = {
   "/mavsdk.rpc.shell.ShellService/Send",
+  "/mavsdk.rpc.shell.ShellService/SubscribeReceive",
 };
 
 std::unique_ptr< ShellService::Stub> ShellService::NewStub(const std::shared_ptr< ::grpc::ChannelInterface>& channel, const ::grpc::StubOptions& options) {
@@ -34,6 +35,7 @@ std::unique_ptr< ShellService::Stub> ShellService::NewStub(const std::shared_ptr
 
 ShellService::Stub::Stub(const std::shared_ptr< ::grpc::ChannelInterface>& channel)
   : channel_(channel), rpcmethod_Send_(ShellService_method_names[0], ::grpc::internal::RpcMethod::NORMAL_RPC, channel)
+  , rpcmethod_SubscribeReceive_(ShellService_method_names[1], ::grpc::internal::RpcMethod::SERVER_STREAMING, channel)
   {}
 
 ::grpc::Status ShellService::Stub::Send(::grpc::ClientContext* context, const ::mavsdk::rpc::shell::SendRequest& request, ::mavsdk::rpc::shell::SendResponse* response) {
@@ -64,12 +66,33 @@ void ShellService::Stub::experimental_async::Send(::grpc::ClientContext* context
   return ::grpc_impl::internal::ClientAsyncResponseReaderFactory< ::mavsdk::rpc::shell::SendResponse>::Create(channel_.get(), cq, rpcmethod_Send_, context, request, false);
 }
 
+::grpc::ClientReader< ::mavsdk::rpc::shell::ReceiveResponse>* ShellService::Stub::SubscribeReceiveRaw(::grpc::ClientContext* context, const ::mavsdk::rpc::shell::SubscribeReceiveRequest& request) {
+  return ::grpc_impl::internal::ClientReaderFactory< ::mavsdk::rpc::shell::ReceiveResponse>::Create(channel_.get(), rpcmethod_SubscribeReceive_, context, request);
+}
+
+void ShellService::Stub::experimental_async::SubscribeReceive(::grpc::ClientContext* context, ::mavsdk::rpc::shell::SubscribeReceiveRequest* request, ::grpc::experimental::ClientReadReactor< ::mavsdk::rpc::shell::ReceiveResponse>* reactor) {
+  ::grpc_impl::internal::ClientCallbackReaderFactory< ::mavsdk::rpc::shell::ReceiveResponse>::Create(stub_->channel_.get(), stub_->rpcmethod_SubscribeReceive_, context, request, reactor);
+}
+
+::grpc::ClientAsyncReader< ::mavsdk::rpc::shell::ReceiveResponse>* ShellService::Stub::AsyncSubscribeReceiveRaw(::grpc::ClientContext* context, const ::mavsdk::rpc::shell::SubscribeReceiveRequest& request, ::grpc::CompletionQueue* cq, void* tag) {
+  return ::grpc_impl::internal::ClientAsyncReaderFactory< ::mavsdk::rpc::shell::ReceiveResponse>::Create(channel_.get(), cq, rpcmethod_SubscribeReceive_, context, request, true, tag);
+}
+
+::grpc::ClientAsyncReader< ::mavsdk::rpc::shell::ReceiveResponse>* ShellService::Stub::PrepareAsyncSubscribeReceiveRaw(::grpc::ClientContext* context, const ::mavsdk::rpc::shell::SubscribeReceiveRequest& request, ::grpc::CompletionQueue* cq) {
+  return ::grpc_impl::internal::ClientAsyncReaderFactory< ::mavsdk::rpc::shell::ReceiveResponse>::Create(channel_.get(), cq, rpcmethod_SubscribeReceive_, context, request, false, nullptr);
+}
+
 ShellService::Service::Service() {
   AddMethod(new ::grpc::internal::RpcServiceMethod(
       ShellService_method_names[0],
       ::grpc::internal::RpcMethod::NORMAL_RPC,
       new ::grpc::internal::RpcMethodHandler< ShellService::Service, ::mavsdk::rpc::shell::SendRequest, ::mavsdk::rpc::shell::SendResponse>(
           std::mem_fn(&ShellService::Service::Send), this)));
+  AddMethod(new ::grpc::internal::RpcServiceMethod(
+      ShellService_method_names[1],
+      ::grpc::internal::RpcMethod::SERVER_STREAMING,
+      new ::grpc::internal::ServerStreamingHandler< ShellService::Service, ::mavsdk::rpc::shell::SubscribeReceiveRequest, ::mavsdk::rpc::shell::ReceiveResponse>(
+          std::mem_fn(&ShellService::Service::SubscribeReceive), this)));
 }
 
 ShellService::Service::~Service() {
@@ -79,6 +102,13 @@ ShellService::Service::~Service() {
   (void) context;
   (void) request;
   (void) response;
+  return ::grpc::Status(::grpc::StatusCode::UNIMPLEMENTED, "");
+}
+
+::grpc::Status ShellService::Service::SubscribeReceive(::grpc::ServerContext* context, const ::mavsdk::rpc::shell::SubscribeReceiveRequest* request, ::grpc::ServerWriter< ::mavsdk::rpc::shell::ReceiveResponse>* writer) {
+  (void) context;
+  (void) request;
+  (void) writer;
   return ::grpc::Status(::grpc::StatusCode::UNIMPLEMENTED, "");
 }
 
