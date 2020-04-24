@@ -42,8 +42,8 @@ namespace rpc {
 namespace mocap {
 
 // *
-// Motion Capture allow vehicles to navigate when a global
-// position source is unavailable or unreliable
+// Allows interfacing a vehicle with a motion capture system in
+// order to allow navigation without global positioning sources available
 // (e.g. indoors, or when flying under a bridge. etc.).
 class MocapService final {
  public:

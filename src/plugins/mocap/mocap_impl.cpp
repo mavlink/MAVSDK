@@ -29,47 +29,47 @@ Mocap::Result MocapImpl::set_vision_position_estimate(
     const Mocap::VisionPositionEstimate& vision_position_estimate)
 {
     if (!_parent->is_connected())
-        return Mocap::Result::NO_SYSTEM;
+        return Mocap::Result::NoSystem;
 
     _visual_position_estimate_mutex.lock();
     _vision_position_estimate = vision_position_estimate;
     _visual_position_estimate_mutex.unlock();
 
     if (!send_vision_position_estimate())
-        return Mocap::Result::CONNECTION_ERROR;
+        return Mocap::Result::ConnectionError;
 
-    return Mocap::Result::SUCCESS;
+    return Mocap::Result::Success;
 }
 
 Mocap::Result
 MocapImpl::set_attitude_position_mocap(const Mocap::AttitudePositionMocap& attitude_position_mocap)
 {
     if (!_parent->is_connected())
-        return Mocap::Result::NO_SYSTEM;
+        return Mocap::Result::NoSystem;
 
     _attitude_position_mocap_mutex.lock();
     _attitude_position_mocap = attitude_position_mocap;
     _attitude_position_mocap_mutex.unlock();
 
     if (!send_attitude_position_mocap())
-        return Mocap::Result::CONNECTION_ERROR;
+        return Mocap::Result::ConnectionError;
 
-    return Mocap::Result::SUCCESS;
+    return Mocap::Result::Success;
 }
 
 Mocap::Result MocapImpl::set_odometry(const Mocap::Odometry& odometry)
 {
     if (!_parent->is_connected())
-        return Mocap::Result::NO_SYSTEM;
+        return Mocap::Result::NoSystem;
 
     _odometry_mutex.lock();
     _odometry = odometry;
     _odometry_mutex.unlock();
 
     if (!send_odometry())
-        return Mocap::Result::CONNECTION_ERROR;
+        return Mocap::Result::ConnectionError;
 
-    return Mocap::Result::SUCCESS;
+    return Mocap::Result::Success;
 }
 
 bool MocapImpl::send_vision_position_estimate()
@@ -103,8 +103,8 @@ bool MocapImpl::send_vision_position_estimate()
         vision_position_estimate.angle_body.roll_rad,
         vision_position_estimate.angle_body.pitch_rad,
         vision_position_estimate.angle_body.yaw_rad,
-        vision_position_estimate.pose_covariance.data(),
-        vision_position_estimate.reset_counter);
+        vision_position_estimate.pose_covariance.covariance_matrix.data(), // TODO: check this data
+        0); // FIXME: reset_counter not set
 
     return _parent->send_message(message);
 }
@@ -144,7 +144,7 @@ bool MocapImpl::send_attitude_position_mocap()
         attitude_position_mocap.position_body.x_m,
         attitude_position_mocap.position_body.y_m,
         attitude_position_mocap.position_body.z_m,
-        attitude_position_mocap.pose_covariance.data());
+        attitude_position_mocap.pose_covariance.covariance_matrix.data()); // TODO: check this data
 
     return _parent->send_message(message);
 }
@@ -191,8 +191,8 @@ bool MocapImpl::send_odometry()
         odometry.angular_velocity_body.roll_rad_s,
         odometry.angular_velocity_body.pitch_rad_s,
         odometry.angular_velocity_body.yaw_rad_s,
-        odometry.pose_covariance.data(),
-        odometry.velocity_covariance.data(),
+        odometry.pose_covariance.covariance_matrix.data(), // TODO: check this data
+        odometry.velocity_covariance.covariance_matrix.data(), // TODO: check this data
         0,
         MAV_ESTIMATOR_TYPE_MOCAP);
 

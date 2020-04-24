@@ -33,6 +33,7 @@
 #include <google/protobuf/extension_set.h>  // IWYU pragma: export
 #include <google/protobuf/generated_enum_reflection.h>
 #include <google/protobuf/unknown_field_set.h>
+#include "mavsdk_options.pb.h"
 // @@protoc_insertion_point(includes)
 #include <google/protobuf/port_def.inc>
 #define PROTOBUF_INTERNAL_EXPORT_mocap_2fmocap_2eproto
@@ -132,14 +133,14 @@ namespace rpc {
 namespace mocap {
 
 enum Odometry_MavFrame : int {
-  Odometry_MavFrame_MOCAP_NED = 0,
-  Odometry_MavFrame_LOCAL_FRD = 1,
+  Odometry_MavFrame_MAV_FRAME_MOCAP_NED = 0,
+  Odometry_MavFrame_MAV_FRAME_LOCAL_FRD = 1,
   Odometry_MavFrame_Odometry_MavFrame_INT_MIN_SENTINEL_DO_NOT_USE_ = std::numeric_limits<::PROTOBUF_NAMESPACE_ID::int32>::min(),
   Odometry_MavFrame_Odometry_MavFrame_INT_MAX_SENTINEL_DO_NOT_USE_ = std::numeric_limits<::PROTOBUF_NAMESPACE_ID::int32>::max()
 };
 bool Odometry_MavFrame_IsValid(int value);
-constexpr Odometry_MavFrame Odometry_MavFrame_MavFrame_MIN = Odometry_MavFrame_MOCAP_NED;
-constexpr Odometry_MavFrame Odometry_MavFrame_MavFrame_MAX = Odometry_MavFrame_LOCAL_FRD;
+constexpr Odometry_MavFrame Odometry_MavFrame_MavFrame_MIN = Odometry_MavFrame_MAV_FRAME_MOCAP_NED;
+constexpr Odometry_MavFrame Odometry_MavFrame_MavFrame_MAX = Odometry_MavFrame_MAV_FRAME_LOCAL_FRD;
 constexpr int Odometry_MavFrame_MavFrame_ARRAYSIZE = Odometry_MavFrame_MavFrame_MAX + 1;
 
 const ::PROTOBUF_NAMESPACE_ID::EnumDescriptor* Odometry_MavFrame_descriptor();
@@ -157,17 +158,17 @@ inline bool Odometry_MavFrame_Parse(
     Odometry_MavFrame_descriptor(), name, value);
 }
 enum MocapResult_Result : int {
-  MocapResult_Result_UNKNOWN = 0,
-  MocapResult_Result_SUCCESS = 1,
-  MocapResult_Result_NO_SYSTEM = 2,
-  MocapResult_Result_CONNECTION_ERROR = 3,
-  MocapResult_Result_INVALID_REQUEST_DATA = 4,
+  MocapResult_Result_RESULT_UNKNOWN = 0,
+  MocapResult_Result_RESULT_SUCCESS = 1,
+  MocapResult_Result_RESULT_NO_SYSTEM = 2,
+  MocapResult_Result_RESULT_CONNECTION_ERROR = 3,
+  MocapResult_Result_RESULT_INVALID_REQUEST_DATA = 4,
   MocapResult_Result_MocapResult_Result_INT_MIN_SENTINEL_DO_NOT_USE_ = std::numeric_limits<::PROTOBUF_NAMESPACE_ID::int32>::min(),
   MocapResult_Result_MocapResult_Result_INT_MAX_SENTINEL_DO_NOT_USE_ = std::numeric_limits<::PROTOBUF_NAMESPACE_ID::int32>::max()
 };
 bool MocapResult_Result_IsValid(int value);
-constexpr MocapResult_Result MocapResult_Result_Result_MIN = MocapResult_Result_UNKNOWN;
-constexpr MocapResult_Result MocapResult_Result_Result_MAX = MocapResult_Result_INVALID_REQUEST_DATA;
+constexpr MocapResult_Result MocapResult_Result_Result_MIN = MocapResult_Result_RESULT_UNKNOWN;
+constexpr MocapResult_Result MocapResult_Result_Result_MAX = MocapResult_Result_RESULT_INVALID_REQUEST_DATA;
 constexpr int MocapResult_Result_Result_ARRAYSIZE = MocapResult_Result_Result_MAX + 1;
 
 const ::PROTOBUF_NAMESPACE_ID::EnumDescriptor* MocapResult_Result_descriptor();
@@ -990,6 +991,909 @@ class SetOdometryResponse :
 };
 // -------------------------------------------------------------------
 
+class PositionBody :
+    public ::PROTOBUF_NAMESPACE_ID::Message /* @@protoc_insertion_point(class_definition:mavsdk.rpc.mocap.PositionBody) */ {
+ public:
+  PositionBody();
+  virtual ~PositionBody();
+
+  PositionBody(const PositionBody& from);
+  PositionBody(PositionBody&& from) noexcept
+    : PositionBody() {
+    *this = ::std::move(from);
+  }
+
+  inline PositionBody& operator=(const PositionBody& from) {
+    CopyFrom(from);
+    return *this;
+  }
+  inline PositionBody& operator=(PositionBody&& from) noexcept {
+    if (GetArenaNoVirtual() == from.GetArenaNoVirtual()) {
+      if (this != &from) InternalSwap(&from);
+    } else {
+      CopyFrom(from);
+    }
+    return *this;
+  }
+
+  static const ::PROTOBUF_NAMESPACE_ID::Descriptor* descriptor() {
+    return GetDescriptor();
+  }
+  static const ::PROTOBUF_NAMESPACE_ID::Descriptor* GetDescriptor() {
+    return GetMetadataStatic().descriptor;
+  }
+  static const ::PROTOBUF_NAMESPACE_ID::Reflection* GetReflection() {
+    return GetMetadataStatic().reflection;
+  }
+  static const PositionBody& default_instance();
+
+  static void InitAsDefaultInstance();  // FOR INTERNAL USE ONLY
+  static inline const PositionBody* internal_default_instance() {
+    return reinterpret_cast<const PositionBody*>(
+               &_PositionBody_default_instance_);
+  }
+  static constexpr int kIndexInFileMessages =
+    6;
+
+  friend void swap(PositionBody& a, PositionBody& b) {
+    a.Swap(&b);
+  }
+  inline void Swap(PositionBody* other) {
+    if (other == this) return;
+    InternalSwap(other);
+  }
+
+  // implements Message ----------------------------------------------
+
+  inline PositionBody* New() const final {
+    return CreateMaybeMessage<PositionBody>(nullptr);
+  }
+
+  PositionBody* New(::PROTOBUF_NAMESPACE_ID::Arena* arena) const final {
+    return CreateMaybeMessage<PositionBody>(arena);
+  }
+  void CopyFrom(const ::PROTOBUF_NAMESPACE_ID::Message& from) final;
+  void MergeFrom(const ::PROTOBUF_NAMESPACE_ID::Message& from) final;
+  void CopyFrom(const PositionBody& from);
+  void MergeFrom(const PositionBody& from);
+  PROTOBUF_ATTRIBUTE_REINITIALIZES void Clear() final;
+  bool IsInitialized() const final;
+
+  size_t ByteSizeLong() const final;
+  const char* _InternalParse(const char* ptr, ::PROTOBUF_NAMESPACE_ID::internal::ParseContext* ctx) final;
+  ::PROTOBUF_NAMESPACE_ID::uint8* _InternalSerialize(
+      ::PROTOBUF_NAMESPACE_ID::uint8* target, ::PROTOBUF_NAMESPACE_ID::io::EpsCopyOutputStream* stream) const final;
+  int GetCachedSize() const final { return _cached_size_.Get(); }
+
+  private:
+  inline void SharedCtor();
+  inline void SharedDtor();
+  void SetCachedSize(int size) const final;
+  void InternalSwap(PositionBody* other);
+  friend class ::PROTOBUF_NAMESPACE_ID::internal::AnyMetadata;
+  static ::PROTOBUF_NAMESPACE_ID::StringPiece FullMessageName() {
+    return "mavsdk.rpc.mocap.PositionBody";
+  }
+  private:
+  inline ::PROTOBUF_NAMESPACE_ID::Arena* GetArenaNoVirtual() const {
+    return nullptr;
+  }
+  inline void* MaybeArenaPtr() const {
+    return nullptr;
+  }
+  public:
+
+  ::PROTOBUF_NAMESPACE_ID::Metadata GetMetadata() const final;
+  private:
+  static ::PROTOBUF_NAMESPACE_ID::Metadata GetMetadataStatic() {
+    ::PROTOBUF_NAMESPACE_ID::internal::AssignDescriptors(&::descriptor_table_mocap_2fmocap_2eproto);
+    return ::descriptor_table_mocap_2fmocap_2eproto.file_level_metadata[kIndexInFileMessages];
+  }
+
+  public:
+
+  // nested types ----------------------------------------------------
+
+  // accessors -------------------------------------------------------
+
+  enum : int {
+    kXMFieldNumber = 1,
+    kYMFieldNumber = 2,
+    kZMFieldNumber = 3,
+  };
+  // float x_m = 1;
+  void clear_x_m();
+  float x_m() const;
+  void set_x_m(float value);
+  private:
+  float _internal_x_m() const;
+  void _internal_set_x_m(float value);
+  public:
+
+  // float y_m = 2;
+  void clear_y_m();
+  float y_m() const;
+  void set_y_m(float value);
+  private:
+  float _internal_y_m() const;
+  void _internal_set_y_m(float value);
+  public:
+
+  // float z_m = 3;
+  void clear_z_m();
+  float z_m() const;
+  void set_z_m(float value);
+  private:
+  float _internal_z_m() const;
+  void _internal_set_z_m(float value);
+  public:
+
+  // @@protoc_insertion_point(class_scope:mavsdk.rpc.mocap.PositionBody)
+ private:
+  class _Internal;
+
+  ::PROTOBUF_NAMESPACE_ID::internal::InternalMetadataWithArena _internal_metadata_;
+  float x_m_;
+  float y_m_;
+  float z_m_;
+  mutable ::PROTOBUF_NAMESPACE_ID::internal::CachedSize _cached_size_;
+  friend struct ::TableStruct_mocap_2fmocap_2eproto;
+};
+// -------------------------------------------------------------------
+
+class AngleBody :
+    public ::PROTOBUF_NAMESPACE_ID::Message /* @@protoc_insertion_point(class_definition:mavsdk.rpc.mocap.AngleBody) */ {
+ public:
+  AngleBody();
+  virtual ~AngleBody();
+
+  AngleBody(const AngleBody& from);
+  AngleBody(AngleBody&& from) noexcept
+    : AngleBody() {
+    *this = ::std::move(from);
+  }
+
+  inline AngleBody& operator=(const AngleBody& from) {
+    CopyFrom(from);
+    return *this;
+  }
+  inline AngleBody& operator=(AngleBody&& from) noexcept {
+    if (GetArenaNoVirtual() == from.GetArenaNoVirtual()) {
+      if (this != &from) InternalSwap(&from);
+    } else {
+      CopyFrom(from);
+    }
+    return *this;
+  }
+
+  static const ::PROTOBUF_NAMESPACE_ID::Descriptor* descriptor() {
+    return GetDescriptor();
+  }
+  static const ::PROTOBUF_NAMESPACE_ID::Descriptor* GetDescriptor() {
+    return GetMetadataStatic().descriptor;
+  }
+  static const ::PROTOBUF_NAMESPACE_ID::Reflection* GetReflection() {
+    return GetMetadataStatic().reflection;
+  }
+  static const AngleBody& default_instance();
+
+  static void InitAsDefaultInstance();  // FOR INTERNAL USE ONLY
+  static inline const AngleBody* internal_default_instance() {
+    return reinterpret_cast<const AngleBody*>(
+               &_AngleBody_default_instance_);
+  }
+  static constexpr int kIndexInFileMessages =
+    7;
+
+  friend void swap(AngleBody& a, AngleBody& b) {
+    a.Swap(&b);
+  }
+  inline void Swap(AngleBody* other) {
+    if (other == this) return;
+    InternalSwap(other);
+  }
+
+  // implements Message ----------------------------------------------
+
+  inline AngleBody* New() const final {
+    return CreateMaybeMessage<AngleBody>(nullptr);
+  }
+
+  AngleBody* New(::PROTOBUF_NAMESPACE_ID::Arena* arena) const final {
+    return CreateMaybeMessage<AngleBody>(arena);
+  }
+  void CopyFrom(const ::PROTOBUF_NAMESPACE_ID::Message& from) final;
+  void MergeFrom(const ::PROTOBUF_NAMESPACE_ID::Message& from) final;
+  void CopyFrom(const AngleBody& from);
+  void MergeFrom(const AngleBody& from);
+  PROTOBUF_ATTRIBUTE_REINITIALIZES void Clear() final;
+  bool IsInitialized() const final;
+
+  size_t ByteSizeLong() const final;
+  const char* _InternalParse(const char* ptr, ::PROTOBUF_NAMESPACE_ID::internal::ParseContext* ctx) final;
+  ::PROTOBUF_NAMESPACE_ID::uint8* _InternalSerialize(
+      ::PROTOBUF_NAMESPACE_ID::uint8* target, ::PROTOBUF_NAMESPACE_ID::io::EpsCopyOutputStream* stream) const final;
+  int GetCachedSize() const final { return _cached_size_.Get(); }
+
+  private:
+  inline void SharedCtor();
+  inline void SharedDtor();
+  void SetCachedSize(int size) const final;
+  void InternalSwap(AngleBody* other);
+  friend class ::PROTOBUF_NAMESPACE_ID::internal::AnyMetadata;
+  static ::PROTOBUF_NAMESPACE_ID::StringPiece FullMessageName() {
+    return "mavsdk.rpc.mocap.AngleBody";
+  }
+  private:
+  inline ::PROTOBUF_NAMESPACE_ID::Arena* GetArenaNoVirtual() const {
+    return nullptr;
+  }
+  inline void* MaybeArenaPtr() const {
+    return nullptr;
+  }
+  public:
+
+  ::PROTOBUF_NAMESPACE_ID::Metadata GetMetadata() const final;
+  private:
+  static ::PROTOBUF_NAMESPACE_ID::Metadata GetMetadataStatic() {
+    ::PROTOBUF_NAMESPACE_ID::internal::AssignDescriptors(&::descriptor_table_mocap_2fmocap_2eproto);
+    return ::descriptor_table_mocap_2fmocap_2eproto.file_level_metadata[kIndexInFileMessages];
+  }
+
+  public:
+
+  // nested types ----------------------------------------------------
+
+  // accessors -------------------------------------------------------
+
+  enum : int {
+    kRollRadFieldNumber = 1,
+    kPitchRadFieldNumber = 2,
+    kYawRadFieldNumber = 3,
+  };
+  // float roll_rad = 1;
+  void clear_roll_rad();
+  float roll_rad() const;
+  void set_roll_rad(float value);
+  private:
+  float _internal_roll_rad() const;
+  void _internal_set_roll_rad(float value);
+  public:
+
+  // float pitch_rad = 2;
+  void clear_pitch_rad();
+  float pitch_rad() const;
+  void set_pitch_rad(float value);
+  private:
+  float _internal_pitch_rad() const;
+  void _internal_set_pitch_rad(float value);
+  public:
+
+  // float yaw_rad = 3;
+  void clear_yaw_rad();
+  float yaw_rad() const;
+  void set_yaw_rad(float value);
+  private:
+  float _internal_yaw_rad() const;
+  void _internal_set_yaw_rad(float value);
+  public:
+
+  // @@protoc_insertion_point(class_scope:mavsdk.rpc.mocap.AngleBody)
+ private:
+  class _Internal;
+
+  ::PROTOBUF_NAMESPACE_ID::internal::InternalMetadataWithArena _internal_metadata_;
+  float roll_rad_;
+  float pitch_rad_;
+  float yaw_rad_;
+  mutable ::PROTOBUF_NAMESPACE_ID::internal::CachedSize _cached_size_;
+  friend struct ::TableStruct_mocap_2fmocap_2eproto;
+};
+// -------------------------------------------------------------------
+
+class SpeedBody :
+    public ::PROTOBUF_NAMESPACE_ID::Message /* @@protoc_insertion_point(class_definition:mavsdk.rpc.mocap.SpeedBody) */ {
+ public:
+  SpeedBody();
+  virtual ~SpeedBody();
+
+  SpeedBody(const SpeedBody& from);
+  SpeedBody(SpeedBody&& from) noexcept
+    : SpeedBody() {
+    *this = ::std::move(from);
+  }
+
+  inline SpeedBody& operator=(const SpeedBody& from) {
+    CopyFrom(from);
+    return *this;
+  }
+  inline SpeedBody& operator=(SpeedBody&& from) noexcept {
+    if (GetArenaNoVirtual() == from.GetArenaNoVirtual()) {
+      if (this != &from) InternalSwap(&from);
+    } else {
+      CopyFrom(from);
+    }
+    return *this;
+  }
+
+  static const ::PROTOBUF_NAMESPACE_ID::Descriptor* descriptor() {
+    return GetDescriptor();
+  }
+  static const ::PROTOBUF_NAMESPACE_ID::Descriptor* GetDescriptor() {
+    return GetMetadataStatic().descriptor;
+  }
+  static const ::PROTOBUF_NAMESPACE_ID::Reflection* GetReflection() {
+    return GetMetadataStatic().reflection;
+  }
+  static const SpeedBody& default_instance();
+
+  static void InitAsDefaultInstance();  // FOR INTERNAL USE ONLY
+  static inline const SpeedBody* internal_default_instance() {
+    return reinterpret_cast<const SpeedBody*>(
+               &_SpeedBody_default_instance_);
+  }
+  static constexpr int kIndexInFileMessages =
+    8;
+
+  friend void swap(SpeedBody& a, SpeedBody& b) {
+    a.Swap(&b);
+  }
+  inline void Swap(SpeedBody* other) {
+    if (other == this) return;
+    InternalSwap(other);
+  }
+
+  // implements Message ----------------------------------------------
+
+  inline SpeedBody* New() const final {
+    return CreateMaybeMessage<SpeedBody>(nullptr);
+  }
+
+  SpeedBody* New(::PROTOBUF_NAMESPACE_ID::Arena* arena) const final {
+    return CreateMaybeMessage<SpeedBody>(arena);
+  }
+  void CopyFrom(const ::PROTOBUF_NAMESPACE_ID::Message& from) final;
+  void MergeFrom(const ::PROTOBUF_NAMESPACE_ID::Message& from) final;
+  void CopyFrom(const SpeedBody& from);
+  void MergeFrom(const SpeedBody& from);
+  PROTOBUF_ATTRIBUTE_REINITIALIZES void Clear() final;
+  bool IsInitialized() const final;
+
+  size_t ByteSizeLong() const final;
+  const char* _InternalParse(const char* ptr, ::PROTOBUF_NAMESPACE_ID::internal::ParseContext* ctx) final;
+  ::PROTOBUF_NAMESPACE_ID::uint8* _InternalSerialize(
+      ::PROTOBUF_NAMESPACE_ID::uint8* target, ::PROTOBUF_NAMESPACE_ID::io::EpsCopyOutputStream* stream) const final;
+  int GetCachedSize() const final { return _cached_size_.Get(); }
+
+  private:
+  inline void SharedCtor();
+  inline void SharedDtor();
+  void SetCachedSize(int size) const final;
+  void InternalSwap(SpeedBody* other);
+  friend class ::PROTOBUF_NAMESPACE_ID::internal::AnyMetadata;
+  static ::PROTOBUF_NAMESPACE_ID::StringPiece FullMessageName() {
+    return "mavsdk.rpc.mocap.SpeedBody";
+  }
+  private:
+  inline ::PROTOBUF_NAMESPACE_ID::Arena* GetArenaNoVirtual() const {
+    return nullptr;
+  }
+  inline void* MaybeArenaPtr() const {
+    return nullptr;
+  }
+  public:
+
+  ::PROTOBUF_NAMESPACE_ID::Metadata GetMetadata() const final;
+  private:
+  static ::PROTOBUF_NAMESPACE_ID::Metadata GetMetadataStatic() {
+    ::PROTOBUF_NAMESPACE_ID::internal::AssignDescriptors(&::descriptor_table_mocap_2fmocap_2eproto);
+    return ::descriptor_table_mocap_2fmocap_2eproto.file_level_metadata[kIndexInFileMessages];
+  }
+
+  public:
+
+  // nested types ----------------------------------------------------
+
+  // accessors -------------------------------------------------------
+
+  enum : int {
+    kXMSFieldNumber = 1,
+    kYMSFieldNumber = 2,
+    kZMSFieldNumber = 3,
+  };
+  // float x_m_s = 1;
+  void clear_x_m_s();
+  float x_m_s() const;
+  void set_x_m_s(float value);
+  private:
+  float _internal_x_m_s() const;
+  void _internal_set_x_m_s(float value);
+  public:
+
+  // float y_m_s = 2;
+  void clear_y_m_s();
+  float y_m_s() const;
+  void set_y_m_s(float value);
+  private:
+  float _internal_y_m_s() const;
+  void _internal_set_y_m_s(float value);
+  public:
+
+  // float z_m_s = 3;
+  void clear_z_m_s();
+  float z_m_s() const;
+  void set_z_m_s(float value);
+  private:
+  float _internal_z_m_s() const;
+  void _internal_set_z_m_s(float value);
+  public:
+
+  // @@protoc_insertion_point(class_scope:mavsdk.rpc.mocap.SpeedBody)
+ private:
+  class _Internal;
+
+  ::PROTOBUF_NAMESPACE_ID::internal::InternalMetadataWithArena _internal_metadata_;
+  float x_m_s_;
+  float y_m_s_;
+  float z_m_s_;
+  mutable ::PROTOBUF_NAMESPACE_ID::internal::CachedSize _cached_size_;
+  friend struct ::TableStruct_mocap_2fmocap_2eproto;
+};
+// -------------------------------------------------------------------
+
+class AngularVelocityBody :
+    public ::PROTOBUF_NAMESPACE_ID::Message /* @@protoc_insertion_point(class_definition:mavsdk.rpc.mocap.AngularVelocityBody) */ {
+ public:
+  AngularVelocityBody();
+  virtual ~AngularVelocityBody();
+
+  AngularVelocityBody(const AngularVelocityBody& from);
+  AngularVelocityBody(AngularVelocityBody&& from) noexcept
+    : AngularVelocityBody() {
+    *this = ::std::move(from);
+  }
+
+  inline AngularVelocityBody& operator=(const AngularVelocityBody& from) {
+    CopyFrom(from);
+    return *this;
+  }
+  inline AngularVelocityBody& operator=(AngularVelocityBody&& from) noexcept {
+    if (GetArenaNoVirtual() == from.GetArenaNoVirtual()) {
+      if (this != &from) InternalSwap(&from);
+    } else {
+      CopyFrom(from);
+    }
+    return *this;
+  }
+
+  static const ::PROTOBUF_NAMESPACE_ID::Descriptor* descriptor() {
+    return GetDescriptor();
+  }
+  static const ::PROTOBUF_NAMESPACE_ID::Descriptor* GetDescriptor() {
+    return GetMetadataStatic().descriptor;
+  }
+  static const ::PROTOBUF_NAMESPACE_ID::Reflection* GetReflection() {
+    return GetMetadataStatic().reflection;
+  }
+  static const AngularVelocityBody& default_instance();
+
+  static void InitAsDefaultInstance();  // FOR INTERNAL USE ONLY
+  static inline const AngularVelocityBody* internal_default_instance() {
+    return reinterpret_cast<const AngularVelocityBody*>(
+               &_AngularVelocityBody_default_instance_);
+  }
+  static constexpr int kIndexInFileMessages =
+    9;
+
+  friend void swap(AngularVelocityBody& a, AngularVelocityBody& b) {
+    a.Swap(&b);
+  }
+  inline void Swap(AngularVelocityBody* other) {
+    if (other == this) return;
+    InternalSwap(other);
+  }
+
+  // implements Message ----------------------------------------------
+
+  inline AngularVelocityBody* New() const final {
+    return CreateMaybeMessage<AngularVelocityBody>(nullptr);
+  }
+
+  AngularVelocityBody* New(::PROTOBUF_NAMESPACE_ID::Arena* arena) const final {
+    return CreateMaybeMessage<AngularVelocityBody>(arena);
+  }
+  void CopyFrom(const ::PROTOBUF_NAMESPACE_ID::Message& from) final;
+  void MergeFrom(const ::PROTOBUF_NAMESPACE_ID::Message& from) final;
+  void CopyFrom(const AngularVelocityBody& from);
+  void MergeFrom(const AngularVelocityBody& from);
+  PROTOBUF_ATTRIBUTE_REINITIALIZES void Clear() final;
+  bool IsInitialized() const final;
+
+  size_t ByteSizeLong() const final;
+  const char* _InternalParse(const char* ptr, ::PROTOBUF_NAMESPACE_ID::internal::ParseContext* ctx) final;
+  ::PROTOBUF_NAMESPACE_ID::uint8* _InternalSerialize(
+      ::PROTOBUF_NAMESPACE_ID::uint8* target, ::PROTOBUF_NAMESPACE_ID::io::EpsCopyOutputStream* stream) const final;
+  int GetCachedSize() const final { return _cached_size_.Get(); }
+
+  private:
+  inline void SharedCtor();
+  inline void SharedDtor();
+  void SetCachedSize(int size) const final;
+  void InternalSwap(AngularVelocityBody* other);
+  friend class ::PROTOBUF_NAMESPACE_ID::internal::AnyMetadata;
+  static ::PROTOBUF_NAMESPACE_ID::StringPiece FullMessageName() {
+    return "mavsdk.rpc.mocap.AngularVelocityBody";
+  }
+  private:
+  inline ::PROTOBUF_NAMESPACE_ID::Arena* GetArenaNoVirtual() const {
+    return nullptr;
+  }
+  inline void* MaybeArenaPtr() const {
+    return nullptr;
+  }
+  public:
+
+  ::PROTOBUF_NAMESPACE_ID::Metadata GetMetadata() const final;
+  private:
+  static ::PROTOBUF_NAMESPACE_ID::Metadata GetMetadataStatic() {
+    ::PROTOBUF_NAMESPACE_ID::internal::AssignDescriptors(&::descriptor_table_mocap_2fmocap_2eproto);
+    return ::descriptor_table_mocap_2fmocap_2eproto.file_level_metadata[kIndexInFileMessages];
+  }
+
+  public:
+
+  // nested types ----------------------------------------------------
+
+  // accessors -------------------------------------------------------
+
+  enum : int {
+    kRollRadSFieldNumber = 1,
+    kPitchRadSFieldNumber = 2,
+    kYawRadSFieldNumber = 3,
+  };
+  // float roll_rad_s = 1;
+  void clear_roll_rad_s();
+  float roll_rad_s() const;
+  void set_roll_rad_s(float value);
+  private:
+  float _internal_roll_rad_s() const;
+  void _internal_set_roll_rad_s(float value);
+  public:
+
+  // float pitch_rad_s = 2;
+  void clear_pitch_rad_s();
+  float pitch_rad_s() const;
+  void set_pitch_rad_s(float value);
+  private:
+  float _internal_pitch_rad_s() const;
+  void _internal_set_pitch_rad_s(float value);
+  public:
+
+  // float yaw_rad_s = 3;
+  void clear_yaw_rad_s();
+  float yaw_rad_s() const;
+  void set_yaw_rad_s(float value);
+  private:
+  float _internal_yaw_rad_s() const;
+  void _internal_set_yaw_rad_s(float value);
+  public:
+
+  // @@protoc_insertion_point(class_scope:mavsdk.rpc.mocap.AngularVelocityBody)
+ private:
+  class _Internal;
+
+  ::PROTOBUF_NAMESPACE_ID::internal::InternalMetadataWithArena _internal_metadata_;
+  float roll_rad_s_;
+  float pitch_rad_s_;
+  float yaw_rad_s_;
+  mutable ::PROTOBUF_NAMESPACE_ID::internal::CachedSize _cached_size_;
+  friend struct ::TableStruct_mocap_2fmocap_2eproto;
+};
+// -------------------------------------------------------------------
+
+class Covariance :
+    public ::PROTOBUF_NAMESPACE_ID::Message /* @@protoc_insertion_point(class_definition:mavsdk.rpc.mocap.Covariance) */ {
+ public:
+  Covariance();
+  virtual ~Covariance();
+
+  Covariance(const Covariance& from);
+  Covariance(Covariance&& from) noexcept
+    : Covariance() {
+    *this = ::std::move(from);
+  }
+
+  inline Covariance& operator=(const Covariance& from) {
+    CopyFrom(from);
+    return *this;
+  }
+  inline Covariance& operator=(Covariance&& from) noexcept {
+    if (GetArenaNoVirtual() == from.GetArenaNoVirtual()) {
+      if (this != &from) InternalSwap(&from);
+    } else {
+      CopyFrom(from);
+    }
+    return *this;
+  }
+
+  static const ::PROTOBUF_NAMESPACE_ID::Descriptor* descriptor() {
+    return GetDescriptor();
+  }
+  static const ::PROTOBUF_NAMESPACE_ID::Descriptor* GetDescriptor() {
+    return GetMetadataStatic().descriptor;
+  }
+  static const ::PROTOBUF_NAMESPACE_ID::Reflection* GetReflection() {
+    return GetMetadataStatic().reflection;
+  }
+  static const Covariance& default_instance();
+
+  static void InitAsDefaultInstance();  // FOR INTERNAL USE ONLY
+  static inline const Covariance* internal_default_instance() {
+    return reinterpret_cast<const Covariance*>(
+               &_Covariance_default_instance_);
+  }
+  static constexpr int kIndexInFileMessages =
+    10;
+
+  friend void swap(Covariance& a, Covariance& b) {
+    a.Swap(&b);
+  }
+  inline void Swap(Covariance* other) {
+    if (other == this) return;
+    InternalSwap(other);
+  }
+
+  // implements Message ----------------------------------------------
+
+  inline Covariance* New() const final {
+    return CreateMaybeMessage<Covariance>(nullptr);
+  }
+
+  Covariance* New(::PROTOBUF_NAMESPACE_ID::Arena* arena) const final {
+    return CreateMaybeMessage<Covariance>(arena);
+  }
+  void CopyFrom(const ::PROTOBUF_NAMESPACE_ID::Message& from) final;
+  void MergeFrom(const ::PROTOBUF_NAMESPACE_ID::Message& from) final;
+  void CopyFrom(const Covariance& from);
+  void MergeFrom(const Covariance& from);
+  PROTOBUF_ATTRIBUTE_REINITIALIZES void Clear() final;
+  bool IsInitialized() const final;
+
+  size_t ByteSizeLong() const final;
+  const char* _InternalParse(const char* ptr, ::PROTOBUF_NAMESPACE_ID::internal::ParseContext* ctx) final;
+  ::PROTOBUF_NAMESPACE_ID::uint8* _InternalSerialize(
+      ::PROTOBUF_NAMESPACE_ID::uint8* target, ::PROTOBUF_NAMESPACE_ID::io::EpsCopyOutputStream* stream) const final;
+  int GetCachedSize() const final { return _cached_size_.Get(); }
+
+  private:
+  inline void SharedCtor();
+  inline void SharedDtor();
+  void SetCachedSize(int size) const final;
+  void InternalSwap(Covariance* other);
+  friend class ::PROTOBUF_NAMESPACE_ID::internal::AnyMetadata;
+  static ::PROTOBUF_NAMESPACE_ID::StringPiece FullMessageName() {
+    return "mavsdk.rpc.mocap.Covariance";
+  }
+  private:
+  inline ::PROTOBUF_NAMESPACE_ID::Arena* GetArenaNoVirtual() const {
+    return nullptr;
+  }
+  inline void* MaybeArenaPtr() const {
+    return nullptr;
+  }
+  public:
+
+  ::PROTOBUF_NAMESPACE_ID::Metadata GetMetadata() const final;
+  private:
+  static ::PROTOBUF_NAMESPACE_ID::Metadata GetMetadataStatic() {
+    ::PROTOBUF_NAMESPACE_ID::internal::AssignDescriptors(&::descriptor_table_mocap_2fmocap_2eproto);
+    return ::descriptor_table_mocap_2fmocap_2eproto.file_level_metadata[kIndexInFileMessages];
+  }
+
+  public:
+
+  // nested types ----------------------------------------------------
+
+  // accessors -------------------------------------------------------
+
+  enum : int {
+    kCovarianceMatrixFieldNumber = 1,
+  };
+  // repeated float covariance_matrix = 1;
+  int covariance_matrix_size() const;
+  private:
+  int _internal_covariance_matrix_size() const;
+  public:
+  void clear_covariance_matrix();
+  private:
+  float _internal_covariance_matrix(int index) const;
+  const ::PROTOBUF_NAMESPACE_ID::RepeatedField< float >&
+      _internal_covariance_matrix() const;
+  void _internal_add_covariance_matrix(float value);
+  ::PROTOBUF_NAMESPACE_ID::RepeatedField< float >*
+      _internal_mutable_covariance_matrix();
+  public:
+  float covariance_matrix(int index) const;
+  void set_covariance_matrix(int index, float value);
+  void add_covariance_matrix(float value);
+  const ::PROTOBUF_NAMESPACE_ID::RepeatedField< float >&
+      covariance_matrix() const;
+  ::PROTOBUF_NAMESPACE_ID::RepeatedField< float >*
+      mutable_covariance_matrix();
+
+  // @@protoc_insertion_point(class_scope:mavsdk.rpc.mocap.Covariance)
+ private:
+  class _Internal;
+
+  ::PROTOBUF_NAMESPACE_ID::internal::InternalMetadataWithArena _internal_metadata_;
+  ::PROTOBUF_NAMESPACE_ID::RepeatedField< float > covariance_matrix_;
+  mutable std::atomic<int> _covariance_matrix_cached_byte_size_;
+  mutable ::PROTOBUF_NAMESPACE_ID::internal::CachedSize _cached_size_;
+  friend struct ::TableStruct_mocap_2fmocap_2eproto;
+};
+// -------------------------------------------------------------------
+
+class Quaternion :
+    public ::PROTOBUF_NAMESPACE_ID::Message /* @@protoc_insertion_point(class_definition:mavsdk.rpc.mocap.Quaternion) */ {
+ public:
+  Quaternion();
+  virtual ~Quaternion();
+
+  Quaternion(const Quaternion& from);
+  Quaternion(Quaternion&& from) noexcept
+    : Quaternion() {
+    *this = ::std::move(from);
+  }
+
+  inline Quaternion& operator=(const Quaternion& from) {
+    CopyFrom(from);
+    return *this;
+  }
+  inline Quaternion& operator=(Quaternion&& from) noexcept {
+    if (GetArenaNoVirtual() == from.GetArenaNoVirtual()) {
+      if (this != &from) InternalSwap(&from);
+    } else {
+      CopyFrom(from);
+    }
+    return *this;
+  }
+
+  static const ::PROTOBUF_NAMESPACE_ID::Descriptor* descriptor() {
+    return GetDescriptor();
+  }
+  static const ::PROTOBUF_NAMESPACE_ID::Descriptor* GetDescriptor() {
+    return GetMetadataStatic().descriptor;
+  }
+  static const ::PROTOBUF_NAMESPACE_ID::Reflection* GetReflection() {
+    return GetMetadataStatic().reflection;
+  }
+  static const Quaternion& default_instance();
+
+  static void InitAsDefaultInstance();  // FOR INTERNAL USE ONLY
+  static inline const Quaternion* internal_default_instance() {
+    return reinterpret_cast<const Quaternion*>(
+               &_Quaternion_default_instance_);
+  }
+  static constexpr int kIndexInFileMessages =
+    11;
+
+  friend void swap(Quaternion& a, Quaternion& b) {
+    a.Swap(&b);
+  }
+  inline void Swap(Quaternion* other) {
+    if (other == this) return;
+    InternalSwap(other);
+  }
+
+  // implements Message ----------------------------------------------
+
+  inline Quaternion* New() const final {
+    return CreateMaybeMessage<Quaternion>(nullptr);
+  }
+
+  Quaternion* New(::PROTOBUF_NAMESPACE_ID::Arena* arena) const final {
+    return CreateMaybeMessage<Quaternion>(arena);
+  }
+  void CopyFrom(const ::PROTOBUF_NAMESPACE_ID::Message& from) final;
+  void MergeFrom(const ::PROTOBUF_NAMESPACE_ID::Message& from) final;
+  void CopyFrom(const Quaternion& from);
+  void MergeFrom(const Quaternion& from);
+  PROTOBUF_ATTRIBUTE_REINITIALIZES void Clear() final;
+  bool IsInitialized() const final;
+
+  size_t ByteSizeLong() const final;
+  const char* _InternalParse(const char* ptr, ::PROTOBUF_NAMESPACE_ID::internal::ParseContext* ctx) final;
+  ::PROTOBUF_NAMESPACE_ID::uint8* _InternalSerialize(
+      ::PROTOBUF_NAMESPACE_ID::uint8* target, ::PROTOBUF_NAMESPACE_ID::io::EpsCopyOutputStream* stream) const final;
+  int GetCachedSize() const final { return _cached_size_.Get(); }
+
+  private:
+  inline void SharedCtor();
+  inline void SharedDtor();
+  void SetCachedSize(int size) const final;
+  void InternalSwap(Quaternion* other);
+  friend class ::PROTOBUF_NAMESPACE_ID::internal::AnyMetadata;
+  static ::PROTOBUF_NAMESPACE_ID::StringPiece FullMessageName() {
+    return "mavsdk.rpc.mocap.Quaternion";
+  }
+  private:
+  inline ::PROTOBUF_NAMESPACE_ID::Arena* GetArenaNoVirtual() const {
+    return nullptr;
+  }
+  inline void* MaybeArenaPtr() const {
+    return nullptr;
+  }
+  public:
+
+  ::PROTOBUF_NAMESPACE_ID::Metadata GetMetadata() const final;
+  private:
+  static ::PROTOBUF_NAMESPACE_ID::Metadata GetMetadataStatic() {
+    ::PROTOBUF_NAMESPACE_ID::internal::AssignDescriptors(&::descriptor_table_mocap_2fmocap_2eproto);
+    return ::descriptor_table_mocap_2fmocap_2eproto.file_level_metadata[kIndexInFileMessages];
+  }
+
+  public:
+
+  // nested types ----------------------------------------------------
+
+  // accessors -------------------------------------------------------
+
+  enum : int {
+    kWFieldNumber = 1,
+    kXFieldNumber = 2,
+    kYFieldNumber = 3,
+    kZFieldNumber = 4,
+  };
+  // float w = 1;
+  void clear_w();
+  float w() const;
+  void set_w(float value);
+  private:
+  float _internal_w() const;
+  void _internal_set_w(float value);
+  public:
+
+  // float x = 2;
+  void clear_x();
+  float x() const;
+  void set_x(float value);
+  private:
+  float _internal_x() const;
+  void _internal_set_x(float value);
+  public:
+
+  // float y = 3;
+  void clear_y();
+  float y() const;
+  void set_y(float value);
+  private:
+  float _internal_y() const;
+  void _internal_set_y(float value);
+  public:
+
+  // float z = 4;
+  void clear_z();
+  float z() const;
+  void set_z(float value);
+  private:
+  float _internal_z() const;
+  void _internal_set_z(float value);
+  public:
+
+  // @@protoc_insertion_point(class_scope:mavsdk.rpc.mocap.Quaternion)
+ private:
+  class _Internal;
+
+  ::PROTOBUF_NAMESPACE_ID::internal::InternalMetadataWithArena _internal_metadata_;
+  float w_;
+  float x_;
+  float y_;
+  float z_;
+  mutable ::PROTOBUF_NAMESPACE_ID::internal::CachedSize _cached_size_;
+  friend struct ::TableStruct_mocap_2fmocap_2eproto;
+};
+// -------------------------------------------------------------------
+
 class VisionPositionEstimate :
     public ::PROTOBUF_NAMESPACE_ID::Message /* @@protoc_insertion_point(class_definition:mavsdk.rpc.mocap.VisionPositionEstimate) */ {
  public:
@@ -1032,7 +1936,7 @@ class VisionPositionEstimate :
                &_VisionPositionEstimate_default_instance_);
   }
   static constexpr int kIndexInFileMessages =
-    6;
+    12;
 
   friend void swap(VisionPositionEstimate& a, VisionPositionEstimate& b) {
     a.Swap(&b);
@@ -1211,7 +2115,7 @@ class AttitudePositionMocap :
                &_AttitudePositionMocap_default_instance_);
   }
   static constexpr int kIndexInFileMessages =
-    7;
+    13;
 
   friend void swap(AttitudePositionMocap& a, AttitudePositionMocap& b) {
     a.Swap(&b);
@@ -1390,7 +2294,7 @@ class Odometry :
                &_Odometry_default_instance_);
   }
   static constexpr int kIndexInFileMessages =
-    8;
+    14;
 
   friend void swap(Odometry& a, Odometry& b) {
     a.Swap(&b);
@@ -1452,10 +2356,10 @@ class Odometry :
   // nested types ----------------------------------------------------
 
   typedef Odometry_MavFrame MavFrame;
-  static constexpr MavFrame MOCAP_NED =
-    Odometry_MavFrame_MOCAP_NED;
-  static constexpr MavFrame LOCAL_FRD =
-    Odometry_MavFrame_LOCAL_FRD;
+  static constexpr MavFrame MAV_FRAME_MOCAP_NED =
+    Odometry_MavFrame_MAV_FRAME_MOCAP_NED;
+  static constexpr MavFrame MAV_FRAME_LOCAL_FRD =
+    Odometry_MavFrame_MAV_FRAME_LOCAL_FRD;
   static inline bool MavFrame_IsValid(int value) {
     return Odometry_MavFrame_IsValid(value);
   }
@@ -1619,909 +2523,6 @@ class Odometry :
 };
 // -------------------------------------------------------------------
 
-class PositionBody :
-    public ::PROTOBUF_NAMESPACE_ID::Message /* @@protoc_insertion_point(class_definition:mavsdk.rpc.mocap.PositionBody) */ {
- public:
-  PositionBody();
-  virtual ~PositionBody();
-
-  PositionBody(const PositionBody& from);
-  PositionBody(PositionBody&& from) noexcept
-    : PositionBody() {
-    *this = ::std::move(from);
-  }
-
-  inline PositionBody& operator=(const PositionBody& from) {
-    CopyFrom(from);
-    return *this;
-  }
-  inline PositionBody& operator=(PositionBody&& from) noexcept {
-    if (GetArenaNoVirtual() == from.GetArenaNoVirtual()) {
-      if (this != &from) InternalSwap(&from);
-    } else {
-      CopyFrom(from);
-    }
-    return *this;
-  }
-
-  static const ::PROTOBUF_NAMESPACE_ID::Descriptor* descriptor() {
-    return GetDescriptor();
-  }
-  static const ::PROTOBUF_NAMESPACE_ID::Descriptor* GetDescriptor() {
-    return GetMetadataStatic().descriptor;
-  }
-  static const ::PROTOBUF_NAMESPACE_ID::Reflection* GetReflection() {
-    return GetMetadataStatic().reflection;
-  }
-  static const PositionBody& default_instance();
-
-  static void InitAsDefaultInstance();  // FOR INTERNAL USE ONLY
-  static inline const PositionBody* internal_default_instance() {
-    return reinterpret_cast<const PositionBody*>(
-               &_PositionBody_default_instance_);
-  }
-  static constexpr int kIndexInFileMessages =
-    9;
-
-  friend void swap(PositionBody& a, PositionBody& b) {
-    a.Swap(&b);
-  }
-  inline void Swap(PositionBody* other) {
-    if (other == this) return;
-    InternalSwap(other);
-  }
-
-  // implements Message ----------------------------------------------
-
-  inline PositionBody* New() const final {
-    return CreateMaybeMessage<PositionBody>(nullptr);
-  }
-
-  PositionBody* New(::PROTOBUF_NAMESPACE_ID::Arena* arena) const final {
-    return CreateMaybeMessage<PositionBody>(arena);
-  }
-  void CopyFrom(const ::PROTOBUF_NAMESPACE_ID::Message& from) final;
-  void MergeFrom(const ::PROTOBUF_NAMESPACE_ID::Message& from) final;
-  void CopyFrom(const PositionBody& from);
-  void MergeFrom(const PositionBody& from);
-  PROTOBUF_ATTRIBUTE_REINITIALIZES void Clear() final;
-  bool IsInitialized() const final;
-
-  size_t ByteSizeLong() const final;
-  const char* _InternalParse(const char* ptr, ::PROTOBUF_NAMESPACE_ID::internal::ParseContext* ctx) final;
-  ::PROTOBUF_NAMESPACE_ID::uint8* _InternalSerialize(
-      ::PROTOBUF_NAMESPACE_ID::uint8* target, ::PROTOBUF_NAMESPACE_ID::io::EpsCopyOutputStream* stream) const final;
-  int GetCachedSize() const final { return _cached_size_.Get(); }
-
-  private:
-  inline void SharedCtor();
-  inline void SharedDtor();
-  void SetCachedSize(int size) const final;
-  void InternalSwap(PositionBody* other);
-  friend class ::PROTOBUF_NAMESPACE_ID::internal::AnyMetadata;
-  static ::PROTOBUF_NAMESPACE_ID::StringPiece FullMessageName() {
-    return "mavsdk.rpc.mocap.PositionBody";
-  }
-  private:
-  inline ::PROTOBUF_NAMESPACE_ID::Arena* GetArenaNoVirtual() const {
-    return nullptr;
-  }
-  inline void* MaybeArenaPtr() const {
-    return nullptr;
-  }
-  public:
-
-  ::PROTOBUF_NAMESPACE_ID::Metadata GetMetadata() const final;
-  private:
-  static ::PROTOBUF_NAMESPACE_ID::Metadata GetMetadataStatic() {
-    ::PROTOBUF_NAMESPACE_ID::internal::AssignDescriptors(&::descriptor_table_mocap_2fmocap_2eproto);
-    return ::descriptor_table_mocap_2fmocap_2eproto.file_level_metadata[kIndexInFileMessages];
-  }
-
-  public:
-
-  // nested types ----------------------------------------------------
-
-  // accessors -------------------------------------------------------
-
-  enum : int {
-    kXMFieldNumber = 1,
-    kYMFieldNumber = 2,
-    kZMFieldNumber = 3,
-  };
-  // float x_m = 1;
-  void clear_x_m();
-  float x_m() const;
-  void set_x_m(float value);
-  private:
-  float _internal_x_m() const;
-  void _internal_set_x_m(float value);
-  public:
-
-  // float y_m = 2;
-  void clear_y_m();
-  float y_m() const;
-  void set_y_m(float value);
-  private:
-  float _internal_y_m() const;
-  void _internal_set_y_m(float value);
-  public:
-
-  // float z_m = 3;
-  void clear_z_m();
-  float z_m() const;
-  void set_z_m(float value);
-  private:
-  float _internal_z_m() const;
-  void _internal_set_z_m(float value);
-  public:
-
-  // @@protoc_insertion_point(class_scope:mavsdk.rpc.mocap.PositionBody)
- private:
-  class _Internal;
-
-  ::PROTOBUF_NAMESPACE_ID::internal::InternalMetadataWithArena _internal_metadata_;
-  float x_m_;
-  float y_m_;
-  float z_m_;
-  mutable ::PROTOBUF_NAMESPACE_ID::internal::CachedSize _cached_size_;
-  friend struct ::TableStruct_mocap_2fmocap_2eproto;
-};
-// -------------------------------------------------------------------
-
-class AngleBody :
-    public ::PROTOBUF_NAMESPACE_ID::Message /* @@protoc_insertion_point(class_definition:mavsdk.rpc.mocap.AngleBody) */ {
- public:
-  AngleBody();
-  virtual ~AngleBody();
-
-  AngleBody(const AngleBody& from);
-  AngleBody(AngleBody&& from) noexcept
-    : AngleBody() {
-    *this = ::std::move(from);
-  }
-
-  inline AngleBody& operator=(const AngleBody& from) {
-    CopyFrom(from);
-    return *this;
-  }
-  inline AngleBody& operator=(AngleBody&& from) noexcept {
-    if (GetArenaNoVirtual() == from.GetArenaNoVirtual()) {
-      if (this != &from) InternalSwap(&from);
-    } else {
-      CopyFrom(from);
-    }
-    return *this;
-  }
-
-  static const ::PROTOBUF_NAMESPACE_ID::Descriptor* descriptor() {
-    return GetDescriptor();
-  }
-  static const ::PROTOBUF_NAMESPACE_ID::Descriptor* GetDescriptor() {
-    return GetMetadataStatic().descriptor;
-  }
-  static const ::PROTOBUF_NAMESPACE_ID::Reflection* GetReflection() {
-    return GetMetadataStatic().reflection;
-  }
-  static const AngleBody& default_instance();
-
-  static void InitAsDefaultInstance();  // FOR INTERNAL USE ONLY
-  static inline const AngleBody* internal_default_instance() {
-    return reinterpret_cast<const AngleBody*>(
-               &_AngleBody_default_instance_);
-  }
-  static constexpr int kIndexInFileMessages =
-    10;
-
-  friend void swap(AngleBody& a, AngleBody& b) {
-    a.Swap(&b);
-  }
-  inline void Swap(AngleBody* other) {
-    if (other == this) return;
-    InternalSwap(other);
-  }
-
-  // implements Message ----------------------------------------------
-
-  inline AngleBody* New() const final {
-    return CreateMaybeMessage<AngleBody>(nullptr);
-  }
-
-  AngleBody* New(::PROTOBUF_NAMESPACE_ID::Arena* arena) const final {
-    return CreateMaybeMessage<AngleBody>(arena);
-  }
-  void CopyFrom(const ::PROTOBUF_NAMESPACE_ID::Message& from) final;
-  void MergeFrom(const ::PROTOBUF_NAMESPACE_ID::Message& from) final;
-  void CopyFrom(const AngleBody& from);
-  void MergeFrom(const AngleBody& from);
-  PROTOBUF_ATTRIBUTE_REINITIALIZES void Clear() final;
-  bool IsInitialized() const final;
-
-  size_t ByteSizeLong() const final;
-  const char* _InternalParse(const char* ptr, ::PROTOBUF_NAMESPACE_ID::internal::ParseContext* ctx) final;
-  ::PROTOBUF_NAMESPACE_ID::uint8* _InternalSerialize(
-      ::PROTOBUF_NAMESPACE_ID::uint8* target, ::PROTOBUF_NAMESPACE_ID::io::EpsCopyOutputStream* stream) const final;
-  int GetCachedSize() const final { return _cached_size_.Get(); }
-
-  private:
-  inline void SharedCtor();
-  inline void SharedDtor();
-  void SetCachedSize(int size) const final;
-  void InternalSwap(AngleBody* other);
-  friend class ::PROTOBUF_NAMESPACE_ID::internal::AnyMetadata;
-  static ::PROTOBUF_NAMESPACE_ID::StringPiece FullMessageName() {
-    return "mavsdk.rpc.mocap.AngleBody";
-  }
-  private:
-  inline ::PROTOBUF_NAMESPACE_ID::Arena* GetArenaNoVirtual() const {
-    return nullptr;
-  }
-  inline void* MaybeArenaPtr() const {
-    return nullptr;
-  }
-  public:
-
-  ::PROTOBUF_NAMESPACE_ID::Metadata GetMetadata() const final;
-  private:
-  static ::PROTOBUF_NAMESPACE_ID::Metadata GetMetadataStatic() {
-    ::PROTOBUF_NAMESPACE_ID::internal::AssignDescriptors(&::descriptor_table_mocap_2fmocap_2eproto);
-    return ::descriptor_table_mocap_2fmocap_2eproto.file_level_metadata[kIndexInFileMessages];
-  }
-
-  public:
-
-  // nested types ----------------------------------------------------
-
-  // accessors -------------------------------------------------------
-
-  enum : int {
-    kRollRadFieldNumber = 1,
-    kPitchRadFieldNumber = 2,
-    kYawRadFieldNumber = 3,
-  };
-  // float roll_rad = 1;
-  void clear_roll_rad();
-  float roll_rad() const;
-  void set_roll_rad(float value);
-  private:
-  float _internal_roll_rad() const;
-  void _internal_set_roll_rad(float value);
-  public:
-
-  // float pitch_rad = 2;
-  void clear_pitch_rad();
-  float pitch_rad() const;
-  void set_pitch_rad(float value);
-  private:
-  float _internal_pitch_rad() const;
-  void _internal_set_pitch_rad(float value);
-  public:
-
-  // float yaw_rad = 3;
-  void clear_yaw_rad();
-  float yaw_rad() const;
-  void set_yaw_rad(float value);
-  private:
-  float _internal_yaw_rad() const;
-  void _internal_set_yaw_rad(float value);
-  public:
-
-  // @@protoc_insertion_point(class_scope:mavsdk.rpc.mocap.AngleBody)
- private:
-  class _Internal;
-
-  ::PROTOBUF_NAMESPACE_ID::internal::InternalMetadataWithArena _internal_metadata_;
-  float roll_rad_;
-  float pitch_rad_;
-  float yaw_rad_;
-  mutable ::PROTOBUF_NAMESPACE_ID::internal::CachedSize _cached_size_;
-  friend struct ::TableStruct_mocap_2fmocap_2eproto;
-};
-// -------------------------------------------------------------------
-
-class SpeedBody :
-    public ::PROTOBUF_NAMESPACE_ID::Message /* @@protoc_insertion_point(class_definition:mavsdk.rpc.mocap.SpeedBody) */ {
- public:
-  SpeedBody();
-  virtual ~SpeedBody();
-
-  SpeedBody(const SpeedBody& from);
-  SpeedBody(SpeedBody&& from) noexcept
-    : SpeedBody() {
-    *this = ::std::move(from);
-  }
-
-  inline SpeedBody& operator=(const SpeedBody& from) {
-    CopyFrom(from);
-    return *this;
-  }
-  inline SpeedBody& operator=(SpeedBody&& from) noexcept {
-    if (GetArenaNoVirtual() == from.GetArenaNoVirtual()) {
-      if (this != &from) InternalSwap(&from);
-    } else {
-      CopyFrom(from);
-    }
-    return *this;
-  }
-
-  static const ::PROTOBUF_NAMESPACE_ID::Descriptor* descriptor() {
-    return GetDescriptor();
-  }
-  static const ::PROTOBUF_NAMESPACE_ID::Descriptor* GetDescriptor() {
-    return GetMetadataStatic().descriptor;
-  }
-  static const ::PROTOBUF_NAMESPACE_ID::Reflection* GetReflection() {
-    return GetMetadataStatic().reflection;
-  }
-  static const SpeedBody& default_instance();
-
-  static void InitAsDefaultInstance();  // FOR INTERNAL USE ONLY
-  static inline const SpeedBody* internal_default_instance() {
-    return reinterpret_cast<const SpeedBody*>(
-               &_SpeedBody_default_instance_);
-  }
-  static constexpr int kIndexInFileMessages =
-    11;
-
-  friend void swap(SpeedBody& a, SpeedBody& b) {
-    a.Swap(&b);
-  }
-  inline void Swap(SpeedBody* other) {
-    if (other == this) return;
-    InternalSwap(other);
-  }
-
-  // implements Message ----------------------------------------------
-
-  inline SpeedBody* New() const final {
-    return CreateMaybeMessage<SpeedBody>(nullptr);
-  }
-
-  SpeedBody* New(::PROTOBUF_NAMESPACE_ID::Arena* arena) const final {
-    return CreateMaybeMessage<SpeedBody>(arena);
-  }
-  void CopyFrom(const ::PROTOBUF_NAMESPACE_ID::Message& from) final;
-  void MergeFrom(const ::PROTOBUF_NAMESPACE_ID::Message& from) final;
-  void CopyFrom(const SpeedBody& from);
-  void MergeFrom(const SpeedBody& from);
-  PROTOBUF_ATTRIBUTE_REINITIALIZES void Clear() final;
-  bool IsInitialized() const final;
-
-  size_t ByteSizeLong() const final;
-  const char* _InternalParse(const char* ptr, ::PROTOBUF_NAMESPACE_ID::internal::ParseContext* ctx) final;
-  ::PROTOBUF_NAMESPACE_ID::uint8* _InternalSerialize(
-      ::PROTOBUF_NAMESPACE_ID::uint8* target, ::PROTOBUF_NAMESPACE_ID::io::EpsCopyOutputStream* stream) const final;
-  int GetCachedSize() const final { return _cached_size_.Get(); }
-
-  private:
-  inline void SharedCtor();
-  inline void SharedDtor();
-  void SetCachedSize(int size) const final;
-  void InternalSwap(SpeedBody* other);
-  friend class ::PROTOBUF_NAMESPACE_ID::internal::AnyMetadata;
-  static ::PROTOBUF_NAMESPACE_ID::StringPiece FullMessageName() {
-    return "mavsdk.rpc.mocap.SpeedBody";
-  }
-  private:
-  inline ::PROTOBUF_NAMESPACE_ID::Arena* GetArenaNoVirtual() const {
-    return nullptr;
-  }
-  inline void* MaybeArenaPtr() const {
-    return nullptr;
-  }
-  public:
-
-  ::PROTOBUF_NAMESPACE_ID::Metadata GetMetadata() const final;
-  private:
-  static ::PROTOBUF_NAMESPACE_ID::Metadata GetMetadataStatic() {
-    ::PROTOBUF_NAMESPACE_ID::internal::AssignDescriptors(&::descriptor_table_mocap_2fmocap_2eproto);
-    return ::descriptor_table_mocap_2fmocap_2eproto.file_level_metadata[kIndexInFileMessages];
-  }
-
-  public:
-
-  // nested types ----------------------------------------------------
-
-  // accessors -------------------------------------------------------
-
-  enum : int {
-    kXMSFieldNumber = 1,
-    kYMSFieldNumber = 2,
-    kZMSFieldNumber = 3,
-  };
-  // float x_m_s = 1;
-  void clear_x_m_s();
-  float x_m_s() const;
-  void set_x_m_s(float value);
-  private:
-  float _internal_x_m_s() const;
-  void _internal_set_x_m_s(float value);
-  public:
-
-  // float y_m_s = 2;
-  void clear_y_m_s();
-  float y_m_s() const;
-  void set_y_m_s(float value);
-  private:
-  float _internal_y_m_s() const;
-  void _internal_set_y_m_s(float value);
-  public:
-
-  // float z_m_s = 3;
-  void clear_z_m_s();
-  float z_m_s() const;
-  void set_z_m_s(float value);
-  private:
-  float _internal_z_m_s() const;
-  void _internal_set_z_m_s(float value);
-  public:
-
-  // @@protoc_insertion_point(class_scope:mavsdk.rpc.mocap.SpeedBody)
- private:
-  class _Internal;
-
-  ::PROTOBUF_NAMESPACE_ID::internal::InternalMetadataWithArena _internal_metadata_;
-  float x_m_s_;
-  float y_m_s_;
-  float z_m_s_;
-  mutable ::PROTOBUF_NAMESPACE_ID::internal::CachedSize _cached_size_;
-  friend struct ::TableStruct_mocap_2fmocap_2eproto;
-};
-// -------------------------------------------------------------------
-
-class AngularVelocityBody :
-    public ::PROTOBUF_NAMESPACE_ID::Message /* @@protoc_insertion_point(class_definition:mavsdk.rpc.mocap.AngularVelocityBody) */ {
- public:
-  AngularVelocityBody();
-  virtual ~AngularVelocityBody();
-
-  AngularVelocityBody(const AngularVelocityBody& from);
-  AngularVelocityBody(AngularVelocityBody&& from) noexcept
-    : AngularVelocityBody() {
-    *this = ::std::move(from);
-  }
-
-  inline AngularVelocityBody& operator=(const AngularVelocityBody& from) {
-    CopyFrom(from);
-    return *this;
-  }
-  inline AngularVelocityBody& operator=(AngularVelocityBody&& from) noexcept {
-    if (GetArenaNoVirtual() == from.GetArenaNoVirtual()) {
-      if (this != &from) InternalSwap(&from);
-    } else {
-      CopyFrom(from);
-    }
-    return *this;
-  }
-
-  static const ::PROTOBUF_NAMESPACE_ID::Descriptor* descriptor() {
-    return GetDescriptor();
-  }
-  static const ::PROTOBUF_NAMESPACE_ID::Descriptor* GetDescriptor() {
-    return GetMetadataStatic().descriptor;
-  }
-  static const ::PROTOBUF_NAMESPACE_ID::Reflection* GetReflection() {
-    return GetMetadataStatic().reflection;
-  }
-  static const AngularVelocityBody& default_instance();
-
-  static void InitAsDefaultInstance();  // FOR INTERNAL USE ONLY
-  static inline const AngularVelocityBody* internal_default_instance() {
-    return reinterpret_cast<const AngularVelocityBody*>(
-               &_AngularVelocityBody_default_instance_);
-  }
-  static constexpr int kIndexInFileMessages =
-    12;
-
-  friend void swap(AngularVelocityBody& a, AngularVelocityBody& b) {
-    a.Swap(&b);
-  }
-  inline void Swap(AngularVelocityBody* other) {
-    if (other == this) return;
-    InternalSwap(other);
-  }
-
-  // implements Message ----------------------------------------------
-
-  inline AngularVelocityBody* New() const final {
-    return CreateMaybeMessage<AngularVelocityBody>(nullptr);
-  }
-
-  AngularVelocityBody* New(::PROTOBUF_NAMESPACE_ID::Arena* arena) const final {
-    return CreateMaybeMessage<AngularVelocityBody>(arena);
-  }
-  void CopyFrom(const ::PROTOBUF_NAMESPACE_ID::Message& from) final;
-  void MergeFrom(const ::PROTOBUF_NAMESPACE_ID::Message& from) final;
-  void CopyFrom(const AngularVelocityBody& from);
-  void MergeFrom(const AngularVelocityBody& from);
-  PROTOBUF_ATTRIBUTE_REINITIALIZES void Clear() final;
-  bool IsInitialized() const final;
-
-  size_t ByteSizeLong() const final;
-  const char* _InternalParse(const char* ptr, ::PROTOBUF_NAMESPACE_ID::internal::ParseContext* ctx) final;
-  ::PROTOBUF_NAMESPACE_ID::uint8* _InternalSerialize(
-      ::PROTOBUF_NAMESPACE_ID::uint8* target, ::PROTOBUF_NAMESPACE_ID::io::EpsCopyOutputStream* stream) const final;
-  int GetCachedSize() const final { return _cached_size_.Get(); }
-
-  private:
-  inline void SharedCtor();
-  inline void SharedDtor();
-  void SetCachedSize(int size) const final;
-  void InternalSwap(AngularVelocityBody* other);
-  friend class ::PROTOBUF_NAMESPACE_ID::internal::AnyMetadata;
-  static ::PROTOBUF_NAMESPACE_ID::StringPiece FullMessageName() {
-    return "mavsdk.rpc.mocap.AngularVelocityBody";
-  }
-  private:
-  inline ::PROTOBUF_NAMESPACE_ID::Arena* GetArenaNoVirtual() const {
-    return nullptr;
-  }
-  inline void* MaybeArenaPtr() const {
-    return nullptr;
-  }
-  public:
-
-  ::PROTOBUF_NAMESPACE_ID::Metadata GetMetadata() const final;
-  private:
-  static ::PROTOBUF_NAMESPACE_ID::Metadata GetMetadataStatic() {
-    ::PROTOBUF_NAMESPACE_ID::internal::AssignDescriptors(&::descriptor_table_mocap_2fmocap_2eproto);
-    return ::descriptor_table_mocap_2fmocap_2eproto.file_level_metadata[kIndexInFileMessages];
-  }
-
-  public:
-
-  // nested types ----------------------------------------------------
-
-  // accessors -------------------------------------------------------
-
-  enum : int {
-    kRollRadSFieldNumber = 1,
-    kPitchRadSFieldNumber = 2,
-    kYawRadSFieldNumber = 3,
-  };
-  // float roll_rad_s = 1;
-  void clear_roll_rad_s();
-  float roll_rad_s() const;
-  void set_roll_rad_s(float value);
-  private:
-  float _internal_roll_rad_s() const;
-  void _internal_set_roll_rad_s(float value);
-  public:
-
-  // float pitch_rad_s = 2;
-  void clear_pitch_rad_s();
-  float pitch_rad_s() const;
-  void set_pitch_rad_s(float value);
-  private:
-  float _internal_pitch_rad_s() const;
-  void _internal_set_pitch_rad_s(float value);
-  public:
-
-  // float yaw_rad_s = 3;
-  void clear_yaw_rad_s();
-  float yaw_rad_s() const;
-  void set_yaw_rad_s(float value);
-  private:
-  float _internal_yaw_rad_s() const;
-  void _internal_set_yaw_rad_s(float value);
-  public:
-
-  // @@protoc_insertion_point(class_scope:mavsdk.rpc.mocap.AngularVelocityBody)
- private:
-  class _Internal;
-
-  ::PROTOBUF_NAMESPACE_ID::internal::InternalMetadataWithArena _internal_metadata_;
-  float roll_rad_s_;
-  float pitch_rad_s_;
-  float yaw_rad_s_;
-  mutable ::PROTOBUF_NAMESPACE_ID::internal::CachedSize _cached_size_;
-  friend struct ::TableStruct_mocap_2fmocap_2eproto;
-};
-// -------------------------------------------------------------------
-
-class Covariance :
-    public ::PROTOBUF_NAMESPACE_ID::Message /* @@protoc_insertion_point(class_definition:mavsdk.rpc.mocap.Covariance) */ {
- public:
-  Covariance();
-  virtual ~Covariance();
-
-  Covariance(const Covariance& from);
-  Covariance(Covariance&& from) noexcept
-    : Covariance() {
-    *this = ::std::move(from);
-  }
-
-  inline Covariance& operator=(const Covariance& from) {
-    CopyFrom(from);
-    return *this;
-  }
-  inline Covariance& operator=(Covariance&& from) noexcept {
-    if (GetArenaNoVirtual() == from.GetArenaNoVirtual()) {
-      if (this != &from) InternalSwap(&from);
-    } else {
-      CopyFrom(from);
-    }
-    return *this;
-  }
-
-  static const ::PROTOBUF_NAMESPACE_ID::Descriptor* descriptor() {
-    return GetDescriptor();
-  }
-  static const ::PROTOBUF_NAMESPACE_ID::Descriptor* GetDescriptor() {
-    return GetMetadataStatic().descriptor;
-  }
-  static const ::PROTOBUF_NAMESPACE_ID::Reflection* GetReflection() {
-    return GetMetadataStatic().reflection;
-  }
-  static const Covariance& default_instance();
-
-  static void InitAsDefaultInstance();  // FOR INTERNAL USE ONLY
-  static inline const Covariance* internal_default_instance() {
-    return reinterpret_cast<const Covariance*>(
-               &_Covariance_default_instance_);
-  }
-  static constexpr int kIndexInFileMessages =
-    13;
-
-  friend void swap(Covariance& a, Covariance& b) {
-    a.Swap(&b);
-  }
-  inline void Swap(Covariance* other) {
-    if (other == this) return;
-    InternalSwap(other);
-  }
-
-  // implements Message ----------------------------------------------
-
-  inline Covariance* New() const final {
-    return CreateMaybeMessage<Covariance>(nullptr);
-  }
-
-  Covariance* New(::PROTOBUF_NAMESPACE_ID::Arena* arena) const final {
-    return CreateMaybeMessage<Covariance>(arena);
-  }
-  void CopyFrom(const ::PROTOBUF_NAMESPACE_ID::Message& from) final;
-  void MergeFrom(const ::PROTOBUF_NAMESPACE_ID::Message& from) final;
-  void CopyFrom(const Covariance& from);
-  void MergeFrom(const Covariance& from);
-  PROTOBUF_ATTRIBUTE_REINITIALIZES void Clear() final;
-  bool IsInitialized() const final;
-
-  size_t ByteSizeLong() const final;
-  const char* _InternalParse(const char* ptr, ::PROTOBUF_NAMESPACE_ID::internal::ParseContext* ctx) final;
-  ::PROTOBUF_NAMESPACE_ID::uint8* _InternalSerialize(
-      ::PROTOBUF_NAMESPACE_ID::uint8* target, ::PROTOBUF_NAMESPACE_ID::io::EpsCopyOutputStream* stream) const final;
-  int GetCachedSize() const final { return _cached_size_.Get(); }
-
-  private:
-  inline void SharedCtor();
-  inline void SharedDtor();
-  void SetCachedSize(int size) const final;
-  void InternalSwap(Covariance* other);
-  friend class ::PROTOBUF_NAMESPACE_ID::internal::AnyMetadata;
-  static ::PROTOBUF_NAMESPACE_ID::StringPiece FullMessageName() {
-    return "mavsdk.rpc.mocap.Covariance";
-  }
-  private:
-  inline ::PROTOBUF_NAMESPACE_ID::Arena* GetArenaNoVirtual() const {
-    return nullptr;
-  }
-  inline void* MaybeArenaPtr() const {
-    return nullptr;
-  }
-  public:
-
-  ::PROTOBUF_NAMESPACE_ID::Metadata GetMetadata() const final;
-  private:
-  static ::PROTOBUF_NAMESPACE_ID::Metadata GetMetadataStatic() {
-    ::PROTOBUF_NAMESPACE_ID::internal::AssignDescriptors(&::descriptor_table_mocap_2fmocap_2eproto);
-    return ::descriptor_table_mocap_2fmocap_2eproto.file_level_metadata[kIndexInFileMessages];
-  }
-
-  public:
-
-  // nested types ----------------------------------------------------
-
-  // accessors -------------------------------------------------------
-
-  enum : int {
-    kCovarianceMatrixFieldNumber = 1,
-  };
-  // repeated float covariance_matrix = 1;
-  int covariance_matrix_size() const;
-  private:
-  int _internal_covariance_matrix_size() const;
-  public:
-  void clear_covariance_matrix();
-  private:
-  float _internal_covariance_matrix(int index) const;
-  const ::PROTOBUF_NAMESPACE_ID::RepeatedField< float >&
-      _internal_covariance_matrix() const;
-  void _internal_add_covariance_matrix(float value);
-  ::PROTOBUF_NAMESPACE_ID::RepeatedField< float >*
-      _internal_mutable_covariance_matrix();
-  public:
-  float covariance_matrix(int index) const;
-  void set_covariance_matrix(int index, float value);
-  void add_covariance_matrix(float value);
-  const ::PROTOBUF_NAMESPACE_ID::RepeatedField< float >&
-      covariance_matrix() const;
-  ::PROTOBUF_NAMESPACE_ID::RepeatedField< float >*
-      mutable_covariance_matrix();
-
-  // @@protoc_insertion_point(class_scope:mavsdk.rpc.mocap.Covariance)
- private:
-  class _Internal;
-
-  ::PROTOBUF_NAMESPACE_ID::internal::InternalMetadataWithArena _internal_metadata_;
-  ::PROTOBUF_NAMESPACE_ID::RepeatedField< float > covariance_matrix_;
-  mutable std::atomic<int> _covariance_matrix_cached_byte_size_;
-  mutable ::PROTOBUF_NAMESPACE_ID::internal::CachedSize _cached_size_;
-  friend struct ::TableStruct_mocap_2fmocap_2eproto;
-};
-// -------------------------------------------------------------------
-
-class Quaternion :
-    public ::PROTOBUF_NAMESPACE_ID::Message /* @@protoc_insertion_point(class_definition:mavsdk.rpc.mocap.Quaternion) */ {
- public:
-  Quaternion();
-  virtual ~Quaternion();
-
-  Quaternion(const Quaternion& from);
-  Quaternion(Quaternion&& from) noexcept
-    : Quaternion() {
-    *this = ::std::move(from);
-  }
-
-  inline Quaternion& operator=(const Quaternion& from) {
-    CopyFrom(from);
-    return *this;
-  }
-  inline Quaternion& operator=(Quaternion&& from) noexcept {
-    if (GetArenaNoVirtual() == from.GetArenaNoVirtual()) {
-      if (this != &from) InternalSwap(&from);
-    } else {
-      CopyFrom(from);
-    }
-    return *this;
-  }
-
-  static const ::PROTOBUF_NAMESPACE_ID::Descriptor* descriptor() {
-    return GetDescriptor();
-  }
-  static const ::PROTOBUF_NAMESPACE_ID::Descriptor* GetDescriptor() {
-    return GetMetadataStatic().descriptor;
-  }
-  static const ::PROTOBUF_NAMESPACE_ID::Reflection* GetReflection() {
-    return GetMetadataStatic().reflection;
-  }
-  static const Quaternion& default_instance();
-
-  static void InitAsDefaultInstance();  // FOR INTERNAL USE ONLY
-  static inline const Quaternion* internal_default_instance() {
-    return reinterpret_cast<const Quaternion*>(
-               &_Quaternion_default_instance_);
-  }
-  static constexpr int kIndexInFileMessages =
-    14;
-
-  friend void swap(Quaternion& a, Quaternion& b) {
-    a.Swap(&b);
-  }
-  inline void Swap(Quaternion* other) {
-    if (other == this) return;
-    InternalSwap(other);
-  }
-
-  // implements Message ----------------------------------------------
-
-  inline Quaternion* New() const final {
-    return CreateMaybeMessage<Quaternion>(nullptr);
-  }
-
-  Quaternion* New(::PROTOBUF_NAMESPACE_ID::Arena* arena) const final {
-    return CreateMaybeMessage<Quaternion>(arena);
-  }
-  void CopyFrom(const ::PROTOBUF_NAMESPACE_ID::Message& from) final;
-  void MergeFrom(const ::PROTOBUF_NAMESPACE_ID::Message& from) final;
-  void CopyFrom(const Quaternion& from);
-  void MergeFrom(const Quaternion& from);
-  PROTOBUF_ATTRIBUTE_REINITIALIZES void Clear() final;
-  bool IsInitialized() const final;
-
-  size_t ByteSizeLong() const final;
-  const char* _InternalParse(const char* ptr, ::PROTOBUF_NAMESPACE_ID::internal::ParseContext* ctx) final;
-  ::PROTOBUF_NAMESPACE_ID::uint8* _InternalSerialize(
-      ::PROTOBUF_NAMESPACE_ID::uint8* target, ::PROTOBUF_NAMESPACE_ID::io::EpsCopyOutputStream* stream) const final;
-  int GetCachedSize() const final { return _cached_size_.Get(); }
-
-  private:
-  inline void SharedCtor();
-  inline void SharedDtor();
-  void SetCachedSize(int size) const final;
-  void InternalSwap(Quaternion* other);
-  friend class ::PROTOBUF_NAMESPACE_ID::internal::AnyMetadata;
-  static ::PROTOBUF_NAMESPACE_ID::StringPiece FullMessageName() {
-    return "mavsdk.rpc.mocap.Quaternion";
-  }
-  private:
-  inline ::PROTOBUF_NAMESPACE_ID::Arena* GetArenaNoVirtual() const {
-    return nullptr;
-  }
-  inline void* MaybeArenaPtr() const {
-    return nullptr;
-  }
-  public:
-
-  ::PROTOBUF_NAMESPACE_ID::Metadata GetMetadata() const final;
-  private:
-  static ::PROTOBUF_NAMESPACE_ID::Metadata GetMetadataStatic() {
-    ::PROTOBUF_NAMESPACE_ID::internal::AssignDescriptors(&::descriptor_table_mocap_2fmocap_2eproto);
-    return ::descriptor_table_mocap_2fmocap_2eproto.file_level_metadata[kIndexInFileMessages];
-  }
-
-  public:
-
-  // nested types ----------------------------------------------------
-
-  // accessors -------------------------------------------------------
-
-  enum : int {
-    kWFieldNumber = 1,
-    kXFieldNumber = 2,
-    kYFieldNumber = 3,
-    kZFieldNumber = 4,
-  };
-  // float w = 1;
-  void clear_w();
-  float w() const;
-  void set_w(float value);
-  private:
-  float _internal_w() const;
-  void _internal_set_w(float value);
-  public:
-
-  // float x = 2;
-  void clear_x();
-  float x() const;
-  void set_x(float value);
-  private:
-  float _internal_x() const;
-  void _internal_set_x(float value);
-  public:
-
-  // float y = 3;
-  void clear_y();
-  float y() const;
-  void set_y(float value);
-  private:
-  float _internal_y() const;
-  void _internal_set_y(float value);
-  public:
-
-  // float z = 4;
-  void clear_z();
-  float z() const;
-  void set_z(float value);
-  private:
-  float _internal_z() const;
-  void _internal_set_z(float value);
-  public:
-
-  // @@protoc_insertion_point(class_scope:mavsdk.rpc.mocap.Quaternion)
- private:
-  class _Internal;
-
-  ::PROTOBUF_NAMESPACE_ID::internal::InternalMetadataWithArena _internal_metadata_;
-  float w_;
-  float x_;
-  float y_;
-  float z_;
-  mutable ::PROTOBUF_NAMESPACE_ID::internal::CachedSize _cached_size_;
-  friend struct ::TableStruct_mocap_2fmocap_2eproto;
-};
-// -------------------------------------------------------------------
-
 class MocapResult :
     public ::PROTOBUF_NAMESPACE_ID::Message /* @@protoc_insertion_point(class_definition:mavsdk.rpc.mocap.MocapResult) */ {
  public:
@@ -2626,16 +2627,16 @@ class MocapResult :
   // nested types ----------------------------------------------------
 
   typedef MocapResult_Result Result;
-  static constexpr Result UNKNOWN =
-    MocapResult_Result_UNKNOWN;
-  static constexpr Result SUCCESS =
-    MocapResult_Result_SUCCESS;
-  static constexpr Result NO_SYSTEM =
-    MocapResult_Result_NO_SYSTEM;
-  static constexpr Result CONNECTION_ERROR =
-    MocapResult_Result_CONNECTION_ERROR;
-  static constexpr Result INVALID_REQUEST_DATA =
-    MocapResult_Result_INVALID_REQUEST_DATA;
+  static constexpr Result RESULT_UNKNOWN =
+    MocapResult_Result_RESULT_UNKNOWN;
+  static constexpr Result RESULT_SUCCESS =
+    MocapResult_Result_RESULT_SUCCESS;
+  static constexpr Result RESULT_NO_SYSTEM =
+    MocapResult_Result_RESULT_NO_SYSTEM;
+  static constexpr Result RESULT_CONNECTION_ERROR =
+    MocapResult_Result_RESULT_CONNECTION_ERROR;
+  static constexpr Result RESULT_INVALID_REQUEST_DATA =
+    MocapResult_Result_RESULT_INVALID_REQUEST_DATA;
   static inline bool Result_IsValid(int value) {
     return MocapResult_Result_IsValid(value);
   }
@@ -3091,6 +3092,397 @@ inline void SetOdometryResponse::set_allocated_mocap_result(::mavsdk::rpc::mocap
   }
   mocap_result_ = mocap_result;
   // @@protoc_insertion_point(field_set_allocated:mavsdk.rpc.mocap.SetOdometryResponse.mocap_result)
+}
+
+// -------------------------------------------------------------------
+
+// PositionBody
+
+// float x_m = 1;
+inline void PositionBody::clear_x_m() {
+  x_m_ = 0;
+}
+inline float PositionBody::_internal_x_m() const {
+  return x_m_;
+}
+inline float PositionBody::x_m() const {
+  // @@protoc_insertion_point(field_get:mavsdk.rpc.mocap.PositionBody.x_m)
+  return _internal_x_m();
+}
+inline void PositionBody::_internal_set_x_m(float value) {
+  
+  x_m_ = value;
+}
+inline void PositionBody::set_x_m(float value) {
+  _internal_set_x_m(value);
+  // @@protoc_insertion_point(field_set:mavsdk.rpc.mocap.PositionBody.x_m)
+}
+
+// float y_m = 2;
+inline void PositionBody::clear_y_m() {
+  y_m_ = 0;
+}
+inline float PositionBody::_internal_y_m() const {
+  return y_m_;
+}
+inline float PositionBody::y_m() const {
+  // @@protoc_insertion_point(field_get:mavsdk.rpc.mocap.PositionBody.y_m)
+  return _internal_y_m();
+}
+inline void PositionBody::_internal_set_y_m(float value) {
+  
+  y_m_ = value;
+}
+inline void PositionBody::set_y_m(float value) {
+  _internal_set_y_m(value);
+  // @@protoc_insertion_point(field_set:mavsdk.rpc.mocap.PositionBody.y_m)
+}
+
+// float z_m = 3;
+inline void PositionBody::clear_z_m() {
+  z_m_ = 0;
+}
+inline float PositionBody::_internal_z_m() const {
+  return z_m_;
+}
+inline float PositionBody::z_m() const {
+  // @@protoc_insertion_point(field_get:mavsdk.rpc.mocap.PositionBody.z_m)
+  return _internal_z_m();
+}
+inline void PositionBody::_internal_set_z_m(float value) {
+  
+  z_m_ = value;
+}
+inline void PositionBody::set_z_m(float value) {
+  _internal_set_z_m(value);
+  // @@protoc_insertion_point(field_set:mavsdk.rpc.mocap.PositionBody.z_m)
+}
+
+// -------------------------------------------------------------------
+
+// AngleBody
+
+// float roll_rad = 1;
+inline void AngleBody::clear_roll_rad() {
+  roll_rad_ = 0;
+}
+inline float AngleBody::_internal_roll_rad() const {
+  return roll_rad_;
+}
+inline float AngleBody::roll_rad() const {
+  // @@protoc_insertion_point(field_get:mavsdk.rpc.mocap.AngleBody.roll_rad)
+  return _internal_roll_rad();
+}
+inline void AngleBody::_internal_set_roll_rad(float value) {
+  
+  roll_rad_ = value;
+}
+inline void AngleBody::set_roll_rad(float value) {
+  _internal_set_roll_rad(value);
+  // @@protoc_insertion_point(field_set:mavsdk.rpc.mocap.AngleBody.roll_rad)
+}
+
+// float pitch_rad = 2;
+inline void AngleBody::clear_pitch_rad() {
+  pitch_rad_ = 0;
+}
+inline float AngleBody::_internal_pitch_rad() const {
+  return pitch_rad_;
+}
+inline float AngleBody::pitch_rad() const {
+  // @@protoc_insertion_point(field_get:mavsdk.rpc.mocap.AngleBody.pitch_rad)
+  return _internal_pitch_rad();
+}
+inline void AngleBody::_internal_set_pitch_rad(float value) {
+  
+  pitch_rad_ = value;
+}
+inline void AngleBody::set_pitch_rad(float value) {
+  _internal_set_pitch_rad(value);
+  // @@protoc_insertion_point(field_set:mavsdk.rpc.mocap.AngleBody.pitch_rad)
+}
+
+// float yaw_rad = 3;
+inline void AngleBody::clear_yaw_rad() {
+  yaw_rad_ = 0;
+}
+inline float AngleBody::_internal_yaw_rad() const {
+  return yaw_rad_;
+}
+inline float AngleBody::yaw_rad() const {
+  // @@protoc_insertion_point(field_get:mavsdk.rpc.mocap.AngleBody.yaw_rad)
+  return _internal_yaw_rad();
+}
+inline void AngleBody::_internal_set_yaw_rad(float value) {
+  
+  yaw_rad_ = value;
+}
+inline void AngleBody::set_yaw_rad(float value) {
+  _internal_set_yaw_rad(value);
+  // @@protoc_insertion_point(field_set:mavsdk.rpc.mocap.AngleBody.yaw_rad)
+}
+
+// -------------------------------------------------------------------
+
+// SpeedBody
+
+// float x_m_s = 1;
+inline void SpeedBody::clear_x_m_s() {
+  x_m_s_ = 0;
+}
+inline float SpeedBody::_internal_x_m_s() const {
+  return x_m_s_;
+}
+inline float SpeedBody::x_m_s() const {
+  // @@protoc_insertion_point(field_get:mavsdk.rpc.mocap.SpeedBody.x_m_s)
+  return _internal_x_m_s();
+}
+inline void SpeedBody::_internal_set_x_m_s(float value) {
+  
+  x_m_s_ = value;
+}
+inline void SpeedBody::set_x_m_s(float value) {
+  _internal_set_x_m_s(value);
+  // @@protoc_insertion_point(field_set:mavsdk.rpc.mocap.SpeedBody.x_m_s)
+}
+
+// float y_m_s = 2;
+inline void SpeedBody::clear_y_m_s() {
+  y_m_s_ = 0;
+}
+inline float SpeedBody::_internal_y_m_s() const {
+  return y_m_s_;
+}
+inline float SpeedBody::y_m_s() const {
+  // @@protoc_insertion_point(field_get:mavsdk.rpc.mocap.SpeedBody.y_m_s)
+  return _internal_y_m_s();
+}
+inline void SpeedBody::_internal_set_y_m_s(float value) {
+  
+  y_m_s_ = value;
+}
+inline void SpeedBody::set_y_m_s(float value) {
+  _internal_set_y_m_s(value);
+  // @@protoc_insertion_point(field_set:mavsdk.rpc.mocap.SpeedBody.y_m_s)
+}
+
+// float z_m_s = 3;
+inline void SpeedBody::clear_z_m_s() {
+  z_m_s_ = 0;
+}
+inline float SpeedBody::_internal_z_m_s() const {
+  return z_m_s_;
+}
+inline float SpeedBody::z_m_s() const {
+  // @@protoc_insertion_point(field_get:mavsdk.rpc.mocap.SpeedBody.z_m_s)
+  return _internal_z_m_s();
+}
+inline void SpeedBody::_internal_set_z_m_s(float value) {
+  
+  z_m_s_ = value;
+}
+inline void SpeedBody::set_z_m_s(float value) {
+  _internal_set_z_m_s(value);
+  // @@protoc_insertion_point(field_set:mavsdk.rpc.mocap.SpeedBody.z_m_s)
+}
+
+// -------------------------------------------------------------------
+
+// AngularVelocityBody
+
+// float roll_rad_s = 1;
+inline void AngularVelocityBody::clear_roll_rad_s() {
+  roll_rad_s_ = 0;
+}
+inline float AngularVelocityBody::_internal_roll_rad_s() const {
+  return roll_rad_s_;
+}
+inline float AngularVelocityBody::roll_rad_s() const {
+  // @@protoc_insertion_point(field_get:mavsdk.rpc.mocap.AngularVelocityBody.roll_rad_s)
+  return _internal_roll_rad_s();
+}
+inline void AngularVelocityBody::_internal_set_roll_rad_s(float value) {
+  
+  roll_rad_s_ = value;
+}
+inline void AngularVelocityBody::set_roll_rad_s(float value) {
+  _internal_set_roll_rad_s(value);
+  // @@protoc_insertion_point(field_set:mavsdk.rpc.mocap.AngularVelocityBody.roll_rad_s)
+}
+
+// float pitch_rad_s = 2;
+inline void AngularVelocityBody::clear_pitch_rad_s() {
+  pitch_rad_s_ = 0;
+}
+inline float AngularVelocityBody::_internal_pitch_rad_s() const {
+  return pitch_rad_s_;
+}
+inline float AngularVelocityBody::pitch_rad_s() const {
+  // @@protoc_insertion_point(field_get:mavsdk.rpc.mocap.AngularVelocityBody.pitch_rad_s)
+  return _internal_pitch_rad_s();
+}
+inline void AngularVelocityBody::_internal_set_pitch_rad_s(float value) {
+  
+  pitch_rad_s_ = value;
+}
+inline void AngularVelocityBody::set_pitch_rad_s(float value) {
+  _internal_set_pitch_rad_s(value);
+  // @@protoc_insertion_point(field_set:mavsdk.rpc.mocap.AngularVelocityBody.pitch_rad_s)
+}
+
+// float yaw_rad_s = 3;
+inline void AngularVelocityBody::clear_yaw_rad_s() {
+  yaw_rad_s_ = 0;
+}
+inline float AngularVelocityBody::_internal_yaw_rad_s() const {
+  return yaw_rad_s_;
+}
+inline float AngularVelocityBody::yaw_rad_s() const {
+  // @@protoc_insertion_point(field_get:mavsdk.rpc.mocap.AngularVelocityBody.yaw_rad_s)
+  return _internal_yaw_rad_s();
+}
+inline void AngularVelocityBody::_internal_set_yaw_rad_s(float value) {
+  
+  yaw_rad_s_ = value;
+}
+inline void AngularVelocityBody::set_yaw_rad_s(float value) {
+  _internal_set_yaw_rad_s(value);
+  // @@protoc_insertion_point(field_set:mavsdk.rpc.mocap.AngularVelocityBody.yaw_rad_s)
+}
+
+// -------------------------------------------------------------------
+
+// Covariance
+
+// repeated float covariance_matrix = 1;
+inline int Covariance::_internal_covariance_matrix_size() const {
+  return covariance_matrix_.size();
+}
+inline int Covariance::covariance_matrix_size() const {
+  return _internal_covariance_matrix_size();
+}
+inline void Covariance::clear_covariance_matrix() {
+  covariance_matrix_.Clear();
+}
+inline float Covariance::_internal_covariance_matrix(int index) const {
+  return covariance_matrix_.Get(index);
+}
+inline float Covariance::covariance_matrix(int index) const {
+  // @@protoc_insertion_point(field_get:mavsdk.rpc.mocap.Covariance.covariance_matrix)
+  return _internal_covariance_matrix(index);
+}
+inline void Covariance::set_covariance_matrix(int index, float value) {
+  covariance_matrix_.Set(index, value);
+  // @@protoc_insertion_point(field_set:mavsdk.rpc.mocap.Covariance.covariance_matrix)
+}
+inline void Covariance::_internal_add_covariance_matrix(float value) {
+  covariance_matrix_.Add(value);
+}
+inline void Covariance::add_covariance_matrix(float value) {
+  _internal_add_covariance_matrix(value);
+  // @@protoc_insertion_point(field_add:mavsdk.rpc.mocap.Covariance.covariance_matrix)
+}
+inline const ::PROTOBUF_NAMESPACE_ID::RepeatedField< float >&
+Covariance::_internal_covariance_matrix() const {
+  return covariance_matrix_;
+}
+inline const ::PROTOBUF_NAMESPACE_ID::RepeatedField< float >&
+Covariance::covariance_matrix() const {
+  // @@protoc_insertion_point(field_list:mavsdk.rpc.mocap.Covariance.covariance_matrix)
+  return _internal_covariance_matrix();
+}
+inline ::PROTOBUF_NAMESPACE_ID::RepeatedField< float >*
+Covariance::_internal_mutable_covariance_matrix() {
+  return &covariance_matrix_;
+}
+inline ::PROTOBUF_NAMESPACE_ID::RepeatedField< float >*
+Covariance::mutable_covariance_matrix() {
+  // @@protoc_insertion_point(field_mutable_list:mavsdk.rpc.mocap.Covariance.covariance_matrix)
+  return _internal_mutable_covariance_matrix();
+}
+
+// -------------------------------------------------------------------
+
+// Quaternion
+
+// float w = 1;
+inline void Quaternion::clear_w() {
+  w_ = 0;
+}
+inline float Quaternion::_internal_w() const {
+  return w_;
+}
+inline float Quaternion::w() const {
+  // @@protoc_insertion_point(field_get:mavsdk.rpc.mocap.Quaternion.w)
+  return _internal_w();
+}
+inline void Quaternion::_internal_set_w(float value) {
+  
+  w_ = value;
+}
+inline void Quaternion::set_w(float value) {
+  _internal_set_w(value);
+  // @@protoc_insertion_point(field_set:mavsdk.rpc.mocap.Quaternion.w)
+}
+
+// float x = 2;
+inline void Quaternion::clear_x() {
+  x_ = 0;
+}
+inline float Quaternion::_internal_x() const {
+  return x_;
+}
+inline float Quaternion::x() const {
+  // @@protoc_insertion_point(field_get:mavsdk.rpc.mocap.Quaternion.x)
+  return _internal_x();
+}
+inline void Quaternion::_internal_set_x(float value) {
+  
+  x_ = value;
+}
+inline void Quaternion::set_x(float value) {
+  _internal_set_x(value);
+  // @@protoc_insertion_point(field_set:mavsdk.rpc.mocap.Quaternion.x)
+}
+
+// float y = 3;
+inline void Quaternion::clear_y() {
+  y_ = 0;
+}
+inline float Quaternion::_internal_y() const {
+  return y_;
+}
+inline float Quaternion::y() const {
+  // @@protoc_insertion_point(field_get:mavsdk.rpc.mocap.Quaternion.y)
+  return _internal_y();
+}
+inline void Quaternion::_internal_set_y(float value) {
+  
+  y_ = value;
+}
+inline void Quaternion::set_y(float value) {
+  _internal_set_y(value);
+  // @@protoc_insertion_point(field_set:mavsdk.rpc.mocap.Quaternion.y)
+}
+
+// float z = 4;
+inline void Quaternion::clear_z() {
+  z_ = 0;
+}
+inline float Quaternion::_internal_z() const {
+  return z_;
+}
+inline float Quaternion::z() const {
+  // @@protoc_insertion_point(field_get:mavsdk.rpc.mocap.Quaternion.z)
+  return _internal_z();
+}
+inline void Quaternion::_internal_set_z(float value) {
+  
+  z_ = value;
+}
+inline void Quaternion::set_z(float value) {
+  _internal_set_z(value);
+  // @@protoc_insertion_point(field_set:mavsdk.rpc.mocap.Quaternion.z)
 }
 
 // -------------------------------------------------------------------
@@ -3903,397 +4295,6 @@ inline void Odometry::set_allocated_velocity_covariance(::mavsdk::rpc::mocap::Co
   }
   velocity_covariance_ = velocity_covariance;
   // @@protoc_insertion_point(field_set_allocated:mavsdk.rpc.mocap.Odometry.velocity_covariance)
-}
-
-// -------------------------------------------------------------------
-
-// PositionBody
-
-// float x_m = 1;
-inline void PositionBody::clear_x_m() {
-  x_m_ = 0;
-}
-inline float PositionBody::_internal_x_m() const {
-  return x_m_;
-}
-inline float PositionBody::x_m() const {
-  // @@protoc_insertion_point(field_get:mavsdk.rpc.mocap.PositionBody.x_m)
-  return _internal_x_m();
-}
-inline void PositionBody::_internal_set_x_m(float value) {
-  
-  x_m_ = value;
-}
-inline void PositionBody::set_x_m(float value) {
-  _internal_set_x_m(value);
-  // @@protoc_insertion_point(field_set:mavsdk.rpc.mocap.PositionBody.x_m)
-}
-
-// float y_m = 2;
-inline void PositionBody::clear_y_m() {
-  y_m_ = 0;
-}
-inline float PositionBody::_internal_y_m() const {
-  return y_m_;
-}
-inline float PositionBody::y_m() const {
-  // @@protoc_insertion_point(field_get:mavsdk.rpc.mocap.PositionBody.y_m)
-  return _internal_y_m();
-}
-inline void PositionBody::_internal_set_y_m(float value) {
-  
-  y_m_ = value;
-}
-inline void PositionBody::set_y_m(float value) {
-  _internal_set_y_m(value);
-  // @@protoc_insertion_point(field_set:mavsdk.rpc.mocap.PositionBody.y_m)
-}
-
-// float z_m = 3;
-inline void PositionBody::clear_z_m() {
-  z_m_ = 0;
-}
-inline float PositionBody::_internal_z_m() const {
-  return z_m_;
-}
-inline float PositionBody::z_m() const {
-  // @@protoc_insertion_point(field_get:mavsdk.rpc.mocap.PositionBody.z_m)
-  return _internal_z_m();
-}
-inline void PositionBody::_internal_set_z_m(float value) {
-  
-  z_m_ = value;
-}
-inline void PositionBody::set_z_m(float value) {
-  _internal_set_z_m(value);
-  // @@protoc_insertion_point(field_set:mavsdk.rpc.mocap.PositionBody.z_m)
-}
-
-// -------------------------------------------------------------------
-
-// AngleBody
-
-// float roll_rad = 1;
-inline void AngleBody::clear_roll_rad() {
-  roll_rad_ = 0;
-}
-inline float AngleBody::_internal_roll_rad() const {
-  return roll_rad_;
-}
-inline float AngleBody::roll_rad() const {
-  // @@protoc_insertion_point(field_get:mavsdk.rpc.mocap.AngleBody.roll_rad)
-  return _internal_roll_rad();
-}
-inline void AngleBody::_internal_set_roll_rad(float value) {
-  
-  roll_rad_ = value;
-}
-inline void AngleBody::set_roll_rad(float value) {
-  _internal_set_roll_rad(value);
-  // @@protoc_insertion_point(field_set:mavsdk.rpc.mocap.AngleBody.roll_rad)
-}
-
-// float pitch_rad = 2;
-inline void AngleBody::clear_pitch_rad() {
-  pitch_rad_ = 0;
-}
-inline float AngleBody::_internal_pitch_rad() const {
-  return pitch_rad_;
-}
-inline float AngleBody::pitch_rad() const {
-  // @@protoc_insertion_point(field_get:mavsdk.rpc.mocap.AngleBody.pitch_rad)
-  return _internal_pitch_rad();
-}
-inline void AngleBody::_internal_set_pitch_rad(float value) {
-  
-  pitch_rad_ = value;
-}
-inline void AngleBody::set_pitch_rad(float value) {
-  _internal_set_pitch_rad(value);
-  // @@protoc_insertion_point(field_set:mavsdk.rpc.mocap.AngleBody.pitch_rad)
-}
-
-// float yaw_rad = 3;
-inline void AngleBody::clear_yaw_rad() {
-  yaw_rad_ = 0;
-}
-inline float AngleBody::_internal_yaw_rad() const {
-  return yaw_rad_;
-}
-inline float AngleBody::yaw_rad() const {
-  // @@protoc_insertion_point(field_get:mavsdk.rpc.mocap.AngleBody.yaw_rad)
-  return _internal_yaw_rad();
-}
-inline void AngleBody::_internal_set_yaw_rad(float value) {
-  
-  yaw_rad_ = value;
-}
-inline void AngleBody::set_yaw_rad(float value) {
-  _internal_set_yaw_rad(value);
-  // @@protoc_insertion_point(field_set:mavsdk.rpc.mocap.AngleBody.yaw_rad)
-}
-
-// -------------------------------------------------------------------
-
-// SpeedBody
-
-// float x_m_s = 1;
-inline void SpeedBody::clear_x_m_s() {
-  x_m_s_ = 0;
-}
-inline float SpeedBody::_internal_x_m_s() const {
-  return x_m_s_;
-}
-inline float SpeedBody::x_m_s() const {
-  // @@protoc_insertion_point(field_get:mavsdk.rpc.mocap.SpeedBody.x_m_s)
-  return _internal_x_m_s();
-}
-inline void SpeedBody::_internal_set_x_m_s(float value) {
-  
-  x_m_s_ = value;
-}
-inline void SpeedBody::set_x_m_s(float value) {
-  _internal_set_x_m_s(value);
-  // @@protoc_insertion_point(field_set:mavsdk.rpc.mocap.SpeedBody.x_m_s)
-}
-
-// float y_m_s = 2;
-inline void SpeedBody::clear_y_m_s() {
-  y_m_s_ = 0;
-}
-inline float SpeedBody::_internal_y_m_s() const {
-  return y_m_s_;
-}
-inline float SpeedBody::y_m_s() const {
-  // @@protoc_insertion_point(field_get:mavsdk.rpc.mocap.SpeedBody.y_m_s)
-  return _internal_y_m_s();
-}
-inline void SpeedBody::_internal_set_y_m_s(float value) {
-  
-  y_m_s_ = value;
-}
-inline void SpeedBody::set_y_m_s(float value) {
-  _internal_set_y_m_s(value);
-  // @@protoc_insertion_point(field_set:mavsdk.rpc.mocap.SpeedBody.y_m_s)
-}
-
-// float z_m_s = 3;
-inline void SpeedBody::clear_z_m_s() {
-  z_m_s_ = 0;
-}
-inline float SpeedBody::_internal_z_m_s() const {
-  return z_m_s_;
-}
-inline float SpeedBody::z_m_s() const {
-  // @@protoc_insertion_point(field_get:mavsdk.rpc.mocap.SpeedBody.z_m_s)
-  return _internal_z_m_s();
-}
-inline void SpeedBody::_internal_set_z_m_s(float value) {
-  
-  z_m_s_ = value;
-}
-inline void SpeedBody::set_z_m_s(float value) {
-  _internal_set_z_m_s(value);
-  // @@protoc_insertion_point(field_set:mavsdk.rpc.mocap.SpeedBody.z_m_s)
-}
-
-// -------------------------------------------------------------------
-
-// AngularVelocityBody
-
-// float roll_rad_s = 1;
-inline void AngularVelocityBody::clear_roll_rad_s() {
-  roll_rad_s_ = 0;
-}
-inline float AngularVelocityBody::_internal_roll_rad_s() const {
-  return roll_rad_s_;
-}
-inline float AngularVelocityBody::roll_rad_s() const {
-  // @@protoc_insertion_point(field_get:mavsdk.rpc.mocap.AngularVelocityBody.roll_rad_s)
-  return _internal_roll_rad_s();
-}
-inline void AngularVelocityBody::_internal_set_roll_rad_s(float value) {
-  
-  roll_rad_s_ = value;
-}
-inline void AngularVelocityBody::set_roll_rad_s(float value) {
-  _internal_set_roll_rad_s(value);
-  // @@protoc_insertion_point(field_set:mavsdk.rpc.mocap.AngularVelocityBody.roll_rad_s)
-}
-
-// float pitch_rad_s = 2;
-inline void AngularVelocityBody::clear_pitch_rad_s() {
-  pitch_rad_s_ = 0;
-}
-inline float AngularVelocityBody::_internal_pitch_rad_s() const {
-  return pitch_rad_s_;
-}
-inline float AngularVelocityBody::pitch_rad_s() const {
-  // @@protoc_insertion_point(field_get:mavsdk.rpc.mocap.AngularVelocityBody.pitch_rad_s)
-  return _internal_pitch_rad_s();
-}
-inline void AngularVelocityBody::_internal_set_pitch_rad_s(float value) {
-  
-  pitch_rad_s_ = value;
-}
-inline void AngularVelocityBody::set_pitch_rad_s(float value) {
-  _internal_set_pitch_rad_s(value);
-  // @@protoc_insertion_point(field_set:mavsdk.rpc.mocap.AngularVelocityBody.pitch_rad_s)
-}
-
-// float yaw_rad_s = 3;
-inline void AngularVelocityBody::clear_yaw_rad_s() {
-  yaw_rad_s_ = 0;
-}
-inline float AngularVelocityBody::_internal_yaw_rad_s() const {
-  return yaw_rad_s_;
-}
-inline float AngularVelocityBody::yaw_rad_s() const {
-  // @@protoc_insertion_point(field_get:mavsdk.rpc.mocap.AngularVelocityBody.yaw_rad_s)
-  return _internal_yaw_rad_s();
-}
-inline void AngularVelocityBody::_internal_set_yaw_rad_s(float value) {
-  
-  yaw_rad_s_ = value;
-}
-inline void AngularVelocityBody::set_yaw_rad_s(float value) {
-  _internal_set_yaw_rad_s(value);
-  // @@protoc_insertion_point(field_set:mavsdk.rpc.mocap.AngularVelocityBody.yaw_rad_s)
-}
-
-// -------------------------------------------------------------------
-
-// Covariance
-
-// repeated float covariance_matrix = 1;
-inline int Covariance::_internal_covariance_matrix_size() const {
-  return covariance_matrix_.size();
-}
-inline int Covariance::covariance_matrix_size() const {
-  return _internal_covariance_matrix_size();
-}
-inline void Covariance::clear_covariance_matrix() {
-  covariance_matrix_.Clear();
-}
-inline float Covariance::_internal_covariance_matrix(int index) const {
-  return covariance_matrix_.Get(index);
-}
-inline float Covariance::covariance_matrix(int index) const {
-  // @@protoc_insertion_point(field_get:mavsdk.rpc.mocap.Covariance.covariance_matrix)
-  return _internal_covariance_matrix(index);
-}
-inline void Covariance::set_covariance_matrix(int index, float value) {
-  covariance_matrix_.Set(index, value);
-  // @@protoc_insertion_point(field_set:mavsdk.rpc.mocap.Covariance.covariance_matrix)
-}
-inline void Covariance::_internal_add_covariance_matrix(float value) {
-  covariance_matrix_.Add(value);
-}
-inline void Covariance::add_covariance_matrix(float value) {
-  _internal_add_covariance_matrix(value);
-  // @@protoc_insertion_point(field_add:mavsdk.rpc.mocap.Covariance.covariance_matrix)
-}
-inline const ::PROTOBUF_NAMESPACE_ID::RepeatedField< float >&
-Covariance::_internal_covariance_matrix() const {
-  return covariance_matrix_;
-}
-inline const ::PROTOBUF_NAMESPACE_ID::RepeatedField< float >&
-Covariance::covariance_matrix() const {
-  // @@protoc_insertion_point(field_list:mavsdk.rpc.mocap.Covariance.covariance_matrix)
-  return _internal_covariance_matrix();
-}
-inline ::PROTOBUF_NAMESPACE_ID::RepeatedField< float >*
-Covariance::_internal_mutable_covariance_matrix() {
-  return &covariance_matrix_;
-}
-inline ::PROTOBUF_NAMESPACE_ID::RepeatedField< float >*
-Covariance::mutable_covariance_matrix() {
-  // @@protoc_insertion_point(field_mutable_list:mavsdk.rpc.mocap.Covariance.covariance_matrix)
-  return _internal_mutable_covariance_matrix();
-}
-
-// -------------------------------------------------------------------
-
-// Quaternion
-
-// float w = 1;
-inline void Quaternion::clear_w() {
-  w_ = 0;
-}
-inline float Quaternion::_internal_w() const {
-  return w_;
-}
-inline float Quaternion::w() const {
-  // @@protoc_insertion_point(field_get:mavsdk.rpc.mocap.Quaternion.w)
-  return _internal_w();
-}
-inline void Quaternion::_internal_set_w(float value) {
-  
-  w_ = value;
-}
-inline void Quaternion::set_w(float value) {
-  _internal_set_w(value);
-  // @@protoc_insertion_point(field_set:mavsdk.rpc.mocap.Quaternion.w)
-}
-
-// float x = 2;
-inline void Quaternion::clear_x() {
-  x_ = 0;
-}
-inline float Quaternion::_internal_x() const {
-  return x_;
-}
-inline float Quaternion::x() const {
-  // @@protoc_insertion_point(field_get:mavsdk.rpc.mocap.Quaternion.x)
-  return _internal_x();
-}
-inline void Quaternion::_internal_set_x(float value) {
-  
-  x_ = value;
-}
-inline void Quaternion::set_x(float value) {
-  _internal_set_x(value);
-  // @@protoc_insertion_point(field_set:mavsdk.rpc.mocap.Quaternion.x)
-}
-
-// float y = 3;
-inline void Quaternion::clear_y() {
-  y_ = 0;
-}
-inline float Quaternion::_internal_y() const {
-  return y_;
-}
-inline float Quaternion::y() const {
-  // @@protoc_insertion_point(field_get:mavsdk.rpc.mocap.Quaternion.y)
-  return _internal_y();
-}
-inline void Quaternion::_internal_set_y(float value) {
-  
-  y_ = value;
-}
-inline void Quaternion::set_y(float value) {
-  _internal_set_y(value);
-  // @@protoc_insertion_point(field_set:mavsdk.rpc.mocap.Quaternion.y)
-}
-
-// float z = 4;
-inline void Quaternion::clear_z() {
-  z_ = 0;
-}
-inline float Quaternion::_internal_z() const {
-  return z_;
-}
-inline float Quaternion::z() const {
-  // @@protoc_insertion_point(field_get:mavsdk.rpc.mocap.Quaternion.z)
-  return _internal_z();
-}
-inline void Quaternion::_internal_set_z(float value) {
-  
-  z_ = value;
-}
-inline void Quaternion::set_z(float value) {
-  _internal_set_z(value);
-  // @@protoc_insertion_point(field_set:mavsdk.rpc.mocap.Quaternion.z)
 }
 
 // -------------------------------------------------------------------
