@@ -82,6 +82,9 @@ public:
 
     /**
      * @brief Receive feedback from a sent command line.
+     *
+     * This subscription needs to be made before a command line is sent, otherwise, no response will
+     * be sent.
      */
     void receive_async(receive_callback_t callback);
 
