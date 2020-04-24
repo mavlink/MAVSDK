@@ -56,10 +56,11 @@ public:
         const std::string& from_path,
         const std::string& to_path,
         MavlinkFTP::result_callback_t callback);
-    void calc_file_crc32_async(
-        const std::string& path, MavlinkFTP::file_crc32_result_callback_t callback);
-    MavlinkFTP::Result calc_local_file_crc32(const std::string& path, uint32_t& csum);
-    void set_timeout(uint32_t timeout) { _last_command_timeout = timeout; }
+    void are_files_identical_async(
+        const std::string& local_path,
+        const std::string& remote_path,
+        MavlinkFTP::are_files_identical_callback_t callback);
+
     void set_retries(uint32_t retries) { _max_last_command_retries = retries; }
     void set_root_dir(const std::string& root_dir);
     void set_target_component_id(uint8_t component_id)
@@ -112,6 +113,8 @@ private:
         RSP_NAK ///< Nak response
     };
 
+    typedef std::function<void(MavlinkFTP::Result, uint32_t)> file_crc32_result_callback_t;
+
     static constexpr auto DIRENT_FILE = "F"; ///< Identifies File returned from List command
     static constexpr auto DIRENT_DIR = "D"; ///< Identifies Directory returned from List command
     static constexpr auto DIRENT_SKIP = "S"; ///< Identifies Skipped entry from List command
@@ -156,8 +159,8 @@ private:
     void* _last_command_timeout_cookie = nullptr;
     bool _last_command_timer_running{false};
     std::mutex _timer_mutex{};
-    uint32_t _last_command_timeout{200};
-    uint32_t _max_last_command_retries{3};
+    static constexpr uint32_t _last_command_timeout{200};
+    uint32_t _max_last_command_retries{5};
     uint32_t _last_command_retries = 0;
     std::string _last_path{};
     uint16_t _seq_number = 0;
@@ -172,7 +175,10 @@ private:
     MavlinkFTP::result_callback_t _curr_op_result_callback{};
     MavlinkFTP::progress_callback_t _curr_op_progress_callback{};
     MavlinkFTP::directory_items_and_result_callback_t _curr_dir_items_result_callback{};
-    MavlinkFTP::file_crc32_result_callback_t _current_crc32_result_callback{};
+    file_crc32_result_callback_t _current_crc32_result_callback{};
+
+    void _calc_file_crc32_async(const std::string& path, file_crc32_result_callback_t callback);
+    MavlinkFTP::Result _calc_local_file_crc32(const std::string& path, uint32_t& csum);
 
     void _process_ack(PayloadHeader* payload);
     void _process_nak(PayloadHeader* payload);

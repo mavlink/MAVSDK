@@ -45,8 +45,6 @@ void usage(const std::string& bin_name)
               << " rmdir [-r] <path>    : Remove directory on remote machine. [-r] recursively"
               << std::endl
               << " cmp <local> <remote> : Compare local and remote file" << std::endl
-              << " crc32 <path>         : Get remote file crc32" << std::endl
-              << " localcrc32 <path>    : Get local file crc32" << std::endl
               << std::endl
               << "Return codes:" << std::endl
               << " 0 : Success" << std::endl
@@ -204,24 +202,6 @@ MavlinkFTP::Result rename_file(
     return future_result.get();
 }
 
-MavlinkFTP::Result get_file_checksum(
-    std::shared_ptr<MavlinkFTP>& mavlink_ftp, const std::string& remote_file_path, uint32_t& crc)
-{
-    auto prom = std::make_shared<std::promise<std::pair<MavlinkFTP::Result, uint32_t>>>();
-
-    auto future_result = prom->get_future();
-    mavlink_ftp->calc_file_crc32_async(
-        remote_file_path, [prom](MavlinkFTP::Result result, uint32_t checksum) {
-            prom->set_value(std::pair<MavlinkFTP::Result, uint32_t>(result, checksum));
-        });
-
-    std::pair<MavlinkFTP::Result, uint32_t> result = future_result.get();
-    if (result.first == MavlinkFTP::Result::SUCCESS) {
-        crc = result.second;
-    }
-    return result.first;
-}
-
 int main(int argc, char** argv)
 {
     Mavsdk mavsdk;
@@ -263,8 +243,6 @@ int main(int argc, char** argv)
 
     System& system = mavsdk.system();
     auto mavlink_ftp = std::make_shared<MavlinkFTP>(system);
-    mavlink_ftp->set_timeout(200);
-    mavlink_ftp->set_retries(10);
     try {
         mavlink_ftp->set_target_component_id(std::stoi(argv[2]));
     } catch (...) {
@@ -399,58 +377,29 @@ int main(int argc, char** argv)
                       << NORMAL_CONSOLE_TEXT << std::endl;
             return 1;
         }
-    } else if (command == "crc32") {
-        if (argc < 5) {
-            usage(argv[0]);
-            return 1;
-        }
-        uint32_t crc32;
-        res = get_file_checksum(mavlink_ftp, argv[4], crc32);
-        if (res == MavlinkFTP::Result::SUCCESS) {
-            std::cout << "CRC32=" << crc32 << std::endl;
-        } else {
-            std::cout << ERROR_CONSOLE_TEXT
-                      << "Get file crc32 error: " << mavlink_ftp->result_str(res)
-                      << NORMAL_CONSOLE_TEXT << std::endl;
-            return (res == MavlinkFTP::Result::FILE_DOES_NOT_EXIST) ? 2 : 1;
-        }
-    } else if (command == "localcrc32") {
-        if (argc < 5) {
-            usage(argv[0]);
-            return 1;
-        }
-        uint32_t crc32;
-        res = mavlink_ftp->calc_local_file_crc32(argv[4], crc32);
-        if (res == MavlinkFTP::Result::SUCCESS) {
-            std::cout << "Local CRC32=" << crc32 << std::endl;
-        } else {
-            std::cout << ERROR_CONSOLE_TEXT
-                      << "Get local file crc32 error: " << mavlink_ftp->result_str(res)
-                      << NORMAL_CONSOLE_TEXT << std::endl;
-            return (res == MavlinkFTP::Result::FILE_DOES_NOT_EXIST) ? 2 : 1;
-        }
     } else if (command == "cmp") {
         if (argc < 6) {
             usage(argv[0]);
             return 1;
         }
-        uint32_t crc32_loc;
-        res = mavlink_ftp->calc_local_file_crc32(argv[4], crc32_loc);
-        if (res != MavlinkFTP::Result::SUCCESS) {
-            std::cout << ERROR_CONSOLE_TEXT
-                      << "Get local file crc32 error: " << mavlink_ftp->result_str(res)
+
+        auto prom = std::make_shared<std::promise<std::pair<MavlinkFTP::Result, bool>>>();
+        auto future_result = prom->get_future();
+
+        mavlink_ftp->are_files_identical_async(
+            argv[4], argv[5], [&prom](MavlinkFTP::Result result, bool identical) {
+                prom->set_value(std::make_pair<>(result, identical));
+            });
+
+        auto result = future_result.get();
+
+        if (result.first != MavlinkFTP::Result::SUCCESS) {
+            std::cout << ERROR_CONSOLE_TEXT std::cout << "Error comparing files."
                       << NORMAL_CONSOLE_TEXT << std::endl;
-            return (res == MavlinkFTP::Result::FILE_DOES_NOT_EXIST) ? 2 : 1;
+            return 4;
         }
-        uint32_t crc32_rem;
-        res = get_file_checksum(mavlink_ftp, argv[5], crc32_rem);
-        if (res != MavlinkFTP::Result::SUCCESS) {
-            std::cout << ERROR_CONSOLE_TEXT
-                      << "Get file crc32 error: " << mavlink_ftp->result_str(res)
-                      << NORMAL_CONSOLE_TEXT << std::endl;
-            return (res == MavlinkFTP::Result::FILE_DOES_NOT_EXIST) ? 2 : 1;
-        }
-        if (crc32_loc == crc32_rem) {
+
+        if (result.second) {
             std::cout << "Files are equal" << std::endl;
         } else {
             std::cout << "Files are different" << std::endl;

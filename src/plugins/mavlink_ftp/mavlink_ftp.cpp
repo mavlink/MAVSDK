@@ -35,16 +35,6 @@ std::string MavlinkFTP::result_str(Result result)
     }
 }
 
-void MavlinkFTP::set_timeout(uint32_t timeout)
-{
-    _impl->set_timeout(timeout);
-}
-
-void MavlinkFTP::set_retries(uint32_t retries)
-{
-    _impl->set_retries(retries);
-}
-
 void MavlinkFTP::set_root_dir(const std::string& root_dir)
 {
     _impl->set_root_dir(root_dir);
@@ -110,15 +100,12 @@ void MavlinkFTP::rename_async(
     _impl->rename_async(fromPath, toPath, callback);
 }
 
-void MavlinkFTP::calc_file_crc32_async(
-    const std::string& path, file_crc32_result_callback_t callback)
+void MavlinkFTP::are_files_identical_async(
+    const std::string& local_path,
+    const std::string& remote_path,
+    are_files_identical_callback_t callback)
 {
-    _impl->calc_file_crc32_async(path, callback);
-}
-
-MavlinkFTP::Result MavlinkFTP::calc_local_file_crc32(const std::string& path, uint32_t& checksum)
-{
-    return _impl->calc_local_file_crc32(path, checksum);
+    _impl->are_files_identical_async(local_path, remote_path, callback);
 }
 
 } // namespace mavsdk
