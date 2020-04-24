@@ -69,8 +69,24 @@ Mocap::Result MocapImpl::send_vision_position_estimate(
                     .time_since_epoch())
                 .count();
 
-    mavlink_message_t message;
+    std::array<float, 21> covariance{};
 
+    // The covariance matrix needs to have length 21 or 1 with the one entry set to NaN.
+
+    if (vision_position_estimate.pose_covariance.covariance_matrix.size() == 21) {
+        std::copy(
+            vision_position_estimate.pose_covariance.covariance_matrix.begin(),
+            vision_position_estimate.pose_covariance.covariance_matrix.end(),
+            covariance.begin());
+    } else if (
+        vision_position_estimate.pose_covariance.covariance_matrix.size() == 1 &&
+        std::isnan(vision_position_estimate.pose_covariance.covariance_matrix[0])) {
+        covariance[0] = NAN;
+    } else {
+        return Mocap::Result::InvalidRequestData;
+    }
+
+    mavlink_message_t message;
     mavlink_msg_vision_position_estimate_pack(
         _parent->get_own_system_id(),
         _parent->get_own_component_id(),
@@ -82,7 +98,7 @@ Mocap::Result MocapImpl::send_vision_position_estimate(
         vision_position_estimate.angle_body.roll_rad,
         vision_position_estimate.angle_body.pitch_rad,
         vision_position_estimate.angle_body.yaw_rad,
-        vision_position_estimate.pose_covariance.covariance_matrix.data(), // TODO: check this data
+        covariance.data(),
         0); // FIXME: reset_counter not set
 
     return _parent->send_message(message) ? Mocap::Result::Success : Mocap::Result::ConnectionError;
@@ -111,6 +127,23 @@ MocapImpl::send_attitude_position_mocap(const Mocap::AttitudePositionMocap& atti
     q[2] = attitude_position_mocap.q.y;
     q[3] = attitude_position_mocap.q.z;
 
+    std::array<float, 21> covariance{};
+
+    // The covariance matrix needs to have length 21 or 1 with the one entry set to NaN.
+
+    if (attitude_position_mocap.pose_covariance.covariance_matrix.size() == 21) {
+        std::copy(
+            attitude_position_mocap.pose_covariance.covariance_matrix.begin(),
+            attitude_position_mocap.pose_covariance.covariance_matrix.end(),
+            covariance.begin());
+    } else if (
+        attitude_position_mocap.pose_covariance.covariance_matrix.size() == 1 &&
+        std::isnan(attitude_position_mocap.pose_covariance.covariance_matrix[0])) {
+        covariance[0] = NAN;
+    } else {
+        return Mocap::Result::InvalidRequestData;
+    }
+
     mavlink_msg_att_pos_mocap_pack(
         _parent->get_own_system_id(),
         _parent->get_own_component_id(),
@@ -120,7 +153,7 @@ MocapImpl::send_attitude_position_mocap(const Mocap::AttitudePositionMocap& atti
         attitude_position_mocap.position_body.x_m,
         attitude_position_mocap.position_body.y_m,
         attitude_position_mocap.position_body.z_m,
-        attitude_position_mocap.pose_covariance.covariance_matrix.data()); // TODO: check this data
+        covariance.data());
 
     return _parent->send_message(message) ? Mocap::Result::Success : Mocap::Result::ConnectionError;
 }
@@ -146,6 +179,37 @@ Mocap::Result MocapImpl::send_odometry(const Mocap::Odometry& odometry)
     q[2] = odometry.q.y;
     q[3] = odometry.q.z;
 
+    std::array<float, 21> pose_covariance{};
+    std::array<float, 21> velocity_covariance{};
+
+    // The covariance matrix needs to have length 21 or 1 with the one entry set to NaN.
+
+    if (odometry.pose_covariance.covariance_matrix.size() == 21) {
+        std::copy(
+            odometry.pose_covariance.covariance_matrix.begin(),
+            odometry.pose_covariance.covariance_matrix.end(),
+            pose_covariance.begin());
+    } else if (
+        odometry.pose_covariance.covariance_matrix.size() == 1 &&
+        std::isnan(odometry.pose_covariance.covariance_matrix[0])) {
+        pose_covariance[0] = NAN;
+    } else {
+        return Mocap::Result::InvalidRequestData;
+    }
+
+    if (odometry.velocity_covariance.covariance_matrix.size() == 21) {
+        std::copy(
+            odometry.velocity_covariance.covariance_matrix.begin(),
+            odometry.velocity_covariance.covariance_matrix.end(),
+            velocity_covariance.begin());
+    } else if (
+        odometry.velocity_covariance.covariance_matrix.size() == 1 &&
+        std::isnan(odometry.velocity_covariance.covariance_matrix[0])) {
+        velocity_covariance[0] = NAN;
+    } else {
+        return Mocap::Result::InvalidRequestData;
+    }
+
     mavlink_msg_odometry_pack(
         _parent->get_own_system_id(),
         _parent->get_own_component_id(),
@@ -163,8 +227,8 @@ Mocap::Result MocapImpl::send_odometry(const Mocap::Odometry& odometry)
         odometry.angular_velocity_body.roll_rad_s,
         odometry.angular_velocity_body.pitch_rad_s,
         odometry.angular_velocity_body.yaw_rad_s,
-        odometry.pose_covariance.covariance_matrix.data(), // TODO: check this data
-        odometry.velocity_covariance.covariance_matrix.data(), // TODO: check this data
+        pose_covariance.data(),
+        velocity_covariance.data(),
         0,
         MAV_ESTIMATOR_TYPE_MOCAP);
 
