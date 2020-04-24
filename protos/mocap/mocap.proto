@@ -8,7 +8,7 @@ option java_package = "io.mavsdk.mocap";
 option java_outer_classname = "MocapProto";
 
 /**
- * This class allows interfacing a vehicle with a motion capture system in
+ * Allows interfacing a vehicle with a motion capture system in
  * order to allow navigation without global positioning sources available
  * (e.g. indoors, or when flying under a bridge. etc.).
  */
