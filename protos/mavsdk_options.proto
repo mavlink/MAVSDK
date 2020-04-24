@@ -4,6 +4,8 @@ import "google/protobuf/descriptor.proto";
 
 package mavsdk.options;
 
+option java_package = "options.mavsdk";
+
 extend google.protobuf.FieldOptions {
     string default_value = 50000;
 }
