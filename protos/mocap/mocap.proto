@@ -2,76 +2,44 @@ syntax = "proto3";
 
 package mavsdk.rpc.mocap;
 
+import "mavsdk_options.proto";
+
 option java_package = "io.mavsdk.mocap";
 option java_outer_classname = "MocapProto";
 
 /**
- * Motion Capture allow vehicles to navigate when a global
- * position source is unavailable or unreliable
+ * This class allows interfacing a vehicle with a motion capture system in
+ * order to allow navigation without global positioning sources available
  * (e.g. indoors, or when flying under a bridge. etc.).
  */
 service MocapService {
     // Send Global position/attitude estimate from a vision source.
-    rpc SetVisionPositionEstimate(SetVisionPositionEstimateRequest) returns(SetVisionPositionEstimateResponse) {}
+    rpc SetVisionPositionEstimate(SetVisionPositionEstimateRequest) returns(SetVisionPositionEstimateResponse) { option (mavsdk.options.async_type) = SYNC; }
     // Send motion capture attitude and position.
-    rpc SetAttitudePositionMocap(SetAttitudePositionMocapRequest) returns(SetAttitudePositionMocapResponse) {}
+    rpc SetAttitudePositionMocap(SetAttitudePositionMocapRequest) returns(SetAttitudePositionMocapResponse) { option (mavsdk.options.async_type) = SYNC; }
     // Send odometry information with an external interface.
-    rpc SetOdometry(SetOdometryRequest) returns(SetOdometryResponse) {}
+    rpc SetOdometry(SetOdometryRequest) returns(SetOdometryResponse) { option (mavsdk.options.async_type) = SYNC; }
 }
 
 message SetVisionPositionEstimateRequest {
-    VisionPositionEstimate vision_position_estimate = 1;
+    VisionPositionEstimate vision_position_estimate = 1; // The vision position estimate
 }
 message SetVisionPositionEstimateResponse {
     MocapResult mocap_result = 1;
 }
 
 message SetAttitudePositionMocapRequest {
-    AttitudePositionMocap attitude_position_mocap = 1;
+    AttitudePositionMocap attitude_position_mocap = 1; // The attitude and position data
 }
 message SetAttitudePositionMocapResponse {
     MocapResult mocap_result = 1;
 }
 
 message SetOdometryRequest {
-    Odometry odometry = 1;
+    Odometry odometry = 1; // The odometry data
 }
 message SetOdometryResponse {
     MocapResult mocap_result = 1;
-}
-
-// Global position/attitude estimate from a vision source.
-message VisionPositionEstimate {
-    uint64 time_usec = 1; // PositionBody frame timestamp UNIX Epoch time (0 to use Backend timestamp)
-    PositionBody position_body = 2; // Global position (m)
-    AngleBody angle_body = 3; // Body angle (rad).
-    Covariance pose_covariance = 4; // Pose cross-covariance matrix.
-}
-
-// Motion capture attitude and position
-message AttitudePositionMocap {
-    uint64 time_usec = 1; // PositionBody frame timestamp UNIX Epoch time (0 to use Backend timestamp)
-    Quaternion q = 2; // Attitude quaternion (w, x, y, z order, zero-rotation is 1, 0, 0, 0)
-    PositionBody position_body = 3; // Body Position (NED)
-    Covariance pose_covariance = 4; // Pose cross-covariance matrix.
-}
-
-// Odometry message to communicate odometry information with an external interface.
-message Odometry {
-    // Mavlink frame id
-    enum MavFrame {
-        MOCAP_NED = 0; // MAVLink number: 14. Odometry local coordinate frame of data given by a motion capture system, Z-down (x: north, y: east, z: down).
-        LOCAL_FRD = 1; // MAVLink number: 20. Forward, Right, Down coordinate frame. This is a local frame with Z-down and arbitrary F/R alignment (i.e. not aligned with NED/earth frame). Replacement for MAV_FRAME_MOCAP_NED, MAV_FRAME_VISION_NED, MAV_FRAME_ESTIM_NED.
-    }
-
-    uint64 time_usec = 1; // Timestamp (0 to use Backend timestamp).
-    MavFrame frame_id = 2; // Coordinate frame of reference for the pose data.
-    PositionBody position_body = 3; // Body Position.
-    Quaternion q = 4; // Quaternion components, w, x, y, z (1 0 0 0 is the null-rotation).
-    SpeedBody speed_body = 5; // Linear speed (m/s).
-    AngularVelocityBody angular_velocity_body = 6; // Angular speed (rad/s).
-    Covariance pose_covariance = 7; // Pose cross-covariance matrix.
-    Covariance velocity_covariance = 8; // Velocity cross-covariance matrix.
 }
 
 // Body position type
@@ -103,12 +71,12 @@ message AngularVelocityBody {
 }
 
 /* Covariance type.
- * Row-major representation of a 6x6 cross-covariance matrix
- * upper right triangle.
- * Set first to NaN if unknown.
+ * Row-major representation of a 6x6 cross-covariance matrix upper
+ * right triangle.
+ * Needs to be 21 entries or 1 entry with NaN if unknown.
  */
 message Covariance {
-    repeated float covariance_matrix = 1;
+    repeated float covariance_matrix = 1; // The covariance matrix
 }
 
 /*
@@ -128,15 +96,50 @@ message Quaternion {
     float z = 4; // Quaternion entry 3, also denoted as d
 }
 
+
+// Global position/attitude estimate from a vision source.
+message VisionPositionEstimate {
+    uint64 time_usec = 1; // PositionBody frame timestamp UNIX Epoch time (0 to use Backend timestamp)
+    PositionBody position_body = 2; // Global position (m)
+    AngleBody angle_body = 3; // Body angle (rad).
+    Covariance pose_covariance = 4; // Pose cross-covariance matrix.
+}
+
+// Motion capture attitude and position
+message AttitudePositionMocap {
+    uint64 time_usec = 1; // PositionBody frame timestamp UNIX Epoch time (0 to use Backend timestamp)
+    Quaternion q = 2; // Attitude quaternion (w, x, y, z order, zero-rotation is 1, 0, 0, 0)
+    PositionBody position_body = 3; // Body Position (NED)
+    Covariance pose_covariance = 4; // Pose cross-covariance matrix.
+}
+
+// Odometry message to communicate odometry information with an external interface.
+message Odometry {
+    // Mavlink frame id
+    enum MavFrame {
+        MAV_FRAME_MOCAP_NED = 0; // MAVLink number: 14. Odometry local coordinate frame of data given by a motion capture system, Z-down (x: north, y: east, z: down).
+        MAV_FRAME_LOCAL_FRD = 1; // MAVLink number: 20. Forward, Right, Down coordinate frame. This is a local frame with Z-down and arbitrary F/R alignment (i.e. not aligned with NED/earth frame). Replacement for MAV_FRAME_MOCAP_NED, MAV_FRAME_VISION_NED, MAV_FRAME_ESTIM_NED.
+    }
+
+    uint64 time_usec = 1; // Timestamp (0 to use Backend timestamp).
+    MavFrame frame_id = 2; // Coordinate frame of reference for the pose data.
+    PositionBody position_body = 3; // Body Position.
+    Quaternion q = 4; // Quaternion components, w, x, y, z (1 0 0 0 is the null-rotation).
+    SpeedBody speed_body = 5; // Linear speed (m/s).
+    AngularVelocityBody angular_velocity_body = 6; // Angular speed (rad/s).
+    Covariance pose_covariance = 7; // Pose cross-covariance matrix.
+    Covariance velocity_covariance = 8; // Velocity cross-covariance matrix.
+}
+
 // Result type.
 message MocapResult {
     // Possible results returned for mocap requests
     enum Result {
-        UNKNOWN = 0; // Unknown error
-        SUCCESS = 1; // Request succeeded
-        NO_SYSTEM = 2; // No system is connected
-        CONNECTION_ERROR = 3; // Connection error
-        INVALID_REQUEST_DATA = 4; // Invalid request data
+        RESULT_UNKNOWN = 0; // Unknown error
+        RESULT_SUCCESS = 1; // Request succeeded
+        RESULT_NO_SYSTEM = 2; // No system is connected
+        RESULT_CONNECTION_ERROR = 3; // Connection error
+        RESULT_INVALID_REQUEST_DATA = 4; // Invalid request data
     }
 
     Result result = 1; // Result enum value
