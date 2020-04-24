@@ -28,56 +28,35 @@ MocapImpl::~MocapImpl()
 Mocap::Result MocapImpl::set_vision_position_estimate(
     const Mocap::VisionPositionEstimate& vision_position_estimate)
 {
-    if (!_parent->is_connected())
+    if (!_parent->is_connected()) {
         return Mocap::Result::NoSystem;
+    }
 
-    _visual_position_estimate_mutex.lock();
-    _vision_position_estimate = vision_position_estimate;
-    _visual_position_estimate_mutex.unlock();
-
-    if (!send_vision_position_estimate())
-        return Mocap::Result::ConnectionError;
-
-    return Mocap::Result::Success;
+    return send_vision_position_estimate(vision_position_estimate);
 }
 
 Mocap::Result
 MocapImpl::set_attitude_position_mocap(const Mocap::AttitudePositionMocap& attitude_position_mocap)
 {
-    if (!_parent->is_connected())
+    if (!_parent->is_connected()) {
         return Mocap::Result::NoSystem;
+    }
 
-    _attitude_position_mocap_mutex.lock();
-    _attitude_position_mocap = attitude_position_mocap;
-    _attitude_position_mocap_mutex.unlock();
-
-    if (!send_attitude_position_mocap())
-        return Mocap::Result::ConnectionError;
-
-    return Mocap::Result::Success;
+    return send_attitude_position_mocap(attitude_position_mocap);
 }
 
 Mocap::Result MocapImpl::set_odometry(const Mocap::Odometry& odometry)
 {
-    if (!_parent->is_connected())
+    if (!_parent->is_connected()) {
         return Mocap::Result::NoSystem;
+    }
 
-    _odometry_mutex.lock();
-    _odometry = odometry;
-    _odometry_mutex.unlock();
-
-    if (!send_odometry())
-        return Mocap::Result::ConnectionError;
-
-    return Mocap::Result::Success;
+    return send_odometry(odometry);
 }
 
-bool MocapImpl::send_vision_position_estimate()
+Mocap::Result MocapImpl::send_vision_position_estimate(
+    const Mocap::VisionPositionEstimate& vision_position_estimate)
 {
-    _visual_position_estimate_mutex.lock();
-    auto vision_position_estimate = _vision_position_estimate;
-    _visual_position_estimate_mutex.unlock();
-
     const uint64_t autopilot_time_usec =
         (!vision_position_estimate.time_usec) ?
             std::chrono::duration_cast<std::chrono::microseconds>(
@@ -106,15 +85,12 @@ bool MocapImpl::send_vision_position_estimate()
         vision_position_estimate.pose_covariance.covariance_matrix.data(), // TODO: check this data
         0); // FIXME: reset_counter not set
 
-    return _parent->send_message(message);
+    return _parent->send_message(message) ? Mocap::Result::Success : Mocap::Result::ConnectionError;
 }
 
-bool MocapImpl::send_attitude_position_mocap()
+Mocap::Result
+MocapImpl::send_attitude_position_mocap(const Mocap::AttitudePositionMocap& attitude_position_mocap)
 {
-    _attitude_position_mocap_mutex.lock();
-    auto attitude_position_mocap = _attitude_position_mocap;
-    _attitude_position_mocap_mutex.unlock();
-
     const uint64_t autopilot_time_usec =
         (!attitude_position_mocap.time_usec) ?
             std::chrono::duration_cast<std::chrono::microseconds>(
@@ -146,15 +122,11 @@ bool MocapImpl::send_attitude_position_mocap()
         attitude_position_mocap.position_body.z_m,
         attitude_position_mocap.pose_covariance.covariance_matrix.data()); // TODO: check this data
 
-    return _parent->send_message(message);
+    return _parent->send_message(message) ? Mocap::Result::Success : Mocap::Result::ConnectionError;
 }
 
-bool MocapImpl::send_odometry()
+Mocap::Result MocapImpl::send_odometry(const Mocap::Odometry& odometry)
 {
-    _odometry_mutex.lock();
-    auto odometry = _odometry;
-    _odometry_mutex.unlock();
-
     const uint64_t autopilot_time_usec =
         (!odometry.time_usec) ?
             std::chrono::duration_cast<std::chrono::microseconds>(
@@ -196,7 +168,7 @@ bool MocapImpl::send_odometry()
         0,
         MAV_ESTIMATOR_TYPE_MOCAP);
 
-    return _parent->send_message(message);
+    return _parent->send_message(message) ? Mocap::Result::Success : Mocap::Result::ConnectionError;
 }
 
 } // namespace mavsdk
