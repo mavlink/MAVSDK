@@ -13,27 +13,27 @@ service TuneService {
 
 // An element of the tune
 enum SongElement {
-  STYLE_LEGATO = 0; // After this element, start playing legato
-  STYLE_NORMAL = 1; // After this element, start playing normal
-  STYLE_STACCATO = 2; // After this element, start playing staccato
-  DURATION_1 = 3; // After this element, set the note duration to 1
-  DURATION_2 = 4; // After this element, set the note duration to 2
-  DURATION_4 = 5; // After this element, set the note duration to 4
-  DURATION_8 = 6; // After this element, set the note duration to 8
-  DURATION_16 = 7; // After this element, set the note duration to 16
-  DURATION_32 = 8; // After this element, set the note duration to 32
-  NOTE_A = 9; // Play note A
-  NOTE_B = 10; // Play note B
-  NOTE_C = 11; // Play note C
-  NOTE_D = 12; // Play note D
-  NOTE_E = 13; // Play note E
-  NOTE_F = 14; // Play note F
-  NOTE_G = 15; // Play note G
-  NOTE_PAUSE = 16; // Play a rest
-  SHARP = 17; // After this element, sharp the note (half a step up)
-  FLAT = 18; // After this element, flat the note (half a step down)
-  OCTAVE_UP = 19; // After this element, shift the note 1 octave up
-  OCTAVE_DOWN = 20; // After this element, shift the note 1 octave down
+  SONG_ELEMENT_STYLE_LEGATO = 0; // After this element, start playing legato
+  SONG_ELEMENT_STYLE_NORMAL = 1; // After this element, start playing normal
+  SONG_ELEMENT_STYLE_STACCATO = 2; // After this element, start playing staccato
+  SONG_ELEMENT_DURATION_1 = 3; // After this element, set the note duration to 1
+  SONG_ELEMENT_DURATION_2 = 4; // After this element, set the note duration to 2
+  SONG_ELEMENT_DURATION_4 = 5; // After this element, set the note duration to 4
+  SONG_ELEMENT_DURATION_8 = 6; // After this element, set the note duration to 8
+  SONG_ELEMENT_DURATION_16 = 7; // After this element, set the note duration to 16
+  SONG_ELEMENT_DURATION_32 = 8; // After this element, set the note duration to 32
+  SONG_ELEMENT_NOTE_A = 9; // Play note A
+  SONG_ELEMENT_NOTE_B = 10; // Play note B
+  SONG_ELEMENT_NOTE_C = 11; // Play note C
+  SONG_ELEMENT_NOTE_D = 12; // Play note D
+  SONG_ELEMENT_NOTE_E = 13; // Play note E
+  SONG_ELEMENT_NOTE_F = 14; // Play note F
+  SONG_ELEMENT_NOTE_G = 15; // Play note G
+  SONG_ELEMENT_NOTE_PAUSE = 16; // Play a rest
+  SONG_ELEMENT_SHARP = 17; // After this element, sharp the note (half a step up)
+  SONG_ELEMENT_FLAT = 18; // After this element, flat the note (half a step down)
+  SONG_ELEMENT_OCTAVE_UP = 19; // After this element, shift the note 1 octave up
+  SONG_ELEMENT_OCTAVE_DOWN = 20; // After this element, shift the note 1 octave down
 }
 
 message PlayTuneRequest {
@@ -46,10 +46,10 @@ message PlayTuneResponse {
 message TuneResult {
   // Possible results returned for tune requests.
   enum Result {
-    SUCCESS = 0; // Request succeeded
-    INVALID_TEMPO = 1; // Invalid tempo (range: 32 - 255)
-    TUNE_TOO_LONG = 2; // Invalid tune: encoded string must be at most 230 chars
-    ERROR = 3; // Failed to send the request
+    RESULT_SUCCESS = 0; // Request succeeded
+    RESULT_INVALID_TEMPO = 1; // Invalid tempo (range: 32 - 255)
+    RESULT_TUNE_TOO_LONG = 2; // Invalid tune: encoded string must be at most 230 chars
+    RESULT_ERROR = 3; // Failed to send the request
   }
 
   Result result = 1; // Result enum value

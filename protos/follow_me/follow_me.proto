@@ -30,11 +30,11 @@ service FollowMeService {
 message Config {
     // Direction relative to the target that the vehicle should follow
     enum FollowDirection {
-        NONE = 0; // Do not follow
-        FRONT_RIGHT = 1; // Follow from front right
-        FRONT_LEFT = 2; // Follow from front left
-        FRONT = 3; // Follow from front
-        BEHIND = 4; // Folow from behind
+        FOLLOW_DIRECTION_NONE = 0; // Do not follow
+        FOLLOW_DIRECTION_FRONT_RIGHT = 1; // Follow from front right
+        FOLLOW_DIRECTION_FRONT_LEFT = 2; // Follow from front left
+        FOLLOW_DIRECTION_FRONT = 3; // Follow from front
+        FOLLOW_DIRECTION_BEHIND = 4; // Folow from behind
     }
 
     float min_height_m = 1; // Minimum height for the vehicle
@@ -95,15 +95,15 @@ message StopResponse {
 message FollowMeResult {
     // Possible results returned for followme operations
     enum Result {
-        UNKNOWN = 0; // Unkown error
-        SUCCESS = 1; // Request succeeded
-        NO_SYSTEM = 2; // No system connected
-        CONNECTION_ERROR = 3; // Connection error
-        BUSY = 4; // Vehicle is busy
-        COMMAND_DENIED = 5; // Command denied
-        TIMEOUT = 6; // Request timed out
-        NOT_ACTIVE = 7; // FollowMe is not active
-        SET_CONFIG_FAILED = 8; // Failed to set FollowMe configuration
+        RESULT_UNKNOWN = 0; // Unkown error
+        RESULT_SUCCESS = 1; // Request succeeded
+        RESULT_NO_SYSTEM = 2; // No system connected
+        RESULT_CONNECTION_ERROR = 3; // Connection error
+        RESULT_BUSY = 4; // Vehicle is busy
+        RESULT_COMMAND_DENIED = 5; // Command denied
+        RESULT_TIMEOUT = 6; // Request timed out
+        RESULT_NOT_ACTIVE = 7; // FollowMe is not active
+        RESULT_SET_CONFIG_FAILED = 8; // Failed to set FollowMe configuration
     }
 
     Result result = 1; // Result enum value
