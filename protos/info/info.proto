@@ -2,13 +2,64 @@ syntax = "proto3";
 
 package mavsdk.rpc.info;
 
+import "mavsdk_options.proto";
+
 option java_package = "io.mavsdk.info";
 option java_outer_classname = "InfoProto";
 
-// Provide infomation about the hardware and/or software of a system.
+// Provide information about the hardware and/or software of a system.
 service InfoService {
-    // Get the system version information.
-    rpc GetVersion(GetVersionRequest) returns(GetVersionResponse) {}
+    // Get flight information of the system.
+    rpc GetFlightInformation(GetFlightInformationRequest) returns(GetFlightInformationResponse) { option (mavsdk.options.async_type) = SYNC; }
+    // Get the identification of the system.
+    rpc GetIdentification(GetIdentificationRequest) returns(GetIdentificationResponse) { option (mavsdk.options.async_type) = SYNC; }
+    // Get product information of the system.
+    rpc GetProduct(GetProductRequest) returns(GetProductResponse) { option (mavsdk.options.async_type) = SYNC; }
+    // Get the version information of the system.
+    rpc GetVersion(GetVersionRequest) returns(GetVersionResponse) { option (mavsdk.options.async_type) = SYNC; }
+}
+
+message GetFlightInformationRequest {}
+message GetFlightInformationResponse {
+    InfoResult info_result = 1;
+    FlightInfo flight_info = 2; // Flight information of the system
+}
+
+message GetIdentificationRequest {}
+message GetIdentificationResponse {
+    InfoResult info_result = 1;
+    Identification identification = 2; // Identification of the system
+}
+
+message GetProductRequest {}
+message GetProductResponse {
+    InfoResult info_result = 1;
+    Product product = 2; // Product information of the system
+}
+
+message GetVersionRequest {}
+message GetVersionResponse {
+    InfoResult info_result = 1;
+    Version version = 2; // Version information about the system
+}
+
+// System flight information.
+message FlightInfo {
+    uint32 time_boot_ms = 1; // Time since system boot
+    uint64 flight_uid = 2; // Flight counter. Starts from zero, is incremented at every disarm and is never reset (even after reboot)
+}
+
+// System identification.
+message Identification {
+    string hardware_uid = 1; // UID of the hardware. This refers to uid2 of MAVLink. If the system does not support uid2 yet, this is all zeros.
+}
+
+// System product information.
+message Product {
+    int32 vendor_id = 1; // ID of the board vendor
+    string vendor_name = 2; // Name of the vendor
+    int32 product_id = 3; // ID of the product
+    string product_name = 4; // Name of the product
 }
 
 // System version information.
@@ -22,12 +73,8 @@ message Version {
     int32 os_sw_major = 7; // Operating system software major version
     int32 os_sw_minor = 8; // Operating system software minor version
     int32 os_sw_patch = 9; // Operating system software patch version
-}
-
-message GetVersionRequest {}
-message GetVersionResponse {
-    InfoResult info_result = 1;
-    Version version = 2; // Version information about the system
+    string flight_sw_git_hash = 10; // Flight software git hash
+    string os_sw_git_hash = 11; // Operating system software git hash
 }
 
 // Result type.
