@@ -79,9 +79,9 @@ public:
         directory_items_and_result_callback_t;
 
     /**
-     * @brief Callback type for `calc_file_crc32_async()` call to get file CRC32.
+     * @brief Callback type for `are_files_identical()` call.
      */
-    typedef std::function<void(Result, uint32_t)> file_crc32_result_callback_t;
+    typedef std::function<void(Result, bool)> are_files_identical_callback_t;
 
     /**
      * @brief Resets FTP server in case there are stale open sessions (asynchronous).
@@ -162,35 +162,16 @@ public:
         const std::string& from_path, const std::string& to_path, result_callback_t callback);
 
     /**
-     * @brief Calculate CRC32 for file (asynchronous).
+     * @brief Compare two files using CRC32 checksum.
      *
-     * @param path Path to file for which CRC32 is calculated.
-     * @param callback Callback to receive result of this request.
+     * @param local_path The path of the local file.
+     * @param remote_path The path of the remote file.
+     * @param callback The callback for the result
      */
-    void calc_file_crc32_async(const std::string& path, file_crc32_result_callback_t callback);
-
-    /**
-     * @brief Calculate CRC32 for local file.
-     *
-     * @param path Path to local file for which CRC32 is calculated.
-     * @param checksum CRC32 of the file
-     * @return Result of the operation
-     */
-    MavlinkFTP::Result calc_local_file_crc32(const std::string& path, uint32_t& checksum);
-
-    /**
-     * @brief Set timeout for Mavlink FTP operation.
-     *
-     * @param timeout Timeout in milliseconds
-     */
-    void set_timeout(uint32_t timeout);
-
-    /**
-     * @brief Set number of retries after timeout for Mavlink FTP operation.
-     *
-     * @param retries Number of retries before ERR_TIMEOUT is issued
-     */
-    void set_retries(uint32_t retries);
+    void are_files_identical_async(
+        const std::string& local_path,
+        const std::string& remote_path,
+        are_files_identical_callback_t callback);
 
     /**
      * @brief Set root dir for Mavlink FTP server.

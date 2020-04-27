@@ -535,8 +535,41 @@ void MavlinkFTPImpl::rename_async(
     _send_mavlink_ftp_message(raw_payload);
 }
 
-void MavlinkFTPImpl::calc_file_crc32_async(
-    const std::string& path, MavlinkFTP::file_crc32_result_callback_t callback)
+void MavlinkFTPImpl::are_files_identical_async(
+    const std::string& local_path,
+    const std::string& remote_path,
+    MavlinkFTP::are_files_identical_callback_t callback)
+{
+    if (!callback) {
+        return;
+    }
+
+    auto temp_callback = callback;
+
+    uint32_t crc_local = 0;
+    auto result_local = _calc_local_file_crc32(local_path, crc_local);
+    if (result_local != MavlinkFTP::Result::SUCCESS) {
+        _parent->call_user_callback(
+            [temp_callback, result_local]() { temp_callback(result_local, false); });
+        return;
+    }
+
+    _calc_file_crc32_async(
+        remote_path,
+        [this, crc_local, temp_callback](MavlinkFTP::Result result_remote, uint32_t crc_remote) {
+            if (result_remote != MavlinkFTP::Result::SUCCESS) {
+                _parent->call_user_callback(
+                    [temp_callback, result_remote]() { temp_callback(result_remote, false); });
+            } else {
+                _parent->call_user_callback([temp_callback, crc_local, crc_remote]() {
+                    temp_callback(MavlinkFTP::Result::SUCCESS, crc_local == crc_remote);
+                });
+            }
+        });
+}
+
+void MavlinkFTPImpl::_calc_file_crc32_async(
+    const std::string& path, file_crc32_result_callback_t callback)
 {
     std::lock_guard<std::mutex> lock(_curr_op_mutex);
     if (_curr_op != CMD_NONE) {
@@ -1117,7 +1150,7 @@ MavlinkFTPImpl::ServerResult MavlinkFTPImpl::_work_rename(PayloadHeader* payload
     }
 }
 
-MavlinkFTP::Result MavlinkFTPImpl::calc_local_file_crc32(const std::string& path, uint32_t& csum)
+MavlinkFTP::Result MavlinkFTPImpl::_calc_local_file_crc32(const std::string& path, uint32_t& csum)
 {
     if (!fs_exists(path)) {
         return MavlinkFTP::Result::FILE_DOES_NOT_EXIST;
@@ -1166,7 +1199,7 @@ MavlinkFTPImpl::ServerResult MavlinkFTPImpl::_work_calc_file_CRC32(PayloadHeader
 
     payload->size = sizeof(uint32_t);
     uint32_t checksum;
-    MavlinkFTP::Result res = calc_local_file_crc32(path, checksum);
+    MavlinkFTP::Result res = _calc_local_file_crc32(path, checksum);
     if (res != MavlinkFTP::Result::SUCCESS) {
         return ServerResult::ERR_FILE_IO_ERROR;
     }

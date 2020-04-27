@@ -159,25 +159,22 @@ void test_rename(
     EXPECT_EQ(result, MavlinkFTP::Result::SUCCESS);
 }
 
-void test_crc32(
+void compare(
     std::shared_ptr<MavlinkFTP> mavlink_ftp,
     const std::string& local_file,
     const std::string& remote_file)
 {
-    uint32_t crc;
-    MavlinkFTP::Result r = mavlink_ftp->calc_local_file_crc32(local_file, crc);
-    EXPECT_EQ(r, MavlinkFTP::Result::SUCCESS);
-
-    auto prom = std::make_shared<std::promise<std::pair<MavlinkFTP::Result, uint32_t>>>();
+    auto prom = std::make_shared<std::promise<std::pair<MavlinkFTP::Result, bool>>>();
     auto future_result = prom->get_future();
-    mavlink_ftp->calc_file_crc32_async(
-        remote_file, [prom](MavlinkFTP::Result res, uint32_t checksum) {
-            prom->set_value(std::pair<MavlinkFTP::Result, uint32_t>(res, checksum));
+
+    mavlink_ftp->are_files_identical_async(
+        local_file, remote_file, [&prom](MavlinkFTP::Result result, bool identical) {
+            prom->set_value(std::make_pair<>(result, identical));
         });
 
-    std::pair<MavlinkFTP::Result, uint32_t> result = future_result.get();
+    auto result = future_result.get();
     EXPECT_EQ(result.first, MavlinkFTP::Result::SUCCESS);
-    EXPECT_EQ(result.second, crc);
+    EXPECT_EQ(result.second, true);
 }
 
 TEST(MavlinkFTPTest, ListDirectory)
@@ -188,8 +185,6 @@ TEST(MavlinkFTPTest, ListDirectory)
     ASSERT_EQ(ret, ConnectionResult::SUCCESS);
     System& system = mavsdk.system();
     auto mavlink_ftp = std::make_shared<MavlinkFTP>(system);
-    mavlink_ftp->set_timeout(50);
-    mavlink_ftp->set_retries(10);
 
     // Wait for system to connect via heartbeat.
     std::this_thread::sleep_for(std::chrono::seconds(2));
@@ -207,8 +202,6 @@ TEST(MavlinkFTPTest, DownloadFile)
     ASSERT_EQ(ret, ConnectionResult::SUCCESS);
     System& system = mavsdk.system();
     auto mavlink_ftp = std::make_shared<MavlinkFTP>(system);
-    mavlink_ftp->set_timeout(50);
-    mavlink_ftp->set_retries(10);
 
     // Wait for system to connect via heartbeat.
     std::this_thread::sleep_for(std::chrono::seconds(2));
@@ -243,8 +236,6 @@ TEST(MavlinkFTPTest, UploadFiles)
     ASSERT_EQ(ret, ConnectionResult::SUCCESS);
     System& system = mavsdk.system();
     auto mavlink_ftp = std::make_shared<MavlinkFTP>(system);
-    mavlink_ftp->set_timeout(50);
-    mavlink_ftp->set_retries(10);
 
     // Wait for system to connect via heartbeat.
     std::this_thread::sleep_for(std::chrono::seconds(2));
@@ -274,7 +265,7 @@ TEST(MavlinkFTPTest, UploadFiles)
         std::string file_name = "test_file_" + std::to_string(i);
         create_test_file(file_name, 1024);
         test_upload(mavlink_ftp, file_name, "/test");
-        test_crc32(mavlink_ftp, file_name, "/test/" + file_name);
+        compare(mavlink_ftp, file_name, "/test/" + file_name);
         remove(file_name.c_str());
     }
 
@@ -341,8 +332,6 @@ TEST(MavlinkFTPTest, TestServer)
 
     auto mavlink_ftp_client = std::make_shared<MavlinkFTP>(system_gcs);
     mavlink_ftp_client->set_target_component_id(server_comp_id);
-    mavlink_ftp_client->set_timeout(50);
-    mavlink_ftp_client->set_retries(10);
 
     test_list_directory(mavlink_ftp_client, "/");
 
@@ -355,23 +344,13 @@ TEST(MavlinkFTPTest, TestServer)
 
     test_upload(mavlink_ftp_client, file_name1, "test");
 
-    test_crc32(mavlink_ftp_client, file_name1, "test/" + file_name1);
+    compare(mavlink_ftp_client, file_name1, "test/" + file_name1);
 
     test_rename(mavlink_ftp_client, "test/" + file_name1, "test/" + file_name2);
 
+    compare(mavlink_ftp_client, file_name1, "test/" + file_name2);
+
     test_download(mavlink_ftp_client, "test/" + file_name2, ".");
-
-    uint32_t crc1;
-    MavlinkFTP::Result res1 = mavlink_ftp_client->calc_local_file_crc32(file_name1, crc1);
-    EXPECT_EQ(res1, MavlinkFTP::Result::SUCCESS);
-
-    uint32_t crc2;
-    MavlinkFTP::Result res2 = mavlink_ftp_client->calc_local_file_crc32(file_name2, crc2);
-    EXPECT_EQ(res2, MavlinkFTP::Result::SUCCESS);
-
-    EXPECT_EQ(crc1, crc2);
-    remove(file_name1.c_str());
-    remove(file_name2.c_str());
 
     MavlinkFTP::Result result = test_remove_file(mavlink_ftp_client, "test/" + file_name1);
     EXPECT_EQ(result, MavlinkFTP::Result::FILE_DOES_NOT_EXIST);
