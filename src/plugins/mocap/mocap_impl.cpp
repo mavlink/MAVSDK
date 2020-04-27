@@ -28,56 +28,35 @@ MocapImpl::~MocapImpl()
 Mocap::Result MocapImpl::set_vision_position_estimate(
     const Mocap::VisionPositionEstimate& vision_position_estimate)
 {
-    if (!_parent->is_connected())
-        return Mocap::Result::NO_SYSTEM;
+    if (!_parent->is_connected()) {
+        return Mocap::Result::NoSystem;
+    }
 
-    _visual_position_estimate_mutex.lock();
-    _vision_position_estimate = vision_position_estimate;
-    _visual_position_estimate_mutex.unlock();
-
-    if (!send_vision_position_estimate())
-        return Mocap::Result::CONNECTION_ERROR;
-
-    return Mocap::Result::SUCCESS;
+    return send_vision_position_estimate(vision_position_estimate);
 }
 
 Mocap::Result
 MocapImpl::set_attitude_position_mocap(const Mocap::AttitudePositionMocap& attitude_position_mocap)
 {
-    if (!_parent->is_connected())
-        return Mocap::Result::NO_SYSTEM;
+    if (!_parent->is_connected()) {
+        return Mocap::Result::NoSystem;
+    }
 
-    _attitude_position_mocap_mutex.lock();
-    _attitude_position_mocap = attitude_position_mocap;
-    _attitude_position_mocap_mutex.unlock();
-
-    if (!send_attitude_position_mocap())
-        return Mocap::Result::CONNECTION_ERROR;
-
-    return Mocap::Result::SUCCESS;
+    return send_attitude_position_mocap(attitude_position_mocap);
 }
 
 Mocap::Result MocapImpl::set_odometry(const Mocap::Odometry& odometry)
 {
-    if (!_parent->is_connected())
-        return Mocap::Result::NO_SYSTEM;
+    if (!_parent->is_connected()) {
+        return Mocap::Result::NoSystem;
+    }
 
-    _odometry_mutex.lock();
-    _odometry = odometry;
-    _odometry_mutex.unlock();
-
-    if (!send_odometry())
-        return Mocap::Result::CONNECTION_ERROR;
-
-    return Mocap::Result::SUCCESS;
+    return send_odometry(odometry);
 }
 
-bool MocapImpl::send_vision_position_estimate()
+Mocap::Result MocapImpl::send_vision_position_estimate(
+    const Mocap::VisionPositionEstimate& vision_position_estimate)
 {
-    _visual_position_estimate_mutex.lock();
-    auto vision_position_estimate = _vision_position_estimate;
-    _visual_position_estimate_mutex.unlock();
-
     const uint64_t autopilot_time_usec =
         (!vision_position_estimate.time_usec) ?
             std::chrono::duration_cast<std::chrono::microseconds>(
@@ -90,8 +69,24 @@ bool MocapImpl::send_vision_position_estimate()
                     .time_since_epoch())
                 .count();
 
-    mavlink_message_t message;
+    std::array<float, 21> covariance{};
 
+    // The covariance matrix needs to have length 21 or 1 with the one entry set to NaN.
+
+    if (vision_position_estimate.pose_covariance.covariance_matrix.size() == 21) {
+        std::copy(
+            vision_position_estimate.pose_covariance.covariance_matrix.begin(),
+            vision_position_estimate.pose_covariance.covariance_matrix.end(),
+            covariance.begin());
+    } else if (
+        vision_position_estimate.pose_covariance.covariance_matrix.size() == 1 &&
+        std::isnan(vision_position_estimate.pose_covariance.covariance_matrix[0])) {
+        covariance[0] = NAN;
+    } else {
+        return Mocap::Result::InvalidRequestData;
+    }
+
+    mavlink_message_t message;
     mavlink_msg_vision_position_estimate_pack(
         _parent->get_own_system_id(),
         _parent->get_own_component_id(),
@@ -103,18 +98,15 @@ bool MocapImpl::send_vision_position_estimate()
         vision_position_estimate.angle_body.roll_rad,
         vision_position_estimate.angle_body.pitch_rad,
         vision_position_estimate.angle_body.yaw_rad,
-        vision_position_estimate.pose_covariance.data(),
-        vision_position_estimate.reset_counter);
+        covariance.data(),
+        0); // FIXME: reset_counter not set
 
-    return _parent->send_message(message);
+    return _parent->send_message(message) ? Mocap::Result::Success : Mocap::Result::ConnectionError;
 }
 
-bool MocapImpl::send_attitude_position_mocap()
+Mocap::Result
+MocapImpl::send_attitude_position_mocap(const Mocap::AttitudePositionMocap& attitude_position_mocap)
 {
-    _attitude_position_mocap_mutex.lock();
-    auto attitude_position_mocap = _attitude_position_mocap;
-    _attitude_position_mocap_mutex.unlock();
-
     const uint64_t autopilot_time_usec =
         (!attitude_position_mocap.time_usec) ?
             std::chrono::duration_cast<std::chrono::microseconds>(
@@ -135,6 +127,23 @@ bool MocapImpl::send_attitude_position_mocap()
     q[2] = attitude_position_mocap.q.y;
     q[3] = attitude_position_mocap.q.z;
 
+    std::array<float, 21> covariance{};
+
+    // The covariance matrix needs to have length 21 or 1 with the one entry set to NaN.
+
+    if (attitude_position_mocap.pose_covariance.covariance_matrix.size() == 21) {
+        std::copy(
+            attitude_position_mocap.pose_covariance.covariance_matrix.begin(),
+            attitude_position_mocap.pose_covariance.covariance_matrix.end(),
+            covariance.begin());
+    } else if (
+        attitude_position_mocap.pose_covariance.covariance_matrix.size() == 1 &&
+        std::isnan(attitude_position_mocap.pose_covariance.covariance_matrix[0])) {
+        covariance[0] = NAN;
+    } else {
+        return Mocap::Result::InvalidRequestData;
+    }
+
     mavlink_msg_att_pos_mocap_pack(
         _parent->get_own_system_id(),
         _parent->get_own_component_id(),
@@ -144,17 +153,13 @@ bool MocapImpl::send_attitude_position_mocap()
         attitude_position_mocap.position_body.x_m,
         attitude_position_mocap.position_body.y_m,
         attitude_position_mocap.position_body.z_m,
-        attitude_position_mocap.pose_covariance.data());
+        covariance.data());
 
-    return _parent->send_message(message);
+    return _parent->send_message(message) ? Mocap::Result::Success : Mocap::Result::ConnectionError;
 }
 
-bool MocapImpl::send_odometry()
+Mocap::Result MocapImpl::send_odometry(const Mocap::Odometry& odometry)
 {
-    _odometry_mutex.lock();
-    auto odometry = _odometry;
-    _odometry_mutex.unlock();
-
     const uint64_t autopilot_time_usec =
         (!odometry.time_usec) ?
             std::chrono::duration_cast<std::chrono::microseconds>(
@@ -174,6 +179,37 @@ bool MocapImpl::send_odometry()
     q[2] = odometry.q.y;
     q[3] = odometry.q.z;
 
+    std::array<float, 21> pose_covariance{};
+    std::array<float, 21> velocity_covariance{};
+
+    // The covariance matrix needs to have length 21 or 1 with the one entry set to NaN.
+
+    if (odometry.pose_covariance.covariance_matrix.size() == 21) {
+        std::copy(
+            odometry.pose_covariance.covariance_matrix.begin(),
+            odometry.pose_covariance.covariance_matrix.end(),
+            pose_covariance.begin());
+    } else if (
+        odometry.pose_covariance.covariance_matrix.size() == 1 &&
+        std::isnan(odometry.pose_covariance.covariance_matrix[0])) {
+        pose_covariance[0] = NAN;
+    } else {
+        return Mocap::Result::InvalidRequestData;
+    }
+
+    if (odometry.velocity_covariance.covariance_matrix.size() == 21) {
+        std::copy(
+            odometry.velocity_covariance.covariance_matrix.begin(),
+            odometry.velocity_covariance.covariance_matrix.end(),
+            velocity_covariance.begin());
+    } else if (
+        odometry.velocity_covariance.covariance_matrix.size() == 1 &&
+        std::isnan(odometry.velocity_covariance.covariance_matrix[0])) {
+        velocity_covariance[0] = NAN;
+    } else {
+        return Mocap::Result::InvalidRequestData;
+    }
+
     mavlink_msg_odometry_pack(
         _parent->get_own_system_id(),
         _parent->get_own_component_id(),
@@ -191,12 +227,12 @@ bool MocapImpl::send_odometry()
         odometry.angular_velocity_body.roll_rad_s,
         odometry.angular_velocity_body.pitch_rad_s,
         odometry.angular_velocity_body.yaw_rad_s,
-        odometry.pose_covariance.data(),
-        odometry.velocity_covariance.data(),
+        pose_covariance.data(),
+        velocity_covariance.data(),
         0,
         MAV_ESTIMATOR_TYPE_MOCAP);
 
-    return _parent->send_message(message);
+    return _parent->send_message(message) ? Mocap::Result::Success : Mocap::Result::ConnectionError;
 }
 
 } // namespace mavsdk

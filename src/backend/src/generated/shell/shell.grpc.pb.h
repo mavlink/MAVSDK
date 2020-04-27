@@ -62,6 +62,8 @@ class ShellService final {
     }
     //
     // Receive feedback from a sent command line.
+    //
+    // This subscription needs to be made before a command line is sent, otherwise, no response will be sent.
     std::unique_ptr< ::grpc::ClientReaderInterface< ::mavsdk::rpc::shell::ReceiveResponse>> SubscribeReceive(::grpc::ClientContext* context, const ::mavsdk::rpc::shell::SubscribeReceiveRequest& request) {
       return std::unique_ptr< ::grpc::ClientReaderInterface< ::mavsdk::rpc::shell::ReceiveResponse>>(SubscribeReceiveRaw(context, request));
     }
@@ -82,6 +84,8 @@ class ShellService final {
       virtual void Send(::grpc::ClientContext* context, const ::grpc::ByteBuffer* request, ::mavsdk::rpc::shell::SendResponse* response, ::grpc::experimental::ClientUnaryReactor* reactor) = 0;
       //
       // Receive feedback from a sent command line.
+      //
+      // This subscription needs to be made before a command line is sent, otherwise, no response will be sent.
       virtual void SubscribeReceive(::grpc::ClientContext* context, ::mavsdk::rpc::shell::SubscribeReceiveRequest* request, ::grpc::experimental::ClientReadReactor< ::mavsdk::rpc::shell::ReceiveResponse>* reactor) = 0;
     };
     virtual class experimental_async_interface* experimental_async() { return nullptr; }
@@ -149,6 +153,8 @@ class ShellService final {
     virtual ::grpc::Status Send(::grpc::ServerContext* context, const ::mavsdk::rpc::shell::SendRequest* request, ::mavsdk::rpc::shell::SendResponse* response);
     //
     // Receive feedback from a sent command line.
+    //
+    // This subscription needs to be made before a command line is sent, otherwise, no response will be sent.
     virtual ::grpc::Status SubscribeReceive(::grpc::ServerContext* context, const ::mavsdk::rpc::shell::SubscribeReceiveRequest* request, ::grpc::ServerWriter< ::mavsdk::rpc::shell::ReceiveResponse>* writer);
   };
   template <class BaseClass>
