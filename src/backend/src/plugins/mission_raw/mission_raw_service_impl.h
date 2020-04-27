@@ -126,7 +126,7 @@ public:
         return obj;
     }
 
-    static rpc::mission_raw::MissionResult::Result
+    static rpc::mission_raw::MissionRawResult::Result
     translateToRpcResult(const mavsdk::MissionRaw::Result& result)
     {
         switch (result) {
@@ -134,54 +134,54 @@ public:
                 LogErr() << "Unknown result enum value: " << static_cast<int>(result);
             // FALLTHROUGH
             case mavsdk::MissionRaw::Result::Unknown:
-                return rpc::mission_raw::MissionResult_Result_RESULT_UNKNOWN;
+                return rpc::mission_raw::MissionRawResult_Result_RESULT_UNKNOWN;
             case mavsdk::MissionRaw::Result::Success:
-                return rpc::mission_raw::MissionResult_Result_RESULT_SUCCESS;
+                return rpc::mission_raw::MissionRawResult_Result_RESULT_SUCCESS;
             case mavsdk::MissionRaw::Result::Error:
-                return rpc::mission_raw::MissionResult_Result_RESULT_ERROR;
+                return rpc::mission_raw::MissionRawResult_Result_RESULT_ERROR;
             case mavsdk::MissionRaw::Result::TooManyMissionItems:
-                return rpc::mission_raw::MissionResult_Result_RESULT_TOO_MANY_MISSION_ITEMS;
+                return rpc::mission_raw::MissionRawResult_Result_RESULT_TOO_MANY_MISSION_ITEMS;
             case mavsdk::MissionRaw::Result::Busy:
-                return rpc::mission_raw::MissionResult_Result_RESULT_BUSY;
+                return rpc::mission_raw::MissionRawResult_Result_RESULT_BUSY;
             case mavsdk::MissionRaw::Result::Timeout:
-                return rpc::mission_raw::MissionResult_Result_RESULT_TIMEOUT;
+                return rpc::mission_raw::MissionRawResult_Result_RESULT_TIMEOUT;
             case mavsdk::MissionRaw::Result::InvalidArgument:
-                return rpc::mission_raw::MissionResult_Result_RESULT_INVALID_ARGUMENT;
+                return rpc::mission_raw::MissionRawResult_Result_RESULT_INVALID_ARGUMENT;
             case mavsdk::MissionRaw::Result::Unsupported:
-                return rpc::mission_raw::MissionResult_Result_RESULT_UNSUPPORTED;
+                return rpc::mission_raw::MissionRawResult_Result_RESULT_UNSUPPORTED;
             case mavsdk::MissionRaw::Result::NoMissionAvailable:
-                return rpc::mission_raw::MissionResult_Result_RESULT_NO_MISSION_AVAILABLE;
+                return rpc::mission_raw::MissionRawResult_Result_RESULT_NO_MISSION_AVAILABLE;
             case mavsdk::MissionRaw::Result::TransferCancelled:
-                return rpc::mission_raw::MissionResult_Result_RESULT_TRANSFER_CANCELLED;
+                return rpc::mission_raw::MissionRawResult_Result_RESULT_TRANSFER_CANCELLED;
         }
     }
 
     static mavsdk::MissionRaw::Result
-    translateFromRpcResult(const rpc::mission_raw::MissionResult::Result result)
+    translateFromRpcResult(const rpc::mission_raw::MissionRawResult::Result result)
     {
         switch (result) {
             default:
                 LogErr() << "Unknown result enum value: " << static_cast<int>(result);
             // FALLTHROUGH
-            case rpc::mission_raw::MissionResult_Result_RESULT_UNKNOWN:
+            case rpc::mission_raw::MissionRawResult_Result_RESULT_UNKNOWN:
                 return mavsdk::MissionRaw::Result::Unknown;
-            case rpc::mission_raw::MissionResult_Result_RESULT_SUCCESS:
+            case rpc::mission_raw::MissionRawResult_Result_RESULT_SUCCESS:
                 return mavsdk::MissionRaw::Result::Success;
-            case rpc::mission_raw::MissionResult_Result_RESULT_ERROR:
+            case rpc::mission_raw::MissionRawResult_Result_RESULT_ERROR:
                 return mavsdk::MissionRaw::Result::Error;
-            case rpc::mission_raw::MissionResult_Result_RESULT_TOO_MANY_MISSION_ITEMS:
+            case rpc::mission_raw::MissionRawResult_Result_RESULT_TOO_MANY_MISSION_ITEMS:
                 return mavsdk::MissionRaw::Result::TooManyMissionItems;
-            case rpc::mission_raw::MissionResult_Result_RESULT_BUSY:
+            case rpc::mission_raw::MissionRawResult_Result_RESULT_BUSY:
                 return mavsdk::MissionRaw::Result::Busy;
-            case rpc::mission_raw::MissionResult_Result_RESULT_TIMEOUT:
+            case rpc::mission_raw::MissionRawResult_Result_RESULT_TIMEOUT:
                 return mavsdk::MissionRaw::Result::Timeout;
-            case rpc::mission_raw::MissionResult_Result_RESULT_INVALID_ARGUMENT:
+            case rpc::mission_raw::MissionRawResult_Result_RESULT_INVALID_ARGUMENT:
                 return mavsdk::MissionRaw::Result::InvalidArgument;
-            case rpc::mission_raw::MissionResult_Result_RESULT_UNSUPPORTED:
+            case rpc::mission_raw::MissionRawResult_Result_RESULT_UNSUPPORTED:
                 return mavsdk::MissionRaw::Result::Unsupported;
-            case rpc::mission_raw::MissionResult_Result_RESULT_NO_MISSION_AVAILABLE:
+            case rpc::mission_raw::MissionRawResult_Result_RESULT_NO_MISSION_AVAILABLE:
                 return mavsdk::MissionRaw::Result::NoMissionAvailable;
-            case rpc::mission_raw::MissionResult_Result_RESULT_TRANSFER_CANCELLED:
+            case rpc::mission_raw::MissionRawResult_Result_RESULT_TRANSFER_CANCELLED:
                 return mavsdk::MissionRaw::Result::TransferCancelled;
         }
     }
