@@ -10,7 +10,7 @@
 #include "global_include.h"
 #include "mavsdk.h"
 #include "system.h"
-#include "plugins/mavlink_ftp/mavlink_ftp.h"
+#include "plugins/ftp/ftp.h"
 
 #ifdef ENABLE_MAVLINK_PASSTHROUGH
 #include <random>
@@ -24,11 +24,11 @@ using namespace mavsdk;
 static std::atomic<uint32_t> _bytes_transferred{0};
 static std::atomic<uint32_t> _file_size{0};
 
-void reset_server(std::shared_ptr<MavlinkFTP>& mavlink_ftp)
+void reset_server(std::shared_ptr<Ftp>& ftp)
 {
-    auto prom = std::make_shared<std::promise<MavlinkFTP::Result>>();
+    auto prom = std::make_shared<std::promise<Ftp::Result>>();
     auto future_result = prom->get_future();
-    mavlink_ftp->reset_async([prom](MavlinkFTP::Result result) { prom->set_value(result); });
+    ftp->reset_async([prom](Ftp::Result result) { prom->set_value(result); });
     future_result.get();
 }
 
@@ -40,64 +40,55 @@ void create_test_file(std::string file_name, uint32_t size)
     of.close();
 }
 
-void test_create_directory(std::shared_ptr<MavlinkFTP> mavlink_ftp, const std::string& path)
+void test_create_directory(std::shared_ptr<Ftp> ftp, const std::string& path)
 {
-    auto prom = std::make_shared<std::promise<MavlinkFTP::Result>>();
+    auto prom = std::make_shared<std::promise<Ftp::Result>>();
     auto future_result = prom->get_future();
-    mavlink_ftp->create_directory_async(
-        path, [prom](MavlinkFTP::Result result) { prom->set_value(result); });
+    ftp->create_directory_async(path, [prom](Ftp::Result result) { prom->set_value(result); });
 
-    MavlinkFTP::Result result = future_result.get();
+    Ftp::Result result = future_result.get();
     EXPECT_TRUE(
-        result == MavlinkFTP::Result::SUCCESS || result == MavlinkFTP::Result::FILE_EXISTS ||
-        result == MavlinkFTP::Result::FILE_PROTECTED);
+        result == Ftp::Result::SUCCESS || result == Ftp::Result::FILE_EXISTS ||
+        result == Ftp::Result::FILE_PROTECTED);
 }
 
-void test_list_directory(std::shared_ptr<MavlinkFTP> mavlink_ftp, const std::string& path)
+void test_list_directory(std::shared_ptr<Ftp> ftp, const std::string& path)
 {
-    auto prom =
-        std::make_shared<std::promise<std::pair<MavlinkFTP::Result, std::vector<std::string>>>>();
+    auto prom = std::make_shared<std::promise<std::pair<Ftp::Result, std::vector<std::string>>>>();
     auto future_result = prom->get_future();
-    mavlink_ftp->list_directory_async(
-        path, [prom](MavlinkFTP::Result result, std::vector<std::string> list) {
-            prom->set_value(std::pair<MavlinkFTP::Result, std::vector<std::string>>(result, list));
-        });
+    ftp->list_directory_async(path, [prom](Ftp::Result result, std::vector<std::string> list) {
+        prom->set_value(std::pair<Ftp::Result, std::vector<std::string>>(result, list));
+    });
 
-    std::pair<MavlinkFTP::Result, std::vector<std::string>> result = future_result.get();
-    EXPECT_EQ(result.first, MavlinkFTP::Result::SUCCESS);
+    std::pair<Ftp::Result, std::vector<std::string>> result = future_result.get();
+    EXPECT_EQ(result.first, Ftp::Result::SUCCESS);
     EXPECT_GT(result.second.size(), 0);
 }
 
-MavlinkFTP::Result
-test_remove_directory(std::shared_ptr<MavlinkFTP> mavlink_ftp, const std::string& path)
+Ftp::Result test_remove_directory(std::shared_ptr<Ftp> ftp, const std::string& path)
 {
-    auto prom = std::make_shared<std::promise<MavlinkFTP::Result>>();
+    auto prom = std::make_shared<std::promise<Ftp::Result>>();
     auto future_result = prom->get_future();
-    mavlink_ftp->remove_directory_async(
-        path, [prom](MavlinkFTP::Result result) { prom->set_value(result); });
+    ftp->remove_directory_async(path, [prom](Ftp::Result result) { prom->set_value(result); });
 
     return future_result.get();
 }
 
-MavlinkFTP::Result
-test_remove_file(std::shared_ptr<MavlinkFTP> mavlink_ftp, const std::string& path)
+Ftp::Result test_remove_file(std::shared_ptr<Ftp> ftp, const std::string& path)
 {
-    auto prom = std::make_shared<std::promise<MavlinkFTP::Result>>();
+    auto prom = std::make_shared<std::promise<Ftp::Result>>();
     auto future_result = prom->get_future();
-    mavlink_ftp->remove_file_async(
-        path, [prom](MavlinkFTP::Result result) { prom->set_value(result); });
+    ftp->remove_file_async(path, [prom](Ftp::Result result) { prom->set_value(result); });
 
     return future_result.get();
 }
 
 void test_download(
-    std::shared_ptr<MavlinkFTP> mavlink_ftp,
-    const std::string& remote_file,
-    const std::string& local_path)
+    std::shared_ptr<Ftp> ftp, const std::string& remote_file, const std::string& local_path)
 {
-    auto prom = std::make_shared<std::promise<MavlinkFTP::Result>>();
+    auto prom = std::make_shared<std::promise<Ftp::Result>>();
     auto future_result = prom->get_future();
-    mavlink_ftp->download_async(
+    ftp->download_async(
         remote_file,
         local_path,
         [](uint32_t bytes_transferred, uint32_t file_size) {
@@ -110,23 +101,21 @@ void test_download(
             _bytes_transferred = bytes_transferred;
             _file_size = file_size;
         },
-        [prom](MavlinkFTP::Result result) { prom->set_value(result); });
+        [prom](Ftp::Result result) { prom->set_value(result); });
 
-    MavlinkFTP::Result result = future_result.get();
-    EXPECT_EQ(result, MavlinkFTP::Result::SUCCESS);
+    Ftp::Result result = future_result.get();
+    EXPECT_EQ(result, Ftp::Result::SUCCESS);
     EXPECT_GT(_file_size, 0);
     EXPECT_EQ(_bytes_transferred, _file_size);
 }
 
 void test_upload(
-    std::shared_ptr<MavlinkFTP> mavlink_ftp,
-    const std::string& local_file,
-    const std::string& remote_folder)
+    std::shared_ptr<Ftp> ftp, const std::string& local_file, const std::string& remote_folder)
 {
-    auto prom = std::make_shared<std::promise<MavlinkFTP::Result>>();
+    auto prom = std::make_shared<std::promise<Ftp::Result>>();
     auto future_result = prom->get_future();
     _bytes_transferred = _file_size = 0;
-    mavlink_ftp->upload_async(
+    ftp->upload_async(
         local_file,
         remote_folder,
         [local_file](uint32_t bytes_transferred, uint32_t file_size) {
@@ -139,74 +128,70 @@ void test_upload(
             _bytes_transferred = bytes_transferred;
             _file_size = file_size;
         },
-        [prom](MavlinkFTP::Result result) { prom->set_value(result); });
+        [prom](Ftp::Result result) { prom->set_value(result); });
 
-    MavlinkFTP::Result result = future_result.get();
+    Ftp::Result result = future_result.get();
     EXPECT_GT(_file_size, 0);
     EXPECT_EQ(_bytes_transferred, _file_size);
-    EXPECT_EQ(result, MavlinkFTP::Result::SUCCESS);
+    EXPECT_EQ(result, Ftp::Result::SUCCESS);
 }
 
-void test_rename(
-    std::shared_ptr<MavlinkFTP> mavlink_ftp, const std::string& from, const std::string& to)
+void test_rename(std::shared_ptr<Ftp> ftp, const std::string& from, const std::string& to)
 {
-    auto prom = std::make_shared<std::promise<MavlinkFTP::Result>>();
+    auto prom = std::make_shared<std::promise<Ftp::Result>>();
     auto future_result = prom->get_future();
-    mavlink_ftp->rename_async(
-        from, to, [prom](MavlinkFTP::Result result) { prom->set_value(result); });
+    ftp->rename_async(from, to, [prom](Ftp::Result result) { prom->set_value(result); });
 
-    MavlinkFTP::Result result = future_result.get();
-    EXPECT_EQ(result, MavlinkFTP::Result::SUCCESS);
+    Ftp::Result result = future_result.get();
+    EXPECT_EQ(result, Ftp::Result::SUCCESS);
 }
 
 void compare(
-    std::shared_ptr<MavlinkFTP> mavlink_ftp,
-    const std::string& local_file,
-    const std::string& remote_file)
+    std::shared_ptr<Ftp> ftp, const std::string& local_file, const std::string& remote_file)
 {
-    auto prom = std::make_shared<std::promise<std::pair<MavlinkFTP::Result, bool>>>();
+    auto prom = std::make_shared<std::promise<std::pair<Ftp::Result, bool>>>();
     auto future_result = prom->get_future();
 
-    mavlink_ftp->are_files_identical_async(
-        local_file, remote_file, [&prom](MavlinkFTP::Result result, bool identical) {
+    ftp->are_files_identical_async(
+        local_file, remote_file, [&prom](Ftp::Result result, bool identical) {
             prom->set_value(std::make_pair<>(result, identical));
         });
 
     auto result = future_result.get();
-    EXPECT_EQ(result.first, MavlinkFTP::Result::SUCCESS);
+    EXPECT_EQ(result.first, Ftp::Result::SUCCESS);
     EXPECT_EQ(result.second, true);
 }
 
-TEST(MavlinkFTPTest, ListDirectory)
+TEST(FtpTest, ListDirectory)
 {
     Mavsdk mavsdk;
 
     ConnectionResult ret = mavsdk.add_udp_connection();
     ASSERT_EQ(ret, ConnectionResult::SUCCESS);
     System& system = mavsdk.system();
-    auto mavlink_ftp = std::make_shared<MavlinkFTP>(system);
+    auto ftp = std::make_shared<Ftp>(system);
 
     // Wait for system to connect via heartbeat.
     std::this_thread::sleep_for(std::chrono::seconds(2));
     // Reset server in case there are stale open sessions
-    reset_server(mavlink_ftp);
+    reset_server(ftp);
 
-    test_list_directory(mavlink_ftp, "/");
+    test_list_directory(ftp, "/");
 }
 
-TEST(MavlinkFTPTest, DownloadFile)
+TEST(FtpTest, DownloadFile)
 {
     Mavsdk mavsdk;
 
     ConnectionResult ret = mavsdk.add_udp_connection();
     ASSERT_EQ(ret, ConnectionResult::SUCCESS);
     System& system = mavsdk.system();
-    auto mavlink_ftp = std::make_shared<MavlinkFTP>(system);
+    auto ftp = std::make_shared<Ftp>(system);
 
     // Wait for system to connect via heartbeat.
     std::this_thread::sleep_for(std::chrono::seconds(2));
     // Reset server in case there are stale open sessions
-    reset_server(mavlink_ftp);
+    reset_server(ftp);
 
 #ifdef ENABLE_MAVLINK_PASSTHROUGH
     auto mavlink_passthrough = std::make_shared<MavlinkPassthrough>(system);
@@ -224,23 +209,23 @@ TEST(MavlinkFTPTest, DownloadFile)
     });
 #endif
 
-    test_download(mavlink_ftp, "/dataman", ".");
+    test_download(ftp, "/dataman", ".");
     remove("dataman");
 }
 
-TEST(MavlinkFTPTest, UploadFiles)
+TEST(FtpTest, UploadFiles)
 {
     Mavsdk mavsdk;
 
     ConnectionResult ret = mavsdk.add_udp_connection();
     ASSERT_EQ(ret, ConnectionResult::SUCCESS);
     System& system = mavsdk.system();
-    auto mavlink_ftp = std::make_shared<MavlinkFTP>(system);
+    auto ftp = std::make_shared<Ftp>(system);
 
     // Wait for system to connect via heartbeat.
     std::this_thread::sleep_for(std::chrono::seconds(2));
     // Reset server in case there are stale open sessions
-    reset_server(mavlink_ftp);
+    reset_server(ftp);
 
 #ifdef ENABLE_MAVLINK_PASSTHROUGH
     auto mavlink_passthrough = std::make_shared<MavlinkPassthrough>(system);
@@ -258,41 +243,40 @@ TEST(MavlinkFTPTest, UploadFiles)
     });
 #endif
 
-    test_create_directory(mavlink_ftp, "/test");
+    test_create_directory(ftp, "/test");
 
     const int number_of_files = 100;
     for (int i = 0; i < number_of_files; i++) {
         std::string file_name = "test_file_" + std::to_string(i);
         create_test_file(file_name, 1024);
-        test_upload(mavlink_ftp, file_name, "/test");
-        compare(mavlink_ftp, file_name, "/test/" + file_name);
+        test_upload(ftp, file_name, "/test");
+        compare(ftp, file_name, "/test/" + file_name);
         remove(file_name.c_str());
     }
 
     {
-        auto prom = std::make_shared<
-            std::promise<std::pair<MavlinkFTP::Result, std::vector<std::string>>>>();
+        auto prom =
+            std::make_shared<std::promise<std::pair<Ftp::Result, std::vector<std::string>>>>();
         auto future_result = prom->get_future();
-        mavlink_ftp->list_directory_async(
-            "/test", [prom](MavlinkFTP::Result result, std::vector<std::string> list) {
-                prom->set_value(
-                    std::pair<MavlinkFTP::Result, std::vector<std::string>>(result, list));
+        ftp->list_directory_async(
+            "/test", [prom](Ftp::Result result, std::vector<std::string> list) {
+                prom->set_value(std::pair<Ftp::Result, std::vector<std::string>>(result, list));
             });
 
-        std::pair<MavlinkFTP::Result, std::vector<std::string>> result = future_result.get();
+        std::pair<Ftp::Result, std::vector<std::string>> result = future_result.get();
         int count = 0;
         for (auto entry : result.second) {
             if (entry.rfind("Ftest_file_", 0) == 0) {
                 count++;
             }
         }
-        EXPECT_EQ(result.first, MavlinkFTP::Result::SUCCESS);
+        EXPECT_EQ(result.first, Ftp::Result::SUCCESS);
         EXPECT_GT(result.second.size(), 0);
         EXPECT_EQ(count, number_of_files);
     }
 }
 
-TEST(MavlinkFTPTest, TestServer)
+TEST(FtpTest, TestServer)
 {
     ConnectionResult ret;
 
@@ -326,38 +310,38 @@ TEST(MavlinkFTPTest, TestServer)
     });
 #endif
 
-    auto mavlink_ftp_server = std::make_shared<MavlinkFTP>(system_cc);
-    mavlink_ftp_server->set_root_dir(".");
-    uint8_t server_comp_id = mavlink_ftp_server->get_our_compid();
+    auto ftp_server = std::make_shared<Ftp>(system_cc);
+    ftp_server->set_root_dir(".");
+    uint8_t server_comp_id = ftp_server->get_our_compid();
 
-    auto mavlink_ftp_client = std::make_shared<MavlinkFTP>(system_gcs);
-    mavlink_ftp_client->set_target_component_id(server_comp_id);
+    auto ftp_client = std::make_shared<Ftp>(system_gcs);
+    ftp_client->set_target_component_id(server_comp_id);
 
-    test_list_directory(mavlink_ftp_client, "/");
+    test_list_directory(ftp_client, "/");
 
-    mavlink_ftp_server->set_root_dir(".");
-    test_create_directory(mavlink_ftp_client, "test");
+    ftp_server->set_root_dir(".");
+    test_create_directory(ftp_client, "test");
 
     std::string file_name1 = "ftp_data_file1";
     std::string file_name2 = "ftp_data_file2";
     create_test_file(file_name1, 100000);
 
-    test_upload(mavlink_ftp_client, file_name1, "test");
+    test_upload(ftp_client, file_name1, "test");
 
-    compare(mavlink_ftp_client, file_name1, "test/" + file_name1);
+    compare(ftp_client, file_name1, "test/" + file_name1);
 
-    test_rename(mavlink_ftp_client, "test/" + file_name1, "test/" + file_name2);
+    test_rename(ftp_client, "test/" + file_name1, "test/" + file_name2);
 
-    compare(mavlink_ftp_client, file_name1, "test/" + file_name2);
+    compare(ftp_client, file_name1, "test/" + file_name2);
 
-    test_download(mavlink_ftp_client, "test/" + file_name2, ".");
+    test_download(ftp_client, "test/" + file_name2, ".");
 
-    MavlinkFTP::Result result = test_remove_file(mavlink_ftp_client, "test/" + file_name1);
-    EXPECT_EQ(result, MavlinkFTP::Result::FILE_DOES_NOT_EXIST);
+    Ftp::Result result = test_remove_file(ftp_client, "test/" + file_name1);
+    EXPECT_EQ(result, Ftp::Result::FILE_DOES_NOT_EXIST);
 
-    result = test_remove_file(mavlink_ftp_client, "test/" + file_name2);
-    EXPECT_EQ(result, MavlinkFTP::Result::SUCCESS);
+    result = test_remove_file(ftp_client, "test/" + file_name2);
+    EXPECT_EQ(result, Ftp::Result::SUCCESS);
 
-    result = test_remove_directory(mavlink_ftp_client, "test");
-    EXPECT_EQ(result, MavlinkFTP::Result::SUCCESS);
+    result = test_remove_directory(ftp_client, "test");
+    EXPECT_EQ(result, Ftp::Result::SUCCESS);
 }

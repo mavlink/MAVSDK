@@ -1,6 +1,6 @@
 cmake_minimum_required(VERSION 2.8.12)
 
-project(mavlink_ftp_client)
+project(ftp_server)
 
 find_package(Threads REQUIRED)
 
@@ -12,12 +12,12 @@ endif()
 
 find_package(MAVSDK REQUIRED)
 
-add_executable(mavlink_ftp_client
-    mavlink_ftp_client.cpp
+add_executable(ftp_server
+    ftp_server.cpp
 )
 
-target_link_libraries(mavlink_ftp_client
-    MAVSDK::mavsdk_mavlink_ftp
+target_link_libraries(ftp_server
+    MAVSDK::mavsdk_ftp
     MAVSDK::mavsdk
     ${CMAKE_THREAD_LIBS_INIT}
 )

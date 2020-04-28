@@ -5,7 +5,7 @@
 #include <string>
 
 #include "mavlink_include.h"
-#include "plugins/mavlink_ftp/mavlink_ftp.h"
+#include "plugins/ftp/ftp.h"
 #include "plugin_impl_base.h"
 
 // As found in
@@ -18,13 +18,13 @@
 
 namespace mavsdk {
 
-class MavlinkFTPImpl : public PluginImplBase {
+class FtpImpl : public PluginImplBase {
 public:
-    MavlinkFTPImpl(System& system);
-    MavlinkFTPImpl(const MavlinkFTPImpl&) = delete;
-    const MavlinkFTPImpl& operator=(const MavlinkFTPImpl&) = delete;
+    FtpImpl(System& system);
+    FtpImpl(const FtpImpl&) = delete;
+    const FtpImpl& operator=(const FtpImpl&) = delete;
 
-    ~MavlinkFTPImpl();
+    ~FtpImpl();
 
     void init() override;
     void deinit() override;
@@ -34,32 +34,30 @@ public:
 
     void send();
 
-    void reset_async(MavlinkFTP::result_callback_t callback);
+    void reset_async(Ftp::result_callback_t callback);
     void download_async(
         const std::string& remote_file_path,
         const std::string& local_folder,
-        MavlinkFTP::progress_callback_t progress_callback,
-        MavlinkFTP::result_callback_t result_callback);
+        Ftp::progress_callback_t progress_callback,
+        Ftp::result_callback_t result_callback);
     void upload_async(
         const std::string& local_file_path,
         const std::string& remote_folder,
-        MavlinkFTP::progress_callback_t progress_callback,
-        MavlinkFTP::result_callback_t result_callback);
+        Ftp::progress_callback_t progress_callback,
+        Ftp::result_callback_t result_callback);
     void list_directory_async(
         const std::string& path,
-        MavlinkFTP::directory_items_and_result_callback_t callback,
+        Ftp::directory_items_and_result_callback_t callback,
         uint32_t offset = 0);
-    void create_directory_async(const std::string& path, MavlinkFTP::result_callback_t callback);
-    void remove_directory_async(const std::string& path, MavlinkFTP::result_callback_t callback);
-    void remove_file_async(const std::string& path, MavlinkFTP::result_callback_t callback);
+    void create_directory_async(const std::string& path, Ftp::result_callback_t callback);
+    void remove_directory_async(const std::string& path, Ftp::result_callback_t callback);
+    void remove_file_async(const std::string& path, Ftp::result_callback_t callback);
     void rename_async(
-        const std::string& from_path,
-        const std::string& to_path,
-        MavlinkFTP::result_callback_t callback);
+        const std::string& from_path, const std::string& to_path, Ftp::result_callback_t callback);
     void are_files_identical_async(
         const std::string& local_path,
         const std::string& remote_path,
-        MavlinkFTP::are_files_identical_callback_t callback);
+        Ftp::are_files_identical_callback_t callback);
 
     void set_retries(uint32_t retries) { _max_last_command_retries = retries; }
     void set_root_dir(const std::string& root_dir);
@@ -113,7 +111,7 @@ private:
         RSP_NAK ///< Nak response
     };
 
-    typedef std::function<void(MavlinkFTP::Result, uint32_t)> file_crc32_result_callback_t;
+    typedef std::function<void(Ftp::Result, uint32_t)> file_crc32_result_callback_t;
 
     static constexpr auto DIRENT_FILE = "F"; ///< Identifies File returned from List command
     static constexpr auto DIRENT_DIR = "D"; ///< Identifies Directory returned from List command
@@ -172,27 +170,24 @@ private:
     uint32_t _bytes_transferred = 0;
     uint32_t _file_size = 0;
     std::vector<std::string> _curr_directory_list{};
-    MavlinkFTP::result_callback_t _curr_op_result_callback{};
-    MavlinkFTP::progress_callback_t _curr_op_progress_callback{};
-    MavlinkFTP::directory_items_and_result_callback_t _curr_dir_items_result_callback{};
+    Ftp::result_callback_t _curr_op_result_callback{};
+    Ftp::progress_callback_t _curr_op_progress_callback{};
+    Ftp::directory_items_and_result_callback_t _curr_dir_items_result_callback{};
     file_crc32_result_callback_t _current_crc32_result_callback{};
 
     void _calc_file_crc32_async(const std::string& path, file_crc32_result_callback_t callback);
-    MavlinkFTP::Result _calc_local_file_crc32(const std::string& path, uint32_t& csum);
+    Ftp::Result _calc_local_file_crc32(const std::string& path, uint32_t& csum);
 
     void _process_ack(PayloadHeader* payload);
     void _process_nak(PayloadHeader* payload);
     void _process_nak(ServerResult result);
-    static MavlinkFTP::Result _translate(ServerResult result);
+    static Ftp::Result _translate(ServerResult result);
     void _call_op_result_callback(ServerResult result);
     void _call_op_progress_callback(uint32_t bytes_read, uint32_t total_bytes);
     void _call_dir_items_result_callback(ServerResult result, std::vector<std::string> list);
     void _call_crc32_result_callback(ServerResult result, uint32_t crc32);
     void _generic_command_async(
-        Opcode opcode,
-        uint32_t offset,
-        const std::string& path,
-        MavlinkFTP::result_callback_t callback);
+        Opcode opcode, uint32_t offset, const std::string& path, Ftp::result_callback_t callback);
     void _read();
     void _write();
     void _end_read_session();
