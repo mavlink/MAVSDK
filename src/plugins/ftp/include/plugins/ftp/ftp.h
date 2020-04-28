@@ -12,13 +12,13 @@
 namespace mavsdk {
 
 class System;
-class MavlinkFTPImpl;
+class FtpImpl;
 
 /**
- * @brief The MavlinkFTP class provides file uploading and downloading using MAVLink FTP.
+ * @brief The Ftp class provides file uploading and downloading using MAVLink FTP.
  *
  */
-class MavlinkFTP : public PluginBase {
+class Ftp : public PluginBase {
 public:
     /**
      * @brief Constructor. Creates the plugin for a specific System.
@@ -26,17 +26,17 @@ public:
      * The plugin is typically created as shown below:
      *
      *     ```cpp
-     *     auto mavlink_ftp = std::make_shared<MavlinkFTP>(system);
+     *     auto ftp = std::make_shared<Ftp>(system);
      *     ```
      *
      * @param system The specific system associated with this plugin.
      */
-    explicit MavlinkFTP(System& system);
+    explicit Ftp(System& system);
 
     /**
      * @brief Destructor (internal use only).
      */
-    ~MavlinkFTP();
+    ~Ftp();
 
     /**
      * @brief Possible results returned for requests.
@@ -55,10 +55,10 @@ public:
     };
 
     /**
-     * @brief Returns a human-readable English string for `MavlinkFTP::Result`.
+     * @brief Returns a human-readable English string for `Ftp::Result`.
      *
      * @param result The enum value for which a human readable string is required.
-     * @return Human readable string for the `MavlinkFTP::Result`.
+     * @return Human readable string for the `Ftp::Result`.
      */
     std::string result_str(Result result);
 
@@ -197,15 +197,15 @@ public:
     /**
      * @brief Copy Constructor (object is not copyable).
      */
-    MavlinkFTP(const MavlinkFTP&) = delete;
+    Ftp(const Ftp&) = delete;
     /**
      * @brief Equality operator (object is not copyable).
      */
-    const MavlinkFTP& operator=(const MavlinkFTP&) = delete;
+    const Ftp& operator=(const Ftp&) = delete;
 
 private:
     /** @private Underlying implementation, set at instantiation */
-    std::unique_ptr<MavlinkFTPImpl> _impl;
+    std::unique_ptr<FtpImpl> _impl;
 };
 
 } // namespace mavsdk

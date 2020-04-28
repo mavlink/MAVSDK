@@ -1,14 +1,14 @@
 /**
- * @file mavlink_ftpd.cpp
+ * @file ftp_server.cpp
  *
- * @brief Demonstrates how to use Mavlink FTP server with the MAVSDK.
+ * @brief Demonstrates how to use a FTP server with MAVSDK.
  *
  * @author Matej Frančeškin <matej@auterion.com>,
  * @date 2019-09-06
  */
 
 #include <mavsdk/mavsdk.h>
-#include <mavsdk/plugins/mavlink_ftp/mavlink_ftp.h>
+#include <mavsdk/plugins/ftp/ftp.h>
 
 #include <chrono>
 #include <iostream>
@@ -47,13 +47,12 @@ int main(int argc, char** argv)
     }
     System& system_cc = mavsdk.system();
 
-    auto mavlink_ftp_server = std::make_shared<MavlinkFTP>(system_cc);
-    mavlink_ftp_server->set_root_dir(argv[3]);
+    auto ftp_server = std::make_shared<Ftp>(system_cc);
+    ftp_server->set_root_dir(argv[3]);
 
     std::cout << NORMAL_CONSOLE_TEXT << "Mavlink FTP server running." << std::endl
               << "Remote:       " << argv[1] << ":" << argv[2] << std::endl
-              << "Component ID: " << static_cast<int>(mavlink_ftp_server->get_our_compid())
-              << std::endl;
+              << "Component ID: " << static_cast<int>(ftp_server->get_our_compid()) << std::endl;
 
     for (;;) {
         std::this_thread::sleep_for(std::chrono::seconds(1));
