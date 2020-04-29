@@ -103,7 +103,7 @@ void InfoImpl::process_autopilot_version(const mavlink_message_t& message)
     _version.flight_sw_patch = (autopilot_version.flight_sw_version >> (8 * 1)) & 0xFF;
 
     // first three bytes of flight_custom_version (little endian) describe vendor version
-    _version.flight_sw_git_hash = translate_binary_to_str(
+    _version.flight_sw_git_hash = swap_and_translate_binary_to_str(
         autopilot_version.flight_custom_version + 3,
         sizeof(autopilot_version.flight_custom_version) - 3);
 
@@ -129,7 +129,7 @@ void InfoImpl::process_autopilot_version(const mavlink_message_t& message)
     //     << "."
     //     << _version.os_sw_patch;
 
-    _version.os_sw_git_hash = translate_binary_to_str(
+    _version.os_sw_git_hash = swap_and_translate_binary_to_str(
         autopilot_version.os_custom_version, sizeof(autopilot_version.os_custom_version));
 
     _product.vendor_id = autopilot_version.vendor_id;
@@ -157,7 +157,7 @@ void InfoImpl::process_flight_information(const mavlink_message_t& message)
     _flight_information_received = true;
 }
 
-std::string InfoImpl::translate_binary_to_str(uint8_t* binary, unsigned binary_len)
+std::string InfoImpl::swap_and_translate_binary_to_str(uint8_t* binary, unsigned binary_len)
 {
     std::string str(binary_len * 2, '0');
 
@@ -165,6 +165,18 @@ std::string InfoImpl::translate_binary_to_str(uint8_t* binary, unsigned binary_l
         // One hex number occupies 2 chars.
         // The binary is in little endian, therefore we need to swap the bytes for us to read.
         snprintf(&str[i * 2], str.length() - i * 2, "%02x", binary[binary_len - 1 - i]);
+    }
+
+    return str;
+}
+
+std::string InfoImpl::translate_binary_to_str(uint8_t* binary, unsigned binary_len)
+{
+    std::string str(binary_len * 2, '0');
+
+    for (unsigned i = 0; i < binary_len; ++i) {
+        // One hex number occupies 2 chars.
+        snprintf(&str[i * 2], str.length() - i * 2, "%02x", binary[i]);
     }
 
     return str;
