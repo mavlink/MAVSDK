@@ -1,0 +1,179 @@
+syntax = "proto3";
+
+package mavsdk.rpc.ftp;
+
+import "mavsdk_options.proto";
+
+option java_package = "io.mavsdk.ftp";
+option java_outer_classname = "FtpProto";
+
+/*
+ * Implements file transfer functionality using MAVLink FTP.
+ */
+service FtpService {
+    /*
+     * Resets FTP server in case there are stale open sessions.
+     */
+    rpc Reset(ResetRequest) returns(ResetResponse) { option (mavsdk.options.async_type) = ASYNC; }
+    /*
+     * Downloads a file to local directory.
+     */
+    rpc SubscribeDownload(SubscribeDownloadRequest) returns(stream DownloadResponse) { option (mavsdk.options.async_type) = ASYNC; }
+    /*
+     * Uploads local file to remote directory.
+     */
+    rpc SubscribeUpload(SubscribeUploadRequest) returns(stream UploadResponse) { option (mavsdk.options.async_type) = ASYNC; }
+    /*
+     * Lists items from a remote directory.
+     */
+    rpc ListDirectory(ListDirectoryRequest) returns(ListDirectoryResponse) { option (mavsdk.options.async_type) = ASYNC; }
+    /*
+     * Creates a remote directory.
+     */
+    rpc CreateDirectory(CreateDirectoryRequest) returns(CreateDirectoryResponse) { option (mavsdk.options.async_type) = ASYNC; }
+    /*
+     * Removes a remote directory.
+     */
+    rpc RemoveDirectory(RemoveDirectoryRequest) returns(RemoveDirectoryResponse) { option (mavsdk.options.async_type) = ASYNC; }
+    /*
+     * Removes a remote file.
+     */
+    rpc RemoveFile(RemoveFileRequest) returns(RemoveFileResponse) { option (mavsdk.options.async_type) = ASYNC; }
+    /*
+     * Renames a remote file or remote directory.
+     */
+    rpc Rename(RenameRequest) returns(RenameResponse) { option (mavsdk.options.async_type) = ASYNC; }
+    /*
+     * Compares a local file to a remote file using a CRC32 checksum.
+     */
+    rpc AreFilesIdentical(AreFilesIdenticalRequest) returns(AreFilesIdenticalResponse) { option (mavsdk.options.async_type) = ASYNC; }
+    /*
+     * Set root directory for MAVLink FTP server.
+     */
+    rpc SetRootDirectory(SetRootDirectoryRequest) returns(SetRootDirectoryResponse) { option (mavsdk.options.async_type) = SYNC; }
+    /*
+     * Set target component ID. By default it is the autopilot.
+     */
+    rpc SetTargetComponentId(SetTargetComponentIdRequest) returns(SetTargetComponentIdResponse) { option (mavsdk.options.async_type) = SYNC; }
+    /*
+     * Get our own component ID.
+     */
+    rpc GetOurComponentId(GetOurComponentIdRequest) returns(GetOurComponentIdResponse) { option (mavsdk.options.async_type) = SYNC; }
+}
+
+message ResetRequest {}
+message ResetResponse {
+    FtpResult ftp_result = 1;
+}
+
+message SubscribeDownloadRequest {
+    string remote_file_path = 1; // The path of the remote file to download.
+    string local_dir = 2; // The local directory to download to.
+}
+message DownloadResponse {
+    FtpResult ftp_result = 1;
+    ProgressData progress_data = 2; // The progress data if result is next
+}
+
+message SubscribeUploadRequest {
+    string local_file_path = 1; // The local file path to upload.
+    string remote_dir = 2; // The remote directory to upload to.
+}
+message UploadResponse {
+    FtpResult ftp_result = 1;
+    ProgressData progress_data = 2; // The progress data if result is next
+}
+
+message ListDirectoryRequest {
+    string remote_dir = 1; // The remote directory to list the contents for.
+}
+message ListDirectoryResponse {
+    FtpResult ftp_result = 1;
+    repeated string paths = 2; // The found directory contents.
+}
+
+message CreateDirectoryRequest {
+    string remote_dir = 1; // The remote directory to create.
+}
+message CreateDirectoryResponse {
+    FtpResult ftp_result = 1;
+}
+
+message RemoveDirectoryRequest {
+    string remote_dir = 1; // The remote directory to remove.
+}
+message RemoveDirectoryResponse {
+    FtpResult ftp_result = 1;
+}
+
+message RemoveFileRequest {
+    string remote_file_path = 1; // The path of the remote file to remove.
+}
+message RemoveFileResponse {
+    FtpResult ftp_result = 1;
+}
+
+message RenameRequest {
+    string remote_from_path = 1; // The remote source path.
+    string remote_to_path = 2; // The remote destination path.
+}
+message RenameResponse {
+    FtpResult ftp_result = 1;
+}
+
+message AreFilesIdenticalRequest {
+    string local_file_path = 1; // The path of the local file.
+    string remote_file_path = 2; // The path of the remote file.
+}
+message AreFilesIdenticalResponse {
+    FtpResult ftp_result = 1;
+    bool are_identical = 2; // Whether the files are identical.
+}
+
+message SetRootDirectoryRequest {
+    string root_dir = 1; // The root directory to set.
+}
+message SetRootDirectoryResponse {
+    FtpResult ftp_result = 1;
+}
+
+message SetTargetComponentIdRequest {
+    uint32 component_id = 1; // The component ID to set.
+}
+message SetTargetComponentIdResponse {
+    FtpResult ftp_result = 1;
+}
+
+message GetOurComponentIdRequest {}
+message GetOurComponentIdResponse {
+    FtpResult ftp_result = 1;
+    uint32 component_id = 2; // Our component ID.
+}
+
+// Progress data type for file transfer.
+message ProgressData {
+    uint32 bytes_transferred = 1; // The number of bytes already transferred.
+    uint32 total_bytes = 2; // The total bytes to transfer.
+}
+
+// Result type.
+message FtpResult {
+    // Possible results returned for FTP commands
+    enum Result {
+        RESULT_UNKNOWN = 0; // Unknown error
+        RESULT_SUCCESS = 1; // Success
+        RESULT_NEXT = 2; // Intermediate message showing progress
+        RESULT_TIMEOUT = 3; // Timeout
+        RESULT_BUSY = 4; // Operation is already in progress
+        RESULT_FILE_IO_ERROR = 5; // File IO operation error
+        RESULT_FILE_EXISTS = 6; // File exists already
+        RESULT_FILE_DOES_NOT_EXIST = 7; // File does not exist
+        RESULT_FILE_PROTECTED = 8; // File is write protected
+        RESULT_INVALID_PARAMETER = 9; // Invalid parameter
+        RESULT_UNSUPPORTED = 10; // Unsupported command
+        RESULT_PROTOCOL_ERROR = 11; // General protocol error
+    }
+
+    Result result = 1; // Result enum value
+    string result_str = 2; // Human-readable English string describing the result
+}
