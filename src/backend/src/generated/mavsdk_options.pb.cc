@@ -33,7 +33,8 @@ const char descriptor_table_protodef_mavsdk_5foptions_2eproto[] PROTOBUF_SECTION
   "ions\030\320\206\003 \001(\t:0\n\007epsilon\022\035.google.protobu"
   "f.FieldOptions\030\321\206\003 \001(\001:O\n\nasync_type\022\036.g"
   "oogle.protobuf.MethodOptions\030\320\206\003 \001(\0162\031.m"
-  "avsdk.options.AsyncTypeb\006proto3"
+  "avsdk.options.AsyncTypeB\020\n\016options.mavsd"
+  "kb\006proto3"
   ;
 static const ::PROTOBUF_NAMESPACE_ID::internal::DescriptorTable*const descriptor_table_mavsdk_5foptions_2eproto_deps[1] = {
   &::descriptor_table_google_2fprotobuf_2fdescriptor_2eproto,
@@ -43,7 +44,7 @@ static ::PROTOBUF_NAMESPACE_ID::internal::SCCInfoBase*const descriptor_table_mav
 static ::PROTOBUF_NAMESPACE_ID::internal::once_flag descriptor_table_mavsdk_5foptions_2eproto_once;
 static bool descriptor_table_mavsdk_5foptions_2eproto_initialized = false;
 const ::PROTOBUF_NAMESPACE_ID::internal::DescriptorTable descriptor_table_mavsdk_5foptions_2eproto = {
-  &descriptor_table_mavsdk_5foptions_2eproto_initialized, descriptor_table_protodef_mavsdk_5foptions_2eproto, "mavsdk_options.proto", 311,
+  &descriptor_table_mavsdk_5foptions_2eproto_initialized, descriptor_table_protodef_mavsdk_5foptions_2eproto, "mavsdk_options.proto", 329,
   &descriptor_table_mavsdk_5foptions_2eproto_once, descriptor_table_mavsdk_5foptions_2eproto_sccs, descriptor_table_mavsdk_5foptions_2eproto_deps, 0, 1,
   schemas, file_default_instances, TableStruct_mavsdk_5foptions_2eproto::offsets,
   file_level_metadata_mavsdk_5foptions_2eproto, 0, file_level_enum_descriptors_mavsdk_5foptions_2eproto, file_level_service_descriptors_mavsdk_5foptions_2eproto,

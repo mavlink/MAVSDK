@@ -47,11 +47,11 @@ private:
     void* _call_every_cookie{nullptr};
     void* _flight_info_call_every_cookie{nullptr};
 
-    static const char* vendor_id_str(uint16_t vendor_id);
-    static const char* product_id_str(uint16_t product_id);
+    static const std::string vendor_id_str(uint16_t vendor_id);
+    static const std::string product_id_str(uint16_t product_id);
 
-    static void
-    translate_binary_to_str(uint8_t* binary, unsigned binary_len, char* str, unsigned str_len);
+    static std::string swap_and_translate_binary_to_str(uint8_t* binary, unsigned binary_len);
+    static std::string translate_binary_to_str(uint8_t* binary, unsigned binary_len);
 };
 
 } // namespace mavsdk

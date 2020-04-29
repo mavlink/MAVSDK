@@ -41,7 +41,7 @@ namespace mavsdk {
 namespace rpc {
 namespace info {
 
-// Provide infomation about the hardware and/or software of a system.
+// Provide information about the hardware and/or software of a system.
 class InfoService final {
  public:
   static constexpr char const* service_full_name() {
@@ -50,7 +50,31 @@ class InfoService final {
   class StubInterface {
    public:
     virtual ~StubInterface() {}
-    // Get the system version information.
+    // Get flight information of the system.
+    virtual ::grpc::Status GetFlightInformation(::grpc::ClientContext* context, const ::mavsdk::rpc::info::GetFlightInformationRequest& request, ::mavsdk::rpc::info::GetFlightInformationResponse* response) = 0;
+    std::unique_ptr< ::grpc::ClientAsyncResponseReaderInterface< ::mavsdk::rpc::info::GetFlightInformationResponse>> AsyncGetFlightInformation(::grpc::ClientContext* context, const ::mavsdk::rpc::info::GetFlightInformationRequest& request, ::grpc::CompletionQueue* cq) {
+      return std::unique_ptr< ::grpc::ClientAsyncResponseReaderInterface< ::mavsdk::rpc::info::GetFlightInformationResponse>>(AsyncGetFlightInformationRaw(context, request, cq));
+    }
+    std::unique_ptr< ::grpc::ClientAsyncResponseReaderInterface< ::mavsdk::rpc::info::GetFlightInformationResponse>> PrepareAsyncGetFlightInformation(::grpc::ClientContext* context, const ::mavsdk::rpc::info::GetFlightInformationRequest& request, ::grpc::CompletionQueue* cq) {
+      return std::unique_ptr< ::grpc::ClientAsyncResponseReaderInterface< ::mavsdk::rpc::info::GetFlightInformationResponse>>(PrepareAsyncGetFlightInformationRaw(context, request, cq));
+    }
+    // Get the identification of the system.
+    virtual ::grpc::Status GetIdentification(::grpc::ClientContext* context, const ::mavsdk::rpc::info::GetIdentificationRequest& request, ::mavsdk::rpc::info::GetIdentificationResponse* response) = 0;
+    std::unique_ptr< ::grpc::ClientAsyncResponseReaderInterface< ::mavsdk::rpc::info::GetIdentificationResponse>> AsyncGetIdentification(::grpc::ClientContext* context, const ::mavsdk::rpc::info::GetIdentificationRequest& request, ::grpc::CompletionQueue* cq) {
+      return std::unique_ptr< ::grpc::ClientAsyncResponseReaderInterface< ::mavsdk::rpc::info::GetIdentificationResponse>>(AsyncGetIdentificationRaw(context, request, cq));
+    }
+    std::unique_ptr< ::grpc::ClientAsyncResponseReaderInterface< ::mavsdk::rpc::info::GetIdentificationResponse>> PrepareAsyncGetIdentification(::grpc::ClientContext* context, const ::mavsdk::rpc::info::GetIdentificationRequest& request, ::grpc::CompletionQueue* cq) {
+      return std::unique_ptr< ::grpc::ClientAsyncResponseReaderInterface< ::mavsdk::rpc::info::GetIdentificationResponse>>(PrepareAsyncGetIdentificationRaw(context, request, cq));
+    }
+    // Get product information of the system.
+    virtual ::grpc::Status GetProduct(::grpc::ClientContext* context, const ::mavsdk::rpc::info::GetProductRequest& request, ::mavsdk::rpc::info::GetProductResponse* response) = 0;
+    std::unique_ptr< ::grpc::ClientAsyncResponseReaderInterface< ::mavsdk::rpc::info::GetProductResponse>> AsyncGetProduct(::grpc::ClientContext* context, const ::mavsdk::rpc::info::GetProductRequest& request, ::grpc::CompletionQueue* cq) {
+      return std::unique_ptr< ::grpc::ClientAsyncResponseReaderInterface< ::mavsdk::rpc::info::GetProductResponse>>(AsyncGetProductRaw(context, request, cq));
+    }
+    std::unique_ptr< ::grpc::ClientAsyncResponseReaderInterface< ::mavsdk::rpc::info::GetProductResponse>> PrepareAsyncGetProduct(::grpc::ClientContext* context, const ::mavsdk::rpc::info::GetProductRequest& request, ::grpc::CompletionQueue* cq) {
+      return std::unique_ptr< ::grpc::ClientAsyncResponseReaderInterface< ::mavsdk::rpc::info::GetProductResponse>>(PrepareAsyncGetProductRaw(context, request, cq));
+    }
+    // Get the version information of the system.
     virtual ::grpc::Status GetVersion(::grpc::ClientContext* context, const ::mavsdk::rpc::info::GetVersionRequest& request, ::mavsdk::rpc::info::GetVersionResponse* response) = 0;
     std::unique_ptr< ::grpc::ClientAsyncResponseReaderInterface< ::mavsdk::rpc::info::GetVersionResponse>> AsyncGetVersion(::grpc::ClientContext* context, const ::mavsdk::rpc::info::GetVersionRequest& request, ::grpc::CompletionQueue* cq) {
       return std::unique_ptr< ::grpc::ClientAsyncResponseReaderInterface< ::mavsdk::rpc::info::GetVersionResponse>>(AsyncGetVersionRaw(context, request, cq));
@@ -61,7 +85,22 @@ class InfoService final {
     class experimental_async_interface {
      public:
       virtual ~experimental_async_interface() {}
-      // Get the system version information.
+      // Get flight information of the system.
+      virtual void GetFlightInformation(::grpc::ClientContext* context, const ::mavsdk::rpc::info::GetFlightInformationRequest* request, ::mavsdk::rpc::info::GetFlightInformationResponse* response, std::function<void(::grpc::Status)>) = 0;
+      virtual void GetFlightInformation(::grpc::ClientContext* context, const ::grpc::ByteBuffer* request, ::mavsdk::rpc::info::GetFlightInformationResponse* response, std::function<void(::grpc::Status)>) = 0;
+      virtual void GetFlightInformation(::grpc::ClientContext* context, const ::mavsdk::rpc::info::GetFlightInformationRequest* request, ::mavsdk::rpc::info::GetFlightInformationResponse* response, ::grpc::experimental::ClientUnaryReactor* reactor) = 0;
+      virtual void GetFlightInformation(::grpc::ClientContext* context, const ::grpc::ByteBuffer* request, ::mavsdk::rpc::info::GetFlightInformationResponse* response, ::grpc::experimental::ClientUnaryReactor* reactor) = 0;
+      // Get the identification of the system.
+      virtual void GetIdentification(::grpc::ClientContext* context, const ::mavsdk::rpc::info::GetIdentificationRequest* request, ::mavsdk::rpc::info::GetIdentificationResponse* response, std::function<void(::grpc::Status)>) = 0;
+      virtual void GetIdentification(::grpc::ClientContext* context, const ::grpc::ByteBuffer* request, ::mavsdk::rpc::info::GetIdentificationResponse* response, std::function<void(::grpc::Status)>) = 0;
+      virtual void GetIdentification(::grpc::ClientContext* context, const ::mavsdk::rpc::info::GetIdentificationRequest* request, ::mavsdk::rpc::info::GetIdentificationResponse* response, ::grpc::experimental::ClientUnaryReactor* reactor) = 0;
+      virtual void GetIdentification(::grpc::ClientContext* context, const ::grpc::ByteBuffer* request, ::mavsdk::rpc::info::GetIdentificationResponse* response, ::grpc::experimental::ClientUnaryReactor* reactor) = 0;
+      // Get product information of the system.
+      virtual void GetProduct(::grpc::ClientContext* context, const ::mavsdk::rpc::info::GetProductRequest* request, ::mavsdk::rpc::info::GetProductResponse* response, std::function<void(::grpc::Status)>) = 0;
+      virtual void GetProduct(::grpc::ClientContext* context, const ::grpc::ByteBuffer* request, ::mavsdk::rpc::info::GetProductResponse* response, std::function<void(::grpc::Status)>) = 0;
+      virtual void GetProduct(::grpc::ClientContext* context, const ::mavsdk::rpc::info::GetProductRequest* request, ::mavsdk::rpc::info::GetProductResponse* response, ::grpc::experimental::ClientUnaryReactor* reactor) = 0;
+      virtual void GetProduct(::grpc::ClientContext* context, const ::grpc::ByteBuffer* request, ::mavsdk::rpc::info::GetProductResponse* response, ::grpc::experimental::ClientUnaryReactor* reactor) = 0;
+      // Get the version information of the system.
       virtual void GetVersion(::grpc::ClientContext* context, const ::mavsdk::rpc::info::GetVersionRequest* request, ::mavsdk::rpc::info::GetVersionResponse* response, std::function<void(::grpc::Status)>) = 0;
       virtual void GetVersion(::grpc::ClientContext* context, const ::grpc::ByteBuffer* request, ::mavsdk::rpc::info::GetVersionResponse* response, std::function<void(::grpc::Status)>) = 0;
       virtual void GetVersion(::grpc::ClientContext* context, const ::mavsdk::rpc::info::GetVersionRequest* request, ::mavsdk::rpc::info::GetVersionResponse* response, ::grpc::experimental::ClientUnaryReactor* reactor) = 0;
@@ -69,12 +108,39 @@ class InfoService final {
     };
     virtual class experimental_async_interface* experimental_async() { return nullptr; }
   private:
+    virtual ::grpc::ClientAsyncResponseReaderInterface< ::mavsdk::rpc::info::GetFlightInformationResponse>* AsyncGetFlightInformationRaw(::grpc::ClientContext* context, const ::mavsdk::rpc::info::GetFlightInformationRequest& request, ::grpc::CompletionQueue* cq) = 0;
+    virtual ::grpc::ClientAsyncResponseReaderInterface< ::mavsdk::rpc::info::GetFlightInformationResponse>* PrepareAsyncGetFlightInformationRaw(::grpc::ClientContext* context, const ::mavsdk::rpc::info::GetFlightInformationRequest& request, ::grpc::CompletionQueue* cq) = 0;
+    virtual ::grpc::ClientAsyncResponseReaderInterface< ::mavsdk::rpc::info::GetIdentificationResponse>* AsyncGetIdentificationRaw(::grpc::ClientContext* context, const ::mavsdk::rpc::info::GetIdentificationRequest& request, ::grpc::CompletionQueue* cq) = 0;
+    virtual ::grpc::ClientAsyncResponseReaderInterface< ::mavsdk::rpc::info::GetIdentificationResponse>* PrepareAsyncGetIdentificationRaw(::grpc::ClientContext* context, const ::mavsdk::rpc::info::GetIdentificationRequest& request, ::grpc::CompletionQueue* cq) = 0;
+    virtual ::grpc::ClientAsyncResponseReaderInterface< ::mavsdk::rpc::info::GetProductResponse>* AsyncGetProductRaw(::grpc::ClientContext* context, const ::mavsdk::rpc::info::GetProductRequest& request, ::grpc::CompletionQueue* cq) = 0;
+    virtual ::grpc::ClientAsyncResponseReaderInterface< ::mavsdk::rpc::info::GetProductResponse>* PrepareAsyncGetProductRaw(::grpc::ClientContext* context, const ::mavsdk::rpc::info::GetProductRequest& request, ::grpc::CompletionQueue* cq) = 0;
     virtual ::grpc::ClientAsyncResponseReaderInterface< ::mavsdk::rpc::info::GetVersionResponse>* AsyncGetVersionRaw(::grpc::ClientContext* context, const ::mavsdk::rpc::info::GetVersionRequest& request, ::grpc::CompletionQueue* cq) = 0;
     virtual ::grpc::ClientAsyncResponseReaderInterface< ::mavsdk::rpc::info::GetVersionResponse>* PrepareAsyncGetVersionRaw(::grpc::ClientContext* context, const ::mavsdk::rpc::info::GetVersionRequest& request, ::grpc::CompletionQueue* cq) = 0;
   };
   class Stub final : public StubInterface {
    public:
     Stub(const std::shared_ptr< ::grpc::ChannelInterface>& channel);
+    ::grpc::Status GetFlightInformation(::grpc::ClientContext* context, const ::mavsdk::rpc::info::GetFlightInformationRequest& request, ::mavsdk::rpc::info::GetFlightInformationResponse* response) override;
+    std::unique_ptr< ::grpc::ClientAsyncResponseReader< ::mavsdk::rpc::info::GetFlightInformationResponse>> AsyncGetFlightInformation(::grpc::ClientContext* context, const ::mavsdk::rpc::info::GetFlightInformationRequest& request, ::grpc::CompletionQueue* cq) {
+      return std::unique_ptr< ::grpc::ClientAsyncResponseReader< ::mavsdk::rpc::info::GetFlightInformationResponse>>(AsyncGetFlightInformationRaw(context, request, cq));
+    }
+    std::unique_ptr< ::grpc::ClientAsyncResponseReader< ::mavsdk::rpc::info::GetFlightInformationResponse>> PrepareAsyncGetFlightInformation(::grpc::ClientContext* context, const ::mavsdk::rpc::info::GetFlightInformationRequest& request, ::grpc::CompletionQueue* cq) {
+      return std::unique_ptr< ::grpc::ClientAsyncResponseReader< ::mavsdk::rpc::info::GetFlightInformationResponse>>(PrepareAsyncGetFlightInformationRaw(context, request, cq));
+    }
+    ::grpc::Status GetIdentification(::grpc::ClientContext* context, const ::mavsdk::rpc::info::GetIdentificationRequest& request, ::mavsdk::rpc::info::GetIdentificationResponse* response) override;
+    std::unique_ptr< ::grpc::ClientAsyncResponseReader< ::mavsdk::rpc::info::GetIdentificationResponse>> AsyncGetIdentification(::grpc::ClientContext* context, const ::mavsdk::rpc::info::GetIdentificationRequest& request, ::grpc::CompletionQueue* cq) {
+      return std::unique_ptr< ::grpc::ClientAsyncResponseReader< ::mavsdk::rpc::info::GetIdentificationResponse>>(AsyncGetIdentificationRaw(context, request, cq));
+    }
+    std::unique_ptr< ::grpc::ClientAsyncResponseReader< ::mavsdk::rpc::info::GetIdentificationResponse>> PrepareAsyncGetIdentification(::grpc::ClientContext* context, const ::mavsdk::rpc::info::GetIdentificationRequest& request, ::grpc::CompletionQueue* cq) {
+      return std::unique_ptr< ::grpc::ClientAsyncResponseReader< ::mavsdk::rpc::info::GetIdentificationResponse>>(PrepareAsyncGetIdentificationRaw(context, request, cq));
+    }
+    ::grpc::Status GetProduct(::grpc::ClientContext* context, const ::mavsdk::rpc::info::GetProductRequest& request, ::mavsdk::rpc::info::GetProductResponse* response) override;
+    std::unique_ptr< ::grpc::ClientAsyncResponseReader< ::mavsdk::rpc::info::GetProductResponse>> AsyncGetProduct(::grpc::ClientContext* context, const ::mavsdk::rpc::info::GetProductRequest& request, ::grpc::CompletionQueue* cq) {
+      return std::unique_ptr< ::grpc::ClientAsyncResponseReader< ::mavsdk::rpc::info::GetProductResponse>>(AsyncGetProductRaw(context, request, cq));
+    }
+    std::unique_ptr< ::grpc::ClientAsyncResponseReader< ::mavsdk::rpc::info::GetProductResponse>> PrepareAsyncGetProduct(::grpc::ClientContext* context, const ::mavsdk::rpc::info::GetProductRequest& request, ::grpc::CompletionQueue* cq) {
+      return std::unique_ptr< ::grpc::ClientAsyncResponseReader< ::mavsdk::rpc::info::GetProductResponse>>(PrepareAsyncGetProductRaw(context, request, cq));
+    }
     ::grpc::Status GetVersion(::grpc::ClientContext* context, const ::mavsdk::rpc::info::GetVersionRequest& request, ::mavsdk::rpc::info::GetVersionResponse* response) override;
     std::unique_ptr< ::grpc::ClientAsyncResponseReader< ::mavsdk::rpc::info::GetVersionResponse>> AsyncGetVersion(::grpc::ClientContext* context, const ::mavsdk::rpc::info::GetVersionRequest& request, ::grpc::CompletionQueue* cq) {
       return std::unique_ptr< ::grpc::ClientAsyncResponseReader< ::mavsdk::rpc::info::GetVersionResponse>>(AsyncGetVersionRaw(context, request, cq));
@@ -85,6 +151,18 @@ class InfoService final {
     class experimental_async final :
       public StubInterface::experimental_async_interface {
      public:
+      void GetFlightInformation(::grpc::ClientContext* context, const ::mavsdk::rpc::info::GetFlightInformationRequest* request, ::mavsdk::rpc::info::GetFlightInformationResponse* response, std::function<void(::grpc::Status)>) override;
+      void GetFlightInformation(::grpc::ClientContext* context, const ::grpc::ByteBuffer* request, ::mavsdk::rpc::info::GetFlightInformationResponse* response, std::function<void(::grpc::Status)>) override;
+      void GetFlightInformation(::grpc::ClientContext* context, const ::mavsdk::rpc::info::GetFlightInformationRequest* request, ::mavsdk::rpc::info::GetFlightInformationResponse* response, ::grpc::experimental::ClientUnaryReactor* reactor) override;
+      void GetFlightInformation(::grpc::ClientContext* context, const ::grpc::ByteBuffer* request, ::mavsdk::rpc::info::GetFlightInformationResponse* response, ::grpc::experimental::ClientUnaryReactor* reactor) override;
+      void GetIdentification(::grpc::ClientContext* context, const ::mavsdk::rpc::info::GetIdentificationRequest* request, ::mavsdk::rpc::info::GetIdentificationResponse* response, std::function<void(::grpc::Status)>) override;
+      void GetIdentification(::grpc::ClientContext* context, const ::grpc::ByteBuffer* request, ::mavsdk::rpc::info::GetIdentificationResponse* response, std::function<void(::grpc::Status)>) override;
+      void GetIdentification(::grpc::ClientContext* context, const ::mavsdk::rpc::info::GetIdentificationRequest* request, ::mavsdk::rpc::info::GetIdentificationResponse* response, ::grpc::experimental::ClientUnaryReactor* reactor) override;
+      void GetIdentification(::grpc::ClientContext* context, const ::grpc::ByteBuffer* request, ::mavsdk::rpc::info::GetIdentificationResponse* response, ::grpc::experimental::ClientUnaryReactor* reactor) override;
+      void GetProduct(::grpc::ClientContext* context, const ::mavsdk::rpc::info::GetProductRequest* request, ::mavsdk::rpc::info::GetProductResponse* response, std::function<void(::grpc::Status)>) override;
+      void GetProduct(::grpc::ClientContext* context, const ::grpc::ByteBuffer* request, ::mavsdk::rpc::info::GetProductResponse* response, std::function<void(::grpc::Status)>) override;
+      void GetProduct(::grpc::ClientContext* context, const ::mavsdk::rpc::info::GetProductRequest* request, ::mavsdk::rpc::info::GetProductResponse* response, ::grpc::experimental::ClientUnaryReactor* reactor) override;
+      void GetProduct(::grpc::ClientContext* context, const ::grpc::ByteBuffer* request, ::mavsdk::rpc::info::GetProductResponse* response, ::grpc::experimental::ClientUnaryReactor* reactor) override;
       void GetVersion(::grpc::ClientContext* context, const ::mavsdk::rpc::info::GetVersionRequest* request, ::mavsdk::rpc::info::GetVersionResponse* response, std::function<void(::grpc::Status)>) override;
       void GetVersion(::grpc::ClientContext* context, const ::grpc::ByteBuffer* request, ::mavsdk::rpc::info::GetVersionResponse* response, std::function<void(::grpc::Status)>) override;
       void GetVersion(::grpc::ClientContext* context, const ::mavsdk::rpc::info::GetVersionRequest* request, ::mavsdk::rpc::info::GetVersionResponse* response, ::grpc::experimental::ClientUnaryReactor* reactor) override;
@@ -100,8 +178,17 @@ class InfoService final {
    private:
     std::shared_ptr< ::grpc::ChannelInterface> channel_;
     class experimental_async async_stub_{this};
+    ::grpc::ClientAsyncResponseReader< ::mavsdk::rpc::info::GetFlightInformationResponse>* AsyncGetFlightInformationRaw(::grpc::ClientContext* context, const ::mavsdk::rpc::info::GetFlightInformationRequest& request, ::grpc::CompletionQueue* cq) override;
+    ::grpc::ClientAsyncResponseReader< ::mavsdk::rpc::info::GetFlightInformationResponse>* PrepareAsyncGetFlightInformationRaw(::grpc::ClientContext* context, const ::mavsdk::rpc::info::GetFlightInformationRequest& request, ::grpc::CompletionQueue* cq) override;
+    ::grpc::ClientAsyncResponseReader< ::mavsdk::rpc::info::GetIdentificationResponse>* AsyncGetIdentificationRaw(::grpc::ClientContext* context, const ::mavsdk::rpc::info::GetIdentificationRequest& request, ::grpc::CompletionQueue* cq) override;
+    ::grpc::ClientAsyncResponseReader< ::mavsdk::rpc::info::GetIdentificationResponse>* PrepareAsyncGetIdentificationRaw(::grpc::ClientContext* context, const ::mavsdk::rpc::info::GetIdentificationRequest& request, ::grpc::CompletionQueue* cq) override;
+    ::grpc::ClientAsyncResponseReader< ::mavsdk::rpc::info::GetProductResponse>* AsyncGetProductRaw(::grpc::ClientContext* context, const ::mavsdk::rpc::info::GetProductRequest& request, ::grpc::CompletionQueue* cq) override;
+    ::grpc::ClientAsyncResponseReader< ::mavsdk::rpc::info::GetProductResponse>* PrepareAsyncGetProductRaw(::grpc::ClientContext* context, const ::mavsdk::rpc::info::GetProductRequest& request, ::grpc::CompletionQueue* cq) override;
     ::grpc::ClientAsyncResponseReader< ::mavsdk::rpc::info::GetVersionResponse>* AsyncGetVersionRaw(::grpc::ClientContext* context, const ::mavsdk::rpc::info::GetVersionRequest& request, ::grpc::CompletionQueue* cq) override;
     ::grpc::ClientAsyncResponseReader< ::mavsdk::rpc::info::GetVersionResponse>* PrepareAsyncGetVersionRaw(::grpc::ClientContext* context, const ::mavsdk::rpc::info::GetVersionRequest& request, ::grpc::CompletionQueue* cq) override;
+    const ::grpc::internal::RpcMethod rpcmethod_GetFlightInformation_;
+    const ::grpc::internal::RpcMethod rpcmethod_GetIdentification_;
+    const ::grpc::internal::RpcMethod rpcmethod_GetProduct_;
     const ::grpc::internal::RpcMethod rpcmethod_GetVersion_;
   };
   static std::unique_ptr<Stub> NewStub(const std::shared_ptr< ::grpc::ChannelInterface>& channel, const ::grpc::StubOptions& options = ::grpc::StubOptions());
@@ -110,8 +197,74 @@ class InfoService final {
    public:
     Service();
     virtual ~Service();
-    // Get the system version information.
+    // Get flight information of the system.
+    virtual ::grpc::Status GetFlightInformation(::grpc::ServerContext* context, const ::mavsdk::rpc::info::GetFlightInformationRequest* request, ::mavsdk::rpc::info::GetFlightInformationResponse* response);
+    // Get the identification of the system.
+    virtual ::grpc::Status GetIdentification(::grpc::ServerContext* context, const ::mavsdk::rpc::info::GetIdentificationRequest* request, ::mavsdk::rpc::info::GetIdentificationResponse* response);
+    // Get product information of the system.
+    virtual ::grpc::Status GetProduct(::grpc::ServerContext* context, const ::mavsdk::rpc::info::GetProductRequest* request, ::mavsdk::rpc::info::GetProductResponse* response);
+    // Get the version information of the system.
     virtual ::grpc::Status GetVersion(::grpc::ServerContext* context, const ::mavsdk::rpc::info::GetVersionRequest* request, ::mavsdk::rpc::info::GetVersionResponse* response);
+  };
+  template <class BaseClass>
+  class WithAsyncMethod_GetFlightInformation : public BaseClass {
+   private:
+    void BaseClassMustBeDerivedFromService(const Service* /*service*/) {}
+   public:
+    WithAsyncMethod_GetFlightInformation() {
+      ::grpc::Service::MarkMethodAsync(0);
+    }
+    ~WithAsyncMethod_GetFlightInformation() override {
+      BaseClassMustBeDerivedFromService(this);
+    }
+    // disable synchronous version of this method
+    ::grpc::Status GetFlightInformation(::grpc::ServerContext* /*context*/, const ::mavsdk::rpc::info::GetFlightInformationRequest* /*request*/, ::mavsdk::rpc::info::GetFlightInformationResponse* /*response*/) override {
+      abort();
+      return ::grpc::Status(::grpc::StatusCode::UNIMPLEMENTED, "");
+    }
+    void RequestGetFlightInformation(::grpc::ServerContext* context, ::mavsdk::rpc::info::GetFlightInformationRequest* request, ::grpc::ServerAsyncResponseWriter< ::mavsdk::rpc::info::GetFlightInformationResponse>* response, ::grpc::CompletionQueue* new_call_cq, ::grpc::ServerCompletionQueue* notification_cq, void *tag) {
+      ::grpc::Service::RequestAsyncUnary(0, context, request, response, new_call_cq, notification_cq, tag);
+    }
+  };
+  template <class BaseClass>
+  class WithAsyncMethod_GetIdentification : public BaseClass {
+   private:
+    void BaseClassMustBeDerivedFromService(const Service* /*service*/) {}
+   public:
+    WithAsyncMethod_GetIdentification() {
+      ::grpc::Service::MarkMethodAsync(1);
+    }
+    ~WithAsyncMethod_GetIdentification() override {
+      BaseClassMustBeDerivedFromService(this);
+    }
+    // disable synchronous version of this method
+    ::grpc::Status GetIdentification(::grpc::ServerContext* /*context*/, const ::mavsdk::rpc::info::GetIdentificationRequest* /*request*/, ::mavsdk::rpc::info::GetIdentificationResponse* /*response*/) override {
+      abort();
+      return ::grpc::Status(::grpc::StatusCode::UNIMPLEMENTED, "");
+    }
+    void RequestGetIdentification(::grpc::ServerContext* context, ::mavsdk::rpc::info::GetIdentificationRequest* request, ::grpc::ServerAsyncResponseWriter< ::mavsdk::rpc::info::GetIdentificationResponse>* response, ::grpc::CompletionQueue* new_call_cq, ::grpc::ServerCompletionQueue* notification_cq, void *tag) {
+      ::grpc::Service::RequestAsyncUnary(1, context, request, response, new_call_cq, notification_cq, tag);
+    }
+  };
+  template <class BaseClass>
+  class WithAsyncMethod_GetProduct : public BaseClass {
+   private:
+    void BaseClassMustBeDerivedFromService(const Service* /*service*/) {}
+   public:
+    WithAsyncMethod_GetProduct() {
+      ::grpc::Service::MarkMethodAsync(2);
+    }
+    ~WithAsyncMethod_GetProduct() override {
+      BaseClassMustBeDerivedFromService(this);
+    }
+    // disable synchronous version of this method
+    ::grpc::Status GetProduct(::grpc::ServerContext* /*context*/, const ::mavsdk::rpc::info::GetProductRequest* /*request*/, ::mavsdk::rpc::info::GetProductResponse* /*response*/) override {
+      abort();
+      return ::grpc::Status(::grpc::StatusCode::UNIMPLEMENTED, "");
+    }
+    void RequestGetProduct(::grpc::ServerContext* context, ::mavsdk::rpc::info::GetProductRequest* request, ::grpc::ServerAsyncResponseWriter< ::mavsdk::rpc::info::GetProductResponse>* response, ::grpc::CompletionQueue* new_call_cq, ::grpc::ServerCompletionQueue* notification_cq, void *tag) {
+      ::grpc::Service::RequestAsyncUnary(2, context, request, response, new_call_cq, notification_cq, tag);
+    }
   };
   template <class BaseClass>
   class WithAsyncMethod_GetVersion : public BaseClass {
@@ -119,7 +272,7 @@ class InfoService final {
     void BaseClassMustBeDerivedFromService(const Service* /*service*/) {}
    public:
     WithAsyncMethod_GetVersion() {
-      ::grpc::Service::MarkMethodAsync(0);
+      ::grpc::Service::MarkMethodAsync(3);
     }
     ~WithAsyncMethod_GetVersion() override {
       BaseClassMustBeDerivedFromService(this);
@@ -130,23 +283,98 @@ class InfoService final {
       return ::grpc::Status(::grpc::StatusCode::UNIMPLEMENTED, "");
     }
     void RequestGetVersion(::grpc::ServerContext* context, ::mavsdk::rpc::info::GetVersionRequest* request, ::grpc::ServerAsyncResponseWriter< ::mavsdk::rpc::info::GetVersionResponse>* response, ::grpc::CompletionQueue* new_call_cq, ::grpc::ServerCompletionQueue* notification_cq, void *tag) {
-      ::grpc::Service::RequestAsyncUnary(0, context, request, response, new_call_cq, notification_cq, tag);
+      ::grpc::Service::RequestAsyncUnary(3, context, request, response, new_call_cq, notification_cq, tag);
     }
   };
-  typedef WithAsyncMethod_GetVersion<Service > AsyncService;
+  typedef WithAsyncMethod_GetFlightInformation<WithAsyncMethod_GetIdentification<WithAsyncMethod_GetProduct<WithAsyncMethod_GetVersion<Service > > > > AsyncService;
+  template <class BaseClass>
+  class ExperimentalWithCallbackMethod_GetFlightInformation : public BaseClass {
+   private:
+    void BaseClassMustBeDerivedFromService(const Service* /*service*/) {}
+   public:
+    ExperimentalWithCallbackMethod_GetFlightInformation() {
+      ::grpc::Service::experimental().MarkMethodCallback(0,
+        new ::grpc_impl::internal::CallbackUnaryHandler< ::mavsdk::rpc::info::GetFlightInformationRequest, ::mavsdk::rpc::info::GetFlightInformationResponse>(
+          [this](::grpc::experimental::CallbackServerContext* context, const ::mavsdk::rpc::info::GetFlightInformationRequest* request, ::mavsdk::rpc::info::GetFlightInformationResponse* response) { return this->GetFlightInformation(context, request, response); }));}
+    void SetMessageAllocatorFor_GetFlightInformation(
+        ::grpc::experimental::MessageAllocator< ::mavsdk::rpc::info::GetFlightInformationRequest, ::mavsdk::rpc::info::GetFlightInformationResponse>* allocator) {
+      static_cast<::grpc_impl::internal::CallbackUnaryHandler< ::mavsdk::rpc::info::GetFlightInformationRequest, ::mavsdk::rpc::info::GetFlightInformationResponse>*>(
+          ::grpc::Service::experimental().GetHandler(0))
+              ->SetMessageAllocator(allocator);
+    }
+    ~ExperimentalWithCallbackMethod_GetFlightInformation() override {
+      BaseClassMustBeDerivedFromService(this);
+    }
+    // disable synchronous version of this method
+    ::grpc::Status GetFlightInformation(::grpc::ServerContext* /*context*/, const ::mavsdk::rpc::info::GetFlightInformationRequest* /*request*/, ::mavsdk::rpc::info::GetFlightInformationResponse* /*response*/) override {
+      abort();
+      return ::grpc::Status(::grpc::StatusCode::UNIMPLEMENTED, "");
+    }
+    virtual ::grpc::experimental::ServerUnaryReactor* GetFlightInformation(::grpc::experimental::CallbackServerContext* /*context*/, const ::mavsdk::rpc::info::GetFlightInformationRequest* /*request*/, ::mavsdk::rpc::info::GetFlightInformationResponse* /*response*/) { return nullptr; }
+  };
+  template <class BaseClass>
+  class ExperimentalWithCallbackMethod_GetIdentification : public BaseClass {
+   private:
+    void BaseClassMustBeDerivedFromService(const Service* /*service*/) {}
+   public:
+    ExperimentalWithCallbackMethod_GetIdentification() {
+      ::grpc::Service::experimental().MarkMethodCallback(1,
+        new ::grpc_impl::internal::CallbackUnaryHandler< ::mavsdk::rpc::info::GetIdentificationRequest, ::mavsdk::rpc::info::GetIdentificationResponse>(
+          [this](::grpc::experimental::CallbackServerContext* context, const ::mavsdk::rpc::info::GetIdentificationRequest* request, ::mavsdk::rpc::info::GetIdentificationResponse* response) { return this->GetIdentification(context, request, response); }));}
+    void SetMessageAllocatorFor_GetIdentification(
+        ::grpc::experimental::MessageAllocator< ::mavsdk::rpc::info::GetIdentificationRequest, ::mavsdk::rpc::info::GetIdentificationResponse>* allocator) {
+      static_cast<::grpc_impl::internal::CallbackUnaryHandler< ::mavsdk::rpc::info::GetIdentificationRequest, ::mavsdk::rpc::info::GetIdentificationResponse>*>(
+          ::grpc::Service::experimental().GetHandler(1))
+              ->SetMessageAllocator(allocator);
+    }
+    ~ExperimentalWithCallbackMethod_GetIdentification() override {
+      BaseClassMustBeDerivedFromService(this);
+    }
+    // disable synchronous version of this method
+    ::grpc::Status GetIdentification(::grpc::ServerContext* /*context*/, const ::mavsdk::rpc::info::GetIdentificationRequest* /*request*/, ::mavsdk::rpc::info::GetIdentificationResponse* /*response*/) override {
+      abort();
+      return ::grpc::Status(::grpc::StatusCode::UNIMPLEMENTED, "");
+    }
+    virtual ::grpc::experimental::ServerUnaryReactor* GetIdentification(::grpc::experimental::CallbackServerContext* /*context*/, const ::mavsdk::rpc::info::GetIdentificationRequest* /*request*/, ::mavsdk::rpc::info::GetIdentificationResponse* /*response*/) { return nullptr; }
+  };
+  template <class BaseClass>
+  class ExperimentalWithCallbackMethod_GetProduct : public BaseClass {
+   private:
+    void BaseClassMustBeDerivedFromService(const Service* /*service*/) {}
+   public:
+    ExperimentalWithCallbackMethod_GetProduct() {
+      ::grpc::Service::experimental().MarkMethodCallback(2,
+        new ::grpc_impl::internal::CallbackUnaryHandler< ::mavsdk::rpc::info::GetProductRequest, ::mavsdk::rpc::info::GetProductResponse>(
+          [this](::grpc::experimental::CallbackServerContext* context, const ::mavsdk::rpc::info::GetProductRequest* request, ::mavsdk::rpc::info::GetProductResponse* response) { return this->GetProduct(context, request, response); }));}
+    void SetMessageAllocatorFor_GetProduct(
+        ::grpc::experimental::MessageAllocator< ::mavsdk::rpc::info::GetProductRequest, ::mavsdk::rpc::info::GetProductResponse>* allocator) {
+      static_cast<::grpc_impl::internal::CallbackUnaryHandler< ::mavsdk::rpc::info::GetProductRequest, ::mavsdk::rpc::info::GetProductResponse>*>(
+          ::grpc::Service::experimental().GetHandler(2))
+              ->SetMessageAllocator(allocator);
+    }
+    ~ExperimentalWithCallbackMethod_GetProduct() override {
+      BaseClassMustBeDerivedFromService(this);
+    }
+    // disable synchronous version of this method
+    ::grpc::Status GetProduct(::grpc::ServerContext* /*context*/, const ::mavsdk::rpc::info::GetProductRequest* /*request*/, ::mavsdk::rpc::info::GetProductResponse* /*response*/) override {
+      abort();
+      return ::grpc::Status(::grpc::StatusCode::UNIMPLEMENTED, "");
+    }
+    virtual ::grpc::experimental::ServerUnaryReactor* GetProduct(::grpc::experimental::CallbackServerContext* /*context*/, const ::mavsdk::rpc::info::GetProductRequest* /*request*/, ::mavsdk::rpc::info::GetProductResponse* /*response*/) { return nullptr; }
+  };
   template <class BaseClass>
   class ExperimentalWithCallbackMethod_GetVersion : public BaseClass {
    private:
     void BaseClassMustBeDerivedFromService(const Service* /*service*/) {}
    public:
     ExperimentalWithCallbackMethod_GetVersion() {
-      ::grpc::Service::experimental().MarkMethodCallback(0,
+      ::grpc::Service::experimental().MarkMethodCallback(3,
         new ::grpc_impl::internal::CallbackUnaryHandler< ::mavsdk::rpc::info::GetVersionRequest, ::mavsdk::rpc::info::GetVersionResponse>(
           [this](::grpc::experimental::CallbackServerContext* context, const ::mavsdk::rpc::info::GetVersionRequest* request, ::mavsdk::rpc::info::GetVersionResponse* response) { return this->GetVersion(context, request, response); }));}
     void SetMessageAllocatorFor_GetVersion(
         ::grpc::experimental::MessageAllocator< ::mavsdk::rpc::info::GetVersionRequest, ::mavsdk::rpc::info::GetVersionResponse>* allocator) {
       static_cast<::grpc_impl::internal::CallbackUnaryHandler< ::mavsdk::rpc::info::GetVersionRequest, ::mavsdk::rpc::info::GetVersionResponse>*>(
-          ::grpc::Service::experimental().GetHandler(0))
+          ::grpc::Service::experimental().GetHandler(3))
               ->SetMessageAllocator(allocator);
     }
     ~ExperimentalWithCallbackMethod_GetVersion() override {
@@ -159,14 +387,65 @@ class InfoService final {
     }
     virtual ::grpc::experimental::ServerUnaryReactor* GetVersion(::grpc::experimental::CallbackServerContext* /*context*/, const ::mavsdk::rpc::info::GetVersionRequest* /*request*/, ::mavsdk::rpc::info::GetVersionResponse* /*response*/) { return nullptr; }
   };
-  typedef ExperimentalWithCallbackMethod_GetVersion<Service > ExperimentalCallbackService;
+  typedef ExperimentalWithCallbackMethod_GetFlightInformation<ExperimentalWithCallbackMethod_GetIdentification<ExperimentalWithCallbackMethod_GetProduct<ExperimentalWithCallbackMethod_GetVersion<Service > > > > ExperimentalCallbackService;
+  template <class BaseClass>
+  class WithGenericMethod_GetFlightInformation : public BaseClass {
+   private:
+    void BaseClassMustBeDerivedFromService(const Service* /*service*/) {}
+   public:
+    WithGenericMethod_GetFlightInformation() {
+      ::grpc::Service::MarkMethodGeneric(0);
+    }
+    ~WithGenericMethod_GetFlightInformation() override {
+      BaseClassMustBeDerivedFromService(this);
+    }
+    // disable synchronous version of this method
+    ::grpc::Status GetFlightInformation(::grpc::ServerContext* /*context*/, const ::mavsdk::rpc::info::GetFlightInformationRequest* /*request*/, ::mavsdk::rpc::info::GetFlightInformationResponse* /*response*/) override {
+      abort();
+      return ::grpc::Status(::grpc::StatusCode::UNIMPLEMENTED, "");
+    }
+  };
+  template <class BaseClass>
+  class WithGenericMethod_GetIdentification : public BaseClass {
+   private:
+    void BaseClassMustBeDerivedFromService(const Service* /*service*/) {}
+   public:
+    WithGenericMethod_GetIdentification() {
+      ::grpc::Service::MarkMethodGeneric(1);
+    }
+    ~WithGenericMethod_GetIdentification() override {
+      BaseClassMustBeDerivedFromService(this);
+    }
+    // disable synchronous version of this method
+    ::grpc::Status GetIdentification(::grpc::ServerContext* /*context*/, const ::mavsdk::rpc::info::GetIdentificationRequest* /*request*/, ::mavsdk::rpc::info::GetIdentificationResponse* /*response*/) override {
+      abort();
+      return ::grpc::Status(::grpc::StatusCode::UNIMPLEMENTED, "");
+    }
+  };
+  template <class BaseClass>
+  class WithGenericMethod_GetProduct : public BaseClass {
+   private:
+    void BaseClassMustBeDerivedFromService(const Service* /*service*/) {}
+   public:
+    WithGenericMethod_GetProduct() {
+      ::grpc::Service::MarkMethodGeneric(2);
+    }
+    ~WithGenericMethod_GetProduct() override {
+      BaseClassMustBeDerivedFromService(this);
+    }
+    // disable synchronous version of this method
+    ::grpc::Status GetProduct(::grpc::ServerContext* /*context*/, const ::mavsdk::rpc::info::GetProductRequest* /*request*/, ::mavsdk::rpc::info::GetProductResponse* /*response*/) override {
+      abort();
+      return ::grpc::Status(::grpc::StatusCode::UNIMPLEMENTED, "");
+    }
+  };
   template <class BaseClass>
   class WithGenericMethod_GetVersion : public BaseClass {
    private:
     void BaseClassMustBeDerivedFromService(const Service* /*service*/) {}
    public:
     WithGenericMethod_GetVersion() {
-      ::grpc::Service::MarkMethodGeneric(0);
+      ::grpc::Service::MarkMethodGeneric(3);
     }
     ~WithGenericMethod_GetVersion() override {
       BaseClassMustBeDerivedFromService(this);
@@ -178,12 +457,72 @@ class InfoService final {
     }
   };
   template <class BaseClass>
+  class WithRawMethod_GetFlightInformation : public BaseClass {
+   private:
+    void BaseClassMustBeDerivedFromService(const Service* /*service*/) {}
+   public:
+    WithRawMethod_GetFlightInformation() {
+      ::grpc::Service::MarkMethodRaw(0);
+    }
+    ~WithRawMethod_GetFlightInformation() override {
+      BaseClassMustBeDerivedFromService(this);
+    }
+    // disable synchronous version of this method
+    ::grpc::Status GetFlightInformation(::grpc::ServerContext* /*context*/, const ::mavsdk::rpc::info::GetFlightInformationRequest* /*request*/, ::mavsdk::rpc::info::GetFlightInformationResponse* /*response*/) override {
+      abort();
+      return ::grpc::Status(::grpc::StatusCode::UNIMPLEMENTED, "");
+    }
+    void RequestGetFlightInformation(::grpc::ServerContext* context, ::grpc::ByteBuffer* request, ::grpc::ServerAsyncResponseWriter< ::grpc::ByteBuffer>* response, ::grpc::CompletionQueue* new_call_cq, ::grpc::ServerCompletionQueue* notification_cq, void *tag) {
+      ::grpc::Service::RequestAsyncUnary(0, context, request, response, new_call_cq, notification_cq, tag);
+    }
+  };
+  template <class BaseClass>
+  class WithRawMethod_GetIdentification : public BaseClass {
+   private:
+    void BaseClassMustBeDerivedFromService(const Service* /*service*/) {}
+   public:
+    WithRawMethod_GetIdentification() {
+      ::grpc::Service::MarkMethodRaw(1);
+    }
+    ~WithRawMethod_GetIdentification() override {
+      BaseClassMustBeDerivedFromService(this);
+    }
+    // disable synchronous version of this method
+    ::grpc::Status GetIdentification(::grpc::ServerContext* /*context*/, const ::mavsdk::rpc::info::GetIdentificationRequest* /*request*/, ::mavsdk::rpc::info::GetIdentificationResponse* /*response*/) override {
+      abort();
+      return ::grpc::Status(::grpc::StatusCode::UNIMPLEMENTED, "");
+    }
+    void RequestGetIdentification(::grpc::ServerContext* context, ::grpc::ByteBuffer* request, ::grpc::ServerAsyncResponseWriter< ::grpc::ByteBuffer>* response, ::grpc::CompletionQueue* new_call_cq, ::grpc::ServerCompletionQueue* notification_cq, void *tag) {
+      ::grpc::Service::RequestAsyncUnary(1, context, request, response, new_call_cq, notification_cq, tag);
+    }
+  };
+  template <class BaseClass>
+  class WithRawMethod_GetProduct : public BaseClass {
+   private:
+    void BaseClassMustBeDerivedFromService(const Service* /*service*/) {}
+   public:
+    WithRawMethod_GetProduct() {
+      ::grpc::Service::MarkMethodRaw(2);
+    }
+    ~WithRawMethod_GetProduct() override {
+      BaseClassMustBeDerivedFromService(this);
+    }
+    // disable synchronous version of this method
+    ::grpc::Status GetProduct(::grpc::ServerContext* /*context*/, const ::mavsdk::rpc::info::GetProductRequest* /*request*/, ::mavsdk::rpc::info::GetProductResponse* /*response*/) override {
+      abort();
+      return ::grpc::Status(::grpc::StatusCode::UNIMPLEMENTED, "");
+    }
+    void RequestGetProduct(::grpc::ServerContext* context, ::grpc::ByteBuffer* request, ::grpc::ServerAsyncResponseWriter< ::grpc::ByteBuffer>* response, ::grpc::CompletionQueue* new_call_cq, ::grpc::ServerCompletionQueue* notification_cq, void *tag) {
+      ::grpc::Service::RequestAsyncUnary(2, context, request, response, new_call_cq, notification_cq, tag);
+    }
+  };
+  template <class BaseClass>
   class WithRawMethod_GetVersion : public BaseClass {
    private:
     void BaseClassMustBeDerivedFromService(const Service* /*service*/) {}
    public:
     WithRawMethod_GetVersion() {
-      ::grpc::Service::MarkMethodRaw(0);
+      ::grpc::Service::MarkMethodRaw(3);
     }
     ~WithRawMethod_GetVersion() override {
       BaseClassMustBeDerivedFromService(this);
@@ -194,8 +533,68 @@ class InfoService final {
       return ::grpc::Status(::grpc::StatusCode::UNIMPLEMENTED, "");
     }
     void RequestGetVersion(::grpc::ServerContext* context, ::grpc::ByteBuffer* request, ::grpc::ServerAsyncResponseWriter< ::grpc::ByteBuffer>* response, ::grpc::CompletionQueue* new_call_cq, ::grpc::ServerCompletionQueue* notification_cq, void *tag) {
-      ::grpc::Service::RequestAsyncUnary(0, context, request, response, new_call_cq, notification_cq, tag);
+      ::grpc::Service::RequestAsyncUnary(3, context, request, response, new_call_cq, notification_cq, tag);
     }
+  };
+  template <class BaseClass>
+  class ExperimentalWithRawCallbackMethod_GetFlightInformation : public BaseClass {
+   private:
+    void BaseClassMustBeDerivedFromService(const Service* /*service*/) {}
+   public:
+    ExperimentalWithRawCallbackMethod_GetFlightInformation() {
+      ::grpc::Service::experimental().MarkMethodRawCallback(0,
+        new ::grpc_impl::internal::CallbackUnaryHandler< ::grpc::ByteBuffer, ::grpc::ByteBuffer>(
+          [this](::grpc::experimental::CallbackServerContext* context, const ::grpc::ByteBuffer* request, ::grpc::ByteBuffer* response) { return this->GetFlightInformation(context, request, response); }));
+    }
+    ~ExperimentalWithRawCallbackMethod_GetFlightInformation() override {
+      BaseClassMustBeDerivedFromService(this);
+    }
+    // disable synchronous version of this method
+    ::grpc::Status GetFlightInformation(::grpc::ServerContext* /*context*/, const ::mavsdk::rpc::info::GetFlightInformationRequest* /*request*/, ::mavsdk::rpc::info::GetFlightInformationResponse* /*response*/) override {
+      abort();
+      return ::grpc::Status(::grpc::StatusCode::UNIMPLEMENTED, "");
+    }
+    virtual ::grpc::experimental::ServerUnaryReactor* GetFlightInformation(::grpc::experimental::CallbackServerContext* /*context*/, const ::grpc::ByteBuffer* /*request*/, ::grpc::ByteBuffer* /*response*/) { return nullptr; }
+  };
+  template <class BaseClass>
+  class ExperimentalWithRawCallbackMethod_GetIdentification : public BaseClass {
+   private:
+    void BaseClassMustBeDerivedFromService(const Service* /*service*/) {}
+   public:
+    ExperimentalWithRawCallbackMethod_GetIdentification() {
+      ::grpc::Service::experimental().MarkMethodRawCallback(1,
+        new ::grpc_impl::internal::CallbackUnaryHandler< ::grpc::ByteBuffer, ::grpc::ByteBuffer>(
+          [this](::grpc::experimental::CallbackServerContext* context, const ::grpc::ByteBuffer* request, ::grpc::ByteBuffer* response) { return this->GetIdentification(context, request, response); }));
+    }
+    ~ExperimentalWithRawCallbackMethod_GetIdentification() override {
+      BaseClassMustBeDerivedFromService(this);
+    }
+    // disable synchronous version of this method
+    ::grpc::Status GetIdentification(::grpc::ServerContext* /*context*/, const ::mavsdk::rpc::info::GetIdentificationRequest* /*request*/, ::mavsdk::rpc::info::GetIdentificationResponse* /*response*/) override {
+      abort();
+      return ::grpc::Status(::grpc::StatusCode::UNIMPLEMENTED, "");
+    }
+    virtual ::grpc::experimental::ServerUnaryReactor* GetIdentification(::grpc::experimental::CallbackServerContext* /*context*/, const ::grpc::ByteBuffer* /*request*/, ::grpc::ByteBuffer* /*response*/) { return nullptr; }
+  };
+  template <class BaseClass>
+  class ExperimentalWithRawCallbackMethod_GetProduct : public BaseClass {
+   private:
+    void BaseClassMustBeDerivedFromService(const Service* /*service*/) {}
+   public:
+    ExperimentalWithRawCallbackMethod_GetProduct() {
+      ::grpc::Service::experimental().MarkMethodRawCallback(2,
+        new ::grpc_impl::internal::CallbackUnaryHandler< ::grpc::ByteBuffer, ::grpc::ByteBuffer>(
+          [this](::grpc::experimental::CallbackServerContext* context, const ::grpc::ByteBuffer* request, ::grpc::ByteBuffer* response) { return this->GetProduct(context, request, response); }));
+    }
+    ~ExperimentalWithRawCallbackMethod_GetProduct() override {
+      BaseClassMustBeDerivedFromService(this);
+    }
+    // disable synchronous version of this method
+    ::grpc::Status GetProduct(::grpc::ServerContext* /*context*/, const ::mavsdk::rpc::info::GetProductRequest* /*request*/, ::mavsdk::rpc::info::GetProductResponse* /*response*/) override {
+      abort();
+      return ::grpc::Status(::grpc::StatusCode::UNIMPLEMENTED, "");
+    }
+    virtual ::grpc::experimental::ServerUnaryReactor* GetProduct(::grpc::experimental::CallbackServerContext* /*context*/, const ::grpc::ByteBuffer* /*request*/, ::grpc::ByteBuffer* /*response*/) { return nullptr; }
   };
   template <class BaseClass>
   class ExperimentalWithRawCallbackMethod_GetVersion : public BaseClass {
@@ -203,7 +602,7 @@ class InfoService final {
     void BaseClassMustBeDerivedFromService(const Service* /*service*/) {}
    public:
     ExperimentalWithRawCallbackMethod_GetVersion() {
-      ::grpc::Service::experimental().MarkMethodRawCallback(0,
+      ::grpc::Service::experimental().MarkMethodRawCallback(3,
         new ::grpc_impl::internal::CallbackUnaryHandler< ::grpc::ByteBuffer, ::grpc::ByteBuffer>(
           [this](::grpc::experimental::CallbackServerContext* context, const ::grpc::ByteBuffer* request, ::grpc::ByteBuffer* response) { return this->GetVersion(context, request, response); }));
     }
@@ -218,12 +617,72 @@ class InfoService final {
     virtual ::grpc::experimental::ServerUnaryReactor* GetVersion(::grpc::experimental::CallbackServerContext* /*context*/, const ::grpc::ByteBuffer* /*request*/, ::grpc::ByteBuffer* /*response*/) { return nullptr; }
   };
   template <class BaseClass>
+  class WithStreamedUnaryMethod_GetFlightInformation : public BaseClass {
+   private:
+    void BaseClassMustBeDerivedFromService(const Service* /*service*/) {}
+   public:
+    WithStreamedUnaryMethod_GetFlightInformation() {
+      ::grpc::Service::MarkMethodStreamed(0,
+        new ::grpc::internal::StreamedUnaryHandler< ::mavsdk::rpc::info::GetFlightInformationRequest, ::mavsdk::rpc::info::GetFlightInformationResponse>(std::bind(&WithStreamedUnaryMethod_GetFlightInformation<BaseClass>::StreamedGetFlightInformation, this, std::placeholders::_1, std::placeholders::_2)));
+    }
+    ~WithStreamedUnaryMethod_GetFlightInformation() override {
+      BaseClassMustBeDerivedFromService(this);
+    }
+    // disable regular version of this method
+    ::grpc::Status GetFlightInformation(::grpc::ServerContext* /*context*/, const ::mavsdk::rpc::info::GetFlightInformationRequest* /*request*/, ::mavsdk::rpc::info::GetFlightInformationResponse* /*response*/) override {
+      abort();
+      return ::grpc::Status(::grpc::StatusCode::UNIMPLEMENTED, "");
+    }
+    // replace default version of method with streamed unary
+    virtual ::grpc::Status StreamedGetFlightInformation(::grpc::ServerContext* context, ::grpc::ServerUnaryStreamer< ::mavsdk::rpc::info::GetFlightInformationRequest,::mavsdk::rpc::info::GetFlightInformationResponse>* server_unary_streamer) = 0;
+  };
+  template <class BaseClass>
+  class WithStreamedUnaryMethod_GetIdentification : public BaseClass {
+   private:
+    void BaseClassMustBeDerivedFromService(const Service* /*service*/) {}
+   public:
+    WithStreamedUnaryMethod_GetIdentification() {
+      ::grpc::Service::MarkMethodStreamed(1,
+        new ::grpc::internal::StreamedUnaryHandler< ::mavsdk::rpc::info::GetIdentificationRequest, ::mavsdk::rpc::info::GetIdentificationResponse>(std::bind(&WithStreamedUnaryMethod_GetIdentification<BaseClass>::StreamedGetIdentification, this, std::placeholders::_1, std::placeholders::_2)));
+    }
+    ~WithStreamedUnaryMethod_GetIdentification() override {
+      BaseClassMustBeDerivedFromService(this);
+    }
+    // disable regular version of this method
+    ::grpc::Status GetIdentification(::grpc::ServerContext* /*context*/, const ::mavsdk::rpc::info::GetIdentificationRequest* /*request*/, ::mavsdk::rpc::info::GetIdentificationResponse* /*response*/) override {
+      abort();
+      return ::grpc::Status(::grpc::StatusCode::UNIMPLEMENTED, "");
+    }
+    // replace default version of method with streamed unary
+    virtual ::grpc::Status StreamedGetIdentification(::grpc::ServerContext* context, ::grpc::ServerUnaryStreamer< ::mavsdk::rpc::info::GetIdentificationRequest,::mavsdk::rpc::info::GetIdentificationResponse>* server_unary_streamer) = 0;
+  };
+  template <class BaseClass>
+  class WithStreamedUnaryMethod_GetProduct : public BaseClass {
+   private:
+    void BaseClassMustBeDerivedFromService(const Service* /*service*/) {}
+   public:
+    WithStreamedUnaryMethod_GetProduct() {
+      ::grpc::Service::MarkMethodStreamed(2,
+        new ::grpc::internal::StreamedUnaryHandler< ::mavsdk::rpc::info::GetProductRequest, ::mavsdk::rpc::info::GetProductResponse>(std::bind(&WithStreamedUnaryMethod_GetProduct<BaseClass>::StreamedGetProduct, this, std::placeholders::_1, std::placeholders::_2)));
+    }
+    ~WithStreamedUnaryMethod_GetProduct() override {
+      BaseClassMustBeDerivedFromService(this);
+    }
+    // disable regular version of this method
+    ::grpc::Status GetProduct(::grpc::ServerContext* /*context*/, const ::mavsdk::rpc::info::GetProductRequest* /*request*/, ::mavsdk::rpc::info::GetProductResponse* /*response*/) override {
+      abort();
+      return ::grpc::Status(::grpc::StatusCode::UNIMPLEMENTED, "");
+    }
+    // replace default version of method with streamed unary
+    virtual ::grpc::Status StreamedGetProduct(::grpc::ServerContext* context, ::grpc::ServerUnaryStreamer< ::mavsdk::rpc::info::GetProductRequest,::mavsdk::rpc::info::GetProductResponse>* server_unary_streamer) = 0;
+  };
+  template <class BaseClass>
   class WithStreamedUnaryMethod_GetVersion : public BaseClass {
    private:
     void BaseClassMustBeDerivedFromService(const Service* /*service*/) {}
    public:
     WithStreamedUnaryMethod_GetVersion() {
-      ::grpc::Service::MarkMethodStreamed(0,
+      ::grpc::Service::MarkMethodStreamed(3,
         new ::grpc::internal::StreamedUnaryHandler< ::mavsdk::rpc::info::GetVersionRequest, ::mavsdk::rpc::info::GetVersionResponse>(std::bind(&WithStreamedUnaryMethod_GetVersion<BaseClass>::StreamedGetVersion, this, std::placeholders::_1, std::placeholders::_2)));
     }
     ~WithStreamedUnaryMethod_GetVersion() override {
@@ -237,9 +696,9 @@ class InfoService final {
     // replace default version of method with streamed unary
     virtual ::grpc::Status StreamedGetVersion(::grpc::ServerContext* context, ::grpc::ServerUnaryStreamer< ::mavsdk::rpc::info::GetVersionRequest,::mavsdk::rpc::info::GetVersionResponse>* server_unary_streamer) = 0;
   };
-  typedef WithStreamedUnaryMethod_GetVersion<Service > StreamedUnaryService;
+  typedef WithStreamedUnaryMethod_GetFlightInformation<WithStreamedUnaryMethod_GetIdentification<WithStreamedUnaryMethod_GetProduct<WithStreamedUnaryMethod_GetVersion<Service > > > > StreamedUnaryService;
   typedef Service SplitStreamedService;
-  typedef WithStreamedUnaryMethod_GetVersion<Service > StreamedService;
+  typedef WithStreamedUnaryMethod_GetFlightInformation<WithStreamedUnaryMethod_GetIdentification<WithStreamedUnaryMethod_GetProduct<WithStreamedUnaryMethod_GetVersion<Service > > > > StreamedService;
 };
 
 }  // namespace info
