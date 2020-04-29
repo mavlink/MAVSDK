@@ -2,6 +2,8 @@ syntax = "proto3";
 
 package mavsdk.rpc.follow_me;
 
+import "mavsdk_options.proto";
+
 option java_package = "io.mavsdk.follow_me";
 option java_outer_classname = "FollowMeProto";
 
@@ -11,19 +13,19 @@ option java_outer_classname = "FollowMeProto";
  */
 service FollowMeService {
     // Get current configuration.
-    rpc GetConfig(GetConfigRequest) returns(GetConfigResponse) {}
+    rpc GetConfig(GetConfigRequest) returns(GetConfigResponse) { option (mavsdk.options.async_type) = SYNC; }
     // Apply configuration by sending it to the system.
-    rpc SetConfig(SetConfigRequest) returns(SetConfigResponse) {}
+    rpc SetConfig(SetConfigRequest) returns(SetConfigResponse) { option (mavsdk.options.async_type) = SYNC; }
     // Check if FollowMe is active.
-    rpc IsActive(IsActiveRequest) returns(IsActiveResponse) {}
+    rpc IsActive(IsActiveRequest) returns(IsActiveResponse) { option (mavsdk.options.async_type) = SYNC; }
     // Set location of the moving target.
-    rpc SetTargetLocation(SetTargetLocationRequest) returns(SetTargetLocationResponse) {}
+    rpc SetTargetLocation(SetTargetLocationRequest) returns(SetTargetLocationResponse) { option (mavsdk.options.async_type) = SYNC; }
     // Get the last location of the target.
-    rpc GetLastLocation(GetLastLocationRequest) returns(GetLastLocationResponse) {}
+    rpc GetLastLocation(GetLastLocationRequest) returns(GetLastLocationResponse) { option (mavsdk.options.async_type) = SYNC; }
     // Start FollowMe mode.
-    rpc Start(StartRequest) returns(StartResponse) {}
+    rpc Start(StartRequest) returns(StartResponse) { option (mavsdk.options.async_type) = SYNC; }
     // Stop FollowMe mode.
-    rpc Stop(StopRequest) returns(StopResponse) {}
+    rpc Stop(StopRequest) returns(StopResponse) { option (mavsdk.options.async_type) = SYNC; }
 }
 
 // Configuration type.
@@ -31,35 +33,35 @@ message Config {
     // Direction relative to the target that the vehicle should follow
     enum FollowDirection {
         FOLLOW_DIRECTION_NONE = 0; // Do not follow
-        FOLLOW_DIRECTION_FRONT_RIGHT = 1; // Follow from front right
-        FOLLOW_DIRECTION_FRONT_LEFT = 2; // Follow from front left
-        FOLLOW_DIRECTION_FRONT = 3; // Follow from front
-        FOLLOW_DIRECTION_BEHIND = 4; // Folow from behind
+        FOLLOW_DIRECTION_BEHIND = 1; // Follow from behind
+        FOLLOW_DIRECTION_FRONT = 2; // Follow from front
+        FOLLOW_DIRECTION_FRONT_RIGHT = 3; // Follow from front right
+        FOLLOW_DIRECTION_FRONT_LEFT = 4; // Follow from front left
     }
 
-    float min_height_m = 1; // Minimum height for the vehicle
-    float follow_distance_m = 2; // Distance from target for vehicle to follow
+    float min_height_m = 1 [(mavsdk.options.default_value)="8.0"]; // Minimum height for the vehicle in meters (recommended minimum 8 meters)
+    float follow_distance_m = 2 [(mavsdk.options.default_value)="8.0"]; // Distance from target for vehicle to follow in meters (recommended minimum 1 meter)
     FollowDirection follow_direction = 3; // Direction to follow in
-    float responsiveness = 4; // How responsive the vehicle is to the motion of the target
+    float responsiveness = 4 [(mavsdk.options.default_value)="0.5"]; // How responsive the vehicle is to the motion of the target (range 0.0 to 1.0)
 }
 
 // Target location for the vehicle to follow
 message TargetLocation {
-    double latitude_deg = 1; // Target latitude in degrees
-    double longitude_deg = 2; // Target longitude in degrees
-    double absolute_altitude_m = 3; // Target altitude in meters above MSL
-    float velocity_x_m_s = 4; // Target velocity in X axis, in meters per second
-    float velocity_y_m_s = 5; // Target velocity in Y axis, in meters per second
-    float velocity_z_m_s = 6; // Target velocity in Z axis, in meters per second
+    double latitude_deg = 1 [(mavsdk.options.default_value)="NAN"]; // Target latitude in degrees
+    double longitude_deg = 2 [(mavsdk.options.default_value)="NAN"]; // Target longitude in degrees
+    float absolute_altitude_m = 3 [(mavsdk.options.default_value)="NAN"]; // Target altitude in meters above MSL
+    float velocity_x_m_s = 4 [(mavsdk.options.default_value)="NAN"]; // Target velocity in X axis, in meters per second
+    float velocity_y_m_s = 5 [(mavsdk.options.default_value)="NAN"]; // Target velocity in Y axis, in meters per second
+    float velocity_z_m_s = 6 [(mavsdk.options.default_value)="NAN"]; // Target velocity in Z axis, in meters per second
 }
 
 message GetConfigRequest {}
 message GetConfigResponse {
-    Config config = 1; // The current FollowMe configuration
+    Config config = 1; // The current configuration
 }
 
 message SetConfigRequest {
-    Config config = 1; // The new FollowMe configuration to be set
+    Config config = 1; // The new configuration to be set
 }
 message SetConfigResponse {
     FollowMeResult follow_me_result = 1;
@@ -67,7 +69,7 @@ message SetConfigResponse {
 
 message IsActiveRequest {}
 message IsActiveResponse {
-    bool is_active = 1; // Whether FollowMe is ative or not
+    bool is_active = 1; // Whether follow me is active or not
 }
 
 message SetTargetLocationRequest {
