@@ -114,31 +114,20 @@ void TuneImpl::play_tune_async(
 
     LogDebug() << "About to send tune: " << tune_str;
 
-    if (tune_str.size() > 230) {
+    if (tune_str.size() > MAVLINK_MSG_PLAY_TUNE_V2_FIELD_TUNE_LEN - 1) {
         report_tune_result(callback, Tune::Result::TuneTooLong);
         return;
     }
 
-    std::string tune1_str;
-    std::string tune2_str;
-
-    if (tune_str.size() < 30) {
-        tune1_str = tune_str;
-        tune2_str = "";
-    } else {
-        tune1_str = tune_str.substr(0, 30);
-        tune2_str = tune_str.substr(30);
-    }
-
     mavlink_message_t message;
-    mavlink_msg_play_tune_pack(
+    mavlink_msg_play_tune_v2_pack(
         _parent->get_own_system_id(),
         _parent->get_own_component_id(),
         &message,
         _parent->get_system_id(),
         _parent->get_autopilot_id(),
-        tune1_str.c_str(),
-        tune2_str.c_str());
+        TUNE_FORMAT_QBASIC1_1,
+        tune_str.c_str());
 
     if (!_parent->send_message(message)) {
         report_tune_result(callback, Tune::Result::Error);
