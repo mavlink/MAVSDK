@@ -7,7 +7,7 @@ typedef std::function<void({% if has_result %}{{ plugin_name.upper_camel_case }}
 /**
  * @brief {{ method_description | replace('\n', '\n *')}}
  */
-void {{ name.lower_snake_case }}_async({{ name.lower_snake_case }}_callback_t callback);
+void {{ name.lower_snake_case }}_async({% for param in params %}{{ param.type_info.name }} {{ param.name.lower_snake_case }}, {% endfor %}{{ name.lower_snake_case }}_callback_t callback);
 {% endif %}
 
 {% if is_sync %}
