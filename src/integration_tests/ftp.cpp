@@ -48,8 +48,8 @@ void test_create_directory(std::shared_ptr<Ftp> ftp, const std::string& path)
 
     Ftp::Result result = future_result.get();
     EXPECT_TRUE(
-        result == Ftp::Result::SUCCESS || result == Ftp::Result::FILE_EXISTS ||
-        result == Ftp::Result::FILE_PROTECTED);
+        result == Ftp::Result::Success || result == Ftp::Result::FileExists ||
+        result == Ftp::Result::FileProtected);
 }
 
 void test_list_directory(std::shared_ptr<Ftp> ftp, const std::string& path)
@@ -61,7 +61,7 @@ void test_list_directory(std::shared_ptr<Ftp> ftp, const std::string& path)
     });
 
     std::pair<Ftp::Result, std::vector<std::string>> result = future_result.get();
-    EXPECT_EQ(result.first, Ftp::Result::SUCCESS);
+    EXPECT_EQ(result.first, Ftp::Result::Success);
     EXPECT_GT(result.second.size(), 0);
 }
 
@@ -89,22 +89,23 @@ void test_download(
     auto prom = std::make_shared<std::promise<Ftp::Result>>();
     auto future_result = prom->get_future();
     ftp->download_async(
-        remote_file,
-        local_path,
-        [](uint32_t bytes_transferred, uint32_t file_size) {
-            int percentage = bytes_transferred * 100 / file_size;
-            std::cout << "\rDownloading [" << std::setw(3) << percentage << "%] "
-                      << bytes_transferred << " of " << file_size;
-            if (bytes_transferred >= file_size) {
-                std::cout << std::endl;
+        remote_file, local_path, [prom](Ftp::Result result, Ftp::ProgressData progress) {
+            if (result == Ftp::Result::Next) {
+                int percentage = progress.bytes_transferred * 100 / progress.total_bytes;
+                std::cout << "\rDownloading [" << std::setw(3) << percentage << "%] "
+                          << progress.bytes_transferred << " of " << progress.total_bytes;
+                if (progress.bytes_transferred >= progress.total_bytes) {
+                    std::cout << std::endl;
+                }
+                _bytes_transferred = progress.bytes_transferred;
+                _file_size = progress.total_bytes;
+            } else {
+                prom->set_value(result);
             }
-            _bytes_transferred = bytes_transferred;
-            _file_size = file_size;
-        },
-        [prom](Ftp::Result result) { prom->set_value(result); });
+        });
 
     Ftp::Result result = future_result.get();
-    EXPECT_EQ(result, Ftp::Result::SUCCESS);
+    EXPECT_EQ(result, Ftp::Result::Success);
     EXPECT_GT(_file_size, 0);
     EXPECT_EQ(_bytes_transferred, _file_size);
 }
@@ -116,24 +117,26 @@ void test_upload(
     auto future_result = prom->get_future();
     _bytes_transferred = _file_size = 0;
     ftp->upload_async(
-        local_file,
-        remote_folder,
-        [local_file](uint32_t bytes_transferred, uint32_t file_size) {
-            int percentage = bytes_transferred * 100 / file_size;
-            std::cout << "\rUploading " << local_file << "[" << std::setw(3) << percentage << "%] "
-                      << bytes_transferred << " of " << file_size;
-            if (bytes_transferred == file_size) {
-                std::cout << std::endl;
+        local_file, remote_folder, [prom](Ftp::Result result, Ftp::ProgressData progress) {
+            if (result == Ftp::Result::Next) {
+                int percentage = progress.bytes_transferred * 100 / progress.total_bytes;
+                std::cout << "\rUploading "
+                          << "[" << std::setw(3) << percentage << "%] "
+                          << progress.bytes_transferred << " of " << progress.total_bytes;
+                if (progress.bytes_transferred == progress.total_bytes) {
+                    std::cout << std::endl;
+                }
+                _bytes_transferred = progress.bytes_transferred;
+                _file_size = progress.total_bytes;
+            } else {
+                prom->set_value(result);
             }
-            _bytes_transferred = bytes_transferred;
-            _file_size = file_size;
-        },
-        [prom](Ftp::Result result) { prom->set_value(result); });
+        });
 
     Ftp::Result result = future_result.get();
     EXPECT_GT(_file_size, 0);
     EXPECT_EQ(_bytes_transferred, _file_size);
-    EXPECT_EQ(result, Ftp::Result::SUCCESS);
+    EXPECT_EQ(result, Ftp::Result::Success);
 }
 
 void test_rename(std::shared_ptr<Ftp> ftp, const std::string& from, const std::string& to)
@@ -143,7 +146,7 @@ void test_rename(std::shared_ptr<Ftp> ftp, const std::string& from, const std::s
     ftp->rename_async(from, to, [prom](Ftp::Result result) { prom->set_value(result); });
 
     Ftp::Result result = future_result.get();
-    EXPECT_EQ(result, Ftp::Result::SUCCESS);
+    EXPECT_EQ(result, Ftp::Result::Success);
 }
 
 void compare(
@@ -158,7 +161,7 @@ void compare(
         });
 
     auto result = future_result.get();
-    EXPECT_EQ(result.first, Ftp::Result::SUCCESS);
+    EXPECT_EQ(result.first, Ftp::Result::Success);
     EXPECT_EQ(result.second, true);
 }
 
@@ -270,7 +273,7 @@ TEST(FtpTest, UploadFiles)
                 count++;
             }
         }
-        EXPECT_EQ(result.first, Ftp::Result::SUCCESS);
+        EXPECT_EQ(result.first, Ftp::Result::Success);
         EXPECT_GT(result.second.size(), 0);
         EXPECT_EQ(count, number_of_files);
     }
@@ -311,15 +314,15 @@ TEST(FtpTest, TestServer)
 #endif
 
     auto ftp_server = std::make_shared<Ftp>(system_cc);
-    ftp_server->set_root_dir(".");
-    uint8_t server_comp_id = ftp_server->get_our_compid();
+    ftp_server->set_root_directory(".");
+    uint8_t server_comp_id = ftp_server->get_our_component_id().second;
 
     auto ftp_client = std::make_shared<Ftp>(system_gcs);
     ftp_client->set_target_component_id(server_comp_id);
 
     test_list_directory(ftp_client, "/");
 
-    ftp_server->set_root_dir(".");
+    ftp_server->set_root_directory(".");
     test_create_directory(ftp_client, "test");
 
     std::string file_name1 = "ftp_data_file1";
@@ -337,11 +340,11 @@ TEST(FtpTest, TestServer)
     test_download(ftp_client, "test/" + file_name2, ".");
 
     Ftp::Result result = test_remove_file(ftp_client, "test/" + file_name1);
-    EXPECT_EQ(result, Ftp::Result::FILE_DOES_NOT_EXIST);
+    EXPECT_EQ(result, Ftp::Result::FileDoesNotExist);
 
     result = test_remove_file(ftp_client, "test/" + file_name2);
-    EXPECT_EQ(result, Ftp::Result::SUCCESS);
+    EXPECT_EQ(result, Ftp::Result::Success);
 
     result = test_remove_directory(ftp_client, "test");
-    EXPECT_EQ(result, Ftp::Result::SUCCESS);
+    EXPECT_EQ(result, Ftp::Result::Success);
 }

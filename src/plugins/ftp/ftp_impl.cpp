@@ -220,8 +220,12 @@ void FtpImpl::_call_op_progress_callback(uint32_t bytes_read, uint32_t total_byt
 {
     if (_curr_op_progress_callback) {
         const auto temp_callback = _curr_op_progress_callback;
-        _parent->call_user_callback(
-            [temp_callback, bytes_read, total_bytes]() { temp_callback(bytes_read, total_bytes); });
+        _parent->call_user_callback([temp_callback, bytes_read, total_bytes]() {
+            Ftp::ProgressData progress;
+            progress.bytes_transferred = bytes_read;
+            progress.total_bytes = total_bytes;
+            temp_callback(Ftp::Result::Next, progress);
+        });
     }
 }
 
@@ -247,21 +251,21 @@ Ftp::Result FtpImpl::_translate(ServerResult result)
 {
     switch (result) {
         case ServerResult::SUCCESS:
-            return Ftp::Result::SUCCESS;
+            return Ftp::Result::Success;
         case ServerResult::ERR_TIMEOUT:
-            return Ftp::Result::TIMEOUT;
+            return Ftp::Result::Timeout;
         case ServerResult::ERR_FILE_IO_ERROR:
-            return Ftp::Result::FILE_IO_ERROR;
+            return Ftp::Result::FileIoError;
         case ServerResult::ERR_FAIL_FILE_EXISTS:
-            return Ftp::Result::FILE_EXISTS;
+            return Ftp::Result::FileExists;
         case ServerResult::ERR_FAIL_FILE_PROTECTED:
-            return Ftp::Result::FILE_PROTECTED;
+            return Ftp::Result::FileProtected;
         case ServerResult::ERR_UNKOWN_COMMAND:
-            return Ftp::Result::UNSUPPORTED;
+            return Ftp::Result::Unsupported;
         case ServerResult::ERR_FAIL_FILE_DOES_NOT_EXIST:
-            return Ftp::Result::FILE_DOES_NOT_EXIST;
+            return Ftp::Result::FileDoesNotExist;
         default:
-            return Ftp::Result::PROTOCOL_ERROR;
+            return Ftp::Result::ProtocolError;
     }
 }
 
@@ -269,7 +273,7 @@ void FtpImpl::reset_async(Ftp::result_callback_t callback)
 {
     std::lock_guard<std::mutex> lock(_curr_op_mutex);
     if (_curr_op != CMD_NONE) {
-        callback(Ftp::Result::IN_PROGRESS);
+        callback(Ftp::Result::Busy);
         return;
     }
 
@@ -287,12 +291,12 @@ void FtpImpl::reset_async(Ftp::result_callback_t callback)
 void FtpImpl::download_async(
     const std::string& remote_path,
     const std::string& local_folder,
-    Ftp::progress_callback_t progress_callback,
-    Ftp::result_callback_t result_callback)
+    Ftp::download_callback_t callback)
 {
     std::lock_guard<std::mutex> lock(_curr_op_mutex);
     if (_curr_op != CMD_NONE) {
-        result_callback(Ftp::Result::IN_PROGRESS);
+        Ftp::ProgressData empty{};
+        callback(Ftp::Result::Busy, empty);
         return;
     }
 
@@ -302,11 +306,18 @@ void FtpImpl::download_async(
         std::make_shared<std::ofstream>(local_path, std::fstream::trunc | std::fstream::binary);
     if (!*_ofstream) {
         _end_read_session();
-        result_callback(Ftp::Result::FILE_IO_ERROR);
+        Ftp::ProgressData empty{};
+        callback(Ftp::Result::FileIoError, empty);
         return;
     }
 
-    _curr_op_progress_callback = progress_callback;
+    _curr_op_progress_callback = callback;
+
+    const auto result_callback = [callback](Ftp::Result result) {
+        Ftp::ProgressData empty{};
+        callback(result, empty);
+    };
+
     _generic_command_async(CMD_OPEN_FILE_RO, 0, remote_path, result_callback);
 }
 
@@ -341,31 +352,39 @@ void FtpImpl::_read()
 void FtpImpl::upload_async(
     const std::string& local_file_path,
     const std::string& remote_folder,
-    Ftp::progress_callback_t progress_callback,
-    Ftp::result_callback_t result_callback)
+    Ftp::upload_callback_t callback)
 {
     std::lock_guard<std::mutex> lock(_curr_op_mutex);
     if (_curr_op != CMD_NONE) {
-        result_callback(Ftp::Result::IN_PROGRESS);
+        Ftp::ProgressData empty{};
+        callback(Ftp::Result::Busy, empty);
         return;
     }
 
     if (!fs_exists(local_file_path)) {
-        result_callback(Ftp::Result::FILE_DOES_NOT_EXIST);
+        Ftp::ProgressData empty{};
+        callback(Ftp::Result::FileDoesNotExist, empty);
         return;
     }
 
     _ifstream = std::make_shared<std::ifstream>(local_file_path, std::fstream::binary);
     if (!*_ifstream) {
         _end_write_session();
-        result_callback(Ftp::Result::FILE_IO_ERROR);
+        Ftp::ProgressData empty{};
+        callback(Ftp::Result::FileIoError, empty);
         return;
     }
 
     _file_size = fs_file_size(local_file_path);
-    _curr_op_progress_callback = progress_callback;
+    _curr_op_progress_callback = callback;
     std::string local_path(local_file_path);
     std::string remote_file_path = remote_folder + path_separator + fs_filename(local_path);
+
+    const auto result_callback = [callback](Ftp::Result result) {
+        Ftp::ProgressData empty{};
+        callback(result, empty);
+    };
+
     _generic_command_async(CMD_OPEN_FILE_WO, 0, remote_file_path, result_callback);
 }
 
@@ -420,19 +439,20 @@ void FtpImpl::_terminate_session()
 }
 
 void FtpImpl::list_directory_async(
-    const std::string& path, Ftp::directory_items_and_result_callback_t callback, uint32_t offset)
+    const std::string& path, Ftp::list_directory_callback_t callback, uint32_t offset)
 {
     std::lock_guard<std::mutex> lock(_curr_op_mutex);
     if (_curr_op != CMD_NONE && offset == 0) {
-        callback(Ftp::Result::IN_PROGRESS, std::vector<std::string>());
+        callback(Ftp::Result::Busy, std::vector<std::string>());
         return;
     }
     if (path.length() >= max_data_length) {
-        callback(Ftp::Result::INVALID_PARAMETER, std::vector<std::string>());
+        callback(Ftp::Result::InvalidParameter, std::vector<std::string>());
         return;
     }
 
     _last_path = path;
+    // TODOTODO
     _curr_dir_items_result_callback = callback;
     _list_directory(offset);
 }
@@ -458,11 +478,11 @@ void FtpImpl::_generic_command_async(
     Opcode opcode, uint32_t offset, const std::string& path, Ftp::result_callback_t callback)
 {
     if (_curr_op != CMD_NONE) {
-        callback(Ftp::Result::IN_PROGRESS);
+        callback(Ftp::Result::Busy);
         return;
     }
     if (path.length() >= max_data_length) {
-        callback(Ftp::Result::INVALID_PARAMETER);
+        callback(Ftp::Result::InvalidParameter);
         return;
     }
 
@@ -502,11 +522,11 @@ void FtpImpl::rename_async(
 {
     std::lock_guard<std::mutex> lock(_curr_op_mutex);
     if (_curr_op != CMD_NONE) {
-        callback(Ftp::Result::IN_PROGRESS);
+        callback(Ftp::Result::Busy);
         return;
     }
     if (from_path.length() + to_path.length() + 1 >= max_data_length) {
-        callback(Ftp::Result::INVALID_PARAMETER);
+        callback(Ftp::Result::InvalidParameter);
         return;
     }
 
@@ -540,7 +560,7 @@ void FtpImpl::are_files_identical_async(
 
     uint32_t crc_local = 0;
     auto result_local = _calc_local_file_crc32(local_path, crc_local);
-    if (result_local != Ftp::Result::SUCCESS) {
+    if (result_local != Ftp::Result::Success) {
         _parent->call_user_callback(
             [temp_callback, result_local]() { temp_callback(result_local, false); });
         return;
@@ -549,12 +569,12 @@ void FtpImpl::are_files_identical_async(
     _calc_file_crc32_async(
         remote_path,
         [this, crc_local, temp_callback](Ftp::Result result_remote, uint32_t crc_remote) {
-            if (result_remote != Ftp::Result::SUCCESS) {
+            if (result_remote != Ftp::Result::Success) {
                 _parent->call_user_callback(
                     [temp_callback, result_remote]() { temp_callback(result_remote, false); });
             } else {
                 _parent->call_user_callback([temp_callback, crc_local, crc_remote]() {
-                    temp_callback(Ftp::Result::SUCCESS, crc_local == crc_remote);
+                    temp_callback(Ftp::Result::Success, crc_local == crc_remote);
                 });
             }
         });
@@ -564,11 +584,11 @@ void FtpImpl::_calc_file_crc32_async(const std::string& path, file_crc32_result_
 {
     std::lock_guard<std::mutex> lock(_curr_op_mutex);
     if (_curr_op != CMD_NONE) {
-        callback(Ftp::Result::IN_PROGRESS, 0);
+        callback(Ftp::Result::Busy, 0);
         return;
     }
     if (path.length() >= max_data_length) {
-        callback(Ftp::Result::INVALID_PARAMETER, 0);
+        callback(Ftp::Result::InvalidParameter, 0);
         return;
     }
 
@@ -656,7 +676,9 @@ void FtpImpl::process_mavlink_ftp_message(const mavlink_message_t& msg)
     mavlink_file_transfer_protocol_t ftp_req;
     mavlink_msg_file_transfer_protocol_decode(&msg, &ftp_req);
 
-    if (ftp_req.target_component != 0 && ftp_req.target_component != get_our_compid()) {
+    if (ftp_req.target_component != 0 &&
+        ftp_req.target_component != get_our_component_id().second) {
+        LogWarn() << "wrong compid!";
         return;
     }
 
@@ -843,9 +865,10 @@ std::string FtpImpl::_get_path(PayloadHeader* payload)
     return _get_path(_data_as_string(payload));
 }
 
-void FtpImpl::set_root_dir(const std::string& root_dir)
+Ftp::Result FtpImpl::set_root_directory(const std::string& root_dir)
 {
     _root_dir = fs_canonical(root_dir);
+    return Ftp::Result::Success;
 }
 
 std::string FtpImpl::_get_path(const std::string& payload_path)
@@ -1144,12 +1167,12 @@ FtpImpl::ServerResult FtpImpl::_work_rename(PayloadHeader* payload)
 Ftp::Result FtpImpl::_calc_local_file_crc32(const std::string& path, uint32_t& csum)
 {
     if (!fs_exists(path)) {
-        return Ftp::Result::FILE_DOES_NOT_EXIST;
+        return Ftp::Result::FileDoesNotExist;
     }
 
     int fd = ::open(path.c_str(), O_RDONLY);
     if (fd < 0) {
-        return Ftp::Result::FILE_IO_ERROR;
+        return Ftp::Result::FileIoError;
     }
 
     // Read whole file in buffer size chunks
@@ -1163,7 +1186,7 @@ Ftp::Result FtpImpl::_calc_local_file_crc32(const std::string& path, uint32_t& c
             int r_errno = errno;
             close(fd);
             errno = r_errno;
-            return Ftp::Result::FILE_IO_ERROR;
+            return Ftp::Result::FileIoError;
         }
 
         checksum.add((uint8_t*)buffer, bytes_read);
@@ -1173,7 +1196,7 @@ Ftp::Result FtpImpl::_calc_local_file_crc32(const std::string& path, uint32_t& c
 
     csum = checksum.get();
 
-    return Ftp::Result::SUCCESS;
+    return Ftp::Result::Success;
 }
 
 FtpImpl::ServerResult FtpImpl::_work_calc_file_CRC32(PayloadHeader* payload)
@@ -1191,7 +1214,7 @@ FtpImpl::ServerResult FtpImpl::_work_calc_file_CRC32(PayloadHeader* payload)
     payload->size = sizeof(uint32_t);
     uint32_t checksum;
     Ftp::Result res = _calc_local_file_crc32(path, checksum);
-    if (res != Ftp::Result::SUCCESS) {
+    if (res != Ftp::Result::Success) {
         return ServerResult::ERR_FILE_IO_ERROR;
     }
     *reinterpret_cast<uint32_t*>(payload->data) = checksum;

@@ -38,17 +38,13 @@ public:
     void download_async(
         const std::string& remote_file_path,
         const std::string& local_folder,
-        Ftp::progress_callback_t progress_callback,
-        Ftp::result_callback_t result_callback);
+        Ftp::download_callback_t callback);
     void upload_async(
         const std::string& local_file_path,
         const std::string& remote_folder,
-        Ftp::progress_callback_t progress_callback,
-        Ftp::result_callback_t result_callback);
+        Ftp::upload_callback_t callback);
     void list_directory_async(
-        const std::string& path,
-        Ftp::directory_items_and_result_callback_t callback,
-        uint32_t offset = 0);
+        const std::string& path, Ftp::list_directory_callback_t callback, uint32_t offset = 0);
     void create_directory_async(const std::string& path, Ftp::result_callback_t callback);
     void remove_directory_async(const std::string& path, Ftp::result_callback_t callback);
     void remove_file_async(const std::string& path, Ftp::result_callback_t callback);
@@ -60,13 +56,17 @@ public:
         Ftp::are_files_identical_callback_t callback);
 
     void set_retries(uint32_t retries) { _max_last_command_retries = retries; }
-    void set_root_dir(const std::string& root_dir);
-    void set_target_component_id(uint8_t component_id)
+    Ftp::Result set_root_directory(const std::string& root_dir);
+    Ftp::Result set_target_component_id(uint8_t component_id)
     {
         _target_component_id = component_id;
         _target_component_id_set = true;
+        return Ftp::Result::Success;
     }
-    uint8_t get_our_compid() { return _parent->get_own_component_id(); };
+    std::pair<Ftp::Result, uint8_t> get_our_component_id()
+    {
+        return std::make_pair<>(Ftp::Result::Success, _parent->get_own_component_id());
+    };
 
 private:
     /// @brief Possible server results returned for requests.
@@ -170,9 +170,15 @@ private:
     uint32_t _bytes_transferred = 0;
     uint32_t _file_size = 0;
     std::vector<std::string> _curr_directory_list{};
+
     Ftp::result_callback_t _curr_op_result_callback{};
-    Ftp::progress_callback_t _curr_op_progress_callback{};
-    Ftp::directory_items_and_result_callback_t _curr_dir_items_result_callback{};
+    // _curr_op_progress_callback is used for download_callback_t as well as upload_callback_t
+    static_assert(
+        std::is_same<Ftp::download_callback_t, Ftp::upload_callback_t>::value,
+        "callback types don't match");
+    Ftp::download_callback_t _curr_op_progress_callback{};
+    Ftp::list_directory_callback_t _curr_dir_items_result_callback{};
+
     file_crc32_result_callback_t _current_crc32_result_callback{};
 
     void _calc_file_crc32_async(const std::string& path, file_crc32_result_callback_t callback);
@@ -183,7 +189,7 @@ private:
     void _process_nak(ServerResult result);
     static Ftp::Result _translate(ServerResult result);
     void _call_op_result_callback(ServerResult result);
-    void _call_op_progress_callback(uint32_t bytes_read, uint32_t total_bytes);
+    void _call_op_progress_callback(uint32_t bytes_written, uint32_t total_bytes);
     void _call_dir_items_result_callback(ServerResult result, std::vector<std::string> list);
     void _call_crc32_result_callback(ServerResult result, uint32_t crc32);
     void _generic_command_async(
