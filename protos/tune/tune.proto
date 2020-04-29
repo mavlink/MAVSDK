@@ -2,13 +2,15 @@ syntax = "proto3";
 
 package mavsdk.rpc.tune;
 
+import "mavsdk_options.proto";
+
 option java_package = "io.mavsdk.tune";
 option java_outer_classname = "TuneProto";
 
 // Enable creating and sending a tune to be played on the system.
 service TuneService {
   // Send a tune to be played by the system.
-  rpc PlayTune(PlayTuneRequest) returns(PlayTuneResponse) {}
+  rpc PlayTune(PlayTuneRequest) returns(PlayTuneResponse) { option (mavsdk.options.async_type) = ASYNC; }
 }
 
 // An element of the tune
@@ -37,10 +39,16 @@ enum SongElement {
 }
 
 message PlayTuneRequest {
-  repeated SongElement tune = 1; // The tune to be played
+  TuneDescription description = 1; // The tune to be played
 }
 message PlayTuneResponse {
   TuneResult tune_result = 1;
+}
+
+// Tune description, containing song elements and tempo.
+message TuneDescription {
+  repeated SongElement song_elements = 1; // The list of song elements (notes, pauses, ...) to be played
+  int32 tempo = 2; // The tempo of the song (range: 32 - 255)
 }
 
 message TuneResult {
