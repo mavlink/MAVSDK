@@ -64,11 +64,18 @@ TEST_F(SitlTest, FollowMeOneLocation)
     print(curr_config);
 
     // Set just a single location before starting FollowMe (optional)
-    follow_me->set_target_location({47.39768399, 8.54564155, 0.0, 0.f, 0.f, 0.f});
+    FollowMe::TargetLocation some_location;
+    some_location.latitude_deg = 47.39768399;
+    some_location.longitude_deg = 8.54564155;
+    some_location.absolute_altitude_m = 0.0;
+    some_location.velocity_x_m_s = 0.f;
+    some_location.velocity_y_m_s = 0.f;
+    some_location.velocity_z_m_s = 0.f;
+    follow_me->set_target_location(some_location);
 
     // Start following with default configuration
     FollowMe::Result follow_me_result = follow_me->start();
-    ASSERT_EQ(FollowMe::Result::SUCCESS, follow_me_result);
+    ASSERT_EQ(FollowMe::Result::Success, follow_me_result);
     sleep_for(seconds(1));
 
     std::cout << "We're waiting (for 5s) to see the drone moving target location set." << std::endl;
@@ -76,7 +83,7 @@ TEST_F(SitlTest, FollowMeOneLocation)
 
     // stop following
     follow_me_result = follow_me->stop();
-    ASSERT_EQ(FollowMe::Result::SUCCESS, follow_me_result);
+    ASSERT_EQ(FollowMe::Result::Success, follow_me_result);
     sleep_for(seconds(2)); // to watch flight mode change from "FollowMe" to default "HOLD"
 
     action_ret = action->land();
@@ -135,22 +142,22 @@ TEST_F(SitlTest, FollowMeMultiLocationWithConfig)
     config.follow_distance_m = 20.f; // set distance b/w system and target during FollowMe mode
     config.responsiveness = 0.2f; // set to higher responsiveness
     config.follow_direction =
-        FollowMe::Config::FollowDirection::FRONT; // System follows target from FRONT side
+        FollowMe::Config::FollowDirection::Front; // System follows target from FRONT side
 
     // Apply configuration
     FollowMe::Result config_result = follow_me->set_config(config);
-    ASSERT_EQ(FollowMe::Result::SUCCESS, config_result);
+    ASSERT_EQ(FollowMe::Result::Success, config_result);
 
     // Start following
     FollowMe::Result follow_me_result = follow_me->start();
-    ASSERT_EQ(FollowMe::Result::SUCCESS, follow_me_result);
+    ASSERT_EQ(FollowMe::Result::Success, follow_me_result);
 
     // send location update every second
     send_location_updates(follow_me);
 
     // Stop following
     follow_me_result = follow_me->stop();
-    ASSERT_EQ(FollowMe::Result::SUCCESS, follow_me_result);
+    ASSERT_EQ(FollowMe::Result::Success, follow_me_result);
     sleep_for(seconds(2)); // to watch flight mode change from "FollowMe" to default "HOLD"
 
     action_ret = action->land();
@@ -170,9 +177,20 @@ void print(const FollowMe::Config& config)
     std::cout << "Min Height: " << config.min_height_m << "m" << std::endl;
     std::cout << "Distance: " << config.follow_distance_m << "m" << std::endl;
     std::cout << "Responsiveness: " << config.responsiveness << std::endl;
-    std::cout << "Following from: " << FollowMe::Config::to_str(config.follow_direction)
-              << std::endl;
+    std::cout << "Following from: " << config.follow_direction << std::endl;
     std::cout << "---------------------------" << std::endl;
+}
+
+FollowMe::TargetLocation create_target_location(double latitude_deg, double longitude_deg)
+{
+    FollowMe::TargetLocation location;
+    location.latitude_deg = latitude_deg;
+    location.longitude_deg = longitude_deg;
+    location.absolute_altitude_m = 0.0;
+    location.velocity_x_m_s = 0.f;
+    location.velocity_y_m_s = 0.f;
+    location.velocity_z_m_s = 0.f;
+    return location;
 }
 
 void send_location_updates(std::shared_ptr<FollowMe> follow_me, size_t count, float rate)
@@ -180,106 +198,106 @@ void send_location_updates(std::shared_ptr<FollowMe> follow_me, size_t count, fl
     // TODO: Generate these co-ordinates from an algorithm
     // Altitude here is ignored by PX4, as we've set min altitude in configuration.
     std::array<FollowMe::TargetLocation, N_LOCATIONS> spiral_path = {
-        {{47.39768399, 8.54564155, 0.0, 0.f, 0.f, 0.f},
-         {47.39769035, 8.54566569, 0.0, 0.f, 0.f, 0.f},
-         {47.39770759, 8.54568983, 0.0, 0.f, 0.f, 0.f},
-         {47.39772757, 8.54569922, 0.0, 0.f, 0.f, 0.f},
-         {47.39774481, 8.54570727, 0.0, 0.f, 0.f, 0.f},
-         {47.39776025, 8.54572202, 0.0, 0.f, 0.f, 0.f},
-         {47.39778567, 8.54572336, 0.0, 0.f, 0.f, 0.f},
-         {47.39780291, 8.54572202, 0.0, 0.f, 0.f, 0.f},
-         {47.39782107, 8.54571263, 0.0, 0.f, 0.f, 0.f},
-         {47.39783469, 8.54569788, 0.0, 0.f, 0.f, 0.f},
-         {47.39783832, 8.54568179, 0.0, 0.f, 0.f, 0.f},
-         {47.39784104, 8.54566569, 0.0, 0.f, 0.f, 0.f},
-         {47.39784376, 8.54564424, 0.0, 0.f, 0.f, 0.f},
-         {47.39772938, 8.54552488, 0.0, 0.f, 0.f, 0.f},
-         {47.39782475, 8.54559193, 0.0, 0.f, 0.f, 0.f},
-         {47.39780291, 8.54557048, 0.0, 0.f, 0.f, 0.f},
-         {47.39771304, 8.54554231, 0.0, 0.f, 0.f, 0.f},
-         {47.39780836, 8.54552756, 0.0, 0.f, 0.f, 0.f},
-         {47.39973737, 8.54269845, 0.0, 0.f, 0.f, 0.f},
-         {47.39973730, 8.54269780, 0.0, 0.f, 0.f, 0.f},
-         {47.39779838, 8.54555174, 0.0, 0.f, 0.f, 0.f},
-         {47.39778748, 8.54554499, 0.0, 0.f, 0.f, 0.f},
-         {47.39777659, 8.54553561, 0.0, 0.f, 0.f, 0.f},
-         {47.39776569, 8.54553292, 0.0, 0.f, 0.f, 0.f},
-         {47.39774663, 8.54552622, 0.0, 0.f, 0.f, 0.f},
-         {47.39772938, 8.54552488, 0.0, 0.f, 0.f, 0.f},
-         {47.39771304, 8.54554231, 0.0, 0.f, 0.f, 0.f},
-         {47.39770578, 8.54557445, 0.0, 0.f, 0.f, 0.f},
-         {47.39770487, 8.54559596, 0.0, 0.f, 0.f, 0.f},
-         {47.39770578, 8.54561741, 0.0, 0.f, 0.f, 0.f},
-         {47.39770669, 8.54563887, 0.0, 0.f, 0.f, 0.f},
-         {47.39771486, 8.54565765, 0.0, 0.f, 0.f, 0.f},
-         {47.39773029, 8.54567642, 0.0, 0.f, 0.f, 0.f},
-         {47.39775026, 8.54568447, 0.0, 0.f, 0.f, 0.f},
-         {47.39776751, 8.54569118, 0.0, 0.f, 0.f, 0.f},
-         {47.39778203, 8.54569118, 0.0, 0.f, 0.f, 0.f},
-         {47.39779838, 8.54568447, 0.0, 0.f, 0.f, 0.f},
-         {47.39781835, 8.54566972, 0.0, 0.f, 0.f, 0.f},
-         {47.39782107, 8.54564692, 0.0, 0.f, 0.f, 0.f},
-         {47.39782474, 8.54561876, 0.0, 0.f, 0.f, 0.f},
-         {47.39782474, 8.54556511, 0.0, 0.f, 0.f, 0.f},
-         {47.39782107, 8.54553427, 0.0, 0.f, 0.f, 0.f},
-         {47.39779656, 8.54551549, 0.0, 0.f, 0.f, 0.f},
-         {47.39777568, 8.54550342, 0.0, 0.f, 0.f, 0.f},
-         {47.39775482, 8.54549671, 0.0, 0.f, 0.f, 0.f},
-         {47.39773755, 8.54549671, 0.0, 0.f, 0.f, 0.f},
-         {47.39771849, 8.54550208, 0.0, 0.f, 0.f, 0.f},
-         {47.39770396, 8.54551415, 0.0, 0.f, 0.f, 0.f},
-         {47.39769398, 8.54554097, 0.0, 0.f, 0.f, 0.f},
-         {47.39768762, 8.54556243, 0.0, 0.f, 0.f, 0.f},
-         {47.39768672, 8.54557852, 0.0, 0.f, 0.f, 0.f},
-         {47.39768493, 8.54559998, 0.0, 0.f, 0.f, 0.f},
-         {47.39768399, 8.54562278, 0.0, 0.f, 0.f, 0.f},
-         {47.39768399, 8.54564155, 0.0, 0.f, 0.f, 0.f},
-         {47.39769035, 8.54566569, 0.0, 0.f, 0.f, 0.f},
-         {47.39770759, 8.54568983, 0.0, 0.f, 0.f, 0.f},
-         {47.39772757, 8.54569922, 0.0, 0.f, 0.f, 0.f},
-         {47.39774481, 8.54570727, 0.0, 0.f, 0.f, 0.f},
-         {47.39776025, 8.54572202, 0.0, 0.f, 0.f, 0.f},
-         {47.39778567, 8.54572336, 0.0, 0.f, 0.f, 0.f},
-         {47.39780291, 8.54572202, 0.0, 0.f, 0.f, 0.f},
-         {47.39782107, 8.54571263, 0.0, 0.f, 0.f, 0.f},
-         {47.39783469, 8.54569788, 0.0, 0.f, 0.f, 0.f},
-         {47.39783832, 8.54568179, 0.0, 0.f, 0.f, 0.f},
-         {47.39784104, 8.54566569, 0.0, 0.f, 0.f, 0.f},
-         {47.39784376, 8.54564424, 0.0, 0.f, 0.f, 0.f},
-         {47.39784386, 8.54564435, 0.0, 0.f, 0.f, 0.f},
-         {47.39784396, 8.54564444, 0.0, 0.f, 0.f, 0.f},
-         {47.39784386, 8.54564454, 0.0, 0.f, 0.f, 0.f},
-         {47.39784346, 8.54564464, 0.0, 0.f, 0.f, 0.f},
-         {47.39784336, 8.54564424, 0.0, 0.f, 0.f, 0.f},
-         {47.39772757, 8.54569922, 0.0, 0.f, 0.f, 0.f},
-         {47.39774481, 8.54570727, 0.0, 0.f, 0.f, 0.f},
-         {47.39776025, 8.54572202, 0.0, 0.f, 0.f, 0.f},
-         {47.39778567, 8.54572336, 0.0, 0.f, 0.f, 0.f},
-         {47.39770396, 8.54551415, 0.0, 0.f, 0.f, 0.f},
-         {47.39769398, 8.54554097, 0.0, 0.f, 0.f, 0.f},
-         {47.39768762, 8.54556243, 0.0, 0.f, 0.f, 0.f},
-         {47.39768672, 8.54557852, 0.0, 0.f, 0.f, 0.f},
-         {47.39768494, 8.54559998, 0.0, 0.f, 0.f, 0.f},
-         {47.39779454, 8.54559464, 0.0, 0.f, 0.f, 0.f},
-         {47.39780291, 8.54557048, 0.0, 0.f, 0.f, 0.f},
-         {47.39779838, 8.54555173, 0.0, 0.f, 0.f, 0.f},
-         {47.39778748, 8.54554499, 0.0, 0.f, 0.f, 0.f},
-         {47.39777659, 8.54553561, 0.0, 0.f, 0.f, 0.f},
-         {47.39776569, 8.54553292, 0.0, 0.f, 0.f, 0.f},
-         {47.39774663, 8.54552622, 0.0, 0.f, 0.f, 0.f},
-         {47.39771304, 8.54554231, 0.0, 0.f, 0.f, 0.f},
-         {47.39772938, 8.54552488, 0.0, 0.f, 0.f, 0.f},
-         {47.39771304, 8.54554231, 0.0, 0.f, 0.f, 0.f},
-         {47.39770578, 8.54557445, 0.0, 0.f, 0.f, 0.f},
-         {47.39770487, 8.54559596, 0.0, 0.f, 0.f, 0.f},
-         {47.39770578, 8.54561741, 0.0, 0.f, 0.f, 0.f},
-         {47.39770669, 8.54563887, 0.0, 0.f, 0.f, 0.f},
-         {47.39771486, 8.54565765, 0.0, 0.f, 0.f, 0.f},
-         {47.39773029, 8.54567642, 0.0, 0.f, 0.f, 0.f},
-         {47.39775026, 8.54568447, 0.0, 0.f, 0.f, 0.f},
-         {47.39776751, 8.54569118, 0.0, 0.f, 0.f, 0.f},
-         {47.39784346, 8.54564464, 0.0, 0.f, 0.f, 0.f},
-         {47.39776569, 8.54553292, 0.0, 0.f, 0.f, 0.f}}};
+        create_target_location(47.39768399, 8.54564155),
+        create_target_location(47.39769035, 8.54566569),
+        create_target_location(47.39770759, 8.54568983),
+        create_target_location(47.39772757, 8.54569922),
+        create_target_location(47.39774481, 8.54570727),
+        create_target_location(47.39776025, 8.54572202),
+        create_target_location(47.39778567, 8.54572336),
+        create_target_location(47.39780291, 8.54572202),
+        create_target_location(47.39782107, 8.54571263),
+        create_target_location(47.39783469, 8.54569788),
+        create_target_location(47.39783832, 8.54568179),
+        create_target_location(47.39784104, 8.54566569),
+        create_target_location(47.39784376, 8.54564424),
+        create_target_location(47.39772938, 8.54552488),
+        create_target_location(47.39782475, 8.54559193),
+        create_target_location(47.39780291, 8.54557048),
+        create_target_location(47.39771304, 8.54554231),
+        create_target_location(47.39780836, 8.54552756),
+        create_target_location(47.39973737, 8.54269845),
+        create_target_location(47.39973730, 8.54269780),
+        create_target_location(47.39779838, 8.54555174),
+        create_target_location(47.39778748, 8.54554499),
+        create_target_location(47.39777659, 8.54553561),
+        create_target_location(47.39776569, 8.54553292),
+        create_target_location(47.39774663, 8.54552622),
+        create_target_location(47.39772938, 8.54552488),
+        create_target_location(47.39771304, 8.54554231),
+        create_target_location(47.39770578, 8.54557445),
+        create_target_location(47.39770487, 8.54559596),
+        create_target_location(47.39770578, 8.54561741),
+        create_target_location(47.39770669, 8.54563887),
+        create_target_location(47.39771486, 8.54565765),
+        create_target_location(47.39773029, 8.54567642),
+        create_target_location(47.39775026, 8.54568447),
+        create_target_location(47.39776751, 8.54569118),
+        create_target_location(47.39778203, 8.54569118),
+        create_target_location(47.39779838, 8.54568447),
+        create_target_location(47.39781835, 8.54566972),
+        create_target_location(47.39782107, 8.54564692),
+        create_target_location(47.39782474, 8.54561876),
+        create_target_location(47.39782474, 8.54556511),
+        create_target_location(47.39782107, 8.54553427),
+        create_target_location(47.39779656, 8.54551549),
+        create_target_location(47.39777568, 8.54550342),
+        create_target_location(47.39775482, 8.54549671),
+        create_target_location(47.39773755, 8.54549671),
+        create_target_location(47.39771849, 8.54550208),
+        create_target_location(47.39770396, 8.54551415),
+        create_target_location(47.39769398, 8.54554097),
+        create_target_location(47.39768762, 8.54556243),
+        create_target_location(47.39768672, 8.54557852),
+        create_target_location(47.39768493, 8.54559998),
+        create_target_location(47.39768399, 8.54562278),
+        create_target_location(47.39768399, 8.54564155),
+        create_target_location(47.39769035, 8.54566569),
+        create_target_location(47.39770759, 8.54568983),
+        create_target_location(47.39772757, 8.54569922),
+        create_target_location(47.39774481, 8.54570727),
+        create_target_location(47.39776025, 8.54572202),
+        create_target_location(47.39778567, 8.54572336),
+        create_target_location(47.39780291, 8.54572202),
+        create_target_location(47.39782107, 8.54571263),
+        create_target_location(47.39783469, 8.54569788),
+        create_target_location(47.39783832, 8.54568179),
+        create_target_location(47.39784104, 8.54566569),
+        create_target_location(47.39784376, 8.54564424),
+        create_target_location(47.39784386, 8.54564435),
+        create_target_location(47.39784396, 8.54564444),
+        create_target_location(47.39784386, 8.54564454),
+        create_target_location(47.39784346, 8.54564464),
+        create_target_location(47.39784336, 8.54564424),
+        create_target_location(47.39772757, 8.54569922),
+        create_target_location(47.39774481, 8.54570727),
+        create_target_location(47.39776025, 8.54572202),
+        create_target_location(47.39778567, 8.54572336),
+        create_target_location(47.39770396, 8.54551415),
+        create_target_location(47.39769398, 8.54554097),
+        create_target_location(47.39768762, 8.54556243),
+        create_target_location(47.39768672, 8.54557852),
+        create_target_location(47.39768494, 8.54559998),
+        create_target_location(47.39779454, 8.54559464),
+        create_target_location(47.39780291, 8.54557048),
+        create_target_location(47.39779838, 8.54555173),
+        create_target_location(47.39778748, 8.54554499),
+        create_target_location(47.39777659, 8.54553561),
+        create_target_location(47.39776569, 8.54553292),
+        create_target_location(47.39774663, 8.54552622),
+        create_target_location(47.39771304, 8.54554231),
+        create_target_location(47.39772938, 8.54552488),
+        create_target_location(47.39771304, 8.54554231),
+        create_target_location(47.39770578, 8.54557445),
+        create_target_location(47.39770487, 8.54559596),
+        create_target_location(47.39770578, 8.54561741),
+        create_target_location(47.39770669, 8.54563887),
+        create_target_location(47.39771486, 8.54565765),
+        create_target_location(47.39773029, 8.54567642),
+        create_target_location(47.39775026, 8.54568447),
+        create_target_location(47.39776751, 8.54569118),
+        create_target_location(47.39784346, 8.54564464),
+        create_target_location(47.39776569, 8.54553292)};
 
     // We're limiting to N_LOCATIONS for testing.
     count = (count > N_LOCATIONS) ? N_LOCATIONS : count;

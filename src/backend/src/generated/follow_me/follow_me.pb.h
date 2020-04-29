@@ -508,7 +508,7 @@ class TargetLocation :
     kVelocityYMSFieldNumber = 5,
     kVelocityZMSFieldNumber = 6,
   };
-  // double latitude_deg = 1 [(.mavsdk.options.default_value) = "NAN"];
+  // double latitude_deg = 1 [(.mavsdk.options.default_value) = "NaN"];
   void clear_latitude_deg();
   double latitude_deg() const;
   void set_latitude_deg(double value);
@@ -517,7 +517,7 @@ class TargetLocation :
   void _internal_set_latitude_deg(double value);
   public:
 
-  // double longitude_deg = 2 [(.mavsdk.options.default_value) = "NAN"];
+  // double longitude_deg = 2 [(.mavsdk.options.default_value) = "NaN"];
   void clear_longitude_deg();
   double longitude_deg() const;
   void set_longitude_deg(double value);
@@ -526,7 +526,7 @@ class TargetLocation :
   void _internal_set_longitude_deg(double value);
   public:
 
-  // float absolute_altitude_m = 3 [(.mavsdk.options.default_value) = "NAN"];
+  // float absolute_altitude_m = 3 [(.mavsdk.options.default_value) = "NaN"];
   void clear_absolute_altitude_m();
   float absolute_altitude_m() const;
   void set_absolute_altitude_m(float value);
@@ -535,7 +535,7 @@ class TargetLocation :
   void _internal_set_absolute_altitude_m(float value);
   public:
 
-  // float velocity_x_m_s = 4 [(.mavsdk.options.default_value) = "NAN"];
+  // float velocity_x_m_s = 4 [(.mavsdk.options.default_value) = "NaN"];
   void clear_velocity_x_m_s();
   float velocity_x_m_s() const;
   void set_velocity_x_m_s(float value);
@@ -544,7 +544,7 @@ class TargetLocation :
   void _internal_set_velocity_x_m_s(float value);
   public:
 
-  // float velocity_y_m_s = 5 [(.mavsdk.options.default_value) = "NAN"];
+  // float velocity_y_m_s = 5 [(.mavsdk.options.default_value) = "NaN"];
   void clear_velocity_y_m_s();
   float velocity_y_m_s() const;
   void set_velocity_y_m_s(float value);
@@ -553,7 +553,7 @@ class TargetLocation :
   void _internal_set_velocity_y_m_s(float value);
   public:
 
-  // float velocity_z_m_s = 6 [(.mavsdk.options.default_value) = "NAN"];
+  // float velocity_z_m_s = 6 [(.mavsdk.options.default_value) = "NaN"];
   void clear_velocity_z_m_s();
   float velocity_z_m_s() const;
   void set_velocity_z_m_s(float value);
@@ -2636,7 +2636,7 @@ inline void Config::set_responsiveness(float value) {
 
 // TargetLocation
 
-// double latitude_deg = 1 [(.mavsdk.options.default_value) = "NAN"];
+// double latitude_deg = 1 [(.mavsdk.options.default_value) = "NaN"];
 inline void TargetLocation::clear_latitude_deg() {
   latitude_deg_ = 0;
 }
@@ -2656,7 +2656,7 @@ inline void TargetLocation::set_latitude_deg(double value) {
   // @@protoc_insertion_point(field_set:mavsdk.rpc.follow_me.TargetLocation.latitude_deg)
 }
 
-// double longitude_deg = 2 [(.mavsdk.options.default_value) = "NAN"];
+// double longitude_deg = 2 [(.mavsdk.options.default_value) = "NaN"];
 inline void TargetLocation::clear_longitude_deg() {
   longitude_deg_ = 0;
 }
@@ -2676,7 +2676,7 @@ inline void TargetLocation::set_longitude_deg(double value) {
   // @@protoc_insertion_point(field_set:mavsdk.rpc.follow_me.TargetLocation.longitude_deg)
 }
 
-// float absolute_altitude_m = 3 [(.mavsdk.options.default_value) = "NAN"];
+// float absolute_altitude_m = 3 [(.mavsdk.options.default_value) = "NaN"];
 inline void TargetLocation::clear_absolute_altitude_m() {
   absolute_altitude_m_ = 0;
 }
@@ -2696,7 +2696,7 @@ inline void TargetLocation::set_absolute_altitude_m(float value) {
   // @@protoc_insertion_point(field_set:mavsdk.rpc.follow_me.TargetLocation.absolute_altitude_m)
 }
 
-// float velocity_x_m_s = 4 [(.mavsdk.options.default_value) = "NAN"];
+// float velocity_x_m_s = 4 [(.mavsdk.options.default_value) = "NaN"];
 inline void TargetLocation::clear_velocity_x_m_s() {
   velocity_x_m_s_ = 0;
 }
@@ -2716,7 +2716,7 @@ inline void TargetLocation::set_velocity_x_m_s(float value) {
   // @@protoc_insertion_point(field_set:mavsdk.rpc.follow_me.TargetLocation.velocity_x_m_s)
 }
 
-// float velocity_y_m_s = 5 [(.mavsdk.options.default_value) = "NAN"];
+// float velocity_y_m_s = 5 [(.mavsdk.options.default_value) = "NaN"];
 inline void TargetLocation::clear_velocity_y_m_s() {
   velocity_y_m_s_ = 0;
 }
@@ -2736,7 +2736,7 @@ inline void TargetLocation::set_velocity_y_m_s(float value) {
   // @@protoc_insertion_point(field_set:mavsdk.rpc.follow_me.TargetLocation.velocity_y_m_s)
 }
 
-// float velocity_z_m_s = 6 [(.mavsdk.options.default_value) = "NAN"];
+// float velocity_z_m_s = 6 [(.mavsdk.options.default_value) = "NaN"];
 inline void TargetLocation::clear_velocity_z_m_s() {
   velocity_z_m_s_ = 0;
 }

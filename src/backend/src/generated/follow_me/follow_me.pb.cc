@@ -501,12 +501,12 @@ const char descriptor_table_protodef_follow_5fme_2ffollow_5fme_2eproto[] PROTOBU
   "N_BEHIND\020\001\022\032\n\026FOLLOW_DIRECTION_FRONT\020\002\022 "
   "\n\034FOLLOW_DIRECTION_FRONT_RIGHT\020\003\022\037\n\033FOLL"
   "OW_DIRECTION_FRONT_LEFT\020\004\"\330\001\n\016TargetLoca"
-  "tion\022\035\n\014latitude_deg\030\001 \001(\001B\007\202\265\030\003NAN\022\036\n\rl"
-  "ongitude_deg\030\002 \001(\001B\007\202\265\030\003NAN\022$\n\023absolute_"
-  "altitude_m\030\003 \001(\002B\007\202\265\030\003NAN\022\037\n\016velocity_x_"
-  "m_s\030\004 \001(\002B\007\202\265\030\003NAN\022\037\n\016velocity_y_m_s\030\005 \001"
-  "(\002B\007\202\265\030\003NAN\022\037\n\016velocity_z_m_s\030\006 \001(\002B\007\202\265\030"
-  "\003NAN\"\022\n\020GetConfigRequest\"A\n\021GetConfigRes"
+  "tion\022\035\n\014latitude_deg\030\001 \001(\001B\007\202\265\030\003NaN\022\036\n\rl"
+  "ongitude_deg\030\002 \001(\001B\007\202\265\030\003NaN\022$\n\023absolute_"
+  "altitude_m\030\003 \001(\002B\007\202\265\030\003NaN\022\037\n\016velocity_x_"
+  "m_s\030\004 \001(\002B\007\202\265\030\003NaN\022\037\n\016velocity_y_m_s\030\005 \001"
+  "(\002B\007\202\265\030\003NaN\022\037\n\016velocity_z_m_s\030\006 \001(\002B\007\202\265\030"
+  "\003NaN\"\022\n\020GetConfigRequest\"A\n\021GetConfigRes"
   "ponse\022,\n\006config\030\001 \001(\0132\034.mavsdk.rpc.follo"
   "w_me.Config\"@\n\020SetConfigRequest\022,\n\006confi"
   "g\030\001 \001(\0132\034.mavsdk.rpc.follow_me.Config\"S\n"
@@ -977,42 +977,42 @@ const char* TargetLocation::_InternalParse(const char* ptr, ::PROTOBUF_NAMESPACE
     ptr = ::PROTOBUF_NAMESPACE_ID::internal::ReadTag(ptr, &tag);
     CHK_(ptr);
     switch (tag >> 3) {
-      // double latitude_deg = 1 [(.mavsdk.options.default_value) = "NAN"];
+      // double latitude_deg = 1 [(.mavsdk.options.default_value) = "NaN"];
       case 1:
         if (PROTOBUF_PREDICT_TRUE(static_cast<::PROTOBUF_NAMESPACE_ID::uint8>(tag) == 9)) {
           latitude_deg_ = ::PROTOBUF_NAMESPACE_ID::internal::UnalignedLoad<double>(ptr);
           ptr += sizeof(double);
         } else goto handle_unusual;
         continue;
-      // double longitude_deg = 2 [(.mavsdk.options.default_value) = "NAN"];
+      // double longitude_deg = 2 [(.mavsdk.options.default_value) = "NaN"];
       case 2:
         if (PROTOBUF_PREDICT_TRUE(static_cast<::PROTOBUF_NAMESPACE_ID::uint8>(tag) == 17)) {
           longitude_deg_ = ::PROTOBUF_NAMESPACE_ID::internal::UnalignedLoad<double>(ptr);
           ptr += sizeof(double);
         } else goto handle_unusual;
         continue;
-      // float absolute_altitude_m = 3 [(.mavsdk.options.default_value) = "NAN"];
+      // float absolute_altitude_m = 3 [(.mavsdk.options.default_value) = "NaN"];
       case 3:
         if (PROTOBUF_PREDICT_TRUE(static_cast<::PROTOBUF_NAMESPACE_ID::uint8>(tag) == 29)) {
           absolute_altitude_m_ = ::PROTOBUF_NAMESPACE_ID::internal::UnalignedLoad<float>(ptr);
           ptr += sizeof(float);
         } else goto handle_unusual;
         continue;
-      // float velocity_x_m_s = 4 [(.mavsdk.options.default_value) = "NAN"];
+      // float velocity_x_m_s = 4 [(.mavsdk.options.default_value) = "NaN"];
       case 4:
         if (PROTOBUF_PREDICT_TRUE(static_cast<::PROTOBUF_NAMESPACE_ID::uint8>(tag) == 37)) {
           velocity_x_m_s_ = ::PROTOBUF_NAMESPACE_ID::internal::UnalignedLoad<float>(ptr);
           ptr += sizeof(float);
         } else goto handle_unusual;
         continue;
-      // float velocity_y_m_s = 5 [(.mavsdk.options.default_value) = "NAN"];
+      // float velocity_y_m_s = 5 [(.mavsdk.options.default_value) = "NaN"];
       case 5:
         if (PROTOBUF_PREDICT_TRUE(static_cast<::PROTOBUF_NAMESPACE_ID::uint8>(tag) == 45)) {
           velocity_y_m_s_ = ::PROTOBUF_NAMESPACE_ID::internal::UnalignedLoad<float>(ptr);
           ptr += sizeof(float);
         } else goto handle_unusual;
         continue;
-      // float velocity_z_m_s = 6 [(.mavsdk.options.default_value) = "NAN"];
+      // float velocity_z_m_s = 6 [(.mavsdk.options.default_value) = "NaN"];
       case 6:
         if (PROTOBUF_PREDICT_TRUE(static_cast<::PROTOBUF_NAMESPACE_ID::uint8>(tag) == 53)) {
           velocity_z_m_s_ = ::PROTOBUF_NAMESPACE_ID::internal::UnalignedLoad<float>(ptr);
@@ -1045,37 +1045,37 @@ failure:
   ::PROTOBUF_NAMESPACE_ID::uint32 cached_has_bits = 0;
   (void) cached_has_bits;
 
-  // double latitude_deg = 1 [(.mavsdk.options.default_value) = "NAN"];
+  // double latitude_deg = 1 [(.mavsdk.options.default_value) = "NaN"];
   if (!(this->latitude_deg() <= 0 && this->latitude_deg() >= 0)) {
     target = stream->EnsureSpace(target);
     target = ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::WriteDoubleToArray(1, this->_internal_latitude_deg(), target);
   }
 
-  // double longitude_deg = 2 [(.mavsdk.options.default_value) = "NAN"];
+  // double longitude_deg = 2 [(.mavsdk.options.default_value) = "NaN"];
   if (!(this->longitude_deg() <= 0 && this->longitude_deg() >= 0)) {
     target = stream->EnsureSpace(target);
     target = ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::WriteDoubleToArray(2, this->_internal_longitude_deg(), target);
   }
 
-  // float absolute_altitude_m = 3 [(.mavsdk.options.default_value) = "NAN"];
+  // float absolute_altitude_m = 3 [(.mavsdk.options.default_value) = "NaN"];
   if (!(this->absolute_altitude_m() <= 0 && this->absolute_altitude_m() >= 0)) {
     target = stream->EnsureSpace(target);
     target = ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::WriteFloatToArray(3, this->_internal_absolute_altitude_m(), target);
   }
 
-  // float velocity_x_m_s = 4 [(.mavsdk.options.default_value) = "NAN"];
+  // float velocity_x_m_s = 4 [(.mavsdk.options.default_value) = "NaN"];
   if (!(this->velocity_x_m_s() <= 0 && this->velocity_x_m_s() >= 0)) {
     target = stream->EnsureSpace(target);
     target = ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::WriteFloatToArray(4, this->_internal_velocity_x_m_s(), target);
   }
 
-  // float velocity_y_m_s = 5 [(.mavsdk.options.default_value) = "NAN"];
+  // float velocity_y_m_s = 5 [(.mavsdk.options.default_value) = "NaN"];
   if (!(this->velocity_y_m_s() <= 0 && this->velocity_y_m_s() >= 0)) {
     target = stream->EnsureSpace(target);
     target = ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::WriteFloatToArray(5, this->_internal_velocity_y_m_s(), target);
   }
 
-  // float velocity_z_m_s = 6 [(.mavsdk.options.default_value) = "NAN"];
+  // float velocity_z_m_s = 6 [(.mavsdk.options.default_value) = "NaN"];
   if (!(this->velocity_z_m_s() <= 0 && this->velocity_z_m_s() >= 0)) {
     target = stream->EnsureSpace(target);
     target = ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::WriteFloatToArray(6, this->_internal_velocity_z_m_s(), target);
@@ -1097,32 +1097,32 @@ size_t TargetLocation::ByteSizeLong() const {
   // Prevent compiler warnings about cached_has_bits being unused
   (void) cached_has_bits;
 
-  // double latitude_deg = 1 [(.mavsdk.options.default_value) = "NAN"];
+  // double latitude_deg = 1 [(.mavsdk.options.default_value) = "NaN"];
   if (!(this->latitude_deg() <= 0 && this->latitude_deg() >= 0)) {
     total_size += 1 + 8;
   }
 
-  // double longitude_deg = 2 [(.mavsdk.options.default_value) = "NAN"];
+  // double longitude_deg = 2 [(.mavsdk.options.default_value) = "NaN"];
   if (!(this->longitude_deg() <= 0 && this->longitude_deg() >= 0)) {
     total_size += 1 + 8;
   }
 
-  // float absolute_altitude_m = 3 [(.mavsdk.options.default_value) = "NAN"];
+  // float absolute_altitude_m = 3 [(.mavsdk.options.default_value) = "NaN"];
   if (!(this->absolute_altitude_m() <= 0 && this->absolute_altitude_m() >= 0)) {
     total_size += 1 + 4;
   }
 
-  // float velocity_x_m_s = 4 [(.mavsdk.options.default_value) = "NAN"];
+  // float velocity_x_m_s = 4 [(.mavsdk.options.default_value) = "NaN"];
   if (!(this->velocity_x_m_s() <= 0 && this->velocity_x_m_s() >= 0)) {
     total_size += 1 + 4;
   }
 
-  // float velocity_y_m_s = 5 [(.mavsdk.options.default_value) = "NAN"];
+  // float velocity_y_m_s = 5 [(.mavsdk.options.default_value) = "NaN"];
   if (!(this->velocity_y_m_s() <= 0 && this->velocity_y_m_s() >= 0)) {
     total_size += 1 + 4;
   }
 
-  // float velocity_z_m_s = 6 [(.mavsdk.options.default_value) = "NAN"];
+  // float velocity_z_m_s = 6 [(.mavsdk.options.default_value) = "NaN"];
   if (!(this->velocity_z_m_s() <= 0 && this->velocity_z_m_s() >= 0)) {
     total_size += 1 + 4;
   }
