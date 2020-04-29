@@ -173,7 +173,9 @@ private:
 
     Ftp::result_callback_t _curr_op_result_callback{};
     // _curr_op_progress_callback is used for download_callback_t as well as upload_callback_t
-    static_assert(std::is_same<Ftp::download_callback_t, Ftp::upload_callback_t>::value);
+    static_assert(
+        std::is_same<Ftp::download_callback_t, Ftp::upload_callback_t>::value,
+        "callback types don't match");
     Ftp::download_callback_t _curr_op_progress_callback{};
     Ftp::list_directory_callback_t _curr_dir_items_result_callback{};
 
