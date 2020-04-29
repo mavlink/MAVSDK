@@ -47,12 +47,12 @@ message Config {
 
 // Target location for the vehicle to follow
 message TargetLocation {
-    double latitude_deg = 1 [(mavsdk.options.default_value)="NAN"]; // Target latitude in degrees
-    double longitude_deg = 2 [(mavsdk.options.default_value)="NAN"]; // Target longitude in degrees
-    float absolute_altitude_m = 3 [(mavsdk.options.default_value)="NAN"]; // Target altitude in meters above MSL
-    float velocity_x_m_s = 4 [(mavsdk.options.default_value)="NAN"]; // Target velocity in X axis, in meters per second
-    float velocity_y_m_s = 5 [(mavsdk.options.default_value)="NAN"]; // Target velocity in Y axis, in meters per second
-    float velocity_z_m_s = 6 [(mavsdk.options.default_value)="NAN"]; // Target velocity in Z axis, in meters per second
+    double latitude_deg = 1 [(mavsdk.options.default_value)="NaN"]; // Target latitude in degrees
+    double longitude_deg = 2 [(mavsdk.options.default_value)="NaN"]; // Target longitude in degrees
+    float absolute_altitude_m = 3 [(mavsdk.options.default_value)="NaN"]; // Target altitude in meters above MSL
+    float velocity_x_m_s = 4 [(mavsdk.options.default_value)="NaN"]; // Target velocity in X axis, in meters per second
+    float velocity_y_m_s = 5 [(mavsdk.options.default_value)="NaN"]; // Target velocity in Y axis, in meters per second
+    float velocity_z_m_s = 6 [(mavsdk.options.default_value)="NaN"]; // Target velocity in Z axis, in meters per second
 }
 
 message GetConfigRequest {}
