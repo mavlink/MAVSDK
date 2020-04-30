@@ -29,7 +29,8 @@ command -v ${protoc_binary} && command -v ${protoc_grpc_binary} || {
     exit 1
 }
 
-plugin_list="action calibration geofence gimbal camera core info mission mocap offboard param shell telemetry"
+plugin_list="action calibration camera follow_me ftp geofence gimbal info mission mission_raw mocap offboard param shell telemetry"
+plugin_list_and_core="${plugin_list} core"
 
 echo ""
 echo "-------------------------------"
@@ -40,7 +41,7 @@ echo ""
 
 mkdir -p ${backend_generated_dir}
 
-for plugin in ${plugin_list}; do
+for plugin in ${plugin_list_and_core}; do
     ${protoc_binary} -I ${proto_dir} --cpp_out=${backend_generated_dir} --grpc_out=${backend_generated_dir} --plugin=protoc-gen-grpc=${protoc_grpc_binary} ${proto_dir}/${plugin}/${plugin}.proto
 done
 
@@ -59,7 +60,7 @@ template_path_plugin_h="${script_dir}/../templates/plugin_h"
 template_path_plugin_cpp="${script_dir}/../templates/plugin_cpp"
 template_path_mavsdk_server="${script_dir}/../templates/mavsdk_server"
 
-for plugin in action calibration camera ftp geofence gimbal info mission mission_raw mocap offboard param shell telemetry; do
+for plugin in ${plugin_list}; do
     ${protoc_binary} -I ${proto_dir} --custom_out=${tmp_output_dir} --plugin=protoc-gen-custom=${protoc_gen_dcsdk} --custom_opt="file_ext=h,template_path=${template_path_plugin_h}" ${proto_dir}/${plugin}/${plugin}.proto
     mv ${tmp_output_dir}/${plugin}/$(snake_case_to_camel_case ${plugin}).h ${script_dir}/../src/plugins/${plugin}/include/plugins/${plugin}/${plugin}.h
 

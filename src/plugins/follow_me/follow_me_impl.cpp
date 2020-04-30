@@ -9,8 +9,7 @@ namespace mavsdk {
 FollowMeImpl::FollowMeImpl(System& system) : PluginImplBase(system)
 {
     // (Lat, Lon, Alt) => double, (vx, vy, vz) => float
-    _last_location = _target_location =
-        FollowMe::TargetLocation{double(NAN), double(NAN), double(NAN), NAN, NAN, NAN};
+    _last_location = _target_location = FollowMe::TargetLocation{};
     _parent->register_plugin(this);
 }
 
@@ -73,7 +72,7 @@ void FollowMeImpl::disable()
     stop_sending_target_location();
 }
 
-const FollowMe::Config& FollowMeImpl::get_config() const
+FollowMe::Config FollowMeImpl::get_config() const
 {
     return _config;
 }
@@ -83,7 +82,7 @@ FollowMe::Result FollowMeImpl::set_config(const FollowMe::Config& config)
     // Valdidate configuration
     if (!is_config_ok(config)) {
         LogErr() << debug_str << "set_config() failed. Last configuration is preserved.";
-        return FollowMe::Result::SET_CONFIG_FAILED;
+        return FollowMe::Result::SetConfigFailed;
     }
 
     auto height = config.min_height_m;
@@ -129,10 +128,10 @@ FollowMe::Result FollowMeImpl::set_config(const FollowMe::Config& config)
         }
     }
 
-    return (success ? FollowMe::Result::SUCCESS : FollowMe::Result::SET_CONFIG_FAILED);
+    return (success ? FollowMe::Result::Success : FollowMe::Result::SetConfigFailed);
 }
 
-void FollowMeImpl::set_target_location(const FollowMe::TargetLocation& location)
+FollowMe::Result FollowMeImpl::set_target_location(const FollowMe::TargetLocation& location)
 {
     _mutex.lock();
     _target_location = location;
@@ -141,7 +140,7 @@ void FollowMeImpl::set_target_location(const FollowMe::TargetLocation& location)
 
     if (_mode != Mode::ACTIVE) {
         _mutex.unlock();
-        return;
+        return FollowMe::Result::NotActive;
     }
     // If set already, reschedule it.
     if (_target_location_cookie) {
@@ -156,9 +155,11 @@ void FollowMeImpl::set_target_location(const FollowMe::TargetLocation& location)
 
     // Send it immediately for now.
     send_target_location();
+
+    return FollowMe::Result::Success;
 }
 
-const FollowMe::TargetLocation& FollowMeImpl::get_last_location() const
+FollowMe::TargetLocation FollowMeImpl::get_last_location() const
 {
     std::lock_guard<std::mutex> lock(_mutex);
     return _last_location;
@@ -175,7 +176,7 @@ FollowMe::Result FollowMeImpl::start()
     FollowMe::Result result =
         to_follow_me_result(_parent->set_flight_mode(SystemImpl::FlightMode::FOLLOW_ME));
 
-    if (result == FollowMe::Result::SUCCESS) {
+    if (result == FollowMe::Result::Success) {
         // If location was set before, lets send it to vehicle
         std::lock_guard<std::mutex> lock(
             _mutex); // locking is not necessary here but lets do it for integrity
@@ -202,17 +203,17 @@ bool FollowMeImpl::is_config_ok(const FollowMe::Config& config) const
 {
     auto config_ok = false;
 
-    if (config.min_height_m < FollowMe::Config::MIN_HEIGHT_M) {
+    if (config.min_height_m < CONFIG_MIN_HEIGHT_M) {
         LogErr() << debug_str << "Err: Min height must be atleast 8.0 meters";
-    } else if (config.follow_distance_m < FollowMe::Config::MIN_FOLLOW_DIST_M) {
+    } else if (config.follow_distance_m < CONFIG_MIN_FOLLOW_DIST_M) {
         LogErr() << debug_str << "Err: Min Follow distance must be atleast 1.0 meter";
     } else if (
-        config.follow_direction < FollowMe::Config::FollowDirection::FRONT_RIGHT ||
-        config.follow_direction > FollowMe::Config::FollowDirection::NONE) {
+        config.follow_direction < FollowMe::Config::FollowDirection::None ||
+        config.follow_direction > FollowMe::Config::FollowDirection::FrontLeft) {
         LogErr() << debug_str << "Err: Invalid Follow direction";
     } else if (
-        config.responsiveness < FollowMe::Config::MIN_RESPONSIVENESS ||
-        config.responsiveness > FollowMe::Config::MAX_RESPONSIVENESS) {
+        config.responsiveness < CONFIG_MIN_RESPONSIVENESS ||
+        config.responsiveness > CONFIG_MAX_RESPONSIVENESS) {
         LogErr() << debug_str << "Err: Responsiveness must be in range (0.0 to 1.0)";
     } else { // Config is OK
         config_ok = true;
@@ -225,19 +226,19 @@ FollowMe::Result FollowMeImpl::to_follow_me_result(MAVLinkCommands::Result resul
 {
     switch (result) {
         case MAVLinkCommands::Result::SUCCESS:
-            return FollowMe::Result::SUCCESS;
+            return FollowMe::Result::Success;
         case MAVLinkCommands::Result::NO_SYSTEM:
-            return FollowMe::Result::NO_SYSTEM;
+            return FollowMe::Result::NoSystem;
         case MAVLinkCommands::Result::CONNECTION_ERROR:
-            return FollowMe::Result::CONNECTION_ERROR;
+            return FollowMe::Result::ConnectionError;
         case MAVLinkCommands::Result::BUSY:
-            return FollowMe::Result::BUSY;
+            return FollowMe::Result::Busy;
         case MAVLinkCommands::Result::COMMAND_DENIED:
-            return FollowMe::Result::COMMAND_DENIED;
+            return FollowMe::Result::CommandDenied;
         case MAVLinkCommands::Result::TIMEOUT:
-            return FollowMe::Result::TIMEOUT;
+            return FollowMe::Result::Timeout;
         default:
-            return FollowMe::Result::UNKNOWN;
+            return FollowMe::Result::Unknown;
     }
 }
 
