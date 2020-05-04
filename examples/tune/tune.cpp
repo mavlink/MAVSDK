@@ -65,50 +65,56 @@ int main(int argc, char** argv)
         return 1;
     }
 
-    std::vector<Tune::SongElement> the_tune;
-    the_tune.push_back(Tune::SongElement::DURATION_4);
-    the_tune.push_back(Tune::SongElement::NOTE_G);
-    the_tune.push_back(Tune::SongElement::NOTE_A);
-    the_tune.push_back(Tune::SongElement::NOTE_B);
-    the_tune.push_back(Tune::SongElement::FLAT);
-    the_tune.push_back(Tune::SongElement::OCTAVE_UP);
-    the_tune.push_back(Tune::SongElement::DURATION_1);
-    the_tune.push_back(Tune::SongElement::NOTE_E);
-    the_tune.push_back(Tune::SongElement::FLAT);
-    the_tune.push_back(Tune::SongElement::OCTAVE_DOWN);
-    the_tune.push_back(Tune::SongElement::DURATION_4);
-    the_tune.push_back(Tune::SongElement::NOTE_PAUSE);
-    the_tune.push_back(Tune::SongElement::NOTE_F);
-    the_tune.push_back(Tune::SongElement::NOTE_G);
-    the_tune.push_back(Tune::SongElement::NOTE_A);
-    the_tune.push_back(Tune::SongElement::OCTAVE_UP);
-    the_tune.push_back(Tune::SongElement::DURATION_2);
-    the_tune.push_back(Tune::SongElement::NOTE_D);
-    the_tune.push_back(Tune::SongElement::NOTE_D);
-    the_tune.push_back(Tune::SongElement::OCTAVE_DOWN);
-    the_tune.push_back(Tune::SongElement::DURATION_4);
-    the_tune.push_back(Tune::SongElement::NOTE_PAUSE);
-    the_tune.push_back(Tune::SongElement::NOTE_E);
-    the_tune.push_back(Tune::SongElement::FLAT);
-    the_tune.push_back(Tune::SongElement::NOTE_F);
-    the_tune.push_back(Tune::SongElement::NOTE_G);
-    the_tune.push_back(Tune::SongElement::OCTAVE_UP);
-    the_tune.push_back(Tune::SongElement::DURATION_1);
-    the_tune.push_back(Tune::SongElement::NOTE_C);
-    the_tune.push_back(Tune::SongElement::OCTAVE_DOWN);
-    the_tune.push_back(Tune::SongElement::DURATION_4);
-    the_tune.push_back(Tune::SongElement::NOTE_PAUSE);
-    the_tune.push_back(Tune::SongElement::NOTE_A);
-    the_tune.push_back(Tune::SongElement::OCTAVE_UP);
-    the_tune.push_back(Tune::SongElement::NOTE_C);
-    the_tune.push_back(Tune::SongElement::OCTAVE_DOWN);
-    the_tune.push_back(Tune::SongElement::NOTE_B);
-    the_tune.push_back(Tune::SongElement::FLAT);
-    the_tune.push_back(Tune::SongElement::DURATION_2);
-    the_tune.push_back(Tune::SongElement::NOTE_G);
+    std::vector<Tune::SongElement> song_elements;
+    song_elements.push_back(Tune::SongElement::Duration4);
+    song_elements.push_back(Tune::SongElement::NoteG);
+    song_elements.push_back(Tune::SongElement::NoteA);
+    song_elements.push_back(Tune::SongElement::NoteB);
+    song_elements.push_back(Tune::SongElement::Flat);
+    song_elements.push_back(Tune::SongElement::OctaveUp);
+    song_elements.push_back(Tune::SongElement::Duration1);
+    song_elements.push_back(Tune::SongElement::NoteE);
+    song_elements.push_back(Tune::SongElement::Flat);
+    song_elements.push_back(Tune::SongElement::OctaveDown);
+    song_elements.push_back(Tune::SongElement::Duration4);
+    song_elements.push_back(Tune::SongElement::NotePause);
+    song_elements.push_back(Tune::SongElement::NoteF);
+    song_elements.push_back(Tune::SongElement::NoteG);
+    song_elements.push_back(Tune::SongElement::NoteA);
+    song_elements.push_back(Tune::SongElement::OctaveUp);
+    song_elements.push_back(Tune::SongElement::Duration2);
+    song_elements.push_back(Tune::SongElement::NoteD);
+    song_elements.push_back(Tune::SongElement::NoteD);
+    song_elements.push_back(Tune::SongElement::OctaveDown);
+    song_elements.push_back(Tune::SongElement::Duration4);
+    song_elements.push_back(Tune::SongElement::NotePause);
+    song_elements.push_back(Tune::SongElement::NoteE);
+    song_elements.push_back(Tune::SongElement::Flat);
+    song_elements.push_back(Tune::SongElement::NoteF);
+    song_elements.push_back(Tune::SongElement::NoteG);
+    song_elements.push_back(Tune::SongElement::OctaveUp);
+    song_elements.push_back(Tune::SongElement::Duration1);
+    song_elements.push_back(Tune::SongElement::NoteC);
+    song_elements.push_back(Tune::SongElement::OctaveDown);
+    song_elements.push_back(Tune::SongElement::Duration4);
+    song_elements.push_back(Tune::SongElement::NotePause);
+    song_elements.push_back(Tune::SongElement::NoteA);
+    song_elements.push_back(Tune::SongElement::OctaveUp);
+    song_elements.push_back(Tune::SongElement::NoteC);
+    song_elements.push_back(Tune::SongElement::OctaveDown);
+    song_elements.push_back(Tune::SongElement::NoteB);
+    song_elements.push_back(Tune::SongElement::Flat);
+    song_elements.push_back(Tune::SongElement::Duration2);
+    song_elements.push_back(Tune::SongElement::NoteG);
 
     Tune tune(system);
-    tune.play_tune_async(the_tune, 200, [](const Tune::Result result) {
+    const int tempo = 200;
+
+    Tune::TuneDescription tune_description;
+    tune_description.song_elements = song_elements;
+    tune_description.tempo = tempo;
+
+    tune.play_tune_async(tune_description, [](const Tune::Result result) {
         std::cout << NORMAL_CONSOLE_TEXT << "Tune sent with result: " << Tune::result_str(result)
                   << std::endl;
     });

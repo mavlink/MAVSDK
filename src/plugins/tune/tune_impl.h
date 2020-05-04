@@ -18,10 +18,8 @@ public:
     void enable() override;
     void disable() override;
 
-    void play_tune_async(
-        const std::vector<Tune::SongElement>& tune,
-        const int tempo,
-        const Tune::result_callback_t& callback);
+    void
+    play_tune_async(const Tune::TuneDescription& tune, const Tune::result_callback_t& callback);
 
     // Non-copyable
     TuneImpl(const TuneImpl&) = delete;
