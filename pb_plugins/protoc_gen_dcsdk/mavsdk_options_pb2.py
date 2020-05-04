@@ -19,8 +19,8 @@ DESCRIPTOR = _descriptor.FileDescriptor(
   name='mavsdk_options.proto',
   package='mavsdk.options',
   syntax='proto3',
-  serialized_options=None,
-  serialized_pb=b'\n\x14mavsdk_options.proto\x12\x0emavsdk.options\x1a google/protobuf/descriptor.proto**\n\tAsyncType\x12\t\n\x05\x41SYNC\x10\x00\x12\x08\n\x04SYNC\x10\x01\x12\x08\n\x04\x42OTH\x10\x02:6\n\rdefault_value\x12\x1d.google.protobuf.FieldOptions\x18\xd0\x86\x03 \x01(\t:0\n\x07\x65psilon\x12\x1d.google.protobuf.FieldOptions\x18\xd1\x86\x03 \x01(\x01:O\n\nasync_type\x12\x1e.google.protobuf.MethodOptions\x18\xd0\x86\x03 \x01(\x0e\x32\x19.mavsdk.options.AsyncTypeb\x06proto3'
+  serialized_options=b'\n\016options.mavsdk',
+  serialized_pb=b'\n\x14mavsdk_options.proto\x12\x0emavsdk.options\x1a google/protobuf/descriptor.proto**\n\tAsyncType\x12\t\n\x05\x41SYNC\x10\x00\x12\x08\n\x04SYNC\x10\x01\x12\x08\n\x04\x42OTH\x10\x02:6\n\rdefault_value\x12\x1d.google.protobuf.FieldOptions\x18\xd0\x86\x03 \x01(\t:0\n\x07\x65psilon\x12\x1d.google.protobuf.FieldOptions\x18\xd1\x86\x03 \x01(\x01:O\n\nasync_type\x12\x1e.google.protobuf.MethodOptions\x18\xd0\x86\x03 \x01(\x0e\x32\x19.mavsdk.options.AsyncType:3\n\tis_finite\x12\x1e.google.protobuf.MethodOptions\x18\xd1\x86\x03 \x01(\x08\x42\x10\n\x0eoptions.mavsdkb\x06proto3'
   ,
   dependencies=[google_dot_protobuf_dot_descriptor__pb2.DESCRIPTOR,])
 
@@ -79,16 +79,27 @@ async_type = _descriptor.FieldDescriptor(
   message_type=None, enum_type=None, containing_type=None,
   is_extension=True, extension_scope=None,
   serialized_options=None, file=DESCRIPTOR)
+IS_FINITE_FIELD_NUMBER = 50001
+is_finite = _descriptor.FieldDescriptor(
+  name='is_finite', full_name='mavsdk.options.is_finite', index=3,
+  number=50001, type=8, cpp_type=7, label=1,
+  has_default_value=False, default_value=False,
+  message_type=None, enum_type=None, containing_type=None,
+  is_extension=True, extension_scope=None,
+  serialized_options=None, file=DESCRIPTOR)
 
 DESCRIPTOR.enum_types_by_name['AsyncType'] = _ASYNCTYPE
 DESCRIPTOR.extensions_by_name['default_value'] = default_value
 DESCRIPTOR.extensions_by_name['epsilon'] = epsilon
 DESCRIPTOR.extensions_by_name['async_type'] = async_type
+DESCRIPTOR.extensions_by_name['is_finite'] = is_finite
 _sym_db.RegisterFileDescriptor(DESCRIPTOR)
 
 google_dot_protobuf_dot_descriptor__pb2.FieldOptions.RegisterExtension(default_value)
 google_dot_protobuf_dot_descriptor__pb2.FieldOptions.RegisterExtension(epsilon)
 async_type.enum_type = _ASYNCTYPE
 google_dot_protobuf_dot_descriptor__pb2.MethodOptions.RegisterExtension(async_type)
+google_dot_protobuf_dot_descriptor__pb2.MethodOptions.RegisterExtension(is_finite)
 
+DESCRIPTOR._options = None
 # @@protoc_insertion_point(module_scope)

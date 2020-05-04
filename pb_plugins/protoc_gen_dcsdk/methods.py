@@ -30,6 +30,7 @@ class Method(object):
         self.extract_params(pb_method, requests)
         self.extract_return_type_and_name(pb_method, responses)
         self.extract_async_type(pb_method)
+        self.extract_is_finite(pb_method)
 
     def extract_params(self, pb_method, requests):
         method_input = pb_method.input_type.split(".")[-1]
@@ -78,13 +79,21 @@ class Method(object):
         self._is_sync = True
         self._is_async = True
 
-        if "[mavsdk.options.async_type]" in pb_method.options.__str__():
-            async_type = pb_method.options.__str__().split(':')[-1].strip()
+        for option_line in pb_method.options.__str__().splitlines():
+            if "[mavsdk.options.async_type]" in option_line:
+                async_type = option_line.split(':')[-1].strip()
 
-            if async_type == "SYNC":
-                self._is_async = False
-            elif async_type == "ASYNC":
-                self._is_sync = False
+                if async_type == "SYNC":
+                    self._is_async = False
+                elif async_type == "ASYNC":
+                    self._is_sync = False
+
+    def extract_is_finite(self, pb_method):
+        self._is_finite = False
+
+        for method_descriptor in pb_method.options.Extensions:
+            if method_descriptor.name == "is_finite":
+                self._is_finite = pb_method.options.Extensions[method_descriptor]
 
     @property
     def is_stream(self):
@@ -273,4 +282,5 @@ class Stream(Method):
             method_description=self._method_description,
             has_result=self._has_result,
             is_async=self._is_async,
-            is_sync=self._is_sync)
+            is_sync=self._is_sync,
+            is_finite=self._is_finite)

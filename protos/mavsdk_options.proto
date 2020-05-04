@@ -8,14 +8,12 @@ option java_package = "options.mavsdk";
 
 extend google.protobuf.FieldOptions {
     string default_value = 50000;
-}
-
-extend google.protobuf.FieldOptions {
     double epsilon = 50001;
 }
 
 extend google.protobuf.MethodOptions {
     AsyncType async_type = 50000;
+    bool is_finite = 50001;
 }
 
 enum AsyncType {

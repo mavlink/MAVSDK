@@ -18,11 +18,17 @@ service FtpService {
     /*
      * Downloads a file to local directory.
      */
-    rpc SubscribeDownload(SubscribeDownloadRequest) returns(stream DownloadResponse) { option (mavsdk.options.async_type) = ASYNC; }
+    rpc SubscribeDownload(SubscribeDownloadRequest) returns(stream DownloadResponse) {
+        option (mavsdk.options.async_type) = ASYNC;
+        option (mavsdk.options.is_finite) = true;
+    }
     /*
      * Uploads local file to remote directory.
      */
-    rpc SubscribeUpload(SubscribeUploadRequest) returns(stream UploadResponse) { option (mavsdk.options.async_type) = ASYNC; }
+    rpc SubscribeUpload(SubscribeUploadRequest) returns(stream UploadResponse) {
+        option (mavsdk.options.async_type) = ASYNC;
+        option (mavsdk.options.is_finite) = true;
+    }
     /*
      * Lists items from a remote directory.
      */

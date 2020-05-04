@@ -10,13 +10,25 @@ option java_outer_classname = "CalibrationProto";
 // Enable to calibrate sensors of a drone such as gyro, accelerometer, and magnetometer.
 service CalibrationService {
     // Perform gyro calibration.
-    rpc SubscribeCalibrateGyro(SubscribeCalibrateGyroRequest) returns(stream CalibrateGyroResponse) { option (mavsdk.options.async_type) = ASYNC; }
+    rpc SubscribeCalibrateGyro(SubscribeCalibrateGyroRequest) returns(stream CalibrateGyroResponse) {
+        option (mavsdk.options.async_type) = ASYNC;
+        option (mavsdk.options.is_finite) = true;
+    }
     // Perform accelerometer calibration.
-    rpc SubscribeCalibrateAccelerometer(SubscribeCalibrateAccelerometerRequest) returns(stream CalibrateAccelerometerResponse) { option (mavsdk.options.async_type) = ASYNC; }
+    rpc SubscribeCalibrateAccelerometer(SubscribeCalibrateAccelerometerRequest) returns(stream CalibrateAccelerometerResponse) {
+        option (mavsdk.options.async_type) = ASYNC;
+        option (mavsdk.options.is_finite) = true;
+    }
     // Perform magnetometer caliration.
-    rpc SubscribeCalibrateMagnetometer(SubscribeCalibrateMagnetometerRequest) returns(stream CalibrateMagnetometerResponse) { option (mavsdk.options.async_type) = ASYNC; }
+    rpc SubscribeCalibrateMagnetometer(SubscribeCalibrateMagnetometerRequest) returns(stream CalibrateMagnetometerResponse) {
+        option (mavsdk.options.async_type) = ASYNC;
+        option (mavsdk.options.is_finite) = true;
+    }
     // Perform gimbal accelerometer calibration.
-    rpc SubscribeCalibrateGimbalAccelerometer(SubscribeCalibrateGimbalAccelerometerRequest) returns(stream CalibrateGimbalAccelerometerResponse) { option (mavsdk.options.async_type) = ASYNC; }
+    rpc SubscribeCalibrateGimbalAccelerometer(SubscribeCalibrateGimbalAccelerometerRequest) returns(stream CalibrateGimbalAccelerometerResponse) {
+        option (mavsdk.options.async_type) = ASYNC;
+        option (mavsdk.options.is_finite) = true;
+    }
     // Cancel ongoing calibration process.
     rpc Cancel(CancelRequest) returns(CancelResponse) { option (mavsdk.options.async_type) = SYNC; }
 }
