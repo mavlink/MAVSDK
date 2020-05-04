@@ -392,27 +392,27 @@ const char descriptor_table_protodef_calibration_2fcalibration_2eproto[] PROTOBU
   "gressData\022\037\n\014has_progress\030\001 \001(\010B\t\202\265\030\005fal"
   "se\022\031\n\010progress\030\002 \001(\002B\007\202\265\030\003NaN\022\"\n\017has_sta"
   "tus_text\030\003 \001(\010B\t\202\265\030\005false\022\023\n\013status_text"
-  "\030\004 \001(\t2\367\005\n\022CalibrationService\022\206\001\n\026Subscr"
+  "\030\004 \001(\t2\207\006\n\022CalibrationService\022\212\001\n\026Subscr"
   "ibeCalibrateGyro\0225.mavsdk.rpc.calibratio"
   "n.SubscribeCalibrateGyroRequest\032-.mavsdk"
-  ".rpc.calibration.CalibrateGyroResponse\"\004"
-  "\200\265\030\0000\001\022\241\001\n\037SubscribeCalibrateAcceleromet"
-  "er\022>.mavsdk.rpc.calibration.SubscribeCal"
-  "ibrateAccelerometerRequest\0326.mavsdk.rpc."
-  "calibration.CalibrateAccelerometerRespon"
-  "se\"\004\200\265\030\0000\001\022\236\001\n\036SubscribeCalibrateMagneto"
-  "meter\022=.mavsdk.rpc.calibration.Subscribe"
-  "CalibrateMagnetometerRequest\0325.mavsdk.rp"
-  "c.calibration.CalibrateMagnetometerRespo"
-  "nse\"\004\200\265\030\0000\001\022\263\001\n%SubscribeCalibrateGimbal"
-  "Accelerometer\022D.mavsdk.rpc.calibration.S"
-  "ubscribeCalibrateGimbalAccelerometerRequ"
-  "est\032<.mavsdk.rpc.calibration.CalibrateGi"
-  "mbalAccelerometerResponse\"\004\200\265\030\0000\001\022]\n\006Can"
-  "cel\022%.mavsdk.rpc.calibration.CancelReque"
-  "st\032&.mavsdk.rpc.calibration.CancelRespon"
-  "se\"\004\200\265\030\001B)\n\025io.mavsdk.calibrationB\020Calib"
-  "rationProtob\006proto3"
+  ".rpc.calibration.CalibrateGyroResponse\"\010"
+  "\200\265\030\000\210\265\030\0010\001\022\245\001\n\037SubscribeCalibrateAcceler"
+  "ometer\022>.mavsdk.rpc.calibration.Subscrib"
+  "eCalibrateAccelerometerRequest\0326.mavsdk."
+  "rpc.calibration.CalibrateAccelerometerRe"
+  "sponse\"\010\200\265\030\000\210\265\030\0010\001\022\242\001\n\036SubscribeCalibrat"
+  "eMagnetometer\022=.mavsdk.rpc.calibration.S"
+  "ubscribeCalibrateMagnetometerRequest\0325.m"
+  "avsdk.rpc.calibration.CalibrateMagnetome"
+  "terResponse\"\010\200\265\030\000\210\265\030\0010\001\022\267\001\n%SubscribeCal"
+  "ibrateGimbalAccelerometer\022D.mavsdk.rpc.c"
+  "alibration.SubscribeCalibrateGimbalAccel"
+  "erometerRequest\032<.mavsdk.rpc.calibration"
+  ".CalibrateGimbalAccelerometerResponse\"\010\200"
+  "\265\030\000\210\265\030\0010\001\022]\n\006Cancel\022%.mavsdk.rpc.calibra"
+  "tion.CancelRequest\032&.mavsdk.rpc.calibrat"
+  "ion.CancelResponse\"\004\200\265\030\001B)\n\025io.mavsdk.ca"
+  "librationB\020CalibrationProtob\006proto3"
   ;
 static const ::PROTOBUF_NAMESPACE_ID::internal::DescriptorTable*const descriptor_table_calibration_2fcalibration_2eproto_deps[1] = {
   &::descriptor_table_mavsdk_5foptions_2eproto,
@@ -434,7 +434,7 @@ static ::PROTOBUF_NAMESPACE_ID::internal::SCCInfoBase*const descriptor_table_cal
 static ::PROTOBUF_NAMESPACE_ID::internal::once_flag descriptor_table_calibration_2fcalibration_2eproto_once;
 static bool descriptor_table_calibration_2fcalibration_2eproto_initialized = false;
 const ::PROTOBUF_NAMESPACE_ID::internal::DescriptorTable descriptor_table_calibration_2fcalibration_2eproto = {
-  &descriptor_table_calibration_2fcalibration_2eproto_initialized, descriptor_table_protodef_calibration_2fcalibration_2eproto, "calibration/calibration.proto", 2219,
+  &descriptor_table_calibration_2fcalibration_2eproto_initialized, descriptor_table_protodef_calibration_2fcalibration_2eproto, "calibration/calibration.proto", 2235,
   &descriptor_table_calibration_2fcalibration_2eproto_once, descriptor_table_calibration_2fcalibration_2eproto_sccs, descriptor_table_calibration_2fcalibration_2eproto_deps, 12, 1,
   schemas, file_default_instances, TableStruct_calibration_2fcalibration_2eproto::offsets,
   file_level_metadata_calibration_2fcalibration_2eproto, 12, file_level_enum_descriptors_calibration_2fcalibration_2eproto, file_level_service_descriptors_calibration_2fcalibration_2eproto,

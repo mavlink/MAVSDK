@@ -71,8 +71,8 @@ void check_interval_on(std::shared_ptr<Camera> camera, bool on)
     auto ret = prom->get_future();
 
     // Check if status is correct
-    camera->status_async([prom, on, camera](Camera::Status status) {
-        camera->status_async(nullptr);
+    camera->subscribe_status([prom, on, camera](Camera::Status status) {
+        camera->subscribe_status(nullptr);
         EXPECT_EQ(status.photo_interval_on, on);
         prom->set_value();
     });

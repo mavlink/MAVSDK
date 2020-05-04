@@ -279,14 +279,15 @@ public:
     Result set_current_mission_item(int32_t index) const;
 
     /**
-     * @brief Callback type for mission_progress_async.
+     * @brief Callback type for subscribe_mission_progress.
      */
+
     typedef std::function<void(MissionProgress)> mission_progress_callback_t;
 
     /**
      * @brief Subscribe to mission progress updates.
      */
-    void mission_progress_async(mission_progress_callback_t callback);
+    void subscribe_mission_progress(mission_progress_callback_t callback);
 
     /**
      * @brief Poll for 'MissionProgress' (blocking).
@@ -296,8 +297,9 @@ public:
     MissionProgress mission_progress() const;
 
     /**
-     * @brief Callback type for mission_changed_async.
+     * @brief Callback type for subscribe_mission_changed.
      */
+
     typedef std::function<void(bool)> mission_changed_callback_t;
 
     /**
@@ -309,7 +311,7 @@ public:
      *
      * @param callback Callback to notify about change.
      */
-    void mission_changed_async(mission_changed_callback_t callback);
+    void subscribe_mission_changed(mission_changed_callback_t callback);
 
     /**
      * @brief Returns a human-readable English string for a Result.

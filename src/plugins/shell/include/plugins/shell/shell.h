@@ -78,8 +78,9 @@ public:
     Result send(std::string command) const;
 
     /**
-     * @brief Callback type for receive_async.
+     * @brief Callback type for subscribe_receive.
      */
+
     typedef std::function<void(std::string)> receive_callback_t;
 
     /**
@@ -88,7 +89,7 @@ public:
      * This subscription needs to be made before a command line is sent, otherwise, no response will
      * be sent.
      */
-    void receive_async(receive_callback_t callback);
+    void subscribe_receive(receive_callback_t callback);
 
     /**
      * @brief Returns a human-readable English string for a Result.

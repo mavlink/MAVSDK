@@ -347,14 +347,15 @@ public:
     std::pair<Result, bool> is_mission_finished() const;
 
     /**
-     * @brief Callback type for mission_progress_async.
+     * @brief Callback type for subscribe_mission_progress.
      */
+
     typedef std::function<void(MissionProgress)> mission_progress_callback_t;
 
     /**
      * @brief Subscribe to mission progress updates.
      */
-    void mission_progress_async(mission_progress_callback_t callback);
+    void subscribe_mission_progress(mission_progress_callback_t callback);
 
     /**
      * @brief Poll for 'MissionProgress' (blocking).

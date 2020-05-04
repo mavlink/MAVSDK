@@ -92,7 +92,7 @@ std::pair<Mission::Result, bool> Mission::is_mission_finished() const
     return _impl->is_mission_finished();
 }
 
-void Mission::mission_progress_async(mission_progress_callback_t callback)
+void Mission::subscribe_mission_progress(mission_progress_callback_t callback)
 {
     _impl->mission_progress_async(callback);
 }

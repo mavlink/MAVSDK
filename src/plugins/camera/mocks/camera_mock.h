@@ -17,15 +17,15 @@ public:
     MOCK_CONST_METHOD1(set_mode, Camera::Result(Camera::Mode)){};
     MOCK_CONST_METHOD1(set_setting, Camera::Result(Camera::Setting)){};
     MOCK_CONST_METHOD1(get_setting, std::pair<Camera::Result, Camera::Setting>(Camera::Setting)){};
-    MOCK_CONST_METHOD1(mode_async, void(Camera::mode_callback_t)){};
+    MOCK_CONST_METHOD1(subscribe_mode, void(Camera::mode_callback_t)){};
     MOCK_CONST_METHOD1(set_video_stream_settings, void(Camera::VideoStreamSettings)){};
-    MOCK_CONST_METHOD1(video_stream_info_async, void(Camera::video_stream_info_callback_t)){};
-    MOCK_CONST_METHOD1(capture_info_async, void(Camera::capture_info_callback_t)){};
-    MOCK_CONST_METHOD1(status_async, void(Camera::status_callback_t)){};
-    MOCK_CONST_METHOD1(information_async, void(Camera::information_callback_t)){};
-    MOCK_CONST_METHOD1(current_settings_async, void(Camera::current_settings_callback_t)){};
+    MOCK_CONST_METHOD1(subscribe_video_stream_info, void(Camera::video_stream_info_callback_t)){};
+    MOCK_CONST_METHOD1(subscribe_capture_info, void(Camera::capture_info_callback_t)){};
+    MOCK_CONST_METHOD1(subscribe_status, void(Camera::status_callback_t)){};
+    MOCK_CONST_METHOD1(subscribe_information, void(Camera::information_callback_t)){};
+    MOCK_CONST_METHOD1(subscribe_current_settings, void(Camera::current_settings_callback_t)){};
     MOCK_CONST_METHOD1(
-        possible_setting_options_async, void(Camera::possible_setting_options_callback_t)){};
+        subscribe_possible_setting_options, void(Camera::possible_setting_options_callback_t)){};
     MOCK_CONST_METHOD3(
         set_option_async,
         void(Camera::result_callback_t, const std::string&, const Camera::Option)){};

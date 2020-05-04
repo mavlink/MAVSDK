@@ -95,7 +95,7 @@ Camera::Result Camera::set_mode(Mode mode) const
     return _impl->set_mode(mode);
 }
 
-void Camera::mode_async(mode_callback_t callback)
+void Camera::subscribe_mode(mode_callback_t callback)
 {
     _impl->mode_async(callback);
 }
@@ -105,7 +105,7 @@ Camera::Mode Camera::mode() const
     return _impl->mode();
 }
 
-void Camera::information_async(information_callback_t callback)
+void Camera::subscribe_information(information_callback_t callback)
 {
     _impl->information_async(callback);
 }
@@ -115,7 +115,7 @@ Camera::Information Camera::information() const
     return _impl->information();
 }
 
-void Camera::video_stream_info_async(video_stream_info_callback_t callback)
+void Camera::subscribe_video_stream_info(video_stream_info_callback_t callback)
 {
     _impl->video_stream_info_async(callback);
 }
@@ -125,12 +125,12 @@ Camera::VideoStreamInfo Camera::video_stream_info() const
     return _impl->video_stream_info();
 }
 
-void Camera::capture_info_async(capture_info_callback_t callback)
+void Camera::subscribe_capture_info(capture_info_callback_t callback)
 {
     _impl->capture_info_async(callback);
 }
 
-void Camera::status_async(status_callback_t callback)
+void Camera::subscribe_status(status_callback_t callback)
 {
     _impl->status_async(callback);
 }
@@ -140,12 +140,12 @@ Camera::Status Camera::status() const
     return _impl->status();
 }
 
-void Camera::current_settings_async(current_settings_callback_t callback)
+void Camera::subscribe_current_settings(current_settings_callback_t callback)
 {
     _impl->current_settings_async(callback);
 }
 
-void Camera::possible_setting_options_async(possible_setting_options_callback_t callback)
+void Camera::subscribe_possible_setting_options(possible_setting_options_callback_t callback)
 {
     _impl->possible_setting_options_async(callback);
 }

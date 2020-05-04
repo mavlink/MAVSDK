@@ -88,7 +88,7 @@ MissionRaw::Result MissionRaw::set_current_mission_item(int32_t index) const
     return _impl->set_current_mission_item(index);
 }
 
-void MissionRaw::mission_progress_async(mission_progress_callback_t callback)
+void MissionRaw::subscribe_mission_progress(mission_progress_callback_t callback)
 {
     _impl->mission_progress_async(callback);
 }
@@ -98,7 +98,7 @@ MissionRaw::MissionProgress MissionRaw::mission_progress() const
     return _impl->mission_progress();
 }
 
-void MissionRaw::mission_changed_async(mission_changed_callback_t callback)
+void MissionRaw::subscribe_mission_changed(mission_changed_callback_t callback)
 {
     _impl->mission_changed_async(callback);
 }

@@ -105,6 +105,7 @@ public:
     /**
      * @brief Callback type for calibrate_gyro_async.
      */
+
     typedef std::function<void(Calibration::Result, ProgressData)> calibrate_gyro_callback_t;
 
     /**
@@ -115,6 +116,7 @@ public:
     /**
      * @brief Callback type for calibrate_accelerometer_async.
      */
+
     typedef std::function<void(Calibration::Result, ProgressData)>
         calibrate_accelerometer_callback_t;
 
@@ -126,6 +128,7 @@ public:
     /**
      * @brief Callback type for calibrate_magnetometer_async.
      */
+
     typedef std::function<void(Calibration::Result, ProgressData)>
         calibrate_magnetometer_callback_t;
 
@@ -137,6 +140,7 @@ public:
     /**
      * @brief Callback type for calibrate_gimbal_accelerometer_async.
      */
+
     typedef std::function<void(Calibration::Result, ProgressData)>
         calibrate_gimbal_accelerometer_callback_t;
 

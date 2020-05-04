@@ -406,7 +406,7 @@ public:
 
         std::mutex subscribe_mutex{};
 
-        _mission.mission_progress_async(
+        _mission.subscribe_mission_progress(
             [this, &writer, &stream_closed_promise, is_finished, &subscribe_mutex](
                 const mavsdk::Mission::MissionProgress mission_progress) {
                 rpc::mission::MissionProgressResponse rpc_response;
@@ -416,7 +416,7 @@ public:
 
                 std::lock_guard<std::mutex> lock(subscribe_mutex);
                 if (!*is_finished && !writer->Write(rpc_response)) {
-                    _mission.mission_progress_async(nullptr);
+                    _mission.subscribe_mission_progress(nullptr);
                     *is_finished = true;
                     unregister_stream_stop_promise(stream_closed_promise);
                     stream_closed_promise->set_value();

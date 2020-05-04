@@ -102,6 +102,10 @@ static const int kAsyncTypeFieldNumber = 50000;
 extern ::PROTOBUF_NAMESPACE_ID::internal::ExtensionIdentifier< ::google::protobuf::MethodOptions,
     ::PROTOBUF_NAMESPACE_ID::internal::EnumTypeTraits< ::mavsdk::options::AsyncType, ::mavsdk::options::AsyncType_IsValid>, 14, false >
   async_type;
+static const int kIsFiniteFieldNumber = 50001;
+extern ::PROTOBUF_NAMESPACE_ID::internal::ExtensionIdentifier< ::google::protobuf::MethodOptions,
+    ::PROTOBUF_NAMESPACE_ID::internal::PrimitiveTypeTraits< bool >, 8, false >
+  is_finite;
 
 // ===================================================================
 

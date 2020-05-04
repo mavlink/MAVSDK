@@ -45,7 +45,7 @@ TEST_F(SitlTest, FollowMeOneLocation)
     Action::Result action_ret = action->arm();
     ASSERT_EQ(Action::Result::Success, action_ret);
 
-    telemetry->flight_mode_async(std::bind(
+    telemetry->subscribe_flight_mode(std::bind(
         [&](Telemetry::FlightMode flight_mode) {
             const FollowMe::TargetLocation last_location = follow_me->get_last_location();
 
@@ -121,7 +121,7 @@ TEST_F(SitlTest, FollowMeMultiLocationWithConfig)
     Action::Result action_ret = action->arm();
     ASSERT_EQ(Action::Result::Success, action_ret);
 
-    telemetry->flight_mode_async(std::bind(
+    telemetry->subscribe_flight_mode(std::bind(
         [&](Telemetry::FlightMode flight_mode) {
             const FollowMe::TargetLocation last_location = follow_me->get_last_location();
 

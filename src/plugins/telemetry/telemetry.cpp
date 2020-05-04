@@ -39,7 +39,7 @@ Telemetry::Telemetry(System& system) : PluginBase(), _impl{new TelemetryImpl(sys
 
 Telemetry::~Telemetry() {}
 
-void Telemetry::position_async(position_callback_t callback)
+void Telemetry::subscribe_position(position_callback_t callback)
 {
     _impl->position_async(callback);
 }
@@ -49,7 +49,7 @@ Telemetry::Position Telemetry::position() const
     return _impl->position();
 }
 
-void Telemetry::home_async(home_callback_t callback)
+void Telemetry::subscribe_home(home_callback_t callback)
 {
     _impl->home_async(callback);
 }
@@ -59,7 +59,7 @@ Telemetry::Position Telemetry::home() const
     return _impl->home();
 }
 
-void Telemetry::in_air_async(in_air_callback_t callback)
+void Telemetry::subscribe_in_air(in_air_callback_t callback)
 {
     _impl->in_air_async(callback);
 }
@@ -69,7 +69,7 @@ bool Telemetry::in_air() const
     return _impl->in_air();
 }
 
-void Telemetry::landed_state_async(landed_state_callback_t callback)
+void Telemetry::subscribe_landed_state(landed_state_callback_t callback)
 {
     _impl->landed_state_async(callback);
 }
@@ -79,7 +79,7 @@ Telemetry::LandedState Telemetry::landed_state() const
     return _impl->landed_state();
 }
 
-void Telemetry::armed_async(armed_callback_t callback)
+void Telemetry::subscribe_armed(armed_callback_t callback)
 {
     _impl->armed_async(callback);
 }
@@ -89,7 +89,7 @@ bool Telemetry::armed() const
     return _impl->armed();
 }
 
-void Telemetry::attitude_quaternion_async(attitude_quaternion_callback_t callback)
+void Telemetry::subscribe_attitude_quaternion(attitude_quaternion_callback_t callback)
 {
     _impl->attitude_quaternion_async(callback);
 }
@@ -99,7 +99,7 @@ Telemetry::Quaternion Telemetry::attitude_quaternion() const
     return _impl->attitude_quaternion();
 }
 
-void Telemetry::attitude_euler_async(attitude_euler_callback_t callback)
+void Telemetry::subscribe_attitude_euler(attitude_euler_callback_t callback)
 {
     _impl->attitude_euler_async(callback);
 }
@@ -109,7 +109,7 @@ Telemetry::EulerAngle Telemetry::attitude_euler() const
     return _impl->attitude_euler();
 }
 
-void Telemetry::attitude_angular_velocity_body_async(
+void Telemetry::subscribe_attitude_angular_velocity_body(
     attitude_angular_velocity_body_callback_t callback)
 {
     _impl->attitude_angular_velocity_body_async(callback);
@@ -120,7 +120,7 @@ Telemetry::AngularVelocityBody Telemetry::attitude_angular_velocity_body() const
     return _impl->attitude_angular_velocity_body();
 }
 
-void Telemetry::camera_attitude_quaternion_async(camera_attitude_quaternion_callback_t callback)
+void Telemetry::subscribe_camera_attitude_quaternion(camera_attitude_quaternion_callback_t callback)
 {
     _impl->camera_attitude_quaternion_async(callback);
 }
@@ -130,7 +130,7 @@ Telemetry::Quaternion Telemetry::camera_attitude_quaternion() const
     return _impl->camera_attitude_quaternion();
 }
 
-void Telemetry::camera_attitude_euler_async(camera_attitude_euler_callback_t callback)
+void Telemetry::subscribe_camera_attitude_euler(camera_attitude_euler_callback_t callback)
 {
     _impl->camera_attitude_euler_async(callback);
 }
@@ -140,7 +140,7 @@ Telemetry::EulerAngle Telemetry::camera_attitude_euler() const
     return _impl->camera_attitude_euler();
 }
 
-void Telemetry::ground_speed_ned_async(ground_speed_ned_callback_t callback)
+void Telemetry::subscribe_ground_speed_ned(ground_speed_ned_callback_t callback)
 {
     _impl->ground_speed_ned_async(callback);
 }
@@ -150,7 +150,7 @@ Telemetry::SpeedNed Telemetry::ground_speed_ned() const
     return _impl->ground_speed_ned();
 }
 
-void Telemetry::gps_info_async(gps_info_callback_t callback)
+void Telemetry::subscribe_gps_info(gps_info_callback_t callback)
 {
     _impl->gps_info_async(callback);
 }
@@ -160,7 +160,7 @@ Telemetry::GpsInfo Telemetry::gps_info() const
     return _impl->gps_info();
 }
 
-void Telemetry::battery_async(battery_callback_t callback)
+void Telemetry::subscribe_battery(battery_callback_t callback)
 {
     _impl->battery_async(callback);
 }
@@ -170,7 +170,7 @@ Telemetry::Battery Telemetry::battery() const
     return _impl->battery();
 }
 
-void Telemetry::flight_mode_async(flight_mode_callback_t callback)
+void Telemetry::subscribe_flight_mode(flight_mode_callback_t callback)
 {
     _impl->flight_mode_async(callback);
 }
@@ -180,7 +180,7 @@ Telemetry::FlightMode Telemetry::flight_mode() const
     return _impl->flight_mode();
 }
 
-void Telemetry::health_async(health_callback_t callback)
+void Telemetry::subscribe_health(health_callback_t callback)
 {
     _impl->health_async(callback);
 }
@@ -190,7 +190,7 @@ Telemetry::Health Telemetry::health() const
     return _impl->health();
 }
 
-void Telemetry::rc_status_async(rc_status_callback_t callback)
+void Telemetry::subscribe_rc_status(rc_status_callback_t callback)
 {
     _impl->rc_status_async(callback);
 }
@@ -200,7 +200,7 @@ Telemetry::RcStatus Telemetry::rc_status() const
     return _impl->rc_status();
 }
 
-void Telemetry::status_text_async(status_text_callback_t callback)
+void Telemetry::subscribe_status_text(status_text_callback_t callback)
 {
     _impl->status_text_async(callback);
 }
@@ -210,7 +210,7 @@ Telemetry::StatusText Telemetry::status_text() const
     return _impl->status_text();
 }
 
-void Telemetry::actuator_control_target_async(actuator_control_target_callback_t callback)
+void Telemetry::subscribe_actuator_control_target(actuator_control_target_callback_t callback)
 {
     _impl->actuator_control_target_async(callback);
 }
@@ -220,7 +220,7 @@ Telemetry::ActuatorControlTarget Telemetry::actuator_control_target() const
     return _impl->actuator_control_target();
 }
 
-void Telemetry::actuator_output_status_async(actuator_output_status_callback_t callback)
+void Telemetry::subscribe_actuator_output_status(actuator_output_status_callback_t callback)
 {
     _impl->actuator_output_status_async(callback);
 }
@@ -230,7 +230,7 @@ Telemetry::ActuatorOutputStatus Telemetry::actuator_output_status() const
     return _impl->actuator_output_status();
 }
 
-void Telemetry::odometry_async(odometry_callback_t callback)
+void Telemetry::subscribe_odometry(odometry_callback_t callback)
 {
     _impl->odometry_async(callback);
 }
@@ -240,7 +240,7 @@ Telemetry::Odometry Telemetry::odometry() const
     return _impl->odometry();
 }
 
-void Telemetry::position_velocity_ned_async(position_velocity_ned_callback_t callback)
+void Telemetry::subscribe_position_velocity_ned(position_velocity_ned_callback_t callback)
 {
     _impl->position_velocity_ned_async(callback);
 }
@@ -250,7 +250,7 @@ Telemetry::PositionVelocityNed Telemetry::position_velocity_ned() const
     return _impl->position_velocity_ned();
 }
 
-void Telemetry::ground_truth_async(ground_truth_callback_t callback)
+void Telemetry::subscribe_ground_truth(ground_truth_callback_t callback)
 {
     _impl->ground_truth_async(callback);
 }
@@ -260,7 +260,7 @@ Telemetry::GroundTruth Telemetry::ground_truth() const
     return _impl->ground_truth();
 }
 
-void Telemetry::fixedwing_metrics_async(fixedwing_metrics_callback_t callback)
+void Telemetry::subscribe_fixedwing_metrics(fixedwing_metrics_callback_t callback)
 {
     _impl->fixedwing_metrics_async(callback);
 }
@@ -270,7 +270,7 @@ Telemetry::FixedwingMetrics Telemetry::fixedwing_metrics() const
     return _impl->fixedwing_metrics();
 }
 
-void Telemetry::imu_async(imu_callback_t callback)
+void Telemetry::subscribe_imu(imu_callback_t callback)
 {
     _impl->imu_async(callback);
 }
@@ -280,7 +280,7 @@ Telemetry::Imu Telemetry::imu() const
     return _impl->imu();
 }
 
-void Telemetry::health_all_ok_async(health_all_ok_callback_t callback)
+void Telemetry::subscribe_health_all_ok(health_all_ok_callback_t callback)
 {
     _impl->health_all_ok_async(callback);
 }
@@ -290,7 +290,7 @@ bool Telemetry::health_all_ok() const
     return _impl->health_all_ok();
 }
 
-void Telemetry::unix_epoch_time_async(unix_epoch_time_callback_t callback)
+void Telemetry::subscribe_unix_epoch_time(unix_epoch_time_callback_t callback)
 {
     _impl->unix_epoch_time_async(callback);
 }

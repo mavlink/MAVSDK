@@ -105,6 +105,7 @@ public:
     /**
      * @brief Callback type for download_async.
      */
+
     typedef std::function<void(Ftp::Result, ProgressData)> download_callback_t;
 
     /**
@@ -116,6 +117,7 @@ public:
     /**
      * @brief Callback type for upload_async.
      */
+
     typedef std::function<void(Ftp::Result, ProgressData)> upload_callback_t;
 
     /**

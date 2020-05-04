@@ -328,7 +328,7 @@ public:
 
         std::mutex subscribe_mutex{};
 
-        _mission_raw.mission_progress_async(
+        _mission_raw.subscribe_mission_progress(
             [this, &writer, &stream_closed_promise, is_finished, &subscribe_mutex](
                 const mavsdk::MissionRaw::MissionProgress mission_progress) {
                 rpc::mission_raw::MissionProgressResponse rpc_response;
@@ -338,7 +338,7 @@ public:
 
                 std::lock_guard<std::mutex> lock(subscribe_mutex);
                 if (!*is_finished && !writer->Write(rpc_response)) {
-                    _mission_raw.mission_progress_async(nullptr);
+                    _mission_raw.subscribe_mission_progress(nullptr);
                     *is_finished = true;
                     unregister_stream_stop_promise(stream_closed_promise);
                     stream_closed_promise->set_value();
@@ -362,7 +362,7 @@ public:
 
         std::mutex subscribe_mutex{};
 
-        _mission_raw.mission_changed_async(
+        _mission_raw.subscribe_mission_changed(
             [this, &writer, &stream_closed_promise, is_finished, &subscribe_mutex](
                 const bool mission_changed) {
                 rpc::mission_raw::MissionChangedResponse rpc_response;
@@ -371,7 +371,7 @@ public:
 
                 std::lock_guard<std::mutex> lock(subscribe_mutex);
                 if (!*is_finished && !writer->Write(rpc_response)) {
-                    _mission_raw.mission_changed_async(nullptr);
+                    _mission_raw.subscribe_mission_changed(nullptr);
                     *is_finished = true;
                     unregister_stream_stop_promise(stream_closed_promise);
                     stream_closed_promise->set_value();

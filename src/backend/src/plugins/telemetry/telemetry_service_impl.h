@@ -1080,7 +1080,7 @@ public:
 
         std::mutex subscribe_mutex{};
 
-        _telemetry.position_async(
+        _telemetry.subscribe_position(
             [this, &writer, &stream_closed_promise, is_finished, &subscribe_mutex](
                 const mavsdk::Telemetry::Position position) {
                 rpc::telemetry::PositionResponse rpc_response;
@@ -1089,7 +1089,7 @@ public:
 
                 std::lock_guard<std::mutex> lock(subscribe_mutex);
                 if (!*is_finished && !writer->Write(rpc_response)) {
-                    _telemetry.position_async(nullptr);
+                    _telemetry.subscribe_position(nullptr);
                     *is_finished = true;
                     unregister_stream_stop_promise(stream_closed_promise);
                     stream_closed_promise->set_value();
@@ -1113,7 +1113,7 @@ public:
 
         std::mutex subscribe_mutex{};
 
-        _telemetry.home_async(
+        _telemetry.subscribe_home(
             [this, &writer, &stream_closed_promise, is_finished, &subscribe_mutex](
                 const mavsdk::Telemetry::Position home) {
                 rpc::telemetry::HomeResponse rpc_response;
@@ -1122,7 +1122,7 @@ public:
 
                 std::lock_guard<std::mutex> lock(subscribe_mutex);
                 if (!*is_finished && !writer->Write(rpc_response)) {
-                    _telemetry.home_async(nullptr);
+                    _telemetry.subscribe_home(nullptr);
                     *is_finished = true;
                     unregister_stream_stop_promise(stream_closed_promise);
                     stream_closed_promise->set_value();
@@ -1146,7 +1146,7 @@ public:
 
         std::mutex subscribe_mutex{};
 
-        _telemetry.in_air_async(
+        _telemetry.subscribe_in_air(
             [this, &writer, &stream_closed_promise, is_finished, &subscribe_mutex](
                 const bool in_air) {
                 rpc::telemetry::InAirResponse rpc_response;
@@ -1155,7 +1155,7 @@ public:
 
                 std::lock_guard<std::mutex> lock(subscribe_mutex);
                 if (!*is_finished && !writer->Write(rpc_response)) {
-                    _telemetry.in_air_async(nullptr);
+                    _telemetry.subscribe_in_air(nullptr);
                     *is_finished = true;
                     unregister_stream_stop_promise(stream_closed_promise);
                     stream_closed_promise->set_value();
@@ -1179,7 +1179,7 @@ public:
 
         std::mutex subscribe_mutex{};
 
-        _telemetry.landed_state_async(
+        _telemetry.subscribe_landed_state(
             [this, &writer, &stream_closed_promise, is_finished, &subscribe_mutex](
                 const mavsdk::Telemetry::LandedState landed_state) {
                 rpc::telemetry::LandedStateResponse rpc_response;
@@ -1188,7 +1188,7 @@ public:
 
                 std::lock_guard<std::mutex> lock(subscribe_mutex);
                 if (!*is_finished && !writer->Write(rpc_response)) {
-                    _telemetry.landed_state_async(nullptr);
+                    _telemetry.subscribe_landed_state(nullptr);
                     *is_finished = true;
                     unregister_stream_stop_promise(stream_closed_promise);
                     stream_closed_promise->set_value();
@@ -1212,7 +1212,7 @@ public:
 
         std::mutex subscribe_mutex{};
 
-        _telemetry.armed_async(
+        _telemetry.subscribe_armed(
             [this, &writer, &stream_closed_promise, is_finished, &subscribe_mutex](
                 const bool armed) {
                 rpc::telemetry::ArmedResponse rpc_response;
@@ -1221,7 +1221,7 @@ public:
 
                 std::lock_guard<std::mutex> lock(subscribe_mutex);
                 if (!*is_finished && !writer->Write(rpc_response)) {
-                    _telemetry.armed_async(nullptr);
+                    _telemetry.subscribe_armed(nullptr);
                     *is_finished = true;
                     unregister_stream_stop_promise(stream_closed_promise);
                     stream_closed_promise->set_value();
@@ -1245,7 +1245,7 @@ public:
 
         std::mutex subscribe_mutex{};
 
-        _telemetry.attitude_quaternion_async(
+        _telemetry.subscribe_attitude_quaternion(
             [this, &writer, &stream_closed_promise, is_finished, &subscribe_mutex](
                 const mavsdk::Telemetry::Quaternion attitude_quaternion) {
                 rpc::telemetry::AttitudeQuaternionResponse rpc_response;
@@ -1255,7 +1255,7 @@ public:
 
                 std::lock_guard<std::mutex> lock(subscribe_mutex);
                 if (!*is_finished && !writer->Write(rpc_response)) {
-                    _telemetry.attitude_quaternion_async(nullptr);
+                    _telemetry.subscribe_attitude_quaternion(nullptr);
                     *is_finished = true;
                     unregister_stream_stop_promise(stream_closed_promise);
                     stream_closed_promise->set_value();
@@ -1279,7 +1279,7 @@ public:
 
         std::mutex subscribe_mutex{};
 
-        _telemetry.attitude_euler_async(
+        _telemetry.subscribe_attitude_euler(
             [this, &writer, &stream_closed_promise, is_finished, &subscribe_mutex](
                 const mavsdk::Telemetry::EulerAngle attitude_euler) {
                 rpc::telemetry::AttitudeEulerResponse rpc_response;
@@ -1289,7 +1289,7 @@ public:
 
                 std::lock_guard<std::mutex> lock(subscribe_mutex);
                 if (!*is_finished && !writer->Write(rpc_response)) {
-                    _telemetry.attitude_euler_async(nullptr);
+                    _telemetry.subscribe_attitude_euler(nullptr);
                     *is_finished = true;
                     unregister_stream_stop_promise(stream_closed_promise);
                     stream_closed_promise->set_value();
@@ -1313,7 +1313,7 @@ public:
 
         std::mutex subscribe_mutex{};
 
-        _telemetry.attitude_angular_velocity_body_async(
+        _telemetry.subscribe_attitude_angular_velocity_body(
             [this, &writer, &stream_closed_promise, is_finished, &subscribe_mutex](
                 const mavsdk::Telemetry::AngularVelocityBody attitude_angular_velocity_body) {
                 rpc::telemetry::AttitudeAngularVelocityBodyResponse rpc_response;
@@ -1323,7 +1323,7 @@ public:
 
                 std::lock_guard<std::mutex> lock(subscribe_mutex);
                 if (!*is_finished && !writer->Write(rpc_response)) {
-                    _telemetry.attitude_angular_velocity_body_async(nullptr);
+                    _telemetry.subscribe_attitude_angular_velocity_body(nullptr);
                     *is_finished = true;
                     unregister_stream_stop_promise(stream_closed_promise);
                     stream_closed_promise->set_value();
@@ -1347,7 +1347,7 @@ public:
 
         std::mutex subscribe_mutex{};
 
-        _telemetry.camera_attitude_quaternion_async(
+        _telemetry.subscribe_camera_attitude_quaternion(
             [this, &writer, &stream_closed_promise, is_finished, &subscribe_mutex](
                 const mavsdk::Telemetry::Quaternion camera_attitude_quaternion) {
                 rpc::telemetry::CameraAttitudeQuaternionResponse rpc_response;
@@ -1357,7 +1357,7 @@ public:
 
                 std::lock_guard<std::mutex> lock(subscribe_mutex);
                 if (!*is_finished && !writer->Write(rpc_response)) {
-                    _telemetry.camera_attitude_quaternion_async(nullptr);
+                    _telemetry.subscribe_camera_attitude_quaternion(nullptr);
                     *is_finished = true;
                     unregister_stream_stop_promise(stream_closed_promise);
                     stream_closed_promise->set_value();
@@ -1381,7 +1381,7 @@ public:
 
         std::mutex subscribe_mutex{};
 
-        _telemetry.camera_attitude_euler_async(
+        _telemetry.subscribe_camera_attitude_euler(
             [this, &writer, &stream_closed_promise, is_finished, &subscribe_mutex](
                 const mavsdk::Telemetry::EulerAngle camera_attitude_euler) {
                 rpc::telemetry::CameraAttitudeEulerResponse rpc_response;
@@ -1391,7 +1391,7 @@ public:
 
                 std::lock_guard<std::mutex> lock(subscribe_mutex);
                 if (!*is_finished && !writer->Write(rpc_response)) {
-                    _telemetry.camera_attitude_euler_async(nullptr);
+                    _telemetry.subscribe_camera_attitude_euler(nullptr);
                     *is_finished = true;
                     unregister_stream_stop_promise(stream_closed_promise);
                     stream_closed_promise->set_value();
@@ -1415,7 +1415,7 @@ public:
 
         std::mutex subscribe_mutex{};
 
-        _telemetry.ground_speed_ned_async(
+        _telemetry.subscribe_ground_speed_ned(
             [this, &writer, &stream_closed_promise, is_finished, &subscribe_mutex](
                 const mavsdk::Telemetry::SpeedNed ground_speed_ned) {
                 rpc::telemetry::GroundSpeedNedResponse rpc_response;
@@ -1425,7 +1425,7 @@ public:
 
                 std::lock_guard<std::mutex> lock(subscribe_mutex);
                 if (!*is_finished && !writer->Write(rpc_response)) {
-                    _telemetry.ground_speed_ned_async(nullptr);
+                    _telemetry.subscribe_ground_speed_ned(nullptr);
                     *is_finished = true;
                     unregister_stream_stop_promise(stream_closed_promise);
                     stream_closed_promise->set_value();
@@ -1449,7 +1449,7 @@ public:
 
         std::mutex subscribe_mutex{};
 
-        _telemetry.gps_info_async(
+        _telemetry.subscribe_gps_info(
             [this, &writer, &stream_closed_promise, is_finished, &subscribe_mutex](
                 const mavsdk::Telemetry::GpsInfo gps_info) {
                 rpc::telemetry::GpsInfoResponse rpc_response;
@@ -1458,7 +1458,7 @@ public:
 
                 std::lock_guard<std::mutex> lock(subscribe_mutex);
                 if (!*is_finished && !writer->Write(rpc_response)) {
-                    _telemetry.gps_info_async(nullptr);
+                    _telemetry.subscribe_gps_info(nullptr);
                     *is_finished = true;
                     unregister_stream_stop_promise(stream_closed_promise);
                     stream_closed_promise->set_value();
@@ -1482,7 +1482,7 @@ public:
 
         std::mutex subscribe_mutex{};
 
-        _telemetry.battery_async(
+        _telemetry.subscribe_battery(
             [this, &writer, &stream_closed_promise, is_finished, &subscribe_mutex](
                 const mavsdk::Telemetry::Battery battery) {
                 rpc::telemetry::BatteryResponse rpc_response;
@@ -1491,7 +1491,7 @@ public:
 
                 std::lock_guard<std::mutex> lock(subscribe_mutex);
                 if (!*is_finished && !writer->Write(rpc_response)) {
-                    _telemetry.battery_async(nullptr);
+                    _telemetry.subscribe_battery(nullptr);
                     *is_finished = true;
                     unregister_stream_stop_promise(stream_closed_promise);
                     stream_closed_promise->set_value();
@@ -1515,7 +1515,7 @@ public:
 
         std::mutex subscribe_mutex{};
 
-        _telemetry.flight_mode_async(
+        _telemetry.subscribe_flight_mode(
             [this, &writer, &stream_closed_promise, is_finished, &subscribe_mutex](
                 const mavsdk::Telemetry::FlightMode flight_mode) {
                 rpc::telemetry::FlightModeResponse rpc_response;
@@ -1524,7 +1524,7 @@ public:
 
                 std::lock_guard<std::mutex> lock(subscribe_mutex);
                 if (!*is_finished && !writer->Write(rpc_response)) {
-                    _telemetry.flight_mode_async(nullptr);
+                    _telemetry.subscribe_flight_mode(nullptr);
                     *is_finished = true;
                     unregister_stream_stop_promise(stream_closed_promise);
                     stream_closed_promise->set_value();
@@ -1548,7 +1548,7 @@ public:
 
         std::mutex subscribe_mutex{};
 
-        _telemetry.health_async(
+        _telemetry.subscribe_health(
             [this, &writer, &stream_closed_promise, is_finished, &subscribe_mutex](
                 const mavsdk::Telemetry::Health health) {
                 rpc::telemetry::HealthResponse rpc_response;
@@ -1557,7 +1557,7 @@ public:
 
                 std::lock_guard<std::mutex> lock(subscribe_mutex);
                 if (!*is_finished && !writer->Write(rpc_response)) {
-                    _telemetry.health_async(nullptr);
+                    _telemetry.subscribe_health(nullptr);
                     *is_finished = true;
                     unregister_stream_stop_promise(stream_closed_promise);
                     stream_closed_promise->set_value();
@@ -1581,7 +1581,7 @@ public:
 
         std::mutex subscribe_mutex{};
 
-        _telemetry.rc_status_async(
+        _telemetry.subscribe_rc_status(
             [this, &writer, &stream_closed_promise, is_finished, &subscribe_mutex](
                 const mavsdk::Telemetry::RcStatus rc_status) {
                 rpc::telemetry::RcStatusResponse rpc_response;
@@ -1590,7 +1590,7 @@ public:
 
                 std::lock_guard<std::mutex> lock(subscribe_mutex);
                 if (!*is_finished && !writer->Write(rpc_response)) {
-                    _telemetry.rc_status_async(nullptr);
+                    _telemetry.subscribe_rc_status(nullptr);
                     *is_finished = true;
                     unregister_stream_stop_promise(stream_closed_promise);
                     stream_closed_promise->set_value();
@@ -1614,7 +1614,7 @@ public:
 
         std::mutex subscribe_mutex{};
 
-        _telemetry.status_text_async(
+        _telemetry.subscribe_status_text(
             [this, &writer, &stream_closed_promise, is_finished, &subscribe_mutex](
                 const mavsdk::Telemetry::StatusText status_text) {
                 rpc::telemetry::StatusTextResponse rpc_response;
@@ -1624,7 +1624,7 @@ public:
 
                 std::lock_guard<std::mutex> lock(subscribe_mutex);
                 if (!*is_finished && !writer->Write(rpc_response)) {
-                    _telemetry.status_text_async(nullptr);
+                    _telemetry.subscribe_status_text(nullptr);
                     *is_finished = true;
                     unregister_stream_stop_promise(stream_closed_promise);
                     stream_closed_promise->set_value();
@@ -1648,7 +1648,7 @@ public:
 
         std::mutex subscribe_mutex{};
 
-        _telemetry.actuator_control_target_async(
+        _telemetry.subscribe_actuator_control_target(
             [this, &writer, &stream_closed_promise, is_finished, &subscribe_mutex](
                 const mavsdk::Telemetry::ActuatorControlTarget actuator_control_target) {
                 rpc::telemetry::ActuatorControlTargetResponse rpc_response;
@@ -1658,7 +1658,7 @@ public:
 
                 std::lock_guard<std::mutex> lock(subscribe_mutex);
                 if (!*is_finished && !writer->Write(rpc_response)) {
-                    _telemetry.actuator_control_target_async(nullptr);
+                    _telemetry.subscribe_actuator_control_target(nullptr);
                     *is_finished = true;
                     unregister_stream_stop_promise(stream_closed_promise);
                     stream_closed_promise->set_value();
@@ -1682,7 +1682,7 @@ public:
 
         std::mutex subscribe_mutex{};
 
-        _telemetry.actuator_output_status_async(
+        _telemetry.subscribe_actuator_output_status(
             [this, &writer, &stream_closed_promise, is_finished, &subscribe_mutex](
                 const mavsdk::Telemetry::ActuatorOutputStatus actuator_output_status) {
                 rpc::telemetry::ActuatorOutputStatusResponse rpc_response;
@@ -1692,7 +1692,7 @@ public:
 
                 std::lock_guard<std::mutex> lock(subscribe_mutex);
                 if (!*is_finished && !writer->Write(rpc_response)) {
-                    _telemetry.actuator_output_status_async(nullptr);
+                    _telemetry.subscribe_actuator_output_status(nullptr);
                     *is_finished = true;
                     unregister_stream_stop_promise(stream_closed_promise);
                     stream_closed_promise->set_value();
@@ -1716,7 +1716,7 @@ public:
 
         std::mutex subscribe_mutex{};
 
-        _telemetry.odometry_async(
+        _telemetry.subscribe_odometry(
             [this, &writer, &stream_closed_promise, is_finished, &subscribe_mutex](
                 const mavsdk::Telemetry::Odometry odometry) {
                 rpc::telemetry::OdometryResponse rpc_response;
@@ -1725,7 +1725,7 @@ public:
 
                 std::lock_guard<std::mutex> lock(subscribe_mutex);
                 if (!*is_finished && !writer->Write(rpc_response)) {
-                    _telemetry.odometry_async(nullptr);
+                    _telemetry.subscribe_odometry(nullptr);
                     *is_finished = true;
                     unregister_stream_stop_promise(stream_closed_promise);
                     stream_closed_promise->set_value();
@@ -1749,7 +1749,7 @@ public:
 
         std::mutex subscribe_mutex{};
 
-        _telemetry.position_velocity_ned_async(
+        _telemetry.subscribe_position_velocity_ned(
             [this, &writer, &stream_closed_promise, is_finished, &subscribe_mutex](
                 const mavsdk::Telemetry::PositionVelocityNed position_velocity_ned) {
                 rpc::telemetry::PositionVelocityNedResponse rpc_response;
@@ -1759,7 +1759,7 @@ public:
 
                 std::lock_guard<std::mutex> lock(subscribe_mutex);
                 if (!*is_finished && !writer->Write(rpc_response)) {
-                    _telemetry.position_velocity_ned_async(nullptr);
+                    _telemetry.subscribe_position_velocity_ned(nullptr);
                     *is_finished = true;
                     unregister_stream_stop_promise(stream_closed_promise);
                     stream_closed_promise->set_value();
@@ -1783,7 +1783,7 @@ public:
 
         std::mutex subscribe_mutex{};
 
-        _telemetry.ground_truth_async(
+        _telemetry.subscribe_ground_truth(
             [this, &writer, &stream_closed_promise, is_finished, &subscribe_mutex](
                 const mavsdk::Telemetry::GroundTruth ground_truth) {
                 rpc::telemetry::GroundTruthResponse rpc_response;
@@ -1793,7 +1793,7 @@ public:
 
                 std::lock_guard<std::mutex> lock(subscribe_mutex);
                 if (!*is_finished && !writer->Write(rpc_response)) {
-                    _telemetry.ground_truth_async(nullptr);
+                    _telemetry.subscribe_ground_truth(nullptr);
                     *is_finished = true;
                     unregister_stream_stop_promise(stream_closed_promise);
                     stream_closed_promise->set_value();
@@ -1817,7 +1817,7 @@ public:
 
         std::mutex subscribe_mutex{};
 
-        _telemetry.fixedwing_metrics_async(
+        _telemetry.subscribe_fixedwing_metrics(
             [this, &writer, &stream_closed_promise, is_finished, &subscribe_mutex](
                 const mavsdk::Telemetry::FixedwingMetrics fixedwing_metrics) {
                 rpc::telemetry::FixedwingMetricsResponse rpc_response;
@@ -1827,7 +1827,7 @@ public:
 
                 std::lock_guard<std::mutex> lock(subscribe_mutex);
                 if (!*is_finished && !writer->Write(rpc_response)) {
-                    _telemetry.fixedwing_metrics_async(nullptr);
+                    _telemetry.subscribe_fixedwing_metrics(nullptr);
                     *is_finished = true;
                     unregister_stream_stop_promise(stream_closed_promise);
                     stream_closed_promise->set_value();
@@ -1851,20 +1851,21 @@ public:
 
         std::mutex subscribe_mutex{};
 
-        _telemetry.imu_async([this, &writer, &stream_closed_promise, is_finished, &subscribe_mutex](
-                                 const mavsdk::Telemetry::Imu imu) {
-            rpc::telemetry::ImuResponse rpc_response;
+        _telemetry.subscribe_imu(
+            [this, &writer, &stream_closed_promise, is_finished, &subscribe_mutex](
+                const mavsdk::Telemetry::Imu imu) {
+                rpc::telemetry::ImuResponse rpc_response;
 
-            rpc_response.set_allocated_imu(translateToRpcImu(imu).release());
+                rpc_response.set_allocated_imu(translateToRpcImu(imu).release());
 
-            std::lock_guard<std::mutex> lock(subscribe_mutex);
-            if (!*is_finished && !writer->Write(rpc_response)) {
-                _telemetry.imu_async(nullptr);
-                *is_finished = true;
-                unregister_stream_stop_promise(stream_closed_promise);
-                stream_closed_promise->set_value();
-            }
-        });
+                std::lock_guard<std::mutex> lock(subscribe_mutex);
+                if (!*is_finished && !writer->Write(rpc_response)) {
+                    _telemetry.subscribe_imu(nullptr);
+                    *is_finished = true;
+                    unregister_stream_stop_promise(stream_closed_promise);
+                    stream_closed_promise->set_value();
+                }
+            });
 
         stream_closed_future.wait();
         return grpc::Status::OK;
@@ -1883,7 +1884,7 @@ public:
 
         std::mutex subscribe_mutex{};
 
-        _telemetry.health_all_ok_async(
+        _telemetry.subscribe_health_all_ok(
             [this, &writer, &stream_closed_promise, is_finished, &subscribe_mutex](
                 const bool health_all_ok) {
                 rpc::telemetry::HealthAllOkResponse rpc_response;
@@ -1892,7 +1893,7 @@ public:
 
                 std::lock_guard<std::mutex> lock(subscribe_mutex);
                 if (!*is_finished && !writer->Write(rpc_response)) {
-                    _telemetry.health_all_ok_async(nullptr);
+                    _telemetry.subscribe_health_all_ok(nullptr);
                     *is_finished = true;
                     unregister_stream_stop_promise(stream_closed_promise);
                     stream_closed_promise->set_value();
@@ -1916,7 +1917,7 @@ public:
 
         std::mutex subscribe_mutex{};
 
-        _telemetry.unix_epoch_time_async(
+        _telemetry.subscribe_unix_epoch_time(
             [this, &writer, &stream_closed_promise, is_finished, &subscribe_mutex](
                 const uint64_t unix_epoch_time) {
                 rpc::telemetry::UnixEpochTimeResponse rpc_response;
@@ -1925,7 +1926,7 @@ public:
 
                 std::lock_guard<std::mutex> lock(subscribe_mutex);
                 if (!*is_finished && !writer->Write(rpc_response)) {
-                    _telemetry.unix_epoch_time_async(nullptr);
+                    _telemetry.subscribe_unix_epoch_time(nullptr);
                     *is_finished = true;
                     unregister_stream_stop_promise(stream_closed_promise);
                     stream_closed_promise->set_value();

@@ -40,7 +40,7 @@ TEST(CameraTest, TakePhotoSingle)
 
     std::this_thread::sleep_for(std::chrono::seconds(1));
 
-    camera->capture_info_async(std::bind(&receive_capture_info, _1));
+    camera->subscribe_capture_info(std::bind(&receive_capture_info, _1));
 
     camera->take_photo_async(std::bind(&receive_camera_result, _1));
     std::this_thread::sleep_for(std::chrono::seconds(5));
@@ -68,7 +68,7 @@ TEST(CameraTest, TakePhotosMultiple)
 
     std::this_thread::sleep_for(std::chrono::seconds(1));
 
-    camera->capture_info_async(std::bind(&receive_capture_info, _1));
+    camera->subscribe_capture_info(std::bind(&receive_capture_info, _1));
 
     for (unsigned i = 0; i < num_photos_to_take; ++i) {
         camera->take_photo_async(std::bind(&receive_camera_result, _1));

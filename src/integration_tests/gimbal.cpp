@@ -39,7 +39,7 @@ TEST(SitlTestGimbal, GimbalMove)
 
     telemetry->set_rate_camera_attitude(10.0);
 
-    telemetry->camera_attitude_euler_async(&receive_gimbal_attitude_euler_angles);
+    telemetry->subscribe_camera_attitude_euler(&receive_gimbal_attitude_euler_angles);
 
     for (int i = 0; i < 500; i += 1) {
         send_new_gimbal_command(gimbal, i);
@@ -77,7 +77,7 @@ TEST(SitlTestGimbal, GimbalTakeoffAndMove)
 
     telemetry->set_rate_camera_attitude(10.0);
 
-    telemetry->camera_attitude_euler_async(&receive_gimbal_attitude_euler_angles);
+    telemetry->subscribe_camera_attitude_euler(&receive_gimbal_attitude_euler_angles);
 
     for (int i = 0; i < 500; i += 1) {
         send_new_gimbal_command(gimbal, i);
@@ -131,7 +131,7 @@ TEST(SitlTestGimbal, GimbalROIOffboard)
 
     telemetry->set_rate_camera_attitude(10.0);
 
-    telemetry->camera_attitude_euler_async(&receive_gimbal_attitude_euler_angles);
+    telemetry->subscribe_camera_attitude_euler(&receive_gimbal_attitude_euler_angles);
 
     // Send it once before starting offboard, otherwise it will be rejected.
     Offboard::VelocityNedYaw still;

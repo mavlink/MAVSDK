@@ -73,7 +73,7 @@ TEST_F(SitlTest, MissionChangeSpeed)
     Action::Result result = action->arm();
     ASSERT_EQ(result, Action::Result::Success);
 
-    mission->mission_progress_async(std::bind(&receive_mission_progress, _1));
+    mission->subscribe_mission_progress(std::bind(&receive_mission_progress, _1));
 
     mission->start_mission_async(std::bind(&receive_start_mission_result, _1));
     std::this_thread::sleep_for(std::chrono::seconds(1));

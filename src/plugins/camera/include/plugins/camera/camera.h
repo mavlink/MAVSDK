@@ -530,14 +530,15 @@ public:
     Result set_mode(Mode mode) const;
 
     /**
-     * @brief Callback type for mode_async.
+     * @brief Callback type for subscribe_mode.
      */
+
     typedef std::function<void(Mode)> mode_callback_t;
 
     /**
      * @brief Subscribe to camera mode updates.
      */
-    void mode_async(mode_callback_t callback);
+    void subscribe_mode(mode_callback_t callback);
 
     /**
      * @brief Poll for 'Mode' (blocking).
@@ -547,14 +548,15 @@ public:
     Mode mode() const;
 
     /**
-     * @brief Callback type for information_async.
+     * @brief Callback type for subscribe_information.
      */
+
     typedef std::function<void(Information)> information_callback_t;
 
     /**
      * @brief Subscribe to camera information updates.
      */
-    void information_async(information_callback_t callback);
+    void subscribe_information(information_callback_t callback);
 
     /**
      * @brief Poll for 'Information' (blocking).
@@ -564,14 +566,15 @@ public:
     Information information() const;
 
     /**
-     * @brief Callback type for video_stream_info_async.
+     * @brief Callback type for subscribe_video_stream_info.
      */
+
     typedef std::function<void(VideoStreamInfo)> video_stream_info_callback_t;
 
     /**
      * @brief Subscribe to video stream info updates.
      */
-    void video_stream_info_async(video_stream_info_callback_t callback);
+    void subscribe_video_stream_info(video_stream_info_callback_t callback);
 
     /**
      * @brief Poll for 'VideoStreamInfo' (blocking).
@@ -581,24 +584,26 @@ public:
     VideoStreamInfo video_stream_info() const;
 
     /**
-     * @brief Callback type for capture_info_async.
+     * @brief Callback type for subscribe_capture_info.
      */
+
     typedef std::function<void(CaptureInfo)> capture_info_callback_t;
 
     /**
      * @brief Subscribe to capture info updates.
      */
-    void capture_info_async(capture_info_callback_t callback);
+    void subscribe_capture_info(capture_info_callback_t callback);
 
     /**
-     * @brief Callback type for status_async.
+     * @brief Callback type for subscribe_status.
      */
+
     typedef std::function<void(Status)> status_callback_t;
 
     /**
      * @brief Subscribe to camera status updates.
      */
-    void status_async(status_callback_t callback);
+    void subscribe_status(status_callback_t callback);
 
     /**
      * @brief Poll for 'Status' (blocking).
@@ -608,24 +613,26 @@ public:
     Status status() const;
 
     /**
-     * @brief Callback type for current_settings_async.
+     * @brief Callback type for subscribe_current_settings.
      */
+
     typedef std::function<void(std::vector<Setting>)> current_settings_callback_t;
 
     /**
      * @brief Get the list of current camera settings.
      */
-    void current_settings_async(current_settings_callback_t callback);
+    void subscribe_current_settings(current_settings_callback_t callback);
 
     /**
-     * @brief Callback type for possible_setting_options_async.
+     * @brief Callback type for subscribe_possible_setting_options.
      */
+
     typedef std::function<void(std::vector<SettingOptions>)> possible_setting_options_callback_t;
 
     /**
      * @brief Get the list of settings that can be changed.
      */
-    void possible_setting_options_async(possible_setting_options_callback_t callback);
+    void subscribe_possible_setting_options(possible_setting_options_callback_t callback);
 
     /**
      * @brief Poll for 'std::vector<SettingOptions>' (blocking).

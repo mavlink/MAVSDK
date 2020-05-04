@@ -1,13 +1,19 @@
 {% if is_async %}
+    {% if is_finite %}
 /**
 * @brief Callback type for {{ name.lower_snake_case }}_async.
 */
+    {% else %}
+/**
+* @brief Callback type for subscribe_{{ name.lower_snake_case }}.
+*/
+    {% endif %}
 typedef std::function<void({% if has_result %}{{ plugin_name.upper_camel_case }}::Result, {% endif %}{{ return_type.name }})> {{ name.lower_snake_case }}_callback_t;
 
 /**
  * @brief {{ method_description | replace('\n', '\n *')}}
  */
-void {{ name.lower_snake_case }}_async({% for param in params %}{{ param.type_info.name }} {{ param.name.lower_snake_case }}, {% endfor %}{{ name.lower_snake_case }}_callback_t callback);
+void {% if not is_finite %}subscribe_{% endif %}{{ name.lower_snake_case }}{% if is_finite %}_async{% endif %}({% for param in params %}{{ param.type_info.name }} {{ param.name.lower_snake_case }}, {% endfor %}{{ name.lower_snake_case }}_callback_t callback);
 {% endif %}
 
 {% if is_sync %}

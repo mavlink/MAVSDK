@@ -10,9 +10,9 @@ Camera::Mode get_mode(std::shared_ptr<Camera> camera)
     auto prom = std::make_shared<std::promise<Camera::Mode>>();
     auto ret = prom->get_future();
 
-    camera->mode_async([prom, camera](Camera::Mode mode) {
+    camera->subscribe_mode([prom, camera](Camera::Mode mode) {
         prom->set_value(mode);
-        camera->mode_async(nullptr);
+        camera->subscribe_mode(nullptr);
     });
 
     auto status = ret.wait_for(std::chrono::seconds(7));
