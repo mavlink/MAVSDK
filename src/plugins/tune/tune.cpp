@@ -49,7 +49,7 @@ const char* Tune::result_str(Tune::Result result)
         case Tune::Result::InvalidTempo:
             return "Invalid tempo (range: 32 - 255)";
         case Tune::Result::TuneTooLong:
-            return "Invalid tune: encoded string must be at most 230 chars";
+            return "Invalid tune: encoded string must be at most 247 chars";
         case Tune::Result::Error:
             return "Failed to send the request";
         default:

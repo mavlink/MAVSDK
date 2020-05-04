@@ -107,7 +107,7 @@ public:
     enum class Result {
         Success, /**< @brief Request succeeded. */
         InvalidTempo, /**< @brief Invalid tempo (range: 32 - 255). */
-        TuneTooLong, /**< @brief Invalid tune: encoded string must be at most 230 chars. */
+        TuneTooLong, /**< @brief Invalid tune: encoded string must be at most 247 chars. */
         Error, /**< @brief Failed to send the request. */
     };
 
