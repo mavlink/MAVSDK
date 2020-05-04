@@ -40,11 +40,13 @@ public:
      * @brief Results for log file requests.
      */
     enum class Result {
-        SUCCESS = 0, /**< @brief Request succeeded. */
-        NO_LOGFILES, /**< @brief No logfiles found. */
-        TOO_MANY_RETRIES, /**< @brief Too many retries. */
+        UNKNOWN = 0, /**< @brief Unknown error. */
+        SUCCESS, /**< @brief Request succeeded. */
         PROGRESS, /**< @brief Progress update. */
-        UNKNOWN /**< @brief Unknown error. */
+        NO_LOGFILES, /**< @brief No logfiles found. */
+        TIMEOUT, /**< @brief A timeout happened. */
+        INVALID_ARGUMENT, /**< @brief Invalid argument. */
+        FILE_OPEN_FAILED, /**< @brief File open failed. */
     };
 
     /**

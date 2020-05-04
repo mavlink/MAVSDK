@@ -4,6 +4,7 @@
 #include "plugins/log_files/log_files.h"
 #include "plugin_impl_base.h"
 #include "system.h"
+#include <fstream>
 
 namespace mavsdk {
 
@@ -34,10 +35,20 @@ private:
 
     void request_list_entry(int entry_id);
 
-    void check_missing_log_data();
-    void request_log_data(unsigned id, unsigned offset, unsigned bytes_to_get);
+    void check_part();
+    void request_log_data(unsigned id, unsigned start, unsigned count);
     void data_timeout();
-    void write_log_data_to_disk();
+
+    void start_logfile(const std::string& path);
+    void write_part_to_disk();
+    void finish_logfile();
+    void report_progress(unsigned transferred, unsigned total);
+
+    std::size_t determine_part_end();
+    void reset_data();
+
+    static constexpr double LIST_TIMEOUT_S = 0.2;
+    static constexpr double DATA_TIMEOUT_S = 0.1;
 
     Time _time{};
 
@@ -50,23 +61,31 @@ private:
         void* cookie{nullptr};
     } _entries{};
 
+    // We download data in parts of 512 * 90 bytes.
+    // If we request the whole file at once we get too much data at once and
+    // can't keep up (at least for PX4 SITL). Also, we need to keep track of
+    // way too many parts which makes the progress and re-transmission
+    // calculation too expensive.
+    //
+    // This is very much inspired from how QGroundControl does it.
+    static constexpr unsigned PART_SIZE = 512;
+    // A part refers to the
+
     struct {
-        unsigned id{0};
         std::mutex mutex{};
+        void* cookie{nullptr};
+        unsigned id{0};
+        unsigned bytes_to_get{0};
         std::vector<uint8_t> bytes{};
         std::vector<bool> chunks_received{};
+        std::size_t part_start{0};
         unsigned retries{0};
         bool rerequesting{false};
-        void* cookie{nullptr};
-        std::string file_path{};
-        LogFiles::download_log_file_callback_t callback{nullptr};
-        unsigned last_progress_percentage{0};
-        unsigned chunks_to_rerequest_initially{0};
-        unsigned bytes_received{};
+        int last_ofs_rerequested{-1};
         dl_time_t time_started{};
+        std::ofstream file{};
+        LogFiles::download_log_file_callback_t callback{nullptr};
     } _data{};
-
-    static constexpr unsigned CHUNK_SIZE = 90;
 };
 
 } // namespace mavsdk

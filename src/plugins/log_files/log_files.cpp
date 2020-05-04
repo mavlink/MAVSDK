@@ -33,10 +33,12 @@ const char* LogFiles::result_str(Result result)
     switch (result) {
         case Result::SUCCESS:
             return "Success";
+        case Result::PROGRESS:
+            return "Progress";
         case Result::NO_LOGFILES:
             return "No logfiles";
-        case Result::TOO_MANY_RETRIES:
-            return "Too many retries";
+        case Result::TIMEOUT:
+            return "Timeout";
         case Result::UNKNOWN:
         default:
             return "Unknown";
