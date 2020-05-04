@@ -45,6 +45,8 @@ public:
         PROGRESS, /**< @brief Progress update. */
         NO_LOGFILES, /**< @brief No logfiles found. */
         TIMEOUT, /**< @brief A timeout happened. */
+        INVALID_ARGUMENT, /**< @brief Invalid argument. */
+        FILE_OPEN_FAILED, /**< @brief File open failed. */
     };
 
     /**
