@@ -39,6 +39,12 @@ private:
     void data_timeout();
     void write_log_data_to_disk();
 
+    void reset_data();
+    int get_progress();
+
+    static constexpr double LIST_TIMEOUT_S = 0.5;
+    static constexpr double DATA_TIMEOUT_S = 0.25;
+
     Time _time{};
 
     struct {
@@ -51,19 +57,19 @@ private:
     } _entries{};
 
     struct {
-        unsigned id{0};
         std::mutex mutex{};
+        void* cookie{nullptr};
+        unsigned id{0};
         std::vector<uint8_t> bytes{};
         std::vector<bool> chunks_received{};
         unsigned retries{0};
         bool rerequesting{false};
-        void* cookie{nullptr};
-        std::string file_path{};
-        LogFiles::download_log_file_callback_t callback{nullptr};
-        unsigned last_progress_percentage{0};
-        unsigned chunks_to_rerequest_initially{0};
+        int last_ofs_rerequested{-1};
+        int last_progress_percentage{-1};
         unsigned bytes_received{};
         dl_time_t time_started{};
+        std::string file_path{};
+        LogFiles::download_log_file_callback_t callback{nullptr};
     } _data{};
 
     static constexpr unsigned CHUNK_SIZE = 90;
