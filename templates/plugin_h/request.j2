@@ -6,13 +6,17 @@ typedef std::function<void({% if has_result %}Result, {% endif %}{{ return_type.
 
 /**
  * @brief {{ method_description | replace('\n', '\n *')}}
+ *
+ * This function is non-blocking.{% if is_sync %} See '{{ name.lower_snake_case }}' for the blocking counterpart.{% endif %}
  */
 void {{ name.lower_snake_case }}_async({% for param in params %}{{ param.type_info.name }} {{ param.name.lower_snake_case }}, {% endfor %}const {{ name.lower_snake_case }}_callback_t callback);
 {% endif %}
 
 {% if is_sync %}
 /**
- * @brief Synchronous wrapper for {{ name.lower_snake_case }}_async().
+ * @brief {{ method_description | replace('\n', '\n *')}}
+ *
+ * This function is blocking.{% if is_async %} See '{{ name.lower_snake_case }}_async' for the non-blocking counterpart.{% endif %}
  *
  * @return Result of request.
  */

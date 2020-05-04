@@ -146,7 +146,9 @@ public:
     void calibrate_gimbal_accelerometer_async(calibrate_gimbal_accelerometer_callback_t callback);
 
     /**
-     * @brief Synchronous wrapper for cancel_async().
+     * @brief Cancel ongoing calibration process.
+     *
+     * This function is blocking.
      *
      * @return Result of request.
      */

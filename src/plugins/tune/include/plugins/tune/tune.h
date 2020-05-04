@@ -125,6 +125,8 @@ public:
 
     /**
      * @brief Send a tune to be played by the system.
+     *
+     * This function is non-blocking.
      */
     void play_tune_async(TuneDescription description, const result_callback_t callback);
 

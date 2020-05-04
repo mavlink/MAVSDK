@@ -166,28 +166,36 @@ public:
     typedef std::function<void(Result)> result_callback_t;
 
     /**
-     * @brief Synchronous wrapper for get_flight_information_async().
+     * @brief Get flight information of the system.
+     *
+     * This function is blocking.
      *
      * @return Result of request.
      */
     std::pair<Result, Info::FlightInfo> get_flight_information() const;
 
     /**
-     * @brief Synchronous wrapper for get_identification_async().
+     * @brief Get the identification of the system.
+     *
+     * This function is blocking.
      *
      * @return Result of request.
      */
     std::pair<Result, Info::Identification> get_identification() const;
 
     /**
-     * @brief Synchronous wrapper for get_product_async().
+     * @brief Get product information of the system.
+     *
+     * This function is blocking.
      *
      * @return Result of request.
      */
     std::pair<Result, Info::Product> get_product() const;
 
     /**
-     * @brief Synchronous wrapper for get_version_async().
+     * @brief Get the version information of the system.
+     *
+     * This function is blocking.
      *
      * @return Result of request.
      */

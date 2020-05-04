@@ -86,11 +86,19 @@ public:
      * This sets the desired pitch and yaw angles of a gimbal.
      * Will return when the command is accepted, however, it might
      * take the gimbal longer to actually be set to the new angles.
+     *
+     * This function is non-blocking. See 'set_pitch_and_yaw' for the blocking counterpart.
      */
     void set_pitch_and_yaw_async(float pitch_deg, float yaw_deg, const result_callback_t callback);
 
     /**
-     * @brief Synchronous wrapper for set_pitch_and_yaw_async().
+     * @brief Set gimbal pitch and yaw angles.
+     *
+     * This sets the desired pitch and yaw angles of a gimbal.
+     * Will return when the command is accepted, however, it might
+     * take the gimbal longer to actually be set to the new angles.
+     *
+     * This function is blocking. See 'set_pitch_and_yaw_async' for the non-blocking counterpart.
      *
      * @return Result of request.
      */
@@ -102,11 +110,19 @@ public:
      * This sets the desired yaw mode of a gimbal.
      * Will return when the command is accepted. However, it might
      * take the gimbal longer to actually be set to the new angles.
+     *
+     * This function is non-blocking. See 'set_mode' for the blocking counterpart.
      */
     void set_mode_async(GimbalMode gimbal_mode, const result_callback_t callback);
 
     /**
-     * @brief Synchronous wrapper for set_mode_async().
+     * @brief Set gimbal mode.
+     *
+     * This sets the desired yaw mode of a gimbal.
+     * Will return when the command is accepted. However, it might
+     * take the gimbal longer to actually be set to the new angles.
+     *
+     * This function is blocking. See 'set_mode_async' for the non-blocking counterpart.
      *
      * @return Result of request.
      */
@@ -120,6 +136,8 @@ public:
      * receives a new command.
      * The function will return when the command is accepted, however, it might
      * take the gimbal longer to actually rotate to the ROI.
+     *
+     * This function is non-blocking. See 'set_roi_location' for the blocking counterpart.
      */
     void set_roi_location_async(
         double latitude_deg,
@@ -128,7 +146,15 @@ public:
         const result_callback_t callback);
 
     /**
-     * @brief Synchronous wrapper for set_roi_location_async().
+     * @brief Set gimbal region of interest (ROI).
+     *
+     * This sets a region of interest that the gimbal will point to.
+     * The gimbal will continue to point to the specified region until it
+     * receives a new command.
+     * The function will return when the command is accepted, however, it might
+     * take the gimbal longer to actually rotate to the ROI.
+     *
+     * This function is blocking. See 'set_roi_location_async' for the non-blocking counterpart.
      *
      * @return Result of request.
      */

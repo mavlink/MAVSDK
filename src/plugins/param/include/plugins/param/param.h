@@ -68,28 +68,44 @@ public:
     typedef std::function<void(Result)> result_callback_t;
 
     /**
-     * @brief Synchronous wrapper for get_param_int_async().
+     * @brief Get an int parameter.
+     *
+     * If the type is wrong, the result will be `WRONG_TYPE`.
+     *
+     * This function is blocking.
      *
      * @return Result of request.
      */
     std::pair<Result, int32_t> get_param_int(std::string name) const;
 
     /**
-     * @brief Synchronous wrapper for set_param_int_async().
+     * @brief Set an int parameter.
+     *
+     * If the type is wrong, the result will be `WRONG_TYPE`.
+     *
+     * This function is blocking.
      *
      * @return Result of request.
      */
     Result set_param_int(std::string name, int32_t value) const;
 
     /**
-     * @brief Synchronous wrapper for get_param_float_async().
+     * @brief Get a float parameter.
+     *
+     * If the type is wrong, the result will be `WRONG_TYPE`.
+     *
+     * This function is blocking.
      *
      * @return Result of request.
      */
     std::pair<Result, float> get_param_float(std::string name) const;
 
     /**
-     * @brief Synchronous wrapper for set_param_float_async().
+     * @brief Set a float parameter.
+     *
+     * If the type is wrong, the result will be `WRONG_TYPE`.
+     *
+     * This function is blocking.
      *
      * @return Result of request.
      */

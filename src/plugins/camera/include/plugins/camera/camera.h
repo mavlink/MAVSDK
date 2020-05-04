@@ -417,11 +417,15 @@ public:
 
     /**
      * @brief Take one photo.
+     *
+     * This function is non-blocking. See 'take_photo' for the blocking counterpart.
      */
     void take_photo_async(const result_callback_t callback);
 
     /**
-     * @brief Synchronous wrapper for take_photo_async().
+     * @brief Take one photo.
+     *
+     * This function is blocking. See 'take_photo_async' for the non-blocking counterpart.
      *
      * @return Result of request.
      */
@@ -429,11 +433,15 @@ public:
 
     /**
      * @brief Start photo timelapse with a given interval.
+     *
+     * This function is non-blocking. See 'start_photo_interval' for the blocking counterpart.
      */
     void start_photo_interval_async(float interval_s, const result_callback_t callback);
 
     /**
-     * @brief Synchronous wrapper for start_photo_interval_async().
+     * @brief Start photo timelapse with a given interval.
+     *
+     * This function is blocking. See 'start_photo_interval_async' for the non-blocking counterpart.
      *
      * @return Result of request.
      */
@@ -441,11 +449,15 @@ public:
 
     /**
      * @brief Stop a running photo timelapse.
+     *
+     * This function is non-blocking. See 'stop_photo_interval' for the blocking counterpart.
      */
     void stop_photo_interval_async(const result_callback_t callback);
 
     /**
-     * @brief Synchronous wrapper for stop_photo_interval_async().
+     * @brief Stop a running photo timelapse.
+     *
+     * This function is blocking. See 'stop_photo_interval_async' for the non-blocking counterpart.
      *
      * @return Result of request.
      */
@@ -453,11 +465,15 @@ public:
 
     /**
      * @brief Start a video recording.
+     *
+     * This function is non-blocking. See 'start_video' for the blocking counterpart.
      */
     void start_video_async(const result_callback_t callback);
 
     /**
-     * @brief Synchronous wrapper for start_video_async().
+     * @brief Start a video recording.
+     *
+     * This function is blocking. See 'start_video_async' for the non-blocking counterpart.
      *
      * @return Result of request.
      */
@@ -465,25 +481,33 @@ public:
 
     /**
      * @brief Stop a running video recording.
+     *
+     * This function is non-blocking. See 'stop_video' for the blocking counterpart.
      */
     void stop_video_async(const result_callback_t callback);
 
     /**
-     * @brief Synchronous wrapper for stop_video_async().
+     * @brief Stop a running video recording.
+     *
+     * This function is blocking. See 'stop_video_async' for the non-blocking counterpart.
      *
      * @return Result of request.
      */
     Result stop_video() const;
 
     /**
-     * @brief Synchronous wrapper for start_video_streaming_async().
+     * @brief Start video streaming.
+     *
+     * This function is blocking.
      *
      * @return Result of request.
      */
     Result start_video_streaming() const;
 
     /**
-     * @brief Synchronous wrapper for stop_video_streaming_async().
+     * @brief Stop current video streaming.
+     *
+     * This function is blocking.
      *
      * @return Result of request.
      */
@@ -491,11 +515,15 @@ public:
 
     /**
      * @brief Set camera mode.
+     *
+     * This function is non-blocking. See 'set_mode' for the blocking counterpart.
      */
     void set_mode_async(Mode mode, const result_callback_t callback);
 
     /**
-     * @brief Synchronous wrapper for set_mode_async().
+     * @brief Set camera mode.
+     *
+     * This function is blocking. See 'set_mode_async' for the non-blocking counterpart.
      *
      * @return Result of request.
      */
@@ -512,7 +540,7 @@ public:
     void mode_async(mode_callback_t callback);
 
     /**
-     * @brief Synchronous wrapper getting one Mode update.
+     * @brief Poll for 'Mode' (blocking).
      *
      * @return One Mode update.
      */
@@ -529,7 +557,7 @@ public:
     void information_async(information_callback_t callback);
 
     /**
-     * @brief Synchronous wrapper getting one Information update.
+     * @brief Poll for 'Information' (blocking).
      *
      * @return One Information update.
      */
@@ -546,7 +574,7 @@ public:
     void video_stream_info_async(video_stream_info_callback_t callback);
 
     /**
-     * @brief Synchronous wrapper getting one VideoStreamInfo update.
+     * @brief Poll for 'VideoStreamInfo' (blocking).
      *
      * @return One VideoStreamInfo update.
      */
@@ -573,7 +601,7 @@ public:
     void status_async(status_callback_t callback);
 
     /**
-     * @brief Synchronous wrapper getting one Status update.
+     * @brief Poll for 'Status' (blocking).
      *
      * @return One Status update.
      */
@@ -600,7 +628,7 @@ public:
     void possible_setting_options_async(possible_setting_options_callback_t callback);
 
     /**
-     * @brief Synchronous wrapper getting one std::vector<SettingOptions> update.
+     * @brief Poll for 'std::vector<SettingOptions>' (blocking).
      *
      * @return One std::vector<SettingOptions> update.
      */
@@ -610,11 +638,17 @@ public:
      * @brief Set a setting to some value.
      *
      * Only setting_id of setting and option_id of option needs to be set.
+     *
+     * This function is non-blocking. See 'set_setting' for the blocking counterpart.
      */
     void set_setting_async(Setting setting, const result_callback_t callback);
 
     /**
-     * @brief Synchronous wrapper for set_setting_async().
+     * @brief Set a setting to some value.
+     *
+     * Only setting_id of setting and option_id of option needs to be set.
+     *
+     * This function is blocking. See 'set_setting_async' for the non-blocking counterpart.
      *
      * @return Result of request.
      */
@@ -629,11 +663,17 @@ public:
      * @brief Get a setting.
      *
      * Only setting_id of setting needs to be set.
+     *
+     * This function is non-blocking. See 'get_setting' for the blocking counterpart.
      */
     void get_setting_async(Setting setting, const get_setting_callback_t callback);
 
     /**
-     * @brief Synchronous wrapper for get_setting_async().
+     * @brief Get a setting.
+     *
+     * Only setting_id of setting needs to be set.
+     *
+     * This function is blocking. See 'get_setting_async' for the non-blocking counterpart.
      *
      * @return Result of request.
      */
@@ -643,11 +683,17 @@ public:
      * @brief Format storage (e.g. SD card) in camera.
      *
      * This will delete all content of the camera storage!
+     *
+     * This function is non-blocking. See 'format_storage' for the blocking counterpart.
      */
     void format_storage_async(const result_callback_t callback);
 
     /**
-     * @brief Synchronous wrapper for format_storage_async().
+     * @brief Format storage (e.g. SD card) in camera.
+     *
+     * This will delete all content of the camera storage!
+     *
+     * This function is blocking. See 'format_storage_async' for the non-blocking counterpart.
      *
      * @return Result of request.
      */

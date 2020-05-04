@@ -833,7 +833,7 @@ public:
     void position_async(position_callback_t callback);
 
     /**
-     * @brief Synchronous wrapper getting one Position update.
+     * @brief Poll for 'Position' (blocking).
      *
      * @return One Position update.
      */
@@ -850,7 +850,7 @@ public:
     void home_async(home_callback_t callback);
 
     /**
-     * @brief Synchronous wrapper getting one Position update.
+     * @brief Poll for 'Position' (blocking).
      *
      * @return One Position update.
      */
@@ -867,7 +867,7 @@ public:
     void in_air_async(in_air_callback_t callback);
 
     /**
-     * @brief Synchronous wrapper getting one bool update.
+     * @brief Poll for 'bool' (blocking).
      *
      * @return One bool update.
      */
@@ -884,7 +884,7 @@ public:
     void landed_state_async(landed_state_callback_t callback);
 
     /**
-     * @brief Synchronous wrapper getting one LandedState update.
+     * @brief Poll for 'LandedState' (blocking).
      *
      * @return One LandedState update.
      */
@@ -901,7 +901,7 @@ public:
     void armed_async(armed_callback_t callback);
 
     /**
-     * @brief Synchronous wrapper getting one bool update.
+     * @brief Poll for 'bool' (blocking).
      *
      * @return One bool update.
      */
@@ -918,7 +918,7 @@ public:
     void attitude_quaternion_async(attitude_quaternion_callback_t callback);
 
     /**
-     * @brief Synchronous wrapper getting one Quaternion update.
+     * @brief Poll for 'Quaternion' (blocking).
      *
      * @return One Quaternion update.
      */
@@ -935,7 +935,7 @@ public:
     void attitude_euler_async(attitude_euler_callback_t callback);
 
     /**
-     * @brief Synchronous wrapper getting one EulerAngle update.
+     * @brief Poll for 'EulerAngle' (blocking).
      *
      * @return One EulerAngle update.
      */
@@ -952,7 +952,7 @@ public:
     void attitude_angular_velocity_body_async(attitude_angular_velocity_body_callback_t callback);
 
     /**
-     * @brief Synchronous wrapper getting one AngularVelocityBody update.
+     * @brief Poll for 'AngularVelocityBody' (blocking).
      *
      * @return One AngularVelocityBody update.
      */
@@ -969,7 +969,7 @@ public:
     void camera_attitude_quaternion_async(camera_attitude_quaternion_callback_t callback);
 
     /**
-     * @brief Synchronous wrapper getting one Quaternion update.
+     * @brief Poll for 'Quaternion' (blocking).
      *
      * @return One Quaternion update.
      */
@@ -986,7 +986,7 @@ public:
     void camera_attitude_euler_async(camera_attitude_euler_callback_t callback);
 
     /**
-     * @brief Synchronous wrapper getting one EulerAngle update.
+     * @brief Poll for 'EulerAngle' (blocking).
      *
      * @return One EulerAngle update.
      */
@@ -1003,7 +1003,7 @@ public:
     void ground_speed_ned_async(ground_speed_ned_callback_t callback);
 
     /**
-     * @brief Synchronous wrapper getting one SpeedNed update.
+     * @brief Poll for 'SpeedNed' (blocking).
      *
      * @return One SpeedNed update.
      */
@@ -1020,7 +1020,7 @@ public:
     void gps_info_async(gps_info_callback_t callback);
 
     /**
-     * @brief Synchronous wrapper getting one GpsInfo update.
+     * @brief Poll for 'GpsInfo' (blocking).
      *
      * @return One GpsInfo update.
      */
@@ -1037,7 +1037,7 @@ public:
     void battery_async(battery_callback_t callback);
 
     /**
-     * @brief Synchronous wrapper getting one Battery update.
+     * @brief Poll for 'Battery' (blocking).
      *
      * @return One Battery update.
      */
@@ -1054,7 +1054,7 @@ public:
     void flight_mode_async(flight_mode_callback_t callback);
 
     /**
-     * @brief Synchronous wrapper getting one FlightMode update.
+     * @brief Poll for 'FlightMode' (blocking).
      *
      * @return One FlightMode update.
      */
@@ -1071,7 +1071,7 @@ public:
     void health_async(health_callback_t callback);
 
     /**
-     * @brief Synchronous wrapper getting one Health update.
+     * @brief Poll for 'Health' (blocking).
      *
      * @return One Health update.
      */
@@ -1088,7 +1088,7 @@ public:
     void rc_status_async(rc_status_callback_t callback);
 
     /**
-     * @brief Synchronous wrapper getting one RcStatus update.
+     * @brief Poll for 'RcStatus' (blocking).
      *
      * @return One RcStatus update.
      */
@@ -1105,7 +1105,7 @@ public:
     void status_text_async(status_text_callback_t callback);
 
     /**
-     * @brief Synchronous wrapper getting one StatusText update.
+     * @brief Poll for 'StatusText' (blocking).
      *
      * @return One StatusText update.
      */
@@ -1122,7 +1122,7 @@ public:
     void actuator_control_target_async(actuator_control_target_callback_t callback);
 
     /**
-     * @brief Synchronous wrapper getting one ActuatorControlTarget update.
+     * @brief Poll for 'ActuatorControlTarget' (blocking).
      *
      * @return One ActuatorControlTarget update.
      */
@@ -1139,7 +1139,7 @@ public:
     void actuator_output_status_async(actuator_output_status_callback_t callback);
 
     /**
-     * @brief Synchronous wrapper getting one ActuatorOutputStatus update.
+     * @brief Poll for 'ActuatorOutputStatus' (blocking).
      *
      * @return One ActuatorOutputStatus update.
      */
@@ -1156,7 +1156,7 @@ public:
     void odometry_async(odometry_callback_t callback);
 
     /**
-     * @brief Synchronous wrapper getting one Odometry update.
+     * @brief Poll for 'Odometry' (blocking).
      *
      * @return One Odometry update.
      */
@@ -1173,7 +1173,7 @@ public:
     void position_velocity_ned_async(position_velocity_ned_callback_t callback);
 
     /**
-     * @brief Synchronous wrapper getting one PositionVelocityNed update.
+     * @brief Poll for 'PositionVelocityNed' (blocking).
      *
      * @return One PositionVelocityNed update.
      */
@@ -1190,7 +1190,7 @@ public:
     void ground_truth_async(ground_truth_callback_t callback);
 
     /**
-     * @brief Synchronous wrapper getting one GroundTruth update.
+     * @brief Poll for 'GroundTruth' (blocking).
      *
      * @return One GroundTruth update.
      */
@@ -1207,7 +1207,7 @@ public:
     void fixedwing_metrics_async(fixedwing_metrics_callback_t callback);
 
     /**
-     * @brief Synchronous wrapper getting one FixedwingMetrics update.
+     * @brief Poll for 'FixedwingMetrics' (blocking).
      *
      * @return One FixedwingMetrics update.
      */
@@ -1224,7 +1224,7 @@ public:
     void imu_async(imu_callback_t callback);
 
     /**
-     * @brief Synchronous wrapper getting one Imu update.
+     * @brief Poll for 'Imu' (blocking).
      *
      * @return One Imu update.
      */
@@ -1241,7 +1241,7 @@ public:
     void health_all_ok_async(health_all_ok_callback_t callback);
 
     /**
-     * @brief Synchronous wrapper getting one bool update.
+     * @brief Poll for 'bool' (blocking).
      *
      * @return One bool update.
      */
@@ -1258,7 +1258,7 @@ public:
     void unix_epoch_time_async(unix_epoch_time_callback_t callback);
 
     /**
-     * @brief Synchronous wrapper getting one uint64_t update.
+     * @brief Poll for 'uint64_t' (blocking).
      *
      * @return One uint64_t update.
      */
@@ -1266,11 +1266,15 @@ public:
 
     /**
      * @brief Set rate to 'position' updates.
+     *
+     * This function is non-blocking. See 'set_rate_position' for the blocking counterpart.
      */
     void set_rate_position_async(double rate_hz, const result_callback_t callback);
 
     /**
-     * @brief Synchronous wrapper for set_rate_position_async().
+     * @brief Set rate to 'position' updates.
+     *
+     * This function is blocking. See 'set_rate_position_async' for the non-blocking counterpart.
      *
      * @return Result of request.
      */
@@ -1278,11 +1282,15 @@ public:
 
     /**
      * @brief Set rate to 'home position' updates.
+     *
+     * This function is non-blocking. See 'set_rate_home' for the blocking counterpart.
      */
     void set_rate_home_async(double rate_hz, const result_callback_t callback);
 
     /**
-     * @brief Synchronous wrapper for set_rate_home_async().
+     * @brief Set rate to 'home position' updates.
+     *
+     * This function is blocking. See 'set_rate_home_async' for the non-blocking counterpart.
      *
      * @return Result of request.
      */
@@ -1290,11 +1298,15 @@ public:
 
     /**
      * @brief Set rate to in-air updates.
+     *
+     * This function is non-blocking. See 'set_rate_in_air' for the blocking counterpart.
      */
     void set_rate_in_air_async(double rate_hz, const result_callback_t callback);
 
     /**
-     * @brief Synchronous wrapper for set_rate_in_air_async().
+     * @brief Set rate to in-air updates.
+     *
+     * This function is blocking. See 'set_rate_in_air_async' for the non-blocking counterpart.
      *
      * @return Result of request.
      */
@@ -1302,11 +1314,16 @@ public:
 
     /**
      * @brief Set rate to landed state updates
+     *
+     * This function is non-blocking. See 'set_rate_landed_state' for the blocking counterpart.
      */
     void set_rate_landed_state_async(double rate_hz, const result_callback_t callback);
 
     /**
-     * @brief Synchronous wrapper for set_rate_landed_state_async().
+     * @brief Set rate to landed state updates
+     *
+     * This function is blocking. See 'set_rate_landed_state_async' for the non-blocking
+     * counterpart.
      *
      * @return Result of request.
      */
@@ -1314,11 +1331,15 @@ public:
 
     /**
      * @brief Set rate to 'attitude' updates.
+     *
+     * This function is non-blocking. See 'set_rate_attitude' for the blocking counterpart.
      */
     void set_rate_attitude_async(double rate_hz, const result_callback_t callback);
 
     /**
-     * @brief Synchronous wrapper for set_rate_attitude_async().
+     * @brief Set rate to 'attitude' updates.
+     *
+     * This function is blocking. See 'set_rate_attitude_async' for the non-blocking counterpart.
      *
      * @return Result of request.
      */
@@ -1326,11 +1347,16 @@ public:
 
     /**
      * @brief Set rate of camera attitude updates.
+     *
+     * This function is non-blocking. See 'set_rate_camera_attitude' for the blocking counterpart.
      */
     void set_rate_camera_attitude_async(double rate_hz, const result_callback_t callback);
 
     /**
-     * @brief Synchronous wrapper for set_rate_camera_attitude_async().
+     * @brief Set rate of camera attitude updates.
+     *
+     * This function is blocking. See 'set_rate_camera_attitude_async' for the non-blocking
+     * counterpart.
      *
      * @return Result of request.
      */
@@ -1338,11 +1364,16 @@ public:
 
     /**
      * @brief Set rate to 'ground speed' updates (NED).
+     *
+     * This function is non-blocking. See 'set_rate_ground_speed_ned' for the blocking counterpart.
      */
     void set_rate_ground_speed_ned_async(double rate_hz, const result_callback_t callback);
 
     /**
-     * @brief Synchronous wrapper for set_rate_ground_speed_ned_async().
+     * @brief Set rate to 'ground speed' updates (NED).
+     *
+     * This function is blocking. See 'set_rate_ground_speed_ned_async' for the non-blocking
+     * counterpart.
      *
      * @return Result of request.
      */
@@ -1350,11 +1381,15 @@ public:
 
     /**
      * @brief Set rate to 'GPS info' updates.
+     *
+     * This function is non-blocking. See 'set_rate_gps_info' for the blocking counterpart.
      */
     void set_rate_gps_info_async(double rate_hz, const result_callback_t callback);
 
     /**
-     * @brief Synchronous wrapper for set_rate_gps_info_async().
+     * @brief Set rate to 'GPS info' updates.
+     *
+     * This function is blocking. See 'set_rate_gps_info_async' for the non-blocking counterpart.
      *
      * @return Result of request.
      */
@@ -1362,11 +1397,15 @@ public:
 
     /**
      * @brief Set rate to 'battery' updates.
+     *
+     * This function is non-blocking. See 'set_rate_battery' for the blocking counterpart.
      */
     void set_rate_battery_async(double rate_hz, const result_callback_t callback);
 
     /**
-     * @brief Synchronous wrapper for set_rate_battery_async().
+     * @brief Set rate to 'battery' updates.
+     *
+     * This function is blocking. See 'set_rate_battery_async' for the non-blocking counterpart.
      *
      * @return Result of request.
      */
@@ -1374,11 +1413,15 @@ public:
 
     /**
      * @brief Set rate to 'RC status' updates.
+     *
+     * This function is non-blocking. See 'set_rate_rc_status' for the blocking counterpart.
      */
     void set_rate_rc_status_async(double rate_hz, const result_callback_t callback);
 
     /**
-     * @brief Synchronous wrapper for set_rate_rc_status_async().
+     * @brief Set rate to 'RC status' updates.
+     *
+     * This function is blocking. See 'set_rate_rc_status_async' for the non-blocking counterpart.
      *
      * @return Result of request.
      */
@@ -1386,11 +1429,17 @@ public:
 
     /**
      * @brief Set rate to 'actuator control target' updates.
+     *
+     * This function is non-blocking. See 'set_rate_actuator_control_target' for the blocking
+     * counterpart.
      */
     void set_rate_actuator_control_target_async(double rate_hz, const result_callback_t callback);
 
     /**
-     * @brief Synchronous wrapper for set_rate_actuator_control_target_async().
+     * @brief Set rate to 'actuator control target' updates.
+     *
+     * This function is blocking. See 'set_rate_actuator_control_target_async' for the non-blocking
+     * counterpart.
      *
      * @return Result of request.
      */
@@ -1398,11 +1447,17 @@ public:
 
     /**
      * @brief Set rate to 'actuator output status' updates.
+     *
+     * This function is non-blocking. See 'set_rate_actuator_output_status' for the blocking
+     * counterpart.
      */
     void set_rate_actuator_output_status_async(double rate_hz, const result_callback_t callback);
 
     /**
-     * @brief Synchronous wrapper for set_rate_actuator_output_status_async().
+     * @brief Set rate to 'actuator output status' updates.
+     *
+     * This function is blocking. See 'set_rate_actuator_output_status_async' for the non-blocking
+     * counterpart.
      *
      * @return Result of request.
      */
@@ -1410,11 +1465,15 @@ public:
 
     /**
      * @brief Set rate to 'odometry' updates.
+     *
+     * This function is non-blocking. See 'set_rate_odometry' for the blocking counterpart.
      */
     void set_rate_odometry_async(double rate_hz, const result_callback_t callback);
 
     /**
-     * @brief Synchronous wrapper for set_rate_odometry_async().
+     * @brief Set rate to 'odometry' updates.
+     *
+     * This function is blocking. See 'set_rate_odometry_async' for the non-blocking counterpart.
      *
      * @return Result of request.
      */
@@ -1422,11 +1481,17 @@ public:
 
     /**
      * @brief Set rate to 'position velocity' updates.
+     *
+     * This function is non-blocking. See 'set_rate_position_velocity_ned' for the blocking
+     * counterpart.
      */
     void set_rate_position_velocity_ned_async(double rate_hz, const result_callback_t callback);
 
     /**
-     * @brief Synchronous wrapper for set_rate_position_velocity_ned_async().
+     * @brief Set rate to 'position velocity' updates.
+     *
+     * This function is blocking. See 'set_rate_position_velocity_ned_async' for the non-blocking
+     * counterpart.
      *
      * @return Result of request.
      */
@@ -1434,11 +1499,16 @@ public:
 
     /**
      * @brief Set rate to 'ground truth' updates.
+     *
+     * This function is non-blocking. See 'set_rate_ground_truth' for the blocking counterpart.
      */
     void set_rate_ground_truth_async(double rate_hz, const result_callback_t callback);
 
     /**
-     * @brief Synchronous wrapper for set_rate_ground_truth_async().
+     * @brief Set rate to 'ground truth' updates.
+     *
+     * This function is blocking. See 'set_rate_ground_truth_async' for the non-blocking
+     * counterpart.
      *
      * @return Result of request.
      */
@@ -1446,11 +1516,16 @@ public:
 
     /**
      * @brief Set rate to 'fixedwing metrics' updates.
+     *
+     * This function is non-blocking. See 'set_rate_fixedwing_metrics' for the blocking counterpart.
      */
     void set_rate_fixedwing_metrics_async(double rate_hz, const result_callback_t callback);
 
     /**
-     * @brief Synchronous wrapper for set_rate_fixedwing_metrics_async().
+     * @brief Set rate to 'fixedwing metrics' updates.
+     *
+     * This function is blocking. See 'set_rate_fixedwing_metrics_async' for the non-blocking
+     * counterpart.
      *
      * @return Result of request.
      */
@@ -1458,11 +1533,15 @@ public:
 
     /**
      * @brief Set rate to 'IMU' updates.
+     *
+     * This function is non-blocking. See 'set_rate_imu' for the blocking counterpart.
      */
     void set_rate_imu_async(double rate_hz, const result_callback_t callback);
 
     /**
-     * @brief Synchronous wrapper for set_rate_imu_async().
+     * @brief Set rate to 'IMU' updates.
+     *
+     * This function is blocking. See 'set_rate_imu_async' for the non-blocking counterpart.
      *
      * @return Result of request.
      */
@@ -1470,11 +1549,16 @@ public:
 
     /**
      * @brief Set rate to 'unix epoch time' updates.
+     *
+     * This function is non-blocking. See 'set_rate_unix_epoch_time' for the blocking counterpart.
      */
     void set_rate_unix_epoch_time_async(double rate_hz, const result_callback_t callback);
 
     /**
-     * @brief Synchronous wrapper for set_rate_unix_epoch_time_async().
+     * @brief Set rate to 'unix epoch time' updates.
+     *
+     * This function is blocking. See 'set_rate_unix_epoch_time_async' for the non-blocking
+     * counterpart.
      *
      * @return Result of request.
      */

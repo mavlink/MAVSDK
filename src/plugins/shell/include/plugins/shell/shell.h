@@ -69,7 +69,9 @@ public:
     typedef std::function<void(Result)> result_callback_t;
 
     /**
-     * @brief Synchronous wrapper for send_async().
+     * @brief Send a command line.
+     *
+     * This function is blocking.
      *
      * @return Result of request.
      */

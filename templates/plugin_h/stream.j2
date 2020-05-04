@@ -12,7 +12,7 @@ void {{ name.lower_snake_case }}_async({% for param in params %}{{ param.type_in
 
 {% if is_sync %}
 /**
- * @brief Synchronous wrapper getting one {{ return_type.name }} update.
+ * @brief Poll for '{{ return_type.name }}' (blocking).
  *
  * @return One {{ return_type.name }} update.
  */

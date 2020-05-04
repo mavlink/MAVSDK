@@ -273,11 +273,15 @@ public:
 
     /**
      * @brief Start offboard control.
+     *
+     * This function is non-blocking. See 'start' for the blocking counterpart.
      */
     void start_async(const result_callback_t callback);
 
     /**
-     * @brief Synchronous wrapper for start_async().
+     * @brief Start offboard control.
+     *
+     * This function is blocking. See 'start_async' for the non-blocking counterpart.
      *
      * @return Result of request.
      */
@@ -287,60 +291,86 @@ public:
      * @brief Stop offboard control.
      *
      * The vehicle will be put into Hold mode: https://docs.px4.io/en/flight_modes/hold.html
+     *
+     * This function is non-blocking. See 'stop' for the blocking counterpart.
      */
     void stop_async(const result_callback_t callback);
 
     /**
-     * @brief Synchronous wrapper for stop_async().
+     * @brief Stop offboard control.
+     *
+     * The vehicle will be put into Hold mode: https://docs.px4.io/en/flight_modes/hold.html
+     *
+     * This function is blocking. See 'stop_async' for the non-blocking counterpart.
      *
      * @return Result of request.
      */
     Result stop() const;
 
     /**
-     * @brief Synchronous wrapper for is_active_async().
+     * @brief Check if offboard control is active.
+     *
+     * True means that the vehicle is in offboard mode and we are actively sending
+     * setpoints.
+     *
+     * This function is blocking.
      *
      * @return Result of request.
      */
     std::pair<Result, bool> is_active() const;
 
     /**
-     * @brief Synchronous wrapper for set_attitude_async().
+     * @brief Set the attitude in terms of roll, pitch and yaw in degrees with thrust.
+     *
+     * This function is blocking.
      *
      * @return Result of request.
      */
     Result set_attitude(Attitude attitude) const;
 
     /**
-     * @brief Synchronous wrapper for set_actuator_control_async().
+     * @brief Set direct actuator control values to groups #0 and #1.
+     *
+     * First 8 controls will go to control group 0, the following 8 controls to control group 1 (if
+     * actuator_control.num_controls more than 8).
+     *
+     * This function is blocking.
      *
      * @return Result of request.
      */
     Result set_actuator_control(ActuatorControl actuator_control) const;
 
     /**
-     * @brief Synchronous wrapper for set_attitude_rate_async().
+     * @brief Set the attitude rate in terms of pitch, roll and yaw angular rate along with thrust.
+     *
+     * This function is blocking.
      *
      * @return Result of request.
      */
     Result set_attitude_rate(AttitudeRate attitude_rate) const;
 
     /**
-     * @brief Synchronous wrapper for set_position_ned_async().
+     * @brief Set the position in NED coordinates and yaw.
+     *
+     * This function is blocking.
      *
      * @return Result of request.
      */
     Result set_position_ned(PositionNedYaw position_ned_yaw) const;
 
     /**
-     * @brief Synchronous wrapper for set_velocity_body_async().
+     * @brief Set the velocity in body coordinates and yaw angular rate.
+     *
+     * This function is blocking.
      *
      * @return Result of request.
      */
     Result set_velocity_body(VelocityBodyYawspeed velocity_body_yawspeed) const;
 
     /**
-     * @brief Synchronous wrapper for set_velocity_ned_async().
+     * @brief Set the velocity in NED coordinates and yaw.
+     *
+     * This function is blocking.
      *
      * @return Result of request.
      */

@@ -184,18 +184,27 @@ public:
      *
      * The mission items are uploaded to a drone. Once uploaded the mission can be started and
      * executed even if the connection is lost.
+     *
+     * This function is non-blocking. See 'upload_mission' for the blocking counterpart.
      */
     void upload_mission_async(MissionPlan mission_plan, const result_callback_t callback);
 
     /**
-     * @brief Synchronous wrapper for upload_mission_async().
+     * @brief Upload a list of mission items to the system.
+     *
+     * The mission items are uploaded to a drone. Once uploaded the mission can be started and
+     * executed even if the connection is lost.
+     *
+     * This function is blocking. See 'upload_mission_async' for the non-blocking counterpart.
      *
      * @return Result of request.
      */
     Result upload_mission(MissionPlan mission_plan) const;
 
     /**
-     * @brief Synchronous wrapper for cancel_mission_upload_async().
+     * @brief Cancel an ongoing mission upload.
+     *
+     * This function is blocking.
      *
      * @return Result of request.
      */
@@ -211,18 +220,27 @@ public:
      *
      * Will fail if any of the downloaded mission items are not supported
      * by the MAVSDK API.
+     *
+     * This function is non-blocking. See 'download_mission' for the blocking counterpart.
      */
     void download_mission_async(const download_mission_callback_t callback);
 
     /**
-     * @brief Synchronous wrapper for download_mission_async().
+     * @brief Download a list of mission items from the system (asynchronous).
+     *
+     * Will fail if any of the downloaded mission items are not supported
+     * by the MAVSDK API.
+     *
+     * This function is blocking. See 'download_mission_async' for the non-blocking counterpart.
      *
      * @return Result of request.
      */
     std::pair<Result, Mission::MissionPlan> download_mission() const;
 
     /**
-     * @brief Synchronous wrapper for cancel_mission_download_async().
+     * @brief Cancel an ongoing mission download.
+     *
+     * This function is blocking.
      *
      * @return Result of request.
      */
@@ -232,11 +250,17 @@ public:
      * @brief Start the mission.
      *
      * A mission must be uploaded to the vehicle before this can be called.
+     *
+     * This function is non-blocking. See 'start_mission' for the blocking counterpart.
      */
     void start_mission_async(const result_callback_t callback);
 
     /**
-     * @brief Synchronous wrapper for start_mission_async().
+     * @brief Start the mission.
+     *
+     * A mission must be uploaded to the vehicle before this can be called.
+     *
+     * This function is blocking. See 'start_mission_async' for the non-blocking counterpart.
      *
      * @return Result of request.
      */
@@ -249,11 +273,20 @@ public:
      * [HOLD mode](https://docs.px4.io/en/flight_modes/hold.html).
      * A multicopter should just hover at the spot while a fixedwing vehicle should loiter
      * around the location where it paused.
+     *
+     * This function is non-blocking. See 'pause_mission' for the blocking counterpart.
      */
     void pause_mission_async(const result_callback_t callback);
 
     /**
-     * @brief Synchronous wrapper for pause_mission_async().
+     * @brief Pause the mission.
+     *
+     * Pausing the mission puts the vehicle into
+     * [HOLD mode](https://docs.px4.io/en/flight_modes/hold.html).
+     * A multicopter should just hover at the spot while a fixedwing vehicle should loiter
+     * around the location where it paused.
+     *
+     * This function is blocking. See 'pause_mission_async' for the non-blocking counterpart.
      *
      * @return Result of request.
      */
@@ -261,11 +294,15 @@ public:
 
     /**
      * @brief Clear the mission saved on the vehicle.
+     *
+     * This function is non-blocking. See 'clear_mission' for the blocking counterpart.
      */
     void clear_mission_async(const result_callback_t callback);
 
     /**
-     * @brief Synchronous wrapper for clear_mission_async().
+     * @brief Clear the mission saved on the vehicle.
+     *
+     * This function is blocking. See 'clear_mission_async' for the non-blocking counterpart.
      *
      * @return Result of request.
      */
@@ -279,18 +316,31 @@ public:
      *
      * Note that this is not necessarily true for general missions using MAVLink if loop counters
      * are used.
+     *
+     * This function is non-blocking. See 'set_current_mission_item' for the blocking counterpart.
      */
     void set_current_mission_item_async(int32_t index, const result_callback_t callback);
 
     /**
-     * @brief Synchronous wrapper for set_current_mission_item_async().
+     * @brief Sets the mission item index to go to.
+     *
+     * By setting the current index to 0, the mission is restarted from the beginning. If it is set
+     * to a specific index of a mission item, the mission will be set to this item.
+     *
+     * Note that this is not necessarily true for general missions using MAVLink if loop counters
+     * are used.
+     *
+     * This function is blocking. See 'set_current_mission_item_async' for the non-blocking
+     * counterpart.
      *
      * @return Result of request.
      */
     Result set_current_mission_item(int32_t index) const;
 
     /**
-     * @brief Synchronous wrapper for is_mission_finished_async().
+     * @brief Check if the mission has been finished.
+     *
+     * This function is blocking.
      *
      * @return Result of request.
      */
@@ -307,21 +357,31 @@ public:
     void mission_progress_async(mission_progress_callback_t callback);
 
     /**
-     * @brief Synchronous wrapper getting one MissionProgress update.
+     * @brief Poll for 'MissionProgress' (blocking).
      *
      * @return One MissionProgress update.
      */
     MissionProgress mission_progress() const;
 
     /**
-     * @brief Synchronous wrapper for get_return_to_launch_after_mission_async().
+     * @brief Get whether to trigger Return-to-Launch (RTL) after mission is complete.
+     *
+     * Before getting this option, it needs to be set, or a mission
+     * needs to be downloaded.
+     *
+     * This function is blocking.
      *
      * @return Result of request.
      */
     std::pair<Result, bool> get_return_to_launch_after_mission() const;
 
     /**
-     * @brief Synchronous wrapper for set_return_to_launch_after_mission_async().
+     * @brief Set whether to trigger Return-to-Launch (RTL) after the mission is complete.
+     *
+     * This will only take effect for the next mission upload, meaning that
+     * the mission may have to be uploaded again.
+     *
+     * This function is blocking.
      *
      * @return Result of request.
      */
@@ -337,12 +397,21 @@ public:
      *
      * The method will fail if any of the imported mission items are not supported
      * by the MAVSDK API.
+     *
+     * This function is non-blocking. See 'import_qgroundcontrol_mission' for the blocking
+     * counterpart.
      */
     void import_qgroundcontrol_mission_async(
         std::string qgc_plan_path, const import_qgroundcontrol_mission_callback_t callback);
 
     /**
-     * @brief Synchronous wrapper for import_qgroundcontrol_mission_async().
+     * @brief Import a QGroundControl (QGC) mission plan.
+     *
+     * The method will fail if any of the imported mission items are not supported
+     * by the MAVSDK API.
+     *
+     * This function is blocking. See 'import_qgroundcontrol_mission_async' for the non-blocking
+     * counterpart.
      *
      * @return Result of request.
      */
