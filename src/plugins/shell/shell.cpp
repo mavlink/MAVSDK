@@ -18,7 +18,7 @@ Shell::Result Shell::send(std::string command) const
     return _impl->send(command);
 }
 
-void Shell::receive_async(receive_callback_t callback)
+void Shell::subscribe_receive(receive_callback_t callback)
 {
     _impl->receive_async(callback);
 }

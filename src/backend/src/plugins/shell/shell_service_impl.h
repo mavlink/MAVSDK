@@ -108,20 +108,21 @@ public:
 
         std::mutex subscribe_mutex{};
 
-        _shell.receive_async([this, &writer, &stream_closed_promise, is_finished, &subscribe_mutex](
-                                 const std::string receive) {
-            rpc::shell::ReceiveResponse rpc_response;
+        _shell.subscribe_receive(
+            [this, &writer, &stream_closed_promise, is_finished, &subscribe_mutex](
+                const std::string receive) {
+                rpc::shell::ReceiveResponse rpc_response;
 
-            rpc_response.set_data(receive);
+                rpc_response.set_data(receive);
 
-            std::lock_guard<std::mutex> lock(subscribe_mutex);
-            if (!*is_finished && !writer->Write(rpc_response)) {
-                _shell.receive_async(nullptr);
-                *is_finished = true;
-                unregister_stream_stop_promise(stream_closed_promise);
-                stream_closed_promise->set_value();
-            }
-        });
+                std::lock_guard<std::mutex> lock(subscribe_mutex);
+                if (!*is_finished && !writer->Write(rpc_response)) {
+                    _shell.subscribe_receive(nullptr);
+                    *is_finished = true;
+                    unregister_stream_stop_promise(stream_closed_promise);
+                    stream_closed_promise->set_value();
+                }
+            });
 
         stream_closed_future.wait();
         return grpc::Status::OK;

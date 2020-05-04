@@ -36,7 +36,7 @@ TEST_F(SitlTest, MissionRawMissionChanged)
     std::atomic<bool> called_once{false};
 
     LogInfo() << "Subscribe for mission changed notification";
-    mission_raw->mission_changed_async([&prom_changed, &called_once](bool) {
+    mission_raw->subscribe_mission_changed([&prom_changed, &called_once](bool) {
         bool flag = false;
         if (called_once.compare_exchange_strong(flag, true)) {
             prom_changed.set_value();

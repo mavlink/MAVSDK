@@ -149,49 +149,63 @@ public:
     typedef std::function<void(Result)> result_callback_t;
 
     /**
-     * @brief Synchronous wrapper for get_config_async().
+     * @brief Get current configuration.
+     *
+     * This function is blocking.
      *
      * @return Result of request.
      */
     FollowMe::Config get_config() const;
 
     /**
-     * @brief Synchronous wrapper for set_config_async().
+     * @brief Apply configuration by sending it to the system.
+     *
+     * This function is blocking.
      *
      * @return Result of request.
      */
     Result set_config(Config config) const;
 
     /**
-     * @brief Synchronous wrapper for is_active_async().
+     * @brief Check if FollowMe is active.
+     *
+     * This function is blocking.
      *
      * @return Result of request.
      */
     bool is_active() const;
 
     /**
-     * @brief Synchronous wrapper for set_target_location_async().
+     * @brief Set location of the moving target.
+     *
+     * This function is blocking.
      *
      * @return Result of request.
      */
     Result set_target_location(TargetLocation location) const;
 
     /**
-     * @brief Synchronous wrapper for get_last_location_async().
+     * @brief Get the last location of the target.
+     *
+     * This function is blocking.
      *
      * @return Result of request.
      */
     FollowMe::TargetLocation get_last_location() const;
 
     /**
-     * @brief Synchronous wrapper for start_async().
+     * @brief Start FollowMe mode.
+     *
+     * This function is blocking.
      *
      * @return Result of request.
      */
     Result start() const;
 
     /**
-     * @brief Synchronous wrapper for stop_async().
+     * @brief Stop FollowMe mode.
+     *
+     * This function is blocking.
      *
      * @return Result of request.
      */

@@ -97,12 +97,15 @@ public:
 
     /**
      * @brief Resets FTP server in case there are stale open sessions.
+     *
+     * This function is non-blocking.
      */
     void reset_async(const result_callback_t callback);
 
     /**
      * @brief Callback type for download_async.
      */
+
     typedef std::function<void(Ftp::Result, ProgressData)> download_callback_t;
 
     /**
@@ -114,6 +117,7 @@ public:
     /**
      * @brief Callback type for upload_async.
      */
+
     typedef std::function<void(Ftp::Result, ProgressData)> upload_callback_t;
 
     /**
@@ -129,26 +133,36 @@ public:
 
     /**
      * @brief Lists items from a remote directory.
+     *
+     * This function is non-blocking.
      */
     void list_directory_async(std::string remote_dir, const list_directory_callback_t callback);
 
     /**
      * @brief Creates a remote directory.
+     *
+     * This function is non-blocking.
      */
     void create_directory_async(std::string remote_dir, const result_callback_t callback);
 
     /**
      * @brief Removes a remote directory.
+     *
+     * This function is non-blocking.
      */
     void remove_directory_async(std::string remote_dir, const result_callback_t callback);
 
     /**
      * @brief Removes a remote file.
+     *
+     * This function is non-blocking.
      */
     void remove_file_async(std::string remote_file_path, const result_callback_t callback);
 
     /**
      * @brief Renames a remote file or remote directory.
+     *
+     * This function is non-blocking.
      */
     void rename_async(
         std::string remote_from_path, std::string remote_to_path, const result_callback_t callback);
@@ -160,6 +174,8 @@ public:
 
     /**
      * @brief Compares a local file to a remote file using a CRC32 checksum.
+     *
+     * This function is non-blocking.
      */
     void are_files_identical_async(
         std::string local_file_path,
@@ -167,21 +183,27 @@ public:
         const are_files_identical_callback_t callback);
 
     /**
-     * @brief Synchronous wrapper for set_root_directory_async().
+     * @brief Set root directory for MAVLink FTP server.
+     *
+     * This function is blocking.
      *
      * @return Result of request.
      */
     Result set_root_directory(std::string root_dir) const;
 
     /**
-     * @brief Synchronous wrapper for set_target_component_id_async().
+     * @brief Set target component ID. By default it is the autopilot.
+     *
+     * This function is blocking.
      *
      * @return Result of request.
      */
     Result set_target_component_id(uint32_t component_id) const;
 
     /**
-     * @brief Synchronous wrapper for get_our_component_id_async().
+     * @brief Get our own component ID.
+     *
+     * This function is blocking.
      *
      * @return Result of request.
      */

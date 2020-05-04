@@ -34,10 +34,10 @@ TEST_F(SitlTest, ActionHoverAsync)
         LogDebug() << "Waiting to be ready...";
         std::promise<void> prom;
         std::future<void> fut = prom.get_future();
-        telemetry->health_all_ok_async([&telemetry, &prom](bool all_ok) {
+        telemetry->subscribe_health_all_ok([&telemetry, &prom](bool all_ok) {
             if (all_ok) {
                 // Unregister to prevent fulfilling promise twice.
-                telemetry->health_all_ok_async(nullptr);
+                telemetry->subscribe_health_all_ok(nullptr);
                 prom.set_value();
             }
         });
@@ -87,10 +87,10 @@ TEST_F(SitlTest, ActionHoverAsync)
         LogInfo() << "Waiting to be landed...";
         std::promise<void> prom;
         std::future<void> fut = prom.get_future();
-        telemetry->in_air_async([&telemetry, &prom](bool in_air) {
+        telemetry->subscribe_in_air([&telemetry, &prom](bool in_air) {
             if (!in_air) {
                 // Unregister to prevent fulfilling promise twice.
-                telemetry->in_air_async(nullptr);
+                telemetry->subscribe_in_air(nullptr);
                 prom.set_value();
             }
         });

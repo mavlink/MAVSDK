@@ -30,10 +30,10 @@ TEST_F(SitlTest, ActionTakeoffAndKill)
         LogDebug() << "Waiting to be ready...";
         std::promise<void> prom;
         std::future<void> fut = prom.get_future();
-        telemetry->health_all_ok_async([&telemetry, &prom](bool all_ok) {
+        telemetry->subscribe_health_all_ok([&telemetry, &prom](bool all_ok) {
             if (all_ok) {
                 // Unregister to prevent fulfilling promise twice.
-                telemetry->health_all_ok_async(nullptr);
+                telemetry->subscribe_health_all_ok(nullptr);
                 prom.set_value();
             }
         });

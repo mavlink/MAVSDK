@@ -323,21 +323,27 @@ public:
     typedef std::function<void(Result)> result_callback_t;
 
     /**
-     * @brief Synchronous wrapper for set_vision_position_estimate_async().
+     * @brief Send Global position/attitude estimate from a vision source.
+     *
+     * This function is blocking.
      *
      * @return Result of request.
      */
     Result set_vision_position_estimate(VisionPositionEstimate vision_position_estimate) const;
 
     /**
-     * @brief Synchronous wrapper for set_attitude_position_mocap_async().
+     * @brief Send motion capture attitude and position.
+     *
+     * This function is blocking.
      *
      * @return Result of request.
      */
     Result set_attitude_position_mocap(AttitudePositionMocap attitude_position_mocap) const;
 
     /**
-     * @brief Synchronous wrapper for set_odometry_async().
+     * @brief Send odometry information with an external interface.
+     *
+     * This function is blocking.
      *
      * @return Result of request.
      */

@@ -282,7 +282,7 @@ TEST(CameraTest, SubscribeCurrentSettings)
     EXPECT_EQ(set_setting(camera, "CAM_EXPMODE", "0"), Camera::Result::Success);
 
     bool subscription_called = false;
-    camera->current_settings_async(
+    camera->subscribe_current_settings(
         std::bind(receive_current_settings, std::ref(subscription_called), _1));
 
     EXPECT_EQ(camera->set_mode(Camera::Mode::Photo), Camera::Result::Success);
@@ -345,7 +345,7 @@ TEST(CameraTest, SubscribePossibleSettings)
     std::this_thread::sleep_for(std::chrono::seconds(1));
 
     bool subscription_called = false;
-    camera->possible_setting_options_async(
+    camera->subscribe_possible_setting_options(
         std::bind(receive_possible_setting_options, std::ref(subscription_called), _1));
 
     EXPECT_EQ(camera->set_mode(Camera::Mode::Photo), Camera::Result::Success);

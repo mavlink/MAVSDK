@@ -132,11 +132,18 @@ public:
      *
      * Polygons are uploaded to a drone. Once uploaded, the geofence will remain
      * on the drone even if a connection is lost.
+     *
+     * This function is non-blocking. See 'upload_geofence' for the blocking counterpart.
      */
     void upload_geofence_async(std::vector<Polygon> polygons, const result_callback_t callback);
 
     /**
-     * @brief Synchronous wrapper for upload_geofence_async().
+     * @brief Upload a geofence.
+     *
+     * Polygons are uploaded to a drone. Once uploaded, the geofence will remain
+     * on the drone even if a connection is lost.
+     *
+     * This function is blocking. See 'upload_geofence_async' for the non-blocking counterpart.
      *
      * @return Result of request.
      */

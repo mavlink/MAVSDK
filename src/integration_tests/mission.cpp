@@ -214,7 +214,7 @@ void test_mission(
     LogInfo() << "Armed.";
 
     // Before starting the mission, we want to be sure to subscribe to the mission progress.
-    mission->mission_progress_async([&mission](Mission::MissionProgress progress) {
+    mission->subscribe_mission_progress([&mission](Mission::MissionProgress progress) {
         LogInfo() << "Mission status update: " << progress.current << " / " << progress.total;
         if (progress.current >= 2 && !pause_already_done) {
             pause_already_done = true;

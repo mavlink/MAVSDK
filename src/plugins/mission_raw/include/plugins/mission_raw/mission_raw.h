@@ -136,19 +136,28 @@ public:
      *
      * The raw mission items are uploaded to a drone. Once uploaded the mission
      * can be started and executed even if the connection is lost.
+     *
+     * This function is non-blocking. See 'upload_mission' for the blocking counterpart.
      */
     void
     upload_mission_async(std::vector<MissionItem> mission_items, const result_callback_t callback);
 
     /**
-     * @brief Synchronous wrapper for upload_mission_async().
+     * @brief Upload a list of raw mission items to the system.
+     *
+     * The raw mission items are uploaded to a drone. Once uploaded the mission
+     * can be started and executed even if the connection is lost.
+     *
+     * This function is blocking. See 'upload_mission_async' for the non-blocking counterpart.
      *
      * @return Result of request.
      */
     Result upload_mission(std::vector<MissionItem> mission_items) const;
 
     /**
-     * @brief Synchronous wrapper for cancel_mission_upload_async().
+     * @brief Cancel an ongoing mission upload.
+     *
+     * This function is blocking.
      *
      * @return Result of request.
      */
@@ -161,18 +170,24 @@ public:
 
     /**
      * @brief Download a list of raw mission items from the system (asynchronous).
+     *
+     * This function is non-blocking. See 'download_mission' for the blocking counterpart.
      */
     void download_mission_async(const download_mission_callback_t callback);
 
     /**
-     * @brief Synchronous wrapper for download_mission_async().
+     * @brief Download a list of raw mission items from the system (asynchronous).
+     *
+     * This function is blocking. See 'download_mission_async' for the non-blocking counterpart.
      *
      * @return Result of request.
      */
     std::pair<Result, std::vector<MissionRaw::MissionItem>> download_mission() const;
 
     /**
-     * @brief Synchronous wrapper for cancel_mission_download_async().
+     * @brief Cancel an ongoing mission download.
+     *
+     * This function is blocking.
      *
      * @return Result of request.
      */
@@ -182,11 +197,17 @@ public:
      * @brief Start the mission.
      *
      * A mission must be uploaded to the vehicle before this can be called.
+     *
+     * This function is non-blocking. See 'start_mission' for the blocking counterpart.
      */
     void start_mission_async(const result_callback_t callback);
 
     /**
-     * @brief Synchronous wrapper for start_mission_async().
+     * @brief Start the mission.
+     *
+     * A mission must be uploaded to the vehicle before this can be called.
+     *
+     * This function is blocking. See 'start_mission_async' for the non-blocking counterpart.
      *
      * @return Result of request.
      */
@@ -199,11 +220,20 @@ public:
      * [HOLD mode](https://docs.px4.io/en/flight_modes/hold.html).
      * A multicopter should just hover at the spot while a fixedwing vehicle should loiter
      * around the location where it paused.
+     *
+     * This function is non-blocking. See 'pause_mission' for the blocking counterpart.
      */
     void pause_mission_async(const result_callback_t callback);
 
     /**
-     * @brief Synchronous wrapper for pause_mission_async().
+     * @brief Pause the mission.
+     *
+     * Pausing the mission puts the vehicle into
+     * [HOLD mode](https://docs.px4.io/en/flight_modes/hold.html).
+     * A multicopter should just hover at the spot while a fixedwing vehicle should loiter
+     * around the location where it paused.
+     *
+     * This function is blocking. See 'pause_mission_async' for the non-blocking counterpart.
      *
      * @return Result of request.
      */
@@ -211,11 +241,15 @@ public:
 
     /**
      * @brief Clear the mission saved on the vehicle.
+     *
+     * This function is non-blocking. See 'clear_mission' for the blocking counterpart.
      */
     void clear_mission_async(const result_callback_t callback);
 
     /**
-     * @brief Synchronous wrapper for clear_mission_async().
+     * @brief Clear the mission saved on the vehicle.
+     *
+     * This function is blocking. See 'clear_mission_async' for the non-blocking counterpart.
      *
      * @return Result of request.
      */
@@ -226,36 +260,46 @@ public:
      *
      * By setting the current index to 0, the mission is restarted from the beginning. If it is set
      * to a specific index of a raw mission item, the mission will be set to this item.
+     *
+     * This function is non-blocking. See 'set_current_mission_item' for the blocking counterpart.
      */
     void set_current_mission_item_async(int32_t index, const result_callback_t callback);
 
     /**
-     * @brief Synchronous wrapper for set_current_mission_item_async().
+     * @brief Sets the raw mission item index to go to.
+     *
+     * By setting the current index to 0, the mission is restarted from the beginning. If it is set
+     * to a specific index of a raw mission item, the mission will be set to this item.
+     *
+     * This function is blocking. See 'set_current_mission_item_async' for the non-blocking
+     * counterpart.
      *
      * @return Result of request.
      */
     Result set_current_mission_item(int32_t index) const;
 
     /**
-     * @brief Callback type for mission_progress_async.
+     * @brief Callback type for subscribe_mission_progress.
      */
+
     typedef std::function<void(MissionProgress)> mission_progress_callback_t;
 
     /**
      * @brief Subscribe to mission progress updates.
      */
-    void mission_progress_async(mission_progress_callback_t callback);
+    void subscribe_mission_progress(mission_progress_callback_t callback);
 
     /**
-     * @brief Synchronous wrapper getting one MissionProgress update.
+     * @brief Poll for 'MissionProgress' (blocking).
      *
      * @return One MissionProgress update.
      */
     MissionProgress mission_progress() const;
 
     /**
-     * @brief Callback type for mission_changed_async.
+     * @brief Callback type for subscribe_mission_changed.
      */
+
     typedef std::function<void(bool)> mission_changed_callback_t;
 
     /**
@@ -267,7 +311,7 @@ public:
      *
      * @param callback Callback to notify about change.
      */
-    void mission_changed_async(mission_changed_callback_t callback);
+    void subscribe_mission_changed(mission_changed_callback_t callback);
 
     /**
      * @brief Returns a human-readable English string for a Result.

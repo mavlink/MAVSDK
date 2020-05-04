@@ -26,7 +26,7 @@ TEST(CameraTest, Status)
     System& system = dc.system();
     auto camera = std::make_shared<Camera>(system);
 
-    camera->status_async(std::bind(&receive_camera_status, _1));
+    camera->subscribe_status(std::bind(&receive_camera_status, _1));
     std::this_thread::sleep_for(std::chrono::seconds(5));
     EXPECT_TRUE(_received_status);
 }

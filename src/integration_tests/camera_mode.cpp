@@ -25,7 +25,7 @@ TEST(CameraTest, SetModeSync)
     bool received_mode_change = false;
     Camera::Mode last_mode = Camera::Mode::Unknown;
 
-    camera->mode_async([&received_mode_change, &last_mode](Camera::Mode mode) {
+    camera->subscribe_mode([&received_mode_change, &last_mode](Camera::Mode mode) {
         LogInfo() << "Got mode: " << int(mode);
         received_mode_change = true;
         last_mode = mode;
