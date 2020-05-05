@@ -112,12 +112,12 @@ public:
     /**
      * @brief Callback type for asynchronous LogFiles calls.
      */
-    typedef std::function<void(Result)> ResultCallback;
+    using ResultCallback = std::function<void(Result)>;
 
     /**
      * @brief Callback type for get_entries_async.
      */
-    typedef std::function<void(Result, std::vector<Entry>)> GetEntriesCallback;
+    using GetEntriesCallback = std::function<void(Result, std::vector<Entry>)>;
 
     /**
      * @brief Get List of log files.
@@ -139,7 +139,7 @@ public:
      * @brief Callback type for download_log_file_async.
      */
 
-    typedef std::function<void(LogFiles::Result, ProgressData)> DownloadLogFileCallback;
+    using DownloadLogFileCallback = std::function<void(LogFiles::Result, ProgressData)>;
 
     /**
      * @brief Download log file.

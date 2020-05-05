@@ -93,7 +93,7 @@ public:
     /**
      * @brief Callback type for asynchronous Ftp calls.
      */
-    typedef std::function<void(Result)> ResultCallback;
+    using ResultCallback = std::function<void(Result)>;
 
     /**
      * @brief Resets FTP server in case there are stale open sessions.
@@ -106,7 +106,7 @@ public:
      * @brief Callback type for download_async.
      */
 
-    typedef std::function<void(Ftp::Result, ProgressData)> DownloadCallback;
+    using DownloadCallback = std::function<void(Ftp::Result, ProgressData)>;
 
     /**
      * @brief Downloads a file to local directory.
@@ -118,7 +118,7 @@ public:
      * @brief Callback type for upload_async.
      */
 
-    typedef std::function<void(Ftp::Result, ProgressData)> UploadCallback;
+    using UploadCallback = std::function<void(Ftp::Result, ProgressData)>;
 
     /**
      * @brief Uploads local file to remote directory.
@@ -128,7 +128,7 @@ public:
     /**
      * @brief Callback type for list_directory_async.
      */
-    typedef std::function<void(Result, std::vector<std::string>)> ListDirectoryCallback;
+    using ListDirectoryCallback = std::function<void(Result, std::vector<std::string>)>;
 
     /**
      * @brief Lists items from a remote directory.
@@ -169,7 +169,7 @@ public:
     /**
      * @brief Callback type for are_files_identical_async.
      */
-    typedef std::function<void(Result, bool)> AreFilesIdenticalCallback;
+    using AreFilesIdenticalCallback = std::function<void(Result, bool)>;
 
     /**
      * @brief Compares a local file to a remote file using a CRC32 checksum.

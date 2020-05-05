@@ -2,7 +2,7 @@
 /**
 * @brief Callback type for {{ name.lower_snake_case }}_async.
 */
-typedef std::function<void({% if has_result %}Result, {% endif %}{{ return_type.name }})> {{ name.upper_camel_case }}Callback;
+using {{ name.upper_camel_case }}Callback = std::function<void({% if has_result %}Result, {% endif %}{{ return_type.name }})>;
 
 /**
  * @brief {{ method_description | replace('\n', '\n *')}}

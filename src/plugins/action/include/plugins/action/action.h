@@ -73,7 +73,7 @@ public:
     /**
      * @brief Callback type for asynchronous Action calls.
      */
-    typedef std::function<void(Result)> ResultCallback;
+    using ResultCallback = std::function<void(Result)>;
 
     /**
      * @brief Send command to arm the drone.
@@ -342,7 +342,7 @@ public:
     /**
      * @brief Callback type for get_takeoff_altitude_async.
      */
-    typedef std::function<void(Result, float)> GetTakeoffAltitudeCallback;
+    using GetTakeoffAltitudeCallback = std::function<void(Result, float)>;
 
     /**
      * @brief Get the takeoff altitude (in meters above ground).
@@ -379,7 +379,7 @@ public:
     /**
      * @brief Callback type for get_maximum_speed_async.
      */
-    typedef std::function<void(Result, float)> GetMaximumSpeedCallback;
+    using GetMaximumSpeedCallback = std::function<void(Result, float)>;
 
     /**
      * @brief Get the vehicle maximum speed (in metres/second).
@@ -416,7 +416,7 @@ public:
     /**
      * @brief Callback type for get_return_to_launch_altitude_async.
      */
-    typedef std::function<void(Result, float)> GetReturnToLaunchAltitudeCallback;
+    using GetReturnToLaunchAltitudeCallback = std::function<void(Result, float)>;
 
     /**
      * @brief Get the return to launch minimum return altitude (in meters).

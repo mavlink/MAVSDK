@@ -78,7 +78,7 @@ public:
     /**
      * @brief Callback type for asynchronous Gimbal calls.
      */
-    typedef std::function<void(Result)> ResultCallback;
+    using ResultCallback = std::function<void(Result)>;
 
     /**
      * @brief Set gimbal pitch and yaw angles.

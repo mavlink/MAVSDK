@@ -820,13 +820,13 @@ public:
     /**
      * @brief Callback type for asynchronous Telemetry calls.
      */
-    typedef std::function<void(Result)> ResultCallback;
+    using ResultCallback = std::function<void(Result)>;
 
     /**
      * @brief Callback type for subscribe_position.
      */
 
-    typedef std::function<void(Position)> PositionCallback;
+    using PositionCallback = std::function<void(Position)>;
 
     /**
      * @brief Subscribe to 'position' updates.
@@ -844,7 +844,7 @@ public:
      * @brief Callback type for subscribe_home.
      */
 
-    typedef std::function<void(Position)> HomeCallback;
+    using HomeCallback = std::function<void(Position)>;
 
     /**
      * @brief Subscribe to 'home position' updates.
@@ -862,7 +862,7 @@ public:
      * @brief Callback type for subscribe_in_air.
      */
 
-    typedef std::function<void(bool)> InAirCallback;
+    using InAirCallback = std::function<void(bool)>;
 
     /**
      * @brief Subscribe to in-air updates.
@@ -880,7 +880,7 @@ public:
      * @brief Callback type for subscribe_landed_state.
      */
 
-    typedef std::function<void(LandedState)> LandedStateCallback;
+    using LandedStateCallback = std::function<void(LandedState)>;
 
     /**
      * @brief Subscribe to landed state updates
@@ -898,7 +898,7 @@ public:
      * @brief Callback type for subscribe_armed.
      */
 
-    typedef std::function<void(bool)> ArmedCallback;
+    using ArmedCallback = std::function<void(bool)>;
 
     /**
      * @brief Subscribe to armed updates.
@@ -916,7 +916,7 @@ public:
      * @brief Callback type for subscribe_attitude_quaternion.
      */
 
-    typedef std::function<void(Quaternion)> AttitudeQuaternionCallback;
+    using AttitudeQuaternionCallback = std::function<void(Quaternion)>;
 
     /**
      * @brief Subscribe to 'attitude' updates (quaternion).
@@ -934,7 +934,7 @@ public:
      * @brief Callback type for subscribe_attitude_euler.
      */
 
-    typedef std::function<void(EulerAngle)> AttitudeEulerCallback;
+    using AttitudeEulerCallback = std::function<void(EulerAngle)>;
 
     /**
      * @brief Subscribe to 'attitude' updates (Euler).
@@ -952,7 +952,7 @@ public:
      * @brief Callback type for subscribe_attitude_angular_velocity_body.
      */
 
-    typedef std::function<void(AngularVelocityBody)> AttitudeAngularVelocityBodyCallback;
+    using AttitudeAngularVelocityBodyCallback = std::function<void(AngularVelocityBody)>;
 
     /**
      * @brief Subscribe to 'attitude' updates (angular velocity)
@@ -970,7 +970,7 @@ public:
      * @brief Callback type for subscribe_camera_attitude_quaternion.
      */
 
-    typedef std::function<void(Quaternion)> CameraAttitudeQuaternionCallback;
+    using CameraAttitudeQuaternionCallback = std::function<void(Quaternion)>;
 
     /**
      * @brief Subscribe to 'camera attitude' updates (quaternion).
@@ -988,7 +988,7 @@ public:
      * @brief Callback type for subscribe_camera_attitude_euler.
      */
 
-    typedef std::function<void(EulerAngle)> CameraAttitudeEulerCallback;
+    using CameraAttitudeEulerCallback = std::function<void(EulerAngle)>;
 
     /**
      * @brief Subscribe to 'camera attitude' updates (Euler).
@@ -1006,7 +1006,7 @@ public:
      * @brief Callback type for subscribe_ground_speed_ned.
      */
 
-    typedef std::function<void(SpeedNed)> GroundSpeedNedCallback;
+    using GroundSpeedNedCallback = std::function<void(SpeedNed)>;
 
     /**
      * @brief Subscribe to 'ground speed' updates (NED).
@@ -1024,7 +1024,7 @@ public:
      * @brief Callback type for subscribe_gps_info.
      */
 
-    typedef std::function<void(GpsInfo)> GpsInfoCallback;
+    using GpsInfoCallback = std::function<void(GpsInfo)>;
 
     /**
      * @brief Subscribe to 'GPS info' updates.
@@ -1042,7 +1042,7 @@ public:
      * @brief Callback type for subscribe_battery.
      */
 
-    typedef std::function<void(Battery)> BatteryCallback;
+    using BatteryCallback = std::function<void(Battery)>;
 
     /**
      * @brief Subscribe to 'battery' updates.
@@ -1060,7 +1060,7 @@ public:
      * @brief Callback type for subscribe_flight_mode.
      */
 
-    typedef std::function<void(FlightMode)> FlightModeCallback;
+    using FlightModeCallback = std::function<void(FlightMode)>;
 
     /**
      * @brief Subscribe to 'flight mode' updates.
@@ -1078,7 +1078,7 @@ public:
      * @brief Callback type for subscribe_health.
      */
 
-    typedef std::function<void(Health)> HealthCallback;
+    using HealthCallback = std::function<void(Health)>;
 
     /**
      * @brief Subscribe to 'health' updates.
@@ -1096,7 +1096,7 @@ public:
      * @brief Callback type for subscribe_rc_status.
      */
 
-    typedef std::function<void(RcStatus)> RcStatusCallback;
+    using RcStatusCallback = std::function<void(RcStatus)>;
 
     /**
      * @brief Subscribe to 'RC status' updates.
@@ -1114,7 +1114,7 @@ public:
      * @brief Callback type for subscribe_status_text.
      */
 
-    typedef std::function<void(StatusText)> StatusTextCallback;
+    using StatusTextCallback = std::function<void(StatusText)>;
 
     /**
      * @brief Subscribe to 'status text' updates.
@@ -1132,7 +1132,7 @@ public:
      * @brief Callback type for subscribe_actuator_control_target.
      */
 
-    typedef std::function<void(ActuatorControlTarget)> ActuatorControlTargetCallback;
+    using ActuatorControlTargetCallback = std::function<void(ActuatorControlTarget)>;
 
     /**
      * @brief Subscribe to 'actuator control target' updates.
@@ -1150,7 +1150,7 @@ public:
      * @brief Callback type for subscribe_actuator_output_status.
      */
 
-    typedef std::function<void(ActuatorOutputStatus)> ActuatorOutputStatusCallback;
+    using ActuatorOutputStatusCallback = std::function<void(ActuatorOutputStatus)>;
 
     /**
      * @brief Subscribe to 'actuator output status' updates.
@@ -1168,7 +1168,7 @@ public:
      * @brief Callback type for subscribe_odometry.
      */
 
-    typedef std::function<void(Odometry)> OdometryCallback;
+    using OdometryCallback = std::function<void(Odometry)>;
 
     /**
      * @brief Subscribe to 'odometry' updates.
@@ -1186,7 +1186,7 @@ public:
      * @brief Callback type for subscribe_position_velocity_ned.
      */
 
-    typedef std::function<void(PositionVelocityNed)> PositionVelocityNedCallback;
+    using PositionVelocityNedCallback = std::function<void(PositionVelocityNed)>;
 
     /**
      * @brief Subscribe to 'position velocity' updates.
@@ -1204,7 +1204,7 @@ public:
      * @brief Callback type for subscribe_ground_truth.
      */
 
-    typedef std::function<void(GroundTruth)> GroundTruthCallback;
+    using GroundTruthCallback = std::function<void(GroundTruth)>;
 
     /**
      * @brief Subscribe to 'ground truth' updates.
@@ -1222,7 +1222,7 @@ public:
      * @brief Callback type for subscribe_fixedwing_metrics.
      */
 
-    typedef std::function<void(FixedwingMetrics)> FixedwingMetricsCallback;
+    using FixedwingMetricsCallback = std::function<void(FixedwingMetrics)>;
 
     /**
      * @brief Subscribe to 'fixedwing metrics' updates.
@@ -1240,7 +1240,7 @@ public:
      * @brief Callback type for subscribe_imu.
      */
 
-    typedef std::function<void(Imu)> ImuCallback;
+    using ImuCallback = std::function<void(Imu)>;
 
     /**
      * @brief Subscribe to 'IMU' updates.
@@ -1258,7 +1258,7 @@ public:
      * @brief Callback type for subscribe_health_all_ok.
      */
 
-    typedef std::function<void(bool)> HealthAllOkCallback;
+    using HealthAllOkCallback = std::function<void(bool)>;
 
     /**
      * @brief Subscribe to 'HealthAllOk' updates.
@@ -1276,7 +1276,7 @@ public:
      * @brief Callback type for subscribe_unix_epoch_time.
      */
 
-    typedef std::function<void(uint64_t)> UnixEpochTimeCallback;
+    using UnixEpochTimeCallback = std::function<void(uint64_t)>;
 
     /**
      * @brief Subscribe to 'unix epoch time' updates.

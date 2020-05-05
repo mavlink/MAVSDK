@@ -177,7 +177,7 @@ public:
     /**
      * @brief Callback type for asynchronous Mission calls.
      */
-    typedef std::function<void(Result)> ResultCallback;
+    using ResultCallback = std::function<void(Result)>;
 
     /**
      * @brief Upload a list of mission items to the system.
@@ -213,7 +213,7 @@ public:
     /**
      * @brief Callback type for download_mission_async.
      */
-    typedef std::function<void(Result, MissionPlan)> DownloadMissionCallback;
+    using DownloadMissionCallback = std::function<void(Result, MissionPlan)>;
 
     /**
      * @brief Download a list of mission items from the system (asynchronous).
@@ -350,7 +350,7 @@ public:
      * @brief Callback type for subscribe_mission_progress.
      */
 
-    typedef std::function<void(MissionProgress)> MissionProgressCallback;
+    using MissionProgressCallback = std::function<void(MissionProgress)>;
 
     /**
      * @brief Subscribe to mission progress updates.
@@ -391,7 +391,7 @@ public:
     /**
      * @brief Callback type for import_qgroundcontrol_mission_async.
      */
-    typedef std::function<void(Result, MissionPlan)> ImportQgroundcontrolMissionCallback;
+    using ImportQgroundcontrolMissionCallback = std::function<void(Result, MissionPlan)>;
 
     /**
      * @brief Import a QGroundControl (QGC) mission plan.

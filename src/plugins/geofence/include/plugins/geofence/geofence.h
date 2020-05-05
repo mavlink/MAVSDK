@@ -125,7 +125,7 @@ public:
     /**
      * @brief Callback type for asynchronous Geofence calls.
      */
-    typedef std::function<void(Result)> ResultCallback;
+    using ResultCallback = std::function<void(Result)>;
 
     /**
      * @brief Upload a geofence.

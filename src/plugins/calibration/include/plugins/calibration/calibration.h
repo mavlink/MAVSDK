@@ -100,13 +100,13 @@ public:
     /**
      * @brief Callback type for asynchronous Calibration calls.
      */
-    typedef std::function<void(Result)> ResultCallback;
+    using ResultCallback = std::function<void(Result)>;
 
     /**
      * @brief Callback type for calibrate_gyro_async.
      */
 
-    typedef std::function<void(Calibration::Result, ProgressData)> CalibrateGyroCallback;
+    using CalibrateGyroCallback = std::function<void(Calibration::Result, ProgressData)>;
 
     /**
      * @brief Perform gyro calibration.
@@ -117,7 +117,7 @@ public:
      * @brief Callback type for calibrate_accelerometer_async.
      */
 
-    typedef std::function<void(Calibration::Result, ProgressData)> CalibrateAccelerometerCallback;
+    using CalibrateAccelerometerCallback = std::function<void(Calibration::Result, ProgressData)>;
 
     /**
      * @brief Perform accelerometer calibration.
@@ -128,7 +128,7 @@ public:
      * @brief Callback type for calibrate_magnetometer_async.
      */
 
-    typedef std::function<void(Calibration::Result, ProgressData)> CalibrateMagnetometerCallback;
+    using CalibrateMagnetometerCallback = std::function<void(Calibration::Result, ProgressData)>;
 
     /**
      * @brief Perform magnetometer caliration.
@@ -139,8 +139,8 @@ public:
      * @brief Callback type for calibrate_gimbal_accelerometer_async.
      */
 
-    typedef std::function<void(Calibration::Result, ProgressData)>
-        CalibrateGimbalAccelerometerCallback;
+    using CalibrateGimbalAccelerometerCallback =
+        std::function<void(Calibration::Result, ProgressData)>;
 
     /**
      * @brief Perform gimbal accelerometer calibration.

@@ -66,7 +66,7 @@ public:
     /**
      * @brief Callback type for asynchronous Shell calls.
      */
-    typedef std::function<void(Result)> ResultCallback;
+    using ResultCallback = std::function<void(Result)>;
 
     /**
      * @brief Send a command line.
@@ -81,7 +81,7 @@ public:
      * @brief Callback type for subscribe_receive.
      */
 
-    typedef std::function<void(std::string)> ReceiveCallback;
+    using ReceiveCallback = std::function<void(std::string)>;
 
     /**
      * @brief Receive feedback from a sent command line.

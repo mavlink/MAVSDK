@@ -413,7 +413,7 @@ public:
     /**
      * @brief Callback type for asynchronous Camera calls.
      */
-    typedef std::function<void(Result)> ResultCallback;
+    using ResultCallback = std::function<void(Result)>;
 
     /**
      * @brief Take one photo.
@@ -533,7 +533,7 @@ public:
      * @brief Callback type for subscribe_mode.
      */
 
-    typedef std::function<void(Mode)> ModeCallback;
+    using ModeCallback = std::function<void(Mode)>;
 
     /**
      * @brief Subscribe to camera mode updates.
@@ -551,7 +551,7 @@ public:
      * @brief Callback type for subscribe_information.
      */
 
-    typedef std::function<void(Information)> InformationCallback;
+    using InformationCallback = std::function<void(Information)>;
 
     /**
      * @brief Subscribe to camera information updates.
@@ -569,7 +569,7 @@ public:
      * @brief Callback type for subscribe_video_stream_info.
      */
 
-    typedef std::function<void(VideoStreamInfo)> VideoStreamInfoCallback;
+    using VideoStreamInfoCallback = std::function<void(VideoStreamInfo)>;
 
     /**
      * @brief Subscribe to video stream info updates.
@@ -587,7 +587,7 @@ public:
      * @brief Callback type for subscribe_capture_info.
      */
 
-    typedef std::function<void(CaptureInfo)> CaptureInfoCallback;
+    using CaptureInfoCallback = std::function<void(CaptureInfo)>;
 
     /**
      * @brief Subscribe to capture info updates.
@@ -598,7 +598,7 @@ public:
      * @brief Callback type for subscribe_status.
      */
 
-    typedef std::function<void(Status)> StatusCallback;
+    using StatusCallback = std::function<void(Status)>;
 
     /**
      * @brief Subscribe to camera status updates.
@@ -616,7 +616,7 @@ public:
      * @brief Callback type for subscribe_current_settings.
      */
 
-    typedef std::function<void(std::vector<Setting>)> CurrentSettingsCallback;
+    using CurrentSettingsCallback = std::function<void(std::vector<Setting>)>;
 
     /**
      * @brief Get the list of current camera settings.
@@ -627,7 +627,7 @@ public:
      * @brief Callback type for subscribe_possible_setting_options.
      */
 
-    typedef std::function<void(std::vector<SettingOptions>)> PossibleSettingOptionsCallback;
+    using PossibleSettingOptionsCallback = std::function<void(std::vector<SettingOptions>)>;
 
     /**
      * @brief Get the list of settings that can be changed.
@@ -664,7 +664,7 @@ public:
     /**
      * @brief Callback type for get_setting_async.
      */
-    typedef std::function<void(Result, Setting)> GetSettingCallback;
+    using GetSettingCallback = std::function<void(Result, Setting)>;
 
     /**
      * @brief Get a setting.

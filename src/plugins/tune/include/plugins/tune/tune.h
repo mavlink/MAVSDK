@@ -121,7 +121,7 @@ public:
     /**
      * @brief Callback type for asynchronous Tune calls.
      */
-    typedef std::function<void(Result)> ResultCallback;
+    using ResultCallback = std::function<void(Result)>;
 
     /**
      * @brief Send a tune to be played by the system.
