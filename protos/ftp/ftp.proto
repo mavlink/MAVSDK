@@ -152,8 +152,7 @@ message SetTargetComponentIdResponse {
 
 message GetOurComponentIdRequest {}
 message GetOurComponentIdResponse {
-    FtpResult ftp_result = 1;
-    uint32 component_id = 2; // Our component ID.
+    uint32 component_id = 1; // Our component ID.
 }
 
 // Progress data type for file transfer.
