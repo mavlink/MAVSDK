@@ -1099,7 +1099,7 @@ TelemetryImpl::telemetry_flight_mode_from_flight_mode(SystemImpl::FlightMode fli
 
 void TelemetryImpl::receive_param_cal_gyro(MAVLinkParameters::Result result, int value)
 {
-    if (result != MAVLinkParameters::Result::SUCCESS) {
+    if (result != MAVLinkParameters::Result::Success) {
         LogErr() << "Error: Param for gyro cal failed.";
         return;
     }
@@ -1110,7 +1110,7 @@ void TelemetryImpl::receive_param_cal_gyro(MAVLinkParameters::Result result, int
 
 void TelemetryImpl::receive_param_cal_accel(MAVLinkParameters::Result result, int value)
 {
-    if (result != MAVLinkParameters::Result::SUCCESS) {
+    if (result != MAVLinkParameters::Result::Success) {
         LogErr() << "Error: Param for accel cal failed.";
         return;
     }
@@ -1121,7 +1121,7 @@ void TelemetryImpl::receive_param_cal_accel(MAVLinkParameters::Result result, in
 
 void TelemetryImpl::receive_param_cal_mag(MAVLinkParameters::Result result, int value)
 {
-    if (result != MAVLinkParameters::Result::SUCCESS) {
+    if (result != MAVLinkParameters::Result::Success) {
         LogErr() << "Error: Param for mag cal failed.";
         return;
     }
@@ -1133,7 +1133,7 @@ void TelemetryImpl::receive_param_cal_mag(MAVLinkParameters::Result result, int 
 #ifdef LEVEL_CALIBRATION
 void TelemetryImpl::receive_param_cal_level(MAVLinkParameters::Result result, float value)
 {
-    if (result != MAVLinkParameters::Result::SUCCESS) {
+    if (result != MAVLinkParameters::Result::Success) {
         LogErr() << "Error: Param for level cal failed.";
         return;
     }
@@ -1145,7 +1145,7 @@ void TelemetryImpl::receive_param_cal_level(MAVLinkParameters::Result result, fl
 
 void TelemetryImpl::receive_param_hitl(MAVLinkParameters::Result result, int value)
 {
-    if (result != MAVLinkParameters::Result::SUCCESS) {
+    if (result != MAVLinkParameters::Result::Success) {
         LogErr() << "Error: Param to determine hitl failed.";
         return;
     }

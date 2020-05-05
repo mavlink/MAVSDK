@@ -679,7 +679,7 @@ std::pair<MAVLinkParameters::Result, float> SystemImpl::get_param_float(const st
         value_type,
         [&prom](MAVLinkParameters::Result result, MAVLinkParameters::ParamValue param) {
             float value = NAN;
-            if (result == MAVLinkParameters::Result::SUCCESS) {
+            if (result == MAVLinkParameters::Result::Success) {
                 value = param.get_float();
             }
             prom.set_value(std::make_pair<>(result, value));
@@ -702,7 +702,7 @@ std::pair<MAVLinkParameters::Result, int> SystemImpl::get_param_int(const std::s
         value_type,
         [&prom](MAVLinkParameters::Result result, MAVLinkParameters::ParamValue param) {
             int value = 0;
-            if (result == MAVLinkParameters::Result::SUCCESS) {
+            if (result == MAVLinkParameters::Result::Success) {
                 value = param.get_int32();
             }
             prom.set_value(std::make_pair<>(result, value));
@@ -725,7 +725,7 @@ std::pair<MAVLinkParameters::Result, float> SystemImpl::get_param_ext_float(cons
         value_type,
         [&prom](MAVLinkParameters::Result result, MAVLinkParameters::ParamValue param) {
             float value = NAN;
-            if (result == MAVLinkParameters::Result::SUCCESS) {
+            if (result == MAVLinkParameters::Result::Success) {
                 value = param.get_float();
             }
             prom.set_value(std::make_pair<>(result, value));
@@ -749,7 +749,7 @@ std::pair<MAVLinkParameters::Result, int> SystemImpl::get_param_ext_int(const st
         value_type,
         [&prom](MAVLinkParameters::Result result, MAVLinkParameters::ParamValue param) {
             int value = 0;
-            if (result == MAVLinkParameters::Result::SUCCESS) {
+            if (result == MAVLinkParameters::Result::Success) {
                 value = param.get_int32();
             }
             prom.set_value(std::make_pair<>(result, value));
@@ -992,7 +992,7 @@ void SystemImpl::receive_float_param(
     get_param_float_callback_t callback)
 {
     if (callback) {
-        if (result == MAVLinkParameters::Result::SUCCESS) {
+        if (result == MAVLinkParameters::Result::Success) {
             callback(result, value.get_float());
         } else {
             callback(result, NAN);
@@ -1006,7 +1006,7 @@ void SystemImpl::receive_int_param(
     get_param_int_callback_t callback)
 {
     if (callback) {
-        if (result == MAVLinkParameters::Result::SUCCESS) {
+        if (result == MAVLinkParameters::Result::Success) {
             callback(result, value.get_int32());
         } else {
             callback(result, 0);

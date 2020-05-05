@@ -1156,7 +1156,7 @@ void CameraImpl::set_option_async(
         setting_id,
         value,
         [this, callback, setting_id, value](MAVLinkParameters::Result result) {
-            if (result == MAVLinkParameters::Result::SUCCESS) {
+            if (result == MAVLinkParameters::Result::Success) {
                 if (!this->_camera_definition) {
                     if (callback) {
                         const auto temp_callback = callback;
@@ -1427,7 +1427,7 @@ void CameraImpl::refresh_params()
             param_value_type,
             [param_name, is_last, this](
                 MAVLinkParameters::Result result, MAVLinkParameters::ParamValue value) {
-                if (result != MAVLinkParameters::Result::SUCCESS) {
+                if (result != MAVLinkParameters::Result::Success) {
                     return;
                 }
                 // We need to check again by the time this callback runs
