@@ -22,5 +22,5 @@ void {% if not is_finite %}subscribe_{% endif %}{{ name.lower_snake_case }}{% if
  *
  * @return One {{ return_type.name }} update.
  */
-{{ return_type.name }} {{ name.lower_snake_case }}() const;
+{{ return_type.name }} {{ name.lower_snake_case }}({% for param in params %}{{ param.type_info.name }} {{ param.name.lower_snake_case }}{% if not loop.last %}, {% endif %}{% endfor %}) const;
 {% endif %}

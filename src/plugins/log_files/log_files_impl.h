@@ -22,7 +22,6 @@ public:
     std::pair<LogFiles::Result, std::vector<LogFiles::Entry>> get_entries();
     void get_entries_async(LogFiles::get_entries_callback_t callback);
 
-    LogFiles::Result download_log_file(unsigned id, const std::string& file_path);
     void download_log_file_async(
         unsigned id, const std::string& file_path, LogFiles::download_log_file_callback_t callback);
 
@@ -39,7 +38,7 @@ private:
     void request_log_data(unsigned id, unsigned start, unsigned count);
     void data_timeout();
 
-    void start_logfile(const std::string& path);
+    bool start_logfile(const std::string& path);
     void write_part_to_disk();
     void finish_logfile();
     void report_progress(unsigned transferred, unsigned total);

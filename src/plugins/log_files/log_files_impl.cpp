@@ -129,7 +129,7 @@ void LogFilesImpl::process_log_entry(const mavlink_message_t& message)
             const auto tmp_callback = _entries.callback;
             std::vector<LogFiles::Entry> empty_list{};
             _parent->call_user_callback([tmp_callback, empty_list]() {
-                tmp_callback(LogFiles::Result::NO_LOGFILES, empty_list);
+                tmp_callback(LogFiles::Result::NoLogfiles, empty_list);
             });
         }
         return;
@@ -168,7 +168,7 @@ void LogFilesImpl::list_timeout()
         if (_entries.callback) {
             const auto tmp_callback = _entries.callback;
             _parent->call_user_callback([tmp_callback, entry_list]() {
-                tmp_callback(LogFiles::Result::SUCCESS, entry_list);
+                tmp_callback(LogFiles::Result::Success, entry_list);
             });
         }
     } else {
@@ -178,7 +178,7 @@ void LogFilesImpl::list_timeout()
                 const auto tmp_callback = _entries.callback;
                 _parent->call_user_callback([tmp_callback]() {
                     std::vector<LogFiles::Entry> empty_vector{};
-                    tmp_callback(LogFiles::Result::TIMEOUT, empty_vector);
+                    tmp_callback(LogFiles::Result::Timeout, empty_vector);
                 });
             }
         } else {
@@ -196,21 +196,6 @@ void LogFilesImpl::list_timeout()
     }
 }
 
-LogFiles::Result LogFilesImpl::download_log_file(unsigned id, const std::string& file_path)
-{
-    auto prom = std::make_shared<std::promise<LogFiles::Result>>();
-    auto future_result = prom->get_future();
-
-    download_log_file_async(id, file_path, [prom](LogFiles::Result result, float progress) {
-        if (result == LogFiles::Result::PROGRESS) {
-            LogInfo() << "Download progress: " << 100.0f * progress;
-        } else {
-            prom->set_value(result);
-        }
-    });
-    return future_result.get();
-}
-
 void LogFilesImpl::download_log_file_async(
     unsigned id, const std::string& file_path, LogFiles::download_log_file_callback_t callback)
 {
@@ -223,8 +208,11 @@ void LogFilesImpl::download_log_file_async(
             LogErr() << "Log entry id " << id << " not found";
             if (callback) {
                 const auto tmp_callback = callback;
-                _parent->call_user_callback(
-                    [tmp_callback]() { tmp_callback(LogFiles::Result::INVALID_ARGUMENT, 0.0f); });
+                _parent->call_user_callback([tmp_callback]() {
+                    LogFiles::ProgressData progress;
+                    progress.progress = 0.0f;
+                    tmp_callback(LogFiles::Result::InvalidArgument, progress);
+                });
             }
             return;
         }
@@ -235,8 +223,17 @@ void LogFilesImpl::download_log_file_async(
     {
         std::lock_guard<std::mutex> lock(_data.mutex);
 
-        // TODO: Check for errors while opening the file.
-        start_logfile(file_path);
+        if (!start_logfile(file_path)) {
+            if (callback) {
+                const auto tmp_callback = callback;
+                _parent->call_user_callback([tmp_callback]() {
+                    LogFiles::ProgressData progress;
+                    progress.progress = NAN;
+                    tmp_callback(LogFiles::Result::FileOpenFailed, progress);
+                });
+            }
+            return;
+        }
 
         _data.id = id;
         _data.callback = callback;
@@ -254,8 +251,11 @@ void LogFilesImpl::download_log_file_async(
 
         if (_data.callback) {
             const auto tmp_callback = _data.callback;
-            _parent->call_user_callback(
-                [tmp_callback]() { tmp_callback(LogFiles::Result::PROGRESS, 0.0f); });
+            _parent->call_user_callback([tmp_callback]() {
+                LogFiles::ProgressData progress;
+                progress.progress = 0.0f;
+                tmp_callback(LogFiles::Result::Progress, progress);
+            });
         }
     }
 }
@@ -316,8 +316,12 @@ void LogFilesImpl::report_progress(unsigned transferred, unsigned total)
 
     if (_data.callback) {
         const auto tmp_callback = _data.callback;
-        _parent->call_user_callback(
-            [tmp_callback, progress]() { tmp_callback(LogFiles::Result::PROGRESS, progress); });
+        _parent->call_user_callback([tmp_callback, progress]() {
+            LogFiles::ProgressData progress_data;
+            progress_data.progress = progress;
+
+            tmp_callback(LogFiles::Result::Progress, progress_data);
+        });
     }
 }
 
@@ -359,8 +363,11 @@ void LogFilesImpl::check_part()
 
             if (_data.callback) {
                 const auto tmp_callback = _data.callback;
-                _parent->call_user_callback(
-                    [tmp_callback]() { tmp_callback(LogFiles::Result::SUCCESS, 1.0f); });
+                _parent->call_user_callback([tmp_callback]() {
+                    LogFiles::ProgressData progress_data;
+                    progress_data.progress = 1.0f;
+                    tmp_callback(LogFiles::Result::Success, progress_data);
+                });
             }
 
             reset_data();
@@ -404,11 +411,13 @@ void LogFilesImpl::data_timeout()
     }
 }
 
-void LogFilesImpl::start_logfile(const std::string& path)
+bool LogFilesImpl::start_logfile(const std::string& path)
 {
     // Assumes to have the lock for _data.mutex.
 
     _data.file.open(path, std::ios::out | std::ios::binary);
+
+    return ((_data.file.rdstate() & std::ofstream::failbit) == 0);
 }
 
 void LogFilesImpl::write_part_to_disk()
