@@ -150,7 +150,7 @@ protected:
     MissionServiceImpl _mission_service;
 
     /* The mission returns its result through a callback, which is saved in _result_callback. */
-    mavsdk::Mission::result_callback_t _result_callback{};
+    mavsdk::Mission::ResultCallback _result_callback{};
 
     /* The tests need to make sure that _result_callback has been set before calling it, hence the
      * promise. */

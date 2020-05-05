@@ -67,7 +67,7 @@ MAVLinkCommands::Result MAVLinkCommands::send_command(const MAVLinkCommands::Com
 }
 
 void MAVLinkCommands::queue_command_async(
-    const CommandInt& command, command_result_callback_t callback)
+    const CommandInt& command, command_ResultCallback callback)
 {
     // LogDebug() << "Command " << (int)(command.command) << " to send to "
     //  << (int)(command.target_system_id)<< ", " << (int)(command.target_component_id);
@@ -98,7 +98,7 @@ void MAVLinkCommands::queue_command_async(
 }
 
 void MAVLinkCommands::queue_command_async(
-    const CommandLong& command, command_result_callback_t callback)
+    const CommandLong& command, command_ResultCallback callback)
 {
     // LogDebug() << "Command " << (int)(command.command) << " to send to "
     //  << (int)(command.target_system_id)<< ", " << (int)(command.target_component_id);
@@ -277,7 +277,7 @@ void MAVLinkCommands::do_work()
 }
 
 void MAVLinkCommands::call_callback(
-    const command_result_callback_t& callback, Result result, float progress)
+    const command_ResultCallback& callback, Result result, float progress)
 {
     if (!callback) {
         return;

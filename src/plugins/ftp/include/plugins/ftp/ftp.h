@@ -93,71 +93,70 @@ public:
     /**
      * @brief Callback type for asynchronous Ftp calls.
      */
-    typedef std::function<void(Result)> result_callback_t;
+    typedef std::function<void(Result)> ResultCallback;
 
     /**
      * @brief Resets FTP server in case there are stale open sessions.
      *
      * This function is non-blocking.
      */
-    void reset_async(const result_callback_t callback);
+    void reset_async(const ResultCallback callback);
 
     /**
      * @brief Callback type for download_async.
      */
 
-    typedef std::function<void(Ftp::Result, ProgressData)> download_callback_t;
+    typedef std::function<void(Ftp::Result, ProgressData)> DownloadCallback;
 
     /**
      * @brief Downloads a file to local directory.
      */
-    void download_async(
-        std::string remote_file_path, std::string local_dir, download_callback_t callback);
+    void
+    download_async(std::string remote_file_path, std::string local_dir, DownloadCallback callback);
 
     /**
      * @brief Callback type for upload_async.
      */
 
-    typedef std::function<void(Ftp::Result, ProgressData)> upload_callback_t;
+    typedef std::function<void(Ftp::Result, ProgressData)> UploadCallback;
 
     /**
      * @brief Uploads local file to remote directory.
      */
-    void
-    upload_async(std::string local_file_path, std::string remote_dir, upload_callback_t callback);
+    void upload_async(std::string local_file_path, std::string remote_dir, UploadCallback callback);
 
     /**
      * @brief Callback type for list_directory_async.
      */
-    typedef std::function<void(Result, std::vector<std::string>)> list_directory_callback_t;
+    typedef std::function<void(Result, std::vector<std::string>)> ListDirectoryCallback;
 
     /**
      * @brief Lists items from a remote directory.
      *
      * This function is non-blocking.
      */
-    void list_directory_async(std::string remote_dir, const list_directory_callback_t callback);
+    void list_directory_async(std::string remote_dir, const ListDirectoryCallback callback);
 
     /**
      * @brief Creates a remote directory.
      *
      * This function is non-blocking.
      */
-    void create_directory_async(std::string remote_dir, const result_callback_t callback);
+    void create_directory_async(std::string remote_dir, const ResultCallback callback);
 
     /**
      * @brief Removes a remote directory.
      *
      * This function is non-blocking.
      */
-    void remove_directory_async(std::string remote_dir, const result_callback_t callback);
+    void remove_directory_async(std::string remote_dir, const ResultCallback callback);
 
     /**
      * @brief Removes a remote file.
      *
      * This function is non-blocking.
      */
-    void remove_file_async(std::string remote_file_path, const result_callback_t callback);
+    void remove_file_async(std::string remote_file_path, const ResultCallback callback);
 
     /**
      * @brief Renames a remote file or remote directory.
@@ -165,12 +164,12 @@ public:
      * This function is non-blocking.
      */
     void rename_async(
-        std::string remote_from_path, std::string remote_to_path, const result_callback_t callback);
+        std::string remote_from_path, std::string remote_to_path, const ResultCallback callback);
 
     /**
      * @brief Callback type for are_files_identical_async.
      */
-    typedef std::function<void(Result, bool)> are_files_identical_callback_t;
+    typedef std::function<void(Result, bool)> AreFilesIdenticalCallback;
 
     /**
      * @brief Compares a local file to a remote file using a CRC32 checksum.
@@ -180,7 +179,7 @@ public:
     void are_files_identical_async(
         std::string local_file_path,
         std::string remote_file_path,
-        const are_files_identical_callback_t callback);
+        const AreFilesIdenticalCallback callback);
 
     /**
      * @brief Set root directory for MAVLink FTP server.

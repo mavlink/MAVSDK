@@ -36,7 +36,7 @@ void CalibrationImpl::enable() {}
 
 void CalibrationImpl::disable() {}
 
-void CalibrationImpl::calibrate_gyro_async(const calibration_callback_t& callback)
+void CalibrationImpl::calibrate_gyro_async(const CalibrationCallback& callback)
 {
     std::lock_guard<std::mutex> lock(_calibration_mutex);
 
@@ -64,7 +64,7 @@ void CalibrationImpl::calibrate_gyro_async(const calibration_callback_t& callbac
 }
 
 void CalibrationImpl::call_user_callback(
-    const calibration_callback_t& callback,
+    const CalibrationCallback& callback,
     const Calibration::Result& result,
     const Calibration::ProgressData progress_data)
 {
@@ -74,7 +74,7 @@ void CalibrationImpl::call_user_callback(
     }
 }
 
-void CalibrationImpl::calibrate_accelerometer_async(const calibration_callback_t& callback)
+void CalibrationImpl::calibrate_accelerometer_async(const CalibrationCallback& callback)
 {
     std::lock_guard<std::mutex> lock(_calibration_mutex);
 
@@ -101,7 +101,7 @@ void CalibrationImpl::calibrate_accelerometer_async(const calibration_callback_t
         command, std::bind(&CalibrationImpl::command_result_callback, this, _1, _2));
 }
 
-void CalibrationImpl::calibrate_magnetometer_async(const calibration_callback_t& callback)
+void CalibrationImpl::calibrate_magnetometer_async(const CalibrationCallback& callback)
 {
     std::lock_guard<std::mutex> lock(_calibration_mutex);
 
@@ -128,7 +128,7 @@ void CalibrationImpl::calibrate_magnetometer_async(const calibration_callback_t&
         command, std::bind(&CalibrationImpl::command_result_callback, this, _1, _2));
 }
 
-void CalibrationImpl::calibrate_gimbal_accelerometer_async(const calibration_callback_t& callback)
+void CalibrationImpl::calibrate_gimbal_accelerometer_async(const CalibrationCallback& callback)
 {
     std::lock_guard<std::mutex> lock(_calibration_mutex);
 

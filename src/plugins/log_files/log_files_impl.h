@@ -20,10 +20,10 @@ public:
     void disable() override;
 
     std::pair<LogFiles::Result, std::vector<LogFiles::Entry>> get_entries();
-    void get_entries_async(LogFiles::get_entries_callback_t callback);
+    void get_entries_async(LogFiles::GetEntriesCallback callback);
 
     void download_log_file_async(
-        unsigned id, const std::string& file_path, LogFiles::download_log_file_callback_t callback);
+        unsigned id, const std::string& file_path, LogFiles::DownloadLogFileCallback callback);
 
 private:
     void request_end();
@@ -54,7 +54,7 @@ private:
     struct {
         std::mutex mutex{};
         std::map<unsigned, LogFiles::Entry> entry_map{};
-        LogFiles::get_entries_callback_t callback{nullptr};
+        LogFiles::GetEntriesCallback callback{nullptr};
         unsigned max_list_id{0};
         unsigned retries{0};
         void* cookie{nullptr};
@@ -83,7 +83,7 @@ private:
         int last_ofs_rerequested{-1};
         dl_time_t time_started{};
         std::ofstream file{};
-        LogFiles::download_log_file_callback_t callback{nullptr};
+        LogFiles::DownloadLogFileCallback callback{nullptr};
     } _data{};
 };
 

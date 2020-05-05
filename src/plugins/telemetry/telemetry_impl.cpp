@@ -300,7 +300,7 @@ Telemetry::Result TelemetryImpl::set_rate_unix_epoch_time(double rate_hz)
 }
 
 void TelemetryImpl::set_rate_position_velocity_ned_async(
-    double rate_hz, Telemetry::result_callback_t callback)
+    double rate_hz, Telemetry::ResultCallback callback)
 {
     _parent->set_msg_rate_async(
         MAVLINK_MSG_ID_LOCAL_POSITION_NED,
@@ -308,7 +308,7 @@ void TelemetryImpl::set_rate_position_velocity_ned_async(
         std::bind(&TelemetryImpl::command_result_callback, std::placeholders::_1, callback));
 }
 
-void TelemetryImpl::set_rate_position_async(double rate_hz, Telemetry::result_callback_t callback)
+void TelemetryImpl::set_rate_position_async(double rate_hz, Telemetry::ResultCallback callback)
 {
     _position_rate_hz = rate_hz;
     double max_rate_hz = std::max(_position_rate_hz, _ground_speed_ned_rate_hz);
@@ -319,7 +319,7 @@ void TelemetryImpl::set_rate_position_async(double rate_hz, Telemetry::result_ca
         std::bind(&TelemetryImpl::command_result_callback, std::placeholders::_1, callback));
 }
 
-void TelemetryImpl::set_rate_home_async(double rate_hz, Telemetry::result_callback_t callback)
+void TelemetryImpl::set_rate_home_async(double rate_hz, Telemetry::ResultCallback callback)
 {
     _parent->set_msg_rate_async(
         MAVLINK_MSG_ID_HOME_POSITION,
@@ -327,13 +327,12 @@ void TelemetryImpl::set_rate_home_async(double rate_hz, Telemetry::result_callba
         std::bind(&TelemetryImpl::command_result_callback, std::placeholders::_1, callback));
 }
 
-void TelemetryImpl::set_rate_in_air_async(double rate_hz, Telemetry::result_callback_t callback)
+void TelemetryImpl::set_rate_in_air_async(double rate_hz, Telemetry::ResultCallback callback)
 {
     set_rate_landed_state_async(rate_hz, callback);
 }
 
-void TelemetryImpl::set_rate_landed_state_async(
-    double rate_hz, Telemetry::result_callback_t callback)
+void TelemetryImpl::set_rate_landed_state_async(double rate_hz, Telemetry::ResultCallback callback)
 {
     _parent->set_msg_rate_async(
         MAVLINK_MSG_ID_EXTENDED_SYS_STATE,
@@ -341,7 +340,7 @@ void TelemetryImpl::set_rate_landed_state_async(
         std::bind(&TelemetryImpl::command_result_callback, std::placeholders::_1, callback));
 }
 
-void TelemetryImpl::set_rate_attitude_async(double rate_hz, Telemetry::result_callback_t callback)
+void TelemetryImpl::set_rate_attitude_async(double rate_hz, Telemetry::ResultCallback callback)
 {
     _parent->set_msg_rate_async(
         MAVLINK_MSG_ID_ATTITUDE_QUATERNION,
@@ -350,7 +349,7 @@ void TelemetryImpl::set_rate_attitude_async(double rate_hz, Telemetry::result_ca
 }
 
 void TelemetryImpl::set_rate_camera_attitude_async(
-    double rate_hz, Telemetry::result_callback_t callback)
+    double rate_hz, Telemetry::ResultCallback callback)
 {
     _parent->set_msg_rate_async(
         MAVLINK_MSG_ID_MOUNT_ORIENTATION,
@@ -359,7 +358,7 @@ void TelemetryImpl::set_rate_camera_attitude_async(
 }
 
 void TelemetryImpl::set_rate_ground_speed_ned_async(
-    double rate_hz, Telemetry::result_callback_t callback)
+    double rate_hz, Telemetry::ResultCallback callback)
 {
     _ground_speed_ned_rate_hz = rate_hz;
     double max_rate_hz = std::max(_position_rate_hz, _ground_speed_ned_rate_hz);
@@ -370,7 +369,7 @@ void TelemetryImpl::set_rate_ground_speed_ned_async(
         std::bind(&TelemetryImpl::command_result_callback, std::placeholders::_1, callback));
 }
 
-void TelemetryImpl::set_rate_imu_async(double rate_hz, Telemetry::result_callback_t callback)
+void TelemetryImpl::set_rate_imu_async(double rate_hz, Telemetry::ResultCallback callback)
 {
     _parent->set_msg_rate_async(
         MAVLINK_MSG_ID_HIGHRES_IMU,
@@ -379,7 +378,7 @@ void TelemetryImpl::set_rate_imu_async(double rate_hz, Telemetry::result_callbac
 }
 
 void TelemetryImpl::set_rate_fixedwing_metrics_async(
-    double rate_hz, Telemetry::result_callback_t callback)
+    double rate_hz, Telemetry::ResultCallback callback)
 {
     _parent->set_msg_rate_async(
         MAVLINK_MSG_ID_VFR_HUD,
@@ -387,8 +386,7 @@ void TelemetryImpl::set_rate_fixedwing_metrics_async(
         std::bind(&TelemetryImpl::command_result_callback, std::placeholders::_1, callback));
 }
 
-void TelemetryImpl::set_rate_ground_truth_async(
-    double rate_hz, Telemetry::result_callback_t callback)
+void TelemetryImpl::set_rate_ground_truth_async(double rate_hz, Telemetry::ResultCallback callback)
 {
     _parent->set_msg_rate_async(
         MAVLINK_MSG_ID_HIL_STATE_QUATERNION,
@@ -396,7 +394,7 @@ void TelemetryImpl::set_rate_ground_truth_async(
         std::bind(&TelemetryImpl::command_result_callback, std::placeholders::_1, callback));
 }
 
-void TelemetryImpl::set_rate_gps_info_async(double rate_hz, Telemetry::result_callback_t callback)
+void TelemetryImpl::set_rate_gps_info_async(double rate_hz, Telemetry::ResultCallback callback)
 {
     _parent->set_msg_rate_async(
         MAVLINK_MSG_ID_GPS_RAW_INT,
@@ -404,7 +402,7 @@ void TelemetryImpl::set_rate_gps_info_async(double rate_hz, Telemetry::result_ca
         std::bind(&TelemetryImpl::command_result_callback, std::placeholders::_1, callback));
 }
 
-void TelemetryImpl::set_rate_battery_async(double rate_hz, Telemetry::result_callback_t callback)
+void TelemetryImpl::set_rate_battery_async(double rate_hz, Telemetry::ResultCallback callback)
 {
     _parent->set_msg_rate_async(
         MAVLINK_MSG_ID_SYS_STATUS,
@@ -412,7 +410,7 @@ void TelemetryImpl::set_rate_battery_async(double rate_hz, Telemetry::result_cal
         std::bind(&TelemetryImpl::command_result_callback, std::placeholders::_1, callback));
 }
 
-void TelemetryImpl::set_rate_rc_status_async(double rate_hz, Telemetry::result_callback_t callback)
+void TelemetryImpl::set_rate_rc_status_async(double rate_hz, Telemetry::ResultCallback callback)
 {
     _parent->set_msg_rate_async(
         MAVLINK_MSG_ID_RC_CHANNELS,
@@ -421,7 +419,7 @@ void TelemetryImpl::set_rate_rc_status_async(double rate_hz, Telemetry::result_c
 }
 
 void TelemetryImpl::set_rate_unix_epoch_time_async(
-    double rate_hz, Telemetry::result_callback_t callback)
+    double rate_hz, Telemetry::ResultCallback callback)
 {
     _parent->set_msg_rate_async(
         MAVLINK_MSG_ID_UTM_GLOBAL_POSITION,
@@ -430,7 +428,7 @@ void TelemetryImpl::set_rate_unix_epoch_time_async(
 }
 
 void TelemetryImpl::set_rate_actuator_control_target_async(
-    double rate_hz, Telemetry::result_callback_t callback)
+    double rate_hz, Telemetry::ResultCallback callback)
 {
     _parent->set_msg_rate_async(
         MAVLINK_MSG_ID_ACTUATOR_CONTROL_TARGET,
@@ -439,7 +437,7 @@ void TelemetryImpl::set_rate_actuator_control_target_async(
 }
 
 void TelemetryImpl::set_rate_actuator_output_status_async(
-    double rate_hz, Telemetry::result_callback_t callback)
+    double rate_hz, Telemetry::ResultCallback callback)
 {
     _parent->set_msg_rate_async(
         MAVLINK_MSG_ID_ACTUATOR_OUTPUT_STATUS,
@@ -447,7 +445,7 @@ void TelemetryImpl::set_rate_actuator_output_status_async(
         std::bind(&TelemetryImpl::command_result_callback, std::placeholders::_1, callback));
 }
 
-void TelemetryImpl::set_rate_odometry_async(double rate_hz, Telemetry::result_callback_t callback)
+void TelemetryImpl::set_rate_odometry_async(double rate_hz, Telemetry::ResultCallback callback)
 {
     _parent->set_msg_rate_async(
         MAVLINK_MSG_ID_ODOMETRY,
@@ -477,7 +475,7 @@ TelemetryImpl::telemetry_result_from_command_result(MAVLinkCommands::Result comm
 }
 
 void TelemetryImpl::command_result_callback(
-    MAVLinkCommands::Result command_result, const Telemetry::result_callback_t& callback)
+    MAVLinkCommands::Result command_result, const Telemetry::ResultCallback& callback)
 {
     Telemetry::Result action_result = telemetry_result_from_command_result(command_result);
 
@@ -1524,137 +1522,135 @@ void TelemetryImpl::set_odometry(Telemetry::Odometry& odometry)
     _odometry = odometry;
 }
 
-void TelemetryImpl::position_velocity_ned_async(
-    Telemetry::position_velocity_ned_callback_t& callback)
+void TelemetryImpl::position_velocity_ned_async(Telemetry::PositionVelocityNedCallback& callback)
 {
     _position_velocity_ned_subscription = callback;
 }
 
-void TelemetryImpl::position_async(Telemetry::position_callback_t& callback)
+void TelemetryImpl::position_async(Telemetry::PositionCallback& callback)
 {
     _position_subscription = callback;
 }
 
-void TelemetryImpl::home_async(Telemetry::position_callback_t& callback)
+void TelemetryImpl::home_async(Telemetry::PositionCallback& callback)
 {
     _home_position_subscription = callback;
 }
 
-void TelemetryImpl::in_air_async(Telemetry::in_air_callback_t& callback)
+void TelemetryImpl::in_air_async(Telemetry::InAirCallback& callback)
 {
     _in_air_subscription = callback;
 }
 
-void TelemetryImpl::status_text_async(Telemetry::status_text_callback_t& callback)
+void TelemetryImpl::status_text_async(Telemetry::StatusTextCallback& callback)
 {
     _status_text_subscription = callback;
 }
 
-void TelemetryImpl::armed_async(Telemetry::armed_callback_t& callback)
+void TelemetryImpl::armed_async(Telemetry::ArmedCallback& callback)
 {
     _armed_subscription = callback;
 }
 
-void TelemetryImpl::attitude_quaternion_async(Telemetry::attitude_quaternion_callback_t& callback)
+void TelemetryImpl::attitude_quaternion_async(Telemetry::AttitudeQuaternionCallback& callback)
 {
     _attitude_quaternion_angle_subscription = callback;
 }
 
-void TelemetryImpl::attitude_euler_async(Telemetry::attitude_euler_callback_t& callback)
+void TelemetryImpl::attitude_euler_async(Telemetry::AttitudeEulerCallback& callback)
 {
     _attitude_euler_angle_subscription = callback;
 }
 
 void TelemetryImpl::attitude_angular_velocity_body_async(
-    Telemetry::attitude_angular_velocity_body_callback_t& callback)
+    Telemetry::AttitudeAngularVelocityBodyCallback& callback)
 {
     _attitude_angular_velocity_body_subscription = callback;
 }
 
-void TelemetryImpl::fixedwing_metrics_async(Telemetry::fixedwing_metrics_callback_t& callback)
+void TelemetryImpl::fixedwing_metrics_async(Telemetry::FixedwingMetricsCallback& callback)
 {
     _fixedwing_metrics_subscription = callback;
 }
 
-void TelemetryImpl::ground_truth_async(Telemetry::ground_truth_callback_t& callback)
+void TelemetryImpl::ground_truth_async(Telemetry::GroundTruthCallback& callback)
 {
     _ground_truth_subscription = callback;
 }
 
 void TelemetryImpl::camera_attitude_quaternion_async(
-    Telemetry::attitude_quaternion_callback_t& callback)
+    Telemetry::AttitudeQuaternionCallback& callback)
 {
     _camera_attitude_quaternion_subscription = callback;
 }
 
-void TelemetryImpl::camera_attitude_euler_async(Telemetry::attitude_euler_callback_t& callback)
+void TelemetryImpl::camera_attitude_euler_async(Telemetry::AttitudeEulerCallback& callback)
 {
     _camera_attitude_euler_angle_subscription = callback;
 }
 
-void TelemetryImpl::ground_speed_ned_async(Telemetry::ground_speed_ned_callback_t& callback)
+void TelemetryImpl::ground_speed_ned_async(Telemetry::GroundSpeedNedCallback& callback)
 {
     _ground_speed_ned_subscription = callback;
 }
 
-void TelemetryImpl::imu_async(Telemetry::imu_callback_t& callback)
+void TelemetryImpl::imu_async(Telemetry::ImuCallback& callback)
 {
     _imu_reading_ned_subscription = callback;
 }
 
-void TelemetryImpl::gps_info_async(Telemetry::gps_info_callback_t& callback)
+void TelemetryImpl::gps_info_async(Telemetry::GpsInfoCallback& callback)
 {
     _gps_info_subscription = callback;
 }
 
-void TelemetryImpl::battery_async(Telemetry::battery_callback_t& callback)
+void TelemetryImpl::battery_async(Telemetry::BatteryCallback& callback)
 {
     _battery_subscription = callback;
 }
 
-void TelemetryImpl::flight_mode_async(Telemetry::flight_mode_callback_t& callback)
+void TelemetryImpl::flight_mode_async(Telemetry::FlightModeCallback& callback)
 {
     _flight_mode_subscription = callback;
 }
 
-void TelemetryImpl::health_async(Telemetry::health_callback_t& callback)
+void TelemetryImpl::health_async(Telemetry::HealthCallback& callback)
 {
     _health_subscription = callback;
 }
 
-void TelemetryImpl::health_all_ok_async(Telemetry::health_all_ok_callback_t& callback)
+void TelemetryImpl::health_all_ok_async(Telemetry::HealthAllOkCallback& callback)
 {
     _health_all_ok_subscription = callback;
 }
 
-void TelemetryImpl::landed_state_async(Telemetry::landed_state_callback_t& callback)
+void TelemetryImpl::landed_state_async(Telemetry::LandedStateCallback& callback)
 {
     _landed_state_subscription = callback;
 }
 
-void TelemetryImpl::rc_status_async(Telemetry::rc_status_callback_t& callback)
+void TelemetryImpl::rc_status_async(Telemetry::RcStatusCallback& callback)
 {
     _rc_status_subscription = callback;
 }
 
-void TelemetryImpl::unix_epoch_time_async(Telemetry::unix_epoch_time_callback_t& callback)
+void TelemetryImpl::unix_epoch_time_async(Telemetry::UnixEpochTimeCallback& callback)
 {
     _unix_epoch_time_subscription = callback;
 }
 
 void TelemetryImpl::actuator_control_target_async(
-    Telemetry::actuator_control_target_callback_t& callback)
+    Telemetry::ActuatorControlTargetCallback& callback)
 {
     _actuator_control_target_subscription = callback;
 }
 
-void TelemetryImpl::actuator_output_status_async(
-    Telemetry::actuator_output_status_callback_t& callback)
+void TelemetryImpl::actuator_output_status_async(Telemetry::ActuatorOutputStatusCallback& callback)
 {
     _actuator_output_status_subscription = callback;
 }
 
-void TelemetryImpl::odometry_async(Telemetry::odometry_callback_t& callback)
+void TelemetryImpl::odometry_async(Telemetry::OdometryCallback& callback)
 {
     _odometry_subscription = callback;
 }

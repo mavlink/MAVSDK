@@ -235,7 +235,7 @@ void TelemetryServiceImplTest::checkSendsPositions(const std::vector<Position>& 
 {
     std::promise<void> subscription_promise;
     auto subscription_future = subscription_promise.get_future();
-    mavsdk::Telemetry::position_callback_t position_callback;
+    mavsdk::Telemetry::PositionCallback position_callback;
     EXPECT_CALL(*_telemetry, subscribe_position(_))
         .WillOnce(SaveCallback(&position_callback, &subscription_promise));
 
@@ -346,7 +346,7 @@ void TelemetryServiceImplTest::checkSendsHealths(const std::vector<Health>& heal
 {
     std::promise<void> subscription_promise;
     auto subscription_future = subscription_promise.get_future();
-    mavsdk::Telemetry::health_callback_t health_callback;
+    mavsdk::Telemetry::HealthCallback health_callback;
     EXPECT_CALL(*_telemetry, subscribe_health(_))
         .WillOnce(SaveCallback(&health_callback, &subscription_promise));
 
@@ -451,7 +451,7 @@ void TelemetryServiceImplTest::checkSendsHomePositions(
 {
     std::promise<void> subscription_promise;
     auto subscription_future = subscription_promise.get_future();
-    mavsdk::Telemetry::position_callback_t home_callback;
+    mavsdk::Telemetry::PositionCallback home_callback;
     EXPECT_CALL(*_telemetry, subscribe_home(_))
         .WillOnce(SaveCallback(&home_callback, &subscription_promise));
 
@@ -533,7 +533,7 @@ void TelemetryServiceImplTest::checkSendsInAirEvents(const std::vector<bool>& in
 {
     std::promise<void> subscription_promise;
     auto subscription_future = subscription_promise.get_future();
-    mavsdk::Telemetry::in_air_callback_t in_air_callback;
+    mavsdk::Telemetry::InAirCallback in_air_callback;
     EXPECT_CALL(*_telemetry, subscribe_in_air(_))
         .WillOnce(SaveCallback(&in_air_callback, &subscription_promise));
 
@@ -615,7 +615,7 @@ void TelemetryServiceImplTest::checkSendsArmedEvents(const std::vector<bool>& ar
 {
     std::promise<void> subscription_promise;
     auto subscription_future = subscription_promise.get_future();
-    mavsdk::Telemetry::armed_callback_t armed_callback;
+    mavsdk::Telemetry::ArmedCallback armed_callback;
     EXPECT_CALL(*_telemetry, subscribe_armed(_))
         .WillOnce(SaveCallback(&armed_callback, &subscription_promise));
 
@@ -725,7 +725,7 @@ void TelemetryServiceImplTest::checkSendsGpsInfoEvents(
 {
     std::promise<void> subscription_promise;
     auto subscription_future = subscription_promise.get_future();
-    mavsdk::Telemetry::gps_info_callback_t gps_info_callback;
+    mavsdk::Telemetry::GpsInfoCallback gps_info_callback;
     EXPECT_CALL(*_telemetry, subscribe_gps_info(_))
         .WillOnce(SaveCallback(&gps_info_callback, &subscription_promise));
 
@@ -837,7 +837,7 @@ void TelemetryServiceImplTest::checkSendsBatteryEvents(
 {
     std::promise<void> subscription_promise;
     auto subscription_future = subscription_promise.get_future();
-    mavsdk::Telemetry::battery_callback_t battery_callback;
+    mavsdk::Telemetry::BatteryCallback battery_callback;
     EXPECT_CALL(*_telemetry, subscribe_battery(_))
         .WillOnce(SaveCallback(&battery_callback, &subscription_promise));
 
@@ -947,7 +947,7 @@ void TelemetryServiceImplTest::checkSendsFlightModeEvents(
 {
     std::promise<void> subscription_promise;
     auto subscription_future = subscription_promise.get_future();
-    mavsdk::Telemetry::flight_mode_callback_t flight_mode_callback;
+    mavsdk::Telemetry::FlightModeCallback flight_mode_callback;
     EXPECT_CALL(*_telemetry, subscribe_flight_mode(_))
         .WillOnce(SaveCallback(&flight_mode_callback, &subscription_promise));
 
@@ -1123,7 +1123,7 @@ void TelemetryServiceImplTest::checkSendsAttitudeQuaternions(
 {
     std::promise<void> subscription_promise;
     auto subscription_future = subscription_promise.get_future();
-    mavsdk::Telemetry::attitude_quaternion_callback_t attitude_quaternion_callback;
+    mavsdk::Telemetry::AttitudeQuaternionCallback attitude_quaternion_callback;
     EXPECT_CALL(*_telemetry, subscribe_attitude_quaternion(_))
         .WillOnce(SaveCallback(&attitude_quaternion_callback, &subscription_promise));
 
@@ -1147,8 +1147,7 @@ void TelemetryServiceImplTest::checkSendsAttitudeAngularVelocitiesBody(
 {
     std::promise<void> subscription_promise;
     auto subscription_future = subscription_promise.get_future();
-    mavsdk::Telemetry::attitude_angular_velocity_body_callback_t
-        attitude_angular_velocity_body_callback;
+    mavsdk::Telemetry::AttitudeAngularVelocityBodyCallback attitude_angular_velocity_body_callback;
     EXPECT_CALL(*_telemetry, subscribe_attitude_angular_velocity_body(_))
         .WillOnce(SaveCallback(&attitude_angular_velocity_body_callback, &subscription_promise));
 
@@ -1258,7 +1257,7 @@ void TelemetryServiceImplTest::checkSendsAttitudeEulerAngles(
 {
     std::promise<void> subscription_promise;
     auto subscription_future = subscription_promise.get_future();
-    mavsdk::Telemetry::attitude_euler_callback_t attitude_euler_angle_callback;
+    mavsdk::Telemetry::AttitudeEulerCallback attitude_euler_angle_callback;
     EXPECT_CALL(*_telemetry, subscribe_attitude_euler(_))
         .WillOnce(SaveCallback(&attitude_euler_angle_callback, &subscription_promise));
 
@@ -1347,7 +1346,7 @@ void TelemetryServiceImplTest::checkSendsCameraAttitudeQuaternions(
 {
     std::promise<void> subscription_promise;
     auto subscription_future = subscription_promise.get_future();
-    mavsdk::Telemetry::attitude_quaternion_callback_t attitude_quaternion_callback;
+    mavsdk::Telemetry::AttitudeQuaternionCallback attitude_quaternion_callback;
     EXPECT_CALL(*_telemetry, subscribe_camera_attitude_quaternion(_))
         .WillOnce(SaveCallback(&attitude_quaternion_callback, &subscription_promise));
 
@@ -1435,7 +1434,7 @@ void TelemetryServiceImplTest::checkSendsCameraAttitudeEulerAngles(
 {
     std::promise<void> subscription_promise;
     auto subscription_future = subscription_promise.get_future();
-    mavsdk::Telemetry::attitude_euler_callback_t attitude_euler_angle_callback;
+    mavsdk::Telemetry::AttitudeEulerCallback attitude_euler_angle_callback;
     EXPECT_CALL(*_telemetry, subscribe_camera_attitude_euler(_))
         .WillOnce(SaveCallback(&attitude_euler_angle_callback, &subscription_promise));
 
@@ -1535,7 +1534,7 @@ void TelemetryServiceImplTest::checkSendsGroundSpeedEvents(
 {
     std::promise<void> subscription_promise;
     auto subscription_future = subscription_promise.get_future();
-    mavsdk::Telemetry::ground_speed_ned_callback_t ground_speed_ned_callback;
+    mavsdk::Telemetry::GroundSpeedNedCallback ground_speed_ned_callback;
     EXPECT_CALL(*_telemetry, subscribe_ground_speed_ned(_))
         .WillOnce(SaveCallback(&ground_speed_ned_callback, &subscription_promise));
 
@@ -1637,7 +1636,7 @@ void TelemetryServiceImplTest::checkSendsRcStatusEvents(
 {
     std::promise<void> subscription_promise;
     auto subscription_future = subscription_promise.get_future();
-    mavsdk::Telemetry::rc_status_callback_t rc_status_callback;
+    mavsdk::Telemetry::RcStatusCallback rc_status_callback;
     EXPECT_CALL(*_telemetry, subscribe_rc_status(_))
         .WillOnce(SaveCallback(&rc_status_callback, &subscription_promise));
 
@@ -1749,7 +1748,7 @@ void TelemetryServiceImplTest::checkSendsActuatorControlTargetEvents(
 {
     std::promise<void> subscription_promise;
     auto subscription_future = subscription_promise.get_future();
-    mavsdk::Telemetry::actuator_control_target_callback_t actuator_control_target_callback;
+    mavsdk::Telemetry::ActuatorControlTargetCallback actuator_control_target_callback;
     EXPECT_CALL(*_telemetry, subscribe_actuator_control_target(_))
         .WillOnce(SaveCallback(&actuator_control_target_callback, &subscription_promise));
 
@@ -1777,7 +1776,7 @@ void TelemetryServiceImplTest::checkSendsActuatorOutputStatusEvents(
 {
     std::promise<void> subscription_promise;
     auto subscription_future = subscription_promise.get_future();
-    mavsdk::Telemetry::actuator_output_status_callback_t actuator_output_status_callback;
+    mavsdk::Telemetry::ActuatorOutputStatusCallback actuator_output_status_callback;
     EXPECT_CALL(*_telemetry, subscribe_actuator_output_status(_))
         .WillOnce(SaveCallback(&actuator_output_status_callback, &subscription_promise));
 

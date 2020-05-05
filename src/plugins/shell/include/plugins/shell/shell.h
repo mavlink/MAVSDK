@@ -66,7 +66,7 @@ public:
     /**
      * @brief Callback type for asynchronous Shell calls.
      */
-    typedef std::function<void(Result)> result_callback_t;
+    typedef std::function<void(Result)> ResultCallback;
 
     /**
      * @brief Send a command line.
@@ -81,7 +81,7 @@ public:
      * @brief Callback type for subscribe_receive.
      */
 
-    typedef std::function<void(std::string)> receive_callback_t;
+    typedef std::function<void(std::string)> ReceiveCallback;
 
     /**
      * @brief Receive feedback from a sent command line.
@@ -89,7 +89,7 @@ public:
      * This subscription needs to be made before a command line is sent, otherwise, no response will
      * be sent.
      */
-    void subscribe_receive(receive_callback_t callback);
+    void subscribe_receive(ReceiveCallback callback);
 
     /**
      * @brief Returns a human-readable English string for a Result.

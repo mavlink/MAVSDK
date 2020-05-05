@@ -21,32 +21,32 @@ public:
     void disable() override;
 
     std::pair<MissionRaw::Result, std::vector<MissionRaw::MissionItem>> download_mission();
-    void download_mission_async(const MissionRaw::download_mission_callback_t& callback);
+    void download_mission_async(const MissionRaw::DownloadMissionCallback& callback);
     MissionRaw::Result cancel_mission_download();
 
     MissionRaw::Result upload_mission(std::vector<MissionRaw::MissionItem> mission_items);
     void upload_mission_async(
         const std::vector<MissionRaw::MissionItem>& mission_raw,
-        const MissionRaw::result_callback_t& callback);
+        const MissionRaw::ResultCallback& callback);
     MissionRaw::Result cancel_mission_upload();
 
-    void mission_changed_async(MissionRaw::mission_changed_callback_t callback);
+    void mission_changed_async(MissionRaw::MissionChangedCallback callback);
 
     MissionRaw::Result start_mission();
-    void start_mission_async(const MissionRaw::result_callback_t& callback);
+    void start_mission_async(const MissionRaw::ResultCallback& callback);
     MissionRaw::Result pause_mission();
-    void pause_mission_async(const MissionRaw::result_callback_t& callback);
+    void pause_mission_async(const MissionRaw::ResultCallback& callback);
     MissionRaw::Result clear_mission();
-    void clear_mission_async(const MissionRaw::result_callback_t& callback);
+    void clear_mission_async(const MissionRaw::ResultCallback& callback);
 
     MissionRaw::Result set_current_mission_item(int index);
-    void set_current_mission_item_async(int index, const MissionRaw::result_callback_t& callback);
+    void set_current_mission_item_async(int index, const MissionRaw::ResultCallback& callback);
 
     int current_mavlink_mission_item() const;
     int total_mavlink_mission_items() const;
 
     MissionRaw::MissionProgress mission_progress();
-    void mission_progress_async(MissionRaw::mission_progress_callback_t callback);
+    void mission_progress_async(MissionRaw::MissionProgressCallback callback);
 
     MissionRawImpl(const MissionRawImpl&) = delete;
     const MissionRawImpl& operator=(const MissionRawImpl&) = delete;
@@ -60,8 +60,8 @@ private:
 
     void report_progress_current();
 
-    void report_flight_mode_change(
-        MissionRaw::result_callback_t callback, MAVLinkCommands::Result result);
+    void
+    report_flight_mode_change(MissionRaw::ResultCallback callback, MAVLinkCommands::Result result);
     static MissionRaw::Result command_result_to_mission_result(MAVLinkCommands::Result result);
 
     std::vector<MAVLinkMissionTransfer::ItemInt>
@@ -84,12 +84,12 @@ private:
         std::mutex mutex{};
         MissionRaw::MissionProgress last{};
         MissionRaw::MissionProgress last_reported{};
-        MissionRaw::mission_progress_callback_t callback{nullptr};
+        MissionRaw::MissionProgressCallback callback{nullptr};
     } _mission_progress{};
 
     struct {
         std::mutex mutex{};
-        MissionRaw::mission_changed_callback_t callback{nullptr};
+        MissionRaw::MissionChangedCallback callback{nullptr};
     } _mission_changed{};
 };
 

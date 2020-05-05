@@ -163,7 +163,7 @@ public:
     /**
      * @brief Callback type for asynchronous Info calls.
      */
-    typedef std::function<void(Result)> result_callback_t;
+    typedef std::function<void(Result)> ResultCallback;
 
     /**
      * @brief Get flight information of the system.

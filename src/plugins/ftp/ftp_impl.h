@@ -34,26 +34,26 @@ public:
 
     void send();
 
-    void reset_async(Ftp::result_callback_t callback);
+    void reset_async(Ftp::ResultCallback callback);
     void download_async(
         const std::string& remote_file_path,
         const std::string& local_folder,
-        Ftp::download_callback_t callback);
+        Ftp::DownloadCallback callback);
     void upload_async(
         const std::string& local_file_path,
         const std::string& remote_folder,
-        Ftp::upload_callback_t callback);
+        Ftp::UploadCallback callback);
     void list_directory_async(
-        const std::string& path, Ftp::list_directory_callback_t callback, uint32_t offset = 0);
-    void create_directory_async(const std::string& path, Ftp::result_callback_t callback);
-    void remove_directory_async(const std::string& path, Ftp::result_callback_t callback);
-    void remove_file_async(const std::string& path, Ftp::result_callback_t callback);
+        const std::string& path, Ftp::ListDirectoryCallback callback, uint32_t offset = 0);
+    void create_directory_async(const std::string& path, Ftp::ResultCallback callback);
+    void remove_directory_async(const std::string& path, Ftp::ResultCallback callback);
+    void remove_file_async(const std::string& path, Ftp::ResultCallback callback);
     void rename_async(
-        const std::string& from_path, const std::string& to_path, Ftp::result_callback_t callback);
+        const std::string& from_path, const std::string& to_path, Ftp::ResultCallback callback);
     void are_files_identical_async(
         const std::string& local_path,
         const std::string& remote_path,
-        Ftp::are_files_identical_callback_t callback);
+        Ftp::AreFilesIdenticalCallback callback);
 
     void set_retries(uint32_t retries) { _max_last_command_retries = retries; }
     Ftp::Result set_root_directory(const std::string& root_dir);
@@ -108,7 +108,7 @@ private:
         RSP_NAK ///< Nak response
     };
 
-    typedef std::function<void(Ftp::Result, uint32_t)> file_crc32_result_callback_t;
+    typedef std::function<void(Ftp::Result, uint32_t)> file_crc32_ResultCallback;
 
     static constexpr auto DIRENT_FILE = "F"; ///< Identifies File returned from List command
     static constexpr auto DIRENT_DIR = "D"; ///< Identifies Directory returned from List command
@@ -168,17 +168,17 @@ private:
     uint32_t _file_size = 0;
     std::vector<std::string> _curr_directory_list{};
 
-    Ftp::result_callback_t _curr_op_result_callback{};
+    Ftp::ResultCallback _curr_op_result_callback{};
     // _curr_op_progress_callback is used for download_callback_t as well as upload_callback_t
     static_assert(
-        std::is_same<Ftp::download_callback_t, Ftp::upload_callback_t>::value,
+        std::is_same<Ftp::DownloadCallback, Ftp::UploadCallback>::value,
         "callback types don't match");
-    Ftp::download_callback_t _curr_op_progress_callback{};
-    Ftp::list_directory_callback_t _curr_dir_items_result_callback{};
+    Ftp::DownloadCallback _curr_op_progress_callback{};
+    Ftp::ListDirectoryCallback _curr_dir_items_result_callback{};
 
-    file_crc32_result_callback_t _current_crc32_result_callback{};
+    file_crc32_ResultCallback _current_crc32_result_callback{};
 
-    void _calc_file_crc32_async(const std::string& path, file_crc32_result_callback_t callback);
+    void _calc_file_crc32_async(const std::string& path, file_crc32_ResultCallback callback);
     Ftp::Result _calc_local_file_crc32(const std::string& path, uint32_t& csum);
 
     void _process_ack(PayloadHeader* payload);
@@ -190,7 +190,7 @@ private:
     void _call_dir_items_result_callback(ServerResult result, std::vector<std::string> list);
     void _call_crc32_result_callback(ServerResult result, uint32_t crc32);
     void _generic_command_async(
-        Opcode opcode, uint32_t offset, const std::string& path, Ftp::result_callback_t callback);
+        Opcode opcode, uint32_t offset, const std::string& path, Ftp::ResultCallback callback);
     void _read();
     void _write();
     void _end_read_session();

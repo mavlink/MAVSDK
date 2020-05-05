@@ -2,14 +2,14 @@
 /**
 * @brief Callback type for {{ name.lower_snake_case }}_async.
 */
-typedef std::function<void({% if has_result %}Result, {% endif %}{{ return_type.name }})> {{ name.lower_snake_case }}_callback_t;
+typedef std::function<void({% if has_result %}Result, {% endif %}{{ return_type.name }})> {{ name.upper_camel_case }}Callback;
 
 /**
  * @brief {{ method_description | replace('\n', '\n *')}}
  *
  * This function is non-blocking.{% if is_sync %} See '{{ name.lower_snake_case }}' for the blocking counterpart.{% endif %}
  */
-void {{ name.lower_snake_case }}_async({% for param in params %}{{ param.type_info.name }} {{ param.name.lower_snake_case }}, {% endfor %}const {{ name.lower_snake_case }}_callback_t callback);
+void {{ name.lower_snake_case }}_async({% for param in params %}{{ param.type_info.name }} {{ param.name.lower_snake_case }}, {% endfor %}const {{ name.upper_camel_case }}Callback callback);
 {% endif %}
 
 {% if is_sync %}

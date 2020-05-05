@@ -100,54 +100,52 @@ public:
     /**
      * @brief Callback type for asynchronous Calibration calls.
      */
-    typedef std::function<void(Result)> result_callback_t;
+    typedef std::function<void(Result)> ResultCallback;
 
     /**
      * @brief Callback type for calibrate_gyro_async.
      */
 
-    typedef std::function<void(Calibration::Result, ProgressData)> calibrate_gyro_callback_t;
+    typedef std::function<void(Calibration::Result, ProgressData)> CalibrateGyroCallback;
 
     /**
      * @brief Perform gyro calibration.
      */
-    void calibrate_gyro_async(calibrate_gyro_callback_t callback);
+    void calibrate_gyro_async(CalibrateGyroCallback callback);
 
     /**
      * @brief Callback type for calibrate_accelerometer_async.
      */
 
-    typedef std::function<void(Calibration::Result, ProgressData)>
-        calibrate_accelerometer_callback_t;
+    typedef std::function<void(Calibration::Result, ProgressData)> CalibrateAccelerometerCallback;
 
     /**
      * @brief Perform accelerometer calibration.
      */
-    void calibrate_accelerometer_async(calibrate_accelerometer_callback_t callback);
+    void calibrate_accelerometer_async(CalibrateAccelerometerCallback callback);
 
     /**
      * @brief Callback type for calibrate_magnetometer_async.
      */
 
-    typedef std::function<void(Calibration::Result, ProgressData)>
-        calibrate_magnetometer_callback_t;
+    typedef std::function<void(Calibration::Result, ProgressData)> CalibrateMagnetometerCallback;
 
     /**
      * @brief Perform magnetometer caliration.
      */
-    void calibrate_magnetometer_async(calibrate_magnetometer_callback_t callback);
+    void calibrate_magnetometer_async(CalibrateMagnetometerCallback callback);
 
     /**
      * @brief Callback type for calibrate_gimbal_accelerometer_async.
      */
 
     typedef std::function<void(Calibration::Result, ProgressData)>
-        calibrate_gimbal_accelerometer_callback_t;
+        CalibrateGimbalAccelerometerCallback;
 
     /**
      * @brief Perform gimbal accelerometer calibration.
      */
-    void calibrate_gimbal_accelerometer_async(calibrate_gimbal_accelerometer_callback_t callback);
+    void calibrate_gimbal_accelerometer_async(CalibrateGimbalAccelerometerCallback callback);
 
     /**
      * @brief Cancel ongoing calibration process.

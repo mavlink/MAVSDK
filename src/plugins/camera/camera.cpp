@@ -25,7 +25,7 @@ Camera::Camera(System& system) : PluginBase(), _impl{new CameraImpl(system)} {}
 
 Camera::~Camera() {}
 
-void Camera::take_photo_async(const result_callback_t callback)
+void Camera::take_photo_async(const ResultCallback callback)
 {
     _impl->take_photo_async(callback);
 }
@@ -35,7 +35,7 @@ Camera::Result Camera::take_photo() const
     return _impl->take_photo();
 }
 
-void Camera::start_photo_interval_async(float interval_s, const result_callback_t callback)
+void Camera::start_photo_interval_async(float interval_s, const ResultCallback callback)
 {
     _impl->start_photo_interval_async(interval_s, callback);
 }
@@ -45,7 +45,7 @@ Camera::Result Camera::start_photo_interval(float interval_s) const
     return _impl->start_photo_interval(interval_s);
 }
 
-void Camera::stop_photo_interval_async(const result_callback_t callback)
+void Camera::stop_photo_interval_async(const ResultCallback callback)
 {
     _impl->stop_photo_interval_async(callback);
 }
@@ -55,7 +55,7 @@ Camera::Result Camera::stop_photo_interval() const
     return _impl->stop_photo_interval();
 }
 
-void Camera::start_video_async(const result_callback_t callback)
+void Camera::start_video_async(const ResultCallback callback)
 {
     _impl->start_video_async(callback);
 }
@@ -65,7 +65,7 @@ Camera::Result Camera::start_video() const
     return _impl->start_video();
 }
 
-void Camera::stop_video_async(const result_callback_t callback)
+void Camera::stop_video_async(const ResultCallback callback)
 {
     _impl->stop_video_async(callback);
 }
@@ -85,7 +85,7 @@ Camera::Result Camera::stop_video_streaming() const
     return _impl->stop_video_streaming();
 }
 
-void Camera::set_mode_async(Mode mode, const result_callback_t callback)
+void Camera::set_mode_async(Mode mode, const ResultCallback callback)
 {
     _impl->set_mode_async(mode, callback);
 }
@@ -95,7 +95,7 @@ Camera::Result Camera::set_mode(Mode mode) const
     return _impl->set_mode(mode);
 }
 
-void Camera::subscribe_mode(mode_callback_t callback)
+void Camera::subscribe_mode(ModeCallback callback)
 {
     _impl->mode_async(callback);
 }
@@ -105,7 +105,7 @@ Camera::Mode Camera::mode() const
     return _impl->mode();
 }
 
-void Camera::subscribe_information(information_callback_t callback)
+void Camera::subscribe_information(InformationCallback callback)
 {
     _impl->information_async(callback);
 }
@@ -115,7 +115,7 @@ Camera::Information Camera::information() const
     return _impl->information();
 }
 
-void Camera::subscribe_video_stream_info(video_stream_info_callback_t callback)
+void Camera::subscribe_video_stream_info(VideoStreamInfoCallback callback)
 {
     _impl->video_stream_info_async(callback);
 }
@@ -125,12 +125,12 @@ Camera::VideoStreamInfo Camera::video_stream_info() const
     return _impl->video_stream_info();
 }
 
-void Camera::subscribe_capture_info(capture_info_callback_t callback)
+void Camera::subscribe_capture_info(CaptureInfoCallback callback)
 {
     _impl->capture_info_async(callback);
 }
 
-void Camera::subscribe_status(status_callback_t callback)
+void Camera::subscribe_status(StatusCallback callback)
 {
     _impl->status_async(callback);
 }
@@ -140,12 +140,12 @@ Camera::Status Camera::status() const
     return _impl->status();
 }
 
-void Camera::subscribe_current_settings(current_settings_callback_t callback)
+void Camera::subscribe_current_settings(CurrentSettingsCallback callback)
 {
     _impl->current_settings_async(callback);
 }
 
-void Camera::subscribe_possible_setting_options(possible_setting_options_callback_t callback)
+void Camera::subscribe_possible_setting_options(PossibleSettingOptionsCallback callback)
 {
     _impl->possible_setting_options_async(callback);
 }
@@ -155,7 +155,7 @@ std::vector<Camera::SettingOptions> Camera::possible_setting_options() const
     return _impl->possible_setting_options();
 }
 
-void Camera::set_setting_async(Setting setting, const result_callback_t callback)
+void Camera::set_setting_async(Setting setting, const ResultCallback callback)
 {
     _impl->set_setting_async(setting, callback);
 }
@@ -165,7 +165,7 @@ Camera::Result Camera::set_setting(Setting setting) const
     return _impl->set_setting(setting);
 }
 
-void Camera::get_setting_async(Setting setting, const get_setting_callback_t callback)
+void Camera::get_setting_async(Setting setting, const GetSettingCallback callback)
 {
     _impl->get_setting_async(setting, callback);
 }
@@ -175,7 +175,7 @@ std::pair<Camera::Result, Camera::Setting> Camera::get_setting(Setting setting) 
     return _impl->get_setting(setting);
 }
 
-void Camera::format_storage_async(const result_callback_t callback)
+void Camera::format_storage_async(const ResultCallback callback)
 {
     _impl->format_storage_async(callback);
 }

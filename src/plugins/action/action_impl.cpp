@@ -165,7 +165,7 @@ Action::Result ActionImpl::transition_to_multicopter() const
     return fut.get();
 }
 
-void ActionImpl::arm_async(const Action::result_callback_t& callback) const
+void ActionImpl::arm_async(const Action::ResultCallback& callback) const
 {
     auto send_arm_command = [this, callback]() {
         MAVLinkCommands::CommandLong command{};
@@ -199,7 +199,7 @@ void ActionImpl::arm_async(const Action::result_callback_t& callback) const
     send_arm_command();
 }
 
-void ActionImpl::disarm_async(const Action::result_callback_t& callback) const
+void ActionImpl::disarm_async(const Action::ResultCallback& callback) const
 {
     Action::Result ret = disarming_allowed();
     if (ret != Action::Result::Success) {
@@ -220,7 +220,7 @@ void ActionImpl::disarm_async(const Action::result_callback_t& callback) const
     });
 }
 
-void ActionImpl::kill_async(const Action::result_callback_t& callback) const
+void ActionImpl::kill_async(const Action::ResultCallback& callback) const
 {
     MAVLinkCommands::CommandLong command{};
 
@@ -234,7 +234,7 @@ void ActionImpl::kill_async(const Action::result_callback_t& callback) const
     });
 }
 
-void ActionImpl::reboot_async(const Action::result_callback_t& callback) const
+void ActionImpl::reboot_async(const Action::ResultCallback& callback) const
 {
     MAVLinkCommands::CommandLong command{};
 
@@ -250,7 +250,7 @@ void ActionImpl::reboot_async(const Action::result_callback_t& callback) const
     });
 }
 
-void ActionImpl::shutdown_async(const Action::result_callback_t& callback) const
+void ActionImpl::shutdown_async(const Action::ResultCallback& callback) const
 {
     MAVLinkCommands::CommandLong command{};
 
@@ -266,7 +266,7 @@ void ActionImpl::shutdown_async(const Action::result_callback_t& callback) const
     });
 }
 
-void ActionImpl::takeoff_async(const Action::result_callback_t& callback) const
+void ActionImpl::takeoff_async(const Action::ResultCallback& callback) const
 {
     MAVLinkCommands::CommandLong command{};
 
@@ -278,7 +278,7 @@ void ActionImpl::takeoff_async(const Action::result_callback_t& callback) const
     });
 }
 
-void ActionImpl::land_async(const Action::result_callback_t& callback) const
+void ActionImpl::land_async(const Action::ResultCallback& callback) const
 {
     MAVLinkCommands::CommandLong command{};
 
@@ -291,7 +291,7 @@ void ActionImpl::land_async(const Action::result_callback_t& callback) const
     });
 }
 
-void ActionImpl::return_to_launch_async(const Action::result_callback_t& callback) const
+void ActionImpl::return_to_launch_async(const Action::ResultCallback& callback) const
 {
     _parent->set_flight_mode_async(
         SystemImpl::FlightMode::ReturnToLaunch,
@@ -305,7 +305,7 @@ void ActionImpl::goto_location_async(
     const double longitude_deg,
     const float altitude_amsl_m,
     const float yaw_deg,
-    const Action::result_callback_t& callback)
+    const Action::ResultCallback& callback)
 {
     MAVLinkCommands::CommandInt command{};
 
@@ -321,7 +321,7 @@ void ActionImpl::goto_location_async(
     });
 }
 
-void ActionImpl::transition_to_fixedwing_async(const Action::result_callback_t& callback) const
+void ActionImpl::transition_to_fixedwing_async(const Action::ResultCallback& callback) const
 {
     if (!_vtol_transition_support_known) {
         if (callback) {
@@ -348,7 +348,7 @@ void ActionImpl::transition_to_fixedwing_async(const Action::result_callback_t& 
     });
 }
 
-void ActionImpl::transition_to_multicopter_async(const Action::result_callback_t& callback) const
+void ActionImpl::transition_to_multicopter_async(const Action::ResultCallback& callback) const
 {
     if (!_vtol_transition_support_known) {
         if (callback) {
@@ -422,7 +422,7 @@ void ActionImpl::process_extended_sys_state(const mavlink_message_t& message)
 }
 
 void ActionImpl::set_takeoff_altitude_async(
-    const float relative_altitude_m, const Action::result_callback_t& callback) const
+    const float relative_altitude_m, const Action::ResultCallback& callback) const
 {
     callback(set_takeoff_altitude(relative_altitude_m));
 }
@@ -436,7 +436,7 @@ Action::Result ActionImpl::set_takeoff_altitude(float relative_altitude_m) const
 }
 
 void ActionImpl::get_takeoff_altitude_async(
-    const Action::get_takeoff_altitude_callback_t& callback) const
+    const Action::GetTakeoffAltitudeCallback& callback) const
 {
     auto altitude_result = get_takeoff_altitude();
     callback(altitude_result.first, altitude_result.second);
@@ -452,7 +452,7 @@ std::pair<Action::Result, float> ActionImpl::get_takeoff_altitude() const
 }
 
 void ActionImpl::set_maximum_speed_async(
-    const float speed_m_s, const Action::result_callback_t& callback) const
+    const float speed_m_s, const Action::ResultCallback& callback) const
 {
     callback(set_maximum_speed(speed_m_s));
 }
@@ -464,7 +464,7 @@ Action::Result ActionImpl::set_maximum_speed(float speed_m_s) const
                                                             Action::Result::ParameterError;
 }
 
-void ActionImpl::get_maximum_speed_async(const Action::get_maximum_speed_callback_t& callback) const
+void ActionImpl::get_maximum_speed_async(const Action::GetMaximumSpeedCallback& callback) const
 {
     auto speed_result = get_maximum_speed();
     callback(speed_result.first, speed_result.second);
@@ -480,7 +480,7 @@ std::pair<Action::Result, float> ActionImpl::get_maximum_speed() const
 }
 
 void ActionImpl::set_return_to_launch_altitude_async(
-    const float relative_altitude_m, const Action::result_callback_t& callback) const
+    const float relative_altitude_m, const Action::ResultCallback& callback) const
 {
     callback(set_return_to_launch_altitude(relative_altitude_m));
 }
@@ -494,7 +494,7 @@ Action::Result ActionImpl::set_return_to_launch_altitude(const float relative_al
 }
 
 void ActionImpl::get_return_to_launch_altitude_async(
-    const Action::get_return_to_launch_altitude_callback_t& callback) const
+    const Action::GetReturnToLaunchAltitudeCallback& callback) const
 {
     const auto get_result = get_return_to_launch_altitude();
     callback(get_result.first, get_result.second);
@@ -530,7 +530,7 @@ Action::Result ActionImpl::action_result_from_command_result(MAVLinkCommands::Re
 }
 
 void ActionImpl::command_result_callback(
-    MAVLinkCommands::Result command_result, const Action::result_callback_t& callback) const
+    MAVLinkCommands::Result command_result, const Action::ResultCallback& callback) const
 {
     Action::Result action_result = action_result_from_command_result(command_result);
 

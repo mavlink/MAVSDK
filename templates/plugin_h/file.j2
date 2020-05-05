@@ -54,7 +54,7 @@ public:
     /**
      * @brief Callback type for asynchronous {{ plugin_name.upper_camel_case }} calls.
      */
-    typedef std::function<void(Result)> result_callback_t;
+    typedef std::function<void(Result)> ResultCallback;
 {% endif %}
 
 {% for method in methods %}

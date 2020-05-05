@@ -820,18 +820,18 @@ public:
     /**
      * @brief Callback type for asynchronous Telemetry calls.
      */
-    typedef std::function<void(Result)> result_callback_t;
+    typedef std::function<void(Result)> ResultCallback;
 
     /**
      * @brief Callback type for subscribe_position.
      */
 
-    typedef std::function<void(Position)> position_callback_t;
+    typedef std::function<void(Position)> PositionCallback;
 
     /**
      * @brief Subscribe to 'position' updates.
      */
-    void subscribe_position(position_callback_t callback);
+    void subscribe_position(PositionCallback callback);
 
     /**
      * @brief Poll for 'Position' (blocking).
@@ -844,12 +844,12 @@ public:
      * @brief Callback type for subscribe_home.
      */
 
-    typedef std::function<void(Position)> home_callback_t;
+    typedef std::function<void(Position)> HomeCallback;
 
     /**
      * @brief Subscribe to 'home position' updates.
      */
-    void subscribe_home(home_callback_t callback);
+    void subscribe_home(HomeCallback callback);
 
     /**
      * @brief Poll for 'Position' (blocking).
@@ -862,12 +862,12 @@ public:
      * @brief Callback type for subscribe_in_air.
      */
 
-    typedef std::function<void(bool)> in_air_callback_t;
+    typedef std::function<void(bool)> InAirCallback;
 
     /**
      * @brief Subscribe to in-air updates.
      */
-    void subscribe_in_air(in_air_callback_t callback);
+    void subscribe_in_air(InAirCallback callback);
 
     /**
      * @brief Poll for 'bool' (blocking).
@@ -880,12 +880,12 @@ public:
      * @brief Callback type for subscribe_landed_state.
      */
 
-    typedef std::function<void(LandedState)> landed_state_callback_t;
+    typedef std::function<void(LandedState)> LandedStateCallback;
 
     /**
      * @brief Subscribe to landed state updates
      */
-    void subscribe_landed_state(landed_state_callback_t callback);
+    void subscribe_landed_state(LandedStateCallback callback);
 
     /**
      * @brief Poll for 'LandedState' (blocking).
@@ -898,12 +898,12 @@ public:
      * @brief Callback type for subscribe_armed.
      */
 
-    typedef std::function<void(bool)> armed_callback_t;
+    typedef std::function<void(bool)> ArmedCallback;
 
     /**
      * @brief Subscribe to armed updates.
      */
-    void subscribe_armed(armed_callback_t callback);
+    void subscribe_armed(ArmedCallback callback);
 
     /**
      * @brief Poll for 'bool' (blocking).
@@ -916,12 +916,12 @@ public:
      * @brief Callback type for subscribe_attitude_quaternion.
      */
 
-    typedef std::function<void(Quaternion)> attitude_quaternion_callback_t;
+    typedef std::function<void(Quaternion)> AttitudeQuaternionCallback;
 
     /**
      * @brief Subscribe to 'attitude' updates (quaternion).
      */
-    void subscribe_attitude_quaternion(attitude_quaternion_callback_t callback);
+    void subscribe_attitude_quaternion(AttitudeQuaternionCallback callback);
 
     /**
      * @brief Poll for 'Quaternion' (blocking).
@@ -934,12 +934,12 @@ public:
      * @brief Callback type for subscribe_attitude_euler.
      */
 
-    typedef std::function<void(EulerAngle)> attitude_euler_callback_t;
+    typedef std::function<void(EulerAngle)> AttitudeEulerCallback;
 
     /**
      * @brief Subscribe to 'attitude' updates (Euler).
      */
-    void subscribe_attitude_euler(attitude_euler_callback_t callback);
+    void subscribe_attitude_euler(AttitudeEulerCallback callback);
 
     /**
      * @brief Poll for 'EulerAngle' (blocking).
@@ -952,13 +952,12 @@ public:
      * @brief Callback type for subscribe_attitude_angular_velocity_body.
      */
 
-    typedef std::function<void(AngularVelocityBody)> attitude_angular_velocity_body_callback_t;
+    typedef std::function<void(AngularVelocityBody)> AttitudeAngularVelocityBodyCallback;
 
     /**
      * @brief Subscribe to 'attitude' updates (angular velocity)
      */
-    void
-    subscribe_attitude_angular_velocity_body(attitude_angular_velocity_body_callback_t callback);
+    void subscribe_attitude_angular_velocity_body(AttitudeAngularVelocityBodyCallback callback);
 
     /**
      * @brief Poll for 'AngularVelocityBody' (blocking).
@@ -971,12 +970,12 @@ public:
      * @brief Callback type for subscribe_camera_attitude_quaternion.
      */
 
-    typedef std::function<void(Quaternion)> camera_attitude_quaternion_callback_t;
+    typedef std::function<void(Quaternion)> CameraAttitudeQuaternionCallback;
 
     /**
      * @brief Subscribe to 'camera attitude' updates (quaternion).
      */
-    void subscribe_camera_attitude_quaternion(camera_attitude_quaternion_callback_t callback);
+    void subscribe_camera_attitude_quaternion(CameraAttitudeQuaternionCallback callback);
 
     /**
      * @brief Poll for 'Quaternion' (blocking).
@@ -989,12 +988,12 @@ public:
      * @brief Callback type for subscribe_camera_attitude_euler.
      */
 
-    typedef std::function<void(EulerAngle)> camera_attitude_euler_callback_t;
+    typedef std::function<void(EulerAngle)> CameraAttitudeEulerCallback;
 
     /**
      * @brief Subscribe to 'camera attitude' updates (Euler).
      */
-    void subscribe_camera_attitude_euler(camera_attitude_euler_callback_t callback);
+    void subscribe_camera_attitude_euler(CameraAttitudeEulerCallback callback);
 
     /**
      * @brief Poll for 'EulerAngle' (blocking).
@@ -1007,12 +1006,12 @@ public:
      * @brief Callback type for subscribe_ground_speed_ned.
      */
 
-    typedef std::function<void(SpeedNed)> ground_speed_ned_callback_t;
+    typedef std::function<void(SpeedNed)> GroundSpeedNedCallback;
 
     /**
      * @brief Subscribe to 'ground speed' updates (NED).
      */
-    void subscribe_ground_speed_ned(ground_speed_ned_callback_t callback);
+    void subscribe_ground_speed_ned(GroundSpeedNedCallback callback);
 
     /**
      * @brief Poll for 'SpeedNed' (blocking).
@@ -1025,12 +1024,12 @@ public:
      * @brief Callback type for subscribe_gps_info.
      */
 
-    typedef std::function<void(GpsInfo)> gps_info_callback_t;
+    typedef std::function<void(GpsInfo)> GpsInfoCallback;
 
     /**
      * @brief Subscribe to 'GPS info' updates.
      */
-    void subscribe_gps_info(gps_info_callback_t callback);
+    void subscribe_gps_info(GpsInfoCallback callback);
 
     /**
      * @brief Poll for 'GpsInfo' (blocking).
@@ -1043,12 +1042,12 @@ public:
      * @brief Callback type for subscribe_battery.
      */
 
-    typedef std::function<void(Battery)> battery_callback_t;
+    typedef std::function<void(Battery)> BatteryCallback;
 
     /**
      * @brief Subscribe to 'battery' updates.
      */
-    void subscribe_battery(battery_callback_t callback);
+    void subscribe_battery(BatteryCallback callback);
 
     /**
      * @brief Poll for 'Battery' (blocking).
@@ -1061,12 +1060,12 @@ public:
      * @brief Callback type for subscribe_flight_mode.
      */
 
-    typedef std::function<void(FlightMode)> flight_mode_callback_t;
+    typedef std::function<void(FlightMode)> FlightModeCallback;
 
     /**
      * @brief Subscribe to 'flight mode' updates.
      */
-    void subscribe_flight_mode(flight_mode_callback_t callback);
+    void subscribe_flight_mode(FlightModeCallback callback);
 
     /**
      * @brief Poll for 'FlightMode' (blocking).
@@ -1079,12 +1078,12 @@ public:
      * @brief Callback type for subscribe_health.
      */
 
-    typedef std::function<void(Health)> health_callback_t;
+    typedef std::function<void(Health)> HealthCallback;
 
     /**
      * @brief Subscribe to 'health' updates.
      */
-    void subscribe_health(health_callback_t callback);
+    void subscribe_health(HealthCallback callback);
 
     /**
      * @brief Poll for 'Health' (blocking).
@@ -1097,12 +1096,12 @@ public:
      * @brief Callback type for subscribe_rc_status.
      */
 
-    typedef std::function<void(RcStatus)> rc_status_callback_t;
+    typedef std::function<void(RcStatus)> RcStatusCallback;
 
     /**
      * @brief Subscribe to 'RC status' updates.
      */
-    void subscribe_rc_status(rc_status_callback_t callback);
+    void subscribe_rc_status(RcStatusCallback callback);
 
     /**
      * @brief Poll for 'RcStatus' (blocking).
@@ -1115,12 +1114,12 @@ public:
      * @brief Callback type for subscribe_status_text.
      */
 
-    typedef std::function<void(StatusText)> status_text_callback_t;
+    typedef std::function<void(StatusText)> StatusTextCallback;
 
     /**
      * @brief Subscribe to 'status text' updates.
      */
-    void subscribe_status_text(status_text_callback_t callback);
+    void subscribe_status_text(StatusTextCallback callback);
 
     /**
      * @brief Poll for 'StatusText' (blocking).
@@ -1133,12 +1132,12 @@ public:
      * @brief Callback type for subscribe_actuator_control_target.
      */
 
-    typedef std::function<void(ActuatorControlTarget)> actuator_control_target_callback_t;
+    typedef std::function<void(ActuatorControlTarget)> ActuatorControlTargetCallback;
 
     /**
      * @brief Subscribe to 'actuator control target' updates.
      */
-    void subscribe_actuator_control_target(actuator_control_target_callback_t callback);
+    void subscribe_actuator_control_target(ActuatorControlTargetCallback callback);
 
     /**
      * @brief Poll for 'ActuatorControlTarget' (blocking).
@@ -1151,12 +1150,12 @@ public:
      * @brief Callback type for subscribe_actuator_output_status.
      */
 
-    typedef std::function<void(ActuatorOutputStatus)> actuator_output_status_callback_t;
+    typedef std::function<void(ActuatorOutputStatus)> ActuatorOutputStatusCallback;
 
     /**
      * @brief Subscribe to 'actuator output status' updates.
      */
-    void subscribe_actuator_output_status(actuator_output_status_callback_t callback);
+    void subscribe_actuator_output_status(ActuatorOutputStatusCallback callback);
 
     /**
      * @brief Poll for 'ActuatorOutputStatus' (blocking).
@@ -1169,12 +1168,12 @@ public:
      * @brief Callback type for subscribe_odometry.
      */
 
-    typedef std::function<void(Odometry)> odometry_callback_t;
+    typedef std::function<void(Odometry)> OdometryCallback;
 
     /**
      * @brief Subscribe to 'odometry' updates.
      */
-    void subscribe_odometry(odometry_callback_t callback);
+    void subscribe_odometry(OdometryCallback callback);
 
     /**
      * @brief Poll for 'Odometry' (blocking).
@@ -1187,12 +1186,12 @@ public:
      * @brief Callback type for subscribe_position_velocity_ned.
      */
 
-    typedef std::function<void(PositionVelocityNed)> position_velocity_ned_callback_t;
+    typedef std::function<void(PositionVelocityNed)> PositionVelocityNedCallback;
 
     /**
      * @brief Subscribe to 'position velocity' updates.
      */
-    void subscribe_position_velocity_ned(position_velocity_ned_callback_t callback);
+    void subscribe_position_velocity_ned(PositionVelocityNedCallback callback);
 
     /**
      * @brief Poll for 'PositionVelocityNed' (blocking).
@@ -1205,12 +1204,12 @@ public:
      * @brief Callback type for subscribe_ground_truth.
      */
 
-    typedef std::function<void(GroundTruth)> ground_truth_callback_t;
+    typedef std::function<void(GroundTruth)> GroundTruthCallback;
 
     /**
      * @brief Subscribe to 'ground truth' updates.
      */
-    void subscribe_ground_truth(ground_truth_callback_t callback);
+    void subscribe_ground_truth(GroundTruthCallback callback);
 
     /**
      * @brief Poll for 'GroundTruth' (blocking).
@@ -1223,12 +1222,12 @@ public:
      * @brief Callback type for subscribe_fixedwing_metrics.
      */
 
-    typedef std::function<void(FixedwingMetrics)> fixedwing_metrics_callback_t;
+    typedef std::function<void(FixedwingMetrics)> FixedwingMetricsCallback;
 
     /**
      * @brief Subscribe to 'fixedwing metrics' updates.
      */
-    void subscribe_fixedwing_metrics(fixedwing_metrics_callback_t callback);
+    void subscribe_fixedwing_metrics(FixedwingMetricsCallback callback);
 
     /**
      * @brief Poll for 'FixedwingMetrics' (blocking).
@@ -1241,12 +1240,12 @@ public:
      * @brief Callback type for subscribe_imu.
      */
 
-    typedef std::function<void(Imu)> imu_callback_t;
+    typedef std::function<void(Imu)> ImuCallback;
 
     /**
      * @brief Subscribe to 'IMU' updates.
      */
-    void subscribe_imu(imu_callback_t callback);
+    void subscribe_imu(ImuCallback callback);
 
     /**
      * @brief Poll for 'Imu' (blocking).
@@ -1259,12 +1258,12 @@ public:
      * @brief Callback type for subscribe_health_all_ok.
      */
 
-    typedef std::function<void(bool)> health_all_ok_callback_t;
+    typedef std::function<void(bool)> HealthAllOkCallback;
 
     /**
      * @brief Subscribe to 'HealthAllOk' updates.
      */
-    void subscribe_health_all_ok(health_all_ok_callback_t callback);
+    void subscribe_health_all_ok(HealthAllOkCallback callback);
 
     /**
      * @brief Poll for 'bool' (blocking).
@@ -1277,12 +1276,12 @@ public:
      * @brief Callback type for subscribe_unix_epoch_time.
      */
 
-    typedef std::function<void(uint64_t)> unix_epoch_time_callback_t;
+    typedef std::function<void(uint64_t)> UnixEpochTimeCallback;
 
     /**
      * @brief Subscribe to 'unix epoch time' updates.
      */
-    void subscribe_unix_epoch_time(unix_epoch_time_callback_t callback);
+    void subscribe_unix_epoch_time(UnixEpochTimeCallback callback);
 
     /**
      * @brief Poll for 'uint64_t' (blocking).
@@ -1296,7 +1295,7 @@ public:
      *
      * This function is non-blocking. See 'set_rate_position' for the blocking counterpart.
      */
-    void set_rate_position_async(double rate_hz, const result_callback_t callback);
+    void set_rate_position_async(double rate_hz, const ResultCallback callback);
 
     /**
      * @brief Set rate to 'position' updates.
@@ -1312,7 +1311,7 @@ public:
      *
      * This function is non-blocking. See 'set_rate_home' for the blocking counterpart.
      */
-    void set_rate_home_async(double rate_hz, const result_callback_t callback);
+    void set_rate_home_async(double rate_hz, const ResultCallback callback);
 
     /**
      * @brief Set rate to 'home position' updates.
@@ -1328,7 +1327,7 @@ public:
      *
      * This function is non-blocking. See 'set_rate_in_air' for the blocking counterpart.
      */
-    void set_rate_in_air_async(double rate_hz, const result_callback_t callback);
+    void set_rate_in_air_async(double rate_hz, const ResultCallback callback);
 
     /**
      * @brief Set rate to in-air updates.
@@ -1344,7 +1343,7 @@ public:
      *
      * This function is non-blocking. See 'set_rate_landed_state' for the blocking counterpart.
      */
-    void set_rate_landed_state_async(double rate_hz, const result_callback_t callback);
+    void set_rate_landed_state_async(double rate_hz, const ResultCallback callback);
 
     /**
      * @brief Set rate to landed state updates
@@ -1361,7 +1360,7 @@ public:
      *
      * This function is non-blocking. See 'set_rate_attitude' for the blocking counterpart.
      */
-    void set_rate_attitude_async(double rate_hz, const result_callback_t callback);
+    void set_rate_attitude_async(double rate_hz, const ResultCallback callback);
 
     /**
      * @brief Set rate to 'attitude' updates.
@@ -1377,7 +1376,7 @@ public:
      *
      * This function is non-blocking. See 'set_rate_camera_attitude' for the blocking counterpart.
      */
-    void set_rate_camera_attitude_async(double rate_hz, const result_callback_t callback);
+    void set_rate_camera_attitude_async(double rate_hz, const ResultCallback callback);
 
     /**
      * @brief Set rate of camera attitude updates.
@@ -1394,7 +1393,7 @@ public:
      *
      * This function is non-blocking. See 'set_rate_ground_speed_ned' for the blocking counterpart.
      */
-    void set_rate_ground_speed_ned_async(double rate_hz, const result_callback_t callback);
+    void set_rate_ground_speed_ned_async(double rate_hz, const ResultCallback callback);
 
     /**
      * @brief Set rate to 'ground speed' updates (NED).
@@ -1411,7 +1410,7 @@ public:
      *
      * This function is non-blocking. See 'set_rate_gps_info' for the blocking counterpart.
      */
-    void set_rate_gps_info_async(double rate_hz, const result_callback_t callback);
+    void set_rate_gps_info_async(double rate_hz, const ResultCallback callback);
 
     /**
      * @brief Set rate to 'GPS info' updates.
@@ -1427,7 +1426,7 @@ public:
      *
      * This function is non-blocking. See 'set_rate_battery' for the blocking counterpart.
      */
-    void set_rate_battery_async(double rate_hz, const result_callback_t callback);
+    void set_rate_battery_async(double rate_hz, const ResultCallback callback);
 
     /**
      * @brief Set rate to 'battery' updates.
@@ -1443,7 +1442,7 @@ public:
      *
      * This function is non-blocking. See 'set_rate_rc_status' for the blocking counterpart.
      */
-    void set_rate_rc_status_async(double rate_hz, const result_callback_t callback);
+    void set_rate_rc_status_async(double rate_hz, const ResultCallback callback);
 
     /**
      * @brief Set rate to 'RC status' updates.
@@ -1460,7 +1459,7 @@ public:
      * This function is non-blocking. See 'set_rate_actuator_control_target' for the blocking
      * counterpart.
      */
-    void set_rate_actuator_control_target_async(double rate_hz, const result_callback_t callback);
+    void set_rate_actuator_control_target_async(double rate_hz, const ResultCallback callback);
 
     /**
      * @brief Set rate to 'actuator control target' updates.
@@ -1478,7 +1477,7 @@ public:
      * This function is non-blocking. See 'set_rate_actuator_output_status' for the blocking
      * counterpart.
      */
-    void set_rate_actuator_output_status_async(double rate_hz, const result_callback_t callback);
+    void set_rate_actuator_output_status_async(double rate_hz, const ResultCallback callback);
 
     /**
      * @brief Set rate to 'actuator output status' updates.
@@ -1495,7 +1494,7 @@ public:
      *
      * This function is non-blocking. See 'set_rate_odometry' for the blocking counterpart.
      */
-    void set_rate_odometry_async(double rate_hz, const result_callback_t callback);
+    void set_rate_odometry_async(double rate_hz, const ResultCallback callback);
 
     /**
      * @brief Set rate to 'odometry' updates.
@@ -1512,7 +1511,7 @@ public:
      * This function is non-blocking. See 'set_rate_position_velocity_ned' for the blocking
      * counterpart.
      */
-    void set_rate_position_velocity_ned_async(double rate_hz, const result_callback_t callback);
+    void set_rate_position_velocity_ned_async(double rate_hz, const ResultCallback callback);
 
     /**
      * @brief Set rate to 'position velocity' updates.
@@ -1529,7 +1528,7 @@ public:
      *
      * This function is non-blocking. See 'set_rate_ground_truth' for the blocking counterpart.
      */
-    void set_rate_ground_truth_async(double rate_hz, const result_callback_t callback);
+    void set_rate_ground_truth_async(double rate_hz, const ResultCallback callback);
 
     /**
      * @brief Set rate to 'ground truth' updates.
@@ -1546,7 +1545,7 @@ public:
      *
      * This function is non-blocking. See 'set_rate_fixedwing_metrics' for the blocking counterpart.
      */
-    void set_rate_fixedwing_metrics_async(double rate_hz, const result_callback_t callback);
+    void set_rate_fixedwing_metrics_async(double rate_hz, const ResultCallback callback);
 
     /**
      * @brief Set rate to 'fixedwing metrics' updates.
@@ -1563,7 +1562,7 @@ public:
      *
      * This function is non-blocking. See 'set_rate_imu' for the blocking counterpart.
      */
-    void set_rate_imu_async(double rate_hz, const result_callback_t callback);
+    void set_rate_imu_async(double rate_hz, const ResultCallback callback);
 
     /**
      * @brief Set rate to 'IMU' updates.
@@ -1579,7 +1578,7 @@ public:
      *
      * This function is non-blocking. See 'set_rate_unix_epoch_time' for the blocking counterpart.
      */
-    void set_rate_unix_epoch_time_async(double rate_hz, const result_callback_t callback);
+    void set_rate_unix_epoch_time_async(double rate_hz, const ResultCallback callback);
 
     /**
      * @brief Set rate to 'unix epoch time' updates.

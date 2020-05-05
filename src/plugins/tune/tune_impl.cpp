@@ -23,7 +23,7 @@ void TuneImpl::enable() {}
 void TuneImpl::disable() {}
 
 void TuneImpl::play_tune_async(
-    const Tune::TuneDescription& tune, const Tune::result_callback_t& callback)
+    const Tune::TuneDescription& tune, const Tune::ResultCallback& callback)
 {
     const auto song_elements = tune.song_elements;
     const int tempo = tune.tempo;
@@ -137,7 +137,7 @@ void TuneImpl::play_tune_async(
     report_tune_result(callback, Tune::Result::Success);
 }
 
-void TuneImpl::report_tune_result(const Tune::result_callback_t& callback, Tune::Result result)
+void TuneImpl::report_tune_result(const Tune::ResultCallback& callback, Tune::Result result)
 {
     if (callback == nullptr) {
         LogWarn() << "Callback is not set";

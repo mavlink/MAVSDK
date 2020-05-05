@@ -17,7 +17,7 @@ MissionRaw::MissionRaw(System& system) : PluginBase(), _impl{new MissionRawImpl(
 MissionRaw::~MissionRaw() {}
 
 void MissionRaw::upload_mission_async(
-    std::vector<MissionItem> mission_items, const result_callback_t callback)
+    std::vector<MissionItem> mission_items, const ResultCallback callback)
 {
     _impl->upload_mission_async(mission_items, callback);
 }
@@ -32,7 +32,7 @@ MissionRaw::Result MissionRaw::cancel_mission_upload() const
     return _impl->cancel_mission_upload();
 }
 
-void MissionRaw::download_mission_async(const download_mission_callback_t callback)
+void MissionRaw::download_mission_async(const DownloadMissionCallback callback)
 {
     _impl->download_mission_async(callback);
 }
@@ -48,7 +48,7 @@ MissionRaw::Result MissionRaw::cancel_mission_download() const
     return _impl->cancel_mission_download();
 }
 
-void MissionRaw::start_mission_async(const result_callback_t callback)
+void MissionRaw::start_mission_async(const ResultCallback callback)
 {
     _impl->start_mission_async(callback);
 }
@@ -58,7 +58,7 @@ MissionRaw::Result MissionRaw::start_mission() const
     return _impl->start_mission();
 }
 
-void MissionRaw::pause_mission_async(const result_callback_t callback)
+void MissionRaw::pause_mission_async(const ResultCallback callback)
 {
     _impl->pause_mission_async(callback);
 }
@@ -68,7 +68,7 @@ MissionRaw::Result MissionRaw::pause_mission() const
     return _impl->pause_mission();
 }
 
-void MissionRaw::clear_mission_async(const result_callback_t callback)
+void MissionRaw::clear_mission_async(const ResultCallback callback)
 {
     _impl->clear_mission_async(callback);
 }
@@ -78,7 +78,7 @@ MissionRaw::Result MissionRaw::clear_mission() const
     return _impl->clear_mission();
 }
 
-void MissionRaw::set_current_mission_item_async(int32_t index, const result_callback_t callback)
+void MissionRaw::set_current_mission_item_async(int32_t index, const ResultCallback callback)
 {
     _impl->set_current_mission_item_async(index, callback);
 }
@@ -88,7 +88,7 @@ MissionRaw::Result MissionRaw::set_current_mission_item(int32_t index) const
     return _impl->set_current_mission_item(index);
 }
 
-void MissionRaw::subscribe_mission_progress(mission_progress_callback_t callback)
+void MissionRaw::subscribe_mission_progress(MissionProgressCallback callback)
 {
     _impl->mission_progress_async(callback);
 }
@@ -98,7 +98,7 @@ MissionRaw::MissionProgress MissionRaw::mission_progress() const
     return _impl->mission_progress();
 }
 
-void MissionRaw::subscribe_mission_changed(mission_changed_callback_t callback)
+void MissionRaw::subscribe_mission_changed(MissionChangedCallback callback)
 {
     _impl->mission_changed_async(callback);
 }

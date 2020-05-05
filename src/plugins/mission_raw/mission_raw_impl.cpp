@@ -113,7 +113,7 @@ MissionRawImpl::upload_mission(std::vector<MissionRaw::MissionItem> mission_item
 
 void MissionRawImpl::upload_mission_async(
     const std::vector<MissionRaw::MissionItem>& mission_raw,
-    const MissionRaw::result_callback_t& callback)
+    const MissionRaw::ResultCallback& callback)
 {
     if (_last_upload.lock()) {
         _parent->call_user_callback([callback]() {
@@ -173,7 +173,7 @@ MissionRawImpl::download_mission()
     return fut.get();
 }
 
-void MissionRawImpl::download_mission_async(const MissionRaw::download_mission_callback_t& callback)
+void MissionRawImpl::download_mission_async(const MissionRaw::DownloadMissionCallback& callback)
 {
     if (_last_download.lock()) {
         _parent->call_user_callback([callback]() {
@@ -293,7 +293,7 @@ MissionRaw::Result MissionRawImpl::start_mission()
     return fut.get();
 }
 
-void MissionRawImpl::start_mission_async(const MissionRaw::result_callback_t& callback)
+void MissionRawImpl::start_mission_async(const MissionRaw::ResultCallback& callback)
 {
     _parent->set_flight_mode_async(
         SystemImpl::FlightMode::Mission, [this, callback](MAVLinkCommands::Result result, float) {
@@ -310,7 +310,7 @@ MissionRaw::Result MissionRawImpl::pause_mission()
     return fut.get();
 }
 
-void MissionRawImpl::pause_mission_async(const MissionRaw::result_callback_t& callback)
+void MissionRawImpl::pause_mission_async(const MissionRaw::ResultCallback& callback)
 {
     _parent->set_flight_mode_async(
         SystemImpl::FlightMode::Hold, [this, callback](MAVLinkCommands::Result result, float) {
@@ -319,7 +319,7 @@ void MissionRawImpl::pause_mission_async(const MissionRaw::result_callback_t& ca
 }
 
 void MissionRawImpl::report_flight_mode_change(
-    MissionRaw::result_callback_t callback, MAVLinkCommands::Result result)
+    MissionRaw::ResultCallback callback, MAVLinkCommands::Result result)
 {
     if (!callback) {
         return;
@@ -362,7 +362,7 @@ MissionRaw::Result MissionRawImpl::clear_mission()
     return fut.get();
 }
 
-void MissionRawImpl::clear_mission_async(const MissionRaw::result_callback_t& callback)
+void MissionRawImpl::clear_mission_async(const MissionRaw::ResultCallback& callback)
 {
     _parent->mission_transfer().clear_items_async(
         MAV_MISSION_TYPE_MISSION, [this, callback](MAVLinkMissionTransfer::Result result) {
@@ -386,7 +386,7 @@ MissionRaw::Result MissionRawImpl::set_current_mission_item(int index)
 }
 
 void MissionRawImpl::set_current_mission_item_async(
-    int index, const MissionRaw::result_callback_t& callback)
+    int index, const MissionRaw::ResultCallback& callback)
 {
     if (index < 0 && index >= _mission_progress.last.total) {
         _parent->call_user_callback([callback]() {
@@ -435,7 +435,7 @@ void MissionRawImpl::report_progress_current()
     }
 }
 
-void MissionRawImpl::mission_progress_async(MissionRaw::mission_progress_callback_t callback)
+void MissionRawImpl::mission_progress_async(MissionRaw::MissionProgressCallback callback)
 {
     std::lock_guard<std::mutex> lock(_mission_progress.mutex);
     _mission_progress.callback = callback;
@@ -447,7 +447,7 @@ MissionRaw::MissionProgress MissionRawImpl::mission_progress()
     return _mission_progress.last;
 }
 
-void MissionRawImpl::mission_changed_async(MissionRaw::mission_changed_callback_t callback)
+void MissionRawImpl::mission_changed_async(MissionRaw::MissionChangedCallback callback)
 {
     std::lock_guard<std::mutex> lock(_mission_changed.mutex);
     _mission_changed.callback = callback;

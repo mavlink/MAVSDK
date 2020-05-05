@@ -357,7 +357,7 @@ TEST_F(CameraServiceImplTest, setModeSetsVideoMode)
 
 TEST_F(CameraServiceImplTest, registersToCameraMode)
 {
-    mavsdk::Camera::mode_callback_t mode_callback;
+    mavsdk::Camera::ModeCallback mode_callback;
     EXPECT_CALL(_camera, subscribe_mode(_))
         .Times(2)
         .WillOnce(SaveResult(&mode_callback, &_callback_saved_promise))
@@ -401,7 +401,7 @@ void CameraServiceImplTest::checkSendsModes(const std::vector<mavsdk::Camera::Mo
 {
     std::promise<void> subscription_promise;
     auto subscription_future = subscription_promise.get_future();
-    mavsdk::Camera::mode_callback_t mode_callback;
+    mavsdk::Camera::ModeCallback mode_callback;
     auto context = std::make_shared<grpc::ClientContext>();
     EXPECT_CALL(_camera, subscribe_mode(_))
         .Times(2)
@@ -457,7 +457,7 @@ TEST_F(CameraServiceImplTest, registersToVideoStreamInfo)
     auto rpc_video_stream_info = createArbitraryRPCVideoStreamInfo();
     const auto expected_video_stream_info =
         CameraServiceImpl::translateFromRpcVideoStreamInfo(*rpc_video_stream_info);
-    mavsdk::Camera::video_stream_info_callback_t video_info_callback;
+    mavsdk::Camera::VideoStreamInfoCallback video_info_callback;
     EXPECT_CALL(_camera, subscribe_video_stream_info(_))
         .Times(2)
         .WillOnce(SaveResult(&video_info_callback, &_callback_saved_promise))
@@ -516,7 +516,7 @@ void CameraServiceImplTest::checkSendsVideoStreamInfo(
 {
     std::promise<void> subscription_promise;
     auto subscription_future = subscription_promise.get_future();
-    mavsdk::Camera::video_stream_info_callback_t video_info_callback;
+    mavsdk::Camera::VideoStreamInfoCallback video_info_callback;
     auto context = std::make_shared<grpc::ClientContext>();
     EXPECT_CALL(_camera, subscribe_video_stream_info(_))
         .Times(2)
@@ -547,7 +547,7 @@ TEST_F(CameraServiceImplTest, registersToCaptureInfo)
     auto rpc_capture_info = createArbitraryRPCCaptureInfo();
     const auto expected_capture_info =
         CameraServiceImpl::translateFromRpcCaptureInfo(*rpc_capture_info);
-    mavsdk::Camera::capture_info_callback_t capture_info_callback;
+    mavsdk::Camera::CaptureInfoCallback capture_info_callback;
     EXPECT_CALL(_camera, subscribe_capture_info(_))
         .Times(2)
         .WillOnce(SaveResult(&capture_info_callback, &_callback_saved_promise))
@@ -655,7 +655,7 @@ void CameraServiceImplTest::checkSendsCaptureInfo(
 {
     std::promise<void> subscription_promise;
     auto subscription_future = subscription_promise.get_future();
-    mavsdk::Camera::capture_info_callback_t capture_info_callback;
+    mavsdk::Camera::CaptureInfoCallback capture_info_callback;
     auto context = std::make_shared<grpc::ClientContext>();
     EXPECT_CALL(_camera, subscribe_capture_info(_))
         .Times(2)
@@ -728,7 +728,7 @@ TEST_F(CameraServiceImplTest, registersToStatus)
 {
     const auto expected_camera_status = createStatus(
         false, true, ARBITRARY_CAMERA_STORAGE_STATUS, 3.4f, 12.6f, 16.0f, 0.4f, "100E90HD");
-    mavsdk::Camera::status_callback_t status_callback;
+    mavsdk::Camera::StatusCallback status_callback;
     EXPECT_CALL(_camera, subscribe_status(_))
         .Times(2)
         .WillOnce(SaveResult(&status_callback, &_callback_saved_promise))
@@ -799,7 +799,7 @@ void CameraServiceImplTest::checkSendsStatus(
 {
     std::promise<void> subscription_promise;
     auto subscription_future = subscription_promise.get_future();
-    mavsdk::Camera::status_callback_t camera_status_callback;
+    mavsdk::Camera::StatusCallback camera_status_callback;
     auto context = std::make_shared<grpc::ClientContext>();
     EXPECT_CALL(_camera, subscribe_status(_))
         .Times(2)
@@ -866,7 +866,7 @@ TEST_F(CameraServiceImplTest, registersToCurrentSettings)
         ARBITRARY_SETTING_ID,
         ARBITRARY_SETTING_DESCRIPTION,
         createOption(ARBITRARY_OPTION_ID, ARBITRARY_OPTION_DESCRIPTION)));
-    mavsdk::Camera::current_settings_callback_t current_settings_callback;
+    mavsdk::Camera::CurrentSettingsCallback current_settings_callback;
     EXPECT_CALL(_camera, subscribe_current_settings(_))
         .Times(2)
         .WillOnce(SaveResult(&current_settings_callback, &_callback_saved_promise))
@@ -947,7 +947,7 @@ void CameraServiceImplTest::checkSendsCurrentSettings(
 {
     std::promise<void> subscription_promise;
     auto subscription_future = subscription_promise.get_future();
-    mavsdk::Camera::current_settings_callback_t current_settings_callback;
+    mavsdk::Camera::CurrentSettingsCallback current_settings_callback;
     auto context = std::make_shared<grpc::ClientContext>();
     EXPECT_CALL(_camera, subscribe_current_settings(_))
         .Times(2)
@@ -1025,7 +1025,7 @@ TEST_F(CameraServiceImplTest, registersToPossibleSettings)
     options.push_back(createOption(ARBITRARY_OPTION_ID, ARBITRARY_OPTION_DESCRIPTION));
     possible_settings.push_back(
         createSettingOptions(ARBITRARY_SETTING_ID, ARBITRARY_SETTING_DESCRIPTION, options));
-    mavsdk::Camera::possible_setting_options_callback_t possible_settings_callback;
+    mavsdk::Camera::PossibleSettingOptionsCallback possible_settings_callback;
     EXPECT_CALL(_camera, subscribe_possible_setting_options(_))
         .Times(2)
         .WillOnce(SaveResult(&possible_settings_callback, &_callback_saved_promise))
@@ -1098,7 +1098,7 @@ void CameraServiceImplTest::checkSendsPossibleSettingOptions(
 {
     std::promise<void> subscription_promise;
     auto subscription_future = subscription_promise.get_future();
-    mavsdk::Camera::possible_setting_options_callback_t possible_setting_options_callback;
+    mavsdk::Camera::PossibleSettingOptionsCallback possible_setting_options_callback;
     auto context = std::make_shared<grpc::ClientContext>();
     EXPECT_CALL(_camera, subscribe_possible_setting_options(_))
         .Times(2)
@@ -1210,7 +1210,7 @@ std::unique_ptr<mavsdk::rpc::camera::Setting> CameraServiceImplTest::createRPCSe
 
 TEST_F(CameraServiceImplTest, setsSettingEvenWhenContextAndResponseAreNull)
 {
-    mavsdk::Camera::result_callback_t result_callback;
+    mavsdk::Camera::ResultCallback result_callback;
     mavsdk::rpc::camera::SetSettingRequest request;
     request.set_allocated_setting(createRPCSetting(
                                       ARBITRARY_SETTING_ID,
@@ -1225,7 +1225,7 @@ TEST_F(CameraServiceImplTest, setsSettingEvenWhenContextAndResponseAreNull)
 
 TEST_F(CameraServiceImplTest, setsSettingWithRightParameter)
 {
-    mavsdk::Camera::result_callback_t result_callback;
+    mavsdk::Camera::ResultCallback result_callback;
     mavsdk::rpc::camera::SetSettingRequest request;
     request.set_allocated_setting(createRPCSetting(
                                       ARBITRARY_SETTING_ID,

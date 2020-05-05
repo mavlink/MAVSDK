@@ -17,7 +17,7 @@ Mission::Mission(System& system) : PluginBase(), _impl{new MissionImpl(system)} 
 
 Mission::~Mission() {}
 
-void Mission::upload_mission_async(MissionPlan mission_plan, const result_callback_t callback)
+void Mission::upload_mission_async(MissionPlan mission_plan, const ResultCallback callback)
 {
     _impl->upload_mission_async(mission_plan, callback);
 }
@@ -32,7 +32,7 @@ Mission::Result Mission::cancel_mission_upload() const
     return _impl->cancel_mission_upload();
 }
 
-void Mission::download_mission_async(const download_mission_callback_t callback)
+void Mission::download_mission_async(const DownloadMissionCallback callback)
 {
     _impl->download_mission_async(callback);
 }
@@ -47,7 +47,7 @@ Mission::Result Mission::cancel_mission_download() const
     return _impl->cancel_mission_download();
 }
 
-void Mission::start_mission_async(const result_callback_t callback)
+void Mission::start_mission_async(const ResultCallback callback)
 {
     _impl->start_mission_async(callback);
 }
@@ -57,7 +57,7 @@ Mission::Result Mission::start_mission() const
     return _impl->start_mission();
 }
 
-void Mission::pause_mission_async(const result_callback_t callback)
+void Mission::pause_mission_async(const ResultCallback callback)
 {
     _impl->pause_mission_async(callback);
 }
@@ -67,7 +67,7 @@ Mission::Result Mission::pause_mission() const
     return _impl->pause_mission();
 }
 
-void Mission::clear_mission_async(const result_callback_t callback)
+void Mission::clear_mission_async(const ResultCallback callback)
 {
     _impl->clear_mission_async(callback);
 }
@@ -77,7 +77,7 @@ Mission::Result Mission::clear_mission() const
     return _impl->clear_mission();
 }
 
-void Mission::set_current_mission_item_async(int32_t index, const result_callback_t callback)
+void Mission::set_current_mission_item_async(int32_t index, const ResultCallback callback)
 {
     _impl->set_current_mission_item_async(index, callback);
 }
@@ -92,7 +92,7 @@ std::pair<Mission::Result, bool> Mission::is_mission_finished() const
     return _impl->is_mission_finished();
 }
 
-void Mission::subscribe_mission_progress(mission_progress_callback_t callback)
+void Mission::subscribe_mission_progress(MissionProgressCallback callback)
 {
     _impl->mission_progress_async(callback);
 }
@@ -113,7 +113,7 @@ Mission::Result Mission::set_return_to_launch_after_mission(bool enable) const
 }
 
 void Mission::import_qgroundcontrol_mission_async(
-    std::string qgc_plan_path, const import_qgroundcontrol_mission_callback_t callback)
+    std::string qgc_plan_path, const ImportQgroundcontrolMissionCallback callback)
 {
     _impl->import_qgroundcontrol_mission_async(qgc_plan_path, callback);
 }

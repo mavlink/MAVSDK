@@ -382,7 +382,7 @@ Camera::Result CameraImpl::stop_video()
     return camera_result_from_command_result(_parent->send_command(cmd_stop_video));
 }
 
-void CameraImpl::take_photo_async(const Camera::result_callback_t& callback)
+void CameraImpl::take_photo_async(const Camera::ResultCallback& callback)
 {
     // TODO: check whether we are in photo mode.
 
@@ -396,7 +396,7 @@ void CameraImpl::take_photo_async(const Camera::result_callback_t& callback)
 }
 
 void CameraImpl::start_photo_interval_async(
-    float interval_s, const Camera::result_callback_t& callback)
+    float interval_s, const Camera::ResultCallback& callback)
 {
     if (!interval_valid(interval_s)) {
         const auto temp_callback = callback;
@@ -416,7 +416,7 @@ void CameraImpl::start_photo_interval_async(
         std::bind(&CameraImpl::receive_command_result, this, _1, callback));
 }
 
-void CameraImpl::stop_photo_interval_async(const Camera::result_callback_t& callback)
+void CameraImpl::stop_photo_interval_async(const Camera::ResultCallback& callback)
 {
     auto cmd_stop_photo_interval = make_command_stop_photo();
 
@@ -425,7 +425,7 @@ void CameraImpl::stop_photo_interval_async(const Camera::result_callback_t& call
         std::bind(&CameraImpl::receive_command_result, this, _1, callback));
 }
 
-void CameraImpl::start_video_async(const Camera::result_callback_t& callback)
+void CameraImpl::start_video_async(const Camera::ResultCallback& callback)
 {
     // TODO: check whether video capture is already in progress.
     // TODO: check whether we are in video mode.
@@ -437,7 +437,7 @@ void CameraImpl::start_video_async(const Camera::result_callback_t& callback)
         cmd_start_video, std::bind(&CameraImpl::receive_command_result, this, _1, callback));
 }
 
-void CameraImpl::stop_video_async(const Camera::result_callback_t& callback)
+void CameraImpl::stop_video_async(const Camera::ResultCallback& callback)
 {
     auto cmd_stop_video = make_command_stop_video();
 
@@ -452,7 +452,7 @@ Camera::Information CameraImpl::information() const
     return _information.data;
 }
 
-void CameraImpl::information_async(const Camera::information_callback_t& callback)
+void CameraImpl::information_async(const Camera::InformationCallback& callback)
 {
     std::lock_guard<std::mutex> lock(_information.mutex);
     _information.subscription_callback = callback;
@@ -513,7 +513,7 @@ Camera::VideoStreamInfo CameraImpl::video_stream_info()
     return _video_stream_info.data;
 }
 
-void CameraImpl::video_stream_info_async(const Camera::video_stream_info_callback_t callback)
+void CameraImpl::video_stream_info_async(const Camera::VideoStreamInfoCallback callback)
 {
     std::lock_guard<std::mutex> lock(_video_stream_info.mutex);
 
@@ -595,7 +595,7 @@ float CameraImpl::to_mavlink_camera_mode(const Camera::Mode mode) const
     }
 }
 
-void CameraImpl::set_mode_async(const Camera::Mode mode, const Camera::result_callback_t& callback)
+void CameraImpl::set_mode_async(const Camera::Mode mode, const Camera::ResultCallback& callback)
 {
     const auto mavlink_mode = to_mavlink_camera_mode(mode);
     auto cmd_set_camera_mode = make_command_set_camera_mode(mavlink_mode);
@@ -614,7 +614,7 @@ Camera::Mode CameraImpl::mode()
     return _mode.data;
 }
 
-void CameraImpl::mode_async(const Camera::mode_callback_t callback)
+void CameraImpl::mode_async(const Camera::ModeCallback callback)
 {
     {
         std::lock_guard<std::mutex> lock(_mode.mutex);
@@ -648,7 +648,7 @@ void CameraImpl::request_status()
     _parent->send_command_async(make_command_request_storage_info(), nullptr);
 }
 
-void CameraImpl::status_async(const Camera::status_callback_t callback)
+void CameraImpl::status_async(const Camera::StatusCallback callback)
 {
     std::lock_guard<std::mutex> lock(_status.mutex);
 
@@ -667,7 +667,7 @@ Camera::Status CameraImpl::status()
     return _status.data;
 }
 
-void CameraImpl::capture_info_async(Camera::capture_info_callback_t callback)
+void CameraImpl::capture_info_async(Camera::CaptureInfoCallback callback)
 {
     std::lock_guard<std::mutex> lock(_capture_info.mutex);
     _capture_info.callback = callback;
@@ -928,7 +928,7 @@ void CameraImpl::check_status()
 }
 
 void CameraImpl::receive_command_result(
-    MAVLinkCommands::Result command_result, const Camera::result_callback_t& callback)
+    MAVLinkCommands::Result command_result, const Camera::ResultCallback& callback)
 {
     Camera::Result camera_result = camera_result_from_command_result(command_result);
 
@@ -939,7 +939,7 @@ void CameraImpl::receive_command_result(
 
 void CameraImpl::receive_set_mode_command_result(
     const MAVLinkCommands::Result command_result,
-    const Camera::result_callback_t callback,
+    const Camera::ResultCallback callback,
     const Camera::Mode mode)
 {
     Camera::Result camera_result = camera_result_from_command_result(command_result);
@@ -1063,8 +1063,7 @@ Camera::Result CameraImpl::set_setting(Camera::Setting setting)
     return ret.get();
 }
 
-void CameraImpl::set_setting_async(
-    Camera::Setting setting, const Camera::result_callback_t callback)
+void CameraImpl::set_setting_async(Camera::Setting setting, const Camera::ResultCallback callback)
 {
     set_option_async(setting.setting_id, setting.option, callback);
 }
@@ -1072,7 +1071,7 @@ void CameraImpl::set_setting_async(
 void CameraImpl::set_option_async(
     const std::string& setting_id,
     const Camera::Option& option,
-    const Camera::result_callback_t& callback)
+    const Camera::ResultCallback& callback)
 {
     if (!_camera_definition) {
         LogWarn() << "Error: no camera defnition available yet.";
@@ -1192,7 +1191,7 @@ void CameraImpl::set_option_async(
 }
 
 void CameraImpl::get_setting_async(
-    Camera::Setting setting, const Camera::get_setting_callback_t callback)
+    Camera::Setting setting, const Camera::GetSettingCallback callback)
 {
     get_option_async(
         setting.setting_id,
@@ -1283,7 +1282,7 @@ void CameraImpl::get_option_async(
     }
 }
 
-void CameraImpl::current_settings_async(const Camera::current_settings_callback_t& callback)
+void CameraImpl::current_settings_async(const Camera::CurrentSettingsCallback& callback)
 {
     {
         std::lock_guard<std::mutex> lock(_subscribe_current_settings.mutex);
@@ -1293,7 +1292,7 @@ void CameraImpl::current_settings_async(const Camera::current_settings_callback_
 }
 
 void CameraImpl::possible_setting_options_async(
-    const Camera::possible_setting_options_callback_t& callback)
+    const Camera::PossibleSettingOptionsCallback& callback)
 {
     {
         std::lock_guard<std::mutex> lock(_subscribe_possible_setting_options.mutex);
@@ -1506,7 +1505,7 @@ Camera::Result CameraImpl::format_storage()
     return ret.get();
 }
 
-void CameraImpl::format_storage_async(Camera::result_callback_t callback)
+void CameraImpl::format_storage_async(Camera::ResultCallback callback)
 {
     MAVLinkCommands::CommandLong cmd_format{};
 

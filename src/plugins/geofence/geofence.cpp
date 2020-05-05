@@ -16,8 +16,7 @@ Geofence::Geofence(System& system) : PluginBase(), _impl{new GeofenceImpl(system
 
 Geofence::~Geofence() {}
 
-void Geofence::upload_geofence_async(
-    std::vector<Polygon> polygons, const result_callback_t callback)
+void Geofence::upload_geofence_async(std::vector<Polygon> polygons, const ResultCallback callback)
 {
     _impl->upload_geofence_async(polygons, callback);
 }

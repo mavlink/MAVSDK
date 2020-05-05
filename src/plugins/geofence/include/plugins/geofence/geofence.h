@@ -125,7 +125,7 @@ public:
     /**
      * @brief Callback type for asynchronous Geofence calls.
      */
-    typedef std::function<void(Result)> result_callback_t;
+    typedef std::function<void(Result)> ResultCallback;
 
     /**
      * @brief Upload a geofence.
@@ -135,7 +135,7 @@ public:
      *
      * This function is non-blocking. See 'upload_geofence' for the blocking counterpart.
      */
-    void upload_geofence_async(std::vector<Polygon> polygons, const result_callback_t callback);
+    void upload_geofence_async(std::vector<Polygon> polygons, const ResultCallback callback);
 
     /**
      * @brief Upload a geofence.

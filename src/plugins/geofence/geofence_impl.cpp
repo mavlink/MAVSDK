@@ -33,7 +33,7 @@ Geofence::Result GeofenceImpl::upload_geofence(const std::vector<Geofence::Polyg
 }
 
 void GeofenceImpl::upload_geofence_async(
-    const std::vector<Geofence::Polygon>& polygons, const Geofence::result_callback_t& callback)
+    const std::vector<Geofence::Polygon>& polygons, const Geofence::ResultCallback& callback)
 {
     // We can just create these items on the stack because they get copied
     // later in the MAVLinkMissionTransfer constructor.

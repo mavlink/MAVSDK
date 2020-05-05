@@ -29,50 +29,49 @@ public:
     Camera::Result start_video();
     Camera::Result stop_video();
 
-    void take_photo_async(const Camera::result_callback_t& callback);
-    void start_photo_interval_async(float interval_s, const Camera::result_callback_t& callback);
-    void stop_photo_interval_async(const Camera::result_callback_t& callback);
-    void start_video_async(const Camera::result_callback_t& callback);
-    void stop_video_async(const Camera::result_callback_t& callback);
+    void take_photo_async(const Camera::ResultCallback& callback);
+    void start_photo_interval_async(float interval_s, const Camera::ResultCallback& callback);
+    void stop_photo_interval_async(const Camera::ResultCallback& callback);
+    void start_video_async(const Camera::ResultCallback& callback);
+    void stop_video_async(const Camera::ResultCallback& callback);
 
     Camera::Information information() const;
-    void information_async(const Camera::information_callback_t& callback);
+    void information_async(const Camera::InformationCallback& callback);
 
     std::pair<Camera::Result, Camera::VideoStreamInfo> get_video_stream_info();
 
     Camera::VideoStreamInfo video_stream_info();
-    void video_stream_info_async(Camera::video_stream_info_callback_t callback);
+    void video_stream_info_async(Camera::VideoStreamInfoCallback callback);
 
     Camera::Result start_video_streaming();
     Camera::Result stop_video_streaming();
 
     Camera::Result set_mode(const Camera::Mode mode);
-    void set_mode_async(const Camera::Mode mode, const Camera::result_callback_t& callback);
+    void set_mode_async(const Camera::Mode mode, const Camera::ResultCallback& callback);
 
     Camera::Mode mode();
-    void mode_async(const Camera::mode_callback_t callback);
+    void mode_async(const Camera::ModeCallback callback);
 
-    void capture_info_async(Camera::capture_info_callback_t callback);
+    void capture_info_async(Camera::CaptureInfoCallback callback);
 
     Camera::Status status();
-    void status_async(const Camera::status_callback_t callback);
+    void status_async(const Camera::StatusCallback callback);
 
     Camera::Result set_setting(Camera::Setting setting);
-    void set_setting_async(Camera::Setting setting, const Camera::result_callback_t callback);
+    void set_setting_async(Camera::Setting setting, const Camera::ResultCallback callback);
 
-    void get_setting_async(Camera::Setting setting, const Camera::get_setting_callback_t callback);
+    void get_setting_async(Camera::Setting setting, const Camera::GetSettingCallback callback);
     std::pair<Camera::Result, Camera::Setting> get_setting(Camera::Setting setting);
 
     std::vector<Camera::SettingOptions> possible_setting_options();
 
     bool is_setting_range(const std::string& setting_id);
 
-    void current_settings_async(const Camera::current_settings_callback_t& callback);
-    void
-    possible_setting_options_async(const Camera::possible_setting_options_callback_t& callback);
+    void current_settings_async(const Camera::CurrentSettingsCallback& callback);
+    void possible_setting_options_async(const Camera::PossibleSettingOptionsCallback& callback);
 
     Camera::Result format_storage();
-    void format_storage_async(Camera::result_callback_t callback);
+    void format_storage_async(Camera::ResultCallback callback);
 
     CameraImpl(const CameraImpl&) = delete;
     CameraImpl& operator=(const CameraImpl&) = delete;
@@ -84,7 +83,7 @@ private:
     void set_option_async(
         const std::string& setting_id,
         const Camera::Option& option,
-        const Camera::result_callback_t& callback);
+        const Camera::ResultCallback& callback);
 
     Camera::Result get_option(const std::string& setting_id, Camera::Option& option);
     void get_option_async(
@@ -101,14 +100,14 @@ private:
 
     void receive_set_mode_command_result(
         const MAVLinkCommands::Result command_result,
-        const Camera::result_callback_t callback,
+        const Camera::ResultCallback callback,
         const Camera::Mode mode);
 
     static Camera::Result
     camera_result_from_command_result(const MAVLinkCommands::Result command_result);
 
     void receive_command_result(
-        MAVLinkCommands::Result command_result, const Camera::result_callback_t& callback);
+        MAVLinkCommands::Result command_result, const Camera::ResultCallback& callback);
 
     static bool interval_valid(float interval_s);
 
@@ -177,7 +176,7 @@ private:
         bool received_camera_capture_status{false};
         bool received_storage_information{false};
 
-        Camera::status_callback_t subscription_callback{nullptr};
+        Camera::StatusCallback subscription_callback{nullptr};
         void* call_every_cookie{nullptr};
     } _status{};
 
@@ -186,7 +185,7 @@ private:
     struct {
         std::mutex mutex{};
         Camera::Mode data{};
-        Camera::mode_callback_t subscription_callback{nullptr};
+        Camera::ModeCallback subscription_callback{nullptr};
         void* call_every_cookie{nullptr};
     } _mode{};
 
@@ -197,7 +196,7 @@ private:
 
     struct {
         std::mutex mutex{};
-        Camera::capture_info_callback_t callback{nullptr};
+        Camera::CaptureInfoCallback callback{nullptr};
     } _capture_info{};
 
     struct {
@@ -205,23 +204,23 @@ private:
         Camera::VideoStreamInfo data{};
         bool available{false};
         void* call_every_cookie{nullptr};
-        Camera::video_stream_info_callback_t subscription_callback{nullptr};
+        Camera::VideoStreamInfoCallback subscription_callback{nullptr};
     } _video_stream_info{};
 
     struct {
         mutable std::mutex mutex{};
         Camera::Information data{};
-        Camera::information_callback_t subscription_callback{nullptr};
+        Camera::InformationCallback subscription_callback{nullptr};
     } _information{};
 
     struct {
         std::mutex mutex{};
-        Camera::current_settings_callback_t callback{nullptr};
+        Camera::CurrentSettingsCallback callback{nullptr};
     } _subscribe_current_settings{};
 
     struct {
         std::mutex mutex{};
-        Camera::possible_setting_options_callback_t callback{nullptr};
+        Camera::PossibleSettingOptionsCallback callback{nullptr};
     } _subscribe_possible_setting_options{};
 };
 

@@ -320,7 +320,7 @@ public:
     /**
      * @brief Callback type for asynchronous Mocap calls.
      */
-    typedef std::function<void(Result)> result_callback_t;
+    typedef std::function<void(Result)> ResultCallback;
 
     /**
      * @brief Send Global position/attitude estimate from a vision source.

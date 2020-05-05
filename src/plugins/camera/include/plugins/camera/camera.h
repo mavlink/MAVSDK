@@ -413,14 +413,14 @@ public:
     /**
      * @brief Callback type for asynchronous Camera calls.
      */
-    typedef std::function<void(Result)> result_callback_t;
+    typedef std::function<void(Result)> ResultCallback;
 
     /**
      * @brief Take one photo.
      *
      * This function is non-blocking. See 'take_photo' for the blocking counterpart.
      */
-    void take_photo_async(const result_callback_t callback);
+    void take_photo_async(const ResultCallback callback);
 
     /**
      * @brief Take one photo.
@@ -436,7 +436,7 @@ public:
      *
      * This function is non-blocking. See 'start_photo_interval' for the blocking counterpart.
      */
-    void start_photo_interval_async(float interval_s, const result_callback_t callback);
+    void start_photo_interval_async(float interval_s, const ResultCallback callback);
 
     /**
      * @brief Start photo timelapse with a given interval.
@@ -452,7 +452,7 @@ public:
      *
      * This function is non-blocking. See 'stop_photo_interval' for the blocking counterpart.
      */
-    void stop_photo_interval_async(const result_callback_t callback);
+    void stop_photo_interval_async(const ResultCallback callback);
 
     /**
      * @brief Stop a running photo timelapse.
@@ -468,7 +468,7 @@ public:
      *
      * This function is non-blocking. See 'start_video' for the blocking counterpart.
      */
-    void start_video_async(const result_callback_t callback);
+    void start_video_async(const ResultCallback callback);
 
     /**
      * @brief Start a video recording.
@@ -484,7 +484,7 @@ public:
      *
      * This function is non-blocking. See 'stop_video' for the blocking counterpart.
      */
-    void stop_video_async(const result_callback_t callback);
+    void stop_video_async(const ResultCallback callback);
 
     /**
      * @brief Stop a running video recording.
@@ -518,7 +518,7 @@ public:
      *
      * This function is non-blocking. See 'set_mode' for the blocking counterpart.
      */
-    void set_mode_async(Mode mode, const result_callback_t callback);
+    void set_mode_async(Mode mode, const ResultCallback callback);
 
     /**
      * @brief Set camera mode.
@@ -533,12 +533,12 @@ public:
      * @brief Callback type for subscribe_mode.
      */
 
-    typedef std::function<void(Mode)> mode_callback_t;
+    typedef std::function<void(Mode)> ModeCallback;
 
     /**
      * @brief Subscribe to camera mode updates.
      */
-    void subscribe_mode(mode_callback_t callback);
+    void subscribe_mode(ModeCallback callback);
 
     /**
      * @brief Poll for 'Mode' (blocking).
@@ -551,12 +551,12 @@ public:
      * @brief Callback type for subscribe_information.
      */
 
-    typedef std::function<void(Information)> information_callback_t;
+    typedef std::function<void(Information)> InformationCallback;
 
     /**
      * @brief Subscribe to camera information updates.
      */
-    void subscribe_information(information_callback_t callback);
+    void subscribe_information(InformationCallback callback);
 
     /**
      * @brief Poll for 'Information' (blocking).
@@ -569,12 +569,12 @@ public:
      * @brief Callback type for subscribe_video_stream_info.
      */
 
-    typedef std::function<void(VideoStreamInfo)> video_stream_info_callback_t;
+    typedef std::function<void(VideoStreamInfo)> VideoStreamInfoCallback;
 
     /**
      * @brief Subscribe to video stream info updates.
      */
-    void subscribe_video_stream_info(video_stream_info_callback_t callback);
+    void subscribe_video_stream_info(VideoStreamInfoCallback callback);
 
     /**
      * @brief Poll for 'VideoStreamInfo' (blocking).
@@ -587,23 +587,23 @@ public:
      * @brief Callback type for subscribe_capture_info.
      */
 
-    typedef std::function<void(CaptureInfo)> capture_info_callback_t;
+    typedef std::function<void(CaptureInfo)> CaptureInfoCallback;
 
     /**
      * @brief Subscribe to capture info updates.
      */
-    void subscribe_capture_info(capture_info_callback_t callback);
+    void subscribe_capture_info(CaptureInfoCallback callback);
 
     /**
      * @brief Callback type for subscribe_status.
      */
 
-    typedef std::function<void(Status)> status_callback_t;
+    typedef std::function<void(Status)> StatusCallback;
 
     /**
      * @brief Subscribe to camera status updates.
      */
-    void subscribe_status(status_callback_t callback);
+    void subscribe_status(StatusCallback callback);
 
     /**
      * @brief Poll for 'Status' (blocking).
@@ -616,23 +616,23 @@ public:
      * @brief Callback type for subscribe_current_settings.
      */
 
-    typedef std::function<void(std::vector<Setting>)> current_settings_callback_t;
+    typedef std::function<void(std::vector<Setting>)> CurrentSettingsCallback;
 
     /**
      * @brief Get the list of current camera settings.
      */
-    void subscribe_current_settings(current_settings_callback_t callback);
+    void subscribe_current_settings(CurrentSettingsCallback callback);
 
     /**
      * @brief Callback type for subscribe_possible_setting_options.
      */
 
-    typedef std::function<void(std::vector<SettingOptions>)> possible_setting_options_callback_t;
+    typedef std::function<void(std::vector<SettingOptions>)> PossibleSettingOptionsCallback;
 
     /**
      * @brief Get the list of settings that can be changed.
      */
-    void subscribe_possible_setting_options(possible_setting_options_callback_t callback);
+    void subscribe_possible_setting_options(PossibleSettingOptionsCallback callback);
 
     /**
      * @brief Poll for 'std::vector<SettingOptions>' (blocking).
@@ -648,7 +648,7 @@ public:
      *
      * This function is non-blocking. See 'set_setting' for the blocking counterpart.
      */
-    void set_setting_async(Setting setting, const result_callback_t callback);
+    void set_setting_async(Setting setting, const ResultCallback callback);
 
     /**
      * @brief Set a setting to some value.
@@ -664,7 +664,7 @@ public:
     /**
      * @brief Callback type for get_setting_async.
      */
-    typedef std::function<void(Result, Setting)> get_setting_callback_t;
+    typedef std::function<void(Result, Setting)> GetSettingCallback;
 
     /**
      * @brief Get a setting.
@@ -673,7 +673,7 @@ public:
      *
      * This function is non-blocking. See 'get_setting' for the blocking counterpart.
      */
-    void get_setting_async(Setting setting, const get_setting_callback_t callback);
+    void get_setting_async(Setting setting, const GetSettingCallback callback);
 
     /**
      * @brief Get a setting.
@@ -693,7 +693,7 @@ public:
      *
      * This function is non-blocking. See 'format_storage' for the blocking counterpart.
      */
-    void format_storage_async(const result_callback_t callback);
+    void format_storage_async(const ResultCallback callback);
 
     /**
      * @brief Format storage (e.g. SD card) in camera.
