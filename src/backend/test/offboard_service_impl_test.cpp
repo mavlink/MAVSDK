@@ -46,8 +46,7 @@ std::string stopAndGetTranslatedResult(mavsdk::Offboard::Result stop_result);
 
 class OffboardServiceImplTest : public ::testing::TestWithParam<InputPair> {
 protected:
-    void checkReturnsCorrectIsActiveStatus(
-        const std::pair<mavsdk::Offboard::Result, bool> expected_is_active_status);
+    void checkReturnsCorrectIsActiveStatus(const bool expected_is_active_status);
 
     std::unique_ptr<mavsdk::rpc::offboard::Attitude> createArbitraryRPCAttitude() const;
     std::unique_ptr<mavsdk::rpc::offboard::AttitudeRate> createArbitraryRPCAttitudeRate() const;
@@ -125,12 +124,12 @@ TEST_F(OffboardServiceImplTest, isActiveCallsGetter)
 
 TEST_F(OffboardServiceImplTest, isActiveGetsCorrectValue)
 {
-    checkReturnsCorrectIsActiveStatus(std::make_pair<>(mavsdk::Offboard::Result::Success, false));
-    checkReturnsCorrectIsActiveStatus(std::make_pair<>(mavsdk::Offboard::Result::Success, true));
+    checkReturnsCorrectIsActiveStatus(false);
+    checkReturnsCorrectIsActiveStatus(true);
 }
 
 void OffboardServiceImplTest::checkReturnsCorrectIsActiveStatus(
-    const std::pair<mavsdk::Offboard::Result, bool> expected_is_active_status)
+    const bool expected_is_active_status)
 {
     MockOffboard offboard;
     OffboardServiceImpl offboardService(offboard);
@@ -138,7 +137,7 @@ void OffboardServiceImplTest::checkReturnsCorrectIsActiveStatus(
     mavsdk::rpc::offboard::IsActiveResponse response;
 
     offboardService.IsActive(nullptr, nullptr, &response);
-    EXPECT_EQ(expected_is_active_status.second, response.is_active());
+    EXPECT_EQ(expected_is_active_status, response.is_active());
 }
 
 TEST_F(OffboardServiceImplTest, isActiveDoesNotCrashWithNullResponse)

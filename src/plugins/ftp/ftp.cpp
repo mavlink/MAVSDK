@@ -76,7 +76,7 @@ Ftp::Result Ftp::set_target_component_id(uint32_t component_id) const
     return _impl->set_target_component_id(component_id);
 }
 
-std::pair<Ftp::Result, uint32_t> Ftp::get_our_component_id() const
+uint32_t Ftp::get_our_component_id() const
 {
     return _impl->get_our_component_id();
 }

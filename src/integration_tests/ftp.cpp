@@ -315,7 +315,7 @@ TEST(FtpTest, TestServer)
 
     auto ftp_server = std::make_shared<Ftp>(system_cc);
     ftp_server->set_root_directory(".");
-    uint8_t server_comp_id = ftp_server->get_our_component_id().second;
+    uint8_t server_comp_id = ftp_server->get_our_component_id();
 
     auto ftp_client = std::make_shared<Ftp>(system_gcs);
     ftp_client->set_target_component_id(server_comp_id);

@@ -63,10 +63,7 @@ public:
         _target_component_id_set = true;
         return Ftp::Result::Success;
     }
-    std::pair<Ftp::Result, uint8_t> get_our_component_id()
-    {
-        return std::make_pair<>(Ftp::Result::Success, _parent->get_own_component_id());
-    };
+    uint8_t get_our_component_id() { return _parent->get_own_component_id(); };
 
 private:
     /// @brief Possible server results returned for requests.

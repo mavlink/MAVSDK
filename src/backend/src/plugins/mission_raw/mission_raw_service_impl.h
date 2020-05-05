@@ -229,12 +229,12 @@ public:
         const rpc::mission_raw::DownloadMissionRequest* /* request */,
         rpc::mission_raw::DownloadMissionResponse* response) override
     {
-        auto result_pair = _mission_raw.download_mission();
+        auto result = _mission_raw.download_mission();
 
         if (response != nullptr) {
-            fillResponseWithResult(response, result_pair.first);
+            fillResponseWithResult(response, result.first);
             response->set_allocated_mission_items(
-                translateToRpcMissionItem(result_pair.second).release());
+                translateToRpcMissionItem(result.second).release());
         }
 
         return grpc::Status::OK;

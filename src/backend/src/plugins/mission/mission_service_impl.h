@@ -292,12 +292,12 @@ public:
         const rpc::mission::DownloadMissionRequest* /* request */,
         rpc::mission::DownloadMissionResponse* response) override
     {
-        auto result_pair = _mission.download_mission();
+        auto result = _mission.download_mission();
 
         if (response != nullptr) {
-            fillResponseWithResult(response, result_pair.first);
+            fillResponseWithResult(response, result.first);
             response->set_allocated_mission_plan(
-                translateToRpcMissionPlan(result_pair.second).release());
+                translateToRpcMissionPlan(result.second).release());
         }
 
         return grpc::Status::OK;
@@ -383,11 +383,11 @@ public:
         const rpc::mission::IsMissionFinishedRequest* /* request */,
         rpc::mission::IsMissionFinishedResponse* response) override
     {
-        auto result_pair = _mission.is_mission_finished();
+        auto result = _mission.is_mission_finished();
 
         if (response != nullptr) {
-            fillResponseWithResult(response, result_pair.first);
-            response->set_is_finished(result_pair.second);
+            fillResponseWithResult(response, result.first);
+            response->set_is_finished(result.second);
         }
 
         return grpc::Status::OK;
@@ -432,11 +432,11 @@ public:
         const rpc::mission::GetReturnToLaunchAfterMissionRequest* /* request */,
         rpc::mission::GetReturnToLaunchAfterMissionResponse* response) override
     {
-        auto result_pair = _mission.get_return_to_launch_after_mission();
+        auto result = _mission.get_return_to_launch_after_mission();
 
         if (response != nullptr) {
-            fillResponseWithResult(response, result_pair.first);
-            response->set_enable(result_pair.second);
+            fillResponseWithResult(response, result.first);
+            response->set_enable(result.second);
         }
 
         return grpc::Status::OK;
@@ -471,12 +471,12 @@ public:
             return grpc::Status::OK;
         }
 
-        auto result_pair = _mission.import_qgroundcontrol_mission(request->qgc_plan_path());
+        auto result = _mission.import_qgroundcontrol_mission(request->qgc_plan_path());
 
         if (response != nullptr) {
-            fillResponseWithResult(response, result_pair.first);
+            fillResponseWithResult(response, result.first);
             response->set_allocated_mission_plan(
-                translateToRpcMissionPlan(result_pair.second).release());
+                translateToRpcMissionPlan(result.second).release());
         }
 
         return grpc::Status::OK;

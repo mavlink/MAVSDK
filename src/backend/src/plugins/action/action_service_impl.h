@@ -269,11 +269,11 @@ public:
         const rpc::action::GetTakeoffAltitudeRequest* /* request */,
         rpc::action::GetTakeoffAltitudeResponse* response) override
     {
-        auto result_pair = _action.get_takeoff_altitude();
+        auto result = _action.get_takeoff_altitude();
 
         if (response != nullptr) {
-            fillResponseWithResult(response, result_pair.first);
-            response->set_altitude(result_pair.second);
+            fillResponseWithResult(response, result.first);
+            response->set_altitude(result.second);
         }
 
         return grpc::Status::OK;
@@ -303,11 +303,11 @@ public:
         const rpc::action::GetMaximumSpeedRequest* /* request */,
         rpc::action::GetMaximumSpeedResponse* response) override
     {
-        auto result_pair = _action.get_maximum_speed();
+        auto result = _action.get_maximum_speed();
 
         if (response != nullptr) {
-            fillResponseWithResult(response, result_pair.first);
-            response->set_speed(result_pair.second);
+            fillResponseWithResult(response, result.first);
+            response->set_speed(result.second);
         }
 
         return grpc::Status::OK;
@@ -337,11 +337,11 @@ public:
         const rpc::action::GetReturnToLaunchAltitudeRequest* /* request */,
         rpc::action::GetReturnToLaunchAltitudeResponse* response) override
     {
-        auto result_pair = _action.get_return_to_launch_altitude();
+        auto result = _action.get_return_to_launch_altitude();
 
         if (response != nullptr) {
-            fillResponseWithResult(response, result_pair.first);
-            response->set_relative_altitude_m(result_pair.second);
+            fillResponseWithResult(response, result.first);
+            response->set_relative_altitude_m(result.second);
         }
 
         return grpc::Status::OK;

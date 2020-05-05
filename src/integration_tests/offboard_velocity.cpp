@@ -71,14 +71,14 @@ TEST_F(SitlTest, OffboardVelocityNED)
     }
 
     // Let's make sure that offboard knows it is active.
-    EXPECT_TRUE(offboard->is_active().second);
+    EXPECT_TRUE(offboard->is_active());
 
     // Then randomly, we just interfere with a mission command to pause it.
     mission->pause_mission_async(nullptr);
     // This needs some time to propagate.
     std::this_thread::sleep_for(std::chrono::seconds(2));
     // Now it should be inactive.
-    EXPECT_FALSE(offboard->is_active().second);
+    EXPECT_FALSE(offboard->is_active());
 
     // So we start it yet again.
     offboard_result = offboard->start();
@@ -94,7 +94,7 @@ TEST_F(SitlTest, OffboardVelocityNED)
     offboard_result = offboard->start();
     // Now it should work.
     EXPECT_EQ(offboard_result, Offboard::Result::Success);
-    EXPECT_TRUE(offboard->is_active().second);
+    EXPECT_TRUE(offboard->is_active());
 
     // Ok let's carry on.
     offboard->set_velocity_ned(yaw_left);

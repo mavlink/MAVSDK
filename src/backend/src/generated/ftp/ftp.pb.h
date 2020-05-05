@@ -3505,25 +3505,9 @@ class GetOurComponentIdResponse :
   // accessors -------------------------------------------------------
 
   enum : int {
-    kFtpResultFieldNumber = 1,
-    kComponentIdFieldNumber = 2,
+    kComponentIdFieldNumber = 1,
   };
-  // .mavsdk.rpc.ftp.FtpResult ftp_result = 1;
-  bool has_ftp_result() const;
-  private:
-  bool _internal_has_ftp_result() const;
-  public:
-  void clear_ftp_result();
-  const ::mavsdk::rpc::ftp::FtpResult& ftp_result() const;
-  ::mavsdk::rpc::ftp::FtpResult* release_ftp_result();
-  ::mavsdk::rpc::ftp::FtpResult* mutable_ftp_result();
-  void set_allocated_ftp_result(::mavsdk::rpc::ftp::FtpResult* ftp_result);
-  private:
-  const ::mavsdk::rpc::ftp::FtpResult& _internal_ftp_result() const;
-  ::mavsdk::rpc::ftp::FtpResult* _internal_mutable_ftp_result();
-  public:
-
-  // uint32 component_id = 2;
+  // uint32 component_id = 1;
   void clear_component_id();
   ::PROTOBUF_NAMESPACE_ID::uint32 component_id() const;
   void set_component_id(::PROTOBUF_NAMESPACE_ID::uint32 value);
@@ -3537,7 +3521,6 @@ class GetOurComponentIdResponse :
   class _Internal;
 
   ::PROTOBUF_NAMESPACE_ID::internal::InternalMetadataWithArena _internal_metadata_;
-  ::mavsdk::rpc::ftp::FtpResult* ftp_result_;
   ::PROTOBUF_NAMESPACE_ID::uint32 component_id_;
   mutable ::PROTOBUF_NAMESPACE_ID::internal::CachedSize _cached_size_;
   friend struct ::TableStruct_ftp_2fftp_2eproto;
@@ -5654,67 +5637,7 @@ inline void SetTargetComponentIdResponse::set_allocated_ftp_result(::mavsdk::rpc
 
 // GetOurComponentIdResponse
 
-// .mavsdk.rpc.ftp.FtpResult ftp_result = 1;
-inline bool GetOurComponentIdResponse::_internal_has_ftp_result() const {
-  return this != internal_default_instance() && ftp_result_ != nullptr;
-}
-inline bool GetOurComponentIdResponse::has_ftp_result() const {
-  return _internal_has_ftp_result();
-}
-inline void GetOurComponentIdResponse::clear_ftp_result() {
-  if (GetArenaNoVirtual() == nullptr && ftp_result_ != nullptr) {
-    delete ftp_result_;
-  }
-  ftp_result_ = nullptr;
-}
-inline const ::mavsdk::rpc::ftp::FtpResult& GetOurComponentIdResponse::_internal_ftp_result() const {
-  const ::mavsdk::rpc::ftp::FtpResult* p = ftp_result_;
-  return p != nullptr ? *p : *reinterpret_cast<const ::mavsdk::rpc::ftp::FtpResult*>(
-      &::mavsdk::rpc::ftp::_FtpResult_default_instance_);
-}
-inline const ::mavsdk::rpc::ftp::FtpResult& GetOurComponentIdResponse::ftp_result() const {
-  // @@protoc_insertion_point(field_get:mavsdk.rpc.ftp.GetOurComponentIdResponse.ftp_result)
-  return _internal_ftp_result();
-}
-inline ::mavsdk::rpc::ftp::FtpResult* GetOurComponentIdResponse::release_ftp_result() {
-  // @@protoc_insertion_point(field_release:mavsdk.rpc.ftp.GetOurComponentIdResponse.ftp_result)
-  
-  ::mavsdk::rpc::ftp::FtpResult* temp = ftp_result_;
-  ftp_result_ = nullptr;
-  return temp;
-}
-inline ::mavsdk::rpc::ftp::FtpResult* GetOurComponentIdResponse::_internal_mutable_ftp_result() {
-  
-  if (ftp_result_ == nullptr) {
-    auto* p = CreateMaybeMessage<::mavsdk::rpc::ftp::FtpResult>(GetArenaNoVirtual());
-    ftp_result_ = p;
-  }
-  return ftp_result_;
-}
-inline ::mavsdk::rpc::ftp::FtpResult* GetOurComponentIdResponse::mutable_ftp_result() {
-  // @@protoc_insertion_point(field_mutable:mavsdk.rpc.ftp.GetOurComponentIdResponse.ftp_result)
-  return _internal_mutable_ftp_result();
-}
-inline void GetOurComponentIdResponse::set_allocated_ftp_result(::mavsdk::rpc::ftp::FtpResult* ftp_result) {
-  ::PROTOBUF_NAMESPACE_ID::Arena* message_arena = GetArenaNoVirtual();
-  if (message_arena == nullptr) {
-    delete ftp_result_;
-  }
-  if (ftp_result) {
-    ::PROTOBUF_NAMESPACE_ID::Arena* submessage_arena = nullptr;
-    if (message_arena != submessage_arena) {
-      ftp_result = ::PROTOBUF_NAMESPACE_ID::internal::GetOwnedMessage(
-          message_arena, ftp_result, submessage_arena);
-    }
-    
-  } else {
-    
-  }
-  ftp_result_ = ftp_result;
-  // @@protoc_insertion_point(field_set_allocated:mavsdk.rpc.ftp.GetOurComponentIdResponse.ftp_result)
-}
-
-// uint32 component_id = 2;
+// uint32 component_id = 1;
 inline void GetOurComponentIdResponse::clear_component_id() {
   component_id_ = 0u;
 }

@@ -924,25 +924,9 @@ class IsActiveResponse :
   // accessors -------------------------------------------------------
 
   enum : int {
-    kOffboardResultFieldNumber = 1,
-    kIsActiveFieldNumber = 2,
+    kIsActiveFieldNumber = 1,
   };
-  // .mavsdk.rpc.offboard.OffboardResult offboard_result = 1;
-  bool has_offboard_result() const;
-  private:
-  bool _internal_has_offboard_result() const;
-  public:
-  void clear_offboard_result();
-  const ::mavsdk::rpc::offboard::OffboardResult& offboard_result() const;
-  ::mavsdk::rpc::offboard::OffboardResult* release_offboard_result();
-  ::mavsdk::rpc::offboard::OffboardResult* mutable_offboard_result();
-  void set_allocated_offboard_result(::mavsdk::rpc::offboard::OffboardResult* offboard_result);
-  private:
-  const ::mavsdk::rpc::offboard::OffboardResult& _internal_offboard_result() const;
-  ::mavsdk::rpc::offboard::OffboardResult* _internal_mutable_offboard_result();
-  public:
-
-  // bool is_active = 2;
+  // bool is_active = 1;
   void clear_is_active();
   bool is_active() const;
   void set_is_active(bool value);
@@ -956,7 +940,6 @@ class IsActiveResponse :
   class _Internal;
 
   ::PROTOBUF_NAMESPACE_ID::internal::InternalMetadataWithArena _internal_metadata_;
-  ::mavsdk::rpc::offboard::OffboardResult* offboard_result_;
   bool is_active_;
   mutable ::PROTOBUF_NAMESPACE_ID::internal::CachedSize _cached_size_;
   friend struct ::TableStruct_offboard_2foffboard_2eproto;
@@ -3992,67 +3975,7 @@ inline void StopResponse::set_allocated_offboard_result(::mavsdk::rpc::offboard:
 
 // IsActiveResponse
 
-// .mavsdk.rpc.offboard.OffboardResult offboard_result = 1;
-inline bool IsActiveResponse::_internal_has_offboard_result() const {
-  return this != internal_default_instance() && offboard_result_ != nullptr;
-}
-inline bool IsActiveResponse::has_offboard_result() const {
-  return _internal_has_offboard_result();
-}
-inline void IsActiveResponse::clear_offboard_result() {
-  if (GetArenaNoVirtual() == nullptr && offboard_result_ != nullptr) {
-    delete offboard_result_;
-  }
-  offboard_result_ = nullptr;
-}
-inline const ::mavsdk::rpc::offboard::OffboardResult& IsActiveResponse::_internal_offboard_result() const {
-  const ::mavsdk::rpc::offboard::OffboardResult* p = offboard_result_;
-  return p != nullptr ? *p : *reinterpret_cast<const ::mavsdk::rpc::offboard::OffboardResult*>(
-      &::mavsdk::rpc::offboard::_OffboardResult_default_instance_);
-}
-inline const ::mavsdk::rpc::offboard::OffboardResult& IsActiveResponse::offboard_result() const {
-  // @@protoc_insertion_point(field_get:mavsdk.rpc.offboard.IsActiveResponse.offboard_result)
-  return _internal_offboard_result();
-}
-inline ::mavsdk::rpc::offboard::OffboardResult* IsActiveResponse::release_offboard_result() {
-  // @@protoc_insertion_point(field_release:mavsdk.rpc.offboard.IsActiveResponse.offboard_result)
-  
-  ::mavsdk::rpc::offboard::OffboardResult* temp = offboard_result_;
-  offboard_result_ = nullptr;
-  return temp;
-}
-inline ::mavsdk::rpc::offboard::OffboardResult* IsActiveResponse::_internal_mutable_offboard_result() {
-  
-  if (offboard_result_ == nullptr) {
-    auto* p = CreateMaybeMessage<::mavsdk::rpc::offboard::OffboardResult>(GetArenaNoVirtual());
-    offboard_result_ = p;
-  }
-  return offboard_result_;
-}
-inline ::mavsdk::rpc::offboard::OffboardResult* IsActiveResponse::mutable_offboard_result() {
-  // @@protoc_insertion_point(field_mutable:mavsdk.rpc.offboard.IsActiveResponse.offboard_result)
-  return _internal_mutable_offboard_result();
-}
-inline void IsActiveResponse::set_allocated_offboard_result(::mavsdk::rpc::offboard::OffboardResult* offboard_result) {
-  ::PROTOBUF_NAMESPACE_ID::Arena* message_arena = GetArenaNoVirtual();
-  if (message_arena == nullptr) {
-    delete offboard_result_;
-  }
-  if (offboard_result) {
-    ::PROTOBUF_NAMESPACE_ID::Arena* submessage_arena = nullptr;
-    if (message_arena != submessage_arena) {
-      offboard_result = ::PROTOBUF_NAMESPACE_ID::internal::GetOwnedMessage(
-          message_arena, offboard_result, submessage_arena);
-    }
-    
-  } else {
-    
-  }
-  offboard_result_ = offboard_result;
-  // @@protoc_insertion_point(field_set_allocated:mavsdk.rpc.offboard.IsActiveResponse.offboard_result)
-}
-
-// bool is_active = 2;
+// bool is_active = 1;
 inline void IsActiveResponse::clear_is_active() {
   is_active_ = false;
 }

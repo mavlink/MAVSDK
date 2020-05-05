@@ -208,11 +208,10 @@ public:
         const rpc::follow_me::GetConfigRequest* /* request */,
         rpc::follow_me::GetConfigResponse* response) override
     {
-        auto result_pair = _follow_me.get_config();
+        auto result = _follow_me.get_config();
 
         if (response != nullptr) {
-            fillResponseWithResult(response, result_pair.first);
-            response->set_allocated_config(translateToRpcConfig(result_pair.second).release());
+            response->set_allocated_config(translateToRpcConfig(result).release());
         }
 
         return grpc::Status::OK;
@@ -242,11 +241,10 @@ public:
         const rpc::follow_me::IsActiveRequest* /* request */,
         rpc::follow_me::IsActiveResponse* response) override
     {
-        auto result_pair = _follow_me.is_active();
+        auto result = _follow_me.is_active();
 
         if (response != nullptr) {
-            fillResponseWithResult(response, result_pair.first);
-            response->set_is_active(result_pair.second);
+            response->set_is_active(result);
         }
 
         return grpc::Status::OK;
@@ -276,12 +274,10 @@ public:
         const rpc::follow_me::GetLastLocationRequest* /* request */,
         rpc::follow_me::GetLastLocationResponse* response) override
     {
-        auto result_pair = _follow_me.get_last_location();
+        auto result = _follow_me.get_last_location();
 
         if (response != nullptr) {
-            fillResponseWithResult(response, result_pair.first);
-            response->set_allocated_location(
-                translateToRpcTargetLocation(result_pair.second).release());
+            response->set_allocated_location(translateToRpcTargetLocation(result).release());
         }
 
         return grpc::Status::OK;
