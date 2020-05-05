@@ -853,43 +853,43 @@ SystemImpl::make_command_flight_mode(FlightMode flight_mode, uint8_t component_i
     uint8_t custom_sub_mode = 0;
 
     switch (flight_mode) {
-        case FlightMode::HOLD:
+        case FlightMode::Hold:
             custom_sub_mode = px4::PX4_CUSTOM_SUB_MODE_AUTO_LOITER;
             break;
-        case FlightMode::RETURN_TO_LAUNCH:
+        case FlightMode::ReturnToLaunch:
             custom_sub_mode = px4::PX4_CUSTOM_SUB_MODE_AUTO_RTL;
             break;
-        case FlightMode::TAKEOFF:
+        case FlightMode::Takeoff:
             custom_sub_mode = px4::PX4_CUSTOM_SUB_MODE_AUTO_TAKEOFF;
             break;
-        case FlightMode::LAND:
+        case FlightMode::Land:
             custom_sub_mode = px4::PX4_CUSTOM_SUB_MODE_AUTO_LAND;
             break;
-        case FlightMode::MISSION:
+        case FlightMode::Mission:
             custom_sub_mode = px4::PX4_CUSTOM_SUB_MODE_AUTO_MISSION;
             break;
-        case FlightMode::FOLLOW_ME:
+        case FlightMode::FollowMe:
             custom_sub_mode = px4::PX4_CUSTOM_SUB_MODE_AUTO_FOLLOW_TARGET;
             break;
-        case FlightMode::OFFBOARD:
+        case FlightMode::Offboard:
             custom_mode = px4::PX4_CUSTOM_MAIN_MODE_OFFBOARD;
             break;
-        case FlightMode::MANUAL:
+        case FlightMode::Manual:
             custom_mode = px4::PX4_CUSTOM_MAIN_MODE_MANUAL;
             break;
-        case FlightMode::POSCTL:
+        case FlightMode::Posctl:
             custom_mode = px4::PX4_CUSTOM_MAIN_MODE_POSCTL;
             break;
-        case FlightMode::ALTCTL:
+        case FlightMode::Altctl:
             custom_mode = px4::PX4_CUSTOM_MAIN_MODE_ALTCTL;
             break;
-        case FlightMode::RATTITUDE:
+        case FlightMode::Rattitude:
             custom_mode = px4::PX4_CUSTOM_MAIN_MODE_RATTITUDE;
             break;
-        case FlightMode::ACRO:
+        case FlightMode::Acro:
             custom_mode = px4::PX4_CUSTOM_MAIN_MODE_ACRO;
             break;
-        case FlightMode::STABILIZED:
+        case FlightMode::Stabilized:
             custom_mode = px4::PX4_CUSTOM_MAIN_MODE_STABILIZED;
             break;
         default:
@@ -921,40 +921,40 @@ SystemImpl::FlightMode SystemImpl::to_flight_mode_from_custom_mode(uint32_t cust
 
     switch (px4_custom_mode.main_mode) {
         case px4::PX4_CUSTOM_MAIN_MODE_OFFBOARD:
-            return FlightMode::OFFBOARD;
+            return FlightMode::Offboard;
         case px4::PX4_CUSTOM_MAIN_MODE_MANUAL:
-            return FlightMode::MANUAL;
+            return FlightMode::Manual;
         case px4::PX4_CUSTOM_MAIN_MODE_POSCTL:
-            return FlightMode::POSCTL;
+            return FlightMode::Posctl;
         case px4::PX4_CUSTOM_MAIN_MODE_ALTCTL:
-            return FlightMode::ALTCTL;
+            return FlightMode::Altctl;
         case px4::PX4_CUSTOM_MAIN_MODE_RATTITUDE:
-            return FlightMode::RATTITUDE;
+            return FlightMode::Rattitude;
         case px4::PX4_CUSTOM_MAIN_MODE_ACRO:
-            return FlightMode::ACRO;
+            return FlightMode::Acro;
         case px4::PX4_CUSTOM_MAIN_MODE_STABILIZED:
-            return FlightMode::STABILIZED;
+            return FlightMode::Stabilized;
         case px4::PX4_CUSTOM_MAIN_MODE_AUTO:
             switch (px4_custom_mode.sub_mode) {
                 case px4::PX4_CUSTOM_SUB_MODE_AUTO_READY:
-                    return FlightMode::READY;
+                    return FlightMode::Ready;
                 case px4::PX4_CUSTOM_SUB_MODE_AUTO_TAKEOFF:
-                    return FlightMode::TAKEOFF;
+                    return FlightMode::Takeoff;
                 case px4::PX4_CUSTOM_SUB_MODE_AUTO_LOITER:
-                    return FlightMode::HOLD;
+                    return FlightMode::Hold;
                 case px4::PX4_CUSTOM_SUB_MODE_AUTO_MISSION:
-                    return FlightMode::MISSION;
+                    return FlightMode::Mission;
                 case px4::PX4_CUSTOM_SUB_MODE_AUTO_RTL:
-                    return FlightMode::RETURN_TO_LAUNCH;
+                    return FlightMode::ReturnToLaunch;
                 case px4::PX4_CUSTOM_SUB_MODE_AUTO_LAND:
-                    return FlightMode::LAND;
+                    return FlightMode::Land;
                 case px4::PX4_CUSTOM_SUB_MODE_AUTO_FOLLOW_TARGET:
-                    return FlightMode::FOLLOW_ME;
+                    return FlightMode::FollowMe;
                 default:
-                    return FlightMode::UNKNOWN;
+                    return FlightMode::Unknown;
             }
         default:
-            return FlightMode::UNKNOWN;
+            return FlightMode::Unknown;
     }
 }
 

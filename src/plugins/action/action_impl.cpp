@@ -180,10 +180,10 @@ void ActionImpl::arm_async(const Action::result_callback_t& callback) const
             });
     };
 
-    if (_parent->get_flight_mode() == SystemImpl::FlightMode::MISSION ||
-        _parent->get_flight_mode() == SystemImpl::FlightMode::RETURN_TO_LAUNCH) {
+    if (_parent->get_flight_mode() == SystemImpl::FlightMode::Mission ||
+        _parent->get_flight_mode() == SystemImpl::FlightMode::ReturnToLaunch) {
         _parent->set_flight_mode_async(
-            SystemImpl::FlightMode::HOLD,
+            SystemImpl::FlightMode::Hold,
             [callback, send_arm_command](MAVLinkCommands::Result result, float) {
                 Action::Result action_result = action_result_from_command_result(result);
                 if (action_result != Action::Result::Success) {
@@ -294,7 +294,7 @@ void ActionImpl::land_async(const Action::result_callback_t& callback) const
 void ActionImpl::return_to_launch_async(const Action::result_callback_t& callback) const
 {
     _parent->set_flight_mode_async(
-        SystemImpl::FlightMode::RETURN_TO_LAUNCH,
+        SystemImpl::FlightMode::ReturnToLaunch,
         [this, callback](MAVLinkCommands::Result result, float) {
             command_result_callback(result, callback);
         });

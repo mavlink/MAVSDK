@@ -296,7 +296,7 @@ MissionRaw::Result MissionRawImpl::start_mission()
 void MissionRawImpl::start_mission_async(const MissionRaw::result_callback_t& callback)
 {
     _parent->set_flight_mode_async(
-        SystemImpl::FlightMode::MISSION, [this, callback](MAVLinkCommands::Result result, float) {
+        SystemImpl::FlightMode::Mission, [this, callback](MAVLinkCommands::Result result, float) {
             report_flight_mode_change(callback, result);
         });
 }
@@ -313,7 +313,7 @@ MissionRaw::Result MissionRawImpl::pause_mission()
 void MissionRawImpl::pause_mission_async(const MissionRaw::result_callback_t& callback)
 {
     _parent->set_flight_mode_async(
-        SystemImpl::FlightMode::HOLD, [this, callback](MAVLinkCommands::Result result, float) {
+        SystemImpl::FlightMode::Hold, [this, callback](MAVLinkCommands::Result result, float) {
             report_flight_mode_change(callback, result);
         });
 }
