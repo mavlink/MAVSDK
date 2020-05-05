@@ -76,8 +76,7 @@ message StopResponse {
 
 message IsActiveRequest {}
 message IsActiveResponse {
-    OffboardResult offboard_result = 1;
-    bool is_active = 2; // True if offboard is active
+    bool is_active = 1; // True if offboard is active
 }
 
 message SetAttitudeRequest {
