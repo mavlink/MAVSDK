@@ -1,0 +1,59 @@
+syntax = "proto3";
+
+package mavsdk.rpc.log_files;
+
+import "mavsdk_options.proto";
+
+option java_package = "io.mavsdk.log_files";
+option java_outer_classname = "LogFilesProto";
+
+// Allow to download log files from the vehicle after a flight is complete.
+// For log streaming during flight check the logging plugin.
+service LogFilesService {
+    // Get List of log files.
+    rpc GetEntries(GetEntriesRequest) returns(GetEntriesResponse) {}
+    // Download log file.
+    rpc SubscribeDownloadLogFile(SubscribeDownloadLogFileRequest) returns(stream DownloadLogFileResponse) {
+        option (mavsdk.options.async_type) = ASYNC;
+        option (mavsdk.options.is_finite) = true;
+    }
+}
+
+message GetEntriesRequest {}
+message GetEntriesResponse {
+    LogFileResult log_file_result = 1;
+    repeated Entry entries = 2; // List of entries
+}
+
+message SubscribeDownloadLogFileRequest {
+    uint32 id = 1; // ID of the log file to download
+    string path = 2; // Path of where to download log file to.
+}
+message DownloadLogFileResponse {
+    LogFileResult log_file_result = 1;
+    float progress = 2; // Progress if result is progress
+}
+
+// Log file entry type.
+message Entry {
+    uint32 id = 1; // ID of the log file, to specify a file to be download
+    string date = 2; // Date of the log file in UTC in ISO 8601 format "yyyy-mm-ddThh:mm:ssZ"
+    uint32 size_bytes = 3; // Size of file in bytes
+}
+
+// Result type.
+message LogFileResult {
+    // Possible results returned for calibration commands
+    enum Result {
+        RESULT_UNKNOWN = 0; // Unknown error
+        RESULT_SUCCESS = 1; // Request succeeded
+        RESULT_PROGRESS = 2; // Progress update
+        RESULT_NO_LOGFILES = 3; // No log files found
+        RESULT_TIMEOUT = 4; // A timeout happened
+        RESULT_INVALID_ARGUMENT = 5; // Invalid argument
+        RESULT_FILE_OPEN_FAILED = 6; // File open failed
+    }
+
+    Result result = 1; // Result enum value
+    string result_str = 2; // Human-readable English string describing the result
+}
