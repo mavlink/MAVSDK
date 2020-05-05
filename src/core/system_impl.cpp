@@ -895,7 +895,7 @@ SystemImpl::make_command_flight_mode(FlightMode flight_mode, uint8_t component_i
         default:
             LogErr() << "Unknown Flight mode.";
             MAVLinkCommands::CommandLong empty_command{};
-            return std::make_pair<>(MAVLinkCommands::Result::UNKNOWN_ERROR, empty_command);
+            return std::make_pair<>(MAVLinkCommands::Result::UnknownError, empty_command);
     }
 
     MAVLinkCommands::CommandLong command{};
@@ -906,7 +906,7 @@ SystemImpl::make_command_flight_mode(FlightMode flight_mode, uint8_t component_i
     command.params.param3 = float(custom_sub_mode);
     command.target_component_id = component_id;
 
-    return std::make_pair<>(MAVLinkCommands::Result::SUCCESS, command);
+    return std::make_pair<>(MAVLinkCommands::Result::Success, command);
 }
 
 SystemImpl::FlightMode SystemImpl::get_flight_mode() const
@@ -963,7 +963,7 @@ MAVLinkCommands::Result SystemImpl::set_flight_mode(FlightMode system_mode, uint
     std::pair<MAVLinkCommands::Result, MAVLinkCommands::CommandLong> result =
         make_command_flight_mode(system_mode, component_id);
 
-    if (result.first != MAVLinkCommands::Result::SUCCESS) {
+    if (result.first != MAVLinkCommands::Result::Success) {
         return result.first;
     }
 
@@ -976,7 +976,7 @@ void SystemImpl::set_flight_mode_async(
     std::pair<MAVLinkCommands::Result, MAVLinkCommands::CommandLong> result =
         make_command_flight_mode(system_mode, component_id);
 
-    if (result.first != MAVLinkCommands::Result::SUCCESS) {
+    if (result.first != MAVLinkCommands::Result::Success) {
         if (callback) {
             callback(result.first, NAN);
         }
@@ -1047,7 +1047,7 @@ uint8_t SystemImpl::get_gimbal_id() const
 MAVLinkCommands::Result SystemImpl::send_command(MAVLinkCommands::CommandLong& command)
 {
     if (target_address.system_id == 0 && _components.size() == 0) {
-        return MAVLinkCommands::Result::NO_SYSTEM;
+        return MAVLinkCommands::Result::NoSystem;
     }
     command.target_system_id = get_system_id();
     return _commands.send_command(command);
@@ -1056,7 +1056,7 @@ MAVLinkCommands::Result SystemImpl::send_command(MAVLinkCommands::CommandLong& c
 MAVLinkCommands::Result SystemImpl::send_command(MAVLinkCommands::CommandInt& command)
 {
     if (target_address.system_id == 0 && _components.size() == 0) {
-        return MAVLinkCommands::Result::NO_SYSTEM;
+        return MAVLinkCommands::Result::NoSystem;
     }
     command.target_system_id = get_system_id();
     return _commands.send_command(command);
@@ -1067,7 +1067,7 @@ void SystemImpl::send_command_async(
 {
     if (target_address.system_id == 0 && _components.size() == 0) {
         if (callback) {
-            callback(MAVLinkCommands::Result::NO_SYSTEM, NAN);
+            callback(MAVLinkCommands::Result::NoSystem, NAN);
         }
         return;
     }
@@ -1081,7 +1081,7 @@ void SystemImpl::send_command_async(
 {
     if (target_address.system_id == 0 && _components.size() == 0) {
         if (callback) {
-            callback(MAVLinkCommands::Result::NO_SYSTEM, NAN);
+            callback(MAVLinkCommands::Result::NoSystem, NAN);
         }
         return;
     }

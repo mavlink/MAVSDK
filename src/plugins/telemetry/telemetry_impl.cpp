@@ -459,17 +459,17 @@ Telemetry::Result
 TelemetryImpl::telemetry_result_from_command_result(MAVLinkCommands::Result command_result)
 {
     switch (command_result) {
-        case MAVLinkCommands::Result::SUCCESS:
+        case MAVLinkCommands::Result::Success:
             return Telemetry::Result::Success;
-        case MAVLinkCommands::Result::NO_SYSTEM:
+        case MAVLinkCommands::Result::NoSystem:
             return Telemetry::Result::NoSystem;
-        case MAVLinkCommands::Result::CONNECTION_ERROR:
+        case MAVLinkCommands::Result::ConnectionError:
             return Telemetry::Result::ConnectionError;
-        case MAVLinkCommands::Result::BUSY:
+        case MAVLinkCommands::Result::Busy:
             return Telemetry::Result::Busy;
-        case MAVLinkCommands::Result::COMMAND_DENIED:
+        case MAVLinkCommands::Result::CommandDenied:
             return Telemetry::Result::CommandDenied;
-        case MAVLinkCommands::Result::TIMEOUT:
+        case MAVLinkCommands::Result::Timeout:
             return Telemetry::Result::Timeout;
         default:
             return Telemetry::Result::Unknown;

@@ -18,14 +18,14 @@ public:
     ~MAVLinkCommands();
 
     enum class Result {
-        SUCCESS = 0,
-        NO_SYSTEM,
-        CONNECTION_ERROR,
-        BUSY,
-        COMMAND_DENIED,
-        TIMEOUT,
-        IN_PROGRESS,
-        UNKNOWN_ERROR
+        Success = 0,
+        NoSystem,
+        ConnectionError,
+        Busy,
+        CommandDenied,
+        Timeout,
+        InProgress,
+        UnknownError
     };
 
     typedef std::function<void(Result, float)> command_result_callback_t;

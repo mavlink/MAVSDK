@@ -512,17 +512,17 @@ std::pair<Action::Result, float> ActionImpl::get_return_to_launch_altitude() con
 Action::Result ActionImpl::action_result_from_command_result(MAVLinkCommands::Result result)
 {
     switch (result) {
-        case MAVLinkCommands::Result::SUCCESS:
+        case MAVLinkCommands::Result::Success:
             return Action::Result::Success;
-        case MAVLinkCommands::Result::NO_SYSTEM:
+        case MAVLinkCommands::Result::NoSystem:
             return Action::Result::NoSystem;
-        case MAVLinkCommands::Result::CONNECTION_ERROR:
+        case MAVLinkCommands::Result::ConnectionError:
             return Action::Result::ConnectionError;
-        case MAVLinkCommands::Result::BUSY:
+        case MAVLinkCommands::Result::Busy:
             return Action::Result::Busy;
-        case MAVLinkCommands::Result::COMMAND_DENIED:
+        case MAVLinkCommands::Result::CommandDenied:
             return Action::Result::CommandDenied;
-        case MAVLinkCommands::Result::TIMEOUT:
+        case MAVLinkCommands::Result::Timeout:
             return Action::Result::Timeout;
         default:
             return Action::Result::Unknown;

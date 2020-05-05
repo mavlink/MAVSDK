@@ -200,21 +200,21 @@ void CalibrationImpl::command_result_callback(
     // use the progress info. If we get an ack, we need to translate that to
     // a first progress update, and then parse the statustexts for progress.
     switch (command_result) {
-        case MAVLinkCommands::Result::SUCCESS:
+        case MAVLinkCommands::Result::Success:
             // Silently ignore.
             break;
 
-        case MAVLinkCommands::Result::NO_SYSTEM:
+        case MAVLinkCommands::Result::NoSystem:
             // FALLTHROUGH
-        case MAVLinkCommands::Result::CONNECTION_ERROR:
+        case MAVLinkCommands::Result::ConnectionError:
             // FALLTHROUGH
-        case MAVLinkCommands::Result::BUSY:
+        case MAVLinkCommands::Result::Busy:
             // FALLTHROUGH
-        case MAVLinkCommands::Result::COMMAND_DENIED:
+        case MAVLinkCommands::Result::CommandDenied:
             // FALLTHROUGH
-        case MAVLinkCommands::Result::UNKNOWN_ERROR:
+        case MAVLinkCommands::Result::UnknownError:
             // FALLTHROUGH
-        case MAVLinkCommands::Result::TIMEOUT: {
+        case MAVLinkCommands::Result::Timeout: {
             // Report all error cases.
             const auto timeout_result = calibration_result_from_command_result(command_result);
             call_user_callback(_calibration_callback, timeout_result, Calibration::ProgressData());
@@ -223,7 +223,7 @@ void CalibrationImpl::command_result_callback(
             break;
         }
 
-        case MAVLinkCommands::Result::IN_PROGRESS: {
+        case MAVLinkCommands::Result::InProgress: {
             const auto progress_result = calibration_result_from_command_result(command_result);
             Calibration::ProgressData progress_data;
             progress_data.has_progress = true;
@@ -239,19 +239,19 @@ Calibration::Result
 CalibrationImpl::calibration_result_from_command_result(MAVLinkCommands::Result result)
 {
     switch (result) {
-        case MAVLinkCommands::Result::SUCCESS:
+        case MAVLinkCommands::Result::Success:
             return Calibration::Result::Success;
-        case MAVLinkCommands::Result::NO_SYSTEM:
+        case MAVLinkCommands::Result::NoSystem:
             return Calibration::Result::NoSystem;
-        case MAVLinkCommands::Result::CONNECTION_ERROR:
+        case MAVLinkCommands::Result::ConnectionError:
             return Calibration::Result::ConnectionError;
-        case MAVLinkCommands::Result::BUSY:
+        case MAVLinkCommands::Result::Busy:
             return Calibration::Result::Busy;
-        case MAVLinkCommands::Result::COMMAND_DENIED:
+        case MAVLinkCommands::Result::CommandDenied:
             return Calibration::Result::CommandDenied;
-        case MAVLinkCommands::Result::TIMEOUT:
+        case MAVLinkCommands::Result::Timeout:
             return Calibration::Result::Timeout;
-        case MAVLinkCommands::Result::IN_PROGRESS:
+        case MAVLinkCommands::Result::InProgress:
             return Calibration::Result::Next;
         default:
             return Calibration::Result::Unknown;

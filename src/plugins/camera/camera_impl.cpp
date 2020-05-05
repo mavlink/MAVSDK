@@ -531,17 +531,17 @@ Camera::Result
 CameraImpl::camera_result_from_command_result(const MAVLinkCommands::Result command_result)
 {
     switch (command_result) {
-        case MAVLinkCommands::Result::SUCCESS:
+        case MAVLinkCommands::Result::Success:
             return Camera::Result::Success;
-        case MAVLinkCommands::Result::NO_SYSTEM:
+        case MAVLinkCommands::Result::NoSystem:
         // FALLTHROUGH
-        case MAVLinkCommands::Result::CONNECTION_ERROR:
+        case MAVLinkCommands::Result::ConnectionError:
         // FALLTHROUGH
-        case MAVLinkCommands::Result::BUSY:
+        case MAVLinkCommands::Result::Busy:
             return Camera::Result::Error;
-        case MAVLinkCommands::Result::COMMAND_DENIED:
+        case MAVLinkCommands::Result::CommandDenied:
             return Camera::Result::Denied;
-        case MAVLinkCommands::Result::TIMEOUT:
+        case MAVLinkCommands::Result::Timeout:
             return Camera::Result::Timeout;
         default:
             return Camera::Result::Unknown;
@@ -950,7 +950,7 @@ void CameraImpl::receive_set_mode_command_result(
             [temp_callback, camera_result]() { temp_callback(camera_result); });
     }
 
-    if (command_result == MAVLinkCommands::Result::SUCCESS && _camera_definition) {
+    if (command_result == MAVLinkCommands::Result::Success && _camera_definition) {
         // This "parameter" needs to be manually set.
         {
             std::lock_guard<std::mutex> lock(_mode.mutex);
