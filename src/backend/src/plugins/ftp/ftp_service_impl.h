@@ -224,11 +224,11 @@ public:
             return grpc::Status::OK;
         }
 
-        auto result_pair = _ftp.list_directory(request->remote_dir());
+        auto result = _ftp.list_directory(request->remote_dir());
 
         if (response != nullptr) {
-            fillResponseWithResult(response, result_pair.first);
-            response->set_paths(result_pair.second);
+            fillResponseWithResult(response, result.first);
+            response->set_paths(result.second);
         }
 
         return grpc::Status::OK;
@@ -320,12 +320,12 @@ public:
             return grpc::Status::OK;
         }
 
-        auto result_pair =
+        auto result =
             _ftp.are_files_identical(request->local_file_path(), request->remote_file_path());
 
         if (response != nullptr) {
-            fillResponseWithResult(response, result_pair.first);
-            response->set_are_identical(result_pair.second);
+            fillResponseWithResult(response, result.first);
+            response->set_are_identical(result.second);
         }
 
         return grpc::Status::OK;
@@ -374,11 +374,10 @@ public:
         const rpc::ftp::GetOurComponentIdRequest* /* request */,
         rpc::ftp::GetOurComponentIdResponse* response) override
     {
-        auto result_pair = _ftp.get_our_component_id();
+        auto result = _ftp.get_our_component_id();
 
         if (response != nullptr) {
-            fillResponseWithResult(response, result_pair.first);
-            response->set_component_id(result_pair.second);
+            response->set_component_id(result);
         }
 
         return grpc::Status::OK;

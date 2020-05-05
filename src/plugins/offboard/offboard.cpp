@@ -41,7 +41,7 @@ Offboard::Result Offboard::stop() const
     return _impl->stop();
 }
 
-std::pair<Offboard::Result, bool> Offboard::is_active() const
+bool Offboard::is_active() const
 {
     return _impl->is_active();
 }

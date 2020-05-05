@@ -933,11 +933,11 @@ public:
             return grpc::Status::OK;
         }
 
-        auto result_pair = _camera.get_setting(translateFromRpcSetting(request->setting()));
+        auto result = _camera.get_setting(translateFromRpcSetting(request->setting()));
 
         if (response != nullptr) {
-            fillResponseWithResult(response, result_pair.first);
-            response->set_allocated_setting(translateToRpcSetting(result_pair.second).release());
+            fillResponseWithResult(response, result.first);
+            response->set_allocated_setting(translateToRpcSetting(result.second).release());
         }
 
         return grpc::Status::OK;

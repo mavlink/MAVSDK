@@ -202,12 +202,11 @@ public:
         const rpc::info::GetFlightInformationRequest* /* request */,
         rpc::info::GetFlightInformationResponse* response) override
     {
-        auto result_pair = _info.get_flight_information();
+        auto result = _info.get_flight_information();
 
         if (response != nullptr) {
-            fillResponseWithResult(response, result_pair.first);
-            response->set_allocated_flight_info(
-                translateToRpcFlightInfo(result_pair.second).release());
+            fillResponseWithResult(response, result.first);
+            response->set_allocated_flight_info(translateToRpcFlightInfo(result.second).release());
         }
 
         return grpc::Status::OK;
@@ -218,12 +217,12 @@ public:
         const rpc::info::GetIdentificationRequest* /* request */,
         rpc::info::GetIdentificationResponse* response) override
     {
-        auto result_pair = _info.get_identification();
+        auto result = _info.get_identification();
 
         if (response != nullptr) {
-            fillResponseWithResult(response, result_pair.first);
+            fillResponseWithResult(response, result.first);
             response->set_allocated_identification(
-                translateToRpcIdentification(result_pair.second).release());
+                translateToRpcIdentification(result.second).release());
         }
 
         return grpc::Status::OK;
@@ -234,11 +233,11 @@ public:
         const rpc::info::GetProductRequest* /* request */,
         rpc::info::GetProductResponse* response) override
     {
-        auto result_pair = _info.get_product();
+        auto result = _info.get_product();
 
         if (response != nullptr) {
-            fillResponseWithResult(response, result_pair.first);
-            response->set_allocated_product(translateToRpcProduct(result_pair.second).release());
+            fillResponseWithResult(response, result.first);
+            response->set_allocated_product(translateToRpcProduct(result.second).release());
         }
 
         return grpc::Status::OK;
@@ -249,11 +248,11 @@ public:
         const rpc::info::GetVersionRequest* /* request */,
         rpc::info::GetVersionResponse* response) override
     {
-        auto result_pair = _info.get_version();
+        auto result = _info.get_version();
 
         if (response != nullptr) {
-            fillResponseWithResult(response, result_pair.first);
-            response->set_allocated_version(translateToRpcVersion(result_pair.second).release());
+            fillResponseWithResult(response, result.first);
+            response->set_allocated_version(translateToRpcVersion(result.second).release());
         }
 
         return grpc::Status::OK;

@@ -207,7 +207,7 @@ public:
      *
      * @return Result of request.
      */
-    std::pair<Result, uint32_t> get_our_component_id() const;
+    uint32_t get_our_component_id() const;
 
     /**
      * @brief Returns a human-readable English string for a Result.

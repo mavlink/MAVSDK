@@ -330,11 +330,10 @@ public:
         const rpc::offboard::IsActiveRequest* /* request */,
         rpc::offboard::IsActiveResponse* response) override
     {
-        auto result_pair = _offboard.is_active();
+        auto result = _offboard.is_active();
 
         if (response != nullptr) {
-            fillResponseWithResult(response, result_pair.first);
-            response->set_is_active(result_pair.second);
+            response->set_is_active(result);
         }
 
         return grpc::Status::OK;

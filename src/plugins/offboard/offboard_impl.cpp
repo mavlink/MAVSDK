@@ -95,10 +95,10 @@ void OffboardImpl::stop_async(Offboard::result_callback_t callback)
         std::bind(&OffboardImpl::receive_command_result, this, std::placeholders::_1, callback));
 }
 
-std::pair<Offboard::Result, bool> OffboardImpl::is_active()
+bool OffboardImpl::is_active()
 {
     std::lock_guard<std::mutex> lock(_mutex);
-    return std::make_pair<>(Offboard::Result::Success, (_mode != Mode::NOT_ACTIVE));
+    return (_mode != Mode::NOT_ACTIVE);
 }
 
 void OffboardImpl::receive_command_result(

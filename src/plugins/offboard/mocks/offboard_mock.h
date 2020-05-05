@@ -9,7 +9,7 @@ class MockOffboard {
 public:
     MOCK_CONST_METHOD0(start, Offboard::Result()){};
     MOCK_CONST_METHOD0(stop, Offboard::Result()){};
-    MOCK_CONST_METHOD0(is_active, std::pair<Offboard::Result, bool>()){};
+    MOCK_CONST_METHOD0(is_active, bool()){};
     MOCK_CONST_METHOD1(set_attitude, Offboard::Result(Offboard::Attitude)){};
     MOCK_CONST_METHOD1(set_attitude_rate, Offboard::Result(Offboard::AttitudeRate)){};
     MOCK_CONST_METHOD1(set_position_ned, Offboard::Result(Offboard::PositionNedYaw)){};

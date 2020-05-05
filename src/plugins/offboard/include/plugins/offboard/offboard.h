@@ -317,7 +317,7 @@ public:
      *
      * @return Result of request.
      */
-    std::pair<Result, bool> is_active() const;
+    bool is_active() const;
 
     /**
      * @brief Set the attitude in terms of roll, pitch and yaw in degrees with thrust.

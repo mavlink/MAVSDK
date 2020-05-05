@@ -86,11 +86,11 @@ public:
             return grpc::Status::OK;
         }
 
-        auto result_pair = _param.get_param_int(request->name());
+        auto result = _param.get_param_int(request->name());
 
         if (response != nullptr) {
-            fillResponseWithResult(response, result_pair.first);
-            response->set_value(result_pair.second);
+            fillResponseWithResult(response, result.first);
+            response->set_value(result.second);
         }
 
         return grpc::Status::OK;
@@ -125,11 +125,11 @@ public:
             return grpc::Status::OK;
         }
 
-        auto result_pair = _param.get_param_float(request->name());
+        auto result = _param.get_param_float(request->name());
 
         if (response != nullptr) {
-            fillResponseWithResult(response, result_pair.first);
-            response->set_value(result_pair.second);
+            fillResponseWithResult(response, result.first);
+            response->set_value(result.second);
         }
 
         return grpc::Status::OK;

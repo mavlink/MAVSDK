@@ -239,9 +239,8 @@ static void InitDefaultsscc_info_GetOurComponentIdResponse_ftp_2fftp_2eproto() {
   ::mavsdk::rpc::ftp::GetOurComponentIdResponse::InitAsDefaultInstance();
 }
 
-::PROTOBUF_NAMESPACE_ID::internal::SCCInfo<1> scc_info_GetOurComponentIdResponse_ftp_2fftp_2eproto =
-    {{ATOMIC_VAR_INIT(::PROTOBUF_NAMESPACE_ID::internal::SCCInfoBase::kUninitialized), 1, 0, InitDefaultsscc_info_GetOurComponentIdResponse_ftp_2fftp_2eproto}, {
-      &scc_info_FtpResult_ftp_2fftp_2eproto.base,}};
+::PROTOBUF_NAMESPACE_ID::internal::SCCInfo<0> scc_info_GetOurComponentIdResponse_ftp_2fftp_2eproto =
+    {{ATOMIC_VAR_INIT(::PROTOBUF_NAMESPACE_ID::internal::SCCInfoBase::kUninitialized), 0, 0, InitDefaultsscc_info_GetOurComponentIdResponse_ftp_2fftp_2eproto}, {}};
 
 static void InitDefaultsscc_info_ListDirectoryRequest_ftp_2fftp_2eproto() {
   GOOGLE_PROTOBUF_VERIFY_VERSION;
@@ -658,7 +657,6 @@ const ::PROTOBUF_NAMESPACE_ID::uint32 TableStruct_ftp_2fftp_2eproto::offsets[] P
   ~0u,  // no _extensions_
   ~0u,  // no _oneof_case_
   ~0u,  // no _weak_field_map_
-  PROTOBUF_FIELD_OFFSET(::mavsdk::rpc::ftp::GetOurComponentIdResponse, ftp_result_),
   PROTOBUF_FIELD_OFFSET(::mavsdk::rpc::ftp::GetOurComponentIdResponse, component_id_),
   ~0u,  // no _has_bits_
   PROTOBUF_FIELD_OFFSET(::mavsdk::rpc::ftp::ProgressData, _internal_metadata_),
@@ -700,8 +698,8 @@ static const ::PROTOBUF_NAMESPACE_ID::internal::MigrationSchema schemas[] PROTOB
   { 133, -1, sizeof(::mavsdk::rpc::ftp::SetTargetComponentIdResponse)},
   { 139, -1, sizeof(::mavsdk::rpc::ftp::GetOurComponentIdRequest)},
   { 144, -1, sizeof(::mavsdk::rpc::ftp::GetOurComponentIdResponse)},
-  { 151, -1, sizeof(::mavsdk::rpc::ftp::ProgressData)},
-  { 158, -1, sizeof(::mavsdk::rpc::ftp::FtpResult)},
+  { 150, -1, sizeof(::mavsdk::rpc::ftp::ProgressData)},
+  { 157, -1, sizeof(::mavsdk::rpc::ftp::FtpResult)},
 };
 
 static ::PROTOBUF_NAMESPACE_ID::Message const * const file_default_instances[] = {
@@ -773,53 +771,51 @@ const char descriptor_table_protodef_ftp_2fftp_2eproto[] PROTOBUF_SECTION_VARIAB
   "argetComponentIdRequest\022\024\n\014component_id\030"
   "\001 \001(\r\"M\n\034SetTargetComponentIdResponse\022-\n"
   "\nftp_result\030\001 \001(\0132\031.mavsdk.rpc.ftp.FtpRe"
-  "sult\"\032\n\030GetOurComponentIdRequest\"`\n\031GetO"
-  "urComponentIdResponse\022-\n\nftp_result\030\001 \001("
-  "\0132\031.mavsdk.rpc.ftp.FtpResult\022\024\n\014componen"
-  "t_id\030\002 \001(\r\">\n\014ProgressData\022\031\n\021bytes_tran"
-  "sferred\030\001 \001(\r\022\023\n\013total_bytes\030\002 \001(\r\"\370\002\n\tF"
-  "tpResult\0220\n\006result\030\001 \001(\0162 .mavsdk.rpc.ft"
-  "p.FtpResult.Result\022\022\n\nresult_str\030\002 \001(\t\"\244"
-  "\002\n\006Result\022\022\n\016RESULT_UNKNOWN\020\000\022\022\n\016RESULT_"
-  "SUCCESS\020\001\022\017\n\013RESULT_NEXT\020\002\022\022\n\016RESULT_TIM"
-  "EOUT\020\003\022\017\n\013RESULT_BUSY\020\004\022\030\n\024RESULT_FILE_I"
-  "O_ERROR\020\005\022\026\n\022RESULT_FILE_EXISTS\020\006\022\036\n\032RES"
-  "ULT_FILE_DOES_NOT_EXIST\020\007\022\031\n\025RESULT_FILE"
-  "_PROTECTED\020\010\022\034\n\030RESULT_INVALID_PARAMETER"
-  "\020\t\022\026\n\022RESULT_UNSUPPORTED\020\n\022\031\n\025RESULT_PRO"
-  "TOCOL_ERROR\020\0132\324\t\n\nFtpService\022J\n\005Reset\022\034."
-  "mavsdk.rpc.ftp.ResetRequest\032\035.mavsdk.rpc"
-  ".ftp.ResetResponse\"\004\200\265\030\000\022k\n\021SubscribeDow"
-  "nload\022(.mavsdk.rpc.ftp.SubscribeDownload"
-  "Request\032 .mavsdk.rpc.ftp.DownloadRespons"
-  "e\"\010\200\265\030\000\210\265\030\0010\001\022e\n\017SubscribeUpload\022&.mavsd"
-  "k.rpc.ftp.SubscribeUploadRequest\032\036.mavsd"
-  "k.rpc.ftp.UploadResponse\"\010\200\265\030\000\210\265\030\0010\001\022b\n\r"
-  "ListDirectory\022$.mavsdk.rpc.ftp.ListDirec"
-  "toryRequest\032%.mavsdk.rpc.ftp.ListDirecto"
-  "ryResponse\"\004\200\265\030\000\022h\n\017CreateDirectory\022&.ma"
-  "vsdk.rpc.ftp.CreateDirectoryRequest\032\'.ma"
-  "vsdk.rpc.ftp.CreateDirectoryResponse\"\004\200\265"
-  "\030\000\022h\n\017RemoveDirectory\022&.mavsdk.rpc.ftp.R"
-  "emoveDirectoryRequest\032\'.mavsdk.rpc.ftp.R"
-  "emoveDirectoryResponse\"\004\200\265\030\000\022Y\n\nRemoveFi"
-  "le\022!.mavsdk.rpc.ftp.RemoveFileRequest\032\"."
-  "mavsdk.rpc.ftp.RemoveFileResponse\"\004\200\265\030\000\022"
-  "M\n\006Rename\022\035.mavsdk.rpc.ftp.RenameRequest"
-  "\032\036.mavsdk.rpc.ftp.RenameResponse\"\004\200\265\030\000\022n"
-  "\n\021AreFilesIdentical\022(.mavsdk.rpc.ftp.Are"
-  "FilesIdenticalRequest\032).mavsdk.rpc.ftp.A"
-  "reFilesIdenticalResponse\"\004\200\265\030\000\022k\n\020SetRoo"
-  "tDirectory\022\'.mavsdk.rpc.ftp.SetRootDirec"
-  "toryRequest\032(.mavsdk.rpc.ftp.SetRootDire"
-  "ctoryResponse\"\004\200\265\030\001\022w\n\024SetTargetComponen"
-  "tId\022+.mavsdk.rpc.ftp.SetTargetComponentI"
-  "dRequest\032,.mavsdk.rpc.ftp.SetTargetCompo"
-  "nentIdResponse\"\004\200\265\030\001\022n\n\021GetOurComponentI"
-  "d\022(.mavsdk.rpc.ftp.GetOurComponentIdRequ"
-  "est\032).mavsdk.rpc.ftp.GetOurComponentIdRe"
-  "sponse\"\004\200\265\030\001B\031\n\rio.mavsdk.ftpB\010FtpProtob"
-  "\006proto3"
+  "sult\"\032\n\030GetOurComponentIdRequest\"1\n\031GetO"
+  "urComponentIdResponse\022\024\n\014component_id\030\001 "
+  "\001(\r\">\n\014ProgressData\022\031\n\021bytes_transferred"
+  "\030\001 \001(\r\022\023\n\013total_bytes\030\002 \001(\r\"\370\002\n\tFtpResul"
+  "t\0220\n\006result\030\001 \001(\0162 .mavsdk.rpc.ftp.FtpRe"
+  "sult.Result\022\022\n\nresult_str\030\002 \001(\t\"\244\002\n\006Resu"
+  "lt\022\022\n\016RESULT_UNKNOWN\020\000\022\022\n\016RESULT_SUCCESS"
+  "\020\001\022\017\n\013RESULT_NEXT\020\002\022\022\n\016RESULT_TIMEOUT\020\003\022"
+  "\017\n\013RESULT_BUSY\020\004\022\030\n\024RESULT_FILE_IO_ERROR"
+  "\020\005\022\026\n\022RESULT_FILE_EXISTS\020\006\022\036\n\032RESULT_FIL"
+  "E_DOES_NOT_EXIST\020\007\022\031\n\025RESULT_FILE_PROTEC"
+  "TED\020\010\022\034\n\030RESULT_INVALID_PARAMETER\020\t\022\026\n\022R"
+  "ESULT_UNSUPPORTED\020\n\022\031\n\025RESULT_PROTOCOL_E"
+  "RROR\020\0132\324\t\n\nFtpService\022J\n\005Reset\022\034.mavsdk."
+  "rpc.ftp.ResetRequest\032\035.mavsdk.rpc.ftp.Re"
+  "setResponse\"\004\200\265\030\000\022k\n\021SubscribeDownload\022("
+  ".mavsdk.rpc.ftp.SubscribeDownloadRequest"
+  "\032 .mavsdk.rpc.ftp.DownloadResponse\"\010\200\265\030\000"
+  "\210\265\030\0010\001\022e\n\017SubscribeUpload\022&.mavsdk.rpc.f"
+  "tp.SubscribeUploadRequest\032\036.mavsdk.rpc.f"
+  "tp.UploadResponse\"\010\200\265\030\000\210\265\030\0010\001\022b\n\rListDir"
+  "ectory\022$.mavsdk.rpc.ftp.ListDirectoryReq"
+  "uest\032%.mavsdk.rpc.ftp.ListDirectoryRespo"
+  "nse\"\004\200\265\030\000\022h\n\017CreateDirectory\022&.mavsdk.rp"
+  "c.ftp.CreateDirectoryRequest\032\'.mavsdk.rp"
+  "c.ftp.CreateDirectoryResponse\"\004\200\265\030\000\022h\n\017R"
+  "emoveDirectory\022&.mavsdk.rpc.ftp.RemoveDi"
+  "rectoryRequest\032\'.mavsdk.rpc.ftp.RemoveDi"
+  "rectoryResponse\"\004\200\265\030\000\022Y\n\nRemoveFile\022!.ma"
+  "vsdk.rpc.ftp.RemoveFileRequest\032\".mavsdk."
+  "rpc.ftp.RemoveFileResponse\"\004\200\265\030\000\022M\n\006Rena"
+  "me\022\035.mavsdk.rpc.ftp.RenameRequest\032\036.mavs"
+  "dk.rpc.ftp.RenameResponse\"\004\200\265\030\000\022n\n\021AreFi"
+  "lesIdentical\022(.mavsdk.rpc.ftp.AreFilesId"
+  "enticalRequest\032).mavsdk.rpc.ftp.AreFiles"
+  "IdenticalResponse\"\004\200\265\030\000\022k\n\020SetRootDirect"
+  "ory\022\'.mavsdk.rpc.ftp.SetRootDirectoryReq"
+  "uest\032(.mavsdk.rpc.ftp.SetRootDirectoryRe"
+  "sponse\"\004\200\265\030\001\022w\n\024SetTargetComponentId\022+.m"
+  "avsdk.rpc.ftp.SetTargetComponentIdReques"
+  "t\032,.mavsdk.rpc.ftp.SetTargetComponentIdR"
+  "esponse\"\004\200\265\030\001\022n\n\021GetOurComponentId\022(.mav"
+  "sdk.rpc.ftp.GetOurComponentIdRequest\032).m"
+  "avsdk.rpc.ftp.GetOurComponentIdResponse\""
+  "\004\200\265\030\001B\031\n\rio.mavsdk.ftpB\010FtpProtob\006proto3"
   ;
 static const ::PROTOBUF_NAMESPACE_ID::internal::DescriptorTable*const descriptor_table_ftp_2fftp_2eproto_deps[1] = {
   &::descriptor_table_mavsdk_5foptions_2eproto,
@@ -855,7 +851,7 @@ static ::PROTOBUF_NAMESPACE_ID::internal::SCCInfoBase*const descriptor_table_ftp
 static ::PROTOBUF_NAMESPACE_ID::internal::once_flag descriptor_table_ftp_2fftp_2eproto_once;
 static bool descriptor_table_ftp_2fftp_2eproto_initialized = false;
 const ::PROTOBUF_NAMESPACE_ID::internal::DescriptorTable descriptor_table_ftp_2fftp_2eproto = {
-  &descriptor_table_ftp_2fftp_2eproto_initialized, descriptor_table_protodef_ftp_2fftp_2eproto, "ftp/ftp.proto", 3407,
+  &descriptor_table_ftp_2fftp_2eproto_initialized, descriptor_table_protodef_ftp_2fftp_2eproto, "ftp/ftp.proto", 3360,
   &descriptor_table_ftp_2fftp_2eproto_once, descriptor_table_ftp_2fftp_2eproto_sccs, descriptor_table_ftp_2fftp_2eproto_deps, 26, 1,
   schemas, file_default_instances, TableStruct_ftp_2fftp_2eproto::offsets,
   file_level_metadata_ftp_2fftp_2eproto, 26, file_level_enum_descriptors_ftp_2fftp_2eproto, file_level_service_descriptors_ftp_2fftp_2eproto,
@@ -5748,18 +5744,11 @@ void GetOurComponentIdRequest::InternalSwap(GetOurComponentIdRequest* other) {
 // ===================================================================
 
 void GetOurComponentIdResponse::InitAsDefaultInstance() {
-  ::mavsdk::rpc::ftp::_GetOurComponentIdResponse_default_instance_._instance.get_mutable()->ftp_result_ = const_cast< ::mavsdk::rpc::ftp::FtpResult*>(
-      ::mavsdk::rpc::ftp::FtpResult::internal_default_instance());
 }
 class GetOurComponentIdResponse::_Internal {
  public:
-  static const ::mavsdk::rpc::ftp::FtpResult& ftp_result(const GetOurComponentIdResponse* msg);
 };
 
-const ::mavsdk::rpc::ftp::FtpResult&
-GetOurComponentIdResponse::_Internal::ftp_result(const GetOurComponentIdResponse* msg) {
-  return *msg->ftp_result_;
-}
 GetOurComponentIdResponse::GetOurComponentIdResponse()
   : ::PROTOBUF_NAMESPACE_ID::Message(), _internal_metadata_(nullptr) {
   SharedCtor();
@@ -5769,20 +5758,12 @@ GetOurComponentIdResponse::GetOurComponentIdResponse(const GetOurComponentIdResp
   : ::PROTOBUF_NAMESPACE_ID::Message(),
       _internal_metadata_(nullptr) {
   _internal_metadata_.MergeFrom(from._internal_metadata_);
-  if (from._internal_has_ftp_result()) {
-    ftp_result_ = new ::mavsdk::rpc::ftp::FtpResult(*from.ftp_result_);
-  } else {
-    ftp_result_ = nullptr;
-  }
   component_id_ = from.component_id_;
   // @@protoc_insertion_point(copy_constructor:mavsdk.rpc.ftp.GetOurComponentIdResponse)
 }
 
 void GetOurComponentIdResponse::SharedCtor() {
-  ::PROTOBUF_NAMESPACE_ID::internal::InitSCC(&scc_info_GetOurComponentIdResponse_ftp_2fftp_2eproto.base);
-  ::memset(&ftp_result_, 0, static_cast<size_t>(
-      reinterpret_cast<char*>(&component_id_) -
-      reinterpret_cast<char*>(&ftp_result_)) + sizeof(component_id_));
+  component_id_ = 0u;
 }
 
 GetOurComponentIdResponse::~GetOurComponentIdResponse() {
@@ -5791,7 +5772,6 @@ GetOurComponentIdResponse::~GetOurComponentIdResponse() {
 }
 
 void GetOurComponentIdResponse::SharedDtor() {
-  if (this != internal_default_instance()) delete ftp_result_;
 }
 
 void GetOurComponentIdResponse::SetCachedSize(int size) const {
@@ -5809,10 +5789,6 @@ void GetOurComponentIdResponse::Clear() {
   // Prevent compiler warnings about cached_has_bits being unused
   (void) cached_has_bits;
 
-  if (GetArenaNoVirtual() == nullptr && ftp_result_ != nullptr) {
-    delete ftp_result_;
-  }
-  ftp_result_ = nullptr;
   component_id_ = 0u;
   _internal_metadata_.Clear();
 }
@@ -5824,16 +5800,9 @@ const char* GetOurComponentIdResponse::_InternalParse(const char* ptr, ::PROTOBU
     ptr = ::PROTOBUF_NAMESPACE_ID::internal::ReadTag(ptr, &tag);
     CHK_(ptr);
     switch (tag >> 3) {
-      // .mavsdk.rpc.ftp.FtpResult ftp_result = 1;
+      // uint32 component_id = 1;
       case 1:
-        if (PROTOBUF_PREDICT_TRUE(static_cast<::PROTOBUF_NAMESPACE_ID::uint8>(tag) == 10)) {
-          ptr = ctx->ParseMessage(_internal_mutable_ftp_result(), ptr);
-          CHK_(ptr);
-        } else goto handle_unusual;
-        continue;
-      // uint32 component_id = 2;
-      case 2:
-        if (PROTOBUF_PREDICT_TRUE(static_cast<::PROTOBUF_NAMESPACE_ID::uint8>(tag) == 16)) {
+        if (PROTOBUF_PREDICT_TRUE(static_cast<::PROTOBUF_NAMESPACE_ID::uint8>(tag) == 8)) {
           component_id_ = ::PROTOBUF_NAMESPACE_ID::internal::ReadVarint(&ptr);
           CHK_(ptr);
         } else goto handle_unusual;
@@ -5864,18 +5833,10 @@ failure:
   ::PROTOBUF_NAMESPACE_ID::uint32 cached_has_bits = 0;
   (void) cached_has_bits;
 
-  // .mavsdk.rpc.ftp.FtpResult ftp_result = 1;
-  if (this->has_ftp_result()) {
-    target = stream->EnsureSpace(target);
-    target = ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::
-      InternalWriteMessage(
-        1, _Internal::ftp_result(this), target, stream);
-  }
-
-  // uint32 component_id = 2;
+  // uint32 component_id = 1;
   if (this->component_id() != 0) {
     target = stream->EnsureSpace(target);
-    target = ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::WriteUInt32ToArray(2, this->_internal_component_id(), target);
+    target = ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::WriteUInt32ToArray(1, this->_internal_component_id(), target);
   }
 
   if (PROTOBUF_PREDICT_FALSE(_internal_metadata_.have_unknown_fields())) {
@@ -5894,14 +5855,7 @@ size_t GetOurComponentIdResponse::ByteSizeLong() const {
   // Prevent compiler warnings about cached_has_bits being unused
   (void) cached_has_bits;
 
-  // .mavsdk.rpc.ftp.FtpResult ftp_result = 1;
-  if (this->has_ftp_result()) {
-    total_size += 1 +
-      ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::MessageSize(
-        *ftp_result_);
-  }
-
-  // uint32 component_id = 2;
+  // uint32 component_id = 1;
   if (this->component_id() != 0) {
     total_size += 1 +
       ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::UInt32Size(
@@ -5939,9 +5893,6 @@ void GetOurComponentIdResponse::MergeFrom(const GetOurComponentIdResponse& from)
   ::PROTOBUF_NAMESPACE_ID::uint32 cached_has_bits = 0;
   (void) cached_has_bits;
 
-  if (from.has_ftp_result()) {
-    _internal_mutable_ftp_result()->::mavsdk::rpc::ftp::FtpResult::MergeFrom(from._internal_ftp_result());
-  }
   if (from.component_id() != 0) {
     _internal_set_component_id(from._internal_component_id());
   }
@@ -5968,7 +5919,6 @@ bool GetOurComponentIdResponse::IsInitialized() const {
 void GetOurComponentIdResponse::InternalSwap(GetOurComponentIdResponse* other) {
   using std::swap;
   _internal_metadata_.Swap(&other->_internal_metadata_);
-  swap(ftp_result_, other->ftp_result_);
   swap(component_id_, other->component_id_);
 }
 

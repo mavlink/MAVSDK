@@ -133,11 +133,11 @@ public:
         const rpc::log_files::GetEntriesRequest* /* request */,
         rpc::log_files::GetEntriesResponse* response) override
     {
-        auto result_pair = _log_files.get_entries();
+        auto result = _log_files.get_entries();
 
         if (response != nullptr) {
-            fillResponseWithResult(response, result_pair.first);
-            response->set_allocated_entries(translateToRpcEntry(result_pair.second).release());
+            fillResponseWithResult(response, result.first);
+            response->set_allocated_entries(translateToRpcEntry(result.second).release());
         }
 
         return grpc::Status::OK;

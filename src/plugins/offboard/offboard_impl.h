@@ -26,7 +26,7 @@ public:
     void start_async(Offboard::result_callback_t callback);
     void stop_async(Offboard::result_callback_t callback);
 
-    std::pair<Offboard::Result, bool> is_active();
+    bool is_active();
 
     Offboard::Result set_position_ned(Offboard::PositionNedYaw position_ned_yaw);
     Offboard::Result set_velocity_ned(Offboard::VelocityNedYaw velocity_ned_yaw);
