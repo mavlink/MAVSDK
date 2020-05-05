@@ -31,7 +31,14 @@ message SubscribeDownloadLogFileRequest {
 }
 message DownloadLogFileResponse {
     LogFileResult log_file_result = 1;
-    float progress = 2; // Progress if result is progress
+    ProgressData progress = 2; // Progress if result is progress
+}
+
+/*
+ * Progress data coming when downloading a log file.
+ */
+message ProgressData {
+    float progress = 1 [(mavsdk.options.default_value)="NaN"]; // Progress from 0 to 1
 }
 
 // Log file entry type.
