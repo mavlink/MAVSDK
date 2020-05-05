@@ -13,7 +13,7 @@ TEST_F(SitlTest, ActionHoverAsync)
     Mavsdk dc;
 
     ConnectionResult ret = dc.add_udp_connection();
-    ASSERT_EQ(ret, ConnectionResult::SUCCESS);
+    ASSERT_EQ(ret, ConnectionResult::Success);
 
     {
         LogInfo() << "Waiting to discover vehicle";

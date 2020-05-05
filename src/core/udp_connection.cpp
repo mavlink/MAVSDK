@@ -5,7 +5,7 @@
 #ifdef WINDOWS
 #include <winsock2.h>
 #include <Ws2tcpip.h> // For InetPton
-#undef SOCKET_ERROR // conflicts with ConnectionResult::SOCKET_ERROR
+#undef SOCKET_ERROR // conflicts with ConnectionResult::SocketError
 #ifndef MINGW
 #pragma comment(lib, "Ws2_32.lib") // Without this, Ws2_32.lib is not included in static library.
 #endif
@@ -46,17 +46,17 @@ UdpConnection::~UdpConnection()
 ConnectionResult UdpConnection::start()
 {
     if (!start_mavlink_receiver()) {
-        return ConnectionResult::CONNECTIONS_EXHAUSTED;
+        return ConnectionResult::ConnectionsExhausted;
     }
 
     ConnectionResult ret = setup_port();
-    if (ret != ConnectionResult::SUCCESS) {
+    if (ret != ConnectionResult::Success) {
         return ret;
     }
 
     start_recv_thread();
 
-    return ConnectionResult::SUCCESS;
+    return ConnectionResult::Success;
 }
 
 ConnectionResult UdpConnection::setup_port()
@@ -65,7 +65,7 @@ ConnectionResult UdpConnection::setup_port()
     WSADATA wsa;
     if (WSAStartup(MAKEWORD(2, 2), &wsa) != 0) {
         LogErr() << "Error: Winsock failed, error: %d", WSAGetLastError();
-        return ConnectionResult::SOCKET_ERROR;
+        return ConnectionResult::SocketError;
     }
 #endif
 
@@ -73,7 +73,7 @@ ConnectionResult UdpConnection::setup_port()
 
     if (_socket_fd < 0) {
         LogErr() << "socket error" << GET_ERROR(errno);
-        return ConnectionResult::SOCKET_ERROR;
+        return ConnectionResult::SocketError;
     }
 
     struct sockaddr_in addr {};
@@ -83,10 +83,10 @@ ConnectionResult UdpConnection::setup_port()
 
     if (bind(_socket_fd, reinterpret_cast<sockaddr*>(&addr), sizeof(addr)) != 0) {
         LogErr() << "bind error: " << GET_ERROR(errno);
-        return ConnectionResult::BIND_ERROR;
+        return ConnectionResult::BindError;
     }
 
-    return ConnectionResult::SUCCESS;
+    return ConnectionResult::Success;
 }
 
 void UdpConnection::start_recv_thread()
@@ -122,7 +122,7 @@ ConnectionResult UdpConnection::stop()
     // it can happen that we interfere with the parsing of a message.
     stop_mavlink_receiver();
 
-    return ConnectionResult::SUCCESS;
+    return ConnectionResult::Success;
 }
 
 bool UdpConnection::send_message(const mavlink_message_t& message)

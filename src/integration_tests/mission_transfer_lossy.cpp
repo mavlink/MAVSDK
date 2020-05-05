@@ -18,7 +18,7 @@ static std::atomic<unsigned> _lossy_counter{0};
 TEST_F(SitlTest, MissionTransferLossy)
 {
     Mavsdk dc;
-    ASSERT_EQ(dc.add_udp_connection(), ConnectionResult::SUCCESS);
+    ASSERT_EQ(dc.add_udp_connection(), ConnectionResult::Success);
 
     {
         LogInfo() << "Waiting to discover vehicle";

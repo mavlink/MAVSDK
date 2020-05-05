@@ -31,7 +31,7 @@ void takeoff_and_hover_at_altitude(float altitude_m)
     Mavsdk dc;
 
     ConnectionResult ret = dc.add_udp_connection();
-    ASSERT_EQ(ret, ConnectionResult::SUCCESS);
+    ASSERT_EQ(ret, ConnectionResult::Success);
 
     // Wait for system to connect via heartbeat.
     LogInfo() << "Waiting for system connect";

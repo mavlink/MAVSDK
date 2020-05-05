@@ -23,7 +23,7 @@ int main(int argc, const char* argv[])
     mavsdk::Mavsdk dc;
 
     mavsdk::ConnectionResult ret = dc.add_udp_connection();
-    if (ret != mavsdk::ConnectionResult::SUCCESS) {
+    if (ret != mavsdk::ConnectionResult::Success) {
         std::cout << "failed to add connection" << std::endl;
         return -1;
     }

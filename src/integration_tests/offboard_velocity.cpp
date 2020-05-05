@@ -14,7 +14,7 @@ TEST_F(SitlTest, OffboardVelocityNED)
     Mavsdk dc;
 
     ConnectionResult ret = dc.add_udp_connection();
-    ASSERT_EQ(ConnectionResult::SUCCESS, ret);
+    ASSERT_EQ(ConnectionResult::Success, ret);
 
     // Wait for system to connect via heartbeat.
     std::this_thread::sleep_for(std::chrono::seconds(2));
@@ -128,7 +128,7 @@ TEST_F(SitlTest, OffboardVelocityBody)
     Mavsdk dc;
 
     ConnectionResult ret = dc.add_udp_connection();
-    ASSERT_EQ(ConnectionResult::SUCCESS, ret);
+    ASSERT_EQ(ConnectionResult::Success, ret);
 
     // Wait for system to connect via heartbeat.
     std::this_thread::sleep_for(std::chrono::seconds(2));

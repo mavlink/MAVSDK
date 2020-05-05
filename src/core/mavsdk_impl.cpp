@@ -137,7 +137,7 @@ ConnectionResult MavsdkImpl::add_any_connection(const std::string& connection_ur
 {
     CliArg cli_arg;
     if (!cli_arg.parse(connection_url)) {
-        return ConnectionResult::CONNECTION_URL_INVALID;
+        return ConnectionResult::ConnectionUrlInvalid;
     }
 
     switch (cli_arg.get_protocol()) {
@@ -174,7 +174,7 @@ ConnectionResult MavsdkImpl::add_any_connection(const std::string& connection_ur
         }
 
         default:
-            return ConnectionResult::CONNECTION_ERROR;
+            return ConnectionResult::ConnectionError;
     }
 }
 
@@ -183,10 +183,10 @@ ConnectionResult MavsdkImpl::add_udp_connection(const std::string& local_ip, con
     auto new_conn = std::make_shared<UdpConnection>(
         std::bind(&MavsdkImpl::receive_message, this, std::placeholders::_1), local_ip, local_port);
     if (!new_conn) {
-        return ConnectionResult::CONNECTION_ERROR;
+        return ConnectionResult::ConnectionError;
     }
     ConnectionResult ret = new_conn->start();
-    if (ret == ConnectionResult::SUCCESS) {
+    if (ret == ConnectionResult::Success) {
         add_connection(new_conn);
     }
     return ret;
@@ -197,11 +197,11 @@ ConnectionResult MavsdkImpl::setup_udp_remote(const std::string& remote_ip, int 
     auto new_conn = std::make_shared<UdpConnection>(
         std::bind(&MavsdkImpl::receive_message, this, std::placeholders::_1), "0.0.0.0", 0);
     if (!new_conn) {
-        return ConnectionResult::CONNECTION_ERROR;
+        return ConnectionResult::ConnectionError;
     }
     ConnectionResult ret = new_conn->start();
     _is_single_system = true;
-    if (ret == ConnectionResult::SUCCESS) {
+    if (ret == ConnectionResult::Success) {
         new_conn->add_remote(remote_ip, remote_port);
         add_connection(new_conn);
         make_system_with_component(get_own_system_id(), get_own_component_id());
@@ -216,10 +216,10 @@ ConnectionResult MavsdkImpl::add_tcp_connection(const std::string& remote_ip, in
         remote_ip,
         remote_port);
     if (!new_conn) {
-        return ConnectionResult::CONNECTION_ERROR;
+        return ConnectionResult::ConnectionError;
     }
     ConnectionResult ret = new_conn->start();
-    if (ret == ConnectionResult::SUCCESS) {
+    if (ret == ConnectionResult::Success) {
         add_connection(new_conn);
     }
     return ret;
@@ -230,10 +230,10 @@ ConnectionResult MavsdkImpl::add_serial_connection(const std::string& dev_path, 
     auto new_conn = std::make_shared<SerialConnection>(
         std::bind(&MavsdkImpl::receive_message, this, std::placeholders::_1), dev_path, baudrate);
     if (!new_conn) {
-        return ConnectionResult::CONNECTION_ERROR;
+        return ConnectionResult::ConnectionError;
     }
     ConnectionResult ret = new_conn->start();
-    if (ret == ConnectionResult::SUCCESS) {
+    if (ret == ConnectionResult::Success) {
         add_connection(new_conn);
     }
     return ret;

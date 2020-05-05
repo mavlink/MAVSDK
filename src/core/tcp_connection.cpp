@@ -44,17 +44,17 @@ TcpConnection::~TcpConnection()
 ConnectionResult TcpConnection::start()
 {
     if (!start_mavlink_receiver()) {
-        return ConnectionResult::CONNECTIONS_EXHAUSTED;
+        return ConnectionResult::ConnectionsExhausted;
     }
 
     ConnectionResult ret = setup_port();
-    if (ret != ConnectionResult::SUCCESS) {
+    if (ret != ConnectionResult::Success) {
         return ret;
     }
 
     start_recv_thread();
 
-    return ConnectionResult::SUCCESS;
+    return ConnectionResult::Success;
 }
 
 ConnectionResult TcpConnection::setup_port()
@@ -64,7 +64,7 @@ ConnectionResult TcpConnection::setup_port()
     if (WSAStartup(MAKEWORD(2, 2), &wsa) != 0) {
         LogErr() << "Error: Winsock failed, error: %d", WSAGetLastError();
         _is_ok = false;
-        return ConnectionResult::SOCKET_ERROR;
+        return ConnectionResult::SocketError;
     }
 #endif
 
@@ -73,7 +73,7 @@ ConnectionResult TcpConnection::setup_port()
     if (_socket_fd < 0) {
         LogErr() << "socket error" << GET_ERROR(errno);
         _is_ok = false;
-        return ConnectionResult::SOCKET_ERROR;
+        return ConnectionResult::SocketError;
     }
 
     struct sockaddr_in remote_addr {};
@@ -85,11 +85,11 @@ ConnectionResult TcpConnection::setup_port()
         0) {
         LogErr() << "connect error: " << GET_ERROR(errno);
         _is_ok = false;
-        return ConnectionResult::SOCKET_CONNECTION_ERROR;
+        return ConnectionResult::SocketConnectionError;
     }
 
     _is_ok = true;
-    return ConnectionResult::SUCCESS;
+    return ConnectionResult::Success;
 }
 
 void TcpConnection::start_recv_thread()
@@ -125,7 +125,7 @@ ConnectionResult TcpConnection::stop()
     // it can happen that we interfere with the parsing of a message.
     stop_mavlink_receiver();
 
-    return ConnectionResult::SUCCESS;
+    return ConnectionResult::Success;
 }
 
 bool TcpConnection::send_message(const mavlink_message_t& message)

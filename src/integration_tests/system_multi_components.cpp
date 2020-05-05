@@ -28,7 +28,7 @@ TEST(SitlTestMultiple, SystemMultipleComponents)
     Mavsdk dc;
 
     // For both Autopilot and Camera
-    ASSERT_EQ(dc.add_udp_connection(), ConnectionResult::SUCCESS);
+    ASSERT_EQ(dc.add_udp_connection(), ConnectionResult::Success);
 
     // FIXME: As components send Heartbeats at 1Hz,
     // lets wait until atleast 2 of them gets discovered.
