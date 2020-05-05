@@ -235,8 +235,14 @@ void LogFilesImpl::download_log_file_async(
     {
         std::lock_guard<std::mutex> lock(_data.mutex);
 
-        // TODO: Check for errors while opening the file.
-        start_logfile(file_path);
+        if (!start_logfile(file_path)) {
+            if (callback) {
+                const auto tmp_callback = callback;
+                _parent->call_user_callback(
+                    [tmp_callback]() { tmp_callback(LogFiles::Result::FILE_OPEN_FAILED, NAN); });
+            }
+            return;
+        }
 
         _data.id = id;
         _data.callback = callback;
@@ -404,11 +410,13 @@ void LogFilesImpl::data_timeout()
     }
 }
 
-void LogFilesImpl::start_logfile(const std::string& path)
+bool LogFilesImpl::start_logfile(const std::string& path)
 {
     // Assumes to have the lock for _data.mutex.
 
     _data.file.open(path, std::ios::out | std::ios::binary);
+
+    return ((_data.file.rdstate() & std::ofstream::failbit) == 0);
 }
 
 void LogFilesImpl::write_part_to_disk()

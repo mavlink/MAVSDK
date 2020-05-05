@@ -39,7 +39,7 @@ private:
     void request_log_data(unsigned id, unsigned start, unsigned count);
     void data_timeout();
 
-    void start_logfile(const std::string& path);
+    bool start_logfile(const std::string& path);
     void write_part_to_disk();
     void finish_logfile();
     void report_progress(unsigned transferred, unsigned total);
