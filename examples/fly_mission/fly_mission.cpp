@@ -84,7 +84,7 @@ int main(int argc, char** argv)
             return 1;
         }
 
-        if (connection_result != ConnectionResult::SUCCESS) {
+        if (connection_result != ConnectionResult::Success) {
             std::cout << ERROR_CONSOLE_TEXT
                       << "Connection failed: " << connection_result_str(connection_result)
                       << NORMAL_CONSOLE_TEXT << std::endl;
@@ -188,7 +188,7 @@ int main(int argc, char** argv)
             mission_items, [prom](Mission::Result result) { prom->set_value(result); });
 
         const Mission::Result result = future_result.get();
-        if (result != Mission::Result::SUCCESS) {
+        if (result != Mission::Result::Success) {
             std::cout << "Mission upload failed (" << Mission::result_str(result) << "), exiting."
                       << std::endl;
             return 1;
@@ -238,7 +238,7 @@ int main(int argc, char** argv)
         mission->pause_mission_async([prom](Mission::Result result) { prom->set_value(result); });
 
         const Mission::Result result = future_result.get();
-        if (result != Mission::Result::SUCCESS) {
+        if (result != Mission::Result::Success) {
             std::cout << "Failed to pause mission (" << Mission::result_str(result) << ")"
                       << std::endl;
         } else {
@@ -258,7 +258,7 @@ int main(int argc, char** argv)
         mission->start_mission_async([prom](Mission::Result result) { prom->set_value(result); });
 
         const Mission::Result result = future_result.get();
-        if (result != Mission::Result::SUCCESS) {
+        if (result != Mission::Result::Success) {
             std::cout << "Failed to resume mission (" << Mission::result_str(result) << ")"
                       << std::endl;
         } else {
@@ -323,7 +323,7 @@ inline void handle_action_err_exit(Action::Result result, const std::string& mes
 
 inline void handle_mission_err_exit(Mission::Result result, const std::string& message)
 {
-    if (result != Mission::Result::SUCCESS) {
+    if (result != Mission::Result::Success) {
         std::cerr << ERROR_CONSOLE_TEXT << message << Mission::result_str(result)
                   << NORMAL_CONSOLE_TEXT << std::endl;
         exit(EXIT_FAILURE);
@@ -333,7 +333,7 @@ inline void handle_mission_err_exit(Mission::Result result, const std::string& m
 // Handles connection result
 inline void handle_connection_err_exit(ConnectionResult result, const std::string& message)
 {
-    if (result != ConnectionResult::SUCCESS) {
+    if (result != ConnectionResult::Success) {
         std::cerr << ERROR_CONSOLE_TEXT << message << connection_result_str(result)
                   << NORMAL_CONSOLE_TEXT << std::endl;
         exit(EXIT_FAILURE);

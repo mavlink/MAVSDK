@@ -49,7 +49,7 @@ bool start_discovery(Mavsdk& mavsdk, const std::string& connection_url)
 {
     const auto connection_result = mavsdk.add_any_connection(connection_url);
 
-    if (connection_result != ConnectionResult::SUCCESS) {
+    if (connection_result != ConnectionResult::Success) {
         std::cout << ERROR_CONSOLE_TEXT
                   << "Connection failed: " << connection_result_str(connection_result)
                   << NORMAL_CONSOLE_TEXT << std::endl;

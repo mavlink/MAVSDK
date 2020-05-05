@@ -27,7 +27,7 @@ int main(int argc, char** argv)
     const auto connection_url = argv[1];
     const auto connection_result = dc.add_any_connection(connection_url);
 
-    if (connection_result != ConnectionResult::SUCCESS) {
+    if (connection_result != ConnectionResult::Success) {
         std::cout << "Connection failed: " << connection_result_str(connection_result) << std::endl;
         return 1;
     }
@@ -90,7 +90,7 @@ create_calibration_callback(std::promise<void>& calibration_promise)
     return [&calibration_promise](
                const Calibration::Result result, const Calibration::ProgressData progress_data) {
         switch (result) {
-            case Calibration::Result::SUCCESS:
+            case Calibration::Result::Success:
                 std::cout << "--- Calibration succeeded!" << std::endl;
                 calibration_promise.set_value();
                 break;

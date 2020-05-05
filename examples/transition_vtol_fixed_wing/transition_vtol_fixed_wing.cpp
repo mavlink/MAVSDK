@@ -31,7 +31,7 @@ int main(int argc, char** argv)
 
     // Add connection specified by CLI argument.
     const ConnectionResult connection_result = dc.add_any_connection(connection_url);
-    if (connection_result != ConnectionResult::SUCCESS) {
+    if (connection_result != ConnectionResult::Success) {
         std::cout << ERROR_CONSOLE_TEXT
                   << "Connection failed: " << connection_result_str(connection_result)
                   << NORMAL_CONSOLE_TEXT << std::endl;
@@ -51,7 +51,7 @@ int main(int argc, char** argv)
 
     // We want to listen to the altitude of the drone at 1 Hz.
     const Telemetry::Result set_rate_result = telemetry->set_rate_position(1.0);
-    if (set_rate_result != Telemetry::Result::SUCCESS) {
+    if (set_rate_result != Telemetry::Result::Success) {
         std::cout << ERROR_CONSOLE_TEXT
                   << "Setting rate failed: " << Telemetry::result_str(set_rate_result)
                   << NORMAL_CONSOLE_TEXT << std::endl;

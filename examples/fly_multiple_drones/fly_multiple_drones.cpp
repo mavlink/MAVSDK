@@ -108,7 +108,7 @@ int main(int argc, char* argv[])
     // executable
     for (int i = 1; i <= total_ports_used; ++i) {
         ConnectionResult connection_result = dc.add_any_connection(argv[i]);
-        if (connection_result != ConnectionResult::SUCCESS) {
+        if (connection_result != ConnectionResult::Success) {
             std::cerr << ERROR_CONSOLE_TEXT
                       << "Connection error: " << connection_result_str(connection_result)
                       << NORMAL_CONSOLE_TEXT << std::endl;
@@ -161,7 +161,7 @@ void complete_mission(std::string qgc_plan, System& system)
     // We want to listen to the telemetry data at 1 Hz.
     const Telemetry::Result set_rate_result = telemetry->set_rate_position(1.0);
 
-    if (set_rate_result != Telemetry::Result::SUCCESS) {
+    if (set_rate_result != Telemetry::Result::Success) {
         std::cerr << ERROR_CONSOLE_TEXT
                   << "Setting rate failed:" << Telemetry::result_str(set_rate_result)
                   << NORMAL_CONSOLE_TEXT << std::endl;
@@ -269,7 +269,7 @@ static void handle_action_err_exit(Action::Result result, const std::string& mes
 
 static void handle_mission_err_exit(Mission::Result result, const std::string& message)
 {
-    if (result != Mission::Result::SUCCESS) {
+    if (result != Mission::Result::Success) {
         std::cerr << ERROR_CONSOLE_TEXT << message << Mission::result_str(result)
                   << NORMAL_CONSOLE_TEXT << std::endl;
         exit(EXIT_FAILURE);
