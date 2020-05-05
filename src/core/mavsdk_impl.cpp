@@ -141,7 +141,7 @@ ConnectionResult MavsdkImpl::add_any_connection(const std::string& connection_ur
     }
 
     switch (cli_arg.get_protocol()) {
-        case CliArg::Protocol::UDP: {
+        case CliArg::Protocol::Udp: {
             std::string path = Mavsdk::DEFAULT_UDP_BIND_IP;
             int port = Mavsdk::DEFAULT_UDP_PORT;
             if (!cli_arg.get_path().empty()) {
@@ -153,7 +153,7 @@ ConnectionResult MavsdkImpl::add_any_connection(const std::string& connection_ur
             return add_udp_connection(path, port);
         }
 
-        case CliArg::Protocol::TCP: {
+        case CliArg::Protocol::Tcp: {
             std::string path = Mavsdk::DEFAULT_TCP_REMOTE_IP;
             int port = Mavsdk::DEFAULT_TCP_REMOTE_PORT;
             if (!cli_arg.get_path().empty()) {
@@ -165,7 +165,7 @@ ConnectionResult MavsdkImpl::add_any_connection(const std::string& connection_ur
             return add_tcp_connection(path, port);
         }
 
-        case CliArg::Protocol::SERIAL: {
+        case CliArg::Protocol::Serial: {
             int baudrate = Mavsdk::DEFAULT_SERIAL_BAUDRATE;
             if (cli_arg.get_baudrate()) {
                 baudrate = cli_arg.get_baudrate();

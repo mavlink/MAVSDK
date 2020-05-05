@@ -6,7 +6,7 @@ namespace mavsdk {
 
 class CliArg {
 public:
-    enum class Protocol { NONE, UDP, TCP, SERIAL };
+    enum class Protocol { None, Udp, Tcp, Serial };
 
     bool parse(const std::string& uri);
 
@@ -25,7 +25,7 @@ private:
     bool find_port(std::string& rest);
     bool find_baudrate(std::string& rest);
 
-    Protocol _protocol{Protocol::NONE};
+    Protocol _protocol{Protocol::None};
     std::string _path{};
     int _port{0};
     int _baudrate{0};
