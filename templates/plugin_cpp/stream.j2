@@ -10,8 +10,8 @@ void {{ plugin_name.upper_camel_case }}::{% if not is_finite %}subscribe_{% endi
 std::vector<{% if not return_type.is_primitive %}{{ plugin_name.upper_camel_case }}::{% endif %}{{ return_type.inner_name }}>
 {% else %}
 {% if not return_type.is_primitive %}{{ plugin_name.upper_camel_case }}::{% endif %}{{ return_type.name }}
-{%endif -%} {{ plugin_name.upper_camel_case }}::{{ name.lower_snake_case }}() const
+{%endif -%} {{ plugin_name.upper_camel_case }}::{{ name.lower_snake_case }}({% for param in params %}{{ param.type_info.name }} {{ param.name.lower_snake_case }}{% if not loop.last %}, {% endif %}{% endfor %}) const
 {
-    return _impl->{{ name.lower_snake_case }}();
+    return _impl->{{ name.lower_snake_case }}({% for param in params %}{{ param.name.lower_snake_case }}{% if not loop.last %}, {% endif %}{% endfor %});
 }
 {% endif %}
