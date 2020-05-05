@@ -11,7 +11,6 @@ add_subdirectory(geofence)
 add_subdirectory(gimbal)
 add_subdirectory(info)
 add_subdirectory(log_files)
-#add_subdirectory(logging) # Not implemented completely
 add_subdirectory(ftp)
 add_subdirectory(mission)
 add_subdirectory(mission_raw)
