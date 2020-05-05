@@ -39,7 +39,7 @@ Offboard::Result OffboardImpl::start()
 {
     {
         std::lock_guard<std::mutex> lock(_mutex);
-        if (_mode == Mode::NOT_ACTIVE) {
+        if (_mode == Mode::NotActive) {
             return Offboard::Result::NoSetpointSet;
         }
         _last_started = _time.steady_time();
@@ -53,7 +53,7 @@ Offboard::Result OffboardImpl::stop()
 {
     {
         std::lock_guard<std::mutex> lock(_mutex);
-        if (_mode != Mode::NOT_ACTIVE) {
+        if (_mode != Mode::NotActive) {
             stop_sending_setpoints();
         }
     }
@@ -67,7 +67,7 @@ void OffboardImpl::start_async(Offboard::result_callback_t callback)
     {
         std::lock_guard<std::mutex> lock(_mutex);
 
-        if (_mode == Mode::NOT_ACTIVE) {
+        if (_mode == Mode::NotActive) {
             if (callback) {
                 callback(Offboard::Result::NoSetpointSet);
             }
@@ -85,7 +85,7 @@ void OffboardImpl::stop_async(Offboard::result_callback_t callback)
 {
     {
         std::lock_guard<std::mutex> lock(_mutex);
-        if (_mode != Mode::NOT_ACTIVE) {
+        if (_mode != Mode::NotActive) {
             stop_sending_setpoints();
         }
     }
@@ -98,7 +98,7 @@ void OffboardImpl::stop_async(Offboard::result_callback_t callback)
 bool OffboardImpl::is_active()
 {
     std::lock_guard<std::mutex> lock(_mutex);
-    return (_mode != Mode::NOT_ACTIVE);
+    return (_mode != Mode::NotActive);
 }
 
 void OffboardImpl::receive_command_result(
@@ -115,7 +115,7 @@ Offboard::Result OffboardImpl::set_position_ned(Offboard::PositionNedYaw positio
     _mutex.lock();
     _position_ned_yaw = position_ned_yaw;
 
-    if (_mode != Mode::POSITION_Ned) {
+    if (_mode != Mode::PositionNed) {
         if (_call_every_cookie) {
             // If we're already sending other setpoints, stop that now.
             _parent->remove_call_every(_call_every_cookie);
@@ -125,7 +125,7 @@ Offboard::Result OffboardImpl::set_position_ned(Offboard::PositionNedYaw positio
         _parent->add_call_every(
             [this]() { send_position_ned(); }, SEND_INTERVAL_S, &_call_every_cookie);
 
-        _mode = Mode::POSITION_Ned;
+        _mode = Mode::PositionNed;
     } else {
         // We're already sending these kind of setpoints. Since the setpoint change, let's
         // reschedule the next call, so we don't send setpoints too often.
@@ -142,7 +142,7 @@ Offboard::Result OffboardImpl::set_velocity_ned(Offboard::VelocityNedYaw velocit
     _mutex.lock();
     _velocity_ned_yaw = velocity_ned_yaw;
 
-    if (_mode != Mode::VELOCITY_Ned) {
+    if (_mode != Mode::VelocityNed) {
         if (_call_every_cookie) {
             // If we're already sending other setpoints, stop that now.
             _parent->remove_call_every(_call_every_cookie);
@@ -152,7 +152,7 @@ Offboard::Result OffboardImpl::set_velocity_ned(Offboard::VelocityNedYaw velocit
         _parent->add_call_every(
             [this]() { send_velocity_ned(); }, SEND_INTERVAL_S, &_call_every_cookie);
 
-        _mode = Mode::VELOCITY_Ned;
+        _mode = Mode::VelocityNed;
     } else {
         // We're already sending these kind of setpoints. Since the setpoint change, let's
         // reschedule the next call, so we don't send setpoints too often.
@@ -170,7 +170,7 @@ OffboardImpl::set_velocity_body(Offboard::VelocityBodyYawspeed velocity_body_yaw
     _mutex.lock();
     _velocity_body_yawspeed = velocity_body_yawspeed;
 
-    if (_mode != Mode::VELOCITY_BODY) {
+    if (_mode != Mode::VelocityBody) {
         if (_call_every_cookie) {
             // If we're already sending other setpoints, stop that now.
             _parent->remove_call_every(_call_every_cookie);
@@ -180,7 +180,7 @@ OffboardImpl::set_velocity_body(Offboard::VelocityBodyYawspeed velocity_body_yaw
         _parent->add_call_every(
             [this]() { send_velocity_body(); }, SEND_INTERVAL_S, &_call_every_cookie);
 
-        _mode = Mode::VELOCITY_BODY;
+        _mode = Mode::VelocityBody;
     } else {
         // We're already sending these kind of setpoints. Since the setpoint change, let's
         // reschedule the next call, so we don't send setpoints too often.
@@ -197,7 +197,7 @@ Offboard::Result OffboardImpl::set_attitude(Offboard::Attitude attitude)
     _mutex.lock();
     _attitude = attitude;
 
-    if (_mode != Mode::ATTITUDE) {
+    if (_mode != Mode::Attitude) {
         if (_call_every_cookie) {
             // If we're already sending other setpoints, stop that now.
             _parent->remove_call_every(_call_every_cookie);
@@ -207,7 +207,7 @@ Offboard::Result OffboardImpl::set_attitude(Offboard::Attitude attitude)
         _parent->add_call_every(
             [this]() { send_attitude(); }, SEND_INTERVAL_S, &_call_every_cookie);
 
-        _mode = Mode::ATTITUDE;
+        _mode = Mode::Attitude;
     } else {
         // We're already sending these kind of setpoints. Since the setpoint change, let's
         // reschedule the next call, so we don't send setpoints too often.
@@ -224,7 +224,7 @@ Offboard::Result OffboardImpl::set_attitude_rate(Offboard::AttitudeRate attitude
     _mutex.lock();
     _attitude_rate = attitude_rate;
 
-    if (_mode != Mode::ATTITUDE_RATE) {
+    if (_mode != Mode::AttitudeRate) {
         if (_call_every_cookie) {
             // If we're already sending other setpoints, stop that now.
             _parent->remove_call_every(_call_every_cookie);
@@ -234,7 +234,7 @@ Offboard::Result OffboardImpl::set_attitude_rate(Offboard::AttitudeRate attitude
         _parent->add_call_every(
             [this]() { send_attitude_rate(); }, SEND_INTERVAL_S, &_call_every_cookie);
 
-        _mode = Mode::ATTITUDE_RATE;
+        _mode = Mode::AttitudeRate;
     } else {
         // We're already sending these kind of setpoints. Since the setpoint change, let's
         // reschedule the next call, so we don't send setpoints too often.
@@ -251,7 +251,7 @@ Offboard::Result OffboardImpl::set_actuator_control(Offboard::ActuatorControl ac
     _mutex.lock();
     _actuator_control = actuator_control;
 
-    if (_mode != Mode::ACTUATOR_CONTROL) {
+    if (_mode != Mode::ActuatorControl) {
         if (_call_every_cookie) {
             // If we're already sending other setpoints, stop that now.
             _parent->remove_call_every(_call_every_cookie);
@@ -261,7 +261,7 @@ Offboard::Result OffboardImpl::set_actuator_control(Offboard::ActuatorControl ac
         _parent->add_call_every(
             [this]() { send_actuator_control(); }, SEND_INTERVAL_S, &_call_every_cookie);
 
-        _mode = Mode::ACTUATOR_CONTROL;
+        _mode = Mode::ActuatorControl;
     } else {
         // We're already sending these kind of values. Since the value changes, let's
         // reschedule the next call, so we don't send values too often.
@@ -583,7 +583,7 @@ void OffboardImpl::process_heartbeat(const mavlink_message_t& message)
         // Therefore, we make sure we don't stop too eagerly and ignore
         // possibly stale heartbeats for some time.
         std::lock_guard<std::mutex> lock(_mutex);
-        if (!offboard_mode_active && _mode != Mode::NOT_ACTIVE &&
+        if (!offboard_mode_active && _mode != Mode::NotActive &&
             _time.elapsed_since_s(_last_started) > 1.5) {
             // It seems that we are no longer in offboard mode but still trying to send
             // setpoints. Let's stop for now.
@@ -600,7 +600,7 @@ void OffboardImpl::stop_sending_setpoints()
         _parent->remove_call_every(_call_every_cookie);
         _call_every_cookie = nullptr;
     }
-    _mode = Mode::NOT_ACTIVE;
+    _mode = Mode::NotActive;
 }
 
 Offboard::Result OffboardImpl::offboard_result_from_command_result(MAVLinkCommands::Result result)
