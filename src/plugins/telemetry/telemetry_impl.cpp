@@ -459,17 +459,17 @@ Telemetry::Result
 TelemetryImpl::telemetry_result_from_command_result(MAVLinkCommands::Result command_result)
 {
     switch (command_result) {
-        case MAVLinkCommands::Result::SUCCESS:
+        case MAVLinkCommands::Result::Success:
             return Telemetry::Result::Success;
-        case MAVLinkCommands::Result::NO_SYSTEM:
+        case MAVLinkCommands::Result::NoSystem:
             return Telemetry::Result::NoSystem;
-        case MAVLinkCommands::Result::CONNECTION_ERROR:
+        case MAVLinkCommands::Result::ConnectionError:
             return Telemetry::Result::ConnectionError;
-        case MAVLinkCommands::Result::BUSY:
+        case MAVLinkCommands::Result::Busy:
             return Telemetry::Result::Busy;
-        case MAVLinkCommands::Result::COMMAND_DENIED:
+        case MAVLinkCommands::Result::CommandDenied:
             return Telemetry::Result::CommandDenied;
-        case MAVLinkCommands::Result::TIMEOUT:
+        case MAVLinkCommands::Result::Timeout:
             return Telemetry::Result::Timeout;
         default:
             return Telemetry::Result::Unknown;
@@ -1064,33 +1064,33 @@ Telemetry::FlightMode
 TelemetryImpl::telemetry_flight_mode_from_flight_mode(SystemImpl::FlightMode flight_mode)
 {
     switch (flight_mode) {
-        case SystemImpl::FlightMode::READY:
+        case SystemImpl::FlightMode::Ready:
             return Telemetry::FlightMode::Ready;
-        case SystemImpl::FlightMode::TAKEOFF:
+        case SystemImpl::FlightMode::Takeoff:
             return Telemetry::FlightMode::Takeoff;
-        case SystemImpl::FlightMode::HOLD:
+        case SystemImpl::FlightMode::Hold:
             return Telemetry::FlightMode::Hold;
-        case SystemImpl::FlightMode::MISSION:
+        case SystemImpl::FlightMode::Mission:
             return Telemetry::FlightMode::Mission;
-        case SystemImpl::FlightMode::RETURN_TO_LAUNCH:
+        case SystemImpl::FlightMode::ReturnToLaunch:
             return Telemetry::FlightMode::ReturnToLaunch;
-        case SystemImpl::FlightMode::LAND:
+        case SystemImpl::FlightMode::Land:
             return Telemetry::FlightMode::Land;
-        case SystemImpl::FlightMode::OFFBOARD:
+        case SystemImpl::FlightMode::Offboard:
             return Telemetry::FlightMode::Offboard;
-        case SystemImpl::FlightMode::FOLLOW_ME:
+        case SystemImpl::FlightMode::FollowMe:
             return Telemetry::FlightMode::FollowMe;
-        case SystemImpl::FlightMode::MANUAL:
+        case SystemImpl::FlightMode::Manual:
             return Telemetry::FlightMode::Manual;
-        case SystemImpl::FlightMode::POSCTL:
+        case SystemImpl::FlightMode::Posctl:
             return Telemetry::FlightMode::Posctl;
-        case SystemImpl::FlightMode::ALTCTL:
+        case SystemImpl::FlightMode::Altctl:
             return Telemetry::FlightMode::Altctl;
-        case SystemImpl::FlightMode::RATTITUDE:
+        case SystemImpl::FlightMode::Rattitude:
             return Telemetry::FlightMode::Rattitude;
-        case SystemImpl::FlightMode::ACRO:
+        case SystemImpl::FlightMode::Acro:
             return Telemetry::FlightMode::Acro;
-        case SystemImpl::FlightMode::STABILIZED:
+        case SystemImpl::FlightMode::Stabilized:
             return Telemetry::FlightMode::Stabilized;
         default:
             return Telemetry::FlightMode::Unknown;
@@ -1099,7 +1099,7 @@ TelemetryImpl::telemetry_flight_mode_from_flight_mode(SystemImpl::FlightMode fli
 
 void TelemetryImpl::receive_param_cal_gyro(MAVLinkParameters::Result result, int value)
 {
-    if (result != MAVLinkParameters::Result::SUCCESS) {
+    if (result != MAVLinkParameters::Result::Success) {
         LogErr() << "Error: Param for gyro cal failed.";
         return;
     }
@@ -1110,7 +1110,7 @@ void TelemetryImpl::receive_param_cal_gyro(MAVLinkParameters::Result result, int
 
 void TelemetryImpl::receive_param_cal_accel(MAVLinkParameters::Result result, int value)
 {
-    if (result != MAVLinkParameters::Result::SUCCESS) {
+    if (result != MAVLinkParameters::Result::Success) {
         LogErr() << "Error: Param for accel cal failed.";
         return;
     }
@@ -1121,7 +1121,7 @@ void TelemetryImpl::receive_param_cal_accel(MAVLinkParameters::Result result, in
 
 void TelemetryImpl::receive_param_cal_mag(MAVLinkParameters::Result result, int value)
 {
-    if (result != MAVLinkParameters::Result::SUCCESS) {
+    if (result != MAVLinkParameters::Result::Success) {
         LogErr() << "Error: Param for mag cal failed.";
         return;
     }
@@ -1133,7 +1133,7 @@ void TelemetryImpl::receive_param_cal_mag(MAVLinkParameters::Result result, int 
 #ifdef LEVEL_CALIBRATION
 void TelemetryImpl::receive_param_cal_level(MAVLinkParameters::Result result, float value)
 {
-    if (result != MAVLinkParameters::Result::SUCCESS) {
+    if (result != MAVLinkParameters::Result::Success) {
         LogErr() << "Error: Param for level cal failed.";
         return;
     }
@@ -1145,7 +1145,7 @@ void TelemetryImpl::receive_param_cal_level(MAVLinkParameters::Result result, fl
 
 void TelemetryImpl::receive_param_hitl(MAVLinkParameters::Result result, int value)
 {
-    if (result != MAVLinkParameters::Result::SUCCESS) {
+    if (result != MAVLinkParameters::Result::Success) {
         LogErr() << "Error: Param to determine hitl failed.";
         return;
     }

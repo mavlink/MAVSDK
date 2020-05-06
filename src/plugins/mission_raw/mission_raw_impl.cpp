@@ -296,7 +296,7 @@ MissionRaw::Result MissionRawImpl::start_mission()
 void MissionRawImpl::start_mission_async(const MissionRaw::result_callback_t& callback)
 {
     _parent->set_flight_mode_async(
-        SystemImpl::FlightMode::MISSION, [this, callback](MAVLinkCommands::Result result, float) {
+        SystemImpl::FlightMode::Mission, [this, callback](MAVLinkCommands::Result result, float) {
             report_flight_mode_change(callback, result);
         });
 }
@@ -313,7 +313,7 @@ MissionRaw::Result MissionRawImpl::pause_mission()
 void MissionRawImpl::pause_mission_async(const MissionRaw::result_callback_t& callback)
 {
     _parent->set_flight_mode_async(
-        SystemImpl::FlightMode::HOLD, [this, callback](MAVLinkCommands::Result result, float) {
+        SystemImpl::FlightMode::Hold, [this, callback](MAVLinkCommands::Result result, float) {
             report_flight_mode_change(callback, result);
         });
 }
@@ -332,21 +332,21 @@ void MissionRawImpl::report_flight_mode_change(
 MissionRaw::Result MissionRawImpl::command_result_to_mission_result(MAVLinkCommands::Result result)
 {
     switch (result) {
-        case MAVLinkCommands::Result::SUCCESS:
+        case MAVLinkCommands::Result::Success:
             return MissionRaw::Result::Success;
-        case MAVLinkCommands::Result::NO_SYSTEM:
+        case MAVLinkCommands::Result::NoSystem:
             return MissionRaw::Result::Error; // FIXME
-        case MAVLinkCommands::Result::CONNECTION_ERROR:
+        case MAVLinkCommands::Result::ConnectionError:
             return MissionRaw::Result::Error; // FIXME
-        case MAVLinkCommands::Result::BUSY:
+        case MAVLinkCommands::Result::Busy:
             return MissionRaw::Result::Busy;
-        case MAVLinkCommands::Result::COMMAND_DENIED:
+        case MAVLinkCommands::Result::CommandDenied:
             return MissionRaw::Result::Error; // FIXME
-        case MAVLinkCommands::Result::TIMEOUT:
+        case MAVLinkCommands::Result::Timeout:
             return MissionRaw::Result::Timeout;
-        case MAVLinkCommands::Result::IN_PROGRESS:
+        case MAVLinkCommands::Result::InProgress:
             return MissionRaw::Result::Busy; // FIXME
-        case MAVLinkCommands::Result::UNKNOWN_ERROR:
+        case MAVLinkCommands::Result::UnknownError:
             return MissionRaw::Result::Unknown;
         default:
             return MissionRaw::Result::Unknown;

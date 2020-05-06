@@ -170,7 +170,7 @@ TEST(FtpTest, ListDirectory)
     Mavsdk mavsdk;
 
     ConnectionResult ret = mavsdk.add_udp_connection();
-    ASSERT_EQ(ret, ConnectionResult::SUCCESS);
+    ASSERT_EQ(ret, ConnectionResult::Success);
     System& system = mavsdk.system();
     auto ftp = std::make_shared<Ftp>(system);
 
@@ -187,7 +187,7 @@ TEST(FtpTest, DownloadFile)
     Mavsdk mavsdk;
 
     ConnectionResult ret = mavsdk.add_udp_connection();
-    ASSERT_EQ(ret, ConnectionResult::SUCCESS);
+    ASSERT_EQ(ret, ConnectionResult::Success);
     System& system = mavsdk.system();
     auto ftp = std::make_shared<Ftp>(system);
 
@@ -221,7 +221,7 @@ TEST(FtpTest, UploadFiles)
     Mavsdk mavsdk;
 
     ConnectionResult ret = mavsdk.add_udp_connection();
-    ASSERT_EQ(ret, ConnectionResult::SUCCESS);
+    ASSERT_EQ(ret, ConnectionResult::Success);
     System& system = mavsdk.system();
     auto ftp = std::make_shared<Ftp>(system);
 
@@ -287,14 +287,14 @@ TEST(FtpTest, TestServer)
     Mavsdk::Configuration config_gcs(Mavsdk::Configuration::UsageType::GroundStation);
     mavsdk_gcs.set_configuration(config_gcs);
     ret = mavsdk_gcs.add_udp_connection(24550);
-    ASSERT_EQ(ret, ConnectionResult::SUCCESS);
+    ASSERT_EQ(ret, ConnectionResult::Success);
     System& system_gcs = mavsdk_gcs.system();
 
     Mavsdk mavsdk_cc;
     Mavsdk::Configuration config_cc(Mavsdk::Configuration::UsageType::GroundStation);
     mavsdk_cc.set_configuration(config_cc);
     ret = mavsdk_cc.setup_udp_remote("127.0.0.1", 24550);
-    ASSERT_EQ(ret, ConnectionResult::SUCCESS);
+    ASSERT_EQ(ret, ConnectionResult::Success);
     System& system_cc = mavsdk_cc.system();
 
 #ifdef ENABLE_MAVLINK_PASSTHROUGH

@@ -13,7 +13,7 @@ TEST(HardwareTest, LogFiles)
 
     // ConnectionResult ret = dc.add_serial_connection("/dev/ttyACM0");
     ConnectionResult ret = dc.add_udp_connection();
-    ASSERT_EQ(ret, ConnectionResult::SUCCESS);
+    ASSERT_EQ(ret, ConnectionResult::Success);
 
     std::this_thread::sleep_for(std::chrono::seconds(2));
 

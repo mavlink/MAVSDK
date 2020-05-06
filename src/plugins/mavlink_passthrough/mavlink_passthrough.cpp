@@ -24,13 +24,13 @@ void MavlinkPassthrough::subscribe_message_async(
 std::string MavlinkPassthrough::result_str(Result result)
 {
     switch (result) {
-        case MavlinkPassthrough::Result::SUCCESS:
+        case MavlinkPassthrough::Result::Success:
             return "Success";
-        case MavlinkPassthrough::Result::CONNECTION_ERROR:
+        case MavlinkPassthrough::Result::ConnectionError:
             return "Connection error";
         default:
             // FALLTHROUGH
-        case MavlinkPassthrough::Result::UNKNOWN:
+        case MavlinkPassthrough::Result::Unknown:
             return "Unknown";
     }
 }

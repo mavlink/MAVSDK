@@ -60,17 +60,17 @@ SerialConnection::~SerialConnection()
 ConnectionResult SerialConnection::start()
 {
     if (!start_mavlink_receiver()) {
-        return ConnectionResult::CONNECTIONS_EXHAUSTED;
+        return ConnectionResult::ConnectionsExhausted;
     }
 
     ConnectionResult ret = setup_port();
-    if (ret != ConnectionResult::SUCCESS) {
+    if (ret != ConnectionResult::Success) {
         return ret;
     }
 
     start_recv_thread();
 
-    return ConnectionResult::SUCCESS;
+    return ConnectionResult::Success;
 }
 
 ConnectionResult SerialConnection::setup_port()
@@ -80,13 +80,13 @@ ConnectionResult SerialConnection::setup_port()
     _fd = open(_serial_node.c_str(), O_RDWR | O_NOCTTY | O_NONBLOCK);
     if (_fd == -1) {
         LogErr() << "open failed: " << GET_ERROR();
-        return ConnectionResult::CONNECTION_ERROR;
+        return ConnectionResult::ConnectionError;
     }
     // We need to clear the O_NONBLOCK again because we can block while reading
     // as we do it in a separate thread.
     if (fcntl(_fd, F_SETFL, 0) == -1) {
         LogErr() << "fcntl failed: " << GET_ERROR();
-        return ConnectionResult::CONNECTION_ERROR;
+        return ConnectionResult::ConnectionError;
     }
 #elif defined(WINDOWS)
     _handle = CreateFile(
@@ -100,7 +100,7 @@ ConnectionResult SerialConnection::setup_port()
 
     if (_handle == INVALID_HANDLE_VALUE) {
         LogErr() << "CreateFile failed with: " << GET_ERROR();
-        return ConnectionResult::CONNECTION_ERROR;
+        return ConnectionResult::ConnectionError;
     }
 #endif
 
@@ -111,7 +111,7 @@ ConnectionResult SerialConnection::setup_port()
     if (tcgetattr(_fd, &tc) != 0) {
         LogErr() << "tcgetattr failed: " << GET_ERROR();
         close(_fd);
-        return ConnectionResult::CONNECTION_ERROR;
+        return ConnectionResult::ConnectionError;
     }
 #endif
 
@@ -136,25 +136,25 @@ ConnectionResult SerialConnection::setup_port()
 #endif
 
     if (baudrate_or_define == -1) {
-        return ConnectionResult::BAUDRATE_UNKNOWN;
+        return ConnectionResult::BaudrateUnknown;
     }
 
     if (cfsetispeed(&tc, baudrate_or_define) != 0) {
         LogErr() << "cfsetispeed failed: " << GET_ERROR();
         close(_fd);
-        return ConnectionResult::CONNECTION_ERROR;
+        return ConnectionResult::ConnectionError;
     }
 
     if (cfsetospeed(&tc, baudrate_or_define) != 0) {
         LogErr() << "cfsetospeed failed: " << GET_ERROR();
         close(_fd);
-        return ConnectionResult::CONNECTION_ERROR;
+        return ConnectionResult::ConnectionError;
     }
 
     if (tcsetattr(_fd, TCSANOW, &tc) != 0) {
         LogErr() << "tcsetattr failed: " << GET_ERROR();
         close(_fd);
-        return ConnectionResult::CONNECTION_ERROR;
+        return ConnectionResult::ConnectionError;
     }
 #endif
 
@@ -165,7 +165,7 @@ ConnectionResult SerialConnection::setup_port()
 
     if (!GetCommState(_handle, &dcb)) {
         LogErr() << "GetCommState failed with error: " << GET_ERROR();
-        return ConnectionResult::CONNECTION_ERROR;
+        return ConnectionResult::ConnectionError;
     }
 
     dcb.BaudRate = _baudrate;
@@ -182,7 +182,7 @@ ConnectionResult SerialConnection::setup_port()
 
     if (!SetCommState(_handle, &dcb)) {
         LogErr() << "SetCommState failed with error: " << GET_ERROR();
-        return ConnectionResult::CONNECTION_ERROR;
+        return ConnectionResult::ConnectionError;
     }
 
     COMMTIMEOUTS timeout = {0, 0, 0, 0, 0};
@@ -195,12 +195,12 @@ ConnectionResult SerialConnection::setup_port()
 
     if (!SetCommTimeouts(_handle, &timeout)) {
         LogErr() << "SetCommTimeouts failed with error: " << GET_ERROR();
-        return ConnectionResult::CONNECTION_ERROR;
+        return ConnectionResult::ConnectionError;
     }
 
 #endif
 
-    return ConnectionResult::SUCCESS;
+    return ConnectionResult::Success;
 }
 
 void SerialConnection::start_recv_thread()
@@ -228,7 +228,7 @@ ConnectionResult SerialConnection::stop()
     // it can happen that we interfere with the parsing of a message.
     stop_mavlink_receiver();
 
-    return ConnectionResult::SUCCESS;
+    return ConnectionResult::Success;
 }
 
 bool SerialConnection::send_message(const mavlink_message_t& message)

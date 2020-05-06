@@ -26,7 +26,7 @@ TEST_F(SitlTest, FollowMeOneLocation)
     Mavsdk dc;
 
     ConnectionResult ret = dc.add_udp_connection();
-    ASSERT_EQ(ConnectionResult::SUCCESS, ret);
+    ASSERT_EQ(ConnectionResult::Success, ret);
 
     // Wait for system to connect via heartbeat.
     sleep_for(seconds(2));
@@ -101,7 +101,7 @@ TEST_F(SitlTest, FollowMeMultiLocationWithConfig)
     Mavsdk dc;
 
     ConnectionResult ret = dc.add_udp_connection();
-    ASSERT_EQ(ConnectionResult::SUCCESS, ret);
+    ASSERT_EQ(ConnectionResult::Success, ret);
 
     // Wait for system to connect via heartbeat.
     ASSERT_TRUE(poll_condition_with_timeout(

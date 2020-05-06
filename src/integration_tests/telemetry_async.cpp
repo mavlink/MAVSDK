@@ -75,7 +75,7 @@ TEST_F(SitlTest, TelemetryAsync)
 
     uint64_t uuid = uuids.at(0);
 
-    ASSERT_EQ(ret, ConnectionResult::SUCCESS);
+    ASSERT_EQ(ret, ConnectionResult::Success);
 
     System& system = dc.system(uuid);
 

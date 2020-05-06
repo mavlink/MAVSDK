@@ -39,7 +39,7 @@ TEST(CameraTest, ShowSettingsAndOptions)
     Mavsdk dc;
 
     ConnectionResult ret = dc.add_udp_connection();
-    ASSERT_EQ(ret, ConnectionResult::SUCCESS);
+    ASSERT_EQ(ret, ConnectionResult::Success);
 
     // Wait for system to connect via heartbeat.
     std::this_thread::sleep_for(std::chrono::seconds(2));
@@ -128,7 +128,7 @@ TEST(CameraTest, SetSettings)
     Mavsdk dc;
 
     ConnectionResult connection_ret = dc.add_udp_connection();
-    ASSERT_EQ(connection_ret, ConnectionResult::SUCCESS);
+    ASSERT_EQ(connection_ret, ConnectionResult::Success);
 
     // Wait for system to connect via heartbeat.
     std::this_thread::sleep_for(std::chrono::seconds(2));
@@ -266,7 +266,7 @@ TEST(CameraTest, SubscribeCurrentSettings)
     Mavsdk dc;
 
     ConnectionResult connection_ret = dc.add_udp_connection();
-    ASSERT_EQ(connection_ret, ConnectionResult::SUCCESS);
+    ASSERT_EQ(connection_ret, ConnectionResult::Success);
 
     // Wait for system to connect via heartbeat.
     std::this_thread::sleep_for(std::chrono::seconds(2));
@@ -328,7 +328,7 @@ TEST(CameraTest, SubscribePossibleSettings)
     Mavsdk dc;
 
     ConnectionResult connection_ret = dc.add_udp_connection();
-    ASSERT_EQ(connection_ret, ConnectionResult::SUCCESS);
+    ASSERT_EQ(connection_ret, ConnectionResult::Success);
 
     // Wait for system to connect via heartbeat.
     std::this_thread::sleep_for(std::chrono::seconds(2));

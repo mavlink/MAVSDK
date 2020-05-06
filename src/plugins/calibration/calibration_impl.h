@@ -65,12 +65,12 @@ private:
     std::atomic<bool> _is_magnetometer_running = {false};
 
     enum class State {
-        NONE,
-        GYRO_CALIBRATION,
-        ACCELEROMETER_CALIBRATION,
-        MAGNETOMETER_CALIBRATION,
-        GIMBAL_ACCELEROMETER_CALIBRATION
-    } _state{State::NONE};
+        None,
+        GyroCalibration,
+        AccelerometerCalibration,
+        MagnetometerCalibration,
+        GimbalAccelerometerCalibration
+    } _state{State::None};
 
     calibration_callback_t _calibration_callback{nullptr};
 };

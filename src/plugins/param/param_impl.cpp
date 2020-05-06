@@ -50,15 +50,15 @@ Param::Result ParamImpl::set_param_float(const std::string& name, float value)
 Param::Result ParamImpl::result_from_mavlink_parameters_result(MAVLinkParameters::Result result)
 {
     switch (result) {
-        case MAVLinkParameters::Result::SUCCESS:
+        case MAVLinkParameters::Result::Success:
             return Param::Result::Success;
-        case MAVLinkParameters::Result::TIMEOUT:
+        case MAVLinkParameters::Result::Timeout:
             return Param::Result::Timeout;
-        case MAVLinkParameters::Result::PARAM_NAME_TOO_LONG:
+        case MAVLinkParameters::Result::ParamNameTooLong:
             return Param::Result::ParamNameTooLong;
-        case MAVLinkParameters::Result::WRONG_TYPE:
+        case MAVLinkParameters::Result::WrongType:
             return Param::Result::WrongType;
-        case MAVLinkParameters::Result::CONNECTION_ERROR:
+        case MAVLinkParameters::Result::ConnectionError:
             return Param::Result::ConnectionError;
         default:
             LogErr() << "Unknown param error";

@@ -47,9 +47,9 @@ public:
      * @brief Possible results returned for requests.
      */
     enum class Result {
-        UNKNOWN, /**< @brief Unknown error. */
-        SUCCESS, /**< @brief Success. */
-        CONNECTION_ERROR /**< @brief Connection error. */
+        Unknown, /**< @brief Unknown error. */
+        Success, /**< @brief Success. */
+        ConnectionError /**< @brief Connection error. */
     };
 
     /**

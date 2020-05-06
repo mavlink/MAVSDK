@@ -26,7 +26,7 @@ TEST_F(SitlTest, MissionUploadCancellation)
     Mavsdk dc;
 
     ConnectionResult ret = dc.add_udp_connection();
-    ASSERT_EQ(ret, ConnectionResult::SUCCESS);
+    ASSERT_EQ(ret, ConnectionResult::Success);
 
     // Wait for system to connect via heartbeat.
     ASSERT_TRUE(poll_condition_with_timeout(
@@ -72,7 +72,7 @@ TEST_F(SitlTest, MissionDownloadCancellation)
     Mavsdk dc;
 
     ConnectionResult ret = dc.add_udp_connection();
-    ASSERT_EQ(ret, ConnectionResult::SUCCESS);
+    ASSERT_EQ(ret, ConnectionResult::Success);
 
     // Wait for system to connect via heartbeat.
     ASSERT_TRUE(poll_condition_with_timeout(

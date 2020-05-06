@@ -180,10 +180,10 @@ void ActionImpl::arm_async(const Action::result_callback_t& callback) const
             });
     };
 
-    if (_parent->get_flight_mode() == SystemImpl::FlightMode::MISSION ||
-        _parent->get_flight_mode() == SystemImpl::FlightMode::RETURN_TO_LAUNCH) {
+    if (_parent->get_flight_mode() == SystemImpl::FlightMode::Mission ||
+        _parent->get_flight_mode() == SystemImpl::FlightMode::ReturnToLaunch) {
         _parent->set_flight_mode_async(
-            SystemImpl::FlightMode::HOLD,
+            SystemImpl::FlightMode::Hold,
             [callback, send_arm_command](MAVLinkCommands::Result result, float) {
                 Action::Result action_result = action_result_from_command_result(result);
                 if (action_result != Action::Result::Success) {
@@ -294,7 +294,7 @@ void ActionImpl::land_async(const Action::result_callback_t& callback) const
 void ActionImpl::return_to_launch_async(const Action::result_callback_t& callback) const
 {
     _parent->set_flight_mode_async(
-        SystemImpl::FlightMode::RETURN_TO_LAUNCH,
+        SystemImpl::FlightMode::ReturnToLaunch,
         [this, callback](MAVLinkCommands::Result result, float) {
             command_result_callback(result, callback);
         });
@@ -431,7 +431,7 @@ Action::Result ActionImpl::set_takeoff_altitude(float relative_altitude_m) const
 {
     const MAVLinkParameters::Result result =
         _parent->set_param_float(TAKEOFF_ALT_PARAM, relative_altitude_m);
-    return (result == MAVLinkParameters::Result::SUCCESS) ? Action::Result::Success :
+    return (result == MAVLinkParameters::Result::Success) ? Action::Result::Success :
                                                             Action::Result::ParameterError;
 }
 
@@ -446,7 +446,7 @@ std::pair<Action::Result, float> ActionImpl::get_takeoff_altitude() const
 {
     auto result = _parent->get_param_float(TAKEOFF_ALT_PARAM);
     return std::make_pair<>(
-        (result.first == MAVLinkParameters::Result::SUCCESS) ? Action::Result::Success :
+        (result.first == MAVLinkParameters::Result::Success) ? Action::Result::Success :
                                                                Action::Result::ParameterError,
         result.second);
 }
@@ -460,7 +460,7 @@ void ActionImpl::set_maximum_speed_async(
 Action::Result ActionImpl::set_maximum_speed(float speed_m_s) const
 {
     const MAVLinkParameters::Result result = _parent->set_param_float(MAX_SPEED_PARAM, speed_m_s);
-    return (result == MAVLinkParameters::Result::SUCCESS) ? Action::Result::Success :
+    return (result == MAVLinkParameters::Result::Success) ? Action::Result::Success :
                                                             Action::Result::ParameterError;
 }
 
@@ -474,7 +474,7 @@ std::pair<Action::Result, float> ActionImpl::get_maximum_speed() const
 {
     auto result = _parent->get_param_float(MAX_SPEED_PARAM);
     return std::make_pair<>(
-        (result.first == MAVLinkParameters::Result::SUCCESS) ? Action::Result::Success :
+        (result.first == MAVLinkParameters::Result::Success) ? Action::Result::Success :
                                                                Action::Result::ParameterError,
         result.second);
 }
@@ -489,7 +489,7 @@ Action::Result ActionImpl::set_return_to_launch_altitude(const float relative_al
 {
     const MAVLinkParameters::Result result =
         _parent->set_param_float(RTL_RETURN_ALTITUDE_PARAM, relative_altitude_m);
-    return (result == MAVLinkParameters::Result::SUCCESS) ? Action::Result::Success :
+    return (result == MAVLinkParameters::Result::Success) ? Action::Result::Success :
                                                             Action::Result::ParameterError;
 }
 
@@ -504,7 +504,7 @@ std::pair<Action::Result, float> ActionImpl::get_return_to_launch_altitude() con
 {
     auto result = _parent->get_param_float(RTL_RETURN_ALTITUDE_PARAM);
     return std::make_pair<>(
-        (result.first == MAVLinkParameters::Result::SUCCESS) ? Action::Result::Success :
+        (result.first == MAVLinkParameters::Result::Success) ? Action::Result::Success :
                                                                Action::Result::ParameterError,
         result.second);
 }
@@ -512,17 +512,17 @@ std::pair<Action::Result, float> ActionImpl::get_return_to_launch_altitude() con
 Action::Result ActionImpl::action_result_from_command_result(MAVLinkCommands::Result result)
 {
     switch (result) {
-        case MAVLinkCommands::Result::SUCCESS:
+        case MAVLinkCommands::Result::Success:
             return Action::Result::Success;
-        case MAVLinkCommands::Result::NO_SYSTEM:
+        case MAVLinkCommands::Result::NoSystem:
             return Action::Result::NoSystem;
-        case MAVLinkCommands::Result::CONNECTION_ERROR:
+        case MAVLinkCommands::Result::ConnectionError:
             return Action::Result::ConnectionError;
-        case MAVLinkCommands::Result::BUSY:
+        case MAVLinkCommands::Result::Busy:
             return Action::Result::Busy;
-        case MAVLinkCommands::Result::COMMAND_DENIED:
+        case MAVLinkCommands::Result::CommandDenied:
             return Action::Result::CommandDenied;
-        case MAVLinkCommands::Result::TIMEOUT:
+        case MAVLinkCommands::Result::Timeout:
             return Action::Result::Timeout;
         default:
             return Action::Result::Unknown;

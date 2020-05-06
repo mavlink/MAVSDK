@@ -32,21 +32,21 @@ class PluginImplBase;
 class SystemImpl : public Sender {
 public:
     enum class FlightMode {
-        UNKNOWN,
-        READY,
-        TAKEOFF,
-        HOLD,
-        MISSION,
-        RETURN_TO_LAUNCH,
-        LAND,
-        OFFBOARD,
-        FOLLOW_ME,
-        MANUAL,
-        ALTCTL,
-        POSCTL,
-        ACRO,
-        RATTITUDE,
-        STABILIZED,
+        Unknown,
+        Ready,
+        Takeoff,
+        Hold,
+        Mission,
+        ReturnToLaunch,
+        Land,
+        Offboard,
+        FollowMe,
+        Manual,
+        Altctl,
+        Posctl,
+        Acro,
+        Rattitude,
+        Stabilized,
     };
 
     explicit SystemImpl(
@@ -322,7 +322,7 @@ private:
     std::function<bool(mavlink_message_t&)> _incoming_messages_intercept_callback{nullptr};
     std::function<bool(mavlink_message_t&)> _outgoing_messages_intercept_callback{nullptr};
 
-    std::atomic<FlightMode> _flight_mode{FlightMode::UNKNOWN};
+    std::atomic<FlightMode> _flight_mode{FlightMode::Unknown};
 };
 
 } // namespace mavsdk

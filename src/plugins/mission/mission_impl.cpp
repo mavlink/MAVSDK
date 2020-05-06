@@ -619,7 +619,7 @@ Mission::Result MissionImpl::start_mission()
 void MissionImpl::start_mission_async(const Mission::result_callback_t& callback)
 {
     _parent->set_flight_mode_async(
-        SystemImpl::FlightMode::MISSION, [this, callback](MAVLinkCommands::Result result, float) {
+        SystemImpl::FlightMode::Mission, [this, callback](MAVLinkCommands::Result result, float) {
             report_flight_mode_change(callback, result);
         });
 }
@@ -636,7 +636,7 @@ Mission::Result MissionImpl::pause_mission()
 void MissionImpl::pause_mission_async(const Mission::result_callback_t& callback)
 {
     _parent->set_flight_mode_async(
-        SystemImpl::FlightMode::HOLD, [this, callback](MAVLinkCommands::Result result, float) {
+        SystemImpl::FlightMode::Hold, [this, callback](MAVLinkCommands::Result result, float) {
             report_flight_mode_change(callback, result);
         });
 }
@@ -655,21 +655,21 @@ void MissionImpl::report_flight_mode_change(
 Mission::Result MissionImpl::command_result_to_mission_result(MAVLinkCommands::Result result)
 {
     switch (result) {
-        case MAVLinkCommands::Result::SUCCESS:
+        case MAVLinkCommands::Result::Success:
             return Mission::Result::Success;
-        case MAVLinkCommands::Result::NO_SYSTEM:
+        case MAVLinkCommands::Result::NoSystem:
             return Mission::Result::Error; // FIXME
-        case MAVLinkCommands::Result::CONNECTION_ERROR:
+        case MAVLinkCommands::Result::ConnectionError:
             return Mission::Result::Error; // FIXME
-        case MAVLinkCommands::Result::BUSY:
+        case MAVLinkCommands::Result::Busy:
             return Mission::Result::Busy;
-        case MAVLinkCommands::Result::COMMAND_DENIED:
+        case MAVLinkCommands::Result::CommandDenied:
             return Mission::Result::Error; // FIXME
-        case MAVLinkCommands::Result::TIMEOUT:
+        case MAVLinkCommands::Result::Timeout:
             return Mission::Result::Timeout;
-        case MAVLinkCommands::Result::IN_PROGRESS:
+        case MAVLinkCommands::Result::InProgress:
             return Mission::Result::Busy; // FIXME
-        case MAVLinkCommands::Result::UNKNOWN_ERROR:
+        case MAVLinkCommands::Result::UnknownError:
             return Mission::Result::Unknown;
         default:
             return Mission::Result::Unknown;

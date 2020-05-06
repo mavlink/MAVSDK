@@ -67,7 +67,7 @@ int main(int argc, char** argv)
             return 1;
         }
 
-        if (connection_result != ConnectionResult::SUCCESS) {
+        if (connection_result != ConnectionResult::Success) {
             std::cout << ERROR_CONSOLE_TEXT
                       << "Connection failed: " << connection_result_str(connection_result)
                       << NORMAL_CONSOLE_TEXT << std::endl;
@@ -122,7 +122,7 @@ int main(int argc, char** argv)
             polygons, [prom](Geofence::Result result) { prom->set_value(result); });
 
         const Geofence::Result result = future_result.get();
-        if (result != Geofence::Result::SUCCESS) {
+        if (result != Geofence::Result::Success) {
             std::cout << "Geofence upload failed (" << Geofence::result_str(result) << "), exiting."
                       << std::endl;
             return 1;

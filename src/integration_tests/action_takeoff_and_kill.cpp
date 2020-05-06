@@ -9,7 +9,7 @@ using namespace mavsdk;
 TEST_F(SitlTest, ActionTakeoffAndKill)
 {
     Mavsdk dc;
-    ASSERT_EQ(dc.add_udp_connection(), ConnectionResult::SUCCESS);
+    ASSERT_EQ(dc.add_udp_connection(), ConnectionResult::Success);
 
     {
         LogInfo() << "Waiting to discover vehicle";

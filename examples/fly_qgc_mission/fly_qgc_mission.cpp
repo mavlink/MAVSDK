@@ -200,7 +200,7 @@ inline void handle_action_err_exit(Action::Result result, const std::string& mes
 
 inline void handle_mission_err_exit(Mission::Result result, const std::string& message)
 {
-    if (result != Mission::Result::SUCCESS) {
+    if (result != Mission::Result::Success) {
         std::cerr << ERROR_CONSOLE_TEXT << message << Mission::result_str(result)
                   << NORMAL_CONSOLE_TEXT << std::endl;
         exit(EXIT_FAILURE);
@@ -210,7 +210,7 @@ inline void handle_mission_err_exit(Mission::Result result, const std::string& m
 // Handles connection result
 inline void handle_connection_err_exit(ConnectionResult result, const std::string& message)
 {
-    if (result != ConnectionResult::SUCCESS) {
+    if (result != ConnectionResult::Success) {
         std::cerr << ERROR_CONSOLE_TEXT << message << connection_result_str(result)
                   << NORMAL_CONSOLE_TEXT << std::endl;
         exit(EXIT_FAILURE);

@@ -11,9 +11,9 @@ TEST(SitlTestMultiple, SystemConnectionMultiple)
     dc = new mavsdk::Mavsdk();
     std::cout << "started" << std::endl;
 
-    ASSERT_EQ(dc->add_udp_connection(14540), ConnectionResult::SUCCESS);
+    ASSERT_EQ(dc->add_udp_connection(14540), ConnectionResult::Success);
 
-    ASSERT_EQ(dc->add_udp_connection(14550), ConnectionResult::SUCCESS);
+    ASSERT_EQ(dc->add_udp_connection(14550), ConnectionResult::Success);
 
     std::this_thread::sleep_for(std::chrono::seconds(5));
 
@@ -33,7 +33,7 @@ TEST(SitlTestMultiple, SystemConnectionMultiple)
 
     dc = new mavsdk::Mavsdk();
 
-    ASSERT_EQ(dc->add_udp_connection(14540), ConnectionResult::SUCCESS);
+    ASSERT_EQ(dc->add_udp_connection(14540), ConnectionResult::Success);
 
     std::this_thread::sleep_for(std::chrono::seconds(3));
     uuids = dc->system_uuids();

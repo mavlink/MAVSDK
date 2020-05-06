@@ -48,7 +48,7 @@ void do_mission_with_rtl(float mission_altitude_m, float return_altitude_m)
         });
 
         ConnectionResult ret = dc.add_udp_connection();
-        ASSERT_EQ(ret, ConnectionResult::SUCCESS);
+        ASSERT_EQ(ret, ConnectionResult::Success);
 
         auto status = future_result.wait_for(std::chrono::seconds(2));
         ASSERT_EQ(status, std::future_status::ready);

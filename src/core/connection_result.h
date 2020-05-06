@@ -12,20 +12,20 @@ namespace mavsdk {
  * returned when you add a connection: add_udp_connection().
  */
 enum class ConnectionResult {
-    SUCCESS = 0, /**< @brief %Connection succeeded. */
-    TIMEOUT, /**< @brief %Connection timed out. */
-    SOCKET_ERROR, /**< @brief Socket error. */
-    BIND_ERROR, /**< @brief Bind error. */
-    SOCKET_CONNECTION_ERROR, /**< @brief Socket connection error. */
-    CONNECTION_ERROR, /**< @brief %Connection error. */
-    NOT_IMPLEMENTED, /**< @brief %Connection type not implemented. */
-    SYSTEM_NOT_CONNECTED, /**< @brief No system is connected. */
-    SYSTEM_BUSY, /**< @brief %System is busy. */
-    COMMAND_DENIED, /**< @brief Command is denied. */
-    DESTINATION_IP_UNKNOWN, /**< @brief %Connection IP is unknown. */
-    CONNECTIONS_EXHAUSTED, /**< @brief %Connections exhausted. */
-    CONNECTION_URL_INVALID, /**< @brief URL invalid. */
-    BAUDRATE_UNKNOWN /**< @brief Baudrate unknown. */
+    Success = 0, /**< @brief %Connection succeeded. */
+    Timeout, /**< @brief %Connection timed out. */
+    SocketError, /**< @brief Socket error. */
+    BindError, /**< @brief Bind error. */
+    SocketConnectionError, /**< @brief Socket connection error. */
+    ConnectionError, /**< @brief %Connection error. */
+    NotImplemented, /**< @brief %Connection type not implemented. */
+    SystemNotConnected, /**< @brief No system is connected. */
+    SystemBusy, /**< @brief %System is busy. */
+    CommandDenied, /**< @brief Command is denied. */
+    DestinationIpUnknown, /**< @brief %Connection IP is unknown. */
+    ConnectionsExhausted, /**< @brief %Connections exhausted. */
+    ConnectionUrlInvalid, /**< @brief URL invalid. */
+    BaudrateUnknown /**< @brief Baudrate unknown. */
 };
 
 /**
@@ -37,33 +37,33 @@ enum class ConnectionResult {
 inline const char* connection_result_str(const ConnectionResult result)
 {
     switch (result) {
-        case ConnectionResult::SUCCESS:
+        case ConnectionResult::Success:
             return "Success";
-        case ConnectionResult::TIMEOUT:
+        case ConnectionResult::Timeout:
             return "Timeout";
-        case ConnectionResult::SOCKET_ERROR:
+        case ConnectionResult::SocketError:
             return "Socket error";
-        case ConnectionResult::BIND_ERROR:
+        case ConnectionResult::BindError:
             return "Bind error";
-        case ConnectionResult::SOCKET_CONNECTION_ERROR:
+        case ConnectionResult::SocketConnectionError:
             return "Socket connection error";
-        case ConnectionResult::CONNECTION_ERROR:
+        case ConnectionResult::ConnectionError:
             return "Connection error";
-        case ConnectionResult::NOT_IMPLEMENTED:
+        case ConnectionResult::NotImplemented:
             return "Not implemented";
-        case ConnectionResult::SYSTEM_NOT_CONNECTED:
+        case ConnectionResult::SystemNotConnected:
             return "System not connected";
-        case ConnectionResult::SYSTEM_BUSY:
+        case ConnectionResult::SystemBusy:
             return "System busy";
-        case ConnectionResult::COMMAND_DENIED:
+        case ConnectionResult::CommandDenied:
             return "Command denied";
-        case ConnectionResult::DESTINATION_IP_UNKNOWN:
+        case ConnectionResult::DestinationIpUnknown:
             return "Destination IP unknown";
-        case ConnectionResult::CONNECTIONS_EXHAUSTED:
+        case ConnectionResult::ConnectionsExhausted:
             return "Connections exhausted";
-        case ConnectionResult::CONNECTION_URL_INVALID:
+        case ConnectionResult::ConnectionUrlInvalid:
             return "Invalid connection URL";
-        case ConnectionResult::BAUDRATE_UNKNOWN:
+        case ConnectionResult::BaudrateUnknown:
             return "Baudrate unknown";
         default:
             return "Unknown";

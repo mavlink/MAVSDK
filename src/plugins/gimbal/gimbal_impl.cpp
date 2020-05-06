@@ -148,14 +148,14 @@ void GimbalImpl::receive_command_result(
 Gimbal::Result GimbalImpl::gimbal_result_from_command_result(MAVLinkCommands::Result command_result)
 {
     switch (command_result) {
-        case MAVLinkCommands::Result::SUCCESS:
+        case MAVLinkCommands::Result::Success:
             return Gimbal::Result::Success;
-        case MAVLinkCommands::Result::TIMEOUT:
+        case MAVLinkCommands::Result::Timeout:
             return Gimbal::Result::Timeout;
-        case MAVLinkCommands::Result::NO_SYSTEM:
-        case MAVLinkCommands::Result::CONNECTION_ERROR:
-        case MAVLinkCommands::Result::BUSY:
-        case MAVLinkCommands::Result::COMMAND_DENIED:
+        case MAVLinkCommands::Result::NoSystem:
+        case MAVLinkCommands::Result::ConnectionError:
+        case MAVLinkCommands::Result::Busy:
+        case MAVLinkCommands::Result::CommandDenied:
         default:
             return Gimbal::Result::Error;
     }

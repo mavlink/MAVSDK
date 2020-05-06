@@ -14,7 +14,7 @@ TEST_F(SitlTest, GeofenceInclusion)
     Mavsdk dl;
 
     ConnectionResult ret = dl.add_udp_connection();
-    ASSERT_EQ(ret, ConnectionResult::SUCCESS);
+    ASSERT_EQ(ret, ConnectionResult::Success);
 
     // Wait for system to connect via heartbeat.
     std::this_thread::sleep_for(std::chrono::seconds(2));

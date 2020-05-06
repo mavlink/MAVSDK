@@ -59,14 +59,14 @@ private:
 
     mutable std::mutex _mutex{};
     enum class Mode {
-        NOT_ACTIVE,
-        POSITION_Ned,
-        VELOCITY_Ned,
-        VELOCITY_BODY,
-        ATTITUDE,
-        ATTITUDE_RATE,
-        ACTUATOR_CONTROL
-    } _mode = Mode::NOT_ACTIVE;
+        NotActive,
+        PositionNed,
+        VelocityNed,
+        VelocityBody,
+        Attitude,
+        AttitudeRate,
+        ActuatorControl
+    } _mode = Mode::NotActive;
     Offboard::PositionNedYaw _position_ned_yaw{};
     Offboard::VelocityNedYaw _velocity_ned_yaw{};
     Offboard::VelocityBodyYawspeed _velocity_body_yawspeed{};

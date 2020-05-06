@@ -38,7 +38,7 @@ MAVLinkCommands::Result MAVLinkCommands::send_command(const MAVLinkCommands::Com
         // We can only fulfill the promise once in C++11.
         // Therefore we have to ignore the IN_PROGRESS state and wait
         // for the final result.
-        if (result != Result::IN_PROGRESS) {
+        if (result != Result::InProgress) {
             prom->set_value(result);
         }
     });
@@ -58,7 +58,7 @@ MAVLinkCommands::Result MAVLinkCommands::send_command(const MAVLinkCommands::Com
         // We can only fulfill the promise once in C++11.
         // Therefore we have to ignore the IN_PROGRESS state and wait
         // for the final result.
-        if (result != Result::IN_PROGRESS) {
+        if (result != Result::InProgress) {
             prom->set_value(result);
         }
     });
@@ -151,34 +151,34 @@ void MAVLinkCommands::receive_command_ack(mavlink_message_t message)
     switch (command_ack.result) {
         case MAV_RESULT_ACCEPTED:
             _parent.unregister_timeout_handler(_timeout_cookie);
-            call_callback(work->callback, Result::SUCCESS, 1.0f);
+            call_callback(work->callback, Result::Success, 1.0f);
             work_queue_guard.pop_front();
             break;
 
         case MAV_RESULT_DENIED:
             LogWarn() << "command denied (" << work->mavlink_command << ").";
             _parent.unregister_timeout_handler(_timeout_cookie);
-            call_callback(work->callback, Result::COMMAND_DENIED, NAN);
+            call_callback(work->callback, Result::CommandDenied, NAN);
             work_queue_guard.pop_front();
             break;
 
         case MAV_RESULT_UNSUPPORTED:
             LogWarn() << "command unsupported (" << work->mavlink_command << ").";
             _parent.unregister_timeout_handler(_timeout_cookie);
-            call_callback(work->callback, Result::COMMAND_DENIED, NAN);
+            call_callback(work->callback, Result::CommandDenied, NAN);
             work_queue_guard.pop_front();
             break;
 
         case MAV_RESULT_TEMPORARILY_REJECTED:
             LogWarn() << "command temporarily rejected (" << work->mavlink_command << ").";
             _parent.unregister_timeout_handler(_timeout_cookie);
-            call_callback(work->callback, Result::COMMAND_DENIED, NAN);
+            call_callback(work->callback, Result::CommandDenied, NAN);
             work_queue_guard.pop_front();
             break;
 
         case MAV_RESULT_FAILED:
             _parent.unregister_timeout_handler(_timeout_cookie);
-            call_callback(work->callback, Result::COMMAND_DENIED, NAN);
+            call_callback(work->callback, Result::CommandDenied, NAN);
             work_queue_guard.pop_front();
             break;
 
@@ -229,7 +229,7 @@ void MAVLinkCommands::receive_timeout()
         if (!_parent.send_message(work->mavlink_message)) {
             LogErr() << "connection send error in retransmit (" << work->mavlink_command << ").";
             work_queue_guard.pop_front();
-            call_callback(work->callback, Result::CONNECTION_ERROR, NAN);
+            call_callback(work->callback, Result::ConnectionError, NAN);
 
         } else {
             --work->retries_to_do;
@@ -245,7 +245,7 @@ void MAVLinkCommands::receive_timeout()
 
         work_queue_guard.pop_front();
 
-        call_callback(work->callback, Result::TIMEOUT, NAN);
+        call_callback(work->callback, Result::Timeout, NAN);
     }
 }
 
@@ -265,7 +265,7 @@ void MAVLinkCommands::do_work()
         if (!_parent.send_message(work->mavlink_message)) {
             LogErr() << "connection send error (" << work->mavlink_command << ")";
             work_queue_guard.pop_front();
-            call_callback(work->callback, Result::CONNECTION_ERROR, NAN);
+            call_callback(work->callback, Result::ConnectionError, NAN);
         } else {
             work->already_sent = true;
             _parent.register_timeout_handler(

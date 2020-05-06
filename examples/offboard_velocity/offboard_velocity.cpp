@@ -41,7 +41,7 @@ inline void action_error_exit(Action::Result result, const std::string& message)
 // Handles Offboard's result
 inline void offboard_error_exit(Offboard::Result result, const std::string& message)
 {
-    if (result != Offboard::Result::SUCCESS) {
+    if (result != Offboard::Result::Success) {
         std::cerr << ERROR_CONSOLE_TEXT << message << Offboard::result_str(result)
                   << NORMAL_CONSOLE_TEXT << std::endl;
         exit(EXIT_FAILURE);
@@ -51,7 +51,7 @@ inline void offboard_error_exit(Offboard::Result result, const std::string& mess
 // Handles connection result
 inline void connection_error_exit(ConnectionResult result, const std::string& message)
 {
-    if (result != ConnectionResult::SUCCESS) {
+    if (result != ConnectionResult::Success) {
         std::cerr << ERROR_CONSOLE_TEXT << message << connection_result_str(result)
                   << NORMAL_CONSOLE_TEXT << std::endl;
         exit(EXIT_FAILURE);
@@ -270,7 +270,7 @@ int main(int argc, char** argv)
         return 1;
     }
 
-    if (connection_result != ConnectionResult::SUCCESS) {
+    if (connection_result != ConnectionResult::Success) {
         std::cout << ERROR_CONSOLE_TEXT
                   << "Connection failed: " << connection_result_str(connection_result)
                   << NORMAL_CONSOLE_TEXT << std::endl;

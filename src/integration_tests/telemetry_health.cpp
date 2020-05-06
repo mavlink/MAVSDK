@@ -12,7 +12,7 @@ TEST_F(SitlTest, TelemetryHealth)
     Mavsdk dc;
 
     ConnectionResult ret = dc.add_udp_connection();
-    ASSERT_EQ(ret, ConnectionResult::SUCCESS);
+    ASSERT_EQ(ret, ConnectionResult::Success);
     std::this_thread::sleep_for(std::chrono::seconds(2));
 
     System& system = dc.system();
