@@ -64,7 +64,7 @@ int main(int argc, char** argv)
 
 void subscribe_armed(std::shared_ptr<Telemetry> telemetry)
 {
-    telemetry->armed_async(
+    telemetry->subscribe_armed(
         [](bool is_armed) { std::cout << (is_armed ? "armed" : "disarmed") << std::endl; });
 }
 

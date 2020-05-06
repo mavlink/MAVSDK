@@ -77,7 +77,7 @@ void run_interactive_shell(Mavsdk& mavsdk)
 {
     Shell shell(mavsdk.system());
 
-    shell.receive_async([](const std::string output) { std::cout << output; });
+    shell.subscribe_receive([](const std::string output) { std::cout << output; });
 
     while (true) {
         std::string command;

@@ -52,7 +52,7 @@ int main(int argc, char** argv)
 
     std::cout << NORMAL_CONSOLE_TEXT << "Mavlink FTP server running." << std::endl
               << "Remote:       " << argv[1] << ":" << argv[2] << std::endl
-              << "Component ID: " << static_cast<int>(ftp_server->get_our_component_id().second)
+              << "Component ID: " << static_cast<int>(ftp_server->get_our_component_id())
               << std::endl;
 
     for (;;) {

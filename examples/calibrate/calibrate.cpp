@@ -9,7 +9,8 @@ bool are_arguments_valid(int argc, char** argv);
 void print_usage(const std::string&);
 void wait_until_discover(Mavsdk&);
 void calibrate_accelerometer(Calibration&);
-Calibration::calibration_callback_t create_calibration_callback(std::promise<void>&);
+std::function<void(Calibration::Result, Calibration::ProgressData)>
+create_calibration_callback(std::promise<void>&);
 void calibrate_gyro(Calibration&);
 void calibrate_magnetometer(Calibration&);
 void calibrate_gimbal_accelerometer(Calibration&);
@@ -84,7 +85,7 @@ void calibrate_accelerometer(Calibration& calibration)
     calibration_future.wait();
 }
 
-Calibration::calibration_callback_t
+std::function<void(Calibration::Result, Calibration::ProgressData)>
 create_calibration_callback(std::promise<void>& calibration_promise)
 {
     return [&calibration_promise](
@@ -94,11 +95,13 @@ create_calibration_callback(std::promise<void>& calibration_promise)
                 std::cout << "--- Calibration succeeded!" << std::endl;
                 calibration_promise.set_value();
                 break;
-            case Calibration::Result::IN_PROGRESS:
-                std::cout << "    Progress: " << progress_data.progress << std::endl;
-                break;
-            case Calibration::Result::INSTRUCTION:
-                std::cout << "    Instruction: " << progress_data.status_text << std::endl;
+            case Calibration::Result::Next:
+                if (progress_data.has_progress) {
+                    std::cout << "    Progress: " << progress_data.progress << std::endl;
+                }
+                if (progress_data.has_status_text) {
+                    std::cout << "    Instruction: " << progress_data.status_text << std::endl;
+                }
                 break;
             default:
                 std::cout << "--- Calibration failed with message: "

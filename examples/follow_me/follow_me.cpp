@@ -90,10 +90,10 @@ int main(int argc, char** argv)
     std::cout << "Armed" << std::endl;
 
     // Subscribe to receive updates on flight mode. You can find out whether FollowMe is active.
-    telemetry->flight_mode_async(std::bind(
+    telemetry->subscribe_flight_mode(std::bind(
         [&](Telemetry::FlightMode flight_mode) {
             const FollowMe::TargetLocation last_location = follow_me->get_last_location();
-            std::cout << "[FlightMode: " << Telemetry::flight_mode_str(flight_mode)
+            std::cout << "[FlightMode: " << flight_mode
                       << "] Vehicle is at: " << last_location.latitude_deg << ", "
                       << last_location.longitude_deg << " degrees." << std::endl;
         },
@@ -109,7 +109,7 @@ int main(int argc, char** argv)
     // right".
     FollowMe::Config config;
     config.min_height_m = 10.0;
-    config.follow_direction = FollowMe::Config::FollowDirection::BEHIND;
+    config.follow_direction = FollowMe::Config::FollowDirection::Behind;
     FollowMe::Result follow_me_result = follow_me->set_config(config);
 
     // Start Follow Me
@@ -120,7 +120,10 @@ int main(int argc, char** argv)
     // Register for platform-specific Location provider. We're using FakeLocationProvider for the
     // example.
     location_provider.request_location_updates([&follow_me](double lat, double lon) {
-        follow_me->set_target_location({lat, lon, 0.0, 0.f, 0.f, 0.f});
+        FollowMe::TargetLocation target_location{};
+        target_location.latitude_deg = lat;
+        target_location.longitude_deg = lon;
+        follow_me->set_target_location(target_location);
     });
 
     while (location_provider.is_running()) {
@@ -132,7 +135,7 @@ int main(int argc, char** argv)
     follow_me_error_exit(follow_me_result, "Failed to stop FollowMe mode");
 
     // Stop flight mode updates.
-    telemetry->flight_mode_async(nullptr);
+    telemetry->subscribe_flight_mode(nullptr);
 
     // Land
     const Action::Result land_result = action->land();

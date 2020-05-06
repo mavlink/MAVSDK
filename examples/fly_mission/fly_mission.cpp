@@ -21,7 +21,6 @@
 #include <functional>
 #include <future>
 #include <iostream>
-#include <memory>
 
 #define ERROR_CONSOLE_TEXT "\033[31m" // Turn text on console red
 #define TELEMETRY_CONSOLE_TEXT "\033[34m" // Turn text on console blue
@@ -39,7 +38,7 @@ inline void handle_mission_err_exit(Mission::Result result, const std::string& m
 // Handles Connection result
 inline void handle_connection_err_exit(ConnectionResult result, const std::string& message);
 
-static std::shared_ptr<MissionItem> make_mission_item(
+static Mission::MissionItem make_mission_item(
     double latitude_deg,
     double longitude_deg,
     float relative_altitude_m,
@@ -47,7 +46,7 @@ static std::shared_ptr<MissionItem> make_mission_item(
     bool is_fly_through,
     float gimbal_pitch_deg,
     float gimbal_yaw_deg,
-    MissionItem::CameraAction camera_action);
+    Mission::MissionItem::CameraAction camera_action);
 
 void usage(std::string bin_name)
 {
@@ -116,7 +115,7 @@ int main(int argc, char** argv)
     std::cout << "System ready" << std::endl;
     std::cout << "Creating and uploading mission" << std::endl;
 
-    std::vector<std::shared_ptr<MissionItem>> mission_items;
+    std::vector<Mission::MissionItem> mission_items;
 
     mission_items.push_back(make_mission_item(
         47.398170327054473,
@@ -126,7 +125,7 @@ int main(int argc, char** argv)
         false,
         20.0f,
         60.0f,
-        MissionItem::CameraAction::NONE));
+        Mission::MissionItem::CameraAction::None));
 
     mission_items.push_back(make_mission_item(
         47.398241338125118,
@@ -136,7 +135,7 @@ int main(int argc, char** argv)
         true,
         0.0f,
         -60.0f,
-        MissionItem::CameraAction::TAKE_PHOTO));
+        Mission::MissionItem::CameraAction::TakePhoto));
 
     mission_items.push_back(make_mission_item(
         47.398139363821485,
@@ -146,7 +145,7 @@ int main(int argc, char** argv)
         true,
         -45.0f,
         0.0f,
-        MissionItem::CameraAction::START_VIDEO));
+        Mission::MissionItem::CameraAction::StartVideo));
 
     mission_items.push_back(make_mission_item(
         47.398058617228855,
@@ -156,7 +155,7 @@ int main(int argc, char** argv)
         false,
         -90.0f,
         30.0f,
-        MissionItem::CameraAction::STOP_VIDEO));
+        Mission::MissionItem::CameraAction::StopVideo));
 
     mission_items.push_back(make_mission_item(
         47.398100366082858,
@@ -166,7 +165,7 @@ int main(int argc, char** argv)
         false,
         -45.0f,
         -30.0f,
-        MissionItem::CameraAction::START_PHOTO_INTERVAL));
+        Mission::MissionItem::CameraAction::StartPhotoInterval));
 
     mission_items.push_back(make_mission_item(
         47.398001890458097,
@@ -176,7 +175,7 @@ int main(int argc, char** argv)
         false,
         0.0f,
         0.0f,
-        MissionItem::CameraAction::STOP_PHOTO_INTERVAL));
+        Mission::MissionItem::CameraAction::StopPhotoInterval));
 
     {
         std::cout << "Uploading mission..." << std::endl;
@@ -184,8 +183,10 @@ int main(int argc, char** argv)
         // std::future.
         auto prom = std::make_shared<std::promise<Mission::Result>>();
         auto future_result = prom->get_future();
+        Mission::MissionPlan mission_plan{};
+        mission_plan.mission_items = mission_items;
         mission->upload_mission_async(
-            mission_items, [prom](Mission::Result result) { prom->set_value(result); });
+            mission_plan, [prom](Mission::Result result) { prom->set_value(result); });
 
         const Mission::Result result = future_result.get();
         if (result != Mission::Result::Success) {
@@ -203,15 +204,17 @@ int main(int argc, char** argv)
 
     std::atomic<bool> want_to_pause{false};
     // Before starting the mission, we want to be sure to subscribe to the mission progress.
-    mission->subscribe_progress([&want_to_pause](int current, int total) {
-        std::cout << "Mission status update: " << current << " / " << total << std::endl;
+    mission->subscribe_mission_progress(
+        [&want_to_pause](Mission::MissionProgress mission_progress) {
+            std::cout << "Mission status update: " << mission_progress.current << " / "
+                      << mission_progress.total << std::endl;
 
-        if (current >= 2) {
-            // We can only set a flag here. If we do more request inside the callback,
-            // we risk blocking the system.
-            want_to_pause = true;
-        }
-    });
+            if (mission_progress.current >= 2) {
+                // We can only set a flag here. If we do more request inside the callback,
+                // we risk blocking the system.
+                want_to_pause = true;
+            }
+        });
 
     {
         std::cout << "Starting mission." << std::endl;
@@ -266,7 +269,7 @@ int main(int argc, char** argv)
         }
     }
 
-    while (!mission->mission_finished()) {
+    while (!mission->is_mission_finished().second) {
         sleep_for(seconds(1));
     }
 
@@ -292,7 +295,7 @@ int main(int argc, char** argv)
     std::cout << "Disarmed, exiting." << std::endl;
 }
 
-std::shared_ptr<MissionItem> make_mission_item(
+Mission::MissionItem make_mission_item(
     double latitude_deg,
     double longitude_deg,
     float relative_altitude_m,
@@ -300,15 +303,17 @@ std::shared_ptr<MissionItem> make_mission_item(
     bool is_fly_through,
     float gimbal_pitch_deg,
     float gimbal_yaw_deg,
-    MissionItem::CameraAction camera_action)
+    Mission::MissionItem::CameraAction camera_action)
 {
-    std::shared_ptr<MissionItem> new_item(new MissionItem());
-    new_item->set_position(latitude_deg, longitude_deg);
-    new_item->set_relative_altitude(relative_altitude_m);
-    new_item->set_speed(speed_m_s);
-    new_item->set_fly_through(is_fly_through);
-    new_item->set_gimbal_pitch_and_yaw(gimbal_pitch_deg, gimbal_yaw_deg);
-    new_item->set_camera_action(camera_action);
+    Mission::MissionItem new_item{};
+    new_item.latitude_deg = latitude_deg;
+    new_item.longitude_deg = longitude_deg;
+    new_item.relative_altitude_m = relative_altitude_m;
+    new_item.speed_m_s = speed_m_s;
+    new_item.is_fly_through = is_fly_through;
+    new_item.gimbal_pitch_deg = gimbal_pitch_deg;
+    new_item.gimbal_yaw_deg = gimbal_yaw_deg;
+    new_item.camera_action = camera_action;
     return new_item;
 }
 

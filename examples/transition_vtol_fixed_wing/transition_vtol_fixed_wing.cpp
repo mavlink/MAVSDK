@@ -59,7 +59,7 @@ int main(int argc, char** argv)
     }
 
     // Set up callback to monitor altitude.
-    telemetry->position_async([](Telemetry::Position position) {
+    telemetry->subscribe_position([](Telemetry::Position position) {
         std::cout << TELEMETRY_CONSOLE_TEXT << "Altitude: " << position.relative_altitude_m << " m"
                   << NORMAL_CONSOLE_TEXT << std::endl;
     });

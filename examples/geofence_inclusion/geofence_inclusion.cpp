@@ -19,7 +19,6 @@
 #include <functional>
 #include <future>
 #include <iostream>
-#include <memory>
 
 #define ERROR_CONSOLE_TEXT "\033[31m" // Turn text on console red
 #define TELEMETRY_CONSOLE_TEXT "\033[34m" // Turn text on console blue
@@ -30,7 +29,7 @@ using namespace std::placeholders; // for `_1`
 using namespace std::chrono; // for seconds(), milliseconds()
 using namespace std::this_thread; // for sleep_for()
 
-static Geofence::Polygon::Point add_point(double latitude_deg, double longitude_deg);
+static Geofence::Point add_point(double latitude_deg, double longitude_deg);
 
 void usage(std::string bin_name)
 {
@@ -100,31 +99,26 @@ int main(int argc, char** argv)
     std::cout << "System ready" << std::endl;
     std::cout << "Creating and uploading geofence" << std::endl;
 
-    std::vector<Geofence::Polygon::Point> points;
+    std::vector<Geofence::Point> points;
     points.push_back(add_point(47.39929240, 8.54296524));
     points.push_back(add_point(47.39696482, 8.54161340));
     points.push_back(add_point(47.39626761, 8.54527193));
     points.push_back(add_point(47.39980072, 8.54736050));
 
-    std::vector<std::shared_ptr<Geofence::Polygon>> polygons;
-    std::shared_ptr<Geofence::Polygon> new_polygon(new Geofence::Polygon());
-    new_polygon->type = Geofence::Polygon::Type::INCLUSION;
-    new_polygon->points = points;
+    std::vector<Geofence::Polygon> polygons;
+    Geofence::Polygon new_polygon{};
+    new_polygon.type = Geofence::Polygon::Type::Inclusion;
+    new_polygon.points = points;
 
     polygons.push_back(new_polygon);
 
     {
         std::cout << "Uploading geofence..." << std::endl;
 
-        auto prom = std::make_shared<std::promise<Geofence::Result>>();
-        auto future_result = prom->get_future();
-        geofence->send_geofence_async(
-            polygons, [prom](Geofence::Result result) { prom->set_value(result); });
+        const Geofence::Result result = geofence->upload_geofence(polygons);
 
-        const Geofence::Result result = future_result.get();
         if (result != Geofence::Result::Success) {
-            std::cout << "Geofence upload failed (" << Geofence::result_str(result) << "), exiting."
-                      << std::endl;
+            std::cout << "Geofence upload failed (" << result << "), exiting." << std::endl;
             return 1;
         }
         std::cout << "Geofence uploaded." << std::endl;
@@ -133,9 +127,9 @@ int main(int argc, char** argv)
     return 0;
 }
 
-Geofence::Polygon::Point add_point(double latitude_deg, double longitude_deg)
+Geofence::Point add_point(double latitude_deg, double longitude_deg)
 {
-    Geofence::Polygon::Point new_point;
+    Geofence::Point new_point;
     new_point.latitude_deg = latitude_deg;
     new_point.longitude_deg = longitude_deg;
     return new_point;

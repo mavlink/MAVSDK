@@ -60,9 +60,15 @@ jobs:
         with:
           submodules: recursive
       - name: configure
-        run: cmake -DCMAKE_BUILD_TYPE=Release -DSUPERBUILD=ON -DBUILD_BACKEND=ON -j 2 -Bbuild/release -H.
+        run: cmake -DCMAKE_BUILD_TYPE=Release -DSUPERBUILD=ON -DENABLE_MAVLINK_PASSTHROUGH=1 -DBUILD_BACKEND=ON -j 2 -Bbuild/release -H.
       - name: build
         run: cmake --build build/release -j 2
+      - name: install
+        run: sudo cmake --build build/release --target install
+      - name: configure examples
+        run: (cd examples && cmake -DCMAKE_BUILD_TYPE=Release -j 2 -Bbuild -H.)
+      - name: build examples
+        run: (cd examples && cmake --build build -j 2)
       - name: test
         run: ./build/release/src/unit_tests_runner
       - name: test (mavsdk_server)
