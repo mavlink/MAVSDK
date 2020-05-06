@@ -178,7 +178,6 @@ std::string InfoImpl::translate_binary_to_str(uint8_t* binary, unsigned binary_l
         // One hex number occupies 2 chars.
         snprintf(&str[i * 2], str.length() - i * 2, "%02x", binary[i]);
     }
-    snprintf(&str[binary_len * 2], str.length() - binary_len * 2 - 1, "%x", '\0');
 
     return str;
 }
