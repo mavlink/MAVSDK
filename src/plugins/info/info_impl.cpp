@@ -172,7 +172,7 @@ std::string InfoImpl::swap_and_translate_binary_to_str(uint8_t* binary, unsigned
 
 std::string InfoImpl::translate_binary_to_str(uint8_t* binary, unsigned binary_len)
 {
-    std::string str(binary_len * 2, '0');
+    std::string str(binary_len * 2 + 1, '0');
 
     for (unsigned i = 0; i < binary_len; ++i) {
         // One hex number occupies 2 chars.
