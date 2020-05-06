@@ -88,6 +88,8 @@ jobs:
              cd proto/pb_plugins
              pip3 install --user -r requirements.txt
              pip3 install --user -e .
+      - name: build necessary protoc tooling
+        run: cmake -DBUILD_BACKEND=ON -Bbuild/default -S.
       - name: generate code from protos
         run: PATH="$PATH:$HOME/.local/bin" tools/generate_from_protos.sh
       - name: fix style
