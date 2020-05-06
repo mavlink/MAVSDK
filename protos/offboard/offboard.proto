@@ -194,7 +194,7 @@ message VelocityNedYaw {
 message OffboardResult {
     // Possible results returned for offboard requests
     enum Result {
-        RESULT_UNKNOWN = 0; // Unknown error
+        RESULT_UNKNOWN = 0; // Unknown result
         RESULT_SUCCESS = 1; // Request succeeded
         RESULT_NO_SYSTEM = 2; // No system is connected
         RESULT_CONNECTION_ERROR = 3; // Connection error

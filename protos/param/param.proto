@@ -72,7 +72,7 @@ message SetParamFloatResponse {
 message ParamResult {
     // Possible results returned for param requests.
     enum Result {
-        RESULT_UNKNOWN = 0; // Unknown error
+        RESULT_UNKNOWN = 0; // Unknown result
         RESULT_SUCCESS = 1; // Request succeeded
         RESULT_TIMEOUT = 2; // Request timed out
         RESULT_CONNECTION_ERROR = 3; // Connection error

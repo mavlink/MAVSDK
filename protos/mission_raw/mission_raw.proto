@@ -151,7 +151,7 @@ message MissionItem {
 message MissionRawResult {
     // Possible results returned for action requests.
     enum Result {
-        RESULT_UNKNOWN = 0; // Unknown error
+        RESULT_UNKNOWN = 0; // Unknown result
         RESULT_SUCCESS = 1; // Request succeeded
         RESULT_ERROR = 2; // Error
         RESULT_TOO_MANY_MISSION_ITEMS = 3; // Too many mission items in the mission

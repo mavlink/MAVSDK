@@ -165,7 +165,7 @@ message ProgressData {
 message FtpResult {
     // Possible results returned for FTP commands
     enum Result {
-        RESULT_UNKNOWN = 0; // Unknown error
+        RESULT_UNKNOWN = 0; // Unknown result
         RESULT_SUCCESS = 1; // Success
         RESULT_NEXT = 2; // Intermediate message showing progress
         RESULT_TIMEOUT = 3; // Timeout

@@ -638,7 +638,7 @@ message Imu {
 message TelemetryResult {
     // Possible results returned for telemetry requests.
     enum Result {
-        RESULT_UNKNOWN = 0; // Unknown error
+        RESULT_UNKNOWN = 0; // Unknown result
         RESULT_SUCCESS = 1; // Success: the telemetry command was accepted by the vehicle
         RESULT_NO_SYSTEM = 2; // No system connected
         RESULT_CONNECTION_ERROR = 3; // Connection error

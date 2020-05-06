@@ -97,7 +97,7 @@ message StopResponse {
 message FollowMeResult {
     // Possible results returned for followme operations
     enum Result {
-        RESULT_UNKNOWN = 0; // Unkown error
+        RESULT_UNKNOWN = 0; // Unkown result
         RESULT_SUCCESS = 1; // Request succeeded
         RESULT_NO_SYSTEM = 2; // No system connected
         RESULT_CONNECTION_ERROR = 3; // Connection error

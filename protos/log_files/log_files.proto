@@ -52,7 +52,7 @@ message Entry {
 message LogFileResult {
     // Possible results returned for calibration commands
     enum Result {
-        RESULT_UNKNOWN = 0; // Unknown error
+        RESULT_UNKNOWN = 0; // Unknown result
         RESULT_SUCCESS = 1; // Request succeeded
         RESULT_PROGRESS = 2; // Progress update
         RESULT_NO_LOGFILES = 3; // No log files found

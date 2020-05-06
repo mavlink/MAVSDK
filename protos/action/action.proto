@@ -219,8 +219,8 @@ message SetReturnToLaunchAltitudeResponse {
 message ActionResult {
     // Possible results returned for action requests.
     enum Result {
-        RESULT_UNKNOWN = 0; // Unknown error
-        RESULT_SUCCESS = 1; // Success: the action command was accepted by the vehicle
+        RESULT_UNKNOWN = 0; // Unknown result
+        RESULT_SUCCESS = 1; // Requeest was successful
         RESULT_NO_SYSTEM = 2; // No system is connected
         RESULT_CONNECTION_ERROR = 3; // Connection error
         RESULT_BUSY = 4; // Vehicle is busy
@@ -228,7 +228,7 @@ message ActionResult {
         RESULT_COMMAND_DENIED_LANDED_STATE_UNKNOWN = 6; // Command refused because landed state is unknown
         RESULT_COMMAND_DENIED_NOT_LANDED = 7; // Command refused because vehicle not landed
         RESULT_TIMEOUT = 8; // Request timed out
-        RESULT_VTOL_TRANSITION_SUPPORT_UNKNOWN = 9; // Hybrid/VTOL transition refused because VTOL support is unknown
+        RESULT_VTOL_TRANSITION_SUPPORT_UNKNOWN = 9; // Hybrid/VTOL transition support is unknown
         RESULT_NO_VTOL_TRANSITION_SUPPORT = 10; // Vehicle does not support hybrid/VTOL transitions
         RESULT_PARAMETER_ERROR = 11; // Error getting or setting parameter
     }

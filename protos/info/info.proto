@@ -81,7 +81,7 @@ message Version {
 message InfoResult {
     // Possible results returned for info requests.
     enum Result {
-        RESULT_UNKNOWN = 0; // Unknown error
+        RESULT_UNKNOWN = 0; // Unknown result
         RESULT_SUCCESS = 1; // Request succeeded
         RESULT_INFORMATION_NOT_RECEIVED_YET = 2; // Information has not been received yet
     }

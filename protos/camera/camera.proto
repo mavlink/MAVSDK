@@ -200,7 +200,7 @@ message FormatStorageResponse {
 message CameraResult {
     // Possible results returned for camera commands
     enum Result {
-        RESULT_UNKNOWN = 0; // Unknown error
+        RESULT_UNKNOWN = 0; // Unknown result
         RESULT_SUCCESS = 1; // Command executed successfully
         RESULT_IN_PROGRESS = 2; // Command in progress
         RESULT_BUSY = 3; // Camera is busy and rejected command

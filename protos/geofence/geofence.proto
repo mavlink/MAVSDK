@@ -46,7 +46,7 @@ message UploadGeofenceResponse {
 message GeofenceResult {
     // Possible results returned for geofence requests.
     enum Result {
-        RESULT_UNKNOWN = 0; // Unknown error
+        RESULT_UNKNOWN = 0; // Unknown result
         RESULT_SUCCESS = 1; // Request succeeded
         RESULT_ERROR = 2; // Error
         RESULT_TOO_MANY_GEOFENCE_ITEMS = 3; // Too many Polygon objects in the geofence

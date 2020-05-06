@@ -70,7 +70,7 @@ enum GimbalMode {
 message GimbalResult {
     // Possible results returned for gimbal commands.
     enum Result {
-        RESULT_UNKNOWN = 0; // Unknown error
+        RESULT_UNKNOWN = 0; // Unknown result
         RESULT_SUCCESS = 1; // Command was accepted
         RESULT_ERROR = 2; // Error occurred sending the command
         RESULT_TIMEOUT = 3; // Command timed out

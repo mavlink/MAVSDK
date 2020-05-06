@@ -64,16 +64,16 @@ message CancelResponse {}
 message CalibrationResult {
     // Possible results returned for calibration commands
     enum Result {
-        RESULT_UNKNOWN = 0; // Unknown error
-        RESULT_SUCCESS = 1; // The calibration process succeeded
-        RESULT_NEXT = 2; // Intermediate message showing progress or instructions on the next steps required by the process
+        RESULT_UNKNOWN = 0; // Unknown result
+        RESULT_SUCCESS = 1; // The calibration succeeded
+        RESULT_NEXT = 2; // Intermediate message showing progress or instructions on the next steps
         RESULT_FAILED = 3; // Calibration failed
         RESULT_NO_SYSTEM = 4; // No system is connected
         RESULT_CONNECTION_ERROR = 5; // Connection error
         RESULT_BUSY = 6; // Vehicle is busy
         RESULT_COMMAND_DENIED = 7; // Command refused by vehicle
         RESULT_TIMEOUT = 8; // Command timed out
-        RESULT_CANCELLED = 9; // Calibration process got cancelled
+        RESULT_CANCELLED = 9; // Calibration process was cancelled
     }
 
     Result result = 1; // Result enum value
