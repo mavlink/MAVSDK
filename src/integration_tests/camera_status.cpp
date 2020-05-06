@@ -15,15 +15,15 @@ static std::atomic<bool> _received_status{false};
 
 TEST(CameraTest, Status)
 {
-    Mavsdk dc;
+    Mavsdk mavsdk;
 
-    ConnectionResult ret = dc.add_udp_connection();
+    ConnectionResult ret = mavsdk.add_udp_connection();
     ASSERT_EQ(ret, ConnectionResult::Success);
 
     // Wait for system to connect via heartbeat.
     std::this_thread::sleep_for(std::chrono::seconds(2));
 
-    System& system = dc.system();
+    System& system = mavsdk.system();
     auto camera = std::make_shared<Camera>(system);
 
     camera->subscribe_status(std::bind(&receive_camera_status, _1));
