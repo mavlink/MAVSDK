@@ -20,15 +20,15 @@ static std::atomic<bool> _received_result{false};
 
 TEST(CameraTest, TakePhotoInterval)
 {
-    Mavsdk dc;
+    Mavsdk mavsdk;
 
-    ConnectionResult ret = dc.add_udp_connection();
+    ConnectionResult ret = mavsdk.add_udp_connection();
     ASSERT_EQ(ret, ConnectionResult::Success);
 
     // Wait for system to connect via heartbeat.
     std::this_thread::sleep_for(std::chrono::seconds(2));
 
-    System& system = dc.system();
+    System& system = mavsdk.system();
     ASSERT_TRUE(system.has_camera());
     auto camera = std::make_shared<Camera>(system);
 
