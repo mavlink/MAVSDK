@@ -47,17 +47,17 @@ public:
      * @brief Possible results returned for calibration commands
      */
     enum class Result {
-        Unknown, /**< @brief Unknown error. */
-        Success, /**< @brief The calibration process succeeded. */
-        Next, /**< @brief Intermediate message showing progress or instructions on the next steps
-                 required by the process. */
+        Unknown, /**< @brief Unknown result. */
+        Success, /**< @brief The calibration succeeded. */
+        Next, /**< @brief Intermediate message showing progress or instructions on the next steps.
+               */
         Failed, /**< @brief Calibration failed. */
         NoSystem, /**< @brief No system is connected. */
         ConnectionError, /**< @brief Connection error. */
         Busy, /**< @brief Vehicle is busy. */
         CommandDenied, /**< @brief Command refused by vehicle. */
         Timeout, /**< @brief Command timed out. */
-        Cancelled, /**< @brief Calibration process got cancelled. */
+        Cancelled, /**< @brief Calibration process was cancelled. */
     };
 
     /**

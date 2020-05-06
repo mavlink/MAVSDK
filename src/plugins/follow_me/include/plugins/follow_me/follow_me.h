@@ -125,7 +125,7 @@ public:
      * @brief Possible results returned for followme operations
      */
     enum class Result {
-        Unknown, /**< @brief Unkown error. */
+        Unknown, /**< @brief Unkown result. */
         Success, /**< @brief Request succeeded. */
         NoSystem, /**< @brief No system connected. */
         ConnectionError, /**< @brief Connection error. */

@@ -69,7 +69,7 @@ public:
      * @brief Possible results returned for camera commands
      */
     enum class Result {
-        Unknown, /**< @brief Unknown error. */
+        Unknown, /**< @brief Unknown result. */
         Success, /**< @brief Command executed successfully. */
         InProgress, /**< @brief Command in progress. */
         Busy, /**< @brief Camera is busy and rejected command. */

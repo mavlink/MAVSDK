@@ -47,8 +47,8 @@ public:
      * @brief Possible results returned for action requests.
      */
     enum class Result {
-        Unknown, /**< @brief Unknown error. */
-        Success, /**< @brief Success: the action command was accepted by the vehicle. */
+        Unknown, /**< @brief Unknown result. */
+        Success, /**< @brief Request was successful. */
         NoSystem, /**< @brief No system is connected. */
         ConnectionError, /**< @brief Connection error. */
         Busy, /**< @brief Vehicle is busy. */
@@ -57,8 +57,7 @@ public:
                                             unknown. */
         CommandDeniedNotLanded, /**< @brief Command refused because vehicle not landed. */
         Timeout, /**< @brief Request timed out. */
-        VtolTransitionSupportUnknown, /**< @brief Hybrid/VTOL transition refused because VTOL
-                                         support is unknown. */
+        VtolTransitionSupportUnknown, /**< @brief Hybrid/VTOL transition support is unknown. */
         NoVtolTransitionSupport, /**< @brief Vehicle does not support hybrid/VTOL transitions. */
         ParameterError, /**< @brief Error getting or setting parameter. */
     };

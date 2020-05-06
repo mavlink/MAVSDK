@@ -156,7 +156,7 @@ const char* MissionRaw::result_str(MissionRaw::Result result)
 {
     switch (result) {
         case MissionRaw::Result::Unknown:
-            return "Unknown error";
+            return "Unknown result";
         case MissionRaw::Result::Success:
             return "Request succeeded";
         case MissionRaw::Result::Error:

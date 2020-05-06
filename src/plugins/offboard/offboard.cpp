@@ -236,7 +236,7 @@ const char* Offboard::result_str(Offboard::Result result)
 {
     switch (result) {
         case Offboard::Result::Unknown:
-            return "Unknown error";
+            return "Unknown result";
         case Offboard::Result::Success:
             return "Request succeeded";
         case Offboard::Result::NoSystem:

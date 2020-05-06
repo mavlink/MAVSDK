@@ -37,7 +37,7 @@ const char* Param::result_str(Param::Result result)
 {
     switch (result) {
         case Param::Result::Unknown:
-            return "Unknown error";
+            return "Unknown result";
         case Param::Result::Success:
             return "Request succeeded";
         case Param::Result::Timeout:

@@ -66,7 +66,7 @@ const char* LogFiles::result_str(LogFiles::Result result)
 {
     switch (result) {
         case LogFiles::Result::Unknown:
-            return "Unknown error";
+            return "Unknown result";
         case LogFiles::Result::Success:
             return "Request succeeded";
         case LogFiles::Result::Progress:

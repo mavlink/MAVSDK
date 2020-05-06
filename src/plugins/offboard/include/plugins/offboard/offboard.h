@@ -249,7 +249,7 @@ public:
      * @brief Possible results returned for offboard requests
      */
     enum class Result {
-        Unknown, /**< @brief Unknown error. */
+        Unknown, /**< @brief Unknown result. */
         Success, /**< @brief Request succeeded. */
         NoSystem, /**< @brief No system is connected. */
         ConnectionError, /**< @brief Connection error. */

@@ -194,9 +194,9 @@ const char* Action::result_str(Action::Result result)
 {
     switch (result) {
         case Action::Result::Unknown:
-            return "Unknown error";
+            return "Unknown result";
         case Action::Result::Success:
-            return "Success: the action command was accepted by the vehicle";
+            return "Request was successful";
         case Action::Result::NoSystem:
             return "No system is connected";
         case Action::Result::ConnectionError:
@@ -212,7 +212,7 @@ const char* Action::result_str(Action::Result result)
         case Action::Result::Timeout:
             return "Request timed out";
         case Action::Result::VtolTransitionSupportUnknown:
-            return "Hybrid/VTOL transition refused because VTOL support is unknown";
+            return "Hybrid/VTOL transition support is unknown";
         case Action::Result::NoVtolTransitionSupport:
             return "Vehicle does not support hybrid/VTOL transitions";
         case Action::Result::ParameterError:

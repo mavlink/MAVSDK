@@ -221,7 +221,7 @@ const char* Mission::result_str(Mission::Result result)
 {
     switch (result) {
         case Mission::Result::Unknown:
-            return "Unknown error";
+            return "Unknown result";
         case Mission::Result::Success:
             return "Request succeeded";
         case Mission::Result::Error:

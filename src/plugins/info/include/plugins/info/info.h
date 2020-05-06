@@ -148,7 +148,7 @@ public:
      * @brief Possible results returned for info requests.
      */
     enum class Result {
-        Unknown, /**< @brief Unknown error. */
+        Unknown, /**< @brief Unknown result. */
         Success, /**< @brief Request succeeded. */
         InformationNotReceivedYet, /**< @brief Information has not been received yet. */
     };

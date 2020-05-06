@@ -62,7 +62,7 @@ public:
      * @brief Possible results returned for gimbal commands.
      */
     enum class Result {
-        Unknown, /**< @brief Unknown error. */
+        Unknown, /**< @brief Unknown result. */
         Success, /**< @brief Command was accepted. */
         Error, /**< @brief Error occurred sending the command. */
         Timeout, /**< @brief Command timed out. */

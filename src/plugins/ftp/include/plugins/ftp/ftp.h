@@ -69,7 +69,7 @@ public:
      * @brief Possible results returned for FTP commands
      */
     enum class Result {
-        Unknown, /**< @brief Unknown error. */
+        Unknown, /**< @brief Unknown result. */
         Success, /**< @brief Success. */
         Next, /**< @brief Intermediate message showing progress. */
         Timeout, /**< @brief Timeout. */

@@ -189,7 +189,7 @@ const char* Camera::result_str(Camera::Result result)
 {
     switch (result) {
         case Camera::Result::Unknown:
-            return "Unknown error";
+            return "Unknown result";
         case Camera::Result::Success:
             return "Command executed successfully";
         case Camera::Result::InProgress:

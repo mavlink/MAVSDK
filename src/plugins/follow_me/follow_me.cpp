@@ -126,7 +126,7 @@ const char* FollowMe::result_str(FollowMe::Result result)
 {
     switch (result) {
         case FollowMe::Result::Unknown:
-            return "Unkown error";
+            return "Unkown result";
         case FollowMe::Result::Success:
             return "Request succeeded";
         case FollowMe::Result::NoSystem:
