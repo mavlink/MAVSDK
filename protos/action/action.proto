@@ -220,7 +220,7 @@ message ActionResult {
     // Possible results returned for action requests.
     enum Result {
         RESULT_UNKNOWN = 0; // Unknown result
-        RESULT_SUCCESS = 1; // Requeest was successful
+        RESULT_SUCCESS = 1; // Request was successful
         RESULT_NO_SYSTEM = 2; // No system is connected
         RESULT_CONNECTION_ERROR = 3; // Connection error
         RESULT_BUSY = 4; // Vehicle is busy
