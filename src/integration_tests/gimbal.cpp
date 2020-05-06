@@ -47,7 +47,7 @@ TEST(SitlTestGimbal, GimbalMove)
     }
 }
 
-TEST(SitlTestGimbal, GimbalTakeoffAndMove)mavsdk
+TEST(SitlTestGimbal, GimbalTakeoffAndMove)
 {
     Mavsdk mavsdk;
 
@@ -127,7 +127,7 @@ TEST(SitlTestGimbal, GimbalROIOffboard)
     action_result = action->takeoff();
     EXPECT_EQ(action_result, Action::Result::Success);
 
-    std::this_thread::sleep_for(std::chrono::seconds(5));mavsdk
+    std::this_thread::sleep_for(std::chrono::seconds(5));
 
     telemetry->set_rate_camera_attitude(10.0);
 
