@@ -63,6 +63,8 @@ jobs:
         run: cmake -DCMAKE_BUILD_TYPE=Release -DSUPERBUILD=ON -DBUILD_BACKEND=ON -j 2 -Bbuild/release -H.
       - name: build
         run: cmake --build build/release -j 2
+      - name: install
+        run: sudo cmake --build build/release --target install
       - name: test
         run: ./build/release/src/unit_tests_runner
       - name: test (mavsdk_server)
