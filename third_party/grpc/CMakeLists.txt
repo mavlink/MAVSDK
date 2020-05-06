@@ -44,4 +44,5 @@ ExternalProject_add(
     GIT_TAG v1.28.1
     PREFIX grpc
     CMAKE_ARGS "${CMAKE_ARGS}"
+    PATCH_COMMAND git apply ${PROJECT_SOURCE_DIR}/absl-workaround.patch
     )
