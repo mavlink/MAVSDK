@@ -1014,7 +1014,7 @@ const char* Telemetry::result_str(Telemetry::Result result)
 {
     switch (result) {
         case Telemetry::Result::Unknown:
-            return "Unknown error";
+            return "Unknown result";
         case Telemetry::Result::Success:
             return "Success: the telemetry command was accepted by the vehicle";
         case Telemetry::Result::NoSystem:

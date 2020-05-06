@@ -50,7 +50,7 @@ const char* Gimbal::result_str(Gimbal::Result result)
 {
     switch (result) {
         case Gimbal::Result::Unknown:
-            return "Unknown error";
+            return "Unknown result";
         case Gimbal::Result::Success:
             return "Command was accepted";
         case Gimbal::Result::Error:

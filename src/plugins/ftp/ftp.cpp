@@ -100,7 +100,7 @@ const char* Ftp::result_str(Ftp::Result result)
 {
     switch (result) {
         case Ftp::Result::Unknown:
-            return "Unknown error";
+            return "Unknown result";
         case Ftp::Result::Success:
             return "Success";
         case Ftp::Result::Next:

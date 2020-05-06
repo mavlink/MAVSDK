@@ -47,7 +47,7 @@ public:
      * @brief Possible results returned for param requests.
      */
     enum class Result {
-        Unknown, /**< @brief Unknown error. */
+        Unknown, /**< @brief Unknown result. */
         Success, /**< @brief Request succeeded. */
         Timeout, /**< @brief Request timed out. */
         ConnectionError, /**< @brief Connection error. */

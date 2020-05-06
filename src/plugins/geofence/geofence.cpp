@@ -79,7 +79,7 @@ const char* Geofence::result_str(Geofence::Result result)
 {
     switch (result) {
         case Geofence::Result::Unknown:
-            return "Unknown error";
+            return "Unknown result";
         case Geofence::Result::Success:
             return "Request succeeded";
         case Geofence::Result::Error:

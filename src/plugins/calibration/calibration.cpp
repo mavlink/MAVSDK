@@ -45,11 +45,11 @@ const char* Calibration::result_str(Calibration::Result result)
 {
     switch (result) {
         case Calibration::Result::Unknown:
-            return "Unknown error";
+            return "Unknown result";
         case Calibration::Result::Success:
-            return "The calibration process succeeded";
+            return "The calibration succeeded";
         case Calibration::Result::Next:
-            return "Intermediate message showing progress or instructions on the next steps required by the process";
+            return "Intermediate message showing progress or instructions on the next steps";
         case Calibration::Result::Failed:
             return "Calibration failed";
         case Calibration::Result::NoSystem:
@@ -63,7 +63,7 @@ const char* Calibration::result_str(Calibration::Result result)
         case Calibration::Result::Timeout:
             return "Command timed out";
         case Calibration::Result::Cancelled:
-            return "Calibration process got cancelled";
+            return "Calibration process was cancelled";
         default:
             return "Unknown";
     }

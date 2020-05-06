@@ -27,7 +27,7 @@ const char* Shell::result_str(Shell::Result result)
 {
     switch (result) {
         case Shell::Result::Unknown:
-            return "Unknown error";
+            return "Unknown result";
         case Shell::Result::Success:
             return "Request succeeded";
         case Shell::Result::NoSystem:

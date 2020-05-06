@@ -106,7 +106,7 @@ public:
      * @brief Possible results returned for geofence requests.
      */
     enum class Result {
-        Unknown, /**< @brief Unknown error. */
+        Unknown, /**< @brief Unknown result. */
         Success, /**< @brief Request succeeded. */
         Error, /**< @brief Error. */
         TooManyGeofenceItems, /**< @brief Too many Polygon objects in the geofence. */

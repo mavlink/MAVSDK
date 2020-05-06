@@ -107,7 +107,7 @@ public:
      * @brief Possible results returned for action requests.
      */
     enum class Result {
-        Unknown, /**< @brief Unknown error. */
+        Unknown, /**< @brief Unknown result. */
         Success, /**< @brief Request succeeded. */
         Error, /**< @brief Error. */
         TooManyMissionItems, /**< @brief Too many mission items in the mission. */

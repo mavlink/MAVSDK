@@ -93,7 +93,7 @@ public:
      * @brief Possible results returned for calibration commands
      */
     enum class Result {
-        Unknown, /**< @brief Unknown error. */
+        Unknown, /**< @brief Unknown result. */
         Success, /**< @brief Request succeeded. */
         Progress, /**< @brief Progress update. */
         NoLogfiles, /**< @brief No log files found. */

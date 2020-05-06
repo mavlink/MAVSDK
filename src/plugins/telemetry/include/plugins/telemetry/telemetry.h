@@ -801,7 +801,7 @@ public:
      * @brief Possible results returned for telemetry requests.
      */
     enum class Result {
-        Unknown, /**< @brief Unknown error. */
+        Unknown, /**< @brief Unknown result. */
         Success, /**< @brief Success: the telemetry command was accepted by the vehicle. */
         NoSystem, /**< @brief No system connected. */
         ConnectionError, /**< @brief Connection error. */

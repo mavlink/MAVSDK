@@ -122,7 +122,7 @@ const char* Info::result_str(Info::Result result)
 {
     switch (result) {
         case Info::Result::Unknown:
-            return "Unknown error";
+            return "Unknown result";
         case Info::Result::Success:
             return "Request succeeded";
         case Info::Result::InformationNotReceivedYet:
