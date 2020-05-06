@@ -62,7 +62,7 @@ Offboard::Result OffboardImpl::stop()
         _parent->set_flight_mode(SystemImpl::FlightMode::Hold));
 }
 
-void OffboardImpl::start_async(Offboard::result_callback_t callback)
+void OffboardImpl::start_async(Offboard::ResultCallback callback)
 {
     {
         std::lock_guard<std::mutex> lock(_mutex);
@@ -81,7 +81,7 @@ void OffboardImpl::start_async(Offboard::result_callback_t callback)
         std::bind(&OffboardImpl::receive_command_result, this, std::placeholders::_1, callback));
 }
 
-void OffboardImpl::stop_async(Offboard::result_callback_t callback)
+void OffboardImpl::stop_async(Offboard::ResultCallback callback)
 {
     {
         std::lock_guard<std::mutex> lock(_mutex);
@@ -102,7 +102,7 @@ bool OffboardImpl::is_active()
 }
 
 void OffboardImpl::receive_command_result(
-    MAVLinkCommands::Result result, const Offboard::result_callback_t& callback)
+    MAVLinkCommands::Result result, const Offboard::ResultCallback& callback)
 {
     Offboard::Result offboard_result = offboard_result_from_command_result(result);
     if (callback) {

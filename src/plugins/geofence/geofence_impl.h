@@ -25,8 +25,7 @@ public:
     Geofence::Result upload_geofence(const std::vector<Geofence::Polygon>& polygons);
 
     void upload_geofence_async(
-        const std::vector<Geofence::Polygon>& polygons,
-        const Geofence::result_callback_t& callback);
+        const std::vector<Geofence::Polygon>& polygons, const Geofence::ResultCallback& callback);
 
     // Non-copyable
     GeofenceImpl(const GeofenceImpl&) = delete;

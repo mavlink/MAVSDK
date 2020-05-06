@@ -15,7 +15,7 @@ Tune::Tune(System& system) : PluginBase(), _impl{new TuneImpl(system)} {}
 
 Tune::~Tune() {}
 
-void Tune::play_tune_async(TuneDescription description, const result_callback_t callback)
+void Tune::play_tune_async(TuneDescription description, const ResultCallback callback)
 {
     _impl->play_tune_async(description, callback);
 }

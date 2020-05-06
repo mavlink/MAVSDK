@@ -121,14 +121,14 @@ public:
     /**
      * @brief Callback type for asynchronous Tune calls.
      */
-    typedef std::function<void(Result)> result_callback_t;
+    using ResultCallback = std::function<void(Result)>;
 
     /**
      * @brief Send a tune to be played by the system.
      *
      * This function is non-blocking.
      */
-    void play_tune_async(TuneDescription description, const result_callback_t callback);
+    void play_tune_async(TuneDescription description, const ResultCallback callback);
 
     /**
      * @brief Returns a human-readable English string for a Result.

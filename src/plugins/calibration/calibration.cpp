@@ -15,23 +15,23 @@ Calibration::Calibration(System& system) : PluginBase(), _impl{new CalibrationIm
 
 Calibration::~Calibration() {}
 
-void Calibration::calibrate_gyro_async(calibrate_gyro_callback_t callback)
+void Calibration::calibrate_gyro_async(CalibrateGyroCallback callback)
 {
     _impl->calibrate_gyro_async(callback);
 }
 
-void Calibration::calibrate_accelerometer_async(calibrate_accelerometer_callback_t callback)
+void Calibration::calibrate_accelerometer_async(CalibrateAccelerometerCallback callback)
 {
     _impl->calibrate_accelerometer_async(callback);
 }
 
-void Calibration::calibrate_magnetometer_async(calibrate_magnetometer_callback_t callback)
+void Calibration::calibrate_magnetometer_async(CalibrateMagnetometerCallback callback)
 {
     _impl->calibrate_magnetometer_async(callback);
 }
 
 void Calibration::calibrate_gimbal_accelerometer_async(
-    calibrate_gimbal_accelerometer_callback_t callback)
+    CalibrateGimbalAccelerometerCallback callback)
 {
     _impl->calibrate_gimbal_accelerometer_async(callback);
 }

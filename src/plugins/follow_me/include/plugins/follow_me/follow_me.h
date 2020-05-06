@@ -146,7 +146,7 @@ public:
     /**
      * @brief Callback type for asynchronous FollowMe calls.
      */
-    typedef std::function<void(Result)> result_callback_t;
+    using ResultCallback = std::function<void(Result)>;
 
     /**
      * @brief Get current configuration.

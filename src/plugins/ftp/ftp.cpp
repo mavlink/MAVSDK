@@ -15,45 +15,44 @@ Ftp::Ftp(System& system) : PluginBase(), _impl{new FtpImpl(system)} {}
 
 Ftp::~Ftp() {}
 
-void Ftp::reset_async(const result_callback_t callback)
+void Ftp::reset_async(const ResultCallback callback)
 {
     _impl->reset_async(callback);
 }
 
 void Ftp::download_async(
-    std::string remote_file_path, std::string local_dir, download_callback_t callback)
+    std::string remote_file_path, std::string local_dir, DownloadCallback callback)
 {
     _impl->download_async(remote_file_path, local_dir, callback);
 }
 
-void Ftp::upload_async(
-    std::string local_file_path, std::string remote_dir, upload_callback_t callback)
+void Ftp::upload_async(std::string local_file_path, std::string remote_dir, UploadCallback callback)
 {
     _impl->upload_async(local_file_path, remote_dir, callback);
 }
 
-void Ftp::list_directory_async(std::string remote_dir, const list_directory_callback_t callback)
+void Ftp::list_directory_async(std::string remote_dir, const ListDirectoryCallback callback)
 {
     _impl->list_directory_async(remote_dir, callback);
 }
 
-void Ftp::create_directory_async(std::string remote_dir, const result_callback_t callback)
+void Ftp::create_directory_async(std::string remote_dir, const ResultCallback callback)
 {
     _impl->create_directory_async(remote_dir, callback);
 }
 
-void Ftp::remove_directory_async(std::string remote_dir, const result_callback_t callback)
+void Ftp::remove_directory_async(std::string remote_dir, const ResultCallback callback)
 {
     _impl->remove_directory_async(remote_dir, callback);
 }
 
-void Ftp::remove_file_async(std::string remote_file_path, const result_callback_t callback)
+void Ftp::remove_file_async(std::string remote_file_path, const ResultCallback callback)
 {
     _impl->remove_file_async(remote_file_path, callback);
 }
 
 void Ftp::rename_async(
-    std::string remote_from_path, std::string remote_to_path, const result_callback_t callback)
+    std::string remote_from_path, std::string remote_to_path, const ResultCallback callback)
 {
     _impl->rename_async(remote_from_path, remote_to_path, callback);
 }
@@ -61,7 +60,7 @@ void Ftp::rename_async(
 void Ftp::are_files_identical_async(
     std::string local_file_path,
     std::string remote_file_path,
-    const are_files_identical_callback_t callback)
+    const AreFilesIdenticalCallback callback)
 {
     _impl->are_files_identical_async(local_file_path, remote_file_path, callback);
 }

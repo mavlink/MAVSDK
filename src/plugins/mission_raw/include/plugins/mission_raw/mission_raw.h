@@ -129,7 +129,7 @@ public:
     /**
      * @brief Callback type for asynchronous MissionRaw calls.
      */
-    typedef std::function<void(Result)> result_callback_t;
+    using ResultCallback = std::function<void(Result)>;
 
     /**
      * @brief Upload a list of raw mission items to the system.
@@ -140,7 +140,7 @@ public:
      * This function is non-blocking. See 'upload_mission' for the blocking counterpart.
      */
     void
-    upload_mission_async(std::vector<MissionItem> mission_items, const result_callback_t callback);
+    upload_mission_async(std::vector<MissionItem> mission_items, const ResultCallback callback);
 
     /**
      * @brief Upload a list of raw mission items to the system.
@@ -166,14 +166,14 @@ public:
     /**
      * @brief Callback type for download_mission_async.
      */
-    typedef std::function<void(Result, std::vector<MissionItem>)> download_mission_callback_t;
+    using DownloadMissionCallback = std::function<void(Result, std::vector<MissionItem>)>;
 
     /**
      * @brief Download a list of raw mission items from the system (asynchronous).
      *
      * This function is non-blocking. See 'download_mission' for the blocking counterpart.
      */
-    void download_mission_async(const download_mission_callback_t callback);
+    void download_mission_async(const DownloadMissionCallback callback);
 
     /**
      * @brief Download a list of raw mission items from the system (asynchronous).
@@ -200,7 +200,7 @@ public:
      *
      * This function is non-blocking. See 'start_mission' for the blocking counterpart.
      */
-    void start_mission_async(const result_callback_t callback);
+    void start_mission_async(const ResultCallback callback);
 
     /**
      * @brief Start the mission.
@@ -223,7 +223,7 @@ public:
      *
      * This function is non-blocking. See 'pause_mission' for the blocking counterpart.
      */
-    void pause_mission_async(const result_callback_t callback);
+    void pause_mission_async(const ResultCallback callback);
 
     /**
      * @brief Pause the mission.
@@ -244,7 +244,7 @@ public:
      *
      * This function is non-blocking. See 'clear_mission' for the blocking counterpart.
      */
-    void clear_mission_async(const result_callback_t callback);
+    void clear_mission_async(const ResultCallback callback);
 
     /**
      * @brief Clear the mission saved on the vehicle.
@@ -263,7 +263,7 @@ public:
      *
      * This function is non-blocking. See 'set_current_mission_item' for the blocking counterpart.
      */
-    void set_current_mission_item_async(int32_t index, const result_callback_t callback);
+    void set_current_mission_item_async(int32_t index, const ResultCallback callback);
 
     /**
      * @brief Sets the raw mission item index to go to.
@@ -282,12 +282,12 @@ public:
      * @brief Callback type for subscribe_mission_progress.
      */
 
-    typedef std::function<void(MissionProgress)> mission_progress_callback_t;
+    using MissionProgressCallback = std::function<void(MissionProgress)>;
 
     /**
      * @brief Subscribe to mission progress updates.
      */
-    void subscribe_mission_progress(mission_progress_callback_t callback);
+    void subscribe_mission_progress(MissionProgressCallback callback);
 
     /**
      * @brief Poll for 'MissionProgress' (blocking).
@@ -300,7 +300,7 @@ public:
      * @brief Callback type for subscribe_mission_changed.
      */
 
-    typedef std::function<void(bool)> mission_changed_callback_t;
+    using MissionChangedCallback = std::function<void(bool)>;
 
     /**
      * @brief *
@@ -311,7 +311,7 @@ public:
      *
      * @param callback Callback to notify about change.
      */
-    void subscribe_mission_changed(mission_changed_callback_t callback);
+    void subscribe_mission_changed(MissionChangedCallback callback);
 
     /**
      * @brief Returns a human-readable English string for a Result.

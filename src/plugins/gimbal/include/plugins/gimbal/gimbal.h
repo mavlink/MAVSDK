@@ -78,7 +78,7 @@ public:
     /**
      * @brief Callback type for asynchronous Gimbal calls.
      */
-    typedef std::function<void(Result)> result_callback_t;
+    using ResultCallback = std::function<void(Result)>;
 
     /**
      * @brief Set gimbal pitch and yaw angles.
@@ -89,7 +89,7 @@ public:
      *
      * This function is non-blocking. See 'set_pitch_and_yaw' for the blocking counterpart.
      */
-    void set_pitch_and_yaw_async(float pitch_deg, float yaw_deg, const result_callback_t callback);
+    void set_pitch_and_yaw_async(float pitch_deg, float yaw_deg, const ResultCallback callback);
 
     /**
      * @brief Set gimbal pitch and yaw angles.
@@ -113,7 +113,7 @@ public:
      *
      * This function is non-blocking. See 'set_mode' for the blocking counterpart.
      */
-    void set_mode_async(GimbalMode gimbal_mode, const result_callback_t callback);
+    void set_mode_async(GimbalMode gimbal_mode, const ResultCallback callback);
 
     /**
      * @brief Set gimbal mode.
@@ -140,10 +140,7 @@ public:
      * This function is non-blocking. See 'set_roi_location' for the blocking counterpart.
      */
     void set_roi_location_async(
-        double latitude_deg,
-        double longitude_deg,
-        float altitude_m,
-        const result_callback_t callback);
+        double latitude_deg, double longitude_deg, float altitude_m, const ResultCallback callback);
 
     /**
      * @brief Set gimbal region of interest (ROI).

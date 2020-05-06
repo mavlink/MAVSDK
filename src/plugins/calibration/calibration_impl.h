@@ -21,20 +21,18 @@ public:
 
     void cancel() const;
 
-    void calibrate_gyro_async(const Calibration::calibrate_gyro_callback_t& callback);
-    void
-    calibrate_accelerometer_async(const Calibration::calibrate_accelerometer_callback_t& callback);
-    void
-    calibrate_magnetometer_async(const Calibration::calibrate_magnetometer_callback_t& callback);
+    void calibrate_gyro_async(const Calibration::CalibrateGyroCallback& callback);
+    void calibrate_accelerometer_async(const Calibration::CalibrateAccelerometerCallback& callback);
+    void calibrate_magnetometer_async(const Calibration::CalibrateMagnetometerCallback& callback);
     void calibrate_gimbal_accelerometer_async(
-        const Calibration::calibrate_gimbal_accelerometer_callback_t& callback);
+        const Calibration::CalibrateGimbalAccelerometerCallback& callback);
 
 private:
     typedef std::function<void(const Calibration::Result result, const Calibration::ProgressData)>
-        calibration_callback_t;
+        CalibrationCallback;
 
     void call_user_callback(
-        const calibration_callback_t& callback,
+        const CalibrationCallback& callback,
         const Calibration::Result& result,
         const Calibration::ProgressData progress_data);
     void process_statustext(const mavlink_message_t& message);
@@ -72,7 +70,7 @@ private:
         GimbalAccelerometerCalibration
     } _state{State::None};
 
-    calibration_callback_t _calibration_callback{nullptr};
+    CalibrationCallback _calibration_callback{nullptr};
 };
 
 } // namespace mavsdk

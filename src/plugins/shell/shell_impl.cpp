@@ -48,7 +48,7 @@ Shell::Result ShellImpl::send(std::string command)
     return Shell::Result::Success;
 }
 
-void ShellImpl::receive_async(Shell::receive_callback_t callback)
+void ShellImpl::receive_async(Shell::ReceiveCallback callback)
 {
     std::lock_guard<std::mutex> lock(_receive.mutex);
     _receive.callback = callback;

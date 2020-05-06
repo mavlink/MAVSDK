@@ -89,7 +89,7 @@ Mission::Result MissionImpl::upload_mission(const Mission::MissionPlan& mission_
 }
 
 void MissionImpl::upload_mission_async(
-    const Mission::MissionPlan& mission_plan, const Mission::result_callback_t& callback)
+    const Mission::MissionPlan& mission_plan, const Mission::ResultCallback& callback)
 {
     if (_mission_data.last_upload.lock()) {
         _parent->call_user_callback([callback]() {
@@ -143,7 +143,7 @@ std::pair<Mission::Result, Mission::MissionPlan> MissionImpl::download_mission()
     return fut.get();
 }
 
-void MissionImpl::download_mission_async(const Mission::download_mission_callback_t& callback)
+void MissionImpl::download_mission_async(const Mission::DownloadMissionCallback& callback)
 {
     if (_mission_data.last_download.lock()) {
         _parent->call_user_callback([callback]() {
@@ -495,7 +495,7 @@ std::pair<Mission::Result, Mission::MissionPlan> MissionImpl::convert_to_result_
         return result_pair;
     }
 
-    Mission::download_mission_callback_t callback;
+    Mission::DownloadMissionCallback callback;
     {
         _enable_return_to_launch_after_mission = false;
 
@@ -616,7 +616,7 @@ Mission::Result MissionImpl::start_mission()
     return fut.get();
 }
 
-void MissionImpl::start_mission_async(const Mission::result_callback_t& callback)
+void MissionImpl::start_mission_async(const Mission::ResultCallback& callback)
 {
     _parent->set_flight_mode_async(
         SystemImpl::FlightMode::Mission, [this, callback](MAVLinkCommands::Result result, float) {
@@ -633,7 +633,7 @@ Mission::Result MissionImpl::pause_mission()
     return fut.get();
 }
 
-void MissionImpl::pause_mission_async(const Mission::result_callback_t& callback)
+void MissionImpl::pause_mission_async(const Mission::ResultCallback& callback)
 {
     _parent->set_flight_mode_async(
         SystemImpl::FlightMode::Hold, [this, callback](MAVLinkCommands::Result result, float) {
@@ -642,7 +642,7 @@ void MissionImpl::pause_mission_async(const Mission::result_callback_t& callback
 }
 
 void MissionImpl::report_flight_mode_change(
-    Mission::result_callback_t callback, MAVLinkCommands::Result result)
+    Mission::ResultCallback callback, MAVLinkCommands::Result result)
 {
     if (!callback) {
         return;
@@ -685,7 +685,7 @@ Mission::Result MissionImpl::clear_mission()
     return fut.get();
 }
 
-void MissionImpl::clear_mission_async(const Mission::result_callback_t& callback)
+void MissionImpl::clear_mission_async(const Mission::ResultCallback& callback)
 {
     _parent->mission_transfer().clear_items_async(
         MAV_MISSION_TYPE_MISSION, [this, callback](MAVLinkMissionTransfer::Result result) {
@@ -709,7 +709,7 @@ Mission::Result MissionImpl::set_current_mission_item(int current)
 }
 
 void MissionImpl::set_current_mission_item_async(
-    int current, const Mission::result_callback_t& callback)
+    int current, const Mission::ResultCallback& callback)
 {
     int mavlink_index = -1;
     {
@@ -854,7 +854,7 @@ Mission::MissionProgress MissionImpl::mission_progress()
     return mission_progress;
 }
 
-void MissionImpl::mission_progress_async(Mission::mission_progress_callback_t callback)
+void MissionImpl::mission_progress_async(Mission::MissionProgressCallback callback)
 {
     std::lock_guard<std::recursive_mutex> lock(_mission_data.mutex);
     _mission_data.mission_progress_callback = callback;
@@ -931,7 +931,7 @@ MissionImpl::import_qgroundcontrol_mission(const std::string& qgc_plan_file)
 }
 
 void MissionImpl::import_qgroundcontrol_mission_async(
-    std::string qgc_plan_path, const Mission::import_qgroundcontrol_mission_callback_t callback)
+    std::string qgc_plan_path, const Mission::ImportQgroundcontrolMissionCallback callback)
 {
     auto fut = std::async([this, callback, qgc_plan_path]() {
         auto result = MissionImpl::import_qgroundcontrol_mission(qgc_plan_path);

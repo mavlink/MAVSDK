@@ -27,32 +27,32 @@ public:
     Mission::Result upload_mission(const Mission::MissionPlan& mission_plan);
 
     void upload_mission_async(
-        const Mission::MissionPlan& mission_plan, const Mission::result_callback_t& callback);
+        const Mission::MissionPlan& mission_plan, const Mission::ResultCallback& callback);
 
-    void cancel_mission_upload_async(const Mission::result_callback_t callback);
+    void cancel_mission_upload_async(const Mission::ResultCallback callback);
     Mission::Result cancel_mission_upload();
 
     std::pair<Mission::Result, Mission::MissionPlan> download_mission();
-    void download_mission_async(const Mission::download_mission_callback_t& callback);
+    void download_mission_async(const Mission::DownloadMissionCallback& callback);
 
     Mission::Result cancel_mission_download();
-    void cancel_mission_download_async(const Mission::result_callback_t& callback);
+    void cancel_mission_download_async(const Mission::ResultCallback& callback);
 
     Mission::Result set_return_to_launch_after_mission(bool enable_rtl);
 
     std::pair<Mission::Result, bool> get_return_to_launch_after_mission();
 
     Mission::Result start_mission();
-    void start_mission_async(const Mission::result_callback_t& callback);
+    void start_mission_async(const Mission::ResultCallback& callback);
 
     Mission::Result pause_mission();
-    void pause_mission_async(const Mission::result_callback_t& callback);
+    void pause_mission_async(const Mission::ResultCallback& callback);
 
     Mission::Result clear_mission();
-    void clear_mission_async(const Mission::result_callback_t& callback);
+    void clear_mission_async(const Mission::ResultCallback& callback);
 
     Mission::Result set_current_mission_item(int index);
-    void set_current_mission_item_async(int current, const Mission::result_callback_t& callback);
+    void set_current_mission_item_async(int current, const Mission::ResultCallback& callback);
 
     std::pair<Mission::Result, bool> is_mission_finished() const;
 
@@ -60,11 +60,10 @@ public:
     int total_mission_items() const;
 
     Mission::MissionProgress mission_progress();
-    void mission_progress_async(Mission::mission_progress_callback_t callback);
+    void mission_progress_async(Mission::MissionProgressCallback callback);
 
     void import_qgroundcontrol_mission_async(
-        std::string qgc_plan_path,
-        const Mission::import_qgroundcontrol_mission_callback_t callback);
+        std::string qgc_plan_path, const Mission::ImportQgroundcontrolMissionCallback callback);
 
     static std::pair<Mission::Result, Mission::MissionPlan>
     import_qgroundcontrol_mission(const std::string& qgc_plan_path);
@@ -88,7 +87,7 @@ private:
     void reset_mission_progress();
 
     void
-    report_flight_mode_change(Mission::result_callback_t callback, MAVLinkCommands::Result result);
+    report_flight_mode_change(Mission::ResultCallback callback, MAVLinkCommands::Result result);
     static Mission::Result command_result_to_mission_result(MAVLinkCommands::Result result);
 
     // FIXME: make static
@@ -115,9 +114,9 @@ private:
         int num_mission_items_to_download{-1};
         int next_mission_item_to_download{-1};
         int last_mission_item_to_upload{-1};
-        Mission::result_callback_t result_callback{nullptr};
-        Mission::download_mission_callback_t download_mission_callback{nullptr};
-        Mission::mission_progress_callback_t mission_progress_callback{nullptr};
+        Mission::ResultCallback result_callback{nullptr};
+        Mission::DownloadMissionCallback download_mission_callback{nullptr};
+        Mission::MissionProgressCallback mission_progress_callback{nullptr};
         int last_current_reported_mission_item{-1};
         int last_total_reported_mission_item{-1};
         std::weak_ptr<MAVLinkMissionTransfer::WorkItem> last_upload{};

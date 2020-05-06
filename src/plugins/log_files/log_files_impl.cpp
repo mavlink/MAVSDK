@@ -76,7 +76,7 @@ std::pair<LogFiles::Result, std::vector<LogFiles::Entry>> LogFilesImpl::get_entr
     return future_result.get();
 }
 
-void LogFilesImpl::get_entries_async(LogFiles::get_entries_callback_t callback)
+void LogFilesImpl::get_entries_async(LogFiles::GetEntriesCallback callback)
 {
     {
         std::lock_guard<std::mutex> lock(_entries.mutex);
@@ -197,7 +197,7 @@ void LogFilesImpl::list_timeout()
 }
 
 void LogFilesImpl::download_log_file_async(
-    unsigned id, const std::string& file_path, LogFiles::download_log_file_callback_t callback)
+    unsigned id, const std::string& file_path, LogFiles::DownloadLogFileCallback callback)
 {
     unsigned bytes_to_get;
     {

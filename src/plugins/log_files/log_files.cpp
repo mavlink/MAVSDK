@@ -16,7 +16,7 @@ LogFiles::LogFiles(System& system) : PluginBase(), _impl{new LogFilesImpl(system
 
 LogFiles::~LogFiles() {}
 
-void LogFiles::get_entries_async(const get_entries_callback_t callback)
+void LogFiles::get_entries_async(const GetEntriesCallback callback)
 {
     _impl->get_entries_async(callback);
 }
@@ -27,7 +27,7 @@ std::pair<LogFiles::Result, std::vector<LogFiles::Entry>> LogFiles::get_entries(
 }
 
 void LogFiles::download_log_file_async(
-    uint32_t id, std::string path, download_log_file_callback_t callback)
+    uint32_t id, std::string path, DownloadLogFileCallback callback)
 {
     _impl->download_log_file_async(id, path, callback);
 }

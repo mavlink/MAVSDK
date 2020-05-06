@@ -269,14 +269,14 @@ public:
     /**
      * @brief Callback type for asynchronous Offboard calls.
      */
-    typedef std::function<void(Result)> result_callback_t;
+    using ResultCallback = std::function<void(Result)>;
 
     /**
      * @brief Start offboard control.
      *
      * This function is non-blocking. See 'start' for the blocking counterpart.
      */
-    void start_async(const result_callback_t callback);
+    void start_async(const ResultCallback callback);
 
     /**
      * @brief Start offboard control.
@@ -294,7 +294,7 @@ public:
      *
      * This function is non-blocking. See 'stop' for the blocking counterpart.
      */
-    void stop_async(const result_callback_t callback);
+    void stop_async(const ResultCallback callback);
 
     /**
      * @brief Stop offboard control.

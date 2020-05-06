@@ -269,7 +269,7 @@ Ftp::Result FtpImpl::_translate(ServerResult result)
     }
 }
 
-void FtpImpl::reset_async(Ftp::result_callback_t callback)
+void FtpImpl::reset_async(Ftp::ResultCallback callback)
 {
     std::lock_guard<std::mutex> lock(_curr_op_mutex);
     if (_curr_op != CMD_NONE) {
@@ -289,9 +289,7 @@ void FtpImpl::reset_async(Ftp::result_callback_t callback)
 }
 
 void FtpImpl::download_async(
-    const std::string& remote_path,
-    const std::string& local_folder,
-    Ftp::download_callback_t callback)
+    const std::string& remote_path, const std::string& local_folder, Ftp::DownloadCallback callback)
 {
     std::lock_guard<std::mutex> lock(_curr_op_mutex);
     if (_curr_op != CMD_NONE) {
@@ -352,7 +350,7 @@ void FtpImpl::_read()
 void FtpImpl::upload_async(
     const std::string& local_file_path,
     const std::string& remote_folder,
-    Ftp::upload_callback_t callback)
+    Ftp::UploadCallback callback)
 {
     std::lock_guard<std::mutex> lock(_curr_op_mutex);
     if (_curr_op != CMD_NONE) {
@@ -439,7 +437,7 @@ void FtpImpl::_terminate_session()
 }
 
 void FtpImpl::list_directory_async(
-    const std::string& path, Ftp::list_directory_callback_t callback, uint32_t offset)
+    const std::string& path, Ftp::ListDirectoryCallback callback, uint32_t offset)
 {
     std::lock_guard<std::mutex> lock(_curr_op_mutex);
     if (_curr_op != CMD_NONE && offset == 0) {
@@ -475,7 +473,7 @@ void FtpImpl::_list_directory(uint32_t offset)
 }
 
 void FtpImpl::_generic_command_async(
-    Opcode opcode, uint32_t offset, const std::string& path, Ftp::result_callback_t callback)
+    Opcode opcode, uint32_t offset, const std::string& path, Ftp::ResultCallback callback)
 {
     if (_curr_op != CMD_NONE) {
         callback(Ftp::Result::Busy);
@@ -499,26 +497,26 @@ void FtpImpl::_generic_command_async(
     _send_mavlink_ftp_message(raw_payload);
 }
 
-void FtpImpl::create_directory_async(const std::string& path, Ftp::result_callback_t callback)
+void FtpImpl::create_directory_async(const std::string& path, Ftp::ResultCallback callback)
 {
     std::lock_guard<std::mutex> lock(_curr_op_mutex);
     _generic_command_async(CMD_CREATE_DIRECTORY, 0, path, callback);
 }
 
-void FtpImpl::remove_directory_async(const std::string& path, Ftp::result_callback_t callback)
+void FtpImpl::remove_directory_async(const std::string& path, Ftp::ResultCallback callback)
 {
     std::lock_guard<std::mutex> lock(_curr_op_mutex);
     _generic_command_async(CMD_REMOVE_DIRECTORY, 0, path, callback);
 }
 
-void FtpImpl::remove_file_async(const std::string& path, Ftp::result_callback_t callback)
+void FtpImpl::remove_file_async(const std::string& path, Ftp::ResultCallback callback)
 {
     std::lock_guard<std::mutex> lock(_curr_op_mutex);
     _generic_command_async(CMD_REMOVE_FILE, 0, path, callback);
 }
 
 void FtpImpl::rename_async(
-    const std::string& from_path, const std::string& to_path, Ftp::result_callback_t callback)
+    const std::string& from_path, const std::string& to_path, Ftp::ResultCallback callback)
 {
     std::lock_guard<std::mutex> lock(_curr_op_mutex);
     if (_curr_op != CMD_NONE) {
@@ -550,7 +548,7 @@ void FtpImpl::rename_async(
 void FtpImpl::are_files_identical_async(
     const std::string& local_path,
     const std::string& remote_path,
-    Ftp::are_files_identical_callback_t callback)
+    Ftp::AreFilesIdenticalCallback callback)
 {
     if (!callback) {
         return;
@@ -580,7 +578,7 @@ void FtpImpl::are_files_identical_async(
         });
 }
 
-void FtpImpl::_calc_file_crc32_async(const std::string& path, file_crc32_result_callback_t callback)
+void FtpImpl::_calc_file_crc32_async(const std::string& path, file_crc32_ResultCallback callback)
 {
     std::lock_guard<std::mutex> lock(_curr_op_mutex);
     if (_curr_op != CMD_NONE) {
