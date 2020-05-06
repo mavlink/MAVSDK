@@ -177,7 +177,7 @@ void complete_mission(std::string qgc_plan, System& system)
     myFile << "Time, Vehicle_ID, Altitude, Latitude, Longitude, Absolute_Altitude, \n";
 
     // Setting up the callback to monitor lat and longitude
-    telemetry->position_async([&](Telemetry::Position position) {
+    telemetry->subscribe_position([&](Telemetry::Position position) {
         myFile << getCurrentTimeString() << "," << (system.get_uuid()) % 100000 << ","
                << position.relative_altitude_m << "," << position.latitude_deg << ","
                << position.longitude_deg << "," << position.absolute_altitude_m << ", \n";
@@ -190,16 +190,16 @@ void complete_mission(std::string qgc_plan, System& system)
     }
 
     // Import Mission items from QGC plan
-    Mission::mission_items_t mission_items;
-    Mission::Result import_res = Mission::import_qgroundcontrol_mission(mission_items, qgc_plan);
-    handle_mission_err_exit(import_res, "Failed to import mission items: ");
+    std::pair<Mission::Result, Mission::MissionPlan> import_res =
+        mission->import_qgroundcontrol_mission(qgc_plan);
+    handle_mission_err_exit(import_res.first, "Failed to import mission items: ");
 
-    if (mission_items.size() == 0) {
+    if (import_res.second.mission_items.size() == 0) {
         std::cerr << "No missions! Exiting..." << std::endl;
         exit(EXIT_FAILURE);
     }
-    std::cout << "Found " << mission_items.size() << " mission items in the given QGC plan."
-              << std::endl;
+    std::cout << "Found " << import_res.second.mission_items.size()
+              << " mission items in the given QGC plan." << std::endl;
 
     {
         std::cout << "Uploading mission..." << std::endl;
@@ -207,7 +207,7 @@ void complete_mission(std::string qgc_plan, System& system)
         auto prom = std::make_shared<std::promise<Mission::Result>>();
         auto future_result = prom->get_future();
         mission->upload_mission_async(
-            mission_items, [prom](Mission::Result result) { prom->set_value(result); });
+            import_res.second, [prom](Mission::Result result) { prom->set_value(result); });
 
         const Mission::Result result = future_result.get();
         handle_mission_err_exit(result, "Mission upload failed: ");
@@ -220,9 +220,9 @@ void complete_mission(std::string qgc_plan, System& system)
     std::cout << "Armed." << std::endl;
 
     // Before starting the mission subscribe to the mission progress.
-    mission->subscribe_progress([&](int current, int total) {
+    mission->subscribe_mission_progress([&](Mission::MissionProgress mission_progress) {
         std::cout << "Mission status update, VehicleID: " << system.get_uuid() % 100000 << " --> "
-                  << current << " / " << total << std::endl;
+                  << mission_progress.current << " / " << mission_progress.total << std::endl;
     });
 
     {
@@ -238,7 +238,7 @@ void complete_mission(std::string qgc_plan, System& system)
         handle_mission_err_exit(result, "Mission start failed: ");
     }
 
-    while (!mission->mission_finished()) {
+    while (!mission->is_mission_finished().second) {
         sleep_for(seconds(1));
     }
 

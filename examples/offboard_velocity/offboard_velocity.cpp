@@ -5,7 +5,6 @@
  *
  * @authors Author: Julian Oes <julian@oes.ch>,
  *                  Shakthi Prashanth <shakthi.prashanth.m@intel.com>
- * @date 2017-10-17
  */
 
 #include <chrono>
@@ -74,14 +73,18 @@ bool offb_ctrl_ned(std::shared_ptr<mavsdk::Offboard> offboard)
 {
     const std::string offb_mode = "NED";
     // Send it once before starting offboard, otherwise it will be rejected.
-    offboard->set_velocity_ned({0.0f, 0.0f, 0.0f, 0.0f});
+    const Offboard::VelocityNedYaw stay{};
+    offboard->set_velocity_ned(stay);
 
     Offboard::Result offboard_result = offboard->start();
     offboard_error_exit(offboard_result, "Offboard start failed");
     offboard_log(offb_mode, "Offboard started");
 
     offboard_log(offb_mode, "Turn to face East");
-    offboard->set_velocity_ned({0.0f, 0.0f, 0.0f, 90.0f});
+
+    Offboard::VelocityNedYaw turn_east{};
+    turn_east.yaw_deg = 90.0f;
+    offboard->set_velocity_ned(turn_east);
     sleep_for(seconds(1)); // Let yaw settle.
 
     {
@@ -92,21 +95,31 @@ bool offb_ctrl_ned(std::shared_ptr<mavsdk::Offboard> offboard)
         offboard_log(offb_mode, "Go North and back South");
         for (unsigned i = 0; i < steps; ++i) {
             float vx = 5.0f * sinf(i * step_size);
-            offboard->set_velocity_ned({vx, 0.0f, 0.0f, 90.0f});
+            Offboard::VelocityNedYaw north_and_back_south{};
+            north_and_back_south.north_m_s = vx;
+            north_and_back_south.yaw_deg = 90.0f;
+            offboard->set_velocity_ned(north_and_back_south);
             sleep_for(milliseconds(10));
         }
     }
 
     offboard_log(offb_mode, "Turn to face West");
-    offboard->set_velocity_ned({0.0f, 0.0f, 0.0f, 270.0f});
+    Offboard::VelocityNedYaw turn_west{};
+    turn_west.yaw_deg = 270.0f;
+    offboard->set_velocity_ned(turn_west);
     sleep_for(seconds(2));
 
     offboard_log(offb_mode, "Go up 2 m/s, turn to face South");
-    offboard->set_velocity_ned({0.0f, 0.0f, -2.0f, 180.0f});
+    Offboard::VelocityNedYaw up_and_south{};
+    up_and_south.down_m_s = -2.0f;
+    up_and_south.yaw_deg = 180.0f;
+    offboard->set_velocity_ned(up_and_south);
     sleep_for(seconds(4));
 
     offboard_log(offb_mode, "Go down 1 m/s, turn to face North");
-    offboard->set_velocity_ned({0.0f, 0.0f, 1.0f, 0.0f});
+    Offboard::VelocityNedYaw down_and_north{};
+    up_and_south.down_m_s = 1.0f;
+    offboard->set_velocity_ned(down_and_north);
     sleep_for(seconds(4));
 
     // Now, stop offboard mode.
@@ -128,38 +141,50 @@ bool offb_ctrl_body(std::shared_ptr<mavsdk::Offboard> offboard)
     const std::string offb_mode = "BODY";
 
     // Send it once before starting offboard, otherwise it will be rejected.
-    offboard->set_velocity_body({0.0f, 0.0f, 0.0f, 0.0f});
+    Offboard::VelocityBodyYawspeed stay{};
+    offboard->set_velocity_body(stay);
 
     Offboard::Result offboard_result = offboard->start();
     offboard_error_exit(offboard_result, "Offboard start failed: ");
     offboard_log(offb_mode, "Offboard started");
 
     offboard_log(offb_mode, "Turn clock-wise and climb");
-    offboard->set_velocity_body({0.0f, 0.0f, -1.0f, 60.0f});
+    Offboard::VelocityBodyYawspeed cc_and_climb{};
+    cc_and_climb.down_m_s = -1.0f;
+    cc_and_climb.yawspeed_deg_s = 60.0f;
+    offboard->set_velocity_body(cc_and_climb);
     sleep_for(seconds(5));
 
     offboard_log(offb_mode, "Turn back anti-clockwise");
-    offboard->set_velocity_body({0.0f, 0.0f, 0.0f, -60.0f});
+    Offboard::VelocityBodyYawspeed ccw{};
+    ccw.down_m_s = -1.0f;
+    ccw.yawspeed_deg_s = -60.0f;
+    offboard->set_velocity_body(ccw);
     sleep_for(seconds(5));
 
     offboard_log(offb_mode, "Wait for a bit");
-    offboard->set_velocity_body({0.0f, 0.0f, 0.0f, 0.0f});
+    offboard->set_velocity_body(stay);
     sleep_for(seconds(2));
 
     offboard_log(offb_mode, "Fly a circle");
-    offboard->set_velocity_body({5.0f, 0.0f, 0.0f, 30.0f});
+    Offboard::VelocityBodyYawspeed circle{};
+    circle.forward_m_s = 5.0f;
+    circle.yawspeed_deg_s = 30.0f;
+    offboard->set_velocity_body(circle);
     sleep_for(seconds(15));
 
     offboard_log(offb_mode, "Wait for a bit");
-    offboard->set_velocity_body({0.0f, 0.0f, 0.0f, 0.0f});
+    offboard->set_velocity_body(stay);
     sleep_for(seconds(5));
 
     offboard_log(offb_mode, "Fly a circle sideways");
-    offboard->set_velocity_body({0.0f, -5.0f, 0.0f, 30.0f});
+    circle.right_m_s = -5.0f;
+    circle.yawspeed_deg_s = 30.0f;
+    offboard->set_velocity_body(circle);
     sleep_for(seconds(15));
 
     offboard_log(offb_mode, "Wait for a bit");
-    offboard->set_velocity_body({0.0f, 0.0f, 0.0f, 0.0f});
+    offboard->set_velocity_body(stay);
     sleep_for(seconds(8));
 
     offboard_result = offboard->stop();
@@ -180,22 +205,27 @@ bool offb_ctrl_attitude(std::shared_ptr<mavsdk::Offboard> offboard)
     const std::string offb_mode = "ATTITUDE";
 
     // Send it once before starting offboard, otherwise it will be rejected.
-    offboard->set_attitude({30.0f, 0.0f, 0.0f, 0.6f});
+    Offboard::Attitude roll{};
+    roll.roll_deg = 30.0f;
+    roll.thrust_value = 0.6f;
+    offboard->set_attitude(roll);
 
     Offboard::Result offboard_result = offboard->start();
     offboard_error_exit(offboard_result, "Offboard start failed");
     offboard_log(offb_mode, "Offboard started");
 
     offboard_log(offb_mode, "ROLL 30");
-    offboard->set_attitude({30.0f, 0.0f, 0.0f, 0.6f});
+    offboard->set_attitude(roll);
     sleep_for(seconds(2)); // rolling
 
     offboard_log(offb_mode, "ROLL -30");
-    offboard->set_attitude({-30.0f, 0.0f, 0.0f, 0.6f});
+    roll.roll_deg = -30.0f;
+    offboard->set_attitude(roll);
     sleep_for(seconds(2)); // Let yaw settle.
 
     offboard_log(offb_mode, "ROLL 0");
-    offboard->set_attitude({0.0f, 0.0f, 0.0f, 0.6f});
+    roll.roll_deg = 0.0f;
+    offboard->set_attitude(roll);
     sleep_for(seconds(2)); // Let yaw settle.
 
     // Now, stop offboard mode.
@@ -235,21 +265,21 @@ landed_state_callback(std::shared_ptr<Telemetry>& telemetry, std::promise<void>&
 {
     return [&landed_promise, &telemetry](Telemetry::LandedState landed) {
         switch (landed) {
-            case Telemetry::LandedState::ON_GROUND:
+            case Telemetry::LandedState::OnGround:
                 std::cout << "On ground" << std::endl;
                 break;
-            case Telemetry::LandedState::TAKING_OFF:
+            case Telemetry::LandedState::TakingOff:
                 std::cout << "Taking off..." << std::endl;
                 break;
-            case Telemetry::LandedState::LANDING:
+            case Telemetry::LandedState::Landing:
                 std::cout << "Landing..." << std::endl;
                 break;
-            case Telemetry::LandedState::IN_AIR:
+            case Telemetry::LandedState::InAir:
                 std::cout << "Taking off has finished." << std::endl;
-                telemetry->landed_state_async(nullptr);
+                telemetry->subscribe_landed_state(nullptr);
                 landed_promise.set_value();
                 break;
-            case Telemetry::LandedState::UNKNOWN:
+            case Telemetry::LandedState::Unknown:
                 std::cout << "Unknown landed state." << std::endl;
                 break;
         }
@@ -302,7 +332,7 @@ int main(int argc, char** argv)
     Action::Result takeoff_result = action->takeoff();
     action_error_exit(takeoff_result, "Takeoff failed");
 
-    telemetry->landed_state_async(landed_state_callback(telemetry, in_air_promise));
+    telemetry->subscribe_landed_state(landed_state_callback(telemetry, in_air_promise));
     in_air_future.wait();
 
     //  using attitude control
