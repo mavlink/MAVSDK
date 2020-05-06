@@ -260,7 +260,7 @@ void usage(std::string bin_name)
               << "For example, to connect to the simulator use URL: udp://:14540" << std::endl;
 }
 
-Telemetry::landed_state_callback_t
+Telemetry::LandedStateCallback
 landed_state_callback(std::shared_ptr<Telemetry>& telemetry, std::promise<void>& landed_promise)
 {
     return [&landed_promise, &telemetry](Telemetry::LandedState landed) {
