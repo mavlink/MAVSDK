@@ -74,6 +74,27 @@ jobs:
       - name: test (mavsdk_server)
         run: ./build/release/src/backend/test/unit_tests_backend
 
+  ubuntu18-proto-check:
+    name: ubuntu-18.04 (proto check)
+    runs-on: ubuntu-18.04
+    steps:
+      - uses: actions/checkout@v1
+        with:
+          submodules: recursive
+      - name: install clang-format
+        run: sudo apt-get install -y clang-format-9
+      - name: install dcsdkgen
+        run: |
+             cd proto/pb_plugins
+             pip3 install --user -r requirements.txt
+             pip3 install --user -e .
+      - name: generate code from protos
+        run: PATH="$PATH:$HOME/.local/bin" tools/generate_from_protos.sh
+      - name: fix style
+        run: tools/fix_style.sh . || true
+      - name: check for diff
+        run: git diff --exit-code
+
   ubuntu18-check-style:
     name: ubuntu-18.04 (check style and docs)
     runs-on: ubuntu-18.04
