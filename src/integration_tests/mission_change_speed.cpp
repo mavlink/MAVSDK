@@ -168,10 +168,8 @@ add_waypoint(double latitude_deg, double longitude_deg, float relative_altitude_
 float current_speed(std::shared_ptr<Telemetry>& telemetry)
 {
     return std::sqrt(
-        telemetry->ground_speed_ned().velocity_north_m_s *
-            telemetry->ground_speed_ned().velocity_north_m_s +
-        telemetry->ground_speed_ned().velocity_east_m_s *
-            telemetry->ground_speed_ned().velocity_east_m_s);
+        telemetry->velocity_ned().north_m_s * telemetry->velocity_ned().north_m_s +
+        telemetry->velocity_ned().east_m_s * telemetry->velocity_ned().east_m_s);
 }
 
 void receive_mission_progress(Mission::MissionProgress progress)

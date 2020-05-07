@@ -358,34 +358,6 @@ public:
         return obj;
     }
 
-    static std::unique_ptr<rpc::telemetry::SpeedNed>
-    translateToRpcSpeedNed(const mavsdk::Telemetry::SpeedNed& speed_ned)
-    {
-        std::unique_ptr<rpc::telemetry::SpeedNed> rpc_obj(new rpc::telemetry::SpeedNed());
-
-        rpc_obj->set_velocity_north_m_s(speed_ned.velocity_north_m_s);
-
-        rpc_obj->set_velocity_east_m_s(speed_ned.velocity_east_m_s);
-
-        rpc_obj->set_velocity_down_m_s(speed_ned.velocity_down_m_s);
-
-        return rpc_obj;
-    }
-
-    static mavsdk::Telemetry::SpeedNed
-    translateFromRpcSpeedNed(const rpc::telemetry::SpeedNed& speed_ned)
-    {
-        mavsdk::Telemetry::SpeedNed obj;
-
-        obj.velocity_north_m_s = speed_ned.velocity_north_m_s();
-
-        obj.velocity_east_m_s = speed_ned.velocity_east_m_s();
-
-        obj.velocity_down_m_s = speed_ned.velocity_down_m_s();
-
-        return obj;
-    }
-
     static std::unique_ptr<rpc::telemetry::GpsInfo>
     translateToRpcGpsInfo(const mavsdk::Telemetry::GpsInfo& gps_info)
     {
@@ -1405,10 +1377,10 @@ public:
         return grpc::Status::OK;
     }
 
-    grpc::Status SubscribeGroundSpeedNed(
+    grpc::Status SubscribeVelocityNed(
         grpc::ServerContext* /* context */,
-        const mavsdk::rpc::telemetry::SubscribeGroundSpeedNedRequest* /* request */,
-        grpc::ServerWriter<rpc::telemetry::GroundSpeedNedResponse>* writer) override
+        const mavsdk::rpc::telemetry::SubscribeVelocityNedRequest* /* request */,
+        grpc::ServerWriter<rpc::telemetry::VelocityNedResponse>* writer) override
     {
         auto stream_closed_promise = std::make_shared<std::promise<void>>();
         auto stream_closed_future = stream_closed_promise->get_future();
@@ -1418,17 +1390,17 @@ public:
 
         std::mutex subscribe_mutex{};
 
-        _telemetry.subscribe_ground_speed_ned(
+        _telemetry.subscribe_velocity_ned(
             [this, &writer, &stream_closed_promise, is_finished, &subscribe_mutex](
-                const mavsdk::Telemetry::SpeedNed ground_speed_ned) {
-                rpc::telemetry::GroundSpeedNedResponse rpc_response;
+                const mavsdk::Telemetry::VelocityNed velocity_ned) {
+                rpc::telemetry::VelocityNedResponse rpc_response;
 
-                rpc_response.set_allocated_ground_speed_ned(
-                    translateToRpcSpeedNed(ground_speed_ned).release());
+                rpc_response.set_allocated_velocity_ned(
+                    translateToRpcVelocityNed(velocity_ned).release());
 
                 std::lock_guard<std::mutex> lock(subscribe_mutex);
                 if (!*is_finished && !writer->Write(rpc_response)) {
-                    _telemetry.subscribe_ground_speed_ned(nullptr);
+                    _telemetry.subscribe_velocity_ned(nullptr);
                     *is_finished = true;
                     unregister_stream_stop_promise(stream_closed_promise);
                     stream_closed_promise->set_value();
@@ -2054,17 +2026,17 @@ public:
         return grpc::Status::OK;
     }
 
-    grpc::Status SetRateGroundSpeedNed(
+    grpc::Status SetRateVelocityNed(
         grpc::ServerContext* /* context */,
-        const rpc::telemetry::SetRateGroundSpeedNedRequest* request,
-        rpc::telemetry::SetRateGroundSpeedNedResponse* response) override
+        const rpc::telemetry::SetRateVelocityNedRequest* request,
+        rpc::telemetry::SetRateVelocityNedResponse* response) override
     {
         if (request == nullptr) {
-            LogWarn() << "SetRateGroundSpeedNed sent with a null request! Ignoring...";
+            LogWarn() << "SetRateVelocityNed sent with a null request! Ignoring...";
             return grpc::Status::OK;
         }
 
-        auto result = _telemetry.set_rate_ground_speed_ned(request->rate_hz());
+        auto result = _telemetry.set_rate_velocity_ned(request->rate_hz());
 
         if (response != nullptr) {
             fillResponseWithResult(response, result);

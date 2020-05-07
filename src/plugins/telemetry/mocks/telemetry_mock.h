@@ -26,7 +26,7 @@ public:
     MOCK_CONST_METHOD1(
         subscribe_camera_attitude_quaternion, void(Telemetry::AttitudeQuaternionCallback)){};
     MOCK_CONST_METHOD1(subscribe_camera_attitude_euler, void(Telemetry::AttitudeEulerCallback)){};
-    MOCK_CONST_METHOD1(subscribe_ground_speed_ned, void(Telemetry::GroundSpeedNedCallback)){};
+    MOCK_CONST_METHOD1(subscribe_velocity_ned, void(Telemetry::VelocityNedCallback)){};
     MOCK_CONST_METHOD1(subscribe_rc_status, void(Telemetry::RcStatusCallback)){};
     MOCK_CONST_METHOD1(
         subscribe_actuator_control_target, void(Telemetry::ActuatorControlTargetCallback)){};
@@ -47,7 +47,7 @@ public:
     MOCK_METHOD1(set_rate_landed_state, Telemetry::Result(double)){};
     MOCK_METHOD1(set_rate_attitude, Telemetry::Result(double)){};
     MOCK_METHOD1(set_rate_camera_attitude, Telemetry::Result(double)){};
-    MOCK_METHOD1(set_rate_ground_speed_ned, Telemetry::Result(double)){};
+    MOCK_METHOD1(set_rate_velocity_ned, Telemetry::Result(double)){};
     MOCK_METHOD1(set_rate_gps_info, Telemetry::Result(double)){};
     MOCK_METHOD1(set_rate_battery, Telemetry::Result(double)){};
     MOCK_METHOD1(set_rate_rc_status, Telemetry::Result(double)){};
@@ -66,7 +66,7 @@ public:
     MOCK_CONST_METHOD2(set_rate_landed_state_async, void(double, Telemetry::ResultCallback)){};
     MOCK_CONST_METHOD2(set_rate_attitude_async, void(double, Telemetry::ResultCallback)){};
     MOCK_CONST_METHOD2(set_rate_camera_attitude_async, void(double, Telemetry::ResultCallback)){};
-    MOCK_CONST_METHOD2(set_rate_ground_speed_ned_async, void(double, Telemetry::ResultCallback)){};
+    MOCK_CONST_METHOD2(set_rate_velocity_ned_async, void(double, Telemetry::ResultCallback)){};
     MOCK_CONST_METHOD2(set_rate_gps_info_async, void(double, Telemetry::ResultCallback)){};
     MOCK_CONST_METHOD2(set_rate_battery_async, void(double, Telemetry::ResultCallback)){};
     MOCK_CONST_METHOD2(set_rate_rc_status_async, void(double, Telemetry::ResultCallback)){};

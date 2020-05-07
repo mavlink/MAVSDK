@@ -195,7 +195,7 @@ Telemetry::Result TelemetryImpl::set_rate_position_velocity_ned(double rate_hz)
 Telemetry::Result TelemetryImpl::set_rate_position(double rate_hz)
 {
     _position_rate_hz = rate_hz;
-    double max_rate_hz = std::max(_position_rate_hz, _ground_speed_ned_rate_hz);
+    double max_rate_hz = std::max(_position_rate_hz, _velocity_ned_rate_hz);
 
     return telemetry_result_from_command_result(
         _parent->set_msg_rate(MAVLINK_MSG_ID_GLOBAL_POSITION_INT, max_rate_hz));
@@ -230,10 +230,10 @@ Telemetry::Result TelemetryImpl::set_rate_camera_attitude(double rate_hz)
         _parent->set_msg_rate(MAVLINK_MSG_ID_MOUNT_ORIENTATION, rate_hz));
 }
 
-Telemetry::Result TelemetryImpl::set_rate_ground_speed_ned(double rate_hz)
+Telemetry::Result TelemetryImpl::set_rate_velocity_ned(double rate_hz)
 {
-    _ground_speed_ned_rate_hz = rate_hz;
-    double max_rate_hz = std::max(_position_rate_hz, _ground_speed_ned_rate_hz);
+    _velocity_ned_rate_hz = rate_hz;
+    double max_rate_hz = std::max(_position_rate_hz, _velocity_ned_rate_hz);
 
     return telemetry_result_from_command_result(
         _parent->set_msg_rate(MAVLINK_MSG_ID_GLOBAL_POSITION_INT, max_rate_hz));
@@ -311,7 +311,7 @@ void TelemetryImpl::set_rate_position_velocity_ned_async(
 void TelemetryImpl::set_rate_position_async(double rate_hz, Telemetry::ResultCallback callback)
 {
     _position_rate_hz = rate_hz;
-    double max_rate_hz = std::max(_position_rate_hz, _ground_speed_ned_rate_hz);
+    double max_rate_hz = std::max(_position_rate_hz, _velocity_ned_rate_hz);
 
     _parent->set_msg_rate_async(
         MAVLINK_MSG_ID_GLOBAL_POSITION_INT,
@@ -357,11 +357,10 @@ void TelemetryImpl::set_rate_camera_attitude_async(
         std::bind(&TelemetryImpl::command_result_callback, std::placeholders::_1, callback));
 }
 
-void TelemetryImpl::set_rate_ground_speed_ned_async(
-    double rate_hz, Telemetry::ResultCallback callback)
+void TelemetryImpl::set_rate_velocity_ned_async(double rate_hz, Telemetry::ResultCallback callback)
 {
-    _ground_speed_ned_rate_hz = rate_hz;
-    double max_rate_hz = std::max(_position_rate_hz, _ground_speed_ned_rate_hz);
+    _velocity_ned_rate_hz = rate_hz;
+    double max_rate_hz = std::max(_position_rate_hz, _velocity_ned_rate_hz);
 
     _parent->set_msg_rate_async(
         MAVLINK_MSG_ID_GLOBAL_POSITION_INT,
@@ -519,11 +518,11 @@ void TelemetryImpl::process_global_position_int(const mavlink_message_t& message
     }
 
     {
-        Telemetry::SpeedNed ground_speed;
-        ground_speed.velocity_north_m_s = global_position_int.vx * 1e-2f;
-        ground_speed.velocity_east_m_s = global_position_int.vy * 1e-2f;
-        ground_speed.velocity_down_m_s = global_position_int.vz * 1e-2f;
-        set_ground_speed_ned(ground_speed);
+        Telemetry::VelocityNed velocity;
+        velocity.north_m_s = global_position_int.vx * 1e-2f;
+        velocity.east_m_s = global_position_int.vy * 1e-2f;
+        velocity.down_m_s = global_position_int.vz * 1e-2f;
+        set_velocity_ned(velocity);
     }
 
     if (_position_subscription) {
@@ -532,9 +531,9 @@ void TelemetryImpl::process_global_position_int(const mavlink_message_t& message
         _parent->call_user_callback([callback, arg]() { callback(arg); });
     }
 
-    if (_ground_speed_ned_subscription) {
-        auto callback = _ground_speed_ned_subscription;
-        auto arg = ground_speed_ned();
+    if (_velocity_ned_subscription) {
+        auto callback = _velocity_ned_subscription;
+        auto arg = velocity_ned();
         _parent->call_user_callback([callback, arg]() { callback(arg); });
     }
 }
@@ -1326,16 +1325,16 @@ void TelemetryImpl::set_camera_attitude_euler_angle(Telemetry::EulerAngle euler_
     _camera_attitude_euler_angle = euler_angle;
 }
 
-Telemetry::SpeedNed TelemetryImpl::ground_speed_ned() const
+Telemetry::VelocityNed TelemetryImpl::velocity_ned() const
 {
-    std::lock_guard<std::mutex> lock(_ground_speed_ned_mutex);
-    return _ground_speed_ned;
+    std::lock_guard<std::mutex> lock(_velocity_ned_mutex);
+    return _velocity_ned;
 }
 
-void TelemetryImpl::set_ground_speed_ned(Telemetry::SpeedNed ground_speed_ned)
+void TelemetryImpl::set_velocity_ned(Telemetry::VelocityNed velocity_ned)
 {
-    std::lock_guard<std::mutex> lock(_ground_speed_ned_mutex);
-    _ground_speed_ned = ground_speed_ned;
+    std::lock_guard<std::mutex> lock(_velocity_ned_mutex);
+    _velocity_ned = velocity_ned;
 }
 
 Telemetry::Imu TelemetryImpl::imu() const
@@ -1589,9 +1588,9 @@ void TelemetryImpl::camera_attitude_euler_async(Telemetry::AttitudeEulerCallback
     _camera_attitude_euler_angle_subscription = callback;
 }
 
-void TelemetryImpl::ground_speed_ned_async(Telemetry::GroundSpeedNedCallback& callback)
+void TelemetryImpl::velocity_ned_async(Telemetry::VelocityNedCallback& callback)
 {
-    _ground_speed_ned_subscription = callback;
+    _velocity_ned_subscription = callback;
 }
 
 void TelemetryImpl::imu_async(Telemetry::ImuCallback& callback)

@@ -244,32 +244,6 @@ public:
     operator<<(std::ostream& str, Telemetry::AngularVelocityBody const& angular_velocity_body);
 
     /**
-     * @brief Speed type, represented in the NED (North East Down) frame and in metres/second.
-     */
-    struct SpeedNed {
-        float velocity_north_m_s{
-            float(NAN)}; /**< @brief Velocity in North direction in metres/second */
-        float velocity_east_m_s{
-            float(NAN)}; /**< @brief Velocity in East direction in metres/second */
-        float velocity_down_m_s{
-            float(NAN)}; /**< @brief Velocity in Down direction in metres/second */
-    };
-
-    /**
-     * @brief Equal operator to compare two `Telemetry::SpeedNed` objects.
-     *
-     * @return `true` if items are equal.
-     */
-    friend bool operator==(const Telemetry::SpeedNed& lhs, const Telemetry::SpeedNed& rhs);
-
-    /**
-     * @brief Stream operator to print information about a `Telemetry::SpeedNed`.
-     *
-     * @return A reference to the stream.
-     */
-    friend std::ostream& operator<<(std::ostream& str, Telemetry::SpeedNed const& speed_ned);
-
-    /**
      * @brief GPS information type.
      */
     struct GpsInfo {
@@ -1003,22 +977,22 @@ public:
     EulerAngle camera_attitude_euler() const;
 
     /**
-     * @brief Callback type for subscribe_ground_speed_ned.
+     * @brief Callback type for subscribe_velocity_ned.
      */
 
-    using GroundSpeedNedCallback = std::function<void(SpeedNed)>;
+    using VelocityNedCallback = std::function<void(VelocityNed)>;
 
     /**
      * @brief Subscribe to 'ground speed' updates (NED).
      */
-    void subscribe_ground_speed_ned(GroundSpeedNedCallback callback);
+    void subscribe_velocity_ned(VelocityNedCallback callback);
 
     /**
-     * @brief Poll for 'SpeedNed' (blocking).
+     * @brief Poll for 'VelocityNed' (blocking).
      *
-     * @return One SpeedNed update.
+     * @return One VelocityNed update.
      */
-    SpeedNed ground_speed_ned() const;
+    VelocityNed velocity_ned() const;
 
     /**
      * @brief Callback type for subscribe_gps_info.
@@ -1391,19 +1365,19 @@ public:
     /**
      * @brief Set rate to 'ground speed' updates (NED).
      *
-     * This function is non-blocking. See 'set_rate_ground_speed_ned' for the blocking counterpart.
+     * This function is non-blocking. See 'set_rate_velocity_ned' for the blocking counterpart.
      */
-    void set_rate_ground_speed_ned_async(double rate_hz, const ResultCallback callback);
+    void set_rate_velocity_ned_async(double rate_hz, const ResultCallback callback);
 
     /**
      * @brief Set rate to 'ground speed' updates (NED).
      *
-     * This function is blocking. See 'set_rate_ground_speed_ned_async' for the non-blocking
+     * This function is blocking. See 'set_rate_velocity_ned_async' for the non-blocking
      * counterpart.
      *
      * @return Result of request.
      */
-    Result set_rate_ground_speed_ned(double rate_hz) const;
+    Result set_rate_velocity_ned(double rate_hz) const;
 
     /**
      * @brief Set rate to 'GPS info' updates.
