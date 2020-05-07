@@ -9,6 +9,7 @@ configure_file(version.h.in version.h)
 add_library(mavsdk
     call_every_handler.cpp
     connection.cpp
+    connection_result.cpp
     curl_wrapper.cpp
     system.cpp
     system_impl.cpp
