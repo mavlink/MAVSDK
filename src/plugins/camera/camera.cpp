@@ -213,21 +213,21 @@ std::ostream& operator<<(std::ostream& str, Camera::Result const& result)
 {
     switch (result) {
         case Camera::Result::Unknown:
-            return str << "Result Unknown";
+            return str << "Unknown";
         case Camera::Result::Success:
-            return str << "Result Success";
+            return str << "Success";
         case Camera::Result::InProgress:
-            return str << "Result In Progress";
+            return str << "In Progress";
         case Camera::Result::Busy:
-            return str << "Result Busy";
+            return str << "Busy";
         case Camera::Result::Denied:
-            return str << "Result Denied";
+            return str << "Denied";
         case Camera::Result::Error:
-            return str << "Result Error";
+            return str << "Error";
         case Camera::Result::Timeout:
-            return str << "Result Timeout";
+            return str << "Timeout";
         case Camera::Result::WrongArgument:
-            return str << "Result Wrong Argument";
+            return str << "Wrong Argument";
         default:
             return str << "Unknown";
     }
@@ -350,9 +350,9 @@ std::ostream& operator<<(std::ostream& str, Camera::VideoStreamInfo::Status cons
 {
     switch (status) {
         case Camera::VideoStreamInfo::Status::NotRunning:
-            return str << "Status Not Running";
+            return str << "Not Running";
         case Camera::VideoStreamInfo::Status::InProgress:
-            return str << "Status In Progress";
+            return str << "In Progress";
         default:
             return str << "Unknown";
     }
@@ -376,11 +376,11 @@ std::ostream& operator<<(std::ostream& str, Camera::Status::StorageStatus const&
 {
     switch (storage_status) {
         case Camera::Status::StorageStatus::NotAvailable:
-            return str << "Storage Status Not Available";
+            return str << "Not Available";
         case Camera::Status::StorageStatus::Unformatted:
-            return str << "Storage Status Unformatted";
+            return str << "Unformatted";
         case Camera::Status::StorageStatus::Formatted:
-            return str << "Storage Status Formatted";
+            return str << "Formatted";
         default:
             return str << "Unknown";
     }
@@ -492,11 +492,11 @@ std::ostream& operator<<(std::ostream& str, Camera::Mode const& mode)
 {
     switch (mode) {
         case Camera::Mode::Unknown:
-            return str << "Mode Unknown";
+            return str << "Unknown";
         case Camera::Mode::Photo:
-            return str << "Mode Photo";
+            return str << "Photo";
         case Camera::Mode::Video:
-            return str << "Mode Video";
+            return str << "Video";
         default:
             return str << "Unknown";
     }

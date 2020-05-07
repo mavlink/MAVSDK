@@ -65,13 +65,13 @@ std::ostream& operator<<(std::ostream& str, Gimbal::Result const& result)
 {
     switch (result) {
         case Gimbal::Result::Unknown:
-            return str << "Result Unknown";
+            return str << "Unknown";
         case Gimbal::Result::Success:
-            return str << "Result Success";
+            return str << "Success";
         case Gimbal::Result::Error:
-            return str << "Result Error";
+            return str << "Error";
         case Gimbal::Result::Timeout:
-            return str << "Result Timeout";
+            return str << "Timeout";
         default:
             return str << "Unknown";
     }
@@ -81,9 +81,9 @@ std::ostream& operator<<(std::ostream& str, Gimbal::GimbalMode const& gimbal_mod
 {
     switch (gimbal_mode) {
         case Gimbal::GimbalMode::YawFollow:
-            return str << "Gimbal Mode Yaw Follow";
+            return str << "Yaw Follow";
         case Gimbal::GimbalMode::YawLock:
-            return str << "Gimbal Mode Yaw Lock";
+            return str << "Yaw Lock";
         default:
             return str << "Unknown";
     }

@@ -788,13 +788,13 @@ std::ostream& operator<<(std::ostream& str, Telemetry::Odometry::MavFrame const&
 {
     switch (mav_frame) {
         case Telemetry::Odometry::MavFrame::Undef:
-            return str << "Mav Frame Undef";
+            return str << "Undef";
         case Telemetry::Odometry::MavFrame::BodyNed:
-            return str << "Mav Frame Body Ned";
+            return str << "Body Ned";
         case Telemetry::Odometry::MavFrame::VisionNed:
-            return str << "Mav Frame Vision Ned";
+            return str << "Vision Ned";
         case Telemetry::Odometry::MavFrame::EstimNed:
-            return str << "Mav Frame Estim Ned";
+            return str << "Estim Ned";
         default:
             return str << "Unknown";
     }
@@ -1034,19 +1034,19 @@ std::ostream& operator<<(std::ostream& str, Telemetry::Result const& result)
 {
     switch (result) {
         case Telemetry::Result::Unknown:
-            return str << "Result Unknown";
+            return str << "Unknown";
         case Telemetry::Result::Success:
-            return str << "Result Success";
+            return str << "Success";
         case Telemetry::Result::NoSystem:
-            return str << "Result No System";
+            return str << "No System";
         case Telemetry::Result::ConnectionError:
-            return str << "Result Connection Error";
+            return str << "Connection Error";
         case Telemetry::Result::Busy:
-            return str << "Result Busy";
+            return str << "Busy";
         case Telemetry::Result::CommandDenied:
-            return str << "Result Command Denied";
+            return str << "Command Denied";
         case Telemetry::Result::Timeout:
-            return str << "Result Timeout";
+            return str << "Timeout";
         default:
             return str << "Unknown";
     }
@@ -1056,19 +1056,19 @@ std::ostream& operator<<(std::ostream& str, Telemetry::FixType const& fix_type)
 {
     switch (fix_type) {
         case Telemetry::FixType::NoGps:
-            return str << "Fix Type No Gps";
+            return str << "No Gps";
         case Telemetry::FixType::NoFix:
-            return str << "Fix Type No Fix";
+            return str << "No Fix";
         case Telemetry::FixType::Fix2D:
-            return str << "Fix Type Fix 2D";
+            return str << "Fix 2D";
         case Telemetry::FixType::Fix3D:
-            return str << "Fix Type Fix 3D";
+            return str << "Fix 3D";
         case Telemetry::FixType::FixDgps:
-            return str << "Fix Type Fix Dgps";
+            return str << "Fix Dgps";
         case Telemetry::FixType::RtkFloat:
-            return str << "Fix Type Rtk Float";
+            return str << "Rtk Float";
         case Telemetry::FixType::RtkFixed:
-            return str << "Fix Type Rtk Fixed";
+            return str << "Rtk Fixed";
         default:
             return str << "Unknown";
     }
@@ -1078,35 +1078,35 @@ std::ostream& operator<<(std::ostream& str, Telemetry::FlightMode const& flight_
 {
     switch (flight_mode) {
         case Telemetry::FlightMode::Unknown:
-            return str << "Flight Mode Unknown";
+            return str << "Unknown";
         case Telemetry::FlightMode::Ready:
-            return str << "Flight Mode Ready";
+            return str << "Ready";
         case Telemetry::FlightMode::Takeoff:
-            return str << "Flight Mode Takeoff";
+            return str << "Takeoff";
         case Telemetry::FlightMode::Hold:
-            return str << "Flight Mode Hold";
+            return str << "Hold";
         case Telemetry::FlightMode::Mission:
-            return str << "Flight Mode Mission";
+            return str << "Mission";
         case Telemetry::FlightMode::ReturnToLaunch:
-            return str << "Flight Mode Return To Launch";
+            return str << "Return To Launch";
         case Telemetry::FlightMode::Land:
-            return str << "Flight Mode Land";
+            return str << "Land";
         case Telemetry::FlightMode::Offboard:
-            return str << "Flight Mode Offboard";
+            return str << "Offboard";
         case Telemetry::FlightMode::FollowMe:
-            return str << "Flight Mode Follow Me";
+            return str << "Follow Me";
         case Telemetry::FlightMode::Manual:
-            return str << "Flight Mode Manual";
+            return str << "Manual";
         case Telemetry::FlightMode::Altctl:
-            return str << "Flight Mode Altctl";
+            return str << "Altctl";
         case Telemetry::FlightMode::Posctl:
-            return str << "Flight Mode Posctl";
+            return str << "Posctl";
         case Telemetry::FlightMode::Acro:
-            return str << "Flight Mode Acro";
+            return str << "Acro";
         case Telemetry::FlightMode::Stabilized:
-            return str << "Flight Mode Stabilized";
+            return str << "Stabilized";
         case Telemetry::FlightMode::Rattitude:
-            return str << "Flight Mode Rattitude";
+            return str << "Rattitude";
         default:
             return str << "Unknown";
     }
@@ -1116,11 +1116,11 @@ std::ostream& operator<<(std::ostream& str, Telemetry::StatusTextType const& sta
 {
     switch (status_text_type) {
         case Telemetry::StatusTextType::Info:
-            return str << "Status Text Type Info";
+            return str << "Info";
         case Telemetry::StatusTextType::Warning:
-            return str << "Status Text Type Warning";
+            return str << "Warning";
         case Telemetry::StatusTextType::Critical:
-            return str << "Status Text Type Critical";
+            return str << "Critical";
         default:
             return str << "Unknown";
     }
@@ -1130,15 +1130,15 @@ std::ostream& operator<<(std::ostream& str, Telemetry::LandedState const& landed
 {
     switch (landed_state) {
         case Telemetry::LandedState::Unknown:
-            return str << "Landed State Unknown";
+            return str << "Unknown";
         case Telemetry::LandedState::OnGround:
-            return str << "Landed State On Ground";
+            return str << "On Ground";
         case Telemetry::LandedState::InAir:
-            return str << "Landed State In Air";
+            return str << "In Air";
         case Telemetry::LandedState::TakingOff:
-            return str << "Landed State Taking Off";
+            return str << "Taking Off";
         case Telemetry::LandedState::Landing:
-            return str << "Landed State Landing";
+            return str << "Landing";
         default:
             return str << "Unknown";
     }

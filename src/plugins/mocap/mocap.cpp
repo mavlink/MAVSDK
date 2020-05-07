@@ -198,9 +198,9 @@ std::ostream& operator<<(std::ostream& str, Mocap::Odometry::MavFrame const& mav
 {
     switch (mav_frame) {
         case Mocap::Odometry::MavFrame::MocapNed:
-            return str << "Mav Frame Mocap Ned";
+            return str << "Mocap Ned";
         case Mocap::Odometry::MavFrame::LocalFrd:
-            return str << "Mav Frame Local Frd";
+            return str << "Local Frd";
         default:
             return str << "Unknown";
     }
@@ -253,15 +253,15 @@ std::ostream& operator<<(std::ostream& str, Mocap::Result const& result)
 {
     switch (result) {
         case Mocap::Result::Unknown:
-            return str << "Result Unknown";
+            return str << "Unknown";
         case Mocap::Result::Success:
-            return str << "Result Success";
+            return str << "Success";
         case Mocap::Result::NoSystem:
-            return str << "Result No System";
+            return str << "No System";
         case Mocap::Result::ConnectionError:
-            return str << "Result Connection Error";
+            return str << "Connection Error";
         case Mocap::Result::InvalidRequestData:
-            return str << "Result Invalid Request Data";
+            return str << "Invalid Request Data";
         default:
             return str << "Unknown";
     }

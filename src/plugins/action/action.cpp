@@ -226,29 +226,29 @@ std::ostream& operator<<(std::ostream& str, Action::Result const& result)
 {
     switch (result) {
         case Action::Result::Unknown:
-            return str << "Result Unknown";
+            return str << "Unknown";
         case Action::Result::Success:
-            return str << "Result Success";
+            return str << "Success";
         case Action::Result::NoSystem:
-            return str << "Result No System";
+            return str << "No System";
         case Action::Result::ConnectionError:
-            return str << "Result Connection Error";
+            return str << "Connection Error";
         case Action::Result::Busy:
-            return str << "Result Busy";
+            return str << "Busy";
         case Action::Result::CommandDenied:
-            return str << "Result Command Denied";
+            return str << "Command Denied";
         case Action::Result::CommandDeniedLandedStateUnknown:
-            return str << "Result Command Denied Landed State Unknown";
+            return str << "Command Denied Landed State Unknown";
         case Action::Result::CommandDeniedNotLanded:
-            return str << "Result Command Denied Not Landed";
+            return str << "Command Denied Not Landed";
         case Action::Result::Timeout:
-            return str << "Result Timeout";
+            return str << "Timeout";
         case Action::Result::VtolTransitionSupportUnknown:
-            return str << "Result Vtol Transition Support Unknown";
+            return str << "Vtol Transition Support Unknown";
         case Action::Result::NoVtolTransitionSupport:
-            return str << "Result No Vtol Transition Support";
+            return str << "No Vtol Transition Support";
         case Action::Result::ParameterError:
-            return str << "Result Parameter Error";
+            return str << "Parameter Error";
         default:
             return str << "Unknown";
     }

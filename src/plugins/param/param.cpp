@@ -57,17 +57,17 @@ std::ostream& operator<<(std::ostream& str, Param::Result const& result)
 {
     switch (result) {
         case Param::Result::Unknown:
-            return str << "Result Unknown";
+            return str << "Unknown";
         case Param::Result::Success:
-            return str << "Result Success";
+            return str << "Success";
         case Param::Result::Timeout:
-            return str << "Result Timeout";
+            return str << "Timeout";
         case Param::Result::ConnectionError:
-            return str << "Result Connection Error";
+            return str << "Connection Error";
         case Param::Result::WrongType:
-            return str << "Result Wrong Type";
+            return str << "Wrong Type";
         case Param::Result::ParamNameTooLong:
-            return str << "Result Param Name Too Long";
+            return str << "Param Name Too Long";
         default:
             return str << "Unknown";
     }

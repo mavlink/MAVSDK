@@ -184,25 +184,25 @@ std::ostream& operator<<(std::ostream& str, MissionRaw::Result const& result)
 {
     switch (result) {
         case MissionRaw::Result::Unknown:
-            return str << "Result Unknown";
+            return str << "Unknown";
         case MissionRaw::Result::Success:
-            return str << "Result Success";
+            return str << "Success";
         case MissionRaw::Result::Error:
-            return str << "Result Error";
+            return str << "Error";
         case MissionRaw::Result::TooManyMissionItems:
-            return str << "Result Too Many Mission Items";
+            return str << "Too Many Mission Items";
         case MissionRaw::Result::Busy:
-            return str << "Result Busy";
+            return str << "Busy";
         case MissionRaw::Result::Timeout:
-            return str << "Result Timeout";
+            return str << "Timeout";
         case MissionRaw::Result::InvalidArgument:
-            return str << "Result Invalid Argument";
+            return str << "Invalid Argument";
         case MissionRaw::Result::Unsupported:
-            return str << "Result Unsupported";
+            return str << "Unsupported";
         case MissionRaw::Result::NoMissionAvailable:
-            return str << "Result No Mission Available";
+            return str << "No Mission Available";
         case MissionRaw::Result::TransferCancelled:
-            return str << "Result Transfer Cancelled";
+            return str << "Transfer Cancelled";
         default:
             return str << "Unknown";
     }
