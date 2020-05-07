@@ -7,12 +7,14 @@
 #include "camera/camera.pb.h"
 
 #include <functional>
+#include <grpc/impl/codegen/port_platform.h>
 #include <grpcpp/impl/codegen/async_generic_service.h>
 #include <grpcpp/impl/codegen/async_stream.h>
 #include <grpcpp/impl/codegen/async_unary_call.h>
 #include <grpcpp/impl/codegen/client_callback.h>
 #include <grpcpp/impl/codegen/client_context.h>
 #include <grpcpp/impl/codegen/completion_queue.h>
+#include <grpcpp/impl/codegen/message_allocator.h>
 #include <grpcpp/impl/codegen/method_handler.h>
 #include <grpcpp/impl/codegen/proto_utils.h>
 #include <grpcpp/impl/codegen/rpc_method.h>
@@ -23,19 +25,6 @@
 #include <grpcpp/impl/codegen/status.h>
 #include <grpcpp/impl/codegen/stub_options.h>
 #include <grpcpp/impl/codegen/sync_stream.h>
-
-namespace grpc_impl {
-class CompletionQueue;
-class ServerCompletionQueue;
-class ServerContext;
-}  // namespace grpc_impl
-
-namespace grpc {
-namespace experimental {
-template <typename RequestT, typename ResponseT>
-class MessageAllocator;
-}  // namespace experimental
-}  // namespace grpc
 
 namespace mavsdk {
 namespace rpc {
@@ -246,96 +235,218 @@ class CameraService final {
       // Take one photo.
       virtual void TakePhoto(::grpc::ClientContext* context, const ::mavsdk::rpc::camera::TakePhotoRequest* request, ::mavsdk::rpc::camera::TakePhotoResponse* response, std::function<void(::grpc::Status)>) = 0;
       virtual void TakePhoto(::grpc::ClientContext* context, const ::grpc::ByteBuffer* request, ::mavsdk::rpc::camera::TakePhotoResponse* response, std::function<void(::grpc::Status)>) = 0;
+      #ifdef GRPC_CALLBACK_API_NONEXPERIMENTAL
+      virtual void TakePhoto(::grpc::ClientContext* context, const ::mavsdk::rpc::camera::TakePhotoRequest* request, ::mavsdk::rpc::camera::TakePhotoResponse* response, ::grpc::ClientUnaryReactor* reactor) = 0;
+      #else
       virtual void TakePhoto(::grpc::ClientContext* context, const ::mavsdk::rpc::camera::TakePhotoRequest* request, ::mavsdk::rpc::camera::TakePhotoResponse* response, ::grpc::experimental::ClientUnaryReactor* reactor) = 0;
+      #endif
+      #ifdef GRPC_CALLBACK_API_NONEXPERIMENTAL
+      virtual void TakePhoto(::grpc::ClientContext* context, const ::grpc::ByteBuffer* request, ::mavsdk::rpc::camera::TakePhotoResponse* response, ::grpc::ClientUnaryReactor* reactor) = 0;
+      #else
       virtual void TakePhoto(::grpc::ClientContext* context, const ::grpc::ByteBuffer* request, ::mavsdk::rpc::camera::TakePhotoResponse* response, ::grpc::experimental::ClientUnaryReactor* reactor) = 0;
+      #endif
       //
       // Start photo timelapse with a given interval.
       virtual void StartPhotoInterval(::grpc::ClientContext* context, const ::mavsdk::rpc::camera::StartPhotoIntervalRequest* request, ::mavsdk::rpc::camera::StartPhotoIntervalResponse* response, std::function<void(::grpc::Status)>) = 0;
       virtual void StartPhotoInterval(::grpc::ClientContext* context, const ::grpc::ByteBuffer* request, ::mavsdk::rpc::camera::StartPhotoIntervalResponse* response, std::function<void(::grpc::Status)>) = 0;
+      #ifdef GRPC_CALLBACK_API_NONEXPERIMENTAL
+      virtual void StartPhotoInterval(::grpc::ClientContext* context, const ::mavsdk::rpc::camera::StartPhotoIntervalRequest* request, ::mavsdk::rpc::camera::StartPhotoIntervalResponse* response, ::grpc::ClientUnaryReactor* reactor) = 0;
+      #else
       virtual void StartPhotoInterval(::grpc::ClientContext* context, const ::mavsdk::rpc::camera::StartPhotoIntervalRequest* request, ::mavsdk::rpc::camera::StartPhotoIntervalResponse* response, ::grpc::experimental::ClientUnaryReactor* reactor) = 0;
+      #endif
+      #ifdef GRPC_CALLBACK_API_NONEXPERIMENTAL
+      virtual void StartPhotoInterval(::grpc::ClientContext* context, const ::grpc::ByteBuffer* request, ::mavsdk::rpc::camera::StartPhotoIntervalResponse* response, ::grpc::ClientUnaryReactor* reactor) = 0;
+      #else
       virtual void StartPhotoInterval(::grpc::ClientContext* context, const ::grpc::ByteBuffer* request, ::mavsdk::rpc::camera::StartPhotoIntervalResponse* response, ::grpc::experimental::ClientUnaryReactor* reactor) = 0;
+      #endif
       //
       // Stop a running photo timelapse.
       virtual void StopPhotoInterval(::grpc::ClientContext* context, const ::mavsdk::rpc::camera::StopPhotoIntervalRequest* request, ::mavsdk::rpc::camera::StopPhotoIntervalResponse* response, std::function<void(::grpc::Status)>) = 0;
       virtual void StopPhotoInterval(::grpc::ClientContext* context, const ::grpc::ByteBuffer* request, ::mavsdk::rpc::camera::StopPhotoIntervalResponse* response, std::function<void(::grpc::Status)>) = 0;
+      #ifdef GRPC_CALLBACK_API_NONEXPERIMENTAL
+      virtual void StopPhotoInterval(::grpc::ClientContext* context, const ::mavsdk::rpc::camera::StopPhotoIntervalRequest* request, ::mavsdk::rpc::camera::StopPhotoIntervalResponse* response, ::grpc::ClientUnaryReactor* reactor) = 0;
+      #else
       virtual void StopPhotoInterval(::grpc::ClientContext* context, const ::mavsdk::rpc::camera::StopPhotoIntervalRequest* request, ::mavsdk::rpc::camera::StopPhotoIntervalResponse* response, ::grpc::experimental::ClientUnaryReactor* reactor) = 0;
+      #endif
+      #ifdef GRPC_CALLBACK_API_NONEXPERIMENTAL
+      virtual void StopPhotoInterval(::grpc::ClientContext* context, const ::grpc::ByteBuffer* request, ::mavsdk::rpc::camera::StopPhotoIntervalResponse* response, ::grpc::ClientUnaryReactor* reactor) = 0;
+      #else
       virtual void StopPhotoInterval(::grpc::ClientContext* context, const ::grpc::ByteBuffer* request, ::mavsdk::rpc::camera::StopPhotoIntervalResponse* response, ::grpc::experimental::ClientUnaryReactor* reactor) = 0;
+      #endif
       //
       // Start a video recording.
       virtual void StartVideo(::grpc::ClientContext* context, const ::mavsdk::rpc::camera::StartVideoRequest* request, ::mavsdk::rpc::camera::StartVideoResponse* response, std::function<void(::grpc::Status)>) = 0;
       virtual void StartVideo(::grpc::ClientContext* context, const ::grpc::ByteBuffer* request, ::mavsdk::rpc::camera::StartVideoResponse* response, std::function<void(::grpc::Status)>) = 0;
+      #ifdef GRPC_CALLBACK_API_NONEXPERIMENTAL
+      virtual void StartVideo(::grpc::ClientContext* context, const ::mavsdk::rpc::camera::StartVideoRequest* request, ::mavsdk::rpc::camera::StartVideoResponse* response, ::grpc::ClientUnaryReactor* reactor) = 0;
+      #else
       virtual void StartVideo(::grpc::ClientContext* context, const ::mavsdk::rpc::camera::StartVideoRequest* request, ::mavsdk::rpc::camera::StartVideoResponse* response, ::grpc::experimental::ClientUnaryReactor* reactor) = 0;
+      #endif
+      #ifdef GRPC_CALLBACK_API_NONEXPERIMENTAL
+      virtual void StartVideo(::grpc::ClientContext* context, const ::grpc::ByteBuffer* request, ::mavsdk::rpc::camera::StartVideoResponse* response, ::grpc::ClientUnaryReactor* reactor) = 0;
+      #else
       virtual void StartVideo(::grpc::ClientContext* context, const ::grpc::ByteBuffer* request, ::mavsdk::rpc::camera::StartVideoResponse* response, ::grpc::experimental::ClientUnaryReactor* reactor) = 0;
+      #endif
       //
       // Stop a running video recording.
       virtual void StopVideo(::grpc::ClientContext* context, const ::mavsdk::rpc::camera::StopVideoRequest* request, ::mavsdk::rpc::camera::StopVideoResponse* response, std::function<void(::grpc::Status)>) = 0;
       virtual void StopVideo(::grpc::ClientContext* context, const ::grpc::ByteBuffer* request, ::mavsdk::rpc::camera::StopVideoResponse* response, std::function<void(::grpc::Status)>) = 0;
+      #ifdef GRPC_CALLBACK_API_NONEXPERIMENTAL
+      virtual void StopVideo(::grpc::ClientContext* context, const ::mavsdk::rpc::camera::StopVideoRequest* request, ::mavsdk::rpc::camera::StopVideoResponse* response, ::grpc::ClientUnaryReactor* reactor) = 0;
+      #else
       virtual void StopVideo(::grpc::ClientContext* context, const ::mavsdk::rpc::camera::StopVideoRequest* request, ::mavsdk::rpc::camera::StopVideoResponse* response, ::grpc::experimental::ClientUnaryReactor* reactor) = 0;
+      #endif
+      #ifdef GRPC_CALLBACK_API_NONEXPERIMENTAL
+      virtual void StopVideo(::grpc::ClientContext* context, const ::grpc::ByteBuffer* request, ::mavsdk::rpc::camera::StopVideoResponse* response, ::grpc::ClientUnaryReactor* reactor) = 0;
+      #else
       virtual void StopVideo(::grpc::ClientContext* context, const ::grpc::ByteBuffer* request, ::mavsdk::rpc::camera::StopVideoResponse* response, ::grpc::experimental::ClientUnaryReactor* reactor) = 0;
+      #endif
       //
       // Start video streaming.
       virtual void StartVideoStreaming(::grpc::ClientContext* context, const ::mavsdk::rpc::camera::StartVideoStreamingRequest* request, ::mavsdk::rpc::camera::StartVideoStreamingResponse* response, std::function<void(::grpc::Status)>) = 0;
       virtual void StartVideoStreaming(::grpc::ClientContext* context, const ::grpc::ByteBuffer* request, ::mavsdk::rpc::camera::StartVideoStreamingResponse* response, std::function<void(::grpc::Status)>) = 0;
+      #ifdef GRPC_CALLBACK_API_NONEXPERIMENTAL
+      virtual void StartVideoStreaming(::grpc::ClientContext* context, const ::mavsdk::rpc::camera::StartVideoStreamingRequest* request, ::mavsdk::rpc::camera::StartVideoStreamingResponse* response, ::grpc::ClientUnaryReactor* reactor) = 0;
+      #else
       virtual void StartVideoStreaming(::grpc::ClientContext* context, const ::mavsdk::rpc::camera::StartVideoStreamingRequest* request, ::mavsdk::rpc::camera::StartVideoStreamingResponse* response, ::grpc::experimental::ClientUnaryReactor* reactor) = 0;
+      #endif
+      #ifdef GRPC_CALLBACK_API_NONEXPERIMENTAL
+      virtual void StartVideoStreaming(::grpc::ClientContext* context, const ::grpc::ByteBuffer* request, ::mavsdk::rpc::camera::StartVideoStreamingResponse* response, ::grpc::ClientUnaryReactor* reactor) = 0;
+      #else
       virtual void StartVideoStreaming(::grpc::ClientContext* context, const ::grpc::ByteBuffer* request, ::mavsdk::rpc::camera::StartVideoStreamingResponse* response, ::grpc::experimental::ClientUnaryReactor* reactor) = 0;
+      #endif
       //
       // Stop current video streaming.
       virtual void StopVideoStreaming(::grpc::ClientContext* context, const ::mavsdk::rpc::camera::StopVideoStreamingRequest* request, ::mavsdk::rpc::camera::StopVideoStreamingResponse* response, std::function<void(::grpc::Status)>) = 0;
       virtual void StopVideoStreaming(::grpc::ClientContext* context, const ::grpc::ByteBuffer* request, ::mavsdk::rpc::camera::StopVideoStreamingResponse* response, std::function<void(::grpc::Status)>) = 0;
+      #ifdef GRPC_CALLBACK_API_NONEXPERIMENTAL
+      virtual void StopVideoStreaming(::grpc::ClientContext* context, const ::mavsdk::rpc::camera::StopVideoStreamingRequest* request, ::mavsdk::rpc::camera::StopVideoStreamingResponse* response, ::grpc::ClientUnaryReactor* reactor) = 0;
+      #else
       virtual void StopVideoStreaming(::grpc::ClientContext* context, const ::mavsdk::rpc::camera::StopVideoStreamingRequest* request, ::mavsdk::rpc::camera::StopVideoStreamingResponse* response, ::grpc::experimental::ClientUnaryReactor* reactor) = 0;
+      #endif
+      #ifdef GRPC_CALLBACK_API_NONEXPERIMENTAL
+      virtual void StopVideoStreaming(::grpc::ClientContext* context, const ::grpc::ByteBuffer* request, ::mavsdk::rpc::camera::StopVideoStreamingResponse* response, ::grpc::ClientUnaryReactor* reactor) = 0;
+      #else
       virtual void StopVideoStreaming(::grpc::ClientContext* context, const ::grpc::ByteBuffer* request, ::mavsdk::rpc::camera::StopVideoStreamingResponse* response, ::grpc::experimental::ClientUnaryReactor* reactor) = 0;
+      #endif
       //
       // Set camera mode.
       virtual void SetMode(::grpc::ClientContext* context, const ::mavsdk::rpc::camera::SetModeRequest* request, ::mavsdk::rpc::camera::SetModeResponse* response, std::function<void(::grpc::Status)>) = 0;
       virtual void SetMode(::grpc::ClientContext* context, const ::grpc::ByteBuffer* request, ::mavsdk::rpc::camera::SetModeResponse* response, std::function<void(::grpc::Status)>) = 0;
+      #ifdef GRPC_CALLBACK_API_NONEXPERIMENTAL
+      virtual void SetMode(::grpc::ClientContext* context, const ::mavsdk::rpc::camera::SetModeRequest* request, ::mavsdk::rpc::camera::SetModeResponse* response, ::grpc::ClientUnaryReactor* reactor) = 0;
+      #else
       virtual void SetMode(::grpc::ClientContext* context, const ::mavsdk::rpc::camera::SetModeRequest* request, ::mavsdk::rpc::camera::SetModeResponse* response, ::grpc::experimental::ClientUnaryReactor* reactor) = 0;
+      #endif
+      #ifdef GRPC_CALLBACK_API_NONEXPERIMENTAL
+      virtual void SetMode(::grpc::ClientContext* context, const ::grpc::ByteBuffer* request, ::mavsdk::rpc::camera::SetModeResponse* response, ::grpc::ClientUnaryReactor* reactor) = 0;
+      #else
       virtual void SetMode(::grpc::ClientContext* context, const ::grpc::ByteBuffer* request, ::mavsdk::rpc::camera::SetModeResponse* response, ::grpc::experimental::ClientUnaryReactor* reactor) = 0;
+      #endif
       //
       // Subscribe to camera mode updates.
+      #ifdef GRPC_CALLBACK_API_NONEXPERIMENTAL
+      virtual void SubscribeMode(::grpc::ClientContext* context, ::mavsdk::rpc::camera::SubscribeModeRequest* request, ::grpc::ClientReadReactor< ::mavsdk::rpc::camera::ModeResponse>* reactor) = 0;
+      #else
       virtual void SubscribeMode(::grpc::ClientContext* context, ::mavsdk::rpc::camera::SubscribeModeRequest* request, ::grpc::experimental::ClientReadReactor< ::mavsdk::rpc::camera::ModeResponse>* reactor) = 0;
+      #endif
       //
       // Subscribe to camera information updates.
+      #ifdef GRPC_CALLBACK_API_NONEXPERIMENTAL
+      virtual void SubscribeInformation(::grpc::ClientContext* context, ::mavsdk::rpc::camera::SubscribeInformationRequest* request, ::grpc::ClientReadReactor< ::mavsdk::rpc::camera::InformationResponse>* reactor) = 0;
+      #else
       virtual void SubscribeInformation(::grpc::ClientContext* context, ::mavsdk::rpc::camera::SubscribeInformationRequest* request, ::grpc::experimental::ClientReadReactor< ::mavsdk::rpc::camera::InformationResponse>* reactor) = 0;
+      #endif
       //
       // Subscribe to video stream info updates.
+      #ifdef GRPC_CALLBACK_API_NONEXPERIMENTAL
+      virtual void SubscribeVideoStreamInfo(::grpc::ClientContext* context, ::mavsdk::rpc::camera::SubscribeVideoStreamInfoRequest* request, ::grpc::ClientReadReactor< ::mavsdk::rpc::camera::VideoStreamInfoResponse>* reactor) = 0;
+      #else
       virtual void SubscribeVideoStreamInfo(::grpc::ClientContext* context, ::mavsdk::rpc::camera::SubscribeVideoStreamInfoRequest* request, ::grpc::experimental::ClientReadReactor< ::mavsdk::rpc::camera::VideoStreamInfoResponse>* reactor) = 0;
+      #endif
       //
       // Subscribe to capture info updates.
+      #ifdef GRPC_CALLBACK_API_NONEXPERIMENTAL
+      virtual void SubscribeCaptureInfo(::grpc::ClientContext* context, ::mavsdk::rpc::camera::SubscribeCaptureInfoRequest* request, ::grpc::ClientReadReactor< ::mavsdk::rpc::camera::CaptureInfoResponse>* reactor) = 0;
+      #else
       virtual void SubscribeCaptureInfo(::grpc::ClientContext* context, ::mavsdk::rpc::camera::SubscribeCaptureInfoRequest* request, ::grpc::experimental::ClientReadReactor< ::mavsdk::rpc::camera::CaptureInfoResponse>* reactor) = 0;
+      #endif
       //
       // Subscribe to camera status updates.
+      #ifdef GRPC_CALLBACK_API_NONEXPERIMENTAL
+      virtual void SubscribeStatus(::grpc::ClientContext* context, ::mavsdk::rpc::camera::SubscribeStatusRequest* request, ::grpc::ClientReadReactor< ::mavsdk::rpc::camera::StatusResponse>* reactor) = 0;
+      #else
       virtual void SubscribeStatus(::grpc::ClientContext* context, ::mavsdk::rpc::camera::SubscribeStatusRequest* request, ::grpc::experimental::ClientReadReactor< ::mavsdk::rpc::camera::StatusResponse>* reactor) = 0;
+      #endif
       //
       // Get the list of current camera settings.
+      #ifdef GRPC_CALLBACK_API_NONEXPERIMENTAL
+      virtual void SubscribeCurrentSettings(::grpc::ClientContext* context, ::mavsdk::rpc::camera::SubscribeCurrentSettingsRequest* request, ::grpc::ClientReadReactor< ::mavsdk::rpc::camera::CurrentSettingsResponse>* reactor) = 0;
+      #else
       virtual void SubscribeCurrentSettings(::grpc::ClientContext* context, ::mavsdk::rpc::camera::SubscribeCurrentSettingsRequest* request, ::grpc::experimental::ClientReadReactor< ::mavsdk::rpc::camera::CurrentSettingsResponse>* reactor) = 0;
+      #endif
       //
       // Get the list of settings that can be changed.
+      #ifdef GRPC_CALLBACK_API_NONEXPERIMENTAL
+      virtual void SubscribePossibleSettingOptions(::grpc::ClientContext* context, ::mavsdk::rpc::camera::SubscribePossibleSettingOptionsRequest* request, ::grpc::ClientReadReactor< ::mavsdk::rpc::camera::PossibleSettingOptionsResponse>* reactor) = 0;
+      #else
       virtual void SubscribePossibleSettingOptions(::grpc::ClientContext* context, ::mavsdk::rpc::camera::SubscribePossibleSettingOptionsRequest* request, ::grpc::experimental::ClientReadReactor< ::mavsdk::rpc::camera::PossibleSettingOptionsResponse>* reactor) = 0;
+      #endif
       //
       // Set a setting to some value.
       //
       // Only setting_id of setting and option_id of option needs to be set.
       virtual void SetSetting(::grpc::ClientContext* context, const ::mavsdk::rpc::camera::SetSettingRequest* request, ::mavsdk::rpc::camera::SetSettingResponse* response, std::function<void(::grpc::Status)>) = 0;
       virtual void SetSetting(::grpc::ClientContext* context, const ::grpc::ByteBuffer* request, ::mavsdk::rpc::camera::SetSettingResponse* response, std::function<void(::grpc::Status)>) = 0;
+      #ifdef GRPC_CALLBACK_API_NONEXPERIMENTAL
+      virtual void SetSetting(::grpc::ClientContext* context, const ::mavsdk::rpc::camera::SetSettingRequest* request, ::mavsdk::rpc::camera::SetSettingResponse* response, ::grpc::ClientUnaryReactor* reactor) = 0;
+      #else
       virtual void SetSetting(::grpc::ClientContext* context, const ::mavsdk::rpc::camera::SetSettingRequest* request, ::mavsdk::rpc::camera::SetSettingResponse* response, ::grpc::experimental::ClientUnaryReactor* reactor) = 0;
+      #endif
+      #ifdef GRPC_CALLBACK_API_NONEXPERIMENTAL
+      virtual void SetSetting(::grpc::ClientContext* context, const ::grpc::ByteBuffer* request, ::mavsdk::rpc::camera::SetSettingResponse* response, ::grpc::ClientUnaryReactor* reactor) = 0;
+      #else
       virtual void SetSetting(::grpc::ClientContext* context, const ::grpc::ByteBuffer* request, ::mavsdk::rpc::camera::SetSettingResponse* response, ::grpc::experimental::ClientUnaryReactor* reactor) = 0;
+      #endif
       //
       // Get a setting.
       //
       // Only setting_id of setting needs to be set.
       virtual void GetSetting(::grpc::ClientContext* context, const ::mavsdk::rpc::camera::GetSettingRequest* request, ::mavsdk::rpc::camera::GetSettingResponse* response, std::function<void(::grpc::Status)>) = 0;
       virtual void GetSetting(::grpc::ClientContext* context, const ::grpc::ByteBuffer* request, ::mavsdk::rpc::camera::GetSettingResponse* response, std::function<void(::grpc::Status)>) = 0;
+      #ifdef GRPC_CALLBACK_API_NONEXPERIMENTAL
+      virtual void GetSetting(::grpc::ClientContext* context, const ::mavsdk::rpc::camera::GetSettingRequest* request, ::mavsdk::rpc::camera::GetSettingResponse* response, ::grpc::ClientUnaryReactor* reactor) = 0;
+      #else
       virtual void GetSetting(::grpc::ClientContext* context, const ::mavsdk::rpc::camera::GetSettingRequest* request, ::mavsdk::rpc::camera::GetSettingResponse* response, ::grpc::experimental::ClientUnaryReactor* reactor) = 0;
+      #endif
+      #ifdef GRPC_CALLBACK_API_NONEXPERIMENTAL
+      virtual void GetSetting(::grpc::ClientContext* context, const ::grpc::ByteBuffer* request, ::mavsdk::rpc::camera::GetSettingResponse* response, ::grpc::ClientUnaryReactor* reactor) = 0;
+      #else
       virtual void GetSetting(::grpc::ClientContext* context, const ::grpc::ByteBuffer* request, ::mavsdk::rpc::camera::GetSettingResponse* response, ::grpc::experimental::ClientUnaryReactor* reactor) = 0;
+      #endif
       //
       // Format storage (e.g. SD card) in camera.
       //
       // This will delete all content of the camera storage!
       virtual void FormatStorage(::grpc::ClientContext* context, const ::mavsdk::rpc::camera::FormatStorageRequest* request, ::mavsdk::rpc::camera::FormatStorageResponse* response, std::function<void(::grpc::Status)>) = 0;
       virtual void FormatStorage(::grpc::ClientContext* context, const ::grpc::ByteBuffer* request, ::mavsdk::rpc::camera::FormatStorageResponse* response, std::function<void(::grpc::Status)>) = 0;
+      #ifdef GRPC_CALLBACK_API_NONEXPERIMENTAL
+      virtual void FormatStorage(::grpc::ClientContext* context, const ::mavsdk::rpc::camera::FormatStorageRequest* request, ::mavsdk::rpc::camera::FormatStorageResponse* response, ::grpc::ClientUnaryReactor* reactor) = 0;
+      #else
       virtual void FormatStorage(::grpc::ClientContext* context, const ::mavsdk::rpc::camera::FormatStorageRequest* request, ::mavsdk::rpc::camera::FormatStorageResponse* response, ::grpc::experimental::ClientUnaryReactor* reactor) = 0;
+      #endif
+      #ifdef GRPC_CALLBACK_API_NONEXPERIMENTAL
+      virtual void FormatStorage(::grpc::ClientContext* context, const ::grpc::ByteBuffer* request, ::mavsdk::rpc::camera::FormatStorageResponse* response, ::grpc::ClientUnaryReactor* reactor) = 0;
+      #else
       virtual void FormatStorage(::grpc::ClientContext* context, const ::grpc::ByteBuffer* request, ::mavsdk::rpc::camera::FormatStorageResponse* response, ::grpc::experimental::ClientUnaryReactor* reactor) = 0;
+      #endif
     };
+    #ifdef GRPC_CALLBACK_API_NONEXPERIMENTAL
+    typedef class experimental_async_interface async_interface;
+    #endif
+    #ifdef GRPC_CALLBACK_API_NONEXPERIMENTAL
+    async_interface* async() { return experimental_async(); }
+    #endif
     virtual class experimental_async_interface* experimental_async() { return nullptr; }
   private:
     virtual ::grpc::ClientAsyncResponseReaderInterface< ::mavsdk::rpc::camera::TakePhotoResponse>* AsyncTakePhotoRaw(::grpc::ClientContext* context, const ::mavsdk::rpc::camera::TakePhotoRequest& request, ::grpc::CompletionQueue* cq) = 0;
@@ -530,55 +641,171 @@ class CameraService final {
      public:
       void TakePhoto(::grpc::ClientContext* context, const ::mavsdk::rpc::camera::TakePhotoRequest* request, ::mavsdk::rpc::camera::TakePhotoResponse* response, std::function<void(::grpc::Status)>) override;
       void TakePhoto(::grpc::ClientContext* context, const ::grpc::ByteBuffer* request, ::mavsdk::rpc::camera::TakePhotoResponse* response, std::function<void(::grpc::Status)>) override;
+      #ifdef GRPC_CALLBACK_API_NONEXPERIMENTAL
+      void TakePhoto(::grpc::ClientContext* context, const ::mavsdk::rpc::camera::TakePhotoRequest* request, ::mavsdk::rpc::camera::TakePhotoResponse* response, ::grpc::ClientUnaryReactor* reactor) override;
+      #else
       void TakePhoto(::grpc::ClientContext* context, const ::mavsdk::rpc::camera::TakePhotoRequest* request, ::mavsdk::rpc::camera::TakePhotoResponse* response, ::grpc::experimental::ClientUnaryReactor* reactor) override;
+      #endif
+      #ifdef GRPC_CALLBACK_API_NONEXPERIMENTAL
+      void TakePhoto(::grpc::ClientContext* context, const ::grpc::ByteBuffer* request, ::mavsdk::rpc::camera::TakePhotoResponse* response, ::grpc::ClientUnaryReactor* reactor) override;
+      #else
       void TakePhoto(::grpc::ClientContext* context, const ::grpc::ByteBuffer* request, ::mavsdk::rpc::camera::TakePhotoResponse* response, ::grpc::experimental::ClientUnaryReactor* reactor) override;
+      #endif
       void StartPhotoInterval(::grpc::ClientContext* context, const ::mavsdk::rpc::camera::StartPhotoIntervalRequest* request, ::mavsdk::rpc::camera::StartPhotoIntervalResponse* response, std::function<void(::grpc::Status)>) override;
       void StartPhotoInterval(::grpc::ClientContext* context, const ::grpc::ByteBuffer* request, ::mavsdk::rpc::camera::StartPhotoIntervalResponse* response, std::function<void(::grpc::Status)>) override;
+      #ifdef GRPC_CALLBACK_API_NONEXPERIMENTAL
+      void StartPhotoInterval(::grpc::ClientContext* context, const ::mavsdk::rpc::camera::StartPhotoIntervalRequest* request, ::mavsdk::rpc::camera::StartPhotoIntervalResponse* response, ::grpc::ClientUnaryReactor* reactor) override;
+      #else
       void StartPhotoInterval(::grpc::ClientContext* context, const ::mavsdk::rpc::camera::StartPhotoIntervalRequest* request, ::mavsdk::rpc::camera::StartPhotoIntervalResponse* response, ::grpc::experimental::ClientUnaryReactor* reactor) override;
+      #endif
+      #ifdef GRPC_CALLBACK_API_NONEXPERIMENTAL
+      void StartPhotoInterval(::grpc::ClientContext* context, const ::grpc::ByteBuffer* request, ::mavsdk::rpc::camera::StartPhotoIntervalResponse* response, ::grpc::ClientUnaryReactor* reactor) override;
+      #else
       void StartPhotoInterval(::grpc::ClientContext* context, const ::grpc::ByteBuffer* request, ::mavsdk::rpc::camera::StartPhotoIntervalResponse* response, ::grpc::experimental::ClientUnaryReactor* reactor) override;
+      #endif
       void StopPhotoInterval(::grpc::ClientContext* context, const ::mavsdk::rpc::camera::StopPhotoIntervalRequest* request, ::mavsdk::rpc::camera::StopPhotoIntervalResponse* response, std::function<void(::grpc::Status)>) override;
       void StopPhotoInterval(::grpc::ClientContext* context, const ::grpc::ByteBuffer* request, ::mavsdk::rpc::camera::StopPhotoIntervalResponse* response, std::function<void(::grpc::Status)>) override;
+      #ifdef GRPC_CALLBACK_API_NONEXPERIMENTAL
+      void StopPhotoInterval(::grpc::ClientContext* context, const ::mavsdk::rpc::camera::StopPhotoIntervalRequest* request, ::mavsdk::rpc::camera::StopPhotoIntervalResponse* response, ::grpc::ClientUnaryReactor* reactor) override;
+      #else
       void StopPhotoInterval(::grpc::ClientContext* context, const ::mavsdk::rpc::camera::StopPhotoIntervalRequest* request, ::mavsdk::rpc::camera::StopPhotoIntervalResponse* response, ::grpc::experimental::ClientUnaryReactor* reactor) override;
+      #endif
+      #ifdef GRPC_CALLBACK_API_NONEXPERIMENTAL
+      void StopPhotoInterval(::grpc::ClientContext* context, const ::grpc::ByteBuffer* request, ::mavsdk::rpc::camera::StopPhotoIntervalResponse* response, ::grpc::ClientUnaryReactor* reactor) override;
+      #else
       void StopPhotoInterval(::grpc::ClientContext* context, const ::grpc::ByteBuffer* request, ::mavsdk::rpc::camera::StopPhotoIntervalResponse* response, ::grpc::experimental::ClientUnaryReactor* reactor) override;
+      #endif
       void StartVideo(::grpc::ClientContext* context, const ::mavsdk::rpc::camera::StartVideoRequest* request, ::mavsdk::rpc::camera::StartVideoResponse* response, std::function<void(::grpc::Status)>) override;
       void StartVideo(::grpc::ClientContext* context, const ::grpc::ByteBuffer* request, ::mavsdk::rpc::camera::StartVideoResponse* response, std::function<void(::grpc::Status)>) override;
+      #ifdef GRPC_CALLBACK_API_NONEXPERIMENTAL
+      void StartVideo(::grpc::ClientContext* context, const ::mavsdk::rpc::camera::StartVideoRequest* request, ::mavsdk::rpc::camera::StartVideoResponse* response, ::grpc::ClientUnaryReactor* reactor) override;
+      #else
       void StartVideo(::grpc::ClientContext* context, const ::mavsdk::rpc::camera::StartVideoRequest* request, ::mavsdk::rpc::camera::StartVideoResponse* response, ::grpc::experimental::ClientUnaryReactor* reactor) override;
+      #endif
+      #ifdef GRPC_CALLBACK_API_NONEXPERIMENTAL
+      void StartVideo(::grpc::ClientContext* context, const ::grpc::ByteBuffer* request, ::mavsdk::rpc::camera::StartVideoResponse* response, ::grpc::ClientUnaryReactor* reactor) override;
+      #else
       void StartVideo(::grpc::ClientContext* context, const ::grpc::ByteBuffer* request, ::mavsdk::rpc::camera::StartVideoResponse* response, ::grpc::experimental::ClientUnaryReactor* reactor) override;
+      #endif
       void StopVideo(::grpc::ClientContext* context, const ::mavsdk::rpc::camera::StopVideoRequest* request, ::mavsdk::rpc::camera::StopVideoResponse* response, std::function<void(::grpc::Status)>) override;
       void StopVideo(::grpc::ClientContext* context, const ::grpc::ByteBuffer* request, ::mavsdk::rpc::camera::StopVideoResponse* response, std::function<void(::grpc::Status)>) override;
+      #ifdef GRPC_CALLBACK_API_NONEXPERIMENTAL
+      void StopVideo(::grpc::ClientContext* context, const ::mavsdk::rpc::camera::StopVideoRequest* request, ::mavsdk::rpc::camera::StopVideoResponse* response, ::grpc::ClientUnaryReactor* reactor) override;
+      #else
       void StopVideo(::grpc::ClientContext* context, const ::mavsdk::rpc::camera::StopVideoRequest* request, ::mavsdk::rpc::camera::StopVideoResponse* response, ::grpc::experimental::ClientUnaryReactor* reactor) override;
+      #endif
+      #ifdef GRPC_CALLBACK_API_NONEXPERIMENTAL
+      void StopVideo(::grpc::ClientContext* context, const ::grpc::ByteBuffer* request, ::mavsdk::rpc::camera::StopVideoResponse* response, ::grpc::ClientUnaryReactor* reactor) override;
+      #else
       void StopVideo(::grpc::ClientContext* context, const ::grpc::ByteBuffer* request, ::mavsdk::rpc::camera::StopVideoResponse* response, ::grpc::experimental::ClientUnaryReactor* reactor) override;
+      #endif
       void StartVideoStreaming(::grpc::ClientContext* context, const ::mavsdk::rpc::camera::StartVideoStreamingRequest* request, ::mavsdk::rpc::camera::StartVideoStreamingResponse* response, std::function<void(::grpc::Status)>) override;
       void StartVideoStreaming(::grpc::ClientContext* context, const ::grpc::ByteBuffer* request, ::mavsdk::rpc::camera::StartVideoStreamingResponse* response, std::function<void(::grpc::Status)>) override;
+      #ifdef GRPC_CALLBACK_API_NONEXPERIMENTAL
+      void StartVideoStreaming(::grpc::ClientContext* context, const ::mavsdk::rpc::camera::StartVideoStreamingRequest* request, ::mavsdk::rpc::camera::StartVideoStreamingResponse* response, ::grpc::ClientUnaryReactor* reactor) override;
+      #else
       void StartVideoStreaming(::grpc::ClientContext* context, const ::mavsdk::rpc::camera::StartVideoStreamingRequest* request, ::mavsdk::rpc::camera::StartVideoStreamingResponse* response, ::grpc::experimental::ClientUnaryReactor* reactor) override;
+      #endif
+      #ifdef GRPC_CALLBACK_API_NONEXPERIMENTAL
+      void StartVideoStreaming(::grpc::ClientContext* context, const ::grpc::ByteBuffer* request, ::mavsdk::rpc::camera::StartVideoStreamingResponse* response, ::grpc::ClientUnaryReactor* reactor) override;
+      #else
       void StartVideoStreaming(::grpc::ClientContext* context, const ::grpc::ByteBuffer* request, ::mavsdk::rpc::camera::StartVideoStreamingResponse* response, ::grpc::experimental::ClientUnaryReactor* reactor) override;
+      #endif
       void StopVideoStreaming(::grpc::ClientContext* context, const ::mavsdk::rpc::camera::StopVideoStreamingRequest* request, ::mavsdk::rpc::camera::StopVideoStreamingResponse* response, std::function<void(::grpc::Status)>) override;
       void StopVideoStreaming(::grpc::ClientContext* context, const ::grpc::ByteBuffer* request, ::mavsdk::rpc::camera::StopVideoStreamingResponse* response, std::function<void(::grpc::Status)>) override;
+      #ifdef GRPC_CALLBACK_API_NONEXPERIMENTAL
+      void StopVideoStreaming(::grpc::ClientContext* context, const ::mavsdk::rpc::camera::StopVideoStreamingRequest* request, ::mavsdk::rpc::camera::StopVideoStreamingResponse* response, ::grpc::ClientUnaryReactor* reactor) override;
+      #else
       void StopVideoStreaming(::grpc::ClientContext* context, const ::mavsdk::rpc::camera::StopVideoStreamingRequest* request, ::mavsdk::rpc::camera::StopVideoStreamingResponse* response, ::grpc::experimental::ClientUnaryReactor* reactor) override;
+      #endif
+      #ifdef GRPC_CALLBACK_API_NONEXPERIMENTAL
+      void StopVideoStreaming(::grpc::ClientContext* context, const ::grpc::ByteBuffer* request, ::mavsdk::rpc::camera::StopVideoStreamingResponse* response, ::grpc::ClientUnaryReactor* reactor) override;
+      #else
       void StopVideoStreaming(::grpc::ClientContext* context, const ::grpc::ByteBuffer* request, ::mavsdk::rpc::camera::StopVideoStreamingResponse* response, ::grpc::experimental::ClientUnaryReactor* reactor) override;
+      #endif
       void SetMode(::grpc::ClientContext* context, const ::mavsdk::rpc::camera::SetModeRequest* request, ::mavsdk::rpc::camera::SetModeResponse* response, std::function<void(::grpc::Status)>) override;
       void SetMode(::grpc::ClientContext* context, const ::grpc::ByteBuffer* request, ::mavsdk::rpc::camera::SetModeResponse* response, std::function<void(::grpc::Status)>) override;
+      #ifdef GRPC_CALLBACK_API_NONEXPERIMENTAL
+      void SetMode(::grpc::ClientContext* context, const ::mavsdk::rpc::camera::SetModeRequest* request, ::mavsdk::rpc::camera::SetModeResponse* response, ::grpc::ClientUnaryReactor* reactor) override;
+      #else
       void SetMode(::grpc::ClientContext* context, const ::mavsdk::rpc::camera::SetModeRequest* request, ::mavsdk::rpc::camera::SetModeResponse* response, ::grpc::experimental::ClientUnaryReactor* reactor) override;
+      #endif
+      #ifdef GRPC_CALLBACK_API_NONEXPERIMENTAL
+      void SetMode(::grpc::ClientContext* context, const ::grpc::ByteBuffer* request, ::mavsdk::rpc::camera::SetModeResponse* response, ::grpc::ClientUnaryReactor* reactor) override;
+      #else
       void SetMode(::grpc::ClientContext* context, const ::grpc::ByteBuffer* request, ::mavsdk::rpc::camera::SetModeResponse* response, ::grpc::experimental::ClientUnaryReactor* reactor) override;
+      #endif
+      #ifdef GRPC_CALLBACK_API_NONEXPERIMENTAL
+      void SubscribeMode(::grpc::ClientContext* context, ::mavsdk::rpc::camera::SubscribeModeRequest* request, ::grpc::ClientReadReactor< ::mavsdk::rpc::camera::ModeResponse>* reactor) override;
+      #else
       void SubscribeMode(::grpc::ClientContext* context, ::mavsdk::rpc::camera::SubscribeModeRequest* request, ::grpc::experimental::ClientReadReactor< ::mavsdk::rpc::camera::ModeResponse>* reactor) override;
+      #endif
+      #ifdef GRPC_CALLBACK_API_NONEXPERIMENTAL
+      void SubscribeInformation(::grpc::ClientContext* context, ::mavsdk::rpc::camera::SubscribeInformationRequest* request, ::grpc::ClientReadReactor< ::mavsdk::rpc::camera::InformationResponse>* reactor) override;
+      #else
       void SubscribeInformation(::grpc::ClientContext* context, ::mavsdk::rpc::camera::SubscribeInformationRequest* request, ::grpc::experimental::ClientReadReactor< ::mavsdk::rpc::camera::InformationResponse>* reactor) override;
+      #endif
+      #ifdef GRPC_CALLBACK_API_NONEXPERIMENTAL
+      void SubscribeVideoStreamInfo(::grpc::ClientContext* context, ::mavsdk::rpc::camera::SubscribeVideoStreamInfoRequest* request, ::grpc::ClientReadReactor< ::mavsdk::rpc::camera::VideoStreamInfoResponse>* reactor) override;
+      #else
       void SubscribeVideoStreamInfo(::grpc::ClientContext* context, ::mavsdk::rpc::camera::SubscribeVideoStreamInfoRequest* request, ::grpc::experimental::ClientReadReactor< ::mavsdk::rpc::camera::VideoStreamInfoResponse>* reactor) override;
+      #endif
+      #ifdef GRPC_CALLBACK_API_NONEXPERIMENTAL
+      void SubscribeCaptureInfo(::grpc::ClientContext* context, ::mavsdk::rpc::camera::SubscribeCaptureInfoRequest* request, ::grpc::ClientReadReactor< ::mavsdk::rpc::camera::CaptureInfoResponse>* reactor) override;
+      #else
       void SubscribeCaptureInfo(::grpc::ClientContext* context, ::mavsdk::rpc::camera::SubscribeCaptureInfoRequest* request, ::grpc::experimental::ClientReadReactor< ::mavsdk::rpc::camera::CaptureInfoResponse>* reactor) override;
+      #endif
+      #ifdef GRPC_CALLBACK_API_NONEXPERIMENTAL
+      void SubscribeStatus(::grpc::ClientContext* context, ::mavsdk::rpc::camera::SubscribeStatusRequest* request, ::grpc::ClientReadReactor< ::mavsdk::rpc::camera::StatusResponse>* reactor) override;
+      #else
       void SubscribeStatus(::grpc::ClientContext* context, ::mavsdk::rpc::camera::SubscribeStatusRequest* request, ::grpc::experimental::ClientReadReactor< ::mavsdk::rpc::camera::StatusResponse>* reactor) override;
+      #endif
+      #ifdef GRPC_CALLBACK_API_NONEXPERIMENTAL
+      void SubscribeCurrentSettings(::grpc::ClientContext* context, ::mavsdk::rpc::camera::SubscribeCurrentSettingsRequest* request, ::grpc::ClientReadReactor< ::mavsdk::rpc::camera::CurrentSettingsResponse>* reactor) override;
+      #else
       void SubscribeCurrentSettings(::grpc::ClientContext* context, ::mavsdk::rpc::camera::SubscribeCurrentSettingsRequest* request, ::grpc::experimental::ClientReadReactor< ::mavsdk::rpc::camera::CurrentSettingsResponse>* reactor) override;
+      #endif
+      #ifdef GRPC_CALLBACK_API_NONEXPERIMENTAL
+      void SubscribePossibleSettingOptions(::grpc::ClientContext* context, ::mavsdk::rpc::camera::SubscribePossibleSettingOptionsRequest* request, ::grpc::ClientReadReactor< ::mavsdk::rpc::camera::PossibleSettingOptionsResponse>* reactor) override;
+      #else
       void SubscribePossibleSettingOptions(::grpc::ClientContext* context, ::mavsdk::rpc::camera::SubscribePossibleSettingOptionsRequest* request, ::grpc::experimental::ClientReadReactor< ::mavsdk::rpc::camera::PossibleSettingOptionsResponse>* reactor) override;
+      #endif
       void SetSetting(::grpc::ClientContext* context, const ::mavsdk::rpc::camera::SetSettingRequest* request, ::mavsdk::rpc::camera::SetSettingResponse* response, std::function<void(::grpc::Status)>) override;
       void SetSetting(::grpc::ClientContext* context, const ::grpc::ByteBuffer* request, ::mavsdk::rpc::camera::SetSettingResponse* response, std::function<void(::grpc::Status)>) override;
+      #ifdef GRPC_CALLBACK_API_NONEXPERIMENTAL
+      void SetSetting(::grpc::ClientContext* context, const ::mavsdk::rpc::camera::SetSettingRequest* request, ::mavsdk::rpc::camera::SetSettingResponse* response, ::grpc::ClientUnaryReactor* reactor) override;
+      #else
       void SetSetting(::grpc::ClientContext* context, const ::mavsdk::rpc::camera::SetSettingRequest* request, ::mavsdk::rpc::camera::SetSettingResponse* response, ::grpc::experimental::ClientUnaryReactor* reactor) override;
+      #endif
+      #ifdef GRPC_CALLBACK_API_NONEXPERIMENTAL
+      void SetSetting(::grpc::ClientContext* context, const ::grpc::ByteBuffer* request, ::mavsdk::rpc::camera::SetSettingResponse* response, ::grpc::ClientUnaryReactor* reactor) override;
+      #else
       void SetSetting(::grpc::ClientContext* context, const ::grpc::ByteBuffer* request, ::mavsdk::rpc::camera::SetSettingResponse* response, ::grpc::experimental::ClientUnaryReactor* reactor) override;
+      #endif
       void GetSetting(::grpc::ClientContext* context, const ::mavsdk::rpc::camera::GetSettingRequest* request, ::mavsdk::rpc::camera::GetSettingResponse* response, std::function<void(::grpc::Status)>) override;
       void GetSetting(::grpc::ClientContext* context, const ::grpc::ByteBuffer* request, ::mavsdk::rpc::camera::GetSettingResponse* response, std::function<void(::grpc::Status)>) override;
+      #ifdef GRPC_CALLBACK_API_NONEXPERIMENTAL
+      void GetSetting(::grpc::ClientContext* context, const ::mavsdk::rpc::camera::GetSettingRequest* request, ::mavsdk::rpc::camera::GetSettingResponse* response, ::grpc::ClientUnaryReactor* reactor) override;
+      #else
       void GetSetting(::grpc::ClientContext* context, const ::mavsdk::rpc::camera::GetSettingRequest* request, ::mavsdk::rpc::camera::GetSettingResponse* response, ::grpc::experimental::ClientUnaryReactor* reactor) override;
+      #endif
+      #ifdef GRPC_CALLBACK_API_NONEXPERIMENTAL
+      void GetSetting(::grpc::ClientContext* context, const ::grpc::ByteBuffer* request, ::mavsdk::rpc::camera::GetSettingResponse* response, ::grpc::ClientUnaryReactor* reactor) override;
+      #else
       void GetSetting(::grpc::ClientContext* context, const ::grpc::ByteBuffer* request, ::mavsdk::rpc::camera::GetSettingResponse* response, ::grpc::experimental::ClientUnaryReactor* reactor) override;
+      #endif
       void FormatStorage(::grpc::ClientContext* context, const ::mavsdk::rpc::camera::FormatStorageRequest* request, ::mavsdk::rpc::camera::FormatStorageResponse* response, std::function<void(::grpc::Status)>) override;
       void FormatStorage(::grpc::ClientContext* context, const ::grpc::ByteBuffer* request, ::mavsdk::rpc::camera::FormatStorageResponse* response, std::function<void(::grpc::Status)>) override;
+      #ifdef GRPC_CALLBACK_API_NONEXPERIMENTAL
+      void FormatStorage(::grpc::ClientContext* context, const ::mavsdk::rpc::camera::FormatStorageRequest* request, ::mavsdk::rpc::camera::FormatStorageResponse* response, ::grpc::ClientUnaryReactor* reactor) override;
+      #else
       void FormatStorage(::grpc::ClientContext* context, const ::mavsdk::rpc::camera::FormatStorageRequest* request, ::mavsdk::rpc::camera::FormatStorageResponse* response, ::grpc::experimental::ClientUnaryReactor* reactor) override;
+      #endif
+      #ifdef GRPC_CALLBACK_API_NONEXPERIMENTAL
+      void FormatStorage(::grpc::ClientContext* context, const ::grpc::ByteBuffer* request, ::mavsdk::rpc::camera::FormatStorageResponse* response, ::grpc::ClientUnaryReactor* reactor) override;
+      #else
       void FormatStorage(::grpc::ClientContext* context, const ::grpc::ByteBuffer* request, ::mavsdk::rpc::camera::FormatStorageResponse* response, ::grpc::experimental::ClientUnaryReactor* reactor) override;
+      #endif
      private:
       friend class Stub;
       explicit experimental_async(Stub* stub): stub_(stub) { }
@@ -1086,13 +1313,28 @@ class CameraService final {
     void BaseClassMustBeDerivedFromService(const Service* /*service*/) {}
    public:
     ExperimentalWithCallbackMethod_TakePhoto() {
-      ::grpc::Service::experimental().MarkMethodCallback(0,
-        new ::grpc_impl::internal::CallbackUnaryHandler< ::mavsdk::rpc::camera::TakePhotoRequest, ::mavsdk::rpc::camera::TakePhotoResponse>(
-          [this](::grpc::experimental::CallbackServerContext* context, const ::mavsdk::rpc::camera::TakePhotoRequest* request, ::mavsdk::rpc::camera::TakePhotoResponse* response) { return this->TakePhoto(context, request, response); }));}
+    #ifdef GRPC_CALLBACK_API_NONEXPERIMENTAL
+      ::grpc::Service::
+    #else
+      ::grpc::Service::experimental().
+    #endif
+        MarkMethodCallback(0,
+          new ::grpc_impl::internal::CallbackUnaryHandler< ::mavsdk::rpc::camera::TakePhotoRequest, ::mavsdk::rpc::camera::TakePhotoResponse>(
+            [this](
+    #ifdef GRPC_CALLBACK_API_NONEXPERIMENTAL
+                   ::grpc::CallbackServerContext*
+    #else
+                   ::grpc::experimental::CallbackServerContext*
+    #endif
+                     context, const ::mavsdk::rpc::camera::TakePhotoRequest* request, ::mavsdk::rpc::camera::TakePhotoResponse* response) { return this->TakePhoto(context, request, response); }));}
     void SetMessageAllocatorFor_TakePhoto(
         ::grpc::experimental::MessageAllocator< ::mavsdk::rpc::camera::TakePhotoRequest, ::mavsdk::rpc::camera::TakePhotoResponse>* allocator) {
-      static_cast<::grpc_impl::internal::CallbackUnaryHandler< ::mavsdk::rpc::camera::TakePhotoRequest, ::mavsdk::rpc::camera::TakePhotoResponse>*>(
-          ::grpc::Service::experimental().GetHandler(0))
+    #ifdef GRPC_CALLBACK_API_NONEXPERIMENTAL
+      ::grpc::internal::MethodHandler* const handler = ::grpc::Service::GetHandler(0);
+    #else
+      ::grpc::internal::MethodHandler* const handler = ::grpc::Service::experimental().GetHandler(0);
+    #endif
+      static_cast<::grpc_impl::internal::CallbackUnaryHandler< ::mavsdk::rpc::camera::TakePhotoRequest, ::mavsdk::rpc::camera::TakePhotoResponse>*>(handler)
               ->SetMessageAllocator(allocator);
     }
     ~ExperimentalWithCallbackMethod_TakePhoto() override {
@@ -1103,7 +1345,14 @@ class CameraService final {
       abort();
       return ::grpc::Status(::grpc::StatusCode::UNIMPLEMENTED, "");
     }
-    virtual ::grpc::experimental::ServerUnaryReactor* TakePhoto(::grpc::experimental::CallbackServerContext* /*context*/, const ::mavsdk::rpc::camera::TakePhotoRequest* /*request*/, ::mavsdk::rpc::camera::TakePhotoResponse* /*response*/) { return nullptr; }
+    #ifdef GRPC_CALLBACK_API_NONEXPERIMENTAL
+    virtual ::grpc::ServerUnaryReactor* TakePhoto(
+      ::grpc::CallbackServerContext* /*context*/, const ::mavsdk::rpc::camera::TakePhotoRequest* /*request*/, ::mavsdk::rpc::camera::TakePhotoResponse* /*response*/)
+    #else
+    virtual ::grpc::experimental::ServerUnaryReactor* TakePhoto(
+      ::grpc::experimental::CallbackServerContext* /*context*/, const ::mavsdk::rpc::camera::TakePhotoRequest* /*request*/, ::mavsdk::rpc::camera::TakePhotoResponse* /*response*/)
+    #endif
+      { return nullptr; }
   };
   template <class BaseClass>
   class ExperimentalWithCallbackMethod_StartPhotoInterval : public BaseClass {
@@ -1111,13 +1360,28 @@ class CameraService final {
     void BaseClassMustBeDerivedFromService(const Service* /*service*/) {}
    public:
     ExperimentalWithCallbackMethod_StartPhotoInterval() {
-      ::grpc::Service::experimental().MarkMethodCallback(1,
-        new ::grpc_impl::internal::CallbackUnaryHandler< ::mavsdk::rpc::camera::StartPhotoIntervalRequest, ::mavsdk::rpc::camera::StartPhotoIntervalResponse>(
-          [this](::grpc::experimental::CallbackServerContext* context, const ::mavsdk::rpc::camera::StartPhotoIntervalRequest* request, ::mavsdk::rpc::camera::StartPhotoIntervalResponse* response) { return this->StartPhotoInterval(context, request, response); }));}
+    #ifdef GRPC_CALLBACK_API_NONEXPERIMENTAL
+      ::grpc::Service::
+    #else
+      ::grpc::Service::experimental().
+    #endif
+        MarkMethodCallback(1,
+          new ::grpc_impl::internal::CallbackUnaryHandler< ::mavsdk::rpc::camera::StartPhotoIntervalRequest, ::mavsdk::rpc::camera::StartPhotoIntervalResponse>(
+            [this](
+    #ifdef GRPC_CALLBACK_API_NONEXPERIMENTAL
+                   ::grpc::CallbackServerContext*
+    #else
+                   ::grpc::experimental::CallbackServerContext*
+    #endif
+                     context, const ::mavsdk::rpc::camera::StartPhotoIntervalRequest* request, ::mavsdk::rpc::camera::StartPhotoIntervalResponse* response) { return this->StartPhotoInterval(context, request, response); }));}
     void SetMessageAllocatorFor_StartPhotoInterval(
         ::grpc::experimental::MessageAllocator< ::mavsdk::rpc::camera::StartPhotoIntervalRequest, ::mavsdk::rpc::camera::StartPhotoIntervalResponse>* allocator) {
-      static_cast<::grpc_impl::internal::CallbackUnaryHandler< ::mavsdk::rpc::camera::StartPhotoIntervalRequest, ::mavsdk::rpc::camera::StartPhotoIntervalResponse>*>(
-          ::grpc::Service::experimental().GetHandler(1))
+    #ifdef GRPC_CALLBACK_API_NONEXPERIMENTAL
+      ::grpc::internal::MethodHandler* const handler = ::grpc::Service::GetHandler(1);
+    #else
+      ::grpc::internal::MethodHandler* const handler = ::grpc::Service::experimental().GetHandler(1);
+    #endif
+      static_cast<::grpc_impl::internal::CallbackUnaryHandler< ::mavsdk::rpc::camera::StartPhotoIntervalRequest, ::mavsdk::rpc::camera::StartPhotoIntervalResponse>*>(handler)
               ->SetMessageAllocator(allocator);
     }
     ~ExperimentalWithCallbackMethod_StartPhotoInterval() override {
@@ -1128,7 +1392,14 @@ class CameraService final {
       abort();
       return ::grpc::Status(::grpc::StatusCode::UNIMPLEMENTED, "");
     }
-    virtual ::grpc::experimental::ServerUnaryReactor* StartPhotoInterval(::grpc::experimental::CallbackServerContext* /*context*/, const ::mavsdk::rpc::camera::StartPhotoIntervalRequest* /*request*/, ::mavsdk::rpc::camera::StartPhotoIntervalResponse* /*response*/) { return nullptr; }
+    #ifdef GRPC_CALLBACK_API_NONEXPERIMENTAL
+    virtual ::grpc::ServerUnaryReactor* StartPhotoInterval(
+      ::grpc::CallbackServerContext* /*context*/, const ::mavsdk::rpc::camera::StartPhotoIntervalRequest* /*request*/, ::mavsdk::rpc::camera::StartPhotoIntervalResponse* /*response*/)
+    #else
+    virtual ::grpc::experimental::ServerUnaryReactor* StartPhotoInterval(
+      ::grpc::experimental::CallbackServerContext* /*context*/, const ::mavsdk::rpc::camera::StartPhotoIntervalRequest* /*request*/, ::mavsdk::rpc::camera::StartPhotoIntervalResponse* /*response*/)
+    #endif
+      { return nullptr; }
   };
   template <class BaseClass>
   class ExperimentalWithCallbackMethod_StopPhotoInterval : public BaseClass {
@@ -1136,13 +1407,28 @@ class CameraService final {
     void BaseClassMustBeDerivedFromService(const Service* /*service*/) {}
    public:
     ExperimentalWithCallbackMethod_StopPhotoInterval() {
-      ::grpc::Service::experimental().MarkMethodCallback(2,
-        new ::grpc_impl::internal::CallbackUnaryHandler< ::mavsdk::rpc::camera::StopPhotoIntervalRequest, ::mavsdk::rpc::camera::StopPhotoIntervalResponse>(
-          [this](::grpc::experimental::CallbackServerContext* context, const ::mavsdk::rpc::camera::StopPhotoIntervalRequest* request, ::mavsdk::rpc::camera::StopPhotoIntervalResponse* response) { return this->StopPhotoInterval(context, request, response); }));}
+    #ifdef GRPC_CALLBACK_API_NONEXPERIMENTAL
+      ::grpc::Service::
+    #else
+      ::grpc::Service::experimental().
+    #endif
+        MarkMethodCallback(2,
+          new ::grpc_impl::internal::CallbackUnaryHandler< ::mavsdk::rpc::camera::StopPhotoIntervalRequest, ::mavsdk::rpc::camera::StopPhotoIntervalResponse>(
+            [this](
+    #ifdef GRPC_CALLBACK_API_NONEXPERIMENTAL
+                   ::grpc::CallbackServerContext*
+    #else
+                   ::grpc::experimental::CallbackServerContext*
+    #endif
+                     context, const ::mavsdk::rpc::camera::StopPhotoIntervalRequest* request, ::mavsdk::rpc::camera::StopPhotoIntervalResponse* response) { return this->StopPhotoInterval(context, request, response); }));}
     void SetMessageAllocatorFor_StopPhotoInterval(
         ::grpc::experimental::MessageAllocator< ::mavsdk::rpc::camera::StopPhotoIntervalRequest, ::mavsdk::rpc::camera::StopPhotoIntervalResponse>* allocator) {
-      static_cast<::grpc_impl::internal::CallbackUnaryHandler< ::mavsdk::rpc::camera::StopPhotoIntervalRequest, ::mavsdk::rpc::camera::StopPhotoIntervalResponse>*>(
-          ::grpc::Service::experimental().GetHandler(2))
+    #ifdef GRPC_CALLBACK_API_NONEXPERIMENTAL
+      ::grpc::internal::MethodHandler* const handler = ::grpc::Service::GetHandler(2);
+    #else
+      ::grpc::internal::MethodHandler* const handler = ::grpc::Service::experimental().GetHandler(2);
+    #endif
+      static_cast<::grpc_impl::internal::CallbackUnaryHandler< ::mavsdk::rpc::camera::StopPhotoIntervalRequest, ::mavsdk::rpc::camera::StopPhotoIntervalResponse>*>(handler)
               ->SetMessageAllocator(allocator);
     }
     ~ExperimentalWithCallbackMethod_StopPhotoInterval() override {
@@ -1153,7 +1439,14 @@ class CameraService final {
       abort();
       return ::grpc::Status(::grpc::StatusCode::UNIMPLEMENTED, "");
     }
-    virtual ::grpc::experimental::ServerUnaryReactor* StopPhotoInterval(::grpc::experimental::CallbackServerContext* /*context*/, const ::mavsdk::rpc::camera::StopPhotoIntervalRequest* /*request*/, ::mavsdk::rpc::camera::StopPhotoIntervalResponse* /*response*/) { return nullptr; }
+    #ifdef GRPC_CALLBACK_API_NONEXPERIMENTAL
+    virtual ::grpc::ServerUnaryReactor* StopPhotoInterval(
+      ::grpc::CallbackServerContext* /*context*/, const ::mavsdk::rpc::camera::StopPhotoIntervalRequest* /*request*/, ::mavsdk::rpc::camera::StopPhotoIntervalResponse* /*response*/)
+    #else
+    virtual ::grpc::experimental::ServerUnaryReactor* StopPhotoInterval(
+      ::grpc::experimental::CallbackServerContext* /*context*/, const ::mavsdk::rpc::camera::StopPhotoIntervalRequest* /*request*/, ::mavsdk::rpc::camera::StopPhotoIntervalResponse* /*response*/)
+    #endif
+      { return nullptr; }
   };
   template <class BaseClass>
   class ExperimentalWithCallbackMethod_StartVideo : public BaseClass {
@@ -1161,13 +1454,28 @@ class CameraService final {
     void BaseClassMustBeDerivedFromService(const Service* /*service*/) {}
    public:
     ExperimentalWithCallbackMethod_StartVideo() {
-      ::grpc::Service::experimental().MarkMethodCallback(3,
-        new ::grpc_impl::internal::CallbackUnaryHandler< ::mavsdk::rpc::camera::StartVideoRequest, ::mavsdk::rpc::camera::StartVideoResponse>(
-          [this](::grpc::experimental::CallbackServerContext* context, const ::mavsdk::rpc::camera::StartVideoRequest* request, ::mavsdk::rpc::camera::StartVideoResponse* response) { return this->StartVideo(context, request, response); }));}
+    #ifdef GRPC_CALLBACK_API_NONEXPERIMENTAL
+      ::grpc::Service::
+    #else
+      ::grpc::Service::experimental().
+    #endif
+        MarkMethodCallback(3,
+          new ::grpc_impl::internal::CallbackUnaryHandler< ::mavsdk::rpc::camera::StartVideoRequest, ::mavsdk::rpc::camera::StartVideoResponse>(
+            [this](
+    #ifdef GRPC_CALLBACK_API_NONEXPERIMENTAL
+                   ::grpc::CallbackServerContext*
+    #else
+                   ::grpc::experimental::CallbackServerContext*
+    #endif
+                     context, const ::mavsdk::rpc::camera::StartVideoRequest* request, ::mavsdk::rpc::camera::StartVideoResponse* response) { return this->StartVideo(context, request, response); }));}
     void SetMessageAllocatorFor_StartVideo(
         ::grpc::experimental::MessageAllocator< ::mavsdk::rpc::camera::StartVideoRequest, ::mavsdk::rpc::camera::StartVideoResponse>* allocator) {
-      static_cast<::grpc_impl::internal::CallbackUnaryHandler< ::mavsdk::rpc::camera::StartVideoRequest, ::mavsdk::rpc::camera::StartVideoResponse>*>(
-          ::grpc::Service::experimental().GetHandler(3))
+    #ifdef GRPC_CALLBACK_API_NONEXPERIMENTAL
+      ::grpc::internal::MethodHandler* const handler = ::grpc::Service::GetHandler(3);
+    #else
+      ::grpc::internal::MethodHandler* const handler = ::grpc::Service::experimental().GetHandler(3);
+    #endif
+      static_cast<::grpc_impl::internal::CallbackUnaryHandler< ::mavsdk::rpc::camera::StartVideoRequest, ::mavsdk::rpc::camera::StartVideoResponse>*>(handler)
               ->SetMessageAllocator(allocator);
     }
     ~ExperimentalWithCallbackMethod_StartVideo() override {
@@ -1178,7 +1486,14 @@ class CameraService final {
       abort();
       return ::grpc::Status(::grpc::StatusCode::UNIMPLEMENTED, "");
     }
-    virtual ::grpc::experimental::ServerUnaryReactor* StartVideo(::grpc::experimental::CallbackServerContext* /*context*/, const ::mavsdk::rpc::camera::StartVideoRequest* /*request*/, ::mavsdk::rpc::camera::StartVideoResponse* /*response*/) { return nullptr; }
+    #ifdef GRPC_CALLBACK_API_NONEXPERIMENTAL
+    virtual ::grpc::ServerUnaryReactor* StartVideo(
+      ::grpc::CallbackServerContext* /*context*/, const ::mavsdk::rpc::camera::StartVideoRequest* /*request*/, ::mavsdk::rpc::camera::StartVideoResponse* /*response*/)
+    #else
+    virtual ::grpc::experimental::ServerUnaryReactor* StartVideo(
+      ::grpc::experimental::CallbackServerContext* /*context*/, const ::mavsdk::rpc::camera::StartVideoRequest* /*request*/, ::mavsdk::rpc::camera::StartVideoResponse* /*response*/)
+    #endif
+      { return nullptr; }
   };
   template <class BaseClass>
   class ExperimentalWithCallbackMethod_StopVideo : public BaseClass {
@@ -1186,13 +1501,28 @@ class CameraService final {
     void BaseClassMustBeDerivedFromService(const Service* /*service*/) {}
    public:
     ExperimentalWithCallbackMethod_StopVideo() {
-      ::grpc::Service::experimental().MarkMethodCallback(4,
-        new ::grpc_impl::internal::CallbackUnaryHandler< ::mavsdk::rpc::camera::StopVideoRequest, ::mavsdk::rpc::camera::StopVideoResponse>(
-          [this](::grpc::experimental::CallbackServerContext* context, const ::mavsdk::rpc::camera::StopVideoRequest* request, ::mavsdk::rpc::camera::StopVideoResponse* response) { return this->StopVideo(context, request, response); }));}
+    #ifdef GRPC_CALLBACK_API_NONEXPERIMENTAL
+      ::grpc::Service::
+    #else
+      ::grpc::Service::experimental().
+    #endif
+        MarkMethodCallback(4,
+          new ::grpc_impl::internal::CallbackUnaryHandler< ::mavsdk::rpc::camera::StopVideoRequest, ::mavsdk::rpc::camera::StopVideoResponse>(
+            [this](
+    #ifdef GRPC_CALLBACK_API_NONEXPERIMENTAL
+                   ::grpc::CallbackServerContext*
+    #else
+                   ::grpc::experimental::CallbackServerContext*
+    #endif
+                     context, const ::mavsdk::rpc::camera::StopVideoRequest* request, ::mavsdk::rpc::camera::StopVideoResponse* response) { return this->StopVideo(context, request, response); }));}
     void SetMessageAllocatorFor_StopVideo(
         ::grpc::experimental::MessageAllocator< ::mavsdk::rpc::camera::StopVideoRequest, ::mavsdk::rpc::camera::StopVideoResponse>* allocator) {
-      static_cast<::grpc_impl::internal::CallbackUnaryHandler< ::mavsdk::rpc::camera::StopVideoRequest, ::mavsdk::rpc::camera::StopVideoResponse>*>(
-          ::grpc::Service::experimental().GetHandler(4))
+    #ifdef GRPC_CALLBACK_API_NONEXPERIMENTAL
+      ::grpc::internal::MethodHandler* const handler = ::grpc::Service::GetHandler(4);
+    #else
+      ::grpc::internal::MethodHandler* const handler = ::grpc::Service::experimental().GetHandler(4);
+    #endif
+      static_cast<::grpc_impl::internal::CallbackUnaryHandler< ::mavsdk::rpc::camera::StopVideoRequest, ::mavsdk::rpc::camera::StopVideoResponse>*>(handler)
               ->SetMessageAllocator(allocator);
     }
     ~ExperimentalWithCallbackMethod_StopVideo() override {
@@ -1203,7 +1533,14 @@ class CameraService final {
       abort();
       return ::grpc::Status(::grpc::StatusCode::UNIMPLEMENTED, "");
     }
-    virtual ::grpc::experimental::ServerUnaryReactor* StopVideo(::grpc::experimental::CallbackServerContext* /*context*/, const ::mavsdk::rpc::camera::StopVideoRequest* /*request*/, ::mavsdk::rpc::camera::StopVideoResponse* /*response*/) { return nullptr; }
+    #ifdef GRPC_CALLBACK_API_NONEXPERIMENTAL
+    virtual ::grpc::ServerUnaryReactor* StopVideo(
+      ::grpc::CallbackServerContext* /*context*/, const ::mavsdk::rpc::camera::StopVideoRequest* /*request*/, ::mavsdk::rpc::camera::StopVideoResponse* /*response*/)
+    #else
+    virtual ::grpc::experimental::ServerUnaryReactor* StopVideo(
+      ::grpc::experimental::CallbackServerContext* /*context*/, const ::mavsdk::rpc::camera::StopVideoRequest* /*request*/, ::mavsdk::rpc::camera::StopVideoResponse* /*response*/)
+    #endif
+      { return nullptr; }
   };
   template <class BaseClass>
   class ExperimentalWithCallbackMethod_StartVideoStreaming : public BaseClass {
@@ -1211,13 +1548,28 @@ class CameraService final {
     void BaseClassMustBeDerivedFromService(const Service* /*service*/) {}
    public:
     ExperimentalWithCallbackMethod_StartVideoStreaming() {
-      ::grpc::Service::experimental().MarkMethodCallback(5,
-        new ::grpc_impl::internal::CallbackUnaryHandler< ::mavsdk::rpc::camera::StartVideoStreamingRequest, ::mavsdk::rpc::camera::StartVideoStreamingResponse>(
-          [this](::grpc::experimental::CallbackServerContext* context, const ::mavsdk::rpc::camera::StartVideoStreamingRequest* request, ::mavsdk::rpc::camera::StartVideoStreamingResponse* response) { return this->StartVideoStreaming(context, request, response); }));}
+    #ifdef GRPC_CALLBACK_API_NONEXPERIMENTAL
+      ::grpc::Service::
+    #else
+      ::grpc::Service::experimental().
+    #endif
+        MarkMethodCallback(5,
+          new ::grpc_impl::internal::CallbackUnaryHandler< ::mavsdk::rpc::camera::StartVideoStreamingRequest, ::mavsdk::rpc::camera::StartVideoStreamingResponse>(
+            [this](
+    #ifdef GRPC_CALLBACK_API_NONEXPERIMENTAL
+                   ::grpc::CallbackServerContext*
+    #else
+                   ::grpc::experimental::CallbackServerContext*
+    #endif
+                     context, const ::mavsdk::rpc::camera::StartVideoStreamingRequest* request, ::mavsdk::rpc::camera::StartVideoStreamingResponse* response) { return this->StartVideoStreaming(context, request, response); }));}
     void SetMessageAllocatorFor_StartVideoStreaming(
         ::grpc::experimental::MessageAllocator< ::mavsdk::rpc::camera::StartVideoStreamingRequest, ::mavsdk::rpc::camera::StartVideoStreamingResponse>* allocator) {
-      static_cast<::grpc_impl::internal::CallbackUnaryHandler< ::mavsdk::rpc::camera::StartVideoStreamingRequest, ::mavsdk::rpc::camera::StartVideoStreamingResponse>*>(
-          ::grpc::Service::experimental().GetHandler(5))
+    #ifdef GRPC_CALLBACK_API_NONEXPERIMENTAL
+      ::grpc::internal::MethodHandler* const handler = ::grpc::Service::GetHandler(5);
+    #else
+      ::grpc::internal::MethodHandler* const handler = ::grpc::Service::experimental().GetHandler(5);
+    #endif
+      static_cast<::grpc_impl::internal::CallbackUnaryHandler< ::mavsdk::rpc::camera::StartVideoStreamingRequest, ::mavsdk::rpc::camera::StartVideoStreamingResponse>*>(handler)
               ->SetMessageAllocator(allocator);
     }
     ~ExperimentalWithCallbackMethod_StartVideoStreaming() override {
@@ -1228,7 +1580,14 @@ class CameraService final {
       abort();
       return ::grpc::Status(::grpc::StatusCode::UNIMPLEMENTED, "");
     }
-    virtual ::grpc::experimental::ServerUnaryReactor* StartVideoStreaming(::grpc::experimental::CallbackServerContext* /*context*/, const ::mavsdk::rpc::camera::StartVideoStreamingRequest* /*request*/, ::mavsdk::rpc::camera::StartVideoStreamingResponse* /*response*/) { return nullptr; }
+    #ifdef GRPC_CALLBACK_API_NONEXPERIMENTAL
+    virtual ::grpc::ServerUnaryReactor* StartVideoStreaming(
+      ::grpc::CallbackServerContext* /*context*/, const ::mavsdk::rpc::camera::StartVideoStreamingRequest* /*request*/, ::mavsdk::rpc::camera::StartVideoStreamingResponse* /*response*/)
+    #else
+    virtual ::grpc::experimental::ServerUnaryReactor* StartVideoStreaming(
+      ::grpc::experimental::CallbackServerContext* /*context*/, const ::mavsdk::rpc::camera::StartVideoStreamingRequest* /*request*/, ::mavsdk::rpc::camera::StartVideoStreamingResponse* /*response*/)
+    #endif
+      { return nullptr; }
   };
   template <class BaseClass>
   class ExperimentalWithCallbackMethod_StopVideoStreaming : public BaseClass {
@@ -1236,13 +1595,28 @@ class CameraService final {
     void BaseClassMustBeDerivedFromService(const Service* /*service*/) {}
    public:
     ExperimentalWithCallbackMethod_StopVideoStreaming() {
-      ::grpc::Service::experimental().MarkMethodCallback(6,
-        new ::grpc_impl::internal::CallbackUnaryHandler< ::mavsdk::rpc::camera::StopVideoStreamingRequest, ::mavsdk::rpc::camera::StopVideoStreamingResponse>(
-          [this](::grpc::experimental::CallbackServerContext* context, const ::mavsdk::rpc::camera::StopVideoStreamingRequest* request, ::mavsdk::rpc::camera::StopVideoStreamingResponse* response) { return this->StopVideoStreaming(context, request, response); }));}
+    #ifdef GRPC_CALLBACK_API_NONEXPERIMENTAL
+      ::grpc::Service::
+    #else
+      ::grpc::Service::experimental().
+    #endif
+        MarkMethodCallback(6,
+          new ::grpc_impl::internal::CallbackUnaryHandler< ::mavsdk::rpc::camera::StopVideoStreamingRequest, ::mavsdk::rpc::camera::StopVideoStreamingResponse>(
+            [this](
+    #ifdef GRPC_CALLBACK_API_NONEXPERIMENTAL
+                   ::grpc::CallbackServerContext*
+    #else
+                   ::grpc::experimental::CallbackServerContext*
+    #endif
+                     context, const ::mavsdk::rpc::camera::StopVideoStreamingRequest* request, ::mavsdk::rpc::camera::StopVideoStreamingResponse* response) { return this->StopVideoStreaming(context, request, response); }));}
     void SetMessageAllocatorFor_StopVideoStreaming(
         ::grpc::experimental::MessageAllocator< ::mavsdk::rpc::camera::StopVideoStreamingRequest, ::mavsdk::rpc::camera::StopVideoStreamingResponse>* allocator) {
-      static_cast<::grpc_impl::internal::CallbackUnaryHandler< ::mavsdk::rpc::camera::StopVideoStreamingRequest, ::mavsdk::rpc::camera::StopVideoStreamingResponse>*>(
-          ::grpc::Service::experimental().GetHandler(6))
+    #ifdef GRPC_CALLBACK_API_NONEXPERIMENTAL
+      ::grpc::internal::MethodHandler* const handler = ::grpc::Service::GetHandler(6);
+    #else
+      ::grpc::internal::MethodHandler* const handler = ::grpc::Service::experimental().GetHandler(6);
+    #endif
+      static_cast<::grpc_impl::internal::CallbackUnaryHandler< ::mavsdk::rpc::camera::StopVideoStreamingRequest, ::mavsdk::rpc::camera::StopVideoStreamingResponse>*>(handler)
               ->SetMessageAllocator(allocator);
     }
     ~ExperimentalWithCallbackMethod_StopVideoStreaming() override {
@@ -1253,7 +1627,14 @@ class CameraService final {
       abort();
       return ::grpc::Status(::grpc::StatusCode::UNIMPLEMENTED, "");
     }
-    virtual ::grpc::experimental::ServerUnaryReactor* StopVideoStreaming(::grpc::experimental::CallbackServerContext* /*context*/, const ::mavsdk::rpc::camera::StopVideoStreamingRequest* /*request*/, ::mavsdk::rpc::camera::StopVideoStreamingResponse* /*response*/) { return nullptr; }
+    #ifdef GRPC_CALLBACK_API_NONEXPERIMENTAL
+    virtual ::grpc::ServerUnaryReactor* StopVideoStreaming(
+      ::grpc::CallbackServerContext* /*context*/, const ::mavsdk::rpc::camera::StopVideoStreamingRequest* /*request*/, ::mavsdk::rpc::camera::StopVideoStreamingResponse* /*response*/)
+    #else
+    virtual ::grpc::experimental::ServerUnaryReactor* StopVideoStreaming(
+      ::grpc::experimental::CallbackServerContext* /*context*/, const ::mavsdk::rpc::camera::StopVideoStreamingRequest* /*request*/, ::mavsdk::rpc::camera::StopVideoStreamingResponse* /*response*/)
+    #endif
+      { return nullptr; }
   };
   template <class BaseClass>
   class ExperimentalWithCallbackMethod_SetMode : public BaseClass {
@@ -1261,13 +1642,28 @@ class CameraService final {
     void BaseClassMustBeDerivedFromService(const Service* /*service*/) {}
    public:
     ExperimentalWithCallbackMethod_SetMode() {
-      ::grpc::Service::experimental().MarkMethodCallback(7,
-        new ::grpc_impl::internal::CallbackUnaryHandler< ::mavsdk::rpc::camera::SetModeRequest, ::mavsdk::rpc::camera::SetModeResponse>(
-          [this](::grpc::experimental::CallbackServerContext* context, const ::mavsdk::rpc::camera::SetModeRequest* request, ::mavsdk::rpc::camera::SetModeResponse* response) { return this->SetMode(context, request, response); }));}
+    #ifdef GRPC_CALLBACK_API_NONEXPERIMENTAL
+      ::grpc::Service::
+    #else
+      ::grpc::Service::experimental().
+    #endif
+        MarkMethodCallback(7,
+          new ::grpc_impl::internal::CallbackUnaryHandler< ::mavsdk::rpc::camera::SetModeRequest, ::mavsdk::rpc::camera::SetModeResponse>(
+            [this](
+    #ifdef GRPC_CALLBACK_API_NONEXPERIMENTAL
+                   ::grpc::CallbackServerContext*
+    #else
+                   ::grpc::experimental::CallbackServerContext*
+    #endif
+                     context, const ::mavsdk::rpc::camera::SetModeRequest* request, ::mavsdk::rpc::camera::SetModeResponse* response) { return this->SetMode(context, request, response); }));}
     void SetMessageAllocatorFor_SetMode(
         ::grpc::experimental::MessageAllocator< ::mavsdk::rpc::camera::SetModeRequest, ::mavsdk::rpc::camera::SetModeResponse>* allocator) {
-      static_cast<::grpc_impl::internal::CallbackUnaryHandler< ::mavsdk::rpc::camera::SetModeRequest, ::mavsdk::rpc::camera::SetModeResponse>*>(
-          ::grpc::Service::experimental().GetHandler(7))
+    #ifdef GRPC_CALLBACK_API_NONEXPERIMENTAL
+      ::grpc::internal::MethodHandler* const handler = ::grpc::Service::GetHandler(7);
+    #else
+      ::grpc::internal::MethodHandler* const handler = ::grpc::Service::experimental().GetHandler(7);
+    #endif
+      static_cast<::grpc_impl::internal::CallbackUnaryHandler< ::mavsdk::rpc::camera::SetModeRequest, ::mavsdk::rpc::camera::SetModeResponse>*>(handler)
               ->SetMessageAllocator(allocator);
     }
     ~ExperimentalWithCallbackMethod_SetMode() override {
@@ -1278,7 +1674,14 @@ class CameraService final {
       abort();
       return ::grpc::Status(::grpc::StatusCode::UNIMPLEMENTED, "");
     }
-    virtual ::grpc::experimental::ServerUnaryReactor* SetMode(::grpc::experimental::CallbackServerContext* /*context*/, const ::mavsdk::rpc::camera::SetModeRequest* /*request*/, ::mavsdk::rpc::camera::SetModeResponse* /*response*/) { return nullptr; }
+    #ifdef GRPC_CALLBACK_API_NONEXPERIMENTAL
+    virtual ::grpc::ServerUnaryReactor* SetMode(
+      ::grpc::CallbackServerContext* /*context*/, const ::mavsdk::rpc::camera::SetModeRequest* /*request*/, ::mavsdk::rpc::camera::SetModeResponse* /*response*/)
+    #else
+    virtual ::grpc::experimental::ServerUnaryReactor* SetMode(
+      ::grpc::experimental::CallbackServerContext* /*context*/, const ::mavsdk::rpc::camera::SetModeRequest* /*request*/, ::mavsdk::rpc::camera::SetModeResponse* /*response*/)
+    #endif
+      { return nullptr; }
   };
   template <class BaseClass>
   class ExperimentalWithCallbackMethod_SubscribeMode : public BaseClass {
@@ -1286,9 +1689,20 @@ class CameraService final {
     void BaseClassMustBeDerivedFromService(const Service* /*service*/) {}
    public:
     ExperimentalWithCallbackMethod_SubscribeMode() {
-      ::grpc::Service::experimental().MarkMethodCallback(8,
-        new ::grpc_impl::internal::CallbackServerStreamingHandler< ::mavsdk::rpc::camera::SubscribeModeRequest, ::mavsdk::rpc::camera::ModeResponse>(
-          [this](::grpc::experimental::CallbackServerContext* context, const ::mavsdk::rpc::camera::SubscribeModeRequest* request) { return this->SubscribeMode(context, request); }));
+    #ifdef GRPC_CALLBACK_API_NONEXPERIMENTAL
+      ::grpc::Service::
+    #else
+      ::grpc::Service::experimental().
+    #endif
+        MarkMethodCallback(8,
+          new ::grpc_impl::internal::CallbackServerStreamingHandler< ::mavsdk::rpc::camera::SubscribeModeRequest, ::mavsdk::rpc::camera::ModeResponse>(
+            [this](
+    #ifdef GRPC_CALLBACK_API_NONEXPERIMENTAL
+                   ::grpc::CallbackServerContext*
+    #else
+                   ::grpc::experimental::CallbackServerContext*
+    #endif
+                     context, const ::mavsdk::rpc::camera::SubscribeModeRequest* request) { return this->SubscribeMode(context, request); }));
     }
     ~ExperimentalWithCallbackMethod_SubscribeMode() override {
       BaseClassMustBeDerivedFromService(this);
@@ -1298,7 +1712,14 @@ class CameraService final {
       abort();
       return ::grpc::Status(::grpc::StatusCode::UNIMPLEMENTED, "");
     }
-    virtual ::grpc::experimental::ServerWriteReactor< ::mavsdk::rpc::camera::ModeResponse>* SubscribeMode(::grpc::experimental::CallbackServerContext* /*context*/, const ::mavsdk::rpc::camera::SubscribeModeRequest* /*request*/) { return nullptr; }
+    #ifdef GRPC_CALLBACK_API_NONEXPERIMENTAL
+    virtual ::grpc::ServerWriteReactor< ::mavsdk::rpc::camera::ModeResponse>* SubscribeMode(
+      ::grpc::CallbackServerContext* /*context*/, const ::mavsdk::rpc::camera::SubscribeModeRequest* /*request*/)
+    #else
+    virtual ::grpc::experimental::ServerWriteReactor< ::mavsdk::rpc::camera::ModeResponse>* SubscribeMode(
+      ::grpc::experimental::CallbackServerContext* /*context*/, const ::mavsdk::rpc::camera::SubscribeModeRequest* /*request*/)
+    #endif
+      { return nullptr; }
   };
   template <class BaseClass>
   class ExperimentalWithCallbackMethod_SubscribeInformation : public BaseClass {
@@ -1306,9 +1727,20 @@ class CameraService final {
     void BaseClassMustBeDerivedFromService(const Service* /*service*/) {}
    public:
     ExperimentalWithCallbackMethod_SubscribeInformation() {
-      ::grpc::Service::experimental().MarkMethodCallback(9,
-        new ::grpc_impl::internal::CallbackServerStreamingHandler< ::mavsdk::rpc::camera::SubscribeInformationRequest, ::mavsdk::rpc::camera::InformationResponse>(
-          [this](::grpc::experimental::CallbackServerContext* context, const ::mavsdk::rpc::camera::SubscribeInformationRequest* request) { return this->SubscribeInformation(context, request); }));
+    #ifdef GRPC_CALLBACK_API_NONEXPERIMENTAL
+      ::grpc::Service::
+    #else
+      ::grpc::Service::experimental().
+    #endif
+        MarkMethodCallback(9,
+          new ::grpc_impl::internal::CallbackServerStreamingHandler< ::mavsdk::rpc::camera::SubscribeInformationRequest, ::mavsdk::rpc::camera::InformationResponse>(
+            [this](
+    #ifdef GRPC_CALLBACK_API_NONEXPERIMENTAL
+                   ::grpc::CallbackServerContext*
+    #else
+                   ::grpc::experimental::CallbackServerContext*
+    #endif
+                     context, const ::mavsdk::rpc::camera::SubscribeInformationRequest* request) { return this->SubscribeInformation(context, request); }));
     }
     ~ExperimentalWithCallbackMethod_SubscribeInformation() override {
       BaseClassMustBeDerivedFromService(this);
@@ -1318,7 +1750,14 @@ class CameraService final {
       abort();
       return ::grpc::Status(::grpc::StatusCode::UNIMPLEMENTED, "");
     }
-    virtual ::grpc::experimental::ServerWriteReactor< ::mavsdk::rpc::camera::InformationResponse>* SubscribeInformation(::grpc::experimental::CallbackServerContext* /*context*/, const ::mavsdk::rpc::camera::SubscribeInformationRequest* /*request*/) { return nullptr; }
+    #ifdef GRPC_CALLBACK_API_NONEXPERIMENTAL
+    virtual ::grpc::ServerWriteReactor< ::mavsdk::rpc::camera::InformationResponse>* SubscribeInformation(
+      ::grpc::CallbackServerContext* /*context*/, const ::mavsdk::rpc::camera::SubscribeInformationRequest* /*request*/)
+    #else
+    virtual ::grpc::experimental::ServerWriteReactor< ::mavsdk::rpc::camera::InformationResponse>* SubscribeInformation(
+      ::grpc::experimental::CallbackServerContext* /*context*/, const ::mavsdk::rpc::camera::SubscribeInformationRequest* /*request*/)
+    #endif
+      { return nullptr; }
   };
   template <class BaseClass>
   class ExperimentalWithCallbackMethod_SubscribeVideoStreamInfo : public BaseClass {
@@ -1326,9 +1765,20 @@ class CameraService final {
     void BaseClassMustBeDerivedFromService(const Service* /*service*/) {}
    public:
     ExperimentalWithCallbackMethod_SubscribeVideoStreamInfo() {
-      ::grpc::Service::experimental().MarkMethodCallback(10,
-        new ::grpc_impl::internal::CallbackServerStreamingHandler< ::mavsdk::rpc::camera::SubscribeVideoStreamInfoRequest, ::mavsdk::rpc::camera::VideoStreamInfoResponse>(
-          [this](::grpc::experimental::CallbackServerContext* context, const ::mavsdk::rpc::camera::SubscribeVideoStreamInfoRequest* request) { return this->SubscribeVideoStreamInfo(context, request); }));
+    #ifdef GRPC_CALLBACK_API_NONEXPERIMENTAL
+      ::grpc::Service::
+    #else
+      ::grpc::Service::experimental().
+    #endif
+        MarkMethodCallback(10,
+          new ::grpc_impl::internal::CallbackServerStreamingHandler< ::mavsdk::rpc::camera::SubscribeVideoStreamInfoRequest, ::mavsdk::rpc::camera::VideoStreamInfoResponse>(
+            [this](
+    #ifdef GRPC_CALLBACK_API_NONEXPERIMENTAL
+                   ::grpc::CallbackServerContext*
+    #else
+                   ::grpc::experimental::CallbackServerContext*
+    #endif
+                     context, const ::mavsdk::rpc::camera::SubscribeVideoStreamInfoRequest* request) { return this->SubscribeVideoStreamInfo(context, request); }));
     }
     ~ExperimentalWithCallbackMethod_SubscribeVideoStreamInfo() override {
       BaseClassMustBeDerivedFromService(this);
@@ -1338,7 +1788,14 @@ class CameraService final {
       abort();
       return ::grpc::Status(::grpc::StatusCode::UNIMPLEMENTED, "");
     }
-    virtual ::grpc::experimental::ServerWriteReactor< ::mavsdk::rpc::camera::VideoStreamInfoResponse>* SubscribeVideoStreamInfo(::grpc::experimental::CallbackServerContext* /*context*/, const ::mavsdk::rpc::camera::SubscribeVideoStreamInfoRequest* /*request*/) { return nullptr; }
+    #ifdef GRPC_CALLBACK_API_NONEXPERIMENTAL
+    virtual ::grpc::ServerWriteReactor< ::mavsdk::rpc::camera::VideoStreamInfoResponse>* SubscribeVideoStreamInfo(
+      ::grpc::CallbackServerContext* /*context*/, const ::mavsdk::rpc::camera::SubscribeVideoStreamInfoRequest* /*request*/)
+    #else
+    virtual ::grpc::experimental::ServerWriteReactor< ::mavsdk::rpc::camera::VideoStreamInfoResponse>* SubscribeVideoStreamInfo(
+      ::grpc::experimental::CallbackServerContext* /*context*/, const ::mavsdk::rpc::camera::SubscribeVideoStreamInfoRequest* /*request*/)
+    #endif
+      { return nullptr; }
   };
   template <class BaseClass>
   class ExperimentalWithCallbackMethod_SubscribeCaptureInfo : public BaseClass {
@@ -1346,9 +1803,20 @@ class CameraService final {
     void BaseClassMustBeDerivedFromService(const Service* /*service*/) {}
    public:
     ExperimentalWithCallbackMethod_SubscribeCaptureInfo() {
-      ::grpc::Service::experimental().MarkMethodCallback(11,
-        new ::grpc_impl::internal::CallbackServerStreamingHandler< ::mavsdk::rpc::camera::SubscribeCaptureInfoRequest, ::mavsdk::rpc::camera::CaptureInfoResponse>(
-          [this](::grpc::experimental::CallbackServerContext* context, const ::mavsdk::rpc::camera::SubscribeCaptureInfoRequest* request) { return this->SubscribeCaptureInfo(context, request); }));
+    #ifdef GRPC_CALLBACK_API_NONEXPERIMENTAL
+      ::grpc::Service::
+    #else
+      ::grpc::Service::experimental().
+    #endif
+        MarkMethodCallback(11,
+          new ::grpc_impl::internal::CallbackServerStreamingHandler< ::mavsdk::rpc::camera::SubscribeCaptureInfoRequest, ::mavsdk::rpc::camera::CaptureInfoResponse>(
+            [this](
+    #ifdef GRPC_CALLBACK_API_NONEXPERIMENTAL
+                   ::grpc::CallbackServerContext*
+    #else
+                   ::grpc::experimental::CallbackServerContext*
+    #endif
+                     context, const ::mavsdk::rpc::camera::SubscribeCaptureInfoRequest* request) { return this->SubscribeCaptureInfo(context, request); }));
     }
     ~ExperimentalWithCallbackMethod_SubscribeCaptureInfo() override {
       BaseClassMustBeDerivedFromService(this);
@@ -1358,7 +1826,14 @@ class CameraService final {
       abort();
       return ::grpc::Status(::grpc::StatusCode::UNIMPLEMENTED, "");
     }
-    virtual ::grpc::experimental::ServerWriteReactor< ::mavsdk::rpc::camera::CaptureInfoResponse>* SubscribeCaptureInfo(::grpc::experimental::CallbackServerContext* /*context*/, const ::mavsdk::rpc::camera::SubscribeCaptureInfoRequest* /*request*/) { return nullptr; }
+    #ifdef GRPC_CALLBACK_API_NONEXPERIMENTAL
+    virtual ::grpc::ServerWriteReactor< ::mavsdk::rpc::camera::CaptureInfoResponse>* SubscribeCaptureInfo(
+      ::grpc::CallbackServerContext* /*context*/, const ::mavsdk::rpc::camera::SubscribeCaptureInfoRequest* /*request*/)
+    #else
+    virtual ::grpc::experimental::ServerWriteReactor< ::mavsdk::rpc::camera::CaptureInfoResponse>* SubscribeCaptureInfo(
+      ::grpc::experimental::CallbackServerContext* /*context*/, const ::mavsdk::rpc::camera::SubscribeCaptureInfoRequest* /*request*/)
+    #endif
+      { return nullptr; }
   };
   template <class BaseClass>
   class ExperimentalWithCallbackMethod_SubscribeStatus : public BaseClass {
@@ -1366,9 +1841,20 @@ class CameraService final {
     void BaseClassMustBeDerivedFromService(const Service* /*service*/) {}
    public:
     ExperimentalWithCallbackMethod_SubscribeStatus() {
-      ::grpc::Service::experimental().MarkMethodCallback(12,
-        new ::grpc_impl::internal::CallbackServerStreamingHandler< ::mavsdk::rpc::camera::SubscribeStatusRequest, ::mavsdk::rpc::camera::StatusResponse>(
-          [this](::grpc::experimental::CallbackServerContext* context, const ::mavsdk::rpc::camera::SubscribeStatusRequest* request) { return this->SubscribeStatus(context, request); }));
+    #ifdef GRPC_CALLBACK_API_NONEXPERIMENTAL
+      ::grpc::Service::
+    #else
+      ::grpc::Service::experimental().
+    #endif
+        MarkMethodCallback(12,
+          new ::grpc_impl::internal::CallbackServerStreamingHandler< ::mavsdk::rpc::camera::SubscribeStatusRequest, ::mavsdk::rpc::camera::StatusResponse>(
+            [this](
+    #ifdef GRPC_CALLBACK_API_NONEXPERIMENTAL
+                   ::grpc::CallbackServerContext*
+    #else
+                   ::grpc::experimental::CallbackServerContext*
+    #endif
+                     context, const ::mavsdk::rpc::camera::SubscribeStatusRequest* request) { return this->SubscribeStatus(context, request); }));
     }
     ~ExperimentalWithCallbackMethod_SubscribeStatus() override {
       BaseClassMustBeDerivedFromService(this);
@@ -1378,7 +1864,14 @@ class CameraService final {
       abort();
       return ::grpc::Status(::grpc::StatusCode::UNIMPLEMENTED, "");
     }
-    virtual ::grpc::experimental::ServerWriteReactor< ::mavsdk::rpc::camera::StatusResponse>* SubscribeStatus(::grpc::experimental::CallbackServerContext* /*context*/, const ::mavsdk::rpc::camera::SubscribeStatusRequest* /*request*/) { return nullptr; }
+    #ifdef GRPC_CALLBACK_API_NONEXPERIMENTAL
+    virtual ::grpc::ServerWriteReactor< ::mavsdk::rpc::camera::StatusResponse>* SubscribeStatus(
+      ::grpc::CallbackServerContext* /*context*/, const ::mavsdk::rpc::camera::SubscribeStatusRequest* /*request*/)
+    #else
+    virtual ::grpc::experimental::ServerWriteReactor< ::mavsdk::rpc::camera::StatusResponse>* SubscribeStatus(
+      ::grpc::experimental::CallbackServerContext* /*context*/, const ::mavsdk::rpc::camera::SubscribeStatusRequest* /*request*/)
+    #endif
+      { return nullptr; }
   };
   template <class BaseClass>
   class ExperimentalWithCallbackMethod_SubscribeCurrentSettings : public BaseClass {
@@ -1386,9 +1879,20 @@ class CameraService final {
     void BaseClassMustBeDerivedFromService(const Service* /*service*/) {}
    public:
     ExperimentalWithCallbackMethod_SubscribeCurrentSettings() {
-      ::grpc::Service::experimental().MarkMethodCallback(13,
-        new ::grpc_impl::internal::CallbackServerStreamingHandler< ::mavsdk::rpc::camera::SubscribeCurrentSettingsRequest, ::mavsdk::rpc::camera::CurrentSettingsResponse>(
-          [this](::grpc::experimental::CallbackServerContext* context, const ::mavsdk::rpc::camera::SubscribeCurrentSettingsRequest* request) { return this->SubscribeCurrentSettings(context, request); }));
+    #ifdef GRPC_CALLBACK_API_NONEXPERIMENTAL
+      ::grpc::Service::
+    #else
+      ::grpc::Service::experimental().
+    #endif
+        MarkMethodCallback(13,
+          new ::grpc_impl::internal::CallbackServerStreamingHandler< ::mavsdk::rpc::camera::SubscribeCurrentSettingsRequest, ::mavsdk::rpc::camera::CurrentSettingsResponse>(
+            [this](
+    #ifdef GRPC_CALLBACK_API_NONEXPERIMENTAL
+                   ::grpc::CallbackServerContext*
+    #else
+                   ::grpc::experimental::CallbackServerContext*
+    #endif
+                     context, const ::mavsdk::rpc::camera::SubscribeCurrentSettingsRequest* request) { return this->SubscribeCurrentSettings(context, request); }));
     }
     ~ExperimentalWithCallbackMethod_SubscribeCurrentSettings() override {
       BaseClassMustBeDerivedFromService(this);
@@ -1398,7 +1902,14 @@ class CameraService final {
       abort();
       return ::grpc::Status(::grpc::StatusCode::UNIMPLEMENTED, "");
     }
-    virtual ::grpc::experimental::ServerWriteReactor< ::mavsdk::rpc::camera::CurrentSettingsResponse>* SubscribeCurrentSettings(::grpc::experimental::CallbackServerContext* /*context*/, const ::mavsdk::rpc::camera::SubscribeCurrentSettingsRequest* /*request*/) { return nullptr; }
+    #ifdef GRPC_CALLBACK_API_NONEXPERIMENTAL
+    virtual ::grpc::ServerWriteReactor< ::mavsdk::rpc::camera::CurrentSettingsResponse>* SubscribeCurrentSettings(
+      ::grpc::CallbackServerContext* /*context*/, const ::mavsdk::rpc::camera::SubscribeCurrentSettingsRequest* /*request*/)
+    #else
+    virtual ::grpc::experimental::ServerWriteReactor< ::mavsdk::rpc::camera::CurrentSettingsResponse>* SubscribeCurrentSettings(
+      ::grpc::experimental::CallbackServerContext* /*context*/, const ::mavsdk::rpc::camera::SubscribeCurrentSettingsRequest* /*request*/)
+    #endif
+      { return nullptr; }
   };
   template <class BaseClass>
   class ExperimentalWithCallbackMethod_SubscribePossibleSettingOptions : public BaseClass {
@@ -1406,9 +1917,20 @@ class CameraService final {
     void BaseClassMustBeDerivedFromService(const Service* /*service*/) {}
    public:
     ExperimentalWithCallbackMethod_SubscribePossibleSettingOptions() {
-      ::grpc::Service::experimental().MarkMethodCallback(14,
-        new ::grpc_impl::internal::CallbackServerStreamingHandler< ::mavsdk::rpc::camera::SubscribePossibleSettingOptionsRequest, ::mavsdk::rpc::camera::PossibleSettingOptionsResponse>(
-          [this](::grpc::experimental::CallbackServerContext* context, const ::mavsdk::rpc::camera::SubscribePossibleSettingOptionsRequest* request) { return this->SubscribePossibleSettingOptions(context, request); }));
+    #ifdef GRPC_CALLBACK_API_NONEXPERIMENTAL
+      ::grpc::Service::
+    #else
+      ::grpc::Service::experimental().
+    #endif
+        MarkMethodCallback(14,
+          new ::grpc_impl::internal::CallbackServerStreamingHandler< ::mavsdk::rpc::camera::SubscribePossibleSettingOptionsRequest, ::mavsdk::rpc::camera::PossibleSettingOptionsResponse>(
+            [this](
+    #ifdef GRPC_CALLBACK_API_NONEXPERIMENTAL
+                   ::grpc::CallbackServerContext*
+    #else
+                   ::grpc::experimental::CallbackServerContext*
+    #endif
+                     context, const ::mavsdk::rpc::camera::SubscribePossibleSettingOptionsRequest* request) { return this->SubscribePossibleSettingOptions(context, request); }));
     }
     ~ExperimentalWithCallbackMethod_SubscribePossibleSettingOptions() override {
       BaseClassMustBeDerivedFromService(this);
@@ -1418,7 +1940,14 @@ class CameraService final {
       abort();
       return ::grpc::Status(::grpc::StatusCode::UNIMPLEMENTED, "");
     }
-    virtual ::grpc::experimental::ServerWriteReactor< ::mavsdk::rpc::camera::PossibleSettingOptionsResponse>* SubscribePossibleSettingOptions(::grpc::experimental::CallbackServerContext* /*context*/, const ::mavsdk::rpc::camera::SubscribePossibleSettingOptionsRequest* /*request*/) { return nullptr; }
+    #ifdef GRPC_CALLBACK_API_NONEXPERIMENTAL
+    virtual ::grpc::ServerWriteReactor< ::mavsdk::rpc::camera::PossibleSettingOptionsResponse>* SubscribePossibleSettingOptions(
+      ::grpc::CallbackServerContext* /*context*/, const ::mavsdk::rpc::camera::SubscribePossibleSettingOptionsRequest* /*request*/)
+    #else
+    virtual ::grpc::experimental::ServerWriteReactor< ::mavsdk::rpc::camera::PossibleSettingOptionsResponse>* SubscribePossibleSettingOptions(
+      ::grpc::experimental::CallbackServerContext* /*context*/, const ::mavsdk::rpc::camera::SubscribePossibleSettingOptionsRequest* /*request*/)
+    #endif
+      { return nullptr; }
   };
   template <class BaseClass>
   class ExperimentalWithCallbackMethod_SetSetting : public BaseClass {
@@ -1426,13 +1955,28 @@ class CameraService final {
     void BaseClassMustBeDerivedFromService(const Service* /*service*/) {}
    public:
     ExperimentalWithCallbackMethod_SetSetting() {
-      ::grpc::Service::experimental().MarkMethodCallback(15,
-        new ::grpc_impl::internal::CallbackUnaryHandler< ::mavsdk::rpc::camera::SetSettingRequest, ::mavsdk::rpc::camera::SetSettingResponse>(
-          [this](::grpc::experimental::CallbackServerContext* context, const ::mavsdk::rpc::camera::SetSettingRequest* request, ::mavsdk::rpc::camera::SetSettingResponse* response) { return this->SetSetting(context, request, response); }));}
+    #ifdef GRPC_CALLBACK_API_NONEXPERIMENTAL
+      ::grpc::Service::
+    #else
+      ::grpc::Service::experimental().
+    #endif
+        MarkMethodCallback(15,
+          new ::grpc_impl::internal::CallbackUnaryHandler< ::mavsdk::rpc::camera::SetSettingRequest, ::mavsdk::rpc::camera::SetSettingResponse>(
+            [this](
+    #ifdef GRPC_CALLBACK_API_NONEXPERIMENTAL
+                   ::grpc::CallbackServerContext*
+    #else
+                   ::grpc::experimental::CallbackServerContext*
+    #endif
+                     context, const ::mavsdk::rpc::camera::SetSettingRequest* request, ::mavsdk::rpc::camera::SetSettingResponse* response) { return this->SetSetting(context, request, response); }));}
     void SetMessageAllocatorFor_SetSetting(
         ::grpc::experimental::MessageAllocator< ::mavsdk::rpc::camera::SetSettingRequest, ::mavsdk::rpc::camera::SetSettingResponse>* allocator) {
-      static_cast<::grpc_impl::internal::CallbackUnaryHandler< ::mavsdk::rpc::camera::SetSettingRequest, ::mavsdk::rpc::camera::SetSettingResponse>*>(
-          ::grpc::Service::experimental().GetHandler(15))
+    #ifdef GRPC_CALLBACK_API_NONEXPERIMENTAL
+      ::grpc::internal::MethodHandler* const handler = ::grpc::Service::GetHandler(15);
+    #else
+      ::grpc::internal::MethodHandler* const handler = ::grpc::Service::experimental().GetHandler(15);
+    #endif
+      static_cast<::grpc_impl::internal::CallbackUnaryHandler< ::mavsdk::rpc::camera::SetSettingRequest, ::mavsdk::rpc::camera::SetSettingResponse>*>(handler)
               ->SetMessageAllocator(allocator);
     }
     ~ExperimentalWithCallbackMethod_SetSetting() override {
@@ -1443,7 +1987,14 @@ class CameraService final {
       abort();
       return ::grpc::Status(::grpc::StatusCode::UNIMPLEMENTED, "");
     }
-    virtual ::grpc::experimental::ServerUnaryReactor* SetSetting(::grpc::experimental::CallbackServerContext* /*context*/, const ::mavsdk::rpc::camera::SetSettingRequest* /*request*/, ::mavsdk::rpc::camera::SetSettingResponse* /*response*/) { return nullptr; }
+    #ifdef GRPC_CALLBACK_API_NONEXPERIMENTAL
+    virtual ::grpc::ServerUnaryReactor* SetSetting(
+      ::grpc::CallbackServerContext* /*context*/, const ::mavsdk::rpc::camera::SetSettingRequest* /*request*/, ::mavsdk::rpc::camera::SetSettingResponse* /*response*/)
+    #else
+    virtual ::grpc::experimental::ServerUnaryReactor* SetSetting(
+      ::grpc::experimental::CallbackServerContext* /*context*/, const ::mavsdk::rpc::camera::SetSettingRequest* /*request*/, ::mavsdk::rpc::camera::SetSettingResponse* /*response*/)
+    #endif
+      { return nullptr; }
   };
   template <class BaseClass>
   class ExperimentalWithCallbackMethod_GetSetting : public BaseClass {
@@ -1451,13 +2002,28 @@ class CameraService final {
     void BaseClassMustBeDerivedFromService(const Service* /*service*/) {}
    public:
     ExperimentalWithCallbackMethod_GetSetting() {
-      ::grpc::Service::experimental().MarkMethodCallback(16,
-        new ::grpc_impl::internal::CallbackUnaryHandler< ::mavsdk::rpc::camera::GetSettingRequest, ::mavsdk::rpc::camera::GetSettingResponse>(
-          [this](::grpc::experimental::CallbackServerContext* context, const ::mavsdk::rpc::camera::GetSettingRequest* request, ::mavsdk::rpc::camera::GetSettingResponse* response) { return this->GetSetting(context, request, response); }));}
+    #ifdef GRPC_CALLBACK_API_NONEXPERIMENTAL
+      ::grpc::Service::
+    #else
+      ::grpc::Service::experimental().
+    #endif
+        MarkMethodCallback(16,
+          new ::grpc_impl::internal::CallbackUnaryHandler< ::mavsdk::rpc::camera::GetSettingRequest, ::mavsdk::rpc::camera::GetSettingResponse>(
+            [this](
+    #ifdef GRPC_CALLBACK_API_NONEXPERIMENTAL
+                   ::grpc::CallbackServerContext*
+    #else
+                   ::grpc::experimental::CallbackServerContext*
+    #endif
+                     context, const ::mavsdk::rpc::camera::GetSettingRequest* request, ::mavsdk::rpc::camera::GetSettingResponse* response) { return this->GetSetting(context, request, response); }));}
     void SetMessageAllocatorFor_GetSetting(
         ::grpc::experimental::MessageAllocator< ::mavsdk::rpc::camera::GetSettingRequest, ::mavsdk::rpc::camera::GetSettingResponse>* allocator) {
-      static_cast<::grpc_impl::internal::CallbackUnaryHandler< ::mavsdk::rpc::camera::GetSettingRequest, ::mavsdk::rpc::camera::GetSettingResponse>*>(
-          ::grpc::Service::experimental().GetHandler(16))
+    #ifdef GRPC_CALLBACK_API_NONEXPERIMENTAL
+      ::grpc::internal::MethodHandler* const handler = ::grpc::Service::GetHandler(16);
+    #else
+      ::grpc::internal::MethodHandler* const handler = ::grpc::Service::experimental().GetHandler(16);
+    #endif
+      static_cast<::grpc_impl::internal::CallbackUnaryHandler< ::mavsdk::rpc::camera::GetSettingRequest, ::mavsdk::rpc::camera::GetSettingResponse>*>(handler)
               ->SetMessageAllocator(allocator);
     }
     ~ExperimentalWithCallbackMethod_GetSetting() override {
@@ -1468,7 +2034,14 @@ class CameraService final {
       abort();
       return ::grpc::Status(::grpc::StatusCode::UNIMPLEMENTED, "");
     }
-    virtual ::grpc::experimental::ServerUnaryReactor* GetSetting(::grpc::experimental::CallbackServerContext* /*context*/, const ::mavsdk::rpc::camera::GetSettingRequest* /*request*/, ::mavsdk::rpc::camera::GetSettingResponse* /*response*/) { return nullptr; }
+    #ifdef GRPC_CALLBACK_API_NONEXPERIMENTAL
+    virtual ::grpc::ServerUnaryReactor* GetSetting(
+      ::grpc::CallbackServerContext* /*context*/, const ::mavsdk::rpc::camera::GetSettingRequest* /*request*/, ::mavsdk::rpc::camera::GetSettingResponse* /*response*/)
+    #else
+    virtual ::grpc::experimental::ServerUnaryReactor* GetSetting(
+      ::grpc::experimental::CallbackServerContext* /*context*/, const ::mavsdk::rpc::camera::GetSettingRequest* /*request*/, ::mavsdk::rpc::camera::GetSettingResponse* /*response*/)
+    #endif
+      { return nullptr; }
   };
   template <class BaseClass>
   class ExperimentalWithCallbackMethod_FormatStorage : public BaseClass {
@@ -1476,13 +2049,28 @@ class CameraService final {
     void BaseClassMustBeDerivedFromService(const Service* /*service*/) {}
    public:
     ExperimentalWithCallbackMethod_FormatStorage() {
-      ::grpc::Service::experimental().MarkMethodCallback(17,
-        new ::grpc_impl::internal::CallbackUnaryHandler< ::mavsdk::rpc::camera::FormatStorageRequest, ::mavsdk::rpc::camera::FormatStorageResponse>(
-          [this](::grpc::experimental::CallbackServerContext* context, const ::mavsdk::rpc::camera::FormatStorageRequest* request, ::mavsdk::rpc::camera::FormatStorageResponse* response) { return this->FormatStorage(context, request, response); }));}
+    #ifdef GRPC_CALLBACK_API_NONEXPERIMENTAL
+      ::grpc::Service::
+    #else
+      ::grpc::Service::experimental().
+    #endif
+        MarkMethodCallback(17,
+          new ::grpc_impl::internal::CallbackUnaryHandler< ::mavsdk::rpc::camera::FormatStorageRequest, ::mavsdk::rpc::camera::FormatStorageResponse>(
+            [this](
+    #ifdef GRPC_CALLBACK_API_NONEXPERIMENTAL
+                   ::grpc::CallbackServerContext*
+    #else
+                   ::grpc::experimental::CallbackServerContext*
+    #endif
+                     context, const ::mavsdk::rpc::camera::FormatStorageRequest* request, ::mavsdk::rpc::camera::FormatStorageResponse* response) { return this->FormatStorage(context, request, response); }));}
     void SetMessageAllocatorFor_FormatStorage(
         ::grpc::experimental::MessageAllocator< ::mavsdk::rpc::camera::FormatStorageRequest, ::mavsdk::rpc::camera::FormatStorageResponse>* allocator) {
-      static_cast<::grpc_impl::internal::CallbackUnaryHandler< ::mavsdk::rpc::camera::FormatStorageRequest, ::mavsdk::rpc::camera::FormatStorageResponse>*>(
-          ::grpc::Service::experimental().GetHandler(17))
+    #ifdef GRPC_CALLBACK_API_NONEXPERIMENTAL
+      ::grpc::internal::MethodHandler* const handler = ::grpc::Service::GetHandler(17);
+    #else
+      ::grpc::internal::MethodHandler* const handler = ::grpc::Service::experimental().GetHandler(17);
+    #endif
+      static_cast<::grpc_impl::internal::CallbackUnaryHandler< ::mavsdk::rpc::camera::FormatStorageRequest, ::mavsdk::rpc::camera::FormatStorageResponse>*>(handler)
               ->SetMessageAllocator(allocator);
     }
     ~ExperimentalWithCallbackMethod_FormatStorage() override {
@@ -1493,8 +2081,19 @@ class CameraService final {
       abort();
       return ::grpc::Status(::grpc::StatusCode::UNIMPLEMENTED, "");
     }
-    virtual ::grpc::experimental::ServerUnaryReactor* FormatStorage(::grpc::experimental::CallbackServerContext* /*context*/, const ::mavsdk::rpc::camera::FormatStorageRequest* /*request*/, ::mavsdk::rpc::camera::FormatStorageResponse* /*response*/) { return nullptr; }
+    #ifdef GRPC_CALLBACK_API_NONEXPERIMENTAL
+    virtual ::grpc::ServerUnaryReactor* FormatStorage(
+      ::grpc::CallbackServerContext* /*context*/, const ::mavsdk::rpc::camera::FormatStorageRequest* /*request*/, ::mavsdk::rpc::camera::FormatStorageResponse* /*response*/)
+    #else
+    virtual ::grpc::experimental::ServerUnaryReactor* FormatStorage(
+      ::grpc::experimental::CallbackServerContext* /*context*/, const ::mavsdk::rpc::camera::FormatStorageRequest* /*request*/, ::mavsdk::rpc::camera::FormatStorageResponse* /*response*/)
+    #endif
+      { return nullptr; }
   };
+  #ifdef GRPC_CALLBACK_API_NONEXPERIMENTAL
+  typedef ExperimentalWithCallbackMethod_TakePhoto<ExperimentalWithCallbackMethod_StartPhotoInterval<ExperimentalWithCallbackMethod_StopPhotoInterval<ExperimentalWithCallbackMethod_StartVideo<ExperimentalWithCallbackMethod_StopVideo<ExperimentalWithCallbackMethod_StartVideoStreaming<ExperimentalWithCallbackMethod_StopVideoStreaming<ExperimentalWithCallbackMethod_SetMode<ExperimentalWithCallbackMethod_SubscribeMode<ExperimentalWithCallbackMethod_SubscribeInformation<ExperimentalWithCallbackMethod_SubscribeVideoStreamInfo<ExperimentalWithCallbackMethod_SubscribeCaptureInfo<ExperimentalWithCallbackMethod_SubscribeStatus<ExperimentalWithCallbackMethod_SubscribeCurrentSettings<ExperimentalWithCallbackMethod_SubscribePossibleSettingOptions<ExperimentalWithCallbackMethod_SetSetting<ExperimentalWithCallbackMethod_GetSetting<ExperimentalWithCallbackMethod_FormatStorage<Service > > > > > > > > > > > > > > > > > > CallbackService;
+  #endif
+
   typedef ExperimentalWithCallbackMethod_TakePhoto<ExperimentalWithCallbackMethod_StartPhotoInterval<ExperimentalWithCallbackMethod_StopPhotoInterval<ExperimentalWithCallbackMethod_StartVideo<ExperimentalWithCallbackMethod_StopVideo<ExperimentalWithCallbackMethod_StartVideoStreaming<ExperimentalWithCallbackMethod_StopVideoStreaming<ExperimentalWithCallbackMethod_SetMode<ExperimentalWithCallbackMethod_SubscribeMode<ExperimentalWithCallbackMethod_SubscribeInformation<ExperimentalWithCallbackMethod_SubscribeVideoStreamInfo<ExperimentalWithCallbackMethod_SubscribeCaptureInfo<ExperimentalWithCallbackMethod_SubscribeStatus<ExperimentalWithCallbackMethod_SubscribeCurrentSettings<ExperimentalWithCallbackMethod_SubscribePossibleSettingOptions<ExperimentalWithCallbackMethod_SetSetting<ExperimentalWithCallbackMethod_GetSetting<ExperimentalWithCallbackMethod_FormatStorage<Service > > > > > > > > > > > > > > > > > > ExperimentalCallbackService;
   template <class BaseClass>
   class WithGenericMethod_TakePhoto : public BaseClass {
@@ -2168,9 +2767,20 @@ class CameraService final {
     void BaseClassMustBeDerivedFromService(const Service* /*service*/) {}
    public:
     ExperimentalWithRawCallbackMethod_TakePhoto() {
-      ::grpc::Service::experimental().MarkMethodRawCallback(0,
-        new ::grpc_impl::internal::CallbackUnaryHandler< ::grpc::ByteBuffer, ::grpc::ByteBuffer>(
-          [this](::grpc::experimental::CallbackServerContext* context, const ::grpc::ByteBuffer* request, ::grpc::ByteBuffer* response) { return this->TakePhoto(context, request, response); }));
+    #ifdef GRPC_CALLBACK_API_NONEXPERIMENTAL
+      ::grpc::Service::
+    #else
+      ::grpc::Service::experimental().
+    #endif
+        MarkMethodRawCallback(0,
+          new ::grpc_impl::internal::CallbackUnaryHandler< ::grpc::ByteBuffer, ::grpc::ByteBuffer>(
+            [this](
+    #ifdef GRPC_CALLBACK_API_NONEXPERIMENTAL
+                   ::grpc::CallbackServerContext*
+    #else
+                   ::grpc::experimental::CallbackServerContext*
+    #endif
+                     context, const ::grpc::ByteBuffer* request, ::grpc::ByteBuffer* response) { return this->TakePhoto(context, request, response); }));
     }
     ~ExperimentalWithRawCallbackMethod_TakePhoto() override {
       BaseClassMustBeDerivedFromService(this);
@@ -2180,7 +2790,14 @@ class CameraService final {
       abort();
       return ::grpc::Status(::grpc::StatusCode::UNIMPLEMENTED, "");
     }
-    virtual ::grpc::experimental::ServerUnaryReactor* TakePhoto(::grpc::experimental::CallbackServerContext* /*context*/, const ::grpc::ByteBuffer* /*request*/, ::grpc::ByteBuffer* /*response*/) { return nullptr; }
+    #ifdef GRPC_CALLBACK_API_NONEXPERIMENTAL
+    virtual ::grpc::ServerUnaryReactor* TakePhoto(
+      ::grpc::CallbackServerContext* /*context*/, const ::grpc::ByteBuffer* /*request*/, ::grpc::ByteBuffer* /*response*/)
+    #else
+    virtual ::grpc::experimental::ServerUnaryReactor* TakePhoto(
+      ::grpc::experimental::CallbackServerContext* /*context*/, const ::grpc::ByteBuffer* /*request*/, ::grpc::ByteBuffer* /*response*/)
+    #endif
+      { return nullptr; }
   };
   template <class BaseClass>
   class ExperimentalWithRawCallbackMethod_StartPhotoInterval : public BaseClass {
@@ -2188,9 +2805,20 @@ class CameraService final {
     void BaseClassMustBeDerivedFromService(const Service* /*service*/) {}
    public:
     ExperimentalWithRawCallbackMethod_StartPhotoInterval() {
-      ::grpc::Service::experimental().MarkMethodRawCallback(1,
-        new ::grpc_impl::internal::CallbackUnaryHandler< ::grpc::ByteBuffer, ::grpc::ByteBuffer>(
-          [this](::grpc::experimental::CallbackServerContext* context, const ::grpc::ByteBuffer* request, ::grpc::ByteBuffer* response) { return this->StartPhotoInterval(context, request, response); }));
+    #ifdef GRPC_CALLBACK_API_NONEXPERIMENTAL
+      ::grpc::Service::
+    #else
+      ::grpc::Service::experimental().
+    #endif
+        MarkMethodRawCallback(1,
+          new ::grpc_impl::internal::CallbackUnaryHandler< ::grpc::ByteBuffer, ::grpc::ByteBuffer>(
+            [this](
+    #ifdef GRPC_CALLBACK_API_NONEXPERIMENTAL
+                   ::grpc::CallbackServerContext*
+    #else
+                   ::grpc::experimental::CallbackServerContext*
+    #endif
+                     context, const ::grpc::ByteBuffer* request, ::grpc::ByteBuffer* response) { return this->StartPhotoInterval(context, request, response); }));
     }
     ~ExperimentalWithRawCallbackMethod_StartPhotoInterval() override {
       BaseClassMustBeDerivedFromService(this);
@@ -2200,7 +2828,14 @@ class CameraService final {
       abort();
       return ::grpc::Status(::grpc::StatusCode::UNIMPLEMENTED, "");
     }
-    virtual ::grpc::experimental::ServerUnaryReactor* StartPhotoInterval(::grpc::experimental::CallbackServerContext* /*context*/, const ::grpc::ByteBuffer* /*request*/, ::grpc::ByteBuffer* /*response*/) { return nullptr; }
+    #ifdef GRPC_CALLBACK_API_NONEXPERIMENTAL
+    virtual ::grpc::ServerUnaryReactor* StartPhotoInterval(
+      ::grpc::CallbackServerContext* /*context*/, const ::grpc::ByteBuffer* /*request*/, ::grpc::ByteBuffer* /*response*/)
+    #else
+    virtual ::grpc::experimental::ServerUnaryReactor* StartPhotoInterval(
+      ::grpc::experimental::CallbackServerContext* /*context*/, const ::grpc::ByteBuffer* /*request*/, ::grpc::ByteBuffer* /*response*/)
+    #endif
+      { return nullptr; }
   };
   template <class BaseClass>
   class ExperimentalWithRawCallbackMethod_StopPhotoInterval : public BaseClass {
@@ -2208,9 +2843,20 @@ class CameraService final {
     void BaseClassMustBeDerivedFromService(const Service* /*service*/) {}
    public:
     ExperimentalWithRawCallbackMethod_StopPhotoInterval() {
-      ::grpc::Service::experimental().MarkMethodRawCallback(2,
-        new ::grpc_impl::internal::CallbackUnaryHandler< ::grpc::ByteBuffer, ::grpc::ByteBuffer>(
-          [this](::grpc::experimental::CallbackServerContext* context, const ::grpc::ByteBuffer* request, ::grpc::ByteBuffer* response) { return this->StopPhotoInterval(context, request, response); }));
+    #ifdef GRPC_CALLBACK_API_NONEXPERIMENTAL
+      ::grpc::Service::
+    #else
+      ::grpc::Service::experimental().
+    #endif
+        MarkMethodRawCallback(2,
+          new ::grpc_impl::internal::CallbackUnaryHandler< ::grpc::ByteBuffer, ::grpc::ByteBuffer>(
+            [this](
+    #ifdef GRPC_CALLBACK_API_NONEXPERIMENTAL
+                   ::grpc::CallbackServerContext*
+    #else
+                   ::grpc::experimental::CallbackServerContext*
+    #endif
+                     context, const ::grpc::ByteBuffer* request, ::grpc::ByteBuffer* response) { return this->StopPhotoInterval(context, request, response); }));
     }
     ~ExperimentalWithRawCallbackMethod_StopPhotoInterval() override {
       BaseClassMustBeDerivedFromService(this);
@@ -2220,7 +2866,14 @@ class CameraService final {
       abort();
       return ::grpc::Status(::grpc::StatusCode::UNIMPLEMENTED, "");
     }
-    virtual ::grpc::experimental::ServerUnaryReactor* StopPhotoInterval(::grpc::experimental::CallbackServerContext* /*context*/, const ::grpc::ByteBuffer* /*request*/, ::grpc::ByteBuffer* /*response*/) { return nullptr; }
+    #ifdef GRPC_CALLBACK_API_NONEXPERIMENTAL
+    virtual ::grpc::ServerUnaryReactor* StopPhotoInterval(
+      ::grpc::CallbackServerContext* /*context*/, const ::grpc::ByteBuffer* /*request*/, ::grpc::ByteBuffer* /*response*/)
+    #else
+    virtual ::grpc::experimental::ServerUnaryReactor* StopPhotoInterval(
+      ::grpc::experimental::CallbackServerContext* /*context*/, const ::grpc::ByteBuffer* /*request*/, ::grpc::ByteBuffer* /*response*/)
+    #endif
+      { return nullptr; }
   };
   template <class BaseClass>
   class ExperimentalWithRawCallbackMethod_StartVideo : public BaseClass {
@@ -2228,9 +2881,20 @@ class CameraService final {
     void BaseClassMustBeDerivedFromService(const Service* /*service*/) {}
    public:
     ExperimentalWithRawCallbackMethod_StartVideo() {
-      ::grpc::Service::experimental().MarkMethodRawCallback(3,
-        new ::grpc_impl::internal::CallbackUnaryHandler< ::grpc::ByteBuffer, ::grpc::ByteBuffer>(
-          [this](::grpc::experimental::CallbackServerContext* context, const ::grpc::ByteBuffer* request, ::grpc::ByteBuffer* response) { return this->StartVideo(context, request, response); }));
+    #ifdef GRPC_CALLBACK_API_NONEXPERIMENTAL
+      ::grpc::Service::
+    #else
+      ::grpc::Service::experimental().
+    #endif
+        MarkMethodRawCallback(3,
+          new ::grpc_impl::internal::CallbackUnaryHandler< ::grpc::ByteBuffer, ::grpc::ByteBuffer>(
+            [this](
+    #ifdef GRPC_CALLBACK_API_NONEXPERIMENTAL
+                   ::grpc::CallbackServerContext*
+    #else
+                   ::grpc::experimental::CallbackServerContext*
+    #endif
+                     context, const ::grpc::ByteBuffer* request, ::grpc::ByteBuffer* response) { return this->StartVideo(context, request, response); }));
     }
     ~ExperimentalWithRawCallbackMethod_StartVideo() override {
       BaseClassMustBeDerivedFromService(this);
@@ -2240,7 +2904,14 @@ class CameraService final {
       abort();
       return ::grpc::Status(::grpc::StatusCode::UNIMPLEMENTED, "");
     }
-    virtual ::grpc::experimental::ServerUnaryReactor* StartVideo(::grpc::experimental::CallbackServerContext* /*context*/, const ::grpc::ByteBuffer* /*request*/, ::grpc::ByteBuffer* /*response*/) { return nullptr; }
+    #ifdef GRPC_CALLBACK_API_NONEXPERIMENTAL
+    virtual ::grpc::ServerUnaryReactor* StartVideo(
+      ::grpc::CallbackServerContext* /*context*/, const ::grpc::ByteBuffer* /*request*/, ::grpc::ByteBuffer* /*response*/)
+    #else
+    virtual ::grpc::experimental::ServerUnaryReactor* StartVideo(
+      ::grpc::experimental::CallbackServerContext* /*context*/, const ::grpc::ByteBuffer* /*request*/, ::grpc::ByteBuffer* /*response*/)
+    #endif
+      { return nullptr; }
   };
   template <class BaseClass>
   class ExperimentalWithRawCallbackMethod_StopVideo : public BaseClass {
@@ -2248,9 +2919,20 @@ class CameraService final {
     void BaseClassMustBeDerivedFromService(const Service* /*service*/) {}
    public:
     ExperimentalWithRawCallbackMethod_StopVideo() {
-      ::grpc::Service::experimental().MarkMethodRawCallback(4,
-        new ::grpc_impl::internal::CallbackUnaryHandler< ::grpc::ByteBuffer, ::grpc::ByteBuffer>(
-          [this](::grpc::experimental::CallbackServerContext* context, const ::grpc::ByteBuffer* request, ::grpc::ByteBuffer* response) { return this->StopVideo(context, request, response); }));
+    #ifdef GRPC_CALLBACK_API_NONEXPERIMENTAL
+      ::grpc::Service::
+    #else
+      ::grpc::Service::experimental().
+    #endif
+        MarkMethodRawCallback(4,
+          new ::grpc_impl::internal::CallbackUnaryHandler< ::grpc::ByteBuffer, ::grpc::ByteBuffer>(
+            [this](
+    #ifdef GRPC_CALLBACK_API_NONEXPERIMENTAL
+                   ::grpc::CallbackServerContext*
+    #else
+                   ::grpc::experimental::CallbackServerContext*
+    #endif
+                     context, const ::grpc::ByteBuffer* request, ::grpc::ByteBuffer* response) { return this->StopVideo(context, request, response); }));
     }
     ~ExperimentalWithRawCallbackMethod_StopVideo() override {
       BaseClassMustBeDerivedFromService(this);
@@ -2260,7 +2942,14 @@ class CameraService final {
       abort();
       return ::grpc::Status(::grpc::StatusCode::UNIMPLEMENTED, "");
     }
-    virtual ::grpc::experimental::ServerUnaryReactor* StopVideo(::grpc::experimental::CallbackServerContext* /*context*/, const ::grpc::ByteBuffer* /*request*/, ::grpc::ByteBuffer* /*response*/) { return nullptr; }
+    #ifdef GRPC_CALLBACK_API_NONEXPERIMENTAL
+    virtual ::grpc::ServerUnaryReactor* StopVideo(
+      ::grpc::CallbackServerContext* /*context*/, const ::grpc::ByteBuffer* /*request*/, ::grpc::ByteBuffer* /*response*/)
+    #else
+    virtual ::grpc::experimental::ServerUnaryReactor* StopVideo(
+      ::grpc::experimental::CallbackServerContext* /*context*/, const ::grpc::ByteBuffer* /*request*/, ::grpc::ByteBuffer* /*response*/)
+    #endif
+      { return nullptr; }
   };
   template <class BaseClass>
   class ExperimentalWithRawCallbackMethod_StartVideoStreaming : public BaseClass {
@@ -2268,9 +2957,20 @@ class CameraService final {
     void BaseClassMustBeDerivedFromService(const Service* /*service*/) {}
    public:
     ExperimentalWithRawCallbackMethod_StartVideoStreaming() {
-      ::grpc::Service::experimental().MarkMethodRawCallback(5,
-        new ::grpc_impl::internal::CallbackUnaryHandler< ::grpc::ByteBuffer, ::grpc::ByteBuffer>(
-          [this](::grpc::experimental::CallbackServerContext* context, const ::grpc::ByteBuffer* request, ::grpc::ByteBuffer* response) { return this->StartVideoStreaming(context, request, response); }));
+    #ifdef GRPC_CALLBACK_API_NONEXPERIMENTAL
+      ::grpc::Service::
+    #else
+      ::grpc::Service::experimental().
+    #endif
+        MarkMethodRawCallback(5,
+          new ::grpc_impl::internal::CallbackUnaryHandler< ::grpc::ByteBuffer, ::grpc::ByteBuffer>(
+            [this](
+    #ifdef GRPC_CALLBACK_API_NONEXPERIMENTAL
+                   ::grpc::CallbackServerContext*
+    #else
+                   ::grpc::experimental::CallbackServerContext*
+    #endif
+                     context, const ::grpc::ByteBuffer* request, ::grpc::ByteBuffer* response) { return this->StartVideoStreaming(context, request, response); }));
     }
     ~ExperimentalWithRawCallbackMethod_StartVideoStreaming() override {
       BaseClassMustBeDerivedFromService(this);
@@ -2280,7 +2980,14 @@ class CameraService final {
       abort();
       return ::grpc::Status(::grpc::StatusCode::UNIMPLEMENTED, "");
     }
-    virtual ::grpc::experimental::ServerUnaryReactor* StartVideoStreaming(::grpc::experimental::CallbackServerContext* /*context*/, const ::grpc::ByteBuffer* /*request*/, ::grpc::ByteBuffer* /*response*/) { return nullptr; }
+    #ifdef GRPC_CALLBACK_API_NONEXPERIMENTAL
+    virtual ::grpc::ServerUnaryReactor* StartVideoStreaming(
+      ::grpc::CallbackServerContext* /*context*/, const ::grpc::ByteBuffer* /*request*/, ::grpc::ByteBuffer* /*response*/)
+    #else
+    virtual ::grpc::experimental::ServerUnaryReactor* StartVideoStreaming(
+      ::grpc::experimental::CallbackServerContext* /*context*/, const ::grpc::ByteBuffer* /*request*/, ::grpc::ByteBuffer* /*response*/)
+    #endif
+      { return nullptr; }
   };
   template <class BaseClass>
   class ExperimentalWithRawCallbackMethod_StopVideoStreaming : public BaseClass {
@@ -2288,9 +2995,20 @@ class CameraService final {
     void BaseClassMustBeDerivedFromService(const Service* /*service*/) {}
    public:
     ExperimentalWithRawCallbackMethod_StopVideoStreaming() {
-      ::grpc::Service::experimental().MarkMethodRawCallback(6,
-        new ::grpc_impl::internal::CallbackUnaryHandler< ::grpc::ByteBuffer, ::grpc::ByteBuffer>(
-          [this](::grpc::experimental::CallbackServerContext* context, const ::grpc::ByteBuffer* request, ::grpc::ByteBuffer* response) { return this->StopVideoStreaming(context, request, response); }));
+    #ifdef GRPC_CALLBACK_API_NONEXPERIMENTAL
+      ::grpc::Service::
+    #else
+      ::grpc::Service::experimental().
+    #endif
+        MarkMethodRawCallback(6,
+          new ::grpc_impl::internal::CallbackUnaryHandler< ::grpc::ByteBuffer, ::grpc::ByteBuffer>(
+            [this](
+    #ifdef GRPC_CALLBACK_API_NONEXPERIMENTAL
+                   ::grpc::CallbackServerContext*
+    #else
+                   ::grpc::experimental::CallbackServerContext*
+    #endif
+                     context, const ::grpc::ByteBuffer* request, ::grpc::ByteBuffer* response) { return this->StopVideoStreaming(context, request, response); }));
     }
     ~ExperimentalWithRawCallbackMethod_StopVideoStreaming() override {
       BaseClassMustBeDerivedFromService(this);
@@ -2300,7 +3018,14 @@ class CameraService final {
       abort();
       return ::grpc::Status(::grpc::StatusCode::UNIMPLEMENTED, "");
     }
-    virtual ::grpc::experimental::ServerUnaryReactor* StopVideoStreaming(::grpc::experimental::CallbackServerContext* /*context*/, const ::grpc::ByteBuffer* /*request*/, ::grpc::ByteBuffer* /*response*/) { return nullptr; }
+    #ifdef GRPC_CALLBACK_API_NONEXPERIMENTAL
+    virtual ::grpc::ServerUnaryReactor* StopVideoStreaming(
+      ::grpc::CallbackServerContext* /*context*/, const ::grpc::ByteBuffer* /*request*/, ::grpc::ByteBuffer* /*response*/)
+    #else
+    virtual ::grpc::experimental::ServerUnaryReactor* StopVideoStreaming(
+      ::grpc::experimental::CallbackServerContext* /*context*/, const ::grpc::ByteBuffer* /*request*/, ::grpc::ByteBuffer* /*response*/)
+    #endif
+      { return nullptr; }
   };
   template <class BaseClass>
   class ExperimentalWithRawCallbackMethod_SetMode : public BaseClass {
@@ -2308,9 +3033,20 @@ class CameraService final {
     void BaseClassMustBeDerivedFromService(const Service* /*service*/) {}
    public:
     ExperimentalWithRawCallbackMethod_SetMode() {
-      ::grpc::Service::experimental().MarkMethodRawCallback(7,
-        new ::grpc_impl::internal::CallbackUnaryHandler< ::grpc::ByteBuffer, ::grpc::ByteBuffer>(
-          [this](::grpc::experimental::CallbackServerContext* context, const ::grpc::ByteBuffer* request, ::grpc::ByteBuffer* response) { return this->SetMode(context, request, response); }));
+    #ifdef GRPC_CALLBACK_API_NONEXPERIMENTAL
+      ::grpc::Service::
+    #else
+      ::grpc::Service::experimental().
+    #endif
+        MarkMethodRawCallback(7,
+          new ::grpc_impl::internal::CallbackUnaryHandler< ::grpc::ByteBuffer, ::grpc::ByteBuffer>(
+            [this](
+    #ifdef GRPC_CALLBACK_API_NONEXPERIMENTAL
+                   ::grpc::CallbackServerContext*
+    #else
+                   ::grpc::experimental::CallbackServerContext*
+    #endif
+                     context, const ::grpc::ByteBuffer* request, ::grpc::ByteBuffer* response) { return this->SetMode(context, request, response); }));
     }
     ~ExperimentalWithRawCallbackMethod_SetMode() override {
       BaseClassMustBeDerivedFromService(this);
@@ -2320,7 +3056,14 @@ class CameraService final {
       abort();
       return ::grpc::Status(::grpc::StatusCode::UNIMPLEMENTED, "");
     }
-    virtual ::grpc::experimental::ServerUnaryReactor* SetMode(::grpc::experimental::CallbackServerContext* /*context*/, const ::grpc::ByteBuffer* /*request*/, ::grpc::ByteBuffer* /*response*/) { return nullptr; }
+    #ifdef GRPC_CALLBACK_API_NONEXPERIMENTAL
+    virtual ::grpc::ServerUnaryReactor* SetMode(
+      ::grpc::CallbackServerContext* /*context*/, const ::grpc::ByteBuffer* /*request*/, ::grpc::ByteBuffer* /*response*/)
+    #else
+    virtual ::grpc::experimental::ServerUnaryReactor* SetMode(
+      ::grpc::experimental::CallbackServerContext* /*context*/, const ::grpc::ByteBuffer* /*request*/, ::grpc::ByteBuffer* /*response*/)
+    #endif
+      { return nullptr; }
   };
   template <class BaseClass>
   class ExperimentalWithRawCallbackMethod_SubscribeMode : public BaseClass {
@@ -2328,9 +3071,20 @@ class CameraService final {
     void BaseClassMustBeDerivedFromService(const Service* /*service*/) {}
    public:
     ExperimentalWithRawCallbackMethod_SubscribeMode() {
-      ::grpc::Service::experimental().MarkMethodRawCallback(8,
-        new ::grpc_impl::internal::CallbackServerStreamingHandler< ::grpc::ByteBuffer, ::grpc::ByteBuffer>(
-          [this](::grpc::experimental::CallbackServerContext* context, const::grpc::ByteBuffer* request) { return this->SubscribeMode(context, request); }));
+    #ifdef GRPC_CALLBACK_API_NONEXPERIMENTAL
+      ::grpc::Service::
+    #else
+      ::grpc::Service::experimental().
+    #endif
+        MarkMethodRawCallback(8,
+          new ::grpc_impl::internal::CallbackServerStreamingHandler< ::grpc::ByteBuffer, ::grpc::ByteBuffer>(
+            [this](
+    #ifdef GRPC_CALLBACK_API_NONEXPERIMENTAL
+                   ::grpc::CallbackServerContext*
+    #else
+                   ::grpc::experimental::CallbackServerContext*
+    #endif
+                     context, const::grpc::ByteBuffer* request) { return this->SubscribeMode(context, request); }));
     }
     ~ExperimentalWithRawCallbackMethod_SubscribeMode() override {
       BaseClassMustBeDerivedFromService(this);
@@ -2340,7 +3094,14 @@ class CameraService final {
       abort();
       return ::grpc::Status(::grpc::StatusCode::UNIMPLEMENTED, "");
     }
-    virtual ::grpc::experimental::ServerWriteReactor< ::grpc::ByteBuffer>* SubscribeMode(::grpc::experimental::CallbackServerContext* /*context*/, const ::grpc::ByteBuffer* /*request*/) { return nullptr; }
+    #ifdef GRPC_CALLBACK_API_NONEXPERIMENTAL
+    virtual ::grpc::ServerWriteReactor< ::grpc::ByteBuffer>* SubscribeMode(
+      ::grpc::CallbackServerContext* /*context*/, const ::grpc::ByteBuffer* /*request*/)
+    #else
+    virtual ::grpc::experimental::ServerWriteReactor< ::grpc::ByteBuffer>* SubscribeMode(
+      ::grpc::experimental::CallbackServerContext* /*context*/, const ::grpc::ByteBuffer* /*request*/)
+    #endif
+      { return nullptr; }
   };
   template <class BaseClass>
   class ExperimentalWithRawCallbackMethod_SubscribeInformation : public BaseClass {
@@ -2348,9 +3109,20 @@ class CameraService final {
     void BaseClassMustBeDerivedFromService(const Service* /*service*/) {}
    public:
     ExperimentalWithRawCallbackMethod_SubscribeInformation() {
-      ::grpc::Service::experimental().MarkMethodRawCallback(9,
-        new ::grpc_impl::internal::CallbackServerStreamingHandler< ::grpc::ByteBuffer, ::grpc::ByteBuffer>(
-          [this](::grpc::experimental::CallbackServerContext* context, const::grpc::ByteBuffer* request) { return this->SubscribeInformation(context, request); }));
+    #ifdef GRPC_CALLBACK_API_NONEXPERIMENTAL
+      ::grpc::Service::
+    #else
+      ::grpc::Service::experimental().
+    #endif
+        MarkMethodRawCallback(9,
+          new ::grpc_impl::internal::CallbackServerStreamingHandler< ::grpc::ByteBuffer, ::grpc::ByteBuffer>(
+            [this](
+    #ifdef GRPC_CALLBACK_API_NONEXPERIMENTAL
+                   ::grpc::CallbackServerContext*
+    #else
+                   ::grpc::experimental::CallbackServerContext*
+    #endif
+                     context, const::grpc::ByteBuffer* request) { return this->SubscribeInformation(context, request); }));
     }
     ~ExperimentalWithRawCallbackMethod_SubscribeInformation() override {
       BaseClassMustBeDerivedFromService(this);
@@ -2360,7 +3132,14 @@ class CameraService final {
       abort();
       return ::grpc::Status(::grpc::StatusCode::UNIMPLEMENTED, "");
     }
-    virtual ::grpc::experimental::ServerWriteReactor< ::grpc::ByteBuffer>* SubscribeInformation(::grpc::experimental::CallbackServerContext* /*context*/, const ::grpc::ByteBuffer* /*request*/) { return nullptr; }
+    #ifdef GRPC_CALLBACK_API_NONEXPERIMENTAL
+    virtual ::grpc::ServerWriteReactor< ::grpc::ByteBuffer>* SubscribeInformation(
+      ::grpc::CallbackServerContext* /*context*/, const ::grpc::ByteBuffer* /*request*/)
+    #else
+    virtual ::grpc::experimental::ServerWriteReactor< ::grpc::ByteBuffer>* SubscribeInformation(
+      ::grpc::experimental::CallbackServerContext* /*context*/, const ::grpc::ByteBuffer* /*request*/)
+    #endif
+      { return nullptr; }
   };
   template <class BaseClass>
   class ExperimentalWithRawCallbackMethod_SubscribeVideoStreamInfo : public BaseClass {
@@ -2368,9 +3147,20 @@ class CameraService final {
     void BaseClassMustBeDerivedFromService(const Service* /*service*/) {}
    public:
     ExperimentalWithRawCallbackMethod_SubscribeVideoStreamInfo() {
-      ::grpc::Service::experimental().MarkMethodRawCallback(10,
-        new ::grpc_impl::internal::CallbackServerStreamingHandler< ::grpc::ByteBuffer, ::grpc::ByteBuffer>(
-          [this](::grpc::experimental::CallbackServerContext* context, const::grpc::ByteBuffer* request) { return this->SubscribeVideoStreamInfo(context, request); }));
+    #ifdef GRPC_CALLBACK_API_NONEXPERIMENTAL
+      ::grpc::Service::
+    #else
+      ::grpc::Service::experimental().
+    #endif
+        MarkMethodRawCallback(10,
+          new ::grpc_impl::internal::CallbackServerStreamingHandler< ::grpc::ByteBuffer, ::grpc::ByteBuffer>(
+            [this](
+    #ifdef GRPC_CALLBACK_API_NONEXPERIMENTAL
+                   ::grpc::CallbackServerContext*
+    #else
+                   ::grpc::experimental::CallbackServerContext*
+    #endif
+                     context, const::grpc::ByteBuffer* request) { return this->SubscribeVideoStreamInfo(context, request); }));
     }
     ~ExperimentalWithRawCallbackMethod_SubscribeVideoStreamInfo() override {
       BaseClassMustBeDerivedFromService(this);
@@ -2380,7 +3170,14 @@ class CameraService final {
       abort();
       return ::grpc::Status(::grpc::StatusCode::UNIMPLEMENTED, "");
     }
-    virtual ::grpc::experimental::ServerWriteReactor< ::grpc::ByteBuffer>* SubscribeVideoStreamInfo(::grpc::experimental::CallbackServerContext* /*context*/, const ::grpc::ByteBuffer* /*request*/) { return nullptr; }
+    #ifdef GRPC_CALLBACK_API_NONEXPERIMENTAL
+    virtual ::grpc::ServerWriteReactor< ::grpc::ByteBuffer>* SubscribeVideoStreamInfo(
+      ::grpc::CallbackServerContext* /*context*/, const ::grpc::ByteBuffer* /*request*/)
+    #else
+    virtual ::grpc::experimental::ServerWriteReactor< ::grpc::ByteBuffer>* SubscribeVideoStreamInfo(
+      ::grpc::experimental::CallbackServerContext* /*context*/, const ::grpc::ByteBuffer* /*request*/)
+    #endif
+      { return nullptr; }
   };
   template <class BaseClass>
   class ExperimentalWithRawCallbackMethod_SubscribeCaptureInfo : public BaseClass {
@@ -2388,9 +3185,20 @@ class CameraService final {
     void BaseClassMustBeDerivedFromService(const Service* /*service*/) {}
    public:
     ExperimentalWithRawCallbackMethod_SubscribeCaptureInfo() {
-      ::grpc::Service::experimental().MarkMethodRawCallback(11,
-        new ::grpc_impl::internal::CallbackServerStreamingHandler< ::grpc::ByteBuffer, ::grpc::ByteBuffer>(
-          [this](::grpc::experimental::CallbackServerContext* context, const::grpc::ByteBuffer* request) { return this->SubscribeCaptureInfo(context, request); }));
+    #ifdef GRPC_CALLBACK_API_NONEXPERIMENTAL
+      ::grpc::Service::
+    #else
+      ::grpc::Service::experimental().
+    #endif
+        MarkMethodRawCallback(11,
+          new ::grpc_impl::internal::CallbackServerStreamingHandler< ::grpc::ByteBuffer, ::grpc::ByteBuffer>(
+            [this](
+    #ifdef GRPC_CALLBACK_API_NONEXPERIMENTAL
+                   ::grpc::CallbackServerContext*
+    #else
+                   ::grpc::experimental::CallbackServerContext*
+    #endif
+                     context, const::grpc::ByteBuffer* request) { return this->SubscribeCaptureInfo(context, request); }));
     }
     ~ExperimentalWithRawCallbackMethod_SubscribeCaptureInfo() override {
       BaseClassMustBeDerivedFromService(this);
@@ -2400,7 +3208,14 @@ class CameraService final {
       abort();
       return ::grpc::Status(::grpc::StatusCode::UNIMPLEMENTED, "");
     }
-    virtual ::grpc::experimental::ServerWriteReactor< ::grpc::ByteBuffer>* SubscribeCaptureInfo(::grpc::experimental::CallbackServerContext* /*context*/, const ::grpc::ByteBuffer* /*request*/) { return nullptr; }
+    #ifdef GRPC_CALLBACK_API_NONEXPERIMENTAL
+    virtual ::grpc::ServerWriteReactor< ::grpc::ByteBuffer>* SubscribeCaptureInfo(
+      ::grpc::CallbackServerContext* /*context*/, const ::grpc::ByteBuffer* /*request*/)
+    #else
+    virtual ::grpc::experimental::ServerWriteReactor< ::grpc::ByteBuffer>* SubscribeCaptureInfo(
+      ::grpc::experimental::CallbackServerContext* /*context*/, const ::grpc::ByteBuffer* /*request*/)
+    #endif
+      { return nullptr; }
   };
   template <class BaseClass>
   class ExperimentalWithRawCallbackMethod_SubscribeStatus : public BaseClass {
@@ -2408,9 +3223,20 @@ class CameraService final {
     void BaseClassMustBeDerivedFromService(const Service* /*service*/) {}
    public:
     ExperimentalWithRawCallbackMethod_SubscribeStatus() {
-      ::grpc::Service::experimental().MarkMethodRawCallback(12,
-        new ::grpc_impl::internal::CallbackServerStreamingHandler< ::grpc::ByteBuffer, ::grpc::ByteBuffer>(
-          [this](::grpc::experimental::CallbackServerContext* context, const::grpc::ByteBuffer* request) { return this->SubscribeStatus(context, request); }));
+    #ifdef GRPC_CALLBACK_API_NONEXPERIMENTAL
+      ::grpc::Service::
+    #else
+      ::grpc::Service::experimental().
+    #endif
+        MarkMethodRawCallback(12,
+          new ::grpc_impl::internal::CallbackServerStreamingHandler< ::grpc::ByteBuffer, ::grpc::ByteBuffer>(
+            [this](
+    #ifdef GRPC_CALLBACK_API_NONEXPERIMENTAL
+                   ::grpc::CallbackServerContext*
+    #else
+                   ::grpc::experimental::CallbackServerContext*
+    #endif
+                     context, const::grpc::ByteBuffer* request) { return this->SubscribeStatus(context, request); }));
     }
     ~ExperimentalWithRawCallbackMethod_SubscribeStatus() override {
       BaseClassMustBeDerivedFromService(this);
@@ -2420,7 +3246,14 @@ class CameraService final {
       abort();
       return ::grpc::Status(::grpc::StatusCode::UNIMPLEMENTED, "");
     }
-    virtual ::grpc::experimental::ServerWriteReactor< ::grpc::ByteBuffer>* SubscribeStatus(::grpc::experimental::CallbackServerContext* /*context*/, const ::grpc::ByteBuffer* /*request*/) { return nullptr; }
+    #ifdef GRPC_CALLBACK_API_NONEXPERIMENTAL
+    virtual ::grpc::ServerWriteReactor< ::grpc::ByteBuffer>* SubscribeStatus(
+      ::grpc::CallbackServerContext* /*context*/, const ::grpc::ByteBuffer* /*request*/)
+    #else
+    virtual ::grpc::experimental::ServerWriteReactor< ::grpc::ByteBuffer>* SubscribeStatus(
+      ::grpc::experimental::CallbackServerContext* /*context*/, const ::grpc::ByteBuffer* /*request*/)
+    #endif
+      { return nullptr; }
   };
   template <class BaseClass>
   class ExperimentalWithRawCallbackMethod_SubscribeCurrentSettings : public BaseClass {
@@ -2428,9 +3261,20 @@ class CameraService final {
     void BaseClassMustBeDerivedFromService(const Service* /*service*/) {}
    public:
     ExperimentalWithRawCallbackMethod_SubscribeCurrentSettings() {
-      ::grpc::Service::experimental().MarkMethodRawCallback(13,
-        new ::grpc_impl::internal::CallbackServerStreamingHandler< ::grpc::ByteBuffer, ::grpc::ByteBuffer>(
-          [this](::grpc::experimental::CallbackServerContext* context, const::grpc::ByteBuffer* request) { return this->SubscribeCurrentSettings(context, request); }));
+    #ifdef GRPC_CALLBACK_API_NONEXPERIMENTAL
+      ::grpc::Service::
+    #else
+      ::grpc::Service::experimental().
+    #endif
+        MarkMethodRawCallback(13,
+          new ::grpc_impl::internal::CallbackServerStreamingHandler< ::grpc::ByteBuffer, ::grpc::ByteBuffer>(
+            [this](
+    #ifdef GRPC_CALLBACK_API_NONEXPERIMENTAL
+                   ::grpc::CallbackServerContext*
+    #else
+                   ::grpc::experimental::CallbackServerContext*
+    #endif
+                     context, const::grpc::ByteBuffer* request) { return this->SubscribeCurrentSettings(context, request); }));
     }
     ~ExperimentalWithRawCallbackMethod_SubscribeCurrentSettings() override {
       BaseClassMustBeDerivedFromService(this);
@@ -2440,7 +3284,14 @@ class CameraService final {
       abort();
       return ::grpc::Status(::grpc::StatusCode::UNIMPLEMENTED, "");
     }
-    virtual ::grpc::experimental::ServerWriteReactor< ::grpc::ByteBuffer>* SubscribeCurrentSettings(::grpc::experimental::CallbackServerContext* /*context*/, const ::grpc::ByteBuffer* /*request*/) { return nullptr; }
+    #ifdef GRPC_CALLBACK_API_NONEXPERIMENTAL
+    virtual ::grpc::ServerWriteReactor< ::grpc::ByteBuffer>* SubscribeCurrentSettings(
+      ::grpc::CallbackServerContext* /*context*/, const ::grpc::ByteBuffer* /*request*/)
+    #else
+    virtual ::grpc::experimental::ServerWriteReactor< ::grpc::ByteBuffer>* SubscribeCurrentSettings(
+      ::grpc::experimental::CallbackServerContext* /*context*/, const ::grpc::ByteBuffer* /*request*/)
+    #endif
+      { return nullptr; }
   };
   template <class BaseClass>
   class ExperimentalWithRawCallbackMethod_SubscribePossibleSettingOptions : public BaseClass {
@@ -2448,9 +3299,20 @@ class CameraService final {
     void BaseClassMustBeDerivedFromService(const Service* /*service*/) {}
    public:
     ExperimentalWithRawCallbackMethod_SubscribePossibleSettingOptions() {
-      ::grpc::Service::experimental().MarkMethodRawCallback(14,
-        new ::grpc_impl::internal::CallbackServerStreamingHandler< ::grpc::ByteBuffer, ::grpc::ByteBuffer>(
-          [this](::grpc::experimental::CallbackServerContext* context, const::grpc::ByteBuffer* request) { return this->SubscribePossibleSettingOptions(context, request); }));
+    #ifdef GRPC_CALLBACK_API_NONEXPERIMENTAL
+      ::grpc::Service::
+    #else
+      ::grpc::Service::experimental().
+    #endif
+        MarkMethodRawCallback(14,
+          new ::grpc_impl::internal::CallbackServerStreamingHandler< ::grpc::ByteBuffer, ::grpc::ByteBuffer>(
+            [this](
+    #ifdef GRPC_CALLBACK_API_NONEXPERIMENTAL
+                   ::grpc::CallbackServerContext*
+    #else
+                   ::grpc::experimental::CallbackServerContext*
+    #endif
+                     context, const::grpc::ByteBuffer* request) { return this->SubscribePossibleSettingOptions(context, request); }));
     }
     ~ExperimentalWithRawCallbackMethod_SubscribePossibleSettingOptions() override {
       BaseClassMustBeDerivedFromService(this);
@@ -2460,7 +3322,14 @@ class CameraService final {
       abort();
       return ::grpc::Status(::grpc::StatusCode::UNIMPLEMENTED, "");
     }
-    virtual ::grpc::experimental::ServerWriteReactor< ::grpc::ByteBuffer>* SubscribePossibleSettingOptions(::grpc::experimental::CallbackServerContext* /*context*/, const ::grpc::ByteBuffer* /*request*/) { return nullptr; }
+    #ifdef GRPC_CALLBACK_API_NONEXPERIMENTAL
+    virtual ::grpc::ServerWriteReactor< ::grpc::ByteBuffer>* SubscribePossibleSettingOptions(
+      ::grpc::CallbackServerContext* /*context*/, const ::grpc::ByteBuffer* /*request*/)
+    #else
+    virtual ::grpc::experimental::ServerWriteReactor< ::grpc::ByteBuffer>* SubscribePossibleSettingOptions(
+      ::grpc::experimental::CallbackServerContext* /*context*/, const ::grpc::ByteBuffer* /*request*/)
+    #endif
+      { return nullptr; }
   };
   template <class BaseClass>
   class ExperimentalWithRawCallbackMethod_SetSetting : public BaseClass {
@@ -2468,9 +3337,20 @@ class CameraService final {
     void BaseClassMustBeDerivedFromService(const Service* /*service*/) {}
    public:
     ExperimentalWithRawCallbackMethod_SetSetting() {
-      ::grpc::Service::experimental().MarkMethodRawCallback(15,
-        new ::grpc_impl::internal::CallbackUnaryHandler< ::grpc::ByteBuffer, ::grpc::ByteBuffer>(
-          [this](::grpc::experimental::CallbackServerContext* context, const ::grpc::ByteBuffer* request, ::grpc::ByteBuffer* response) { return this->SetSetting(context, request, response); }));
+    #ifdef GRPC_CALLBACK_API_NONEXPERIMENTAL
+      ::grpc::Service::
+    #else
+      ::grpc::Service::experimental().
+    #endif
+        MarkMethodRawCallback(15,
+          new ::grpc_impl::internal::CallbackUnaryHandler< ::grpc::ByteBuffer, ::grpc::ByteBuffer>(
+            [this](
+    #ifdef GRPC_CALLBACK_API_NONEXPERIMENTAL
+                   ::grpc::CallbackServerContext*
+    #else
+                   ::grpc::experimental::CallbackServerContext*
+    #endif
+                     context, const ::grpc::ByteBuffer* request, ::grpc::ByteBuffer* response) { return this->SetSetting(context, request, response); }));
     }
     ~ExperimentalWithRawCallbackMethod_SetSetting() override {
       BaseClassMustBeDerivedFromService(this);
@@ -2480,7 +3360,14 @@ class CameraService final {
       abort();
       return ::grpc::Status(::grpc::StatusCode::UNIMPLEMENTED, "");
     }
-    virtual ::grpc::experimental::ServerUnaryReactor* SetSetting(::grpc::experimental::CallbackServerContext* /*context*/, const ::grpc::ByteBuffer* /*request*/, ::grpc::ByteBuffer* /*response*/) { return nullptr; }
+    #ifdef GRPC_CALLBACK_API_NONEXPERIMENTAL
+    virtual ::grpc::ServerUnaryReactor* SetSetting(
+      ::grpc::CallbackServerContext* /*context*/, const ::grpc::ByteBuffer* /*request*/, ::grpc::ByteBuffer* /*response*/)
+    #else
+    virtual ::grpc::experimental::ServerUnaryReactor* SetSetting(
+      ::grpc::experimental::CallbackServerContext* /*context*/, const ::grpc::ByteBuffer* /*request*/, ::grpc::ByteBuffer* /*response*/)
+    #endif
+      { return nullptr; }
   };
   template <class BaseClass>
   class ExperimentalWithRawCallbackMethod_GetSetting : public BaseClass {
@@ -2488,9 +3375,20 @@ class CameraService final {
     void BaseClassMustBeDerivedFromService(const Service* /*service*/) {}
    public:
     ExperimentalWithRawCallbackMethod_GetSetting() {
-      ::grpc::Service::experimental().MarkMethodRawCallback(16,
-        new ::grpc_impl::internal::CallbackUnaryHandler< ::grpc::ByteBuffer, ::grpc::ByteBuffer>(
-          [this](::grpc::experimental::CallbackServerContext* context, const ::grpc::ByteBuffer* request, ::grpc::ByteBuffer* response) { return this->GetSetting(context, request, response); }));
+    #ifdef GRPC_CALLBACK_API_NONEXPERIMENTAL
+      ::grpc::Service::
+    #else
+      ::grpc::Service::experimental().
+    #endif
+        MarkMethodRawCallback(16,
+          new ::grpc_impl::internal::CallbackUnaryHandler< ::grpc::ByteBuffer, ::grpc::ByteBuffer>(
+            [this](
+    #ifdef GRPC_CALLBACK_API_NONEXPERIMENTAL
+                   ::grpc::CallbackServerContext*
+    #else
+                   ::grpc::experimental::CallbackServerContext*
+    #endif
+                     context, const ::grpc::ByteBuffer* request, ::grpc::ByteBuffer* response) { return this->GetSetting(context, request, response); }));
     }
     ~ExperimentalWithRawCallbackMethod_GetSetting() override {
       BaseClassMustBeDerivedFromService(this);
@@ -2500,7 +3398,14 @@ class CameraService final {
       abort();
       return ::grpc::Status(::grpc::StatusCode::UNIMPLEMENTED, "");
     }
-    virtual ::grpc::experimental::ServerUnaryReactor* GetSetting(::grpc::experimental::CallbackServerContext* /*context*/, const ::grpc::ByteBuffer* /*request*/, ::grpc::ByteBuffer* /*response*/) { return nullptr; }
+    #ifdef GRPC_CALLBACK_API_NONEXPERIMENTAL
+    virtual ::grpc::ServerUnaryReactor* GetSetting(
+      ::grpc::CallbackServerContext* /*context*/, const ::grpc::ByteBuffer* /*request*/, ::grpc::ByteBuffer* /*response*/)
+    #else
+    virtual ::grpc::experimental::ServerUnaryReactor* GetSetting(
+      ::grpc::experimental::CallbackServerContext* /*context*/, const ::grpc::ByteBuffer* /*request*/, ::grpc::ByteBuffer* /*response*/)
+    #endif
+      { return nullptr; }
   };
   template <class BaseClass>
   class ExperimentalWithRawCallbackMethod_FormatStorage : public BaseClass {
@@ -2508,9 +3413,20 @@ class CameraService final {
     void BaseClassMustBeDerivedFromService(const Service* /*service*/) {}
    public:
     ExperimentalWithRawCallbackMethod_FormatStorage() {
-      ::grpc::Service::experimental().MarkMethodRawCallback(17,
-        new ::grpc_impl::internal::CallbackUnaryHandler< ::grpc::ByteBuffer, ::grpc::ByteBuffer>(
-          [this](::grpc::experimental::CallbackServerContext* context, const ::grpc::ByteBuffer* request, ::grpc::ByteBuffer* response) { return this->FormatStorage(context, request, response); }));
+    #ifdef GRPC_CALLBACK_API_NONEXPERIMENTAL
+      ::grpc::Service::
+    #else
+      ::grpc::Service::experimental().
+    #endif
+        MarkMethodRawCallback(17,
+          new ::grpc_impl::internal::CallbackUnaryHandler< ::grpc::ByteBuffer, ::grpc::ByteBuffer>(
+            [this](
+    #ifdef GRPC_CALLBACK_API_NONEXPERIMENTAL
+                   ::grpc::CallbackServerContext*
+    #else
+                   ::grpc::experimental::CallbackServerContext*
+    #endif
+                     context, const ::grpc::ByteBuffer* request, ::grpc::ByteBuffer* response) { return this->FormatStorage(context, request, response); }));
     }
     ~ExperimentalWithRawCallbackMethod_FormatStorage() override {
       BaseClassMustBeDerivedFromService(this);
@@ -2520,7 +3436,14 @@ class CameraService final {
       abort();
       return ::grpc::Status(::grpc::StatusCode::UNIMPLEMENTED, "");
     }
-    virtual ::grpc::experimental::ServerUnaryReactor* FormatStorage(::grpc::experimental::CallbackServerContext* /*context*/, const ::grpc::ByteBuffer* /*request*/, ::grpc::ByteBuffer* /*response*/) { return nullptr; }
+    #ifdef GRPC_CALLBACK_API_NONEXPERIMENTAL
+    virtual ::grpc::ServerUnaryReactor* FormatStorage(
+      ::grpc::CallbackServerContext* /*context*/, const ::grpc::ByteBuffer* /*request*/, ::grpc::ByteBuffer* /*response*/)
+    #else
+    virtual ::grpc::experimental::ServerUnaryReactor* FormatStorage(
+      ::grpc::experimental::CallbackServerContext* /*context*/, const ::grpc::ByteBuffer* /*request*/, ::grpc::ByteBuffer* /*response*/)
+    #endif
+      { return nullptr; }
   };
   template <class BaseClass>
   class WithStreamedUnaryMethod_TakePhoto : public BaseClass {

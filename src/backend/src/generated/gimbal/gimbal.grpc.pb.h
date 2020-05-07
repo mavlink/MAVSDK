@@ -7,12 +7,14 @@
 #include "gimbal/gimbal.pb.h"
 
 #include <functional>
+#include <grpc/impl/codegen/port_platform.h>
 #include <grpcpp/impl/codegen/async_generic_service.h>
 #include <grpcpp/impl/codegen/async_stream.h>
 #include <grpcpp/impl/codegen/async_unary_call.h>
 #include <grpcpp/impl/codegen/client_callback.h>
 #include <grpcpp/impl/codegen/client_context.h>
 #include <grpcpp/impl/codegen/completion_queue.h>
+#include <grpcpp/impl/codegen/message_allocator.h>
 #include <grpcpp/impl/codegen/method_handler.h>
 #include <grpcpp/impl/codegen/proto_utils.h>
 #include <grpcpp/impl/codegen/rpc_method.h>
@@ -23,19 +25,6 @@
 #include <grpcpp/impl/codegen/status.h>
 #include <grpcpp/impl/codegen/stub_options.h>
 #include <grpcpp/impl/codegen/sync_stream.h>
-
-namespace grpc_impl {
-class CompletionQueue;
-class ServerCompletionQueue;
-class ServerContext;
-}  // namespace grpc_impl
-
-namespace grpc {
-namespace experimental {
-template <typename RequestT, typename ResponseT>
-class MessageAllocator;
-}  // namespace experimental
-}  // namespace grpc
 
 namespace mavsdk {
 namespace rpc {
@@ -104,8 +93,16 @@ class GimbalService final {
       // take the gimbal longer to actually be set to the new angles.
       virtual void SetPitchAndYaw(::grpc::ClientContext* context, const ::mavsdk::rpc::gimbal::SetPitchAndYawRequest* request, ::mavsdk::rpc::gimbal::SetPitchAndYawResponse* response, std::function<void(::grpc::Status)>) = 0;
       virtual void SetPitchAndYaw(::grpc::ClientContext* context, const ::grpc::ByteBuffer* request, ::mavsdk::rpc::gimbal::SetPitchAndYawResponse* response, std::function<void(::grpc::Status)>) = 0;
+      #ifdef GRPC_CALLBACK_API_NONEXPERIMENTAL
+      virtual void SetPitchAndYaw(::grpc::ClientContext* context, const ::mavsdk::rpc::gimbal::SetPitchAndYawRequest* request, ::mavsdk::rpc::gimbal::SetPitchAndYawResponse* response, ::grpc::ClientUnaryReactor* reactor) = 0;
+      #else
       virtual void SetPitchAndYaw(::grpc::ClientContext* context, const ::mavsdk::rpc::gimbal::SetPitchAndYawRequest* request, ::mavsdk::rpc::gimbal::SetPitchAndYawResponse* response, ::grpc::experimental::ClientUnaryReactor* reactor) = 0;
+      #endif
+      #ifdef GRPC_CALLBACK_API_NONEXPERIMENTAL
+      virtual void SetPitchAndYaw(::grpc::ClientContext* context, const ::grpc::ByteBuffer* request, ::mavsdk::rpc::gimbal::SetPitchAndYawResponse* response, ::grpc::ClientUnaryReactor* reactor) = 0;
+      #else
       virtual void SetPitchAndYaw(::grpc::ClientContext* context, const ::grpc::ByteBuffer* request, ::mavsdk::rpc::gimbal::SetPitchAndYawResponse* response, ::grpc::experimental::ClientUnaryReactor* reactor) = 0;
+      #endif
       //
       // Set gimbal mode.
       //
@@ -114,8 +111,16 @@ class GimbalService final {
       // take the gimbal longer to actually be set to the new angles.
       virtual void SetMode(::grpc::ClientContext* context, const ::mavsdk::rpc::gimbal::SetModeRequest* request, ::mavsdk::rpc::gimbal::SetModeResponse* response, std::function<void(::grpc::Status)>) = 0;
       virtual void SetMode(::grpc::ClientContext* context, const ::grpc::ByteBuffer* request, ::mavsdk::rpc::gimbal::SetModeResponse* response, std::function<void(::grpc::Status)>) = 0;
+      #ifdef GRPC_CALLBACK_API_NONEXPERIMENTAL
+      virtual void SetMode(::grpc::ClientContext* context, const ::mavsdk::rpc::gimbal::SetModeRequest* request, ::mavsdk::rpc::gimbal::SetModeResponse* response, ::grpc::ClientUnaryReactor* reactor) = 0;
+      #else
       virtual void SetMode(::grpc::ClientContext* context, const ::mavsdk::rpc::gimbal::SetModeRequest* request, ::mavsdk::rpc::gimbal::SetModeResponse* response, ::grpc::experimental::ClientUnaryReactor* reactor) = 0;
+      #endif
+      #ifdef GRPC_CALLBACK_API_NONEXPERIMENTAL
+      virtual void SetMode(::grpc::ClientContext* context, const ::grpc::ByteBuffer* request, ::mavsdk::rpc::gimbal::SetModeResponse* response, ::grpc::ClientUnaryReactor* reactor) = 0;
+      #else
       virtual void SetMode(::grpc::ClientContext* context, const ::grpc::ByteBuffer* request, ::mavsdk::rpc::gimbal::SetModeResponse* response, ::grpc::experimental::ClientUnaryReactor* reactor) = 0;
+      #endif
       //
       // Set gimbal region of interest (ROI).
       //
@@ -126,9 +131,23 @@ class GimbalService final {
       // take the gimbal longer to actually rotate to the ROI.
       virtual void SetRoiLocation(::grpc::ClientContext* context, const ::mavsdk::rpc::gimbal::SetRoiLocationRequest* request, ::mavsdk::rpc::gimbal::SetRoiLocationResponse* response, std::function<void(::grpc::Status)>) = 0;
       virtual void SetRoiLocation(::grpc::ClientContext* context, const ::grpc::ByteBuffer* request, ::mavsdk::rpc::gimbal::SetRoiLocationResponse* response, std::function<void(::grpc::Status)>) = 0;
+      #ifdef GRPC_CALLBACK_API_NONEXPERIMENTAL
+      virtual void SetRoiLocation(::grpc::ClientContext* context, const ::mavsdk::rpc::gimbal::SetRoiLocationRequest* request, ::mavsdk::rpc::gimbal::SetRoiLocationResponse* response, ::grpc::ClientUnaryReactor* reactor) = 0;
+      #else
       virtual void SetRoiLocation(::grpc::ClientContext* context, const ::mavsdk::rpc::gimbal::SetRoiLocationRequest* request, ::mavsdk::rpc::gimbal::SetRoiLocationResponse* response, ::grpc::experimental::ClientUnaryReactor* reactor) = 0;
+      #endif
+      #ifdef GRPC_CALLBACK_API_NONEXPERIMENTAL
+      virtual void SetRoiLocation(::grpc::ClientContext* context, const ::grpc::ByteBuffer* request, ::mavsdk::rpc::gimbal::SetRoiLocationResponse* response, ::grpc::ClientUnaryReactor* reactor) = 0;
+      #else
       virtual void SetRoiLocation(::grpc::ClientContext* context, const ::grpc::ByteBuffer* request, ::mavsdk::rpc::gimbal::SetRoiLocationResponse* response, ::grpc::experimental::ClientUnaryReactor* reactor) = 0;
+      #endif
     };
+    #ifdef GRPC_CALLBACK_API_NONEXPERIMENTAL
+    typedef class experimental_async_interface async_interface;
+    #endif
+    #ifdef GRPC_CALLBACK_API_NONEXPERIMENTAL
+    async_interface* async() { return experimental_async(); }
+    #endif
     virtual class experimental_async_interface* experimental_async() { return nullptr; }
   private:
     virtual ::grpc::ClientAsyncResponseReaderInterface< ::mavsdk::rpc::gimbal::SetPitchAndYawResponse>* AsyncSetPitchAndYawRaw(::grpc::ClientContext* context, const ::mavsdk::rpc::gimbal::SetPitchAndYawRequest& request, ::grpc::CompletionQueue* cq) = 0;
@@ -167,16 +186,40 @@ class GimbalService final {
      public:
       void SetPitchAndYaw(::grpc::ClientContext* context, const ::mavsdk::rpc::gimbal::SetPitchAndYawRequest* request, ::mavsdk::rpc::gimbal::SetPitchAndYawResponse* response, std::function<void(::grpc::Status)>) override;
       void SetPitchAndYaw(::grpc::ClientContext* context, const ::grpc::ByteBuffer* request, ::mavsdk::rpc::gimbal::SetPitchAndYawResponse* response, std::function<void(::grpc::Status)>) override;
+      #ifdef GRPC_CALLBACK_API_NONEXPERIMENTAL
+      void SetPitchAndYaw(::grpc::ClientContext* context, const ::mavsdk::rpc::gimbal::SetPitchAndYawRequest* request, ::mavsdk::rpc::gimbal::SetPitchAndYawResponse* response, ::grpc::ClientUnaryReactor* reactor) override;
+      #else
       void SetPitchAndYaw(::grpc::ClientContext* context, const ::mavsdk::rpc::gimbal::SetPitchAndYawRequest* request, ::mavsdk::rpc::gimbal::SetPitchAndYawResponse* response, ::grpc::experimental::ClientUnaryReactor* reactor) override;
+      #endif
+      #ifdef GRPC_CALLBACK_API_NONEXPERIMENTAL
+      void SetPitchAndYaw(::grpc::ClientContext* context, const ::grpc::ByteBuffer* request, ::mavsdk::rpc::gimbal::SetPitchAndYawResponse* response, ::grpc::ClientUnaryReactor* reactor) override;
+      #else
       void SetPitchAndYaw(::grpc::ClientContext* context, const ::grpc::ByteBuffer* request, ::mavsdk::rpc::gimbal::SetPitchAndYawResponse* response, ::grpc::experimental::ClientUnaryReactor* reactor) override;
+      #endif
       void SetMode(::grpc::ClientContext* context, const ::mavsdk::rpc::gimbal::SetModeRequest* request, ::mavsdk::rpc::gimbal::SetModeResponse* response, std::function<void(::grpc::Status)>) override;
       void SetMode(::grpc::ClientContext* context, const ::grpc::ByteBuffer* request, ::mavsdk::rpc::gimbal::SetModeResponse* response, std::function<void(::grpc::Status)>) override;
+      #ifdef GRPC_CALLBACK_API_NONEXPERIMENTAL
+      void SetMode(::grpc::ClientContext* context, const ::mavsdk::rpc::gimbal::SetModeRequest* request, ::mavsdk::rpc::gimbal::SetModeResponse* response, ::grpc::ClientUnaryReactor* reactor) override;
+      #else
       void SetMode(::grpc::ClientContext* context, const ::mavsdk::rpc::gimbal::SetModeRequest* request, ::mavsdk::rpc::gimbal::SetModeResponse* response, ::grpc::experimental::ClientUnaryReactor* reactor) override;
+      #endif
+      #ifdef GRPC_CALLBACK_API_NONEXPERIMENTAL
+      void SetMode(::grpc::ClientContext* context, const ::grpc::ByteBuffer* request, ::mavsdk::rpc::gimbal::SetModeResponse* response, ::grpc::ClientUnaryReactor* reactor) override;
+      #else
       void SetMode(::grpc::ClientContext* context, const ::grpc::ByteBuffer* request, ::mavsdk::rpc::gimbal::SetModeResponse* response, ::grpc::experimental::ClientUnaryReactor* reactor) override;
+      #endif
       void SetRoiLocation(::grpc::ClientContext* context, const ::mavsdk::rpc::gimbal::SetRoiLocationRequest* request, ::mavsdk::rpc::gimbal::SetRoiLocationResponse* response, std::function<void(::grpc::Status)>) override;
       void SetRoiLocation(::grpc::ClientContext* context, const ::grpc::ByteBuffer* request, ::mavsdk::rpc::gimbal::SetRoiLocationResponse* response, std::function<void(::grpc::Status)>) override;
+      #ifdef GRPC_CALLBACK_API_NONEXPERIMENTAL
+      void SetRoiLocation(::grpc::ClientContext* context, const ::mavsdk::rpc::gimbal::SetRoiLocationRequest* request, ::mavsdk::rpc::gimbal::SetRoiLocationResponse* response, ::grpc::ClientUnaryReactor* reactor) override;
+      #else
       void SetRoiLocation(::grpc::ClientContext* context, const ::mavsdk::rpc::gimbal::SetRoiLocationRequest* request, ::mavsdk::rpc::gimbal::SetRoiLocationResponse* response, ::grpc::experimental::ClientUnaryReactor* reactor) override;
+      #endif
+      #ifdef GRPC_CALLBACK_API_NONEXPERIMENTAL
+      void SetRoiLocation(::grpc::ClientContext* context, const ::grpc::ByteBuffer* request, ::mavsdk::rpc::gimbal::SetRoiLocationResponse* response, ::grpc::ClientUnaryReactor* reactor) override;
+      #else
       void SetRoiLocation(::grpc::ClientContext* context, const ::grpc::ByteBuffer* request, ::mavsdk::rpc::gimbal::SetRoiLocationResponse* response, ::grpc::experimental::ClientUnaryReactor* reactor) override;
+      #endif
      private:
       friend class Stub;
       explicit experimental_async(Stub* stub): stub_(stub) { }
@@ -296,13 +339,28 @@ class GimbalService final {
     void BaseClassMustBeDerivedFromService(const Service* /*service*/) {}
    public:
     ExperimentalWithCallbackMethod_SetPitchAndYaw() {
-      ::grpc::Service::experimental().MarkMethodCallback(0,
-        new ::grpc_impl::internal::CallbackUnaryHandler< ::mavsdk::rpc::gimbal::SetPitchAndYawRequest, ::mavsdk::rpc::gimbal::SetPitchAndYawResponse>(
-          [this](::grpc::experimental::CallbackServerContext* context, const ::mavsdk::rpc::gimbal::SetPitchAndYawRequest* request, ::mavsdk::rpc::gimbal::SetPitchAndYawResponse* response) { return this->SetPitchAndYaw(context, request, response); }));}
+    #ifdef GRPC_CALLBACK_API_NONEXPERIMENTAL
+      ::grpc::Service::
+    #else
+      ::grpc::Service::experimental().
+    #endif
+        MarkMethodCallback(0,
+          new ::grpc_impl::internal::CallbackUnaryHandler< ::mavsdk::rpc::gimbal::SetPitchAndYawRequest, ::mavsdk::rpc::gimbal::SetPitchAndYawResponse>(
+            [this](
+    #ifdef GRPC_CALLBACK_API_NONEXPERIMENTAL
+                   ::grpc::CallbackServerContext*
+    #else
+                   ::grpc::experimental::CallbackServerContext*
+    #endif
+                     context, const ::mavsdk::rpc::gimbal::SetPitchAndYawRequest* request, ::mavsdk::rpc::gimbal::SetPitchAndYawResponse* response) { return this->SetPitchAndYaw(context, request, response); }));}
     void SetMessageAllocatorFor_SetPitchAndYaw(
         ::grpc::experimental::MessageAllocator< ::mavsdk::rpc::gimbal::SetPitchAndYawRequest, ::mavsdk::rpc::gimbal::SetPitchAndYawResponse>* allocator) {
-      static_cast<::grpc_impl::internal::CallbackUnaryHandler< ::mavsdk::rpc::gimbal::SetPitchAndYawRequest, ::mavsdk::rpc::gimbal::SetPitchAndYawResponse>*>(
-          ::grpc::Service::experimental().GetHandler(0))
+    #ifdef GRPC_CALLBACK_API_NONEXPERIMENTAL
+      ::grpc::internal::MethodHandler* const handler = ::grpc::Service::GetHandler(0);
+    #else
+      ::grpc::internal::MethodHandler* const handler = ::grpc::Service::experimental().GetHandler(0);
+    #endif
+      static_cast<::grpc_impl::internal::CallbackUnaryHandler< ::mavsdk::rpc::gimbal::SetPitchAndYawRequest, ::mavsdk::rpc::gimbal::SetPitchAndYawResponse>*>(handler)
               ->SetMessageAllocator(allocator);
     }
     ~ExperimentalWithCallbackMethod_SetPitchAndYaw() override {
@@ -313,7 +371,14 @@ class GimbalService final {
       abort();
       return ::grpc::Status(::grpc::StatusCode::UNIMPLEMENTED, "");
     }
-    virtual ::grpc::experimental::ServerUnaryReactor* SetPitchAndYaw(::grpc::experimental::CallbackServerContext* /*context*/, const ::mavsdk::rpc::gimbal::SetPitchAndYawRequest* /*request*/, ::mavsdk::rpc::gimbal::SetPitchAndYawResponse* /*response*/) { return nullptr; }
+    #ifdef GRPC_CALLBACK_API_NONEXPERIMENTAL
+    virtual ::grpc::ServerUnaryReactor* SetPitchAndYaw(
+      ::grpc::CallbackServerContext* /*context*/, const ::mavsdk::rpc::gimbal::SetPitchAndYawRequest* /*request*/, ::mavsdk::rpc::gimbal::SetPitchAndYawResponse* /*response*/)
+    #else
+    virtual ::grpc::experimental::ServerUnaryReactor* SetPitchAndYaw(
+      ::grpc::experimental::CallbackServerContext* /*context*/, const ::mavsdk::rpc::gimbal::SetPitchAndYawRequest* /*request*/, ::mavsdk::rpc::gimbal::SetPitchAndYawResponse* /*response*/)
+    #endif
+      { return nullptr; }
   };
   template <class BaseClass>
   class ExperimentalWithCallbackMethod_SetMode : public BaseClass {
@@ -321,13 +386,28 @@ class GimbalService final {
     void BaseClassMustBeDerivedFromService(const Service* /*service*/) {}
    public:
     ExperimentalWithCallbackMethod_SetMode() {
-      ::grpc::Service::experimental().MarkMethodCallback(1,
-        new ::grpc_impl::internal::CallbackUnaryHandler< ::mavsdk::rpc::gimbal::SetModeRequest, ::mavsdk::rpc::gimbal::SetModeResponse>(
-          [this](::grpc::experimental::CallbackServerContext* context, const ::mavsdk::rpc::gimbal::SetModeRequest* request, ::mavsdk::rpc::gimbal::SetModeResponse* response) { return this->SetMode(context, request, response); }));}
+    #ifdef GRPC_CALLBACK_API_NONEXPERIMENTAL
+      ::grpc::Service::
+    #else
+      ::grpc::Service::experimental().
+    #endif
+        MarkMethodCallback(1,
+          new ::grpc_impl::internal::CallbackUnaryHandler< ::mavsdk::rpc::gimbal::SetModeRequest, ::mavsdk::rpc::gimbal::SetModeResponse>(
+            [this](
+    #ifdef GRPC_CALLBACK_API_NONEXPERIMENTAL
+                   ::grpc::CallbackServerContext*
+    #else
+                   ::grpc::experimental::CallbackServerContext*
+    #endif
+                     context, const ::mavsdk::rpc::gimbal::SetModeRequest* request, ::mavsdk::rpc::gimbal::SetModeResponse* response) { return this->SetMode(context, request, response); }));}
     void SetMessageAllocatorFor_SetMode(
         ::grpc::experimental::MessageAllocator< ::mavsdk::rpc::gimbal::SetModeRequest, ::mavsdk::rpc::gimbal::SetModeResponse>* allocator) {
-      static_cast<::grpc_impl::internal::CallbackUnaryHandler< ::mavsdk::rpc::gimbal::SetModeRequest, ::mavsdk::rpc::gimbal::SetModeResponse>*>(
-          ::grpc::Service::experimental().GetHandler(1))
+    #ifdef GRPC_CALLBACK_API_NONEXPERIMENTAL
+      ::grpc::internal::MethodHandler* const handler = ::grpc::Service::GetHandler(1);
+    #else
+      ::grpc::internal::MethodHandler* const handler = ::grpc::Service::experimental().GetHandler(1);
+    #endif
+      static_cast<::grpc_impl::internal::CallbackUnaryHandler< ::mavsdk::rpc::gimbal::SetModeRequest, ::mavsdk::rpc::gimbal::SetModeResponse>*>(handler)
               ->SetMessageAllocator(allocator);
     }
     ~ExperimentalWithCallbackMethod_SetMode() override {
@@ -338,7 +418,14 @@ class GimbalService final {
       abort();
       return ::grpc::Status(::grpc::StatusCode::UNIMPLEMENTED, "");
     }
-    virtual ::grpc::experimental::ServerUnaryReactor* SetMode(::grpc::experimental::CallbackServerContext* /*context*/, const ::mavsdk::rpc::gimbal::SetModeRequest* /*request*/, ::mavsdk::rpc::gimbal::SetModeResponse* /*response*/) { return nullptr; }
+    #ifdef GRPC_CALLBACK_API_NONEXPERIMENTAL
+    virtual ::grpc::ServerUnaryReactor* SetMode(
+      ::grpc::CallbackServerContext* /*context*/, const ::mavsdk::rpc::gimbal::SetModeRequest* /*request*/, ::mavsdk::rpc::gimbal::SetModeResponse* /*response*/)
+    #else
+    virtual ::grpc::experimental::ServerUnaryReactor* SetMode(
+      ::grpc::experimental::CallbackServerContext* /*context*/, const ::mavsdk::rpc::gimbal::SetModeRequest* /*request*/, ::mavsdk::rpc::gimbal::SetModeResponse* /*response*/)
+    #endif
+      { return nullptr; }
   };
   template <class BaseClass>
   class ExperimentalWithCallbackMethod_SetRoiLocation : public BaseClass {
@@ -346,13 +433,28 @@ class GimbalService final {
     void BaseClassMustBeDerivedFromService(const Service* /*service*/) {}
    public:
     ExperimentalWithCallbackMethod_SetRoiLocation() {
-      ::grpc::Service::experimental().MarkMethodCallback(2,
-        new ::grpc_impl::internal::CallbackUnaryHandler< ::mavsdk::rpc::gimbal::SetRoiLocationRequest, ::mavsdk::rpc::gimbal::SetRoiLocationResponse>(
-          [this](::grpc::experimental::CallbackServerContext* context, const ::mavsdk::rpc::gimbal::SetRoiLocationRequest* request, ::mavsdk::rpc::gimbal::SetRoiLocationResponse* response) { return this->SetRoiLocation(context, request, response); }));}
+    #ifdef GRPC_CALLBACK_API_NONEXPERIMENTAL
+      ::grpc::Service::
+    #else
+      ::grpc::Service::experimental().
+    #endif
+        MarkMethodCallback(2,
+          new ::grpc_impl::internal::CallbackUnaryHandler< ::mavsdk::rpc::gimbal::SetRoiLocationRequest, ::mavsdk::rpc::gimbal::SetRoiLocationResponse>(
+            [this](
+    #ifdef GRPC_CALLBACK_API_NONEXPERIMENTAL
+                   ::grpc::CallbackServerContext*
+    #else
+                   ::grpc::experimental::CallbackServerContext*
+    #endif
+                     context, const ::mavsdk::rpc::gimbal::SetRoiLocationRequest* request, ::mavsdk::rpc::gimbal::SetRoiLocationResponse* response) { return this->SetRoiLocation(context, request, response); }));}
     void SetMessageAllocatorFor_SetRoiLocation(
         ::grpc::experimental::MessageAllocator< ::mavsdk::rpc::gimbal::SetRoiLocationRequest, ::mavsdk::rpc::gimbal::SetRoiLocationResponse>* allocator) {
-      static_cast<::grpc_impl::internal::CallbackUnaryHandler< ::mavsdk::rpc::gimbal::SetRoiLocationRequest, ::mavsdk::rpc::gimbal::SetRoiLocationResponse>*>(
-          ::grpc::Service::experimental().GetHandler(2))
+    #ifdef GRPC_CALLBACK_API_NONEXPERIMENTAL
+      ::grpc::internal::MethodHandler* const handler = ::grpc::Service::GetHandler(2);
+    #else
+      ::grpc::internal::MethodHandler* const handler = ::grpc::Service::experimental().GetHandler(2);
+    #endif
+      static_cast<::grpc_impl::internal::CallbackUnaryHandler< ::mavsdk::rpc::gimbal::SetRoiLocationRequest, ::mavsdk::rpc::gimbal::SetRoiLocationResponse>*>(handler)
               ->SetMessageAllocator(allocator);
     }
     ~ExperimentalWithCallbackMethod_SetRoiLocation() override {
@@ -363,8 +465,19 @@ class GimbalService final {
       abort();
       return ::grpc::Status(::grpc::StatusCode::UNIMPLEMENTED, "");
     }
-    virtual ::grpc::experimental::ServerUnaryReactor* SetRoiLocation(::grpc::experimental::CallbackServerContext* /*context*/, const ::mavsdk::rpc::gimbal::SetRoiLocationRequest* /*request*/, ::mavsdk::rpc::gimbal::SetRoiLocationResponse* /*response*/) { return nullptr; }
+    #ifdef GRPC_CALLBACK_API_NONEXPERIMENTAL
+    virtual ::grpc::ServerUnaryReactor* SetRoiLocation(
+      ::grpc::CallbackServerContext* /*context*/, const ::mavsdk::rpc::gimbal::SetRoiLocationRequest* /*request*/, ::mavsdk::rpc::gimbal::SetRoiLocationResponse* /*response*/)
+    #else
+    virtual ::grpc::experimental::ServerUnaryReactor* SetRoiLocation(
+      ::grpc::experimental::CallbackServerContext* /*context*/, const ::mavsdk::rpc::gimbal::SetRoiLocationRequest* /*request*/, ::mavsdk::rpc::gimbal::SetRoiLocationResponse* /*response*/)
+    #endif
+      { return nullptr; }
   };
+  #ifdef GRPC_CALLBACK_API_NONEXPERIMENTAL
+  typedef ExperimentalWithCallbackMethod_SetPitchAndYaw<ExperimentalWithCallbackMethod_SetMode<ExperimentalWithCallbackMethod_SetRoiLocation<Service > > > CallbackService;
+  #endif
+
   typedef ExperimentalWithCallbackMethod_SetPitchAndYaw<ExperimentalWithCallbackMethod_SetMode<ExperimentalWithCallbackMethod_SetRoiLocation<Service > > > ExperimentalCallbackService;
   template <class BaseClass>
   class WithGenericMethod_SetPitchAndYaw : public BaseClass {
@@ -483,9 +596,20 @@ class GimbalService final {
     void BaseClassMustBeDerivedFromService(const Service* /*service*/) {}
    public:
     ExperimentalWithRawCallbackMethod_SetPitchAndYaw() {
-      ::grpc::Service::experimental().MarkMethodRawCallback(0,
-        new ::grpc_impl::internal::CallbackUnaryHandler< ::grpc::ByteBuffer, ::grpc::ByteBuffer>(
-          [this](::grpc::experimental::CallbackServerContext* context, const ::grpc::ByteBuffer* request, ::grpc::ByteBuffer* response) { return this->SetPitchAndYaw(context, request, response); }));
+    #ifdef GRPC_CALLBACK_API_NONEXPERIMENTAL
+      ::grpc::Service::
+    #else
+      ::grpc::Service::experimental().
+    #endif
+        MarkMethodRawCallback(0,
+          new ::grpc_impl::internal::CallbackUnaryHandler< ::grpc::ByteBuffer, ::grpc::ByteBuffer>(
+            [this](
+    #ifdef GRPC_CALLBACK_API_NONEXPERIMENTAL
+                   ::grpc::CallbackServerContext*
+    #else
+                   ::grpc::experimental::CallbackServerContext*
+    #endif
+                     context, const ::grpc::ByteBuffer* request, ::grpc::ByteBuffer* response) { return this->SetPitchAndYaw(context, request, response); }));
     }
     ~ExperimentalWithRawCallbackMethod_SetPitchAndYaw() override {
       BaseClassMustBeDerivedFromService(this);
@@ -495,7 +619,14 @@ class GimbalService final {
       abort();
       return ::grpc::Status(::grpc::StatusCode::UNIMPLEMENTED, "");
     }
-    virtual ::grpc::experimental::ServerUnaryReactor* SetPitchAndYaw(::grpc::experimental::CallbackServerContext* /*context*/, const ::grpc::ByteBuffer* /*request*/, ::grpc::ByteBuffer* /*response*/) { return nullptr; }
+    #ifdef GRPC_CALLBACK_API_NONEXPERIMENTAL
+    virtual ::grpc::ServerUnaryReactor* SetPitchAndYaw(
+      ::grpc::CallbackServerContext* /*context*/, const ::grpc::ByteBuffer* /*request*/, ::grpc::ByteBuffer* /*response*/)
+    #else
+    virtual ::grpc::experimental::ServerUnaryReactor* SetPitchAndYaw(
+      ::grpc::experimental::CallbackServerContext* /*context*/, const ::grpc::ByteBuffer* /*request*/, ::grpc::ByteBuffer* /*response*/)
+    #endif
+      { return nullptr; }
   };
   template <class BaseClass>
   class ExperimentalWithRawCallbackMethod_SetMode : public BaseClass {
@@ -503,9 +634,20 @@ class GimbalService final {
     void BaseClassMustBeDerivedFromService(const Service* /*service*/) {}
    public:
     ExperimentalWithRawCallbackMethod_SetMode() {
-      ::grpc::Service::experimental().MarkMethodRawCallback(1,
-        new ::grpc_impl::internal::CallbackUnaryHandler< ::grpc::ByteBuffer, ::grpc::ByteBuffer>(
-          [this](::grpc::experimental::CallbackServerContext* context, const ::grpc::ByteBuffer* request, ::grpc::ByteBuffer* response) { return this->SetMode(context, request, response); }));
+    #ifdef GRPC_CALLBACK_API_NONEXPERIMENTAL
+      ::grpc::Service::
+    #else
+      ::grpc::Service::experimental().
+    #endif
+        MarkMethodRawCallback(1,
+          new ::grpc_impl::internal::CallbackUnaryHandler< ::grpc::ByteBuffer, ::grpc::ByteBuffer>(
+            [this](
+    #ifdef GRPC_CALLBACK_API_NONEXPERIMENTAL
+                   ::grpc::CallbackServerContext*
+    #else
+                   ::grpc::experimental::CallbackServerContext*
+    #endif
+                     context, const ::grpc::ByteBuffer* request, ::grpc::ByteBuffer* response) { return this->SetMode(context, request, response); }));
     }
     ~ExperimentalWithRawCallbackMethod_SetMode() override {
       BaseClassMustBeDerivedFromService(this);
@@ -515,7 +657,14 @@ class GimbalService final {
       abort();
       return ::grpc::Status(::grpc::StatusCode::UNIMPLEMENTED, "");
     }
-    virtual ::grpc::experimental::ServerUnaryReactor* SetMode(::grpc::experimental::CallbackServerContext* /*context*/, const ::grpc::ByteBuffer* /*request*/, ::grpc::ByteBuffer* /*response*/) { return nullptr; }
+    #ifdef GRPC_CALLBACK_API_NONEXPERIMENTAL
+    virtual ::grpc::ServerUnaryReactor* SetMode(
+      ::grpc::CallbackServerContext* /*context*/, const ::grpc::ByteBuffer* /*request*/, ::grpc::ByteBuffer* /*response*/)
+    #else
+    virtual ::grpc::experimental::ServerUnaryReactor* SetMode(
+      ::grpc::experimental::CallbackServerContext* /*context*/, const ::grpc::ByteBuffer* /*request*/, ::grpc::ByteBuffer* /*response*/)
+    #endif
+      { return nullptr; }
   };
   template <class BaseClass>
   class ExperimentalWithRawCallbackMethod_SetRoiLocation : public BaseClass {
@@ -523,9 +672,20 @@ class GimbalService final {
     void BaseClassMustBeDerivedFromService(const Service* /*service*/) {}
    public:
     ExperimentalWithRawCallbackMethod_SetRoiLocation() {
-      ::grpc::Service::experimental().MarkMethodRawCallback(2,
-        new ::grpc_impl::internal::CallbackUnaryHandler< ::grpc::ByteBuffer, ::grpc::ByteBuffer>(
-          [this](::grpc::experimental::CallbackServerContext* context, const ::grpc::ByteBuffer* request, ::grpc::ByteBuffer* response) { return this->SetRoiLocation(context, request, response); }));
+    #ifdef GRPC_CALLBACK_API_NONEXPERIMENTAL
+      ::grpc::Service::
+    #else
+      ::grpc::Service::experimental().
+    #endif
+        MarkMethodRawCallback(2,
+          new ::grpc_impl::internal::CallbackUnaryHandler< ::grpc::ByteBuffer, ::grpc::ByteBuffer>(
+            [this](
+    #ifdef GRPC_CALLBACK_API_NONEXPERIMENTAL
+                   ::grpc::CallbackServerContext*
+    #else
+                   ::grpc::experimental::CallbackServerContext*
+    #endif
+                     context, const ::grpc::ByteBuffer* request, ::grpc::ByteBuffer* response) { return this->SetRoiLocation(context, request, response); }));
     }
     ~ExperimentalWithRawCallbackMethod_SetRoiLocation() override {
       BaseClassMustBeDerivedFromService(this);
@@ -535,7 +695,14 @@ class GimbalService final {
       abort();
       return ::grpc::Status(::grpc::StatusCode::UNIMPLEMENTED, "");
     }
-    virtual ::grpc::experimental::ServerUnaryReactor* SetRoiLocation(::grpc::experimental::CallbackServerContext* /*context*/, const ::grpc::ByteBuffer* /*request*/, ::grpc::ByteBuffer* /*response*/) { return nullptr; }
+    #ifdef GRPC_CALLBACK_API_NONEXPERIMENTAL
+    virtual ::grpc::ServerUnaryReactor* SetRoiLocation(
+      ::grpc::CallbackServerContext* /*context*/, const ::grpc::ByteBuffer* /*request*/, ::grpc::ByteBuffer* /*response*/)
+    #else
+    virtual ::grpc::experimental::ServerUnaryReactor* SetRoiLocation(
+      ::grpc::experimental::CallbackServerContext* /*context*/, const ::grpc::ByteBuffer* /*request*/, ::grpc::ByteBuffer* /*response*/)
+    #endif
+      { return nullptr; }
   };
   template <class BaseClass>
   class WithStreamedUnaryMethod_SetPitchAndYaw : public BaseClass {
