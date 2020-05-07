@@ -1,17 +1,3 @@
-{% if name.upper_camel_case.endswith('Result') -%}
-const char* {{ plugin_name.upper_camel_case }}::result_str({{ plugin_name.upper_camel_case }}::Result result)
-{
-    switch (result) {
-        {%- for value in values %}
-        case {{ plugin_name.upper_camel_case }}::{{ name.upper_camel_case }}::{{ value.name.upper_camel_case }}:
-            return "{{ value.description[1:].rstrip() }}";
-        {%- endfor %}
-        default:
-            return "Unknown";
-    }
-}
-{% endif %}
-
 std::ostream& operator<<(std::ostream& str, {{ plugin_name.upper_camel_case }}::{% if parent_struct and not name.upper_camel_case.endswith("Result") %}{{ parent_struct.upper_camel_case }}::{% endif %}{{ name.upper_camel_case }} const& {{ name.lower_snake_case }})
 {
     switch ({{ name.lower_snake_case }}) {

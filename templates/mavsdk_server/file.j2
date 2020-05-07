@@ -11,6 +11,7 @@
 #include <future>
 #include <limits>
 #include <memory>
+#include <sstream>
 #include <vector>
 
 namespace {{ package.lower_snake_case.split('.')[0] }} {
@@ -29,7 +30,9 @@ public:
 
         auto* rpc_{{ plugin_name.lower_snake_case }}_result = new rpc::{{ plugin_name.lower_snake_case }}::{{ plugin_name.upper_camel_case }}Result();
         rpc_{{ plugin_name.lower_snake_case }}_result->set_result(rpc_result);
-        rpc_{{ plugin_name.lower_snake_case }}_result->set_result_str(mavsdk::{{ plugin_name.upper_camel_case }}::result_str(result));
+        std::stringstream ss;
+        ss << result;
+        rpc_{{ plugin_name.lower_snake_case }}_result->set_result_str(ss.str());
 
         response->set_allocated_{{ plugin_name.lower_snake_case }}_result(rpc_{{ plugin_name.lower_snake_case }}_result);
     }
