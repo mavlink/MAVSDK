@@ -67,8 +67,7 @@ int main(int argc, char** argv)
         }
 
         if (connection_result != ConnectionResult::Success) {
-            std::cout << ERROR_CONSOLE_TEXT
-                      << "Connection failed: " << connection_result_str(connection_result)
+            std::cout << ERROR_CONSOLE_TEXT << "Connection failed: " << connection_result
                       << NORMAL_CONSOLE_TEXT << std::endl;
             return 1;
         }

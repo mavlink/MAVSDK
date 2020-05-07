@@ -40,8 +40,7 @@ int main(int argc, char* argv[])
     for (int i = 1; i < argc; ++i) {
         ConnectionResult connection_result = dc.add_any_connection(argv[i]);
         if (connection_result != ConnectionResult::Success) {
-            std::cerr << ERROR_CONSOLE_TEXT
-                      << "Connection error: " << connection_result_str(connection_result)
+            std::cerr << ERROR_CONSOLE_TEXT << "Connection error: " << connection_result
                       << NORMAL_CONSOLE_TEXT << std::endl;
             return 1;
         }

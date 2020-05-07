@@ -60,8 +60,7 @@ int main(int argc, char** argv)
     }
 
     if (connection_result != ConnectionResult::Success) {
-        std::cout << ERROR_CONSOLE_TEXT
-                  << "Connection failed: " << connection_result_str(connection_result)
+        std::cout << ERROR_CONSOLE_TEXT << "Connection failed: " << connection_result
                   << NORMAL_CONSOLE_TEXT << std::endl;
         return 1;
     }
@@ -168,8 +167,7 @@ inline void follow_me_error_exit(FollowMe::Result result, const std::string& mes
 inline void connection_error_exit(ConnectionResult result, const std::string& message)
 {
     if (result != ConnectionResult::Success) {
-        std::cerr << ERROR_CONSOLE_TEXT << message << connection_result_str(result)
-                  << NORMAL_CONSOLE_TEXT << std::endl;
+        std::cerr << ERROR_CONSOLE_TEXT << message << result << NORMAL_CONSOLE_TEXT << std::endl;
         exit(EXIT_FAILURE);
     }
 }
