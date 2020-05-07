@@ -48,6 +48,8 @@ def query_pull_requests(gql_client, releases, release_tag, debug=False):
         previous_wanted_release = wanted_release
         wanted_release = release
 
+        if not release["tag"]:
+            continue
         if release["tag"]["name"] == release_tag:
             break
 
