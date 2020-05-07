@@ -53,12 +53,11 @@ public:
     };
 
     /**
-     * @brief Returns a human-readable English string for `MavlinkPassthrough::Result`.
+     * @brief Stream operator to print information about a `MavlinkPassthrough::Result`.
      *
-     * @param result The enum value for which a human readable string is required.
-     * @return Human readable string for the `MavlinkPassthrough::Result`.
+     * @return A reference to the stream.
      */
-    std::string result_str(Result result);
+    friend std::ostream& operator<<(std::ostream& str, MavlinkPassthrough::Result const& result);
 
     /**
      * @brief Send message.
