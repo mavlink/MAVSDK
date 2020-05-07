@@ -152,8 +152,7 @@ int main(int argc, char** argv)
 inline void action_error_exit(Action::Result result, const std::string& message)
 {
     if (result != Action::Result::Success) {
-        std::cerr << ERROR_CONSOLE_TEXT << message << Action::result_str(result)
-                  << NORMAL_CONSOLE_TEXT << std::endl;
+        std::cerr << ERROR_CONSOLE_TEXT << message << result << NORMAL_CONSOLE_TEXT << std::endl;
         exit(EXIT_FAILURE);
     }
 }
@@ -161,8 +160,7 @@ inline void action_error_exit(Action::Result result, const std::string& message)
 inline void follow_me_error_exit(FollowMe::Result result, const std::string& message)
 {
     if (result != FollowMe::Result::Success) {
-        std::cerr << ERROR_CONSOLE_TEXT << message << FollowMe::result_str(result)
-                  << NORMAL_CONSOLE_TEXT << std::endl;
+        std::cerr << ERROR_CONSOLE_TEXT << message << result << NORMAL_CONSOLE_TEXT << std::endl;
         exit(EXIT_FAILURE);
     }
 }

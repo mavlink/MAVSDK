@@ -31,8 +31,7 @@ using std::this_thread::sleep_for;
 inline void action_error_exit(Action::Result result, const std::string& message)
 {
     if (result != Action::Result::Success) {
-        std::cerr << ERROR_CONSOLE_TEXT << message << Action::result_str(result)
-                  << NORMAL_CONSOLE_TEXT << std::endl;
+        std::cerr << ERROR_CONSOLE_TEXT << message << result << NORMAL_CONSOLE_TEXT << std::endl;
         exit(EXIT_FAILURE);
     }
 }
@@ -41,8 +40,7 @@ inline void action_error_exit(Action::Result result, const std::string& message)
 inline void offboard_error_exit(Offboard::Result result, const std::string& message)
 {
     if (result != Offboard::Result::Success) {
-        std::cerr << ERROR_CONSOLE_TEXT << message << Offboard::result_str(result)
-                  << NORMAL_CONSOLE_TEXT << std::endl;
+        std::cerr << ERROR_CONSOLE_TEXT << message << result << NORMAL_CONSOLE_TEXT << std::endl;
         exit(EXIT_FAILURE);
     }
 }

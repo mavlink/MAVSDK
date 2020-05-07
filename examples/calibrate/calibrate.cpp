@@ -104,8 +104,7 @@ create_calibration_callback(std::promise<void>& calibration_promise)
                 }
                 break;
             default:
-                std::cout << "--- Calibration failed with message: "
-                          << Calibration::result_str(result) << std::endl;
+                std::cout << "--- Calibration failed with message: " << result << std::endl;
                 calibration_promise.set_value();
                 break;
         }
