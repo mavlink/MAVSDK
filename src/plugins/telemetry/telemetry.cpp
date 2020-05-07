@@ -1008,28 +1008,6 @@ std::ostream& operator<<(std::ostream& str, Telemetry::Imu const& imu)
     return str;
 }
 
-const char* Telemetry::result_str(Telemetry::Result result)
-{
-    switch (result) {
-        case Telemetry::Result::Unknown:
-            return "Unknown result";
-        case Telemetry::Result::Success:
-            return "Success: the telemetry command was accepted by the vehicle";
-        case Telemetry::Result::NoSystem:
-            return "No system connected";
-        case Telemetry::Result::ConnectionError:
-            return "Connection error";
-        case Telemetry::Result::Busy:
-            return "Vehicle is busy";
-        case Telemetry::Result::CommandDenied:
-            return "Command refused by vehicle";
-        case Telemetry::Result::Timeout:
-            return "Request timed out";
-        default:
-            return "Unknown";
-    }
-}
-
 std::ostream& operator<<(std::ostream& str, Telemetry::Result const& result)
 {
     switch (result) {

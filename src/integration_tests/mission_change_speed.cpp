@@ -132,7 +132,7 @@ void receive_upload_mission_result(Mission::Result result)
     if (result == Mission::Result::Success) {
         _mission_sent_ok = true;
     } else {
-        LogErr() << "Error: mission send result: " << Mission::result_str(result);
+        LogErr() << "Error: mission send result: " << result;
     }
 }
 
@@ -143,7 +143,7 @@ void receive_start_mission_result(Mission::Result result)
     if (result == Mission::Result::Success) {
         _mission_started_ok = true;
     } else {
-        LogErr() << "Error: mission start result: " << Mission::result_str(result);
+        LogErr() << "Error: mission start result: " << result;
     }
 }
 

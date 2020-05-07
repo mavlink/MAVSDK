@@ -95,38 +95,6 @@ std::ostream& operator<<(std::ostream& str, Ftp::ProgressData const& progress_da
     return str;
 }
 
-const char* Ftp::result_str(Ftp::Result result)
-{
-    switch (result) {
-        case Ftp::Result::Unknown:
-            return "Unknown result";
-        case Ftp::Result::Success:
-            return "Success";
-        case Ftp::Result::Next:
-            return "Intermediate message showing progress";
-        case Ftp::Result::Timeout:
-            return "Timeout";
-        case Ftp::Result::Busy:
-            return "Operation is already in progress";
-        case Ftp::Result::FileIoError:
-            return "File IO operation error";
-        case Ftp::Result::FileExists:
-            return "File exists already";
-        case Ftp::Result::FileDoesNotExist:
-            return "File does not exist";
-        case Ftp::Result::FileProtected:
-            return "File is write protected";
-        case Ftp::Result::InvalidParameter:
-            return "Invalid parameter";
-        case Ftp::Result::Unsupported:
-            return "Unsupported command";
-        case Ftp::Result::ProtocolError:
-            return "General protocol error";
-        default:
-            return "Unknown";
-    }
-}
-
 std::ostream& operator<<(std::ostream& str, Ftp::Result const& result)
 {
     switch (result) {

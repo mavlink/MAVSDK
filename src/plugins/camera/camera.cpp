@@ -185,30 +185,6 @@ Camera::Result Camera::format_storage() const
     return _impl->format_storage();
 }
 
-const char* Camera::result_str(Camera::Result result)
-{
-    switch (result) {
-        case Camera::Result::Unknown:
-            return "Unknown result";
-        case Camera::Result::Success:
-            return "Command executed successfully";
-        case Camera::Result::InProgress:
-            return "Command in progress";
-        case Camera::Result::Busy:
-            return "Camera is busy and rejected command";
-        case Camera::Result::Denied:
-            return "Camera denied the command";
-        case Camera::Result::Error:
-            return "An error has occured while executing the command";
-        case Camera::Result::Timeout:
-            return "Command timed out";
-        case Camera::Result::WrongArgument:
-            return "Command has wrong argument(s)";
-        default:
-            return "Unknown";
-    }
-}
-
 std::ostream& operator<<(std::ostream& str, Camera::Result const& result)
 {
     switch (result) {

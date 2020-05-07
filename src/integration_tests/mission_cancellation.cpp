@@ -49,7 +49,7 @@ TEST_F(SitlTest, MissionUploadCancellation)
     std::future<Mission::Result> fut = prom.get_future();
 
     mission->upload_mission_async(mission_plan, [&prom](Mission::Result result) {
-        LogInfo() << "Upload mission result: " << Mission::result_str(result);
+        LogInfo() << "Upload mission result: " << result;
         prom.set_value(result);
     });
 
@@ -96,7 +96,7 @@ TEST_F(SitlTest, MissionDownloadCancellation)
         std::future<Mission::Result> fut = prom.get_future();
 
         mission->upload_mission_async(mission_plan, [&prom](Mission::Result result) {
-            LogInfo() << "Upload mission result: " << Mission::result_str(result);
+            LogInfo() << "Upload mission result: " << result;
             prom.set_value(result);
         });
 
@@ -111,7 +111,7 @@ TEST_F(SitlTest, MissionDownloadCancellation)
         mission->download_mission_async(
             [&prom](Mission::Result result, Mission::MissionPlan received_mission_plan) {
                 UNUSED(received_mission_plan);
-                LogInfo() << "Download mission result: " << Mission::result_str(result);
+                LogInfo() << "Download mission result: " << result;
                 prom.set_value(result);
             });
 

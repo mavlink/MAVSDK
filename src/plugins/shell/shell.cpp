@@ -23,26 +23,6 @@ void Shell::subscribe_receive(ReceiveCallback callback)
     _impl->receive_async(callback);
 }
 
-const char* Shell::result_str(Shell::Result result)
-{
-    switch (result) {
-        case Shell::Result::Unknown:
-            return "Unknown result";
-        case Shell::Result::Success:
-            return "Request succeeded";
-        case Shell::Result::NoSystem:
-            return "No system is connected";
-        case Shell::Result::ConnectionError:
-            return "Connection error";
-        case Shell::Result::NoResponse:
-            return "Response was not received";
-        case Shell::Result::Busy:
-            return "Shell busy (transfer in progress)";
-        default:
-            return "Unknown";
-    }
-}
-
 std::ostream& operator<<(std::ostream& str, Shell::Result const& result)
 {
     switch (result) {

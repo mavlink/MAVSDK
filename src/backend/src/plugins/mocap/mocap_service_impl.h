@@ -11,6 +11,7 @@
 #include <future>
 #include <limits>
 #include <memory>
+#include <sstream>
 #include <vector>
 
 namespace mavsdk {
@@ -28,7 +29,9 @@ public:
 
         auto* rpc_mocap_result = new rpc::mocap::MocapResult();
         rpc_mocap_result->set_result(rpc_result);
-        rpc_mocap_result->set_result_str(mavsdk::Mocap::result_str(result));
+        std::stringstream ss;
+        ss << result;
+        rpc_mocap_result->set_result_str(ss.str());
 
         response->set_allocated_mocap_result(rpc_mocap_result);
     }

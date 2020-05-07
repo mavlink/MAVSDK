@@ -217,40 +217,6 @@ std::ostream& operator<<(std::ostream& str, Mission::MissionProgress const& miss
     return str;
 }
 
-const char* Mission::result_str(Mission::Result result)
-{
-    switch (result) {
-        case Mission::Result::Unknown:
-            return "Unknown result";
-        case Mission::Result::Success:
-            return "Request succeeded";
-        case Mission::Result::Error:
-            return "Error";
-        case Mission::Result::TooManyMissionItems:
-            return "Too many mission items in the mission";
-        case Mission::Result::Busy:
-            return "Vehicle is busy";
-        case Mission::Result::Timeout:
-            return "Request timed out";
-        case Mission::Result::InvalidArgument:
-            return "Invalid argument";
-        case Mission::Result::Unsupported:
-            return "Mission downloaded from the system is not supported";
-        case Mission::Result::NoMissionAvailable:
-            return "No mission available on the system";
-        case Mission::Result::FailedToOpenQgcPlan:
-            return "Failed to open the QGroundControl plan";
-        case Mission::Result::FailedToParseQgcPlan:
-            return "Failed to parse the QGroundControl plan";
-        case Mission::Result::UnsupportedMissionCmd:
-            return "Unsupported mission command";
-        case Mission::Result::TransferCancelled:
-            return "Mission transfer (upload or download) has been cancelled";
-        default:
-            return "Unknown";
-    }
-}
-
 std::ostream& operator<<(std::ostream& str, Mission::Result const& result)
 {
     switch (result) {

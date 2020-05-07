@@ -41,22 +41,6 @@ std::ostream& operator<<(std::ostream& str, Tune::TuneDescription const& tune_de
     return str;
 }
 
-const char* Tune::result_str(Tune::Result result)
-{
-    switch (result) {
-        case Tune::Result::Success:
-            return "Request succeeded";
-        case Tune::Result::InvalidTempo:
-            return "Invalid tempo (range: 32 - 255)";
-        case Tune::Result::TuneTooLong:
-            return "Invalid tune: encoded string must be at most 247 chars";
-        case Tune::Result::Error:
-            return "Failed to send the request";
-        default:
-            return "Unknown";
-    }
-}
-
 std::ostream& operator<<(std::ostream& str, Tune::Result const& result)
 {
     switch (result) {

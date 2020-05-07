@@ -232,30 +232,6 @@ std::ostream& operator<<(std::ostream& str, Offboard::VelocityNedYaw const& velo
     return str;
 }
 
-const char* Offboard::result_str(Offboard::Result result)
-{
-    switch (result) {
-        case Offboard::Result::Unknown:
-            return "Unknown result";
-        case Offboard::Result::Success:
-            return "Request succeeded";
-        case Offboard::Result::NoSystem:
-            return "No system is connected";
-        case Offboard::Result::ConnectionError:
-            return "Connection error";
-        case Offboard::Result::Busy:
-            return "Vehicle is busy";
-        case Offboard::Result::CommandDenied:
-            return "Command denied";
-        case Offboard::Result::Timeout:
-            return "Request timed out";
-        case Offboard::Result::NoSetpointSet:
-            return "Cannot start without setpoint set";
-        default:
-            return "Unknown";
-    }
-}
-
 std::ostream& operator<<(std::ostream& str, Offboard::Result const& result)
 {
     switch (result) {
