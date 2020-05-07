@@ -136,11 +136,11 @@ std::ostream& operator<<(std::ostream& str, Info::Result const& result)
 {
     switch (result) {
         case Info::Result::Unknown:
-            return str << "Result Unknown";
+            return str << "Unknown";
         case Info::Result::Success:
-            return str << "Result Success";
+            return str << "Success";
         case Info::Result::InformationNotReceivedYet:
-            return str << "Result Information Not Received Yet";
+            return str << "Information Not Received Yet";
         default:
             return str << "Unknown";
     }

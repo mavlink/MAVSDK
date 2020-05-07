@@ -56,15 +56,15 @@ operator<<(std::ostream& str, FollowMe::Config::FollowDirection const& follow_di
 {
     switch (follow_direction) {
         case FollowMe::Config::FollowDirection::None:
-            return str << "Follow Direction None";
+            return str << "None";
         case FollowMe::Config::FollowDirection::Behind:
-            return str << "Follow Direction Behind";
+            return str << "Behind";
         case FollowMe::Config::FollowDirection::Front:
-            return str << "Follow Direction Front";
+            return str << "Front";
         case FollowMe::Config::FollowDirection::FrontRight:
-            return str << "Follow Direction Front Right";
+            return str << "Front Right";
         case FollowMe::Config::FollowDirection::FrontLeft:
-            return str << "Follow Direction Front Left";
+            return str << "Front Left";
         default:
             return str << "Unknown";
     }
@@ -152,23 +152,23 @@ std::ostream& operator<<(std::ostream& str, FollowMe::Result const& result)
 {
     switch (result) {
         case FollowMe::Result::Unknown:
-            return str << "Result Unknown";
+            return str << "Unknown";
         case FollowMe::Result::Success:
-            return str << "Result Success";
+            return str << "Success";
         case FollowMe::Result::NoSystem:
-            return str << "Result No System";
+            return str << "No System";
         case FollowMe::Result::ConnectionError:
-            return str << "Result Connection Error";
+            return str << "Connection Error";
         case FollowMe::Result::Busy:
-            return str << "Result Busy";
+            return str << "Busy";
         case FollowMe::Result::CommandDenied:
-            return str << "Result Command Denied";
+            return str << "Command Denied";
         case FollowMe::Result::Timeout:
-            return str << "Result Timeout";
+            return str << "Timeout";
         case FollowMe::Result::NotActive:
-            return str << "Result Not Active";
+            return str << "Not Active";
         case FollowMe::Result::SetConfigFailed:
-            return str << "Result Set Config Failed";
+            return str << "Set Config Failed";
         default:
             return str << "Unknown";
     }

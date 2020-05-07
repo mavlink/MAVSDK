@@ -61,13 +61,13 @@ std::ostream& operator<<(std::ostream& str, Tune::Result const& result)
 {
     switch (result) {
         case Tune::Result::Success:
-            return str << "Result Success";
+            return str << "Success";
         case Tune::Result::InvalidTempo:
-            return str << "Result Invalid Tempo";
+            return str << "Invalid Tempo";
         case Tune::Result::TuneTooLong:
-            return str << "Result Tune Too Long";
+            return str << "Tune Too Long";
         case Tune::Result::Error:
-            return str << "Result Error";
+            return str << "Error";
         default:
             return str << "Unknown";
     }
@@ -77,47 +77,47 @@ std::ostream& operator<<(std::ostream& str, Tune::SongElement const& song_elemen
 {
     switch (song_element) {
         case Tune::SongElement::StyleLegato:
-            return str << "Song Element Style Legato";
+            return str << "Style Legato";
         case Tune::SongElement::StyleNormal:
-            return str << "Song Element Style Normal";
+            return str << "Style Normal";
         case Tune::SongElement::StyleStaccato:
-            return str << "Song Element Style Staccato";
+            return str << "Style Staccato";
         case Tune::SongElement::Duration1:
-            return str << "Song Element Duration 1";
+            return str << "Duration 1";
         case Tune::SongElement::Duration2:
-            return str << "Song Element Duration 2";
+            return str << "Duration 2";
         case Tune::SongElement::Duration4:
-            return str << "Song Element Duration 4";
+            return str << "Duration 4";
         case Tune::SongElement::Duration8:
-            return str << "Song Element Duration 8";
+            return str << "Duration 8";
         case Tune::SongElement::Duration16:
-            return str << "Song Element Duration 16";
+            return str << "Duration 16";
         case Tune::SongElement::Duration32:
-            return str << "Song Element Duration 32";
+            return str << "Duration 32";
         case Tune::SongElement::NoteA:
-            return str << "Song Element Note A";
+            return str << "Note A";
         case Tune::SongElement::NoteB:
-            return str << "Song Element Note B";
+            return str << "Note B";
         case Tune::SongElement::NoteC:
-            return str << "Song Element Note C";
+            return str << "Note C";
         case Tune::SongElement::NoteD:
-            return str << "Song Element Note D";
+            return str << "Note D";
         case Tune::SongElement::NoteE:
-            return str << "Song Element Note E";
+            return str << "Note E";
         case Tune::SongElement::NoteF:
-            return str << "Song Element Note F";
+            return str << "Note F";
         case Tune::SongElement::NoteG:
-            return str << "Song Element Note G";
+            return str << "Note G";
         case Tune::SongElement::NotePause:
-            return str << "Song Element Note Pause";
+            return str << "Note Pause";
         case Tune::SongElement::Sharp:
-            return str << "Song Element Sharp";
+            return str << "Sharp";
         case Tune::SongElement::Flat:
-            return str << "Song Element Flat";
+            return str << "Flat";
         case Tune::SongElement::OctaveUp:
-            return str << "Song Element Octave Up";
+            return str << "Octave Up";
         case Tune::SongElement::OctaveDown:
-            return str << "Song Element Octave Down";
+            return str << "Octave Down";
         default:
             return str << "Unknown";
     }

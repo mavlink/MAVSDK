@@ -260,21 +260,21 @@ std::ostream& operator<<(std::ostream& str, Offboard::Result const& result)
 {
     switch (result) {
         case Offboard::Result::Unknown:
-            return str << "Result Unknown";
+            return str << "Unknown";
         case Offboard::Result::Success:
-            return str << "Result Success";
+            return str << "Success";
         case Offboard::Result::NoSystem:
-            return str << "Result No System";
+            return str << "No System";
         case Offboard::Result::ConnectionError:
-            return str << "Result Connection Error";
+            return str << "Connection Error";
         case Offboard::Result::Busy:
-            return str << "Result Busy";
+            return str << "Busy";
         case Offboard::Result::CommandDenied:
-            return str << "Result Command Denied";
+            return str << "Command Denied";
         case Offboard::Result::Timeout:
-            return str << "Result Timeout";
+            return str << "Timeout";
         case Offboard::Result::NoSetpointSet:
-            return str << "Result No Setpoint Set";
+            return str << "No Setpoint Set";
         default:
             return str << "Unknown";
     }

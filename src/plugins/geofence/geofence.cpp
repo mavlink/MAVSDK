@@ -48,9 +48,9 @@ std::ostream& operator<<(std::ostream& str, Geofence::Polygon::Type const& type)
 {
     switch (type) {
         case Geofence::Polygon::Type::Inclusion:
-            return str << "Type Inclusion";
+            return str << "Inclusion";
         case Geofence::Polygon::Type::Exclusion:
-            return str << "Type Exclusion";
+            return str << "Exclusion";
         default:
             return str << "Unknown";
     }
@@ -100,19 +100,19 @@ std::ostream& operator<<(std::ostream& str, Geofence::Result const& result)
 {
     switch (result) {
         case Geofence::Result::Unknown:
-            return str << "Result Unknown";
+            return str << "Unknown";
         case Geofence::Result::Success:
-            return str << "Result Success";
+            return str << "Success";
         case Geofence::Result::Error:
-            return str << "Result Error";
+            return str << "Error";
         case Geofence::Result::TooManyGeofenceItems:
-            return str << "Result Too Many Geofence Items";
+            return str << "Too Many Geofence Items";
         case Geofence::Result::Busy:
-            return str << "Result Busy";
+            return str << "Busy";
         case Geofence::Result::Timeout:
-            return str << "Result Timeout";
+            return str << "Timeout";
         case Geofence::Result::InvalidArgument:
-            return str << "Result Invalid Argument";
+            return str << "Invalid Argument";
         default:
             return str << "Unknown";
     }

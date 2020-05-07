@@ -47,17 +47,17 @@ std::ostream& operator<<(std::ostream& str, Shell::Result const& result)
 {
     switch (result) {
         case Shell::Result::Unknown:
-            return str << "Result Unknown";
+            return str << "Unknown";
         case Shell::Result::Success:
-            return str << "Result Success";
+            return str << "Success";
         case Shell::Result::NoSystem:
-            return str << "Result No System";
+            return str << "No System";
         case Shell::Result::ConnectionError:
-            return str << "Result Connection Error";
+            return str << "Connection Error";
         case Shell::Result::NoResponse:
-            return str << "Result No Response";
+            return str << "No Response";
         case Shell::Result::Busy:
-            return str << "Result Busy";
+            return str << "Busy";
         default:
             return str << "Unknown";
     }

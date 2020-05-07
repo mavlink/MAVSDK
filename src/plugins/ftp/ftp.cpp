@@ -131,29 +131,29 @@ std::ostream& operator<<(std::ostream& str, Ftp::Result const& result)
 {
     switch (result) {
         case Ftp::Result::Unknown:
-            return str << "Result Unknown";
+            return str << "Unknown";
         case Ftp::Result::Success:
-            return str << "Result Success";
+            return str << "Success";
         case Ftp::Result::Next:
-            return str << "Result Next";
+            return str << "Next";
         case Ftp::Result::Timeout:
-            return str << "Result Timeout";
+            return str << "Timeout";
         case Ftp::Result::Busy:
-            return str << "Result Busy";
+            return str << "Busy";
         case Ftp::Result::FileIoError:
-            return str << "Result File Io Error";
+            return str << "File Io Error";
         case Ftp::Result::FileExists:
-            return str << "Result File Exists";
+            return str << "File Exists";
         case Ftp::Result::FileDoesNotExist:
-            return str << "Result File Does Not Exist";
+            return str << "File Does Not Exist";
         case Ftp::Result::FileProtected:
-            return str << "Result File Protected";
+            return str << "File Protected";
         case Ftp::Result::InvalidParameter:
-            return str << "Result Invalid Parameter";
+            return str << "Invalid Parameter";
         case Ftp::Result::Unsupported:
-            return str << "Result Unsupported";
+            return str << "Unsupported";
         case Ftp::Result::ProtocolError:
-            return str << "Result Protocol Error";
+            return str << "Protocol Error";
         default:
             return str << "Unknown";
     }

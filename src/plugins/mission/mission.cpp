@@ -128,17 +128,17 @@ std::ostream& operator<<(std::ostream& str, Mission::MissionItem::CameraAction c
 {
     switch (camera_action) {
         case Mission::MissionItem::CameraAction::None:
-            return str << "Camera Action None";
+            return str << "None";
         case Mission::MissionItem::CameraAction::TakePhoto:
-            return str << "Camera Action Take Photo";
+            return str << "Take Photo";
         case Mission::MissionItem::CameraAction::StartPhotoInterval:
-            return str << "Camera Action Start Photo Interval";
+            return str << "Start Photo Interval";
         case Mission::MissionItem::CameraAction::StopPhotoInterval:
-            return str << "Camera Action Stop Photo Interval";
+            return str << "Stop Photo Interval";
         case Mission::MissionItem::CameraAction::StartVideo:
-            return str << "Camera Action Start Video";
+            return str << "Start Video";
         case Mission::MissionItem::CameraAction::StopVideo:
-            return str << "Camera Action Stop Video";
+            return str << "Stop Video";
         default:
             return str << "Unknown";
     }
@@ -255,31 +255,31 @@ std::ostream& operator<<(std::ostream& str, Mission::Result const& result)
 {
     switch (result) {
         case Mission::Result::Unknown:
-            return str << "Result Unknown";
+            return str << "Unknown";
         case Mission::Result::Success:
-            return str << "Result Success";
+            return str << "Success";
         case Mission::Result::Error:
-            return str << "Result Error";
+            return str << "Error";
         case Mission::Result::TooManyMissionItems:
-            return str << "Result Too Many Mission Items";
+            return str << "Too Many Mission Items";
         case Mission::Result::Busy:
-            return str << "Result Busy";
+            return str << "Busy";
         case Mission::Result::Timeout:
-            return str << "Result Timeout";
+            return str << "Timeout";
         case Mission::Result::InvalidArgument:
-            return str << "Result Invalid Argument";
+            return str << "Invalid Argument";
         case Mission::Result::Unsupported:
-            return str << "Result Unsupported";
+            return str << "Unsupported";
         case Mission::Result::NoMissionAvailable:
-            return str << "Result No Mission Available";
+            return str << "No Mission Available";
         case Mission::Result::FailedToOpenQgcPlan:
-            return str << "Result Failed To Open Qgc Plan";
+            return str << "Failed To Open Qgc Plan";
         case Mission::Result::FailedToParseQgcPlan:
-            return str << "Result Failed To Parse Qgc Plan";
+            return str << "Failed To Parse Qgc Plan";
         case Mission::Result::UnsupportedMissionCmd:
-            return str << "Result Unsupported Mission Cmd";
+            return str << "Unsupported Mission Cmd";
         case Mission::Result::TransferCancelled:
-            return str << "Result Transfer Cancelled";
+            return str << "Transfer Cancelled";
         default:
             return str << "Unknown";
     }

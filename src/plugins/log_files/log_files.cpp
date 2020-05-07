@@ -88,19 +88,19 @@ std::ostream& operator<<(std::ostream& str, LogFiles::Result const& result)
 {
     switch (result) {
         case LogFiles::Result::Unknown:
-            return str << "Result Unknown";
+            return str << "Unknown";
         case LogFiles::Result::Success:
-            return str << "Result Success";
+            return str << "Success";
         case LogFiles::Result::Progress:
-            return str << "Result Progress";
+            return str << "Progress";
         case LogFiles::Result::NoLogfiles:
-            return str << "Result No Logfiles";
+            return str << "No Logfiles";
         case LogFiles::Result::Timeout:
-            return str << "Result Timeout";
+            return str << "Timeout";
         case LogFiles::Result::InvalidArgument:
-            return str << "Result Invalid Argument";
+            return str << "Invalid Argument";
         case LogFiles::Result::FileOpenFailed:
-            return str << "Result File Open Failed";
+            return str << "File Open Failed";
         default:
             return str << "Unknown";
     }

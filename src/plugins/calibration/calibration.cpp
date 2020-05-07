@@ -73,25 +73,25 @@ std::ostream& operator<<(std::ostream& str, Calibration::Result const& result)
 {
     switch (result) {
         case Calibration::Result::Unknown:
-            return str << "Result Unknown";
+            return str << "Unknown";
         case Calibration::Result::Success:
-            return str << "Result Success";
+            return str << "Success";
         case Calibration::Result::Next:
-            return str << "Result Next";
+            return str << "Next";
         case Calibration::Result::Failed:
-            return str << "Result Failed";
+            return str << "Failed";
         case Calibration::Result::NoSystem:
-            return str << "Result No System";
+            return str << "No System";
         case Calibration::Result::ConnectionError:
-            return str << "Result Connection Error";
+            return str << "Connection Error";
         case Calibration::Result::Busy:
-            return str << "Result Busy";
+            return str << "Busy";
         case Calibration::Result::CommandDenied:
-            return str << "Result Command Denied";
+            return str << "Command Denied";
         case Calibration::Result::Timeout:
-            return str << "Result Timeout";
+            return str << "Timeout";
         case Calibration::Result::Cancelled:
-            return str << "Result Cancelled";
+            return str << "Cancelled";
         default:
             return str << "Unknown";
     }
