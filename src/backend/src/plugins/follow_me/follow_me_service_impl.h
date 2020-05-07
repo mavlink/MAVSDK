@@ -11,6 +11,7 @@
 #include <future>
 #include <limits>
 #include <memory>
+#include <sstream>
 #include <vector>
 
 namespace mavsdk {
@@ -28,7 +29,9 @@ public:
 
         auto* rpc_follow_me_result = new rpc::follow_me::FollowMeResult();
         rpc_follow_me_result->set_result(rpc_result);
-        rpc_follow_me_result->set_result_str(mavsdk::FollowMe::result_str(result));
+        std::stringstream ss;
+        ss << result;
+        rpc_follow_me_result->set_result_str(ss.str());
 
         response->set_allocated_follow_me_result(rpc_follow_me_result);
     }

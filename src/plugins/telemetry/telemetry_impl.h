@@ -34,7 +34,7 @@ public:
     Telemetry::Result set_rate_landed_state(double rate_hz);
     Telemetry::Result set_rate_attitude(double rate_hz);
     Telemetry::Result set_rate_camera_attitude(double rate_hz);
-    Telemetry::Result set_rate_ground_speed_ned(double rate_hz);
+    Telemetry::Result set_rate_velocity_ned(double rate_hz);
     Telemetry::Result set_rate_imu(double rate_hz);
     Telemetry::Result set_rate_fixedwing_metrics(double rate_hz);
     Telemetry::Result set_rate_ground_truth(double rate_hz);
@@ -53,7 +53,7 @@ public:
     void set_rate_landed_state_async(double rate_hz, Telemetry::ResultCallback callback);
     void set_rate_attitude_async(double rate_hz, Telemetry::ResultCallback callback);
     void set_rate_camera_attitude_async(double rate_hz, Telemetry::ResultCallback callback);
-    void set_rate_ground_speed_ned_async(double rate_hz, Telemetry::ResultCallback callback);
+    void set_rate_velocity_ned_async(double rate_hz, Telemetry::ResultCallback callback);
     void set_rate_imu_async(double rate_hz, Telemetry::ResultCallback callback);
     void set_rate_fixedwing_metrics_async(double rate_hz, Telemetry::ResultCallback callback);
     void set_rate_ground_truth_async(double rate_hz, Telemetry::ResultCallback callback);
@@ -79,7 +79,7 @@ public:
     Telemetry::FixedwingMetrics fixedwing_metrics() const;
     Telemetry::EulerAngle camera_attitude_euler() const;
     Telemetry::Quaternion camera_attitude_quaternion() const;
-    Telemetry::SpeedNed ground_speed_ned() const;
+    Telemetry::VelocityNed velocity_ned() const;
     Telemetry::Imu imu() const;
     Telemetry::GpsInfo gps_info() const;
     Telemetry::Battery battery() const;
@@ -106,7 +106,7 @@ public:
     void ground_truth_async(Telemetry::GroundTruthCallback& callback);
     void camera_attitude_quaternion_async(Telemetry::AttitudeQuaternionCallback& callback);
     void camera_attitude_euler_async(Telemetry::AttitudeEulerCallback& callback);
-    void ground_speed_ned_async(Telemetry::GroundSpeedNedCallback& callback);
+    void velocity_ned_async(Telemetry::VelocityNedCallback& callback);
     void imu_async(Telemetry::ImuCallback& callback);
     void gps_info_async(Telemetry::GpsInfoCallback& callback);
     void battery_async(Telemetry::BatteryCallback& callback);
@@ -136,7 +136,7 @@ private:
     void set_fixedwing_metrics(Telemetry::FixedwingMetrics fixedwing_metrics);
     void set_ground_truth(Telemetry::GroundTruth ground_truth);
     void set_camera_attitude_euler_angle(Telemetry::EulerAngle euler_angle);
-    void set_ground_speed_ned(Telemetry::SpeedNed ground_speed_ned);
+    void set_velocity_ned(Telemetry::VelocityNed velocity_ned);
     void set_imu_reading_ned(Telemetry::Imu imu);
     void set_gps_info(Telemetry::GpsInfo gps_info);
     void set_battery(Telemetry::Battery battery);
@@ -231,8 +231,8 @@ private:
     mutable std::mutex _fixedwing_metrics_mutex{};
     Telemetry::FixedwingMetrics _fixedwing_metrics{};
 
-    mutable std::mutex _ground_speed_ned_mutex{};
-    Telemetry::SpeedNed _ground_speed_ned{};
+    mutable std::mutex _velocity_ned_mutex{};
+    Telemetry::VelocityNed _velocity_ned{};
 
     mutable std::mutex _imu_reading_ned_mutex{};
     Telemetry::Imu _imu_reading_ned{};
@@ -280,7 +280,7 @@ private:
     Telemetry::AttitudeEulerCallback _attitude_euler_angle_subscription{nullptr};
     Telemetry::AttitudeQuaternionCallback _camera_attitude_quaternion_subscription{nullptr};
     Telemetry::AttitudeEulerCallback _camera_attitude_euler_angle_subscription{nullptr};
-    Telemetry::GroundSpeedNedCallback _ground_speed_ned_subscription{nullptr};
+    Telemetry::VelocityNedCallback _velocity_ned_subscription{nullptr};
     Telemetry::ImuCallback _imu_reading_ned_subscription{nullptr};
     Telemetry::GpsInfoCallback _gps_info_subscription{nullptr};
     Telemetry::BatteryCallback _battery_subscription{nullptr};
@@ -294,9 +294,9 @@ private:
     Telemetry::ActuatorOutputStatusCallback _actuator_output_status_subscription{nullptr};
     Telemetry::OdometryCallback _odometry_subscription{nullptr};
 
-    // The ground speed and position are coupled to the same message, therefore, we just use
-    // the faster between the two.
-    double _ground_speed_ned_rate_hz{0.0};
+    // The velocity (former ground speed) and position are coupled to the same message, therefore,
+    // we just use the faster between the two.
+    double _velocity_ned_rate_hz{0.0};
     double _position_rate_hz{-1.0};
 
     void* _rc_channels_timeout_cookie{nullptr};

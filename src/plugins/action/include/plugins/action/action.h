@@ -455,14 +455,6 @@ public:
     Result set_return_to_launch_altitude(float relative_altitude_m) const;
 
     /**
-     * @brief Returns a human-readable English string for a Result.
-     *
-     * @param result The enum value for which a human readable string is required.
-     * @return Human readable string for the Result.
-     */
-    static const char* result_str(Result result);
-
-    /**
      * @brief Copy constructor (object is not copyable).
      */
     Action(const Action&) = delete;

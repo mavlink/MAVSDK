@@ -11,6 +11,7 @@
 #include <future>
 #include <limits>
 #include <memory>
+#include <sstream>
 #include <vector>
 
 namespace mavsdk {
@@ -28,7 +29,9 @@ public:
 
         auto* rpc_log_files_result = new rpc::log_files::LogFilesResult();
         rpc_log_files_result->set_result(rpc_result);
-        rpc_log_files_result->set_result_str(mavsdk::LogFiles::result_str(result));
+        std::stringstream ss;
+        ss << result;
+        rpc_log_files_result->set_result_str(ss.str());
 
         response->set_allocated_log_files_result(rpc_log_files_result);
     }
@@ -168,7 +171,9 @@ public:
                 auto rpc_result = translateToRpcResult(result);
                 auto* rpc_log_files_result = new rpc::log_files::LogFilesResult();
                 rpc_log_files_result->set_result(rpc_result);
-                rpc_log_files_result->set_result_str(mavsdk::LogFiles::result_str(result));
+                std::stringstream ss;
+                ss << result;
+                rpc_log_files_result->set_result_str(ss.str());
                 rpc_response.set_allocated_log_files_result(rpc_log_files_result);
 
                 std::lock_guard<std::mutex> lock(subscribe_mutex);

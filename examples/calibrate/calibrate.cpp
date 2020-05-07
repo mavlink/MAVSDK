@@ -29,7 +29,7 @@ int main(int argc, char** argv)
     const auto connection_result = dc.add_any_connection(connection_url);
 
     if (connection_result != ConnectionResult::Success) {
-        std::cout << "Connection failed: " << connection_result_str(connection_result) << std::endl;
+        std::cout << "Connection failed: " << connection_result << std::endl;
         return 1;
     }
 
@@ -104,8 +104,7 @@ create_calibration_callback(std::promise<void>& calibration_promise)
                 }
                 break;
             default:
-                std::cout << "--- Calibration failed with message: "
-                          << Calibration::result_str(result) << std::endl;
+                std::cout << "--- Calibration failed with message: " << result << std::endl;
                 calibration_promise.set_value();
                 break;
         }

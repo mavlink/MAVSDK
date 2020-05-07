@@ -109,8 +109,7 @@ int main(int argc, char* argv[])
     for (int i = 1; i <= total_ports_used; ++i) {
         ConnectionResult connection_result = dc.add_any_connection(argv[i]);
         if (connection_result != ConnectionResult::Success) {
-            std::cerr << ERROR_CONSOLE_TEXT
-                      << "Connection error: " << connection_result_str(connection_result)
+            std::cerr << ERROR_CONSOLE_TEXT << "Connection error: " << connection_result
                       << NORMAL_CONSOLE_TEXT << std::endl;
             return 1;
         }
@@ -162,8 +161,7 @@ void complete_mission(std::string qgc_plan, System& system)
     const Telemetry::Result set_rate_result = telemetry->set_rate_position(1.0);
 
     if (set_rate_result != Telemetry::Result::Success) {
-        std::cerr << ERROR_CONSOLE_TEXT
-                  << "Setting rate failed:" << Telemetry::result_str(set_rate_result)
+        std::cerr << ERROR_CONSOLE_TEXT << "Setting rate failed:" << set_rate_result
                   << NORMAL_CONSOLE_TEXT << std::endl;
         return;
     }
@@ -250,8 +248,7 @@ void complete_mission(std::string qgc_plan, System& system)
         std::cout << "Commanding RTL..." << std::endl;
         const Action::Result result = action->return_to_launch();
         if (result != Action::Result::Success) {
-            std::cout << "Failed to command RTL (" << Action::result_str(result) << ")"
-                      << std::endl;
+            std::cout << "Failed to command RTL (" << result << ")" << std::endl;
         } else {
             std::cout << "Commanded RTL." << std::endl;
         }
@@ -261,8 +258,7 @@ void complete_mission(std::string qgc_plan, System& system)
 static void handle_action_err_exit(Action::Result result, const std::string& message)
 {
     if (result != Action::Result::Success) {
-        std::cerr << ERROR_CONSOLE_TEXT << message << Action::result_str(result)
-                  << NORMAL_CONSOLE_TEXT << std::endl;
+        std::cerr << ERROR_CONSOLE_TEXT << message << result << NORMAL_CONSOLE_TEXT << std::endl;
         exit(EXIT_FAILURE);
     }
 }
@@ -270,8 +266,7 @@ static void handle_action_err_exit(Action::Result result, const std::string& mes
 static void handle_mission_err_exit(Mission::Result result, const std::string& message)
 {
     if (result != Mission::Result::Success) {
-        std::cerr << ERROR_CONSOLE_TEXT << message << Mission::result_str(result)
-                  << NORMAL_CONSOLE_TEXT << std::endl;
+        std::cerr << ERROR_CONSOLE_TEXT << message << result << NORMAL_CONSOLE_TEXT << std::endl;
         exit(EXIT_FAILURE);
     }
 }

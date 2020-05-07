@@ -11,6 +11,7 @@
 #include <future>
 #include <limits>
 #include <memory>
+#include <sstream>
 #include <vector>
 
 namespace mavsdk {
@@ -28,7 +29,9 @@ public:
 
         auto* rpc_geofence_result = new rpc::geofence::GeofenceResult();
         rpc_geofence_result->set_result(rpc_result);
-        rpc_geofence_result->set_result_str(mavsdk::Geofence::result_str(result));
+        std::stringstream ss;
+        ss << result;
+        rpc_geofence_result->set_result_str(ss.str());
 
         response->set_allocated_geofence_result(rpc_geofence_result);
     }

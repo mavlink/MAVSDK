@@ -11,6 +11,7 @@
 #include <future>
 #include <limits>
 #include <memory>
+#include <sstream>
 #include <vector>
 
 namespace mavsdk {
@@ -28,7 +29,9 @@ public:
 
         auto* rpc_param_result = new rpc::param::ParamResult();
         rpc_param_result->set_result(rpc_result);
-        rpc_param_result->set_result_str(mavsdk::Param::result_str(result));
+        std::stringstream ss;
+        ss << result;
+        rpc_param_result->set_result_str(ss.str());
 
         response->set_allocated_param_result(rpc_param_result);
     }

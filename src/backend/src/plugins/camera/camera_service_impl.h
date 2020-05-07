@@ -11,6 +11,7 @@
 #include <future>
 #include <limits>
 #include <memory>
+#include <sstream>
 #include <vector>
 
 namespace mavsdk {
@@ -28,7 +29,9 @@ public:
 
         auto* rpc_camera_result = new rpc::camera::CameraResult();
         rpc_camera_result->set_result(rpc_result);
-        rpc_camera_result->set_result_str(mavsdk::Camera::result_str(result));
+        std::stringstream ss;
+        ss << result;
+        rpc_camera_result->set_result_str(ss.str());
 
         response->set_allocated_camera_result(rpc_camera_result);
     }

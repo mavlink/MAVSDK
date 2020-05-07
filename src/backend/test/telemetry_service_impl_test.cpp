@@ -40,7 +40,7 @@ using EulerAngle = mavsdk::Telemetry::EulerAngle;
 
 using AngularVelocityBody = mavsdk::Telemetry::AngularVelocityBody;
 
-using GroundSpeedNed = mavsdk::Telemetry::SpeedNed;
+using VelocityNed = mavsdk::Telemetry::VelocityNed;
 
 using RcStatus = mavsdk::Telemetry::RcStatus;
 
@@ -126,11 +126,10 @@ protected:
     std::future<void>
     subscribeCameraAttitudeEulerAsync(std::vector<EulerAngle>& euler_angles) const;
 
-    void checkSendsGroundSpeedEvents(const std::vector<GroundSpeedNed>& ground_speed_events) const;
-    GroundSpeedNed
-    createGroundSpeedNed(const float vel_north, const float vel_east, const float vel_down) const;
-    std::future<void>
-    subscribeGroundSpeedNedAsync(std::vector<GroundSpeedNed>& ground_speed_events) const;
+    void checkSendsVelocityEvents(const std::vector<VelocityNed>& velocity_events) const;
+    VelocityNed
+    createVelocityNed(const float vel_north, const float vel_east, const float vel_down) const;
+    std::future<void> subscribeVelocityNedAsync(std::vector<VelocityNed>& velocity_events) const;
 
     void checkSendsRcStatusEvents(const std::vector<RcStatus>& rc_status_events) const;
     RcStatus createRcStatus(
@@ -1463,104 +1462,104 @@ TEST_F(TelemetryServiceImplTest, sendsMultipleCameraAttitudeEuler)
     checkSendsCameraAttitudeEulerAngles(euler_angles);
 }
 
-TEST_F(TelemetryServiceImplTest, registersToTelemetryGroundSpeedNedAsync)
+TEST_F(TelemetryServiceImplTest, registersToTelemetryVelocityNedAsync)
 {
-    EXPECT_CALL(*_telemetry, subscribe_ground_speed_ned(_)).Times(1);
+    EXPECT_CALL(*_telemetry, subscribe_velocity_ned(_)).Times(1);
 
-    std::vector<GroundSpeedNed> ground_speed_events;
-    auto ground_speed_stream_future = subscribeGroundSpeedNedAsync(ground_speed_events);
+    std::vector<VelocityNed> velocity_events;
+    auto velocity_stream_future = subscribeVelocityNedAsync(velocity_events);
 
     _telemetry_service->stop();
-    ground_speed_stream_future.wait();
+    velocity_stream_future.wait();
 }
 
-std::future<void> TelemetryServiceImplTest::subscribeGroundSpeedNedAsync(
-    std::vector<GroundSpeedNed>& ground_speed_events) const
+std::future<void>
+TelemetryServiceImplTest::subscribeVelocityNedAsync(std::vector<VelocityNed>& velocity_events) const
 {
     return std::async(std::launch::async, [&]() {
         grpc::ClientContext context;
-        mavsdk::rpc::telemetry::SubscribeGroundSpeedNedRequest request;
-        auto response_reader = _stub->SubscribeGroundSpeedNed(&context, request);
+        mavsdk::rpc::telemetry::SubscribeVelocityNedRequest request;
+        auto response_reader = _stub->SubscribeVelocityNed(&context, request);
 
-        mavsdk::rpc::telemetry::GroundSpeedNedResponse response;
+        mavsdk::rpc::telemetry::VelocityNedResponse response;
         while (response_reader->Read(&response)) {
-            auto ground_speed_rpc = response.ground_speed_ned();
+            auto velocity_rpc = response.velocity_ned();
 
-            GroundSpeedNed ground_speed;
-            ground_speed.velocity_north_m_s = ground_speed_rpc.velocity_north_m_s();
-            ground_speed.velocity_east_m_s = ground_speed_rpc.velocity_east_m_s();
-            ground_speed.velocity_down_m_s = ground_speed_rpc.velocity_down_m_s();
+            VelocityNed velocity;
+            velocity.north_m_s = velocity_rpc.north_m_s();
+            velocity.east_m_s = velocity_rpc.east_m_s();
+            velocity.down_m_s = velocity_rpc.down_m_s();
 
-            ground_speed_events.push_back(ground_speed);
+            velocity_events.push_back(velocity);
         }
 
         response_reader->Finish();
     });
 }
 
-TEST_F(TelemetryServiceImplTest, doesNotSendGroundSpeedNedIfCallbackNotCalled)
+TEST_F(TelemetryServiceImplTest, doesNotSendVelocityNedIfCallbackNotCalled)
 {
-    std::vector<GroundSpeedNed> ground_speed_events;
-    auto ground_speed_stream_future = subscribeGroundSpeedNedAsync(ground_speed_events);
+    std::vector<VelocityNed> velocity_events;
+    auto velocity_stream_future = subscribeVelocityNedAsync(velocity_events);
 
     _telemetry_service->stop();
-    ground_speed_stream_future.wait();
+    velocity_stream_future.wait();
 
-    EXPECT_EQ(0, ground_speed_events.size());
+    EXPECT_EQ(0, velocity_events.size());
 }
 
-TEST_F(TelemetryServiceImplTest, sendsOneGroundSpeedEvent)
+TEST_F(TelemetryServiceImplTest, sendsOneVelocityEvent)
 {
-    std::vector<GroundSpeedNed> ground_speed_events;
-    ground_speed_events.push_back(createGroundSpeedNed(12.3f, 1.2f, -0.2f));
+    std::vector<VelocityNed> velocity_events;
+    velocity_events.push_back(createVelocityNed(12.3f, 1.2f, -0.2f));
 
-    checkSendsGroundSpeedEvents(ground_speed_events);
+    checkSendsVelocityEvents(velocity_events);
 }
 
-GroundSpeedNed TelemetryServiceImplTest::createGroundSpeedNed(
+VelocityNed TelemetryServiceImplTest::createVelocityNed(
     const float vel_north, const float vel_east, const float vel_down) const
 {
-    GroundSpeedNed ground_speed;
+    VelocityNed velocity;
 
-    ground_speed.velocity_north_m_s = vel_north;
-    ground_speed.velocity_east_m_s = vel_east;
-    ground_speed.velocity_down_m_s = vel_down;
+    velocity.north_m_s = vel_north;
+    velocity.east_m_s = vel_east;
+    velocity.down_m_s = vel_down;
 
-    return ground_speed;
+    return velocity;
 }
 
-void TelemetryServiceImplTest::checkSendsGroundSpeedEvents(
-    const std::vector<GroundSpeedNed>& ground_speed_events) const
+void TelemetryServiceImplTest::checkSendsVelocityEvents(
+    const std::vector<VelocityNed>& velocity_events) const
 {
     std::promise<void> subscription_promise;
     auto subscription_future = subscription_promise.get_future();
-    mavsdk::Telemetry::GroundSpeedNedCallback ground_speed_ned_callback;
-    EXPECT_CALL(*_telemetry, subscribe_ground_speed_ned(_))
-        .WillOnce(SaveCallback(&ground_speed_ned_callback, &subscription_promise));
+    mavsdk::Telemetry::VelocityNedCallback velocity_ned_callback;
+    EXPECT_CALL(*_telemetry, subscribe_velocity_ned(_))
+        .WillOnce(SaveCallback(&velocity_ned_callback, &subscription_promise));
 
-    std::vector<GroundSpeedNed> received_ground_speed_events;
-    auto ground_speed_stream_future = subscribeGroundSpeedNedAsync(received_ground_speed_events);
+    std::vector<VelocityNed> received_velocity_events;
+    auto velocity_stream_future = subscribeVelocityNedAsync(received_velocity_events);
     subscription_future.wait();
-    for (const auto ground_speed : ground_speed_events) {
-        ground_speed_ned_callback(ground_speed);
+    for (const auto velocity : velocity_events) {
+        velocity_ned_callback(velocity);
     }
     _telemetry_service->stop();
-    ground_speed_stream_future.wait();
+    velocity_stream_future.wait();
 
-    ASSERT_EQ(ground_speed_events.size(), received_ground_speed_events.size());
-    for (size_t i = 0; i < ground_speed_events.size(); i++) {
-        EXPECT_EQ(ground_speed_events.at(i), received_ground_speed_events.at(i));
+    ASSERT_EQ(velocity_events.size(), received_velocity_events.size());
+    for (size_t i = 0; i < velocity_events.size(); i++) {
+        EXPECT_EQ(velocity_events.at(i), received_velocity_events.at(i));
     }
 }
 
-TEST_F(TelemetryServiceImplTest, sendsMultipleGroundSpeedEvents)
+TEST_F(TelemetryServiceImplTest, sendsMultipleVelocityEvents)
 {
-    std::vector<GroundSpeedNed> ground_speed_events;
-    ground_speed_events.push_back(createGroundSpeedNed(2.3f, 22.1f, 1.1f));
-    ground_speed_events.push_back(createGroundSpeedNed(5.23f, 1.2f, 4.0f));
-    ground_speed_events.push_back(createGroundSpeedNed(-4.12f, -3.1f, 8.23f));
+    std::vector<VelocityNed> velocity_events;
+    velocity_events.push_back(createVelocityNed(2.3f, 22.1f, 1.1f));
+    velocity_events.push_back(createVelocityNed(5.23f, 1.2f, 4.0f));
+    velocity_events.push_back(createVelocityNed(-4.12f, -3.1f, 8.23f));
 
-    checkSendsGroundSpeedEvents(ground_speed_events);
+    checkSendsVelocityEvents(velocity_events);
 }
 
 TEST_F(TelemetryServiceImplTest, registersToTelemetryRcStatusAsync)

@@ -152,34 +152,6 @@ std::ostream& operator<<(std::ostream& str, MissionRaw::MissionItem const& missi
     return str;
 }
 
-const char* MissionRaw::result_str(MissionRaw::Result result)
-{
-    switch (result) {
-        case MissionRaw::Result::Unknown:
-            return "Unknown result";
-        case MissionRaw::Result::Success:
-            return "Request succeeded";
-        case MissionRaw::Result::Error:
-            return "Error";
-        case MissionRaw::Result::TooManyMissionItems:
-            return "Too many mission items in the mission";
-        case MissionRaw::Result::Busy:
-            return "Vehicle is busy";
-        case MissionRaw::Result::Timeout:
-            return "Request timed out";
-        case MissionRaw::Result::InvalidArgument:
-            return "Invalid argument";
-        case MissionRaw::Result::Unsupported:
-            return "Mission downloaded from the system is not supported";
-        case MissionRaw::Result::NoMissionAvailable:
-            return "No mission available on the system";
-        case MissionRaw::Result::TransferCancelled:
-            return "Mission transfer (upload or download) has been cancelled";
-        default:
-            return "Unknown";
-    }
-}
-
 std::ostream& operator<<(std::ostream& str, MissionRaw::Result const& result)
 {
     switch (result) {

@@ -231,24 +231,6 @@ std::ostream& operator<<(std::ostream& str, Mocap::Odometry const& odometry)
     return str;
 }
 
-const char* Mocap::result_str(Mocap::Result result)
-{
-    switch (result) {
-        case Mocap::Result::Unknown:
-            return "Unknown error";
-        case Mocap::Result::Success:
-            return "Request succeeded";
-        case Mocap::Result::NoSystem:
-            return "No system is connected";
-        case Mocap::Result::ConnectionError:
-            return "Connection error";
-        case Mocap::Result::InvalidRequestData:
-            return "Invalid request data";
-        default:
-            return "Unknown";
-    }
-}
-
 std::ostream& operator<<(std::ostream& str, Mocap::Result const& result)
 {
     switch (result) {

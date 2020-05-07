@@ -158,14 +158,6 @@ public:
     Result set_roi_location(double latitude_deg, double longitude_deg, float altitude_m) const;
 
     /**
-     * @brief Returns a human-readable English string for a Result.
-     *
-     * @param result The enum value for which a human readable string is required.
-     * @return Human readable string for the Result.
-     */
-    static const char* result_str(Result result);
-
-    /**
      * @brief Copy constructor (object is not copyable).
      */
     Gimbal(const Gimbal&) = delete;

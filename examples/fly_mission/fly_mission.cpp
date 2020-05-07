@@ -84,8 +84,7 @@ int main(int argc, char** argv)
         }
 
         if (connection_result != ConnectionResult::Success) {
-            std::cout << ERROR_CONSOLE_TEXT
-                      << "Connection failed: " << connection_result_str(connection_result)
+            std::cout << ERROR_CONSOLE_TEXT << "Connection failed: " << connection_result
                       << NORMAL_CONSOLE_TEXT << std::endl;
             return 1;
         }
@@ -190,8 +189,7 @@ int main(int argc, char** argv)
 
         const Mission::Result result = future_result.get();
         if (result != Mission::Result::Success) {
-            std::cout << "Mission upload failed (" << Mission::result_str(result) << "), exiting."
-                      << std::endl;
+            std::cout << "Mission upload failed (" << result << "), exiting." << std::endl;
             return 1;
         }
         std::cout << "Mission uploaded." << std::endl;
@@ -242,8 +240,7 @@ int main(int argc, char** argv)
 
         const Mission::Result result = future_result.get();
         if (result != Mission::Result::Success) {
-            std::cout << "Failed to pause mission (" << Mission::result_str(result) << ")"
-                      << std::endl;
+            std::cout << "Failed to pause mission (" << result << ")" << std::endl;
         } else {
             std::cout << "Mission paused." << std::endl;
         }
@@ -262,8 +259,7 @@ int main(int argc, char** argv)
 
         const Mission::Result result = future_result.get();
         if (result != Mission::Result::Success) {
-            std::cout << "Failed to resume mission (" << Mission::result_str(result) << ")"
-                      << std::endl;
+            std::cout << "Failed to resume mission (" << result << ")" << std::endl;
         } else {
             std::cout << "Resumed mission." << std::endl;
         }
@@ -278,8 +274,7 @@ int main(int argc, char** argv)
         std::cout << "Commanding RTL..." << std::endl;
         const Action::Result result = action->return_to_launch();
         if (result != Action::Result::Success) {
-            std::cout << "Failed to command RTL (" << Action::result_str(result) << ")"
-                      << std::endl;
+            std::cout << "Failed to command RTL (" << result << ")" << std::endl;
         } else {
             std::cout << "Commanded RTL." << std::endl;
         }
@@ -320,8 +315,7 @@ Mission::MissionItem make_mission_item(
 inline void handle_action_err_exit(Action::Result result, const std::string& message)
 {
     if (result != Action::Result::Success) {
-        std::cerr << ERROR_CONSOLE_TEXT << message << Action::result_str(result)
-                  << NORMAL_CONSOLE_TEXT << std::endl;
+        std::cerr << ERROR_CONSOLE_TEXT << message << result << NORMAL_CONSOLE_TEXT << std::endl;
         exit(EXIT_FAILURE);
     }
 }
@@ -329,8 +323,7 @@ inline void handle_action_err_exit(Action::Result result, const std::string& mes
 inline void handle_mission_err_exit(Mission::Result result, const std::string& message)
 {
     if (result != Mission::Result::Success) {
-        std::cerr << ERROR_CONSOLE_TEXT << message << Mission::result_str(result)
-                  << NORMAL_CONSOLE_TEXT << std::endl;
+        std::cerr << ERROR_CONSOLE_TEXT << message << result << NORMAL_CONSOLE_TEXT << std::endl;
         exit(EXIT_FAILURE);
     }
 }
@@ -339,8 +332,7 @@ inline void handle_mission_err_exit(Mission::Result result, const std::string& m
 inline void handle_connection_err_exit(ConnectionResult result, const std::string& message)
 {
     if (result != ConnectionResult::Success) {
-        std::cerr << ERROR_CONSOLE_TEXT << message << connection_result_str(result)
-                  << NORMAL_CONSOLE_TEXT << std::endl;
+        std::cerr << ERROR_CONSOLE_TEXT << message << result << NORMAL_CONSOLE_TEXT << std::endl;
         exit(EXIT_FAILURE);
     }
 }

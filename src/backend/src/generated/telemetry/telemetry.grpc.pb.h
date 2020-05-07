@@ -142,14 +142,14 @@ class TelemetryService final {
       return std::unique_ptr< ::grpc::ClientAsyncReaderInterface< ::mavsdk::rpc::telemetry::CameraAttitudeEulerResponse>>(PrepareAsyncSubscribeCameraAttitudeEulerRaw(context, request, cq));
     }
     // Subscribe to 'ground speed' updates (NED).
-    std::unique_ptr< ::grpc::ClientReaderInterface< ::mavsdk::rpc::telemetry::GroundSpeedNedResponse>> SubscribeGroundSpeedNed(::grpc::ClientContext* context, const ::mavsdk::rpc::telemetry::SubscribeGroundSpeedNedRequest& request) {
-      return std::unique_ptr< ::grpc::ClientReaderInterface< ::mavsdk::rpc::telemetry::GroundSpeedNedResponse>>(SubscribeGroundSpeedNedRaw(context, request));
+    std::unique_ptr< ::grpc::ClientReaderInterface< ::mavsdk::rpc::telemetry::VelocityNedResponse>> SubscribeVelocityNed(::grpc::ClientContext* context, const ::mavsdk::rpc::telemetry::SubscribeVelocityNedRequest& request) {
+      return std::unique_ptr< ::grpc::ClientReaderInterface< ::mavsdk::rpc::telemetry::VelocityNedResponse>>(SubscribeVelocityNedRaw(context, request));
     }
-    std::unique_ptr< ::grpc::ClientAsyncReaderInterface< ::mavsdk::rpc::telemetry::GroundSpeedNedResponse>> AsyncSubscribeGroundSpeedNed(::grpc::ClientContext* context, const ::mavsdk::rpc::telemetry::SubscribeGroundSpeedNedRequest& request, ::grpc::CompletionQueue* cq, void* tag) {
-      return std::unique_ptr< ::grpc::ClientAsyncReaderInterface< ::mavsdk::rpc::telemetry::GroundSpeedNedResponse>>(AsyncSubscribeGroundSpeedNedRaw(context, request, cq, tag));
+    std::unique_ptr< ::grpc::ClientAsyncReaderInterface< ::mavsdk::rpc::telemetry::VelocityNedResponse>> AsyncSubscribeVelocityNed(::grpc::ClientContext* context, const ::mavsdk::rpc::telemetry::SubscribeVelocityNedRequest& request, ::grpc::CompletionQueue* cq, void* tag) {
+      return std::unique_ptr< ::grpc::ClientAsyncReaderInterface< ::mavsdk::rpc::telemetry::VelocityNedResponse>>(AsyncSubscribeVelocityNedRaw(context, request, cq, tag));
     }
-    std::unique_ptr< ::grpc::ClientAsyncReaderInterface< ::mavsdk::rpc::telemetry::GroundSpeedNedResponse>> PrepareAsyncSubscribeGroundSpeedNed(::grpc::ClientContext* context, const ::mavsdk::rpc::telemetry::SubscribeGroundSpeedNedRequest& request, ::grpc::CompletionQueue* cq) {
-      return std::unique_ptr< ::grpc::ClientAsyncReaderInterface< ::mavsdk::rpc::telemetry::GroundSpeedNedResponse>>(PrepareAsyncSubscribeGroundSpeedNedRaw(context, request, cq));
+    std::unique_ptr< ::grpc::ClientAsyncReaderInterface< ::mavsdk::rpc::telemetry::VelocityNedResponse>> PrepareAsyncSubscribeVelocityNed(::grpc::ClientContext* context, const ::mavsdk::rpc::telemetry::SubscribeVelocityNedRequest& request, ::grpc::CompletionQueue* cq) {
+      return std::unique_ptr< ::grpc::ClientAsyncReaderInterface< ::mavsdk::rpc::telemetry::VelocityNedResponse>>(PrepareAsyncSubscribeVelocityNedRaw(context, request, cq));
     }
     // Subscribe to 'GPS info' updates.
     std::unique_ptr< ::grpc::ClientReaderInterface< ::mavsdk::rpc::telemetry::GpsInfoResponse>> SubscribeGpsInfo(::grpc::ClientContext* context, const ::mavsdk::rpc::telemetry::SubscribeGpsInfoRequest& request) {
@@ -350,12 +350,12 @@ class TelemetryService final {
       return std::unique_ptr< ::grpc::ClientAsyncResponseReaderInterface< ::mavsdk::rpc::telemetry::SetRateCameraAttitudeResponse>>(PrepareAsyncSetRateCameraAttitudeRaw(context, request, cq));
     }
     // Set rate to 'ground speed' updates (NED).
-    virtual ::grpc::Status SetRateGroundSpeedNed(::grpc::ClientContext* context, const ::mavsdk::rpc::telemetry::SetRateGroundSpeedNedRequest& request, ::mavsdk::rpc::telemetry::SetRateGroundSpeedNedResponse* response) = 0;
-    std::unique_ptr< ::grpc::ClientAsyncResponseReaderInterface< ::mavsdk::rpc::telemetry::SetRateGroundSpeedNedResponse>> AsyncSetRateGroundSpeedNed(::grpc::ClientContext* context, const ::mavsdk::rpc::telemetry::SetRateGroundSpeedNedRequest& request, ::grpc::CompletionQueue* cq) {
-      return std::unique_ptr< ::grpc::ClientAsyncResponseReaderInterface< ::mavsdk::rpc::telemetry::SetRateGroundSpeedNedResponse>>(AsyncSetRateGroundSpeedNedRaw(context, request, cq));
+    virtual ::grpc::Status SetRateVelocityNed(::grpc::ClientContext* context, const ::mavsdk::rpc::telemetry::SetRateVelocityNedRequest& request, ::mavsdk::rpc::telemetry::SetRateVelocityNedResponse* response) = 0;
+    std::unique_ptr< ::grpc::ClientAsyncResponseReaderInterface< ::mavsdk::rpc::telemetry::SetRateVelocityNedResponse>> AsyncSetRateVelocityNed(::grpc::ClientContext* context, const ::mavsdk::rpc::telemetry::SetRateVelocityNedRequest& request, ::grpc::CompletionQueue* cq) {
+      return std::unique_ptr< ::grpc::ClientAsyncResponseReaderInterface< ::mavsdk::rpc::telemetry::SetRateVelocityNedResponse>>(AsyncSetRateVelocityNedRaw(context, request, cq));
     }
-    std::unique_ptr< ::grpc::ClientAsyncResponseReaderInterface< ::mavsdk::rpc::telemetry::SetRateGroundSpeedNedResponse>> PrepareAsyncSetRateGroundSpeedNed(::grpc::ClientContext* context, const ::mavsdk::rpc::telemetry::SetRateGroundSpeedNedRequest& request, ::grpc::CompletionQueue* cq) {
-      return std::unique_ptr< ::grpc::ClientAsyncResponseReaderInterface< ::mavsdk::rpc::telemetry::SetRateGroundSpeedNedResponse>>(PrepareAsyncSetRateGroundSpeedNedRaw(context, request, cq));
+    std::unique_ptr< ::grpc::ClientAsyncResponseReaderInterface< ::mavsdk::rpc::telemetry::SetRateVelocityNedResponse>> PrepareAsyncSetRateVelocityNed(::grpc::ClientContext* context, const ::mavsdk::rpc::telemetry::SetRateVelocityNedRequest& request, ::grpc::CompletionQueue* cq) {
+      return std::unique_ptr< ::grpc::ClientAsyncResponseReaderInterface< ::mavsdk::rpc::telemetry::SetRateVelocityNedResponse>>(PrepareAsyncSetRateVelocityNedRaw(context, request, cq));
     }
     // Set rate to 'GPS info' updates.
     virtual ::grpc::Status SetRateGpsInfo(::grpc::ClientContext* context, const ::mavsdk::rpc::telemetry::SetRateGpsInfoRequest& request, ::mavsdk::rpc::telemetry::SetRateGpsInfoResponse* response) = 0;
@@ -510,9 +510,9 @@ class TelemetryService final {
       #endif
       // Subscribe to 'ground speed' updates (NED).
       #ifdef GRPC_CALLBACK_API_NONEXPERIMENTAL
-      virtual void SubscribeGroundSpeedNed(::grpc::ClientContext* context, ::mavsdk::rpc::telemetry::SubscribeGroundSpeedNedRequest* request, ::grpc::ClientReadReactor< ::mavsdk::rpc::telemetry::GroundSpeedNedResponse>* reactor) = 0;
+      virtual void SubscribeVelocityNed(::grpc::ClientContext* context, ::mavsdk::rpc::telemetry::SubscribeVelocityNedRequest* request, ::grpc::ClientReadReactor< ::mavsdk::rpc::telemetry::VelocityNedResponse>* reactor) = 0;
       #else
-      virtual void SubscribeGroundSpeedNed(::grpc::ClientContext* context, ::mavsdk::rpc::telemetry::SubscribeGroundSpeedNedRequest* request, ::grpc::experimental::ClientReadReactor< ::mavsdk::rpc::telemetry::GroundSpeedNedResponse>* reactor) = 0;
+      virtual void SubscribeVelocityNed(::grpc::ClientContext* context, ::mavsdk::rpc::telemetry::SubscribeVelocityNedRequest* request, ::grpc::experimental::ClientReadReactor< ::mavsdk::rpc::telemetry::VelocityNedResponse>* reactor) = 0;
       #endif
       // Subscribe to 'GPS info' updates.
       #ifdef GRPC_CALLBACK_API_NONEXPERIMENTAL
@@ -683,17 +683,17 @@ class TelemetryService final {
       virtual void SetRateCameraAttitude(::grpc::ClientContext* context, const ::grpc::ByteBuffer* request, ::mavsdk::rpc::telemetry::SetRateCameraAttitudeResponse* response, ::grpc::experimental::ClientUnaryReactor* reactor) = 0;
       #endif
       // Set rate to 'ground speed' updates (NED).
-      virtual void SetRateGroundSpeedNed(::grpc::ClientContext* context, const ::mavsdk::rpc::telemetry::SetRateGroundSpeedNedRequest* request, ::mavsdk::rpc::telemetry::SetRateGroundSpeedNedResponse* response, std::function<void(::grpc::Status)>) = 0;
-      virtual void SetRateGroundSpeedNed(::grpc::ClientContext* context, const ::grpc::ByteBuffer* request, ::mavsdk::rpc::telemetry::SetRateGroundSpeedNedResponse* response, std::function<void(::grpc::Status)>) = 0;
+      virtual void SetRateVelocityNed(::grpc::ClientContext* context, const ::mavsdk::rpc::telemetry::SetRateVelocityNedRequest* request, ::mavsdk::rpc::telemetry::SetRateVelocityNedResponse* response, std::function<void(::grpc::Status)>) = 0;
+      virtual void SetRateVelocityNed(::grpc::ClientContext* context, const ::grpc::ByteBuffer* request, ::mavsdk::rpc::telemetry::SetRateVelocityNedResponse* response, std::function<void(::grpc::Status)>) = 0;
       #ifdef GRPC_CALLBACK_API_NONEXPERIMENTAL
-      virtual void SetRateGroundSpeedNed(::grpc::ClientContext* context, const ::mavsdk::rpc::telemetry::SetRateGroundSpeedNedRequest* request, ::mavsdk::rpc::telemetry::SetRateGroundSpeedNedResponse* response, ::grpc::ClientUnaryReactor* reactor) = 0;
+      virtual void SetRateVelocityNed(::grpc::ClientContext* context, const ::mavsdk::rpc::telemetry::SetRateVelocityNedRequest* request, ::mavsdk::rpc::telemetry::SetRateVelocityNedResponse* response, ::grpc::ClientUnaryReactor* reactor) = 0;
       #else
-      virtual void SetRateGroundSpeedNed(::grpc::ClientContext* context, const ::mavsdk::rpc::telemetry::SetRateGroundSpeedNedRequest* request, ::mavsdk::rpc::telemetry::SetRateGroundSpeedNedResponse* response, ::grpc::experimental::ClientUnaryReactor* reactor) = 0;
+      virtual void SetRateVelocityNed(::grpc::ClientContext* context, const ::mavsdk::rpc::telemetry::SetRateVelocityNedRequest* request, ::mavsdk::rpc::telemetry::SetRateVelocityNedResponse* response, ::grpc::experimental::ClientUnaryReactor* reactor) = 0;
       #endif
       #ifdef GRPC_CALLBACK_API_NONEXPERIMENTAL
-      virtual void SetRateGroundSpeedNed(::grpc::ClientContext* context, const ::grpc::ByteBuffer* request, ::mavsdk::rpc::telemetry::SetRateGroundSpeedNedResponse* response, ::grpc::ClientUnaryReactor* reactor) = 0;
+      virtual void SetRateVelocityNed(::grpc::ClientContext* context, const ::grpc::ByteBuffer* request, ::mavsdk::rpc::telemetry::SetRateVelocityNedResponse* response, ::grpc::ClientUnaryReactor* reactor) = 0;
       #else
-      virtual void SetRateGroundSpeedNed(::grpc::ClientContext* context, const ::grpc::ByteBuffer* request, ::mavsdk::rpc::telemetry::SetRateGroundSpeedNedResponse* response, ::grpc::experimental::ClientUnaryReactor* reactor) = 0;
+      virtual void SetRateVelocityNed(::grpc::ClientContext* context, const ::grpc::ByteBuffer* request, ::mavsdk::rpc::telemetry::SetRateVelocityNedResponse* response, ::grpc::experimental::ClientUnaryReactor* reactor) = 0;
       #endif
       // Set rate to 'GPS info' updates.
       virtual void SetRateGpsInfo(::grpc::ClientContext* context, const ::mavsdk::rpc::telemetry::SetRateGpsInfoRequest* request, ::mavsdk::rpc::telemetry::SetRateGpsInfoResponse* response, std::function<void(::grpc::Status)>) = 0;
@@ -877,9 +877,9 @@ class TelemetryService final {
     virtual ::grpc::ClientReaderInterface< ::mavsdk::rpc::telemetry::CameraAttitudeEulerResponse>* SubscribeCameraAttitudeEulerRaw(::grpc::ClientContext* context, const ::mavsdk::rpc::telemetry::SubscribeCameraAttitudeEulerRequest& request) = 0;
     virtual ::grpc::ClientAsyncReaderInterface< ::mavsdk::rpc::telemetry::CameraAttitudeEulerResponse>* AsyncSubscribeCameraAttitudeEulerRaw(::grpc::ClientContext* context, const ::mavsdk::rpc::telemetry::SubscribeCameraAttitudeEulerRequest& request, ::grpc::CompletionQueue* cq, void* tag) = 0;
     virtual ::grpc::ClientAsyncReaderInterface< ::mavsdk::rpc::telemetry::CameraAttitudeEulerResponse>* PrepareAsyncSubscribeCameraAttitudeEulerRaw(::grpc::ClientContext* context, const ::mavsdk::rpc::telemetry::SubscribeCameraAttitudeEulerRequest& request, ::grpc::CompletionQueue* cq) = 0;
-    virtual ::grpc::ClientReaderInterface< ::mavsdk::rpc::telemetry::GroundSpeedNedResponse>* SubscribeGroundSpeedNedRaw(::grpc::ClientContext* context, const ::mavsdk::rpc::telemetry::SubscribeGroundSpeedNedRequest& request) = 0;
-    virtual ::grpc::ClientAsyncReaderInterface< ::mavsdk::rpc::telemetry::GroundSpeedNedResponse>* AsyncSubscribeGroundSpeedNedRaw(::grpc::ClientContext* context, const ::mavsdk::rpc::telemetry::SubscribeGroundSpeedNedRequest& request, ::grpc::CompletionQueue* cq, void* tag) = 0;
-    virtual ::grpc::ClientAsyncReaderInterface< ::mavsdk::rpc::telemetry::GroundSpeedNedResponse>* PrepareAsyncSubscribeGroundSpeedNedRaw(::grpc::ClientContext* context, const ::mavsdk::rpc::telemetry::SubscribeGroundSpeedNedRequest& request, ::grpc::CompletionQueue* cq) = 0;
+    virtual ::grpc::ClientReaderInterface< ::mavsdk::rpc::telemetry::VelocityNedResponse>* SubscribeVelocityNedRaw(::grpc::ClientContext* context, const ::mavsdk::rpc::telemetry::SubscribeVelocityNedRequest& request) = 0;
+    virtual ::grpc::ClientAsyncReaderInterface< ::mavsdk::rpc::telemetry::VelocityNedResponse>* AsyncSubscribeVelocityNedRaw(::grpc::ClientContext* context, const ::mavsdk::rpc::telemetry::SubscribeVelocityNedRequest& request, ::grpc::CompletionQueue* cq, void* tag) = 0;
+    virtual ::grpc::ClientAsyncReaderInterface< ::mavsdk::rpc::telemetry::VelocityNedResponse>* PrepareAsyncSubscribeVelocityNedRaw(::grpc::ClientContext* context, const ::mavsdk::rpc::telemetry::SubscribeVelocityNedRequest& request, ::grpc::CompletionQueue* cq) = 0;
     virtual ::grpc::ClientReaderInterface< ::mavsdk::rpc::telemetry::GpsInfoResponse>* SubscribeGpsInfoRaw(::grpc::ClientContext* context, const ::mavsdk::rpc::telemetry::SubscribeGpsInfoRequest& request) = 0;
     virtual ::grpc::ClientAsyncReaderInterface< ::mavsdk::rpc::telemetry::GpsInfoResponse>* AsyncSubscribeGpsInfoRaw(::grpc::ClientContext* context, const ::mavsdk::rpc::telemetry::SubscribeGpsInfoRequest& request, ::grpc::CompletionQueue* cq, void* tag) = 0;
     virtual ::grpc::ClientAsyncReaderInterface< ::mavsdk::rpc::telemetry::GpsInfoResponse>* PrepareAsyncSubscribeGpsInfoRaw(::grpc::ClientContext* context, const ::mavsdk::rpc::telemetry::SubscribeGpsInfoRequest& request, ::grpc::CompletionQueue* cq) = 0;
@@ -937,8 +937,8 @@ class TelemetryService final {
     virtual ::grpc::ClientAsyncResponseReaderInterface< ::mavsdk::rpc::telemetry::SetRateAttitudeResponse>* PrepareAsyncSetRateAttitudeRaw(::grpc::ClientContext* context, const ::mavsdk::rpc::telemetry::SetRateAttitudeRequest& request, ::grpc::CompletionQueue* cq) = 0;
     virtual ::grpc::ClientAsyncResponseReaderInterface< ::mavsdk::rpc::telemetry::SetRateCameraAttitudeResponse>* AsyncSetRateCameraAttitudeRaw(::grpc::ClientContext* context, const ::mavsdk::rpc::telemetry::SetRateCameraAttitudeRequest& request, ::grpc::CompletionQueue* cq) = 0;
     virtual ::grpc::ClientAsyncResponseReaderInterface< ::mavsdk::rpc::telemetry::SetRateCameraAttitudeResponse>* PrepareAsyncSetRateCameraAttitudeRaw(::grpc::ClientContext* context, const ::mavsdk::rpc::telemetry::SetRateCameraAttitudeRequest& request, ::grpc::CompletionQueue* cq) = 0;
-    virtual ::grpc::ClientAsyncResponseReaderInterface< ::mavsdk::rpc::telemetry::SetRateGroundSpeedNedResponse>* AsyncSetRateGroundSpeedNedRaw(::grpc::ClientContext* context, const ::mavsdk::rpc::telemetry::SetRateGroundSpeedNedRequest& request, ::grpc::CompletionQueue* cq) = 0;
-    virtual ::grpc::ClientAsyncResponseReaderInterface< ::mavsdk::rpc::telemetry::SetRateGroundSpeedNedResponse>* PrepareAsyncSetRateGroundSpeedNedRaw(::grpc::ClientContext* context, const ::mavsdk::rpc::telemetry::SetRateGroundSpeedNedRequest& request, ::grpc::CompletionQueue* cq) = 0;
+    virtual ::grpc::ClientAsyncResponseReaderInterface< ::mavsdk::rpc::telemetry::SetRateVelocityNedResponse>* AsyncSetRateVelocityNedRaw(::grpc::ClientContext* context, const ::mavsdk::rpc::telemetry::SetRateVelocityNedRequest& request, ::grpc::CompletionQueue* cq) = 0;
+    virtual ::grpc::ClientAsyncResponseReaderInterface< ::mavsdk::rpc::telemetry::SetRateVelocityNedResponse>* PrepareAsyncSetRateVelocityNedRaw(::grpc::ClientContext* context, const ::mavsdk::rpc::telemetry::SetRateVelocityNedRequest& request, ::grpc::CompletionQueue* cq) = 0;
     virtual ::grpc::ClientAsyncResponseReaderInterface< ::mavsdk::rpc::telemetry::SetRateGpsInfoResponse>* AsyncSetRateGpsInfoRaw(::grpc::ClientContext* context, const ::mavsdk::rpc::telemetry::SetRateGpsInfoRequest& request, ::grpc::CompletionQueue* cq) = 0;
     virtual ::grpc::ClientAsyncResponseReaderInterface< ::mavsdk::rpc::telemetry::SetRateGpsInfoResponse>* PrepareAsyncSetRateGpsInfoRaw(::grpc::ClientContext* context, const ::mavsdk::rpc::telemetry::SetRateGpsInfoRequest& request, ::grpc::CompletionQueue* cq) = 0;
     virtual ::grpc::ClientAsyncResponseReaderInterface< ::mavsdk::rpc::telemetry::SetRateBatteryResponse>* AsyncSetRateBatteryRaw(::grpc::ClientContext* context, const ::mavsdk::rpc::telemetry::SetRateBatteryRequest& request, ::grpc::CompletionQueue* cq) = 0;
@@ -1055,14 +1055,14 @@ class TelemetryService final {
     std::unique_ptr< ::grpc::ClientAsyncReader< ::mavsdk::rpc::telemetry::CameraAttitudeEulerResponse>> PrepareAsyncSubscribeCameraAttitudeEuler(::grpc::ClientContext* context, const ::mavsdk::rpc::telemetry::SubscribeCameraAttitudeEulerRequest& request, ::grpc::CompletionQueue* cq) {
       return std::unique_ptr< ::grpc::ClientAsyncReader< ::mavsdk::rpc::telemetry::CameraAttitudeEulerResponse>>(PrepareAsyncSubscribeCameraAttitudeEulerRaw(context, request, cq));
     }
-    std::unique_ptr< ::grpc::ClientReader< ::mavsdk::rpc::telemetry::GroundSpeedNedResponse>> SubscribeGroundSpeedNed(::grpc::ClientContext* context, const ::mavsdk::rpc::telemetry::SubscribeGroundSpeedNedRequest& request) {
-      return std::unique_ptr< ::grpc::ClientReader< ::mavsdk::rpc::telemetry::GroundSpeedNedResponse>>(SubscribeGroundSpeedNedRaw(context, request));
+    std::unique_ptr< ::grpc::ClientReader< ::mavsdk::rpc::telemetry::VelocityNedResponse>> SubscribeVelocityNed(::grpc::ClientContext* context, const ::mavsdk::rpc::telemetry::SubscribeVelocityNedRequest& request) {
+      return std::unique_ptr< ::grpc::ClientReader< ::mavsdk::rpc::telemetry::VelocityNedResponse>>(SubscribeVelocityNedRaw(context, request));
     }
-    std::unique_ptr< ::grpc::ClientAsyncReader< ::mavsdk::rpc::telemetry::GroundSpeedNedResponse>> AsyncSubscribeGroundSpeedNed(::grpc::ClientContext* context, const ::mavsdk::rpc::telemetry::SubscribeGroundSpeedNedRequest& request, ::grpc::CompletionQueue* cq, void* tag) {
-      return std::unique_ptr< ::grpc::ClientAsyncReader< ::mavsdk::rpc::telemetry::GroundSpeedNedResponse>>(AsyncSubscribeGroundSpeedNedRaw(context, request, cq, tag));
+    std::unique_ptr< ::grpc::ClientAsyncReader< ::mavsdk::rpc::telemetry::VelocityNedResponse>> AsyncSubscribeVelocityNed(::grpc::ClientContext* context, const ::mavsdk::rpc::telemetry::SubscribeVelocityNedRequest& request, ::grpc::CompletionQueue* cq, void* tag) {
+      return std::unique_ptr< ::grpc::ClientAsyncReader< ::mavsdk::rpc::telemetry::VelocityNedResponse>>(AsyncSubscribeVelocityNedRaw(context, request, cq, tag));
     }
-    std::unique_ptr< ::grpc::ClientAsyncReader< ::mavsdk::rpc::telemetry::GroundSpeedNedResponse>> PrepareAsyncSubscribeGroundSpeedNed(::grpc::ClientContext* context, const ::mavsdk::rpc::telemetry::SubscribeGroundSpeedNedRequest& request, ::grpc::CompletionQueue* cq) {
-      return std::unique_ptr< ::grpc::ClientAsyncReader< ::mavsdk::rpc::telemetry::GroundSpeedNedResponse>>(PrepareAsyncSubscribeGroundSpeedNedRaw(context, request, cq));
+    std::unique_ptr< ::grpc::ClientAsyncReader< ::mavsdk::rpc::telemetry::VelocityNedResponse>> PrepareAsyncSubscribeVelocityNed(::grpc::ClientContext* context, const ::mavsdk::rpc::telemetry::SubscribeVelocityNedRequest& request, ::grpc::CompletionQueue* cq) {
+      return std::unique_ptr< ::grpc::ClientAsyncReader< ::mavsdk::rpc::telemetry::VelocityNedResponse>>(PrepareAsyncSubscribeVelocityNedRaw(context, request, cq));
     }
     std::unique_ptr< ::grpc::ClientReader< ::mavsdk::rpc::telemetry::GpsInfoResponse>> SubscribeGpsInfo(::grpc::ClientContext* context, const ::mavsdk::rpc::telemetry::SubscribeGpsInfoRequest& request) {
       return std::unique_ptr< ::grpc::ClientReader< ::mavsdk::rpc::telemetry::GpsInfoResponse>>(SubscribeGpsInfoRaw(context, request));
@@ -1241,12 +1241,12 @@ class TelemetryService final {
     std::unique_ptr< ::grpc::ClientAsyncResponseReader< ::mavsdk::rpc::telemetry::SetRateCameraAttitudeResponse>> PrepareAsyncSetRateCameraAttitude(::grpc::ClientContext* context, const ::mavsdk::rpc::telemetry::SetRateCameraAttitudeRequest& request, ::grpc::CompletionQueue* cq) {
       return std::unique_ptr< ::grpc::ClientAsyncResponseReader< ::mavsdk::rpc::telemetry::SetRateCameraAttitudeResponse>>(PrepareAsyncSetRateCameraAttitudeRaw(context, request, cq));
     }
-    ::grpc::Status SetRateGroundSpeedNed(::grpc::ClientContext* context, const ::mavsdk::rpc::telemetry::SetRateGroundSpeedNedRequest& request, ::mavsdk::rpc::telemetry::SetRateGroundSpeedNedResponse* response) override;
-    std::unique_ptr< ::grpc::ClientAsyncResponseReader< ::mavsdk::rpc::telemetry::SetRateGroundSpeedNedResponse>> AsyncSetRateGroundSpeedNed(::grpc::ClientContext* context, const ::mavsdk::rpc::telemetry::SetRateGroundSpeedNedRequest& request, ::grpc::CompletionQueue* cq) {
-      return std::unique_ptr< ::grpc::ClientAsyncResponseReader< ::mavsdk::rpc::telemetry::SetRateGroundSpeedNedResponse>>(AsyncSetRateGroundSpeedNedRaw(context, request, cq));
+    ::grpc::Status SetRateVelocityNed(::grpc::ClientContext* context, const ::mavsdk::rpc::telemetry::SetRateVelocityNedRequest& request, ::mavsdk::rpc::telemetry::SetRateVelocityNedResponse* response) override;
+    std::unique_ptr< ::grpc::ClientAsyncResponseReader< ::mavsdk::rpc::telemetry::SetRateVelocityNedResponse>> AsyncSetRateVelocityNed(::grpc::ClientContext* context, const ::mavsdk::rpc::telemetry::SetRateVelocityNedRequest& request, ::grpc::CompletionQueue* cq) {
+      return std::unique_ptr< ::grpc::ClientAsyncResponseReader< ::mavsdk::rpc::telemetry::SetRateVelocityNedResponse>>(AsyncSetRateVelocityNedRaw(context, request, cq));
     }
-    std::unique_ptr< ::grpc::ClientAsyncResponseReader< ::mavsdk::rpc::telemetry::SetRateGroundSpeedNedResponse>> PrepareAsyncSetRateGroundSpeedNed(::grpc::ClientContext* context, const ::mavsdk::rpc::telemetry::SetRateGroundSpeedNedRequest& request, ::grpc::CompletionQueue* cq) {
-      return std::unique_ptr< ::grpc::ClientAsyncResponseReader< ::mavsdk::rpc::telemetry::SetRateGroundSpeedNedResponse>>(PrepareAsyncSetRateGroundSpeedNedRaw(context, request, cq));
+    std::unique_ptr< ::grpc::ClientAsyncResponseReader< ::mavsdk::rpc::telemetry::SetRateVelocityNedResponse>> PrepareAsyncSetRateVelocityNed(::grpc::ClientContext* context, const ::mavsdk::rpc::telemetry::SetRateVelocityNedRequest& request, ::grpc::CompletionQueue* cq) {
+      return std::unique_ptr< ::grpc::ClientAsyncResponseReader< ::mavsdk::rpc::telemetry::SetRateVelocityNedResponse>>(PrepareAsyncSetRateVelocityNedRaw(context, request, cq));
     }
     ::grpc::Status SetRateGpsInfo(::grpc::ClientContext* context, const ::mavsdk::rpc::telemetry::SetRateGpsInfoRequest& request, ::mavsdk::rpc::telemetry::SetRateGpsInfoResponse* response) override;
     std::unique_ptr< ::grpc::ClientAsyncResponseReader< ::mavsdk::rpc::telemetry::SetRateGpsInfoResponse>> AsyncSetRateGpsInfo(::grpc::ClientContext* context, const ::mavsdk::rpc::telemetry::SetRateGpsInfoRequest& request, ::grpc::CompletionQueue* cq) {
@@ -1379,9 +1379,9 @@ class TelemetryService final {
       void SubscribeCameraAttitudeEuler(::grpc::ClientContext* context, ::mavsdk::rpc::telemetry::SubscribeCameraAttitudeEulerRequest* request, ::grpc::experimental::ClientReadReactor< ::mavsdk::rpc::telemetry::CameraAttitudeEulerResponse>* reactor) override;
       #endif
       #ifdef GRPC_CALLBACK_API_NONEXPERIMENTAL
-      void SubscribeGroundSpeedNed(::grpc::ClientContext* context, ::mavsdk::rpc::telemetry::SubscribeGroundSpeedNedRequest* request, ::grpc::ClientReadReactor< ::mavsdk::rpc::telemetry::GroundSpeedNedResponse>* reactor) override;
+      void SubscribeVelocityNed(::grpc::ClientContext* context, ::mavsdk::rpc::telemetry::SubscribeVelocityNedRequest* request, ::grpc::ClientReadReactor< ::mavsdk::rpc::telemetry::VelocityNedResponse>* reactor) override;
       #else
-      void SubscribeGroundSpeedNed(::grpc::ClientContext* context, ::mavsdk::rpc::telemetry::SubscribeGroundSpeedNedRequest* request, ::grpc::experimental::ClientReadReactor< ::mavsdk::rpc::telemetry::GroundSpeedNedResponse>* reactor) override;
+      void SubscribeVelocityNed(::grpc::ClientContext* context, ::mavsdk::rpc::telemetry::SubscribeVelocityNedRequest* request, ::grpc::experimental::ClientReadReactor< ::mavsdk::rpc::telemetry::VelocityNedResponse>* reactor) override;
       #endif
       #ifdef GRPC_CALLBACK_API_NONEXPERIMENTAL
       void SubscribeGpsInfo(::grpc::ClientContext* context, ::mavsdk::rpc::telemetry::SubscribeGpsInfoRequest* request, ::grpc::ClientReadReactor< ::mavsdk::rpc::telemetry::GpsInfoResponse>* reactor) override;
@@ -1530,17 +1530,17 @@ class TelemetryService final {
       #else
       void SetRateCameraAttitude(::grpc::ClientContext* context, const ::grpc::ByteBuffer* request, ::mavsdk::rpc::telemetry::SetRateCameraAttitudeResponse* response, ::grpc::experimental::ClientUnaryReactor* reactor) override;
       #endif
-      void SetRateGroundSpeedNed(::grpc::ClientContext* context, const ::mavsdk::rpc::telemetry::SetRateGroundSpeedNedRequest* request, ::mavsdk::rpc::telemetry::SetRateGroundSpeedNedResponse* response, std::function<void(::grpc::Status)>) override;
-      void SetRateGroundSpeedNed(::grpc::ClientContext* context, const ::grpc::ByteBuffer* request, ::mavsdk::rpc::telemetry::SetRateGroundSpeedNedResponse* response, std::function<void(::grpc::Status)>) override;
+      void SetRateVelocityNed(::grpc::ClientContext* context, const ::mavsdk::rpc::telemetry::SetRateVelocityNedRequest* request, ::mavsdk::rpc::telemetry::SetRateVelocityNedResponse* response, std::function<void(::grpc::Status)>) override;
+      void SetRateVelocityNed(::grpc::ClientContext* context, const ::grpc::ByteBuffer* request, ::mavsdk::rpc::telemetry::SetRateVelocityNedResponse* response, std::function<void(::grpc::Status)>) override;
       #ifdef GRPC_CALLBACK_API_NONEXPERIMENTAL
-      void SetRateGroundSpeedNed(::grpc::ClientContext* context, const ::mavsdk::rpc::telemetry::SetRateGroundSpeedNedRequest* request, ::mavsdk::rpc::telemetry::SetRateGroundSpeedNedResponse* response, ::grpc::ClientUnaryReactor* reactor) override;
+      void SetRateVelocityNed(::grpc::ClientContext* context, const ::mavsdk::rpc::telemetry::SetRateVelocityNedRequest* request, ::mavsdk::rpc::telemetry::SetRateVelocityNedResponse* response, ::grpc::ClientUnaryReactor* reactor) override;
       #else
-      void SetRateGroundSpeedNed(::grpc::ClientContext* context, const ::mavsdk::rpc::telemetry::SetRateGroundSpeedNedRequest* request, ::mavsdk::rpc::telemetry::SetRateGroundSpeedNedResponse* response, ::grpc::experimental::ClientUnaryReactor* reactor) override;
+      void SetRateVelocityNed(::grpc::ClientContext* context, const ::mavsdk::rpc::telemetry::SetRateVelocityNedRequest* request, ::mavsdk::rpc::telemetry::SetRateVelocityNedResponse* response, ::grpc::experimental::ClientUnaryReactor* reactor) override;
       #endif
       #ifdef GRPC_CALLBACK_API_NONEXPERIMENTAL
-      void SetRateGroundSpeedNed(::grpc::ClientContext* context, const ::grpc::ByteBuffer* request, ::mavsdk::rpc::telemetry::SetRateGroundSpeedNedResponse* response, ::grpc::ClientUnaryReactor* reactor) override;
+      void SetRateVelocityNed(::grpc::ClientContext* context, const ::grpc::ByteBuffer* request, ::mavsdk::rpc::telemetry::SetRateVelocityNedResponse* response, ::grpc::ClientUnaryReactor* reactor) override;
       #else
-      void SetRateGroundSpeedNed(::grpc::ClientContext* context, const ::grpc::ByteBuffer* request, ::mavsdk::rpc::telemetry::SetRateGroundSpeedNedResponse* response, ::grpc::experimental::ClientUnaryReactor* reactor) override;
+      void SetRateVelocityNed(::grpc::ClientContext* context, const ::grpc::ByteBuffer* request, ::mavsdk::rpc::telemetry::SetRateVelocityNedResponse* response, ::grpc::experimental::ClientUnaryReactor* reactor) override;
       #endif
       void SetRateGpsInfo(::grpc::ClientContext* context, const ::mavsdk::rpc::telemetry::SetRateGpsInfoRequest* request, ::mavsdk::rpc::telemetry::SetRateGpsInfoResponse* response, std::function<void(::grpc::Status)>) override;
       void SetRateGpsInfo(::grpc::ClientContext* context, const ::grpc::ByteBuffer* request, ::mavsdk::rpc::telemetry::SetRateGpsInfoResponse* response, std::function<void(::grpc::Status)>) override;
@@ -1715,9 +1715,9 @@ class TelemetryService final {
     ::grpc::ClientReader< ::mavsdk::rpc::telemetry::CameraAttitudeEulerResponse>* SubscribeCameraAttitudeEulerRaw(::grpc::ClientContext* context, const ::mavsdk::rpc::telemetry::SubscribeCameraAttitudeEulerRequest& request) override;
     ::grpc::ClientAsyncReader< ::mavsdk::rpc::telemetry::CameraAttitudeEulerResponse>* AsyncSubscribeCameraAttitudeEulerRaw(::grpc::ClientContext* context, const ::mavsdk::rpc::telemetry::SubscribeCameraAttitudeEulerRequest& request, ::grpc::CompletionQueue* cq, void* tag) override;
     ::grpc::ClientAsyncReader< ::mavsdk::rpc::telemetry::CameraAttitudeEulerResponse>* PrepareAsyncSubscribeCameraAttitudeEulerRaw(::grpc::ClientContext* context, const ::mavsdk::rpc::telemetry::SubscribeCameraAttitudeEulerRequest& request, ::grpc::CompletionQueue* cq) override;
-    ::grpc::ClientReader< ::mavsdk::rpc::telemetry::GroundSpeedNedResponse>* SubscribeGroundSpeedNedRaw(::grpc::ClientContext* context, const ::mavsdk::rpc::telemetry::SubscribeGroundSpeedNedRequest& request) override;
-    ::grpc::ClientAsyncReader< ::mavsdk::rpc::telemetry::GroundSpeedNedResponse>* AsyncSubscribeGroundSpeedNedRaw(::grpc::ClientContext* context, const ::mavsdk::rpc::telemetry::SubscribeGroundSpeedNedRequest& request, ::grpc::CompletionQueue* cq, void* tag) override;
-    ::grpc::ClientAsyncReader< ::mavsdk::rpc::telemetry::GroundSpeedNedResponse>* PrepareAsyncSubscribeGroundSpeedNedRaw(::grpc::ClientContext* context, const ::mavsdk::rpc::telemetry::SubscribeGroundSpeedNedRequest& request, ::grpc::CompletionQueue* cq) override;
+    ::grpc::ClientReader< ::mavsdk::rpc::telemetry::VelocityNedResponse>* SubscribeVelocityNedRaw(::grpc::ClientContext* context, const ::mavsdk::rpc::telemetry::SubscribeVelocityNedRequest& request) override;
+    ::grpc::ClientAsyncReader< ::mavsdk::rpc::telemetry::VelocityNedResponse>* AsyncSubscribeVelocityNedRaw(::grpc::ClientContext* context, const ::mavsdk::rpc::telemetry::SubscribeVelocityNedRequest& request, ::grpc::CompletionQueue* cq, void* tag) override;
+    ::grpc::ClientAsyncReader< ::mavsdk::rpc::telemetry::VelocityNedResponse>* PrepareAsyncSubscribeVelocityNedRaw(::grpc::ClientContext* context, const ::mavsdk::rpc::telemetry::SubscribeVelocityNedRequest& request, ::grpc::CompletionQueue* cq) override;
     ::grpc::ClientReader< ::mavsdk::rpc::telemetry::GpsInfoResponse>* SubscribeGpsInfoRaw(::grpc::ClientContext* context, const ::mavsdk::rpc::telemetry::SubscribeGpsInfoRequest& request) override;
     ::grpc::ClientAsyncReader< ::mavsdk::rpc::telemetry::GpsInfoResponse>* AsyncSubscribeGpsInfoRaw(::grpc::ClientContext* context, const ::mavsdk::rpc::telemetry::SubscribeGpsInfoRequest& request, ::grpc::CompletionQueue* cq, void* tag) override;
     ::grpc::ClientAsyncReader< ::mavsdk::rpc::telemetry::GpsInfoResponse>* PrepareAsyncSubscribeGpsInfoRaw(::grpc::ClientContext* context, const ::mavsdk::rpc::telemetry::SubscribeGpsInfoRequest& request, ::grpc::CompletionQueue* cq) override;
@@ -1775,8 +1775,8 @@ class TelemetryService final {
     ::grpc::ClientAsyncResponseReader< ::mavsdk::rpc::telemetry::SetRateAttitudeResponse>* PrepareAsyncSetRateAttitudeRaw(::grpc::ClientContext* context, const ::mavsdk::rpc::telemetry::SetRateAttitudeRequest& request, ::grpc::CompletionQueue* cq) override;
     ::grpc::ClientAsyncResponseReader< ::mavsdk::rpc::telemetry::SetRateCameraAttitudeResponse>* AsyncSetRateCameraAttitudeRaw(::grpc::ClientContext* context, const ::mavsdk::rpc::telemetry::SetRateCameraAttitudeRequest& request, ::grpc::CompletionQueue* cq) override;
     ::grpc::ClientAsyncResponseReader< ::mavsdk::rpc::telemetry::SetRateCameraAttitudeResponse>* PrepareAsyncSetRateCameraAttitudeRaw(::grpc::ClientContext* context, const ::mavsdk::rpc::telemetry::SetRateCameraAttitudeRequest& request, ::grpc::CompletionQueue* cq) override;
-    ::grpc::ClientAsyncResponseReader< ::mavsdk::rpc::telemetry::SetRateGroundSpeedNedResponse>* AsyncSetRateGroundSpeedNedRaw(::grpc::ClientContext* context, const ::mavsdk::rpc::telemetry::SetRateGroundSpeedNedRequest& request, ::grpc::CompletionQueue* cq) override;
-    ::grpc::ClientAsyncResponseReader< ::mavsdk::rpc::telemetry::SetRateGroundSpeedNedResponse>* PrepareAsyncSetRateGroundSpeedNedRaw(::grpc::ClientContext* context, const ::mavsdk::rpc::telemetry::SetRateGroundSpeedNedRequest& request, ::grpc::CompletionQueue* cq) override;
+    ::grpc::ClientAsyncResponseReader< ::mavsdk::rpc::telemetry::SetRateVelocityNedResponse>* AsyncSetRateVelocityNedRaw(::grpc::ClientContext* context, const ::mavsdk::rpc::telemetry::SetRateVelocityNedRequest& request, ::grpc::CompletionQueue* cq) override;
+    ::grpc::ClientAsyncResponseReader< ::mavsdk::rpc::telemetry::SetRateVelocityNedResponse>* PrepareAsyncSetRateVelocityNedRaw(::grpc::ClientContext* context, const ::mavsdk::rpc::telemetry::SetRateVelocityNedRequest& request, ::grpc::CompletionQueue* cq) override;
     ::grpc::ClientAsyncResponseReader< ::mavsdk::rpc::telemetry::SetRateGpsInfoResponse>* AsyncSetRateGpsInfoRaw(::grpc::ClientContext* context, const ::mavsdk::rpc::telemetry::SetRateGpsInfoRequest& request, ::grpc::CompletionQueue* cq) override;
     ::grpc::ClientAsyncResponseReader< ::mavsdk::rpc::telemetry::SetRateGpsInfoResponse>* PrepareAsyncSetRateGpsInfoRaw(::grpc::ClientContext* context, const ::mavsdk::rpc::telemetry::SetRateGpsInfoRequest& request, ::grpc::CompletionQueue* cq) override;
     ::grpc::ClientAsyncResponseReader< ::mavsdk::rpc::telemetry::SetRateBatteryResponse>* AsyncSetRateBatteryRaw(::grpc::ClientContext* context, const ::mavsdk::rpc::telemetry::SetRateBatteryRequest& request, ::grpc::CompletionQueue* cq) override;
@@ -1809,7 +1809,7 @@ class TelemetryService final {
     const ::grpc::internal::RpcMethod rpcmethod_SubscribeAttitudeAngularVelocityBody_;
     const ::grpc::internal::RpcMethod rpcmethod_SubscribeCameraAttitudeQuaternion_;
     const ::grpc::internal::RpcMethod rpcmethod_SubscribeCameraAttitudeEuler_;
-    const ::grpc::internal::RpcMethod rpcmethod_SubscribeGroundSpeedNed_;
+    const ::grpc::internal::RpcMethod rpcmethod_SubscribeVelocityNed_;
     const ::grpc::internal::RpcMethod rpcmethod_SubscribeGpsInfo_;
     const ::grpc::internal::RpcMethod rpcmethod_SubscribeBattery_;
     const ::grpc::internal::RpcMethod rpcmethod_SubscribeFlightMode_;
@@ -1831,7 +1831,7 @@ class TelemetryService final {
     const ::grpc::internal::RpcMethod rpcmethod_SetRateLandedState_;
     const ::grpc::internal::RpcMethod rpcmethod_SetRateAttitude_;
     const ::grpc::internal::RpcMethod rpcmethod_SetRateCameraAttitude_;
-    const ::grpc::internal::RpcMethod rpcmethod_SetRateGroundSpeedNed_;
+    const ::grpc::internal::RpcMethod rpcmethod_SetRateVelocityNed_;
     const ::grpc::internal::RpcMethod rpcmethod_SetRateGpsInfo_;
     const ::grpc::internal::RpcMethod rpcmethod_SetRateBattery_;
     const ::grpc::internal::RpcMethod rpcmethod_SetRateRcStatus_;
@@ -1871,7 +1871,7 @@ class TelemetryService final {
     // Subscribe to 'camera attitude' updates (Euler).
     virtual ::grpc::Status SubscribeCameraAttitudeEuler(::grpc::ServerContext* context, const ::mavsdk::rpc::telemetry::SubscribeCameraAttitudeEulerRequest* request, ::grpc::ServerWriter< ::mavsdk::rpc::telemetry::CameraAttitudeEulerResponse>* writer);
     // Subscribe to 'ground speed' updates (NED).
-    virtual ::grpc::Status SubscribeGroundSpeedNed(::grpc::ServerContext* context, const ::mavsdk::rpc::telemetry::SubscribeGroundSpeedNedRequest* request, ::grpc::ServerWriter< ::mavsdk::rpc::telemetry::GroundSpeedNedResponse>* writer);
+    virtual ::grpc::Status SubscribeVelocityNed(::grpc::ServerContext* context, const ::mavsdk::rpc::telemetry::SubscribeVelocityNedRequest* request, ::grpc::ServerWriter< ::mavsdk::rpc::telemetry::VelocityNedResponse>* writer);
     // Subscribe to 'GPS info' updates.
     virtual ::grpc::Status SubscribeGpsInfo(::grpc::ServerContext* context, const ::mavsdk::rpc::telemetry::SubscribeGpsInfoRequest* request, ::grpc::ServerWriter< ::mavsdk::rpc::telemetry::GpsInfoResponse>* writer);
     // Subscribe to 'battery' updates.
@@ -1915,7 +1915,7 @@ class TelemetryService final {
     // Set rate of camera attitude updates.
     virtual ::grpc::Status SetRateCameraAttitude(::grpc::ServerContext* context, const ::mavsdk::rpc::telemetry::SetRateCameraAttitudeRequest* request, ::mavsdk::rpc::telemetry::SetRateCameraAttitudeResponse* response);
     // Set rate to 'ground speed' updates (NED).
-    virtual ::grpc::Status SetRateGroundSpeedNed(::grpc::ServerContext* context, const ::mavsdk::rpc::telemetry::SetRateGroundSpeedNedRequest* request, ::mavsdk::rpc::telemetry::SetRateGroundSpeedNedResponse* response);
+    virtual ::grpc::Status SetRateVelocityNed(::grpc::ServerContext* context, const ::mavsdk::rpc::telemetry::SetRateVelocityNedRequest* request, ::mavsdk::rpc::telemetry::SetRateVelocityNedResponse* response);
     // Set rate to 'GPS info' updates.
     virtual ::grpc::Status SetRateGpsInfo(::grpc::ServerContext* context, const ::mavsdk::rpc::telemetry::SetRateGpsInfoRequest* request, ::mavsdk::rpc::telemetry::SetRateGpsInfoResponse* response);
     // Set rate to 'battery' updates.
@@ -2140,22 +2140,22 @@ class TelemetryService final {
     }
   };
   template <class BaseClass>
-  class WithAsyncMethod_SubscribeGroundSpeedNed : public BaseClass {
+  class WithAsyncMethod_SubscribeVelocityNed : public BaseClass {
    private:
     void BaseClassMustBeDerivedFromService(const Service* /*service*/) {}
    public:
-    WithAsyncMethod_SubscribeGroundSpeedNed() {
+    WithAsyncMethod_SubscribeVelocityNed() {
       ::grpc::Service::MarkMethodAsync(10);
     }
-    ~WithAsyncMethod_SubscribeGroundSpeedNed() override {
+    ~WithAsyncMethod_SubscribeVelocityNed() override {
       BaseClassMustBeDerivedFromService(this);
     }
     // disable synchronous version of this method
-    ::grpc::Status SubscribeGroundSpeedNed(::grpc::ServerContext* /*context*/, const ::mavsdk::rpc::telemetry::SubscribeGroundSpeedNedRequest* /*request*/, ::grpc::ServerWriter< ::mavsdk::rpc::telemetry::GroundSpeedNedResponse>* /*writer*/) override {
+    ::grpc::Status SubscribeVelocityNed(::grpc::ServerContext* /*context*/, const ::mavsdk::rpc::telemetry::SubscribeVelocityNedRequest* /*request*/, ::grpc::ServerWriter< ::mavsdk::rpc::telemetry::VelocityNedResponse>* /*writer*/) override {
       abort();
       return ::grpc::Status(::grpc::StatusCode::UNIMPLEMENTED, "");
     }
-    void RequestSubscribeGroundSpeedNed(::grpc::ServerContext* context, ::mavsdk::rpc::telemetry::SubscribeGroundSpeedNedRequest* request, ::grpc::ServerAsyncWriter< ::mavsdk::rpc::telemetry::GroundSpeedNedResponse>* writer, ::grpc::CompletionQueue* new_call_cq, ::grpc::ServerCompletionQueue* notification_cq, void *tag) {
+    void RequestSubscribeVelocityNed(::grpc::ServerContext* context, ::mavsdk::rpc::telemetry::SubscribeVelocityNedRequest* request, ::grpc::ServerAsyncWriter< ::mavsdk::rpc::telemetry::VelocityNedResponse>* writer, ::grpc::CompletionQueue* new_call_cq, ::grpc::ServerCompletionQueue* notification_cq, void *tag) {
       ::grpc::Service::RequestAsyncServerStreaming(10, context, request, writer, new_call_cq, notification_cq, tag);
     }
   };
@@ -2580,22 +2580,22 @@ class TelemetryService final {
     }
   };
   template <class BaseClass>
-  class WithAsyncMethod_SetRateGroundSpeedNed : public BaseClass {
+  class WithAsyncMethod_SetRateVelocityNed : public BaseClass {
    private:
     void BaseClassMustBeDerivedFromService(const Service* /*service*/) {}
    public:
-    WithAsyncMethod_SetRateGroundSpeedNed() {
+    WithAsyncMethod_SetRateVelocityNed() {
       ::grpc::Service::MarkMethodAsync(32);
     }
-    ~WithAsyncMethod_SetRateGroundSpeedNed() override {
+    ~WithAsyncMethod_SetRateVelocityNed() override {
       BaseClassMustBeDerivedFromService(this);
     }
     // disable synchronous version of this method
-    ::grpc::Status SetRateGroundSpeedNed(::grpc::ServerContext* /*context*/, const ::mavsdk::rpc::telemetry::SetRateGroundSpeedNedRequest* /*request*/, ::mavsdk::rpc::telemetry::SetRateGroundSpeedNedResponse* /*response*/) override {
+    ::grpc::Status SetRateVelocityNed(::grpc::ServerContext* /*context*/, const ::mavsdk::rpc::telemetry::SetRateVelocityNedRequest* /*request*/, ::mavsdk::rpc::telemetry::SetRateVelocityNedResponse* /*response*/) override {
       abort();
       return ::grpc::Status(::grpc::StatusCode::UNIMPLEMENTED, "");
     }
-    void RequestSetRateGroundSpeedNed(::grpc::ServerContext* context, ::mavsdk::rpc::telemetry::SetRateGroundSpeedNedRequest* request, ::grpc::ServerAsyncResponseWriter< ::mavsdk::rpc::telemetry::SetRateGroundSpeedNedResponse>* response, ::grpc::CompletionQueue* new_call_cq, ::grpc::ServerCompletionQueue* notification_cq, void *tag) {
+    void RequestSetRateVelocityNed(::grpc::ServerContext* context, ::mavsdk::rpc::telemetry::SetRateVelocityNedRequest* request, ::grpc::ServerAsyncResponseWriter< ::mavsdk::rpc::telemetry::SetRateVelocityNedResponse>* response, ::grpc::CompletionQueue* new_call_cq, ::grpc::ServerCompletionQueue* notification_cq, void *tag) {
       ::grpc::Service::RequestAsyncUnary(32, context, request, response, new_call_cq, notification_cq, tag);
     }
   };
@@ -2819,7 +2819,7 @@ class TelemetryService final {
       ::grpc::Service::RequestAsyncUnary(43, context, request, response, new_call_cq, notification_cq, tag);
     }
   };
-  typedef WithAsyncMethod_SubscribePosition<WithAsyncMethod_SubscribeHome<WithAsyncMethod_SubscribeInAir<WithAsyncMethod_SubscribeLandedState<WithAsyncMethod_SubscribeArmed<WithAsyncMethod_SubscribeAttitudeQuaternion<WithAsyncMethod_SubscribeAttitudeEuler<WithAsyncMethod_SubscribeAttitudeAngularVelocityBody<WithAsyncMethod_SubscribeCameraAttitudeQuaternion<WithAsyncMethod_SubscribeCameraAttitudeEuler<WithAsyncMethod_SubscribeGroundSpeedNed<WithAsyncMethod_SubscribeGpsInfo<WithAsyncMethod_SubscribeBattery<WithAsyncMethod_SubscribeFlightMode<WithAsyncMethod_SubscribeHealth<WithAsyncMethod_SubscribeRcStatus<WithAsyncMethod_SubscribeStatusText<WithAsyncMethod_SubscribeActuatorControlTarget<WithAsyncMethod_SubscribeActuatorOutputStatus<WithAsyncMethod_SubscribeOdometry<WithAsyncMethod_SubscribePositionVelocityNed<WithAsyncMethod_SubscribeGroundTruth<WithAsyncMethod_SubscribeFixedwingMetrics<WithAsyncMethod_SubscribeImu<WithAsyncMethod_SubscribeHealthAllOk<WithAsyncMethod_SubscribeUnixEpochTime<WithAsyncMethod_SetRatePosition<WithAsyncMethod_SetRateHome<WithAsyncMethod_SetRateInAir<WithAsyncMethod_SetRateLandedState<WithAsyncMethod_SetRateAttitude<WithAsyncMethod_SetRateCameraAttitude<WithAsyncMethod_SetRateGroundSpeedNed<WithAsyncMethod_SetRateGpsInfo<WithAsyncMethod_SetRateBattery<WithAsyncMethod_SetRateRcStatus<WithAsyncMethod_SetRateActuatorControlTarget<WithAsyncMethod_SetRateActuatorOutputStatus<WithAsyncMethod_SetRateOdometry<WithAsyncMethod_SetRatePositionVelocityNed<WithAsyncMethod_SetRateGroundTruth<WithAsyncMethod_SetRateFixedwingMetrics<WithAsyncMethod_SetRateImu<WithAsyncMethod_SetRateUnixEpochTime<Service > > > > > > > > > > > > > > > > > > > > > > > > > > > > > > > > > > > > > > > > > > > > AsyncService;
+  typedef WithAsyncMethod_SubscribePosition<WithAsyncMethod_SubscribeHome<WithAsyncMethod_SubscribeInAir<WithAsyncMethod_SubscribeLandedState<WithAsyncMethod_SubscribeArmed<WithAsyncMethod_SubscribeAttitudeQuaternion<WithAsyncMethod_SubscribeAttitudeEuler<WithAsyncMethod_SubscribeAttitudeAngularVelocityBody<WithAsyncMethod_SubscribeCameraAttitudeQuaternion<WithAsyncMethod_SubscribeCameraAttitudeEuler<WithAsyncMethod_SubscribeVelocityNed<WithAsyncMethod_SubscribeGpsInfo<WithAsyncMethod_SubscribeBattery<WithAsyncMethod_SubscribeFlightMode<WithAsyncMethod_SubscribeHealth<WithAsyncMethod_SubscribeRcStatus<WithAsyncMethod_SubscribeStatusText<WithAsyncMethod_SubscribeActuatorControlTarget<WithAsyncMethod_SubscribeActuatorOutputStatus<WithAsyncMethod_SubscribeOdometry<WithAsyncMethod_SubscribePositionVelocityNed<WithAsyncMethod_SubscribeGroundTruth<WithAsyncMethod_SubscribeFixedwingMetrics<WithAsyncMethod_SubscribeImu<WithAsyncMethod_SubscribeHealthAllOk<WithAsyncMethod_SubscribeUnixEpochTime<WithAsyncMethod_SetRatePosition<WithAsyncMethod_SetRateHome<WithAsyncMethod_SetRateInAir<WithAsyncMethod_SetRateLandedState<WithAsyncMethod_SetRateAttitude<WithAsyncMethod_SetRateCameraAttitude<WithAsyncMethod_SetRateVelocityNed<WithAsyncMethod_SetRateGpsInfo<WithAsyncMethod_SetRateBattery<WithAsyncMethod_SetRateRcStatus<WithAsyncMethod_SetRateActuatorControlTarget<WithAsyncMethod_SetRateActuatorOutputStatus<WithAsyncMethod_SetRateOdometry<WithAsyncMethod_SetRatePositionVelocityNed<WithAsyncMethod_SetRateGroundTruth<WithAsyncMethod_SetRateFixedwingMetrics<WithAsyncMethod_SetRateImu<WithAsyncMethod_SetRateUnixEpochTime<Service > > > > > > > > > > > > > > > > > > > > > > > > > > > > > > > > > > > > > > > > > > > > AsyncService;
   template <class BaseClass>
   class ExperimentalWithCallbackMethod_SubscribePosition : public BaseClass {
    private:
@@ -3201,40 +3201,40 @@ class TelemetryService final {
       { return nullptr; }
   };
   template <class BaseClass>
-  class ExperimentalWithCallbackMethod_SubscribeGroundSpeedNed : public BaseClass {
+  class ExperimentalWithCallbackMethod_SubscribeVelocityNed : public BaseClass {
    private:
     void BaseClassMustBeDerivedFromService(const Service* /*service*/) {}
    public:
-    ExperimentalWithCallbackMethod_SubscribeGroundSpeedNed() {
+    ExperimentalWithCallbackMethod_SubscribeVelocityNed() {
     #ifdef GRPC_CALLBACK_API_NONEXPERIMENTAL
       ::grpc::Service::
     #else
       ::grpc::Service::experimental().
     #endif
         MarkMethodCallback(10,
-          new ::grpc_impl::internal::CallbackServerStreamingHandler< ::mavsdk::rpc::telemetry::SubscribeGroundSpeedNedRequest, ::mavsdk::rpc::telemetry::GroundSpeedNedResponse>(
+          new ::grpc_impl::internal::CallbackServerStreamingHandler< ::mavsdk::rpc::telemetry::SubscribeVelocityNedRequest, ::mavsdk::rpc::telemetry::VelocityNedResponse>(
             [this](
     #ifdef GRPC_CALLBACK_API_NONEXPERIMENTAL
                    ::grpc::CallbackServerContext*
     #else
                    ::grpc::experimental::CallbackServerContext*
     #endif
-                     context, const ::mavsdk::rpc::telemetry::SubscribeGroundSpeedNedRequest* request) { return this->SubscribeGroundSpeedNed(context, request); }));
+                     context, const ::mavsdk::rpc::telemetry::SubscribeVelocityNedRequest* request) { return this->SubscribeVelocityNed(context, request); }));
     }
-    ~ExperimentalWithCallbackMethod_SubscribeGroundSpeedNed() override {
+    ~ExperimentalWithCallbackMethod_SubscribeVelocityNed() override {
       BaseClassMustBeDerivedFromService(this);
     }
     // disable synchronous version of this method
-    ::grpc::Status SubscribeGroundSpeedNed(::grpc::ServerContext* /*context*/, const ::mavsdk::rpc::telemetry::SubscribeGroundSpeedNedRequest* /*request*/, ::grpc::ServerWriter< ::mavsdk::rpc::telemetry::GroundSpeedNedResponse>* /*writer*/) override {
+    ::grpc::Status SubscribeVelocityNed(::grpc::ServerContext* /*context*/, const ::mavsdk::rpc::telemetry::SubscribeVelocityNedRequest* /*request*/, ::grpc::ServerWriter< ::mavsdk::rpc::telemetry::VelocityNedResponse>* /*writer*/) override {
       abort();
       return ::grpc::Status(::grpc::StatusCode::UNIMPLEMENTED, "");
     }
     #ifdef GRPC_CALLBACK_API_NONEXPERIMENTAL
-    virtual ::grpc::ServerWriteReactor< ::mavsdk::rpc::telemetry::GroundSpeedNedResponse>* SubscribeGroundSpeedNed(
-      ::grpc::CallbackServerContext* /*context*/, const ::mavsdk::rpc::telemetry::SubscribeGroundSpeedNedRequest* /*request*/)
+    virtual ::grpc::ServerWriteReactor< ::mavsdk::rpc::telemetry::VelocityNedResponse>* SubscribeVelocityNed(
+      ::grpc::CallbackServerContext* /*context*/, const ::mavsdk::rpc::telemetry::SubscribeVelocityNedRequest* /*request*/)
     #else
-    virtual ::grpc::experimental::ServerWriteReactor< ::mavsdk::rpc::telemetry::GroundSpeedNedResponse>* SubscribeGroundSpeedNed(
-      ::grpc::experimental::CallbackServerContext* /*context*/, const ::mavsdk::rpc::telemetry::SubscribeGroundSpeedNedRequest* /*request*/)
+    virtual ::grpc::experimental::ServerWriteReactor< ::mavsdk::rpc::telemetry::VelocityNedResponse>* SubscribeVelocityNed(
+      ::grpc::experimental::CallbackServerContext* /*context*/, const ::mavsdk::rpc::telemetry::SubscribeVelocityNedRequest* /*request*/)
     #endif
       { return nullptr; }
   };
@@ -4091,49 +4091,49 @@ class TelemetryService final {
       { return nullptr; }
   };
   template <class BaseClass>
-  class ExperimentalWithCallbackMethod_SetRateGroundSpeedNed : public BaseClass {
+  class ExperimentalWithCallbackMethod_SetRateVelocityNed : public BaseClass {
    private:
     void BaseClassMustBeDerivedFromService(const Service* /*service*/) {}
    public:
-    ExperimentalWithCallbackMethod_SetRateGroundSpeedNed() {
+    ExperimentalWithCallbackMethod_SetRateVelocityNed() {
     #ifdef GRPC_CALLBACK_API_NONEXPERIMENTAL
       ::grpc::Service::
     #else
       ::grpc::Service::experimental().
     #endif
         MarkMethodCallback(32,
-          new ::grpc_impl::internal::CallbackUnaryHandler< ::mavsdk::rpc::telemetry::SetRateGroundSpeedNedRequest, ::mavsdk::rpc::telemetry::SetRateGroundSpeedNedResponse>(
+          new ::grpc_impl::internal::CallbackUnaryHandler< ::mavsdk::rpc::telemetry::SetRateVelocityNedRequest, ::mavsdk::rpc::telemetry::SetRateVelocityNedResponse>(
             [this](
     #ifdef GRPC_CALLBACK_API_NONEXPERIMENTAL
                    ::grpc::CallbackServerContext*
     #else
                    ::grpc::experimental::CallbackServerContext*
     #endif
-                     context, const ::mavsdk::rpc::telemetry::SetRateGroundSpeedNedRequest* request, ::mavsdk::rpc::telemetry::SetRateGroundSpeedNedResponse* response) { return this->SetRateGroundSpeedNed(context, request, response); }));}
-    void SetMessageAllocatorFor_SetRateGroundSpeedNed(
-        ::grpc::experimental::MessageAllocator< ::mavsdk::rpc::telemetry::SetRateGroundSpeedNedRequest, ::mavsdk::rpc::telemetry::SetRateGroundSpeedNedResponse>* allocator) {
+                     context, const ::mavsdk::rpc::telemetry::SetRateVelocityNedRequest* request, ::mavsdk::rpc::telemetry::SetRateVelocityNedResponse* response) { return this->SetRateVelocityNed(context, request, response); }));}
+    void SetMessageAllocatorFor_SetRateVelocityNed(
+        ::grpc::experimental::MessageAllocator< ::mavsdk::rpc::telemetry::SetRateVelocityNedRequest, ::mavsdk::rpc::telemetry::SetRateVelocityNedResponse>* allocator) {
     #ifdef GRPC_CALLBACK_API_NONEXPERIMENTAL
       ::grpc::internal::MethodHandler* const handler = ::grpc::Service::GetHandler(32);
     #else
       ::grpc::internal::MethodHandler* const handler = ::grpc::Service::experimental().GetHandler(32);
     #endif
-      static_cast<::grpc_impl::internal::CallbackUnaryHandler< ::mavsdk::rpc::telemetry::SetRateGroundSpeedNedRequest, ::mavsdk::rpc::telemetry::SetRateGroundSpeedNedResponse>*>(handler)
+      static_cast<::grpc_impl::internal::CallbackUnaryHandler< ::mavsdk::rpc::telemetry::SetRateVelocityNedRequest, ::mavsdk::rpc::telemetry::SetRateVelocityNedResponse>*>(handler)
               ->SetMessageAllocator(allocator);
     }
-    ~ExperimentalWithCallbackMethod_SetRateGroundSpeedNed() override {
+    ~ExperimentalWithCallbackMethod_SetRateVelocityNed() override {
       BaseClassMustBeDerivedFromService(this);
     }
     // disable synchronous version of this method
-    ::grpc::Status SetRateGroundSpeedNed(::grpc::ServerContext* /*context*/, const ::mavsdk::rpc::telemetry::SetRateGroundSpeedNedRequest* /*request*/, ::mavsdk::rpc::telemetry::SetRateGroundSpeedNedResponse* /*response*/) override {
+    ::grpc::Status SetRateVelocityNed(::grpc::ServerContext* /*context*/, const ::mavsdk::rpc::telemetry::SetRateVelocityNedRequest* /*request*/, ::mavsdk::rpc::telemetry::SetRateVelocityNedResponse* /*response*/) override {
       abort();
       return ::grpc::Status(::grpc::StatusCode::UNIMPLEMENTED, "");
     }
     #ifdef GRPC_CALLBACK_API_NONEXPERIMENTAL
-    virtual ::grpc::ServerUnaryReactor* SetRateGroundSpeedNed(
-      ::grpc::CallbackServerContext* /*context*/, const ::mavsdk::rpc::telemetry::SetRateGroundSpeedNedRequest* /*request*/, ::mavsdk::rpc::telemetry::SetRateGroundSpeedNedResponse* /*response*/)
+    virtual ::grpc::ServerUnaryReactor* SetRateVelocityNed(
+      ::grpc::CallbackServerContext* /*context*/, const ::mavsdk::rpc::telemetry::SetRateVelocityNedRequest* /*request*/, ::mavsdk::rpc::telemetry::SetRateVelocityNedResponse* /*response*/)
     #else
-    virtual ::grpc::experimental::ServerUnaryReactor* SetRateGroundSpeedNed(
-      ::grpc::experimental::CallbackServerContext* /*context*/, const ::mavsdk::rpc::telemetry::SetRateGroundSpeedNedRequest* /*request*/, ::mavsdk::rpc::telemetry::SetRateGroundSpeedNedResponse* /*response*/)
+    virtual ::grpc::experimental::ServerUnaryReactor* SetRateVelocityNed(
+      ::grpc::experimental::CallbackServerContext* /*context*/, const ::mavsdk::rpc::telemetry::SetRateVelocityNedRequest* /*request*/, ::mavsdk::rpc::telemetry::SetRateVelocityNedResponse* /*response*/)
     #endif
       { return nullptr; }
   };
@@ -4655,10 +4655,10 @@ class TelemetryService final {
       { return nullptr; }
   };
   #ifdef GRPC_CALLBACK_API_NONEXPERIMENTAL
-  typedef ExperimentalWithCallbackMethod_SubscribePosition<ExperimentalWithCallbackMethod_SubscribeHome<ExperimentalWithCallbackMethod_SubscribeInAir<ExperimentalWithCallbackMethod_SubscribeLandedState<ExperimentalWithCallbackMethod_SubscribeArmed<ExperimentalWithCallbackMethod_SubscribeAttitudeQuaternion<ExperimentalWithCallbackMethod_SubscribeAttitudeEuler<ExperimentalWithCallbackMethod_SubscribeAttitudeAngularVelocityBody<ExperimentalWithCallbackMethod_SubscribeCameraAttitudeQuaternion<ExperimentalWithCallbackMethod_SubscribeCameraAttitudeEuler<ExperimentalWithCallbackMethod_SubscribeGroundSpeedNed<ExperimentalWithCallbackMethod_SubscribeGpsInfo<ExperimentalWithCallbackMethod_SubscribeBattery<ExperimentalWithCallbackMethod_SubscribeFlightMode<ExperimentalWithCallbackMethod_SubscribeHealth<ExperimentalWithCallbackMethod_SubscribeRcStatus<ExperimentalWithCallbackMethod_SubscribeStatusText<ExperimentalWithCallbackMethod_SubscribeActuatorControlTarget<ExperimentalWithCallbackMethod_SubscribeActuatorOutputStatus<ExperimentalWithCallbackMethod_SubscribeOdometry<ExperimentalWithCallbackMethod_SubscribePositionVelocityNed<ExperimentalWithCallbackMethod_SubscribeGroundTruth<ExperimentalWithCallbackMethod_SubscribeFixedwingMetrics<ExperimentalWithCallbackMethod_SubscribeImu<ExperimentalWithCallbackMethod_SubscribeHealthAllOk<ExperimentalWithCallbackMethod_SubscribeUnixEpochTime<ExperimentalWithCallbackMethod_SetRatePosition<ExperimentalWithCallbackMethod_SetRateHome<ExperimentalWithCallbackMethod_SetRateInAir<ExperimentalWithCallbackMethod_SetRateLandedState<ExperimentalWithCallbackMethod_SetRateAttitude<ExperimentalWithCallbackMethod_SetRateCameraAttitude<ExperimentalWithCallbackMethod_SetRateGroundSpeedNed<ExperimentalWithCallbackMethod_SetRateGpsInfo<ExperimentalWithCallbackMethod_SetRateBattery<ExperimentalWithCallbackMethod_SetRateRcStatus<ExperimentalWithCallbackMethod_SetRateActuatorControlTarget<ExperimentalWithCallbackMethod_SetRateActuatorOutputStatus<ExperimentalWithCallbackMethod_SetRateOdometry<ExperimentalWithCallbackMethod_SetRatePositionVelocityNed<ExperimentalWithCallbackMethod_SetRateGroundTruth<ExperimentalWithCallbackMethod_SetRateFixedwingMetrics<ExperimentalWithCallbackMethod_SetRateImu<ExperimentalWithCallbackMethod_SetRateUnixEpochTime<Service > > > > > > > > > > > > > > > > > > > > > > > > > > > > > > > > > > > > > > > > > > > > CallbackService;
+  typedef ExperimentalWithCallbackMethod_SubscribePosition<ExperimentalWithCallbackMethod_SubscribeHome<ExperimentalWithCallbackMethod_SubscribeInAir<ExperimentalWithCallbackMethod_SubscribeLandedState<ExperimentalWithCallbackMethod_SubscribeArmed<ExperimentalWithCallbackMethod_SubscribeAttitudeQuaternion<ExperimentalWithCallbackMethod_SubscribeAttitudeEuler<ExperimentalWithCallbackMethod_SubscribeAttitudeAngularVelocityBody<ExperimentalWithCallbackMethod_SubscribeCameraAttitudeQuaternion<ExperimentalWithCallbackMethod_SubscribeCameraAttitudeEuler<ExperimentalWithCallbackMethod_SubscribeVelocityNed<ExperimentalWithCallbackMethod_SubscribeGpsInfo<ExperimentalWithCallbackMethod_SubscribeBattery<ExperimentalWithCallbackMethod_SubscribeFlightMode<ExperimentalWithCallbackMethod_SubscribeHealth<ExperimentalWithCallbackMethod_SubscribeRcStatus<ExperimentalWithCallbackMethod_SubscribeStatusText<ExperimentalWithCallbackMethod_SubscribeActuatorControlTarget<ExperimentalWithCallbackMethod_SubscribeActuatorOutputStatus<ExperimentalWithCallbackMethod_SubscribeOdometry<ExperimentalWithCallbackMethod_SubscribePositionVelocityNed<ExperimentalWithCallbackMethod_SubscribeGroundTruth<ExperimentalWithCallbackMethod_SubscribeFixedwingMetrics<ExperimentalWithCallbackMethod_SubscribeImu<ExperimentalWithCallbackMethod_SubscribeHealthAllOk<ExperimentalWithCallbackMethod_SubscribeUnixEpochTime<ExperimentalWithCallbackMethod_SetRatePosition<ExperimentalWithCallbackMethod_SetRateHome<ExperimentalWithCallbackMethod_SetRateInAir<ExperimentalWithCallbackMethod_SetRateLandedState<ExperimentalWithCallbackMethod_SetRateAttitude<ExperimentalWithCallbackMethod_SetRateCameraAttitude<ExperimentalWithCallbackMethod_SetRateVelocityNed<ExperimentalWithCallbackMethod_SetRateGpsInfo<ExperimentalWithCallbackMethod_SetRateBattery<ExperimentalWithCallbackMethod_SetRateRcStatus<ExperimentalWithCallbackMethod_SetRateActuatorControlTarget<ExperimentalWithCallbackMethod_SetRateActuatorOutputStatus<ExperimentalWithCallbackMethod_SetRateOdometry<ExperimentalWithCallbackMethod_SetRatePositionVelocityNed<ExperimentalWithCallbackMethod_SetRateGroundTruth<ExperimentalWithCallbackMethod_SetRateFixedwingMetrics<ExperimentalWithCallbackMethod_SetRateImu<ExperimentalWithCallbackMethod_SetRateUnixEpochTime<Service > > > > > > > > > > > > > > > > > > > > > > > > > > > > > > > > > > > > > > > > > > > > CallbackService;
   #endif
 
-  typedef ExperimentalWithCallbackMethod_SubscribePosition<ExperimentalWithCallbackMethod_SubscribeHome<ExperimentalWithCallbackMethod_SubscribeInAir<ExperimentalWithCallbackMethod_SubscribeLandedState<ExperimentalWithCallbackMethod_SubscribeArmed<ExperimentalWithCallbackMethod_SubscribeAttitudeQuaternion<ExperimentalWithCallbackMethod_SubscribeAttitudeEuler<ExperimentalWithCallbackMethod_SubscribeAttitudeAngularVelocityBody<ExperimentalWithCallbackMethod_SubscribeCameraAttitudeQuaternion<ExperimentalWithCallbackMethod_SubscribeCameraAttitudeEuler<ExperimentalWithCallbackMethod_SubscribeGroundSpeedNed<ExperimentalWithCallbackMethod_SubscribeGpsInfo<ExperimentalWithCallbackMethod_SubscribeBattery<ExperimentalWithCallbackMethod_SubscribeFlightMode<ExperimentalWithCallbackMethod_SubscribeHealth<ExperimentalWithCallbackMethod_SubscribeRcStatus<ExperimentalWithCallbackMethod_SubscribeStatusText<ExperimentalWithCallbackMethod_SubscribeActuatorControlTarget<ExperimentalWithCallbackMethod_SubscribeActuatorOutputStatus<ExperimentalWithCallbackMethod_SubscribeOdometry<ExperimentalWithCallbackMethod_SubscribePositionVelocityNed<ExperimentalWithCallbackMethod_SubscribeGroundTruth<ExperimentalWithCallbackMethod_SubscribeFixedwingMetrics<ExperimentalWithCallbackMethod_SubscribeImu<ExperimentalWithCallbackMethod_SubscribeHealthAllOk<ExperimentalWithCallbackMethod_SubscribeUnixEpochTime<ExperimentalWithCallbackMethod_SetRatePosition<ExperimentalWithCallbackMethod_SetRateHome<ExperimentalWithCallbackMethod_SetRateInAir<ExperimentalWithCallbackMethod_SetRateLandedState<ExperimentalWithCallbackMethod_SetRateAttitude<ExperimentalWithCallbackMethod_SetRateCameraAttitude<ExperimentalWithCallbackMethod_SetRateGroundSpeedNed<ExperimentalWithCallbackMethod_SetRateGpsInfo<ExperimentalWithCallbackMethod_SetRateBattery<ExperimentalWithCallbackMethod_SetRateRcStatus<ExperimentalWithCallbackMethod_SetRateActuatorControlTarget<ExperimentalWithCallbackMethod_SetRateActuatorOutputStatus<ExperimentalWithCallbackMethod_SetRateOdometry<ExperimentalWithCallbackMethod_SetRatePositionVelocityNed<ExperimentalWithCallbackMethod_SetRateGroundTruth<ExperimentalWithCallbackMethod_SetRateFixedwingMetrics<ExperimentalWithCallbackMethod_SetRateImu<ExperimentalWithCallbackMethod_SetRateUnixEpochTime<Service > > > > > > > > > > > > > > > > > > > > > > > > > > > > > > > > > > > > > > > > > > > > ExperimentalCallbackService;
+  typedef ExperimentalWithCallbackMethod_SubscribePosition<ExperimentalWithCallbackMethod_SubscribeHome<ExperimentalWithCallbackMethod_SubscribeInAir<ExperimentalWithCallbackMethod_SubscribeLandedState<ExperimentalWithCallbackMethod_SubscribeArmed<ExperimentalWithCallbackMethod_SubscribeAttitudeQuaternion<ExperimentalWithCallbackMethod_SubscribeAttitudeEuler<ExperimentalWithCallbackMethod_SubscribeAttitudeAngularVelocityBody<ExperimentalWithCallbackMethod_SubscribeCameraAttitudeQuaternion<ExperimentalWithCallbackMethod_SubscribeCameraAttitudeEuler<ExperimentalWithCallbackMethod_SubscribeVelocityNed<ExperimentalWithCallbackMethod_SubscribeGpsInfo<ExperimentalWithCallbackMethod_SubscribeBattery<ExperimentalWithCallbackMethod_SubscribeFlightMode<ExperimentalWithCallbackMethod_SubscribeHealth<ExperimentalWithCallbackMethod_SubscribeRcStatus<ExperimentalWithCallbackMethod_SubscribeStatusText<ExperimentalWithCallbackMethod_SubscribeActuatorControlTarget<ExperimentalWithCallbackMethod_SubscribeActuatorOutputStatus<ExperimentalWithCallbackMethod_SubscribeOdometry<ExperimentalWithCallbackMethod_SubscribePositionVelocityNed<ExperimentalWithCallbackMethod_SubscribeGroundTruth<ExperimentalWithCallbackMethod_SubscribeFixedwingMetrics<ExperimentalWithCallbackMethod_SubscribeImu<ExperimentalWithCallbackMethod_SubscribeHealthAllOk<ExperimentalWithCallbackMethod_SubscribeUnixEpochTime<ExperimentalWithCallbackMethod_SetRatePosition<ExperimentalWithCallbackMethod_SetRateHome<ExperimentalWithCallbackMethod_SetRateInAir<ExperimentalWithCallbackMethod_SetRateLandedState<ExperimentalWithCallbackMethod_SetRateAttitude<ExperimentalWithCallbackMethod_SetRateCameraAttitude<ExperimentalWithCallbackMethod_SetRateVelocityNed<ExperimentalWithCallbackMethod_SetRateGpsInfo<ExperimentalWithCallbackMethod_SetRateBattery<ExperimentalWithCallbackMethod_SetRateRcStatus<ExperimentalWithCallbackMethod_SetRateActuatorControlTarget<ExperimentalWithCallbackMethod_SetRateActuatorOutputStatus<ExperimentalWithCallbackMethod_SetRateOdometry<ExperimentalWithCallbackMethod_SetRatePositionVelocityNed<ExperimentalWithCallbackMethod_SetRateGroundTruth<ExperimentalWithCallbackMethod_SetRateFixedwingMetrics<ExperimentalWithCallbackMethod_SetRateImu<ExperimentalWithCallbackMethod_SetRateUnixEpochTime<Service > > > > > > > > > > > > > > > > > > > > > > > > > > > > > > > > > > > > > > > > > > > > ExperimentalCallbackService;
   template <class BaseClass>
   class WithGenericMethod_SubscribePosition : public BaseClass {
    private:
@@ -4830,18 +4830,18 @@ class TelemetryService final {
     }
   };
   template <class BaseClass>
-  class WithGenericMethod_SubscribeGroundSpeedNed : public BaseClass {
+  class WithGenericMethod_SubscribeVelocityNed : public BaseClass {
    private:
     void BaseClassMustBeDerivedFromService(const Service* /*service*/) {}
    public:
-    WithGenericMethod_SubscribeGroundSpeedNed() {
+    WithGenericMethod_SubscribeVelocityNed() {
       ::grpc::Service::MarkMethodGeneric(10);
     }
-    ~WithGenericMethod_SubscribeGroundSpeedNed() override {
+    ~WithGenericMethod_SubscribeVelocityNed() override {
       BaseClassMustBeDerivedFromService(this);
     }
     // disable synchronous version of this method
-    ::grpc::Status SubscribeGroundSpeedNed(::grpc::ServerContext* /*context*/, const ::mavsdk::rpc::telemetry::SubscribeGroundSpeedNedRequest* /*request*/, ::grpc::ServerWriter< ::mavsdk::rpc::telemetry::GroundSpeedNedResponse>* /*writer*/) override {
+    ::grpc::Status SubscribeVelocityNed(::grpc::ServerContext* /*context*/, const ::mavsdk::rpc::telemetry::SubscribeVelocityNedRequest* /*request*/, ::grpc::ServerWriter< ::mavsdk::rpc::telemetry::VelocityNedResponse>* /*writer*/) override {
       abort();
       return ::grpc::Status(::grpc::StatusCode::UNIMPLEMENTED, "");
     }
@@ -5204,18 +5204,18 @@ class TelemetryService final {
     }
   };
   template <class BaseClass>
-  class WithGenericMethod_SetRateGroundSpeedNed : public BaseClass {
+  class WithGenericMethod_SetRateVelocityNed : public BaseClass {
    private:
     void BaseClassMustBeDerivedFromService(const Service* /*service*/) {}
    public:
-    WithGenericMethod_SetRateGroundSpeedNed() {
+    WithGenericMethod_SetRateVelocityNed() {
       ::grpc::Service::MarkMethodGeneric(32);
     }
-    ~WithGenericMethod_SetRateGroundSpeedNed() override {
+    ~WithGenericMethod_SetRateVelocityNed() override {
       BaseClassMustBeDerivedFromService(this);
     }
     // disable synchronous version of this method
-    ::grpc::Status SetRateGroundSpeedNed(::grpc::ServerContext* /*context*/, const ::mavsdk::rpc::telemetry::SetRateGroundSpeedNedRequest* /*request*/, ::mavsdk::rpc::telemetry::SetRateGroundSpeedNedResponse* /*response*/) override {
+    ::grpc::Status SetRateVelocityNed(::grpc::ServerContext* /*context*/, const ::mavsdk::rpc::telemetry::SetRateVelocityNedRequest* /*request*/, ::mavsdk::rpc::telemetry::SetRateVelocityNedResponse* /*response*/) override {
       abort();
       return ::grpc::Status(::grpc::StatusCode::UNIMPLEMENTED, "");
     }
@@ -5608,22 +5608,22 @@ class TelemetryService final {
     }
   };
   template <class BaseClass>
-  class WithRawMethod_SubscribeGroundSpeedNed : public BaseClass {
+  class WithRawMethod_SubscribeVelocityNed : public BaseClass {
    private:
     void BaseClassMustBeDerivedFromService(const Service* /*service*/) {}
    public:
-    WithRawMethod_SubscribeGroundSpeedNed() {
+    WithRawMethod_SubscribeVelocityNed() {
       ::grpc::Service::MarkMethodRaw(10);
     }
-    ~WithRawMethod_SubscribeGroundSpeedNed() override {
+    ~WithRawMethod_SubscribeVelocityNed() override {
       BaseClassMustBeDerivedFromService(this);
     }
     // disable synchronous version of this method
-    ::grpc::Status SubscribeGroundSpeedNed(::grpc::ServerContext* /*context*/, const ::mavsdk::rpc::telemetry::SubscribeGroundSpeedNedRequest* /*request*/, ::grpc::ServerWriter< ::mavsdk::rpc::telemetry::GroundSpeedNedResponse>* /*writer*/) override {
+    ::grpc::Status SubscribeVelocityNed(::grpc::ServerContext* /*context*/, const ::mavsdk::rpc::telemetry::SubscribeVelocityNedRequest* /*request*/, ::grpc::ServerWriter< ::mavsdk::rpc::telemetry::VelocityNedResponse>* /*writer*/) override {
       abort();
       return ::grpc::Status(::grpc::StatusCode::UNIMPLEMENTED, "");
     }
-    void RequestSubscribeGroundSpeedNed(::grpc::ServerContext* context, ::grpc::ByteBuffer* request, ::grpc::ServerAsyncWriter< ::grpc::ByteBuffer>* writer, ::grpc::CompletionQueue* new_call_cq, ::grpc::ServerCompletionQueue* notification_cq, void *tag) {
+    void RequestSubscribeVelocityNed(::grpc::ServerContext* context, ::grpc::ByteBuffer* request, ::grpc::ServerAsyncWriter< ::grpc::ByteBuffer>* writer, ::grpc::CompletionQueue* new_call_cq, ::grpc::ServerCompletionQueue* notification_cq, void *tag) {
       ::grpc::Service::RequestAsyncServerStreaming(10, context, request, writer, new_call_cq, notification_cq, tag);
     }
   };
@@ -6048,22 +6048,22 @@ class TelemetryService final {
     }
   };
   template <class BaseClass>
-  class WithRawMethod_SetRateGroundSpeedNed : public BaseClass {
+  class WithRawMethod_SetRateVelocityNed : public BaseClass {
    private:
     void BaseClassMustBeDerivedFromService(const Service* /*service*/) {}
    public:
-    WithRawMethod_SetRateGroundSpeedNed() {
+    WithRawMethod_SetRateVelocityNed() {
       ::grpc::Service::MarkMethodRaw(32);
     }
-    ~WithRawMethod_SetRateGroundSpeedNed() override {
+    ~WithRawMethod_SetRateVelocityNed() override {
       BaseClassMustBeDerivedFromService(this);
     }
     // disable synchronous version of this method
-    ::grpc::Status SetRateGroundSpeedNed(::grpc::ServerContext* /*context*/, const ::mavsdk::rpc::telemetry::SetRateGroundSpeedNedRequest* /*request*/, ::mavsdk::rpc::telemetry::SetRateGroundSpeedNedResponse* /*response*/) override {
+    ::grpc::Status SetRateVelocityNed(::grpc::ServerContext* /*context*/, const ::mavsdk::rpc::telemetry::SetRateVelocityNedRequest* /*request*/, ::mavsdk::rpc::telemetry::SetRateVelocityNedResponse* /*response*/) override {
       abort();
       return ::grpc::Status(::grpc::StatusCode::UNIMPLEMENTED, "");
     }
-    void RequestSetRateGroundSpeedNed(::grpc::ServerContext* context, ::grpc::ByteBuffer* request, ::grpc::ServerAsyncResponseWriter< ::grpc::ByteBuffer>* response, ::grpc::CompletionQueue* new_call_cq, ::grpc::ServerCompletionQueue* notification_cq, void *tag) {
+    void RequestSetRateVelocityNed(::grpc::ServerContext* context, ::grpc::ByteBuffer* request, ::grpc::ServerAsyncResponseWriter< ::grpc::ByteBuffer>* response, ::grpc::CompletionQueue* new_call_cq, ::grpc::ServerCompletionQueue* notification_cq, void *tag) {
       ::grpc::Service::RequestAsyncUnary(32, context, request, response, new_call_cq, notification_cq, tag);
     }
   };
@@ -6668,11 +6668,11 @@ class TelemetryService final {
       { return nullptr; }
   };
   template <class BaseClass>
-  class ExperimentalWithRawCallbackMethod_SubscribeGroundSpeedNed : public BaseClass {
+  class ExperimentalWithRawCallbackMethod_SubscribeVelocityNed : public BaseClass {
    private:
     void BaseClassMustBeDerivedFromService(const Service* /*service*/) {}
    public:
-    ExperimentalWithRawCallbackMethod_SubscribeGroundSpeedNed() {
+    ExperimentalWithRawCallbackMethod_SubscribeVelocityNed() {
     #ifdef GRPC_CALLBACK_API_NONEXPERIMENTAL
       ::grpc::Service::
     #else
@@ -6686,21 +6686,21 @@ class TelemetryService final {
     #else
                    ::grpc::experimental::CallbackServerContext*
     #endif
-                     context, const::grpc::ByteBuffer* request) { return this->SubscribeGroundSpeedNed(context, request); }));
+                     context, const::grpc::ByteBuffer* request) { return this->SubscribeVelocityNed(context, request); }));
     }
-    ~ExperimentalWithRawCallbackMethod_SubscribeGroundSpeedNed() override {
+    ~ExperimentalWithRawCallbackMethod_SubscribeVelocityNed() override {
       BaseClassMustBeDerivedFromService(this);
     }
     // disable synchronous version of this method
-    ::grpc::Status SubscribeGroundSpeedNed(::grpc::ServerContext* /*context*/, const ::mavsdk::rpc::telemetry::SubscribeGroundSpeedNedRequest* /*request*/, ::grpc::ServerWriter< ::mavsdk::rpc::telemetry::GroundSpeedNedResponse>* /*writer*/) override {
+    ::grpc::Status SubscribeVelocityNed(::grpc::ServerContext* /*context*/, const ::mavsdk::rpc::telemetry::SubscribeVelocityNedRequest* /*request*/, ::grpc::ServerWriter< ::mavsdk::rpc::telemetry::VelocityNedResponse>* /*writer*/) override {
       abort();
       return ::grpc::Status(::grpc::StatusCode::UNIMPLEMENTED, "");
     }
     #ifdef GRPC_CALLBACK_API_NONEXPERIMENTAL
-    virtual ::grpc::ServerWriteReactor< ::grpc::ByteBuffer>* SubscribeGroundSpeedNed(
+    virtual ::grpc::ServerWriteReactor< ::grpc::ByteBuffer>* SubscribeVelocityNed(
       ::grpc::CallbackServerContext* /*context*/, const ::grpc::ByteBuffer* /*request*/)
     #else
-    virtual ::grpc::experimental::ServerWriteReactor< ::grpc::ByteBuffer>* SubscribeGroundSpeedNed(
+    virtual ::grpc::experimental::ServerWriteReactor< ::grpc::ByteBuffer>* SubscribeVelocityNed(
       ::grpc::experimental::CallbackServerContext* /*context*/, const ::grpc::ByteBuffer* /*request*/)
     #endif
       { return nullptr; }
@@ -7504,11 +7504,11 @@ class TelemetryService final {
       { return nullptr; }
   };
   template <class BaseClass>
-  class ExperimentalWithRawCallbackMethod_SetRateGroundSpeedNed : public BaseClass {
+  class ExperimentalWithRawCallbackMethod_SetRateVelocityNed : public BaseClass {
    private:
     void BaseClassMustBeDerivedFromService(const Service* /*service*/) {}
    public:
-    ExperimentalWithRawCallbackMethod_SetRateGroundSpeedNed() {
+    ExperimentalWithRawCallbackMethod_SetRateVelocityNed() {
     #ifdef GRPC_CALLBACK_API_NONEXPERIMENTAL
       ::grpc::Service::
     #else
@@ -7522,21 +7522,21 @@ class TelemetryService final {
     #else
                    ::grpc::experimental::CallbackServerContext*
     #endif
-                     context, const ::grpc::ByteBuffer* request, ::grpc::ByteBuffer* response) { return this->SetRateGroundSpeedNed(context, request, response); }));
+                     context, const ::grpc::ByteBuffer* request, ::grpc::ByteBuffer* response) { return this->SetRateVelocityNed(context, request, response); }));
     }
-    ~ExperimentalWithRawCallbackMethod_SetRateGroundSpeedNed() override {
+    ~ExperimentalWithRawCallbackMethod_SetRateVelocityNed() override {
       BaseClassMustBeDerivedFromService(this);
     }
     // disable synchronous version of this method
-    ::grpc::Status SetRateGroundSpeedNed(::grpc::ServerContext* /*context*/, const ::mavsdk::rpc::telemetry::SetRateGroundSpeedNedRequest* /*request*/, ::mavsdk::rpc::telemetry::SetRateGroundSpeedNedResponse* /*response*/) override {
+    ::grpc::Status SetRateVelocityNed(::grpc::ServerContext* /*context*/, const ::mavsdk::rpc::telemetry::SetRateVelocityNedRequest* /*request*/, ::mavsdk::rpc::telemetry::SetRateVelocityNedResponse* /*response*/) override {
       abort();
       return ::grpc::Status(::grpc::StatusCode::UNIMPLEMENTED, "");
     }
     #ifdef GRPC_CALLBACK_API_NONEXPERIMENTAL
-    virtual ::grpc::ServerUnaryReactor* SetRateGroundSpeedNed(
+    virtual ::grpc::ServerUnaryReactor* SetRateVelocityNed(
       ::grpc::CallbackServerContext* /*context*/, const ::grpc::ByteBuffer* /*request*/, ::grpc::ByteBuffer* /*response*/)
     #else
-    virtual ::grpc::experimental::ServerUnaryReactor* SetRateGroundSpeedNed(
+    virtual ::grpc::experimental::ServerUnaryReactor* SetRateVelocityNed(
       ::grpc::experimental::CallbackServerContext* /*context*/, const ::grpc::ByteBuffer* /*request*/, ::grpc::ByteBuffer* /*response*/)
     #endif
       { return nullptr; }
@@ -8080,24 +8080,24 @@ class TelemetryService final {
     virtual ::grpc::Status StreamedSetRateCameraAttitude(::grpc::ServerContext* context, ::grpc::ServerUnaryStreamer< ::mavsdk::rpc::telemetry::SetRateCameraAttitudeRequest,::mavsdk::rpc::telemetry::SetRateCameraAttitudeResponse>* server_unary_streamer) = 0;
   };
   template <class BaseClass>
-  class WithStreamedUnaryMethod_SetRateGroundSpeedNed : public BaseClass {
+  class WithStreamedUnaryMethod_SetRateVelocityNed : public BaseClass {
    private:
     void BaseClassMustBeDerivedFromService(const Service* /*service*/) {}
    public:
-    WithStreamedUnaryMethod_SetRateGroundSpeedNed() {
+    WithStreamedUnaryMethod_SetRateVelocityNed() {
       ::grpc::Service::MarkMethodStreamed(32,
-        new ::grpc::internal::StreamedUnaryHandler< ::mavsdk::rpc::telemetry::SetRateGroundSpeedNedRequest, ::mavsdk::rpc::telemetry::SetRateGroundSpeedNedResponse>(std::bind(&WithStreamedUnaryMethod_SetRateGroundSpeedNed<BaseClass>::StreamedSetRateGroundSpeedNed, this, std::placeholders::_1, std::placeholders::_2)));
+        new ::grpc::internal::StreamedUnaryHandler< ::mavsdk::rpc::telemetry::SetRateVelocityNedRequest, ::mavsdk::rpc::telemetry::SetRateVelocityNedResponse>(std::bind(&WithStreamedUnaryMethod_SetRateVelocityNed<BaseClass>::StreamedSetRateVelocityNed, this, std::placeholders::_1, std::placeholders::_2)));
     }
-    ~WithStreamedUnaryMethod_SetRateGroundSpeedNed() override {
+    ~WithStreamedUnaryMethod_SetRateVelocityNed() override {
       BaseClassMustBeDerivedFromService(this);
     }
     // disable regular version of this method
-    ::grpc::Status SetRateGroundSpeedNed(::grpc::ServerContext* /*context*/, const ::mavsdk::rpc::telemetry::SetRateGroundSpeedNedRequest* /*request*/, ::mavsdk::rpc::telemetry::SetRateGroundSpeedNedResponse* /*response*/) override {
+    ::grpc::Status SetRateVelocityNed(::grpc::ServerContext* /*context*/, const ::mavsdk::rpc::telemetry::SetRateVelocityNedRequest* /*request*/, ::mavsdk::rpc::telemetry::SetRateVelocityNedResponse* /*response*/) override {
       abort();
       return ::grpc::Status(::grpc::StatusCode::UNIMPLEMENTED, "");
     }
     // replace default version of method with streamed unary
-    virtual ::grpc::Status StreamedSetRateGroundSpeedNed(::grpc::ServerContext* context, ::grpc::ServerUnaryStreamer< ::mavsdk::rpc::telemetry::SetRateGroundSpeedNedRequest,::mavsdk::rpc::telemetry::SetRateGroundSpeedNedResponse>* server_unary_streamer) = 0;
+    virtual ::grpc::Status StreamedSetRateVelocityNed(::grpc::ServerContext* context, ::grpc::ServerUnaryStreamer< ::mavsdk::rpc::telemetry::SetRateVelocityNedRequest,::mavsdk::rpc::telemetry::SetRateVelocityNedResponse>* server_unary_streamer) = 0;
   };
   template <class BaseClass>
   class WithStreamedUnaryMethod_SetRateGpsInfo : public BaseClass {
@@ -8319,7 +8319,7 @@ class TelemetryService final {
     // replace default version of method with streamed unary
     virtual ::grpc::Status StreamedSetRateUnixEpochTime(::grpc::ServerContext* context, ::grpc::ServerUnaryStreamer< ::mavsdk::rpc::telemetry::SetRateUnixEpochTimeRequest,::mavsdk::rpc::telemetry::SetRateUnixEpochTimeResponse>* server_unary_streamer) = 0;
   };
-  typedef WithStreamedUnaryMethod_SetRatePosition<WithStreamedUnaryMethod_SetRateHome<WithStreamedUnaryMethod_SetRateInAir<WithStreamedUnaryMethod_SetRateLandedState<WithStreamedUnaryMethod_SetRateAttitude<WithStreamedUnaryMethod_SetRateCameraAttitude<WithStreamedUnaryMethod_SetRateGroundSpeedNed<WithStreamedUnaryMethod_SetRateGpsInfo<WithStreamedUnaryMethod_SetRateBattery<WithStreamedUnaryMethod_SetRateRcStatus<WithStreamedUnaryMethod_SetRateActuatorControlTarget<WithStreamedUnaryMethod_SetRateActuatorOutputStatus<WithStreamedUnaryMethod_SetRateOdometry<WithStreamedUnaryMethod_SetRatePositionVelocityNed<WithStreamedUnaryMethod_SetRateGroundTruth<WithStreamedUnaryMethod_SetRateFixedwingMetrics<WithStreamedUnaryMethod_SetRateImu<WithStreamedUnaryMethod_SetRateUnixEpochTime<Service > > > > > > > > > > > > > > > > > > StreamedUnaryService;
+  typedef WithStreamedUnaryMethod_SetRatePosition<WithStreamedUnaryMethod_SetRateHome<WithStreamedUnaryMethod_SetRateInAir<WithStreamedUnaryMethod_SetRateLandedState<WithStreamedUnaryMethod_SetRateAttitude<WithStreamedUnaryMethod_SetRateCameraAttitude<WithStreamedUnaryMethod_SetRateVelocityNed<WithStreamedUnaryMethod_SetRateGpsInfo<WithStreamedUnaryMethod_SetRateBattery<WithStreamedUnaryMethod_SetRateRcStatus<WithStreamedUnaryMethod_SetRateActuatorControlTarget<WithStreamedUnaryMethod_SetRateActuatorOutputStatus<WithStreamedUnaryMethod_SetRateOdometry<WithStreamedUnaryMethod_SetRatePositionVelocityNed<WithStreamedUnaryMethod_SetRateGroundTruth<WithStreamedUnaryMethod_SetRateFixedwingMetrics<WithStreamedUnaryMethod_SetRateImu<WithStreamedUnaryMethod_SetRateUnixEpochTime<Service > > > > > > > > > > > > > > > > > > StreamedUnaryService;
   template <class BaseClass>
   class WithSplitStreamingMethod_SubscribePosition : public BaseClass {
    private:
@@ -8521,24 +8521,24 @@ class TelemetryService final {
     virtual ::grpc::Status StreamedSubscribeCameraAttitudeEuler(::grpc::ServerContext* context, ::grpc::ServerSplitStreamer< ::mavsdk::rpc::telemetry::SubscribeCameraAttitudeEulerRequest,::mavsdk::rpc::telemetry::CameraAttitudeEulerResponse>* server_split_streamer) = 0;
   };
   template <class BaseClass>
-  class WithSplitStreamingMethod_SubscribeGroundSpeedNed : public BaseClass {
+  class WithSplitStreamingMethod_SubscribeVelocityNed : public BaseClass {
    private:
     void BaseClassMustBeDerivedFromService(const Service* /*service*/) {}
    public:
-    WithSplitStreamingMethod_SubscribeGroundSpeedNed() {
+    WithSplitStreamingMethod_SubscribeVelocityNed() {
       ::grpc::Service::MarkMethodStreamed(10,
-        new ::grpc::internal::SplitServerStreamingHandler< ::mavsdk::rpc::telemetry::SubscribeGroundSpeedNedRequest, ::mavsdk::rpc::telemetry::GroundSpeedNedResponse>(std::bind(&WithSplitStreamingMethod_SubscribeGroundSpeedNed<BaseClass>::StreamedSubscribeGroundSpeedNed, this, std::placeholders::_1, std::placeholders::_2)));
+        new ::grpc::internal::SplitServerStreamingHandler< ::mavsdk::rpc::telemetry::SubscribeVelocityNedRequest, ::mavsdk::rpc::telemetry::VelocityNedResponse>(std::bind(&WithSplitStreamingMethod_SubscribeVelocityNed<BaseClass>::StreamedSubscribeVelocityNed, this, std::placeholders::_1, std::placeholders::_2)));
     }
-    ~WithSplitStreamingMethod_SubscribeGroundSpeedNed() override {
+    ~WithSplitStreamingMethod_SubscribeVelocityNed() override {
       BaseClassMustBeDerivedFromService(this);
     }
     // disable regular version of this method
-    ::grpc::Status SubscribeGroundSpeedNed(::grpc::ServerContext* /*context*/, const ::mavsdk::rpc::telemetry::SubscribeGroundSpeedNedRequest* /*request*/, ::grpc::ServerWriter< ::mavsdk::rpc::telemetry::GroundSpeedNedResponse>* /*writer*/) override {
+    ::grpc::Status SubscribeVelocityNed(::grpc::ServerContext* /*context*/, const ::mavsdk::rpc::telemetry::SubscribeVelocityNedRequest* /*request*/, ::grpc::ServerWriter< ::mavsdk::rpc::telemetry::VelocityNedResponse>* /*writer*/) override {
       abort();
       return ::grpc::Status(::grpc::StatusCode::UNIMPLEMENTED, "");
     }
     // replace default version of method with split streamed
-    virtual ::grpc::Status StreamedSubscribeGroundSpeedNed(::grpc::ServerContext* context, ::grpc::ServerSplitStreamer< ::mavsdk::rpc::telemetry::SubscribeGroundSpeedNedRequest,::mavsdk::rpc::telemetry::GroundSpeedNedResponse>* server_split_streamer) = 0;
+    virtual ::grpc::Status StreamedSubscribeVelocityNed(::grpc::ServerContext* context, ::grpc::ServerSplitStreamer< ::mavsdk::rpc::telemetry::SubscribeVelocityNedRequest,::mavsdk::rpc::telemetry::VelocityNedResponse>* server_split_streamer) = 0;
   };
   template <class BaseClass>
   class WithSplitStreamingMethod_SubscribeGpsInfo : public BaseClass {
@@ -8840,8 +8840,8 @@ class TelemetryService final {
     // replace default version of method with split streamed
     virtual ::grpc::Status StreamedSubscribeUnixEpochTime(::grpc::ServerContext* context, ::grpc::ServerSplitStreamer< ::mavsdk::rpc::telemetry::SubscribeUnixEpochTimeRequest,::mavsdk::rpc::telemetry::UnixEpochTimeResponse>* server_split_streamer) = 0;
   };
-  typedef WithSplitStreamingMethod_SubscribePosition<WithSplitStreamingMethod_SubscribeHome<WithSplitStreamingMethod_SubscribeInAir<WithSplitStreamingMethod_SubscribeLandedState<WithSplitStreamingMethod_SubscribeArmed<WithSplitStreamingMethod_SubscribeAttitudeQuaternion<WithSplitStreamingMethod_SubscribeAttitudeEuler<WithSplitStreamingMethod_SubscribeAttitudeAngularVelocityBody<WithSplitStreamingMethod_SubscribeCameraAttitudeQuaternion<WithSplitStreamingMethod_SubscribeCameraAttitudeEuler<WithSplitStreamingMethod_SubscribeGroundSpeedNed<WithSplitStreamingMethod_SubscribeGpsInfo<WithSplitStreamingMethod_SubscribeBattery<WithSplitStreamingMethod_SubscribeFlightMode<WithSplitStreamingMethod_SubscribeHealth<WithSplitStreamingMethod_SubscribeRcStatus<WithSplitStreamingMethod_SubscribeStatusText<WithSplitStreamingMethod_SubscribeActuatorControlTarget<WithSplitStreamingMethod_SubscribeActuatorOutputStatus<WithSplitStreamingMethod_SubscribeOdometry<WithSplitStreamingMethod_SubscribePositionVelocityNed<WithSplitStreamingMethod_SubscribeGroundTruth<WithSplitStreamingMethod_SubscribeFixedwingMetrics<WithSplitStreamingMethod_SubscribeImu<WithSplitStreamingMethod_SubscribeHealthAllOk<WithSplitStreamingMethod_SubscribeUnixEpochTime<Service > > > > > > > > > > > > > > > > > > > > > > > > > > SplitStreamedService;
-  typedef WithSplitStreamingMethod_SubscribePosition<WithSplitStreamingMethod_SubscribeHome<WithSplitStreamingMethod_SubscribeInAir<WithSplitStreamingMethod_SubscribeLandedState<WithSplitStreamingMethod_SubscribeArmed<WithSplitStreamingMethod_SubscribeAttitudeQuaternion<WithSplitStreamingMethod_SubscribeAttitudeEuler<WithSplitStreamingMethod_SubscribeAttitudeAngularVelocityBody<WithSplitStreamingMethod_SubscribeCameraAttitudeQuaternion<WithSplitStreamingMethod_SubscribeCameraAttitudeEuler<WithSplitStreamingMethod_SubscribeGroundSpeedNed<WithSplitStreamingMethod_SubscribeGpsInfo<WithSplitStreamingMethod_SubscribeBattery<WithSplitStreamingMethod_SubscribeFlightMode<WithSplitStreamingMethod_SubscribeHealth<WithSplitStreamingMethod_SubscribeRcStatus<WithSplitStreamingMethod_SubscribeStatusText<WithSplitStreamingMethod_SubscribeActuatorControlTarget<WithSplitStreamingMethod_SubscribeActuatorOutputStatus<WithSplitStreamingMethod_SubscribeOdometry<WithSplitStreamingMethod_SubscribePositionVelocityNed<WithSplitStreamingMethod_SubscribeGroundTruth<WithSplitStreamingMethod_SubscribeFixedwingMetrics<WithSplitStreamingMethod_SubscribeImu<WithSplitStreamingMethod_SubscribeHealthAllOk<WithSplitStreamingMethod_SubscribeUnixEpochTime<WithStreamedUnaryMethod_SetRatePosition<WithStreamedUnaryMethod_SetRateHome<WithStreamedUnaryMethod_SetRateInAir<WithStreamedUnaryMethod_SetRateLandedState<WithStreamedUnaryMethod_SetRateAttitude<WithStreamedUnaryMethod_SetRateCameraAttitude<WithStreamedUnaryMethod_SetRateGroundSpeedNed<WithStreamedUnaryMethod_SetRateGpsInfo<WithStreamedUnaryMethod_SetRateBattery<WithStreamedUnaryMethod_SetRateRcStatus<WithStreamedUnaryMethod_SetRateActuatorControlTarget<WithStreamedUnaryMethod_SetRateActuatorOutputStatus<WithStreamedUnaryMethod_SetRateOdometry<WithStreamedUnaryMethod_SetRatePositionVelocityNed<WithStreamedUnaryMethod_SetRateGroundTruth<WithStreamedUnaryMethod_SetRateFixedwingMetrics<WithStreamedUnaryMethod_SetRateImu<WithStreamedUnaryMethod_SetRateUnixEpochTime<Service > > > > > > > > > > > > > > > > > > > > > > > > > > > > > > > > > > > > > > > > > > > > StreamedService;
+  typedef WithSplitStreamingMethod_SubscribePosition<WithSplitStreamingMethod_SubscribeHome<WithSplitStreamingMethod_SubscribeInAir<WithSplitStreamingMethod_SubscribeLandedState<WithSplitStreamingMethod_SubscribeArmed<WithSplitStreamingMethod_SubscribeAttitudeQuaternion<WithSplitStreamingMethod_SubscribeAttitudeEuler<WithSplitStreamingMethod_SubscribeAttitudeAngularVelocityBody<WithSplitStreamingMethod_SubscribeCameraAttitudeQuaternion<WithSplitStreamingMethod_SubscribeCameraAttitudeEuler<WithSplitStreamingMethod_SubscribeVelocityNed<WithSplitStreamingMethod_SubscribeGpsInfo<WithSplitStreamingMethod_SubscribeBattery<WithSplitStreamingMethod_SubscribeFlightMode<WithSplitStreamingMethod_SubscribeHealth<WithSplitStreamingMethod_SubscribeRcStatus<WithSplitStreamingMethod_SubscribeStatusText<WithSplitStreamingMethod_SubscribeActuatorControlTarget<WithSplitStreamingMethod_SubscribeActuatorOutputStatus<WithSplitStreamingMethod_SubscribeOdometry<WithSplitStreamingMethod_SubscribePositionVelocityNed<WithSplitStreamingMethod_SubscribeGroundTruth<WithSplitStreamingMethod_SubscribeFixedwingMetrics<WithSplitStreamingMethod_SubscribeImu<WithSplitStreamingMethod_SubscribeHealthAllOk<WithSplitStreamingMethod_SubscribeUnixEpochTime<Service > > > > > > > > > > > > > > > > > > > > > > > > > > SplitStreamedService;
+  typedef WithSplitStreamingMethod_SubscribePosition<WithSplitStreamingMethod_SubscribeHome<WithSplitStreamingMethod_SubscribeInAir<WithSplitStreamingMethod_SubscribeLandedState<WithSplitStreamingMethod_SubscribeArmed<WithSplitStreamingMethod_SubscribeAttitudeQuaternion<WithSplitStreamingMethod_SubscribeAttitudeEuler<WithSplitStreamingMethod_SubscribeAttitudeAngularVelocityBody<WithSplitStreamingMethod_SubscribeCameraAttitudeQuaternion<WithSplitStreamingMethod_SubscribeCameraAttitudeEuler<WithSplitStreamingMethod_SubscribeVelocityNed<WithSplitStreamingMethod_SubscribeGpsInfo<WithSplitStreamingMethod_SubscribeBattery<WithSplitStreamingMethod_SubscribeFlightMode<WithSplitStreamingMethod_SubscribeHealth<WithSplitStreamingMethod_SubscribeRcStatus<WithSplitStreamingMethod_SubscribeStatusText<WithSplitStreamingMethod_SubscribeActuatorControlTarget<WithSplitStreamingMethod_SubscribeActuatorOutputStatus<WithSplitStreamingMethod_SubscribeOdometry<WithSplitStreamingMethod_SubscribePositionVelocityNed<WithSplitStreamingMethod_SubscribeGroundTruth<WithSplitStreamingMethod_SubscribeFixedwingMetrics<WithSplitStreamingMethod_SubscribeImu<WithSplitStreamingMethod_SubscribeHealthAllOk<WithSplitStreamingMethod_SubscribeUnixEpochTime<WithStreamedUnaryMethod_SetRatePosition<WithStreamedUnaryMethod_SetRateHome<WithStreamedUnaryMethod_SetRateInAir<WithStreamedUnaryMethod_SetRateLandedState<WithStreamedUnaryMethod_SetRateAttitude<WithStreamedUnaryMethod_SetRateCameraAttitude<WithStreamedUnaryMethod_SetRateVelocityNed<WithStreamedUnaryMethod_SetRateGpsInfo<WithStreamedUnaryMethod_SetRateBattery<WithStreamedUnaryMethod_SetRateRcStatus<WithStreamedUnaryMethod_SetRateActuatorControlTarget<WithStreamedUnaryMethod_SetRateActuatorOutputStatus<WithStreamedUnaryMethod_SetRateOdometry<WithStreamedUnaryMethod_SetRatePositionVelocityNed<WithStreamedUnaryMethod_SetRateGroundTruth<WithStreamedUnaryMethod_SetRateFixedwingMetrics<WithStreamedUnaryMethod_SetRateImu<WithStreamedUnaryMethod_SetRateUnixEpochTime<Service > > > > > > > > > > > > > > > > > > > > > > > > > > > > > > > > > > > > > > > > > > > > StreamedService;
 };
 
 }  // namespace telemetry

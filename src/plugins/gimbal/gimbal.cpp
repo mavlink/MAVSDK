@@ -45,22 +45,6 @@ Gimbal::set_roi_location(double latitude_deg, double longitude_deg, float altitu
     return _impl->set_roi_location(latitude_deg, longitude_deg, altitude_m);
 }
 
-const char* Gimbal::result_str(Gimbal::Result result)
-{
-    switch (result) {
-        case Gimbal::Result::Unknown:
-            return "Unknown result";
-        case Gimbal::Result::Success:
-            return "Command was accepted";
-        case Gimbal::Result::Error:
-            return "Error occurred sending the command";
-        case Gimbal::Result::Timeout:
-            return "Command timed out";
-        default:
-            return "Unknown";
-    }
-}
-
 std::ostream& operator<<(std::ostream& str, Gimbal::Result const& result)
 {
     switch (result) {

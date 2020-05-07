@@ -40,8 +40,7 @@ int main(int argc, char* argv[])
     for (int i = 1; i < argc; ++i) {
         ConnectionResult connection_result = dc.add_any_connection(argv[i]);
         if (connection_result != ConnectionResult::Success) {
-            std::cerr << ERROR_CONSOLE_TEXT
-                      << "Connection error: " << connection_result_str(connection_result)
+            std::cerr << ERROR_CONSOLE_TEXT << "Connection error: " << connection_result
                       << NORMAL_CONSOLE_TEXT << std::endl;
             return 1;
         }
@@ -88,8 +87,7 @@ void takeoff_and_land(System& system)
     const Telemetry::Result set_rate_result = telemetry->set_rate_position(1.0);
 
     if (set_rate_result != Telemetry::Result::Success) {
-        std::cerr << ERROR_CONSOLE_TEXT
-                  << "Setting rate failed:" << Telemetry::result_str(set_rate_result)
+        std::cerr << ERROR_CONSOLE_TEXT << "Setting rate failed:" << set_rate_result
                   << NORMAL_CONSOLE_TEXT << std::endl;
         return;
     }
@@ -113,15 +111,15 @@ void takeoff_and_land(System& system)
     const Action::Result arm_result = action->arm();
 
     if (arm_result != Action::Result::Success) {
-        std::cerr << ERROR_CONSOLE_TEXT << "Arming failed:" << Action::result_str(arm_result)
-                  << NORMAL_CONSOLE_TEXT << std::endl;
+        std::cerr << ERROR_CONSOLE_TEXT << "Arming failed:" << arm_result << NORMAL_CONSOLE_TEXT
+                  << std::endl;
     }
 
     // Take off
     std::cout << "Taking off..." << std::endl;
     const Action::Result takeoff_result = action->takeoff();
     if (takeoff_result != Action::Result::Success) {
-        std::cerr << ERROR_CONSOLE_TEXT << "Takeoff failed:" << Action::result_str(takeoff_result)
+        std::cerr << ERROR_CONSOLE_TEXT << "Takeoff failed:" << takeoff_result
                   << NORMAL_CONSOLE_TEXT << std::endl;
     }
 
@@ -131,8 +129,8 @@ void takeoff_and_land(System& system)
     std::cout << "Landing..." << std::endl;
     const Action::Result land_result = action->land();
     if (land_result != Action::Result::Success) {
-        std::cerr << ERROR_CONSOLE_TEXT << "Land failed:" << Action::result_str(land_result)
-                  << NORMAL_CONSOLE_TEXT << std::endl;
+        std::cerr << ERROR_CONSOLE_TEXT << "Land failed:" << land_result << NORMAL_CONSOLE_TEXT
+                  << std::endl;
     }
 
     // Check if vehicle is still in air

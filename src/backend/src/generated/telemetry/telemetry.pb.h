@@ -49,7 +49,7 @@ struct TableStruct_telemetry_2ftelemetry_2eproto {
     PROTOBUF_SECTION_VARIABLE(protodesc_cold);
   static const ::PROTOBUF_NAMESPACE_ID::internal::AuxillaryParseTableField aux[]
     PROTOBUF_SECTION_VARIABLE(protodesc_cold);
-  static const ::PROTOBUF_NAMESPACE_ID::internal::ParseTable schema[118]
+  static const ::PROTOBUF_NAMESPACE_ID::internal::ParseTable schema[117]
     PROTOBUF_SECTION_VARIABLE(protodesc_cold);
   static const ::PROTOBUF_NAMESPACE_ID::internal::FieldMetadata field_metadata[];
   static const ::PROTOBUF_NAMESPACE_ID::internal::SerializationTable serialization_table[];
@@ -125,9 +125,6 @@ extern GpsInfoDefaultTypeInternal _GpsInfo_default_instance_;
 class GpsInfoResponse;
 class GpsInfoResponseDefaultTypeInternal;
 extern GpsInfoResponseDefaultTypeInternal _GpsInfoResponse_default_instance_;
-class GroundSpeedNedResponse;
-class GroundSpeedNedResponseDefaultTypeInternal;
-extern GroundSpeedNedResponseDefaultTypeInternal _GroundSpeedNedResponse_default_instance_;
 class GroundTruth;
 class GroundTruthDefaultTypeInternal;
 extern GroundTruthDefaultTypeInternal _GroundTruth_default_instance_;
@@ -248,12 +245,6 @@ extern SetRateGpsInfoRequestDefaultTypeInternal _SetRateGpsInfoRequest_default_i
 class SetRateGpsInfoResponse;
 class SetRateGpsInfoResponseDefaultTypeInternal;
 extern SetRateGpsInfoResponseDefaultTypeInternal _SetRateGpsInfoResponse_default_instance_;
-class SetRateGroundSpeedNedRequest;
-class SetRateGroundSpeedNedRequestDefaultTypeInternal;
-extern SetRateGroundSpeedNedRequestDefaultTypeInternal _SetRateGroundSpeedNedRequest_default_instance_;
-class SetRateGroundSpeedNedResponse;
-class SetRateGroundSpeedNedResponseDefaultTypeInternal;
-extern SetRateGroundSpeedNedResponseDefaultTypeInternal _SetRateGroundSpeedNedResponse_default_instance_;
 class SetRateGroundTruthRequest;
 class SetRateGroundTruthRequestDefaultTypeInternal;
 extern SetRateGroundTruthRequestDefaultTypeInternal _SetRateGroundTruthRequest_default_instance_;
@@ -314,9 +305,12 @@ extern SetRateUnixEpochTimeRequestDefaultTypeInternal _SetRateUnixEpochTimeReque
 class SetRateUnixEpochTimeResponse;
 class SetRateUnixEpochTimeResponseDefaultTypeInternal;
 extern SetRateUnixEpochTimeResponseDefaultTypeInternal _SetRateUnixEpochTimeResponse_default_instance_;
-class SpeedNed;
-class SpeedNedDefaultTypeInternal;
-extern SpeedNedDefaultTypeInternal _SpeedNed_default_instance_;
+class SetRateVelocityNedRequest;
+class SetRateVelocityNedRequestDefaultTypeInternal;
+extern SetRateVelocityNedRequestDefaultTypeInternal _SetRateVelocityNedRequest_default_instance_;
+class SetRateVelocityNedResponse;
+class SetRateVelocityNedResponseDefaultTypeInternal;
+extern SetRateVelocityNedResponseDefaultTypeInternal _SetRateVelocityNedResponse_default_instance_;
 class StatusText;
 class StatusTextDefaultTypeInternal;
 extern StatusTextDefaultTypeInternal _StatusText_default_instance_;
@@ -359,9 +353,6 @@ extern SubscribeFlightModeRequestDefaultTypeInternal _SubscribeFlightModeRequest
 class SubscribeGpsInfoRequest;
 class SubscribeGpsInfoRequestDefaultTypeInternal;
 extern SubscribeGpsInfoRequestDefaultTypeInternal _SubscribeGpsInfoRequest_default_instance_;
-class SubscribeGroundSpeedNedRequest;
-class SubscribeGroundSpeedNedRequestDefaultTypeInternal;
-extern SubscribeGroundSpeedNedRequestDefaultTypeInternal _SubscribeGroundSpeedNedRequest_default_instance_;
 class SubscribeGroundTruthRequest;
 class SubscribeGroundTruthRequestDefaultTypeInternal;
 extern SubscribeGroundTruthRequestDefaultTypeInternal _SubscribeGroundTruthRequest_default_instance_;
@@ -401,6 +392,9 @@ extern SubscribeStatusTextRequestDefaultTypeInternal _SubscribeStatusTextRequest
 class SubscribeUnixEpochTimeRequest;
 class SubscribeUnixEpochTimeRequestDefaultTypeInternal;
 extern SubscribeUnixEpochTimeRequestDefaultTypeInternal _SubscribeUnixEpochTimeRequest_default_instance_;
+class SubscribeVelocityNedRequest;
+class SubscribeVelocityNedRequestDefaultTypeInternal;
+extern SubscribeVelocityNedRequestDefaultTypeInternal _SubscribeVelocityNedRequest_default_instance_;
 class TelemetryResult;
 class TelemetryResultDefaultTypeInternal;
 extern TelemetryResultDefaultTypeInternal _TelemetryResult_default_instance_;
@@ -413,6 +407,9 @@ extern VelocityBodyDefaultTypeInternal _VelocityBody_default_instance_;
 class VelocityNed;
 class VelocityNedDefaultTypeInternal;
 extern VelocityNedDefaultTypeInternal _VelocityNed_default_instance_;
+class VelocityNedResponse;
+class VelocityNedResponseDefaultTypeInternal;
+extern VelocityNedResponseDefaultTypeInternal _VelocityNedResponse_default_instance_;
 }  // namespace telemetry
 }  // namespace rpc
 }  // namespace mavsdk
@@ -439,7 +436,6 @@ template<> ::mavsdk::rpc::telemetry::FixedwingMetricsResponse* Arena::CreateMayb
 template<> ::mavsdk::rpc::telemetry::FlightModeResponse* Arena::CreateMaybeMessage<::mavsdk::rpc::telemetry::FlightModeResponse>(Arena*);
 template<> ::mavsdk::rpc::telemetry::GpsInfo* Arena::CreateMaybeMessage<::mavsdk::rpc::telemetry::GpsInfo>(Arena*);
 template<> ::mavsdk::rpc::telemetry::GpsInfoResponse* Arena::CreateMaybeMessage<::mavsdk::rpc::telemetry::GpsInfoResponse>(Arena*);
-template<> ::mavsdk::rpc::telemetry::GroundSpeedNedResponse* Arena::CreateMaybeMessage<::mavsdk::rpc::telemetry::GroundSpeedNedResponse>(Arena*);
 template<> ::mavsdk::rpc::telemetry::GroundTruth* Arena::CreateMaybeMessage<::mavsdk::rpc::telemetry::GroundTruth>(Arena*);
 template<> ::mavsdk::rpc::telemetry::GroundTruthResponse* Arena::CreateMaybeMessage<::mavsdk::rpc::telemetry::GroundTruthResponse>(Arena*);
 template<> ::mavsdk::rpc::telemetry::Health* Arena::CreateMaybeMessage<::mavsdk::rpc::telemetry::Health>(Arena*);
@@ -480,8 +476,6 @@ template<> ::mavsdk::rpc::telemetry::SetRateFixedwingMetricsRequest* Arena::Crea
 template<> ::mavsdk::rpc::telemetry::SetRateFixedwingMetricsResponse* Arena::CreateMaybeMessage<::mavsdk::rpc::telemetry::SetRateFixedwingMetricsResponse>(Arena*);
 template<> ::mavsdk::rpc::telemetry::SetRateGpsInfoRequest* Arena::CreateMaybeMessage<::mavsdk::rpc::telemetry::SetRateGpsInfoRequest>(Arena*);
 template<> ::mavsdk::rpc::telemetry::SetRateGpsInfoResponse* Arena::CreateMaybeMessage<::mavsdk::rpc::telemetry::SetRateGpsInfoResponse>(Arena*);
-template<> ::mavsdk::rpc::telemetry::SetRateGroundSpeedNedRequest* Arena::CreateMaybeMessage<::mavsdk::rpc::telemetry::SetRateGroundSpeedNedRequest>(Arena*);
-template<> ::mavsdk::rpc::telemetry::SetRateGroundSpeedNedResponse* Arena::CreateMaybeMessage<::mavsdk::rpc::telemetry::SetRateGroundSpeedNedResponse>(Arena*);
 template<> ::mavsdk::rpc::telemetry::SetRateGroundTruthRequest* Arena::CreateMaybeMessage<::mavsdk::rpc::telemetry::SetRateGroundTruthRequest>(Arena*);
 template<> ::mavsdk::rpc::telemetry::SetRateGroundTruthResponse* Arena::CreateMaybeMessage<::mavsdk::rpc::telemetry::SetRateGroundTruthResponse>(Arena*);
 template<> ::mavsdk::rpc::telemetry::SetRateHomeRequest* Arena::CreateMaybeMessage<::mavsdk::rpc::telemetry::SetRateHomeRequest>(Arena*);
@@ -502,7 +496,8 @@ template<> ::mavsdk::rpc::telemetry::SetRateRcStatusRequest* Arena::CreateMaybeM
 template<> ::mavsdk::rpc::telemetry::SetRateRcStatusResponse* Arena::CreateMaybeMessage<::mavsdk::rpc::telemetry::SetRateRcStatusResponse>(Arena*);
 template<> ::mavsdk::rpc::telemetry::SetRateUnixEpochTimeRequest* Arena::CreateMaybeMessage<::mavsdk::rpc::telemetry::SetRateUnixEpochTimeRequest>(Arena*);
 template<> ::mavsdk::rpc::telemetry::SetRateUnixEpochTimeResponse* Arena::CreateMaybeMessage<::mavsdk::rpc::telemetry::SetRateUnixEpochTimeResponse>(Arena*);
-template<> ::mavsdk::rpc::telemetry::SpeedNed* Arena::CreateMaybeMessage<::mavsdk::rpc::telemetry::SpeedNed>(Arena*);
+template<> ::mavsdk::rpc::telemetry::SetRateVelocityNedRequest* Arena::CreateMaybeMessage<::mavsdk::rpc::telemetry::SetRateVelocityNedRequest>(Arena*);
+template<> ::mavsdk::rpc::telemetry::SetRateVelocityNedResponse* Arena::CreateMaybeMessage<::mavsdk::rpc::telemetry::SetRateVelocityNedResponse>(Arena*);
 template<> ::mavsdk::rpc::telemetry::StatusText* Arena::CreateMaybeMessage<::mavsdk::rpc::telemetry::StatusText>(Arena*);
 template<> ::mavsdk::rpc::telemetry::StatusTextResponse* Arena::CreateMaybeMessage<::mavsdk::rpc::telemetry::StatusTextResponse>(Arena*);
 template<> ::mavsdk::rpc::telemetry::SubscribeActuatorControlTargetRequest* Arena::CreateMaybeMessage<::mavsdk::rpc::telemetry::SubscribeActuatorControlTargetRequest>(Arena*);
@@ -517,7 +512,6 @@ template<> ::mavsdk::rpc::telemetry::SubscribeCameraAttitudeQuaternionRequest* A
 template<> ::mavsdk::rpc::telemetry::SubscribeFixedwingMetricsRequest* Arena::CreateMaybeMessage<::mavsdk::rpc::telemetry::SubscribeFixedwingMetricsRequest>(Arena*);
 template<> ::mavsdk::rpc::telemetry::SubscribeFlightModeRequest* Arena::CreateMaybeMessage<::mavsdk::rpc::telemetry::SubscribeFlightModeRequest>(Arena*);
 template<> ::mavsdk::rpc::telemetry::SubscribeGpsInfoRequest* Arena::CreateMaybeMessage<::mavsdk::rpc::telemetry::SubscribeGpsInfoRequest>(Arena*);
-template<> ::mavsdk::rpc::telemetry::SubscribeGroundSpeedNedRequest* Arena::CreateMaybeMessage<::mavsdk::rpc::telemetry::SubscribeGroundSpeedNedRequest>(Arena*);
 template<> ::mavsdk::rpc::telemetry::SubscribeGroundTruthRequest* Arena::CreateMaybeMessage<::mavsdk::rpc::telemetry::SubscribeGroundTruthRequest>(Arena*);
 template<> ::mavsdk::rpc::telemetry::SubscribeHealthAllOkRequest* Arena::CreateMaybeMessage<::mavsdk::rpc::telemetry::SubscribeHealthAllOkRequest>(Arena*);
 template<> ::mavsdk::rpc::telemetry::SubscribeHealthRequest* Arena::CreateMaybeMessage<::mavsdk::rpc::telemetry::SubscribeHealthRequest>(Arena*);
@@ -531,10 +525,12 @@ template<> ::mavsdk::rpc::telemetry::SubscribePositionVelocityNedRequest* Arena:
 template<> ::mavsdk::rpc::telemetry::SubscribeRcStatusRequest* Arena::CreateMaybeMessage<::mavsdk::rpc::telemetry::SubscribeRcStatusRequest>(Arena*);
 template<> ::mavsdk::rpc::telemetry::SubscribeStatusTextRequest* Arena::CreateMaybeMessage<::mavsdk::rpc::telemetry::SubscribeStatusTextRequest>(Arena*);
 template<> ::mavsdk::rpc::telemetry::SubscribeUnixEpochTimeRequest* Arena::CreateMaybeMessage<::mavsdk::rpc::telemetry::SubscribeUnixEpochTimeRequest>(Arena*);
+template<> ::mavsdk::rpc::telemetry::SubscribeVelocityNedRequest* Arena::CreateMaybeMessage<::mavsdk::rpc::telemetry::SubscribeVelocityNedRequest>(Arena*);
 template<> ::mavsdk::rpc::telemetry::TelemetryResult* Arena::CreateMaybeMessage<::mavsdk::rpc::telemetry::TelemetryResult>(Arena*);
 template<> ::mavsdk::rpc::telemetry::UnixEpochTimeResponse* Arena::CreateMaybeMessage<::mavsdk::rpc::telemetry::UnixEpochTimeResponse>(Arena*);
 template<> ::mavsdk::rpc::telemetry::VelocityBody* Arena::CreateMaybeMessage<::mavsdk::rpc::telemetry::VelocityBody>(Arena*);
 template<> ::mavsdk::rpc::telemetry::VelocityNed* Arena::CreateMaybeMessage<::mavsdk::rpc::telemetry::VelocityNed>(Arena*);
+template<> ::mavsdk::rpc::telemetry::VelocityNedResponse* Arena::CreateMaybeMessage<::mavsdk::rpc::telemetry::VelocityNedResponse>(Arena*);
 PROTOBUF_NAMESPACE_CLOSE
 namespace mavsdk {
 namespace rpc {
@@ -3193,23 +3189,23 @@ class CameraAttitudeEulerResponse :
 };
 // -------------------------------------------------------------------
 
-class SubscribeGroundSpeedNedRequest :
-    public ::PROTOBUF_NAMESPACE_ID::Message /* @@protoc_insertion_point(class_definition:mavsdk.rpc.telemetry.SubscribeGroundSpeedNedRequest) */ {
+class SubscribeVelocityNedRequest :
+    public ::PROTOBUF_NAMESPACE_ID::Message /* @@protoc_insertion_point(class_definition:mavsdk.rpc.telemetry.SubscribeVelocityNedRequest) */ {
  public:
-  SubscribeGroundSpeedNedRequest();
-  virtual ~SubscribeGroundSpeedNedRequest();
+  SubscribeVelocityNedRequest();
+  virtual ~SubscribeVelocityNedRequest();
 
-  SubscribeGroundSpeedNedRequest(const SubscribeGroundSpeedNedRequest& from);
-  SubscribeGroundSpeedNedRequest(SubscribeGroundSpeedNedRequest&& from) noexcept
-    : SubscribeGroundSpeedNedRequest() {
+  SubscribeVelocityNedRequest(const SubscribeVelocityNedRequest& from);
+  SubscribeVelocityNedRequest(SubscribeVelocityNedRequest&& from) noexcept
+    : SubscribeVelocityNedRequest() {
     *this = ::std::move(from);
   }
 
-  inline SubscribeGroundSpeedNedRequest& operator=(const SubscribeGroundSpeedNedRequest& from) {
+  inline SubscribeVelocityNedRequest& operator=(const SubscribeVelocityNedRequest& from) {
     CopyFrom(from);
     return *this;
   }
-  inline SubscribeGroundSpeedNedRequest& operator=(SubscribeGroundSpeedNedRequest&& from) noexcept {
+  inline SubscribeVelocityNedRequest& operator=(SubscribeVelocityNedRequest&& from) noexcept {
     if (GetArenaNoVirtual() == from.GetArenaNoVirtual()) {
       if (this != &from) InternalSwap(&from);
     } else {
@@ -3227,37 +3223,37 @@ class SubscribeGroundSpeedNedRequest :
   static const ::PROTOBUF_NAMESPACE_ID::Reflection* GetReflection() {
     return GetMetadataStatic().reflection;
   }
-  static const SubscribeGroundSpeedNedRequest& default_instance();
+  static const SubscribeVelocityNedRequest& default_instance();
 
   static void InitAsDefaultInstance();  // FOR INTERNAL USE ONLY
-  static inline const SubscribeGroundSpeedNedRequest* internal_default_instance() {
-    return reinterpret_cast<const SubscribeGroundSpeedNedRequest*>(
-               &_SubscribeGroundSpeedNedRequest_default_instance_);
+  static inline const SubscribeVelocityNedRequest* internal_default_instance() {
+    return reinterpret_cast<const SubscribeVelocityNedRequest*>(
+               &_SubscribeVelocityNedRequest_default_instance_);
   }
   static constexpr int kIndexInFileMessages =
     20;
 
-  friend void swap(SubscribeGroundSpeedNedRequest& a, SubscribeGroundSpeedNedRequest& b) {
+  friend void swap(SubscribeVelocityNedRequest& a, SubscribeVelocityNedRequest& b) {
     a.Swap(&b);
   }
-  inline void Swap(SubscribeGroundSpeedNedRequest* other) {
+  inline void Swap(SubscribeVelocityNedRequest* other) {
     if (other == this) return;
     InternalSwap(other);
   }
 
   // implements Message ----------------------------------------------
 
-  inline SubscribeGroundSpeedNedRequest* New() const final {
-    return CreateMaybeMessage<SubscribeGroundSpeedNedRequest>(nullptr);
+  inline SubscribeVelocityNedRequest* New() const final {
+    return CreateMaybeMessage<SubscribeVelocityNedRequest>(nullptr);
   }
 
-  SubscribeGroundSpeedNedRequest* New(::PROTOBUF_NAMESPACE_ID::Arena* arena) const final {
-    return CreateMaybeMessage<SubscribeGroundSpeedNedRequest>(arena);
+  SubscribeVelocityNedRequest* New(::PROTOBUF_NAMESPACE_ID::Arena* arena) const final {
+    return CreateMaybeMessage<SubscribeVelocityNedRequest>(arena);
   }
   void CopyFrom(const ::PROTOBUF_NAMESPACE_ID::Message& from) final;
   void MergeFrom(const ::PROTOBUF_NAMESPACE_ID::Message& from) final;
-  void CopyFrom(const SubscribeGroundSpeedNedRequest& from);
-  void MergeFrom(const SubscribeGroundSpeedNedRequest& from);
+  void CopyFrom(const SubscribeVelocityNedRequest& from);
+  void MergeFrom(const SubscribeVelocityNedRequest& from);
   PROTOBUF_ATTRIBUTE_REINITIALIZES void Clear() final;
   bool IsInitialized() const final;
 
@@ -3271,10 +3267,10 @@ class SubscribeGroundSpeedNedRequest :
   inline void SharedCtor();
   inline void SharedDtor();
   void SetCachedSize(int size) const final;
-  void InternalSwap(SubscribeGroundSpeedNedRequest* other);
+  void InternalSwap(SubscribeVelocityNedRequest* other);
   friend class ::PROTOBUF_NAMESPACE_ID::internal::AnyMetadata;
   static ::PROTOBUF_NAMESPACE_ID::StringPiece FullMessageName() {
-    return "mavsdk.rpc.telemetry.SubscribeGroundSpeedNedRequest";
+    return "mavsdk.rpc.telemetry.SubscribeVelocityNedRequest";
   }
   private:
   inline ::PROTOBUF_NAMESPACE_ID::Arena* GetArenaNoVirtual() const {
@@ -3298,7 +3294,7 @@ class SubscribeGroundSpeedNedRequest :
 
   // accessors -------------------------------------------------------
 
-  // @@protoc_insertion_point(class_scope:mavsdk.rpc.telemetry.SubscribeGroundSpeedNedRequest)
+  // @@protoc_insertion_point(class_scope:mavsdk.rpc.telemetry.SubscribeVelocityNedRequest)
  private:
   class _Internal;
 
@@ -3308,23 +3304,23 @@ class SubscribeGroundSpeedNedRequest :
 };
 // -------------------------------------------------------------------
 
-class GroundSpeedNedResponse :
-    public ::PROTOBUF_NAMESPACE_ID::Message /* @@protoc_insertion_point(class_definition:mavsdk.rpc.telemetry.GroundSpeedNedResponse) */ {
+class VelocityNedResponse :
+    public ::PROTOBUF_NAMESPACE_ID::Message /* @@protoc_insertion_point(class_definition:mavsdk.rpc.telemetry.VelocityNedResponse) */ {
  public:
-  GroundSpeedNedResponse();
-  virtual ~GroundSpeedNedResponse();
+  VelocityNedResponse();
+  virtual ~VelocityNedResponse();
 
-  GroundSpeedNedResponse(const GroundSpeedNedResponse& from);
-  GroundSpeedNedResponse(GroundSpeedNedResponse&& from) noexcept
-    : GroundSpeedNedResponse() {
+  VelocityNedResponse(const VelocityNedResponse& from);
+  VelocityNedResponse(VelocityNedResponse&& from) noexcept
+    : VelocityNedResponse() {
     *this = ::std::move(from);
   }
 
-  inline GroundSpeedNedResponse& operator=(const GroundSpeedNedResponse& from) {
+  inline VelocityNedResponse& operator=(const VelocityNedResponse& from) {
     CopyFrom(from);
     return *this;
   }
-  inline GroundSpeedNedResponse& operator=(GroundSpeedNedResponse&& from) noexcept {
+  inline VelocityNedResponse& operator=(VelocityNedResponse&& from) noexcept {
     if (GetArenaNoVirtual() == from.GetArenaNoVirtual()) {
       if (this != &from) InternalSwap(&from);
     } else {
@@ -3342,37 +3338,37 @@ class GroundSpeedNedResponse :
   static const ::PROTOBUF_NAMESPACE_ID::Reflection* GetReflection() {
     return GetMetadataStatic().reflection;
   }
-  static const GroundSpeedNedResponse& default_instance();
+  static const VelocityNedResponse& default_instance();
 
   static void InitAsDefaultInstance();  // FOR INTERNAL USE ONLY
-  static inline const GroundSpeedNedResponse* internal_default_instance() {
-    return reinterpret_cast<const GroundSpeedNedResponse*>(
-               &_GroundSpeedNedResponse_default_instance_);
+  static inline const VelocityNedResponse* internal_default_instance() {
+    return reinterpret_cast<const VelocityNedResponse*>(
+               &_VelocityNedResponse_default_instance_);
   }
   static constexpr int kIndexInFileMessages =
     21;
 
-  friend void swap(GroundSpeedNedResponse& a, GroundSpeedNedResponse& b) {
+  friend void swap(VelocityNedResponse& a, VelocityNedResponse& b) {
     a.Swap(&b);
   }
-  inline void Swap(GroundSpeedNedResponse* other) {
+  inline void Swap(VelocityNedResponse* other) {
     if (other == this) return;
     InternalSwap(other);
   }
 
   // implements Message ----------------------------------------------
 
-  inline GroundSpeedNedResponse* New() const final {
-    return CreateMaybeMessage<GroundSpeedNedResponse>(nullptr);
+  inline VelocityNedResponse* New() const final {
+    return CreateMaybeMessage<VelocityNedResponse>(nullptr);
   }
 
-  GroundSpeedNedResponse* New(::PROTOBUF_NAMESPACE_ID::Arena* arena) const final {
-    return CreateMaybeMessage<GroundSpeedNedResponse>(arena);
+  VelocityNedResponse* New(::PROTOBUF_NAMESPACE_ID::Arena* arena) const final {
+    return CreateMaybeMessage<VelocityNedResponse>(arena);
   }
   void CopyFrom(const ::PROTOBUF_NAMESPACE_ID::Message& from) final;
   void MergeFrom(const ::PROTOBUF_NAMESPACE_ID::Message& from) final;
-  void CopyFrom(const GroundSpeedNedResponse& from);
-  void MergeFrom(const GroundSpeedNedResponse& from);
+  void CopyFrom(const VelocityNedResponse& from);
+  void MergeFrom(const VelocityNedResponse& from);
   PROTOBUF_ATTRIBUTE_REINITIALIZES void Clear() final;
   bool IsInitialized() const final;
 
@@ -3386,10 +3382,10 @@ class GroundSpeedNedResponse :
   inline void SharedCtor();
   inline void SharedDtor();
   void SetCachedSize(int size) const final;
-  void InternalSwap(GroundSpeedNedResponse* other);
+  void InternalSwap(VelocityNedResponse* other);
   friend class ::PROTOBUF_NAMESPACE_ID::internal::AnyMetadata;
   static ::PROTOBUF_NAMESPACE_ID::StringPiece FullMessageName() {
-    return "mavsdk.rpc.telemetry.GroundSpeedNedResponse";
+    return "mavsdk.rpc.telemetry.VelocityNedResponse";
   }
   private:
   inline ::PROTOBUF_NAMESPACE_ID::Arena* GetArenaNoVirtual() const {
@@ -3414,29 +3410,29 @@ class GroundSpeedNedResponse :
   // accessors -------------------------------------------------------
 
   enum : int {
-    kGroundSpeedNedFieldNumber = 1,
+    kVelocityNedFieldNumber = 1,
   };
-  // .mavsdk.rpc.telemetry.SpeedNed ground_speed_ned = 1;
-  bool has_ground_speed_ned() const;
+  // .mavsdk.rpc.telemetry.VelocityNed velocity_ned = 1;
+  bool has_velocity_ned() const;
   private:
-  bool _internal_has_ground_speed_ned() const;
+  bool _internal_has_velocity_ned() const;
   public:
-  void clear_ground_speed_ned();
-  const ::mavsdk::rpc::telemetry::SpeedNed& ground_speed_ned() const;
-  ::mavsdk::rpc::telemetry::SpeedNed* release_ground_speed_ned();
-  ::mavsdk::rpc::telemetry::SpeedNed* mutable_ground_speed_ned();
-  void set_allocated_ground_speed_ned(::mavsdk::rpc::telemetry::SpeedNed* ground_speed_ned);
+  void clear_velocity_ned();
+  const ::mavsdk::rpc::telemetry::VelocityNed& velocity_ned() const;
+  ::mavsdk::rpc::telemetry::VelocityNed* release_velocity_ned();
+  ::mavsdk::rpc::telemetry::VelocityNed* mutable_velocity_ned();
+  void set_allocated_velocity_ned(::mavsdk::rpc::telemetry::VelocityNed* velocity_ned);
   private:
-  const ::mavsdk::rpc::telemetry::SpeedNed& _internal_ground_speed_ned() const;
-  ::mavsdk::rpc::telemetry::SpeedNed* _internal_mutable_ground_speed_ned();
+  const ::mavsdk::rpc::telemetry::VelocityNed& _internal_velocity_ned() const;
+  ::mavsdk::rpc::telemetry::VelocityNed* _internal_mutable_velocity_ned();
   public:
 
-  // @@protoc_insertion_point(class_scope:mavsdk.rpc.telemetry.GroundSpeedNedResponse)
+  // @@protoc_insertion_point(class_scope:mavsdk.rpc.telemetry.VelocityNedResponse)
  private:
   class _Internal;
 
   ::PROTOBUF_NAMESPACE_ID::internal::InternalMetadataWithArena _internal_metadata_;
-  ::mavsdk::rpc::telemetry::SpeedNed* ground_speed_ned_;
+  ::mavsdk::rpc::telemetry::VelocityNed* velocity_ned_;
   mutable ::PROTOBUF_NAMESPACE_ID::internal::CachedSize _cached_size_;
   friend struct ::TableStruct_telemetry_2ftelemetry_2eproto;
 };
@@ -9255,23 +9251,23 @@ class SetRateCameraAttitudeResponse :
 };
 // -------------------------------------------------------------------
 
-class SetRateGroundSpeedNedRequest :
-    public ::PROTOBUF_NAMESPACE_ID::Message /* @@protoc_insertion_point(class_definition:mavsdk.rpc.telemetry.SetRateGroundSpeedNedRequest) */ {
+class SetRateVelocityNedRequest :
+    public ::PROTOBUF_NAMESPACE_ID::Message /* @@protoc_insertion_point(class_definition:mavsdk.rpc.telemetry.SetRateVelocityNedRequest) */ {
  public:
-  SetRateGroundSpeedNedRequest();
-  virtual ~SetRateGroundSpeedNedRequest();
+  SetRateVelocityNedRequest();
+  virtual ~SetRateVelocityNedRequest();
 
-  SetRateGroundSpeedNedRequest(const SetRateGroundSpeedNedRequest& from);
-  SetRateGroundSpeedNedRequest(SetRateGroundSpeedNedRequest&& from) noexcept
-    : SetRateGroundSpeedNedRequest() {
+  SetRateVelocityNedRequest(const SetRateVelocityNedRequest& from);
+  SetRateVelocityNedRequest(SetRateVelocityNedRequest&& from) noexcept
+    : SetRateVelocityNedRequest() {
     *this = ::std::move(from);
   }
 
-  inline SetRateGroundSpeedNedRequest& operator=(const SetRateGroundSpeedNedRequest& from) {
+  inline SetRateVelocityNedRequest& operator=(const SetRateVelocityNedRequest& from) {
     CopyFrom(from);
     return *this;
   }
-  inline SetRateGroundSpeedNedRequest& operator=(SetRateGroundSpeedNedRequest&& from) noexcept {
+  inline SetRateVelocityNedRequest& operator=(SetRateVelocityNedRequest&& from) noexcept {
     if (GetArenaNoVirtual() == from.GetArenaNoVirtual()) {
       if (this != &from) InternalSwap(&from);
     } else {
@@ -9289,37 +9285,37 @@ class SetRateGroundSpeedNedRequest :
   static const ::PROTOBUF_NAMESPACE_ID::Reflection* GetReflection() {
     return GetMetadataStatic().reflection;
   }
-  static const SetRateGroundSpeedNedRequest& default_instance();
+  static const SetRateVelocityNedRequest& default_instance();
 
   static void InitAsDefaultInstance();  // FOR INTERNAL USE ONLY
-  static inline const SetRateGroundSpeedNedRequest* internal_default_instance() {
-    return reinterpret_cast<const SetRateGroundSpeedNedRequest*>(
-               &_SetRateGroundSpeedNedRequest_default_instance_);
+  static inline const SetRateVelocityNedRequest* internal_default_instance() {
+    return reinterpret_cast<const SetRateVelocityNedRequest*>(
+               &_SetRateVelocityNedRequest_default_instance_);
   }
   static constexpr int kIndexInFileMessages =
     68;
 
-  friend void swap(SetRateGroundSpeedNedRequest& a, SetRateGroundSpeedNedRequest& b) {
+  friend void swap(SetRateVelocityNedRequest& a, SetRateVelocityNedRequest& b) {
     a.Swap(&b);
   }
-  inline void Swap(SetRateGroundSpeedNedRequest* other) {
+  inline void Swap(SetRateVelocityNedRequest* other) {
     if (other == this) return;
     InternalSwap(other);
   }
 
   // implements Message ----------------------------------------------
 
-  inline SetRateGroundSpeedNedRequest* New() const final {
-    return CreateMaybeMessage<SetRateGroundSpeedNedRequest>(nullptr);
+  inline SetRateVelocityNedRequest* New() const final {
+    return CreateMaybeMessage<SetRateVelocityNedRequest>(nullptr);
   }
 
-  SetRateGroundSpeedNedRequest* New(::PROTOBUF_NAMESPACE_ID::Arena* arena) const final {
-    return CreateMaybeMessage<SetRateGroundSpeedNedRequest>(arena);
+  SetRateVelocityNedRequest* New(::PROTOBUF_NAMESPACE_ID::Arena* arena) const final {
+    return CreateMaybeMessage<SetRateVelocityNedRequest>(arena);
   }
   void CopyFrom(const ::PROTOBUF_NAMESPACE_ID::Message& from) final;
   void MergeFrom(const ::PROTOBUF_NAMESPACE_ID::Message& from) final;
-  void CopyFrom(const SetRateGroundSpeedNedRequest& from);
-  void MergeFrom(const SetRateGroundSpeedNedRequest& from);
+  void CopyFrom(const SetRateVelocityNedRequest& from);
+  void MergeFrom(const SetRateVelocityNedRequest& from);
   PROTOBUF_ATTRIBUTE_REINITIALIZES void Clear() final;
   bool IsInitialized() const final;
 
@@ -9333,10 +9329,10 @@ class SetRateGroundSpeedNedRequest :
   inline void SharedCtor();
   inline void SharedDtor();
   void SetCachedSize(int size) const final;
-  void InternalSwap(SetRateGroundSpeedNedRequest* other);
+  void InternalSwap(SetRateVelocityNedRequest* other);
   friend class ::PROTOBUF_NAMESPACE_ID::internal::AnyMetadata;
   static ::PROTOBUF_NAMESPACE_ID::StringPiece FullMessageName() {
-    return "mavsdk.rpc.telemetry.SetRateGroundSpeedNedRequest";
+    return "mavsdk.rpc.telemetry.SetRateVelocityNedRequest";
   }
   private:
   inline ::PROTOBUF_NAMESPACE_ID::Arena* GetArenaNoVirtual() const {
@@ -9372,7 +9368,7 @@ class SetRateGroundSpeedNedRequest :
   void _internal_set_rate_hz(double value);
   public:
 
-  // @@protoc_insertion_point(class_scope:mavsdk.rpc.telemetry.SetRateGroundSpeedNedRequest)
+  // @@protoc_insertion_point(class_scope:mavsdk.rpc.telemetry.SetRateVelocityNedRequest)
  private:
   class _Internal;
 
@@ -9383,23 +9379,23 @@ class SetRateGroundSpeedNedRequest :
 };
 // -------------------------------------------------------------------
 
-class SetRateGroundSpeedNedResponse :
-    public ::PROTOBUF_NAMESPACE_ID::Message /* @@protoc_insertion_point(class_definition:mavsdk.rpc.telemetry.SetRateGroundSpeedNedResponse) */ {
+class SetRateVelocityNedResponse :
+    public ::PROTOBUF_NAMESPACE_ID::Message /* @@protoc_insertion_point(class_definition:mavsdk.rpc.telemetry.SetRateVelocityNedResponse) */ {
  public:
-  SetRateGroundSpeedNedResponse();
-  virtual ~SetRateGroundSpeedNedResponse();
+  SetRateVelocityNedResponse();
+  virtual ~SetRateVelocityNedResponse();
 
-  SetRateGroundSpeedNedResponse(const SetRateGroundSpeedNedResponse& from);
-  SetRateGroundSpeedNedResponse(SetRateGroundSpeedNedResponse&& from) noexcept
-    : SetRateGroundSpeedNedResponse() {
+  SetRateVelocityNedResponse(const SetRateVelocityNedResponse& from);
+  SetRateVelocityNedResponse(SetRateVelocityNedResponse&& from) noexcept
+    : SetRateVelocityNedResponse() {
     *this = ::std::move(from);
   }
 
-  inline SetRateGroundSpeedNedResponse& operator=(const SetRateGroundSpeedNedResponse& from) {
+  inline SetRateVelocityNedResponse& operator=(const SetRateVelocityNedResponse& from) {
     CopyFrom(from);
     return *this;
   }
-  inline SetRateGroundSpeedNedResponse& operator=(SetRateGroundSpeedNedResponse&& from) noexcept {
+  inline SetRateVelocityNedResponse& operator=(SetRateVelocityNedResponse&& from) noexcept {
     if (GetArenaNoVirtual() == from.GetArenaNoVirtual()) {
       if (this != &from) InternalSwap(&from);
     } else {
@@ -9417,37 +9413,37 @@ class SetRateGroundSpeedNedResponse :
   static const ::PROTOBUF_NAMESPACE_ID::Reflection* GetReflection() {
     return GetMetadataStatic().reflection;
   }
-  static const SetRateGroundSpeedNedResponse& default_instance();
+  static const SetRateVelocityNedResponse& default_instance();
 
   static void InitAsDefaultInstance();  // FOR INTERNAL USE ONLY
-  static inline const SetRateGroundSpeedNedResponse* internal_default_instance() {
-    return reinterpret_cast<const SetRateGroundSpeedNedResponse*>(
-               &_SetRateGroundSpeedNedResponse_default_instance_);
+  static inline const SetRateVelocityNedResponse* internal_default_instance() {
+    return reinterpret_cast<const SetRateVelocityNedResponse*>(
+               &_SetRateVelocityNedResponse_default_instance_);
   }
   static constexpr int kIndexInFileMessages =
     69;
 
-  friend void swap(SetRateGroundSpeedNedResponse& a, SetRateGroundSpeedNedResponse& b) {
+  friend void swap(SetRateVelocityNedResponse& a, SetRateVelocityNedResponse& b) {
     a.Swap(&b);
   }
-  inline void Swap(SetRateGroundSpeedNedResponse* other) {
+  inline void Swap(SetRateVelocityNedResponse* other) {
     if (other == this) return;
     InternalSwap(other);
   }
 
   // implements Message ----------------------------------------------
 
-  inline SetRateGroundSpeedNedResponse* New() const final {
-    return CreateMaybeMessage<SetRateGroundSpeedNedResponse>(nullptr);
+  inline SetRateVelocityNedResponse* New() const final {
+    return CreateMaybeMessage<SetRateVelocityNedResponse>(nullptr);
   }
 
-  SetRateGroundSpeedNedResponse* New(::PROTOBUF_NAMESPACE_ID::Arena* arena) const final {
-    return CreateMaybeMessage<SetRateGroundSpeedNedResponse>(arena);
+  SetRateVelocityNedResponse* New(::PROTOBUF_NAMESPACE_ID::Arena* arena) const final {
+    return CreateMaybeMessage<SetRateVelocityNedResponse>(arena);
   }
   void CopyFrom(const ::PROTOBUF_NAMESPACE_ID::Message& from) final;
   void MergeFrom(const ::PROTOBUF_NAMESPACE_ID::Message& from) final;
-  void CopyFrom(const SetRateGroundSpeedNedResponse& from);
-  void MergeFrom(const SetRateGroundSpeedNedResponse& from);
+  void CopyFrom(const SetRateVelocityNedResponse& from);
+  void MergeFrom(const SetRateVelocityNedResponse& from);
   PROTOBUF_ATTRIBUTE_REINITIALIZES void Clear() final;
   bool IsInitialized() const final;
 
@@ -9461,10 +9457,10 @@ class SetRateGroundSpeedNedResponse :
   inline void SharedCtor();
   inline void SharedDtor();
   void SetCachedSize(int size) const final;
-  void InternalSwap(SetRateGroundSpeedNedResponse* other);
+  void InternalSwap(SetRateVelocityNedResponse* other);
   friend class ::PROTOBUF_NAMESPACE_ID::internal::AnyMetadata;
   static ::PROTOBUF_NAMESPACE_ID::StringPiece FullMessageName() {
-    return "mavsdk.rpc.telemetry.SetRateGroundSpeedNedResponse";
+    return "mavsdk.rpc.telemetry.SetRateVelocityNedResponse";
   }
   private:
   inline ::PROTOBUF_NAMESPACE_ID::Arena* GetArenaNoVirtual() const {
@@ -9506,7 +9502,7 @@ class SetRateGroundSpeedNedResponse :
   ::mavsdk::rpc::telemetry::TelemetryResult* _internal_mutable_telemetry_result();
   public:
 
-  // @@protoc_insertion_point(class_scope:mavsdk.rpc.telemetry.SetRateGroundSpeedNedResponse)
+  // @@protoc_insertion_point(class_scope:mavsdk.rpc.telemetry.SetRateVelocityNedResponse)
  private:
   class _Internal;
 
@@ -13021,156 +13017,6 @@ class AngularVelocityBody :
 };
 // -------------------------------------------------------------------
 
-class SpeedNed :
-    public ::PROTOBUF_NAMESPACE_ID::Message /* @@protoc_insertion_point(class_definition:mavsdk.rpc.telemetry.SpeedNed) */ {
- public:
-  SpeedNed();
-  virtual ~SpeedNed();
-
-  SpeedNed(const SpeedNed& from);
-  SpeedNed(SpeedNed&& from) noexcept
-    : SpeedNed() {
-    *this = ::std::move(from);
-  }
-
-  inline SpeedNed& operator=(const SpeedNed& from) {
-    CopyFrom(from);
-    return *this;
-  }
-  inline SpeedNed& operator=(SpeedNed&& from) noexcept {
-    if (GetArenaNoVirtual() == from.GetArenaNoVirtual()) {
-      if (this != &from) InternalSwap(&from);
-    } else {
-      CopyFrom(from);
-    }
-    return *this;
-  }
-
-  static const ::PROTOBUF_NAMESPACE_ID::Descriptor* descriptor() {
-    return GetDescriptor();
-  }
-  static const ::PROTOBUF_NAMESPACE_ID::Descriptor* GetDescriptor() {
-    return GetMetadataStatic().descriptor;
-  }
-  static const ::PROTOBUF_NAMESPACE_ID::Reflection* GetReflection() {
-    return GetMetadataStatic().reflection;
-  }
-  static const SpeedNed& default_instance();
-
-  static void InitAsDefaultInstance();  // FOR INTERNAL USE ONLY
-  static inline const SpeedNed* internal_default_instance() {
-    return reinterpret_cast<const SpeedNed*>(
-               &_SpeedNed_default_instance_);
-  }
-  static constexpr int kIndexInFileMessages =
-    96;
-
-  friend void swap(SpeedNed& a, SpeedNed& b) {
-    a.Swap(&b);
-  }
-  inline void Swap(SpeedNed* other) {
-    if (other == this) return;
-    InternalSwap(other);
-  }
-
-  // implements Message ----------------------------------------------
-
-  inline SpeedNed* New() const final {
-    return CreateMaybeMessage<SpeedNed>(nullptr);
-  }
-
-  SpeedNed* New(::PROTOBUF_NAMESPACE_ID::Arena* arena) const final {
-    return CreateMaybeMessage<SpeedNed>(arena);
-  }
-  void CopyFrom(const ::PROTOBUF_NAMESPACE_ID::Message& from) final;
-  void MergeFrom(const ::PROTOBUF_NAMESPACE_ID::Message& from) final;
-  void CopyFrom(const SpeedNed& from);
-  void MergeFrom(const SpeedNed& from);
-  PROTOBUF_ATTRIBUTE_REINITIALIZES void Clear() final;
-  bool IsInitialized() const final;
-
-  size_t ByteSizeLong() const final;
-  const char* _InternalParse(const char* ptr, ::PROTOBUF_NAMESPACE_ID::internal::ParseContext* ctx) final;
-  ::PROTOBUF_NAMESPACE_ID::uint8* _InternalSerialize(
-      ::PROTOBUF_NAMESPACE_ID::uint8* target, ::PROTOBUF_NAMESPACE_ID::io::EpsCopyOutputStream* stream) const final;
-  int GetCachedSize() const final { return _cached_size_.Get(); }
-
-  private:
-  inline void SharedCtor();
-  inline void SharedDtor();
-  void SetCachedSize(int size) const final;
-  void InternalSwap(SpeedNed* other);
-  friend class ::PROTOBUF_NAMESPACE_ID::internal::AnyMetadata;
-  static ::PROTOBUF_NAMESPACE_ID::StringPiece FullMessageName() {
-    return "mavsdk.rpc.telemetry.SpeedNed";
-  }
-  private:
-  inline ::PROTOBUF_NAMESPACE_ID::Arena* GetArenaNoVirtual() const {
-    return nullptr;
-  }
-  inline void* MaybeArenaPtr() const {
-    return nullptr;
-  }
-  public:
-
-  ::PROTOBUF_NAMESPACE_ID::Metadata GetMetadata() const final;
-  private:
-  static ::PROTOBUF_NAMESPACE_ID::Metadata GetMetadataStatic() {
-    ::PROTOBUF_NAMESPACE_ID::internal::AssignDescriptors(&::descriptor_table_telemetry_2ftelemetry_2eproto);
-    return ::descriptor_table_telemetry_2ftelemetry_2eproto.file_level_metadata[kIndexInFileMessages];
-  }
-
-  public:
-
-  // nested types ----------------------------------------------------
-
-  // accessors -------------------------------------------------------
-
-  enum : int {
-    kVelocityNorthMSFieldNumber = 1,
-    kVelocityEastMSFieldNumber = 2,
-    kVelocityDownMSFieldNumber = 3,
-  };
-  // float velocity_north_m_s = 1 [(.mavsdk.options.default_value) = "NaN"];
-  void clear_velocity_north_m_s();
-  float velocity_north_m_s() const;
-  void set_velocity_north_m_s(float value);
-  private:
-  float _internal_velocity_north_m_s() const;
-  void _internal_set_velocity_north_m_s(float value);
-  public:
-
-  // float velocity_east_m_s = 2 [(.mavsdk.options.default_value) = "NaN"];
-  void clear_velocity_east_m_s();
-  float velocity_east_m_s() const;
-  void set_velocity_east_m_s(float value);
-  private:
-  float _internal_velocity_east_m_s() const;
-  void _internal_set_velocity_east_m_s(float value);
-  public:
-
-  // float velocity_down_m_s = 3 [(.mavsdk.options.default_value) = "NaN"];
-  void clear_velocity_down_m_s();
-  float velocity_down_m_s() const;
-  void set_velocity_down_m_s(float value);
-  private:
-  float _internal_velocity_down_m_s() const;
-  void _internal_set_velocity_down_m_s(float value);
-  public:
-
-  // @@protoc_insertion_point(class_scope:mavsdk.rpc.telemetry.SpeedNed)
- private:
-  class _Internal;
-
-  ::PROTOBUF_NAMESPACE_ID::internal::InternalMetadataWithArena _internal_metadata_;
-  float velocity_north_m_s_;
-  float velocity_east_m_s_;
-  float velocity_down_m_s_;
-  mutable ::PROTOBUF_NAMESPACE_ID::internal::CachedSize _cached_size_;
-  friend struct ::TableStruct_telemetry_2ftelemetry_2eproto;
-};
-// -------------------------------------------------------------------
-
 class GpsInfo :
     public ::PROTOBUF_NAMESPACE_ID::Message /* @@protoc_insertion_point(class_definition:mavsdk.rpc.telemetry.GpsInfo) */ {
  public:
@@ -13213,7 +13059,7 @@ class GpsInfo :
                &_GpsInfo_default_instance_);
   }
   static constexpr int kIndexInFileMessages =
-    97;
+    96;
 
   friend void swap(GpsInfo& a, GpsInfo& b) {
     a.Swap(&b);
@@ -13352,7 +13198,7 @@ class Battery :
                &_Battery_default_instance_);
   }
   static constexpr int kIndexInFileMessages =
-    98;
+    97;
 
   friend void swap(Battery& a, Battery& b) {
     a.Swap(&b);
@@ -13491,7 +13337,7 @@ class Health :
                &_Health_default_instance_);
   }
   static constexpr int kIndexInFileMessages =
-    99;
+    98;
 
   friend void swap(Health& a, Health& b) {
     a.Swap(&b);
@@ -13685,7 +13531,7 @@ class RcStatus :
                &_RcStatus_default_instance_);
   }
   static constexpr int kIndexInFileMessages =
-    100;
+    99;
 
   friend void swap(RcStatus& a, RcStatus& b) {
     a.Swap(&b);
@@ -13835,7 +13681,7 @@ class StatusText :
                &_StatusText_default_instance_);
   }
   static constexpr int kIndexInFileMessages =
-    101;
+    100;
 
   friend void swap(StatusText& a, StatusText& b) {
     a.Swap(&b);
@@ -13981,7 +13827,7 @@ class ActuatorControlTarget :
                &_ActuatorControlTarget_default_instance_);
   }
   static constexpr int kIndexInFileMessages =
-    102;
+    101;
 
   friend void swap(ActuatorControlTarget& a, ActuatorControlTarget& b) {
     a.Swap(&b);
@@ -14134,7 +13980,7 @@ class ActuatorOutputStatus :
                &_ActuatorOutputStatus_default_instance_);
   }
   static constexpr int kIndexInFileMessages =
-    103;
+    102;
 
   friend void swap(ActuatorOutputStatus& a, ActuatorOutputStatus& b) {
     a.Swap(&b);
@@ -14287,7 +14133,7 @@ class Covariance :
                &_Covariance_default_instance_);
   }
   static constexpr int kIndexInFileMessages =
-    104;
+    103;
 
   friend void swap(Covariance& a, Covariance& b) {
     a.Swap(&b);
@@ -14429,7 +14275,7 @@ class VelocityBody :
                &_VelocityBody_default_instance_);
   }
   static constexpr int kIndexInFileMessages =
-    105;
+    104;
 
   friend void swap(VelocityBody& a, VelocityBody& b) {
     a.Swap(&b);
@@ -14579,7 +14425,7 @@ class PositionBody :
                &_PositionBody_default_instance_);
   }
   static constexpr int kIndexInFileMessages =
-    106;
+    105;
 
   friend void swap(PositionBody& a, PositionBody& b) {
     a.Swap(&b);
@@ -14729,7 +14575,7 @@ class Odometry :
                &_Odometry_default_instance_);
   }
   static constexpr int kIndexInFileMessages =
-    107;
+    106;
 
   friend void swap(Odometry& a, Odometry& b) {
     a.Swap(&b);
@@ -15015,7 +14861,7 @@ class PositionNed :
                &_PositionNed_default_instance_);
   }
   static constexpr int kIndexInFileMessages =
-    108;
+    107;
 
   friend void swap(PositionNed& a, PositionNed& b) {
     a.Swap(&b);
@@ -15165,7 +15011,7 @@ class VelocityNed :
                &_VelocityNed_default_instance_);
   }
   static constexpr int kIndexInFileMessages =
-    109;
+    108;
 
   friend void swap(VelocityNed& a, VelocityNed& b) {
     a.Swap(&b);
@@ -15315,7 +15161,7 @@ class PositionVelocityNed :
                &_PositionVelocityNed_default_instance_);
   }
   static constexpr int kIndexInFileMessages =
-    110;
+    109;
 
   friend void swap(PositionVelocityNed& a, PositionVelocityNed& b) {
     a.Swap(&b);
@@ -15466,7 +15312,7 @@ class GroundTruth :
                &_GroundTruth_default_instance_);
   }
   static constexpr int kIndexInFileMessages =
-    111;
+    110;
 
   friend void swap(GroundTruth& a, GroundTruth& b) {
     a.Swap(&b);
@@ -15616,7 +15462,7 @@ class FixedwingMetrics :
                &_FixedwingMetrics_default_instance_);
   }
   static constexpr int kIndexInFileMessages =
-    112;
+    111;
 
   friend void swap(FixedwingMetrics& a, FixedwingMetrics& b) {
     a.Swap(&b);
@@ -15766,7 +15612,7 @@ class AccelerationFrd :
                &_AccelerationFrd_default_instance_);
   }
   static constexpr int kIndexInFileMessages =
-    113;
+    112;
 
   friend void swap(AccelerationFrd& a, AccelerationFrd& b) {
     a.Swap(&b);
@@ -15916,7 +15762,7 @@ class AngularVelocityFrd :
                &_AngularVelocityFrd_default_instance_);
   }
   static constexpr int kIndexInFileMessages =
-    114;
+    113;
 
   friend void swap(AngularVelocityFrd& a, AngularVelocityFrd& b) {
     a.Swap(&b);
@@ -16066,7 +15912,7 @@ class MagneticFieldFrd :
                &_MagneticFieldFrd_default_instance_);
   }
   static constexpr int kIndexInFileMessages =
-    115;
+    114;
 
   friend void swap(MagneticFieldFrd& a, MagneticFieldFrd& b) {
     a.Swap(&b);
@@ -16216,7 +16062,7 @@ class Imu :
                &_Imu_default_instance_);
   }
   static constexpr int kIndexInFileMessages =
-    116;
+    115;
 
   friend void swap(Imu& a, Imu& b) {
     a.Swap(&b);
@@ -16395,7 +16241,7 @@ class TelemetryResult :
                &_TelemetryResult_default_instance_);
   }
   static constexpr int kIndexInFileMessages =
-    117;
+    116;
 
   friend void swap(TelemetryResult& a, TelemetryResult& b) {
     a.Swap(&b);
@@ -17106,70 +16952,70 @@ inline void CameraAttitudeEulerResponse::set_allocated_attitude_euler(::mavsdk::
 
 // -------------------------------------------------------------------
 
-// SubscribeGroundSpeedNedRequest
+// SubscribeVelocityNedRequest
 
 // -------------------------------------------------------------------
 
-// GroundSpeedNedResponse
+// VelocityNedResponse
 
-// .mavsdk.rpc.telemetry.SpeedNed ground_speed_ned = 1;
-inline bool GroundSpeedNedResponse::_internal_has_ground_speed_ned() const {
-  return this != internal_default_instance() && ground_speed_ned_ != nullptr;
+// .mavsdk.rpc.telemetry.VelocityNed velocity_ned = 1;
+inline bool VelocityNedResponse::_internal_has_velocity_ned() const {
+  return this != internal_default_instance() && velocity_ned_ != nullptr;
 }
-inline bool GroundSpeedNedResponse::has_ground_speed_ned() const {
-  return _internal_has_ground_speed_ned();
+inline bool VelocityNedResponse::has_velocity_ned() const {
+  return _internal_has_velocity_ned();
 }
-inline void GroundSpeedNedResponse::clear_ground_speed_ned() {
-  if (GetArenaNoVirtual() == nullptr && ground_speed_ned_ != nullptr) {
-    delete ground_speed_ned_;
+inline void VelocityNedResponse::clear_velocity_ned() {
+  if (GetArenaNoVirtual() == nullptr && velocity_ned_ != nullptr) {
+    delete velocity_ned_;
   }
-  ground_speed_ned_ = nullptr;
+  velocity_ned_ = nullptr;
 }
-inline const ::mavsdk::rpc::telemetry::SpeedNed& GroundSpeedNedResponse::_internal_ground_speed_ned() const {
-  const ::mavsdk::rpc::telemetry::SpeedNed* p = ground_speed_ned_;
-  return p != nullptr ? *p : *reinterpret_cast<const ::mavsdk::rpc::telemetry::SpeedNed*>(
-      &::mavsdk::rpc::telemetry::_SpeedNed_default_instance_);
+inline const ::mavsdk::rpc::telemetry::VelocityNed& VelocityNedResponse::_internal_velocity_ned() const {
+  const ::mavsdk::rpc::telemetry::VelocityNed* p = velocity_ned_;
+  return p != nullptr ? *p : *reinterpret_cast<const ::mavsdk::rpc::telemetry::VelocityNed*>(
+      &::mavsdk::rpc::telemetry::_VelocityNed_default_instance_);
 }
-inline const ::mavsdk::rpc::telemetry::SpeedNed& GroundSpeedNedResponse::ground_speed_ned() const {
-  // @@protoc_insertion_point(field_get:mavsdk.rpc.telemetry.GroundSpeedNedResponse.ground_speed_ned)
-  return _internal_ground_speed_ned();
+inline const ::mavsdk::rpc::telemetry::VelocityNed& VelocityNedResponse::velocity_ned() const {
+  // @@protoc_insertion_point(field_get:mavsdk.rpc.telemetry.VelocityNedResponse.velocity_ned)
+  return _internal_velocity_ned();
 }
-inline ::mavsdk::rpc::telemetry::SpeedNed* GroundSpeedNedResponse::release_ground_speed_ned() {
-  // @@protoc_insertion_point(field_release:mavsdk.rpc.telemetry.GroundSpeedNedResponse.ground_speed_ned)
+inline ::mavsdk::rpc::telemetry::VelocityNed* VelocityNedResponse::release_velocity_ned() {
+  // @@protoc_insertion_point(field_release:mavsdk.rpc.telemetry.VelocityNedResponse.velocity_ned)
   
-  ::mavsdk::rpc::telemetry::SpeedNed* temp = ground_speed_ned_;
-  ground_speed_ned_ = nullptr;
+  ::mavsdk::rpc::telemetry::VelocityNed* temp = velocity_ned_;
+  velocity_ned_ = nullptr;
   return temp;
 }
-inline ::mavsdk::rpc::telemetry::SpeedNed* GroundSpeedNedResponse::_internal_mutable_ground_speed_ned() {
+inline ::mavsdk::rpc::telemetry::VelocityNed* VelocityNedResponse::_internal_mutable_velocity_ned() {
   
-  if (ground_speed_ned_ == nullptr) {
-    auto* p = CreateMaybeMessage<::mavsdk::rpc::telemetry::SpeedNed>(GetArenaNoVirtual());
-    ground_speed_ned_ = p;
+  if (velocity_ned_ == nullptr) {
+    auto* p = CreateMaybeMessage<::mavsdk::rpc::telemetry::VelocityNed>(GetArenaNoVirtual());
+    velocity_ned_ = p;
   }
-  return ground_speed_ned_;
+  return velocity_ned_;
 }
-inline ::mavsdk::rpc::telemetry::SpeedNed* GroundSpeedNedResponse::mutable_ground_speed_ned() {
-  // @@protoc_insertion_point(field_mutable:mavsdk.rpc.telemetry.GroundSpeedNedResponse.ground_speed_ned)
-  return _internal_mutable_ground_speed_ned();
+inline ::mavsdk::rpc::telemetry::VelocityNed* VelocityNedResponse::mutable_velocity_ned() {
+  // @@protoc_insertion_point(field_mutable:mavsdk.rpc.telemetry.VelocityNedResponse.velocity_ned)
+  return _internal_mutable_velocity_ned();
 }
-inline void GroundSpeedNedResponse::set_allocated_ground_speed_ned(::mavsdk::rpc::telemetry::SpeedNed* ground_speed_ned) {
+inline void VelocityNedResponse::set_allocated_velocity_ned(::mavsdk::rpc::telemetry::VelocityNed* velocity_ned) {
   ::PROTOBUF_NAMESPACE_ID::Arena* message_arena = GetArenaNoVirtual();
   if (message_arena == nullptr) {
-    delete ground_speed_ned_;
+    delete velocity_ned_;
   }
-  if (ground_speed_ned) {
+  if (velocity_ned) {
     ::PROTOBUF_NAMESPACE_ID::Arena* submessage_arena = nullptr;
     if (message_arena != submessage_arena) {
-      ground_speed_ned = ::PROTOBUF_NAMESPACE_ID::internal::GetOwnedMessage(
-          message_arena, ground_speed_ned, submessage_arena);
+      velocity_ned = ::PROTOBUF_NAMESPACE_ID::internal::GetOwnedMessage(
+          message_arena, velocity_ned, submessage_arena);
     }
     
   } else {
     
   }
-  ground_speed_ned_ = ground_speed_ned;
-  // @@protoc_insertion_point(field_set_allocated:mavsdk.rpc.telemetry.GroundSpeedNedResponse.ground_speed_ned)
+  velocity_ned_ = velocity_ned;
+  // @@protoc_insertion_point(field_set_allocated:mavsdk.rpc.telemetry.VelocityNedResponse.velocity_ned)
 }
 
 // -------------------------------------------------------------------
@@ -18778,62 +18624,62 @@ inline void SetRateCameraAttitudeResponse::set_allocated_telemetry_result(::mavs
 
 // -------------------------------------------------------------------
 
-// SetRateGroundSpeedNedRequest
+// SetRateVelocityNedRequest
 
 // double rate_hz = 1;
-inline void SetRateGroundSpeedNedRequest::clear_rate_hz() {
+inline void SetRateVelocityNedRequest::clear_rate_hz() {
   rate_hz_ = 0;
 }
-inline double SetRateGroundSpeedNedRequest::_internal_rate_hz() const {
+inline double SetRateVelocityNedRequest::_internal_rate_hz() const {
   return rate_hz_;
 }
-inline double SetRateGroundSpeedNedRequest::rate_hz() const {
-  // @@protoc_insertion_point(field_get:mavsdk.rpc.telemetry.SetRateGroundSpeedNedRequest.rate_hz)
+inline double SetRateVelocityNedRequest::rate_hz() const {
+  // @@protoc_insertion_point(field_get:mavsdk.rpc.telemetry.SetRateVelocityNedRequest.rate_hz)
   return _internal_rate_hz();
 }
-inline void SetRateGroundSpeedNedRequest::_internal_set_rate_hz(double value) {
+inline void SetRateVelocityNedRequest::_internal_set_rate_hz(double value) {
   
   rate_hz_ = value;
 }
-inline void SetRateGroundSpeedNedRequest::set_rate_hz(double value) {
+inline void SetRateVelocityNedRequest::set_rate_hz(double value) {
   _internal_set_rate_hz(value);
-  // @@protoc_insertion_point(field_set:mavsdk.rpc.telemetry.SetRateGroundSpeedNedRequest.rate_hz)
+  // @@protoc_insertion_point(field_set:mavsdk.rpc.telemetry.SetRateVelocityNedRequest.rate_hz)
 }
 
 // -------------------------------------------------------------------
 
-// SetRateGroundSpeedNedResponse
+// SetRateVelocityNedResponse
 
 // .mavsdk.rpc.telemetry.TelemetryResult telemetry_result = 1;
-inline bool SetRateGroundSpeedNedResponse::_internal_has_telemetry_result() const {
+inline bool SetRateVelocityNedResponse::_internal_has_telemetry_result() const {
   return this != internal_default_instance() && telemetry_result_ != nullptr;
 }
-inline bool SetRateGroundSpeedNedResponse::has_telemetry_result() const {
+inline bool SetRateVelocityNedResponse::has_telemetry_result() const {
   return _internal_has_telemetry_result();
 }
-inline void SetRateGroundSpeedNedResponse::clear_telemetry_result() {
+inline void SetRateVelocityNedResponse::clear_telemetry_result() {
   if (GetArenaNoVirtual() == nullptr && telemetry_result_ != nullptr) {
     delete telemetry_result_;
   }
   telemetry_result_ = nullptr;
 }
-inline const ::mavsdk::rpc::telemetry::TelemetryResult& SetRateGroundSpeedNedResponse::_internal_telemetry_result() const {
+inline const ::mavsdk::rpc::telemetry::TelemetryResult& SetRateVelocityNedResponse::_internal_telemetry_result() const {
   const ::mavsdk::rpc::telemetry::TelemetryResult* p = telemetry_result_;
   return p != nullptr ? *p : *reinterpret_cast<const ::mavsdk::rpc::telemetry::TelemetryResult*>(
       &::mavsdk::rpc::telemetry::_TelemetryResult_default_instance_);
 }
-inline const ::mavsdk::rpc::telemetry::TelemetryResult& SetRateGroundSpeedNedResponse::telemetry_result() const {
-  // @@protoc_insertion_point(field_get:mavsdk.rpc.telemetry.SetRateGroundSpeedNedResponse.telemetry_result)
+inline const ::mavsdk::rpc::telemetry::TelemetryResult& SetRateVelocityNedResponse::telemetry_result() const {
+  // @@protoc_insertion_point(field_get:mavsdk.rpc.telemetry.SetRateVelocityNedResponse.telemetry_result)
   return _internal_telemetry_result();
 }
-inline ::mavsdk::rpc::telemetry::TelemetryResult* SetRateGroundSpeedNedResponse::release_telemetry_result() {
-  // @@protoc_insertion_point(field_release:mavsdk.rpc.telemetry.SetRateGroundSpeedNedResponse.telemetry_result)
+inline ::mavsdk::rpc::telemetry::TelemetryResult* SetRateVelocityNedResponse::release_telemetry_result() {
+  // @@protoc_insertion_point(field_release:mavsdk.rpc.telemetry.SetRateVelocityNedResponse.telemetry_result)
   
   ::mavsdk::rpc::telemetry::TelemetryResult* temp = telemetry_result_;
   telemetry_result_ = nullptr;
   return temp;
 }
-inline ::mavsdk::rpc::telemetry::TelemetryResult* SetRateGroundSpeedNedResponse::_internal_mutable_telemetry_result() {
+inline ::mavsdk::rpc::telemetry::TelemetryResult* SetRateVelocityNedResponse::_internal_mutable_telemetry_result() {
   
   if (telemetry_result_ == nullptr) {
     auto* p = CreateMaybeMessage<::mavsdk::rpc::telemetry::TelemetryResult>(GetArenaNoVirtual());
@@ -18841,11 +18687,11 @@ inline ::mavsdk::rpc::telemetry::TelemetryResult* SetRateGroundSpeedNedResponse:
   }
   return telemetry_result_;
 }
-inline ::mavsdk::rpc::telemetry::TelemetryResult* SetRateGroundSpeedNedResponse::mutable_telemetry_result() {
-  // @@protoc_insertion_point(field_mutable:mavsdk.rpc.telemetry.SetRateGroundSpeedNedResponse.telemetry_result)
+inline ::mavsdk::rpc::telemetry::TelemetryResult* SetRateVelocityNedResponse::mutable_telemetry_result() {
+  // @@protoc_insertion_point(field_mutable:mavsdk.rpc.telemetry.SetRateVelocityNedResponse.telemetry_result)
   return _internal_mutable_telemetry_result();
 }
-inline void SetRateGroundSpeedNedResponse::set_allocated_telemetry_result(::mavsdk::rpc::telemetry::TelemetryResult* telemetry_result) {
+inline void SetRateVelocityNedResponse::set_allocated_telemetry_result(::mavsdk::rpc::telemetry::TelemetryResult* telemetry_result) {
   ::PROTOBUF_NAMESPACE_ID::Arena* message_arena = GetArenaNoVirtual();
   if (message_arena == nullptr) {
     delete telemetry_result_;
@@ -18861,7 +18707,7 @@ inline void SetRateGroundSpeedNedResponse::set_allocated_telemetry_result(::mavs
     
   }
   telemetry_result_ = telemetry_result;
-  // @@protoc_insertion_point(field_set_allocated:mavsdk.rpc.telemetry.SetRateGroundSpeedNedResponse.telemetry_result)
+  // @@protoc_insertion_point(field_set_allocated:mavsdk.rpc.telemetry.SetRateVelocityNedResponse.telemetry_result)
 }
 
 // -------------------------------------------------------------------
@@ -20126,70 +19972,6 @@ inline void AngularVelocityBody::_internal_set_yaw_rad_s(float value) {
 inline void AngularVelocityBody::set_yaw_rad_s(float value) {
   _internal_set_yaw_rad_s(value);
   // @@protoc_insertion_point(field_set:mavsdk.rpc.telemetry.AngularVelocityBody.yaw_rad_s)
-}
-
-// -------------------------------------------------------------------
-
-// SpeedNed
-
-// float velocity_north_m_s = 1 [(.mavsdk.options.default_value) = "NaN"];
-inline void SpeedNed::clear_velocity_north_m_s() {
-  velocity_north_m_s_ = 0;
-}
-inline float SpeedNed::_internal_velocity_north_m_s() const {
-  return velocity_north_m_s_;
-}
-inline float SpeedNed::velocity_north_m_s() const {
-  // @@protoc_insertion_point(field_get:mavsdk.rpc.telemetry.SpeedNed.velocity_north_m_s)
-  return _internal_velocity_north_m_s();
-}
-inline void SpeedNed::_internal_set_velocity_north_m_s(float value) {
-  
-  velocity_north_m_s_ = value;
-}
-inline void SpeedNed::set_velocity_north_m_s(float value) {
-  _internal_set_velocity_north_m_s(value);
-  // @@protoc_insertion_point(field_set:mavsdk.rpc.telemetry.SpeedNed.velocity_north_m_s)
-}
-
-// float velocity_east_m_s = 2 [(.mavsdk.options.default_value) = "NaN"];
-inline void SpeedNed::clear_velocity_east_m_s() {
-  velocity_east_m_s_ = 0;
-}
-inline float SpeedNed::_internal_velocity_east_m_s() const {
-  return velocity_east_m_s_;
-}
-inline float SpeedNed::velocity_east_m_s() const {
-  // @@protoc_insertion_point(field_get:mavsdk.rpc.telemetry.SpeedNed.velocity_east_m_s)
-  return _internal_velocity_east_m_s();
-}
-inline void SpeedNed::_internal_set_velocity_east_m_s(float value) {
-  
-  velocity_east_m_s_ = value;
-}
-inline void SpeedNed::set_velocity_east_m_s(float value) {
-  _internal_set_velocity_east_m_s(value);
-  // @@protoc_insertion_point(field_set:mavsdk.rpc.telemetry.SpeedNed.velocity_east_m_s)
-}
-
-// float velocity_down_m_s = 3 [(.mavsdk.options.default_value) = "NaN"];
-inline void SpeedNed::clear_velocity_down_m_s() {
-  velocity_down_m_s_ = 0;
-}
-inline float SpeedNed::_internal_velocity_down_m_s() const {
-  return velocity_down_m_s_;
-}
-inline float SpeedNed::velocity_down_m_s() const {
-  // @@protoc_insertion_point(field_get:mavsdk.rpc.telemetry.SpeedNed.velocity_down_m_s)
-  return _internal_velocity_down_m_s();
-}
-inline void SpeedNed::_internal_set_velocity_down_m_s(float value) {
-  
-  velocity_down_m_s_ = value;
-}
-inline void SpeedNed::set_velocity_down_m_s(float value) {
-  _internal_set_velocity_down_m_s(value);
-  // @@protoc_insertion_point(field_set:mavsdk.rpc.telemetry.SpeedNed.velocity_down_m_s)
 }
 
 // -------------------------------------------------------------------
@@ -22180,8 +21962,6 @@ inline void TelemetryResult::set_allocated_result_str(std::string* result_str) {
 #ifdef __GNUC__
   #pragma GCC diagnostic pop
 #endif  // __GNUC__
-// -------------------------------------------------------------------
-
 // -------------------------------------------------------------------
 
 // -------------------------------------------------------------------

@@ -62,28 +62,6 @@ std::ostream& operator<<(std::ostream& str, LogFiles::Entry const& entry)
     return str;
 }
 
-const char* LogFiles::result_str(LogFiles::Result result)
-{
-    switch (result) {
-        case LogFiles::Result::Unknown:
-            return "Unknown result";
-        case LogFiles::Result::Success:
-            return "Request succeeded";
-        case LogFiles::Result::Progress:
-            return "Progress update";
-        case LogFiles::Result::NoLogfiles:
-            return "No log files found";
-        case LogFiles::Result::Timeout:
-            return "A timeout happened";
-        case LogFiles::Result::InvalidArgument:
-            return "Invalid argument";
-        case LogFiles::Result::FileOpenFailed:
-            return "File open failed";
-        default:
-            return "Unknown";
-    }
-}
-
 std::ostream& operator<<(std::ostream& str, LogFiles::Result const& result)
 {
     switch (result) {

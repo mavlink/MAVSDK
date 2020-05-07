@@ -41,34 +41,6 @@ void Calibration::cancel() const
     _impl->cancel();
 }
 
-const char* Calibration::result_str(Calibration::Result result)
-{
-    switch (result) {
-        case Calibration::Result::Unknown:
-            return "Unknown result";
-        case Calibration::Result::Success:
-            return "The calibration succeeded";
-        case Calibration::Result::Next:
-            return "Intermediate message showing progress or instructions on the next steps";
-        case Calibration::Result::Failed:
-            return "Calibration failed";
-        case Calibration::Result::NoSystem:
-            return "No system is connected";
-        case Calibration::Result::ConnectionError:
-            return "Connection error";
-        case Calibration::Result::Busy:
-            return "Vehicle is busy";
-        case Calibration::Result::CommandDenied:
-            return "Command refused by vehicle";
-        case Calibration::Result::Timeout:
-            return "Command timed out";
-        case Calibration::Result::Cancelled:
-            return "Calibration process was cancelled";
-        default:
-            return "Unknown";
-    }
-}
-
 std::ostream& operator<<(std::ostream& str, Calibration::Result const& result)
 {
     switch (result) {

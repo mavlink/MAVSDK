@@ -33,7 +33,7 @@ int main(int argc, char** argv)
     }
 
     if (connection_result != ConnectionResult::Success) {
-        std::cout << "Connection failed: " << connection_result_str(connection_result) << std::endl;
+        std::cout << "Connection failed: " << connection_result << std::endl;
         return 1;
     }
 

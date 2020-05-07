@@ -118,20 +118,6 @@ std::ostream& operator<<(std::ostream& str, Info::Version const& version)
     return str;
 }
 
-const char* Info::result_str(Info::Result result)
-{
-    switch (result) {
-        case Info::Result::Unknown:
-            return "Unknown result";
-        case Info::Result::Success:
-            return "Request succeeded";
-        case Info::Result::InformationNotReceivedYet:
-            return "Information has not been received yet";
-        default:
-            return "Unknown";
-    }
-}
-
 std::ostream& operator<<(std::ostream& str, Info::Result const& result)
 {
     switch (result) {

@@ -24,7 +24,7 @@ static void print_ground_truth(Telemetry::GroundTruth ground_truth);
 static void print_camera_quaternion(Telemetry::Quaternion quaternion);
 static void print_camera_euler_angle(Telemetry::EulerAngle euler_angle);
 #endif
-static void print_ground_speed_ned(Telemetry::SpeedNed ground_speed_ned);
+static void print_velocity_ned(Telemetry::VelocityNed velocity_ned);
 static void print_imu_reading_ned(Telemetry::Imu imu_reading_ned);
 static void print_gps_info(Telemetry::GpsInfo gps_info);
 static void print_battery(Telemetry::Battery battery);
@@ -48,7 +48,7 @@ static bool _received_ground_truth = false;
 static bool _received_camera_quaternion = false;
 static bool _received_camera_euler_angle = false;
 #endif
-static bool _received_ground_speed = false;
+static bool _received_velocity = false;
 static bool _received_imu_reading_ned = false;
 static bool _received_gps_info = false;
 static bool _received_battery = false;
@@ -93,7 +93,7 @@ TEST_F(SitlTest, TelemetryAsync)
     telemetry->set_rate_attitude_async(10.0, std::bind(&receive_result, _1));
     std::this_thread::sleep_for(std::chrono::milliseconds(100));
 
-    telemetry->set_rate_ground_speed_ned_async(10.0, std::bind(&receive_result, _1));
+    telemetry->set_rate_velocity_ned_async(10.0, std::bind(&receive_result, _1));
     std::this_thread::sleep_for(std::chrono::milliseconds(100));
 
     telemetry->set_rate_imu_async(10.0, std::bind(&receive_result, _1));
@@ -139,7 +139,7 @@ TEST_F(SitlTest, TelemetryAsync)
     telemetry->subscribe_camera_attitude_euler_angle(std::bind(&print_camera_euler_angle, _1));
 #endif
 
-    telemetry->subscribe_ground_speed_ned(std::bind(&print_ground_speed_ned, _1));
+    telemetry->subscribe_velocity_ned(std::bind(&print_velocity_ned, _1));
 
     telemetry->subscribe_imu(std::bind(&print_imu_reading_ned, _1));
 
@@ -173,7 +173,7 @@ TEST_F(SitlTest, TelemetryAsync)
     EXPECT_TRUE(_received_camera_quaternion);
     EXPECT_TRUE(_received_camera_euler_angle);
 #endif
-    EXPECT_TRUE(_received_ground_speed);
+    EXPECT_TRUE(_received_velocity);
     EXPECT_TRUE(_received_imu_reading_ned);
     EXPECT_TRUE(_received_gps_info);
     EXPECT_TRUE(_received_battery);
@@ -277,13 +277,12 @@ void print_camera_euler_angle(Telemetry::EulerAngle euler_angle)
 }
 #endif
 
-void print_ground_speed_ned(Telemetry::SpeedNed ground_speed_ned)
+void print_velocity_ned(Telemetry::VelocityNed velocity_ned)
 {
-    std::cout << "Ground speed NED: [ " << ground_speed_ned.velocity_north_m_s << ", "
-              << ground_speed_ned.velocity_east_m_s << ", " << ground_speed_ned.velocity_down_m_s
-              << " ]" << std::endl;
+    std::cout << "Ground speed NED: [ " << velocity_ned.north_m_s << ", " << velocity_ned.east_m_s
+              << ", " << velocity_ned.down_m_s << " ]" << std::endl;
 
-    _received_ground_speed = true;
+    _received_velocity = true;
 }
 
 void print_imu_reading_ned(Telemetry::Imu imu)

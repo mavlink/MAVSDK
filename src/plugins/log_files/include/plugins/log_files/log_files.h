@@ -147,14 +147,6 @@ public:
     void download_log_file_async(uint32_t id, std::string path, DownloadLogFileCallback callback);
 
     /**
-     * @brief Returns a human-readable English string for a Result.
-     *
-     * @param result The enum value for which a human readable string is required.
-     * @return Human readable string for the Result.
-     */
-    static const char* result_str(Result result);
-
-    /**
      * @brief Copy constructor (object is not copyable).
      */
     LogFiles(const LogFiles&) = delete;

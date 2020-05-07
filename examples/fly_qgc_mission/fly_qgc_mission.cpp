@@ -180,8 +180,7 @@ int main(int argc, char** argv)
         std::cout << "Commanding RTL..." << std::endl;
         const Action::Result result = action->return_to_launch();
         if (result != Action::Result::Success) {
-            std::cout << "Failed to command RTL (" << Action::result_str(result) << ")"
-                      << std::endl;
+            std::cout << "Failed to command RTL (" << result << ")" << std::endl;
         } else {
             std::cout << "Commanded RTL." << std::endl;
         }
@@ -193,8 +192,7 @@ int main(int argc, char** argv)
 inline void handle_action_err_exit(Action::Result result, const std::string& message)
 {
     if (result != Action::Result::Success) {
-        std::cerr << ERROR_CONSOLE_TEXT << message << Action::result_str(result)
-                  << NORMAL_CONSOLE_TEXT << std::endl;
+        std::cerr << ERROR_CONSOLE_TEXT << message << result << NORMAL_CONSOLE_TEXT << std::endl;
         exit(EXIT_FAILURE);
     }
 }
@@ -202,8 +200,7 @@ inline void handle_action_err_exit(Action::Result result, const std::string& mes
 inline void handle_mission_err_exit(Mission::Result result, const std::string& message)
 {
     if (result != Mission::Result::Success) {
-        std::cerr << ERROR_CONSOLE_TEXT << message << Mission::result_str(result)
-                  << NORMAL_CONSOLE_TEXT << std::endl;
+        std::cerr << ERROR_CONSOLE_TEXT << message << result << NORMAL_CONSOLE_TEXT << std::endl;
         exit(EXIT_FAILURE);
     }
 }
@@ -212,8 +209,7 @@ inline void handle_mission_err_exit(Mission::Result result, const std::string& m
 inline void handle_connection_err_exit(ConnectionResult result, const std::string& message)
 {
     if (result != ConnectionResult::Success) {
-        std::cerr << ERROR_CONSOLE_TEXT << message << connection_result_str(result)
-                  << NORMAL_CONSOLE_TEXT << std::endl;
+        std::cerr << ERROR_CONSOLE_TEXT << message << result << NORMAL_CONSOLE_TEXT << std::endl;
         exit(EXIT_FAILURE);
     }
 }

@@ -1,5 +1,7 @@
 #pragma once
 
+#include <sstream>
+
 /**
  * @brief Namespace for all mavsdk types.
  */
@@ -29,45 +31,10 @@ enum class ConnectionResult {
 };
 
 /**
- * @brief Returns a human-readable English string for a ConnectionResult.
+ * @brief Stream operator to print information about a `ConnectionResult`.
  *
- * @param result The enum value for which a human readable string is required.
- * @return Human readable string for the ConnectionResult.
+ * @return A reference to the stream.
  */
-inline const char* connection_result_str(const ConnectionResult result)
-{
-    switch (result) {
-        case ConnectionResult::Success:
-            return "Success";
-        case ConnectionResult::Timeout:
-            return "Timeout";
-        case ConnectionResult::SocketError:
-            return "Socket error";
-        case ConnectionResult::BindError:
-            return "Bind error";
-        case ConnectionResult::SocketConnectionError:
-            return "Socket connection error";
-        case ConnectionResult::ConnectionError:
-            return "Connection error";
-        case ConnectionResult::NotImplemented:
-            return "Not implemented";
-        case ConnectionResult::SystemNotConnected:
-            return "System not connected";
-        case ConnectionResult::SystemBusy:
-            return "System busy";
-        case ConnectionResult::CommandDenied:
-            return "Command denied";
-        case ConnectionResult::DestinationIpUnknown:
-            return "Destination IP unknown";
-        case ConnectionResult::ConnectionsExhausted:
-            return "Connections exhausted";
-        case ConnectionResult::ConnectionUrlInvalid:
-            return "Invalid connection URL";
-        case ConnectionResult::BaudrateUnknown:
-            return "Baudrate unknown";
-        default:
-            return "Unknown";
-    }
-}
+std::ostream& operator<<(std::ostream& str, const ConnectionResult& result);
 
 } // namespace mavsdk

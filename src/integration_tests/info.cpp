@@ -42,7 +42,7 @@ TEST_F(SitlTest, Info)
 
             EXPECT_NE(version_result.second.flight_sw_major, 0);
         } else {
-            LogWarn() << "Version request result: " << Info::result_str(version_result.first);
+            LogWarn() << "Version request result: " << version_result.first;
         }
 
         std::pair<Info::Result, Info::Product> product_result = info->get_product();
@@ -52,7 +52,7 @@ TEST_F(SitlTest, Info)
             std::cout << "Vendor: " << product_result.second.vendor_name << std::endl;
             std::cout << "Product: " << product_result.second.product_name << std::endl;
         } else {
-            LogWarn() << "Product request result: " << Info::result_str(product_result.first);
+            LogWarn() << "Product request result: " << product_result.first;
         }
 
         std::pair<Info::Result, Info::Identification> identification_result =
@@ -63,8 +63,7 @@ TEST_F(SitlTest, Info)
         if (identification_result.first == Info::Result::Success) {
             std::cout << "Hardware UID: " << identification_result.second.hardware_uid << std::endl;
         } else {
-            LogWarn() << "Identification request result: "
-                      << Info::result_str(identification_result.first);
+            LogWarn() << "Identification request result: " << identification_result.first;
         }
 
         std::pair<Info::Result, Info::FlightInfo> flight_info_result =
@@ -76,7 +75,7 @@ TEST_F(SitlTest, Info)
                       << std::to_string(flight_info_result.second.time_boot_ms) << std::endl;
             std::cout << "Flight UID: " << flight_info_result.second.flight_uid << std::endl;
         } else {
-            LogWarn() << "Product request result: " << Info::result_str(flight_info_result.first);
+            LogWarn() << "Product request result: " << flight_info_result.first;
         }
 
         std::this_thread::sleep_for(std::chrono::seconds(1));

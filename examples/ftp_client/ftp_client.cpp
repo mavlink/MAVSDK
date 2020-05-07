@@ -214,8 +214,7 @@ int main(int argc, char** argv)
     }
 
     if (connection_result != ConnectionResult::Success) {
-        std::cout << ERROR_CONSOLE_TEXT
-                  << "Connection failed: " << connection_result_str(connection_result)
+        std::cout << ERROR_CONSOLE_TEXT << "Connection failed: " << connection_result
                   << NORMAL_CONSOLE_TEXT << std::endl;
         return 1;
     }
@@ -241,8 +240,8 @@ int main(int argc, char** argv)
     Ftp::Result res;
     res = reset_server(ftp);
     if (res != Ftp::Result::Success) {
-        std::cout << ERROR_CONSOLE_TEXT << "Reset server error: " << ftp->result_str(res)
-                  << NORMAL_CONSOLE_TEXT << std::endl;
+        std::cout << ERROR_CONSOLE_TEXT << "Reset server error: " << res << NORMAL_CONSOLE_TEXT
+                  << std::endl;
         return 1;
     }
 
@@ -257,8 +256,8 @@ int main(int argc, char** argv)
         if (res == Ftp::Result::Success) {
             std::cout << "File uploaded." << std::endl;
         } else {
-            std::cout << ERROR_CONSOLE_TEXT << "File upload error: " << ftp->result_str(res)
-                      << NORMAL_CONSOLE_TEXT << std::endl;
+            std::cout << ERROR_CONSOLE_TEXT << "File upload error: " << res << NORMAL_CONSOLE_TEXT
+                      << std::endl;
             return (res == Ftp::Result::FileDoesNotExist) ? 2 : 1;
         }
     } else if (command == "get") {
@@ -270,8 +269,8 @@ int main(int argc, char** argv)
         if (res == Ftp::Result::Success) {
             std::cout << "File downloaded." << std::endl;
         } else {
-            std::cout << ERROR_CONSOLE_TEXT << "File download error: " << ftp->result_str(res)
-                      << NORMAL_CONSOLE_TEXT << std::endl;
+            std::cout << ERROR_CONSOLE_TEXT << "File download error: " << res << NORMAL_CONSOLE_TEXT
+                      << std::endl;
             return (res == Ftp::Result::FileDoesNotExist) ? 2 : 1;
         }
     } else if (command == "rename") {
@@ -283,8 +282,8 @@ int main(int argc, char** argv)
         if (res == Ftp::Result::Success) {
             std::cout << "File renamed." << std::endl;
         } else {
-            std::cout << ERROR_CONSOLE_TEXT << "File rename error: " << ftp->result_str(res)
-                      << NORMAL_CONSOLE_TEXT << std::endl;
+            std::cout << ERROR_CONSOLE_TEXT << "File rename error: " << res << NORMAL_CONSOLE_TEXT
+                      << std::endl;
             return (res == Ftp::Result::FileDoesNotExist) ? 2 : 1;
         }
     } else if (command == "mkdir") {
@@ -298,7 +297,7 @@ int main(int argc, char** argv)
         } else if (res == Ftp::Result::FileExists) {
             std::cout << "Directory already exists." << std::endl;
         } else {
-            std::cout << ERROR_CONSOLE_TEXT << "Create directory error: " << ftp->result_str(res)
+            std::cout << ERROR_CONSOLE_TEXT << "Create directory error: " << res
                       << NORMAL_CONSOLE_TEXT << std::endl;
             return 1;
         }
@@ -324,7 +323,7 @@ int main(int argc, char** argv)
             std::cout << "Directory does not exist." << std::endl;
             return 2;
         } else {
-            std::cout << ERROR_CONSOLE_TEXT << "Remove directory error: " << ftp->result_str(res)
+            std::cout << ERROR_CONSOLE_TEXT << "Remove directory error: " << res
                       << NORMAL_CONSOLE_TEXT << std::endl;
             return 1;
         }
@@ -340,7 +339,7 @@ int main(int argc, char** argv)
             std::cout << "Directory does not exist." << std::endl;
             return 2;
         } else {
-            std::cout << ERROR_CONSOLE_TEXT << "List directory error: " << ftp->result_str(res)
+            std::cout << ERROR_CONSOLE_TEXT << "List directory error: " << res
                       << NORMAL_CONSOLE_TEXT << std::endl;
             return 1;
         }
@@ -356,8 +355,8 @@ int main(int argc, char** argv)
             std::cout << "File does not exist." << std::endl;
             return 2;
         } else {
-            std::cout << ERROR_CONSOLE_TEXT << "Delete file error: " << ftp->result_str(res)
-                      << NORMAL_CONSOLE_TEXT << std::endl;
+            std::cout << ERROR_CONSOLE_TEXT << "Delete file error: " << res << NORMAL_CONSOLE_TEXT
+                      << std::endl;
             return 1;
         }
     } else if (command == "cmp") {

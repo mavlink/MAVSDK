@@ -11,6 +11,7 @@
 #include <future>
 #include <limits>
 #include <memory>
+#include <sstream>
 #include <vector>
 
 namespace mavsdk {
@@ -28,7 +29,9 @@ public:
 
         auto* rpc_mission_raw_result = new rpc::mission_raw::MissionRawResult();
         rpc_mission_raw_result->set_result(rpc_result);
-        rpc_mission_raw_result->set_result_str(mavsdk::MissionRaw::result_str(result));
+        std::stringstream ss;
+        ss << result;
+        rpc_mission_raw_result->set_result_str(ss.str());
 
         response->set_allocated_mission_raw_result(rpc_mission_raw_result);
     }

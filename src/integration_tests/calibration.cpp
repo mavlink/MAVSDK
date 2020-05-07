@@ -39,7 +39,7 @@ TEST(HardwareTest, CalibrationGyro)
     auto future_ret = fut.get();
     EXPECT_EQ(future_ret, Calibration::Result::Success);
     if (future_ret != Calibration::Result::Success) {
-        LogErr() << "Calibration error: " << Calibration::result_str(future_ret);
+        LogErr() << "Calibration error: " << future_ret;
     }
 }
 
@@ -66,7 +66,7 @@ TEST(HardwareTest, CalibrationAccelerometer)
     auto future_ret = fut.get();
     EXPECT_EQ(future_ret, Calibration::Result::Success);
     if (future_ret != Calibration::Result::Success) {
-        LogErr() << "Calibration error: " << Calibration::result_str(future_ret);
+        LogErr() << "Calibration error: " << future_ret;
     }
 }
 
@@ -93,7 +93,7 @@ TEST(HardwareTest, CalibrationMagnetometer)
     auto future_ret = fut.get();
     EXPECT_EQ(future_ret, Calibration::Result::Success);
     if (future_ret != Calibration::Result::Success) {
-        LogErr() << "Calibration error: " << Calibration::result_str(future_ret);
+        LogErr() << "Calibration error: " << future_ret;
     }
 }
 
@@ -120,7 +120,7 @@ TEST(HardwareTest, CalibrationGimbalAccelerometer)
     auto future_ret = fut.get();
     EXPECT_EQ(future_ret, Calibration::Result::Success);
     if (future_ret != Calibration::Result::Success) {
-        LogErr() << "Calibration error: " << Calibration::result_str(future_ret);
+        LogErr() << "Calibration error: " << future_ret;
     }
 }
 
@@ -157,7 +157,7 @@ TEST(HardwareTest, CalibrationGyroWithTelemetry)
     auto future_ret = fut.get();
     EXPECT_EQ(future_ret, Calibration::Result::Success);
     if (future_ret != Calibration::Result::Success) {
-        LogErr() << "Calibration error: " << Calibration::result_str(future_ret);
+        LogErr() << "Calibration error: " << future_ret;
     }
 
     // Now, telemetry should be updated showing that the gyro calibration is ok.

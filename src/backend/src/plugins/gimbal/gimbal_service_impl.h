@@ -11,6 +11,7 @@
 #include <future>
 #include <limits>
 #include <memory>
+#include <sstream>
 #include <vector>
 
 namespace mavsdk {
@@ -28,7 +29,9 @@ public:
 
         auto* rpc_gimbal_result = new rpc::gimbal::GimbalResult();
         rpc_gimbal_result->set_result(rpc_result);
-        rpc_gimbal_result->set_result_str(mavsdk::Gimbal::result_str(result));
+        std::stringstream ss;
+        ss << result;
+        rpc_gimbal_result->set_result_str(ss.str());
 
         response->set_allocated_gimbal_result(rpc_gimbal_result);
     }

@@ -33,26 +33,6 @@ Param::Result Param::set_param_float(std::string name, float value) const
     return _impl->set_param_float(name, value);
 }
 
-const char* Param::result_str(Param::Result result)
-{
-    switch (result) {
-        case Param::Result::Unknown:
-            return "Unknown result";
-        case Param::Result::Success:
-            return "Request succeeded";
-        case Param::Result::Timeout:
-            return "Request timed out";
-        case Param::Result::ConnectionError:
-            return "Connection error";
-        case Param::Result::WrongType:
-            return "Wrong type";
-        case Param::Result::ParamNameTooLong:
-            return "Parameter name too long (> 16)";
-        default:
-            return "Unknown";
-    }
-}
-
 std::ostream& operator<<(std::ostream& str, Param::Result const& result)
 {
     switch (result) {

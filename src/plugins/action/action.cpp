@@ -190,38 +190,6 @@ Action::Result Action::set_return_to_launch_altitude(float relative_altitude_m) 
     return _impl->set_return_to_launch_altitude(relative_altitude_m);
 }
 
-const char* Action::result_str(Action::Result result)
-{
-    switch (result) {
-        case Action::Result::Unknown:
-            return "Unknown result";
-        case Action::Result::Success:
-            return "Request was successful";
-        case Action::Result::NoSystem:
-            return "No system is connected";
-        case Action::Result::ConnectionError:
-            return "Connection error";
-        case Action::Result::Busy:
-            return "Vehicle is busy";
-        case Action::Result::CommandDenied:
-            return "Command refused by vehicle";
-        case Action::Result::CommandDeniedLandedStateUnknown:
-            return "Command refused because landed state is unknown";
-        case Action::Result::CommandDeniedNotLanded:
-            return "Command refused because vehicle not landed";
-        case Action::Result::Timeout:
-            return "Request timed out";
-        case Action::Result::VtolTransitionSupportUnknown:
-            return "Hybrid/VTOL transition support is unknown";
-        case Action::Result::NoVtolTransitionSupport:
-            return "Vehicle does not support hybrid/VTOL transitions";
-        case Action::Result::ParameterError:
-            return "Error getting or setting parameter";
-        default:
-            return "Unknown";
-    }
-}
-
 std::ostream& operator<<(std::ostream& str, Action::Result const& result)
 {
     switch (result) {

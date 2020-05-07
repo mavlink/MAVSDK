@@ -74,28 +74,6 @@ std::ostream& operator<<(std::ostream& str, Geofence::Polygon const& polygon)
     return str;
 }
 
-const char* Geofence::result_str(Geofence::Result result)
-{
-    switch (result) {
-        case Geofence::Result::Unknown:
-            return "Unknown result";
-        case Geofence::Result::Success:
-            return "Request succeeded";
-        case Geofence::Result::Error:
-            return "Error";
-        case Geofence::Result::TooManyGeofenceItems:
-            return "Too many Polygon objects in the geofence";
-        case Geofence::Result::Busy:
-            return "Vehicle is busy";
-        case Geofence::Result::Timeout:
-            return "Request timed out";
-        case Geofence::Result::InvalidArgument:
-            return "Invalid argument";
-        default:
-            return "Unknown";
-    }
-}
-
 std::ostream& operator<<(std::ostream& str, Geofence::Result const& result)
 {
     switch (result) {

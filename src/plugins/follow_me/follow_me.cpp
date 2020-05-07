@@ -122,32 +122,6 @@ std::ostream& operator<<(std::ostream& str, FollowMe::TargetLocation const& targ
     return str;
 }
 
-const char* FollowMe::result_str(FollowMe::Result result)
-{
-    switch (result) {
-        case FollowMe::Result::Unknown:
-            return "Unkown result";
-        case FollowMe::Result::Success:
-            return "Request succeeded";
-        case FollowMe::Result::NoSystem:
-            return "No system connected";
-        case FollowMe::Result::ConnectionError:
-            return "Connection error";
-        case FollowMe::Result::Busy:
-            return "Vehicle is busy";
-        case FollowMe::Result::CommandDenied:
-            return "Command denied";
-        case FollowMe::Result::Timeout:
-            return "Request timed out";
-        case FollowMe::Result::NotActive:
-            return "FollowMe is not active";
-        case FollowMe::Result::SetConfigFailed:
-            return "Failed to set FollowMe configuration";
-        default:
-            return "Unknown";
-    }
-}
-
 std::ostream& operator<<(std::ostream& str, FollowMe::Result const& result)
 {
     switch (result) {

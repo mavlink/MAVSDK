@@ -13,7 +13,6 @@ using Position = Telemetry::Position;
 using Quaternion = Telemetry::Quaternion;
 using EulerAngle = Telemetry::EulerAngle;
 using AngularVelocityBody = Telemetry::AngularVelocityBody;
-using SpeedNed = Telemetry::SpeedNed;
 using GpsInfo = Telemetry::GpsInfo;
 using Battery = Telemetry::Battery;
 using Health = Telemetry::Health;
@@ -140,14 +139,14 @@ Telemetry::EulerAngle Telemetry::camera_attitude_euler() const
     return _impl->camera_attitude_euler();
 }
 
-void Telemetry::subscribe_ground_speed_ned(GroundSpeedNedCallback callback)
+void Telemetry::subscribe_velocity_ned(VelocityNedCallback callback)
 {
-    _impl->ground_speed_ned_async(callback);
+    _impl->velocity_ned_async(callback);
 }
 
-Telemetry::SpeedNed Telemetry::ground_speed_ned() const
+Telemetry::VelocityNed Telemetry::velocity_ned() const
 {
-    return _impl->ground_speed_ned();
+    return _impl->velocity_ned();
 }
 
 void Telemetry::subscribe_gps_info(GpsInfoCallback callback)
@@ -360,14 +359,14 @@ Telemetry::Result Telemetry::set_rate_camera_attitude(double rate_hz) const
     return _impl->set_rate_camera_attitude(rate_hz);
 }
 
-void Telemetry::set_rate_ground_speed_ned_async(double rate_hz, const ResultCallback callback)
+void Telemetry::set_rate_velocity_ned_async(double rate_hz, const ResultCallback callback)
 {
-    _impl->set_rate_ground_speed_ned_async(rate_hz, callback);
+    _impl->set_rate_velocity_ned_async(rate_hz, callback);
 }
 
-Telemetry::Result Telemetry::set_rate_ground_speed_ned(double rate_hz) const
+Telemetry::Result Telemetry::set_rate_velocity_ned(double rate_hz) const
 {
-    return _impl->set_rate_ground_speed_ned(rate_hz);
+    return _impl->set_rate_velocity_ned(rate_hz);
 }
 
 void Telemetry::set_rate_gps_info_async(double rate_hz, const ResultCallback callback)
@@ -564,27 +563,6 @@ operator<<(std::ostream& str, Telemetry::AngularVelocityBody const& angular_velo
     str << "    roll_rad_s: " << angular_velocity_body.roll_rad_s << '\n';
     str << "    pitch_rad_s: " << angular_velocity_body.pitch_rad_s << '\n';
     str << "    yaw_rad_s: " << angular_velocity_body.yaw_rad_s << '\n';
-    str << '}';
-    return str;
-}
-
-bool operator==(const Telemetry::SpeedNed& lhs, const Telemetry::SpeedNed& rhs)
-{
-    return ((std::isnan(rhs.velocity_north_m_s) && std::isnan(lhs.velocity_north_m_s)) ||
-            rhs.velocity_north_m_s == lhs.velocity_north_m_s) &&
-           ((std::isnan(rhs.velocity_east_m_s) && std::isnan(lhs.velocity_east_m_s)) ||
-            rhs.velocity_east_m_s == lhs.velocity_east_m_s) &&
-           ((std::isnan(rhs.velocity_down_m_s) && std::isnan(lhs.velocity_down_m_s)) ||
-            rhs.velocity_down_m_s == lhs.velocity_down_m_s);
-}
-
-std::ostream& operator<<(std::ostream& str, Telemetry::SpeedNed const& speed_ned)
-{
-    str << std::setprecision(15);
-    str << "speed_ned:" << '\n' << "{\n";
-    str << "    velocity_north_m_s: " << speed_ned.velocity_north_m_s << '\n';
-    str << "    velocity_east_m_s: " << speed_ned.velocity_east_m_s << '\n';
-    str << "    velocity_down_m_s: " << speed_ned.velocity_down_m_s << '\n';
     str << '}';
     return str;
 }
@@ -1006,28 +984,6 @@ std::ostream& operator<<(std::ostream& str, Telemetry::Imu const& imu)
     str << "    temperature_degc: " << imu.temperature_degc << '\n';
     str << '}';
     return str;
-}
-
-const char* Telemetry::result_str(Telemetry::Result result)
-{
-    switch (result) {
-        case Telemetry::Result::Unknown:
-            return "Unknown result";
-        case Telemetry::Result::Success:
-            return "Success: the telemetry command was accepted by the vehicle";
-        case Telemetry::Result::NoSystem:
-            return "No system connected";
-        case Telemetry::Result::ConnectionError:
-            return "Connection error";
-        case Telemetry::Result::Busy:
-            return "Vehicle is busy";
-        case Telemetry::Result::CommandDenied:
-            return "Command refused by vehicle";
-        case Telemetry::Result::Timeout:
-            return "Request timed out";
-        default:
-            return "Unknown";
-    }
 }
 
 std::ostream& operator<<(std::ostream& str, Telemetry::Result const& result)
