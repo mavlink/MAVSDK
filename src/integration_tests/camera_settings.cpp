@@ -36,15 +36,15 @@ void contains_num_options(
 
 TEST(CameraTest, ShowSettingsAndOptions)
 {
-    Mavsdk dc;
+    Mavsdk mavsdk;
 
-    ConnectionResult ret = dc.add_udp_connection();
+    ConnectionResult ret = mavsdk.add_udp_connection();
     ASSERT_EQ(ret, ConnectionResult::Success);
 
     // Wait for system to connect via heartbeat.
     std::this_thread::sleep_for(std::chrono::seconds(2));
 
-    System& system = dc.system();
+    System& system = mavsdk.system();
     ASSERT_TRUE(system.has_camera());
     auto camera = std::make_shared<Camera>(system);
 
@@ -125,15 +125,15 @@ TEST(CameraTest, ShowSettingsAndOptions)
 
 TEST(CameraTest, SetSettings)
 {
-    Mavsdk dc;
+    Mavsdk mavsdk;
 
-    ConnectionResult connection_ret = dc.add_udp_connection();
+    ConnectionResult connection_ret = mavsdk.add_udp_connection();
     ASSERT_EQ(connection_ret, ConnectionResult::Success);
 
     // Wait for system to connect via heartbeat.
     std::this_thread::sleep_for(std::chrono::seconds(2));
 
-    System& system = dc.system();
+    System& system = mavsdk.system();
     ASSERT_TRUE(system.has_camera());
     auto camera = std::make_shared<Camera>(system);
 
@@ -263,15 +263,15 @@ receive_current_settings(bool& subscription_called, const std::vector<Camera::Se
 
 TEST(CameraTest, SubscribeCurrentSettings)
 {
-    Mavsdk dc;
+    Mavsdk mavsdk;
 
-    ConnectionResult connection_ret = dc.add_udp_connection();
+    ConnectionResult connection_ret = mavsdk.add_udp_connection();
     ASSERT_EQ(connection_ret, ConnectionResult::Success);
 
     // Wait for system to connect via heartbeat.
     std::this_thread::sleep_for(std::chrono::seconds(2));
 
-    System& system = dc.system();
+    System& system = mavsdk.system();
     ASSERT_TRUE(system.has_camera());
     auto camera = std::make_shared<Camera>(system);
 
@@ -325,15 +325,15 @@ static void receive_possible_setting_options(
 
 TEST(CameraTest, SubscribePossibleSettings)
 {
-    Mavsdk dc;
+    Mavsdk mavsdk;
 
-    ConnectionResult connection_ret = dc.add_udp_connection();
+    ConnectionResult connection_ret = mavsdk.add_udp_connection();
     ASSERT_EQ(connection_ret, ConnectionResult::Success);
 
     // Wait for system to connect via heartbeat.
     std::this_thread::sleep_for(std::chrono::seconds(2));
 
-    System& system = dc.system();
+    System& system = mavsdk.system();
     ASSERT_TRUE(system.has_camera());
     auto camera = std::make_shared<Camera>(system);
 

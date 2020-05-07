@@ -19,17 +19,17 @@ TEST_F(SitlTest, ActionTransitionSync_standard_vtol)
 void takeoff_and_transition_to_fixedwing()
 {
     // Init & connect
-    Mavsdk dc;
+    Mavsdk mavsdk;
 
-    ConnectionResult ret = dc.add_udp_connection();
+    ConnectionResult ret = mavsdk.add_udp_connection();
     ASSERT_EQ(ret, ConnectionResult::Success);
 
     // Wait for system to connect via heartbeat.
     ASSERT_TRUE(poll_condition_with_timeout(
-        [&dc]() { return dc.is_connected(); }, std::chrono::seconds(10)));
-    ASSERT_TRUE(dc.is_connected());
+        [&mavsdk]() { return mavsdk.is_connected(); }, std::chrono::seconds(10)));
+    ASSERT_TRUE(mavsdk.is_connected());
 
-    System& system = dc.system();
+    System& system = mavsdk.system();
     auto action = std::make_shared<Action>(system);
     auto telemetry = std::make_shared<Telemetry>(system);
 

@@ -10,23 +10,23 @@ using namespace mavsdk;
 
 TEST_F(SitlTest, ActionHoverAsync)
 {
-    Mavsdk dc;
+    Mavsdk mavsdk;
 
-    ConnectionResult ret = dc.add_udp_connection();
+    ConnectionResult ret = mavsdk.add_udp_connection();
     ASSERT_EQ(ret, ConnectionResult::Success);
 
     {
         LogInfo() << "Waiting to discover vehicle";
         std::promise<void> prom;
         std::future<void> fut = prom.get_future();
-        dc.register_on_discover([&prom](uint64_t uuid) {
+        mavsdk.register_on_discover([&prom](uint64_t uuid) {
             prom.set_value();
             UNUSED(uuid);
         });
         ASSERT_EQ(fut.wait_for(std::chrono::seconds(10)), std::future_status::ready);
     }
 
-    System& system = dc.system();
+    System& system = mavsdk.system();
     auto telemetry = std::make_shared<Telemetry>(system);
     auto action = std::make_shared<Action>(system);
 

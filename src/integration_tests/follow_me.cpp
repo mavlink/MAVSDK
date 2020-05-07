@@ -23,14 +23,14 @@ const size_t N_LOCATIONS = 100ul;
 
 TEST_F(SitlTest, FollowMeOneLocation)
 {
-    Mavsdk dc;
+    Mavsdk mavsdk;
 
-    ConnectionResult ret = dc.add_udp_connection();
+    ConnectionResult ret = mavsdk.add_udp_connection();
     ASSERT_EQ(ConnectionResult::Success, ret);
 
     // Wait for system to connect via heartbeat.
     sleep_for(seconds(2));
-    System& system = dc.system();
+    System& system = mavsdk.system();
     ASSERT_TRUE(system.has_autopilot());
 
     auto telemetry = std::make_shared<Telemetry>(system);
@@ -98,15 +98,15 @@ TEST_F(SitlTest, FollowMeOneLocation)
 
 TEST_F(SitlTest, FollowMeMultiLocationWithConfig)
 {
-    Mavsdk dc;
+    Mavsdk mavsdk;
 
-    ConnectionResult ret = dc.add_udp_connection();
+    ConnectionResult ret = mavsdk.add_udp_connection();
     ASSERT_EQ(ConnectionResult::Success, ret);
 
     // Wait for system to connect via heartbeat.
     ASSERT_TRUE(poll_condition_with_timeout(
-        [&dc]() { return dc.is_connected(); }, std::chrono::seconds(10)));
-    System& system = dc.system();
+        [&mavsdk]() { return mavsdk.is_connected(); }, std::chrono::seconds(10)));
+    System& system = mavsdk.system();
     ASSERT_TRUE(system.has_autopilot());
 
     auto telemetry = std::make_shared<Telemetry>(system);

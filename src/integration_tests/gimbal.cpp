@@ -21,14 +21,14 @@ void receive_gimbal_attitude_euler_angles(Telemetry::EulerAngle euler_angle);
 
 TEST(SitlTestGimbal, GimbalMove)
 {
-    Mavsdk dc;
+    Mavsdk mavsdk;
 
-    ConnectionResult ret = dc.add_udp_connection();
+    ConnectionResult ret = mavsdk.add_udp_connection();
     ASSERT_EQ(ret, ConnectionResult::Success);
 
     // Wait for system to connect via heartbeat.
     std::this_thread::sleep_for(std::chrono::seconds(2));
-    System& system = dc.system();
+    System& system = mavsdk.system();
     // FIXME: This is what it should be, for now though with the typhoon_h480
     //        SITL simulation, the gimbal is hooked up to the autopilot.
     // ASSERT_TRUE(system.has_gimbal());
@@ -49,14 +49,14 @@ TEST(SitlTestGimbal, GimbalMove)
 
 TEST(SitlTestGimbal, GimbalTakeoffAndMove)
 {
-    Mavsdk dc;
+    Mavsdk mavsdk;
 
-    ConnectionResult ret = dc.add_udp_connection();
+    ConnectionResult ret = mavsdk.add_udp_connection();
     ASSERT_EQ(ret, ConnectionResult::Success);
 
     // Wait for system to connect via heartbeat.
     std::this_thread::sleep_for(std::chrono::seconds(2));
-    System& system = dc.system();
+    System& system = mavsdk.system();
     // ASSERT_TRUE(system.has_gimbal());
     ASSERT_TRUE(system.has_autopilot());
 
@@ -90,14 +90,14 @@ TEST(SitlTestGimbal, GimbalTakeoffAndMove)
 
 TEST(SitlTestGimbal, GimbalROIOffboard)
 {
-    Mavsdk dc;
+    Mavsdk mavsdk;
 
-    ConnectionResult ret = dc.add_udp_connection();
+    ConnectionResult ret = mavsdk.add_udp_connection();
     ASSERT_EQ(ret, ConnectionResult::Success);
 
     // Wait for system to connect via heartbeat.
     std::this_thread::sleep_for(std::chrono::seconds(2));
-    System& system = dc.system();
+    System& system = mavsdk.system();
     // ASSERT_TRUE(system.has_gimbal());
     ASSERT_TRUE(system.has_autopilot());
 

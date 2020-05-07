@@ -18,14 +18,14 @@ static void receive_calibration_callback(
 
 TEST(HardwareTest, CalibrationGyro)
 {
-    Mavsdk dc;
+    Mavsdk mavsdk;
 
-    ConnectionResult ret = dc.add_udp_connection();
+    ConnectionResult ret = mavsdk.add_udp_connection();
     ASSERT_EQ(ret, ConnectionResult::Success);
 
     // Wait for system to connect via heartbeat.
     std::this_thread::sleep_for(std::chrono::seconds(2));
-    System& system = dc.system();
+    System& system = mavsdk.system();
     ASSERT_TRUE(system.has_autopilot());
 
     auto calibration = std::make_shared<Calibration>(system);
@@ -45,14 +45,14 @@ TEST(HardwareTest, CalibrationGyro)
 
 TEST(HardwareTest, CalibrationAccelerometer)
 {
-    Mavsdk dc;
+    Mavsdk mavsdk;
 
-    ConnectionResult ret = dc.add_udp_connection();
+    ConnectionResult ret = mavsdk.add_udp_connection();
     ASSERT_EQ(ret, ConnectionResult::Success);
 
     // Wait for system to connect via heartbeat.
     std::this_thread::sleep_for(std::chrono::seconds(2));
-    System& system = dc.system();
+    System& system = mavsdk.system();
     ASSERT_TRUE(system.has_autopilot());
 
     auto calibration = std::make_shared<Calibration>(system);
@@ -72,14 +72,14 @@ TEST(HardwareTest, CalibrationAccelerometer)
 
 TEST(HardwareTest, CalibrationMagnetometer)
 {
-    Mavsdk dc;
+    Mavsdk mavsdk;
 
-    ConnectionResult ret = dc.add_udp_connection();
+    ConnectionResult ret = mavsdk.add_udp_connection();
     ASSERT_EQ(ret, ConnectionResult::Success);
 
     // Wait for system to connect via heartbeat.
     std::this_thread::sleep_for(std::chrono::seconds(2));
-    System& system = dc.system();
+    System& system = mavsdk.system();
 
     auto calibration = std::make_shared<Calibration>(system);
     ASSERT_TRUE(system.has_autopilot());
@@ -99,14 +99,14 @@ TEST(HardwareTest, CalibrationMagnetometer)
 
 TEST(HardwareTest, CalibrationGimbalAccelerometer)
 {
-    Mavsdk dc;
+    Mavsdk mavsdk;
 
-    ConnectionResult ret = dc.add_udp_connection();
+    ConnectionResult ret = mavsdk.add_udp_connection();
     ASSERT_EQ(ret, ConnectionResult::Success);
 
     // Wait for system to connect via heartbeat.
     std::this_thread::sleep_for(std::chrono::seconds(2));
-    System& system = dc.system();
+    System& system = mavsdk.system();
     ASSERT_TRUE(system.has_gimbal());
 
     auto calibration = std::make_shared<Calibration>(system);
@@ -126,14 +126,14 @@ TEST(HardwareTest, CalibrationGimbalAccelerometer)
 
 TEST(HardwareTest, CalibrationGyroWithTelemetry)
 {
-    Mavsdk dc;
+    Mavsdk mavsdk;
 
-    ConnectionResult ret = dc.add_udp_connection();
+    ConnectionResult ret = mavsdk.add_udp_connection();
     ASSERT_EQ(ret, ConnectionResult::Success);
 
     // Wait for system to connect via heartbeat.
     std::this_thread::sleep_for(std::chrono::seconds(2));
-    System& system = dc.system();
+    System& system = mavsdk.system();
     ASSERT_TRUE(system.has_autopilot());
 
     // Reset Gyro calibration using param.
@@ -167,14 +167,14 @@ TEST(HardwareTest, CalibrationGyroWithTelemetry)
 
 TEST(HardwareTest, CalibrationGyroCancelled)
 {
-    Mavsdk dc;
+    Mavsdk mavsdk;
 
-    ConnectionResult ret = dc.add_udp_connection();
+    ConnectionResult ret = mavsdk.add_udp_connection();
     ASSERT_EQ(ret, ConnectionResult::Success);
 
     // Wait for system to connect via heartbeat.
     std::this_thread::sleep_for(std::chrono::seconds(2));
-    System& system = dc.system();
+    System& system = mavsdk.system();
     ASSERT_TRUE(system.has_autopilot());
 
     // Do gyro calibration.
