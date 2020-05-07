@@ -33,7 +33,7 @@ service TelemetryService {
     // Subscribe to 'camera attitude' updates (Euler).
     rpc SubscribeCameraAttitudeEuler(SubscribeCameraAttitudeEulerRequest) returns(stream CameraAttitudeEulerResponse) {}
     // Subscribe to 'ground speed' updates (NED).
-    rpc SubscribeGroundSpeedNed(SubscribeGroundSpeedNedRequest) returns(stream GroundSpeedNedResponse) {}
+    rpc SubscribeVelocityNed(SubscribeVelocityNedRequest) returns(stream VelocityNedResponse) {}
     // Subscribe to 'GPS info' updates.
     rpc SubscribeGpsInfo(SubscribeGpsInfoRequest) returns(stream GpsInfoResponse) {}
     // Subscribe to 'battery' updates.
@@ -78,7 +78,7 @@ service TelemetryService {
     // Set rate of camera attitude updates.
     rpc SetRateCameraAttitude(SetRateCameraAttitudeRequest) returns(SetRateCameraAttitudeResponse) {}
     // Set rate to 'ground speed' updates (NED).
-    rpc SetRateGroundSpeedNed(SetRateGroundSpeedNedRequest) returns(SetRateGroundSpeedNedResponse) {}
+    rpc SetRateVelocityNed(SetRateVelocityNedRequest) returns(SetRateVelocityNedResponse) {}
     // Set rate to 'GPS info' updates.
     rpc SetRateGpsInfo(SetRateGpsInfoRequest) returns(SetRateGpsInfoResponse) {}
     // Set rate to 'battery' updates.
@@ -153,9 +153,9 @@ message CameraAttitudeEulerResponse {
     EulerAngle attitude_euler = 1; // The next camera attitude (Euler)
 }
 
-message SubscribeGroundSpeedNedRequest {}
-message GroundSpeedNedResponse {
-    SpeedNed ground_speed_ned = 1; // The next ground speed (NED)
+message SubscribeVelocityNedRequest {}
+message VelocityNedResponse {
+    VelocityNed velocity_ned = 1; // The next velocity (NED)
 }
 
 message SubscribeGpsInfoRequest {}
@@ -289,10 +289,10 @@ message SetRateCameraAttitudeResponse {
     TelemetryResult telemetry_result = 1;
 }
 
-message SetRateGroundSpeedNedRequest {
+message SetRateVelocityNedRequest {
     double rate_hz = 1; // The requested rate (in Hertz)
 }
-message SetRateGroundSpeedNedResponse {
+message SetRateVelocityNedResponse {
     TelemetryResult telemetry_result = 1;
 }
 
@@ -417,13 +417,6 @@ message AngularVelocityBody {
     float roll_rad_s = 1 [(mavsdk.options.default_value)="NaN"]; // Roll angular velocity
     float pitch_rad_s = 2 [(mavsdk.options.default_value)="NaN"]; // Pitch angular velocity
     float yaw_rad_s = 3 [(mavsdk.options.default_value)="NaN"]; // Yaw angular velocity
-}
-
-// Speed type, represented in the NED (North East Down) frame and in metres/second.
-message SpeedNed {
-    float velocity_north_m_s = 1 [(mavsdk.options.default_value)="NaN"]; // Velocity in North direction in metres/second
-    float velocity_east_m_s = 2 [(mavsdk.options.default_value)="NaN"]; // Velocity in East direction in metres/second
-    float velocity_down_m_s = 3 [(mavsdk.options.default_value)="NaN"]; // Velocity in Down direction in metres/second
 }
 
 // GPS information type.
