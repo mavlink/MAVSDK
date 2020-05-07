@@ -1,0 +1,14 @@
+diff --git a/CMakeLists.txt b/CMakeLists.txt
+index f7d6191519..60d2c92965 100644
+--- a/CMakeLists.txt
++++ b/CMakeLists.txt
+@@ -188,6 +188,9 @@ else()
+   set(_gRPC_CORE_NOSTDCXX_FLAGS "")
+ endif()
+ 
++# Workaround for https://github.com/abseil/abseil-cpp/issues/626
++add_definitions(-DABSL_NO_XRAY_ATTRIBUTES)
++
+ include(cmake/abseil-cpp.cmake)
+ include(cmake/address_sorting.cmake)
+ include(cmake/benchmark.cmake)
