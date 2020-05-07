@@ -16,36 +16,41 @@ using MockAction = NiceMock<mavsdk::testing::MockAction>;
 using ActionServiceImpl = mavsdk::backend::ActionServiceImpl<MockAction>;
 
 using ActionResult = mavsdk::rpc::action::ActionResult;
-using InputPair = std::pair<std::string, mavsdk::Action::Result>;
 
 static constexpr float ARBITRARY_ALTITUDE = 42.42f;
 static constexpr float ARBITRARY_SPEED = 8.24f;
 
-std::vector<InputPair> generateInputPairs();
-std::string armAndGetTranslatedResult(mavsdk::Action::Result arm_result);
-std::string disarmAndGetTranslatedResult(mavsdk::Action::Result disarm_result);
-std::string takeoffAndGetTranslatedResult(mavsdk::Action::Result takeoff_result);
-std::string landAndGetTranslatedResult(mavsdk::Action::Result land_result);
-std::string killAndGetTranslatedResult(mavsdk::Action::Result kill_result);
-std::string returnToLaunchAndGetTranslatedResult(mavsdk::Action::Result rtl_result);
-std::string
+std::vector<mavsdk::Action::Result> generateResults();
+mavsdk::Action::Result armAndGetTranslatedResult(mavsdk::Action::Result arm_result);
+mavsdk::Action::Result disarmAndGetTranslatedResult(mavsdk::Action::Result disarm_result);
+mavsdk::Action::Result takeoffAndGetTranslatedResult(mavsdk::Action::Result takeoff_result);
+mavsdk::Action::Result landAndGetTranslatedResult(mavsdk::Action::Result land_result);
+mavsdk::Action::Result killAndGetTranslatedResult(mavsdk::Action::Result kill_result);
+mavsdk::Action::Result returnToLaunchAndGetTranslatedResult(mavsdk::Action::Result rtl_result);
+mavsdk::Action::Result
 transitionToFWAndGetTranslatedResult(const mavsdk::Action::Result transition_to_fw_result);
-std::string
+mavsdk::Action::Result
 transitionToMCAndGetTranslatedResult(const mavsdk::Action::Result transition_to_fw_result);
-std::string
+mavsdk::Action::Result
 getReturnToLaunchAltitudeAndGetTranslatedResult(const mavsdk::Action::Result action_result);
-std::string
+mavsdk::Action::Result
 setReturnToLaunchAltitudeAndGetTranslatedResult(const mavsdk::Action::Result action_result);
+mavsdk::Action::Result
+getTakeoffAltitudeAndGetTranslatedResult(const mavsdk::Action::Result action_result);
+mavsdk::Action::Result
+setTakeoffAltitudeAndGetTranslatedResult(const mavsdk::Action::Result action_result);
+mavsdk::Action::Result
+translateFromRpcResult(const mavsdk::rpc::action::ActionResult::Result& result);
 
-class ActionServiceImplTest : public ::testing::TestWithParam<InputPair> {};
+class ActionServiceImplTest : public ::testing::TestWithParam<mavsdk::Action::Result> {};
 
 TEST_P(ActionServiceImplTest, armResultIsTranslatedCorrectly)
 {
-    const auto rpc_result = armAndGetTranslatedResult(GetParam().second);
-    EXPECT_EQ(rpc_result, GetParam().first);
+    const auto result = armAndGetTranslatedResult(GetParam());
+    EXPECT_EQ(result, GetParam());
 }
 
-std::string armAndGetTranslatedResult(const mavsdk::Action::Result arm_result)
+mavsdk::Action::Result armAndGetTranslatedResult(const mavsdk::Action::Result arm_result)
 {
     MockAction action;
     ON_CALL(action, arm()).WillByDefault(Return(arm_result));
@@ -54,7 +59,7 @@ std::string armAndGetTranslatedResult(const mavsdk::Action::Result arm_result)
 
     actionService.Arm(nullptr, nullptr, &response);
 
-    return ActionResult::Result_Name(response.action_result().result());
+    return translateFromRpcResult(response.action_result().result());
 }
 
 TEST_F(ActionServiceImplTest, armsEvenWhenArgsAreNull)
@@ -68,11 +73,11 @@ TEST_F(ActionServiceImplTest, armsEvenWhenArgsAreNull)
 
 TEST_P(ActionServiceImplTest, disarmResultIsTranslatedCorrectly)
 {
-    const auto rpc_result = disarmAndGetTranslatedResult(GetParam().second);
-    EXPECT_EQ(rpc_result, GetParam().first);
+    const auto rpc_result = disarmAndGetTranslatedResult(GetParam());
+    EXPECT_EQ(rpc_result, GetParam());
 }
 
-std::string disarmAndGetTranslatedResult(mavsdk::Action::Result disarm_result)
+mavsdk::Action::Result disarmAndGetTranslatedResult(mavsdk::Action::Result disarm_result)
 {
     MockAction action;
     ON_CALL(action, disarm()).WillByDefault(Return(disarm_result));
@@ -81,7 +86,7 @@ std::string disarmAndGetTranslatedResult(mavsdk::Action::Result disarm_result)
 
     actionService.Disarm(nullptr, nullptr, &response);
 
-    return ActionResult::Result_Name(response.action_result().result());
+    return translateFromRpcResult(response.action_result().result());
 }
 
 TEST_F(ActionServiceImplTest, disarmsEvenWhenArgsAreNull)
@@ -95,11 +100,11 @@ TEST_F(ActionServiceImplTest, disarmsEvenWhenArgsAreNull)
 
 TEST_P(ActionServiceImplTest, takeoffResultIsTranslatedCorrectly)
 {
-    const auto rpc_result = takeoffAndGetTranslatedResult(GetParam().second);
-    EXPECT_EQ(rpc_result, GetParam().first);
+    const auto rpc_result = takeoffAndGetTranslatedResult(GetParam());
+    EXPECT_EQ(rpc_result, GetParam());
 }
 
-std::string takeoffAndGetTranslatedResult(const mavsdk::Action::Result takeoff_result)
+mavsdk::Action::Result takeoffAndGetTranslatedResult(const mavsdk::Action::Result takeoff_result)
 {
     MockAction action;
     ON_CALL(action, takeoff()).WillByDefault(Return(takeoff_result));
@@ -108,7 +113,7 @@ std::string takeoffAndGetTranslatedResult(const mavsdk::Action::Result takeoff_r
 
     actionService.Takeoff(nullptr, nullptr, &response);
 
-    return ActionResult::Result_Name(response.action_result().result());
+    return translateFromRpcResult(response.action_result().result());
 }
 
 TEST_F(ActionServiceImplTest, takeoffEvenWhenArgsAreNull)
@@ -122,11 +127,11 @@ TEST_F(ActionServiceImplTest, takeoffEvenWhenArgsAreNull)
 
 TEST_P(ActionServiceImplTest, landResultIsTranslatedCorrectly)
 {
-    const auto rpc_result = landAndGetTranslatedResult(GetParam().second);
-    EXPECT_EQ(rpc_result, GetParam().first);
+    const auto rpc_result = landAndGetTranslatedResult(GetParam());
+    EXPECT_EQ(rpc_result, GetParam());
 }
 
-std::string landAndGetTranslatedResult(const mavsdk::Action::Result land_result)
+mavsdk::Action::Result landAndGetTranslatedResult(const mavsdk::Action::Result land_result)
 {
     MockAction action;
     ON_CALL(action, land()).WillByDefault(Return(land_result));
@@ -135,7 +140,7 @@ std::string landAndGetTranslatedResult(const mavsdk::Action::Result land_result)
 
     actionService.Land(nullptr, nullptr, &response);
 
-    return ActionResult::Result_Name(response.action_result().result());
+    return translateFromRpcResult(response.action_result().result());
 }
 
 TEST_F(ActionServiceImplTest, landsEvenWhenArgsAreNull)
@@ -149,11 +154,11 @@ TEST_F(ActionServiceImplTest, landsEvenWhenArgsAreNull)
 
 TEST_P(ActionServiceImplTest, killResultIsTranslatedCorrectly)
 {
-    const auto rpc_result = killAndGetTranslatedResult(GetParam().second);
-    EXPECT_EQ(rpc_result, GetParam().first);
+    const auto rpc_result = killAndGetTranslatedResult(GetParam());
+    EXPECT_EQ(rpc_result, GetParam());
 }
 
-std::string killAndGetTranslatedResult(const mavsdk::Action::Result kill_result)
+mavsdk::Action::Result killAndGetTranslatedResult(const mavsdk::Action::Result kill_result)
 {
     MockAction action;
     ON_CALL(action, kill()).WillByDefault(Return(kill_result));
@@ -162,7 +167,7 @@ std::string killAndGetTranslatedResult(const mavsdk::Action::Result kill_result)
 
     actionService.Kill(nullptr, nullptr, &response);
 
-    return ActionResult::Result_Name(response.action_result().result());
+    return translateFromRpcResult(response.action_result().result());
 }
 
 TEST_F(ActionServiceImplTest, killsEvenWhenArgsAreNull)
@@ -176,11 +181,11 @@ TEST_F(ActionServiceImplTest, killsEvenWhenArgsAreNull)
 
 TEST_P(ActionServiceImplTest, rtlResultIsTranslatedCorrectly)
 {
-    const auto rpc_result = returnToLaunchAndGetTranslatedResult(GetParam().second);
-    EXPECT_EQ(rpc_result, GetParam().first);
+    const auto rpc_result = returnToLaunchAndGetTranslatedResult(GetParam());
+    EXPECT_EQ(rpc_result, GetParam());
 }
 
-std::string returnToLaunchAndGetTranslatedResult(const mavsdk::Action::Result rtl_result)
+mavsdk::Action::Result returnToLaunchAndGetTranslatedResult(const mavsdk::Action::Result rtl_result)
 {
     MockAction action;
     ON_CALL(action, return_to_launch()).WillByDefault(Return(rtl_result));
@@ -189,7 +194,7 @@ std::string returnToLaunchAndGetTranslatedResult(const mavsdk::Action::Result rt
 
     actionService.ReturnToLaunch(nullptr, nullptr, &response);
 
-    return ActionResult::Result_Name(response.action_result().result());
+    return translateFromRpcResult(response.action_result().result());
 }
 
 TEST_F(ActionServiceImplTest, rtlsEvenWhenArgsAreNull)
@@ -203,21 +208,21 @@ TEST_F(ActionServiceImplTest, rtlsEvenWhenArgsAreNull)
 
 TEST_P(ActionServiceImplTest, transition2fwResultIsTranslatedCorrectly)
 {
-    const auto rpc_result = transitionToFWAndGetTranslatedResult(GetParam().second);
-    EXPECT_EQ(rpc_result, GetParam().first);
+    const auto rpc_result = transitionToFWAndGetTranslatedResult(GetParam());
+    EXPECT_EQ(rpc_result, GetParam());
 }
 
-std::string
+mavsdk::Action::Result
 transitionToFWAndGetTranslatedResult(const mavsdk::Action::Result transition_to_fw_result)
 {
     MockAction action;
     ON_CALL(action, transition_to_fixedwing()).WillByDefault(Return(transition_to_fw_result));
     ActionServiceImpl actionService(action);
-    mavsdk::rpc::action::TransitionToFixedWingResponse response;
+    mavsdk::rpc::action::TransitionToFixedwingResponse response;
 
-    actionService.TransitionToFixedWing(nullptr, nullptr, &response);
+    actionService.TransitionToFixedwing(nullptr, nullptr, &response);
 
-    return ActionResult::Result_Name(response.action_result().result());
+    return translateFromRpcResult(response.action_result().result());
 }
 
 TEST_F(ActionServiceImplTest, transitions2fwEvenWhenArgsAreNull)
@@ -226,16 +231,16 @@ TEST_F(ActionServiceImplTest, transitions2fwEvenWhenArgsAreNull)
     ActionServiceImpl actionService(action);
     EXPECT_CALL(action, transition_to_fixedwing()).Times(1);
 
-    actionService.TransitionToFixedWing(nullptr, nullptr, nullptr);
+    actionService.TransitionToFixedwing(nullptr, nullptr, nullptr);
 }
 
 TEST_P(ActionServiceImplTest, transition2mcResultIsTranslatedCorrectly)
 {
-    const auto rpc_result = transitionToMCAndGetTranslatedResult(GetParam().second);
-    EXPECT_EQ(rpc_result, GetParam().first);
+    const auto rpc_result = transitionToMCAndGetTranslatedResult(GetParam());
+    EXPECT_EQ(rpc_result, GetParam());
 }
 
-std::string
+mavsdk::Action::Result
 transitionToMCAndGetTranslatedResult(const mavsdk::Action::Result transition_to_mc_result)
 {
     MockAction action;
@@ -245,7 +250,7 @@ transitionToMCAndGetTranslatedResult(const mavsdk::Action::Result transition_to_
 
     actionService.TransitionToMulticopter(nullptr, nullptr, &response);
 
-    return ActionResult::Result_Name(response.action_result().result());
+    return translateFromRpcResult(response.action_result().result());
 }
 
 TEST_F(ActionServiceImplTest, transitions2mcEvenWhenArgsAreNull)
@@ -271,13 +276,13 @@ TEST_P(ActionServiceImplTest, getsCorrectTakeoffAltitude)
 {
     MockAction action;
     ActionServiceImpl actionService(action);
-    const auto expected_pair = std::make_pair<>(GetParam().second, ARBITRARY_ALTITUDE);
+    const auto expected_pair = std::make_pair<>(GetParam(), ARBITRARY_ALTITUDE);
     ON_CALL(action, get_takeoff_altitude()).WillByDefault(Return(expected_pair));
     mavsdk::rpc::action::GetTakeoffAltitudeResponse response;
 
     actionService.GetTakeoffAltitude(nullptr, nullptr, &response);
 
-    EXPECT_EQ(GetParam().first, ActionResult::Result_Name(response.action_result().result()));
+    EXPECT_EQ(GetParam(), translateFromRpcResult(response.action_result().result()));
     EXPECT_EQ(expected_pair.second, response.altitude());
 }
 
@@ -287,6 +292,26 @@ TEST_F(ActionServiceImplTest, getTakeoffAltitudeDoesNotCrashWithNullResponse)
     ActionServiceImpl actionService(action);
 
     actionService.GetTakeoffAltitude(nullptr, nullptr, nullptr);
+}
+
+TEST_P(ActionServiceImplTest, getTakeoffAltitudeResultIsTranslatedCorrectly)
+{
+    const auto rpc_result = getTakeoffAltitudeAndGetTranslatedResult(GetParam());
+    EXPECT_EQ(rpc_result, GetParam());
+}
+
+mavsdk::Action::Result
+getTakeoffAltitudeAndGetTranslatedResult(const mavsdk::Action::Result action_result)
+{
+    MockAction action;
+    const auto return_pair = std::make_pair<>(action_result, ARBITRARY_ALTITUDE);
+    ON_CALL(action, get_takeoff_altitude()).WillByDefault(Return(return_pair));
+    ActionServiceImpl actionService(action);
+    mavsdk::rpc::action::GetTakeoffAltitudeResponse response;
+
+    actionService.GetTakeoffAltitude(nullptr, nullptr, &response);
+
+    return translateFromRpcResult(response.action_result().result());
 }
 
 TEST_F(ActionServiceImplTest, setTakeoffAltitudeDoesNotCrashWithNullRequest)
@@ -319,6 +344,27 @@ TEST_P(ActionServiceImplTest, setTakeoffAltitudeSetsRightValue)
     actionService.SetTakeoffAltitude(nullptr, &request, nullptr);
 }
 
+TEST_P(ActionServiceImplTest, setTakeoffAltitudeResultIsTranslatedCorrectly)
+{
+    const auto rpc_result = setTakeoffAltitudeAndGetTranslatedResult(GetParam());
+    EXPECT_EQ(rpc_result, GetParam());
+}
+
+mavsdk::Action::Result
+setTakeoffAltitudeAndGetTranslatedResult(const mavsdk::Action::Result action_result)
+{
+    MockAction action;
+    ON_CALL(action, set_takeoff_altitude(_)).WillByDefault(Return(action_result));
+    ActionServiceImpl actionService(action);
+    mavsdk::rpc::action::SetTakeoffAltitudeRequest request;
+    request.set_altitude(ARBITRARY_ALTITUDE);
+    mavsdk::rpc::action::SetTakeoffAltitudeResponse response;
+
+    actionService.SetTakeoffAltitude(nullptr, &request, &response);
+
+    return translateFromRpcResult(response.action_result().result());
+}
+
 TEST_F(ActionServiceImplTest, getMaxSpeedDoesNotCrashWithNullResponse)
 {
     MockAction action;
@@ -331,7 +377,7 @@ TEST_F(ActionServiceImplTest, getMaxSpeedCallsGetter)
 {
     MockAction action;
     ActionServiceImpl actionService(action);
-    EXPECT_CALL(action, get_max_speed()).Times(1);
+    EXPECT_CALL(action, get_maximum_speed()).Times(1);
     mavsdk::rpc::action::GetMaximumSpeedResponse response;
 
     actionService.GetMaximumSpeed(nullptr, nullptr, &response);
@@ -341,13 +387,13 @@ TEST_P(ActionServiceImplTest, getMaxSpeedGetsRightValue)
 {
     MockAction action;
     ActionServiceImpl actionService(action);
-    const auto expected_pair = std::make_pair<>(GetParam().second, ARBITRARY_SPEED);
-    ON_CALL(action, get_max_speed()).WillByDefault(Return(expected_pair));
+    const auto expected_pair = std::make_pair<>(GetParam(), ARBITRARY_SPEED);
+    ON_CALL(action, get_maximum_speed()).WillByDefault(Return(expected_pair));
     mavsdk::rpc::action::GetMaximumSpeedResponse response;
 
     actionService.GetMaximumSpeed(nullptr, nullptr, &response);
 
-    EXPECT_EQ(GetParam().first, ActionResult::Result_Name(response.action_result().result()));
+    EXPECT_EQ(GetParam(), translateFromRpcResult(response.action_result().result()));
     EXPECT_EQ(expected_pair.second, response.speed());
 }
 
@@ -374,7 +420,7 @@ TEST_F(ActionServiceImplTest, setMaxSpeedCallsSetter)
 {
     MockAction action;
     ActionServiceImpl actionService(action);
-    EXPECT_CALL(action, set_max_speed(_)).Times(1);
+    EXPECT_CALL(action, set_maximum_speed(_)).Times(1);
     mavsdk::rpc::action::SetMaximumSpeedRequest request;
 
     actionService.SetMaximumSpeed(nullptr, &request, nullptr);
@@ -385,7 +431,7 @@ TEST_F(ActionServiceImplTest, setMaxSpeedSetsRightValue)
     MockAction action;
     ActionServiceImpl actionService(action);
     const auto expected_speed = ARBITRARY_SPEED;
-    EXPECT_CALL(action, set_max_speed(expected_speed)).Times(1);
+    EXPECT_CALL(action, set_maximum_speed(expected_speed)).Times(1);
     mavsdk::rpc::action::SetMaximumSpeedRequest request;
     request.set_speed(expected_speed);
 
@@ -394,29 +440,29 @@ TEST_F(ActionServiceImplTest, setMaxSpeedSetsRightValue)
 
 TEST_P(ActionServiceImplTest, getReturnToLaunchAltitudeResultIsTranslatedCorrectly)
 {
-    const auto rpc_result = getReturnToLaunchAltitudeAndGetTranslatedResult(GetParam().second);
-    EXPECT_EQ(rpc_result, GetParam().first);
+    const auto rpc_result = getReturnToLaunchAltitudeAndGetTranslatedResult(GetParam());
+    EXPECT_EQ(rpc_result, GetParam());
 }
 
-std::string
+mavsdk::Action::Result
 getReturnToLaunchAltitudeAndGetTranslatedResult(const mavsdk::Action::Result action_result)
 {
     MockAction action;
     const auto return_pair = std::make_pair<>(action_result, ARBITRARY_ALTITUDE);
-    ON_CALL(action, get_return_to_launch_return_altitude()).WillByDefault(Return(return_pair));
+    ON_CALL(action, get_return_to_launch_altitude()).WillByDefault(Return(return_pair));
     ActionServiceImpl actionService(action);
     mavsdk::rpc::action::GetReturnToLaunchAltitudeResponse response;
 
     actionService.GetReturnToLaunchAltitude(nullptr, nullptr, &response);
 
-    return ActionResult::Result_Name(response.action_result().result());
+    return translateFromRpcResult(response.action_result().result());
 }
 
 TEST_F(ActionServiceImplTest, getReturnToLaunchAltitudeCallsGetter)
 {
     MockAction action;
     ActionServiceImpl actionService(action);
-    EXPECT_CALL(action, get_return_to_launch_return_altitude()).Times(1);
+    EXPECT_CALL(action, get_return_to_launch_altitude()).Times(1);
     mavsdk::rpc::action::GetReturnToLaunchAltitudeResponse response;
 
     actionService.GetReturnToLaunchAltitude(nullptr, nullptr, &response);
@@ -426,13 +472,13 @@ TEST_P(ActionServiceImplTest, getsCorrectReturnToLaunchAltitude)
 {
     MockAction action;
     ActionServiceImpl actionService(action);
-    const auto expected_pair = std::make_pair<>(GetParam().second, ARBITRARY_ALTITUDE);
-    ON_CALL(action, get_return_to_launch_return_altitude()).WillByDefault(Return(expected_pair));
+    const auto expected_pair = std::make_pair<>(GetParam(), ARBITRARY_ALTITUDE);
+    ON_CALL(action, get_return_to_launch_altitude()).WillByDefault(Return(expected_pair));
     mavsdk::rpc::action::GetReturnToLaunchAltitudeResponse response;
 
     actionService.GetReturnToLaunchAltitude(nullptr, nullptr, &response);
 
-    EXPECT_EQ(GetParam().first, ActionResult::Result_Name(response.action_result().result()));
+    EXPECT_EQ(GetParam(), translateFromRpcResult(response.action_result().result()));
     EXPECT_EQ(expected_pair.second, response.relative_altitude_m());
 }
 
@@ -446,15 +492,15 @@ TEST_F(ActionServiceImplTest, getReturnToLaunchAltitudeDoesNotCrashWithNullRespo
 
 TEST_P(ActionServiceImplTest, setReturnToLaunchAltitudeResultIsTranslatedCorrectly)
 {
-    const auto rpc_result = setReturnToLaunchAltitudeAndGetTranslatedResult(GetParam().second);
-    EXPECT_EQ(rpc_result, GetParam().first);
+    const auto rpc_result = setReturnToLaunchAltitudeAndGetTranslatedResult(GetParam());
+    EXPECT_EQ(rpc_result, GetParam());
 }
 
-std::string
+mavsdk::Action::Result
 setReturnToLaunchAltitudeAndGetTranslatedResult(const mavsdk::Action::Result action_result)
 {
     MockAction action;
-    ON_CALL(action, set_return_to_launch_return_altitude(_)).WillByDefault(Return(action_result));
+    ON_CALL(action, set_return_to_launch_altitude(_)).WillByDefault(Return(action_result));
     ActionServiceImpl actionService(action);
     mavsdk::rpc::action::SetReturnToLaunchAltitudeRequest request;
     request.set_relative_altitude_m(ARBITRARY_ALTITUDE);
@@ -462,7 +508,7 @@ setReturnToLaunchAltitudeAndGetTranslatedResult(const mavsdk::Action::Result act
 
     actionService.SetReturnToLaunchAltitude(nullptr, &request, &response);
 
-    return ActionResult::Result_Name(response.action_result().result());
+    return translateFromRpcResult(response.action_result().result());
 }
 
 TEST_F(ActionServiceImplTest, setReturnToLaunchAltitudeDoesNotCrashWithNullParams)
@@ -477,7 +523,7 @@ TEST_F(ActionServiceImplTest, setReturnToLaunchAltitudeCallsSetter)
 {
     MockAction action;
     ActionServiceImpl actionService(action);
-    EXPECT_CALL(action, set_return_to_launch_return_altitude(_)).Times(1);
+    EXPECT_CALL(action, set_return_to_launch_altitude(_)).Times(1);
     mavsdk::rpc::action::SetReturnToLaunchAltitudeRequest request;
 
     actionService.SetReturnToLaunchAltitude(nullptr, &request, nullptr);
@@ -488,41 +534,66 @@ TEST_P(ActionServiceImplTest, setReturnToLaunchAltitudeSetsRightValue)
     MockAction action;
     ActionServiceImpl actionService(action);
     float expected_altitude = ARBITRARY_ALTITUDE;
-    EXPECT_CALL(action, set_return_to_launch_return_altitude(expected_altitude)).Times(1);
+    EXPECT_CALL(action, set_return_to_launch_altitude(expected_altitude)).Times(1);
     mavsdk::rpc::action::SetReturnToLaunchAltitudeRequest request;
     request.set_relative_altitude_m(expected_altitude);
 
     actionService.SetReturnToLaunchAltitude(nullptr, &request, nullptr);
 }
 
-INSTANTIATE_TEST_CASE_P(
-    ActionResultCorrespondences, ActionServiceImplTest, ::testing::ValuesIn(generateInputPairs()));
-
-std::vector<InputPair> generateInputPairs()
+mavsdk::Action::Result
+translateFromRpcResult(const mavsdk::rpc::action::ActionResult::Result& result)
 {
-    std::vector<InputPair> input_pairs;
-    input_pairs.push_back(std::make_pair("SUCCESS", mavsdk::Action::Result::SUCCESS));
-    input_pairs.push_back(std::make_pair("NO_SYSTEM", mavsdk::Action::Result::NO_SYSTEM));
-    input_pairs.push_back(
-        std::make_pair("CONNECTION_ERROR", mavsdk::Action::Result::CONNECTION_ERROR));
-    input_pairs.push_back(std::make_pair("BUSY", mavsdk::Action::Result::BUSY));
-    input_pairs.push_back(std::make_pair("COMMAND_DENIED", mavsdk::Action::Result::COMMAND_DENIED));
-    input_pairs.push_back(std::make_pair(
-        "COMMAND_DENIED_LANDED_STATE_UNKNOWN",
-        mavsdk::Action::Result::COMMAND_DENIED_LANDED_STATE_UNKNOWN));
-    input_pairs.push_back(std::make_pair(
-        "COMMAND_DENIED_NOT_LANDED", mavsdk::Action::Result::COMMAND_DENIED_NOT_LANDED));
-    input_pairs.push_back(std::make_pair("TIMEOUT", mavsdk::Action::Result::TIMEOUT));
-    input_pairs.push_back(std::make_pair(
-        "VTOL_TRANSITION_SUPPORT_UNKNOWN",
-        mavsdk::Action::Result::VTOL_TRANSITION_SUPPORT_UNKNOWN));
-    input_pairs.push_back(std::make_pair(
-        "NO_VTOL_TRANSITION_SUPPORT", mavsdk::Action::Result::NO_VTOL_TRANSITION_SUPPORT));
-    input_pairs.push_back(std::make_pair("UNKNOWN", mavsdk::Action::Result::UNKNOWN));
-    input_pairs.push_back(
-        std::make_pair("PARAMETER_ERROR", mavsdk::Action::Result::PARAMETER_ERROR));
+    switch (result) {
+        case mavsdk::rpc::action::ActionResult_Result_RESULT_UNKNOWN:
+            return mavsdk::Action::Result::Unknown;
+        case mavsdk::rpc::action::ActionResult_Result_RESULT_SUCCESS:
+            return mavsdk::Action::Result::Success;
+        case mavsdk::rpc::action::ActionResult_Result_RESULT_NO_SYSTEM:
+            return mavsdk::Action::Result::NoSystem;
+        case mavsdk::rpc::action::ActionResult_Result_RESULT_CONNECTION_ERROR:
+            return mavsdk::Action::Result::ConnectionError;
+        case mavsdk::rpc::action::ActionResult_Result_RESULT_BUSY:
+            return mavsdk::Action::Result::Busy;
+        case mavsdk::rpc::action::ActionResult_Result_RESULT_COMMAND_DENIED:
+            return mavsdk::Action::Result::CommandDenied;
+        case mavsdk::rpc::action::ActionResult_Result_RESULT_COMMAND_DENIED_LANDED_STATE_UNKNOWN:
+            return mavsdk::Action::Result::CommandDeniedLandedStateUnknown;
+        case mavsdk::rpc::action::ActionResult_Result_RESULT_COMMAND_DENIED_NOT_LANDED:
+            return mavsdk::Action::Result::CommandDeniedNotLanded;
+        case mavsdk::rpc::action::ActionResult_Result_RESULT_TIMEOUT:
+            return mavsdk::Action::Result::Timeout;
+        case mavsdk::rpc::action::ActionResult_Result_RESULT_VTOL_TRANSITION_SUPPORT_UNKNOWN:
+            return mavsdk::Action::Result::VtolTransitionSupportUnknown;
+        case mavsdk::rpc::action::ActionResult_Result_RESULT_NO_VTOL_TRANSITION_SUPPORT:
+            return mavsdk::Action::Result::NoVtolTransitionSupport;
+        case mavsdk::rpc::action::ActionResult_Result_RESULT_PARAMETER_ERROR:
+            return mavsdk::Action::Result::ParameterError;
+        default:
+            return mavsdk::Action::Result::Unknown;
+    }
+}
 
-    return input_pairs;
+INSTANTIATE_TEST_SUITE_P(
+    ActionResultCorrespondences, ActionServiceImplTest, ::testing::ValuesIn(generateResults()));
+
+std::vector<mavsdk::Action::Result> generateResults()
+{
+    std::vector<mavsdk::Action::Result> results;
+    results.push_back(mavsdk::Action::Result::Success);
+    results.push_back(mavsdk::Action::Result::NoSystem);
+    results.push_back(mavsdk::Action::Result::ConnectionError);
+    results.push_back(mavsdk::Action::Result::Busy);
+    results.push_back(mavsdk::Action::Result::CommandDenied);
+    results.push_back(mavsdk::Action::Result::CommandDeniedLandedStateUnknown);
+    results.push_back(mavsdk::Action::Result::CommandDeniedNotLanded);
+    results.push_back(mavsdk::Action::Result::Timeout);
+    results.push_back(mavsdk::Action::Result::VtolTransitionSupportUnknown);
+    results.push_back(mavsdk::Action::Result::NoVtolTransitionSupport);
+    results.push_back(mavsdk::Action::Result::Unknown);
+    results.push_back(mavsdk::Action::Result::ParameterError);
+
+    return results;
 }
 
 } // namespace

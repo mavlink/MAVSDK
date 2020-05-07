@@ -1,0 +1,22 @@
+grpc::Status {{ name.upper_camel_case }}(
+    grpc::ServerContext* /* context */,
+    const rpc::{{ plugin_name.lower_snake_case }}::{{ name.upper_camel_case }}Request* {% if not params -%} /* request */ {%- else -%} request {%- endif -%},
+    rpc::{{ plugin_name.lower_snake_case }}::{{ name.upper_camel_case }}Response* response) override
+{
+    {% if params -%}
+    if (request == nullptr) {
+        LogWarn() << "{{ name.upper_camel_case }} sent with a null request! Ignoring...";
+        return grpc::Status::OK;
+    }
+    {%- endif %}
+
+    auto result = _{{ plugin_name.lower_snake_case }}.{{ name.lower_snake_case }}({% for param in params %}{% if not param.type_info.is_primitive %}translateFromRpc{{ param.name.upper_camel_case }}({% endif %}request->{{ param.name.lower_snake_case }}(){% if not param.type_info.is_primitive %}){% endif %}{{ ", " if not loop.last }}{% endfor %});
+
+    if (response != nullptr) {
+        {% if has_result %}fillResponseWithResult(response, result.first);{% endif %}
+        response->set_{% if return_type.is_primitive %}{{ return_name.lower_snake_case }}(result{% if has_result %}.second{% endif %}{% else %}allocated_{{ return_name.lower_snake_case }}(translateToRpc{{ return_type.inner_name }}(result{% if has_result %}.second{% endif %}).release(){% endif %});
+    }
+
+
+    return grpc::Status::OK;
+}

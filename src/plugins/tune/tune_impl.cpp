@@ -23,87 +23,88 @@ void TuneImpl::enable() {}
 void TuneImpl::disable() {}
 
 void TuneImpl::play_tune_async(
-    const std::vector<Tune::SongElement>& tune,
-    const int tempo,
-    const Tune::result_callback_t& callback)
+    const Tune::TuneDescription& tune, const Tune::ResultCallback& callback)
 {
+    const auto song_elements = tune.song_elements;
+    const int tempo = tune.tempo;
+
     if (tempo < 32 || tempo > 255) {
-        report_tune_result(callback, Tune::Result::INVALID_TEMPO);
+        report_tune_result(callback, Tune::Result::InvalidTempo);
         return;
     }
 
     std::string tune_str("MFT" + std::to_string(tempo) + "O2");
     int last_duration = 1;
 
-    for (auto song_elem : tune) {
+    for (auto song_elem : song_elements) {
         switch (song_elem) {
-            case Tune::SongElement::STYLE_LEGATO:
+            case Tune::SongElement::StyleLegato:
                 tune_str.append("ML");
                 break;
-            case Tune::SongElement::STYLE_NORMAL:
+            case Tune::SongElement::StyleNormal:
                 tune_str.append("MN");
                 break;
-            case Tune::SongElement::STYLE_STACCATO:
+            case Tune::SongElement::StyleStaccato:
                 tune_str.append("MS");
                 break;
-            case Tune::SongElement::DURATION_1:
+            case Tune::SongElement::Duration1:
                 tune_str.append("L1");
                 last_duration = 1;
                 break;
-            case Tune::SongElement::DURATION_2:
+            case Tune::SongElement::Duration2:
                 tune_str.append("L2");
                 last_duration = 2;
                 break;
-            case Tune::SongElement::DURATION_4:
+            case Tune::SongElement::Duration4:
                 tune_str.append("L4");
                 last_duration = 4;
                 break;
-            case Tune::SongElement::DURATION_8:
+            case Tune::SongElement::Duration8:
                 tune_str.append("L8");
                 last_duration = 8;
                 break;
-            case Tune::SongElement::DURATION_16:
+            case Tune::SongElement::Duration16:
                 tune_str.append("L16");
                 last_duration = 16;
                 break;
-            case Tune::SongElement::DURATION_32:
+            case Tune::SongElement::Duration32:
                 tune_str.append("L32");
                 last_duration = 32;
                 break;
-            case Tune::SongElement::NOTE_A:
+            case Tune::SongElement::NoteA:
                 tune_str.append("A");
                 break;
-            case Tune::SongElement::NOTE_B:
+            case Tune::SongElement::NoteB:
                 tune_str.append("B");
                 break;
-            case Tune::SongElement::NOTE_C:
+            case Tune::SongElement::NoteC:
                 tune_str.append("C");
                 break;
-            case Tune::SongElement::NOTE_D:
+            case Tune::SongElement::NoteD:
                 tune_str.append("D");
                 break;
-            case Tune::SongElement::NOTE_E:
+            case Tune::SongElement::NoteE:
                 tune_str.append("E");
                 break;
-            case Tune::SongElement::NOTE_F:
+            case Tune::SongElement::NoteF:
                 tune_str.append("F");
                 break;
-            case Tune::SongElement::NOTE_G:
+            case Tune::SongElement::NoteG:
                 tune_str.append("G");
                 break;
-            case Tune::SongElement::NOTE_PAUSE:
+            case Tune::SongElement::NotePause:
                 tune_str.append("P" + std::to_string(last_duration));
                 break;
-            case Tune::SongElement::SHARP:
+            case Tune::SongElement::Sharp:
                 tune_str.append("+");
                 break;
-            case Tune::SongElement::FLAT:
+            case Tune::SongElement::Flat:
                 tune_str.append("-");
                 break;
-            case Tune::SongElement::OCTAVE_UP:
+            case Tune::SongElement::OctaveUp:
                 tune_str.append(">");
                 break;
-            case Tune::SongElement::OCTAVE_DOWN:
+            case Tune::SongElement::OctaveDown:
                 tune_str.append("<");
                 break;
             default:
@@ -113,41 +114,30 @@ void TuneImpl::play_tune_async(
 
     LogDebug() << "About to send tune: " << tune_str;
 
-    if (tune_str.size() > 230) {
-        report_tune_result(callback, Tune::Result::TUNE_TOO_LONG);
+    if (tune_str.size() > MAVLINK_MSG_PLAY_TUNE_V2_FIELD_TUNE_LEN - 1) {
+        report_tune_result(callback, Tune::Result::TuneTooLong);
         return;
     }
 
-    std::string tune1_str;
-    std::string tune2_str;
-
-    if (tune_str.size() < 30) {
-        tune1_str = tune_str;
-        tune2_str = "";
-    } else {
-        tune1_str = tune_str.substr(0, 30);
-        tune2_str = tune_str.substr(30);
-    }
-
     mavlink_message_t message;
-    mavlink_msg_play_tune_pack(
+    mavlink_msg_play_tune_v2_pack(
         _parent->get_own_system_id(),
         _parent->get_own_component_id(),
         &message,
         _parent->get_system_id(),
         _parent->get_autopilot_id(),
-        tune1_str.c_str(),
-        tune2_str.c_str());
+        TUNE_FORMAT_QBASIC1_1,
+        tune_str.c_str());
 
     if (!_parent->send_message(message)) {
-        report_tune_result(callback, Tune::Result::ERROR);
+        report_tune_result(callback, Tune::Result::Error);
         return;
     }
 
-    report_tune_result(callback, Tune::Result::SUCCESS);
+    report_tune_result(callback, Tune::Result::Success);
 }
 
-void TuneImpl::report_tune_result(const Tune::result_callback_t& callback, Tune::Result result)
+void TuneImpl::report_tune_result(const Tune::ResultCallback& callback, Tune::Result result)
 {
     if (callback == nullptr) {
         LogWarn() << "Callback is not set";

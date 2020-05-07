@@ -1,9 +1,6 @@
 #include "mission_raw_impl.h"
 #include "system.h"
 #include "global_include.h"
-#include <fstream> // for `std::ifstream`
-#include <sstream> // for `std::stringstream`
-#include <cmath>
 
 namespace mavsdk {
 
@@ -27,14 +24,21 @@ void MissionRawImpl::init()
         this);
 
     _parent->register_mavlink_message_handler(
-        MAVLINK_MSG_ID_MISSION_COUNT,
-        std::bind(&MissionRawImpl::process_mission_count, this, _1),
+        MAVLINK_MSG_ID_MISSION_CURRENT,
+        std::bind(&MissionRawImpl::process_mission_current, this, _1),
         this);
 
     _parent->register_mavlink_message_handler(
-        MAVLINK_MSG_ID_MISSION_ITEM_INT,
-        std::bind(&MissionRawImpl::process_mission_item_int, this, _1),
+        MAVLINK_MSG_ID_MISSION_ITEM_REACHED,
+        std::bind(&MissionRawImpl::process_mission_item_reached, this, _1),
         this);
+}
+
+void MissionRawImpl::enable() {}
+
+void MissionRawImpl::disable()
+{
+    reset_mission_progress();
 }
 
 void MissionRawImpl::deinit()
@@ -42,16 +46,22 @@ void MissionRawImpl::deinit()
     _parent->unregister_all_mavlink_message_handlers(this);
 }
 
-void MissionRawImpl::enable() {}
-
-void MissionRawImpl::disable() {}
+void MissionRawImpl::reset_mission_progress()
+{
+    std::lock_guard<std::mutex> lock(_mission_progress.mutex);
+    _mission_progress.last.current = -1;
+    _mission_progress.last.total = -1;
+    _mission_progress.last_reported.current = -1;
+    _mission_progress.last_reported.total = -1;
+}
 
 void MissionRawImpl::process_mission_ack(const mavlink_message_t& message)
 {
     mavlink_mission_ack_t mission_ack;
     mavlink_msg_mission_ack_decode(&message, &mission_ack);
 
-    if (mission_ack.type != MAV_MISSION_ACCEPTED) {
+    if (mission_ack.type != MAV_MISSION_ACCEPTED ||
+        mission_ack.mission_type != MAV_MISSION_TYPE_MISSION) {
         return;
     }
 
@@ -59,280 +69,424 @@ void MissionRawImpl::process_mission_ack(const mavlink_message_t& message)
     // a new mission. In that case we need to notify our user.
     std::lock_guard<std::mutex> lock(_mission_changed.mutex);
     if (_mission_changed.callback) {
-        // Local copy because we can't make a copy of member variable.
-        auto callback = _mission_changed.callback;
-        _parent->call_user_callback([callback]() { callback(); });
+        auto temp_callback = _mission_changed.callback;
+        _parent->call_user_callback([temp_callback]() { temp_callback(true); });
     }
 }
 
-void MissionRawImpl::download_mission_async(
-    const MissionRaw::mission_items_and_result_callback_t& callback)
+void MissionRawImpl::process_mission_current(const mavlink_message_t& message)
 {
+    mavlink_mission_current_t mission_current;
+    mavlink_msg_mission_current_decode(&message, &mission_current);
+
     {
-        std::lock_guard<std::mutex> lock(_mission_download.mutex);
-        if (_mission_download.state != MissionDownload::State::NONE) {
+        std::lock_guard<std::mutex> lock(_mission_progress.mutex);
+        _mission_progress.last.current = mission_current.seq;
+    }
+
+    report_progress_current();
+}
+
+void MissionRawImpl::process_mission_item_reached(const mavlink_message_t& message)
+{
+    mavlink_mission_item_reached_t mission_item_reached;
+    mavlink_msg_mission_item_reached_decode(&message, &mission_item_reached);
+
+    {
+        std::lock_guard<std::mutex> lock(_mission_progress.mutex);
+        _mission_progress.last.current = mission_item_reached.seq + 1;
+    }
+
+    report_progress_current();
+}
+
+MissionRaw::Result
+MissionRawImpl::upload_mission(std::vector<MissionRaw::MissionItem> mission_items)
+{
+    auto prom = std::promise<MissionRaw::Result>();
+    auto fut = prom.get_future();
+
+    upload_mission_async(
+        mission_items, [&prom](MissionRaw::Result result) { prom.set_value(result); });
+    return fut.get();
+}
+
+void MissionRawImpl::upload_mission_async(
+    const std::vector<MissionRaw::MissionItem>& mission_raw,
+    const MissionRaw::ResultCallback& callback)
+{
+    if (_last_upload.lock()) {
+        _parent->call_user_callback([callback]() {
             if (callback) {
-                std::vector<std::shared_ptr<MissionRaw::MavlinkMissionItemInt>> empty_vec{};
-                _parent->call_user_callback(
-                    [callback, empty_vec]() { callback(MissionRaw::Result::BUSY, empty_vec); });
+                callback(MissionRaw::Result::Busy);
             }
-            return;
-        }
-
-        _mission_download.state = MissionDownload::State::REQUEST_LIST;
-        _mission_download.retries = 0;
-        _mission_download.mavlink_mission_items_downloaded.clear();
-        _mission_download.callback = callback;
+        });
+        return;
     }
 
-    _parent->register_timeout_handler(
-        std::bind(&MissionRawImpl::do_download_step, this), 0.0, nullptr);
+    if (!_parent->does_support_mission_int()) {
+        _parent->call_user_callback([callback]() {
+            if (callback) {
+                callback(MissionRaw::Result::Unsupported);
+            }
+        });
+        return;
+    }
+
+    const auto int_items = convert_to_int_items(mission_raw);
+
+    _last_upload = _parent->mission_transfer().upload_items_async(
+        MAV_MISSION_TYPE_MISSION,
+        int_items,
+        [this, callback, int_items](MAVLinkMissionTransfer::Result result) {
+            auto converted_result = convert_result(result);
+            auto converted_items = convert_items(int_items);
+            _parent->call_user_callback([callback, converted_result, converted_items]() {
+                if (callback) {
+                    callback(converted_result);
+                }
+            });
+        });
 }
 
-void MissionRawImpl::do_download_step()
+MissionRaw::Result MissionRawImpl::cancel_mission_upload()
 {
-    std::lock_guard<std::mutex> lock(_mission_download.mutex);
-    switch (_mission_download.state) {
-        case MissionDownload::State::NONE:
-            LogWarn() << "Invalid state: do_download_step and State::NONE";
-            break;
-        case MissionDownload::State::REQUEST_LIST:
-            request_list();
-            break;
-        case MissionDownload::State::REQUEST_ITEM:
-            request_item();
-            break;
-        case MissionDownload::State::SHOULD_ACK:
-            send_ack();
-            break;
+    auto ptr = _last_upload.lock();
+    if (ptr) {
+        ptr->cancel();
+        return MissionRaw::Result::Success;
+    } else {
+        return MissionRaw::Result::Error;
     }
 }
 
-void MissionRawImpl::request_list()
+std::pair<MissionRaw::Result, std::vector<MissionRaw::MissionItem>>
+MissionRawImpl::download_mission()
 {
-    // Requires _mission_download.mutex.
+    auto prom = std::promise<std::pair<MissionRaw::Result, std::vector<MissionRaw::MissionItem>>>();
+    auto fut = prom.get_future();
 
-    if (_mission_download.retries++ >= 3) {
-        // We tried multiple times without success, let's give up.
-        _mission_download.state = MissionDownload::State::NONE;
-        if (_mission_download.callback) {
-            std::vector<std::shared_ptr<MissionRaw::MavlinkMissionItemInt>> empty_vec{};
-            auto callback = _mission_download.callback;
-            _parent->call_user_callback(
-                [callback, empty_vec]() { callback(MissionRaw::Result::TIMEOUT, empty_vec); });
-        }
-        return;
-    }
-
-    // LogDebug() << "Requesting mission list (" << _mission_download.retries << ")";
-
-    mavlink_message_t message;
-    mavlink_msg_mission_request_list_pack(
-        _parent->get_own_system_id(),
-        _parent->get_own_component_id(),
-        &message,
-        _parent->get_system_id(),
-        _parent->get_autopilot_id(),
-        MAV_MISSION_TYPE_MISSION);
-
-    if (!_parent->send_message(message)) {
-        // This is a terrible and unexpected error. Therefore we don't even
-        // retry but just give up.
-        _mission_download.state = MissionDownload::State::NONE;
-        if (_mission_download.callback) {
-            std::vector<std::shared_ptr<MissionRaw::MavlinkMissionItemInt>> empty_vec{};
-            auto callback = _mission_download.callback;
-            _parent->call_user_callback(
-                [callback, empty_vec]() { callback(MissionRaw::Result::ERROR, empty_vec); });
-        }
-        return;
-    }
-
-    // We retry the list request and mission item request, so we use the lower timeout.
-    _parent->register_timeout_handler(
-        std::bind(&MissionRawImpl::do_download_step, this), RETRY_TIMEOUT_S, &_timeout_cookie);
+    download_mission_async(
+        [&prom](MissionRaw::Result result, std::vector<MissionRaw::MissionItem> mission_items) {
+            prom.set_value(std::make_pair<>(result, mission_items));
+        });
+    return fut.get();
 }
 
-void MissionRawImpl::process_mission_count(const mavlink_message_t& message)
+void MissionRawImpl::download_mission_async(const MissionRaw::DownloadMissionCallback& callback)
 {
-    // LogDebug() << "Received mission count";
-
-    std::lock_guard<std::mutex> lock(_mission_download.mutex);
-    if (_mission_download.state != MissionDownload::State::REQUEST_LIST) {
+    if (_last_download.lock()) {
+        _parent->call_user_callback([callback]() {
+            if (callback) {
+                std::vector<MissionRaw::MissionItem> empty_items;
+                callback(MissionRaw::Result::Busy, empty_items);
+            }
+        });
         return;
     }
 
-    mavlink_mission_count_t mission_count;
-    mavlink_msg_mission_count_decode(&message, &mission_count);
-
-    _mission_download.num_mission_items_to_download = mission_count.count;
-    _mission_download.next_mission_item_to_download = 0;
-    _mission_download.retries = 0;
-
-    // We can get rid of the timeout and schedule and do the next step straightaway.
-    _parent->unregister_timeout_handler(_timeout_cookie);
-
-    _mission_download.state = MissionDownload::State::REQUEST_ITEM;
-
-    if (mission_count.count == 0) {
-        _mission_download.state = MissionDownload::State::SHOULD_ACK;
-    }
-
-    // Let's just add this to the queue, this way we don't block the receive thread
-    // and let go of the mutex as well.
-    _parent->register_timeout_handler(
-        std::bind(&MissionRawImpl::do_download_step, this), 0.0, nullptr);
+    _last_download = _parent->mission_transfer().download_items_async(
+        MAV_MISSION_TYPE_MISSION,
+        [this, callback](
+            MAVLinkMissionTransfer::Result result,
+            std::vector<MAVLinkMissionTransfer::ItemInt> items) {
+            auto converted_result = convert_result(result);
+            auto converted_items = convert_items(items);
+            _parent->call_user_callback([callback, converted_result, converted_items]() {
+                callback(converted_result, converted_items);
+            });
+        });
 }
 
-void MissionRawImpl::request_item()
+MissionRaw::Result MissionRawImpl::cancel_mission_download()
 {
-    // Requires _mission_download.mutex.
-
-    if (_mission_download.retries++ >= 3) {
-        // We tried multiple times without success, let's give up.
-        _mission_download.state = MissionDownload::State::NONE;
-        if (_mission_download.callback) {
-            std::vector<std::shared_ptr<MissionRaw::MavlinkMissionItemInt>> empty_vec{};
-            auto callback = _mission_download.callback;
-            _parent->call_user_callback(
-                [callback, empty_vec]() { callback(MissionRaw::Result::TIMEOUT, empty_vec); });
-        }
-        return;
+    auto ptr = _last_download.lock();
+    if (ptr) {
+        ptr->cancel();
+        return MissionRaw::Result::Success;
+    } else {
+        return MissionRaw::Result::Error;
     }
-
-    // LogDebug() << "Requesting mission item " << _mission_download.next_mission_item_to_download
-    //            << " (" << _mission_download.retries << ")";
-
-    mavlink_message_t message;
-    mavlink_msg_mission_request_int_pack(
-        _parent->get_own_system_id(),
-        _parent->get_own_component_id(),
-        &message,
-        _parent->get_system_id(),
-        _parent->get_autopilot_id(),
-        _mission_download.next_mission_item_to_download,
-        MAV_MISSION_TYPE_MISSION);
-
-    if (!_parent->send_message(message)) {
-        // This is a terrible and unexpected error. Therefore we don't even
-        // retry but just give up.
-        _mission_download.state = MissionDownload::State::NONE;
-        if (_mission_download.callback) {
-            std::vector<std::shared_ptr<MissionRaw::MavlinkMissionItemInt>> empty_vec{};
-            auto callback = _mission_download.callback;
-            _parent->call_user_callback(
-                [callback, empty_vec]() { callback(MissionRaw::Result::ERROR, empty_vec); });
-        }
-        return;
-    }
-
-    // We retry the list request and mission item request, so we use the lower timeout.
-    _parent->register_timeout_handler(
-        std::bind(&MissionRawImpl::do_download_step, this), RETRY_TIMEOUT_S, &_timeout_cookie);
 }
 
-void MissionRawImpl::process_mission_item_int(const mavlink_message_t& message)
+MAVLinkMissionTransfer::ItemInt
+MissionRawImpl::convert_mission_raw(const MissionRaw::MissionItem transfer_mission_raw)
 {
-    // LogDebug() << "Received mission item int";
+    MAVLinkMissionTransfer::ItemInt new_item_int;
 
-    std::lock_guard<std::mutex> lock(_mission_download.mutex);
-    if (_mission_download.state != MissionDownload::State::REQUEST_ITEM) {
-        return;
-    }
+    new_item_int.seq = transfer_mission_raw.seq;
+    new_item_int.frame = transfer_mission_raw.frame;
+    new_item_int.command = transfer_mission_raw.command;
+    new_item_int.current = transfer_mission_raw.current;
+    new_item_int.autocontinue = transfer_mission_raw.autocontinue;
+    new_item_int.param1 = transfer_mission_raw.param1;
+    new_item_int.param2 = transfer_mission_raw.param2;
+    new_item_int.param3 = transfer_mission_raw.param3;
+    new_item_int.param4 = transfer_mission_raw.param4;
+    new_item_int.x = transfer_mission_raw.x;
+    new_item_int.y = transfer_mission_raw.y;
+    new_item_int.z = transfer_mission_raw.z;
+    new_item_int.mission_type = transfer_mission_raw.mission_type;
 
-    mavlink_mission_item_int_t mission_item_int;
-    mavlink_msg_mission_item_int_decode(&message, &mission_item_int);
-
-    if (mission_item_int.seq != _mission_download.next_mission_item_to_download) {
-        LogWarn() << "Received mission item " << int(mission_item_int.seq) << " instead of "
-                  << _mission_download.next_mission_item_to_download << " (ignored)";
-
-        // The timeout will happen anyway and retry for this case.
-        return;
-    }
-
-    auto new_item = std::make_shared<MissionRaw::MavlinkMissionItemInt>();
-
-    new_item->target_system = mission_item_int.target_system;
-    new_item->target_component = mission_item_int.target_component;
-    new_item->seq = mission_item_int.seq;
-    new_item->frame = mission_item_int.frame;
-    new_item->command = mission_item_int.command;
-    new_item->current = mission_item_int.current;
-    new_item->autocontinue = mission_item_int.autocontinue;
-    new_item->param1 = mission_item_int.param1;
-    new_item->param2 = mission_item_int.param2;
-    new_item->param3 = mission_item_int.param3;
-    new_item->param4 = mission_item_int.param4;
-    new_item->x = mission_item_int.x;
-    new_item->y = mission_item_int.y;
-    new_item->z = mission_item_int.z;
-    new_item->mission_type = mission_item_int.mission_type;
-
-    _mission_download.mavlink_mission_items_downloaded.push_back(new_item);
-    ++_mission_download.next_mission_item_to_download;
-    _mission_download.retries = 0;
-
-    if (_mission_download.next_mission_item_to_download ==
-        _mission_download.num_mission_items_to_download) {
-        _mission_download.state = MissionDownload::State::SHOULD_ACK;
-    }
-
-    // We can remove timeout.
-    _parent->unregister_timeout_handler(_timeout_cookie);
-
-    // And schedule the next request.
-    _parent->register_timeout_handler(
-        std::bind(&MissionRawImpl::do_download_step, this), 0.0, nullptr);
+    return new_item_int;
 }
 
-void MissionRawImpl::send_ack()
+std::vector<MAVLinkMissionTransfer::ItemInt>
+MissionRawImpl::convert_to_int_items(const std::vector<MissionRaw::MissionItem>& mission_raw)
 {
-    // Requires _mission_download.mutex.
+    std::vector<MAVLinkMissionTransfer::ItemInt> int_items;
 
-    // LogDebug() << "Sending ack";
+    for (const auto& item : mission_raw) {
+        int_items.push_back(convert_mission_raw(item));
+    }
 
-    mavlink_message_t message;
-    mavlink_msg_mission_ack_pack(
-        _parent->get_own_system_id(),
-        _parent->get_own_component_id(),
-        &message,
-        _parent->get_system_id(),
-        _parent->get_autopilot_id(),
-        MAV_MISSION_ACCEPTED,
-        MAV_MISSION_TYPE_MISSION);
+    std::lock_guard<std::mutex> lock(_mission_progress.mutex);
+    _mission_progress.last.total = int_items.size();
 
-    if (!_parent->send_message(message)) {
-        // This is a terrible and unexpected error. Therefore we don't even
-        // retry but just give up.
-        _mission_download.state = MissionDownload::State::NONE;
-        if (_mission_download.callback) {
-            std::vector<std::shared_ptr<MissionRaw::MavlinkMissionItemInt>> empty_vec{};
-            auto callback = _mission_download.callback;
-            _parent->call_user_callback(
-                [callback, empty_vec]() { callback(MissionRaw::Result::ERROR, empty_vec); });
-        }
+    return int_items;
+}
+
+MissionRaw::MissionItem
+MissionRawImpl::convert_item(const MAVLinkMissionTransfer::ItemInt& transfer_item)
+{
+    MissionRaw::MissionItem new_item;
+
+    new_item.seq = transfer_item.seq;
+    new_item.frame = transfer_item.frame;
+    new_item.command = transfer_item.command;
+    new_item.current = transfer_item.current;
+    new_item.autocontinue = transfer_item.autocontinue;
+    new_item.param1 = transfer_item.param1;
+    new_item.param2 = transfer_item.param2;
+    new_item.param3 = transfer_item.param3;
+    new_item.param4 = transfer_item.param4;
+    new_item.x = transfer_item.x;
+    new_item.y = transfer_item.y;
+    new_item.z = transfer_item.z;
+    new_item.mission_type = transfer_item.mission_type;
+
+    return new_item;
+}
+
+std::vector<MissionRaw::MissionItem>
+MissionRawImpl::convert_items(const std::vector<MAVLinkMissionTransfer::ItemInt>& transfer_items)
+{
+    std::vector<MissionRaw::MissionItem> new_items;
+    new_items.reserve(transfer_items.size());
+
+    for (const auto& transfer_item : transfer_items) {
+        new_items.push_back(convert_item(transfer_item));
+    }
+
+    std::lock_guard<std::mutex> lock(_mission_progress.mutex);
+    _mission_progress.last.total = new_items.size();
+
+    return new_items;
+}
+
+MissionRaw::Result MissionRawImpl::start_mission()
+{
+    auto prom = std::promise<MissionRaw::Result>();
+    auto fut = prom.get_future();
+
+    start_mission_async([&prom](MissionRaw::Result result) { prom.set_value(result); });
+    return fut.get();
+}
+
+void MissionRawImpl::start_mission_async(const MissionRaw::ResultCallback& callback)
+{
+    _parent->set_flight_mode_async(
+        SystemImpl::FlightMode::Mission, [this, callback](MAVLinkCommands::Result result, float) {
+            report_flight_mode_change(callback, result);
+        });
+}
+
+MissionRaw::Result MissionRawImpl::pause_mission()
+{
+    auto prom = std::promise<MissionRaw::Result>();
+    auto fut = prom.get_future();
+
+    pause_mission_async([&prom](MissionRaw::Result result) { prom.set_value(result); });
+    return fut.get();
+}
+
+void MissionRawImpl::pause_mission_async(const MissionRaw::ResultCallback& callback)
+{
+    _parent->set_flight_mode_async(
+        SystemImpl::FlightMode::Hold, [this, callback](MAVLinkCommands::Result result, float) {
+            report_flight_mode_change(callback, result);
+        });
+}
+
+void MissionRawImpl::report_flight_mode_change(
+    MissionRaw::ResultCallback callback, MAVLinkCommands::Result result)
+{
+    if (!callback) {
         return;
     }
 
-    // We did it, we are done.
-    _mission_download.state = MissionDownload::State::NONE;
+    _parent->call_user_callback(
+        [callback, result]() { callback(command_result_to_mission_result(result)); });
+}
 
-    if (_mission_download.callback) {
-        std::vector<std::shared_ptr<MissionRaw::MavlinkMissionItemInt>> vec_copy =
-            _mission_download.mavlink_mission_items_downloaded;
-        auto callback = _mission_download.callback;
-        _parent->call_user_callback(
-            [callback, vec_copy]() { callback(MissionRaw::Result::SUCCESS, vec_copy); });
+MissionRaw::Result MissionRawImpl::command_result_to_mission_result(MAVLinkCommands::Result result)
+{
+    switch (result) {
+        case MAVLinkCommands::Result::Success:
+            return MissionRaw::Result::Success;
+        case MAVLinkCommands::Result::NoSystem:
+            return MissionRaw::Result::Error; // FIXME
+        case MAVLinkCommands::Result::ConnectionError:
+            return MissionRaw::Result::Error; // FIXME
+        case MAVLinkCommands::Result::Busy:
+            return MissionRaw::Result::Busy;
+        case MAVLinkCommands::Result::CommandDenied:
+            return MissionRaw::Result::Error; // FIXME
+        case MAVLinkCommands::Result::Timeout:
+            return MissionRaw::Result::Timeout;
+        case MAVLinkCommands::Result::InProgress:
+            return MissionRaw::Result::Busy; // FIXME
+        case MAVLinkCommands::Result::UnknownError:
+            return MissionRaw::Result::Unknown;
+        default:
+            return MissionRaw::Result::Unknown;
     }
 }
 
-void MissionRawImpl::download_mission_cancel() {}
+MissionRaw::Result MissionRawImpl::clear_mission()
+{
+    auto prom = std::promise<MissionRaw::Result>();
+    auto fut = prom.get_future();
 
-void MissionRawImpl::subscribe_mission_changed(MissionRaw::mission_changed_callback_t callback)
+    clear_mission_async([&prom](MissionRaw::Result result) { prom.set_value(result); });
+    return fut.get();
+}
+
+void MissionRawImpl::clear_mission_async(const MissionRaw::ResultCallback& callback)
+{
+    _parent->mission_transfer().clear_items_async(
+        MAV_MISSION_TYPE_MISSION, [this, callback](MAVLinkMissionTransfer::Result result) {
+            auto converted_result = convert_result(result);
+            _parent->call_user_callback([callback, converted_result]() {
+                if (callback) {
+                    callback(converted_result);
+                }
+            });
+        });
+}
+
+MissionRaw::Result MissionRawImpl::set_current_mission_item(int index)
+{
+    auto prom = std::promise<MissionRaw::Result>();
+    auto fut = prom.get_future();
+
+    set_current_mission_item_async(
+        index, [&prom](MissionRaw::Result result) { prom.set_value(result); });
+    return fut.get();
+}
+
+void MissionRawImpl::set_current_mission_item_async(
+    int index, const MissionRaw::ResultCallback& callback)
+{
+    if (index < 0 && index >= _mission_progress.last.total) {
+        _parent->call_user_callback([callback]() {
+            if (callback) {
+                callback(MissionRaw::Result::InvalidArgument);
+                return;
+            }
+        });
+    }
+
+    _parent->mission_transfer().set_current_item_async(
+        index, [this, callback](MAVLinkMissionTransfer::Result result) {
+            auto converted_result = convert_result(result);
+            _parent->call_user_callback([callback, converted_result]() {
+                if (callback) {
+                    callback(converted_result);
+                }
+            });
+        });
+}
+
+void MissionRawImpl::report_progress_current()
+{
+    std::lock_guard<std::mutex> lock(_mission_progress.mutex);
+
+    if (_mission_progress.callback == nullptr) {
+        return;
+    }
+
+    bool should_report = false;
+    {
+        if (_mission_progress.last_reported.current != _mission_progress.last.current) {
+            _mission_progress.last_reported.current = _mission_progress.last.current;
+            should_report = true;
+        }
+        if (_mission_progress.last_reported.total != _mission_progress.last.total) {
+            _mission_progress.last_reported.total = _mission_progress.last.total;
+            should_report = true;
+        }
+    }
+
+    if (should_report) {
+        const auto last = _mission_progress.last;
+        const auto temp_callback = _mission_progress.callback;
+        _parent->call_user_callback([temp_callback, last]() { temp_callback(last); });
+    }
+}
+
+void MissionRawImpl::mission_progress_async(MissionRaw::MissionProgressCallback callback)
+{
+    std::lock_guard<std::mutex> lock(_mission_progress.mutex);
+    _mission_progress.callback = callback;
+}
+
+MissionRaw::MissionProgress MissionRawImpl::mission_progress()
+{
+    std::lock_guard<std::mutex> lock(_mission_progress.mutex);
+    return _mission_progress.last;
+}
+
+void MissionRawImpl::mission_changed_async(MissionRaw::MissionChangedCallback callback)
 {
     std::lock_guard<std::mutex> lock(_mission_changed.mutex);
     _mission_changed.callback = callback;
+}
+
+MissionRaw::Result MissionRawImpl::convert_result(MAVLinkMissionTransfer::Result result)
+{
+    switch (result) {
+        case MAVLinkMissionTransfer::Result::Success:
+            return MissionRaw::Result::Success;
+        case MAVLinkMissionTransfer::Result::ConnectionError:
+            return MissionRaw::Result::Error; // FIXME
+        case MAVLinkMissionTransfer::Result::Denied:
+            return MissionRaw::Result::Error; // FIXME
+        case MAVLinkMissionTransfer::Result::TooManyMissionItems:
+            return MissionRaw::Result::Error; // FIXME
+        case MAVLinkMissionTransfer::Result::Timeout:
+            return MissionRaw::Result::Timeout;
+        case MAVLinkMissionTransfer::Result::Unsupported:
+            return MissionRaw::Result::Unsupported;
+        case MAVLinkMissionTransfer::Result::UnsupportedFrame:
+            return MissionRaw::Result::Error; // FIXME
+        case MAVLinkMissionTransfer::Result::NoMissionAvailable:
+            return MissionRaw::Result::NoMissionAvailable;
+        case MAVLinkMissionTransfer::Result::Cancelled:
+            return MissionRaw::Result::TransferCancelled;
+        case MAVLinkMissionTransfer::Result::MissionTypeNotConsistent:
+            return MissionRaw::Result::InvalidArgument; // FIXME
+        case MAVLinkMissionTransfer::Result::InvalidSequence:
+            return MissionRaw::Result::InvalidArgument; // FIXME
+        case MAVLinkMissionTransfer::Result::CurrentInvalid:
+            return MissionRaw::Result::InvalidArgument; // FIXME
+        case MAVLinkMissionTransfer::Result::ProtocolError:
+            return MissionRaw::Result::Error; // FIXME
+        case MAVLinkMissionTransfer::Result::InvalidParam:
+            return MissionRaw::Result::InvalidArgument; // FIXME
+        default:
+            return MissionRaw::Result::Unknown;
+    }
 }
 
 } // namespace mavsdk

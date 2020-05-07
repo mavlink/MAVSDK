@@ -30,6 +30,7 @@ include(cmake/compiler_flags.cmake)
 
 list(APPEND CMAKE_MODULE_PATH "${CMAKE_CURRENT_SOURCE_DIR}/cmake/Modules")
 
+find_package(Threads REQUIRED)
 find_package(CURL REQUIRED)
 find_package(tinyxml2 REQUIRED)
 

@@ -22,34 +22,21 @@ public:
     void enable() override;
     void disable() override;
 
-    Shell::Result shell_command(const Shell::ShellMessage& shell_message);
+    Shell::Result send(std::string command);
+    void receive_async(Shell::ReceiveCallback callback);
 
-    Shell::Result shell_command_response_async(Shell::result_callback_t& callback);
     ShellImpl(const ShellImpl&) = delete;
     ShellImpl& operator=(const ShellImpl&) = delete;
 
 private:
-    bool send_shell_message_mavlink();
-
+    bool send_command_message(std::string command);
     void process_shell_message(const mavlink_message_t& message);
 
-    void receive_shell_message_timeout();
+    static constexpr uint16_t timeout_ms = 1000;
 
-    bool is_transfer_in_progress();
-
-    std::promise<void> _transfer_finished_promise{};
-    std::future<void> _transfer_finished_future{};
-
-    std::mutex _transfer_mutex{};
-
-    void* _shell_message_timeout_cookie{nullptr};
-
-    Shell::result_callback_t _result_subscription{nullptr};
-
-    void finish_transfer(Shell::Result result, Shell::ShellMessage response_shell_message);
-
-    Shell::ShellMessage _shell_message{};
-
-    Shell::ShellMessage _response{};
+    struct {
+        std::mutex mutex{};
+        Shell::ReceiveCallback callback{nullptr};
+    } _receive{};
 };
 } // namespace mavsdk

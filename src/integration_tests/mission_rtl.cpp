@@ -48,7 +48,7 @@ void do_mission_with_rtl(float mission_altitude_m, float return_altitude_m)
         });
 
         ConnectionResult ret = dc.add_udp_connection();
-        ASSERT_EQ(ret, ConnectionResult::SUCCESS);
+        ASSERT_EQ(ret, ConnectionResult::Success);
 
         auto status = future_result.wait_for(std::chrono::seconds(2));
         ASSERT_EQ(status, std::future_status::ready);
@@ -64,7 +64,7 @@ void do_mission_with_rtl(float mission_altitude_m, float return_altitude_m)
 
     PathChecker pc;
 
-    telemetry->position_async([&pc](Telemetry::Position position) {
+    telemetry->subscribe_position([&pc](Telemetry::Position position) {
         pc.check_current_alitude(position.relative_altitude_m);
     });
 
@@ -75,25 +75,26 @@ void do_mission_with_rtl(float mission_altitude_m, float return_altitude_m)
     }
 
     LogInfo() << "Setting RTL return altitude to " << return_altitude_m;
-    action->set_return_to_launch_return_altitude(return_altitude_m);
+    action->set_return_to_launch_altitude(return_altitude_m);
 
     LogInfo() << "System ready";
     LogInfo() << "Creating and uploading mission";
 
-    auto new_item = std::make_shared<MissionItem>();
+    Mission::MissionItem new_item{};
 
-    new_item->set_position(47.398170327054473, 8.5456490218639658);
-    new_item->set_relative_altitude(mission_altitude_m);
+    new_item.latitude_deg = 47.398170327054473;
+    new_item.longitude_deg = 8.5456490218639658;
+    new_item.relative_altitude_m = mission_altitude_m;
 
-    std::vector<std::shared_ptr<MissionItem>> mission_items;
-    mission_items.push_back(new_item);
+    Mission::MissionPlan mission_plan{};
+    mission_plan.mission_items.push_back(new_item);
 
     {
         LogInfo() << "Uploading mission...";
         auto prom = std::make_shared<std::promise<void>>();
         auto future_result = prom->get_future();
-        mission->upload_mission_async(mission_items, [prom](Mission::Result result) {
-            ASSERT_EQ(result, Mission::Result::SUCCESS);
+        mission->upload_mission_async(mission_plan, [prom](Mission::Result result) {
+            ASSERT_EQ(result, Mission::Result::Success);
             prom->set_value();
             LogInfo() << "Mission uploaded.";
         });
@@ -109,12 +110,12 @@ void do_mission_with_rtl(float mission_altitude_m, float return_altitude_m)
 
     LogInfo() << "Arming...";
     const Action::Result arm_result = action->arm();
-    ASSERT_EQ(arm_result, Action::Result::SUCCESS);
+    ASSERT_EQ(arm_result, Action::Result::Success);
     LogInfo() << "Armed.";
 
     // Before starting the mission, we want to be sure to subscribe to the mission progress.
-    mission->subscribe_progress([&mission](int current, int total) {
-        LogInfo() << "Mission status update: " << current << " / " << total;
+    mission->subscribe_mission_progress([&mission](Mission::MissionProgress progress) {
+        LogInfo() << "Mission status update: " << progress.current << " / " << progress.total;
     });
 
     {
@@ -122,7 +123,7 @@ void do_mission_with_rtl(float mission_altitude_m, float return_altitude_m)
         auto prom = std::make_shared<std::promise<void>>();
         auto future_result = prom->get_future();
         mission->start_mission_async([prom](Mission::Result result) {
-            ASSERT_EQ(result, Mission::Result::SUCCESS);
+            ASSERT_EQ(result, Mission::Result::Success);
             prom->set_value();
             LogInfo() << "Started mission.";
         });
@@ -132,7 +133,7 @@ void do_mission_with_rtl(float mission_altitude_m, float return_altitude_m)
         future_result.get();
     }
 
-    while (!mission->mission_finished()) {
+    while (!mission->is_mission_finished().second) {
         std::this_thread::sleep_for(std::chrono::seconds(1));
     }
 
@@ -152,7 +153,7 @@ void do_mission_with_rtl(float mission_altitude_m, float return_altitude_m)
         // We are done, and can do RTL to go home.
         LogInfo() << "Commanding RTL...";
         const Action::Result result = action->return_to_launch();
-        EXPECT_EQ(result, Action::Result::SUCCESS);
+        EXPECT_EQ(result, Action::Result::Success);
         LogInfo() << "Commanded RTL.";
     }
 

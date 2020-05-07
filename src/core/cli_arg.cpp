@@ -9,7 +9,7 @@ namespace mavsdk {
 
 void CliArg::reset()
 {
-    _protocol = Protocol::NONE;
+    _protocol = Protocol::None;
     _path.clear();
     _baudrate = 0;
     _port = 0;
@@ -28,7 +28,7 @@ bool CliArg::parse(const std::string& uri)
         return false;
     }
 
-    if (_protocol == Protocol::SERIAL) {
+    if (_protocol == Protocol::Serial) {
         if (!find_baudrate(rest)) {
             return false;
         }
@@ -49,15 +49,15 @@ bool CliArg::find_protocol(std::string& rest)
     const std::string delimiter = "://";
 
     if (rest.find(udp + delimiter) == 0) {
-        _protocol = Protocol::UDP;
+        _protocol = Protocol::Udp;
         rest.erase(0, udp.length() + delimiter.length());
         return true;
     } else if (rest.find(tcp + delimiter) == 0) {
-        _protocol = Protocol::TCP;
+        _protocol = Protocol::Tcp;
         rest.erase(0, tcp.length() + delimiter.length());
         return true;
     } else if (rest.find(serial + delimiter) == 0) {
-        _protocol = Protocol::SERIAL;
+        _protocol = Protocol::Serial;
         rest.erase(0, serial.length() + delimiter.length());
         return true;
     } else {
@@ -69,7 +69,7 @@ bool CliArg::find_protocol(std::string& rest)
 bool CliArg::find_path(std::string& rest)
 {
     if (rest.length() == 0) {
-        if (_protocol == Protocol::UDP || _protocol == Protocol::TCP) {
+        if (_protocol == Protocol::Udp || _protocol == Protocol::Tcp) {
             // We have to use the default path
             return true;
         } else {
@@ -88,7 +88,7 @@ bool CliArg::find_path(std::string& rest)
         rest = "";
     }
 
-    if (_protocol == Protocol::SERIAL) {
+    if (_protocol == Protocol::Serial) {
         if (_path.find("/") == 0) {
             // A Linux/macOS path starting with '/' is ok.
             return true;

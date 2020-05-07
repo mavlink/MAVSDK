@@ -21,7 +21,7 @@ TEST_F(SitlTest, OffboardAttitudeRate)
     Mavsdk dc;
 
     ConnectionResult ret = dc.add_udp_connection();
-    ASSERT_EQ(ConnectionResult::SUCCESS, ret);
+    ASSERT_EQ(ConnectionResult::Success, ret);
 
     // Wait for system to connect via heartbeat.
     std::this_thread::sleep_for(std::chrono::seconds(2));
@@ -55,11 +55,11 @@ TEST_F(SitlTest, OffboardAttitudeRate)
 
 void arm_and_takeoff(std::shared_ptr<Action> action, std::shared_ptr<Telemetry> telemetry)
 {
-    ASSERT_EQ(action->arm(), Action::Result::SUCCESS);
+    ASSERT_EQ(action->arm(), Action::Result::Success);
 
-    ASSERT_EQ(action->set_takeoff_altitude(5.0f), Action::Result::SUCCESS);
+    ASSERT_EQ(action->set_takeoff_altitude(5.0f), Action::Result::Success);
 
-    ASSERT_EQ(action->takeoff(), Action::Result::SUCCESS);
+    ASSERT_EQ(action->takeoff(), Action::Result::Success);
 
     while (telemetry->position().relative_altitude_m < 4.0f) {
         std::this_thread::sleep_for(std::chrono::milliseconds(100));
@@ -78,26 +78,33 @@ void disarm_and_land(std::shared_ptr<Action> action, std::shared_ptr<Telemetry> 
 void start_offboard(std::shared_ptr<Offboard> offboard)
 {
     // Send it once before starting offboard, otherwise it will be rejected.
-    offboard->set_attitude_rate({0.0f, 0.0f, 0.0f, 1.0f});
-    EXPECT_EQ(offboard->start(), Offboard::Result::SUCCESS);
+    Offboard::AttitudeRate full_up{};
+    full_up.thrust_value = 1.0f;
+    offboard->set_attitude_rate(full_up);
+    EXPECT_EQ(offboard->start(), Offboard::Result::Success);
 }
 
 void stop_offboard(std::shared_ptr<Offboard> offboard)
 {
-    EXPECT_EQ(offboard->stop(), Offboard::Result::SUCCESS);
+    EXPECT_EQ(offboard->stop(), Offboard::Result::Success);
 }
 
 void flip_roll(std::shared_ptr<Offboard> offboard, std::shared_ptr<Telemetry> telemetry)
 {
     while (telemetry->position().relative_altitude_m < 6.0f) {
         // Full speed up to avoid loosing too much altitude during the flip.
-        offboard->set_attitude_rate({0.0f, 0.0f, 0.0f, 1.0f});
+        Offboard::AttitudeRate full_up{};
+        full_up.thrust_value = 1.0f;
+        offboard->set_attitude_rate(full_up);
     }
 
     enum class TurningState { Init, Turned45, Turned315 } turning_state{TurningState::Init};
 
     while (turning_state != TurningState::Turned315) {
-        offboard->set_attitude_rate({360.0f, 0.0f, 0.0f, 0.25f});
+        Offboard::AttitudeRate roll{};
+        roll.roll_deg_s = 360.0f;
+        roll.thrust_value = 0.25f;
+        offboard->set_attitude_rate(roll);
         std::this_thread::sleep_for(std::chrono::milliseconds(10));
 
         // We can't check for a negative angle from the beginning because we might
@@ -105,13 +112,13 @@ void flip_roll(std::shared_ptr<Offboard> offboard, std::shared_ptr<Telemetry> te
         // sure that we have started turning.
         switch (turning_state) {
             case TurningState::Init:
-                if (telemetry->attitude_euler_angle().roll_deg > 45.0f) {
+                if (telemetry->attitude_euler().roll_deg > 45.0f) {
                     turning_state = TurningState::Turned45;
                 }
                 break;
             case TurningState::Turned45:
-                if (telemetry->attitude_euler_angle().roll_deg > -45.0f &&
-                    telemetry->attitude_euler_angle().roll_deg < 0.0f) {
+                if (telemetry->attitude_euler().roll_deg > -45.0f &&
+                    telemetry->attitude_euler().roll_deg < 0.0f) {
                     turning_state = TurningState::Turned315;
                 }
                 break;
@@ -120,8 +127,10 @@ void flip_roll(std::shared_ptr<Offboard> offboard, std::shared_ptr<Telemetry> te
         }
     }
 
-    while (std::abs(telemetry->attitude_euler_angle().roll_deg) > 3.0f) {
-        offboard->set_attitude({0.0f, 0.0f, 0.0f, 0.6f});
+    while (std::abs(telemetry->attitude_euler().roll_deg) > 3.0f) {
+        Offboard::Attitude some_up{};
+        some_up.thrust_value = 0.6f;
+        offboard->set_attitude(some_up);
         std::this_thread::sleep_for(std::chrono::milliseconds(10));
     }
 }
@@ -130,7 +139,9 @@ void flip_pitch(std::shared_ptr<Offboard> offboard, std::shared_ptr<Telemetry> t
 {
     while (telemetry->position().relative_altitude_m < 10.0f) {
         // Full speed up to avoid loosing too much altitude during the flip.
-        offboard->set_attitude({0.0f, 0.0f, 0.0f, 1.0f});
+        Offboard::Attitude full_up{};
+        full_up.thrust_value = 1.0f;
+        offboard->set_attitude(full_up);
     }
 
     enum class TurningState {
@@ -141,7 +152,12 @@ void flip_pitch(std::shared_ptr<Offboard> offboard, std::shared_ptr<Telemetry> t
     } turning_state{TurningState::Init};
 
     while (turning_state != TurningState::Turned315) {
-        offboard->set_attitude_rate({0.0f, 360.0f, 0.0f, 0.25f});
+        Offboard::AttitudeRate pitch{};
+        pitch.roll_deg_s = 0.0f;
+        pitch.pitch_deg_s = 360.0f;
+        pitch.yaw_deg_s = 0.0f;
+        pitch.thrust_value = 0.25f;
+        offboard->set_attitude_rate(pitch);
         std::this_thread::sleep_for(std::chrono::milliseconds(10));
 
         // We can't check for a negative angle from the beginning because we might
@@ -151,18 +167,18 @@ void flip_pitch(std::shared_ptr<Offboard> offboard, std::shared_ptr<Telemetry> t
         // degrees before it goes down to 0 and eventually -90.
         switch (turning_state) {
             case TurningState::Init:
-                if (telemetry->attitude_euler_angle().pitch_deg > 45.0f) {
+                if (telemetry->attitude_euler().pitch_deg > 45.0f) {
                     turning_state = TurningState::Turned45;
                 }
                 break;
             case TurningState::Turned45:
-                if (telemetry->attitude_euler_angle().pitch_deg < -60.0f) {
+                if (telemetry->attitude_euler().pitch_deg < -60.0f) {
                     turning_state = TurningState::Turned240;
                 }
                 break;
             case TurningState::Turned240:
-                if (telemetry->attitude_euler_angle().pitch_deg < 0.0f &&
-                    telemetry->attitude_euler_angle().pitch_deg > -45.0f) {
+                if (telemetry->attitude_euler().pitch_deg < 0.0f &&
+                    telemetry->attitude_euler().pitch_deg > -45.0f) {
                     turning_state = TurningState::Turned315;
                 }
                 break;
@@ -172,10 +188,12 @@ void flip_pitch(std::shared_ptr<Offboard> offboard, std::shared_ptr<Telemetry> t
     }
 
     while (true) {
-        offboard->set_attitude({0.0f, 0.0f, 0.0f, 0.6f});
+        Offboard::Attitude some_up{};
+        some_up.thrust_value = 0.6f;
+        offboard->set_attitude(some_up);
         std::this_thread::sleep_for(std::chrono::milliseconds(10));
 
-        if (std::abs(telemetry->attitude_euler_angle().pitch_deg) < 3.0f) {
+        if (std::abs(telemetry->attitude_euler().pitch_deg) < 3.0f) {
             break;
         }
     }
@@ -184,12 +202,17 @@ void flip_pitch(std::shared_ptr<Offboard> offboard, std::shared_ptr<Telemetry> t
 void turn_yaw(std::shared_ptr<Offboard> offboard)
 {
     for (int i = 0; i < 100; ++i) {
-        offboard->set_attitude_rate({0.0f, 0.0f, 360.0f, 0.5f});
+        Offboard::AttitudeRate yaw{};
+        yaw.yaw_deg_s = 360.0f;
+        yaw.thrust_value = 0.5;
+        offboard->set_attitude_rate(yaw);
         std::this_thread::sleep_for(std::chrono::milliseconds(10));
     }
 
     for (int i = 0; i < 100; ++i) {
-        offboard->set_attitude({0.0f, 0.0f, 0.0f, 0.5f});
+        Offboard::Attitude stay{};
+        stay.thrust_value = 0.5;
+        offboard->set_attitude(stay);
         std::this_thread::sleep_for(std::chrono::milliseconds(10));
     }
 }

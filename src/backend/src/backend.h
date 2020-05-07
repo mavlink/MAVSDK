@@ -3,9 +3,6 @@
 #include <memory>
 #include <string>
 
-namespace mavsdk {
-namespace backend {
-
 class MavsdkBackend {
 public:
     MavsdkBackend();
@@ -16,11 +13,10 @@ public:
     int startGRPCServer(int port);
     void connect(const std::string& connection_url = "udp://");
     void wait();
+    void stop();
+    int getPort();
 
 private:
     class Impl;
     std::unique_ptr<Impl> _impl;
 };
-
-} // namespace backend
-} // namespace mavsdk

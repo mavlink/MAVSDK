@@ -17,33 +17,38 @@ namespace mavsdk {
 using namespace std::placeholders; // for `_1`
 
 SystemImpl::SystemImpl(MavsdkImpl& parent, uint8_t system_id, uint8_t comp_id, bool connected) :
-    _system_id(system_id),
+    Sender(parent.own_address, target_address),
     _parent(parent),
     _params(*this),
     _commands(*this),
     _timesync(*this),
     _timeout_handler(_time),
-    _call_every_handler(_time)
+    _call_every_handler(_time),
+    _mission_transfer(*this, _message_handler, _timeout_handler)
 {
+    target_address.system_id = system_id;
+    // FIXME: for now use this as a default.
+    target_address.component_id = MAV_COMP_ID_AUTOPILOT1;
+
     if (connected) {
         _always_connected = true;
-        _uuid = _system_id;
+        _uuid = system_id;
         _uuid_initialized = true;
         set_connected();
     }
     _system_thread = new std::thread(&SystemImpl::system_thread, this);
 
-    register_mavlink_message_handler(
+    _message_handler.register_one(
         MAVLINK_MSG_ID_HEARTBEAT, std::bind(&SystemImpl::process_heartbeat, this, _1), this);
 
     // We're registering for Autopilot version because it is a good time do so,
     // regardless whether we deal with Autopilot.
-    register_mavlink_message_handler(
+    _message_handler.register_one(
         MAVLINK_MSG_ID_AUTOPILOT_VERSION,
         std::bind(&SystemImpl::process_autopilot_version, this, _1),
         this);
 
-    register_mavlink_message_handler(
+    _message_handler.register_one(
         MAVLINK_MSG_ID_STATUSTEXT, std::bind(&SystemImpl::process_statustext, this, _1), this);
 
     add_new_component(comp_id);
@@ -57,7 +62,7 @@ SystemImpl::SystemImpl(MavsdkImpl& parent, uint8_t system_id, uint8_t comp_id, b
 SystemImpl::~SystemImpl()
 {
     _should_exit = true;
-    unregister_all_mavlink_message_handlers(this);
+    _message_handler.unregister_all(this);
 
     unregister_timeout_handler(_autopilot_version_timed_out_cookie);
     if (!_always_connected) {
@@ -81,38 +86,17 @@ bool SystemImpl::is_connected() const
 void SystemImpl::register_mavlink_message_handler(
     uint16_t msg_id, mavlink_message_handler_t callback, const void* cookie)
 {
-    std::lock_guard<std::mutex> lock(_mavlink_handler_table_mutex);
-
-    MAVLinkHandlerTableEntry entry = {msg_id, callback, cookie};
-    _mavlink_handler_table.push_back(entry);
+    _message_handler.register_one(msg_id, callback, cookie);
 }
 
 void SystemImpl::unregister_mavlink_message_handler(uint16_t msg_id, const void* cookie)
 {
-    std::lock_guard<std::mutex> lock(_mavlink_handler_table_mutex);
-
-    for (auto it = _mavlink_handler_table.begin(); it != _mavlink_handler_table.end();
-         /* no ++it */) {
-        if (it->msg_id == msg_id && it->cookie == cookie) {
-            it = _mavlink_handler_table.erase(it);
-        } else {
-            ++it;
-        }
-    }
+    _message_handler.unregister_one(msg_id, cookie);
 }
 
 void SystemImpl::unregister_all_mavlink_message_handlers(const void* cookie)
 {
-    std::lock_guard<std::mutex> lock(_mavlink_handler_table_mutex);
-
-    for (auto it = _mavlink_handler_table.begin(); it != _mavlink_handler_table.end();
-         /* no ++it */) {
-        if (it->cookie == cookie) {
-            it = _mavlink_handler_table.erase(it);
-        } else {
-            ++it;
-        }
-    }
+    _message_handler.unregister_all(cookie);
 }
 
 void SystemImpl::register_timeout_handler(
@@ -143,26 +127,7 @@ void SystemImpl::process_mavlink_message(mavlink_message_t& message)
         }
     }
 
-    std::lock_guard<std::mutex> lock(_mavlink_handler_table_mutex);
-
-#if MESSAGE_DEBUGGING == 1
-    bool forwarded = false;
-#endif
-    for (auto it = _mavlink_handler_table.begin(); it != _mavlink_handler_table.end(); ++it) {
-        if (it->msg_id == message.msgid) {
-#if MESSAGE_DEBUGGING == 1
-            LogDebug() << "Forwarding msg " << int(message.msgid) << " to " << size_t(it->cookie);
-            forwarded = true;
-#endif
-            it->callback(message);
-        }
-    }
-
-#if MESSAGE_DEBUGGING == 1
-    if (!forwarded) {
-        LogDebug() << "Ignoring msg " << int(message.msgid);
-    }
-#endif
+    _message_handler.process_message(message);
 }
 
 void SystemImpl::add_call_every(std::function<void()> callback, float interval_s, void** cookie)
@@ -234,7 +199,7 @@ void SystemImpl::process_autopilot_version(const mavlink_message_t& message)
     } else if (_uuid == 0 && autopilot_version.uid == 0) {
         // This is not ideal because the system has no valid UUID.
         // In this case we use the mavlink system ID as the UUID.
-        _uuid = _system_id;
+        _uuid = target_address.system_id;
 
     } else if (_uuid != autopilot_version.uid) {
         // TODO: this is bad, we should raise a flag to invalidate system.
@@ -315,6 +280,7 @@ void SystemImpl::system_thread()
         _params.do_work();
         _commands.do_work();
         _timesync.do_work();
+        _mission_transfer.do_work();
 
         if (_connected) {
             // Work fairly fast if we're connected.
@@ -500,26 +466,29 @@ void SystemImpl::request_autopilot_version()
         // We give up getting a UUID and use the system ID.
 
         LogWarn() << "No UUID received, using system ID instead.";
-        _uuid = _system_id;
+        _uuid = target_address.system_id;
         _uuid_initialized = true;
         set_connected();
         return;
     }
 
-    _autopilot_version_pending = true;
+    if (!_autopilot_version_pending) {
+        _autopilot_version_pending = true;
+        send_autopilot_version_request();
 
-    send_autopilot_version_request();
+        ++_uuid_retries;
 
-    ++_uuid_retries;
+        // We set a timeout to stay "pending" for half a second. This way, we
+        // don't give up too early e.g. because multiple components might send
+        // heartbeats and we receive them all at once and run out of retries.
+        // Also, with simulation sped up we might get too many heartbeats in
+        // fast succession.
 
-    // We set a timeout to stay "pending" for half a second. This way, we don't give up too
-    // early e.g. because multiple components send heartbeats and we receive them all at once
-    // and run out of retries.
-
-    // We create a temp reference, so we don't need to capture `this`.
-    auto& pending_tmp = _autopilot_version_pending;
-    register_timeout_handler(
-        [&pending_tmp]() { pending_tmp = false; }, 0.5, &_autopilot_version_timed_out_cookie);
+        register_timeout_handler(
+            [this]() { _autopilot_version_pending = false; },
+            0.5,
+            &_autopilot_version_timed_out_cookie);
+    }
 }
 
 void SystemImpl::send_autopilot_version_request()
@@ -610,12 +579,12 @@ uint64_t SystemImpl::get_uuid() const
 
 uint8_t SystemImpl::get_system_id() const
 {
-    return _system_id;
+    return target_address.system_id;
 }
 
 void SystemImpl::set_system_id(uint8_t system_id)
 {
-    _system_id = system_id;
+    target_address.system_id = system_id;
 }
 
 uint8_t SystemImpl::get_own_system_id() const
@@ -710,7 +679,7 @@ std::pair<MAVLinkParameters::Result, float> SystemImpl::get_param_float(const st
         value_type,
         [&prom](MAVLinkParameters::Result result, MAVLinkParameters::ParamValue param) {
             float value = NAN;
-            if (result == MAVLinkParameters::Result::SUCCESS) {
+            if (result == MAVLinkParameters::Result::Success) {
                 value = param.get_float();
             }
             prom.set_value(std::make_pair<>(result, value));
@@ -733,7 +702,7 @@ std::pair<MAVLinkParameters::Result, int> SystemImpl::get_param_int(const std::s
         value_type,
         [&prom](MAVLinkParameters::Result result, MAVLinkParameters::ParamValue param) {
             int value = 0;
-            if (result == MAVLinkParameters::Result::SUCCESS) {
+            if (result == MAVLinkParameters::Result::Success) {
                 value = param.get_int32();
             }
             prom.set_value(std::make_pair<>(result, value));
@@ -756,7 +725,7 @@ std::pair<MAVLinkParameters::Result, float> SystemImpl::get_param_ext_float(cons
         value_type,
         [&prom](MAVLinkParameters::Result result, MAVLinkParameters::ParamValue param) {
             float value = NAN;
-            if (result == MAVLinkParameters::Result::SUCCESS) {
+            if (result == MAVLinkParameters::Result::Success) {
                 value = param.get_float();
             }
             prom.set_value(std::make_pair<>(result, value));
@@ -780,7 +749,7 @@ std::pair<MAVLinkParameters::Result, int> SystemImpl::get_param_ext_int(const st
         value_type,
         [&prom](MAVLinkParameters::Result result, MAVLinkParameters::ParamValue param) {
             int value = 0;
-            if (result == MAVLinkParameters::Result::SUCCESS) {
+            if (result == MAVLinkParameters::Result::Success) {
                 value = param.get_int32();
             }
             prom.set_value(std::make_pair<>(result, value));
@@ -884,49 +853,49 @@ SystemImpl::make_command_flight_mode(FlightMode flight_mode, uint8_t component_i
     uint8_t custom_sub_mode = 0;
 
     switch (flight_mode) {
-        case FlightMode::HOLD:
+        case FlightMode::Hold:
             custom_sub_mode = px4::PX4_CUSTOM_SUB_MODE_AUTO_LOITER;
             break;
-        case FlightMode::RETURN_TO_LAUNCH:
+        case FlightMode::ReturnToLaunch:
             custom_sub_mode = px4::PX4_CUSTOM_SUB_MODE_AUTO_RTL;
             break;
-        case FlightMode::TAKEOFF:
+        case FlightMode::Takeoff:
             custom_sub_mode = px4::PX4_CUSTOM_SUB_MODE_AUTO_TAKEOFF;
             break;
-        case FlightMode::LAND:
+        case FlightMode::Land:
             custom_sub_mode = px4::PX4_CUSTOM_SUB_MODE_AUTO_LAND;
             break;
-        case FlightMode::MISSION:
+        case FlightMode::Mission:
             custom_sub_mode = px4::PX4_CUSTOM_SUB_MODE_AUTO_MISSION;
             break;
-        case FlightMode::FOLLOW_ME:
+        case FlightMode::FollowMe:
             custom_sub_mode = px4::PX4_CUSTOM_SUB_MODE_AUTO_FOLLOW_TARGET;
             break;
-        case FlightMode::OFFBOARD:
+        case FlightMode::Offboard:
             custom_mode = px4::PX4_CUSTOM_MAIN_MODE_OFFBOARD;
             break;
-        case FlightMode::MANUAL:
+        case FlightMode::Manual:
             custom_mode = px4::PX4_CUSTOM_MAIN_MODE_MANUAL;
             break;
-        case FlightMode::POSCTL:
+        case FlightMode::Posctl:
             custom_mode = px4::PX4_CUSTOM_MAIN_MODE_POSCTL;
             break;
-        case FlightMode::ALTCTL:
+        case FlightMode::Altctl:
             custom_mode = px4::PX4_CUSTOM_MAIN_MODE_ALTCTL;
             break;
-        case FlightMode::RATTITUDE:
+        case FlightMode::Rattitude:
             custom_mode = px4::PX4_CUSTOM_MAIN_MODE_RATTITUDE;
             break;
-        case FlightMode::ACRO:
+        case FlightMode::Acro:
             custom_mode = px4::PX4_CUSTOM_MAIN_MODE_ACRO;
             break;
-        case FlightMode::STABILIZED:
+        case FlightMode::Stabilized:
             custom_mode = px4::PX4_CUSTOM_MAIN_MODE_STABILIZED;
             break;
         default:
             LogErr() << "Unknown Flight mode.";
             MAVLinkCommands::CommandLong empty_command{};
-            return std::make_pair<>(MAVLinkCommands::Result::UNKNOWN_ERROR, empty_command);
+            return std::make_pair<>(MAVLinkCommands::Result::UnknownError, empty_command);
     }
 
     MAVLinkCommands::CommandLong command{};
@@ -937,7 +906,7 @@ SystemImpl::make_command_flight_mode(FlightMode flight_mode, uint8_t component_i
     command.params.param3 = float(custom_sub_mode);
     command.target_component_id = component_id;
 
-    return std::make_pair<>(MAVLinkCommands::Result::SUCCESS, command);
+    return std::make_pair<>(MAVLinkCommands::Result::Success, command);
 }
 
 SystemImpl::FlightMode SystemImpl::get_flight_mode() const
@@ -952,40 +921,40 @@ SystemImpl::FlightMode SystemImpl::to_flight_mode_from_custom_mode(uint32_t cust
 
     switch (px4_custom_mode.main_mode) {
         case px4::PX4_CUSTOM_MAIN_MODE_OFFBOARD:
-            return FlightMode::OFFBOARD;
+            return FlightMode::Offboard;
         case px4::PX4_CUSTOM_MAIN_MODE_MANUAL:
-            return FlightMode::MANUAL;
+            return FlightMode::Manual;
         case px4::PX4_CUSTOM_MAIN_MODE_POSCTL:
-            return FlightMode::POSCTL;
+            return FlightMode::Posctl;
         case px4::PX4_CUSTOM_MAIN_MODE_ALTCTL:
-            return FlightMode::ALTCTL;
+            return FlightMode::Altctl;
         case px4::PX4_CUSTOM_MAIN_MODE_RATTITUDE:
-            return FlightMode::RATTITUDE;
+            return FlightMode::Rattitude;
         case px4::PX4_CUSTOM_MAIN_MODE_ACRO:
-            return FlightMode::ACRO;
+            return FlightMode::Acro;
         case px4::PX4_CUSTOM_MAIN_MODE_STABILIZED:
-            return FlightMode::STABILIZED;
+            return FlightMode::Stabilized;
         case px4::PX4_CUSTOM_MAIN_MODE_AUTO:
             switch (px4_custom_mode.sub_mode) {
                 case px4::PX4_CUSTOM_SUB_MODE_AUTO_READY:
-                    return FlightMode::READY;
+                    return FlightMode::Ready;
                 case px4::PX4_CUSTOM_SUB_MODE_AUTO_TAKEOFF:
-                    return FlightMode::TAKEOFF;
+                    return FlightMode::Takeoff;
                 case px4::PX4_CUSTOM_SUB_MODE_AUTO_LOITER:
-                    return FlightMode::HOLD;
+                    return FlightMode::Hold;
                 case px4::PX4_CUSTOM_SUB_MODE_AUTO_MISSION:
-                    return FlightMode::MISSION;
+                    return FlightMode::Mission;
                 case px4::PX4_CUSTOM_SUB_MODE_AUTO_RTL:
-                    return FlightMode::RETURN_TO_LAUNCH;
+                    return FlightMode::ReturnToLaunch;
                 case px4::PX4_CUSTOM_SUB_MODE_AUTO_LAND:
-                    return FlightMode::LAND;
+                    return FlightMode::Land;
                 case px4::PX4_CUSTOM_SUB_MODE_AUTO_FOLLOW_TARGET:
-                    return FlightMode::FOLLOW_ME;
+                    return FlightMode::FollowMe;
                 default:
-                    return FlightMode::UNKNOWN;
+                    return FlightMode::Unknown;
             }
         default:
-            return FlightMode::UNKNOWN;
+            return FlightMode::Unknown;
     }
 }
 
@@ -994,7 +963,7 @@ MAVLinkCommands::Result SystemImpl::set_flight_mode(FlightMode system_mode, uint
     std::pair<MAVLinkCommands::Result, MAVLinkCommands::CommandLong> result =
         make_command_flight_mode(system_mode, component_id);
 
-    if (result.first != MAVLinkCommands::Result::SUCCESS) {
+    if (result.first != MAVLinkCommands::Result::Success) {
         return result.first;
     }
 
@@ -1002,12 +971,12 @@ MAVLinkCommands::Result SystemImpl::set_flight_mode(FlightMode system_mode, uint
 }
 
 void SystemImpl::set_flight_mode_async(
-    FlightMode system_mode, command_result_callback_t callback, uint8_t component_id)
+    FlightMode system_mode, commandResultCallback callback, uint8_t component_id)
 {
     std::pair<MAVLinkCommands::Result, MAVLinkCommands::CommandLong> result =
         make_command_flight_mode(system_mode, component_id);
 
-    if (result.first != MAVLinkCommands::Result::SUCCESS) {
+    if (result.first != MAVLinkCommands::Result::Success) {
         if (callback) {
             callback(result.first, NAN);
         }
@@ -1023,7 +992,7 @@ void SystemImpl::receive_float_param(
     get_param_float_callback_t callback)
 {
     if (callback) {
-        if (result == MAVLinkParameters::Result::SUCCESS) {
+        if (result == MAVLinkParameters::Result::Success) {
             callback(result, value.get_float());
         } else {
             callback(result, NAN);
@@ -1037,7 +1006,7 @@ void SystemImpl::receive_int_param(
     get_param_int_callback_t callback)
 {
     if (callback) {
-        if (result == MAVLinkParameters::Result::SUCCESS) {
+        if (result == MAVLinkParameters::Result::Success) {
             callback(result, value.get_int32());
         } else {
             callback(result, 0);
@@ -1077,8 +1046,8 @@ uint8_t SystemImpl::get_gimbal_id() const
 
 MAVLinkCommands::Result SystemImpl::send_command(MAVLinkCommands::CommandLong& command)
 {
-    if (_system_id == 0 && _components.size() == 0) {
-        return MAVLinkCommands::Result::NO_SYSTEM;
+    if (target_address.system_id == 0 && _components.size() == 0) {
+        return MAVLinkCommands::Result::NoSystem;
     }
     command.target_system_id = get_system_id();
     return _commands.send_command(command);
@@ -1086,19 +1055,19 @@ MAVLinkCommands::Result SystemImpl::send_command(MAVLinkCommands::CommandLong& c
 
 MAVLinkCommands::Result SystemImpl::send_command(MAVLinkCommands::CommandInt& command)
 {
-    if (_system_id == 0 && _components.size() == 0) {
-        return MAVLinkCommands::Result::NO_SYSTEM;
+    if (target_address.system_id == 0 && _components.size() == 0) {
+        return MAVLinkCommands::Result::NoSystem;
     }
     command.target_system_id = get_system_id();
     return _commands.send_command(command);
 }
 
 void SystemImpl::send_command_async(
-    MAVLinkCommands::CommandLong& command, const command_result_callback_t callback)
+    MAVLinkCommands::CommandLong command, const commandResultCallback callback)
 {
-    if (_system_id == 0 && _components.size() == 0) {
+    if (target_address.system_id == 0 && _components.size() == 0) {
         if (callback) {
-            callback(MAVLinkCommands::Result::NO_SYSTEM, NAN);
+            callback(MAVLinkCommands::Result::NoSystem, NAN);
         }
         return;
     }
@@ -1108,11 +1077,11 @@ void SystemImpl::send_command_async(
 }
 
 void SystemImpl::send_command_async(
-    MAVLinkCommands::CommandInt& command, const command_result_callback_t callback)
+    MAVLinkCommands::CommandInt command, const commandResultCallback callback)
 {
-    if (_system_id == 0 && _components.size() == 0) {
+    if (target_address.system_id == 0 && _components.size() == 0) {
         if (callback) {
-            callback(MAVLinkCommands::Result::NO_SYSTEM, NAN);
+            callback(MAVLinkCommands::Result::NoSystem, NAN);
         }
         return;
     }
@@ -1124,30 +1093,18 @@ void SystemImpl::send_command_async(
 MAVLinkCommands::Result
 SystemImpl::set_msg_rate(uint16_t message_id, double rate_hz, uint8_t component_id)
 {
-    std::pair<MAVLinkCommands::Result, MAVLinkCommands::CommandLong> result =
-        make_command_msg_rate(message_id, rate_hz, component_id);
-    if (result.first == MAVLinkCommands::Result::SUCCESS) {
-        return send_command(result.second);
-    }
-
-    return result.first;
+    MAVLinkCommands::CommandLong command = make_command_msg_rate(message_id, rate_hz, component_id);
+    return send_command(command);
 }
 
 void SystemImpl::set_msg_rate_async(
-    uint16_t message_id, double rate_hz, command_result_callback_t callback, uint8_t component_id)
+    uint16_t message_id, double rate_hz, commandResultCallback callback, uint8_t component_id)
 {
-    std::pair<MAVLinkCommands::Result, MAVLinkCommands::CommandLong> result =
-        make_command_msg_rate(message_id, rate_hz, component_id);
-    if (result.first == MAVLinkCommands::Result::SUCCESS) {
-        send_command_async(result.second, callback);
-    } else {
-        if (callback) {
-            callback(result.first, NAN);
-        }
-    }
+    MAVLinkCommands::CommandLong command = make_command_msg_rate(message_id, rate_hz, component_id);
+    send_command_async(command, callback);
 }
 
-std::pair<MAVLinkCommands::Result, MAVLinkCommands::CommandLong>
+MAVLinkCommands::CommandLong
 SystemImpl::make_command_msg_rate(uint16_t message_id, double rate_hz, uint8_t component_id)
 {
     MAVLinkCommands::CommandLong command{};
@@ -1167,7 +1124,7 @@ SystemImpl::make_command_msg_rate(uint16_t message_id, double rate_hz, uint8_t c
     command.params.param2 = interval_us;
     command.target_component_id = component_id;
 
-    return std::make_pair<>(MAVLinkCommands::Result::SUCCESS, command);
+    return command;
 }
 
 void SystemImpl::register_plugin(PluginImplBase* plugin_impl)

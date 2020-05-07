@@ -16,7 +16,7 @@ public:
     CalibrationStatustextParser& operator=(CalibrationStatustextParser const&) = delete;
     CalibrationStatustextParser& operator=(CalibrationStatustextParser&&) = delete;
 
-    enum class Status { NONE, STARTED, DONE, FAILED, CANCELLED, PROGRESS, INSTRUCTION };
+    enum class Status { None, Started, Done, Failed, Cancelled, Progress, Instruction };
 
     void reset();
     bool parse(const std::string& statustext);
@@ -34,7 +34,7 @@ private:
     bool check_progress(const std::string& statustext);
     bool check_instruction(const std::string& statustext);
 
-    Status _status{Status::NONE};
+    Status _status{Status::None};
     float _progress{NAN};
     std::string _failed_message{};
     std::string _instruction_message{};

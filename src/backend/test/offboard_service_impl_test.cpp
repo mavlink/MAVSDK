@@ -137,7 +137,6 @@ void OffboardServiceImplTest::checkReturnsCorrectIsActiveStatus(
     mavsdk::rpc::offboard::IsActiveResponse response;
 
     offboardService.IsActive(nullptr, nullptr, &response);
-
     EXPECT_EQ(expected_is_active_status, response.is_active());
 }
 
@@ -193,7 +192,7 @@ TEST_F(OffboardServiceImplTest, setsActuatorControlCorrectly)
 
     auto rpc_actuator_control = createArbitraryRPCActuatorControl();
     const auto expected_actuator_control =
-        OffboardServiceImpl::translateRPCActuatorControl(*rpc_actuator_control);
+        OffboardServiceImpl::translateFromRpcActuatorControl(*rpc_actuator_control);
     EXPECT_CALL(offboard, set_actuator_control(expected_actuator_control)).Times(1);
 
     request.set_allocated_actuator_control(rpc_actuator_control.release());
@@ -288,7 +287,7 @@ TEST_F(OffboardServiceImplTest, setsAttitudeCorrectly)
     mavsdk::rpc::offboard::SetAttitudeRequest request;
 
     auto rpc_attitude = createArbitraryRPCAttitude();
-    const auto expected_attitude = OffboardServiceImpl::translateRPCAttitude(*rpc_attitude);
+    const auto expected_attitude = OffboardServiceImpl::translateFromRpcAttitude(*rpc_attitude);
     EXPECT_CALL(offboard, set_attitude(expected_attitude)).Times(1);
 
     request.set_allocated_attitude(rpc_attitude.release());
@@ -304,7 +303,7 @@ TEST_F(OffboardServiceImplTest, setsAttitudeRateCorrectly)
 
     auto rpc_attitude_rate = createArbitraryRPCAttitudeRate();
     const auto expected_attitude_rate =
-        OffboardServiceImpl::translateRPCAttitudeRate(*rpc_attitude_rate);
+        OffboardServiceImpl::translateFromRpcAttitudeRate(*rpc_attitude_rate);
     EXPECT_CALL(offboard, set_attitude_rate(expected_attitude_rate)).Times(1);
 
     request.set_allocated_attitude_rate(rpc_attitude_rate.release());
@@ -353,7 +352,7 @@ TEST_F(OffboardServiceImplTest, setsPositionNedYawCorrectly)
 
     auto rpc_position_ned_yaw = createArbitraryRPCPositionNedYaw();
     const auto expected_position_ned_yaw =
-        OffboardServiceImpl::translateRPCPositionNedYaw(*rpc_position_ned_yaw);
+        OffboardServiceImpl::translateFromRpcPositionNedYaw(*rpc_position_ned_yaw);
     EXPECT_CALL(offboard, set_position_ned(expected_position_ned_yaw)).Times(1);
 
     request.set_allocated_position_ned_yaw(rpc_position_ned_yaw.release());
@@ -402,7 +401,7 @@ TEST_F(OffboardServiceImplTest, setsVelocityBodyCorrectly)
 
     auto rpc_velocity_body = createArbitraryRPCVelocityBodyYawspeed();
     const auto expected_velocity_body =
-        OffboardServiceImpl::translateRPCVelocityBodyYawspeed(*rpc_velocity_body);
+        OffboardServiceImpl::translateFromRpcVelocityBodyYawspeed(*rpc_velocity_body);
     EXPECT_CALL(offboard, set_velocity_body(expected_velocity_body)).Times(1);
 
     request.set_allocated_velocity_body_yawspeed(rpc_velocity_body.release());
@@ -451,7 +450,7 @@ TEST_F(OffboardServiceImplTest, setsVelocityNedCorrectly)
 
     auto rpc_velocity_ned = createArbitraryRPCVelocityNedYaw();
     const auto expected_velocity_ned =
-        OffboardServiceImpl::translateRPCVelocityNedYaw(*rpc_velocity_ned);
+        OffboardServiceImpl::translateFromRpcVelocityNedYaw(*rpc_velocity_ned);
     EXPECT_CALL(offboard, set_velocity_ned(expected_velocity_ned)).Times(1);
 
     request.set_allocated_velocity_ned_yaw(rpc_velocity_ned.release());
@@ -459,7 +458,7 @@ TEST_F(OffboardServiceImplTest, setsVelocityNedCorrectly)
     offboardService.SetVelocityNed(nullptr, &request, nullptr);
 }
 
-INSTANTIATE_TEST_CASE_P(
+INSTANTIATE_TEST_SUITE_P(
     OffboardResultCorrespondences,
     OffboardServiceImplTest,
     ::testing::ValuesIn(generateInputPairs()));
@@ -467,17 +466,17 @@ INSTANTIATE_TEST_CASE_P(
 std::vector<InputPair> generateInputPairs()
 {
     std::vector<InputPair> input_pairs;
-    input_pairs.push_back(std::make_pair("SUCCESS", mavsdk::Offboard::Result::SUCCESS));
-    input_pairs.push_back(std::make_pair("NO_SYSTEM", mavsdk::Offboard::Result::NO_SYSTEM));
+    input_pairs.push_back(std::make_pair("RESULT_SUCCESS", mavsdk::Offboard::Result::Success));
+    input_pairs.push_back(std::make_pair("RESULT_NO_SYSTEM", mavsdk::Offboard::Result::NoSystem));
     input_pairs.push_back(
-        std::make_pair("CONNECTION_ERROR", mavsdk::Offboard::Result::CONNECTION_ERROR));
-    input_pairs.push_back(std::make_pair("BUSY", mavsdk::Offboard::Result::BUSY));
+        std::make_pair("RESULT_CONNECTION_ERROR", mavsdk::Offboard::Result::ConnectionError));
+    input_pairs.push_back(std::make_pair("RESULT_BUSY", mavsdk::Offboard::Result::Busy));
     input_pairs.push_back(
-        std::make_pair("COMMAND_DENIED", mavsdk::Offboard::Result::COMMAND_DENIED));
-    input_pairs.push_back(std::make_pair("TIMEOUT", mavsdk::Offboard::Result::TIMEOUT));
+        std::make_pair("RESULT_COMMAND_DENIED", mavsdk::Offboard::Result::CommandDenied));
+    input_pairs.push_back(std::make_pair("RESULT_TIMEOUT", mavsdk::Offboard::Result::Timeout));
     input_pairs.push_back(
-        std::make_pair("NO_SETPOINT_SET", mavsdk::Offboard::Result::NO_SETPOINT_SET));
-    input_pairs.push_back(std::make_pair("UNKNOWN", mavsdk::Offboard::Result::UNKNOWN));
+        std::make_pair("RESULT_NO_SETPOINT_SET", mavsdk::Offboard::Result::NoSetpointSet));
+    input_pairs.push_back(std::make_pair("RESULT_UNKNOWN", mavsdk::Offboard::Result::Unknown));
 
     return input_pairs;
 }

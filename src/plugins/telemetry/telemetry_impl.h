@@ -29,12 +29,13 @@ public:
 
     Telemetry::Result set_rate_position_velocity_ned(double rate_hz);
     Telemetry::Result set_rate_position(double rate_hz);
-    Telemetry::Result set_rate_home_position(double rate_hz);
+    Telemetry::Result set_rate_home(double rate_hz);
     Telemetry::Result set_rate_in_air(double rate_hz);
+    Telemetry::Result set_rate_landed_state(double rate_hz);
     Telemetry::Result set_rate_attitude(double rate_hz);
     Telemetry::Result set_rate_camera_attitude(double rate_hz);
-    Telemetry::Result set_rate_ground_speed_ned(double rate_hz);
-    Telemetry::Result set_rate_imu_reading_ned(double rate_hz);
+    Telemetry::Result set_rate_velocity_ned(double rate_hz);
+    Telemetry::Result set_rate_imu(double rate_hz);
     Telemetry::Result set_rate_fixedwing_metrics(double rate_hz);
     Telemetry::Result set_rate_ground_truth(double rate_hz);
     Telemetry::Result set_rate_gps_info(double rate_hz);
@@ -43,88 +44,87 @@ public:
     Telemetry::Result set_rate_actuator_control_target(double rate_hz);
     Telemetry::Result set_rate_actuator_output_status(double rate_hz);
     Telemetry::Result set_rate_odometry(double rate_hz);
+    Telemetry::Result set_rate_unix_epoch_time(double rate_hz);
 
-    void
-    set_rate_position_velocity_ned_async(double rate_hz, Telemetry::result_callback_t callback);
-    void set_rate_position_async(double rate_hz, Telemetry::result_callback_t callback);
-    void set_rate_home_position_async(double rate_hz, Telemetry::result_callback_t callback);
-    void set_rate_in_air_async(double rate_hz, Telemetry::result_callback_t callback);
-    void set_rate_attitude_async(double rate_hz, Telemetry::result_callback_t callback);
-    void set_rate_camera_attitude_async(double rate_hz, Telemetry::result_callback_t callback);
-    void set_rate_ground_speed_ned_async(double rate_hz, Telemetry::result_callback_t callback);
-    void set_rate_imu_reading_ned_async(double rate_hz, Telemetry::result_callback_t callback);
-    void set_rate_fixedwing_metrics_async(double rate_hz, Telemetry::result_callback_t callback);
-    void set_rate_ground_truth_async(double rate_hz, Telemetry::result_callback_t callback);
-    void set_rate_gps_info_async(double rate_hz, Telemetry::result_callback_t callback);
-    void set_rate_battery_async(double rate_hz, Telemetry::result_callback_t callback);
-    void set_rate_rc_status_async(double rate_hz, Telemetry::result_callback_t callback);
-    void
-    set_rate_actuator_control_target_async(double rate_hz, Telemetry::result_callback_t callback);
-    void
-    set_rate_actuator_output_status_async(double rate_hz, Telemetry::result_callback_t callback);
-    void set_rate_odometry_async(double rate_hz, Telemetry::result_callback_t callback);
-    void set_rate_unix_epoch_time_async(double rate_hz, Telemetry::result_callback_t callback);
+    void set_rate_position_velocity_ned_async(double rate_hz, Telemetry::ResultCallback callback);
+    void set_rate_position_async(double rate_hz, Telemetry::ResultCallback callback);
+    void set_rate_home_async(double rate_hz, Telemetry::ResultCallback callback);
+    void set_rate_in_air_async(double rate_hz, Telemetry::ResultCallback callback);
+    void set_rate_landed_state_async(double rate_hz, Telemetry::ResultCallback callback);
+    void set_rate_attitude_async(double rate_hz, Telemetry::ResultCallback callback);
+    void set_rate_camera_attitude_async(double rate_hz, Telemetry::ResultCallback callback);
+    void set_rate_velocity_ned_async(double rate_hz, Telemetry::ResultCallback callback);
+    void set_rate_imu_async(double rate_hz, Telemetry::ResultCallback callback);
+    void set_rate_fixedwing_metrics_async(double rate_hz, Telemetry::ResultCallback callback);
+    void set_rate_ground_truth_async(double rate_hz, Telemetry::ResultCallback callback);
+    void set_rate_gps_info_async(double rate_hz, Telemetry::ResultCallback callback);
+    void set_rate_battery_async(double rate_hz, Telemetry::ResultCallback callback);
+    void set_rate_rc_status_async(double rate_hz, Telemetry::ResultCallback callback);
+    void set_rate_actuator_control_target_async(double rate_hz, Telemetry::ResultCallback callback);
+    void set_rate_actuator_output_status_async(double rate_hz, Telemetry::ResultCallback callback);
+    void set_rate_odometry_async(double rate_hz, Telemetry::ResultCallback callback);
+    void set_rate_unix_epoch_time_async(double rate_hz, Telemetry::ResultCallback callback);
 
-    Telemetry::PositionVelocityNED get_position_velocity_ned() const;
-    Telemetry::Position get_position() const;
-    Telemetry::Position get_home_position() const;
+    Telemetry::PositionVelocityNed position_velocity_ned() const;
+    Telemetry::Position position() const;
+    Telemetry::Position home() const;
     bool in_air() const;
     bool armed() const;
-    Telemetry::LandedState get_landed_state() const;
-    Telemetry::StatusText get_status_text() const;
-    Telemetry::EulerAngle get_attitude_euler_angle() const;
-    Telemetry::Quaternion get_attitude_quaternion() const;
-    Telemetry::AngularVelocityBody get_attitude_angular_velocity_body() const;
-    Telemetry::GroundTruth get_ground_truth() const;
-    Telemetry::FixedwingMetrics get_fixedwing_metrics() const;
-    Telemetry::EulerAngle get_camera_attitude_euler_angle() const;
-    Telemetry::Quaternion get_camera_attitude_quaternion() const;
-    Telemetry::GroundSpeedNED get_ground_speed_ned() const;
-    Telemetry::IMUReadingNED get_imu_reading_ned() const;
-    Telemetry::GPSInfo get_gps_info() const;
-    Telemetry::Battery get_battery() const;
-    Telemetry::FlightMode get_flight_mode() const;
-    Telemetry::Health get_health() const;
-    bool get_health_all_ok() const;
-    Telemetry::RCStatus get_rc_status() const;
-    Telemetry::ActuatorControlTarget get_actuator_control_target() const;
-    Telemetry::ActuatorOutputStatus get_actuator_output_status() const;
-    Telemetry::Odometry get_odometry() const;
-    uint64_t get_unix_epoch_time_us() const;
+    Telemetry::LandedState landed_state() const;
+    Telemetry::StatusText status_text() const;
+    Telemetry::EulerAngle attitude_euler() const;
+    Telemetry::Quaternion attitude_quaternion() const;
+    Telemetry::AngularVelocityBody attitude_angular_velocity_body() const;
+    Telemetry::GroundTruth ground_truth() const;
+    Telemetry::FixedwingMetrics fixedwing_metrics() const;
+    Telemetry::EulerAngle camera_attitude_euler() const;
+    Telemetry::Quaternion camera_attitude_quaternion() const;
+    Telemetry::VelocityNed velocity_ned() const;
+    Telemetry::Imu imu() const;
+    Telemetry::GpsInfo gps_info() const;
+    Telemetry::Battery battery() const;
+    Telemetry::FlightMode flight_mode() const;
+    Telemetry::Health health() const;
+    bool health_all_ok() const;
+    Telemetry::RcStatus rc_status() const;
+    Telemetry::ActuatorControlTarget actuator_control_target() const;
+    Telemetry::ActuatorOutputStatus actuator_output_status() const;
+    Telemetry::Odometry odometry() const;
+    uint64_t unix_epoch_time() const;
 
-    void position_velocity_ned_async(Telemetry::position_velocity_ned_callback_t& callback);
-    void position_async(Telemetry::position_callback_t& callback);
-    void home_position_async(Telemetry::position_callback_t& callback);
-    void in_air_async(Telemetry::in_air_callback_t& callback);
-    void status_text_async(Telemetry::status_text_callback_t& callback);
-    void armed_async(Telemetry::armed_callback_t& callback);
-    void attitude_quaternion_async(Telemetry::attitude_quaternion_callback_t& callback);
-    void attitude_euler_angle_async(Telemetry::attitude_euler_angle_callback_t& callback);
-    void attitude_angular_velocity_body_async(
-        Telemetry::attitude_angular_velocity_body_callback_t& callback);
-    void fixedwing_metrics_async(Telemetry::fixedwing_metrics_callback_t& callback);
-    void ground_truth_async(Telemetry::ground_truth_callback_t& callback);
-    void camera_attitude_quaternion_async(Telemetry::attitude_quaternion_callback_t& callback);
-    void camera_attitude_euler_angle_async(Telemetry::attitude_euler_angle_callback_t& callback);
-    void ground_speed_ned_async(Telemetry::ground_speed_ned_callback_t& callback);
-    void imu_reading_ned_async(Telemetry::imu_reading_ned_callback_t& callback);
-    void gps_info_async(Telemetry::gps_info_callback_t& callback);
-    void battery_async(Telemetry::battery_callback_t& callback);
-    void flight_mode_async(Telemetry::flight_mode_callback_t& callback);
-    void health_async(Telemetry::health_callback_t& callback);
-    void health_all_ok_async(Telemetry::health_all_ok_callback_t& callback);
-    void landed_state_async(Telemetry::landed_state_callback_t& callback);
-    void rc_status_async(Telemetry::rc_status_callback_t& callback);
-    void unix_epoch_time_async(Telemetry::unix_epoch_time_callback_t& callback);
-    void actuator_control_target_async(Telemetry::actuator_control_target_callback_t& callback);
-    void actuator_output_status_async(Telemetry::actuator_output_status_callback_t& callback);
-    void odometry_async(Telemetry::odometry_callback_t& callback);
+    void position_velocity_ned_async(Telemetry::PositionVelocityNedCallback& callback);
+    void position_async(Telemetry::PositionCallback& callback);
+    void home_async(Telemetry::PositionCallback& callback);
+    void in_air_async(Telemetry::InAirCallback& callback);
+    void status_text_async(Telemetry::StatusTextCallback& callback);
+    void armed_async(Telemetry::ArmedCallback& callback);
+    void attitude_quaternion_async(Telemetry::AttitudeQuaternionCallback& callback);
+    void attitude_euler_async(Telemetry::AttitudeEulerCallback& callback);
+    void
+    attitude_angular_velocity_body_async(Telemetry::AttitudeAngularVelocityBodyCallback& callback);
+    void fixedwing_metrics_async(Telemetry::FixedwingMetricsCallback& callback);
+    void ground_truth_async(Telemetry::GroundTruthCallback& callback);
+    void camera_attitude_quaternion_async(Telemetry::AttitudeQuaternionCallback& callback);
+    void camera_attitude_euler_async(Telemetry::AttitudeEulerCallback& callback);
+    void velocity_ned_async(Telemetry::VelocityNedCallback& callback);
+    void imu_async(Telemetry::ImuCallback& callback);
+    void gps_info_async(Telemetry::GpsInfoCallback& callback);
+    void battery_async(Telemetry::BatteryCallback& callback);
+    void flight_mode_async(Telemetry::FlightModeCallback& callback);
+    void health_async(Telemetry::HealthCallback& callback);
+    void health_all_ok_async(Telemetry::HealthAllOkCallback& callback);
+    void landed_state_async(Telemetry::LandedStateCallback& callback);
+    void rc_status_async(Telemetry::RcStatusCallback& callback);
+    void unix_epoch_time_async(Telemetry::UnixEpochTimeCallback& callback);
+    void actuator_control_target_async(Telemetry::ActuatorControlTargetCallback& callback);
+    void actuator_output_status_async(Telemetry::ActuatorOutputStatusCallback& callback);
+    void odometry_async(Telemetry::OdometryCallback& callback);
 
     TelemetryImpl(const TelemetryImpl&) = delete;
     TelemetryImpl& operator=(const TelemetryImpl&) = delete;
 
 private:
-    void set_position_velocity_ned(Telemetry::PositionVelocityNED position_velocity_ned);
+    void set_position_velocity_ned(Telemetry::PositionVelocityNed position_velocity_ned);
     void set_position(Telemetry::Position position);
     void set_home_position(Telemetry::Position home_position);
     void set_in_air(bool in_air);
@@ -136,9 +136,9 @@ private:
     void set_fixedwing_metrics(Telemetry::FixedwingMetrics fixedwing_metrics);
     void set_ground_truth(Telemetry::GroundTruth ground_truth);
     void set_camera_attitude_euler_angle(Telemetry::EulerAngle euler_angle);
-    void set_ground_speed_ned(Telemetry::GroundSpeedNED ground_speed_ned);
-    void set_imu_reading_ned(Telemetry::IMUReadingNED imu_reading_ned);
-    void set_gps_info(Telemetry::GPSInfo gps_info);
+    void set_velocity_ned(Telemetry::VelocityNed velocity_ned);
+    void set_imu_reading_ned(Telemetry::Imu imu);
+    void set_gps_info(Telemetry::GpsInfo gps_info);
     void set_battery(Telemetry::Battery battery);
     void set_health_local_position(bool ok);
     void set_health_global_position(bool ok);
@@ -149,8 +149,8 @@ private:
     void set_health_level_calibration(bool ok);
     void set_rc_status(bool available, float signal_strength_percent);
     void set_unix_epoch_time_us(uint64_t time_us);
-    void set_actuator_control_target(uint8_t group, const std::array<float, 8>& controls);
-    void set_actuator_output_status(uint32_t active, const std::array<float, 32>& actuators);
+    void set_actuator_control_target(uint8_t group, const std::vector<float>& controls);
+    void set_actuator_output_status(uint32_t active, const std::vector<float>& actuators);
     void set_odometry(Telemetry::Odometry& odometry);
 
     void process_position_velocity_ned(const mavlink_message_t& message);
@@ -190,7 +190,7 @@ private:
     telemetry_result_from_command_result(MAVLinkCommands::Result command_result);
 
     static void command_result_callback(
-        MAVLinkCommands::Result command_result, const Telemetry::result_callback_t& callback);
+        MAVLinkCommands::Result command_result, const Telemetry::ResultCallback& callback);
 
     static Telemetry::LandedState to_landed_state(mavlink_extended_sys_state_t extended_sys_state);
 
@@ -201,103 +201,102 @@ private:
     // The mutexs are mutable so that the lock can get aqcuired in
     // methods marked const.
     mutable std::mutex _position_mutex{};
-    Telemetry::Position _position{double(NAN), double(NAN), NAN, NAN};
+    Telemetry::Position _position{};
 
     mutable std::mutex _position_velocity_ned_mutex{};
-    Telemetry::PositionVelocityNED _position_velocity_ned{{NAN, NAN, NAN}, {NAN, NAN, NAN}};
+    Telemetry::PositionVelocityNed _position_velocity_ned{};
 
     mutable std::mutex _home_position_mutex{};
-    Telemetry::Position _home_position{double(NAN), double(NAN), NAN, NAN};
+    Telemetry::Position _home_position{};
 
     // If possible, just use atomic instead of a mutex.
     std::atomic_bool _in_air{false};
     std::atomic_bool _armed{false};
 
     mutable std::mutex _status_text_mutex{};
-    Telemetry::StatusText _status_text{Telemetry::StatusText::StatusType::INFO, ""};
+    Telemetry::StatusText _status_text{};
 
     mutable std::mutex _attitude_quaternion_mutex{};
-    Telemetry::Quaternion _attitude_quaternion{NAN, NAN, NAN, NAN};
+    Telemetry::Quaternion _attitude_quaternion{};
 
     mutable std::mutex _camera_attitude_euler_angle_mutex{};
-    Telemetry::EulerAngle _camera_attitude_euler_angle{NAN, NAN, NAN};
+    Telemetry::EulerAngle _camera_attitude_euler_angle{};
 
     mutable std::mutex _attitude_angular_velocity_body_mutex{};
-    Telemetry::AngularVelocityBody _attitude_angular_velocity_body{NAN, NAN, NAN};
+    Telemetry::AngularVelocityBody _attitude_angular_velocity_body{};
 
     mutable std::mutex _ground_truth_mutex{};
-    Telemetry::GroundTruth _ground_truth{double(NAN), double(NAN), NAN};
+    Telemetry::GroundTruth _ground_truth{};
 
     mutable std::mutex _fixedwing_metrics_mutex{};
-    Telemetry::FixedwingMetrics _fixedwing_metrics{NAN, NAN, NAN};
+    Telemetry::FixedwingMetrics _fixedwing_metrics{};
 
-    mutable std::mutex _ground_speed_ned_mutex{};
-    Telemetry::GroundSpeedNED _ground_speed_ned{NAN, NAN, NAN};
+    mutable std::mutex _velocity_ned_mutex{};
+    Telemetry::VelocityNed _velocity_ned{};
 
     mutable std::mutex _imu_reading_ned_mutex{};
-    Telemetry::IMUReadingNED _imu_reading_ned{
-        {NAN, NAN, NAN}, {NAN, NAN, NAN}, {NAN, NAN, NAN}, NAN};
+    Telemetry::Imu _imu_reading_ned{};
 
     mutable std::mutex _gps_info_mutex{};
-    Telemetry::GPSInfo _gps_info{0, 0};
+    Telemetry::GpsInfo _gps_info{};
 
     mutable std::mutex _battery_mutex{};
-    Telemetry::Battery _battery{NAN, NAN};
+    Telemetry::Battery _battery{};
 
     mutable std::mutex _health_mutex{};
-    Telemetry::Health _health{false, false, false, false, false, false, false};
+    Telemetry::Health _health{};
 
     mutable std::mutex _landed_state_mutex{};
-    Telemetry::LandedState _landed_state{Telemetry::LandedState::UNKNOWN};
+    Telemetry::LandedState _landed_state{Telemetry::LandedState::Unknown};
 
     mutable std::mutex _rc_status_mutex{};
-    Telemetry::RCStatus _rc_status{false, false, 0.0f};
+    Telemetry::RcStatus _rc_status{};
 
     mutable std::mutex _unix_epoch_time_mutex{};
     uint64_t _unix_epoch_time_us{};
 
     mutable std::mutex _actuator_control_target_mutex{};
-    Telemetry::ActuatorControlTarget _actuator_control_target{0, {0.0f}};
+    Telemetry::ActuatorControlTarget _actuator_control_target{};
 
     mutable std::mutex _actuator_output_status_mutex{};
-    Telemetry::ActuatorOutputStatus _actuator_output_status{0, {0.0f}};
+    Telemetry::ActuatorOutputStatus _actuator_output_status{};
 
     mutable std::mutex _odometry_mutex{};
     Telemetry::Odometry _odometry{};
 
     std::atomic<bool> _hitl_enabled{false};
 
-    Telemetry::position_velocity_ned_callback_t _position_velocity_ned_subscription{nullptr};
-    Telemetry::position_callback_t _position_subscription{nullptr};
-    Telemetry::position_callback_t _home_position_subscription{nullptr};
-    Telemetry::in_air_callback_t _in_air_subscription{nullptr};
-    Telemetry::status_text_callback_t _status_text_subscription{nullptr};
-    Telemetry::armed_callback_t _armed_subscription{nullptr};
-    Telemetry::attitude_quaternion_callback_t _attitude_quaternion_subscription{nullptr};
-    Telemetry::attitude_angular_velocity_body_callback_t
-        _attitude_angular_velocity_body_subscription{nullptr};
-    Telemetry::ground_truth_callback_t _ground_truth_subscription{nullptr};
-    Telemetry::fixedwing_metrics_callback_t _fixedwing_metrics_subscription{nullptr};
-    Telemetry::attitude_euler_angle_callback_t _attitude_euler_angle_subscription{nullptr};
-    Telemetry::attitude_quaternion_callback_t _camera_attitude_quaternion_subscription{nullptr};
-    Telemetry::attitude_euler_angle_callback_t _camera_attitude_euler_angle_subscription{nullptr};
-    Telemetry::ground_speed_ned_callback_t _ground_speed_ned_subscription{nullptr};
-    Telemetry::imu_reading_ned_callback_t _imu_reading_ned_subscription{nullptr};
-    Telemetry::gps_info_callback_t _gps_info_subscription{nullptr};
-    Telemetry::battery_callback_t _battery_subscription{nullptr};
-    Telemetry::flight_mode_callback_t _flight_mode_subscription{nullptr};
-    Telemetry::health_callback_t _health_subscription{nullptr};
-    Telemetry::health_all_ok_callback_t _health_all_ok_subscription{nullptr};
-    Telemetry::landed_state_callback_t _landed_state_subscription{nullptr};
-    Telemetry::rc_status_callback_t _rc_status_subscription{nullptr};
-    Telemetry::unix_epoch_time_callback_t _unix_epoch_time_subscription{nullptr};
-    Telemetry::actuator_control_target_callback_t _actuator_control_target_subscription{nullptr};
-    Telemetry::actuator_output_status_callback_t _actuator_output_status_subscription{nullptr};
-    Telemetry::odometry_callback_t _odometry_subscription{nullptr};
+    Telemetry::PositionVelocityNedCallback _position_velocity_ned_subscription{nullptr};
+    Telemetry::PositionCallback _position_subscription{nullptr};
+    Telemetry::PositionCallback _home_position_subscription{nullptr};
+    Telemetry::InAirCallback _in_air_subscription{nullptr};
+    Telemetry::StatusTextCallback _status_text_subscription{nullptr};
+    Telemetry::ArmedCallback _armed_subscription{nullptr};
+    Telemetry::AttitudeQuaternionCallback _attitude_quaternion_angle_subscription{nullptr};
+    Telemetry::AttitudeAngularVelocityBodyCallback _attitude_angular_velocity_body_subscription{
+        nullptr};
+    Telemetry::GroundTruthCallback _ground_truth_subscription{nullptr};
+    Telemetry::FixedwingMetricsCallback _fixedwing_metrics_subscription{nullptr};
+    Telemetry::AttitudeEulerCallback _attitude_euler_angle_subscription{nullptr};
+    Telemetry::AttitudeQuaternionCallback _camera_attitude_quaternion_subscription{nullptr};
+    Telemetry::AttitudeEulerCallback _camera_attitude_euler_angle_subscription{nullptr};
+    Telemetry::VelocityNedCallback _velocity_ned_subscription{nullptr};
+    Telemetry::ImuCallback _imu_reading_ned_subscription{nullptr};
+    Telemetry::GpsInfoCallback _gps_info_subscription{nullptr};
+    Telemetry::BatteryCallback _battery_subscription{nullptr};
+    Telemetry::FlightModeCallback _flight_mode_subscription{nullptr};
+    Telemetry::HealthCallback _health_subscription{nullptr};
+    Telemetry::HealthAllOkCallback _health_all_ok_subscription{nullptr};
+    Telemetry::LandedStateCallback _landed_state_subscription{nullptr};
+    Telemetry::RcStatusCallback _rc_status_subscription{nullptr};
+    Telemetry::UnixEpochTimeCallback _unix_epoch_time_subscription{nullptr};
+    Telemetry::ActuatorControlTargetCallback _actuator_control_target_subscription{nullptr};
+    Telemetry::ActuatorOutputStatusCallback _actuator_output_status_subscription{nullptr};
+    Telemetry::OdometryCallback _odometry_subscription{nullptr};
 
-    // The ground speed and position are coupled to the same message, therefore, we just use
-    // the faster between the two.
-    double _ground_speed_ned_rate_hz{0.0};
+    // The velocity (former ground speed) and position are coupled to the same message, therefore,
+    // we just use the faster between the two.
+    double _velocity_ned_rate_hz{0.0};
     double _position_rate_hz{-1.0};
 
     void* _rc_channels_timeout_cookie{nullptr};

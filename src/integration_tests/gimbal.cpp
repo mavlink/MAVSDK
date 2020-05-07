@@ -21,14 +21,14 @@ void receive_gimbal_attitude_euler_angles(Telemetry::EulerAngle euler_angle);
 
 TEST(SitlTestGimbal, GimbalMove)
 {
-    Mavsdk dc;
+    Mavsdk mavsdk;
 
-    ConnectionResult ret = dc.add_udp_connection();
-    ASSERT_EQ(ret, ConnectionResult::SUCCESS);
+    ConnectionResult ret = mavsdk.add_udp_connection();
+    ASSERT_EQ(ret, ConnectionResult::Success);
 
     // Wait for system to connect via heartbeat.
     std::this_thread::sleep_for(std::chrono::seconds(2));
-    System& system = dc.system();
+    System& system = mavsdk.system();
     // FIXME: This is what it should be, for now though with the typhoon_h480
     //        SITL simulation, the gimbal is hooked up to the autopilot.
     // ASSERT_TRUE(system.has_gimbal());
@@ -39,7 +39,7 @@ TEST(SitlTestGimbal, GimbalMove)
 
     telemetry->set_rate_camera_attitude(10.0);
 
-    telemetry->camera_attitude_euler_angle_async(&receive_gimbal_attitude_euler_angles);
+    telemetry->subscribe_camera_attitude_euler(&receive_gimbal_attitude_euler_angles);
 
     for (int i = 0; i < 500; i += 1) {
         send_new_gimbal_command(gimbal, i);
@@ -49,14 +49,14 @@ TEST(SitlTestGimbal, GimbalMove)
 
 TEST(SitlTestGimbal, GimbalTakeoffAndMove)
 {
-    Mavsdk dc;
+    Mavsdk mavsdk;
 
-    ConnectionResult ret = dc.add_udp_connection();
-    ASSERT_EQ(ret, ConnectionResult::SUCCESS);
+    ConnectionResult ret = mavsdk.add_udp_connection();
+    ASSERT_EQ(ret, ConnectionResult::Success);
 
     // Wait for system to connect via heartbeat.
     std::this_thread::sleep_for(std::chrono::seconds(2));
-    System& system = dc.system();
+    System& system = mavsdk.system();
     // ASSERT_TRUE(system.has_gimbal());
     ASSERT_TRUE(system.has_autopilot());
 
@@ -70,14 +70,14 @@ TEST(SitlTestGimbal, GimbalTakeoffAndMove)
     }
 
     Action::Result action_result = action->arm();
-    EXPECT_EQ(action_result, Action::Result::SUCCESS);
+    EXPECT_EQ(action_result, Action::Result::Success);
 
     action_result = action->takeoff();
-    EXPECT_EQ(action_result, Action::Result::SUCCESS);
+    EXPECT_EQ(action_result, Action::Result::Success);
 
     telemetry->set_rate_camera_attitude(10.0);
 
-    telemetry->camera_attitude_euler_angle_async(&receive_gimbal_attitude_euler_angles);
+    telemetry->subscribe_camera_attitude_euler(&receive_gimbal_attitude_euler_angles);
 
     for (int i = 0; i < 500; i += 1) {
         send_new_gimbal_command(gimbal, i);
@@ -90,14 +90,14 @@ TEST(SitlTestGimbal, GimbalTakeoffAndMove)
 
 TEST(SitlTestGimbal, GimbalROIOffboard)
 {
-    Mavsdk dc;
+    Mavsdk mavsdk;
 
-    ConnectionResult ret = dc.add_udp_connection();
-    ASSERT_EQ(ret, ConnectionResult::SUCCESS);
+    ConnectionResult ret = mavsdk.add_udp_connection();
+    ASSERT_EQ(ret, ConnectionResult::Success);
 
     // Wait for system to connect via heartbeat.
     std::this_thread::sleep_for(std::chrono::seconds(2));
-    System& system = dc.system();
+    System& system = mavsdk.system();
     // ASSERT_TRUE(system.has_gimbal());
     ASSERT_TRUE(system.has_autopilot());
 
@@ -122,27 +122,38 @@ TEST(SitlTestGimbal, GimbalROIOffboard)
         position.absolute_altitude_m + 1.f);
 
     Action::Result action_result = action->arm();
-    EXPECT_EQ(action_result, Action::Result::SUCCESS);
+    EXPECT_EQ(action_result, Action::Result::Success);
 
     action_result = action->takeoff();
-    EXPECT_EQ(action_result, Action::Result::SUCCESS);
+    EXPECT_EQ(action_result, Action::Result::Success);
 
     std::this_thread::sleep_for(std::chrono::seconds(5));
 
     telemetry->set_rate_camera_attitude(10.0);
 
-    telemetry->camera_attitude_euler_angle_async(&receive_gimbal_attitude_euler_angles);
+    telemetry->subscribe_camera_attitude_euler(&receive_gimbal_attitude_euler_angles);
 
     // Send it once before starting offboard, otherwise it will be rejected.
-    offboard->set_velocity_ned({0.0f, 0.0f, 0.0f, 0.0f});
+    Offboard::VelocityNedYaw still;
+    still.north_m_s = 0.0f;
+    still.east_m_s = 0.0f;
+    still.down_m_s = 0.0f;
+    still.yaw_deg = 0.0f;
+    offboard->set_velocity_ned(still);
     Offboard::Result offboard_result = offboard->start();
-    EXPECT_EQ(offboard_result, Offboard::Result::SUCCESS);
+    EXPECT_EQ(offboard_result, Offboard::Result::Success);
 
     auto fly_straight = [&offboard](int step_count, float max_speed) {
         for (int i = 0; i < step_count; ++i) {
             int k = (i <= step_count / 2) ? i : step_count - i;
             float vy = static_cast<float>(k) / (step_count / 2) * max_speed;
-            offboard->set_velocity_ned({0.0f, vy, 0.0f, 90.0f});
+
+            Offboard::VelocityNedYaw move_east;
+            move_east.north_m_s = 0.0f;
+            move_east.east_m_s = vy;
+            move_east.down_m_s = 0.0f;
+            move_east.yaw_deg = 90.0f;
+            offboard->set_velocity_ned(move_east);
             std::this_thread::sleep_for(std::chrono::milliseconds(10));
         }
     };
@@ -157,7 +168,13 @@ TEST(SitlTestGimbal, GimbalROIOffboard)
 
     for (unsigned i = 0; i < steps; ++i) {
         float vx = 5.0f * sinf(i * step_size);
-        offboard->set_velocity_ned({vx, 0.0f, 0.0f, 90.0f});
+
+        Offboard::VelocityNedYaw move_north;
+        move_north.north_m_s = vx;
+        move_north.east_m_s = 0.0f;
+        move_north.down_m_s = 0.0f;
+        move_north.yaw_deg = 90.0f;
+        offboard->set_velocity_ned(move_north);
         std::this_thread::sleep_for(std::chrono::milliseconds(10));
     }
 
@@ -178,7 +195,7 @@ void send_new_gimbal_command(std::shared_ptr<Gimbal> gimbal, int i)
 
 void send_gimbal_mode_command(std::shared_ptr<Gimbal> gimbal, const Gimbal::GimbalMode gimbal_mode)
 {
-    gimbal->set_gimbal_mode_async(gimbal_mode, &receive_gimbal_result);
+    gimbal->set_mode_async(gimbal_mode, &receive_gimbal_result);
 }
 
 void send_gimbal_roi_location(
@@ -189,7 +206,7 @@ void send_gimbal_roi_location(
 
 void receive_gimbal_result(Gimbal::Result result)
 {
-    EXPECT_EQ(result, Gimbal::Result::SUCCESS);
+    EXPECT_EQ(result, Gimbal::Result::Success);
 }
 
 void receive_gimbal_attitude_euler_angles(Telemetry::EulerAngle euler_angle)

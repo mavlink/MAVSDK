@@ -9,11 +9,25 @@
 #include "mavsdk.h"
 #include "system.h"
 #include "mavlink_include.h"
+#include "mavlink_address.h"
 
 namespace mavsdk {
 
 class MavsdkImpl {
 public:
+    /** @brief Default System ID for GCS configuration type. */
+    static constexpr int DEFAULT_SYSTEM_ID_GCS = 245;
+    /** @brief Default Component ID for GCS configuration type. */
+    static constexpr int DEFAULT_COMPONENT_ID_GCS = MAV_COMP_ID_MISSIONPLANNER;
+    /** @brief Default System ID for CompanionComputer configuration type. */
+    static constexpr int DEFAULT_SYSTEM_ID_CC = 1;
+    /** @brief Default Component ID for CompanionComputer configuration type. */
+    static constexpr int DEFAULT_COMPONENT_ID_CC = MAV_COMP_ID_PATHPLANNER;
+    /** @brief Default System ID for Autopilot configuration type. */
+    static constexpr int DEFAULT_SYSTEM_ID_AUTOPILOT = 1;
+    /** @brief Default Component ID for Autopilot configuration type. */
+    static constexpr int DEFAULT_COMPONENT_ID_AUTOPILOT = MAV_COMP_ID_AUTOPILOT1;
+
     MavsdkImpl();
     ~MavsdkImpl();
 
@@ -49,6 +63,8 @@ public:
     void notify_on_discover(uint64_t uuid);
     void notify_on_timeout(uint64_t uuid);
 
+    MAVLinkAddress own_address{};
+
 private:
     void add_connection(std::shared_ptr<Connection>);
     void make_system_with_component(uint8_t system_id, uint8_t component_id);
@@ -65,7 +81,7 @@ private:
     Mavsdk::event_callback_t _on_discover_callback;
     Mavsdk::event_callback_t _on_timeout_callback;
 
-    std::atomic<Mavsdk::Configuration> _configuration{Mavsdk::Configuration::GroundStation};
+    Mavsdk::Configuration _configuration;
     bool _is_single_system{false};
 
     std::atomic<bool> _should_exit = {false};

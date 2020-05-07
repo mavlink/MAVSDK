@@ -358,60 +358,64 @@ static ::PROTOBUF_NAMESPACE_ID::Message const * const file_default_instances[] =
 
 const char descriptor_table_protodef_calibration_2fcalibration_2eproto[] PROTOBUF_SECTION_VARIABLE(protodesc_cold) =
   "\n\035calibration/calibration.proto\022\026mavsdk."
-  "rpc.calibration\"\037\n\035SubscribeCalibrateGyr"
-  "oRequest\"\233\001\n\025CalibrateGyroResponse\022E\n\022ca"
-  "libration_result\030\001 \001(\0132).mavsdk.rpc.cali"
-  "bration.CalibrationResult\022;\n\rprogress_da"
-  "ta\030\002 \001(\0132$.mavsdk.rpc.calibration.Progre"
-  "ssData\"(\n&SubscribeCalibrateAcceleromete"
-  "rRequest\"\244\001\n\036CalibrateAccelerometerRespo"
-  "nse\022E\n\022calibration_result\030\001 \001(\0132).mavsdk"
-  ".rpc.calibration.CalibrationResult\022;\n\rpr"
-  "ogress_data\030\002 \001(\0132$.mavsdk.rpc.calibrati"
-  "on.ProgressData\"\'\n%SubscribeCalibrateMag"
-  "netometerRequest\"\243\001\n\035CalibrateMagnetomet"
-  "erResponse\022E\n\022calibration_result\030\001 \001(\0132)"
-  ".mavsdk.rpc.calibration.CalibrationResul"
-  "t\022;\n\rprogress_data\030\002 \001(\0132$.mavsdk.rpc.ca"
-  "libration.ProgressData\".\n,SubscribeCalib"
-  "rateGimbalAccelerometerRequest\"\252\001\n$Calib"
-  "rateGimbalAccelerometerResponse\022E\n\022calib"
-  "ration_result\030\001 \001(\0132).mavsdk.rpc.calibra"
-  "tion.CalibrationResult\022;\n\rprogress_data\030"
-  "\002 \001(\0132$.mavsdk.rpc.calibration.ProgressD"
-  "ata\"\017\n\rCancelRequest\"\020\n\016CancelResponse\"\233"
-  "\002\n\021CalibrationResult\022@\n\006result\030\001 \001(\01620.m"
-  "avsdk.rpc.calibration.CalibrationResult."
-  "Result\022\022\n\nresult_str\030\002 \001(\t\"\257\001\n\006Result\022\013\n"
-  "\007UNKNOWN\020\000\022\013\n\007SUCCESS\020\001\022\017\n\013IN_PROGRESS\020\002"
-  "\022\017\n\013INSTRUCTION\020\003\022\n\n\006FAILED\020\004\022\r\n\tNO_SYST"
-  "EM\020\005\022\024\n\020CONNECTION_ERROR\020\006\022\010\n\004BUSY\020\007\022\022\n\016"
-  "COMMAND_DENIED\020\010\022\013\n\007TIMEOUT\020\t\022\r\n\tCANCELL"
-  "ED\020\n\"d\n\014ProgressData\022\024\n\014has_progress\030\001 \001"
-  "(\010\022\020\n\010progress\030\002 \001(\002\022\027\n\017has_status_text\030"
-  "\003 \001(\010\022\023\n\013status_text\030\004 \001(\t2\343\005\n\022Calibrati"
-  "onService\022\202\001\n\026SubscribeCalibrateGyro\0225.m"
-  "avsdk.rpc.calibration.SubscribeCalibrate"
-  "GyroRequest\032-.mavsdk.rpc.calibration.Cal"
-  "ibrateGyroResponse\"\0000\001\022\235\001\n\037SubscribeCali"
-  "brateAccelerometer\022>.mavsdk.rpc.calibrat"
-  "ion.SubscribeCalibrateAccelerometerReque"
-  "st\0326.mavsdk.rpc.calibration.CalibrateAcc"
-  "elerometerResponse\"\0000\001\022\232\001\n\036SubscribeCali"
-  "brateMagnetometer\022=.mavsdk.rpc.calibrati"
-  "on.SubscribeCalibrateMagnetometerRequest"
-  "\0325.mavsdk.rpc.calibration.CalibrateMagne"
-  "tometerResponse\"\0000\001\022\257\001\n%SubscribeCalibra"
-  "teGimbalAccelerometer\022D.mavsdk.rpc.calib"
-  "ration.SubscribeCalibrateGimbalAccelerom"
-  "eterRequest\032<.mavsdk.rpc.calibration.Cal"
-  "ibrateGimbalAccelerometerResponse\"\0000\001\022Y\n"
-  "\006Cancel\022%.mavsdk.rpc.calibration.CancelR"
-  "equest\032&.mavsdk.rpc.calibration.CancelRe"
-  "sponse\"\000B)\n\025io.mavsdk.calibrationB\020Calib"
-  "rationProtob\006proto3"
+  "rpc.calibration\032\024mavsdk_options.proto\"\037\n"
+  "\035SubscribeCalibrateGyroRequest\"\233\001\n\025Calib"
+  "rateGyroResponse\022E\n\022calibration_result\030\001"
+  " \001(\0132).mavsdk.rpc.calibration.Calibratio"
+  "nResult\022;\n\rprogress_data\030\002 \001(\0132$.mavsdk."
+  "rpc.calibration.ProgressData\"(\n&Subscrib"
+  "eCalibrateAccelerometerRequest\"\244\001\n\036Calib"
+  "rateAccelerometerResponse\022E\n\022calibration"
+  "_result\030\001 \001(\0132).mavsdk.rpc.calibration.C"
+  "alibrationResult\022;\n\rprogress_data\030\002 \001(\0132"
+  "$.mavsdk.rpc.calibration.ProgressData\"\'\n"
+  "%SubscribeCalibrateMagnetometerRequest\"\243"
+  "\001\n\035CalibrateMagnetometerResponse\022E\n\022cali"
+  "bration_result\030\001 \001(\0132).mavsdk.rpc.calibr"
+  "ation.CalibrationResult\022;\n\rprogress_data"
+  "\030\002 \001(\0132$.mavsdk.rpc.calibration.Progress"
+  "Data\".\n,SubscribeCalibrateGimbalAccelero"
+  "meterRequest\"\252\001\n$CalibrateGimbalAccelero"
+  "meterResponse\022E\n\022calibration_result\030\001 \001("
+  "\0132).mavsdk.rpc.calibration.CalibrationRe"
+  "sult\022;\n\rprogress_data\030\002 \001(\0132$.mavsdk.rpc"
+  ".calibration.ProgressData\"\017\n\rCancelReque"
+  "st\"\020\n\016CancelResponse\"\311\002\n\021CalibrationResu"
+  "lt\022@\n\006result\030\001 \001(\01620.mavsdk.rpc.calibrat"
+  "ion.CalibrationResult.Result\022\022\n\nresult_s"
+  "tr\030\002 \001(\t\"\335\001\n\006Result\022\022\n\016RESULT_UNKNOWN\020\000\022"
+  "\022\n\016RESULT_SUCCESS\020\001\022\017\n\013RESULT_NEXT\020\002\022\021\n\r"
+  "RESULT_FAILED\020\003\022\024\n\020RESULT_NO_SYSTEM\020\004\022\033\n"
+  "\027RESULT_CONNECTION_ERROR\020\005\022\017\n\013RESULT_BUS"
+  "Y\020\006\022\031\n\025RESULT_COMMAND_DENIED\020\007\022\022\n\016RESULT"
+  "_TIMEOUT\020\010\022\024\n\020RESULT_CANCELLED\020\t\"\203\001\n\014Pro"
+  "gressData\022\037\n\014has_progress\030\001 \001(\010B\t\202\265\030\005fal"
+  "se\022\031\n\010progress\030\002 \001(\002B\007\202\265\030\003NaN\022\"\n\017has_sta"
+  "tus_text\030\003 \001(\010B\t\202\265\030\005false\022\023\n\013status_text"
+  "\030\004 \001(\t2\207\006\n\022CalibrationService\022\212\001\n\026Subscr"
+  "ibeCalibrateGyro\0225.mavsdk.rpc.calibratio"
+  "n.SubscribeCalibrateGyroRequest\032-.mavsdk"
+  ".rpc.calibration.CalibrateGyroResponse\"\010"
+  "\200\265\030\000\210\265\030\0010\001\022\245\001\n\037SubscribeCalibrateAcceler"
+  "ometer\022>.mavsdk.rpc.calibration.Subscrib"
+  "eCalibrateAccelerometerRequest\0326.mavsdk."
+  "rpc.calibration.CalibrateAccelerometerRe"
+  "sponse\"\010\200\265\030\000\210\265\030\0010\001\022\242\001\n\036SubscribeCalibrat"
+  "eMagnetometer\022=.mavsdk.rpc.calibration.S"
+  "ubscribeCalibrateMagnetometerRequest\0325.m"
+  "avsdk.rpc.calibration.CalibrateMagnetome"
+  "terResponse\"\010\200\265\030\000\210\265\030\0010\001\022\267\001\n%SubscribeCal"
+  "ibrateGimbalAccelerometer\022D.mavsdk.rpc.c"
+  "alibration.SubscribeCalibrateGimbalAccel"
+  "erometerRequest\032<.mavsdk.rpc.calibration"
+  ".CalibrateGimbalAccelerometerResponse\"\010\200"
+  "\265\030\000\210\265\030\0010\001\022]\n\006Cancel\022%.mavsdk.rpc.calibra"
+  "tion.CancelRequest\032&.mavsdk.rpc.calibrat"
+  "ion.CancelResponse\"\004\200\265\030\001B)\n\025io.mavsdk.ca"
+  "librationB\020CalibrationProtob\006proto3"
   ;
 static const ::PROTOBUF_NAMESPACE_ID::internal::DescriptorTable*const descriptor_table_calibration_2fcalibration_2eproto_deps[1] = {
+  &::descriptor_table_mavsdk_5foptions_2eproto,
 };
 static ::PROTOBUF_NAMESPACE_ID::internal::SCCInfoBase*const descriptor_table_calibration_2fcalibration_2eproto_sccs[12] = {
   &scc_info_CalibrateAccelerometerResponse_calibration_2fcalibration_2eproto.base,
@@ -430,8 +434,8 @@ static ::PROTOBUF_NAMESPACE_ID::internal::SCCInfoBase*const descriptor_table_cal
 static ::PROTOBUF_NAMESPACE_ID::internal::once_flag descriptor_table_calibration_2fcalibration_2eproto_once;
 static bool descriptor_table_calibration_2fcalibration_2eproto_initialized = false;
 const ::PROTOBUF_NAMESPACE_ID::internal::DescriptorTable descriptor_table_calibration_2fcalibration_2eproto = {
-  &descriptor_table_calibration_2fcalibration_2eproto_initialized, descriptor_table_protodef_calibration_2fcalibration_2eproto, "calibration/calibration.proto", 2099,
-  &descriptor_table_calibration_2fcalibration_2eproto_once, descriptor_table_calibration_2fcalibration_2eproto_sccs, descriptor_table_calibration_2fcalibration_2eproto_deps, 12, 0,
+  &descriptor_table_calibration_2fcalibration_2eproto_initialized, descriptor_table_protodef_calibration_2fcalibration_2eproto, "calibration/calibration.proto", 2235,
+  &descriptor_table_calibration_2fcalibration_2eproto_once, descriptor_table_calibration_2fcalibration_2eproto_sccs, descriptor_table_calibration_2fcalibration_2eproto_deps, 12, 1,
   schemas, file_default_instances, TableStruct_calibration_2fcalibration_2eproto::offsets,
   file_level_metadata_calibration_2fcalibration_2eproto, 12, file_level_enum_descriptors_calibration_2fcalibration_2eproto, file_level_service_descriptors_calibration_2fcalibration_2eproto,
 };
@@ -457,7 +461,6 @@ bool CalibrationResult_Result_IsValid(int value) {
     case 7:
     case 8:
     case 9:
-    case 10:
       return true;
     default:
       return false;
@@ -465,17 +468,16 @@ bool CalibrationResult_Result_IsValid(int value) {
 }
 
 #if (__cplusplus < 201703) && (!defined(_MSC_VER) || _MSC_VER >= 1900)
-constexpr CalibrationResult_Result CalibrationResult::UNKNOWN;
-constexpr CalibrationResult_Result CalibrationResult::SUCCESS;
-constexpr CalibrationResult_Result CalibrationResult::IN_PROGRESS;
-constexpr CalibrationResult_Result CalibrationResult::INSTRUCTION;
-constexpr CalibrationResult_Result CalibrationResult::FAILED;
-constexpr CalibrationResult_Result CalibrationResult::NO_SYSTEM;
-constexpr CalibrationResult_Result CalibrationResult::CONNECTION_ERROR;
-constexpr CalibrationResult_Result CalibrationResult::BUSY;
-constexpr CalibrationResult_Result CalibrationResult::COMMAND_DENIED;
-constexpr CalibrationResult_Result CalibrationResult::TIMEOUT;
-constexpr CalibrationResult_Result CalibrationResult::CANCELLED;
+constexpr CalibrationResult_Result CalibrationResult::RESULT_UNKNOWN;
+constexpr CalibrationResult_Result CalibrationResult::RESULT_SUCCESS;
+constexpr CalibrationResult_Result CalibrationResult::RESULT_NEXT;
+constexpr CalibrationResult_Result CalibrationResult::RESULT_FAILED;
+constexpr CalibrationResult_Result CalibrationResult::RESULT_NO_SYSTEM;
+constexpr CalibrationResult_Result CalibrationResult::RESULT_CONNECTION_ERROR;
+constexpr CalibrationResult_Result CalibrationResult::RESULT_BUSY;
+constexpr CalibrationResult_Result CalibrationResult::RESULT_COMMAND_DENIED;
+constexpr CalibrationResult_Result CalibrationResult::RESULT_TIMEOUT;
+constexpr CalibrationResult_Result CalibrationResult::RESULT_CANCELLED;
 constexpr CalibrationResult_Result CalibrationResult::Result_MIN;
 constexpr CalibrationResult_Result CalibrationResult::Result_MAX;
 constexpr int CalibrationResult::Result_ARRAYSIZE;
@@ -2701,21 +2703,21 @@ const char* ProgressData::_InternalParse(const char* ptr, ::PROTOBUF_NAMESPACE_I
     ptr = ::PROTOBUF_NAMESPACE_ID::internal::ReadTag(ptr, &tag);
     CHK_(ptr);
     switch (tag >> 3) {
-      // bool has_progress = 1;
+      // bool has_progress = 1 [(.mavsdk.options.default_value) = "false"];
       case 1:
         if (PROTOBUF_PREDICT_TRUE(static_cast<::PROTOBUF_NAMESPACE_ID::uint8>(tag) == 8)) {
           has_progress_ = ::PROTOBUF_NAMESPACE_ID::internal::ReadVarint(&ptr);
           CHK_(ptr);
         } else goto handle_unusual;
         continue;
-      // float progress = 2;
+      // float progress = 2 [(.mavsdk.options.default_value) = "NaN"];
       case 2:
         if (PROTOBUF_PREDICT_TRUE(static_cast<::PROTOBUF_NAMESPACE_ID::uint8>(tag) == 21)) {
           progress_ = ::PROTOBUF_NAMESPACE_ID::internal::UnalignedLoad<float>(ptr);
           ptr += sizeof(float);
         } else goto handle_unusual;
         continue;
-      // bool has_status_text = 3;
+      // bool has_status_text = 3 [(.mavsdk.options.default_value) = "false"];
       case 3:
         if (PROTOBUF_PREDICT_TRUE(static_cast<::PROTOBUF_NAMESPACE_ID::uint8>(tag) == 24)) {
           has_status_text_ = ::PROTOBUF_NAMESPACE_ID::internal::ReadVarint(&ptr);
@@ -2757,19 +2759,19 @@ failure:
   ::PROTOBUF_NAMESPACE_ID::uint32 cached_has_bits = 0;
   (void) cached_has_bits;
 
-  // bool has_progress = 1;
+  // bool has_progress = 1 [(.mavsdk.options.default_value) = "false"];
   if (this->has_progress() != 0) {
     target = stream->EnsureSpace(target);
     target = ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::WriteBoolToArray(1, this->_internal_has_progress(), target);
   }
 
-  // float progress = 2;
+  // float progress = 2 [(.mavsdk.options.default_value) = "NaN"];
   if (!(this->progress() <= 0 && this->progress() >= 0)) {
     target = stream->EnsureSpace(target);
     target = ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::WriteFloatToArray(2, this->_internal_progress(), target);
   }
 
-  // bool has_status_text = 3;
+  // bool has_status_text = 3 [(.mavsdk.options.default_value) = "false"];
   if (this->has_status_text() != 0) {
     target = stream->EnsureSpace(target);
     target = ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::WriteBoolToArray(3, this->_internal_has_status_text(), target);
@@ -2808,17 +2810,17 @@ size_t ProgressData::ByteSizeLong() const {
         this->_internal_status_text());
   }
 
-  // float progress = 2;
+  // float progress = 2 [(.mavsdk.options.default_value) = "NaN"];
   if (!(this->progress() <= 0 && this->progress() >= 0)) {
     total_size += 1 + 4;
   }
 
-  // bool has_progress = 1;
+  // bool has_progress = 1 [(.mavsdk.options.default_value) = "false"];
   if (this->has_progress() != 0) {
     total_size += 1 + 1;
   }
 
-  // bool has_status_text = 3;
+  // bool has_status_text = 3 [(.mavsdk.options.default_value) = "false"];
   if (this->has_status_text() != 0) {
     total_size += 1 + 1;
   }

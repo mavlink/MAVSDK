@@ -24,12 +24,12 @@ static void print_ground_truth(Telemetry::GroundTruth ground_truth);
 static void print_camera_quaternion(Telemetry::Quaternion quaternion);
 static void print_camera_euler_angle(Telemetry::EulerAngle euler_angle);
 #endif
-static void print_ground_speed_ned(Telemetry::GroundSpeedNED ground_speed_ned);
-static void print_imu_reading_ned(Telemetry::IMUReadingNED imu_reading_ned);
-static void print_gps_info(Telemetry::GPSInfo gps_info);
+static void print_velocity_ned(Telemetry::VelocityNed velocity_ned);
+static void print_imu_reading_ned(Telemetry::Imu imu_reading_ned);
+static void print_gps_info(Telemetry::GpsInfo gps_info);
 static void print_battery(Telemetry::Battery battery);
-static void print_rc_status(Telemetry::RCStatus rc_status);
-static void print_position_velocity_ned(Telemetry::PositionVelocityNED position_velocity_ned);
+static void print_rc_status(Telemetry::RcStatus rc_status);
+static void print_position_velocity_ned(Telemetry::PositionVelocityNed position_velocity_ned);
 static void print_unix_epoch_time_us(uint64_t time_us);
 static void print_actuator_control_target(Telemetry::ActuatorControlTarget actuator_control_target);
 static void print_actuator_output_status(Telemetry::ActuatorOutputStatus actuator_output_status);
@@ -48,7 +48,7 @@ static bool _received_ground_truth = false;
 static bool _received_camera_quaternion = false;
 static bool _received_camera_euler_angle = false;
 #endif
-static bool _received_ground_speed = false;
+static bool _received_velocity = false;
 static bool _received_imu_reading_ned = false;
 static bool _received_gps_info = false;
 static bool _received_battery = false;
@@ -75,7 +75,7 @@ TEST_F(SitlTest, TelemetryAsync)
 
     uint64_t uuid = uuids.at(0);
 
-    ASSERT_EQ(ret, ConnectionResult::SUCCESS);
+    ASSERT_EQ(ret, ConnectionResult::Success);
 
     System& system = dc.system(uuid);
 
@@ -84,7 +84,7 @@ TEST_F(SitlTest, TelemetryAsync)
     telemetry->set_rate_position_async(10.0, std::bind(&receive_result, _1));
     std::this_thread::sleep_for(std::chrono::milliseconds(100));
 
-    telemetry->set_rate_home_position_async(10.0, std::bind(&receive_result, _1));
+    telemetry->set_rate_home_async(10.0, std::bind(&receive_result, _1));
     std::this_thread::sleep_for(std::chrono::milliseconds(100));
 
     telemetry->set_rate_in_air_async(10.0, std::bind(&receive_result, _1));
@@ -93,10 +93,10 @@ TEST_F(SitlTest, TelemetryAsync)
     telemetry->set_rate_attitude_async(10.0, std::bind(&receive_result, _1));
     std::this_thread::sleep_for(std::chrono::milliseconds(100));
 
-    telemetry->set_rate_ground_speed_ned_async(10.0, std::bind(&receive_result, _1));
+    telemetry->set_rate_velocity_ned_async(10.0, std::bind(&receive_result, _1));
     std::this_thread::sleep_for(std::chrono::milliseconds(100));
 
-    telemetry->set_rate_imu_reading_ned_async(10.0, std::bind(&receive_result, _1));
+    telemetry->set_rate_imu_async(10.0, std::bind(&receive_result, _1));
     std::this_thread::sleep_for(std::chrono::milliseconds(100));
 
     telemetry->set_rate_gps_info_async(10.0, std::bind(&receive_result, _1));
@@ -114,47 +114,48 @@ TEST_F(SitlTest, TelemetryAsync)
     telemetry->set_rate_ground_truth_async(10.0, std::bind(&receive_result, _1));
     std::this_thread::sleep_for(std::chrono::milliseconds(100));
 
-    telemetry->position_async(std::bind(&print_position, _1));
+    telemetry->subscribe_position(std::bind(&print_position, _1));
 
-    telemetry->home_position_async(std::bind(&print_home_position, _1));
+    telemetry->subscribe_home(std::bind(&print_home_position, _1));
 
-    telemetry->in_air_async(std::bind(&print_in_air, _1));
+    telemetry->subscribe_in_air(std::bind(&print_in_air, _1));
 
-    telemetry->armed_async(std::bind(&print_armed, _1));
+    telemetry->subscribe_armed(std::bind(&print_armed, _1));
 
-    telemetry->attitude_quaternion_async(std::bind(&print_quaternion, _1));
+    telemetry->subscribe_attitude_quaternion(std::bind(&print_quaternion, _1));
 
-    telemetry->attitude_euler_angle_async(std::bind(&print_euler_angle, _1));
+    telemetry->subscribe_attitude_euler(std::bind(&print_euler_angle, _1));
 
-    telemetry->attitude_angular_velocity_body_async(std::bind(&print_angular_velocity_body, _1));
+    telemetry->subscribe_attitude_angular_velocity_body(
+        std::bind(&print_angular_velocity_body, _1));
 
-    telemetry->fixedwing_metrics_async(std::bind(&print_fixedwing_metrics, _1));
+    telemetry->subscribe_fixedwing_metrics(std::bind(&print_fixedwing_metrics, _1));
 
-    telemetry->ground_truth_async(std::bind(&print_ground_truth, _1));
+    telemetry->subscribe_ground_truth(std::bind(&print_ground_truth, _1));
 
 #if CAMERA_AVAILABLE == 1
-    telemetry->camera_attitude_quaternion_async(std::bind(&print_camera_quaternion, _1));
+    telemetry->subscribe_camera_attitude_quaternion(std::bind(&print_camera_quaternion, _1));
 
-    telemetry->camera_attitude_euler_angle_async(std::bind(&print_camera_euler_angle, _1));
+    telemetry->subscribe_camera_attitude_euler_angle(std::bind(&print_camera_euler_angle, _1));
 #endif
 
-    telemetry->ground_speed_ned_async(std::bind(&print_ground_speed_ned, _1));
+    telemetry->subscribe_velocity_ned(std::bind(&print_velocity_ned, _1));
 
-    telemetry->imu_reading_ned_async(std::bind(&print_imu_reading_ned, _1));
+    telemetry->subscribe_imu(std::bind(&print_imu_reading_ned, _1));
 
-    telemetry->gps_info_async(std::bind(&print_gps_info, _1));
+    telemetry->subscribe_gps_info(std::bind(&print_gps_info, _1));
 
-    telemetry->battery_async(std::bind(&print_battery, _1));
+    telemetry->subscribe_battery(std::bind(&print_battery, _1));
 
-    telemetry->rc_status_async(std::bind(&print_rc_status, _1));
+    telemetry->subscribe_rc_status(std::bind(&print_rc_status, _1));
 
-    telemetry->position_velocity_ned_async(std::bind(&print_position_velocity_ned, _1));
+    telemetry->subscribe_position_velocity_ned(std::bind(&print_position_velocity_ned, _1));
 
-    telemetry->unix_epoch_time_async(std::bind(&print_unix_epoch_time_us, _1));
+    telemetry->subscribe_unix_epoch_time(std::bind(&print_unix_epoch_time_us, _1));
 
-    telemetry->actuator_control_target_async(std::bind(&print_actuator_control_target, _1));
+    telemetry->subscribe_actuator_control_target(std::bind(&print_actuator_control_target, _1));
 
-    telemetry->actuator_output_status_async(std::bind(&print_actuator_output_status, _1));
+    telemetry->subscribe_actuator_output_status(std::bind(&print_actuator_output_status, _1));
 
     std::this_thread::sleep_for(std::chrono::seconds(10));
 
@@ -172,7 +173,7 @@ TEST_F(SitlTest, TelemetryAsync)
     EXPECT_TRUE(_received_camera_quaternion);
     EXPECT_TRUE(_received_camera_euler_angle);
 #endif
-    EXPECT_TRUE(_received_ground_speed);
+    EXPECT_TRUE(_received_velocity);
     EXPECT_TRUE(_received_imu_reading_ned);
     EXPECT_TRUE(_received_gps_info);
     EXPECT_TRUE(_received_battery);
@@ -184,7 +185,7 @@ TEST_F(SitlTest, TelemetryAsync)
 
 void receive_result(Telemetry::Result result)
 {
-    if (result != Telemetry::Result::SUCCESS) {
+    if (result != Telemetry::Result::Success) {
         _set_rate_error = true;
         std::cerr << "Received ret: " << int(result) << std::endl;
         EXPECT_TRUE(false);
@@ -276,33 +277,22 @@ void print_camera_euler_angle(Telemetry::EulerAngle euler_angle)
 }
 #endif
 
-void print_ground_speed_ned(Telemetry::GroundSpeedNED ground_speed_ned)
+void print_velocity_ned(Telemetry::VelocityNed velocity_ned)
 {
-    std::cout << "Ground speed NED: [ " << ground_speed_ned.velocity_north_m_s << ", "
-              << ground_speed_ned.velocity_east_m_s << ", " << ground_speed_ned.velocity_down_m_s
-              << " ]" << std::endl;
+    std::cout << "Ground speed NED: [ " << velocity_ned.north_m_s << ", " << velocity_ned.east_m_s
+              << ", " << velocity_ned.down_m_s << " ]" << std::endl;
 
-    _received_ground_speed = true;
+    _received_velocity = true;
 }
 
-void print_imu_reading_ned(Telemetry::IMUReadingNED imu_reading_ned)
+void print_imu_reading_ned(Telemetry::Imu imu)
 {
-    std::cout << "Acceleration north: " << imu_reading_ned.acceleration.north_m_s2 << " m/s^2, "
-              << "east: " << imu_reading_ned.acceleration.east_m_s2 << " m/s^2, "
-              << "down: " << imu_reading_ned.acceleration.down_m_s2 << " m/s^2, "
-              << "Angular velocity north: " << imu_reading_ned.angular_velocity.north_rad_s
-              << " rad/s, "
-              << "east: " << imu_reading_ned.angular_velocity.east_rad_s << " rad/s, "
-              << "down: " << imu_reading_ned.angular_velocity.down_rad_s << " rad/s, "
-              << "Magnetic field north: " << imu_reading_ned.magnetic_field.north_gauss << " G, "
-              << "east: " << imu_reading_ned.magnetic_field.east_gauss << " G, "
-              << "down: " << imu_reading_ned.magnetic_field.down_gauss << " G, "
-              << "Temperature: " << imu_reading_ned.temperature_degC << " C" << std::endl;
+    std::cout << imu << std::endl;
 
     _received_imu_reading_ned = true;
 }
 
-void print_gps_info(Telemetry::GPSInfo gps_info)
+void print_gps_info(Telemetry::GpsInfo gps_info)
 {
     std::cout << "GPS, num satellites: " << gps_info.num_satellites << ", "
               << "fix type: " << gps_info.fix_type << std::endl;
@@ -318,14 +308,14 @@ void print_battery(Telemetry::Battery battery)
     _received_battery = true;
 }
 
-void print_rc_status(Telemetry::RCStatus rc_status)
+void print_rc_status(Telemetry::RcStatus rc_status)
 {
     std::cout << "RC status [ RSSI: " << rc_status.signal_strength_percent * 100 << "]"
               << std::endl;
     _received_rc_status = true;
 }
 
-void print_position_velocity_ned(Telemetry::PositionVelocityNED position_velocity_ned)
+void print_position_velocity_ned(Telemetry::PositionVelocityNed position_velocity_ned)
 {
     std::cout << "Got position north:  " << position_velocity_ned.position.north_m << " m, "
               << "east: " << position_velocity_ned.position.east_m << " m, "

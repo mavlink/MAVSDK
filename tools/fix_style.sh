@@ -3,34 +3,46 @@
 # This script runs clang-format over all files ending in .h, .c, .cpp listed
 # by git in the given directory.
 
-# Check for the clang-format version
-version_required_major="6"
+version_required_major="9"
 
-clang_format_version() {
-    echo "At least ${version_required} is required"
-}
-
-# check if clang-format is installed
-condition=$(which clang-format 2>/dev/null | grep -v "not found" | wc -l)
-if [ $condition -eq 0 ]; then
-    echo "clang-format is not installed"
-    clang_format_version
-    exit 1
+# Try to find the latest version of clang
+if command -v clang-format-9 >/dev/null; then
+    clang_format=clang-format-9
+elif command -v clang-format-8 >/dev/null; then
+    clang_format=clang-format-8
+elif command -v clang-format-7 >/dev/null; then
+    clang_format=clang-format-7
+elif command -v clang-format >/dev/null; then
+    clang_format=clang-format
 else
+    echo "clang-format not found"
+    echo "--> check: https://mavsdk.mavlink.io/develop/en/contributing/code_style.html#formatting-and-white-space"
+    exit 1
+fi
 
-    version=$(clang-format --version)
-    semver_regex="(0|[1-9][0-9]*)\\.(0|[1-9][0-9]*)\\.(0|[1-9][0-9]*)"
-    if [[ $version =~ $semver_regex ]]; then
-        version_major=${BASH_REMATCH[1]}
-        if [ "$version_required_major" -gt "$version_major" ]; then
-            echo "Clang version $version_major too old (required >= $version_required_major)"
-            exit 1
-        fi
+# Check version of found clang
+version=$($clang_format --version)
+semver_regex="(0|[1-9][0-9]*)\\.(0|[1-9][0-9]*)\\.(0|[1-9][0-9]*)"
+if [[ $version =~ $semver_regex ]]; then
+version_major=${BASH_REMATCH[1]}
+if [ "$version_required_major" -gt "$version_major" ]; then
+    echo "Clang version $version_major too old (required: $version_required_major)"
+    echo "You can use clang-format-9 from docker:"
+    echo ""
+    echo "    'tools/run-docker.sh tools/fix_style.sh .'"
+    exit 1
 
-    else
-        echo "Could not determine clang-format version"
-        exit 1
-    fi
+elif [ "$version_required_major" -lt "$version_major" ]; then
+    echo "Clang version $version_major too new (required: $version_required_major)"
+    echo "You can use clang-format-9 from docker:"
+    echo ""
+    echo "    'tools/run-docker.sh tools/fix_style.sh .'"
+    exit 1
+fi
+
+else
+    echo "Could not determine clang-format version"
+    exit 1
 fi
 
 # Check that exactly one directory is given
@@ -65,7 +77,6 @@ fi
 cd $1 > /dev/null
 
 # Go through all .h, c., and .cpp files listed by git
-# TODO: add -r argument to include all files
 files=`git ls-files | grep -E "\.h$|\.c$|\.cpp$|\.proto"`
 
 while IFS= read file; do
@@ -88,7 +99,7 @@ while IFS= read file; do
     fi
 
     cp $file $file.orig
-    result=`clang-format -style=file -i $file`
+    result=`$clang_format -style=file -i $file`
 
     if ! cmp $file $file.orig >/dev/null 2>&1; then
         echo "Changed $file:"

@@ -19,17 +19,17 @@ TEST_F(SitlTest, ActionTransitionSync_standard_vtol)
 void takeoff_and_transition_to_fixedwing()
 {
     // Init & connect
-    Mavsdk dc;
+    Mavsdk mavsdk;
 
-    ConnectionResult ret = dc.add_udp_connection();
-    ASSERT_EQ(ret, ConnectionResult::SUCCESS);
+    ConnectionResult ret = mavsdk.add_udp_connection();
+    ASSERT_EQ(ret, ConnectionResult::Success);
 
     // Wait for system to connect via heartbeat.
     ASSERT_TRUE(poll_condition_with_timeout(
-        [&dc]() { return dc.is_connected(); }, std::chrono::seconds(10)));
-    ASSERT_TRUE(dc.is_connected());
+        [&mavsdk]() { return mavsdk.is_connected(); }, std::chrono::seconds(10)));
+    ASSERT_TRUE(mavsdk.is_connected());
 
-    System& system = dc.system();
+    System& system = mavsdk.system();
     auto action = std::make_shared<Action>(system);
     auto telemetry = std::make_shared<Telemetry>(system);
 
@@ -38,7 +38,7 @@ void takeoff_and_transition_to_fixedwing()
 
     LogInfo() << "Transitioning to fixedwing";
     Action::Result transition_result = action->transition_to_fixedwing();
-    EXPECT_EQ(transition_result, Action::Result::SUCCESS);
+    EXPECT_EQ(transition_result, Action::Result::Success);
 
     // Wait a little before the transition back to multicopter,
     // so we can actually see it fly
@@ -46,7 +46,7 @@ void takeoff_and_transition_to_fixedwing()
 
     LogInfo() << "Transitioning to multicopter";
     transition_result = action->transition_to_multicopter();
-    EXPECT_EQ(transition_result, Action::Result::SUCCESS);
+    EXPECT_EQ(transition_result, Action::Result::Success);
 
     std::this_thread::sleep_for(std::chrono::seconds(5));
 
@@ -77,12 +77,12 @@ void takeoff(std::shared_ptr<Action> action, std::shared_ptr<Telemetry> telemetr
     action->set_takeoff_altitude(altitude_m);
 
     Action::Result action_ret = action->arm();
-    ASSERT_EQ(action_ret, Action::Result::SUCCESS);
+    ASSERT_EQ(action_ret, Action::Result::Success);
     std::this_thread::sleep_for(std::chrono::seconds(1));
 
     LogInfo() << "Taking off";
     action_ret = action->takeoff();
-    EXPECT_EQ(action_ret, Action::Result::SUCCESS);
+    EXPECT_EQ(action_ret, Action::Result::Success);
     const int wait_time_s = 15;
     std::this_thread::sleep_for(std::chrono::seconds(wait_time_s));
 

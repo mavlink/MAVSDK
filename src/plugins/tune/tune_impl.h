@@ -18,10 +18,7 @@ public:
     void enable() override;
     void disable() override;
 
-    void play_tune_async(
-        const std::vector<Tune::SongElement>& tune,
-        const int tempo,
-        const Tune::result_callback_t& callback);
+    void play_tune_async(const Tune::TuneDescription& tune, const Tune::ResultCallback& callback);
 
     // Non-copyable
     TuneImpl(const TuneImpl&) = delete;
@@ -30,12 +27,12 @@ public:
 private:
     void timeout_happened();
 
-    void report_tune_result(const Tune::result_callback_t& callback, Tune::Result result);
+    void report_tune_result(const Tune::ResultCallback& callback, Tune::Result result);
 
     void receive_command_result(
-        MAVLinkCommands::Result command_result, const Tune::result_callback_t& callback);
+        MAVLinkCommands::Result command_result, const Tune::ResultCallback& callback);
 
-    Tune::result_callback_t _result_callback = nullptr;
+    Tune::ResultCallback _result_callback = nullptr;
 
     std::vector<std::shared_ptr<mavlink_message_t>> _mavlink_tune_item_messages;
 };

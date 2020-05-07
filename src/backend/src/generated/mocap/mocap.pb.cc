@@ -51,18 +51,6 @@ class SetOdometryResponseDefaultTypeInternal {
  public:
   ::PROTOBUF_NAMESPACE_ID::internal::ExplicitlyConstructed<SetOdometryResponse> _instance;
 } _SetOdometryResponse_default_instance_;
-class VisionPositionEstimateDefaultTypeInternal {
- public:
-  ::PROTOBUF_NAMESPACE_ID::internal::ExplicitlyConstructed<VisionPositionEstimate> _instance;
-} _VisionPositionEstimate_default_instance_;
-class AttitudePositionMocapDefaultTypeInternal {
- public:
-  ::PROTOBUF_NAMESPACE_ID::internal::ExplicitlyConstructed<AttitudePositionMocap> _instance;
-} _AttitudePositionMocap_default_instance_;
-class OdometryDefaultTypeInternal {
- public:
-  ::PROTOBUF_NAMESPACE_ID::internal::ExplicitlyConstructed<Odometry> _instance;
-} _Odometry_default_instance_;
 class PositionBodyDefaultTypeInternal {
  public:
   ::PROTOBUF_NAMESPACE_ID::internal::ExplicitlyConstructed<PositionBody> _instance;
@@ -87,6 +75,18 @@ class QuaternionDefaultTypeInternal {
  public:
   ::PROTOBUF_NAMESPACE_ID::internal::ExplicitlyConstructed<Quaternion> _instance;
 } _Quaternion_default_instance_;
+class VisionPositionEstimateDefaultTypeInternal {
+ public:
+  ::PROTOBUF_NAMESPACE_ID::internal::ExplicitlyConstructed<VisionPositionEstimate> _instance;
+} _VisionPositionEstimate_default_instance_;
+class AttitudePositionMocapDefaultTypeInternal {
+ public:
+  ::PROTOBUF_NAMESPACE_ID::internal::ExplicitlyConstructed<AttitudePositionMocap> _instance;
+} _AttitudePositionMocap_default_instance_;
+class OdometryDefaultTypeInternal {
+ public:
+  ::PROTOBUF_NAMESPACE_ID::internal::ExplicitlyConstructed<Odometry> _instance;
+} _Odometry_default_instance_;
 class MocapResultDefaultTypeInternal {
  public:
   ::PROTOBUF_NAMESPACE_ID::internal::ExplicitlyConstructed<MocapResult> _instance;
@@ -377,37 +377,6 @@ const ::PROTOBUF_NAMESPACE_ID::uint32 TableStruct_mocap_2fmocap_2eproto::offsets
   ~0u,  // no _weak_field_map_
   PROTOBUF_FIELD_OFFSET(::mavsdk::rpc::mocap::SetOdometryResponse, mocap_result_),
   ~0u,  // no _has_bits_
-  PROTOBUF_FIELD_OFFSET(::mavsdk::rpc::mocap::VisionPositionEstimate, _internal_metadata_),
-  ~0u,  // no _extensions_
-  ~0u,  // no _oneof_case_
-  ~0u,  // no _weak_field_map_
-  PROTOBUF_FIELD_OFFSET(::mavsdk::rpc::mocap::VisionPositionEstimate, time_usec_),
-  PROTOBUF_FIELD_OFFSET(::mavsdk::rpc::mocap::VisionPositionEstimate, position_body_),
-  PROTOBUF_FIELD_OFFSET(::mavsdk::rpc::mocap::VisionPositionEstimate, angle_body_),
-  PROTOBUF_FIELD_OFFSET(::mavsdk::rpc::mocap::VisionPositionEstimate, pose_covariance_),
-  ~0u,  // no _has_bits_
-  PROTOBUF_FIELD_OFFSET(::mavsdk::rpc::mocap::AttitudePositionMocap, _internal_metadata_),
-  ~0u,  // no _extensions_
-  ~0u,  // no _oneof_case_
-  ~0u,  // no _weak_field_map_
-  PROTOBUF_FIELD_OFFSET(::mavsdk::rpc::mocap::AttitudePositionMocap, time_usec_),
-  PROTOBUF_FIELD_OFFSET(::mavsdk::rpc::mocap::AttitudePositionMocap, q_),
-  PROTOBUF_FIELD_OFFSET(::mavsdk::rpc::mocap::AttitudePositionMocap, position_body_),
-  PROTOBUF_FIELD_OFFSET(::mavsdk::rpc::mocap::AttitudePositionMocap, pose_covariance_),
-  ~0u,  // no _has_bits_
-  PROTOBUF_FIELD_OFFSET(::mavsdk::rpc::mocap::Odometry, _internal_metadata_),
-  ~0u,  // no _extensions_
-  ~0u,  // no _oneof_case_
-  ~0u,  // no _weak_field_map_
-  PROTOBUF_FIELD_OFFSET(::mavsdk::rpc::mocap::Odometry, time_usec_),
-  PROTOBUF_FIELD_OFFSET(::mavsdk::rpc::mocap::Odometry, frame_id_),
-  PROTOBUF_FIELD_OFFSET(::mavsdk::rpc::mocap::Odometry, position_body_),
-  PROTOBUF_FIELD_OFFSET(::mavsdk::rpc::mocap::Odometry, q_),
-  PROTOBUF_FIELD_OFFSET(::mavsdk::rpc::mocap::Odometry, speed_body_),
-  PROTOBUF_FIELD_OFFSET(::mavsdk::rpc::mocap::Odometry, angular_velocity_body_),
-  PROTOBUF_FIELD_OFFSET(::mavsdk::rpc::mocap::Odometry, pose_covariance_),
-  PROTOBUF_FIELD_OFFSET(::mavsdk::rpc::mocap::Odometry, velocity_covariance_),
-  ~0u,  // no _has_bits_
   PROTOBUF_FIELD_OFFSET(::mavsdk::rpc::mocap::PositionBody, _internal_metadata_),
   ~0u,  // no _extensions_
   ~0u,  // no _oneof_case_
@@ -455,6 +424,37 @@ const ::PROTOBUF_NAMESPACE_ID::uint32 TableStruct_mocap_2fmocap_2eproto::offsets
   PROTOBUF_FIELD_OFFSET(::mavsdk::rpc::mocap::Quaternion, y_),
   PROTOBUF_FIELD_OFFSET(::mavsdk::rpc::mocap::Quaternion, z_),
   ~0u,  // no _has_bits_
+  PROTOBUF_FIELD_OFFSET(::mavsdk::rpc::mocap::VisionPositionEstimate, _internal_metadata_),
+  ~0u,  // no _extensions_
+  ~0u,  // no _oneof_case_
+  ~0u,  // no _weak_field_map_
+  PROTOBUF_FIELD_OFFSET(::mavsdk::rpc::mocap::VisionPositionEstimate, time_usec_),
+  PROTOBUF_FIELD_OFFSET(::mavsdk::rpc::mocap::VisionPositionEstimate, position_body_),
+  PROTOBUF_FIELD_OFFSET(::mavsdk::rpc::mocap::VisionPositionEstimate, angle_body_),
+  PROTOBUF_FIELD_OFFSET(::mavsdk::rpc::mocap::VisionPositionEstimate, pose_covariance_),
+  ~0u,  // no _has_bits_
+  PROTOBUF_FIELD_OFFSET(::mavsdk::rpc::mocap::AttitudePositionMocap, _internal_metadata_),
+  ~0u,  // no _extensions_
+  ~0u,  // no _oneof_case_
+  ~0u,  // no _weak_field_map_
+  PROTOBUF_FIELD_OFFSET(::mavsdk::rpc::mocap::AttitudePositionMocap, time_usec_),
+  PROTOBUF_FIELD_OFFSET(::mavsdk::rpc::mocap::AttitudePositionMocap, q_),
+  PROTOBUF_FIELD_OFFSET(::mavsdk::rpc::mocap::AttitudePositionMocap, position_body_),
+  PROTOBUF_FIELD_OFFSET(::mavsdk::rpc::mocap::AttitudePositionMocap, pose_covariance_),
+  ~0u,  // no _has_bits_
+  PROTOBUF_FIELD_OFFSET(::mavsdk::rpc::mocap::Odometry, _internal_metadata_),
+  ~0u,  // no _extensions_
+  ~0u,  // no _oneof_case_
+  ~0u,  // no _weak_field_map_
+  PROTOBUF_FIELD_OFFSET(::mavsdk::rpc::mocap::Odometry, time_usec_),
+  PROTOBUF_FIELD_OFFSET(::mavsdk::rpc::mocap::Odometry, frame_id_),
+  PROTOBUF_FIELD_OFFSET(::mavsdk::rpc::mocap::Odometry, position_body_),
+  PROTOBUF_FIELD_OFFSET(::mavsdk::rpc::mocap::Odometry, q_),
+  PROTOBUF_FIELD_OFFSET(::mavsdk::rpc::mocap::Odometry, speed_body_),
+  PROTOBUF_FIELD_OFFSET(::mavsdk::rpc::mocap::Odometry, angular_velocity_body_),
+  PROTOBUF_FIELD_OFFSET(::mavsdk::rpc::mocap::Odometry, pose_covariance_),
+  PROTOBUF_FIELD_OFFSET(::mavsdk::rpc::mocap::Odometry, velocity_covariance_),
+  ~0u,  // no _has_bits_
   PROTOBUF_FIELD_OFFSET(::mavsdk::rpc::mocap::MocapResult, _internal_metadata_),
   ~0u,  // no _extensions_
   ~0u,  // no _oneof_case_
@@ -469,15 +469,15 @@ static const ::PROTOBUF_NAMESPACE_ID::internal::MigrationSchema schemas[] PROTOB
   { 18, -1, sizeof(::mavsdk::rpc::mocap::SetAttitudePositionMocapResponse)},
   { 24, -1, sizeof(::mavsdk::rpc::mocap::SetOdometryRequest)},
   { 30, -1, sizeof(::mavsdk::rpc::mocap::SetOdometryResponse)},
-  { 36, -1, sizeof(::mavsdk::rpc::mocap::VisionPositionEstimate)},
-  { 45, -1, sizeof(::mavsdk::rpc::mocap::AttitudePositionMocap)},
-  { 54, -1, sizeof(::mavsdk::rpc::mocap::Odometry)},
-  { 67, -1, sizeof(::mavsdk::rpc::mocap::PositionBody)},
-  { 75, -1, sizeof(::mavsdk::rpc::mocap::AngleBody)},
-  { 83, -1, sizeof(::mavsdk::rpc::mocap::SpeedBody)},
-  { 91, -1, sizeof(::mavsdk::rpc::mocap::AngularVelocityBody)},
-  { 99, -1, sizeof(::mavsdk::rpc::mocap::Covariance)},
-  { 105, -1, sizeof(::mavsdk::rpc::mocap::Quaternion)},
+  { 36, -1, sizeof(::mavsdk::rpc::mocap::PositionBody)},
+  { 44, -1, sizeof(::mavsdk::rpc::mocap::AngleBody)},
+  { 52, -1, sizeof(::mavsdk::rpc::mocap::SpeedBody)},
+  { 60, -1, sizeof(::mavsdk::rpc::mocap::AngularVelocityBody)},
+  { 68, -1, sizeof(::mavsdk::rpc::mocap::Covariance)},
+  { 74, -1, sizeof(::mavsdk::rpc::mocap::Quaternion)},
+  { 83, -1, sizeof(::mavsdk::rpc::mocap::VisionPositionEstimate)},
+  { 92, -1, sizeof(::mavsdk::rpc::mocap::AttitudePositionMocap)},
+  { 101, -1, sizeof(::mavsdk::rpc::mocap::Odometry)},
   { 114, -1, sizeof(::mavsdk::rpc::mocap::MocapResult)},
 };
 
@@ -488,82 +488,85 @@ static ::PROTOBUF_NAMESPACE_ID::Message const * const file_default_instances[] =
   reinterpret_cast<const ::PROTOBUF_NAMESPACE_ID::Message*>(&::mavsdk::rpc::mocap::_SetAttitudePositionMocapResponse_default_instance_),
   reinterpret_cast<const ::PROTOBUF_NAMESPACE_ID::Message*>(&::mavsdk::rpc::mocap::_SetOdometryRequest_default_instance_),
   reinterpret_cast<const ::PROTOBUF_NAMESPACE_ID::Message*>(&::mavsdk::rpc::mocap::_SetOdometryResponse_default_instance_),
-  reinterpret_cast<const ::PROTOBUF_NAMESPACE_ID::Message*>(&::mavsdk::rpc::mocap::_VisionPositionEstimate_default_instance_),
-  reinterpret_cast<const ::PROTOBUF_NAMESPACE_ID::Message*>(&::mavsdk::rpc::mocap::_AttitudePositionMocap_default_instance_),
-  reinterpret_cast<const ::PROTOBUF_NAMESPACE_ID::Message*>(&::mavsdk::rpc::mocap::_Odometry_default_instance_),
   reinterpret_cast<const ::PROTOBUF_NAMESPACE_ID::Message*>(&::mavsdk::rpc::mocap::_PositionBody_default_instance_),
   reinterpret_cast<const ::PROTOBUF_NAMESPACE_ID::Message*>(&::mavsdk::rpc::mocap::_AngleBody_default_instance_),
   reinterpret_cast<const ::PROTOBUF_NAMESPACE_ID::Message*>(&::mavsdk::rpc::mocap::_SpeedBody_default_instance_),
   reinterpret_cast<const ::PROTOBUF_NAMESPACE_ID::Message*>(&::mavsdk::rpc::mocap::_AngularVelocityBody_default_instance_),
   reinterpret_cast<const ::PROTOBUF_NAMESPACE_ID::Message*>(&::mavsdk::rpc::mocap::_Covariance_default_instance_),
   reinterpret_cast<const ::PROTOBUF_NAMESPACE_ID::Message*>(&::mavsdk::rpc::mocap::_Quaternion_default_instance_),
+  reinterpret_cast<const ::PROTOBUF_NAMESPACE_ID::Message*>(&::mavsdk::rpc::mocap::_VisionPositionEstimate_default_instance_),
+  reinterpret_cast<const ::PROTOBUF_NAMESPACE_ID::Message*>(&::mavsdk::rpc::mocap::_AttitudePositionMocap_default_instance_),
+  reinterpret_cast<const ::PROTOBUF_NAMESPACE_ID::Message*>(&::mavsdk::rpc::mocap::_Odometry_default_instance_),
   reinterpret_cast<const ::PROTOBUF_NAMESPACE_ID::Message*>(&::mavsdk::rpc::mocap::_MocapResult_default_instance_),
 };
 
 const char descriptor_table_protodef_mocap_2fmocap_2eproto[] PROTOBUF_SECTION_VARIABLE(protodesc_cold) =
-  "\n\021mocap/mocap.proto\022\020mavsdk.rpc.mocap\"n\n"
-  " SetVisionPositionEstimateRequest\022J\n\030vis"
-  "ion_position_estimate\030\001 \001(\0132(.mavsdk.rpc"
-  ".mocap.VisionPositionEstimate\"X\n!SetVisi"
-  "onPositionEstimateResponse\0223\n\014mocap_resu"
-  "lt\030\001 \001(\0132\035.mavsdk.rpc.mocap.MocapResult\""
-  "k\n\037SetAttitudePositionMocapRequest\022H\n\027at"
-  "titude_position_mocap\030\001 \001(\0132\'.mavsdk.rpc"
-  ".mocap.AttitudePositionMocap\"W\n SetAttit"
-  "udePositionMocapResponse\0223\n\014mocap_result"
-  "\030\001 \001(\0132\035.mavsdk.rpc.mocap.MocapResult\"B\n"
-  "\022SetOdometryRequest\022,\n\010odometry\030\001 \001(\0132\032."
-  "mavsdk.rpc.mocap.Odometry\"J\n\023SetOdometry"
+  "\n\021mocap/mocap.proto\022\020mavsdk.rpc.mocap\032\024m"
+  "avsdk_options.proto\"n\n SetVisionPosition"
+  "EstimateRequest\022J\n\030vision_position_estim"
+  "ate\030\001 \001(\0132(.mavsdk.rpc.mocap.VisionPosit"
+  "ionEstimate\"X\n!SetVisionPositionEstimate"
   "Response\0223\n\014mocap_result\030\001 \001(\0132\035.mavsdk."
-  "rpc.mocap.MocapResult\"\312\001\n\026VisionPosition"
-  "Estimate\022\021\n\ttime_usec\030\001 \001(\004\0225\n\rposition_"
-  "body\030\002 \001(\0132\036.mavsdk.rpc.mocap.PositionBo"
-  "dy\022/\n\nangle_body\030\003 \001(\0132\033.mavsdk.rpc.moca"
-  "p.AngleBody\0225\n\017pose_covariance\030\004 \001(\0132\034.m"
-  "avsdk.rpc.mocap.Covariance\"\301\001\n\025AttitudeP"
-  "ositionMocap\022\021\n\ttime_usec\030\001 \001(\004\022\'\n\001q\030\002 \001"
-  "(\0132\034.mavsdk.rpc.mocap.Quaternion\0225\n\rposi"
-  "tion_body\030\003 \001(\0132\036.mavsdk.rpc.mocap.Posit"
-  "ionBody\0225\n\017pose_covariance\030\004 \001(\0132\034.mavsd"
-  "k.rpc.mocap.Covariance\"\307\003\n\010Odometry\022\021\n\tt"
-  "ime_usec\030\001 \001(\004\0225\n\010frame_id\030\002 \001(\0162#.mavsd"
-  "k.rpc.mocap.Odometry.MavFrame\0225\n\rpositio"
-  "n_body\030\003 \001(\0132\036.mavsdk.rpc.mocap.Position"
-  "Body\022\'\n\001q\030\004 \001(\0132\034.mavsdk.rpc.mocap.Quate"
-  "rnion\022/\n\nspeed_body\030\005 \001(\0132\033.mavsdk.rpc.m"
-  "ocap.SpeedBody\022D\n\025angular_velocity_body\030"
-  "\006 \001(\0132%.mavsdk.rpc.mocap.AngularVelocity"
-  "Body\0225\n\017pose_covariance\030\007 \001(\0132\034.mavsdk.r"
-  "pc.mocap.Covariance\0229\n\023velocity_covarian"
-  "ce\030\010 \001(\0132\034.mavsdk.rpc.mocap.Covariance\"("
-  "\n\010MavFrame\022\r\n\tMOCAP_NED\020\000\022\r\n\tLOCAL_FRD\020\001"
-  "\"5\n\014PositionBody\022\013\n\003x_m\030\001 \001(\002\022\013\n\003y_m\030\002 \001"
-  "(\002\022\013\n\003z_m\030\003 \001(\002\"A\n\tAngleBody\022\020\n\010roll_rad"
-  "\030\001 \001(\002\022\021\n\tpitch_rad\030\002 \001(\002\022\017\n\007yaw_rad\030\003 \001"
-  "(\002\"8\n\tSpeedBody\022\r\n\005x_m_s\030\001 \001(\002\022\r\n\005y_m_s\030"
-  "\002 \001(\002\022\r\n\005z_m_s\030\003 \001(\002\"Q\n\023AngularVelocityB"
-  "ody\022\022\n\nroll_rad_s\030\001 \001(\002\022\023\n\013pitch_rad_s\030\002"
-  " \001(\002\022\021\n\tyaw_rad_s\030\003 \001(\002\"\'\n\nCovariance\022\031\n"
-  "\021covariance_matrix\030\001 \003(\002\"8\n\nQuaternion\022\t"
-  "\n\001w\030\001 \001(\002\022\t\n\001x\030\002 \001(\002\022\t\n\001y\030\003 \001(\002\022\t\n\001z\030\004 \001"
-  "(\002\"\272\001\n\013MocapResult\0224\n\006result\030\001 \001(\0162$.mav"
-  "sdk.rpc.mocap.MocapResult.Result\022\022\n\nresu"
-  "lt_str\030\002 \001(\t\"a\n\006Result\022\013\n\007UNKNOWN\020\000\022\013\n\007S"
-  "UCCESS\020\001\022\r\n\tNO_SYSTEM\020\002\022\024\n\020CONNECTION_ER"
-  "ROR\020\003\022\030\n\024INVALID_REQUEST_DATA\020\0042\373\002\n\014Moca"
-  "pService\022\206\001\n\031SetVisionPositionEstimate\0222"
-  ".mavsdk.rpc.mocap.SetVisionPositionEstim"
-  "ateRequest\0323.mavsdk.rpc.mocap.SetVisionP"
-  "ositionEstimateResponse\"\000\022\203\001\n\030SetAttitud"
-  "ePositionMocap\0221.mavsdk.rpc.mocap.SetAtt"
-  "itudePositionMocapRequest\0322.mavsdk.rpc.m"
-  "ocap.SetAttitudePositionMocapResponse\"\000\022"
-  "\\\n\013SetOdometry\022$.mavsdk.rpc.mocap.SetOdo"
-  "metryRequest\032%.mavsdk.rpc.mocap.SetOdome"
-  "tryResponse\"\000B\035\n\017io.mavsdk.mocapB\nMocapP"
-  "rotob\006proto3"
+  "rpc.mocap.MocapResult\"k\n\037SetAttitudePosi"
+  "tionMocapRequest\022H\n\027attitude_position_mo"
+  "cap\030\001 \001(\0132\'.mavsdk.rpc.mocap.AttitudePos"
+  "itionMocap\"W\n SetAttitudePositionMocapRe"
+  "sponse\0223\n\014mocap_result\030\001 \001(\0132\035.mavsdk.rp"
+  "c.mocap.MocapResult\"B\n\022SetOdometryReques"
+  "t\022,\n\010odometry\030\001 \001(\0132\032.mavsdk.rpc.mocap.O"
+  "dometry\"J\n\023SetOdometryResponse\0223\n\014mocap_"
+  "result\030\001 \001(\0132\035.mavsdk.rpc.mocap.MocapRes"
+  "ult\"5\n\014PositionBody\022\013\n\003x_m\030\001 \001(\002\022\013\n\003y_m\030"
+  "\002 \001(\002\022\013\n\003z_m\030\003 \001(\002\"A\n\tAngleBody\022\020\n\010roll_"
+  "rad\030\001 \001(\002\022\021\n\tpitch_rad\030\002 \001(\002\022\017\n\007yaw_rad\030"
+  "\003 \001(\002\"8\n\tSpeedBody\022\r\n\005x_m_s\030\001 \001(\002\022\r\n\005y_m"
+  "_s\030\002 \001(\002\022\r\n\005z_m_s\030\003 \001(\002\"Q\n\023AngularVeloci"
+  "tyBody\022\022\n\nroll_rad_s\030\001 \001(\002\022\023\n\013pitch_rad_"
+  "s\030\002 \001(\002\022\021\n\tyaw_rad_s\030\003 \001(\002\"\'\n\nCovariance"
+  "\022\031\n\021covariance_matrix\030\001 \003(\002\"8\n\nQuaternio"
+  "n\022\t\n\001w\030\001 \001(\002\022\t\n\001x\030\002 \001(\002\022\t\n\001y\030\003 \001(\002\022\t\n\001z\030"
+  "\004 \001(\002\"\312\001\n\026VisionPositionEstimate\022\021\n\ttime"
+  "_usec\030\001 \001(\004\0225\n\rposition_body\030\002 \001(\0132\036.mav"
+  "sdk.rpc.mocap.PositionBody\022/\n\nangle_body"
+  "\030\003 \001(\0132\033.mavsdk.rpc.mocap.AngleBody\0225\n\017p"
+  "ose_covariance\030\004 \001(\0132\034.mavsdk.rpc.mocap."
+  "Covariance\"\301\001\n\025AttitudePositionMocap\022\021\n\t"
+  "time_usec\030\001 \001(\004\022\'\n\001q\030\002 \001(\0132\034.mavsdk.rpc."
+  "mocap.Quaternion\0225\n\rposition_body\030\003 \001(\0132"
+  "\036.mavsdk.rpc.mocap.PositionBody\0225\n\017pose_"
+  "covariance\030\004 \001(\0132\034.mavsdk.rpc.mocap.Cova"
+  "riance\"\333\003\n\010Odometry\022\021\n\ttime_usec\030\001 \001(\004\0225"
+  "\n\010frame_id\030\002 \001(\0162#.mavsdk.rpc.mocap.Odom"
+  "etry.MavFrame\0225\n\rposition_body\030\003 \001(\0132\036.m"
+  "avsdk.rpc.mocap.PositionBody\022\'\n\001q\030\004 \001(\0132"
+  "\034.mavsdk.rpc.mocap.Quaternion\022/\n\nspeed_b"
+  "ody\030\005 \001(\0132\033.mavsdk.rpc.mocap.SpeedBody\022D"
+  "\n\025angular_velocity_body\030\006 \001(\0132%.mavsdk.r"
+  "pc.mocap.AngularVelocityBody\0225\n\017pose_cov"
+  "ariance\030\007 \001(\0132\034.mavsdk.rpc.mocap.Covaria"
+  "nce\0229\n\023velocity_covariance\030\010 \001(\0132\034.mavsd"
+  "k.rpc.mocap.Covariance\"<\n\010MavFrame\022\027\n\023MA"
+  "V_FRAME_MOCAP_NED\020\000\022\027\n\023MAV_FRAME_LOCAL_F"
+  "RD\020\001\"\336\001\n\013MocapResult\0224\n\006result\030\001 \001(\0162$.m"
+  "avsdk.rpc.mocap.MocapResult.Result\022\022\n\nre"
+  "sult_str\030\002 \001(\t\"\204\001\n\006Result\022\022\n\016RESULT_UNKN"
+  "OWN\020\000\022\022\n\016RESULT_SUCCESS\020\001\022\024\n\020RESULT_NO_S"
+  "YSTEM\020\002\022\033\n\027RESULT_CONNECTION_ERROR\020\003\022\037\n\033"
+  "RESULT_INVALID_REQUEST_DATA\020\0042\207\003\n\014MocapS"
+  "ervice\022\212\001\n\031SetVisionPositionEstimate\0222.m"
+  "avsdk.rpc.mocap.SetVisionPositionEstimat"
+  "eRequest\0323.mavsdk.rpc.mocap.SetVisionPos"
+  "itionEstimateResponse\"\004\200\265\030\001\022\207\001\n\030SetAttit"
+  "udePositionMocap\0221.mavsdk.rpc.mocap.SetA"
+  "ttitudePositionMocapRequest\0322.mavsdk.rpc"
+  ".mocap.SetAttitudePositionMocapResponse\""
+  "\004\200\265\030\001\022`\n\013SetOdometry\022$.mavsdk.rpc.mocap."
+  "SetOdometryRequest\032%.mavsdk.rpc.mocap.Se"
+  "tOdometryResponse\"\004\200\265\030\001B\035\n\017io.mavsdk.moc"
+  "apB\nMocapProtob\006proto3"
   ;
 static const ::PROTOBUF_NAMESPACE_ID::internal::DescriptorTable*const descriptor_table_mocap_2fmocap_2eproto_deps[1] = {
+  &::descriptor_table_mavsdk_5foptions_2eproto,
 };
 static ::PROTOBUF_NAMESPACE_ID::internal::SCCInfoBase*const descriptor_table_mocap_2fmocap_2eproto_sccs[16] = {
   &scc_info_AngleBody_mocap_2fmocap_2eproto.base,
@@ -586,8 +589,8 @@ static ::PROTOBUF_NAMESPACE_ID::internal::SCCInfoBase*const descriptor_table_moc
 static ::PROTOBUF_NAMESPACE_ID::internal::once_flag descriptor_table_mocap_2fmocap_2eproto_once;
 static bool descriptor_table_mocap_2fmocap_2eproto_initialized = false;
 const ::PROTOBUF_NAMESPACE_ID::internal::DescriptorTable descriptor_table_mocap_2fmocap_2eproto = {
-  &descriptor_table_mocap_2fmocap_2eproto_initialized, descriptor_table_protodef_mocap_2fmocap_2eproto, "mocap/mocap.proto", 2412,
-  &descriptor_table_mocap_2fmocap_2eproto_once, descriptor_table_mocap_2fmocap_2eproto_sccs, descriptor_table_mocap_2fmocap_2eproto_deps, 16, 0,
+  &descriptor_table_mocap_2fmocap_2eproto_initialized, descriptor_table_protodef_mocap_2fmocap_2eproto, "mocap/mocap.proto", 2502,
+  &descriptor_table_mocap_2fmocap_2eproto_once, descriptor_table_mocap_2fmocap_2eproto_sccs, descriptor_table_mocap_2fmocap_2eproto_deps, 16, 1,
   schemas, file_default_instances, TableStruct_mocap_2fmocap_2eproto::offsets,
   file_level_metadata_mocap_2fmocap_2eproto, 16, file_level_enum_descriptors_mocap_2fmocap_2eproto, file_level_service_descriptors_mocap_2fmocap_2eproto,
 };
@@ -612,8 +615,8 @@ bool Odometry_MavFrame_IsValid(int value) {
 }
 
 #if (__cplusplus < 201703) && (!defined(_MSC_VER) || _MSC_VER >= 1900)
-constexpr Odometry_MavFrame Odometry::MOCAP_NED;
-constexpr Odometry_MavFrame Odometry::LOCAL_FRD;
+constexpr Odometry_MavFrame Odometry::MAV_FRAME_MOCAP_NED;
+constexpr Odometry_MavFrame Odometry::MAV_FRAME_LOCAL_FRD;
 constexpr Odometry_MavFrame Odometry::MavFrame_MIN;
 constexpr Odometry_MavFrame Odometry::MavFrame_MAX;
 constexpr int Odometry::MavFrame_ARRAYSIZE;
@@ -636,11 +639,11 @@ bool MocapResult_Result_IsValid(int value) {
 }
 
 #if (__cplusplus < 201703) && (!defined(_MSC_VER) || _MSC_VER >= 1900)
-constexpr MocapResult_Result MocapResult::UNKNOWN;
-constexpr MocapResult_Result MocapResult::SUCCESS;
-constexpr MocapResult_Result MocapResult::NO_SYSTEM;
-constexpr MocapResult_Result MocapResult::CONNECTION_ERROR;
-constexpr MocapResult_Result MocapResult::INVALID_REQUEST_DATA;
+constexpr MocapResult_Result MocapResult::RESULT_UNKNOWN;
+constexpr MocapResult_Result MocapResult::RESULT_SUCCESS;
+constexpr MocapResult_Result MocapResult::RESULT_NO_SYSTEM;
+constexpr MocapResult_Result MocapResult::RESULT_CONNECTION_ERROR;
+constexpr MocapResult_Result MocapResult::RESULT_INVALID_REQUEST_DATA;
 constexpr MocapResult_Result MocapResult::Result_MIN;
 constexpr MocapResult_Result MocapResult::Result_MAX;
 constexpr int MocapResult::Result_ARRAYSIZE;
@@ -1866,1118 +1869,6 @@ void SetOdometryResponse::InternalSwap(SetOdometryResponse* other) {
 }
 
 ::PROTOBUF_NAMESPACE_ID::Metadata SetOdometryResponse::GetMetadata() const {
-  return GetMetadataStatic();
-}
-
-
-// ===================================================================
-
-void VisionPositionEstimate::InitAsDefaultInstance() {
-  ::mavsdk::rpc::mocap::_VisionPositionEstimate_default_instance_._instance.get_mutable()->position_body_ = const_cast< ::mavsdk::rpc::mocap::PositionBody*>(
-      ::mavsdk::rpc::mocap::PositionBody::internal_default_instance());
-  ::mavsdk::rpc::mocap::_VisionPositionEstimate_default_instance_._instance.get_mutable()->angle_body_ = const_cast< ::mavsdk::rpc::mocap::AngleBody*>(
-      ::mavsdk::rpc::mocap::AngleBody::internal_default_instance());
-  ::mavsdk::rpc::mocap::_VisionPositionEstimate_default_instance_._instance.get_mutable()->pose_covariance_ = const_cast< ::mavsdk::rpc::mocap::Covariance*>(
-      ::mavsdk::rpc::mocap::Covariance::internal_default_instance());
-}
-class VisionPositionEstimate::_Internal {
- public:
-  static const ::mavsdk::rpc::mocap::PositionBody& position_body(const VisionPositionEstimate* msg);
-  static const ::mavsdk::rpc::mocap::AngleBody& angle_body(const VisionPositionEstimate* msg);
-  static const ::mavsdk::rpc::mocap::Covariance& pose_covariance(const VisionPositionEstimate* msg);
-};
-
-const ::mavsdk::rpc::mocap::PositionBody&
-VisionPositionEstimate::_Internal::position_body(const VisionPositionEstimate* msg) {
-  return *msg->position_body_;
-}
-const ::mavsdk::rpc::mocap::AngleBody&
-VisionPositionEstimate::_Internal::angle_body(const VisionPositionEstimate* msg) {
-  return *msg->angle_body_;
-}
-const ::mavsdk::rpc::mocap::Covariance&
-VisionPositionEstimate::_Internal::pose_covariance(const VisionPositionEstimate* msg) {
-  return *msg->pose_covariance_;
-}
-VisionPositionEstimate::VisionPositionEstimate()
-  : ::PROTOBUF_NAMESPACE_ID::Message(), _internal_metadata_(nullptr) {
-  SharedCtor();
-  // @@protoc_insertion_point(constructor:mavsdk.rpc.mocap.VisionPositionEstimate)
-}
-VisionPositionEstimate::VisionPositionEstimate(const VisionPositionEstimate& from)
-  : ::PROTOBUF_NAMESPACE_ID::Message(),
-      _internal_metadata_(nullptr) {
-  _internal_metadata_.MergeFrom(from._internal_metadata_);
-  if (from._internal_has_position_body()) {
-    position_body_ = new ::mavsdk::rpc::mocap::PositionBody(*from.position_body_);
-  } else {
-    position_body_ = nullptr;
-  }
-  if (from._internal_has_angle_body()) {
-    angle_body_ = new ::mavsdk::rpc::mocap::AngleBody(*from.angle_body_);
-  } else {
-    angle_body_ = nullptr;
-  }
-  if (from._internal_has_pose_covariance()) {
-    pose_covariance_ = new ::mavsdk::rpc::mocap::Covariance(*from.pose_covariance_);
-  } else {
-    pose_covariance_ = nullptr;
-  }
-  time_usec_ = from.time_usec_;
-  // @@protoc_insertion_point(copy_constructor:mavsdk.rpc.mocap.VisionPositionEstimate)
-}
-
-void VisionPositionEstimate::SharedCtor() {
-  ::PROTOBUF_NAMESPACE_ID::internal::InitSCC(&scc_info_VisionPositionEstimate_mocap_2fmocap_2eproto.base);
-  ::memset(&position_body_, 0, static_cast<size_t>(
-      reinterpret_cast<char*>(&time_usec_) -
-      reinterpret_cast<char*>(&position_body_)) + sizeof(time_usec_));
-}
-
-VisionPositionEstimate::~VisionPositionEstimate() {
-  // @@protoc_insertion_point(destructor:mavsdk.rpc.mocap.VisionPositionEstimate)
-  SharedDtor();
-}
-
-void VisionPositionEstimate::SharedDtor() {
-  if (this != internal_default_instance()) delete position_body_;
-  if (this != internal_default_instance()) delete angle_body_;
-  if (this != internal_default_instance()) delete pose_covariance_;
-}
-
-void VisionPositionEstimate::SetCachedSize(int size) const {
-  _cached_size_.Set(size);
-}
-const VisionPositionEstimate& VisionPositionEstimate::default_instance() {
-  ::PROTOBUF_NAMESPACE_ID::internal::InitSCC(&::scc_info_VisionPositionEstimate_mocap_2fmocap_2eproto.base);
-  return *internal_default_instance();
-}
-
-
-void VisionPositionEstimate::Clear() {
-// @@protoc_insertion_point(message_clear_start:mavsdk.rpc.mocap.VisionPositionEstimate)
-  ::PROTOBUF_NAMESPACE_ID::uint32 cached_has_bits = 0;
-  // Prevent compiler warnings about cached_has_bits being unused
-  (void) cached_has_bits;
-
-  if (GetArenaNoVirtual() == nullptr && position_body_ != nullptr) {
-    delete position_body_;
-  }
-  position_body_ = nullptr;
-  if (GetArenaNoVirtual() == nullptr && angle_body_ != nullptr) {
-    delete angle_body_;
-  }
-  angle_body_ = nullptr;
-  if (GetArenaNoVirtual() == nullptr && pose_covariance_ != nullptr) {
-    delete pose_covariance_;
-  }
-  pose_covariance_ = nullptr;
-  time_usec_ = PROTOBUF_ULONGLONG(0);
-  _internal_metadata_.Clear();
-}
-
-const char* VisionPositionEstimate::_InternalParse(const char* ptr, ::PROTOBUF_NAMESPACE_ID::internal::ParseContext* ctx) {
-#define CHK_(x) if (PROTOBUF_PREDICT_FALSE(!(x))) goto failure
-  while (!ctx->Done(&ptr)) {
-    ::PROTOBUF_NAMESPACE_ID::uint32 tag;
-    ptr = ::PROTOBUF_NAMESPACE_ID::internal::ReadTag(ptr, &tag);
-    CHK_(ptr);
-    switch (tag >> 3) {
-      // uint64 time_usec = 1;
-      case 1:
-        if (PROTOBUF_PREDICT_TRUE(static_cast<::PROTOBUF_NAMESPACE_ID::uint8>(tag) == 8)) {
-          time_usec_ = ::PROTOBUF_NAMESPACE_ID::internal::ReadVarint(&ptr);
-          CHK_(ptr);
-        } else goto handle_unusual;
-        continue;
-      // .mavsdk.rpc.mocap.PositionBody position_body = 2;
-      case 2:
-        if (PROTOBUF_PREDICT_TRUE(static_cast<::PROTOBUF_NAMESPACE_ID::uint8>(tag) == 18)) {
-          ptr = ctx->ParseMessage(_internal_mutable_position_body(), ptr);
-          CHK_(ptr);
-        } else goto handle_unusual;
-        continue;
-      // .mavsdk.rpc.mocap.AngleBody angle_body = 3;
-      case 3:
-        if (PROTOBUF_PREDICT_TRUE(static_cast<::PROTOBUF_NAMESPACE_ID::uint8>(tag) == 26)) {
-          ptr = ctx->ParseMessage(_internal_mutable_angle_body(), ptr);
-          CHK_(ptr);
-        } else goto handle_unusual;
-        continue;
-      // .mavsdk.rpc.mocap.Covariance pose_covariance = 4;
-      case 4:
-        if (PROTOBUF_PREDICT_TRUE(static_cast<::PROTOBUF_NAMESPACE_ID::uint8>(tag) == 34)) {
-          ptr = ctx->ParseMessage(_internal_mutable_pose_covariance(), ptr);
-          CHK_(ptr);
-        } else goto handle_unusual;
-        continue;
-      default: {
-      handle_unusual:
-        if ((tag & 7) == 4 || tag == 0) {
-          ctx->SetLastTag(tag);
-          goto success;
-        }
-        ptr = UnknownFieldParse(tag, &_internal_metadata_, ptr, ctx);
-        CHK_(ptr != nullptr);
-        continue;
-      }
-    }  // switch
-  }  // while
-success:
-  return ptr;
-failure:
-  ptr = nullptr;
-  goto success;
-#undef CHK_
-}
-
-::PROTOBUF_NAMESPACE_ID::uint8* VisionPositionEstimate::_InternalSerialize(
-    ::PROTOBUF_NAMESPACE_ID::uint8* target, ::PROTOBUF_NAMESPACE_ID::io::EpsCopyOutputStream* stream) const {
-  // @@protoc_insertion_point(serialize_to_array_start:mavsdk.rpc.mocap.VisionPositionEstimate)
-  ::PROTOBUF_NAMESPACE_ID::uint32 cached_has_bits = 0;
-  (void) cached_has_bits;
-
-  // uint64 time_usec = 1;
-  if (this->time_usec() != 0) {
-    target = stream->EnsureSpace(target);
-    target = ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::WriteUInt64ToArray(1, this->_internal_time_usec(), target);
-  }
-
-  // .mavsdk.rpc.mocap.PositionBody position_body = 2;
-  if (this->has_position_body()) {
-    target = stream->EnsureSpace(target);
-    target = ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::
-      InternalWriteMessage(
-        2, _Internal::position_body(this), target, stream);
-  }
-
-  // .mavsdk.rpc.mocap.AngleBody angle_body = 3;
-  if (this->has_angle_body()) {
-    target = stream->EnsureSpace(target);
-    target = ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::
-      InternalWriteMessage(
-        3, _Internal::angle_body(this), target, stream);
-  }
-
-  // .mavsdk.rpc.mocap.Covariance pose_covariance = 4;
-  if (this->has_pose_covariance()) {
-    target = stream->EnsureSpace(target);
-    target = ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::
-      InternalWriteMessage(
-        4, _Internal::pose_covariance(this), target, stream);
-  }
-
-  if (PROTOBUF_PREDICT_FALSE(_internal_metadata_.have_unknown_fields())) {
-    target = ::PROTOBUF_NAMESPACE_ID::internal::WireFormat::InternalSerializeUnknownFieldsToArray(
-        _internal_metadata_.unknown_fields(), target, stream);
-  }
-  // @@protoc_insertion_point(serialize_to_array_end:mavsdk.rpc.mocap.VisionPositionEstimate)
-  return target;
-}
-
-size_t VisionPositionEstimate::ByteSizeLong() const {
-// @@protoc_insertion_point(message_byte_size_start:mavsdk.rpc.mocap.VisionPositionEstimate)
-  size_t total_size = 0;
-
-  ::PROTOBUF_NAMESPACE_ID::uint32 cached_has_bits = 0;
-  // Prevent compiler warnings about cached_has_bits being unused
-  (void) cached_has_bits;
-
-  // .mavsdk.rpc.mocap.PositionBody position_body = 2;
-  if (this->has_position_body()) {
-    total_size += 1 +
-      ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::MessageSize(
-        *position_body_);
-  }
-
-  // .mavsdk.rpc.mocap.AngleBody angle_body = 3;
-  if (this->has_angle_body()) {
-    total_size += 1 +
-      ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::MessageSize(
-        *angle_body_);
-  }
-
-  // .mavsdk.rpc.mocap.Covariance pose_covariance = 4;
-  if (this->has_pose_covariance()) {
-    total_size += 1 +
-      ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::MessageSize(
-        *pose_covariance_);
-  }
-
-  // uint64 time_usec = 1;
-  if (this->time_usec() != 0) {
-    total_size += 1 +
-      ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::UInt64Size(
-        this->_internal_time_usec());
-  }
-
-  if (PROTOBUF_PREDICT_FALSE(_internal_metadata_.have_unknown_fields())) {
-    return ::PROTOBUF_NAMESPACE_ID::internal::ComputeUnknownFieldsSize(
-        _internal_metadata_, total_size, &_cached_size_);
-  }
-  int cached_size = ::PROTOBUF_NAMESPACE_ID::internal::ToCachedSize(total_size);
-  SetCachedSize(cached_size);
-  return total_size;
-}
-
-void VisionPositionEstimate::MergeFrom(const ::PROTOBUF_NAMESPACE_ID::Message& from) {
-// @@protoc_insertion_point(generalized_merge_from_start:mavsdk.rpc.mocap.VisionPositionEstimate)
-  GOOGLE_DCHECK_NE(&from, this);
-  const VisionPositionEstimate* source =
-      ::PROTOBUF_NAMESPACE_ID::DynamicCastToGenerated<VisionPositionEstimate>(
-          &from);
-  if (source == nullptr) {
-  // @@protoc_insertion_point(generalized_merge_from_cast_fail:mavsdk.rpc.mocap.VisionPositionEstimate)
-    ::PROTOBUF_NAMESPACE_ID::internal::ReflectionOps::Merge(from, this);
-  } else {
-  // @@protoc_insertion_point(generalized_merge_from_cast_success:mavsdk.rpc.mocap.VisionPositionEstimate)
-    MergeFrom(*source);
-  }
-}
-
-void VisionPositionEstimate::MergeFrom(const VisionPositionEstimate& from) {
-// @@protoc_insertion_point(class_specific_merge_from_start:mavsdk.rpc.mocap.VisionPositionEstimate)
-  GOOGLE_DCHECK_NE(&from, this);
-  _internal_metadata_.MergeFrom(from._internal_metadata_);
-  ::PROTOBUF_NAMESPACE_ID::uint32 cached_has_bits = 0;
-  (void) cached_has_bits;
-
-  if (from.has_position_body()) {
-    _internal_mutable_position_body()->::mavsdk::rpc::mocap::PositionBody::MergeFrom(from._internal_position_body());
-  }
-  if (from.has_angle_body()) {
-    _internal_mutable_angle_body()->::mavsdk::rpc::mocap::AngleBody::MergeFrom(from._internal_angle_body());
-  }
-  if (from.has_pose_covariance()) {
-    _internal_mutable_pose_covariance()->::mavsdk::rpc::mocap::Covariance::MergeFrom(from._internal_pose_covariance());
-  }
-  if (from.time_usec() != 0) {
-    _internal_set_time_usec(from._internal_time_usec());
-  }
-}
-
-void VisionPositionEstimate::CopyFrom(const ::PROTOBUF_NAMESPACE_ID::Message& from) {
-// @@protoc_insertion_point(generalized_copy_from_start:mavsdk.rpc.mocap.VisionPositionEstimate)
-  if (&from == this) return;
-  Clear();
-  MergeFrom(from);
-}
-
-void VisionPositionEstimate::CopyFrom(const VisionPositionEstimate& from) {
-// @@protoc_insertion_point(class_specific_copy_from_start:mavsdk.rpc.mocap.VisionPositionEstimate)
-  if (&from == this) return;
-  Clear();
-  MergeFrom(from);
-}
-
-bool VisionPositionEstimate::IsInitialized() const {
-  return true;
-}
-
-void VisionPositionEstimate::InternalSwap(VisionPositionEstimate* other) {
-  using std::swap;
-  _internal_metadata_.Swap(&other->_internal_metadata_);
-  swap(position_body_, other->position_body_);
-  swap(angle_body_, other->angle_body_);
-  swap(pose_covariance_, other->pose_covariance_);
-  swap(time_usec_, other->time_usec_);
-}
-
-::PROTOBUF_NAMESPACE_ID::Metadata VisionPositionEstimate::GetMetadata() const {
-  return GetMetadataStatic();
-}
-
-
-// ===================================================================
-
-void AttitudePositionMocap::InitAsDefaultInstance() {
-  ::mavsdk::rpc::mocap::_AttitudePositionMocap_default_instance_._instance.get_mutable()->q_ = const_cast< ::mavsdk::rpc::mocap::Quaternion*>(
-      ::mavsdk::rpc::mocap::Quaternion::internal_default_instance());
-  ::mavsdk::rpc::mocap::_AttitudePositionMocap_default_instance_._instance.get_mutable()->position_body_ = const_cast< ::mavsdk::rpc::mocap::PositionBody*>(
-      ::mavsdk::rpc::mocap::PositionBody::internal_default_instance());
-  ::mavsdk::rpc::mocap::_AttitudePositionMocap_default_instance_._instance.get_mutable()->pose_covariance_ = const_cast< ::mavsdk::rpc::mocap::Covariance*>(
-      ::mavsdk::rpc::mocap::Covariance::internal_default_instance());
-}
-class AttitudePositionMocap::_Internal {
- public:
-  static const ::mavsdk::rpc::mocap::Quaternion& q(const AttitudePositionMocap* msg);
-  static const ::mavsdk::rpc::mocap::PositionBody& position_body(const AttitudePositionMocap* msg);
-  static const ::mavsdk::rpc::mocap::Covariance& pose_covariance(const AttitudePositionMocap* msg);
-};
-
-const ::mavsdk::rpc::mocap::Quaternion&
-AttitudePositionMocap::_Internal::q(const AttitudePositionMocap* msg) {
-  return *msg->q_;
-}
-const ::mavsdk::rpc::mocap::PositionBody&
-AttitudePositionMocap::_Internal::position_body(const AttitudePositionMocap* msg) {
-  return *msg->position_body_;
-}
-const ::mavsdk::rpc::mocap::Covariance&
-AttitudePositionMocap::_Internal::pose_covariance(const AttitudePositionMocap* msg) {
-  return *msg->pose_covariance_;
-}
-AttitudePositionMocap::AttitudePositionMocap()
-  : ::PROTOBUF_NAMESPACE_ID::Message(), _internal_metadata_(nullptr) {
-  SharedCtor();
-  // @@protoc_insertion_point(constructor:mavsdk.rpc.mocap.AttitudePositionMocap)
-}
-AttitudePositionMocap::AttitudePositionMocap(const AttitudePositionMocap& from)
-  : ::PROTOBUF_NAMESPACE_ID::Message(),
-      _internal_metadata_(nullptr) {
-  _internal_metadata_.MergeFrom(from._internal_metadata_);
-  if (from._internal_has_q()) {
-    q_ = new ::mavsdk::rpc::mocap::Quaternion(*from.q_);
-  } else {
-    q_ = nullptr;
-  }
-  if (from._internal_has_position_body()) {
-    position_body_ = new ::mavsdk::rpc::mocap::PositionBody(*from.position_body_);
-  } else {
-    position_body_ = nullptr;
-  }
-  if (from._internal_has_pose_covariance()) {
-    pose_covariance_ = new ::mavsdk::rpc::mocap::Covariance(*from.pose_covariance_);
-  } else {
-    pose_covariance_ = nullptr;
-  }
-  time_usec_ = from.time_usec_;
-  // @@protoc_insertion_point(copy_constructor:mavsdk.rpc.mocap.AttitudePositionMocap)
-}
-
-void AttitudePositionMocap::SharedCtor() {
-  ::PROTOBUF_NAMESPACE_ID::internal::InitSCC(&scc_info_AttitudePositionMocap_mocap_2fmocap_2eproto.base);
-  ::memset(&q_, 0, static_cast<size_t>(
-      reinterpret_cast<char*>(&time_usec_) -
-      reinterpret_cast<char*>(&q_)) + sizeof(time_usec_));
-}
-
-AttitudePositionMocap::~AttitudePositionMocap() {
-  // @@protoc_insertion_point(destructor:mavsdk.rpc.mocap.AttitudePositionMocap)
-  SharedDtor();
-}
-
-void AttitudePositionMocap::SharedDtor() {
-  if (this != internal_default_instance()) delete q_;
-  if (this != internal_default_instance()) delete position_body_;
-  if (this != internal_default_instance()) delete pose_covariance_;
-}
-
-void AttitudePositionMocap::SetCachedSize(int size) const {
-  _cached_size_.Set(size);
-}
-const AttitudePositionMocap& AttitudePositionMocap::default_instance() {
-  ::PROTOBUF_NAMESPACE_ID::internal::InitSCC(&::scc_info_AttitudePositionMocap_mocap_2fmocap_2eproto.base);
-  return *internal_default_instance();
-}
-
-
-void AttitudePositionMocap::Clear() {
-// @@protoc_insertion_point(message_clear_start:mavsdk.rpc.mocap.AttitudePositionMocap)
-  ::PROTOBUF_NAMESPACE_ID::uint32 cached_has_bits = 0;
-  // Prevent compiler warnings about cached_has_bits being unused
-  (void) cached_has_bits;
-
-  if (GetArenaNoVirtual() == nullptr && q_ != nullptr) {
-    delete q_;
-  }
-  q_ = nullptr;
-  if (GetArenaNoVirtual() == nullptr && position_body_ != nullptr) {
-    delete position_body_;
-  }
-  position_body_ = nullptr;
-  if (GetArenaNoVirtual() == nullptr && pose_covariance_ != nullptr) {
-    delete pose_covariance_;
-  }
-  pose_covariance_ = nullptr;
-  time_usec_ = PROTOBUF_ULONGLONG(0);
-  _internal_metadata_.Clear();
-}
-
-const char* AttitudePositionMocap::_InternalParse(const char* ptr, ::PROTOBUF_NAMESPACE_ID::internal::ParseContext* ctx) {
-#define CHK_(x) if (PROTOBUF_PREDICT_FALSE(!(x))) goto failure
-  while (!ctx->Done(&ptr)) {
-    ::PROTOBUF_NAMESPACE_ID::uint32 tag;
-    ptr = ::PROTOBUF_NAMESPACE_ID::internal::ReadTag(ptr, &tag);
-    CHK_(ptr);
-    switch (tag >> 3) {
-      // uint64 time_usec = 1;
-      case 1:
-        if (PROTOBUF_PREDICT_TRUE(static_cast<::PROTOBUF_NAMESPACE_ID::uint8>(tag) == 8)) {
-          time_usec_ = ::PROTOBUF_NAMESPACE_ID::internal::ReadVarint(&ptr);
-          CHK_(ptr);
-        } else goto handle_unusual;
-        continue;
-      // .mavsdk.rpc.mocap.Quaternion q = 2;
-      case 2:
-        if (PROTOBUF_PREDICT_TRUE(static_cast<::PROTOBUF_NAMESPACE_ID::uint8>(tag) == 18)) {
-          ptr = ctx->ParseMessage(_internal_mutable_q(), ptr);
-          CHK_(ptr);
-        } else goto handle_unusual;
-        continue;
-      // .mavsdk.rpc.mocap.PositionBody position_body = 3;
-      case 3:
-        if (PROTOBUF_PREDICT_TRUE(static_cast<::PROTOBUF_NAMESPACE_ID::uint8>(tag) == 26)) {
-          ptr = ctx->ParseMessage(_internal_mutable_position_body(), ptr);
-          CHK_(ptr);
-        } else goto handle_unusual;
-        continue;
-      // .mavsdk.rpc.mocap.Covariance pose_covariance = 4;
-      case 4:
-        if (PROTOBUF_PREDICT_TRUE(static_cast<::PROTOBUF_NAMESPACE_ID::uint8>(tag) == 34)) {
-          ptr = ctx->ParseMessage(_internal_mutable_pose_covariance(), ptr);
-          CHK_(ptr);
-        } else goto handle_unusual;
-        continue;
-      default: {
-      handle_unusual:
-        if ((tag & 7) == 4 || tag == 0) {
-          ctx->SetLastTag(tag);
-          goto success;
-        }
-        ptr = UnknownFieldParse(tag, &_internal_metadata_, ptr, ctx);
-        CHK_(ptr != nullptr);
-        continue;
-      }
-    }  // switch
-  }  // while
-success:
-  return ptr;
-failure:
-  ptr = nullptr;
-  goto success;
-#undef CHK_
-}
-
-::PROTOBUF_NAMESPACE_ID::uint8* AttitudePositionMocap::_InternalSerialize(
-    ::PROTOBUF_NAMESPACE_ID::uint8* target, ::PROTOBUF_NAMESPACE_ID::io::EpsCopyOutputStream* stream) const {
-  // @@protoc_insertion_point(serialize_to_array_start:mavsdk.rpc.mocap.AttitudePositionMocap)
-  ::PROTOBUF_NAMESPACE_ID::uint32 cached_has_bits = 0;
-  (void) cached_has_bits;
-
-  // uint64 time_usec = 1;
-  if (this->time_usec() != 0) {
-    target = stream->EnsureSpace(target);
-    target = ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::WriteUInt64ToArray(1, this->_internal_time_usec(), target);
-  }
-
-  // .mavsdk.rpc.mocap.Quaternion q = 2;
-  if (this->has_q()) {
-    target = stream->EnsureSpace(target);
-    target = ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::
-      InternalWriteMessage(
-        2, _Internal::q(this), target, stream);
-  }
-
-  // .mavsdk.rpc.mocap.PositionBody position_body = 3;
-  if (this->has_position_body()) {
-    target = stream->EnsureSpace(target);
-    target = ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::
-      InternalWriteMessage(
-        3, _Internal::position_body(this), target, stream);
-  }
-
-  // .mavsdk.rpc.mocap.Covariance pose_covariance = 4;
-  if (this->has_pose_covariance()) {
-    target = stream->EnsureSpace(target);
-    target = ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::
-      InternalWriteMessage(
-        4, _Internal::pose_covariance(this), target, stream);
-  }
-
-  if (PROTOBUF_PREDICT_FALSE(_internal_metadata_.have_unknown_fields())) {
-    target = ::PROTOBUF_NAMESPACE_ID::internal::WireFormat::InternalSerializeUnknownFieldsToArray(
-        _internal_metadata_.unknown_fields(), target, stream);
-  }
-  // @@protoc_insertion_point(serialize_to_array_end:mavsdk.rpc.mocap.AttitudePositionMocap)
-  return target;
-}
-
-size_t AttitudePositionMocap::ByteSizeLong() const {
-// @@protoc_insertion_point(message_byte_size_start:mavsdk.rpc.mocap.AttitudePositionMocap)
-  size_t total_size = 0;
-
-  ::PROTOBUF_NAMESPACE_ID::uint32 cached_has_bits = 0;
-  // Prevent compiler warnings about cached_has_bits being unused
-  (void) cached_has_bits;
-
-  // .mavsdk.rpc.mocap.Quaternion q = 2;
-  if (this->has_q()) {
-    total_size += 1 +
-      ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::MessageSize(
-        *q_);
-  }
-
-  // .mavsdk.rpc.mocap.PositionBody position_body = 3;
-  if (this->has_position_body()) {
-    total_size += 1 +
-      ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::MessageSize(
-        *position_body_);
-  }
-
-  // .mavsdk.rpc.mocap.Covariance pose_covariance = 4;
-  if (this->has_pose_covariance()) {
-    total_size += 1 +
-      ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::MessageSize(
-        *pose_covariance_);
-  }
-
-  // uint64 time_usec = 1;
-  if (this->time_usec() != 0) {
-    total_size += 1 +
-      ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::UInt64Size(
-        this->_internal_time_usec());
-  }
-
-  if (PROTOBUF_PREDICT_FALSE(_internal_metadata_.have_unknown_fields())) {
-    return ::PROTOBUF_NAMESPACE_ID::internal::ComputeUnknownFieldsSize(
-        _internal_metadata_, total_size, &_cached_size_);
-  }
-  int cached_size = ::PROTOBUF_NAMESPACE_ID::internal::ToCachedSize(total_size);
-  SetCachedSize(cached_size);
-  return total_size;
-}
-
-void AttitudePositionMocap::MergeFrom(const ::PROTOBUF_NAMESPACE_ID::Message& from) {
-// @@protoc_insertion_point(generalized_merge_from_start:mavsdk.rpc.mocap.AttitudePositionMocap)
-  GOOGLE_DCHECK_NE(&from, this);
-  const AttitudePositionMocap* source =
-      ::PROTOBUF_NAMESPACE_ID::DynamicCastToGenerated<AttitudePositionMocap>(
-          &from);
-  if (source == nullptr) {
-  // @@protoc_insertion_point(generalized_merge_from_cast_fail:mavsdk.rpc.mocap.AttitudePositionMocap)
-    ::PROTOBUF_NAMESPACE_ID::internal::ReflectionOps::Merge(from, this);
-  } else {
-  // @@protoc_insertion_point(generalized_merge_from_cast_success:mavsdk.rpc.mocap.AttitudePositionMocap)
-    MergeFrom(*source);
-  }
-}
-
-void AttitudePositionMocap::MergeFrom(const AttitudePositionMocap& from) {
-// @@protoc_insertion_point(class_specific_merge_from_start:mavsdk.rpc.mocap.AttitudePositionMocap)
-  GOOGLE_DCHECK_NE(&from, this);
-  _internal_metadata_.MergeFrom(from._internal_metadata_);
-  ::PROTOBUF_NAMESPACE_ID::uint32 cached_has_bits = 0;
-  (void) cached_has_bits;
-
-  if (from.has_q()) {
-    _internal_mutable_q()->::mavsdk::rpc::mocap::Quaternion::MergeFrom(from._internal_q());
-  }
-  if (from.has_position_body()) {
-    _internal_mutable_position_body()->::mavsdk::rpc::mocap::PositionBody::MergeFrom(from._internal_position_body());
-  }
-  if (from.has_pose_covariance()) {
-    _internal_mutable_pose_covariance()->::mavsdk::rpc::mocap::Covariance::MergeFrom(from._internal_pose_covariance());
-  }
-  if (from.time_usec() != 0) {
-    _internal_set_time_usec(from._internal_time_usec());
-  }
-}
-
-void AttitudePositionMocap::CopyFrom(const ::PROTOBUF_NAMESPACE_ID::Message& from) {
-// @@protoc_insertion_point(generalized_copy_from_start:mavsdk.rpc.mocap.AttitudePositionMocap)
-  if (&from == this) return;
-  Clear();
-  MergeFrom(from);
-}
-
-void AttitudePositionMocap::CopyFrom(const AttitudePositionMocap& from) {
-// @@protoc_insertion_point(class_specific_copy_from_start:mavsdk.rpc.mocap.AttitudePositionMocap)
-  if (&from == this) return;
-  Clear();
-  MergeFrom(from);
-}
-
-bool AttitudePositionMocap::IsInitialized() const {
-  return true;
-}
-
-void AttitudePositionMocap::InternalSwap(AttitudePositionMocap* other) {
-  using std::swap;
-  _internal_metadata_.Swap(&other->_internal_metadata_);
-  swap(q_, other->q_);
-  swap(position_body_, other->position_body_);
-  swap(pose_covariance_, other->pose_covariance_);
-  swap(time_usec_, other->time_usec_);
-}
-
-::PROTOBUF_NAMESPACE_ID::Metadata AttitudePositionMocap::GetMetadata() const {
-  return GetMetadataStatic();
-}
-
-
-// ===================================================================
-
-void Odometry::InitAsDefaultInstance() {
-  ::mavsdk::rpc::mocap::_Odometry_default_instance_._instance.get_mutable()->position_body_ = const_cast< ::mavsdk::rpc::mocap::PositionBody*>(
-      ::mavsdk::rpc::mocap::PositionBody::internal_default_instance());
-  ::mavsdk::rpc::mocap::_Odometry_default_instance_._instance.get_mutable()->q_ = const_cast< ::mavsdk::rpc::mocap::Quaternion*>(
-      ::mavsdk::rpc::mocap::Quaternion::internal_default_instance());
-  ::mavsdk::rpc::mocap::_Odometry_default_instance_._instance.get_mutable()->speed_body_ = const_cast< ::mavsdk::rpc::mocap::SpeedBody*>(
-      ::mavsdk::rpc::mocap::SpeedBody::internal_default_instance());
-  ::mavsdk::rpc::mocap::_Odometry_default_instance_._instance.get_mutable()->angular_velocity_body_ = const_cast< ::mavsdk::rpc::mocap::AngularVelocityBody*>(
-      ::mavsdk::rpc::mocap::AngularVelocityBody::internal_default_instance());
-  ::mavsdk::rpc::mocap::_Odometry_default_instance_._instance.get_mutable()->pose_covariance_ = const_cast< ::mavsdk::rpc::mocap::Covariance*>(
-      ::mavsdk::rpc::mocap::Covariance::internal_default_instance());
-  ::mavsdk::rpc::mocap::_Odometry_default_instance_._instance.get_mutable()->velocity_covariance_ = const_cast< ::mavsdk::rpc::mocap::Covariance*>(
-      ::mavsdk::rpc::mocap::Covariance::internal_default_instance());
-}
-class Odometry::_Internal {
- public:
-  static const ::mavsdk::rpc::mocap::PositionBody& position_body(const Odometry* msg);
-  static const ::mavsdk::rpc::mocap::Quaternion& q(const Odometry* msg);
-  static const ::mavsdk::rpc::mocap::SpeedBody& speed_body(const Odometry* msg);
-  static const ::mavsdk::rpc::mocap::AngularVelocityBody& angular_velocity_body(const Odometry* msg);
-  static const ::mavsdk::rpc::mocap::Covariance& pose_covariance(const Odometry* msg);
-  static const ::mavsdk::rpc::mocap::Covariance& velocity_covariance(const Odometry* msg);
-};
-
-const ::mavsdk::rpc::mocap::PositionBody&
-Odometry::_Internal::position_body(const Odometry* msg) {
-  return *msg->position_body_;
-}
-const ::mavsdk::rpc::mocap::Quaternion&
-Odometry::_Internal::q(const Odometry* msg) {
-  return *msg->q_;
-}
-const ::mavsdk::rpc::mocap::SpeedBody&
-Odometry::_Internal::speed_body(const Odometry* msg) {
-  return *msg->speed_body_;
-}
-const ::mavsdk::rpc::mocap::AngularVelocityBody&
-Odometry::_Internal::angular_velocity_body(const Odometry* msg) {
-  return *msg->angular_velocity_body_;
-}
-const ::mavsdk::rpc::mocap::Covariance&
-Odometry::_Internal::pose_covariance(const Odometry* msg) {
-  return *msg->pose_covariance_;
-}
-const ::mavsdk::rpc::mocap::Covariance&
-Odometry::_Internal::velocity_covariance(const Odometry* msg) {
-  return *msg->velocity_covariance_;
-}
-Odometry::Odometry()
-  : ::PROTOBUF_NAMESPACE_ID::Message(), _internal_metadata_(nullptr) {
-  SharedCtor();
-  // @@protoc_insertion_point(constructor:mavsdk.rpc.mocap.Odometry)
-}
-Odometry::Odometry(const Odometry& from)
-  : ::PROTOBUF_NAMESPACE_ID::Message(),
-      _internal_metadata_(nullptr) {
-  _internal_metadata_.MergeFrom(from._internal_metadata_);
-  if (from._internal_has_position_body()) {
-    position_body_ = new ::mavsdk::rpc::mocap::PositionBody(*from.position_body_);
-  } else {
-    position_body_ = nullptr;
-  }
-  if (from._internal_has_q()) {
-    q_ = new ::mavsdk::rpc::mocap::Quaternion(*from.q_);
-  } else {
-    q_ = nullptr;
-  }
-  if (from._internal_has_speed_body()) {
-    speed_body_ = new ::mavsdk::rpc::mocap::SpeedBody(*from.speed_body_);
-  } else {
-    speed_body_ = nullptr;
-  }
-  if (from._internal_has_angular_velocity_body()) {
-    angular_velocity_body_ = new ::mavsdk::rpc::mocap::AngularVelocityBody(*from.angular_velocity_body_);
-  } else {
-    angular_velocity_body_ = nullptr;
-  }
-  if (from._internal_has_pose_covariance()) {
-    pose_covariance_ = new ::mavsdk::rpc::mocap::Covariance(*from.pose_covariance_);
-  } else {
-    pose_covariance_ = nullptr;
-  }
-  if (from._internal_has_velocity_covariance()) {
-    velocity_covariance_ = new ::mavsdk::rpc::mocap::Covariance(*from.velocity_covariance_);
-  } else {
-    velocity_covariance_ = nullptr;
-  }
-  ::memcpy(&time_usec_, &from.time_usec_,
-    static_cast<size_t>(reinterpret_cast<char*>(&frame_id_) -
-    reinterpret_cast<char*>(&time_usec_)) + sizeof(frame_id_));
-  // @@protoc_insertion_point(copy_constructor:mavsdk.rpc.mocap.Odometry)
-}
-
-void Odometry::SharedCtor() {
-  ::PROTOBUF_NAMESPACE_ID::internal::InitSCC(&scc_info_Odometry_mocap_2fmocap_2eproto.base);
-  ::memset(&position_body_, 0, static_cast<size_t>(
-      reinterpret_cast<char*>(&frame_id_) -
-      reinterpret_cast<char*>(&position_body_)) + sizeof(frame_id_));
-}
-
-Odometry::~Odometry() {
-  // @@protoc_insertion_point(destructor:mavsdk.rpc.mocap.Odometry)
-  SharedDtor();
-}
-
-void Odometry::SharedDtor() {
-  if (this != internal_default_instance()) delete position_body_;
-  if (this != internal_default_instance()) delete q_;
-  if (this != internal_default_instance()) delete speed_body_;
-  if (this != internal_default_instance()) delete angular_velocity_body_;
-  if (this != internal_default_instance()) delete pose_covariance_;
-  if (this != internal_default_instance()) delete velocity_covariance_;
-}
-
-void Odometry::SetCachedSize(int size) const {
-  _cached_size_.Set(size);
-}
-const Odometry& Odometry::default_instance() {
-  ::PROTOBUF_NAMESPACE_ID::internal::InitSCC(&::scc_info_Odometry_mocap_2fmocap_2eproto.base);
-  return *internal_default_instance();
-}
-
-
-void Odometry::Clear() {
-// @@protoc_insertion_point(message_clear_start:mavsdk.rpc.mocap.Odometry)
-  ::PROTOBUF_NAMESPACE_ID::uint32 cached_has_bits = 0;
-  // Prevent compiler warnings about cached_has_bits being unused
-  (void) cached_has_bits;
-
-  if (GetArenaNoVirtual() == nullptr && position_body_ != nullptr) {
-    delete position_body_;
-  }
-  position_body_ = nullptr;
-  if (GetArenaNoVirtual() == nullptr && q_ != nullptr) {
-    delete q_;
-  }
-  q_ = nullptr;
-  if (GetArenaNoVirtual() == nullptr && speed_body_ != nullptr) {
-    delete speed_body_;
-  }
-  speed_body_ = nullptr;
-  if (GetArenaNoVirtual() == nullptr && angular_velocity_body_ != nullptr) {
-    delete angular_velocity_body_;
-  }
-  angular_velocity_body_ = nullptr;
-  if (GetArenaNoVirtual() == nullptr && pose_covariance_ != nullptr) {
-    delete pose_covariance_;
-  }
-  pose_covariance_ = nullptr;
-  if (GetArenaNoVirtual() == nullptr && velocity_covariance_ != nullptr) {
-    delete velocity_covariance_;
-  }
-  velocity_covariance_ = nullptr;
-  ::memset(&time_usec_, 0, static_cast<size_t>(
-      reinterpret_cast<char*>(&frame_id_) -
-      reinterpret_cast<char*>(&time_usec_)) + sizeof(frame_id_));
-  _internal_metadata_.Clear();
-}
-
-const char* Odometry::_InternalParse(const char* ptr, ::PROTOBUF_NAMESPACE_ID::internal::ParseContext* ctx) {
-#define CHK_(x) if (PROTOBUF_PREDICT_FALSE(!(x))) goto failure
-  while (!ctx->Done(&ptr)) {
-    ::PROTOBUF_NAMESPACE_ID::uint32 tag;
-    ptr = ::PROTOBUF_NAMESPACE_ID::internal::ReadTag(ptr, &tag);
-    CHK_(ptr);
-    switch (tag >> 3) {
-      // uint64 time_usec = 1;
-      case 1:
-        if (PROTOBUF_PREDICT_TRUE(static_cast<::PROTOBUF_NAMESPACE_ID::uint8>(tag) == 8)) {
-          time_usec_ = ::PROTOBUF_NAMESPACE_ID::internal::ReadVarint(&ptr);
-          CHK_(ptr);
-        } else goto handle_unusual;
-        continue;
-      // .mavsdk.rpc.mocap.Odometry.MavFrame frame_id = 2;
-      case 2:
-        if (PROTOBUF_PREDICT_TRUE(static_cast<::PROTOBUF_NAMESPACE_ID::uint8>(tag) == 16)) {
-          ::PROTOBUF_NAMESPACE_ID::uint64 val = ::PROTOBUF_NAMESPACE_ID::internal::ReadVarint(&ptr);
-          CHK_(ptr);
-          _internal_set_frame_id(static_cast<::mavsdk::rpc::mocap::Odometry_MavFrame>(val));
-        } else goto handle_unusual;
-        continue;
-      // .mavsdk.rpc.mocap.PositionBody position_body = 3;
-      case 3:
-        if (PROTOBUF_PREDICT_TRUE(static_cast<::PROTOBUF_NAMESPACE_ID::uint8>(tag) == 26)) {
-          ptr = ctx->ParseMessage(_internal_mutable_position_body(), ptr);
-          CHK_(ptr);
-        } else goto handle_unusual;
-        continue;
-      // .mavsdk.rpc.mocap.Quaternion q = 4;
-      case 4:
-        if (PROTOBUF_PREDICT_TRUE(static_cast<::PROTOBUF_NAMESPACE_ID::uint8>(tag) == 34)) {
-          ptr = ctx->ParseMessage(_internal_mutable_q(), ptr);
-          CHK_(ptr);
-        } else goto handle_unusual;
-        continue;
-      // .mavsdk.rpc.mocap.SpeedBody speed_body = 5;
-      case 5:
-        if (PROTOBUF_PREDICT_TRUE(static_cast<::PROTOBUF_NAMESPACE_ID::uint8>(tag) == 42)) {
-          ptr = ctx->ParseMessage(_internal_mutable_speed_body(), ptr);
-          CHK_(ptr);
-        } else goto handle_unusual;
-        continue;
-      // .mavsdk.rpc.mocap.AngularVelocityBody angular_velocity_body = 6;
-      case 6:
-        if (PROTOBUF_PREDICT_TRUE(static_cast<::PROTOBUF_NAMESPACE_ID::uint8>(tag) == 50)) {
-          ptr = ctx->ParseMessage(_internal_mutable_angular_velocity_body(), ptr);
-          CHK_(ptr);
-        } else goto handle_unusual;
-        continue;
-      // .mavsdk.rpc.mocap.Covariance pose_covariance = 7;
-      case 7:
-        if (PROTOBUF_PREDICT_TRUE(static_cast<::PROTOBUF_NAMESPACE_ID::uint8>(tag) == 58)) {
-          ptr = ctx->ParseMessage(_internal_mutable_pose_covariance(), ptr);
-          CHK_(ptr);
-        } else goto handle_unusual;
-        continue;
-      // .mavsdk.rpc.mocap.Covariance velocity_covariance = 8;
-      case 8:
-        if (PROTOBUF_PREDICT_TRUE(static_cast<::PROTOBUF_NAMESPACE_ID::uint8>(tag) == 66)) {
-          ptr = ctx->ParseMessage(_internal_mutable_velocity_covariance(), ptr);
-          CHK_(ptr);
-        } else goto handle_unusual;
-        continue;
-      default: {
-      handle_unusual:
-        if ((tag & 7) == 4 || tag == 0) {
-          ctx->SetLastTag(tag);
-          goto success;
-        }
-        ptr = UnknownFieldParse(tag, &_internal_metadata_, ptr, ctx);
-        CHK_(ptr != nullptr);
-        continue;
-      }
-    }  // switch
-  }  // while
-success:
-  return ptr;
-failure:
-  ptr = nullptr;
-  goto success;
-#undef CHK_
-}
-
-::PROTOBUF_NAMESPACE_ID::uint8* Odometry::_InternalSerialize(
-    ::PROTOBUF_NAMESPACE_ID::uint8* target, ::PROTOBUF_NAMESPACE_ID::io::EpsCopyOutputStream* stream) const {
-  // @@protoc_insertion_point(serialize_to_array_start:mavsdk.rpc.mocap.Odometry)
-  ::PROTOBUF_NAMESPACE_ID::uint32 cached_has_bits = 0;
-  (void) cached_has_bits;
-
-  // uint64 time_usec = 1;
-  if (this->time_usec() != 0) {
-    target = stream->EnsureSpace(target);
-    target = ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::WriteUInt64ToArray(1, this->_internal_time_usec(), target);
-  }
-
-  // .mavsdk.rpc.mocap.Odometry.MavFrame frame_id = 2;
-  if (this->frame_id() != 0) {
-    target = stream->EnsureSpace(target);
-    target = ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::WriteEnumToArray(
-      2, this->_internal_frame_id(), target);
-  }
-
-  // .mavsdk.rpc.mocap.PositionBody position_body = 3;
-  if (this->has_position_body()) {
-    target = stream->EnsureSpace(target);
-    target = ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::
-      InternalWriteMessage(
-        3, _Internal::position_body(this), target, stream);
-  }
-
-  // .mavsdk.rpc.mocap.Quaternion q = 4;
-  if (this->has_q()) {
-    target = stream->EnsureSpace(target);
-    target = ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::
-      InternalWriteMessage(
-        4, _Internal::q(this), target, stream);
-  }
-
-  // .mavsdk.rpc.mocap.SpeedBody speed_body = 5;
-  if (this->has_speed_body()) {
-    target = stream->EnsureSpace(target);
-    target = ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::
-      InternalWriteMessage(
-        5, _Internal::speed_body(this), target, stream);
-  }
-
-  // .mavsdk.rpc.mocap.AngularVelocityBody angular_velocity_body = 6;
-  if (this->has_angular_velocity_body()) {
-    target = stream->EnsureSpace(target);
-    target = ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::
-      InternalWriteMessage(
-        6, _Internal::angular_velocity_body(this), target, stream);
-  }
-
-  // .mavsdk.rpc.mocap.Covariance pose_covariance = 7;
-  if (this->has_pose_covariance()) {
-    target = stream->EnsureSpace(target);
-    target = ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::
-      InternalWriteMessage(
-        7, _Internal::pose_covariance(this), target, stream);
-  }
-
-  // .mavsdk.rpc.mocap.Covariance velocity_covariance = 8;
-  if (this->has_velocity_covariance()) {
-    target = stream->EnsureSpace(target);
-    target = ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::
-      InternalWriteMessage(
-        8, _Internal::velocity_covariance(this), target, stream);
-  }
-
-  if (PROTOBUF_PREDICT_FALSE(_internal_metadata_.have_unknown_fields())) {
-    target = ::PROTOBUF_NAMESPACE_ID::internal::WireFormat::InternalSerializeUnknownFieldsToArray(
-        _internal_metadata_.unknown_fields(), target, stream);
-  }
-  // @@protoc_insertion_point(serialize_to_array_end:mavsdk.rpc.mocap.Odometry)
-  return target;
-}
-
-size_t Odometry::ByteSizeLong() const {
-// @@protoc_insertion_point(message_byte_size_start:mavsdk.rpc.mocap.Odometry)
-  size_t total_size = 0;
-
-  ::PROTOBUF_NAMESPACE_ID::uint32 cached_has_bits = 0;
-  // Prevent compiler warnings about cached_has_bits being unused
-  (void) cached_has_bits;
-
-  // .mavsdk.rpc.mocap.PositionBody position_body = 3;
-  if (this->has_position_body()) {
-    total_size += 1 +
-      ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::MessageSize(
-        *position_body_);
-  }
-
-  // .mavsdk.rpc.mocap.Quaternion q = 4;
-  if (this->has_q()) {
-    total_size += 1 +
-      ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::MessageSize(
-        *q_);
-  }
-
-  // .mavsdk.rpc.mocap.SpeedBody speed_body = 5;
-  if (this->has_speed_body()) {
-    total_size += 1 +
-      ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::MessageSize(
-        *speed_body_);
-  }
-
-  // .mavsdk.rpc.mocap.AngularVelocityBody angular_velocity_body = 6;
-  if (this->has_angular_velocity_body()) {
-    total_size += 1 +
-      ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::MessageSize(
-        *angular_velocity_body_);
-  }
-
-  // .mavsdk.rpc.mocap.Covariance pose_covariance = 7;
-  if (this->has_pose_covariance()) {
-    total_size += 1 +
-      ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::MessageSize(
-        *pose_covariance_);
-  }
-
-  // .mavsdk.rpc.mocap.Covariance velocity_covariance = 8;
-  if (this->has_velocity_covariance()) {
-    total_size += 1 +
-      ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::MessageSize(
-        *velocity_covariance_);
-  }
-
-  // uint64 time_usec = 1;
-  if (this->time_usec() != 0) {
-    total_size += 1 +
-      ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::UInt64Size(
-        this->_internal_time_usec());
-  }
-
-  // .mavsdk.rpc.mocap.Odometry.MavFrame frame_id = 2;
-  if (this->frame_id() != 0) {
-    total_size += 1 +
-      ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::EnumSize(this->_internal_frame_id());
-  }
-
-  if (PROTOBUF_PREDICT_FALSE(_internal_metadata_.have_unknown_fields())) {
-    return ::PROTOBUF_NAMESPACE_ID::internal::ComputeUnknownFieldsSize(
-        _internal_metadata_, total_size, &_cached_size_);
-  }
-  int cached_size = ::PROTOBUF_NAMESPACE_ID::internal::ToCachedSize(total_size);
-  SetCachedSize(cached_size);
-  return total_size;
-}
-
-void Odometry::MergeFrom(const ::PROTOBUF_NAMESPACE_ID::Message& from) {
-// @@protoc_insertion_point(generalized_merge_from_start:mavsdk.rpc.mocap.Odometry)
-  GOOGLE_DCHECK_NE(&from, this);
-  const Odometry* source =
-      ::PROTOBUF_NAMESPACE_ID::DynamicCastToGenerated<Odometry>(
-          &from);
-  if (source == nullptr) {
-  // @@protoc_insertion_point(generalized_merge_from_cast_fail:mavsdk.rpc.mocap.Odometry)
-    ::PROTOBUF_NAMESPACE_ID::internal::ReflectionOps::Merge(from, this);
-  } else {
-  // @@protoc_insertion_point(generalized_merge_from_cast_success:mavsdk.rpc.mocap.Odometry)
-    MergeFrom(*source);
-  }
-}
-
-void Odometry::MergeFrom(const Odometry& from) {
-// @@protoc_insertion_point(class_specific_merge_from_start:mavsdk.rpc.mocap.Odometry)
-  GOOGLE_DCHECK_NE(&from, this);
-  _internal_metadata_.MergeFrom(from._internal_metadata_);
-  ::PROTOBUF_NAMESPACE_ID::uint32 cached_has_bits = 0;
-  (void) cached_has_bits;
-
-  if (from.has_position_body()) {
-    _internal_mutable_position_body()->::mavsdk::rpc::mocap::PositionBody::MergeFrom(from._internal_position_body());
-  }
-  if (from.has_q()) {
-    _internal_mutable_q()->::mavsdk::rpc::mocap::Quaternion::MergeFrom(from._internal_q());
-  }
-  if (from.has_speed_body()) {
-    _internal_mutable_speed_body()->::mavsdk::rpc::mocap::SpeedBody::MergeFrom(from._internal_speed_body());
-  }
-  if (from.has_angular_velocity_body()) {
-    _internal_mutable_angular_velocity_body()->::mavsdk::rpc::mocap::AngularVelocityBody::MergeFrom(from._internal_angular_velocity_body());
-  }
-  if (from.has_pose_covariance()) {
-    _internal_mutable_pose_covariance()->::mavsdk::rpc::mocap::Covariance::MergeFrom(from._internal_pose_covariance());
-  }
-  if (from.has_velocity_covariance()) {
-    _internal_mutable_velocity_covariance()->::mavsdk::rpc::mocap::Covariance::MergeFrom(from._internal_velocity_covariance());
-  }
-  if (from.time_usec() != 0) {
-    _internal_set_time_usec(from._internal_time_usec());
-  }
-  if (from.frame_id() != 0) {
-    _internal_set_frame_id(from._internal_frame_id());
-  }
-}
-
-void Odometry::CopyFrom(const ::PROTOBUF_NAMESPACE_ID::Message& from) {
-// @@protoc_insertion_point(generalized_copy_from_start:mavsdk.rpc.mocap.Odometry)
-  if (&from == this) return;
-  Clear();
-  MergeFrom(from);
-}
-
-void Odometry::CopyFrom(const Odometry& from) {
-// @@protoc_insertion_point(class_specific_copy_from_start:mavsdk.rpc.mocap.Odometry)
-  if (&from == this) return;
-  Clear();
-  MergeFrom(from);
-}
-
-bool Odometry::IsInitialized() const {
-  return true;
-}
-
-void Odometry::InternalSwap(Odometry* other) {
-  using std::swap;
-  _internal_metadata_.Swap(&other->_internal_metadata_);
-  swap(position_body_, other->position_body_);
-  swap(q_, other->q_);
-  swap(speed_body_, other->speed_body_);
-  swap(angular_velocity_body_, other->angular_velocity_body_);
-  swap(pose_covariance_, other->pose_covariance_);
-  swap(velocity_covariance_, other->velocity_covariance_);
-  swap(time_usec_, other->time_usec_);
-  swap(frame_id_, other->frame_id_);
-}
-
-::PROTOBUF_NAMESPACE_ID::Metadata Odometry::GetMetadata() const {
   return GetMetadataStatic();
 }
 
@@ -4369,6 +3260,1118 @@ void Quaternion::InternalSwap(Quaternion* other) {
 
 // ===================================================================
 
+void VisionPositionEstimate::InitAsDefaultInstance() {
+  ::mavsdk::rpc::mocap::_VisionPositionEstimate_default_instance_._instance.get_mutable()->position_body_ = const_cast< ::mavsdk::rpc::mocap::PositionBody*>(
+      ::mavsdk::rpc::mocap::PositionBody::internal_default_instance());
+  ::mavsdk::rpc::mocap::_VisionPositionEstimate_default_instance_._instance.get_mutable()->angle_body_ = const_cast< ::mavsdk::rpc::mocap::AngleBody*>(
+      ::mavsdk::rpc::mocap::AngleBody::internal_default_instance());
+  ::mavsdk::rpc::mocap::_VisionPositionEstimate_default_instance_._instance.get_mutable()->pose_covariance_ = const_cast< ::mavsdk::rpc::mocap::Covariance*>(
+      ::mavsdk::rpc::mocap::Covariance::internal_default_instance());
+}
+class VisionPositionEstimate::_Internal {
+ public:
+  static const ::mavsdk::rpc::mocap::PositionBody& position_body(const VisionPositionEstimate* msg);
+  static const ::mavsdk::rpc::mocap::AngleBody& angle_body(const VisionPositionEstimate* msg);
+  static const ::mavsdk::rpc::mocap::Covariance& pose_covariance(const VisionPositionEstimate* msg);
+};
+
+const ::mavsdk::rpc::mocap::PositionBody&
+VisionPositionEstimate::_Internal::position_body(const VisionPositionEstimate* msg) {
+  return *msg->position_body_;
+}
+const ::mavsdk::rpc::mocap::AngleBody&
+VisionPositionEstimate::_Internal::angle_body(const VisionPositionEstimate* msg) {
+  return *msg->angle_body_;
+}
+const ::mavsdk::rpc::mocap::Covariance&
+VisionPositionEstimate::_Internal::pose_covariance(const VisionPositionEstimate* msg) {
+  return *msg->pose_covariance_;
+}
+VisionPositionEstimate::VisionPositionEstimate()
+  : ::PROTOBUF_NAMESPACE_ID::Message(), _internal_metadata_(nullptr) {
+  SharedCtor();
+  // @@protoc_insertion_point(constructor:mavsdk.rpc.mocap.VisionPositionEstimate)
+}
+VisionPositionEstimate::VisionPositionEstimate(const VisionPositionEstimate& from)
+  : ::PROTOBUF_NAMESPACE_ID::Message(),
+      _internal_metadata_(nullptr) {
+  _internal_metadata_.MergeFrom(from._internal_metadata_);
+  if (from._internal_has_position_body()) {
+    position_body_ = new ::mavsdk::rpc::mocap::PositionBody(*from.position_body_);
+  } else {
+    position_body_ = nullptr;
+  }
+  if (from._internal_has_angle_body()) {
+    angle_body_ = new ::mavsdk::rpc::mocap::AngleBody(*from.angle_body_);
+  } else {
+    angle_body_ = nullptr;
+  }
+  if (from._internal_has_pose_covariance()) {
+    pose_covariance_ = new ::mavsdk::rpc::mocap::Covariance(*from.pose_covariance_);
+  } else {
+    pose_covariance_ = nullptr;
+  }
+  time_usec_ = from.time_usec_;
+  // @@protoc_insertion_point(copy_constructor:mavsdk.rpc.mocap.VisionPositionEstimate)
+}
+
+void VisionPositionEstimate::SharedCtor() {
+  ::PROTOBUF_NAMESPACE_ID::internal::InitSCC(&scc_info_VisionPositionEstimate_mocap_2fmocap_2eproto.base);
+  ::memset(&position_body_, 0, static_cast<size_t>(
+      reinterpret_cast<char*>(&time_usec_) -
+      reinterpret_cast<char*>(&position_body_)) + sizeof(time_usec_));
+}
+
+VisionPositionEstimate::~VisionPositionEstimate() {
+  // @@protoc_insertion_point(destructor:mavsdk.rpc.mocap.VisionPositionEstimate)
+  SharedDtor();
+}
+
+void VisionPositionEstimate::SharedDtor() {
+  if (this != internal_default_instance()) delete position_body_;
+  if (this != internal_default_instance()) delete angle_body_;
+  if (this != internal_default_instance()) delete pose_covariance_;
+}
+
+void VisionPositionEstimate::SetCachedSize(int size) const {
+  _cached_size_.Set(size);
+}
+const VisionPositionEstimate& VisionPositionEstimate::default_instance() {
+  ::PROTOBUF_NAMESPACE_ID::internal::InitSCC(&::scc_info_VisionPositionEstimate_mocap_2fmocap_2eproto.base);
+  return *internal_default_instance();
+}
+
+
+void VisionPositionEstimate::Clear() {
+// @@protoc_insertion_point(message_clear_start:mavsdk.rpc.mocap.VisionPositionEstimate)
+  ::PROTOBUF_NAMESPACE_ID::uint32 cached_has_bits = 0;
+  // Prevent compiler warnings about cached_has_bits being unused
+  (void) cached_has_bits;
+
+  if (GetArenaNoVirtual() == nullptr && position_body_ != nullptr) {
+    delete position_body_;
+  }
+  position_body_ = nullptr;
+  if (GetArenaNoVirtual() == nullptr && angle_body_ != nullptr) {
+    delete angle_body_;
+  }
+  angle_body_ = nullptr;
+  if (GetArenaNoVirtual() == nullptr && pose_covariance_ != nullptr) {
+    delete pose_covariance_;
+  }
+  pose_covariance_ = nullptr;
+  time_usec_ = PROTOBUF_ULONGLONG(0);
+  _internal_metadata_.Clear();
+}
+
+const char* VisionPositionEstimate::_InternalParse(const char* ptr, ::PROTOBUF_NAMESPACE_ID::internal::ParseContext* ctx) {
+#define CHK_(x) if (PROTOBUF_PREDICT_FALSE(!(x))) goto failure
+  while (!ctx->Done(&ptr)) {
+    ::PROTOBUF_NAMESPACE_ID::uint32 tag;
+    ptr = ::PROTOBUF_NAMESPACE_ID::internal::ReadTag(ptr, &tag);
+    CHK_(ptr);
+    switch (tag >> 3) {
+      // uint64 time_usec = 1;
+      case 1:
+        if (PROTOBUF_PREDICT_TRUE(static_cast<::PROTOBUF_NAMESPACE_ID::uint8>(tag) == 8)) {
+          time_usec_ = ::PROTOBUF_NAMESPACE_ID::internal::ReadVarint(&ptr);
+          CHK_(ptr);
+        } else goto handle_unusual;
+        continue;
+      // .mavsdk.rpc.mocap.PositionBody position_body = 2;
+      case 2:
+        if (PROTOBUF_PREDICT_TRUE(static_cast<::PROTOBUF_NAMESPACE_ID::uint8>(tag) == 18)) {
+          ptr = ctx->ParseMessage(_internal_mutable_position_body(), ptr);
+          CHK_(ptr);
+        } else goto handle_unusual;
+        continue;
+      // .mavsdk.rpc.mocap.AngleBody angle_body = 3;
+      case 3:
+        if (PROTOBUF_PREDICT_TRUE(static_cast<::PROTOBUF_NAMESPACE_ID::uint8>(tag) == 26)) {
+          ptr = ctx->ParseMessage(_internal_mutable_angle_body(), ptr);
+          CHK_(ptr);
+        } else goto handle_unusual;
+        continue;
+      // .mavsdk.rpc.mocap.Covariance pose_covariance = 4;
+      case 4:
+        if (PROTOBUF_PREDICT_TRUE(static_cast<::PROTOBUF_NAMESPACE_ID::uint8>(tag) == 34)) {
+          ptr = ctx->ParseMessage(_internal_mutable_pose_covariance(), ptr);
+          CHK_(ptr);
+        } else goto handle_unusual;
+        continue;
+      default: {
+      handle_unusual:
+        if ((tag & 7) == 4 || tag == 0) {
+          ctx->SetLastTag(tag);
+          goto success;
+        }
+        ptr = UnknownFieldParse(tag, &_internal_metadata_, ptr, ctx);
+        CHK_(ptr != nullptr);
+        continue;
+      }
+    }  // switch
+  }  // while
+success:
+  return ptr;
+failure:
+  ptr = nullptr;
+  goto success;
+#undef CHK_
+}
+
+::PROTOBUF_NAMESPACE_ID::uint8* VisionPositionEstimate::_InternalSerialize(
+    ::PROTOBUF_NAMESPACE_ID::uint8* target, ::PROTOBUF_NAMESPACE_ID::io::EpsCopyOutputStream* stream) const {
+  // @@protoc_insertion_point(serialize_to_array_start:mavsdk.rpc.mocap.VisionPositionEstimate)
+  ::PROTOBUF_NAMESPACE_ID::uint32 cached_has_bits = 0;
+  (void) cached_has_bits;
+
+  // uint64 time_usec = 1;
+  if (this->time_usec() != 0) {
+    target = stream->EnsureSpace(target);
+    target = ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::WriteUInt64ToArray(1, this->_internal_time_usec(), target);
+  }
+
+  // .mavsdk.rpc.mocap.PositionBody position_body = 2;
+  if (this->has_position_body()) {
+    target = stream->EnsureSpace(target);
+    target = ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::
+      InternalWriteMessage(
+        2, _Internal::position_body(this), target, stream);
+  }
+
+  // .mavsdk.rpc.mocap.AngleBody angle_body = 3;
+  if (this->has_angle_body()) {
+    target = stream->EnsureSpace(target);
+    target = ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::
+      InternalWriteMessage(
+        3, _Internal::angle_body(this), target, stream);
+  }
+
+  // .mavsdk.rpc.mocap.Covariance pose_covariance = 4;
+  if (this->has_pose_covariance()) {
+    target = stream->EnsureSpace(target);
+    target = ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::
+      InternalWriteMessage(
+        4, _Internal::pose_covariance(this), target, stream);
+  }
+
+  if (PROTOBUF_PREDICT_FALSE(_internal_metadata_.have_unknown_fields())) {
+    target = ::PROTOBUF_NAMESPACE_ID::internal::WireFormat::InternalSerializeUnknownFieldsToArray(
+        _internal_metadata_.unknown_fields(), target, stream);
+  }
+  // @@protoc_insertion_point(serialize_to_array_end:mavsdk.rpc.mocap.VisionPositionEstimate)
+  return target;
+}
+
+size_t VisionPositionEstimate::ByteSizeLong() const {
+// @@protoc_insertion_point(message_byte_size_start:mavsdk.rpc.mocap.VisionPositionEstimate)
+  size_t total_size = 0;
+
+  ::PROTOBUF_NAMESPACE_ID::uint32 cached_has_bits = 0;
+  // Prevent compiler warnings about cached_has_bits being unused
+  (void) cached_has_bits;
+
+  // .mavsdk.rpc.mocap.PositionBody position_body = 2;
+  if (this->has_position_body()) {
+    total_size += 1 +
+      ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::MessageSize(
+        *position_body_);
+  }
+
+  // .mavsdk.rpc.mocap.AngleBody angle_body = 3;
+  if (this->has_angle_body()) {
+    total_size += 1 +
+      ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::MessageSize(
+        *angle_body_);
+  }
+
+  // .mavsdk.rpc.mocap.Covariance pose_covariance = 4;
+  if (this->has_pose_covariance()) {
+    total_size += 1 +
+      ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::MessageSize(
+        *pose_covariance_);
+  }
+
+  // uint64 time_usec = 1;
+  if (this->time_usec() != 0) {
+    total_size += 1 +
+      ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::UInt64Size(
+        this->_internal_time_usec());
+  }
+
+  if (PROTOBUF_PREDICT_FALSE(_internal_metadata_.have_unknown_fields())) {
+    return ::PROTOBUF_NAMESPACE_ID::internal::ComputeUnknownFieldsSize(
+        _internal_metadata_, total_size, &_cached_size_);
+  }
+  int cached_size = ::PROTOBUF_NAMESPACE_ID::internal::ToCachedSize(total_size);
+  SetCachedSize(cached_size);
+  return total_size;
+}
+
+void VisionPositionEstimate::MergeFrom(const ::PROTOBUF_NAMESPACE_ID::Message& from) {
+// @@protoc_insertion_point(generalized_merge_from_start:mavsdk.rpc.mocap.VisionPositionEstimate)
+  GOOGLE_DCHECK_NE(&from, this);
+  const VisionPositionEstimate* source =
+      ::PROTOBUF_NAMESPACE_ID::DynamicCastToGenerated<VisionPositionEstimate>(
+          &from);
+  if (source == nullptr) {
+  // @@protoc_insertion_point(generalized_merge_from_cast_fail:mavsdk.rpc.mocap.VisionPositionEstimate)
+    ::PROTOBUF_NAMESPACE_ID::internal::ReflectionOps::Merge(from, this);
+  } else {
+  // @@protoc_insertion_point(generalized_merge_from_cast_success:mavsdk.rpc.mocap.VisionPositionEstimate)
+    MergeFrom(*source);
+  }
+}
+
+void VisionPositionEstimate::MergeFrom(const VisionPositionEstimate& from) {
+// @@protoc_insertion_point(class_specific_merge_from_start:mavsdk.rpc.mocap.VisionPositionEstimate)
+  GOOGLE_DCHECK_NE(&from, this);
+  _internal_metadata_.MergeFrom(from._internal_metadata_);
+  ::PROTOBUF_NAMESPACE_ID::uint32 cached_has_bits = 0;
+  (void) cached_has_bits;
+
+  if (from.has_position_body()) {
+    _internal_mutable_position_body()->::mavsdk::rpc::mocap::PositionBody::MergeFrom(from._internal_position_body());
+  }
+  if (from.has_angle_body()) {
+    _internal_mutable_angle_body()->::mavsdk::rpc::mocap::AngleBody::MergeFrom(from._internal_angle_body());
+  }
+  if (from.has_pose_covariance()) {
+    _internal_mutable_pose_covariance()->::mavsdk::rpc::mocap::Covariance::MergeFrom(from._internal_pose_covariance());
+  }
+  if (from.time_usec() != 0) {
+    _internal_set_time_usec(from._internal_time_usec());
+  }
+}
+
+void VisionPositionEstimate::CopyFrom(const ::PROTOBUF_NAMESPACE_ID::Message& from) {
+// @@protoc_insertion_point(generalized_copy_from_start:mavsdk.rpc.mocap.VisionPositionEstimate)
+  if (&from == this) return;
+  Clear();
+  MergeFrom(from);
+}
+
+void VisionPositionEstimate::CopyFrom(const VisionPositionEstimate& from) {
+// @@protoc_insertion_point(class_specific_copy_from_start:mavsdk.rpc.mocap.VisionPositionEstimate)
+  if (&from == this) return;
+  Clear();
+  MergeFrom(from);
+}
+
+bool VisionPositionEstimate::IsInitialized() const {
+  return true;
+}
+
+void VisionPositionEstimate::InternalSwap(VisionPositionEstimate* other) {
+  using std::swap;
+  _internal_metadata_.Swap(&other->_internal_metadata_);
+  swap(position_body_, other->position_body_);
+  swap(angle_body_, other->angle_body_);
+  swap(pose_covariance_, other->pose_covariance_);
+  swap(time_usec_, other->time_usec_);
+}
+
+::PROTOBUF_NAMESPACE_ID::Metadata VisionPositionEstimate::GetMetadata() const {
+  return GetMetadataStatic();
+}
+
+
+// ===================================================================
+
+void AttitudePositionMocap::InitAsDefaultInstance() {
+  ::mavsdk::rpc::mocap::_AttitudePositionMocap_default_instance_._instance.get_mutable()->q_ = const_cast< ::mavsdk::rpc::mocap::Quaternion*>(
+      ::mavsdk::rpc::mocap::Quaternion::internal_default_instance());
+  ::mavsdk::rpc::mocap::_AttitudePositionMocap_default_instance_._instance.get_mutable()->position_body_ = const_cast< ::mavsdk::rpc::mocap::PositionBody*>(
+      ::mavsdk::rpc::mocap::PositionBody::internal_default_instance());
+  ::mavsdk::rpc::mocap::_AttitudePositionMocap_default_instance_._instance.get_mutable()->pose_covariance_ = const_cast< ::mavsdk::rpc::mocap::Covariance*>(
+      ::mavsdk::rpc::mocap::Covariance::internal_default_instance());
+}
+class AttitudePositionMocap::_Internal {
+ public:
+  static const ::mavsdk::rpc::mocap::Quaternion& q(const AttitudePositionMocap* msg);
+  static const ::mavsdk::rpc::mocap::PositionBody& position_body(const AttitudePositionMocap* msg);
+  static const ::mavsdk::rpc::mocap::Covariance& pose_covariance(const AttitudePositionMocap* msg);
+};
+
+const ::mavsdk::rpc::mocap::Quaternion&
+AttitudePositionMocap::_Internal::q(const AttitudePositionMocap* msg) {
+  return *msg->q_;
+}
+const ::mavsdk::rpc::mocap::PositionBody&
+AttitudePositionMocap::_Internal::position_body(const AttitudePositionMocap* msg) {
+  return *msg->position_body_;
+}
+const ::mavsdk::rpc::mocap::Covariance&
+AttitudePositionMocap::_Internal::pose_covariance(const AttitudePositionMocap* msg) {
+  return *msg->pose_covariance_;
+}
+AttitudePositionMocap::AttitudePositionMocap()
+  : ::PROTOBUF_NAMESPACE_ID::Message(), _internal_metadata_(nullptr) {
+  SharedCtor();
+  // @@protoc_insertion_point(constructor:mavsdk.rpc.mocap.AttitudePositionMocap)
+}
+AttitudePositionMocap::AttitudePositionMocap(const AttitudePositionMocap& from)
+  : ::PROTOBUF_NAMESPACE_ID::Message(),
+      _internal_metadata_(nullptr) {
+  _internal_metadata_.MergeFrom(from._internal_metadata_);
+  if (from._internal_has_q()) {
+    q_ = new ::mavsdk::rpc::mocap::Quaternion(*from.q_);
+  } else {
+    q_ = nullptr;
+  }
+  if (from._internal_has_position_body()) {
+    position_body_ = new ::mavsdk::rpc::mocap::PositionBody(*from.position_body_);
+  } else {
+    position_body_ = nullptr;
+  }
+  if (from._internal_has_pose_covariance()) {
+    pose_covariance_ = new ::mavsdk::rpc::mocap::Covariance(*from.pose_covariance_);
+  } else {
+    pose_covariance_ = nullptr;
+  }
+  time_usec_ = from.time_usec_;
+  // @@protoc_insertion_point(copy_constructor:mavsdk.rpc.mocap.AttitudePositionMocap)
+}
+
+void AttitudePositionMocap::SharedCtor() {
+  ::PROTOBUF_NAMESPACE_ID::internal::InitSCC(&scc_info_AttitudePositionMocap_mocap_2fmocap_2eproto.base);
+  ::memset(&q_, 0, static_cast<size_t>(
+      reinterpret_cast<char*>(&time_usec_) -
+      reinterpret_cast<char*>(&q_)) + sizeof(time_usec_));
+}
+
+AttitudePositionMocap::~AttitudePositionMocap() {
+  // @@protoc_insertion_point(destructor:mavsdk.rpc.mocap.AttitudePositionMocap)
+  SharedDtor();
+}
+
+void AttitudePositionMocap::SharedDtor() {
+  if (this != internal_default_instance()) delete q_;
+  if (this != internal_default_instance()) delete position_body_;
+  if (this != internal_default_instance()) delete pose_covariance_;
+}
+
+void AttitudePositionMocap::SetCachedSize(int size) const {
+  _cached_size_.Set(size);
+}
+const AttitudePositionMocap& AttitudePositionMocap::default_instance() {
+  ::PROTOBUF_NAMESPACE_ID::internal::InitSCC(&::scc_info_AttitudePositionMocap_mocap_2fmocap_2eproto.base);
+  return *internal_default_instance();
+}
+
+
+void AttitudePositionMocap::Clear() {
+// @@protoc_insertion_point(message_clear_start:mavsdk.rpc.mocap.AttitudePositionMocap)
+  ::PROTOBUF_NAMESPACE_ID::uint32 cached_has_bits = 0;
+  // Prevent compiler warnings about cached_has_bits being unused
+  (void) cached_has_bits;
+
+  if (GetArenaNoVirtual() == nullptr && q_ != nullptr) {
+    delete q_;
+  }
+  q_ = nullptr;
+  if (GetArenaNoVirtual() == nullptr && position_body_ != nullptr) {
+    delete position_body_;
+  }
+  position_body_ = nullptr;
+  if (GetArenaNoVirtual() == nullptr && pose_covariance_ != nullptr) {
+    delete pose_covariance_;
+  }
+  pose_covariance_ = nullptr;
+  time_usec_ = PROTOBUF_ULONGLONG(0);
+  _internal_metadata_.Clear();
+}
+
+const char* AttitudePositionMocap::_InternalParse(const char* ptr, ::PROTOBUF_NAMESPACE_ID::internal::ParseContext* ctx) {
+#define CHK_(x) if (PROTOBUF_PREDICT_FALSE(!(x))) goto failure
+  while (!ctx->Done(&ptr)) {
+    ::PROTOBUF_NAMESPACE_ID::uint32 tag;
+    ptr = ::PROTOBUF_NAMESPACE_ID::internal::ReadTag(ptr, &tag);
+    CHK_(ptr);
+    switch (tag >> 3) {
+      // uint64 time_usec = 1;
+      case 1:
+        if (PROTOBUF_PREDICT_TRUE(static_cast<::PROTOBUF_NAMESPACE_ID::uint8>(tag) == 8)) {
+          time_usec_ = ::PROTOBUF_NAMESPACE_ID::internal::ReadVarint(&ptr);
+          CHK_(ptr);
+        } else goto handle_unusual;
+        continue;
+      // .mavsdk.rpc.mocap.Quaternion q = 2;
+      case 2:
+        if (PROTOBUF_PREDICT_TRUE(static_cast<::PROTOBUF_NAMESPACE_ID::uint8>(tag) == 18)) {
+          ptr = ctx->ParseMessage(_internal_mutable_q(), ptr);
+          CHK_(ptr);
+        } else goto handle_unusual;
+        continue;
+      // .mavsdk.rpc.mocap.PositionBody position_body = 3;
+      case 3:
+        if (PROTOBUF_PREDICT_TRUE(static_cast<::PROTOBUF_NAMESPACE_ID::uint8>(tag) == 26)) {
+          ptr = ctx->ParseMessage(_internal_mutable_position_body(), ptr);
+          CHK_(ptr);
+        } else goto handle_unusual;
+        continue;
+      // .mavsdk.rpc.mocap.Covariance pose_covariance = 4;
+      case 4:
+        if (PROTOBUF_PREDICT_TRUE(static_cast<::PROTOBUF_NAMESPACE_ID::uint8>(tag) == 34)) {
+          ptr = ctx->ParseMessage(_internal_mutable_pose_covariance(), ptr);
+          CHK_(ptr);
+        } else goto handle_unusual;
+        continue;
+      default: {
+      handle_unusual:
+        if ((tag & 7) == 4 || tag == 0) {
+          ctx->SetLastTag(tag);
+          goto success;
+        }
+        ptr = UnknownFieldParse(tag, &_internal_metadata_, ptr, ctx);
+        CHK_(ptr != nullptr);
+        continue;
+      }
+    }  // switch
+  }  // while
+success:
+  return ptr;
+failure:
+  ptr = nullptr;
+  goto success;
+#undef CHK_
+}
+
+::PROTOBUF_NAMESPACE_ID::uint8* AttitudePositionMocap::_InternalSerialize(
+    ::PROTOBUF_NAMESPACE_ID::uint8* target, ::PROTOBUF_NAMESPACE_ID::io::EpsCopyOutputStream* stream) const {
+  // @@protoc_insertion_point(serialize_to_array_start:mavsdk.rpc.mocap.AttitudePositionMocap)
+  ::PROTOBUF_NAMESPACE_ID::uint32 cached_has_bits = 0;
+  (void) cached_has_bits;
+
+  // uint64 time_usec = 1;
+  if (this->time_usec() != 0) {
+    target = stream->EnsureSpace(target);
+    target = ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::WriteUInt64ToArray(1, this->_internal_time_usec(), target);
+  }
+
+  // .mavsdk.rpc.mocap.Quaternion q = 2;
+  if (this->has_q()) {
+    target = stream->EnsureSpace(target);
+    target = ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::
+      InternalWriteMessage(
+        2, _Internal::q(this), target, stream);
+  }
+
+  // .mavsdk.rpc.mocap.PositionBody position_body = 3;
+  if (this->has_position_body()) {
+    target = stream->EnsureSpace(target);
+    target = ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::
+      InternalWriteMessage(
+        3, _Internal::position_body(this), target, stream);
+  }
+
+  // .mavsdk.rpc.mocap.Covariance pose_covariance = 4;
+  if (this->has_pose_covariance()) {
+    target = stream->EnsureSpace(target);
+    target = ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::
+      InternalWriteMessage(
+        4, _Internal::pose_covariance(this), target, stream);
+  }
+
+  if (PROTOBUF_PREDICT_FALSE(_internal_metadata_.have_unknown_fields())) {
+    target = ::PROTOBUF_NAMESPACE_ID::internal::WireFormat::InternalSerializeUnknownFieldsToArray(
+        _internal_metadata_.unknown_fields(), target, stream);
+  }
+  // @@protoc_insertion_point(serialize_to_array_end:mavsdk.rpc.mocap.AttitudePositionMocap)
+  return target;
+}
+
+size_t AttitudePositionMocap::ByteSizeLong() const {
+// @@protoc_insertion_point(message_byte_size_start:mavsdk.rpc.mocap.AttitudePositionMocap)
+  size_t total_size = 0;
+
+  ::PROTOBUF_NAMESPACE_ID::uint32 cached_has_bits = 0;
+  // Prevent compiler warnings about cached_has_bits being unused
+  (void) cached_has_bits;
+
+  // .mavsdk.rpc.mocap.Quaternion q = 2;
+  if (this->has_q()) {
+    total_size += 1 +
+      ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::MessageSize(
+        *q_);
+  }
+
+  // .mavsdk.rpc.mocap.PositionBody position_body = 3;
+  if (this->has_position_body()) {
+    total_size += 1 +
+      ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::MessageSize(
+        *position_body_);
+  }
+
+  // .mavsdk.rpc.mocap.Covariance pose_covariance = 4;
+  if (this->has_pose_covariance()) {
+    total_size += 1 +
+      ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::MessageSize(
+        *pose_covariance_);
+  }
+
+  // uint64 time_usec = 1;
+  if (this->time_usec() != 0) {
+    total_size += 1 +
+      ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::UInt64Size(
+        this->_internal_time_usec());
+  }
+
+  if (PROTOBUF_PREDICT_FALSE(_internal_metadata_.have_unknown_fields())) {
+    return ::PROTOBUF_NAMESPACE_ID::internal::ComputeUnknownFieldsSize(
+        _internal_metadata_, total_size, &_cached_size_);
+  }
+  int cached_size = ::PROTOBUF_NAMESPACE_ID::internal::ToCachedSize(total_size);
+  SetCachedSize(cached_size);
+  return total_size;
+}
+
+void AttitudePositionMocap::MergeFrom(const ::PROTOBUF_NAMESPACE_ID::Message& from) {
+// @@protoc_insertion_point(generalized_merge_from_start:mavsdk.rpc.mocap.AttitudePositionMocap)
+  GOOGLE_DCHECK_NE(&from, this);
+  const AttitudePositionMocap* source =
+      ::PROTOBUF_NAMESPACE_ID::DynamicCastToGenerated<AttitudePositionMocap>(
+          &from);
+  if (source == nullptr) {
+  // @@protoc_insertion_point(generalized_merge_from_cast_fail:mavsdk.rpc.mocap.AttitudePositionMocap)
+    ::PROTOBUF_NAMESPACE_ID::internal::ReflectionOps::Merge(from, this);
+  } else {
+  // @@protoc_insertion_point(generalized_merge_from_cast_success:mavsdk.rpc.mocap.AttitudePositionMocap)
+    MergeFrom(*source);
+  }
+}
+
+void AttitudePositionMocap::MergeFrom(const AttitudePositionMocap& from) {
+// @@protoc_insertion_point(class_specific_merge_from_start:mavsdk.rpc.mocap.AttitudePositionMocap)
+  GOOGLE_DCHECK_NE(&from, this);
+  _internal_metadata_.MergeFrom(from._internal_metadata_);
+  ::PROTOBUF_NAMESPACE_ID::uint32 cached_has_bits = 0;
+  (void) cached_has_bits;
+
+  if (from.has_q()) {
+    _internal_mutable_q()->::mavsdk::rpc::mocap::Quaternion::MergeFrom(from._internal_q());
+  }
+  if (from.has_position_body()) {
+    _internal_mutable_position_body()->::mavsdk::rpc::mocap::PositionBody::MergeFrom(from._internal_position_body());
+  }
+  if (from.has_pose_covariance()) {
+    _internal_mutable_pose_covariance()->::mavsdk::rpc::mocap::Covariance::MergeFrom(from._internal_pose_covariance());
+  }
+  if (from.time_usec() != 0) {
+    _internal_set_time_usec(from._internal_time_usec());
+  }
+}
+
+void AttitudePositionMocap::CopyFrom(const ::PROTOBUF_NAMESPACE_ID::Message& from) {
+// @@protoc_insertion_point(generalized_copy_from_start:mavsdk.rpc.mocap.AttitudePositionMocap)
+  if (&from == this) return;
+  Clear();
+  MergeFrom(from);
+}
+
+void AttitudePositionMocap::CopyFrom(const AttitudePositionMocap& from) {
+// @@protoc_insertion_point(class_specific_copy_from_start:mavsdk.rpc.mocap.AttitudePositionMocap)
+  if (&from == this) return;
+  Clear();
+  MergeFrom(from);
+}
+
+bool AttitudePositionMocap::IsInitialized() const {
+  return true;
+}
+
+void AttitudePositionMocap::InternalSwap(AttitudePositionMocap* other) {
+  using std::swap;
+  _internal_metadata_.Swap(&other->_internal_metadata_);
+  swap(q_, other->q_);
+  swap(position_body_, other->position_body_);
+  swap(pose_covariance_, other->pose_covariance_);
+  swap(time_usec_, other->time_usec_);
+}
+
+::PROTOBUF_NAMESPACE_ID::Metadata AttitudePositionMocap::GetMetadata() const {
+  return GetMetadataStatic();
+}
+
+
+// ===================================================================
+
+void Odometry::InitAsDefaultInstance() {
+  ::mavsdk::rpc::mocap::_Odometry_default_instance_._instance.get_mutable()->position_body_ = const_cast< ::mavsdk::rpc::mocap::PositionBody*>(
+      ::mavsdk::rpc::mocap::PositionBody::internal_default_instance());
+  ::mavsdk::rpc::mocap::_Odometry_default_instance_._instance.get_mutable()->q_ = const_cast< ::mavsdk::rpc::mocap::Quaternion*>(
+      ::mavsdk::rpc::mocap::Quaternion::internal_default_instance());
+  ::mavsdk::rpc::mocap::_Odometry_default_instance_._instance.get_mutable()->speed_body_ = const_cast< ::mavsdk::rpc::mocap::SpeedBody*>(
+      ::mavsdk::rpc::mocap::SpeedBody::internal_default_instance());
+  ::mavsdk::rpc::mocap::_Odometry_default_instance_._instance.get_mutable()->angular_velocity_body_ = const_cast< ::mavsdk::rpc::mocap::AngularVelocityBody*>(
+      ::mavsdk::rpc::mocap::AngularVelocityBody::internal_default_instance());
+  ::mavsdk::rpc::mocap::_Odometry_default_instance_._instance.get_mutable()->pose_covariance_ = const_cast< ::mavsdk::rpc::mocap::Covariance*>(
+      ::mavsdk::rpc::mocap::Covariance::internal_default_instance());
+  ::mavsdk::rpc::mocap::_Odometry_default_instance_._instance.get_mutable()->velocity_covariance_ = const_cast< ::mavsdk::rpc::mocap::Covariance*>(
+      ::mavsdk::rpc::mocap::Covariance::internal_default_instance());
+}
+class Odometry::_Internal {
+ public:
+  static const ::mavsdk::rpc::mocap::PositionBody& position_body(const Odometry* msg);
+  static const ::mavsdk::rpc::mocap::Quaternion& q(const Odometry* msg);
+  static const ::mavsdk::rpc::mocap::SpeedBody& speed_body(const Odometry* msg);
+  static const ::mavsdk::rpc::mocap::AngularVelocityBody& angular_velocity_body(const Odometry* msg);
+  static const ::mavsdk::rpc::mocap::Covariance& pose_covariance(const Odometry* msg);
+  static const ::mavsdk::rpc::mocap::Covariance& velocity_covariance(const Odometry* msg);
+};
+
+const ::mavsdk::rpc::mocap::PositionBody&
+Odometry::_Internal::position_body(const Odometry* msg) {
+  return *msg->position_body_;
+}
+const ::mavsdk::rpc::mocap::Quaternion&
+Odometry::_Internal::q(const Odometry* msg) {
+  return *msg->q_;
+}
+const ::mavsdk::rpc::mocap::SpeedBody&
+Odometry::_Internal::speed_body(const Odometry* msg) {
+  return *msg->speed_body_;
+}
+const ::mavsdk::rpc::mocap::AngularVelocityBody&
+Odometry::_Internal::angular_velocity_body(const Odometry* msg) {
+  return *msg->angular_velocity_body_;
+}
+const ::mavsdk::rpc::mocap::Covariance&
+Odometry::_Internal::pose_covariance(const Odometry* msg) {
+  return *msg->pose_covariance_;
+}
+const ::mavsdk::rpc::mocap::Covariance&
+Odometry::_Internal::velocity_covariance(const Odometry* msg) {
+  return *msg->velocity_covariance_;
+}
+Odometry::Odometry()
+  : ::PROTOBUF_NAMESPACE_ID::Message(), _internal_metadata_(nullptr) {
+  SharedCtor();
+  // @@protoc_insertion_point(constructor:mavsdk.rpc.mocap.Odometry)
+}
+Odometry::Odometry(const Odometry& from)
+  : ::PROTOBUF_NAMESPACE_ID::Message(),
+      _internal_metadata_(nullptr) {
+  _internal_metadata_.MergeFrom(from._internal_metadata_);
+  if (from._internal_has_position_body()) {
+    position_body_ = new ::mavsdk::rpc::mocap::PositionBody(*from.position_body_);
+  } else {
+    position_body_ = nullptr;
+  }
+  if (from._internal_has_q()) {
+    q_ = new ::mavsdk::rpc::mocap::Quaternion(*from.q_);
+  } else {
+    q_ = nullptr;
+  }
+  if (from._internal_has_speed_body()) {
+    speed_body_ = new ::mavsdk::rpc::mocap::SpeedBody(*from.speed_body_);
+  } else {
+    speed_body_ = nullptr;
+  }
+  if (from._internal_has_angular_velocity_body()) {
+    angular_velocity_body_ = new ::mavsdk::rpc::mocap::AngularVelocityBody(*from.angular_velocity_body_);
+  } else {
+    angular_velocity_body_ = nullptr;
+  }
+  if (from._internal_has_pose_covariance()) {
+    pose_covariance_ = new ::mavsdk::rpc::mocap::Covariance(*from.pose_covariance_);
+  } else {
+    pose_covariance_ = nullptr;
+  }
+  if (from._internal_has_velocity_covariance()) {
+    velocity_covariance_ = new ::mavsdk::rpc::mocap::Covariance(*from.velocity_covariance_);
+  } else {
+    velocity_covariance_ = nullptr;
+  }
+  ::memcpy(&time_usec_, &from.time_usec_,
+    static_cast<size_t>(reinterpret_cast<char*>(&frame_id_) -
+    reinterpret_cast<char*>(&time_usec_)) + sizeof(frame_id_));
+  // @@protoc_insertion_point(copy_constructor:mavsdk.rpc.mocap.Odometry)
+}
+
+void Odometry::SharedCtor() {
+  ::PROTOBUF_NAMESPACE_ID::internal::InitSCC(&scc_info_Odometry_mocap_2fmocap_2eproto.base);
+  ::memset(&position_body_, 0, static_cast<size_t>(
+      reinterpret_cast<char*>(&frame_id_) -
+      reinterpret_cast<char*>(&position_body_)) + sizeof(frame_id_));
+}
+
+Odometry::~Odometry() {
+  // @@protoc_insertion_point(destructor:mavsdk.rpc.mocap.Odometry)
+  SharedDtor();
+}
+
+void Odometry::SharedDtor() {
+  if (this != internal_default_instance()) delete position_body_;
+  if (this != internal_default_instance()) delete q_;
+  if (this != internal_default_instance()) delete speed_body_;
+  if (this != internal_default_instance()) delete angular_velocity_body_;
+  if (this != internal_default_instance()) delete pose_covariance_;
+  if (this != internal_default_instance()) delete velocity_covariance_;
+}
+
+void Odometry::SetCachedSize(int size) const {
+  _cached_size_.Set(size);
+}
+const Odometry& Odometry::default_instance() {
+  ::PROTOBUF_NAMESPACE_ID::internal::InitSCC(&::scc_info_Odometry_mocap_2fmocap_2eproto.base);
+  return *internal_default_instance();
+}
+
+
+void Odometry::Clear() {
+// @@protoc_insertion_point(message_clear_start:mavsdk.rpc.mocap.Odometry)
+  ::PROTOBUF_NAMESPACE_ID::uint32 cached_has_bits = 0;
+  // Prevent compiler warnings about cached_has_bits being unused
+  (void) cached_has_bits;
+
+  if (GetArenaNoVirtual() == nullptr && position_body_ != nullptr) {
+    delete position_body_;
+  }
+  position_body_ = nullptr;
+  if (GetArenaNoVirtual() == nullptr && q_ != nullptr) {
+    delete q_;
+  }
+  q_ = nullptr;
+  if (GetArenaNoVirtual() == nullptr && speed_body_ != nullptr) {
+    delete speed_body_;
+  }
+  speed_body_ = nullptr;
+  if (GetArenaNoVirtual() == nullptr && angular_velocity_body_ != nullptr) {
+    delete angular_velocity_body_;
+  }
+  angular_velocity_body_ = nullptr;
+  if (GetArenaNoVirtual() == nullptr && pose_covariance_ != nullptr) {
+    delete pose_covariance_;
+  }
+  pose_covariance_ = nullptr;
+  if (GetArenaNoVirtual() == nullptr && velocity_covariance_ != nullptr) {
+    delete velocity_covariance_;
+  }
+  velocity_covariance_ = nullptr;
+  ::memset(&time_usec_, 0, static_cast<size_t>(
+      reinterpret_cast<char*>(&frame_id_) -
+      reinterpret_cast<char*>(&time_usec_)) + sizeof(frame_id_));
+  _internal_metadata_.Clear();
+}
+
+const char* Odometry::_InternalParse(const char* ptr, ::PROTOBUF_NAMESPACE_ID::internal::ParseContext* ctx) {
+#define CHK_(x) if (PROTOBUF_PREDICT_FALSE(!(x))) goto failure
+  while (!ctx->Done(&ptr)) {
+    ::PROTOBUF_NAMESPACE_ID::uint32 tag;
+    ptr = ::PROTOBUF_NAMESPACE_ID::internal::ReadTag(ptr, &tag);
+    CHK_(ptr);
+    switch (tag >> 3) {
+      // uint64 time_usec = 1;
+      case 1:
+        if (PROTOBUF_PREDICT_TRUE(static_cast<::PROTOBUF_NAMESPACE_ID::uint8>(tag) == 8)) {
+          time_usec_ = ::PROTOBUF_NAMESPACE_ID::internal::ReadVarint(&ptr);
+          CHK_(ptr);
+        } else goto handle_unusual;
+        continue;
+      // .mavsdk.rpc.mocap.Odometry.MavFrame frame_id = 2;
+      case 2:
+        if (PROTOBUF_PREDICT_TRUE(static_cast<::PROTOBUF_NAMESPACE_ID::uint8>(tag) == 16)) {
+          ::PROTOBUF_NAMESPACE_ID::uint64 val = ::PROTOBUF_NAMESPACE_ID::internal::ReadVarint(&ptr);
+          CHK_(ptr);
+          _internal_set_frame_id(static_cast<::mavsdk::rpc::mocap::Odometry_MavFrame>(val));
+        } else goto handle_unusual;
+        continue;
+      // .mavsdk.rpc.mocap.PositionBody position_body = 3;
+      case 3:
+        if (PROTOBUF_PREDICT_TRUE(static_cast<::PROTOBUF_NAMESPACE_ID::uint8>(tag) == 26)) {
+          ptr = ctx->ParseMessage(_internal_mutable_position_body(), ptr);
+          CHK_(ptr);
+        } else goto handle_unusual;
+        continue;
+      // .mavsdk.rpc.mocap.Quaternion q = 4;
+      case 4:
+        if (PROTOBUF_PREDICT_TRUE(static_cast<::PROTOBUF_NAMESPACE_ID::uint8>(tag) == 34)) {
+          ptr = ctx->ParseMessage(_internal_mutable_q(), ptr);
+          CHK_(ptr);
+        } else goto handle_unusual;
+        continue;
+      // .mavsdk.rpc.mocap.SpeedBody speed_body = 5;
+      case 5:
+        if (PROTOBUF_PREDICT_TRUE(static_cast<::PROTOBUF_NAMESPACE_ID::uint8>(tag) == 42)) {
+          ptr = ctx->ParseMessage(_internal_mutable_speed_body(), ptr);
+          CHK_(ptr);
+        } else goto handle_unusual;
+        continue;
+      // .mavsdk.rpc.mocap.AngularVelocityBody angular_velocity_body = 6;
+      case 6:
+        if (PROTOBUF_PREDICT_TRUE(static_cast<::PROTOBUF_NAMESPACE_ID::uint8>(tag) == 50)) {
+          ptr = ctx->ParseMessage(_internal_mutable_angular_velocity_body(), ptr);
+          CHK_(ptr);
+        } else goto handle_unusual;
+        continue;
+      // .mavsdk.rpc.mocap.Covariance pose_covariance = 7;
+      case 7:
+        if (PROTOBUF_PREDICT_TRUE(static_cast<::PROTOBUF_NAMESPACE_ID::uint8>(tag) == 58)) {
+          ptr = ctx->ParseMessage(_internal_mutable_pose_covariance(), ptr);
+          CHK_(ptr);
+        } else goto handle_unusual;
+        continue;
+      // .mavsdk.rpc.mocap.Covariance velocity_covariance = 8;
+      case 8:
+        if (PROTOBUF_PREDICT_TRUE(static_cast<::PROTOBUF_NAMESPACE_ID::uint8>(tag) == 66)) {
+          ptr = ctx->ParseMessage(_internal_mutable_velocity_covariance(), ptr);
+          CHK_(ptr);
+        } else goto handle_unusual;
+        continue;
+      default: {
+      handle_unusual:
+        if ((tag & 7) == 4 || tag == 0) {
+          ctx->SetLastTag(tag);
+          goto success;
+        }
+        ptr = UnknownFieldParse(tag, &_internal_metadata_, ptr, ctx);
+        CHK_(ptr != nullptr);
+        continue;
+      }
+    }  // switch
+  }  // while
+success:
+  return ptr;
+failure:
+  ptr = nullptr;
+  goto success;
+#undef CHK_
+}
+
+::PROTOBUF_NAMESPACE_ID::uint8* Odometry::_InternalSerialize(
+    ::PROTOBUF_NAMESPACE_ID::uint8* target, ::PROTOBUF_NAMESPACE_ID::io::EpsCopyOutputStream* stream) const {
+  // @@protoc_insertion_point(serialize_to_array_start:mavsdk.rpc.mocap.Odometry)
+  ::PROTOBUF_NAMESPACE_ID::uint32 cached_has_bits = 0;
+  (void) cached_has_bits;
+
+  // uint64 time_usec = 1;
+  if (this->time_usec() != 0) {
+    target = stream->EnsureSpace(target);
+    target = ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::WriteUInt64ToArray(1, this->_internal_time_usec(), target);
+  }
+
+  // .mavsdk.rpc.mocap.Odometry.MavFrame frame_id = 2;
+  if (this->frame_id() != 0) {
+    target = stream->EnsureSpace(target);
+    target = ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::WriteEnumToArray(
+      2, this->_internal_frame_id(), target);
+  }
+
+  // .mavsdk.rpc.mocap.PositionBody position_body = 3;
+  if (this->has_position_body()) {
+    target = stream->EnsureSpace(target);
+    target = ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::
+      InternalWriteMessage(
+        3, _Internal::position_body(this), target, stream);
+  }
+
+  // .mavsdk.rpc.mocap.Quaternion q = 4;
+  if (this->has_q()) {
+    target = stream->EnsureSpace(target);
+    target = ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::
+      InternalWriteMessage(
+        4, _Internal::q(this), target, stream);
+  }
+
+  // .mavsdk.rpc.mocap.SpeedBody speed_body = 5;
+  if (this->has_speed_body()) {
+    target = stream->EnsureSpace(target);
+    target = ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::
+      InternalWriteMessage(
+        5, _Internal::speed_body(this), target, stream);
+  }
+
+  // .mavsdk.rpc.mocap.AngularVelocityBody angular_velocity_body = 6;
+  if (this->has_angular_velocity_body()) {
+    target = stream->EnsureSpace(target);
+    target = ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::
+      InternalWriteMessage(
+        6, _Internal::angular_velocity_body(this), target, stream);
+  }
+
+  // .mavsdk.rpc.mocap.Covariance pose_covariance = 7;
+  if (this->has_pose_covariance()) {
+    target = stream->EnsureSpace(target);
+    target = ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::
+      InternalWriteMessage(
+        7, _Internal::pose_covariance(this), target, stream);
+  }
+
+  // .mavsdk.rpc.mocap.Covariance velocity_covariance = 8;
+  if (this->has_velocity_covariance()) {
+    target = stream->EnsureSpace(target);
+    target = ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::
+      InternalWriteMessage(
+        8, _Internal::velocity_covariance(this), target, stream);
+  }
+
+  if (PROTOBUF_PREDICT_FALSE(_internal_metadata_.have_unknown_fields())) {
+    target = ::PROTOBUF_NAMESPACE_ID::internal::WireFormat::InternalSerializeUnknownFieldsToArray(
+        _internal_metadata_.unknown_fields(), target, stream);
+  }
+  // @@protoc_insertion_point(serialize_to_array_end:mavsdk.rpc.mocap.Odometry)
+  return target;
+}
+
+size_t Odometry::ByteSizeLong() const {
+// @@protoc_insertion_point(message_byte_size_start:mavsdk.rpc.mocap.Odometry)
+  size_t total_size = 0;
+
+  ::PROTOBUF_NAMESPACE_ID::uint32 cached_has_bits = 0;
+  // Prevent compiler warnings about cached_has_bits being unused
+  (void) cached_has_bits;
+
+  // .mavsdk.rpc.mocap.PositionBody position_body = 3;
+  if (this->has_position_body()) {
+    total_size += 1 +
+      ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::MessageSize(
+        *position_body_);
+  }
+
+  // .mavsdk.rpc.mocap.Quaternion q = 4;
+  if (this->has_q()) {
+    total_size += 1 +
+      ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::MessageSize(
+        *q_);
+  }
+
+  // .mavsdk.rpc.mocap.SpeedBody speed_body = 5;
+  if (this->has_speed_body()) {
+    total_size += 1 +
+      ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::MessageSize(
+        *speed_body_);
+  }
+
+  // .mavsdk.rpc.mocap.AngularVelocityBody angular_velocity_body = 6;
+  if (this->has_angular_velocity_body()) {
+    total_size += 1 +
+      ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::MessageSize(
+        *angular_velocity_body_);
+  }
+
+  // .mavsdk.rpc.mocap.Covariance pose_covariance = 7;
+  if (this->has_pose_covariance()) {
+    total_size += 1 +
+      ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::MessageSize(
+        *pose_covariance_);
+  }
+
+  // .mavsdk.rpc.mocap.Covariance velocity_covariance = 8;
+  if (this->has_velocity_covariance()) {
+    total_size += 1 +
+      ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::MessageSize(
+        *velocity_covariance_);
+  }
+
+  // uint64 time_usec = 1;
+  if (this->time_usec() != 0) {
+    total_size += 1 +
+      ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::UInt64Size(
+        this->_internal_time_usec());
+  }
+
+  // .mavsdk.rpc.mocap.Odometry.MavFrame frame_id = 2;
+  if (this->frame_id() != 0) {
+    total_size += 1 +
+      ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::EnumSize(this->_internal_frame_id());
+  }
+
+  if (PROTOBUF_PREDICT_FALSE(_internal_metadata_.have_unknown_fields())) {
+    return ::PROTOBUF_NAMESPACE_ID::internal::ComputeUnknownFieldsSize(
+        _internal_metadata_, total_size, &_cached_size_);
+  }
+  int cached_size = ::PROTOBUF_NAMESPACE_ID::internal::ToCachedSize(total_size);
+  SetCachedSize(cached_size);
+  return total_size;
+}
+
+void Odometry::MergeFrom(const ::PROTOBUF_NAMESPACE_ID::Message& from) {
+// @@protoc_insertion_point(generalized_merge_from_start:mavsdk.rpc.mocap.Odometry)
+  GOOGLE_DCHECK_NE(&from, this);
+  const Odometry* source =
+      ::PROTOBUF_NAMESPACE_ID::DynamicCastToGenerated<Odometry>(
+          &from);
+  if (source == nullptr) {
+  // @@protoc_insertion_point(generalized_merge_from_cast_fail:mavsdk.rpc.mocap.Odometry)
+    ::PROTOBUF_NAMESPACE_ID::internal::ReflectionOps::Merge(from, this);
+  } else {
+  // @@protoc_insertion_point(generalized_merge_from_cast_success:mavsdk.rpc.mocap.Odometry)
+    MergeFrom(*source);
+  }
+}
+
+void Odometry::MergeFrom(const Odometry& from) {
+// @@protoc_insertion_point(class_specific_merge_from_start:mavsdk.rpc.mocap.Odometry)
+  GOOGLE_DCHECK_NE(&from, this);
+  _internal_metadata_.MergeFrom(from._internal_metadata_);
+  ::PROTOBUF_NAMESPACE_ID::uint32 cached_has_bits = 0;
+  (void) cached_has_bits;
+
+  if (from.has_position_body()) {
+    _internal_mutable_position_body()->::mavsdk::rpc::mocap::PositionBody::MergeFrom(from._internal_position_body());
+  }
+  if (from.has_q()) {
+    _internal_mutable_q()->::mavsdk::rpc::mocap::Quaternion::MergeFrom(from._internal_q());
+  }
+  if (from.has_speed_body()) {
+    _internal_mutable_speed_body()->::mavsdk::rpc::mocap::SpeedBody::MergeFrom(from._internal_speed_body());
+  }
+  if (from.has_angular_velocity_body()) {
+    _internal_mutable_angular_velocity_body()->::mavsdk::rpc::mocap::AngularVelocityBody::MergeFrom(from._internal_angular_velocity_body());
+  }
+  if (from.has_pose_covariance()) {
+    _internal_mutable_pose_covariance()->::mavsdk::rpc::mocap::Covariance::MergeFrom(from._internal_pose_covariance());
+  }
+  if (from.has_velocity_covariance()) {
+    _internal_mutable_velocity_covariance()->::mavsdk::rpc::mocap::Covariance::MergeFrom(from._internal_velocity_covariance());
+  }
+  if (from.time_usec() != 0) {
+    _internal_set_time_usec(from._internal_time_usec());
+  }
+  if (from.frame_id() != 0) {
+    _internal_set_frame_id(from._internal_frame_id());
+  }
+}
+
+void Odometry::CopyFrom(const ::PROTOBUF_NAMESPACE_ID::Message& from) {
+// @@protoc_insertion_point(generalized_copy_from_start:mavsdk.rpc.mocap.Odometry)
+  if (&from == this) return;
+  Clear();
+  MergeFrom(from);
+}
+
+void Odometry::CopyFrom(const Odometry& from) {
+// @@protoc_insertion_point(class_specific_copy_from_start:mavsdk.rpc.mocap.Odometry)
+  if (&from == this) return;
+  Clear();
+  MergeFrom(from);
+}
+
+bool Odometry::IsInitialized() const {
+  return true;
+}
+
+void Odometry::InternalSwap(Odometry* other) {
+  using std::swap;
+  _internal_metadata_.Swap(&other->_internal_metadata_);
+  swap(position_body_, other->position_body_);
+  swap(q_, other->q_);
+  swap(speed_body_, other->speed_body_);
+  swap(angular_velocity_body_, other->angular_velocity_body_);
+  swap(pose_covariance_, other->pose_covariance_);
+  swap(velocity_covariance_, other->velocity_covariance_);
+  swap(time_usec_, other->time_usec_);
+  swap(frame_id_, other->frame_id_);
+}
+
+::PROTOBUF_NAMESPACE_ID::Metadata Odometry::GetMetadata() const {
+  return GetMetadataStatic();
+}
+
+
+// ===================================================================
+
 void MocapResult::InitAsDefaultInstance() {
 }
 class MocapResult::_Internal {
@@ -4617,15 +4620,6 @@ template<> PROTOBUF_NOINLINE ::mavsdk::rpc::mocap::SetOdometryRequest* Arena::Cr
 template<> PROTOBUF_NOINLINE ::mavsdk::rpc::mocap::SetOdometryResponse* Arena::CreateMaybeMessage< ::mavsdk::rpc::mocap::SetOdometryResponse >(Arena* arena) {
   return Arena::CreateInternal< ::mavsdk::rpc::mocap::SetOdometryResponse >(arena);
 }
-template<> PROTOBUF_NOINLINE ::mavsdk::rpc::mocap::VisionPositionEstimate* Arena::CreateMaybeMessage< ::mavsdk::rpc::mocap::VisionPositionEstimate >(Arena* arena) {
-  return Arena::CreateInternal< ::mavsdk::rpc::mocap::VisionPositionEstimate >(arena);
-}
-template<> PROTOBUF_NOINLINE ::mavsdk::rpc::mocap::AttitudePositionMocap* Arena::CreateMaybeMessage< ::mavsdk::rpc::mocap::AttitudePositionMocap >(Arena* arena) {
-  return Arena::CreateInternal< ::mavsdk::rpc::mocap::AttitudePositionMocap >(arena);
-}
-template<> PROTOBUF_NOINLINE ::mavsdk::rpc::mocap::Odometry* Arena::CreateMaybeMessage< ::mavsdk::rpc::mocap::Odometry >(Arena* arena) {
-  return Arena::CreateInternal< ::mavsdk::rpc::mocap::Odometry >(arena);
-}
 template<> PROTOBUF_NOINLINE ::mavsdk::rpc::mocap::PositionBody* Arena::CreateMaybeMessage< ::mavsdk::rpc::mocap::PositionBody >(Arena* arena) {
   return Arena::CreateInternal< ::mavsdk::rpc::mocap::PositionBody >(arena);
 }
@@ -4643,6 +4637,15 @@ template<> PROTOBUF_NOINLINE ::mavsdk::rpc::mocap::Covariance* Arena::CreateMayb
 }
 template<> PROTOBUF_NOINLINE ::mavsdk::rpc::mocap::Quaternion* Arena::CreateMaybeMessage< ::mavsdk::rpc::mocap::Quaternion >(Arena* arena) {
   return Arena::CreateInternal< ::mavsdk::rpc::mocap::Quaternion >(arena);
+}
+template<> PROTOBUF_NOINLINE ::mavsdk::rpc::mocap::VisionPositionEstimate* Arena::CreateMaybeMessage< ::mavsdk::rpc::mocap::VisionPositionEstimate >(Arena* arena) {
+  return Arena::CreateInternal< ::mavsdk::rpc::mocap::VisionPositionEstimate >(arena);
+}
+template<> PROTOBUF_NOINLINE ::mavsdk::rpc::mocap::AttitudePositionMocap* Arena::CreateMaybeMessage< ::mavsdk::rpc::mocap::AttitudePositionMocap >(Arena* arena) {
+  return Arena::CreateInternal< ::mavsdk::rpc::mocap::AttitudePositionMocap >(arena);
+}
+template<> PROTOBUF_NOINLINE ::mavsdk::rpc::mocap::Odometry* Arena::CreateMaybeMessage< ::mavsdk::rpc::mocap::Odometry >(Arena* arena) {
+  return Arena::CreateInternal< ::mavsdk::rpc::mocap::Odometry >(arena);
 }
 template<> PROTOBUF_NOINLINE ::mavsdk::rpc::mocap::MocapResult* Arena::CreateMaybeMessage< ::mavsdk::rpc::mocap::MocapResult >(Arena* arena) {
   return Arena::CreateInternal< ::mavsdk::rpc::mocap::MocapResult >(arena);

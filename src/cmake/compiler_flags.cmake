@@ -10,6 +10,9 @@ if(MSVC)
     # Needed by gRPC headers
     add_definitions(-D_WIN32_WINNT=0x0600)
 
+    # Needed by big auto-generated grpc/protobuf header files
+    add_definitions(-bigobj)
+
     # We need this so Windows links to e.g. mavsdk_telemetry.dll.
     # Without this option it will look for mavsdk_telemetry.lib and fail.
     option(CMAKE_WINDOWS_EXPORT_ALL_SYMBOLS "Export all symbols on Windows" ON)
@@ -28,6 +31,9 @@ else()
 
 
     if(CMAKE_CXX_COMPILER_ID STREQUAL "GNU")
+        if(CMAKE_CXX_COMPILER_VERSION VERSION_LESS 5)
+            set(warnings "${warnings} -Wno-shadow -Wno-effc++")
+        endif()
         if(CMAKE_CXX_COMPILER_VERSION VERSION_GREATER 6)
             set(warnings "${warnings} -Wduplicated-cond -Wnull-dereference")
         endif()
@@ -58,8 +64,27 @@ if(IOS)
     add_definitions("-DIOS")
 endif()
 
+if(ANDROID)
+    add_definitions("-DANDROID")
+endif()
+
 if(UNIX AND NOT APPLE)
     add_definitions("-DLINUX")
+endif()
+
+if(ASAN)
+    set(CMAKE_C_FLAGS "-fsanitize=address ${CMAKE_C_FLAGS}")
+    set(CMAKE_CXX_FLAGS "-fsanitize=address ${CMAKE_C_FLAGS}")
+endif()
+
+if(UBSAN)
+    set(CMAKE_C_FLAGS "-fsanitize=undefined ${CMAKE_C_FLAGS}")
+    set(CMAKE_CXX_FLAGS "-fsanitize=undefined ${CMAKE_C_FLAGS}")
+endif()
+
+if(LSAN)
+    set(CMAKE_C_FLAGS "-fsanitize=leak ${CMAKE_C_FLAGS}")
+    set(CMAKE_CXX_FLAGS "-fsanitize=leak ${CMAKE_C_FLAGS}")
 endif()
 
 set(CMAKE_CXX_FLAGS_COVERAGE "${CMAKE_CXX_FLAGS_COVERAGE} --coverage")

@@ -208,21 +208,21 @@ def markdown_any_tag(aTag, html=False,para=True,consume=False):
     elif aTag.tag=='simplesect':
         if aTag.attrib['kind']=='see' or aTag.attrib['kind']=='return':
             #Handle @note (note) and @sa (see) tags.
-            # Note we should ONLY see this via the detaileddescription handling 
+            # Note we should ONLY see this via the detaileddescription handling
             # Because children that are simplesect are not parsed.
             tag_text=lead_text+child_text+tail_text
 
-        #Convert "note" types     
+        #Convert "note" types
         if aTag.attrib['kind']=='warning' or aTag.attrib['kind']=='note' or aTag.attrib['kind']=='attention':
-            #print('Debug: kind %s' % aTag.attrib['kind'])  
-            noteTypeText=aTag.attrib['kind'].capitalize()            
+            #print('Debug: kind %s' % aTag.attrib['kind'])
+            noteTypeText=aTag.attrib['kind'].capitalize()
             if para:
                  if html:
                      tag_text='<p>'+lead_text+'<b>'+noteTypeText+': </b> '+child_text+'</p>'+tail_text
                  else: # ONLY THIS PATH TESTED (others should not occur, but leaving in as standard.
                      tag_text='\n\n> **'+noteTypeText+'** '+lead_text.strip()+child_text.strip()+'\n\n'+tail_text.strip()
             else: #para disabled, render without them.
-                tag_text='\n\n> **'+noteTypeText+'** '+ lead_text.strip()+child_text.strip()+tail_text.strip()        
+                tag_text='\n\n> **'+noteTypeText+'** '+ lead_text.strip()+child_text.strip()+tail_text.strip()
 
 
     elif aTag.tag=='verbatim':
@@ -316,7 +316,7 @@ class cppAttribute:
         #Get value of initialiser with no tags (won't work in code block)
         value_initializer =''
         temp_initializer = markdown_any_tag(self.initializer).strip()
-        if not temp_initializer: 
+        if not temp_initializer:
             pass #Empty initializer
             self.initializer=''
         else:
@@ -332,11 +332,11 @@ class cppAttribute:
                 value_initializer=" "+value_initializer.strip()
             #print('value_initializer: %s' % value_initializer)
 
-            
+
 
         output_string+='\n```cpp\n%s%s\n```\n' % (markdown_any_tag(self.definition).strip(),value_initializer)
-        
-        
+
+
         output_string+='\n\n%s' % markdown_any_tag(self.briefdescription).strip()
         output_string+='\n\n%s' % markdown_any_tag(self.detaileddescription).strip()
 
@@ -716,7 +716,7 @@ class cppFunction:
         # Print function in overview
         return_type=markdown_any_tag(self.return_type).strip()
         if not return_type:
-            return_type = '&nbsp;' 
+            return_type = '&nbsp;'
         output_string='%s | [%s](#%s) %s | %s\n\n' % (return_type, self.name, self.id, self.argsstring2.strip(),markdown_any_tag(self.briefdescription).strip())
         return output_string
 
@@ -1157,7 +1157,7 @@ class cppNamespace:
             outputstring+='\n\n## Data Structures\n'
             for the_structure in self.inner_classes:
                 outputstring+='\n* [%s](%s.md)' % (the_structure.name,the_structure.id)
-            
+
         if len(self.enumerations)>0:
             outputstring+='\n\n## Enumerations\n'
             outputstring+='\nType | Description'
@@ -1248,7 +1248,7 @@ for root, dirs, files in os.walk(DOXYGEN_XML_DIR, topdown=False):
             print("  Generating: %s (namespace xml index file)" % current_filename)
             currentNamespace=cppNamespace()
             currentNamespace.import_doxygen_namespace_file(name,current_filename)
-            
+
             markdown_string=currentNamespace.markdown()
             outputfile_name=DOXYGEN_OUTPUT_DIR+'/'+name[:-4]+'.md'
 

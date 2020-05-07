@@ -11,7 +11,7 @@
 
 using namespace mavsdk;
 
-static std::shared_ptr<MissionItem> add_waypoint(
+static Mission::MissionItem add_waypoint(
     double latitude_deg,
     double longitude_deg,
     float relative_altitude_m,
@@ -26,7 +26,7 @@ TEST_F(SitlTest, MissionUploadCancellation)
     Mavsdk dc;
 
     ConnectionResult ret = dc.add_udp_connection();
-    ASSERT_EQ(ret, ConnectionResult::SUCCESS);
+    ASSERT_EQ(ret, ConnectionResult::Success);
 
     // Wait for system to connect via heartbeat.
     ASSERT_TRUE(poll_condition_with_timeout(
@@ -37,19 +37,19 @@ TEST_F(SitlTest, MissionUploadCancellation)
 
     auto mission = std::make_shared<Mission>(system);
 
-    std::vector<std::shared_ptr<MissionItem>> mission_items;
+    Mission::MissionPlan mission_plan{};
 
     // We're going to try uploading 100 mission items.
     for (unsigned i = 0; i < 1000; ++i) {
-        mission_items.push_back(
+        mission_plan.mission_items.push_back(
             add_waypoint(47.3981703270545, 8.54564902186397, 20.0, 3.0, true, -90.0, 0.0, false));
     }
 
     std::promise<Mission::Result> prom{};
     std::future<Mission::Result> fut = prom.get_future();
 
-    mission->upload_mission_async(mission_items, [&prom](Mission::Result result) {
-        LogInfo() << "Upload mission result: " << Mission::result_str(result);
+    mission->upload_mission_async(mission_plan, [&prom](Mission::Result result) {
+        LogInfo() << "Upload mission result: " << result;
         prom.set_value(result);
     });
 
@@ -57,11 +57,14 @@ TEST_F(SitlTest, MissionUploadCancellation)
     auto future_status = fut.wait_for(std::chrono::milliseconds(100));
     EXPECT_EQ(future_status, std::future_status::timeout);
 
-    mission->upload_mission_cancel();
+    mission->cancel_mission_upload();
     future_status = fut.wait_for(std::chrono::milliseconds(200));
     EXPECT_EQ(future_status, std::future_status::ready);
     auto future_result = fut.get();
-    EXPECT_EQ(future_result, Mission::Result::CANCELLED);
+    EXPECT_EQ(future_result, Mission::Result::TransferCancelled);
+
+    // FIXME: older PX4 versions don't support CANCEL and need time to timeout.
+    std::this_thread::sleep_for(std::chrono::seconds(5));
 }
 
 TEST_F(SitlTest, MissionDownloadCancellation)
@@ -69,7 +72,7 @@ TEST_F(SitlTest, MissionDownloadCancellation)
     Mavsdk dc;
 
     ConnectionResult ret = dc.add_udp_connection();
-    ASSERT_EQ(ret, ConnectionResult::SUCCESS);
+    ASSERT_EQ(ret, ConnectionResult::Success);
 
     // Wait for system to connect via heartbeat.
     ASSERT_TRUE(poll_condition_with_timeout(
@@ -80,11 +83,11 @@ TEST_F(SitlTest, MissionDownloadCancellation)
 
     auto mission = std::make_shared<Mission>(system);
 
-    std::vector<std::shared_ptr<MissionItem>> mission_items;
+    Mission::MissionPlan mission_plan{};
 
     // We're going to try uploading 100 mission items.
     for (unsigned i = 0; i < 1000; ++i) {
-        mission_items.push_back(
+        mission_plan.mission_items.push_back(
             add_waypoint(47.3981703270545, 8.54564902186397, 20.0, 3.0, true, -90.0, 0.0, false));
     }
 
@@ -92,27 +95,23 @@ TEST_F(SitlTest, MissionDownloadCancellation)
         std::promise<Mission::Result> prom{};
         std::future<Mission::Result> fut = prom.get_future();
 
-        mission->upload_mission_async(mission_items, [&prom](Mission::Result result) {
-            LogInfo() << "Upload mission result: " << Mission::result_str(result);
+        mission->upload_mission_async(mission_plan, [&prom](Mission::Result result) {
+            LogInfo() << "Upload mission result: " << result;
             prom.set_value(result);
         });
 
         auto future_result = fut.get();
-        EXPECT_EQ(future_result, Mission::Result::SUCCESS);
+        EXPECT_EQ(future_result, Mission::Result::Success);
     }
-
-    mission_items.clear();
 
     {
         std::promise<Mission::Result> prom{};
         std::future<Mission::Result> fut = prom.get_future();
 
         mission->download_mission_async(
-            [&prom](
-                Mission::Result result,
-                std::vector<std::shared_ptr<MissionItem>> received_mission_items) {
-                UNUSED(received_mission_items);
-                LogInfo() << "Download mission result: " << Mission::result_str(result);
+            [&prom](Mission::Result result, Mission::MissionPlan received_mission_plan) {
+                UNUSED(received_mission_plan);
+                LogInfo() << "Download mission result: " << result;
                 prom.set_value(result);
             });
 
@@ -120,15 +119,18 @@ TEST_F(SitlTest, MissionDownloadCancellation)
         auto future_status = fut.wait_for(std::chrono::milliseconds(100));
         EXPECT_EQ(future_status, std::future_status::timeout);
 
-        mission->download_mission_cancel();
+        mission->cancel_mission_download();
         future_status = fut.wait_for(std::chrono::milliseconds(200));
         EXPECT_EQ(future_status, std::future_status::ready);
         auto future_result = fut.get();
-        EXPECT_EQ(future_result, Mission::Result::CANCELLED);
+        EXPECT_EQ(future_result, Mission::Result::TransferCancelled);
     }
+
+    // FIXME: older PX4 versions don't support CANCEL and need time to timeout.
+    std::this_thread::sleep_for(std::chrono::seconds(5));
 }
 
-std::shared_ptr<MissionItem> add_waypoint(
+Mission::MissionItem add_waypoint(
     double latitude_deg,
     double longitude_deg,
     float relative_altitude_m,
@@ -138,14 +140,17 @@ std::shared_ptr<MissionItem> add_waypoint(
     float gimbal_yaw_deg,
     bool take_photo)
 {
-    std::shared_ptr<MissionItem> new_item(new MissionItem());
-    new_item->set_position(latitude_deg, longitude_deg);
-    new_item->set_relative_altitude(relative_altitude_m);
-    new_item->set_speed(speed_m_s);
-    new_item->set_fly_through(is_fly_through);
-    new_item->set_gimbal_pitch_and_yaw(gimbal_pitch_deg, gimbal_yaw_deg);
+    Mission::MissionItem new_item{};
+    new_item.latitude_deg = latitude_deg;
+    new_item.longitude_deg = longitude_deg;
+    new_item.relative_altitude_m = relative_altitude_m;
+    new_item.speed_m_s = speed_m_s;
+    new_item.is_fly_through = is_fly_through;
+
+    new_item.gimbal_pitch_deg = gimbal_pitch_deg;
+    new_item.gimbal_yaw_deg = gimbal_yaw_deg;
     if (take_photo) {
-        new_item->set_camera_action(MissionItem::CameraAction::TAKE_PHOTO);
+        new_item.camera_action = Mission::MissionItem::CameraAction::TakePhoto;
     }
     return new_item;
 }

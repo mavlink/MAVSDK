@@ -48,7 +48,7 @@ struct TableStruct_gimbal_2fgimbal_2eproto {
     PROTOBUF_SECTION_VARIABLE(protodesc_cold);
   static const ::PROTOBUF_NAMESPACE_ID::internal::AuxillaryParseTableField aux[]
     PROTOBUF_SECTION_VARIABLE(protodesc_cold);
-  static const ::PROTOBUF_NAMESPACE_ID::internal::ParseTable schema[5]
+  static const ::PROTOBUF_NAMESPACE_ID::internal::ParseTable schema[7]
     PROTOBUF_SECTION_VARIABLE(protodesc_cold);
   static const ::PROTOBUF_NAMESPACE_ID::internal::FieldMetadata field_metadata[];
   static const ::PROTOBUF_NAMESPACE_ID::internal::SerializationTable serialization_table[];
@@ -73,6 +73,12 @@ extern SetPitchAndYawRequestDefaultTypeInternal _SetPitchAndYawRequest_default_i
 class SetPitchAndYawResponse;
 class SetPitchAndYawResponseDefaultTypeInternal;
 extern SetPitchAndYawResponseDefaultTypeInternal _SetPitchAndYawResponse_default_instance_;
+class SetRoiLocationRequest;
+class SetRoiLocationRequestDefaultTypeInternal;
+extern SetRoiLocationRequestDefaultTypeInternal _SetRoiLocationRequest_default_instance_;
+class SetRoiLocationResponse;
+class SetRoiLocationResponseDefaultTypeInternal;
+extern SetRoiLocationResponseDefaultTypeInternal _SetRoiLocationResponse_default_instance_;
 }  // namespace gimbal
 }  // namespace rpc
 }  // namespace mavsdk
@@ -82,22 +88,24 @@ template<> ::mavsdk::rpc::gimbal::SetModeRequest* Arena::CreateMaybeMessage<::ma
 template<> ::mavsdk::rpc::gimbal::SetModeResponse* Arena::CreateMaybeMessage<::mavsdk::rpc::gimbal::SetModeResponse>(Arena*);
 template<> ::mavsdk::rpc::gimbal::SetPitchAndYawRequest* Arena::CreateMaybeMessage<::mavsdk::rpc::gimbal::SetPitchAndYawRequest>(Arena*);
 template<> ::mavsdk::rpc::gimbal::SetPitchAndYawResponse* Arena::CreateMaybeMessage<::mavsdk::rpc::gimbal::SetPitchAndYawResponse>(Arena*);
+template<> ::mavsdk::rpc::gimbal::SetRoiLocationRequest* Arena::CreateMaybeMessage<::mavsdk::rpc::gimbal::SetRoiLocationRequest>(Arena*);
+template<> ::mavsdk::rpc::gimbal::SetRoiLocationResponse* Arena::CreateMaybeMessage<::mavsdk::rpc::gimbal::SetRoiLocationResponse>(Arena*);
 PROTOBUF_NAMESPACE_CLOSE
 namespace mavsdk {
 namespace rpc {
 namespace gimbal {
 
 enum GimbalResult_Result : int {
-  GimbalResult_Result_UNKNOWN = 0,
-  GimbalResult_Result_SUCCESS = 1,
-  GimbalResult_Result_ERROR = 2,
-  GimbalResult_Result_TIMEOUT = 3,
+  GimbalResult_Result_RESULT_UNKNOWN = 0,
+  GimbalResult_Result_RESULT_SUCCESS = 1,
+  GimbalResult_Result_RESULT_ERROR = 2,
+  GimbalResult_Result_RESULT_TIMEOUT = 3,
   GimbalResult_Result_GimbalResult_Result_INT_MIN_SENTINEL_DO_NOT_USE_ = std::numeric_limits<::PROTOBUF_NAMESPACE_ID::int32>::min(),
   GimbalResult_Result_GimbalResult_Result_INT_MAX_SENTINEL_DO_NOT_USE_ = std::numeric_limits<::PROTOBUF_NAMESPACE_ID::int32>::max()
 };
 bool GimbalResult_Result_IsValid(int value);
-constexpr GimbalResult_Result GimbalResult_Result_Result_MIN = GimbalResult_Result_UNKNOWN;
-constexpr GimbalResult_Result GimbalResult_Result_Result_MAX = GimbalResult_Result_TIMEOUT;
+constexpr GimbalResult_Result GimbalResult_Result_Result_MIN = GimbalResult_Result_RESULT_UNKNOWN;
+constexpr GimbalResult_Result GimbalResult_Result_Result_MAX = GimbalResult_Result_RESULT_TIMEOUT;
 constexpr int GimbalResult_Result_Result_ARRAYSIZE = GimbalResult_Result_Result_MAX + 1;
 
 const ::PROTOBUF_NAMESPACE_ID::EnumDescriptor* GimbalResult_Result_descriptor();
@@ -115,14 +123,14 @@ inline bool GimbalResult_Result_Parse(
     GimbalResult_Result_descriptor(), name, value);
 }
 enum GimbalMode : int {
-  YAW_FOLLOW = 0,
-  YAW_LOCK = 1,
+  GIMBAL_MODE_YAW_FOLLOW = 0,
+  GIMBAL_MODE_YAW_LOCK = 1,
   GimbalMode_INT_MIN_SENTINEL_DO_NOT_USE_ = std::numeric_limits<::PROTOBUF_NAMESPACE_ID::int32>::min(),
   GimbalMode_INT_MAX_SENTINEL_DO_NOT_USE_ = std::numeric_limits<::PROTOBUF_NAMESPACE_ID::int32>::max()
 };
 bool GimbalMode_IsValid(int value);
-constexpr GimbalMode GimbalMode_MIN = YAW_FOLLOW;
-constexpr GimbalMode GimbalMode_MAX = YAW_LOCK;
+constexpr GimbalMode GimbalMode_MIN = GIMBAL_MODE_YAW_FOLLOW;
+constexpr GimbalMode GimbalMode_MAX = GIMBAL_MODE_YAW_LOCK;
 constexpr int GimbalMode_ARRAYSIZE = GimbalMode_MAX + 1;
 
 const ::PROTOBUF_NAMESPACE_ID::EnumDescriptor* GimbalMode_descriptor();
@@ -676,6 +684,290 @@ class SetModeResponse :
 };
 // -------------------------------------------------------------------
 
+class SetRoiLocationRequest :
+    public ::PROTOBUF_NAMESPACE_ID::Message /* @@protoc_insertion_point(class_definition:mavsdk.rpc.gimbal.SetRoiLocationRequest) */ {
+ public:
+  SetRoiLocationRequest();
+  virtual ~SetRoiLocationRequest();
+
+  SetRoiLocationRequest(const SetRoiLocationRequest& from);
+  SetRoiLocationRequest(SetRoiLocationRequest&& from) noexcept
+    : SetRoiLocationRequest() {
+    *this = ::std::move(from);
+  }
+
+  inline SetRoiLocationRequest& operator=(const SetRoiLocationRequest& from) {
+    CopyFrom(from);
+    return *this;
+  }
+  inline SetRoiLocationRequest& operator=(SetRoiLocationRequest&& from) noexcept {
+    if (GetArenaNoVirtual() == from.GetArenaNoVirtual()) {
+      if (this != &from) InternalSwap(&from);
+    } else {
+      CopyFrom(from);
+    }
+    return *this;
+  }
+
+  static const ::PROTOBUF_NAMESPACE_ID::Descriptor* descriptor() {
+    return GetDescriptor();
+  }
+  static const ::PROTOBUF_NAMESPACE_ID::Descriptor* GetDescriptor() {
+    return GetMetadataStatic().descriptor;
+  }
+  static const ::PROTOBUF_NAMESPACE_ID::Reflection* GetReflection() {
+    return GetMetadataStatic().reflection;
+  }
+  static const SetRoiLocationRequest& default_instance();
+
+  static void InitAsDefaultInstance();  // FOR INTERNAL USE ONLY
+  static inline const SetRoiLocationRequest* internal_default_instance() {
+    return reinterpret_cast<const SetRoiLocationRequest*>(
+               &_SetRoiLocationRequest_default_instance_);
+  }
+  static constexpr int kIndexInFileMessages =
+    4;
+
+  friend void swap(SetRoiLocationRequest& a, SetRoiLocationRequest& b) {
+    a.Swap(&b);
+  }
+  inline void Swap(SetRoiLocationRequest* other) {
+    if (other == this) return;
+    InternalSwap(other);
+  }
+
+  // implements Message ----------------------------------------------
+
+  inline SetRoiLocationRequest* New() const final {
+    return CreateMaybeMessage<SetRoiLocationRequest>(nullptr);
+  }
+
+  SetRoiLocationRequest* New(::PROTOBUF_NAMESPACE_ID::Arena* arena) const final {
+    return CreateMaybeMessage<SetRoiLocationRequest>(arena);
+  }
+  void CopyFrom(const ::PROTOBUF_NAMESPACE_ID::Message& from) final;
+  void MergeFrom(const ::PROTOBUF_NAMESPACE_ID::Message& from) final;
+  void CopyFrom(const SetRoiLocationRequest& from);
+  void MergeFrom(const SetRoiLocationRequest& from);
+  PROTOBUF_ATTRIBUTE_REINITIALIZES void Clear() final;
+  bool IsInitialized() const final;
+
+  size_t ByteSizeLong() const final;
+  const char* _InternalParse(const char* ptr, ::PROTOBUF_NAMESPACE_ID::internal::ParseContext* ctx) final;
+  ::PROTOBUF_NAMESPACE_ID::uint8* _InternalSerialize(
+      ::PROTOBUF_NAMESPACE_ID::uint8* target, ::PROTOBUF_NAMESPACE_ID::io::EpsCopyOutputStream* stream) const final;
+  int GetCachedSize() const final { return _cached_size_.Get(); }
+
+  private:
+  inline void SharedCtor();
+  inline void SharedDtor();
+  void SetCachedSize(int size) const final;
+  void InternalSwap(SetRoiLocationRequest* other);
+  friend class ::PROTOBUF_NAMESPACE_ID::internal::AnyMetadata;
+  static ::PROTOBUF_NAMESPACE_ID::StringPiece FullMessageName() {
+    return "mavsdk.rpc.gimbal.SetRoiLocationRequest";
+  }
+  private:
+  inline ::PROTOBUF_NAMESPACE_ID::Arena* GetArenaNoVirtual() const {
+    return nullptr;
+  }
+  inline void* MaybeArenaPtr() const {
+    return nullptr;
+  }
+  public:
+
+  ::PROTOBUF_NAMESPACE_ID::Metadata GetMetadata() const final;
+  private:
+  static ::PROTOBUF_NAMESPACE_ID::Metadata GetMetadataStatic() {
+    ::PROTOBUF_NAMESPACE_ID::internal::AssignDescriptors(&::descriptor_table_gimbal_2fgimbal_2eproto);
+    return ::descriptor_table_gimbal_2fgimbal_2eproto.file_level_metadata[kIndexInFileMessages];
+  }
+
+  public:
+
+  // nested types ----------------------------------------------------
+
+  // accessors -------------------------------------------------------
+
+  enum : int {
+    kLatitudeDegFieldNumber = 1,
+    kLongitudeDegFieldNumber = 2,
+    kAltitudeMFieldNumber = 3,
+  };
+  // double latitude_deg = 1;
+  void clear_latitude_deg();
+  double latitude_deg() const;
+  void set_latitude_deg(double value);
+  private:
+  double _internal_latitude_deg() const;
+  void _internal_set_latitude_deg(double value);
+  public:
+
+  // double longitude_deg = 2;
+  void clear_longitude_deg();
+  double longitude_deg() const;
+  void set_longitude_deg(double value);
+  private:
+  double _internal_longitude_deg() const;
+  void _internal_set_longitude_deg(double value);
+  public:
+
+  // float altitude_m = 3;
+  void clear_altitude_m();
+  float altitude_m() const;
+  void set_altitude_m(float value);
+  private:
+  float _internal_altitude_m() const;
+  void _internal_set_altitude_m(float value);
+  public:
+
+  // @@protoc_insertion_point(class_scope:mavsdk.rpc.gimbal.SetRoiLocationRequest)
+ private:
+  class _Internal;
+
+  ::PROTOBUF_NAMESPACE_ID::internal::InternalMetadataWithArena _internal_metadata_;
+  double latitude_deg_;
+  double longitude_deg_;
+  float altitude_m_;
+  mutable ::PROTOBUF_NAMESPACE_ID::internal::CachedSize _cached_size_;
+  friend struct ::TableStruct_gimbal_2fgimbal_2eproto;
+};
+// -------------------------------------------------------------------
+
+class SetRoiLocationResponse :
+    public ::PROTOBUF_NAMESPACE_ID::Message /* @@protoc_insertion_point(class_definition:mavsdk.rpc.gimbal.SetRoiLocationResponse) */ {
+ public:
+  SetRoiLocationResponse();
+  virtual ~SetRoiLocationResponse();
+
+  SetRoiLocationResponse(const SetRoiLocationResponse& from);
+  SetRoiLocationResponse(SetRoiLocationResponse&& from) noexcept
+    : SetRoiLocationResponse() {
+    *this = ::std::move(from);
+  }
+
+  inline SetRoiLocationResponse& operator=(const SetRoiLocationResponse& from) {
+    CopyFrom(from);
+    return *this;
+  }
+  inline SetRoiLocationResponse& operator=(SetRoiLocationResponse&& from) noexcept {
+    if (GetArenaNoVirtual() == from.GetArenaNoVirtual()) {
+      if (this != &from) InternalSwap(&from);
+    } else {
+      CopyFrom(from);
+    }
+    return *this;
+  }
+
+  static const ::PROTOBUF_NAMESPACE_ID::Descriptor* descriptor() {
+    return GetDescriptor();
+  }
+  static const ::PROTOBUF_NAMESPACE_ID::Descriptor* GetDescriptor() {
+    return GetMetadataStatic().descriptor;
+  }
+  static const ::PROTOBUF_NAMESPACE_ID::Reflection* GetReflection() {
+    return GetMetadataStatic().reflection;
+  }
+  static const SetRoiLocationResponse& default_instance();
+
+  static void InitAsDefaultInstance();  // FOR INTERNAL USE ONLY
+  static inline const SetRoiLocationResponse* internal_default_instance() {
+    return reinterpret_cast<const SetRoiLocationResponse*>(
+               &_SetRoiLocationResponse_default_instance_);
+  }
+  static constexpr int kIndexInFileMessages =
+    5;
+
+  friend void swap(SetRoiLocationResponse& a, SetRoiLocationResponse& b) {
+    a.Swap(&b);
+  }
+  inline void Swap(SetRoiLocationResponse* other) {
+    if (other == this) return;
+    InternalSwap(other);
+  }
+
+  // implements Message ----------------------------------------------
+
+  inline SetRoiLocationResponse* New() const final {
+    return CreateMaybeMessage<SetRoiLocationResponse>(nullptr);
+  }
+
+  SetRoiLocationResponse* New(::PROTOBUF_NAMESPACE_ID::Arena* arena) const final {
+    return CreateMaybeMessage<SetRoiLocationResponse>(arena);
+  }
+  void CopyFrom(const ::PROTOBUF_NAMESPACE_ID::Message& from) final;
+  void MergeFrom(const ::PROTOBUF_NAMESPACE_ID::Message& from) final;
+  void CopyFrom(const SetRoiLocationResponse& from);
+  void MergeFrom(const SetRoiLocationResponse& from);
+  PROTOBUF_ATTRIBUTE_REINITIALIZES void Clear() final;
+  bool IsInitialized() const final;
+
+  size_t ByteSizeLong() const final;
+  const char* _InternalParse(const char* ptr, ::PROTOBUF_NAMESPACE_ID::internal::ParseContext* ctx) final;
+  ::PROTOBUF_NAMESPACE_ID::uint8* _InternalSerialize(
+      ::PROTOBUF_NAMESPACE_ID::uint8* target, ::PROTOBUF_NAMESPACE_ID::io::EpsCopyOutputStream* stream) const final;
+  int GetCachedSize() const final { return _cached_size_.Get(); }
+
+  private:
+  inline void SharedCtor();
+  inline void SharedDtor();
+  void SetCachedSize(int size) const final;
+  void InternalSwap(SetRoiLocationResponse* other);
+  friend class ::PROTOBUF_NAMESPACE_ID::internal::AnyMetadata;
+  static ::PROTOBUF_NAMESPACE_ID::StringPiece FullMessageName() {
+    return "mavsdk.rpc.gimbal.SetRoiLocationResponse";
+  }
+  private:
+  inline ::PROTOBUF_NAMESPACE_ID::Arena* GetArenaNoVirtual() const {
+    return nullptr;
+  }
+  inline void* MaybeArenaPtr() const {
+    return nullptr;
+  }
+  public:
+
+  ::PROTOBUF_NAMESPACE_ID::Metadata GetMetadata() const final;
+  private:
+  static ::PROTOBUF_NAMESPACE_ID::Metadata GetMetadataStatic() {
+    ::PROTOBUF_NAMESPACE_ID::internal::AssignDescriptors(&::descriptor_table_gimbal_2fgimbal_2eproto);
+    return ::descriptor_table_gimbal_2fgimbal_2eproto.file_level_metadata[kIndexInFileMessages];
+  }
+
+  public:
+
+  // nested types ----------------------------------------------------
+
+  // accessors -------------------------------------------------------
+
+  enum : int {
+    kGimbalResultFieldNumber = 1,
+  };
+  // .mavsdk.rpc.gimbal.GimbalResult gimbal_result = 1;
+  bool has_gimbal_result() const;
+  private:
+  bool _internal_has_gimbal_result() const;
+  public:
+  void clear_gimbal_result();
+  const ::mavsdk::rpc::gimbal::GimbalResult& gimbal_result() const;
+  ::mavsdk::rpc::gimbal::GimbalResult* release_gimbal_result();
+  ::mavsdk::rpc::gimbal::GimbalResult* mutable_gimbal_result();
+  void set_allocated_gimbal_result(::mavsdk::rpc::gimbal::GimbalResult* gimbal_result);
+  private:
+  const ::mavsdk::rpc::gimbal::GimbalResult& _internal_gimbal_result() const;
+  ::mavsdk::rpc::gimbal::GimbalResult* _internal_mutable_gimbal_result();
+  public:
+
+  // @@protoc_insertion_point(class_scope:mavsdk.rpc.gimbal.SetRoiLocationResponse)
+ private:
+  class _Internal;
+
+  ::PROTOBUF_NAMESPACE_ID::internal::InternalMetadataWithArena _internal_metadata_;
+  ::mavsdk::rpc::gimbal::GimbalResult* gimbal_result_;
+  mutable ::PROTOBUF_NAMESPACE_ID::internal::CachedSize _cached_size_;
+  friend struct ::TableStruct_gimbal_2fgimbal_2eproto;
+};
+// -------------------------------------------------------------------
+
 class GimbalResult :
     public ::PROTOBUF_NAMESPACE_ID::Message /* @@protoc_insertion_point(class_definition:mavsdk.rpc.gimbal.GimbalResult) */ {
  public:
@@ -718,7 +1010,7 @@ class GimbalResult :
                &_GimbalResult_default_instance_);
   }
   static constexpr int kIndexInFileMessages =
-    4;
+    6;
 
   friend void swap(GimbalResult& a, GimbalResult& b) {
     a.Swap(&b);
@@ -780,14 +1072,14 @@ class GimbalResult :
   // nested types ----------------------------------------------------
 
   typedef GimbalResult_Result Result;
-  static constexpr Result UNKNOWN =
-    GimbalResult_Result_UNKNOWN;
-  static constexpr Result SUCCESS =
-    GimbalResult_Result_SUCCESS;
-  static constexpr Result ERROR =
-    GimbalResult_Result_ERROR;
-  static constexpr Result TIMEOUT =
-    GimbalResult_Result_TIMEOUT;
+  static constexpr Result RESULT_UNKNOWN =
+    GimbalResult_Result_RESULT_UNKNOWN;
+  static constexpr Result RESULT_SUCCESS =
+    GimbalResult_Result_RESULT_SUCCESS;
+  static constexpr Result RESULT_ERROR =
+    GimbalResult_Result_RESULT_ERROR;
+  static constexpr Result RESULT_TIMEOUT =
+    GimbalResult_Result_RESULT_TIMEOUT;
   static inline bool Result_IsValid(int value) {
     return GimbalResult_Result_IsValid(value);
   }
@@ -1059,6 +1351,134 @@ inline void SetModeResponse::set_allocated_gimbal_result(::mavsdk::rpc::gimbal::
 
 // -------------------------------------------------------------------
 
+// SetRoiLocationRequest
+
+// double latitude_deg = 1;
+inline void SetRoiLocationRequest::clear_latitude_deg() {
+  latitude_deg_ = 0;
+}
+inline double SetRoiLocationRequest::_internal_latitude_deg() const {
+  return latitude_deg_;
+}
+inline double SetRoiLocationRequest::latitude_deg() const {
+  // @@protoc_insertion_point(field_get:mavsdk.rpc.gimbal.SetRoiLocationRequest.latitude_deg)
+  return _internal_latitude_deg();
+}
+inline void SetRoiLocationRequest::_internal_set_latitude_deg(double value) {
+  
+  latitude_deg_ = value;
+}
+inline void SetRoiLocationRequest::set_latitude_deg(double value) {
+  _internal_set_latitude_deg(value);
+  // @@protoc_insertion_point(field_set:mavsdk.rpc.gimbal.SetRoiLocationRequest.latitude_deg)
+}
+
+// double longitude_deg = 2;
+inline void SetRoiLocationRequest::clear_longitude_deg() {
+  longitude_deg_ = 0;
+}
+inline double SetRoiLocationRequest::_internal_longitude_deg() const {
+  return longitude_deg_;
+}
+inline double SetRoiLocationRequest::longitude_deg() const {
+  // @@protoc_insertion_point(field_get:mavsdk.rpc.gimbal.SetRoiLocationRequest.longitude_deg)
+  return _internal_longitude_deg();
+}
+inline void SetRoiLocationRequest::_internal_set_longitude_deg(double value) {
+  
+  longitude_deg_ = value;
+}
+inline void SetRoiLocationRequest::set_longitude_deg(double value) {
+  _internal_set_longitude_deg(value);
+  // @@protoc_insertion_point(field_set:mavsdk.rpc.gimbal.SetRoiLocationRequest.longitude_deg)
+}
+
+// float altitude_m = 3;
+inline void SetRoiLocationRequest::clear_altitude_m() {
+  altitude_m_ = 0;
+}
+inline float SetRoiLocationRequest::_internal_altitude_m() const {
+  return altitude_m_;
+}
+inline float SetRoiLocationRequest::altitude_m() const {
+  // @@protoc_insertion_point(field_get:mavsdk.rpc.gimbal.SetRoiLocationRequest.altitude_m)
+  return _internal_altitude_m();
+}
+inline void SetRoiLocationRequest::_internal_set_altitude_m(float value) {
+  
+  altitude_m_ = value;
+}
+inline void SetRoiLocationRequest::set_altitude_m(float value) {
+  _internal_set_altitude_m(value);
+  // @@protoc_insertion_point(field_set:mavsdk.rpc.gimbal.SetRoiLocationRequest.altitude_m)
+}
+
+// -------------------------------------------------------------------
+
+// SetRoiLocationResponse
+
+// .mavsdk.rpc.gimbal.GimbalResult gimbal_result = 1;
+inline bool SetRoiLocationResponse::_internal_has_gimbal_result() const {
+  return this != internal_default_instance() && gimbal_result_ != nullptr;
+}
+inline bool SetRoiLocationResponse::has_gimbal_result() const {
+  return _internal_has_gimbal_result();
+}
+inline void SetRoiLocationResponse::clear_gimbal_result() {
+  if (GetArenaNoVirtual() == nullptr && gimbal_result_ != nullptr) {
+    delete gimbal_result_;
+  }
+  gimbal_result_ = nullptr;
+}
+inline const ::mavsdk::rpc::gimbal::GimbalResult& SetRoiLocationResponse::_internal_gimbal_result() const {
+  const ::mavsdk::rpc::gimbal::GimbalResult* p = gimbal_result_;
+  return p != nullptr ? *p : *reinterpret_cast<const ::mavsdk::rpc::gimbal::GimbalResult*>(
+      &::mavsdk::rpc::gimbal::_GimbalResult_default_instance_);
+}
+inline const ::mavsdk::rpc::gimbal::GimbalResult& SetRoiLocationResponse::gimbal_result() const {
+  // @@protoc_insertion_point(field_get:mavsdk.rpc.gimbal.SetRoiLocationResponse.gimbal_result)
+  return _internal_gimbal_result();
+}
+inline ::mavsdk::rpc::gimbal::GimbalResult* SetRoiLocationResponse::release_gimbal_result() {
+  // @@protoc_insertion_point(field_release:mavsdk.rpc.gimbal.SetRoiLocationResponse.gimbal_result)
+  
+  ::mavsdk::rpc::gimbal::GimbalResult* temp = gimbal_result_;
+  gimbal_result_ = nullptr;
+  return temp;
+}
+inline ::mavsdk::rpc::gimbal::GimbalResult* SetRoiLocationResponse::_internal_mutable_gimbal_result() {
+  
+  if (gimbal_result_ == nullptr) {
+    auto* p = CreateMaybeMessage<::mavsdk::rpc::gimbal::GimbalResult>(GetArenaNoVirtual());
+    gimbal_result_ = p;
+  }
+  return gimbal_result_;
+}
+inline ::mavsdk::rpc::gimbal::GimbalResult* SetRoiLocationResponse::mutable_gimbal_result() {
+  // @@protoc_insertion_point(field_mutable:mavsdk.rpc.gimbal.SetRoiLocationResponse.gimbal_result)
+  return _internal_mutable_gimbal_result();
+}
+inline void SetRoiLocationResponse::set_allocated_gimbal_result(::mavsdk::rpc::gimbal::GimbalResult* gimbal_result) {
+  ::PROTOBUF_NAMESPACE_ID::Arena* message_arena = GetArenaNoVirtual();
+  if (message_arena == nullptr) {
+    delete gimbal_result_;
+  }
+  if (gimbal_result) {
+    ::PROTOBUF_NAMESPACE_ID::Arena* submessage_arena = nullptr;
+    if (message_arena != submessage_arena) {
+      gimbal_result = ::PROTOBUF_NAMESPACE_ID::internal::GetOwnedMessage(
+          message_arena, gimbal_result, submessage_arena);
+    }
+    
+  } else {
+    
+  }
+  gimbal_result_ = gimbal_result;
+  // @@protoc_insertion_point(field_set_allocated:mavsdk.rpc.gimbal.SetRoiLocationResponse.gimbal_result)
+}
+
+// -------------------------------------------------------------------
+
 // GimbalResult
 
 // .mavsdk.rpc.gimbal.GimbalResult.Result result = 1;
@@ -1144,6 +1564,10 @@ inline void GimbalResult::set_allocated_result_str(std::string* result_str) {
 #ifdef __GNUC__
   #pragma GCC diagnostic pop
 #endif  // __GNUC__
+// -------------------------------------------------------------------
+
+// -------------------------------------------------------------------
+
 // -------------------------------------------------------------------
 
 // -------------------------------------------------------------------

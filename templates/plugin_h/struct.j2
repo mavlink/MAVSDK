@@ -1,0 +1,42 @@
+{% macro convert_default_value_str(type, default_value_str) -%}
+    {%- if default_value_str == "NaN" -%}
+{{ type }}(NAN)
+    {%- else -%}
+{{ default_value_str }}
+    {%- endif -%}
+{%- endmacro %}
+
+{% for nested_enum in nested_enums %}
+{% if nested_enum.endswith('Result') -%}
+{{ nested_enums[nested_enum] }}
+{% endif -%}
+{% endfor -%}
+
+{% if not name.upper_camel_case.endswith('Result') -%}
+/**
+ * @brief {{ struct_description | replace('\n', '\n *')}}
+ */
+struct {{ name.upper_camel_case }} {
+    {% for nested_enum in nested_enums %}
+    {{ nested_enums[nested_enum] }}
+    {% endfor -%}
+    {%- for field in fields %}
+    {{ field.type_info.name }} {{ field.name.lower_snake_case }}{% if field.default_value %}{{ '{' }}{{ convert_default_value_str(field.type_info.name, field.default_value) }}{{ '}' }}{% else %}{{ '{}' }}{% endif %}; /**< @brief{{ field.description.rstrip() }} */
+    {%- endfor %}
+};
+{% endif %}
+{% if not name.upper_camel_case.endswith('Result') -%}
+/**
+ * @brief Equal operator to compare two `{{ plugin_name.upper_camel_case }}::{{ name.upper_camel_case }}` objects.
+ *
+ * @return `true` if items are equal.
+ */
+friend bool operator==(const {{ plugin_name.upper_camel_case }}::{{ name.upper_camel_case }}& lhs, const {{ plugin_name.upper_camel_case }}::{{ name.upper_camel_case }}& rhs);
+
+/**
+ * @brief Stream operator to print information about a `{{ plugin_name.upper_camel_case }}::{{ name.upper_camel_case }}`.
+ *
+ * @return A reference to the stream.
+ */
+friend std::ostream& operator<<(std::ostream& str, {{ plugin_name.upper_camel_case }}::{{ name.upper_camel_case }} const& {{ name.lower_snake_case }});
+{% endif -%}

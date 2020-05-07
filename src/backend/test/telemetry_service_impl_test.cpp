@@ -25,8 +25,9 @@ using Position = mavsdk::Telemetry::Position;
 using HealthResponse = mavsdk::rpc::telemetry::HealthResponse;
 using Health = mavsdk::Telemetry::Health;
 
-using GpsInfo = mavsdk::Telemetry::GPSInfo;
-using FixType = mavsdk::rpc::telemetry::FixType;
+using GpsInfo = mavsdk::Telemetry::GpsInfo;
+using FixType = mavsdk::Telemetry::FixType;
+using RPCFixType = mavsdk::rpc::telemetry::FixType;
 
 using Battery = mavsdk::Telemetry::Battery;
 
@@ -39,9 +40,9 @@ using EulerAngle = mavsdk::Telemetry::EulerAngle;
 
 using AngularVelocityBody = mavsdk::Telemetry::AngularVelocityBody;
 
-using GroundSpeedNed = mavsdk::Telemetry::GroundSpeedNED;
+using VelocityNed = mavsdk::Telemetry::VelocityNed;
 
-using RcStatus = mavsdk::Telemetry::RCStatus;
+using RcStatus = mavsdk::Telemetry::RcStatus;
 
 using ActuatorControlTarget = mavsdk::Telemetry::ActuatorControlTarget;
 
@@ -88,10 +89,10 @@ protected:
     void checkSendsArmedEvents(const std::vector<bool>& armed_events) const;
     std::future<void> subscribeArmedAsync(std::vector<bool>& armed_events) const;
 
-    GpsInfo createGpsInfo(const int num_satellites, const int fix_type) const;
+    GpsInfo createGpsInfo(const int num_satellites, const FixType fix_type) const;
     void checkSendsGpsInfoEvents(const std::vector<GpsInfo>& gps_info_events) const;
     std::future<void> subscribeGpsInfoAsync(std::vector<GpsInfo>& gps_info_events) const;
-    int translateRPCGpsFixType(const FixType rpc_fix_type) const;
+    FixType translateRPCGpsFixType(RPCFixType fixType) const;
 
     void checkSendsBatteryEvents(const std::vector<Battery>& battery_events) const;
     Battery createBattery(const float voltage_v, const float remaining_percent) const;
@@ -125,11 +126,10 @@ protected:
     std::future<void>
     subscribeCameraAttitudeEulerAsync(std::vector<EulerAngle>& euler_angles) const;
 
-    void checkSendsGroundSpeedEvents(const std::vector<GroundSpeedNed>& ground_speed_events) const;
-    GroundSpeedNed
-    createGroundSpeedNed(const float vel_north, const float vel_east, const float vel_down) const;
-    std::future<void>
-    subscribeGroundSpeedNedAsync(std::vector<GroundSpeedNed>& ground_speed_events) const;
+    void checkSendsVelocityEvents(const std::vector<VelocityNed>& velocity_events) const;
+    VelocityNed
+    createVelocityNed(const float vel_north, const float vel_east, const float vel_down) const;
+    std::future<void> subscribeVelocityNedAsync(std::vector<VelocityNed>& velocity_events) const;
 
     void checkSendsRcStatusEvents(const std::vector<RcStatus>& rc_status_events) const;
     RcStatus createRcStatus(
@@ -178,7 +178,7 @@ ACTION_P2(SaveCallback, callback, callback_promise)
 
 TEST_F(TelemetryServiceImplTest, registersToTelemetryPositionAsync)
 {
-    EXPECT_CALL(*_telemetry, position_async(_)).Times(1);
+    EXPECT_CALL(*_telemetry, subscribe_position(_)).Times(1);
 
     std::vector<Position> positions;
     auto position_stream_future = subscribePositionAsync(positions);
@@ -234,8 +234,8 @@ void TelemetryServiceImplTest::checkSendsPositions(const std::vector<Position>& 
 {
     std::promise<void> subscription_promise;
     auto subscription_future = subscription_promise.get_future();
-    mavsdk::Telemetry::position_callback_t position_callback;
-    EXPECT_CALL(*_telemetry, position_async(_))
+    mavsdk::Telemetry::PositionCallback position_callback;
+    EXPECT_CALL(*_telemetry, subscribe_position(_))
         .WillOnce(SaveCallback(&position_callback, &subscription_promise));
 
     std::vector<Position> received_positions;
@@ -278,7 +278,7 @@ TEST_F(TelemetryServiceImplTest, sendsMultiplePositions)
 
 TEST_F(TelemetryServiceImplTest, registersToTelemetryHealthAsync)
 {
-    EXPECT_CALL(*_telemetry, health_async(_)).Times(1);
+    EXPECT_CALL(*_telemetry, subscribe_health(_)).Times(1);
 
     std::vector<Health> healths;
     auto health_stream_future = subscribeHealthAsync(healths);
@@ -299,13 +299,13 @@ std::future<void> TelemetryServiceImplTest::subscribeHealthAsync(std::vector<Hea
             auto health_rpc = response.health();
 
             Health health;
-            health.gyrometer_calibration_ok = health_rpc.is_gyrometer_calibration_ok();
-            health.accelerometer_calibration_ok = health_rpc.is_accelerometer_calibration_ok();
-            health.magnetometer_calibration_ok = health_rpc.is_magnetometer_calibration_ok();
-            health.level_calibration_ok = health_rpc.is_level_calibration_ok();
-            health.local_position_ok = health_rpc.is_local_position_ok();
-            health.global_position_ok = health_rpc.is_global_position_ok();
-            health.home_position_ok = health_rpc.is_home_position_ok();
+            health.is_gyrometer_calibration_ok = health_rpc.is_gyrometer_calibration_ok();
+            health.is_accelerometer_calibration_ok = health_rpc.is_accelerometer_calibration_ok();
+            health.is_magnetometer_calibration_ok = health_rpc.is_magnetometer_calibration_ok();
+            health.is_level_calibration_ok = health_rpc.is_level_calibration_ok();
+            health.is_local_position_ok = health_rpc.is_local_position_ok();
+            health.is_global_position_ok = health_rpc.is_global_position_ok();
+            health.is_home_position_ok = health_rpc.is_home_position_ok();
 
             healths.push_back(health);
         }
@@ -345,8 +345,8 @@ void TelemetryServiceImplTest::checkSendsHealths(const std::vector<Health>& heal
 {
     std::promise<void> subscription_promise;
     auto subscription_future = subscription_promise.get_future();
-    mavsdk::Telemetry::health_callback_t health_callback;
-    EXPECT_CALL(*_telemetry, health_async(_))
+    mavsdk::Telemetry::HealthCallback health_callback;
+    EXPECT_CALL(*_telemetry, subscribe_health(_))
         .WillOnce(SaveCallback(&health_callback, &subscription_promise));
 
     std::vector<Health> received_healths;
@@ -368,13 +368,13 @@ Health TelemetryServiceImplTest::createRandomHealth()
 {
     mavsdk::Telemetry::Health health;
 
-    health.gyrometer_calibration_ok = generateRandomBool();
-    health.accelerometer_calibration_ok = generateRandomBool();
-    health.magnetometer_calibration_ok = generateRandomBool();
-    health.level_calibration_ok = generateRandomBool();
-    health.local_position_ok = generateRandomBool();
-    health.global_position_ok = generateRandomBool();
-    health.home_position_ok = generateRandomBool();
+    health.is_gyrometer_calibration_ok = generateRandomBool();
+    health.is_accelerometer_calibration_ok = generateRandomBool();
+    health.is_magnetometer_calibration_ok = generateRandomBool();
+    health.is_level_calibration_ok = generateRandomBool();
+    health.is_local_position_ok = generateRandomBool();
+    health.is_global_position_ok = generateRandomBool();
+    health.is_home_position_ok = generateRandomBool();
 
     return health;
 }
@@ -392,7 +392,7 @@ TEST_F(TelemetryServiceImplTest, sendsMultipleHealths)
 
 TEST_F(TelemetryServiceImplTest, registersToTelemetryHomeAsync)
 {
-    EXPECT_CALL(*_telemetry, home_position_async(_)).Times(1);
+    EXPECT_CALL(*_telemetry, subscribe_home(_)).Times(1);
 
     std::vector<Position> home_positions;
     auto home_stream_future = subscribeHomeAsync(home_positions);
@@ -450,8 +450,8 @@ void TelemetryServiceImplTest::checkSendsHomePositions(
 {
     std::promise<void> subscription_promise;
     auto subscription_future = subscription_promise.get_future();
-    mavsdk::Telemetry::position_callback_t home_callback;
-    EXPECT_CALL(*_telemetry, home_position_async(_))
+    mavsdk::Telemetry::PositionCallback home_callback;
+    EXPECT_CALL(*_telemetry, subscribe_home(_))
         .WillOnce(SaveCallback(&home_callback, &subscription_promise));
 
     std::vector<Position> received_home_positions;
@@ -482,7 +482,7 @@ TEST_F(TelemetryServiceImplTest, sendsMultipleHomePositions)
 
 TEST_F(TelemetryServiceImplTest, registersToTelemetryInAirAsync)
 {
-    EXPECT_CALL(*_telemetry, in_air_async(_)).Times(1);
+    EXPECT_CALL(*_telemetry, subscribe_in_air(_)).Times(1);
 
     std::vector<bool> in_air_events;
     auto in_air_stream_future = subscribeInAirAsync(in_air_events);
@@ -532,8 +532,8 @@ void TelemetryServiceImplTest::checkSendsInAirEvents(const std::vector<bool>& in
 {
     std::promise<void> subscription_promise;
     auto subscription_future = subscription_promise.get_future();
-    mavsdk::Telemetry::in_air_callback_t in_air_callback;
-    EXPECT_CALL(*_telemetry, in_air_async(_))
+    mavsdk::Telemetry::InAirCallback in_air_callback;
+    EXPECT_CALL(*_telemetry, subscribe_in_air(_))
         .WillOnce(SaveCallback(&in_air_callback, &subscription_promise));
 
     std::vector<bool> received_in_air_events;
@@ -564,7 +564,7 @@ TEST_F(TelemetryServiceImplTest, sendsMultipleInAirEvents)
 
 TEST_F(TelemetryServiceImplTest, registersToTelemetryArmedAsync)
 {
-    EXPECT_CALL(*_telemetry, armed_async(_)).Times(1);
+    EXPECT_CALL(*_telemetry, subscribe_armed(_)).Times(1);
 
     std::vector<bool> armed_events;
     auto armed_stream_future = subscribeArmedAsync(armed_events);
@@ -614,8 +614,8 @@ void TelemetryServiceImplTest::checkSendsArmedEvents(const std::vector<bool>& ar
 {
     std::promise<void> subscription_promise;
     auto subscription_future = subscription_promise.get_future();
-    mavsdk::Telemetry::armed_callback_t armed_callback;
-    EXPECT_CALL(*_telemetry, armed_async(_))
+    mavsdk::Telemetry::ArmedCallback armed_callback;
+    EXPECT_CALL(*_telemetry, subscribe_armed(_))
         .WillOnce(SaveCallback(&armed_callback, &subscription_promise));
 
     std::vector<bool> received_armed_events;
@@ -646,7 +646,7 @@ TEST_F(TelemetryServiceImplTest, sendsMultipleArmedEvents)
 
 TEST_F(TelemetryServiceImplTest, registersToTelemetryGpsInfoAsync)
 {
-    EXPECT_CALL(*_telemetry, gps_info_async(_)).Times(1);
+    EXPECT_CALL(*_telemetry, subscribe_gps_info(_)).Times(1);
 
     std::vector<GpsInfo> gps_info_events;
     auto gps_info_stream_future = subscribeGpsInfoAsync(gps_info_events);
@@ -678,24 +678,25 @@ TelemetryServiceImplTest::subscribeGpsInfoAsync(std::vector<GpsInfo>& gps_info_e
     });
 }
 
-int TelemetryServiceImplTest::translateRPCGpsFixType(const FixType rpc_fix_type) const
+FixType TelemetryServiceImplTest::translateRPCGpsFixType(RPCFixType fixType) const
 {
-    switch (rpc_fix_type) {
+    switch (fixType) {
         default:
-        case FixType::NO_GPS:
-            return 0;
-        case FixType::NO_FIX:
-            return 1;
-        case FixType::FIX_2D:
-            return 2;
-        case FixType::FIX_3D:
-            return 3;
-        case FixType::FIX_DGPS:
-            return 4;
-        case FixType::RTK_FLOAT:
-            return 5;
-        case FixType::RTK_FIXED:
-            return 6;
+            // FALLTHROUGH
+        case mavsdk::rpc::telemetry::FIX_TYPE_NO_GPS:
+            return mavsdk::Telemetry::FixType::NoGps;
+        case mavsdk::rpc::telemetry::FIX_TYPE_NO_FIX:
+            return mavsdk::Telemetry::FixType::NoFix;
+        case mavsdk::rpc::telemetry::FIX_TYPE_FIX_2D:
+            return mavsdk::Telemetry::FixType::Fix2D;
+        case mavsdk::rpc::telemetry::FIX_TYPE_FIX_3D:
+            return mavsdk::Telemetry::FixType::Fix3D;
+        case mavsdk::rpc::telemetry::FIX_TYPE_FIX_DGPS:
+            return mavsdk::Telemetry::FixType::FixDgps;
+        case mavsdk::rpc::telemetry::FIX_TYPE_RTK_FLOAT:
+            return mavsdk::Telemetry::FixType::RtkFloat;
+        case mavsdk::rpc::telemetry::FIX_TYPE_RTK_FIXED:
+            return mavsdk::Telemetry::FixType::RtkFixed;
     }
 }
 
@@ -713,7 +714,7 @@ TEST_F(TelemetryServiceImplTest, doesNotSendGpsInfoIfCallbackNotCalled)
 TEST_F(TelemetryServiceImplTest, sendsOneGpsInfoEvent)
 {
     std::vector<GpsInfo> gps_info_events;
-    gps_info_events.push_back(createGpsInfo(10, 3));
+    gps_info_events.push_back(createGpsInfo(10, FixType::Fix3D));
 
     checkSendsGpsInfoEvents(gps_info_events);
 }
@@ -723,8 +724,8 @@ void TelemetryServiceImplTest::checkSendsGpsInfoEvents(
 {
     std::promise<void> subscription_promise;
     auto subscription_future = subscription_promise.get_future();
-    mavsdk::Telemetry::gps_info_callback_t gps_info_callback;
-    EXPECT_CALL(*_telemetry, gps_info_async(_))
+    mavsdk::Telemetry::GpsInfoCallback gps_info_callback;
+    EXPECT_CALL(*_telemetry, subscribe_gps_info(_))
         .WillOnce(SaveCallback(&gps_info_callback, &subscription_promise));
 
     std::vector<GpsInfo> received_gps_info_events;
@@ -742,7 +743,8 @@ void TelemetryServiceImplTest::checkSendsGpsInfoEvents(
     }
 }
 
-GpsInfo TelemetryServiceImplTest::createGpsInfo(const int num_satellites, const int fix_type) const
+GpsInfo
+TelemetryServiceImplTest::createGpsInfo(const int num_satellites, const FixType fix_type) const
 {
     GpsInfo expected_gps_info;
 
@@ -755,20 +757,20 @@ GpsInfo TelemetryServiceImplTest::createGpsInfo(const int num_satellites, const 
 TEST_F(TelemetryServiceImplTest, sendsMultipleGpsInfoEvents)
 {
     std::vector<GpsInfo> gps_info_events;
-    gps_info_events.push_back(createGpsInfo(5, 0));
-    gps_info_events.push_back(createGpsInfo(0, 1));
-    gps_info_events.push_back(createGpsInfo(10, 2));
-    gps_info_events.push_back(createGpsInfo(8, 3));
-    gps_info_events.push_back(createGpsInfo(22, 4));
-    gps_info_events.push_back(createGpsInfo(13, 5));
-    gps_info_events.push_back(createGpsInfo(7, 6));
+    gps_info_events.push_back(createGpsInfo(5, FixType::NoGps));
+    gps_info_events.push_back(createGpsInfo(0, FixType::NoFix));
+    gps_info_events.push_back(createGpsInfo(10, FixType::Fix2D));
+    gps_info_events.push_back(createGpsInfo(8, FixType::Fix3D));
+    gps_info_events.push_back(createGpsInfo(22, FixType::FixDgps));
+    gps_info_events.push_back(createGpsInfo(13, FixType::RtkFloat));
+    gps_info_events.push_back(createGpsInfo(7, FixType::RtkFixed));
 
     checkSendsGpsInfoEvents(gps_info_events);
 }
 
 TEST_F(TelemetryServiceImplTest, registersToTelemetryBatteryAsync)
 {
-    EXPECT_CALL(*_telemetry, battery_async(_)).Times(1);
+    EXPECT_CALL(*_telemetry, subscribe_battery(_)).Times(1);
 
     std::vector<Battery> battery_events;
     auto battery_stream_future = subscribeBatteryAsync(battery_events);
@@ -834,8 +836,8 @@ void TelemetryServiceImplTest::checkSendsBatteryEvents(
 {
     std::promise<void> subscription_promise;
     auto subscription_future = subscription_promise.get_future();
-    mavsdk::Telemetry::battery_callback_t battery_callback;
-    EXPECT_CALL(*_telemetry, battery_async(_))
+    mavsdk::Telemetry::BatteryCallback battery_callback;
+    EXPECT_CALL(*_telemetry, subscribe_battery(_))
         .WillOnce(SaveCallback(&battery_callback, &subscription_promise));
 
     std::vector<Battery> received_battery_events;
@@ -867,7 +869,7 @@ TEST_F(TelemetryServiceImplTest, sendsMultipleBatteryEvents)
 
 TEST_F(TelemetryServiceImplTest, registersToTelemetryFlightModeAsync)
 {
-    EXPECT_CALL(*_telemetry, flight_mode_async(_)).Times(1);
+    EXPECT_CALL(*_telemetry, subscribe_flight_mode(_)).Times(1);
 
     std::vector<FlightMode> flight_mode_events;
     auto flight_mode_stream_future = subscribeFlightModeAsync(flight_mode_events);
@@ -899,24 +901,24 @@ TelemetryServiceImplTest::translateRPCFlightMode(const RPCFlightMode rpc_flight_
 {
     switch (rpc_flight_mode) {
         default:
-        case RPCFlightMode::UNKNOWN:
-            return FlightMode::UNKNOWN;
-        case RPCFlightMode::READY:
-            return FlightMode::READY;
-        case RPCFlightMode::TAKEOFF:
-            return FlightMode::TAKEOFF;
-        case RPCFlightMode::HOLD:
-            return FlightMode::HOLD;
-        case RPCFlightMode::MISSION:
-            return FlightMode::MISSION;
-        case RPCFlightMode::RETURN_TO_LAUNCH:
-            return FlightMode::RETURN_TO_LAUNCH;
-        case RPCFlightMode::LAND:
-            return FlightMode::LAND;
-        case RPCFlightMode::OFFBOARD:
-            return FlightMode::OFFBOARD;
-        case RPCFlightMode::FOLLOW_ME:
-            return FlightMode::FOLLOW_ME;
+        case RPCFlightMode::FLIGHT_MODE_UNKNOWN:
+            return FlightMode::Unknown;
+        case RPCFlightMode::FLIGHT_MODE_READY:
+            return FlightMode::Ready;
+        case RPCFlightMode::FLIGHT_MODE_TAKEOFF:
+            return FlightMode::Takeoff;
+        case RPCFlightMode::FLIGHT_MODE_HOLD:
+            return FlightMode::Hold;
+        case RPCFlightMode::FLIGHT_MODE_MISSION:
+            return FlightMode::Mission;
+        case RPCFlightMode::FLIGHT_MODE_RETURN_TO_LAUNCH:
+            return FlightMode::ReturnToLaunch;
+        case RPCFlightMode::FLIGHT_MODE_LAND:
+            return FlightMode::Land;
+        case RPCFlightMode::FLIGHT_MODE_OFFBOARD:
+            return FlightMode::Offboard;
+        case RPCFlightMode::FLIGHT_MODE_FOLLOW_ME:
+            return FlightMode::FollowMe;
     }
 }
 
@@ -934,7 +936,7 @@ TEST_F(TelemetryServiceImplTest, doesNotSendFlightModeInfoIfCallbackNotCalled)
 TEST_F(TelemetryServiceImplTest, sendsOneFlightModeEvent)
 {
     std::vector<FlightMode> flight_mode_events;
-    flight_mode_events.push_back(FlightMode::UNKNOWN);
+    flight_mode_events.push_back(FlightMode::Unknown);
 
     checkSendsFlightModeEvents(flight_mode_events);
 }
@@ -944,8 +946,8 @@ void TelemetryServiceImplTest::checkSendsFlightModeEvents(
 {
     std::promise<void> subscription_promise;
     auto subscription_future = subscription_promise.get_future();
-    mavsdk::Telemetry::flight_mode_callback_t flight_mode_callback;
-    EXPECT_CALL(*_telemetry, flight_mode_async(_))
+    mavsdk::Telemetry::FlightModeCallback flight_mode_callback;
+    EXPECT_CALL(*_telemetry, subscribe_flight_mode(_))
         .WillOnce(SaveCallback(&flight_mode_callback, &subscription_promise));
 
     std::vector<FlightMode> received_flight_mode_events;
@@ -966,22 +968,22 @@ void TelemetryServiceImplTest::checkSendsFlightModeEvents(
 TEST_F(TelemetryServiceImplTest, sendsMultipleFlightModeEvents)
 {
     std::vector<FlightMode> flight_mode_events;
-    flight_mode_events.push_back(FlightMode::UNKNOWN);
-    flight_mode_events.push_back(FlightMode::READY);
-    flight_mode_events.push_back(FlightMode::TAKEOFF);
-    flight_mode_events.push_back(FlightMode::HOLD);
-    flight_mode_events.push_back(FlightMode::MISSION);
-    flight_mode_events.push_back(FlightMode::RETURN_TO_LAUNCH);
-    flight_mode_events.push_back(FlightMode::LAND);
-    flight_mode_events.push_back(FlightMode::OFFBOARD);
-    flight_mode_events.push_back(FlightMode::FOLLOW_ME);
+    flight_mode_events.push_back(FlightMode::Unknown);
+    flight_mode_events.push_back(FlightMode::Ready);
+    flight_mode_events.push_back(FlightMode::Takeoff);
+    flight_mode_events.push_back(FlightMode::Hold);
+    flight_mode_events.push_back(FlightMode::Mission);
+    flight_mode_events.push_back(FlightMode::ReturnToLaunch);
+    flight_mode_events.push_back(FlightMode::Land);
+    flight_mode_events.push_back(FlightMode::Offboard);
+    flight_mode_events.push_back(FlightMode::FollowMe);
 
     checkSendsFlightModeEvents(flight_mode_events);
 }
 
 TEST_F(TelemetryServiceImplTest, registersToTelemetryAttitudeQuaternionAsync)
 {
-    EXPECT_CALL(*_telemetry, attitude_quaternion_async(_)).Times(1);
+    EXPECT_CALL(*_telemetry, subscribe_attitude_quaternion(_)).Times(1);
 
     std::vector<Quaternion> quaternions;
     auto quaternion_stream_future = subscribeAttitudeQuaternionAsync(quaternions);
@@ -992,7 +994,7 @@ TEST_F(TelemetryServiceImplTest, registersToTelemetryAttitudeQuaternionAsync)
 
 TEST_F(TelemetryServiceImplTest, registersToTelemetryAttitudeAngularVelocityBodyAsync)
 {
-    EXPECT_CALL(*_telemetry, attitude_angular_velocity_body_async(_)).Times(1);
+    EXPECT_CALL(*_telemetry, subscribe_attitude_angular_velocity_body(_)).Times(1);
 
     std::vector<AngularVelocityBody> angular_velocities_body;
     auto angular_velocity_body_stream_future =
@@ -1120,8 +1122,8 @@ void TelemetryServiceImplTest::checkSendsAttitudeQuaternions(
 {
     std::promise<void> subscription_promise;
     auto subscription_future = subscription_promise.get_future();
-    mavsdk::Telemetry::attitude_quaternion_callback_t attitude_quaternion_callback;
-    EXPECT_CALL(*_telemetry, attitude_quaternion_async(_))
+    mavsdk::Telemetry::AttitudeQuaternionCallback attitude_quaternion_callback;
+    EXPECT_CALL(*_telemetry, subscribe_attitude_quaternion(_))
         .WillOnce(SaveCallback(&attitude_quaternion_callback, &subscription_promise));
 
     std::vector<Quaternion> received_quaternions;
@@ -1144,9 +1146,8 @@ void TelemetryServiceImplTest::checkSendsAttitudeAngularVelocitiesBody(
 {
     std::promise<void> subscription_promise;
     auto subscription_future = subscription_promise.get_future();
-    mavsdk::Telemetry::attitude_angular_velocity_body_callback_t
-        attitude_angular_velocity_body_callback;
-    EXPECT_CALL(*_telemetry, attitude_angular_velocity_body_async(_))
+    mavsdk::Telemetry::AttitudeAngularVelocityBodyCallback attitude_angular_velocity_body_callback;
+    EXPECT_CALL(*_telemetry, subscribe_attitude_angular_velocity_body(_))
         .WillOnce(SaveCallback(&attitude_angular_velocity_body_callback, &subscription_promise));
 
     std::vector<AngularVelocityBody> received_angular_velocities_body;
@@ -1187,7 +1188,7 @@ TEST_F(TelemetryServiceImplTest, sendsMultipleAttitudeAngularVelocityBodys)
 
 TEST_F(TelemetryServiceImplTest, registersToTelemetryAttitudeEulerAsync)
 {
-    EXPECT_CALL(*_telemetry, attitude_euler_angle_async(_)).Times(1);
+    EXPECT_CALL(*_telemetry, subscribe_attitude_euler(_)).Times(1);
 
     std::vector<EulerAngle> euler_angles;
     auto euler_angle_stream_future = subscribeAttitudeEulerAsync(euler_angles);
@@ -1255,8 +1256,8 @@ void TelemetryServiceImplTest::checkSendsAttitudeEulerAngles(
 {
     std::promise<void> subscription_promise;
     auto subscription_future = subscription_promise.get_future();
-    mavsdk::Telemetry::attitude_euler_angle_callback_t attitude_euler_angle_callback;
-    EXPECT_CALL(*_telemetry, attitude_euler_angle_async(_))
+    mavsdk::Telemetry::AttitudeEulerCallback attitude_euler_angle_callback;
+    EXPECT_CALL(*_telemetry, subscribe_attitude_euler(_))
         .WillOnce(SaveCallback(&attitude_euler_angle_callback, &subscription_promise));
 
     std::vector<EulerAngle> received_euler_angles;
@@ -1286,7 +1287,7 @@ TEST_F(TelemetryServiceImplTest, sendsMultipleAttitudeEuler)
 
 TEST_F(TelemetryServiceImplTest, registersToTelemetryCameraAttitudeQuaternionAsync)
 {
-    EXPECT_CALL(*_telemetry, camera_attitude_quaternion_async(_)).Times(1);
+    EXPECT_CALL(*_telemetry, subscribe_camera_attitude_quaternion(_)).Times(1);
 
     std::vector<Quaternion> quaternions;
     auto quaternion_stream_future = subscribeCameraAttitudeQuaternionAsync(quaternions);
@@ -1344,8 +1345,8 @@ void TelemetryServiceImplTest::checkSendsCameraAttitudeQuaternions(
 {
     std::promise<void> subscription_promise;
     auto subscription_future = subscription_promise.get_future();
-    mavsdk::Telemetry::attitude_quaternion_callback_t attitude_quaternion_callback;
-    EXPECT_CALL(*_telemetry, camera_attitude_quaternion_async(_))
+    mavsdk::Telemetry::AttitudeQuaternionCallback attitude_quaternion_callback;
+    EXPECT_CALL(*_telemetry, subscribe_camera_attitude_quaternion(_))
         .WillOnce(SaveCallback(&attitude_quaternion_callback, &subscription_promise));
 
     std::vector<Quaternion> received_quaternions;
@@ -1375,7 +1376,7 @@ TEST_F(TelemetryServiceImplTest, sendsMultipleCameraAttitudeQuaternions)
 
 TEST_F(TelemetryServiceImplTest, registersToTelemetryCameraAttitudeEulerAsync)
 {
-    EXPECT_CALL(*_telemetry, camera_attitude_euler_angle_async(_)).Times(1);
+    EXPECT_CALL(*_telemetry, subscribe_camera_attitude_euler(_)).Times(1);
 
     std::vector<EulerAngle> euler_angles;
     auto euler_angle_stream_future = subscribeCameraAttitudeEulerAsync(euler_angles);
@@ -1432,8 +1433,8 @@ void TelemetryServiceImplTest::checkSendsCameraAttitudeEulerAngles(
 {
     std::promise<void> subscription_promise;
     auto subscription_future = subscription_promise.get_future();
-    mavsdk::Telemetry::attitude_euler_angle_callback_t attitude_euler_angle_callback;
-    EXPECT_CALL(*_telemetry, camera_attitude_euler_angle_async(_))
+    mavsdk::Telemetry::AttitudeEulerCallback attitude_euler_angle_callback;
+    EXPECT_CALL(*_telemetry, subscribe_camera_attitude_euler(_))
         .WillOnce(SaveCallback(&attitude_euler_angle_callback, &subscription_promise));
 
     std::vector<EulerAngle> received_euler_angles;
@@ -1461,109 +1462,109 @@ TEST_F(TelemetryServiceImplTest, sendsMultipleCameraAttitudeEuler)
     checkSendsCameraAttitudeEulerAngles(euler_angles);
 }
 
-TEST_F(TelemetryServiceImplTest, registersToTelemetryGroundSpeedNedAsync)
+TEST_F(TelemetryServiceImplTest, registersToTelemetryVelocityNedAsync)
 {
-    EXPECT_CALL(*_telemetry, ground_speed_ned_async(_)).Times(1);
+    EXPECT_CALL(*_telemetry, subscribe_velocity_ned(_)).Times(1);
 
-    std::vector<GroundSpeedNed> ground_speed_events;
-    auto ground_speed_stream_future = subscribeGroundSpeedNedAsync(ground_speed_events);
+    std::vector<VelocityNed> velocity_events;
+    auto velocity_stream_future = subscribeVelocityNedAsync(velocity_events);
 
     _telemetry_service->stop();
-    ground_speed_stream_future.wait();
+    velocity_stream_future.wait();
 }
 
-std::future<void> TelemetryServiceImplTest::subscribeGroundSpeedNedAsync(
-    std::vector<GroundSpeedNed>& ground_speed_events) const
+std::future<void>
+TelemetryServiceImplTest::subscribeVelocityNedAsync(std::vector<VelocityNed>& velocity_events) const
 {
     return std::async(std::launch::async, [&]() {
         grpc::ClientContext context;
-        mavsdk::rpc::telemetry::SubscribeGroundSpeedNedRequest request;
-        auto response_reader = _stub->SubscribeGroundSpeedNed(&context, request);
+        mavsdk::rpc::telemetry::SubscribeVelocityNedRequest request;
+        auto response_reader = _stub->SubscribeVelocityNed(&context, request);
 
-        mavsdk::rpc::telemetry::GroundSpeedNedResponse response;
+        mavsdk::rpc::telemetry::VelocityNedResponse response;
         while (response_reader->Read(&response)) {
-            auto ground_speed_rpc = response.ground_speed_ned();
+            auto velocity_rpc = response.velocity_ned();
 
-            GroundSpeedNed ground_speed;
-            ground_speed.velocity_north_m_s = ground_speed_rpc.velocity_north_m_s();
-            ground_speed.velocity_east_m_s = ground_speed_rpc.velocity_east_m_s();
-            ground_speed.velocity_down_m_s = ground_speed_rpc.velocity_down_m_s();
+            VelocityNed velocity;
+            velocity.north_m_s = velocity_rpc.north_m_s();
+            velocity.east_m_s = velocity_rpc.east_m_s();
+            velocity.down_m_s = velocity_rpc.down_m_s();
 
-            ground_speed_events.push_back(ground_speed);
+            velocity_events.push_back(velocity);
         }
 
         response_reader->Finish();
     });
 }
 
-TEST_F(TelemetryServiceImplTest, doesNotSendGroundSpeedNedIfCallbackNotCalled)
+TEST_F(TelemetryServiceImplTest, doesNotSendVelocityNedIfCallbackNotCalled)
 {
-    std::vector<GroundSpeedNed> ground_speed_events;
-    auto ground_speed_stream_future = subscribeGroundSpeedNedAsync(ground_speed_events);
+    std::vector<VelocityNed> velocity_events;
+    auto velocity_stream_future = subscribeVelocityNedAsync(velocity_events);
 
     _telemetry_service->stop();
-    ground_speed_stream_future.wait();
+    velocity_stream_future.wait();
 
-    EXPECT_EQ(0, ground_speed_events.size());
+    EXPECT_EQ(0, velocity_events.size());
 }
 
-TEST_F(TelemetryServiceImplTest, sendsOneGroundSpeedEvent)
+TEST_F(TelemetryServiceImplTest, sendsOneVelocityEvent)
 {
-    std::vector<GroundSpeedNed> ground_speed_events;
-    ground_speed_events.push_back(createGroundSpeedNed(12.3f, 1.2f, -0.2f));
+    std::vector<VelocityNed> velocity_events;
+    velocity_events.push_back(createVelocityNed(12.3f, 1.2f, -0.2f));
 
-    checkSendsGroundSpeedEvents(ground_speed_events);
+    checkSendsVelocityEvents(velocity_events);
 }
 
-GroundSpeedNed TelemetryServiceImplTest::createGroundSpeedNed(
+VelocityNed TelemetryServiceImplTest::createVelocityNed(
     const float vel_north, const float vel_east, const float vel_down) const
 {
-    GroundSpeedNed ground_speed;
+    VelocityNed velocity;
 
-    ground_speed.velocity_north_m_s = vel_north;
-    ground_speed.velocity_east_m_s = vel_east;
-    ground_speed.velocity_down_m_s = vel_down;
+    velocity.north_m_s = vel_north;
+    velocity.east_m_s = vel_east;
+    velocity.down_m_s = vel_down;
 
-    return ground_speed;
+    return velocity;
 }
 
-void TelemetryServiceImplTest::checkSendsGroundSpeedEvents(
-    const std::vector<GroundSpeedNed>& ground_speed_events) const
+void TelemetryServiceImplTest::checkSendsVelocityEvents(
+    const std::vector<VelocityNed>& velocity_events) const
 {
     std::promise<void> subscription_promise;
     auto subscription_future = subscription_promise.get_future();
-    mavsdk::Telemetry::ground_speed_ned_callback_t ground_speed_ned_callback;
-    EXPECT_CALL(*_telemetry, ground_speed_ned_async(_))
-        .WillOnce(SaveCallback(&ground_speed_ned_callback, &subscription_promise));
+    mavsdk::Telemetry::VelocityNedCallback velocity_ned_callback;
+    EXPECT_CALL(*_telemetry, subscribe_velocity_ned(_))
+        .WillOnce(SaveCallback(&velocity_ned_callback, &subscription_promise));
 
-    std::vector<GroundSpeedNed> received_ground_speed_events;
-    auto ground_speed_stream_future = subscribeGroundSpeedNedAsync(received_ground_speed_events);
+    std::vector<VelocityNed> received_velocity_events;
+    auto velocity_stream_future = subscribeVelocityNedAsync(received_velocity_events);
     subscription_future.wait();
-    for (const auto ground_speed : ground_speed_events) {
-        ground_speed_ned_callback(ground_speed);
+    for (const auto velocity : velocity_events) {
+        velocity_ned_callback(velocity);
     }
     _telemetry_service->stop();
-    ground_speed_stream_future.wait();
+    velocity_stream_future.wait();
 
-    ASSERT_EQ(ground_speed_events.size(), received_ground_speed_events.size());
-    for (size_t i = 0; i < ground_speed_events.size(); i++) {
-        EXPECT_EQ(ground_speed_events.at(i), received_ground_speed_events.at(i));
+    ASSERT_EQ(velocity_events.size(), received_velocity_events.size());
+    for (size_t i = 0; i < velocity_events.size(); i++) {
+        EXPECT_EQ(velocity_events.at(i), received_velocity_events.at(i));
     }
 }
 
-TEST_F(TelemetryServiceImplTest, sendsMultipleGroundSpeedEvents)
+TEST_F(TelemetryServiceImplTest, sendsMultipleVelocityEvents)
 {
-    std::vector<GroundSpeedNed> ground_speed_events;
-    ground_speed_events.push_back(createGroundSpeedNed(2.3f, 22.1f, 1.1f));
-    ground_speed_events.push_back(createGroundSpeedNed(5.23f, 1.2f, 4.0f));
-    ground_speed_events.push_back(createGroundSpeedNed(-4.12f, -3.1f, 8.23f));
+    std::vector<VelocityNed> velocity_events;
+    velocity_events.push_back(createVelocityNed(2.3f, 22.1f, 1.1f));
+    velocity_events.push_back(createVelocityNed(5.23f, 1.2f, 4.0f));
+    velocity_events.push_back(createVelocityNed(-4.12f, -3.1f, 8.23f));
 
-    checkSendsGroundSpeedEvents(ground_speed_events);
+    checkSendsVelocityEvents(velocity_events);
 }
 
 TEST_F(TelemetryServiceImplTest, registersToTelemetryRcStatusAsync)
 {
-    EXPECT_CALL(*_telemetry, rc_status_async(_)).Times(1);
+    EXPECT_CALL(*_telemetry, subscribe_rc_status(_)).Times(1);
 
     std::vector<RcStatus> rc_status_events;
     auto rc_status_stream_future = subscribeRcStatusAsync(rc_status_events);
@@ -1585,8 +1586,8 @@ TelemetryServiceImplTest::subscribeRcStatusAsync(std::vector<RcStatus>& rc_statu
             auto rc_status_rpc = response.rc_status();
 
             RcStatus rc_status;
-            rc_status.available_once = rc_status_rpc.was_available_once();
-            rc_status.available = rc_status_rpc.is_available();
+            rc_status.was_available_once = rc_status_rpc.was_available_once();
+            rc_status.is_available = rc_status_rpc.is_available();
             rc_status.signal_strength_percent = rc_status_rpc.signal_strength_percent();
 
             rc_status_events.push_back(rc_status);
@@ -1622,8 +1623,8 @@ RcStatus TelemetryServiceImplTest::createRcStatus(
 {
     RcStatus rc_status;
 
-    rc_status.available_once = was_available_once;
-    rc_status.available = is_available;
+    rc_status.was_available_once = was_available_once;
+    rc_status.is_available = is_available;
     rc_status.signal_strength_percent = signal_strength_percent;
 
     return rc_status;
@@ -1634,8 +1635,8 @@ void TelemetryServiceImplTest::checkSendsRcStatusEvents(
 {
     std::promise<void> subscription_promise;
     auto subscription_future = subscription_promise.get_future();
-    mavsdk::Telemetry::rc_status_callback_t rc_status_callback;
-    EXPECT_CALL(*_telemetry, rc_status_async(_))
+    mavsdk::Telemetry::RcStatusCallback rc_status_callback;
+    EXPECT_CALL(*_telemetry, subscribe_rc_status(_))
         .WillOnce(SaveCallback(&rc_status_callback, &subscription_promise));
 
     std::vector<RcStatus> received_rc_status_events;
@@ -1667,9 +1668,9 @@ std::future<void> TelemetryServiceImplTest::subscribeActuatorControlTargetAsync(
 
             ActuatorControlTarget actuator_control_target{};
             actuator_control_target.group = actuator_control_target_rpc.group();
-            int num_controls = std::min(8, actuator_control_target_rpc.controls_size());
+            const int num_controls = actuator_control_target_rpc.controls_size();
             for (int i = 0; i < num_controls; i++) {
-                actuator_control_target.controls[i] = actuator_control_target_rpc.controls(i);
+                actuator_control_target.controls.push_back(actuator_control_target_rpc.controls(i));
             }
 
             actuator_control_target_events.push_back(actuator_control_target);
@@ -1693,9 +1694,9 @@ std::future<void> TelemetryServiceImplTest::subscribeActuatorOutputStatusAsync(
 
             ActuatorOutputStatus actuator_output_status{};
             actuator_output_status.active = actuator_output_status_rpc.active();
-            int num_actuators = std::min(32, actuator_output_status_rpc.actuator_size());
+            const int num_actuators = actuator_output_status_rpc.actuator_size();
             for (int i = 0; i < num_actuators; i++) {
-                actuator_output_status.actuator[i] = actuator_output_status_rpc.actuator(i);
+                actuator_output_status.actuator.push_back(actuator_output_status_rpc.actuator(i));
             }
 
             actuator_output_status_events.push_back(actuator_output_status);
@@ -1721,8 +1722,10 @@ ActuatorControlTarget TelemetryServiceImplTest::createActuatorControlTarget(
     ActuatorControlTarget actuator_control_target{};
 
     actuator_control_target.group = group;
-    int controls_len = std::min<size_t>(8, controls.size());
-    std::copy_n(controls.begin(), controls_len, actuator_control_target.controls);
+
+    for (const auto& control : controls) {
+        actuator_control_target.controls.push_back(control);
+    }
 
     return actuator_control_target;
 }
@@ -1730,10 +1733,11 @@ ActuatorControlTarget TelemetryServiceImplTest::createActuatorControlTarget(
 ActuatorOutputStatus
 TelemetryServiceImplTest::createActuatorOutputStatus(const std::vector<float>& actuators) const
 {
-    ActuatorOutputStatus actuator_output_status;
+    ActuatorOutputStatus actuator_output_status{};
 
-    actuator_output_status.active = std::min<size_t>(32, actuators.size());
-    std::copy_n(actuators.begin(), actuator_output_status.active, actuator_output_status.actuator);
+    for (const auto& actuator : actuators) {
+        actuator_output_status.actuator.push_back(actuator);
+    }
 
     return actuator_output_status;
 }
@@ -1743,14 +1747,15 @@ void TelemetryServiceImplTest::checkSendsActuatorControlTargetEvents(
 {
     std::promise<void> subscription_promise;
     auto subscription_future = subscription_promise.get_future();
-    mavsdk::Telemetry::actuator_control_target_callback_t actuator_control_target_callback;
-    EXPECT_CALL(*_telemetry, actuator_control_target_async(_))
+    mavsdk::Telemetry::ActuatorControlTargetCallback actuator_control_target_callback;
+    EXPECT_CALL(*_telemetry, subscribe_actuator_control_target(_))
         .WillOnce(SaveCallback(&actuator_control_target_callback, &subscription_promise));
 
     std::vector<ActuatorControlTarget> received_actuator_control_target_events;
     auto actuator_control_target_stream_future =
         subscribeActuatorControlTargetAsync(received_actuator_control_target_events);
     subscription_future.wait();
+
     for (const auto actuator_control_target : actuator_control_target_events) {
         actuator_control_target_callback(actuator_control_target);
     }
@@ -1770,8 +1775,8 @@ void TelemetryServiceImplTest::checkSendsActuatorOutputStatusEvents(
 {
     std::promise<void> subscription_promise;
     auto subscription_future = subscription_promise.get_future();
-    mavsdk::Telemetry::actuator_output_status_callback_t actuator_output_status_callback;
-    EXPECT_CALL(*_telemetry, actuator_output_status_async(_))
+    mavsdk::Telemetry::ActuatorOutputStatusCallback actuator_output_status_callback;
+    EXPECT_CALL(*_telemetry, subscribe_actuator_output_status(_))
         .WillOnce(SaveCallback(&actuator_output_status_callback, &subscription_promise));
 
     std::vector<ActuatorOutputStatus> received_actuator_output_status_events;

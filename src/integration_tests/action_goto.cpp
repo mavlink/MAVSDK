@@ -9,16 +9,16 @@ using namespace mavsdk;
 
 TEST_F(SitlTest, ActionGoto)
 {
-    Mavsdk dc;
+    Mavsdk mavsdk;
 
-    ConnectionResult ret = dc.add_udp_connection();
-    ASSERT_EQ(ret, ConnectionResult::SUCCESS);
+    ConnectionResult ret = mavsdk.add_udp_connection();
+    ASSERT_EQ(ret, ConnectionResult::Success);
 
     // Wait for system to connect via heartbeat.
     ASSERT_TRUE(poll_condition_with_timeout(
-        [&dc]() { return dc.is_connected(); }, std::chrono::seconds(10)));
+        [&mavsdk]() { return mavsdk.is_connected(); }, std::chrono::seconds(10)));
 
-    System& system = dc.system();
+    System& system = mavsdk.system();
     auto telemetry = std::make_shared<Telemetry>(system);
 
     int iteration = 0;
@@ -31,11 +31,11 @@ TEST_F(SitlTest, ActionGoto)
 
     auto action = std::make_shared<Action>(system);
     Action::Result action_ret = action->arm();
-    EXPECT_EQ(action_ret, Action::Result::SUCCESS);
+    EXPECT_EQ(action_ret, Action::Result::Success);
     std::this_thread::sleep_for(std::chrono::seconds(1));
 
     action_ret = action->takeoff();
-    EXPECT_EQ(action_ret, Action::Result::SUCCESS);
+    EXPECT_EQ(action_ret, Action::Result::Success);
     std::this_thread::sleep_for(std::chrono::seconds(2));
 
     // Go somewhere
@@ -47,7 +47,7 @@ TEST_F(SitlTest, ActionGoto)
     std::this_thread::sleep_for(std::chrono::seconds(10));
 
     action_ret = action->land();
-    EXPECT_EQ(action_ret, Action::Result::SUCCESS);
+    EXPECT_EQ(action_ret, Action::Result::Success);
 
     iteration = 0;
     while (telemetry->in_air()) {
@@ -59,5 +59,5 @@ TEST_F(SitlTest, ActionGoto)
     }
 
     action_ret = action->disarm();
-    EXPECT_EQ(action_ret, Action::Result::SUCCESS);
+    EXPECT_EQ(action_ret, Action::Result::Success);
 }

@@ -38,7 +38,7 @@ MAVLinkCommands::Result MAVLinkCommands::send_command(const MAVLinkCommands::Com
         // We can only fulfill the promise once in C++11.
         // Therefore we have to ignore the IN_PROGRESS state and wait
         // for the final result.
-        if (result != Result::IN_PROGRESS) {
+        if (result != Result::InProgress) {
             prom->set_value(result);
         }
     });
@@ -58,7 +58,7 @@ MAVLinkCommands::Result MAVLinkCommands::send_command(const MAVLinkCommands::Com
         // We can only fulfill the promise once in C++11.
         // Therefore we have to ignore the IN_PROGRESS state and wait
         // for the final result.
-        if (result != Result::IN_PROGRESS) {
+        if (result != Result::InProgress) {
             prom->set_value(result);
         }
     });
@@ -66,17 +66,17 @@ MAVLinkCommands::Result MAVLinkCommands::send_command(const MAVLinkCommands::Com
     return res.get();
 }
 
-void MAVLinkCommands::queue_command_async(
-    const CommandInt& command, command_result_callback_t callback)
+void MAVLinkCommands::queue_command_async(const CommandInt& command, commandResultCallback callback)
 {
     // LogDebug() << "Command " << (int)(command.command) << " to send to "
-    //  << (int)(command.target_system_id)<< ", " << (int)(command.target_component_id;
+    //  << (int)(command.target_system_id)<< ", " << (int)(command.target_component_id);
 
-    Work new_work{};
+    auto new_work = std::make_shared<Work>();
+
     mavlink_msg_command_int_pack(
         _parent.get_own_system_id(),
         _parent.get_own_component_id(),
-        &new_work.mavlink_message,
+        &new_work->mavlink_message,
         command.target_system_id,
         command.target_component_id,
         command.frame,
@@ -91,22 +91,22 @@ void MAVLinkCommands::queue_command_async(
         command.params.y,
         command.params.z);
 
-    new_work.callback = callback;
-    new_work.mavlink_command = command.command;
+    new_work->callback = callback;
+    new_work->mavlink_command = command.command;
     _work_queue.push_back(new_work);
 }
 
 void MAVLinkCommands::queue_command_async(
-    const CommandLong& command, command_result_callback_t callback)
+    const CommandLong& command, commandResultCallback callback)
 {
     // LogDebug() << "Command " << (int)(command.command) << " to send to "
-    //  << (int)(command.target_system_id)<< ", " << (int)(command.target_component_id;
+    //  << (int)(command.target_system_id)<< ", " << (int)(command.target_component_id);
 
-    Work new_work{};
+    auto new_work = std::make_shared<Work>();
     mavlink_msg_command_long_pack(
         _parent.get_own_system_id(),
         _parent.get_own_component_id(),
-        &new_work.mavlink_message,
+        &new_work->mavlink_message,
         command.target_system_id,
         command.target_component_id,
         command.command,
@@ -119,8 +119,9 @@ void MAVLinkCommands::queue_command_async(
         command.params.param6,
         command.params.param7);
 
-    new_work.callback = callback;
-    new_work.mavlink_command = command.command;
+    new_work->callback = callback;
+    new_work->mavlink_command = command.command;
+    new_work->time_started = _parent.get_time().steady_time();
     _work_queue.push_back(new_work);
 }
 
@@ -128,8 +129,6 @@ void MAVLinkCommands::receive_command_ack(mavlink_message_t message)
 {
     mavlink_command_ack_t command_ack;
     mavlink_msg_command_ack_decode(&message, &command_ack);
-
-    // LogDebug() << "We got an ack: " << command_ack.command;
 
     LockedQueue<Work>::Guard work_queue_guard(_work_queue);
     auto work = work_queue_guard.get_front();
@@ -145,38 +144,41 @@ void MAVLinkCommands::receive_command_ack(mavlink_message_t message)
         return;
     }
 
+    // LogDebug() << "We got an ack: " << command_ack.command
+    //            << " after: " << _parent.get_time().elapsed_since_s(work->time_started) << " s";
+
     switch (command_ack.result) {
         case MAV_RESULT_ACCEPTED:
             _parent.unregister_timeout_handler(_timeout_cookie);
+            call_callback(work->callback, Result::Success, 1.0f);
             work_queue_guard.pop_front();
-            call_callback(work->callback, Result::SUCCESS, 1.0f);
             break;
 
         case MAV_RESULT_DENIED:
             LogWarn() << "command denied (" << work->mavlink_command << ").";
             _parent.unregister_timeout_handler(_timeout_cookie);
+            call_callback(work->callback, Result::CommandDenied, NAN);
             work_queue_guard.pop_front();
-            call_callback(work->callback, Result::COMMAND_DENIED, NAN);
             break;
 
         case MAV_RESULT_UNSUPPORTED:
             LogWarn() << "command unsupported (" << work->mavlink_command << ").";
             _parent.unregister_timeout_handler(_timeout_cookie);
+            call_callback(work->callback, Result::CommandDenied, NAN);
             work_queue_guard.pop_front();
-            call_callback(work->callback, Result::COMMAND_DENIED, NAN);
             break;
 
         case MAV_RESULT_TEMPORARILY_REJECTED:
             LogWarn() << "command temporarily rejected (" << work->mavlink_command << ").";
             _parent.unregister_timeout_handler(_timeout_cookie);
+            call_callback(work->callback, Result::CommandDenied, NAN);
             work_queue_guard.pop_front();
-            call_callback(work->callback, Result::COMMAND_DENIED, NAN);
             break;
 
         case MAV_RESULT_FAILED:
             _parent.unregister_timeout_handler(_timeout_cookie);
+            call_callback(work->callback, Result::CommandDenied, NAN);
             work_queue_guard.pop_front();
-            call_callback(work->callback, Result::COMMAND_DENIED, NAN);
             break;
 
         case MAV_RESULT_IN_PROGRESS:
@@ -219,12 +221,14 @@ void MAVLinkCommands::receive_timeout()
 
     if (work->retries_to_do > 0) {
         // We're not sure the command arrived, let's retransmit.
-        LogWarn() << "sending again, retries to do: " << work->retries_to_do << "  ("
-                  << work->mavlink_command << ").";
+        LogWarn() << "sending again after "
+                  << _parent.get_time().elapsed_since_s(work->time_started)
+                  << " s, retries to do: " << work->retries_to_do << "  (" << work->mavlink_command
+                  << ").";
         if (!_parent.send_message(work->mavlink_message)) {
             LogErr() << "connection send error in retransmit (" << work->mavlink_command << ").";
             work_queue_guard.pop_front();
-            call_callback(work->callback, Result::CONNECTION_ERROR, NAN);
+            call_callback(work->callback, Result::ConnectionError, NAN);
 
         } else {
             --work->retries_to_do;
@@ -240,7 +244,7 @@ void MAVLinkCommands::receive_timeout()
 
         work_queue_guard.pop_front();
 
-        call_callback(work->callback, Result::TIMEOUT, NAN);
+        call_callback(work->callback, Result::Timeout, NAN);
     }
 }
 
@@ -256,10 +260,11 @@ void MAVLinkCommands::do_work()
 
     if (!work->already_sent) {
         // LogDebug() << "sending it the first time (" << work->mavlink_command << ")";
+        work->time_started = _parent.get_time().steady_time();
         if (!_parent.send_message(work->mavlink_message)) {
             LogErr() << "connection send error (" << work->mavlink_command << ")";
             work_queue_guard.pop_front();
-            call_callback(work->callback, Result::CONNECTION_ERROR, NAN);
+            call_callback(work->callback, Result::ConnectionError, NAN);
         } else {
             work->already_sent = true;
             _parent.register_timeout_handler(
@@ -271,7 +276,7 @@ void MAVLinkCommands::do_work()
 }
 
 void MAVLinkCommands::call_callback(
-    const command_result_callback_t& callback, Result result, float progress)
+    const commandResultCallback& callback, Result result, float progress)
 {
     if (!callback) {
         return;

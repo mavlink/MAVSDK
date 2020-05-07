@@ -39,7 +39,7 @@ Gimbal::Result GimbalImpl::set_pitch_and_yaw(float pitch_deg, float yaw_deg)
 }
 
 void GimbalImpl::set_pitch_and_yaw_async(
-    float pitch_deg, float yaw_deg, Gimbal::result_callback_t callback)
+    float pitch_deg, float yaw_deg, Gimbal::ResultCallback callback)
 {
     const float roll_deg = 0.0f;
     MAVLinkCommands::CommandLong command{};
@@ -55,7 +55,7 @@ void GimbalImpl::set_pitch_and_yaw_async(
         command, std::bind(&GimbalImpl::receive_command_result, std::placeholders::_1, callback));
 }
 
-Gimbal::Result GimbalImpl::set_gimbal_mode(const Gimbal::GimbalMode gimbal_mode)
+Gimbal::Result GimbalImpl::set_mode(const Gimbal::GimbalMode gimbal_mode)
 {
     MAVLinkCommands::CommandInt command{};
 
@@ -74,8 +74,8 @@ Gimbal::Result GimbalImpl::set_gimbal_mode(const Gimbal::GimbalMode gimbal_mode)
     return gimbal_result_from_command_result(_parent->send_command(command));
 }
 
-void GimbalImpl::set_gimbal_mode_async(
-    const Gimbal::GimbalMode gimbal_mode, Gimbal::result_callback_t callback)
+void GimbalImpl::set_mode_async(
+    const Gimbal::GimbalMode gimbal_mode, Gimbal::ResultCallback callback)
 {
     MAVLinkCommands::CommandInt command{};
 
@@ -97,9 +97,9 @@ void GimbalImpl::set_gimbal_mode_async(
 float GimbalImpl::to_float_gimbal_mode(const Gimbal::GimbalMode gimbal_mode) const
 {
     switch (gimbal_mode) {
-        case Gimbal::GimbalMode::YAW_FOLLOW:
+        case Gimbal::GimbalMode::YawFollow:
             return 0.0f;
-        case Gimbal::GimbalMode::YAW_LOCK:
+        case Gimbal::GimbalMode::YawLock:
             return 1.0f;
         default:
             return 0.0f;
@@ -121,7 +121,7 @@ GimbalImpl::set_roi_location(double latitude_deg, double longitude_deg, float al
 }
 
 void GimbalImpl::set_roi_location_async(
-    double latitude_deg, double longitude_deg, float altitude_m, Gimbal::result_callback_t callback)
+    double latitude_deg, double longitude_deg, float altitude_m, Gimbal::ResultCallback callback)
 {
     MAVLinkCommands::CommandInt command{};
 
@@ -136,7 +136,7 @@ void GimbalImpl::set_roi_location_async(
 }
 
 void GimbalImpl::receive_command_result(
-    MAVLinkCommands::Result command_result, const Gimbal::result_callback_t& callback)
+    MAVLinkCommands::Result command_result, const Gimbal::ResultCallback& callback)
 {
     Gimbal::Result gimbal_result = gimbal_result_from_command_result(command_result);
 
@@ -148,16 +148,16 @@ void GimbalImpl::receive_command_result(
 Gimbal::Result GimbalImpl::gimbal_result_from_command_result(MAVLinkCommands::Result command_result)
 {
     switch (command_result) {
-        case MAVLinkCommands::Result::SUCCESS:
-            return Gimbal::Result::SUCCESS;
-        case MAVLinkCommands::Result::TIMEOUT:
-            return Gimbal::Result::TIMEOUT;
-        case MAVLinkCommands::Result::NO_SYSTEM:
-        case MAVLinkCommands::Result::CONNECTION_ERROR:
-        case MAVLinkCommands::Result::BUSY:
-        case MAVLinkCommands::Result::COMMAND_DENIED:
+        case MAVLinkCommands::Result::Success:
+            return Gimbal::Result::Success;
+        case MAVLinkCommands::Result::Timeout:
+            return Gimbal::Result::Timeout;
+        case MAVLinkCommands::Result::NoSystem:
+        case MAVLinkCommands::Result::ConnectionError:
+        case MAVLinkCommands::Result::Busy:
+        case MAVLinkCommands::Result::CommandDenied:
         default:
-            return Gimbal::Result::ERROR;
+            return Gimbal::Result::Error;
     }
 }
 

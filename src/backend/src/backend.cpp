@@ -6,8 +6,7 @@
 #include "mavsdk.h"
 #include "grpc_server.h"
 
-namespace mavsdk {
-namespace backend {
+using namespace mavsdk::backend;
 
 class MavsdkBackend::Impl {
 public:
@@ -24,15 +23,21 @@ public:
     {
         _server = std::unique_ptr<GRPCServer>(new GRPCServer(_dc));
         _server->set_port(port);
-        return _server->run();
+        _grpc_port = _server->run();
+        return _grpc_port;
     }
 
     void wait() { _server->wait(); }
 
+    void stop() { _server->stop(); }
+
+    int getPort() { return _grpc_port; }
+
 private:
-    Mavsdk _dc;
+    mavsdk::Mavsdk _dc;
     ConnectionInitiator<mavsdk::Mavsdk> _connection_initiator;
     std::unique_ptr<GRPCServer> _server;
+    int _grpc_port;
 };
 
 MavsdkBackend::MavsdkBackend() : _impl(new Impl()) {}
@@ -50,6 +55,12 @@ void MavsdkBackend::wait()
 {
     _impl->wait();
 }
+void MavsdkBackend::stop()
+{
+    _impl->stop();
+}
 
-} // namespace backend
-} // namespace mavsdk
+int MavsdkBackend::getPort()
+{
+    return _impl->getPort();
+}

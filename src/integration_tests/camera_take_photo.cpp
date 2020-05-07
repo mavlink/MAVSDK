@@ -21,22 +21,22 @@ static std::atomic<bool> _received_capture_info{false};
 
 TEST(CameraTest, TakePhotoSingle)
 {
-    Mavsdk dc;
+    Mavsdk mavsdk;
 
-    ConnectionResult ret = dc.add_udp_connection();
-    ASSERT_EQ(ret, ConnectionResult::SUCCESS);
+    ConnectionResult ret = mavsdk.add_udp_connection();
+    ASSERT_EQ(ret, ConnectionResult::Success);
 
     // Wait for system to connect via heartbeat.
     std::this_thread::sleep_for(std::chrono::seconds(2));
 
-    System& system = dc.system();
+    System& system = mavsdk.system();
     ASSERT_TRUE(system.has_camera());
     auto camera = std::make_shared<Camera>(system);
 
     std::this_thread::sleep_for(std::chrono::seconds(1));
 
     // We want to take the picture in photo mode.
-    set_mode_async(camera, Camera::Mode::PHOTO);
+    set_mode_async(camera, Camera::Mode::Photo);
 
     std::this_thread::sleep_for(std::chrono::seconds(1));
 
@@ -49,22 +49,22 @@ TEST(CameraTest, TakePhotoSingle)
 
 TEST(CameraTest, TakePhotosMultiple)
 {
-    Mavsdk dc;
+    Mavsdk mavsdk;
 
     const int num_photos_to_take = 3;
 
-    ConnectionResult ret = dc.add_udp_connection();
-    ASSERT_EQ(ret, ConnectionResult::SUCCESS);
+    ConnectionResult ret = mavsdk.add_udp_connection();
+    ASSERT_EQ(ret, ConnectionResult::Success);
 
     // Wait for system to connect via heartbeat.
     std::this_thread::sleep_for(std::chrono::seconds(2));
 
-    System& system = dc.system();
+    System& system = mavsdk.system();
     ASSERT_TRUE(system.has_camera());
     auto camera = std::make_shared<Camera>(system);
 
     // We want to take the picture in photo mode.
-    set_mode_async(camera, Camera::Mode::PHOTO);
+    set_mode_async(camera, Camera::Mode::Photo);
 
     std::this_thread::sleep_for(std::chrono::seconds(1));
 
@@ -82,7 +82,7 @@ TEST(CameraTest, TakePhotosMultiple)
 void receive_camera_result(Camera::Result result)
 {
     _received_result = true;
-    EXPECT_EQ(result, Camera::Result::SUCCESS);
+    EXPECT_EQ(result, Camera::Result::Success);
 }
 
 void receive_capture_info(Camera::CaptureInfo capture_info)
@@ -95,7 +95,7 @@ void receive_capture_info(Camera::CaptureInfo capture_info)
     LogInfo() << "Attitude: " << capture_info.attitude_quaternion.w << ", "
               << capture_info.attitude_quaternion.x << ", " << capture_info.attitude_quaternion.y
               << ", " << capture_info.attitude_quaternion.z << ".";
-    LogInfo() << "Result: " << (capture_info.success ? "success" : "fail") << ".";
+    LogInfo() << "Result: " << (capture_info.is_success ? "success" : "fail") << ".";
     LogInfo() << "Saved to " << capture_info.file_url << " (" << capture_info.index << ").";
 
     _received_capture_info = true;

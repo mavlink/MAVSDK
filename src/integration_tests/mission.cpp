@@ -18,7 +18,7 @@ static void test_mission(
     std::shared_ptr<Mission> mission,
     std::shared_ptr<Action> action);
 
-static std::shared_ptr<MissionItem> add_mission_item(
+static Mission::MissionItem add_mission_item(
     double latitude_deg,
     double longitude_deg,
     float relative_altitude_m,
@@ -27,10 +27,7 @@ static std::shared_ptr<MissionItem> add_mission_item(
     float gimbal_pitch_deg,
     float gimbal_yaw_deg,
     float loiter_time_s,
-    MissionItem::CameraAction camera_action);
-
-static void compare_mission_items(
-    const std::shared_ptr<MissionItem> original, const std::shared_ptr<MissionItem> downloaded);
+    Mission::MissionItem::CameraAction camera_action);
 
 static void pause_and_resume(std::shared_ptr<Mission> mission);
 
@@ -53,7 +50,7 @@ TEST_F(SitlTest, MissionAddWaypointsAndFly)
         });
 
         ConnectionResult ret = dc.add_udp_connection();
-        ASSERT_EQ(ret, ConnectionResult::SUCCESS);
+        ASSERT_EQ(ret, ConnectionResult::Success);
 
         auto status = future_result.wait_for(std::chrono::seconds(2));
         ASSERT_EQ(status, std::future_status::ready);
@@ -88,10 +85,10 @@ void test_mission(
     LogInfo() << "System ready";
     LogInfo() << "Creating and uploading mission";
 
-    std::vector<std::shared_ptr<MissionItem>> mission_items;
+    Mission::MissionPlan mission_plan{};
 
-    while (mission_items.size() < NUM_MISSION_ITEMS) {
-        mission_items.push_back(add_mission_item(
+    while (mission_plan.mission_items.size() < NUM_MISSION_ITEMS) {
+        mission_plan.mission_items.push_back(add_mission_item(
             47.398170327054473,
             8.5456490218639658,
             10.0f,
@@ -100,9 +97,9 @@ void test_mission(
             20.0f,
             60.0f,
             NAN,
-            MissionItem::CameraAction::NONE));
+            Mission::MissionItem::CameraAction::None));
 
-        mission_items.push_back(add_mission_item(
+        mission_plan.mission_items.push_back(add_mission_item(
             47.398241338125118,
             8.5455360114574432,
             10.0f,
@@ -111,9 +108,9 @@ void test_mission(
             0.0f,
             -60.0f,
             5.0f,
-            MissionItem::CameraAction::TAKE_PHOTO));
+            Mission::MissionItem::CameraAction::TakePhoto));
 
-        mission_items.push_back(add_mission_item(
+        mission_plan.mission_items.push_back(add_mission_item(
             47.398139363821485,
             8.5453846156597137,
             10.0f,
@@ -122,9 +119,9 @@ void test_mission(
             -46.0f,
             0.0f,
             NAN,
-            MissionItem::CameraAction::START_VIDEO));
+            Mission::MissionItem::CameraAction::StartVideo));
 
-        mission_items.push_back(add_mission_item(
+        mission_plan.mission_items.push_back(add_mission_item(
             47.398058617228855,
             8.5454618036746979,
             10.0f,
@@ -133,9 +130,9 @@ void test_mission(
             -90.0f,
             30.0f,
             NAN,
-            MissionItem::CameraAction::STOP_VIDEO));
+            Mission::MissionItem::CameraAction::StopVideo));
 
-        mission_items.push_back(add_mission_item(
+        mission_plan.mission_items.push_back(add_mission_item(
             47.398100366082858,
             8.5456969141960144,
             10.0f,
@@ -144,9 +141,9 @@ void test_mission(
             -45.0f,
             -30.0f,
             NAN,
-            MissionItem::CameraAction::START_PHOTO_INTERVAL));
+            Mission::MissionItem::CameraAction::StartPhotoInterval));
 
-        mission_items.push_back(add_mission_item(
+        mission_plan.mission_items.push_back(add_mission_item(
             47.398001890458097,
             8.5455576181411743,
             10.0f,
@@ -155,11 +152,11 @@ void test_mission(
             0.0f,
             0.0f,
             NAN,
-            MissionItem::CameraAction::STOP_PHOTO_INTERVAL));
+            Mission::MissionItem::CameraAction::StopPhotoInterval));
     }
 
     mission->set_return_to_launch_after_mission(true);
-    EXPECT_TRUE(mission->get_return_to_launch_after_mission());
+    EXPECT_TRUE(mission->get_return_to_launch_after_mission().second);
 
     {
         LogInfo() << "Uploading mission...";
@@ -167,8 +164,8 @@ void test_mission(
         // std::future.
         auto prom = std::make_shared<std::promise<void>>();
         auto future_result = prom->get_future();
-        mission->upload_mission_async(mission_items, [prom](Mission::Result result) {
-            ASSERT_EQ(result, Mission::Result::SUCCESS);
+        mission->upload_mission_async(mission_plan, [prom](Mission::Result result) {
+            ASSERT_EQ(result, Mission::Result::Success);
             prom->set_value();
             LogInfo() << "Mission uploaded.";
         });
@@ -185,39 +182,41 @@ void test_mission(
         // std::future.
         auto prom = std::make_shared<std::promise<void>>();
         auto future_result = prom->get_future();
-        mission->download_mission_async(
-            [prom, mission_items](
-                Mission::Result result,
-                std::vector<std::shared_ptr<MissionItem>> mission_items_downloaded) {
-                EXPECT_EQ(result, Mission::Result::SUCCESS);
-                prom->set_value();
-                LogInfo() << "Mission downloaded (to check it).";
+        mission->download_mission_async([prom, mission_plan](
+                                            Mission::Result result,
+                                            Mission::MissionPlan mission_plan_downloaded) {
+            EXPECT_EQ(result, Mission::Result::Success);
+            prom->set_value();
+            LogInfo() << "Mission downloaded (to check it).";
 
-                EXPECT_EQ(mission_items.size(), mission_items_downloaded.size());
+            EXPECT_EQ(
+                mission_plan.mission_items.size(), mission_plan_downloaded.mission_items.size());
 
-                if (mission_items.size() == mission_items_downloaded.size()) {
-                    for (unsigned i = 0; i < mission_items.size(); ++i) {
-                        compare_mission_items(mission_items.at(i), mission_items_downloaded.at(i));
-                    }
+            if (mission_plan.mission_items.size() == mission_plan_downloaded.mission_items.size()) {
+                for (unsigned i = 0; i < mission_plan.mission_items.size(); ++i) {
+                    const auto original = mission_plan.mission_items.at(i);
+                    const auto downloaded = mission_plan_downloaded.mission_items.at(i);
+                    EXPECT_EQ(original, downloaded);
                 }
-            });
+            }
+        });
 
         auto status = future_result.wait_for(std::chrono::seconds(2));
         ASSERT_EQ(status, std::future_status::ready);
         future_result.get();
     }
 
-    EXPECT_TRUE(mission->get_return_to_launch_after_mission());
+    EXPECT_TRUE(mission->get_return_to_launch_after_mission().second);
 
     LogInfo() << "Arming...";
     const Action::Result arm_result = action->arm();
-    EXPECT_EQ(arm_result, Action::Result::SUCCESS);
+    EXPECT_EQ(arm_result, Action::Result::Success);
     LogInfo() << "Armed.";
 
     // Before starting the mission, we want to be sure to subscribe to the mission progress.
-    mission->subscribe_progress([&mission](int current, int total) {
-        LogInfo() << "Mission status update: " << current << " / " << total;
-        if (current >= 2 && !pause_already_done) {
+    mission->subscribe_mission_progress([&mission](Mission::MissionProgress progress) {
+        LogInfo() << "Mission status update: " << progress.current << " / " << progress.total;
+        if (progress.current >= 2 && !pause_already_done) {
             pause_already_done = true;
             pause_and_resume(mission);
         }
@@ -228,7 +227,7 @@ void test_mission(
         auto prom = std::make_shared<std::promise<void>>();
         auto future_result = prom->get_future();
         mission->start_mission_async([prom](Mission::Result result) {
-            ASSERT_EQ(result, Mission::Result::SUCCESS);
+            ASSERT_EQ(result, Mission::Result::Success);
             prom->set_value();
             LogInfo() << "Started mission.";
         });
@@ -241,7 +240,7 @@ void test_mission(
     // At the end of the mission it should RTL automatically, we can
     // just wait for auto disarm.
 
-    while (!mission->mission_finished()) {
+    while (!mission->is_mission_finished().second) {
         std::this_thread::sleep_for(std::chrono::seconds(1));
     }
 
@@ -256,7 +255,7 @@ void test_mission(
         auto prom = std::make_shared<std::promise<void>>();
         auto future_result = prom->get_future();
         mission->clear_mission_async([prom](Mission::Result result) {
-            ASSERT_EQ(result, Mission::Result::SUCCESS);
+            ASSERT_EQ(result, Mission::Result::Success);
             prom->set_value();
             LogInfo() << "Cleared mission, exiting.";
         });
@@ -267,7 +266,7 @@ void test_mission(
     }
 }
 
-std::shared_ptr<MissionItem> add_mission_item(
+Mission::MissionItem add_mission_item(
     double latitude_deg,
     double longitude_deg,
     float relative_altitude_m,
@@ -276,29 +275,25 @@ std::shared_ptr<MissionItem> add_mission_item(
     float gimbal_pitch_deg,
     float gimbal_yaw_deg,
     float loiter_time_s,
-    MissionItem::CameraAction camera_action)
+    Mission::MissionItem::CameraAction camera_action)
 {
-    auto new_item = std::make_shared<MissionItem>();
-    new_item->set_position(latitude_deg, longitude_deg);
-    new_item->set_relative_altitude(relative_altitude_m);
-    new_item->set_speed(speed_m_s);
-    new_item->set_fly_through(is_fly_through);
-    new_item->set_gimbal_pitch_and_yaw(gimbal_pitch_deg, gimbal_yaw_deg);
-    new_item->set_loiter_time(loiter_time_s);
-    new_item->set_camera_action(camera_action);
+    Mission::MissionItem new_item{};
+    new_item.latitude_deg = latitude_deg;
+    new_item.longitude_deg = longitude_deg;
+    new_item.relative_altitude_m = relative_altitude_m;
+    new_item.speed_m_s = speed_m_s;
+    new_item.is_fly_through = is_fly_through;
+    new_item.gimbal_pitch_deg = gimbal_pitch_deg;
+    new_item.gimbal_yaw_deg = gimbal_yaw_deg;
+    new_item.loiter_time_s = loiter_time_s;
+    new_item.camera_action = camera_action;
 
     // In order to test setting the interval, add it here.
-    if (camera_action == MissionItem::CameraAction::START_PHOTO_INTERVAL) {
-        new_item->set_camera_photo_interval(1.5);
+    if (camera_action == Mission::MissionItem::CameraAction::StartPhotoInterval) {
+        new_item.camera_photo_interval_s = 1.5;
     }
 
     return new_item;
-}
-
-void compare_mission_items(
-    const std::shared_ptr<MissionItem> original, const std::shared_ptr<MissionItem> downloaded)
-{
-    EXPECT_TRUE(*original == *downloaded);
 }
 
 void pause_and_resume(std::shared_ptr<Mission> mission)
@@ -308,7 +303,7 @@ void pause_and_resume(std::shared_ptr<Mission> mission)
         auto prom = std::make_shared<std::promise<void>>();
         auto future_result = prom->get_future();
         mission->pause_mission_async([prom](Mission::Result result) {
-            EXPECT_EQ(result, Mission::Result::SUCCESS);
+            EXPECT_EQ(result, Mission::Result::Success);
             prom->set_value();
             LogInfo() << "Mission paused.";
         });
@@ -327,7 +322,7 @@ void pause_and_resume(std::shared_ptr<Mission> mission)
         auto future_result = prom->get_future();
         LogInfo() << "Resuming mission...";
         mission->start_mission_async([prom](Mission::Result result) {
-            EXPECT_EQ(result, Mission::Result::SUCCESS);
+            EXPECT_EQ(result, Mission::Result::Success);
             prom->set_value();
         });
 

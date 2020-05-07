@@ -21,7 +21,7 @@ TEST_F(SitlTest, SystemConnectionAsync)
 {
     Mavsdk dc;
 
-    ASSERT_EQ(dc.add_udp_connection(), ConnectionResult::SUCCESS);
+    ASSERT_EQ(dc.add_udp_connection(), ConnectionResult::Success);
 
     dc.register_on_discover(std::bind(&on_discover, _1));
     dc.register_on_timeout(std::bind(&on_timeout, _1));

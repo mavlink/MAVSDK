@@ -5,7 +5,10 @@ set(COMPONENTS_LIST action calibration camera core geofence gimbal info mission 
 foreach(COMPONENT_NAME ${COMPONENTS_LIST})
     add_library(${COMPONENT_NAME}_proto_gens STATIC
         ${CMAKE_CURRENT_SOURCE_DIR}/generated/${COMPONENT_NAME}/${COMPONENT_NAME}.grpc.pb.cc
-        ${CMAKE_CURRENT_SOURCE_DIR}/generated/${COMPONENT_NAME}/${COMPONENT_NAME}.pb.cc)
+        ${CMAKE_CURRENT_SOURCE_DIR}/generated/${COMPONENT_NAME}/${COMPONENT_NAME}.pb.cc
+        ${CMAKE_CURRENT_SOURCE_DIR}/generated/mavsdk_options.grpc.pb.cc
+        ${CMAKE_CURRENT_SOURCE_DIR}/generated/mavsdk_options.pb.cc
+        )
 
     target_link_libraries(${COMPONENT_NAME}_proto_gens
         gRPC::grpc++

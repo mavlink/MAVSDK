@@ -11,10 +11,10 @@ public:
     LockedQueue(){};
     ~LockedQueue(){};
 
-    void push_back(T item)
+    void push_back(std::shared_ptr<T> item_ptr)
     {
         std::lock_guard<std::mutex> lock(_mutex);
-        _queue.push_back(std::make_shared<T>(item));
+        _queue.push_back(item_ptr);
     }
 
     size_t size()
@@ -30,6 +30,8 @@ public:
 
     iterator erase(iterator it) { return _queue.erase(it); }
 
+    // This guard serves the purpose to combine a get_front with a pop_front.
+    // Thus, no one can interfere between the two steps.
     class Guard {
     public:
         Guard(LockedQueue& locked_queue) : _locked_queue(locked_queue)

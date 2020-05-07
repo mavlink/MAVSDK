@@ -1,0 +1,15 @@
+/**
+ * @brief {{ enum_description | replace('\n', '\n *')}}
+ */
+enum class {{ name.upper_camel_case }} {
+{%- for value in values %}
+    {{ value.name.upper_camel_case }}, /**< @brief{{ value.description.rstrip() }}. */
+{%- endfor %}
+};
+
+/**
+ * @brief Stream operator to print information about a `{{ plugin_name.upper_camel_case }}::{{ name.upper_camel_case }}`.
+ *
+ * @return A reference to the stream.
+ */
+friend std::ostream& operator<<(std::ostream& str, {{ plugin_name.upper_camel_case }}::{% if parent_struct and not name.upper_camel_case.endswith("Result") %}{{ parent_struct.upper_camel_case }}::{% endif %}{{ name.upper_camel_case }} const& {{ name.lower_snake_case }});

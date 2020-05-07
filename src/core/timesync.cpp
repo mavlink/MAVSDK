@@ -27,6 +27,8 @@ void Timesync::do_work()
                                   _parent.get_autopilot_time().now().time_since_epoch())
                                   .count();
             send_timesync(0, now_ns);
+        } else {
+            _autopilot_timesync_acquired = false;
         }
         _last_time = _parent.get_time().steady_time();
     }
@@ -42,7 +44,7 @@ void Timesync::process_timesync(const mavlink_message_t& message)
                          _parent.get_autopilot_time().now().time_since_epoch())
                          .count();
 
-    if (timesync.tc1 == 0) {
+    if (timesync.tc1 == 0 && _autopilot_timesync_acquired) {
         // Send synced time to remote system
         send_timesync(now_ns, timesync.ts1);
     } else if (timesync.tc1 > 0) {
@@ -75,6 +77,7 @@ void Timesync::set_timesync_offset(int64_t offset_ns, uint64_t start_transfer_lo
 
         // Save time offset for other components to use
         _parent.get_autopilot_time().shift_time_by(std::chrono::nanoseconds(offset_ns));
+        _autopilot_timesync_acquired = true;
 
         // Reset high RTT count after filter update
         _high_rtt_count = 0;

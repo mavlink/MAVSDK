@@ -31,7 +31,7 @@ bool CalibrationStatustextParser::parse(const std::string& statustext)
 
 void CalibrationStatustextParser::reset()
 {
-    _status = Status::NONE;
+    _status = Status::None;
     _progress = NAN;
     _failed_message.clear();
     _instruction_message.clear();
@@ -54,9 +54,9 @@ bool CalibrationStatustextParser::check_started(const std::string& statustext)
 
     if (ret == 2) {
         if (version_stamp == 2) {
-            _status = Status::STARTED;
+            _status = Status::Started;
         } else {
-            _status = Status::FAILED;
+            _status = Status::Failed;
 
             std::stringstream error_stream{};
             error_stream << "Unknown calibration version stamp: " << version_stamp;
@@ -74,7 +74,7 @@ bool CalibrationStatustextParser::check_done(const std::string& statustext)
     const int ret = sscanf(statustext.c_str(), CAL_QGC_DONE_MSG, _tmp_str);
 
     if (ret == 1) {
-        _status = Status::DONE;
+        _status = Status::Done;
         return true;
     }
     return false;
@@ -87,7 +87,7 @@ bool CalibrationStatustextParser::check_failed(const std::string& statustext)
     const int ret = sscanf(statustext.c_str(), CUSTOM_CAL_QGC_FAILED_MSG, _tmp_str);
 
     if (ret == 1) {
-        _status = Status::FAILED;
+        _status = Status::Failed;
         _failed_message = _tmp_str;
         return true;
     }
@@ -97,7 +97,7 @@ bool CalibrationStatustextParser::check_failed(const std::string& statustext)
 bool CalibrationStatustextParser::check_cancelled(const std::string& statustext)
 {
     if (statustext.compare(CAL_QGC_CANCELLED_MSG) == 0) {
-        _status = Status::CANCELLED;
+        _status = Status::Cancelled;
         return true;
     }
     return false;
@@ -110,7 +110,7 @@ bool CalibrationStatustextParser::check_progress(const std::string& statustext)
 
     if (ret == 1 && progress_int >= 0 && progress_int <= 100) {
         _progress = float(progress_int) / 100;
-        _status = Status::PROGRESS;
+        _status = Status::Progress;
         return true;
     }
 
@@ -121,7 +121,7 @@ bool CalibrationStatustextParser::check_progress(const std::string& statustext)
 
     if (ret == 2 && progress_int >= 0 && progress_int <= 100) {
         _progress = float(progress_int) / 100;
-        _status = Status::PROGRESS;
+        _status = Status::Progress;
         return true;
     }
 
@@ -135,7 +135,7 @@ bool CalibrationStatustextParser::check_instruction(const std::string& statustex
     const int ret = sscanf(statustext.c_str(), CATCHALL, _tmp_str);
 
     if (ret == 1) {
-        _status = Status::INSTRUCTION;
+        _status = Status::Instruction;
         _instruction_message = _tmp_str;
         return true;
     }

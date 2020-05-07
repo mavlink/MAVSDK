@@ -33,6 +33,7 @@
 #include <google/protobuf/extension_set.h>  // IWYU pragma: export
 #include <google/protobuf/generated_enum_reflection.h>
 #include <google/protobuf/unknown_field_set.h>
+#include "mavsdk_options.pb.h"
 // @@protoc_insertion_point(includes)
 #include <google/protobuf/port_def.inc>
 #define PROTOBUF_INTERNAL_EXPORT_calibration_2fcalibration_2eproto
@@ -116,23 +117,22 @@ namespace rpc {
 namespace calibration {
 
 enum CalibrationResult_Result : int {
-  CalibrationResult_Result_UNKNOWN = 0,
-  CalibrationResult_Result_SUCCESS = 1,
-  CalibrationResult_Result_IN_PROGRESS = 2,
-  CalibrationResult_Result_INSTRUCTION = 3,
-  CalibrationResult_Result_FAILED = 4,
-  CalibrationResult_Result_NO_SYSTEM = 5,
-  CalibrationResult_Result_CONNECTION_ERROR = 6,
-  CalibrationResult_Result_BUSY = 7,
-  CalibrationResult_Result_COMMAND_DENIED = 8,
-  CalibrationResult_Result_TIMEOUT = 9,
-  CalibrationResult_Result_CANCELLED = 10,
+  CalibrationResult_Result_RESULT_UNKNOWN = 0,
+  CalibrationResult_Result_RESULT_SUCCESS = 1,
+  CalibrationResult_Result_RESULT_NEXT = 2,
+  CalibrationResult_Result_RESULT_FAILED = 3,
+  CalibrationResult_Result_RESULT_NO_SYSTEM = 4,
+  CalibrationResult_Result_RESULT_CONNECTION_ERROR = 5,
+  CalibrationResult_Result_RESULT_BUSY = 6,
+  CalibrationResult_Result_RESULT_COMMAND_DENIED = 7,
+  CalibrationResult_Result_RESULT_TIMEOUT = 8,
+  CalibrationResult_Result_RESULT_CANCELLED = 9,
   CalibrationResult_Result_CalibrationResult_Result_INT_MIN_SENTINEL_DO_NOT_USE_ = std::numeric_limits<::PROTOBUF_NAMESPACE_ID::int32>::min(),
   CalibrationResult_Result_CalibrationResult_Result_INT_MAX_SENTINEL_DO_NOT_USE_ = std::numeric_limits<::PROTOBUF_NAMESPACE_ID::int32>::max()
 };
 bool CalibrationResult_Result_IsValid(int value);
-constexpr CalibrationResult_Result CalibrationResult_Result_Result_MIN = CalibrationResult_Result_UNKNOWN;
-constexpr CalibrationResult_Result CalibrationResult_Result_Result_MAX = CalibrationResult_Result_CANCELLED;
+constexpr CalibrationResult_Result CalibrationResult_Result_Result_MIN = CalibrationResult_Result_RESULT_UNKNOWN;
+constexpr CalibrationResult_Result CalibrationResult_Result_Result_MAX = CalibrationResult_Result_RESULT_CANCELLED;
 constexpr int CalibrationResult_Result_Result_ARRAYSIZE = CalibrationResult_Result_Result_MAX + 1;
 
 const ::PROTOBUF_NAMESPACE_ID::EnumDescriptor* CalibrationResult_Result_descriptor();
@@ -1549,28 +1549,26 @@ class CalibrationResult :
   // nested types ----------------------------------------------------
 
   typedef CalibrationResult_Result Result;
-  static constexpr Result UNKNOWN =
-    CalibrationResult_Result_UNKNOWN;
-  static constexpr Result SUCCESS =
-    CalibrationResult_Result_SUCCESS;
-  static constexpr Result IN_PROGRESS =
-    CalibrationResult_Result_IN_PROGRESS;
-  static constexpr Result INSTRUCTION =
-    CalibrationResult_Result_INSTRUCTION;
-  static constexpr Result FAILED =
-    CalibrationResult_Result_FAILED;
-  static constexpr Result NO_SYSTEM =
-    CalibrationResult_Result_NO_SYSTEM;
-  static constexpr Result CONNECTION_ERROR =
-    CalibrationResult_Result_CONNECTION_ERROR;
-  static constexpr Result BUSY =
-    CalibrationResult_Result_BUSY;
-  static constexpr Result COMMAND_DENIED =
-    CalibrationResult_Result_COMMAND_DENIED;
-  static constexpr Result TIMEOUT =
-    CalibrationResult_Result_TIMEOUT;
-  static constexpr Result CANCELLED =
-    CalibrationResult_Result_CANCELLED;
+  static constexpr Result RESULT_UNKNOWN =
+    CalibrationResult_Result_RESULT_UNKNOWN;
+  static constexpr Result RESULT_SUCCESS =
+    CalibrationResult_Result_RESULT_SUCCESS;
+  static constexpr Result RESULT_NEXT =
+    CalibrationResult_Result_RESULT_NEXT;
+  static constexpr Result RESULT_FAILED =
+    CalibrationResult_Result_RESULT_FAILED;
+  static constexpr Result RESULT_NO_SYSTEM =
+    CalibrationResult_Result_RESULT_NO_SYSTEM;
+  static constexpr Result RESULT_CONNECTION_ERROR =
+    CalibrationResult_Result_RESULT_CONNECTION_ERROR;
+  static constexpr Result RESULT_BUSY =
+    CalibrationResult_Result_RESULT_BUSY;
+  static constexpr Result RESULT_COMMAND_DENIED =
+    CalibrationResult_Result_RESULT_COMMAND_DENIED;
+  static constexpr Result RESULT_TIMEOUT =
+    CalibrationResult_Result_RESULT_TIMEOUT;
+  static constexpr Result RESULT_CANCELLED =
+    CalibrationResult_Result_RESULT_CANCELLED;
   static inline bool Result_IsValid(int value) {
     return CalibrationResult_Result_IsValid(value);
   }
@@ -1766,7 +1764,7 @@ class ProgressData :
   std::string* _internal_mutable_status_text();
   public:
 
-  // float progress = 2;
+  // float progress = 2 [(.mavsdk.options.default_value) = "NaN"];
   void clear_progress();
   float progress() const;
   void set_progress(float value);
@@ -1775,7 +1773,7 @@ class ProgressData :
   void _internal_set_progress(float value);
   public:
 
-  // bool has_progress = 1;
+  // bool has_progress = 1 [(.mavsdk.options.default_value) = "false"];
   void clear_has_progress();
   bool has_progress() const;
   void set_has_progress(bool value);
@@ -1784,7 +1782,7 @@ class ProgressData :
   void _internal_set_has_progress(bool value);
   public:
 
-  // bool has_status_text = 3;
+  // bool has_status_text = 3 [(.mavsdk.options.default_value) = "false"];
   void clear_has_status_text();
   bool has_status_text() const;
   void set_has_status_text(bool value);
@@ -2420,7 +2418,7 @@ inline void CalibrationResult::set_allocated_result_str(std::string* result_str)
 
 // ProgressData
 
-// bool has_progress = 1;
+// bool has_progress = 1 [(.mavsdk.options.default_value) = "false"];
 inline void ProgressData::clear_has_progress() {
   has_progress_ = false;
 }
@@ -2440,7 +2438,7 @@ inline void ProgressData::set_has_progress(bool value) {
   // @@protoc_insertion_point(field_set:mavsdk.rpc.calibration.ProgressData.has_progress)
 }
 
-// float progress = 2;
+// float progress = 2 [(.mavsdk.options.default_value) = "NaN"];
 inline void ProgressData::clear_progress() {
   progress_ = 0;
 }
@@ -2460,7 +2458,7 @@ inline void ProgressData::set_progress(float value) {
   // @@protoc_insertion_point(field_set:mavsdk.rpc.calibration.ProgressData.progress)
 }
 
-// bool has_status_text = 3;
+// bool has_status_text = 3 [(.mavsdk.options.default_value) = "false"];
 inline void ProgressData::clear_has_status_text() {
   has_status_text_ = false;
 }

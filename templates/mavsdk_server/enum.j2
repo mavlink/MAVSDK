@@ -1,0 +1,35 @@
+static rpc::{{ plugin_name.lower_snake_case }}::{% if parent_struct %}{{ parent_struct.upper_camel_case }}::{% endif %}{{ name.upper_camel_case }} translateToRpc{{ name.upper_camel_case }}(const mavsdk::{{ plugin_name.upper_camel_case }}::{% if parent_struct and not name.upper_camel_case.endswith("Result") %}{{ parent_struct.upper_camel_case }}::{% endif %}{{ name.upper_camel_case }}& {{ name.lower_snake_case }})
+{
+    switch ({{ name.lower_snake_case }}) {
+        {%- for value in values %}
+        {%- if loop.first %}
+        default:
+            LogErr() << "Unknown {{ name.lower_snake_case }} enum value: " << static_cast<int>({{ name.lower_snake_case }});
+        // FALLTHROUGH
+        case mavsdk::{{ plugin_name.upper_camel_case }}::{% if parent_struct and not name.upper_camel_case.endswith("Result") %}{{ parent_struct.upper_camel_case }}::{% endif %}{{ name.upper_camel_case }}::{{ value.name.upper_camel_case }}:
+            return rpc::{{ plugin_name.lower_snake_case }}::{% if parent_struct %}{{ parent_struct.upper_camel_case }}_{{ name.upper_camel_case }}_{% endif %}{{ name.uppercase }}_{{ value.name.uppercase }};
+        {%- else %}
+        case mavsdk::{{ plugin_name.upper_camel_case }}::{% if parent_struct and not name.upper_camel_case.endswith("Result") %}{{ parent_struct.upper_camel_case }}::{% endif %}{{ name.upper_camel_case }}::{{ value.name.upper_camel_case }}:
+            return rpc::{{ plugin_name.lower_snake_case }}::{% if parent_struct %}{{ parent_struct.upper_camel_case }}_{{ name.upper_camel_case }}_{% endif %}{{ name.uppercase }}_{{ value.name.uppercase }};
+        {%- endif %}
+        {%- endfor %}
+    }
+}
+
+static mavsdk::{{ plugin_name.upper_camel_case }}::{% if parent_struct and not name.upper_camel_case.endswith("Result") %}{{ parent_struct.upper_camel_case }}::{% endif %}{{ name.upper_camel_case }} translateFromRpc{{ name.upper_camel_case }}(const rpc::{{ plugin_name.lower_snake_case }}::{% if parent_struct %}{{ parent_struct.upper_camel_case }}::{% endif %}{{ name.upper_camel_case }} {{ name.lower_snake_case}})
+{
+    switch ({{ name.lower_snake_case }}) {
+        {%- for value in values %}
+            {%- if loop.first %}
+        default:
+            LogErr() << "Unknown {{ name.lower_snake_case }} enum value: " << static_cast<int>({{ name.lower_snake_case }});
+        // FALLTHROUGH
+        case rpc::{{ plugin_name.lower_snake_case }}::{% if parent_struct %}{{ parent_struct.upper_camel_case }}_{{ name.upper_camel_case }}_{% endif %}{{ name.uppercase }}_{{ value.name.uppercase }}:
+            return mavsdk::{{ plugin_name.upper_camel_case }}::{% if parent_struct and not name.upper_camel_case.endswith("Result") %}{{ parent_struct.upper_camel_case }}::{% endif %}{{ name.upper_camel_case }}::{{ value.name.upper_camel_case }};
+        {%- else %}
+        case rpc::{{ plugin_name.lower_snake_case }}::{% if parent_struct %}{{ parent_struct.upper_camel_case }}_{{ name.upper_camel_case }}_{% endif %}{{ name.uppercase }}_{{ value.name.uppercase }}:
+            return mavsdk::{{ plugin_name.upper_camel_case }}::{% if parent_struct and not name.upper_camel_case.endswith("Result") %}{{ parent_struct.upper_camel_case }}::{% endif %}{{ name.upper_camel_case }}::{{ value.name.upper_camel_case }};
+        {%- endif %}
+        {%- endfor %}
+    }
+}

@@ -25,22 +25,22 @@ void set_color(Color color)
 #if defined(WINDOWS)
     HANDLE handle = GetStdHandle(STD_OUTPUT_HANDLE);
     switch (color) {
-        case Color::RED:
+        case Color::Red:
             SetConsoleTextAttribute(handle, WIN_COLOR_RED);
             break;
-        case Color::GREEN:
+        case Color::Green:
             SetConsoleTextAttribute(handle, WIN_COLOR_GREEN);
             break;
-        case Color::YELLOW:
+        case Color::Yellow:
             SetConsoleTextAttribute(handle, WIN_COLOR_YELLOW);
             break;
-        case Color::BLUE:
+        case Color::Blue:
             SetConsoleTextAttribute(handle, WIN_COLOR_BLUE);
             break;
-        case Color::GRAY:
+        case Color::Gray:
             SetConsoleTextAttribute(handle, WIN_COLOR_GRAY);
             break;
-        case Color::RESET:
+        case Color::Reset:
             SetConsoleTextAttribute(handle, WIN_COLOR_RESET);
             break;
     }
@@ -48,22 +48,22 @@ void set_color(Color color)
     UNUSED(color);
 #else
     switch (color) {
-        case Color::RED:
+        case Color::Red:
             std::cout << ANSI_COLOR_RED;
             break;
-        case Color::GREEN:
+        case Color::Green:
             std::cout << ANSI_COLOR_GREEN;
             break;
-        case Color::YELLOW:
+        case Color::Yellow:
             std::cout << ANSI_COLOR_YELLOW;
             break;
-        case Color::BLUE:
+        case Color::Blue:
             std::cout << ANSI_COLOR_BLUE;
             break;
-        case Color::GRAY:
+        case Color::Gray:
             std::cout << ANSI_COLOR_GRAY;
             break;
-        case Color::RESET:
+        case Color::Reset:
             std::cout << ANSI_COLOR_RESET;
             break;
     }

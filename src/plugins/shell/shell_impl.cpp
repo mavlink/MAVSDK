@@ -5,10 +5,9 @@ namespace mavsdk {
 
 void ShellImpl::init()
 {
-    using namespace std::placeholders; // for `_1`
     _parent->register_mavlink_message_handler(
         MAVLINK_MSG_ID_SERIAL_CONTROL,
-        std::bind(&ShellImpl::process_shell_message, this, _1),
+        [this](const mavlink_message_t& message) { process_shell_message(message); },
         this);
 }
 
@@ -21,12 +20,9 @@ void ShellImpl::enable() {}
 
 void ShellImpl::disable() {}
 
-ShellImpl::ShellImpl(System& system) :
-    PluginImplBase(system),
-    _transfer_finished_future(_transfer_finished_promise.get_future())
+ShellImpl::ShellImpl(System& system) : PluginImplBase(system)
 {
     _parent->register_plugin(this);
-    _transfer_finished_promise.set_value();
 }
 
 ShellImpl::~ShellImpl()
@@ -34,132 +30,62 @@ ShellImpl::~ShellImpl()
     _parent->unregister_plugin(this);
 }
 
-bool ShellImpl::is_transfer_in_progress()
+Shell::Result ShellImpl::send(std::string command)
 {
-    if (!_transfer_finished_future.valid()) { // Should never happen
-        return false;
-    }
-    return _transfer_finished_future.wait_for(std::chrono::seconds(0)) != std::future_status::ready;
-}
-
-Shell::Result ShellImpl::shell_command_response_async(Shell::result_callback_t& callback)
-{
-    std::lock_guard<std::mutex> lock(_transfer_mutex);
-    if (is_transfer_in_progress()) {
-        return Shell::Result::BUSY;
-    }
-    _result_subscription = callback;
-    return Shell::Result::SUCCESS;
-}
-
-void ShellImpl::finish_transfer(Shell::Result result, Shell::ShellMessage response_shell_message)
-{
-    std::lock_guard<std::mutex> lock(_transfer_mutex);
-    if (!is_transfer_in_progress()) {
-        return;
-    }
-    if (_result_subscription) {
-        auto callback = _result_subscription;
-        _parent->call_user_callback([callback, result, response_shell_message]() {
-            callback(result, response_shell_message);
-        });
-    }
-    _transfer_finished_promise.set_value();
-}
-
-Shell::Result ShellImpl::shell_command(const Shell::ShellMessage& shell_message)
-{
-    {
-        std::lock_guard<std::mutex> lock(_transfer_mutex);
-        if (is_transfer_in_progress()) {
-            return Shell::Result::BUSY;
-        }
-
-        _transfer_finished_promise = std::promise<void>();
-        _transfer_finished_future = _transfer_finished_promise.get_future();
-    }
-
     if (!_parent->is_connected()) {
-        finish_transfer(Shell::Result::NO_SYSTEM, Shell::ShellMessage{});
-        return Shell::Result::NO_SYSTEM;
+        return Shell::Result::NoSystem;
     }
 
-    _shell_message = shell_message;
-
-    if (_shell_message.data.back() != '\n') {
-        _shell_message.data.append(1, '\n');
+    // In case a newline at the end of the command is missing, we add it here.
+    if (command.back() != '\n') {
+        command.append(1, '\n');
     }
 
-    if (!send_shell_message_mavlink()) {
-        finish_transfer(Shell::Result::CONNECTION_ERROR, Shell::ShellMessage{});
-        return Shell::Result::CONNECTION_ERROR;
+    if (!send_command_message(command)) {
+        return Shell::Result::ConnectionError;
     }
 
-    if (!_result_subscription || !shell_message.need_response) {
-        finish_transfer(Shell::Result::SUCCESS, Shell::ShellMessage{});
-        return Shell::Result::SUCCESS;
-    }
-
-    _response = Shell::ShellMessage{};
-
-    if (_shell_message_timeout_cookie) {
-        _parent->unregister_timeout_handler(_shell_message_timeout_cookie);
-        _shell_message_timeout_cookie = nullptr;
-    }
-    _parent->register_timeout_handler(
-        std::bind(&ShellImpl::receive_shell_message_timeout, this),
-        shell_message.timeout / 1000.0,
-        &_shell_message_timeout_cookie);
-    return Shell::Result::SUCCESS;
+    return Shell::Result::Success;
 }
 
-void ShellImpl::receive_shell_message_timeout()
+void ShellImpl::receive_async(Shell::ReceiveCallback callback)
 {
-    std::lock_guard<std::mutex> lock(_transfer_mutex);
-    Shell::Result result =
-        (_response.data.length() ? Shell::Result::SUCCESS : Shell::Result::NO_RESPONSE);
-    if (!is_transfer_in_progress()) {
-        return;
-    }
-    if (_result_subscription) {
-        auto callback = _result_subscription;
-        Shell::ShellMessage response = _response;
-        _parent->call_user_callback([callback, result, response]() { callback(result, response); });
-    }
-    _transfer_finished_promise.set_value();
-
-    _parent->unregister_timeout_handler(_shell_message_timeout_cookie);
-    _shell_message_timeout_cookie = nullptr;
+    std::lock_guard<std::mutex> lock(_receive.mutex);
+    _receive.callback = callback;
 }
 
-bool ShellImpl::send_shell_message_mavlink()
+bool ShellImpl::send_command_message(std::string command)
 {
     mavlink_message_t message;
-    Shell::ShellMessage shell_message{};
 
-    shell_message = _shell_message;
-
-    while (shell_message.data.length() > MAVLINK_MSG_SERIAL_CONTROL_FIELD_DATA_LEN) {
+    while (command.length() > MAVLINK_MSG_SERIAL_CONTROL_FIELD_DATA_LEN) {
         mavlink_msg_serial_control_pack(
             _parent->get_own_system_id(),
             _parent->get_own_component_id(),
             &message,
             static_cast<uint8_t>(SERIAL_CONTROL_DEV::SERIAL_CONTROL_DEV_SHELL),
             0,
-            shell_message.timeout,
+            timeout_ms,
             0,
             static_cast<uint8_t>(MAVLINK_MSG_SERIAL_CONTROL_FIELD_DATA_LEN),
-            reinterpret_cast<const uint8_t*>(shell_message.data.c_str()));
-        shell_message.data.erase(0, MAVLINK_MSG_SERIAL_CONTROL_FIELD_DATA_LEN);
+            reinterpret_cast<const uint8_t*>(command.c_str()));
+        command.erase(0, MAVLINK_MSG_SERIAL_CONTROL_FIELD_DATA_LEN);
         if (!_parent->send_message(message)) {
             return false;
         }
     }
 
-    uint8_t flags = shell_message.need_response ? SERIAL_CONTROL_FLAG_RESPOND : 0;
+    uint8_t flags = 0;
+    {
+        // We only ask for a reponse if we have subscribed to a response.
+        std::lock_guard<std::mutex> lock(_receive.mutex);
+        if (_receive.callback != nullptr) {
+            flags |= SERIAL_CONTROL_FLAG_RESPOND;
+        }
+    }
 
     uint8_t data[MAVLINK_MSG_SERIAL_CONTROL_FIELD_DATA_LEN]{};
-    memcpy(data, shell_message.data.c_str(), shell_message.data.length());
+    memcpy(data, command.c_str(), command.length());
 
     mavlink_msg_serial_control_pack(
         _parent->get_own_system_id(),
@@ -167,9 +93,9 @@ bool ShellImpl::send_shell_message_mavlink()
         &message,
         static_cast<uint8_t>(SERIAL_CONTROL_DEV::SERIAL_CONTROL_DEV_SHELL),
         flags,
-        shell_message.timeout,
+        timeout_ms,
         0,
-        static_cast<uint8_t>(shell_message.data.length()),
+        static_cast<uint8_t>(command.length()),
         data);
 
     return _parent->send_message(message);
@@ -177,42 +103,30 @@ bool ShellImpl::send_shell_message_mavlink()
 
 void ShellImpl::process_shell_message(const mavlink_message_t& message)
 {
-    std::lock_guard<std::mutex> lock(_transfer_mutex);
-    if (!is_transfer_in_progress()) { // Skip symbols after ESC
-        return;
+    mavlink_serial_control_t serial_control;
+    mavlink_msg_serial_control_decode(&message, &serial_control);
+
+    // This adds an additional byte for the null termination.
+    char str_copy[sizeof(serial_control.data) + 1]{0};
+
+    const auto len =
+        std::min(static_cast<std::size_t>(serial_control.count), sizeof(serial_control.data));
+
+    memcpy(str_copy, serial_control.data, len);
+
+    std::string response(str_copy);
+
+    // For the NuttShell (nsh>) we see these characters being sent but we're not sure
+    // what they are for, so we're removing them for now.
+    auto index = response.find({32, 27, '[', 'K'});
+    if (index != std::string::npos) {
+        response.erase(index, 4);
     }
-    int count = 0;
-    uint8_t data[MAVLINK_MSG_SERIAL_CONTROL_FIELD_DATA_LEN + 1]{0};
 
-    _response.timeout = mavlink_msg_serial_control_get_timeout(&message);
-    _response.need_response =
-        mavlink_msg_serial_control_get_flags(&message) & SERIAL_CONTROL_FLAG_RESPOND;
-
-    mavlink_msg_serial_control_get_data(&message, data);
-    count = mavlink_msg_serial_control_get_count(&message);
-    data[count] = '\0';
-    _response.data += std::string((char*)data);
-
-    size_t escape_pos = _response.data.find(27); // Find termination (ESC)
-    if (escape_pos != std::string::npos) {
-        if (_shell_message_timeout_cookie) {
-            _parent->unregister_timeout_handler(_shell_message_timeout_cookie);
-            _shell_message_timeout_cookie = nullptr;
-        }
-
-        _response.data.erase(_response.data.begin() + escape_pos, _response.data.end());
-
-        if (_result_subscription) {
-            auto callback = _result_subscription;
-            Shell::ShellMessage arg = _response;
-            _parent->call_user_callback(
-                [callback, arg]() { callback(Shell::Result::SUCCESS, arg); });
-        }
-        _transfer_finished_promise.set_value();
-    } else {
-        if (_shell_message_timeout_cookie) {
-            _parent->refresh_timeout_handler(_shell_message_timeout_cookie);
-        }
+    std::lock_guard<std::mutex> lock(_receive.mutex);
+    if (_receive.callback) {
+        const auto temp_callback = _receive.callback;
+        _parent->call_user_callback([temp_callback, response]() { temp_callback(response); });
     }
 }
 

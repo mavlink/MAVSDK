@@ -30,9 +30,9 @@ void MavlinkPassthroughImpl::disable() {}
 MavlinkPassthrough::Result MavlinkPassthroughImpl::send_message(mavlink_message_t& message)
 {
     if (!_parent->send_message(message)) {
-        return MavlinkPassthrough::Result::CONNECTION_ERROR;
+        return MavlinkPassthrough::Result::ConnectionError;
     }
-    return MavlinkPassthrough::Result::SUCCESS;
+    return MavlinkPassthrough::Result::Success;
 }
 
 void MavlinkPassthroughImpl::subscribe_message_async(

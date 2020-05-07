@@ -3,8 +3,6 @@ find_package(JsonCpp REQUIRED)
 add_library(mavsdk_mission
     mission.cpp
     mission_impl.cpp
-    mission_item.cpp
-    mission_item_impl.cpp
 )
 
 include_directories(
@@ -35,11 +33,11 @@ install(TARGETS mavsdk_mission
 
 install(FILES
     include/plugins/mission/mission.h
-    include/plugins/mission/mission_item.h
     DESTINATION ${CMAKE_INSTALL_INCLUDEDIR}/mavsdk/plugins/mission
 )
 
 list(APPEND UNIT_TEST_SOURCES
     ${CMAKE_CURRENT_SOURCE_DIR}/mission_import_qgc_test.cpp
+    ${CMAKE_CURRENT_SOURCE_DIR}/mission_equality_operator_test.cpp
 )
 set(UNIT_TEST_SOURCES ${UNIT_TEST_SOURCES} PARENT_SCOPE)

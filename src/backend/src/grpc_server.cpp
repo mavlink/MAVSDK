@@ -53,6 +53,16 @@ void GRPCServer::wait()
     }
 }
 
+void GRPCServer::stop()
+{
+    if (_server != nullptr) {
+        _telemetry_service.stop();
+        _server->Shutdown();
+    } else {
+        LogWarn() << "Calling 'stop()' on a non-existing server. Did you call 'run()' before?";
+    }
+}
+
 void GRPCServer::setup_port(grpc::ServerBuilder& builder)
 {
     const std::string server_address("0.0.0.0:" + std::to_string(_port));

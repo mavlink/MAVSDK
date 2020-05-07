@@ -44,8 +44,8 @@ private:
     {
         mavsdk::ConnectionResult connection_result = dc.add_any_connection(connection_url);
 
-        if (connection_result != ConnectionResult::SUCCESS) {
-            LogErr() << "Connection failed: " << connection_result_str(connection_result);
+        if (connection_result != ConnectionResult::Success) {
+            LogErr() << "Connection failed: " << connection_result;
             return false;
         }
 

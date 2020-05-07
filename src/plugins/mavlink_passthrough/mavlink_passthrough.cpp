@@ -21,17 +21,17 @@ void MavlinkPassthrough::subscribe_message_async(
     _impl->subscribe_message_async(message_id, callback);
 }
 
-std::string MavlinkPassthrough::result_str(Result result)
+std::ostream& operator<<(std::ostream& str, MavlinkPassthrough::Result const& result)
 {
     switch (result) {
-        case MavlinkPassthrough::Result::SUCCESS:
-            return "Success";
-        case MavlinkPassthrough::Result::CONNECTION_ERROR:
-            return "Connection error";
         default:
-            // FALLTHROUGH
-        case MavlinkPassthrough::Result::UNKNOWN:
-            return "Unknown";
+        // FALLTHROUGH
+        case MavlinkPassthrough::Result::Unknown:
+            return str << "Unknown";
+        case MavlinkPassthrough::Result::Success:
+            return str << "Success";
+        case MavlinkPassthrough::Result::ConnectionError:
+            return str << "Connection Error";
     }
 }
 

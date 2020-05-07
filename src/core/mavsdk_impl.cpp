@@ -20,9 +20,11 @@ MavsdkImpl::MavsdkImpl() :
     _systems_mutex(),
     _systems(),
     _on_discover_callback(nullptr),
-    _on_timeout_callback(nullptr)
+    _on_timeout_callback(nullptr),
+    _configuration(Mavsdk::Configuration::UsageType::GroundStation)
 {
     LogInfo() << "MAVSDK version: " << mavsdk_version;
+    set_configuration(_configuration);
 }
 
 MavsdkImpl::~MavsdkImpl()
@@ -135,11 +137,11 @@ ConnectionResult MavsdkImpl::add_any_connection(const std::string& connection_ur
 {
     CliArg cli_arg;
     if (!cli_arg.parse(connection_url)) {
-        return ConnectionResult::CONNECTION_URL_INVALID;
+        return ConnectionResult::ConnectionUrlInvalid;
     }
 
     switch (cli_arg.get_protocol()) {
-        case CliArg::Protocol::UDP: {
+        case CliArg::Protocol::Udp: {
             std::string path = Mavsdk::DEFAULT_UDP_BIND_IP;
             int port = Mavsdk::DEFAULT_UDP_PORT;
             if (!cli_arg.get_path().empty()) {
@@ -151,7 +153,7 @@ ConnectionResult MavsdkImpl::add_any_connection(const std::string& connection_ur
             return add_udp_connection(path, port);
         }
 
-        case CliArg::Protocol::TCP: {
+        case CliArg::Protocol::Tcp: {
             std::string path = Mavsdk::DEFAULT_TCP_REMOTE_IP;
             int port = Mavsdk::DEFAULT_TCP_REMOTE_PORT;
             if (!cli_arg.get_path().empty()) {
@@ -163,7 +165,7 @@ ConnectionResult MavsdkImpl::add_any_connection(const std::string& connection_ur
             return add_tcp_connection(path, port);
         }
 
-        case CliArg::Protocol::SERIAL: {
+        case CliArg::Protocol::Serial: {
             int baudrate = Mavsdk::DEFAULT_SERIAL_BAUDRATE;
             if (cli_arg.get_baudrate()) {
                 baudrate = cli_arg.get_baudrate();
@@ -172,7 +174,7 @@ ConnectionResult MavsdkImpl::add_any_connection(const std::string& connection_ur
         }
 
         default:
-            return ConnectionResult::CONNECTION_ERROR;
+            return ConnectionResult::ConnectionError;
     }
 }
 
@@ -181,10 +183,10 @@ ConnectionResult MavsdkImpl::add_udp_connection(const std::string& local_ip, con
     auto new_conn = std::make_shared<UdpConnection>(
         std::bind(&MavsdkImpl::receive_message, this, std::placeholders::_1), local_ip, local_port);
     if (!new_conn) {
-        return ConnectionResult::CONNECTION_ERROR;
+        return ConnectionResult::ConnectionError;
     }
     ConnectionResult ret = new_conn->start();
-    if (ret == ConnectionResult::SUCCESS) {
+    if (ret == ConnectionResult::Success) {
         add_connection(new_conn);
     }
     return ret;
@@ -195,11 +197,11 @@ ConnectionResult MavsdkImpl::setup_udp_remote(const std::string& remote_ip, int 
     auto new_conn = std::make_shared<UdpConnection>(
         std::bind(&MavsdkImpl::receive_message, this, std::placeholders::_1), "0.0.0.0", 0);
     if (!new_conn) {
-        return ConnectionResult::CONNECTION_ERROR;
+        return ConnectionResult::ConnectionError;
     }
     ConnectionResult ret = new_conn->start();
     _is_single_system = true;
-    if (ret == ConnectionResult::SUCCESS) {
+    if (ret == ConnectionResult::Success) {
         new_conn->add_remote(remote_ip, remote_port);
         add_connection(new_conn);
         make_system_with_component(get_own_system_id(), get_own_component_id());
@@ -214,10 +216,10 @@ ConnectionResult MavsdkImpl::add_tcp_connection(const std::string& remote_ip, in
         remote_ip,
         remote_port);
     if (!new_conn) {
-        return ConnectionResult::CONNECTION_ERROR;
+        return ConnectionResult::ConnectionError;
     }
     ConnectionResult ret = new_conn->start();
-    if (ret == ConnectionResult::SUCCESS) {
+    if (ret == ConnectionResult::Success) {
         add_connection(new_conn);
     }
     return ret;
@@ -228,10 +230,10 @@ ConnectionResult MavsdkImpl::add_serial_connection(const std::string& dev_path, 
     auto new_conn = std::make_shared<SerialConnection>(
         std::bind(&MavsdkImpl::receive_message, this, std::placeholders::_1), dev_path, baudrate);
     if (!new_conn) {
-        return ConnectionResult::CONNECTION_ERROR;
+        return ConnectionResult::ConnectionError;
     }
     ConnectionResult ret = new_conn->start();
-    if (ret == ConnectionResult::SUCCESS) {
+    if (ret == ConnectionResult::Success) {
         add_connection(new_conn);
     }
     return ret;
@@ -245,7 +247,8 @@ void MavsdkImpl::add_connection(std::shared_ptr<Connection> new_connection)
 
 void MavsdkImpl::set_configuration(Mavsdk::Configuration configuration)
 {
-    _configuration = configuration;
+    own_address.system_id = configuration.get_system_id();
+    own_address.component_id = configuration.get_component_id();
 }
 
 std::vector<uint64_t> MavsdkImpl::get_system_uuids() const
@@ -310,55 +313,30 @@ System& MavsdkImpl::get_system(const uint64_t uuid)
 
 uint8_t MavsdkImpl::get_own_system_id() const
 {
-    switch (_configuration.load()) {
-        case Mavsdk::Configuration::Autopilot:
-            return 1;
-
-        case Mavsdk::Configuration::GroundStation:
-            return MAV_COMP_ID_MISSIONPLANNER;
-
-        case Mavsdk::Configuration::CompanionComputer:
-            // FIXME: This should be the same as the drone but we need to
-            // add auto detection for it.
-            return 1;
-
-        default:
-            LogErr() << "Unknown configuration";
-            return 0;
-    }
+    // TODO: To be deprecated.
+    return own_address.system_id;
 }
 
 uint8_t MavsdkImpl::get_own_component_id() const
 {
-    switch (_configuration.load()) {
-        case Mavsdk::Configuration::Autopilot:
-            return MAV_COMP_ID_AUTOPILOT1;
-
-        case Mavsdk::Configuration::GroundStation:
-            // FIXME: For now we increment by 1 to avoid conflicts with others.
-            return MAV_COMP_ID_MISSIONPLANNER + 1;
-
-        case Mavsdk::Configuration::CompanionComputer:
-            // It's at least a possibility that we are bridging MAVLink traffic.
-            return MAV_COMP_ID_UDP_BRIDGE;
-
-        default:
-            LogErr() << "Unknown configuration";
-            return 0;
-    }
+    // TODO: To be deprecated.
+    return own_address.component_id;
 }
 
 uint8_t MavsdkImpl::get_mav_type() const
 {
-    switch (_configuration.load()) {
-        case Mavsdk::Configuration::Autopilot:
+    switch (_configuration.get_usage_type()) {
+        case Mavsdk::Configuration::UsageType::Autopilot:
             return MAV_TYPE_GENERIC;
 
-        case Mavsdk::Configuration::GroundStation:
+        case Mavsdk::Configuration::UsageType::GroundStation:
             return MAV_TYPE_GCS;
 
-        case Mavsdk::Configuration::CompanionComputer:
+        case Mavsdk::Configuration::UsageType::CompanionComputer:
             return MAV_TYPE_ONBOARD_CONTROLLER;
+
+        case Mavsdk::Configuration::UsageType::Custom:
+            return MAV_TYPE_GENERIC;
 
         default:
             LogErr() << "Unknown configuration";

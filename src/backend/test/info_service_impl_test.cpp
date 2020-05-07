@@ -30,9 +30,23 @@ static constexpr int ARBITRARY_SW_VERSION_OS_MAJOR = 4;
 static constexpr int ARBITRARY_SW_VERSION_OS_MINOR = 5;
 static constexpr int ARBITRARY_SW_VERSION_OS_PATCH = 6;
 
-std::vector<InputPair> generateInputPairs();
+std::vector<mavsdk::Info::Result> generateResults();
 
-class InfoServiceImplTest : public ::testing::TestWithParam<InputPair> {};
+class InfoServiceImplTest : public ::testing::TestWithParam<mavsdk::Info::Result> {};
+
+mavsdk::Info::Result translateFromRpcResult(const mavsdk::rpc::info::InfoResult::Result result)
+{
+    switch (result) {
+        default:
+        // FALLTHROUGH
+        case mavsdk::rpc::info::InfoResult_Result_RESULT_UNKNOWN:
+            return mavsdk::Info::Result::Unknown;
+        case mavsdk::rpc::info::InfoResult_Result_RESULT_SUCCESS:
+            return mavsdk::Info::Result::Success;
+        case mavsdk::rpc::info::InfoResult_Result_RESULT_INFORMATION_NOT_RECEIVED_YET:
+            return mavsdk::Info::Result::InformationNotReceivedYet;
+    }
+}
 
 TEST_F(InfoServiceImplTest, getVersionCallsGetter)
 {
@@ -61,13 +75,13 @@ TEST_P(InfoServiceImplTest, getsCorrectVersion)
     arbitrary_version.os_sw_minor = ARBITRARY_SW_VERSION_OS_MINOR;
     arbitrary_version.os_sw_patch = ARBITRARY_SW_VERSION_OS_PATCH;
 
-    const auto expected_pair = std::make_pair<>(GetParam().second, arbitrary_version);
+    const auto expected_pair = std::make_pair<>(GetParam(), arbitrary_version);
     ON_CALL(info, get_version()).WillByDefault(Return(expected_pair));
     mavsdk::rpc::info::GetVersionResponse response;
 
     infoService.GetVersion(nullptr, nullptr, &response);
 
-    EXPECT_EQ(GetParam().first, InfoResult::Result_Name(response.info_result().result()));
+    EXPECT_EQ(GetParam(), translateFromRpcResult(response.info_result().result()));
     EXPECT_EQ(expected_pair.second.flight_sw_major, response.version().flight_sw_major());
     EXPECT_EQ(expected_pair.second.flight_sw_minor, response.version().flight_sw_minor());
     EXPECT_EQ(expected_pair.second.flight_sw_patch, response.version().flight_sw_patch());
@@ -90,18 +104,17 @@ TEST_F(InfoServiceImplTest, getVersionDoesNotCrashWithNullResponse)
     infoService.GetVersion(nullptr, nullptr, nullptr);
 }
 
-INSTANTIATE_TEST_CASE_P(
-    InfoResultCorrespondences, InfoServiceImplTest, ::testing::ValuesIn(generateInputPairs()));
+INSTANTIATE_TEST_SUITE_P(
+    InfoResultCorrespondences, InfoServiceImplTest, ::testing::ValuesIn(generateResults()));
 
-std::vector<InputPair> generateInputPairs()
+std::vector<mavsdk::Info::Result> generateResults()
 {
-    std::vector<InputPair> input_pairs;
-    input_pairs.push_back(std::make_pair("SUCCESS", mavsdk::Info::Result::SUCCESS));
-    input_pairs.push_back(std::make_pair(
-        "INFORMATION_NOT_RECEIVED_YET", mavsdk::Info::Result::INFORMATION_NOT_RECEIVED_YET));
-    input_pairs.push_back(std::make_pair("UNKNOWN", mavsdk::Info::Result::UNKNOWN));
+    std::vector<mavsdk::Info::Result> results;
+    results.push_back(mavsdk::Info::Result::Success);
+    results.push_back(mavsdk::Info::Result::InformationNotReceivedYet);
+    results.push_back(mavsdk::Info::Result::Unknown);
 
-    return input_pairs;
+    return results;
 }
 
 } // namespace

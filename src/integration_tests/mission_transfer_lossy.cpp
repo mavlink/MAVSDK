@@ -10,15 +10,7 @@
 using namespace mavsdk;
 
 static void set_link_lossy(std::shared_ptr<MavlinkPassthrough> mavlink_passthrough);
-static std::vector<std::shared_ptr<MissionItem>> create_mission_items();
-static void upload_mission(
-    std::shared_ptr<Mission> mission,
-    const std::vector<std::shared_ptr<MissionItem>>& mission_items);
-static std::vector<std::shared_ptr<MissionItem>> download_mission(std::shared_ptr<Mission> mission);
-static void compare_mission(
-    const std::vector<std::shared_ptr<MissionItem>>& a,
-    const std::vector<std::shared_ptr<MissionItem>>& b);
-
+static std::vector<Mission::MissionItem> create_mission_items();
 static bool should_keep_message(const mavlink_message_t& message);
 
 static std::atomic<unsigned> _lossy_counter{0};
@@ -26,7 +18,7 @@ static std::atomic<unsigned> _lossy_counter{0};
 TEST_F(SitlTest, MissionTransferLossy)
 {
     Mavsdk dc;
-    ASSERT_EQ(dc.add_udp_connection(), ConnectionResult::SUCCESS);
+    ASSERT_EQ(dc.add_udp_connection(), ConnectionResult::Success);
 
     {
         LogInfo() << "Waiting to discover vehicle";
@@ -45,11 +37,15 @@ TEST_F(SitlTest, MissionTransferLossy)
 
     set_link_lossy(mavlink_passthrough);
 
-    auto mission_items = create_mission_items();
+    Mission::MissionPlan mission_plan;
+    mission_plan.mission_items = create_mission_items();
 
-    upload_mission(mission, mission_items);
-    auto downloaded_mission_items = download_mission(mission);
-    compare_mission(mission_items, downloaded_mission_items);
+    ASSERT_EQ(mission->upload_mission(mission_plan), Mission::Result::Success);
+
+    auto result = mission->download_mission();
+    ASSERT_EQ(result.first, Mission::Result::Success);
+
+    EXPECT_EQ(mission_plan, result.second);
 }
 
 void set_link_lossy(std::shared_ptr<MavlinkPassthrough> mavlink_passthrough)
@@ -75,73 +71,17 @@ bool should_keep_message(const mavlink_message_t& message)
     return should_keep;
 }
 
-std::vector<std::shared_ptr<MissionItem>> create_mission_items()
+std::vector<Mission::MissionItem> create_mission_items()
 {
-    std::vector<std::shared_ptr<MissionItem>> mission_items;
+    std::vector<Mission::MissionItem> mission_items;
 
     for (unsigned i = 0; i < 20; ++i) {
-        auto new_item = std::make_shared<MissionItem>();
-        new_item->set_position(47.398170327054473 + (i * 1e-6), 8.5456490218639658 + (i * 1e-6));
-        new_item->set_relative_altitude(10.0f + (i * 0.2f));
-        new_item->set_speed(5.0f + (i * 0.1f));
+        Mission::MissionItem new_item{};
+        new_item.latitude_deg = 47.398170327054473 + (i * 1e-6);
+        new_item.longitude_deg = 8.5456490218639658 + (i * 1e-6);
+        new_item.relative_altitude_m = 10.0f + (i * 0.2f);
+        new_item.speed_m_s = 5.0f + (i * 0.1f);
         mission_items.push_back(new_item);
     }
     return mission_items;
-}
-
-void upload_mission(
-    std::shared_ptr<Mission> mission,
-    const std::vector<std::shared_ptr<MissionItem>>& mission_items)
-{
-    LogInfo() << "Uploading mission...";
-    auto prom = std::promise<void>{};
-    auto fut = prom.get_future();
-    mission->upload_mission_async(mission_items, [&prom](Mission::Result result) {
-        ASSERT_EQ(result, Mission::Result::SUCCESS);
-        prom.set_value();
-        LogInfo() << "Mission uploaded.";
-    });
-
-    auto status = fut.wait_for(std::chrono::seconds(20));
-    ASSERT_EQ(status, std::future_status::ready);
-    fut.get();
-}
-
-std::vector<std::shared_ptr<MissionItem>> download_mission(std::shared_ptr<Mission> mission)
-{
-    LogInfo() << "Downloading mission...";
-    auto prom = std::promise<void>();
-    auto fut = prom.get_future();
-
-    std::vector<std::shared_ptr<MissionItem>> mission_items;
-
-    mission->download_mission_async(
-        [&prom, &mission_items](
-            Mission::Result result, std::vector<std::shared_ptr<MissionItem>> mission_items_) {
-            EXPECT_EQ(result, Mission::Result::SUCCESS);
-            mission_items = mission_items_;
-            prom.set_value();
-            LogInfo() << "Mission downloaded.";
-        });
-
-    auto status = fut.wait_for(std::chrono::seconds(20));
-    EXPECT_EQ(status, std::future_status::ready);
-    fut.get();
-
-    return mission_items;
-}
-
-void compare_mission(
-    const std::vector<std::shared_ptr<MissionItem>>& a,
-    const std::vector<std::shared_ptr<MissionItem>>& b)
-{
-    EXPECT_EQ(a.size(), b.size());
-
-    if (a.size() != b.size()) {
-        return;
-    }
-
-    for (unsigned i = 0; i < a.size(); ++i) {
-        EXPECT_EQ(*a.at(i), *b.at(i));
-    }
 }

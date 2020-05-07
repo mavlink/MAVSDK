@@ -2,6 +2,7 @@
 
 #include "mavlink_include.h"
 #include "locked_queue.h"
+#include "global_include.h"
 #include <cstdint>
 #include <string>
 #include <functional>
@@ -17,17 +18,17 @@ public:
     ~MAVLinkCommands();
 
     enum class Result {
-        SUCCESS = 0,
-        NO_SYSTEM,
-        CONNECTION_ERROR,
-        BUSY,
-        COMMAND_DENIED,
-        TIMEOUT,
-        IN_PROGRESS,
-        UNKNOWN_ERROR
+        Success = 0,
+        NoSystem,
+        ConnectionError,
+        Busy,
+        CommandDenied,
+        Timeout,
+        InProgress,
+        UnknownError
     };
 
-    typedef std::function<void(Result, float)> command_result_callback_t;
+    typedef std::function<void(Result, float)> commandResultCallback;
 
     struct CommandInt {
         uint8_t target_system_id{0};
@@ -93,8 +94,8 @@ public:
     Result send_command(const CommandInt& command);
     Result send_command(const CommandLong& command);
 
-    void queue_command_async(const CommandInt& command, command_result_callback_t callback);
-    void queue_command_async(const CommandLong& command, command_result_callback_t callback);
+    void queue_command_async(const CommandInt& command, commandResultCallback callback);
+    void queue_command_async(const CommandLong& command, commandResultCallback callback);
 
     void do_work();
 
@@ -111,13 +112,14 @@ private:
         uint16_t mavlink_command{0};
         bool already_sent{false};
         mavlink_message_t mavlink_message{};
-        command_result_callback_t callback{};
+        commandResultCallback callback{};
+        dl_time_t time_started{};
     };
 
     void receive_command_ack(mavlink_message_t message);
     void receive_timeout();
 
-    void call_callback(const command_result_callback_t& callback, Result result, float progress);
+    void call_callback(const commandResultCallback& callback, Result result, float progress);
 
     SystemImpl& _parent;
     LockedQueue<Work> _work_queue{};

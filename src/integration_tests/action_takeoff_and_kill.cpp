@@ -8,21 +8,21 @@ using namespace mavsdk;
 
 TEST_F(SitlTest, ActionTakeoffAndKill)
 {
-    Mavsdk dc;
-    ASSERT_EQ(dc.add_udp_connection(), ConnectionResult::SUCCESS);
+    Mavsdk mavsdk;
+    ASSERT_EQ(mavsdk.add_udp_connection(), ConnectionResult::Success);
 
     {
         LogInfo() << "Waiting to discover vehicle";
         std::promise<void> prom;
         std::future<void> fut = prom.get_future();
-        dc.register_on_discover([&prom](uint64_t uuid) {
+        mavsdk.register_on_discover([&prom](uint64_t uuid) {
             prom.set_value();
             UNUSED(uuid);
         });
         ASSERT_EQ(fut.wait_for(std::chrono::seconds(10)), std::future_status::ready);
     }
 
-    System& system = dc.system();
+    System& system = mavsdk.system();
     auto telemetry = std::make_shared<Telemetry>(system);
     auto action = std::make_shared<Action>(system);
 
@@ -30,10 +30,10 @@ TEST_F(SitlTest, ActionTakeoffAndKill)
         LogDebug() << "Waiting to be ready...";
         std::promise<void> prom;
         std::future<void> fut = prom.get_future();
-        telemetry->health_all_ok_async([&telemetry, &prom](bool all_ok) {
+        telemetry->subscribe_health_all_ok([&telemetry, &prom](bool all_ok) {
             if (all_ok) {
                 // Unregister to prevent fulfilling promise twice.
-                telemetry->health_all_ok_async(nullptr);
+                telemetry->subscribe_health_all_ok(nullptr);
                 prom.set_value();
             }
         });
@@ -50,7 +50,7 @@ TEST_F(SitlTest, ActionTakeoffAndKill)
         std::promise<void> prom;
         std::future<void> fut = prom.get_future();
         action->arm_async([&prom](Action::Result result) {
-            EXPECT_EQ(result, Action::Result::SUCCESS);
+            EXPECT_EQ(result, Action::Result::Success);
             prom.set_value();
         });
         EXPECT_EQ(fut.wait_for(std::chrono::seconds(2)), std::future_status::ready);
@@ -61,7 +61,7 @@ TEST_F(SitlTest, ActionTakeoffAndKill)
         std::promise<void> prom;
         std::future<void> fut = prom.get_future();
         action->takeoff_async([&prom](Action::Result result) {
-            EXPECT_EQ(result, Action::Result::SUCCESS);
+            EXPECT_EQ(result, Action::Result::Success);
             prom.set_value();
         });
         EXPECT_EQ(fut.wait_for(std::chrono::seconds(2)), std::future_status::ready);
@@ -77,7 +77,7 @@ TEST_F(SitlTest, ActionTakeoffAndKill)
         std::promise<void> prom;
         std::future<void> fut = prom.get_future();
         action->kill_async([&prom](Action::Result result) {
-            EXPECT_EQ(result, Action::Result::SUCCESS);
+            EXPECT_EQ(result, Action::Result::Success);
             prom.set_value();
         });
         EXPECT_EQ(fut.wait_for(std::chrono::seconds(2)), std::future_status::ready);
