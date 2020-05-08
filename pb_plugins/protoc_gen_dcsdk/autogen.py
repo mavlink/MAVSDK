@@ -32,7 +32,7 @@ class AutoGen(object):
             plugin_name, plugin_dir = AutoGen.extract_plugin_name_and_dir(
                 proto_file.name, package, is_java)
 
-            if package.startswith("google") or package == "mavsdk.options":
+            if package.startswith("google") or package == "mavsdk.options" or package.startswith("com.google") or package == "options.mavsdk":
                 continue
 
             docs = Docs.collect_docs(proto_file.source_code_info)

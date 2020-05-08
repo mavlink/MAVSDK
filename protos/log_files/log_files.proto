@@ -21,7 +21,7 @@ service LogFilesService {
 
 message GetEntriesRequest {}
 message GetEntriesResponse {
-    LogFileResult log_file_result = 1;
+    LogFilesResult log_files_result = 1;
     repeated Entry entries = 2; // List of entries
 }
 
@@ -30,7 +30,7 @@ message SubscribeDownloadLogFileRequest {
     string path = 2; // Path of where to download log file to.
 }
 message DownloadLogFileResponse {
-    LogFileResult log_file_result = 1;
+    LogFilesResult log_files_result = 1;
     ProgressData progress = 2; // Progress if result is progress
 }
 
@@ -49,12 +49,12 @@ message Entry {
 }
 
 // Result type.
-message LogFileResult {
+message LogFilesResult {
     // Possible results returned for calibration commands
     enum Result {
         RESULT_UNKNOWN = 0; // Unknown result
         RESULT_SUCCESS = 1; // Request succeeded
-        RESULT_PROGRESS = 2; // Progress update
+        RESULT_NEXT = 2; // Progress update
         RESULT_NO_LOGFILES = 3; // No log files found
         RESULT_TIMEOUT = 4; // A timeout happened
         RESULT_INVALID_ARGUMENT = 5; // Invalid argument
