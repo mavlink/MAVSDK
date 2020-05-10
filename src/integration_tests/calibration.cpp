@@ -97,6 +97,33 @@ TEST(HardwareTest, CalibrationMagnetometer)
     }
 }
 
+TEST(HardwareTest, CalibrationLevelHorizon)
+{
+    Mavsdk dc;
+
+    ConnectionResult ret = dc.add_udp_connection();
+    ASSERT_EQ(ret, ConnectionResult::Success);
+
+    // Wait for system to connect via heartbeat.
+    std::this_thread::sleep_for(std::chrono::seconds(2));
+    System& system = dc.system();
+    ASSERT_TRUE(system.has_autopilot());
+
+    auto calibration = std::make_shared<Calibration>(system);
+
+    std::promise<Calibration::Result> prom{};
+    std::future<Calibration::Result> fut = prom.get_future();
+
+    calibration->calibrate_level_horizon_async(
+        std::bind(&receive_calibration_callback, _1, _2, "level horizon", std::ref(prom)));
+
+    auto future_ret = fut.get();
+    EXPECT_EQ(future_ret, Calibration::Result::Success);
+    if (future_ret != Calibration::Result::Success) {
+        LogErr() << "Calibration error: " << future_ret;
+    }
+}
+
 TEST(HardwareTest, CalibrationGimbalAccelerometer)
 {
     Mavsdk mavsdk;

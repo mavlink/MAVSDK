@@ -27,6 +27,7 @@ static const char* CalibrationService_method_names[] = {
   "/mavsdk.rpc.calibration.CalibrationService/SubscribeCalibrateGyro",
   "/mavsdk.rpc.calibration.CalibrationService/SubscribeCalibrateAccelerometer",
   "/mavsdk.rpc.calibration.CalibrationService/SubscribeCalibrateMagnetometer",
+  "/mavsdk.rpc.calibration.CalibrationService/SubscribeCalibrateLevelHorizon",
   "/mavsdk.rpc.calibration.CalibrationService/SubscribeCalibrateGimbalAccelerometer",
   "/mavsdk.rpc.calibration.CalibrationService/Cancel",
 };
@@ -41,8 +42,9 @@ CalibrationService::Stub::Stub(const std::shared_ptr< ::grpc::ChannelInterface>&
   : channel_(channel), rpcmethod_SubscribeCalibrateGyro_(CalibrationService_method_names[0], ::grpc::internal::RpcMethod::SERVER_STREAMING, channel)
   , rpcmethod_SubscribeCalibrateAccelerometer_(CalibrationService_method_names[1], ::grpc::internal::RpcMethod::SERVER_STREAMING, channel)
   , rpcmethod_SubscribeCalibrateMagnetometer_(CalibrationService_method_names[2], ::grpc::internal::RpcMethod::SERVER_STREAMING, channel)
-  , rpcmethod_SubscribeCalibrateGimbalAccelerometer_(CalibrationService_method_names[3], ::grpc::internal::RpcMethod::SERVER_STREAMING, channel)
-  , rpcmethod_Cancel_(CalibrationService_method_names[4], ::grpc::internal::RpcMethod::NORMAL_RPC, channel)
+  , rpcmethod_SubscribeCalibrateLevelHorizon_(CalibrationService_method_names[3], ::grpc::internal::RpcMethod::SERVER_STREAMING, channel)
+  , rpcmethod_SubscribeCalibrateGimbalAccelerometer_(CalibrationService_method_names[4], ::grpc::internal::RpcMethod::SERVER_STREAMING, channel)
+  , rpcmethod_Cancel_(CalibrationService_method_names[5], ::grpc::internal::RpcMethod::NORMAL_RPC, channel)
   {}
 
 ::grpc::ClientReader< ::mavsdk::rpc::calibration::CalibrateGyroResponse>* CalibrationService::Stub::SubscribeCalibrateGyroRaw(::grpc::ClientContext* context, const ::mavsdk::rpc::calibration::SubscribeCalibrateGyroRequest& request) {
@@ -91,6 +93,22 @@ void CalibrationService::Stub::experimental_async::SubscribeCalibrateMagnetomete
 
 ::grpc::ClientAsyncReader< ::mavsdk::rpc::calibration::CalibrateMagnetometerResponse>* CalibrationService::Stub::PrepareAsyncSubscribeCalibrateMagnetometerRaw(::grpc::ClientContext* context, const ::mavsdk::rpc::calibration::SubscribeCalibrateMagnetometerRequest& request, ::grpc::CompletionQueue* cq) {
   return ::grpc_impl::internal::ClientAsyncReaderFactory< ::mavsdk::rpc::calibration::CalibrateMagnetometerResponse>::Create(channel_.get(), cq, rpcmethod_SubscribeCalibrateMagnetometer_, context, request, false, nullptr);
+}
+
+::grpc::ClientReader< ::mavsdk::rpc::calibration::CalibrateLevelHorizonResponse>* CalibrationService::Stub::SubscribeCalibrateLevelHorizonRaw(::grpc::ClientContext* context, const ::mavsdk::rpc::calibration::SubscribeCalibrateLevelHorizonRequest& request) {
+  return ::grpc_impl::internal::ClientReaderFactory< ::mavsdk::rpc::calibration::CalibrateLevelHorizonResponse>::Create(channel_.get(), rpcmethod_SubscribeCalibrateLevelHorizon_, context, request);
+}
+
+void CalibrationService::Stub::experimental_async::SubscribeCalibrateLevelHorizon(::grpc::ClientContext* context, ::mavsdk::rpc::calibration::SubscribeCalibrateLevelHorizonRequest* request, ::grpc::experimental::ClientReadReactor< ::mavsdk::rpc::calibration::CalibrateLevelHorizonResponse>* reactor) {
+  ::grpc_impl::internal::ClientCallbackReaderFactory< ::mavsdk::rpc::calibration::CalibrateLevelHorizonResponse>::Create(stub_->channel_.get(), stub_->rpcmethod_SubscribeCalibrateLevelHorizon_, context, request, reactor);
+}
+
+::grpc::ClientAsyncReader< ::mavsdk::rpc::calibration::CalibrateLevelHorizonResponse>* CalibrationService::Stub::AsyncSubscribeCalibrateLevelHorizonRaw(::grpc::ClientContext* context, const ::mavsdk::rpc::calibration::SubscribeCalibrateLevelHorizonRequest& request, ::grpc::CompletionQueue* cq, void* tag) {
+  return ::grpc_impl::internal::ClientAsyncReaderFactory< ::mavsdk::rpc::calibration::CalibrateLevelHorizonResponse>::Create(channel_.get(), cq, rpcmethod_SubscribeCalibrateLevelHorizon_, context, request, true, tag);
+}
+
+::grpc::ClientAsyncReader< ::mavsdk::rpc::calibration::CalibrateLevelHorizonResponse>* CalibrationService::Stub::PrepareAsyncSubscribeCalibrateLevelHorizonRaw(::grpc::ClientContext* context, const ::mavsdk::rpc::calibration::SubscribeCalibrateLevelHorizonRequest& request, ::grpc::CompletionQueue* cq) {
+  return ::grpc_impl::internal::ClientAsyncReaderFactory< ::mavsdk::rpc::calibration::CalibrateLevelHorizonResponse>::Create(channel_.get(), cq, rpcmethod_SubscribeCalibrateLevelHorizon_, context, request, false, nullptr);
 }
 
 ::grpc::ClientReader< ::mavsdk::rpc::calibration::CalibrateGimbalAccelerometerResponse>* CalibrationService::Stub::SubscribeCalibrateGimbalAccelerometerRaw(::grpc::ClientContext* context, const ::mavsdk::rpc::calibration::SubscribeCalibrateGimbalAccelerometerRequest& request) {
@@ -156,10 +174,15 @@ CalibrationService::Service::Service() {
   AddMethod(new ::grpc::internal::RpcServiceMethod(
       CalibrationService_method_names[3],
       ::grpc::internal::RpcMethod::SERVER_STREAMING,
+      new ::grpc::internal::ServerStreamingHandler< CalibrationService::Service, ::mavsdk::rpc::calibration::SubscribeCalibrateLevelHorizonRequest, ::mavsdk::rpc::calibration::CalibrateLevelHorizonResponse>(
+          std::mem_fn(&CalibrationService::Service::SubscribeCalibrateLevelHorizon), this)));
+  AddMethod(new ::grpc::internal::RpcServiceMethod(
+      CalibrationService_method_names[4],
+      ::grpc::internal::RpcMethod::SERVER_STREAMING,
       new ::grpc::internal::ServerStreamingHandler< CalibrationService::Service, ::mavsdk::rpc::calibration::SubscribeCalibrateGimbalAccelerometerRequest, ::mavsdk::rpc::calibration::CalibrateGimbalAccelerometerResponse>(
           std::mem_fn(&CalibrationService::Service::SubscribeCalibrateGimbalAccelerometer), this)));
   AddMethod(new ::grpc::internal::RpcServiceMethod(
-      CalibrationService_method_names[4],
+      CalibrationService_method_names[5],
       ::grpc::internal::RpcMethod::NORMAL_RPC,
       new ::grpc::internal::RpcMethodHandler< CalibrationService::Service, ::mavsdk::rpc::calibration::CancelRequest, ::mavsdk::rpc::calibration::CancelResponse>(
           std::mem_fn(&CalibrationService::Service::Cancel), this)));
@@ -183,6 +206,13 @@ CalibrationService::Service::~Service() {
 }
 
 ::grpc::Status CalibrationService::Service::SubscribeCalibrateMagnetometer(::grpc::ServerContext* context, const ::mavsdk::rpc::calibration::SubscribeCalibrateMagnetometerRequest* request, ::grpc::ServerWriter< ::mavsdk::rpc::calibration::CalibrateMagnetometerResponse>* writer) {
+  (void) context;
+  (void) request;
+  (void) writer;
+  return ::grpc::Status(::grpc::StatusCode::UNIMPLEMENTED, "");
+}
+
+::grpc::Status CalibrationService::Service::SubscribeCalibrateLevelHorizon(::grpc::ServerContext* context, const ::mavsdk::rpc::calibration::SubscribeCalibrateLevelHorizonRequest* request, ::grpc::ServerWriter< ::mavsdk::rpc::calibration::CalibrateLevelHorizonResponse>* writer) {
   (void) context;
   (void) request;
   (void) writer;

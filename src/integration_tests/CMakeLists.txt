@@ -111,4 +111,3 @@ add_custom_command(TARGET integration_tests_runner
         ${CMAKE_CURRENT_SOURCE_DIR}/../../tools/stop_px4_sitl.sh
         ${CMAKE_CURRENT_BINARY_DIR}
 )
-

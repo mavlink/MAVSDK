@@ -30,6 +30,11 @@ void Calibration::calibrate_magnetometer_async(CalibrateMagnetometerCallback cal
     _impl->calibrate_magnetometer_async(callback);
 }
 
+void Calibration::calibrate_level_horizon_async(CalibrateLevelHorizonCallback callback)
+{
+    _impl->calibrate_level_horizon_async(callback);
+}
+
 void Calibration::calibrate_gimbal_accelerometer_async(
     CalibrateGimbalAccelerometerCallback callback)
 {

@@ -136,6 +136,17 @@ public:
     void calibrate_magnetometer_async(CalibrateMagnetometerCallback callback);
 
     /**
+     * @brief Callback type for calibrate_levelhorizon_async.
+     */
+
+    using CalibrateLevelHorizonCallback = std::function<void(Calibration::Result, ProgressData)>;
+
+    /**
+     * @brief Perform level horizon calibration.
+     */
+    void calibrate_level_horizon_async(CalibrateLevelHorizonCallback callback);
+
+    /**
      * @brief Callback type for calibrate_gimbal_accelerometer_async.
      */
 

@@ -261,6 +261,47 @@ public:
         return grpc::Status::OK;
     }
 
+    grpc::Status SubscribeCalibrateLevelHorizon(
+        grpc::ServerContext* /* context */,
+        const mavsdk::rpc::calibration::SubscribeCalibrateLevelHorizonRequest* /* request */,
+        grpc::ServerWriter<rpc::calibration::CalibrateLevelHorizonResponse>* writer) override
+    {
+        auto stream_closed_promise = std::make_shared<std::promise<void>>();
+        auto stream_closed_future = stream_closed_promise->get_future();
+        register_stream_stop_promise(stream_closed_promise);
+
+        auto is_finished = std::make_shared<bool>(false);
+
+        std::mutex subscribe_mutex{};
+
+        _calibration.calibrate_level_horizon_async(
+            [this, &writer, &stream_closed_promise, is_finished, &subscribe_mutex](
+                mavsdk::Calibration::Result result,
+                const mavsdk::Calibration::ProgressData calibrate_level_horizon) {
+                rpc::calibration::CalibrateLevelHorizonResponse rpc_response;
+
+                rpc_response.set_allocated_progress_data(
+                    translateToRpcProgressData(calibrate_level_horizon).release());
+
+                auto rpc_result = translateToRpcResult(result);
+                auto* rpc_calibration_result = new rpc::calibration::CalibrationResult();
+                rpc_calibration_result->set_result(rpc_result);
+                rpc_calibration_result->set_result_str(mavsdk::Calibration::result_str(result));
+                rpc_response.set_allocated_calibration_result(rpc_calibration_result);
+
+                std::lock_guard<std::mutex> lock(subscribe_mutex);
+                if (!*is_finished && !writer->Write(rpc_response)) {
+                    _calibration.calibrate_level_horizon_async(nullptr);
+                    *is_finished = true;
+                    unregister_stream_stop_promise(stream_closed_promise);
+                    stream_closed_promise->set_value();
+                }
+            });
+
+        stream_closed_future.wait();
+        return grpc::Status::OK;
+    }
+
     grpc::Status SubscribeCalibrateGimbalAccelerometer(
         grpc::ServerContext* /* context */,
         const mavsdk::rpc::calibration::SubscribeCalibrateGimbalAccelerometerRequest* /* request */,
