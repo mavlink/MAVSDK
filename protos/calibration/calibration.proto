@@ -19,8 +19,13 @@ service CalibrationService {
         option (mavsdk.options.async_type) = ASYNC;
         option (mavsdk.options.is_finite) = true;
     }
-    // Perform magnetometer caliration.
+    // Perform magnetometer calibration.
     rpc SubscribeCalibrateMagnetometer(SubscribeCalibrateMagnetometerRequest) returns(stream CalibrateMagnetometerResponse) {
+        option (mavsdk.options.async_type) = ASYNC;
+        option (mavsdk.options.is_finite) = true;
+    }
+    // Perform board level horizon calibration.
+    rpc SubscribeCalibrateLevelHorizon(SubscribeCalibrateLevelHorizonRequest) returns(stream CalibrateLevelHorizonResponse) {
         option (mavsdk.options.async_type) = ASYNC;
         option (mavsdk.options.is_finite) = true;
     }
@@ -47,6 +52,12 @@ message CalibrateAccelerometerResponse {
 
 message SubscribeCalibrateMagnetometerRequest {}
 message CalibrateMagnetometerResponse {
+    CalibrationResult calibration_result = 1;
+    ProgressData progress_data = 2; // Progress data
+}
+
+message SubscribeCalibrateLevelHorizonRequest {}
+message CalibrateLevelHorizonResponse {
     CalibrationResult calibration_result = 1;
     ProgressData progress_data = 2; // Progress data
 }
