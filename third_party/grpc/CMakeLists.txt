@@ -41,9 +41,7 @@ endforeach()
 
 ExternalProject_add(
     grpc
-    GIT_REPOSITORY https://github.com/grpc/grpc
-    GIT_TAG v1.28.1
+    URL https://github.com/grpc/grpc/archive/v1.28.1.tar.gz
     PREFIX grpc
     CMAKE_ARGS "${CMAKE_ARGS}"
-    PATCH_COMMAND git apply ${PROJECT_SOURCE_DIR}/absl-workaround.patch
     )
