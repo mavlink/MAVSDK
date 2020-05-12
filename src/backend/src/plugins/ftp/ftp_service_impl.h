@@ -168,11 +168,12 @@ public:
                 rpc_ftp_result->set_result_str(ss.str());
                 rpc_response.set_allocated_ftp_result(rpc_ftp_result);
 
-                std::lock_guard<std::mutex> lock(subscribe_mutex);
+                std::unique_lock<std::mutex> lock(subscribe_mutex);
                 if (!*is_finished && !writer->Write(rpc_response)) {
                     _ftp.download_async(nullptr);
                     *is_finished = true;
                     unregister_stream_stop_promise(stream_closed_promise);
+                    lock.unlock();
                     stream_closed_promise->set_value();
                 }
             });
@@ -208,11 +209,12 @@ public:
             rpc_ftp_result->set_result_str(ss.str());
             rpc_response.set_allocated_ftp_result(rpc_ftp_result);
 
-            std::lock_guard<std::mutex> lock(subscribe_mutex);
+            std::unique_lock<std::mutex> lock(subscribe_mutex);
             if (!*is_finished && !writer->Write(rpc_response)) {
                 _ftp.upload_async(nullptr);
                 *is_finished = true;
                 unregister_stream_stop_promise(stream_closed_promise);
+                lock.unlock();
                 stream_closed_promise->set_value();
             }
         });

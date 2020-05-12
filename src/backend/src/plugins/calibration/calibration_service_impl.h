@@ -159,11 +159,12 @@ public:
                 rpc_calibration_result->set_result_str(ss.str());
                 rpc_response.set_allocated_calibration_result(rpc_calibration_result);
 
-                std::lock_guard<std::mutex> lock(subscribe_mutex);
+                std::unique_lock<std::mutex> lock(subscribe_mutex);
                 if (!*is_finished && !writer->Write(rpc_response)) {
                     _calibration.calibrate_gyro_async(nullptr);
                     *is_finished = true;
                     unregister_stream_stop_promise(stream_closed_promise);
+                    lock.unlock();
                     stream_closed_promise->set_value();
                 }
             });
@@ -202,11 +203,12 @@ public:
                 rpc_calibration_result->set_result_str(ss.str());
                 rpc_response.set_allocated_calibration_result(rpc_calibration_result);
 
-                std::lock_guard<std::mutex> lock(subscribe_mutex);
+                std::unique_lock<std::mutex> lock(subscribe_mutex);
                 if (!*is_finished && !writer->Write(rpc_response)) {
                     _calibration.calibrate_accelerometer_async(nullptr);
                     *is_finished = true;
                     unregister_stream_stop_promise(stream_closed_promise);
+                    lock.unlock();
                     stream_closed_promise->set_value();
                 }
             });
@@ -245,11 +247,12 @@ public:
                 rpc_calibration_result->set_result_str(ss.str());
                 rpc_response.set_allocated_calibration_result(rpc_calibration_result);
 
-                std::lock_guard<std::mutex> lock(subscribe_mutex);
+                std::unique_lock<std::mutex> lock(subscribe_mutex);
                 if (!*is_finished && !writer->Write(rpc_response)) {
                     _calibration.calibrate_magnetometer_async(nullptr);
                     *is_finished = true;
                     unregister_stream_stop_promise(stream_closed_promise);
+                    lock.unlock();
                     stream_closed_promise->set_value();
                 }
             });
@@ -288,11 +291,12 @@ public:
                 rpc_calibration_result->set_result_str(ss.str());
                 rpc_response.set_allocated_calibration_result(rpc_calibration_result);
 
-                std::lock_guard<std::mutex> lock(subscribe_mutex);
+                std::unique_lock<std::mutex> lock(subscribe_mutex);
                 if (!*is_finished && !writer->Write(rpc_response)) {
                     _calibration.calibrate_gimbal_accelerometer_async(nullptr);
                     *is_finished = true;
                     unregister_stream_stop_promise(stream_closed_promise);
+                    lock.unlock();
                     stream_closed_promise->set_value();
                 }
             });

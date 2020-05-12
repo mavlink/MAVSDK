@@ -339,11 +339,12 @@ public:
                 rpc_response.set_allocated_mission_progress(
                     translateToRpcMissionProgress(mission_progress).release());
 
-                std::lock_guard<std::mutex> lock(subscribe_mutex);
+                std::unique_lock<std::mutex> lock(subscribe_mutex);
                 if (!*is_finished && !writer->Write(rpc_response)) {
                     _mission_raw.subscribe_mission_progress(nullptr);
                     *is_finished = true;
                     unregister_stream_stop_promise(stream_closed_promise);
+                    lock.unlock();
                     stream_closed_promise->set_value();
                 }
             });
@@ -372,11 +373,12 @@ public:
 
                 rpc_response.set_mission_changed(mission_changed);
 
-                std::lock_guard<std::mutex> lock(subscribe_mutex);
+                std::unique_lock<std::mutex> lock(subscribe_mutex);
                 if (!*is_finished && !writer->Write(rpc_response)) {
                     _mission_raw.subscribe_mission_changed(nullptr);
                     *is_finished = true;
                     unregister_stream_stop_promise(stream_closed_promise);
+                    lock.unlock();
                     stream_closed_promise->set_value();
                 }
             });

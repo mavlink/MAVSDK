@@ -1062,11 +1062,12 @@ public:
 
                 rpc_response.set_allocated_position(translateToRpcPosition(position).release());
 
-                std::lock_guard<std::mutex> lock(subscribe_mutex);
+                std::unique_lock<std::mutex> lock(subscribe_mutex);
                 if (!*is_finished && !writer->Write(rpc_response)) {
                     _telemetry.subscribe_position(nullptr);
                     *is_finished = true;
                     unregister_stream_stop_promise(stream_closed_promise);
+                    lock.unlock();
                     stream_closed_promise->set_value();
                 }
             });
@@ -1095,11 +1096,12 @@ public:
 
                 rpc_response.set_allocated_home(translateToRpcPosition(home).release());
 
-                std::lock_guard<std::mutex> lock(subscribe_mutex);
+                std::unique_lock<std::mutex> lock(subscribe_mutex);
                 if (!*is_finished && !writer->Write(rpc_response)) {
                     _telemetry.subscribe_home(nullptr);
                     *is_finished = true;
                     unregister_stream_stop_promise(stream_closed_promise);
+                    lock.unlock();
                     stream_closed_promise->set_value();
                 }
             });
@@ -1128,11 +1130,12 @@ public:
 
                 rpc_response.set_is_in_air(in_air);
 
-                std::lock_guard<std::mutex> lock(subscribe_mutex);
+                std::unique_lock<std::mutex> lock(subscribe_mutex);
                 if (!*is_finished && !writer->Write(rpc_response)) {
                     _telemetry.subscribe_in_air(nullptr);
                     *is_finished = true;
                     unregister_stream_stop_promise(stream_closed_promise);
+                    lock.unlock();
                     stream_closed_promise->set_value();
                 }
             });
@@ -1161,11 +1164,12 @@ public:
 
                 rpc_response.set_landed_state(translateToRpcLandedState(landed_state));
 
-                std::lock_guard<std::mutex> lock(subscribe_mutex);
+                std::unique_lock<std::mutex> lock(subscribe_mutex);
                 if (!*is_finished && !writer->Write(rpc_response)) {
                     _telemetry.subscribe_landed_state(nullptr);
                     *is_finished = true;
                     unregister_stream_stop_promise(stream_closed_promise);
+                    lock.unlock();
                     stream_closed_promise->set_value();
                 }
             });
@@ -1194,11 +1198,12 @@ public:
 
                 rpc_response.set_is_armed(armed);
 
-                std::lock_guard<std::mutex> lock(subscribe_mutex);
+                std::unique_lock<std::mutex> lock(subscribe_mutex);
                 if (!*is_finished && !writer->Write(rpc_response)) {
                     _telemetry.subscribe_armed(nullptr);
                     *is_finished = true;
                     unregister_stream_stop_promise(stream_closed_promise);
+                    lock.unlock();
                     stream_closed_promise->set_value();
                 }
             });
@@ -1228,11 +1233,12 @@ public:
                 rpc_response.set_allocated_attitude_quaternion(
                     translateToRpcQuaternion(attitude_quaternion).release());
 
-                std::lock_guard<std::mutex> lock(subscribe_mutex);
+                std::unique_lock<std::mutex> lock(subscribe_mutex);
                 if (!*is_finished && !writer->Write(rpc_response)) {
                     _telemetry.subscribe_attitude_quaternion(nullptr);
                     *is_finished = true;
                     unregister_stream_stop_promise(stream_closed_promise);
+                    lock.unlock();
                     stream_closed_promise->set_value();
                 }
             });
@@ -1262,11 +1268,12 @@ public:
                 rpc_response.set_allocated_attitude_euler(
                     translateToRpcEulerAngle(attitude_euler).release());
 
-                std::lock_guard<std::mutex> lock(subscribe_mutex);
+                std::unique_lock<std::mutex> lock(subscribe_mutex);
                 if (!*is_finished && !writer->Write(rpc_response)) {
                     _telemetry.subscribe_attitude_euler(nullptr);
                     *is_finished = true;
                     unregister_stream_stop_promise(stream_closed_promise);
+                    lock.unlock();
                     stream_closed_promise->set_value();
                 }
             });
@@ -1296,11 +1303,12 @@ public:
                 rpc_response.set_allocated_attitude_angular_velocity_body(
                     translateToRpcAngularVelocityBody(attitude_angular_velocity_body).release());
 
-                std::lock_guard<std::mutex> lock(subscribe_mutex);
+                std::unique_lock<std::mutex> lock(subscribe_mutex);
                 if (!*is_finished && !writer->Write(rpc_response)) {
                     _telemetry.subscribe_attitude_angular_velocity_body(nullptr);
                     *is_finished = true;
                     unregister_stream_stop_promise(stream_closed_promise);
+                    lock.unlock();
                     stream_closed_promise->set_value();
                 }
             });
@@ -1330,11 +1338,12 @@ public:
                 rpc_response.set_allocated_attitude_quaternion(
                     translateToRpcQuaternion(camera_attitude_quaternion).release());
 
-                std::lock_guard<std::mutex> lock(subscribe_mutex);
+                std::unique_lock<std::mutex> lock(subscribe_mutex);
                 if (!*is_finished && !writer->Write(rpc_response)) {
                     _telemetry.subscribe_camera_attitude_quaternion(nullptr);
                     *is_finished = true;
                     unregister_stream_stop_promise(stream_closed_promise);
+                    lock.unlock();
                     stream_closed_promise->set_value();
                 }
             });
@@ -1364,11 +1373,12 @@ public:
                 rpc_response.set_allocated_attitude_euler(
                     translateToRpcEulerAngle(camera_attitude_euler).release());
 
-                std::lock_guard<std::mutex> lock(subscribe_mutex);
+                std::unique_lock<std::mutex> lock(subscribe_mutex);
                 if (!*is_finished && !writer->Write(rpc_response)) {
                     _telemetry.subscribe_camera_attitude_euler(nullptr);
                     *is_finished = true;
                     unregister_stream_stop_promise(stream_closed_promise);
+                    lock.unlock();
                     stream_closed_promise->set_value();
                 }
             });
@@ -1398,11 +1408,12 @@ public:
                 rpc_response.set_allocated_velocity_ned(
                     translateToRpcVelocityNed(velocity_ned).release());
 
-                std::lock_guard<std::mutex> lock(subscribe_mutex);
+                std::unique_lock<std::mutex> lock(subscribe_mutex);
                 if (!*is_finished && !writer->Write(rpc_response)) {
                     _telemetry.subscribe_velocity_ned(nullptr);
                     *is_finished = true;
                     unregister_stream_stop_promise(stream_closed_promise);
+                    lock.unlock();
                     stream_closed_promise->set_value();
                 }
             });
@@ -1431,11 +1442,12 @@ public:
 
                 rpc_response.set_allocated_gps_info(translateToRpcGpsInfo(gps_info).release());
 
-                std::lock_guard<std::mutex> lock(subscribe_mutex);
+                std::unique_lock<std::mutex> lock(subscribe_mutex);
                 if (!*is_finished && !writer->Write(rpc_response)) {
                     _telemetry.subscribe_gps_info(nullptr);
                     *is_finished = true;
                     unregister_stream_stop_promise(stream_closed_promise);
+                    lock.unlock();
                     stream_closed_promise->set_value();
                 }
             });
@@ -1464,11 +1476,12 @@ public:
 
                 rpc_response.set_allocated_battery(translateToRpcBattery(battery).release());
 
-                std::lock_guard<std::mutex> lock(subscribe_mutex);
+                std::unique_lock<std::mutex> lock(subscribe_mutex);
                 if (!*is_finished && !writer->Write(rpc_response)) {
                     _telemetry.subscribe_battery(nullptr);
                     *is_finished = true;
                     unregister_stream_stop_promise(stream_closed_promise);
+                    lock.unlock();
                     stream_closed_promise->set_value();
                 }
             });
@@ -1497,11 +1510,12 @@ public:
 
                 rpc_response.set_flight_mode(translateToRpcFlightMode(flight_mode));
 
-                std::lock_guard<std::mutex> lock(subscribe_mutex);
+                std::unique_lock<std::mutex> lock(subscribe_mutex);
                 if (!*is_finished && !writer->Write(rpc_response)) {
                     _telemetry.subscribe_flight_mode(nullptr);
                     *is_finished = true;
                     unregister_stream_stop_promise(stream_closed_promise);
+                    lock.unlock();
                     stream_closed_promise->set_value();
                 }
             });
@@ -1530,11 +1544,12 @@ public:
 
                 rpc_response.set_allocated_health(translateToRpcHealth(health).release());
 
-                std::lock_guard<std::mutex> lock(subscribe_mutex);
+                std::unique_lock<std::mutex> lock(subscribe_mutex);
                 if (!*is_finished && !writer->Write(rpc_response)) {
                     _telemetry.subscribe_health(nullptr);
                     *is_finished = true;
                     unregister_stream_stop_promise(stream_closed_promise);
+                    lock.unlock();
                     stream_closed_promise->set_value();
                 }
             });
@@ -1563,11 +1578,12 @@ public:
 
                 rpc_response.set_allocated_rc_status(translateToRpcRcStatus(rc_status).release());
 
-                std::lock_guard<std::mutex> lock(subscribe_mutex);
+                std::unique_lock<std::mutex> lock(subscribe_mutex);
                 if (!*is_finished && !writer->Write(rpc_response)) {
                     _telemetry.subscribe_rc_status(nullptr);
                     *is_finished = true;
                     unregister_stream_stop_promise(stream_closed_promise);
+                    lock.unlock();
                     stream_closed_promise->set_value();
                 }
             });
@@ -1597,11 +1613,12 @@ public:
                 rpc_response.set_allocated_status_text(
                     translateToRpcStatusText(status_text).release());
 
-                std::lock_guard<std::mutex> lock(subscribe_mutex);
+                std::unique_lock<std::mutex> lock(subscribe_mutex);
                 if (!*is_finished && !writer->Write(rpc_response)) {
                     _telemetry.subscribe_status_text(nullptr);
                     *is_finished = true;
                     unregister_stream_stop_promise(stream_closed_promise);
+                    lock.unlock();
                     stream_closed_promise->set_value();
                 }
             });
@@ -1631,11 +1648,12 @@ public:
                 rpc_response.set_allocated_actuator_control_target(
                     translateToRpcActuatorControlTarget(actuator_control_target).release());
 
-                std::lock_guard<std::mutex> lock(subscribe_mutex);
+                std::unique_lock<std::mutex> lock(subscribe_mutex);
                 if (!*is_finished && !writer->Write(rpc_response)) {
                     _telemetry.subscribe_actuator_control_target(nullptr);
                     *is_finished = true;
                     unregister_stream_stop_promise(stream_closed_promise);
+                    lock.unlock();
                     stream_closed_promise->set_value();
                 }
             });
@@ -1665,11 +1683,12 @@ public:
                 rpc_response.set_allocated_actuator_output_status(
                     translateToRpcActuatorOutputStatus(actuator_output_status).release());
 
-                std::lock_guard<std::mutex> lock(subscribe_mutex);
+                std::unique_lock<std::mutex> lock(subscribe_mutex);
                 if (!*is_finished && !writer->Write(rpc_response)) {
                     _telemetry.subscribe_actuator_output_status(nullptr);
                     *is_finished = true;
                     unregister_stream_stop_promise(stream_closed_promise);
+                    lock.unlock();
                     stream_closed_promise->set_value();
                 }
             });
@@ -1698,11 +1717,12 @@ public:
 
                 rpc_response.set_allocated_odometry(translateToRpcOdometry(odometry).release());
 
-                std::lock_guard<std::mutex> lock(subscribe_mutex);
+                std::unique_lock<std::mutex> lock(subscribe_mutex);
                 if (!*is_finished && !writer->Write(rpc_response)) {
                     _telemetry.subscribe_odometry(nullptr);
                     *is_finished = true;
                     unregister_stream_stop_promise(stream_closed_promise);
+                    lock.unlock();
                     stream_closed_promise->set_value();
                 }
             });
@@ -1732,11 +1752,12 @@ public:
                 rpc_response.set_allocated_position_velocity_ned(
                     translateToRpcPositionVelocityNed(position_velocity_ned).release());
 
-                std::lock_guard<std::mutex> lock(subscribe_mutex);
+                std::unique_lock<std::mutex> lock(subscribe_mutex);
                 if (!*is_finished && !writer->Write(rpc_response)) {
                     _telemetry.subscribe_position_velocity_ned(nullptr);
                     *is_finished = true;
                     unregister_stream_stop_promise(stream_closed_promise);
+                    lock.unlock();
                     stream_closed_promise->set_value();
                 }
             });
@@ -1766,11 +1787,12 @@ public:
                 rpc_response.set_allocated_ground_truth(
                     translateToRpcGroundTruth(ground_truth).release());
 
-                std::lock_guard<std::mutex> lock(subscribe_mutex);
+                std::unique_lock<std::mutex> lock(subscribe_mutex);
                 if (!*is_finished && !writer->Write(rpc_response)) {
                     _telemetry.subscribe_ground_truth(nullptr);
                     *is_finished = true;
                     unregister_stream_stop_promise(stream_closed_promise);
+                    lock.unlock();
                     stream_closed_promise->set_value();
                 }
             });
@@ -1800,11 +1822,12 @@ public:
                 rpc_response.set_allocated_fixedwing_metrics(
                     translateToRpcFixedwingMetrics(fixedwing_metrics).release());
 
-                std::lock_guard<std::mutex> lock(subscribe_mutex);
+                std::unique_lock<std::mutex> lock(subscribe_mutex);
                 if (!*is_finished && !writer->Write(rpc_response)) {
                     _telemetry.subscribe_fixedwing_metrics(nullptr);
                     *is_finished = true;
                     unregister_stream_stop_promise(stream_closed_promise);
+                    lock.unlock();
                     stream_closed_promise->set_value();
                 }
             });
@@ -1833,11 +1856,12 @@ public:
 
                 rpc_response.set_allocated_imu(translateToRpcImu(imu).release());
 
-                std::lock_guard<std::mutex> lock(subscribe_mutex);
+                std::unique_lock<std::mutex> lock(subscribe_mutex);
                 if (!*is_finished && !writer->Write(rpc_response)) {
                     _telemetry.subscribe_imu(nullptr);
                     *is_finished = true;
                     unregister_stream_stop_promise(stream_closed_promise);
+                    lock.unlock();
                     stream_closed_promise->set_value();
                 }
             });
@@ -1866,11 +1890,12 @@ public:
 
                 rpc_response.set_is_health_all_ok(health_all_ok);
 
-                std::lock_guard<std::mutex> lock(subscribe_mutex);
+                std::unique_lock<std::mutex> lock(subscribe_mutex);
                 if (!*is_finished && !writer->Write(rpc_response)) {
                     _telemetry.subscribe_health_all_ok(nullptr);
                     *is_finished = true;
                     unregister_stream_stop_promise(stream_closed_promise);
+                    lock.unlock();
                     stream_closed_promise->set_value();
                 }
             });
@@ -1899,11 +1924,12 @@ public:
 
                 rpc_response.set_time_us(unix_epoch_time);
 
-                std::lock_guard<std::mutex> lock(subscribe_mutex);
+                std::unique_lock<std::mutex> lock(subscribe_mutex);
                 if (!*is_finished && !writer->Write(rpc_response)) {
                     _telemetry.subscribe_unix_epoch_time(nullptr);
                     *is_finished = true;
                     unregister_stream_stop_promise(stream_closed_promise);
+                    lock.unlock();
                     stream_closed_promise->set_value();
                 }
             });
