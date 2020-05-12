@@ -6,7 +6,6 @@ include(ExternalProject)
 list(APPEND CMAKE_ARGS
     "${CL_ARGS}"
     "-DCMAKE_INSTALL_PREFIX:PATH=${CMAKE_INSTALL_PREFIX}"
-    "-DABSL_NO_XRAY_ATTRIBUTES=ON"
     "-DCMAKE_POSITION_INDEPENDENT_CODE=ON"
     )
 
@@ -17,7 +16,8 @@ endforeach()
 
 ExternalProject_add(
     absl
-    URL https://github.com/abseil/abseil-cpp/archive/20200225.tar.gz
+    GIT_REPOSITORY https://github.com/abseil/abseil-cpp.git
     PREFIX absl
+    PATCH_COMMAND git apply ${PROJECT_SOURCE_DIR}/no-xray-attributes.patch
     CMAKE_ARGS "${CMAKE_ARGS}"
     )
