@@ -14,7 +14,7 @@ echo "* Building cpp_rsc binary..."
 curl -L https://github.com/JonasVautherin/cpp_rsc/archive/master.tar.gz | tar -xvz -C ${tmp_dir}
 clone_dir=${tmp_dir}/cpp_rsc-master
 
-cmake -B${clone_dir}/build -S${clone_dir}
+cmake -B${clone_dir}/build -H${clone_dir}
 cmake --build ${clone_dir}/build
 
 cpp_rsc=${clone_dir}/build/src/cpp_rsc
