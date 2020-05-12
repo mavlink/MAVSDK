@@ -41,7 +41,8 @@ void CalibrationImpl::calibrate_gyro_async(const CalibrationCallback& callback)
     std::lock_guard<std::mutex> lock(_calibration_mutex);
 
     if (_parent->is_armed()) {
-        report_failed("System is armed.");
+        Calibration::ProgressData progress_data;
+        call_user_callback(callback, Calibration::Result::FailedArmed, progress_data);
         return;
     }
 
@@ -79,7 +80,8 @@ void CalibrationImpl::calibrate_accelerometer_async(const CalibrationCallback& c
     std::lock_guard<std::mutex> lock(_calibration_mutex);
 
     if (_parent->is_armed()) {
-        report_failed("System is armed.");
+        Calibration::ProgressData progress_data;
+        call_user_callback(callback, Calibration::Result::FailedArmed, progress_data);
         return;
     }
 
@@ -106,7 +108,8 @@ void CalibrationImpl::calibrate_magnetometer_async(const CalibrationCallback& ca
     std::lock_guard<std::mutex> lock(_calibration_mutex);
 
     if (_parent->is_armed()) {
-        report_failed("System is armed.");
+        Calibration::ProgressData progress_data;
+        call_user_callback(callback, Calibration::Result::FailedArmed, progress_data);
         return;
     }
 
@@ -133,7 +136,8 @@ void CalibrationImpl::calibrate_level_horizon_async(const CalibrationCallback& c
     std::lock_guard<std::mutex> lock(_calibration_mutex);
 
     if (_parent->is_armed()) {
-        report_failed("System is armed.");
+        Calibration::ProgressData progress_data;
+        call_user_callback(callback, Calibration::Result::FailedArmed, progress_data);
         return;
     }
 
@@ -160,7 +164,8 @@ void CalibrationImpl::calibrate_gimbal_accelerometer_async(const CalibrationCall
     std::lock_guard<std::mutex> lock(_calibration_mutex);
 
     if (_parent->is_armed()) {
-        report_failed("System is armed.");
+        Calibration::ProgressData progress_data;
+        call_user_callback(callback, Calibration::Result::FailedArmed, progress_data);
         return;
     }
 

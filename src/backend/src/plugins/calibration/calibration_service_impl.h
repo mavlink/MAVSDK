@@ -63,6 +63,8 @@ public:
                 return rpc::calibration::CalibrationResult_Result_RESULT_TIMEOUT;
             case mavsdk::Calibration::Result::Cancelled:
                 return rpc::calibration::CalibrationResult_Result_RESULT_CANCELLED;
+            case mavsdk::Calibration::Result::FailedArmed:
+                return rpc::calibration::CalibrationResult_Result_RESULT_FAILED_ARMED;
         }
     }
 
@@ -93,6 +95,8 @@ public:
                 return mavsdk::Calibration::Result::Timeout;
             case rpc::calibration::CalibrationResult_Result_RESULT_CANCELLED:
                 return mavsdk::Calibration::Result::Cancelled;
+            case rpc::calibration::CalibrationResult_Result_RESULT_FAILED_ARMED:
+                return mavsdk::Calibration::Result::FailedArmed;
         }
     }
 
@@ -286,14 +290,17 @@ public:
                 auto rpc_result = translateToRpcResult(result);
                 auto* rpc_calibration_result = new rpc::calibration::CalibrationResult();
                 rpc_calibration_result->set_result(rpc_result);
-                rpc_calibration_result->set_result_str(mavsdk::Calibration::result_str(result));
+                std::stringstream ss;
+                ss << result;
+                rpc_calibration_result->set_result_str(ss.str());
                 rpc_response.set_allocated_calibration_result(rpc_calibration_result);
 
-                std::lock_guard<std::mutex> lock(subscribe_mutex);
+                std::unique_lock<std::mutex> lock(subscribe_mutex);
                 if (!*is_finished && !writer->Write(rpc_response)) {
                     _calibration.calibrate_level_horizon_async(nullptr);
                     *is_finished = true;
                     unregister_stream_stop_promise(stream_closed_promise);
+                    lock.unlock();
                     stream_closed_promise->set_value();
                 }
             });

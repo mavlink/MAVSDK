@@ -83,7 +83,7 @@ public:
         return obj;
     }
 
-    static rpc::log_files::LogFileResult::Result
+    static rpc::log_files::LogFilesResult::Result
     translateToRpcResult(const mavsdk::LogFiles::Result& result)
     {
         switch (result) {
@@ -91,42 +91,42 @@ public:
                 LogErr() << "Unknown result enum value: " << static_cast<int>(result);
             // FALLTHROUGH
             case mavsdk::LogFiles::Result::Unknown:
-                return rpc::log_files::LogFileResult_Result_RESULT_UNKNOWN;
+                return rpc::log_files::LogFilesResult_Result_RESULT_UNKNOWN;
             case mavsdk::LogFiles::Result::Success:
-                return rpc::log_files::LogFileResult_Result_RESULT_SUCCESS;
-            case mavsdk::LogFiles::Result::Progress:
-                return rpc::log_files::LogFileResult_Result_RESULT_PROGRESS;
+                return rpc::log_files::LogFilesResult_Result_RESULT_SUCCESS;
+            case mavsdk::LogFiles::Result::Next:
+                return rpc::log_files::LogFilesResult_Result_RESULT_NEXT;
             case mavsdk::LogFiles::Result::NoLogfiles:
-                return rpc::log_files::LogFileResult_Result_RESULT_NO_LOGFILES;
+                return rpc::log_files::LogFilesResult_Result_RESULT_NO_LOGFILES;
             case mavsdk::LogFiles::Result::Timeout:
-                return rpc::log_files::LogFileResult_Result_RESULT_TIMEOUT;
+                return rpc::log_files::LogFilesResult_Result_RESULT_TIMEOUT;
             case mavsdk::LogFiles::Result::InvalidArgument:
-                return rpc::log_files::LogFileResult_Result_RESULT_INVALID_ARGUMENT;
+                return rpc::log_files::LogFilesResult_Result_RESULT_INVALID_ARGUMENT;
             case mavsdk::LogFiles::Result::FileOpenFailed:
-                return rpc::log_files::LogFileResult_Result_RESULT_FILE_OPEN_FAILED;
+                return rpc::log_files::LogFilesResult_Result_RESULT_FILE_OPEN_FAILED;
         }
     }
 
     static mavsdk::LogFiles::Result
-    translateFromRpcResult(const rpc::log_files::LogFileResult::Result result)
+    translateFromRpcResult(const rpc::log_files::LogFilesResult::Result result)
     {
         switch (result) {
             default:
                 LogErr() << "Unknown result enum value: " << static_cast<int>(result);
             // FALLTHROUGH
-            case rpc::log_files::LogFileResult_Result_RESULT_UNKNOWN:
+            case rpc::log_files::LogFilesResult_Result_RESULT_UNKNOWN:
                 return mavsdk::LogFiles::Result::Unknown;
-            case rpc::log_files::LogFileResult_Result_RESULT_SUCCESS:
+            case rpc::log_files::LogFilesResult_Result_RESULT_SUCCESS:
                 return mavsdk::LogFiles::Result::Success;
-            case rpc::log_files::LogFileResult_Result_RESULT_PROGRESS:
-                return mavsdk::LogFiles::Result::Progress;
-            case rpc::log_files::LogFileResult_Result_RESULT_NO_LOGFILES:
+            case rpc::log_files::LogFilesResult_Result_RESULT_NEXT:
+                return mavsdk::LogFiles::Result::Next;
+            case rpc::log_files::LogFilesResult_Result_RESULT_NO_LOGFILES:
                 return mavsdk::LogFiles::Result::NoLogfiles;
-            case rpc::log_files::LogFileResult_Result_RESULT_TIMEOUT:
+            case rpc::log_files::LogFilesResult_Result_RESULT_TIMEOUT:
                 return mavsdk::LogFiles::Result::Timeout;
-            case rpc::log_files::LogFileResult_Result_RESULT_INVALID_ARGUMENT:
+            case rpc::log_files::LogFilesResult_Result_RESULT_INVALID_ARGUMENT:
                 return mavsdk::LogFiles::Result::InvalidArgument;
-            case rpc::log_files::LogFileResult_Result_RESULT_FILE_OPEN_FAILED:
+            case rpc::log_files::LogFilesResult_Result_RESULT_FILE_OPEN_FAILED:
                 return mavsdk::LogFiles::Result::FileOpenFailed;
         }
     }

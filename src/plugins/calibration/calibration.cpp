@@ -69,6 +69,8 @@ std::ostream& operator<<(std::ostream& str, Calibration::Result const& result)
             return str << "Timeout";
         case Calibration::Result::Cancelled:
             return str << "Cancelled";
+        case Calibration::Result::FailedArmed:
+            return str << "Failed Armed";
         default:
             return str << "Unknown";
     }

@@ -439,44 +439,44 @@ const char descriptor_table_protodef_calibration_2fcalibration_2eproto[] PROTOBU
   "lt\030\001 \001(\0132).mavsdk.rpc.calibration.Calibr"
   "ationResult\022;\n\rprogress_data\030\002 \001(\0132$.mav"
   "sdk.rpc.calibration.ProgressData\"\017\n\rCanc"
-  "elRequest\"\020\n\016CancelResponse\"\311\002\n\021Calibrat"
+  "elRequest\"\020\n\016CancelResponse\"\342\002\n\021Calibrat"
   "ionResult\022@\n\006result\030\001 \001(\01620.mavsdk.rpc.c"
   "alibration.CalibrationResult.Result\022\022\n\nr"
-  "esult_str\030\002 \001(\t\"\335\001\n\006Result\022\022\n\016RESULT_UNK"
+  "esult_str\030\002 \001(\t\"\366\001\n\006Result\022\022\n\016RESULT_UNK"
   "NOWN\020\000\022\022\n\016RESULT_SUCCESS\020\001\022\017\n\013RESULT_NEX"
   "T\020\002\022\021\n\rRESULT_FAILED\020\003\022\024\n\020RESULT_NO_SYST"
   "EM\020\004\022\033\n\027RESULT_CONNECTION_ERROR\020\005\022\017\n\013RES"
   "ULT_BUSY\020\006\022\031\n\025RESULT_COMMAND_DENIED\020\007\022\022\n"
-  "\016RESULT_TIMEOUT\020\010\022\024\n\020RESULT_CANCELLED\020\t\""
-  "\203\001\n\014ProgressData\022\037\n\014has_progress\030\001 \001(\010B\t"
-  "\202\265\030\005false\022\031\n\010progress\030\002 \001(\002B\007\202\265\030\003NaN\022\"\n\017"
-  "has_status_text\030\003 \001(\010B\t\202\265\030\005false\022\023\n\013stat"
-  "us_text\030\004 \001(\t2\254\007\n\022CalibrationService\022\212\001\n"
-  "\026SubscribeCalibrateGyro\0225.mavsdk.rpc.cal"
-  "ibration.SubscribeCalibrateGyroRequest\032-"
-  ".mavsdk.rpc.calibration.CalibrateGyroRes"
-  "ponse\"\010\200\265\030\000\210\265\030\0010\001\022\245\001\n\037SubscribeCalibrate"
-  "Accelerometer\022>.mavsdk.rpc.calibration.S"
-  "ubscribeCalibrateAccelerometerRequest\0326."
-  "mavsdk.rpc.calibration.CalibrateAccelero"
-  "meterResponse\"\010\200\265\030\000\210\265\030\0010\001\022\242\001\n\036SubscribeC"
-  "alibrateMagnetometer\022=.mavsdk.rpc.calibr"
-  "ation.SubscribeCalibrateMagnetometerRequ"
-  "est\0325.mavsdk.rpc.calibration.CalibrateMa"
-  "gnetometerResponse\"\010\200\265\030\000\210\265\030\0010\001\022\242\001\n\036Subsc"
-  "ribeCalibrateLevelHorizon\022=.mavsdk.rpc.c"
-  "alibration.SubscribeCalibrateLevelHorizo"
-  "nRequest\0325.mavsdk.rpc.calibration.Calibr"
-  "ateLevelHorizonResponse\"\010\200\265\030\000\210\265\030\0010\001\022\267\001\n%"
-  "SubscribeCalibrateGimbalAccelerometer\022D."
-  "mavsdk.rpc.calibration.SubscribeCalibrat"
-  "eGimbalAccelerometerRequest\032<.mavsdk.rpc"
-  ".calibration.CalibrateGimbalAcceleromete"
-  "rResponse\"\010\200\265\030\000\210\265\030\0010\001\022]\n\006Cancel\022%.mavsdk"
-  ".rpc.calibration.CancelRequest\032&.mavsdk."
-  "rpc.calibration.CancelResponse\"\004\200\265\030\001B)\n\025"
-  "io.mavsdk.calibrationB\020CalibrationProtob"
-  "\006proto3"
+  "\016RESULT_TIMEOUT\020\010\022\024\n\020RESULT_CANCELLED\020\t\022"
+  "\027\n\023RESULT_FAILED_ARMED\020\n\"\203\001\n\014ProgressDat"
+  "a\022\037\n\014has_progress\030\001 \001(\010B\t\202\265\030\005false\022\031\n\010pr"
+  "ogress\030\002 \001(\002B\007\202\265\030\003NaN\022\"\n\017has_status_text"
+  "\030\003 \001(\010B\t\202\265\030\005false\022\023\n\013status_text\030\004 \001(\t2\254"
+  "\007\n\022CalibrationService\022\212\001\n\026SubscribeCalib"
+  "rateGyro\0225.mavsdk.rpc.calibration.Subscr"
+  "ibeCalibrateGyroRequest\032-.mavsdk.rpc.cal"
+  "ibration.CalibrateGyroResponse\"\010\200\265\030\000\210\265\030\001"
+  "0\001\022\245\001\n\037SubscribeCalibrateAccelerometer\022>"
+  ".mavsdk.rpc.calibration.SubscribeCalibra"
+  "teAccelerometerRequest\0326.mavsdk.rpc.cali"
+  "bration.CalibrateAccelerometerResponse\"\010"
+  "\200\265\030\000\210\265\030\0010\001\022\242\001\n\036SubscribeCalibrateMagneto"
+  "meter\022=.mavsdk.rpc.calibration.Subscribe"
+  "CalibrateMagnetometerRequest\0325.mavsdk.rp"
+  "c.calibration.CalibrateMagnetometerRespo"
+  "nse\"\010\200\265\030\000\210\265\030\0010\001\022\242\001\n\036SubscribeCalibrateLe"
+  "velHorizon\022=.mavsdk.rpc.calibration.Subs"
+  "cribeCalibrateLevelHorizonRequest\0325.mavs"
+  "dk.rpc.calibration.CalibrateLevelHorizon"
+  "Response\"\010\200\265\030\000\210\265\030\0010\001\022\267\001\n%SubscribeCalibr"
+  "ateGimbalAccelerometer\022D.mavsdk.rpc.cali"
+  "bration.SubscribeCalibrateGimbalAccelero"
+  "meterRequest\032<.mavsdk.rpc.calibration.Ca"
+  "librateGimbalAccelerometerResponse\"\010\200\265\030\000"
+  "\210\265\030\0010\001\022]\n\006Cancel\022%.mavsdk.rpc.calibratio"
+  "n.CancelRequest\032&.mavsdk.rpc.calibration"
+  ".CancelResponse\"\004\200\265\030\001B)\n\025io.mavsdk.calib"
+  "rationB\020CalibrationProtob\006proto3"
   ;
 static const ::PROTOBUF_NAMESPACE_ID::internal::DescriptorTable*const descriptor_table_calibration_2fcalibration_2eproto_deps[1] = {
   &::descriptor_table_mavsdk_5foptions_2eproto,
@@ -500,7 +500,7 @@ static ::PROTOBUF_NAMESPACE_ID::internal::SCCInfoBase*const descriptor_table_cal
 static ::PROTOBUF_NAMESPACE_ID::internal::once_flag descriptor_table_calibration_2fcalibration_2eproto_once;
 static bool descriptor_table_calibration_2fcalibration_2eproto_initialized = false;
 const ::PROTOBUF_NAMESPACE_ID::internal::DescriptorTable descriptor_table_calibration_2fcalibration_2eproto = {
-  &descriptor_table_calibration_2fcalibration_2eproto_initialized, descriptor_table_protodef_calibration_2fcalibration_2eproto, "calibration/calibration.proto", 2607,
+  &descriptor_table_calibration_2fcalibration_2eproto_initialized, descriptor_table_protodef_calibration_2fcalibration_2eproto, "calibration/calibration.proto", 2632,
   &descriptor_table_calibration_2fcalibration_2eproto_once, descriptor_table_calibration_2fcalibration_2eproto_sccs, descriptor_table_calibration_2fcalibration_2eproto_deps, 14, 1,
   schemas, file_default_instances, TableStruct_calibration_2fcalibration_2eproto::offsets,
   file_level_metadata_calibration_2fcalibration_2eproto, 14, file_level_enum_descriptors_calibration_2fcalibration_2eproto, file_level_service_descriptors_calibration_2fcalibration_2eproto,
@@ -527,6 +527,7 @@ bool CalibrationResult_Result_IsValid(int value) {
     case 7:
     case 8:
     case 9:
+    case 10:
       return true;
     default:
       return false;
@@ -544,6 +545,7 @@ constexpr CalibrationResult_Result CalibrationResult::RESULT_BUSY;
 constexpr CalibrationResult_Result CalibrationResult::RESULT_COMMAND_DENIED;
 constexpr CalibrationResult_Result CalibrationResult::RESULT_TIMEOUT;
 constexpr CalibrationResult_Result CalibrationResult::RESULT_CANCELLED;
+constexpr CalibrationResult_Result CalibrationResult::RESULT_FAILED_ARMED;
 constexpr CalibrationResult_Result CalibrationResult::Result_MIN;
 constexpr CalibrationResult_Result CalibrationResult::Result_MAX;
 constexpr int CalibrationResult::Result_ARRAYSIZE;

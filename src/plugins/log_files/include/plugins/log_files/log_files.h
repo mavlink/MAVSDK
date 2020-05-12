@@ -95,7 +95,7 @@ public:
     enum class Result {
         Unknown, /**< @brief Unknown result. */
         Success, /**< @brief Request succeeded. */
-        Progress, /**< @brief Progress update. */
+        Next, /**< @brief Progress update. */
         NoLogfiles, /**< @brief No log files found. */
         Timeout, /**< @brief A timeout happened. */
         InvalidArgument, /**< @brief Invalid argument. */
