@@ -25,7 +25,7 @@ command -v ${protoc_binary} && command -v ${protoc_grpc_binary} || {
     echo >&2 ""
     echo >&2 "You may want to run the CMake configure step first:"
     echo >&2 ""
-    echo >&2 "    $ cmake -DBUILD_BACKEND=ON -Bbuild/default -S."
+    echo >&2 "    $ cmake -DBUILD_BACKEND=ON -Bbuild/default -H."
     exit 1
 }
 
