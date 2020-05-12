@@ -69,8 +69,8 @@ std::ostream& operator<<(std::ostream& str, LogFiles::Result const& result)
             return str << "Unknown";
         case LogFiles::Result::Success:
             return str << "Success";
-        case LogFiles::Result::Progress:
-            return str << "Progress";
+        case LogFiles::Result::Next:
+            return str << "Next";
         case LogFiles::Result::NoLogfiles:
             return str << "No Logfiles";
         case LogFiles::Result::Timeout:

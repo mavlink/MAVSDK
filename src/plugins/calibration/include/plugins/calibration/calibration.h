@@ -58,6 +58,7 @@ public:
         CommandDenied, /**< @brief Command refused by vehicle. */
         Timeout, /**< @brief Command timed out. */
         Cancelled, /**< @brief Calibration process was cancelled. */
+        FailedArmed, /**< @brief Calibration process failed since the vehicle is armed. */
     };
 
     /**
@@ -131,9 +132,20 @@ public:
     using CalibrateMagnetometerCallback = std::function<void(Calibration::Result, ProgressData)>;
 
     /**
-     * @brief Perform magnetometer caliration.
+     * @brief Perform magnetometer calibration.
      */
     void calibrate_magnetometer_async(CalibrateMagnetometerCallback callback);
+
+    /**
+     * @brief Callback type for calibrate_level_horizon_async.
+     */
+
+    using CalibrateLevelHorizonCallback = std::function<void(Calibration::Result, ProgressData)>;
+
+    /**
+     * @brief Perform board level horizon calibration.
+     */
+    void calibrate_level_horizon_async(CalibrateLevelHorizonCallback callback);
 
     /**
      * @brief Callback type for calibrate_gimbal_accelerometer_async.

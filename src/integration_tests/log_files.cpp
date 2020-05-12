@@ -44,7 +44,7 @@ TEST(HardwareTest, LogFiles)
                 entry.id,
                 file_path_stream.str(),
                 [&prom](LogFiles::Result result, LogFiles::ProgressData progress_data) {
-                    if (result == LogFiles::Result::Progress) {
+                    if (result == LogFiles::Result::Next) {
                         LogInfo() << "Download progress: " << 100.0f * progress_data.progress;
                     } else {
                         EXPECT_EQ(result, LogFiles::Result::Success);

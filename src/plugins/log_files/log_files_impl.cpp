@@ -254,7 +254,7 @@ void LogFilesImpl::download_log_file_async(
             _parent->call_user_callback([tmp_callback]() {
                 LogFiles::ProgressData progress;
                 progress.progress = 0.0f;
-                tmp_callback(LogFiles::Result::Progress, progress);
+                tmp_callback(LogFiles::Result::Next, progress);
             });
         }
     }
@@ -320,7 +320,7 @@ void LogFilesImpl::report_progress(unsigned transferred, unsigned total)
             LogFiles::ProgressData progress_data;
             progress_data.progress = progress;
 
-            tmp_callback(LogFiles::Result::Progress, progress_data);
+            tmp_callback(LogFiles::Result::Next, progress_data);
         });
     }
 }
