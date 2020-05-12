@@ -687,11 +687,12 @@ public:
 
                 rpc_response.set_mode(translateToRpcMode(mode));
 
-                std::lock_guard<std::mutex> lock(subscribe_mutex);
+                std::unique_lock<std::mutex> lock(subscribe_mutex);
                 if (!*is_finished && !writer->Write(rpc_response)) {
                     _camera.subscribe_mode(nullptr);
                     *is_finished = true;
                     unregister_stream_stop_promise(stream_closed_promise);
+                    lock.unlock();
                     stream_closed_promise->set_value();
                 }
             });
@@ -721,11 +722,12 @@ public:
                 rpc_response.set_allocated_information(
                     translateToRpcInformation(information).release());
 
-                std::lock_guard<std::mutex> lock(subscribe_mutex);
+                std::unique_lock<std::mutex> lock(subscribe_mutex);
                 if (!*is_finished && !writer->Write(rpc_response)) {
                     _camera.subscribe_information(nullptr);
                     *is_finished = true;
                     unregister_stream_stop_promise(stream_closed_promise);
+                    lock.unlock();
                     stream_closed_promise->set_value();
                 }
             });
@@ -755,11 +757,12 @@ public:
                 rpc_response.set_allocated_video_stream_info(
                     translateToRpcVideoStreamInfo(video_stream_info).release());
 
-                std::lock_guard<std::mutex> lock(subscribe_mutex);
+                std::unique_lock<std::mutex> lock(subscribe_mutex);
                 if (!*is_finished && !writer->Write(rpc_response)) {
                     _camera.subscribe_video_stream_info(nullptr);
                     *is_finished = true;
                     unregister_stream_stop_promise(stream_closed_promise);
+                    lock.unlock();
                     stream_closed_promise->set_value();
                 }
             });
@@ -789,11 +792,12 @@ public:
                 rpc_response.set_allocated_capture_info(
                     translateToRpcCaptureInfo(capture_info).release());
 
-                std::lock_guard<std::mutex> lock(subscribe_mutex);
+                std::unique_lock<std::mutex> lock(subscribe_mutex);
                 if (!*is_finished && !writer->Write(rpc_response)) {
                     _camera.subscribe_capture_info(nullptr);
                     *is_finished = true;
                     unregister_stream_stop_promise(stream_closed_promise);
+                    lock.unlock();
                     stream_closed_promise->set_value();
                 }
             });
@@ -822,11 +826,12 @@ public:
 
                 rpc_response.set_allocated_camera_status(translateToRpcStatus(status).release());
 
-                std::lock_guard<std::mutex> lock(subscribe_mutex);
+                std::unique_lock<std::mutex> lock(subscribe_mutex);
                 if (!*is_finished && !writer->Write(rpc_response)) {
                     _camera.subscribe_status(nullptr);
                     *is_finished = true;
                     unregister_stream_stop_promise(stream_closed_promise);
+                    lock.unlock();
                     stream_closed_promise->set_value();
                 }
             });
@@ -858,11 +863,12 @@ public:
                     ptr->CopyFrom(*translateToRpcSetting(elem).release());
                 }
 
-                std::lock_guard<std::mutex> lock(subscribe_mutex);
+                std::unique_lock<std::mutex> lock(subscribe_mutex);
                 if (!*is_finished && !writer->Write(rpc_response)) {
                     _camera.subscribe_current_settings(nullptr);
                     *is_finished = true;
                     unregister_stream_stop_promise(stream_closed_promise);
+                    lock.unlock();
                     stream_closed_promise->set_value();
                 }
             });
@@ -894,11 +900,12 @@ public:
                     ptr->CopyFrom(*translateToRpcSettingOptions(elem).release());
                 }
 
-                std::lock_guard<std::mutex> lock(subscribe_mutex);
+                std::unique_lock<std::mutex> lock(subscribe_mutex);
                 if (!*is_finished && !writer->Write(rpc_response)) {
                     _camera.subscribe_possible_setting_options(nullptr);
                     *is_finished = true;
                     unregister_stream_stop_promise(stream_closed_promise);
+                    lock.unlock();
                     stream_closed_promise->set_value();
                 }
             });
