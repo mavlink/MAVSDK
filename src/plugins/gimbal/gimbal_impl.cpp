@@ -52,7 +52,10 @@ void GimbalImpl::set_pitch_and_yaw_async(
     command.target_component_id = _parent->get_autopilot_id();
 
     _parent->send_command_async(
-        command, std::bind(&GimbalImpl::receive_command_result, std::placeholders::_1, callback));
+        command, [callback](MAVLinkCommands::Result command_result, float progress) {
+            UNUSED(progress);
+            receive_command_result(command_result, callback);
+        });
 }
 
 Gimbal::Result GimbalImpl::set_mode(const Gimbal::GimbalMode gimbal_mode)
@@ -91,7 +94,10 @@ void GimbalImpl::set_mode_async(
     command.target_component_id = _parent->get_autopilot_id();
 
     _parent->send_command_async(
-        command, std::bind(&GimbalImpl::receive_command_result, std::placeholders::_1, callback));
+        command, [callback](MAVLinkCommands::Result command_result, float progress) {
+            UNUSED(progress);
+            receive_command_result(command_result, callback);
+        });
 }
 
 float GimbalImpl::to_float_gimbal_mode(const Gimbal::GimbalMode gimbal_mode) const
@@ -132,7 +138,10 @@ void GimbalImpl::set_roi_location_async(
     command.target_component_id = _parent->get_autopilot_id();
 
     _parent->send_command_async(
-        command, std::bind(&GimbalImpl::receive_command_result, std::placeholders::_1, callback));
+        command, [callback](MAVLinkCommands::Result command_result, float progress) {
+            UNUSED(progress);
+            receive_command_result(command_result, callback);
+        });
 }
 
 void GimbalImpl::receive_command_result(
