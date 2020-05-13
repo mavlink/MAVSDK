@@ -17,6 +17,7 @@ endforeach()
 ExternalProject_add(
     absl
     GIT_REPOSITORY https://github.com/abseil/abseil-cpp.git
+    GIT_TAG 20200225
     PREFIX absl
     PATCH_COMMAND git apply ${PROJECT_SOURCE_DIR}/no-xray-attributes.patch
     CMAKE_ARGS "${CMAKE_ARGS}"
