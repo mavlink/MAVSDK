@@ -40,6 +40,17 @@ public:
     const GimbalImpl& operator=(const GimbalImpl&) = delete;
 
 private:
+    enum class Protocol {
+        Unknown,
+        Version1,
+        Version2,
+    } _protocol{Protocol::Unknown};
+
+    void* _protocol_cookie{nullptr};
+
+    void receive_protocol_timeout();
+    void process_gimbal_manager_information(const mavlink_message_t& message);
+
     static Gimbal::Result gimbal_result_from_command_result(MAVLinkCommands::Result command_result);
 
     static void receive_command_result(

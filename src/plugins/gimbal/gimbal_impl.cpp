@@ -15,13 +15,52 @@ GimbalImpl::~GimbalImpl()
     _parent->unregister_plugin(this);
 }
 
-void GimbalImpl::init() {}
+void GimbalImpl::init()
+{
+    _parent->register_mavlink_message_handler(
+        MAVLINK_MSG_ID_GIMBAL_MANAGER_INFORMATION,
+        [this](const mavlink_message_t& message) { process_gimbal_manager_information(message); },
+        this);
+}
 
 void GimbalImpl::deinit() {}
 
-void GimbalImpl::enable() {}
+void GimbalImpl::enable()
+{
+    _parent->register_timeout_handler(
+        [this]() { receive_protocol_timeout(); }, 1.0, &_protocol_cookie);
 
-void GimbalImpl::disable() {}
+    MAVLinkCommands::CommandLong command{};
+    command.command = MAV_CMD_REQUEST_MESSAGE;
+    command.params.param1 = static_cast<float>(MAVLINK_MSG_ID_GIMBAL_MANAGER_INFORMATION);
+    command.target_component_id = 0; // any component
+    _parent->send_command_async(command, nullptr);
+}
+
+void GimbalImpl::disable()
+{
+    _protocol = Protocol::Unknown;
+}
+
+void GimbalImpl::receive_protocol_timeout()
+{
+    // We did not receive a GIMBAL_MANAGER_INFORMATION in time, so we have to
+    // assume Version2 is not available.
+    _protocol = Protocol::Version1;
+    LogDebug() << "Falling back to Gimbal Version 1";
+}
+
+void GimbalImpl::process_gimbal_manager_information(const mavlink_message_t& message)
+{
+    mavlink_gimbal_manager_information_t gimbal_manager_information;
+    mavlink_msg_gimbal_manager_information_decode(&message, &gimbal_manager_information);
+
+    LogDebug() << "Using Gimbal Version 2 as gimbal manager for gimbal device "
+               << static_cast<int>(gimbal_manager_information.gimbal_device_id)
+               << " was discovered";
+
+    _protocol = Protocol::Version2;
+}
 
 Gimbal::Result GimbalImpl::set_pitch_and_yaw(float pitch_deg, float yaw_deg)
 {
