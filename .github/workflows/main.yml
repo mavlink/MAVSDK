@@ -89,7 +89,7 @@ jobs:
              pip3 install --user -r requirements.txt
              pip3 install --user -e .
       - name: build necessary protoc tooling
-        run: cmake -DBUILD_BACKEND=ON -Bbuild/default -S.
+        run: cmake -DBUILD_BACKEND=ON -Bbuild/default -H.
       - name: generate code from protos
         run: PATH="$PATH:$HOME/.local/bin" tools/generate_from_protos.sh
       - name: fix style
@@ -109,6 +109,25 @@ jobs:
         run: ./tools/fix_style.sh .
       - name: check docs
         run: tools/generate_docs.sh
+
+  alpine-linux:
+    name: alpine 3.11.6 (musl)
+    runs-on: ubuntu-18.04
+    container: alpine:3.11.6
+    steps:
+      - uses: actions/checkout@v1
+        with:
+          submodules: recursive
+      - name: install tools
+        run: apk update && apk add build-base cmake git linux-headers
+      - name: configure
+        run: cmake -DCMAKE_BUILD_TYPE=Release -DBUILD_BACKEND=ON -DBUILD_SHARED_LIBS=OFF -DCMAKE_INSTALL_PREFIX=install -Bbuild/release -H.
+      - name: build
+        run: cmake --build build/release --target install -- -j2
+      - name: test
+        run: ./build/release/src/unit_tests_runner
+      - name: test (mavsdk_server)
+        run: ./build/release/src/backend/test/unit_tests_backend
 
   px4-sitl:
     name: PX4 SITL ${{ matrix.px4_version }} (ubuntu-18.04)
