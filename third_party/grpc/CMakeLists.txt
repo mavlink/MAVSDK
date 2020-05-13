@@ -16,6 +16,7 @@ list(APPEND CMAKE_ARGS
     "-DgRPC_PROTOBUF_PROVIDER=package"
     "-DgRPC_PROTOBUF_PACKAGE_TYPE=CONFIG"
     "-DgRPC_SSL_PROVIDER=package"
+    "-DgRPC_ABSL_PROVIDER=package"
     "-DgRPC_INSTALL_default=ON"
     "-DgRPC_MSVC_STATIC_RUNTIME=OFF"
     "-DgRPC_BUILD_CSHARP_EXT=OFF"
@@ -40,9 +41,7 @@ endforeach()
 
 ExternalProject_add(
     grpc
-    GIT_REPOSITORY https://github.com/grpc/grpc
-    GIT_TAG v1.28.1
+    URL https://github.com/grpc/grpc/archive/v1.28.1.tar.gz
     PREFIX grpc
     CMAKE_ARGS "${CMAKE_ARGS}"
-    PATCH_COMMAND git apply ${PROJECT_SOURCE_DIR}/absl-workaround.patch
     )
