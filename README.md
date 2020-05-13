@@ -1,6 +1,6 @@
 <img alt="MAVSDK" src="https://mavsdk.mavlink.io/develop/assets/site/sdk_logo_full.png" width="400">
 
-[![travis-ci build status](https://travis-ci.org/mavlink/MAVSDK.svg?branch=develop)](https://travis-ci.org/mavlink/MAVSDK)
+[![GitHub Actions Status](https://github.com/mavlink/MAVSDK/workflows/Build%20and%20Test/badge.svg?branch=develop)](https://github.com/mavlink/MAVSDK/actions?query=branch%3Adevelop)
 [![Coverage Status](https://coveralls.io/repos/github/mavlink/MAVSDK/badge.svg?branch=develop)](https://coveralls.io/github/mavlink/MAVSDK?branch=develop)
 
 ## Description
