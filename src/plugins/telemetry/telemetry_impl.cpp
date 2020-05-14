@@ -501,6 +501,8 @@ void TelemetryImpl::process_position_velocity_ned(const mavlink_message_t& messa
         auto arg = position_velocity_ned();
         _parent->call_user_callback([callback, arg]() { callback(arg); });
     }
+
+    set_health_local_position(true);
 }
 
 void TelemetryImpl::process_global_position_int(const mavlink_message_t& message)
@@ -732,8 +734,6 @@ void TelemetryImpl::process_gps_raw_int(const mavlink_message_t& message)
     const bool gps_ok = ((gps_raw_int.fix_type >= 3) && (gps_raw_int.satellites_visible >= 8));
 
     set_health_global_position(gps_ok);
-    // Local is not different from global for now until things like flow are in place.
-    set_health_local_position(gps_ok);
 
     if (_gps_info_subscription) {
         auto callback = _gps_info_subscription;
