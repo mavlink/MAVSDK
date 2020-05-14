@@ -1,6 +1,7 @@
 #pragma once
 
 #include "plugins/gimbal/gimbal.h"
+#include "gimbal_v1.h"
 #include "plugin_impl_base.h"
 #include "system.h"
 
@@ -25,8 +26,6 @@ public:
 
     void set_mode_async(const Gimbal::GimbalMode gimbal_mode, Gimbal::ResultCallback callback);
 
-    float to_float_gimbal_mode(const Gimbal::GimbalMode gimbal_mode) const;
-
     Gimbal::Result set_roi_location(double latitude_deg, double longitude_deg, float altitude_m);
 
     void set_roi_location_async(
@@ -34,6 +33,11 @@ public:
         double longitude_deg,
         float altitude_m,
         Gimbal::ResultCallback callback);
+
+    static Gimbal::Result gimbal_result_from_command_result(MAVLinkCommands::Result command_result);
+
+    static void receive_command_result(
+        MAVLinkCommands::Result command_result, const Gimbal::ResultCallback& callback);
 
     // Non-copyable
     GimbalImpl(const GimbalImpl&) = delete;
@@ -46,15 +50,12 @@ private:
         Version2,
     } _protocol{Protocol::Unknown};
 
+    GimbalV1 _gimbal_v1;
+
     void* _protocol_cookie{nullptr};
 
     void receive_protocol_timeout();
     void process_gimbal_manager_information(const mavlink_message_t& message);
-
-    static Gimbal::Result gimbal_result_from_command_result(MAVLinkCommands::Result command_result);
-
-    static void receive_command_result(
-        MAVLinkCommands::Result command_result, const Gimbal::ResultCallback& callback);
 };
 
 } // namespace mavsdk
