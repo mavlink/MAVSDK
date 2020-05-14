@@ -110,7 +110,7 @@ std::string fs_canonical(const std::string& path)
 
 bool fs_create_directory(const std::string& path)
 {
-    return (mkdir(path.c_str(), ACCESSPERMS) == 0);
+    return (mkdir(path.c_str(), (S_IRWXU | S_IRWXG | S_IRWXO)) == 0);
 }
 
 bool fs_remove(const std::string& path)
