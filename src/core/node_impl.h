@@ -12,6 +12,7 @@
 #include "thread_pool.h"
 #include "timesync.h"
 #include "system.h"
+#include "capabilities/autopilot.h"
 #include <cstdint>
 #include <functional>
 #include <atomic>
@@ -29,7 +30,7 @@ class PluginImplBase;
 
 // This class is the impl of Node. this is to hide the private methods
 // and functionality from the public library API.
-class NodeImpl : public Sender {
+class NodeImpl : public Sender, Autopilot {
 public:
     explicit NodeImpl(
             MavsdkImpl& parent, uint8_t system_id, uint8_t component_id);
@@ -56,6 +57,8 @@ public:
 
     uint8_t get_system_id();
     uint8_t get_component_id();
+
+    bool is_connected() const;
 
     bool send_message(mavlink_message_t& message) override;
 
@@ -90,6 +93,10 @@ public:
     void intercept_incoming_messages(std::function<bool(mavlink_message_t&)> callback);
     void intercept_outgoing_messages(std::function<bool(mavlink_message_t&)> callback);
 
+    bool ha_capability_autopilot() const;
+    void get_autopilot_info_async(const Autopilot::autopilot_info_callback_t callback);
+    void set_flight_mode_async(FlightMode mode, command_result_callback_t callback);
+
     // Non-copyable
     NodeImpl(const NodeImpl&) = delete;
     const NodeImpl& operator=(const NodeImpl&) = delete;
@@ -115,14 +122,12 @@ private:
     // Needs to be before anything else because they can depend on it.
     MAVLinkMessageHandler _message_handler{};
 
-    MavsdkImpl& _parent;
     uint8_t system_id;
     uint8_t component_id;
 
     command_result_callback_t _command_result_callback{nullptr};
 
     std::thread* _system_thread{nullptr};
-    std::atomic<bool> _should_exit{false};
 
     static constexpr double _HEARTBEAT_TIMEOUT_S = 3.0;
 
