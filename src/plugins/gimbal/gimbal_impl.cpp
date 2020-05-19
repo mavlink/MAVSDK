@@ -1,8 +1,10 @@
 #include "gimbal_impl.h"
 #include "global_include.h"
 #include "gimbal_protocol_v1.h"
-#include <functional>
+#include <chrono>
 #include <cmath>
+#include <functional>
+#include <thread>
 
 namespace mavsdk {
 
@@ -65,93 +67,56 @@ void GimbalImpl::process_gimbal_manager_information(const mavlink_message_t& mes
 
 Gimbal::Result GimbalImpl::set_pitch_and_yaw(float pitch_deg, float yaw_deg)
 {
-    if (_gimbal_protocol) {
-        return _gimbal_protocol->set_pitch_and_yaw(pitch_deg, yaw_deg);
-    }
+    wait_for_protocol();
 
-    // FIXME: should be
-    // return Gimbal::Result::ProtocolUnknown
-    return Gimbal::Result::Error;
+    return _gimbal_protocol->set_pitch_and_yaw(pitch_deg, yaw_deg);
 }
 
 void GimbalImpl::set_pitch_and_yaw_async(
     float pitch_deg, float yaw_deg, Gimbal::ResultCallback callback)
 {
-    if (_gimbal_protocol) {
-        _gimbal_protocol->set_pitch_and_yaw_async(pitch_deg, yaw_deg, callback);
-        return;
-    }
-
-    if (callback) {
-        auto temp_callback = callback;
-        _parent->call_user_callback([temp_callback]() {
-            // FIXME: should be
-            // temp_callback(Gimbal::Result::ProtocolUnknown)
-            temp_callback(Gimbal::Result::Error);
-        });
-        return;
-    }
+    wait_for_protocol_async(
+        [=]() { _gimbal_protocol->set_pitch_and_yaw_async(pitch_deg, yaw_deg, callback); });
 }
 
 Gimbal::Result GimbalImpl::set_mode(const Gimbal::GimbalMode gimbal_mode)
 {
-    if (_gimbal_protocol) {
-        return _gimbal_protocol->set_mode(gimbal_mode);
-    }
-
-    // FIXME: should be
-    // return Gimbal::Result::ProtocolUnknown
-    return Gimbal::Result::Error;
+    wait_for_protocol();
+    return _gimbal_protocol->set_mode(gimbal_mode);
 }
 
 void GimbalImpl::set_mode_async(
     const Gimbal::GimbalMode gimbal_mode, Gimbal::ResultCallback callback)
 {
-    if (_gimbal_protocol) {
-        _gimbal_protocol->set_mode_async(gimbal_mode, callback);
-        return;
-    }
-
-    if (callback) {
-        auto temp_callback = callback;
-        _parent->call_user_callback([temp_callback]() {
-            // FIXME: should be
-            // temp_callback(Gimbal::Result::ProtocolUnknown)
-            temp_callback(Gimbal::Result::Error);
-        });
-        return;
-    }
+    wait_for_protocol_async([=]() { _gimbal_protocol->set_mode_async(gimbal_mode, callback); });
 }
 
 Gimbal::Result
 GimbalImpl::set_roi_location(double latitude_deg, double longitude_deg, float altitude_m)
 {
-    if (_gimbal_protocol) {
-        return _gimbal_protocol->set_roi_location(latitude_deg, longitude_deg, altitude_m);
-    }
-
-    // FIXME: should be
-    // return Gimbal::Result::ProtocolUnknown
-    return Gimbal::Result::Error;
+    wait_for_protocol();
+    return _gimbal_protocol->set_roi_location(latitude_deg, longitude_deg, altitude_m);
 }
 
 void GimbalImpl::set_roi_location_async(
     double latitude_deg, double longitude_deg, float altitude_m, Gimbal::ResultCallback callback)
 {
-    if (_gimbal_protocol) {
+    wait_for_protocol_async([=]() {
         _gimbal_protocol->set_roi_location_async(latitude_deg, longitude_deg, altitude_m, callback);
-        return;
-    }
+    });
+}
 
-    if (callback) {
-        auto temp_callback = callback;
-        _parent->call_user_callback([temp_callback]() {
-            // FIXME: should be
-            // temp_callback(Gimbal::Result::ProtocolUnknown)
-            temp_callback(Gimbal::Result::Error);
-        });
-        return;
+void GimbalImpl::wait_for_protocol()
+{
+    while (_gimbal_protocol == nullptr) {
+        std::this_thread::sleep_for(std::chrono::milliseconds(100));
     }
+}
+
+void GimbalImpl::wait_for_protocol_async(std::function<void()> callback)
+{
+    wait_for_protocol();
+    callback();
 }
 
 void GimbalImpl::receive_command_result(

@@ -48,6 +48,8 @@ private:
 
     void* _protocol_cookie{nullptr};
 
+    void wait_for_protocol();
+    void wait_for_protocol_async(std::function<void()> callback);
     void receive_protocol_timeout();
     void process_gimbal_manager_information(const mavlink_message_t& message);
 };
