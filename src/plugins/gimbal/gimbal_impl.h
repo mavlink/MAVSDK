@@ -1,7 +1,7 @@
 #pragma once
 
 #include "plugins/gimbal/gimbal.h"
-#include "gimbal_protocol_v1.h"
+#include "gimbal_protocol_base.h"
 #include "plugin_impl_base.h"
 #include "system.h"
 
@@ -44,13 +44,7 @@ public:
     const GimbalImpl& operator=(const GimbalImpl&) = delete;
 
 private:
-    enum class Protocol {
-        Unknown,
-        Version1,
-        Version2,
-    } _protocol{Protocol::Unknown};
-
-    GimbalProtocolV1 _gimbal_protocol_v1;
+    std::unique_ptr<GimbalProtocolBase> _gimbal_protocol{nullptr};
 
     void* _protocol_cookie{nullptr};
 

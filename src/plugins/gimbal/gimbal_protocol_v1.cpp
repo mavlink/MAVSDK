@@ -6,8 +6,7 @@
 
 namespace mavsdk {
 
-GimbalProtocolV1::GimbalProtocolV1(SystemImpl &system_impl) :
-    _system_impl(system_impl) {}
+GimbalProtocolV1::GimbalProtocolV1(SystemImpl& system_impl) : GimbalProtocolBase(system_impl) {}
 
 Gimbal::Result GimbalProtocolV1::set_pitch_and_yaw(float pitch_deg, float yaw_deg)
 {

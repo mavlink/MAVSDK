@@ -1,11 +1,12 @@
 #include "gimbal_impl.h"
 #include "global_include.h"
+#include "gimbal_protocol_v1.h"
 #include <functional>
 #include <cmath>
 
 namespace mavsdk {
 
-GimbalImpl::GimbalImpl(System& system) : PluginImplBase(system), _gimbal_protocol_v1(*_parent)
+GimbalImpl::GimbalImpl(System& system) : PluginImplBase(system)
 {
     _parent->register_plugin(this);
 }
@@ -39,15 +40,15 @@ void GimbalImpl::enable()
 
 void GimbalImpl::disable()
 {
-    _protocol = Protocol::Unknown;
+    _gimbal_protocol.reset(nullptr);
 }
 
 void GimbalImpl::receive_protocol_timeout()
 {
     // We did not receive a GIMBAL_MANAGER_INFORMATION in time, so we have to
     // assume Version2 is not available.
-    _protocol = Protocol::Version1;
     LogDebug() << "Falling back to Gimbal Version 1";
+    _gimbal_protocol.reset(new GimbalProtocolV1(*_parent));
 }
 
 void GimbalImpl::process_gimbal_manager_information(const mavlink_message_t& message)
@@ -59,7 +60,7 @@ void GimbalImpl::process_gimbal_manager_information(const mavlink_message_t& mes
                << static_cast<int>(gimbal_manager_information.gimbal_device_id)
                << " was discovered";
 
-    _protocol = Protocol::Version2;
+    //_gimbal_protocol.reset(new GimbalProtocolV2(*_parent));
 }
 
 Gimbal::Result GimbalImpl::set_pitch_and_yaw(float pitch_deg, float yaw_deg)
@@ -99,27 +100,28 @@ void GimbalImpl::set_pitch_and_yaw_async(
 
 Gimbal::Result GimbalImpl::set_mode(const Gimbal::GimbalMode gimbal_mode)
 {
-    if (_protocol == Protocol::Version1) {
-        return _gimbal_protocol_v1.set_mode(gimbal_mode);
+    if (_gimbal_protocol) {
+        return _gimbal_protocol->set_mode(gimbal_mode);
     }
 
     // FIXME: should be
-    // return Gimbal::Result::NotSupported;
+    // return Gimbal::Result::ProtocolUnknown
     return Gimbal::Result::Error;
 }
 
 void GimbalImpl::set_mode_async(
     const Gimbal::GimbalMode gimbal_mode, Gimbal::ResultCallback callback)
 {
-    if (_protocol == Protocol::Version1) {
-        _gimbal_protocol_v1.set_mode_async(gimbal_mode, callback);
+    if (_gimbal_protocol) {
+        _gimbal_protocol->set_mode_async(gimbal_mode, callback);
         return;
     }
 
     if (callback) {
         auto temp_callback = callback;
         _parent->call_user_callback([temp_callback]() {
-            // FIXME: should be Gimbal::Result::NotSupported
+            // FIXME: should be
+            // temp_callback(Gimbal::Result::ProtocolUnknown)
             temp_callback(Gimbal::Result::Error);
         });
         return;
@@ -129,27 +131,28 @@ void GimbalImpl::set_mode_async(
 Gimbal::Result
 GimbalImpl::set_roi_location(double latitude_deg, double longitude_deg, float altitude_m)
 {
-    if (_protocol == Protocol::Version1) {
-        return _gimbal_protocol_v1.set_roi_location(latitude_deg, longitude_deg, altitude_m);
+    if (_gimbal_protocol) {
+        return _gimbal_protocol->set_roi_location(latitude_deg, longitude_deg, altitude_m);
     }
 
     // FIXME: should be
-    // return Gimbal::Result::NotSupported;
+    // return Gimbal::Result::ProtocolUnknown
     return Gimbal::Result::Error;
 }
 
 void GimbalImpl::set_roi_location_async(
     double latitude_deg, double longitude_deg, float altitude_m, Gimbal::ResultCallback callback)
 {
-    if (_protocol == Protocol::Version1) {
-        _gimbal_protocol_v1.set_roi_location_async(latitude_deg, longitude_deg, altitude_m, callback);
+    if (_gimbal_protocol) {
+        _gimbal_protocol->set_roi_location_async(latitude_deg, longitude_deg, altitude_m, callback);
         return;
     }
 
     if (callback) {
         auto temp_callback = callback;
         _parent->call_user_callback([temp_callback]() {
-            // FIXME: should be Gimbal::Result::NotSupported
+            // FIXME: should be
+            // temp_callback(Gimbal::Result::ProtocolUnknown)
             temp_callback(Gimbal::Result::Error);
         });
         return;
