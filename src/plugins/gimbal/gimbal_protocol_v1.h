@@ -6,10 +6,10 @@
 
 namespace mavsdk {
 
-class GimbalV1 {
+class GimbalProtocolV1 {
 public:
-    GimbalV1(SystemImpl& system_impl);
-    ~GimbalV1() = default;
+    GimbalProtocolV1(SystemImpl& system_impl);
+    ~GimbalProtocolV1() = default;
 
     Gimbal::Result set_pitch_and_yaw(float pitch_deg, float yaw_deg);
 

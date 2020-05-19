@@ -1,4 +1,4 @@
-#include "gimbal_v1.h"
+#include "gimbal_protocol_v1.h"
 #include "gimbal_impl.h"
 #include "global_include.h"
 #include <functional>
@@ -6,10 +6,10 @@
 
 namespace mavsdk {
 
-GimbalV1::GimbalV1(SystemImpl &system_impl) :
+GimbalProtocolV1::GimbalProtocolV1(SystemImpl &system_impl) :
     _system_impl(system_impl) {}
 
-Gimbal::Result GimbalV1::set_pitch_and_yaw(float pitch_deg, float yaw_deg)
+Gimbal::Result GimbalProtocolV1::set_pitch_and_yaw(float pitch_deg, float yaw_deg)
 {
     const float roll_deg = 0.0f;
     MAVLinkCommands::CommandLong command{};
@@ -24,7 +24,7 @@ Gimbal::Result GimbalV1::set_pitch_and_yaw(float pitch_deg, float yaw_deg)
     return GimbalImpl::gimbal_result_from_command_result(_system_impl.send_command(command));
 }
 
-void GimbalV1::set_pitch_and_yaw_async(
+void GimbalProtocolV1::set_pitch_and_yaw_async(
     float pitch_deg, float yaw_deg, Gimbal::ResultCallback callback)
 {
     const float roll_deg = 0.0f;
@@ -44,7 +44,7 @@ void GimbalV1::set_pitch_and_yaw_async(
         });
 }
 
-Gimbal::Result GimbalV1::set_mode(const Gimbal::GimbalMode gimbal_mode)
+Gimbal::Result GimbalProtocolV1::set_mode(const Gimbal::GimbalMode gimbal_mode)
 {
     MAVLinkCommands::CommandInt command{};
 
@@ -63,7 +63,7 @@ Gimbal::Result GimbalV1::set_mode(const Gimbal::GimbalMode gimbal_mode)
     return GimbalImpl::gimbal_result_from_command_result(_system_impl.send_command(command));
 }
 
-void GimbalV1::set_mode_async(
+void GimbalProtocolV1::set_mode_async(
     const Gimbal::GimbalMode gimbal_mode, Gimbal::ResultCallback callback)
 {
     MAVLinkCommands::CommandInt command{};
@@ -86,7 +86,7 @@ void GimbalV1::set_mode_async(
         });
 }
 
-float GimbalV1::to_float_gimbal_mode(const Gimbal::GimbalMode gimbal_mode)
+float GimbalProtocolV1::to_float_gimbal_mode(const Gimbal::GimbalMode gimbal_mode)
 {
     switch (gimbal_mode) {
         case Gimbal::GimbalMode::YawFollow:
@@ -99,7 +99,7 @@ float GimbalV1::to_float_gimbal_mode(const Gimbal::GimbalMode gimbal_mode)
 }
 
 Gimbal::Result
-GimbalV1::set_roi_location(double latitude_deg, double longitude_deg, float altitude_m)
+GimbalProtocolV1::set_roi_location(double latitude_deg, double longitude_deg, float altitude_m)
 {
     MAVLinkCommands::CommandInt command{};
 
@@ -112,7 +112,7 @@ GimbalV1::set_roi_location(double latitude_deg, double longitude_deg, float alti
     return GimbalImpl::gimbal_result_from_command_result(_system_impl.send_command(command));
 }
 
-void GimbalV1::set_roi_location_async(
+void GimbalProtocolV1::set_roi_location_async(
     double latitude_deg, double longitude_deg, float altitude_m, Gimbal::ResultCallback callback)
 {
     MAVLinkCommands::CommandInt command{};

@@ -5,7 +5,7 @@
 
 namespace mavsdk {
 
-GimbalImpl::GimbalImpl(System& system) : PluginImplBase(system), _gimbal_v1(*_parent)
+GimbalImpl::GimbalImpl(System& system) : PluginImplBase(system), _gimbal_protocol_v1(*_parent)
 {
     _parent->register_plugin(this);
 }
@@ -100,7 +100,7 @@ void GimbalImpl::set_pitch_and_yaw_async(
 Gimbal::Result GimbalImpl::set_mode(const Gimbal::GimbalMode gimbal_mode)
 {
     if (_protocol == Protocol::Version1) {
-        return _gimbal_v1.set_mode(gimbal_mode);
+        return _gimbal_protocol_v1.set_mode(gimbal_mode);
     }
 
     // FIXME: should be
@@ -112,7 +112,7 @@ void GimbalImpl::set_mode_async(
     const Gimbal::GimbalMode gimbal_mode, Gimbal::ResultCallback callback)
 {
     if (_protocol == Protocol::Version1) {
-        _gimbal_v1.set_mode_async(gimbal_mode, callback);
+        _gimbal_protocol_v1.set_mode_async(gimbal_mode, callback);
         return;
     }
 
@@ -130,7 +130,7 @@ Gimbal::Result
 GimbalImpl::set_roi_location(double latitude_deg, double longitude_deg, float altitude_m)
 {
     if (_protocol == Protocol::Version1) {
-        return _gimbal_v1.set_roi_location(latitude_deg, longitude_deg, altitude_m);
+        return _gimbal_protocol_v1.set_roi_location(latitude_deg, longitude_deg, altitude_m);
     }
 
     // FIXME: should be
@@ -142,7 +142,7 @@ void GimbalImpl::set_roi_location_async(
     double latitude_deg, double longitude_deg, float altitude_m, Gimbal::ResultCallback callback)
 {
     if (_protocol == Protocol::Version1) {
-        _gimbal_v1.set_roi_location_async(latitude_deg, longitude_deg, altitude_m, callback);
+        _gimbal_protocol_v1.set_roi_location_async(latitude_deg, longitude_deg, altitude_m, callback);
         return;
     }
 

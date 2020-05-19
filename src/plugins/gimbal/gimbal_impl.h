@@ -1,7 +1,7 @@
 #pragma once
 
 #include "plugins/gimbal/gimbal.h"
-#include "gimbal_v1.h"
+#include "gimbal_protocol_v1.h"
 #include "plugin_impl_base.h"
 #include "system.h"
 
@@ -50,7 +50,7 @@ private:
         Version2,
     } _protocol{Protocol::Unknown};
 
-    GimbalV1 _gimbal_v1;
+    GimbalProtocolV1 _gimbal_protocol_v1;
 
     void* _protocol_cookie{nullptr};
 
