@@ -65,37 +65,32 @@ void GimbalImpl::process_gimbal_manager_information(const mavlink_message_t& mes
 
 Gimbal::Result GimbalImpl::set_pitch_and_yaw(float pitch_deg, float yaw_deg)
 {
-    const float roll_deg = 0.0f;
-    MAVLinkCommands::CommandLong command{};
+    if (_gimbal_protocol) {
+        return _gimbal_protocol->set_pitch_and_yaw(pitch_deg, yaw_deg);
+    }
 
-    command.command = MAV_CMD_DO_MOUNT_CONTROL;
-    command.params.param1 = pitch_deg;
-    command.params.param2 = roll_deg;
-    command.params.param3 = yaw_deg;
-    command.params.param7 = float(MAV_MOUNT_MODE_MAVLINK_TARGETING);
-    command.target_component_id = _parent->get_autopilot_id();
-
-    return gimbal_result_from_command_result(_parent->send_command(command));
+    // FIXME: should be
+    // return Gimbal::Result::ProtocolUnknown
+    return Gimbal::Result::Error;
 }
 
 void GimbalImpl::set_pitch_and_yaw_async(
     float pitch_deg, float yaw_deg, Gimbal::ResultCallback callback)
 {
-    const float roll_deg = 0.0f;
-    MAVLinkCommands::CommandLong command{};
+    if (_gimbal_protocol) {
+        _gimbal_protocol->set_pitch_and_yaw_async(pitch_deg, yaw_deg, callback);
+        return;
+    }
 
-    command.command = MAV_CMD_DO_MOUNT_CONTROL;
-    command.params.param1 = pitch_deg;
-    command.params.param2 = roll_deg;
-    command.params.param3 = yaw_deg;
-    command.params.param7 = float(MAV_MOUNT_MODE_MAVLINK_TARGETING);
-    command.target_component_id = _parent->get_autopilot_id();
-
-    _parent->send_command_async(
-        command, [callback](MAVLinkCommands::Result command_result, float progress) {
-            UNUSED(progress);
-            receive_command_result(command_result, callback);
+    if (callback) {
+        auto temp_callback = callback;
+        _parent->call_user_callback([temp_callback]() {
+            // FIXME: should be
+            // temp_callback(Gimbal::Result::ProtocolUnknown)
+            temp_callback(Gimbal::Result::Error);
         });
+        return;
+    }
 }
 
 Gimbal::Result GimbalImpl::set_mode(const Gimbal::GimbalMode gimbal_mode)
