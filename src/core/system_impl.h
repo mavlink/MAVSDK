@@ -17,7 +17,7 @@
 #include <atomic>
 #include <vector>
 #include <unordered_set>
-#include <map>
+#include <unordered_map>
 #include <thread>
 #include <mutex>
 #include <future>
@@ -317,7 +317,7 @@ private:
     ThreadPool _thread_pool{3};
 
     std::mutex _param_changed_callbacks_mutex{};
-    std::map<const void*, param_changed_callback_t> _param_changed_callbacks{};
+    std::unordered_map<const void*, param_changed_callback_t> _param_changed_callbacks{};
 
     std::function<bool(mavlink_message_t&)> _incoming_messages_intercept_callback{nullptr};
     std::function<bool(mavlink_message_t&)> _outgoing_messages_intercept_callback{nullptr};

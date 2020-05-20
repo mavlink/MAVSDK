@@ -842,7 +842,7 @@ int MissionImpl::total_mission_items() const
 {
     std::lock_guard<std::recursive_mutex> lock(_mission_data.mutex);
     return static_cast<int>(
-        _mission_data.mavlink_mission_item_to_mission_item_indices.rbegin()->second + 1);
+	    _mission_data.mavlink_mission_item_to_mission_item_indices.size());
 }
 
 Mission::MissionProgress MissionImpl::mission_progress()

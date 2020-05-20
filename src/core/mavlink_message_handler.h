@@ -2,7 +2,6 @@
 
 #include <cstdint>
 #include <functional>
-#include <map>
 #include <mutex>
 #include <vector>
 #include "mavlink_include.h"

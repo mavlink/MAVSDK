@@ -1,6 +1,6 @@
 #pragma once
 
-#include <map>
+#include <unordered_map>
 #include <mutex>
 #include <vector>
 #include <atomic>
@@ -76,7 +76,7 @@ private:
     std::vector<std::shared_ptr<Connection>> _connections;
 
     mutable std::recursive_mutex _systems_mutex;
-    std::map<uint8_t, std::shared_ptr<System>> _systems;
+    std::unordered_map<uint8_t, std::shared_ptr<System>> _systems;
 
     Mavsdk::event_callback_t _on_discover_callback;
     Mavsdk::event_callback_t _on_timeout_callback;

@@ -2,7 +2,7 @@
 #include "log.h"
 #include <gtest/gtest.h>
 #include <vector>
-#include <map>
+#include <unordered_map>
 #include <memory>
 #include <fstream>
 
@@ -42,7 +42,7 @@ TEST(CameraDefinition, E90CheckDefaultSettings)
     cd.assume_default_settings();
 
     {
-        std::map<std::string, MAVLinkParameters::ParamValue> settings{};
+        std::unordered_map<std::string, MAVLinkParameters::ParamValue> settings{};
         EXPECT_TRUE(cd.get_all_settings(settings));
         EXPECT_EQ(settings.size(), 17);
 
@@ -73,7 +73,7 @@ TEST(CameraDefinition, E90CheckDefaultSettings)
     }
 
     {
-        std::map<std::string, MAVLinkParameters::ParamValue> settings{};
+        std::unordered_map<std::string, MAVLinkParameters::ParamValue> settings{};
         EXPECT_TRUE(cd.get_possible_settings(settings));
         EXPECT_EQ(settings.size(), 7);
         // LogDebug() << "Found settings:";
@@ -90,7 +90,7 @@ TEST(CameraDefinition, E90CheckDefaultSettings)
     }
 
     {
-        std::map<std::string, MAVLinkParameters::ParamValue> settings{};
+        std::unordered_map<std::string, MAVLinkParameters::ParamValue> settings{};
         EXPECT_TRUE(cd.get_possible_settings(settings));
         EXPECT_EQ(settings.size(), 9);
         // LogDebug() << "Found settings:";
@@ -517,7 +517,7 @@ TEST(CameraDefinition, UVCCheckDefaultSettings)
 
     cd.assume_default_settings();
 
-    std::map<std::string, MAVLinkParameters::ParamValue> settings{};
+    std::unordered_map<std::string, MAVLinkParameters::ParamValue> settings{};
     EXPECT_TRUE(cd.get_all_settings(settings));
     EXPECT_EQ(settings.size(), 13);
 
@@ -561,7 +561,7 @@ TEST(CameraDefinition, UVCCheckPossibleSettings)
         EXPECT_TRUE(cd.set_setting("exp-mode", value));
     }
 
-    std::map<std::string, MAVLinkParameters::ParamValue> settings{};
+    std::unordered_map<std::string, MAVLinkParameters::ParamValue> settings{};
     EXPECT_TRUE(cd.get_possible_settings(settings));
     EXPECT_EQ(settings.size(), 10);
 
