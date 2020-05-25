@@ -1,6 +1,7 @@
 #include "mission_impl.h"
 #include "system.h"
 #include "global_include.h"
+#include <algorithm>
 #include <fstream> // for `std::ifstream`
 #include <sstream> // for `std::stringstream`
 #include <cmath>
@@ -233,6 +234,7 @@ MissionImpl::convert_to_int_items(const std::vector<MissionItem>& mission_items)
     float last_z;
 
     unsigned item_i = 0;
+    _mission_data.mavlink_mission_item_to_mission_item_indices.clear();
 
     for (const auto& item : mission_items) {
         if (has_valid_position(item)) {
@@ -264,8 +266,7 @@ MissionImpl::convert_to_int_items(const std::vector<MissionItem>& mission_items)
             last_z = z;
             last_frame = MAV_FRAME_GLOBAL_RELATIVE_ALT_INT;
 
-            _mission_data.mavlink_mission_item_to_mission_item_indices.insert(
-                std::pair<int, int>{static_cast<int>(int_items.size()), item_i});
+            _mission_data.mavlink_mission_item_to_mission_item_indices.push_back(item_i);
             int_items.push_back(next_item);
         }
 
@@ -291,8 +292,7 @@ MissionImpl::convert_to_int_items(const std::vector<MissionItem>& mission_items)
                                                       NAN,
                                                       MAV_MISSION_TYPE_MISSION};
 
-            _mission_data.mavlink_mission_item_to_mission_item_indices.insert(
-                std::pair<int, int>{static_cast<int>(int_items.size()), item_i});
+            _mission_data.mavlink_mission_item_to_mission_item_indices.push_back(item_i);
             int_items.push_back(next_item);
         }
 
@@ -321,8 +321,7 @@ MissionImpl::convert_to_int_items(const std::vector<MissionItem>& mission_items)
                     2.0f, // eventually this is the correct flag to set absolute yaw angle.
                     MAV_MISSION_TYPE_MISSION};
 
-                _mission_data.mavlink_mission_item_to_mission_item_indices.insert(
-                    std::pair<int, int>{static_cast<int>(int_items.size()), item_i});
+                _mission_data.mavlink_mission_item_to_mission_item_indices.push_back(item_i);
                 int_items.push_back(next_item);
             }
 
@@ -347,8 +346,7 @@ MissionImpl::convert_to_int_items(const std::vector<MissionItem>& mission_items)
                                                       MAV_MOUNT_MODE_MAVLINK_TARGETING,
                                                       MAV_MISSION_TYPE_MISSION};
 
-            _mission_data.mavlink_mission_item_to_mission_item_indices.insert(
-                std::pair<int, int>{static_cast<int>(int_items.size()), item_i});
+            _mission_data.mavlink_mission_item_to_mission_item_indices.push_back(item_i);
             int_items.push_back(next_item);
         }
 
@@ -384,8 +382,7 @@ MissionImpl::convert_to_int_items(const std::vector<MissionItem>& mission_items)
                     last_z,
                     MAV_MISSION_TYPE_MISSION};
 
-                _mission_data.mavlink_mission_item_to_mission_item_indices.insert(
-                    std::pair<int, int>{static_cast<int>(int_items.size()), item_i});
+                _mission_data.mavlink_mission_item_to_mission_item_indices.push_back(item_i);
                 int_items.push_back(next_item);
             }
 
@@ -450,8 +447,7 @@ MissionImpl::convert_to_int_items(const std::vector<MissionItem>& mission_items)
                                                       NAN,
                                                       MAV_MISSION_TYPE_MISSION};
 
-            _mission_data.mavlink_mission_item_to_mission_item_indices.insert(
-                std::pair<int, int>{static_cast<int>(int_items.size()), item_i});
+            _mission_data.mavlink_mission_item_to_mission_item_indices.push_back(item_i);
             int_items.push_back(next_item);
         }
 
@@ -477,10 +473,10 @@ MissionImpl::convert_to_int_items(const std::vector<MissionItem>& mission_items)
                                                   0,
                                                   MAV_MISSION_TYPE_MISSION};
 
-        _mission_data.mavlink_mission_item_to_mission_item_indices.insert(
-            std::pair<int, int>{static_cast<int>(int_items.size()), item_i});
+        _mission_data.mavlink_mission_item_to_mission_item_indices.push_back(item_i);
         int_items.push_back(next_item);
     }
+
     return int_items;
 }
 
@@ -495,14 +491,14 @@ std::pair<Mission::Result, Mission::MissionPlan> MissionImpl::convert_to_result_
         return result_pair;
     }
 
+    _mission_data.mavlink_mission_item_to_mission_item_indices.clear();
+
     Mission::DownloadMissionCallback callback;
     {
         _enable_return_to_launch_after_mission = false;
 
         MissionItem new_mission_item{};
         bool have_set_position = false;
-
-        int mavlink_item_i = 0;
 
         for (const auto& int_item : int_items) {
             LogDebug() << "Assembling Message: " << int(int_item.seq);
@@ -595,10 +591,8 @@ std::pair<Mission::Result, Mission::MissionPlan> MissionImpl::convert_to_result_
                 break;
             }
 
-            _mission_data.mavlink_mission_item_to_mission_item_indices.insert(std::pair<int, int>{
-                mavlink_item_i, static_cast<int>(result_pair.second.mission_items.size())});
-
-            ++mavlink_item_i;
+            _mission_data.mavlink_mission_item_to_mission_item_indices.push_back(
+                result_pair.second.mission_items.size());
         }
 
         // Don't forget to add last mission item.
@@ -715,13 +709,13 @@ void MissionImpl::set_current_mission_item_async(
     {
         std::lock_guard<std::recursive_mutex> lock(_mission_data.mutex);
         // We need to find the first mavlink item which maps to the current mission item.
-        for (auto it = _mission_data.mavlink_mission_item_to_mission_item_indices.begin();
-             it != _mission_data.mavlink_mission_item_to_mission_item_indices.end();
-             ++it) {
-            if (it->second == current) {
-                mavlink_index = it->first;
+        int i = 0;
+        for (auto index : _mission_data.mavlink_mission_item_to_mission_item_indices) {
+            if (index == current) {
+                mavlink_index = i;
                 break;
             }
+            ++i;
         }
     }
 
@@ -825,23 +819,23 @@ int MissionImpl::current_mission_item() const
     std::lock_guard<std::recursive_mutex> lock(_mission_data.mutex);
 
     // We want to return the current mission item and not the underlying
-    // mavlink mission item. Therefore we check the index map.
-    auto entry = _mission_data.mavlink_mission_item_to_mission_item_indices.find(
-        _mission_data.last_current_mavlink_mission_item);
-
-    if (entry != _mission_data.mavlink_mission_item_to_mission_item_indices.end()) {
-        return entry->second;
-
-    } else {
-        // Somehow we couldn't find it in the map
+    // mavlink mission item.
+    if (_mission_data.last_current_mavlink_mission_item >=
+        static_cast<int>(_mission_data.mavlink_mission_item_to_mission_item_indices.size())) {
         return -1;
     }
+
+    return _mission_data.mavlink_mission_item_to_mission_item_indices[static_cast<unsigned>(
+        _mission_data.last_current_mavlink_mission_item)];
 }
 
 int MissionImpl::total_mission_items() const
 {
     std::lock_guard<std::recursive_mutex> lock(_mission_data.mutex);
-    return static_cast<int>(_mission_data.mavlink_mission_item_to_mission_item_indices.size());
+    if (_mission_data.mavlink_mission_item_to_mission_item_indices.size() == 0) {
+        return 0;
+    }
+    return _mission_data.mavlink_mission_item_to_mission_item_indices.back() + 1;
 }
 
 Mission::MissionProgress MissionImpl::mission_progress()
