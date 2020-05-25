@@ -3,7 +3,7 @@
 #include <mutex>
 #include <memory>
 #include <functional>
-#include <map>
+#include <unordered_map>
 #include "global_include.h"
 
 namespace mavsdk {
@@ -33,7 +33,7 @@ private:
         float interval_s{0.0f};
     };
 
-    std::map<void*, std::shared_ptr<Entry>> _entries{};
+    std::unordered_map<void*, std::shared_ptr<Entry>> _entries{};
     std::mutex _entries_mutex{};
     bool _iterator_invalidated{false};
 

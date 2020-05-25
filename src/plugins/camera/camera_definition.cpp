@@ -82,7 +82,7 @@ bool CameraDefinition::parse_xml()
         return false;
     }
 
-    std::map<std::string, std::string> type_map{};
+    std::unordered_map<std::string, std::string> type_map{};
     // We need all types first.
     for (auto e_parameter = e_parameters->FirstChildElement("parameter"); e_parameter != nullptr;
          e_parameter = e_parameter->NextSiblingElement("parameter")) {
@@ -240,7 +240,7 @@ std::pair<bool, std::vector<std::shared_ptr<CameraDefinition::Option>>>
 CameraDefinition::parse_options(
     const tinyxml2::XMLElement* options_handle,
     const std::string& param_name,
-    std::map<std::string, std::string>& type_map)
+    std::unordered_map<std::string, std::string>& type_map)
 {
     std::vector<std::shared_ptr<Option>> options{};
 
@@ -335,7 +335,7 @@ std::tuple<bool, std::vector<std::shared_ptr<CameraDefinition::Option>>, CameraD
 CameraDefinition::parse_range_options(
     const tinyxml2::XMLElement* param_handle,
     const std::string& param_name,
-    std::map<std::string, std::string>& type_map)
+    std::unordered_map<std::string, std::string>& type_map)
 {
     std::vector<std::shared_ptr<Option>> options{};
     Option default_option{};
@@ -461,7 +461,7 @@ void CameraDefinition::assume_default_settings()
 }
 
 bool CameraDefinition::get_all_settings(
-    std::map<std::string, MAVLinkParameters::ParamValue>& settings)
+    std::unordered_map<std::string, MAVLinkParameters::ParamValue>& settings)
 {
     std::lock_guard<std::recursive_mutex> lock(_mutex);
 
@@ -474,7 +474,7 @@ bool CameraDefinition::get_all_settings(
 }
 
 bool CameraDefinition::get_possible_settings(
-    std::map<std::string, MAVLinkParameters::ParamValue>& settings)
+    std::unordered_map<std::string, MAVLinkParameters::ParamValue>& settings)
 {
     std::lock_guard<std::recursive_mutex> lock(_mutex);
 
@@ -647,7 +647,7 @@ bool CameraDefinition::get_possible_options(
         return false;
     }
 
-    std::map<std::string, MAVLinkParameters::ParamValue> settings;
+    std::unordered_map<std::string, MAVLinkParameters::ParamValue> settings;
     if (!get_possible_settings(settings)) {
         return false;
     }

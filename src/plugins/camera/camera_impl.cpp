@@ -1004,7 +1004,7 @@ bool CameraImpl::get_possible_setting_options(std::vector<std::string>& settings
         return false;
     }
 
-    std::map<std::string, MAVLinkParameters::ParamValue> cd_settings{};
+    std::unordered_map<std::string, MAVLinkParameters::ParamValue> cd_settings{};
     _camera_definition->get_possible_settings(cd_settings);
 
     for (const auto& cd_setting : cd_settings) {

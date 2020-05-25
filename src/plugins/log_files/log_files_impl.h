@@ -53,7 +53,7 @@ private:
 
     struct {
         std::mutex mutex{};
-        std::map<unsigned, LogFiles::Entry> entry_map{};
+        std::unordered_map<unsigned, LogFiles::Entry> entry_map{};
         LogFiles::GetEntriesCallback callback{nullptr};
         unsigned max_list_id{0};
         unsigned retries{0};

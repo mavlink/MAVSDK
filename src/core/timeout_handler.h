@@ -3,7 +3,7 @@
 #include <mutex>
 #include <memory>
 #include <functional>
-#include <map>
+#include <unordered_map>
 #include "global_include.h"
 
 namespace mavsdk {
@@ -32,7 +32,7 @@ private:
         double duration_s{0.0};
     };
 
-    std::map<void*, std::shared_ptr<Timeout>> _timeouts{};
+    std::unordered_map<void*, std::shared_ptr<Timeout>> _timeouts{};
     std::mutex _timeouts_mutex{};
     bool _iterator_invalidated{false};
 
