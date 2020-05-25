@@ -476,7 +476,6 @@ MissionImpl::convert_to_int_items(const std::vector<MissionItem>& mission_items)
         _mission_data.mavlink_mission_item_to_mission_item_indices.push_back(item_i);
         int_items.push_back(next_item);
     }
-
     return int_items;
 }
 
