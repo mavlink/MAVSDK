@@ -14,22 +14,19 @@ using namespace std::placeholders; // for `_1`
 
 static void receive_upload_mission_result(Mission::Result result);
 static void receive_start_mission_result(Mission::Result result);
-static void receive_mission_progress(Mission::MissionProgress progress);
 
 Mission::MissionItem only_set_speed(float speed_m_s);
 Mission::MissionItem
 add_waypoint(double latitude_deg, double longitude_deg, float relative_altitude_m, float speed_m_s);
 
-float current_speed(std::shared_ptr<Telemetry>& telemetry);
+float current_speed(std::shared_ptr<Telemetry> telemetry);
 
 static std::atomic<bool> _mission_sent_ok{false};
 static std::atomic<bool> _mission_started_ok{false};
-static std::atomic<int> _current_item{0};
 
 const static float speeds[4] = {10.0f, 3.0f, 8.0f, 5.0f};
 
 // Test to check speed set for mission items.
-
 TEST_F(SitlTest, MissionChangeSpeed)
 {
     Mavsdk dc;
@@ -73,51 +70,53 @@ TEST_F(SitlTest, MissionChangeSpeed)
     Action::Result result = action->arm();
     ASSERT_EQ(result, Action::Result::Success);
 
-    mission->subscribe_mission_progress(std::bind(&receive_mission_progress, _1));
+    int last_item = -1;
+    mission->subscribe_mission_progress(
+        [&mission_plan, &last_item, &telemetry](Mission::MissionProgress progress) {
+            LogInfo() << "Mission progress: " << progress.current << " / " << progress.total;
+
+            if (progress.current < static_cast<int>(mission_plan.mission_items.size()) &&
+                last_item != progress.current) {
+                // Don't check the first because it's just a speed command and neither the second
+                // because we're still taking off.
+                if (progress.current >= 2) {
+                    // Time to accelerate
+                    std::this_thread::sleep_for(std::chrono::seconds(4));
+                    const float speed_correct = speeds[progress.current - 1];
+                    const float speed_actual = current_speed(telemetry);
+                    const float margin = 1.0f;
+                    if (speed_actual >= speed_correct + margin ||
+                        speed_actual <= speed_correct - margin) {
+                        LogWarn() << "Speed should be: " << speed_correct << " m/s, "
+                                  << "actually: " << speed_actual << " m/s";
+                    } else {
+                        LogWarn() << "Speed should be: " << speed_correct << " m/s, "
+                                  << "actually: " << speed_actual << " m/s";
+                    }
+                    // TODO: enable these again with a better check not susceptible to time.
+                    // EXPECT_GT(speed_actual, speed_correct - margin);
+                    // EXPECT_LT(speed_actual, speed_correct + margin);
+                }
+                last_item = progress.current;
+            }
+        });
 
     mission->start_mission_async(std::bind(&receive_start_mission_result, _1));
     std::this_thread::sleep_for(std::chrono::seconds(1));
     ASSERT_TRUE(_mission_started_ok);
 
-    int last_item = -1;
-    while (_current_item < static_cast<int>(mission_plan.mission_items.size())) {
-        if (last_item != _current_item) {
-            // Don't check the first because it's just a speed command and neither the second
-            // because we're still taking off.
-            if (_current_item >= 2) {
-                // Time to accelerate
-                std::this_thread::sleep_for(std::chrono::seconds(4));
-                const float speed_correct = speeds[_current_item - 1];
-                const float speed_actual = current_speed(telemetry);
-                const float margin = 1.0f;
-                if (speed_actual >= speed_correct + margin ||
-                    speed_actual <= speed_correct - margin) {
-                    LogWarn() << "Speed should be: " << speed_correct << " m/s, "
-                              << "actually: " << speed_actual << " m/s";
-                } else {
-                    LogWarn() << "Speed should be: " << speed_correct << " m/s, "
-                              << "actually: " << speed_actual << " m/s";
-                }
-                // TODO: enable these again with a better check not susceptible to time.
-                // EXPECT_GT(speed_actual, speed_correct - margin);
-                // EXPECT_LT(speed_actual, speed_correct + margin);
-            }
-            last_item = _current_item;
-        }
-        std::this_thread::sleep_for(std::chrono::milliseconds(100));
+    LogDebug() << "waiting until mission is done";
+    while (!mission->is_mission_finished().second) {
+        std::this_thread::sleep_for(std::chrono::seconds(1));
     }
+
     LogInfo() << "mission done";
 
     result = action->return_to_launch();
     ASSERT_EQ(result, Action::Result::Success);
 
-    while (!mission->is_mission_finished().second) {
-        LogDebug() << "waiting until mission is done";
-        std::this_thread::sleep_for(std::chrono::seconds(1));
-    }
-
+    LogDebug() << "waiting until landed";
     while (telemetry->in_air()) {
-        LogDebug() << "waiting until landed";
         std::this_thread::sleep_for(std::chrono::seconds(1));
     }
 
@@ -165,15 +164,9 @@ add_waypoint(double latitude_deg, double longitude_deg, float relative_altitude_
     return new_item;
 }
 
-float current_speed(std::shared_ptr<Telemetry>& telemetry)
+float current_speed(std::shared_ptr<Telemetry> telemetry)
 {
     return std::sqrt(
         telemetry->velocity_ned().north_m_s * telemetry->velocity_ned().north_m_s +
         telemetry->velocity_ned().east_m_s * telemetry->velocity_ned().east_m_s);
-}
-
-void receive_mission_progress(Mission::MissionProgress progress)
-{
-    LogInfo() << "Mission status update: " << progress.current << " / " << progress.total;
-    _current_item = progress.current;
 }
