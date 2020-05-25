@@ -1,7 +1,7 @@
 #pragma once
 
 #include <json/json.h>
-#include <unordered_map>
+#include <map>
 #include <memory>
 #include <mutex>
 
@@ -110,7 +110,7 @@ private:
         mutable std::recursive_mutex mutex{};
         int last_current_mavlink_mission_item{-1};
         int last_reached_mavlink_mission_item{-1};
-        std::unordered_map<int, int> mavlink_mission_item_to_mission_item_indices{};
+        std::map<int, int> mavlink_mission_item_to_mission_item_indices{};
         int num_mission_items_to_download{-1};
         int next_mission_item_to_download{-1};
         int last_mission_item_to_upload{-1};
