@@ -10,10 +10,6 @@
 #include "plugins/mission/mission.h"
 
 using namespace mavsdk;
-using namespace std::placeholders; // for `_1`
-
-static void receive_upload_mission_result(Mission::Result result);
-static void receive_start_mission_result(Mission::Result result);
 
 Mission::MissionItem only_set_speed(float speed_m_s);
 Mission::MissionItem
@@ -21,24 +17,21 @@ add_waypoint(double latitude_deg, double longitude_deg, float relative_altitude_
 
 float current_speed(std::shared_ptr<Telemetry> telemetry);
 
-static std::atomic<bool> _mission_sent_ok{false};
-static std::atomic<bool> _mission_started_ok{false};
-
 const static float speeds[4] = {10.0f, 3.0f, 8.0f, 5.0f};
 
 // Test to check speed set for mission items.
 TEST_F(SitlTest, MissionChangeSpeed)
 {
-    Mavsdk dc;
+    Mavsdk mavsdk;
 
-    ConnectionResult ret = dc.add_udp_connection();
+    ConnectionResult ret = mavsdk.add_udp_connection();
     ASSERT_EQ(ret, ConnectionResult::Success);
 
     // Wait for system to connect via heartbeat.
     ASSERT_TRUE(poll_condition_with_timeout(
-        [&dc]() { return dc.is_connected(); }, std::chrono::seconds(10)));
+        [&mavsdk]() { return mavsdk.is_connected(); }, std::chrono::seconds(10)));
 
-    System& system = dc.system();
+    System& system = mavsdk.system();
     ASSERT_TRUE(system.has_autopilot());
 
     auto telemetry = std::make_shared<Telemetry>(system);
@@ -63,12 +56,13 @@ TEST_F(SitlTest, MissionChangeSpeed)
     mission_plan.mission_items.push_back(
         add_waypoint(47.397733642793433, 8.5447776308767516, 10, speeds[3]));
 
-    mission->upload_mission_async(mission_plan, std::bind(&receive_upload_mission_result, _1));
-    std::this_thread::sleep_for(std::chrono::seconds(1));
-    ASSERT_TRUE(_mission_sent_ok);
+    Mission::Result mission_result = mission->upload_mission(mission_plan);
+    ASSERT_EQ(mission_result, Mission::Result::Success);
 
-    Action::Result result = action->arm();
-    ASSERT_EQ(result, Action::Result::Success);
+    std::this_thread::sleep_for(std::chrono::seconds(1));
+
+    Action::Result action_result = action->arm();
+    ASSERT_EQ(action_result, Action::Result::Success);
 
     int last_item = -1;
     mission->subscribe_mission_progress(
@@ -101,9 +95,9 @@ TEST_F(SitlTest, MissionChangeSpeed)
             }
         });
 
-    mission->start_mission_async(std::bind(&receive_start_mission_result, _1));
+    mission_result = mission->start_mission();
+    ASSERT_EQ(mission_result, Mission::Result::Success);
     std::this_thread::sleep_for(std::chrono::seconds(1));
-    ASSERT_TRUE(_mission_started_ok);
 
     LogDebug() << "waiting until mission is done";
     while (!mission->is_mission_finished().second) {
@@ -112,38 +106,16 @@ TEST_F(SitlTest, MissionChangeSpeed)
 
     LogInfo() << "mission done";
 
-    result = action->return_to_launch();
-    ASSERT_EQ(result, Action::Result::Success);
+    action_result = action->return_to_launch();
+    ASSERT_EQ(action_result, Action::Result::Success);
 
     LogDebug() << "waiting until landed";
     while (telemetry->in_air()) {
         std::this_thread::sleep_for(std::chrono::seconds(1));
     }
 
-    result = action->disarm();
-    ASSERT_EQ(result, Action::Result::Success);
-}
-
-void receive_upload_mission_result(Mission::Result result)
-{
-    EXPECT_EQ(result, Mission::Result::Success);
-
-    if (result == Mission::Result::Success) {
-        _mission_sent_ok = true;
-    } else {
-        LogErr() << "Error: mission send result: " << result;
-    }
-}
-
-void receive_start_mission_result(Mission::Result result)
-{
-    EXPECT_EQ(result, Mission::Result::Success);
-
-    if (result == Mission::Result::Success) {
-        _mission_started_ok = true;
-    } else {
-        LogErr() << "Error: mission start result: " << result;
-    }
+    action_result = action->disarm();
+    ASSERT_EQ(action_result, Action::Result::Success);
 }
 
 Mission::MissionItem only_set_speed(float speed_m_s)
