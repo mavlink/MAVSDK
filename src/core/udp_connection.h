@@ -47,7 +47,8 @@ private:
 
         bool operator==(const UdpConnection::Remote& other)
         {
-            return ip == other.ip && port_number == other.port_number;
+            return ip == other.ip && port_number == other.port_number &&
+                   system_id == other.system_id;
         }
 
         uint8_t system_id{0};
