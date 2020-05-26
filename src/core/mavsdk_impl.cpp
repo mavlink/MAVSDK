@@ -276,7 +276,8 @@ System& MavsdkImpl::get_system()
         }
 
         if (_systems.size() > 1) {
-            LogErr() << "More than one system found:";
+            LogWarn()
+                << "More than one system found. You should be using `get_system(uuid)` instead of `get_system()`!";
 
             // Just return first system instead of failing.
             return *_systems.begin()->second;
