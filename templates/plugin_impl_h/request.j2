@@ -1,0 +1,7 @@
+{% if is_async %}
+void {{ name.lower_snake_case }}_async({% for param in params %}{{ param.type_info.name }} {{ param.name.lower_snake_case }}, {% endfor %}const {{ plugin_name.upper_camel_case }}::{{ name.upper_camel_case }}Callback callback);
+{% endif %}
+
+{% if is_sync %}
+{% if has_result %}std::pair<{{ plugin_name.upper_camel_case }}::Result{% endif %}{% if has_result %}, {% endif %}{% if return_type.is_repeated %}std::vector<{% if not return_type.is_primitive%}{{ plugin_name.upper_camel_case }}::{% endif %}{{ return_type.inner_name }}>{% else %}{% if not return_type.is_primitive%}{{ plugin_name.upper_camel_case }}::{% endif %}{{ return_type.name }}{% endif %}{% if has_result %}>{% endif %} {{ name.lower_snake_case }}({% for param in params %}{{ param.type_info.name }} {{ param.name.lower_snake_case }}{{ ", " if not loop.last }}{% endfor %});
+{% endif %}

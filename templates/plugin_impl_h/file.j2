@@ -1,0 +1,26 @@
+#pragma once
+
+#include "plugins/{{ plugin_name.lower_snake_case }}/{{ plugin_name.lower_snake_case }}.h"
+#include "plugin_impl_base.h"
+
+namespace mavsdk {
+
+class {{ plugin_name.upper_camel_case }}Impl : public PluginImplBase {
+public:
+    {{ plugin_name.upper_camel_case }}Impl(System& system);
+    ~{{ plugin_name.upper_camel_case }}Impl();
+
+    void init() override;
+    void deinit() override;
+
+    void enable() override;
+    void disable() override;
+
+{% for method in methods %}
+{{ indent(method, 1) }}
+{% endfor %}
+
+private:
+};
+
+} // namespace mavsdk

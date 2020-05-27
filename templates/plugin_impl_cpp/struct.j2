@@ -1,0 +1,44 @@
+{% for nested_enum in nested_enums %}
+{{ nested_enums[nested_enum] }}
+{% endfor -%}
+
+{% if not name.upper_camel_case.endswith('Result') -%}
+bool operator==(const {{ plugin_name.upper_camel_case }}::{{ name.upper_camel_case }}& lhs, const {{ plugin_name.upper_camel_case }}::{{ name.upper_camel_case }}& rhs)
+{
+    return
+    {%- for field in fields %}
+    {%- if field.type_info.name == 'double' %}
+        {%- if field.epsilon %}
+        ((std::isnan(rhs.{{ field.name.lower_snake_case }}) && std::isnan(lhs.{{ field.name.lower_snake_case }})) || (std::fabs(rhs.{{ field.name.lower_snake_case }} - lhs.{{ field.name.lower_snake_case }}) < {{ field.epsilon }}))
+        {%- else %}
+        ((std::isnan(rhs.{{ field.name.lower_snake_case }}) && std::isnan(lhs.{{ field.name.lower_snake_case }})) || rhs.{{ field.name.lower_snake_case }} == lhs.{{ field.name.lower_snake_case }})
+        {%- endif %}
+    {%- elif field.type_info.name == 'float' %}
+        ((std::isnan(rhs.{{ field.name.lower_snake_case }}) && std::isnan(lhs.{{ field.name.lower_snake_case }})) || rhs.{{ field.name.lower_snake_case }} == lhs.{{ field.name.lower_snake_case }})
+    {%- else %}
+        (rhs.{{ field.name.lower_snake_case }} == lhs.{{ field.name.lower_snake_case }})
+    {%- endif %}
+    {%- if loop.last %};{% else %} &&{% endif %}
+    {%- endfor %}
+}
+
+std::ostream& operator<<(std::ostream& str, {{ plugin_name.upper_camel_case }}::{{ name.upper_camel_case }} const& {{ name.lower_snake_case }})
+{
+    str << std::setprecision(15);
+    str << "{{ name.lower_snake_case }}:" << '\n'
+        << "{\n";
+    {%- for field in fields -%}
+        {%- if not field.type_info.is_repeated %}
+    str << "    {{ field.name.lower_snake_case }}: " << {{ name.lower_snake_case }}.{{ field.name.lower_snake_case }} << '\n';
+        {%- else %}
+    str << "    {{ field.name.lower_snake_case }}: [";
+    for (auto it = {{ name.lower_snake_case }}.{{ field.name.lower_snake_case }}.begin(); it != {{ name.lower_snake_case }}.{{ field.name.lower_snake_case }}.end(); ++it) {
+        str << *it;
+        str << (it + 1 != {{ name.lower_snake_case }}.{{ field.name.lower_snake_case }}.end() ? ", " : "]\n");
+    }
+        {%- endif %}
+    {%- endfor %}
+    str << '}';
+    return str;
+}
+{% endif %}

@@ -1,0 +1,21 @@
+{% if is_async %}
+void {{ plugin_name.upper_camel_case }}Impl::{{ name.lower_snake_case }}_async({% for param in params %}{{ param.type_info.name }} {{ param.name.lower_snake_case }}, {% endfor %}const {{ plugin_name.upper_camel_case }}::ResultCallback callback)
+{
+    {% for param in params %}
+    UNUSED({{ param.name.lower_snake_case }});
+    {% endfor %}
+    UNUSED(callback);
+}
+{% endif %}
+
+{% if is_sync %}
+{% if has_result %}{{ plugin_name.upper_camel_case }}::Result{% else %}void{% endif %} {{ plugin_name.upper_camel_case }}Impl::{{ name.lower_snake_case }}({% for param in params %}{{ param.type_info.name }} {{ param.name.lower_snake_case }}{{ ", " if not loop.last }}{% endfor %})
+{
+    {% for param in params %}
+    UNUSED({{ param.name.lower_snake_case }});
+    {% endfor %}
+
+    // TODO :)
+    {% if has_result %}return {}{% endif %};
+}
+{% endif %}
