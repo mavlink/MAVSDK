@@ -1,0 +1,27 @@
+#include "{{ plugin_name.lower_snake_case }}_impl.h"
+
+namespace mavsdk {
+
+{{ plugin_name.upper_camel_case }}Impl::{{ plugin_name.upper_camel_case }}Impl(System& system) : PluginImplBase(system)
+{
+    _parent->register_plugin(this);
+}
+
+{{ plugin_name.upper_camel_case }}Impl::~{{ plugin_name.upper_camel_case }}Impl()
+{
+    _parent->unregister_plugin(this);
+}
+
+void {{ plugin_name.upper_camel_case }}Impl::init() {}
+
+void {{ plugin_name.upper_camel_case }}Impl::deinit() {}
+
+void {{ plugin_name.upper_camel_case }}Impl::enable() {}
+
+void {{ plugin_name.upper_camel_case }}Impl::disable() {}
+
+{% for method in methods %}
+{{ method }}
+{% endfor %}
+
+} // namespace mavsdk

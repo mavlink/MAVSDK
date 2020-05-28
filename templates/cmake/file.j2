@@ -1,0 +1,28 @@
+add_library(mavsdk_{{ plugin_name.lower_snake_case }}
+    {{ plugin_name.lower_snake_case }}.cpp
+    {{ plugin_name.lower_snake_case }}_impl.cpp
+)
+
+target_link_libraries(mavsdk_{{ plugin_name.lower_snake_case }}
+    mavsdk
+)
+
+set_target_properties(mavsdk_{{ plugin_name.lower_snake_case }}
+    PROPERTIES COMPILE_FLAGS ${warnings}
+)
+
+target_include_directories(mavsdk_{{ plugin_name.lower_snake_case }} PUBLIC
+    $<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/include>
+    $<INSTALL_INTERFACE:include/mavsdk>
+    )
+
+install(TARGETS mavsdk_{{ plugin_name.lower_snake_case }}
+    EXPORT mavsdk-targets
+    LIBRARY DESTINATION ${CMAKE_INSTALL_LIBDIR}
+    ARCHIVE DESTINATION ${CMAKE_INSTALL_LIBDIR}
+    )
+
+install(FILES
+    include/plugins/{{ plugin_name.lower_snake_case }}/{{ plugin_name.lower_snake_case }}.h
+    DESTINATION ${CMAKE_INSTALL_INCLUDEDIR}/mavsdk/plugins/{{ plugin_name.lower_snake_case }}
+)

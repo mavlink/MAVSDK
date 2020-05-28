@@ -14,8 +14,7 @@ function snake_case_to_camel_case {
     echo $1 | sed -r 's/(^|_)([a-z])/\U\2/g'
 }
 
-
-command -v ${protoc_binary} && command -v ${protoc_grpc_binary} || {
+command -v ${protoc_binary} > /dev/null && command -v ${protoc_grpc_binary} > /dev/null || {
     echo "-------------------------------"
     echo " Error"
     echo "-------------------------------"
@@ -29,38 +28,36 @@ command -v ${protoc_binary} && command -v ${protoc_grpc_binary} || {
     exit 1
 }
 
-plugin_list="action calibration camera follow_me ftp geofence gimbal info log_files mission mission_raw mocap offboard param shell telemetry tune"
-plugin_list_and_core="${plugin_list} core"
+echo "Found protoc ($(${protoc_binary} --version)): ${protoc_binary}"
+echo "Found grpc_cpp_plugin: ${protoc_grpc_binary}"
 
-echo ""
-echo "-------------------------------"
-echo " Generating pb and grpc.pb files"
-echo "    * protoc --version: $(${protoc_binary} --version)"
-echo "-------------------------------"
-echo ""
+plugin_list_and_core=$(cd ${script_dir}/../proto/protos && ls -d */ | sed 's:/*$::')
 
-mkdir -p ${backend_generated_dir}
-
-for plugin in ${plugin_list_and_core}; do
-    ${protoc_binary} -I ${proto_dir} --cpp_out=${backend_generated_dir} --grpc_out=${backend_generated_dir} --plugin=protoc-gen-grpc=${protoc_grpc_binary} ${proto_dir}/${plugin}/${plugin}.proto
-done
-
+echo "Processing mavsdk_options.proto"
 ${protoc_binary} -I ${proto_dir} --cpp_out=${backend_generated_dir} --grpc_out=${backend_generated_dir} --plugin=protoc-gen-grpc=${protoc_grpc_binary} ${proto_dir}/mavsdk_options.proto
 
-echo ""
-echo "-------------------------------"
-echo " Generating C++ and mavsdk_server files"
-echo "    * protoc --version: $(${protoc_binary} --version)"
-echo "-------------------------------"
-echo ""
 
 tmp_output_dir="$(mktemp -d)"
 protoc_gen_dcsdk=$(which protoc-gen-dcsdk)
 template_path_plugin_h="${script_dir}/../templates/plugin_h"
 template_path_plugin_cpp="${script_dir}/../templates/plugin_cpp"
+template_path_plugin_impl_h="${script_dir}/../templates/plugin_impl_h"
+template_path_plugin_impl_cpp="${script_dir}/../templates/plugin_impl_cpp"
 template_path_mavsdk_server="${script_dir}/../templates/mavsdk_server"
+template_path_cmake="${script_dir}/../templates/cmake"
 
-for plugin in ${plugin_list}; do
+for plugin in ${plugin_list_and_core}; do
+
+    echo "Processing ${plugin}/${plugin}.proto"
+
+    mkdir -p ${backend_generated_dir}
+    ${protoc_binary} -I ${proto_dir} --cpp_out=${backend_generated_dir} --grpc_out=${backend_generated_dir} --plugin=protoc-gen-grpc=${protoc_grpc_binary} ${proto_dir}/${plugin}/${plugin}.proto
+
+    if [[ "${plugin}" == "core" ]]; then
+        continue
+    fi
+
+    mkdir -p ${script_dir}/../src/plugins/${plugin}/include/plugins/${plugin}
     ${protoc_binary} -I ${proto_dir} --custom_out=${tmp_output_dir} --plugin=protoc-gen-custom=${protoc_gen_dcsdk} --custom_opt="file_ext=h,template_path=${template_path_plugin_h}" ${proto_dir}/${plugin}/${plugin}.proto
     mv ${tmp_output_dir}/${plugin}/$(snake_case_to_camel_case ${plugin}).h ${script_dir}/../src/plugins/${plugin}/include/plugins/${plugin}/${plugin}.h
 
@@ -70,4 +67,52 @@ for plugin in ${plugin_list}; do
     ${protoc_binary} -I ${proto_dir} --custom_out=${tmp_output_dir} --plugin=protoc-gen-custom=${protoc_gen_dcsdk} --custom_opt="file_ext=h,template_path=${template_path_mavsdk_server}" ${proto_dir}/${plugin}/${plugin}.proto
     mkdir -p ${script_dir}/../src/backend/src/plugins/${plugin}
     mv ${tmp_output_dir}/${plugin}/$(snake_case_to_camel_case ${plugin}).h ${script_dir}/../src/backend/src/plugins/${plugin}/${plugin}_service_impl.h
+
+    file_impl_h="${script_dir}/../src/plugins/${plugin}/${plugin}_impl.h"
+    if [[ ! -f "${file_impl_h}" ]]; then
+        ${protoc_binary} -I ${proto_dir} --custom_out=${tmp_output_dir} --plugin=protoc-gen-custom=${protoc_gen_dcsdk} --custom_opt="file_ext=h,template_path=${template_path_plugin_impl_h}" ${proto_dir}/${plugin}/${plugin}.proto
+        mv ${tmp_output_dir}/${plugin}/$(snake_case_to_camel_case ${plugin}).h ${file_impl_h}
+        echo "-> Creating ${file_impl_h}"
+    else
+        # Warn if file is not checked in yet.
+        if [[ ! $(git ls-files --error-unmatch ${file_impl_h} 2> /dev/null) ]]; then
+            echo "-> Not creating ${file_impl_h} because it already exists"
+        fi
+    fi
+
+    file_impl_cpp="${script_dir}/../src/plugins/${plugin}/${plugin}_impl.cpp"
+    if [[ ! -f $file_impl_cpp ]]; then
+        ${protoc_binary} -I ${proto_dir} --custom_out=${tmp_output_dir} --plugin=protoc-gen-custom=${protoc_gen_dcsdk} --custom_opt="file_ext=cpp,template_path=${template_path_plugin_impl_cpp}" ${proto_dir}/${plugin}/${plugin}.proto
+        mv ${tmp_output_dir}/${plugin}/$(snake_case_to_camel_case ${plugin}).cpp ${file_impl_cpp}
+        echo "-> Creating ${file_impl_cpp}"
+    else
+        # Warn if file is not checked in yet.
+        if [[ ! $(git ls-files --error-unmatch ${file_impl_cpp} 2> /dev/null) ]]; then
+            echo "-> Not creating ${file_impl_cpp} because it already exists"
+        fi
+    fi
+
+    file_cmake="${script_dir}/../src/plugins/${plugin}/CMakeLists.txt"
+    if [[ ! -f $file_cmake ]]; then
+        ${protoc_binary} -I ${proto_dir} --custom_out=${tmp_output_dir} --plugin=protoc-gen-custom=${protoc_gen_dcsdk} --custom_opt="file_ext=txt,template_path=${template_path_cmake}" ${proto_dir}/${plugin}/${plugin}.proto
+        mv ${tmp_output_dir}/${plugin}/$(snake_case_to_camel_case ${plugin}).txt ${file_cmake}
+        echo "-> Creating ${file_cmake}"
+    else
+        # Warn if file is not checked in yet.
+        if [[ ! $(git ls-files --error-unmatch ${file_cmake} 2> /dev/null) ]]; then
+            echo "-> Not creating ${file_cmake} because it already exists"
+        fi
+    fi
+
+    plugins_cmake_file="${script_dir}/../src/plugins/CMakeLists.txt"
+    if [[ ! $(grep ${plugin} ${plugins_cmake_file}) ]]; then
+        echo "-> Adding entry for '${plugin}' to ${plugins_cmake_file}"
+
+        # We want to append the plugin to the list but before the passthrough plugin.
+        # Therefore, we grep for the line numbers of add_subdirectory, cut to numbers only, and use the first of the two last.
+        last_line=$(grep -n 'add_subdirectory' 'src/plugins/CMakeLists.txt' | cut -f1 -d: | tail -2 | head -n 1)
+        # We have to increment by one to write it below the last one.
+        last_line=$(($last_line+1))
+        sed -i "${last_line}iadd_subdirectory(${plugin})" ${plugins_cmake_file}
+    fi
 done
