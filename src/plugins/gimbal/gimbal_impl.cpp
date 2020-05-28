@@ -62,6 +62,7 @@ void GimbalImpl::process_gimbal_manager_information(const mavlink_message_t& mes
                << static_cast<int>(gimbal_manager_information.gimbal_device_id)
                << " was discovered";
 
+    _parent->unregister_timeout_handler(_protocol_cookie);
     //_gimbal_protocol.reset(new GimbalProtocolV2(*_parent));
 }
 
