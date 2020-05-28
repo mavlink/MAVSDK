@@ -77,14 +77,6 @@ void MavsdkImpl::receive_message(mavlink_message_t& message)
         return;
     }
 
-    // FIXME: Ignore messages from QGroundControl for now. Usually QGC identifies
-    //        itself with sysid 255.
-    //        A better way would probably be to parse the heartbeat message and
-    //        look at type and check if it is MAV_TYPE_GCS.
-    if (message.sysid == 255) {
-        return;
-    }
-
     std::lock_guard<std::recursive_mutex> lock(_systems_mutex);
 
     // Change system id of null system
