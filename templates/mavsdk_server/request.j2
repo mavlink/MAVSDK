@@ -14,7 +14,18 @@ grpc::Status {{ name.upper_camel_case }}(
 
     if (response != nullptr) {
         {% if has_result %}fillResponseWithResult(response, result.first);{% endif %}
+        {% if return_type.is_repeated %}
+        for (auto elem : result.second) {
+            {% if return_type.is_primitive %}
+            response->add_{{ return_name.lower_snake_case }}(elem);
+            {% else %}
+            auto* ptr = response->add_{{ return_name.lower_snake_case }}();
+            ptr->CopyFrom(*translateToRpc{{ return_type.inner_name }}(elem).release());
+            {% endif %}
+        }
+        {% else %}
         response->set_{% if return_type.is_primitive %}{{ return_name.lower_snake_case }}(result{% if has_result %}.second{% endif %}{% else %}allocated_{{ return_name.lower_snake_case }}(translateToRpc{{ return_type.inner_name }}(result{% if has_result %}.second{% endif %}).release(){% endif %});
+        {% endif %}
     }
 
 
