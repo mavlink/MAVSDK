@@ -121,6 +121,7 @@ public:
                 std::unique_lock<std::mutex> lock(subscribe_mutex);
                 if (!*is_finished && !writer->Write(rpc_response)) {
                     _shell.subscribe_receive(nullptr);
+
                     *is_finished = true;
                     unregister_stream_stop_promise(stream_closed_promise);
                     lock.unlock();

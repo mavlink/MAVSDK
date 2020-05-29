@@ -236,8 +236,11 @@ public:
 
         if (response != nullptr) {
             fillResponseWithResult(response, result.first);
-            response->set_allocated_mission_items(
-                translateToRpcMissionItem(result.second).release());
+
+            for (auto elem : result.second) {
+                auto* ptr = response->add_mission_items();
+                ptr->CopyFrom(*translateToRpcMissionItem(elem).release());
+            }
         }
 
         return grpc::Status::OK;
@@ -342,6 +345,7 @@ public:
                 std::unique_lock<std::mutex> lock(subscribe_mutex);
                 if (!*is_finished && !writer->Write(rpc_response)) {
                     _mission_raw.subscribe_mission_progress(nullptr);
+
                     *is_finished = true;
                     unregister_stream_stop_promise(stream_closed_promise);
                     lock.unlock();
@@ -376,6 +380,7 @@ public:
                 std::unique_lock<std::mutex> lock(subscribe_mutex);
                 if (!*is_finished && !writer->Write(rpc_response)) {
                     _mission_raw.subscribe_mission_changed(nullptr);
+
                     *is_finished = true;
                     unregister_stream_stop_promise(stream_closed_promise);
                     lock.unlock();

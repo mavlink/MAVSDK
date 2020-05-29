@@ -209,6 +209,7 @@ public:
 
         if (response != nullptr) {
             fillResponseWithResult(response, result.first);
+
             response->set_allocated_flight_info(translateToRpcFlightInfo(result.second).release());
         }
 
@@ -224,6 +225,7 @@ public:
 
         if (response != nullptr) {
             fillResponseWithResult(response, result.first);
+
             response->set_allocated_identification(
                 translateToRpcIdentification(result.second).release());
         }
@@ -240,6 +242,7 @@ public:
 
         if (response != nullptr) {
             fillResponseWithResult(response, result.first);
+
             response->set_allocated_product(translateToRpcProduct(result.second).release());
         }
 
@@ -255,6 +258,7 @@ public:
 
         if (response != nullptr) {
             fillResponseWithResult(response, result.first);
+
             response->set_allocated_version(translateToRpcVersion(result.second).release());
         }
 

@@ -36,9 +36,19 @@ void Ftp::list_directory_async(std::string remote_dir, const ListDirectoryCallba
     _impl->list_directory_async(remote_dir, callback);
 }
 
+std::pair<Ftp::Result, std::vector<std::string>> Ftp::list_directory(std::string remote_dir) const
+{
+    return _impl->list_directory(remote_dir);
+}
+
 void Ftp::create_directory_async(std::string remote_dir, const ResultCallback callback)
 {
     _impl->create_directory_async(remote_dir, callback);
+}
+
+Ftp::Result Ftp::create_directory(std::string remote_dir) const
+{
+    return _impl->create_directory(remote_dir);
 }
 
 void Ftp::remove_directory_async(std::string remote_dir, const ResultCallback callback)
@@ -46,9 +56,19 @@ void Ftp::remove_directory_async(std::string remote_dir, const ResultCallback ca
     _impl->remove_directory_async(remote_dir, callback);
 }
 
+Ftp::Result Ftp::remove_directory(std::string remote_dir) const
+{
+    return _impl->remove_directory(remote_dir);
+}
+
 void Ftp::remove_file_async(std::string remote_file_path, const ResultCallback callback)
 {
     _impl->remove_file_async(remote_file_path, callback);
+}
+
+Ftp::Result Ftp::remove_file(std::string remote_file_path) const
+{
+    return _impl->remove_file(remote_file_path);
 }
 
 void Ftp::rename_async(
@@ -57,12 +77,23 @@ void Ftp::rename_async(
     _impl->rename_async(remote_from_path, remote_to_path, callback);
 }
 
+Ftp::Result Ftp::rename(std::string remote_from_path, std::string remote_to_path) const
+{
+    return _impl->rename(remote_from_path, remote_to_path);
+}
+
 void Ftp::are_files_identical_async(
     std::string local_file_path,
     std::string remote_file_path,
     const AreFilesIdenticalCallback callback)
 {
     _impl->are_files_identical_async(local_file_path, remote_file_path, callback);
+}
+
+std::pair<Ftp::Result, bool>
+Ftp::are_files_identical(std::string local_file_path, std::string remote_file_path) const
+{
+    return _impl->are_files_identical(local_file_path, remote_file_path);
 }
 
 Ftp::Result Ftp::set_root_directory(std::string root_dir) const

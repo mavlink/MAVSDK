@@ -130,7 +130,11 @@ public:
         const rpc::ftp::ResetRequest* /* request */,
         rpc::ftp::ResetResponse* response) override
     {
-        auto result = _ftp.reset();
+        std::promise<mavsdk::Ftp::Result> prom;
+        std::future<mavsdk::Ftp::Result> fut = prom.get_future();
+
+        _ftp.reset_async([&prom](const mavsdk::Ftp::Result result) { prom.set_value(result); });
+        auto result = fut.get();
 
         if (response != nullptr) {
             fillResponseWithResult(response, result);
@@ -141,7 +145,7 @@ public:
 
     grpc::Status SubscribeDownload(
         grpc::ServerContext* /* context */,
-        const mavsdk::rpc::ftp::SubscribeDownloadRequest* /* request */,
+        const mavsdk::rpc::ftp::SubscribeDownloadRequest* request,
         grpc::ServerWriter<rpc::ftp::DownloadResponse>* writer) override
     {
         auto stream_closed_promise = std::make_shared<std::promise<void>>();
@@ -153,6 +157,8 @@ public:
         std::mutex subscribe_mutex{};
 
         _ftp.download_async(
+            request->remote_file_path(),
+            request->local_dir(),
             [this, &writer, &stream_closed_promise, is_finished, &subscribe_mutex](
                 mavsdk::Ftp::Result result, const mavsdk::Ftp::ProgressData download) {
                 rpc::ftp::DownloadResponse rpc_response;
@@ -170,7 +176,6 @@ public:
 
                 std::unique_lock<std::mutex> lock(subscribe_mutex);
                 if (!*is_finished && !writer->Write(rpc_response)) {
-                    _ftp.download_async(nullptr);
                     *is_finished = true;
                     unregister_stream_stop_promise(stream_closed_promise);
                     lock.unlock();
@@ -184,7 +189,7 @@ public:
 
     grpc::Status SubscribeUpload(
         grpc::ServerContext* /* context */,
-        const mavsdk::rpc::ftp::SubscribeUploadRequest* /* request */,
+        const mavsdk::rpc::ftp::SubscribeUploadRequest* request,
         grpc::ServerWriter<rpc::ftp::UploadResponse>* writer) override
     {
         auto stream_closed_promise = std::make_shared<std::promise<void>>();
@@ -195,29 +200,32 @@ public:
 
         std::mutex subscribe_mutex{};
 
-        _ftp.upload_async([this, &writer, &stream_closed_promise, is_finished, &subscribe_mutex](
-                              mavsdk::Ftp::Result result, const mavsdk::Ftp::ProgressData upload) {
-            rpc::ftp::UploadResponse rpc_response;
+        _ftp.upload_async(
+            request->local_file_path(),
+            request->remote_dir(),
+            [this, &writer, &stream_closed_promise, is_finished, &subscribe_mutex](
+                mavsdk::Ftp::Result result, const mavsdk::Ftp::ProgressData upload) {
+                rpc::ftp::UploadResponse rpc_response;
 
-            rpc_response.set_allocated_progress_data(translateToRpcProgressData(upload).release());
+                rpc_response.set_allocated_progress_data(
+                    translateToRpcProgressData(upload).release());
 
-            auto rpc_result = translateToRpcResult(result);
-            auto* rpc_ftp_result = new rpc::ftp::FtpResult();
-            rpc_ftp_result->set_result(rpc_result);
-            std::stringstream ss;
-            ss << result;
-            rpc_ftp_result->set_result_str(ss.str());
-            rpc_response.set_allocated_ftp_result(rpc_ftp_result);
+                auto rpc_result = translateToRpcResult(result);
+                auto* rpc_ftp_result = new rpc::ftp::FtpResult();
+                rpc_ftp_result->set_result(rpc_result);
+                std::stringstream ss;
+                ss << result;
+                rpc_ftp_result->set_result_str(ss.str());
+                rpc_response.set_allocated_ftp_result(rpc_ftp_result);
 
-            std::unique_lock<std::mutex> lock(subscribe_mutex);
-            if (!*is_finished && !writer->Write(rpc_response)) {
-                _ftp.upload_async(nullptr);
-                *is_finished = true;
-                unregister_stream_stop_promise(stream_closed_promise);
-                lock.unlock();
-                stream_closed_promise->set_value();
-            }
-        });
+                std::unique_lock<std::mutex> lock(subscribe_mutex);
+                if (!*is_finished && !writer->Write(rpc_response)) {
+                    *is_finished = true;
+                    unregister_stream_stop_promise(stream_closed_promise);
+                    lock.unlock();
+                    stream_closed_promise->set_value();
+                }
+            });
 
         stream_closed_future.wait();
         return grpc::Status::OK;
@@ -237,7 +245,10 @@ public:
 
         if (response != nullptr) {
             fillResponseWithResult(response, result.first);
-            response->set_paths(result.second);
+
+            for (auto elem : result.second) {
+                response->add_paths(elem);
+            }
         }
 
         return grpc::Status::OK;
@@ -334,6 +345,7 @@ public:
 
         if (response != nullptr) {
             fillResponseWithResult(response, result.first);
+
             response->set_are_identical(result.second);
         }
 

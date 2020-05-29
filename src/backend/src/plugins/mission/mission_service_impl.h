@@ -155,7 +155,8 @@ public:
         mavsdk::Mission::MissionPlan obj;
 
         for (const auto& elem : mission_plan.mission_items()) {
-            obj.mission_items.push_back(translateFromRpcMissionItem(elem));
+            obj.mission_items.push_back(
+                translateFromRpcMissionItem(static_cast<mavsdk::rpc::mission::MissionItem>(elem)));
         }
 
         return obj;
@@ -299,6 +300,7 @@ public:
 
         if (response != nullptr) {
             fillResponseWithResult(response, result.first);
+
             response->set_allocated_mission_plan(
                 translateToRpcMissionPlan(result.second).release());
         }
@@ -390,6 +392,7 @@ public:
 
         if (response != nullptr) {
             fillResponseWithResult(response, result.first);
+
             response->set_is_finished(result.second);
         }
 
@@ -420,6 +423,7 @@ public:
                 std::unique_lock<std::mutex> lock(subscribe_mutex);
                 if (!*is_finished && !writer->Write(rpc_response)) {
                     _mission.subscribe_mission_progress(nullptr);
+
                     *is_finished = true;
                     unregister_stream_stop_promise(stream_closed_promise);
                     lock.unlock();
@@ -440,6 +444,7 @@ public:
 
         if (response != nullptr) {
             fillResponseWithResult(response, result.first);
+
             response->set_enable(result.second);
         }
 
@@ -479,6 +484,7 @@ public:
 
         if (response != nullptr) {
             fillResponseWithResult(response, result.first);
+
             response->set_allocated_mission_plan(
                 translateToRpcMissionPlan(result.second).release());
         }

@@ -18,6 +18,7 @@ public:
     void enable() override;
     void disable() override;
 
+    Tune::Result play_tune(const Tune::TuneDescription& tune);
     void play_tune_async(const Tune::TuneDescription& tune, const Tune::ResultCallback& callback);
 
     // Non-copyable

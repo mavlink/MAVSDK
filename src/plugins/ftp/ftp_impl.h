@@ -34,6 +34,14 @@ public:
 
     void send();
 
+    std::pair<Ftp::Result, std::vector<std::string>> list_directory(const std::string& path);
+    Ftp::Result create_directory(const std::string& path);
+    Ftp::Result remove_directory(const std::string& path);
+    Ftp::Result remove_file(const std::string& path);
+    Ftp::Result rename(const std::string& from_path, const std::string& to_path);
+    std::pair<Ftp::Result, bool>
+    are_files_identical(const std::string& local_path, const std::string& remote_path);
+
     void reset_async(Ftp::ResultCallback callback);
     void download_async(
         const std::string& remote_file_path,

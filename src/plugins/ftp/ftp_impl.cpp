@@ -436,6 +436,19 @@ void FtpImpl::_terminate_session()
     _send_mavlink_ftp_message(raw_payload);
 }
 
+std::pair<Ftp::Result, std::vector<std::string>> FtpImpl::list_directory(const std::string& path)
+{
+    std::promise<std::pair<Ftp::Result, std::vector<std::string>>> prom;
+    auto fut = prom.get_future();
+
+    list_directory_async(
+        path, [&prom](const Ftp::Result result, const std::vector<std::string> dirs) {
+            prom.set_value(std::make_pair(result, dirs));
+        });
+
+    return fut.get();
+}
+
 void FtpImpl::list_directory_async(
     const std::string& path, Ftp::ListDirectoryCallback callback, uint32_t offset)
 {
@@ -497,10 +510,30 @@ void FtpImpl::_generic_command_async(
     _send_mavlink_ftp_message(raw_payload);
 }
 
+Ftp::Result FtpImpl::create_directory(const std::string& path)
+{
+    std::promise<Ftp::Result> prom;
+    auto fut = prom.get_future();
+
+    create_directory_async(path, [&prom](const Ftp::Result result) { prom.set_value(result); });
+
+    return fut.get();
+}
+
 void FtpImpl::create_directory_async(const std::string& path, Ftp::ResultCallback callback)
 {
     std::lock_guard<std::mutex> lock(_curr_op_mutex);
     _generic_command_async(CMD_CREATE_DIRECTORY, 0, path, callback);
+}
+
+Ftp::Result FtpImpl::remove_directory(const std::string& path)
+{
+    std::promise<Ftp::Result> prom;
+    auto fut = prom.get_future();
+
+    remove_directory_async(path, [&prom](const Ftp::Result result) { prom.set_value(result); });
+
+    return fut.get();
 }
 
 void FtpImpl::remove_directory_async(const std::string& path, Ftp::ResultCallback callback)
@@ -509,10 +542,30 @@ void FtpImpl::remove_directory_async(const std::string& path, Ftp::ResultCallbac
     _generic_command_async(CMD_REMOVE_DIRECTORY, 0, path, callback);
 }
 
+Ftp::Result FtpImpl::remove_file(const std::string& path)
+{
+    std::promise<Ftp::Result> prom;
+    auto fut = prom.get_future();
+
+    remove_file_async(path, [&prom](const Ftp::Result result) { prom.set_value(result); });
+
+    return fut.get();
+}
+
 void FtpImpl::remove_file_async(const std::string& path, Ftp::ResultCallback callback)
 {
     std::lock_guard<std::mutex> lock(_curr_op_mutex);
     _generic_command_async(CMD_REMOVE_FILE, 0, path, callback);
+}
+
+Ftp::Result FtpImpl::rename(const std::string& from_path, const std::string& to_path)
+{
+    std::promise<Ftp::Result> prom;
+    auto fut = prom.get_future();
+
+    rename_async(from_path, to_path, [&prom](const Ftp::Result result) { prom.set_value(result); });
+
+    return fut.get();
 }
 
 void FtpImpl::rename_async(
@@ -543,6 +596,20 @@ void FtpImpl::rename_async(
     payload->size += to_path.length() + 1;
     _curr_op_result_callback = callback;
     _send_mavlink_ftp_message(raw_payload);
+}
+
+std::pair<Ftp::Result, bool>
+FtpImpl::are_files_identical(const std::string& local_path, const std::string& remote_path)
+{
+    std::promise<std::pair<Ftp::Result, bool>> prom;
+    auto fut = prom.get_future();
+
+    are_files_identical_async(
+        local_path, remote_path, [&prom](const Ftp::Result result, const bool are_identical) {
+            prom.set_value(std::make_pair(result, are_identical));
+        });
+
+    return fut.get();
 }
 
 void FtpImpl::are_files_identical_async(

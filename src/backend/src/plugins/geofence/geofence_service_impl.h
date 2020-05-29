@@ -107,7 +107,8 @@ public:
         mavsdk::Geofence::Polygon obj;
 
         for (const auto& elem : polygon.points()) {
-            obj.points.push_back(translateFromRpcPoint(elem));
+            obj.points.push_back(
+                translateFromRpcPoint(static_cast<mavsdk::rpc::geofence::Point>(elem)));
         }
 
         obj.type = translateFromRpcType(polygon.type());

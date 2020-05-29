@@ -113,7 +113,8 @@ public:
         mavsdk::Offboard::ActuatorControl obj;
 
         for (const auto& elem : actuator_control.groups()) {
-            obj.groups.push_back(translateFromRpcActuatorControlGroup(elem));
+            obj.groups.push_back(translateFromRpcActuatorControlGroup(
+                static_cast<mavsdk::rpc::offboard::ActuatorControlGroup>(elem)));
         }
 
         return obj;

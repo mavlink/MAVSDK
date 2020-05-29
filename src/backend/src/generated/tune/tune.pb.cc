@@ -169,11 +169,11 @@ const char descriptor_table_protodef_tune_2ftune_2eproto[] PROTOBUF_SECTION_VARI
   "ELEMENT_NOTE_G\020\017\022\033\n\027SONG_ELEMENT_NOTE_PA"
   "USE\020\020\022\026\n\022SONG_ELEMENT_SHARP\020\021\022\025\n\021SONG_EL"
   "EMENT_FLAT\020\022\022\032\n\026SONG_ELEMENT_OCTAVE_UP\020\023"
-  "\022\034\n\030SONG_ELEMENT_OCTAVE_DOWN\020\0242d\n\013TuneSe"
-  "rvice\022U\n\010PlayTune\022 .mavsdk.rpc.tune.Play"
+  "\022\034\n\030SONG_ELEMENT_OCTAVE_DOWN\020\0242`\n\013TuneSe"
+  "rvice\022Q\n\010PlayTune\022 .mavsdk.rpc.tune.Play"
   "TuneRequest\032!.mavsdk.rpc.tune.PlayTuneRe"
-  "sponse\"\004\200\265\030\000B\033\n\016io.mavsdk.tuneB\tTuneProt"
-  "ob\006proto3"
+  "sponse\"\000B\033\n\016io.mavsdk.tuneB\tTuneProtob\006p"
+  "roto3"
   ;
 static const ::PROTOBUF_NAMESPACE_ID::internal::DescriptorTable*const descriptor_table_tune_2ftune_2eproto_deps[1] = {
   &::descriptor_table_mavsdk_5foptions_2eproto,
@@ -187,7 +187,7 @@ static ::PROTOBUF_NAMESPACE_ID::internal::SCCInfoBase*const descriptor_table_tun
 static ::PROTOBUF_NAMESPACE_ID::internal::once_flag descriptor_table_tune_2ftune_2eproto_once;
 static bool descriptor_table_tune_2ftune_2eproto_initialized = false;
 const ::PROTOBUF_NAMESPACE_ID::internal::DescriptorTable descriptor_table_tune_2ftune_2eproto = {
-  &descriptor_table_tune_2ftune_2eproto_initialized, descriptor_table_protodef_tune_2ftune_2eproto, "tune/tune.proto", 1209,
+  &descriptor_table_tune_2ftune_2eproto_initialized, descriptor_table_protodef_tune_2ftune_2eproto, "tune/tune.proto", 1205,
   &descriptor_table_tune_2ftune_2eproto_once, descriptor_table_tune_2ftune_2eproto_sccs, descriptor_table_tune_2ftune_2eproto_deps, 4, 1,
   schemas, file_default_instances, TableStruct_tune_2ftune_2eproto::offsets,
   file_level_metadata_tune_2ftune_2eproto, 4, file_level_enum_descriptors_tune_2ftune_2eproto, file_level_service_descriptors_tune_2ftune_2eproto,

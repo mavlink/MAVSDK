@@ -126,9 +126,18 @@ public:
     /**
      * @brief Send a tune to be played by the system.
      *
-     * This function is non-blocking.
+     * This function is non-blocking. See 'play_tune' for the blocking counterpart.
      */
     void play_tune_async(TuneDescription description, const ResultCallback callback);
+
+    /**
+     * @brief Send a tune to be played by the system.
+     *
+     * This function is blocking. See 'play_tune_async' for the non-blocking counterpart.
+     *
+     * @return Result of request.
+     */
+    Result play_tune(TuneDescription description) const;
 
     /**
      * @brief Copy constructor (object is not copyable).

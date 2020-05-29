@@ -22,6 +22,15 @@ void TuneImpl::enable() {}
 
 void TuneImpl::disable() {}
 
+Tune::Result TuneImpl::play_tune(const Tune::TuneDescription& tune)
+{
+    std::promise<Tune::Result> prom;
+    auto fut = prom.get_future();
+
+    play_tune_async(tune, [&prom](const Tune::Result result) { prom.set_value(result); });
+    return fut.get();
+}
+
 void TuneImpl::play_tune_async(
     const Tune::TuneDescription& tune, const Tune::ResultCallback& callback)
 {
