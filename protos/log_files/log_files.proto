@@ -43,7 +43,7 @@ message ProgressData {
 
 // Log file entry type.
 message Entry {
-    uint32 id = 1; // ID of the log file, to specify a file to be download
+    uint32 id = 1; // ID of the log file, to specify a file to be downloaded
     string date = 2; // Date of the log file in UTC in ISO 8601 format "yyyy-mm-ddThh:mm:ssZ"
     uint32 size_bytes = 3; // Size of file in bytes
 }

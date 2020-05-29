@@ -10,7 +10,7 @@ option java_outer_classname = "TuneProto";
 // Enable creating and sending a tune to be played on the system.
 service TuneService {
   // Send a tune to be played by the system.
-  rpc PlayTune(PlayTuneRequest) returns(PlayTuneResponse) { option (mavsdk.options.async_type) = ASYNC; }
+  rpc PlayTune(PlayTuneRequest) returns(PlayTuneResponse) {}
 }
 
 // An element of the tune

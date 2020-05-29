@@ -32,27 +32,27 @@ service FtpService {
     /*
      * Lists items from a remote directory.
      */
-    rpc ListDirectory(ListDirectoryRequest) returns(ListDirectoryResponse) { option (mavsdk.options.async_type) = ASYNC; }
+    rpc ListDirectory(ListDirectoryRequest) returns(ListDirectoryResponse) {}
     /*
      * Creates a remote directory.
      */
-    rpc CreateDirectory(CreateDirectoryRequest) returns(CreateDirectoryResponse) { option (mavsdk.options.async_type) = ASYNC; }
+    rpc CreateDirectory(CreateDirectoryRequest) returns(CreateDirectoryResponse) {}
     /*
      * Removes a remote directory.
      */
-    rpc RemoveDirectory(RemoveDirectoryRequest) returns(RemoveDirectoryResponse) { option (mavsdk.options.async_type) = ASYNC; }
+    rpc RemoveDirectory(RemoveDirectoryRequest) returns(RemoveDirectoryResponse) {}
     /*
      * Removes a remote file.
      */
-    rpc RemoveFile(RemoveFileRequest) returns(RemoveFileResponse) { option (mavsdk.options.async_type) = ASYNC; }
+    rpc RemoveFile(RemoveFileRequest) returns(RemoveFileResponse) {}
     /*
      * Renames a remote file or remote directory.
      */
-    rpc Rename(RenameRequest) returns(RenameResponse) { option (mavsdk.options.async_type) = ASYNC; }
+    rpc Rename(RenameRequest) returns(RenameResponse) {}
     /*
      * Compares a local file to a remote file using a CRC32 checksum.
      */
-    rpc AreFilesIdentical(AreFilesIdenticalRequest) returns(AreFilesIdenticalResponse) { option (mavsdk.options.async_type) = ASYNC; }
+    rpc AreFilesIdentical(AreFilesIdenticalRequest) returns(AreFilesIdenticalResponse) {}
     /*
      * Set root directory for MAVLink FTP server.
      */
