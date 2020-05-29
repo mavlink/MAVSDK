@@ -83,7 +83,7 @@ public:
         _telemetry(_dc.system()),
         _telemetry_service(_telemetry),
         _tune(_dc.system()),
-        _tune_service(_tune),
+        _tune_service(_tune)
     {}
 
     int run();
