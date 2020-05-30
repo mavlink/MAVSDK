@@ -133,38 +133,83 @@ public:
     /**
      * @brief Lists items from a remote directory.
      *
-     * This function is non-blocking.
+     * This function is non-blocking. See 'list_directory' for the blocking counterpart.
      */
     void list_directory_async(std::string remote_dir, const ListDirectoryCallback callback);
 
     /**
+     * @brief Lists items from a remote directory.
+     *
+     * This function is blocking. See 'list_directory_async' for the non-blocking counterpart.
+     *
+     * @return Result of request.
+     */
+    std::pair<Result, std::vector<std::string>> list_directory(std::string remote_dir) const;
+
+    /**
      * @brief Creates a remote directory.
      *
-     * This function is non-blocking.
+     * This function is non-blocking. See 'create_directory' for the blocking counterpart.
      */
     void create_directory_async(std::string remote_dir, const ResultCallback callback);
 
     /**
+     * @brief Creates a remote directory.
+     *
+     * This function is blocking. See 'create_directory_async' for the non-blocking counterpart.
+     *
+     * @return Result of request.
+     */
+    Result create_directory(std::string remote_dir) const;
+
+    /**
      * @brief Removes a remote directory.
      *
-     * This function is non-blocking.
+     * This function is non-blocking. See 'remove_directory' for the blocking counterpart.
      */
     void remove_directory_async(std::string remote_dir, const ResultCallback callback);
 
     /**
+     * @brief Removes a remote directory.
+     *
+     * This function is blocking. See 'remove_directory_async' for the non-blocking counterpart.
+     *
+     * @return Result of request.
+     */
+    Result remove_directory(std::string remote_dir) const;
+
+    /**
      * @brief Removes a remote file.
      *
-     * This function is non-blocking.
+     * This function is non-blocking. See 'remove_file' for the blocking counterpart.
      */
     void remove_file_async(std::string remote_file_path, const ResultCallback callback);
 
     /**
+     * @brief Removes a remote file.
+     *
+     * This function is blocking. See 'remove_file_async' for the non-blocking counterpart.
+     *
+     * @return Result of request.
+     */
+    Result remove_file(std::string remote_file_path) const;
+
+    /**
      * @brief Renames a remote file or remote directory.
      *
-     * This function is non-blocking.
+     * This function is non-blocking. See 'rename' for the blocking counterpart.
      */
     void rename_async(
         std::string remote_from_path, std::string remote_to_path, const ResultCallback callback);
+
+    /**
+     * @brief Renames a remote file or remote directory.
+     *
+     * This function is blocking. See 'rename_async' for the non-blocking counterpart.
+     *
+     * @return Result of request.
+     */
+    Result rename(std::string remote_from_path, std::string remote_to_path) const;
 
     /**
      * @brief Callback type for are_files_identical_async.
@@ -174,12 +219,22 @@ public:
     /**
      * @brief Compares a local file to a remote file using a CRC32 checksum.
      *
-     * This function is non-blocking.
+     * This function is non-blocking. See 'are_files_identical' for the blocking counterpart.
      */
     void are_files_identical_async(
         std::string local_file_path,
         std::string remote_file_path,
         const AreFilesIdenticalCallback callback);
+
+    /**
+     * @brief Compares a local file to a remote file using a CRC32 checksum.
+     *
+     * This function is blocking. See 'are_files_identical_async' for the non-blocking counterpart.
+     *
+     * @return Result of request.
+     */
+    std::pair<Result, bool>
+    are_files_identical(std::string local_file_path, std::string remote_file_path) const;
 
     /**
      * @brief Set root directory for MAVLink FTP server.

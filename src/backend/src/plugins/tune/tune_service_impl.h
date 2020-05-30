@@ -145,8 +145,9 @@ public:
     {
         std::unique_ptr<rpc::tune::TuneDescription> rpc_obj(new rpc::tune::TuneDescription());
 
-        rpc_obj->set_song_elements(
-            translateToRpcstd::vector<SongElement>(tune_description.song_elements));
+        for (const auto& elem : tune_description.song_elements) {
+            rpc_obj->add_song_elements(translateToRpcSongElement(elem));
+        }
 
         rpc_obj->set_tempo(tune_description.tempo);
 
@@ -159,7 +160,8 @@ public:
         mavsdk::Tune::TuneDescription obj;
 
         for (const auto& elem : tune_description.song_elements()) {
-            obj.song_elements.push_back(translateFromRpcSongElement(elem));
+            obj.song_elements.push_back(
+                translateFromRpcSongElement(static_cast<mavsdk::rpc::tune::SongElement>(elem)));
         }
 
         obj.tempo = tune_description.tempo();
@@ -211,7 +213,7 @@ public:
             return grpc::Status::OK;
         }
 
-        auto result = _tune.play_tune(translateFromRpcDescription(request->description()));
+        auto result = _tune.play_tune(translateFromRpcTuneDescription(request->description()));
 
         if (response != nullptr) {
             fillResponseWithResult(response, result);

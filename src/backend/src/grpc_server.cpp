@@ -21,16 +21,21 @@ int GRPCServer::run()
     builder.RegisterService(&_core);
     builder.RegisterService(&_action_service);
     builder.RegisterService(&_calibration_service);
+    builder.RegisterService(&_camera_service);
+    builder.RegisterService(&_follow_me_service);
+    builder.RegisterService(&_ftp_service);
     builder.RegisterService(&_geofence_service);
     builder.RegisterService(&_gimbal_service);
-    builder.RegisterService(&_camera_service);
-    builder.RegisterService(&_mission_service);
-    builder.RegisterService(&_offboard_service);
-    builder.RegisterService(&_telemetry_service);
     builder.RegisterService(&_info_service);
+    builder.RegisterService(&_log_files_service);
+    builder.RegisterService(&_mission_service);
+    builder.RegisterService(&_mission_raw_service);
+    builder.RegisterService(&_mocap_service);
+    builder.RegisterService(&_offboard_service);
     builder.RegisterService(&_param_service);
     builder.RegisterService(&_shell_service);
-    builder.RegisterService(&_mocap_service);
+    builder.RegisterService(&_telemetry_service);
+    builder.RegisterService(&_tune_service);
 
     _server = builder.BuildAndStart();
 

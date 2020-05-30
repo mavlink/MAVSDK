@@ -513,7 +513,8 @@ public:
         obj.setting_description = setting_options.setting_description();
 
         for (const auto& elem : setting_options.options()) {
-            obj.options.push_back(translateFromRpcOption(elem));
+            obj.options.push_back(
+                translateFromRpcOption(static_cast<mavsdk::rpc::camera::Option>(elem)));
         }
 
         obj.is_range = setting_options.is_range();
@@ -690,6 +691,7 @@ public:
                 std::unique_lock<std::mutex> lock(subscribe_mutex);
                 if (!*is_finished && !writer->Write(rpc_response)) {
                     _camera.subscribe_mode(nullptr);
+
                     *is_finished = true;
                     unregister_stream_stop_promise(stream_closed_promise);
                     lock.unlock();
@@ -725,6 +727,7 @@ public:
                 std::unique_lock<std::mutex> lock(subscribe_mutex);
                 if (!*is_finished && !writer->Write(rpc_response)) {
                     _camera.subscribe_information(nullptr);
+
                     *is_finished = true;
                     unregister_stream_stop_promise(stream_closed_promise);
                     lock.unlock();
@@ -760,6 +763,7 @@ public:
                 std::unique_lock<std::mutex> lock(subscribe_mutex);
                 if (!*is_finished && !writer->Write(rpc_response)) {
                     _camera.subscribe_video_stream_info(nullptr);
+
                     *is_finished = true;
                     unregister_stream_stop_promise(stream_closed_promise);
                     lock.unlock();
@@ -795,6 +799,7 @@ public:
                 std::unique_lock<std::mutex> lock(subscribe_mutex);
                 if (!*is_finished && !writer->Write(rpc_response)) {
                     _camera.subscribe_capture_info(nullptr);
+
                     *is_finished = true;
                     unregister_stream_stop_promise(stream_closed_promise);
                     lock.unlock();
@@ -829,6 +834,7 @@ public:
                 std::unique_lock<std::mutex> lock(subscribe_mutex);
                 if (!*is_finished && !writer->Write(rpc_response)) {
                     _camera.subscribe_status(nullptr);
+
                     *is_finished = true;
                     unregister_stream_stop_promise(stream_closed_promise);
                     lock.unlock();
@@ -866,6 +872,7 @@ public:
                 std::unique_lock<std::mutex> lock(subscribe_mutex);
                 if (!*is_finished && !writer->Write(rpc_response)) {
                     _camera.subscribe_current_settings(nullptr);
+
                     *is_finished = true;
                     unregister_stream_stop_promise(stream_closed_promise);
                     lock.unlock();
@@ -903,6 +910,7 @@ public:
                 std::unique_lock<std::mutex> lock(subscribe_mutex);
                 if (!*is_finished && !writer->Write(rpc_response)) {
                     _camera.subscribe_possible_setting_options(nullptr);
+
                     *is_finished = true;
                     unregister_stream_stop_promise(stream_closed_promise);
                     lock.unlock();
@@ -947,6 +955,7 @@ public:
 
         if (response != nullptr) {
             fillResponseWithResult(response, result.first);
+
             response->set_allocated_setting(translateToRpcSetting(result.second).release());
         }
 

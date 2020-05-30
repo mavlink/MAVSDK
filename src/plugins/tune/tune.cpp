@@ -20,6 +20,11 @@ void Tune::play_tune_async(TuneDescription description, const ResultCallback cal
     _impl->play_tune_async(description, callback);
 }
 
+Tune::Result Tune::play_tune(TuneDescription description) const
+{
+    return _impl->play_tune(description);
+}
+
 bool operator==(const Tune::TuneDescription& lhs, const Tune::TuneDescription& rhs)
 {
     return (rhs.song_elements == lhs.song_elements) && (rhs.tempo == lhs.tempo);

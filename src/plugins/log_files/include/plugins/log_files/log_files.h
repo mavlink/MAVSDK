@@ -69,7 +69,7 @@ public:
      * @brief Log file entry type.
      */
     struct Entry {
-        uint32_t id{}; /**< @brief ID of the log file, to specify a file to be download */
+        uint32_t id{}; /**< @brief ID of the log file, to specify a file to be downloaded */
         std::string date{}; /**< @brief Date of the log file in UTC in ISO 8601 format
                                "yyyy-mm-ddThh:mm:ssZ" */
         uint32_t size_bytes{}; /**< @brief Size of file in bytes */

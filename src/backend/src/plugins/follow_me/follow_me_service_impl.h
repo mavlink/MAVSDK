@@ -263,7 +263,8 @@ public:
             return grpc::Status::OK;
         }
 
-        auto result = _follow_me.set_target_location(translateFromRpcLocation(request->location()));
+        auto result =
+            _follow_me.set_target_location(translateFromRpcTargetLocation(request->location()));
 
         if (response != nullptr) {
             fillResponseWithResult(response, result);

@@ -140,7 +140,11 @@ public:
 
         if (response != nullptr) {
             fillResponseWithResult(response, result.first);
-            response->set_allocated_entries(translateToRpcEntry(result.second).release());
+
+            for (auto elem : result.second) {
+                auto* ptr = response->add_entries();
+                ptr->CopyFrom(*translateToRpcEntry(elem).release());
+            }
         }
 
         return grpc::Status::OK;
@@ -148,7 +152,7 @@ public:
 
     grpc::Status SubscribeDownloadLogFile(
         grpc::ServerContext* /* context */,
-        const mavsdk::rpc::log_files::SubscribeDownloadLogFileRequest* /* request */,
+        const mavsdk::rpc::log_files::SubscribeDownloadLogFileRequest* request,
         grpc::ServerWriter<rpc::log_files::DownloadLogFileResponse>* writer) override
     {
         auto stream_closed_promise = std::make_shared<std::promise<void>>();
@@ -160,6 +164,8 @@ public:
         std::mutex subscribe_mutex{};
 
         _log_files.download_log_file_async(
+            request->id(),
+            request->path(),
             [this, &writer, &stream_closed_promise, is_finished, &subscribe_mutex](
                 mavsdk::LogFiles::Result result,
                 const mavsdk::LogFiles::ProgressData download_log_file) {
@@ -178,7 +184,6 @@ public:
 
                 std::unique_lock<std::mutex> lock(subscribe_mutex);
                 if (!*is_finished && !writer->Write(rpc_response)) {
-                    _log_files.download_log_file_async(nullptr);
                     *is_finished = true;
                     unregister_stream_stop_promise(stream_closed_promise);
                     lock.unlock();

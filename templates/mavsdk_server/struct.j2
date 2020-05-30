@@ -18,7 +18,13 @@ static std::unique_ptr<rpc::{{ plugin_name.lower_snake_case }}::{{ name.upper_ca
         {% endif %}
     {% else %}
         {% if field.type_info.is_enum %}
+            {% if field.type_info.is_repeated %}
+    for (const auto& elem : {{ name.lower_snake_case }}.{{ field.name.lower_snake_case }}) {
+        rpc_obj->add_{{ field.name.lower_snake_case }}(translateToRpc{{ field.type_info.inner_name }}(elem));
+    }
+            {% else %}
     rpc_obj->set_{{ field.name.lower_snake_case }}(translateToRpc{{ field.type_info.name }}({{ name.lower_snake_case }}.{{ field.name.lower_snake_case }}));
+            {% endif %}
         {% else %}
             {% if field.type_info.is_repeated %}
     for (const auto& elem : {{ name.lower_snake_case }}.{{ field.name.lower_snake_case }}) {
@@ -51,7 +57,7 @@ static {{ package.lower_snake_case.split('.')[0] }}::{{ plugin_name.upper_camel_
     {% else %}
         {% if field.type_info.is_repeated %}
             for (const auto& elem : {{ name.lower_snake_case }}.{{ field.name.lower_snake_case }}()) {
-                obj.{{ field.name.lower_snake_case }}.push_back(translateFromRpc{{ field.type_info.inner_name }}(elem));
+                obj.{{ field.name.lower_snake_case }}.push_back(translateFromRpc{{ field.type_info.inner_name }}(static_cast<mavsdk::rpc::{{ plugin_name.lower_snake_case }}::{{ field.type_info.inner_name }}>(elem)));
             }
         {% else %}
     obj.{{ field.name.lower_snake_case }} = translateFromRpc{% if field.parent_struct %}{{ field.parent_struct.name.upper_camel_case }}{% endif%}{{ field.type_info.name }}({{ name.lower_snake_case }}.{{ field.name.lower_snake_case }}());

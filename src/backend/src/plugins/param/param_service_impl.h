@@ -93,6 +93,7 @@ public:
 
         if (response != nullptr) {
             fillResponseWithResult(response, result.first);
+
             response->set_value(result.second);
         }
 
@@ -132,6 +133,7 @@ public:
 
         if (response != nullptr) {
             fillResponseWithResult(response, result.first);
+
             response->set_value(result.second);
         }
 

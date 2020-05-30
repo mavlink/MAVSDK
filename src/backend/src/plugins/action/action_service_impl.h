@@ -276,6 +276,7 @@ public:
 
         if (response != nullptr) {
             fillResponseWithResult(response, result.first);
+
             response->set_altitude(result.second);
         }
 
@@ -310,6 +311,7 @@ public:
 
         if (response != nullptr) {
             fillResponseWithResult(response, result.first);
+
             response->set_speed(result.second);
         }
 
@@ -344,6 +346,7 @@ public:
 
         if (response != nullptr) {
             fillResponseWithResult(response, result.first);
+
             response->set_relative_altitude_m(result.second);
         }
 

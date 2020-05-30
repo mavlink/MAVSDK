@@ -1,6 +1,6 @@
 cmake_minimum_required(VERSION 3.1)
 
-set(COMPONENTS_LIST action calibration camera core geofence gimbal info mission mocap offboard param shell telemetry)
+set(COMPONENTS_LIST action calibration camera core follow_me ftp geofence gimbal info log_files mission mission_raw mocap offboard param shell telemetry tune)
 
 foreach(COMPONENT_NAME ${COMPONENTS_LIST})
     add_library(${COMPONENT_NAME}_proto_gens STATIC
@@ -46,16 +46,21 @@ target_link_libraries(mavsdk_server
     PRIVATE
     mavsdk_action
     mavsdk_calibration
+    mavsdk_camera
+    mavsdk_follow_me
+    mavsdk_ftp
     mavsdk_geofence
     mavsdk_gimbal
-    mavsdk_camera
-    mavsdk_mission
-    mavsdk_offboard
-    mavsdk_telemetry
     mavsdk_info
+    mavsdk_log_files
+    mavsdk_mission
+    mavsdk_mission_raw
+    mavsdk_mocap
+    mavsdk_offboard
     mavsdk_param
     mavsdk_shell
-    mavsdk_mocap
+    mavsdk_telemetry
+    mavsdk_tune
     mavsdk
     gRPC::grpc++
     ${COMPONENTS_PROTOGENS}
