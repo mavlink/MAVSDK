@@ -79,6 +79,8 @@ public:
                 return rpc::gimbal::GimbalResult_Result_RESULT_ERROR;
             case mavsdk::Gimbal::Result::Timeout:
                 return rpc::gimbal::GimbalResult_Result_RESULT_TIMEOUT;
+            case mavsdk::Gimbal::Result::Unsupported:
+                return rpc::gimbal::GimbalResult_Result_RESULT_UNSUPPORTED;
         }
     }
 
@@ -97,6 +99,8 @@ public:
                 return mavsdk::Gimbal::Result::Error;
             case rpc::gimbal::GimbalResult_Result_RESULT_TIMEOUT:
                 return mavsdk::Gimbal::Result::Timeout;
+            case rpc::gimbal::GimbalResult_Result_RESULT_UNSUPPORTED:
+                return mavsdk::Gimbal::Result::Unsupported;
         }
     }
 

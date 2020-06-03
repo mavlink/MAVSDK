@@ -235,22 +235,23 @@ const char descriptor_table_protodef_gimbal_2fgimbal_2eproto[] PROTOBUF_SECTION_
   "itude_deg\030\001 \001(\001\022\025\n\rlongitude_deg\030\002 \001(\001\022\022"
   "\n\naltitude_m\030\003 \001(\002\"P\n\026SetRoiLocationResp"
   "onse\0226\n\rgimbal_result\030\001 \001(\0132\037.mavsdk.rpc"
-  ".gimbal.GimbalResult\"\262\001\n\014GimbalResult\0226\n"
+  ".gimbal.GimbalResult\"\312\001\n\014GimbalResult\0226\n"
   "\006result\030\001 \001(\0162&.mavsdk.rpc.gimbal.Gimbal"
-  "Result.Result\022\022\n\nresult_str\030\002 \001(\t\"V\n\006Res"
+  "Result.Result\022\022\n\nresult_str\030\002 \001(\t\"n\n\006Res"
   "ult\022\022\n\016RESULT_UNKNOWN\020\000\022\022\n\016RESULT_SUCCES"
   "S\020\001\022\020\n\014RESULT_ERROR\020\002\022\022\n\016RESULT_TIMEOUT\020"
-  "\003*B\n\nGimbalMode\022\032\n\026GIMBAL_MODE_YAW_FOLLO"
-  "W\020\000\022\030\n\024GIMBAL_MODE_YAW_LOCK\020\0012\265\002\n\rGimbal"
-  "Service\022g\n\016SetPitchAndYaw\022(.mavsdk.rpc.g"
-  "imbal.SetPitchAndYawRequest\032).mavsdk.rpc"
-  ".gimbal.SetPitchAndYawResponse\"\000\022R\n\007SetM"
-  "ode\022!.mavsdk.rpc.gimbal.SetModeRequest\032\""
-  ".mavsdk.rpc.gimbal.SetModeResponse\"\000\022g\n\016"
-  "SetRoiLocation\022(.mavsdk.rpc.gimbal.SetRo"
-  "iLocationRequest\032).mavsdk.rpc.gimbal.Set"
-  "RoiLocationResponse\"\000B\037\n\020io.mavsdk.gimba"
-  "lB\013GimbalProtob\006proto3"
+  "\003\022\026\n\022RESULT_UNSUPPORTED\020\004*B\n\nGimbalMode\022"
+  "\032\n\026GIMBAL_MODE_YAW_FOLLOW\020\000\022\030\n\024GIMBAL_MO"
+  "DE_YAW_LOCK\020\0012\265\002\n\rGimbalService\022g\n\016SetPi"
+  "tchAndYaw\022(.mavsdk.rpc.gimbal.SetPitchAn"
+  "dYawRequest\032).mavsdk.rpc.gimbal.SetPitch"
+  "AndYawResponse\"\000\022R\n\007SetMode\022!.mavsdk.rpc"
+  ".gimbal.SetModeRequest\032\".mavsdk.rpc.gimb"
+  "al.SetModeResponse\"\000\022g\n\016SetRoiLocation\022("
+  ".mavsdk.rpc.gimbal.SetRoiLocationRequest"
+  "\032).mavsdk.rpc.gimbal.SetRoiLocationRespo"
+  "nse\"\000B\037\n\020io.mavsdk.gimbalB\013GimbalProtob\006"
+  "proto3"
   ;
 static const ::PROTOBUF_NAMESPACE_ID::internal::DescriptorTable*const descriptor_table_gimbal_2fgimbal_2eproto_deps[1] = {
 };
@@ -266,7 +267,7 @@ static ::PROTOBUF_NAMESPACE_ID::internal::SCCInfoBase*const descriptor_table_gim
 static ::PROTOBUF_NAMESPACE_ID::internal::once_flag descriptor_table_gimbal_2fgimbal_2eproto_once;
 static bool descriptor_table_gimbal_2fgimbal_2eproto_initialized = false;
 const ::PROTOBUF_NAMESPACE_ID::internal::DescriptorTable descriptor_table_gimbal_2fgimbal_2eproto = {
-  &descriptor_table_gimbal_2fgimbal_2eproto_initialized, descriptor_table_protodef_gimbal_2fgimbal_2eproto, "gimbal/gimbal.proto", 1102,
+  &descriptor_table_gimbal_2fgimbal_2eproto_initialized, descriptor_table_protodef_gimbal_2fgimbal_2eproto, "gimbal/gimbal.proto", 1126,
   &descriptor_table_gimbal_2fgimbal_2eproto_once, descriptor_table_gimbal_2fgimbal_2eproto_sccs, descriptor_table_gimbal_2fgimbal_2eproto_deps, 7, 0,
   schemas, file_default_instances, TableStruct_gimbal_2fgimbal_2eproto::offsets,
   file_level_metadata_gimbal_2fgimbal_2eproto, 7, file_level_enum_descriptors_gimbal_2fgimbal_2eproto, file_level_service_descriptors_gimbal_2fgimbal_2eproto,
@@ -287,6 +288,7 @@ bool GimbalResult_Result_IsValid(int value) {
     case 1:
     case 2:
     case 3:
+    case 4:
       return true;
     default:
       return false;
@@ -298,6 +300,7 @@ constexpr GimbalResult_Result GimbalResult::RESULT_UNKNOWN;
 constexpr GimbalResult_Result GimbalResult::RESULT_SUCCESS;
 constexpr GimbalResult_Result GimbalResult::RESULT_ERROR;
 constexpr GimbalResult_Result GimbalResult::RESULT_TIMEOUT;
+constexpr GimbalResult_Result GimbalResult::RESULT_UNSUPPORTED;
 constexpr GimbalResult_Result GimbalResult::Result_MIN;
 constexpr GimbalResult_Result GimbalResult::Result_MAX;
 constexpr int GimbalResult::Result_ARRAYSIZE;

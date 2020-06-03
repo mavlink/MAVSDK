@@ -66,6 +66,7 @@ public:
         Success, /**< @brief Command was accepted. */
         Error, /**< @brief Error occurred sending the command. */
         Timeout, /**< @brief Command timed out. */
+        Unsupported, /**< @brief Functionality not supported. */
     };
 
     /**

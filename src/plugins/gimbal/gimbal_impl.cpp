@@ -1,6 +1,7 @@
 #include "gimbal_impl.h"
 #include "global_include.h"
 #include "gimbal_protocol_v1.h"
+#include "gimbal_protocol_v2.h"
 #include <chrono>
 #include <cmath>
 #include <functional>
@@ -63,7 +64,7 @@ void GimbalImpl::process_gimbal_manager_information(const mavlink_message_t& mes
                << " was discovered";
 
     _parent->unregister_timeout_handler(_protocol_cookie);
-    //_gimbal_protocol.reset(new GimbalProtocolV2(*_parent));
+    _gimbal_protocol.reset(new GimbalProtocolV2(*_parent));
 }
 
 Gimbal::Result GimbalImpl::set_pitch_and_yaw(float pitch_deg, float yaw_deg)
