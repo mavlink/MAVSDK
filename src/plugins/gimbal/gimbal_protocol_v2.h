@@ -7,7 +7,8 @@ namespace mavsdk {
 
 class GimbalProtocolV2 : public GimbalProtocolBase {
 public:
-    GimbalProtocolV2(SystemImpl& system_impl);
+    GimbalProtocolV2(
+        SystemImpl& system_impl, const mavlink_gimbal_manager_information_t& information);
     ~GimbalProtocolV2() = default;
 
     Gimbal::Result set_pitch_and_yaw(float pitch_deg, float yaw_deg) override;
@@ -30,6 +31,9 @@ public:
         Gimbal::ResultCallback callback) override;
 
 private:
+    void set_gimbal_information(const mavlink_gimbal_manager_information_t& information);
+
+    uint8_t _gimbal_device_id{0};
 };
 
 } // namespace mavsdk

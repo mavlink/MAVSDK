@@ -59,12 +59,12 @@ void GimbalImpl::process_gimbal_manager_information(const mavlink_message_t& mes
     mavlink_gimbal_manager_information_t gimbal_manager_information;
     mavlink_msg_gimbal_manager_information_decode(&message, &gimbal_manager_information);
 
-    LogDebug() << "Using Gimbal Version 2 as gimbal manager for gimbal device "
+    LogDebug() << "Using Gimbal Version 2 as gimbal manager information for gimbal device "
                << static_cast<int>(gimbal_manager_information.gimbal_device_id)
                << " was discovered";
 
     _parent->unregister_timeout_handler(_protocol_cookie);
-    _gimbal_protocol.reset(new GimbalProtocolV2(*_parent));
+    _gimbal_protocol.reset(new GimbalProtocolV2(*_parent, gimbal_manager_information));
 }
 
 Gimbal::Result GimbalImpl::set_pitch_and_yaw(float pitch_deg, float yaw_deg)
