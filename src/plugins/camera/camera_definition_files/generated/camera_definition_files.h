@@ -14,6 +14,10 @@
   
   const int e10txml_size = 13781; 
 
+  extern const char e30zxml[];
+  
+  const int e30zxml_size = 20658; 
+
   extern const char e50xml[];
   
   const int e50xml_size = 30430; 
