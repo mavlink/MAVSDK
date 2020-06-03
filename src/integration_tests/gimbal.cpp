@@ -19,6 +19,8 @@ void send_gimbal_roi_location(
 void receive_gimbal_result(Gimbal::Result result);
 void receive_gimbal_attitude_euler_angles(Telemetry::EulerAngle euler_angle);
 
+// Note, this test does not work in SITL because the gimbal does not move
+// unless it is armed.
 TEST(SitlTestGimbal, GimbalMove)
 {
     Mavsdk mavsdk;
@@ -29,6 +31,7 @@ TEST(SitlTestGimbal, GimbalMove)
     // Wait for system to connect via heartbeat.
     std::this_thread::sleep_for(std::chrono::seconds(2));
     System& system = mavsdk.system();
+
     // FIXME: This is what it should be, for now though with the typhoon_h480
     //        SITL simulation, the gimbal is hooked up to the autopilot.
     // ASSERT_TRUE(system.has_gimbal());
@@ -79,9 +82,44 @@ TEST(SitlTestGimbal, GimbalTakeoffAndMove)
 
     telemetry->subscribe_camera_attitude_euler(&receive_gimbal_attitude_euler_angles);
 
-    for (int i = 0; i < 500; i += 1) {
-        send_new_gimbal_command(gimbal, i);
-        std::this_thread::sleep_for(std::chrono::milliseconds(10));
+    std::this_thread::sleep_for(std::chrono::seconds(1));
+
+    // Look forward
+    gimbal->set_pitch_and_yaw_async(0.0f, 0.0f, &receive_gimbal_result);
+    std::this_thread::sleep_for(std::chrono::seconds(1));
+
+    // Look right
+    for (int i = 0; i < 90; ++i) {
+        gimbal->set_pitch_and_yaw_async(0.0f, static_cast<float>(i), &receive_gimbal_result);
+        std::this_thread::sleep_for(std::chrono::milliseconds(20));
+    }
+    std::this_thread::sleep_for(std::chrono::seconds(1));
+
+    // Look left
+    for (int i = 90; i >= -90; --i) {
+        gimbal->set_pitch_and_yaw_async(0.0f, static_cast<float>(i), &receive_gimbal_result);
+        std::this_thread::sleep_for(std::chrono::milliseconds(20));
+    }
+    std::this_thread::sleep_for(std::chrono::seconds(1));
+
+    // Look forward
+    for (int i = -90; i <= 0; ++i) {
+        gimbal->set_pitch_and_yaw_async(0.0f, static_cast<float>(i), &receive_gimbal_result);
+        std::this_thread::sleep_for(std::chrono::milliseconds(20));
+    }
+    std::this_thread::sleep_for(std::chrono::seconds(1));
+
+    // Tilt down
+    for (int i = 0; i > -90; --i) {
+        gimbal->set_pitch_and_yaw_async(static_cast<float>(i), 0.0f, &receive_gimbal_result);
+        std::this_thread::sleep_for(std::chrono::milliseconds(20));
+    }
+    std::this_thread::sleep_for(std::chrono::seconds(1));
+
+    // And back up
+    for (int i = -90; i <= 0; ++i) {
+        gimbal->set_pitch_and_yaw_async(static_cast<float>(i), 0.0f, &receive_gimbal_result);
+        std::this_thread::sleep_for(std::chrono::milliseconds(20));
     }
 
     action->land();
@@ -211,6 +249,6 @@ void receive_gimbal_result(Gimbal::Result result)
 
 void receive_gimbal_attitude_euler_angles(Telemetry::EulerAngle euler_angle)
 {
-    LogInfo() << "Received gimbal attitude: " << euler_angle.roll_deg << ", "
-              << euler_angle.pitch_deg << ", " << euler_angle.yaw_deg;
+    UNUSED(euler_angle);
+    LogInfo() << "Received gimbal attitude: " << euler_angle;
 }
