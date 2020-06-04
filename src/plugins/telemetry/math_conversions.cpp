@@ -22,12 +22,12 @@ Telemetry::EulerAngle to_euler_angle_from_quaternion(Telemetry::Quaternion quate
 
 Telemetry::Quaternion to_quaternion_from_euler_angle(Telemetry::EulerAngle euler_angle)
 {
-    const double cos_phi_2 = cos(double(euler_angle.roll_deg) / 2.0);
-    const double sin_phi_2 = sin(double(euler_angle.roll_deg) / 2.0);
-    const double cos_theta_2 = cos(double(euler_angle.pitch_deg) / 2.0);
-    const double sin_theta_2 = sin(double(euler_angle.pitch_deg) / 2.0);
-    const double cos_psi_2 = cos(double(euler_angle.yaw_deg) / 2.0);
-    const double sin_psi_2 = sin(double(euler_angle.yaw_deg) / 2.0);
+    const double cos_phi_2 = cos(double(to_rad_from_deg(euler_angle.roll_deg)) / 2.0);
+    const double sin_phi_2 = sin(double(to_rad_from_deg(euler_angle.roll_deg)) / 2.0);
+    const double cos_theta_2 = cos(double(to_rad_from_deg(euler_angle.pitch_deg)) / 2.0);
+    const double sin_theta_2 = sin(double(to_rad_from_deg(euler_angle.pitch_deg)) / 2.0);
+    const double cos_psi_2 = cos(double(to_rad_from_deg(euler_angle.yaw_deg)) / 2.0);
+    const double sin_psi_2 = sin(double(to_rad_from_deg(euler_angle.yaw_deg)) / 2.0);
 
     Telemetry::Quaternion quaternion;
     quaternion.w = float(cos_phi_2 * cos_theta_2 * cos_psi_2 + sin_phi_2 * sin_theta_2 * sin_psi_2);
