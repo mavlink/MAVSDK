@@ -14,6 +14,7 @@
 using namespace mavsdk;
 
 void send_new_gimbal_command(std::shared_ptr<Gimbal> gimbal, int i);
+void gimbal_pattern(std::shared_ptr<Gimbal> gimbal);
 void send_gimbal_roi_location(
     std::shared_ptr<Gimbal> gimbal, double latitude_deg, double longitude_deg, float altitude_m);
 void receive_gimbal_result(Gimbal::Result result);
@@ -66,6 +67,7 @@ TEST(SitlTestGimbal, GimbalTakeoffAndMove)
     auto telemetry = std::make_shared<Telemetry>(system);
     auto gimbal = std::make_shared<Gimbal>(system);
     auto action = std::make_shared<Action>(system);
+    auto offboard = std::make_shared<Offboard>(system);
 
     while (!telemetry->health_all_ok()) {
         LogInfo() << "waiting for system to be ready";
@@ -82,8 +84,38 @@ TEST(SitlTestGimbal, GimbalTakeoffAndMove)
 
     telemetry->subscribe_camera_attitude_euler(&receive_gimbal_attitude_euler_angles);
 
+    std::this_thread::sleep_for(std::chrono::seconds(3));
+
+    // Slowly fly circle.
+    Offboard::VelocityBodyYawspeed circle;
+    circle.forward_m_s = 0.5f;
+    circle.right_m_s = 0.0f;
+    circle.down_m_s = 0.0f;
+    circle.yawspeed_deg_s = 10.0f;
+
+    EXPECT_EQ(offboard->set_velocity_body(circle), Offboard::Result::Success);
+    EXPECT_EQ(offboard->start(), Offboard::Result::Success);
+
     std::this_thread::sleep_for(std::chrono::seconds(1));
 
+    // First use gimbal in yaw follow mode.
+    EXPECT_EQ(gimbal->set_mode(Gimbal::GimbalMode::YawFollow), Gimbal::Result::Success);
+
+    gimbal_pattern(gimbal);
+    std::this_thread::sleep_for(std::chrono::seconds(1));
+
+    // Now set to lock mode
+    EXPECT_EQ(gimbal->set_mode(Gimbal::GimbalMode::YawLock), Gimbal::Result::Success);
+
+    gimbal_pattern(gimbal);
+    std::this_thread::sleep_for(std::chrono::seconds(1));
+
+    action->land();
+    std::this_thread::sleep_for(std::chrono::seconds(3));
+}
+
+void gimbal_pattern(std::shared_ptr<Gimbal> gimbal)
+{
     // Look forward
     gimbal->set_pitch_and_yaw_async(0.0f, 0.0f, &receive_gimbal_result);
     std::this_thread::sleep_for(std::chrono::seconds(1));
@@ -121,9 +153,6 @@ TEST(SitlTestGimbal, GimbalTakeoffAndMove)
         gimbal->set_pitch_and_yaw_async(static_cast<float>(i), 0.0f, &receive_gimbal_result);
         std::this_thread::sleep_for(std::chrono::milliseconds(20));
     }
-
-    action->land();
-    std::this_thread::sleep_for(std::chrono::seconds(3));
 }
 
 TEST(SitlTestGimbal, GimbalROIOffboard)
