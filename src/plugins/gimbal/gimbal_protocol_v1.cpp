@@ -47,6 +47,9 @@ Gimbal::Result GimbalProtocolV1::set_mode(const Gimbal::GimbalMode gimbal_mode)
 {
     MAVLinkCommands::CommandInt command{};
 
+    // Correct here would actually be to:
+    // - set yaw stabilize / param4 to 0 as usual
+    // - set param7/paramz to 2.
     command.command =
         MAV_CMD_DO_MOUNT_CONFIGURE; // Mission command to configure a camera or antenna mount
     command.params.param1 = float(MAV_MOUNT_MODE_MAVLINK_TARGETING); // Mount operation mode
@@ -67,6 +70,9 @@ void GimbalProtocolV1::set_mode_async(
 {
     MAVLinkCommands::CommandInt command{};
 
+    // Correct here would actually be to:
+    // - set yaw stabilize / param4 to 0 as usual
+    // - set param7/paramz to 2.
     command.command = MAV_CMD_DO_MOUNT_CONFIGURE;
     command.params.param1 = float(MAV_MOUNT_MODE_MAVLINK_TARGETING); // Mount operation mode
     command.params.param2 = 0.0f; // stabilize roll

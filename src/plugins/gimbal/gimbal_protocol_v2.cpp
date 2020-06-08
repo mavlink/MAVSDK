@@ -28,7 +28,9 @@ Gimbal::Result GimbalProtocolV2::set_pitch_and_yaw(float pitch_deg, float yaw_de
     float quaternion[4];
     mavlink_euler_to_quaternion(roll_rad, pitch_rad, yaw_rad, quaternion);
 
-    const uint32_t flags = GIMBAL_MANAGER_FLAGS_ROLL_LOCK | GIMBAL_MANAGER_FLAGS_PITCH_LOCK;
+    const uint32_t flags =
+        GIMBAL_MANAGER_FLAGS_ROLL_LOCK | GIMBAL_MANAGER_FLAGS_PITCH_LOCK |
+        ((_gimbal_mode == Gimbal::GimbalMode::YawLock) ? GIMBAL_MANAGER_FLAGS_YAW_LOCK : 0);
 
     mavlink_message_t message;
     mavlink_msg_gimbal_manager_set_attitude_pack(
@@ -61,20 +63,19 @@ void GimbalProtocolV2::set_pitch_and_yaw_async(
 
 Gimbal::Result GimbalProtocolV2::set_mode(const Gimbal::GimbalMode gimbal_mode)
 {
-    UNUSED(gimbal_mode);
-
-    return Gimbal::Result::Unsupported;
+    _gimbal_mode = gimbal_mode;
+    return Gimbal::Result::Success;
 }
 
 void GimbalProtocolV2::set_mode_async(
     const Gimbal::GimbalMode gimbal_mode, Gimbal::ResultCallback callback)
 {
-    UNUSED(gimbal_mode);
+    _gimbal_mode = gimbal_mode;
 
     if (callback) {
         auto temp_callback = callback;
         _system_impl.call_user_callback(
-            [temp_callback]() { temp_callback(Gimbal::Result::Unsupported); });
+            [temp_callback]() { temp_callback(Gimbal::Result::Success); });
     }
 }
 

@@ -34,6 +34,7 @@ private:
     void set_gimbal_information(const mavlink_gimbal_manager_information_t& information);
 
     uint8_t _gimbal_device_id{0};
+    Gimbal::GimbalMode _gimbal_mode{Gimbal::GimbalMode::YawFollow};
 };
 
 } // namespace mavsdk
