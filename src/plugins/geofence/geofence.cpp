@@ -44,12 +44,12 @@ std::ostream& operator<<(std::ostream& str, Geofence::Point const& point)
     return str;
 }
 
-std::ostream& operator<<(std::ostream& str, Geofence::Polygon::Type const& type)
+std::ostream& operator<<(std::ostream& str, Geofence::Polygon::FenceType const& fence_type)
 {
-    switch (type) {
-        case Geofence::Polygon::Type::Inclusion:
+    switch (fence_type) {
+        case Geofence::Polygon::FenceType::Inclusion:
             return str << "Inclusion";
-        case Geofence::Polygon::Type::Exclusion:
+        case Geofence::Polygon::FenceType::Exclusion:
             return str << "Exclusion";
         default:
             return str << "Unknown";
@@ -57,7 +57,7 @@ std::ostream& operator<<(std::ostream& str, Geofence::Polygon::Type const& type)
 }
 bool operator==(const Geofence::Polygon& lhs, const Geofence::Polygon& rhs)
 {
-    return (rhs.points == lhs.points) && (rhs.type == lhs.type);
+    return (rhs.points == lhs.points) && (rhs.fence_type == lhs.fence_type);
 }
 
 std::ostream& operator<<(std::ostream& str, Geofence::Polygon const& polygon)
@@ -69,7 +69,7 @@ std::ostream& operator<<(std::ostream& str, Geofence::Polygon const& polygon)
         str << *it;
         str << (it + 1 != polygon.points.end() ? ", " : "]\n");
     }
-    str << "    type: " << polygon.type << '\n';
+    str << "    fence_type: " << polygon.fence_type << '\n';
     str << '}';
     return str;
 }

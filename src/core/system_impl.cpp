@@ -971,7 +971,7 @@ MAVLinkCommands::Result SystemImpl::set_flight_mode(FlightMode system_mode, uint
 }
 
 void SystemImpl::set_flight_mode_async(
-    FlightMode system_mode, commandResultCallback callback, uint8_t component_id)
+    FlightMode system_mode, CommandResultCallback callback, uint8_t component_id)
 {
     std::pair<MAVLinkCommands::Result, MAVLinkCommands::CommandLong> result =
         make_command_flight_mode(system_mode, component_id);
@@ -1063,7 +1063,7 @@ MAVLinkCommands::Result SystemImpl::send_command(MAVLinkCommands::CommandInt& co
 }
 
 void SystemImpl::send_command_async(
-    MAVLinkCommands::CommandLong command, const commandResultCallback callback)
+    MAVLinkCommands::CommandLong command, const CommandResultCallback callback)
 {
     if (target_address.system_id == 0 && _components.size() == 0) {
         if (callback) {
@@ -1077,7 +1077,7 @@ void SystemImpl::send_command_async(
 }
 
 void SystemImpl::send_command_async(
-    MAVLinkCommands::CommandInt command, const commandResultCallback callback)
+    MAVLinkCommands::CommandInt command, const CommandResultCallback callback)
 {
     if (target_address.system_id == 0 && _components.size() == 0) {
         if (callback) {
@@ -1098,7 +1098,7 @@ SystemImpl::set_msg_rate(uint16_t message_id, double rate_hz, uint8_t component_
 }
 
 void SystemImpl::set_msg_rate_async(
-    uint16_t message_id, double rate_hz, commandResultCallback callback, uint8_t component_id)
+    uint16_t message_id, double rate_hz, CommandResultCallback callback, uint8_t component_id)
 {
     MAVLinkCommands::CommandLong command = make_command_msg_rate(message_id, rate_hz, component_id);
     send_command_async(command, callback);

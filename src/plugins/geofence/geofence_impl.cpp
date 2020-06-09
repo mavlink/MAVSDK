@@ -55,11 +55,11 @@ GeofenceImpl::assemble_items(const std::vector<Geofence::Polygon>& polygons)
     uint16_t sequence = 0;
     for (auto& polygon : polygons) {
         uint16_t command;
-        switch (polygon.type) {
-            case Geofence::Polygon::Type::Inclusion:
+        switch (polygon.fence_type) {
+            case Geofence::Polygon::FenceType::Inclusion:
                 command = MAV_CMD_NAV_FENCE_POLYGON_VERTEX_INCLUSION;
                 break;
-            case Geofence::Polygon::Type::Exclusion:
+            case Geofence::Polygon::FenceType::Exclusion:
                 command = MAV_CMD_NAV_FENCE_POLYGON_VERTEX_EXCLUSION;
                 break;
             default:

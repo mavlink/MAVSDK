@@ -72,20 +72,21 @@ public:
         /**
          * @brief Geofence polygon types.
          */
-        enum class Type {
+        enum class FenceType {
             Inclusion, /**< @brief Type representing an inclusion fence. */
             Exclusion, /**< @brief Type representing an exclusion fence. */
         };
 
         /**
-         * @brief Stream operator to print information about a `Geofence::Type`.
+         * @brief Stream operator to print information about a `Geofence::FenceType`.
          *
          * @return A reference to the stream.
          */
-        friend std::ostream& operator<<(std::ostream& str, Geofence::Polygon::Type const& type);
+        friend std::ostream&
+        operator<<(std::ostream& str, Geofence::Polygon::FenceType const& fence_type);
 
         std::vector<Point> points{}; /**< @brief Points defining the polygon */
-        Type type{}; /**< @brief Fence type */
+        FenceType fence_type{}; /**< @brief Fence type */
     };
 
     /**

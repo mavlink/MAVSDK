@@ -87,30 +87,30 @@ namespace mavsdk {
 namespace rpc {
 namespace geofence {
 
-enum Polygon_Type : int {
-  Polygon_Type_TYPE_INCLUSION = 0,
-  Polygon_Type_TYPE_EXCLUSION = 1,
-  Polygon_Type_Polygon_Type_INT_MIN_SENTINEL_DO_NOT_USE_ = std::numeric_limits<::PROTOBUF_NAMESPACE_ID::int32>::min(),
-  Polygon_Type_Polygon_Type_INT_MAX_SENTINEL_DO_NOT_USE_ = std::numeric_limits<::PROTOBUF_NAMESPACE_ID::int32>::max()
+enum Polygon_FenceType : int {
+  Polygon_FenceType_FENCE_TYPE_INCLUSION = 0,
+  Polygon_FenceType_FENCE_TYPE_EXCLUSION = 1,
+  Polygon_FenceType_Polygon_FenceType_INT_MIN_SENTINEL_DO_NOT_USE_ = std::numeric_limits<::PROTOBUF_NAMESPACE_ID::int32>::min(),
+  Polygon_FenceType_Polygon_FenceType_INT_MAX_SENTINEL_DO_NOT_USE_ = std::numeric_limits<::PROTOBUF_NAMESPACE_ID::int32>::max()
 };
-bool Polygon_Type_IsValid(int value);
-constexpr Polygon_Type Polygon_Type_Type_MIN = Polygon_Type_TYPE_INCLUSION;
-constexpr Polygon_Type Polygon_Type_Type_MAX = Polygon_Type_TYPE_EXCLUSION;
-constexpr int Polygon_Type_Type_ARRAYSIZE = Polygon_Type_Type_MAX + 1;
+bool Polygon_FenceType_IsValid(int value);
+constexpr Polygon_FenceType Polygon_FenceType_FenceType_MIN = Polygon_FenceType_FENCE_TYPE_INCLUSION;
+constexpr Polygon_FenceType Polygon_FenceType_FenceType_MAX = Polygon_FenceType_FENCE_TYPE_EXCLUSION;
+constexpr int Polygon_FenceType_FenceType_ARRAYSIZE = Polygon_FenceType_FenceType_MAX + 1;
 
-const ::PROTOBUF_NAMESPACE_ID::EnumDescriptor* Polygon_Type_descriptor();
+const ::PROTOBUF_NAMESPACE_ID::EnumDescriptor* Polygon_FenceType_descriptor();
 template<typename T>
-inline const std::string& Polygon_Type_Name(T enum_t_value) {
-  static_assert(::std::is_same<T, Polygon_Type>::value ||
+inline const std::string& Polygon_FenceType_Name(T enum_t_value) {
+  static_assert(::std::is_same<T, Polygon_FenceType>::value ||
     ::std::is_integral<T>::value,
-    "Incorrect type passed to function Polygon_Type_Name.");
+    "Incorrect type passed to function Polygon_FenceType_Name.");
   return ::PROTOBUF_NAMESPACE_ID::internal::NameOfEnum(
-    Polygon_Type_descriptor(), enum_t_value);
+    Polygon_FenceType_descriptor(), enum_t_value);
 }
-inline bool Polygon_Type_Parse(
-    const std::string& name, Polygon_Type* value) {
-  return ::PROTOBUF_NAMESPACE_ID::internal::ParseNamedEnum<Polygon_Type>(
-    Polygon_Type_descriptor(), name, value);
+inline bool Polygon_FenceType_Parse(
+    const std::string& name, Polygon_FenceType* value) {
+  return ::PROTOBUF_NAMESPACE_ID::internal::ParseNamedEnum<Polygon_FenceType>(
+    Polygon_FenceType_descriptor(), name, value);
 }
 enum GeofenceResult_Result : int {
   GeofenceResult_Result_RESULT_UNKNOWN = 0,
@@ -386,41 +386,41 @@ class Polygon :
 
   // nested types ----------------------------------------------------
 
-  typedef Polygon_Type Type;
-  static constexpr Type TYPE_INCLUSION =
-    Polygon_Type_TYPE_INCLUSION;
-  static constexpr Type TYPE_EXCLUSION =
-    Polygon_Type_TYPE_EXCLUSION;
-  static inline bool Type_IsValid(int value) {
-    return Polygon_Type_IsValid(value);
+  typedef Polygon_FenceType FenceType;
+  static constexpr FenceType FENCE_TYPE_INCLUSION =
+    Polygon_FenceType_FENCE_TYPE_INCLUSION;
+  static constexpr FenceType FENCE_TYPE_EXCLUSION =
+    Polygon_FenceType_FENCE_TYPE_EXCLUSION;
+  static inline bool FenceType_IsValid(int value) {
+    return Polygon_FenceType_IsValid(value);
   }
-  static constexpr Type Type_MIN =
-    Polygon_Type_Type_MIN;
-  static constexpr Type Type_MAX =
-    Polygon_Type_Type_MAX;
-  static constexpr int Type_ARRAYSIZE =
-    Polygon_Type_Type_ARRAYSIZE;
+  static constexpr FenceType FenceType_MIN =
+    Polygon_FenceType_FenceType_MIN;
+  static constexpr FenceType FenceType_MAX =
+    Polygon_FenceType_FenceType_MAX;
+  static constexpr int FenceType_ARRAYSIZE =
+    Polygon_FenceType_FenceType_ARRAYSIZE;
   static inline const ::PROTOBUF_NAMESPACE_ID::EnumDescriptor*
-  Type_descriptor() {
-    return Polygon_Type_descriptor();
+  FenceType_descriptor() {
+    return Polygon_FenceType_descriptor();
   }
   template<typename T>
-  static inline const std::string& Type_Name(T enum_t_value) {
-    static_assert(::std::is_same<T, Type>::value ||
+  static inline const std::string& FenceType_Name(T enum_t_value) {
+    static_assert(::std::is_same<T, FenceType>::value ||
       ::std::is_integral<T>::value,
-      "Incorrect type passed to function Type_Name.");
-    return Polygon_Type_Name(enum_t_value);
+      "Incorrect type passed to function FenceType_Name.");
+    return Polygon_FenceType_Name(enum_t_value);
   }
-  static inline bool Type_Parse(const std::string& name,
-      Type* value) {
-    return Polygon_Type_Parse(name, value);
+  static inline bool FenceType_Parse(const std::string& name,
+      FenceType* value) {
+    return Polygon_FenceType_Parse(name, value);
   }
 
   // accessors -------------------------------------------------------
 
   enum : int {
     kPointsFieldNumber = 1,
-    kTypeFieldNumber = 2,
+    kFenceTypeFieldNumber = 2,
   };
   // repeated .mavsdk.rpc.geofence.Point points = 1;
   int points_size() const;
@@ -440,13 +440,13 @@ class Polygon :
   const ::PROTOBUF_NAMESPACE_ID::RepeatedPtrField< ::mavsdk::rpc::geofence::Point >&
       points() const;
 
-  // .mavsdk.rpc.geofence.Polygon.Type type = 2;
-  void clear_type();
-  ::mavsdk::rpc::geofence::Polygon_Type type() const;
-  void set_type(::mavsdk::rpc::geofence::Polygon_Type value);
+  // .mavsdk.rpc.geofence.Polygon.FenceType fence_type = 2;
+  void clear_fence_type();
+  ::mavsdk::rpc::geofence::Polygon_FenceType fence_type() const;
+  void set_fence_type(::mavsdk::rpc::geofence::Polygon_FenceType value);
   private:
-  ::mavsdk::rpc::geofence::Polygon_Type _internal_type() const;
-  void _internal_set_type(::mavsdk::rpc::geofence::Polygon_Type value);
+  ::mavsdk::rpc::geofence::Polygon_FenceType _internal_fence_type() const;
+  void _internal_set_fence_type(::mavsdk::rpc::geofence::Polygon_FenceType value);
   public:
 
   // @@protoc_insertion_point(class_scope:mavsdk.rpc.geofence.Polygon)
@@ -455,7 +455,7 @@ class Polygon :
 
   ::PROTOBUF_NAMESPACE_ID::internal::InternalMetadataWithArena _internal_metadata_;
   ::PROTOBUF_NAMESPACE_ID::RepeatedPtrField< ::mavsdk::rpc::geofence::Point > points_;
-  int type_;
+  int fence_type_;
   mutable ::PROTOBUF_NAMESPACE_ID::internal::CachedSize _cached_size_;
   friend struct ::TableStruct_geofence_2fgeofence_2eproto;
 };
@@ -1010,24 +1010,24 @@ Polygon::points() const {
   return points_;
 }
 
-// .mavsdk.rpc.geofence.Polygon.Type type = 2;
-inline void Polygon::clear_type() {
-  type_ = 0;
+// .mavsdk.rpc.geofence.Polygon.FenceType fence_type = 2;
+inline void Polygon::clear_fence_type() {
+  fence_type_ = 0;
 }
-inline ::mavsdk::rpc::geofence::Polygon_Type Polygon::_internal_type() const {
-  return static_cast< ::mavsdk::rpc::geofence::Polygon_Type >(type_);
+inline ::mavsdk::rpc::geofence::Polygon_FenceType Polygon::_internal_fence_type() const {
+  return static_cast< ::mavsdk::rpc::geofence::Polygon_FenceType >(fence_type_);
 }
-inline ::mavsdk::rpc::geofence::Polygon_Type Polygon::type() const {
-  // @@protoc_insertion_point(field_get:mavsdk.rpc.geofence.Polygon.type)
-  return _internal_type();
+inline ::mavsdk::rpc::geofence::Polygon_FenceType Polygon::fence_type() const {
+  // @@protoc_insertion_point(field_get:mavsdk.rpc.geofence.Polygon.fence_type)
+  return _internal_fence_type();
 }
-inline void Polygon::_internal_set_type(::mavsdk::rpc::geofence::Polygon_Type value) {
+inline void Polygon::_internal_set_fence_type(::mavsdk::rpc::geofence::Polygon_FenceType value) {
   
-  type_ = value;
+  fence_type_ = value;
 }
-inline void Polygon::set_type(::mavsdk::rpc::geofence::Polygon_Type value) {
-  _internal_set_type(value);
-  // @@protoc_insertion_point(field_set:mavsdk.rpc.geofence.Polygon.type)
+inline void Polygon::set_fence_type(::mavsdk::rpc::geofence::Polygon_FenceType value) {
+  _internal_set_fence_type(value);
+  // @@protoc_insertion_point(field_set:mavsdk.rpc.geofence.Polygon.fence_type)
 }
 
 // -------------------------------------------------------------------
@@ -1241,10 +1241,10 @@ inline void GeofenceResult::set_allocated_result_str(std::string* result_str) {
 
 PROTOBUF_NAMESPACE_OPEN
 
-template <> struct is_proto_enum< ::mavsdk::rpc::geofence::Polygon_Type> : ::std::true_type {};
+template <> struct is_proto_enum< ::mavsdk::rpc::geofence::Polygon_FenceType> : ::std::true_type {};
 template <>
-inline const EnumDescriptor* GetEnumDescriptor< ::mavsdk::rpc::geofence::Polygon_Type>() {
-  return ::mavsdk::rpc::geofence::Polygon_Type_descriptor();
+inline const EnumDescriptor* GetEnumDescriptor< ::mavsdk::rpc::geofence::Polygon_FenceType>() {
+  return ::mavsdk::rpc::geofence::Polygon_FenceType_descriptor();
 }
 template <> struct is_proto_enum< ::mavsdk::rpc::geofence::GeofenceResult_Result> : ::std::true_type {};
 template <>

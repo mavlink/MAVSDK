@@ -76,15 +76,15 @@ public:
 
     static FlightMode to_flight_mode_from_custom_mode(uint32_t custom_mode);
 
-    typedef std::function<void(MAVLinkCommands::Result, float)> commandResultCallback;
+    using CommandResultCallback = MAVLinkCommands::CommandResultCallback;
 
     MAVLinkCommands::Result send_command(MAVLinkCommands::CommandLong& command);
     MAVLinkCommands::Result send_command(MAVLinkCommands::CommandInt& command);
 
     void
-    send_command_async(MAVLinkCommands::CommandLong command, const commandResultCallback callback);
+    send_command_async(MAVLinkCommands::CommandLong command, const CommandResultCallback callback);
     void
-    send_command_async(MAVLinkCommands::CommandInt command, const commandResultCallback callback);
+    send_command_async(MAVLinkCommands::CommandInt command, const CommandResultCallback callback);
 
     MAVLinkCommands::Result set_msg_rate(
         uint16_t message_id, double rate_hz, uint8_t component_id = MAV_COMP_ID_AUTOPILOT1);
@@ -92,7 +92,7 @@ public:
     void set_msg_rate_async(
         uint16_t message_id,
         double rate_hz,
-        commandResultCallback callback,
+        CommandResultCallback callback,
         uint8_t component_id = MAV_COMP_ID_AUTOPILOT1);
 
     // Adds unique component ids
@@ -145,7 +145,7 @@ public:
 
     void set_flight_mode_async(
         FlightMode mode,
-        commandResultCallback callback,
+        CommandResultCallback callback,
         uint8_t component_id = MAV_COMP_ID_AUTOPILOT1);
 
     typedef std::function<void(MAVLinkParameters::Result result, float value)>
@@ -282,7 +282,7 @@ private:
 
     MavsdkImpl& _parent;
 
-    commandResultCallback _command_result_callback{nullptr};
+    CommandResultCallback _command_result_callback{nullptr};
 
     std::thread* _system_thread{nullptr};
     std::atomic<bool> _should_exit{false};

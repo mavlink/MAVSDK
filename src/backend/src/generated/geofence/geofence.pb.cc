@@ -134,7 +134,7 @@ const ::PROTOBUF_NAMESPACE_ID::uint32 TableStruct_geofence_2fgeofence_2eproto::o
   ~0u,  // no _oneof_case_
   ~0u,  // no _weak_field_map_
   PROTOBUF_FIELD_OFFSET(::mavsdk::rpc::geofence::Polygon, points_),
-  PROTOBUF_FIELD_OFFSET(::mavsdk::rpc::geofence::Polygon, type_),
+  PROTOBUF_FIELD_OFFSET(::mavsdk::rpc::geofence::Polygon, fence_type_),
   ~0u,  // no _has_bits_
   PROTOBUF_FIELD_OFFSET(::mavsdk::rpc::geofence::UploadGeofenceRequest, _internal_metadata_),
   ~0u,  // no _extensions_
@@ -174,26 +174,27 @@ static ::PROTOBUF_NAMESPACE_ID::Message const * const file_default_instances[] =
 const char descriptor_table_protodef_geofence_2fgeofence_2eproto[] PROTOBUF_SECTION_VARIABLE(protodesc_cold) =
   "\n\027geofence/geofence.proto\022\023mavsdk.rpc.ge"
   "ofence\"4\n\005Point\022\024\n\014latitude_deg\030\001 \001(\001\022\025\n"
-  "\rlongitude_deg\030\002 \001(\001\"\226\001\n\007Polygon\022*\n\006poin"
-  "ts\030\001 \003(\0132\032.mavsdk.rpc.geofence.Point\022/\n\004"
-  "type\030\002 \001(\0162!.mavsdk.rpc.geofence.Polygon"
-  ".Type\".\n\004Type\022\022\n\016TYPE_INCLUSION\020\000\022\022\n\016TYP"
-  "E_EXCLUSION\020\001\"G\n\025UploadGeofenceRequest\022."
-  "\n\010polygons\030\001 \003(\0132\034.mavsdk.rpc.geofence.P"
-  "olygon\"V\n\026UploadGeofenceResponse\022<\n\017geof"
-  "ence_result\030\001 \001(\0132#.mavsdk.rpc.geofence."
-  "GeofenceResult\"\213\002\n\016GeofenceResult\022:\n\006res"
-  "ult\030\001 \001(\0162*.mavsdk.rpc.geofence.Geofence"
-  "Result.Result\022\022\n\nresult_str\030\002 \001(\t\"\250\001\n\006Re"
-  "sult\022\022\n\016RESULT_UNKNOWN\020\000\022\022\n\016RESULT_SUCCE"
-  "SS\020\001\022\020\n\014RESULT_ERROR\020\002\022\"\n\036RESULT_TOO_MAN"
-  "Y_GEOFENCE_ITEMS\020\003\022\017\n\013RESULT_BUSY\020\004\022\022\n\016R"
-  "ESULT_TIMEOUT\020\005\022\033\n\027RESULT_INVALID_ARGUME"
-  "NT\020\0062~\n\017GeofenceService\022k\n\016UploadGeofenc"
-  "e\022*.mavsdk.rpc.geofence.UploadGeofenceRe"
-  "quest\032+.mavsdk.rpc.geofence.UploadGeofen"
-  "ceResponse\"\000B#\n\022io.mavsdk.geofenceB\rGeof"
-  "enceProtob\006proto3"
+  "\rlongitude_deg\030\002 \001(\001\"\262\001\n\007Polygon\022*\n\006poin"
+  "ts\030\001 \003(\0132\032.mavsdk.rpc.geofence.Point\022:\n\n"
+  "fence_type\030\002 \001(\0162&.mavsdk.rpc.geofence.P"
+  "olygon.FenceType\"\?\n\tFenceType\022\030\n\024FENCE_T"
+  "YPE_INCLUSION\020\000\022\030\n\024FENCE_TYPE_EXCLUSION\020"
+  "\001\"G\n\025UploadGeofenceRequest\022.\n\010polygons\030\001"
+  " \003(\0132\034.mavsdk.rpc.geofence.Polygon\"V\n\026Up"
+  "loadGeofenceResponse\022<\n\017geofence_result\030"
+  "\001 \001(\0132#.mavsdk.rpc.geofence.GeofenceResu"
+  "lt\"\213\002\n\016GeofenceResult\022:\n\006result\030\001 \001(\0162*."
+  "mavsdk.rpc.geofence.GeofenceResult.Resul"
+  "t\022\022\n\nresult_str\030\002 \001(\t\"\250\001\n\006Result\022\022\n\016RESU"
+  "LT_UNKNOWN\020\000\022\022\n\016RESULT_SUCCESS\020\001\022\020\n\014RESU"
+  "LT_ERROR\020\002\022\"\n\036RESULT_TOO_MANY_GEOFENCE_I"
+  "TEMS\020\003\022\017\n\013RESULT_BUSY\020\004\022\022\n\016RESULT_TIMEOU"
+  "T\020\005\022\033\n\027RESULT_INVALID_ARGUMENT\020\0062~\n\017Geof"
+  "enceService\022k\n\016UploadGeofence\022*.mavsdk.r"
+  "pc.geofence.UploadGeofenceRequest\032+.mavs"
+  "dk.rpc.geofence.UploadGeofenceResponse\"\000"
+  "B#\n\022io.mavsdk.geofenceB\rGeofenceProtob\006p"
+  "roto3"
   ;
 static const ::PROTOBUF_NAMESPACE_ID::internal::DescriptorTable*const descriptor_table_geofence_2fgeofence_2eproto_deps[1] = {
 };
@@ -207,7 +208,7 @@ static ::PROTOBUF_NAMESPACE_ID::internal::SCCInfoBase*const descriptor_table_geo
 static ::PROTOBUF_NAMESPACE_ID::internal::once_flag descriptor_table_geofence_2fgeofence_2eproto_once;
 static bool descriptor_table_geofence_2fgeofence_2eproto_initialized = false;
 const ::PROTOBUF_NAMESPACE_ID::internal::DescriptorTable descriptor_table_geofence_2fgeofence_2eproto = {
-  &descriptor_table_geofence_2fgeofence_2eproto_initialized, descriptor_table_protodef_geofence_2fgeofence_2eproto, "geofence/geofence.proto", 857,
+  &descriptor_table_geofence_2fgeofence_2eproto_initialized, descriptor_table_protodef_geofence_2fgeofence_2eproto, "geofence/geofence.proto", 885,
   &descriptor_table_geofence_2fgeofence_2eproto_once, descriptor_table_geofence_2fgeofence_2eproto_sccs, descriptor_table_geofence_2fgeofence_2eproto_deps, 5, 0,
   schemas, file_default_instances, TableStruct_geofence_2fgeofence_2eproto::offsets,
   file_level_metadata_geofence_2fgeofence_2eproto, 5, file_level_enum_descriptors_geofence_2fgeofence_2eproto, file_level_service_descriptors_geofence_2fgeofence_2eproto,
@@ -218,11 +219,11 @@ static bool dynamic_init_dummy_geofence_2fgeofence_2eproto = (  ::PROTOBUF_NAMES
 namespace mavsdk {
 namespace rpc {
 namespace geofence {
-const ::PROTOBUF_NAMESPACE_ID::EnumDescriptor* Polygon_Type_descriptor() {
+const ::PROTOBUF_NAMESPACE_ID::EnumDescriptor* Polygon_FenceType_descriptor() {
   ::PROTOBUF_NAMESPACE_ID::internal::AssignDescriptors(&descriptor_table_geofence_2fgeofence_2eproto);
   return file_level_enum_descriptors_geofence_2fgeofence_2eproto[0];
 }
-bool Polygon_Type_IsValid(int value) {
+bool Polygon_FenceType_IsValid(int value) {
   switch (value) {
     case 0:
     case 1:
@@ -233,11 +234,11 @@ bool Polygon_Type_IsValid(int value) {
 }
 
 #if (__cplusplus < 201703) && (!defined(_MSC_VER) || _MSC_VER >= 1900)
-constexpr Polygon_Type Polygon::TYPE_INCLUSION;
-constexpr Polygon_Type Polygon::TYPE_EXCLUSION;
-constexpr Polygon_Type Polygon::Type_MIN;
-constexpr Polygon_Type Polygon::Type_MAX;
-constexpr int Polygon::Type_ARRAYSIZE;
+constexpr Polygon_FenceType Polygon::FENCE_TYPE_INCLUSION;
+constexpr Polygon_FenceType Polygon::FENCE_TYPE_EXCLUSION;
+constexpr Polygon_FenceType Polygon::FenceType_MIN;
+constexpr Polygon_FenceType Polygon::FenceType_MAX;
+constexpr int Polygon::FenceType_ARRAYSIZE;
 #endif  // (__cplusplus < 201703) && (!defined(_MSC_VER) || _MSC_VER >= 1900)
 const ::PROTOBUF_NAMESPACE_ID::EnumDescriptor* GeofenceResult_Result_descriptor() {
   ::PROTOBUF_NAMESPACE_ID::internal::AssignDescriptors(&descriptor_table_geofence_2fgeofence_2eproto);
@@ -501,13 +502,13 @@ Polygon::Polygon(const Polygon& from)
       _internal_metadata_(nullptr),
       points_(from.points_) {
   _internal_metadata_.MergeFrom(from._internal_metadata_);
-  type_ = from.type_;
+  fence_type_ = from.fence_type_;
   // @@protoc_insertion_point(copy_constructor:mavsdk.rpc.geofence.Polygon)
 }
 
 void Polygon::SharedCtor() {
   ::PROTOBUF_NAMESPACE_ID::internal::InitSCC(&scc_info_Polygon_geofence_2fgeofence_2eproto.base);
-  type_ = 0;
+  fence_type_ = 0;
 }
 
 Polygon::~Polygon() {
@@ -534,7 +535,7 @@ void Polygon::Clear() {
   (void) cached_has_bits;
 
   points_.Clear();
-  type_ = 0;
+  fence_type_ = 0;
   _internal_metadata_.Clear();
 }
 
@@ -557,12 +558,12 @@ const char* Polygon::_InternalParse(const char* ptr, ::PROTOBUF_NAMESPACE_ID::in
           } while (::PROTOBUF_NAMESPACE_ID::internal::ExpectTag<10>(ptr));
         } else goto handle_unusual;
         continue;
-      // .mavsdk.rpc.geofence.Polygon.Type type = 2;
+      // .mavsdk.rpc.geofence.Polygon.FenceType fence_type = 2;
       case 2:
         if (PROTOBUF_PREDICT_TRUE(static_cast<::PROTOBUF_NAMESPACE_ID::uint8>(tag) == 16)) {
           ::PROTOBUF_NAMESPACE_ID::uint64 val = ::PROTOBUF_NAMESPACE_ID::internal::ReadVarint(&ptr);
           CHK_(ptr);
-          _internal_set_type(static_cast<::mavsdk::rpc::geofence::Polygon_Type>(val));
+          _internal_set_fence_type(static_cast<::mavsdk::rpc::geofence::Polygon_FenceType>(val));
         } else goto handle_unusual;
         continue;
       default: {
@@ -599,11 +600,11 @@ failure:
       InternalWriteMessage(1, this->_internal_points(i), target, stream);
   }
 
-  // .mavsdk.rpc.geofence.Polygon.Type type = 2;
-  if (this->type() != 0) {
+  // .mavsdk.rpc.geofence.Polygon.FenceType fence_type = 2;
+  if (this->fence_type() != 0) {
     target = stream->EnsureSpace(target);
     target = ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::WriteEnumToArray(
-      2, this->_internal_type(), target);
+      2, this->_internal_fence_type(), target);
   }
 
   if (PROTOBUF_PREDICT_FALSE(_internal_metadata_.have_unknown_fields())) {
@@ -629,10 +630,10 @@ size_t Polygon::ByteSizeLong() const {
       ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::MessageSize(msg);
   }
 
-  // .mavsdk.rpc.geofence.Polygon.Type type = 2;
-  if (this->type() != 0) {
+  // .mavsdk.rpc.geofence.Polygon.FenceType fence_type = 2;
+  if (this->fence_type() != 0) {
     total_size += 1 +
-      ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::EnumSize(this->_internal_type());
+      ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::EnumSize(this->_internal_fence_type());
   }
 
   if (PROTOBUF_PREDICT_FALSE(_internal_metadata_.have_unknown_fields())) {
@@ -667,8 +668,8 @@ void Polygon::MergeFrom(const Polygon& from) {
   (void) cached_has_bits;
 
   points_.MergeFrom(from.points_);
-  if (from.type() != 0) {
-    _internal_set_type(from._internal_type());
+  if (from.fence_type() != 0) {
+    _internal_set_fence_type(from._internal_fence_type());
   }
 }
 
@@ -694,7 +695,7 @@ void Polygon::InternalSwap(Polygon* other) {
   using std::swap;
   _internal_metadata_.Swap(&other->_internal_metadata_);
   points_.InternalSwap(&other->points_);
-  swap(type_, other->type_);
+  swap(fence_type_, other->fence_type_);
 }
 
 ::PROTOBUF_NAMESPACE_ID::Metadata Polygon::GetMetadata() const {

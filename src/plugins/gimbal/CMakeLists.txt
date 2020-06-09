@@ -1,6 +1,8 @@
 add_library(mavsdk_gimbal
     gimbal.cpp
     gimbal_impl.cpp
+    gimbal_protocol_v1.cpp
+    gimbal_protocol_v2.cpp
 )
 
 target_link_libraries(mavsdk_gimbal

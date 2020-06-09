@@ -56,6 +56,8 @@ std::ostream& operator<<(std::ostream& str, Gimbal::Result const& result)
             return str << "Error";
         case Gimbal::Result::Timeout:
             return str << "Timeout";
+        case Gimbal::Result::Unsupported:
+            return str << "Unsupported";
         default:
             return str << "Unknown";
     }

@@ -59,31 +59,31 @@ public:
         return obj;
     }
 
-    static rpc::geofence::Polygon::Type
-    translateToRpcType(const mavsdk::Geofence::Polygon::Type& type)
+    static rpc::geofence::Polygon::FenceType
+    translateToRpcFenceType(const mavsdk::Geofence::Polygon::FenceType& fence_type)
     {
-        switch (type) {
+        switch (fence_type) {
             default:
-                LogErr() << "Unknown type enum value: " << static_cast<int>(type);
+                LogErr() << "Unknown fence_type enum value: " << static_cast<int>(fence_type);
             // FALLTHROUGH
-            case mavsdk::Geofence::Polygon::Type::Inclusion:
-                return rpc::geofence::Polygon_Type_TYPE_INCLUSION;
-            case mavsdk::Geofence::Polygon::Type::Exclusion:
-                return rpc::geofence::Polygon_Type_TYPE_EXCLUSION;
+            case mavsdk::Geofence::Polygon::FenceType::Inclusion:
+                return rpc::geofence::Polygon_FenceType_FENCE_TYPE_INCLUSION;
+            case mavsdk::Geofence::Polygon::FenceType::Exclusion:
+                return rpc::geofence::Polygon_FenceType_FENCE_TYPE_EXCLUSION;
         }
     }
 
-    static mavsdk::Geofence::Polygon::Type
-    translateFromRpcType(const rpc::geofence::Polygon::Type type)
+    static mavsdk::Geofence::Polygon::FenceType
+    translateFromRpcFenceType(const rpc::geofence::Polygon::FenceType fence_type)
     {
-        switch (type) {
+        switch (fence_type) {
             default:
-                LogErr() << "Unknown type enum value: " << static_cast<int>(type);
+                LogErr() << "Unknown fence_type enum value: " << static_cast<int>(fence_type);
             // FALLTHROUGH
-            case rpc::geofence::Polygon_Type_TYPE_INCLUSION:
-                return mavsdk::Geofence::Polygon::Type::Inclusion;
-            case rpc::geofence::Polygon_Type_TYPE_EXCLUSION:
-                return mavsdk::Geofence::Polygon::Type::Exclusion;
+            case rpc::geofence::Polygon_FenceType_FENCE_TYPE_INCLUSION:
+                return mavsdk::Geofence::Polygon::FenceType::Inclusion;
+            case rpc::geofence::Polygon_FenceType_FENCE_TYPE_EXCLUSION:
+                return mavsdk::Geofence::Polygon::FenceType::Exclusion;
         }
     }
 
@@ -97,7 +97,7 @@ public:
             ptr->CopyFrom(*translateToRpcPoint(elem).release());
         }
 
-        rpc_obj->set_type(translateToRpcType(polygon.type));
+        rpc_obj->set_fence_type(translateToRpcFenceType(polygon.fence_type));
 
         return rpc_obj;
     }
@@ -111,7 +111,7 @@ public:
                 translateFromRpcPoint(static_cast<mavsdk::rpc::geofence::Point>(elem)));
         }
 
-        obj.type = translateFromRpcType(polygon.type());
+        obj.fence_type = translateFromRpcFenceType(polygon.fence_type());
 
         return obj;
     }

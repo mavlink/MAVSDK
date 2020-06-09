@@ -28,7 +28,7 @@ public:
         UnknownError
     };
 
-    typedef std::function<void(Result, float)> commandResultCallback;
+    using CommandResultCallback = std::function<void(Result, float)>;
 
     struct CommandInt {
         uint8_t target_system_id{0};
@@ -94,8 +94,8 @@ public:
     Result send_command(const CommandInt& command);
     Result send_command(const CommandLong& command);
 
-    void queue_command_async(const CommandInt& command, commandResultCallback callback);
-    void queue_command_async(const CommandLong& command, commandResultCallback callback);
+    void queue_command_async(const CommandInt& command, CommandResultCallback callback);
+    void queue_command_async(const CommandLong& command, CommandResultCallback callback);
 
     void do_work();
 
@@ -112,14 +112,14 @@ private:
         uint16_t mavlink_command{0};
         bool already_sent{false};
         mavlink_message_t mavlink_message{};
-        commandResultCallback callback{};
+        CommandResultCallback callback{};
         dl_time_t time_started{};
     };
 
     void receive_command_ack(mavlink_message_t message);
     void receive_timeout();
 
-    void call_callback(const commandResultCallback& callback, Result result, float progress);
+    void call_callback(const CommandResultCallback& callback, Result result, float progress);
 
     SystemImpl& _parent;
     LockedQueue<Work> _work_queue{};
