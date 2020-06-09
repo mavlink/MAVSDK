@@ -1147,7 +1147,7 @@ void TelemetryImpl::receive_param_hitl(MAVLinkParameters::Result result, int val
         return;
     }
 
-    _hitl_enabled = (value == 1);
+    _hitl_enabled = (value > 0);
 
     // assume sensor calibration ok in hitl
     if (_hitl_enabled) {
