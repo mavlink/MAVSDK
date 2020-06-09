@@ -106,7 +106,7 @@ int main(int argc, char** argv)
 
     std::vector<Geofence::Polygon> polygons;
     Geofence::Polygon new_polygon{};
-    new_polygon.type = Geofence::Polygon::Type::Inclusion;
+    new_polygon.fence_type = Geofence::Polygon::FenceType::Inclusion;
     new_polygon.points = points;
 
     polygons.push_back(new_polygon);
