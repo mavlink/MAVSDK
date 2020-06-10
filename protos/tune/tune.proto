@@ -54,10 +54,11 @@ message TuneDescription {
 message TuneResult {
   // Possible results returned for tune requests.
   enum Result {
-    RESULT_SUCCESS = 0; // Request succeeded
-    RESULT_INVALID_TEMPO = 1; // Invalid tempo (range: 32 - 255)
-    RESULT_TUNE_TOO_LONG = 2; // Invalid tune: encoded string must be at most 247 chars
-    RESULT_ERROR = 3; // Failed to send the request
+    RESULT_UNKNOWN = 0; // Unknown result
+    RESULT_SUCCESS = 1; // Request succeeded
+    RESULT_INVALID_TEMPO = 2; // Invalid tempo (range: 32 - 255)
+    RESULT_TUNE_TOO_LONG = 3; // Invalid tune: encoded string must be at most 247 chars
+    RESULT_ERROR = 4; // Failed to send the request
   }
 
   Result result = 1; // Result enum value
