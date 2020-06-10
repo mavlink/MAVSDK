@@ -1,7 +1,7 @@
 {% if is_async %}
-void {{ name.lower_snake_case }}_async({% for param in params %}{{ param.type_info.name }} {{ param.name.lower_snake_case }}, {% endfor %}const {{ plugin_name.upper_camel_case }}::ResultCallback callback);
+void {{ name.lower_snake_case }}_async({% for param in params %}{% if not param.type_info.is_primitive %}{{ plugin_name.upper_camel_case }}::{% endif %}{{ param.type_info.name }} {{ param.name.lower_snake_case }}, {% endfor %}const {{ plugin_name.upper_camel_case }}::ResultCallback callback);
 {% endif %}
 
 {% if is_sync %}
-{% if has_result %}{{ plugin_name.upper_camel_case }}::Result{% else %}void{% endif %} {{ name.lower_snake_case }}({% for param in params %}{{ param.type_info.name }} {{ param.name.lower_snake_case }}{{ ", " if not loop.last }}{% endfor %});
+{% if has_result %}{{ plugin_name.upper_camel_case }}::Result{% else %}void{% endif %} {{ name.lower_snake_case }}({% for param in params %}{% if not param.type_info.is_primitive %}{{ plugin_name.upper_camel_case }}::{% endif %}{{ param.type_info.name }} {{ param.name.lower_snake_case }}{{ ", " if not loop.last }}{% endfor %});
 {% endif %}
