@@ -85,15 +85,16 @@ namespace rpc {
 namespace tune {
 
 enum TuneResult_Result : int {
-  TuneResult_Result_RESULT_SUCCESS = 0,
-  TuneResult_Result_RESULT_INVALID_TEMPO = 1,
-  TuneResult_Result_RESULT_TUNE_TOO_LONG = 2,
-  TuneResult_Result_RESULT_ERROR = 3,
+  TuneResult_Result_RESULT_UNKNOWN = 0,
+  TuneResult_Result_RESULT_SUCCESS = 1,
+  TuneResult_Result_RESULT_INVALID_TEMPO = 2,
+  TuneResult_Result_RESULT_TUNE_TOO_LONG = 3,
+  TuneResult_Result_RESULT_ERROR = 4,
   TuneResult_Result_TuneResult_Result_INT_MIN_SENTINEL_DO_NOT_USE_ = std::numeric_limits<::PROTOBUF_NAMESPACE_ID::int32>::min(),
   TuneResult_Result_TuneResult_Result_INT_MAX_SENTINEL_DO_NOT_USE_ = std::numeric_limits<::PROTOBUF_NAMESPACE_ID::int32>::max()
 };
 bool TuneResult_Result_IsValid(int value);
-constexpr TuneResult_Result TuneResult_Result_Result_MIN = TuneResult_Result_RESULT_SUCCESS;
+constexpr TuneResult_Result TuneResult_Result_Result_MIN = TuneResult_Result_RESULT_UNKNOWN;
 constexpr TuneResult_Result TuneResult_Result_Result_MAX = TuneResult_Result_RESULT_ERROR;
 constexpr int TuneResult_Result_Result_ARRAYSIZE = TuneResult_Result_Result_MAX + 1;
 
@@ -677,6 +678,8 @@ class TuneResult :
   // nested types ----------------------------------------------------
 
   typedef TuneResult_Result Result;
+  static constexpr Result RESULT_UNKNOWN =
+    TuneResult_Result_RESULT_UNKNOWN;
   static constexpr Result RESULT_SUCCESS =
     TuneResult_Result_RESULT_SUCCESS;
   static constexpr Result RESULT_INVALID_TEMPO =

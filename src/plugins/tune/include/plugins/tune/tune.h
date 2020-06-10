@@ -105,6 +105,7 @@ public:
      * @brief Possible results returned for tune requests.
      */
     enum class Result {
+        Unknown, /**< @brief Unknown result. */
         Success, /**< @brief Request succeeded. */
         InvalidTempo, /**< @brief Invalid tempo (range: 32 - 255). */
         TuneTooLong, /**< @brief Invalid tune: encoded string must be at most 247 chars. */

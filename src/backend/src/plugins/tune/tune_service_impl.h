@@ -175,6 +175,8 @@ public:
             default:
                 LogErr() << "Unknown result enum value: " << static_cast<int>(result);
             // FALLTHROUGH
+            case mavsdk::Tune::Result::Unknown:
+                return rpc::tune::TuneResult_Result_RESULT_UNKNOWN;
             case mavsdk::Tune::Result::Success:
                 return rpc::tune::TuneResult_Result_RESULT_SUCCESS;
             case mavsdk::Tune::Result::InvalidTempo:
@@ -192,6 +194,8 @@ public:
             default:
                 LogErr() << "Unknown result enum value: " << static_cast<int>(result);
             // FALLTHROUGH
+            case rpc::tune::TuneResult_Result_RESULT_UNKNOWN:
+                return mavsdk::Tune::Result::Unknown;
             case rpc::tune::TuneResult_Result_RESULT_SUCCESS:
                 return mavsdk::Tune::Result::Success;
             case rpc::tune::TuneResult_Result_RESULT_INVALID_TEMPO:
