@@ -4,6 +4,7 @@
 #include <mutex>
 #include <vector>
 #include <atomic>
+#include <map>
 
 #include "connection.h"
 #include "mavsdk.h"
@@ -11,6 +12,7 @@
 #include "node.h"
 #include "mavlink_include.h"
 #include "mavlink_address.h"
+#include "autopilot_node.h"
 
 namespace mavsdk {
 
@@ -52,6 +54,8 @@ public:
     System& get_system();
     System& get_system(uint64_t uuid);
 
+    AutopilotNode& get_autopilot();
+
     uint8_t get_own_system_id() const;
     uint8_t get_own_component_id() const;
     uint8_t get_mav_type() const;
@@ -87,7 +91,7 @@ private:
     mutable std::recursive_mutex _systems_mutex;
     std::unordered_map<uint8_t, std::shared_ptr<System>> _systems;
     mutable std::recursive_mutex _nodes_mutex;
-    std::map<uint16_t, std::shared_ptr<Node>> _nodes;
+    std::unordered_map<uint16_t, std::shared_ptr<Node>> _nodes;
 
     Mavsdk::event_callback_t _on_discover_callback;
     Mavsdk::event_callback_t _on_timeout_callback;

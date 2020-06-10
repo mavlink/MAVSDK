@@ -1,6 +1,5 @@
 #pragma once
 
-#include "../deprecated.h"
 #include "../node_impl.h"
 
 namespace mavsdk {
@@ -39,7 +38,7 @@ public:
         uint8_t* get_os_custom_version();
         uint16_t get_vendor_id();
         uint16_t get_product_id();
-        DEPRECATED uint64_t get_uid();
+        uint64_t get_uid();
         uint8_t* get_uid2();
 
     private:
@@ -58,12 +57,13 @@ public:
     };
 
     typedef std::function<void(Info)> autopilot_info_callback_t;
+    typedef std::function<void(MAVLinkCommands::Result, float)> command_result_callback_t;
     virtual bool has_capability_autopilot() const;
     virtual void get_autopilot_info_async(const autopilot_info_callback_t callback);
 
     virtual void set_flight_mode_async(
             FlightMode mode,
-            NodeImpl::command_result_callback_t callback);
+            command_result_callback_t callback);
 
     virtual ~Autopilot();
 };

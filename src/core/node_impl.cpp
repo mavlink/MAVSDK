@@ -18,10 +18,16 @@ using namespace std::placeholders; // for `_1`
 
 NodeImpl::NodeImpl(MavsdkImpl& parent, uint8_t system_id, uint8_t comp_id) :
     Sender(parent.own_address, node_address),
-    _parent(parent)
+    _parent(parent),
+    _timeout_handler(_time),
+    _heartbeat()
 {
     node_address.system_id = system_id;
     node_address.component_id = comp_id;
+
+    std::cout << "Here"<< std::endl;
+    _message_handler.register_one(
+            MAVLINK_MSG_ID_HEARTBEAT, std::bind(&NodeImpl::process_heartbeat, this, _1), this);
 }
 
 NodeImpl::~NodeImpl()
@@ -31,8 +37,7 @@ NodeImpl::~NodeImpl()
 
 void NodeImpl::process_mavlink_message(mavlink_message_t& message)
 {
-    if (false) LogDebug() << "Received message: " << int(message.msgid);
-    return;
+    _message_handler.process_message(message);
 }
 
 bool NodeImpl::send_message(mavlink_message_t& message)
@@ -55,6 +60,50 @@ uint8_t NodeImpl::get_component_id()
 bool NodeImpl::is_connected()
 {
     return false;
+}
+
+void NodeImpl::process_heartbeat(const mavlink_message_t& message)
+{
+    std::cout<< "Heartbeat" << std::endl;
+    mavlink_msg_heartbeat_decode(&message, &_heartbeat);
+
+    refresh_timeout_handler(_heartbeat_timeout_cookie);
+}
+
+void NodeImpl::register_timeout_handler(
+    std::function<void()> callback, double duration_s, void** cookie)
+{
+    _timeout_handler.add(callback, duration_s, cookie);
+}
+
+void NodeImpl::refresh_timeout_handler(const void* cookie)
+{
+    _timeout_handler.refresh(cookie);
+}
+
+void NodeImpl::unregister_timeout_handler(const void* cookie)
+{
+     _timeout_handler.remove(cookie);
+}
+
+uint8_t NodeImpl::get_type() const
+{
+    return _heartbeat.type;
+}
+
+uint8_t NodeImpl::get_autopilot() const
+{
+    return _heartbeat.autopilot;
+}
+
+uint8_t NodeImpl::get_base_mode() const
+{
+    return _heartbeat.base_mode;
+}
+
+uint8_t NodeImpl::get_system_status() const
+{
+    return _heartbeat.system_status;
 }
 
 } // namespace mavsdk

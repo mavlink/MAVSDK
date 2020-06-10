@@ -7,6 +7,8 @@ include_directories(
 configure_file(version.h.in version.h)
 
 add_library(mavsdk
+    autopilot_node.cpp
+    autopilot_node_impl.cpp
     call_every_handler.cpp
     connection.cpp
     connection_result.cpp

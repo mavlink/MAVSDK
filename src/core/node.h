@@ -8,6 +8,7 @@ namespace mavsdk {
 class NodeImpl;
 class MavsdkImpl;
 class PluginImplBase;
+class AutopilotNodeImpl;
 
 /**
  * @brief This class represents a MAVLink node, which is EXACTLY 1 component on one system.
@@ -31,7 +32,7 @@ public:
     /**
      * @brief Destructor.
      */
-    ~Node();
+    virtual ~Node();
 
     /**
      * @brief Checks if the node is connected.
@@ -70,6 +71,7 @@ private:
      */
     friend MavsdkImpl;
     friend PluginImplBase;
+    friend AutopilotNodeImpl;
 
     std::shared_ptr<NodeImpl> _node_impl;
 };

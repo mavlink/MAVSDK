@@ -10,6 +10,8 @@
 #include "system_impl.h"
 #include "node.h"
 #include "node_impl.h"
+#include "autopilot_node.h"
+#include "autopilot_node_impl.h"
 #include "serial_connection.h"
 #include "cli_arg.h"
 #include "version.h"
@@ -91,7 +93,6 @@ void MavsdkImpl::receive_message(mavlink_message_t& message)
     // Change system id of null system
 
     if (message.msgid == MAVLINK_MSG_ID_HEARTBEAT) {
-        std::cout << "Heartbeat: " << std::endl;
         process_heartbeat(message);
     }
 
@@ -150,10 +151,14 @@ void MavsdkImpl::process_heartbeat(const mavlink_message_t& message)
     std::lock_guard<std::mutex> lock(_connections_mutex);
 
     uint16_t node_id = (message.sysid << 8) | message.compid;
-    std::cout << "HB Sysid: " << int(message.sysid) << " compid: " << int(message.compid) << std::endl;
+    //std::cout << "HB Sysid: " << int(message.sysid) << " compid: " << int(message.compid) << std::endl;
 
-    if (_nodes.find(node_id) == _nodes.end()) {
-        std::cout << "Creating node" << std::endl;
+    auto node = _nodes.find(node_id);
+    //if (node != _nodes.end()) {
+        //node->process_heartbeat(message);
+    //} else {
+    if (node == _nodes.end()) {
+        LogDebug() << "Creating node";
         make_node_with_id(message.sysid, message.compid);
     }
 }
@@ -290,6 +295,23 @@ std::vector<uint64_t> MavsdkImpl::get_system_uuids() const
     }
 
     return uuids;
+}
+
+AutopilotNode& MavsdkImpl::get_autopilot()
+{
+    { 
+        std::lock_guard<std::recursive_mutex> lock(_nodes_mutex);
+
+        // in get_autopilot without uuid, we expect to have only one autopilot connected
+        for (auto node : _nodes) {
+            if (AutopilotNodeImpl::is_autopilot(node)) {
+                auto autopilot = std::make_shared<AutopilotNode>(*this, system_id, component_id);
+                return dynamic_cast<AutopilotNode&>(node);
+            }
+        }
+    }
+
+    return NULL;
 }
 
 System& MavsdkImpl::get_system()
