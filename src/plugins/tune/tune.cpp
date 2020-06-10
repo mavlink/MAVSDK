@@ -49,6 +49,8 @@ std::ostream& operator<<(std::ostream& str, Tune::TuneDescription const& tune_de
 std::ostream& operator<<(std::ostream& str, Tune::Result const& result)
 {
     switch (result) {
+        case Tune::Result::Unknown:
+            return str << "Unknown";
         case Tune::Result::Success:
             return str << "Success";
         case Tune::Result::InvalidTempo:
