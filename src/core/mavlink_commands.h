@@ -23,6 +23,7 @@ public:
         ConnectionError,
         Busy,
         CommandDenied,
+        Unsupported,
         Timeout,
         InProgress,
         UnknownError

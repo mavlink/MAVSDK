@@ -246,6 +246,8 @@ void CalibrationImpl::command_result_callback(
             // FALLTHROUGH
         case MAVLinkCommands::Result::CommandDenied:
             // FALLTHROUGH
+        case MAVLinkCommands::Result::Unsupported:
+            // FALLTHROUGH
         case MAVLinkCommands::Result::UnknownError:
             // FALLTHROUGH
         case MAVLinkCommands::Result::Timeout: {
