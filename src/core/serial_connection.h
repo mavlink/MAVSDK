@@ -13,7 +13,10 @@ namespace mavsdk {
 class SerialConnection : public Connection {
 public:
     explicit SerialConnection(
-        Connection::receiver_callback_t receiver_callback, const std::string& path, int baudrate);
+        Connection::receiver_callback_t receiver_callback,
+        const std::string& path,
+        int baudrate,
+        bool flow_control);
     ConnectionResult start() override;
     ConnectionResult stop() override;
     ~SerialConnection();
@@ -33,8 +36,9 @@ private:
     static int define_from_baudrate(int baudrate);
 #endif
 
-    std::string _serial_node;
-    int _baudrate;
+    const std::string _serial_node;
+    const int _baudrate;
+    const bool _flow_control;
 
     std::mutex _mutex = {};
 #if !defined(WINDOWS)

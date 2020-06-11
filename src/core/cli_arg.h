@@ -16,6 +16,8 @@ public:
 
     int get_baudrate() const { return _baudrate; }
 
+    bool get_flow_control() const { return _flow_control_enabled; }
+
     std::string get_path() const { return _path; }
 
 private:
@@ -29,6 +31,7 @@ private:
     std::string _path{};
     int _port{0};
     int _baudrate{0};
+    bool _flow_control_enabled{false};
 };
 
 } // namespace mavsdk

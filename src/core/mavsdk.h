@@ -126,10 +126,13 @@ public:
      *
      * @param dev_path COM or UART dev node name/path (e.g. "/dev/ttyS0", or "COM3" on Windows).
      * @param baudrate Baudrate of the serial port (defaults to 57600).
+     * @param flow_control enable/disable flow control
      * @return The result of adding the connection.
      */
-    ConnectionResult
-    add_serial_connection(const std::string& dev_path, int baudrate = DEFAULT_SERIAL_BAUDRATE);
+    ConnectionResult add_serial_connection(
+        const std::string& dev_path,
+        int baudrate = DEFAULT_SERIAL_BAUDRATE,
+        bool flow_control = false);
 
     /**
      * @brief Stores the configured system id and component id of the MAVSDK instance
