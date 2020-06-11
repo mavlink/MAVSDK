@@ -61,7 +61,24 @@ void GRPCServer::wait()
 void GRPCServer::stop()
 {
     if (_server != nullptr) {
+        _core.stop();
+        _action_service.stop();
+        _calibration_service.stop();
+        _camera_service.stop();
+        _follow_me_service.stop();
+        _ftp_service.stop();
+        _geofence_service.stop();
+        _gimbal_service.stop();
+        _info_service.stop();
+        _log_files_service.stop();
+        _mission_service.stop();
+        _mission_raw_service.stop();
+        _mocap_service.stop();
+        _offboard_service.stop();
+        _param_service.stop();
+        _shell_service.stop();
         _telemetry_service.stop();
+        _tune_service.stop();
         _server->Shutdown();
     } else {
         LogWarn() << "Calling 'stop()' on a non-existing server. Did you call 'run()' before?";
