@@ -2,11 +2,7 @@
 #include "backend.h"
 #include <string>
 
-MavsdkBackend* runBackend(
-    const char* system_address,
-    const int mavsdk_server_port,
-    void (*onServerStarted)(void*),
-    void* context)
+MavsdkBackend* runBackend(const char* system_address, const int mavsdk_server_port)
 {
     auto backend = new MavsdkBackend();
 
@@ -17,10 +13,6 @@ MavsdkBackend* runBackend(
     }
 
     backend->connect(std::string(system_address));
-
-    if (onServerStarted != nullptr) {
-        onServerStarted(context);
-    }
 
     return backend;
 }

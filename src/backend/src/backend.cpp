@@ -16,7 +16,6 @@ public:
     void connect(const std::string& connection_url)
     {
         _connection_initiator.start(_dc, connection_url);
-        _connection_initiator.wait();
     }
 
     int startGRPCServer(const int port)
