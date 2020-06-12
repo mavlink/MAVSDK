@@ -2,7 +2,7 @@
 #include "backend.h"
 #include <string>
 
-MavsdkBackend* runBackend(const char* system_address, const int mavsdk_server_port)
+MavsdkBackend* mavsdk_server_run(const char* system_address, const int mavsdk_server_port)
 {
     auto backend = new MavsdkBackend();
 
@@ -17,17 +17,17 @@ MavsdkBackend* runBackend(const char* system_address, const int mavsdk_server_po
     return backend;
 }
 
-int getPort(MavsdkBackend* backend)
+int mavsdk_server_get_port(MavsdkBackend* backend)
 {
     return backend->getPort();
 }
 
-void attach(MavsdkBackend* backend)
+void mavsdk_server_attach(MavsdkBackend* backend)
 {
     backend->wait();
 }
 
-void stopBackend(MavsdkBackend* backend)
+void mavsdk_server_stop(MavsdkBackend* backend)
 {
     backend->stop();
     delete backend;

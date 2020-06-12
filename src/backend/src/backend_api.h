@@ -11,13 +11,13 @@ extern "C" {
 #endif
 
 DLLExport struct MavsdkBackend*
-runBackend(const char* system_address, const int mavsdk_server_port);
+mavsdk_server_run(const char* system_address, const int mavsdk_server_port);
 
-DLLExport int getPort(struct MavsdkBackend* backend);
+DLLExport int mavsdk_server_get_port(struct MavsdkBackend* backend);
 
-DLLExport void attach(struct MavsdkBackend* backend);
+DLLExport void mavsdk_server_attach(struct MavsdkBackend* backend);
 
-DLLExport void stopBackend(struct MavsdkBackend* backend);
+DLLExport void mavsdk_server_stop(struct MavsdkBackend* backend);
 
 #ifdef __cplusplus
 }
