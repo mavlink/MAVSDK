@@ -122,21 +122,31 @@ TEST(CliArg, SerialConnections)
     EXPECT_EQ(ca.get_protocol(), CliArg::Protocol::Serial);
     EXPECT_STREQ(ca.get_path().c_str(), "/dev/ttyS0");
     EXPECT_EQ(0, ca.get_baudrate());
+    EXPECT_EQ(false, ca.get_flow_control());
+
+    EXPECT_TRUE(ca.parse("serial_flowcontrol:///dev/ttyS0:4000000"));
+    EXPECT_EQ(ca.get_protocol(), CliArg::Protocol::Serial);
+    EXPECT_STREQ(ca.get_path().c_str(), "/dev/ttyS0");
+    EXPECT_EQ(4000000, ca.get_baudrate());
+    EXPECT_EQ(true, ca.get_flow_control());
 
     EXPECT_TRUE(ca.parse("serial://COM13:57600"));
     EXPECT_EQ(ca.get_protocol(), CliArg::Protocol::Serial);
     EXPECT_STREQ(ca.get_path().c_str(), "COM13");
     EXPECT_EQ(57600, ca.get_baudrate());
+    EXPECT_EQ(false, ca.get_flow_control());
 
     EXPECT_TRUE(ca.parse("serial:///dev/tty.usbmodem1:115200"));
     EXPECT_EQ(ca.get_protocol(), CliArg::Protocol::Serial);
     EXPECT_STREQ(ca.get_path().c_str(), "/dev/tty.usbmodem1");
     EXPECT_EQ(115200, ca.get_baudrate());
+    EXPECT_EQ(false, ca.get_flow_control());
 
     EXPECT_TRUE(ca.parse("serial://COM3"));
     EXPECT_EQ(ca.get_protocol(), CliArg::Protocol::Serial);
     EXPECT_STREQ(ca.get_path().c_str(), "COM3");
     EXPECT_EQ(0, ca.get_baudrate());
+    EXPECT_EQ(false, ca.get_flow_control());
 
     // All the wrong combinations.
     EXPECT_FALSE(ca.parse(""));

@@ -45,10 +45,14 @@ std::string GetLastErrorStdStr()
 #endif
 
 SerialConnection::SerialConnection(
-    Connection::receiver_callback_t receiver_callback, const std::string& path, int baudrate) :
+    Connection::receiver_callback_t receiver_callback,
+    const std::string& path,
+    int baudrate,
+    bool flow_control) :
     Connection(receiver_callback),
     _serial_node(path),
-    _baudrate(baudrate)
+    _baudrate(baudrate),
+    _flow_control(flow_control)
 {}
 
 SerialConnection::~SerialConnection()
@@ -124,6 +128,10 @@ ConnectionResult SerialConnection::setup_port()
 
     tc.c_cc[VMIN] = 0; // We are ok with 0 bytes.
     tc.c_cc[VTIME] = 10; // Timeout after 1 second.
+
+    if (_flow_control) {
+        tc.c_cflag |= CRTSCTS;
+    }
 #endif
 
 #if defined(LINUX) || defined(APPLE)
@@ -172,8 +180,14 @@ ConnectionResult SerialConnection::setup_port()
     dcb.ByteSize = 8;
     dcb.Parity = NOPARITY;
     dcb.StopBits = ONESTOPBIT;
-    dcb.fDtrControl = DTR_CONTROL_DISABLE;
-    dcb.fRtsControl = RTS_CONTROL_DISABLE;
+    if (_flow_control) {
+        dcb.fOutxCtsFlow = TRUE;
+        dcb.fDtrControl = DTR_CONTROL_HANDSHAKE;
+        dcb.fRtsControl = RTS_CONTROL_HANDSHAKE;
+    } else {
+        dcb.fDtrControl = DTR_CONTROL_DISABLE;
+        dcb.fRtsControl = RTS_CONTROL_DISABLE;
+    }
     dcb.fOutX = FALSE;
     dcb.fInX = FALSE;
     dcb.fBinary = TRUE;

@@ -46,6 +46,7 @@ bool CliArg::find_protocol(std::string& rest)
     const std::string udp = "udp";
     const std::string tcp = "tcp";
     const std::string serial = "serial";
+    const std::string serial_flowcontrol = "serial_flowcontrol";
     const std::string delimiter = "://";
 
     if (rest.find(udp + delimiter) == 0) {
@@ -58,7 +59,13 @@ bool CliArg::find_protocol(std::string& rest)
         return true;
     } else if (rest.find(serial + delimiter) == 0) {
         _protocol = Protocol::Serial;
+        _flow_control_enabled = false;
         rest.erase(0, serial.length() + delimiter.length());
+        return true;
+    } else if (rest.find(serial_flowcontrol + delimiter) == 0) {
+        _protocol = Protocol::Serial;
+        _flow_control_enabled = true;
+        rest.erase(0, serial_flowcontrol.length() + delimiter.length());
         return true;
     } else {
         LogWarn() << "Unknown protocol";

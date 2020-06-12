@@ -39,9 +39,10 @@ ConnectionResult Mavsdk::add_tcp_connection(const std::string& remote_ip, const 
     return _impl->add_tcp_connection(remote_ip, remote_port);
 }
 
-ConnectionResult Mavsdk::add_serial_connection(const std::string& dev_path, const int baudrate)
+ConnectionResult
+Mavsdk::add_serial_connection(const std::string& dev_path, const int baudrate, bool flow_control)
 {
-    return _impl->add_serial_connection(dev_path, baudrate);
+    return _impl->add_serial_connection(dev_path, baudrate, flow_control);
 }
 
 void Mavsdk::set_configuration(Configuration configuration)
