@@ -12,7 +12,7 @@
 #include "node.h"
 #include "mavlink_include.h"
 #include "mavlink_address.h"
-#include "autopilot_node.h"
+#include "autopilot_interface.h"
 
 namespace mavsdk {
 
@@ -54,7 +54,7 @@ public:
     System& get_system();
     System& get_system(uint64_t uuid);
 
-    AutopilotNode& get_autopilot();
+    AutopilotInterface* get_autopilot();
 
     uint8_t get_own_system_id() const;
     uint8_t get_own_component_id() const;

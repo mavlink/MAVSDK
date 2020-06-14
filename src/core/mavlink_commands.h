@@ -10,11 +10,11 @@
 
 namespace mavsdk {
 
-class SystemImpl;
+class NodeImpl;
 
 class MAVLinkCommands {
 public:
-    explicit MAVLinkCommands(SystemImpl& parent);
+    explicit MAVLinkCommands(NodeImpl& parent);
     ~MAVLinkCommands();
 
     enum class Result {
@@ -121,7 +121,7 @@ private:
 
     void call_callback(const commandResultCallback& callback, Result result, float progress);
 
-    SystemImpl& _parent;
+    NodeImpl& _parent;
     LockedQueue<Work> _work_queue{};
 
     void* _timeout_cookie = nullptr;

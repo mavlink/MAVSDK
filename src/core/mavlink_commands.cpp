@@ -1,5 +1,5 @@
 #include "mavlink_commands.h"
-#include "system_impl.h"
+#include "node_impl.h"
 #include <future>
 #include <memory>
 
@@ -14,7 +14,7 @@ namespace mavsdk {
 //       - The queue used does not support going through and checking each and every
 //         item yet.
 
-MAVLinkCommands::MAVLinkCommands(SystemImpl& parent) : _parent(parent)
+MAVLinkCommands::MAVLinkCommands(NodeImpl& parent) : _parent(parent)
 {
     _parent.register_mavlink_message_handler(
         MAVLINK_MSG_ID_COMMAND_ACK,
@@ -74,8 +74,8 @@ void MAVLinkCommands::queue_command_async(const CommandInt& command, commandResu
     auto new_work = std::make_shared<Work>();
 
     mavlink_msg_command_int_pack(
-        _parent.get_own_system_id(),
-        _parent.get_own_component_id(),
+        _parent.get_system_id(),
+        _parent.get_component_id(),
         &new_work->mavlink_message,
         command.target_system_id,
         command.target_component_id,
@@ -104,8 +104,8 @@ void MAVLinkCommands::queue_command_async(
 
     auto new_work = std::make_shared<Work>();
     mavlink_msg_command_long_pack(
-        _parent.get_own_system_id(),
-        _parent.get_own_component_id(),
+        _parent.get_system_id(),
+        _parent.get_component_id(),
         &new_work->mavlink_message,
         command.target_system_id,
         command.target_component_id,

@@ -10,8 +10,8 @@
 #include "system_impl.h"
 #include "node.h"
 #include "node_impl.h"
-#include "autopilot_node.h"
-#include "autopilot_node_impl.h"
+#include "autopilot_interface.h"
+#include "autopilot_interface_impl.h"
 #include "serial_connection.h"
 #include "cli_arg.h"
 #include "version.h"
@@ -297,21 +297,20 @@ std::vector<uint64_t> MavsdkImpl::get_system_uuids() const
     return uuids;
 }
 
-AutopilotNode& MavsdkImpl::get_autopilot()
+AutopilotInterface* MavsdkImpl::get_autopilot()
 {
     { 
         std::lock_guard<std::recursive_mutex> lock(_nodes_mutex);
 
         // in get_autopilot without uuid, we expect to have only one autopilot connected
-        for (auto node : _nodes) {
-            if (AutopilotNodeImpl::is_autopilot(node)) {
-                auto autopilot = std::make_shared<AutopilotNode>(*this, system_id, component_id);
-                return dynamic_cast<AutopilotNode&>(node);
+        for (auto const& connected_node : _nodes) {
+            if (connected_node.second->node_impl()->is_autopilot()) {
+                return new AutopilotInterface(*connected_node.second);
             }
         }
     }
 
-    return NULL;
+    return nullptr;
 }
 
 System& MavsdkImpl::get_system()

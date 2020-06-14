@@ -7,14 +7,14 @@ include_directories(
 configure_file(version.h.in version.h)
 
 add_library(mavsdk
-    autopilot_node.cpp
-    autopilot_node_impl.cpp
+    autopilot_interface.cpp
+    autopilot_interface_impl.cpp
     call_every_handler.cpp
     connection.cpp
     connection_result.cpp
     curl_wrapper.cpp
-    system.cpp
-    system_impl.cpp
+    #system.cpp
+    #system_impl.cpp
     node.cpp
     node_impl.cpp
     mavsdk.cpp
@@ -88,8 +88,10 @@ install(TARGETS mavsdk
 
 install(FILES
     connection_result.h
-    system.h
+    #system.h
     mavsdk.h
+    interface_base.h
+    autopilot_interface.h
     plugin_base.h
     geometry.h
     DESTINATION "${CMAKE_INSTALL_INCLUDEDIR}/mavsdk"

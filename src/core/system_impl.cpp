@@ -20,11 +20,13 @@ SystemImpl::SystemImpl(MavsdkImpl& parent, uint8_t system_id, uint8_t comp_id, b
     Sender(parent.own_address, target_address),
     _parent(parent),
     _params(*this),
-    _commands(*this),
+    //_commands(*this),
+    _commands{NULL},
     _timesync(*this),
     _timeout_handler(_time),
     _call_every_handler(_time),
-    _mission_transfer(*this, _message_handler, _timeout_handler)
+    //_mission_transfer(*this, _message_handler, _timeout_handler)
+    _mission_transfer{nullptr},
 {
     target_address.system_id = system_id;
     // FIXME: for now use this as a default.

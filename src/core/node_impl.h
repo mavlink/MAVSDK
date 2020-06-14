@@ -11,8 +11,7 @@
 #include "call_every_handler.h"
 #include "thread_pool.h"
 #include "timesync.h"
-#include "system.h"
-#include "capabilities/autopilot.h"
+#include "interface_base.h"
 #include <cstdint>
 #include <functional>
 #include <atomic>
@@ -80,8 +79,10 @@ public:
         double rate_hz,
         command_result_callback_t callback);
 
+    // TODO refactor
     uint8_t get_own_mav_type() const;
 
+    // TODO refactor
     Time& get_time() { return _time; };
     AutopilotTime& get_autopilot_time() { return _autopilot_time; };
 
@@ -102,10 +103,13 @@ public:
 
     MAVLinkAddress target_address{};
 
+    // TODO refactor
     uint8_t get_type() const;
     uint8_t get_autopilot() const;
     uint8_t get_base_mode() const;
     uint8_t get_system_status() const;
+
+    bool is_autopilot() const;
 private:
     MavsdkImpl& _parent;
     std::atomic<bool> _should_exit{false};
@@ -137,9 +141,13 @@ private:
 
     static constexpr double _HEARTBEAT_SEND_INTERVAL_S = 1.0;
 
+    MAVLinkCommands _commands;
+
     TimeoutHandler _timeout_handler;
 
     mavlink_heartbeat_t _heartbeat;
+
+    std::vector<InterfaceBase> _interfaces;
 };
 
 } // namespace mavsdk

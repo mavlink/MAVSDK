@@ -1,6 +1,7 @@
 #include "mavsdk.h"
 
 #include "mavsdk_impl.h"
+#include "autopilot_interface.h"
 #include "global_include.h"
 
 namespace mavsdk {
@@ -62,6 +63,11 @@ System& Mavsdk::system() const
 System& Mavsdk::system(const uint64_t uuid) const
 {
     return _impl->get_system(uuid);
+}
+
+AutopilotInterface* Mavsdk::get_autopilot()
+{
+    return _impl->get_autopilot();
 }
 
 bool Mavsdk::is_connected() const

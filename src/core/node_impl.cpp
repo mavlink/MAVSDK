@@ -19,8 +19,10 @@ using namespace std::placeholders; // for `_1`
 NodeImpl::NodeImpl(MavsdkImpl& parent, uint8_t system_id, uint8_t comp_id) :
     Sender(parent.own_address, node_address),
     _parent(parent),
+    _commands(*this),
     _timeout_handler(_time),
-    _heartbeat()
+    _heartbeat(),
+    _interfaces()
 {
     node_address.system_id = system_id;
     node_address.component_id = comp_id;
@@ -64,7 +66,7 @@ bool NodeImpl::is_connected()
 
 void NodeImpl::process_heartbeat(const mavlink_message_t& message)
 {
-    std::cout<< "Heartbeat" << std::endl;
+    //std::cout<< "Heartbeat" << std::endl;
     mavlink_msg_heartbeat_decode(&message, &_heartbeat);
 
     refresh_timeout_handler(_heartbeat_timeout_cookie);
@@ -104,6 +106,61 @@ uint8_t NodeImpl::get_base_mode() const
 uint8_t NodeImpl::get_system_status() const
 {
     return _heartbeat.system_status;
+}
+
+// TODO: certain is_xyz functions will take time,
+// should they be blocking or async?
+bool NodeImpl::is_autopilot() const
+{
+    return get_autopilot() != MAV_AUTOPILOT_INVALID;
+}
+
+MAVLinkCommands::Result NodeImpl::send_command(MAVLinkCommands::CommandLong& command)
+{
+    if (target_address.system_id == 0 && target_address.component_id == 0) {
+        // TODO: should rename to NoNode or something
+        return MAVLinkCommands::Result::NoSystem;
+    }
+    command.target_system_id = get_system_id();
+    return _commands.send_command(command);
+}
+
+MAVLinkCommands::Result NodeImpl::send_command(MAVLinkCommands::CommandInt& command)
+{
+    if (target_address.system_id == 0 && target_address.component_id == 0) {
+        // TODO: should rename to NoNode or something
+        return MAVLinkCommands::Result::NoSystem;
+    }
+    command.target_system_id = get_system_id();
+    return _commands.send_command(command);
+}
+
+void NodeImpl::send_command_async(
+        MAVLinkCommands::CommandLong& command, const command_result_callback_t callback)
+{
+    if (target_address.system_id == 0 && target_address.component_id == 0) {
+        // TODO: should rename to NoNode or something
+        if (callback) {
+            callback(MAVLinkCommands::Result::NoSystem, NAN);
+        }
+    }
+    command.target_system_id = get_system_id();
+
+    _commands.queue_command_async(command, callback);
+}
+
+void NodeImpl::send_command_async(
+        MAVLinkCommands::CommandInt& command, const command_result_callback_t callback)
+{
+    if (target_address.system_id == 0 && target_address.component_id == 0) {
+        // TODO: should rename to NoNode or something
+        if (callback) {
+            callback(MAVLinkCommands::Result::NoSystem, NAN);
+        }
+    }
+    command.target_system_id = get_system_id();
+
+    _commands.queue_command_async(command, callback);
 }
 
 } // namespace mavsdk

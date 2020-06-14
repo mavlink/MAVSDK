@@ -12,6 +12,7 @@ namespace mavsdk {
 
 class MavsdkImpl;
 class System;
+class AutopilotInterface;
 
 /**
  * @brief This is the main class of MAVSDK (a MAVLink API Library).
@@ -227,6 +228,15 @@ public:
      * @return A reference to the specified system.
      */
     System& system(uint64_t uuid) const;
+
+    /**
+     * @brief Get an interface to an autopilot.
+     *
+     * This returns the first discovered autopilot or null if an autopilot has not been found yet.
+     *
+     * @return A pointer to an AutopilotInterface.
+     */
+    AutopilotInterface *get_autopilot();
 
     /**
      * @brief Callback type for discover and timeout notifications.
