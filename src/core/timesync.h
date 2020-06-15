@@ -5,11 +5,11 @@
 
 namespace mavsdk {
 
-class SystemImpl;
+class NodeImpl;
 
 class Timesync {
 public:
-    Timesync(SystemImpl& parent);
+    Timesync(NodeImpl& parent);
     ~Timesync();
 
     void do_work();
@@ -18,7 +18,7 @@ public:
     Timesync& operator=(const Timesync&) = delete;
 
 private:
-    SystemImpl& _parent;
+    NodeImpl& _parent;
 
     void process_timesync(const mavlink_message_t& message);
     void send_timesync(uint64_t tc1, uint64_t ts1);

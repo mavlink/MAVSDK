@@ -1,12 +1,12 @@
 #include "timesync.h"
 #include "log.h"
-#include "system_impl.h"
+#include "node_impl.h"
 
 // Partially based on: https://github.com/mavlink/mavros/blob/master/mavros/src/plugins/sys_time.cpp
 
 namespace mavsdk {
 
-Timesync::Timesync(SystemImpl& parent) : _parent(parent)
+Timesync::Timesync(NodeImpl& parent) : _parent(parent)
 {
     using namespace std::placeholders; // for `_1`
 
@@ -45,10 +45,10 @@ void Timesync::process_timesync(const mavlink_message_t& message)
                          .count();
 
     if (timesync.tc1 == 0 && _autopilot_timesync_acquired) {
-        // Send synced time to remote system
+        // Send synced time to remote node
         send_timesync(now_ns, timesync.ts1);
     } else if (timesync.tc1 > 0) {
-        // Time offset between this system and the remote system is calculated assuming RTT for
+        // Time offset between this node and the remote node is calculated assuming RTT for
         // the timesync packet is roughly equal both ways.
         set_timesync_offset((timesync.tc1 * 2 - (timesync.ts1 + now_ns)) / 2, timesync.ts1);
     }
@@ -70,7 +70,7 @@ void Timesync::set_timesync_offset(int64_t offset_ns, uint64_t start_transfer_lo
                           .count();
 
     // Calculate the round trip time (RTT) it took the timesync packet to bounce back to us from
-    // remote system
+    // remote node
     uint64_t rtt_ns = now_ns - start_transfer_local_time_ns;
 
     if (rtt_ns < _MAX_RTT_SAMPLE_MS * 1000000ULL) { // Only use samples with low RTT

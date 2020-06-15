@@ -15,7 +15,7 @@ add_executable(node_test
 )
 
 target_link_libraries(node_test
-    MAVSDK::mavsdk_telemetry
-    MAVSDK::mavsdk_action
+    #MAVSDK::mavsdk_telemetry
+    #MAVSDK::mavsdk_action
     MAVSDK::mavsdk
 )

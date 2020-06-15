@@ -20,12 +20,15 @@ NodeImpl::NodeImpl(MavsdkImpl& parent, uint8_t system_id, uint8_t comp_id) :
     Sender(parent.own_address, node_address),
     _parent(parent),
     _commands(*this),
+    _timesync(*this),
     _timeout_handler(_time),
     _heartbeat(),
     _interfaces()
 {
     node_address.system_id = system_id;
     node_address.component_id = comp_id;
+
+    _system_thread = new std::thread(&NodeImpl::system_thread, this);
 
     std::cout << "Here"<< std::endl;
     _message_handler.register_one(
@@ -44,9 +47,11 @@ void NodeImpl::process_mavlink_message(mavlink_message_t& message)
 
 bool NodeImpl::send_message(mavlink_message_t& message)
 {
-    LogDebug()<< "Sending message: " << int(message.msgid);
+    // TODO intercept callback
 
-    return true;
+    LogDebug()<< "Sending message: " << size_t(message.msgid);
+
+    return _parent.send_message(message);
 }
 
 uint8_t NodeImpl::get_system_id()
@@ -59,14 +64,24 @@ uint8_t NodeImpl::get_component_id()
     return node_address.component_id;
 }
 
+uint8_t NodeImpl::get_own_system_id()
+{
+    return _parent.get_own_system_id();
+}
+
+uint8_t NodeImpl::get_own_component_id()
+{
+    return _parent.get_own_component_id();
+}
+
 bool NodeImpl::is_connected()
 {
+    // TODO implement heartbeat timeout 
     return false;
 }
 
 void NodeImpl::process_heartbeat(const mavlink_message_t& message)
 {
-    //std::cout<< "Heartbeat" << std::endl;
     mavlink_msg_heartbeat_decode(&message, &_heartbeat);
 
     refresh_timeout_handler(_heartbeat_timeout_cookie);
@@ -145,6 +160,7 @@ void NodeImpl::send_command_async(
         }
     }
     command.target_system_id = get_system_id();
+    command.target_component_id = get_component_id();
 
     _commands.queue_command_async(command, callback);
 }
@@ -162,5 +178,58 @@ void NodeImpl::send_command_async(
 
     _commands.queue_command_async(command, callback);
 }
+
+void NodeImpl::call_user_callback(const std::function<void()>& func)
+{
+    _thread_pool.enqueue(func);
+}
+
+void NodeImpl::register_mavlink_message_handler(
+        uint16_t msg_id, mavlink_message_handler_t callback, const void* cookie)
+{
+    _message_handler.register_one(msg_id, callback, cookie);
+}
+
+void NodeImpl::unregister_mavlink_message_handler(
+        uint16_t msg_id, const void* cookie)
+{
+    _message_handler.unregister_one(msg_id, cookie);
+}
+
+void NodeImpl::unregister_all_mavlink_message_handlers(const void* cookie)
+{
+    _message_handler.unregister_all(cookie);
+}
+
+void NodeImpl::system_thread()
+{
+    dl_time_t last_time{};
+
+    while (!_should_exit) {
+        // _call_every_handler.run_once();
+        _timeout_handler.run_once();
+        //_params.do_work();
+        _commands.do_work();
+        _timesync.do_work();
+        // _mission_transfer.do_work();
+        
+        if (is_connected()) {
+            // Work fairly fast if we're connected
+             std::this_thread::sleep_for(std::chrono::milliseconds(10));
+        } else {
+            // Be less aggressive when unconnected.
+            std::this_thread::sleep_for(std::chrono::milliseconds(100));
+        }
+    }
+}
+
+// TODO *_call_every
+// TODO set_msg_rate(_async)
+// TODO get_own_mav_type()
+// TODO autopilot time and stuff
+// TODO register plugins
+// TODO heartbeats_timed_out
+// TODO mission transfer
+// TODO make_command_msg_rate
 
 } // namespace mavsdk

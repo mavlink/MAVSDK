@@ -6,8 +6,6 @@
 #include "global_include.h"
 #include "tcp_connection.h"
 #include "udp_connection.h"
-#include "system.h"
-#include "system_impl.h"
 #include "node.h"
 #include "node_impl.h"
 #include "autopilot_interface.h"
@@ -21,8 +19,8 @@ namespace mavsdk {
 MavsdkImpl::MavsdkImpl() :
     _connections_mutex(),
     _connections(),
-    _systems_mutex(),
-    _systems(),
+    //_systems_mutex(),
+    //_systems(),
     _nodes_mutex(),
     _nodes(),
     _on_discover_callback(nullptr),
@@ -38,10 +36,10 @@ MavsdkImpl::MavsdkImpl() :
 MavsdkImpl::~MavsdkImpl()
 {
     {
-        std::lock_guard<std::recursive_mutex> lock(_systems_mutex);
+        //std::lock_guard<std::recursive_mutex> lock(_systems_mutex);
         _should_exit = true;
 
-        _systems.clear();
+        //_systems.clear();
         _nodes.clear();
     }
 
@@ -87,7 +85,7 @@ void MavsdkImpl::receive_message(mavlink_message_t& message)
         return;
     }
 
-    std::lock_guard<std::recursive_mutex> lock(_systems_mutex);
+    //std::lock_guard<std::recursive_mutex> lock(_systems_mutex);
 
     // TODO kalyan - I'm assuming this is how we create systems, and should be checked
     // Change system id of null system
@@ -287,12 +285,12 @@ std::vector<uint64_t> MavsdkImpl::get_system_uuids() const
     // and another for uid2
     std::vector<uint64_t> uuids = {};
 
-    for (auto it = _systems.begin(); it != _systems.end(); ++it) {
-        uint64_t uuid = it->second->_system_impl->get_uuid();
-        if (uuid != 0) {
-            uuids.push_back(uuid);
-        }
-    }
+    //for (auto it = _systems.begin(); it != _systems.end(); ++it) {
+        //uint64_t uuid = it->second->_system_impl->get_uuid();
+        //if (uuid != 0) {
+            //uuids.push_back(uuid);
+        //}
+    //}
 
     return uuids;
 }
@@ -313,54 +311,54 @@ AutopilotInterface* MavsdkImpl::get_autopilot()
     return nullptr;
 }
 
-System& MavsdkImpl::get_system()
-{
-    // TODO kalyan - probably should be scrapped
-    {
-        std::lock_guard<std::recursive_mutex> lock(_systems_mutex);
-        // In get_system without uuid, we expect to have only
-        // one system connected.
-        if (_systems.size() == 1) {
-            return *(_systems.at(_systems.begin()->first));
-        }
+//System& MavsdkImpl::get_system()
+//{
+    //// TODO kalyan - probably should be scrapped
+    //{
+        //std::lock_guard<std::recursive_mutex> lock(_systems_mutex);
+        //// In get_system without uuid, we expect to have only
+        //// one system connected.
+        //if (_systems.size() == 1) {
+            //return *(_systems.at(_systems.begin()->first));
+        //}
 
-        if (_systems.size() > 1) {
-            LogWarn()
-                << "More than one system found. You should be using `get_system(uuid)` instead of `get_system()`!";
+        //if (_systems.size() > 1) {
+            //LogWarn()
+                //<< "More than one system found. You should be using `get_system(uuid)` instead of `get_system()`!";
 
-            // Just return first system instead of failing.
-            return *_systems.begin()->second;
-        } else {
-            uint8_t system_id = 0, comp_id = 0;
-            make_system_with_component(system_id, comp_id);
-            return *_systems[system_id];
-        }
-    }
-}
+            //// Just return first system instead of failing.
+            //return *_systems.begin()->second;
+        //} else {
+            //uint8_t system_id = 0, comp_id = 0;
+            //make_system_with_component(system_id, comp_id);
+            //return *_systems[system_id];
+        //}
+    //}
+//}
 
-System& MavsdkImpl::get_system(const uint64_t uuid)
-{
-    // TODO kalyan - do we even need this? Why not just discover?
-    {
-        std::lock_guard<std::recursive_mutex> lock(_systems_mutex);
-        // TODO: make a cache map for this.
-        for (auto system : _systems) {
-            if (system.second->get_uuid() == uuid) {
-                return *system.second;
-            }
-        }
-    }
+//System& MavsdkImpl::get_system(const uint64_t uuid)
+//{
+    //// TODO kalyan - do we even need this? Why not just discover?
+    //{
+        //std::lock_guard<std::recursive_mutex> lock(_systems_mutex);
+        //// TODO: make a cache map for this.
+        //for (auto system : _systems) {
+            //if (system.second->get_uuid() == uuid) {
+                //return *system.second;
+            //}
+        //}
+    //}
 
-    // We have not found a system with this UUID.
-    // TODO: this is an error condition that we ought to handle properly.
-    LogErr() << "System with UUID: " << uuid << " not found";
+    //// We have not found a system with this UUID.
+    //// TODO: this is an error condition that we ought to handle properly.
+    //LogErr() << "System with UUID: " << uuid << " not found";
 
-    // Create a dummy
-    uint8_t system_id = 0, comp_id = 0;
-    make_system_with_component(system_id, comp_id);
+    //// Create a dummy
+    //uint8_t system_id = 0, comp_id = 0;
+    //make_system_with_component(system_id, comp_id);
 
-    return *_systems[system_id];
-}
+    //return *_systems[system_id];
+//}
 
 uint8_t MavsdkImpl::get_own_system_id() const
 {
@@ -397,31 +395,33 @@ uint8_t MavsdkImpl::get_mav_type() const
 bool MavsdkImpl::is_connected() const
 {
     // TODO kalyan - don't really like this, should be looked at in detail
-    std::lock_guard<std::recursive_mutex> lock(_systems_mutex);
+    //std::lock_guard<std::recursive_mutex> lock(_systems_mutex);
 
-    if (_systems.empty()) {
-        return false;
-    }
+    //if (_systems.empty()) {
+        //return false;
+    //}
 
-    return _systems.begin()->second->is_connected();
+    //return _systems.begin()->second->is_connected();
+    return false;
 }
 
 bool MavsdkImpl::is_connected(const uint64_t uuid) const
 {
+    std::cout << uuid << std::endl;
     // TODO kalyan - don't really like this, should be looked at in detail
-    std::lock_guard<std::recursive_mutex> lock(_systems_mutex);
+    //std::lock_guard<std::recursive_mutex> lock(_systems_mutex);
 
-    for (auto it = _systems.begin(); it != _systems.end(); ++it) {
-        if (it->second->get_uuid() == uuid) {
-            return it->second->is_connected();
-        }
-    }
+    //for (auto it = _systems.begin(); it != _systems.end(); ++it) {
+        //if (it->second->get_uuid() == uuid) {
+            //return it->second->is_connected();
+        //}
+    //}
     return false;
 }
 
 void MavsdkImpl::make_system_with_component(uint8_t system_id, uint8_t comp_id)
 {
-    std::lock_guard<std::recursive_mutex> lock(_systems_mutex);
+    //std::lock_guard<std::recursive_mutex> lock(_systems_mutex);
 
     if (_should_exit) {
         // When the system got destroyed in the destructor, we have to give up.
@@ -430,9 +430,9 @@ void MavsdkImpl::make_system_with_component(uint8_t system_id, uint8_t comp_id)
 
     LogDebug() << "New: System ID: " << int(system_id) << " Comp ID: " << int(comp_id);
     // Make a system with its first component
-    auto new_system = std::make_shared<System>(*this, system_id, comp_id, _is_single_system);
+    //auto new_system = std::make_shared<System>(*this, system_id, comp_id, _is_single_system);
 
-    _systems.insert(system_entry_t(system_id, new_system));
+    //_systems.insert(system_entry_t(system_id, new_system));
 }
 
 void MavsdkImpl::make_node_with_id(uint8_t system_id, uint8_t component_id) {
@@ -456,12 +456,13 @@ void MavsdkImpl::make_node_with_id(uint8_t system_id, uint8_t component_id) {
 
 bool MavsdkImpl::does_system_exist(uint8_t system_id)
 {
+    std::cout << system_id << std::endl;
     // TODO kalyan - system ID is not enough to determine connection?
-    std::lock_guard<std::recursive_mutex> lock(_systems_mutex);
+    //std::lock_guard<std::recursive_mutex> lock(_systems_mutex);
 
-    if (!_should_exit) {
-        return (_systems.find(system_id) != _systems.end());
-    }
+    //if (!_should_exit) {
+        //return (_systems.find(system_id) != _systems.end());
+    //}
     // When the system got destroyed in the destructor, we have to give up.
     return false;
 }
@@ -486,7 +487,8 @@ void MavsdkImpl::notify_on_timeout(const uint8_t system_id, const uint8_t compon
 void MavsdkImpl::register_on_discover(const Mavsdk::event_callback_t callback)
 {
     // TODO kalyan - where is this called?
-    std::lock_guard<std::recursive_mutex> lock(_systems_mutex);
+    //std::lock_guard<std::recursive_mutex> lock(_systems_mutex);
+    std::lock_guard<std::recursive_mutex> lock(_nodes_mutex);
 
     if (callback) {
         for (auto const& connected_node : _nodes) {

@@ -1,11 +1,11 @@
 #include "mavlink_parameters.h"
-#include "system_impl.h"
+#include "node_impl.h"
 #include <cstring>
 #include <future>
 
 namespace mavsdk {
 
-MAVLinkParameters::MAVLinkParameters(SystemImpl& parent) : _parent(parent)
+MAVLinkParameters::MAVLinkParameters(NodeImpl& parent) : _parent(parent)
 {
     _parent.register_mavlink_message_handler(
         MAVLINK_MSG_ID_PARAM_VALUE,
@@ -172,7 +172,8 @@ void MAVLinkParameters::do_work()
                     _parent.get_own_component_id(),
                     &work->mavlink_message,
                     _parent.get_system_id(),
-                    _parent.get_autopilot_id(),
+                    //_parent.get_autopilot_id(),
+                    MAVLinkCommands::DEFAULT_COMPONENT_ID_AUTOPILOT, // TODO change
                     param_id,
                     work->param_value.get_4_float_bytes(),
                     work->param_value.get_mav_param_type());
@@ -223,7 +224,8 @@ void MAVLinkParameters::do_work()
                     _parent.get_own_component_id(),
                     &work->mavlink_message,
                     _parent.get_system_id(),
-                    _parent.get_autopilot_id(),
+                    //_parent.get_autopilot_id(),
+                    MAVLinkCommands::DEFAULT_COMPONENT_ID_AUTOPILOT, // TODO change
                     param_id,
                     -1);
             }

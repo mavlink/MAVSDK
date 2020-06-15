@@ -15,6 +15,7 @@ AutopilotInterfaceImpl::AutopilotInterfaceImpl(std::shared_ptr<NodeImpl> node_im
             MAVLINK_MSG_ID_AUTOPILOT_VERSION, 
             std::bind(&AutopilotInterfaceImpl::process_autopilot_version, this, _1),
             this);
+    request_autopilot_version();
 }
 
 uint64_t AutopilotInterfaceImpl::get_uuid() const
@@ -29,10 +30,9 @@ void AutopilotInterfaceImpl::request_autopilot_version()
 
     command.command = MAV_CMD_REQUEST_AUTOPILOT_CAPABILITIES;
     command.params.param1 = 1.0f;
-    command.target_component_id = _node_impl->get_component_id();
 
     _node_impl->send_command_async(command, nullptr);
-} // namespace mavsdk
+}
 
 void AutopilotInterfaceImpl::process_autopilot_version(const mavlink_message_t& message)
 {

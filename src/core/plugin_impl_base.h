@@ -1,24 +1,24 @@
 #pragma once
-#include "system_impl.h"
+#include "node_impl.h"
 #include <memory>
 
 namespace mavsdk {
 
-class System;
-class SystemImpl;
+class Node;
+class NodeImpl;
 
 class PluginImplBase {
 public:
-    explicit PluginImplBase(System& system);
+    explicit PluginImplBase(Node& node);
     virtual ~PluginImplBase() = default;
 
     /*
      * The method `init()` is called when a plugin is instantiated which happens
-     * when a system is constructed. This does not mean that the system actually
-     * exists and is connected, it might just be an empty dummy system.
+     * when a node is constructed. This does not mean that the node actually
+     * exists and is connected, it might just be an empty dummy node.
      *
      * Plugins should do initialization steps with other parts of the Dronecode SDK
-     * at this state, e.g. set up callbacks with _parent (System).
+     * at this state, e.g. set up callbacks with _parent (Node).
      */
     virtual void init() = 0;
 
@@ -31,22 +31,22 @@ public:
     virtual void deinit() = 0;
 
     /*
-     * The method `enable()` is called when a system is discovered (is connected).
+     * The method `enable()` is called when a node is discovered (is connected).
      *
      * Plugins should do all initialization/configuration steps here that require a
-     * system to be connected such as setting/getting parameters.
+     * node to be connected such as setting/getting parameters.
      *
      * If any threads, call_every or timeouts are needed, they can be started now.
      */
     virtual void enable() = 0;
 
     /*
-     * The method `disable()` is called when a system has timed out. The method is also
-     * called before `deinit()` is called in case we destruct with a system still
+     * The method `disable()` is called when a node has timed out. The method is also
+     * called before `deinit()` is called in case we destruct with a node still
      * connected.
      *
      * Plugins should stop whatever they were doing in order to prevent warnings and
-     * errors because communication to the system no longer work, e.g. stop setting
+     * errors because communication to the node no longer work, e.g. stop setting
      * parameters or commands.
      *
      * If any threads, call_every, or timeouts are running, they should be stopped now.
@@ -58,7 +58,7 @@ public:
     const PluginImplBase& operator=(const PluginImplBase&) = delete;
 
 protected:
-    std::shared_ptr<SystemImpl> _parent;
+    std::shared_ptr<NodeImpl> _parent;
 };
 
 } // namespace mavsdk

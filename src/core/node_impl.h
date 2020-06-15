@@ -57,7 +57,8 @@ public:
     uint8_t get_system_id();
     uint8_t get_component_id();
 
-    bool is_connected() const;
+    uint8_t get_own_system_id();
+    uint8_t get_own_component_id();
 
     bool send_message(mavlink_message_t& message) override;
 
@@ -103,11 +104,10 @@ public:
 
     MAVLinkAddress target_address{};
 
-    // TODO refactor
     uint8_t get_type() const;
     uint8_t get_autopilot() const;
     uint8_t get_base_mode() const;
-    uint8_t get_system_status() const;
+    //uint8_t get_system_status() const;
 
     bool is_autopilot() const;
 private:
@@ -118,7 +118,6 @@ private:
     void heartbeats_timed_out();
 
     void system_thread();
-    void send_heartbeat();
 
     MAVLinkCommands::CommandLong
     make_command_msg_rate(uint16_t message_id, double rate_hz, uint8_t component_id);
@@ -143,7 +142,11 @@ private:
 
     MAVLinkCommands _commands;
 
+    Timesync _timesync;
+
     TimeoutHandler _timeout_handler;
+
+    ThreadPool _thread_pool{3};
 
     mavlink_heartbeat_t _heartbeat;
 

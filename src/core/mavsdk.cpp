@@ -55,15 +55,15 @@ std::vector<uint64_t> Mavsdk::system_uuids() const
     return _impl->get_system_uuids();
 }
 
-System& Mavsdk::system() const
-{
-    return _impl->get_system();
-}
+//System& Mavsdk::system() const
+//{
+    //return _impl->get_system();
+//}
 
-System& Mavsdk::system(const uint64_t uuid) const
-{
-    return _impl->get_system(uuid);
-}
+//System& Mavsdk::system(const uint64_t uuid) const
+//{
+    //return _impl->get_system(uuid);
+//}
 
 AutopilotInterface* Mavsdk::get_autopilot()
 {

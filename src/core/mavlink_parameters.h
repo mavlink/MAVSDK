@@ -12,11 +12,11 @@
 
 namespace mavsdk {
 
-class SystemImpl;
+class NodeImpl;
 
 class MAVLinkParameters {
 public:
-    explicit MAVLinkParameters(SystemImpl& parent);
+    explicit MAVLinkParameters(NodeImpl& parent);
     ~MAVLinkParameters();
 
     class ParamValue {
@@ -618,7 +618,7 @@ private:
 
     static std::string extract_safe_param_id(const char param_id[]);
 
-    SystemImpl& _parent;
+    NodeImpl& _parent;
 
     // Params can be up to 16 chars without 0-termination.
     static constexpr size_t PARAM_ID_LEN = 16;

@@ -8,7 +8,6 @@
 
 #include "connection.h"
 #include "mavsdk.h"
-#include "system.h"
 #include "node.h"
 #include "mavlink_include.h"
 #include "mavlink_address.h"
@@ -51,8 +50,6 @@ public:
     void set_configuration(Mavsdk::Configuration configuration);
 
     std::vector<uint64_t> get_system_uuids() const;
-    System& get_system();
-    System& get_system(uint64_t uuid);
 
     AutopilotInterface* get_autopilot();
 
@@ -81,15 +78,12 @@ private:
     void make_node_with_id(uint8_t system_id, uint8_t component_id);
     bool does_system_exist(uint8_t system_id);
 
-    using system_entry_t = std::pair<uint8_t, std::shared_ptr<System>>;
     using node_id_t = uint16_t;
     using node_entry_t = std::pair<node_id_t, std::shared_ptr<Node>>;
 
     std::mutex _connections_mutex;
     std::vector<std::shared_ptr<Connection>> _connections;
 
-    mutable std::recursive_mutex _systems_mutex;
-    std::unordered_map<uint8_t, std::shared_ptr<System>> _systems;
     mutable std::recursive_mutex _nodes_mutex;
     std::unordered_map<uint16_t, std::shared_ptr<Node>> _nodes;
 

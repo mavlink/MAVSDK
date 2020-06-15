@@ -6,8 +6,9 @@
 #include <chrono>
 #include <cstdint>
 #include <mavsdk/mavsdk.h>
-#include <mavsdk/plugins/action/action.h>
-#include <mavsdk/plugins/telemetry/telemetry.h>
+#include <mavsdk/autopilot_interface.h>
+//#include <mavsdk/plugins/action/action.h>
+//#include <mavsdk/plugins/telemetry/telemetry.h>
 #include <iostream>
 #include <thread>
 
@@ -29,48 +30,47 @@ void usage(std::string bin_name)
               << "For example, to connect to the simulator use URL: udp://:14540" << std::endl;
 }
 
-void component_discovered(ComponentType component_type)
-{
-    std::cout << NORMAL_CONSOLE_TEXT << "Discovered a component with type "
-              << unsigned(component_type) << std::endl;
-}
+//void component_discovered(ComponentType component_type)
+//{
+    //std::cout << NORMAL_CONSOLE_TEXT << "Discovered a component with type "
+              //<< unsigned(component_type) << std::endl;
+//}
 
 int main(int argc, char** argv)
 {
-    Mavsdk dc;
+    Mavsdk mavsdk;
     std::string connection_url;
     ConnectionResult connection_result;
 
     //bool discovered_system = false;
     if (argc == 2) {
         connection_url = argv[1];
-        connection_result = dc.add_any_connection(connection_url);
+        connection_result = mavsdk.add_any_connection(connection_url);
     } else {
         usage(argv[0]);
         return 1;
     }
 
-    if (connection_result != ConnectionResult::SUCCESS) {
+    if (connection_result != ConnectionResult::Success) {
         std::cout << ERROR_CONSOLE_TEXT
-                  << "Connection failed: " << connection_result_str(connection_result)
+                  << "Connection failed: " << connection_result
                   << NORMAL_CONSOLE_TEXT << std::endl;
         return 1;
     }
 
-    dc.register_on_discover([](uint8_t system_id, uint8_t component_id) {
+    mavsdk.register_on_discover([](uint8_t system_id, uint8_t component_id) {
             std::cout << "Discovered system with sid: " << int(system_id) << " cid: " << int(component_id) << std::endl;
     });
 
-    dc.register_on_timeout([](uint8_t system_id, uint8_t component_id) {
+    mavsdk.register_on_timeout([](uint8_t system_id, uint8_t component_id) {
             std::cout << "Lost sid: " << int(system_id) << " cid: " << int(component_id) << std::endl;
     });
 
+    sleep_for(seconds(2));
+    AutopilotInterface *autopilot = mavsdk.get_autopilot();
+    sleep_for(seconds(2));
+    std::cout << autopilot->get_uuid() << std::endl;
     sleep_for(seconds(600));
-    // We don't need to specify the UUID if it's only one system anyway.
-    // If there were multiple, we could specify it with:
-    // dc.system(uint64_t uuid);
-    //System& system = dc.system();
-
     //std::cout << "Waiting to discover system..." << std::endl;
     //dc.register_on_discover([&discovered_system](uint64_t uuid) {
         //std::cout << "Discovered system with UUID: " << uuid << std::endl;

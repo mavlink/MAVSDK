@@ -5,13 +5,11 @@
 #include <vector>
 #include <functional>
 
-#include "system.h"
 #include "connection_result.h"
 
 namespace mavsdk {
 
 class MavsdkImpl;
-class System;
 class AutopilotInterface;
 
 /**
@@ -216,7 +214,7 @@ public:
      *
      * @return A reference to a system.
      */
-    System& system() const;
+    //System& system() const;
 
     /**
      * @brief Get the system with the specified UUID.
@@ -227,7 +225,7 @@ public:
      * @param uuid UUID of system to get.
      * @return A reference to the specified system.
      */
-    System& system(uint64_t uuid) const;
+    //System& system(uint64_t uuid) const;
 
     /**
      * @brief Get an interface to an autopilot.

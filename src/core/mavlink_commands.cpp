@@ -68,14 +68,14 @@ MAVLinkCommands::Result MAVLinkCommands::send_command(const MAVLinkCommands::Com
 
 void MAVLinkCommands::queue_command_async(const CommandInt& command, commandResultCallback callback)
 {
-    // LogDebug() << "Command " << (int)(command.command) << " to send to "
-    //  << (int)(command.target_system_id)<< ", " << (int)(command.target_component_id);
+     LogDebug() << "Command " << (int)(command.command) << " to send to "
+      << (int)(command.target_system_id)<< ", " << (int)(command.target_component_id);
 
     auto new_work = std::make_shared<Work>();
 
     mavlink_msg_command_int_pack(
-        _parent.get_system_id(),
-        _parent.get_component_id(),
+        _parent.get_own_system_id(),
+        _parent.get_own_component_id(),
         &new_work->mavlink_message,
         command.target_system_id,
         command.target_component_id,
@@ -99,13 +99,13 @@ void MAVLinkCommands::queue_command_async(const CommandInt& command, commandResu
 void MAVLinkCommands::queue_command_async(
     const CommandLong& command, commandResultCallback callback)
 {
-    // LogDebug() << "Command " << (int)(command.command) << " to send to "
-    //  << (int)(command.target_system_id)<< ", " << (int)(command.target_component_id);
+     LogDebug() << "Command " << (int)(command.command) << " to send to "
+      << (int)(command.target_system_id)<< ", " << (int)(command.target_component_id);
 
     auto new_work = std::make_shared<Work>();
     mavlink_msg_command_long_pack(
-        _parent.get_system_id(),
-        _parent.get_component_id(),
+        _parent.get_own_system_id(),
+        _parent.get_own_component_id(),
         &new_work->mavlink_message,
         command.target_system_id,
         command.target_component_id,
