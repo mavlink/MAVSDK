@@ -62,15 +62,15 @@ public:
 
     bool send_message(mavlink_message_t& message) override;
 
-    typedef std::function<void(MAVLinkCommands::Result, float)> command_result_callback_t;
+    typedef std::function<void(MAVLinkCommands::Result, float)> commandResultCallback;
 
     MAVLinkCommands::Result send_command(MAVLinkCommands::CommandLong& command);
     MAVLinkCommands::Result send_command(MAVLinkCommands::CommandInt& command);
 
     void send_command_async(
-        MAVLinkCommands::CommandLong& command, const command_result_callback_t callback);
+        MAVLinkCommands::CommandLong& command, const commandResultCallback callback);
     void send_command_async(
-        MAVLinkCommands::CommandInt& command, const command_result_callback_t callback);
+        MAVLinkCommands::CommandInt& command, const commandResultCallback callback);
 
     MAVLinkCommands::Result set_msg_rate(
         uint16_t message_id, double rate_hz);
@@ -78,7 +78,7 @@ public:
     void set_msg_rate_async(
         uint16_t message_id,
         double rate_hz,
-        command_result_callback_t callback);
+        commandResultCallback callback);
 
     // TODO refactor
     uint8_t get_own_mav_type() const;
@@ -107,9 +107,58 @@ public:
     uint8_t get_type() const;
     uint8_t get_autopilot() const;
     uint8_t get_base_mode() const;
-    //uint8_t get_system_status() const;
+    uint8_t get_system_status() const;
 
     bool is_autopilot() const;
+
+    MAVLinkCommands::CommandLong
+    make_command_msg_rate(uint16_t message_id, double rate_hz);
+
+    MAVLinkParameters::Result set_param_float(const std::string& name, float value);
+    MAVLinkParameters::Result set_param_int(const std::string& name, int32_t value);
+    MAVLinkParameters::Result set_param_ext_float(const std::string& name, float value);
+    MAVLinkParameters::Result set_param_ext_int(const std::string& name, int32_t value);
+
+    typedef std::function<void(MAVLinkParameters::Result result)> success_t;
+    void set_param_float_async(
+            const std::string& name, float value, success_t callback, const void* cookie);
+    void set_param_int_async(
+            const std::string& name, int32_t value, success_t callback, const void* cookie);
+    void set_param_ext_float_async(
+            const std::string& name, float value, success_t callback, const void* cookie);
+    void set_param_ext_int_async(
+            const std::string& name, int32_t value, success_t callback, const void* cookie);
+
+    typedef std::function<void(MAVLinkParameters::Result result, float value)>
+        get_param_float_callback_t;
+    typedef std::function<void(MAVLinkParameters::Result result, int32_t value)>
+        get_param_int_callback_t;
+
+    static void receive_float_param(
+        MAVLinkParameters::Result result,
+        MAVLinkParameters::ParamValue value,
+        get_param_float_callback_t callback);
+    static void receive_int_param(
+        MAVLinkParameters::Result result,
+        MAVLinkParameters::ParamValue value,
+        get_param_int_callback_t callback);
+
+    std::pair<MAVLinkParameters::Result, float> get_param_float(const std::string& name);
+    std::pair<MAVLinkParameters::Result, int> get_param_int(const std::string& name);
+    std::pair<MAVLinkParameters::Result, float> get_param_ext_float(const std::string& name);
+    std::pair<MAVLinkParameters::Result, int> get_param_ext_int(const std::string& name);
+
+    // These methods can be used to cache a parameter when a system connects. For that
+    // the callback can just be set to nullptr.
+    void get_param_float_async(
+        const std::string& name, get_param_float_callback_t callback, const void* cookie);
+    void get_param_int_async(
+        const std::string& name, get_param_int_callback_t callback, const void* cookie);
+    void get_param_ext_float_async(
+        const std::string& name, get_param_float_callback_t callback, const void* cookie);
+    void get_param_ext_int_async(
+        const std::string& name, get_param_int_callback_t callback, const void* cookie);
+
 private:
     MavsdkImpl& _parent;
     std::atomic<bool> _should_exit{false};
@@ -119,16 +168,13 @@ private:
 
     void system_thread();
 
-    MAVLinkCommands::CommandLong
-    make_command_msg_rate(uint16_t message_id, double rate_hz, uint8_t component_id);
-
     Time _time{};
     AutopilotTime _autopilot_time{};
 
     // Needs to be before anything else because they can depend on it.
     MAVLinkMessageHandler _message_handler{};
 
-    command_result_callback_t _command_result_callback{nullptr};
+    commandResultCallback _command_result_callback{nullptr};
 
     std::thread* _system_thread{nullptr};
 
@@ -140,11 +186,16 @@ private:
 
     static constexpr double _HEARTBEAT_SEND_INTERVAL_S = 1.0;
 
+    MAVLinkParameters _params;
     MAVLinkCommands _commands;
 
     Timesync _timesync;
 
     TimeoutHandler _timeout_handler;
+    CallEveryHandler _call_every_handler;
+
+    std::mutex _plugin_impls_mutex{};
+    std::vector<PluginImplBase*> _plugin_impls{};
 
     ThreadPool _thread_pool{3};
 

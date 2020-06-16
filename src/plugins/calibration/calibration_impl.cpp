@@ -5,31 +5,33 @@
 
 #include "global_include.h"
 #include "px4_custom_mode.h"
-#include "system.h"
+#include "autopilot_interface.h"
+#include "autopilot_interface_impl.h"
 
 namespace mavsdk {
 
 using namespace std::placeholders;
 
-CalibrationImpl::CalibrationImpl(System& system) : PluginImplBase(system)
+CalibrationImpl::CalibrationImpl(AutopilotInterface& interface) : PluginImplBase(),
+    _interface(interface.impl())
 {
-    _parent->register_plugin(this);
+    _interface->register_plugin(this);
 }
 
 CalibrationImpl::~CalibrationImpl()
 {
-    _parent->unregister_plugin(this);
+    _interface->unregister_plugin(this);
 }
 
 void CalibrationImpl::init()
 {
-    _parent->register_mavlink_message_handler(
+    _interface->register_mavlink_message_handler(
         MAVLINK_MSG_ID_STATUSTEXT, std::bind(&CalibrationImpl::process_statustext, this, _1), this);
 }
 
 void CalibrationImpl::deinit()
 {
-    _parent->unregister_all_mavlink_message_handlers(this);
+    _interface->unregister_all_mavlink_message_handlers(this);
 }
 
 void CalibrationImpl::enable() {}
@@ -40,7 +42,7 @@ void CalibrationImpl::calibrate_gyro_async(const CalibrationCallback& callback)
 {
     std::lock_guard<std::mutex> lock(_calibration_mutex);
 
-    if (_parent->is_armed()) {
+    if (_interface->is_armed()) {
         Calibration::ProgressData progress_data;
         call_user_callback(callback, Calibration::Result::FailedArmed, progress_data);
         return;
@@ -60,7 +62,7 @@ void CalibrationImpl::calibrate_gyro_async(const CalibrationCallback& callback)
     MAVLinkCommands::CommandLong::set_as_reserved(command.params, 0.0f);
     command.params.param1 = 1.0f; // Gyro
     command.target_component_id = MAV_COMP_ID_AUTOPILOT1;
-    _parent->send_command_async(
+    _interface->send_command_async(
         command, std::bind(&CalibrationImpl::command_result_callback, this, _1, _2));
 }
 
@@ -70,7 +72,7 @@ void CalibrationImpl::call_user_callback(
     const Calibration::ProgressData progress_data)
 {
     if (callback) {
-        _parent->call_user_callback(
+        _interface->call_user_callback(
             [callback, result, progress_data]() { callback(result, progress_data); });
     }
 }
@@ -79,7 +81,7 @@ void CalibrationImpl::calibrate_accelerometer_async(const CalibrationCallback& c
 {
     std::lock_guard<std::mutex> lock(_calibration_mutex);
 
-    if (_parent->is_armed()) {
+    if (_interface->is_armed()) {
         Calibration::ProgressData progress_data;
         call_user_callback(callback, Calibration::Result::FailedArmed, progress_data);
         return;
@@ -99,7 +101,7 @@ void CalibrationImpl::calibrate_accelerometer_async(const CalibrationCallback& c
     MAVLinkCommands::CommandLong::set_as_reserved(command.params, 0.0f);
     command.params.param5 = 1.0f; // Accel
     command.target_component_id = MAV_COMP_ID_AUTOPILOT1;
-    _parent->send_command_async(
+    _interface->send_command_async(
         command, std::bind(&CalibrationImpl::command_result_callback, this, _1, _2));
 }
 
@@ -107,7 +109,7 @@ void CalibrationImpl::calibrate_magnetometer_async(const CalibrationCallback& ca
 {
     std::lock_guard<std::mutex> lock(_calibration_mutex);
 
-    if (_parent->is_armed()) {
+    if (_interface->is_armed()) {
         Calibration::ProgressData progress_data;
         call_user_callback(callback, Calibration::Result::FailedArmed, progress_data);
         return;
@@ -127,7 +129,7 @@ void CalibrationImpl::calibrate_magnetometer_async(const CalibrationCallback& ca
     MAVLinkCommands::CommandLong::set_as_reserved(command.params, 0.0f);
     command.params.param2 = 1.0f; // Mag
     command.target_component_id = MAV_COMP_ID_AUTOPILOT1;
-    _parent->send_command_async(
+    _interface->send_command_async(
         command, std::bind(&CalibrationImpl::command_result_callback, this, _1, _2));
 }
 
@@ -135,7 +137,7 @@ void CalibrationImpl::calibrate_level_horizon_async(const CalibrationCallback& c
 {
     std::lock_guard<std::mutex> lock(_calibration_mutex);
 
-    if (_parent->is_armed()) {
+    if (_interface->is_armed()) {
         Calibration::ProgressData progress_data;
         call_user_callback(callback, Calibration::Result::FailedArmed, progress_data);
         return;
@@ -155,7 +157,7 @@ void CalibrationImpl::calibrate_level_horizon_async(const CalibrationCallback& c
     MAVLinkCommands::CommandLong::set_as_reserved(command.params, 0.0f);
     command.params.param5 = 2.0f; // Board Level
     command.target_component_id = MAV_COMP_ID_AUTOPILOT1;
-    _parent->send_command_async(
+    _interface->send_command_async(
         command, std::bind(&CalibrationImpl::command_result_callback, this, _1, _2));
 }
 
@@ -163,7 +165,7 @@ void CalibrationImpl::calibrate_gimbal_accelerometer_async(const CalibrationCall
 {
     std::lock_guard<std::mutex> lock(_calibration_mutex);
 
-    if (_parent->is_armed()) {
+    if (_interface->is_armed()) {
         Calibration::ProgressData progress_data;
         call_user_callback(callback, Calibration::Result::FailedArmed, progress_data);
         return;
@@ -183,7 +185,7 @@ void CalibrationImpl::calibrate_gimbal_accelerometer_async(const CalibrationCall
     MAVLinkCommands::CommandLong::set_as_reserved(command.params, 0.0f);
     command.params.param5 = 1.0f; // Accel
     command.target_component_id = MAV_COMP_ID_GIMBAL;
-    _parent->send_command_async(
+    _interface->send_command_async(
         command, std::bind(&CalibrationImpl::command_result_callback, this, _1, _2));
 }
 
@@ -216,7 +218,7 @@ void CalibrationImpl::cancel() const
     MAVLinkCommands::CommandLong::set_as_reserved(command.params, 0.0f);
     command.target_component_id = target_component_id;
     // We don't care about the result, the initial callback should get notified about it.
-    _parent->send_command_async(command, nullptr);
+    _interface->send_command_async(command, nullptr);
 }
 
 void CalibrationImpl::command_result_callback(
@@ -341,18 +343,18 @@ void CalibrationImpl::process_statustext(const mavlink_message_t& message)
                 case State::None:
                     break;
                 case State::GyroCalibration:
-                    _parent->param_changed("CAL_GYRO0_ID");
+                    _interface->param_changed("CAL_GYRO0_ID");
                     break;
                 case State::AccelerometerCalibration:
-                    _parent->param_changed("CAL_ACC0_ID");
+                    _interface->param_changed("CAL_ACC0_ID");
                     break;
                 case State::MagnetometerCalibration:
-                    _parent->param_changed("CAL_MAG0_ID");
+                    _interface->param_changed("CAL_MAG0_ID");
                     break;
                 case State::LevelHorizonCalibration:
-                    _parent->param_changed("SENS_BOARD_X_OFF");
-                    _parent->param_changed("SENS_BOARD_Y_OFF");
-                    _parent->param_changed("SENS_BOARD_Z_OFF");
+                    _interface->param_changed("SENS_BOARD_X_OFF");
+                    _interface->param_changed("SENS_BOARD_Y_OFF");
+                    _interface->param_changed("SENS_BOARD_Z_OFF");
                     break;
                 case State::GimbalAccelerometerCalibration:
                     break;

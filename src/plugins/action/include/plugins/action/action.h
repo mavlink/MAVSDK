@@ -17,7 +17,7 @@
 
 namespace mavsdk {
 
-class System;
+class AutopilotInterface;
 class ActionImpl;
 
 /**
@@ -26,17 +26,17 @@ class ActionImpl;
 class Action : public PluginBase {
 public:
     /**
-     * @brief Constructor. Creates the plugin for a specific System.
+     * @brief Constructor. Creates the plugin for a specific Autopilot.
      *
      * The plugin is typically created as shown below:
      *
      *     ```cpp
-     *     auto action = std::make_shared<Action>(system);
+     *     auto action = std::make_shared<Action>(interface);
      *     ```
      *
-     * @param system The specific system associated with this plugin.
+     * @param interface The specific autopilot associated with this plugin.
      */
-    explicit Action(System& system);
+    explicit Action(AutopilotInterface& interface);
 
     /**
      * @brief Destructor (internal use only).

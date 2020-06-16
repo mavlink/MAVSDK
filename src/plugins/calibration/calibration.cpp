@@ -11,7 +11,7 @@ namespace mavsdk {
 
 using ProgressData = Calibration::ProgressData;
 
-Calibration::Calibration(System& system) : PluginBase(), _impl{new CalibrationImpl(system)} {}
+Calibration::Calibration(AutopilotInterface& interface) : PluginBase(), _impl{new CalibrationImpl(interface)} {}
 
 Calibration::~Calibration() {}
 

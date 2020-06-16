@@ -3,13 +3,13 @@ include_directories(
     SYSTEM  ${PROJECT_SOURCE_DIR}/third_party/mavlink/include
 )
 
-#add_subdirectory(action)
+add_subdirectory(action)
 #add_subdirectory(calibration)
 #add_subdirectory(camera)
 #add_subdirectory(follow_me)
 #add_subdirectory(geofence)
 #add_subdirectory(gimbal)
-#add_subdirectory(info)
+add_subdirectory(info)
 #add_subdirectory(log_files)
 #add_subdirectory(ftp)
 #add_subdirectory(mission)

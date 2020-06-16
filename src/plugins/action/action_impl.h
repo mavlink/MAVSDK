@@ -7,10 +7,12 @@
 #include <cstdint>
 
 namespace mavsdk {
+class AutopilotInterface;
+class AutopilotInterfaceImpl;
 
 class ActionImpl : public PluginImplBase {
 public:
-    ActionImpl(System& system);
+    ActionImpl(AutopilotInterface& interface);
     ~ActionImpl();
 
     void init() override;
@@ -75,6 +77,8 @@ public:
     std::pair<Action::Result, float> get_return_to_launch_altitude() const;
 
 private:
+    std::shared_ptr<AutopilotInterfaceImpl> _interface;
+
     Action::Result disarming_allowed() const;
     Action::Result taking_off_allowed() const;
 

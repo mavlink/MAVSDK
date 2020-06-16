@@ -6,10 +6,11 @@
 
 #include "action_impl.h"
 #include "plugins/action/action.h"
+#include "autopilot_interface.h"
 
 namespace mavsdk {
 
-Action::Action(System& system) : PluginBase(), _impl{new ActionImpl(system)} {}
+Action::Action(AutopilotInterface& interface) : PluginBase(), _impl{new ActionImpl(interface)} {}
 
 Action::~Action() {}
 

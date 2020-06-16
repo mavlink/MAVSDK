@@ -14,7 +14,7 @@ using Identification = Info::Identification;
 using Product = Info::Product;
 using Version = Info::Version;
 
-Info::Info(System& system) : PluginBase(), _impl{new InfoImpl(system)} {}
+Info::Info(AutopilotInterface& interface) : PluginBase(), _impl{new InfoImpl(interface)} {}
 
 Info::~Info() {}
 

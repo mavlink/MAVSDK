@@ -17,8 +17,9 @@
 
 namespace mavsdk {
 
-class System;
+class AutopilotInfo;
 class InfoImpl;
+class AutopilotInterface;
 
 /**
  * @brief Provide information about the hardware and/or software of a system.
@@ -26,17 +27,17 @@ class InfoImpl;
 class Info : public PluginBase {
 public:
     /**
-     * @brief Constructor. Creates the plugin for a specific System.
+     * @brief Constructor. Creates the plugin for a specific AutopilotInterface.
      *
      * The plugin is typically created as shown below:
      *
      *     ```cpp
-     *     auto info = std::make_shared<Info>(system);
+     *     auto info = std::make_shared<Info>(autopilot_interface);
      *     ```
      *
-     * @param system The specific system associated with this plugin.
+     * @param interface The specific interface associated with this plugin.
      */
-    explicit Info(System& system);
+    explicit Info(AutopilotInterface& interface);
 
     /**
      * @brief Destructor (internal use only).
@@ -44,7 +45,7 @@ public:
     ~Info();
 
     /**
-     * @brief System flight information.
+     * @brief Autopilot flight information.
      */
     struct FlightInfo {
         uint32_t time_boot_ms{}; /**< @brief Time since system boot */
@@ -67,7 +68,7 @@ public:
     friend std::ostream& operator<<(std::ostream& str, Info::FlightInfo const& flight_info);
 
     /**
-     * @brief System identification.
+     * @brief Autopilot identification.
      */
     struct Identification {
         std::string
@@ -90,7 +91,7 @@ public:
     friend std::ostream& operator<<(std::ostream& str, Info::Identification const& identification);
 
     /**
-     * @brief System product information.
+     * @brief Autopilot product information.
      */
     struct Product {
         int32_t vendor_id{}; /**< @brief ID of the board vendor */
@@ -114,7 +115,7 @@ public:
     friend std::ostream& operator<<(std::ostream& str, Info::Product const& product);
 
     /**
-     * @brief System version information.
+     * @brief Autopilot version information.
      */
     struct Version {
         int32_t flight_sw_major{}; /**< @brief Flight software major version */

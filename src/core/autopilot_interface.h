@@ -13,7 +13,9 @@ namespace mavsdk {
 class NodeImpl;
 class AutopilotInterfaceImpl;
 class MavsdkImpl;
-class PluginImplBase;
+class InfoImpl;
+class CalibrationImpl;
+class ActionImpl;
 
 /**
  * @brief This represents an interface to an autopilot.
@@ -48,7 +50,10 @@ private:
      * MavsdkImpl and PluginImplBase need access to AutopilotImpl class.
      */
     friend MavsdkImpl;
-    friend PluginImplBase;
+    // TODO this is really horrible, is there any other way? I couldn't think of one
+    friend InfoImpl;
+    friend CalibrationImpl;
+    friend ActionImpl;
 
     Node& _parent;
 

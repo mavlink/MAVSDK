@@ -4,13 +4,14 @@
 #include "calibration_statustext_parser.h"
 #include "mavlink_include.h"
 #include "plugin_impl_base.h"
-#include "system.h"
 
 namespace mavsdk {
+class AutopilotInterface;
+class AutopilotInterfaceImpl;
 
 class CalibrationImpl : public PluginImplBase {
 public:
-    CalibrationImpl(System& system);
+    CalibrationImpl(AutopilotInterface& interface);
     ~CalibrationImpl();
 
     void init() override;
@@ -29,6 +30,8 @@ public:
         const Calibration::CalibrateGimbalAccelerometerCallback& callback);
 
 private:
+    std::shared_ptr<AutopilotInterfaceImpl> _interface;
+
     typedef std::function<void(const Calibration::Result result, const Calibration::ProgressData)>
         CalibrationCallback;
 

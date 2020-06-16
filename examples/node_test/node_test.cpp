@@ -7,7 +7,7 @@
 #include <cstdint>
 #include <mavsdk/mavsdk.h>
 #include <mavsdk/autopilot_interface.h>
-//#include <mavsdk/plugins/action/action.h>
+#include <mavsdk/plugins/action/action.h>
 //#include <mavsdk/plugins/telemetry/telemetry.h>
 #include <iostream>
 #include <thread>

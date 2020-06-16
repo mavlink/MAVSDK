@@ -17,7 +17,7 @@
 
 namespace mavsdk {
 
-class System;
+class AutopilotInterface;
 class CalibrationImpl;
 
 /**
@@ -26,17 +26,17 @@ class CalibrationImpl;
 class Calibration : public PluginBase {
 public:
     /**
-     * @brief Constructor. Creates the plugin for a specific System.
+     * @brief Constructor. Creates the plugin for a specific AutopilotInterface.
      *
      * The plugin is typically created as shown below:
      *
      *     ```cpp
-     *     auto calibration = std::make_shared<Calibration>(system);
+     *     auto calibration = std::make_shared<Calibration>(autopilot_interface);
      *     ```
      *
-     * @param system The specific system associated with this plugin.
+     * @param interface The specific autopilot interface associated with this plugin.
      */
-    explicit Calibration(System& system);
+    explicit Calibration(AutopilotInterface& interface);
 
     /**
      * @brief Destructor (internal use only).

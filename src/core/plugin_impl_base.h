@@ -6,10 +6,12 @@ namespace mavsdk {
 
 class Node;
 class NodeImpl;
+class AutopilotInterface;
 
 class PluginImplBase {
 public:
-    explicit PluginImplBase(Node& node);
+    //explicit PluginImplBase(AutopilotInterface& interface);
+    explicit PluginImplBase();
     virtual ~PluginImplBase() = default;
 
     /*
@@ -18,7 +20,7 @@ public:
      * exists and is connected, it might just be an empty dummy node.
      *
      * Plugins should do initialization steps with other parts of the Dronecode SDK
-     * at this state, e.g. set up callbacks with _parent (Node).
+     * at this state, e.g. set up callbacks with _interace (InterfaceBase).
      */
     virtual void init() = 0;
 
@@ -57,8 +59,8 @@ public:
     PluginImplBase(const PluginImplBase&) = delete;
     const PluginImplBase& operator=(const PluginImplBase&) = delete;
 
-protected:
-    std::shared_ptr<NodeImpl> _parent;
+//protected:
+    //std::shared_ptr<InterfaceBaseImpl> _interface;
 };
 
 } // namespace mavsdk

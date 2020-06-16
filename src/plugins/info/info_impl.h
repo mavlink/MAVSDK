@@ -7,10 +7,12 @@
 #include "plugin_impl_base.h"
 
 namespace mavsdk {
+class AutopilotInterface;
+class AutopilotInterfaceImpl;
 
 class InfoImpl : public PluginImplBase {
 public:
-    InfoImpl(System& system);
+    InfoImpl(AutopilotInterface& interface);
     ~InfoImpl();
 
     void init() override;
@@ -28,6 +30,8 @@ public:
     InfoImpl& operator=(const InfoImpl&) = delete;
 
 private:
+    std::shared_ptr<AutopilotInterfaceImpl> _interface;
+
     void request_version_again();
     void request_flight_information();
     void process_heartbeat(const mavlink_message_t& message);
