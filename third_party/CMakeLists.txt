@@ -17,7 +17,7 @@ endif()
 build_target(curl)
 
 if(${BUILD_BACKEND})
-    build_target(libressl)
+    build_target(openssl)
     build_target(cares)
     build_target(protobuf)
     build_target(absl)

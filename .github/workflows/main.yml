@@ -235,7 +235,7 @@ jobs:
       - name: setup dockcross
         run: docker run --rm dockcross/android-arm > ./dockcross-android-arm; chmod +x ./dockcross-android-arm
       - name: configure
-        run: ./dockcross-android-arm cmake -DCMAKE_BUILD_TYPE=Release -DCMAKE_INSTALL_PREFIX=build/android-arm/install -DBUILD_BACKEND=ON -DBUILD_SHARED_LIBS=OFF -j 2 -Bbuild/android-arm -H.
+        run: ./dockcross-android-arm /bin/bash -c 'ANDROID_NDK=${CROSS_ROOT} PLATFORM=android-arm cmake -DCMAKE_BUILD_TYPE=Release -DCMAKE_INSTALL_PREFIX=build/android-arm/install -DBUILD_BACKEND=ON -DBUILD_SHARED_LIBS=OFF -j 2 -Bbuild/android-arm -H.'
       - name: build
         run: ./dockcross-android-arm cmake --build build/android-arm -j 2 --target install
       - name: create tar with header and library
@@ -260,7 +260,7 @@ jobs:
       - name: setup dockcross
         run: docker run --rm dockcross/android-arm64 > ./dockcross-android-arm64; chmod +x ./dockcross-android-arm64
       - name: configure
-        run: ./dockcross-android-arm64 cmake -DCMAKE_BUILD_TYPE=Release -DCMAKE_INSTALL_PREFIX=build/android-arm64/install -DBUILD_BACKEND=ON -DBUILD_SHARED_LIBS=OFF -j 2 -Bbuild/android-arm64 -H.
+        run: ./dockcross-android-arm64 /bin/bash -c 'ANDROID_NDK=${CROSS_ROOT} PLATFORM=android-arm64 cmake -DCMAKE_BUILD_TYPE=Release -DCMAKE_INSTALL_PREFIX=build/android-arm64/install -DBUILD_BACKEND=ON -DBUILD_SHARED_LIBS=OFF -j 2 -Bbuild/android-arm64 -H.'
       - name: build
         run: ./dockcross-android-arm64 cmake --build build/android-arm64 -j 2 --target install
       - name: create tar with header and library
