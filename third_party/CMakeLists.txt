@@ -7,6 +7,7 @@ include(cmake/build_target.cmake)
 list(APPEND CMAKE_PREFIX_PATH "${DEPS_INSTALL_PATH}")
 set(CMAKE_PREFIX_PATH ${CMAKE_PREFIX_PATH} PARENT_SCOPE)
 
+build_target(openssl)
 build_target(jsoncpp)
 build_target(tinyxml2)
 
