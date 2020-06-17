@@ -260,7 +260,7 @@ jobs:
           tag: ${{ github.ref }}
           overwrite: true
 
-  dockcross-manylinux:
+  dockcross-manylinux2010-x64:
     name: ${{ matrix.arch_name }}
     runs-on: ubuntu-18.04
     strategy:
@@ -270,8 +270,6 @@ jobs:
       - uses: actions/checkout@v2
         with:
           submodules: recursive
-      - name: setup dockcross
-        run: docker run --rm dockcross/${{ matrix.arch_name }} > ./dockcross-${{ matrix.arch_name }}; chmod +x ./dockcross-${{ matrix.arch_name }}
       - uses: actions/cache@v2
         id: cache
         with:
@@ -280,6 +278,8 @@ jobs:
       - name: disable superbuild on cache hit
         if: steps.cache.outputs.cache-hit == 'true'
         run: echo "superbuild=-DSUPERBUILD=OFF" >> $GITHUB_ENV && echo "cmake_prefix_path=-DCMAKE_PREFIX_PATH=/work/build/${{ matrix.arch_name }}/third_party/install" >> $GITHUB_ENV
+      - name: setup dockcross
+        run: docker run --rm dockcross/${{ matrix.arch_name }} > ./dockcross-${{ matrix.arch_name }}; chmod +x ./dockcross-${{ matrix.arch_name }}
       - name: configure
         run: ./dockcross-${{ matrix.arch_name }} cmake $superbuild $cmake_prefix_path -DCMAKE_BUILD_TYPE=Release -DCMAKE_INSTALL_PREFIX=build/${{ matrix.arch_name }}/install -DBUILD_MAVSDK_SERVER=ON -DBUILD_SHARED_LIBS=OFF -DWERROR=OFF -j 2 -Bbuild/${{ matrix.arch_name }} -H.
       - name: build
@@ -317,14 +317,37 @@ jobs:
       - name: configure
         run: ./dockcross-${{ matrix.arch_name }} cmake $superbuild $cmake_prefix_path -DCMAKE_BUILD_TYPE=Release -DCMAKE_INSTALL_PREFIX=build/${{ matrix.arch_name }}/install -DBUILD_MAVSDK_SERVER=ON -DBUILD_SHARED_LIBS=OFF -DBUILD_STATIC_MAVSDK_SERVER=ON -DWERROR=OFF -j 2 -Bbuild/${{ matrix.arch_name }} -H.
       - name: build
-        run: ./dockcross-${{ matrix.arch_name }} cmake --build build/${{ matrix.arch_name }} -j 2 --target install
+        run: ./dockcross-manylinux2010-x64 cmake --build build/manylinux2010-x64 -j 2 --target install
       - name: Publish artefacts
         if: startsWith(github.ref, 'refs/tags/v')
         uses: svenstaro/upload-release-action@v1-release
         with:
           repo_token: ${{ secrets.GITHUB_TOKEN }}
-          file: 'build/${{ matrix.arch_name }}/install/bin/mavsdk_server'
-          asset_name: 'mavsdk_server_${{ matrix.arch_name }}'
+          file: 'build/manylinux2010-x64/install/bin/mavsdk_server'
+          asset_name: 'mavsdk_server_manylinux2010-x64'
+          tag: ${{ github.ref }}
+          overwrite: true
+
+  dockcross-manylinux2014-aarch64:
+    name: manylinux2014-aarch64
+    runs-on: ubuntu-18.04
+    steps:
+      - uses: actions/checkout@v1
+        with:
+          submodules: recursive
+      - name: setup dockcross
+        run: docker run --rm dockcross/manylinux2014-aarch64 > ./dockcross-manylinux2014-aarch64; chmod +x ./dockcross-manylinux2014-aarch64
+      - name: configure
+        run: ./dockcross-manylinux2014-aarch64 /bin/bash -c 'CROSS_COMPILE="" PLATFORM=linux-aarch64 cmake -DCMAKE_BUILD_TYPE=Release -DCMAKE_INSTALL_PREFIX=build/manylinux2014-aarch64/install -DBUILD_BACKEND=ON -DBUILD_SHARED_LIBS=OFF -j 2 -Bbuild/manylinux2014-aarch64 -H.'
+      - name: build
+        run: ./dockcross-manylinux2014-aarch64 cmake --build build/manylinux2014-aarch64 -j 2 --target install
+      - name: Publish artefacts
+        if: startsWith(github.ref, 'refs/tags/v')
+        uses: svenstaro/upload-release-action@v1-release
+        with:
+          repo_token: ${{ secrets.GITHUB_TOKEN }}
+          file: 'build/manylinux2014-aarch64/install/bin/mavsdk_server'
+          asset_name: 'mavsdk_server_manylinux2014-aarch64'
           tag: ${{ github.ref }}
           overwrite: true
 
