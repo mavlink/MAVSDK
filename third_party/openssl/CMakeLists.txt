@@ -14,14 +14,12 @@ if(ANDROID)
         CONFIGURE_COMMAND <SOURCE_DIR>/Configure --sysroot=$ENV{CROSS_ROOT}/sysroot $ENV{OPENSSL_PLATFORM} --prefix=${CMAKE_INSTALL_PREFIX} no-shared
         BUILD_COMMAND make
         )
-elseif(APPLE)
-    execute_process(COMMAND xcrun --sdk macosx --show-sdk-path OUTPUT_VARIABLE OPENSSL_SYSROOT)
-
+elseif(IOS)
     ExternalProject_add(
         openssl
         URL https://www.openssl.org/source/openssl-1.1.1g.tar.gz
         PREFIX openssl
-        CONFIGURE_COMMAND <SOURCE_DIR>/config --prefix=${CMAKE_INSTALL_PREFIX} no-shared
+        CONFIGURE_COMMAND <SOURCE_DIR>/Configure ios64-cross --prefix=${CMAKE_INSTALL_PREFIX} no-shared
         )
 elseif(CMAKE_CROSSCOMPILING) # This assumes we use dockcross
     ExternalProject_add(
