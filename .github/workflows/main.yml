@@ -380,6 +380,12 @@ jobs:
       - uses: actions/checkout@v1
         with:
           submodules: recursive
+      - name: set CROSS_SDK value
+        run: |
+          export VAR_CROSS_TOP="$(dirname $(dirname $(xcrun --sdk iphoneos --show-sdk-path)))"
+          echo "::set-env name=CROSS_TOP::$VAR_CROSS_TOP"
+          export VAR_CROSS_SDK="$(basename $(xcrun --sdk iphoneos --show-sdk-path))"
+          echo "::set-env name=CROSS_SDK::$VAR_CROSS_SDK"
       - name: configure (ios)
         run: cmake -DCMAKE_BUILD_TYPE=Release -DCMAKE_TOOLCHAIN_FILE=$(pwd)/tools/ios.toolchain.cmake -DPLATFORM=OS -DBUILD_BACKEND=ON -DBUILD_SHARED_LIBS=OFF -j 2 -Bbuild/ios -H.
       - name: build (ios)
