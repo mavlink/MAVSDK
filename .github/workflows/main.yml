@@ -323,8 +323,8 @@ jobs:
         uses: svenstaro/upload-release-action@v1-release
         with:
           repo_token: ${{ secrets.GITHUB_TOKEN }}
-          file: 'build/fat_bin/mavsdk_server.framework'
-          asset_name: 'mavsdk_server.framework'
+          file: 'build/fat_bin/mavsdk_server.zip'
+          asset_name: 'mavsdk_server_ios.zip'
           tag: ${{ github.ref }}
           overwrite: true
 
