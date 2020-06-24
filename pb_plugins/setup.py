@@ -24,7 +24,7 @@ class custom_build(build):
             sys.exit(1)
 
         proto_path = f"{script_dir}/../protos"
-        output_path = f"{script_dir}/protoc_gen_dcsdk"
+        output_path = f"{script_dir}/protoc_gen_mavsdk"
         proto_file = "mavsdk_options.proto"
 
         if not os.path.exists(f"{proto_path}/{proto_file}"):
@@ -42,18 +42,18 @@ class custom_build(build):
         build.run(self)
 
 setup(
-    name="protoc-gen-dcsdk",
+    name="protoc-gen-mavsdk",
     version="0.1",
     description="Autogenerator for the MAVSDK bindings",
     url="@TODO",
     author="@TODO",
     author_email="@TODO",
 
-    packages=["protoc_gen_dcsdk"],
+    packages=["protoc_gen_mavsdk"],
     install_requires=["protobuf", "jinja2"],
     entry_points={
         "console_scripts": [
-            "protoc-gen-dcsdk= protoc_gen_dcsdk.__main__:main"
+            "protoc-gen-mavsdk= protoc_gen_mavsdk.__main__:main"
         ]
     },
     cmdclass={'build': custom_build}
