@@ -1,6 +1,6 @@
 import unittest
 
-from protoc_gen_dcsdk.name_parser import (NameParser, NameParserFactory)
+from protoc_gen_mavsdk.name_parser import (NameParser, NameParserFactory)
 from unittest.mock import patch, mock_open
 
 class TestNameParser(unittest.TestCase):

@@ -11,7 +11,7 @@ from .utils import (get_template_env,
                     name_parser_factory,
                     type_info_factory)
 
-import protoc_gen_dcsdk.mavsdk_options_pb2
+import protoc_gen_mavsdk.mavsdk_options_pb2
 
 class AutoGen(object):
     """ Autogenerator for the MAVSDK bindings """
