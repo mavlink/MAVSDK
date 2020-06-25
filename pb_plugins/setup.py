@@ -6,55 +6,45 @@ from distutils.command.build import build
 from distutils.spawn import find_executable
 from setuptools import setup
 
-script_dir = os.path.abspath(os.path.dirname(os.path.realpath(__file__)))
-
-class custom_build(build):
+def parse_requirements(filename):
     """
-    Class that overrides the build step to add a custom pre-build step
+    Helper which parses requirement_?.*.txt files
+
+    :param filename: relative path, e.g. `./requirements.txt`
+    :returns: List of requirements
     """
 
-    def run(self):
-        if 'PROTOC' in os.environ and os.path.exists(os.environ['PROTOC']):
-            protoc = os.environ['PROTOC']
-        else:
-            protoc = find_executable('protoc')
+    # Get absolute filepath
+    filepath = os.path.join(os.getcwd(), filename)
 
-        if protoc is None:
-            sys.stderr.write("'protoc' not found. Install it globally or set the PROTOC environment variable to point to it.")
-            sys.exit(1)
+    # Check if file exists
+    if not os.path.exists(filepath):
+        print("[!] File {} not found".format(filename))
+        return []
 
-        proto_path = f"{script_dir}/../protos"
-        output_path = f"{script_dir}/protoc_gen_mavsdk"
-        proto_file = "mavsdk_options.proto"
-
-        if not os.path.exists(f"{proto_path}/{proto_file}"):
-            sys.stderr.write(f"Can't find required file: {proto_file} in {proto_path}!")
-            sys.exit(1)
-        elif not os.path.exists(output_path):
-            sys.stderr.write(f"Can't find output path: {output_path}!")
-            sys.exit(1)
-
-        command = [protoc, '-I', proto_path, f"--python_out={output_path}", proto_file]
-        print(command)
-        if subprocess.call(command) != 0:
-            sys.exit(1)
-
-        build.run(self)
+    # Parse install requirements
+    with open(filepath, encoding="utf-8") as f:
+        return [requires.strip() for requires in f.readlines()]
 
 setup(
     name="protoc-gen-mavsdk",
-    version="0.1",
-    description="Autogenerator for the MAVSDK bindings",
-    url="@TODO",
-    author="@TODO",
-    author_email="@TODO",
+    version="1.0.0",
+    description="Protoc plugin used to generate MAVSDK bindings",
+    url="https://github.com/mavlink/MAVSDK-Proto",
+    maintainer="Jonas Vautherin, Julian Oes",
+    maintainer_email="jonas@auterion.com, julian.oes@auterion.com",
+
+    classifiers=[
+        "Development Status :: 5 - Production/Stable",
+        "Intended Audience :: Developers",
+        "License :: OSI Approved :: BSD License",
+    ],
 
     packages=["protoc_gen_mavsdk"],
-    install_requires=["protobuf", "jinja2"],
+    install_requires=parse_requirements("requirements.txt"),
     entry_points={
         "console_scripts": [
             "protoc-gen-mavsdk= protoc_gen_mavsdk.__main__:main"
         ]
-    },
-    cmdclass={'build': custom_build}
+    }
 )
