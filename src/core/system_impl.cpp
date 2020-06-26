@@ -831,6 +831,32 @@ void SystemImpl::cancel_all_param(const void* cookie)
     _params.cancel_all_param(cookie);
 }
 
+void SystemImpl::subscribe_param_int(
+    const std::string& name, SubscribeParamIntCallback callback, const void* cookie)
+{
+    MAVLinkParameters::ParamValue value_type;
+    value_type.set_int32(0);
+
+    _params.subscribe_param_changed(
+        name,
+        value_type,
+        [callback](MAVLinkParameters::ParamValue value) { callback(value.get_int32()); },
+        cookie);
+}
+
+void SystemImpl::subscribe_param_float(
+    const std::string& name, SubscribeParamFloatCallback callback, const void* cookie)
+{
+    MAVLinkParameters::ParamValue value_type;
+    value_type.set_float(0);
+
+    _params.subscribe_param_changed(
+        name,
+        value_type,
+        [callback](MAVLinkParameters::ParamValue value) { callback(value.get_float()); },
+        cookie);
+}
+
 std::pair<MAVLinkCommands::Result, MAVLinkCommands::CommandLong>
 SystemImpl::make_command_flight_mode(FlightMode flight_mode, uint8_t component_id)
 {

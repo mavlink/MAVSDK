@@ -9,6 +9,7 @@
 #include <string>
 #include <functional>
 #include <cassert>
+#include <vector>
 
 namespace mavsdk {
 
@@ -600,6 +601,13 @@ public:
         const void* cookie,
         bool extended = false);
 
+    using ParamChangedCallback = std::function<void(ParamValue value)>;
+    void subscribe_param_changed(
+        const std::string& name,
+        ParamValue value_type,
+        ParamChangedCallback callback,
+        const void* cookie);
+
     void cancel_all_param(const void* cookie);
 
     void do_work();
@@ -615,6 +623,8 @@ private:
     void process_param_ext_value(const mavlink_message_t& message);
     void process_param_ext_ack(const mavlink_message_t& message);
     void receive_timeout();
+
+    void notify_param_subscriptions(const mavlink_param_value_t& param_value);
 
     static std::string extract_safe_param_id(const char param_id[]);
 
@@ -641,6 +651,16 @@ private:
     LockedQueue<WorkItem> _work_queue{};
 
     void* _timeout_cookie = nullptr;
+
+    struct ParamChangedSubscription {
+        std::string param_name{};
+        ParamChangedCallback callback{};
+        ParamValue value_type{};
+        const void* cookie{nullptr};
+    };
+
+    std::mutex _param_changed_subscriptions_mutex{};
+    std::vector<ParamChangedSubscription> _param_changed_subscriptions{};
 
     // dl_time_t _last_request_time = {};
 };
