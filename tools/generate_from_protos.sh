@@ -28,6 +28,16 @@ command -v ${protoc_binary} > /dev/null && command -v ${protoc_grpc_binary} > /d
     exit 1
 }
 
+command -v protoc-gen-mavsdk > /dev/null || {
+    echo "-------------------------------"
+    echo " Error"
+    echo "-------------------------------"
+    echo >&2 "'protoc-gen-mavsdk' not found in PATH"
+    echo >&2 ""
+    echo >&2 "Make sure 'protoc-gen-mavsdk' is installed and available"
+    exit 1
+}
+
 echo "Found protoc ($(${protoc_binary} --version)): ${protoc_binary}"
 echo "Found grpc_cpp_plugin: ${protoc_grpc_binary}"
 
@@ -36,9 +46,8 @@ plugin_list_and_core=$(cd ${script_dir}/../proto/protos && ls -d */ | sed 's:/*$
 echo "Processing mavsdk_options.proto"
 ${protoc_binary} -I ${proto_dir} --cpp_out=${backend_generated_dir} --grpc_out=${backend_generated_dir} --plugin=protoc-gen-grpc=${protoc_grpc_binary} ${proto_dir}/mavsdk_options.proto
 
-
 tmp_output_dir="$(mktemp -d)"
-protoc_gen_dcsdk=$(which protoc-gen-dcsdk)
+protoc_gen_dcsdk=$(which protoc-gen-mavsdk)
 template_path_plugin_h="${script_dir}/../templates/plugin_h"
 template_path_plugin_cpp="${script_dir}/../templates/plugin_cpp"
 template_path_plugin_impl_h="${script_dir}/../templates/plugin_impl_h"
