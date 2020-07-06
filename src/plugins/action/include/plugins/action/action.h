@@ -171,7 +171,7 @@ public:
      *
      * This function is non-blocking. See 'reboot' for the blocking counterpart.
      */
-    void reboot_async(const ResultCallback callback);
+    void reboot_async(const ResultCallback callback, const uint8_t component=0xFF);
 
     /**
      * @brief Send command to reboot the drone components.
@@ -182,7 +182,7 @@ public:
      *
      * @return Result of request.
      */
-    Result reboot() const;
+    Result reboot(const uint8_t component=0xFF) const;
 
     /**
      * @brief Send command to shut down the drone components.
@@ -193,7 +193,7 @@ public:
      *
      * This function is non-blocking. See 'shutdown' for the blocking counterpart.
      */
-    void shutdown_async(const ResultCallback callback);
+    void shutdown_async(const ResultCallback callback, const uint8_t component=0xFF);
 
     /**
      * @brief Send command to shut down the drone components.
@@ -206,7 +206,7 @@ public:
      *
      * @return Result of request.
      */
-    Result shutdown() const;
+    Result shutdown(const uint8_t component=0xFF) const;
 
     /**
      * @brief Send command to kill the drone.
