@@ -73,6 +73,16 @@ Action::Result Action::shutdown() const
     return _impl->shutdown();
 }
 
+void Action::terminate_async(const ResultCallback callback)
+{
+    _impl->terminate_async(callback);
+}
+
+Action::Result Action::terminate() const
+{
+    return _impl->terminate();
+}
+
 void Action::kill_async(const ResultCallback callback)
 {
     _impl->kill_async(callback);
