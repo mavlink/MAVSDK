@@ -35,6 +35,9 @@ command -v protoc-gen-mavsdk > /dev/null || {
     echo >&2 "'protoc-gen-mavsdk' not found in PATH"
     echo >&2 ""
     echo >&2 "Make sure 'protoc-gen-mavsdk' is installed and available"
+    echo >&2 "You can install it using pip:"
+    echo >&2 ""
+    echo >&2 "    pip3 install --user protoc-gen-mavsdk"
     exit 1
 }
 
