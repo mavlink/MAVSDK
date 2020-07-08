@@ -24,7 +24,7 @@ command -v ${protoc_binary} > /dev/null && command -v ${protoc_grpc_binary} > /d
     echo >&2 ""
     echo >&2 "You may want to run the CMake configure step first:"
     echo >&2 ""
-    echo >&2 "    $ cmake -DBUILD_BACKEND=ON -Bbuild/default -H."
+    echo >&2 "    cmake -DBUILD_BACKEND=ON -Bbuild/default -H."
     exit 1
 }
 
@@ -35,6 +35,9 @@ command -v protoc-gen-mavsdk > /dev/null || {
     echo >&2 "'protoc-gen-mavsdk' not found in PATH"
     echo >&2 ""
     echo >&2 "Make sure 'protoc-gen-mavsdk' is installed and available"
+    echo >&2 "You can install it using pip:"
+    echo >&2 ""
+    echo >&2 "    pip3 install --user protoc-gen-mavsdk"
     exit 1
 }
 
@@ -47,7 +50,7 @@ echo "Processing mavsdk_options.proto"
 ${protoc_binary} -I ${proto_dir} --cpp_out=${backend_generated_dir} --grpc_out=${backend_generated_dir} --plugin=protoc-gen-grpc=${protoc_grpc_binary} ${proto_dir}/mavsdk_options.proto
 
 tmp_output_dir="$(mktemp -d)"
-protoc_gen_dcsdk=$(which protoc-gen-mavsdk)
+protoc_gen_mavsdk=$(which protoc-gen-mavsdk)
 template_path_plugin_h="${script_dir}/../templates/plugin_h"
 template_path_plugin_cpp="${script_dir}/../templates/plugin_cpp"
 template_path_plugin_impl_h="${script_dir}/../templates/plugin_impl_h"
@@ -67,19 +70,19 @@ for plugin in ${plugin_list_and_core}; do
     fi
 
     mkdir -p ${script_dir}/../src/plugins/${plugin}/include/plugins/${plugin}
-    ${protoc_binary} -I ${proto_dir} --custom_out=${tmp_output_dir} --plugin=protoc-gen-custom=${protoc_gen_dcsdk} --custom_opt="file_ext=h,template_path=${template_path_plugin_h}" ${proto_dir}/${plugin}/${plugin}.proto
+    ${protoc_binary} -I ${proto_dir} --custom_out=${tmp_output_dir} --plugin=protoc-gen-custom=${protoc_gen_mavsdk} --custom_opt="file_ext=h,template_path=${template_path_plugin_h}" ${proto_dir}/${plugin}/${plugin}.proto
     mv ${tmp_output_dir}/${plugin}/$(snake_case_to_camel_case ${plugin}).h ${script_dir}/../src/plugins/${plugin}/include/plugins/${plugin}/${plugin}.h
 
-    ${protoc_binary} -I ${proto_dir} --custom_out=${tmp_output_dir} --plugin=protoc-gen-custom=${protoc_gen_dcsdk} --custom_opt="file_ext=cpp,template_path=${template_path_plugin_cpp}" ${proto_dir}/${plugin}/${plugin}.proto
+    ${protoc_binary} -I ${proto_dir} --custom_out=${tmp_output_dir} --plugin=protoc-gen-custom=${protoc_gen_mavsdk} --custom_opt="file_ext=cpp,template_path=${template_path_plugin_cpp}" ${proto_dir}/${plugin}/${plugin}.proto
     mv ${tmp_output_dir}/${plugin}/$(snake_case_to_camel_case ${plugin}).cpp ${script_dir}/../src/plugins/${plugin}/${plugin}.cpp
 
-    ${protoc_binary} -I ${proto_dir} --custom_out=${tmp_output_dir} --plugin=protoc-gen-custom=${protoc_gen_dcsdk} --custom_opt="file_ext=h,template_path=${template_path_mavsdk_server}" ${proto_dir}/${plugin}/${plugin}.proto
+    ${protoc_binary} -I ${proto_dir} --custom_out=${tmp_output_dir} --plugin=protoc-gen-custom=${protoc_gen_mavsdk} --custom_opt="file_ext=h,template_path=${template_path_mavsdk_server}" ${proto_dir}/${plugin}/${plugin}.proto
     mkdir -p ${script_dir}/../src/backend/src/plugins/${plugin}
     mv ${tmp_output_dir}/${plugin}/$(snake_case_to_camel_case ${plugin}).h ${script_dir}/../src/backend/src/plugins/${plugin}/${plugin}_service_impl.h
 
     file_impl_h="${script_dir}/../src/plugins/${plugin}/${plugin}_impl.h"
     if [[ ! -f "${file_impl_h}" ]]; then
-        ${protoc_binary} -I ${proto_dir} --custom_out=${tmp_output_dir} --plugin=protoc-gen-custom=${protoc_gen_dcsdk} --custom_opt="file_ext=h,template_path=${template_path_plugin_impl_h}" ${proto_dir}/${plugin}/${plugin}.proto
+        ${protoc_binary} -I ${proto_dir} --custom_out=${tmp_output_dir} --plugin=protoc-gen-custom=${protoc_gen_mavsdk} --custom_opt="file_ext=h,template_path=${template_path_plugin_impl_h}" ${proto_dir}/${plugin}/${plugin}.proto
         mv ${tmp_output_dir}/${plugin}/$(snake_case_to_camel_case ${plugin}).h ${file_impl_h}
         echo "-> Creating ${file_impl_h}"
     else
@@ -91,7 +94,7 @@ for plugin in ${plugin_list_and_core}; do
 
     file_impl_cpp="${script_dir}/../src/plugins/${plugin}/${plugin}_impl.cpp"
     if [[ ! -f $file_impl_cpp ]]; then
-        ${protoc_binary} -I ${proto_dir} --custom_out=${tmp_output_dir} --plugin=protoc-gen-custom=${protoc_gen_dcsdk} --custom_opt="file_ext=cpp,template_path=${template_path_plugin_impl_cpp}" ${proto_dir}/${plugin}/${plugin}.proto
+        ${protoc_binary} -I ${proto_dir} --custom_out=${tmp_output_dir} --plugin=protoc-gen-custom=${protoc_gen_mavsdk} --custom_opt="file_ext=cpp,template_path=${template_path_plugin_impl_cpp}" ${proto_dir}/${plugin}/${plugin}.proto
         mv ${tmp_output_dir}/${plugin}/$(snake_case_to_camel_case ${plugin}).cpp ${file_impl_cpp}
         echo "-> Creating ${file_impl_cpp}"
     else
@@ -103,7 +106,7 @@ for plugin in ${plugin_list_and_core}; do
 
     file_cmake="${script_dir}/../src/plugins/${plugin}/CMakeLists.txt"
     if [[ ! -f $file_cmake ]]; then
-        ${protoc_binary} -I ${proto_dir} --custom_out=${tmp_output_dir} --plugin=protoc-gen-custom=${protoc_gen_dcsdk} --custom_opt="file_ext=txt,template_path=${template_path_cmake}" ${proto_dir}/${plugin}/${plugin}.proto
+        ${protoc_binary} -I ${proto_dir} --custom_out=${tmp_output_dir} --plugin=protoc-gen-custom=${protoc_gen_mavsdk} --custom_opt="file_ext=txt,template_path=${template_path_cmake}" ${proto_dir}/${plugin}/${plugin}.proto
         mv ${tmp_output_dir}/${plugin}/$(snake_case_to_camel_case ${plugin}).txt ${file_cmake}
         echo "-> Creating ${file_cmake}"
     else
