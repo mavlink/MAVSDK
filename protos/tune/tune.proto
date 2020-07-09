@@ -39,7 +39,7 @@ enum SongElement {
 }
 
 message PlayTuneRequest {
-  TuneDescription description = 1; // The tune to be played
+  TuneDescription tune_description = 1; // The tune to be played
 }
 message PlayTuneResponse {
   TuneResult tune_result = 1;
