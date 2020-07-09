@@ -38,6 +38,11 @@ std::pair<Info::Result, Info::Version> Info::get_version() const
     return _impl->get_version();
 }
 
+std::pair<Info::Result, double> Info::get_speed_factor() const
+{
+    return _impl->get_speed_factor();
+}
+
 bool operator==(const Info::FlightInfo& lhs, const Info::FlightInfo& rhs)
 {
     return (rhs.time_boot_ms == lhs.time_boot_ms) && (rhs.flight_uid == lhs.flight_uid);

@@ -265,6 +265,22 @@ public:
         return grpc::Status::OK;
     }
 
+    grpc::Status GetSpeedFactor(
+        grpc::ServerContext* /* context */,
+        const rpc::info::GetSpeedFactorRequest* /* request */,
+        rpc::info::GetSpeedFactorResponse* response) override
+    {
+        auto result = _info.get_speed_factor();
+
+        if (response != nullptr) {
+            fillResponseWithResult(response, result.first);
+
+            response->set_speed_factor(result.second);
+        }
+
+        return grpc::Status::OK;
+    }
+
     void stop()
     {
         _stopped.store(true);

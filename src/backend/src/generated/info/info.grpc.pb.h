@@ -71,6 +71,14 @@ class InfoService final {
     std::unique_ptr< ::grpc::ClientAsyncResponseReaderInterface< ::mavsdk::rpc::info::GetVersionResponse>> PrepareAsyncGetVersion(::grpc::ClientContext* context, const ::mavsdk::rpc::info::GetVersionRequest& request, ::grpc::CompletionQueue* cq) {
       return std::unique_ptr< ::grpc::ClientAsyncResponseReaderInterface< ::mavsdk::rpc::info::GetVersionResponse>>(PrepareAsyncGetVersionRaw(context, request, cq));
     }
+    // Get the speed factor of a simulation (with lockstep a simulation can run faster or slower than realtime).
+    virtual ::grpc::Status GetSpeedFactor(::grpc::ClientContext* context, const ::mavsdk::rpc::info::GetSpeedFactorRequest& request, ::mavsdk::rpc::info::GetSpeedFactorResponse* response) = 0;
+    std::unique_ptr< ::grpc::ClientAsyncResponseReaderInterface< ::mavsdk::rpc::info::GetSpeedFactorResponse>> AsyncGetSpeedFactor(::grpc::ClientContext* context, const ::mavsdk::rpc::info::GetSpeedFactorRequest& request, ::grpc::CompletionQueue* cq) {
+      return std::unique_ptr< ::grpc::ClientAsyncResponseReaderInterface< ::mavsdk::rpc::info::GetSpeedFactorResponse>>(AsyncGetSpeedFactorRaw(context, request, cq));
+    }
+    std::unique_ptr< ::grpc::ClientAsyncResponseReaderInterface< ::mavsdk::rpc::info::GetSpeedFactorResponse>> PrepareAsyncGetSpeedFactor(::grpc::ClientContext* context, const ::mavsdk::rpc::info::GetSpeedFactorRequest& request, ::grpc::CompletionQueue* cq) {
+      return std::unique_ptr< ::grpc::ClientAsyncResponseReaderInterface< ::mavsdk::rpc::info::GetSpeedFactorResponse>>(PrepareAsyncGetSpeedFactorRaw(context, request, cq));
+    }
     class experimental_async_interface {
      public:
       virtual ~experimental_async_interface() {}
@@ -126,6 +134,19 @@ class InfoService final {
       #else
       virtual void GetVersion(::grpc::ClientContext* context, const ::grpc::ByteBuffer* request, ::mavsdk::rpc::info::GetVersionResponse* response, ::grpc::experimental::ClientUnaryReactor* reactor) = 0;
       #endif
+      // Get the speed factor of a simulation (with lockstep a simulation can run faster or slower than realtime).
+      virtual void GetSpeedFactor(::grpc::ClientContext* context, const ::mavsdk::rpc::info::GetSpeedFactorRequest* request, ::mavsdk::rpc::info::GetSpeedFactorResponse* response, std::function<void(::grpc::Status)>) = 0;
+      virtual void GetSpeedFactor(::grpc::ClientContext* context, const ::grpc::ByteBuffer* request, ::mavsdk::rpc::info::GetSpeedFactorResponse* response, std::function<void(::grpc::Status)>) = 0;
+      #ifdef GRPC_CALLBACK_API_NONEXPERIMENTAL
+      virtual void GetSpeedFactor(::grpc::ClientContext* context, const ::mavsdk::rpc::info::GetSpeedFactorRequest* request, ::mavsdk::rpc::info::GetSpeedFactorResponse* response, ::grpc::ClientUnaryReactor* reactor) = 0;
+      #else
+      virtual void GetSpeedFactor(::grpc::ClientContext* context, const ::mavsdk::rpc::info::GetSpeedFactorRequest* request, ::mavsdk::rpc::info::GetSpeedFactorResponse* response, ::grpc::experimental::ClientUnaryReactor* reactor) = 0;
+      #endif
+      #ifdef GRPC_CALLBACK_API_NONEXPERIMENTAL
+      virtual void GetSpeedFactor(::grpc::ClientContext* context, const ::grpc::ByteBuffer* request, ::mavsdk::rpc::info::GetSpeedFactorResponse* response, ::grpc::ClientUnaryReactor* reactor) = 0;
+      #else
+      virtual void GetSpeedFactor(::grpc::ClientContext* context, const ::grpc::ByteBuffer* request, ::mavsdk::rpc::info::GetSpeedFactorResponse* response, ::grpc::experimental::ClientUnaryReactor* reactor) = 0;
+      #endif
     };
     #ifdef GRPC_CALLBACK_API_NONEXPERIMENTAL
     typedef class experimental_async_interface async_interface;
@@ -143,6 +164,8 @@ class InfoService final {
     virtual ::grpc::ClientAsyncResponseReaderInterface< ::mavsdk::rpc::info::GetProductResponse>* PrepareAsyncGetProductRaw(::grpc::ClientContext* context, const ::mavsdk::rpc::info::GetProductRequest& request, ::grpc::CompletionQueue* cq) = 0;
     virtual ::grpc::ClientAsyncResponseReaderInterface< ::mavsdk::rpc::info::GetVersionResponse>* AsyncGetVersionRaw(::grpc::ClientContext* context, const ::mavsdk::rpc::info::GetVersionRequest& request, ::grpc::CompletionQueue* cq) = 0;
     virtual ::grpc::ClientAsyncResponseReaderInterface< ::mavsdk::rpc::info::GetVersionResponse>* PrepareAsyncGetVersionRaw(::grpc::ClientContext* context, const ::mavsdk::rpc::info::GetVersionRequest& request, ::grpc::CompletionQueue* cq) = 0;
+    virtual ::grpc::ClientAsyncResponseReaderInterface< ::mavsdk::rpc::info::GetSpeedFactorResponse>* AsyncGetSpeedFactorRaw(::grpc::ClientContext* context, const ::mavsdk::rpc::info::GetSpeedFactorRequest& request, ::grpc::CompletionQueue* cq) = 0;
+    virtual ::grpc::ClientAsyncResponseReaderInterface< ::mavsdk::rpc::info::GetSpeedFactorResponse>* PrepareAsyncGetSpeedFactorRaw(::grpc::ClientContext* context, const ::mavsdk::rpc::info::GetSpeedFactorRequest& request, ::grpc::CompletionQueue* cq) = 0;
   };
   class Stub final : public StubInterface {
    public:
@@ -174,6 +197,13 @@ class InfoService final {
     }
     std::unique_ptr< ::grpc::ClientAsyncResponseReader< ::mavsdk::rpc::info::GetVersionResponse>> PrepareAsyncGetVersion(::grpc::ClientContext* context, const ::mavsdk::rpc::info::GetVersionRequest& request, ::grpc::CompletionQueue* cq) {
       return std::unique_ptr< ::grpc::ClientAsyncResponseReader< ::mavsdk::rpc::info::GetVersionResponse>>(PrepareAsyncGetVersionRaw(context, request, cq));
+    }
+    ::grpc::Status GetSpeedFactor(::grpc::ClientContext* context, const ::mavsdk::rpc::info::GetSpeedFactorRequest& request, ::mavsdk::rpc::info::GetSpeedFactorResponse* response) override;
+    std::unique_ptr< ::grpc::ClientAsyncResponseReader< ::mavsdk::rpc::info::GetSpeedFactorResponse>> AsyncGetSpeedFactor(::grpc::ClientContext* context, const ::mavsdk::rpc::info::GetSpeedFactorRequest& request, ::grpc::CompletionQueue* cq) {
+      return std::unique_ptr< ::grpc::ClientAsyncResponseReader< ::mavsdk::rpc::info::GetSpeedFactorResponse>>(AsyncGetSpeedFactorRaw(context, request, cq));
+    }
+    std::unique_ptr< ::grpc::ClientAsyncResponseReader< ::mavsdk::rpc::info::GetSpeedFactorResponse>> PrepareAsyncGetSpeedFactor(::grpc::ClientContext* context, const ::mavsdk::rpc::info::GetSpeedFactorRequest& request, ::grpc::CompletionQueue* cq) {
+      return std::unique_ptr< ::grpc::ClientAsyncResponseReader< ::mavsdk::rpc::info::GetSpeedFactorResponse>>(PrepareAsyncGetSpeedFactorRaw(context, request, cq));
     }
     class experimental_async final :
       public StubInterface::experimental_async_interface {
@@ -226,6 +256,18 @@ class InfoService final {
       #else
       void GetVersion(::grpc::ClientContext* context, const ::grpc::ByteBuffer* request, ::mavsdk::rpc::info::GetVersionResponse* response, ::grpc::experimental::ClientUnaryReactor* reactor) override;
       #endif
+      void GetSpeedFactor(::grpc::ClientContext* context, const ::mavsdk::rpc::info::GetSpeedFactorRequest* request, ::mavsdk::rpc::info::GetSpeedFactorResponse* response, std::function<void(::grpc::Status)>) override;
+      void GetSpeedFactor(::grpc::ClientContext* context, const ::grpc::ByteBuffer* request, ::mavsdk::rpc::info::GetSpeedFactorResponse* response, std::function<void(::grpc::Status)>) override;
+      #ifdef GRPC_CALLBACK_API_NONEXPERIMENTAL
+      void GetSpeedFactor(::grpc::ClientContext* context, const ::mavsdk::rpc::info::GetSpeedFactorRequest* request, ::mavsdk::rpc::info::GetSpeedFactorResponse* response, ::grpc::ClientUnaryReactor* reactor) override;
+      #else
+      void GetSpeedFactor(::grpc::ClientContext* context, const ::mavsdk::rpc::info::GetSpeedFactorRequest* request, ::mavsdk::rpc::info::GetSpeedFactorResponse* response, ::grpc::experimental::ClientUnaryReactor* reactor) override;
+      #endif
+      #ifdef GRPC_CALLBACK_API_NONEXPERIMENTAL
+      void GetSpeedFactor(::grpc::ClientContext* context, const ::grpc::ByteBuffer* request, ::mavsdk::rpc::info::GetSpeedFactorResponse* response, ::grpc::ClientUnaryReactor* reactor) override;
+      #else
+      void GetSpeedFactor(::grpc::ClientContext* context, const ::grpc::ByteBuffer* request, ::mavsdk::rpc::info::GetSpeedFactorResponse* response, ::grpc::experimental::ClientUnaryReactor* reactor) override;
+      #endif
      private:
       friend class Stub;
       explicit experimental_async(Stub* stub): stub_(stub) { }
@@ -245,10 +287,13 @@ class InfoService final {
     ::grpc::ClientAsyncResponseReader< ::mavsdk::rpc::info::GetProductResponse>* PrepareAsyncGetProductRaw(::grpc::ClientContext* context, const ::mavsdk::rpc::info::GetProductRequest& request, ::grpc::CompletionQueue* cq) override;
     ::grpc::ClientAsyncResponseReader< ::mavsdk::rpc::info::GetVersionResponse>* AsyncGetVersionRaw(::grpc::ClientContext* context, const ::mavsdk::rpc::info::GetVersionRequest& request, ::grpc::CompletionQueue* cq) override;
     ::grpc::ClientAsyncResponseReader< ::mavsdk::rpc::info::GetVersionResponse>* PrepareAsyncGetVersionRaw(::grpc::ClientContext* context, const ::mavsdk::rpc::info::GetVersionRequest& request, ::grpc::CompletionQueue* cq) override;
+    ::grpc::ClientAsyncResponseReader< ::mavsdk::rpc::info::GetSpeedFactorResponse>* AsyncGetSpeedFactorRaw(::grpc::ClientContext* context, const ::mavsdk::rpc::info::GetSpeedFactorRequest& request, ::grpc::CompletionQueue* cq) override;
+    ::grpc::ClientAsyncResponseReader< ::mavsdk::rpc::info::GetSpeedFactorResponse>* PrepareAsyncGetSpeedFactorRaw(::grpc::ClientContext* context, const ::mavsdk::rpc::info::GetSpeedFactorRequest& request, ::grpc::CompletionQueue* cq) override;
     const ::grpc::internal::RpcMethod rpcmethod_GetFlightInformation_;
     const ::grpc::internal::RpcMethod rpcmethod_GetIdentification_;
     const ::grpc::internal::RpcMethod rpcmethod_GetProduct_;
     const ::grpc::internal::RpcMethod rpcmethod_GetVersion_;
+    const ::grpc::internal::RpcMethod rpcmethod_GetSpeedFactor_;
   };
   static std::unique_ptr<Stub> NewStub(const std::shared_ptr< ::grpc::ChannelInterface>& channel, const ::grpc::StubOptions& options = ::grpc::StubOptions());
 
@@ -264,6 +309,8 @@ class InfoService final {
     virtual ::grpc::Status GetProduct(::grpc::ServerContext* context, const ::mavsdk::rpc::info::GetProductRequest* request, ::mavsdk::rpc::info::GetProductResponse* response);
     // Get the version information of the system.
     virtual ::grpc::Status GetVersion(::grpc::ServerContext* context, const ::mavsdk::rpc::info::GetVersionRequest* request, ::mavsdk::rpc::info::GetVersionResponse* response);
+    // Get the speed factor of a simulation (with lockstep a simulation can run faster or slower than realtime).
+    virtual ::grpc::Status GetSpeedFactor(::grpc::ServerContext* context, const ::mavsdk::rpc::info::GetSpeedFactorRequest* request, ::mavsdk::rpc::info::GetSpeedFactorResponse* response);
   };
   template <class BaseClass>
   class WithAsyncMethod_GetFlightInformation : public BaseClass {
@@ -345,7 +392,27 @@ class InfoService final {
       ::grpc::Service::RequestAsyncUnary(3, context, request, response, new_call_cq, notification_cq, tag);
     }
   };
-  typedef WithAsyncMethod_GetFlightInformation<WithAsyncMethod_GetIdentification<WithAsyncMethod_GetProduct<WithAsyncMethod_GetVersion<Service > > > > AsyncService;
+  template <class BaseClass>
+  class WithAsyncMethod_GetSpeedFactor : public BaseClass {
+   private:
+    void BaseClassMustBeDerivedFromService(const Service* /*service*/) {}
+   public:
+    WithAsyncMethod_GetSpeedFactor() {
+      ::grpc::Service::MarkMethodAsync(4);
+    }
+    ~WithAsyncMethod_GetSpeedFactor() override {
+      BaseClassMustBeDerivedFromService(this);
+    }
+    // disable synchronous version of this method
+    ::grpc::Status GetSpeedFactor(::grpc::ServerContext* /*context*/, const ::mavsdk::rpc::info::GetSpeedFactorRequest* /*request*/, ::mavsdk::rpc::info::GetSpeedFactorResponse* /*response*/) override {
+      abort();
+      return ::grpc::Status(::grpc::StatusCode::UNIMPLEMENTED, "");
+    }
+    void RequestGetSpeedFactor(::grpc::ServerContext* context, ::mavsdk::rpc::info::GetSpeedFactorRequest* request, ::grpc::ServerAsyncResponseWriter< ::mavsdk::rpc::info::GetSpeedFactorResponse>* response, ::grpc::CompletionQueue* new_call_cq, ::grpc::ServerCompletionQueue* notification_cq, void *tag) {
+      ::grpc::Service::RequestAsyncUnary(4, context, request, response, new_call_cq, notification_cq, tag);
+    }
+  };
+  typedef WithAsyncMethod_GetFlightInformation<WithAsyncMethod_GetIdentification<WithAsyncMethod_GetProduct<WithAsyncMethod_GetVersion<WithAsyncMethod_GetSpeedFactor<Service > > > > > AsyncService;
   template <class BaseClass>
   class ExperimentalWithCallbackMethod_GetFlightInformation : public BaseClass {
    private:
@@ -534,11 +601,58 @@ class InfoService final {
     #endif
       { return nullptr; }
   };
+  template <class BaseClass>
+  class ExperimentalWithCallbackMethod_GetSpeedFactor : public BaseClass {
+   private:
+    void BaseClassMustBeDerivedFromService(const Service* /*service*/) {}
+   public:
+    ExperimentalWithCallbackMethod_GetSpeedFactor() {
+    #ifdef GRPC_CALLBACK_API_NONEXPERIMENTAL
+      ::grpc::Service::
+    #else
+      ::grpc::Service::experimental().
+    #endif
+        MarkMethodCallback(4,
+          new ::grpc_impl::internal::CallbackUnaryHandler< ::mavsdk::rpc::info::GetSpeedFactorRequest, ::mavsdk::rpc::info::GetSpeedFactorResponse>(
+            [this](
+    #ifdef GRPC_CALLBACK_API_NONEXPERIMENTAL
+                   ::grpc::CallbackServerContext*
+    #else
+                   ::grpc::experimental::CallbackServerContext*
+    #endif
+                     context, const ::mavsdk::rpc::info::GetSpeedFactorRequest* request, ::mavsdk::rpc::info::GetSpeedFactorResponse* response) { return this->GetSpeedFactor(context, request, response); }));}
+    void SetMessageAllocatorFor_GetSpeedFactor(
+        ::grpc::experimental::MessageAllocator< ::mavsdk::rpc::info::GetSpeedFactorRequest, ::mavsdk::rpc::info::GetSpeedFactorResponse>* allocator) {
+    #ifdef GRPC_CALLBACK_API_NONEXPERIMENTAL
+      ::grpc::internal::MethodHandler* const handler = ::grpc::Service::GetHandler(4);
+    #else
+      ::grpc::internal::MethodHandler* const handler = ::grpc::Service::experimental().GetHandler(4);
+    #endif
+      static_cast<::grpc_impl::internal::CallbackUnaryHandler< ::mavsdk::rpc::info::GetSpeedFactorRequest, ::mavsdk::rpc::info::GetSpeedFactorResponse>*>(handler)
+              ->SetMessageAllocator(allocator);
+    }
+    ~ExperimentalWithCallbackMethod_GetSpeedFactor() override {
+      BaseClassMustBeDerivedFromService(this);
+    }
+    // disable synchronous version of this method
+    ::grpc::Status GetSpeedFactor(::grpc::ServerContext* /*context*/, const ::mavsdk::rpc::info::GetSpeedFactorRequest* /*request*/, ::mavsdk::rpc::info::GetSpeedFactorResponse* /*response*/) override {
+      abort();
+      return ::grpc::Status(::grpc::StatusCode::UNIMPLEMENTED, "");
+    }
+    #ifdef GRPC_CALLBACK_API_NONEXPERIMENTAL
+    virtual ::grpc::ServerUnaryReactor* GetSpeedFactor(
+      ::grpc::CallbackServerContext* /*context*/, const ::mavsdk::rpc::info::GetSpeedFactorRequest* /*request*/, ::mavsdk::rpc::info::GetSpeedFactorResponse* /*response*/)
+    #else
+    virtual ::grpc::experimental::ServerUnaryReactor* GetSpeedFactor(
+      ::grpc::experimental::CallbackServerContext* /*context*/, const ::mavsdk::rpc::info::GetSpeedFactorRequest* /*request*/, ::mavsdk::rpc::info::GetSpeedFactorResponse* /*response*/)
+    #endif
+      { return nullptr; }
+  };
   #ifdef GRPC_CALLBACK_API_NONEXPERIMENTAL
-  typedef ExperimentalWithCallbackMethod_GetFlightInformation<ExperimentalWithCallbackMethod_GetIdentification<ExperimentalWithCallbackMethod_GetProduct<ExperimentalWithCallbackMethod_GetVersion<Service > > > > CallbackService;
+  typedef ExperimentalWithCallbackMethod_GetFlightInformation<ExperimentalWithCallbackMethod_GetIdentification<ExperimentalWithCallbackMethod_GetProduct<ExperimentalWithCallbackMethod_GetVersion<ExperimentalWithCallbackMethod_GetSpeedFactor<Service > > > > > CallbackService;
   #endif
 
-  typedef ExperimentalWithCallbackMethod_GetFlightInformation<ExperimentalWithCallbackMethod_GetIdentification<ExperimentalWithCallbackMethod_GetProduct<ExperimentalWithCallbackMethod_GetVersion<Service > > > > ExperimentalCallbackService;
+  typedef ExperimentalWithCallbackMethod_GetFlightInformation<ExperimentalWithCallbackMethod_GetIdentification<ExperimentalWithCallbackMethod_GetProduct<ExperimentalWithCallbackMethod_GetVersion<ExperimentalWithCallbackMethod_GetSpeedFactor<Service > > > > > ExperimentalCallbackService;
   template <class BaseClass>
   class WithGenericMethod_GetFlightInformation : public BaseClass {
    private:
@@ -603,6 +717,23 @@ class InfoService final {
     }
     // disable synchronous version of this method
     ::grpc::Status GetVersion(::grpc::ServerContext* /*context*/, const ::mavsdk::rpc::info::GetVersionRequest* /*request*/, ::mavsdk::rpc::info::GetVersionResponse* /*response*/) override {
+      abort();
+      return ::grpc::Status(::grpc::StatusCode::UNIMPLEMENTED, "");
+    }
+  };
+  template <class BaseClass>
+  class WithGenericMethod_GetSpeedFactor : public BaseClass {
+   private:
+    void BaseClassMustBeDerivedFromService(const Service* /*service*/) {}
+   public:
+    WithGenericMethod_GetSpeedFactor() {
+      ::grpc::Service::MarkMethodGeneric(4);
+    }
+    ~WithGenericMethod_GetSpeedFactor() override {
+      BaseClassMustBeDerivedFromService(this);
+    }
+    // disable synchronous version of this method
+    ::grpc::Status GetSpeedFactor(::grpc::ServerContext* /*context*/, const ::mavsdk::rpc::info::GetSpeedFactorRequest* /*request*/, ::mavsdk::rpc::info::GetSpeedFactorResponse* /*response*/) override {
       abort();
       return ::grpc::Status(::grpc::StatusCode::UNIMPLEMENTED, "");
     }
@@ -685,6 +816,26 @@ class InfoService final {
     }
     void RequestGetVersion(::grpc::ServerContext* context, ::grpc::ByteBuffer* request, ::grpc::ServerAsyncResponseWriter< ::grpc::ByteBuffer>* response, ::grpc::CompletionQueue* new_call_cq, ::grpc::ServerCompletionQueue* notification_cq, void *tag) {
       ::grpc::Service::RequestAsyncUnary(3, context, request, response, new_call_cq, notification_cq, tag);
+    }
+  };
+  template <class BaseClass>
+  class WithRawMethod_GetSpeedFactor : public BaseClass {
+   private:
+    void BaseClassMustBeDerivedFromService(const Service* /*service*/) {}
+   public:
+    WithRawMethod_GetSpeedFactor() {
+      ::grpc::Service::MarkMethodRaw(4);
+    }
+    ~WithRawMethod_GetSpeedFactor() override {
+      BaseClassMustBeDerivedFromService(this);
+    }
+    // disable synchronous version of this method
+    ::grpc::Status GetSpeedFactor(::grpc::ServerContext* /*context*/, const ::mavsdk::rpc::info::GetSpeedFactorRequest* /*request*/, ::mavsdk::rpc::info::GetSpeedFactorResponse* /*response*/) override {
+      abort();
+      return ::grpc::Status(::grpc::StatusCode::UNIMPLEMENTED, "");
+    }
+    void RequestGetSpeedFactor(::grpc::ServerContext* context, ::grpc::ByteBuffer* request, ::grpc::ServerAsyncResponseWriter< ::grpc::ByteBuffer>* response, ::grpc::CompletionQueue* new_call_cq, ::grpc::ServerCompletionQueue* notification_cq, void *tag) {
+      ::grpc::Service::RequestAsyncUnary(4, context, request, response, new_call_cq, notification_cq, tag);
     }
   };
   template <class BaseClass>
@@ -840,6 +991,44 @@ class InfoService final {
       { return nullptr; }
   };
   template <class BaseClass>
+  class ExperimentalWithRawCallbackMethod_GetSpeedFactor : public BaseClass {
+   private:
+    void BaseClassMustBeDerivedFromService(const Service* /*service*/) {}
+   public:
+    ExperimentalWithRawCallbackMethod_GetSpeedFactor() {
+    #ifdef GRPC_CALLBACK_API_NONEXPERIMENTAL
+      ::grpc::Service::
+    #else
+      ::grpc::Service::experimental().
+    #endif
+        MarkMethodRawCallback(4,
+          new ::grpc_impl::internal::CallbackUnaryHandler< ::grpc::ByteBuffer, ::grpc::ByteBuffer>(
+            [this](
+    #ifdef GRPC_CALLBACK_API_NONEXPERIMENTAL
+                   ::grpc::CallbackServerContext*
+    #else
+                   ::grpc::experimental::CallbackServerContext*
+    #endif
+                     context, const ::grpc::ByteBuffer* request, ::grpc::ByteBuffer* response) { return this->GetSpeedFactor(context, request, response); }));
+    }
+    ~ExperimentalWithRawCallbackMethod_GetSpeedFactor() override {
+      BaseClassMustBeDerivedFromService(this);
+    }
+    // disable synchronous version of this method
+    ::grpc::Status GetSpeedFactor(::grpc::ServerContext* /*context*/, const ::mavsdk::rpc::info::GetSpeedFactorRequest* /*request*/, ::mavsdk::rpc::info::GetSpeedFactorResponse* /*response*/) override {
+      abort();
+      return ::grpc::Status(::grpc::StatusCode::UNIMPLEMENTED, "");
+    }
+    #ifdef GRPC_CALLBACK_API_NONEXPERIMENTAL
+    virtual ::grpc::ServerUnaryReactor* GetSpeedFactor(
+      ::grpc::CallbackServerContext* /*context*/, const ::grpc::ByteBuffer* /*request*/, ::grpc::ByteBuffer* /*response*/)
+    #else
+    virtual ::grpc::experimental::ServerUnaryReactor* GetSpeedFactor(
+      ::grpc::experimental::CallbackServerContext* /*context*/, const ::grpc::ByteBuffer* /*request*/, ::grpc::ByteBuffer* /*response*/)
+    #endif
+      { return nullptr; }
+  };
+  template <class BaseClass>
   class WithStreamedUnaryMethod_GetFlightInformation : public BaseClass {
    private:
     void BaseClassMustBeDerivedFromService(const Service* /*service*/) {}
@@ -919,9 +1108,29 @@ class InfoService final {
     // replace default version of method with streamed unary
     virtual ::grpc::Status StreamedGetVersion(::grpc::ServerContext* context, ::grpc::ServerUnaryStreamer< ::mavsdk::rpc::info::GetVersionRequest,::mavsdk::rpc::info::GetVersionResponse>* server_unary_streamer) = 0;
   };
-  typedef WithStreamedUnaryMethod_GetFlightInformation<WithStreamedUnaryMethod_GetIdentification<WithStreamedUnaryMethod_GetProduct<WithStreamedUnaryMethod_GetVersion<Service > > > > StreamedUnaryService;
+  template <class BaseClass>
+  class WithStreamedUnaryMethod_GetSpeedFactor : public BaseClass {
+   private:
+    void BaseClassMustBeDerivedFromService(const Service* /*service*/) {}
+   public:
+    WithStreamedUnaryMethod_GetSpeedFactor() {
+      ::grpc::Service::MarkMethodStreamed(4,
+        new ::grpc::internal::StreamedUnaryHandler< ::mavsdk::rpc::info::GetSpeedFactorRequest, ::mavsdk::rpc::info::GetSpeedFactorResponse>(std::bind(&WithStreamedUnaryMethod_GetSpeedFactor<BaseClass>::StreamedGetSpeedFactor, this, std::placeholders::_1, std::placeholders::_2)));
+    }
+    ~WithStreamedUnaryMethod_GetSpeedFactor() override {
+      BaseClassMustBeDerivedFromService(this);
+    }
+    // disable regular version of this method
+    ::grpc::Status GetSpeedFactor(::grpc::ServerContext* /*context*/, const ::mavsdk::rpc::info::GetSpeedFactorRequest* /*request*/, ::mavsdk::rpc::info::GetSpeedFactorResponse* /*response*/) override {
+      abort();
+      return ::grpc::Status(::grpc::StatusCode::UNIMPLEMENTED, "");
+    }
+    // replace default version of method with streamed unary
+    virtual ::grpc::Status StreamedGetSpeedFactor(::grpc::ServerContext* context, ::grpc::ServerUnaryStreamer< ::mavsdk::rpc::info::GetSpeedFactorRequest,::mavsdk::rpc::info::GetSpeedFactorResponse>* server_unary_streamer) = 0;
+  };
+  typedef WithStreamedUnaryMethod_GetFlightInformation<WithStreamedUnaryMethod_GetIdentification<WithStreamedUnaryMethod_GetProduct<WithStreamedUnaryMethod_GetVersion<WithStreamedUnaryMethod_GetSpeedFactor<Service > > > > > StreamedUnaryService;
   typedef Service SplitStreamedService;
-  typedef WithStreamedUnaryMethod_GetFlightInformation<WithStreamedUnaryMethod_GetIdentification<WithStreamedUnaryMethod_GetProduct<WithStreamedUnaryMethod_GetVersion<Service > > > > StreamedService;
+  typedef WithStreamedUnaryMethod_GetFlightInformation<WithStreamedUnaryMethod_GetIdentification<WithStreamedUnaryMethod_GetProduct<WithStreamedUnaryMethod_GetVersion<WithStreamedUnaryMethod_GetSpeedFactor<Service > > > > > StreamedService;
 };
 
 }  // namespace info
