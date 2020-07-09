@@ -9,7 +9,6 @@ backend_generated_dir="${script_dir}/../src/backend/src/generated"
 third_party_dir="${script_dir}/../build/default/third_party"
 protoc_binary="${third_party_dir}/install/bin/protoc"
 protoc_grpc_binary="${third_party_dir}/install/bin/grpc_cpp_plugin"
-mavlink_dir="${script_dir}/../src/third_party/mavlink/include"
 
 function snake_case_to_camel_case {
     echo $1 | sed -r 's/(^|_)([a-z])/\U\2/g'
@@ -61,7 +60,7 @@ for plugin in ${plugin_list_and_core}; do
     echo "Processing ${plugin}/${plugin}.proto"
 
     mkdir -p ${backend_generated_dir}
-    ${protoc_binary} -I ${proto_dir} --cpp_out=${backend_generated_dir} --grpc_out=${backend_generated_dir} --plugin=protoc-gen-grpc=${protoc_grpc_binary} ${proto_dir}/${plugin}/${plugin}.proto --proto_path=${mavlink_dir}
+    ${protoc_binary} -I ${proto_dir} --cpp_out=${backend_generated_dir} --grpc_out=${backend_generated_dir} --plugin=protoc-gen-grpc=${protoc_grpc_binary} ${proto_dir}/${plugin}/${plugin}.proto
     if [[ "${plugin}" == "core" ]]; then
         continue
     fi
