@@ -60,11 +60,11 @@ service FtpService {
     /*
      * Set target component ID. By default it is the autopilot.
      */
-    rpc SetTargetComponentId(SetTargetComponentIdRequest) returns(SetTargetComponentIdResponse) { option (mavsdk.options.async_type) = SYNC; }
+    rpc SetTargetCompid(SetTargetCompidRequest) returns(SetTargetCompidResponse) { option (mavsdk.options.async_type) = SYNC; }
     /*
      * Get our own component ID.
      */
-    rpc GetOurComponentId(GetOurComponentIdRequest) returns(GetOurComponentIdResponse) { option (mavsdk.options.async_type) = SYNC; }
+    rpc GetOurCompid(GetOurCompidRequest) returns(GetOurCompidResponse) { option (mavsdk.options.async_type) = SYNC; }
 }
 
 message ResetRequest {}
@@ -143,16 +143,16 @@ message SetRootDirectoryResponse {
     FtpResult ftp_result = 1;
 }
 
-message SetTargetComponentIdRequest {
-    uint32 component_id = 1; // The component ID to set.
+message SetTargetCompidRequest {
+    uint32 compid = 1; // The component ID to set.
 }
-message SetTargetComponentIdResponse {
+message SetTargetCompidResponse {
     FtpResult ftp_result = 1;
 }
 
-message GetOurComponentIdRequest {}
-message GetOurComponentIdResponse {
-    uint32 component_id = 1; // Our component ID.
+message GetOurCompidRequest {}
+message GetOurCompidResponse {
+    uint32 compid = 1; // Our component ID.
 }
 
 // Progress data type for file transfer.
