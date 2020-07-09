@@ -22,8 +22,8 @@ public:
     Action::Result arm() const;
     Action::Result disarm() const;
     Action::Result kill() const;
-    Action::Result reboot(const uint8_t component=0xFF) const;
-    Action::Result shutdown(const uint8_t component=0xFF) const;
+    Action::Result reboot(uint32_t mav_component) const;
+    Action::Result shutdown(uint32_t mav_component) const;
     Action::Result takeoff() const;
     Action::Result land() const;
     Action::Result return_to_launch() const;
@@ -38,8 +38,8 @@ public:
     void arm_async(const Action::ResultCallback& callback) const;
     void disarm_async(const Action::ResultCallback& callback) const;
     void kill_async(const Action::ResultCallback& callback) const;
-    void reboot_async(const Action::ResultCallback& callback, const uint8_t component=0xFF) const;
-    void shutdown_async(const Action::ResultCallback& callback, const uint8_t component=0xFF) const;
+    void reboot_async(uint32_t mav_component, const Action::ResultCallback& callback) const;
+    void shutdown_async(uint32_t mav_component, const Action::ResultCallback& callback) const;
     void takeoff_async(const Action::ResultCallback& callback) const;
     void land_async(const Action::ResultCallback& callback) const;
     void return_to_launch_async(const Action::ResultCallback& callback) const;

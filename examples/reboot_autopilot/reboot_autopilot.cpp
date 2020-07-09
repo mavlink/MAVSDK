@@ -90,7 +90,7 @@ int main(int argc, char** argv)
 
     // Reboot vehicle
     std::cout << "Rebooting Autopilot..." << std::endl;
-    const Action::Result reboot_result = action->reboot(0x01);
+    const Action::Result reboot_result = action->reboot(1);
 
     if (reboot_result != Action::Result::Success) {
         std::cout << ERROR_CONSOLE_TEXT << "Reboot failed:" << reboot_result << NORMAL_CONSOLE_TEXT

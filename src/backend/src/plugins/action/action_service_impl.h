@@ -162,10 +162,15 @@ public:
 
     grpc::Status Reboot(
         grpc::ServerContext* /* context */,
-        const rpc::action::RebootRequest* /* request */,
+        const rpc::action::RebootRequest* request,
         rpc::action::RebootResponse* response) override
     {
-        auto result = _action.reboot();
+        if (request == nullptr) {
+            LogWarn() << "Reboot sent with a null request! Ignoring...";
+            return grpc::Status::OK;
+        }
+
+        auto result = _action.reboot(request->mav_component());
 
         if (response != nullptr) {
             fillResponseWithResult(response, result);
@@ -176,10 +181,15 @@ public:
 
     grpc::Status Shutdown(
         grpc::ServerContext* /* context */,
-        const rpc::action::ShutdownRequest* /* request */,
+        const rpc::action::ShutdownRequest* request,
         rpc::action::ShutdownResponse* response) override
     {
-        auto result = _action.shutdown();
+        if (request == nullptr) {
+            LogWarn() << "Shutdown sent with a null request! Ignoring...";
+            return grpc::Status::OK;
+        }
+
+        auto result = _action.shutdown(request->mav_component());
 
         if (response != nullptr) {
             fillResponseWithResult(response, result);

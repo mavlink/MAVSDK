@@ -78,22 +78,22 @@ Action::Result ActionImpl::kill() const
     return fut.get();
 }
 
-Action::Result ActionImpl::reboot(const uint8_t component) const
+Action::Result ActionImpl::reboot(uint32_t mav_component) const
 {
     auto prom = std::promise<Action::Result>();
     auto fut = prom.get_future();
 
-    reboot_async([&prom](Action::Result result) { prom.set_value(result); }, component);
+    reboot_async(mav_component, [&prom](Action::Result result) { prom.set_value(result); });
 
     return fut.get();
 }
 
-Action::Result ActionImpl::shutdown(const uint8_t component) const
+Action::Result ActionImpl::shutdown(uint32_t mav_component) const
 {
     auto prom = std::promise<Action::Result>();
     auto fut = prom.get_future();
 
-    shutdown_async([&prom](Action::Result result) { prom.set_value(result); }, component);
+    shutdown_async(mav_component, [&prom](Action::Result result) { prom.set_value(result); });
 
     return fut.get();
 }
@@ -234,15 +234,15 @@ void ActionImpl::kill_async(const Action::ResultCallback& callback) const
     });
 }
 
-void ActionImpl::reboot_async(const Action::ResultCallback& callback, const uint8_t component) const
+void ActionImpl::reboot_async(uint32_t mav_component, const Action::ResultCallback& callback) const
 {
     MAVLinkCommands::CommandLong command{};
 
     command.command = MAV_CMD_PREFLIGHT_REBOOT_SHUTDOWN;
-    command.params.param1 = (component & 0x01) == 0x01 ? 1.0f : 0.0f; // reboot autopilot
-    command.params.param2 = (component & 0x02) == 0x02 ? 1.0f : 0.0f; // reboot onboard computer
-    command.params.param3 = (component & 0x04) == 0x04 ? 1.0f : 0.0f; // reboot camera
-    command.params.param4 = (component & 0x08) == 0x08 ? 1.0f : 0.0f; // reboot gimbal
+    command.params.param1 = (mav_component == 0) || (mav_component == 1) ? 1.0f : 0.0f; // reboot autopilot
+    command.params.param2 = (mav_component == 0) || (mav_component == 190) ? 1.0f : 0.0f; // reboot onboard computer
+    command.params.param3 = (mav_component == 0) || (mav_component == 100) ? 1.0f : 0.0f; // reboot camera
+    command.params.param4 = (mav_component == 0) || (mav_component == 154) ? 1.0f : 0.0f; // reboot gimbal
     command.target_component_id = _parent->get_autopilot_id();
 
     _parent->send_command_async(command, [this, callback](MAVLinkCommands::Result result, float) {
@@ -250,15 +250,15 @@ void ActionImpl::reboot_async(const Action::ResultCallback& callback, const uint
     });
 }
 
-void ActionImpl::shutdown_async(const Action::ResultCallback& callback, const uint8_t component) const
+void ActionImpl::shutdown_async(uint32_t mav_component, const Action::ResultCallback& callback) const
 {
     MAVLinkCommands::CommandLong command{};
 
     command.command = MAV_CMD_PREFLIGHT_REBOOT_SHUTDOWN;
-    command.params.param1 = (component & 0x01) == 0x01 ? 2.0f : 0.0f; // shutdown autopilot
-    command.params.param2 = (component & 0x02) == 0x02 ? 2.0f : 0.0f; // shutdown onboard computer
-    command.params.param3 = (component & 0x04) == 0x04 ? 2.0f : 0.0f; // shutdown camera
-    command.params.param4 = (component & 0x08) == 0x08 ? 2.0f : 0.0f; // shutdown gimbal
+    command.params.param1 = (mav_component == 0) || (mav_component == 1) ? 2.0f : 0.0f; // shutdown autopilot
+    command.params.param2 = (mav_component == 0) || (mav_component == 190) ? 2.0f : 0.0f; // shutdown onboard computer
+    command.params.param3 = (mav_component == 0) || (mav_component == 100) ? 2.0f : 0.0f; // shutdown camera
+    command.params.param4 = (mav_component == 0) || (mav_component == 154) ? 2.0f : 0.0f; // shutdown gimbal
     command.target_component_id = _parent->get_autopilot_id();
 
     _parent->send_command_async(command, [this, callback](MAVLinkCommands::Result result, float) {

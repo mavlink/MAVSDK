@@ -1345,11 +1345,24 @@ class RebootRequest :
 
   // accessors -------------------------------------------------------
 
+  enum : int {
+    kMavComponentFieldNumber = 1,
+  };
+  // uint32 mav_component = 1;
+  void clear_mav_component();
+  ::PROTOBUF_NAMESPACE_ID::uint32 mav_component() const;
+  void set_mav_component(::PROTOBUF_NAMESPACE_ID::uint32 value);
+  private:
+  ::PROTOBUF_NAMESPACE_ID::uint32 _internal_mav_component() const;
+  void _internal_set_mav_component(::PROTOBUF_NAMESPACE_ID::uint32 value);
+  public:
+
   // @@protoc_insertion_point(class_scope:mavsdk.rpc.action.RebootRequest)
  private:
   class _Internal;
 
   ::PROTOBUF_NAMESPACE_ID::internal::InternalMetadataWithArena _internal_metadata_;
+  ::PROTOBUF_NAMESPACE_ID::uint32 mav_component_;
   mutable ::PROTOBUF_NAMESPACE_ID::internal::CachedSize _cached_size_;
   friend struct ::TableStruct_action_2faction_2eproto;
 };
@@ -1594,11 +1607,24 @@ class ShutdownRequest :
 
   // accessors -------------------------------------------------------
 
+  enum : int {
+    kMavComponentFieldNumber = 1,
+  };
+  // uint32 mav_component = 1;
+  void clear_mav_component();
+  ::PROTOBUF_NAMESPACE_ID::uint32 mav_component() const;
+  void set_mav_component(::PROTOBUF_NAMESPACE_ID::uint32 value);
+  private:
+  ::PROTOBUF_NAMESPACE_ID::uint32 _internal_mav_component() const;
+  void _internal_set_mav_component(::PROTOBUF_NAMESPACE_ID::uint32 value);
+  public:
+
   // @@protoc_insertion_point(class_scope:mavsdk.rpc.action.ShutdownRequest)
  private:
   class _Internal;
 
   ::PROTOBUF_NAMESPACE_ID::internal::InternalMetadataWithArena _internal_metadata_;
+  ::PROTOBUF_NAMESPACE_ID::uint32 mav_component_;
   mutable ::PROTOBUF_NAMESPACE_ID::internal::CachedSize _cached_size_;
   friend struct ::TableStruct_action_2faction_2eproto;
 };
@@ -5072,6 +5098,26 @@ inline void LandResponse::set_allocated_action_result(::mavsdk::rpc::action::Act
 
 // RebootRequest
 
+// uint32 mav_component = 1;
+inline void RebootRequest::clear_mav_component() {
+  mav_component_ = 0u;
+}
+inline ::PROTOBUF_NAMESPACE_ID::uint32 RebootRequest::_internal_mav_component() const {
+  return mav_component_;
+}
+inline ::PROTOBUF_NAMESPACE_ID::uint32 RebootRequest::mav_component() const {
+  // @@protoc_insertion_point(field_get:mavsdk.rpc.action.RebootRequest.mav_component)
+  return _internal_mav_component();
+}
+inline void RebootRequest::_internal_set_mav_component(::PROTOBUF_NAMESPACE_ID::uint32 value) {
+  
+  mav_component_ = value;
+}
+inline void RebootRequest::set_mav_component(::PROTOBUF_NAMESPACE_ID::uint32 value) {
+  _internal_set_mav_component(value);
+  // @@protoc_insertion_point(field_set:mavsdk.rpc.action.RebootRequest.mav_component)
+}
+
 // -------------------------------------------------------------------
 
 // RebootResponse
@@ -5139,6 +5185,26 @@ inline void RebootResponse::set_allocated_action_result(::mavsdk::rpc::action::A
 // -------------------------------------------------------------------
 
 // ShutdownRequest
+
+// uint32 mav_component = 1;
+inline void ShutdownRequest::clear_mav_component() {
+  mav_component_ = 0u;
+}
+inline ::PROTOBUF_NAMESPACE_ID::uint32 ShutdownRequest::_internal_mav_component() const {
+  return mav_component_;
+}
+inline ::PROTOBUF_NAMESPACE_ID::uint32 ShutdownRequest::mav_component() const {
+  // @@protoc_insertion_point(field_get:mavsdk.rpc.action.ShutdownRequest.mav_component)
+  return _internal_mav_component();
+}
+inline void ShutdownRequest::_internal_set_mav_component(::PROTOBUF_NAMESPACE_ID::uint32 value) {
+  
+  mav_component_ = value;
+}
+inline void ShutdownRequest::set_mav_component(::PROTOBUF_NAMESPACE_ID::uint32 value) {
+  _internal_set_mav_component(value);
+  // @@protoc_insertion_point(field_set:mavsdk.rpc.action.ShutdownRequest.mav_component)
+}
 
 // -------------------------------------------------------------------
 
