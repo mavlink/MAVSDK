@@ -61,6 +61,7 @@ for plugin in ${plugin_list_and_core}; do
 
     mkdir -p ${backend_generated_dir}
     ${protoc_binary} -I ${proto_dir} --cpp_out=${backend_generated_dir} --grpc_out=${backend_generated_dir} --plugin=protoc-gen-grpc=${protoc_grpc_binary} ${proto_dir}/${plugin}/${plugin}.proto
+
     if [[ "${plugin}" == "core" ]]; then
         continue
     fi
