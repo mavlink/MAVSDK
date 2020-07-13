@@ -11,6 +11,8 @@ include_directories(
 
 set_target_properties(mavsdk_mission
     PROPERTIES COMPILE_FLAGS ${warnings}
+    VERSION ${MAVSDK_VERSION_STRING}
+    SOVERSION ${MAVSDK_SOVERSION_STRING}
 )
 
 target_link_libraries(mavsdk_mission

@@ -10,6 +10,8 @@ target_link_libraries(mavsdk_calibration
 
 set_target_properties(mavsdk_calibration
     PROPERTIES COMPILE_FLAGS ${warnings}
+    VERSION ${MAVSDK_VERSION_STRING}
+    SOVERSION ${MAVSDK_SOVERSION_STRING}
 )
 
 target_include_directories(mavsdk_calibration PUBLIC

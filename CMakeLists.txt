@@ -1,5 +1,11 @@
 cmake_minimum_required(VERSION 3.1)
 
+set(MAVSDK_VERSION_MAJOR 0)
+set(MAVSDK_VERSION_MINOR 28)
+set(MAVSDK_VERSION_PATCH 0)
+set(MAVSDK_SOVERSION_STRING ${MAVSDK_VERSION_MAJOR})
+set(MAVSDK_VERSION_STRING ${MAVSDK_VERSION_MAJOR}.${MAVSDK_VERSION_MINOR}.${MAVSDK_VERSION_PATCH})
+
 # Extract command line args into ${CL_ARGS} in order to propagate them to the superbuild dependencies 
 get_cmake_property(vars CACHE_VARIABLES)
 foreach(var ${vars})

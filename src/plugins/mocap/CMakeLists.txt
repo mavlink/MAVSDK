@@ -9,6 +9,8 @@ target_link_libraries(mavsdk_mocap
 
 set_target_properties(mavsdk_mocap
     PROPERTIES COMPILE_FLAGS ${warnings}
+    VERSION ${MAVSDK_VERSION_STRING}
+    SOVERSION ${MAVSDK_SOVERSION_STRING}
 )
 
 target_include_directories(mavsdk_mocap PUBLIC
