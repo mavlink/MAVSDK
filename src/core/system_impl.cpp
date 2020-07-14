@@ -17,7 +17,7 @@ namespace mavsdk {
 using namespace std::placeholders; // for `_1`
 
 SystemImpl::SystemImpl(MavsdkImpl& parent, uint8_t system_id, uint8_t comp_id, bool connected) :
-    Sender(parent.own_address, target_address),
+    Sender(parent.own_address, _target_address),
     _parent(parent),
     _params(*this),
     _commands(*this),
@@ -26,9 +26,9 @@ SystemImpl::SystemImpl(MavsdkImpl& parent, uint8_t system_id, uint8_t comp_id, b
     _call_every_handler(_time),
     _mission_transfer(*this, _message_handler, _timeout_handler)
 {
-    target_address.system_id = system_id;
+    _target_address.system_id = system_id;
     // FIXME: for now use this as a default.
-    target_address.component_id = MAV_COMP_ID_AUTOPILOT1;
+    _target_address.component_id = MAV_COMP_ID_AUTOPILOT1;
 
     if (connected) {
         _always_connected = true;
@@ -579,12 +579,12 @@ uint64_t SystemImpl::get_uuid() const
 
 uint8_t SystemImpl::get_system_id() const
 {
-    return target_address.system_id;
+    return _target_address.system_id;
 }
 
 void SystemImpl::set_system_id(uint8_t system_id)
 {
-    target_address.system_id = system_id;
+    _target_address.system_id = system_id;
 }
 
 uint8_t SystemImpl::get_own_system_id() const
@@ -1046,7 +1046,7 @@ uint8_t SystemImpl::get_gimbal_id() const
 
 MAVLinkCommands::Result SystemImpl::send_command(MAVLinkCommands::CommandLong& command)
 {
-    if (target_address.system_id == 0 && _components.size() == 0) {
+    if (_target_address.system_id == 0 && _components.size() == 0) {
         return MAVLinkCommands::Result::NoSystem;
     }
     command.target_system_id = get_system_id();
@@ -1055,7 +1055,7 @@ MAVLinkCommands::Result SystemImpl::send_command(MAVLinkCommands::CommandLong& c
 
 MAVLinkCommands::Result SystemImpl::send_command(MAVLinkCommands::CommandInt& command)
 {
-    if (target_address.system_id == 0 && _components.size() == 0) {
+    if (_target_address.system_id == 0 && _components.size() == 0) {
         return MAVLinkCommands::Result::NoSystem;
     }
     command.target_system_id = get_system_id();
@@ -1065,7 +1065,7 @@ MAVLinkCommands::Result SystemImpl::send_command(MAVLinkCommands::CommandInt& co
 void SystemImpl::send_command_async(
     MAVLinkCommands::CommandLong command, const CommandResultCallback callback)
 {
-    if (target_address.system_id == 0 && _components.size() == 0) {
+    if (_target_address.system_id == 0 && _components.size() == 0) {
         if (callback) {
             callback(MAVLinkCommands::Result::NoSystem, NAN);
         }
@@ -1079,7 +1079,7 @@ void SystemImpl::send_command_async(
 void SystemImpl::send_command_async(
     MAVLinkCommands::CommandInt command, const CommandResultCallback callback)
 {
-    if (target_address.system_id == 0 && _components.size() == 0) {
+    if (_target_address.system_id == 0 && _components.size() == 0) {
         if (callback) {
             callback(MAVLinkCommands::Result::NoSystem, NAN);
         }

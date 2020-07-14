@@ -221,8 +221,6 @@ public:
     SystemImpl(const SystemImpl&) = delete;
     const SystemImpl& operator=(const SystemImpl&) = delete;
 
-    MAVLinkAddress target_address{};
-
 private:
     // Helper methods added to increase readablity
     static bool is_autopilot(uint8_t comp_id);
@@ -263,6 +261,8 @@ private:
 
     std::mutex _component_discovered_callback_mutex{};
     discover_callback_t _component_discovered_callback{nullptr};
+
+    MAVLinkAddress _target_address{};
 
     Time _time{};
     AutopilotTime _autopilot_time{};
