@@ -9,7 +9,7 @@
 #include "mavlink_mission_transfer.h"
 #include "timeout_handler.h"
 #include "call_every_handler.h"
-#include "thread_pool.h"
+#include "safe_queue.h"
 #include "timesync.h"
 #include "system.h"
 #include <cstdint>
@@ -243,6 +243,8 @@ private:
     void system_thread();
     void send_heartbeat();
 
+    void process_message_thread();
+
     // We use std::pair instead of a std::optional.
     std::pair<MAVLinkCommands::Result, MAVLinkCommands::CommandLong>
     make_command_flight_mode(FlightMode mode, uint8_t component_id);
@@ -285,6 +287,7 @@ private:
     CommandResultCallback _command_result_callback{nullptr};
 
     std::thread* _system_thread{nullptr};
+    std::thread* _process_message_thread{nullptr};
     std::atomic<bool> _should_exit{false};
 
     static constexpr double _HEARTBEAT_TIMEOUT_S = 3.0;
@@ -297,6 +300,9 @@ private:
     void* _autopilot_version_timed_out_cookie = nullptr;
 
     static constexpr double _HEARTBEAT_SEND_INTERVAL_S = 1.0;
+
+    SafeQueue<mavlink_message_t> _message_queue{};
+    uint32_t _last_dequeued_message_id{0};
 
     MAVLinkParameters _params;
     MAVLinkCommands _commands;
@@ -313,8 +319,6 @@ private:
 
     // We used set to maintain unique component ids
     std::unordered_set<uint8_t> _components{};
-
-    ThreadPool _thread_pool{3};
 
     std::mutex _param_changed_callbacks_mutex{};
     std::unordered_map<const void*, param_changed_callback_t> _param_changed_callbacks{};

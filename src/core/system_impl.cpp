@@ -38,6 +38,8 @@ SystemImpl::SystemImpl(MavsdkImpl& parent, uint8_t system_id, uint8_t comp_id, b
     }
     _system_thread = new std::thread(&SystemImpl::system_thread, this);
 
+    _process_message_thread = new std::thread(&SystemImpl::process_message_thread, this);
+
     _message_handler.register_one(
         MAVLINK_MSG_ID_HEARTBEAT, std::bind(&SystemImpl::process_heartbeat, this, _1), this);
 
@@ -52,11 +54,6 @@ SystemImpl::SystemImpl(MavsdkImpl& parent, uint8_t system_id, uint8_t comp_id, b
         MAVLINK_MSG_ID_STATUSTEXT, std::bind(&SystemImpl::process_statustext, this, _1), this);
 
     add_new_component(comp_id);
-
-    // FIXME: It would be better to do things like this in a method and not
-    //        in the constructor where we can't fail gracefully because we
-    //        don't have exceptions.
-    _thread_pool.start();
 }
 
 SystemImpl::~SystemImpl()
@@ -69,7 +66,12 @@ SystemImpl::~SystemImpl()
         unregister_timeout_handler(_heartbeat_timeout_cookie);
     }
 
-    _thread_pool.stop();
+    if (_process_message_thread != nullptr) {
+        _message_queue.stop();
+        _process_message_thread->join();
+        delete _process_message_thread;
+        _process_message_thread = nullptr;
+    }
 
     if (_system_thread != nullptr) {
         _system_thread->join();
@@ -117,17 +119,26 @@ void SystemImpl::unregister_timeout_handler(const void* cookie)
 
 void SystemImpl::process_mavlink_message(mavlink_message_t& message)
 {
-    // This is a low level interface where incoming messages can be tampered
-    // with or even dropped.
-    if (_incoming_messages_intercept_callback) {
-        const bool keep = _incoming_messages_intercept_callback(message);
-        if (!keep) {
-            LogDebug() << "Dropped incoming message: " << int(message.msgid);
-            return;
+    _message_queue.enqueue(message);
+
+    auto queue_size = _message_queue.size();
+
+    // LogDebug() << "queue size: " << queue_size;
+
+    if (queue_size > 50) {
+        static dl_time_t last_time;
+        if (_time.elapsed_since_s(last_time) > 1.0) {
+            LogErr() << "mavlink message queue overflow: " << queue_size
+                     << ", sysid: " << static_cast<unsigned>(_target_address.system_id)
+                     << ", compid: " << static_cast<unsigned>(_target_address.component_id)
+                     << " (a callback for message " << _last_dequeued_message_id << " is blocking)";
+            last_time = _time.steady_time();
+        }
+
+        if (queue_size > 1000) {
+            abort();
         }
     }
-
-    _message_handler.process_message(message);
 }
 
 void SystemImpl::add_call_every(std::function<void()> callback, float interval_s, void** cookie)
@@ -289,6 +300,31 @@ void SystemImpl::system_thread()
             // Be less aggressive when unconnected.
             std::this_thread::sleep_for(std::chrono::milliseconds(100));
         }
+    }
+}
+
+void SystemImpl::process_message_thread()
+{
+    while (!_should_exit) {
+        auto message = _message_queue.dequeue();
+        if (!message.first) {
+            LogDebug() << "Nothing, continuing";
+            continue;
+        }
+
+        _last_dequeued_message_id = message.second.msgid;
+
+        // This is a low level interface where incoming messages can be tampered
+        // with or even dropped.
+        if (_incoming_messages_intercept_callback) {
+            const bool keep = _incoming_messages_intercept_callback(message.second);
+            if (!keep) {
+                LogDebug() << "Dropped incoming message: " << int(message.second.msgid);
+                return;
+            }
+        }
+
+        _message_handler.process_message(message.second);
     }
 }
 
@@ -1163,7 +1199,7 @@ void SystemImpl::unregister_plugin(PluginImplBase* plugin_impl)
 
 void SystemImpl::call_user_callback(const std::function<void()>& func)
 {
-    _thread_pool.enqueue(func);
+    func();
 }
 
 void SystemImpl::param_changed(const std::string& name)
