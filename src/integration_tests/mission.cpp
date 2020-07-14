@@ -298,37 +298,38 @@ Mission::MissionItem add_mission_item(
 
 void pause_and_resume(std::shared_ptr<Mission> mission)
 {
-    {
-        // We pause inside the callback and hope not to get blocked.
-        auto prom = std::make_shared<std::promise<void>>();
-        auto future_result = prom->get_future();
-        mission->pause_mission_async([prom](Mission::Result result) {
-            EXPECT_EQ(result, Mission::Result::Success);
-            prom->set_value();
-            LogInfo() << "Mission paused.";
-        });
+    std::async(std::launch::deferred, [mission]() {
+        {
+            auto prom = std::make_shared<std::promise<void>>();
+            auto future_result = prom->get_future();
+            mission->pause_mission_async([prom](Mission::Result result) {
+                EXPECT_EQ(result, Mission::Result::Success);
+                prom->set_value();
+                LogInfo() << "Mission paused.";
+            });
 
-        auto status = future_result.wait_for(std::chrono::seconds(2));
-        ASSERT_EQ(status, std::future_status::ready);
-        future_result.get();
-    }
+            auto status = future_result.wait_for(std::chrono::seconds(2));
+            ASSERT_EQ(status, std::future_status::ready);
+            future_result.get();
+        }
 
-    // Pause for 5 seconds.
-    std::this_thread::sleep_for(std::chrono::seconds(5));
+        // Pause for 5 seconds.
+        std::this_thread::sleep_for(std::chrono::seconds(5));
 
-    // Then continue.
-    {
-        auto prom = std::make_shared<std::promise<void>>();
-        auto future_result = prom->get_future();
-        LogInfo() << "Resuming mission...";
-        mission->start_mission_async([prom](Mission::Result result) {
-            EXPECT_EQ(result, Mission::Result::Success);
-            prom->set_value();
-        });
+        {
+            auto prom = std::make_shared<std::promise<void>>();
+            // Then continue.
+            auto future_result = prom->get_future();
+            LogInfo() << "Resuming mission...";
+            mission->start_mission_async([prom](Mission::Result result) {
+                EXPECT_EQ(result, Mission::Result::Success);
+                prom->set_value();
+            });
 
-        auto status = future_result.wait_for(std::chrono::seconds(2));
-        ASSERT_EQ(status, std::future_status::ready);
-        future_result.get();
-        LogInfo() << "Mission resumed.";
-    }
+            auto status = future_result.wait_for(std::chrono::seconds(2));
+            ASSERT_EQ(status, std::future_status::ready);
+            future_result.get();
+            LogInfo() << "Mission resumed.";
+        }
+    });
 }
