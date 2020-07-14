@@ -5,6 +5,7 @@
 #include "system_impl.h"
 #include "plugin_impl_base.h"
 #include "px4_custom_mode.h"
+#include <cstdlib>
 #include <functional>
 #include <algorithm>
 #include <future>
@@ -38,7 +39,8 @@ SystemImpl::SystemImpl(MavsdkImpl& parent, uint8_t system_id, uint8_t comp_id, b
     }
     _system_thread = new std::thread(&SystemImpl::system_thread, this);
 
-    _process_message_thread = new std::thread(&SystemImpl::process_message_thread, this);
+    _process_user_callbacks_thread =
+        new std::thread(&SystemImpl::process_user_callbacks_thread, this);
 
     _message_handler.register_one(
         MAVLINK_MSG_ID_HEARTBEAT, std::bind(&SystemImpl::process_heartbeat, this, _1), this);
@@ -54,6 +56,13 @@ SystemImpl::SystemImpl(MavsdkImpl& parent, uint8_t system_id, uint8_t comp_id, b
         MAVLINK_MSG_ID_STATUSTEXT, std::bind(&SystemImpl::process_statustext, this, _1), this);
 
     add_new_component(comp_id);
+
+    if (const char* env_p = std::getenv("MAVSDK_CALLBACK_DEBUGGING")) {
+        if (env_p && std::string("1").compare(env_p) == 0) {
+            LogDebug() << "Callback debugging is on.";
+            _callback_debugging = true;
+        }
+    }
 }
 
 SystemImpl::~SystemImpl()
@@ -66,11 +75,11 @@ SystemImpl::~SystemImpl()
         unregister_timeout_handler(_heartbeat_timeout_cookie);
     }
 
-    if (_process_message_thread != nullptr) {
-        _message_queue.stop();
-        _process_message_thread->join();
-        delete _process_message_thread;
-        _process_message_thread = nullptr;
+    if (_process_user_callbacks_thread != nullptr) {
+        _user_callback_queue.stop();
+        _process_user_callbacks_thread->join();
+        delete _process_user_callbacks_thread;
+        _process_user_callbacks_thread = nullptr;
     }
 
     if (_system_thread != nullptr) {
@@ -119,26 +128,17 @@ void SystemImpl::unregister_timeout_handler(const void* cookie)
 
 void SystemImpl::process_mavlink_message(mavlink_message_t& message)
 {
-    _message_queue.enqueue(message);
-
-    auto queue_size = _message_queue.size();
-
-    // LogDebug() << "queue size: " << queue_size;
-
-    if (queue_size > 50) {
-        static dl_time_t last_time;
-        if (_time.elapsed_since_s(last_time) > 1.0) {
-            LogErr() << "mavlink message queue overflow: " << queue_size
-                     << ", sysid: " << static_cast<unsigned>(_target_address.system_id)
-                     << ", compid: " << static_cast<unsigned>(_target_address.component_id)
-                     << " (a callback for message " << _last_dequeued_message_id << " is blocking)";
-            last_time = _time.steady_time();
-        }
-
-        if (queue_size > 1000) {
-            abort();
+    // This is a low level interface where incoming messages can be tampered
+    // with or even dropped.
+    if (_incoming_messages_intercept_callback) {
+        const bool keep = _incoming_messages_intercept_callback(message);
+        if (!keep) {
+            LogDebug() << "Dropped incoming message: " << int(message.msgid);
+            return;
         }
     }
+
+    _message_handler.process_message(message);
 }
 
 void SystemImpl::add_call_every(std::function<void()> callback, float interval_s, void** cookie)
@@ -303,28 +303,36 @@ void SystemImpl::system_thread()
     }
 }
 
-void SystemImpl::process_message_thread()
+void SystemImpl::process_user_callbacks_thread()
 {
     while (!_should_exit) {
-        auto message = _message_queue.dequeue();
-        if (!message.first) {
-            LogDebug() << "Nothing, continuing";
+        auto callback = _user_callback_queue.dequeue();
+        if (!callback.first) {
             continue;
         }
 
-        _last_dequeued_message_id = message.second.msgid;
+        void* cookie{nullptr};
 
-        // This is a low level interface where incoming messages can be tampered
-        // with or even dropped.
-        if (_incoming_messages_intercept_callback) {
-            const bool keep = _incoming_messages_intercept_callback(message.second);
-            if (!keep) {
-                LogDebug() << "Dropped incoming message: " << int(message.second.msgid);
-                return;
-            }
-        }
-
-        _message_handler.process_message(message.second);
+        const double timeout_s = 1.0;
+        register_timeout_handler(
+            [&]() {
+                if (_callback_debugging) {
+                    LogWarn() << "Callback called from " << callback.second.filename << ":"
+                              << callback.second.linenumber << " took more than " << timeout_s
+                              << " second to run.";
+                    fflush(stdout);
+                    fflush(stderr);
+                    abort();
+                } else {
+                    LogWarn()
+                        << "Callback took more than " << timeout_s << " second to run.\n"
+                        << "See: https://mavsdk.mavlink.io/develop/en/cpp/troubleshooting.html#user_callbacks";
+                }
+            },
+            timeout_s,
+            &cookie);
+        callback.second.func();
+        unregister_timeout_handler(cookie);
     }
 }
 
@@ -1197,9 +1205,28 @@ void SystemImpl::unregister_plugin(PluginImplBase* plugin_impl)
     }
 }
 
-void SystemImpl::call_user_callback(const std::function<void()>& func)
+void SystemImpl::call_user_callback_located(
+    const std::string& filename, const int linenumber, const std::function<void()>& func)
 {
-    func();
+    auto callback_size = _user_callback_queue.size();
+    if (callback_size == 10) {
+        LogWarn()
+            << "User callback queue too slow.\n"
+               "See: https://mavsdk.mavlink.io/develop/en/cpp/troubleshooting.html#user_callbacks";
+
+    } else if (callback_size == 99) {
+        LogErr()
+            << "User callback queue overflown\n"
+               "See: https://mavsdk.mavlink.io/develop/en/cpp/troubleshooting.html#user_callbacks";
+
+    } else if (callback_size == 100) {
+        return;
+    }
+
+    // We only need to keep track of filename and linenumber if we're actually debugging this.
+    UserCallback user_callback =
+        _callback_debugging ? UserCallback{func, filename, linenumber} : UserCallback{func};
+    _user_callback_queue.enqueue(user_callback);
 }
 
 void SystemImpl::param_changed(const std::string& name)

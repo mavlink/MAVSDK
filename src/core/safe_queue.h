@@ -29,7 +29,7 @@ public:
         std::unique_lock<std::mutex> lock(_mutex);
         while (_queue.empty()) {
             if (_should_exit) {
-                T nothing;
+                T nothing{};
                 return std::pair<bool, T>(false, nothing);
             }
             // Release lock during the wait and re-aquire it afterwards.

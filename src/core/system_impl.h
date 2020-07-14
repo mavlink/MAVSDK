@@ -207,7 +207,8 @@ public:
     void register_plugin(PluginImplBase* plugin_impl);
     void unregister_plugin(PluginImplBase* plugin_impl);
 
-    void call_user_callback(const std::function<void()>& func);
+    void call_user_callback_located(
+        const std::string& filename, const int linenumber, const std::function<void()>& func);
 
     void send_autopilot_version_request();
     void send_flight_information_request();
@@ -243,7 +244,7 @@ private:
     void system_thread();
     void send_heartbeat();
 
-    void process_message_thread();
+    void process_user_callbacks_thread();
 
     // We use std::pair instead of a std::optional.
     std::pair<MAVLinkCommands::Result, MAVLinkCommands::CommandLong>
@@ -287,7 +288,7 @@ private:
     CommandResultCallback _command_result_callback{nullptr};
 
     std::thread* _system_thread{nullptr};
-    std::thread* _process_message_thread{nullptr};
+    std::thread* _process_user_callbacks_thread{nullptr};
     std::atomic<bool> _should_exit{false};
 
     static constexpr double _HEARTBEAT_TIMEOUT_S = 3.0;
@@ -301,9 +302,6 @@ private:
 
     static constexpr double _HEARTBEAT_SEND_INTERVAL_S = 1.0;
 
-    SafeQueue<mavlink_message_t> _message_queue{};
-    uint32_t _last_dequeued_message_id{0};
-
     MAVLinkParameters _params;
     MAVLinkCommands _commands;
 
@@ -313,6 +311,23 @@ private:
     CallEveryHandler _call_every_handler;
 
     MAVLinkMissionTransfer _mission_transfer;
+
+    struct UserCallback {
+        UserCallback() {}
+        UserCallback(const std::function<void()>& func_) : func(func_) {}
+        UserCallback(
+            const std::function<void()>& func_,
+            const std::string& filename_,
+            const int linenumber_) :
+            func(func_),
+            filename(filename_),
+            linenumber(linenumber_)
+        {}
+
+        std::function<void()> func{};
+        std::string filename{};
+        int linenumber{};
+    };
 
     std::mutex _plugin_impls_mutex{};
     std::vector<PluginImplBase*> _plugin_impls{};
@@ -327,6 +342,9 @@ private:
     std::function<bool(mavlink_message_t&)> _outgoing_messages_intercept_callback{nullptr};
 
     std::atomic<FlightMode> _flight_mode{FlightMode::Unknown};
+
+    SafeQueue<UserCallback> _user_callback_queue{};
+    bool _callback_debugging{false};
 };
 
 } // namespace mavsdk
