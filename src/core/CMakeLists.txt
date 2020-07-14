@@ -104,6 +104,7 @@ list(APPEND UNIT_TEST_SOURCES
     ${PROJECT_SOURCE_DIR}/core/cli_arg_test.cpp
     ${PROJECT_SOURCE_DIR}/core/locked_queue_test.cpp
     ${PROJECT_SOURCE_DIR}/core/thread_pool_test.cpp
+    ${PROJECT_SOURCE_DIR}/core/safe_queue_test.cpp
     ${PROJECT_SOURCE_DIR}/core/mavsdk_test.cpp
     ${PROJECT_SOURCE_DIR}/core/mavlink_mission_transfer_test.cpp
     ${PROJECT_SOURCE_DIR}/core/geometry_test.cpp

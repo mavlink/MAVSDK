@@ -14,8 +14,8 @@ namespace mavsdk {
 
 template<class T> class SafeQueue {
 public:
-    SafeQueue() {}
-    ~SafeQueue() {}
+    SafeQueue() = default;
+    ~SafeQueue() = default;
 
     void enqueue(T item)
     {
@@ -24,19 +24,25 @@ public:
         _condition_var.notify_one();
     }
 
-    T dequeue()
+    std::pair<bool, T> dequeue()
     {
         std::unique_lock<std::mutex> lock(_mutex);
         while (_queue.empty()) {
             if (_should_exit) {
-                return nullptr;
+                T nothing;
+                return std::pair<bool, T>(false, nothing);
             }
             // Release lock during the wait and re-aquire it afterwards.
             _condition_var.wait(lock);
         }
-        T item = _queue.front();
-        _queue.pop();
-        return item;
+        if (_should_exit) {
+            T nothing;
+            return std::pair<bool, T>(false, nothing);
+        } else {
+            T item = _queue.front();
+            _queue.pop();
+            return std::pair<bool, T>(true, item);
+        }
     }
 
     void stop()
@@ -46,6 +52,12 @@ public:
         std::lock_guard<std::mutex> lock(_mutex);
         _should_exit = true;
         _condition_var.notify_all();
+    }
+
+    std::size_t size() const
+    {
+        std::lock_guard<std::mutex> lock(_mutex);
+        return _queue.size();
     }
 
 private:
