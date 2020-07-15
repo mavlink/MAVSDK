@@ -59,6 +59,9 @@ void arm_and_takeoff(std::shared_ptr<Action> action, std::shared_ptr<Telemetry> 
 
     ASSERT_EQ(action->set_takeoff_altitude(5.0f), Action::Result::Success);
 
+    // FIXME: workaround to prevent a race between set_takeoff_altitude and takeoff.
+    std::this_thread::sleep_for(std::chrono::seconds(1));
+
     ASSERT_EQ(action->takeoff(), Action::Result::Success);
 
     while (telemetry->position().relative_altitude_m < 4.0f) {
