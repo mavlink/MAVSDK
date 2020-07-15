@@ -85,9 +85,6 @@ TEST_F(SitlTest, MissionChangeSpeed)
                             speed_actual <= speed_correct - margin) {
                             LogWarn() << "Speed should be: " << speed_correct << " m/s, "
                                       << "actually: " << speed_actual << " m/s";
-                        } else {
-                            LogWarn() << "Speed should be: " << speed_correct << " m/s, "
-                                      << "actually: " << speed_actual << " m/s";
                         }
                         // TODO: enable these again with a better check not susceptible to time.
                         // EXPECT_GT(speed_actual, speed_correct - margin);
