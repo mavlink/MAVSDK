@@ -74,7 +74,8 @@ TEST_F(SitlTest, MissionChangeSpeed)
                 // Don't check the first because it's just a speed command and neither the second
                 // because we're still taking off.
                 if (progress.current >= 2) {
-                    std::async(std::launch::deferred, [&progress, telemetry]() {
+                    std::thread([&progress, telemetry]() {
+                        LogWarn() << "Running later!";
                         // Time to accelerate
                         std::this_thread::sleep_for(std::chrono::seconds(4));
                         const float speed_correct = speeds[progress.current - 1];
@@ -91,7 +92,7 @@ TEST_F(SitlTest, MissionChangeSpeed)
                         // TODO: enable these again with a better check not susceptible to time.
                         // EXPECT_GT(speed_actual, speed_correct - margin);
                         // EXPECT_LT(speed_actual, speed_correct + margin);
-                    });
+                    }).detach();
                 }
                 last_item = progress.current;
             }

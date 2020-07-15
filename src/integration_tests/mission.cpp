@@ -298,7 +298,7 @@ Mission::MissionItem add_mission_item(
 
 void pause_and_resume(std::shared_ptr<Mission> mission)
 {
-    std::async(std::launch::deferred, [mission]() {
+    std::thread([mission]() {
         {
             auto prom = std::make_shared<std::promise<void>>();
             auto future_result = prom->get_future();
@@ -331,5 +331,5 @@ void pause_and_resume(std::shared_ptr<Mission> mission)
             future_result.get();
             LogInfo() << "Mission resumed.";
         }
-    });
+    }).detach();
 }
