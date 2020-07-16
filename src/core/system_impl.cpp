@@ -23,9 +23,8 @@ SystemImpl::SystemImpl(MavsdkImpl& parent, uint8_t system_id, uint8_t comp_id, b
     _params(*this),
     _commands(*this),
     _timesync(*this),
-    _timeout_handler(_time),
     _call_every_handler(_time),
-    _mission_transfer(*this, _message_handler, _timeout_handler)
+    _mission_transfer(*this, _message_handler, _parent.timeout_handler)
 {
     _target_address.system_id = system_id;
     // FIXME: for now use this as a default.
@@ -38,9 +37,6 @@ SystemImpl::SystemImpl(MavsdkImpl& parent, uint8_t system_id, uint8_t comp_id, b
         set_connected();
     }
     _system_thread = new std::thread(&SystemImpl::system_thread, this);
-
-    _process_user_callbacks_thread =
-        new std::thread(&SystemImpl::process_user_callbacks_thread, this);
 
     _message_handler.register_one(
         MAVLINK_MSG_ID_HEARTBEAT, std::bind(&SystemImpl::process_heartbeat, this, _1), this);
@@ -56,13 +52,6 @@ SystemImpl::SystemImpl(MavsdkImpl& parent, uint8_t system_id, uint8_t comp_id, b
         MAVLINK_MSG_ID_STATUSTEXT, std::bind(&SystemImpl::process_statustext, this, _1), this);
 
     add_new_component(comp_id);
-
-    if (const char* env_p = std::getenv("MAVSDK_CALLBACK_DEBUGGING")) {
-        if (env_p && std::string("1").compare(env_p) == 0) {
-            LogDebug() << "Callback debugging is on.";
-            _callback_debugging = true;
-        }
-    }
 }
 
 SystemImpl::~SystemImpl()
@@ -73,13 +62,6 @@ SystemImpl::~SystemImpl()
     unregister_timeout_handler(_autopilot_version_timed_out_cookie);
     if (!_always_connected) {
         unregister_timeout_handler(_heartbeat_timeout_cookie);
-    }
-
-    if (_process_user_callbacks_thread != nullptr) {
-        _user_callback_queue.stop();
-        _process_user_callbacks_thread->join();
-        delete _process_user_callbacks_thread;
-        _process_user_callbacks_thread = nullptr;
     }
 
     if (_system_thread != nullptr) {
@@ -111,19 +93,19 @@ void SystemImpl::unregister_all_mavlink_message_handlers(const void* cookie)
 }
 
 void SystemImpl::register_timeout_handler(
-    std::function<void()> callback, double duration_s, void** cookie)
+    const std::function<void()>& callback, double duration_s, void** cookie)
 {
-    _timeout_handler.add(callback, duration_s, cookie);
+    _parent.timeout_handler.add(callback, duration_s, cookie);
 }
 
 void SystemImpl::refresh_timeout_handler(const void* cookie)
 {
-    _timeout_handler.refresh(cookie);
+    _parent.timeout_handler.refresh(cookie);
 }
 
 void SystemImpl::unregister_timeout_handler(const void* cookie)
 {
-    _timeout_handler.remove(cookie);
+    _parent.timeout_handler.remove(cookie);
 }
 
 void SystemImpl::process_mavlink_message(mavlink_message_t& message)
@@ -287,7 +269,6 @@ void SystemImpl::system_thread()
         }
 
         _call_every_handler.run_once();
-        _timeout_handler.run_once();
         _params.do_work();
         _commands.do_work();
         _timesync.do_work();
@@ -300,39 +281,6 @@ void SystemImpl::system_thread()
             // Be less aggressive when unconnected.
             std::this_thread::sleep_for(std::chrono::milliseconds(100));
         }
-    }
-}
-
-void SystemImpl::process_user_callbacks_thread()
-{
-    while (!_should_exit) {
-        auto callback = _user_callback_queue.dequeue();
-        if (!callback.first) {
-            continue;
-        }
-
-        void* cookie{nullptr};
-
-        const double timeout_s = 1.0;
-        register_timeout_handler(
-            [&]() {
-                if (_callback_debugging) {
-                    LogWarn() << "Callback called from " << callback.second.filename << ":"
-                              << callback.second.linenumber << " took more than " << timeout_s
-                              << " second to run.";
-                    fflush(stdout);
-                    fflush(stderr);
-                    abort();
-                } else {
-                    LogWarn()
-                        << "Callback took more than " << timeout_s << " second to run.\n"
-                        << "See: https://mavsdk.mavlink.io/develop/en/cpp/troubleshooting.html#user_callbacks";
-                }
-            },
-            timeout_s,
-            &cookie);
-        callback.second.func();
-        unregister_timeout_handler(cookie);
     }
 }
 
@@ -1208,25 +1156,7 @@ void SystemImpl::unregister_plugin(PluginImplBase* plugin_impl)
 void SystemImpl::call_user_callback_located(
     const std::string& filename, const int linenumber, const std::function<void()>& func)
 {
-    auto callback_size = _user_callback_queue.size();
-    if (callback_size == 10) {
-        LogWarn()
-            << "User callback queue too slow.\n"
-               "See: https://mavsdk.mavlink.io/develop/en/cpp/troubleshooting.html#user_callbacks";
-
-    } else if (callback_size == 99) {
-        LogErr()
-            << "User callback queue overflown\n"
-               "See: https://mavsdk.mavlink.io/develop/en/cpp/troubleshooting.html#user_callbacks";
-
-    } else if (callback_size == 100) {
-        return;
-    }
-
-    // We only need to keep track of filename and linenumber if we're actually debugging this.
-    UserCallback user_callback =
-        _callback_debugging ? UserCallback{func, filename, linenumber} : UserCallback{func};
-    _user_callback_queue.enqueue(user_callback);
+    _parent.call_user_callback_located(filename, linenumber, func);
 }
 
 void SystemImpl::param_changed(const std::string& name)
