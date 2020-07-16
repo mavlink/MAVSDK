@@ -50,16 +50,6 @@ endif()
 set(mavsdk_install_include_dir "include/mavsdk")
 set(mavsdk_install_lib_dir ${lib_path})
 
-execute_process(
-    COMMAND git describe --abbrev=8 --dirty --always --tags
-    WORKING_DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR}
-    OUTPUT_VARIABLE VERSION_STR
-    OUTPUT_STRIP_TRAILING_WHITESPACE
-)
-
-STRING(REGEX REPLACE v\([0-9]+.[0-9]+.[0-9]+.*$\) \\1 VERSION_STR "${VERSION_STR}")
-message(STATUS "Version: ${VERSION_STR}")
-
 add_subdirectory(core)
 add_subdirectory(plugins)
 
