@@ -115,11 +115,11 @@ jobs:
     runs-on: ubuntu-18.04
     container: alpine:3.11.6
     steps:
+      - name: install tools
+        run: apk update && apk add build-base cmake git linux-headers
       - uses: actions/checkout@v2
         with:
           submodules: recursive
-      - name: install tools
-        run: apk update && apk add build-base cmake git linux-headers
       - name: configure
         run: cmake -DCMAKE_BUILD_TYPE=Release -DBUILD_BACKEND=ON -DBUILD_SHARED_LIBS=OFF -DCMAKE_INSTALL_PREFIX=install -Bbuild/release -H.
       - name: build
