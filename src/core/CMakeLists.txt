@@ -39,6 +39,10 @@ target_link_libraries(mavsdk
     CURL::libcurl
     ${CMAKE_THREAD_LIBS_INIT}
 )
+set_target_properties(mavsdk PROPERTIES
+    VERSION ${MAVSDK_VERSION_STRING}
+    SOVERSION ${MAVSDK_SOVERSION_STRING}
+)
 
 if (IOS)
     target_link_libraries(mavsdk

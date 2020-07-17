@@ -1,6 +1,25 @@
 cmake_minimum_required(VERSION 3.1)
 
-# Extract command line args into ${CL_ARGS} in order to propagate them to the superbuild dependencies 
+execute_process(
+    COMMAND git describe --abbrev=8 --dirty --always --tags
+    WORKING_DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR}
+    OUTPUT_VARIABLE VERSION_STR
+    OUTPUT_STRIP_TRAILING_WHITESPACE
+)
+
+message(STATUS "Version: ${VERSION_STR}")
+STRING(REGEX REPLACE v\([0-9]+\).[0-9]+.[0-9]+.*$ \\1 MAVSDK_VERSION_MAJOR "${VERSION_STR}")
+STRING(REGEX REPLACE v[0-9]+.\([0-9]+\).[0-9]+.*$ \\1 MAVSDK_VERSION_MINOR "${VERSION_STR}")
+STRING(REGEX REPLACE v[0-9]+.[0-9]+.\([0-9]+\).*$ \\1 MAVSDK_VERSION_PATCH "${VERSION_STR}")
+
+message(STATUS "Version major: ${MAVSDK_VERSION_MAJOR}")
+message(STATUS "Version minor: ${MAVSDK_VERSION_MINOR}")
+message(STATUS "Version patch: ${MAVSDK_VERSION_PATCH}")
+
+set(MAVSDK_SOVERSION_STRING ${MAVSDK_VERSION_MAJOR})
+set(MAVSDK_VERSION_STRING ${MAVSDK_VERSION_MAJOR}.${MAVSDK_VERSION_MINOR}.${MAVSDK_VERSION_PATCH})
+
+# Extract command line args into ${CL_ARGS} in order to propagate them to the superbuild dependencies
 get_cmake_property(vars CACHE_VARIABLES)
 foreach(var ${vars})
   get_property(currentHelpString CACHE "${var}" PROPERTY HELPSTRING)

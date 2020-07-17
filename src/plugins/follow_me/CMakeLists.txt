@@ -9,6 +9,8 @@ target_link_libraries(mavsdk_follow_me
 
 set_target_properties(mavsdk_follow_me
     PROPERTIES COMPILE_FLAGS ${warnings}
+    VERSION ${MAVSDK_VERSION_STRING}
+    SOVERSION ${MAVSDK_SOVERSION_STRING}
 )
 
 target_include_directories(mavsdk_follow_me PUBLIC

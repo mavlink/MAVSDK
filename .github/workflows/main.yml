@@ -275,6 +275,20 @@ jobs:
           tag: ${{ github.ref }}
           overwrite: true
 
+  debian-packaging:
+    name: Ubuntu/Debian packaging (Ubuntu 20.04)
+    runs-on: ubuntu-20.04
+    steps:
+      - uses: actions/checkout@v2
+        with:
+          submodules: recursive
+      - name: Install lcov
+        run: sudo apt-get install -y build-essential debhelper fakeroot libjsoncpp-dev libcurl4-openssl-dev libtinyxml2-dev libjsoncpp1 libcurl4 libtinyxml2-6a
+      - name: Generate changelog
+        run: ./tools/generate_debian_changelog.sh > debian/changelog
+      - name: Build package
+        run: dpkg-buildpackage -us -uc -b
+
   macOS:
     name: macOS
     runs-on: macos-latest
