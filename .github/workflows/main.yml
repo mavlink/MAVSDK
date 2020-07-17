@@ -17,7 +17,7 @@ jobs:
     name: coverage (ubuntu-18.04)
     runs-on: ubuntu-18.04
     steps:
-      - uses: actions/checkout@v1
+      - uses: actions/checkout@v2
         with:
           submodules: recursive
       - name: Install lcov
@@ -40,7 +40,7 @@ jobs:
     name: ubuntu-18.04 (non-backend, non-superbuild)
     runs-on: ubuntu-18.04
     steps:
-      - uses: actions/checkout@v1
+      - uses: actions/checkout@v2
         with:
           submodules: recursive
       - name: install
@@ -56,7 +56,7 @@ jobs:
     name: ubuntu-18.04 (backend, superbuild)
     runs-on: ubuntu-18.04
     steps:
-      - uses: actions/checkout@v1
+      - uses: actions/checkout@v2
         with:
           submodules: recursive
       - name: configure
@@ -78,7 +78,7 @@ jobs:
     name: ubuntu-18.04 (proto check)
     runs-on: ubuntu-18.04
     steps:
-      - uses: actions/checkout@v1
+      - uses: actions/checkout@v2
         with:
           submodules: recursive
       - name: install clang-format
@@ -102,7 +102,7 @@ jobs:
     runs-on: ubuntu-18.04
     container: mavsdk/mavsdk-ubuntu-18.04
     steps:
-      - uses: actions/checkout@v1
+      - uses: actions/checkout@v2
         with:
           submodules: recursive
       - name: check style
@@ -115,7 +115,7 @@ jobs:
     runs-on: ubuntu-18.04
     container: alpine:3.11.6
     steps:
-      - uses: actions/checkout@v1
+      - uses: actions/checkout@v2
         with:
           submodules: recursive
       - name: install tools
@@ -137,7 +137,7 @@ jobs:
       matrix:
         px4_version: [v1.9, v1.10, v1.11]
     steps:
-      - uses: actions/checkout@v1
+      - uses: actions/checkout@v2
         with:
           submodules: recursive
       - name: test
@@ -151,7 +151,7 @@ jobs:
       matrix:
         container_name: [ubuntu-16.04, ubuntu-18.04]
     steps:
-      - uses: actions/checkout@v1
+      - uses: actions/checkout@v2
         with:
           submodules: recursive
       - name: configure
@@ -179,7 +179,7 @@ jobs:
       matrix:
         container_name: [fedora-30, fedora-31]
     steps:
-      - uses: actions/checkout@v1
+      - uses: actions/checkout@v2
         with:
           submodules: recursive
       - name: configure
@@ -206,7 +206,7 @@ jobs:
       matrix:
         arch_name: [linux-armv6, linux-armv7, linux-arm64, manylinux2010-x64, manylinux2014-aarch64]
     steps:
-      - uses: actions/checkout@v1
+      - uses: actions/checkout@v2
         with:
           submodules: recursive
       - name: setup dockcross
@@ -229,7 +229,7 @@ jobs:
     name: android-arm
     runs-on: ubuntu-18.04
     steps:
-      - uses: actions/checkout@v1
+      - uses: actions/checkout@v2
         with:
           submodules: recursive
       - name: setup dockcross
@@ -254,7 +254,7 @@ jobs:
     name: android-arm64
     runs-on: ubuntu-18.04
     steps:
-      - uses: actions/checkout@v1
+      - uses: actions/checkout@v2
         with:
           submodules: recursive
       - name: setup dockcross
@@ -293,7 +293,7 @@ jobs:
     name: macOS
     runs-on: macos-latest
     steps:
-      - uses: actions/checkout@v1
+      - uses: actions/checkout@v2
         with:
           submodules: recursive
       - name: configure
@@ -318,7 +318,7 @@ jobs:
     name: iOS
     runs-on: macos-latest
     steps:
-      - uses: actions/checkout@v1
+      - uses: actions/checkout@v2
         with:
           submodules: recursive
       - name: configure (ios)
@@ -346,7 +346,7 @@ jobs:
     name: Windows
     runs-on: windows-latest
     steps:
-      - uses: actions/checkout@v1
+      - uses: actions/checkout@v2
         with:
           submodules: recursive
       - name: configure
