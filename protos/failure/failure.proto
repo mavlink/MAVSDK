@@ -1,0 +1,71 @@
+syntax = "proto3";
+
+package mavsdk.rpc.failure;
+
+import "mavsdk_options.proto";
+
+option java_package = "io.mavsdk.failure";
+option java_outer_classname = "FailureProto";
+
+// Inject failures into system to test failsafes.
+service FailureService {
+  // Injects a failure.
+  rpc Inject(InjectRequest) returns(InjectResponse) { option (mavsdk.options.async_type) = SYNC; }
+}
+
+// A failure unit.
+enum FailureUnit {
+    FAILURE_UNIT_SENSOR_GYRO = 0; // Gyro
+    FAILURE_UNIT_SENSOR_ACCEL = 1; // Accelerometer
+    FAILURE_UNIT_SENSOR_MAG = 2; // Magnetometer
+    FAILURE_UNIT_SENSOR_BARO = 3; // Barometer
+    FAILURE_UNIT_SENSOR_GPS = 4; // GPS
+    FAILURE_UNIT_SENSOR_OPTICAL_FLOW = 5; // Optical flow
+    FAILURE_UNIT_SENSOR_VIO = 6; // Visual inertial odometry
+    FAILURE_UNIT_SENSOR_DISTANCE_SENSOR = 7; // Distance sensor
+    FAILURE_UNIT_SENSOR_AIRSPEED = 8; // Airspeed
+    FAILURE_UNIT_SYSTEM_BATTERY = 100; // Battery
+    FAILURE_UNIT_SYSTEM_MOTOR = 101; // Motor
+    FAILURE_UNIT_SYSTEM_SERVO = 102; // Servo
+    FAILURE_UNIT_SYSTEM_AVOIDANCE = 103; // Avoidance
+    FAILURE_UNIT_SYSTEM_RC_SIGNAL = 104; // RC signal
+    FAILURE_UNIT_SYSTEM_MAVLINK_SIGNAL = 105; // MAVLink signal
+}
+
+// A failure type
+enum FailureType {
+    FAILURE_TYPE_OK = 0; // No failure injected, used to reset a previous failure
+    FAILURE_TYPE_OFF = 1; // Sets unit off, so completely non-responsive
+    FAILURE_TYPE_STUCK = 2; // Unit is stuck e.g. keeps reporting the same value
+    FAILURE_TYPE_GARBAGE = 3; // Unit is reporting complete garbage
+    FAILURE_TYPE_WRONG = 4; // Unit is consistently wrong
+    FAILURE_TYPE_SLOW = 5; // Unit is slow, so e.g. reporting at slower than expected rate
+    FAILURE_TYPE_DELAYED = 6; // Data of unit is delayed in time
+    FAILURE_TYPE_INTERMITTENT = 7; // Unit is sometimes working, sometimes not
+}
+
+message InjectRequest {
+    FailureUnit failure_unit = 1; // The failure unit to send
+    FailureType failure_type = 2; // The failure type to send
+    int32 instance = 3; // Instance to affect (0 for all)
+}
+message InjectResponse {
+    FailureResult failure_result = 1;
+}
+
+message FailureResult {
+    // Possible results returned for failure requests.
+    enum Result {
+        RESULT_UNKNOWN = 0; // Unknown result
+        RESULT_SUCCESS = 1; // Request succeeded
+        RESULT_NO_SYSTEM = 2; // No system is connected
+        RESULT_CONNECTION_ERROR = 3; // Connection error
+        RESULT_UNSUPPORTED = 4; // Failure not supported
+        RESULT_DENIED = 5; // Failure injection denied
+        RESULT_DISABLED = 6; // Failure injection is disabled
+        RESULT_TIMEOUT = 7; // Request timed out
+    }
+
+    Result result = 1; // Result enum value
+    string result_str = 2; // Human-readable English string describing the result
+}
