@@ -129,13 +129,27 @@ jobs:
       - name: test (mavsdk_server)
         run: ./build/release/src/backend/test/unit_tests_backend
 
-  px4-sitl:
+  px4-sitl-18.04:
     name: PX4 SITL ${{ matrix.px4_version }} (ubuntu-18.04)
     runs-on: ubuntu-18.04
     container: mavsdk/mavsdk-ubuntu-18.04-px4-sitl-${{ matrix.px4_version }}
     strategy:
       matrix:
-        px4_version: [v1.9, v1.10, v1.11]
+        px4_version: [v1.9, v1.10]
+    steps:
+      - uses: actions/checkout@v2
+        with:
+          submodules: recursive
+      - name: test
+        run: PX4_VERSION=${{ matrix.px4_version }} tools/run-sitl-tests.sh /home/user/Firmware
+
+  px4-sitl-20.04:
+    name: PX4 SITL ${{ matrix.px4_version }} (ubuntu-20.04)
+    runs-on: ubuntu-18.04
+    container: mavsdk/mavsdk-ubuntu-20.04-px4-sitl-${{ matrix.px4_version }}
+    strategy:
+      matrix:
+        px4_version: [v1.11]
     steps:
       - uses: actions/checkout@v2
         with:
@@ -149,7 +163,7 @@ jobs:
     container: mavsdk/mavsdk-${{ matrix.container_name }}
     strategy:
       matrix:
-        container_name: [ubuntu-16.04, ubuntu-18.04]
+        container_name: [ubuntu-18.04, ubuntu-20.04]
     steps:
       - uses: actions/checkout@v2
         with:

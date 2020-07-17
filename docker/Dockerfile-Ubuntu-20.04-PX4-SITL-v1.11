@@ -1,8 +1,8 @@
 #
-# PX4 v1.11.0-rc1 SITL testing environment for MAVSDK based on Ubuntu 18.04.
+# PX4 v1.11.0-rc1 SITL testing environment for MAVSDK based on Ubuntu 20.04.
 # Author: Julian Oes <julian@oes.ch>
 #
-FROM mavsdk/mavsdk-ubuntu-18.04
+FROM mavsdk/mavsdk-ubuntu-20.04
 MAINTAINER Julian Oes <julian@oes.ch>
 
 ENV FIRMWARE_DIR ${WORKDIR}../Firmware
