@@ -7,9 +7,11 @@
 
 #include "connection.h"
 #include "mavsdk.h"
-#include "system.h"
 #include "mavlink_include.h"
 #include "mavlink_address.h"
+#include "safe_queue.h"
+#include "system.h"
+#include "timeout_handler.h"
 
 namespace mavsdk {
 
@@ -30,6 +32,8 @@ public:
 
     MavsdkImpl();
     ~MavsdkImpl();
+    MavsdkImpl(const MavsdkImpl&) = delete;
+    void operator=(const MavsdkImpl&) = delete;
 
     std::string version() const;
 
@@ -64,12 +68,20 @@ public:
     void notify_on_discover(uint64_t uuid);
     void notify_on_timeout(uint64_t uuid);
 
+    TimeoutHandler timeout_handler;
+
+    void call_user_callback_located(
+        const std::string& filename, const int linenumber, const std::function<void()>& func);
+
     MAVLinkAddress own_address{};
 
 private:
     void add_connection(std::shared_ptr<Connection>);
     void make_system_with_component(uint8_t system_id, uint8_t component_id);
     bool does_system_exist(uint8_t system_id);
+
+    void work_thread();
+    void process_user_callbacks_thread();
 
     using system_entry_t = std::pair<uint8_t, std::shared_ptr<System>>;
 
@@ -82,8 +94,32 @@ private:
     Mavsdk::event_callback_t _on_discover_callback;
     Mavsdk::event_callback_t _on_timeout_callback;
 
+    Time _time{};
+
     Mavsdk::Configuration _configuration;
     bool _is_single_system{false};
+
+    struct UserCallback {
+        UserCallback() {}
+        UserCallback(const std::function<void()>& func_) : func(func_) {}
+        UserCallback(
+            const std::function<void()>& func_,
+            const std::string& filename_,
+            const int linenumber_) :
+            func(func_),
+            filename(filename_),
+            linenumber(linenumber_)
+        {}
+
+        std::function<void()> func{};
+        std::string filename{};
+        int linenumber{};
+    };
+
+    std::thread* _work_thread{nullptr};
+    std::thread* _process_user_callbacks_thread{nullptr};
+    SafeQueue<UserCallback> _user_callback_queue{};
+    bool _callback_debugging{false};
 
     std::atomic<bool> _should_exit = {false};
 };

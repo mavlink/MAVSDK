@@ -66,7 +66,7 @@ TEST_F(SitlTest, MissionChangeSpeed)
 
     int last_item = -1;
     mission->subscribe_mission_progress(
-        [&mission_plan, &last_item, &telemetry](Mission::MissionProgress progress) {
+        [&mission_plan, &last_item, telemetry](Mission::MissionProgress progress) {
             LogInfo() << "Mission progress: " << progress.current << " / " << progress.total;
 
             if (progress.current < static_cast<int>(mission_plan.mission_items.size()) &&
@@ -74,22 +74,21 @@ TEST_F(SitlTest, MissionChangeSpeed)
                 // Don't check the first because it's just a speed command and neither the second
                 // because we're still taking off.
                 if (progress.current >= 2) {
-                    // Time to accelerate
-                    std::this_thread::sleep_for(std::chrono::seconds(4));
-                    const float speed_correct = speeds[progress.current - 1];
-                    const float speed_actual = current_speed(telemetry);
-                    const float margin = 1.0f;
-                    if (speed_actual >= speed_correct + margin ||
-                        speed_actual <= speed_correct - margin) {
-                        LogWarn() << "Speed should be: " << speed_correct << " m/s, "
-                                  << "actually: " << speed_actual << " m/s";
-                    } else {
-                        LogWarn() << "Speed should be: " << speed_correct << " m/s, "
-                                  << "actually: " << speed_actual << " m/s";
-                    }
-                    // TODO: enable these again with a better check not susceptible to time.
-                    // EXPECT_GT(speed_actual, speed_correct - margin);
-                    // EXPECT_LT(speed_actual, speed_correct + margin);
+                    std::thread([progress, telemetry]() {
+                        // Time to accelerate
+                        std::this_thread::sleep_for(std::chrono::seconds(4));
+                        const float speed_correct = speeds[progress.current - 1];
+                        const float speed_actual = current_speed(telemetry);
+                        const float margin = 1.0f;
+                        if (speed_actual >= speed_correct + margin ||
+                            speed_actual <= speed_correct - margin) {
+                            LogWarn() << "Speed should be: " << speed_correct << " m/s, "
+                                      << "actually: " << speed_actual << " m/s";
+                        }
+                        // TODO: enable these again with a better check not susceptible to time.
+                        // EXPECT_GT(speed_actual, speed_correct - margin);
+                        // EXPECT_LT(speed_actual, speed_correct + margin);
+                    }).detach();
                 }
                 last_item = progress.current;
             }

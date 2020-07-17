@@ -32,7 +32,7 @@ private:
     typedef std::function<void(const Calibration::Result result, const Calibration::ProgressData)>
         CalibrationCallback;
 
-    void call_user_callback(
+    void call_callback(
         const CalibrationCallback& callback,
         const Calibration::Result& result,
         const Calibration::ProgressData progress_data);

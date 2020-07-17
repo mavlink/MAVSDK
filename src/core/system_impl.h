@@ -9,7 +9,7 @@
 #include "mavlink_mission_transfer.h"
 #include "timeout_handler.h"
 #include "call_every_handler.h"
-#include "thread_pool.h"
+#include "safe_queue.h"
 #include "timesync.h"
 #include "system.h"
 #include <cstdint>
@@ -63,7 +63,8 @@ public:
     void unregister_mavlink_message_handler(uint16_t msg_id, const void* cookie);
     void unregister_all_mavlink_message_handlers(const void* cookie);
 
-    void register_timeout_handler(std::function<void()> callback, double duration_s, void** cookie);
+    void register_timeout_handler(
+        const std::function<void()>& callback, double duration_s, void** cookie);
     void refresh_timeout_handler(const void* cookie);
     void unregister_timeout_handler(const void* cookie);
 
@@ -207,7 +208,8 @@ public:
     void register_plugin(PluginImplBase* plugin_impl);
     void unregister_plugin(PluginImplBase* plugin_impl);
 
-    void call_user_callback(const std::function<void()>& func);
+    void call_user_callback_located(
+        const std::string& filename, const int linenumber, const std::function<void()>& func);
 
     void send_autopilot_version_request();
     void send_flight_information_request();
@@ -220,8 +222,6 @@ public:
     // Non-copyable
     SystemImpl(const SystemImpl&) = delete;
     const SystemImpl& operator=(const SystemImpl&) = delete;
-
-    MAVLinkAddress target_address{};
 
 private:
     // Helper methods added to increase readablity
@@ -264,6 +264,8 @@ private:
     std::mutex _component_discovered_callback_mutex{};
     discover_callback_t _component_discovered_callback{nullptr};
 
+    MAVLinkAddress _target_address{};
+
     Time _time{};
     AutopilotTime _autopilot_time{};
 
@@ -303,7 +305,6 @@ private:
 
     Timesync _timesync;
 
-    TimeoutHandler _timeout_handler;
     CallEveryHandler _call_every_handler;
 
     MAVLinkMissionTransfer _mission_transfer;
@@ -313,8 +314,6 @@ private:
 
     // We used set to maintain unique component ids
     std::unordered_set<uint8_t> _components{};
-
-    ThreadPool _thread_pool{3};
 
     std::mutex _param_changed_callbacks_mutex{};
     std::unordered_map<const void*, param_changed_callback_t> _param_changed_callbacks{};

@@ -15,6 +15,7 @@
 namespace mavsdk {
 
 MavsdkImpl::MavsdkImpl() :
+    timeout_handler(_time),
     _connections_mutex(),
     _connections(),
     _systems_mutex(),
@@ -25,13 +26,39 @@ MavsdkImpl::MavsdkImpl() :
 {
     LogInfo() << "MAVSDK version: " << mavsdk_version;
     set_configuration(_configuration);
+
+    if (const char* env_p = std::getenv("MAVSDK_CALLBACK_DEBUGGING")) {
+        if (env_p && std::string("1").compare(env_p) == 0) {
+            LogDebug() << "Callback debugging is on.";
+            _callback_debugging = true;
+        }
+    }
+
+    _work_thread = new std::thread(&MavsdkImpl::work_thread, this);
+
+    _process_user_callbacks_thread =
+        new std::thread(&MavsdkImpl::process_user_callbacks_thread, this);
 }
 
 MavsdkImpl::~MavsdkImpl()
 {
+    _should_exit = true;
+
+    if (_process_user_callbacks_thread != nullptr) {
+        _user_callback_queue.stop();
+        _process_user_callbacks_thread->join();
+        delete _process_user_callbacks_thread;
+        _process_user_callbacks_thread = nullptr;
+    }
+
+    if (_work_thread != nullptr) {
+        _work_thread->join();
+        delete _work_thread;
+        _work_thread = nullptr;
+    }
+
     {
         std::lock_guard<std::recursive_mutex> lock(_systems_mutex);
-        _should_exit = true;
 
         _systems.clear();
     }
@@ -431,6 +458,72 @@ void MavsdkImpl::register_on_discover(const Mavsdk::event_callback_t callback)
 void MavsdkImpl::register_on_timeout(const Mavsdk::event_callback_t callback)
 {
     _on_timeout_callback = callback;
+}
+
+void MavsdkImpl::work_thread()
+{
+    while (!_should_exit) {
+        timeout_handler.run_once();
+        std::this_thread::sleep_for(std::chrono::milliseconds(10));
+    }
+}
+
+void MavsdkImpl::call_user_callback_located(
+    const std::string& filename, const int linenumber, const std::function<void()>& func)
+{
+    auto callback_size = _user_callback_queue.size();
+    if (callback_size == 10) {
+        LogWarn()
+            << "User callback queue too slow.\n"
+               "See: https://mavsdk.mavlink.io/develop/en/cpp/troubleshooting.html#user_callbacks";
+
+    } else if (callback_size == 99) {
+        LogErr()
+            << "User callback queue overflown\n"
+               "See: https://mavsdk.mavlink.io/develop/en/cpp/troubleshooting.html#user_callbacks";
+
+    } else if (callback_size == 100) {
+        return;
+    }
+
+    // We only need to keep track of filename and linenumber if we're actually debugging this.
+    UserCallback user_callback =
+        _callback_debugging ? UserCallback{func, filename, linenumber} : UserCallback{func};
+
+    _user_callback_queue.enqueue(user_callback);
+}
+
+void MavsdkImpl::process_user_callbacks_thread()
+{
+    while (!_should_exit) {
+        auto callback = _user_callback_queue.dequeue();
+        if (!callback.first) {
+            continue;
+        }
+
+        void* cookie{nullptr};
+
+        const double timeout_s = 1.0;
+        timeout_handler.add(
+            [&]() {
+                if (_callback_debugging) {
+                    LogWarn() << "Callback called from " << callback.second.filename << ":"
+                              << callback.second.linenumber << " took more than " << timeout_s
+                              << " second to run.";
+                    fflush(stdout);
+                    fflush(stderr);
+                    abort();
+                } else {
+                    LogWarn()
+                        << "Callback took more than " << timeout_s << " second to run.\n"
+                        << "See: https://mavsdk.mavlink.io/develop/en/cpp/troubleshooting.html#user_callbacks";
+                }
+            },
+            timeout_s,
+            &cookie);
+        callback.second.func();
+        timeout_handler.remove(cookie);
+    }
 }
 
 } // namespace mavsdk

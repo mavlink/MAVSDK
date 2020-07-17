@@ -23,6 +23,16 @@ constexpr float M_PI_F = float(M_PI);
 #define STRNCPY strncpy
 #endif
 
+#if !defined(WINDOWS)
+// Remove path and extract only filename.
+#define __FILENAME__ \
+    (__builtin_strrchr(__FILE__, '/') ? __builtin_strrchr(__FILE__, '/') + 1 : __FILE__)
+#else
+#define __FILENAME__ __FILE__
+#endif
+
+#define call_user_callback(...) call_user_callback_located(__FILENAME__, __LINE__, __VA_ARGS__)
+
 namespace mavsdk {
 
 typedef std::chrono::time_point<std::chrono::steady_clock> dl_time_t;

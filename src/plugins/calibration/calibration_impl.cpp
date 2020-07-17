@@ -42,13 +42,13 @@ void CalibrationImpl::calibrate_gyro_async(const CalibrationCallback& callback)
 
     if (_parent->is_armed()) {
         Calibration::ProgressData progress_data;
-        call_user_callback(callback, Calibration::Result::FailedArmed, progress_data);
+        call_callback(callback, Calibration::Result::FailedArmed, progress_data);
         return;
     }
 
     if (_state != State::None) {
         Calibration::ProgressData progress_data;
-        call_user_callback(callback, Calibration::Result::Busy, progress_data);
+        call_callback(callback, Calibration::Result::Busy, progress_data);
         return;
     }
 
@@ -64,7 +64,7 @@ void CalibrationImpl::calibrate_gyro_async(const CalibrationCallback& callback)
         command, std::bind(&CalibrationImpl::command_result_callback, this, _1, _2));
 }
 
-void CalibrationImpl::call_user_callback(
+void CalibrationImpl::call_callback(
     const CalibrationCallback& callback,
     const Calibration::Result& result,
     const Calibration::ProgressData progress_data)
@@ -81,13 +81,13 @@ void CalibrationImpl::calibrate_accelerometer_async(const CalibrationCallback& c
 
     if (_parent->is_armed()) {
         Calibration::ProgressData progress_data;
-        call_user_callback(callback, Calibration::Result::FailedArmed, progress_data);
+        call_callback(callback, Calibration::Result::FailedArmed, progress_data);
         return;
     }
 
     if (_state != State::None) {
         Calibration::ProgressData progress_data;
-        call_user_callback(callback, Calibration::Result::Busy, progress_data);
+        call_callback(callback, Calibration::Result::Busy, progress_data);
         return;
     }
 
@@ -109,13 +109,13 @@ void CalibrationImpl::calibrate_magnetometer_async(const CalibrationCallback& ca
 
     if (_parent->is_armed()) {
         Calibration::ProgressData progress_data;
-        call_user_callback(callback, Calibration::Result::FailedArmed, progress_data);
+        call_callback(callback, Calibration::Result::FailedArmed, progress_data);
         return;
     }
 
     if (_state != State::None) {
         Calibration::ProgressData progress_data;
-        call_user_callback(callback, Calibration::Result::Busy, progress_data);
+        call_callback(callback, Calibration::Result::Busy, progress_data);
         return;
     }
 
@@ -137,13 +137,13 @@ void CalibrationImpl::calibrate_level_horizon_async(const CalibrationCallback& c
 
     if (_parent->is_armed()) {
         Calibration::ProgressData progress_data;
-        call_user_callback(callback, Calibration::Result::FailedArmed, progress_data);
+        call_callback(callback, Calibration::Result::FailedArmed, progress_data);
         return;
     }
 
     if (_state != State::None) {
         Calibration::ProgressData progress_data;
-        call_user_callback(callback, Calibration::Result::Busy, progress_data);
+        call_callback(callback, Calibration::Result::Busy, progress_data);
         return;
     }
 
@@ -165,13 +165,13 @@ void CalibrationImpl::calibrate_gimbal_accelerometer_async(const CalibrationCall
 
     if (_parent->is_armed()) {
         Calibration::ProgressData progress_data;
-        call_user_callback(callback, Calibration::Result::FailedArmed, progress_data);
+        call_callback(callback, Calibration::Result::FailedArmed, progress_data);
         return;
     }
 
     if (_state != State::None) {
         Calibration::ProgressData progress_data;
-        call_user_callback(callback, Calibration::Result::Busy, progress_data);
+        call_callback(callback, Calibration::Result::Busy, progress_data);
         return;
     }
 
@@ -251,7 +251,7 @@ void CalibrationImpl::command_result_callback(
         case MAVLinkCommands::Result::Timeout: {
             // Report all error cases.
             const auto timeout_result = calibration_result_from_command_result(command_result);
-            call_user_callback(_calibration_callback, timeout_result, Calibration::ProgressData());
+            call_callback(_calibration_callback, timeout_result, Calibration::ProgressData());
             _calibration_callback = nullptr;
             _state = State::None;
             break;
@@ -263,7 +263,7 @@ void CalibrationImpl::command_result_callback(
             progress_data.has_progress = true;
             progress_data.progress = progress;
 
-            call_user_callback(_calibration_callback, progress_result, progress_data);
+            call_callback(_calibration_callback, progress_result, progress_data);
             break;
         }
     };
@@ -384,21 +384,21 @@ void CalibrationImpl::report_started()
 void CalibrationImpl::report_done()
 {
     const Calibration::ProgressData progress_data;
-    call_user_callback(_calibration_callback, Calibration::Result::Success, progress_data);
+    call_callback(_calibration_callback, Calibration::Result::Success, progress_data);
 }
 
 void CalibrationImpl::report_failed(const std::string& failed)
 {
     LogErr() << "Calibration failed: " << failed;
     const Calibration::ProgressData progress_data;
-    call_user_callback(_calibration_callback, Calibration::Result::Failed, progress_data);
+    call_callback(_calibration_callback, Calibration::Result::Failed, progress_data);
 }
 
 void CalibrationImpl::report_cancelled()
 {
     LogWarn() << "Calibration was cancelled";
     const Calibration::ProgressData progress_data;
-    call_user_callback(_calibration_callback, Calibration::Result::Cancelled, progress_data);
+    call_callback(_calibration_callback, Calibration::Result::Cancelled, progress_data);
 }
 
 void CalibrationImpl::report_progress(float progress)
@@ -406,7 +406,7 @@ void CalibrationImpl::report_progress(float progress)
     Calibration::ProgressData progress_data;
     progress_data.has_progress = true;
     progress_data.progress = progress;
-    call_user_callback(_calibration_callback, Calibration::Result::Next, progress_data);
+    call_callback(_calibration_callback, Calibration::Result::Next, progress_data);
 }
 
 void CalibrationImpl::report_instruction(const std::string& instruction)
@@ -414,7 +414,7 @@ void CalibrationImpl::report_instruction(const std::string& instruction)
     Calibration::ProgressData progress_data;
     progress_data.has_status_text = true;
     progress_data.status_text = instruction;
-    call_user_callback(_calibration_callback, Calibration::Result::Next, progress_data);
+    call_callback(_calibration_callback, Calibration::Result::Next, progress_data);
 }
 
 } // namespace mavsdk

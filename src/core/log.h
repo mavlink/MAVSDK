@@ -1,20 +1,13 @@
 #pragma once
 
 #include <sstream>
+#include "global_include.h"
 
 #if defined(ANDROID)
 #include <android/log.h>
 #else
 #include <iostream>
 #include <ctime>
-#endif
-
-#if !defined(WINDOWS)
-// Remove path and extract only filename.
-#define __FILENAME__ \
-    (__builtin_strrchr(__FILE__, '/') ? __builtin_strrchr(__FILE__, '/') + 1 : __FILE__)
-#else
-#define __FILENAME__ __FILE__
 #endif
 
 #define LogDebug() LogDebugDetailed(__FILENAME__, __LINE__)

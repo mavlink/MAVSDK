@@ -18,17 +18,17 @@ static void turn_yaw(std::shared_ptr<Offboard> offboard);
 
 TEST_F(SitlTest, OffboardAttitudeRate)
 {
-    Mavsdk dc;
+    Mavsdk mavsdk;
 
-    ConnectionResult ret = dc.add_udp_connection();
+    ConnectionResult ret = mavsdk.add_udp_connection();
     ASSERT_EQ(ConnectionResult::Success, ret);
 
     // Wait for system to connect via heartbeat.
     std::this_thread::sleep_for(std::chrono::seconds(2));
 
-    ASSERT_TRUE(dc.system().has_autopilot());
+    ASSERT_TRUE(mavsdk.system().has_autopilot());
 
-    System& system = dc.system();
+    System& system = mavsdk.system();
     auto telemetry = std::make_shared<Telemetry>(system);
     auto action = std::make_shared<Action>(system);
     auto offboard = std::make_shared<Offboard>(system);
@@ -58,6 +58,9 @@ void arm_and_takeoff(std::shared_ptr<Action> action, std::shared_ptr<Telemetry> 
     ASSERT_EQ(action->arm(), Action::Result::Success);
 
     ASSERT_EQ(action->set_takeoff_altitude(5.0f), Action::Result::Success);
+
+    // FIXME: workaround to prevent a race between set_takeoff_altitude and takeoff.
+    std::this_thread::sleep_for(std::chrono::seconds(1));
 
     ASSERT_EQ(action->takeoff(), Action::Result::Success);
 
@@ -105,7 +108,7 @@ void flip_roll(std::shared_ptr<Offboard> offboard, std::shared_ptr<Telemetry> te
         roll.roll_deg_s = 360.0f;
         roll.thrust_value = 0.25f;
         offboard->set_attitude_rate(roll);
-        std::this_thread::sleep_for(std::chrono::milliseconds(10));
+        std::this_thread::sleep_for(std::chrono::milliseconds(1));
 
         // We can't check for a negative angle from the beginning because we might
         // have a slightly negative angle right in the beginning. Therefore, we make
@@ -131,7 +134,7 @@ void flip_roll(std::shared_ptr<Offboard> offboard, std::shared_ptr<Telemetry> te
         Offboard::Attitude some_up{};
         some_up.thrust_value = 0.6f;
         offboard->set_attitude(some_up);
-        std::this_thread::sleep_for(std::chrono::milliseconds(10));
+        std::this_thread::sleep_for(std::chrono::milliseconds(1));
     }
 }
 
@@ -158,7 +161,7 @@ void flip_pitch(std::shared_ptr<Offboard> offboard, std::shared_ptr<Telemetry> t
         pitch.yaw_deg_s = 0.0f;
         pitch.thrust_value = 0.25f;
         offboard->set_attitude_rate(pitch);
-        std::this_thread::sleep_for(std::chrono::milliseconds(10));
+        std::this_thread::sleep_for(std::chrono::milliseconds(1));
 
         // We can't check for a negative angle from the beginning because we might
         // have a slightly negative angle right in the beginning. Therefore, we make
@@ -191,7 +194,7 @@ void flip_pitch(std::shared_ptr<Offboard> offboard, std::shared_ptr<Telemetry> t
         Offboard::Attitude some_up{};
         some_up.thrust_value = 0.6f;
         offboard->set_attitude(some_up);
-        std::this_thread::sleep_for(std::chrono::milliseconds(10));
+        std::this_thread::sleep_for(std::chrono::milliseconds(1));
 
         if (std::abs(telemetry->attitude_euler().pitch_deg) < 3.0f) {
             break;
@@ -206,13 +209,13 @@ void turn_yaw(std::shared_ptr<Offboard> offboard)
         yaw.yaw_deg_s = 360.0f;
         yaw.thrust_value = 0.5;
         offboard->set_attitude_rate(yaw);
-        std::this_thread::sleep_for(std::chrono::milliseconds(10));
+        std::this_thread::sleep_for(std::chrono::milliseconds(1));
     }
 
     for (int i = 0; i < 100; ++i) {
         Offboard::Attitude stay{};
         stay.thrust_value = 0.5;
         offboard->set_attitude(stay);
-        std::this_thread::sleep_for(std::chrono::milliseconds(10));
+        std::this_thread::sleep_for(std::chrono::milliseconds(1));
     }
 }

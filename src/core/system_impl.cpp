@@ -5,6 +5,7 @@
 #include "system_impl.h"
 #include "plugin_impl_base.h"
 #include "px4_custom_mode.h"
+#include <cstdlib>
 #include <functional>
 #include <algorithm>
 #include <future>
@@ -17,18 +18,17 @@ namespace mavsdk {
 using namespace std::placeholders; // for `_1`
 
 SystemImpl::SystemImpl(MavsdkImpl& parent, uint8_t system_id, uint8_t comp_id, bool connected) :
-    Sender(parent.own_address, target_address),
+    Sender(parent.own_address, _target_address),
     _parent(parent),
     _params(*this),
     _commands(*this),
     _timesync(*this),
-    _timeout_handler(_time),
     _call_every_handler(_time),
-    _mission_transfer(*this, _message_handler, _timeout_handler)
+    _mission_transfer(*this, _message_handler, _parent.timeout_handler)
 {
-    target_address.system_id = system_id;
+    _target_address.system_id = system_id;
     // FIXME: for now use this as a default.
-    target_address.component_id = MAV_COMP_ID_AUTOPILOT1;
+    _target_address.component_id = MAV_COMP_ID_AUTOPILOT1;
 
     if (connected) {
         _always_connected = true;
@@ -52,11 +52,6 @@ SystemImpl::SystemImpl(MavsdkImpl& parent, uint8_t system_id, uint8_t comp_id, b
         MAVLINK_MSG_ID_STATUSTEXT, std::bind(&SystemImpl::process_statustext, this, _1), this);
 
     add_new_component(comp_id);
-
-    // FIXME: It would be better to do things like this in a method and not
-    //        in the constructor where we can't fail gracefully because we
-    //        don't have exceptions.
-    _thread_pool.start();
 }
 
 SystemImpl::~SystemImpl()
@@ -68,8 +63,6 @@ SystemImpl::~SystemImpl()
     if (!_always_connected) {
         unregister_timeout_handler(_heartbeat_timeout_cookie);
     }
-
-    _thread_pool.stop();
 
     if (_system_thread != nullptr) {
         _system_thread->join();
@@ -100,19 +93,19 @@ void SystemImpl::unregister_all_mavlink_message_handlers(const void* cookie)
 }
 
 void SystemImpl::register_timeout_handler(
-    std::function<void()> callback, double duration_s, void** cookie)
+    const std::function<void()>& callback, double duration_s, void** cookie)
 {
-    _timeout_handler.add(callback, duration_s, cookie);
+    _parent.timeout_handler.add(callback, duration_s, cookie);
 }
 
 void SystemImpl::refresh_timeout_handler(const void* cookie)
 {
-    _timeout_handler.refresh(cookie);
+    _parent.timeout_handler.refresh(cookie);
 }
 
 void SystemImpl::unregister_timeout_handler(const void* cookie)
 {
-    _timeout_handler.remove(cookie);
+    _parent.timeout_handler.remove(cookie);
 }
 
 void SystemImpl::process_mavlink_message(mavlink_message_t& message)
@@ -276,7 +269,6 @@ void SystemImpl::system_thread()
         }
 
         _call_every_handler.run_once();
-        _timeout_handler.run_once();
         _params.do_work();
         _commands.do_work();
         _timesync.do_work();
@@ -579,12 +571,12 @@ uint64_t SystemImpl::get_uuid() const
 
 uint8_t SystemImpl::get_system_id() const
 {
-    return target_address.system_id;
+    return _target_address.system_id;
 }
 
 void SystemImpl::set_system_id(uint8_t system_id)
 {
-    target_address.system_id = system_id;
+    _target_address.system_id = system_id;
 }
 
 uint8_t SystemImpl::get_own_system_id() const
@@ -1046,7 +1038,7 @@ uint8_t SystemImpl::get_gimbal_id() const
 
 MAVLinkCommands::Result SystemImpl::send_command(MAVLinkCommands::CommandLong& command)
 {
-    if (target_address.system_id == 0 && _components.size() == 0) {
+    if (_target_address.system_id == 0 && _components.size() == 0) {
         return MAVLinkCommands::Result::NoSystem;
     }
     command.target_system_id = get_system_id();
@@ -1055,7 +1047,7 @@ MAVLinkCommands::Result SystemImpl::send_command(MAVLinkCommands::CommandLong& c
 
 MAVLinkCommands::Result SystemImpl::send_command(MAVLinkCommands::CommandInt& command)
 {
-    if (target_address.system_id == 0 && _components.size() == 0) {
+    if (_target_address.system_id == 0 && _components.size() == 0) {
         return MAVLinkCommands::Result::NoSystem;
     }
     command.target_system_id = get_system_id();
@@ -1065,7 +1057,7 @@ MAVLinkCommands::Result SystemImpl::send_command(MAVLinkCommands::CommandInt& co
 void SystemImpl::send_command_async(
     MAVLinkCommands::CommandLong command, const CommandResultCallback callback)
 {
-    if (target_address.system_id == 0 && _components.size() == 0) {
+    if (_target_address.system_id == 0 && _components.size() == 0) {
         if (callback) {
             callback(MAVLinkCommands::Result::NoSystem, NAN);
         }
@@ -1079,7 +1071,7 @@ void SystemImpl::send_command_async(
 void SystemImpl::send_command_async(
     MAVLinkCommands::CommandInt command, const CommandResultCallback callback)
 {
-    if (target_address.system_id == 0 && _components.size() == 0) {
+    if (_target_address.system_id == 0 && _components.size() == 0) {
         if (callback) {
             callback(MAVLinkCommands::Result::NoSystem, NAN);
         }
@@ -1161,9 +1153,10 @@ void SystemImpl::unregister_plugin(PluginImplBase* plugin_impl)
     }
 }
 
-void SystemImpl::call_user_callback(const std::function<void()>& func)
+void SystemImpl::call_user_callback_located(
+    const std::string& filename, const int linenumber, const std::function<void()>& func)
 {
-    _thread_pool.enqueue(func);
+    _parent.call_user_callback_located(filename, linenumber, func);
 }
 
 void SystemImpl::param_changed(const std::string& name)
