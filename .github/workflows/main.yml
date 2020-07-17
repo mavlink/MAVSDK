@@ -191,7 +191,7 @@ jobs:
     container: mavsdk/mavsdk-${{ matrix.container_name }}
     strategy:
       matrix:
-        container_name: [fedora-30, fedora-31]
+        container_name: [fedora-31, fedora-32]
     steps:
       - uses: actions/checkout@v2
         with:
