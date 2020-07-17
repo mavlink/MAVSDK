@@ -135,13 +135,13 @@ jobs:
     container: mavsdk/mavsdk-ubuntu-18.04-px4-sitl-${{ matrix.px4_version }}
     strategy:
       matrix:
-        px4_version: [v1.9, v1.10]
+        px4_version: [v1.9, v1.10, v1.11]
     steps:
       - uses: actions/checkout@v1
         with:
           submodules: recursive
       - name: test
-        run: tools/run-sitl-tests.sh /home/user/Firmware
+        run: PX4_VERSION=${{ matrix.px4_version }} tools/run-sitl-tests.sh /home/user/Firmware
 
   deb-package:
     name: ${{ matrix.container_name }} (package, non-backend)
