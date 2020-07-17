@@ -47,6 +47,7 @@ enum FailureType {
 message InjectRequest {
     FailureUnit failure_unit = 1; // The failure unit to send
     FailureType failure_type = 2; // The failure type to send
+    int32 instance = 3; // Instance to affect (0 for all)
 }
 message InjectResponse {
     FailureResult failure_result = 1;
