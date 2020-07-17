@@ -56,8 +56,8 @@ void FailureImpl::disable()
     _enabled = EnabledState::Init;
 }
 
-Failure::Result
-FailureImpl::inject(Failure::FailureUnit failure_unit, Failure::FailureType failure_type)
+Failure::Result FailureImpl::inject(
+    Failure::FailureUnit failure_unit, Failure::FailureType failure_type, int32_t instance)
 {
     while (_enabled == EnabledState::Init) {
         std::this_thread::sleep_for(std::chrono::milliseconds(10));
@@ -73,6 +73,7 @@ FailureImpl::inject(Failure::FailureUnit failure_unit, Failure::FailureType fail
     command.command = MAV_CMD_INJECT_FAILURE;
     command.params.param1 = static_cast<float>(failure_unit);
     command.params.param2 = static_cast<float>(failure_type);
+    command.params.param3 = static_cast<float>(instance);
     command.target_component_id = _parent->get_autopilot_id();
 
     return failure_result_from_command_result(_parent->send_command(command));

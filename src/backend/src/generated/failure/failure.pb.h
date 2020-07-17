@@ -290,6 +290,7 @@ class InjectRequest :
   enum : int {
     kFailureUnitFieldNumber = 1,
     kFailureTypeFieldNumber = 2,
+    kInstanceFieldNumber = 3,
   };
   // .mavsdk.rpc.failure.FailureUnit failure_unit = 1;
   void clear_failure_unit();
@@ -309,6 +310,15 @@ class InjectRequest :
   void _internal_set_failure_type(::mavsdk::rpc::failure::FailureType value);
   public:
 
+  // int32 instance = 3;
+  void clear_instance();
+  ::PROTOBUF_NAMESPACE_ID::int32 instance() const;
+  void set_instance(::PROTOBUF_NAMESPACE_ID::int32 value);
+  private:
+  ::PROTOBUF_NAMESPACE_ID::int32 _internal_instance() const;
+  void _internal_set_instance(::PROTOBUF_NAMESPACE_ID::int32 value);
+  public:
+
   // @@protoc_insertion_point(class_scope:mavsdk.rpc.failure.InjectRequest)
  private:
   class _Internal;
@@ -316,6 +326,7 @@ class InjectRequest :
   ::PROTOBUF_NAMESPACE_ID::internal::InternalMetadataWithArena _internal_metadata_;
   int failure_unit_;
   int failure_type_;
+  ::PROTOBUF_NAMESPACE_ID::int32 instance_;
   mutable ::PROTOBUF_NAMESPACE_ID::internal::CachedSize _cached_size_;
   friend struct ::TableStruct_failure_2ffailure_2eproto;
 };
@@ -690,6 +701,26 @@ inline void InjectRequest::_internal_set_failure_type(::mavsdk::rpc::failure::Fa
 inline void InjectRequest::set_failure_type(::mavsdk::rpc::failure::FailureType value) {
   _internal_set_failure_type(value);
   // @@protoc_insertion_point(field_set:mavsdk.rpc.failure.InjectRequest.failure_type)
+}
+
+// int32 instance = 3;
+inline void InjectRequest::clear_instance() {
+  instance_ = 0;
+}
+inline ::PROTOBUF_NAMESPACE_ID::int32 InjectRequest::_internal_instance() const {
+  return instance_;
+}
+inline ::PROTOBUF_NAMESPACE_ID::int32 InjectRequest::instance() const {
+  // @@protoc_insertion_point(field_get:mavsdk.rpc.failure.InjectRequest.instance)
+  return _internal_instance();
+}
+inline void InjectRequest::_internal_set_instance(::PROTOBUF_NAMESPACE_ID::int32 value) {
+  
+  instance_ = value;
+}
+inline void InjectRequest::set_instance(::PROTOBUF_NAMESPACE_ID::int32 value) {
+  _internal_set_instance(value);
+  // @@protoc_insertion_point(field_set:mavsdk.rpc.failure.InjectRequest.instance)
 }
 
 // -------------------------------------------------------------------

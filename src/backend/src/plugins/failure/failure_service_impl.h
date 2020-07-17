@@ -232,7 +232,8 @@ public:
 
         auto result = _failure.inject(
             translateFromRpcFailureUnit(request->failure_unit()),
-            translateFromRpcFailureType(request->failure_type()));
+            translateFromRpcFailureType(request->failure_type()),
+            request->instance());
 
         if (response != nullptr) {
             fillResponseWithResult(response, result);

@@ -125,7 +125,7 @@ public:
      *
      * @return Result of request.
      */
-    Result inject(FailureUnit failure_unit, FailureType failure_type) const;
+    Result inject(FailureUnit failure_unit, FailureType failure_type, int32_t instance) const;
 
     /**
      * @brief Copy constructor (object is not copyable).
