@@ -129,7 +129,7 @@ jobs:
       - name: test (mavsdk_server)
         run: ./build/release/src/backend/test/unit_tests_backend
 
-  px4-sitl-18.04:
+  px4-sitl-older:
     name: PX4 SITL ${{ matrix.px4_version }} (ubuntu-18.04)
     runs-on: ubuntu-18.04
     container: mavsdk/mavsdk-ubuntu-18.04-px4-sitl-${{ matrix.px4_version }}
@@ -143,7 +143,7 @@ jobs:
       - name: test
         run: PX4_VERSION=${{ matrix.px4_version }} tools/run-sitl-tests.sh /home/user/Firmware
 
-  px4-sitl-20.04:
+  px4-sitl-newer:
     name: PX4 SITL ${{ matrix.px4_version }} (ubuntu-20.04)
     runs-on: ubuntu-18.04
     container: mavsdk/mavsdk-ubuntu-20.04-px4-sitl-${{ matrix.px4_version }}

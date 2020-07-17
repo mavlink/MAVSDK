@@ -30,8 +30,8 @@ RUN apt-get update \
         libtool \
         libz-dev \
         ninja-build \
-        python \
-        python-pip \
+        python3 \
+        python3-pip \
         ruby-dev \
         software-properties-common \
         sudo \
