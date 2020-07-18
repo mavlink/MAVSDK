@@ -22,7 +22,6 @@ RUN apt-get update \
         cmake \
         colordiff \
         doxygen \
-        git \
         golang-go \
         libcurl4-openssl-dev \
         libltdl-dev \
@@ -38,6 +37,12 @@ RUN apt-get update \
         wget \
     && apt-get -y autoremove \
     && apt-get clean autoclean \
+    && rm -rf /var/lib/apt/lists/{apt,dpkg,cache,log} /tmp/* /var/tmp/*
+
+# We need git with version at least 2.18 for GitHub checkout v2
+RUN add-apt-repository ppa:git-core/ppa -y \
+    && apt-get update \
+    && apt-get install git -y \
     && rm -rf /var/lib/apt/lists/{apt,dpkg,cache,log} /tmp/* /var/tmp/*
 
 RUN gem install --no-document fpm;

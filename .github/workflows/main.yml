@@ -17,7 +17,7 @@ jobs:
     name: coverage (ubuntu-18.04)
     runs-on: ubuntu-18.04
     steps:
-      - uses: actions/checkout@v1
+      - uses: actions/checkout@v2
         with:
           submodules: recursive
       - name: Install lcov
@@ -40,7 +40,7 @@ jobs:
     name: ubuntu-18.04 (non-backend, non-superbuild)
     runs-on: ubuntu-18.04
     steps:
-      - uses: actions/checkout@v1
+      - uses: actions/checkout@v2
         with:
           submodules: recursive
       - name: install
@@ -56,7 +56,7 @@ jobs:
     name: ubuntu-18.04 (backend, superbuild)
     runs-on: ubuntu-18.04
     steps:
-      - uses: actions/checkout@v1
+      - uses: actions/checkout@v2
         with:
           submodules: recursive
       - name: configure
@@ -78,7 +78,7 @@ jobs:
     name: ubuntu-18.04 (proto check)
     runs-on: ubuntu-18.04
     steps:
-      - uses: actions/checkout@v1
+      - uses: actions/checkout@v2
         with:
           submodules: recursive
       - name: install clang-format
@@ -102,7 +102,7 @@ jobs:
     runs-on: ubuntu-18.04
     container: mavsdk/mavsdk-ubuntu-18.04
     steps:
-      - uses: actions/checkout@v1
+      - uses: actions/checkout@v2
         with:
           submodules: recursive
       - name: check style
@@ -115,11 +115,11 @@ jobs:
     runs-on: ubuntu-18.04
     container: alpine:3.11.6
     steps:
-      - uses: actions/checkout@v1
-        with:
-          submodules: recursive
       - name: install tools
         run: apk update && apk add build-base cmake git linux-headers
+      - uses: actions/checkout@v2
+        with:
+          submodules: recursive
       - name: configure
         run: cmake -DCMAKE_BUILD_TYPE=Release -DBUILD_BACKEND=ON -DBUILD_SHARED_LIBS=OFF -DCMAKE_INSTALL_PREFIX=install -Bbuild/release -H.
       - name: build
@@ -129,15 +129,29 @@ jobs:
       - name: test (mavsdk_server)
         run: ./build/release/src/backend/test/unit_tests_backend
 
-  px4-sitl:
+  px4-sitl-older:
     name: PX4 SITL ${{ matrix.px4_version }} (ubuntu-18.04)
     runs-on: ubuntu-18.04
     container: mavsdk/mavsdk-ubuntu-18.04-px4-sitl-${{ matrix.px4_version }}
     strategy:
       matrix:
-        px4_version: [v1.9, v1.10, v1.11]
+        px4_version: [v1.9, v1.10]
     steps:
-      - uses: actions/checkout@v1
+      - uses: actions/checkout@v2
+        with:
+          submodules: recursive
+      - name: test
+        run: PX4_VERSION=${{ matrix.px4_version }} tools/run-sitl-tests.sh /home/user/Firmware
+
+  px4-sitl-newer:
+    name: PX4 SITL ${{ matrix.px4_version }} (ubuntu-20.04)
+    runs-on: ubuntu-18.04
+    container: mavsdk/mavsdk-ubuntu-20.04-px4-sitl-${{ matrix.px4_version }}
+    strategy:
+      matrix:
+        px4_version: [v1.11]
+    steps:
+      - uses: actions/checkout@v2
         with:
           submodules: recursive
       - name: test
@@ -149,9 +163,9 @@ jobs:
     container: mavsdk/mavsdk-${{ matrix.container_name }}
     strategy:
       matrix:
-        container_name: [ubuntu-16.04, ubuntu-18.04]
+        container_name: [ubuntu-18.04, ubuntu-20.04]
     steps:
-      - uses: actions/checkout@v1
+      - uses: actions/checkout@v2
         with:
           submodules: recursive
       - name: configure
@@ -177,9 +191,9 @@ jobs:
     container: mavsdk/mavsdk-${{ matrix.container_name }}
     strategy:
       matrix:
-        container_name: [fedora-30, fedora-31]
+        container_name: [fedora-31, fedora-32]
     steps:
-      - uses: actions/checkout@v1
+      - uses: actions/checkout@v2
         with:
           submodules: recursive
       - name: configure
@@ -206,7 +220,7 @@ jobs:
       matrix:
         arch_name: [linux-armv6, linux-armv7, linux-arm64, manylinux2010-x64, manylinux2014-aarch64]
     steps:
-      - uses: actions/checkout@v1
+      - uses: actions/checkout@v2
         with:
           submodules: recursive
       - name: setup dockcross
@@ -229,7 +243,7 @@ jobs:
     name: android-arm
     runs-on: ubuntu-18.04
     steps:
-      - uses: actions/checkout@v1
+      - uses: actions/checkout@v2
         with:
           submodules: recursive
       - name: setup dockcross
@@ -254,7 +268,7 @@ jobs:
     name: android-arm64
     runs-on: ubuntu-18.04
     steps:
-      - uses: actions/checkout@v1
+      - uses: actions/checkout@v2
         with:
           submodules: recursive
       - name: setup dockcross
@@ -293,7 +307,7 @@ jobs:
     name: macOS
     runs-on: macos-latest
     steps:
-      - uses: actions/checkout@v1
+      - uses: actions/checkout@v2
         with:
           submodules: recursive
       - name: configure
@@ -318,7 +332,7 @@ jobs:
     name: iOS
     runs-on: macos-latest
     steps:
-      - uses: actions/checkout@v1
+      - uses: actions/checkout@v2
         with:
           submodules: recursive
       - name: configure (ios)
@@ -346,7 +360,7 @@ jobs:
     name: Windows
     runs-on: windows-latest
     steps:
-      - uses: actions/checkout@v1
+      - uses: actions/checkout@v2
         with:
           submodules: recursive
       - name: configure
