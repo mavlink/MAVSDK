@@ -16,7 +16,7 @@ static void flip_roll(std::shared_ptr<Offboard> offboard, std::shared_ptr<Teleme
 static void flip_pitch(std::shared_ptr<Offboard> offboard, std::shared_ptr<Telemetry> telemetry);
 static void turn_yaw(std::shared_ptr<Offboard> offboard);
 
-TEST_F(SitlTest, OffboardAttitudeRate)
+TEST(SitlTestDisabled, OffboardAttitudeRate)
 {
     Mavsdk mavsdk;
 
