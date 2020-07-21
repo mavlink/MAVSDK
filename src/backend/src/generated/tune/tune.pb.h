@@ -264,21 +264,21 @@ class PlayTuneRequest :
   // accessors -------------------------------------------------------
 
   enum : int {
-    kDescriptionFieldNumber = 1,
+    kTuneDescriptionFieldNumber = 1,
   };
-  // .mavsdk.rpc.tune.TuneDescription description = 1;
-  bool has_description() const;
+  // .mavsdk.rpc.tune.TuneDescription tune_description = 1;
+  bool has_tune_description() const;
   private:
-  bool _internal_has_description() const;
+  bool _internal_has_tune_description() const;
   public:
-  void clear_description();
-  const ::mavsdk::rpc::tune::TuneDescription& description() const;
-  ::mavsdk::rpc::tune::TuneDescription* release_description();
-  ::mavsdk::rpc::tune::TuneDescription* mutable_description();
-  void set_allocated_description(::mavsdk::rpc::tune::TuneDescription* description);
+  void clear_tune_description();
+  const ::mavsdk::rpc::tune::TuneDescription& tune_description() const;
+  ::mavsdk::rpc::tune::TuneDescription* release_tune_description();
+  ::mavsdk::rpc::tune::TuneDescription* mutable_tune_description();
+  void set_allocated_tune_description(::mavsdk::rpc::tune::TuneDescription* tune_description);
   private:
-  const ::mavsdk::rpc::tune::TuneDescription& _internal_description() const;
-  ::mavsdk::rpc::tune::TuneDescription* _internal_mutable_description();
+  const ::mavsdk::rpc::tune::TuneDescription& _internal_tune_description() const;
+  ::mavsdk::rpc::tune::TuneDescription* _internal_mutable_tune_description();
   public:
 
   // @@protoc_insertion_point(class_scope:mavsdk.rpc.tune.PlayTuneRequest)
@@ -286,7 +286,7 @@ class PlayTuneRequest :
   class _Internal;
 
   ::PROTOBUF_NAMESPACE_ID::internal::InternalMetadataWithArena _internal_metadata_;
-  ::mavsdk::rpc::tune::TuneDescription* description_;
+  ::mavsdk::rpc::tune::TuneDescription* tune_description_;
   mutable ::PROTOBUF_NAMESPACE_ID::internal::CachedSize _cached_size_;
   friend struct ::TableStruct_tune_2ftune_2eproto;
 };
@@ -765,64 +765,64 @@ class TuneResult :
 #endif  // __GNUC__
 // PlayTuneRequest
 
-// .mavsdk.rpc.tune.TuneDescription description = 1;
-inline bool PlayTuneRequest::_internal_has_description() const {
-  return this != internal_default_instance() && description_ != nullptr;
+// .mavsdk.rpc.tune.TuneDescription tune_description = 1;
+inline bool PlayTuneRequest::_internal_has_tune_description() const {
+  return this != internal_default_instance() && tune_description_ != nullptr;
 }
-inline bool PlayTuneRequest::has_description() const {
-  return _internal_has_description();
+inline bool PlayTuneRequest::has_tune_description() const {
+  return _internal_has_tune_description();
 }
-inline void PlayTuneRequest::clear_description() {
-  if (GetArenaNoVirtual() == nullptr && description_ != nullptr) {
-    delete description_;
+inline void PlayTuneRequest::clear_tune_description() {
+  if (GetArenaNoVirtual() == nullptr && tune_description_ != nullptr) {
+    delete tune_description_;
   }
-  description_ = nullptr;
+  tune_description_ = nullptr;
 }
-inline const ::mavsdk::rpc::tune::TuneDescription& PlayTuneRequest::_internal_description() const {
-  const ::mavsdk::rpc::tune::TuneDescription* p = description_;
+inline const ::mavsdk::rpc::tune::TuneDescription& PlayTuneRequest::_internal_tune_description() const {
+  const ::mavsdk::rpc::tune::TuneDescription* p = tune_description_;
   return p != nullptr ? *p : *reinterpret_cast<const ::mavsdk::rpc::tune::TuneDescription*>(
       &::mavsdk::rpc::tune::_TuneDescription_default_instance_);
 }
-inline const ::mavsdk::rpc::tune::TuneDescription& PlayTuneRequest::description() const {
-  // @@protoc_insertion_point(field_get:mavsdk.rpc.tune.PlayTuneRequest.description)
-  return _internal_description();
+inline const ::mavsdk::rpc::tune::TuneDescription& PlayTuneRequest::tune_description() const {
+  // @@protoc_insertion_point(field_get:mavsdk.rpc.tune.PlayTuneRequest.tune_description)
+  return _internal_tune_description();
 }
-inline ::mavsdk::rpc::tune::TuneDescription* PlayTuneRequest::release_description() {
-  // @@protoc_insertion_point(field_release:mavsdk.rpc.tune.PlayTuneRequest.description)
+inline ::mavsdk::rpc::tune::TuneDescription* PlayTuneRequest::release_tune_description() {
+  // @@protoc_insertion_point(field_release:mavsdk.rpc.tune.PlayTuneRequest.tune_description)
   
-  ::mavsdk::rpc::tune::TuneDescription* temp = description_;
-  description_ = nullptr;
+  ::mavsdk::rpc::tune::TuneDescription* temp = tune_description_;
+  tune_description_ = nullptr;
   return temp;
 }
-inline ::mavsdk::rpc::tune::TuneDescription* PlayTuneRequest::_internal_mutable_description() {
+inline ::mavsdk::rpc::tune::TuneDescription* PlayTuneRequest::_internal_mutable_tune_description() {
   
-  if (description_ == nullptr) {
+  if (tune_description_ == nullptr) {
     auto* p = CreateMaybeMessage<::mavsdk::rpc::tune::TuneDescription>(GetArenaNoVirtual());
-    description_ = p;
+    tune_description_ = p;
   }
-  return description_;
+  return tune_description_;
 }
-inline ::mavsdk::rpc::tune::TuneDescription* PlayTuneRequest::mutable_description() {
-  // @@protoc_insertion_point(field_mutable:mavsdk.rpc.tune.PlayTuneRequest.description)
-  return _internal_mutable_description();
+inline ::mavsdk::rpc::tune::TuneDescription* PlayTuneRequest::mutable_tune_description() {
+  // @@protoc_insertion_point(field_mutable:mavsdk.rpc.tune.PlayTuneRequest.tune_description)
+  return _internal_mutable_tune_description();
 }
-inline void PlayTuneRequest::set_allocated_description(::mavsdk::rpc::tune::TuneDescription* description) {
+inline void PlayTuneRequest::set_allocated_tune_description(::mavsdk::rpc::tune::TuneDescription* tune_description) {
   ::PROTOBUF_NAMESPACE_ID::Arena* message_arena = GetArenaNoVirtual();
   if (message_arena == nullptr) {
-    delete description_;
+    delete tune_description_;
   }
-  if (description) {
+  if (tune_description) {
     ::PROTOBUF_NAMESPACE_ID::Arena* submessage_arena = nullptr;
     if (message_arena != submessage_arena) {
-      description = ::PROTOBUF_NAMESPACE_ID::internal::GetOwnedMessage(
-          message_arena, description, submessage_arena);
+      tune_description = ::PROTOBUF_NAMESPACE_ID::internal::GetOwnedMessage(
+          message_arena, tune_description, submessage_arena);
     }
     
   } else {
     
   }
-  description_ = description;
-  // @@protoc_insertion_point(field_set_allocated:mavsdk.rpc.tune.PlayTuneRequest.description)
+  tune_description_ = tune_description;
+  // @@protoc_insertion_point(field_set_allocated:mavsdk.rpc.tune.PlayTuneRequest.tune_description)
 }
 
 // -------------------------------------------------------------------

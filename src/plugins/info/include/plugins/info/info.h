@@ -202,6 +202,16 @@ public:
     std::pair<Result, Info::Version> get_version() const;
 
     /**
+     * @brief Get the speed factor of a simulation (with lockstep a simulation can run faster or
+     * slower than realtime).
+     *
+     * This function is blocking.
+     *
+     * @return Result of request.
+     */
+    std::pair<Result, double> get_speed_factor() const;
+
+    /**
      * @brief Copy constructor (object is not copyable).
      */
     Info(const Info&) = delete;

@@ -15,14 +15,14 @@ Tune::Tune(System& system) : PluginBase(), _impl{new TuneImpl(system)} {}
 
 Tune::~Tune() {}
 
-void Tune::play_tune_async(TuneDescription description, const ResultCallback callback)
+void Tune::play_tune_async(TuneDescription tune_description, const ResultCallback callback)
 {
-    _impl->play_tune_async(description, callback);
+    _impl->play_tune_async(tune_description, callback);
 }
 
-Tune::Result Tune::play_tune(TuneDescription description) const
+Tune::Result Tune::play_tune(TuneDescription tune_description) const
 {
-    return _impl->play_tune(description);
+    return _impl->play_tune(tune_description);
 }
 
 bool operator==(const Tune::TuneDescription& lhs, const Tune::TuneDescription& rhs)

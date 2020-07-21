@@ -139,6 +139,13 @@ public:
     void set_param_ext_int_async(
         const std::string& name, int32_t value, success_t callback, const void* cookie);
 
+    using SubscribeParamIntCallback = std::function<void(int)>;
+    void subscribe_param_int(
+        const std::string& name, SubscribeParamIntCallback callback, const void* cookie);
+    using SubscribeParamFloatCallback = std::function<void(float)>;
+    void subscribe_param_float(
+        const std::string& name, SubscribeParamFloatCallback callback, const void* cookie);
+
     FlightMode get_flight_mode() const;
 
     MAVLinkCommands::Result

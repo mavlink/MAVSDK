@@ -371,17 +371,17 @@ public:
         return grpc::Status::OK;
     }
 
-    grpc::Status SetTargetComponentId(
+    grpc::Status SetTargetCompid(
         grpc::ServerContext* /* context */,
-        const rpc::ftp::SetTargetComponentIdRequest* request,
-        rpc::ftp::SetTargetComponentIdResponse* response) override
+        const rpc::ftp::SetTargetCompidRequest* request,
+        rpc::ftp::SetTargetCompidResponse* response) override
     {
         if (request == nullptr) {
-            LogWarn() << "SetTargetComponentId sent with a null request! Ignoring...";
+            LogWarn() << "SetTargetCompid sent with a null request! Ignoring...";
             return grpc::Status::OK;
         }
 
-        auto result = _ftp.set_target_component_id(request->component_id());
+        auto result = _ftp.set_target_compid(request->compid());
 
         if (response != nullptr) {
             fillResponseWithResult(response, result);
@@ -390,15 +390,15 @@ public:
         return grpc::Status::OK;
     }
 
-    grpc::Status GetOurComponentId(
+    grpc::Status GetOurCompid(
         grpc::ServerContext* /* context */,
-        const rpc::ftp::GetOurComponentIdRequest* /* request */,
-        rpc::ftp::GetOurComponentIdResponse* response) override
+        const rpc::ftp::GetOurCompidRequest* /* request */,
+        rpc::ftp::GetOurCompidResponse* response) override
     {
-        auto result = _ftp.get_our_component_id();
+        auto result = _ftp.get_our_compid();
 
         if (response != nullptr) {
-            response->set_component_id(result);
+            response->set_compid(result);
         }
 
         return grpc::Status::OK;

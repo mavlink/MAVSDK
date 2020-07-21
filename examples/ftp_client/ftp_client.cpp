@@ -230,7 +230,7 @@ int main(int argc, char** argv)
     System& system = mavsdk.system();
     auto ftp = std::make_shared<Ftp>(system);
     try {
-        ftp->set_target_component_id(std::stoi(argv[2]));
+        ftp->set_target_compid(std::stoi(argv[2]));
     } catch (...) {
         std::cout << ERROR_CONSOLE_TEXT << "Invalid argument: " << argv[2] << NORMAL_CONSOLE_TEXT
                   << std::endl;

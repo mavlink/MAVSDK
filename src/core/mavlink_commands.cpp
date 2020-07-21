@@ -170,7 +170,7 @@ void MAVLinkCommands::receive_command_ack(mavlink_message_t message)
             case MAV_RESULT_UNSUPPORTED:
                 LogWarn() << "command unsupported (" << work->mavlink_command << ").";
                 _parent.unregister_timeout_handler(_timeout_cookie);
-                temp_result = {Result::CommandDenied, NAN};
+                temp_result = {Result::Unsupported, NAN};
                 work_queue_guard.pop_front();
                 break;
 

@@ -29,6 +29,9 @@ void InfoImpl::init()
         MAVLINK_MSG_ID_FLIGHT_INFORMATION,
         std::bind(&InfoImpl::process_flight_information, this, _1),
         this);
+
+    _parent->register_mavlink_message_handler(
+        MAVLINK_MSG_ID_ATTITUDE, std::bind(&InfoImpl::process_attitude, this, _1), this);
 }
 
 void InfoImpl::deinit()
@@ -233,6 +236,41 @@ const std::string InfoImpl::product_id_str(uint16_t product_id)
         default:
             return "undefined";
     }
+}
+
+void InfoImpl::process_attitude(const mavlink_message_t& message)
+{
+    // We use the attitude message to estimate the lockstep speed factor
+    // because it's common to be sent, arrives at high rate, and contains
+    // the timestamp field.
+    mavlink_attitude_t attitude;
+    mavlink_msg_attitude_decode(&message, &attitude);
+
+    std::lock_guard<std::mutex> lock(_mutex);
+
+    if (_last_time_boot_ms != 0) {
+        const double new_factor = (attitude.time_boot_ms - _last_time_boot_ms) /
+                                  (_time.elapsed_since_s(_last_time_attitude_arrived) * 1000.0);
+
+        if (std::isfinite(_speed_factor)) {
+            // Do some filtering.
+            _speed_factor = _speed_factor * 0.9 + new_factor * 0.1;
+        } else {
+            _speed_factor = new_factor;
+        }
+    }
+
+    _last_time_boot_ms = attitude.time_boot_ms;
+    _last_time_attitude_arrived = _time.steady_time();
+}
+
+std::pair<Info::Result, double> InfoImpl::get_speed_factor() const
+{
+    std::lock_guard<std::mutex> lock(_mutex);
+    return std::make_pair<>(
+        (std::isfinite(_speed_factor) ? Info::Result::Success :
+                                        Info::Result::InformationNotReceivedYet),
+        _speed_factor);
 }
 
 } // namespace mavsdk

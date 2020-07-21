@@ -315,10 +315,10 @@ TEST(FtpTest, TestServer)
 
     auto ftp_server = std::make_shared<Ftp>(system_cc);
     ftp_server->set_root_directory(".");
-    uint8_t server_comp_id = ftp_server->get_our_component_id();
+    uint8_t server_comp_id = ftp_server->get_our_compid();
 
     auto ftp_client = std::make_shared<Ftp>(system_gcs);
-    ftp_client->set_target_component_id(server_comp_id);
+    ftp_client->set_target_compid(server_comp_id);
 
     test_list_directory(ftp_client, "/");
 

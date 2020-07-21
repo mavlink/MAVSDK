@@ -129,7 +129,7 @@ public:
      *
      * This function is non-blocking. See 'play_tune' for the blocking counterpart.
      */
-    void play_tune_async(TuneDescription description, const ResultCallback callback);
+    void play_tune_async(TuneDescription tune_description, const ResultCallback callback);
 
     /**
      * @brief Send a tune to be played by the system.
@@ -138,7 +138,7 @@ public:
      *
      * @return Result of request.
      */
-    Result play_tune(TuneDescription description) const;
+    Result play_tune(TuneDescription tune_description) const;
 
     /**
      * @brief Copy constructor (object is not copyable).

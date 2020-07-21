@@ -133,6 +133,35 @@ void MAVLinkParameters::cancel_all_param(const void* cookie)
     }
 }
 
+void MAVLinkParameters::subscribe_param_changed(
+    const std::string& name,
+    ParamValue value_type,
+    MAVLinkParameters::ParamChangedCallback callback,
+    const void* cookie)
+{
+    std::lock_guard<std::mutex> lock(_param_changed_subscriptions_mutex);
+
+    if (callback != nullptr) {
+        ParamChangedSubscription subscription{};
+        subscription.param_name = name;
+        subscription.callback = callback;
+        subscription.cookie = cookie;
+        subscription.value_type = value_type;
+        _param_changed_subscriptions.push_back(subscription);
+
+    } else {
+        for (auto it = _param_changed_subscriptions.begin();
+             it != _param_changed_subscriptions.end();
+             /* ++it */) {
+            if (it->param_name.compare(name) == 0 && it->cookie == cookie) {
+                it = _param_changed_subscriptions.erase(it);
+            } else {
+                ++it;
+            }
+        }
+    }
+}
+
 void MAVLinkParameters::do_work()
 {
     LockedQueue<WorkItem>::Guard work_queue_guard(_work_queue);
@@ -260,6 +289,8 @@ void MAVLinkParameters::process_param_value(const mavlink_message_t& message)
 
     // LogDebug() << "getting param value: " << extract_safe_param_id(param_value.param_id);
 
+    notify_param_subscriptions(param_value);
+
     LockedQueue<WorkItem>::Guard work_queue_guard(_work_queue);
     auto work = work_queue_guard.get_front();
 
@@ -307,6 +338,26 @@ void MAVLinkParameters::process_param_value(const mavlink_message_t& message)
             // _parent.get_time().elapsed_since_s(_last_request_time);
             work_queue_guard.pop_front();
         } break;
+    }
+}
+
+void MAVLinkParameters::notify_param_subscriptions(const mavlink_param_value_t& param_value)
+{
+    std::lock_guard<std::mutex> lock(_param_changed_subscriptions_mutex);
+
+    for (const auto& subscription : _param_changed_subscriptions) {
+        if (subscription.param_name.compare(extract_safe_param_id(param_value.param_id)) != 0) {
+            continue;
+        }
+
+        ParamValue value;
+        value.set_from_mavlink_param_value(param_value);
+        if (!subscription.value_type.is_same_type(value)) {
+            LogErr() << "Received wrong param type in subscription for " << subscription.param_name;
+            continue;
+        }
+
+        subscription.callback(value);
     }
 }
 

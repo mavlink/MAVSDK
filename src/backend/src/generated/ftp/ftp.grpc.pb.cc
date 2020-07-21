@@ -34,8 +34,8 @@ static const char* FtpService_method_names[] = {
   "/mavsdk.rpc.ftp.FtpService/Rename",
   "/mavsdk.rpc.ftp.FtpService/AreFilesIdentical",
   "/mavsdk.rpc.ftp.FtpService/SetRootDirectory",
-  "/mavsdk.rpc.ftp.FtpService/SetTargetComponentId",
-  "/mavsdk.rpc.ftp.FtpService/GetOurComponentId",
+  "/mavsdk.rpc.ftp.FtpService/SetTargetCompid",
+  "/mavsdk.rpc.ftp.FtpService/GetOurCompid",
 };
 
 std::unique_ptr< FtpService::Stub> FtpService::NewStub(const std::shared_ptr< ::grpc::ChannelInterface>& channel, const ::grpc::StubOptions& options) {
@@ -55,8 +55,8 @@ FtpService::Stub::Stub(const std::shared_ptr< ::grpc::ChannelInterface>& channel
   , rpcmethod_Rename_(FtpService_method_names[7], ::grpc::internal::RpcMethod::NORMAL_RPC, channel)
   , rpcmethod_AreFilesIdentical_(FtpService_method_names[8], ::grpc::internal::RpcMethod::NORMAL_RPC, channel)
   , rpcmethod_SetRootDirectory_(FtpService_method_names[9], ::grpc::internal::RpcMethod::NORMAL_RPC, channel)
-  , rpcmethod_SetTargetComponentId_(FtpService_method_names[10], ::grpc::internal::RpcMethod::NORMAL_RPC, channel)
-  , rpcmethod_GetOurComponentId_(FtpService_method_names[11], ::grpc::internal::RpcMethod::NORMAL_RPC, channel)
+  , rpcmethod_SetTargetCompid_(FtpService_method_names[10], ::grpc::internal::RpcMethod::NORMAL_RPC, channel)
+  , rpcmethod_GetOurCompid_(FtpService_method_names[11], ::grpc::internal::RpcMethod::NORMAL_RPC, channel)
   {}
 
 ::grpc::Status FtpService::Stub::Reset(::grpc::ClientContext* context, const ::mavsdk::rpc::ftp::ResetRequest& request, ::mavsdk::rpc::ftp::ResetResponse* response) {
@@ -315,60 +315,60 @@ void FtpService::Stub::experimental_async::SetRootDirectory(::grpc::ClientContex
   return ::grpc_impl::internal::ClientAsyncResponseReaderFactory< ::mavsdk::rpc::ftp::SetRootDirectoryResponse>::Create(channel_.get(), cq, rpcmethod_SetRootDirectory_, context, request, false);
 }
 
-::grpc::Status FtpService::Stub::SetTargetComponentId(::grpc::ClientContext* context, const ::mavsdk::rpc::ftp::SetTargetComponentIdRequest& request, ::mavsdk::rpc::ftp::SetTargetComponentIdResponse* response) {
-  return ::grpc::internal::BlockingUnaryCall(channel_.get(), rpcmethod_SetTargetComponentId_, context, request, response);
+::grpc::Status FtpService::Stub::SetTargetCompid(::grpc::ClientContext* context, const ::mavsdk::rpc::ftp::SetTargetCompidRequest& request, ::mavsdk::rpc::ftp::SetTargetCompidResponse* response) {
+  return ::grpc::internal::BlockingUnaryCall(channel_.get(), rpcmethod_SetTargetCompid_, context, request, response);
 }
 
-void FtpService::Stub::experimental_async::SetTargetComponentId(::grpc::ClientContext* context, const ::mavsdk::rpc::ftp::SetTargetComponentIdRequest* request, ::mavsdk::rpc::ftp::SetTargetComponentIdResponse* response, std::function<void(::grpc::Status)> f) {
-  ::grpc_impl::internal::CallbackUnaryCall(stub_->channel_.get(), stub_->rpcmethod_SetTargetComponentId_, context, request, response, std::move(f));
+void FtpService::Stub::experimental_async::SetTargetCompid(::grpc::ClientContext* context, const ::mavsdk::rpc::ftp::SetTargetCompidRequest* request, ::mavsdk::rpc::ftp::SetTargetCompidResponse* response, std::function<void(::grpc::Status)> f) {
+  ::grpc_impl::internal::CallbackUnaryCall(stub_->channel_.get(), stub_->rpcmethod_SetTargetCompid_, context, request, response, std::move(f));
 }
 
-void FtpService::Stub::experimental_async::SetTargetComponentId(::grpc::ClientContext* context, const ::grpc::ByteBuffer* request, ::mavsdk::rpc::ftp::SetTargetComponentIdResponse* response, std::function<void(::grpc::Status)> f) {
-  ::grpc_impl::internal::CallbackUnaryCall(stub_->channel_.get(), stub_->rpcmethod_SetTargetComponentId_, context, request, response, std::move(f));
+void FtpService::Stub::experimental_async::SetTargetCompid(::grpc::ClientContext* context, const ::grpc::ByteBuffer* request, ::mavsdk::rpc::ftp::SetTargetCompidResponse* response, std::function<void(::grpc::Status)> f) {
+  ::grpc_impl::internal::CallbackUnaryCall(stub_->channel_.get(), stub_->rpcmethod_SetTargetCompid_, context, request, response, std::move(f));
 }
 
-void FtpService::Stub::experimental_async::SetTargetComponentId(::grpc::ClientContext* context, const ::mavsdk::rpc::ftp::SetTargetComponentIdRequest* request, ::mavsdk::rpc::ftp::SetTargetComponentIdResponse* response, ::grpc::experimental::ClientUnaryReactor* reactor) {
-  ::grpc_impl::internal::ClientCallbackUnaryFactory::Create(stub_->channel_.get(), stub_->rpcmethod_SetTargetComponentId_, context, request, response, reactor);
+void FtpService::Stub::experimental_async::SetTargetCompid(::grpc::ClientContext* context, const ::mavsdk::rpc::ftp::SetTargetCompidRequest* request, ::mavsdk::rpc::ftp::SetTargetCompidResponse* response, ::grpc::experimental::ClientUnaryReactor* reactor) {
+  ::grpc_impl::internal::ClientCallbackUnaryFactory::Create(stub_->channel_.get(), stub_->rpcmethod_SetTargetCompid_, context, request, response, reactor);
 }
 
-void FtpService::Stub::experimental_async::SetTargetComponentId(::grpc::ClientContext* context, const ::grpc::ByteBuffer* request, ::mavsdk::rpc::ftp::SetTargetComponentIdResponse* response, ::grpc::experimental::ClientUnaryReactor* reactor) {
-  ::grpc_impl::internal::ClientCallbackUnaryFactory::Create(stub_->channel_.get(), stub_->rpcmethod_SetTargetComponentId_, context, request, response, reactor);
+void FtpService::Stub::experimental_async::SetTargetCompid(::grpc::ClientContext* context, const ::grpc::ByteBuffer* request, ::mavsdk::rpc::ftp::SetTargetCompidResponse* response, ::grpc::experimental::ClientUnaryReactor* reactor) {
+  ::grpc_impl::internal::ClientCallbackUnaryFactory::Create(stub_->channel_.get(), stub_->rpcmethod_SetTargetCompid_, context, request, response, reactor);
 }
 
-::grpc::ClientAsyncResponseReader< ::mavsdk::rpc::ftp::SetTargetComponentIdResponse>* FtpService::Stub::AsyncSetTargetComponentIdRaw(::grpc::ClientContext* context, const ::mavsdk::rpc::ftp::SetTargetComponentIdRequest& request, ::grpc::CompletionQueue* cq) {
-  return ::grpc_impl::internal::ClientAsyncResponseReaderFactory< ::mavsdk::rpc::ftp::SetTargetComponentIdResponse>::Create(channel_.get(), cq, rpcmethod_SetTargetComponentId_, context, request, true);
+::grpc::ClientAsyncResponseReader< ::mavsdk::rpc::ftp::SetTargetCompidResponse>* FtpService::Stub::AsyncSetTargetCompidRaw(::grpc::ClientContext* context, const ::mavsdk::rpc::ftp::SetTargetCompidRequest& request, ::grpc::CompletionQueue* cq) {
+  return ::grpc_impl::internal::ClientAsyncResponseReaderFactory< ::mavsdk::rpc::ftp::SetTargetCompidResponse>::Create(channel_.get(), cq, rpcmethod_SetTargetCompid_, context, request, true);
 }
 
-::grpc::ClientAsyncResponseReader< ::mavsdk::rpc::ftp::SetTargetComponentIdResponse>* FtpService::Stub::PrepareAsyncSetTargetComponentIdRaw(::grpc::ClientContext* context, const ::mavsdk::rpc::ftp::SetTargetComponentIdRequest& request, ::grpc::CompletionQueue* cq) {
-  return ::grpc_impl::internal::ClientAsyncResponseReaderFactory< ::mavsdk::rpc::ftp::SetTargetComponentIdResponse>::Create(channel_.get(), cq, rpcmethod_SetTargetComponentId_, context, request, false);
+::grpc::ClientAsyncResponseReader< ::mavsdk::rpc::ftp::SetTargetCompidResponse>* FtpService::Stub::PrepareAsyncSetTargetCompidRaw(::grpc::ClientContext* context, const ::mavsdk::rpc::ftp::SetTargetCompidRequest& request, ::grpc::CompletionQueue* cq) {
+  return ::grpc_impl::internal::ClientAsyncResponseReaderFactory< ::mavsdk::rpc::ftp::SetTargetCompidResponse>::Create(channel_.get(), cq, rpcmethod_SetTargetCompid_, context, request, false);
 }
 
-::grpc::Status FtpService::Stub::GetOurComponentId(::grpc::ClientContext* context, const ::mavsdk::rpc::ftp::GetOurComponentIdRequest& request, ::mavsdk::rpc::ftp::GetOurComponentIdResponse* response) {
-  return ::grpc::internal::BlockingUnaryCall(channel_.get(), rpcmethod_GetOurComponentId_, context, request, response);
+::grpc::Status FtpService::Stub::GetOurCompid(::grpc::ClientContext* context, const ::mavsdk::rpc::ftp::GetOurCompidRequest& request, ::mavsdk::rpc::ftp::GetOurCompidResponse* response) {
+  return ::grpc::internal::BlockingUnaryCall(channel_.get(), rpcmethod_GetOurCompid_, context, request, response);
 }
 
-void FtpService::Stub::experimental_async::GetOurComponentId(::grpc::ClientContext* context, const ::mavsdk::rpc::ftp::GetOurComponentIdRequest* request, ::mavsdk::rpc::ftp::GetOurComponentIdResponse* response, std::function<void(::grpc::Status)> f) {
-  ::grpc_impl::internal::CallbackUnaryCall(stub_->channel_.get(), stub_->rpcmethod_GetOurComponentId_, context, request, response, std::move(f));
+void FtpService::Stub::experimental_async::GetOurCompid(::grpc::ClientContext* context, const ::mavsdk::rpc::ftp::GetOurCompidRequest* request, ::mavsdk::rpc::ftp::GetOurCompidResponse* response, std::function<void(::grpc::Status)> f) {
+  ::grpc_impl::internal::CallbackUnaryCall(stub_->channel_.get(), stub_->rpcmethod_GetOurCompid_, context, request, response, std::move(f));
 }
 
-void FtpService::Stub::experimental_async::GetOurComponentId(::grpc::ClientContext* context, const ::grpc::ByteBuffer* request, ::mavsdk::rpc::ftp::GetOurComponentIdResponse* response, std::function<void(::grpc::Status)> f) {
-  ::grpc_impl::internal::CallbackUnaryCall(stub_->channel_.get(), stub_->rpcmethod_GetOurComponentId_, context, request, response, std::move(f));
+void FtpService::Stub::experimental_async::GetOurCompid(::grpc::ClientContext* context, const ::grpc::ByteBuffer* request, ::mavsdk::rpc::ftp::GetOurCompidResponse* response, std::function<void(::grpc::Status)> f) {
+  ::grpc_impl::internal::CallbackUnaryCall(stub_->channel_.get(), stub_->rpcmethod_GetOurCompid_, context, request, response, std::move(f));
 }
 
-void FtpService::Stub::experimental_async::GetOurComponentId(::grpc::ClientContext* context, const ::mavsdk::rpc::ftp::GetOurComponentIdRequest* request, ::mavsdk::rpc::ftp::GetOurComponentIdResponse* response, ::grpc::experimental::ClientUnaryReactor* reactor) {
-  ::grpc_impl::internal::ClientCallbackUnaryFactory::Create(stub_->channel_.get(), stub_->rpcmethod_GetOurComponentId_, context, request, response, reactor);
+void FtpService::Stub::experimental_async::GetOurCompid(::grpc::ClientContext* context, const ::mavsdk::rpc::ftp::GetOurCompidRequest* request, ::mavsdk::rpc::ftp::GetOurCompidResponse* response, ::grpc::experimental::ClientUnaryReactor* reactor) {
+  ::grpc_impl::internal::ClientCallbackUnaryFactory::Create(stub_->channel_.get(), stub_->rpcmethod_GetOurCompid_, context, request, response, reactor);
 }
 
-void FtpService::Stub::experimental_async::GetOurComponentId(::grpc::ClientContext* context, const ::grpc::ByteBuffer* request, ::mavsdk::rpc::ftp::GetOurComponentIdResponse* response, ::grpc::experimental::ClientUnaryReactor* reactor) {
-  ::grpc_impl::internal::ClientCallbackUnaryFactory::Create(stub_->channel_.get(), stub_->rpcmethod_GetOurComponentId_, context, request, response, reactor);
+void FtpService::Stub::experimental_async::GetOurCompid(::grpc::ClientContext* context, const ::grpc::ByteBuffer* request, ::mavsdk::rpc::ftp::GetOurCompidResponse* response, ::grpc::experimental::ClientUnaryReactor* reactor) {
+  ::grpc_impl::internal::ClientCallbackUnaryFactory::Create(stub_->channel_.get(), stub_->rpcmethod_GetOurCompid_, context, request, response, reactor);
 }
 
-::grpc::ClientAsyncResponseReader< ::mavsdk::rpc::ftp::GetOurComponentIdResponse>* FtpService::Stub::AsyncGetOurComponentIdRaw(::grpc::ClientContext* context, const ::mavsdk::rpc::ftp::GetOurComponentIdRequest& request, ::grpc::CompletionQueue* cq) {
-  return ::grpc_impl::internal::ClientAsyncResponseReaderFactory< ::mavsdk::rpc::ftp::GetOurComponentIdResponse>::Create(channel_.get(), cq, rpcmethod_GetOurComponentId_, context, request, true);
+::grpc::ClientAsyncResponseReader< ::mavsdk::rpc::ftp::GetOurCompidResponse>* FtpService::Stub::AsyncGetOurCompidRaw(::grpc::ClientContext* context, const ::mavsdk::rpc::ftp::GetOurCompidRequest& request, ::grpc::CompletionQueue* cq) {
+  return ::grpc_impl::internal::ClientAsyncResponseReaderFactory< ::mavsdk::rpc::ftp::GetOurCompidResponse>::Create(channel_.get(), cq, rpcmethod_GetOurCompid_, context, request, true);
 }
 
-::grpc::ClientAsyncResponseReader< ::mavsdk::rpc::ftp::GetOurComponentIdResponse>* FtpService::Stub::PrepareAsyncGetOurComponentIdRaw(::grpc::ClientContext* context, const ::mavsdk::rpc::ftp::GetOurComponentIdRequest& request, ::grpc::CompletionQueue* cq) {
-  return ::grpc_impl::internal::ClientAsyncResponseReaderFactory< ::mavsdk::rpc::ftp::GetOurComponentIdResponse>::Create(channel_.get(), cq, rpcmethod_GetOurComponentId_, context, request, false);
+::grpc::ClientAsyncResponseReader< ::mavsdk::rpc::ftp::GetOurCompidResponse>* FtpService::Stub::PrepareAsyncGetOurCompidRaw(::grpc::ClientContext* context, const ::mavsdk::rpc::ftp::GetOurCompidRequest& request, ::grpc::CompletionQueue* cq) {
+  return ::grpc_impl::internal::ClientAsyncResponseReaderFactory< ::mavsdk::rpc::ftp::GetOurCompidResponse>::Create(channel_.get(), cq, rpcmethod_GetOurCompid_, context, request, false);
 }
 
 FtpService::Service::Service() {
@@ -425,13 +425,13 @@ FtpService::Service::Service() {
   AddMethod(new ::grpc::internal::RpcServiceMethod(
       FtpService_method_names[10],
       ::grpc::internal::RpcMethod::NORMAL_RPC,
-      new ::grpc::internal::RpcMethodHandler< FtpService::Service, ::mavsdk::rpc::ftp::SetTargetComponentIdRequest, ::mavsdk::rpc::ftp::SetTargetComponentIdResponse>(
-          std::mem_fn(&FtpService::Service::SetTargetComponentId), this)));
+      new ::grpc::internal::RpcMethodHandler< FtpService::Service, ::mavsdk::rpc::ftp::SetTargetCompidRequest, ::mavsdk::rpc::ftp::SetTargetCompidResponse>(
+          std::mem_fn(&FtpService::Service::SetTargetCompid), this)));
   AddMethod(new ::grpc::internal::RpcServiceMethod(
       FtpService_method_names[11],
       ::grpc::internal::RpcMethod::NORMAL_RPC,
-      new ::grpc::internal::RpcMethodHandler< FtpService::Service, ::mavsdk::rpc::ftp::GetOurComponentIdRequest, ::mavsdk::rpc::ftp::GetOurComponentIdResponse>(
-          std::mem_fn(&FtpService::Service::GetOurComponentId), this)));
+      new ::grpc::internal::RpcMethodHandler< FtpService::Service, ::mavsdk::rpc::ftp::GetOurCompidRequest, ::mavsdk::rpc::ftp::GetOurCompidResponse>(
+          std::mem_fn(&FtpService::Service::GetOurCompid), this)));
 }
 
 FtpService::Service::~Service() {
@@ -507,14 +507,14 @@ FtpService::Service::~Service() {
   return ::grpc::Status(::grpc::StatusCode::UNIMPLEMENTED, "");
 }
 
-::grpc::Status FtpService::Service::SetTargetComponentId(::grpc::ServerContext* context, const ::mavsdk::rpc::ftp::SetTargetComponentIdRequest* request, ::mavsdk::rpc::ftp::SetTargetComponentIdResponse* response) {
+::grpc::Status FtpService::Service::SetTargetCompid(::grpc::ServerContext* context, const ::mavsdk::rpc::ftp::SetTargetCompidRequest* request, ::mavsdk::rpc::ftp::SetTargetCompidResponse* response) {
   (void) context;
   (void) request;
   (void) response;
   return ::grpc::Status(::grpc::StatusCode::UNIMPLEMENTED, "");
 }
 
-::grpc::Status FtpService::Service::GetOurComponentId(::grpc::ServerContext* context, const ::mavsdk::rpc::ftp::GetOurComponentIdRequest* request, ::mavsdk::rpc::ftp::GetOurComponentIdResponse* response) {
+::grpc::Status FtpService::Service::GetOurCompid(::grpc::ServerContext* context, const ::mavsdk::rpc::ftp::GetOurCompidRequest* request, ::mavsdk::rpc::ftp::GetOurCompidResponse* response) {
   (void) context;
   (void) request;
   (void) response;
