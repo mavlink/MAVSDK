@@ -106,7 +106,7 @@ const ::PROTOBUF_NAMESPACE_ID::uint32 TableStruct_tune_2ftune_2eproto::offsets[]
   ~0u,  // no _extensions_
   ~0u,  // no _oneof_case_
   ~0u,  // no _weak_field_map_
-  PROTOBUF_FIELD_OFFSET(::mavsdk::rpc::tune::PlayTuneRequest, description_),
+  PROTOBUF_FIELD_OFFSET(::mavsdk::rpc::tune::PlayTuneRequest, tune_description_),
   ~0u,  // no _has_bits_
   PROTOBUF_FIELD_OFFSET(::mavsdk::rpc::tune::PlayTuneResponse, _internal_metadata_),
   ~0u,  // no _extensions_
@@ -144,36 +144,36 @@ static ::PROTOBUF_NAMESPACE_ID::Message const * const file_default_instances[] =
 
 const char descriptor_table_protodef_tune_2ftune_2eproto[] PROTOBUF_SECTION_VARIABLE(protodesc_cold) =
   "\n\017tune/tune.proto\022\017mavsdk.rpc.tune\032\024mavs"
-  "dk_options.proto\"H\n\017PlayTuneRequest\0225\n\013d"
-  "escription\030\001 \001(\0132 .mavsdk.rpc.tune.TuneD"
-  "escription\"D\n\020PlayTuneResponse\0220\n\013tune_r"
-  "esult\030\001 \001(\0132\033.mavsdk.rpc.tune.TuneResult"
-  "\"U\n\017TuneDescription\0223\n\rsong_elements\030\001 \003"
-  "(\0162\034.mavsdk.rpc.tune.SongElement\022\r\n\005temp"
-  "o\030\002 \001(\005\"\314\001\n\nTuneResult\0222\n\006result\030\001 \001(\0162\""
-  ".mavsdk.rpc.tune.TuneResult.Result\022\022\n\nre"
-  "sult_str\030\002 \001(\t\"v\n\006Result\022\022\n\016RESULT_UNKNO"
-  "WN\020\000\022\022\n\016RESULT_SUCCESS\020\001\022\030\n\024RESULT_INVAL"
-  "ID_TEMPO\020\002\022\030\n\024RESULT_TUNE_TOO_LONG\020\003\022\020\n\014"
-  "RESULT_ERROR\020\004*\321\004\n\013SongElement\022\035\n\031SONG_E"
-  "LEMENT_STYLE_LEGATO\020\000\022\035\n\031SONG_ELEMENT_ST"
-  "YLE_NORMAL\020\001\022\037\n\033SONG_ELEMENT_STYLE_STACC"
-  "ATO\020\002\022\033\n\027SONG_ELEMENT_DURATION_1\020\003\022\033\n\027SO"
-  "NG_ELEMENT_DURATION_2\020\004\022\033\n\027SONG_ELEMENT_"
-  "DURATION_4\020\005\022\033\n\027SONG_ELEMENT_DURATION_8\020"
-  "\006\022\034\n\030SONG_ELEMENT_DURATION_16\020\007\022\034\n\030SONG_"
-  "ELEMENT_DURATION_32\020\010\022\027\n\023SONG_ELEMENT_NO"
-  "TE_A\020\t\022\027\n\023SONG_ELEMENT_NOTE_B\020\n\022\027\n\023SONG_"
-  "ELEMENT_NOTE_C\020\013\022\027\n\023SONG_ELEMENT_NOTE_D\020"
-  "\014\022\027\n\023SONG_ELEMENT_NOTE_E\020\r\022\027\n\023SONG_ELEME"
-  "NT_NOTE_F\020\016\022\027\n\023SONG_ELEMENT_NOTE_G\020\017\022\033\n\027"
-  "SONG_ELEMENT_NOTE_PAUSE\020\020\022\026\n\022SONG_ELEMEN"
-  "T_SHARP\020\021\022\025\n\021SONG_ELEMENT_FLAT\020\022\022\032\n\026SONG"
-  "_ELEMENT_OCTAVE_UP\020\023\022\034\n\030SONG_ELEMENT_OCT"
-  "AVE_DOWN\020\0242`\n\013TuneService\022Q\n\010PlayTune\022 ."
-  "mavsdk.rpc.tune.PlayTuneRequest\032!.mavsdk"
-  ".rpc.tune.PlayTuneResponse\"\000B\033\n\016io.mavsd"
-  "k.tuneB\tTuneProtob\006proto3"
+  "dk_options.proto\"M\n\017PlayTuneRequest\022:\n\020t"
+  "une_description\030\001 \001(\0132 .mavsdk.rpc.tune."
+  "TuneDescription\"D\n\020PlayTuneResponse\0220\n\013t"
+  "une_result\030\001 \001(\0132\033.mavsdk.rpc.tune.TuneR"
+  "esult\"U\n\017TuneDescription\0223\n\rsong_element"
+  "s\030\001 \003(\0162\034.mavsdk.rpc.tune.SongElement\022\r\n"
+  "\005tempo\030\002 \001(\005\"\314\001\n\nTuneResult\0222\n\006result\030\001 "
+  "\001(\0162\".mavsdk.rpc.tune.TuneResult.Result\022"
+  "\022\n\nresult_str\030\002 \001(\t\"v\n\006Result\022\022\n\016RESULT_"
+  "UNKNOWN\020\000\022\022\n\016RESULT_SUCCESS\020\001\022\030\n\024RESULT_"
+  "INVALID_TEMPO\020\002\022\030\n\024RESULT_TUNE_TOO_LONG\020"
+  "\003\022\020\n\014RESULT_ERROR\020\004*\321\004\n\013SongElement\022\035\n\031S"
+  "ONG_ELEMENT_STYLE_LEGATO\020\000\022\035\n\031SONG_ELEME"
+  "NT_STYLE_NORMAL\020\001\022\037\n\033SONG_ELEMENT_STYLE_"
+  "STACCATO\020\002\022\033\n\027SONG_ELEMENT_DURATION_1\020\003\022"
+  "\033\n\027SONG_ELEMENT_DURATION_2\020\004\022\033\n\027SONG_ELE"
+  "MENT_DURATION_4\020\005\022\033\n\027SONG_ELEMENT_DURATI"
+  "ON_8\020\006\022\034\n\030SONG_ELEMENT_DURATION_16\020\007\022\034\n\030"
+  "SONG_ELEMENT_DURATION_32\020\010\022\027\n\023SONG_ELEME"
+  "NT_NOTE_A\020\t\022\027\n\023SONG_ELEMENT_NOTE_B\020\n\022\027\n\023"
+  "SONG_ELEMENT_NOTE_C\020\013\022\027\n\023SONG_ELEMENT_NO"
+  "TE_D\020\014\022\027\n\023SONG_ELEMENT_NOTE_E\020\r\022\027\n\023SONG_"
+  "ELEMENT_NOTE_F\020\016\022\027\n\023SONG_ELEMENT_NOTE_G\020"
+  "\017\022\033\n\027SONG_ELEMENT_NOTE_PAUSE\020\020\022\026\n\022SONG_E"
+  "LEMENT_SHARP\020\021\022\025\n\021SONG_ELEMENT_FLAT\020\022\022\032\n"
+  "\026SONG_ELEMENT_OCTAVE_UP\020\023\022\034\n\030SONG_ELEMEN"
+  "T_OCTAVE_DOWN\020\0242`\n\013TuneService\022Q\n\010PlayTu"
+  "ne\022 .mavsdk.rpc.tune.PlayTuneRequest\032!.m"
+  "avsdk.rpc.tune.PlayTuneResponse\"\000B\033\n\016io."
+  "mavsdk.tuneB\tTuneProtob\006proto3"
   ;
 static const ::PROTOBUF_NAMESPACE_ID::internal::DescriptorTable*const descriptor_table_tune_2ftune_2eproto_deps[1] = {
   &::descriptor_table_mavsdk_5foptions_2eproto,
@@ -187,7 +187,7 @@ static ::PROTOBUF_NAMESPACE_ID::internal::SCCInfoBase*const descriptor_table_tun
 static ::PROTOBUF_NAMESPACE_ID::internal::once_flag descriptor_table_tune_2ftune_2eproto_once;
 static bool descriptor_table_tune_2ftune_2eproto_initialized = false;
 const ::PROTOBUF_NAMESPACE_ID::internal::DescriptorTable descriptor_table_tune_2ftune_2eproto = {
-  &descriptor_table_tune_2ftune_2eproto_initialized, descriptor_table_protodef_tune_2ftune_2eproto, "tune/tune.proto", 1225,
+  &descriptor_table_tune_2ftune_2eproto_initialized, descriptor_table_protodef_tune_2ftune_2eproto, "tune/tune.proto", 1230,
   &descriptor_table_tune_2ftune_2eproto_once, descriptor_table_tune_2ftune_2eproto_sccs, descriptor_table_tune_2ftune_2eproto_deps, 4, 1,
   schemas, file_default_instances, TableStruct_tune_2ftune_2eproto::offsets,
   file_level_metadata_tune_2ftune_2eproto, 4, file_level_enum_descriptors_tune_2ftune_2eproto, file_level_service_descriptors_tune_2ftune_2eproto,
@@ -262,17 +262,17 @@ bool SongElement_IsValid(int value) {
 // ===================================================================
 
 void PlayTuneRequest::InitAsDefaultInstance() {
-  ::mavsdk::rpc::tune::_PlayTuneRequest_default_instance_._instance.get_mutable()->description_ = const_cast< ::mavsdk::rpc::tune::TuneDescription*>(
+  ::mavsdk::rpc::tune::_PlayTuneRequest_default_instance_._instance.get_mutable()->tune_description_ = const_cast< ::mavsdk::rpc::tune::TuneDescription*>(
       ::mavsdk::rpc::tune::TuneDescription::internal_default_instance());
 }
 class PlayTuneRequest::_Internal {
  public:
-  static const ::mavsdk::rpc::tune::TuneDescription& description(const PlayTuneRequest* msg);
+  static const ::mavsdk::rpc::tune::TuneDescription& tune_description(const PlayTuneRequest* msg);
 };
 
 const ::mavsdk::rpc::tune::TuneDescription&
-PlayTuneRequest::_Internal::description(const PlayTuneRequest* msg) {
-  return *msg->description_;
+PlayTuneRequest::_Internal::tune_description(const PlayTuneRequest* msg) {
+  return *msg->tune_description_;
 }
 PlayTuneRequest::PlayTuneRequest()
   : ::PROTOBUF_NAMESPACE_ID::Message(), _internal_metadata_(nullptr) {
@@ -283,17 +283,17 @@ PlayTuneRequest::PlayTuneRequest(const PlayTuneRequest& from)
   : ::PROTOBUF_NAMESPACE_ID::Message(),
       _internal_metadata_(nullptr) {
   _internal_metadata_.MergeFrom(from._internal_metadata_);
-  if (from._internal_has_description()) {
-    description_ = new ::mavsdk::rpc::tune::TuneDescription(*from.description_);
+  if (from._internal_has_tune_description()) {
+    tune_description_ = new ::mavsdk::rpc::tune::TuneDescription(*from.tune_description_);
   } else {
-    description_ = nullptr;
+    tune_description_ = nullptr;
   }
   // @@protoc_insertion_point(copy_constructor:mavsdk.rpc.tune.PlayTuneRequest)
 }
 
 void PlayTuneRequest::SharedCtor() {
   ::PROTOBUF_NAMESPACE_ID::internal::InitSCC(&scc_info_PlayTuneRequest_tune_2ftune_2eproto.base);
-  description_ = nullptr;
+  tune_description_ = nullptr;
 }
 
 PlayTuneRequest::~PlayTuneRequest() {
@@ -302,7 +302,7 @@ PlayTuneRequest::~PlayTuneRequest() {
 }
 
 void PlayTuneRequest::SharedDtor() {
-  if (this != internal_default_instance()) delete description_;
+  if (this != internal_default_instance()) delete tune_description_;
 }
 
 void PlayTuneRequest::SetCachedSize(int size) const {
@@ -320,10 +320,10 @@ void PlayTuneRequest::Clear() {
   // Prevent compiler warnings about cached_has_bits being unused
   (void) cached_has_bits;
 
-  if (GetArenaNoVirtual() == nullptr && description_ != nullptr) {
-    delete description_;
+  if (GetArenaNoVirtual() == nullptr && tune_description_ != nullptr) {
+    delete tune_description_;
   }
-  description_ = nullptr;
+  tune_description_ = nullptr;
   _internal_metadata_.Clear();
 }
 
@@ -334,10 +334,10 @@ const char* PlayTuneRequest::_InternalParse(const char* ptr, ::PROTOBUF_NAMESPAC
     ptr = ::PROTOBUF_NAMESPACE_ID::internal::ReadTag(ptr, &tag);
     CHK_(ptr);
     switch (tag >> 3) {
-      // .mavsdk.rpc.tune.TuneDescription description = 1;
+      // .mavsdk.rpc.tune.TuneDescription tune_description = 1;
       case 1:
         if (PROTOBUF_PREDICT_TRUE(static_cast<::PROTOBUF_NAMESPACE_ID::uint8>(tag) == 10)) {
-          ptr = ctx->ParseMessage(_internal_mutable_description(), ptr);
+          ptr = ctx->ParseMessage(_internal_mutable_tune_description(), ptr);
           CHK_(ptr);
         } else goto handle_unusual;
         continue;
@@ -367,12 +367,12 @@ failure:
   ::PROTOBUF_NAMESPACE_ID::uint32 cached_has_bits = 0;
   (void) cached_has_bits;
 
-  // .mavsdk.rpc.tune.TuneDescription description = 1;
-  if (this->has_description()) {
+  // .mavsdk.rpc.tune.TuneDescription tune_description = 1;
+  if (this->has_tune_description()) {
     target = stream->EnsureSpace(target);
     target = ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::
       InternalWriteMessage(
-        1, _Internal::description(this), target, stream);
+        1, _Internal::tune_description(this), target, stream);
   }
 
   if (PROTOBUF_PREDICT_FALSE(_internal_metadata_.have_unknown_fields())) {
@@ -391,11 +391,11 @@ size_t PlayTuneRequest::ByteSizeLong() const {
   // Prevent compiler warnings about cached_has_bits being unused
   (void) cached_has_bits;
 
-  // .mavsdk.rpc.tune.TuneDescription description = 1;
-  if (this->has_description()) {
+  // .mavsdk.rpc.tune.TuneDescription tune_description = 1;
+  if (this->has_tune_description()) {
     total_size += 1 +
       ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::MessageSize(
-        *description_);
+        *tune_description_);
   }
 
   if (PROTOBUF_PREDICT_FALSE(_internal_metadata_.have_unknown_fields())) {
@@ -429,8 +429,8 @@ void PlayTuneRequest::MergeFrom(const PlayTuneRequest& from) {
   ::PROTOBUF_NAMESPACE_ID::uint32 cached_has_bits = 0;
   (void) cached_has_bits;
 
-  if (from.has_description()) {
-    _internal_mutable_description()->::mavsdk::rpc::tune::TuneDescription::MergeFrom(from._internal_description());
+  if (from.has_tune_description()) {
+    _internal_mutable_tune_description()->::mavsdk::rpc::tune::TuneDescription::MergeFrom(from._internal_tune_description());
   }
 }
 
@@ -455,7 +455,7 @@ bool PlayTuneRequest::IsInitialized() const {
 void PlayTuneRequest::InternalSwap(PlayTuneRequest* other) {
   using std::swap;
   _internal_metadata_.Swap(&other->_internal_metadata_);
-  swap(description_, other->description_);
+  swap(tune_description_, other->tune_description_);
 }
 
 ::PROTOBUF_NAMESPACE_ID::Metadata PlayTuneRequest::GetMetadata() const {

@@ -77,12 +77,12 @@ extern DownloadResponseDefaultTypeInternal _DownloadResponse_default_instance_;
 class FtpResult;
 class FtpResultDefaultTypeInternal;
 extern FtpResultDefaultTypeInternal _FtpResult_default_instance_;
-class GetOurComponentIdRequest;
-class GetOurComponentIdRequestDefaultTypeInternal;
-extern GetOurComponentIdRequestDefaultTypeInternal _GetOurComponentIdRequest_default_instance_;
-class GetOurComponentIdResponse;
-class GetOurComponentIdResponseDefaultTypeInternal;
-extern GetOurComponentIdResponseDefaultTypeInternal _GetOurComponentIdResponse_default_instance_;
+class GetOurCompidRequest;
+class GetOurCompidRequestDefaultTypeInternal;
+extern GetOurCompidRequestDefaultTypeInternal _GetOurCompidRequest_default_instance_;
+class GetOurCompidResponse;
+class GetOurCompidResponseDefaultTypeInternal;
+extern GetOurCompidResponseDefaultTypeInternal _GetOurCompidResponse_default_instance_;
 class ListDirectoryRequest;
 class ListDirectoryRequestDefaultTypeInternal;
 extern ListDirectoryRequestDefaultTypeInternal _ListDirectoryRequest_default_instance_;
@@ -122,12 +122,12 @@ extern SetRootDirectoryRequestDefaultTypeInternal _SetRootDirectoryRequest_defau
 class SetRootDirectoryResponse;
 class SetRootDirectoryResponseDefaultTypeInternal;
 extern SetRootDirectoryResponseDefaultTypeInternal _SetRootDirectoryResponse_default_instance_;
-class SetTargetComponentIdRequest;
-class SetTargetComponentIdRequestDefaultTypeInternal;
-extern SetTargetComponentIdRequestDefaultTypeInternal _SetTargetComponentIdRequest_default_instance_;
-class SetTargetComponentIdResponse;
-class SetTargetComponentIdResponseDefaultTypeInternal;
-extern SetTargetComponentIdResponseDefaultTypeInternal _SetTargetComponentIdResponse_default_instance_;
+class SetTargetCompidRequest;
+class SetTargetCompidRequestDefaultTypeInternal;
+extern SetTargetCompidRequestDefaultTypeInternal _SetTargetCompidRequest_default_instance_;
+class SetTargetCompidResponse;
+class SetTargetCompidResponseDefaultTypeInternal;
+extern SetTargetCompidResponseDefaultTypeInternal _SetTargetCompidResponse_default_instance_;
 class SubscribeDownloadRequest;
 class SubscribeDownloadRequestDefaultTypeInternal;
 extern SubscribeDownloadRequestDefaultTypeInternal _SubscribeDownloadRequest_default_instance_;
@@ -147,8 +147,8 @@ template<> ::mavsdk::rpc::ftp::CreateDirectoryRequest* Arena::CreateMaybeMessage
 template<> ::mavsdk::rpc::ftp::CreateDirectoryResponse* Arena::CreateMaybeMessage<::mavsdk::rpc::ftp::CreateDirectoryResponse>(Arena*);
 template<> ::mavsdk::rpc::ftp::DownloadResponse* Arena::CreateMaybeMessage<::mavsdk::rpc::ftp::DownloadResponse>(Arena*);
 template<> ::mavsdk::rpc::ftp::FtpResult* Arena::CreateMaybeMessage<::mavsdk::rpc::ftp::FtpResult>(Arena*);
-template<> ::mavsdk::rpc::ftp::GetOurComponentIdRequest* Arena::CreateMaybeMessage<::mavsdk::rpc::ftp::GetOurComponentIdRequest>(Arena*);
-template<> ::mavsdk::rpc::ftp::GetOurComponentIdResponse* Arena::CreateMaybeMessage<::mavsdk::rpc::ftp::GetOurComponentIdResponse>(Arena*);
+template<> ::mavsdk::rpc::ftp::GetOurCompidRequest* Arena::CreateMaybeMessage<::mavsdk::rpc::ftp::GetOurCompidRequest>(Arena*);
+template<> ::mavsdk::rpc::ftp::GetOurCompidResponse* Arena::CreateMaybeMessage<::mavsdk::rpc::ftp::GetOurCompidResponse>(Arena*);
 template<> ::mavsdk::rpc::ftp::ListDirectoryRequest* Arena::CreateMaybeMessage<::mavsdk::rpc::ftp::ListDirectoryRequest>(Arena*);
 template<> ::mavsdk::rpc::ftp::ListDirectoryResponse* Arena::CreateMaybeMessage<::mavsdk::rpc::ftp::ListDirectoryResponse>(Arena*);
 template<> ::mavsdk::rpc::ftp::ProgressData* Arena::CreateMaybeMessage<::mavsdk::rpc::ftp::ProgressData>(Arena*);
@@ -162,8 +162,8 @@ template<> ::mavsdk::rpc::ftp::ResetRequest* Arena::CreateMaybeMessage<::mavsdk:
 template<> ::mavsdk::rpc::ftp::ResetResponse* Arena::CreateMaybeMessage<::mavsdk::rpc::ftp::ResetResponse>(Arena*);
 template<> ::mavsdk::rpc::ftp::SetRootDirectoryRequest* Arena::CreateMaybeMessage<::mavsdk::rpc::ftp::SetRootDirectoryRequest>(Arena*);
 template<> ::mavsdk::rpc::ftp::SetRootDirectoryResponse* Arena::CreateMaybeMessage<::mavsdk::rpc::ftp::SetRootDirectoryResponse>(Arena*);
-template<> ::mavsdk::rpc::ftp::SetTargetComponentIdRequest* Arena::CreateMaybeMessage<::mavsdk::rpc::ftp::SetTargetComponentIdRequest>(Arena*);
-template<> ::mavsdk::rpc::ftp::SetTargetComponentIdResponse* Arena::CreateMaybeMessage<::mavsdk::rpc::ftp::SetTargetComponentIdResponse>(Arena*);
+template<> ::mavsdk::rpc::ftp::SetTargetCompidRequest* Arena::CreateMaybeMessage<::mavsdk::rpc::ftp::SetTargetCompidRequest>(Arena*);
+template<> ::mavsdk::rpc::ftp::SetTargetCompidResponse* Arena::CreateMaybeMessage<::mavsdk::rpc::ftp::SetTargetCompidResponse>(Arena*);
 template<> ::mavsdk::rpc::ftp::SubscribeDownloadRequest* Arena::CreateMaybeMessage<::mavsdk::rpc::ftp::SubscribeDownloadRequest>(Arena*);
 template<> ::mavsdk::rpc::ftp::SubscribeUploadRequest* Arena::CreateMaybeMessage<::mavsdk::rpc::ftp::SubscribeUploadRequest>(Arena*);
 template<> ::mavsdk::rpc::ftp::UploadResponse* Arena::CreateMaybeMessage<::mavsdk::rpc::ftp::UploadResponse>(Arena*);
@@ -3022,23 +3022,23 @@ class SetRootDirectoryResponse :
 };
 // -------------------------------------------------------------------
 
-class SetTargetComponentIdRequest :
-    public ::PROTOBUF_NAMESPACE_ID::Message /* @@protoc_insertion_point(class_definition:mavsdk.rpc.ftp.SetTargetComponentIdRequest) */ {
+class SetTargetCompidRequest :
+    public ::PROTOBUF_NAMESPACE_ID::Message /* @@protoc_insertion_point(class_definition:mavsdk.rpc.ftp.SetTargetCompidRequest) */ {
  public:
-  SetTargetComponentIdRequest();
-  virtual ~SetTargetComponentIdRequest();
+  SetTargetCompidRequest();
+  virtual ~SetTargetCompidRequest();
 
-  SetTargetComponentIdRequest(const SetTargetComponentIdRequest& from);
-  SetTargetComponentIdRequest(SetTargetComponentIdRequest&& from) noexcept
-    : SetTargetComponentIdRequest() {
+  SetTargetCompidRequest(const SetTargetCompidRequest& from);
+  SetTargetCompidRequest(SetTargetCompidRequest&& from) noexcept
+    : SetTargetCompidRequest() {
     *this = ::std::move(from);
   }
 
-  inline SetTargetComponentIdRequest& operator=(const SetTargetComponentIdRequest& from) {
+  inline SetTargetCompidRequest& operator=(const SetTargetCompidRequest& from) {
     CopyFrom(from);
     return *this;
   }
-  inline SetTargetComponentIdRequest& operator=(SetTargetComponentIdRequest&& from) noexcept {
+  inline SetTargetCompidRequest& operator=(SetTargetCompidRequest&& from) noexcept {
     if (GetArenaNoVirtual() == from.GetArenaNoVirtual()) {
       if (this != &from) InternalSwap(&from);
     } else {
@@ -3056,37 +3056,37 @@ class SetTargetComponentIdRequest :
   static const ::PROTOBUF_NAMESPACE_ID::Reflection* GetReflection() {
     return GetMetadataStatic().reflection;
   }
-  static const SetTargetComponentIdRequest& default_instance();
+  static const SetTargetCompidRequest& default_instance();
 
   static void InitAsDefaultInstance();  // FOR INTERNAL USE ONLY
-  static inline const SetTargetComponentIdRequest* internal_default_instance() {
-    return reinterpret_cast<const SetTargetComponentIdRequest*>(
-               &_SetTargetComponentIdRequest_default_instance_);
+  static inline const SetTargetCompidRequest* internal_default_instance() {
+    return reinterpret_cast<const SetTargetCompidRequest*>(
+               &_SetTargetCompidRequest_default_instance_);
   }
   static constexpr int kIndexInFileMessages =
     20;
 
-  friend void swap(SetTargetComponentIdRequest& a, SetTargetComponentIdRequest& b) {
+  friend void swap(SetTargetCompidRequest& a, SetTargetCompidRequest& b) {
     a.Swap(&b);
   }
-  inline void Swap(SetTargetComponentIdRequest* other) {
+  inline void Swap(SetTargetCompidRequest* other) {
     if (other == this) return;
     InternalSwap(other);
   }
 
   // implements Message ----------------------------------------------
 
-  inline SetTargetComponentIdRequest* New() const final {
-    return CreateMaybeMessage<SetTargetComponentIdRequest>(nullptr);
+  inline SetTargetCompidRequest* New() const final {
+    return CreateMaybeMessage<SetTargetCompidRequest>(nullptr);
   }
 
-  SetTargetComponentIdRequest* New(::PROTOBUF_NAMESPACE_ID::Arena* arena) const final {
-    return CreateMaybeMessage<SetTargetComponentIdRequest>(arena);
+  SetTargetCompidRequest* New(::PROTOBUF_NAMESPACE_ID::Arena* arena) const final {
+    return CreateMaybeMessage<SetTargetCompidRequest>(arena);
   }
   void CopyFrom(const ::PROTOBUF_NAMESPACE_ID::Message& from) final;
   void MergeFrom(const ::PROTOBUF_NAMESPACE_ID::Message& from) final;
-  void CopyFrom(const SetTargetComponentIdRequest& from);
-  void MergeFrom(const SetTargetComponentIdRequest& from);
+  void CopyFrom(const SetTargetCompidRequest& from);
+  void MergeFrom(const SetTargetCompidRequest& from);
   PROTOBUF_ATTRIBUTE_REINITIALIZES void Clear() final;
   bool IsInitialized() const final;
 
@@ -3100,10 +3100,10 @@ class SetTargetComponentIdRequest :
   inline void SharedCtor();
   inline void SharedDtor();
   void SetCachedSize(int size) const final;
-  void InternalSwap(SetTargetComponentIdRequest* other);
+  void InternalSwap(SetTargetCompidRequest* other);
   friend class ::PROTOBUF_NAMESPACE_ID::internal::AnyMetadata;
   static ::PROTOBUF_NAMESPACE_ID::StringPiece FullMessageName() {
-    return "mavsdk.rpc.ftp.SetTargetComponentIdRequest";
+    return "mavsdk.rpc.ftp.SetTargetCompidRequest";
   }
   private:
   inline ::PROTOBUF_NAMESPACE_ID::Arena* GetArenaNoVirtual() const {
@@ -3128,45 +3128,45 @@ class SetTargetComponentIdRequest :
   // accessors -------------------------------------------------------
 
   enum : int {
-    kComponentIdFieldNumber = 1,
+    kCompidFieldNumber = 1,
   };
-  // uint32 component_id = 1;
-  void clear_component_id();
-  ::PROTOBUF_NAMESPACE_ID::uint32 component_id() const;
-  void set_component_id(::PROTOBUF_NAMESPACE_ID::uint32 value);
+  // uint32 compid = 1;
+  void clear_compid();
+  ::PROTOBUF_NAMESPACE_ID::uint32 compid() const;
+  void set_compid(::PROTOBUF_NAMESPACE_ID::uint32 value);
   private:
-  ::PROTOBUF_NAMESPACE_ID::uint32 _internal_component_id() const;
-  void _internal_set_component_id(::PROTOBUF_NAMESPACE_ID::uint32 value);
+  ::PROTOBUF_NAMESPACE_ID::uint32 _internal_compid() const;
+  void _internal_set_compid(::PROTOBUF_NAMESPACE_ID::uint32 value);
   public:
 
-  // @@protoc_insertion_point(class_scope:mavsdk.rpc.ftp.SetTargetComponentIdRequest)
+  // @@protoc_insertion_point(class_scope:mavsdk.rpc.ftp.SetTargetCompidRequest)
  private:
   class _Internal;
 
   ::PROTOBUF_NAMESPACE_ID::internal::InternalMetadataWithArena _internal_metadata_;
-  ::PROTOBUF_NAMESPACE_ID::uint32 component_id_;
+  ::PROTOBUF_NAMESPACE_ID::uint32 compid_;
   mutable ::PROTOBUF_NAMESPACE_ID::internal::CachedSize _cached_size_;
   friend struct ::TableStruct_ftp_2fftp_2eproto;
 };
 // -------------------------------------------------------------------
 
-class SetTargetComponentIdResponse :
-    public ::PROTOBUF_NAMESPACE_ID::Message /* @@protoc_insertion_point(class_definition:mavsdk.rpc.ftp.SetTargetComponentIdResponse) */ {
+class SetTargetCompidResponse :
+    public ::PROTOBUF_NAMESPACE_ID::Message /* @@protoc_insertion_point(class_definition:mavsdk.rpc.ftp.SetTargetCompidResponse) */ {
  public:
-  SetTargetComponentIdResponse();
-  virtual ~SetTargetComponentIdResponse();
+  SetTargetCompidResponse();
+  virtual ~SetTargetCompidResponse();
 
-  SetTargetComponentIdResponse(const SetTargetComponentIdResponse& from);
-  SetTargetComponentIdResponse(SetTargetComponentIdResponse&& from) noexcept
-    : SetTargetComponentIdResponse() {
+  SetTargetCompidResponse(const SetTargetCompidResponse& from);
+  SetTargetCompidResponse(SetTargetCompidResponse&& from) noexcept
+    : SetTargetCompidResponse() {
     *this = ::std::move(from);
   }
 
-  inline SetTargetComponentIdResponse& operator=(const SetTargetComponentIdResponse& from) {
+  inline SetTargetCompidResponse& operator=(const SetTargetCompidResponse& from) {
     CopyFrom(from);
     return *this;
   }
-  inline SetTargetComponentIdResponse& operator=(SetTargetComponentIdResponse&& from) noexcept {
+  inline SetTargetCompidResponse& operator=(SetTargetCompidResponse&& from) noexcept {
     if (GetArenaNoVirtual() == from.GetArenaNoVirtual()) {
       if (this != &from) InternalSwap(&from);
     } else {
@@ -3184,37 +3184,37 @@ class SetTargetComponentIdResponse :
   static const ::PROTOBUF_NAMESPACE_ID::Reflection* GetReflection() {
     return GetMetadataStatic().reflection;
   }
-  static const SetTargetComponentIdResponse& default_instance();
+  static const SetTargetCompidResponse& default_instance();
 
   static void InitAsDefaultInstance();  // FOR INTERNAL USE ONLY
-  static inline const SetTargetComponentIdResponse* internal_default_instance() {
-    return reinterpret_cast<const SetTargetComponentIdResponse*>(
-               &_SetTargetComponentIdResponse_default_instance_);
+  static inline const SetTargetCompidResponse* internal_default_instance() {
+    return reinterpret_cast<const SetTargetCompidResponse*>(
+               &_SetTargetCompidResponse_default_instance_);
   }
   static constexpr int kIndexInFileMessages =
     21;
 
-  friend void swap(SetTargetComponentIdResponse& a, SetTargetComponentIdResponse& b) {
+  friend void swap(SetTargetCompidResponse& a, SetTargetCompidResponse& b) {
     a.Swap(&b);
   }
-  inline void Swap(SetTargetComponentIdResponse* other) {
+  inline void Swap(SetTargetCompidResponse* other) {
     if (other == this) return;
     InternalSwap(other);
   }
 
   // implements Message ----------------------------------------------
 
-  inline SetTargetComponentIdResponse* New() const final {
-    return CreateMaybeMessage<SetTargetComponentIdResponse>(nullptr);
+  inline SetTargetCompidResponse* New() const final {
+    return CreateMaybeMessage<SetTargetCompidResponse>(nullptr);
   }
 
-  SetTargetComponentIdResponse* New(::PROTOBUF_NAMESPACE_ID::Arena* arena) const final {
-    return CreateMaybeMessage<SetTargetComponentIdResponse>(arena);
+  SetTargetCompidResponse* New(::PROTOBUF_NAMESPACE_ID::Arena* arena) const final {
+    return CreateMaybeMessage<SetTargetCompidResponse>(arena);
   }
   void CopyFrom(const ::PROTOBUF_NAMESPACE_ID::Message& from) final;
   void MergeFrom(const ::PROTOBUF_NAMESPACE_ID::Message& from) final;
-  void CopyFrom(const SetTargetComponentIdResponse& from);
-  void MergeFrom(const SetTargetComponentIdResponse& from);
+  void CopyFrom(const SetTargetCompidResponse& from);
+  void MergeFrom(const SetTargetCompidResponse& from);
   PROTOBUF_ATTRIBUTE_REINITIALIZES void Clear() final;
   bool IsInitialized() const final;
 
@@ -3228,10 +3228,10 @@ class SetTargetComponentIdResponse :
   inline void SharedCtor();
   inline void SharedDtor();
   void SetCachedSize(int size) const final;
-  void InternalSwap(SetTargetComponentIdResponse* other);
+  void InternalSwap(SetTargetCompidResponse* other);
   friend class ::PROTOBUF_NAMESPACE_ID::internal::AnyMetadata;
   static ::PROTOBUF_NAMESPACE_ID::StringPiece FullMessageName() {
-    return "mavsdk.rpc.ftp.SetTargetComponentIdResponse";
+    return "mavsdk.rpc.ftp.SetTargetCompidResponse";
   }
   private:
   inline ::PROTOBUF_NAMESPACE_ID::Arena* GetArenaNoVirtual() const {
@@ -3273,7 +3273,7 @@ class SetTargetComponentIdResponse :
   ::mavsdk::rpc::ftp::FtpResult* _internal_mutable_ftp_result();
   public:
 
-  // @@protoc_insertion_point(class_scope:mavsdk.rpc.ftp.SetTargetComponentIdResponse)
+  // @@protoc_insertion_point(class_scope:mavsdk.rpc.ftp.SetTargetCompidResponse)
  private:
   class _Internal;
 
@@ -3284,23 +3284,23 @@ class SetTargetComponentIdResponse :
 };
 // -------------------------------------------------------------------
 
-class GetOurComponentIdRequest :
-    public ::PROTOBUF_NAMESPACE_ID::Message /* @@protoc_insertion_point(class_definition:mavsdk.rpc.ftp.GetOurComponentIdRequest) */ {
+class GetOurCompidRequest :
+    public ::PROTOBUF_NAMESPACE_ID::Message /* @@protoc_insertion_point(class_definition:mavsdk.rpc.ftp.GetOurCompidRequest) */ {
  public:
-  GetOurComponentIdRequest();
-  virtual ~GetOurComponentIdRequest();
+  GetOurCompidRequest();
+  virtual ~GetOurCompidRequest();
 
-  GetOurComponentIdRequest(const GetOurComponentIdRequest& from);
-  GetOurComponentIdRequest(GetOurComponentIdRequest&& from) noexcept
-    : GetOurComponentIdRequest() {
+  GetOurCompidRequest(const GetOurCompidRequest& from);
+  GetOurCompidRequest(GetOurCompidRequest&& from) noexcept
+    : GetOurCompidRequest() {
     *this = ::std::move(from);
   }
 
-  inline GetOurComponentIdRequest& operator=(const GetOurComponentIdRequest& from) {
+  inline GetOurCompidRequest& operator=(const GetOurCompidRequest& from) {
     CopyFrom(from);
     return *this;
   }
-  inline GetOurComponentIdRequest& operator=(GetOurComponentIdRequest&& from) noexcept {
+  inline GetOurCompidRequest& operator=(GetOurCompidRequest&& from) noexcept {
     if (GetArenaNoVirtual() == from.GetArenaNoVirtual()) {
       if (this != &from) InternalSwap(&from);
     } else {
@@ -3318,37 +3318,37 @@ class GetOurComponentIdRequest :
   static const ::PROTOBUF_NAMESPACE_ID::Reflection* GetReflection() {
     return GetMetadataStatic().reflection;
   }
-  static const GetOurComponentIdRequest& default_instance();
+  static const GetOurCompidRequest& default_instance();
 
   static void InitAsDefaultInstance();  // FOR INTERNAL USE ONLY
-  static inline const GetOurComponentIdRequest* internal_default_instance() {
-    return reinterpret_cast<const GetOurComponentIdRequest*>(
-               &_GetOurComponentIdRequest_default_instance_);
+  static inline const GetOurCompidRequest* internal_default_instance() {
+    return reinterpret_cast<const GetOurCompidRequest*>(
+               &_GetOurCompidRequest_default_instance_);
   }
   static constexpr int kIndexInFileMessages =
     22;
 
-  friend void swap(GetOurComponentIdRequest& a, GetOurComponentIdRequest& b) {
+  friend void swap(GetOurCompidRequest& a, GetOurCompidRequest& b) {
     a.Swap(&b);
   }
-  inline void Swap(GetOurComponentIdRequest* other) {
+  inline void Swap(GetOurCompidRequest* other) {
     if (other == this) return;
     InternalSwap(other);
   }
 
   // implements Message ----------------------------------------------
 
-  inline GetOurComponentIdRequest* New() const final {
-    return CreateMaybeMessage<GetOurComponentIdRequest>(nullptr);
+  inline GetOurCompidRequest* New() const final {
+    return CreateMaybeMessage<GetOurCompidRequest>(nullptr);
   }
 
-  GetOurComponentIdRequest* New(::PROTOBUF_NAMESPACE_ID::Arena* arena) const final {
-    return CreateMaybeMessage<GetOurComponentIdRequest>(arena);
+  GetOurCompidRequest* New(::PROTOBUF_NAMESPACE_ID::Arena* arena) const final {
+    return CreateMaybeMessage<GetOurCompidRequest>(arena);
   }
   void CopyFrom(const ::PROTOBUF_NAMESPACE_ID::Message& from) final;
   void MergeFrom(const ::PROTOBUF_NAMESPACE_ID::Message& from) final;
-  void CopyFrom(const GetOurComponentIdRequest& from);
-  void MergeFrom(const GetOurComponentIdRequest& from);
+  void CopyFrom(const GetOurCompidRequest& from);
+  void MergeFrom(const GetOurCompidRequest& from);
   PROTOBUF_ATTRIBUTE_REINITIALIZES void Clear() final;
   bool IsInitialized() const final;
 
@@ -3362,10 +3362,10 @@ class GetOurComponentIdRequest :
   inline void SharedCtor();
   inline void SharedDtor();
   void SetCachedSize(int size) const final;
-  void InternalSwap(GetOurComponentIdRequest* other);
+  void InternalSwap(GetOurCompidRequest* other);
   friend class ::PROTOBUF_NAMESPACE_ID::internal::AnyMetadata;
   static ::PROTOBUF_NAMESPACE_ID::StringPiece FullMessageName() {
-    return "mavsdk.rpc.ftp.GetOurComponentIdRequest";
+    return "mavsdk.rpc.ftp.GetOurCompidRequest";
   }
   private:
   inline ::PROTOBUF_NAMESPACE_ID::Arena* GetArenaNoVirtual() const {
@@ -3389,7 +3389,7 @@ class GetOurComponentIdRequest :
 
   // accessors -------------------------------------------------------
 
-  // @@protoc_insertion_point(class_scope:mavsdk.rpc.ftp.GetOurComponentIdRequest)
+  // @@protoc_insertion_point(class_scope:mavsdk.rpc.ftp.GetOurCompidRequest)
  private:
   class _Internal;
 
@@ -3399,23 +3399,23 @@ class GetOurComponentIdRequest :
 };
 // -------------------------------------------------------------------
 
-class GetOurComponentIdResponse :
-    public ::PROTOBUF_NAMESPACE_ID::Message /* @@protoc_insertion_point(class_definition:mavsdk.rpc.ftp.GetOurComponentIdResponse) */ {
+class GetOurCompidResponse :
+    public ::PROTOBUF_NAMESPACE_ID::Message /* @@protoc_insertion_point(class_definition:mavsdk.rpc.ftp.GetOurCompidResponse) */ {
  public:
-  GetOurComponentIdResponse();
-  virtual ~GetOurComponentIdResponse();
+  GetOurCompidResponse();
+  virtual ~GetOurCompidResponse();
 
-  GetOurComponentIdResponse(const GetOurComponentIdResponse& from);
-  GetOurComponentIdResponse(GetOurComponentIdResponse&& from) noexcept
-    : GetOurComponentIdResponse() {
+  GetOurCompidResponse(const GetOurCompidResponse& from);
+  GetOurCompidResponse(GetOurCompidResponse&& from) noexcept
+    : GetOurCompidResponse() {
     *this = ::std::move(from);
   }
 
-  inline GetOurComponentIdResponse& operator=(const GetOurComponentIdResponse& from) {
+  inline GetOurCompidResponse& operator=(const GetOurCompidResponse& from) {
     CopyFrom(from);
     return *this;
   }
-  inline GetOurComponentIdResponse& operator=(GetOurComponentIdResponse&& from) noexcept {
+  inline GetOurCompidResponse& operator=(GetOurCompidResponse&& from) noexcept {
     if (GetArenaNoVirtual() == from.GetArenaNoVirtual()) {
       if (this != &from) InternalSwap(&from);
     } else {
@@ -3433,37 +3433,37 @@ class GetOurComponentIdResponse :
   static const ::PROTOBUF_NAMESPACE_ID::Reflection* GetReflection() {
     return GetMetadataStatic().reflection;
   }
-  static const GetOurComponentIdResponse& default_instance();
+  static const GetOurCompidResponse& default_instance();
 
   static void InitAsDefaultInstance();  // FOR INTERNAL USE ONLY
-  static inline const GetOurComponentIdResponse* internal_default_instance() {
-    return reinterpret_cast<const GetOurComponentIdResponse*>(
-               &_GetOurComponentIdResponse_default_instance_);
+  static inline const GetOurCompidResponse* internal_default_instance() {
+    return reinterpret_cast<const GetOurCompidResponse*>(
+               &_GetOurCompidResponse_default_instance_);
   }
   static constexpr int kIndexInFileMessages =
     23;
 
-  friend void swap(GetOurComponentIdResponse& a, GetOurComponentIdResponse& b) {
+  friend void swap(GetOurCompidResponse& a, GetOurCompidResponse& b) {
     a.Swap(&b);
   }
-  inline void Swap(GetOurComponentIdResponse* other) {
+  inline void Swap(GetOurCompidResponse* other) {
     if (other == this) return;
     InternalSwap(other);
   }
 
   // implements Message ----------------------------------------------
 
-  inline GetOurComponentIdResponse* New() const final {
-    return CreateMaybeMessage<GetOurComponentIdResponse>(nullptr);
+  inline GetOurCompidResponse* New() const final {
+    return CreateMaybeMessage<GetOurCompidResponse>(nullptr);
   }
 
-  GetOurComponentIdResponse* New(::PROTOBUF_NAMESPACE_ID::Arena* arena) const final {
-    return CreateMaybeMessage<GetOurComponentIdResponse>(arena);
+  GetOurCompidResponse* New(::PROTOBUF_NAMESPACE_ID::Arena* arena) const final {
+    return CreateMaybeMessage<GetOurCompidResponse>(arena);
   }
   void CopyFrom(const ::PROTOBUF_NAMESPACE_ID::Message& from) final;
   void MergeFrom(const ::PROTOBUF_NAMESPACE_ID::Message& from) final;
-  void CopyFrom(const GetOurComponentIdResponse& from);
-  void MergeFrom(const GetOurComponentIdResponse& from);
+  void CopyFrom(const GetOurCompidResponse& from);
+  void MergeFrom(const GetOurCompidResponse& from);
   PROTOBUF_ATTRIBUTE_REINITIALIZES void Clear() final;
   bool IsInitialized() const final;
 
@@ -3477,10 +3477,10 @@ class GetOurComponentIdResponse :
   inline void SharedCtor();
   inline void SharedDtor();
   void SetCachedSize(int size) const final;
-  void InternalSwap(GetOurComponentIdResponse* other);
+  void InternalSwap(GetOurCompidResponse* other);
   friend class ::PROTOBUF_NAMESPACE_ID::internal::AnyMetadata;
   static ::PROTOBUF_NAMESPACE_ID::StringPiece FullMessageName() {
-    return "mavsdk.rpc.ftp.GetOurComponentIdResponse";
+    return "mavsdk.rpc.ftp.GetOurCompidResponse";
   }
   private:
   inline ::PROTOBUF_NAMESPACE_ID::Arena* GetArenaNoVirtual() const {
@@ -3505,23 +3505,23 @@ class GetOurComponentIdResponse :
   // accessors -------------------------------------------------------
 
   enum : int {
-    kComponentIdFieldNumber = 1,
+    kCompidFieldNumber = 1,
   };
-  // uint32 component_id = 1;
-  void clear_component_id();
-  ::PROTOBUF_NAMESPACE_ID::uint32 component_id() const;
-  void set_component_id(::PROTOBUF_NAMESPACE_ID::uint32 value);
+  // uint32 compid = 1;
+  void clear_compid();
+  ::PROTOBUF_NAMESPACE_ID::uint32 compid() const;
+  void set_compid(::PROTOBUF_NAMESPACE_ID::uint32 value);
   private:
-  ::PROTOBUF_NAMESPACE_ID::uint32 _internal_component_id() const;
-  void _internal_set_component_id(::PROTOBUF_NAMESPACE_ID::uint32 value);
+  ::PROTOBUF_NAMESPACE_ID::uint32 _internal_compid() const;
+  void _internal_set_compid(::PROTOBUF_NAMESPACE_ID::uint32 value);
   public:
 
-  // @@protoc_insertion_point(class_scope:mavsdk.rpc.ftp.GetOurComponentIdResponse)
+  // @@protoc_insertion_point(class_scope:mavsdk.rpc.ftp.GetOurCompidResponse)
  private:
   class _Internal;
 
   ::PROTOBUF_NAMESPACE_ID::internal::InternalMetadataWithArena _internal_metadata_;
-  ::PROTOBUF_NAMESPACE_ID::uint32 component_id_;
+  ::PROTOBUF_NAMESPACE_ID::uint32 compid_;
   mutable ::PROTOBUF_NAMESPACE_ID::internal::CachedSize _cached_size_;
   friend struct ::TableStruct_ftp_2fftp_2eproto;
 };
@@ -5543,62 +5543,62 @@ inline void SetRootDirectoryResponse::set_allocated_ftp_result(::mavsdk::rpc::ft
 
 // -------------------------------------------------------------------
 
-// SetTargetComponentIdRequest
+// SetTargetCompidRequest
 
-// uint32 component_id = 1;
-inline void SetTargetComponentIdRequest::clear_component_id() {
-  component_id_ = 0u;
+// uint32 compid = 1;
+inline void SetTargetCompidRequest::clear_compid() {
+  compid_ = 0u;
 }
-inline ::PROTOBUF_NAMESPACE_ID::uint32 SetTargetComponentIdRequest::_internal_component_id() const {
-  return component_id_;
+inline ::PROTOBUF_NAMESPACE_ID::uint32 SetTargetCompidRequest::_internal_compid() const {
+  return compid_;
 }
-inline ::PROTOBUF_NAMESPACE_ID::uint32 SetTargetComponentIdRequest::component_id() const {
-  // @@protoc_insertion_point(field_get:mavsdk.rpc.ftp.SetTargetComponentIdRequest.component_id)
-  return _internal_component_id();
+inline ::PROTOBUF_NAMESPACE_ID::uint32 SetTargetCompidRequest::compid() const {
+  // @@protoc_insertion_point(field_get:mavsdk.rpc.ftp.SetTargetCompidRequest.compid)
+  return _internal_compid();
 }
-inline void SetTargetComponentIdRequest::_internal_set_component_id(::PROTOBUF_NAMESPACE_ID::uint32 value) {
+inline void SetTargetCompidRequest::_internal_set_compid(::PROTOBUF_NAMESPACE_ID::uint32 value) {
   
-  component_id_ = value;
+  compid_ = value;
 }
-inline void SetTargetComponentIdRequest::set_component_id(::PROTOBUF_NAMESPACE_ID::uint32 value) {
-  _internal_set_component_id(value);
-  // @@protoc_insertion_point(field_set:mavsdk.rpc.ftp.SetTargetComponentIdRequest.component_id)
+inline void SetTargetCompidRequest::set_compid(::PROTOBUF_NAMESPACE_ID::uint32 value) {
+  _internal_set_compid(value);
+  // @@protoc_insertion_point(field_set:mavsdk.rpc.ftp.SetTargetCompidRequest.compid)
 }
 
 // -------------------------------------------------------------------
 
-// SetTargetComponentIdResponse
+// SetTargetCompidResponse
 
 // .mavsdk.rpc.ftp.FtpResult ftp_result = 1;
-inline bool SetTargetComponentIdResponse::_internal_has_ftp_result() const {
+inline bool SetTargetCompidResponse::_internal_has_ftp_result() const {
   return this != internal_default_instance() && ftp_result_ != nullptr;
 }
-inline bool SetTargetComponentIdResponse::has_ftp_result() const {
+inline bool SetTargetCompidResponse::has_ftp_result() const {
   return _internal_has_ftp_result();
 }
-inline void SetTargetComponentIdResponse::clear_ftp_result() {
+inline void SetTargetCompidResponse::clear_ftp_result() {
   if (GetArenaNoVirtual() == nullptr && ftp_result_ != nullptr) {
     delete ftp_result_;
   }
   ftp_result_ = nullptr;
 }
-inline const ::mavsdk::rpc::ftp::FtpResult& SetTargetComponentIdResponse::_internal_ftp_result() const {
+inline const ::mavsdk::rpc::ftp::FtpResult& SetTargetCompidResponse::_internal_ftp_result() const {
   const ::mavsdk::rpc::ftp::FtpResult* p = ftp_result_;
   return p != nullptr ? *p : *reinterpret_cast<const ::mavsdk::rpc::ftp::FtpResult*>(
       &::mavsdk::rpc::ftp::_FtpResult_default_instance_);
 }
-inline const ::mavsdk::rpc::ftp::FtpResult& SetTargetComponentIdResponse::ftp_result() const {
-  // @@protoc_insertion_point(field_get:mavsdk.rpc.ftp.SetTargetComponentIdResponse.ftp_result)
+inline const ::mavsdk::rpc::ftp::FtpResult& SetTargetCompidResponse::ftp_result() const {
+  // @@protoc_insertion_point(field_get:mavsdk.rpc.ftp.SetTargetCompidResponse.ftp_result)
   return _internal_ftp_result();
 }
-inline ::mavsdk::rpc::ftp::FtpResult* SetTargetComponentIdResponse::release_ftp_result() {
-  // @@protoc_insertion_point(field_release:mavsdk.rpc.ftp.SetTargetComponentIdResponse.ftp_result)
+inline ::mavsdk::rpc::ftp::FtpResult* SetTargetCompidResponse::release_ftp_result() {
+  // @@protoc_insertion_point(field_release:mavsdk.rpc.ftp.SetTargetCompidResponse.ftp_result)
   
   ::mavsdk::rpc::ftp::FtpResult* temp = ftp_result_;
   ftp_result_ = nullptr;
   return temp;
 }
-inline ::mavsdk::rpc::ftp::FtpResult* SetTargetComponentIdResponse::_internal_mutable_ftp_result() {
+inline ::mavsdk::rpc::ftp::FtpResult* SetTargetCompidResponse::_internal_mutable_ftp_result() {
   
   if (ftp_result_ == nullptr) {
     auto* p = CreateMaybeMessage<::mavsdk::rpc::ftp::FtpResult>(GetArenaNoVirtual());
@@ -5606,11 +5606,11 @@ inline ::mavsdk::rpc::ftp::FtpResult* SetTargetComponentIdResponse::_internal_mu
   }
   return ftp_result_;
 }
-inline ::mavsdk::rpc::ftp::FtpResult* SetTargetComponentIdResponse::mutable_ftp_result() {
-  // @@protoc_insertion_point(field_mutable:mavsdk.rpc.ftp.SetTargetComponentIdResponse.ftp_result)
+inline ::mavsdk::rpc::ftp::FtpResult* SetTargetCompidResponse::mutable_ftp_result() {
+  // @@protoc_insertion_point(field_mutable:mavsdk.rpc.ftp.SetTargetCompidResponse.ftp_result)
   return _internal_mutable_ftp_result();
 }
-inline void SetTargetComponentIdResponse::set_allocated_ftp_result(::mavsdk::rpc::ftp::FtpResult* ftp_result) {
+inline void SetTargetCompidResponse::set_allocated_ftp_result(::mavsdk::rpc::ftp::FtpResult* ftp_result) {
   ::PROTOBUF_NAMESPACE_ID::Arena* message_arena = GetArenaNoVirtual();
   if (message_arena == nullptr) {
     delete ftp_result_;
@@ -5626,35 +5626,35 @@ inline void SetTargetComponentIdResponse::set_allocated_ftp_result(::mavsdk::rpc
     
   }
   ftp_result_ = ftp_result;
-  // @@protoc_insertion_point(field_set_allocated:mavsdk.rpc.ftp.SetTargetComponentIdResponse.ftp_result)
+  // @@protoc_insertion_point(field_set_allocated:mavsdk.rpc.ftp.SetTargetCompidResponse.ftp_result)
 }
 
 // -------------------------------------------------------------------
 
-// GetOurComponentIdRequest
+// GetOurCompidRequest
 
 // -------------------------------------------------------------------
 
-// GetOurComponentIdResponse
+// GetOurCompidResponse
 
-// uint32 component_id = 1;
-inline void GetOurComponentIdResponse::clear_component_id() {
-  component_id_ = 0u;
+// uint32 compid = 1;
+inline void GetOurCompidResponse::clear_compid() {
+  compid_ = 0u;
 }
-inline ::PROTOBUF_NAMESPACE_ID::uint32 GetOurComponentIdResponse::_internal_component_id() const {
-  return component_id_;
+inline ::PROTOBUF_NAMESPACE_ID::uint32 GetOurCompidResponse::_internal_compid() const {
+  return compid_;
 }
-inline ::PROTOBUF_NAMESPACE_ID::uint32 GetOurComponentIdResponse::component_id() const {
-  // @@protoc_insertion_point(field_get:mavsdk.rpc.ftp.GetOurComponentIdResponse.component_id)
-  return _internal_component_id();
+inline ::PROTOBUF_NAMESPACE_ID::uint32 GetOurCompidResponse::compid() const {
+  // @@protoc_insertion_point(field_get:mavsdk.rpc.ftp.GetOurCompidResponse.compid)
+  return _internal_compid();
 }
-inline void GetOurComponentIdResponse::_internal_set_component_id(::PROTOBUF_NAMESPACE_ID::uint32 value) {
+inline void GetOurCompidResponse::_internal_set_compid(::PROTOBUF_NAMESPACE_ID::uint32 value) {
   
-  component_id_ = value;
+  compid_ = value;
 }
-inline void GetOurComponentIdResponse::set_component_id(::PROTOBUF_NAMESPACE_ID::uint32 value) {
-  _internal_set_component_id(value);
-  // @@protoc_insertion_point(field_set:mavsdk.rpc.ftp.GetOurComponentIdResponse.component_id)
+inline void GetOurCompidResponse::set_compid(::PROTOBUF_NAMESPACE_ID::uint32 value) {
+  _internal_set_compid(value);
+  // @@protoc_insertion_point(field_set:mavsdk.rpc.ftp.GetOurCompidResponse.compid)
 }
 
 // -------------------------------------------------------------------

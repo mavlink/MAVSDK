@@ -741,7 +741,7 @@ void FtpImpl::process_mavlink_ftp_message(const mavlink_message_t& msg)
     mavlink_file_transfer_protocol_t ftp_req;
     mavlink_msg_file_transfer_protocol_decode(&msg, &ftp_req);
 
-    if (ftp_req.target_component != 0 && ftp_req.target_component != get_our_component_id()) {
+    if (ftp_req.target_component != 0 && ftp_req.target_component != get_our_compid()) {
         LogWarn() << "wrong compid!";
         return;
     }

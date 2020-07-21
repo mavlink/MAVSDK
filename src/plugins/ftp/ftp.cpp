@@ -101,14 +101,14 @@ Ftp::Result Ftp::set_root_directory(std::string root_dir) const
     return _impl->set_root_directory(root_dir);
 }
 
-Ftp::Result Ftp::set_target_component_id(uint32_t component_id) const
+Ftp::Result Ftp::set_target_compid(uint32_t compid) const
 {
-    return _impl->set_target_component_id(component_id);
+    return _impl->set_target_compid(compid);
 }
 
-uint32_t Ftp::get_our_component_id() const
+uint32_t Ftp::get_our_compid() const
 {
-    return _impl->get_our_component_id();
+    return _impl->get_our_compid();
 }
 
 bool operator==(const Ftp::ProgressData& lhs, const Ftp::ProgressData& rhs)

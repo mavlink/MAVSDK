@@ -65,13 +65,13 @@ public:
 
     void set_retries(uint32_t retries) { _max_last_command_retries = retries; }
     Ftp::Result set_root_directory(const std::string& root_dir);
-    Ftp::Result set_target_component_id(uint8_t component_id)
+    Ftp::Result set_target_compid(uint8_t component_id)
     {
         _target_component_id = component_id;
         _target_component_id_set = true;
         return Ftp::Result::Success;
     }
-    uint8_t get_our_component_id() { return _parent->get_own_component_id(); };
+    uint8_t get_our_compid() { return _parent->get_own_component_id(); };
 
 private:
     /// @brief Possible server results returned for requests.

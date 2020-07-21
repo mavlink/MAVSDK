@@ -252,7 +252,7 @@ public:
      *
      * @return Result of request.
      */
-    Result set_target_component_id(uint32_t component_id) const;
+    Result set_target_compid(uint32_t compid) const;
 
     /**
      * @brief Get our own component ID.
@@ -261,7 +261,7 @@ public:
      *
      * @return Result of request.
      */
-    uint32_t get_our_component_id() const;
+    uint32_t get_our_compid() const;
 
     /**
      * @brief Copy constructor (object is not copyable).
