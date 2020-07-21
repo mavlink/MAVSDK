@@ -81,10 +81,12 @@ void disarm_and_land(std::shared_ptr<Action> action, std::shared_ptr<Telemetry> 
 void start_offboard(std::shared_ptr<Offboard> offboard)
 {
     // Send it once before starting offboard, otherwise it will be rejected.
-    Offboard::AttitudeRate full_up{};
+    // Also, turn yaw towards North.
+    Offboard::Attitude full_up{};
     full_up.thrust_value = 1.0f;
-    offboard->set_attitude_rate(full_up);
+    offboard->set_attitude(full_up);
     EXPECT_EQ(offboard->start(), Offboard::Result::Success);
+    std::this_thread::sleep_for(std::chrono::seconds(1));
 }
 
 void stop_offboard(std::shared_ptr<Offboard> offboard)
@@ -94,128 +96,70 @@ void stop_offboard(std::shared_ptr<Offboard> offboard)
 
 void flip_roll(std::shared_ptr<Offboard> offboard, std::shared_ptr<Telemetry> telemetry)
 {
-    while (telemetry->position().relative_altitude_m < 6.0f) {
+    while (telemetry->position().relative_altitude_m < 10.0f) {
         // Full speed up to avoid loosing too much altitude during the flip.
         Offboard::AttitudeRate full_up{};
         full_up.thrust_value = 1.0f;
         offboard->set_attitude_rate(full_up);
     }
 
-    enum class TurningState { Init, Turned45, Turned315 } turning_state{TurningState::Init};
+    Offboard::AttitudeRate roll{};
+    roll.roll_deg_s = 360.0f;
+    roll.thrust_value = 0.25f;
+    offboard->set_attitude_rate(roll);
 
-    while (turning_state != TurningState::Turned315) {
-        Offboard::AttitudeRate roll{};
-        roll.roll_deg_s = 360.0f;
-        roll.thrust_value = 0.25f;
-        offboard->set_attitude_rate(roll);
-        std::this_thread::sleep_for(std::chrono::milliseconds(1));
+    // FIXME: This only properly works at 1x speed right now.
+    //        For lockstep setups running faster, we would need to use the
+    //        speed factor into account which will be available in info soon.
+    std::this_thread::sleep_for(std::chrono::milliseconds(750));
 
-        // We can't check for a negative angle from the beginning because we might
-        // have a slightly negative angle right in the beginning. Therefore, we make
-        // sure that we have started turning.
-        switch (turning_state) {
-            case TurningState::Init:
-                if (telemetry->attitude_euler().roll_deg > 45.0f) {
-                    turning_state = TurningState::Turned45;
-                }
-                break;
-            case TurningState::Turned45:
-                if (telemetry->attitude_euler().roll_deg > -45.0f &&
-                    telemetry->attitude_euler().roll_deg < 0.0f) {
-                    turning_state = TurningState::Turned315;
-                }
-                break;
-            case TurningState::Turned315:
-                break;
-        }
-    }
-
-    while (std::abs(telemetry->attitude_euler().roll_deg) > 3.0f) {
-        Offboard::Attitude some_up{};
-        some_up.thrust_value = 0.6f;
-        offboard->set_attitude(some_up);
-        std::this_thread::sleep_for(std::chrono::milliseconds(1));
-    }
+    Offboard::Attitude some_up{};
+    some_up.thrust_value = 0.8f;
+    offboard->set_attitude(some_up);
+    std::this_thread::sleep_for(std::chrono::seconds(2));
 }
 
 void flip_pitch(std::shared_ptr<Offboard> offboard, std::shared_ptr<Telemetry> telemetry)
 {
     while (telemetry->position().relative_altitude_m < 10.0f) {
         // Full speed up to avoid loosing too much altitude during the flip.
-        Offboard::Attitude full_up{};
+        Offboard::AttitudeRate full_up{};
         full_up.thrust_value = 1.0f;
-        offboard->set_attitude(full_up);
+        offboard->set_attitude_rate(full_up);
     }
 
-    enum class TurningState {
-        Init,
-        Turned45,
-        Turned240,
-        Turned315
-    } turning_state{TurningState::Init};
+    Offboard::AttitudeRate pitch{};
+    pitch.roll_deg_s = 0.0f;
+    pitch.pitch_deg_s = 360.0f;
+    pitch.yaw_deg_s = 0.0f;
+    pitch.thrust_value = 0.25f;
+    offboard->set_attitude_rate(pitch);
 
-    while (turning_state != TurningState::Turned315) {
-        Offboard::AttitudeRate pitch{};
-        pitch.roll_deg_s = 0.0f;
-        pitch.pitch_deg_s = 360.0f;
-        pitch.yaw_deg_s = 0.0f;
-        pitch.thrust_value = 0.25f;
-        offboard->set_attitude_rate(pitch);
-        std::this_thread::sleep_for(std::chrono::milliseconds(1));
+    // FIXME: This only properly works at 1x speed right now.
+    //        For lockstep setups running faster, we would need to use the
+    //        speed factor into account which will be available in info soon.
+    std::this_thread::sleep_for(std::chrono::milliseconds(750));
 
-        // We can't check for a negative angle from the beginning because we might
-        // have a slightly negative angle right in the beginning. Therefore, we make
-        // sure that we have started turning.
-        // Euler angles are impractical for this because pitch only increases to 90
-        // degrees before it goes down to 0 and eventually -90.
-        switch (turning_state) {
-            case TurningState::Init:
-                if (telemetry->attitude_euler().pitch_deg > 45.0f) {
-                    turning_state = TurningState::Turned45;
-                }
-                break;
-            case TurningState::Turned45:
-                if (telemetry->attitude_euler().pitch_deg < -60.0f) {
-                    turning_state = TurningState::Turned240;
-                }
-                break;
-            case TurningState::Turned240:
-                if (telemetry->attitude_euler().pitch_deg < 0.0f &&
-                    telemetry->attitude_euler().pitch_deg > -45.0f) {
-                    turning_state = TurningState::Turned315;
-                }
-                break;
-            case TurningState::Turned315:
-                break;
-        }
-    }
-
-    while (true) {
-        Offboard::Attitude some_up{};
-        some_up.thrust_value = 0.6f;
-        offboard->set_attitude(some_up);
-        std::this_thread::sleep_for(std::chrono::milliseconds(1));
-
-        if (std::abs(telemetry->attitude_euler().pitch_deg) < 3.0f) {
-            break;
-        }
-    }
+    Offboard::Attitude some_up{};
+    some_up.thrust_value = 0.8f;
+    offboard->set_attitude(some_up);
+    std::this_thread::sleep_for(std::chrono::seconds(2));
 }
 
 void turn_yaw(std::shared_ptr<Offboard> offboard)
 {
-    for (int i = 0; i < 100; ++i) {
-        Offboard::AttitudeRate yaw{};
-        yaw.yaw_deg_s = 360.0f;
-        yaw.thrust_value = 0.5;
-        offboard->set_attitude_rate(yaw);
-        std::this_thread::sleep_for(std::chrono::milliseconds(1));
-    }
+    Offboard::AttitudeRate yaw{};
+    yaw.yaw_deg_s = 360.0f;
+    yaw.thrust_value = 0.5;
+    offboard->set_attitude_rate(yaw);
 
-    for (int i = 0; i < 100; ++i) {
-        Offboard::Attitude stay{};
-        stay.thrust_value = 0.5;
-        offboard->set_attitude(stay);
-        std::this_thread::sleep_for(std::chrono::milliseconds(1));
-    }
+    // FIXME: This only properly works at 1x speed right now.
+    //        For lockstep setups running faster, we would need to use the
+    //        speed factor into account which will be available in info soon.
+    std::this_thread::sleep_for(std::chrono::milliseconds(750));
+
+    Offboard::Attitude some_up{};
+    some_up.thrust_value = 0.8f;
+    offboard->set_attitude(some_up);
+    std::this_thread::sleep_for(std::chrono::seconds(2));
 }
