@@ -50,7 +50,7 @@ private:
     void* _call_every_cookie{nullptr};
     void* _flight_info_call_every_cookie{nullptr};
 
-    double _speed_factor{NAN};
+    double _speed_factor{double(NAN)};
     Time _time{};
     dl_time_t _last_time_attitude_arrived{};
     uint32_t _last_time_boot_ms{0};
