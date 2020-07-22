@@ -10,6 +10,7 @@ endif()
 
 find_package(MAVSDK REQUIRED)
 find_package(SDL2 REQUIRED)
+find_package(Threads)
 
 add_executable(manual_control
     manual_control.cpp
@@ -20,5 +21,6 @@ target_link_libraries(manual_control
     MAVSDK::mavsdk_action
     MAVSDK::mavsdk_telemetry
     MAVSDK::mavsdk
-    SDL2
+    ${SDL2_LIBRARIES}
+    ${CMAKE_THREAD_LIBS_INIT}
 )
