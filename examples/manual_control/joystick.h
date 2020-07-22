@@ -5,7 +5,7 @@
 #include <mutex>
 #include <vector>
 #include <thread>
-#include <SDL.h>
+#include <SDL2/SDL.h>
 
 class Joystick {
 public:
