@@ -1,0 +1,69 @@
+syntax = "proto3";
+
+package mavsdk.rpc.manual_control;
+
+import "mavsdk_options.proto";
+
+option java_package = "io.mavsdk.manual_control";
+option java_outer_classname = "ManualControlProto";
+
+service ManualControlService
+{
+    /*
+     * Start position control using e.g. joystick input.
+     *
+     * Requires manual control input to be sent regularly already.
+     * Requires a valid position using e.g. GPS, external vision, or optical flow.
+     */
+    rpc StartPositionControl(StartPositionControlRequest)  returns(StartPositionControlResponse) {}
+    /*
+     * Start altitude control
+     *
+     * Requires manual control input to be sent regularly already.
+     * Does not require a  valid position e.g. GPS.
+     */
+    rpc StartAltitudeControl(StartAltitudeControlRequest)  returns(StartAltitudeControlResponse) {}
+    /*
+     * Set manual control input
+     *
+     * The manual control input needs to be sent at a rate high enough to prevent
+     * triggering of RC loss, a good minimum rate is 10 Hz.
+     */
+    rpc SetManualControlInput(SetManualControlInputRequest) returns(SetManualControlInputResponse) { option (mavsdk.options.async_type) = SYNC; }
+}
+
+message StartPositionControlRequest {}
+message StartPositionControlResponse {
+    ManualControlResult manual_control_result = 1;
+}
+
+message StartAltitudeControlRequest {}
+message StartAltitudeControlResponse {
+    ManualControlResult manual_control_result = 1;
+}
+
+message SetManualControlInputRequest {
+    float x = 1; // value between -1. to 1. negative -> backwards, positive -> forwards
+    float y = 2; // value between -1. to 1. negative -> left, positive -> right
+    float z = 3; // value between -1. to 1. negative -> down, positive -> up (usually for now, for multicopter 0 to 1 is expected)
+    float r = 4; // value between -1. to 1. negative -> turn anti-clockwise (towards the left), positive -> turn clockwise (towards the right)
+}
+message SetManualControlInputResponse {
+    ManualControlResult  manual_control_result = 1;
+}
+
+message ManualControlResult {
+    enum Result {
+        RESULT_UNKNOWN = 0; // Unknown result
+        RESULT_SUCCESS = 1; // Request was successful
+        RESULT_NO_SYSTEM = 2; // No system is connected
+        RESULT_CONNECTION_ERROR = 3; // Connection error
+        RESULT_BUSY = 4; // Vehicle is busy
+        RESULT_COMMAND_DENIED = 5; // Command refused by vehicle
+        RESULT_TIMEOUT = 6; // Request timed out
+        RESULT_INPUT_OUT_OF_RANGE = 7; // Input out of range
+    }
+
+    Result result = 1; // Result enum value
+    string result_str = 2; // Human-readable English string describing the result
+}
