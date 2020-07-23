@@ -17,6 +17,7 @@
 #include <mavsdk/mavsdk.h>
 #include <mavsdk/plugins/action/action.h>
 #include <mavsdk/plugins/telemetry/telemetry.h>
+#include <mavsdk/plugins/manual_control/manual_control.h>
 
 #include "joystick.h"
 
@@ -89,6 +90,7 @@ int main(int argc, char** argv)
     System& system = mavsdk.system();
     auto action = std::make_shared<Action>(system);
     auto telemetry = std::make_shared<Telemetry>(system);
+    auto manual_control = std::make_shared<ManualControl>(system);
 
     while (!telemetry->health_all_ok()) {
         std::cout << "Waiting for system to be ready" << std::endl;
@@ -102,18 +104,30 @@ int main(int argc, char** argv)
         return 1;
     }
 
+    if (manual_control->set_manual_control_input(0.f, 0.f, 0.f, 0.f) !=
+        ManualControl::Result::Success) {
+        std::cerr << "Switching to position control failed: " << result << std::endl;
+        return 1;
+    }
+
     while (true) {
-        float roll = joystick->get_axis(joystick_mapping.roll_axis) *
-                     (joystick_mapping.roll_inverted ? -1.f : 1.f);
-        float pitch = joystick->get_axis(joystick_mapping.pitch_axis) *
-                      (joystick_mapping.pitch_inverted ? -1.f : 1.f);
-        float yaw = joystick->get_axis(joystick_mapping.yaw_axis) *
-                    (joystick_mapping.yaw_inverted ? -1.f : 1.f);
+        const float roll = joystick->get_axis(joystick_mapping.roll_axis) *
+                           (joystick_mapping.roll_inverted ? -1.f : 1.f);
+        const float pitch = joystick->get_axis(joystick_mapping.pitch_axis) *
+                            (joystick_mapping.pitch_inverted ? -1.f : 1.f);
+        const float yaw = joystick->get_axis(joystick_mapping.yaw_axis) *
+                          (joystick_mapping.yaw_inverted ? -1.f : 1.f);
         float throttle = joystick->get_axis(joystick_mapping.throttle_axis) *
                          (joystick_mapping.throttle_inverted ? -1.f : 1.f);
 
-        std::cout << "Joystick input: roll: " << roll << ", pitch: " << pitch << ", yaw: " << yaw
-                  << ", throttle " << throttle << std::endl;
+        // Scale -1 to 1 throttle range to 0 to 1
+        throttle = throttle / 2.f + 0.5f;
+
+        // std::cout << "Joystick input: roll: " << roll << ", pitch: " << pitch << ", yaw: " << yaw
+        //           << ", throttle " << throttle << std::endl;
+
+        manual_control->set_manual_control_input(pitch, roll, throttle, yaw);
+
         std::this_thread::sleep_for(std::chrono::milliseconds(20));
     }
 

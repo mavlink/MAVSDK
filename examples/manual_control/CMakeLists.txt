@@ -20,6 +20,7 @@ add_executable(manual_control
 target_link_libraries(manual_control
     MAVSDK::mavsdk_action
     MAVSDK::mavsdk_telemetry
+    MAVSDK::mavsdk_manual_control
     MAVSDK::mavsdk
     ${SDL2_LIBRARIES}
     ${CMAKE_THREAD_LIBS_INIT}
