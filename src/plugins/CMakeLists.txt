@@ -21,6 +21,7 @@ add_subdirectory(shell)
 add_subdirectory(telemetry)
 add_subdirectory(tune)
 add_subdirectory(failure)
+add_subdirectory(manual_control)
 
 if (ENABLE_MAVLINK_PASSTHROUGH)
     message(STATUS "Include MAVLink passthrough plugin")
