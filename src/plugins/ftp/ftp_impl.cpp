@@ -96,6 +96,13 @@ void FtpImpl::_process_ack(PayloadHeader* payload)
             _call_op_result_callback(_session_result);
             break;
 
+        case CMD_RESET_SESSIONS:
+            _curr_op = CMD_NONE;
+            _session_valid = false;
+            _stop_timer();
+            _call_op_result_callback(_session_result);
+            break;
+
         case CMD_LIST_DIRECTORY: {
             bool added = false;
             uint8_t start = 0;
