@@ -48,6 +48,12 @@ void FtpImpl::disable() {}
 void FtpImpl::_process_ack(PayloadHeader* payload)
 {
     std::lock_guard<std::mutex> lock(_curr_op_mutex);
+
+    if (_curr_op != payload->req_opcode) {
+        LogWarn() << "Received ACK not matching our current operation";
+        return;
+    }
+
     switch (_curr_op) {
         case CMD_NONE:
             LogWarn() << "Received ACK without active operation";
@@ -90,6 +96,13 @@ void FtpImpl::_process_ack(PayloadHeader* payload)
             break;
 
         case CMD_TERMINATE_SESSION:
+            _curr_op = CMD_NONE;
+            _session_valid = false;
+            _stop_timer();
+            _call_op_result_callback(_session_result);
+            break;
+
+        case CMD_RESET_SESSIONS:
             _curr_op = CMD_NONE;
             _session_valid = false;
             _stop_timer();
