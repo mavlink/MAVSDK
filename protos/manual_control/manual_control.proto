@@ -52,7 +52,9 @@ message SetManualControlInputResponse {
     ManualControlResult  manual_control_result = 1;
 }
 
+// Result type.
 message ManualControlResult {
+    // Possible results returned for manual control requests.
     enum Result {
         RESULT_UNKNOWN = 0; // Unknown result
         RESULT_SUCCESS = 1; // Request was successful
