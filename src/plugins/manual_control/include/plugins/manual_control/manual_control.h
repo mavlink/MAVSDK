@@ -45,7 +45,7 @@ public:
     ~ManualControl();
 
     /**
-     * @brief
+     * @brief Possible results returned for manual control requests.
      */
     enum class Result {
         Unknown, /**< @brief Unknown result. */
