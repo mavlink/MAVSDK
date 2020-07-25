@@ -512,14 +512,8 @@ void TelemetryImpl::process_global_position_int(const mavlink_message_t& message
 
     {
         Telemetry::Position position;
-        // Special case to signal lat/lon is not set yet.
-        if (global_position_int.lat == 0 && global_position_int.lon == 0) {
-            position.latitude_deg = double(NAN);
-            position.longitude_deg = double(NAN);
-        } else {
-            position.latitude_deg = global_position_int.lat * 1e-7;
-            position.longitude_deg = global_position_int.lon * 1e-7;
-        }
+        position.latitude_deg = global_position_int.lat * 1e-7;
+        position.longitude_deg = global_position_int.lon * 1e-7;
         position.absolute_altitude_m = global_position_int.alt * 1e-3f;
         position.relative_altitude_m = global_position_int.relative_alt * 1e-3f;
         set_position(position);
