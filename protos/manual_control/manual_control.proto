@@ -7,6 +7,7 @@ import "mavsdk_options.proto";
 option java_package = "io.mavsdk.manual_control";
 option java_outer_classname = "ManualControlProto";
 
+// Enable manual control using e.g. a joystick or gamepad.
 service ManualControlService
 {
     /*
