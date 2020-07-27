@@ -30,6 +30,7 @@ namespace mavsdk {
 namespace rpc {
 namespace manual_control {
 
+// Enable manual control using e.g. a joystick or gamepad.
 class ManualControlService final {
  public:
   static constexpr char const* service_full_name() {

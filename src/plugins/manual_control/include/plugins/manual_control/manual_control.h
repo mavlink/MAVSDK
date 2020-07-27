@@ -22,7 +22,7 @@ class System;
 class ManualControlImpl;
 
 /**
- * @brief
+ * @brief Enable manual control using e.g. a joystick or gamepad.
  */
 class ManualControl : public PluginBase {
 public:
