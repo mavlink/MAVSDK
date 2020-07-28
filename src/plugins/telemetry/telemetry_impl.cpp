@@ -606,7 +606,7 @@ void TelemetryImpl::process_attitude_quaternion(const mavlink_message_t& message
 
     Telemetry::Quaternion quaternion;
     quaternion.w = mavlink_attitude_quaternion.q1;
-    quaternion.x = mavlink_attitude_quaternion.q1;
+    quaternion.x = mavlink_attitude_quaternion.q2;
     quaternion.y = mavlink_attitude_quaternion.q3;
     quaternion.z = mavlink_attitude_quaternion.q4;
 
