@@ -567,9 +567,9 @@ void TelemetryImpl::process_attitude(const mavlink_message_t& message)
     mavlink_msg_attitude_decode(&message, &attitude);
 
     Telemetry::EulerAngle euler_angle;
-    euler_angle.roll_deg = attitude.roll;
-    euler_angle.pitch_deg = attitude.pitch;
-    euler_angle.yaw_deg = attitude.yaw;
+    euler_angle.roll_deg = to_deg_from_rad(attitude.roll);
+    euler_angle.pitch_deg = to_deg_from_rad(attitude.pitch);
+    euler_angle.yaw_deg = to_deg_from_rad(attitude.yaw);
 
     Telemetry::AngularVelocityBody angular_velocity_body;
     angular_velocity_body.roll_rad_s = attitude.rollspeed;
