@@ -25,6 +25,7 @@ add_library(mavsdk
     mavlink_receiver.cpp
     mavlink_statustext_handler.cpp
     mavlink_message_handler.cpp
+    ping.cpp
     plugin_impl_base.cpp
     serial_connection.cpp
     tcp_connection.cpp
