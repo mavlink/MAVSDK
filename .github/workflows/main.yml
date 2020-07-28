@@ -65,6 +65,8 @@ jobs:
         run: cmake --build build/release -j 2
       - name: install
         run: sudo cmake --build build/release --target install
+      - name: install examples dependencies
+        run: sudo apt-get install -y libsdl2-dev
       - name: configure examples
         run: (cd examples && cmake -DCMAKE_BUILD_TYPE=Release -j 2 -Bbuild -H.)
       - name: build examples
