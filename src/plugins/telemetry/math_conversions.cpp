@@ -4,8 +4,6 @@
 
 namespace mavsdk {
 
-// TODO: this needs to be unit tested.
-
 Telemetry::EulerAngle to_euler_angle_from_quaternion(Telemetry::Quaternion quaternion)
 {
     auto& q = quaternion;
