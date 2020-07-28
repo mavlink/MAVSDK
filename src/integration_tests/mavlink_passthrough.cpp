@@ -1,3 +1,4 @@
+#include <atomic>
 #include <iostream>
 #include <future>
 #include "log.h"
@@ -47,33 +48,19 @@ TEST_F(SitlTest, MavlinkPassthrough)
     }
 
     {
-        std::promise<void> prom;
-        std::future<void> fut = prom.get_future();
-        unsigned counter = 0;
-        bool stopped = false;
+        std::atomic<unsigned> counter{0};
 
         mavlink_passthrough->subscribe_message_async(
-            MAVLINK_MSG_ID_HIGHRES_IMU,
-            [&prom, &counter, &stopped, mavlink_passthrough](const mavlink_message_t& message) {
+            MAVLINK_MSG_ID_HIGHRES_IMU, [&counter](const mavlink_message_t& message) {
                 mavlink_highres_imu_t highres_imu;
                 mavlink_msg_highres_imu_decode(&message, &highres_imu);
 
                 LogInfo() << "HIGHRES_IMU.temperature [1] (" << counter << ")"
                           << highres_imu.temperature << " degrees C";
-                if (++counter == 100) {
-                    EXPECT_FALSE(stopped);
-                    if (!stopped) {
-                        stopped = true;
-                        // Unsubscribe again
-                        mavlink_passthrough->subscribe_message_async(
-                            MAVLINK_MSG_ID_HIGHRES_IMU, nullptr);
-                        prom.set_value();
-                    }
-                };
+                ++counter;
             });
 
-        // At 50 Hz we should have received 100 temperature measurements in 2 seconds.
-        // After 3 seconds we give up.
-        EXPECT_EQ(fut.wait_for(std::chrono::seconds(3)), std::future_status::ready);
+        std::this_thread::sleep_for(std::chrono::seconds(3));
+        EXPECT_GT(counter, 100);
     }
 }
