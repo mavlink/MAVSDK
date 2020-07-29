@@ -55,11 +55,11 @@ service OffboardService {
      */
     rpc SetPositionNed(SetPositionNedRequest) returns(SetPositionNedResponse) { option (mavsdk.options.async_type) = SYNC; }
     /*
-     * Set the velocity in body coordinates and yaw angular rate.
+     * Set the velocity in body coordinates and yaw angular rate. Not available for fixed-wing aircraft.
      */
     rpc SetVelocityBody(SetVelocityBodyRequest) returns(SetVelocityBodyResponse) { option (mavsdk.options.async_type) = SYNC; }
     /*
-     * Set the velocity in NED coordinates and yaw.
+     * Set the velocity in NED coordinates and yaw. Not available for fixed-wing aircraft.
      */
     rpc SetVelocityNed(SetVelocityNedRequest) returns(SetVelocityNedResponse) { option (mavsdk.options.async_type) = SYNC; }
 }
