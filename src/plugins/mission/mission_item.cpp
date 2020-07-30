@@ -24,6 +24,11 @@ void MissionItem::set_frame(MAV_FRAME frame)
     _impl->set_frame(frame);
 }
 
+void MissionItem::set_transition_mode(MAV_VTOL_STATE mode)
+{
+    _impl->set_transition_mode(mode);
+}
+
 
 void MissionItem::set_position(double latitude_deg, double longitude_deg)
 {

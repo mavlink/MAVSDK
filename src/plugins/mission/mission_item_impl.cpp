@@ -19,6 +19,11 @@ void MissionItemImpl::set_frame(MAV_FRAME frame)
     _frame  = frame;
 }
 
+void MissionItemImpl::set_transition_mode(MAV_VTOL_STATE mode)
+{
+    _transition_mode  = mode;
+}
+
 void MissionItemImpl::set_position(double latitude_deg, double longitude_deg)
 {
     _latitude_deg = latitude_deg;
@@ -88,13 +93,20 @@ uint8_t MissionItemImpl::get_mavlink_autocontinue() const
 float MissionItemImpl::get_mavlink_param1() const
 {
     float hold_time_s;
-    if (_fly_through) {
-        hold_time_s = 0.0f;
-    } else {
-        hold_time_s = 0.5f;
+    if (_command == MAV_CMD_DO_VTOL_TRANSITION) {
+        LogDebug() << "returnint the transition mode:" << _transition_mode;
+        return _transition_mode;
+    }else{
+        if (_fly_through) {
+            hold_time_s = 0.0f;
+        } else {
+            hold_time_s = 0.5f;
+        }
+
+        return hold_time_s;
     }
 
-    return hold_time_s;
+
 }
 
 float MissionItemImpl::get_mavlink_param2() const

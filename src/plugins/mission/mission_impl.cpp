@@ -945,6 +945,12 @@ void MissionImpl::assemble_mission_items()
                     case MAV_CMD_DO_VTOL_TRANSITION:
                         new_mission_item->set_cmd(MAV_CMD_DO_VTOL_TRANSITION);
                         new_mission_item->set_frame(MAV_FRAME_MISSION);
+                        if((int)it->param1 == 3){
+                            new_mission_item->set_transition_mode(MAV_VTOL_STATE_MC);
+                        }
+                        if((int)it->param1 == 4){
+                            new_mission_item->set_transition_mode(MAV_VTOL_STATE_FW);
+                        }
                         break;
                 }
 
@@ -1544,6 +1550,15 @@ Mission::Result MissionImpl::build_mission_items(
             new_mission_item->set_position(lat, lon);
             new_mission_item->set_cmd(command);
 
+            if (command == MAV_CMD_DO_VTOL_TRANSITION) {
+                new_mission_item->set_frame(MAV_FRAME_MISSION);
+                if((int)params[0]==3){
+                    new_mission_item->set_transition_mode(MAV_VTOL_STATE_MC);
+                }
+                if((int)params[0]==4){
+                    new_mission_item->set_transition_mode(MAV_VTOL_STATE_FW);
+                }
+            }
             auto rel_alt = float(params[6]);
             new_mission_item->set_relative_altitude(rel_alt);
 

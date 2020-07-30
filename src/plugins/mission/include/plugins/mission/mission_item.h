@@ -33,6 +33,8 @@ public:
 
     void set_frame(MAV_FRAME frame);
 
+    void set_transition_mode(MAV_VTOL_STATE mode);
+
     /**
      * @brief Set the position of a mission item.
      *
