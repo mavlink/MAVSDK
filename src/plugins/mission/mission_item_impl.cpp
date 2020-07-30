@@ -14,6 +14,11 @@ void MissionItemImpl::set_cmd(MAV_CMD cmd)
     _command = cmd;
 }
 
+void MissionItemImpl::set_frame(MAV_FRAME frame)
+{
+    _frame  = frame;
+}
+
 void MissionItemImpl::set_position(double latitude_deg, double longitude_deg)
 {
     _latitude_deg = latitude_deg;
@@ -67,7 +72,7 @@ void MissionItemImpl::set_camera_photo_interval(double interval_s)
 
 MAV_FRAME MissionItemImpl::get_mavlink_frame() const
 {
-    return MAV_FRAME_GLOBAL_RELATIVE_ALT_INT;
+    return _frame;
 }
 
 MAV_CMD MissionItemImpl::get_mavlink_cmd() const

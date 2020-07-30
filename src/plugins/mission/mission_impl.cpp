@@ -944,6 +944,7 @@ void MissionImpl::assemble_mission_items()
                         break;
                     case MAV_CMD_DO_VTOL_TRANSITION:
                         new_mission_item->set_cmd(MAV_CMD_DO_VTOL_TRANSITION);
+                        new_mission_item->set_frame(MAV_FRAME_MISSION);
                         break;
                 }
 

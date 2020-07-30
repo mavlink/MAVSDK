@@ -20,6 +20,7 @@ public:
     void set_camera_action(MissionItem::CameraAction action);
     void set_camera_photo_interval(double interval_s);
     void set_cmd(MAV_CMD cmd);
+    void set_frame(MAV_FRAME frame);
 
     double get_latitude_deg() const { return _latitude_deg; }
     double get_longitude_deg() const { return _longitude_deg; }
@@ -47,6 +48,7 @@ public:
 
 private:
     MAV_CMD _command = MAV_CMD(MAV_CMD_NAV_WAYPOINT);
+    MAV_FRAME _frame = MAV_FRAME(MAV_FRAME_GLOBAL_RELATIVE_ALT_INT);
     double _latitude_deg = double(NAN);
     double _longitude_deg = double(NAN);
     float _relative_altitude_m = NAN;

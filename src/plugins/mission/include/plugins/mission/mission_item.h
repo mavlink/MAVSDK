@@ -31,12 +31,15 @@ public:
 
     void set_cmd(MAV_CMD cmd);
 
+    void set_frame(MAV_FRAME frame);
+
     /**
      * @brief Set the position of a mission item.
      *
      * @param latitude_deg Latitude of the waypoint in degrees.
      * @param longitude_deg Longitude of the waypoint in degrees.
      */
+
     void set_position(double latitude_deg, double longitude_deg);
 
     /**
