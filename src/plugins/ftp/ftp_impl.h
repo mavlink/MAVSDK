@@ -167,8 +167,8 @@ private:
     uint32_t _last_command_retries = 0;
     std::string _last_path{};
     uint16_t _seq_number = 0;
-    std::shared_ptr<std::ifstream> _ifstream{};
-    std::shared_ptr<std::ofstream> _ofstream{};
+    std::unique_ptr<std::ifstream> _ifstream{};
+    std::unique_ptr<std::ofstream> _ofstream{};
     bool _session_valid = false;
     uint8_t _session = 0;
     ServerResult _session_result = ServerResult::SUCCESS;

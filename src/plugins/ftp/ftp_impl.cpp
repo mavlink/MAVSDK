@@ -313,8 +313,7 @@ void FtpImpl::download_async(
 
     std::string local_path = local_folder + path_separator + fs_filename(remote_path);
 
-    _ofstream =
-        std::make_shared<std::ofstream>(local_path, std::fstream::trunc | std::fstream::binary);
+    _ofstream.reset(new std::ofstream(local_path, std::fstream::trunc | std::fstream::binary));
     if (!*_ofstream) {
         _end_read_session();
         Ftp::ProgressData empty{};
@@ -378,7 +377,7 @@ void FtpImpl::upload_async(
         return;
     }
 
-    _ifstream = std::make_shared<std::ifstream>(local_file_path, std::fstream::binary);
+    _ifstream.reset(new std::ifstream(local_file_path, std::fstream::binary));
     if (!*_ifstream) {
         _end_write_session();
         Ftp::ProgressData empty{};
