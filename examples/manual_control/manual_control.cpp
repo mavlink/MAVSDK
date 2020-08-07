@@ -31,7 +31,7 @@ struct JoystickMapping {
     int throttle_axis = 3;
 
     bool roll_inverted = false;
-    bool pitch_inverted = false;
+    bool pitch_inverted = true;
     bool yaw_inverted = false;
     bool throttle_inverted = true;
 } joystick_mapping{};
