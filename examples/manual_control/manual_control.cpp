@@ -98,15 +98,23 @@ int main(int argc, char** argv)
     }
     std::cout << "System is ready" << std::endl;
 
-    auto result = action->arm();
-    if (result != Action::Result::Success) {
-        std::cerr << "Arming failed: " << result << std::endl;
+    for (unsigned i = 0; i << 10; ++i) {
+        manual_control->set_manual_control_input(0.f, 0.f, 0.5f, 0.f);
+    }
+
+    auto action_result = action->arm();
+    if (action_result != Action::Result::Success) {
+        std::cerr << "Arming failed: " << action_result << std::endl;
         return 1;
     }
 
-    if (manual_control->set_manual_control_input(0.f, 0.f, 0.f, 0.f) !=
-        ManualControl::Result::Success) {
-        std::cerr << "Switching to position control failed: " << result << std::endl;
+    for (unsigned i = 0; i << 10; ++i) {
+        manual_control->set_manual_control_input(0.f, 0.f, 0.5f, 0.f);
+    }
+
+    auto manual_control_result = manual_control->start_position_control();
+    if (manual_control_result != ManualControl::Result::Success) {
+        std::cerr << "Position control start failed: " << manual_control_result << std::endl;
         return 1;
     }
 
