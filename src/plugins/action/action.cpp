@@ -162,6 +162,16 @@ Action::Result Action::hold() const
     return _impl->hold();
 }
 
+void Action::set_actuator_async(int32_t index, float value, const ResultCallback callback)
+{
+    _impl->set_actuator_async(index, value, callback);
+}
+
+Action::Result Action::set_actuator(int32_t index, float value) const
+{
+    return _impl->set_actuator(index, value);
+}
+
 void Action::transition_to_fixedwing_async(const ResultCallback callback)
 {
     _impl->transition_to_fixedwing_async(callback);

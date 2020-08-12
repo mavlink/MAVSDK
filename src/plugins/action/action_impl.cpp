@@ -193,6 +193,16 @@ Action::Result ActionImpl::hold() const
     return fut.get();
 }
 
+Action::Result ActionImpl::set_actuator(const int index, const float value)
+{
+    auto prom = std::promise<Action::Result>();
+    auto fut = prom.get_future();
+
+    set_actuator_async(index, value, [&prom](Action::Result result) { prom.set_value(result); });
+
+    return fut.get();
+}
+
 Action::Result ActionImpl::transition_to_fixedwing() const
 {
     auto prom = std::promise<Action::Result>();
@@ -420,6 +430,42 @@ void ActionImpl::hold_async(const Action::ResultCallback& callback) const
 {
     _parent->set_flight_mode_async(
         SystemImpl::FlightMode::Hold, [this, callback](MavlinkCommandSender::Result result, float) {
+            command_result_callback(result, callback);
+        });
+}
+
+void ActionImpl::set_actuator_async(
+    const int index, const float value, const Action::ResultCallback& callback)
+{
+    MavlinkCommandSender::CommandLong command{};
+
+    command.command = MAV_CMD_DO_SET_ACTUATOR;
+    command.target_component_id = _parent->get_autopilot_id();
+
+    switch (index % 6) {
+        case 1:
+            command.params.param1 = value;
+            break;
+        case 2:
+            command.params.param2 = value;
+            break;
+        case 3:
+            command.params.param3 = value;
+            break;
+        case 4:
+            command.params.param4 = value;
+            break;
+        case 5:
+            command.params.param5 = value;
+            break;
+        case 6:
+            command.params.param6 = value;
+            break;
+    }
+    command.params.param7 = index / 6;
+
+    _parent->send_command_async(
+        command, [this, callback](MavlinkCommandSender::Result result, float) {
             command_result_callback(result, callback);
         });
 }

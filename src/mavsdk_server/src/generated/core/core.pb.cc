@@ -67,8 +67,7 @@ struct ListRunningPluginsResponseDefaultTypeInternal {
 PROTOBUF_ATTRIBUTE_NO_DESTROY PROTOBUF_CONSTINIT ListRunningPluginsResponseDefaultTypeInternal _ListRunningPluginsResponse_default_instance_;
 constexpr ConnectionState::ConnectionState(
   ::PROTOBUF_NAMESPACE_ID::internal::ConstantInitialized)
-  : uuid_(PROTOBUF_ULONGLONG(0))
-  , is_connected_(false){}
+  : is_connected_(false){}
 struct ConnectionStateDefaultTypeInternal {
   constexpr ConnectionStateDefaultTypeInternal()
     : _instance(::PROTOBUF_NAMESPACE_ID::internal::ConstantInitialized{}) {}
@@ -127,7 +126,6 @@ const ::PROTOBUF_NAMESPACE_ID::uint32 TableStruct_core_2fcore_2eproto::offsets[]
   ~0u,  // no _extensions_
   ~0u,  // no _oneof_case_
   ~0u,  // no _weak_field_map_
-  PROTOBUF_FIELD_OFFSET(::mavsdk::rpc::core::ConnectionState, uuid_),
   PROTOBUF_FIELD_OFFSET(::mavsdk::rpc::core::ConnectionState, is_connected_),
   ~0u,  // no _has_bits_
   PROTOBUF_FIELD_OFFSET(::mavsdk::rpc::core::PluginInfo, _internal_metadata_),
@@ -144,7 +142,7 @@ static const ::PROTOBUF_NAMESPACE_ID::internal::MigrationSchema schemas[] PROTOB
   { 11, -1, sizeof(::mavsdk::rpc::core::ListRunningPluginsRequest)},
   { 16, -1, sizeof(::mavsdk::rpc::core::ListRunningPluginsResponse)},
   { 22, -1, sizeof(::mavsdk::rpc::core::ConnectionState)},
-  { 29, -1, sizeof(::mavsdk::rpc::core::PluginInfo)},
+  { 28, -1, sizeof(::mavsdk::rpc::core::PluginInfo)},
 };
 
 static ::PROTOBUF_NAMESPACE_ID::Message const * const file_default_instances[] = {
@@ -163,21 +161,21 @@ const char descriptor_table_protodef_core_2fcore_2eproto[] PROTOBUF_SECTION_VARI
   "(\0132 .mavsdk.rpc.core.ConnectionState\"\033\n\031"
   "ListRunningPluginsRequest\"N\n\032ListRunning"
   "PluginsResponse\0220\n\013plugin_info\030\001 \003(\0132\033.m"
-  "avsdk.rpc.core.PluginInfo\"5\n\017ConnectionS"
-  "tate\022\014\n\004uuid\030\001 \001(\004\022\024\n\014is_connected\030\002 \001(\010"
-  "\"9\n\nPluginInfo\022\014\n\004name\030\001 \001(\t\022\017\n\007address\030"
-  "\002 \001(\t\022\014\n\004port\030\003 \001(\0052\372\001\n\013CoreService\022z\n\030S"
-  "ubscribeConnectionState\0220.mavsdk.rpc.cor"
-  "e.SubscribeConnectionStateRequest\032(.mavs"
-  "dk.rpc.core.ConnectionStateResponse\"\0000\001\022"
-  "o\n\022ListRunningPlugins\022*.mavsdk.rpc.core."
-  "ListRunningPluginsRequest\032+.mavsdk.rpc.c"
-  "ore.ListRunningPluginsResponse\"\000B\033\n\016io.m"
-  "avsdk.coreB\tCoreProtob\006proto3"
+  "avsdk.rpc.core.PluginInfo\"\'\n\017ConnectionS"
+  "tate\022\024\n\014is_connected\030\002 \001(\010\"9\n\nPluginInfo"
+  "\022\014\n\004name\030\001 \001(\t\022\017\n\007address\030\002 \001(\t\022\014\n\004port\030"
+  "\003 \001(\0052\372\001\n\013CoreService\022z\n\030SubscribeConnec"
+  "tionState\0220.mavsdk.rpc.core.SubscribeCon"
+  "nectionStateRequest\032(.mavsdk.rpc.core.Co"
+  "nnectionStateResponse\"\0000\001\022o\n\022ListRunning"
+  "Plugins\022*.mavsdk.rpc.core.ListRunningPlu"
+  "ginsRequest\032+.mavsdk.rpc.core.ListRunnin"
+  "gPluginsResponse\"\000B\033\n\016io.mavsdk.coreB\tCo"
+  "reProtob\006proto3"
   ;
 static ::PROTOBUF_NAMESPACE_ID::internal::once_flag descriptor_table_core_2fcore_2eproto_once;
 const ::PROTOBUF_NAMESPACE_ID::internal::DescriptorTable descriptor_table_core_2fcore_2eproto = {
-  false, false, 669, descriptor_table_protodef_core_2fcore_2eproto, "core/core.proto", 
+  false, false, 655, descriptor_table_protodef_core_2fcore_2eproto, "core/core.proto", 
   &descriptor_table_core_2fcore_2eproto_once, nullptr, 0, 6,
   schemas, file_default_instances, TableStruct_core_2fcore_2eproto::offsets,
   file_level_metadata_core_2fcore_2eproto, file_level_enum_descriptors_core_2fcore_2eproto, file_level_service_descriptors_core_2fcore_2eproto,
@@ -921,17 +919,12 @@ ConnectionState::ConnectionState(::PROTOBUF_NAMESPACE_ID::Arena* arena)
 ConnectionState::ConnectionState(const ConnectionState& from)
   : ::PROTOBUF_NAMESPACE_ID::Message() {
   _internal_metadata_.MergeFrom<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>(from._internal_metadata_);
-  ::memcpy(&uuid_, &from.uuid_,
-    static_cast<size_t>(reinterpret_cast<char*>(&is_connected_) -
-    reinterpret_cast<char*>(&uuid_)) + sizeof(is_connected_));
+  is_connected_ = from.is_connected_;
   // @@protoc_insertion_point(copy_constructor:mavsdk.rpc.core.ConnectionState)
 }
 
 void ConnectionState::SharedCtor() {
-::memset(reinterpret_cast<char*>(this) + static_cast<size_t>(
-    reinterpret_cast<char*>(&uuid_) - reinterpret_cast<char*>(this)),
-    0, static_cast<size_t>(reinterpret_cast<char*>(&is_connected_) -
-    reinterpret_cast<char*>(&uuid_)) + sizeof(is_connected_));
+is_connected_ = false;
 }
 
 ConnectionState::~ConnectionState() {
@@ -960,9 +953,7 @@ void ConnectionState::Clear() {
   // Prevent compiler warnings about cached_has_bits being unused
   (void) cached_has_bits;
 
-  ::memset(&uuid_, 0, static_cast<size_t>(
-      reinterpret_cast<char*>(&is_connected_) -
-      reinterpret_cast<char*>(&uuid_)) + sizeof(is_connected_));
+  is_connected_ = false;
   _internal_metadata_.Clear<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>();
 }
 
@@ -973,13 +964,6 @@ const char* ConnectionState::_InternalParse(const char* ptr, ::PROTOBUF_NAMESPAC
     ptr = ::PROTOBUF_NAMESPACE_ID::internal::ReadTag(ptr, &tag);
     CHK_(ptr);
     switch (tag >> 3) {
-      // uint64 uuid = 1;
-      case 1:
-        if (PROTOBUF_PREDICT_TRUE(static_cast<::PROTOBUF_NAMESPACE_ID::uint8>(tag) == 8)) {
-          uuid_ = ::PROTOBUF_NAMESPACE_ID::internal::ReadVarint64(&ptr);
-          CHK_(ptr);
-        } else goto handle_unusual;
-        continue;
       // bool is_connected = 2;
       case 2:
         if (PROTOBUF_PREDICT_TRUE(static_cast<::PROTOBUF_NAMESPACE_ID::uint8>(tag) == 16)) {
@@ -1015,12 +999,6 @@ failure:
   ::PROTOBUF_NAMESPACE_ID::uint32 cached_has_bits = 0;
   (void) cached_has_bits;
 
-  // uint64 uuid = 1;
-  if (this->uuid() != 0) {
-    target = stream->EnsureSpace(target);
-    target = ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::WriteUInt64ToArray(1, this->_internal_uuid(), target);
-  }
-
   // bool is_connected = 2;
   if (this->is_connected() != 0) {
     target = stream->EnsureSpace(target);
@@ -1042,13 +1020,6 @@ size_t ConnectionState::ByteSizeLong() const {
   ::PROTOBUF_NAMESPACE_ID::uint32 cached_has_bits = 0;
   // Prevent compiler warnings about cached_has_bits being unused
   (void) cached_has_bits;
-
-  // uint64 uuid = 1;
-  if (this->uuid() != 0) {
-    total_size += 1 +
-      ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::UInt64Size(
-        this->_internal_uuid());
-  }
 
   // bool is_connected = 2;
   if (this->is_connected() != 0) {
@@ -1086,9 +1057,6 @@ void ConnectionState::MergeFrom(const ConnectionState& from) {
   ::PROTOBUF_NAMESPACE_ID::uint32 cached_has_bits = 0;
   (void) cached_has_bits;
 
-  if (from.uuid() != 0) {
-    _internal_set_uuid(from._internal_uuid());
-  }
   if (from.is_connected() != 0) {
     _internal_set_is_connected(from._internal_is_connected());
   }
@@ -1115,12 +1083,7 @@ bool ConnectionState::IsInitialized() const {
 void ConnectionState::InternalSwap(ConnectionState* other) {
   using std::swap;
   _internal_metadata_.Swap<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>(&other->_internal_metadata_);
-  ::PROTOBUF_NAMESPACE_ID::internal::memswap<
-      PROTOBUF_FIELD_OFFSET(ConnectionState, is_connected_)
-      + sizeof(ConnectionState::is_connected_)
-      - PROTOBUF_FIELD_OFFSET(ConnectionState, uuid_)>(
-          reinterpret_cast<char*>(&uuid_),
-          reinterpret_cast<char*>(&other->uuid_));
+  swap(is_connected_, other->is_connected_);
 }
 
 ::PROTOBUF_NAMESPACE_ID::Metadata ConnectionState::GetMetadata() const {

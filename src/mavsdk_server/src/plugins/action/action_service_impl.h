@@ -334,6 +334,25 @@ public:
         return grpc::Status::OK;
     }
 
+    grpc::Status SetActuator(
+        grpc::ServerContext* /* context */,
+        const rpc::action::SetActuatorRequest* request,
+        rpc::action::SetActuatorResponse* response) override
+    {
+        if (request == nullptr) {
+            LogWarn() << "SetActuator sent with a null request! Ignoring...";
+            return grpc::Status::OK;
+        }
+
+        auto result = _action.set_actuator(request->index(), request->value());
+
+        if (response != nullptr) {
+            fillResponseWithResult(response, result);
+        }
+
+        return grpc::Status::OK;
+    }
+
     grpc::Status TransitionToFixedwing(
         grpc::ServerContext* /* context */,
         const rpc::action::TransitionToFixedwingRequest* /* request */,
