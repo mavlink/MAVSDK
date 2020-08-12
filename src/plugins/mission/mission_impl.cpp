@@ -1025,7 +1025,9 @@ Mission::Result MissionImpl::build_mission_items(
 }
 
 Mission::Result MissionImpl::import_simple_mission_item(
-        std::vector<Mission::MissionItem>& all_mission_items, const Json::Value& json_mission_item, MissionItem& new_mission_item)
+    std::vector<Mission::MissionItem>& all_mission_items,
+    const Json::Value& json_mission_item,
+    MissionItem& new_mission_item)
 {
     // Parameters of Mission item & MAV command of it.
     MAV_CMD command = static_cast<MAV_CMD>(json_mission_item["command"].asInt());
@@ -1040,17 +1042,19 @@ Mission::Result MissionImpl::import_simple_mission_item(
             params.push_back(p.asDouble());
         }
     }
-    return build_mission_items(command, params, new_mission_item, all_mission_items);            
+    return build_mission_items(command, params, new_mission_item, all_mission_items);
 }
 
 Mission::Result MissionImpl::import_complex_mission_item(
-        std::vector<Mission::MissionItem>& all_mission_items, const Json::Value& json_complex_mission_item, MissionItem& new_mission_item)
+    std::vector<Mission::MissionItem>& all_mission_items,
+    const Json::Value& json_complex_mission_item,
+    MissionItem& new_mission_item)
 {
-    if(json_complex_mission_item["TransectStyleComplexItem"].isNull()){
-        LogWarn() << "Unknown complex item type (" << json_complex_mission_item["complexItemType"] << ")";
+    if (json_complex_mission_item["TransectStyleComplexItem"].isNull()) {
+        LogWarn() << "Unknown complex item type (" << json_complex_mission_item["complexItemType"]
+                  << ")";
         return Mission::Result::UnsupportedMissionCmd;
     }
-
 
     Json::Value complex_item = json_complex_mission_item["TransectStyleComplexItem"];
     for (auto& json_mission_item : complex_item["Items"]) {
@@ -1075,11 +1079,13 @@ Mission::Result MissionImpl::import_mission_items(
 
         // Check if mission item is complex (like a survey from qgc) or a simple item
         Json::Value type = json_mission_item["type"];
-        
+
         if (!type.isNull() && type.asString() == "ComplexItem") {
-            result = import_complex_mission_item(all_mission_items, json_mission_item, new_mission_item);
+            result =
+                import_complex_mission_item(all_mission_items, json_mission_item, new_mission_item);
         } else {
-            result = import_simple_mission_item(all_mission_items, json_mission_item, new_mission_item);
+            result =
+                import_simple_mission_item(all_mission_items, json_mission_item, new_mission_item);
         }
 
         if (result != Mission::Result::Success) {
