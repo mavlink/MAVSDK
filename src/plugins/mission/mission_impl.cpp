@@ -1044,15 +1044,15 @@ Mission::Result MissionImpl::import_simple_mission_item(
 }
 
 Mission::Result MissionImpl::import_complex_mission_item(
-        std::vector<Mission::MissionItem>& all_mission_items, const Json::Value& json_mission_item, MissionItem& new_mission_item)
+        std::vector<Mission::MissionItem>& all_mission_items, const Json::Value& json_complex_mission_item, MissionItem& new_mission_item)
 {
-    if(json_mission_item["TransectStyleComplexItem"].isNull()){
-        LogWarn() << "Unknown complex item type (" << json_mission_item["complexItemType"] << ")";
+    if(json_complex_mission_item["TransectStyleComplexItem"].isNull()){
+        LogWarn() << "Unknown complex item type (" << json_complex_mission_item["complexItemType"] << ")";
         return Mission::Result::UnsupportedMissionCmd;
     }
 
 
-    Json::Value complex_item = json_mission_item["TransectStyleComplexItem"];
+    Json::Value complex_item = json_complex_mission_item["TransectStyleComplexItem"];
     for (auto& json_mission_item : complex_item["Items"]) {
         Mission::Result result =
             import_simple_mission_item(all_mission_items, json_mission_item, new_mission_item);
