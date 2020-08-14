@@ -24,6 +24,8 @@
 #include "info/info_service_impl.h"
 #include "plugins/log_files/log_files.h"
 #include "log_files/log_files_service_impl.h"
+#include "plugins/manual_control/manual_control.h"
+#include "manual_control/manual_control_service_impl.h"
 #include "plugins/mission/mission.h"
 #include "mission/mission_service_impl.h"
 #include "plugins/mission_raw/mission_raw.h"
@@ -68,6 +70,8 @@ public:
         _info_service(_info),
         _log_files(_dc.system()),
         _log_files_service(_log_files),
+        _manual_control(_dc.system()),
+        _manual_control_service(_manual_control),
         _mission(_dc.system()),
         _mission_service(_mission),
         _mission_raw(_dc.system()),
@@ -114,6 +118,8 @@ private:
     InfoServiceImpl<> _info_service;
     LogFiles _log_files;
     LogFilesServiceImpl<> _log_files_service;
+    ManualControl _manual_control;
+    ManualControlServiceImpl<> _manual_control_service;
     Mission _mission;
     MissionServiceImpl<> _mission_service;
     MissionRaw _mission_raw;
