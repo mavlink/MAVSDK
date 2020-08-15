@@ -124,14 +124,30 @@ uint8_t Mavsdk::Configuration::get_system_id() const
     return _system_id;
 }
 
+void Mavsdk::Configuration::set_system_id(uint8_t system_id)
+{
+    _system_id = system_id;
+}
+
 uint8_t Mavsdk::Configuration::get_component_id() const
 {
     return _component_id;
+}
+
+void Mavsdk::Configuration::set_component_id(uint8_t component_id)
+{
+    _component_id = component_id;
 }
 
 Mavsdk::Configuration::UsageType Mavsdk::Configuration::get_usage_type() const
 {
     return _usage_type;
 }
+
+void Mavsdk::Configuration::set_usage_type(Mavsdk::Configuration::UsageType usage_type)
+{
+    _usage_type = usage_type;
+}
+
 
 } // namespace mavsdk
