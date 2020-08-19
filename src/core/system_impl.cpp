@@ -108,6 +108,11 @@ void SystemImpl::unregister_timeout_handler(const void* cookie)
     _parent.timeout_handler.remove(cookie);
 }
 
+void SystemImpl::enable_timesync()
+{
+    _timesync.enable();
+}
+
 void SystemImpl::process_mavlink_message(mavlink_message_t& message)
 {
     // This is a low level interface where incoming messages can be tampered

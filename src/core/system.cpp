@@ -57,4 +57,9 @@ void System::register_component_discovered_callback(discover_callback_t callback
     return _system_impl->register_component_discovered_callback(callback);
 }
 
+void System::enable_timesync()
+{
+    _system_impl->enable_timesync();
+}
+
 } // namespace mavsdk
