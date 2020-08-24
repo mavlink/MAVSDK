@@ -1056,6 +1056,11 @@ Mission::Result MissionImpl::import_complex_mission_item(
         return Mission::Result::UnsupportedMissionCmd;
     }
 
+    // QGC supports more complex mission items than simple waypoints.
+    // Surveys and coridor scans (NOT structure scans) are stored in a so called "TransectStyleComplexItem" item inside the mission_items array.
+    // These ComplexItems also contain an array ("Items") which contains waypoints.
+    // It is used by GQC to keep survey parameters so one can edit it as a survey after importing.
+    // Structure scans are not supported as thes do not contain simple mission items.
     Json::Value complex_item = json_complex_mission_item["TransectStyleComplexItem"];
     for (auto& json_mission_item : complex_item["Items"]) {
         Mission::Result result =
