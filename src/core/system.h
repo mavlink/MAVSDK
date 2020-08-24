@@ -98,6 +98,11 @@ public:
     void register_component_discovered_callback(discover_callback_t callback) const;
 
     /**
+     * @brief Enable time synchronization using the TIMESYNC messages.
+     */
+    void enable_timesync();
+
+    /**
      * @brief Copy constructor (object is not copyable).
      */
     System(const System&) = delete;

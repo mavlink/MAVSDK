@@ -53,6 +53,8 @@ public:
         MavsdkImpl& parent, uint8_t system_id, uint8_t component_id, bool connected);
     ~SystemImpl();
 
+    void enable_timesync();
+
     void process_mavlink_message(mavlink_message_t& message);
 
     typedef std::function<void(const mavlink_message_t&)> mavlink_message_handler_t;
@@ -231,7 +233,6 @@ public:
     const SystemImpl& operator=(const SystemImpl&) = delete;
 
 private:
-    // Helper methods added to increase readablity
     static bool is_autopilot(uint8_t comp_id);
     static bool is_camera(uint8_t comp_id);
 

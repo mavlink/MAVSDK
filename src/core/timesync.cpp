@@ -6,21 +6,28 @@
 
 namespace mavsdk {
 
-Timesync::Timesync(SystemImpl& parent) : _parent(parent)
-{
-    using namespace std::placeholders; // for `_1`
-
-    _parent.register_mavlink_message_handler(
-        MAVLINK_MSG_ID_TIMESYNC, std::bind(&Timesync::process_timesync, this, _1), this);
-}
+Timesync::Timesync(SystemImpl& parent) : _parent(parent) {}
 
 Timesync::~Timesync()
 {
     _parent.unregister_all_mavlink_message_handlers(this);
 }
 
+void Timesync::enable()
+{
+    _is_enabled = true;
+    _parent.register_mavlink_message_handler(
+        MAVLINK_MSG_ID_TIMESYNC,
+        std::bind(&Timesync::process_timesync, this, std::placeholders::_1),
+        this);
+}
+
 void Timesync::do_work()
 {
+    if (!_is_enabled) {
+        return;
+    }
+
     if (_parent.get_time().elapsed_since_s(_last_time) >= _TIMESYNC_SEND_INTERVAL_S) {
         if (_parent.is_connected()) {
             uint64_t now_ns = std::chrono::duration_cast<std::chrono::nanoseconds>(
