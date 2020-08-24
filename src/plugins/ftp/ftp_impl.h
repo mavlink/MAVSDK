@@ -151,6 +151,12 @@ private:
         uint8_t stream_target_system_id{0};
         unsigned stream_chunk_transmitted{0};
     };
+
+    struct OfstreamWithPath {
+        std::ofstream stream;
+        std::string path;
+    };
+
     struct SessionInfo _session_info {}; ///< Session info, fd=-1 for no active session
 
     uint8_t _network_id = 0;
@@ -167,8 +173,8 @@ private:
     uint32_t _last_command_retries = 0;
     std::string _last_path{};
     uint16_t _seq_number = 0;
-    std::shared_ptr<std::ifstream> _ifstream{};
-    std::shared_ptr<std::ofstream> _ofstream{};
+    std::unique_ptr<std::ifstream> _ifstream{};
+    std::unique_ptr<OfstreamWithPath> _ofstream{};
     bool _session_valid = false;
     uint8_t _session = 0;
     ServerResult _session_result = ServerResult::SUCCESS;
@@ -201,7 +207,7 @@ private:
         Opcode opcode, uint32_t offset, const std::string& path, Ftp::ResultCallback callback);
     void _read();
     void _write();
-    void _end_read_session();
+    void _end_read_session(bool delete_file = false);
     void _end_write_session();
     void _terminate_session();
     void _send_mavlink_ftp_message(uint8_t* raw_payload);

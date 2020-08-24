@@ -70,8 +70,8 @@ void FtpImpl::_process_ack(PayloadHeader* payload)
             break;
 
         case CMD_READ_FILE:
-            _ofstream->write(reinterpret_cast<const char*>(payload->data), payload->size);
-            if (!*_ofstream) {
+            _ofstream->stream.write(reinterpret_cast<const char*>(payload->data), payload->size);
+            if (!(_ofstream->stream)) {
                 _session_result = ServerResult::ERR_FILE_IO_ERROR;
                 _end_read_session();
                 return;
@@ -174,7 +174,8 @@ void FtpImpl::_process_nak(ServerResult result)
         case CMD_READ_FILE:
             _session_result = result;
             if (_session_valid) {
-                _end_read_session();
+                const bool delete_file = (result == ServerResult::ERR_FAIL_FILE_DOES_NOT_EXIST);
+                _end_read_session(delete_file);
             } else {
                 _stop_timer();
                 _call_op_result_callback(_session_result);
@@ -313,9 +314,9 @@ void FtpImpl::download_async(
 
     std::string local_path = local_folder + path_separator + fs_filename(remote_path);
 
-    _ofstream =
-        std::make_shared<std::ofstream>(local_path, std::fstream::trunc | std::fstream::binary);
-    if (!*_ofstream) {
+    _ofstream.reset(new OfstreamWithPath{
+        std::ofstream(local_path, std::fstream::trunc | std::fstream::binary), local_path});
+    if (!_ofstream->stream) {
         _end_read_session();
         Ftp::ProgressData empty{};
         callback(Ftp::Result::FileIoError, empty);
@@ -332,12 +333,17 @@ void FtpImpl::download_async(
     _generic_command_async(CMD_OPEN_FILE_RO, 0, remote_path, result_callback);
 }
 
-void FtpImpl::_end_read_session()
+void FtpImpl::_end_read_session(bool delete_file)
 {
     _curr_op = CMD_NONE;
-    if (_ofstream) {
-        _ofstream->close();
-        _ofstream = nullptr;
+    if (_ofstream->stream) {
+        _ofstream->stream.close();
+
+        if (delete_file) {
+            fs_remove(_ofstream->path);
+        }
+
+        _ofstream.reset(nullptr);
     }
     _terminate_session();
 }
@@ -378,7 +384,7 @@ void FtpImpl::upload_async(
         return;
     }
 
-    _ifstream = std::make_shared<std::ifstream>(local_file_path, std::fstream::binary);
+    _ifstream.reset(new std::ifstream(local_file_path, std::fstream::binary));
     if (!*_ifstream) {
         _end_write_session();
         Ftp::ProgressData empty{};
