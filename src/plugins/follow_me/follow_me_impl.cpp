@@ -337,7 +337,6 @@ void FollowMeImpl::process_heartbeat(const mavlink_message_t& message)
         } else if (follow_me_active && _mode == Mode::NOT_ACTIVE) {
             // We're in FollowMe mode now
             _mode = Mode::ACTIVE;
-            _mutex.unlock(); // we must unlock to avoid deadlock in send_target_location()
             return;
         }
     }
