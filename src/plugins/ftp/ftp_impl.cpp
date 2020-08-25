@@ -70,8 +70,8 @@ void FtpImpl::_process_ack(PayloadHeader* payload)
             break;
 
         case CMD_READ_FILE:
-            _ofstream->stream.write(reinterpret_cast<const char*>(payload->data), payload->size);
-            if (!(_ofstream->stream)) {
+            _ofstream.stream.write(reinterpret_cast<const char*>(payload->data), payload->size);
+            if (!_ofstream.stream) {
                 _session_result = ServerResult::ERR_FILE_IO_ERROR;
                 _end_read_session();
                 return;
@@ -314,9 +314,9 @@ void FtpImpl::download_async(
 
     std::string local_path = local_folder + path_separator + fs_filename(remote_path);
 
-    _ofstream.reset(new OfstreamWithPath{
-        std::ofstream(local_path, std::fstream::trunc | std::fstream::binary), local_path});
-    if (!_ofstream->stream) {
+    _ofstream.stream.open(local_path, std::fstream::trunc | std::fstream::binary);
+    _ofstream.path = local_path;
+    if (!_ofstream.stream) {
         _end_read_session();
         Ftp::ProgressData empty{};
         callback(Ftp::Result::FileIoError, empty);
@@ -336,14 +336,12 @@ void FtpImpl::download_async(
 void FtpImpl::_end_read_session(bool delete_file)
 {
     _curr_op = CMD_NONE;
-    if (_ofstream->stream) {
-        _ofstream->stream.close();
+    if (_ofstream.stream.is_open()) {
+        _ofstream.stream.close();
 
         if (delete_file) {
-            fs_remove(_ofstream->path);
+            fs_remove(_ofstream.path);
         }
-
-        _ofstream.reset(nullptr);
     }
     _terminate_session();
 }
@@ -384,8 +382,8 @@ void FtpImpl::upload_async(
         return;
     }
 
-    _ifstream.reset(new std::ifstream(local_file_path, std::fstream::binary));
-    if (!*_ifstream) {
+    _ifstream.open(local_file_path, std::fstream::binary);
+    if (!_ifstream) {
         _end_write_session();
         Ftp::ProgressData empty{};
         callback(Ftp::Result::FileIoError, empty);
@@ -409,8 +407,7 @@ void FtpImpl::_end_write_session()
 {
     _curr_op = CMD_NONE;
     if (_ifstream) {
-        _ifstream->close();
-        _ifstream = nullptr;
+        _ifstream.close();
     }
     _terminate_session();
 }
@@ -429,8 +426,8 @@ void FtpImpl::_write()
     payload->session = _session;
     payload->opcode = _curr_op = CMD_WRITE_FILE;
     payload->offset = _bytes_transferred;
-    int bytes_read = _ifstream->readsome(reinterpret_cast<char*>(payload->data), max_data_length);
-    if (!*_ifstream) {
+    int bytes_read = _ifstream.readsome(reinterpret_cast<char*>(payload->data), max_data_length);
+    if (!_ifstream) {
         _end_write_session();
         _call_op_result_callback(ServerResult::ERR_FILE_IO_ERROR);
         return;
