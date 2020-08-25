@@ -15,6 +15,9 @@ FollowMeImpl::FollowMeImpl(System& system) : PluginImplBase(system)
 
 FollowMeImpl::~FollowMeImpl()
 {
+    if (_target_location_cookie) {
+        _parent->remove_call_every(_target_location_cookie);
+    }
     _parent->unregister_plugin(this);
 }
 
