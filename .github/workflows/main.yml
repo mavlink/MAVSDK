@@ -44,7 +44,7 @@ jobs:
         with:
           submodules: recursive
       - name: install
-        run: sudo apt-get install -y libjsoncpp-dev libcurl4-openssl-dev libtinyxml2-dev
+        run: sudo apt-get update && sudo apt-get install -y libjsoncpp-dev libcurl4-openssl-dev libtinyxml2-dev
       - name: configure
         run: cmake -DCMAKE_BUILD_TYPE=Release -DSUPERBUILD=OFF -j 2 -Bbuild/release -H.
       - name: build
@@ -300,7 +300,7 @@ jobs:
           submodules: recursive
           fetch-depth: 0
       - name: Install lcov
-        run: sudo apt-get install -y build-essential debhelper fakeroot libjsoncpp-dev libcurl4-openssl-dev libtinyxml2-dev libjsoncpp1 libcurl4 libtinyxml2-6a
+        run: sudo apt-get update && sudo apt-get install -y build-essential debhelper fakeroot libjsoncpp-dev libcurl4-openssl-dev libtinyxml2-dev libjsoncpp1 libcurl4 libtinyxml2-6a
       - name: Generate changelog
         run: ./tools/generate_debian_changelog.sh > debian/changelog
       - name: Build package
