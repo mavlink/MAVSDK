@@ -48,7 +48,7 @@ private:
     void send_target_location();
     void stop_sending_target_location();
 
-    enum class EstimationCapabilites { POS, VEL };
+    enum class EstimationCapabilities { POS, VEL };
 
     enum class Mode { NOT_ACTIVE, ACTIVE } _mode = Mode::NOT_ACTIVE;
 
@@ -89,7 +89,7 @@ private:
     void* _target_location_cookie = nullptr;
 
     Time _time{};
-    uint8_t _estimatation_capabilities = 0; // sent to vehicle
+    uint8_t _estimation_capabilities = 0; // sent to vehicle
     FollowMe::Config _config{}; // has FollowMe configuration settings
 
     const float SENDER_RATE = 1.0f; // send location updates once in a second

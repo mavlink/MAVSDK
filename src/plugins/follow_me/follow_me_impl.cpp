@@ -136,7 +136,7 @@ FollowMe::Result FollowMeImpl::set_target_location(const FollowMe::TargetLocatio
     _mutex.lock();
     _target_location = location;
     // We're interested only in lat, long.
-    _estimatation_capabilities |= (1 << static_cast<int>(EstimationCapabilites::POS));
+    _estimation_capabilities |= (1 << static_cast<int>(EstimationCapabilities::POS));
 
     if (_mode != Mode::ACTIVE) {
         _mutex.unlock();
@@ -283,7 +283,7 @@ void FollowMeImpl::send_target_location()
         _parent->get_own_component_id(),
         &msg,
         elapsed_msec,
-        _estimatation_capabilities,
+        _estimation_capabilities,
         lat_int,
         lon_int,
         alt,
