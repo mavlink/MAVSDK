@@ -28,6 +28,7 @@ int GRPCServer::run()
     builder.RegisterService(&_gimbal_service);
     builder.RegisterService(&_info_service);
     builder.RegisterService(&_log_files_service);
+    builder.RegisterService(&_manual_control_service);
     builder.RegisterService(&_mission_service);
     builder.RegisterService(&_mission_raw_service);
     builder.RegisterService(&_mocap_service);
@@ -71,6 +72,7 @@ void GRPCServer::stop()
         _gimbal_service.stop();
         _info_service.stop();
         _log_files_service.stop();
+        _manual_control_service.stop();
         _mission_service.stop();
         _mission_raw_service.stop();
         _mocap_service.stop();
