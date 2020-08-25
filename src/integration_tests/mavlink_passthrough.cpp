@@ -1,4 +1,3 @@
-#include <atomic>
 #include <iostream>
 #include <future>
 #include "log.h"
@@ -48,19 +47,19 @@ TEST_F(SitlTest, MavlinkPassthrough)
     }
 
     {
-        std::atomic<unsigned> counter{0};
+        std::shared_ptr<unsigned> counter{0};
 
         mavlink_passthrough->subscribe_message_async(
-            MAVLINK_MSG_ID_HIGHRES_IMU, [&counter](const mavlink_message_t& message) {
+            MAVLINK_MSG_ID_HIGHRES_IMU, [counter](const mavlink_message_t& message) {
                 mavlink_highres_imu_t highres_imu;
                 mavlink_msg_highres_imu_decode(&message, &highres_imu);
 
                 LogInfo() << "HIGHRES_IMU.temperature [1] (" << counter << ")"
                           << highres_imu.temperature << " degrees C";
-                ++counter;
+                ++(*counter);
             });
 
         std::this_thread::sleep_for(std::chrono::seconds(3));
-        EXPECT_GT(counter, 100);
+        EXPECT_GT(*counter, 100);
     }
 }
