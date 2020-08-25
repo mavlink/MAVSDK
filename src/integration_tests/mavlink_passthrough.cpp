@@ -47,7 +47,7 @@ TEST_F(SitlTest, MavlinkPassthrough)
     }
 
     {
-        std::shared_ptr<unsigned> counter{0};
+        auto counter = std::make_shared<unsigned>(0);
 
         mavlink_passthrough->subscribe_message_async(
             MAVLINK_MSG_ID_HIGHRES_IMU, [counter](const mavlink_message_t& message) {
