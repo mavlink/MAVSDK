@@ -145,7 +145,6 @@ FollowMe::Result FollowMeImpl::set_target_location(const FollowMe::TargetLocatio
     // If set already, reschedule it.
     if (_target_location_cookie) {
         _parent->reset_call_every(_target_location_cookie);
-        _target_location_cookie = nullptr;
     } else {
         // Register now for sending in the next cycle.
         _parent->add_call_every(
