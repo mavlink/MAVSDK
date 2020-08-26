@@ -302,6 +302,7 @@ private:
     std::mutex _connection_mutex{};
     bool _connected{false};
     void* _heartbeat_timeout_cookie = nullptr;
+    void* _heartbeat_send_cookie = nullptr;
 
     std::atomic<bool> _autopilot_version_pending{false};
     void* _autopilot_version_timed_out_cookie = nullptr;

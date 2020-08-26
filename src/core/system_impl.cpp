@@ -263,16 +263,7 @@ void SystemImpl::heartbeats_timed_out()
 
 void SystemImpl::system_thread()
 {
-    dl_time_t last_time{};
-
     while (!_should_exit) {
-        if (_parent.is_connected()) {
-            if (_time.elapsed_since_s(last_time) >= SystemImpl::_HEARTBEAT_SEND_INTERVAL_S) {
-                send_heartbeat();
-                last_time = _time.steady_time();
-            }
-        }
-
         _call_every_handler.run_once();
         _params.do_work();
         _commands.do_work();
@@ -525,6 +516,14 @@ void SystemImpl::set_connected()
             _parent.notify_on_discover(_uuid);
             _connected = true;
 
+            // Send a heartbeat back immediately.
+            send_heartbeat();
+            // And then schedule sending one at a fixed interval.
+            add_call_every(
+                [this]() { send_heartbeat(); },
+                SystemImpl::_HEARTBEAT_SEND_INTERVAL_S,
+                &_heartbeat_send_cookie);
+
             if (!_always_connected) {
                 register_timeout_handler(
                     std::bind(&SystemImpl::heartbeats_timed_out, this),
@@ -559,6 +558,8 @@ void SystemImpl::set_disconnected()
         _connected = false;
         _parent.notify_on_timeout(_uuid);
     }
+
+    remove_call_every(_heartbeat_send_cookie);
 
     {
         std::lock_guard<std::mutex> lock(_plugin_impls_mutex);
