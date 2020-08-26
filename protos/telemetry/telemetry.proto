@@ -486,9 +486,14 @@ message RcStatus {
 
 // Status types.
 enum StatusTextType {
-    STATUS_TEXT_TYPE_INFO = 0; // Information or other
-    STATUS_TEXT_TYPE_WARNING = 1; // Warning
-    STATUS_TEXT_TYPE_CRITICAL = 2; // Critical
+    STATUS_TEXT_TYPE_DEBUG = 0; // Debug
+    STATUS_TEXT_TYPE_INFO = 1; // Information
+    STATUS_TEXT_TYPE_NOTICE = 2; // Notice
+    STATUS_TEXT_TYPE_WARNING = 3; // Warning
+    STATUS_TEXT_TYPE_ERROR = 4; // Error
+    STATUS_TEXT_TYPE_CRITICAL = 5; // Critical
+    STATUS_TEXT_TYPE_ALERT = 6; // Alert
+    STATUS_TEXT_TYPE_EMERGENCY = 7; // Emergency
 }
 
 // StatusText information type.
