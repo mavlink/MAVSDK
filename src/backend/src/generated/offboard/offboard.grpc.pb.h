@@ -119,7 +119,7 @@ class OffboardService final {
       return std::unique_ptr< ::grpc::ClientAsyncResponseReaderInterface< ::mavsdk::rpc::offboard::SetPositionNedResponse>>(PrepareAsyncSetPositionNedRaw(context, request, cq));
     }
     //
-    // Set the velocity in body coordinates and yaw angular rate.
+    // Set the velocity in body coordinates and yaw angular rate. Not available for fixed-wing aircraft.
     virtual ::grpc::Status SetVelocityBody(::grpc::ClientContext* context, const ::mavsdk::rpc::offboard::SetVelocityBodyRequest& request, ::mavsdk::rpc::offboard::SetVelocityBodyResponse* response) = 0;
     std::unique_ptr< ::grpc::ClientAsyncResponseReaderInterface< ::mavsdk::rpc::offboard::SetVelocityBodyResponse>> AsyncSetVelocityBody(::grpc::ClientContext* context, const ::mavsdk::rpc::offboard::SetVelocityBodyRequest& request, ::grpc::CompletionQueue* cq) {
       return std::unique_ptr< ::grpc::ClientAsyncResponseReaderInterface< ::mavsdk::rpc::offboard::SetVelocityBodyResponse>>(AsyncSetVelocityBodyRaw(context, request, cq));
@@ -128,7 +128,7 @@ class OffboardService final {
       return std::unique_ptr< ::grpc::ClientAsyncResponseReaderInterface< ::mavsdk::rpc::offboard::SetVelocityBodyResponse>>(PrepareAsyncSetVelocityBodyRaw(context, request, cq));
     }
     //
-    // Set the velocity in NED coordinates and yaw.
+    // Set the velocity in NED coordinates and yaw. Not available for fixed-wing aircraft.
     virtual ::grpc::Status SetVelocityNed(::grpc::ClientContext* context, const ::mavsdk::rpc::offboard::SetVelocityNedRequest& request, ::mavsdk::rpc::offboard::SetVelocityNedResponse* response) = 0;
     std::unique_ptr< ::grpc::ClientAsyncResponseReaderInterface< ::mavsdk::rpc::offboard::SetVelocityNedResponse>> AsyncSetVelocityNed(::grpc::ClientContext* context, const ::mavsdk::rpc::offboard::SetVelocityNedRequest& request, ::grpc::CompletionQueue* cq) {
       return std::unique_ptr< ::grpc::ClientAsyncResponseReaderInterface< ::mavsdk::rpc::offboard::SetVelocityNedResponse>>(AsyncSetVelocityNedRaw(context, request, cq));
@@ -246,7 +246,7 @@ class OffboardService final {
       virtual void SetPositionNed(::grpc::ClientContext* context, const ::grpc::ByteBuffer* request, ::mavsdk::rpc::offboard::SetPositionNedResponse* response, ::grpc::experimental::ClientUnaryReactor* reactor) = 0;
       #endif
       //
-      // Set the velocity in body coordinates and yaw angular rate.
+      // Set the velocity in body coordinates and yaw angular rate. Not available for fixed-wing aircraft.
       virtual void SetVelocityBody(::grpc::ClientContext* context, const ::mavsdk::rpc::offboard::SetVelocityBodyRequest* request, ::mavsdk::rpc::offboard::SetVelocityBodyResponse* response, std::function<void(::grpc::Status)>) = 0;
       virtual void SetVelocityBody(::grpc::ClientContext* context, const ::grpc::ByteBuffer* request, ::mavsdk::rpc::offboard::SetVelocityBodyResponse* response, std::function<void(::grpc::Status)>) = 0;
       #ifdef GRPC_CALLBACK_API_NONEXPERIMENTAL
@@ -260,7 +260,7 @@ class OffboardService final {
       virtual void SetVelocityBody(::grpc::ClientContext* context, const ::grpc::ByteBuffer* request, ::mavsdk::rpc::offboard::SetVelocityBodyResponse* response, ::grpc::experimental::ClientUnaryReactor* reactor) = 0;
       #endif
       //
-      // Set the velocity in NED coordinates and yaw.
+      // Set the velocity in NED coordinates and yaw. Not available for fixed-wing aircraft.
       virtual void SetVelocityNed(::grpc::ClientContext* context, const ::mavsdk::rpc::offboard::SetVelocityNedRequest* request, ::mavsdk::rpc::offboard::SetVelocityNedResponse* response, std::function<void(::grpc::Status)>) = 0;
       virtual void SetVelocityNed(::grpc::ClientContext* context, const ::grpc::ByteBuffer* request, ::mavsdk::rpc::offboard::SetVelocityNedResponse* response, std::function<void(::grpc::Status)>) = 0;
       #ifdef GRPC_CALLBACK_API_NONEXPERIMENTAL
@@ -553,10 +553,10 @@ class OffboardService final {
     // Set the position in NED coordinates and yaw.
     virtual ::grpc::Status SetPositionNed(::grpc::ServerContext* context, const ::mavsdk::rpc::offboard::SetPositionNedRequest* request, ::mavsdk::rpc::offboard::SetPositionNedResponse* response);
     //
-    // Set the velocity in body coordinates and yaw angular rate.
+    // Set the velocity in body coordinates and yaw angular rate. Not available for fixed-wing aircraft.
     virtual ::grpc::Status SetVelocityBody(::grpc::ServerContext* context, const ::mavsdk::rpc::offboard::SetVelocityBodyRequest* request, ::mavsdk::rpc::offboard::SetVelocityBodyResponse* response);
     //
-    // Set the velocity in NED coordinates and yaw.
+    // Set the velocity in NED coordinates and yaw. Not available for fixed-wing aircraft.
     virtual ::grpc::Status SetVelocityNed(::grpc::ServerContext* context, const ::mavsdk::rpc::offboard::SetVelocityNedRequest* request, ::mavsdk::rpc::offboard::SetVelocityNedResponse* response);
   };
   template <class BaseClass>
