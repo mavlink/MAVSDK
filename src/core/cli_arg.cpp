@@ -111,7 +111,6 @@ bool CliArg::find_path(std::string& rest)
                     _path = "";
                     return false;
                 }
-            _path = "\\\\.\\" + _path;
             }
         } else {
             LogWarn() << "Invalid serial path";

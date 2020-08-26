@@ -15,6 +15,9 @@ FollowMeImpl::FollowMeImpl(System& system) : PluginImplBase(system)
 
 FollowMeImpl::~FollowMeImpl()
 {
+    if (_target_location_cookie) {
+        _parent->remove_call_every(_target_location_cookie);
+    }
     _parent->unregister_plugin(this);
 }
 
@@ -136,7 +139,7 @@ FollowMe::Result FollowMeImpl::set_target_location(const FollowMe::TargetLocatio
     _mutex.lock();
     _target_location = location;
     // We're interested only in lat, long.
-    _estimatation_capabilities |= (1 << static_cast<int>(EstimationCapabilites::POS));
+    _estimation_capabilities |= (1 << static_cast<int>(EstimationCapabilities::POS));
 
     if (_mode != Mode::ACTIVE) {
         _mutex.unlock();
@@ -145,9 +148,8 @@ FollowMe::Result FollowMeImpl::set_target_location(const FollowMe::TargetLocatio
     // If set already, reschedule it.
     if (_target_location_cookie) {
         _parent->reset_call_every(_target_location_cookie);
-        _target_location_cookie = nullptr;
     } else {
-        // Regiter now for sending in the next cycle.
+        // Register now for sending in the next cycle.
         _parent->add_call_every(
             [this]() { send_target_location(); }, SENDER_RATE, &_target_location_cookie);
     }
@@ -283,7 +285,7 @@ void FollowMeImpl::send_target_location()
         _parent->get_own_component_id(),
         &msg,
         elapsed_msec,
-        _estimatation_capabilities,
+        _estimation_capabilities,
         lat_int,
         lon_int,
         alt,
@@ -337,7 +339,6 @@ void FollowMeImpl::process_heartbeat(const mavlink_message_t& message)
         } else if (follow_me_active && _mode == Mode::NOT_ACTIVE) {
             // We're in FollowMe mode now
             _mode = Mode::ACTIVE;
-            _mutex.unlock(); // we must unlock to avoid deadlock in send_target_location()
             return;
         }
     }

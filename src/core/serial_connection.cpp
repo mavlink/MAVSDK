@@ -93,8 +93,11 @@ ConnectionResult SerialConnection::setup_port()
         return ConnectionResult::ConnectionError;
     }
 #elif defined(WINDOWS)
+    // Required for COM ports > 9.
+    const auto full_serial_path = "\\\\.\\" + _serial_node;
+
     _handle = CreateFile(
-        _serial_node.c_str(),
+        full_serial_path.c_str(),
         GENERIC_READ | GENERIC_WRITE,
         0, // exclusive-access
         NULL, //  default security attributes

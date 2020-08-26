@@ -21,6 +21,7 @@ void MavlinkPassthroughImpl::deinit()
 {
     _parent->intercept_incoming_messages(nullptr);
     _parent->intercept_outgoing_messages(nullptr);
+    _parent->unregister_all_mavlink_message_handlers(this);
 }
 
 void MavlinkPassthroughImpl::enable() {}
