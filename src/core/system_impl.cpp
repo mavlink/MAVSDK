@@ -266,11 +266,11 @@ void SystemImpl::system_thread()
     dl_time_t last_time{};
 
     while (!_should_exit) {
-        if (_time.elapsed_since_s(last_time) >= SystemImpl::_HEARTBEAT_SEND_INTERVAL_S) {
-            if (_parent.is_connected()) {
+        if (_parent.is_connected()) {
+            if (_time.elapsed_since_s(last_time) >= SystemImpl::_HEARTBEAT_SEND_INTERVAL_S) {
                 send_heartbeat();
+                last_time = _time.steady_time();
             }
-            last_time = _time.steady_time();
         }
 
         _call_every_handler.run_once();
