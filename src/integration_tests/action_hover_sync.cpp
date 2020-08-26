@@ -46,13 +46,14 @@ void takeoff_and_hover_at_altitude(float altitude_m)
         [telemetry]() { return telemetry->health_all_ok(); }, std::chrono::seconds(10)));
 
     auto action = std::make_shared<Action>(system);
-    Action::Result action_ret = action->arm();
-    EXPECT_EQ(action_ret, Action::Result::Success);
 
     EXPECT_EQ(Action::Result::Success, action->set_takeoff_altitude(altitude_m));
     auto takeoff_altitude_result = action->get_takeoff_altitude();
     EXPECT_EQ(takeoff_altitude_result.first, Action::Result::Success);
     EXPECT_FLOAT_EQ(takeoff_altitude_result.second, altitude_m);
+
+    Action::Result action_ret = action->arm();
+    EXPECT_EQ(action_ret, Action::Result::Success);
 
     action_ret = action->takeoff();
     EXPECT_EQ(action_ret, Action::Result::Success);
