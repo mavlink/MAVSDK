@@ -96,7 +96,8 @@ void send_battery_status(std::shared_ptr<MavlinkPassthrough> mavlink_passthrough
         -1, // energy consumed hJ
         80, // battery_remaining %
         3600, // time_remaining
-        MAV_BATTERY_CHARGE_STATE_OK);
+        MAV_BATTERY_CHARGE_STATE_OK,
+        0); // voltages_ext
 
     mavlink_passthrough->send_message(message);
 }
