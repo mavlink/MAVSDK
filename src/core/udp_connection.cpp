@@ -142,9 +142,14 @@ bool UdpConnection::send_message(const mavlink_message_t& message)
              reinterpret_cast<const uint8_t*>(message.payload64)[entry->target_system_ofs] :
              0);
 
+    // Send the message to all the remotes. A remote is a UDP endpoint
+    // identified by its <ip, port>. This means that if we have two
+    // systems on two different endpoints, then messages directed towards
+    // only one system will be sent to both remotes. The systems are
+    // then expected to ignore messages that are not directed to them.
     bool send_successful = true;
     for (auto& remote : _remotes) {
-        if (target_system_id != 0 && remote.system_id != target_system_id) {
+        if (target_system_id != 0) {
             continue;
         }
 
@@ -187,7 +192,6 @@ void UdpConnection::add_remote_with_remote_sysid(
     Remote new_remote;
     new_remote.ip = remote_ip;
     new_remote.port_number = remote_port;
-    new_remote.system_id = remote_sysid;
 
     auto existing_remote =
         std::find_if(_remotes.begin(), _remotes.end(), [&new_remote](Remote& remote) {
@@ -196,7 +200,7 @@ void UdpConnection::add_remote_with_remote_sysid(
 
     if (existing_remote == _remotes.end()) {
         LogInfo() << "New system on: " << new_remote.ip << ":" << new_remote.port_number
-                  << " (with sysid: " << (int)new_remote.system_id << ")";
+                  << " (with sysid: " << (int)remote_sysid << ")";
         _remotes.push_back(new_remote);
     }
 }
@@ -240,24 +244,6 @@ void UdpConnection::receive()
 
             if (!saved_remote && sysid != 0) {
                 saved_remote = true;
-                {
-                    std::lock_guard<std::mutex> lock(_remote_mutex);
-                    Remote new_remote;
-                    new_remote.ip = inet_ntoa(src_addr.sin_addr);
-                    new_remote.port_number = ntohs(src_addr.sin_port);
-                    new_remote.system_id = sysid;
-
-                    auto existing_remote = std::find_if(
-                        _remotes.begin(), _remotes.end(), [&new_remote](Remote& remote) {
-                            return remote == new_remote;
-                        });
-
-                    if (existing_remote == _remotes.end()) {
-                        LogInfo() << "New system on: " << new_remote.ip << ":"
-                                  << new_remote.port_number;
-                        _remotes.push_back(new_remote);
-                    }
-                }
                 add_remote_with_remote_sysid(
                     inet_ntoa(src_addr.sin_addr), ntohs(src_addr.sin_port), sysid);
             }
