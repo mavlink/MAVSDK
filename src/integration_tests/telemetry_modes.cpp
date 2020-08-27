@@ -35,18 +35,18 @@ TEST_F(SitlTest, TelemetryFlightModes)
     EXPECT_EQ(action->takeoff(), Action::Result::Success);
 
     EXPECT_TRUE(poll_condition_with_timeout(
-        []() { return _flight_mode == Telemetry::FlightMode::Takeoff; }, std::chrono::seconds(10)));
+        []() { return _flight_mode == Telemetry::FlightMode::Takeoff; }, std::chrono::seconds(20)));
 
     EXPECT_TRUE(poll_condition_with_timeout(
-        []() { return _flight_mode == Telemetry::FlightMode::Hold; }, std::chrono::seconds(10)));
+        []() { return _flight_mode == Telemetry::FlightMode::Hold; }, std::chrono::seconds(20)));
 
     EXPECT_EQ(action->land(), Action::Result::Success);
 
     EXPECT_TRUE(poll_condition_with_timeout(
-        []() { return _flight_mode == Telemetry::FlightMode::Land; }, std::chrono::seconds(10)));
+        []() { return _flight_mode == Telemetry::FlightMode::Land; }, std::chrono::seconds(20)));
 
     EXPECT_TRUE(poll_condition_with_timeout(
-        [&telemetry]() { return !telemetry->armed(); }, std::chrono::seconds(10)));
+        [&telemetry]() { return !telemetry->armed(); }, std::chrono::seconds(20)));
 }
 
 void observe_mode(Telemetry::FlightMode flight_mode)
