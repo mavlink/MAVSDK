@@ -10,7 +10,7 @@ using namespace mavsdk;
 void observe_mode(Telemetry::FlightMode flight_mode);
 static std::atomic<Telemetry::FlightMode> _flight_mode{Telemetry::FlightMode::Unknown};
 
-TEST_F(SitlTest, TelemetryFlightModes)
+TEST(SitlTestDisabled, TelemetryFlightModes)
 {
     Mavsdk dc;
 
