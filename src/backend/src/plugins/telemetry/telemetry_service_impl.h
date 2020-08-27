@@ -171,12 +171,22 @@ public:
                 LogErr() << "Unknown status_text_type enum value: "
                          << static_cast<int>(status_text_type);
             // FALLTHROUGH
+            case mavsdk::Telemetry::StatusTextType::Debug:
+                return rpc::telemetry::STATUS_TEXT_TYPE_DEBUG;
             case mavsdk::Telemetry::StatusTextType::Info:
                 return rpc::telemetry::STATUS_TEXT_TYPE_INFO;
+            case mavsdk::Telemetry::StatusTextType::Notice:
+                return rpc::telemetry::STATUS_TEXT_TYPE_NOTICE;
             case mavsdk::Telemetry::StatusTextType::Warning:
                 return rpc::telemetry::STATUS_TEXT_TYPE_WARNING;
+            case mavsdk::Telemetry::StatusTextType::Error:
+                return rpc::telemetry::STATUS_TEXT_TYPE_ERROR;
             case mavsdk::Telemetry::StatusTextType::Critical:
                 return rpc::telemetry::STATUS_TEXT_TYPE_CRITICAL;
+            case mavsdk::Telemetry::StatusTextType::Alert:
+                return rpc::telemetry::STATUS_TEXT_TYPE_ALERT;
+            case mavsdk::Telemetry::StatusTextType::Emergency:
+                return rpc::telemetry::STATUS_TEXT_TYPE_EMERGENCY;
         }
     }
 
@@ -188,12 +198,22 @@ public:
                 LogErr() << "Unknown status_text_type enum value: "
                          << static_cast<int>(status_text_type);
             // FALLTHROUGH
+            case rpc::telemetry::STATUS_TEXT_TYPE_DEBUG:
+                return mavsdk::Telemetry::StatusTextType::Debug;
             case rpc::telemetry::STATUS_TEXT_TYPE_INFO:
                 return mavsdk::Telemetry::StatusTextType::Info;
+            case rpc::telemetry::STATUS_TEXT_TYPE_NOTICE:
+                return mavsdk::Telemetry::StatusTextType::Notice;
             case rpc::telemetry::STATUS_TEXT_TYPE_WARNING:
                 return mavsdk::Telemetry::StatusTextType::Warning;
+            case rpc::telemetry::STATUS_TEXT_TYPE_ERROR:
+                return mavsdk::Telemetry::StatusTextType::Error;
             case rpc::telemetry::STATUS_TEXT_TYPE_CRITICAL:
                 return mavsdk::Telemetry::StatusTextType::Critical;
+            case rpc::telemetry::STATUS_TEXT_TYPE_ALERT:
+                return mavsdk::Telemetry::StatusTextType::Alert;
+            case rpc::telemetry::STATUS_TEXT_TYPE_EMERGENCY:
+                return mavsdk::Telemetry::StatusTextType::Emergency;
         }
     }
 

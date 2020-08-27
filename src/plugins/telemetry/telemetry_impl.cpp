@@ -878,14 +878,29 @@ void TelemetryImpl::process_statustext(const mavlink_message_t& message)
     Telemetry::StatusTextType type;
 
     switch (statustext.severity) {
-        case MAV_SEVERITY_WARNING:
-            type = Telemetry::StatusTextType::Warning;
+        case MAV_SEVERITY_EMERGENCY:
+            type = Telemetry::StatusTextType::Emergency;
+            break;
+        case MAV_SEVERITY_ALERT:
+            type = Telemetry::StatusTextType::Alert;
             break;
         case MAV_SEVERITY_CRITICAL:
             type = Telemetry::StatusTextType::Critical;
             break;
+        case MAV_SEVERITY_ERROR:
+            type = Telemetry::StatusTextType::Error;
+            break;
+        case MAV_SEVERITY_WARNING:
+            type = Telemetry::StatusTextType::Warning;
+            break;
+        case MAV_SEVERITY_NOTICE:
+            type = Telemetry::StatusTextType::Notice;
+            break;
         case MAV_SEVERITY_INFO:
             type = Telemetry::StatusTextType::Info;
+            break;
+        case MAV_SEVERITY_DEBUG:
+            type = Telemetry::StatusTextType::Debug;
             break;
         default:
             LogWarn() << "Unknown StatusText severity";

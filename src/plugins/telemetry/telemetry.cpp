@@ -1071,12 +1071,22 @@ std::ostream& operator<<(std::ostream& str, Telemetry::FlightMode const& flight_
 std::ostream& operator<<(std::ostream& str, Telemetry::StatusTextType const& status_text_type)
 {
     switch (status_text_type) {
+        case Telemetry::StatusTextType::Debug:
+            return str << "Debug";
         case Telemetry::StatusTextType::Info:
             return str << "Info";
+        case Telemetry::StatusTextType::Notice:
+            return str << "Notice";
         case Telemetry::StatusTextType::Warning:
             return str << "Warning";
+        case Telemetry::StatusTextType::Error:
+            return str << "Error";
         case Telemetry::StatusTextType::Critical:
             return str << "Critical";
+        case Telemetry::StatusTextType::Alert:
+            return str << "Alert";
+        case Telemetry::StatusTextType::Emergency:
+            return str << "Emergency";
         default:
             return str << "Unknown";
     }
