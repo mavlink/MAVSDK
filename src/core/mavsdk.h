@@ -162,7 +162,7 @@ public:
          */
         uint8_t get_system_id() const;
 
-        /** 
+        /**
          * @brief Set the system id of this configuration.
          */
         void set_system_id(uint8_t system_id);
