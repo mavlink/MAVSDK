@@ -1,0 +1,7 @@
+#pragma once
+
+namespace mavsdk {
+
+constexpr auto mavsdk_version = "@version@";
+
+} // namespace mavsdk

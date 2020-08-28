@@ -1,0 +1,3 @@
+option('build_deps', type: 'boolean', value: true)
+option('build_backend', type: 'feature', value: 'enabled')
+option('build_shared_libs', type: 'boolean', value: true)
