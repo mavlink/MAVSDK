@@ -149,5 +149,4 @@ void Mavsdk::Configuration::set_usage_type(Mavsdk::Configuration::UsageType usag
     _usage_type = usage_type;
 }
 
-
 } // namespace mavsdk
