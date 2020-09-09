@@ -134,14 +134,6 @@ bool UdpConnection::send_message(const mavlink_message_t& message)
         return false;
     }
 
-    // Some messages have a target system set which allows to send it only
-    // on the matching link.
-    const mavlink_msg_entry_t* entry = mavlink_get_msg_entry(message.msgid);
-    const uint8_t target_system_id =
-        (entry && (entry->flags & MAV_MSG_ENTRY_FLAG_HAVE_TARGET_SYSTEM) ?
-             reinterpret_cast<const uint8_t*>(message.payload64)[entry->target_system_ofs] :
-             0);
-
     // Send the message to all the remotes. A remote is a UDP endpoint
     // identified by its <ip, port>. This means that if we have two
     // systems on two different endpoints, then messages directed towards
@@ -149,10 +141,6 @@ bool UdpConnection::send_message(const mavlink_message_t& message)
     // then expected to ignore messages that are not directed to them.
     bool send_successful = true;
     for (auto& remote : _remotes) {
-        if (target_system_id != 0) {
-            continue;
-        }
-
         struct sockaddr_in dest_addr {};
         dest_addr.sin_family = AF_INET;
 
