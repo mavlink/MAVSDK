@@ -19,9 +19,6 @@ class MavlinkPassthroughImpl;
  * "With great power comes great responsibility." - This plugin allows
  * you to send and receive MAVLink messages. There is no checking or
  * safe-guards, you're on your own, and you have been warned.
- *
- * @note This plugin is not included in the build by default. To add it
- *       `make ENABLE_MAVLINK_PASSTHROUGH=1` is required.
  */
 class MavlinkPassthrough : public PluginBase {
 public:
