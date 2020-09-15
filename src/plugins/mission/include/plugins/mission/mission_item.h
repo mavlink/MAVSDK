@@ -35,6 +35,10 @@ public:
 
     void set_transition_mode(MAV_VTOL_STATE mode);
 
+    void set_jump_item(float item);
+
+    void set_jump_repeat(float repeat);
+
     /**
      * @brief Set the position of a mission item.
      *

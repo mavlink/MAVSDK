@@ -15,6 +15,8 @@ public:
     void set_speed(float speed_m_s);
     void set_fly_through(bool fly_through);
     void set_transition_mode(MAV_VTOL_STATE mode);
+    void set_jump_item(float item);
+    void set_jump_repeat(float repeat);
     void set_acceptance_radius(float radius_m);
     void set_gimbal_pitch_and_yaw(float pitch_deg, float yaw_deg);
     void set_loiter_time(float loiter_time_s);
@@ -56,6 +58,8 @@ private:
     float _speed_m_s = NAN;
     bool _fly_through = false;
     MAV_VTOL_STATE _transition_mode = MAV_VTOL_STATE(MAV_VTOL_STATE_MC);
+    float _jump_item = 1;
+    float _jump_repeat = 1;
     float _acceptance_radius_m = NAN;
     float _gimbal_pitch_deg = NAN;
     float _gimbal_yaw_deg = NAN;

@@ -24,6 +24,16 @@ void MissionItemImpl::set_transition_mode(MAV_VTOL_STATE mode)
     _transition_mode  = mode;
 }
 
+void MissionItemImpl::set_jump_item(float item)
+{
+    _jump_item  = item;
+}
+
+void MissionItemImpl::set_jump_repeat(float repeat)
+{
+    _jump_repeat  = repeat;
+}
+
 void MissionItemImpl::set_position(double latitude_deg, double longitude_deg)
 {
     _latitude_deg = latitude_deg;
@@ -97,31 +107,39 @@ float MissionItemImpl::get_mavlink_param1() const
         LogDebug() << "returnint the transition mode:" << _transition_mode;
         return _transition_mode;
     }else{
-        if (_fly_through) {
-            hold_time_s = 0.0f;
-        } else {
-            hold_time_s = 0.5f;
+        if (_command == MAV_CMD_DO_JUMP) {
+            LogDebug() << "returnint the jump item id mode:" << _transition_mode;
+            return _jump_item;
+        }else{
+            if (_fly_through) {
+                hold_time_s = 0.0f;
+            } else {
+                hold_time_s = 0.5f;
+            }
+            return hold_time_s;
         }
 
-        return hold_time_s;
     }
-
-
 }
 
 float MissionItemImpl::get_mavlink_param2() const
 {
-    float acceptance_radius_m;
-    if (std::isfinite(_acceptance_radius_m)) {
-        acceptance_radius_m = _acceptance_radius_m;
-    } else if (_fly_through) {
-        // _acceptance_radius_m is 0, determine the radius using fly_through
-        acceptance_radius_m = 3.0f;
-    } else {
-        // _acceptance_radius_m is 0, determine the radius using fly_through
-        acceptance_radius_m = 1.0f;
-    }
 
+    float acceptance_radius_m;
+    if (_command == MAV_CMD_DO_JUMP) {
+        LogDebug() << "returnint the jump item repet:" << _transition_mode;
+        return _jump_repeat;
+    }else{
+        if (std::isfinite(_acceptance_radius_m)) {
+            acceptance_radius_m = _acceptance_radius_m;
+        } else if (_fly_through) {
+            // _acceptance_radius_m is 0, determine the radius using fly_through
+            acceptance_radius_m = 3.0f;
+        } else {
+            // _acceptance_radius_m is 0, determine the radius using fly_through
+            acceptance_radius_m = 1.0f;
+        }
+    }
     return acceptance_radius_m;
 }
 

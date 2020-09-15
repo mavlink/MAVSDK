@@ -965,6 +965,11 @@ void MissionImpl::assemble_mission_items()
 
                 new_mission_item->set_gimbal_pitch_and_yaw(it->param1, it->param3);
 
+            }else if(it->command == MAV_CMD_DO_JUMP){
+                new_mission_item->set_cmd(MAV_CMD_DO_JUMP);
+                new_mission_item->set_jump_item(it->param1);
+                new_mission_item->set_jump_repeat(it->param2);
+
             } else if (it->command == MAV_CMD_DO_MOUNT_CONFIGURE) {
                 if (int(it->param1) != MAV_MOUNT_MODE_MAVLINK_TARGETING) {
                     LogErr() << "Gimbal mount configure mode unsupported";

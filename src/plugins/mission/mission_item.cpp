@@ -29,6 +29,16 @@ void MissionItem::set_transition_mode(MAV_VTOL_STATE mode)
     _impl->set_transition_mode(mode);
 }
 
+void MissionItem::set_jump_item(float item)
+{
+    _impl->set_jump_item(item);
+}
+
+void MissionItem::set_jump_repeat(float repeat)
+{
+    _impl->set_jump_repeat(repeat);
+}
+
 
 void MissionItem::set_position(double latitude_deg, double longitude_deg)
 {
