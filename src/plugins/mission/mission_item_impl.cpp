@@ -150,24 +150,41 @@ float MissionItemImpl::get_mavlink_param3() const
 
 float MissionItemImpl::get_mavlink_param4() const
 {
-    // Just let the drone fly forward.
-    float yaw_angle_deg = NAN;
-    return yaw_angle_deg;
+    if (_command == MAV_CMD_DO_JUMP) {
+        return 0.0f;
+    }else{
+        // Just let the drone fly forward.
+        float yaw_angle_deg = NAN;
+        return yaw_angle_deg;
+    }
+
 }
 
 int32_t MissionItemImpl::get_mavlink_x() const
 {
-    return int32_t(std::round(_latitude_deg * 1e7));
+    if (_command == MAV_CMD_DO_JUMP) {
+        return 0;
+    }else {
+        return int32_t(std::round(_latitude_deg * 1e7));
+    }
 }
 
 int32_t MissionItemImpl::get_mavlink_y() const
 {
-    return int32_t(std::round(_longitude_deg * 1e7));
+    if (_command == MAV_CMD_DO_JUMP) {
+        return 0;
+    }else {
+        return int32_t(std::round(_longitude_deg * 1e7));
+    }
 }
 
 float MissionItemImpl::get_mavlink_z() const
 {
-    return _relative_altitude_m;
+    if (_command == MAV_CMD_DO_JUMP) {
+        return 0;
+    }else {
+        return _relative_altitude_m;
+    }
 }
 
 bool MissionItemImpl::is_position_finite() const
