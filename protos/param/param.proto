@@ -79,18 +79,18 @@ message ParamListResponse {
 }
 
 message IntParam {
-    string name = 1;
-    int32 value = 2;
+    string name = 1; // Name of the parameter
+    int32 value = 2; // Value of the parameter
 }
 
 message FloatParam {
-    string name = 1;
-    float value = 2;
+    string name = 1; // Name of the parameter
+    float value = 2; // Value of the parameter
 }
 
 message AllParams {
-    repeated IntParam int_params = 1;
-    repeated FloatParam float_params = 2;
+    repeated IntParam int_params = 1; // Collection of all parameter names and values of type int
+    repeated FloatParam float_params = 2; // Collection of all parameter names and values of type float
 }
 
 // Result type.
