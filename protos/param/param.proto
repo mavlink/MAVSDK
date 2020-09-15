@@ -35,7 +35,6 @@ service ParamService {
     rpc SetParamFloat(SetParamFloatRequest) returns(SetParamFloatResponse) { option (mavsdk.options.async_type) = SYNC; }
     /*
      * Get all parameters.
-     * 
      */
     rpc GetAllParams(ParamListRequest) returns(ParamListResponse) { option (mavsdk.options.async_type) = SYNC; }
 }
@@ -76,7 +75,7 @@ message SetParamFloatResponse {
 message ParamListRequest {}
 
 message ParamListResponse {
-    AllParams params= 1;
+    AllParams params = 1;
 }
 
 message IntParam {
@@ -109,4 +108,3 @@ message ParamResult {
     Result result = 1; // Result enum value
     string result_str = 2; // Human-readable English string describing the result
 }
-
