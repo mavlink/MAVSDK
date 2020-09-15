@@ -1567,7 +1567,11 @@ Mission::Result MissionImpl::build_mission_items(
             auto rel_alt = float(params[6]);
             new_mission_item->set_relative_altitude(rel_alt);
 
-        } else if (command == MAV_CMD_DO_MOUNT_CONTROL) {
+        }else if(command == MAV_CMD_DO_JUMP){
+            new_mission_item->set_cmd(MAV_CMD_DO_JUMP);
+            new_mission_item->set_jump_item(params[0]);
+            new_mission_item->set_jump_repeat(params[1]);
+        }  else if (command == MAV_CMD_DO_MOUNT_CONTROL) {
             auto pitch = float(params[0]), yaw = float(params[2]);
             new_mission_item->set_gimbal_pitch_and_yaw(pitch, yaw);
 
