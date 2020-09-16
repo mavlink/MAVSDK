@@ -820,7 +820,8 @@ int MissionImpl::current_mission_item() const
     // We want to return the current mission item and not the underlying
     // mavlink mission item.
     if (_mission_data.last_current_mavlink_mission_item >=
-        static_cast<int>(_mission_data.mavlink_mission_item_to_mission_item_indices.size())) {
+            static_cast<int>(_mission_data.mavlink_mission_item_to_mission_item_indices.size()) ||
+        _mission_data.last_current_mavlink_mission_item < 0) {
         return -1;
     }
 
