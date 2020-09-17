@@ -64,7 +64,7 @@ void takeoff_and_hover_at_altitude(float altitude_m)
 
     EXPECT_TRUE(poll_condition_with_timeout(
         [telemetry]() { return telemetry->flight_mode() == Telemetry::FlightMode::Hold; },
-        std::chrono::seconds(10)));
+        std::chrono::seconds(20)));
 
     // We need to wait a bit until it stabilizes.
     std::this_thread::sleep_for(std::chrono::seconds(5));
