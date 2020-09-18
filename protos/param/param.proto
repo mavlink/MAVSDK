@@ -36,7 +36,7 @@ service ParamService {
     /*
      * Get all parameters.
      */
-    rpc GetAllParams(ParamListRequest) returns(ParamListResponse) { option (mavsdk.options.async_type) = SYNC; }
+    rpc GetAllParams(GetAllParamsRequest) returns(GetAllParamsResponse) { option (mavsdk.options.async_type) = SYNC; }
 }
 
 message GetParamIntRequest {
@@ -72,9 +72,9 @@ message SetParamFloatResponse {
     ParamResult param_result = 1;
 }
 
-message ParamListRequest {}
+message GetAllParamsRequest {}
 
-message ParamListResponse {
+message GetAllParamsResponse {
     AllParams params = 1;
 }
 
