@@ -967,6 +967,7 @@ void MissionImpl::assemble_mission_items()
 
             }else if(it->command == MAV_CMD_DO_JUMP){
                 new_mission_item->set_cmd(MAV_CMD_DO_JUMP);
+                new_mission_item->set_frame(MAV_FRAME_MISSION);
                 new_mission_item->set_jump_item(it->param1);
                 new_mission_item->set_jump_repeat(it->param2);
 
@@ -1569,6 +1570,7 @@ Mission::Result MissionImpl::build_mission_items(
 
         }else if(command == MAV_CMD_DO_JUMP){
             new_mission_item->set_cmd(MAV_CMD_DO_JUMP);
+            new_mission_item->set_frame(MAV_FRAME_MISSION);
             new_mission_item->set_jump_item(params[0]);
             new_mission_item->set_jump_repeat(params[1]);
         }  else if (command == MAV_CMD_DO_MOUNT_CONTROL) {
