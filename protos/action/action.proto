@@ -51,6 +51,12 @@ service ActionService {
      */
     rpc Shutdown(ShutdownRequest) returns(ShutdownResponse) {}
     /*
+     * Send command to terminate the drone.
+     *
+     * This will run the terminate routine as configured on the drone (e.g. disarm and open the parachute).
+     */
+    rpc Terminate(TerminateRequest) returns(TerminateResponse) {}
+    /*
      * Send command to kill the drone.
      *
      * This will disarm a drone irrespective of whether it is landed or flying.
@@ -143,6 +149,11 @@ message RebootResponse {
 
 message ShutdownRequest {}
 message ShutdownResponse {
+    ActionResult action_result = 1;
+}
+
+message TerminateRequest {}
+message TerminateResponse {
     ActionResult action_result = 1;
 }
 
