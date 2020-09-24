@@ -90,6 +90,15 @@ public:
     uint64_t get_uuid() const;
 
     /**
+     * @brief MAVLink System ID of connected system.
+     *
+     * @note: this is 0 if nothing is connected yet.
+     *
+     * @return the system ID.
+     */
+    uint8_t get_system_id() const;
+
+    /**
      * @brief Register a callback to be called when a component is discovered.
      *
      * @param callback a function of type void(ComponentType) which will be called with the
