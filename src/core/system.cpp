@@ -52,6 +52,11 @@ uint64_t System::get_uuid() const
     return _system_impl->get_uuid();
 }
 
+uint8_t System::get_system_id() const
+{
+    return _system_impl->get_system_id();
+}
+
 void System::register_component_discovered_callback(discover_callback_t callback) const
 {
     return _system_impl->register_component_discovered_callback(callback);
