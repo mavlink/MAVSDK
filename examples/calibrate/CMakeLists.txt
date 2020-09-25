@@ -5,7 +5,7 @@ project(calibrate)
 find_package(Threads REQUIRED)
 
 if(NOT MSVC)
-    add_definitions("-std=c++11 -Wall -Wextra -Werror")
+    add_definitions("-std=c++11 -Wall -Wextra")
 else()
     add_definitions("-std=c++11 -WX -W2")
 endif()
