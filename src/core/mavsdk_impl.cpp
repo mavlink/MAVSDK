@@ -15,7 +15,7 @@
 
 namespace mavsdk {
 
-MavsdkImpl::MavsdkImpl()
+MavsdkImpl::MavsdkImpl() : timeout_handler(_time)
 {
     LogInfo() << "MAVSDK version: " << mavsdk_version;
     set_configuration(_configuration);

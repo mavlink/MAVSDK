@@ -147,7 +147,16 @@ public:
      */
     class Configuration {
     public:
-        enum class UsageType;
+        /**
+         * @brief UsageTypes of configurations, used for automatic ID setting
+         */
+        enum class UsageType {
+            Autopilot, /**< @brief SDK is used as an autopilot. */
+            GroundStation, /**< @brief SDK is used as a ground station. */
+            CompanionComputer, /**< @brief SDK is used as a companion computer on board the MAV. */
+            Custom /**< @brief the SDK is used in a custom configuration, no automatic ID will be
+                      provided */
+        };
 
         /**
          * @brief Create new Configuration via manually configured
@@ -155,14 +164,16 @@ public:
          * @param system_id the system id to store in this configuration
          * @param component_id the component id to store in this configuration
          */
-        Configuration(uint8_t system_id, uint8_t component_id);
+        explicit Configuration(uint8_t system_id, uint8_t component_id);
         /**
          * @brief Create new Configuration using a usage type.
          * In this mode, the system and component ID will be automatically chosen.
          * @param usage_type the usage type, used for automatically choosing ids.
          */
-        Configuration(UsageType usage_type);
-        ~Configuration();
+        explicit Configuration(UsageType usage_type);
+
+        Configuration() = delete;
+        ~Configuration() = default;
 
         /**
          * @brief Get the system id of this configuration
@@ -186,17 +197,6 @@ public:
          */
         void set_component_id(uint8_t component_id);
 
-        /**
-         * @brief UsageTypes of configurations, used for automatic ID setting
-         */
-        enum class UsageType {
-            Autopilot, /**< @brief SDK is used as an autopilot. */
-            GroundStation, /**< @brief SDK is used as a ground station. */
-            CompanionComputer, /**< @brief SDK is used as a companion computer on board the MAV. */
-            Custom /**< @brief the SDK is used in a custom configuration, no automatic ID will be
-                      provided */
-        };
-
         /** @brief Usage type of this configuration, used for automatic ID set */
         UsageType get_usage_type() const;
 
@@ -208,7 +208,6 @@ public:
     private:
         uint8_t _system_id;
         uint8_t _component_id;
-
         UsageType _usage_type;
     };
 

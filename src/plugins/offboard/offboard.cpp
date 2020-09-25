@@ -23,11 +23,6 @@ Offboard::~Offboard() {}
 
 Offboard::Offboard(const Offboard& other) : PluginBase(), _impl(new OffboardImpl(*other._impl)) {}
 
-Offboard::Result Offboard::start()
-{
-    _impl->start_async(callback);
-}
-
 Offboard::Result Offboard::start() const
 {
     return _impl->start();

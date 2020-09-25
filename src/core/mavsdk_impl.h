@@ -90,15 +90,15 @@ private:
     std::mutex _connections_mutex{};
     std::vector<std::shared_ptr<Connection>> _connections{};
 
-    mutable std::recursive_mutex _systems_mutex;
-    std::unordered_map<uint8_t, std::shared_ptr<System>> _systems;
+    mutable std::recursive_mutex _systems_mutex{};
+    std::unordered_map<uint8_t, std::shared_ptr<System>> _systems{};
 
     Mavsdk::event_callback_t _on_discover_callback{nullptr};
     Mavsdk::event_callback_t _on_timeout_callback{nullptr};
 
     Time _time{};
 
-    Mavsdk::Configuration _configuration;
+    Mavsdk::Configuration _configuration{Mavsdk::Configuration::UsageType::GroundStation};
     bool _is_single_system{false};
 
     struct UserCallback {

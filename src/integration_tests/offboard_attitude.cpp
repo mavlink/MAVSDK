@@ -86,14 +86,14 @@ void start_offboard(Offboard& offboard)
     // Also, turn yaw towards North.
     Offboard::Attitude full_up{};
     full_up.thrust_value = 1.0f;
-    offboard->set_attitude(full_up);
-    EXPECT_EQ(offboard->start(), Offboard::Result::Success);
+    offboard.set_attitude(full_up);
+    EXPECT_EQ(offboard.start(), Offboard::Result::Success);
     std::this_thread::sleep_for(std::chrono::seconds(1));
 }
 
 void stop_offboard(Offboard& offboard)
 {
-    EXPECT_EQ(offboard->stop(), Offboard::Result::Success);
+    EXPECT_EQ(offboard.stop(), Offboard::Result::Success);
 }
 
 void flip_roll(Offboard& offboard, std::shared_ptr<Telemetry> telemetry)
@@ -102,13 +102,13 @@ void flip_roll(Offboard& offboard, std::shared_ptr<Telemetry> telemetry)
         // Full speed up to avoid loosing too much altitude during the flip.
         Offboard::AttitudeRate full_up{};
         full_up.thrust_value = 1.0f;
-        offboard->set_attitude_rate(full_up);
+        offboard.set_attitude_rate(full_up);
     }
 
     Offboard::AttitudeRate roll{};
     roll.roll_deg_s = 360.0f;
     roll.thrust_value = 0.25f;
-    offboard->set_attitude_rate(roll);
+    offboard.set_attitude_rate(roll);
 
     // FIXME: This only properly works at 1x speed right now.
     //        For lockstep setups running faster, we would need to use the
@@ -117,7 +117,7 @@ void flip_roll(Offboard& offboard, std::shared_ptr<Telemetry> telemetry)
 
     Offboard::Attitude some_up{};
     some_up.thrust_value = 0.8f;
-    offboard->set_attitude(some_up);
+    offboard.set_attitude(some_up);
     std::this_thread::sleep_for(std::chrono::seconds(2));
 }
 
@@ -127,7 +127,7 @@ void flip_pitch(Offboard& offboard, std::shared_ptr<Telemetry> telemetry)
         // Full speed up to avoid loosing too much altitude during the flip.
         Offboard::AttitudeRate full_up{};
         full_up.thrust_value = 1.0f;
-        offboard->set_attitude_rate(full_up);
+        offboard.set_attitude_rate(full_up);
     }
 
     Offboard::AttitudeRate pitch{};
@@ -135,7 +135,7 @@ void flip_pitch(Offboard& offboard, std::shared_ptr<Telemetry> telemetry)
     pitch.pitch_deg_s = 360.0f;
     pitch.yaw_deg_s = 0.0f;
     pitch.thrust_value = 0.25f;
-    offboard->set_attitude_rate(pitch);
+    offboard.set_attitude_rate(pitch);
 
     // FIXME: This only properly works at 1x speed right now.
     //        For lockstep setups running faster, we would need to use the
@@ -144,7 +144,7 @@ void flip_pitch(Offboard& offboard, std::shared_ptr<Telemetry> telemetry)
 
     Offboard::Attitude some_up{};
     some_up.thrust_value = 0.8f;
-    offboard->set_attitude(some_up);
+    offboard.set_attitude(some_up);
     std::this_thread::sleep_for(std::chrono::seconds(2));
 }
 
@@ -153,7 +153,7 @@ void turn_yaw(Offboard& offboard)
     Offboard::AttitudeRate yaw{};
     yaw.yaw_deg_s = 360.0f;
     yaw.thrust_value = 0.5;
-    offboard->set_attitude_rate(yaw);
+    offboard.set_attitude_rate(yaw);
 
     // FIXME: This only properly works at 1x speed right now.
     //        For lockstep setups running faster, we would need to use the
@@ -162,6 +162,6 @@ void turn_yaw(Offboard& offboard)
 
     Offboard::Attitude some_up{};
     some_up.thrust_value = 0.8f;
-    offboard->set_attitude(some_up);
+    offboard.set_attitude(some_up);
     std::this_thread::sleep_for(std::chrono::seconds(2));
 }

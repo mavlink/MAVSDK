@@ -38,7 +38,7 @@ void takeoff_and_hover_at_altitude(float altitude_m)
     ASSERT_TRUE(poll_condition_with_timeout(
         [&mavsdk]() { return mavsdk.is_connected(); }, std::chrono::seconds(10)));
 
-    auto systems = dc.systems();
+    auto systems = mavsdk.systems();
 
     ASSERT_EQ(systems.size(), 1);
 
@@ -51,8 +51,6 @@ void takeoff_and_hover_at_altitude(float altitude_m)
         [telemetry]() { return telemetry->health_all_ok(); }, std::chrono::seconds(10)));
 
     auto action = std::make_shared<Action>(*system);
-    Action::Result action_ret = action->arm();
-    EXPECT_EQ(action_ret, Action::Result::SUCCESS);
 
     EXPECT_EQ(Action::Result::Success, action->set_takeoff_altitude(altitude_m));
     auto takeoff_altitude_result = action->get_takeoff_altitude();

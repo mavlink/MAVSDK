@@ -122,8 +122,6 @@ Mavsdk::Configuration::Configuration(UsageType usage_type) :
     }
 }
 
-Mavsdk::Configuration::~Configuration() {}
-
 uint8_t Mavsdk::Configuration::get_system_id() const
 {
     return _system_id;
