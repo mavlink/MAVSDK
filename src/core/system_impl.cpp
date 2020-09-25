@@ -252,7 +252,12 @@ void SystemImpl::process_statustext(const mavlink_message_t& message)
     char text_with_null[sizeof(statustext.text) + 1]{};
     memcpy(text_with_null, statustext.text, sizeof(statustext.text));
 
-    LogDebug() << debug_str << ": " << text_with_null;
+    // Only use the debug string for the first chunk of the sequence
+    // or if there is just one message in the sequence
+    if (statustext.id && statustext.chunk_seq)
+        LogDebug() << text_with_null;
+    else
+        LogDebug() << debug_str << ": " << text_with_null;
 }
 
 void SystemImpl::heartbeats_timed_out()
