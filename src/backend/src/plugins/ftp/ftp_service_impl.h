@@ -38,7 +38,7 @@ public:
     static std::unique_ptr<rpc::ftp::ProgressData>
     translateToRpcProgressData(const mavsdk::Ftp::ProgressData& progress_data)
     {
-        std::unique_ptr<rpc::ftp::ProgressData> rpc_obj(new rpc::ftp::ProgressData());
+        auto rpc_obj = std::make_unique<rpc::ftp::ProgressData>();
 
         rpc_obj->set_bytes_transferred(progress_data.bytes_transferred);
 

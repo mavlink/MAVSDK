@@ -27,8 +27,8 @@ class CoreServiceImplTest : public ::testing::Test {
 protected:
     virtual void SetUp()
     {
-        _dc = std::unique_ptr<MockMavsdk>(new MockMavsdk());
-        _core_service = std::unique_ptr<CoreServiceImpl>(new CoreServiceImpl(*_dc));
+        _dc = std::make_unique<MockMavsdk>();
+        _core_service = std::make_unique<CoreServiceImpl>(*_dc);
 
         grpc::ServerBuilder builder;
         builder.RegisterService(_core_service.get());

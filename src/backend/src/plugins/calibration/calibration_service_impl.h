@@ -103,8 +103,7 @@ public:
     static std::unique_ptr<rpc::calibration::ProgressData>
     translateToRpcProgressData(const mavsdk::Calibration::ProgressData& progress_data)
     {
-        std::unique_ptr<rpc::calibration::ProgressData> rpc_obj(
-            new rpc::calibration::ProgressData());
+        auto rpc_obj = std::make_unique<rpc::calibration::ProgressData>();
 
         rpc_obj->set_has_progress(progress_data.has_progress);
 

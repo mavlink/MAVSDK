@@ -39,7 +39,7 @@ public:
     static std::unique_ptr<rpc::offboard::Attitude>
     translateToRpcAttitude(const mavsdk::Offboard::Attitude& attitude)
     {
-        std::unique_ptr<rpc::offboard::Attitude> rpc_obj(new rpc::offboard::Attitude());
+        auto rpc_obj = std::make_unique<rpc::offboard::Attitude>();
 
         rpc_obj->set_roll_deg(attitude.roll_deg);
 
@@ -71,8 +71,7 @@ public:
     static std::unique_ptr<rpc::offboard::ActuatorControlGroup> translateToRpcActuatorControlGroup(
         const mavsdk::Offboard::ActuatorControlGroup& actuator_control_group)
     {
-        std::unique_ptr<rpc::offboard::ActuatorControlGroup> rpc_obj(
-            new rpc::offboard::ActuatorControlGroup());
+        auto rpc_obj = std::make_unique<rpc::offboard::ActuatorControlGroup>();
 
         for (const auto& elem : actuator_control_group.controls) {
             rpc_obj->add_controls(elem);
@@ -96,8 +95,7 @@ public:
     static std::unique_ptr<rpc::offboard::ActuatorControl>
     translateToRpcActuatorControl(const mavsdk::Offboard::ActuatorControl& actuator_control)
     {
-        std::unique_ptr<rpc::offboard::ActuatorControl> rpc_obj(
-            new rpc::offboard::ActuatorControl());
+        auto rpc_obj = std::make_unique<rpc::offboard::ActuatorControl>();
 
         for (const auto& elem : actuator_control.groups) {
             auto* ptr = rpc_obj->add_groups();
@@ -123,7 +121,7 @@ public:
     static std::unique_ptr<rpc::offboard::AttitudeRate>
     translateToRpcAttitudeRate(const mavsdk::Offboard::AttitudeRate& attitude_rate)
     {
-        std::unique_ptr<rpc::offboard::AttitudeRate> rpc_obj(new rpc::offboard::AttitudeRate());
+        auto rpc_obj = std::make_unique<rpc::offboard::AttitudeRate>();
 
         rpc_obj->set_roll_deg_s(attitude_rate.roll_deg_s);
 
@@ -155,7 +153,7 @@ public:
     static std::unique_ptr<rpc::offboard::PositionNedYaw>
     translateToRpcPositionNedYaw(const mavsdk::Offboard::PositionNedYaw& position_ned_yaw)
     {
-        std::unique_ptr<rpc::offboard::PositionNedYaw> rpc_obj(new rpc::offboard::PositionNedYaw());
+        auto rpc_obj = std::make_unique<rpc::offboard::PositionNedYaw>();
 
         rpc_obj->set_north_m(position_ned_yaw.north_m);
 
@@ -187,8 +185,7 @@ public:
     static std::unique_ptr<rpc::offboard::VelocityBodyYawspeed> translateToRpcVelocityBodyYawspeed(
         const mavsdk::Offboard::VelocityBodyYawspeed& velocity_body_yawspeed)
     {
-        std::unique_ptr<rpc::offboard::VelocityBodyYawspeed> rpc_obj(
-            new rpc::offboard::VelocityBodyYawspeed());
+        auto rpc_obj = std::make_unique<rpc::offboard::VelocityBodyYawspeed>();
 
         rpc_obj->set_forward_m_s(velocity_body_yawspeed.forward_m_s);
 
@@ -220,7 +217,7 @@ public:
     static std::unique_ptr<rpc::offboard::VelocityNedYaw>
     translateToRpcVelocityNedYaw(const mavsdk::Offboard::VelocityNedYaw& velocity_ned_yaw)
     {
-        std::unique_ptr<rpc::offboard::VelocityNedYaw> rpc_obj(new rpc::offboard::VelocityNedYaw());
+        auto rpc_obj = std::make_unique<rpc::offboard::VelocityNedYaw>();
 
         rpc_obj->set_north_m_s(velocity_ned_yaw.north_m_s);
 

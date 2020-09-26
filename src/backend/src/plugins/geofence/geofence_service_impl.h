@@ -39,7 +39,7 @@ public:
     static std::unique_ptr<rpc::geofence::Point>
     translateToRpcPoint(const mavsdk::Geofence::Point& point)
     {
-        std::unique_ptr<rpc::geofence::Point> rpc_obj(new rpc::geofence::Point());
+        auto rpc_obj = std::make_unique<rpc::geofence::Point>();
 
         rpc_obj->set_latitude_deg(point.latitude_deg);
 
@@ -90,7 +90,7 @@ public:
     static std::unique_ptr<rpc::geofence::Polygon>
     translateToRpcPolygon(const mavsdk::Geofence::Polygon& polygon)
     {
-        std::unique_ptr<rpc::geofence::Polygon> rpc_obj(new rpc::geofence::Polygon());
+        auto rpc_obj = std::make_unique<rpc::geofence::Polygon>();
 
         for (const auto& elem : polygon.points) {
             auto* ptr = rpc_obj->add_points();

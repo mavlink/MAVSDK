@@ -39,8 +39,7 @@ public:
     static std::unique_ptr<rpc::mission_raw::MissionProgress>
     translateToRpcMissionProgress(const mavsdk::MissionRaw::MissionProgress& mission_progress)
     {
-        std::unique_ptr<rpc::mission_raw::MissionProgress> rpc_obj(
-            new rpc::mission_raw::MissionProgress());
+        auto rpc_obj = std::make_unique<rpc::mission_raw::MissionProgress>();
 
         rpc_obj->set_current(mission_progress.current);
 
@@ -64,7 +63,7 @@ public:
     static std::unique_ptr<rpc::mission_raw::MissionItem>
     translateToRpcMissionItem(const mavsdk::MissionRaw::MissionItem& mission_item)
     {
-        std::unique_ptr<rpc::mission_raw::MissionItem> rpc_obj(new rpc::mission_raw::MissionItem());
+        auto rpc_obj = std::make_unique<rpc::mission_raw::MissionItem>();
 
         rpc_obj->set_seq(mission_item.seq);
 

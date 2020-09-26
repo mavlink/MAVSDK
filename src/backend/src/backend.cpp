@@ -20,7 +20,7 @@ public:
 
     int startGRPCServer(const int port)
     {
-        _server = std::unique_ptr<GRPCServer>(new GRPCServer(_dc));
+        _server = std::make_unique<GRPCServer>(_dc);
         _server->set_port(port);
         _grpc_port = _server->run();
         return _grpc_port;

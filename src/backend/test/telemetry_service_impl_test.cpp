@@ -52,9 +52,8 @@ class TelemetryServiceImplTest : public ::testing::Test {
 protected:
     virtual void SetUp()
     {
-        _telemetry = std::unique_ptr<MockTelemetry>(new MockTelemetry());
-        _telemetry_service =
-            std::unique_ptr<TelemetryServiceImpl>(new TelemetryServiceImpl(*_telemetry));
+        _telemetry = std::make_unique<MockTelemetry>();
+        _telemetry_service = std::make_unique<TelemetryServiceImpl>(*_telemetry);
 
         grpc::ServerBuilder builder;
         builder.RegisterService(_telemetry_service.get());

@@ -81,7 +81,7 @@ public:
     static std::unique_ptr<rpc::follow_me::Config>
     translateToRpcConfig(const mavsdk::FollowMe::Config& config)
     {
-        std::unique_ptr<rpc::follow_me::Config> rpc_obj(new rpc::follow_me::Config());
+        auto rpc_obj = std::make_unique<rpc::follow_me::Config>();
 
         rpc_obj->set_min_height_m(config.min_height_m);
 
@@ -112,8 +112,7 @@ public:
     static std::unique_ptr<rpc::follow_me::TargetLocation>
     translateToRpcTargetLocation(const mavsdk::FollowMe::TargetLocation& target_location)
     {
-        std::unique_ptr<rpc::follow_me::TargetLocation> rpc_obj(
-            new rpc::follow_me::TargetLocation());
+        auto rpc_obj = std::make_unique<rpc::follow_me::TargetLocation>();
 
         rpc_obj->set_latitude_deg(target_location.latitude_deg);
 
