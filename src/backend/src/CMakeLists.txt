@@ -1,4 +1,4 @@
-cmake_minimum_required(VERSION 3.1)
+cmake_minimum_required(VERSION 3.10.2)
 
 set(COMPONENTS_LIST action calibration camera core failure follow_me ftp geofence gimbal info log_files manual_control mission mission_raw mocap offboard param shell telemetry tune)
 

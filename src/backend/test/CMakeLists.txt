@@ -1,4 +1,4 @@
-cmake_minimum_required(VERSION 3.1)
+cmake_minimum_required(VERSION 3.10.2)
 
 add_executable(unit_tests_backend
     action_service_impl_test.cpp

@@ -1,16 +1,18 @@
-cmake_minimum_required(VERSION 2.8.12)
+cmake_minimum_required(VERSION 3.10.2)
+
+set(CMAKE_CXX_STANDARD 17)
+set(CMAKE_CXX_STANDARD_REQUIRED ON)
 
 project(offboard)
 
-if(MINGW)
+if(MINGW OR MSVC)
     add_definitions("-D_USE_MATH_DEFINES") # For M_PI
 endif()
 
 if(MSVC)
-    add_definitions("-std=c++11 -WX -W2")
-    add_definitions("-D_USE_MATH_DEFINES") # For M_PI
+    add_definitions("-WX -W2")
 else()
-    add_definitions("-std=c++11 -Wall -Wextra")
+    add_definitions("-Wall -Wextra")
 endif()
 
 find_package(MAVSDK REQUIRED)
