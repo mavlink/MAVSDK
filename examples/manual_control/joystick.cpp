@@ -1,8 +1,9 @@
 #include "joystick.h"
 
 #include <cmath>
-#include <iostream>
 #include <csignal>
+#include <iostream>
+#include <memory>
 
 Joystick::Joystick() {}
 
