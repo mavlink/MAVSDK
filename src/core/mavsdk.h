@@ -338,7 +338,7 @@ public:
 
 private:
     /* @private. */
-    std::unique_ptr<MavsdkImpl> _impl;
+    std::shared_ptr<MavsdkImpl> _impl{};
 
     // Non-copyable
     Mavsdk(const Mavsdk&) = delete;

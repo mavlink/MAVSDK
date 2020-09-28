@@ -10,8 +10,7 @@ class SystemImpl;
 class PluginImplBase {
 public:
     explicit PluginImplBase(System& system); // to be deprecated
-    explicit PluginImplBase(std::shared_ptr<System> ptr); // new
-    explicit PluginImplBase(std::shared_ptr<SystemImpl> impl_ptr); // new
+    explicit PluginImplBase(std::shared_ptr<System> system); // new
     virtual ~PluginImplBase() = default;
 
     /*

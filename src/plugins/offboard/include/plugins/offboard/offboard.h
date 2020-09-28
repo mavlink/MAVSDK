@@ -44,7 +44,9 @@ public:
      *
      * @param system The specific system associated with this plugin.
      */
-    explicit Offboard(System& system);
+    explicit Offboard(System& system); // deprecated
+
+    explicit Offboard(std::shared_ptr<System> system); // new
 
     /**
      * @brief Destructor (internal use only).
@@ -388,7 +390,7 @@ public:
 
 private:
     /** @private Underlying implementation, set at instantiation */
-    std::unique_ptr<OffboardImpl> _impl;
+    std::unique_ptr<OffboardImpl> _impl{};
 };
 
 } // namespace mavsdk

@@ -11,12 +11,10 @@ OffboardImpl::OffboardImpl(System& system) : PluginImplBase(system)
     _parent->register_plugin(this);
 }
 
-OffboardImpl::OffboardImpl(std::shared_ptr<System> system_ptr) : PluginImplBase(system_ptr)
+OffboardImpl::OffboardImpl(std::shared_ptr<System> system) : PluginImplBase(system)
 {
     _parent->register_plugin(this);
 }
-
-OffboardImpl::OffboardImpl(const OffboardImpl& other) : PluginImplBase(other._parent) {}
 
 OffboardImpl::~OffboardImpl()
 {

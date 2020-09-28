@@ -5,7 +5,10 @@
 
 namespace mavsdk {
 
-Mavsdk::Mavsdk() : _impl{new MavsdkImpl()} {}
+Mavsdk::Mavsdk()
+{
+    _impl = std::make_shared<MavsdkImpl>();
+}
 
 Mavsdk::~Mavsdk() {}
 
