@@ -16,7 +16,7 @@ Joystick::~Joystick()
 
 std::unique_ptr<Joystick> Joystick::create()
 {
-    auto ptr = std::make_unique<Joystick>();
+    std::unique_ptr<Joystick> ptr(new Joystick());
 
     if (ptr && ptr->init()) {
         ptr->connect();
