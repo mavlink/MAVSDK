@@ -13,6 +13,8 @@ using TuneDescription = Tune::TuneDescription;
 
 Tune::Tune(System& system) : PluginBase(), _impl{new TuneImpl(system)} {}
 
+Tune::Tune(std::shared_ptr<System> system) : PluginBase(), _impl{new TuneImpl(system)} {}
+
 Tune::~Tune() {}
 
 void Tune::play_tune_async(TuneDescription tune_description, const ResultCallback callback)

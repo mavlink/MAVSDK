@@ -32,12 +32,25 @@ public:
      * The plugin is typically created as shown below:
      *
      *     ```cpp
-     *     auto log_files = std::make_shared<LogFiles>(system);
+     *     auto log_files = LogFiles(system);
      *     ```
      *
      * @param system The specific system associated with this plugin.
      */
-    explicit LogFiles(System& system);
+    explicit LogFiles(System& system); // deprecated
+
+    /**
+     * @brief Constructor. Creates the plugin for a specific System.
+     *
+     * The plugin is typically created as shown below:
+     *
+     *     ```cpp
+     *     auto log_files = LogFiles(system);
+     *     ```
+     *
+     * @param system The specific system associated with this plugin.
+     */
+    explicit LogFiles(std::shared_ptr<System> system); // new
 
     /**
      * @brief Destructor (internal use only).
@@ -147,9 +160,9 @@ public:
     void download_log_file_async(uint32_t id, std::string path, DownloadLogFileCallback callback);
 
     /**
-     * @brief Copy constructor (object is not copyable).
+     * @brief Copy constructor.
      */
-    LogFiles(const LogFiles&) = delete;
+    LogFiles(const LogFiles& other);
 
     /**
      * @brief Equality operator (object is not copyable).

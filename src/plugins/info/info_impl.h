@@ -11,7 +11,8 @@ namespace mavsdk {
 
 class InfoImpl : public PluginImplBase {
 public:
-    InfoImpl(System& system);
+    explicit InfoImpl(System& system);
+    explicit InfoImpl(std::shared_ptr<System> system);
     ~InfoImpl();
 
     void init() override;

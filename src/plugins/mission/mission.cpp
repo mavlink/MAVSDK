@@ -15,6 +15,8 @@ using MissionProgress = Mission::MissionProgress;
 
 Mission::Mission(System& system) : PluginBase(), _impl{new MissionImpl(system)} {}
 
+Mission::Mission(std::shared_ptr<System> system) : PluginBase(), _impl{new MissionImpl(system)} {}
+
 Mission::~Mission() {}
 
 void Mission::upload_mission_async(MissionPlan mission_plan, const ResultCallback callback)

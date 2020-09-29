@@ -10,7 +10,8 @@ namespace mavsdk {
 
 class CalibrationImpl : public PluginImplBase {
 public:
-    CalibrationImpl(System& system);
+    explicit CalibrationImpl(System& system);
+    explicit CalibrationImpl(std::shared_ptr<System> system);
     ~CalibrationImpl();
 
     void init() override;

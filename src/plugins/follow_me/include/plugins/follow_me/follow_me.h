@@ -32,12 +32,25 @@ public:
      * The plugin is typically created as shown below:
      *
      *     ```cpp
-     *     auto follow_me = std::make_shared<FollowMe>(system);
+     *     auto follow_me = FollowMe(system);
      *     ```
      *
      * @param system The specific system associated with this plugin.
      */
-    explicit FollowMe(System& system);
+    explicit FollowMe(System& system); // deprecated
+
+    /**
+     * @brief Constructor. Creates the plugin for a specific System.
+     *
+     * The plugin is typically created as shown below:
+     *
+     *     ```cpp
+     *     auto follow_me = FollowMe(system);
+     *     ```
+     *
+     * @param system The specific system associated with this plugin.
+     */
+    explicit FollowMe(std::shared_ptr<System> system); // new
 
     /**
      * @brief Destructor (internal use only).
@@ -212,9 +225,9 @@ public:
     Result stop() const;
 
     /**
-     * @brief Copy constructor (object is not copyable).
+     * @brief Copy constructor.
      */
-    FollowMe(const FollowMe&) = delete;
+    FollowMe(const FollowMe& other);
 
     /**
      * @brief Equality operator (object is not copyable).

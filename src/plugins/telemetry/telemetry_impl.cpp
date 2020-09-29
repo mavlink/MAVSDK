@@ -15,6 +15,11 @@ TelemetryImpl::TelemetryImpl(System& system) : PluginImplBase(system)
     _parent->register_plugin(this);
 }
 
+TelemetryImpl::TelemetryImpl(std::shared_ptr<System> system) : PluginImplBase(system)
+{
+    _parent->register_plugin(this);
+}
+
 TelemetryImpl::~TelemetryImpl()
 {
     _parent->unregister_plugin(this);

@@ -37,12 +37,25 @@ public:
      * The plugin is typically created as shown below:
      *
      *     ```cpp
-     *     auto camera = std::make_shared<Camera>(system);
+     *     auto camera = Camera(system);
      *     ```
      *
      * @param system The specific system associated with this plugin.
      */
-    explicit Camera(System& system);
+    explicit Camera(System& system); // deprecated
+
+    /**
+     * @brief Constructor. Creates the plugin for a specific System.
+     *
+     * The plugin is typically created as shown below:
+     *
+     *     ```cpp
+     *     auto camera = Camera(system);
+     *     ```
+     *
+     * @param system The specific system associated with this plugin.
+     */
+    explicit Camera(std::shared_ptr<System> system); // new
 
     /**
      * @brief Destructor (internal use only).
@@ -707,9 +720,9 @@ public:
     Result format_storage() const;
 
     /**
-     * @brief Copy constructor (object is not copyable).
+     * @brief Copy constructor.
      */
-    Camera(const Camera&) = delete;
+    Camera(const Camera& other);
 
     /**
      * @brief Equality operator (object is not copyable).

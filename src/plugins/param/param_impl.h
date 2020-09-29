@@ -10,7 +10,8 @@ namespace mavsdk {
 
 class ParamImpl : public PluginImplBase {
 public:
-    ParamImpl(System& system);
+    explicit ParamImpl(System& system);
+    explicit ParamImpl(std::shared_ptr<System> system);
     ~ParamImpl();
 
     void init() override;

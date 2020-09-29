@@ -10,6 +10,11 @@ ParamImpl::ParamImpl(System& system) : PluginImplBase(system)
     _parent->register_plugin(this);
 }
 
+ParamImpl::ParamImpl(std::shared_ptr<System> system) : PluginImplBase(system)
+{
+    _parent->register_plugin(this);
+}
+
 ParamImpl::~ParamImpl()
 {
     _parent->unregister_plugin(this);

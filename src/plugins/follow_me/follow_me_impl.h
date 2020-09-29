@@ -12,7 +12,8 @@ namespace mavsdk {
 
 class FollowMeImpl : public PluginImplBase {
 public:
-    FollowMeImpl(System& system);
+    explicit FollowMeImpl(System& system);
+    explicit FollowMeImpl(std::shared_ptr<System> system);
     ~FollowMeImpl();
 
     void init() override;

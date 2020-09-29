@@ -14,6 +14,9 @@ using Entry = LogFiles::Entry;
 
 LogFiles::LogFiles(System& system) : PluginBase(), _impl{new LogFilesImpl(system)} {}
 
+LogFiles::LogFiles(std::shared_ptr<System> system) : PluginBase(), _impl{new LogFilesImpl(system)}
+{}
+
 LogFiles::~LogFiles() {}
 
 void LogFiles::get_entries_async(const GetEntriesCallback callback)

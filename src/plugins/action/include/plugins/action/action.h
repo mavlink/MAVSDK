@@ -31,14 +31,25 @@ public:
      * The plugin is typically created as shown below:
      *
      *     ```cpp
-     *     auto action = std::make_shared<Action>(system);
+     *     auto action = Action(system);
      *     ```
      *
      * @param system The specific system associated with this plugin.
      */
-    explicit Action(System& system);
+    explicit Action(System& system); // deprecated
 
-    explicit Action(std::shared_ptr<System> system);
+    /**
+     * @brief Constructor. Creates the plugin for a specific System.
+     *
+     * The plugin is typically created as shown below:
+     *
+     *     ```cpp
+     *     auto action = Action(system);
+     *     ```
+     *
+     * @param system The specific system associated with this plugin.
+     */
+    explicit Action(std::shared_ptr<System> system); // new
 
     /**
      * @brief Destructor (internal use only).
@@ -479,9 +490,9 @@ public:
     Result set_return_to_launch_altitude(float relative_altitude_m) const;
 
     /**
-     * @brief Copy constructor (object is not copyable).
+     * @brief Copy constructor.
      */
-    Action(const Action&) = delete;
+    Action(const Action& other);
 
     /**
      * @brief Equality operator (object is not copyable).

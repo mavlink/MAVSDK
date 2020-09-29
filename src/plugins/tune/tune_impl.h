@@ -9,7 +9,8 @@ namespace mavsdk {
 
 class TuneImpl : public PluginImplBase {
 public:
-    TuneImpl(System& system);
+    explicit TuneImpl(System& system);
+    explicit TuneImpl(std::shared_ptr<System> system);
     ~TuneImpl();
 
     void init() override;

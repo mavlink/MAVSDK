@@ -7,7 +7,8 @@ namespace mavsdk {
 
 class FailureImpl : public PluginImplBase {
 public:
-    FailureImpl(System& system);
+    explicit FailureImpl(System& system);
+    explicit FailureImpl(std::shared_ptr<System> system);
     ~FailureImpl();
 
     void init() override;

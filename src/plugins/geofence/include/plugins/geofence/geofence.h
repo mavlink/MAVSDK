@@ -31,12 +31,25 @@ public:
      * The plugin is typically created as shown below:
      *
      *     ```cpp
-     *     auto geofence = std::make_shared<Geofence>(system);
+     *     auto geofence = Geofence(system);
      *     ```
      *
      * @param system The specific system associated with this plugin.
      */
-    explicit Geofence(System& system);
+    explicit Geofence(System& system); // deprecated
+
+    /**
+     * @brief Constructor. Creates the plugin for a specific System.
+     *
+     * The plugin is typically created as shown below:
+     *
+     *     ```cpp
+     *     auto geofence = Geofence(system);
+     *     ```
+     *
+     * @param system The specific system associated with this plugin.
+     */
+    explicit Geofence(std::shared_ptr<System> system); // new
 
     /**
      * @brief Destructor (internal use only).
@@ -151,9 +164,9 @@ public:
     Result upload_geofence(std::vector<Polygon> polygons) const;
 
     /**
-     * @brief Copy constructor (object is not copyable).
+     * @brief Copy constructor.
      */
-    Geofence(const Geofence&) = delete;
+    Geofence(const Geofence& other);
 
     /**
      * @brief Equality operator (object is not copyable).

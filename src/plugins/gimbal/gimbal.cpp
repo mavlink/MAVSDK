@@ -11,6 +11,8 @@ namespace mavsdk {
 
 Gimbal::Gimbal(System& system) : PluginBase(), _impl{new GimbalImpl(system)} {}
 
+Gimbal::Gimbal(std::shared_ptr<System> system) : PluginBase(), _impl{new GimbalImpl(system)} {}
+
 Gimbal::~Gimbal() {}
 
 void Gimbal::set_pitch_and_yaw_async(float pitch_deg, float yaw_deg, const ResultCallback callback)

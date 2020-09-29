@@ -12,6 +12,11 @@ namespace mavsdk {
 
 ManualControl::ManualControl(System& system) : PluginBase(), _impl{new ManualControlImpl(system)} {}
 
+ManualControl::ManualControl(std::shared_ptr<System> system) :
+    PluginBase(),
+    _impl{new ManualControlImpl(system)}
+{}
+
 ManualControl::~ManualControl() {}
 
 void ManualControl::start_position_control_async(const ResultCallback callback)

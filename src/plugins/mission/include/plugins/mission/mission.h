@@ -31,12 +31,25 @@ public:
      * The plugin is typically created as shown below:
      *
      *     ```cpp
-     *     auto mission = std::make_shared<Mission>(system);
+     *     auto mission = Mission(system);
      *     ```
      *
      * @param system The specific system associated with this plugin.
      */
-    explicit Mission(System& system);
+    explicit Mission(System& system); // deprecated
+
+    /**
+     * @brief Constructor. Creates the plugin for a specific System.
+     *
+     * The plugin is typically created as shown below:
+     *
+     *     ```cpp
+     *     auto mission = Mission(system);
+     *     ```
+     *
+     * @param system The specific system associated with this plugin.
+     */
+    explicit Mission(std::shared_ptr<System> system); // new
 
     /**
      * @brief Destructor (internal use only).
@@ -420,9 +433,9 @@ public:
     import_qgroundcontrol_mission(std::string qgc_plan_path) const;
 
     /**
-     * @brief Copy constructor (object is not copyable).
+     * @brief Copy constructor.
      */
-    Mission(const Mission&) = delete;
+    Mission(const Mission& other);
 
     /**
      * @brief Equality operator (object is not copyable).

@@ -39,13 +39,24 @@ public:
      * The plugin is typically created as shown below:
      *
      *     ```cpp
-     *     auto offboard = std::make_shared<Offboard>(system);
+     *     auto offboard = Offboard(system);
      *     ```
      *
      * @param system The specific system associated with this plugin.
      */
     explicit Offboard(System& system); // deprecated
 
+    /**
+     * @brief Constructor. Creates the plugin for a specific System.
+     *
+     * The plugin is typically created as shown below:
+     *
+     *     ```cpp
+     *     auto offboard = Offboard(system);
+     *     ```
+     *
+     * @param system The specific system associated with this plugin.
+     */
     explicit Offboard(std::shared_ptr<System> system); // new
 
     /**
@@ -383,6 +394,7 @@ public:
      * @brief Copy constructor.
      */
     Offboard(const Offboard& other);
+
     /**
      * @brief Equality operator (object is not copyable).
      */
@@ -390,7 +402,7 @@ public:
 
 private:
     /** @private Underlying implementation, set at instantiation */
-    std::unique_ptr<OffboardImpl> _impl{};
+    std::unique_ptr<OffboardImpl> _impl;
 };
 
 } // namespace mavsdk

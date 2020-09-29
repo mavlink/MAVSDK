@@ -31,12 +31,25 @@ public:
      * The plugin is typically created as shown below:
      *
      *     ```cpp
-     *     auto param = std::make_shared<Param>(system);
+     *     auto param = Param(system);
      *     ```
      *
      * @param system The specific system associated with this plugin.
      */
-    explicit Param(System& system);
+    explicit Param(System& system); // deprecated
+
+    /**
+     * @brief Constructor. Creates the plugin for a specific System.
+     *
+     * The plugin is typically created as shown below:
+     *
+     *     ```cpp
+     *     auto param = Param(system);
+     *     ```
+     *
+     * @param system The specific system associated with this plugin.
+     */
+    explicit Param(std::shared_ptr<System> system); // new
 
     /**
      * @brief Destructor (internal use only).
@@ -189,9 +202,9 @@ public:
     Param::AllParams get_all_params() const;
 
     /**
-     * @brief Copy constructor (object is not copyable).
+     * @brief Copy constructor.
      */
-    Param(const Param&) = delete;
+    Param(const Param& other);
 
     /**
      * @brief Equality operator (object is not copyable).

@@ -31,12 +31,25 @@ public:
      * The plugin is typically created as shown below:
      *
      *     ```cpp
-     *     auto mission_raw = std::make_shared<MissionRaw>(system);
+     *     auto mission_raw = MissionRaw(system);
      *     ```
      *
      * @param system The specific system associated with this plugin.
      */
-    explicit MissionRaw(System& system);
+    explicit MissionRaw(System& system); // deprecated
+
+    /**
+     * @brief Constructor. Creates the plugin for a specific System.
+     *
+     * The plugin is typically created as shown below:
+     *
+     *     ```cpp
+     *     auto mission_raw = MissionRaw(system);
+     *     ```
+     *
+     * @param system The specific system associated with this plugin.
+     */
+    explicit MissionRaw(std::shared_ptr<System> system); // new
 
     /**
      * @brief Destructor (internal use only).
@@ -314,9 +327,9 @@ public:
     void subscribe_mission_changed(MissionChangedCallback callback);
 
     /**
-     * @brief Copy constructor (object is not copyable).
+     * @brief Copy constructor.
      */
-    MissionRaw(const MissionRaw&) = delete;
+    MissionRaw(const MissionRaw& other);
 
     /**
      * @brief Equality operator (object is not copyable).

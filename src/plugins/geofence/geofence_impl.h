@@ -13,7 +13,8 @@ namespace mavsdk {
 
 class GeofenceImpl : public PluginImplBase {
 public:
-    GeofenceImpl(System& system);
+    explicit GeofenceImpl(System& system);
+    explicit GeofenceImpl(std::shared_ptr<System> system);
     ~GeofenceImpl();
 
     void init() override;

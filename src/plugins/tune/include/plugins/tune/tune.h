@@ -31,12 +31,25 @@ public:
      * The plugin is typically created as shown below:
      *
      *     ```cpp
-     *     auto tune = std::make_shared<Tune>(system);
+     *     auto tune = Tune(system);
      *     ```
      *
      * @param system The specific system associated with this plugin.
      */
-    explicit Tune(System& system);
+    explicit Tune(System& system); // deprecated
+
+    /**
+     * @brief Constructor. Creates the plugin for a specific System.
+     *
+     * The plugin is typically created as shown below:
+     *
+     *     ```cpp
+     *     auto tune = Tune(system);
+     *     ```
+     *
+     * @param system The specific system associated with this plugin.
+     */
+    explicit Tune(std::shared_ptr<System> system); // new
 
     /**
      * @brief Destructor (internal use only).
@@ -141,9 +154,9 @@ public:
     Result play_tune(TuneDescription tune_description) const;
 
     /**
-     * @brief Copy constructor (object is not copyable).
+     * @brief Copy constructor.
      */
-    Tune(const Tune&) = delete;
+    Tune(const Tune& other);
 
     /**
      * @brief Equality operator (object is not copyable).

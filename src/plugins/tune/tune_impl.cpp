@@ -9,6 +9,13 @@ TuneImpl::TuneImpl(System& system) : PluginImplBase(system), _mavlink_tune_item_
     _parent->register_plugin(this);
 }
 
+TuneImpl::TuneImpl(std::shared_ptr<System> system) :
+    PluginImplBase(system),
+    _mavlink_tune_item_messages()
+{
+    _parent->register_plugin(this);
+}
+
 TuneImpl::~TuneImpl()
 {
     _parent->unregister_plugin(this);

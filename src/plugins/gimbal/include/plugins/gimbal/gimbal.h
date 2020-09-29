@@ -31,12 +31,25 @@ public:
      * The plugin is typically created as shown below:
      *
      *     ```cpp
-     *     auto gimbal = std::make_shared<Gimbal>(system);
+     *     auto gimbal = Gimbal(system);
      *     ```
      *
      * @param system The specific system associated with this plugin.
      */
-    explicit Gimbal(System& system);
+    explicit Gimbal(System& system); // deprecated
+
+    /**
+     * @brief Constructor. Creates the plugin for a specific System.
+     *
+     * The plugin is typically created as shown below:
+     *
+     *     ```cpp
+     *     auto gimbal = Gimbal(system);
+     *     ```
+     *
+     * @param system The specific system associated with this plugin.
+     */
+    explicit Gimbal(std::shared_ptr<System> system); // new
 
     /**
      * @brief Destructor (internal use only).
@@ -159,9 +172,9 @@ public:
     Result set_roi_location(double latitude_deg, double longitude_deg, float altitude_m) const;
 
     /**
-     * @brief Copy constructor (object is not copyable).
+     * @brief Copy constructor.
      */
-    Gimbal(const Gimbal&) = delete;
+    Gimbal(const Gimbal& other);
 
     /**
      * @brief Equality operator (object is not copyable).

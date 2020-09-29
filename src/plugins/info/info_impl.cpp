@@ -11,6 +11,11 @@ InfoImpl::InfoImpl(System& system) : PluginImplBase(system)
     _parent->register_plugin(this);
 }
 
+InfoImpl::InfoImpl(std::shared_ptr<System> system) : PluginImplBase(system)
+{
+    _parent->register_plugin(this);
+}
+
 InfoImpl::~InfoImpl()
 {
     _parent->unregister_plugin(this);

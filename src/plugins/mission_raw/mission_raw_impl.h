@@ -11,7 +11,8 @@ namespace mavsdk {
 
 class MissionRawImpl : public PluginImplBase {
 public:
-    MissionRawImpl(System& system);
+    explicit MissionRawImpl(System& system);
+    explicit MissionRawImpl(std::shared_ptr<System> system);
     ~MissionRawImpl();
 
     void init() override;

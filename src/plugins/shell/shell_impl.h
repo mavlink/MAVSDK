@@ -13,7 +13,8 @@ class System;
 
 class ShellImpl : public PluginImplBase {
 public:
-    ShellImpl(System& system);
+    explicit ShellImpl(System& system);
+    explicit ShellImpl(std::shared_ptr<System> system);
     ~ShellImpl();
 
     void init() override;

@@ -24,6 +24,11 @@ Offboard::Offboard(std::shared_ptr<System> system) : PluginBase(), _impl{new Off
 
 Offboard::~Offboard() {}
 
+void Offboard::start_async(const ResultCallback callback)
+{
+    _impl->start_async(callback);
+}
+
 Offboard::Result Offboard::start() const
 {
     return _impl->start();

@@ -23,6 +23,8 @@ using Information = Camera::Information;
 
 Camera::Camera(System& system) : PluginBase(), _impl{new CameraImpl(system)} {}
 
+Camera::Camera(std::shared_ptr<System> system) : PluginBase(), _impl{new CameraImpl(system)} {}
+
 Camera::~Camera() {}
 
 void Camera::take_photo_async(const ResultCallback callback)

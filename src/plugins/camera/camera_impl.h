@@ -10,7 +10,8 @@ namespace mavsdk {
 
 class CameraImpl : public PluginImplBase {
 public:
-    CameraImpl(System& system);
+    explicit CameraImpl(System& system);
+    explicit CameraImpl(std::shared_ptr<System> system);
     ~CameraImpl();
 
     void init() override;

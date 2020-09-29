@@ -31,12 +31,25 @@ public:
      * The plugin is typically created as shown below:
      *
      *     ```cpp
-     *     auto calibration = std::make_shared<Calibration>(system);
+     *     auto calibration = Calibration(system);
      *     ```
      *
      * @param system The specific system associated with this plugin.
      */
-    explicit Calibration(System& system);
+    explicit Calibration(System& system); // deprecated
+
+    /**
+     * @brief Constructor. Creates the plugin for a specific System.
+     *
+     * The plugin is typically created as shown below:
+     *
+     *     ```cpp
+     *     auto calibration = Calibration(system);
+     *     ```
+     *
+     * @param system The specific system associated with this plugin.
+     */
+    explicit Calibration(std::shared_ptr<System> system); // new
 
     /**
      * @brief Destructor (internal use only).
@@ -169,9 +182,9 @@ public:
     void cancel() const;
 
     /**
-     * @brief Copy constructor (object is not copyable).
+     * @brief Copy constructor.
      */
-    Calibration(const Calibration&) = delete;
+    Calibration(const Calibration& other);
 
     /**
      * @brief Equality operator (object is not copyable).
