@@ -18,8 +18,8 @@ TEST(CameraTest, SetModeSync)
     // Wait for system to connect via heartbeat.
     std::this_thread::sleep_for(std::chrono::seconds(2));
 
-    auto& system = mavsdk.system();
-    ASSERT_TRUE(system.has_camera());
+    auto system = mavsdk.systems().at(0);
+    ASSERT_TRUE(system->has_camera());
     auto camera = std::make_shared<Camera>(system);
 
     bool received_mode_change = false;
@@ -57,8 +57,8 @@ TEST(CameraTest, SetModeAsync)
     // Wait for system to connect via heartbeat.
     std::this_thread::sleep_for(std::chrono::seconds(2));
 
-    System& system = mavsdk.system();
-    ASSERT_TRUE(system.has_camera());
+    auto system = mavsdk.systems().at(0);
+    ASSERT_TRUE(system->has_camera());
     auto camera = std::make_shared<Camera>(system);
 
     set_mode_async(camera, Camera::Mode::Photo);

@@ -13,8 +13,8 @@ TEST_F(SitlTest, TelemetrySync)
     ASSERT_EQ(ret, ConnectionResult::Success);
 
     std::this_thread::sleep_for(std::chrono::seconds(2));
-    System& system = mavsdk.system();
-    ASSERT_TRUE(system.is_connected());
+    auto system = mavsdk.systems().at(0);
+    ASSERT_TRUE(system->is_connected());
 
     auto telemetry = std::make_shared<Telemetry>(system);
 

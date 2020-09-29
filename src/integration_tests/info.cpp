@@ -7,16 +7,16 @@ using namespace mavsdk;
 
 TEST_F(SitlTest, Info)
 {
-    Mavsdk dc;
+    Mavsdk mavsdk;
 
-    ConnectionResult ret = dc.add_udp_connection();
+    ConnectionResult ret = mavsdk.add_udp_connection();
     ASSERT_EQ(ret, ConnectionResult::Success);
 
     // Wait for system to connect via heartbeat.
     std::this_thread::sleep_for(std::chrono::seconds(2));
-    ASSERT_TRUE(dc.is_connected());
+    ASSERT_TRUE(mavsdk.is_connected());
 
-    System& system = dc.system();
+    auto system = mavsdk.systems().at(0);
     auto info = std::make_shared<Info>(system);
 
     // FIXME: we need to wait some time until Info has determined the version.

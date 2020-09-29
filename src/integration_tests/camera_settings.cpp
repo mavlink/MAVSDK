@@ -44,8 +44,8 @@ TEST(CameraTest, ShowSettingsAndOptions)
     // Wait for system to connect via heartbeat.
     std::this_thread::sleep_for(std::chrono::seconds(2));
 
-    System& system = mavsdk.system();
-    ASSERT_TRUE(system.has_camera());
+    auto system = mavsdk.systems().at(0);
+    ASSERT_TRUE(system->has_camera());
     auto camera = std::make_shared<Camera>(system);
 
     // Wait for download to happen.
@@ -133,8 +133,8 @@ TEST(CameraTest, SetSettings)
     // Wait for system to connect via heartbeat.
     std::this_thread::sleep_for(std::chrono::seconds(2));
 
-    System& system = mavsdk.system();
-    ASSERT_TRUE(system.has_camera());
+    auto system = mavsdk.systems().at(0);
+    ASSERT_TRUE(system->has_camera());
     auto camera = std::make_shared<Camera>(system);
 
     // We need to wait for the camera definition to be ready
@@ -271,8 +271,8 @@ TEST(CameraTest, SubscribeCurrentSettings)
     // Wait for system to connect via heartbeat.
     std::this_thread::sleep_for(std::chrono::seconds(2));
 
-    System& system = mavsdk.system();
-    ASSERT_TRUE(system.has_camera());
+    auto system = mavsdk.systems().at(0);
+    ASSERT_TRUE(system->has_camera());
     auto camera = std::make_shared<Camera>(system);
 
     // We need to wait for the camera definition to be ready
@@ -333,8 +333,8 @@ TEST(CameraTest, SubscribePossibleSettings)
     // Wait for system to connect via heartbeat.
     std::this_thread::sleep_for(std::chrono::seconds(2));
 
-    System& system = mavsdk.system();
-    ASSERT_TRUE(system.has_camera());
+    auto system = mavsdk.systems().at(0);
+    ASSERT_TRUE(system->has_camera());
     auto camera = std::make_shared<Camera>(system);
 
     // We need to wait for the camera definition to be ready

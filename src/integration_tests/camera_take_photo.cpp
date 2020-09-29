@@ -29,8 +29,8 @@ TEST(CameraTest, TakePhotoSingle)
     // Wait for system to connect via heartbeat.
     std::this_thread::sleep_for(std::chrono::seconds(2));
 
-    System& system = mavsdk.system();
-    ASSERT_TRUE(system.has_camera());
+    auto system = mavsdk.systems().at(0);
+    ASSERT_TRUE(system->has_camera());
     auto camera = std::make_shared<Camera>(system);
 
     std::this_thread::sleep_for(std::chrono::seconds(1));
@@ -59,8 +59,8 @@ TEST(CameraTest, TakePhotosMultiple)
     // Wait for system to connect via heartbeat.
     std::this_thread::sleep_for(std::chrono::seconds(2));
 
-    System& system = mavsdk.system();
-    ASSERT_TRUE(system.has_camera());
+    auto system = mavsdk.systems().at(0);
+    ASSERT_TRUE(system->has_camera());
     auto camera = std::make_shared<Camera>(system);
 
     // We want to take the picture in photo mode.

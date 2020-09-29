@@ -60,14 +60,14 @@ void usage(std::string bin_name)
 
 int main(int argc, char** argv)
 {
-    Mavsdk dc;
+    Mavsdk mavsdk;
 
     {
         auto prom = std::make_shared<std::promise<void>>();
         auto future_result = prom->get_future();
 
         std::cout << "Waiting to discover system..." << std::endl;
-        dc.register_on_discover([prom](uint64_t uuid) {
+        mavsdk.register_on_discover([prom](uint64_t uuid) {
             std::cout << "Discovered system with UUID: " << uuid << std::endl;
             prom->set_value();
         });
@@ -77,7 +77,7 @@ int main(int argc, char** argv)
 
         if (argc == 2) {
             connection_url = argv[1];
-            connection_result = dc.add_any_connection(connection_url);
+            connection_result = mavsdk.add_any_connection(connection_url);
         } else {
             usage(argv[0]);
             return 1;
@@ -92,16 +92,13 @@ int main(int argc, char** argv)
         future_result.get();
     }
 
-    dc.register_on_timeout([](uint64_t uuid) {
+    mavsdk.register_on_timeout([](uint64_t uuid) {
         std::cout << "System with UUID timed out: " << uuid << std::endl;
         std::cout << "Exiting." << std::endl;
         exit(0);
     });
 
-    // We don't need to specifiy the UUID if it's only one system anyway.
-    // If there were multiple, we could specify it with:
-    // dc.system(uint64_t uuid);
-    System& system = dc.system();
+    auto system = mavsdk.systems().at(0);
     auto action = std::make_shared<Action>(system);
     auto mission = std::make_shared<Mission>(system);
     auto telemetry = std::make_shared<Telemetry>(system);

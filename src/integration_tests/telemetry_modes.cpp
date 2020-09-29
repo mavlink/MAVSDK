@@ -12,13 +12,13 @@ static std::atomic<Telemetry::FlightMode> _flight_mode{Telemetry::FlightMode::Un
 
 TEST(SitlTestDisabled, TelemetryFlightModes)
 {
-    Mavsdk dc;
+    Mavsdk mavsdk;
 
-    ConnectionResult ret = dc.add_udp_connection();
+    ConnectionResult ret = mavsdk.add_udp_connection();
     ASSERT_EQ(ret, ConnectionResult::Success);
     std::this_thread::sleep_for(std::chrono::seconds(2));
 
-    System& system = dc.system();
+    auto system = mavsdk.systems().at(0);
 
     auto telemetry = std::make_shared<Telemetry>(system);
     auto action = std::make_shared<Action>(system);

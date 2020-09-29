@@ -25,8 +25,8 @@ TEST(HardwareTest, CalibrationGyro)
 
     // Wait for system to connect via heartbeat.
     std::this_thread::sleep_for(std::chrono::seconds(2));
-    System& system = mavsdk.system();
-    ASSERT_TRUE(system.has_autopilot());
+    auto system = mavsdk.systems().at(0);
+    ASSERT_TRUE(system->has_autopilot());
 
     auto calibration = std::make_shared<Calibration>(system);
 
@@ -52,8 +52,8 @@ TEST(HardwareTest, CalibrationAccelerometer)
 
     // Wait for system to connect via heartbeat.
     std::this_thread::sleep_for(std::chrono::seconds(2));
-    System& system = mavsdk.system();
-    ASSERT_TRUE(system.has_autopilot());
+    auto system = mavsdk.systems().at(0);
+    ASSERT_TRUE(system->has_autopilot());
 
     auto calibration = std::make_shared<Calibration>(system);
 
@@ -79,10 +79,10 @@ TEST(HardwareTest, CalibrationMagnetometer)
 
     // Wait for system to connect via heartbeat.
     std::this_thread::sleep_for(std::chrono::seconds(2));
-    System& system = mavsdk.system();
+    auto system = mavsdk.systems().at(0);
 
     auto calibration = std::make_shared<Calibration>(system);
-    ASSERT_TRUE(system.has_autopilot());
+    ASSERT_TRUE(system->has_autopilot());
 
     std::promise<Calibration::Result> prom{};
     std::future<Calibration::Result> fut = prom.get_future();
@@ -106,8 +106,8 @@ TEST(HardwareTest, CalibrationLevelHorizon)
 
     // Wait for system to connect via heartbeat.
     std::this_thread::sleep_for(std::chrono::seconds(2));
-    System& system = dc.system();
-    ASSERT_TRUE(system.has_autopilot());
+    auto system = dc.systems().at(0);
+    ASSERT_TRUE(system->has_autopilot());
 
     auto calibration = std::make_shared<Calibration>(system);
 
@@ -133,8 +133,8 @@ TEST(HardwareTest, CalibrationGimbalAccelerometer)
 
     // Wait for system to connect via heartbeat.
     std::this_thread::sleep_for(std::chrono::seconds(2));
-    System& system = mavsdk.system();
-    ASSERT_TRUE(system.has_gimbal());
+    auto system = mavsdk.systems().at(0);
+    ASSERT_TRUE(system->has_gimbal());
 
     auto calibration = std::make_shared<Calibration>(system);
 
@@ -160,8 +160,8 @@ TEST(HardwareTest, CalibrationGyroWithTelemetry)
 
     // Wait for system to connect via heartbeat.
     std::this_thread::sleep_for(std::chrono::seconds(2));
-    System& system = mavsdk.system();
-    ASSERT_TRUE(system.has_autopilot());
+    auto system = mavsdk.systems().at(0);
+    ASSERT_TRUE(system->has_autopilot());
 
     // Reset Gyro calibration using param.
     auto param = std::make_shared<Param>(system);
@@ -201,8 +201,8 @@ TEST(HardwareTest, CalibrationGyroCancelled)
 
     // Wait for system to connect via heartbeat.
     std::this_thread::sleep_for(std::chrono::seconds(2));
-    System& system = mavsdk.system();
-    ASSERT_TRUE(system.has_autopilot());
+    auto system = mavsdk.systems().at(0);
+    ASSERT_TRUE(system->has_autopilot());
 
     // Do gyro calibration.
     auto calibration = std::make_shared<Calibration>(system);

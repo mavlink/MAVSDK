@@ -9,21 +9,21 @@ using namespace mavsdk;
 
 TEST_F(SitlTest, MavlinkPassthrough)
 {
-    Mavsdk dc;
-    ASSERT_EQ(dc.add_udp_connection(), ConnectionResult::Success);
+    Mavsdk mavsdk;
+    ASSERT_EQ(mavsdk.add_udp_connection(), ConnectionResult::Success);
 
     {
         LogInfo() << "Waiting to discover vehicle";
         std::promise<void> prom;
         std::future<void> fut = prom.get_future();
-        dc.register_on_discover([&prom](uint64_t uuid) {
+        mavsdk.register_on_discover([&prom](uint64_t uuid) {
             prom.set_value();
             UNUSED(uuid);
         });
         ASSERT_EQ(fut.wait_for(std::chrono::seconds(2)), std::future_status::ready);
     }
 
-    System& system = dc.system();
+    auto system = mavsdk.systems().at(0);
     auto mavlink_passthrough = std::make_shared<MavlinkPassthrough>(system);
 
     {

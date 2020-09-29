@@ -9,16 +9,16 @@ using namespace mavsdk;
 
 TEST(HardwareTest, LogFiles)
 {
-    Mavsdk dc;
+    Mavsdk mavsdk;
 
-    // ConnectionResult ret = dc.add_serial_connection("/dev/ttyACM0");
-    ConnectionResult ret = dc.add_udp_connection();
+    // ConnectionResult ret = mavsdk.add_serial_connection("/dev/ttyACM0");
+    ConnectionResult ret = mavsdk.add_udp_connection();
     ASSERT_EQ(ret, ConnectionResult::Success);
 
     std::this_thread::sleep_for(std::chrono::seconds(2));
 
-    System& system = dc.system();
-    ASSERT_TRUE(system.has_autopilot());
+    auto system = mavsdk.systems().at(0);
+    ASSERT_TRUE(system->has_autopilot());
     auto log_files = std::make_shared<LogFiles>(system);
 
     std::pair<LogFiles::Result, std::vector<LogFiles::Entry>> entry_result =

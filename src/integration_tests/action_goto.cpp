@@ -18,7 +18,7 @@ TEST_F(SitlTest, ActionGoto)
     ASSERT_TRUE(poll_condition_with_timeout(
         [&mavsdk]() { return mavsdk.is_connected(); }, std::chrono::seconds(10)));
 
-    System& system = mavsdk.system();
+    auto system = mavsdk.systems().at(0);
     auto telemetry = std::make_shared<Telemetry>(system);
 
     int iteration = 0;

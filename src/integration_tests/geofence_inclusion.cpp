@@ -11,16 +11,16 @@ static Geofence::Point add_point(double latitude_deg, double longitude_deg);
 
 TEST_F(SitlTest, GeofenceInclusion)
 {
-    Mavsdk dl;
+    Mavsdk mavsdk;
 
-    ConnectionResult ret = dl.add_udp_connection();
+    ConnectionResult ret = mavsdk.add_udp_connection();
     ASSERT_EQ(ret, ConnectionResult::Success);
 
     // Wait for system to connect via heartbeat.
     std::this_thread::sleep_for(std::chrono::seconds(2));
 
-    System& system = dl.system();
-    ASSERT_TRUE(system.has_autopilot());
+    auto system = mavsdk.systems().at(0);
+    ASSERT_TRUE(system->has_autopilot());
     auto telemetry = std::make_shared<Telemetry>(system);
     auto geofence = std::make_shared<Geofence>(system);
 

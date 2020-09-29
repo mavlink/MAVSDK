@@ -26,7 +26,7 @@ TEST_F(SitlTest, ActionHoverAsync)
         ASSERT_EQ(fut.wait_for(std::chrono::seconds(10)), std::future_status::ready);
     }
 
-    System& system = mavsdk.system();
+    auto system = mavsdk.systems().at(0);
     auto telemetry = std::make_shared<Telemetry>(system);
     auto action = std::make_shared<Action>(system);
 

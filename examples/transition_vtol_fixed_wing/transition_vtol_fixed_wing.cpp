@@ -27,10 +27,10 @@ int main(int argc, char** argv)
 
     const std::string connection_url = argv[1];
 
-    Mavsdk dc;
+    Mavsdk mavsdk;
 
     // Add connection specified by CLI argument.
-    const ConnectionResult connection_result = dc.add_any_connection(connection_url);
+    const ConnectionResult connection_result = mavsdk.add_any_connection(connection_url);
     if (connection_result != ConnectionResult::Success) {
         std::cout << ERROR_CONSOLE_TEXT << "Connection failed: " << connection_result
                   << NORMAL_CONSOLE_TEXT << std::endl;
@@ -38,13 +38,13 @@ int main(int argc, char** argv)
     }
 
     // We need an autopilot connected to start.
-    while (!dc.system().has_autopilot()) {
+    while (!mavsdk.systems().at(0).has_autopilot()) {
         sleep_for(seconds(1));
         std::cout << "Waiting for system to connect." << std::endl;
     }
 
     // Get system and plugins.
-    System& system = dc.system();
+    auto system = mavsdk.systems().at(0);
     auto telemetry = std::make_shared<Telemetry>(system);
     auto action = std::make_shared<Action>(system);
 

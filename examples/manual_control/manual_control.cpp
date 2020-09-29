@@ -87,7 +87,7 @@ int main(int argc, char** argv)
 
     wait_until_discover(mavsdk);
 
-    System& system = mavsdk.system();
+    auto system = mavsdk.systems().at(0);
     auto action = std::make_shared<Action>(system);
     auto telemetry = std::make_shared<Telemetry>(system);
     auto manual_control = std::make_shared<ManualControl>(system);

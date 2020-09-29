@@ -7,14 +7,14 @@ using namespace mavsdk;
 
 TEST_F(SitlTest, Logging)
 {
-    Mavsdk dc;
+    Mavsdk mavsdk;
 
-    ConnectionResult ret = dc.add_udp_connection();
+    ConnectionResult ret = mavsdk.add_udp_connection();
     ASSERT_EQ(ret, ConnectionResult::Success);
 
     std::this_thread::sleep_for(std::chrono::seconds(2));
 
-    System& system = dc.system();
+    auto system = mavsdk.systems().at(0);
     auto logging = std::make_shared<Logging>(system);
     Logging::Result log_ret = logging->start_logging();
 

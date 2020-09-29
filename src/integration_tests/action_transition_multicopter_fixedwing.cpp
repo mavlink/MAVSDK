@@ -29,7 +29,7 @@ void takeoff_and_transition_to_fixedwing()
         [&mavsdk]() { return mavsdk.is_connected(); }, std::chrono::seconds(10)));
     ASSERT_TRUE(mavsdk.is_connected());
 
-    System& system = mavsdk.system();
+    auto system = mavsdk.systems().at(0);
     auto action = std::make_shared<Action>(system);
     auto telemetry = std::make_shared<Telemetry>(system);
 

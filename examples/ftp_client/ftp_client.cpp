@@ -227,7 +227,7 @@ int main(int argc, char** argv)
 
     future_result.get();
 
-    System& system = mavsdk.system();
+    auto system = mavsdk.systems().at(0);
     auto ftp = std::make_shared<Ftp>(system);
     try {
         ftp->set_target_compid(std::stoi(argv[2]));

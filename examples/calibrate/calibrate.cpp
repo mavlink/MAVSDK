@@ -35,7 +35,7 @@ int main(int argc, char** argv)
 
     wait_until_discover(dc);
 
-    Calibration calibration(dc.system());
+    Calibration calibration(dc.systems().at(0));
     calibrate_accelerometer(calibration);
     calibrate_gyro(calibration);
     calibrate_magnetometer(calibration);

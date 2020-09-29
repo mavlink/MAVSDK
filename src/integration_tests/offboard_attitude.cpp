@@ -26,9 +26,9 @@ TEST(SitlTestDisabled, OffboardAttitudeRate)
     // Wait for system to connect via heartbeat.
     std::this_thread::sleep_for(std::chrono::seconds(2));
 
-    ASSERT_TRUE(mavsdk.system().has_autopilot());
+    ASSERT_TRUE(mavsdk.systems().at(0)->has_autopilot());
 
-    System& system = mavsdk.system();
+    auto system = mavsdk.systems().at(0);
     auto telemetry = std::make_shared<Telemetry>(system);
     auto action = std::make_shared<Action>(system);
 

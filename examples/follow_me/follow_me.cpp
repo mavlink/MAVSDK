@@ -47,13 +47,13 @@ void usage(std::string bin_name)
 
 int main(int argc, char** argv)
 {
-    Mavsdk dc;
+    Mavsdk mavsdk;
     std::string connection_url;
     ConnectionResult connection_result;
 
     if (argc == 2) {
         connection_url = argv[1];
-        connection_result = dc.add_any_connection(connection_url);
+        connection_result = mavsdk.add_any_connection(connection_url);
     } else {
         usage(argv[0]);
         return 1;
@@ -66,13 +66,13 @@ int main(int argc, char** argv)
     }
 
     // Wait for the system to connect via heartbeat
-    while (!dc.is_connected()) {
+    while (!mavsdk.is_connected()) {
         std::cout << "Wait for system to connect via heartbeat" << std::endl;
         sleep_for(seconds(1));
     }
 
     // System got discovered.
-    System& system = dc.system();
+    auto system = mavsdk.systems().at(0);
     auto action = std::make_shared<Action>(system);
     auto follow_me = std::make_shared<FollowMe>(system);
     auto telemetry = std::make_shared<Telemetry>(system);

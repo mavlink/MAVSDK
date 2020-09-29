@@ -74,7 +74,7 @@ void wait_until_discover(Mavsdk& mavsdk)
 
 void run_interactive_shell(Mavsdk& mavsdk)
 {
-    Shell shell(mavsdk.system());
+    Shell shell(mavsdk.systems().at(0));
 
     shell.subscribe_receive([](const std::string output) { std::cout << output; });
 

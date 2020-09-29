@@ -28,12 +28,25 @@ public:
      * The plugin is typically created as shown below:
      *
      *     ```cpp
-     *     auto mavlink_passthrough = std::make_shared<MavlinkPassthrough>(system);
+     *     auto mavlink_passthrough = MavlinkPassthrough(system);
      *     ```
      *
      * @param system The specific system associated with this plugin.
      */
-    explicit MavlinkPassthrough(System& system);
+    explicit MavlinkPassthrough(System& system); // deprecated
+
+    /**
+     * @brief Constructor. Creates the plugin for a specific System.
+     *
+     * The plugin is typically created as shown below:
+     *
+     *     ```cpp
+     *     auto mavlink_passthrough = MavlinkPassthrough(system);
+     *     ```
+     *
+     * @param system The specific system associated with this plugin.
+     */
+    explicit MavlinkPassthrough(std::shared_ptr<System> system); // new
 
     /**
      * @brief Destructor (internal use only).

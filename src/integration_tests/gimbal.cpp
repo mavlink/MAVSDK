@@ -31,12 +31,12 @@ TEST(SitlTestGimbal, GimbalMove)
 
     // Wait for system to connect via heartbeat.
     std::this_thread::sleep_for(std::chrono::seconds(2));
-    System& system = mavsdk.system();
+    auto system = mavsdk.systems().at(0);
 
     // FIXME: This is what it should be, for now though with the typhoon_h480
     //        SITL simulation, the gimbal is hooked up to the autopilot.
     // ASSERT_TRUE(system.has_gimbal());
-    ASSERT_TRUE(system.has_autopilot());
+    ASSERT_TRUE(system->has_autopilot());
 
     auto telemetry = std::make_shared<Telemetry>(system);
     auto gimbal = std::make_shared<Gimbal>(system);
@@ -60,9 +60,9 @@ TEST(SitlTestGimbal, GimbalTakeoffAndMove)
 
     // Wait for system to connect via heartbeat.
     std::this_thread::sleep_for(std::chrono::seconds(2));
-    System& system = mavsdk.system();
+    auto system = mavsdk.systems().at(0);
     // ASSERT_TRUE(system.has_gimbal());
-    ASSERT_TRUE(system.has_autopilot());
+    ASSERT_TRUE(system->has_autopilot());
 
     auto telemetry = std::make_shared<Telemetry>(system);
     auto gimbal = std::make_shared<Gimbal>(system);
@@ -164,9 +164,9 @@ TEST(SitlTestGimbal, GimbalROIOffboard)
 
     // Wait for system to connect via heartbeat.
     std::this_thread::sleep_for(std::chrono::seconds(2));
-    System& system = mavsdk.system();
+    auto system = mavsdk.systems().at(0);
     // ASSERT_TRUE(system.has_gimbal());
-    ASSERT_TRUE(system.has_autopilot());
+    ASSERT_TRUE(system->has_autopilot());
 
     auto telemetry = std::make_shared<Telemetry>(system);
     auto gimbal = std::make_shared<Gimbal>(system);
