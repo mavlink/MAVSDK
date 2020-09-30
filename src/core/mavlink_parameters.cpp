@@ -120,6 +120,45 @@ MAVLinkParameters::get_param(const std::string& name, ParamValue value_type, boo
     return res.get();
 }
 
+void MAVLinkParameters::get_all_params_async(get_all_params_callback_t callback)
+{
+    _all_param_store = std::make_shared<AllParameters>();
+
+    _all_param_store->callback = callback;
+
+    mavlink_message_t msg;
+
+    mavlink_msg_param_request_list_pack(
+        _parent.get_own_system_id(),
+        _parent.get_own_component_id(),
+        &msg,
+        _parent.get_system_id(),
+        _parent.get_autopilot_id());
+
+    if (!_parent.send_message(msg)) {
+        LogErr() << "Failed to send param list request!";
+        callback(std::map<std::string, ParamValue>{});
+        _all_param_store = nullptr;
+    }
+
+    _parent.register_timeout_handler(
+        std::bind(&MAVLinkParameters::receive_timeout, this),
+        1.0,
+        &_all_param_store->timeout_cookie);
+}
+
+std::map<std::string, MAVLinkParameters::ParamValue> MAVLinkParameters::get_all_params()
+{
+    std::promise<std::map<std::string, ParamValue>> prom;
+    auto res = prom.get_future();
+
+    get_all_params_async([&prom](std::map<std::string, MAVLinkParameters::ParamValue> all_params) {
+        prom.set_value(all_params);
+    });
+
+    return res.get();
+}
+
 void MAVLinkParameters::cancel_all_param(const void* cookie)
 {
     LockedQueue<WorkItem>::Guard work_queue_guard(_work_queue);
@@ -289,6 +328,30 @@ void MAVLinkParameters::process_param_value(const mavlink_message_t& message)
     mavlink_msg_param_value_decode(&message, &param_value);
 
     // LogDebug() << "getting param value: " << extract_safe_param_id(param_value.param_id);
+
+    // check if we are looking for param list
+    if (_all_param_store) {
+        ParamValue value;
+        value.set_from_mavlink_param_value(param_value);
+
+        std::string param_id = extract_safe_param_id(param_value.param_id);
+
+        _all_param_store->all_params.insert(std::pair<std::string, ParamValue>(param_id, value));
+
+        if (param_value.param_index + 1 == param_value.param_count) {
+            _all_param_store->callback(_all_param_store->all_params);
+            _all_param_store = nullptr;
+        } else {
+            _parent.unregister_timeout_handler(_all_param_store->timeout_cookie);
+
+            _parent.register_timeout_handler(
+                std::bind(&MAVLinkParameters::receive_timeout, this),
+                1.0,
+                &_all_param_store->timeout_cookie);
+        }
+
+        return;
+    }
 
     notify_param_subscriptions(param_value);
 
@@ -490,6 +553,13 @@ void MAVLinkParameters::process_param_ext_ack(const mavlink_message_t& message)
 
 void MAVLinkParameters::receive_timeout()
 {
+    // first check if we are waiting for param list response
+    if (_all_param_store) {
+        std::lock_guard<std::mutex> lock(_all_param_mutex);
+        _all_param_store->callback(std::map<std::string, ParamValue>{});
+        _all_param_store = nullptr; // stop waiting, failed!
+        return;
+    }
     LockedQueue<WorkItem>::Guard work_queue_guard(_work_queue);
     auto work = work_queue_guard.get_front();
 

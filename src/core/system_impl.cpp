@@ -621,6 +621,11 @@ MAVLinkParameters::Result SystemImpl::set_param_int(const std::string& name, int
     return _params.set_param(name, param_value, false);
 }
 
+std::map<std::string, MAVLinkParameters::ParamValue> SystemImpl::get_all_params()
+{
+    return _params.get_all_params();
+}
+
 MAVLinkParameters::Result SystemImpl::set_param_ext_float(const std::string& name, float value)
 {
     MAVLinkParameters::ParamValue param_value;
