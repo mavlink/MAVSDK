@@ -64,9 +64,7 @@ Param::AllParams ParamImpl::get_all_params()
             tmp_param.name = parampair.first;
             tmp_param.value = parampair.second.get_int32();
             res.int_params.push_back(tmp_param);
-        } /*else {
-            LogDebug() << "missed " << parampair.first << " " << parampair.second.get_string();
-        }*/
+        }
     }
 
     return res;
