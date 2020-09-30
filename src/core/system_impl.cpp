@@ -250,7 +250,7 @@ void SystemImpl::process_statustext(const mavlink_message_t& message)
     // statustext.text is not null terminated, therefore we copy it first to
     // an array big enough that is zeroed.
     char text_with_null[sizeof(statustext.text) + 1]{};
-    memcpy(text_with_null, statustext.text, sizeof(statustext.text));
+    strncpy(text_with_null, statustext.text, sizeof(text_with_null) - 1);
 
     // Only use the debug string for the first chunk of the sequence
     // or if there is just one message in the sequence
