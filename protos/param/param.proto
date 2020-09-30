@@ -33,6 +33,10 @@ service ParamService {
      * If the type is wrong, the result will be `WRONG_TYPE`.
      */
     rpc SetParamFloat(SetParamFloatRequest) returns(SetParamFloatResponse) { option (mavsdk.options.async_type) = SYNC; }
+    /*
+     * Get all parameters.
+     */
+    rpc GetAllParams(GetAllParamsRequest) returns(GetAllParamsResponse) { option (mavsdk.options.async_type) = SYNC; }
 }
 
 message GetParamIntRequest {
@@ -68,6 +72,36 @@ message SetParamFloatResponse {
     ParamResult param_result = 1;
 }
 
+message GetAllParamsRequest {}
+
+message GetAllParamsResponse {
+    AllParams params = 1; // Collection of all parameters
+}
+
+/*
+ * Type for integer parameters.
+ */
+message IntParam {
+    string name = 1; // Name of the parameter
+    int32 value = 2; // Value of the parameter
+}
+
+/*
+ * Type for float paramters.
+ */
+message FloatParam {
+    string name = 1; // Name of the parameter
+    float value = 2; // Value of the parameter
+}
+
+/*
+ * Type collecting all integer and float parameters.
+ */
+message AllParams {
+    repeated IntParam int_params = 1; // Collection of all parameter names and values of type int
+    repeated FloatParam float_params = 2; // Collection of all parameter names and values of type float
+}
+
 // Result type.
 message ParamResult {
     // Possible results returned for param requests.
@@ -83,4 +117,3 @@ message ParamResult {
     Result result = 1; // Result enum value
     string result_str = 2; // Human-readable English string describing the result
 }
-
