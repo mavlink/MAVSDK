@@ -7,9 +7,15 @@ include_directories(
 
 set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -DTESTING")
 
-add_compile_options(
-    -Wno-error=deprecated-declarations
-)
+if(MSVC)
+    add_compile_options(
+         /wd4996 # ignore deprecated
+    )
+else()
+    add_compile_options(
+        -Wno-error=deprecated-declarations
+    )
+endif()
 
 # `make test` does not show output, but `make check` does
 add_custom_target(check COMMAND ${CMAKE_CTEST_COMMAND} --verbose)
