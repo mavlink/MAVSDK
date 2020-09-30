@@ -27,6 +27,8 @@ public:
 
     Param::Result set_param_float(const std::string& name, float value);
 
+    Param::AllParams get_all_params();
+
 private:
     static Param::Result result_from_mavlink_parameters_result(MAVLinkParameters::Result result);
 };

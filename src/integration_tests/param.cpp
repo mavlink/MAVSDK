@@ -35,6 +35,12 @@ TEST_F(SitlTest, ParamSad)
             param->get_param_int("NAME_TOO_LOOOOONG");
         EXPECT_EQ(get_result.first, Param::Result::ParamNameTooLong);
     }
+
+    {
+        auto value = param->get_all_params();
+        EXPECT_GT(value.float_params.size(), 0);
+        EXPECT_GT(value.int_params.size(), 0);
+    }
 }
 
 TEST_F(SitlTest, ParamHappy)

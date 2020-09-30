@@ -10,6 +10,7 @@
 #include <functional>
 #include <cassert>
 #include <vector>
+#include <map>
 
 namespace mavsdk {
 
@@ -601,6 +602,11 @@ public:
         const void* cookie,
         bool extended = false);
 
+    std::map<std::string, MAVLinkParameters::ParamValue> get_all_params();
+    typedef std::function<void(std::map<std::string, MAVLinkParameters::ParamValue>)>
+        get_all_params_callback_t;
+    void get_all_params_async(get_all_params_callback_t callback);
+
     using ParamChangedCallback = std::function<void(ParamValue value)>;
     void subscribe_param_changed(
         const std::string& name,
@@ -661,6 +667,14 @@ private:
 
     std::mutex _param_changed_subscriptions_mutex{};
     std::vector<ParamChangedSubscription> _param_changed_subscriptions{};
+
+    struct AllParameters {
+        std::map<std::string, ParamValue> all_params{};
+        get_all_params_callback_t callback{nullptr};
+        void* timeout_cookie{nullptr};
+    };
+    std::shared_ptr<AllParameters> _all_param_store{nullptr};
+    std::mutex _all_param_mutex{};
 
     // dl_time_t _last_request_time = {};
 };
