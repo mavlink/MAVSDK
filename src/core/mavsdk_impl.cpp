@@ -436,6 +436,12 @@ void MavsdkImpl::notify_on_discover(const uint64_t uuid)
     if (_on_discover_callback) {
         _on_discover_callback(uuid);
     }
+
+    std::lock_guard<std::mutex> lock(_change_callback_mutex);
+    if (_change_callback) {
+        auto temp_callback = _change_callback;
+        call_user_callback([temp_callback]() { temp_callback(); });
+    }
 }
 
 void MavsdkImpl::notify_on_timeout(const uint64_t uuid)
@@ -444,6 +450,18 @@ void MavsdkImpl::notify_on_timeout(const uint64_t uuid)
     if (_on_timeout_callback) {
         _on_timeout_callback(uuid);
     }
+
+    std::lock_guard<std::mutex> lock(_change_callback_mutex);
+    if (_change_callback) {
+        auto temp_callback = _change_callback;
+        call_user_callback([temp_callback]() { temp_callback(); });
+    }
+}
+
+void MavsdkImpl::subscribe_on_change(Mavsdk::ChangeCallback callback)
+{
+    std::lock_guard<std::mutex> lock(_change_callback_mutex);
+    _change_callback = callback;
 }
 
 void MavsdkImpl::register_on_discover(const Mavsdk::event_callback_t callback)

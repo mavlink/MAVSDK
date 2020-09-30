@@ -64,6 +64,7 @@ public:
     bool is_connected() const;
     bool is_connected(uint64_t uuid) const;
 
+    void subscribe_on_change(Mavsdk::ChangeCallback callback);
     void register_on_discover(Mavsdk::event_callback_t callback);
     void register_on_timeout(Mavsdk::event_callback_t callback);
 
@@ -92,6 +93,9 @@ private:
 
     mutable std::recursive_mutex _systems_mutex{};
     std::unordered_map<uint8_t, std::shared_ptr<System>> _systems{};
+
+    std::mutex _change_callback_mutex{};
+    Mavsdk::ChangeCallback _change_callback{nullptr};
 
     Mavsdk::event_callback_t _on_discover_callback{nullptr};
     Mavsdk::event_callback_t _on_timeout_callback{nullptr};

@@ -263,10 +263,26 @@ public:
     DEPRECATED System& system(uint64_t uuid) const;
 
     /**
+     * @brief Callback type discover and timeout notifications.
+     */
+    using ChangeCallback = std::function<void()>;
+
+    /**
+     * @brief Get notification about a change in systems.
+     *
+     * This gets called whenever a system is discovered or has timed out.
+     *
+     * @note Only one subscriber is possible at any time. On a second
+     * subscription, the previous one is overwritten. To unsubscribe, pass nullptr;
+     *
+     * @param callback Callback to subscribe.
+     */
+    void subscribe_on_change(ChangeCallback callback);
+
+    /**
      * @brief Callback type for discover and timeout notifications (deprecated).
      *
-     * @note This typedef will be deprecated because the UUID will be replaced
-     *       by uid with 18 bytes.
+     * @note This typedef is deprecated because the UUID is replaced by uid with 18 bytes.
      *
      * @param uuid UUID of system (or MAVLink system ID for systems that don't have a UUID).
      */
@@ -316,7 +332,6 @@ public:
      *       deprecated and it will be replaced by `register_on_change()`.
      *
      * @param callback Callback to register.
-     *
      */
     DEPRECATED void register_on_discover(event_callback_t callback);
 

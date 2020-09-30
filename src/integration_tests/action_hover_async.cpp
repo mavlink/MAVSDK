@@ -15,18 +15,24 @@ TEST_F(SitlTest, ActionHoverAsync)
     ConnectionResult ret = mavsdk.add_udp_connection();
     ASSERT_EQ(ret, ConnectionResult::Success);
 
+    auto system = std::shared_ptr<System>{nullptr};
     {
         LogInfo() << "Waiting to discover vehicle";
         std::promise<void> prom;
         std::future<void> fut = prom.get_future();
-        mavsdk.register_on_discover([&prom](uint64_t uuid) {
-            prom.set_value();
-            UNUSED(uuid);
+
+        mavsdk.subscribe_on_change([&prom, &mavsdk, &system]() {
+            if (mavsdk.systems().size() == 1) {
+                system = mavsdk.systems().at(0);
+                prom.set_value();
+            }
         });
+
         ASSERT_EQ(fut.wait_for(std::chrono::seconds(10)), std::future_status::ready);
     }
 
-    auto system = mavsdk.systems().at(0);
+    ASSERT_TRUE(system->is_connected());
+
     auto telemetry = std::make_shared<Telemetry>(system);
     auto action = std::make_shared<Action>(system);
 
