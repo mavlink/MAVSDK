@@ -44,7 +44,7 @@ public:
     ~Param();
 
     /**
-     * @brief
+     * @brief Type for integer parameters.
      */
     struct IntParam {
         std::string name{}; /**< @brief Name of the parameter */
@@ -66,7 +66,7 @@ public:
     friend std::ostream& operator<<(std::ostream& str, Param::IntParam const& int_param);
 
     /**
-     * @brief
+     * @brief Type for float paramters.
      */
     struct FloatParam {
         std::string name{}; /**< @brief Name of the parameter */
@@ -88,7 +88,7 @@ public:
     friend std::ostream& operator<<(std::ostream& str, Param::FloatParam const& float_param);
 
     /**
-     * @brief
+     * @brief Type collecting all integer and float parameters.
      */
     struct AllParams {
         std::vector<IntParam>
