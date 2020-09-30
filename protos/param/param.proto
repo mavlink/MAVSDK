@@ -75,7 +75,7 @@ message SetParamFloatResponse {
 message GetAllParamsRequest {}
 
 message GetAllParamsResponse {
-    AllParams params = 1;
+    AllParams params = 1; // Collection of all parameters
 }
 
 /*
