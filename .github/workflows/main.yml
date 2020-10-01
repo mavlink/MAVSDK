@@ -76,15 +76,15 @@ jobs:
       - name: test (mavsdk_server)
         run: ./build/release/src/backend/test/unit_tests_backend
 
-  ubuntu18-proto-check:
-    name: ubuntu-18.04 (proto check)
-    runs-on: ubuntu-18.04
+  ubuntu20-proto-check:
+    name: ubuntu-20.04 (proto check)
+    runs-on: ubuntu-20.04
     steps:
       - uses: actions/checkout@v2
         with:
           submodules: recursive
       - name: install clang-format
-        run: sudo apt-get install -y clang-format-9
+        run: sudo apt-get install -y clang-format-10
       - name: install dcsdkgen
         run: |
              cd proto/pb_plugins
@@ -99,14 +99,15 @@ jobs:
       - name: check for diff
         run: git diff --exit-code
 
-  ubuntu18-check-style:
-    name: ubuntu-18.04 (check style and docs)
-    runs-on: ubuntu-18.04
-    container: mavsdk/mavsdk-ubuntu-18.04
+  ubuntu20-check-style:
+    name: ubuntu-20.04 (check style and docs)
+    runs-on: ubuntu-20.04
     steps:
       - uses: actions/checkout@v2
         with:
           submodules: recursive
+      - name: install dependencies
+        run: sudo apt-get install -y doxygen clang-format-10
       - name: check style
         run: ./tools/fix_style.sh .
       - name: check docs
