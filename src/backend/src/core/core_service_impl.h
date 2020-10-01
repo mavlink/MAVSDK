@@ -10,8 +10,8 @@ namespace backend {
 template<typename Mavsdk = Mavsdk>
 class CoreServiceImpl final : public mavsdk::rpc::core::CoreService::Service {
 public:
-    CoreServiceImpl(Mavsdk& dc) :
-        _dc(dc),
+    CoreServiceImpl(Mavsdk& mavsdk) :
+        _mavsdk(mavsdk),
         _stop_promise(std::promise<void>()),
         _stop_future(_stop_promise.get_future())
     {}
@@ -23,19 +23,16 @@ public:
     {
         std::mutex connection_state_mutex{};
 
-        _dc.register_on_discover([&writer, &connection_state_mutex](const uint64_t uuid) {
-            const auto rpc_connection_state_response = createRpcConnectionStateResponse(uuid, true);
+        _mavsdk.subscribe_on_change([this, &writer, &connection_state_mutex]() {
+            auto systems = _mavsdk.systems();
 
-            std::lock_guard<std::mutex> lock(connection_state_mutex);
-            writer->Write(rpc_connection_state_response);
-        });
+            for (auto system : systems) {
+                const auto rpc_connection_state_response =
+                    createRpcConnectionStateResponse(system->get_uuid(), system->is_connected());
 
-        _dc.register_on_timeout([&writer, &connection_state_mutex](const uint64_t uuid) {
-            const auto rpc_connection_state_response =
-                createRpcConnectionStateResponse(uuid, false);
-
-            std::lock_guard<std::mutex> lock(connection_state_mutex);
-            writer->Write(rpc_connection_state_response);
+                std::lock_guard<std::mutex> lock(connection_state_mutex);
+                writer->Write(rpc_connection_state_response);
+            }
         });
 
         _stop_future.wait();
@@ -76,7 +73,7 @@ public:
     void stop() { _stop_promise.set_value(); }
 
 private:
-    Mavsdk& _dc;
+    Mavsdk& _mavsdk;
     std::promise<void> _stop_promise;
 
     std::future<void> _stop_future;

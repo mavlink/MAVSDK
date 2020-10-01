@@ -329,7 +329,7 @@ public:
      * times, previous callbacks will be overwritten.
      *
      * @note This method will be deprecated because event_callback_t is
-     *       deprecated and it will be replaced by `register_on_change()`.
+     *       deprecated and it will be replaced by `subscribe_on_change()`.
      *
      * @param callback Callback to register.
      */
@@ -345,7 +345,7 @@ public:
      * times, previous callbacks will be overwritten.
      *
      * @note This method will be deprecated because event_callback_t is
-     *       deprecated and it will be replaced by `register_on_change()`.
+     *       deprecated and it will be replaced by `subscribe_on_change()`.
      *
      * @param callback Callback to register.
      */
