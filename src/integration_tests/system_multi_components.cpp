@@ -25,10 +25,10 @@ using namespace std::chrono;
  */
 TEST(SitlTestMultiple, SystemMultipleComponents)
 {
-    Mavsdk dc;
+    Mavsdk mavsdk;
 
     // For both Autopilot and Camera
-    ASSERT_EQ(dc.add_udp_connection(), ConnectionResult::Success);
+    ASSERT_EQ(mavsdk.add_udp_connection(), ConnectionResult::Success);
 
     // FIXME: As components send Heartbeats at 1Hz,
     // lets wait until atleast 2 of them gets discovered.
@@ -36,16 +36,15 @@ TEST(SitlTestMultiple, SystemMultipleComponents)
     std::cout << "We've nothing to do until we've some system to talk to. Lets sleep!\n";
     sleep_for(seconds(3));
 
-    auto uuids = dc.system_uuids();
+    auto uuids = mavsdk.system_uuids();
 
-    for (auto uuid : uuids) {
-        std::cout << "We found a System with UUID: " << uuid << '\n';
-        System& system = dc.system(uuid);
+    for (auto system : mavsdk.systems()) {
+        std::cout << "We found a System with UUID: " << system->get_uuid() << '\n';
 
-        auto has_autopilot = system.has_autopilot();
-        auto is_standalone = system.is_standalone();
-        auto has_camera = system.has_camera(); // Checks whether the system has any camera
-        auto has_gimbal = system.has_gimbal();
+        auto has_autopilot = system->has_autopilot();
+        auto is_standalone = system->is_standalone();
+        auto has_camera = system->has_camera(); // Checks whether the system has any camera
+        auto has_gimbal = system->has_gimbal();
 
         if (has_autopilot && has_camera && !has_gimbal) {
             std::cout << "Its an autopilot with camera(s)." << '\n';

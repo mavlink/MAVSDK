@@ -23,19 +23,19 @@ int main(int argc, char** argv)
         return 1;
     }
 
-    Mavsdk dc;
+    Mavsdk mavsdk;
 
     const auto connection_url = argv[1];
-    const auto connection_result = dc.add_any_connection(connection_url);
+    const auto connection_result = mavsdk.add_any_connection(connection_url);
 
     if (connection_result != ConnectionResult::Success) {
         std::cout << "Connection failed: " << connection_result << std::endl;
         return 1;
     }
 
-    wait_until_discover(dc);
+    wait_until_discover(mavsdk);
 
-    Calibration calibration(dc.systems().at(0));
+    Calibration calibration(mavsdk.systems().at(0));
     calibrate_accelerometer(calibration);
     calibrate_gyro(calibration);
     calibrate_magnetometer(calibration);
@@ -59,15 +59,20 @@ void print_usage(const std::string& bin_name)
               << "For example, to connect to the simulator use URL: udp://:14540" << std::endl;
 }
 
-void wait_until_discover(Mavsdk& dc)
+void wait_until_discover(Mavsdk& mavsdk)
 {
     std::cout << "Waiting to discover system..." << std::endl;
     std::promise<void> discover_promise;
     auto discover_future = discover_promise.get_future();
 
-    dc.register_on_discover([&discover_promise](uint64_t uuid) {
-        std::cout << "Discovered system with UUID: " << uuid << std::endl;
-        discover_promise.set_value();
+    mavsdk.subscribe_on_change([&mavsdk, &discover_promise]() {
+        const auto system = mavsdk.systems().at(0);
+        const auto uuid = system->get_uuid();
+
+        if (system->is_connected()) {
+            std::cout << "Discovered system with UUID: " << uuid << std::endl;
+            discover_promise.set_value();
+        }
     });
 
     discover_future.wait();

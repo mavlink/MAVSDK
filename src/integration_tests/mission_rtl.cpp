@@ -42,9 +42,14 @@ void do_mission_with_rtl(float mission_altitude_m, float return_altitude_m)
         auto future_result = prom->get_future();
 
         LogInfo() << "Waiting to discover system...";
-        mavsdk.register_on_discover([prom](uint64_t uuid) {
-            LogInfo() << "Discovered system with UUID: " << uuid;
-            prom->set_value();
+        mavsdk.subscribe_on_change([&mavsdk, prom]() {
+            const auto system = mavsdk.systems().at(0);
+            const auto uuid = system->get_uuid();
+
+            if (system->is_connected()) {
+                LogInfo() << "Discovered system with UUID: " << uuid;
+                prom->set_value();
+            }
         });
 
         ConnectionResult ret = mavsdk.add_udp_connection();
@@ -54,7 +59,7 @@ void do_mission_with_rtl(float mission_altitude_m, float return_altitude_m)
         ASSERT_EQ(status, std::future_status::ready);
         future_result.get();
         // FIXME: This hack is to prevent that the promise is set twice.
-        mavsdk.register_on_discover(nullptr);
+        mavsdk.subscribe_on_change(nullptr);
     }
 
     auto system = mavsdk.systems().at(0);

@@ -51,7 +51,7 @@ private:
 
         mavsdk.subscribe_on_change([this, &mavsdk]() {
             const auto system = mavsdk.systems().at(0);
-            const auto uuid = mavsdk.systems().at(0)->get_uuid();
+            const auto uuid = system->get_uuid();
 
             if (system->is_connected()) {
                 std::call_once(_discovery_flag, [this, uuid]() {

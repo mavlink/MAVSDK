@@ -14,7 +14,6 @@ using MockMavsdk = NiceMock<mavsdk::testing::MockMavsdk>;
 using ConnectionInitiator = mavsdk::backend::ConnectionInitiator<MockMavsdk>;
 
 static constexpr auto ARBITRARY_CONNECTION_URL = "udp://1291";
-static constexpr auto ARBITRARY_UUID = 1492;
 
 ACTION_P(SaveCallback, change_callback)
 {

@@ -57,7 +57,6 @@ add_executable(integration_tests_runner
     path_checker.cpp
     path_checker.h
     system_connection_async.cpp
-    system_connection_sync.cpp
     system_multi_components.cpp
     telemetry_async.cpp
     telemetry_health.cpp

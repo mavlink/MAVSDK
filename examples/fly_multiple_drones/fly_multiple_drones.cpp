@@ -72,7 +72,7 @@ are running two drones in udp://:14540 and udp://:14541 then you run the example
 #define TELEMETRY_CONSOLE_TEXT "\033[34m" // Turn text on console blue
 #define NORMAL_CONSOLE_TEXT "\033[0m" // Restore normal console colour
 
-static void complete_mission(std::string qgc_plan, System& system);
+static void complete_mission(std::string qgc_plan, std::shared_ptr<System> system);
 
 static void handle_action_err_exit(Action::Result result, const std::string& message);
 
@@ -98,16 +98,16 @@ int main(int argc, char* argv[])
         return 1;
     }
 
-    Mavsdk dc;
+    Mavsdk mavsdk;
 
     // Half of argc is how many udp ports is being used
-    int total_ports_used = argc / 2;
+    size_t total_ports_used = argc / 2;
 
     // the loop below adds the number of ports the sdk monitors.
     // Loop must start from 1 since we are ignoring argv[0] which would be the name of the
     // executable
-    for (int i = 1; i <= total_ports_used; ++i) {
-        ConnectionResult connection_result = dc.add_any_connection(argv[i]);
+    for (size_t i = 1; i <= total_ports_used; ++i) {
+        ConnectionResult connection_result = mavsdk.add_any_connection(argv[i]);
         if (connection_result != ConnectionResult::Success) {
             std::cerr << ERROR_CONSOLE_TEXT << "Connection error: " << connection_result
                       << NORMAL_CONSOLE_TEXT << std::endl;
@@ -115,12 +115,17 @@ int main(int argc, char* argv[])
         }
     }
 
-    std::atomic<signed> num_systems_discovered{0};
+    std::atomic<unsigned> num_systems_discovered{0};
 
     std::cout << "Waiting to discover system..." << std::endl;
-    dc.register_on_discover([&num_systems_discovered](uint64_t uuid) {
-        std::cout << "Discovered system with UUID: " << uuid << std::endl;
-        ++num_systems_discovered;
+    mavsdk.subscribe_on_change([&mavsdk, &num_systems_discovered]() {
+        const auto systems = mavsdk.systems();
+
+        if (systems.size() < num_systems_discovered) {
+            const auto uuid = systems.back()->get_uuid();
+            std::cout << "Discovered system with UUID: " << uuid << std::endl;
+            num_systems_discovered = systems.size();
+        }
     });
 
     // We usually receive heartbeats at 1Hz, therefore we should find a system after around 2
@@ -137,9 +142,8 @@ int main(int argc, char* argv[])
 
     int planFile_provided =
         total_ports_used + 1; // +1 because first plan is specified at argv[total_ports_used+1]
-    for (auto uuid : dc.system_uuids()) {
-        System& system = dc.system(uuid);
-        std::thread t(&complete_mission, argv[planFile_provided], std::ref(system));
+    for (auto system : mavsdk.systems()) {
+        std::thread t(&complete_mission, argv[planFile_provided], system);
         threads.push_back(
             std::move(t)); // Instead of copying, move t into the vector (less expensive)
         planFile_provided += 1;
@@ -151,7 +155,7 @@ int main(int argc, char* argv[])
     return 0;
 }
 
-void complete_mission(std::string qgc_plan, System& system)
+void complete_mission(std::string qgc_plan, std::shared_ptr<System> system)
 {
     auto telemetry = std::make_shared<Telemetry>(system);
     auto action = std::make_shared<Action>(system);
@@ -171,12 +175,12 @@ void complete_mission(std::string qgc_plan, System& system)
     // Creates a file named with vehicle's last few digits of uuid number to store lat and lng with
     // time
     std::ofstream myFile;
-    myFile.open((std::to_string(system.get_uuid() % 100000) + ".csv"));
+    myFile.open((std::to_string(system->get_uuid() % 100000) + ".csv"));
     myFile << "Time, Vehicle_ID, Altitude, Latitude, Longitude, Absolute_Altitude, \n";
 
     // Setting up the callback to monitor lat and longitude
     telemetry->subscribe_position([&](Telemetry::Position position) {
-        myFile << getCurrentTimeString() << "," << (system.get_uuid()) % 100000 << ","
+        myFile << getCurrentTimeString() << "," << (system->get_uuid()) % 100000 << ","
                << position.relative_altitude_m << "," << position.latitude_deg << ","
                << position.longitude_deg << "," << position.absolute_altitude_m << ", \n";
     });
@@ -219,7 +223,7 @@ void complete_mission(std::string qgc_plan, System& system)
 
     // Before starting the mission subscribe to the mission progress.
     mission->subscribe_mission_progress([&](Mission::MissionProgress mission_progress) {
-        std::cout << "Mission status update, VehicleID: " << system.get_uuid() % 100000 << " --> "
+        std::cout << "Mission status update, VehicleID: " << system->get_uuid() % 100000 << " --> "
                   << mission_progress.current << " / " << mission_progress.total << std::endl;
     });
 

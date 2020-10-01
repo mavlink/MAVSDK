@@ -87,9 +87,18 @@ int main(int argc, char** argv)
         auto future_result = prom->get_future();
 
         std::cout << "Waiting to discover system..." << std::endl;
-        mavsdk.register_on_discover([prom](uint64_t uuid) {
-            std::cout << "Discovered system with UUID: " << uuid << std::endl;
-            prom->set_value();
+        mavsdk.subscribe_on_change([&mavsdk, prom]() {
+            const auto system = mavsdk.systems().at(0);
+            const auto uuid = system->get_uuid();
+
+            if (system->is_connected()) {
+                std::cout << "Discovered system with UUID: " << uuid << std::endl;
+                prom->set_value();
+            } else {
+                std::cout << "System with UUID " << uuid << " timed out" << std::endl;
+                std::cout << "Exiting." << std::endl;
+                exit(0);
+            }
         });
 
         connection_result = mavsdk.add_any_connection(connection_url);
@@ -97,12 +106,6 @@ int main(int argc, char** argv)
 
         future_result.get();
     }
-
-    mavsdk.register_on_timeout([](uint64_t uuid) {
-        std::cout << "System with UUID timed out: " << uuid << std::endl;
-        std::cout << "Exiting." << std::endl;
-        exit(0);
-    });
 
     auto system = mavsdk.systems().at(0);
     auto action = std::make_shared<Action>(system);

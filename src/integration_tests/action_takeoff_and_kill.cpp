@@ -15,10 +15,14 @@ TEST_F(SitlTest, ActionTakeoffAndKill)
         LogInfo() << "Waiting to discover vehicle";
         std::promise<void> prom;
         std::future<void> fut = prom.get_future();
-        mavsdk.register_on_discover([&prom](uint64_t uuid) {
-            prom.set_value();
-            UNUSED(uuid);
+        mavsdk.subscribe_on_change([&mavsdk, &prom]() {
+            const auto system = mavsdk.systems().at(0);
+
+            if (system->is_connected()) {
+                prom.set_value();
+            }
         });
+
         ASSERT_EQ(fut.wait_for(std::chrono::seconds(10)), std::future_status::ready);
     }
 

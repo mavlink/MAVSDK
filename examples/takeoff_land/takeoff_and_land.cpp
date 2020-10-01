@@ -59,9 +59,14 @@ int main(int argc, char** argv)
     auto system = mavsdk.systems().at(0);
 
     std::cout << "Waiting to discover system..." << std::endl;
-    mavsdk.register_on_discover([&discovered_system](uint64_t uuid) {
-        std::cout << "Discovered system with UUID: " << uuid << std::endl;
-        discovered_system = true;
+    mavsdk.subscribe_on_change([&mavsdk, &discovered_system]() {
+        const auto system = mavsdk.systems().at(0);
+        const auto uuid = system->get_uuid();
+
+        if (system->is_connected()) {
+            std::cout << "Discovered system with UUID: " << uuid << std::endl;
+            discovered_system = true;
+        }
     });
 
     // We usually receive heartbeats at 1Hz, therefore we should find a system after around 2

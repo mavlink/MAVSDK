@@ -239,9 +239,14 @@ void wait_until_discover(Mavsdk& mavsdk)
     std::promise<void> discover_promise;
     auto discover_future = discover_promise.get_future();
 
-    mavsdk.register_on_discover([&discover_promise](uint64_t uuid) {
-        std::cout << "Discovered system with UUID: " << uuid << std::endl;
-        discover_promise.set_value();
+    mavsdk.subscribe_on_change([&mavsdk, &discover_promise]() {
+        const auto system = mavsdk.systems().at(0);
+        const auto uuid = system->get_uuid();
+
+        if (system->is_connected()) {
+            std::cout << "Discovered system with UUID: " << uuid << std::endl;
+            discover_promise.set_value();
+        }
     });
 
     discover_future.wait();
