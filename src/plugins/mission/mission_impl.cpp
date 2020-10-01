@@ -278,19 +278,20 @@ MissionImpl::convert_to_int_items(const std::vector<MissionItem>& mission_items)
 
             uint8_t autocontinue = 1;
 
-            MAVLinkMissionTransfer::ItemInt next_item{static_cast<uint16_t>(int_items.size()),
-                                                      MAV_FRAME_MISSION,
-                                                      MAV_CMD_DO_CHANGE_SPEED,
-                                                      current,
-                                                      autocontinue,
-                                                      1.0f, // ground speed
-                                                      item.speed_m_s,
-                                                      -1.0f, // no throttle change
-                                                      0.0f, // absolute
-                                                      0,
-                                                      0,
-                                                      NAN,
-                                                      MAV_MISSION_TYPE_MISSION};
+            MAVLinkMissionTransfer::ItemInt next_item{
+                static_cast<uint16_t>(int_items.size()),
+                MAV_FRAME_MISSION,
+                MAV_CMD_DO_CHANGE_SPEED,
+                current,
+                autocontinue,
+                1.0f, // ground speed
+                item.speed_m_s,
+                -1.0f, // no throttle change
+                0.0f, // absolute
+                0,
+                0,
+                NAN,
+                MAV_MISSION_TYPE_MISSION};
 
             _mission_data.mavlink_mission_item_to_mission_item_indices.push_back(item_i);
             int_items.push_back(next_item);
@@ -332,19 +333,20 @@ MissionImpl::convert_to_int_items(const std::vector<MissionItem>& mission_items)
 
             uint8_t autocontinue = 1;
 
-            MAVLinkMissionTransfer::ItemInt next_item{static_cast<uint16_t>(int_items.size()),
-                                                      MAV_FRAME_MISSION,
-                                                      MAV_CMD_DO_MOUNT_CONTROL,
-                                                      current,
-                                                      autocontinue,
-                                                      item.gimbal_pitch_deg, // pitch
-                                                      0.0f, // roll (yes it is a weird order)
-                                                      item.gimbal_yaw_deg, // yaw
-                                                      NAN,
-                                                      0,
-                                                      0,
-                                                      MAV_MOUNT_MODE_MAVLINK_TARGETING,
-                                                      MAV_MISSION_TYPE_MISSION};
+            MAVLinkMissionTransfer::ItemInt next_item{
+                static_cast<uint16_t>(int_items.size()),
+                MAV_FRAME_MISSION,
+                MAV_CMD_DO_MOUNT_CONTROL,
+                current,
+                autocontinue,
+                item.gimbal_pitch_deg, // pitch
+                0.0f, // roll (yes it is a weird order)
+                item.gimbal_yaw_deg, // yaw
+                NAN,
+                0,
+                0,
+                MAV_MOUNT_MODE_MAVLINK_TARGETING,
+                MAV_MISSION_TYPE_MISSION};
 
             _mission_data.mavlink_mission_item_to_mission_item_indices.push_back(item_i);
             int_items.push_back(next_item);
@@ -433,19 +435,20 @@ MissionImpl::convert_to_int_items(const std::vector<MissionItem>& mission_items)
                     break;
             }
 
-            MAVLinkMissionTransfer::ItemInt next_item{static_cast<uint16_t>(int_items.size()),
-                                                      MAV_FRAME_MISSION,
-                                                      command,
-                                                      current,
-                                                      autocontinue,
-                                                      param1,
-                                                      param2,
-                                                      param3,
-                                                      NAN,
-                                                      0,
-                                                      0,
-                                                      NAN,
-                                                      MAV_MISSION_TYPE_MISSION};
+            MAVLinkMissionTransfer::ItemInt next_item{
+                static_cast<uint16_t>(int_items.size()),
+                MAV_FRAME_MISSION,
+                command,
+                current,
+                autocontinue,
+                param1,
+                param2,
+                param3,
+                NAN,
+                0,
+                0,
+                NAN,
+                MAV_MISSION_TYPE_MISSION};
 
             _mission_data.mavlink_mission_item_to_mission_item_indices.push_back(item_i);
             int_items.push_back(next_item);
@@ -459,19 +462,20 @@ MissionImpl::convert_to_int_items(const std::vector<MissionItem>& mission_items)
     --item_i;
 
     if (_enable_return_to_launch_after_mission) {
-        MAVLinkMissionTransfer::ItemInt next_item{static_cast<uint16_t>(int_items.size()),
-                                                  MAV_FRAME_MISSION,
-                                                  MAV_CMD_NAV_RETURN_TO_LAUNCH,
-                                                  0, // current
-                                                  1, // autocontinue
-                                                  NAN, // loiter time in seconds
-                                                  NAN, // empty
-                                                  NAN, // radius around waypoint in meters ?
-                                                  NAN, // loiter at center of waypoint
-                                                  0,
-                                                  0,
-                                                  0,
-                                                  MAV_MISSION_TYPE_MISSION};
+        MAVLinkMissionTransfer::ItemInt next_item{
+            static_cast<uint16_t>(int_items.size()),
+            MAV_FRAME_MISSION,
+            MAV_CMD_NAV_RETURN_TO_LAUNCH,
+            0, // current
+            1, // autocontinue
+            NAN, // loiter time in seconds
+            NAN, // empty
+            NAN, // radius around waypoint in meters ?
+            NAN, // loiter at center of waypoint
+            0,
+            0,
+            0,
+            MAV_MISSION_TYPE_MISSION};
 
         _mission_data.mavlink_mission_item_to_mission_item_indices.push_back(item_i);
         int_items.push_back(next_item);
