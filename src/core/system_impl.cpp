@@ -216,48 +216,13 @@ void SystemImpl::process_statustext(const mavlink_message_t& message)
     mavlink_statustext_t statustext;
     mavlink_msg_statustext_decode(&message, &statustext);
 
-    std::string debug_str = "MAVLink: ";
+    const auto result_severity = _statustext_handler.process_severity(statustext);
+    const auto result_text = _statustext_handler.process_text(statustext);
 
-    switch (statustext.severity) {
-        case MAV_SEVERITY_EMERGENCY:
-            debug_str += "emergency";
-            break;
-        case MAV_SEVERITY_ALERT:
-            debug_str += "alert";
-            break;
-        case MAV_SEVERITY_CRITICAL:
-            debug_str += "critical";
-            break;
-        case MAV_SEVERITY_ERROR:
-            debug_str += "error";
-            break;
-        case MAV_SEVERITY_WARNING:
-            debug_str += "warning";
-            break;
-        case MAV_SEVERITY_NOTICE:
-            debug_str += "notice";
-            break;
-        case MAV_SEVERITY_INFO:
-            debug_str += "info";
-            break;
-        case MAV_SEVERITY_DEBUG:
-            debug_str += "debug";
-            break;
-        default:
-            break;
+    if (result_severity.first && result_text.first) {
+        LogDebug() << "MAVLink: " + result_severity.second + ": " + result_text.second;
+
     }
-
-    // statustext.text is not null terminated, therefore we copy it first to
-    // an array big enough that is zeroed.
-    char text_with_null[sizeof(statustext.text) + 1]{};
-    strncpy(text_with_null, statustext.text, sizeof(text_with_null) - 1);
-
-    // Only use the debug string for the first chunk of the sequence
-    // or if there is just one message in the sequence
-    if (statustext.id && statustext.chunk_seq)
-        LogDebug() << text_with_null;
-    else
-        LogDebug() << debug_str << ": " << text_with_null;
 }
 
 void SystemImpl::heartbeats_timed_out()

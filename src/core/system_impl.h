@@ -7,6 +7,7 @@
 #include "mavlink_commands.h"
 #include "mavlink_message_handler.h"
 #include "mavlink_mission_transfer.h"
+#include "mavlink_statustext_handler.h"
 #include "timeout_handler.h"
 #include "call_every_handler.h"
 #include "safe_queue.h"
@@ -280,6 +281,8 @@ private:
 
     // Needs to be before anything else because they can depend on it.
     MAVLinkMessageHandler _message_handler{};
+
+    MavlinkStatustextHandler _statustext_handler{};
 
     uint64_t _uuid{0};
 
