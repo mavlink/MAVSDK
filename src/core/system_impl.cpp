@@ -221,7 +221,6 @@ void SystemImpl::process_statustext(const mavlink_message_t& message)
 
     if (result_severity.first && result_text.first) {
         LogDebug() << "MAVLink: " + result_severity.second + ": " + result_text.second;
-
     }
 }
 

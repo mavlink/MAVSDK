@@ -3,7 +3,8 @@
 
 namespace mavsdk {
 
-std::pair<bool, std::string> MavlinkStatustextHandler::process_severity(const mavlink_statustext_t& statustext)
+std::pair<bool, std::string>
+MavlinkStatustextHandler::process_severity(const mavlink_statustext_t& statustext)
 {
     switch (statustext.severity) {
         case MAV_SEVERITY_EMERGENCY:
@@ -27,13 +28,13 @@ std::pair<bool, std::string> MavlinkStatustextHandler::process_severity(const ma
     }
 }
 
-std::pair<bool, std::string> MavlinkStatustextHandler::process_text(const mavlink_statustext_t& statustext)
+std::pair<bool, std::string>
+MavlinkStatustextHandler::process_text(const mavlink_statustext_t& statustext)
 {
-    char text_with_null[sizeof(statustext.text) + 1] {};
+    char text_with_null[sizeof(statustext.text) + 1]{};
     strncpy(text_with_null, statustext.text, sizeof(text_with_null) - 1);
 
     if (statustext.id > 0) {
-
         if (statustext.id != _last_id) {
             _temp_multi_str = "";
             _last_chunk_seq = 0;

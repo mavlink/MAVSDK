@@ -6,7 +6,7 @@ using namespace mavsdk;
 
 TEST(MavlinkStatustextHandler, Severities)
 {
-    const std::vector<std::pair<uint8_t, std::string>> severities {
+    const std::vector<std::pair<uint8_t, std::string>> severities{
         {MAV_SEVERITY_DEBUG, "debug"},
         {MAV_SEVERITY_INFO, "info"},
         {MAV_SEVERITY_NOTICE, "notice"},
@@ -14,8 +14,7 @@ TEST(MavlinkStatustextHandler, Severities)
         {MAV_SEVERITY_ERROR, "error"},
         {MAV_SEVERITY_CRITICAL, "critical"},
         {MAV_SEVERITY_ALERT, "alert"},
-        {MAV_SEVERITY_EMERGENCY, "emergency"}
-    };
+        {MAV_SEVERITY_EMERGENCY, "emergency"}};
 
     for (const auto& severity : severities) {
         mavlink_statustext_t statustext{};
@@ -41,7 +40,7 @@ TEST(MavlinkStatustextHandler, WrongSeverity)
 TEST(MavlinkStatustextHandler, SingleStatustextWithNull)
 {
     mavlink_statustext_t statustext{};
-    auto str = std::string {"Hello Reader"};
+    auto str = std::string{"Hello Reader"};
     strncpy(statustext.text, str.c_str(), sizeof(statustext.text) - 1);
 
     MavlinkStatustextHandler handler;
@@ -53,7 +52,7 @@ TEST(MavlinkStatustextHandler, SingleStatustextWithNull)
 TEST(MavlinkStatustextHandler, SingleStatustextWithoutNull)
 {
     mavlink_statustext_t statustext{};
-    auto str = std::string {"asdfghjkl;asdfghjkl;asdfghjkl;asdfghjkl;asdfghjkl;"};
+    auto str = std::string{"asdfghjkl;asdfghjkl;asdfghjkl;asdfghjkl;asdfghjkl;"};
     strncpy(statustext.text, str.c_str(), sizeof(statustext.text));
 
     MavlinkStatustextHandler handler;
@@ -64,15 +63,14 @@ TEST(MavlinkStatustextHandler, SingleStatustextWithoutNull)
 
 TEST(MavlinkStatustextHandler, MultiStatustext)
 {
-    const std::string str =
-        "Lorem ipsum dolor sit amet, consectetur adipiscing"
-        " elit, sed do eiusmod tempor incididunt ut labore "
-        "et dolore magna aliqua. Venenatis cras sed felis e"
-        "get velit aliquet. Ac feugiat sed lectus vestibulu"
-        "m. Condimentum lacinia quis vel eros donec ac odio"
-        ". Eleifend mi in nulla posuere sollicitudin aliqua"
-        "m ultrices. Fusce ut placerat orci nulla pellentes"
-        "que dignissim.";
+    const std::string str = "Lorem ipsum dolor sit amet, consectetur adipiscing"
+                            " elit, sed do eiusmod tempor incididunt ut labore "
+                            "et dolore magna aliqua. Venenatis cras sed felis e"
+                            "get velit aliquet. Ac feugiat sed lectus vestibulu"
+                            "m. Condimentum lacinia quis vel eros donec ac odio"
+                            ". Eleifend mi in nulla posuere sollicitudin aliqua"
+                            "m ultrices. Fusce ut placerat orci nulla pellentes"
+                            "que dignissim.";
 
     constexpr std::size_t chunk_len = sizeof(mavlink_statustext_t::text);
 
@@ -80,7 +78,6 @@ TEST(MavlinkStatustextHandler, MultiStatustext)
 
     uint8_t chunk_seq = 0;
     for (std::size_t start = 0; start < str.size(); start += chunk_len) {
-
         bool is_last = (start + chunk_len >= str.size());
 
         const std::size_t len = std::min(chunk_len, str.size() - start);
@@ -105,10 +102,9 @@ TEST(MavlinkStatustextHandler, MultiStatustext)
 
 TEST(MavlinkStatustextHandler, MultiStatustextDivisibleByChunkLen)
 {
-    const std::string str =
-        "This string is unfortunately exactly the length of"
-        "two chunks which means it needs another message ju"
-        "st to send the strange zero termination character!";
+    const std::string str = "This string is unfortunately exactly the length of"
+                            "two chunks which means it needs another message ju"
+                            "st to send the strange zero termination character!";
 
     constexpr std::size_t chunk_len = sizeof(mavlink_statustext_t::text);
 
@@ -116,7 +112,6 @@ TEST(MavlinkStatustextHandler, MultiStatustextDivisibleByChunkLen)
 
     uint8_t chunk_seq = 0;
     for (std::size_t start = 0; start <= str.size(); start += chunk_len) {
-
         bool is_last = (start + chunk_len > str.size());
 
         const std::size_t len = std::min(chunk_len, str.size() - start);
@@ -146,25 +141,23 @@ TEST(MavlinkStatustextHandler, MultiStatustextDivisibleByChunkLen)
 
 TEST(MavlinkStatustextHandler, MultiStatustextMissingPart)
 {
-    const std::string str =
-        "Lorem ipsum dolor sit amet, consectetur adipiscing"
-        " elit, sed do eiusmod tempor incididunt ut labore "
-        "et dolore magna aliqua. Venenatis cras sed felis e"
-        "get velit aliquet. Ac feugiat sed lectus vestibulu"
-        "m. Condimentum lacinia quis vel eros donec ac odio"
-        ". Eleifend mi in nulla posuere sollicitudin aliqua"
-        "m ultrices. Fusce ut placerat orci nulla pellentes"
-        "que dignissim.";
+    const std::string str = "Lorem ipsum dolor sit amet, consectetur adipiscing"
+                            " elit, sed do eiusmod tempor incididunt ut labore "
+                            "et dolore magna aliqua. Venenatis cras sed felis e"
+                            "get velit aliquet. Ac feugiat sed lectus vestibulu"
+                            "m. Condimentum lacinia quis vel eros donec ac odio"
+                            ". Eleifend mi in nulla posuere sollicitudin aliqua"
+                            "m ultrices. Fusce ut placerat orci nulla pellentes"
+                            "que dignissim.";
 
-    const std::string str_missing =
-        "Lorem ipsum dolor sit amet, consectetur adipiscing"
-        " elit, sed do eiusmod tempor incididunt ut labore "
-        "et dolore magna aliqua. Venenatis cras sed felis e"
-        "[ missing ... ]"
-        "m. Condimentum lacinia quis vel eros donec ac odio"
-        ". Eleifend mi in nulla posuere sollicitudin aliqua"
-        "m ultrices. Fusce ut placerat orci nulla pellentes"
-        "que dignissim.";
+    const std::string str_missing = "Lorem ipsum dolor sit amet, consectetur adipiscing"
+                                    " elit, sed do eiusmod tempor incididunt ut labore "
+                                    "et dolore magna aliqua. Venenatis cras sed felis e"
+                                    "[ missing ... ]"
+                                    "m. Condimentum lacinia quis vel eros donec ac odio"
+                                    ". Eleifend mi in nulla posuere sollicitudin aliqua"
+                                    "m ultrices. Fusce ut placerat orci nulla pellentes"
+                                    "que dignissim.";
 
     constexpr std::size_t chunk_len = sizeof(mavlink_statustext_t::text);
 
@@ -172,7 +165,6 @@ TEST(MavlinkStatustextHandler, MultiStatustextMissingPart)
 
     uint8_t chunk_seq = 0;
     for (std::size_t start = 0; start < str.size(); start += chunk_len) {
-
         bool is_last = (start + chunk_len >= str.size());
 
         const std::size_t len = std::min(chunk_len, str.size() - start);
@@ -202,21 +194,19 @@ TEST(MavlinkStatustextHandler, MultiStatustextConsecutive)
     MavlinkStatustextHandler handler;
 
     {
-        const std::string str =
-            "Lorem ipsum dolor sit amet, consectetur adipiscing"
-            " elit, sed do eiusmod tempor incididunt ut labore "
-            "et dolore magna aliqua. Venenatis cras sed felis e"
-            "get velit aliquet. Ac feugiat sed lectus vestibulu"
-            "m. Condimentum lacinia quis vel eros donec ac odio"
-            ". Eleifend mi in nulla posuere sollicitudin aliqua"
-            "m ultrices. Fusce ut placerat orci nulla pellentes"
-            "que dignissim.";
+        const std::string str = "Lorem ipsum dolor sit amet, consectetur adipiscing"
+                                " elit, sed do eiusmod tempor incididunt ut labore "
+                                "et dolore magna aliqua. Venenatis cras sed felis e"
+                                "get velit aliquet. Ac feugiat sed lectus vestibulu"
+                                "m. Condimentum lacinia quis vel eros donec ac odio"
+                                ". Eleifend mi in nulla posuere sollicitudin aliqua"
+                                "m ultrices. Fusce ut placerat orci nulla pellentes"
+                                "que dignissim.";
 
         constexpr std::size_t chunk_len = sizeof(mavlink_statustext_t::text);
 
         uint8_t chunk_seq = 0;
         for (std::size_t start = 0; start < str.size(); start += chunk_len) {
-
             bool is_last = (start + chunk_len >= str.size());
 
             const std::size_t len = std::min(chunk_len, str.size() - start);
@@ -240,15 +230,13 @@ TEST(MavlinkStatustextHandler, MultiStatustextConsecutive)
     }
 
     {
-        const std::string str =
-            "Blablablablablablablablablablablablablablablablabl"
-            "FooFooFooFoo.";
+        const std::string str = "Blablablablablablablablablablablablablablablablabl"
+                                "FooFooFooFoo.";
 
         constexpr std::size_t chunk_len = sizeof(mavlink_statustext_t::text);
 
         uint8_t chunk_seq = 0;
         for (std::size_t start = 0; start < str.size(); start += chunk_len) {
-
             bool is_last = (start + chunk_len >= str.size());
 
             const std::size_t len = std::min(chunk_len, str.size() - start);
@@ -271,4 +259,3 @@ TEST(MavlinkStatustextHandler, MultiStatustextConsecutive)
         }
     }
 }
-
