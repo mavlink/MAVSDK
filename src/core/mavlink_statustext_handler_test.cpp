@@ -4,6 +4,12 @@
 
 using namespace mavsdk;
 
+// We need to use strncpy without zero termination, so with possible
+// stringop-truncation here, on purpose because the MAVLink message structure
+// of statustext.text does not include the zero termination.
+#pragma GCC diagnostic push
+#pragma GCC diagnostic ignored "-Wstringop-truncation"
+
 TEST(MavlinkStatustextHandler, Severities)
 {
     const std::vector<std::pair<uint8_t, std::string>> severities{
@@ -259,3 +265,5 @@ TEST(MavlinkStatustextHandler, MultiStatustextConsecutive)
         }
     }
 }
+
+#pragma GCC diagnostic pop
