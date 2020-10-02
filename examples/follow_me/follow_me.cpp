@@ -15,6 +15,7 @@
 #include <mavsdk/plugins/action/action.h>
 #include <mavsdk/plugins/follow_me/follow_me.h>
 #include <mavsdk/plugins/telemetry/telemetry.h>
+#include <future>
 #include <iostream>
 #include <memory>
 #include <thread>
@@ -34,6 +35,7 @@ using namespace std::this_thread; // for sleep_for()
 inline void action_error_exit(Action::Result result, const std::string& message);
 inline void follow_me_error_exit(FollowMe::Result result, const std::string& message);
 inline void connection_error_exit(ConnectionResult result, const std::string& message);
+inline void wait_until_discover(Mavsdk& mavsdk);
 
 void usage(std::string bin_name)
 {
@@ -65,11 +67,7 @@ int main(int argc, char** argv)
         return 1;
     }
 
-    // Wait for the system to connect via heartbeat
-    while (!mavsdk.is_connected()) {
-        std::cout << "Wait for system to connect via heartbeat" << std::endl;
-        sleep_for(seconds(1));
-    }
+    wait_until_discover(mavsdk);
 
     // System got discovered.
     auto system = mavsdk.systems().at(0);
@@ -145,6 +143,25 @@ int main(int argc, char** argv)
     }
     std::cout << "Landed..." << std::endl;
     return 0;
+}
+
+void wait_until_discover(Mavsdk& mavsdk)
+{
+    std::cout << "Waiting to discover system..." << std::endl;
+    std::promise<void> discover_promise;
+    auto discover_future = discover_promise.get_future();
+
+    mavsdk.subscribe_on_change([&mavsdk, &discover_promise]() {
+        const auto system = mavsdk.systems().at(0);
+        const auto uuid = system->get_uuid();
+
+        if (system->is_connected()) {
+            std::cout << "Discovered system with UUID: " << uuid << std::endl;
+            discover_promise.set_value();
+        }
+    });
+
+    discover_future.wait();
 }
 
 // Handles Action's result
