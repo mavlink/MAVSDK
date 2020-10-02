@@ -36,7 +36,17 @@ void takeoff_and_hover_at_altitude(float altitude_m)
     // Wait for system to connect via heartbeat.
     LogInfo() << "Waiting for system connect";
     ASSERT_TRUE(poll_condition_with_timeout(
-        [&mavsdk]() { return mavsdk.is_connected(); }, std::chrono::seconds(10)));
+        [&mavsdk]() {
+            const auto systems = mavsdk.systems();
+
+            if (systems.size() == 0) {
+                return false;
+            }
+
+            const auto system = mavsdk.systems().at(0);
+            return system->is_connected();
+        },
+        std::chrono::seconds(10)));
 
     auto systems = mavsdk.systems();
 

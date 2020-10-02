@@ -14,7 +14,7 @@ TEST_F(SitlTest, Info)
 
     // Wait for system to connect via heartbeat.
     std::this_thread::sleep_for(std::chrono::seconds(2));
-    ASSERT_TRUE(mavsdk.is_connected());
+    ASSERT_TRUE(mavsdk.systems().size() > 0);
 
     auto system = mavsdk.systems().at(0);
     auto info = std::make_shared<Info>(system);
