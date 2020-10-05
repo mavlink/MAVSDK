@@ -7,8 +7,10 @@ using namespace mavsdk;
 // We need to use strncpy without zero termination, so with possible
 // stringop-truncation here, on purpose because the MAVLink message structure
 // of statustext.text does not include the zero termination.
+#if defined(__GNUC__)
 #pragma GCC diagnostic push
 #pragma GCC diagnostic ignored "-Wstringop-truncation"
+#endif // defined(__GNUC__)
 
 TEST(MavlinkStatustextHandler, Severities)
 {
@@ -266,4 +268,6 @@ TEST(MavlinkStatustextHandler, MultiStatustextConsecutive)
     }
 }
 
+#if defined(__GNUC__)
 #pragma GCC diagnostic pop
+#endif // defined(__GNUC__)
