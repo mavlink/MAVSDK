@@ -36,8 +36,6 @@ TEST(SitlTestMultiple, SystemMultipleComponents)
     std::cout << "We've nothing to do until we've some system to talk to. Lets sleep!\n";
     sleep_for(seconds(3));
 
-    auto uuids = mavsdk.system_uuids();
-
     for (auto system : mavsdk.systems()) {
         std::cout << "We found a System with UUID: " << system->get_uuid() << '\n';
 

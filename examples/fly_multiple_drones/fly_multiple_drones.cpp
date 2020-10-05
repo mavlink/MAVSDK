@@ -115,7 +115,7 @@ int main(int argc, char* argv[])
         }
     }
 
-    std::atomic<unsigned> num_systems_discovered{0};
+    std::atomic<size_t> num_systems_discovered{0};
 
     std::cout << "Waiting to discover system..." << std::endl;
     mavsdk.subscribe_on_change([&mavsdk, &num_systems_discovered]() {

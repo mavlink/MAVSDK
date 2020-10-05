@@ -38,7 +38,7 @@ int main(int argc, char** argv)
     }
 
     // We need an autopilot connected to start.
-    while (!mavsdk.systems().at(0).has_autopilot()) {
+    while (!mavsdk.systems().at(0)->has_autopilot()) {
         sleep_for(seconds(1));
         std::cout << "Waiting for system to connect." << std::endl;
     }

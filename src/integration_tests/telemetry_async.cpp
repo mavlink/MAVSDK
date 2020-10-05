@@ -59,25 +59,18 @@ static bool _received_actuator_output_status = false;
 
 TEST_F(SitlTest, TelemetryAsync)
 {
-    Mavsdk dc;
+    Mavsdk mavsdk;
 
-    ConnectionResult ret = dc.add_udp_connection();
+    ConnectionResult ret = mavsdk.add_udp_connection();
+    ASSERT_EQ(ret, ConnectionResult::Success);
 
     std::this_thread::sleep_for(std::chrono::seconds(3));
 
-    std::vector<uint64_t> uuids = dc.system_uuids();
+    const auto systems = mavsdk.systems();
+    ASSERT_EQ(systems.size(), 1);
+    const auto system = systems.at(0);
 
-    for (auto it = uuids.begin(); it != uuids.end(); ++it) {
-        std::cout << "found system with UUID: " << *it << std::endl;
-    }
-
-    ASSERT_EQ(uuids.size(), 1);
-
-    uint64_t uuid = uuids.at(0);
-
-    ASSERT_EQ(ret, ConnectionResult::Success);
-
-    System& system = dc.system(uuid);
+    std::cout << "Found system with UUID: " << system->get_uuid() << std::endl;
 
     auto telemetry = std::make_shared<Telemetry>(system);
 

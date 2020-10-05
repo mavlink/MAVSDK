@@ -18,7 +18,7 @@ using namespace mavsdk;
 using namespace std::this_thread;
 using namespace std::chrono;
 
-static void takeoff_and_land(System& system);
+static void takeoff_and_land(std::shared_ptr<System> system);
 
 #define ERROR_CONSOLE_TEXT "\033[31m" // Turn text on console red
 #define TELEMETRY_CONSOLE_TEXT "\033[34m" // Turn text on console blue
@@ -34,7 +34,7 @@ int main(int argc, char* argv[])
 
     Mavsdk mavsdk;
 
-    int total_udp_ports = argc - 1;
+    size_t total_udp_ports = argc - 1;
 
     // the loop below adds the number of ports the sdk monitors.
     for (int i = 1; i < argc; ++i) {
@@ -46,7 +46,7 @@ int main(int argc, char* argv[])
         }
     }
 
-    std::atomic<signed> num_systems_discovered{0};
+    std::atomic<size_t> num_systems_discovered{0};
 
     std::cout << "Waiting to discover system..." << std::endl;
     mavsdk.subscribe_on_change([&mavsdk, &num_systems_discovered]() {
@@ -70,8 +70,7 @@ int main(int argc, char* argv[])
 
     std::vector<std::thread> threads;
 
-    for (auto uuid : mavsdk.system_uuids()) {
-        System& system = mavsdk.system(uuid);
+    for (auto system : mavsdk.systems()) {
         std::thread t(&takeoff_and_land, std::ref(system));
         threads.push_back(std::move(t));
     }
@@ -82,7 +81,7 @@ int main(int argc, char* argv[])
     return 0;
 }
 
-void takeoff_and_land(System& system)
+void takeoff_and_land(std::shared_ptr<System> system)
 {
     auto telemetry = std::make_shared<Telemetry>(system);
     auto action = std::make_shared<Action>(system);

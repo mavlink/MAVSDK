@@ -164,7 +164,7 @@ void CameraImpl::manual_disable()
     _camera_found = false;
 }
 
-Camera::Result CameraImpl::select_camera(unsigned id)
+Camera::Result CameraImpl::select_camera(const size_t id)
 {
     static constexpr std::size_t MAX_SUPPORTED_ID = 5;
 

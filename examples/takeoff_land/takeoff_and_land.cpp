@@ -81,7 +81,7 @@ int main(int argc, char** argv)
 
     // Register a callback so we get told when components (camera, gimbal) etc
     // are found.
-    system.register_component_discovered_callback(component_discovered);
+    system->register_component_discovered_callback(component_discovered);
 
     auto telemetry = std::make_shared<Telemetry>(system);
     auto action = std::make_shared<Action>(system);

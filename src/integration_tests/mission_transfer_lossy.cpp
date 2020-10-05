@@ -13,7 +13,7 @@ static void set_link_lossy(std::shared_ptr<MavlinkPassthrough> mavlink_passthrou
 static std::vector<Mission::MissionItem> create_mission_items();
 static bool should_keep_message(const mavlink_message_t& message);
 
-static std::atomic<unsigned> _lossy_counter{0};
+static std::atomic<size_t> _lossy_counter{0};
 
 TEST_F(SitlTest, MissionTransferLossy)
 {
