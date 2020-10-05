@@ -30,6 +30,9 @@ else()
         if (WERROR)
             set(warnings "${warnings} -Werror")
         endif()
+
+        # Allow #pragma GCC diagnostic ignored "-Wstringop-truncation"
+        set(warnings "${warnings} -Wno-pragmas -Wno-unknown-warning-option")
     endif()
 
 

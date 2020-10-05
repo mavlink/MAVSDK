@@ -22,6 +22,7 @@ add_library(mavsdk
     mavlink_mission_transfer.cpp
     mavlink_parameters.cpp
     mavlink_receiver.cpp
+    mavlink_statustext_handler.cpp
     mavlink_message_handler.cpp
     plugin_impl_base.cpp
     serial_connection.cpp
@@ -109,6 +110,7 @@ list(APPEND UNIT_TEST_SOURCES
     ${PROJECT_SOURCE_DIR}/core/safe_queue_test.cpp
     ${PROJECT_SOURCE_DIR}/core/mavsdk_test.cpp
     ${PROJECT_SOURCE_DIR}/core/mavlink_mission_transfer_test.cpp
+    ${PROJECT_SOURCE_DIR}/core/mavlink_statustext_handler_test.cpp
     ${PROJECT_SOURCE_DIR}/core/geometry_test.cpp
 )
 set(UNIT_TEST_SOURCES ${UNIT_TEST_SOURCES} PARENT_SCOPE)
