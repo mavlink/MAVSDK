@@ -136,52 +136,57 @@ void TelemetryImpl::enable()
     // FIXME: The calibration check should eventually be better than this.
     //        For now, we just do the same as QGC does.
 
-    _parent->get_param_int_async(
-        std::string("CAL_GYRO0_ID"),
-        std::bind(
-            &TelemetryImpl::receive_param_cal_gyro,
-            this,
-            std::placeholders::_1,
-            std::placeholders::_2),
-        this);
+    if (_parent->has_autopilot()) {
+        _parent->get_param_int_async(
+            std::string("CAL_GYRO0_ID"),
+            std::bind(
+                &TelemetryImpl::receive_param_cal_gyro,
+                this,
+                std::placeholders::_1,
+                std::placeholders::_2),
+            this);
 
-    _parent->get_param_int_async(
-        std::string("CAL_ACC0_ID"),
-        std::bind(
-            &TelemetryImpl::receive_param_cal_accel,
-            this,
-            std::placeholders::_1,
-            std::placeholders::_2),
-        this);
+        _parent->get_param_int_async(
+            std::string("CAL_ACC0_ID"),
+            std::bind(
+                &TelemetryImpl::receive_param_cal_accel,
+                this,
+                std::placeholders::_1,
+                std::placeholders::_2),
+            this);
 
-    _parent->get_param_int_async(
-        std::string("CAL_MAG0_ID"),
-        std::bind(
-            &TelemetryImpl::receive_param_cal_mag,
-            this,
-            std::placeholders::_1,
-            std::placeholders::_2),
-        this);
+        _parent->get_param_int_async(
+            std::string("CAL_MAG0_ID"),
+            std::bind(
+                &TelemetryImpl::receive_param_cal_mag,
+                this,
+                std::placeholders::_1,
+                std::placeholders::_2),
+            this);
 
 #ifdef LEVEL_CALIBRATION
-    _parent->param_float_async(
-        std::string("SENS_BOARD_X_OFF"),
-        std::bind(
-            &TelemetryImpl::receive_param_cal_level,
-            this,
-            std::placeholders::_1,
-            std::placeholders::_2),
-        this);
+        _parent->param_float_async(
+            std::string("SENS_BOARD_X_OFF"),
+            std::bind(
+                &TelemetryImpl::receive_param_cal_level,
+                this,
+                std::placeholders::_1,
+                std::placeholders::_2),
+            this);
 #else
-    // If not available, just hardcode it to true.
-    set_health_level_calibration(true);
+        // If not available, just hardcode it to true.
+        set_health_level_calibration(true);
 #endif
 
-    _parent->get_param_int_async(
-        std::string("SYS_HITL"),
-        std::bind(
-            &TelemetryImpl::receive_param_hitl, this, std::placeholders::_1, std::placeholders::_2),
-        this);
+        _parent->get_param_int_async(
+            std::string("SYS_HITL"),
+            std::bind(
+                &TelemetryImpl::receive_param_hitl,
+                this,
+                std::placeholders::_1,
+                std::placeholders::_2),
+            this);
+    }
 }
 
 void TelemetryImpl::disable() {}
