@@ -281,10 +281,6 @@ MissionImpl::convert_to_int_items(const std::vector<MissionItem>& mission_items)
     std::vector<MAVLinkMissionTransfer::ItemInt> int_items;
 
     bool last_position_valid = false; // This flag is to protect us from using an invalid x/y.
-    MAV_FRAME last_frame;
-    int32_t last_x;
-    int32_t last_y;
-    float last_z;
 
     unsigned item_i = 0;
     _mission_data.mavlink_mission_item_to_mission_item_indices.clear();
@@ -314,10 +310,6 @@ MissionImpl::convert_to_int_items(const std::vector<MissionItem>& mission_items)
                 MAV_MISSION_TYPE_MISSION};
 
             last_position_valid = true; // because we checked has_valid_position
-            last_x = x;
-            last_y = y;
-            last_z = z;
-            last_frame = MAV_FRAME_GLOBAL_RELATIVE_ALT_INT;
 
             _mission_data.mavlink_mission_item_to_mission_item_indices.push_back(item_i);
             int_items.push_back(next_item);
@@ -369,9 +361,6 @@ MissionImpl::convert_to_int_items(const std::vector<MissionItem>& mission_items)
             }
         }
 
-        // FIXME: It is a bit of a hack to set a LOITER_TIME waypoint to add a delay.
-        //        A better solution would be to properly use NAV_DELAY instead. This
-        //        would not require us to keep the last lat/lon.
         // A loiter time of NAN is ignored but also a loiter time of 0 doesn't
         // make any sense and should be discarded.
         if (std::isfinite(item.loiter_time_s) && item.loiter_time_s > 0.0f) {
@@ -388,17 +377,17 @@ MissionImpl::convert_to_int_items(const std::vector<MissionItem>& mission_items)
 
                 MAVLinkMissionTransfer::ItemInt next_item{
                     static_cast<uint16_t>(int_items.size()),
-                    static_cast<uint8_t>(last_frame),
-                    MAV_CMD_NAV_LOITER_TIME,
+                    MAV_FRAME_MISSION,
+                    MAV_CMD_NAV_DELAY,
                     current,
                     autocontinue,
                     item.loiter_time_s, // loiter time in seconds
-                    NAN, // empty
-                    0.0f, // radius around waypoint in meters ?
-                    NAN, // don't change yaw
-                    last_x,
-                    last_y,
-                    last_z,
+                    -1, // no specified hour
+                    -1, // no specified minute
+                    -1, // no specified second
+                    0,
+                    0,
+                    0,
                     MAV_MISSION_TYPE_MISSION};
 
                 _mission_data.mavlink_mission_item_to_mission_item_indices.push_back(item_i);
@@ -611,7 +600,22 @@ std::pair<Mission::Result, Mission::MissionPlan> MissionImpl::convert_to_result_
                 }
 
             } else if (int_item.command == MAV_CMD_NAV_LOITER_TIME) {
+                // MAVSDK doesn't use LOITER_TIME anymore, but it is possible
+                // a mission still uses it
                 new_mission_item.loiter_time_s = int_item.param1;
+
+            } else if (int_item.command == MAV_CMD_NAV_DELAY) {
+                if (int_item.param1 != -1) {
+                    // use delay in seconds directly
+                    new_mission_item.loiter_time_s = int_item.param1;
+                } else {
+                    // TODO: we should support this by converting
+                    // time of day data to delay in seconds
+                    // leaving it out for now because a portable implementation
+                    // is not trivial
+                    LogErr() << "Mission item NAV_DELAY params unsupported";
+                    result_pair.first = Mission::Result::Unsupported;
+                }
 
             } else if (int_item.command == MAV_CMD_NAV_RETURN_TO_LAUNCH) {
                 _enable_return_to_launch_after_mission = true;
