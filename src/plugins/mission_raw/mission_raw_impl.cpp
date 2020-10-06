@@ -475,14 +475,18 @@ MissionRaw::Result MissionRawImpl::convert_result(MAVLinkMissionTransfer::Result
         case MAVLinkMissionTransfer::Result::Cancelled:
             return MissionRaw::Result::TransferCancelled;
         case MAVLinkMissionTransfer::Result::MissionTypeNotConsistent:
+            std::cout << "convert_result:MissionTypeNotConsistent" << std::endl;
             return MissionRaw::Result::InvalidArgument; // FIXME
         case MAVLinkMissionTransfer::Result::InvalidSequence:
+            std::cout << "convert_result:InvalidSequence" << std::endl;
             return MissionRaw::Result::InvalidArgument; // FIXME
         case MAVLinkMissionTransfer::Result::CurrentInvalid:
+            std::cout << "convert_result:CurrentInvalid" << std::endl;
             return MissionRaw::Result::InvalidArgument; // FIXME
         case MAVLinkMissionTransfer::Result::ProtocolError:
             return MissionRaw::Result::Error; // FIXME
         case MAVLinkMissionTransfer::Result::InvalidParam:
+            std::cout << "convert_result:InvalidParam" << std::endl;
             return MissionRaw::Result::InvalidArgument; // FIXME
         default:
             return MissionRaw::Result::Unknown;

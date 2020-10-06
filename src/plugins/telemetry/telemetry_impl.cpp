@@ -816,6 +816,10 @@ void TelemetryImpl::process_fixedwing_metrics(const mavlink_message_t& message)
     new_fixedwing_metrics.throttle_percentage = vfr_hud.throttle * 1e-2f;
     new_fixedwing_metrics.climb_rate_m_s = vfr_hud.climb;
 
+    new_fixedwing_metrics.groundspeed_m_s = vfr_hud.groundspeed;
+    new_fixedwing_metrics.alt = vfr_hud.alt;
+    new_fixedwing_metrics.heading = vfr_hud.heading;
+
     set_fixedwing_metrics(new_fixedwing_metrics);
 
     std::lock_guard<std::mutex> lock(_subscription_mutex);
