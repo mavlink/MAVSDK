@@ -650,9 +650,9 @@ public:
             float(NAN)}; /**< @brief Current indicated airspeed (IAS) in metres per second */
         float groundspeed_m_s{
             float(NAN)}; /**< @brief Current indicated groundspeed in metres per second */
-        float alt{float(NAN)}; /**< @brief Current altitude (MSL)in metres */
+        float alt_m{float(NAN)}; /**< @brief Current altitude (MSL)in metres */
         float climb_rate_m_s{float(NAN)}; /**< @brief Current climb rate in metres per second */
-        int16_t heading{int16_t(NAN)}; /**< @brief Current heading in compass units (degrees) (0-360, 0=north).*/
+        int16_t heading_deg{int16_t(NAN)}; /**< @brief Current heading in compass units (degrees) (0-360, 0=north).*/
         float throttle_percentage{float(NAN)}; /**< @brief Current throttle setting (0 to 100) */
     };
 
