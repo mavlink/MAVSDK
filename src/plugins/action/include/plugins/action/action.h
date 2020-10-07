@@ -209,28 +209,6 @@ public:
     Result shutdown() const;
 
     /**
-     * @brief Send command to terminate the drone.
-     *
-     * This will run the terminate routine as configured on the drone (e.g. disarm and open the
-     * parachute).
-     *
-     * This function is non-blocking. See 'terminate' for the blocking counterpart.
-     */
-    void terminate_async(const ResultCallback callback);
-
-    /**
-     * @brief Send command to terminate the drone.
-     *
-     * This will run the terminate routine as configured on the drone (e.g. disarm and open the
-     * parachute).
-     *
-     * This function is blocking. See 'terminate_async' for the non-blocking counterpart.
-     *
-     * @return Result of request.
-     */
-    Result terminate() const;
-
-    /**
      * @brief Send command to kill the drone.
      *
      * This will disarm a drone irrespective of whether it is landed or flying.

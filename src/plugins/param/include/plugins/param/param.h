@@ -44,74 +44,6 @@ public:
     ~Param();
 
     /**
-     * @brief Type for integer parameters.
-     */
-    struct IntParam {
-        std::string name{}; /**< @brief Name of the parameter */
-        int32_t value{}; /**< @brief Value of the parameter */
-    };
-
-    /**
-     * @brief Equal operator to compare two `Param::IntParam` objects.
-     *
-     * @return `true` if items are equal.
-     */
-    friend bool operator==(const Param::IntParam& lhs, const Param::IntParam& rhs);
-
-    /**
-     * @brief Stream operator to print information about a `Param::IntParam`.
-     *
-     * @return A reference to the stream.
-     */
-    friend std::ostream& operator<<(std::ostream& str, Param::IntParam const& int_param);
-
-    /**
-     * @brief Type for float paramters.
-     */
-    struct FloatParam {
-        std::string name{}; /**< @brief Name of the parameter */
-        float value{}; /**< @brief Value of the parameter */
-    };
-
-    /**
-     * @brief Equal operator to compare two `Param::FloatParam` objects.
-     *
-     * @return `true` if items are equal.
-     */
-    friend bool operator==(const Param::FloatParam& lhs, const Param::FloatParam& rhs);
-
-    /**
-     * @brief Stream operator to print information about a `Param::FloatParam`.
-     *
-     * @return A reference to the stream.
-     */
-    friend std::ostream& operator<<(std::ostream& str, Param::FloatParam const& float_param);
-
-    /**
-     * @brief Type collecting all integer and float parameters.
-     */
-    struct AllParams {
-        std::vector<IntParam>
-            int_params{}; /**< @brief Collection of all parameter names and values of type int */
-        std::vector<FloatParam> float_params{}; /**< @brief Collection of all parameter names and
-                                                   values of type float */
-    };
-
-    /**
-     * @brief Equal operator to compare two `Param::AllParams` objects.
-     *
-     * @return `true` if items are equal.
-     */
-    friend bool operator==(const Param::AllParams& lhs, const Param::AllParams& rhs);
-
-    /**
-     * @brief Stream operator to print information about a `Param::AllParams`.
-     *
-     * @return A reference to the stream.
-     */
-    friend std::ostream& operator<<(std::ostream& str, Param::AllParams const& all_params);
-
-    /**
      * @brief Possible results returned for param requests.
      */
     enum class Result {
@@ -178,15 +110,6 @@ public:
      * @return Result of request.
      */
     Result set_param_float(std::string name, float value) const;
-
-    /**
-     * @brief Get all parameters.
-     *
-     * This function is blocking.
-     *
-     * @return Result of request.
-     */
-    Param::AllParams get_all_params() const;
 
     /**
      * @brief Copy constructor (object is not copyable).

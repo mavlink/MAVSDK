@@ -97,16 +97,6 @@ private:
 
     static Mission::Result convert_result(MAVLinkMissionTransfer::Result result);
 
-    static Mission::Result import_simple_mission_item(
-        std::vector<Mission::MissionItem>& all_mission_items,
-        const Json::Value& json_mission_item,
-        Mission::MissionItem& new_mission_item);
-
-    static Mission::Result import_complex_mission_item(
-        std::vector<Mission::MissionItem>& all_mission_items,
-        const Json::Value& json_mission_item,
-        Mission::MissionItem& new_mission_item);
-
     static Mission::Result import_mission_items(
         std::vector<Mission::MissionItem>& all_mission_items, const Json::Value& qgc_plan_json);
 

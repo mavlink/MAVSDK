@@ -662,20 +662,15 @@ inline bool FlightMode_Parse(
     FlightMode_descriptor(), name, value);
 }
 enum StatusTextType : int {
-  STATUS_TEXT_TYPE_DEBUG = 0,
-  STATUS_TEXT_TYPE_INFO = 1,
-  STATUS_TEXT_TYPE_NOTICE = 2,
-  STATUS_TEXT_TYPE_WARNING = 3,
-  STATUS_TEXT_TYPE_ERROR = 4,
-  STATUS_TEXT_TYPE_CRITICAL = 5,
-  STATUS_TEXT_TYPE_ALERT = 6,
-  STATUS_TEXT_TYPE_EMERGENCY = 7,
+  STATUS_TEXT_TYPE_INFO = 0,
+  STATUS_TEXT_TYPE_WARNING = 1,
+  STATUS_TEXT_TYPE_CRITICAL = 2,
   StatusTextType_INT_MIN_SENTINEL_DO_NOT_USE_ = std::numeric_limits<::PROTOBUF_NAMESPACE_ID::int32>::min(),
   StatusTextType_INT_MAX_SENTINEL_DO_NOT_USE_ = std::numeric_limits<::PROTOBUF_NAMESPACE_ID::int32>::max()
 };
 bool StatusTextType_IsValid(int value);
-constexpr StatusTextType StatusTextType_MIN = STATUS_TEXT_TYPE_DEBUG;
-constexpr StatusTextType StatusTextType_MAX = STATUS_TEXT_TYPE_EMERGENCY;
+constexpr StatusTextType StatusTextType_MIN = STATUS_TEXT_TYPE_INFO;
+constexpr StatusTextType StatusTextType_MAX = STATUS_TEXT_TYPE_CRITICAL;
 constexpr int StatusTextType_ARRAYSIZE = StatusTextType_MAX + 1;
 
 const ::PROTOBUF_NAMESPACE_ID::EnumDescriptor* StatusTextType_descriptor();

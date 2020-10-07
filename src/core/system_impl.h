@@ -7,7 +7,6 @@
 #include "mavlink_commands.h"
 #include "mavlink_message_handler.h"
 #include "mavlink_mission_transfer.h"
-#include "mavlink_statustext_handler.h"
 #include "timeout_handler.h"
 #include "call_every_handler.h"
 #include "safe_queue.h"
@@ -53,8 +52,6 @@ public:
     explicit SystemImpl(
         MavsdkImpl& parent, uint8_t system_id, uint8_t component_id, bool connected);
     ~SystemImpl();
-
-    void enable_timesync();
 
     void process_mavlink_message(mavlink_message_t& message);
 
@@ -131,7 +128,6 @@ public:
     MAVLinkParameters::Result set_param_int(const std::string& name, int32_t value);
     MAVLinkParameters::Result set_param_ext_float(const std::string& name, float value);
     MAVLinkParameters::Result set_param_ext_int(const std::string& name, int32_t value);
-    std::map<std::string, MAVLinkParameters::ParamValue> get_all_params();
 
     typedef std::function<void(MAVLinkParameters::Result result)> success_t;
     void set_param_float_async(
@@ -235,6 +231,7 @@ public:
     const SystemImpl& operator=(const SystemImpl&) = delete;
 
 private:
+    // Helper methods added to increase readablity
     static bool is_autopilot(uint8_t comp_id);
     static bool is_camera(uint8_t comp_id);
 
@@ -282,8 +279,6 @@ private:
     // Needs to be before anything else because they can depend on it.
     MAVLinkMessageHandler _message_handler{};
 
-    MavlinkStatustextHandler _statustext_handler{};
-
     uint64_t _uuid{0};
 
     int _uuid_retries = 0;
@@ -306,7 +301,6 @@ private:
     std::mutex _connection_mutex{};
     bool _connected{false};
     void* _heartbeat_timeout_cookie = nullptr;
-    void* _heartbeat_send_cookie = nullptr;
 
     std::atomic<bool> _autopilot_version_pending{false};
     void* _autopilot_version_timed_out_cookie = nullptr;

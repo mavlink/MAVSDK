@@ -43,41 +43,35 @@ void takeoff_and_hover_at_altitude(float altitude_m)
 
     LogInfo() << "Waiting for system to be ready";
     ASSERT_TRUE(poll_condition_with_timeout(
-        [telemetry]() { return telemetry->health_all_ok(); }, std::chrono::seconds(10)));
+        [&telemetry]() { return telemetry->health_all_ok(); }, std::chrono::seconds(10)));
 
     auto action = std::make_shared<Action>(system);
+    Action::Result action_ret = action->arm();
+    EXPECT_EQ(action_ret, Action::Result::Success);
 
     EXPECT_EQ(Action::Result::Success, action->set_takeoff_altitude(altitude_m));
     auto takeoff_altitude_result = action->get_takeoff_altitude();
     EXPECT_EQ(takeoff_altitude_result.first, Action::Result::Success);
     EXPECT_FLOAT_EQ(takeoff_altitude_result.second, altitude_m);
 
-    Action::Result action_ret = action->arm();
-    EXPECT_EQ(action_ret, Action::Result::Success);
-
     action_ret = action->takeoff();
     EXPECT_EQ(action_ret, Action::Result::Success);
 
-    EXPECT_TRUE(poll_condition_with_timeout(
-        [telemetry]() { return telemetry->flight_mode() == Telemetry::FlightMode::Takeoff; },
-        std::chrono::seconds(10)));
+    // TODO: The wait time should not be hard-coded because the
+    //       simulation might run faster.
 
-    EXPECT_TRUE(poll_condition_with_timeout(
-        [telemetry]() { return telemetry->flight_mode() == Telemetry::FlightMode::Hold; },
-        std::chrono::seconds(20)));
+    // We wait 2s / m plus a margin of 5s.
+    const int wait_time_s = static_cast<int>(altitude_m * 2.0f + 5.0f);
+    std::this_thread::sleep_for(std::chrono::seconds(wait_time_s));
 
-    // We need to wait a bit until it stabilizes.
-    std::this_thread::sleep_for(std::chrono::seconds(5));
-
-    // FIXME: we can't expect too much precision apparently.
-    EXPECT_GT(telemetry->position().relative_altitude_m, altitude_m - 0.5f);
-    EXPECT_LT(telemetry->position().relative_altitude_m, altitude_m + 0.5f);
+    EXPECT_GT(telemetry->position().relative_altitude_m, altitude_m - 0.25f);
+    EXPECT_LT(telemetry->position().relative_altitude_m, altitude_m + 0.25f);
 
     action_ret = action->land();
     EXPECT_EQ(action_ret, Action::Result::Success);
 
     EXPECT_TRUE(poll_condition_with_timeout(
-        [telemetry]() { return !telemetry->in_air(); }, std::chrono::seconds(10)));
+        [&telemetry]() { return !telemetry->in_air(); }, std::chrono::seconds(wait_time_s)));
 
     action_ret = action->disarm();
     EXPECT_EQ(action_ret, Action::Result::Success);

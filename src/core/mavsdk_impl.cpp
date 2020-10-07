@@ -273,7 +273,6 @@ void MavsdkImpl::set_configuration(Mavsdk::Configuration configuration)
 {
     own_address.system_id = configuration.get_system_id();
     own_address.component_id = configuration.get_component_id();
-    _configuration.set_usage_type(configuration.get_usage_type());
 }
 
 std::vector<uint64_t> MavsdkImpl::get_system_uuids() const

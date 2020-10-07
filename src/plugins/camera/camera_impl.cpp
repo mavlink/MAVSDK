@@ -829,10 +829,6 @@ void CameraImpl::process_camera_information(const mavlink_message_t& message)
             LogInfo() << "Using cached file for Yuneec E10T.";
             content = e10txml;
             found_content = true;
-        } else if (strcmp((const char*)(camera_information.model_name), "E30Z") == 0) {
-            LogInfo() << "Using cached file for Yuneec E30Z.";
-            content = e30zxml;
-            found_content = true;
         }
     } else {
         content = camera_information.cam_definition_uri;

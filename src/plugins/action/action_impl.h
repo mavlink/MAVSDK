@@ -21,7 +21,6 @@ public:
 
     Action::Result arm() const;
     Action::Result disarm() const;
-    Action::Result terminate() const;
     Action::Result kill() const;
     Action::Result reboot() const;
     Action::Result shutdown() const;
@@ -38,7 +37,6 @@ public:
 
     void arm_async(const Action::ResultCallback& callback) const;
     void disarm_async(const Action::ResultCallback& callback) const;
-    void terminate_async(const Action::ResultCallback& callback) const;
     void kill_async(const Action::ResultCallback& callback) const;
     void reboot_async(const Action::ResultCallback& callback) const;
     void shutdown_async(const Action::ResultCallback& callback) const;

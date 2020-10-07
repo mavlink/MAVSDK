@@ -5,7 +5,7 @@ project(follow_me)
 find_package(Threads REQUIRED)
 
 if(NOT MSVC)
-    add_definitions("-std=c++11 -Wall -Wextra")
+    add_definitions("-std=c++11 -Wall -Wextra -Werror")
 else()
     add_definitions("-std=c++11 -WX -W2")
 endif()

@@ -47,29 +47,6 @@ Param::Result ParamImpl::set_param_float(const std::string& name, float value)
     return result_from_mavlink_parameters_result(result);
 }
 
-Param::AllParams ParamImpl::get_all_params()
-{
-    auto tmp = _parent->get_all_params();
-
-    Param::AllParams res{};
-
-    for (auto const& parampair : tmp) {
-        if (parampair.second.is_float()) {
-            Param::FloatParam tmp_param;
-            tmp_param.name = parampair.first;
-            tmp_param.value = parampair.second.get_float();
-            res.float_params.push_back(tmp_param);
-        } else if (parampair.second.is_int32()) {
-            Param::IntParam tmp_param;
-            tmp_param.name = parampair.first;
-            tmp_param.value = parampair.second.get_int32();
-            res.int_params.push_back(tmp_param);
-        }
-    }
-
-    return res;
-}
-
 Param::Result ParamImpl::result_from_mavlink_parameters_result(MAVLinkParameters::Result result)
 {
     switch (result) {

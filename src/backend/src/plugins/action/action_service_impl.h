@@ -188,20 +188,6 @@ public:
         return grpc::Status::OK;
     }
 
-    grpc::Status Terminate(
-        grpc::ServerContext* /* context */,
-        const rpc::action::TerminateRequest* /* request */,
-        rpc::action::TerminateResponse* response) override
-    {
-        auto result = _action.terminate();
-
-        if (response != nullptr) {
-            fillResponseWithResult(response, result);
-        }
-
-        return grpc::Status::OK;
-    }
-
     grpc::Status Kill(
         grpc::ServerContext* /* context */,
         const rpc::action::KillRequest* /* request */,

@@ -70,19 +70,16 @@ void subscribe_armed(std::shared_ptr<Telemetry> telemetry)
 
 void send_battery_status(std::shared_ptr<MavlinkPassthrough> mavlink_passthrough)
 {
-    const uint16_t voltages[10]{
-        3700,
-        3600,
-        UINT16_MAX,
-        UINT16_MAX,
-        UINT16_MAX,
-        UINT16_MAX,
-        UINT16_MAX,
-        UINT16_MAX,
-        UINT16_MAX,
-        UINT16_MAX}; // mV
-
-    const uint16_t voltages_ext[4]{0, 0, 0, 0};
+    const uint16_t voltages[10]{3700,
+                                3600,
+                                UINT16_MAX,
+                                UINT16_MAX,
+                                UINT16_MAX,
+                                UINT16_MAX,
+                                UINT16_MAX,
+                                UINT16_MAX,
+                                UINT16_MAX,
+                                UINT16_MAX}; // mV
 
     mavlink_message_t message;
     mavlink_msg_battery_status_pack(
@@ -99,10 +96,7 @@ void send_battery_status(std::shared_ptr<MavlinkPassthrough> mavlink_passthrough
         -1, // energy consumed hJ
         80, // battery_remaining %
         3600, // time_remaining
-        MAV_BATTERY_CHARGE_STATE_OK,
-        voltages_ext,
-        MAV_BATTERY_MODE_UNKNOWN, // mode
-        0); // fault_bitmask
+        MAV_BATTERY_CHARGE_STATE_OK);
 
     mavlink_passthrough->send_message(message);
 }

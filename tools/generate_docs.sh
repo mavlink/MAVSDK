@@ -33,7 +33,7 @@ if [ "$skip_checks" = false ]; then
 fi
 
 # Build and install locally.
-cmake -DCMAKE_BUILD_TYPE=Release -DCMAKE_INSTALL_PREFIX=${INSTALL_DIR} -B${BUILD_DIR} -H.;
+cmake -DCMAKE_BUILD_TYPE=Release -DENABLE_MAVLINK_PASSTHROUGH=1 -DCMAKE_INSTALL_PREFIX=${INSTALL_DIR} -B${BUILD_DIR} -H.;
 make -C${BUILD_DIR} install -j4;
 
 return_result=0

@@ -305,10 +305,7 @@ void CalibrationImpl::process_statustext(const mavlink_message_t& message)
     mavlink_msg_statustext_decode(&message, &statustext);
 
     _parser.reset();
-
-    char text_with_null[sizeof(statustext.text) + 1]{};
-    strncpy(text_with_null, statustext.text, sizeof(text_with_null) - 1);
-    _parser.parse(text_with_null);
+    _parser.parse(statustext.text);
 
     switch (_parser.get_status()) {
         case CalibrationStatustextParser::Status::None:

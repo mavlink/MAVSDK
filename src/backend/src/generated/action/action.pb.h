@@ -48,7 +48,7 @@ struct TableStruct_action_2faction_2eproto {
     PROTOBUF_SECTION_VARIABLE(protodesc_cold);
   static const ::PROTOBUF_NAMESPACE_ID::internal::AuxillaryParseTableField aux[]
     PROTOBUF_SECTION_VARIABLE(protodesc_cold);
-  static const ::PROTOBUF_NAMESPACE_ID::internal::ParseTable schema[37]
+  static const ::PROTOBUF_NAMESPACE_ID::internal::ParseTable schema[35]
     PROTOBUF_SECTION_VARIABLE(protodesc_cold);
   static const ::PROTOBUF_NAMESPACE_ID::internal::FieldMetadata field_metadata[];
   static const ::PROTOBUF_NAMESPACE_ID::internal::SerializationTable serialization_table[];
@@ -151,12 +151,6 @@ extern TakeoffRequestDefaultTypeInternal _TakeoffRequest_default_instance_;
 class TakeoffResponse;
 class TakeoffResponseDefaultTypeInternal;
 extern TakeoffResponseDefaultTypeInternal _TakeoffResponse_default_instance_;
-class TerminateRequest;
-class TerminateRequestDefaultTypeInternal;
-extern TerminateRequestDefaultTypeInternal _TerminateRequest_default_instance_;
-class TerminateResponse;
-class TerminateResponseDefaultTypeInternal;
-extern TerminateResponseDefaultTypeInternal _TerminateResponse_default_instance_;
 class TransitionToFixedwingRequest;
 class TransitionToFixedwingRequestDefaultTypeInternal;
 extern TransitionToFixedwingRequestDefaultTypeInternal _TransitionToFixedwingRequest_default_instance_;
@@ -204,8 +198,6 @@ template<> ::mavsdk::rpc::action::ShutdownRequest* Arena::CreateMaybeMessage<::m
 template<> ::mavsdk::rpc::action::ShutdownResponse* Arena::CreateMaybeMessage<::mavsdk::rpc::action::ShutdownResponse>(Arena*);
 template<> ::mavsdk::rpc::action::TakeoffRequest* Arena::CreateMaybeMessage<::mavsdk::rpc::action::TakeoffRequest>(Arena*);
 template<> ::mavsdk::rpc::action::TakeoffResponse* Arena::CreateMaybeMessage<::mavsdk::rpc::action::TakeoffResponse>(Arena*);
-template<> ::mavsdk::rpc::action::TerminateRequest* Arena::CreateMaybeMessage<::mavsdk::rpc::action::TerminateRequest>(Arena*);
-template<> ::mavsdk::rpc::action::TerminateResponse* Arena::CreateMaybeMessage<::mavsdk::rpc::action::TerminateResponse>(Arena*);
 template<> ::mavsdk::rpc::action::TransitionToFixedwingRequest* Arena::CreateMaybeMessage<::mavsdk::rpc::action::TransitionToFixedwingRequest>(Arena*);
 template<> ::mavsdk::rpc::action::TransitionToFixedwingResponse* Arena::CreateMaybeMessage<::mavsdk::rpc::action::TransitionToFixedwingResponse>(Arena*);
 template<> ::mavsdk::rpc::action::TransitionToMulticopterRequest* Arena::CreateMaybeMessage<::mavsdk::rpc::action::TransitionToMulticopterRequest>(Arena*);
@@ -1746,255 +1738,6 @@ class ShutdownResponse :
 };
 // -------------------------------------------------------------------
 
-class TerminateRequest :
-    public ::PROTOBUF_NAMESPACE_ID::Message /* @@protoc_insertion_point(class_definition:mavsdk.rpc.action.TerminateRequest) */ {
- public:
-  TerminateRequest();
-  virtual ~TerminateRequest();
-
-  TerminateRequest(const TerminateRequest& from);
-  TerminateRequest(TerminateRequest&& from) noexcept
-    : TerminateRequest() {
-    *this = ::std::move(from);
-  }
-
-  inline TerminateRequest& operator=(const TerminateRequest& from) {
-    CopyFrom(from);
-    return *this;
-  }
-  inline TerminateRequest& operator=(TerminateRequest&& from) noexcept {
-    if (GetArenaNoVirtual() == from.GetArenaNoVirtual()) {
-      if (this != &from) InternalSwap(&from);
-    } else {
-      CopyFrom(from);
-    }
-    return *this;
-  }
-
-  static const ::PROTOBUF_NAMESPACE_ID::Descriptor* descriptor() {
-    return GetDescriptor();
-  }
-  static const ::PROTOBUF_NAMESPACE_ID::Descriptor* GetDescriptor() {
-    return GetMetadataStatic().descriptor;
-  }
-  static const ::PROTOBUF_NAMESPACE_ID::Reflection* GetReflection() {
-    return GetMetadataStatic().reflection;
-  }
-  static const TerminateRequest& default_instance();
-
-  static void InitAsDefaultInstance();  // FOR INTERNAL USE ONLY
-  static inline const TerminateRequest* internal_default_instance() {
-    return reinterpret_cast<const TerminateRequest*>(
-               &_TerminateRequest_default_instance_);
-  }
-  static constexpr int kIndexInFileMessages =
-    12;
-
-  friend void swap(TerminateRequest& a, TerminateRequest& b) {
-    a.Swap(&b);
-  }
-  inline void Swap(TerminateRequest* other) {
-    if (other == this) return;
-    InternalSwap(other);
-  }
-
-  // implements Message ----------------------------------------------
-
-  inline TerminateRequest* New() const final {
-    return CreateMaybeMessage<TerminateRequest>(nullptr);
-  }
-
-  TerminateRequest* New(::PROTOBUF_NAMESPACE_ID::Arena* arena) const final {
-    return CreateMaybeMessage<TerminateRequest>(arena);
-  }
-  void CopyFrom(const ::PROTOBUF_NAMESPACE_ID::Message& from) final;
-  void MergeFrom(const ::PROTOBUF_NAMESPACE_ID::Message& from) final;
-  void CopyFrom(const TerminateRequest& from);
-  void MergeFrom(const TerminateRequest& from);
-  PROTOBUF_ATTRIBUTE_REINITIALIZES void Clear() final;
-  bool IsInitialized() const final;
-
-  size_t ByteSizeLong() const final;
-  const char* _InternalParse(const char* ptr, ::PROTOBUF_NAMESPACE_ID::internal::ParseContext* ctx) final;
-  ::PROTOBUF_NAMESPACE_ID::uint8* _InternalSerialize(
-      ::PROTOBUF_NAMESPACE_ID::uint8* target, ::PROTOBUF_NAMESPACE_ID::io::EpsCopyOutputStream* stream) const final;
-  int GetCachedSize() const final { return _cached_size_.Get(); }
-
-  private:
-  inline void SharedCtor();
-  inline void SharedDtor();
-  void SetCachedSize(int size) const final;
-  void InternalSwap(TerminateRequest* other);
-  friend class ::PROTOBUF_NAMESPACE_ID::internal::AnyMetadata;
-  static ::PROTOBUF_NAMESPACE_ID::StringPiece FullMessageName() {
-    return "mavsdk.rpc.action.TerminateRequest";
-  }
-  private:
-  inline ::PROTOBUF_NAMESPACE_ID::Arena* GetArenaNoVirtual() const {
-    return nullptr;
-  }
-  inline void* MaybeArenaPtr() const {
-    return nullptr;
-  }
-  public:
-
-  ::PROTOBUF_NAMESPACE_ID::Metadata GetMetadata() const final;
-  private:
-  static ::PROTOBUF_NAMESPACE_ID::Metadata GetMetadataStatic() {
-    ::PROTOBUF_NAMESPACE_ID::internal::AssignDescriptors(&::descriptor_table_action_2faction_2eproto);
-    return ::descriptor_table_action_2faction_2eproto.file_level_metadata[kIndexInFileMessages];
-  }
-
-  public:
-
-  // nested types ----------------------------------------------------
-
-  // accessors -------------------------------------------------------
-
-  // @@protoc_insertion_point(class_scope:mavsdk.rpc.action.TerminateRequest)
- private:
-  class _Internal;
-
-  ::PROTOBUF_NAMESPACE_ID::internal::InternalMetadataWithArena _internal_metadata_;
-  mutable ::PROTOBUF_NAMESPACE_ID::internal::CachedSize _cached_size_;
-  friend struct ::TableStruct_action_2faction_2eproto;
-};
-// -------------------------------------------------------------------
-
-class TerminateResponse :
-    public ::PROTOBUF_NAMESPACE_ID::Message /* @@protoc_insertion_point(class_definition:mavsdk.rpc.action.TerminateResponse) */ {
- public:
-  TerminateResponse();
-  virtual ~TerminateResponse();
-
-  TerminateResponse(const TerminateResponse& from);
-  TerminateResponse(TerminateResponse&& from) noexcept
-    : TerminateResponse() {
-    *this = ::std::move(from);
-  }
-
-  inline TerminateResponse& operator=(const TerminateResponse& from) {
-    CopyFrom(from);
-    return *this;
-  }
-  inline TerminateResponse& operator=(TerminateResponse&& from) noexcept {
-    if (GetArenaNoVirtual() == from.GetArenaNoVirtual()) {
-      if (this != &from) InternalSwap(&from);
-    } else {
-      CopyFrom(from);
-    }
-    return *this;
-  }
-
-  static const ::PROTOBUF_NAMESPACE_ID::Descriptor* descriptor() {
-    return GetDescriptor();
-  }
-  static const ::PROTOBUF_NAMESPACE_ID::Descriptor* GetDescriptor() {
-    return GetMetadataStatic().descriptor;
-  }
-  static const ::PROTOBUF_NAMESPACE_ID::Reflection* GetReflection() {
-    return GetMetadataStatic().reflection;
-  }
-  static const TerminateResponse& default_instance();
-
-  static void InitAsDefaultInstance();  // FOR INTERNAL USE ONLY
-  static inline const TerminateResponse* internal_default_instance() {
-    return reinterpret_cast<const TerminateResponse*>(
-               &_TerminateResponse_default_instance_);
-  }
-  static constexpr int kIndexInFileMessages =
-    13;
-
-  friend void swap(TerminateResponse& a, TerminateResponse& b) {
-    a.Swap(&b);
-  }
-  inline void Swap(TerminateResponse* other) {
-    if (other == this) return;
-    InternalSwap(other);
-  }
-
-  // implements Message ----------------------------------------------
-
-  inline TerminateResponse* New() const final {
-    return CreateMaybeMessage<TerminateResponse>(nullptr);
-  }
-
-  TerminateResponse* New(::PROTOBUF_NAMESPACE_ID::Arena* arena) const final {
-    return CreateMaybeMessage<TerminateResponse>(arena);
-  }
-  void CopyFrom(const ::PROTOBUF_NAMESPACE_ID::Message& from) final;
-  void MergeFrom(const ::PROTOBUF_NAMESPACE_ID::Message& from) final;
-  void CopyFrom(const TerminateResponse& from);
-  void MergeFrom(const TerminateResponse& from);
-  PROTOBUF_ATTRIBUTE_REINITIALIZES void Clear() final;
-  bool IsInitialized() const final;
-
-  size_t ByteSizeLong() const final;
-  const char* _InternalParse(const char* ptr, ::PROTOBUF_NAMESPACE_ID::internal::ParseContext* ctx) final;
-  ::PROTOBUF_NAMESPACE_ID::uint8* _InternalSerialize(
-      ::PROTOBUF_NAMESPACE_ID::uint8* target, ::PROTOBUF_NAMESPACE_ID::io::EpsCopyOutputStream* stream) const final;
-  int GetCachedSize() const final { return _cached_size_.Get(); }
-
-  private:
-  inline void SharedCtor();
-  inline void SharedDtor();
-  void SetCachedSize(int size) const final;
-  void InternalSwap(TerminateResponse* other);
-  friend class ::PROTOBUF_NAMESPACE_ID::internal::AnyMetadata;
-  static ::PROTOBUF_NAMESPACE_ID::StringPiece FullMessageName() {
-    return "mavsdk.rpc.action.TerminateResponse";
-  }
-  private:
-  inline ::PROTOBUF_NAMESPACE_ID::Arena* GetArenaNoVirtual() const {
-    return nullptr;
-  }
-  inline void* MaybeArenaPtr() const {
-    return nullptr;
-  }
-  public:
-
-  ::PROTOBUF_NAMESPACE_ID::Metadata GetMetadata() const final;
-  private:
-  static ::PROTOBUF_NAMESPACE_ID::Metadata GetMetadataStatic() {
-    ::PROTOBUF_NAMESPACE_ID::internal::AssignDescriptors(&::descriptor_table_action_2faction_2eproto);
-    return ::descriptor_table_action_2faction_2eproto.file_level_metadata[kIndexInFileMessages];
-  }
-
-  public:
-
-  // nested types ----------------------------------------------------
-
-  // accessors -------------------------------------------------------
-
-  enum : int {
-    kActionResultFieldNumber = 1,
-  };
-  // .mavsdk.rpc.action.ActionResult action_result = 1;
-  bool has_action_result() const;
-  private:
-  bool _internal_has_action_result() const;
-  public:
-  void clear_action_result();
-  const ::mavsdk::rpc::action::ActionResult& action_result() const;
-  ::mavsdk::rpc::action::ActionResult* release_action_result();
-  ::mavsdk::rpc::action::ActionResult* mutable_action_result();
-  void set_allocated_action_result(::mavsdk::rpc::action::ActionResult* action_result);
-  private:
-  const ::mavsdk::rpc::action::ActionResult& _internal_action_result() const;
-  ::mavsdk::rpc::action::ActionResult* _internal_mutable_action_result();
-  public:
-
-  // @@protoc_insertion_point(class_scope:mavsdk.rpc.action.TerminateResponse)
- private:
-  class _Internal;
-
-  ::PROTOBUF_NAMESPACE_ID::internal::InternalMetadataWithArena _internal_metadata_;
-  ::mavsdk::rpc::action::ActionResult* action_result_;
-  mutable ::PROTOBUF_NAMESPACE_ID::internal::CachedSize _cached_size_;
-  friend struct ::TableStruct_action_2faction_2eproto;
-};
-// -------------------------------------------------------------------
-
 class KillRequest :
     public ::PROTOBUF_NAMESPACE_ID::Message /* @@protoc_insertion_point(class_definition:mavsdk.rpc.action.KillRequest) */ {
  public:
@@ -2037,7 +1780,7 @@ class KillRequest :
                &_KillRequest_default_instance_);
   }
   static constexpr int kIndexInFileMessages =
-    14;
+    12;
 
   friend void swap(KillRequest& a, KillRequest& b) {
     a.Swap(&b);
@@ -2152,7 +1895,7 @@ class KillResponse :
                &_KillResponse_default_instance_);
   }
   static constexpr int kIndexInFileMessages =
-    15;
+    13;
 
   friend void swap(KillResponse& a, KillResponse& b) {
     a.Swap(&b);
@@ -2286,7 +2029,7 @@ class ReturnToLaunchRequest :
                &_ReturnToLaunchRequest_default_instance_);
   }
   static constexpr int kIndexInFileMessages =
-    16;
+    14;
 
   friend void swap(ReturnToLaunchRequest& a, ReturnToLaunchRequest& b) {
     a.Swap(&b);
@@ -2401,7 +2144,7 @@ class ReturnToLaunchResponse :
                &_ReturnToLaunchResponse_default_instance_);
   }
   static constexpr int kIndexInFileMessages =
-    17;
+    15;
 
   friend void swap(ReturnToLaunchResponse& a, ReturnToLaunchResponse& b) {
     a.Swap(&b);
@@ -2535,7 +2278,7 @@ class GotoLocationRequest :
                &_GotoLocationRequest_default_instance_);
   }
   static constexpr int kIndexInFileMessages =
-    18;
+    16;
 
   friend void swap(GotoLocationRequest& a, GotoLocationRequest& b) {
     a.Swap(&b);
@@ -2696,7 +2439,7 @@ class GotoLocationResponse :
                &_GotoLocationResponse_default_instance_);
   }
   static constexpr int kIndexInFileMessages =
-    19;
+    17;
 
   friend void swap(GotoLocationResponse& a, GotoLocationResponse& b) {
     a.Swap(&b);
@@ -2830,7 +2573,7 @@ class TransitionToFixedwingRequest :
                &_TransitionToFixedwingRequest_default_instance_);
   }
   static constexpr int kIndexInFileMessages =
-    20;
+    18;
 
   friend void swap(TransitionToFixedwingRequest& a, TransitionToFixedwingRequest& b) {
     a.Swap(&b);
@@ -2945,7 +2688,7 @@ class TransitionToFixedwingResponse :
                &_TransitionToFixedwingResponse_default_instance_);
   }
   static constexpr int kIndexInFileMessages =
-    21;
+    19;
 
   friend void swap(TransitionToFixedwingResponse& a, TransitionToFixedwingResponse& b) {
     a.Swap(&b);
@@ -3079,7 +2822,7 @@ class TransitionToMulticopterRequest :
                &_TransitionToMulticopterRequest_default_instance_);
   }
   static constexpr int kIndexInFileMessages =
-    22;
+    20;
 
   friend void swap(TransitionToMulticopterRequest& a, TransitionToMulticopterRequest& b) {
     a.Swap(&b);
@@ -3194,7 +2937,7 @@ class TransitionToMulticopterResponse :
                &_TransitionToMulticopterResponse_default_instance_);
   }
   static constexpr int kIndexInFileMessages =
-    23;
+    21;
 
   friend void swap(TransitionToMulticopterResponse& a, TransitionToMulticopterResponse& b) {
     a.Swap(&b);
@@ -3328,7 +3071,7 @@ class GetTakeoffAltitudeRequest :
                &_GetTakeoffAltitudeRequest_default_instance_);
   }
   static constexpr int kIndexInFileMessages =
-    24;
+    22;
 
   friend void swap(GetTakeoffAltitudeRequest& a, GetTakeoffAltitudeRequest& b) {
     a.Swap(&b);
@@ -3443,7 +3186,7 @@ class GetTakeoffAltitudeResponse :
                &_GetTakeoffAltitudeResponse_default_instance_);
   }
   static constexpr int kIndexInFileMessages =
-    25;
+    23;
 
   friend void swap(GetTakeoffAltitudeResponse& a, GetTakeoffAltitudeResponse& b) {
     a.Swap(&b);
@@ -3588,7 +3331,7 @@ class SetTakeoffAltitudeRequest :
                &_SetTakeoffAltitudeRequest_default_instance_);
   }
   static constexpr int kIndexInFileMessages =
-    26;
+    24;
 
   friend void swap(SetTakeoffAltitudeRequest& a, SetTakeoffAltitudeRequest& b) {
     a.Swap(&b);
@@ -3716,7 +3459,7 @@ class SetTakeoffAltitudeResponse :
                &_SetTakeoffAltitudeResponse_default_instance_);
   }
   static constexpr int kIndexInFileMessages =
-    27;
+    25;
 
   friend void swap(SetTakeoffAltitudeResponse& a, SetTakeoffAltitudeResponse& b) {
     a.Swap(&b);
@@ -3850,7 +3593,7 @@ class GetMaximumSpeedRequest :
                &_GetMaximumSpeedRequest_default_instance_);
   }
   static constexpr int kIndexInFileMessages =
-    28;
+    26;
 
   friend void swap(GetMaximumSpeedRequest& a, GetMaximumSpeedRequest& b) {
     a.Swap(&b);
@@ -3965,7 +3708,7 @@ class GetMaximumSpeedResponse :
                &_GetMaximumSpeedResponse_default_instance_);
   }
   static constexpr int kIndexInFileMessages =
-    29;
+    27;
 
   friend void swap(GetMaximumSpeedResponse& a, GetMaximumSpeedResponse& b) {
     a.Swap(&b);
@@ -4110,7 +3853,7 @@ class SetMaximumSpeedRequest :
                &_SetMaximumSpeedRequest_default_instance_);
   }
   static constexpr int kIndexInFileMessages =
-    30;
+    28;
 
   friend void swap(SetMaximumSpeedRequest& a, SetMaximumSpeedRequest& b) {
     a.Swap(&b);
@@ -4238,7 +3981,7 @@ class SetMaximumSpeedResponse :
                &_SetMaximumSpeedResponse_default_instance_);
   }
   static constexpr int kIndexInFileMessages =
-    31;
+    29;
 
   friend void swap(SetMaximumSpeedResponse& a, SetMaximumSpeedResponse& b) {
     a.Swap(&b);
@@ -4372,7 +4115,7 @@ class GetReturnToLaunchAltitudeRequest :
                &_GetReturnToLaunchAltitudeRequest_default_instance_);
   }
   static constexpr int kIndexInFileMessages =
-    32;
+    30;
 
   friend void swap(GetReturnToLaunchAltitudeRequest& a, GetReturnToLaunchAltitudeRequest& b) {
     a.Swap(&b);
@@ -4487,7 +4230,7 @@ class GetReturnToLaunchAltitudeResponse :
                &_GetReturnToLaunchAltitudeResponse_default_instance_);
   }
   static constexpr int kIndexInFileMessages =
-    33;
+    31;
 
   friend void swap(GetReturnToLaunchAltitudeResponse& a, GetReturnToLaunchAltitudeResponse& b) {
     a.Swap(&b);
@@ -4632,7 +4375,7 @@ class SetReturnToLaunchAltitudeRequest :
                &_SetReturnToLaunchAltitudeRequest_default_instance_);
   }
   static constexpr int kIndexInFileMessages =
-    34;
+    32;
 
   friend void swap(SetReturnToLaunchAltitudeRequest& a, SetReturnToLaunchAltitudeRequest& b) {
     a.Swap(&b);
@@ -4760,7 +4503,7 @@ class SetReturnToLaunchAltitudeResponse :
                &_SetReturnToLaunchAltitudeResponse_default_instance_);
   }
   static constexpr int kIndexInFileMessages =
-    35;
+    33;
 
   friend void swap(SetReturnToLaunchAltitudeResponse& a, SetReturnToLaunchAltitudeResponse& b) {
     a.Swap(&b);
@@ -4894,7 +4637,7 @@ class ActionResult :
                &_ActionResult_default_instance_);
   }
   static constexpr int kIndexInFileMessages =
-    36;
+    34;
 
   friend void swap(ActionResult& a, ActionResult& b) {
     a.Swap(&b);
@@ -5459,74 +5202,6 @@ inline void ShutdownResponse::set_allocated_action_result(::mavsdk::rpc::action:
   }
   action_result_ = action_result;
   // @@protoc_insertion_point(field_set_allocated:mavsdk.rpc.action.ShutdownResponse.action_result)
-}
-
-// -------------------------------------------------------------------
-
-// TerminateRequest
-
-// -------------------------------------------------------------------
-
-// TerminateResponse
-
-// .mavsdk.rpc.action.ActionResult action_result = 1;
-inline bool TerminateResponse::_internal_has_action_result() const {
-  return this != internal_default_instance() && action_result_ != nullptr;
-}
-inline bool TerminateResponse::has_action_result() const {
-  return _internal_has_action_result();
-}
-inline void TerminateResponse::clear_action_result() {
-  if (GetArenaNoVirtual() == nullptr && action_result_ != nullptr) {
-    delete action_result_;
-  }
-  action_result_ = nullptr;
-}
-inline const ::mavsdk::rpc::action::ActionResult& TerminateResponse::_internal_action_result() const {
-  const ::mavsdk::rpc::action::ActionResult* p = action_result_;
-  return p != nullptr ? *p : *reinterpret_cast<const ::mavsdk::rpc::action::ActionResult*>(
-      &::mavsdk::rpc::action::_ActionResult_default_instance_);
-}
-inline const ::mavsdk::rpc::action::ActionResult& TerminateResponse::action_result() const {
-  // @@protoc_insertion_point(field_get:mavsdk.rpc.action.TerminateResponse.action_result)
-  return _internal_action_result();
-}
-inline ::mavsdk::rpc::action::ActionResult* TerminateResponse::release_action_result() {
-  // @@protoc_insertion_point(field_release:mavsdk.rpc.action.TerminateResponse.action_result)
-  
-  ::mavsdk::rpc::action::ActionResult* temp = action_result_;
-  action_result_ = nullptr;
-  return temp;
-}
-inline ::mavsdk::rpc::action::ActionResult* TerminateResponse::_internal_mutable_action_result() {
-  
-  if (action_result_ == nullptr) {
-    auto* p = CreateMaybeMessage<::mavsdk::rpc::action::ActionResult>(GetArenaNoVirtual());
-    action_result_ = p;
-  }
-  return action_result_;
-}
-inline ::mavsdk::rpc::action::ActionResult* TerminateResponse::mutable_action_result() {
-  // @@protoc_insertion_point(field_mutable:mavsdk.rpc.action.TerminateResponse.action_result)
-  return _internal_mutable_action_result();
-}
-inline void TerminateResponse::set_allocated_action_result(::mavsdk::rpc::action::ActionResult* action_result) {
-  ::PROTOBUF_NAMESPACE_ID::Arena* message_arena = GetArenaNoVirtual();
-  if (message_arena == nullptr) {
-    delete action_result_;
-  }
-  if (action_result) {
-    ::PROTOBUF_NAMESPACE_ID::Arena* submessage_arena = nullptr;
-    if (message_arena != submessage_arena) {
-      action_result = ::PROTOBUF_NAMESPACE_ID::internal::GetOwnedMessage(
-          message_arena, action_result, submessage_arena);
-    }
-    
-  } else {
-    
-  }
-  action_result_ = action_result;
-  // @@protoc_insertion_point(field_set_allocated:mavsdk.rpc.action.TerminateResponse.action_result)
 }
 
 // -------------------------------------------------------------------
@@ -6564,10 +6239,6 @@ inline void ActionResult::set_allocated_result_str(std::string* result_str) {
 #ifdef __GNUC__
   #pragma GCC diagnostic pop
 #endif  // __GNUC__
-// -------------------------------------------------------------------
-
-// -------------------------------------------------------------------
-
 // -------------------------------------------------------------------
 
 // -------------------------------------------------------------------

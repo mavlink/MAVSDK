@@ -12,10 +12,12 @@
 #include "system.h"
 #include "plugins/ftp/ftp.h"
 
+#ifdef ENABLE_MAVLINK_PASSTHROUGH
 #include <random>
 #include "plugins/mavlink_passthrough/mavlink_passthrough.h"
 static std::default_random_engine random_engine;
 static std::uniform_real_distribution<> distribution(0.0, 1.0);
+#endif
 
 using namespace mavsdk;
 
@@ -194,6 +196,7 @@ TEST(FtpTest, DownloadFile)
     // Reset server in case there are stale open sessions
     reset_server(ftp);
 
+#ifdef ENABLE_MAVLINK_PASSTHROUGH
     auto mavlink_passthrough = std::make_shared<MavlinkPassthrough>(system);
     mavlink_passthrough->intercept_incoming_messages_async([this](mavlink_message_t& message) {
         if (message.msgid != MAVLINK_MSG_ID_FILE_TRANSFER_PROTOCOL) {
@@ -207,6 +210,7 @@ TEST(FtpTest, DownloadFile)
         }
         return (distribution(random_engine) > 0.01);
     });
+#endif
 
     test_download(ftp, "/dataman", ".");
     remove("dataman");
@@ -226,6 +230,7 @@ TEST(FtpTest, UploadFiles)
     // Reset server in case there are stale open sessions
     reset_server(ftp);
 
+#ifdef ENABLE_MAVLINK_PASSTHROUGH
     auto mavlink_passthrough = std::make_shared<MavlinkPassthrough>(system);
     mavlink_passthrough->intercept_incoming_messages_async([this](mavlink_message_t& message) {
         if (message.msgid != MAVLINK_MSG_ID_FILE_TRANSFER_PROTOCOL) {
@@ -239,6 +244,7 @@ TEST(FtpTest, UploadFiles)
         }
         return (distribution(random_engine) > 0.1);
     });
+#endif
 
     test_create_directory(ftp, "/test");
 
@@ -291,6 +297,7 @@ TEST(FtpTest, TestServer)
     ASSERT_EQ(ret, ConnectionResult::Success);
     System& system_cc = mavsdk_cc.system();
 
+#ifdef ENABLE_MAVLINK_PASSTHROUGH
     auto mavlink_passthrough_cc = std::make_shared<MavlinkPassthrough>(system_cc);
     mavlink_passthrough_cc->intercept_incoming_messages_async([this](mavlink_message_t& message) {
         if (message.msgid != MAVLINK_MSG_ID_FILE_TRANSFER_PROTOCOL) {
@@ -304,6 +311,7 @@ TEST(FtpTest, TestServer)
         }
         return (distribution(random_engine) > 0.1);
     });
+#endif
 
     auto ftp_server = std::make_shared<Ftp>(system_cc);
     ftp_server->set_root_directory(".");

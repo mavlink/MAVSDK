@@ -15,16 +15,6 @@ MavlinkPassthrough::Result MavlinkPassthrough::send_message(mavlink_message_t& m
     return _impl->send_message(message);
 }
 
-MavlinkPassthrough::Result MavlinkPassthrough::send_command_int(const CommandInt& command)
-{
-    return _impl->send_command_int(command);
-}
-
-MavlinkPassthrough::Result MavlinkPassthrough::send_command_long(const CommandLong& command)
-{
-    return _impl->send_command_long(command);
-}
-
 void MavlinkPassthrough::subscribe_message_async(
     uint16_t message_id, std::function<void(const mavlink_message_t&)> callback)
 {

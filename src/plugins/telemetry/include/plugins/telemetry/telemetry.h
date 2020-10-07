@@ -99,14 +99,9 @@ public:
      * @brief Status types.
      */
     enum class StatusTextType {
-        Debug, /**< @brief Debug. */
-        Info, /**< @brief Information. */
-        Notice, /**< @brief Notice. */
+        Info, /**< @brief Information or other. */
         Warning, /**< @brief Warning. */
-        Error, /**< @brief Error. */
         Critical, /**< @brief Critical. */
-        Alert, /**< @brief Alert. */
-        Emergency, /**< @brief Emergency. */
     };
 
     /**

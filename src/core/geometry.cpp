@@ -30,9 +30,9 @@ CoordinateTransformation::local_from_global(GlobalCoordinate global_coordinate) 
 
     const double k = (fabs(c) > 0) ? (c / sin(c)) : 1.0;
 
-    return LocalCoordinate{
-        k * (ref_cos_lat * sin_lat - ref_sin_lat * cos_lat * cos_d_lon) * world_radius_m,
-        k * cos_lat * sin(lon_rad - _ref_lon_rad) * world_radius_m};
+    return LocalCoordinate{k * (ref_cos_lat * sin_lat - ref_sin_lat * cos_lat * cos_d_lon) *
+                               world_radius_m,
+                           k * cos_lat * sin(lon_rad - _ref_lon_rad) * world_radius_m};
 }
 
 CoordinateTransformation::GlobalCoordinate

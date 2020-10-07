@@ -36,89 +36,6 @@ public:
         response->set_allocated_param_result(rpc_param_result);
     }
 
-    static std::unique_ptr<rpc::param::IntParam>
-    translateToRpcIntParam(const mavsdk::Param::IntParam& int_param)
-    {
-        std::unique_ptr<rpc::param::IntParam> rpc_obj(new rpc::param::IntParam());
-
-        rpc_obj->set_name(int_param.name);
-
-        rpc_obj->set_value(int_param.value);
-
-        return rpc_obj;
-    }
-
-    static mavsdk::Param::IntParam translateFromRpcIntParam(const rpc::param::IntParam& int_param)
-    {
-        mavsdk::Param::IntParam obj;
-
-        obj.name = int_param.name();
-
-        obj.value = int_param.value();
-
-        return obj;
-    }
-
-    static std::unique_ptr<rpc::param::FloatParam>
-    translateToRpcFloatParam(const mavsdk::Param::FloatParam& float_param)
-    {
-        std::unique_ptr<rpc::param::FloatParam> rpc_obj(new rpc::param::FloatParam());
-
-        rpc_obj->set_name(float_param.name);
-
-        rpc_obj->set_value(float_param.value);
-
-        return rpc_obj;
-    }
-
-    static mavsdk::Param::FloatParam
-    translateFromRpcFloatParam(const rpc::param::FloatParam& float_param)
-    {
-        mavsdk::Param::FloatParam obj;
-
-        obj.name = float_param.name();
-
-        obj.value = float_param.value();
-
-        return obj;
-    }
-
-    static std::unique_ptr<rpc::param::AllParams>
-    translateToRpcAllParams(const mavsdk::Param::AllParams& all_params)
-    {
-        std::unique_ptr<rpc::param::AllParams> rpc_obj(new rpc::param::AllParams());
-
-        for (const auto& elem : all_params.int_params) {
-            auto* ptr = rpc_obj->add_int_params();
-            ptr->CopyFrom(*translateToRpcIntParam(elem).release());
-        }
-
-        for (const auto& elem : all_params.float_params) {
-            auto* ptr = rpc_obj->add_float_params();
-            ptr->CopyFrom(*translateToRpcFloatParam(elem).release());
-        }
-
-        return rpc_obj;
-    }
-
-    static mavsdk::Param::AllParams
-    translateFromRpcAllParams(const rpc::param::AllParams& all_params)
-    {
-        mavsdk::Param::AllParams obj;
-
-        for (const auto& elem : all_params.int_params()) {
-            obj.int_params.push_back(
-                translateFromRpcIntParam(static_cast<mavsdk::rpc::param::IntParam>(elem)));
-        }
-
-        for (const auto& elem : all_params.float_params()) {
-            obj.float_params.push_back(
-                translateFromRpcFloatParam(static_cast<mavsdk::rpc::param::FloatParam>(elem)));
-        }
-
-        return obj;
-    }
-
     static rpc::param::ParamResult::Result translateToRpcResult(const mavsdk::Param::Result& result)
     {
         switch (result) {
@@ -237,20 +154,6 @@ public:
 
         if (response != nullptr) {
             fillResponseWithResult(response, result);
-        }
-
-        return grpc::Status::OK;
-    }
-
-    grpc::Status GetAllParams(
-        grpc::ServerContext* /* context */,
-        const rpc::param::GetAllParamsRequest* /* request */,
-        rpc::param::GetAllParamsResponse* response) override
-    {
-        auto result = _param.get_all_params();
-
-        if (response != nullptr) {
-            response->set_allocated_params(translateToRpcAllParams(result).release());
         }
 
         return grpc::Status::OK;

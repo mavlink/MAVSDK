@@ -266,7 +266,6 @@ private:
 
     std::atomic<bool> _hitl_enabled{false};
 
-    std::mutex _subscription_mutex{};
     Telemetry::PositionVelocityNedCallback _position_velocity_ned_subscription{nullptr};
     Telemetry::PositionCallback _position_subscription{nullptr};
     Telemetry::PositionCallback _home_position_subscription{nullptr};

@@ -12,7 +12,6 @@ public:
     Timesync(SystemImpl& parent);
     ~Timesync();
 
-    void enable();
     void do_work();
 
     Timesync(const Timesync&) = delete;
@@ -31,7 +30,6 @@ private:
     static constexpr uint64_t _MAX_CONS_HIGH_RTT = 5;
     static constexpr uint64_t _MAX_RTT_SAMPLE_MS = 10;
     uint64_t _high_rtt_count{};
-    bool _autopilot_timesync_acquired{false};
-    bool _is_enabled{false};
+    bool _autopilot_timesync_acquired = false;
 };
 } // namespace mavsdk

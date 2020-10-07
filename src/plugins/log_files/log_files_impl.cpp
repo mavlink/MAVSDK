@@ -242,9 +242,7 @@ void LogFilesImpl::download_log_file_async(
         _data.part_start = 0;
         const auto part_size = determine_part_end() - _data.part_start;
         _data.bytes.resize(part_size);
-        _data.chunks_received.resize(
-            part_size / MAVLINK_MSG_LOG_DATA_FIELD_DATA_LEN +
-            ((part_size % MAVLINK_MSG_LOG_DATA_FIELD_DATA_LEN) != 0));
+        _data.chunks_received.resize(part_size / MAVLINK_MSG_LOG_DATA_FIELD_DATA_LEN);
 
         _parent->register_timeout_handler(
             std::bind(&LogFilesImpl::data_timeout, this), DATA_TIMEOUT_S, &_data.cookie);
@@ -378,9 +376,7 @@ void LogFilesImpl::check_part()
 
             const auto part_size = determine_part_end() - _data.part_start;
             _data.bytes.resize(part_size);
-            _data.chunks_received.resize(
-                part_size / MAVLINK_MSG_LOG_DATA_FIELD_DATA_LEN +
-                ((part_size % MAVLINK_MSG_LOG_DATA_FIELD_DATA_LEN) != 0));
+            _data.chunks_received.resize(part_size / MAVLINK_MSG_LOG_DATA_FIELD_DATA_LEN);
             std::fill(_data.chunks_received.begin(), _data.chunks_received.end(), false);
 
             request_log_data(_data.id, _data.part_start, _data.bytes.size());
