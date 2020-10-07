@@ -82,6 +82,8 @@ void send_battery_status(std::shared_ptr<MavlinkPassthrough> mavlink_passthrough
         UINT16_MAX,
         UINT16_MAX}; // mV
 
+    const uint16_t voltages_ext[4]{0, 0, 0, 0};
+
     mavlink_message_t message;
     mavlink_msg_battery_status_pack(
         mavlink_passthrough->get_our_sysid(),
@@ -98,7 +100,9 @@ void send_battery_status(std::shared_ptr<MavlinkPassthrough> mavlink_passthrough
         80, // battery_remaining %
         3600, // time_remaining
         MAV_BATTERY_CHARGE_STATE_OK,
-        0); // voltages_ext
+        voltages_ext,
+        MAV_BATTERY_MODE_UNKNOWN, // mode
+        0); // fault_bitmask
 
     mavlink_passthrough->send_message(message);
 }
