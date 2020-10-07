@@ -20,6 +20,8 @@ public:
     void disable() override;
 
     MavlinkPassthrough::Result send_message(mavlink_message_t& message);
+    MavlinkPassthrough::Result send_command_long(const MavlinkPassthrough::CommandLong& command);
+    MavlinkPassthrough::Result send_command_int(const MavlinkPassthrough::CommandInt& command);
 
     void subscribe_message_async(
         uint16_t message_id, std::function<void(const mavlink_message_t&)> callback);
@@ -33,6 +35,8 @@ public:
     void intercept_outgoing_messages_async(std::function<bool(mavlink_message_t&)> callback);
 
 private:
+    static MavlinkPassthrough::Result
+    to_mavlink_passthrough_result_from_mavlink_commands_result(MAVLinkCommands::Result result);
 };
 
 } // namespace mavsdk

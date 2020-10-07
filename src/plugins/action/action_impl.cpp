@@ -68,6 +68,16 @@ Action::Result ActionImpl::disarm() const
     return fut.get();
 }
 
+Action::Result ActionImpl::terminate() const
+{
+    auto prom = std::promise<Action::Result>();
+    auto fut = prom.get_future();
+
+    terminate_async([&prom](Action::Result result) { prom.set_value(result); });
+
+    return fut.get();
+}
+
 Action::Result ActionImpl::kill() const
 {
     auto prom = std::promise<Action::Result>();
@@ -213,6 +223,19 @@ void ActionImpl::disarm_async(const Action::ResultCallback& callback) const
 
     command.command = MAV_CMD_COMPONENT_ARM_DISARM;
     command.params.param1 = 0.0f; // disarm
+    command.target_component_id = _parent->get_autopilot_id();
+
+    _parent->send_command_async(command, [this, callback](MAVLinkCommands::Result result, float) {
+        command_result_callback(result, callback);
+    });
+}
+
+void ActionImpl::terminate_async(const Action::ResultCallback& callback) const
+{
+    MAVLinkCommands::CommandLong command{};
+
+    command.command = MAV_CMD_DO_FLIGHTTERMINATION;
+    command.params.param1 = 1;
     command.target_component_id = _parent->get_autopilot_id();
 
     _parent->send_command_async(command, [this, callback](MAVLinkCommands::Result result, float) {

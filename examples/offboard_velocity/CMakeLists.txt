@@ -10,7 +10,7 @@ if(MSVC)
     add_definitions("-std=c++11 -WX -W2")
     add_definitions("-D_USE_MATH_DEFINES") # For M_PI
 else()
-    add_definitions("-std=c++11 -Wall -Wextra -Werror")
+    add_definitions("-std=c++11 -Wall -Wextra")
 endif()
 
 find_package(MAVSDK REQUIRED)

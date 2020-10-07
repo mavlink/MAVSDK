@@ -90,12 +90,26 @@ public:
     uint64_t get_uuid() const;
 
     /**
+     * @brief MAVLink System ID of connected system.
+     *
+     * @note: this is 0 if nothing is connected yet.
+     *
+     * @return the system ID.
+     */
+    uint8_t get_system_id() const;
+
+    /**
      * @brief Register a callback to be called when a component is discovered.
      *
      * @param callback a function of type void(ComponentType) which will be called with the
      * component type of the new component.
      */
     void register_component_discovered_callback(discover_callback_t callback) const;
+
+    /**
+     * @brief Enable time synchronization using the TIMESYNC messages.
+     */
+    void enable_timesync();
 
     /**
      * @brief Copy constructor (object is not copyable).

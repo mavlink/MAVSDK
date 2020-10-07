@@ -359,7 +359,8 @@ public:
     Result set_position_ned(PositionNedYaw position_ned_yaw) const;
 
     /**
-     * @brief Set the velocity in body coordinates and yaw angular rate.
+     * @brief Set the velocity in body coordinates and yaw angular rate. Not available for
+     * fixed-wing aircraft.
      *
      * This function is blocking.
      *
@@ -368,7 +369,7 @@ public:
     Result set_velocity_body(VelocityBodyYawspeed velocity_body_yawspeed) const;
 
     /**
-     * @brief Set the velocity in NED coordinates and yaw.
+     * @brief Set the velocity in NED coordinates and yaw. Not available for fixed-wing aircraft.
      *
      * This function is blocking.
      *

@@ -113,6 +113,17 @@ class ActionService final {
       return std::unique_ptr< ::grpc::ClientAsyncResponseReaderInterface< ::mavsdk::rpc::action::ShutdownResponse>>(PrepareAsyncShutdownRaw(context, request, cq));
     }
     //
+    // Send command to terminate the drone.
+    //
+    // This will run the terminate routine as configured on the drone (e.g. disarm and open the parachute).
+    virtual ::grpc::Status Terminate(::grpc::ClientContext* context, const ::mavsdk::rpc::action::TerminateRequest& request, ::mavsdk::rpc::action::TerminateResponse* response) = 0;
+    std::unique_ptr< ::grpc::ClientAsyncResponseReaderInterface< ::mavsdk::rpc::action::TerminateResponse>> AsyncTerminate(::grpc::ClientContext* context, const ::mavsdk::rpc::action::TerminateRequest& request, ::grpc::CompletionQueue* cq) {
+      return std::unique_ptr< ::grpc::ClientAsyncResponseReaderInterface< ::mavsdk::rpc::action::TerminateResponse>>(AsyncTerminateRaw(context, request, cq));
+    }
+    std::unique_ptr< ::grpc::ClientAsyncResponseReaderInterface< ::mavsdk::rpc::action::TerminateResponse>> PrepareAsyncTerminate(::grpc::ClientContext* context, const ::mavsdk::rpc::action::TerminateRequest& request, ::grpc::CompletionQueue* cq) {
+      return std::unique_ptr< ::grpc::ClientAsyncResponseReaderInterface< ::mavsdk::rpc::action::TerminateResponse>>(PrepareAsyncTerminateRaw(context, request, cq));
+    }
+    //
     // Send command to kill the drone.
     //
     // This will disarm a drone irrespective of whether it is landed or flying.
@@ -338,6 +349,22 @@ class ActionService final {
       virtual void Shutdown(::grpc::ClientContext* context, const ::grpc::ByteBuffer* request, ::mavsdk::rpc::action::ShutdownResponse* response, ::grpc::experimental::ClientUnaryReactor* reactor) = 0;
       #endif
       //
+      // Send command to terminate the drone.
+      //
+      // This will run the terminate routine as configured on the drone (e.g. disarm and open the parachute).
+      virtual void Terminate(::grpc::ClientContext* context, const ::mavsdk::rpc::action::TerminateRequest* request, ::mavsdk::rpc::action::TerminateResponse* response, std::function<void(::grpc::Status)>) = 0;
+      virtual void Terminate(::grpc::ClientContext* context, const ::grpc::ByteBuffer* request, ::mavsdk::rpc::action::TerminateResponse* response, std::function<void(::grpc::Status)>) = 0;
+      #ifdef GRPC_CALLBACK_API_NONEXPERIMENTAL
+      virtual void Terminate(::grpc::ClientContext* context, const ::mavsdk::rpc::action::TerminateRequest* request, ::mavsdk::rpc::action::TerminateResponse* response, ::grpc::ClientUnaryReactor* reactor) = 0;
+      #else
+      virtual void Terminate(::grpc::ClientContext* context, const ::mavsdk::rpc::action::TerminateRequest* request, ::mavsdk::rpc::action::TerminateResponse* response, ::grpc::experimental::ClientUnaryReactor* reactor) = 0;
+      #endif
+      #ifdef GRPC_CALLBACK_API_NONEXPERIMENTAL
+      virtual void Terminate(::grpc::ClientContext* context, const ::grpc::ByteBuffer* request, ::mavsdk::rpc::action::TerminateResponse* response, ::grpc::ClientUnaryReactor* reactor) = 0;
+      #else
+      virtual void Terminate(::grpc::ClientContext* context, const ::grpc::ByteBuffer* request, ::mavsdk::rpc::action::TerminateResponse* response, ::grpc::experimental::ClientUnaryReactor* reactor) = 0;
+      #endif
+      //
       // Send command to kill the drone.
       //
       // This will disarm a drone irrespective of whether it is landed or flying.
@@ -532,6 +559,8 @@ class ActionService final {
     virtual ::grpc::ClientAsyncResponseReaderInterface< ::mavsdk::rpc::action::RebootResponse>* PrepareAsyncRebootRaw(::grpc::ClientContext* context, const ::mavsdk::rpc::action::RebootRequest& request, ::grpc::CompletionQueue* cq) = 0;
     virtual ::grpc::ClientAsyncResponseReaderInterface< ::mavsdk::rpc::action::ShutdownResponse>* AsyncShutdownRaw(::grpc::ClientContext* context, const ::mavsdk::rpc::action::ShutdownRequest& request, ::grpc::CompletionQueue* cq) = 0;
     virtual ::grpc::ClientAsyncResponseReaderInterface< ::mavsdk::rpc::action::ShutdownResponse>* PrepareAsyncShutdownRaw(::grpc::ClientContext* context, const ::mavsdk::rpc::action::ShutdownRequest& request, ::grpc::CompletionQueue* cq) = 0;
+    virtual ::grpc::ClientAsyncResponseReaderInterface< ::mavsdk::rpc::action::TerminateResponse>* AsyncTerminateRaw(::grpc::ClientContext* context, const ::mavsdk::rpc::action::TerminateRequest& request, ::grpc::CompletionQueue* cq) = 0;
+    virtual ::grpc::ClientAsyncResponseReaderInterface< ::mavsdk::rpc::action::TerminateResponse>* PrepareAsyncTerminateRaw(::grpc::ClientContext* context, const ::mavsdk::rpc::action::TerminateRequest& request, ::grpc::CompletionQueue* cq) = 0;
     virtual ::grpc::ClientAsyncResponseReaderInterface< ::mavsdk::rpc::action::KillResponse>* AsyncKillRaw(::grpc::ClientContext* context, const ::mavsdk::rpc::action::KillRequest& request, ::grpc::CompletionQueue* cq) = 0;
     virtual ::grpc::ClientAsyncResponseReaderInterface< ::mavsdk::rpc::action::KillResponse>* PrepareAsyncKillRaw(::grpc::ClientContext* context, const ::mavsdk::rpc::action::KillRequest& request, ::grpc::CompletionQueue* cq) = 0;
     virtual ::grpc::ClientAsyncResponseReaderInterface< ::mavsdk::rpc::action::ReturnToLaunchResponse>* AsyncReturnToLaunchRaw(::grpc::ClientContext* context, const ::mavsdk::rpc::action::ReturnToLaunchRequest& request, ::grpc::CompletionQueue* cq) = 0;
@@ -599,6 +628,13 @@ class ActionService final {
     }
     std::unique_ptr< ::grpc::ClientAsyncResponseReader< ::mavsdk::rpc::action::ShutdownResponse>> PrepareAsyncShutdown(::grpc::ClientContext* context, const ::mavsdk::rpc::action::ShutdownRequest& request, ::grpc::CompletionQueue* cq) {
       return std::unique_ptr< ::grpc::ClientAsyncResponseReader< ::mavsdk::rpc::action::ShutdownResponse>>(PrepareAsyncShutdownRaw(context, request, cq));
+    }
+    ::grpc::Status Terminate(::grpc::ClientContext* context, const ::mavsdk::rpc::action::TerminateRequest& request, ::mavsdk::rpc::action::TerminateResponse* response) override;
+    std::unique_ptr< ::grpc::ClientAsyncResponseReader< ::mavsdk::rpc::action::TerminateResponse>> AsyncTerminate(::grpc::ClientContext* context, const ::mavsdk::rpc::action::TerminateRequest& request, ::grpc::CompletionQueue* cq) {
+      return std::unique_ptr< ::grpc::ClientAsyncResponseReader< ::mavsdk::rpc::action::TerminateResponse>>(AsyncTerminateRaw(context, request, cq));
+    }
+    std::unique_ptr< ::grpc::ClientAsyncResponseReader< ::mavsdk::rpc::action::TerminateResponse>> PrepareAsyncTerminate(::grpc::ClientContext* context, const ::mavsdk::rpc::action::TerminateRequest& request, ::grpc::CompletionQueue* cq) {
+      return std::unique_ptr< ::grpc::ClientAsyncResponseReader< ::mavsdk::rpc::action::TerminateResponse>>(PrepareAsyncTerminateRaw(context, request, cq));
     }
     ::grpc::Status Kill(::grpc::ClientContext* context, const ::mavsdk::rpc::action::KillRequest& request, ::mavsdk::rpc::action::KillResponse* response) override;
     std::unique_ptr< ::grpc::ClientAsyncResponseReader< ::mavsdk::rpc::action::KillResponse>> AsyncKill(::grpc::ClientContext* context, const ::mavsdk::rpc::action::KillRequest& request, ::grpc::CompletionQueue* cq) {
@@ -751,6 +787,18 @@ class ActionService final {
       void Shutdown(::grpc::ClientContext* context, const ::grpc::ByteBuffer* request, ::mavsdk::rpc::action::ShutdownResponse* response, ::grpc::ClientUnaryReactor* reactor) override;
       #else
       void Shutdown(::grpc::ClientContext* context, const ::grpc::ByteBuffer* request, ::mavsdk::rpc::action::ShutdownResponse* response, ::grpc::experimental::ClientUnaryReactor* reactor) override;
+      #endif
+      void Terminate(::grpc::ClientContext* context, const ::mavsdk::rpc::action::TerminateRequest* request, ::mavsdk::rpc::action::TerminateResponse* response, std::function<void(::grpc::Status)>) override;
+      void Terminate(::grpc::ClientContext* context, const ::grpc::ByteBuffer* request, ::mavsdk::rpc::action::TerminateResponse* response, std::function<void(::grpc::Status)>) override;
+      #ifdef GRPC_CALLBACK_API_NONEXPERIMENTAL
+      void Terminate(::grpc::ClientContext* context, const ::mavsdk::rpc::action::TerminateRequest* request, ::mavsdk::rpc::action::TerminateResponse* response, ::grpc::ClientUnaryReactor* reactor) override;
+      #else
+      void Terminate(::grpc::ClientContext* context, const ::mavsdk::rpc::action::TerminateRequest* request, ::mavsdk::rpc::action::TerminateResponse* response, ::grpc::experimental::ClientUnaryReactor* reactor) override;
+      #endif
+      #ifdef GRPC_CALLBACK_API_NONEXPERIMENTAL
+      void Terminate(::grpc::ClientContext* context, const ::grpc::ByteBuffer* request, ::mavsdk::rpc::action::TerminateResponse* response, ::grpc::ClientUnaryReactor* reactor) override;
+      #else
+      void Terminate(::grpc::ClientContext* context, const ::grpc::ByteBuffer* request, ::mavsdk::rpc::action::TerminateResponse* response, ::grpc::experimental::ClientUnaryReactor* reactor) override;
       #endif
       void Kill(::grpc::ClientContext* context, const ::mavsdk::rpc::action::KillRequest* request, ::mavsdk::rpc::action::KillResponse* response, std::function<void(::grpc::Status)>) override;
       void Kill(::grpc::ClientContext* context, const ::grpc::ByteBuffer* request, ::mavsdk::rpc::action::KillResponse* response, std::function<void(::grpc::Status)>) override;
@@ -907,6 +955,8 @@ class ActionService final {
     ::grpc::ClientAsyncResponseReader< ::mavsdk::rpc::action::RebootResponse>* PrepareAsyncRebootRaw(::grpc::ClientContext* context, const ::mavsdk::rpc::action::RebootRequest& request, ::grpc::CompletionQueue* cq) override;
     ::grpc::ClientAsyncResponseReader< ::mavsdk::rpc::action::ShutdownResponse>* AsyncShutdownRaw(::grpc::ClientContext* context, const ::mavsdk::rpc::action::ShutdownRequest& request, ::grpc::CompletionQueue* cq) override;
     ::grpc::ClientAsyncResponseReader< ::mavsdk::rpc::action::ShutdownResponse>* PrepareAsyncShutdownRaw(::grpc::ClientContext* context, const ::mavsdk::rpc::action::ShutdownRequest& request, ::grpc::CompletionQueue* cq) override;
+    ::grpc::ClientAsyncResponseReader< ::mavsdk::rpc::action::TerminateResponse>* AsyncTerminateRaw(::grpc::ClientContext* context, const ::mavsdk::rpc::action::TerminateRequest& request, ::grpc::CompletionQueue* cq) override;
+    ::grpc::ClientAsyncResponseReader< ::mavsdk::rpc::action::TerminateResponse>* PrepareAsyncTerminateRaw(::grpc::ClientContext* context, const ::mavsdk::rpc::action::TerminateRequest& request, ::grpc::CompletionQueue* cq) override;
     ::grpc::ClientAsyncResponseReader< ::mavsdk::rpc::action::KillResponse>* AsyncKillRaw(::grpc::ClientContext* context, const ::mavsdk::rpc::action::KillRequest& request, ::grpc::CompletionQueue* cq) override;
     ::grpc::ClientAsyncResponseReader< ::mavsdk::rpc::action::KillResponse>* PrepareAsyncKillRaw(::grpc::ClientContext* context, const ::mavsdk::rpc::action::KillRequest& request, ::grpc::CompletionQueue* cq) override;
     ::grpc::ClientAsyncResponseReader< ::mavsdk::rpc::action::ReturnToLaunchResponse>* AsyncReturnToLaunchRaw(::grpc::ClientContext* context, const ::mavsdk::rpc::action::ReturnToLaunchRequest& request, ::grpc::CompletionQueue* cq) override;
@@ -935,6 +985,7 @@ class ActionService final {
     const ::grpc::internal::RpcMethod rpcmethod_Land_;
     const ::grpc::internal::RpcMethod rpcmethod_Reboot_;
     const ::grpc::internal::RpcMethod rpcmethod_Shutdown_;
+    const ::grpc::internal::RpcMethod rpcmethod_Terminate_;
     const ::grpc::internal::RpcMethod rpcmethod_Kill_;
     const ::grpc::internal::RpcMethod rpcmethod_ReturnToLaunch_;
     const ::grpc::internal::RpcMethod rpcmethod_GotoLocation_;
@@ -990,6 +1041,11 @@ class ActionService final {
     // This command should only be used when the autopilot is disarmed and autopilots commonly
     // reject it if they are not already ready to shut down.
     virtual ::grpc::Status Shutdown(::grpc::ServerContext* context, const ::mavsdk::rpc::action::ShutdownRequest* request, ::mavsdk::rpc::action::ShutdownResponse* response);
+    //
+    // Send command to terminate the drone.
+    //
+    // This will run the terminate routine as configured on the drone (e.g. disarm and open the parachute).
+    virtual ::grpc::Status Terminate(::grpc::ServerContext* context, const ::mavsdk::rpc::action::TerminateRequest* request, ::mavsdk::rpc::action::TerminateResponse* response);
     //
     // Send command to kill the drone.
     //
@@ -1165,12 +1221,32 @@ class ActionService final {
     }
   };
   template <class BaseClass>
+  class WithAsyncMethod_Terminate : public BaseClass {
+   private:
+    void BaseClassMustBeDerivedFromService(const Service* /*service*/) {}
+   public:
+    WithAsyncMethod_Terminate() {
+      ::grpc::Service::MarkMethodAsync(6);
+    }
+    ~WithAsyncMethod_Terminate() override {
+      BaseClassMustBeDerivedFromService(this);
+    }
+    // disable synchronous version of this method
+    ::grpc::Status Terminate(::grpc::ServerContext* /*context*/, const ::mavsdk::rpc::action::TerminateRequest* /*request*/, ::mavsdk::rpc::action::TerminateResponse* /*response*/) override {
+      abort();
+      return ::grpc::Status(::grpc::StatusCode::UNIMPLEMENTED, "");
+    }
+    void RequestTerminate(::grpc::ServerContext* context, ::mavsdk::rpc::action::TerminateRequest* request, ::grpc::ServerAsyncResponseWriter< ::mavsdk::rpc::action::TerminateResponse>* response, ::grpc::CompletionQueue* new_call_cq, ::grpc::ServerCompletionQueue* notification_cq, void *tag) {
+      ::grpc::Service::RequestAsyncUnary(6, context, request, response, new_call_cq, notification_cq, tag);
+    }
+  };
+  template <class BaseClass>
   class WithAsyncMethod_Kill : public BaseClass {
    private:
     void BaseClassMustBeDerivedFromService(const Service* /*service*/) {}
    public:
     WithAsyncMethod_Kill() {
-      ::grpc::Service::MarkMethodAsync(6);
+      ::grpc::Service::MarkMethodAsync(7);
     }
     ~WithAsyncMethod_Kill() override {
       BaseClassMustBeDerivedFromService(this);
@@ -1181,7 +1257,7 @@ class ActionService final {
       return ::grpc::Status(::grpc::StatusCode::UNIMPLEMENTED, "");
     }
     void RequestKill(::grpc::ServerContext* context, ::mavsdk::rpc::action::KillRequest* request, ::grpc::ServerAsyncResponseWriter< ::mavsdk::rpc::action::KillResponse>* response, ::grpc::CompletionQueue* new_call_cq, ::grpc::ServerCompletionQueue* notification_cq, void *tag) {
-      ::grpc::Service::RequestAsyncUnary(6, context, request, response, new_call_cq, notification_cq, tag);
+      ::grpc::Service::RequestAsyncUnary(7, context, request, response, new_call_cq, notification_cq, tag);
     }
   };
   template <class BaseClass>
@@ -1190,7 +1266,7 @@ class ActionService final {
     void BaseClassMustBeDerivedFromService(const Service* /*service*/) {}
    public:
     WithAsyncMethod_ReturnToLaunch() {
-      ::grpc::Service::MarkMethodAsync(7);
+      ::grpc::Service::MarkMethodAsync(8);
     }
     ~WithAsyncMethod_ReturnToLaunch() override {
       BaseClassMustBeDerivedFromService(this);
@@ -1201,7 +1277,7 @@ class ActionService final {
       return ::grpc::Status(::grpc::StatusCode::UNIMPLEMENTED, "");
     }
     void RequestReturnToLaunch(::grpc::ServerContext* context, ::mavsdk::rpc::action::ReturnToLaunchRequest* request, ::grpc::ServerAsyncResponseWriter< ::mavsdk::rpc::action::ReturnToLaunchResponse>* response, ::grpc::CompletionQueue* new_call_cq, ::grpc::ServerCompletionQueue* notification_cq, void *tag) {
-      ::grpc::Service::RequestAsyncUnary(7, context, request, response, new_call_cq, notification_cq, tag);
+      ::grpc::Service::RequestAsyncUnary(8, context, request, response, new_call_cq, notification_cq, tag);
     }
   };
   template <class BaseClass>
@@ -1210,7 +1286,7 @@ class ActionService final {
     void BaseClassMustBeDerivedFromService(const Service* /*service*/) {}
    public:
     WithAsyncMethod_GotoLocation() {
-      ::grpc::Service::MarkMethodAsync(8);
+      ::grpc::Service::MarkMethodAsync(9);
     }
     ~WithAsyncMethod_GotoLocation() override {
       BaseClassMustBeDerivedFromService(this);
@@ -1221,7 +1297,7 @@ class ActionService final {
       return ::grpc::Status(::grpc::StatusCode::UNIMPLEMENTED, "");
     }
     void RequestGotoLocation(::grpc::ServerContext* context, ::mavsdk::rpc::action::GotoLocationRequest* request, ::grpc::ServerAsyncResponseWriter< ::mavsdk::rpc::action::GotoLocationResponse>* response, ::grpc::CompletionQueue* new_call_cq, ::grpc::ServerCompletionQueue* notification_cq, void *tag) {
-      ::grpc::Service::RequestAsyncUnary(8, context, request, response, new_call_cq, notification_cq, tag);
+      ::grpc::Service::RequestAsyncUnary(9, context, request, response, new_call_cq, notification_cq, tag);
     }
   };
   template <class BaseClass>
@@ -1230,7 +1306,7 @@ class ActionService final {
     void BaseClassMustBeDerivedFromService(const Service* /*service*/) {}
    public:
     WithAsyncMethod_TransitionToFixedwing() {
-      ::grpc::Service::MarkMethodAsync(9);
+      ::grpc::Service::MarkMethodAsync(10);
     }
     ~WithAsyncMethod_TransitionToFixedwing() override {
       BaseClassMustBeDerivedFromService(this);
@@ -1241,7 +1317,7 @@ class ActionService final {
       return ::grpc::Status(::grpc::StatusCode::UNIMPLEMENTED, "");
     }
     void RequestTransitionToFixedwing(::grpc::ServerContext* context, ::mavsdk::rpc::action::TransitionToFixedwingRequest* request, ::grpc::ServerAsyncResponseWriter< ::mavsdk::rpc::action::TransitionToFixedwingResponse>* response, ::grpc::CompletionQueue* new_call_cq, ::grpc::ServerCompletionQueue* notification_cq, void *tag) {
-      ::grpc::Service::RequestAsyncUnary(9, context, request, response, new_call_cq, notification_cq, tag);
+      ::grpc::Service::RequestAsyncUnary(10, context, request, response, new_call_cq, notification_cq, tag);
     }
   };
   template <class BaseClass>
@@ -1250,7 +1326,7 @@ class ActionService final {
     void BaseClassMustBeDerivedFromService(const Service* /*service*/) {}
    public:
     WithAsyncMethod_TransitionToMulticopter() {
-      ::grpc::Service::MarkMethodAsync(10);
+      ::grpc::Service::MarkMethodAsync(11);
     }
     ~WithAsyncMethod_TransitionToMulticopter() override {
       BaseClassMustBeDerivedFromService(this);
@@ -1261,7 +1337,7 @@ class ActionService final {
       return ::grpc::Status(::grpc::StatusCode::UNIMPLEMENTED, "");
     }
     void RequestTransitionToMulticopter(::grpc::ServerContext* context, ::mavsdk::rpc::action::TransitionToMulticopterRequest* request, ::grpc::ServerAsyncResponseWriter< ::mavsdk::rpc::action::TransitionToMulticopterResponse>* response, ::grpc::CompletionQueue* new_call_cq, ::grpc::ServerCompletionQueue* notification_cq, void *tag) {
-      ::grpc::Service::RequestAsyncUnary(10, context, request, response, new_call_cq, notification_cq, tag);
+      ::grpc::Service::RequestAsyncUnary(11, context, request, response, new_call_cq, notification_cq, tag);
     }
   };
   template <class BaseClass>
@@ -1270,7 +1346,7 @@ class ActionService final {
     void BaseClassMustBeDerivedFromService(const Service* /*service*/) {}
    public:
     WithAsyncMethod_GetTakeoffAltitude() {
-      ::grpc::Service::MarkMethodAsync(11);
+      ::grpc::Service::MarkMethodAsync(12);
     }
     ~WithAsyncMethod_GetTakeoffAltitude() override {
       BaseClassMustBeDerivedFromService(this);
@@ -1281,7 +1357,7 @@ class ActionService final {
       return ::grpc::Status(::grpc::StatusCode::UNIMPLEMENTED, "");
     }
     void RequestGetTakeoffAltitude(::grpc::ServerContext* context, ::mavsdk::rpc::action::GetTakeoffAltitudeRequest* request, ::grpc::ServerAsyncResponseWriter< ::mavsdk::rpc::action::GetTakeoffAltitudeResponse>* response, ::grpc::CompletionQueue* new_call_cq, ::grpc::ServerCompletionQueue* notification_cq, void *tag) {
-      ::grpc::Service::RequestAsyncUnary(11, context, request, response, new_call_cq, notification_cq, tag);
+      ::grpc::Service::RequestAsyncUnary(12, context, request, response, new_call_cq, notification_cq, tag);
     }
   };
   template <class BaseClass>
@@ -1290,7 +1366,7 @@ class ActionService final {
     void BaseClassMustBeDerivedFromService(const Service* /*service*/) {}
    public:
     WithAsyncMethod_SetTakeoffAltitude() {
-      ::grpc::Service::MarkMethodAsync(12);
+      ::grpc::Service::MarkMethodAsync(13);
     }
     ~WithAsyncMethod_SetTakeoffAltitude() override {
       BaseClassMustBeDerivedFromService(this);
@@ -1301,7 +1377,7 @@ class ActionService final {
       return ::grpc::Status(::grpc::StatusCode::UNIMPLEMENTED, "");
     }
     void RequestSetTakeoffAltitude(::grpc::ServerContext* context, ::mavsdk::rpc::action::SetTakeoffAltitudeRequest* request, ::grpc::ServerAsyncResponseWriter< ::mavsdk::rpc::action::SetTakeoffAltitudeResponse>* response, ::grpc::CompletionQueue* new_call_cq, ::grpc::ServerCompletionQueue* notification_cq, void *tag) {
-      ::grpc::Service::RequestAsyncUnary(12, context, request, response, new_call_cq, notification_cq, tag);
+      ::grpc::Service::RequestAsyncUnary(13, context, request, response, new_call_cq, notification_cq, tag);
     }
   };
   template <class BaseClass>
@@ -1310,7 +1386,7 @@ class ActionService final {
     void BaseClassMustBeDerivedFromService(const Service* /*service*/) {}
    public:
     WithAsyncMethod_GetMaximumSpeed() {
-      ::grpc::Service::MarkMethodAsync(13);
+      ::grpc::Service::MarkMethodAsync(14);
     }
     ~WithAsyncMethod_GetMaximumSpeed() override {
       BaseClassMustBeDerivedFromService(this);
@@ -1321,7 +1397,7 @@ class ActionService final {
       return ::grpc::Status(::grpc::StatusCode::UNIMPLEMENTED, "");
     }
     void RequestGetMaximumSpeed(::grpc::ServerContext* context, ::mavsdk::rpc::action::GetMaximumSpeedRequest* request, ::grpc::ServerAsyncResponseWriter< ::mavsdk::rpc::action::GetMaximumSpeedResponse>* response, ::grpc::CompletionQueue* new_call_cq, ::grpc::ServerCompletionQueue* notification_cq, void *tag) {
-      ::grpc::Service::RequestAsyncUnary(13, context, request, response, new_call_cq, notification_cq, tag);
+      ::grpc::Service::RequestAsyncUnary(14, context, request, response, new_call_cq, notification_cq, tag);
     }
   };
   template <class BaseClass>
@@ -1330,7 +1406,7 @@ class ActionService final {
     void BaseClassMustBeDerivedFromService(const Service* /*service*/) {}
    public:
     WithAsyncMethod_SetMaximumSpeed() {
-      ::grpc::Service::MarkMethodAsync(14);
+      ::grpc::Service::MarkMethodAsync(15);
     }
     ~WithAsyncMethod_SetMaximumSpeed() override {
       BaseClassMustBeDerivedFromService(this);
@@ -1341,7 +1417,7 @@ class ActionService final {
       return ::grpc::Status(::grpc::StatusCode::UNIMPLEMENTED, "");
     }
     void RequestSetMaximumSpeed(::grpc::ServerContext* context, ::mavsdk::rpc::action::SetMaximumSpeedRequest* request, ::grpc::ServerAsyncResponseWriter< ::mavsdk::rpc::action::SetMaximumSpeedResponse>* response, ::grpc::CompletionQueue* new_call_cq, ::grpc::ServerCompletionQueue* notification_cq, void *tag) {
-      ::grpc::Service::RequestAsyncUnary(14, context, request, response, new_call_cq, notification_cq, tag);
+      ::grpc::Service::RequestAsyncUnary(15, context, request, response, new_call_cq, notification_cq, tag);
     }
   };
   template <class BaseClass>
@@ -1350,7 +1426,7 @@ class ActionService final {
     void BaseClassMustBeDerivedFromService(const Service* /*service*/) {}
    public:
     WithAsyncMethod_GetReturnToLaunchAltitude() {
-      ::grpc::Service::MarkMethodAsync(15);
+      ::grpc::Service::MarkMethodAsync(16);
     }
     ~WithAsyncMethod_GetReturnToLaunchAltitude() override {
       BaseClassMustBeDerivedFromService(this);
@@ -1361,7 +1437,7 @@ class ActionService final {
       return ::grpc::Status(::grpc::StatusCode::UNIMPLEMENTED, "");
     }
     void RequestGetReturnToLaunchAltitude(::grpc::ServerContext* context, ::mavsdk::rpc::action::GetReturnToLaunchAltitudeRequest* request, ::grpc::ServerAsyncResponseWriter< ::mavsdk::rpc::action::GetReturnToLaunchAltitudeResponse>* response, ::grpc::CompletionQueue* new_call_cq, ::grpc::ServerCompletionQueue* notification_cq, void *tag) {
-      ::grpc::Service::RequestAsyncUnary(15, context, request, response, new_call_cq, notification_cq, tag);
+      ::grpc::Service::RequestAsyncUnary(16, context, request, response, new_call_cq, notification_cq, tag);
     }
   };
   template <class BaseClass>
@@ -1370,7 +1446,7 @@ class ActionService final {
     void BaseClassMustBeDerivedFromService(const Service* /*service*/) {}
    public:
     WithAsyncMethod_SetReturnToLaunchAltitude() {
-      ::grpc::Service::MarkMethodAsync(16);
+      ::grpc::Service::MarkMethodAsync(17);
     }
     ~WithAsyncMethod_SetReturnToLaunchAltitude() override {
       BaseClassMustBeDerivedFromService(this);
@@ -1381,10 +1457,10 @@ class ActionService final {
       return ::grpc::Status(::grpc::StatusCode::UNIMPLEMENTED, "");
     }
     void RequestSetReturnToLaunchAltitude(::grpc::ServerContext* context, ::mavsdk::rpc::action::SetReturnToLaunchAltitudeRequest* request, ::grpc::ServerAsyncResponseWriter< ::mavsdk::rpc::action::SetReturnToLaunchAltitudeResponse>* response, ::grpc::CompletionQueue* new_call_cq, ::grpc::ServerCompletionQueue* notification_cq, void *tag) {
-      ::grpc::Service::RequestAsyncUnary(16, context, request, response, new_call_cq, notification_cq, tag);
+      ::grpc::Service::RequestAsyncUnary(17, context, request, response, new_call_cq, notification_cq, tag);
     }
   };
-  typedef WithAsyncMethod_Arm<WithAsyncMethod_Disarm<WithAsyncMethod_Takeoff<WithAsyncMethod_Land<WithAsyncMethod_Reboot<WithAsyncMethod_Shutdown<WithAsyncMethod_Kill<WithAsyncMethod_ReturnToLaunch<WithAsyncMethod_GotoLocation<WithAsyncMethod_TransitionToFixedwing<WithAsyncMethod_TransitionToMulticopter<WithAsyncMethod_GetTakeoffAltitude<WithAsyncMethod_SetTakeoffAltitude<WithAsyncMethod_GetMaximumSpeed<WithAsyncMethod_SetMaximumSpeed<WithAsyncMethod_GetReturnToLaunchAltitude<WithAsyncMethod_SetReturnToLaunchAltitude<Service > > > > > > > > > > > > > > > > > AsyncService;
+  typedef WithAsyncMethod_Arm<WithAsyncMethod_Disarm<WithAsyncMethod_Takeoff<WithAsyncMethod_Land<WithAsyncMethod_Reboot<WithAsyncMethod_Shutdown<WithAsyncMethod_Terminate<WithAsyncMethod_Kill<WithAsyncMethod_ReturnToLaunch<WithAsyncMethod_GotoLocation<WithAsyncMethod_TransitionToFixedwing<WithAsyncMethod_TransitionToMulticopter<WithAsyncMethod_GetTakeoffAltitude<WithAsyncMethod_SetTakeoffAltitude<WithAsyncMethod_GetMaximumSpeed<WithAsyncMethod_SetMaximumSpeed<WithAsyncMethod_GetReturnToLaunchAltitude<WithAsyncMethod_SetReturnToLaunchAltitude<Service > > > > > > > > > > > > > > > > > > AsyncService;
   template <class BaseClass>
   class ExperimentalWithCallbackMethod_Arm : public BaseClass {
    private:
@@ -1668,6 +1744,53 @@ class ActionService final {
       { return nullptr; }
   };
   template <class BaseClass>
+  class ExperimentalWithCallbackMethod_Terminate : public BaseClass {
+   private:
+    void BaseClassMustBeDerivedFromService(const Service* /*service*/) {}
+   public:
+    ExperimentalWithCallbackMethod_Terminate() {
+    #ifdef GRPC_CALLBACK_API_NONEXPERIMENTAL
+      ::grpc::Service::
+    #else
+      ::grpc::Service::experimental().
+    #endif
+        MarkMethodCallback(6,
+          new ::grpc_impl::internal::CallbackUnaryHandler< ::mavsdk::rpc::action::TerminateRequest, ::mavsdk::rpc::action::TerminateResponse>(
+            [this](
+    #ifdef GRPC_CALLBACK_API_NONEXPERIMENTAL
+                   ::grpc::CallbackServerContext*
+    #else
+                   ::grpc::experimental::CallbackServerContext*
+    #endif
+                     context, const ::mavsdk::rpc::action::TerminateRequest* request, ::mavsdk::rpc::action::TerminateResponse* response) { return this->Terminate(context, request, response); }));}
+    void SetMessageAllocatorFor_Terminate(
+        ::grpc::experimental::MessageAllocator< ::mavsdk::rpc::action::TerminateRequest, ::mavsdk::rpc::action::TerminateResponse>* allocator) {
+    #ifdef GRPC_CALLBACK_API_NONEXPERIMENTAL
+      ::grpc::internal::MethodHandler* const handler = ::grpc::Service::GetHandler(6);
+    #else
+      ::grpc::internal::MethodHandler* const handler = ::grpc::Service::experimental().GetHandler(6);
+    #endif
+      static_cast<::grpc_impl::internal::CallbackUnaryHandler< ::mavsdk::rpc::action::TerminateRequest, ::mavsdk::rpc::action::TerminateResponse>*>(handler)
+              ->SetMessageAllocator(allocator);
+    }
+    ~ExperimentalWithCallbackMethod_Terminate() override {
+      BaseClassMustBeDerivedFromService(this);
+    }
+    // disable synchronous version of this method
+    ::grpc::Status Terminate(::grpc::ServerContext* /*context*/, const ::mavsdk::rpc::action::TerminateRequest* /*request*/, ::mavsdk::rpc::action::TerminateResponse* /*response*/) override {
+      abort();
+      return ::grpc::Status(::grpc::StatusCode::UNIMPLEMENTED, "");
+    }
+    #ifdef GRPC_CALLBACK_API_NONEXPERIMENTAL
+    virtual ::grpc::ServerUnaryReactor* Terminate(
+      ::grpc::CallbackServerContext* /*context*/, const ::mavsdk::rpc::action::TerminateRequest* /*request*/, ::mavsdk::rpc::action::TerminateResponse* /*response*/)
+    #else
+    virtual ::grpc::experimental::ServerUnaryReactor* Terminate(
+      ::grpc::experimental::CallbackServerContext* /*context*/, const ::mavsdk::rpc::action::TerminateRequest* /*request*/, ::mavsdk::rpc::action::TerminateResponse* /*response*/)
+    #endif
+      { return nullptr; }
+  };
+  template <class BaseClass>
   class ExperimentalWithCallbackMethod_Kill : public BaseClass {
    private:
     void BaseClassMustBeDerivedFromService(const Service* /*service*/) {}
@@ -1678,7 +1801,7 @@ class ActionService final {
     #else
       ::grpc::Service::experimental().
     #endif
-        MarkMethodCallback(6,
+        MarkMethodCallback(7,
           new ::grpc_impl::internal::CallbackUnaryHandler< ::mavsdk::rpc::action::KillRequest, ::mavsdk::rpc::action::KillResponse>(
             [this](
     #ifdef GRPC_CALLBACK_API_NONEXPERIMENTAL
@@ -1690,9 +1813,9 @@ class ActionService final {
     void SetMessageAllocatorFor_Kill(
         ::grpc::experimental::MessageAllocator< ::mavsdk::rpc::action::KillRequest, ::mavsdk::rpc::action::KillResponse>* allocator) {
     #ifdef GRPC_CALLBACK_API_NONEXPERIMENTAL
-      ::grpc::internal::MethodHandler* const handler = ::grpc::Service::GetHandler(6);
+      ::grpc::internal::MethodHandler* const handler = ::grpc::Service::GetHandler(7);
     #else
-      ::grpc::internal::MethodHandler* const handler = ::grpc::Service::experimental().GetHandler(6);
+      ::grpc::internal::MethodHandler* const handler = ::grpc::Service::experimental().GetHandler(7);
     #endif
       static_cast<::grpc_impl::internal::CallbackUnaryHandler< ::mavsdk::rpc::action::KillRequest, ::mavsdk::rpc::action::KillResponse>*>(handler)
               ->SetMessageAllocator(allocator);
@@ -1725,7 +1848,7 @@ class ActionService final {
     #else
       ::grpc::Service::experimental().
     #endif
-        MarkMethodCallback(7,
+        MarkMethodCallback(8,
           new ::grpc_impl::internal::CallbackUnaryHandler< ::mavsdk::rpc::action::ReturnToLaunchRequest, ::mavsdk::rpc::action::ReturnToLaunchResponse>(
             [this](
     #ifdef GRPC_CALLBACK_API_NONEXPERIMENTAL
@@ -1737,9 +1860,9 @@ class ActionService final {
     void SetMessageAllocatorFor_ReturnToLaunch(
         ::grpc::experimental::MessageAllocator< ::mavsdk::rpc::action::ReturnToLaunchRequest, ::mavsdk::rpc::action::ReturnToLaunchResponse>* allocator) {
     #ifdef GRPC_CALLBACK_API_NONEXPERIMENTAL
-      ::grpc::internal::MethodHandler* const handler = ::grpc::Service::GetHandler(7);
+      ::grpc::internal::MethodHandler* const handler = ::grpc::Service::GetHandler(8);
     #else
-      ::grpc::internal::MethodHandler* const handler = ::grpc::Service::experimental().GetHandler(7);
+      ::grpc::internal::MethodHandler* const handler = ::grpc::Service::experimental().GetHandler(8);
     #endif
       static_cast<::grpc_impl::internal::CallbackUnaryHandler< ::mavsdk::rpc::action::ReturnToLaunchRequest, ::mavsdk::rpc::action::ReturnToLaunchResponse>*>(handler)
               ->SetMessageAllocator(allocator);
@@ -1772,7 +1895,7 @@ class ActionService final {
     #else
       ::grpc::Service::experimental().
     #endif
-        MarkMethodCallback(8,
+        MarkMethodCallback(9,
           new ::grpc_impl::internal::CallbackUnaryHandler< ::mavsdk::rpc::action::GotoLocationRequest, ::mavsdk::rpc::action::GotoLocationResponse>(
             [this](
     #ifdef GRPC_CALLBACK_API_NONEXPERIMENTAL
@@ -1784,9 +1907,9 @@ class ActionService final {
     void SetMessageAllocatorFor_GotoLocation(
         ::grpc::experimental::MessageAllocator< ::mavsdk::rpc::action::GotoLocationRequest, ::mavsdk::rpc::action::GotoLocationResponse>* allocator) {
     #ifdef GRPC_CALLBACK_API_NONEXPERIMENTAL
-      ::grpc::internal::MethodHandler* const handler = ::grpc::Service::GetHandler(8);
+      ::grpc::internal::MethodHandler* const handler = ::grpc::Service::GetHandler(9);
     #else
-      ::grpc::internal::MethodHandler* const handler = ::grpc::Service::experimental().GetHandler(8);
+      ::grpc::internal::MethodHandler* const handler = ::grpc::Service::experimental().GetHandler(9);
     #endif
       static_cast<::grpc_impl::internal::CallbackUnaryHandler< ::mavsdk::rpc::action::GotoLocationRequest, ::mavsdk::rpc::action::GotoLocationResponse>*>(handler)
               ->SetMessageAllocator(allocator);
@@ -1819,7 +1942,7 @@ class ActionService final {
     #else
       ::grpc::Service::experimental().
     #endif
-        MarkMethodCallback(9,
+        MarkMethodCallback(10,
           new ::grpc_impl::internal::CallbackUnaryHandler< ::mavsdk::rpc::action::TransitionToFixedwingRequest, ::mavsdk::rpc::action::TransitionToFixedwingResponse>(
             [this](
     #ifdef GRPC_CALLBACK_API_NONEXPERIMENTAL
@@ -1831,9 +1954,9 @@ class ActionService final {
     void SetMessageAllocatorFor_TransitionToFixedwing(
         ::grpc::experimental::MessageAllocator< ::mavsdk::rpc::action::TransitionToFixedwingRequest, ::mavsdk::rpc::action::TransitionToFixedwingResponse>* allocator) {
     #ifdef GRPC_CALLBACK_API_NONEXPERIMENTAL
-      ::grpc::internal::MethodHandler* const handler = ::grpc::Service::GetHandler(9);
+      ::grpc::internal::MethodHandler* const handler = ::grpc::Service::GetHandler(10);
     #else
-      ::grpc::internal::MethodHandler* const handler = ::grpc::Service::experimental().GetHandler(9);
+      ::grpc::internal::MethodHandler* const handler = ::grpc::Service::experimental().GetHandler(10);
     #endif
       static_cast<::grpc_impl::internal::CallbackUnaryHandler< ::mavsdk::rpc::action::TransitionToFixedwingRequest, ::mavsdk::rpc::action::TransitionToFixedwingResponse>*>(handler)
               ->SetMessageAllocator(allocator);
@@ -1866,7 +1989,7 @@ class ActionService final {
     #else
       ::grpc::Service::experimental().
     #endif
-        MarkMethodCallback(10,
+        MarkMethodCallback(11,
           new ::grpc_impl::internal::CallbackUnaryHandler< ::mavsdk::rpc::action::TransitionToMulticopterRequest, ::mavsdk::rpc::action::TransitionToMulticopterResponse>(
             [this](
     #ifdef GRPC_CALLBACK_API_NONEXPERIMENTAL
@@ -1878,9 +2001,9 @@ class ActionService final {
     void SetMessageAllocatorFor_TransitionToMulticopter(
         ::grpc::experimental::MessageAllocator< ::mavsdk::rpc::action::TransitionToMulticopterRequest, ::mavsdk::rpc::action::TransitionToMulticopterResponse>* allocator) {
     #ifdef GRPC_CALLBACK_API_NONEXPERIMENTAL
-      ::grpc::internal::MethodHandler* const handler = ::grpc::Service::GetHandler(10);
+      ::grpc::internal::MethodHandler* const handler = ::grpc::Service::GetHandler(11);
     #else
-      ::grpc::internal::MethodHandler* const handler = ::grpc::Service::experimental().GetHandler(10);
+      ::grpc::internal::MethodHandler* const handler = ::grpc::Service::experimental().GetHandler(11);
     #endif
       static_cast<::grpc_impl::internal::CallbackUnaryHandler< ::mavsdk::rpc::action::TransitionToMulticopterRequest, ::mavsdk::rpc::action::TransitionToMulticopterResponse>*>(handler)
               ->SetMessageAllocator(allocator);
@@ -1913,7 +2036,7 @@ class ActionService final {
     #else
       ::grpc::Service::experimental().
     #endif
-        MarkMethodCallback(11,
+        MarkMethodCallback(12,
           new ::grpc_impl::internal::CallbackUnaryHandler< ::mavsdk::rpc::action::GetTakeoffAltitudeRequest, ::mavsdk::rpc::action::GetTakeoffAltitudeResponse>(
             [this](
     #ifdef GRPC_CALLBACK_API_NONEXPERIMENTAL
@@ -1925,9 +2048,9 @@ class ActionService final {
     void SetMessageAllocatorFor_GetTakeoffAltitude(
         ::grpc::experimental::MessageAllocator< ::mavsdk::rpc::action::GetTakeoffAltitudeRequest, ::mavsdk::rpc::action::GetTakeoffAltitudeResponse>* allocator) {
     #ifdef GRPC_CALLBACK_API_NONEXPERIMENTAL
-      ::grpc::internal::MethodHandler* const handler = ::grpc::Service::GetHandler(11);
+      ::grpc::internal::MethodHandler* const handler = ::grpc::Service::GetHandler(12);
     #else
-      ::grpc::internal::MethodHandler* const handler = ::grpc::Service::experimental().GetHandler(11);
+      ::grpc::internal::MethodHandler* const handler = ::grpc::Service::experimental().GetHandler(12);
     #endif
       static_cast<::grpc_impl::internal::CallbackUnaryHandler< ::mavsdk::rpc::action::GetTakeoffAltitudeRequest, ::mavsdk::rpc::action::GetTakeoffAltitudeResponse>*>(handler)
               ->SetMessageAllocator(allocator);
@@ -1960,7 +2083,7 @@ class ActionService final {
     #else
       ::grpc::Service::experimental().
     #endif
-        MarkMethodCallback(12,
+        MarkMethodCallback(13,
           new ::grpc_impl::internal::CallbackUnaryHandler< ::mavsdk::rpc::action::SetTakeoffAltitudeRequest, ::mavsdk::rpc::action::SetTakeoffAltitudeResponse>(
             [this](
     #ifdef GRPC_CALLBACK_API_NONEXPERIMENTAL
@@ -1972,9 +2095,9 @@ class ActionService final {
     void SetMessageAllocatorFor_SetTakeoffAltitude(
         ::grpc::experimental::MessageAllocator< ::mavsdk::rpc::action::SetTakeoffAltitudeRequest, ::mavsdk::rpc::action::SetTakeoffAltitudeResponse>* allocator) {
     #ifdef GRPC_CALLBACK_API_NONEXPERIMENTAL
-      ::grpc::internal::MethodHandler* const handler = ::grpc::Service::GetHandler(12);
+      ::grpc::internal::MethodHandler* const handler = ::grpc::Service::GetHandler(13);
     #else
-      ::grpc::internal::MethodHandler* const handler = ::grpc::Service::experimental().GetHandler(12);
+      ::grpc::internal::MethodHandler* const handler = ::grpc::Service::experimental().GetHandler(13);
     #endif
       static_cast<::grpc_impl::internal::CallbackUnaryHandler< ::mavsdk::rpc::action::SetTakeoffAltitudeRequest, ::mavsdk::rpc::action::SetTakeoffAltitudeResponse>*>(handler)
               ->SetMessageAllocator(allocator);
@@ -2007,7 +2130,7 @@ class ActionService final {
     #else
       ::grpc::Service::experimental().
     #endif
-        MarkMethodCallback(13,
+        MarkMethodCallback(14,
           new ::grpc_impl::internal::CallbackUnaryHandler< ::mavsdk::rpc::action::GetMaximumSpeedRequest, ::mavsdk::rpc::action::GetMaximumSpeedResponse>(
             [this](
     #ifdef GRPC_CALLBACK_API_NONEXPERIMENTAL
@@ -2019,9 +2142,9 @@ class ActionService final {
     void SetMessageAllocatorFor_GetMaximumSpeed(
         ::grpc::experimental::MessageAllocator< ::mavsdk::rpc::action::GetMaximumSpeedRequest, ::mavsdk::rpc::action::GetMaximumSpeedResponse>* allocator) {
     #ifdef GRPC_CALLBACK_API_NONEXPERIMENTAL
-      ::grpc::internal::MethodHandler* const handler = ::grpc::Service::GetHandler(13);
+      ::grpc::internal::MethodHandler* const handler = ::grpc::Service::GetHandler(14);
     #else
-      ::grpc::internal::MethodHandler* const handler = ::grpc::Service::experimental().GetHandler(13);
+      ::grpc::internal::MethodHandler* const handler = ::grpc::Service::experimental().GetHandler(14);
     #endif
       static_cast<::grpc_impl::internal::CallbackUnaryHandler< ::mavsdk::rpc::action::GetMaximumSpeedRequest, ::mavsdk::rpc::action::GetMaximumSpeedResponse>*>(handler)
               ->SetMessageAllocator(allocator);
@@ -2054,7 +2177,7 @@ class ActionService final {
     #else
       ::grpc::Service::experimental().
     #endif
-        MarkMethodCallback(14,
+        MarkMethodCallback(15,
           new ::grpc_impl::internal::CallbackUnaryHandler< ::mavsdk::rpc::action::SetMaximumSpeedRequest, ::mavsdk::rpc::action::SetMaximumSpeedResponse>(
             [this](
     #ifdef GRPC_CALLBACK_API_NONEXPERIMENTAL
@@ -2066,9 +2189,9 @@ class ActionService final {
     void SetMessageAllocatorFor_SetMaximumSpeed(
         ::grpc::experimental::MessageAllocator< ::mavsdk::rpc::action::SetMaximumSpeedRequest, ::mavsdk::rpc::action::SetMaximumSpeedResponse>* allocator) {
     #ifdef GRPC_CALLBACK_API_NONEXPERIMENTAL
-      ::grpc::internal::MethodHandler* const handler = ::grpc::Service::GetHandler(14);
+      ::grpc::internal::MethodHandler* const handler = ::grpc::Service::GetHandler(15);
     #else
-      ::grpc::internal::MethodHandler* const handler = ::grpc::Service::experimental().GetHandler(14);
+      ::grpc::internal::MethodHandler* const handler = ::grpc::Service::experimental().GetHandler(15);
     #endif
       static_cast<::grpc_impl::internal::CallbackUnaryHandler< ::mavsdk::rpc::action::SetMaximumSpeedRequest, ::mavsdk::rpc::action::SetMaximumSpeedResponse>*>(handler)
               ->SetMessageAllocator(allocator);
@@ -2101,7 +2224,7 @@ class ActionService final {
     #else
       ::grpc::Service::experimental().
     #endif
-        MarkMethodCallback(15,
+        MarkMethodCallback(16,
           new ::grpc_impl::internal::CallbackUnaryHandler< ::mavsdk::rpc::action::GetReturnToLaunchAltitudeRequest, ::mavsdk::rpc::action::GetReturnToLaunchAltitudeResponse>(
             [this](
     #ifdef GRPC_CALLBACK_API_NONEXPERIMENTAL
@@ -2113,9 +2236,9 @@ class ActionService final {
     void SetMessageAllocatorFor_GetReturnToLaunchAltitude(
         ::grpc::experimental::MessageAllocator< ::mavsdk::rpc::action::GetReturnToLaunchAltitudeRequest, ::mavsdk::rpc::action::GetReturnToLaunchAltitudeResponse>* allocator) {
     #ifdef GRPC_CALLBACK_API_NONEXPERIMENTAL
-      ::grpc::internal::MethodHandler* const handler = ::grpc::Service::GetHandler(15);
+      ::grpc::internal::MethodHandler* const handler = ::grpc::Service::GetHandler(16);
     #else
-      ::grpc::internal::MethodHandler* const handler = ::grpc::Service::experimental().GetHandler(15);
+      ::grpc::internal::MethodHandler* const handler = ::grpc::Service::experimental().GetHandler(16);
     #endif
       static_cast<::grpc_impl::internal::CallbackUnaryHandler< ::mavsdk::rpc::action::GetReturnToLaunchAltitudeRequest, ::mavsdk::rpc::action::GetReturnToLaunchAltitudeResponse>*>(handler)
               ->SetMessageAllocator(allocator);
@@ -2148,7 +2271,7 @@ class ActionService final {
     #else
       ::grpc::Service::experimental().
     #endif
-        MarkMethodCallback(16,
+        MarkMethodCallback(17,
           new ::grpc_impl::internal::CallbackUnaryHandler< ::mavsdk::rpc::action::SetReturnToLaunchAltitudeRequest, ::mavsdk::rpc::action::SetReturnToLaunchAltitudeResponse>(
             [this](
     #ifdef GRPC_CALLBACK_API_NONEXPERIMENTAL
@@ -2160,9 +2283,9 @@ class ActionService final {
     void SetMessageAllocatorFor_SetReturnToLaunchAltitude(
         ::grpc::experimental::MessageAllocator< ::mavsdk::rpc::action::SetReturnToLaunchAltitudeRequest, ::mavsdk::rpc::action::SetReturnToLaunchAltitudeResponse>* allocator) {
     #ifdef GRPC_CALLBACK_API_NONEXPERIMENTAL
-      ::grpc::internal::MethodHandler* const handler = ::grpc::Service::GetHandler(16);
+      ::grpc::internal::MethodHandler* const handler = ::grpc::Service::GetHandler(17);
     #else
-      ::grpc::internal::MethodHandler* const handler = ::grpc::Service::experimental().GetHandler(16);
+      ::grpc::internal::MethodHandler* const handler = ::grpc::Service::experimental().GetHandler(17);
     #endif
       static_cast<::grpc_impl::internal::CallbackUnaryHandler< ::mavsdk::rpc::action::SetReturnToLaunchAltitudeRequest, ::mavsdk::rpc::action::SetReturnToLaunchAltitudeResponse>*>(handler)
               ->SetMessageAllocator(allocator);
@@ -2185,10 +2308,10 @@ class ActionService final {
       { return nullptr; }
   };
   #ifdef GRPC_CALLBACK_API_NONEXPERIMENTAL
-  typedef ExperimentalWithCallbackMethod_Arm<ExperimentalWithCallbackMethod_Disarm<ExperimentalWithCallbackMethod_Takeoff<ExperimentalWithCallbackMethod_Land<ExperimentalWithCallbackMethod_Reboot<ExperimentalWithCallbackMethod_Shutdown<ExperimentalWithCallbackMethod_Kill<ExperimentalWithCallbackMethod_ReturnToLaunch<ExperimentalWithCallbackMethod_GotoLocation<ExperimentalWithCallbackMethod_TransitionToFixedwing<ExperimentalWithCallbackMethod_TransitionToMulticopter<ExperimentalWithCallbackMethod_GetTakeoffAltitude<ExperimentalWithCallbackMethod_SetTakeoffAltitude<ExperimentalWithCallbackMethod_GetMaximumSpeed<ExperimentalWithCallbackMethod_SetMaximumSpeed<ExperimentalWithCallbackMethod_GetReturnToLaunchAltitude<ExperimentalWithCallbackMethod_SetReturnToLaunchAltitude<Service > > > > > > > > > > > > > > > > > CallbackService;
+  typedef ExperimentalWithCallbackMethod_Arm<ExperimentalWithCallbackMethod_Disarm<ExperimentalWithCallbackMethod_Takeoff<ExperimentalWithCallbackMethod_Land<ExperimentalWithCallbackMethod_Reboot<ExperimentalWithCallbackMethod_Shutdown<ExperimentalWithCallbackMethod_Terminate<ExperimentalWithCallbackMethod_Kill<ExperimentalWithCallbackMethod_ReturnToLaunch<ExperimentalWithCallbackMethod_GotoLocation<ExperimentalWithCallbackMethod_TransitionToFixedwing<ExperimentalWithCallbackMethod_TransitionToMulticopter<ExperimentalWithCallbackMethod_GetTakeoffAltitude<ExperimentalWithCallbackMethod_SetTakeoffAltitude<ExperimentalWithCallbackMethod_GetMaximumSpeed<ExperimentalWithCallbackMethod_SetMaximumSpeed<ExperimentalWithCallbackMethod_GetReturnToLaunchAltitude<ExperimentalWithCallbackMethod_SetReturnToLaunchAltitude<Service > > > > > > > > > > > > > > > > > > CallbackService;
   #endif
 
-  typedef ExperimentalWithCallbackMethod_Arm<ExperimentalWithCallbackMethod_Disarm<ExperimentalWithCallbackMethod_Takeoff<ExperimentalWithCallbackMethod_Land<ExperimentalWithCallbackMethod_Reboot<ExperimentalWithCallbackMethod_Shutdown<ExperimentalWithCallbackMethod_Kill<ExperimentalWithCallbackMethod_ReturnToLaunch<ExperimentalWithCallbackMethod_GotoLocation<ExperimentalWithCallbackMethod_TransitionToFixedwing<ExperimentalWithCallbackMethod_TransitionToMulticopter<ExperimentalWithCallbackMethod_GetTakeoffAltitude<ExperimentalWithCallbackMethod_SetTakeoffAltitude<ExperimentalWithCallbackMethod_GetMaximumSpeed<ExperimentalWithCallbackMethod_SetMaximumSpeed<ExperimentalWithCallbackMethod_GetReturnToLaunchAltitude<ExperimentalWithCallbackMethod_SetReturnToLaunchAltitude<Service > > > > > > > > > > > > > > > > > ExperimentalCallbackService;
+  typedef ExperimentalWithCallbackMethod_Arm<ExperimentalWithCallbackMethod_Disarm<ExperimentalWithCallbackMethod_Takeoff<ExperimentalWithCallbackMethod_Land<ExperimentalWithCallbackMethod_Reboot<ExperimentalWithCallbackMethod_Shutdown<ExperimentalWithCallbackMethod_Terminate<ExperimentalWithCallbackMethod_Kill<ExperimentalWithCallbackMethod_ReturnToLaunch<ExperimentalWithCallbackMethod_GotoLocation<ExperimentalWithCallbackMethod_TransitionToFixedwing<ExperimentalWithCallbackMethod_TransitionToMulticopter<ExperimentalWithCallbackMethod_GetTakeoffAltitude<ExperimentalWithCallbackMethod_SetTakeoffAltitude<ExperimentalWithCallbackMethod_GetMaximumSpeed<ExperimentalWithCallbackMethod_SetMaximumSpeed<ExperimentalWithCallbackMethod_GetReturnToLaunchAltitude<ExperimentalWithCallbackMethod_SetReturnToLaunchAltitude<Service > > > > > > > > > > > > > > > > > > ExperimentalCallbackService;
   template <class BaseClass>
   class WithGenericMethod_Arm : public BaseClass {
    private:
@@ -2292,12 +2415,29 @@ class ActionService final {
     }
   };
   template <class BaseClass>
+  class WithGenericMethod_Terminate : public BaseClass {
+   private:
+    void BaseClassMustBeDerivedFromService(const Service* /*service*/) {}
+   public:
+    WithGenericMethod_Terminate() {
+      ::grpc::Service::MarkMethodGeneric(6);
+    }
+    ~WithGenericMethod_Terminate() override {
+      BaseClassMustBeDerivedFromService(this);
+    }
+    // disable synchronous version of this method
+    ::grpc::Status Terminate(::grpc::ServerContext* /*context*/, const ::mavsdk::rpc::action::TerminateRequest* /*request*/, ::mavsdk::rpc::action::TerminateResponse* /*response*/) override {
+      abort();
+      return ::grpc::Status(::grpc::StatusCode::UNIMPLEMENTED, "");
+    }
+  };
+  template <class BaseClass>
   class WithGenericMethod_Kill : public BaseClass {
    private:
     void BaseClassMustBeDerivedFromService(const Service* /*service*/) {}
    public:
     WithGenericMethod_Kill() {
-      ::grpc::Service::MarkMethodGeneric(6);
+      ::grpc::Service::MarkMethodGeneric(7);
     }
     ~WithGenericMethod_Kill() override {
       BaseClassMustBeDerivedFromService(this);
@@ -2314,7 +2454,7 @@ class ActionService final {
     void BaseClassMustBeDerivedFromService(const Service* /*service*/) {}
    public:
     WithGenericMethod_ReturnToLaunch() {
-      ::grpc::Service::MarkMethodGeneric(7);
+      ::grpc::Service::MarkMethodGeneric(8);
     }
     ~WithGenericMethod_ReturnToLaunch() override {
       BaseClassMustBeDerivedFromService(this);
@@ -2331,7 +2471,7 @@ class ActionService final {
     void BaseClassMustBeDerivedFromService(const Service* /*service*/) {}
    public:
     WithGenericMethod_GotoLocation() {
-      ::grpc::Service::MarkMethodGeneric(8);
+      ::grpc::Service::MarkMethodGeneric(9);
     }
     ~WithGenericMethod_GotoLocation() override {
       BaseClassMustBeDerivedFromService(this);
@@ -2348,7 +2488,7 @@ class ActionService final {
     void BaseClassMustBeDerivedFromService(const Service* /*service*/) {}
    public:
     WithGenericMethod_TransitionToFixedwing() {
-      ::grpc::Service::MarkMethodGeneric(9);
+      ::grpc::Service::MarkMethodGeneric(10);
     }
     ~WithGenericMethod_TransitionToFixedwing() override {
       BaseClassMustBeDerivedFromService(this);
@@ -2365,7 +2505,7 @@ class ActionService final {
     void BaseClassMustBeDerivedFromService(const Service* /*service*/) {}
    public:
     WithGenericMethod_TransitionToMulticopter() {
-      ::grpc::Service::MarkMethodGeneric(10);
+      ::grpc::Service::MarkMethodGeneric(11);
     }
     ~WithGenericMethod_TransitionToMulticopter() override {
       BaseClassMustBeDerivedFromService(this);
@@ -2382,7 +2522,7 @@ class ActionService final {
     void BaseClassMustBeDerivedFromService(const Service* /*service*/) {}
    public:
     WithGenericMethod_GetTakeoffAltitude() {
-      ::grpc::Service::MarkMethodGeneric(11);
+      ::grpc::Service::MarkMethodGeneric(12);
     }
     ~WithGenericMethod_GetTakeoffAltitude() override {
       BaseClassMustBeDerivedFromService(this);
@@ -2399,7 +2539,7 @@ class ActionService final {
     void BaseClassMustBeDerivedFromService(const Service* /*service*/) {}
    public:
     WithGenericMethod_SetTakeoffAltitude() {
-      ::grpc::Service::MarkMethodGeneric(12);
+      ::grpc::Service::MarkMethodGeneric(13);
     }
     ~WithGenericMethod_SetTakeoffAltitude() override {
       BaseClassMustBeDerivedFromService(this);
@@ -2416,7 +2556,7 @@ class ActionService final {
     void BaseClassMustBeDerivedFromService(const Service* /*service*/) {}
    public:
     WithGenericMethod_GetMaximumSpeed() {
-      ::grpc::Service::MarkMethodGeneric(13);
+      ::grpc::Service::MarkMethodGeneric(14);
     }
     ~WithGenericMethod_GetMaximumSpeed() override {
       BaseClassMustBeDerivedFromService(this);
@@ -2433,7 +2573,7 @@ class ActionService final {
     void BaseClassMustBeDerivedFromService(const Service* /*service*/) {}
    public:
     WithGenericMethod_SetMaximumSpeed() {
-      ::grpc::Service::MarkMethodGeneric(14);
+      ::grpc::Service::MarkMethodGeneric(15);
     }
     ~WithGenericMethod_SetMaximumSpeed() override {
       BaseClassMustBeDerivedFromService(this);
@@ -2450,7 +2590,7 @@ class ActionService final {
     void BaseClassMustBeDerivedFromService(const Service* /*service*/) {}
    public:
     WithGenericMethod_GetReturnToLaunchAltitude() {
-      ::grpc::Service::MarkMethodGeneric(15);
+      ::grpc::Service::MarkMethodGeneric(16);
     }
     ~WithGenericMethod_GetReturnToLaunchAltitude() override {
       BaseClassMustBeDerivedFromService(this);
@@ -2467,7 +2607,7 @@ class ActionService final {
     void BaseClassMustBeDerivedFromService(const Service* /*service*/) {}
    public:
     WithGenericMethod_SetReturnToLaunchAltitude() {
-      ::grpc::Service::MarkMethodGeneric(16);
+      ::grpc::Service::MarkMethodGeneric(17);
     }
     ~WithGenericMethod_SetReturnToLaunchAltitude() override {
       BaseClassMustBeDerivedFromService(this);
@@ -2599,12 +2739,32 @@ class ActionService final {
     }
   };
   template <class BaseClass>
+  class WithRawMethod_Terminate : public BaseClass {
+   private:
+    void BaseClassMustBeDerivedFromService(const Service* /*service*/) {}
+   public:
+    WithRawMethod_Terminate() {
+      ::grpc::Service::MarkMethodRaw(6);
+    }
+    ~WithRawMethod_Terminate() override {
+      BaseClassMustBeDerivedFromService(this);
+    }
+    // disable synchronous version of this method
+    ::grpc::Status Terminate(::grpc::ServerContext* /*context*/, const ::mavsdk::rpc::action::TerminateRequest* /*request*/, ::mavsdk::rpc::action::TerminateResponse* /*response*/) override {
+      abort();
+      return ::grpc::Status(::grpc::StatusCode::UNIMPLEMENTED, "");
+    }
+    void RequestTerminate(::grpc::ServerContext* context, ::grpc::ByteBuffer* request, ::grpc::ServerAsyncResponseWriter< ::grpc::ByteBuffer>* response, ::grpc::CompletionQueue* new_call_cq, ::grpc::ServerCompletionQueue* notification_cq, void *tag) {
+      ::grpc::Service::RequestAsyncUnary(6, context, request, response, new_call_cq, notification_cq, tag);
+    }
+  };
+  template <class BaseClass>
   class WithRawMethod_Kill : public BaseClass {
    private:
     void BaseClassMustBeDerivedFromService(const Service* /*service*/) {}
    public:
     WithRawMethod_Kill() {
-      ::grpc::Service::MarkMethodRaw(6);
+      ::grpc::Service::MarkMethodRaw(7);
     }
     ~WithRawMethod_Kill() override {
       BaseClassMustBeDerivedFromService(this);
@@ -2615,7 +2775,7 @@ class ActionService final {
       return ::grpc::Status(::grpc::StatusCode::UNIMPLEMENTED, "");
     }
     void RequestKill(::grpc::ServerContext* context, ::grpc::ByteBuffer* request, ::grpc::ServerAsyncResponseWriter< ::grpc::ByteBuffer>* response, ::grpc::CompletionQueue* new_call_cq, ::grpc::ServerCompletionQueue* notification_cq, void *tag) {
-      ::grpc::Service::RequestAsyncUnary(6, context, request, response, new_call_cq, notification_cq, tag);
+      ::grpc::Service::RequestAsyncUnary(7, context, request, response, new_call_cq, notification_cq, tag);
     }
   };
   template <class BaseClass>
@@ -2624,7 +2784,7 @@ class ActionService final {
     void BaseClassMustBeDerivedFromService(const Service* /*service*/) {}
    public:
     WithRawMethod_ReturnToLaunch() {
-      ::grpc::Service::MarkMethodRaw(7);
+      ::grpc::Service::MarkMethodRaw(8);
     }
     ~WithRawMethod_ReturnToLaunch() override {
       BaseClassMustBeDerivedFromService(this);
@@ -2635,7 +2795,7 @@ class ActionService final {
       return ::grpc::Status(::grpc::StatusCode::UNIMPLEMENTED, "");
     }
     void RequestReturnToLaunch(::grpc::ServerContext* context, ::grpc::ByteBuffer* request, ::grpc::ServerAsyncResponseWriter< ::grpc::ByteBuffer>* response, ::grpc::CompletionQueue* new_call_cq, ::grpc::ServerCompletionQueue* notification_cq, void *tag) {
-      ::grpc::Service::RequestAsyncUnary(7, context, request, response, new_call_cq, notification_cq, tag);
+      ::grpc::Service::RequestAsyncUnary(8, context, request, response, new_call_cq, notification_cq, tag);
     }
   };
   template <class BaseClass>
@@ -2644,7 +2804,7 @@ class ActionService final {
     void BaseClassMustBeDerivedFromService(const Service* /*service*/) {}
    public:
     WithRawMethod_GotoLocation() {
-      ::grpc::Service::MarkMethodRaw(8);
+      ::grpc::Service::MarkMethodRaw(9);
     }
     ~WithRawMethod_GotoLocation() override {
       BaseClassMustBeDerivedFromService(this);
@@ -2655,7 +2815,7 @@ class ActionService final {
       return ::grpc::Status(::grpc::StatusCode::UNIMPLEMENTED, "");
     }
     void RequestGotoLocation(::grpc::ServerContext* context, ::grpc::ByteBuffer* request, ::grpc::ServerAsyncResponseWriter< ::grpc::ByteBuffer>* response, ::grpc::CompletionQueue* new_call_cq, ::grpc::ServerCompletionQueue* notification_cq, void *tag) {
-      ::grpc::Service::RequestAsyncUnary(8, context, request, response, new_call_cq, notification_cq, tag);
+      ::grpc::Service::RequestAsyncUnary(9, context, request, response, new_call_cq, notification_cq, tag);
     }
   };
   template <class BaseClass>
@@ -2664,7 +2824,7 @@ class ActionService final {
     void BaseClassMustBeDerivedFromService(const Service* /*service*/) {}
    public:
     WithRawMethod_TransitionToFixedwing() {
-      ::grpc::Service::MarkMethodRaw(9);
+      ::grpc::Service::MarkMethodRaw(10);
     }
     ~WithRawMethod_TransitionToFixedwing() override {
       BaseClassMustBeDerivedFromService(this);
@@ -2675,7 +2835,7 @@ class ActionService final {
       return ::grpc::Status(::grpc::StatusCode::UNIMPLEMENTED, "");
     }
     void RequestTransitionToFixedwing(::grpc::ServerContext* context, ::grpc::ByteBuffer* request, ::grpc::ServerAsyncResponseWriter< ::grpc::ByteBuffer>* response, ::grpc::CompletionQueue* new_call_cq, ::grpc::ServerCompletionQueue* notification_cq, void *tag) {
-      ::grpc::Service::RequestAsyncUnary(9, context, request, response, new_call_cq, notification_cq, tag);
+      ::grpc::Service::RequestAsyncUnary(10, context, request, response, new_call_cq, notification_cq, tag);
     }
   };
   template <class BaseClass>
@@ -2684,7 +2844,7 @@ class ActionService final {
     void BaseClassMustBeDerivedFromService(const Service* /*service*/) {}
    public:
     WithRawMethod_TransitionToMulticopter() {
-      ::grpc::Service::MarkMethodRaw(10);
+      ::grpc::Service::MarkMethodRaw(11);
     }
     ~WithRawMethod_TransitionToMulticopter() override {
       BaseClassMustBeDerivedFromService(this);
@@ -2695,7 +2855,7 @@ class ActionService final {
       return ::grpc::Status(::grpc::StatusCode::UNIMPLEMENTED, "");
     }
     void RequestTransitionToMulticopter(::grpc::ServerContext* context, ::grpc::ByteBuffer* request, ::grpc::ServerAsyncResponseWriter< ::grpc::ByteBuffer>* response, ::grpc::CompletionQueue* new_call_cq, ::grpc::ServerCompletionQueue* notification_cq, void *tag) {
-      ::grpc::Service::RequestAsyncUnary(10, context, request, response, new_call_cq, notification_cq, tag);
+      ::grpc::Service::RequestAsyncUnary(11, context, request, response, new_call_cq, notification_cq, tag);
     }
   };
   template <class BaseClass>
@@ -2704,7 +2864,7 @@ class ActionService final {
     void BaseClassMustBeDerivedFromService(const Service* /*service*/) {}
    public:
     WithRawMethod_GetTakeoffAltitude() {
-      ::grpc::Service::MarkMethodRaw(11);
+      ::grpc::Service::MarkMethodRaw(12);
     }
     ~WithRawMethod_GetTakeoffAltitude() override {
       BaseClassMustBeDerivedFromService(this);
@@ -2715,7 +2875,7 @@ class ActionService final {
       return ::grpc::Status(::grpc::StatusCode::UNIMPLEMENTED, "");
     }
     void RequestGetTakeoffAltitude(::grpc::ServerContext* context, ::grpc::ByteBuffer* request, ::grpc::ServerAsyncResponseWriter< ::grpc::ByteBuffer>* response, ::grpc::CompletionQueue* new_call_cq, ::grpc::ServerCompletionQueue* notification_cq, void *tag) {
-      ::grpc::Service::RequestAsyncUnary(11, context, request, response, new_call_cq, notification_cq, tag);
+      ::grpc::Service::RequestAsyncUnary(12, context, request, response, new_call_cq, notification_cq, tag);
     }
   };
   template <class BaseClass>
@@ -2724,7 +2884,7 @@ class ActionService final {
     void BaseClassMustBeDerivedFromService(const Service* /*service*/) {}
    public:
     WithRawMethod_SetTakeoffAltitude() {
-      ::grpc::Service::MarkMethodRaw(12);
+      ::grpc::Service::MarkMethodRaw(13);
     }
     ~WithRawMethod_SetTakeoffAltitude() override {
       BaseClassMustBeDerivedFromService(this);
@@ -2735,7 +2895,7 @@ class ActionService final {
       return ::grpc::Status(::grpc::StatusCode::UNIMPLEMENTED, "");
     }
     void RequestSetTakeoffAltitude(::grpc::ServerContext* context, ::grpc::ByteBuffer* request, ::grpc::ServerAsyncResponseWriter< ::grpc::ByteBuffer>* response, ::grpc::CompletionQueue* new_call_cq, ::grpc::ServerCompletionQueue* notification_cq, void *tag) {
-      ::grpc::Service::RequestAsyncUnary(12, context, request, response, new_call_cq, notification_cq, tag);
+      ::grpc::Service::RequestAsyncUnary(13, context, request, response, new_call_cq, notification_cq, tag);
     }
   };
   template <class BaseClass>
@@ -2744,7 +2904,7 @@ class ActionService final {
     void BaseClassMustBeDerivedFromService(const Service* /*service*/) {}
    public:
     WithRawMethod_GetMaximumSpeed() {
-      ::grpc::Service::MarkMethodRaw(13);
+      ::grpc::Service::MarkMethodRaw(14);
     }
     ~WithRawMethod_GetMaximumSpeed() override {
       BaseClassMustBeDerivedFromService(this);
@@ -2755,7 +2915,7 @@ class ActionService final {
       return ::grpc::Status(::grpc::StatusCode::UNIMPLEMENTED, "");
     }
     void RequestGetMaximumSpeed(::grpc::ServerContext* context, ::grpc::ByteBuffer* request, ::grpc::ServerAsyncResponseWriter< ::grpc::ByteBuffer>* response, ::grpc::CompletionQueue* new_call_cq, ::grpc::ServerCompletionQueue* notification_cq, void *tag) {
-      ::grpc::Service::RequestAsyncUnary(13, context, request, response, new_call_cq, notification_cq, tag);
+      ::grpc::Service::RequestAsyncUnary(14, context, request, response, new_call_cq, notification_cq, tag);
     }
   };
   template <class BaseClass>
@@ -2764,7 +2924,7 @@ class ActionService final {
     void BaseClassMustBeDerivedFromService(const Service* /*service*/) {}
    public:
     WithRawMethod_SetMaximumSpeed() {
-      ::grpc::Service::MarkMethodRaw(14);
+      ::grpc::Service::MarkMethodRaw(15);
     }
     ~WithRawMethod_SetMaximumSpeed() override {
       BaseClassMustBeDerivedFromService(this);
@@ -2775,7 +2935,7 @@ class ActionService final {
       return ::grpc::Status(::grpc::StatusCode::UNIMPLEMENTED, "");
     }
     void RequestSetMaximumSpeed(::grpc::ServerContext* context, ::grpc::ByteBuffer* request, ::grpc::ServerAsyncResponseWriter< ::grpc::ByteBuffer>* response, ::grpc::CompletionQueue* new_call_cq, ::grpc::ServerCompletionQueue* notification_cq, void *tag) {
-      ::grpc::Service::RequestAsyncUnary(14, context, request, response, new_call_cq, notification_cq, tag);
+      ::grpc::Service::RequestAsyncUnary(15, context, request, response, new_call_cq, notification_cq, tag);
     }
   };
   template <class BaseClass>
@@ -2784,7 +2944,7 @@ class ActionService final {
     void BaseClassMustBeDerivedFromService(const Service* /*service*/) {}
    public:
     WithRawMethod_GetReturnToLaunchAltitude() {
-      ::grpc::Service::MarkMethodRaw(15);
+      ::grpc::Service::MarkMethodRaw(16);
     }
     ~WithRawMethod_GetReturnToLaunchAltitude() override {
       BaseClassMustBeDerivedFromService(this);
@@ -2795,7 +2955,7 @@ class ActionService final {
       return ::grpc::Status(::grpc::StatusCode::UNIMPLEMENTED, "");
     }
     void RequestGetReturnToLaunchAltitude(::grpc::ServerContext* context, ::grpc::ByteBuffer* request, ::grpc::ServerAsyncResponseWriter< ::grpc::ByteBuffer>* response, ::grpc::CompletionQueue* new_call_cq, ::grpc::ServerCompletionQueue* notification_cq, void *tag) {
-      ::grpc::Service::RequestAsyncUnary(15, context, request, response, new_call_cq, notification_cq, tag);
+      ::grpc::Service::RequestAsyncUnary(16, context, request, response, new_call_cq, notification_cq, tag);
     }
   };
   template <class BaseClass>
@@ -2804,7 +2964,7 @@ class ActionService final {
     void BaseClassMustBeDerivedFromService(const Service* /*service*/) {}
    public:
     WithRawMethod_SetReturnToLaunchAltitude() {
-      ::grpc::Service::MarkMethodRaw(16);
+      ::grpc::Service::MarkMethodRaw(17);
     }
     ~WithRawMethod_SetReturnToLaunchAltitude() override {
       BaseClassMustBeDerivedFromService(this);
@@ -2815,7 +2975,7 @@ class ActionService final {
       return ::grpc::Status(::grpc::StatusCode::UNIMPLEMENTED, "");
     }
     void RequestSetReturnToLaunchAltitude(::grpc::ServerContext* context, ::grpc::ByteBuffer* request, ::grpc::ServerAsyncResponseWriter< ::grpc::ByteBuffer>* response, ::grpc::CompletionQueue* new_call_cq, ::grpc::ServerCompletionQueue* notification_cq, void *tag) {
-      ::grpc::Service::RequestAsyncUnary(16, context, request, response, new_call_cq, notification_cq, tag);
+      ::grpc::Service::RequestAsyncUnary(17, context, request, response, new_call_cq, notification_cq, tag);
     }
   };
   template <class BaseClass>
@@ -3047,6 +3207,44 @@ class ActionService final {
       { return nullptr; }
   };
   template <class BaseClass>
+  class ExperimentalWithRawCallbackMethod_Terminate : public BaseClass {
+   private:
+    void BaseClassMustBeDerivedFromService(const Service* /*service*/) {}
+   public:
+    ExperimentalWithRawCallbackMethod_Terminate() {
+    #ifdef GRPC_CALLBACK_API_NONEXPERIMENTAL
+      ::grpc::Service::
+    #else
+      ::grpc::Service::experimental().
+    #endif
+        MarkMethodRawCallback(6,
+          new ::grpc_impl::internal::CallbackUnaryHandler< ::grpc::ByteBuffer, ::grpc::ByteBuffer>(
+            [this](
+    #ifdef GRPC_CALLBACK_API_NONEXPERIMENTAL
+                   ::grpc::CallbackServerContext*
+    #else
+                   ::grpc::experimental::CallbackServerContext*
+    #endif
+                     context, const ::grpc::ByteBuffer* request, ::grpc::ByteBuffer* response) { return this->Terminate(context, request, response); }));
+    }
+    ~ExperimentalWithRawCallbackMethod_Terminate() override {
+      BaseClassMustBeDerivedFromService(this);
+    }
+    // disable synchronous version of this method
+    ::grpc::Status Terminate(::grpc::ServerContext* /*context*/, const ::mavsdk::rpc::action::TerminateRequest* /*request*/, ::mavsdk::rpc::action::TerminateResponse* /*response*/) override {
+      abort();
+      return ::grpc::Status(::grpc::StatusCode::UNIMPLEMENTED, "");
+    }
+    #ifdef GRPC_CALLBACK_API_NONEXPERIMENTAL
+    virtual ::grpc::ServerUnaryReactor* Terminate(
+      ::grpc::CallbackServerContext* /*context*/, const ::grpc::ByteBuffer* /*request*/, ::grpc::ByteBuffer* /*response*/)
+    #else
+    virtual ::grpc::experimental::ServerUnaryReactor* Terminate(
+      ::grpc::experimental::CallbackServerContext* /*context*/, const ::grpc::ByteBuffer* /*request*/, ::grpc::ByteBuffer* /*response*/)
+    #endif
+      { return nullptr; }
+  };
+  template <class BaseClass>
   class ExperimentalWithRawCallbackMethod_Kill : public BaseClass {
    private:
     void BaseClassMustBeDerivedFromService(const Service* /*service*/) {}
@@ -3057,7 +3255,7 @@ class ActionService final {
     #else
       ::grpc::Service::experimental().
     #endif
-        MarkMethodRawCallback(6,
+        MarkMethodRawCallback(7,
           new ::grpc_impl::internal::CallbackUnaryHandler< ::grpc::ByteBuffer, ::grpc::ByteBuffer>(
             [this](
     #ifdef GRPC_CALLBACK_API_NONEXPERIMENTAL
@@ -3095,7 +3293,7 @@ class ActionService final {
     #else
       ::grpc::Service::experimental().
     #endif
-        MarkMethodRawCallback(7,
+        MarkMethodRawCallback(8,
           new ::grpc_impl::internal::CallbackUnaryHandler< ::grpc::ByteBuffer, ::grpc::ByteBuffer>(
             [this](
     #ifdef GRPC_CALLBACK_API_NONEXPERIMENTAL
@@ -3133,7 +3331,7 @@ class ActionService final {
     #else
       ::grpc::Service::experimental().
     #endif
-        MarkMethodRawCallback(8,
+        MarkMethodRawCallback(9,
           new ::grpc_impl::internal::CallbackUnaryHandler< ::grpc::ByteBuffer, ::grpc::ByteBuffer>(
             [this](
     #ifdef GRPC_CALLBACK_API_NONEXPERIMENTAL
@@ -3171,7 +3369,7 @@ class ActionService final {
     #else
       ::grpc::Service::experimental().
     #endif
-        MarkMethodRawCallback(9,
+        MarkMethodRawCallback(10,
           new ::grpc_impl::internal::CallbackUnaryHandler< ::grpc::ByteBuffer, ::grpc::ByteBuffer>(
             [this](
     #ifdef GRPC_CALLBACK_API_NONEXPERIMENTAL
@@ -3209,7 +3407,7 @@ class ActionService final {
     #else
       ::grpc::Service::experimental().
     #endif
-        MarkMethodRawCallback(10,
+        MarkMethodRawCallback(11,
           new ::grpc_impl::internal::CallbackUnaryHandler< ::grpc::ByteBuffer, ::grpc::ByteBuffer>(
             [this](
     #ifdef GRPC_CALLBACK_API_NONEXPERIMENTAL
@@ -3247,7 +3445,7 @@ class ActionService final {
     #else
       ::grpc::Service::experimental().
     #endif
-        MarkMethodRawCallback(11,
+        MarkMethodRawCallback(12,
           new ::grpc_impl::internal::CallbackUnaryHandler< ::grpc::ByteBuffer, ::grpc::ByteBuffer>(
             [this](
     #ifdef GRPC_CALLBACK_API_NONEXPERIMENTAL
@@ -3285,7 +3483,7 @@ class ActionService final {
     #else
       ::grpc::Service::experimental().
     #endif
-        MarkMethodRawCallback(12,
+        MarkMethodRawCallback(13,
           new ::grpc_impl::internal::CallbackUnaryHandler< ::grpc::ByteBuffer, ::grpc::ByteBuffer>(
             [this](
     #ifdef GRPC_CALLBACK_API_NONEXPERIMENTAL
@@ -3323,7 +3521,7 @@ class ActionService final {
     #else
       ::grpc::Service::experimental().
     #endif
-        MarkMethodRawCallback(13,
+        MarkMethodRawCallback(14,
           new ::grpc_impl::internal::CallbackUnaryHandler< ::grpc::ByteBuffer, ::grpc::ByteBuffer>(
             [this](
     #ifdef GRPC_CALLBACK_API_NONEXPERIMENTAL
@@ -3361,7 +3559,7 @@ class ActionService final {
     #else
       ::grpc::Service::experimental().
     #endif
-        MarkMethodRawCallback(14,
+        MarkMethodRawCallback(15,
           new ::grpc_impl::internal::CallbackUnaryHandler< ::grpc::ByteBuffer, ::grpc::ByteBuffer>(
             [this](
     #ifdef GRPC_CALLBACK_API_NONEXPERIMENTAL
@@ -3399,7 +3597,7 @@ class ActionService final {
     #else
       ::grpc::Service::experimental().
     #endif
-        MarkMethodRawCallback(15,
+        MarkMethodRawCallback(16,
           new ::grpc_impl::internal::CallbackUnaryHandler< ::grpc::ByteBuffer, ::grpc::ByteBuffer>(
             [this](
     #ifdef GRPC_CALLBACK_API_NONEXPERIMENTAL
@@ -3437,7 +3635,7 @@ class ActionService final {
     #else
       ::grpc::Service::experimental().
     #endif
-        MarkMethodRawCallback(16,
+        MarkMethodRawCallback(17,
           new ::grpc_impl::internal::CallbackUnaryHandler< ::grpc::ByteBuffer, ::grpc::ByteBuffer>(
             [this](
     #ifdef GRPC_CALLBACK_API_NONEXPERIMENTAL
@@ -3585,12 +3783,32 @@ class ActionService final {
     virtual ::grpc::Status StreamedShutdown(::grpc::ServerContext* context, ::grpc::ServerUnaryStreamer< ::mavsdk::rpc::action::ShutdownRequest,::mavsdk::rpc::action::ShutdownResponse>* server_unary_streamer) = 0;
   };
   template <class BaseClass>
+  class WithStreamedUnaryMethod_Terminate : public BaseClass {
+   private:
+    void BaseClassMustBeDerivedFromService(const Service* /*service*/) {}
+   public:
+    WithStreamedUnaryMethod_Terminate() {
+      ::grpc::Service::MarkMethodStreamed(6,
+        new ::grpc::internal::StreamedUnaryHandler< ::mavsdk::rpc::action::TerminateRequest, ::mavsdk::rpc::action::TerminateResponse>(std::bind(&WithStreamedUnaryMethod_Terminate<BaseClass>::StreamedTerminate, this, std::placeholders::_1, std::placeholders::_2)));
+    }
+    ~WithStreamedUnaryMethod_Terminate() override {
+      BaseClassMustBeDerivedFromService(this);
+    }
+    // disable regular version of this method
+    ::grpc::Status Terminate(::grpc::ServerContext* /*context*/, const ::mavsdk::rpc::action::TerminateRequest* /*request*/, ::mavsdk::rpc::action::TerminateResponse* /*response*/) override {
+      abort();
+      return ::grpc::Status(::grpc::StatusCode::UNIMPLEMENTED, "");
+    }
+    // replace default version of method with streamed unary
+    virtual ::grpc::Status StreamedTerminate(::grpc::ServerContext* context, ::grpc::ServerUnaryStreamer< ::mavsdk::rpc::action::TerminateRequest,::mavsdk::rpc::action::TerminateResponse>* server_unary_streamer) = 0;
+  };
+  template <class BaseClass>
   class WithStreamedUnaryMethod_Kill : public BaseClass {
    private:
     void BaseClassMustBeDerivedFromService(const Service* /*service*/) {}
    public:
     WithStreamedUnaryMethod_Kill() {
-      ::grpc::Service::MarkMethodStreamed(6,
+      ::grpc::Service::MarkMethodStreamed(7,
         new ::grpc::internal::StreamedUnaryHandler< ::mavsdk::rpc::action::KillRequest, ::mavsdk::rpc::action::KillResponse>(std::bind(&WithStreamedUnaryMethod_Kill<BaseClass>::StreamedKill, this, std::placeholders::_1, std::placeholders::_2)));
     }
     ~WithStreamedUnaryMethod_Kill() override {
@@ -3610,7 +3828,7 @@ class ActionService final {
     void BaseClassMustBeDerivedFromService(const Service* /*service*/) {}
    public:
     WithStreamedUnaryMethod_ReturnToLaunch() {
-      ::grpc::Service::MarkMethodStreamed(7,
+      ::grpc::Service::MarkMethodStreamed(8,
         new ::grpc::internal::StreamedUnaryHandler< ::mavsdk::rpc::action::ReturnToLaunchRequest, ::mavsdk::rpc::action::ReturnToLaunchResponse>(std::bind(&WithStreamedUnaryMethod_ReturnToLaunch<BaseClass>::StreamedReturnToLaunch, this, std::placeholders::_1, std::placeholders::_2)));
     }
     ~WithStreamedUnaryMethod_ReturnToLaunch() override {
@@ -3630,7 +3848,7 @@ class ActionService final {
     void BaseClassMustBeDerivedFromService(const Service* /*service*/) {}
    public:
     WithStreamedUnaryMethod_GotoLocation() {
-      ::grpc::Service::MarkMethodStreamed(8,
+      ::grpc::Service::MarkMethodStreamed(9,
         new ::grpc::internal::StreamedUnaryHandler< ::mavsdk::rpc::action::GotoLocationRequest, ::mavsdk::rpc::action::GotoLocationResponse>(std::bind(&WithStreamedUnaryMethod_GotoLocation<BaseClass>::StreamedGotoLocation, this, std::placeholders::_1, std::placeholders::_2)));
     }
     ~WithStreamedUnaryMethod_GotoLocation() override {
@@ -3650,7 +3868,7 @@ class ActionService final {
     void BaseClassMustBeDerivedFromService(const Service* /*service*/) {}
    public:
     WithStreamedUnaryMethod_TransitionToFixedwing() {
-      ::grpc::Service::MarkMethodStreamed(9,
+      ::grpc::Service::MarkMethodStreamed(10,
         new ::grpc::internal::StreamedUnaryHandler< ::mavsdk::rpc::action::TransitionToFixedwingRequest, ::mavsdk::rpc::action::TransitionToFixedwingResponse>(std::bind(&WithStreamedUnaryMethod_TransitionToFixedwing<BaseClass>::StreamedTransitionToFixedwing, this, std::placeholders::_1, std::placeholders::_2)));
     }
     ~WithStreamedUnaryMethod_TransitionToFixedwing() override {
@@ -3670,7 +3888,7 @@ class ActionService final {
     void BaseClassMustBeDerivedFromService(const Service* /*service*/) {}
    public:
     WithStreamedUnaryMethod_TransitionToMulticopter() {
-      ::grpc::Service::MarkMethodStreamed(10,
+      ::grpc::Service::MarkMethodStreamed(11,
         new ::grpc::internal::StreamedUnaryHandler< ::mavsdk::rpc::action::TransitionToMulticopterRequest, ::mavsdk::rpc::action::TransitionToMulticopterResponse>(std::bind(&WithStreamedUnaryMethod_TransitionToMulticopter<BaseClass>::StreamedTransitionToMulticopter, this, std::placeholders::_1, std::placeholders::_2)));
     }
     ~WithStreamedUnaryMethod_TransitionToMulticopter() override {
@@ -3690,7 +3908,7 @@ class ActionService final {
     void BaseClassMustBeDerivedFromService(const Service* /*service*/) {}
    public:
     WithStreamedUnaryMethod_GetTakeoffAltitude() {
-      ::grpc::Service::MarkMethodStreamed(11,
+      ::grpc::Service::MarkMethodStreamed(12,
         new ::grpc::internal::StreamedUnaryHandler< ::mavsdk::rpc::action::GetTakeoffAltitudeRequest, ::mavsdk::rpc::action::GetTakeoffAltitudeResponse>(std::bind(&WithStreamedUnaryMethod_GetTakeoffAltitude<BaseClass>::StreamedGetTakeoffAltitude, this, std::placeholders::_1, std::placeholders::_2)));
     }
     ~WithStreamedUnaryMethod_GetTakeoffAltitude() override {
@@ -3710,7 +3928,7 @@ class ActionService final {
     void BaseClassMustBeDerivedFromService(const Service* /*service*/) {}
    public:
     WithStreamedUnaryMethod_SetTakeoffAltitude() {
-      ::grpc::Service::MarkMethodStreamed(12,
+      ::grpc::Service::MarkMethodStreamed(13,
         new ::grpc::internal::StreamedUnaryHandler< ::mavsdk::rpc::action::SetTakeoffAltitudeRequest, ::mavsdk::rpc::action::SetTakeoffAltitudeResponse>(std::bind(&WithStreamedUnaryMethod_SetTakeoffAltitude<BaseClass>::StreamedSetTakeoffAltitude, this, std::placeholders::_1, std::placeholders::_2)));
     }
     ~WithStreamedUnaryMethod_SetTakeoffAltitude() override {
@@ -3730,7 +3948,7 @@ class ActionService final {
     void BaseClassMustBeDerivedFromService(const Service* /*service*/) {}
    public:
     WithStreamedUnaryMethod_GetMaximumSpeed() {
-      ::grpc::Service::MarkMethodStreamed(13,
+      ::grpc::Service::MarkMethodStreamed(14,
         new ::grpc::internal::StreamedUnaryHandler< ::mavsdk::rpc::action::GetMaximumSpeedRequest, ::mavsdk::rpc::action::GetMaximumSpeedResponse>(std::bind(&WithStreamedUnaryMethod_GetMaximumSpeed<BaseClass>::StreamedGetMaximumSpeed, this, std::placeholders::_1, std::placeholders::_2)));
     }
     ~WithStreamedUnaryMethod_GetMaximumSpeed() override {
@@ -3750,7 +3968,7 @@ class ActionService final {
     void BaseClassMustBeDerivedFromService(const Service* /*service*/) {}
    public:
     WithStreamedUnaryMethod_SetMaximumSpeed() {
-      ::grpc::Service::MarkMethodStreamed(14,
+      ::grpc::Service::MarkMethodStreamed(15,
         new ::grpc::internal::StreamedUnaryHandler< ::mavsdk::rpc::action::SetMaximumSpeedRequest, ::mavsdk::rpc::action::SetMaximumSpeedResponse>(std::bind(&WithStreamedUnaryMethod_SetMaximumSpeed<BaseClass>::StreamedSetMaximumSpeed, this, std::placeholders::_1, std::placeholders::_2)));
     }
     ~WithStreamedUnaryMethod_SetMaximumSpeed() override {
@@ -3770,7 +3988,7 @@ class ActionService final {
     void BaseClassMustBeDerivedFromService(const Service* /*service*/) {}
    public:
     WithStreamedUnaryMethod_GetReturnToLaunchAltitude() {
-      ::grpc::Service::MarkMethodStreamed(15,
+      ::grpc::Service::MarkMethodStreamed(16,
         new ::grpc::internal::StreamedUnaryHandler< ::mavsdk::rpc::action::GetReturnToLaunchAltitudeRequest, ::mavsdk::rpc::action::GetReturnToLaunchAltitudeResponse>(std::bind(&WithStreamedUnaryMethod_GetReturnToLaunchAltitude<BaseClass>::StreamedGetReturnToLaunchAltitude, this, std::placeholders::_1, std::placeholders::_2)));
     }
     ~WithStreamedUnaryMethod_GetReturnToLaunchAltitude() override {
@@ -3790,7 +4008,7 @@ class ActionService final {
     void BaseClassMustBeDerivedFromService(const Service* /*service*/) {}
    public:
     WithStreamedUnaryMethod_SetReturnToLaunchAltitude() {
-      ::grpc::Service::MarkMethodStreamed(16,
+      ::grpc::Service::MarkMethodStreamed(17,
         new ::grpc::internal::StreamedUnaryHandler< ::mavsdk::rpc::action::SetReturnToLaunchAltitudeRequest, ::mavsdk::rpc::action::SetReturnToLaunchAltitudeResponse>(std::bind(&WithStreamedUnaryMethod_SetReturnToLaunchAltitude<BaseClass>::StreamedSetReturnToLaunchAltitude, this, std::placeholders::_1, std::placeholders::_2)));
     }
     ~WithStreamedUnaryMethod_SetReturnToLaunchAltitude() override {
@@ -3804,9 +4022,9 @@ class ActionService final {
     // replace default version of method with streamed unary
     virtual ::grpc::Status StreamedSetReturnToLaunchAltitude(::grpc::ServerContext* context, ::grpc::ServerUnaryStreamer< ::mavsdk::rpc::action::SetReturnToLaunchAltitudeRequest,::mavsdk::rpc::action::SetReturnToLaunchAltitudeResponse>* server_unary_streamer) = 0;
   };
-  typedef WithStreamedUnaryMethod_Arm<WithStreamedUnaryMethod_Disarm<WithStreamedUnaryMethod_Takeoff<WithStreamedUnaryMethod_Land<WithStreamedUnaryMethod_Reboot<WithStreamedUnaryMethod_Shutdown<WithStreamedUnaryMethod_Kill<WithStreamedUnaryMethod_ReturnToLaunch<WithStreamedUnaryMethod_GotoLocation<WithStreamedUnaryMethod_TransitionToFixedwing<WithStreamedUnaryMethod_TransitionToMulticopter<WithStreamedUnaryMethod_GetTakeoffAltitude<WithStreamedUnaryMethod_SetTakeoffAltitude<WithStreamedUnaryMethod_GetMaximumSpeed<WithStreamedUnaryMethod_SetMaximumSpeed<WithStreamedUnaryMethod_GetReturnToLaunchAltitude<WithStreamedUnaryMethod_SetReturnToLaunchAltitude<Service > > > > > > > > > > > > > > > > > StreamedUnaryService;
+  typedef WithStreamedUnaryMethod_Arm<WithStreamedUnaryMethod_Disarm<WithStreamedUnaryMethod_Takeoff<WithStreamedUnaryMethod_Land<WithStreamedUnaryMethod_Reboot<WithStreamedUnaryMethod_Shutdown<WithStreamedUnaryMethod_Terminate<WithStreamedUnaryMethod_Kill<WithStreamedUnaryMethod_ReturnToLaunch<WithStreamedUnaryMethod_GotoLocation<WithStreamedUnaryMethod_TransitionToFixedwing<WithStreamedUnaryMethod_TransitionToMulticopter<WithStreamedUnaryMethod_GetTakeoffAltitude<WithStreamedUnaryMethod_SetTakeoffAltitude<WithStreamedUnaryMethod_GetMaximumSpeed<WithStreamedUnaryMethod_SetMaximumSpeed<WithStreamedUnaryMethod_GetReturnToLaunchAltitude<WithStreamedUnaryMethod_SetReturnToLaunchAltitude<Service > > > > > > > > > > > > > > > > > > StreamedUnaryService;
   typedef Service SplitStreamedService;
-  typedef WithStreamedUnaryMethod_Arm<WithStreamedUnaryMethod_Disarm<WithStreamedUnaryMethod_Takeoff<WithStreamedUnaryMethod_Land<WithStreamedUnaryMethod_Reboot<WithStreamedUnaryMethod_Shutdown<WithStreamedUnaryMethod_Kill<WithStreamedUnaryMethod_ReturnToLaunch<WithStreamedUnaryMethod_GotoLocation<WithStreamedUnaryMethod_TransitionToFixedwing<WithStreamedUnaryMethod_TransitionToMulticopter<WithStreamedUnaryMethod_GetTakeoffAltitude<WithStreamedUnaryMethod_SetTakeoffAltitude<WithStreamedUnaryMethod_GetMaximumSpeed<WithStreamedUnaryMethod_SetMaximumSpeed<WithStreamedUnaryMethod_GetReturnToLaunchAltitude<WithStreamedUnaryMethod_SetReturnToLaunchAltitude<Service > > > > > > > > > > > > > > > > > StreamedService;
+  typedef WithStreamedUnaryMethod_Arm<WithStreamedUnaryMethod_Disarm<WithStreamedUnaryMethod_Takeoff<WithStreamedUnaryMethod_Land<WithStreamedUnaryMethod_Reboot<WithStreamedUnaryMethod_Shutdown<WithStreamedUnaryMethod_Terminate<WithStreamedUnaryMethod_Kill<WithStreamedUnaryMethod_ReturnToLaunch<WithStreamedUnaryMethod_GotoLocation<WithStreamedUnaryMethod_TransitionToFixedwing<WithStreamedUnaryMethod_TransitionToMulticopter<WithStreamedUnaryMethod_GetTakeoffAltitude<WithStreamedUnaryMethod_SetTakeoffAltitude<WithStreamedUnaryMethod_GetMaximumSpeed<WithStreamedUnaryMethod_SetMaximumSpeed<WithStreamedUnaryMethod_GetReturnToLaunchAltitude<WithStreamedUnaryMethod_SetReturnToLaunchAltitude<Service > > > > > > > > > > > > > > > > > > StreamedService;
 };
 
 }  // namespace action

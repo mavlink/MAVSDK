@@ -19,9 +19,6 @@ class MavlinkPassthroughImpl;
  * "With great power comes great responsibility." - This plugin allows
  * you to send and receive MAVLink messages. There is no checking or
  * safe-guards, you're on your own, and you have been warned.
- *
- * @note This plugin is not included in the build by default. To add it
- *       `make ENABLE_MAVLINK_PASSTHROUGH=1` is required.
  */
 class MavlinkPassthrough : public PluginBase {
 public:
@@ -49,7 +46,12 @@ public:
     enum class Result {
         Unknown, /**< @brief Unknown error. */
         Success, /**< @brief Success. */
-        ConnectionError /**< @brief Connection error. */
+        ConnectionError, /**< @brief Connection error. */
+        CommandNoSystem, /**< @brief System not available. */
+        CommandBusy, /**< @brief System is busy. */
+        CommandDenied, /**< @brief Command has been denied. */
+        CommandUnsupported, /**< @brief Command is not supported. */
+        CommandTimeout, /**< @brief A timeout happened. */
     };
 
     /**
@@ -65,6 +67,57 @@ public:
      * @return result of the request.
      */
     Result send_message(mavlink_message_t& message);
+
+    /**
+     * @brief Type for MAVLink command_long.
+     */
+    struct CommandLong {
+        uint8_t target_sysid; /**< @brief System ID to send command to */
+        uint8_t target_compid; /**< @brief Component ID to send command to */
+        uint16_t command; /**< @brief command to send. */
+        float param1; /**< @brief param1. */
+        float param2; /**< @brief param2. */
+        float param3; /**< @brief param3. */
+        float param4; /**< @brief param4. */
+        float param5; /**< @brief param5. */
+        float param6; /**< @brief param6. */
+        float param7; /**< @brief param7. */
+    };
+
+    /**
+     * @brief Type for MAVLink command_int.
+     */
+    struct CommandInt {
+        uint8_t target_sysid; /**< @brief System ID to send command to */
+        uint8_t target_compid; /**< @brief Component ID to send command to */
+        uint16_t command; /**< @brief command to send. */
+        MAV_FRAME frame; /**< Frame of command. */
+        float param1; /**< @brief param1. */
+        float param2; /**< @brief param2. */
+        float param3; /**< @brief param3. */
+        float param4; /**< @brief param4. */
+        int32_t x; /**< @brief x. */
+        int32_t y; /**< @brief y. */
+        float z; /**< @brief z. */
+    };
+
+    /**
+     * @brief Send a MAVLink command_long.
+     *
+     * @param command Command to send.
+     *
+     * @return result of the request.
+     */
+    Result send_command_long(const CommandLong& command);
+
+    /**
+     * @brief Send a MAVLink command_long.
+     *
+     * @param command Command to send.
+     *
+     * @return result of the request.
+     */
+    Result send_command_int(const CommandInt& command);
 
     /**
      * @brief Subscribe to messages using message ID.

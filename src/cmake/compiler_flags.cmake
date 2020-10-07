@@ -26,7 +26,13 @@ else()
         set(warnings "-Wall -Wextra -Wshadow -Wno-strict-aliasing -Wold-style-cast -Wdouble-promotion")
     else()
         add_definitions(-fno-exceptions)
-        set(warnings "-Wall -Wextra -Werror -Wshadow -Wno-strict-aliasing -Wold-style-cast -Wdouble-promotion -Wformat=2 -Weffc++")
+        set(warnings "-Wall -Wextra -Wshadow -Wno-strict-aliasing -Wold-style-cast -Wdouble-promotion -Wformat=2 -Weffc++")
+        if (WERROR)
+            set(warnings "${warnings} -Werror")
+        endif()
+
+        # Allow #pragma GCC diagnostic ignored "-Wstringop-truncation"
+        set(warnings "${warnings} -Wno-pragmas -Wno-unknown-warning-option")
     endif()
 
 

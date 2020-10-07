@@ -163,10 +163,20 @@ public:
         uint8_t get_system_id() const;
 
         /**
+         * @brief Set the system id of this configuration.
+         */
+        void set_system_id(uint8_t system_id);
+
+        /**
          * @brief Get the component id of this configuration
          * @return `uint8_t` the component id stored in this configuration,from 1-255
          */
         uint8_t get_component_id() const;
+
+        /**
+         * @brief Set the component id of this configuration.
+         */
+        void set_component_id(uint8_t component_id);
 
         /**
          * @brief UsageTypes of configurations, used for automatic ID setting
@@ -181,6 +191,11 @@ public:
 
         /** @brief Usage type of this configuration, used for automatic ID set */
         UsageType get_usage_type() const;
+
+        /**
+         * @brief Set the usage type of this configuration.
+         */
+        void set_usage_type(UsageType usage_type);
 
     private:
         uint8_t _system_id;

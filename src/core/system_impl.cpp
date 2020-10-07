@@ -108,6 +108,11 @@ void SystemImpl::unregister_timeout_handler(const void* cookie)
     _parent.timeout_handler.remove(cookie);
 }
 
+void SystemImpl::enable_timesync()
+{
+    _timesync.enable();
+}
+
 void SystemImpl::process_mavlink_message(mavlink_message_t& message)
 {
     // This is a low level interface where incoming messages can be tampered
@@ -211,43 +216,12 @@ void SystemImpl::process_statustext(const mavlink_message_t& message)
     mavlink_statustext_t statustext;
     mavlink_msg_statustext_decode(&message, &statustext);
 
-    std::string debug_str = "MAVLink: ";
+    const auto result_severity = _statustext_handler.process_severity(statustext);
+    const auto result_text = _statustext_handler.process_text(statustext);
 
-    switch (statustext.severity) {
-        case MAV_SEVERITY_EMERGENCY:
-            debug_str += "emergency";
-            break;
-        case MAV_SEVERITY_ALERT:
-            debug_str += "alert";
-            break;
-        case MAV_SEVERITY_CRITICAL:
-            debug_str += "critical";
-            break;
-        case MAV_SEVERITY_ERROR:
-            debug_str += "error";
-            break;
-        case MAV_SEVERITY_WARNING:
-            debug_str += "warning";
-            break;
-        case MAV_SEVERITY_NOTICE:
-            debug_str += "notice";
-            break;
-        case MAV_SEVERITY_INFO:
-            debug_str += "info";
-            break;
-        case MAV_SEVERITY_DEBUG:
-            debug_str += "debug";
-            break;
-        default:
-            break;
+    if (result_severity.first && result_text.first) {
+        LogDebug() << "MAVLink: " + result_severity.second + ": " + result_text.second;
     }
-
-    // statustext.text is not null terminated, therefore we copy it first to
-    // an array big enough that is zeroed.
-    char text_with_null[sizeof(statustext.text) + 1]{};
-    memcpy(text_with_null, statustext.text, sizeof(statustext.text));
-
-    LogDebug() << debug_str << ": " << text_with_null;
 }
 
 void SystemImpl::heartbeats_timed_out()
@@ -258,16 +232,7 @@ void SystemImpl::heartbeats_timed_out()
 
 void SystemImpl::system_thread()
 {
-    dl_time_t last_time{};
-
     while (!_should_exit) {
-        if (_time.elapsed_since_s(last_time) >= SystemImpl::_HEARTBEAT_SEND_INTERVAL_S) {
-            if (_parent.is_connected()) {
-                send_heartbeat();
-            }
-            last_time = _time.steady_time();
-        }
-
         _call_every_handler.run_once();
         _params.do_work();
         _commands.do_work();
@@ -520,6 +485,14 @@ void SystemImpl::set_connected()
             _parent.notify_on_discover(_uuid);
             _connected = true;
 
+            // Send a heartbeat back immediately.
+            send_heartbeat();
+            // And then schedule sending one at a fixed interval.
+            add_call_every(
+                [this]() { send_heartbeat(); },
+                SystemImpl::_HEARTBEAT_SEND_INTERVAL_S,
+                &_heartbeat_send_cookie);
+
             if (!_always_connected) {
                 register_timeout_handler(
                     std::bind(&SystemImpl::heartbeats_timed_out, this),
@@ -554,6 +527,8 @@ void SystemImpl::set_disconnected()
         _connected = false;
         _parent.notify_on_timeout(_uuid);
     }
+
+    remove_call_every(_heartbeat_send_cookie);
 
     {
         std::lock_guard<std::mutex> lock(_plugin_impls_mutex);
@@ -608,6 +583,11 @@ MAVLinkParameters::Result SystemImpl::set_param_int(const std::string& name, int
     param_value.set_int32(value);
 
     return _params.set_param(name, param_value, false);
+}
+
+std::map<std::string, MAVLinkParameters::ParamValue> SystemImpl::get_all_params()
+{
+    return _params.get_all_params();
 }
 
 MAVLinkParameters::Result SystemImpl::set_param_ext_float(const std::string& name, float value)

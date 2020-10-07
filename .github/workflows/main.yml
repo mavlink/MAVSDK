@@ -23,7 +23,7 @@ jobs:
       - name: Install lcov
         run: sudo apt-get install -y lcov
       - name: configure
-        run: cmake -DCMAKE_BUILD_TYPE=Coverage -DASAN=ON -DUBSAN=ON -DLSAN=ON -j 2 -Bbuild -H.
+        run: cmake -DCMAKE_BUILD_TYPE=Coverage -DASAN=ON -DUBSAN=ON -DLSAN=ON -DWERROR=ON -j 2 -Bbuild -H.
       - name: build
         run: cmake --build build -j 2
       - name: test
@@ -44,9 +44,9 @@ jobs:
         with:
           submodules: recursive
       - name: install
-        run: sudo apt-get install -y libjsoncpp-dev libcurl4-openssl-dev libtinyxml2-dev
+        run: sudo apt-get update && sudo apt-get install -y libjsoncpp-dev libcurl4-openssl-dev libtinyxml2-dev
       - name: configure
-        run: cmake -DCMAKE_BUILD_TYPE=Release -DSUPERBUILD=OFF -j 2 -Bbuild/release -H.
+        run: cmake -DCMAKE_BUILD_TYPE=Release -DSUPERBUILD=OFF -DWERROR=ON -j 2 -Bbuild/release -H.
       - name: build
         run: cmake --build build/release -j 2
       - name: test
@@ -60,7 +60,7 @@ jobs:
         with:
           submodules: recursive
       - name: configure
-        run: cmake -DCMAKE_BUILD_TYPE=Release -DSUPERBUILD=ON -DENABLE_MAVLINK_PASSTHROUGH=1 -DBUILD_BACKEND=ON -j 2 -Bbuild/release -H.
+        run: cmake -DCMAKE_BUILD_TYPE=Release -DSUPERBUILD=ON -DBUILD_BACKEND=ON -DWERROR=ON -j 2 -Bbuild/release -H.
       - name: build
         run: cmake --build build/release -j 2
       - name: install
@@ -68,7 +68,7 @@ jobs:
       - name: install examples dependencies
         run: sudo apt-get install -y libsdl2-dev
       - name: configure examples
-        run: (cd examples && cmake -DCMAKE_BUILD_TYPE=Release -j 2 -Bbuild -H.)
+        run: (cd examples && cmake -DCMAKE_BUILD_TYPE=Release -DWERROR=ON -j 2 -Bbuild -H.)
       - name: build examples
         run: (cd examples && cmake --build build -j 2)
       - name: test
@@ -76,15 +76,15 @@ jobs:
       - name: test (mavsdk_server)
         run: ./build/release/src/backend/test/unit_tests_backend
 
-  ubuntu18-proto-check:
-    name: ubuntu-18.04 (proto check)
-    runs-on: ubuntu-18.04
+  ubuntu20-proto-check:
+    name: ubuntu-20.04 (proto check)
+    runs-on: ubuntu-20.04
     steps:
       - uses: actions/checkout@v2
         with:
           submodules: recursive
       - name: install clang-format
-        run: sudo apt-get install -y clang-format-9
+        run: sudo apt-get install -y clang-format-10
       - name: install dcsdkgen
         run: |
              cd proto/pb_plugins
@@ -99,14 +99,15 @@ jobs:
       - name: check for diff
         run: git diff --exit-code
 
-  ubuntu18-check-style:
-    name: ubuntu-18.04 (check style and docs)
-    runs-on: ubuntu-18.04
-    container: mavsdk/mavsdk-ubuntu-18.04
+  ubuntu20-check-style:
+    name: ubuntu-20.04 (check style and docs)
+    runs-on: ubuntu-20.04
     steps:
       - uses: actions/checkout@v2
         with:
           submodules: recursive
+      - name: install dependencies
+        run: sudo apt-get install -y doxygen clang-format-10
       - name: check style
         run: ./tools/fix_style.sh .
       - name: check docs
@@ -123,7 +124,7 @@ jobs:
         with:
           submodules: recursive
       - name: configure
-        run: cmake -DCMAKE_BUILD_TYPE=Release -DBUILD_BACKEND=ON -DBUILD_SHARED_LIBS=OFF -DCMAKE_INSTALL_PREFIX=install -Bbuild/release -H.
+        run: cmake -DCMAKE_BUILD_TYPE=Release -DBUILD_BACKEND=ON -DBUILD_SHARED_LIBS=OFF -DCMAKE_INSTALL_PREFIX=install -DWERROR=ON -j 2 -Bbuild/release -H.
       - name: build
         run: cmake --build build/release --target install -- -j2
       - name: test
@@ -171,7 +172,7 @@ jobs:
         with:
           submodules: recursive
       - name: configure
-        run: cmake -DCMAKE_BUILD_TYPE=Release -DBUILD_BACKEND=OFF -DBUILD_SHARED_LIBS=ON -DCMAKE_INSTALL_PREFIX=install -Bbuild/release -H.
+        run: cmake -DCMAKE_BUILD_TYPE=Release -DBUILD_BACKEND=OFF -DBUILD_SHARED_LIBS=ON -DCMAKE_INSTALL_PREFIX=install -DWERROR=ON -j 2 -Bbuild/release -H.
       - name: build
         run: cmake --build build/release --target install -- -j2
       - name: Package
@@ -199,7 +200,7 @@ jobs:
         with:
           submodules: recursive
       - name: configure
-        run: cmake -DCMAKE_BUILD_TYPE=Release -DBUILD_BACKEND=OFF -DBUILD_SHARED_LIBS=ON -DCMAKE_INSTALL_PREFIX=install -Bbuild/release -H.
+        run: cmake -DCMAKE_BUILD_TYPE=Release -DBUILD_BACKEND=OFF -DBUILD_SHARED_LIBS=ON -DCMAKE_INSTALL_PREFIX=install -DWERROR=ON  -j 2 -Bbuild/release -H.
       - name: build
         run: cmake --build build/release --target install -- -j2
       - name: Package
@@ -228,7 +229,7 @@ jobs:
       - name: setup dockcross
         run: docker run --rm dockcross/${{ matrix.arch_name }} > ./dockcross-${{ matrix.arch_name }}; chmod +x ./dockcross-${{ matrix.arch_name }}
       - name: configure
-        run: ./dockcross-${{ matrix.arch_name }} cmake -DCMAKE_BUILD_TYPE=Release -DCMAKE_INSTALL_PREFIX=build/${{ matrix.arch_name }}/install -DBUILD_BACKEND=ON -DBUILD_SHARED_LIBS=OFF -j 2 -Bbuild/${{ matrix.arch_name }} -H.
+        run: ./dockcross-${{ matrix.arch_name }} cmake -DCMAKE_BUILD_TYPE=Release -DCMAKE_INSTALL_PREFIX=build/${{ matrix.arch_name }}/install -DBUILD_BACKEND=ON -DBUILD_SHARED_LIBS=OFF -DWERROR=ON -j 2 -Bbuild/${{ matrix.arch_name }} -H.
       - name: build
         run: ./dockcross-${{ matrix.arch_name }} cmake --build build/${{ matrix.arch_name }} -j 2 --target install
       - name: Publish artefacts
@@ -251,7 +252,7 @@ jobs:
       - name: setup dockcross
         run: docker run --rm dockcross/android-arm > ./dockcross-android-arm; chmod +x ./dockcross-android-arm
       - name: configure
-        run: ./dockcross-android-arm cmake -DCMAKE_BUILD_TYPE=Release -DCMAKE_INSTALL_PREFIX=build/android-arm/install -DBUILD_BACKEND=ON -DBUILD_SHARED_LIBS=OFF -j 2 -Bbuild/android-arm -H.
+        run: ./dockcross-android-arm cmake -DCMAKE_BUILD_TYPE=Release -DCMAKE_INSTALL_PREFIX=build/android-arm/install -DBUILD_BACKEND=ON -DBUILD_SHARED_LIBS=OFF -DWERROR=ON -j 2 -Bbuild/android-arm -H.
       - name: build
         run: ./dockcross-android-arm cmake --build build/android-arm -j 2 --target install
       - name: create tar with header and library
@@ -276,7 +277,7 @@ jobs:
       - name: setup dockcross
         run: docker run --rm dockcross/android-arm64 > ./dockcross-android-arm64; chmod +x ./dockcross-android-arm64
       - name: configure
-        run: ./dockcross-android-arm64 cmake -DCMAKE_BUILD_TYPE=Release -DCMAKE_INSTALL_PREFIX=build/android-arm64/install -DBUILD_BACKEND=ON -DBUILD_SHARED_LIBS=OFF -j 2 -Bbuild/android-arm64 -H.
+        run: ./dockcross-android-arm64 cmake -DCMAKE_BUILD_TYPE=Release -DCMAKE_INSTALL_PREFIX=build/android-arm64/install -DBUILD_BACKEND=ON -DBUILD_SHARED_LIBS=OFF -DWERROR=ON -j 2 -Bbuild/android-arm64 -H.
       - name: build
         run: ./dockcross-android-arm64 cmake --build build/android-arm64 -j 2 --target install
       - name: create tar with header and library
@@ -300,7 +301,7 @@ jobs:
           submodules: recursive
           fetch-depth: 0
       - name: Install lcov
-        run: sudo apt-get install -y build-essential debhelper fakeroot libjsoncpp-dev libcurl4-openssl-dev libtinyxml2-dev libjsoncpp1 libcurl4 libtinyxml2-6a
+        run: sudo apt-get update && sudo apt-get install -y build-essential debhelper fakeroot libjsoncpp-dev libcurl4-openssl-dev libtinyxml2-dev libjsoncpp1 libcurl4 libtinyxml2-6a
       - name: Generate changelog
         run: ./tools/generate_debian_changelog.sh > debian/changelog
       - name: Build package
@@ -314,7 +315,7 @@ jobs:
         with:
           submodules: recursive
       - name: configure
-        run: cmake -DCMAKE_BUILD_TYPE=Release -DCMAKE_INSTALL_PREFIX=build/release/install -DBUILD_BACKEND=ON -DBUILD_SHARED_LIBS=OFF -j 2 -Bbuild/release -H.
+        run: cmake -DCMAKE_BUILD_TYPE=Release -DCMAKE_INSTALL_PREFIX=build/release/install -DBUILD_BACKEND=ON -DBUILD_SHARED_LIBS=OFF -DWERROR=ON -j 2 -Bbuild/release -H.
       - name: build
         run: cmake --build build/release -j 2 --target install
       - name: test (core)
@@ -339,11 +340,11 @@ jobs:
         with:
           submodules: recursive
       - name: configure (ios)
-        run: cmake -DCMAKE_BUILD_TYPE=Release -DCMAKE_TOOLCHAIN_FILE=$(pwd)/tools/ios.toolchain.cmake -DPLATFORM=OS -DBUILD_BACKEND=ON -DBUILD_SHARED_LIBS=OFF -j 2 -Bbuild/ios -H.
+        run: cmake -DCMAKE_BUILD_TYPE=Release -DCMAKE_TOOLCHAIN_FILE=$(pwd)/tools/ios.toolchain.cmake -DPLATFORM=OS -DBUILD_BACKEND=ON -DBUILD_SHARED_LIBS=OFF -DWERROR=ON -j 2 -Bbuild/ios -H.
       - name: build (ios)
         run: cmake --build build/ios -j 2
       - name: configure (ios_simulator)
-        run: cmake -DCMAKE_BUILD_TYPE=Release -DCMAKE_TOOLCHAIN_FILE=$(pwd)/tools/ios.toolchain.cmake -DPLATFORM=SIMULATOR64 -DBUILD_BACKEND=ON -DBUILD_SHARED_LIBS=OFF -j 2 -Bbuild/ios_simulator -H.
+        run: cmake -DCMAKE_BUILD_TYPE=Release -DCMAKE_TOOLCHAIN_FILE=$(pwd)/tools/ios.toolchain.cmake -DPLATFORM=SIMULATOR64 -DBUILD_BACKEND=ON -DBUILD_SHARED_LIBS=OFF -DWERROR=ON -j 2 -Bbuild/ios_simulator -H.
       - name: build (ios_simulator)
         run: cmake --build build/ios_simulator -j 2
       - name: Package
@@ -367,7 +368,7 @@ jobs:
         with:
           submodules: recursive
       - name: configure
-        run: cmake -G "Visual Studio 16 2019" -DCMAKE_BUILD_TYPE=Release -DCMAKE_INSTALL_PREFIX=build/release/install -DBUILD_BACKEND=ON -DBUILD_SHARED_LIBS=OFF -j 2 -Bbuild/release -S.
+        run: cmake -G "Visual Studio 16 2019" -DCMAKE_BUILD_TYPE=Release -DCMAKE_INSTALL_PREFIX=build/release/install -DBUILD_BACKEND=ON -DBUILD_SHARED_LIBS=OFF -DWERROR=ON -j 2 -Bbuild/release -S.
       - name: build
         run: cmake --build build/release -j 2 --config Release --target install
       - name: Publish artefacts

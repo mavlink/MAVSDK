@@ -73,20 +73,20 @@ GeofenceImpl::assemble_items(const std::vector<Geofence::Polygon>& polygons)
             const uint8_t autocontinue = 0;
             const float param1 = float(polygon.points.size());
 
-            items.push_back(
-                MAVLinkMissionTransfer::ItemInt{sequence,
-                                                MAV_FRAME_GLOBAL_INT,
-                                                command,
-                                                current,
-                                                autocontinue,
-                                                param1,
-                                                0.0f,
-                                                0.0f,
-                                                0.0f,
-                                                int32_t(std::round(point.latitude_deg * 1e7)),
-                                                int32_t(std::round(point.longitude_deg * 1e7)),
-                                                0.0f,
-                                                MAV_MISSION_TYPE_FENCE});
+            items.push_back(MAVLinkMissionTransfer::ItemInt{
+                sequence,
+                MAV_FRAME_GLOBAL_INT,
+                command,
+                current,
+                autocontinue,
+                param1,
+                0.0f,
+                0.0f,
+                0.0f,
+                int32_t(std::round(point.latitude_deg * 1e7)),
+                int32_t(std::round(point.longitude_deg * 1e7)),
+                0.0f,
+                MAV_MISSION_TYPE_FENCE});
             ++sequence;
         }
     }
