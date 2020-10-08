@@ -1766,7 +1766,7 @@ void TelemetryImpl::actuator_output_status_async(Telemetry::ActuatorOutputStatus
     _actuator_output_status_subscription = callback;
 }
 
-void TelemetryImpl::distance_sensor_async(Telemetry::DistanceSesorCallback& callback)
+void TelemetryImpl::distance_sensor_async(Telemetry::DistanceSensorCallback& callback)
 {
     std::lock_guard<std::mutex> lock(_subscription_mutex);
     _distance_sensor_subscription = callback;
