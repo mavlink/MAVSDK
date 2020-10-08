@@ -22,6 +22,7 @@ class ActionServiceImpl final : public rpc::action::ActionService::Service {
 public:
     ActionServiceImpl(Action& action) : _action(action) {}
 
+
     template<typename ResponseType>
     void fillResponseWithResult(ResponseType* response, mavsdk::Action::Result& result) const
     {
@@ -36,8 +37,9 @@ public:
         response->set_allocated_action_result(rpc_action_result);
     }
 
-    static rpc::action::ActionResult::Result
-    translateToRpcResult(const mavsdk::Action::Result& result)
+
+
+    static rpc::action::ActionResult::Result translateToRpcResult(const mavsdk::Action::Result& result)
     {
         switch (result) {
             default:
@@ -70,8 +72,7 @@ public:
         }
     }
 
-    static mavsdk::Action::Result
-    translateFromRpcResult(const rpc::action::ActionResult::Result result)
+    static mavsdk::Action::Result translateFromRpcResult(const rpc::action::ActionResult::Result result)
     {
         switch (result) {
             default:
@@ -104,16 +105,23 @@ public:
         }
     }
 
-    grpc::Status
-    Arm(grpc::ServerContext* /* context */,
+
+
+
+    grpc::Status Arm(
+        grpc::ServerContext* /* context */,
         const rpc::action::ArmRequest* /* request */,
         rpc::action::ArmResponse* response) override
     {
+        
         auto result = _action.arm();
+        
 
+        
         if (response != nullptr) {
             fillResponseWithResult(response, result);
         }
+        
 
         return grpc::Status::OK;
     }
@@ -123,11 +131,15 @@ public:
         const rpc::action::DisarmRequest* /* request */,
         rpc::action::DisarmResponse* response) override
     {
+        
         auto result = _action.disarm();
+        
 
+        
         if (response != nullptr) {
             fillResponseWithResult(response, result);
         }
+        
 
         return grpc::Status::OK;
     }
@@ -137,11 +149,15 @@ public:
         const rpc::action::TakeoffRequest* /* request */,
         rpc::action::TakeoffResponse* response) override
     {
+        
         auto result = _action.takeoff();
+        
 
+        
         if (response != nullptr) {
             fillResponseWithResult(response, result);
         }
+        
 
         return grpc::Status::OK;
     }
@@ -151,11 +167,15 @@ public:
         const rpc::action::LandRequest* /* request */,
         rpc::action::LandResponse* response) override
     {
+        
         auto result = _action.land();
+        
 
+        
         if (response != nullptr) {
             fillResponseWithResult(response, result);
         }
+        
 
         return grpc::Status::OK;
     }
@@ -165,11 +185,15 @@ public:
         const rpc::action::RebootRequest* /* request */,
         rpc::action::RebootResponse* response) override
     {
+        
         auto result = _action.reboot();
+        
 
+        
         if (response != nullptr) {
             fillResponseWithResult(response, result);
         }
+        
 
         return grpc::Status::OK;
     }
@@ -179,11 +203,15 @@ public:
         const rpc::action::ShutdownRequest* /* request */,
         rpc::action::ShutdownResponse* response) override
     {
+        
         auto result = _action.shutdown();
+        
 
+        
         if (response != nullptr) {
             fillResponseWithResult(response, result);
         }
+        
 
         return grpc::Status::OK;
     }
@@ -193,11 +221,15 @@ public:
         const rpc::action::TerminateRequest* /* request */,
         rpc::action::TerminateResponse* response) override
     {
+        
         auto result = _action.terminate();
+        
 
+        
         if (response != nullptr) {
             fillResponseWithResult(response, result);
         }
+        
 
         return grpc::Status::OK;
     }
@@ -207,11 +239,15 @@ public:
         const rpc::action::KillRequest* /* request */,
         rpc::action::KillResponse* response) override
     {
+        
         auto result = _action.kill();
+        
 
+        
         if (response != nullptr) {
             fillResponseWithResult(response, result);
         }
+        
 
         return grpc::Status::OK;
     }
@@ -221,11 +257,15 @@ public:
         const rpc::action::ReturnToLaunchRequest* /* request */,
         rpc::action::ReturnToLaunchResponse* response) override
     {
+        
         auto result = _action.return_to_launch();
+        
 
+        
         if (response != nullptr) {
             fillResponseWithResult(response, result);
         }
+        
 
         return grpc::Status::OK;
     }
@@ -239,16 +279,22 @@ public:
             LogWarn() << "GotoLocation sent with a null request! Ignoring...";
             return grpc::Status::OK;
         }
+            
+        
+            
+        
+            
+        
+            
+        
+        auto result = _action.goto_location(request->latitude_deg(), request->longitude_deg(), request->absolute_altitude_m(), request->yaw_deg());
+        
 
-        auto result = _action.goto_location(
-            request->latitude_deg(),
-            request->longitude_deg(),
-            request->absolute_altitude_m(),
-            request->yaw_deg());
-
+        
         if (response != nullptr) {
             fillResponseWithResult(response, result);
         }
+        
 
         return grpc::Status::OK;
     }
@@ -258,11 +304,15 @@ public:
         const rpc::action::TransitionToFixedwingRequest* /* request */,
         rpc::action::TransitionToFixedwingResponse* response) override
     {
+        
         auto result = _action.transition_to_fixedwing();
+        
 
+        
         if (response != nullptr) {
             fillResponseWithResult(response, result);
         }
+        
 
         return grpc::Status::OK;
     }
@@ -272,11 +322,15 @@ public:
         const rpc::action::TransitionToMulticopterRequest* /* request */,
         rpc::action::TransitionToMulticopterResponse* response) override
     {
+        
         auto result = _action.transition_to_multicopter();
+        
 
+        
         if (response != nullptr) {
             fillResponseWithResult(response, result);
         }
+        
 
         return grpc::Status::OK;
     }
@@ -286,13 +340,17 @@ public:
         const rpc::action::GetTakeoffAltitudeRequest* /* request */,
         rpc::action::GetTakeoffAltitudeResponse* response) override
     {
+        
+
         auto result = _action.get_takeoff_altitude();
 
         if (response != nullptr) {
             fillResponseWithResult(response, result.first);
-
+            
             response->set_altitude(result.second);
+            
         }
+
 
         return grpc::Status::OK;
     }
@@ -306,12 +364,16 @@ public:
             LogWarn() << "SetTakeoffAltitude sent with a null request! Ignoring...";
             return grpc::Status::OK;
         }
-
+            
+        
         auto result = _action.set_takeoff_altitude(request->altitude());
+        
 
+        
         if (response != nullptr) {
             fillResponseWithResult(response, result);
         }
+        
 
         return grpc::Status::OK;
     }
@@ -321,13 +383,17 @@ public:
         const rpc::action::GetMaximumSpeedRequest* /* request */,
         rpc::action::GetMaximumSpeedResponse* response) override
     {
+        
+
         auto result = _action.get_maximum_speed();
 
         if (response != nullptr) {
             fillResponseWithResult(response, result.first);
-
+            
             response->set_speed(result.second);
+            
         }
+
 
         return grpc::Status::OK;
     }
@@ -341,12 +407,16 @@ public:
             LogWarn() << "SetMaximumSpeed sent with a null request! Ignoring...";
             return grpc::Status::OK;
         }
-
+            
+        
         auto result = _action.set_maximum_speed(request->speed());
+        
 
+        
         if (response != nullptr) {
             fillResponseWithResult(response, result);
         }
+        
 
         return grpc::Status::OK;
     }
@@ -356,13 +426,17 @@ public:
         const rpc::action::GetReturnToLaunchAltitudeRequest* /* request */,
         rpc::action::GetReturnToLaunchAltitudeResponse* response) override
     {
+        
+
         auto result = _action.get_return_to_launch_altitude();
 
         if (response != nullptr) {
             fillResponseWithResult(response, result.first);
-
+            
             response->set_relative_altitude_m(result.second);
+            
         }
+
 
         return grpc::Status::OK;
     }
@@ -376,18 +450,22 @@ public:
             LogWarn() << "SetReturnToLaunchAltitude sent with a null request! Ignoring...";
             return grpc::Status::OK;
         }
-
+            
+        
         auto result = _action.set_return_to_launch_altitude(request->relative_altitude_m());
+        
 
+        
         if (response != nullptr) {
             fillResponseWithResult(response, result);
         }
+        
 
         return grpc::Status::OK;
     }
 
-    void stop()
-    {
+
+    void stop() {
         _stopped.store(true);
         for (auto& prom : _stream_stop_promises) {
             if (auto handle = prom.lock()) {
@@ -397,8 +475,7 @@ public:
     }
 
 private:
-    void register_stream_stop_promise(std::weak_ptr<std::promise<void>> prom)
-    {
+    void register_stream_stop_promise(std::weak_ptr<std::promise<void>> prom) {
         // If we have already stopped, set promise immediately and don't add it to list.
         if (_stopped.load()) {
             if (auto handle = prom.lock()) {
@@ -409,10 +486,8 @@ private:
         }
     }
 
-    void unregister_stream_stop_promise(std::shared_ptr<std::promise<void>> prom)
-    {
-        for (auto it = _stream_stop_promises.begin(); it != _stream_stop_promises.end();
-             /* ++it */) {
+    void unregister_stream_stop_promise(std::shared_ptr<std::promise<void>> prom) {
+        for (auto it = _stream_stop_promises.begin(); it != _stream_stop_promises.end(); /* ++it */) {
             if (it->lock() == prom) {
                 it = _stream_stop_promises.erase(it);
             } else {
@@ -421,9 +496,9 @@ private:
         }
     }
 
-    Action& _action;
+    Action &_action;
     std::atomic<bool> _stopped{false};
-    std::vector<std::weak_ptr<std::promise<void>>> _stream_stop_promises{};
+    std::vector<std::weak_ptr<std::promise<void>>> _stream_stop_promises {};
 };
 
 } // namespace backend

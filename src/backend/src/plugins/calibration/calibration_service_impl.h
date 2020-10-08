@@ -22,6 +22,7 @@ class CalibrationServiceImpl final : public rpc::calibration::CalibrationService
 public:
     CalibrationServiceImpl(Calibration& calibration) : _calibration(calibration) {}
 
+
     template<typename ResponseType>
     void fillResponseWithResult(ResponseType* response, mavsdk::Calibration::Result& result) const
     {
@@ -36,8 +37,9 @@ public:
         response->set_allocated_calibration_result(rpc_calibration_result);
     }
 
-    static rpc::calibration::CalibrationResult::Result
-    translateToRpcResult(const mavsdk::Calibration::Result& result)
+
+
+    static rpc::calibration::CalibrationResult::Result translateToRpcResult(const mavsdk::Calibration::Result& result)
     {
         switch (result) {
             default:
@@ -68,8 +70,7 @@ public:
         }
     }
 
-    static mavsdk::Calibration::Result
-    translateFromRpcResult(const rpc::calibration::CalibrationResult::Result result)
+    static mavsdk::Calibration::Result translateFromRpcResult(const rpc::calibration::CalibrationResult::Result result)
     {
         switch (result) {
             default:
@@ -100,43 +101,63 @@ public:
         }
     }
 
-    static std::unique_ptr<rpc::calibration::ProgressData>
-    translateToRpcProgressData(const mavsdk::Calibration::ProgressData& progress_data)
+
+
+
+
+
+    static std::unique_ptr<rpc::calibration::ProgressData> translateToRpcProgressData(const mavsdk::Calibration::ProgressData &progress_data)
     {
-        std::unique_ptr<rpc::calibration::ProgressData> rpc_obj(
-            new rpc::calibration::ProgressData());
+        std::unique_ptr<rpc::calibration::ProgressData> rpc_obj(new rpc::calibration::ProgressData());
 
+
+            
         rpc_obj->set_has_progress(progress_data.has_progress);
-
+            
+        
+            
         rpc_obj->set_progress(progress_data.progress);
-
+            
+        
+            
         rpc_obj->set_has_status_text(progress_data.has_status_text);
-
+            
+        
+            
         rpc_obj->set_status_text(progress_data.status_text);
+            
+        
 
         return rpc_obj;
     }
 
-    static mavsdk::Calibration::ProgressData
-    translateFromRpcProgressData(const rpc::calibration::ProgressData& progress_data)
+    static mavsdk::Calibration::ProgressData translateFromRpcProgressData(const rpc::calibration::ProgressData& progress_data)
     {
         mavsdk::Calibration::ProgressData obj;
 
+
+            
         obj.has_progress = progress_data.has_progress();
-
+            
+        
+            
         obj.progress = progress_data.progress();
-
+            
+        
+            
         obj.has_status_text = progress_data.has_status_text();
-
+            
+        
+            
         obj.status_text = progress_data.status_text();
-
+            
+        
         return obj;
     }
 
-    grpc::Status SubscribeCalibrateGyro(
-        grpc::ServerContext* /* context */,
-        const mavsdk::rpc::calibration::SubscribeCalibrateGyroRequest* /* request */,
-        grpc::ServerWriter<rpc::calibration::CalibrateGyroResponse>* writer) override
+
+
+    grpc::Status SubscribeCalibrateGyro(grpc::ServerContext* /* context */, const mavsdk::rpc::calibration::SubscribeCalibrateGyroRequest* /* request */, grpc::ServerWriter<rpc::calibration::CalibrateGyroResponse>* writer) override
     {
         auto stream_closed_promise = std::make_shared<std::promise<void>>();
         auto stream_closed_future = stream_closed_promise->get_future();
@@ -147,39 +168,38 @@ public:
         std::mutex subscribe_mutex{};
 
         _calibration.calibrate_gyro_async(
-            [this, &writer, &stream_closed_promise, is_finished, &subscribe_mutex](
-                mavsdk::Calibration::Result result,
-                const mavsdk::Calibration::ProgressData calibrate_gyro) {
-                rpc::calibration::CalibrateGyroResponse rpc_response;
+            [this, &writer, &stream_closed_promise, is_finished, &subscribe_mutex](mavsdk::Calibration::Result result,const mavsdk::Calibration::ProgressData calibrate_gyro) {
 
-                rpc_response.set_allocated_progress_data(
-                    translateToRpcProgressData(calibrate_gyro).release());
+            rpc::calibration::CalibrateGyroResponse rpc_response;
+        
+            rpc_response.set_allocated_progress_data(translateToRpcProgressData(calibrate_gyro).release());
+        
 
-                auto rpc_result = translateToRpcResult(result);
-                auto* rpc_calibration_result = new rpc::calibration::CalibrationResult();
-                rpc_calibration_result->set_result(rpc_result);
-                std::stringstream ss;
-                ss << result;
-                rpc_calibration_result->set_result_str(ss.str());
-                rpc_response.set_allocated_calibration_result(rpc_calibration_result);
+        
+            auto rpc_result = translateToRpcResult(result);
+            auto* rpc_calibration_result = new rpc::calibration::CalibrationResult();
+            rpc_calibration_result->set_result(rpc_result);
+            std::stringstream ss;
+            ss << result;
+            rpc_calibration_result->set_result_str(ss.str());
+            rpc_response.set_allocated_calibration_result(rpc_calibration_result);
+        
 
-                std::unique_lock<std::mutex> lock(subscribe_mutex);
-                if (!*is_finished && !writer->Write(rpc_response)) {
-                    *is_finished = true;
-                    unregister_stream_stop_promise(stream_closed_promise);
-                    lock.unlock();
-                    stream_closed_promise->set_value();
-                }
-            });
+            std::unique_lock<std::mutex> lock(subscribe_mutex);
+            if (!*is_finished && !writer->Write(rpc_response)) {
+                
+                *is_finished = true;
+                unregister_stream_stop_promise(stream_closed_promise);
+                lock.unlock();
+                stream_closed_promise->set_value();
+            }
+        });
 
         stream_closed_future.wait();
         return grpc::Status::OK;
     }
 
-    grpc::Status SubscribeCalibrateAccelerometer(
-        grpc::ServerContext* /* context */,
-        const mavsdk::rpc::calibration::SubscribeCalibrateAccelerometerRequest* /* request */,
-        grpc::ServerWriter<rpc::calibration::CalibrateAccelerometerResponse>* writer) override
+    grpc::Status SubscribeCalibrateAccelerometer(grpc::ServerContext* /* context */, const mavsdk::rpc::calibration::SubscribeCalibrateAccelerometerRequest* /* request */, grpc::ServerWriter<rpc::calibration::CalibrateAccelerometerResponse>* writer) override
     {
         auto stream_closed_promise = std::make_shared<std::promise<void>>();
         auto stream_closed_future = stream_closed_promise->get_future();
@@ -190,39 +210,38 @@ public:
         std::mutex subscribe_mutex{};
 
         _calibration.calibrate_accelerometer_async(
-            [this, &writer, &stream_closed_promise, is_finished, &subscribe_mutex](
-                mavsdk::Calibration::Result result,
-                const mavsdk::Calibration::ProgressData calibrate_accelerometer) {
-                rpc::calibration::CalibrateAccelerometerResponse rpc_response;
+            [this, &writer, &stream_closed_promise, is_finished, &subscribe_mutex](mavsdk::Calibration::Result result,const mavsdk::Calibration::ProgressData calibrate_accelerometer) {
 
-                rpc_response.set_allocated_progress_data(
-                    translateToRpcProgressData(calibrate_accelerometer).release());
+            rpc::calibration::CalibrateAccelerometerResponse rpc_response;
+        
+            rpc_response.set_allocated_progress_data(translateToRpcProgressData(calibrate_accelerometer).release());
+        
 
-                auto rpc_result = translateToRpcResult(result);
-                auto* rpc_calibration_result = new rpc::calibration::CalibrationResult();
-                rpc_calibration_result->set_result(rpc_result);
-                std::stringstream ss;
-                ss << result;
-                rpc_calibration_result->set_result_str(ss.str());
-                rpc_response.set_allocated_calibration_result(rpc_calibration_result);
+        
+            auto rpc_result = translateToRpcResult(result);
+            auto* rpc_calibration_result = new rpc::calibration::CalibrationResult();
+            rpc_calibration_result->set_result(rpc_result);
+            std::stringstream ss;
+            ss << result;
+            rpc_calibration_result->set_result_str(ss.str());
+            rpc_response.set_allocated_calibration_result(rpc_calibration_result);
+        
 
-                std::unique_lock<std::mutex> lock(subscribe_mutex);
-                if (!*is_finished && !writer->Write(rpc_response)) {
-                    *is_finished = true;
-                    unregister_stream_stop_promise(stream_closed_promise);
-                    lock.unlock();
-                    stream_closed_promise->set_value();
-                }
-            });
+            std::unique_lock<std::mutex> lock(subscribe_mutex);
+            if (!*is_finished && !writer->Write(rpc_response)) {
+                
+                *is_finished = true;
+                unregister_stream_stop_promise(stream_closed_promise);
+                lock.unlock();
+                stream_closed_promise->set_value();
+            }
+        });
 
         stream_closed_future.wait();
         return grpc::Status::OK;
     }
 
-    grpc::Status SubscribeCalibrateMagnetometer(
-        grpc::ServerContext* /* context */,
-        const mavsdk::rpc::calibration::SubscribeCalibrateMagnetometerRequest* /* request */,
-        grpc::ServerWriter<rpc::calibration::CalibrateMagnetometerResponse>* writer) override
+    grpc::Status SubscribeCalibrateMagnetometer(grpc::ServerContext* /* context */, const mavsdk::rpc::calibration::SubscribeCalibrateMagnetometerRequest* /* request */, grpc::ServerWriter<rpc::calibration::CalibrateMagnetometerResponse>* writer) override
     {
         auto stream_closed_promise = std::make_shared<std::promise<void>>();
         auto stream_closed_future = stream_closed_promise->get_future();
@@ -233,39 +252,38 @@ public:
         std::mutex subscribe_mutex{};
 
         _calibration.calibrate_magnetometer_async(
-            [this, &writer, &stream_closed_promise, is_finished, &subscribe_mutex](
-                mavsdk::Calibration::Result result,
-                const mavsdk::Calibration::ProgressData calibrate_magnetometer) {
-                rpc::calibration::CalibrateMagnetometerResponse rpc_response;
+            [this, &writer, &stream_closed_promise, is_finished, &subscribe_mutex](mavsdk::Calibration::Result result,const mavsdk::Calibration::ProgressData calibrate_magnetometer) {
 
-                rpc_response.set_allocated_progress_data(
-                    translateToRpcProgressData(calibrate_magnetometer).release());
+            rpc::calibration::CalibrateMagnetometerResponse rpc_response;
+        
+            rpc_response.set_allocated_progress_data(translateToRpcProgressData(calibrate_magnetometer).release());
+        
 
-                auto rpc_result = translateToRpcResult(result);
-                auto* rpc_calibration_result = new rpc::calibration::CalibrationResult();
-                rpc_calibration_result->set_result(rpc_result);
-                std::stringstream ss;
-                ss << result;
-                rpc_calibration_result->set_result_str(ss.str());
-                rpc_response.set_allocated_calibration_result(rpc_calibration_result);
+        
+            auto rpc_result = translateToRpcResult(result);
+            auto* rpc_calibration_result = new rpc::calibration::CalibrationResult();
+            rpc_calibration_result->set_result(rpc_result);
+            std::stringstream ss;
+            ss << result;
+            rpc_calibration_result->set_result_str(ss.str());
+            rpc_response.set_allocated_calibration_result(rpc_calibration_result);
+        
 
-                std::unique_lock<std::mutex> lock(subscribe_mutex);
-                if (!*is_finished && !writer->Write(rpc_response)) {
-                    *is_finished = true;
-                    unregister_stream_stop_promise(stream_closed_promise);
-                    lock.unlock();
-                    stream_closed_promise->set_value();
-                }
-            });
+            std::unique_lock<std::mutex> lock(subscribe_mutex);
+            if (!*is_finished && !writer->Write(rpc_response)) {
+                
+                *is_finished = true;
+                unregister_stream_stop_promise(stream_closed_promise);
+                lock.unlock();
+                stream_closed_promise->set_value();
+            }
+        });
 
         stream_closed_future.wait();
         return grpc::Status::OK;
     }
 
-    grpc::Status SubscribeCalibrateLevelHorizon(
-        grpc::ServerContext* /* context */,
-        const mavsdk::rpc::calibration::SubscribeCalibrateLevelHorizonRequest* /* request */,
-        grpc::ServerWriter<rpc::calibration::CalibrateLevelHorizonResponse>* writer) override
+    grpc::Status SubscribeCalibrateLevelHorizon(grpc::ServerContext* /* context */, const mavsdk::rpc::calibration::SubscribeCalibrateLevelHorizonRequest* /* request */, grpc::ServerWriter<rpc::calibration::CalibrateLevelHorizonResponse>* writer) override
     {
         auto stream_closed_promise = std::make_shared<std::promise<void>>();
         auto stream_closed_future = stream_closed_promise->get_future();
@@ -276,39 +294,38 @@ public:
         std::mutex subscribe_mutex{};
 
         _calibration.calibrate_level_horizon_async(
-            [this, &writer, &stream_closed_promise, is_finished, &subscribe_mutex](
-                mavsdk::Calibration::Result result,
-                const mavsdk::Calibration::ProgressData calibrate_level_horizon) {
-                rpc::calibration::CalibrateLevelHorizonResponse rpc_response;
+            [this, &writer, &stream_closed_promise, is_finished, &subscribe_mutex](mavsdk::Calibration::Result result,const mavsdk::Calibration::ProgressData calibrate_level_horizon) {
 
-                rpc_response.set_allocated_progress_data(
-                    translateToRpcProgressData(calibrate_level_horizon).release());
+            rpc::calibration::CalibrateLevelHorizonResponse rpc_response;
+        
+            rpc_response.set_allocated_progress_data(translateToRpcProgressData(calibrate_level_horizon).release());
+        
 
-                auto rpc_result = translateToRpcResult(result);
-                auto* rpc_calibration_result = new rpc::calibration::CalibrationResult();
-                rpc_calibration_result->set_result(rpc_result);
-                std::stringstream ss;
-                ss << result;
-                rpc_calibration_result->set_result_str(ss.str());
-                rpc_response.set_allocated_calibration_result(rpc_calibration_result);
+        
+            auto rpc_result = translateToRpcResult(result);
+            auto* rpc_calibration_result = new rpc::calibration::CalibrationResult();
+            rpc_calibration_result->set_result(rpc_result);
+            std::stringstream ss;
+            ss << result;
+            rpc_calibration_result->set_result_str(ss.str());
+            rpc_response.set_allocated_calibration_result(rpc_calibration_result);
+        
 
-                std::unique_lock<std::mutex> lock(subscribe_mutex);
-                if (!*is_finished && !writer->Write(rpc_response)) {
-                    *is_finished = true;
-                    unregister_stream_stop_promise(stream_closed_promise);
-                    lock.unlock();
-                    stream_closed_promise->set_value();
-                }
-            });
+            std::unique_lock<std::mutex> lock(subscribe_mutex);
+            if (!*is_finished && !writer->Write(rpc_response)) {
+                
+                *is_finished = true;
+                unregister_stream_stop_promise(stream_closed_promise);
+                lock.unlock();
+                stream_closed_promise->set_value();
+            }
+        });
 
         stream_closed_future.wait();
         return grpc::Status::OK;
     }
 
-    grpc::Status SubscribeCalibrateGimbalAccelerometer(
-        grpc::ServerContext* /* context */,
-        const mavsdk::rpc::calibration::SubscribeCalibrateGimbalAccelerometerRequest* /* request */,
-        grpc::ServerWriter<rpc::calibration::CalibrateGimbalAccelerometerResponse>* writer) override
+    grpc::Status SubscribeCalibrateGimbalAccelerometer(grpc::ServerContext* /* context */, const mavsdk::rpc::calibration::SubscribeCalibrateGimbalAccelerometerRequest* /* request */, grpc::ServerWriter<rpc::calibration::CalibrateGimbalAccelerometerResponse>* writer) override
     {
         auto stream_closed_promise = std::make_shared<std::promise<void>>();
         auto stream_closed_future = stream_closed_promise->get_future();
@@ -319,30 +336,32 @@ public:
         std::mutex subscribe_mutex{};
 
         _calibration.calibrate_gimbal_accelerometer_async(
-            [this, &writer, &stream_closed_promise, is_finished, &subscribe_mutex](
-                mavsdk::Calibration::Result result,
-                const mavsdk::Calibration::ProgressData calibrate_gimbal_accelerometer) {
-                rpc::calibration::CalibrateGimbalAccelerometerResponse rpc_response;
+            [this, &writer, &stream_closed_promise, is_finished, &subscribe_mutex](mavsdk::Calibration::Result result,const mavsdk::Calibration::ProgressData calibrate_gimbal_accelerometer) {
 
-                rpc_response.set_allocated_progress_data(
-                    translateToRpcProgressData(calibrate_gimbal_accelerometer).release());
+            rpc::calibration::CalibrateGimbalAccelerometerResponse rpc_response;
+        
+            rpc_response.set_allocated_progress_data(translateToRpcProgressData(calibrate_gimbal_accelerometer).release());
+        
 
-                auto rpc_result = translateToRpcResult(result);
-                auto* rpc_calibration_result = new rpc::calibration::CalibrationResult();
-                rpc_calibration_result->set_result(rpc_result);
-                std::stringstream ss;
-                ss << result;
-                rpc_calibration_result->set_result_str(ss.str());
-                rpc_response.set_allocated_calibration_result(rpc_calibration_result);
+        
+            auto rpc_result = translateToRpcResult(result);
+            auto* rpc_calibration_result = new rpc::calibration::CalibrationResult();
+            rpc_calibration_result->set_result(rpc_result);
+            std::stringstream ss;
+            ss << result;
+            rpc_calibration_result->set_result_str(ss.str());
+            rpc_response.set_allocated_calibration_result(rpc_calibration_result);
+        
 
-                std::unique_lock<std::mutex> lock(subscribe_mutex);
-                if (!*is_finished && !writer->Write(rpc_response)) {
-                    *is_finished = true;
-                    unregister_stream_stop_promise(stream_closed_promise);
-                    lock.unlock();
-                    stream_closed_promise->set_value();
-                }
-            });
+            std::unique_lock<std::mutex> lock(subscribe_mutex);
+            if (!*is_finished && !writer->Write(rpc_response)) {
+                
+                *is_finished = true;
+                unregister_stream_stop_promise(stream_closed_promise);
+                lock.unlock();
+                stream_closed_promise->set_value();
+            }
+        });
 
         stream_closed_future.wait();
         return grpc::Status::OK;
@@ -353,13 +372,17 @@ public:
         const rpc::calibration::CancelRequest* /* request */,
         rpc::calibration::CancelResponse* /* response */) override
     {
+        
         _calibration.cancel();
+        
+
+        
 
         return grpc::Status::OK;
     }
 
-    void stop()
-    {
+
+    void stop() {
         _stopped.store(true);
         for (auto& prom : _stream_stop_promises) {
             if (auto handle = prom.lock()) {
@@ -369,8 +392,7 @@ public:
     }
 
 private:
-    void register_stream_stop_promise(std::weak_ptr<std::promise<void>> prom)
-    {
+    void register_stream_stop_promise(std::weak_ptr<std::promise<void>> prom) {
         // If we have already stopped, set promise immediately and don't add it to list.
         if (_stopped.load()) {
             if (auto handle = prom.lock()) {
@@ -381,10 +403,8 @@ private:
         }
     }
 
-    void unregister_stream_stop_promise(std::shared_ptr<std::promise<void>> prom)
-    {
-        for (auto it = _stream_stop_promises.begin(); it != _stream_stop_promises.end();
-             /* ++it */) {
+    void unregister_stream_stop_promise(std::shared_ptr<std::promise<void>> prom) {
+        for (auto it = _stream_stop_promises.begin(); it != _stream_stop_promises.end(); /* ++it */) {
             if (it->lock() == prom) {
                 it = _stream_stop_promises.erase(it);
             } else {
@@ -393,9 +413,9 @@ private:
         }
     }
 
-    Calibration& _calibration;
+    Calibration &_calibration;
     std::atomic<bool> _stopped{false};
-    std::vector<std::weak_ptr<std::promise<void>>> _stream_stop_promises{};
+    std::vector<std::weak_ptr<std::promise<void>>> _stream_stop_promises {};
 };
 
 } // namespace backend

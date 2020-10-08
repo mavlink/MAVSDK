@@ -22,6 +22,7 @@ class GimbalServiceImpl final : public rpc::gimbal::GimbalService::Service {
 public:
     GimbalServiceImpl(Gimbal& gimbal) : _gimbal(gimbal) {}
 
+
     template<typename ResponseType>
     void fillResponseWithResult(ResponseType* response, mavsdk::Gimbal::Result& result) const
     {
@@ -36,8 +37,8 @@ public:
         response->set_allocated_gimbal_result(rpc_gimbal_result);
     }
 
-    static rpc::gimbal::GimbalMode
-    translateToRpcGimbalMode(const mavsdk::Gimbal::GimbalMode& gimbal_mode)
+
+    static rpc::gimbal::GimbalMode translateToRpcGimbalMode(const mavsdk::Gimbal::GimbalMode& gimbal_mode)
     {
         switch (gimbal_mode) {
             default:
@@ -50,8 +51,7 @@ public:
         }
     }
 
-    static mavsdk::Gimbal::GimbalMode
-    translateFromRpcGimbalMode(const rpc::gimbal::GimbalMode gimbal_mode)
+    static mavsdk::Gimbal::GimbalMode translateFromRpcGimbalMode(const rpc::gimbal::GimbalMode gimbal_mode)
     {
         switch (gimbal_mode) {
             default:
@@ -64,8 +64,8 @@ public:
         }
     }
 
-    static rpc::gimbal::GimbalResult::Result
-    translateToRpcResult(const mavsdk::Gimbal::Result& result)
+
+    static rpc::gimbal::GimbalResult::Result translateToRpcResult(const mavsdk::Gimbal::Result& result)
     {
         switch (result) {
             default:
@@ -84,8 +84,7 @@ public:
         }
     }
 
-    static mavsdk::Gimbal::Result
-    translateFromRpcResult(const rpc::gimbal::GimbalResult::Result result)
+    static mavsdk::Gimbal::Result translateFromRpcResult(const rpc::gimbal::GimbalResult::Result result)
     {
         switch (result) {
             default:
@@ -104,6 +103,9 @@ public:
         }
     }
 
+
+
+
     grpc::Status SetPitchAndYaw(
         grpc::ServerContext* /* context */,
         const rpc::gimbal::SetPitchAndYawRequest* request,
@@ -113,12 +115,18 @@ public:
             LogWarn() << "SetPitchAndYaw sent with a null request! Ignoring...";
             return grpc::Status::OK;
         }
-
+            
+        
+            
+        
         auto result = _gimbal.set_pitch_and_yaw(request->pitch_deg(), request->yaw_deg());
+        
 
+        
         if (response != nullptr) {
             fillResponseWithResult(response, result);
         }
+        
 
         return grpc::Status::OK;
     }
@@ -132,12 +140,16 @@ public:
             LogWarn() << "SetMode sent with a null request! Ignoring...";
             return grpc::Status::OK;
         }
-
+            
+        
         auto result = _gimbal.set_mode(translateFromRpcGimbalMode(request->gimbal_mode()));
+        
 
+        
         if (response != nullptr) {
             fillResponseWithResult(response, result);
         }
+        
 
         return grpc::Status::OK;
     }
@@ -151,19 +163,26 @@ public:
             LogWarn() << "SetRoiLocation sent with a null request! Ignoring...";
             return grpc::Status::OK;
         }
+            
+        
+            
+        
+            
+        
+        auto result = _gimbal.set_roi_location(request->latitude_deg(), request->longitude_deg(), request->altitude_m());
+        
 
-        auto result = _gimbal.set_roi_location(
-            request->latitude_deg(), request->longitude_deg(), request->altitude_m());
-
+        
         if (response != nullptr) {
             fillResponseWithResult(response, result);
         }
+        
 
         return grpc::Status::OK;
     }
 
-    void stop()
-    {
+
+    void stop() {
         _stopped.store(true);
         for (auto& prom : _stream_stop_promises) {
             if (auto handle = prom.lock()) {
@@ -173,8 +192,7 @@ public:
     }
 
 private:
-    void register_stream_stop_promise(std::weak_ptr<std::promise<void>> prom)
-    {
+    void register_stream_stop_promise(std::weak_ptr<std::promise<void>> prom) {
         // If we have already stopped, set promise immediately and don't add it to list.
         if (_stopped.load()) {
             if (auto handle = prom.lock()) {
@@ -185,10 +203,8 @@ private:
         }
     }
 
-    void unregister_stream_stop_promise(std::shared_ptr<std::promise<void>> prom)
-    {
-        for (auto it = _stream_stop_promises.begin(); it != _stream_stop_promises.end();
-             /* ++it */) {
+    void unregister_stream_stop_promise(std::shared_ptr<std::promise<void>> prom) {
+        for (auto it = _stream_stop_promises.begin(); it != _stream_stop_promises.end(); /* ++it */) {
             if (it->lock() == prom) {
                 it = _stream_stop_promises.erase(it);
             } else {
@@ -197,9 +213,9 @@ private:
         }
     }
 
-    Gimbal& _gimbal;
+    Gimbal &_gimbal;
     std::atomic<bool> _stopped{false};
-    std::vector<std::weak_ptr<std::promise<void>>> _stream_stop_promises{};
+    std::vector<std::weak_ptr<std::promise<void>>> _stream_stop_promises {};
 };
 
 } // namespace backend

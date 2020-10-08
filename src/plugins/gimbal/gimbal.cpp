@@ -9,41 +9,57 @@
 
 namespace mavsdk {
 
+
+
+
 Gimbal::Gimbal(System& system) : PluginBase(), _impl{new GimbalImpl(system)} {}
 
 Gimbal::~Gimbal() {}
+
+
 
 void Gimbal::set_pitch_and_yaw_async(float pitch_deg, float yaw_deg, const ResultCallback callback)
 {
     _impl->set_pitch_and_yaw_async(pitch_deg, yaw_deg, callback);
 }
 
+
+
 Gimbal::Result Gimbal::set_pitch_and_yaw(float pitch_deg, float yaw_deg) const
 {
     return _impl->set_pitch_and_yaw(pitch_deg, yaw_deg);
 }
+
+
 
 void Gimbal::set_mode_async(GimbalMode gimbal_mode, const ResultCallback callback)
 {
     _impl->set_mode_async(gimbal_mode, callback);
 }
 
+
+
 Gimbal::Result Gimbal::set_mode(GimbalMode gimbal_mode) const
 {
     return _impl->set_mode(gimbal_mode);
 }
 
-void Gimbal::set_roi_location_async(
-    double latitude_deg, double longitude_deg, float altitude_m, const ResultCallback callback)
+
+
+void Gimbal::set_roi_location_async(double latitude_deg, double longitude_deg, float altitude_m, const ResultCallback callback)
 {
     _impl->set_roi_location_async(latitude_deg, longitude_deg, altitude_m, callback);
 }
 
-Gimbal::Result
-Gimbal::set_roi_location(double latitude_deg, double longitude_deg, float altitude_m) const
+
+
+Gimbal::Result Gimbal::set_roi_location(double latitude_deg, double longitude_deg, float altitude_m) const
 {
     return _impl->set_roi_location(latitude_deg, longitude_deg, altitude_m);
 }
+
+
+
 
 std::ostream& operator<<(std::ostream& str, Gimbal::Result const& result)
 {
@@ -63,6 +79,8 @@ std::ostream& operator<<(std::ostream& str, Gimbal::Result const& result)
     }
 }
 
+
+
 std::ostream& operator<<(std::ostream& str, Gimbal::GimbalMode const& gimbal_mode)
 {
     switch (gimbal_mode) {
@@ -74,5 +92,6 @@ std::ostream& operator<<(std::ostream& str, Gimbal::GimbalMode const& gimbal_mod
             return str << "Unknown";
     }
 }
+
 
 } // namespace mavsdk

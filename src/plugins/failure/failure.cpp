@@ -9,15 +9,24 @@
 
 namespace mavsdk {
 
+
+
+
 Failure::Failure(System& system) : PluginBase(), _impl{new FailureImpl(system)} {}
 
 Failure::~Failure() {}
 
-Failure::Result
-Failure::inject(FailureUnit failure_unit, FailureType failure_type, int32_t instance) const
+
+
+
+
+Failure::Result Failure::inject(FailureUnit failure_unit, FailureType failure_type, int32_t instance) const
 {
     return _impl->inject(failure_unit, failure_type, instance);
 }
+
+
+
 
 std::ostream& operator<<(std::ostream& str, Failure::Result const& result)
 {
@@ -42,6 +51,8 @@ std::ostream& operator<<(std::ostream& str, Failure::Result const& result)
             return str << "Unknown";
     }
 }
+
+
 
 std::ostream& operator<<(std::ostream& str, Failure::FailureUnit const& failure_unit)
 {
@@ -104,5 +115,6 @@ std::ostream& operator<<(std::ostream& str, Failure::FailureType const& failure_
             return str << "Unknown";
     }
 }
+
 
 } // namespace mavsdk
