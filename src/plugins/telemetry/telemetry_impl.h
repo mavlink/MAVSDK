@@ -44,6 +44,7 @@ public:
     Telemetry::Result set_rate_actuator_control_target(double rate_hz);
     Telemetry::Result set_rate_actuator_output_status(double rate_hz);
     Telemetry::Result set_rate_odometry(double rate_hz);
+    Telemetry::Result set_rate_distance_sensor(double rate_hz);
     Telemetry::Result set_rate_unix_epoch_time(double rate_hz);
 
     void set_rate_position_velocity_ned_async(double rate_hz, Telemetry::ResultCallback callback);
@@ -63,6 +64,7 @@ public:
     void set_rate_actuator_control_target_async(double rate_hz, Telemetry::ResultCallback callback);
     void set_rate_actuator_output_status_async(double rate_hz, Telemetry::ResultCallback callback);
     void set_rate_odometry_async(double rate_hz, Telemetry::ResultCallback callback);
+    void set_rate_distance_sensor_async(double rate_hz, Telemetry::ResultCallback callback);
     void set_rate_unix_epoch_time_async(double rate_hz, Telemetry::ResultCallback callback);
 
     Telemetry::PositionVelocityNed position_velocity_ned() const;
@@ -90,6 +92,7 @@ public:
     Telemetry::ActuatorControlTarget actuator_control_target() const;
     Telemetry::ActuatorOutputStatus actuator_output_status() const;
     Telemetry::Odometry odometry() const;
+    Telemetry::DistanceSensor distance_sensor() const;
     uint64_t unix_epoch_time() const;
 
     void position_velocity_ned_async(Telemetry::PositionVelocityNedCallback& callback);
@@ -119,6 +122,7 @@ public:
     void actuator_control_target_async(Telemetry::ActuatorControlTargetCallback& callback);
     void actuator_output_status_async(Telemetry::ActuatorOutputStatusCallback& callback);
     void odometry_async(Telemetry::OdometryCallback& callback);
+    void distance_sensor_async(Telemetry::DistanceSensorCallback& callback);
 
     TelemetryImpl(const TelemetryImpl&) = delete;
     TelemetryImpl& operator=(const TelemetryImpl&) = delete;
@@ -152,6 +156,7 @@ private:
     void set_actuator_control_target(uint8_t group, const std::vector<float>& controls);
     void set_actuator_output_status(uint32_t active, const std::vector<float>& actuators);
     void set_odometry(Telemetry::Odometry& odometry);
+    void set_distance_sensor(Telemetry::DistanceSensor& distance_sensor);
 
     void process_position_velocity_ned(const mavlink_message_t& message);
     void process_global_position_int(const mavlink_message_t& message);
@@ -172,6 +177,7 @@ private:
     void process_actuator_control_target(const mavlink_message_t& message);
     void process_actuator_output_status(const mavlink_message_t& message);
     void process_odometry(const mavlink_message_t& message);
+    void process_distance_sensor(const mavlink_message_t& message);
     void receive_param_cal_gyro(MAVLinkParameters::Result result, int value);
     void receive_param_cal_accel(MAVLinkParameters::Result result, int value);
     void receive_param_cal_mag(MAVLinkParameters::Result result, int value);
@@ -264,6 +270,9 @@ private:
     mutable std::mutex _odometry_mutex{};
     Telemetry::Odometry _odometry{};
 
+    mutable std::mutex _distance_sensor_mutex{};
+    Telemetry::DistanceSensor _distance_sensor{};
+
     std::atomic<bool> _hitl_enabled{false};
 
     std::mutex _subscription_mutex{};
@@ -294,7 +303,9 @@ private:
     Telemetry::ActuatorControlTargetCallback _actuator_control_target_subscription{nullptr};
     Telemetry::ActuatorOutputStatusCallback _actuator_output_status_subscription{nullptr};
     Telemetry::OdometryCallback _odometry_subscription{nullptr};
+    Telemetry::DistanceSensorCallback _distance_sensor_subscription{nullptr};
 
+    // The velocity (former ground speed) and position are coupled to the same message, therefore,
     // The velocity (former ground speed) and position are coupled to the same message, therefore,
     // we just use the faster between the two.
     double _velocity_ned_rate_hz{0.0};
