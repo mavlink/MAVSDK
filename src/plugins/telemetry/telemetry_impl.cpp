@@ -1766,6 +1766,13 @@ void TelemetryImpl::actuator_output_status_async(Telemetry::ActuatorOutputStatus
     _actuator_output_status_subscription = callback;
 }
 
+void TelemetryImpl::odometry_async(Telemetry::OdometryCallback& callback)
+{
+    std::lock_guard<std::mutex> lock(_subscription_mutex);
+    _odometry_subscription = callback;
+}
+
+
 void TelemetryImpl::distance_sensor_async(Telemetry::DistanceSensorCallback& callback)
 {
     std::lock_guard<std::mutex> lock(_subscription_mutex);
