@@ -11,6 +11,7 @@ else()
 endif()
 
 find_package(MAVSDK REQUIRED)
+find_package(Threads REQUIRED)
 
 add_executable(gimbal_device_tester
     gimbal_device_tester.cpp
@@ -19,4 +20,5 @@ add_executable(gimbal_device_tester
 target_link_libraries(gimbal_device_tester
     MAVSDK::mavsdk_mavlink_passthrough
     MAVSDK::mavsdk
+    ${CMAKE_THREAD_LIBS_INIT}
 )
