@@ -235,6 +235,12 @@ public:
     // Non-copyable
     SystemImpl(const SystemImpl&) = delete;
     const SystemImpl& operator=(const SystemImpl&) = delete;
+    
+    void register_mavlink_command_handler(uint16_t cmd_id,
+                                      MAVLinkCommands::mavlink_command_handler_t callback,
+                                      const void* cookie);
+    void unregister_mavlink_command_handler(uint16_t cmd_id, const void* cookie);
+    void unregister_all_mavlink_command_handlers(const void* cookie);
 
 private:
     static bool is_autopilot(uint8_t comp_id);
