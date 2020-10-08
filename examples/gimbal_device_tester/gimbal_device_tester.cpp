@@ -33,6 +33,8 @@ static bool request_gimbal_device_information(MavlinkPassthrough& mavlink_passth
 static float degrees(float radians);
 static float radians(float radians);
 
+static constexpr auto test_prefix = "[TEST] ";
+
 class Sender
 {
 public:
@@ -148,6 +150,8 @@ int main(int argc, char** argv)
     std::string connection_url;
     ConnectionResult connection_result;
 
+    std::cout << test_prefix << "Connecting... " << std::flush;
+
     if (argc == 2) {
         connection_url = argv[1];
         connection_result = mavsdk.add_any_connection(connection_url);
@@ -157,20 +161,21 @@ int main(int argc, char** argv)
     }
 
     if (connection_result != ConnectionResult::Success) {
-        std::cerr << "Connection failed: " << connection_result << std::endl;
+        std::cout << "FAIL\n";
+        std::cout << "-> connection failed: " << connection_result << std::endl;
         return 1;
     }
 
     {
         std::promise<void> prom;
         std::future<void> fut = prom.get_future();
-        std::cout << "Waiting to discover system..." << std::endl;
         mavsdk.register_on_discover([&prom](uint64_t /* uuid*/) {
             prom.set_value();
         });
 
         if (fut.wait_for(std::chrono::seconds(2)) != std::future_status::ready) {
-            std::cerr << "No device found, exiting." << std::endl;
+            std::cout << "FAIL\n";
+            std::cout << "-> no device found" << std::endl;
             return 1;
         }
         mavsdk.register_on_discover(nullptr);
@@ -206,6 +211,8 @@ int main(int argc, char** argv)
 
 bool test_device_information(MavlinkPassthrough& mavlink_passthrough)
 {
+    std::cout << test_prefix << "Requests gimbal device information... " << std::flush;
+
     std::promise<void> prom;
     std::future<void> fut = prom.get_future();
     mavlink_passthrough.subscribe_message_async(
@@ -217,16 +224,18 @@ bool test_device_information(MavlinkPassthrough& mavlink_passthrough)
     });
 
     if (!request_gimbal_device_information(mavlink_passthrough)) {
-        std::cerr << "Could not request gimbal device information." << std::endl;
+        std::cout << "FAIL\n";
+        std::cout << "-> could not request gimbal device information" << std::endl;
         return false;
     }
 
     if (fut.wait_for(std::chrono::seconds(2)) != std::future_status::ready) {
-        std::cerr << "No gimbal device information received, exiting." << std::endl;
+        std::cout << "FAIL\n";
+        std::cout << "-> no gimbal device information received" << std::endl;
         return false;
     }
 
-    std::cout << "Received gimbal device information." << std::endl;
+    std::cout << "PASS" << std::endl;
     return true;
 }
 
@@ -235,6 +244,7 @@ bool test_pitch(const Attitude& attitude, AttitudeSetpoint& attitude_setpoint)
     return test_pitch_yaw("Look forward", 0.0f, 0.0f, attitude, attitude_setpoint) &&
         test_pitch_yaw("Tilt 45 degrees down", -45.0f, 0.0f, attitude, attitude_setpoint) &&
         test_pitch_yaw("Tilt 90 degrees down", -90.0f, 0.0f, attitude, attitude_setpoint) &&
+        test_pitch_yaw("Tilt 20 degrees up", 20.0f, 0.0f, attitude, attitude_setpoint) &&
         test_pitch_yaw("Look forward again", 0.0f, 0.0f, attitude, attitude_setpoint);
 }
 
@@ -250,7 +260,7 @@ bool test_yaw_lock(MavlinkPassthrough& mavlink_passthrough, const Attitude&  att
 
 bool test_pitch_yaw(const std::string& description, float pitch_deg, float yaw_deg, const Attitude& attitude, AttitudeSetpoint& attitude_setpoint)
 {
-    std::cout << description << "..." << std::flush;
+    std::cout << test_prefix << description << "... " << std::flush;
     {
         std::lock_guard<std::mutex> lock(attitude_setpoint.mutex);
         attitude_setpoint.pitch_deg = pitch_deg;
@@ -285,11 +295,11 @@ bool test_pitch_yaw(const std::string& description, float pitch_deg, float yaw_d
     }
 
     if (pitch_fail) {
-        std::cout << "    pitch is" << attitude.pitch_deg << " instead of " << pitch_deg << "\n";
+        std::cout << "-> pitch is " << attitude.pitch_deg << " deg instead of " << pitch_deg << " deg\n";
     }
 
     if (yaw_fail) {
-        std::cout << "    yaw is" << attitude.yaw_deg << " instead of " << yaw_deg << "\n";
+        std::cout << "-> yaw is " << attitude.yaw_deg << " deg instead of " << yaw_deg << " deg\n";
     }
 
     return !(pitch_fail || yaw_fail);
