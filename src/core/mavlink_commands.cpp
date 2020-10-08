@@ -20,10 +20,22 @@ MAVLinkCommands::MAVLinkCommands(SystemImpl& parent) : _parent(parent)
         MAVLINK_MSG_ID_COMMAND_ACK,
         std::bind(&MAVLinkCommands::receive_command_ack, this, std::placeholders::_1),
         this);
+
+    _parent.register_mavlink_message_handler(
+        MAVLINK_MSG_ID_COMMAND_LONG,
+        std::bind(&MAVLinkCommands::receive_command_long, this, std::placeholders::_1),
+        this);
+
+    _parent.register_mavlink_message_handler(
+        MAVLINK_MSG_ID_COMMAND_INT,
+        std::bind(&MAVLinkCommands::receive_command_int, this, std::placeholders::_1),
+        this);
 }
 
 MAVLinkCommands::~MAVLinkCommands()
 {
+    unregister_all_mavlink_command_handlers(this);
+
     _parent.unregister_all_mavlink_message_handlers(this);
 }
 
@@ -317,6 +329,73 @@ void MAVLinkCommands::call_callback(
     // It seems that we need to queue the callback on the thread pool otherwise
     // we lock ourselves out when we send a command in the callback receiving a command result.
     _parent.call_user_callback([callback, result, progress]() { callback(result, progress); });
+}
+
+void MAVLinkCommands::receive_command_int(mavlink_message_t message)
+{
+    mavlink_command_int_t command_int;
+    mavlink_msg_command_int_decode(&message, &command_int);
+    MAVLinkCommands::Command cmd(command_int);
+
+    std::lock_guard<std::mutex> lock(_mavlink_command_handler_table_mutex);
+
+    for (auto it = _mavlink_command_handler_table.begin(); it != _mavlink_command_handler_table.end(); ++it) {
+        if (it->cmd_id == command_int.command) {
+            it->callback(cmd);
+        }
+    }
+}
+
+void MAVLinkCommands::receive_command_long(mavlink_message_t message)
+{
+    mavlink_command_long_t command_long;
+    mavlink_msg_command_long_decode(&message, &command_long);
+    MAVLinkCommands::Command cmd(command_long);
+
+    std::lock_guard<std::mutex> lock(_mavlink_command_handler_table_mutex);
+
+    for (auto it = _mavlink_command_handler_table.begin(); it != _mavlink_command_handler_table.end(); ++it) {
+        if (it->cmd_id == command_long.command) {
+            it->callback(cmd);
+        }
+    }
+}
+
+void MAVLinkCommands::register_mavlink_command_handler(
+    uint16_t cmd_id, mavlink_command_handler_t callback, const void* cookie)
+{
+    std::lock_guard<std::mutex> lock(_mavlink_command_handler_table_mutex);
+
+    MAVLinkCommandHandlerTableEntry entry = {cmd_id, callback, cookie};
+    _mavlink_command_handler_table.push_back(entry);
+}
+
+void MAVLinkCommands::unregister_mavlink_command_handler(uint16_t cmd_id, const void* cookie)
+{
+    std::lock_guard<std::mutex> lock(_mavlink_command_handler_table_mutex);
+
+    for (auto it = _mavlink_command_handler_table.begin(); it != _mavlink_command_handler_table.end();
+         /* no ++it */) {
+        if (it->cmd_id == cmd_id && it->cookie == cookie) {
+            it = _mavlink_command_handler_table.erase(it);
+        } else {
+            ++it;
+        }
+    }
+}
+
+void MAVLinkCommands::unregister_all_mavlink_command_handlers(const void* cookie)
+{
+    std::lock_guard<std::mutex> lock(_mavlink_command_handler_table_mutex);
+
+    for (auto it = _mavlink_command_handler_table.begin(); it != _mavlink_command_handler_table.end();
+         /* no ++it */) {
+        if (it->cookie == cookie) {
+            it = _mavlink_command_handler_table.erase(it);
+        } else {
+            ++it;
+        }
+    }
 }
 
 } // namespace mavsdk

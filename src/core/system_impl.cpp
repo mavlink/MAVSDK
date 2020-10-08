@@ -1214,4 +1214,21 @@ void SystemImpl::intercept_outgoing_messages(std::function<bool(mavlink_message_
     _outgoing_messages_intercept_callback = callback;
 }
 
+void SystemImpl::register_mavlink_command_handler(uint16_t cmd_id,
+                                      MAVLinkCommands::mavlink_command_handler_t callback,
+                                      const void* cookie)
+{
+    _commands.register_mavlink_command_handler(cmd_id, callback, cookie);
+}
+
+void SystemImpl::unregister_mavlink_command_handler(uint16_t cmd_id, const void* cookie)
+{
+    _commands.unregister_mavlink_command_handler(cmd_id, cookie);
+}
+
+void SystemImpl::unregister_all_mavlink_command_handlers(const void* cookie)
+{
+    _commands.unregister_all_mavlink_command_handlers(cookie);
+}
+
 } // namespace mavsdk
