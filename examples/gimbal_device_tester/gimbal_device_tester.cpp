@@ -301,16 +301,21 @@ bool test_pitch_yaw(const std::string& description, float pitch_deg, float yaw_d
     bool pitch_fail = false;
     bool yaw_fail = false;
 
+    // TODO: We should do this check in quaternion to avoid gimbal locks.
+    //       For now we avoid the check close to it.
+
     if (attitude.pitch_deg > pitch_deg + margin_deg) {
         pitch_fail = true;
     } else if (attitude.pitch_deg < pitch_deg - margin_deg) {
         pitch_fail = true;
     }
 
-    if (attitude.yaw_deg > yaw_deg + margin_deg) {
-        yaw_fail = true;
-    } else if (attitude.yaw_deg < yaw_deg - margin_deg) {
-        yaw_fail = true;
+    if (attitude.pitch_deg < 80.0f && attitude.pitch_deg > -80.0) {
+        if (attitude.yaw_deg > yaw_deg + margin_deg) {
+            yaw_fail = true;
+        } else if (attitude.yaw_deg < yaw_deg - margin_deg) {
+            yaw_fail = true;
+        }
     }
 
     if (pitch_fail || yaw_fail) {
