@@ -16,9 +16,9 @@ using namespace mavsdk;
 
 struct Attitude {
     mutable std::mutex mutex {};
-    float roll_deg {0.0f};
-    float pitch_deg {0.0f};
-    float yaw_deg {0.0f};
+    float roll_deg {NAN};
+    float pitch_deg {NAN};
+    float yaw_deg {NAN};
 };
 
 struct AttitudeSetpoint {
@@ -139,6 +139,7 @@ private:
 static void subscribe_to_gimbal_device_attitude_status(MavlinkPassthrough& mavlink_passthrough, Attitude& attitude);
 
 static bool test_device_information(MavlinkPassthrough& mavlink_passthrough);
+static bool wait_for_yaw_estimator_to_converge(const Attitude& attitude);
 static bool test_pitch(const Attitude& attitude, AttitudeSetpoint& attitude_setpoint);
 static bool test_yaw_follow(MavlinkPassthrough& mavlink_passthrough, const Attitude& attitude);
 static bool test_yaw_lock(MavlinkPassthrough& mavlink_passthrough, const Attitude& attitude);
@@ -194,6 +195,10 @@ int main(int argc, char** argv)
     AttitudeSetpoint attitude_setpoint {};
     Sender sender(mavlink_passthrough, attitude_setpoint);
 
+    if (!wait_for_yaw_estimator_to_converge(attitude)) {
+        return 1;
+    }
+
     if (!test_pitch(attitude, attitude_setpoint)) {
         return 1;
     }
@@ -207,6 +212,26 @@ int main(int argc, char** argv)
     }
 
     return 0;
+}
+
+bool wait_for_yaw_estimator_to_converge(const Attitude& attitude)
+{
+    std::cout << test_prefix << "Waiting for yaw estimator to converge..." << std::flush;
+    for (unsigned i = 0; i < 200; ++i) {
+        {
+            std::lock_guard<std::mutex> lock(attitude.mutex);
+            if (attitude.yaw_deg < 1.0f && attitude.yaw_deg > -1.0f) {
+                std::cout << "PASS" << std::endl;
+                return true;
+            }
+        }
+        std::this_thread::sleep_for(std::chrono::milliseconds(100));
+    }
+
+    std::cout << "FAIL\n";
+    std::cout << "-> timeout waiting for yaw to converge to 0" << std::endl;
+
+    return false;
 }
 
 bool test_device_information(MavlinkPassthrough& mavlink_passthrough)
