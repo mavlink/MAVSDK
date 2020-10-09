@@ -236,7 +236,7 @@ public:
         const float pitch_min =
             (gimbal_limits.pitch_min_deg != INFINITY ? gimbal_limits.pitch_min_deg : -90.0f);
         const float pitch_max =
-            (gimbal_limits.pitch_max_deg != INFINITY ? gimbal_limits.pitch_min_deg : 20.0f);
+            (gimbal_limits.pitch_max_deg != INFINITY ? gimbal_limits.pitch_max_deg : 20.0f);
 
         std::stringstream limit_down;
         limit_down << "Tilt " << -pitch_min << " down";
