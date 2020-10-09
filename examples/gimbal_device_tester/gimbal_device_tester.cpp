@@ -74,22 +74,22 @@ public:
         return _attitude_setpoint;
     }
 
-    void set_gimbal_attitude(const GimbalAttitude& gimbal_attitude)
+    void change_gimbal_attitude(const std::function<void(GimbalAttitude& gimbal_attitude)>& change_function)
     {
         std::lock_guard<std::mutex> lock(_mutex);
-        _gimbal_attitude = gimbal_attitude;
+        change_function(_gimbal_attitude);
     }
 
-    void set_vehicle_attitude(const VehicleAttitude& vehicle_attitude)
+    void change_vehicle_attitude(const std::function<void(VehicleAttitude& vehicle_attitude)>& change_function)
     {
         std::lock_guard<std::mutex> lock(_mutex);
-        _vehicle_attitude = vehicle_attitude;
+        change_function(_vehicle_attitude);
     }
 
-    void set_attitude_setpoint(const AttitudeSetpoint& attitude_setpoint)
+    void change_attitude_setpoint(const std::function<void(AttitudeSetpoint& attitude_setpoint)>& change_function)
     {
         std::lock_guard<std::mutex> lock(_mutex);
-        _attitude_setpoint = attitude_setpoint;
+        change_function(_attitude_setpoint);
     }
 
 private:
@@ -233,9 +233,9 @@ public:
         }
 
         std::cout << test_prefix << "Yaw 20 degrees to the right... ";
-        auto vehicle_attitude = _attitude_data.vehicle_attitude();
-        vehicle_attitude.yaw_deg = 20.0f;
-        _attitude_data.set_vehicle_attitude(vehicle_attitude);
+        _attitude_data.change_vehicle_attitude([](AttitudeData::VehicleAttitude& vehicle_attitude) {
+            vehicle_attitude.yaw_deg = 20.0f;
+        });
         std::this_thread::sleep_for(std::chrono::seconds(2));
         std::cout << "DONE\n";
 
@@ -253,9 +253,9 @@ public:
         }
 
         std::cout << test_prefix << "Yaw 30 degrees to the left... ";
-        auto vehicle_attitude = _attitude_data.vehicle_attitude();
-        vehicle_attitude.yaw_deg = -30.0f;
-        _attitude_data.set_vehicle_attitude(vehicle_attitude);
+        _attitude_data.change_vehicle_attitude([](AttitudeData::VehicleAttitude& vehicle_attitude) {
+            vehicle_attitude.yaw_deg = -30.0f;
+        });
         std::this_thread::sleep_for(std::chrono::seconds(2));
         std::cout << "DONE\n";
 
@@ -270,11 +270,11 @@ public:
     {
         std::cout << test_prefix << description << "... " << std::flush;
 
-        auto attitude_setpoint = _attitude_data.attitude_setpoint();
-        attitude_setpoint.pitch_deg = pitch_deg;
-        attitude_setpoint.yaw_deg = yaw_deg;
-        attitude_setpoint.mode = mode;
-        _attitude_data.set_attitude_setpoint(attitude_setpoint);
+        _attitude_data.change_attitude_setpoint([&](AttitudeData::AttitudeSetpoint& attitude_setpoint) {
+            attitude_setpoint.pitch_deg = pitch_deg;
+            attitude_setpoint.yaw_deg = yaw_deg;
+            attitude_setpoint.mode = mode;
+        });
 
         std::this_thread::sleep_for(std::chrono::seconds(2));
 
@@ -399,11 +399,11 @@ void subscribe_to_gimbal_device_attitude_status(MavlinkPassthrough& mavlink_pass
         float roll_rad, pitch_rad, yaw_rad;
         mavlink_quaternion_to_euler(attitude_status.q, &roll_rad, &pitch_rad, &yaw_rad);
 
-        auto gimbal_attitude = attitude_data.gimbal_attitude();
-        gimbal_attitude.roll_deg = degrees(roll_rad);
-        gimbal_attitude.pitch_deg = degrees(pitch_rad);
-        gimbal_attitude.yaw_deg = degrees(yaw_rad);
-        attitude_data.set_gimbal_attitude(gimbal_attitude);
+        attitude_data.change_gimbal_attitude([&](AttitudeData::GimbalAttitude& gimbal_attitude) {
+            gimbal_attitude.roll_deg = degrees(roll_rad);
+            gimbal_attitude.pitch_deg = degrees(pitch_rad);
+            gimbal_attitude.yaw_deg = degrees(yaw_rad);
+        });
     });
 }
 
