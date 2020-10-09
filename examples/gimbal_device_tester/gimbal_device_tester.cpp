@@ -1,5 +1,6 @@
-//
 // Test against a MAVLink gimbal device according to the gimbal protocol v2.
+//
+// More info: https://mavlink.io/en/services/gimbal_v2.html
 //
 // Author: Julian Oes <julian@oes.ch>
 
@@ -7,13 +8,12 @@
 #include <mavsdk/plugins/mavlink_passthrough/mavlink_passthrough.h>
 #include <chrono>
 #include <cstdint>
-#include <iostream>
 #include <future>
-#include <memory>
+#include <iostream>
 #include <mutex>
+#include <thread>
 
 using namespace mavsdk;
-
 
 static constexpr auto test_prefix = "[TEST] ";
 
@@ -33,27 +33,24 @@ public:
     ~AttitudeData() = default;
 
     struct GimbalAttitude {
-        float roll_deg {NAN};
-        float pitch_deg {NAN};
-        float yaw_deg {NAN};
+        float roll_deg{NAN};
+        float pitch_deg{NAN};
+        float yaw_deg{NAN};
     };
 
     struct VehicleAttitude {
-        float roll_deg {0.0f};
-        float pitch_deg {0.0f};
-        float yaw_deg {0.0f};
+        float roll_deg{0.0f};
+        float pitch_deg{0.0f};
+        float yaw_deg{0.0f};
     };
 
-    enum class Mode {
-        Follow,
-        Lock
-    };
+    enum class Mode { Follow, Lock };
 
     struct AttitudeSetpoint {
-        Mode mode {Mode::Follow};
-        float roll_deg {0.0f};
-        float pitch_deg {0.0f};
-        float yaw_deg {0.0f};
+        Mode mode{Mode::Follow};
+        float roll_deg{0.0f};
+        float pitch_deg{0.0f};
+        float yaw_deg{0.0f};
     };
 
     GimbalAttitude gimbal_attitude() const
@@ -74,37 +71,37 @@ public:
         return _attitude_setpoint;
     }
 
-    void change_gimbal_attitude(const std::function<void(GimbalAttitude& gimbal_attitude)>& change_function)
+    void change_gimbal_attitude(
+        const std::function<void(GimbalAttitude& gimbal_attitude)>& change_function)
     {
         std::lock_guard<std::mutex> lock(_mutex);
         change_function(_gimbal_attitude);
     }
 
-    void change_vehicle_attitude(const std::function<void(VehicleAttitude& vehicle_attitude)>& change_function)
+    void change_vehicle_attitude(
+        const std::function<void(VehicleAttitude& vehicle_attitude)>& change_function)
     {
         std::lock_guard<std::mutex> lock(_mutex);
         change_function(_vehicle_attitude);
     }
 
-    void change_attitude_setpoint(const std::function<void(AttitudeSetpoint& attitude_setpoint)>& change_function)
+    void change_attitude_setpoint(
+        const std::function<void(AttitudeSetpoint& attitude_setpoint)>& change_function)
     {
         std::lock_guard<std::mutex> lock(_mutex);
         change_function(_attitude_setpoint);
     }
 
 private:
-    mutable std::mutex _mutex {};
-    GimbalAttitude _gimbal_attitude {};
-    VehicleAttitude _vehicle_attitude {};
-    AttitudeSetpoint _attitude_setpoint {};
+    mutable std::mutex _mutex{};
+    GimbalAttitude _gimbal_attitude{};
+    VehicleAttitude _vehicle_attitude{};
+    AttitudeSetpoint _attitude_setpoint{};
 };
 
-class Sender
-{
+class Sender {
 public:
-    explicit Sender(
-            MavlinkPassthrough& mavlink_passthrough,
-            AttitudeData& attitude_data) :
+    explicit Sender(MavlinkPassthrough& mavlink_passthrough, AttitudeData& attitude_data) :
         _mavlink_passthrough(mavlink_passthrough),
         _attitude_data(attitude_data),
         _thread(&Sender::run, this)
@@ -138,15 +135,9 @@ private:
             q);
 
         const uint16_t estimator_status =
-            ESTIMATOR_ATTITUDE |
-            ESTIMATOR_VELOCITY_HORIZ |
-            ESTIMATOR_VELOCITY_VERT |
-            ESTIMATOR_POS_HORIZ_REL |
-            ESTIMATOR_POS_HORIZ_ABS |
-            ESTIMATOR_POS_VERT_ABS |
-            ESTIMATOR_POS_VERT_AGL |
-            ESTIMATOR_PRED_POS_HORIZ_REL |
-            ESTIMATOR_PRED_POS_HORIZ_ABS;
+            ESTIMATOR_ATTITUDE | ESTIMATOR_VELOCITY_HORIZ | ESTIMATOR_VELOCITY_VERT |
+            ESTIMATOR_POS_HORIZ_REL | ESTIMATOR_POS_HORIZ_ABS | ESTIMATOR_POS_VERT_ABS |
+            ESTIMATOR_POS_VERT_AGL | ESTIMATOR_PRED_POS_HORIZ_REL | ESTIMATOR_PRED_POS_HORIZ_ABS;
 
         mavlink_message_t message;
         mavlink_msg_autopilot_state_for_gimbal_device_pack(
@@ -170,9 +161,7 @@ private:
 
     void send_gimbal_device_set_attitude()
     {
-        uint16_t flags =
-            GIMBAL_DEVICE_FLAGS_ROLL_LOCK |
-            GIMBAL_DEVICE_FLAGS_PITCH_LOCK;
+        uint16_t flags = GIMBAL_DEVICE_FLAGS_ROLL_LOCK | GIMBAL_DEVICE_FLAGS_PITCH_LOCK;
 
         const auto attitude_setpoint = _attitude_data.attitude_setpoint();
 
@@ -207,23 +196,20 @@ private:
     MavlinkPassthrough& _mavlink_passthrough;
     AttitudeData& _attitude_data;
     std::thread _thread;
-    std::atomic<bool> _should_exit {false};
+    std::atomic<bool> _should_exit{false};
 };
 
-class Tester
-{
+class Tester {
 public:
-    explicit Tester(AttitudeData& attitude_data) :
-        _attitude_data(attitude_data)
-    {}
+    explicit Tester(AttitudeData& attitude_data) : _attitude_data(attitude_data) {}
 
     bool test_pitch()
     {
         return test_pitch_yaw("Look forward", 0.0f, 0.0f, AttitudeData::Mode::Follow) &&
-            test_pitch_yaw("Tilt 45 degrees down", -45.0f, 0.0f, AttitudeData::Mode::Follow) &&
-            test_pitch_yaw("Tilt 90 degrees down", -90.0f, 0.0f, AttitudeData::Mode::Follow) &&
-            test_pitch_yaw("Tilt 20 degrees up", 20.0f, 0.0f, AttitudeData::Mode::Follow) &&
-            test_pitch_yaw("Look forward again", 0.0f, 0.0f, AttitudeData::Mode::Follow);
+               test_pitch_yaw("Tilt 45 degrees down", -45.0f, 0.0f, AttitudeData::Mode::Follow) &&
+               test_pitch_yaw("Tilt 90 degrees down", -90.0f, 0.0f, AttitudeData::Mode::Follow) &&
+               test_pitch_yaw("Tilt 20 degrees up", 20.0f, 0.0f, AttitudeData::Mode::Follow) &&
+               test_pitch_yaw("Look forward again", 0.0f, 0.0f, AttitudeData::Mode::Follow);
     }
 
     bool test_yaw_follow()
@@ -240,10 +226,12 @@ public:
         std::cout << "DONE\n";
 
         return test_pitch_yaw("Look to the right", 0.0f, 90.0f, AttitudeData::Mode::Follow) &&
-            test_pitch_yaw("Look 60 degrees to the left", 0.0f, -90.0f, AttitudeData::Mode::Follow) &&
-            test_pitch_yaw("Tilt 45 degrees down", -45.0f, -90.0f, AttitudeData::Mode::Follow) &&
-            test_pitch_yaw("Look 60 degrees to the right", -45.0f, 90.0f, AttitudeData::Mode::Follow) &&
-            test_pitch_yaw("Look forward again", 0.0f, 0.0f, AttitudeData::Mode::Follow);
+               test_pitch_yaw(
+                   "Look 60 degrees to the left", 0.0f, -90.0f, AttitudeData::Mode::Follow) &&
+               test_pitch_yaw("Tilt 45 degrees down", -45.0f, -90.0f, AttitudeData::Mode::Follow) &&
+               test_pitch_yaw(
+                   "Look 60 degrees to the right", -45.0f, 90.0f, AttitudeData::Mode::Follow) &&
+               test_pitch_yaw("Look forward again", 0.0f, 0.0f, AttitudeData::Mode::Follow);
     }
 
     bool test_yaw_lock()
@@ -260,21 +248,25 @@ public:
         std::cout << "DONE\n";
 
         return test_pitch_yaw("Look to the right", 0.0f, 90.0f, AttitudeData::Mode::Lock) &&
-            test_pitch_yaw("Look 60 degrees to the left", 0.0f, -90.0f, AttitudeData::Mode::Lock) &&
-            test_pitch_yaw("Tilt 45 degrees down", -45.0f, -90.0f, AttitudeData::Mode::Lock) &&
-            test_pitch_yaw("Look 60 degrees to the right", -45.0f, 90.0f, AttitudeData::Mode::Lock) &&
-            test_pitch_yaw("Look forward again", 0.0f, 0.0f, AttitudeData::Mode::Lock);
+               test_pitch_yaw(
+                   "Look 60 degrees to the left", 0.0f, -90.0f, AttitudeData::Mode::Lock) &&
+               test_pitch_yaw("Tilt 45 degrees down", -45.0f, -90.0f, AttitudeData::Mode::Lock) &&
+               test_pitch_yaw(
+                   "Look 60 degrees to the right", -45.0f, 90.0f, AttitudeData::Mode::Lock) &&
+               test_pitch_yaw("Look forward again", 0.0f, 0.0f, AttitudeData::Mode::Lock);
     }
 
-    bool test_pitch_yaw(const std::string& description, float pitch_deg, float yaw_deg, AttitudeData::Mode mode)
+    bool test_pitch_yaw(
+        const std::string& description, float pitch_deg, float yaw_deg, AttitudeData::Mode mode)
     {
         std::cout << test_prefix << description << "... " << std::flush;
 
-        _attitude_data.change_attitude_setpoint([&](AttitudeData::AttitudeSetpoint& attitude_setpoint) {
-            attitude_setpoint.pitch_deg = pitch_deg;
-            attitude_setpoint.yaw_deg = yaw_deg;
-            attitude_setpoint.mode = mode;
-        });
+        _attitude_data.change_attitude_setpoint(
+            [&](AttitudeData::AttitudeSetpoint& attitude_setpoint) {
+                attitude_setpoint.pitch_deg = pitch_deg;
+                attitude_setpoint.yaw_deg = yaw_deg;
+                attitude_setpoint.mode = mode;
+            });
 
         std::this_thread::sleep_for(std::chrono::seconds(2));
 
@@ -314,16 +306,17 @@ public:
         }
 
         if (pitch_fail) {
-            std::cout << "-> pitch is " << gimbal_attitude.pitch_deg << " deg instead of " << pitch_deg << " deg\n";
+            std::cout << "-> pitch is " << gimbal_attitude.pitch_deg << " deg instead of "
+                      << pitch_deg << " deg\n";
         }
 
         if (yaw_fail) {
-            std::cout << "-> yaw is " << gimbal_attitude.yaw_deg << " deg instead of " << yaw_deg << " deg\n";
+            std::cout << "-> yaw is " << gimbal_attitude.yaw_deg << " deg instead of " << yaw_deg
+                      << " deg\n";
         }
 
         return !(pitch_fail || yaw_fail);
     }
-
 
 private:
     AttitudeData& _attitude_data;
@@ -368,9 +361,10 @@ bool test_device_information(MavlinkPassthrough& mavlink_passthrough)
         MAVLINK_MSG_ID_GIMBAL_DEVICE_INFORMATION,
         [&prom, &mavlink_passthrough](const mavlink_message_t& /* message */) {
             // We only need it once.
-            mavlink_passthrough.subscribe_message_async(MAVLINK_MSG_ID_GIMBAL_DEVICE_INFORMATION, nullptr);
+            mavlink_passthrough.subscribe_message_async(
+                MAVLINK_MSG_ID_GIMBAL_DEVICE_INFORMATION, nullptr);
             prom.set_value();
-    });
+        });
 
     if (!request_gimbal_device_information(mavlink_passthrough)) {
         std::cout << "FAIL\n";
@@ -388,23 +382,25 @@ bool test_device_information(MavlinkPassthrough& mavlink_passthrough)
     return true;
 }
 
-void subscribe_to_gimbal_device_attitude_status(MavlinkPassthrough& mavlink_passthrough, AttitudeData& attitude_data)
+void subscribe_to_gimbal_device_attitude_status(
+    MavlinkPassthrough& mavlink_passthrough, AttitudeData& attitude_data)
 {
     mavlink_passthrough.subscribe_message_async(
         MAVLINK_MSG_ID_GIMBAL_DEVICE_ATTITUDE_STATUS,
         [&attitude_data](const mavlink_message_t& message) {
-        mavlink_gimbal_device_attitude_status_t attitude_status;
-        mavlink_msg_gimbal_device_attitude_status_decode(&message, &attitude_status);
+            mavlink_gimbal_device_attitude_status_t attitude_status;
+            mavlink_msg_gimbal_device_attitude_status_decode(&message, &attitude_status);
 
-        float roll_rad, pitch_rad, yaw_rad;
-        mavlink_quaternion_to_euler(attitude_status.q, &roll_rad, &pitch_rad, &yaw_rad);
+            float roll_rad, pitch_rad, yaw_rad;
+            mavlink_quaternion_to_euler(attitude_status.q, &roll_rad, &pitch_rad, &yaw_rad);
 
-        attitude_data.change_gimbal_attitude([&](AttitudeData::GimbalAttitude& gimbal_attitude) {
-            gimbal_attitude.roll_deg = degrees(roll_rad);
-            gimbal_attitude.pitch_deg = degrees(pitch_rad);
-            gimbal_attitude.yaw_deg = degrees(yaw_rad);
+            attitude_data.change_gimbal_attitude(
+                [&](AttitudeData::GimbalAttitude& gimbal_attitude) {
+                    gimbal_attitude.roll_deg = degrees(roll_rad);
+                    gimbal_attitude.pitch_deg = degrees(pitch_rad);
+                    gimbal_attitude.yaw_deg = degrees(yaw_rad);
+                });
         });
-    });
 }
 
 void usage(const std::string& bin_name)
@@ -416,7 +412,6 @@ void usage(const std::string& bin_name)
               << " For Serial : serial:///path/to/serial/dev[:baudrate]" << std::endl
               << "For example, to connect to the simulator use URL: udp://:14540" << std::endl;
 }
-
 
 int main(int argc, char** argv)
 {
@@ -443,9 +438,7 @@ int main(int argc, char** argv)
     {
         std::promise<void> prom;
         std::future<void> fut = prom.get_future();
-        mavsdk.register_on_discover([&prom](uint64_t /* uuid*/) {
-            prom.set_value();
-        });
+        mavsdk.register_on_discover([&prom](uint64_t /* uuid*/) { prom.set_value(); });
 
         if (fut.wait_for(std::chrono::seconds(2)) != std::future_status::ready) {
             std::cout << "FAIL\n";
@@ -462,7 +455,7 @@ int main(int argc, char** argv)
         return 1;
     }
 
-    AttitudeData attitude_data {};
+    AttitudeData attitude_data{};
 
     subscribe_to_gimbal_device_attitude_status(mavlink_passthrough, attitude_data);
 
