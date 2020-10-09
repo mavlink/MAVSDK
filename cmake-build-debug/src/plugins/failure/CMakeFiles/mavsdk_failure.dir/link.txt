@@ -1,0 +1,1 @@
+/usr/bin/c++ -fPIC -g  -shared -Wl,-soname,libmavsdk_failure.so -o libmavsdk_failure.so CMakeFiles/mavsdk_failure.dir/failure.cpp.o CMakeFiles/mavsdk_failure.dir/failure_impl.cpp.o  -Wl,-rpath,/home/amd/MAVSDK/cmake-build-debug/src/core: ../../core/libmavsdk.so.0.32.0 

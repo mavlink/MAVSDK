@@ -1,0 +1,3 @@
+repository='external project URL'
+module='https://github.com/leethomason/tinyxml2/archive/7.1.0.tar.gz'
+tag=''

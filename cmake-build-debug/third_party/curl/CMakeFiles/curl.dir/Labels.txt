@@ -1,0 +1,13 @@
+# Target labels
+ curl
+# Source files and their labels
+/home/amd/MAVSDK/cmake-build-debug/third_party/curl/CMakeFiles/curl
+/home/amd/MAVSDK/cmake-build-debug/third_party/curl/CMakeFiles/curl.rule
+/home/amd/MAVSDK/cmake-build-debug/third_party/curl/CMakeFiles/curl-complete.rule
+/home/amd/MAVSDK/cmake-build-debug/third_party/curl/curl/src/curl-stamp/curl-install.rule
+/home/amd/MAVSDK/cmake-build-debug/third_party/curl/curl/src/curl-stamp/curl-mkdir.rule
+/home/amd/MAVSDK/cmake-build-debug/third_party/curl/curl/src/curl-stamp/curl-download.rule
+/home/amd/MAVSDK/cmake-build-debug/third_party/curl/curl/src/curl-stamp/curl-update.rule
+/home/amd/MAVSDK/cmake-build-debug/third_party/curl/curl/src/curl-stamp/curl-patch.rule
+/home/amd/MAVSDK/cmake-build-debug/third_party/curl/curl/src/curl-stamp/curl-configure.rule
+/home/amd/MAVSDK/cmake-build-debug/third_party/curl/curl/src/curl-stamp/curl-build.rule

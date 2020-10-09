@@ -1,0 +1,5 @@
+/home/amd/MAVSDK/cmake-build-debug/third_party/install/lib/libz.a
+/home/amd/MAVSDK/cmake-build-debug/third_party/install/include/zconf.h
+/home/amd/MAVSDK/cmake-build-debug/third_party/install/include/zlib.h
+/home/amd/MAVSDK/cmake-build-debug/third_party/install/share/man/man3/zlib.3
+/home/amd/MAVSDK/cmake-build-debug/third_party/install/share/pkgconfig/zlib.pc

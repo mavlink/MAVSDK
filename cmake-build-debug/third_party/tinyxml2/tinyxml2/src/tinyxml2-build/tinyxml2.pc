@@ -1,0 +1,10 @@
+prefix=/home/amd/MAVSDK/cmake-build-debug/third_party/install
+exec_prefix=${prefix}
+libdir=${exec_prefix}/lib
+includedir=${prefix}/include
+
+Name: TinyXML2
+Description: simple, small, C++ XML parser
+Version: 7.1.0
+Libs: -L${libdir} -ltinyxml2
+Cflags: -I${includedir}

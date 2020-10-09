@@ -1,0 +1,1 @@
+/usr/bin/cc -g  -rdynamic CMakeFiles/example.dir/test/example.o  -o example  libz.a 

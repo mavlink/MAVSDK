@@ -1,0 +1,1 @@
+cmd='/tmp/mozilla_amd0/clion-2020.2.4/bin/cmake/linux/bin/cmake;-DCMAKE_BUILD_TYPE=Debug;-DCMAKE_INSTALL_PREFIX:PATH=/home/amd/MAVSDK/cmake-build-debug/third_party/install;-DCMAKE_POSITION_INDEPENDENT_CODE=ON;-GUnix Makefiles;<SOURCE_DIR><SOURCE_SUBDIR>'

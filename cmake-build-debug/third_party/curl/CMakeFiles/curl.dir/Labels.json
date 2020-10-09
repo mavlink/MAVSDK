@@ -1,0 +1,43 @@
+{
+	"sources" : 
+	[
+		{
+			"file" : "/home/amd/MAVSDK/cmake-build-debug/third_party/curl/CMakeFiles/curl"
+		},
+		{
+			"file" : "/home/amd/MAVSDK/cmake-build-debug/third_party/curl/CMakeFiles/curl.rule"
+		},
+		{
+			"file" : "/home/amd/MAVSDK/cmake-build-debug/third_party/curl/CMakeFiles/curl-complete.rule"
+		},
+		{
+			"file" : "/home/amd/MAVSDK/cmake-build-debug/third_party/curl/curl/src/curl-stamp/curl-install.rule"
+		},
+		{
+			"file" : "/home/amd/MAVSDK/cmake-build-debug/third_party/curl/curl/src/curl-stamp/curl-mkdir.rule"
+		},
+		{
+			"file" : "/home/amd/MAVSDK/cmake-build-debug/third_party/curl/curl/src/curl-stamp/curl-download.rule"
+		},
+		{
+			"file" : "/home/amd/MAVSDK/cmake-build-debug/third_party/curl/curl/src/curl-stamp/curl-update.rule"
+		},
+		{
+			"file" : "/home/amd/MAVSDK/cmake-build-debug/third_party/curl/curl/src/curl-stamp/curl-patch.rule"
+		},
+		{
+			"file" : "/home/amd/MAVSDK/cmake-build-debug/third_party/curl/curl/src/curl-stamp/curl-configure.rule"
+		},
+		{
+			"file" : "/home/amd/MAVSDK/cmake-build-debug/third_party/curl/curl/src/curl-stamp/curl-build.rule"
+		}
+	],
+	"target" : 
+	{
+		"labels" : 
+		[
+			"curl"
+		],
+		"name" : "curl"
+	}
+}

@@ -1,0 +1,3 @@
+repository='external project URL'
+module='https://github.com/curl/curl/archive/curl-7_70_0.zip'
+tag=''

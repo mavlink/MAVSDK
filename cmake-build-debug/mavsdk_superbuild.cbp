@@ -1,0 +1,2352 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CodeBlocks_project_file>
+	<FileVersion major="1" minor="6"/>
+	<Project>
+		<Option title="mavsdk_superbuild"/>
+		<Option makefile_is_custom="1"/>
+		<Option compiler="gcc"/>
+		<Option virtualFolders="CMake Files\;CMake Files\src\;CMake Files\src\third_party\;CMake Files\src\third_party\gtest\;CMake Files\src\third_party\gtest\googlemock\;CMake Files\src\third_party\gtest\googlemock\cmake\;CMake Files\src\third_party\gtest\googletest\;CMake Files\src\third_party\gtest\googletest\cmake\;CMake Files\src\cmake\;CMake Files\src\cmake\Modules\;CMake Files\src\core\;CMake Files\src\plugins\;CMake Files\src\plugins\action\;CMake Files\src\plugins\calibration\;CMake Files\src\plugins\camera\;CMake Files\src\plugins\follow_me\;CMake Files\src\plugins\geofence\;CMake Files\src\plugins\gimbal\;CMake Files\src\plugins\info\;CMake Files\src\plugins\log_files\;CMake Files\src\plugins\ftp\;CMake Files\src\plugins\manual_control\;CMake Files\src\plugins\mavlink_passthrough\;CMake Files\src\plugins\mission\;CMake Files\src\plugins\mission_raw\;CMake Files\src\plugins\mocap\;CMake Files\src\plugins\offboard\;CMake Files\src\plugins\param\;CMake Files\src\plugins\shell\;CMake Files\src\plugins\telemetry\;CMake Files\src\plugins\tune\;CMake Files\src\plugins\failure\;CMake Files\src\integration_tests\;CMake Files\cmake-build-debug\;CMake Files\cmake-build-debug\third_party\;CMake Files\cmake-build-debug\third_party\install\;CMake Files\cmake-build-debug\third_party\install\lib\;CMake Files\cmake-build-debug\third_party\install\lib\cmake\;CMake Files\cmake-build-debug\third_party\install\lib\cmake\CURL\;CMake Files\cmake-build-debug\third_party\install\lib\cmake\jsoncpp\;CMake Files\third_party\;CMake Files\third_party\cmake\;"/>
+		<Build>
+			<Target title="all">
+				<Option working_dir="/home/amd/MAVSDK/cmake-build-debug"/>
+				<Option type="4"/>
+				<MakeCommands>
+					<Build command="/usr/bin/make -j128 -f &quot;/home/amd/MAVSDK/cmake-build-debug/Makefile&quot;  VERBOSE=1 all"/>
+					<CompileFile command="/usr/bin/make -j128 -f &quot;/home/amd/MAVSDK/cmake-build-debug/Makefile&quot;  VERBOSE=1 &quot;$file&quot;"/>
+					<Clean command="/usr/bin/make -j128 -f &quot;/home/amd/MAVSDK/cmake-build-debug/Makefile&quot;  VERBOSE=1 clean"/>
+					<DistClean command="/usr/bin/make -j128 -f &quot;/home/amd/MAVSDK/cmake-build-debug/Makefile&quot;  VERBOSE=1 clean"/>
+				</MakeCommands>
+			</Target>
+			<Target title="install/strip">
+				<Option working_dir="/home/amd/MAVSDK/cmake-build-debug"/>
+				<Option type="4"/>
+				<MakeCommands>
+					<Build command="/usr/bin/make -j128 -f &quot;/home/amd/MAVSDK/cmake-build-debug/Makefile&quot;  VERBOSE=1 install/strip"/>
+					<CompileFile command="/usr/bin/make -j128 -f &quot;/home/amd/MAVSDK/cmake-build-debug/Makefile&quot;  VERBOSE=1 &quot;$file&quot;"/>
+					<Clean command="/usr/bin/make -j128 -f &quot;/home/amd/MAVSDK/cmake-build-debug/Makefile&quot;  VERBOSE=1 clean"/>
+					<DistClean command="/usr/bin/make -j128 -f &quot;/home/amd/MAVSDK/cmake-build-debug/Makefile&quot;  VERBOSE=1 clean"/>
+				</MakeCommands>
+			</Target>
+			<Target title="install/local">
+				<Option working_dir="/home/amd/MAVSDK/cmake-build-debug"/>
+				<Option type="4"/>
+				<MakeCommands>
+					<Build command="/usr/bin/make -j128 -f &quot;/home/amd/MAVSDK/cmake-build-debug/Makefile&quot;  VERBOSE=1 install/local"/>
+					<CompileFile command="/usr/bin/make -j128 -f &quot;/home/amd/MAVSDK/cmake-build-debug/Makefile&quot;  VERBOSE=1 &quot;$file&quot;"/>
+					<Clean command="/usr/bin/make -j128 -f &quot;/home/amd/MAVSDK/cmake-build-debug/Makefile&quot;  VERBOSE=1 clean"/>
+					<DistClean command="/usr/bin/make -j128 -f &quot;/home/amd/MAVSDK/cmake-build-debug/Makefile&quot;  VERBOSE=1 clean"/>
+				</MakeCommands>
+			</Target>
+			<Target title="edit_cache">
+				<Option working_dir="/home/amd/MAVSDK/cmake-build-debug"/>
+				<Option type="4"/>
+				<MakeCommands>
+					<Build command="/usr/bin/make -j128 -f &quot;/home/amd/MAVSDK/cmake-build-debug/Makefile&quot;  VERBOSE=1 edit_cache"/>
+					<CompileFile command="/usr/bin/make -j128 -f &quot;/home/amd/MAVSDK/cmake-build-debug/Makefile&quot;  VERBOSE=1 &quot;$file&quot;"/>
+					<Clean command="/usr/bin/make -j128 -f &quot;/home/amd/MAVSDK/cmake-build-debug/Makefile&quot;  VERBOSE=1 clean"/>
+					<DistClean command="/usr/bin/make -j128 -f &quot;/home/amd/MAVSDK/cmake-build-debug/Makefile&quot;  VERBOSE=1 clean"/>
+				</MakeCommands>
+			</Target>
+			<Target title="rebuild_cache">
+				<Option working_dir="/home/amd/MAVSDK/cmake-build-debug"/>
+				<Option type="4"/>
+				<MakeCommands>
+					<Build command="/usr/bin/make -j128 -f &quot;/home/amd/MAVSDK/cmake-build-debug/Makefile&quot;  VERBOSE=1 rebuild_cache"/>
+					<CompileFile command="/usr/bin/make -j128 -f &quot;/home/amd/MAVSDK/cmake-build-debug/Makefile&quot;  VERBOSE=1 &quot;$file&quot;"/>
+					<Clean command="/usr/bin/make -j128 -f &quot;/home/amd/MAVSDK/cmake-build-debug/Makefile&quot;  VERBOSE=1 clean"/>
+					<DistClean command="/usr/bin/make -j128 -f &quot;/home/amd/MAVSDK/cmake-build-debug/Makefile&quot;  VERBOSE=1 clean"/>
+				</MakeCommands>
+			</Target>
+			<Target title="list_install_components">
+				<Option working_dir="/home/amd/MAVSDK/cmake-build-debug"/>
+				<Option type="4"/>
+				<MakeCommands>
+					<Build command="/usr/bin/make -j128 -f &quot;/home/amd/MAVSDK/cmake-build-debug/Makefile&quot;  VERBOSE=1 list_install_components"/>
+					<CompileFile command="/usr/bin/make -j128 -f &quot;/home/amd/MAVSDK/cmake-build-debug/Makefile&quot;  VERBOSE=1 &quot;$file&quot;"/>
+					<Clean command="/usr/bin/make -j128 -f &quot;/home/amd/MAVSDK/cmake-build-debug/Makefile&quot;  VERBOSE=1 clean"/>
+					<DistClean command="/usr/bin/make -j128 -f &quot;/home/amd/MAVSDK/cmake-build-debug/Makefile&quot;  VERBOSE=1 clean"/>
+				</MakeCommands>
+			</Target>
+			<Target title="install">
+				<Option working_dir="/home/amd/MAVSDK/cmake-build-debug"/>
+				<Option type="4"/>
+				<MakeCommands>
+					<Build command="/usr/bin/make -j128 -f &quot;/home/amd/MAVSDK/cmake-build-debug/Makefile&quot;  VERBOSE=1 install"/>
+					<CompileFile command="/usr/bin/make -j128 -f &quot;/home/amd/MAVSDK/cmake-build-debug/Makefile&quot;  VERBOSE=1 &quot;$file&quot;"/>
+					<Clean command="/usr/bin/make -j128 -f &quot;/home/amd/MAVSDK/cmake-build-debug/Makefile&quot;  VERBOSE=1 clean"/>
+					<DistClean command="/usr/bin/make -j128 -f &quot;/home/amd/MAVSDK/cmake-build-debug/Makefile&quot;  VERBOSE=1 clean"/>
+				</MakeCommands>
+			</Target>
+			<Target title="unit_tests_runner">
+				<Option output="/home/amd/MAVSDK/cmake-build-debug/src/unit_tests_runner" prefix_auto="0" extension_auto="0"/>
+				<Option working_dir="/home/amd/MAVSDK/cmake-build-debug/src"/>
+				<Option object_output="./"/>
+				<Option type="1"/>
+				<Option compiler="gcc"/>
+				<Compiler>
+					<Add option="-DFAKE_TIME=1"/>
+					<Add option="-DLINUX"/>
+					<Add option="-DCURL_STATICLIB"/>
+					<Add directory="/home/amd/MAVSDK/src/core"/>
+					<Add directory="/home/amd/MAVSDK/src/third_party/mavlink/include"/>
+					<Add directory="/home/amd/MAVSDK/src/plugins/mission/include"/>
+					<Add directory="/home/amd/MAVSDK/src/plugins/camera/include"/>
+					<Add directory="/home/amd/MAVSDK/src/plugins/calibration/include"/>
+					<Add directory="/home/amd/MAVSDK/src/plugins/telemetry/include"/>
+					<Add directory="/home/amd/MAVSDK/cmake-build-debug/third_party/install/include"/>
+					<Add directory="/home/amd/MAVSDK/src/third_party/gtest/googletest/include"/>
+					<Add directory="/home/amd/MAVSDK/src/third_party/gtest/googletest"/>
+					<Add directory="/home/amd/MAVSDK/src/third_party/gtest/googlemock/include"/>
+					<Add directory="/home/amd/MAVSDK/src/third_party/gtest/googlemock"/>
+					<Add directory="/usr/include/c++/5"/>
+					<Add directory="/usr/include/x86_64-linux-gnu/c++/5"/>
+					<Add directory="/usr/include/c++/5/backward"/>
+					<Add directory="/usr/lib/gcc/x86_64-linux-gnu/5/include"/>
+					<Add directory="/usr/local/include"/>
+					<Add directory="/usr/lib/gcc/x86_64-linux-gnu/5/include-fixed"/>
+					<Add directory="/usr/include/x86_64-linux-gnu"/>
+					<Add directory="/usr/include"/>
+				</Compiler>
+				<MakeCommands>
+					<Build command="/usr/bin/make -j128 -f &quot;/home/amd/MAVSDK/cmake-build-debug/src/Makefile&quot;  VERBOSE=1 unit_tests_runner"/>
+					<CompileFile command="/usr/bin/make -j128 -f &quot;/home/amd/MAVSDK/cmake-build-debug/src/Makefile&quot;  VERBOSE=1 &quot;$file&quot;"/>
+					<Clean command="/usr/bin/make -j128 -f &quot;/home/amd/MAVSDK/cmake-build-debug/src/Makefile&quot;  VERBOSE=1 clean"/>
+					<DistClean command="/usr/bin/make -j128 -f &quot;/home/amd/MAVSDK/cmake-build-debug/src/Makefile&quot;  VERBOSE=1 clean"/>
+				</MakeCommands>
+			</Target>
+			<Target title="unit_tests_runner/fast">
+				<Option output="/home/amd/MAVSDK/cmake-build-debug/src/unit_tests_runner" prefix_auto="0" extension_auto="0"/>
+				<Option working_dir="/home/amd/MAVSDK/cmake-build-debug/src"/>
+				<Option object_output="./"/>
+				<Option type="1"/>
+				<Option compiler="gcc"/>
+				<Compiler>
+					<Add option="-DFAKE_TIME=1"/>
+					<Add option="-DLINUX"/>
+					<Add option="-DCURL_STATICLIB"/>
+					<Add directory="/home/amd/MAVSDK/src/core"/>
+					<Add directory="/home/amd/MAVSDK/src/third_party/mavlink/include"/>
+					<Add directory="/home/amd/MAVSDK/src/plugins/mission/include"/>
+					<Add directory="/home/amd/MAVSDK/src/plugins/camera/include"/>
+					<Add directory="/home/amd/MAVSDK/src/plugins/calibration/include"/>
+					<Add directory="/home/amd/MAVSDK/src/plugins/telemetry/include"/>
+					<Add directory="/home/amd/MAVSDK/cmake-build-debug/third_party/install/include"/>
+					<Add directory="/home/amd/MAVSDK/src/third_party/gtest/googletest/include"/>
+					<Add directory="/home/amd/MAVSDK/src/third_party/gtest/googletest"/>
+					<Add directory="/home/amd/MAVSDK/src/third_party/gtest/googlemock/include"/>
+					<Add directory="/home/amd/MAVSDK/src/third_party/gtest/googlemock"/>
+					<Add directory="/usr/include/c++/5"/>
+					<Add directory="/usr/include/x86_64-linux-gnu/c++/5"/>
+					<Add directory="/usr/include/c++/5/backward"/>
+					<Add directory="/usr/lib/gcc/x86_64-linux-gnu/5/include"/>
+					<Add directory="/usr/local/include"/>
+					<Add directory="/usr/lib/gcc/x86_64-linux-gnu/5/include-fixed"/>
+					<Add directory="/usr/include/x86_64-linux-gnu"/>
+					<Add directory="/usr/include"/>
+				</Compiler>
+				<MakeCommands>
+					<Build command="/usr/bin/make -j128 -f &quot;/home/amd/MAVSDK/cmake-build-debug/src/Makefile&quot;  VERBOSE=1 unit_tests_runner/fast"/>
+					<CompileFile command="/usr/bin/make -j128 -f &quot;/home/amd/MAVSDK/cmake-build-debug/src/Makefile&quot;  VERBOSE=1 &quot;$file&quot;"/>
+					<Clean command="/usr/bin/make -j128 -f &quot;/home/amd/MAVSDK/cmake-build-debug/src/Makefile&quot;  VERBOSE=1 clean"/>
+					<DistClean command="/usr/bin/make -j128 -f &quot;/home/amd/MAVSDK/cmake-build-debug/src/Makefile&quot;  VERBOSE=1 clean"/>
+				</MakeCommands>
+			</Target>
+			<Target title="mavsdk">
+				<Option output="/home/amd/MAVSDK/cmake-build-debug/src/core/libmavsdk.so" prefix_auto="0" extension_auto="0"/>
+				<Option working_dir="/home/amd/MAVSDK/cmake-build-debug/src/core"/>
+				<Option object_output="./"/>
+				<Option type="3"/>
+				<Option compiler="gcc"/>
+				<Compiler>
+					<Add option="-DLINUX"/>
+					<Add option="-DCURL_STATICLIB"/>
+					<Add directory="/home/amd/MAVSDK/src/core"/>
+					<Add directory="/home/amd/MAVSDK/cmake-build-debug/src/core"/>
+					<Add directory="/home/amd/MAVSDK/src/third_party/mavlink/include"/>
+					<Add directory="/home/amd/MAVSDK/cmake-build-debug/third_party/install/include"/>
+					<Add directory="/usr/include/c++/5"/>
+					<Add directory="/usr/include/x86_64-linux-gnu/c++/5"/>
+					<Add directory="/usr/include/c++/5/backward"/>
+					<Add directory="/usr/lib/gcc/x86_64-linux-gnu/5/include"/>
+					<Add directory="/usr/local/include"/>
+					<Add directory="/usr/lib/gcc/x86_64-linux-gnu/5/include-fixed"/>
+					<Add directory="/usr/include/x86_64-linux-gnu"/>
+					<Add directory="/usr/include"/>
+				</Compiler>
+				<MakeCommands>
+					<Build command="/usr/bin/make -j128 -f &quot;/home/amd/MAVSDK/cmake-build-debug/src/core/Makefile&quot;  VERBOSE=1 mavsdk"/>
+					<CompileFile command="/usr/bin/make -j128 -f &quot;/home/amd/MAVSDK/cmake-build-debug/src/core/Makefile&quot;  VERBOSE=1 &quot;$file&quot;"/>
+					<Clean command="/usr/bin/make -j128 -f &quot;/home/amd/MAVSDK/cmake-build-debug/src/core/Makefile&quot;  VERBOSE=1 clean"/>
+					<DistClean command="/usr/bin/make -j128 -f &quot;/home/amd/MAVSDK/cmake-build-debug/src/core/Makefile&quot;  VERBOSE=1 clean"/>
+				</MakeCommands>
+			</Target>
+			<Target title="mavsdk/fast">
+				<Option output="/home/amd/MAVSDK/cmake-build-debug/src/core/libmavsdk.so" prefix_auto="0" extension_auto="0"/>
+				<Option working_dir="/home/amd/MAVSDK/cmake-build-debug/src/core"/>
+				<Option object_output="./"/>
+				<Option type="3"/>
+				<Option compiler="gcc"/>
+				<Compiler>
+					<Add option="-DLINUX"/>
+					<Add option="-DCURL_STATICLIB"/>
+					<Add directory="/home/amd/MAVSDK/src/core"/>
+					<Add directory="/home/amd/MAVSDK/cmake-build-debug/src/core"/>
+					<Add directory="/home/amd/MAVSDK/src/third_party/mavlink/include"/>
+					<Add directory="/home/amd/MAVSDK/cmake-build-debug/third_party/install/include"/>
+					<Add directory="/usr/include/c++/5"/>
+					<Add directory="/usr/include/x86_64-linux-gnu/c++/5"/>
+					<Add directory="/usr/include/c++/5/backward"/>
+					<Add directory="/usr/lib/gcc/x86_64-linux-gnu/5/include"/>
+					<Add directory="/usr/local/include"/>
+					<Add directory="/usr/lib/gcc/x86_64-linux-gnu/5/include-fixed"/>
+					<Add directory="/usr/include/x86_64-linux-gnu"/>
+					<Add directory="/usr/include"/>
+				</Compiler>
+				<MakeCommands>
+					<Build command="/usr/bin/make -j128 -f &quot;/home/amd/MAVSDK/cmake-build-debug/src/core/Makefile&quot;  VERBOSE=1 mavsdk/fast"/>
+					<CompileFile command="/usr/bin/make -j128 -f &quot;/home/amd/MAVSDK/cmake-build-debug/src/core/Makefile&quot;  VERBOSE=1 &quot;$file&quot;"/>
+					<Clean command="/usr/bin/make -j128 -f &quot;/home/amd/MAVSDK/cmake-build-debug/src/core/Makefile&quot;  VERBOSE=1 clean"/>
+					<DistClean command="/usr/bin/make -j128 -f &quot;/home/amd/MAVSDK/cmake-build-debug/src/core/Makefile&quot;  VERBOSE=1 clean"/>
+				</MakeCommands>
+			</Target>
+			<Target title="mavsdk_action">
+				<Option output="/home/amd/MAVSDK/cmake-build-debug/src/plugins/action/libmavsdk_action.so" prefix_auto="0" extension_auto="0"/>
+				<Option working_dir="/home/amd/MAVSDK/cmake-build-debug/src/plugins/action"/>
+				<Option object_output="./"/>
+				<Option type="3"/>
+				<Option compiler="gcc"/>
+				<Compiler>
+					<Add option="-DLINUX"/>
+					<Add directory="/home/amd/MAVSDK/src/core"/>
+					<Add directory="/home/amd/MAVSDK/src/plugins/action/include"/>
+					<Add directory="/home/amd/MAVSDK/src/third_party/mavlink/include"/>
+					<Add directory="/usr/include/c++/5"/>
+					<Add directory="/usr/include/x86_64-linux-gnu/c++/5"/>
+					<Add directory="/usr/include/c++/5/backward"/>
+					<Add directory="/usr/lib/gcc/x86_64-linux-gnu/5/include"/>
+					<Add directory="/usr/local/include"/>
+					<Add directory="/usr/lib/gcc/x86_64-linux-gnu/5/include-fixed"/>
+					<Add directory="/usr/include/x86_64-linux-gnu"/>
+					<Add directory="/usr/include"/>
+				</Compiler>
+				<MakeCommands>
+					<Build command="/usr/bin/make -j128 -f &quot;/home/amd/MAVSDK/cmake-build-debug/src/plugins/action/Makefile&quot;  VERBOSE=1 mavsdk_action"/>
+					<CompileFile command="/usr/bin/make -j128 -f &quot;/home/amd/MAVSDK/cmake-build-debug/src/plugins/action/Makefile&quot;  VERBOSE=1 &quot;$file&quot;"/>
+					<Clean command="/usr/bin/make -j128 -f &quot;/home/amd/MAVSDK/cmake-build-debug/src/plugins/action/Makefile&quot;  VERBOSE=1 clean"/>
+					<DistClean command="/usr/bin/make -j128 -f &quot;/home/amd/MAVSDK/cmake-build-debug/src/plugins/action/Makefile&quot;  VERBOSE=1 clean"/>
+				</MakeCommands>
+			</Target>
+			<Target title="mavsdk_action/fast">
+				<Option output="/home/amd/MAVSDK/cmake-build-debug/src/plugins/action/libmavsdk_action.so" prefix_auto="0" extension_auto="0"/>
+				<Option working_dir="/home/amd/MAVSDK/cmake-build-debug/src/plugins/action"/>
+				<Option object_output="./"/>
+				<Option type="3"/>
+				<Option compiler="gcc"/>
+				<Compiler>
+					<Add option="-DLINUX"/>
+					<Add directory="/home/amd/MAVSDK/src/core"/>
+					<Add directory="/home/amd/MAVSDK/src/plugins/action/include"/>
+					<Add directory="/home/amd/MAVSDK/src/third_party/mavlink/include"/>
+					<Add directory="/usr/include/c++/5"/>
+					<Add directory="/usr/include/x86_64-linux-gnu/c++/5"/>
+					<Add directory="/usr/include/c++/5/backward"/>
+					<Add directory="/usr/lib/gcc/x86_64-linux-gnu/5/include"/>
+					<Add directory="/usr/local/include"/>
+					<Add directory="/usr/lib/gcc/x86_64-linux-gnu/5/include-fixed"/>
+					<Add directory="/usr/include/x86_64-linux-gnu"/>
+					<Add directory="/usr/include"/>
+				</Compiler>
+				<MakeCommands>
+					<Build command="/usr/bin/make -j128 -f &quot;/home/amd/MAVSDK/cmake-build-debug/src/plugins/action/Makefile&quot;  VERBOSE=1 mavsdk_action/fast"/>
+					<CompileFile command="/usr/bin/make -j128 -f &quot;/home/amd/MAVSDK/cmake-build-debug/src/plugins/action/Makefile&quot;  VERBOSE=1 &quot;$file&quot;"/>
+					<Clean command="/usr/bin/make -j128 -f &quot;/home/amd/MAVSDK/cmake-build-debug/src/plugins/action/Makefile&quot;  VERBOSE=1 clean"/>
+					<DistClean command="/usr/bin/make -j128 -f &quot;/home/amd/MAVSDK/cmake-build-debug/src/plugins/action/Makefile&quot;  VERBOSE=1 clean"/>
+				</MakeCommands>
+			</Target>
+			<Target title="mavsdk_calibration">
+				<Option output="/home/amd/MAVSDK/cmake-build-debug/src/plugins/calibration/libmavsdk_calibration.so" prefix_auto="0" extension_auto="0"/>
+				<Option working_dir="/home/amd/MAVSDK/cmake-build-debug/src/plugins/calibration"/>
+				<Option object_output="./"/>
+				<Option type="3"/>
+				<Option compiler="gcc"/>
+				<Compiler>
+					<Add option="-DLINUX"/>
+					<Add directory="/home/amd/MAVSDK/src/core"/>
+					<Add directory="/home/amd/MAVSDK/src/plugins/calibration/include"/>
+					<Add directory="/home/amd/MAVSDK/src/third_party/mavlink/include"/>
+					<Add directory="/usr/include/c++/5"/>
+					<Add directory="/usr/include/x86_64-linux-gnu/c++/5"/>
+					<Add directory="/usr/include/c++/5/backward"/>
+					<Add directory="/usr/lib/gcc/x86_64-linux-gnu/5/include"/>
+					<Add directory="/usr/local/include"/>
+					<Add directory="/usr/lib/gcc/x86_64-linux-gnu/5/include-fixed"/>
+					<Add directory="/usr/include/x86_64-linux-gnu"/>
+					<Add directory="/usr/include"/>
+				</Compiler>
+				<MakeCommands>
+					<Build command="/usr/bin/make -j128 -f &quot;/home/amd/MAVSDK/cmake-build-debug/src/plugins/calibration/Makefile&quot;  VERBOSE=1 mavsdk_calibration"/>
+					<CompileFile command="/usr/bin/make -j128 -f &quot;/home/amd/MAVSDK/cmake-build-debug/src/plugins/calibration/Makefile&quot;  VERBOSE=1 &quot;$file&quot;"/>
+					<Clean command="/usr/bin/make -j128 -f &quot;/home/amd/MAVSDK/cmake-build-debug/src/plugins/calibration/Makefile&quot;  VERBOSE=1 clean"/>
+					<DistClean command="/usr/bin/make -j128 -f &quot;/home/amd/MAVSDK/cmake-build-debug/src/plugins/calibration/Makefile&quot;  VERBOSE=1 clean"/>
+				</MakeCommands>
+			</Target>
+			<Target title="mavsdk_calibration/fast">
+				<Option output="/home/amd/MAVSDK/cmake-build-debug/src/plugins/calibration/libmavsdk_calibration.so" prefix_auto="0" extension_auto="0"/>
+				<Option working_dir="/home/amd/MAVSDK/cmake-build-debug/src/plugins/calibration"/>
+				<Option object_output="./"/>
+				<Option type="3"/>
+				<Option compiler="gcc"/>
+				<Compiler>
+					<Add option="-DLINUX"/>
+					<Add directory="/home/amd/MAVSDK/src/core"/>
+					<Add directory="/home/amd/MAVSDK/src/plugins/calibration/include"/>
+					<Add directory="/home/amd/MAVSDK/src/third_party/mavlink/include"/>
+					<Add directory="/usr/include/c++/5"/>
+					<Add directory="/usr/include/x86_64-linux-gnu/c++/5"/>
+					<Add directory="/usr/include/c++/5/backward"/>
+					<Add directory="/usr/lib/gcc/x86_64-linux-gnu/5/include"/>
+					<Add directory="/usr/local/include"/>
+					<Add directory="/usr/lib/gcc/x86_64-linux-gnu/5/include-fixed"/>
+					<Add directory="/usr/include/x86_64-linux-gnu"/>
+					<Add directory="/usr/include"/>
+				</Compiler>
+				<MakeCommands>
+					<Build command="/usr/bin/make -j128 -f &quot;/home/amd/MAVSDK/cmake-build-debug/src/plugins/calibration/Makefile&quot;  VERBOSE=1 mavsdk_calibration/fast"/>
+					<CompileFile command="/usr/bin/make -j128 -f &quot;/home/amd/MAVSDK/cmake-build-debug/src/plugins/calibration/Makefile&quot;  VERBOSE=1 &quot;$file&quot;"/>
+					<Clean command="/usr/bin/make -j128 -f &quot;/home/amd/MAVSDK/cmake-build-debug/src/plugins/calibration/Makefile&quot;  VERBOSE=1 clean"/>
+					<DistClean command="/usr/bin/make -j128 -f &quot;/home/amd/MAVSDK/cmake-build-debug/src/plugins/calibration/Makefile&quot;  VERBOSE=1 clean"/>
+				</MakeCommands>
+			</Target>
+			<Target title="mavsdk_camera">
+				<Option output="/home/amd/MAVSDK/cmake-build-debug/src/plugins/camera/libmavsdk_camera.so" prefix_auto="0" extension_auto="0"/>
+				<Option working_dir="/home/amd/MAVSDK/cmake-build-debug/src/plugins/camera"/>
+				<Option object_output="./"/>
+				<Option type="3"/>
+				<Option compiler="gcc"/>
+				<Compiler>
+					<Add option="-DLINUX"/>
+					<Add option="-DCURL_STATICLIB"/>
+					<Add directory="/home/amd/MAVSDK/src/core"/>
+					<Add directory="/home/amd/MAVSDK/src/plugins/camera/camera_definition_files/generated"/>
+					<Add directory="/home/amd/MAVSDK/src/plugins/camera/include"/>
+					<Add directory="/home/amd/MAVSDK/src/third_party/mavlink/include"/>
+					<Add directory="/home/amd/MAVSDK/cmake-build-debug/third_party/install/include"/>
+					<Add directory="/usr/include/c++/5"/>
+					<Add directory="/usr/include/x86_64-linux-gnu/c++/5"/>
+					<Add directory="/usr/include/c++/5/backward"/>
+					<Add directory="/usr/lib/gcc/x86_64-linux-gnu/5/include"/>
+					<Add directory="/usr/local/include"/>
+					<Add directory="/usr/lib/gcc/x86_64-linux-gnu/5/include-fixed"/>
+					<Add directory="/usr/include/x86_64-linux-gnu"/>
+					<Add directory="/usr/include"/>
+				</Compiler>
+				<MakeCommands>
+					<Build command="/usr/bin/make -j128 -f &quot;/home/amd/MAVSDK/cmake-build-debug/src/plugins/camera/Makefile&quot;  VERBOSE=1 mavsdk_camera"/>
+					<CompileFile command="/usr/bin/make -j128 -f &quot;/home/amd/MAVSDK/cmake-build-debug/src/plugins/camera/Makefile&quot;  VERBOSE=1 &quot;$file&quot;"/>
+					<Clean command="/usr/bin/make -j128 -f &quot;/home/amd/MAVSDK/cmake-build-debug/src/plugins/camera/Makefile&quot;  VERBOSE=1 clean"/>
+					<DistClean command="/usr/bin/make -j128 -f &quot;/home/amd/MAVSDK/cmake-build-debug/src/plugins/camera/Makefile&quot;  VERBOSE=1 clean"/>
+				</MakeCommands>
+			</Target>
+			<Target title="mavsdk_camera/fast">
+				<Option output="/home/amd/MAVSDK/cmake-build-debug/src/plugins/camera/libmavsdk_camera.so" prefix_auto="0" extension_auto="0"/>
+				<Option working_dir="/home/amd/MAVSDK/cmake-build-debug/src/plugins/camera"/>
+				<Option object_output="./"/>
+				<Option type="3"/>
+				<Option compiler="gcc"/>
+				<Compiler>
+					<Add option="-DLINUX"/>
+					<Add option="-DCURL_STATICLIB"/>
+					<Add directory="/home/amd/MAVSDK/src/core"/>
+					<Add directory="/home/amd/MAVSDK/src/plugins/camera/camera_definition_files/generated"/>
+					<Add directory="/home/amd/MAVSDK/src/plugins/camera/include"/>
+					<Add directory="/home/amd/MAVSDK/src/third_party/mavlink/include"/>
+					<Add directory="/home/amd/MAVSDK/cmake-build-debug/third_party/install/include"/>
+					<Add directory="/usr/include/c++/5"/>
+					<Add directory="/usr/include/x86_64-linux-gnu/c++/5"/>
+					<Add directory="/usr/include/c++/5/backward"/>
+					<Add directory="/usr/lib/gcc/x86_64-linux-gnu/5/include"/>
+					<Add directory="/usr/local/include"/>
+					<Add directory="/usr/lib/gcc/x86_64-linux-gnu/5/include-fixed"/>
+					<Add directory="/usr/include/x86_64-linux-gnu"/>
+					<Add directory="/usr/include"/>
+				</Compiler>
+				<MakeCommands>
+					<Build command="/usr/bin/make -j128 -f &quot;/home/amd/MAVSDK/cmake-build-debug/src/plugins/camera/Makefile&quot;  VERBOSE=1 mavsdk_camera/fast"/>
+					<CompileFile command="/usr/bin/make -j128 -f &quot;/home/amd/MAVSDK/cmake-build-debug/src/plugins/camera/Makefile&quot;  VERBOSE=1 &quot;$file&quot;"/>
+					<Clean command="/usr/bin/make -j128 -f &quot;/home/amd/MAVSDK/cmake-build-debug/src/plugins/camera/Makefile&quot;  VERBOSE=1 clean"/>
+					<DistClean command="/usr/bin/make -j128 -f &quot;/home/amd/MAVSDK/cmake-build-debug/src/plugins/camera/Makefile&quot;  VERBOSE=1 clean"/>
+				</MakeCommands>
+			</Target>
+			<Target title="mavsdk_follow_me">
+				<Option output="/home/amd/MAVSDK/cmake-build-debug/src/plugins/follow_me/libmavsdk_follow_me.so" prefix_auto="0" extension_auto="0"/>
+				<Option working_dir="/home/amd/MAVSDK/cmake-build-debug/src/plugins/follow_me"/>
+				<Option object_output="./"/>
+				<Option type="3"/>
+				<Option compiler="gcc"/>
+				<Compiler>
+					<Add option="-DLINUX"/>
+					<Add directory="/home/amd/MAVSDK/src/core"/>
+					<Add directory="/home/amd/MAVSDK/src/plugins/follow_me/include"/>
+					<Add directory="/home/amd/MAVSDK/src/third_party/mavlink/include"/>
+					<Add directory="/usr/include/c++/5"/>
+					<Add directory="/usr/include/x86_64-linux-gnu/c++/5"/>
+					<Add directory="/usr/include/c++/5/backward"/>
+					<Add directory="/usr/lib/gcc/x86_64-linux-gnu/5/include"/>
+					<Add directory="/usr/local/include"/>
+					<Add directory="/usr/lib/gcc/x86_64-linux-gnu/5/include-fixed"/>
+					<Add directory="/usr/include/x86_64-linux-gnu"/>
+					<Add directory="/usr/include"/>
+				</Compiler>
+				<MakeCommands>
+					<Build command="/usr/bin/make -j128 -f &quot;/home/amd/MAVSDK/cmake-build-debug/src/plugins/follow_me/Makefile&quot;  VERBOSE=1 mavsdk_follow_me"/>
+					<CompileFile command="/usr/bin/make -j128 -f &quot;/home/amd/MAVSDK/cmake-build-debug/src/plugins/follow_me/Makefile&quot;  VERBOSE=1 &quot;$file&quot;"/>
+					<Clean command="/usr/bin/make -j128 -f &quot;/home/amd/MAVSDK/cmake-build-debug/src/plugins/follow_me/Makefile&quot;  VERBOSE=1 clean"/>
+					<DistClean command="/usr/bin/make -j128 -f &quot;/home/amd/MAVSDK/cmake-build-debug/src/plugins/follow_me/Makefile&quot;  VERBOSE=1 clean"/>
+				</MakeCommands>
+			</Target>
+			<Target title="mavsdk_follow_me/fast">
+				<Option output="/home/amd/MAVSDK/cmake-build-debug/src/plugins/follow_me/libmavsdk_follow_me.so" prefix_auto="0" extension_auto="0"/>
+				<Option working_dir="/home/amd/MAVSDK/cmake-build-debug/src/plugins/follow_me"/>
+				<Option object_output="./"/>
+				<Option type="3"/>
+				<Option compiler="gcc"/>
+				<Compiler>
+					<Add option="-DLINUX"/>
+					<Add directory="/home/amd/MAVSDK/src/core"/>
+					<Add directory="/home/amd/MAVSDK/src/plugins/follow_me/include"/>
+					<Add directory="/home/amd/MAVSDK/src/third_party/mavlink/include"/>
+					<Add directory="/usr/include/c++/5"/>
+					<Add directory="/usr/include/x86_64-linux-gnu/c++/5"/>
+					<Add directory="/usr/include/c++/5/backward"/>
+					<Add directory="/usr/lib/gcc/x86_64-linux-gnu/5/include"/>
+					<Add directory="/usr/local/include"/>
+					<Add directory="/usr/lib/gcc/x86_64-linux-gnu/5/include-fixed"/>
+					<Add directory="/usr/include/x86_64-linux-gnu"/>
+					<Add directory="/usr/include"/>
+				</Compiler>
+				<MakeCommands>
+					<Build command="/usr/bin/make -j128 -f &quot;/home/amd/MAVSDK/cmake-build-debug/src/plugins/follow_me/Makefile&quot;  VERBOSE=1 mavsdk_follow_me/fast"/>
+					<CompileFile command="/usr/bin/make -j128 -f &quot;/home/amd/MAVSDK/cmake-build-debug/src/plugins/follow_me/Makefile&quot;  VERBOSE=1 &quot;$file&quot;"/>
+					<Clean command="/usr/bin/make -j128 -f &quot;/home/amd/MAVSDK/cmake-build-debug/src/plugins/follow_me/Makefile&quot;  VERBOSE=1 clean"/>
+					<DistClean command="/usr/bin/make -j128 -f &quot;/home/amd/MAVSDK/cmake-build-debug/src/plugins/follow_me/Makefile&quot;  VERBOSE=1 clean"/>
+				</MakeCommands>
+			</Target>
+			<Target title="mavsdk_geofence">
+				<Option output="/home/amd/MAVSDK/cmake-build-debug/src/plugins/geofence/libmavsdk_geofence.so" prefix_auto="0" extension_auto="0"/>
+				<Option working_dir="/home/amd/MAVSDK/cmake-build-debug/src/plugins/geofence"/>
+				<Option object_output="./"/>
+				<Option type="3"/>
+				<Option compiler="gcc"/>
+				<Compiler>
+					<Add option="-DLINUX"/>
+					<Add directory="/home/amd/MAVSDK/src/core"/>
+					<Add directory="/home/amd/MAVSDK/src/plugins/geofence/include"/>
+					<Add directory="/home/amd/MAVSDK/src/third_party/mavlink/include"/>
+					<Add directory="/usr/include/c++/5"/>
+					<Add directory="/usr/include/x86_64-linux-gnu/c++/5"/>
+					<Add directory="/usr/include/c++/5/backward"/>
+					<Add directory="/usr/lib/gcc/x86_64-linux-gnu/5/include"/>
+					<Add directory="/usr/local/include"/>
+					<Add directory="/usr/lib/gcc/x86_64-linux-gnu/5/include-fixed"/>
+					<Add directory="/usr/include/x86_64-linux-gnu"/>
+					<Add directory="/usr/include"/>
+				</Compiler>
+				<MakeCommands>
+					<Build command="/usr/bin/make -j128 -f &quot;/home/amd/MAVSDK/cmake-build-debug/src/plugins/geofence/Makefile&quot;  VERBOSE=1 mavsdk_geofence"/>
+					<CompileFile command="/usr/bin/make -j128 -f &quot;/home/amd/MAVSDK/cmake-build-debug/src/plugins/geofence/Makefile&quot;  VERBOSE=1 &quot;$file&quot;"/>
+					<Clean command="/usr/bin/make -j128 -f &quot;/home/amd/MAVSDK/cmake-build-debug/src/plugins/geofence/Makefile&quot;  VERBOSE=1 clean"/>
+					<DistClean command="/usr/bin/make -j128 -f &quot;/home/amd/MAVSDK/cmake-build-debug/src/plugins/geofence/Makefile&quot;  VERBOSE=1 clean"/>
+				</MakeCommands>
+			</Target>
+			<Target title="mavsdk_geofence/fast">
+				<Option output="/home/amd/MAVSDK/cmake-build-debug/src/plugins/geofence/libmavsdk_geofence.so" prefix_auto="0" extension_auto="0"/>
+				<Option working_dir="/home/amd/MAVSDK/cmake-build-debug/src/plugins/geofence"/>
+				<Option object_output="./"/>
+				<Option type="3"/>
+				<Option compiler="gcc"/>
+				<Compiler>
+					<Add option="-DLINUX"/>
+					<Add directory="/home/amd/MAVSDK/src/core"/>
+					<Add directory="/home/amd/MAVSDK/src/plugins/geofence/include"/>
+					<Add directory="/home/amd/MAVSDK/src/third_party/mavlink/include"/>
+					<Add directory="/usr/include/c++/5"/>
+					<Add directory="/usr/include/x86_64-linux-gnu/c++/5"/>
+					<Add directory="/usr/include/c++/5/backward"/>
+					<Add directory="/usr/lib/gcc/x86_64-linux-gnu/5/include"/>
+					<Add directory="/usr/local/include"/>
+					<Add directory="/usr/lib/gcc/x86_64-linux-gnu/5/include-fixed"/>
+					<Add directory="/usr/include/x86_64-linux-gnu"/>
+					<Add directory="/usr/include"/>
+				</Compiler>
+				<MakeCommands>
+					<Build command="/usr/bin/make -j128 -f &quot;/home/amd/MAVSDK/cmake-build-debug/src/plugins/geofence/Makefile&quot;  VERBOSE=1 mavsdk_geofence/fast"/>
+					<CompileFile command="/usr/bin/make -j128 -f &quot;/home/amd/MAVSDK/cmake-build-debug/src/plugins/geofence/Makefile&quot;  VERBOSE=1 &quot;$file&quot;"/>
+					<Clean command="/usr/bin/make -j128 -f &quot;/home/amd/MAVSDK/cmake-build-debug/src/plugins/geofence/Makefile&quot;  VERBOSE=1 clean"/>
+					<DistClean command="/usr/bin/make -j128 -f &quot;/home/amd/MAVSDK/cmake-build-debug/src/plugins/geofence/Makefile&quot;  VERBOSE=1 clean"/>
+				</MakeCommands>
+			</Target>
+			<Target title="mavsdk_gimbal">
+				<Option output="/home/amd/MAVSDK/cmake-build-debug/src/plugins/gimbal/libmavsdk_gimbal.so" prefix_auto="0" extension_auto="0"/>
+				<Option working_dir="/home/amd/MAVSDK/cmake-build-debug/src/plugins/gimbal"/>
+				<Option object_output="./"/>
+				<Option type="3"/>
+				<Option compiler="gcc"/>
+				<Compiler>
+					<Add option="-DLINUX"/>
+					<Add directory="/home/amd/MAVSDK/src/core"/>
+					<Add directory="/home/amd/MAVSDK/src/plugins/gimbal/include"/>
+					<Add directory="/home/amd/MAVSDK/src/third_party/mavlink/include"/>
+					<Add directory="/usr/include/c++/5"/>
+					<Add directory="/usr/include/x86_64-linux-gnu/c++/5"/>
+					<Add directory="/usr/include/c++/5/backward"/>
+					<Add directory="/usr/lib/gcc/x86_64-linux-gnu/5/include"/>
+					<Add directory="/usr/local/include"/>
+					<Add directory="/usr/lib/gcc/x86_64-linux-gnu/5/include-fixed"/>
+					<Add directory="/usr/include/x86_64-linux-gnu"/>
+					<Add directory="/usr/include"/>
+				</Compiler>
+				<MakeCommands>
+					<Build command="/usr/bin/make -j128 -f &quot;/home/amd/MAVSDK/cmake-build-debug/src/plugins/gimbal/Makefile&quot;  VERBOSE=1 mavsdk_gimbal"/>
+					<CompileFile command="/usr/bin/make -j128 -f &quot;/home/amd/MAVSDK/cmake-build-debug/src/plugins/gimbal/Makefile&quot;  VERBOSE=1 &quot;$file&quot;"/>
+					<Clean command="/usr/bin/make -j128 -f &quot;/home/amd/MAVSDK/cmake-build-debug/src/plugins/gimbal/Makefile&quot;  VERBOSE=1 clean"/>
+					<DistClean command="/usr/bin/make -j128 -f &quot;/home/amd/MAVSDK/cmake-build-debug/src/plugins/gimbal/Makefile&quot;  VERBOSE=1 clean"/>
+				</MakeCommands>
+			</Target>
+			<Target title="mavsdk_gimbal/fast">
+				<Option output="/home/amd/MAVSDK/cmake-build-debug/src/plugins/gimbal/libmavsdk_gimbal.so" prefix_auto="0" extension_auto="0"/>
+				<Option working_dir="/home/amd/MAVSDK/cmake-build-debug/src/plugins/gimbal"/>
+				<Option object_output="./"/>
+				<Option type="3"/>
+				<Option compiler="gcc"/>
+				<Compiler>
+					<Add option="-DLINUX"/>
+					<Add directory="/home/amd/MAVSDK/src/core"/>
+					<Add directory="/home/amd/MAVSDK/src/plugins/gimbal/include"/>
+					<Add directory="/home/amd/MAVSDK/src/third_party/mavlink/include"/>
+					<Add directory="/usr/include/c++/5"/>
+					<Add directory="/usr/include/x86_64-linux-gnu/c++/5"/>
+					<Add directory="/usr/include/c++/5/backward"/>
+					<Add directory="/usr/lib/gcc/x86_64-linux-gnu/5/include"/>
+					<Add directory="/usr/local/include"/>
+					<Add directory="/usr/lib/gcc/x86_64-linux-gnu/5/include-fixed"/>
+					<Add directory="/usr/include/x86_64-linux-gnu"/>
+					<Add directory="/usr/include"/>
+				</Compiler>
+				<MakeCommands>
+					<Build command="/usr/bin/make -j128 -f &quot;/home/amd/MAVSDK/cmake-build-debug/src/plugins/gimbal/Makefile&quot;  VERBOSE=1 mavsdk_gimbal/fast"/>
+					<CompileFile command="/usr/bin/make -j128 -f &quot;/home/amd/MAVSDK/cmake-build-debug/src/plugins/gimbal/Makefile&quot;  VERBOSE=1 &quot;$file&quot;"/>
+					<Clean command="/usr/bin/make -j128 -f &quot;/home/amd/MAVSDK/cmake-build-debug/src/plugins/gimbal/Makefile&quot;  VERBOSE=1 clean"/>
+					<DistClean command="/usr/bin/make -j128 -f &quot;/home/amd/MAVSDK/cmake-build-debug/src/plugins/gimbal/Makefile&quot;  VERBOSE=1 clean"/>
+				</MakeCommands>
+			</Target>
+			<Target title="mavsdk_info">
+				<Option output="/home/amd/MAVSDK/cmake-build-debug/src/plugins/info/libmavsdk_info.so" prefix_auto="0" extension_auto="0"/>
+				<Option working_dir="/home/amd/MAVSDK/cmake-build-debug/src/plugins/info"/>
+				<Option object_output="./"/>
+				<Option type="3"/>
+				<Option compiler="gcc"/>
+				<Compiler>
+					<Add option="-DLINUX"/>
+					<Add directory="/home/amd/MAVSDK/src/core"/>
+					<Add directory="/home/amd/MAVSDK/src/plugins/info/include"/>
+					<Add directory="/home/amd/MAVSDK/src/third_party/mavlink/include"/>
+					<Add directory="/usr/include/c++/5"/>
+					<Add directory="/usr/include/x86_64-linux-gnu/c++/5"/>
+					<Add directory="/usr/include/c++/5/backward"/>
+					<Add directory="/usr/lib/gcc/x86_64-linux-gnu/5/include"/>
+					<Add directory="/usr/local/include"/>
+					<Add directory="/usr/lib/gcc/x86_64-linux-gnu/5/include-fixed"/>
+					<Add directory="/usr/include/x86_64-linux-gnu"/>
+					<Add directory="/usr/include"/>
+				</Compiler>
+				<MakeCommands>
+					<Build command="/usr/bin/make -j128 -f &quot;/home/amd/MAVSDK/cmake-build-debug/src/plugins/info/Makefile&quot;  VERBOSE=1 mavsdk_info"/>
+					<CompileFile command="/usr/bin/make -j128 -f &quot;/home/amd/MAVSDK/cmake-build-debug/src/plugins/info/Makefile&quot;  VERBOSE=1 &quot;$file&quot;"/>
+					<Clean command="/usr/bin/make -j128 -f &quot;/home/amd/MAVSDK/cmake-build-debug/src/plugins/info/Makefile&quot;  VERBOSE=1 clean"/>
+					<DistClean command="/usr/bin/make -j128 -f &quot;/home/amd/MAVSDK/cmake-build-debug/src/plugins/info/Makefile&quot;  VERBOSE=1 clean"/>
+				</MakeCommands>
+			</Target>
+			<Target title="mavsdk_info/fast">
+				<Option output="/home/amd/MAVSDK/cmake-build-debug/src/plugins/info/libmavsdk_info.so" prefix_auto="0" extension_auto="0"/>
+				<Option working_dir="/home/amd/MAVSDK/cmake-build-debug/src/plugins/info"/>
+				<Option object_output="./"/>
+				<Option type="3"/>
+				<Option compiler="gcc"/>
+				<Compiler>
+					<Add option="-DLINUX"/>
+					<Add directory="/home/amd/MAVSDK/src/core"/>
+					<Add directory="/home/amd/MAVSDK/src/plugins/info/include"/>
+					<Add directory="/home/amd/MAVSDK/src/third_party/mavlink/include"/>
+					<Add directory="/usr/include/c++/5"/>
+					<Add directory="/usr/include/x86_64-linux-gnu/c++/5"/>
+					<Add directory="/usr/include/c++/5/backward"/>
+					<Add directory="/usr/lib/gcc/x86_64-linux-gnu/5/include"/>
+					<Add directory="/usr/local/include"/>
+					<Add directory="/usr/lib/gcc/x86_64-linux-gnu/5/include-fixed"/>
+					<Add directory="/usr/include/x86_64-linux-gnu"/>
+					<Add directory="/usr/include"/>
+				</Compiler>
+				<MakeCommands>
+					<Build command="/usr/bin/make -j128 -f &quot;/home/amd/MAVSDK/cmake-build-debug/src/plugins/info/Makefile&quot;  VERBOSE=1 mavsdk_info/fast"/>
+					<CompileFile command="/usr/bin/make -j128 -f &quot;/home/amd/MAVSDK/cmake-build-debug/src/plugins/info/Makefile&quot;  VERBOSE=1 &quot;$file&quot;"/>
+					<Clean command="/usr/bin/make -j128 -f &quot;/home/amd/MAVSDK/cmake-build-debug/src/plugins/info/Makefile&quot;  VERBOSE=1 clean"/>
+					<DistClean command="/usr/bin/make -j128 -f &quot;/home/amd/MAVSDK/cmake-build-debug/src/plugins/info/Makefile&quot;  VERBOSE=1 clean"/>
+				</MakeCommands>
+			</Target>
+			<Target title="mavsdk_log_files">
+				<Option output="/home/amd/MAVSDK/cmake-build-debug/src/plugins/log_files/libmavsdk_log_files.so" prefix_auto="0" extension_auto="0"/>
+				<Option working_dir="/home/amd/MAVSDK/cmake-build-debug/src/plugins/log_files"/>
+				<Option object_output="./"/>
+				<Option type="3"/>
+				<Option compiler="gcc"/>
+				<Compiler>
+					<Add option="-DLINUX"/>
+					<Add directory="/home/amd/MAVSDK/src/core"/>
+					<Add directory="/home/amd/MAVSDK/src/plugins/log_files/include"/>
+					<Add directory="/home/amd/MAVSDK/src/third_party/mavlink/include"/>
+					<Add directory="/usr/include/c++/5"/>
+					<Add directory="/usr/include/x86_64-linux-gnu/c++/5"/>
+					<Add directory="/usr/include/c++/5/backward"/>
+					<Add directory="/usr/lib/gcc/x86_64-linux-gnu/5/include"/>
+					<Add directory="/usr/local/include"/>
+					<Add directory="/usr/lib/gcc/x86_64-linux-gnu/5/include-fixed"/>
+					<Add directory="/usr/include/x86_64-linux-gnu"/>
+					<Add directory="/usr/include"/>
+				</Compiler>
+				<MakeCommands>
+					<Build command="/usr/bin/make -j128 -f &quot;/home/amd/MAVSDK/cmake-build-debug/src/plugins/log_files/Makefile&quot;  VERBOSE=1 mavsdk_log_files"/>
+					<CompileFile command="/usr/bin/make -j128 -f &quot;/home/amd/MAVSDK/cmake-build-debug/src/plugins/log_files/Makefile&quot;  VERBOSE=1 &quot;$file&quot;"/>
+					<Clean command="/usr/bin/make -j128 -f &quot;/home/amd/MAVSDK/cmake-build-debug/src/plugins/log_files/Makefile&quot;  VERBOSE=1 clean"/>
+					<DistClean command="/usr/bin/make -j128 -f &quot;/home/amd/MAVSDK/cmake-build-debug/src/plugins/log_files/Makefile&quot;  VERBOSE=1 clean"/>
+				</MakeCommands>
+			</Target>
+			<Target title="mavsdk_log_files/fast">
+				<Option output="/home/amd/MAVSDK/cmake-build-debug/src/plugins/log_files/libmavsdk_log_files.so" prefix_auto="0" extension_auto="0"/>
+				<Option working_dir="/home/amd/MAVSDK/cmake-build-debug/src/plugins/log_files"/>
+				<Option object_output="./"/>
+				<Option type="3"/>
+				<Option compiler="gcc"/>
+				<Compiler>
+					<Add option="-DLINUX"/>
+					<Add directory="/home/amd/MAVSDK/src/core"/>
+					<Add directory="/home/amd/MAVSDK/src/plugins/log_files/include"/>
+					<Add directory="/home/amd/MAVSDK/src/third_party/mavlink/include"/>
+					<Add directory="/usr/include/c++/5"/>
+					<Add directory="/usr/include/x86_64-linux-gnu/c++/5"/>
+					<Add directory="/usr/include/c++/5/backward"/>
+					<Add directory="/usr/lib/gcc/x86_64-linux-gnu/5/include"/>
+					<Add directory="/usr/local/include"/>
+					<Add directory="/usr/lib/gcc/x86_64-linux-gnu/5/include-fixed"/>
+					<Add directory="/usr/include/x86_64-linux-gnu"/>
+					<Add directory="/usr/include"/>
+				</Compiler>
+				<MakeCommands>
+					<Build command="/usr/bin/make -j128 -f &quot;/home/amd/MAVSDK/cmake-build-debug/src/plugins/log_files/Makefile&quot;  VERBOSE=1 mavsdk_log_files/fast"/>
+					<CompileFile command="/usr/bin/make -j128 -f &quot;/home/amd/MAVSDK/cmake-build-debug/src/plugins/log_files/Makefile&quot;  VERBOSE=1 &quot;$file&quot;"/>
+					<Clean command="/usr/bin/make -j128 -f &quot;/home/amd/MAVSDK/cmake-build-debug/src/plugins/log_files/Makefile&quot;  VERBOSE=1 clean"/>
+					<DistClean command="/usr/bin/make -j128 -f &quot;/home/amd/MAVSDK/cmake-build-debug/src/plugins/log_files/Makefile&quot;  VERBOSE=1 clean"/>
+				</MakeCommands>
+			</Target>
+			<Target title="mavsdk_ftp">
+				<Option output="/home/amd/MAVSDK/cmake-build-debug/src/plugins/ftp/libmavsdk_ftp.so" prefix_auto="0" extension_auto="0"/>
+				<Option working_dir="/home/amd/MAVSDK/cmake-build-debug/src/plugins/ftp"/>
+				<Option object_output="./"/>
+				<Option type="3"/>
+				<Option compiler="gcc"/>
+				<Compiler>
+					<Add option="-DLINUX"/>
+					<Add directory="/home/amd/MAVSDK/src/core"/>
+					<Add directory="/home/amd/MAVSDK/src/plugins/ftp/include"/>
+					<Add directory="/home/amd/MAVSDK/src/third_party/mavlink/include"/>
+					<Add directory="/usr/include/c++/5"/>
+					<Add directory="/usr/include/x86_64-linux-gnu/c++/5"/>
+					<Add directory="/usr/include/c++/5/backward"/>
+					<Add directory="/usr/lib/gcc/x86_64-linux-gnu/5/include"/>
+					<Add directory="/usr/local/include"/>
+					<Add directory="/usr/lib/gcc/x86_64-linux-gnu/5/include-fixed"/>
+					<Add directory="/usr/include/x86_64-linux-gnu"/>
+					<Add directory="/usr/include"/>
+				</Compiler>
+				<MakeCommands>
+					<Build command="/usr/bin/make -j128 -f &quot;/home/amd/MAVSDK/cmake-build-debug/src/plugins/ftp/Makefile&quot;  VERBOSE=1 mavsdk_ftp"/>
+					<CompileFile command="/usr/bin/make -j128 -f &quot;/home/amd/MAVSDK/cmake-build-debug/src/plugins/ftp/Makefile&quot;  VERBOSE=1 &quot;$file&quot;"/>
+					<Clean command="/usr/bin/make -j128 -f &quot;/home/amd/MAVSDK/cmake-build-debug/src/plugins/ftp/Makefile&quot;  VERBOSE=1 clean"/>
+					<DistClean command="/usr/bin/make -j128 -f &quot;/home/amd/MAVSDK/cmake-build-debug/src/plugins/ftp/Makefile&quot;  VERBOSE=1 clean"/>
+				</MakeCommands>
+			</Target>
+			<Target title="mavsdk_ftp/fast">
+				<Option output="/home/amd/MAVSDK/cmake-build-debug/src/plugins/ftp/libmavsdk_ftp.so" prefix_auto="0" extension_auto="0"/>
+				<Option working_dir="/home/amd/MAVSDK/cmake-build-debug/src/plugins/ftp"/>
+				<Option object_output="./"/>
+				<Option type="3"/>
+				<Option compiler="gcc"/>
+				<Compiler>
+					<Add option="-DLINUX"/>
+					<Add directory="/home/amd/MAVSDK/src/core"/>
+					<Add directory="/home/amd/MAVSDK/src/plugins/ftp/include"/>
+					<Add directory="/home/amd/MAVSDK/src/third_party/mavlink/include"/>
+					<Add directory="/usr/include/c++/5"/>
+					<Add directory="/usr/include/x86_64-linux-gnu/c++/5"/>
+					<Add directory="/usr/include/c++/5/backward"/>
+					<Add directory="/usr/lib/gcc/x86_64-linux-gnu/5/include"/>
+					<Add directory="/usr/local/include"/>
+					<Add directory="/usr/lib/gcc/x86_64-linux-gnu/5/include-fixed"/>
+					<Add directory="/usr/include/x86_64-linux-gnu"/>
+					<Add directory="/usr/include"/>
+				</Compiler>
+				<MakeCommands>
+					<Build command="/usr/bin/make -j128 -f &quot;/home/amd/MAVSDK/cmake-build-debug/src/plugins/ftp/Makefile&quot;  VERBOSE=1 mavsdk_ftp/fast"/>
+					<CompileFile command="/usr/bin/make -j128 -f &quot;/home/amd/MAVSDK/cmake-build-debug/src/plugins/ftp/Makefile&quot;  VERBOSE=1 &quot;$file&quot;"/>
+					<Clean command="/usr/bin/make -j128 -f &quot;/home/amd/MAVSDK/cmake-build-debug/src/plugins/ftp/Makefile&quot;  VERBOSE=1 clean"/>
+					<DistClean command="/usr/bin/make -j128 -f &quot;/home/amd/MAVSDK/cmake-build-debug/src/plugins/ftp/Makefile&quot;  VERBOSE=1 clean"/>
+				</MakeCommands>
+			</Target>
+			<Target title="mavsdk_manual_control">
+				<Option output="/home/amd/MAVSDK/cmake-build-debug/src/plugins/manual_control/libmavsdk_manual_control.so" prefix_auto="0" extension_auto="0"/>
+				<Option working_dir="/home/amd/MAVSDK/cmake-build-debug/src/plugins/manual_control"/>
+				<Option object_output="./"/>
+				<Option type="3"/>
+				<Option compiler="gcc"/>
+				<Compiler>
+					<Add option="-DLINUX"/>
+					<Add directory="/home/amd/MAVSDK/src/core"/>
+					<Add directory="/home/amd/MAVSDK/src/plugins/manual_control/include"/>
+					<Add directory="/home/amd/MAVSDK/src/third_party/mavlink/include"/>
+					<Add directory="/usr/include/c++/5"/>
+					<Add directory="/usr/include/x86_64-linux-gnu/c++/5"/>
+					<Add directory="/usr/include/c++/5/backward"/>
+					<Add directory="/usr/lib/gcc/x86_64-linux-gnu/5/include"/>
+					<Add directory="/usr/local/include"/>
+					<Add directory="/usr/lib/gcc/x86_64-linux-gnu/5/include-fixed"/>
+					<Add directory="/usr/include/x86_64-linux-gnu"/>
+					<Add directory="/usr/include"/>
+				</Compiler>
+				<MakeCommands>
+					<Build command="/usr/bin/make -j128 -f &quot;/home/amd/MAVSDK/cmake-build-debug/src/plugins/manual_control/Makefile&quot;  VERBOSE=1 mavsdk_manual_control"/>
+					<CompileFile command="/usr/bin/make -j128 -f &quot;/home/amd/MAVSDK/cmake-build-debug/src/plugins/manual_control/Makefile&quot;  VERBOSE=1 &quot;$file&quot;"/>
+					<Clean command="/usr/bin/make -j128 -f &quot;/home/amd/MAVSDK/cmake-build-debug/src/plugins/manual_control/Makefile&quot;  VERBOSE=1 clean"/>
+					<DistClean command="/usr/bin/make -j128 -f &quot;/home/amd/MAVSDK/cmake-build-debug/src/plugins/manual_control/Makefile&quot;  VERBOSE=1 clean"/>
+				</MakeCommands>
+			</Target>
+			<Target title="mavsdk_manual_control/fast">
+				<Option output="/home/amd/MAVSDK/cmake-build-debug/src/plugins/manual_control/libmavsdk_manual_control.so" prefix_auto="0" extension_auto="0"/>
+				<Option working_dir="/home/amd/MAVSDK/cmake-build-debug/src/plugins/manual_control"/>
+				<Option object_output="./"/>
+				<Option type="3"/>
+				<Option compiler="gcc"/>
+				<Compiler>
+					<Add option="-DLINUX"/>
+					<Add directory="/home/amd/MAVSDK/src/core"/>
+					<Add directory="/home/amd/MAVSDK/src/plugins/manual_control/include"/>
+					<Add directory="/home/amd/MAVSDK/src/third_party/mavlink/include"/>
+					<Add directory="/usr/include/c++/5"/>
+					<Add directory="/usr/include/x86_64-linux-gnu/c++/5"/>
+					<Add directory="/usr/include/c++/5/backward"/>
+					<Add directory="/usr/lib/gcc/x86_64-linux-gnu/5/include"/>
+					<Add directory="/usr/local/include"/>
+					<Add directory="/usr/lib/gcc/x86_64-linux-gnu/5/include-fixed"/>
+					<Add directory="/usr/include/x86_64-linux-gnu"/>
+					<Add directory="/usr/include"/>
+				</Compiler>
+				<MakeCommands>
+					<Build command="/usr/bin/make -j128 -f &quot;/home/amd/MAVSDK/cmake-build-debug/src/plugins/manual_control/Makefile&quot;  VERBOSE=1 mavsdk_manual_control/fast"/>
+					<CompileFile command="/usr/bin/make -j128 -f &quot;/home/amd/MAVSDK/cmake-build-debug/src/plugins/manual_control/Makefile&quot;  VERBOSE=1 &quot;$file&quot;"/>
+					<Clean command="/usr/bin/make -j128 -f &quot;/home/amd/MAVSDK/cmake-build-debug/src/plugins/manual_control/Makefile&quot;  VERBOSE=1 clean"/>
+					<DistClean command="/usr/bin/make -j128 -f &quot;/home/amd/MAVSDK/cmake-build-debug/src/plugins/manual_control/Makefile&quot;  VERBOSE=1 clean"/>
+				</MakeCommands>
+			</Target>
+			<Target title="mavsdk_mavlink_passthrough">
+				<Option output="/home/amd/MAVSDK/cmake-build-debug/src/plugins/mavlink_passthrough/libmavsdk_mavlink_passthrough.so" prefix_auto="0" extension_auto="0"/>
+				<Option working_dir="/home/amd/MAVSDK/cmake-build-debug/src/plugins/mavlink_passthrough"/>
+				<Option object_output="./"/>
+				<Option type="3"/>
+				<Option compiler="gcc"/>
+				<Compiler>
+					<Add option="-DLINUX"/>
+					<Add directory="/home/amd/MAVSDK/src/core"/>
+					<Add directory="/home/amd/MAVSDK/src/plugins/mavlink_passthrough/include"/>
+					<Add directory="/home/amd/MAVSDK/src/third_party/mavlink/include"/>
+					<Add directory="/usr/include/c++/5"/>
+					<Add directory="/usr/include/x86_64-linux-gnu/c++/5"/>
+					<Add directory="/usr/include/c++/5/backward"/>
+					<Add directory="/usr/lib/gcc/x86_64-linux-gnu/5/include"/>
+					<Add directory="/usr/local/include"/>
+					<Add directory="/usr/lib/gcc/x86_64-linux-gnu/5/include-fixed"/>
+					<Add directory="/usr/include/x86_64-linux-gnu"/>
+					<Add directory="/usr/include"/>
+				</Compiler>
+				<MakeCommands>
+					<Build command="/usr/bin/make -j128 -f &quot;/home/amd/MAVSDK/cmake-build-debug/src/plugins/mavlink_passthrough/Makefile&quot;  VERBOSE=1 mavsdk_mavlink_passthrough"/>
+					<CompileFile command="/usr/bin/make -j128 -f &quot;/home/amd/MAVSDK/cmake-build-debug/src/plugins/mavlink_passthrough/Makefile&quot;  VERBOSE=1 &quot;$file&quot;"/>
+					<Clean command="/usr/bin/make -j128 -f &quot;/home/amd/MAVSDK/cmake-build-debug/src/plugins/mavlink_passthrough/Makefile&quot;  VERBOSE=1 clean"/>
+					<DistClean command="/usr/bin/make -j128 -f &quot;/home/amd/MAVSDK/cmake-build-debug/src/plugins/mavlink_passthrough/Makefile&quot;  VERBOSE=1 clean"/>
+				</MakeCommands>
+			</Target>
+			<Target title="mavsdk_mavlink_passthrough/fast">
+				<Option output="/home/amd/MAVSDK/cmake-build-debug/src/plugins/mavlink_passthrough/libmavsdk_mavlink_passthrough.so" prefix_auto="0" extension_auto="0"/>
+				<Option working_dir="/home/amd/MAVSDK/cmake-build-debug/src/plugins/mavlink_passthrough"/>
+				<Option object_output="./"/>
+				<Option type="3"/>
+				<Option compiler="gcc"/>
+				<Compiler>
+					<Add option="-DLINUX"/>
+					<Add directory="/home/amd/MAVSDK/src/core"/>
+					<Add directory="/home/amd/MAVSDK/src/plugins/mavlink_passthrough/include"/>
+					<Add directory="/home/amd/MAVSDK/src/third_party/mavlink/include"/>
+					<Add directory="/usr/include/c++/5"/>
+					<Add directory="/usr/include/x86_64-linux-gnu/c++/5"/>
+					<Add directory="/usr/include/c++/5/backward"/>
+					<Add directory="/usr/lib/gcc/x86_64-linux-gnu/5/include"/>
+					<Add directory="/usr/local/include"/>
+					<Add directory="/usr/lib/gcc/x86_64-linux-gnu/5/include-fixed"/>
+					<Add directory="/usr/include/x86_64-linux-gnu"/>
+					<Add directory="/usr/include"/>
+				</Compiler>
+				<MakeCommands>
+					<Build command="/usr/bin/make -j128 -f &quot;/home/amd/MAVSDK/cmake-build-debug/src/plugins/mavlink_passthrough/Makefile&quot;  VERBOSE=1 mavsdk_mavlink_passthrough/fast"/>
+					<CompileFile command="/usr/bin/make -j128 -f &quot;/home/amd/MAVSDK/cmake-build-debug/src/plugins/mavlink_passthrough/Makefile&quot;  VERBOSE=1 &quot;$file&quot;"/>
+					<Clean command="/usr/bin/make -j128 -f &quot;/home/amd/MAVSDK/cmake-build-debug/src/plugins/mavlink_passthrough/Makefile&quot;  VERBOSE=1 clean"/>
+					<DistClean command="/usr/bin/make -j128 -f &quot;/home/amd/MAVSDK/cmake-build-debug/src/plugins/mavlink_passthrough/Makefile&quot;  VERBOSE=1 clean"/>
+				</MakeCommands>
+			</Target>
+			<Target title="mavsdk_mission">
+				<Option output="/home/amd/MAVSDK/cmake-build-debug/src/plugins/mission/libmavsdk_mission.so" prefix_auto="0" extension_auto="0"/>
+				<Option working_dir="/home/amd/MAVSDK/cmake-build-debug/src/plugins/mission"/>
+				<Option object_output="./"/>
+				<Option type="3"/>
+				<Option compiler="gcc"/>
+				<Compiler>
+					<Add option="-DLINUX"/>
+					<Add directory="/home/amd/MAVSDK/src/core"/>
+					<Add directory="/home/amd/MAVSDK/src/plugins/mission/include"/>
+					<Add directory="/home/amd/MAVSDK/src/third_party/mavlink/include"/>
+					<Add directory="/home/amd/MAVSDK/cmake-build-debug/third_party/install/include"/>
+					<Add directory="/usr/include/c++/5"/>
+					<Add directory="/usr/include/x86_64-linux-gnu/c++/5"/>
+					<Add directory="/usr/include/c++/5/backward"/>
+					<Add directory="/usr/lib/gcc/x86_64-linux-gnu/5/include"/>
+					<Add directory="/usr/local/include"/>
+					<Add directory="/usr/lib/gcc/x86_64-linux-gnu/5/include-fixed"/>
+					<Add directory="/usr/include/x86_64-linux-gnu"/>
+					<Add directory="/usr/include"/>
+				</Compiler>
+				<MakeCommands>
+					<Build command="/usr/bin/make -j128 -f &quot;/home/amd/MAVSDK/cmake-build-debug/src/plugins/mission/Makefile&quot;  VERBOSE=1 mavsdk_mission"/>
+					<CompileFile command="/usr/bin/make -j128 -f &quot;/home/amd/MAVSDK/cmake-build-debug/src/plugins/mission/Makefile&quot;  VERBOSE=1 &quot;$file&quot;"/>
+					<Clean command="/usr/bin/make -j128 -f &quot;/home/amd/MAVSDK/cmake-build-debug/src/plugins/mission/Makefile&quot;  VERBOSE=1 clean"/>
+					<DistClean command="/usr/bin/make -j128 -f &quot;/home/amd/MAVSDK/cmake-build-debug/src/plugins/mission/Makefile&quot;  VERBOSE=1 clean"/>
+				</MakeCommands>
+			</Target>
+			<Target title="mavsdk_mission/fast">
+				<Option output="/home/amd/MAVSDK/cmake-build-debug/src/plugins/mission/libmavsdk_mission.so" prefix_auto="0" extension_auto="0"/>
+				<Option working_dir="/home/amd/MAVSDK/cmake-build-debug/src/plugins/mission"/>
+				<Option object_output="./"/>
+				<Option type="3"/>
+				<Option compiler="gcc"/>
+				<Compiler>
+					<Add option="-DLINUX"/>
+					<Add directory="/home/amd/MAVSDK/src/core"/>
+					<Add directory="/home/amd/MAVSDK/src/plugins/mission/include"/>
+					<Add directory="/home/amd/MAVSDK/src/third_party/mavlink/include"/>
+					<Add directory="/home/amd/MAVSDK/cmake-build-debug/third_party/install/include"/>
+					<Add directory="/usr/include/c++/5"/>
+					<Add directory="/usr/include/x86_64-linux-gnu/c++/5"/>
+					<Add directory="/usr/include/c++/5/backward"/>
+					<Add directory="/usr/lib/gcc/x86_64-linux-gnu/5/include"/>
+					<Add directory="/usr/local/include"/>
+					<Add directory="/usr/lib/gcc/x86_64-linux-gnu/5/include-fixed"/>
+					<Add directory="/usr/include/x86_64-linux-gnu"/>
+					<Add directory="/usr/include"/>
+				</Compiler>
+				<MakeCommands>
+					<Build command="/usr/bin/make -j128 -f &quot;/home/amd/MAVSDK/cmake-build-debug/src/plugins/mission/Makefile&quot;  VERBOSE=1 mavsdk_mission/fast"/>
+					<CompileFile command="/usr/bin/make -j128 -f &quot;/home/amd/MAVSDK/cmake-build-debug/src/plugins/mission/Makefile&quot;  VERBOSE=1 &quot;$file&quot;"/>
+					<Clean command="/usr/bin/make -j128 -f &quot;/home/amd/MAVSDK/cmake-build-debug/src/plugins/mission/Makefile&quot;  VERBOSE=1 clean"/>
+					<DistClean command="/usr/bin/make -j128 -f &quot;/home/amd/MAVSDK/cmake-build-debug/src/plugins/mission/Makefile&quot;  VERBOSE=1 clean"/>
+				</MakeCommands>
+			</Target>
+			<Target title="mavsdk_mission_raw">
+				<Option output="/home/amd/MAVSDK/cmake-build-debug/src/plugins/mission_raw/libmavsdk_mission_raw.so" prefix_auto="0" extension_auto="0"/>
+				<Option working_dir="/home/amd/MAVSDK/cmake-build-debug/src/plugins/mission_raw"/>
+				<Option object_output="./"/>
+				<Option type="3"/>
+				<Option compiler="gcc"/>
+				<Compiler>
+					<Add option="-DLINUX"/>
+					<Add directory="/home/amd/MAVSDK/src/core"/>
+					<Add directory="/home/amd/MAVSDK/src/plugins/mission_raw/include"/>
+					<Add directory="/home/amd/MAVSDK/src/third_party/mavlink/include"/>
+					<Add directory="/usr/include/c++/5"/>
+					<Add directory="/usr/include/x86_64-linux-gnu/c++/5"/>
+					<Add directory="/usr/include/c++/5/backward"/>
+					<Add directory="/usr/lib/gcc/x86_64-linux-gnu/5/include"/>
+					<Add directory="/usr/local/include"/>
+					<Add directory="/usr/lib/gcc/x86_64-linux-gnu/5/include-fixed"/>
+					<Add directory="/usr/include/x86_64-linux-gnu"/>
+					<Add directory="/usr/include"/>
+				</Compiler>
+				<MakeCommands>
+					<Build command="/usr/bin/make -j128 -f &quot;/home/amd/MAVSDK/cmake-build-debug/src/plugins/mission_raw/Makefile&quot;  VERBOSE=1 mavsdk_mission_raw"/>
+					<CompileFile command="/usr/bin/make -j128 -f &quot;/home/amd/MAVSDK/cmake-build-debug/src/plugins/mission_raw/Makefile&quot;  VERBOSE=1 &quot;$file&quot;"/>
+					<Clean command="/usr/bin/make -j128 -f &quot;/home/amd/MAVSDK/cmake-build-debug/src/plugins/mission_raw/Makefile&quot;  VERBOSE=1 clean"/>
+					<DistClean command="/usr/bin/make -j128 -f &quot;/home/amd/MAVSDK/cmake-build-debug/src/plugins/mission_raw/Makefile&quot;  VERBOSE=1 clean"/>
+				</MakeCommands>
+			</Target>
+			<Target title="mavsdk_mission_raw/fast">
+				<Option output="/home/amd/MAVSDK/cmake-build-debug/src/plugins/mission_raw/libmavsdk_mission_raw.so" prefix_auto="0" extension_auto="0"/>
+				<Option working_dir="/home/amd/MAVSDK/cmake-build-debug/src/plugins/mission_raw"/>
+				<Option object_output="./"/>
+				<Option type="3"/>
+				<Option compiler="gcc"/>
+				<Compiler>
+					<Add option="-DLINUX"/>
+					<Add directory="/home/amd/MAVSDK/src/core"/>
+					<Add directory="/home/amd/MAVSDK/src/plugins/mission_raw/include"/>
+					<Add directory="/home/amd/MAVSDK/src/third_party/mavlink/include"/>
+					<Add directory="/usr/include/c++/5"/>
+					<Add directory="/usr/include/x86_64-linux-gnu/c++/5"/>
+					<Add directory="/usr/include/c++/5/backward"/>
+					<Add directory="/usr/lib/gcc/x86_64-linux-gnu/5/include"/>
+					<Add directory="/usr/local/include"/>
+					<Add directory="/usr/lib/gcc/x86_64-linux-gnu/5/include-fixed"/>
+					<Add directory="/usr/include/x86_64-linux-gnu"/>
+					<Add directory="/usr/include"/>
+				</Compiler>
+				<MakeCommands>
+					<Build command="/usr/bin/make -j128 -f &quot;/home/amd/MAVSDK/cmake-build-debug/src/plugins/mission_raw/Makefile&quot;  VERBOSE=1 mavsdk_mission_raw/fast"/>
+					<CompileFile command="/usr/bin/make -j128 -f &quot;/home/amd/MAVSDK/cmake-build-debug/src/plugins/mission_raw/Makefile&quot;  VERBOSE=1 &quot;$file&quot;"/>
+					<Clean command="/usr/bin/make -j128 -f &quot;/home/amd/MAVSDK/cmake-build-debug/src/plugins/mission_raw/Makefile&quot;  VERBOSE=1 clean"/>
+					<DistClean command="/usr/bin/make -j128 -f &quot;/home/amd/MAVSDK/cmake-build-debug/src/plugins/mission_raw/Makefile&quot;  VERBOSE=1 clean"/>
+				</MakeCommands>
+			</Target>
+			<Target title="mavsdk_mocap">
+				<Option output="/home/amd/MAVSDK/cmake-build-debug/src/plugins/mocap/libmavsdk_mocap.so" prefix_auto="0" extension_auto="0"/>
+				<Option working_dir="/home/amd/MAVSDK/cmake-build-debug/src/plugins/mocap"/>
+				<Option object_output="./"/>
+				<Option type="3"/>
+				<Option compiler="gcc"/>
+				<Compiler>
+					<Add option="-DLINUX"/>
+					<Add directory="/home/amd/MAVSDK/src/core"/>
+					<Add directory="/home/amd/MAVSDK/src/plugins/mocap/include"/>
+					<Add directory="/home/amd/MAVSDK/src/third_party/mavlink/include"/>
+					<Add directory="/usr/include/c++/5"/>
+					<Add directory="/usr/include/x86_64-linux-gnu/c++/5"/>
+					<Add directory="/usr/include/c++/5/backward"/>
+					<Add directory="/usr/lib/gcc/x86_64-linux-gnu/5/include"/>
+					<Add directory="/usr/local/include"/>
+					<Add directory="/usr/lib/gcc/x86_64-linux-gnu/5/include-fixed"/>
+					<Add directory="/usr/include/x86_64-linux-gnu"/>
+					<Add directory="/usr/include"/>
+				</Compiler>
+				<MakeCommands>
+					<Build command="/usr/bin/make -j128 -f &quot;/home/amd/MAVSDK/cmake-build-debug/src/plugins/mocap/Makefile&quot;  VERBOSE=1 mavsdk_mocap"/>
+					<CompileFile command="/usr/bin/make -j128 -f &quot;/home/amd/MAVSDK/cmake-build-debug/src/plugins/mocap/Makefile&quot;  VERBOSE=1 &quot;$file&quot;"/>
+					<Clean command="/usr/bin/make -j128 -f &quot;/home/amd/MAVSDK/cmake-build-debug/src/plugins/mocap/Makefile&quot;  VERBOSE=1 clean"/>
+					<DistClean command="/usr/bin/make -j128 -f &quot;/home/amd/MAVSDK/cmake-build-debug/src/plugins/mocap/Makefile&quot;  VERBOSE=1 clean"/>
+				</MakeCommands>
+			</Target>
+			<Target title="mavsdk_mocap/fast">
+				<Option output="/home/amd/MAVSDK/cmake-build-debug/src/plugins/mocap/libmavsdk_mocap.so" prefix_auto="0" extension_auto="0"/>
+				<Option working_dir="/home/amd/MAVSDK/cmake-build-debug/src/plugins/mocap"/>
+				<Option object_output="./"/>
+				<Option type="3"/>
+				<Option compiler="gcc"/>
+				<Compiler>
+					<Add option="-DLINUX"/>
+					<Add directory="/home/amd/MAVSDK/src/core"/>
+					<Add directory="/home/amd/MAVSDK/src/plugins/mocap/include"/>
+					<Add directory="/home/amd/MAVSDK/src/third_party/mavlink/include"/>
+					<Add directory="/usr/include/c++/5"/>
+					<Add directory="/usr/include/x86_64-linux-gnu/c++/5"/>
+					<Add directory="/usr/include/c++/5/backward"/>
+					<Add directory="/usr/lib/gcc/x86_64-linux-gnu/5/include"/>
+					<Add directory="/usr/local/include"/>
+					<Add directory="/usr/lib/gcc/x86_64-linux-gnu/5/include-fixed"/>
+					<Add directory="/usr/include/x86_64-linux-gnu"/>
+					<Add directory="/usr/include"/>
+				</Compiler>
+				<MakeCommands>
+					<Build command="/usr/bin/make -j128 -f &quot;/home/amd/MAVSDK/cmake-build-debug/src/plugins/mocap/Makefile&quot;  VERBOSE=1 mavsdk_mocap/fast"/>
+					<CompileFile command="/usr/bin/make -j128 -f &quot;/home/amd/MAVSDK/cmake-build-debug/src/plugins/mocap/Makefile&quot;  VERBOSE=1 &quot;$file&quot;"/>
+					<Clean command="/usr/bin/make -j128 -f &quot;/home/amd/MAVSDK/cmake-build-debug/src/plugins/mocap/Makefile&quot;  VERBOSE=1 clean"/>
+					<DistClean command="/usr/bin/make -j128 -f &quot;/home/amd/MAVSDK/cmake-build-debug/src/plugins/mocap/Makefile&quot;  VERBOSE=1 clean"/>
+				</MakeCommands>
+			</Target>
+			<Target title="mavsdk_offboard">
+				<Option output="/home/amd/MAVSDK/cmake-build-debug/src/plugins/offboard/libmavsdk_offboard.so" prefix_auto="0" extension_auto="0"/>
+				<Option working_dir="/home/amd/MAVSDK/cmake-build-debug/src/plugins/offboard"/>
+				<Option object_output="./"/>
+				<Option type="3"/>
+				<Option compiler="gcc"/>
+				<Compiler>
+					<Add option="-DLINUX"/>
+					<Add directory="/home/amd/MAVSDK/src/core"/>
+					<Add directory="/home/amd/MAVSDK/src/plugins/offboard/include"/>
+					<Add directory="/home/amd/MAVSDK/src/third_party/mavlink/include"/>
+					<Add directory="/usr/include/c++/5"/>
+					<Add directory="/usr/include/x86_64-linux-gnu/c++/5"/>
+					<Add directory="/usr/include/c++/5/backward"/>
+					<Add directory="/usr/lib/gcc/x86_64-linux-gnu/5/include"/>
+					<Add directory="/usr/local/include"/>
+					<Add directory="/usr/lib/gcc/x86_64-linux-gnu/5/include-fixed"/>
+					<Add directory="/usr/include/x86_64-linux-gnu"/>
+					<Add directory="/usr/include"/>
+				</Compiler>
+				<MakeCommands>
+					<Build command="/usr/bin/make -j128 -f &quot;/home/amd/MAVSDK/cmake-build-debug/src/plugins/offboard/Makefile&quot;  VERBOSE=1 mavsdk_offboard"/>
+					<CompileFile command="/usr/bin/make -j128 -f &quot;/home/amd/MAVSDK/cmake-build-debug/src/plugins/offboard/Makefile&quot;  VERBOSE=1 &quot;$file&quot;"/>
+					<Clean command="/usr/bin/make -j128 -f &quot;/home/amd/MAVSDK/cmake-build-debug/src/plugins/offboard/Makefile&quot;  VERBOSE=1 clean"/>
+					<DistClean command="/usr/bin/make -j128 -f &quot;/home/amd/MAVSDK/cmake-build-debug/src/plugins/offboard/Makefile&quot;  VERBOSE=1 clean"/>
+				</MakeCommands>
+			</Target>
+			<Target title="mavsdk_offboard/fast">
+				<Option output="/home/amd/MAVSDK/cmake-build-debug/src/plugins/offboard/libmavsdk_offboard.so" prefix_auto="0" extension_auto="0"/>
+				<Option working_dir="/home/amd/MAVSDK/cmake-build-debug/src/plugins/offboard"/>
+				<Option object_output="./"/>
+				<Option type="3"/>
+				<Option compiler="gcc"/>
+				<Compiler>
+					<Add option="-DLINUX"/>
+					<Add directory="/home/amd/MAVSDK/src/core"/>
+					<Add directory="/home/amd/MAVSDK/src/plugins/offboard/include"/>
+					<Add directory="/home/amd/MAVSDK/src/third_party/mavlink/include"/>
+					<Add directory="/usr/include/c++/5"/>
+					<Add directory="/usr/include/x86_64-linux-gnu/c++/5"/>
+					<Add directory="/usr/include/c++/5/backward"/>
+					<Add directory="/usr/lib/gcc/x86_64-linux-gnu/5/include"/>
+					<Add directory="/usr/local/include"/>
+					<Add directory="/usr/lib/gcc/x86_64-linux-gnu/5/include-fixed"/>
+					<Add directory="/usr/include/x86_64-linux-gnu"/>
+					<Add directory="/usr/include"/>
+				</Compiler>
+				<MakeCommands>
+					<Build command="/usr/bin/make -j128 -f &quot;/home/amd/MAVSDK/cmake-build-debug/src/plugins/offboard/Makefile&quot;  VERBOSE=1 mavsdk_offboard/fast"/>
+					<CompileFile command="/usr/bin/make -j128 -f &quot;/home/amd/MAVSDK/cmake-build-debug/src/plugins/offboard/Makefile&quot;  VERBOSE=1 &quot;$file&quot;"/>
+					<Clean command="/usr/bin/make -j128 -f &quot;/home/amd/MAVSDK/cmake-build-debug/src/plugins/offboard/Makefile&quot;  VERBOSE=1 clean"/>
+					<DistClean command="/usr/bin/make -j128 -f &quot;/home/amd/MAVSDK/cmake-build-debug/src/plugins/offboard/Makefile&quot;  VERBOSE=1 clean"/>
+				</MakeCommands>
+			</Target>
+			<Target title="mavsdk_param">
+				<Option output="/home/amd/MAVSDK/cmake-build-debug/src/plugins/param/libmavsdk_param.so" prefix_auto="0" extension_auto="0"/>
+				<Option working_dir="/home/amd/MAVSDK/cmake-build-debug/src/plugins/param"/>
+				<Option object_output="./"/>
+				<Option type="3"/>
+				<Option compiler="gcc"/>
+				<Compiler>
+					<Add option="-DLINUX"/>
+					<Add directory="/home/amd/MAVSDK/src/core"/>
+					<Add directory="/home/amd/MAVSDK/src/plugins/param/include"/>
+					<Add directory="/home/amd/MAVSDK/src/third_party/mavlink/include"/>
+					<Add directory="/usr/include/c++/5"/>
+					<Add directory="/usr/include/x86_64-linux-gnu/c++/5"/>
+					<Add directory="/usr/include/c++/5/backward"/>
+					<Add directory="/usr/lib/gcc/x86_64-linux-gnu/5/include"/>
+					<Add directory="/usr/local/include"/>
+					<Add directory="/usr/lib/gcc/x86_64-linux-gnu/5/include-fixed"/>
+					<Add directory="/usr/include/x86_64-linux-gnu"/>
+					<Add directory="/usr/include"/>
+				</Compiler>
+				<MakeCommands>
+					<Build command="/usr/bin/make -j128 -f &quot;/home/amd/MAVSDK/cmake-build-debug/src/plugins/param/Makefile&quot;  VERBOSE=1 mavsdk_param"/>
+					<CompileFile command="/usr/bin/make -j128 -f &quot;/home/amd/MAVSDK/cmake-build-debug/src/plugins/param/Makefile&quot;  VERBOSE=1 &quot;$file&quot;"/>
+					<Clean command="/usr/bin/make -j128 -f &quot;/home/amd/MAVSDK/cmake-build-debug/src/plugins/param/Makefile&quot;  VERBOSE=1 clean"/>
+					<DistClean command="/usr/bin/make -j128 -f &quot;/home/amd/MAVSDK/cmake-build-debug/src/plugins/param/Makefile&quot;  VERBOSE=1 clean"/>
+				</MakeCommands>
+			</Target>
+			<Target title="mavsdk_param/fast">
+				<Option output="/home/amd/MAVSDK/cmake-build-debug/src/plugins/param/libmavsdk_param.so" prefix_auto="0" extension_auto="0"/>
+				<Option working_dir="/home/amd/MAVSDK/cmake-build-debug/src/plugins/param"/>
+				<Option object_output="./"/>
+				<Option type="3"/>
+				<Option compiler="gcc"/>
+				<Compiler>
+					<Add option="-DLINUX"/>
+					<Add directory="/home/amd/MAVSDK/src/core"/>
+					<Add directory="/home/amd/MAVSDK/src/plugins/param/include"/>
+					<Add directory="/home/amd/MAVSDK/src/third_party/mavlink/include"/>
+					<Add directory="/usr/include/c++/5"/>
+					<Add directory="/usr/include/x86_64-linux-gnu/c++/5"/>
+					<Add directory="/usr/include/c++/5/backward"/>
+					<Add directory="/usr/lib/gcc/x86_64-linux-gnu/5/include"/>
+					<Add directory="/usr/local/include"/>
+					<Add directory="/usr/lib/gcc/x86_64-linux-gnu/5/include-fixed"/>
+					<Add directory="/usr/include/x86_64-linux-gnu"/>
+					<Add directory="/usr/include"/>
+				</Compiler>
+				<MakeCommands>
+					<Build command="/usr/bin/make -j128 -f &quot;/home/amd/MAVSDK/cmake-build-debug/src/plugins/param/Makefile&quot;  VERBOSE=1 mavsdk_param/fast"/>
+					<CompileFile command="/usr/bin/make -j128 -f &quot;/home/amd/MAVSDK/cmake-build-debug/src/plugins/param/Makefile&quot;  VERBOSE=1 &quot;$file&quot;"/>
+					<Clean command="/usr/bin/make -j128 -f &quot;/home/amd/MAVSDK/cmake-build-debug/src/plugins/param/Makefile&quot;  VERBOSE=1 clean"/>
+					<DistClean command="/usr/bin/make -j128 -f &quot;/home/amd/MAVSDK/cmake-build-debug/src/plugins/param/Makefile&quot;  VERBOSE=1 clean"/>
+				</MakeCommands>
+			</Target>
+			<Target title="mavsdk_shell">
+				<Option output="/home/amd/MAVSDK/cmake-build-debug/src/plugins/shell/libmavsdk_shell.so" prefix_auto="0" extension_auto="0"/>
+				<Option working_dir="/home/amd/MAVSDK/cmake-build-debug/src/plugins/shell"/>
+				<Option object_output="./"/>
+				<Option type="3"/>
+				<Option compiler="gcc"/>
+				<Compiler>
+					<Add option="-DLINUX"/>
+					<Add directory="/home/amd/MAVSDK/src/core"/>
+					<Add directory="/home/amd/MAVSDK/src/plugins/shell/include"/>
+					<Add directory="/home/amd/MAVSDK/src/third_party/mavlink/include"/>
+					<Add directory="/usr/include/c++/5"/>
+					<Add directory="/usr/include/x86_64-linux-gnu/c++/5"/>
+					<Add directory="/usr/include/c++/5/backward"/>
+					<Add directory="/usr/lib/gcc/x86_64-linux-gnu/5/include"/>
+					<Add directory="/usr/local/include"/>
+					<Add directory="/usr/lib/gcc/x86_64-linux-gnu/5/include-fixed"/>
+					<Add directory="/usr/include/x86_64-linux-gnu"/>
+					<Add directory="/usr/include"/>
+				</Compiler>
+				<MakeCommands>
+					<Build command="/usr/bin/make -j128 -f &quot;/home/amd/MAVSDK/cmake-build-debug/src/plugins/shell/Makefile&quot;  VERBOSE=1 mavsdk_shell"/>
+					<CompileFile command="/usr/bin/make -j128 -f &quot;/home/amd/MAVSDK/cmake-build-debug/src/plugins/shell/Makefile&quot;  VERBOSE=1 &quot;$file&quot;"/>
+					<Clean command="/usr/bin/make -j128 -f &quot;/home/amd/MAVSDK/cmake-build-debug/src/plugins/shell/Makefile&quot;  VERBOSE=1 clean"/>
+					<DistClean command="/usr/bin/make -j128 -f &quot;/home/amd/MAVSDK/cmake-build-debug/src/plugins/shell/Makefile&quot;  VERBOSE=1 clean"/>
+				</MakeCommands>
+			</Target>
+			<Target title="mavsdk_shell/fast">
+				<Option output="/home/amd/MAVSDK/cmake-build-debug/src/plugins/shell/libmavsdk_shell.so" prefix_auto="0" extension_auto="0"/>
+				<Option working_dir="/home/amd/MAVSDK/cmake-build-debug/src/plugins/shell"/>
+				<Option object_output="./"/>
+				<Option type="3"/>
+				<Option compiler="gcc"/>
+				<Compiler>
+					<Add option="-DLINUX"/>
+					<Add directory="/home/amd/MAVSDK/src/core"/>
+					<Add directory="/home/amd/MAVSDK/src/plugins/shell/include"/>
+					<Add directory="/home/amd/MAVSDK/src/third_party/mavlink/include"/>
+					<Add directory="/usr/include/c++/5"/>
+					<Add directory="/usr/include/x86_64-linux-gnu/c++/5"/>
+					<Add directory="/usr/include/c++/5/backward"/>
+					<Add directory="/usr/lib/gcc/x86_64-linux-gnu/5/include"/>
+					<Add directory="/usr/local/include"/>
+					<Add directory="/usr/lib/gcc/x86_64-linux-gnu/5/include-fixed"/>
+					<Add directory="/usr/include/x86_64-linux-gnu"/>
+					<Add directory="/usr/include"/>
+				</Compiler>
+				<MakeCommands>
+					<Build command="/usr/bin/make -j128 -f &quot;/home/amd/MAVSDK/cmake-build-debug/src/plugins/shell/Makefile&quot;  VERBOSE=1 mavsdk_shell/fast"/>
+					<CompileFile command="/usr/bin/make -j128 -f &quot;/home/amd/MAVSDK/cmake-build-debug/src/plugins/shell/Makefile&quot;  VERBOSE=1 &quot;$file&quot;"/>
+					<Clean command="/usr/bin/make -j128 -f &quot;/home/amd/MAVSDK/cmake-build-debug/src/plugins/shell/Makefile&quot;  VERBOSE=1 clean"/>
+					<DistClean command="/usr/bin/make -j128 -f &quot;/home/amd/MAVSDK/cmake-build-debug/src/plugins/shell/Makefile&quot;  VERBOSE=1 clean"/>
+				</MakeCommands>
+			</Target>
+			<Target title="mavsdk_telemetry">
+				<Option output="/home/amd/MAVSDK/cmake-build-debug/src/plugins/telemetry/libmavsdk_telemetry.so" prefix_auto="0" extension_auto="0"/>
+				<Option working_dir="/home/amd/MAVSDK/cmake-build-debug/src/plugins/telemetry"/>
+				<Option object_output="./"/>
+				<Option type="3"/>
+				<Option compiler="gcc"/>
+				<Compiler>
+					<Add option="-DLINUX"/>
+					<Add directory="/home/amd/MAVSDK/src/core"/>
+					<Add directory="/home/amd/MAVSDK/src/plugins/telemetry/include"/>
+					<Add directory="/home/amd/MAVSDK/src/third_party/mavlink/include"/>
+					<Add directory="/usr/include/c++/5"/>
+					<Add directory="/usr/include/x86_64-linux-gnu/c++/5"/>
+					<Add directory="/usr/include/c++/5/backward"/>
+					<Add directory="/usr/lib/gcc/x86_64-linux-gnu/5/include"/>
+					<Add directory="/usr/local/include"/>
+					<Add directory="/usr/lib/gcc/x86_64-linux-gnu/5/include-fixed"/>
+					<Add directory="/usr/include/x86_64-linux-gnu"/>
+					<Add directory="/usr/include"/>
+				</Compiler>
+				<MakeCommands>
+					<Build command="/usr/bin/make -j128 -f &quot;/home/amd/MAVSDK/cmake-build-debug/src/plugins/telemetry/Makefile&quot;  VERBOSE=1 mavsdk_telemetry"/>
+					<CompileFile command="/usr/bin/make -j128 -f &quot;/home/amd/MAVSDK/cmake-build-debug/src/plugins/telemetry/Makefile&quot;  VERBOSE=1 &quot;$file&quot;"/>
+					<Clean command="/usr/bin/make -j128 -f &quot;/home/amd/MAVSDK/cmake-build-debug/src/plugins/telemetry/Makefile&quot;  VERBOSE=1 clean"/>
+					<DistClean command="/usr/bin/make -j128 -f &quot;/home/amd/MAVSDK/cmake-build-debug/src/plugins/telemetry/Makefile&quot;  VERBOSE=1 clean"/>
+				</MakeCommands>
+			</Target>
+			<Target title="mavsdk_telemetry/fast">
+				<Option output="/home/amd/MAVSDK/cmake-build-debug/src/plugins/telemetry/libmavsdk_telemetry.so" prefix_auto="0" extension_auto="0"/>
+				<Option working_dir="/home/amd/MAVSDK/cmake-build-debug/src/plugins/telemetry"/>
+				<Option object_output="./"/>
+				<Option type="3"/>
+				<Option compiler="gcc"/>
+				<Compiler>
+					<Add option="-DLINUX"/>
+					<Add directory="/home/amd/MAVSDK/src/core"/>
+					<Add directory="/home/amd/MAVSDK/src/plugins/telemetry/include"/>
+					<Add directory="/home/amd/MAVSDK/src/third_party/mavlink/include"/>
+					<Add directory="/usr/include/c++/5"/>
+					<Add directory="/usr/include/x86_64-linux-gnu/c++/5"/>
+					<Add directory="/usr/include/c++/5/backward"/>
+					<Add directory="/usr/lib/gcc/x86_64-linux-gnu/5/include"/>
+					<Add directory="/usr/local/include"/>
+					<Add directory="/usr/lib/gcc/x86_64-linux-gnu/5/include-fixed"/>
+					<Add directory="/usr/include/x86_64-linux-gnu"/>
+					<Add directory="/usr/include"/>
+				</Compiler>
+				<MakeCommands>
+					<Build command="/usr/bin/make -j128 -f &quot;/home/amd/MAVSDK/cmake-build-debug/src/plugins/telemetry/Makefile&quot;  VERBOSE=1 mavsdk_telemetry/fast"/>
+					<CompileFile command="/usr/bin/make -j128 -f &quot;/home/amd/MAVSDK/cmake-build-debug/src/plugins/telemetry/Makefile&quot;  VERBOSE=1 &quot;$file&quot;"/>
+					<Clean command="/usr/bin/make -j128 -f &quot;/home/amd/MAVSDK/cmake-build-debug/src/plugins/telemetry/Makefile&quot;  VERBOSE=1 clean"/>
+					<DistClean command="/usr/bin/make -j128 -f &quot;/home/amd/MAVSDK/cmake-build-debug/src/plugins/telemetry/Makefile&quot;  VERBOSE=1 clean"/>
+				</MakeCommands>
+			</Target>
+			<Target title="mavsdk_tune">
+				<Option output="/home/amd/MAVSDK/cmake-build-debug/src/plugins/tune/libmavsdk_tune.so" prefix_auto="0" extension_auto="0"/>
+				<Option working_dir="/home/amd/MAVSDK/cmake-build-debug/src/plugins/tune"/>
+				<Option object_output="./"/>
+				<Option type="3"/>
+				<Option compiler="gcc"/>
+				<Compiler>
+					<Add option="-DLINUX"/>
+					<Add directory="/home/amd/MAVSDK/src/core"/>
+					<Add directory="/home/amd/MAVSDK/src/plugins/tune/include"/>
+					<Add directory="/home/amd/MAVSDK/src/third_party/mavlink/include"/>
+					<Add directory="/usr/include/c++/5"/>
+					<Add directory="/usr/include/x86_64-linux-gnu/c++/5"/>
+					<Add directory="/usr/include/c++/5/backward"/>
+					<Add directory="/usr/lib/gcc/x86_64-linux-gnu/5/include"/>
+					<Add directory="/usr/local/include"/>
+					<Add directory="/usr/lib/gcc/x86_64-linux-gnu/5/include-fixed"/>
+					<Add directory="/usr/include/x86_64-linux-gnu"/>
+					<Add directory="/usr/include"/>
+				</Compiler>
+				<MakeCommands>
+					<Build command="/usr/bin/make -j128 -f &quot;/home/amd/MAVSDK/cmake-build-debug/src/plugins/tune/Makefile&quot;  VERBOSE=1 mavsdk_tune"/>
+					<CompileFile command="/usr/bin/make -j128 -f &quot;/home/amd/MAVSDK/cmake-build-debug/src/plugins/tune/Makefile&quot;  VERBOSE=1 &quot;$file&quot;"/>
+					<Clean command="/usr/bin/make -j128 -f &quot;/home/amd/MAVSDK/cmake-build-debug/src/plugins/tune/Makefile&quot;  VERBOSE=1 clean"/>
+					<DistClean command="/usr/bin/make -j128 -f &quot;/home/amd/MAVSDK/cmake-build-debug/src/plugins/tune/Makefile&quot;  VERBOSE=1 clean"/>
+				</MakeCommands>
+			</Target>
+			<Target title="mavsdk_tune/fast">
+				<Option output="/home/amd/MAVSDK/cmake-build-debug/src/plugins/tune/libmavsdk_tune.so" prefix_auto="0" extension_auto="0"/>
+				<Option working_dir="/home/amd/MAVSDK/cmake-build-debug/src/plugins/tune"/>
+				<Option object_output="./"/>
+				<Option type="3"/>
+				<Option compiler="gcc"/>
+				<Compiler>
+					<Add option="-DLINUX"/>
+					<Add directory="/home/amd/MAVSDK/src/core"/>
+					<Add directory="/home/amd/MAVSDK/src/plugins/tune/include"/>
+					<Add directory="/home/amd/MAVSDK/src/third_party/mavlink/include"/>
+					<Add directory="/usr/include/c++/5"/>
+					<Add directory="/usr/include/x86_64-linux-gnu/c++/5"/>
+					<Add directory="/usr/include/c++/5/backward"/>
+					<Add directory="/usr/lib/gcc/x86_64-linux-gnu/5/include"/>
+					<Add directory="/usr/local/include"/>
+					<Add directory="/usr/lib/gcc/x86_64-linux-gnu/5/include-fixed"/>
+					<Add directory="/usr/include/x86_64-linux-gnu"/>
+					<Add directory="/usr/include"/>
+				</Compiler>
+				<MakeCommands>
+					<Build command="/usr/bin/make -j128 -f &quot;/home/amd/MAVSDK/cmake-build-debug/src/plugins/tune/Makefile&quot;  VERBOSE=1 mavsdk_tune/fast"/>
+					<CompileFile command="/usr/bin/make -j128 -f &quot;/home/amd/MAVSDK/cmake-build-debug/src/plugins/tune/Makefile&quot;  VERBOSE=1 &quot;$file&quot;"/>
+					<Clean command="/usr/bin/make -j128 -f &quot;/home/amd/MAVSDK/cmake-build-debug/src/plugins/tune/Makefile&quot;  VERBOSE=1 clean"/>
+					<DistClean command="/usr/bin/make -j128 -f &quot;/home/amd/MAVSDK/cmake-build-debug/src/plugins/tune/Makefile&quot;  VERBOSE=1 clean"/>
+				</MakeCommands>
+			</Target>
+			<Target title="mavsdk_failure">
+				<Option output="/home/amd/MAVSDK/cmake-build-debug/src/plugins/failure/libmavsdk_failure.so" prefix_auto="0" extension_auto="0"/>
+				<Option working_dir="/home/amd/MAVSDK/cmake-build-debug/src/plugins/failure"/>
+				<Option object_output="./"/>
+				<Option type="3"/>
+				<Option compiler="gcc"/>
+				<Compiler>
+					<Add option="-DLINUX"/>
+					<Add directory="/home/amd/MAVSDK/src/core"/>
+					<Add directory="/home/amd/MAVSDK/src/plugins/failure/include"/>
+					<Add directory="/home/amd/MAVSDK/src/third_party/mavlink/include"/>
+					<Add directory="/usr/include/c++/5"/>
+					<Add directory="/usr/include/x86_64-linux-gnu/c++/5"/>
+					<Add directory="/usr/include/c++/5/backward"/>
+					<Add directory="/usr/lib/gcc/x86_64-linux-gnu/5/include"/>
+					<Add directory="/usr/local/include"/>
+					<Add directory="/usr/lib/gcc/x86_64-linux-gnu/5/include-fixed"/>
+					<Add directory="/usr/include/x86_64-linux-gnu"/>
+					<Add directory="/usr/include"/>
+				</Compiler>
+				<MakeCommands>
+					<Build command="/usr/bin/make -j128 -f &quot;/home/amd/MAVSDK/cmake-build-debug/src/plugins/failure/Makefile&quot;  VERBOSE=1 mavsdk_failure"/>
+					<CompileFile command="/usr/bin/make -j128 -f &quot;/home/amd/MAVSDK/cmake-build-debug/src/plugins/failure/Makefile&quot;  VERBOSE=1 &quot;$file&quot;"/>
+					<Clean command="/usr/bin/make -j128 -f &quot;/home/amd/MAVSDK/cmake-build-debug/src/plugins/failure/Makefile&quot;  VERBOSE=1 clean"/>
+					<DistClean command="/usr/bin/make -j128 -f &quot;/home/amd/MAVSDK/cmake-build-debug/src/plugins/failure/Makefile&quot;  VERBOSE=1 clean"/>
+				</MakeCommands>
+			</Target>
+			<Target title="mavsdk_failure/fast">
+				<Option output="/home/amd/MAVSDK/cmake-build-debug/src/plugins/failure/libmavsdk_failure.so" prefix_auto="0" extension_auto="0"/>
+				<Option working_dir="/home/amd/MAVSDK/cmake-build-debug/src/plugins/failure"/>
+				<Option object_output="./"/>
+				<Option type="3"/>
+				<Option compiler="gcc"/>
+				<Compiler>
+					<Add option="-DLINUX"/>
+					<Add directory="/home/amd/MAVSDK/src/core"/>
+					<Add directory="/home/amd/MAVSDK/src/plugins/failure/include"/>
+					<Add directory="/home/amd/MAVSDK/src/third_party/mavlink/include"/>
+					<Add directory="/usr/include/c++/5"/>
+					<Add directory="/usr/include/x86_64-linux-gnu/c++/5"/>
+					<Add directory="/usr/include/c++/5/backward"/>
+					<Add directory="/usr/lib/gcc/x86_64-linux-gnu/5/include"/>
+					<Add directory="/usr/local/include"/>
+					<Add directory="/usr/lib/gcc/x86_64-linux-gnu/5/include-fixed"/>
+					<Add directory="/usr/include/x86_64-linux-gnu"/>
+					<Add directory="/usr/include"/>
+				</Compiler>
+				<MakeCommands>
+					<Build command="/usr/bin/make -j128 -f &quot;/home/amd/MAVSDK/cmake-build-debug/src/plugins/failure/Makefile&quot;  VERBOSE=1 mavsdk_failure/fast"/>
+					<CompileFile command="/usr/bin/make -j128 -f &quot;/home/amd/MAVSDK/cmake-build-debug/src/plugins/failure/Makefile&quot;  VERBOSE=1 &quot;$file&quot;"/>
+					<Clean command="/usr/bin/make -j128 -f &quot;/home/amd/MAVSDK/cmake-build-debug/src/plugins/failure/Makefile&quot;  VERBOSE=1 clean"/>
+					<DistClean command="/usr/bin/make -j128 -f &quot;/home/amd/MAVSDK/cmake-build-debug/src/plugins/failure/Makefile&quot;  VERBOSE=1 clean"/>
+				</MakeCommands>
+			</Target>
+			<Target title="gmock_main">
+				<Option output="/home/amd/MAVSDK/cmake-build-debug/lib/libgmock_maind.so" prefix_auto="0" extension_auto="0"/>
+				<Option working_dir="/home/amd/MAVSDK/cmake-build-debug/src/third_party/gtest/googlemock"/>
+				<Option object_output="./"/>
+				<Option type="3"/>
+				<Option compiler="gcc"/>
+				<Compiler>
+					<Add option="-DGTEST_CREATE_SHARED_LIBRARY=1"/>
+					<Add option="-DLINUX"/>
+					<Add directory="/home/amd/MAVSDK/src/third_party/gtest/googlemock/include"/>
+					<Add directory="/home/amd/MAVSDK/src/third_party/gtest/googlemock"/>
+					<Add directory="/home/amd/MAVSDK/src/third_party/gtest/googletest/include"/>
+					<Add directory="/home/amd/MAVSDK/src/third_party/gtest/googletest"/>
+					<Add directory="/usr/include/c++/5"/>
+					<Add directory="/usr/include/x86_64-linux-gnu/c++/5"/>
+					<Add directory="/usr/include/c++/5/backward"/>
+					<Add directory="/usr/lib/gcc/x86_64-linux-gnu/5/include"/>
+					<Add directory="/usr/local/include"/>
+					<Add directory="/usr/lib/gcc/x86_64-linux-gnu/5/include-fixed"/>
+					<Add directory="/usr/include/x86_64-linux-gnu"/>
+					<Add directory="/usr/include"/>
+				</Compiler>
+				<MakeCommands>
+					<Build command="/usr/bin/make -j128 -f &quot;/home/amd/MAVSDK/cmake-build-debug/src/third_party/gtest/googlemock/Makefile&quot;  VERBOSE=1 gmock_main"/>
+					<CompileFile command="/usr/bin/make -j128 -f &quot;/home/amd/MAVSDK/cmake-build-debug/src/third_party/gtest/googlemock/Makefile&quot;  VERBOSE=1 &quot;$file&quot;"/>
+					<Clean command="/usr/bin/make -j128 -f &quot;/home/amd/MAVSDK/cmake-build-debug/src/third_party/gtest/googlemock/Makefile&quot;  VERBOSE=1 clean"/>
+					<DistClean command="/usr/bin/make -j128 -f &quot;/home/amd/MAVSDK/cmake-build-debug/src/third_party/gtest/googlemock/Makefile&quot;  VERBOSE=1 clean"/>
+				</MakeCommands>
+			</Target>
+			<Target title="gmock_main/fast">
+				<Option output="/home/amd/MAVSDK/cmake-build-debug/lib/libgmock_maind.so" prefix_auto="0" extension_auto="0"/>
+				<Option working_dir="/home/amd/MAVSDK/cmake-build-debug/src/third_party/gtest/googlemock"/>
+				<Option object_output="./"/>
+				<Option type="3"/>
+				<Option compiler="gcc"/>
+				<Compiler>
+					<Add option="-DGTEST_CREATE_SHARED_LIBRARY=1"/>
+					<Add option="-DLINUX"/>
+					<Add directory="/home/amd/MAVSDK/src/third_party/gtest/googlemock/include"/>
+					<Add directory="/home/amd/MAVSDK/src/third_party/gtest/googlemock"/>
+					<Add directory="/home/amd/MAVSDK/src/third_party/gtest/googletest/include"/>
+					<Add directory="/home/amd/MAVSDK/src/third_party/gtest/googletest"/>
+					<Add directory="/usr/include/c++/5"/>
+					<Add directory="/usr/include/x86_64-linux-gnu/c++/5"/>
+					<Add directory="/usr/include/c++/5/backward"/>
+					<Add directory="/usr/lib/gcc/x86_64-linux-gnu/5/include"/>
+					<Add directory="/usr/local/include"/>
+					<Add directory="/usr/lib/gcc/x86_64-linux-gnu/5/include-fixed"/>
+					<Add directory="/usr/include/x86_64-linux-gnu"/>
+					<Add directory="/usr/include"/>
+				</Compiler>
+				<MakeCommands>
+					<Build command="/usr/bin/make -j128 -f &quot;/home/amd/MAVSDK/cmake-build-debug/src/third_party/gtest/googlemock/Makefile&quot;  VERBOSE=1 gmock_main/fast"/>
+					<CompileFile command="/usr/bin/make -j128 -f &quot;/home/amd/MAVSDK/cmake-build-debug/src/third_party/gtest/googlemock/Makefile&quot;  VERBOSE=1 &quot;$file&quot;"/>
+					<Clean command="/usr/bin/make -j128 -f &quot;/home/amd/MAVSDK/cmake-build-debug/src/third_party/gtest/googlemock/Makefile&quot;  VERBOSE=1 clean"/>
+					<DistClean command="/usr/bin/make -j128 -f &quot;/home/amd/MAVSDK/cmake-build-debug/src/third_party/gtest/googlemock/Makefile&quot;  VERBOSE=1 clean"/>
+				</MakeCommands>
+			</Target>
+			<Target title="gmock">
+				<Option output="/home/amd/MAVSDK/cmake-build-debug/lib/libgmockd.so" prefix_auto="0" extension_auto="0"/>
+				<Option working_dir="/home/amd/MAVSDK/cmake-build-debug/src/third_party/gtest/googlemock"/>
+				<Option object_output="./"/>
+				<Option type="3"/>
+				<Option compiler="gcc"/>
+				<Compiler>
+					<Add option="-DGTEST_CREATE_SHARED_LIBRARY=1"/>
+					<Add option="-DLINUX"/>
+					<Add directory="/home/amd/MAVSDK/src/third_party/gtest/googlemock/include"/>
+					<Add directory="/home/amd/MAVSDK/src/third_party/gtest/googlemock"/>
+					<Add directory="/home/amd/MAVSDK/src/third_party/gtest/googletest/include"/>
+					<Add directory="/home/amd/MAVSDK/src/third_party/gtest/googletest"/>
+					<Add directory="/usr/include/c++/5"/>
+					<Add directory="/usr/include/x86_64-linux-gnu/c++/5"/>
+					<Add directory="/usr/include/c++/5/backward"/>
+					<Add directory="/usr/lib/gcc/x86_64-linux-gnu/5/include"/>
+					<Add directory="/usr/local/include"/>
+					<Add directory="/usr/lib/gcc/x86_64-linux-gnu/5/include-fixed"/>
+					<Add directory="/usr/include/x86_64-linux-gnu"/>
+					<Add directory="/usr/include"/>
+				</Compiler>
+				<MakeCommands>
+					<Build command="/usr/bin/make -j128 -f &quot;/home/amd/MAVSDK/cmake-build-debug/src/third_party/gtest/googlemock/Makefile&quot;  VERBOSE=1 gmock"/>
+					<CompileFile command="/usr/bin/make -j128 -f &quot;/home/amd/MAVSDK/cmake-build-debug/src/third_party/gtest/googlemock/Makefile&quot;  VERBOSE=1 &quot;$file&quot;"/>
+					<Clean command="/usr/bin/make -j128 -f &quot;/home/amd/MAVSDK/cmake-build-debug/src/third_party/gtest/googlemock/Makefile&quot;  VERBOSE=1 clean"/>
+					<DistClean command="/usr/bin/make -j128 -f &quot;/home/amd/MAVSDK/cmake-build-debug/src/third_party/gtest/googlemock/Makefile&quot;  VERBOSE=1 clean"/>
+				</MakeCommands>
+			</Target>
+			<Target title="gmock/fast">
+				<Option output="/home/amd/MAVSDK/cmake-build-debug/lib/libgmockd.so" prefix_auto="0" extension_auto="0"/>
+				<Option working_dir="/home/amd/MAVSDK/cmake-build-debug/src/third_party/gtest/googlemock"/>
+				<Option object_output="./"/>
+				<Option type="3"/>
+				<Option compiler="gcc"/>
+				<Compiler>
+					<Add option="-DGTEST_CREATE_SHARED_LIBRARY=1"/>
+					<Add option="-DLINUX"/>
+					<Add directory="/home/amd/MAVSDK/src/third_party/gtest/googlemock/include"/>
+					<Add directory="/home/amd/MAVSDK/src/third_party/gtest/googlemock"/>
+					<Add directory="/home/amd/MAVSDK/src/third_party/gtest/googletest/include"/>
+					<Add directory="/home/amd/MAVSDK/src/third_party/gtest/googletest"/>
+					<Add directory="/usr/include/c++/5"/>
+					<Add directory="/usr/include/x86_64-linux-gnu/c++/5"/>
+					<Add directory="/usr/include/c++/5/backward"/>
+					<Add directory="/usr/lib/gcc/x86_64-linux-gnu/5/include"/>
+					<Add directory="/usr/local/include"/>
+					<Add directory="/usr/lib/gcc/x86_64-linux-gnu/5/include-fixed"/>
+					<Add directory="/usr/include/x86_64-linux-gnu"/>
+					<Add directory="/usr/include"/>
+				</Compiler>
+				<MakeCommands>
+					<Build command="/usr/bin/make -j128 -f &quot;/home/amd/MAVSDK/cmake-build-debug/src/third_party/gtest/googlemock/Makefile&quot;  VERBOSE=1 gmock/fast"/>
+					<CompileFile command="/usr/bin/make -j128 -f &quot;/home/amd/MAVSDK/cmake-build-debug/src/third_party/gtest/googlemock/Makefile&quot;  VERBOSE=1 &quot;$file&quot;"/>
+					<Clean command="/usr/bin/make -j128 -f &quot;/home/amd/MAVSDK/cmake-build-debug/src/third_party/gtest/googlemock/Makefile&quot;  VERBOSE=1 clean"/>
+					<DistClean command="/usr/bin/make -j128 -f &quot;/home/amd/MAVSDK/cmake-build-debug/src/third_party/gtest/googlemock/Makefile&quot;  VERBOSE=1 clean"/>
+				</MakeCommands>
+			</Target>
+			<Target title="gtest_main">
+				<Option output="/home/amd/MAVSDK/cmake-build-debug/lib/libgtest_maind.so" prefix_auto="0" extension_auto="0"/>
+				<Option working_dir="/home/amd/MAVSDK/cmake-build-debug/src/third_party/gtest/googletest"/>
+				<Option object_output="./"/>
+				<Option type="3"/>
+				<Option compiler="gcc"/>
+				<Compiler>
+					<Add option="-DGTEST_CREATE_SHARED_LIBRARY=1"/>
+					<Add option="-DLINUX"/>
+					<Add directory="/home/amd/MAVSDK/src/third_party/gtest/googletest/include"/>
+					<Add directory="/home/amd/MAVSDK/src/third_party/gtest/googletest"/>
+					<Add directory="/usr/include/c++/5"/>
+					<Add directory="/usr/include/x86_64-linux-gnu/c++/5"/>
+					<Add directory="/usr/include/c++/5/backward"/>
+					<Add directory="/usr/lib/gcc/x86_64-linux-gnu/5/include"/>
+					<Add directory="/usr/local/include"/>
+					<Add directory="/usr/lib/gcc/x86_64-linux-gnu/5/include-fixed"/>
+					<Add directory="/usr/include/x86_64-linux-gnu"/>
+					<Add directory="/usr/include"/>
+				</Compiler>
+				<MakeCommands>
+					<Build command="/usr/bin/make -j128 -f &quot;/home/amd/MAVSDK/cmake-build-debug/src/third_party/gtest/googletest/Makefile&quot;  VERBOSE=1 gtest_main"/>
+					<CompileFile command="/usr/bin/make -j128 -f &quot;/home/amd/MAVSDK/cmake-build-debug/src/third_party/gtest/googletest/Makefile&quot;  VERBOSE=1 &quot;$file&quot;"/>
+					<Clean command="/usr/bin/make -j128 -f &quot;/home/amd/MAVSDK/cmake-build-debug/src/third_party/gtest/googletest/Makefile&quot;  VERBOSE=1 clean"/>
+					<DistClean command="/usr/bin/make -j128 -f &quot;/home/amd/MAVSDK/cmake-build-debug/src/third_party/gtest/googletest/Makefile&quot;  VERBOSE=1 clean"/>
+				</MakeCommands>
+			</Target>
+			<Target title="gtest_main/fast">
+				<Option output="/home/amd/MAVSDK/cmake-build-debug/lib/libgtest_maind.so" prefix_auto="0" extension_auto="0"/>
+				<Option working_dir="/home/amd/MAVSDK/cmake-build-debug/src/third_party/gtest/googletest"/>
+				<Option object_output="./"/>
+				<Option type="3"/>
+				<Option compiler="gcc"/>
+				<Compiler>
+					<Add option="-DGTEST_CREATE_SHARED_LIBRARY=1"/>
+					<Add option="-DLINUX"/>
+					<Add directory="/home/amd/MAVSDK/src/third_party/gtest/googletest/include"/>
+					<Add directory="/home/amd/MAVSDK/src/third_party/gtest/googletest"/>
+					<Add directory="/usr/include/c++/5"/>
+					<Add directory="/usr/include/x86_64-linux-gnu/c++/5"/>
+					<Add directory="/usr/include/c++/5/backward"/>
+					<Add directory="/usr/lib/gcc/x86_64-linux-gnu/5/include"/>
+					<Add directory="/usr/local/include"/>
+					<Add directory="/usr/lib/gcc/x86_64-linux-gnu/5/include-fixed"/>
+					<Add directory="/usr/include/x86_64-linux-gnu"/>
+					<Add directory="/usr/include"/>
+				</Compiler>
+				<MakeCommands>
+					<Build command="/usr/bin/make -j128 -f &quot;/home/amd/MAVSDK/cmake-build-debug/src/third_party/gtest/googletest/Makefile&quot;  VERBOSE=1 gtest_main/fast"/>
+					<CompileFile command="/usr/bin/make -j128 -f &quot;/home/amd/MAVSDK/cmake-build-debug/src/third_party/gtest/googletest/Makefile&quot;  VERBOSE=1 &quot;$file&quot;"/>
+					<Clean command="/usr/bin/make -j128 -f &quot;/home/amd/MAVSDK/cmake-build-debug/src/third_party/gtest/googletest/Makefile&quot;  VERBOSE=1 clean"/>
+					<DistClean command="/usr/bin/make -j128 -f &quot;/home/amd/MAVSDK/cmake-build-debug/src/third_party/gtest/googletest/Makefile&quot;  VERBOSE=1 clean"/>
+				</MakeCommands>
+			</Target>
+			<Target title="gtest">
+				<Option output="/home/amd/MAVSDK/cmake-build-debug/lib/libgtestd.so" prefix_auto="0" extension_auto="0"/>
+				<Option working_dir="/home/amd/MAVSDK/cmake-build-debug/src/third_party/gtest/googletest"/>
+				<Option object_output="./"/>
+				<Option type="3"/>
+				<Option compiler="gcc"/>
+				<Compiler>
+					<Add option="-DGTEST_CREATE_SHARED_LIBRARY=1"/>
+					<Add option="-DLINUX"/>
+					<Add directory="/home/amd/MAVSDK/src/third_party/gtest/googletest/include"/>
+					<Add directory="/home/amd/MAVSDK/src/third_party/gtest/googletest"/>
+					<Add directory="/usr/include/c++/5"/>
+					<Add directory="/usr/include/x86_64-linux-gnu/c++/5"/>
+					<Add directory="/usr/include/c++/5/backward"/>
+					<Add directory="/usr/lib/gcc/x86_64-linux-gnu/5/include"/>
+					<Add directory="/usr/local/include"/>
+					<Add directory="/usr/lib/gcc/x86_64-linux-gnu/5/include-fixed"/>
+					<Add directory="/usr/include/x86_64-linux-gnu"/>
+					<Add directory="/usr/include"/>
+				</Compiler>
+				<MakeCommands>
+					<Build command="/usr/bin/make -j128 -f &quot;/home/amd/MAVSDK/cmake-build-debug/src/third_party/gtest/googletest/Makefile&quot;  VERBOSE=1 gtest"/>
+					<CompileFile command="/usr/bin/make -j128 -f &quot;/home/amd/MAVSDK/cmake-build-debug/src/third_party/gtest/googletest/Makefile&quot;  VERBOSE=1 &quot;$file&quot;"/>
+					<Clean command="/usr/bin/make -j128 -f &quot;/home/amd/MAVSDK/cmake-build-debug/src/third_party/gtest/googletest/Makefile&quot;  VERBOSE=1 clean"/>
+					<DistClean command="/usr/bin/make -j128 -f &quot;/home/amd/MAVSDK/cmake-build-debug/src/third_party/gtest/googletest/Makefile&quot;  VERBOSE=1 clean"/>
+				</MakeCommands>
+			</Target>
+			<Target title="gtest/fast">
+				<Option output="/home/amd/MAVSDK/cmake-build-debug/lib/libgtestd.so" prefix_auto="0" extension_auto="0"/>
+				<Option working_dir="/home/amd/MAVSDK/cmake-build-debug/src/third_party/gtest/googletest"/>
+				<Option object_output="./"/>
+				<Option type="3"/>
+				<Option compiler="gcc"/>
+				<Compiler>
+					<Add option="-DGTEST_CREATE_SHARED_LIBRARY=1"/>
+					<Add option="-DLINUX"/>
+					<Add directory="/home/amd/MAVSDK/src/third_party/gtest/googletest/include"/>
+					<Add directory="/home/amd/MAVSDK/src/third_party/gtest/googletest"/>
+					<Add directory="/usr/include/c++/5"/>
+					<Add directory="/usr/include/x86_64-linux-gnu/c++/5"/>
+					<Add directory="/usr/include/c++/5/backward"/>
+					<Add directory="/usr/lib/gcc/x86_64-linux-gnu/5/include"/>
+					<Add directory="/usr/local/include"/>
+					<Add directory="/usr/lib/gcc/x86_64-linux-gnu/5/include-fixed"/>
+					<Add directory="/usr/include/x86_64-linux-gnu"/>
+					<Add directory="/usr/include"/>
+				</Compiler>
+				<MakeCommands>
+					<Build command="/usr/bin/make -j128 -f &quot;/home/amd/MAVSDK/cmake-build-debug/src/third_party/gtest/googletest/Makefile&quot;  VERBOSE=1 gtest/fast"/>
+					<CompileFile command="/usr/bin/make -j128 -f &quot;/home/amd/MAVSDK/cmake-build-debug/src/third_party/gtest/googletest/Makefile&quot;  VERBOSE=1 &quot;$file&quot;"/>
+					<Clean command="/usr/bin/make -j128 -f &quot;/home/amd/MAVSDK/cmake-build-debug/src/third_party/gtest/googletest/Makefile&quot;  VERBOSE=1 clean"/>
+					<DistClean command="/usr/bin/make -j128 -f &quot;/home/amd/MAVSDK/cmake-build-debug/src/third_party/gtest/googletest/Makefile&quot;  VERBOSE=1 clean"/>
+				</MakeCommands>
+			</Target>
+			<Target title="check">
+				<Option working_dir="/home/amd/MAVSDK/cmake-build-debug/src/integration_tests"/>
+				<Option type="4"/>
+				<MakeCommands>
+					<Build command="/usr/bin/make -j128 -f &quot;/home/amd/MAVSDK/cmake-build-debug/src/integration_tests/Makefile&quot;  VERBOSE=1 check"/>
+					<CompileFile command="/usr/bin/make -j128 -f &quot;/home/amd/MAVSDK/cmake-build-debug/src/integration_tests/Makefile&quot;  VERBOSE=1 &quot;$file&quot;"/>
+					<Clean command="/usr/bin/make -j128 -f &quot;/home/amd/MAVSDK/cmake-build-debug/src/integration_tests/Makefile&quot;  VERBOSE=1 clean"/>
+					<DistClean command="/usr/bin/make -j128 -f &quot;/home/amd/MAVSDK/cmake-build-debug/src/integration_tests/Makefile&quot;  VERBOSE=1 clean"/>
+				</MakeCommands>
+			</Target>
+			<Target title="integration_tests_runner">
+				<Option output="/home/amd/MAVSDK/cmake-build-debug/src/integration_tests/integration_tests_runner" prefix_auto="0" extension_auto="0"/>
+				<Option working_dir="/home/amd/MAVSDK/cmake-build-debug/src/integration_tests"/>
+				<Option object_output="./"/>
+				<Option type="1"/>
+				<Option compiler="gcc"/>
+				<Compiler>
+					<Add option="-DLINUX"/>
+					<Add directory="/home/amd/MAVSDK/src/core"/>
+					<Add directory="/home/amd/MAVSDK/src"/>
+					<Add directory="/home/amd/MAVSDK/src/plugins/telemetry/include"/>
+					<Add directory="/home/amd/MAVSDK/src/plugins/action/include"/>
+					<Add directory="/home/amd/MAVSDK/src/plugins/mission/include"/>
+					<Add directory="/home/amd/MAVSDK/src/plugins/mission_raw/include"/>
+					<Add directory="/home/amd/MAVSDK/src/plugins/offboard/include"/>
+					<Add directory="/home/amd/MAVSDK/src/plugins/log_files/include"/>
+					<Add directory="/home/amd/MAVSDK/src/plugins/info/include"/>
+					<Add directory="/home/amd/MAVSDK/src/plugins/gimbal/include"/>
+					<Add directory="/home/amd/MAVSDK/src/plugins/follow_me/include"/>
+					<Add directory="/home/amd/MAVSDK/src/plugins/camera/include"/>
+					<Add directory="/home/amd/MAVSDK/src/plugins/calibration/include"/>
+					<Add directory="/home/amd/MAVSDK/src/plugins/geofence/include"/>
+					<Add directory="/home/amd/MAVSDK/src/plugins/param/include"/>
+					<Add directory="/home/amd/MAVSDK/src/plugins/ftp/include"/>
+					<Add directory="/home/amd/MAVSDK/src/plugins/mavlink_passthrough/include"/>
+					<Add directory="/home/amd/MAVSDK/src/third_party/gtest/googletest/include"/>
+					<Add directory="/home/amd/MAVSDK/src/third_party/gtest/googlemock/include"/>
+					<Add directory="/home/amd/MAVSDK/src/third_party/mavlink/include"/>
+					<Add directory="/home/amd/MAVSDK/src/third_party/gtest/googletest"/>
+					<Add directory="/home/amd/MAVSDK/src/third_party/gtest/googlemock"/>
+					<Add directory="/usr/include/c++/5"/>
+					<Add directory="/usr/include/x86_64-linux-gnu/c++/5"/>
+					<Add directory="/usr/include/c++/5/backward"/>
+					<Add directory="/usr/lib/gcc/x86_64-linux-gnu/5/include"/>
+					<Add directory="/usr/local/include"/>
+					<Add directory="/usr/lib/gcc/x86_64-linux-gnu/5/include-fixed"/>
+					<Add directory="/usr/include/x86_64-linux-gnu"/>
+					<Add directory="/usr/include"/>
+				</Compiler>
+				<MakeCommands>
+					<Build command="/usr/bin/make -j128 -f &quot;/home/amd/MAVSDK/cmake-build-debug/src/integration_tests/Makefile&quot;  VERBOSE=1 integration_tests_runner"/>
+					<CompileFile command="/usr/bin/make -j128 -f &quot;/home/amd/MAVSDK/cmake-build-debug/src/integration_tests/Makefile&quot;  VERBOSE=1 &quot;$file&quot;"/>
+					<Clean command="/usr/bin/make -j128 -f &quot;/home/amd/MAVSDK/cmake-build-debug/src/integration_tests/Makefile&quot;  VERBOSE=1 clean"/>
+					<DistClean command="/usr/bin/make -j128 -f &quot;/home/amd/MAVSDK/cmake-build-debug/src/integration_tests/Makefile&quot;  VERBOSE=1 clean"/>
+				</MakeCommands>
+			</Target>
+			<Target title="integration_tests_runner/fast">
+				<Option output="/home/amd/MAVSDK/cmake-build-debug/src/integration_tests/integration_tests_runner" prefix_auto="0" extension_auto="0"/>
+				<Option working_dir="/home/amd/MAVSDK/cmake-build-debug/src/integration_tests"/>
+				<Option object_output="./"/>
+				<Option type="1"/>
+				<Option compiler="gcc"/>
+				<Compiler>
+					<Add option="-DLINUX"/>
+					<Add directory="/home/amd/MAVSDK/src/core"/>
+					<Add directory="/home/amd/MAVSDK/src"/>
+					<Add directory="/home/amd/MAVSDK/src/plugins/telemetry/include"/>
+					<Add directory="/home/amd/MAVSDK/src/plugins/action/include"/>
+					<Add directory="/home/amd/MAVSDK/src/plugins/mission/include"/>
+					<Add directory="/home/amd/MAVSDK/src/plugins/mission_raw/include"/>
+					<Add directory="/home/amd/MAVSDK/src/plugins/offboard/include"/>
+					<Add directory="/home/amd/MAVSDK/src/plugins/log_files/include"/>
+					<Add directory="/home/amd/MAVSDK/src/plugins/info/include"/>
+					<Add directory="/home/amd/MAVSDK/src/plugins/gimbal/include"/>
+					<Add directory="/home/amd/MAVSDK/src/plugins/follow_me/include"/>
+					<Add directory="/home/amd/MAVSDK/src/plugins/camera/include"/>
+					<Add directory="/home/amd/MAVSDK/src/plugins/calibration/include"/>
+					<Add directory="/home/amd/MAVSDK/src/plugins/geofence/include"/>
+					<Add directory="/home/amd/MAVSDK/src/plugins/param/include"/>
+					<Add directory="/home/amd/MAVSDK/src/plugins/ftp/include"/>
+					<Add directory="/home/amd/MAVSDK/src/plugins/mavlink_passthrough/include"/>
+					<Add directory="/home/amd/MAVSDK/src/third_party/gtest/googletest/include"/>
+					<Add directory="/home/amd/MAVSDK/src/third_party/gtest/googlemock/include"/>
+					<Add directory="/home/amd/MAVSDK/src/third_party/mavlink/include"/>
+					<Add directory="/home/amd/MAVSDK/src/third_party/gtest/googletest"/>
+					<Add directory="/home/amd/MAVSDK/src/third_party/gtest/googlemock"/>
+					<Add directory="/usr/include/c++/5"/>
+					<Add directory="/usr/include/x86_64-linux-gnu/c++/5"/>
+					<Add directory="/usr/include/c++/5/backward"/>
+					<Add directory="/usr/lib/gcc/x86_64-linux-gnu/5/include"/>
+					<Add directory="/usr/local/include"/>
+					<Add directory="/usr/lib/gcc/x86_64-linux-gnu/5/include-fixed"/>
+					<Add directory="/usr/include/x86_64-linux-gnu"/>
+					<Add directory="/usr/include"/>
+				</Compiler>
+				<MakeCommands>
+					<Build command="/usr/bin/make -j128 -f &quot;/home/amd/MAVSDK/cmake-build-debug/src/integration_tests/Makefile&quot;  VERBOSE=1 integration_tests_runner/fast"/>
+					<CompileFile command="/usr/bin/make -j128 -f &quot;/home/amd/MAVSDK/cmake-build-debug/src/integration_tests/Makefile&quot;  VERBOSE=1 &quot;$file&quot;"/>
+					<Clean command="/usr/bin/make -j128 -f &quot;/home/amd/MAVSDK/cmake-build-debug/src/integration_tests/Makefile&quot;  VERBOSE=1 clean"/>
+					<DistClean command="/usr/bin/make -j128 -f &quot;/home/amd/MAVSDK/cmake-build-debug/src/integration_tests/Makefile&quot;  VERBOSE=1 clean"/>
+				</MakeCommands>
+			</Target>
+		</Build>
+		<Unit filename="/home/amd/MAVSDK/src/core/any_test.cpp">
+			<Option target="unit_tests_runner"/>
+		</Unit>
+		<Unit filename="/home/amd/MAVSDK/src/core/call_every_handler.cpp">
+			<Option target="mavsdk"/>
+		</Unit>
+		<Unit filename="/home/amd/MAVSDK/src/core/call_every_handler.h">
+			<Option target="mavsdk"/>
+		</Unit>
+		<Unit filename="/home/amd/MAVSDK/src/core/call_every_handler_test.cpp">
+			<Option target="unit_tests_runner"/>
+		</Unit>
+		<Unit filename="/home/amd/MAVSDK/src/core/cli_arg.cpp">
+			<Option target="mavsdk"/>
+		</Unit>
+		<Unit filename="/home/amd/MAVSDK/src/core/cli_arg.h">
+			<Option target="mavsdk"/>
+		</Unit>
+		<Unit filename="/home/amd/MAVSDK/src/core/cli_arg_test.cpp">
+			<Option target="unit_tests_runner"/>
+		</Unit>
+		<Unit filename="/home/amd/MAVSDK/src/core/connection.cpp">
+			<Option target="mavsdk"/>
+		</Unit>
+		<Unit filename="/home/amd/MAVSDK/src/core/connection.h">
+			<Option target="mavsdk"/>
+		</Unit>
+		<Unit filename="/home/amd/MAVSDK/src/core/connection_result.cpp">
+			<Option target="mavsdk"/>
+		</Unit>
+		<Unit filename="/home/amd/MAVSDK/src/core/connection_result.h">
+			<Option target="mavsdk"/>
+		</Unit>
+		<Unit filename="/home/amd/MAVSDK/src/core/curl_test.cpp">
+			<Option target="unit_tests_runner"/>
+		</Unit>
+		<Unit filename="/home/amd/MAVSDK/src/core/curl_wrapper.cpp">
+			<Option target="mavsdk"/>
+		</Unit>
+		<Unit filename="/home/amd/MAVSDK/src/core/curl_wrapper.h">
+			<Option target="mavsdk"/>
+		</Unit>
+		<Unit filename="/home/amd/MAVSDK/src/core/geometry.cpp">
+			<Option target="mavsdk"/>
+		</Unit>
+		<Unit filename="/home/amd/MAVSDK/src/core/geometry.h">
+			<Option target="mavsdk"/>
+		</Unit>
+		<Unit filename="/home/amd/MAVSDK/src/core/geometry_test.cpp">
+			<Option target="unit_tests_runner"/>
+		</Unit>
+		<Unit filename="/home/amd/MAVSDK/src/core/global_include.cpp">
+			<Option target="mavsdk"/>
+		</Unit>
+		<Unit filename="/home/amd/MAVSDK/src/core/global_include.h">
+			<Option target="mavsdk"/>
+		</Unit>
+		<Unit filename="/home/amd/MAVSDK/src/core/global_include_test.cpp">
+			<Option target="unit_tests_runner"/>
+		</Unit>
+		<Unit filename="/home/amd/MAVSDK/src/core/http_loader.cpp">
+			<Option target="mavsdk"/>
+		</Unit>
+		<Unit filename="/home/amd/MAVSDK/src/core/http_loader.h">
+			<Option target="mavsdk"/>
+		</Unit>
+		<Unit filename="/home/amd/MAVSDK/src/core/locked_queue_test.cpp">
+			<Option target="unit_tests_runner"/>
+		</Unit>
+		<Unit filename="/home/amd/MAVSDK/src/core/log.cpp">
+			<Option target="mavsdk"/>
+		</Unit>
+		<Unit filename="/home/amd/MAVSDK/src/core/log.h">
+			<Option target="mavsdk"/>
+		</Unit>
+		<Unit filename="/home/amd/MAVSDK/src/core/mavlink_channels.cpp">
+			<Option target="mavsdk"/>
+		</Unit>
+		<Unit filename="/home/amd/MAVSDK/src/core/mavlink_channels.h">
+			<Option target="mavsdk"/>
+		</Unit>
+		<Unit filename="/home/amd/MAVSDK/src/core/mavlink_channels_test.cpp">
+			<Option target="unit_tests_runner"/>
+		</Unit>
+		<Unit filename="/home/amd/MAVSDK/src/core/mavlink_commands.cpp">
+			<Option target="mavsdk"/>
+		</Unit>
+		<Unit filename="/home/amd/MAVSDK/src/core/mavlink_commands.h">
+			<Option target="mavsdk"/>
+		</Unit>
+		<Unit filename="/home/amd/MAVSDK/src/core/mavlink_message_handler.cpp">
+			<Option target="mavsdk"/>
+		</Unit>
+		<Unit filename="/home/amd/MAVSDK/src/core/mavlink_message_handler.h">
+			<Option target="mavsdk"/>
+		</Unit>
+		<Unit filename="/home/amd/MAVSDK/src/core/mavlink_mission_transfer.cpp">
+			<Option target="mavsdk"/>
+		</Unit>
+		<Unit filename="/home/amd/MAVSDK/src/core/mavlink_mission_transfer.h">
+			<Option target="mavsdk"/>
+		</Unit>
+		<Unit filename="/home/amd/MAVSDK/src/core/mavlink_mission_transfer_test.cpp">
+			<Option target="unit_tests_runner"/>
+		</Unit>
+		<Unit filename="/home/amd/MAVSDK/src/core/mavlink_parameters.cpp">
+			<Option target="mavsdk"/>
+		</Unit>
+		<Unit filename="/home/amd/MAVSDK/src/core/mavlink_parameters.h">
+			<Option target="mavsdk"/>
+		</Unit>
+		<Unit filename="/home/amd/MAVSDK/src/core/mavlink_receiver.cpp">
+			<Option target="mavsdk"/>
+		</Unit>
+		<Unit filename="/home/amd/MAVSDK/src/core/mavlink_receiver.h">
+			<Option target="mavsdk"/>
+		</Unit>
+		<Unit filename="/home/amd/MAVSDK/src/core/mavlink_statustext_handler.cpp">
+			<Option target="mavsdk"/>
+		</Unit>
+		<Unit filename="/home/amd/MAVSDK/src/core/mavlink_statustext_handler.h">
+			<Option target="mavsdk"/>
+		</Unit>
+		<Unit filename="/home/amd/MAVSDK/src/core/mavlink_statustext_handler_test.cpp">
+			<Option target="unit_tests_runner"/>
+		</Unit>
+		<Unit filename="/home/amd/MAVSDK/src/core/mavsdk.cpp">
+			<Option target="mavsdk"/>
+		</Unit>
+		<Unit filename="/home/amd/MAVSDK/src/core/mavsdk.h">
+			<Option target="mavsdk"/>
+		</Unit>
+		<Unit filename="/home/amd/MAVSDK/src/core/mavsdk_impl.cpp">
+			<Option target="mavsdk"/>
+		</Unit>
+		<Unit filename="/home/amd/MAVSDK/src/core/mavsdk_impl.h">
+			<Option target="mavsdk"/>
+		</Unit>
+		<Unit filename="/home/amd/MAVSDK/src/core/mavsdk_test.cpp">
+			<Option target="unit_tests_runner"/>
+		</Unit>
+		<Unit filename="/home/amd/MAVSDK/src/core/plugin_impl_base.cpp">
+			<Option target="mavsdk"/>
+		</Unit>
+		<Unit filename="/home/amd/MAVSDK/src/core/plugin_impl_base.h">
+			<Option target="mavsdk"/>
+		</Unit>
+		<Unit filename="/home/amd/MAVSDK/src/core/safe_queue_test.cpp">
+			<Option target="unit_tests_runner"/>
+		</Unit>
+		<Unit filename="/home/amd/MAVSDK/src/core/serial_connection.cpp">
+			<Option target="mavsdk"/>
+		</Unit>
+		<Unit filename="/home/amd/MAVSDK/src/core/serial_connection.h">
+			<Option target="mavsdk"/>
+		</Unit>
+		<Unit filename="/home/amd/MAVSDK/src/core/system.cpp">
+			<Option target="mavsdk"/>
+		</Unit>
+		<Unit filename="/home/amd/MAVSDK/src/core/system.h">
+			<Option target="mavsdk"/>
+		</Unit>
+		<Unit filename="/home/amd/MAVSDK/src/core/system_impl.cpp">
+			<Option target="mavsdk"/>
+		</Unit>
+		<Unit filename="/home/amd/MAVSDK/src/core/system_impl.h">
+			<Option target="mavsdk"/>
+		</Unit>
+		<Unit filename="/home/amd/MAVSDK/src/core/tcp_connection.cpp">
+			<Option target="mavsdk"/>
+		</Unit>
+		<Unit filename="/home/amd/MAVSDK/src/core/tcp_connection.h">
+			<Option target="mavsdk"/>
+		</Unit>
+		<Unit filename="/home/amd/MAVSDK/src/core/timeout_handler.cpp">
+			<Option target="mavsdk"/>
+		</Unit>
+		<Unit filename="/home/amd/MAVSDK/src/core/timeout_handler.h">
+			<Option target="mavsdk"/>
+		</Unit>
+		<Unit filename="/home/amd/MAVSDK/src/core/timeout_handler_test.cpp">
+			<Option target="unit_tests_runner"/>
+		</Unit>
+		<Unit filename="/home/amd/MAVSDK/src/core/timesync.cpp">
+			<Option target="mavsdk"/>
+		</Unit>
+		<Unit filename="/home/amd/MAVSDK/src/core/timesync.h">
+			<Option target="mavsdk"/>
+		</Unit>
+		<Unit filename="/home/amd/MAVSDK/src/core/udp_connection.cpp">
+			<Option target="mavsdk"/>
+		</Unit>
+		<Unit filename="/home/amd/MAVSDK/src/core/udp_connection.h">
+			<Option target="mavsdk"/>
+		</Unit>
+		<Unit filename="/home/amd/MAVSDK/src/core/unittests_main.cpp">
+			<Option target="unit_tests_runner"/>
+			<Option target="integration_tests_runner"/>
+		</Unit>
+		<Unit filename="/home/amd/MAVSDK/src/integration_tests/CMakeLists.txt">
+			<Option target="integration_tests_runner"/>
+		</Unit>
+		<Unit filename="/home/amd/MAVSDK/src/integration_tests/action_goto.cpp">
+			<Option target="integration_tests_runner"/>
+		</Unit>
+		<Unit filename="/home/amd/MAVSDK/src/integration_tests/action_hover_async.cpp">
+			<Option target="integration_tests_runner"/>
+		</Unit>
+		<Unit filename="/home/amd/MAVSDK/src/integration_tests/action_hover_sync.cpp">
+			<Option target="integration_tests_runner"/>
+		</Unit>
+		<Unit filename="/home/amd/MAVSDK/src/integration_tests/action_takeoff_and_kill.cpp">
+			<Option target="integration_tests_runner"/>
+		</Unit>
+		<Unit filename="/home/amd/MAVSDK/src/integration_tests/action_transition_multicopter_fixedwing.cpp">
+			<Option target="integration_tests_runner"/>
+		</Unit>
+		<Unit filename="/home/amd/MAVSDK/src/integration_tests/calibration.cpp">
+			<Option target="integration_tests_runner"/>
+		</Unit>
+		<Unit filename="/home/amd/MAVSDK/src/integration_tests/camera_format.cpp">
+			<Option target="integration_tests_runner"/>
+		</Unit>
+		<Unit filename="/home/amd/MAVSDK/src/integration_tests/camera_mode.cpp">
+			<Option target="integration_tests_runner"/>
+		</Unit>
+		<Unit filename="/home/amd/MAVSDK/src/integration_tests/camera_settings.cpp">
+			<Option target="integration_tests_runner"/>
+		</Unit>
+		<Unit filename="/home/amd/MAVSDK/src/integration_tests/camera_status.cpp">
+			<Option target="integration_tests_runner"/>
+		</Unit>
+		<Unit filename="/home/amd/MAVSDK/src/integration_tests/camera_take_photo.cpp">
+			<Option target="integration_tests_runner"/>
+		</Unit>
+		<Unit filename="/home/amd/MAVSDK/src/integration_tests/camera_take_photo_interval.cpp">
+			<Option target="integration_tests_runner"/>
+		</Unit>
+		<Unit filename="/home/amd/MAVSDK/src/integration_tests/camera_test_helpers.cpp">
+			<Option target="integration_tests_runner"/>
+		</Unit>
+		<Unit filename="/home/amd/MAVSDK/src/integration_tests/camera_test_helpers.h">
+			<Option target="integration_tests_runner"/>
+		</Unit>
+		<Unit filename="/home/amd/MAVSDK/src/integration_tests/follow_me.cpp">
+			<Option target="integration_tests_runner"/>
+		</Unit>
+		<Unit filename="/home/amd/MAVSDK/src/integration_tests/ftp.cpp">
+			<Option target="integration_tests_runner"/>
+		</Unit>
+		<Unit filename="/home/amd/MAVSDK/src/integration_tests/geofence_inclusion.cpp">
+			<Option target="integration_tests_runner"/>
+		</Unit>
+		<Unit filename="/home/amd/MAVSDK/src/integration_tests/gimbal.cpp">
+			<Option target="integration_tests_runner"/>
+		</Unit>
+		<Unit filename="/home/amd/MAVSDK/src/integration_tests/info.cpp">
+			<Option target="integration_tests_runner"/>
+		</Unit>
+		<Unit filename="/home/amd/MAVSDK/src/integration_tests/log_files.cpp">
+			<Option target="integration_tests_runner"/>
+		</Unit>
+		<Unit filename="/home/amd/MAVSDK/src/integration_tests/mavlink_passthrough.cpp">
+			<Option target="integration_tests_runner"/>
+		</Unit>
+		<Unit filename="/home/amd/MAVSDK/src/integration_tests/mission.cpp">
+			<Option target="integration_tests_runner"/>
+		</Unit>
+		<Unit filename="/home/amd/MAVSDK/src/integration_tests/mission_cancellation.cpp">
+			<Option target="integration_tests_runner"/>
+		</Unit>
+		<Unit filename="/home/amd/MAVSDK/src/integration_tests/mission_change_speed.cpp">
+			<Option target="integration_tests_runner"/>
+		</Unit>
+		<Unit filename="/home/amd/MAVSDK/src/integration_tests/mission_raw_mission_changed.cpp">
+			<Option target="integration_tests_runner"/>
+		</Unit>
+		<Unit filename="/home/amd/MAVSDK/src/integration_tests/mission_rtl.cpp">
+			<Option target="integration_tests_runner"/>
+		</Unit>
+		<Unit filename="/home/amd/MAVSDK/src/integration_tests/mission_transfer_lossy.cpp">
+			<Option target="integration_tests_runner"/>
+		</Unit>
+		<Unit filename="/home/amd/MAVSDK/src/integration_tests/offboard_attitude.cpp">
+			<Option target="integration_tests_runner"/>
+		</Unit>
+		<Unit filename="/home/amd/MAVSDK/src/integration_tests/offboard_position.cpp">
+			<Option target="integration_tests_runner"/>
+		</Unit>
+		<Unit filename="/home/amd/MAVSDK/src/integration_tests/offboard_velocity.cpp">
+			<Option target="integration_tests_runner"/>
+		</Unit>
+		<Unit filename="/home/amd/MAVSDK/src/integration_tests/param.cpp">
+			<Option target="integration_tests_runner"/>
+		</Unit>
+		<Unit filename="/home/amd/MAVSDK/src/integration_tests/path_checker.cpp">
+			<Option target="integration_tests_runner"/>
+		</Unit>
+		<Unit filename="/home/amd/MAVSDK/src/integration_tests/path_checker.h">
+			<Option target="integration_tests_runner"/>
+		</Unit>
+		<Unit filename="/home/amd/MAVSDK/src/integration_tests/system_connection_async.cpp">
+			<Option target="integration_tests_runner"/>
+		</Unit>
+		<Unit filename="/home/amd/MAVSDK/src/integration_tests/system_connection_sync.cpp">
+			<Option target="integration_tests_runner"/>
+		</Unit>
+		<Unit filename="/home/amd/MAVSDK/src/integration_tests/system_multi_components.cpp">
+			<Option target="integration_tests_runner"/>
+		</Unit>
+		<Unit filename="/home/amd/MAVSDK/src/integration_tests/telemetry_async.cpp">
+			<Option target="integration_tests_runner"/>
+		</Unit>
+		<Unit filename="/home/amd/MAVSDK/src/integration_tests/telemetry_health.cpp">
+			<Option target="integration_tests_runner"/>
+		</Unit>
+		<Unit filename="/home/amd/MAVSDK/src/integration_tests/telemetry_modes.cpp">
+			<Option target="integration_tests_runner"/>
+		</Unit>
+		<Unit filename="/home/amd/MAVSDK/src/integration_tests/telemetry_sync.cpp">
+			<Option target="integration_tests_runner"/>
+		</Unit>
+		<Unit filename="/home/amd/MAVSDK/src/plugins/action/action.cpp">
+			<Option target="mavsdk_action"/>
+		</Unit>
+		<Unit filename="/home/amd/MAVSDK/src/plugins/action/action_impl.cpp">
+			<Option target="mavsdk_action"/>
+		</Unit>
+		<Unit filename="/home/amd/MAVSDK/src/plugins/action/action_impl.h">
+			<Option target="mavsdk_action"/>
+		</Unit>
+		<Unit filename="/home/amd/MAVSDK/src/plugins/calibration/calibration.cpp">
+			<Option target="mavsdk_calibration"/>
+		</Unit>
+		<Unit filename="/home/amd/MAVSDK/src/plugins/calibration/calibration_impl.cpp">
+			<Option target="mavsdk_calibration"/>
+		</Unit>
+		<Unit filename="/home/amd/MAVSDK/src/plugins/calibration/calibration_impl.h">
+			<Option target="mavsdk_calibration"/>
+		</Unit>
+		<Unit filename="/home/amd/MAVSDK/src/plugins/calibration/calibration_statustext_parser.cpp">
+			<Option target="mavsdk_calibration"/>
+		</Unit>
+		<Unit filename="/home/amd/MAVSDK/src/plugins/calibration/calibration_statustext_parser.h">
+			<Option target="mavsdk_calibration"/>
+		</Unit>
+		<Unit filename="/home/amd/MAVSDK/src/plugins/calibration/calibration_statustext_parser_test.cpp">
+			<Option target="unit_tests_runner"/>
+		</Unit>
+		<Unit filename="/home/amd/MAVSDK/src/plugins/camera/camera.cpp">
+			<Option target="mavsdk_camera"/>
+		</Unit>
+		<Unit filename="/home/amd/MAVSDK/src/plugins/camera/camera_definition.cpp">
+			<Option target="mavsdk_camera"/>
+		</Unit>
+		<Unit filename="/home/amd/MAVSDK/src/plugins/camera/camera_definition.h">
+			<Option target="mavsdk_camera"/>
+		</Unit>
+		<Unit filename="/home/amd/MAVSDK/src/plugins/camera/camera_definition_files/generated/camera_definition_files.cpp">
+			<Option target="mavsdk_camera"/>
+		</Unit>
+		<Unit filename="/home/amd/MAVSDK/src/plugins/camera/camera_definition_files/generated/camera_definition_files.h">
+			<Option target="mavsdk_camera"/>
+		</Unit>
+		<Unit filename="/home/amd/MAVSDK/src/plugins/camera/camera_definition_test.cpp">
+			<Option target="unit_tests_runner"/>
+		</Unit>
+		<Unit filename="/home/amd/MAVSDK/src/plugins/camera/camera_impl.cpp">
+			<Option target="mavsdk_camera"/>
+		</Unit>
+		<Unit filename="/home/amd/MAVSDK/src/plugins/camera/camera_impl.h">
+			<Option target="mavsdk_camera"/>
+		</Unit>
+		<Unit filename="/home/amd/MAVSDK/src/plugins/failure/failure.cpp">
+			<Option target="mavsdk_failure"/>
+		</Unit>
+		<Unit filename="/home/amd/MAVSDK/src/plugins/failure/failure_impl.cpp">
+			<Option target="mavsdk_failure"/>
+		</Unit>
+		<Unit filename="/home/amd/MAVSDK/src/plugins/failure/failure_impl.h">
+			<Option target="mavsdk_failure"/>
+		</Unit>
+		<Unit filename="/home/amd/MAVSDK/src/plugins/follow_me/follow_me.cpp">
+			<Option target="mavsdk_follow_me"/>
+		</Unit>
+		<Unit filename="/home/amd/MAVSDK/src/plugins/follow_me/follow_me_impl.cpp">
+			<Option target="mavsdk_follow_me"/>
+		</Unit>
+		<Unit filename="/home/amd/MAVSDK/src/plugins/follow_me/follow_me_impl.h">
+			<Option target="mavsdk_follow_me"/>
+		</Unit>
+		<Unit filename="/home/amd/MAVSDK/src/plugins/ftp/crc32.cpp">
+			<Option target="mavsdk_ftp"/>
+		</Unit>
+		<Unit filename="/home/amd/MAVSDK/src/plugins/ftp/crc32.h">
+			<Option target="mavsdk_ftp"/>
+		</Unit>
+		<Unit filename="/home/amd/MAVSDK/src/plugins/ftp/fs.cpp">
+			<Option target="mavsdk_ftp"/>
+		</Unit>
+		<Unit filename="/home/amd/MAVSDK/src/plugins/ftp/fs.h">
+			<Option target="mavsdk_ftp"/>
+		</Unit>
+		<Unit filename="/home/amd/MAVSDK/src/plugins/ftp/ftp.cpp">
+			<Option target="mavsdk_ftp"/>
+		</Unit>
+		<Unit filename="/home/amd/MAVSDK/src/plugins/ftp/ftp_impl.cpp">
+			<Option target="mavsdk_ftp"/>
+		</Unit>
+		<Unit filename="/home/amd/MAVSDK/src/plugins/ftp/ftp_impl.h">
+			<Option target="mavsdk_ftp"/>
+		</Unit>
+		<Unit filename="/home/amd/MAVSDK/src/plugins/geofence/geofence.cpp">
+			<Option target="mavsdk_geofence"/>
+		</Unit>
+		<Unit filename="/home/amd/MAVSDK/src/plugins/geofence/geofence_impl.cpp">
+			<Option target="mavsdk_geofence"/>
+		</Unit>
+		<Unit filename="/home/amd/MAVSDK/src/plugins/geofence/geofence_impl.h">
+			<Option target="mavsdk_geofence"/>
+		</Unit>
+		<Unit filename="/home/amd/MAVSDK/src/plugins/gimbal/gimbal.cpp">
+			<Option target="mavsdk_gimbal"/>
+		</Unit>
+		<Unit filename="/home/amd/MAVSDK/src/plugins/gimbal/gimbal_impl.cpp">
+			<Option target="mavsdk_gimbal"/>
+		</Unit>
+		<Unit filename="/home/amd/MAVSDK/src/plugins/gimbal/gimbal_impl.h">
+			<Option target="mavsdk_gimbal"/>
+		</Unit>
+		<Unit filename="/home/amd/MAVSDK/src/plugins/gimbal/gimbal_protocol_v1.cpp">
+			<Option target="mavsdk_gimbal"/>
+		</Unit>
+		<Unit filename="/home/amd/MAVSDK/src/plugins/gimbal/gimbal_protocol_v1.h">
+			<Option target="mavsdk_gimbal"/>
+		</Unit>
+		<Unit filename="/home/amd/MAVSDK/src/plugins/gimbal/gimbal_protocol_v2.cpp">
+			<Option target="mavsdk_gimbal"/>
+		</Unit>
+		<Unit filename="/home/amd/MAVSDK/src/plugins/gimbal/gimbal_protocol_v2.h">
+			<Option target="mavsdk_gimbal"/>
+		</Unit>
+		<Unit filename="/home/amd/MAVSDK/src/plugins/info/info.cpp">
+			<Option target="mavsdk_info"/>
+		</Unit>
+		<Unit filename="/home/amd/MAVSDK/src/plugins/info/info_impl.cpp">
+			<Option target="mavsdk_info"/>
+		</Unit>
+		<Unit filename="/home/amd/MAVSDK/src/plugins/info/info_impl.h">
+			<Option target="mavsdk_info"/>
+		</Unit>
+		<Unit filename="/home/amd/MAVSDK/src/plugins/log_files/log_files.cpp">
+			<Option target="mavsdk_log_files"/>
+		</Unit>
+		<Unit filename="/home/amd/MAVSDK/src/plugins/log_files/log_files_impl.cpp">
+			<Option target="mavsdk_log_files"/>
+		</Unit>
+		<Unit filename="/home/amd/MAVSDK/src/plugins/log_files/log_files_impl.h">
+			<Option target="mavsdk_log_files"/>
+		</Unit>
+		<Unit filename="/home/amd/MAVSDK/src/plugins/manual_control/manual_control.cpp">
+			<Option target="mavsdk_manual_control"/>
+		</Unit>
+		<Unit filename="/home/amd/MAVSDK/src/plugins/manual_control/manual_control_impl.cpp">
+			<Option target="mavsdk_manual_control"/>
+		</Unit>
+		<Unit filename="/home/amd/MAVSDK/src/plugins/manual_control/manual_control_impl.h">
+			<Option target="mavsdk_manual_control"/>
+		</Unit>
+		<Unit filename="/home/amd/MAVSDK/src/plugins/mavlink_passthrough/mavlink_passthrough.cpp">
+			<Option target="mavsdk_mavlink_passthrough"/>
+		</Unit>
+		<Unit filename="/home/amd/MAVSDK/src/plugins/mavlink_passthrough/mavlink_passthrough_impl.cpp">
+			<Option target="mavsdk_mavlink_passthrough"/>
+		</Unit>
+		<Unit filename="/home/amd/MAVSDK/src/plugins/mavlink_passthrough/mavlink_passthrough_impl.h">
+			<Option target="mavsdk_mavlink_passthrough"/>
+		</Unit>
+		<Unit filename="/home/amd/MAVSDK/src/plugins/mission/mission.cpp">
+			<Option target="mavsdk_mission"/>
+		</Unit>
+		<Unit filename="/home/amd/MAVSDK/src/plugins/mission/mission_equality_operator_test.cpp">
+			<Option target="unit_tests_runner"/>
+		</Unit>
+		<Unit filename="/home/amd/MAVSDK/src/plugins/mission/mission_impl.cpp">
+			<Option target="mavsdk_mission"/>
+		</Unit>
+		<Unit filename="/home/amd/MAVSDK/src/plugins/mission/mission_impl.h">
+			<Option target="mavsdk_mission"/>
+		</Unit>
+		<Unit filename="/home/amd/MAVSDK/src/plugins/mission/mission_import_qgc_test.cpp">
+			<Option target="unit_tests_runner"/>
+		</Unit>
+		<Unit filename="/home/amd/MAVSDK/src/plugins/mission_raw/mission_raw.cpp">
+			<Option target="mavsdk_mission_raw"/>
+		</Unit>
+		<Unit filename="/home/amd/MAVSDK/src/plugins/mission_raw/mission_raw_impl.cpp">
+			<Option target="mavsdk_mission_raw"/>
+		</Unit>
+		<Unit filename="/home/amd/MAVSDK/src/plugins/mission_raw/mission_raw_impl.h">
+			<Option target="mavsdk_mission_raw"/>
+		</Unit>
+		<Unit filename="/home/amd/MAVSDK/src/plugins/mocap/mocap.cpp">
+			<Option target="mavsdk_mocap"/>
+		</Unit>
+		<Unit filename="/home/amd/MAVSDK/src/plugins/mocap/mocap_impl.cpp">
+			<Option target="mavsdk_mocap"/>
+		</Unit>
+		<Unit filename="/home/amd/MAVSDK/src/plugins/mocap/mocap_impl.h">
+			<Option target="mavsdk_mocap"/>
+		</Unit>
+		<Unit filename="/home/amd/MAVSDK/src/plugins/offboard/offboard.cpp">
+			<Option target="mavsdk_offboard"/>
+		</Unit>
+		<Unit filename="/home/amd/MAVSDK/src/plugins/offboard/offboard_impl.cpp">
+			<Option target="mavsdk_offboard"/>
+		</Unit>
+		<Unit filename="/home/amd/MAVSDK/src/plugins/offboard/offboard_impl.h">
+			<Option target="mavsdk_offboard"/>
+		</Unit>
+		<Unit filename="/home/amd/MAVSDK/src/plugins/param/param.cpp">
+			<Option target="mavsdk_param"/>
+		</Unit>
+		<Unit filename="/home/amd/MAVSDK/src/plugins/param/param_impl.cpp">
+			<Option target="mavsdk_param"/>
+		</Unit>
+		<Unit filename="/home/amd/MAVSDK/src/plugins/param/param_impl.h">
+			<Option target="mavsdk_param"/>
+		</Unit>
+		<Unit filename="/home/amd/MAVSDK/src/plugins/shell/shell.cpp">
+			<Option target="mavsdk_shell"/>
+		</Unit>
+		<Unit filename="/home/amd/MAVSDK/src/plugins/shell/shell_impl.cpp">
+			<Option target="mavsdk_shell"/>
+		</Unit>
+		<Unit filename="/home/amd/MAVSDK/src/plugins/shell/shell_impl.h">
+			<Option target="mavsdk_shell"/>
+		</Unit>
+		<Unit filename="/home/amd/MAVSDK/src/plugins/telemetry/math_conversions.cpp">
+			<Option target="mavsdk_telemetry"/>
+		</Unit>
+		<Unit filename="/home/amd/MAVSDK/src/plugins/telemetry/math_conversions.h">
+			<Option target="mavsdk_telemetry"/>
+		</Unit>
+		<Unit filename="/home/amd/MAVSDK/src/plugins/telemetry/math_conversions_test.cpp">
+			<Option target="unit_tests_runner"/>
+		</Unit>
+		<Unit filename="/home/amd/MAVSDK/src/plugins/telemetry/telemetry.cpp">
+			<Option target="mavsdk_telemetry"/>
+		</Unit>
+		<Unit filename="/home/amd/MAVSDK/src/plugins/telemetry/telemetry_impl.cpp">
+			<Option target="mavsdk_telemetry"/>
+		</Unit>
+		<Unit filename="/home/amd/MAVSDK/src/plugins/telemetry/telemetry_impl.h">
+			<Option target="mavsdk_telemetry"/>
+		</Unit>
+		<Unit filename="/home/amd/MAVSDK/src/plugins/tune/tune.cpp">
+			<Option target="mavsdk_tune"/>
+		</Unit>
+		<Unit filename="/home/amd/MAVSDK/src/plugins/tune/tune_impl.cpp">
+			<Option target="mavsdk_tune"/>
+		</Unit>
+		<Unit filename="/home/amd/MAVSDK/src/plugins/tune/tune_impl.h">
+			<Option target="mavsdk_tune"/>
+		</Unit>
+		<Unit filename="/home/amd/MAVSDK/src/third_party/gtest/googlemock/src/gmock-all.cc">
+			<Option target="gmock"/>
+		</Unit>
+		<Unit filename="/home/amd/MAVSDK/src/third_party/gtest/googlemock/src/gmock_main.cc">
+			<Option target="gmock_main"/>
+		</Unit>
+		<Unit filename="/home/amd/MAVSDK/src/third_party/gtest/googletest/src/gtest-all.cc">
+			<Option target="gtest"/>
+		</Unit>
+		<Unit filename="/home/amd/MAVSDK/src/third_party/gtest/googletest/src/gtest_main.cc">
+			<Option target="gtest_main"/>
+		</Unit>
+		<Unit filename="/home/amd/MAVSDK/CMakeLists.txt">
+			<Option virtualFolder="CMake Files\"/>
+		</Unit>
+		<Unit filename="/home/amd/MAVSDK/MAVSDKConfig.cmake.in">
+			<Option virtualFolder="CMake Files\"/>
+		</Unit>
+		<Unit filename="/home/amd/MAVSDK/src/CMakeLists.txt">
+			<Option virtualFolder="CMake Files\src\"/>
+		</Unit>
+		<Unit filename="/home/amd/MAVSDK/src/third_party/gtest/CMakeLists.txt">
+			<Option virtualFolder="CMake Files\src\third_party\gtest\"/>
+		</Unit>
+		<Unit filename="/home/amd/MAVSDK/src/third_party/gtest/googlemock/CMakeLists.txt">
+			<Option virtualFolder="CMake Files\src\third_party\gtest\googlemock\"/>
+		</Unit>
+		<Unit filename="/home/amd/MAVSDK/src/third_party/gtest/googlemock/cmake/gmock.pc.in">
+			<Option virtualFolder="CMake Files\src\third_party\gtest\googlemock\cmake\"/>
+		</Unit>
+		<Unit filename="/home/amd/MAVSDK/src/third_party/gtest/googlemock/cmake/gmock_main.pc.in">
+			<Option virtualFolder="CMake Files\src\third_party\gtest\googlemock\cmake\"/>
+		</Unit>
+		<Unit filename="/home/amd/MAVSDK/src/third_party/gtest/googletest/CMakeLists.txt">
+			<Option virtualFolder="CMake Files\src\third_party\gtest\googletest\"/>
+		</Unit>
+		<Unit filename="/home/amd/MAVSDK/src/third_party/gtest/googletest/cmake/Config.cmake.in">
+			<Option virtualFolder="CMake Files\src\third_party\gtest\googletest\cmake\"/>
+		</Unit>
+		<Unit filename="/home/amd/MAVSDK/src/third_party/gtest/googletest/cmake/gtest.pc.in">
+			<Option virtualFolder="CMake Files\src\third_party\gtest\googletest\cmake\"/>
+		</Unit>
+		<Unit filename="/home/amd/MAVSDK/src/third_party/gtest/googletest/cmake/gtest_main.pc.in">
+			<Option virtualFolder="CMake Files\src\third_party\gtest\googletest\cmake\"/>
+		</Unit>
+		<Unit filename="/home/amd/MAVSDK/src/third_party/gtest/googletest/cmake/internal_utils.cmake">
+			<Option virtualFolder="CMake Files\src\third_party\gtest\googletest\cmake\"/>
+		</Unit>
+		<Unit filename="/home/amd/MAVSDK/src/cmake/compiler_flags.cmake">
+			<Option virtualFolder="CMake Files\src\cmake\"/>
+		</Unit>
+		<Unit filename="/home/amd/MAVSDK/src/cmake/unit_tests.cmake">
+			<Option virtualFolder="CMake Files\src\cmake\"/>
+		</Unit>
+		<Unit filename="/home/amd/MAVSDK/src/cmake/Modules/FindCURL.cmake">
+			<Option virtualFolder="CMake Files\src\cmake\Modules\"/>
+		</Unit>
+		<Unit filename="/home/amd/MAVSDK/src/cmake/Modules/FindJsonCpp.cmake">
+			<Option virtualFolder="CMake Files\src\cmake\Modules\"/>
+		</Unit>
+		<Unit filename="/home/amd/MAVSDK/src/cmake/Modules/Findtinyxml2.cmake">
+			<Option virtualFolder="CMake Files\src\cmake\Modules\"/>
+		</Unit>
+		<Unit filename="/home/amd/MAVSDK/src/core/CMakeLists.txt">
+			<Option virtualFolder="CMake Files\src\core\"/>
+		</Unit>
+		<Unit filename="/home/amd/MAVSDK/src/core/version.h.in">
+			<Option virtualFolder="CMake Files\src\core\"/>
+		</Unit>
+		<Unit filename="/home/amd/MAVSDK/src/plugins/CMakeLists.txt">
+			<Option virtualFolder="CMake Files\src\plugins\"/>
+		</Unit>
+		<Unit filename="/home/amd/MAVSDK/src/plugins/action/CMakeLists.txt">
+			<Option virtualFolder="CMake Files\src\plugins\action\"/>
+		</Unit>
+		<Unit filename="/home/amd/MAVSDK/src/plugins/calibration/CMakeLists.txt">
+			<Option virtualFolder="CMake Files\src\plugins\calibration\"/>
+		</Unit>
+		<Unit filename="/home/amd/MAVSDK/src/plugins/camera/CMakeLists.txt">
+			<Option virtualFolder="CMake Files\src\plugins\camera\"/>
+		</Unit>
+		<Unit filename="/home/amd/MAVSDK/src/plugins/follow_me/CMakeLists.txt">
+			<Option virtualFolder="CMake Files\src\plugins\follow_me\"/>
+		</Unit>
+		<Unit filename="/home/amd/MAVSDK/src/plugins/geofence/CMakeLists.txt">
+			<Option virtualFolder="CMake Files\src\plugins\geofence\"/>
+		</Unit>
+		<Unit filename="/home/amd/MAVSDK/src/plugins/gimbal/CMakeLists.txt">
+			<Option virtualFolder="CMake Files\src\plugins\gimbal\"/>
+		</Unit>
+		<Unit filename="/home/amd/MAVSDK/src/plugins/info/CMakeLists.txt">
+			<Option virtualFolder="CMake Files\src\plugins\info\"/>
+		</Unit>
+		<Unit filename="/home/amd/MAVSDK/src/plugins/log_files/CMakeLists.txt">
+			<Option virtualFolder="CMake Files\src\plugins\log_files\"/>
+		</Unit>
+		<Unit filename="/home/amd/MAVSDK/src/plugins/ftp/CMakeLists.txt">
+			<Option virtualFolder="CMake Files\src\plugins\ftp\"/>
+		</Unit>
+		<Unit filename="/home/amd/MAVSDK/src/plugins/manual_control/CMakeLists.txt">
+			<Option virtualFolder="CMake Files\src\plugins\manual_control\"/>
+		</Unit>
+		<Unit filename="/home/amd/MAVSDK/src/plugins/mavlink_passthrough/CMakeLists.txt">
+			<Option virtualFolder="CMake Files\src\plugins\mavlink_passthrough\"/>
+		</Unit>
+		<Unit filename="/home/amd/MAVSDK/src/plugins/mission/CMakeLists.txt">
+			<Option virtualFolder="CMake Files\src\plugins\mission\"/>
+		</Unit>
+		<Unit filename="/home/amd/MAVSDK/src/plugins/mission_raw/CMakeLists.txt">
+			<Option virtualFolder="CMake Files\src\plugins\mission_raw\"/>
+		</Unit>
+		<Unit filename="/home/amd/MAVSDK/src/plugins/mocap/CMakeLists.txt">
+			<Option virtualFolder="CMake Files\src\plugins\mocap\"/>
+		</Unit>
+		<Unit filename="/home/amd/MAVSDK/src/plugins/offboard/CMakeLists.txt">
+			<Option virtualFolder="CMake Files\src\plugins\offboard\"/>
+		</Unit>
+		<Unit filename="/home/amd/MAVSDK/src/plugins/param/CMakeLists.txt">
+			<Option virtualFolder="CMake Files\src\plugins\param\"/>
+		</Unit>
+		<Unit filename="/home/amd/MAVSDK/src/plugins/shell/CMakeLists.txt">
+			<Option virtualFolder="CMake Files\src\plugins\shell\"/>
+		</Unit>
+		<Unit filename="/home/amd/MAVSDK/src/plugins/telemetry/CMakeLists.txt">
+			<Option virtualFolder="CMake Files\src\plugins\telemetry\"/>
+		</Unit>
+		<Unit filename="/home/amd/MAVSDK/src/plugins/tune/CMakeLists.txt">
+			<Option virtualFolder="CMake Files\src\plugins\tune\"/>
+		</Unit>
+		<Unit filename="/home/amd/MAVSDK/src/plugins/failure/CMakeLists.txt">
+			<Option virtualFolder="CMake Files\src\plugins\failure\"/>
+		</Unit>
+		<Unit filename="/home/amd/MAVSDK/src/integration_tests/CMakeLists.txt">
+			<Option virtualFolder="CMake Files\src\integration_tests\"/>
+		</Unit>
+		<Unit filename="/home/amd/MAVSDK/cmake-build-debug/third_party/install/lib/cmake/CURL/CURLConfig.cmake">
+			<Option virtualFolder="CMake Files\cmake-build-debug\third_party\install\lib\cmake\CURL\"/>
+		</Unit>
+		<Unit filename="/home/amd/MAVSDK/cmake-build-debug/third_party/install/lib/cmake/CURL/CURLConfigVersion.cmake">
+			<Option virtualFolder="CMake Files\cmake-build-debug\third_party\install\lib\cmake\CURL\"/>
+		</Unit>
+		<Unit filename="/home/amd/MAVSDK/cmake-build-debug/third_party/install/lib/cmake/CURL/CURLTargets-debug.cmake">
+			<Option virtualFolder="CMake Files\cmake-build-debug\third_party\install\lib\cmake\CURL\"/>
+		</Unit>
+		<Unit filename="/home/amd/MAVSDK/cmake-build-debug/third_party/install/lib/cmake/CURL/CURLTargets.cmake">
+			<Option virtualFolder="CMake Files\cmake-build-debug\third_party\install\lib\cmake\CURL\"/>
+		</Unit>
+		<Unit filename="/home/amd/MAVSDK/cmake-build-debug/third_party/install/lib/cmake/jsoncpp/jsoncppConfig-debug.cmake">
+			<Option virtualFolder="CMake Files\cmake-build-debug\third_party\install\lib\cmake\jsoncpp\"/>
+		</Unit>
+		<Unit filename="/home/amd/MAVSDK/cmake-build-debug/third_party/install/lib/cmake/jsoncpp/jsoncppConfig.cmake">
+			<Option virtualFolder="CMake Files\cmake-build-debug\third_party\install\lib\cmake\jsoncpp\"/>
+		</Unit>
+		<Unit filename="/home/amd/MAVSDK/third_party/CMakeLists.txt">
+			<Option virtualFolder="CMake Files\third_party\"/>
+		</Unit>
+		<Unit filename="/home/amd/MAVSDK/third_party/cmake/build_target.cmake">
+			<Option virtualFolder="CMake Files\third_party\cmake\"/>
+		</Unit>
+	</Project>
+</CodeBlocks_project_file>

@@ -1,0 +1,43 @@
+{
+	"sources" : 
+	[
+		{
+			"file" : "/home/amd/MAVSDK/cmake-build-debug/third_party/jsoncpp/CMakeFiles/jsoncpp"
+		},
+		{
+			"file" : "/home/amd/MAVSDK/cmake-build-debug/third_party/jsoncpp/CMakeFiles/jsoncpp.rule"
+		},
+		{
+			"file" : "/home/amd/MAVSDK/cmake-build-debug/third_party/jsoncpp/CMakeFiles/jsoncpp-complete.rule"
+		},
+		{
+			"file" : "/home/amd/MAVSDK/cmake-build-debug/third_party/jsoncpp/jsoncpp/src/jsoncpp-stamp/jsoncpp-install.rule"
+		},
+		{
+			"file" : "/home/amd/MAVSDK/cmake-build-debug/third_party/jsoncpp/jsoncpp/src/jsoncpp-stamp/jsoncpp-mkdir.rule"
+		},
+		{
+			"file" : "/home/amd/MAVSDK/cmake-build-debug/third_party/jsoncpp/jsoncpp/src/jsoncpp-stamp/jsoncpp-download.rule"
+		},
+		{
+			"file" : "/home/amd/MAVSDK/cmake-build-debug/third_party/jsoncpp/jsoncpp/src/jsoncpp-stamp/jsoncpp-update.rule"
+		},
+		{
+			"file" : "/home/amd/MAVSDK/cmake-build-debug/third_party/jsoncpp/jsoncpp/src/jsoncpp-stamp/jsoncpp-patch.rule"
+		},
+		{
+			"file" : "/home/amd/MAVSDK/cmake-build-debug/third_party/jsoncpp/jsoncpp/src/jsoncpp-stamp/jsoncpp-configure.rule"
+		},
+		{
+			"file" : "/home/amd/MAVSDK/cmake-build-debug/third_party/jsoncpp/jsoncpp/src/jsoncpp-stamp/jsoncpp-build.rule"
+		}
+	],
+	"target" : 
+	{
+		"labels" : 
+		[
+			"jsoncpp"
+		],
+		"name" : "jsoncpp"
+	}
+}

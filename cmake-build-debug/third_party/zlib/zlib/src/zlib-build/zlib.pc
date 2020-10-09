@@ -1,0 +1,13 @@
+prefix=/home/amd/MAVSDK/cmake-build-debug/third_party/install
+exec_prefix=/home/amd/MAVSDK/cmake-build-debug/third_party/install
+libdir=/home/amd/MAVSDK/cmake-build-debug/third_party/install/lib
+sharedlibdir=/home/amd/MAVSDK/cmake-build-debug/third_party/install/lib
+includedir=/home/amd/MAVSDK/cmake-build-debug/third_party/install/include
+
+Name: zlib
+Description: zlib compression library
+Version: 1.2.11
+
+Requires:
+Libs: -L${libdir} -L${sharedlibdir} -lz
+Cflags: -I${includedir}

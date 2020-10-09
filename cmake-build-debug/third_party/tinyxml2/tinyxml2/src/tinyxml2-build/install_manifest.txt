@@ -1,0 +1,7 @@
+/home/amd/MAVSDK/cmake-build-debug/third_party/install/lib/libtinyxml2.a
+/home/amd/MAVSDK/cmake-build-debug/third_party/install/include/tinyxml2.h
+/home/amd/MAVSDK/cmake-build-debug/third_party/install/lib/pkgconfig/tinyxml2.pc
+/home/amd/MAVSDK/cmake-build-debug/third_party/install/lib/cmake/tinyxml2/tinyxml2Config.cmake
+/home/amd/MAVSDK/cmake-build-debug/third_party/install/lib/cmake/tinyxml2/tinyxml2ConfigVersion.cmake
+/home/amd/MAVSDK/cmake-build-debug/third_party/install/lib/cmake/tinyxml2/tinyxml2Targets.cmake
+/home/amd/MAVSDK/cmake-build-debug/third_party/install/lib/cmake/tinyxml2/tinyxml2Targets-release.cmake
