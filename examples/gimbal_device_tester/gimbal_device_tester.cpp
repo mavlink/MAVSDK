@@ -20,12 +20,20 @@ static constexpr auto test_prefix = "[TEST] ";
 
 float degrees(float radians)
 {
-    return radians * 180.0f / static_cast<float>(M_PI);
+    if (std::isfinite(radians)) {
+        return radians * 180.0f / static_cast<float>(M_PI);
+    } else {
+        return radians;
+    }
 }
 
 float radians(float degrees)
 {
-    return degrees / 180.0f * static_cast<float>(M_PI);
+    if (std::isfinite(degrees)) {
+        return degrees / 180.0f * static_cast<float>(M_PI);
+    } else {
+        return degrees;
+    }
 }
 
 class AttitudeData {
@@ -234,9 +242,9 @@ public:
 
         // If limits are infinity, use arbitrary value.
         const float pitch_min =
-            (gimbal_limits.pitch_min_deg != INFINITY ? gimbal_limits.pitch_min_deg : -90.0f);
+            (!std::isinf(gimbal_limits.pitch_min_deg) ? gimbal_limits.pitch_min_deg : -90.0f);
         const float pitch_max =
-            (gimbal_limits.pitch_max_deg != INFINITY ? gimbal_limits.pitch_max_deg : 20.0f);
+            (!std::isinf(gimbal_limits.pitch_max_deg) ? gimbal_limits.pitch_max_deg : 20.0f);
 
         std::stringstream limit_down;
         limit_down << "Tilt " << -pitch_min << " down";
@@ -267,9 +275,9 @@ public:
         const auto gimbal_limits = _attitude_data.gimbal_limits();
 
         const float yaw_min =
-            (gimbal_limits.yaw_min_deg != INFINITY ? gimbal_limits.yaw_min_deg : -60.0f);
+            (!std::isinf(gimbal_limits.yaw_min_deg) ? gimbal_limits.yaw_min_deg : -60.0f);
         const float yaw_max =
-            (gimbal_limits.yaw_max_deg != INFINITY ? gimbal_limits.yaw_max_deg : 60.0f);
+            (!std::isinf(gimbal_limits.yaw_max_deg) ? gimbal_limits.yaw_max_deg : 60.0f);
 
         std::stringstream limit_right;
         limit_right << "Pan " << yaw_max << " right";
