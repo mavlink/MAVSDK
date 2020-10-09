@@ -11,6 +11,7 @@
 #include <future>
 #include <iostream>
 #include <mutex>
+#include <sstream>
 #include <thread>
 
 using namespace mavsdk;
@@ -38,6 +39,15 @@ public:
         float yaw_deg{NAN};
     };
 
+    struct GimbalLimits {
+        float roll_min_deg{0.0f};
+        float roll_max_deg{0.0f};
+        float pitch_min_deg{0.0f};
+        float pitch_max_deg{0.0f};
+        float yaw_min_deg{0.0f};
+        float yaw_max_deg{0.0f};
+    };
+
     struct VehicleAttitude {
         float roll_deg{0.0f};
         float pitch_deg{0.0f};
@@ -59,6 +69,12 @@ public:
         return _gimbal_attitude;
     }
 
+    GimbalLimits gimbal_limits() const
+    {
+        std::lock_guard<std::mutex> lock(_mutex);
+        return _gimbal_limits;
+    }
+
     VehicleAttitude vehicle_attitude() const
     {
         std::lock_guard<std::mutex> lock(_mutex);
@@ -76,6 +92,13 @@ public:
     {
         std::lock_guard<std::mutex> lock(_mutex);
         change_function(_gimbal_attitude);
+    }
+
+    void
+    change_gimbal_limits(const std::function<void(GimbalLimits& gimbal_limits)>& change_function)
+    {
+        std::lock_guard<std::mutex> lock(_mutex);
+        change_function(_gimbal_limits);
     }
 
     void change_vehicle_attitude(
@@ -97,6 +120,7 @@ private:
     GimbalAttitude _gimbal_attitude{};
     VehicleAttitude _vehicle_attitude{};
     AttitudeSetpoint _attitude_setpoint{};
+    GimbalLimits _gimbal_limits{};
 };
 
 class Sender {
@@ -166,6 +190,7 @@ private:
         const auto attitude_setpoint = _attitude_data.attitude_setpoint();
 
         float q[4];
+
         mavlink_euler_to_quaternion(
             radians(attitude_setpoint.roll_deg),
             radians(attitude_setpoint.pitch_deg),
@@ -205,10 +230,24 @@ public:
 
     bool test_pitch()
     {
+        const auto gimbal_limits = _attitude_data.gimbal_limits();
+
+        // If limits are infinity, use arbitrary value.
+        const float pitch_min =
+            (gimbal_limits.pitch_min_deg != INFINITY ? gimbal_limits.pitch_min_deg : -90.0f);
+        const float pitch_max =
+            (gimbal_limits.pitch_max_deg != INFINITY ? gimbal_limits.pitch_min_deg : 20.0f);
+
+        std::stringstream limit_down;
+        limit_down << "Tilt " << -pitch_min << " down";
+        std::stringstream limit_up;
+        limit_up << "Tilt " << pitch_max << " up";
+
         return test_pitch_yaw("Look forward", 0.0f, 0.0f, AttitudeData::Mode::Follow) &&
+               // FIXME: We assume that -45 degrees is possible.
                test_pitch_yaw("Tilt 45 degrees down", -45.0f, 0.0f, AttitudeData::Mode::Follow) &&
-               test_pitch_yaw("Tilt 90 degrees down", -90.0f, 0.0f, AttitudeData::Mode::Follow) &&
-               test_pitch_yaw("Tilt 20 degrees up", 20.0f, 0.0f, AttitudeData::Mode::Follow) &&
+               test_pitch_yaw(limit_down.str(), pitch_min, 0.0f, AttitudeData::Mode::Follow) &&
+               test_pitch_yaw(limit_up.str(), pitch_max, 0.0f, AttitudeData::Mode::Follow) &&
                test_pitch_yaw("Look forward again", 0.0f, 0.0f, AttitudeData::Mode::Follow);
     }
 
@@ -225,12 +264,25 @@ public:
         std::this_thread::sleep_for(std::chrono::seconds(2));
         std::cout << "DONE\n";
 
+        const auto gimbal_limits = _attitude_data.gimbal_limits();
+
+        const float yaw_min =
+            (gimbal_limits.yaw_min_deg != INFINITY ? gimbal_limits.yaw_min_deg : -60.0f);
+        const float yaw_max =
+            (gimbal_limits.yaw_max_deg != INFINITY ? gimbal_limits.yaw_max_deg : 60.0f);
+
+        std::stringstream limit_right;
+        limit_right << "Pan " << yaw_max << " right";
+        std::stringstream limit_left;
+        limit_left << "Pan " << -yaw_min << " left";
+
         return test_pitch_yaw("Look to the right", 0.0f, 90.0f, AttitudeData::Mode::Follow) &&
-               test_pitch_yaw(
-                   "Look 60 degrees to the left", 0.0f, -90.0f, AttitudeData::Mode::Follow) &&
-               test_pitch_yaw("Tilt 45 degrees down", -45.0f, -90.0f, AttitudeData::Mode::Follow) &&
-               test_pitch_yaw(
-                   "Look 60 degrees to the right", -45.0f, 90.0f, AttitudeData::Mode::Follow) &&
+               test_pitch_yaw(limit_right.str(), 0.0f, yaw_max, AttitudeData::Mode::Follow) &&
+               test_pitch_yaw(limit_left.str(), 0.0f, yaw_min, AttitudeData::Mode::Follow) &&
+               // FIXME: We assume that -45 degrees is possible.
+               test_pitch_yaw("Tilt 45 degrees down", -45.0f, 0.0f, AttitudeData::Mode::Follow) &&
+               test_pitch_yaw(limit_right.str(), -45.0f, yaw_max, AttitudeData::Mode::Follow) &&
+               test_pitch_yaw(limit_left.str(), -45.0f, yaw_min, AttitudeData::Mode::Follow) &&
                test_pitch_yaw("Look forward again", 0.0f, 0.0f, AttitudeData::Mode::Follow);
     }
 
@@ -247,12 +299,26 @@ public:
         std::this_thread::sleep_for(std::chrono::seconds(2));
         std::cout << "DONE\n";
 
+        const auto gimbal_limits = _attitude_data.gimbal_limits();
+
+        // Use a smaller range on both sides.
+        const float yaw_min =
+            (gimbal_limits.yaw_min_deg + 30.0f != INFINITY ? gimbal_limits.yaw_min_deg : -60.0f);
+        const float yaw_max =
+            (gimbal_limits.yaw_max_deg - 30.0f != INFINITY ? gimbal_limits.yaw_max_deg : 60.0f);
+
+        std::stringstream limit_right;
+        limit_right << "Pan " << yaw_max << " right";
+        std::stringstream limit_left;
+        limit_left << "Pan " << -yaw_min << " left";
+
         return test_pitch_yaw("Look to the right", 0.0f, 90.0f, AttitudeData::Mode::Lock) &&
-               test_pitch_yaw(
-                   "Look 60 degrees to the left", 0.0f, -90.0f, AttitudeData::Mode::Lock) &&
-               test_pitch_yaw("Tilt 45 degrees down", -45.0f, -90.0f, AttitudeData::Mode::Lock) &&
-               test_pitch_yaw(
-                   "Look 60 degrees to the right", -45.0f, 90.0f, AttitudeData::Mode::Lock) &&
+               test_pitch_yaw(limit_right.str(), 0.0f, yaw_max, AttitudeData::Mode::Lock) &&
+               test_pitch_yaw(limit_left.str(), 0.0f, yaw_min, AttitudeData::Mode::Lock) &&
+               // FIXME: We assume that -45 degrees is possible.
+               test_pitch_yaw("Tilt 45 degrees down", -45.0f, 0.0f, AttitudeData::Mode::Lock) &&
+               test_pitch_yaw(limit_right.str(), -45.0f, yaw_max, AttitudeData::Mode::Lock) &&
+               test_pitch_yaw(limit_left.str(), -45.0f, yaw_min, AttitudeData::Mode::Lock) &&
                test_pitch_yaw("Look forward again", 0.0f, 0.0f, AttitudeData::Mode::Lock);
     }
 
@@ -351,7 +417,7 @@ bool request_gimbal_device_information(MavlinkPassthrough& mavlink_passthrough)
     return (mavlink_passthrough.send_command_long(command) == MavlinkPassthrough::Result::Success);
 }
 
-bool test_device_information(MavlinkPassthrough& mavlink_passthrough)
+bool test_device_information(MavlinkPassthrough& mavlink_passthrough, AttitudeData& attitude_data)
 {
     std::cout << test_prefix << "Requests gimbal device information... " << std::flush;
 
@@ -359,7 +425,21 @@ bool test_device_information(MavlinkPassthrough& mavlink_passthrough)
     std::future<void> fut = prom.get_future();
     mavlink_passthrough.subscribe_message_async(
         MAVLINK_MSG_ID_GIMBAL_DEVICE_INFORMATION,
-        [&prom, &mavlink_passthrough](const mavlink_message_t& /* message */) {
+        [&prom, &mavlink_passthrough, &attitude_data](const mavlink_message_t& message) {
+            mavlink_gimbal_device_information_t information;
+            mavlink_msg_gimbal_device_information_decode(&message, &information);
+
+            attitude_data.change_gimbal_limits(
+                [&information](AttitudeData::GimbalLimits& gimbal_limits) {
+                    // TODO: add these once they exist
+                    // gimbal_limits.roll_min_deg = degrees(information.bank_min);
+                    // gimbal_limits.roll_max_deg = degrees(information.bank_max);
+                    gimbal_limits.pitch_min_deg = degrees(information.tilt_min);
+                    gimbal_limits.pitch_max_deg = degrees(information.tilt_max);
+                    gimbal_limits.yaw_min_deg = degrees(information.pan_min);
+                    gimbal_limits.yaw_max_deg = degrees(information.pan_max);
+                });
+
             // We only need it once.
             mavlink_passthrough.subscribe_message_async(
                 MAVLINK_MSG_ID_GIMBAL_DEVICE_INFORMATION, nullptr);
@@ -451,11 +531,11 @@ int main(int argc, char** argv)
     System& system = mavsdk.system();
     MavlinkPassthrough mavlink_passthrough(system);
 
-    if (!test_device_information(mavlink_passthrough)) {
+    AttitudeData attitude_data{};
+
+    if (!test_device_information(mavlink_passthrough, attitude_data)) {
         return 1;
     }
-
-    AttitudeData attitude_data{};
 
     subscribe_to_gimbal_device_attitude_status(mavlink_passthrough, attitude_data);
 
