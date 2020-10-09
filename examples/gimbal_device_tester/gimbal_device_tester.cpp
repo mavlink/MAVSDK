@@ -284,8 +284,7 @@ public:
         std::stringstream limit_left;
         limit_left << "Pan " << -yaw_min << " left";
 
-        return test_pitch_yaw("Look to the right", 0.0f, 90.0f, AttitudeData::Mode::Follow) &&
-               test_pitch_yaw(limit_right.str(), 0.0f, yaw_max, AttitudeData::Mode::Follow) &&
+        return test_pitch_yaw(limit_right.str(), 0.0f, yaw_max, AttitudeData::Mode::Follow) &&
                test_pitch_yaw(limit_left.str(), 0.0f, yaw_min, AttitudeData::Mode::Follow) &&
                // FIXME: We assume that -45 degrees is possible.
                test_pitch_yaw("Tilt 45 degrees down", -45.0f, 0.0f, AttitudeData::Mode::Follow) &&
@@ -296,7 +295,7 @@ public:
 
     bool test_yaw_lock()
     {
-        if (!test_pitch_yaw("Switch to lock mode", 0.0f, 0.0f, AttitudeData::Mode::Follow)) {
+        if (!test_pitch_yaw("Switch to lock mode", 0.0f, 0.0f, AttitudeData::Mode::Lock)) {
             return false;
         }
 
@@ -311,17 +310,16 @@ public:
 
         // Use a smaller range on both sides.
         const float yaw_min =
-            (gimbal_limits.yaw_min_deg + 30.0f != INFINITY ? gimbal_limits.yaw_min_deg : -60.0f);
+            (!std::isinf(gimbal_limits.yaw_min_deg) ? gimbal_limits.yaw_min_deg + 30.0f : -60.0f);
         const float yaw_max =
-            (gimbal_limits.yaw_max_deg - 30.0f != INFINITY ? gimbal_limits.yaw_max_deg : 60.0f);
+            (!std::isinf(gimbal_limits.yaw_max_deg) ? gimbal_limits.yaw_max_deg - 30.0f : 60.0f);
 
         std::stringstream limit_right;
         limit_right << "Pan " << yaw_max << " right";
         std::stringstream limit_left;
         limit_left << "Pan " << -yaw_min << " left";
 
-        return test_pitch_yaw("Look to the right", 0.0f, 90.0f, AttitudeData::Mode::Lock) &&
-               test_pitch_yaw(limit_right.str(), 0.0f, yaw_max, AttitudeData::Mode::Lock) &&
+        return test_pitch_yaw(limit_right.str(), 0.0f, yaw_max, AttitudeData::Mode::Lock) &&
                test_pitch_yaw(limit_left.str(), 0.0f, yaw_min, AttitudeData::Mode::Lock) &&
                // FIXME: We assume that -45 degrees is possible.
                test_pitch_yaw("Tilt 45 degrees down", -45.0f, 0.0f, AttitudeData::Mode::Lock) &&
