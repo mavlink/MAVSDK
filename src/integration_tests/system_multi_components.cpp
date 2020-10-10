@@ -37,7 +37,7 @@ TEST(SitlTestMultiple, SystemMultipleComponents)
     sleep_for(seconds(3));
 
     for (auto system : mavsdk.systems()) {
-        std::cout << "We found a System with UUID: " << system->get_uuid() << '\n';
+        std::cout << "We found a System with system ID: " << system->get_system_id() << '\n';
 
         auto has_autopilot = system->has_autopilot();
         auto is_standalone = system->is_standalone();

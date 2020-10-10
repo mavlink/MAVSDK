@@ -44,10 +44,9 @@ void do_mission_with_rtl(float mission_altitude_m, float return_altitude_m)
         LogInfo() << "Waiting to discover system...";
         mavsdk.subscribe_on_change([&mavsdk, prom]() {
             const auto system = mavsdk.systems().at(0);
-            const auto uuid = system->get_uuid();
 
             if (system->is_connected()) {
-                LogInfo() << "Discovered system with UUID: " << uuid;
+                LogInfo() << "Discovered system";
                 prom->set_value();
             }
         });

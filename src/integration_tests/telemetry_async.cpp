@@ -70,7 +70,7 @@ TEST_F(SitlTest, TelemetryAsync)
     ASSERT_EQ(systems.size(), 1);
     const auto system = systems.at(0);
 
-    std::cout << "Found system with UUID: " << system->get_uuid() << std::endl;
+    std::cout << "Found system" << std::endl;
 
     auto telemetry = std::make_shared<Telemetry>(system);
 

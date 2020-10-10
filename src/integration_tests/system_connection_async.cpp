@@ -12,7 +12,7 @@ static constexpr bool ENABLE_TEARDOWN_TEST = false;
 
 static bool _discovered_system = false;
 static bool _timeouted_system = false;
-static uint64_t _uuid = 0;
+static uint8_t _sysid = 0;
 
 TEST_F(SitlTest, SystemConnectionAsync)
 {
@@ -22,20 +22,20 @@ TEST_F(SitlTest, SystemConnectionAsync)
 
     mavsdk.subscribe_on_change([this, &mavsdk]() {
         const auto system = mavsdk.systems().at(0);
-        const auto uuid = system->get_uuid();
+        const auto sysid = system->get_system_id();
 
         if (system->is_connected()) {
-            std::cout << "Found system with UUID: " << uuid << std::endl;
+            std::cout << "Found system with system ID: " << sysid << std::endl;
             _discovered_system = true;
-            _uuid = uuid;
-            // The UUID should not be 0.
-            EXPECT_NE(_uuid, 0);
+            _sysid = sysid;
+            // The sysid should not be 0.
+            EXPECT_NE(_sysid, 0);
         } else {
-            std::cout << "Lost system with UUID: " << uuid << std::endl;
+            std::cout << "Lost system with system ID: " << sysid << std::endl;
             _timeouted_system = true;
 
             // The UUID should still be the same.
-            EXPECT_EQ(_uuid, uuid);
+            EXPECT_EQ(_sysid, sysid);
         }
     });
 
