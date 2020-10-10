@@ -331,7 +331,7 @@ System& MavsdkImpl::get_system(const uint64_t uuid)
         std::lock_guard<std::recursive_mutex> lock(_systems_mutex);
         // TODO: make a cache map for this.
         for (auto& system : _systems) {
-            if (system.second->get_uuid() == uuid) {
+            if (system.second->_system_impl->get_uuid() == uuid) {
                 return *system.second;
             }
         }
@@ -397,7 +397,7 @@ bool MavsdkImpl::is_connected(const uint64_t uuid) const
     std::lock_guard<std::recursive_mutex> lock(_systems_mutex);
 
     for (auto it = _systems.begin(); it != _systems.end(); ++it) {
-        if (it->second->get_uuid() == uuid) {
+        if (it->second->_system_impl->get_uuid() == uuid) {
             return it->second->is_connected();
         }
     }
@@ -475,10 +475,10 @@ void MavsdkImpl::register_on_discover(const Mavsdk::event_callback_t callback)
                 continue;
             }
             // Ignore system if UUID is not initialized yet.
-            if (connected_system.second->get_uuid() == 0) {
+            if (connected_system.second->_system_impl->get_uuid() == 0) {
                 continue;
             }
-            callback(connected_system.second->get_uuid());
+            callback(connected_system.second->_system_impl->get_uuid());
         }
     }
 

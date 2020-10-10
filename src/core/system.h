@@ -3,6 +3,8 @@
 #include <memory>
 #include <functional>
 
+#include "deprecated.h"
+
 namespace mavsdk {
 
 /**
@@ -85,9 +87,12 @@ public:
     /**
      * @brief Get the UUID of the system.
      *
+     * @note This method will be deprecated because the UUID will be replaced
+     *       by a uid with 18 bytes which can be accessed from the info plugin.
+     *
      * @return UUID of system.
      */
-    uint64_t get_uuid() const;
+    DEPRECATED uint64_t get_uuid() const;
 
     /**
      * @brief MAVLink System ID of connected system.
