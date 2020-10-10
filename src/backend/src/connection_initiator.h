@@ -31,7 +31,7 @@ public:
     void wait() { _discovery_future.wait(); }
 
 private:
-    void init_mutex() { _discovery_promise = std::make_shared<std::promise<uint64_t>>(); }
+    void init_mutex() { _discovery_promise = std::make_shared<std::promise<void>>(); }
 
     bool add_any_connection(Mavsdk& mavsdk, const std::string& connection_url)
     {
@@ -45,21 +45,20 @@ private:
         return true;
     }
 
-    std::future<uint64_t> wrapped_subscribe_on_change(Mavsdk& mavsdk)
+    std::future<void> wrapped_subscribe_on_change(Mavsdk& mavsdk)
     {
         auto future = _discovery_promise->get_future();
 
         mavsdk.subscribe_on_change([this, &mavsdk]() {
             const auto system = mavsdk.systems().at(0);
-            const auto uuid = system->get_uuid();
 
             if (system->is_connected()) {
-                std::call_once(_discovery_flag, [this, uuid]() {
-                    LogInfo() << "System discovered [UUID: " << uuid << "]";
-                    _discovery_promise->set_value(uuid);
+                std::call_once(_discovery_flag, [this]() {
+                    LogInfo() << "System discovered";
+                    _discovery_promise->set_value();
                 });
             } else {
-                LogInfo() << "System timed out [UUID: " << uuid << "]";
+                LogInfo() << "System timed out";
             }
         });
 
@@ -67,8 +66,8 @@ private:
     }
 
     std::once_flag _discovery_flag{};
-    std::shared_ptr<std::promise<uint64_t>> _discovery_promise{};
-    std::future<uint64_t> _discovery_future{};
+    std::shared_ptr<std::promise<void>> _discovery_promise{};
+    std::future<void> _discovery_future{};
 };
 
 } // namespace backend

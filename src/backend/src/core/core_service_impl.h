@@ -28,7 +28,7 @@ public:
 
             for (auto system : systems) {
                 const auto rpc_connection_state_response =
-                    createRpcConnectionStateResponse(system->get_uuid(), system->is_connected());
+                    createRpcConnectionStateResponse(system->is_connected());
 
                 std::lock_guard<std::mutex> lock(connection_state_mutex);
                 writer->Write(rpc_connection_state_response);
@@ -79,12 +79,11 @@ private:
     std::future<void> _stop_future;
 
     static mavsdk::rpc::core::ConnectionStateResponse
-    createRpcConnectionStateResponse(const uint64_t uuid, const bool is_connected)
+    createRpcConnectionStateResponse(const bool is_connected)
     {
         mavsdk::rpc::core::ConnectionStateResponse rpc_connection_state_response;
 
         auto* rpc_connection_state = rpc_connection_state_response.mutable_connection_state();
-        rpc_connection_state->set_uuid(uuid);
         rpc_connection_state->set_is_connected(is_connected);
 
         return rpc_connection_state_response;
