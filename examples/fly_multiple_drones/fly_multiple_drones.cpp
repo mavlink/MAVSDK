@@ -122,8 +122,7 @@ int main(int argc, char* argv[])
         const auto systems = mavsdk.systems();
 
         if (systems.size() < num_systems_discovered) {
-            const auto uuid = systems.back()->get_uuid();
-            std::cout << "Discovered system with UUID: " << uuid << std::endl;
+            std::cout << "Discovered system" << std::endl;
             num_systems_discovered = systems.size();
         }
     });
@@ -175,12 +174,12 @@ void complete_mission(std::string qgc_plan, std::shared_ptr<System> system)
     // Creates a file named with vehicle's last few digits of uuid number to store lat and lng with
     // time
     std::ofstream myFile;
-    myFile.open((std::to_string(system->get_uuid() % 100000) + ".csv"));
+    myFile.open((std::to_string(system->get_system_id()) + ".csv"));
     myFile << "Time, Vehicle_ID, Altitude, Latitude, Longitude, Absolute_Altitude, \n";
 
     // Setting up the callback to monitor lat and longitude
     telemetry->subscribe_position([&](Telemetry::Position position) {
-        myFile << getCurrentTimeString() << "," << (system->get_uuid()) % 100000 << ","
+        myFile << getCurrentTimeString() << "," << (system->get_system_id()) << ","
                << position.relative_altitude_m << "," << position.latitude_deg << ","
                << position.longitude_deg << "," << position.absolute_altitude_m << ", \n";
     });
@@ -223,7 +222,7 @@ void complete_mission(std::string qgc_plan, std::shared_ptr<System> system)
 
     // Before starting the mission subscribe to the mission progress.
     mission->subscribe_mission_progress([&](Mission::MissionProgress mission_progress) {
-        std::cout << "Mission status update, VehicleID: " << system->get_uuid() % 100000 << " --> "
+        std::cout << "Mission status update, VehicleID: " << system->get_system_id() << " --> "
                   << mission_progress.current << " / " << mission_progress.total << std::endl;
     });
 

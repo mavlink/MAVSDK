@@ -53,7 +53,7 @@ int main(int argc, char* argv[])
         const auto systems = mavsdk.systems();
 
         if (systems.size() < num_systems_discovered) {
-            std::cout << "Discovered system with UUID: " << systems.back()->get_uuid() << std::endl;
+            std::cout << "Discovered system" << std::endl;
             num_systems_discovered = systems.size();
         }
     });

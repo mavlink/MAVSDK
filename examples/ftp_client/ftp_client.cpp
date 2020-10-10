@@ -199,10 +199,9 @@ int main(int argc, char** argv)
     std::cout << NORMAL_CONSOLE_TEXT << "Waiting to discover system..." << std::endl;
     mavsdk.subscribe_on_change([&mavsdk, prom]() {
         const auto system = mavsdk.systems().at(0);
-        const auto uuid = system->get_uuid();
 
         if (system->is_connected()) {
-            std::cout << "Discovered system with UUID: " << uuid << std::endl;
+            std::cout << "Discovered system" << std::endl;
             prom->set_value();
         }
     });

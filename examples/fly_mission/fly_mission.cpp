@@ -69,13 +69,12 @@ int main(int argc, char** argv)
         std::cout << "Waiting to discover system..." << std::endl;
         mavsdk.subscribe_on_change([&mavsdk, prom]() {
             const auto system = mavsdk.systems().at(0);
-            const auto uuid = system->get_uuid();
 
             if (system->is_connected()) {
-                std::cout << "Discovered system with UUID: " << uuid << std::endl;
+                std::cout << "Discovered system" << std::endl;
                 prom->set_value();
             } else {
-                std::cout << "System with UUID timed out: " << uuid << std::endl;
+                std::cout << "System timed out" << std::endl;
                 std::cout << "Exiting." << std::endl;
                 exit(0);
             }
