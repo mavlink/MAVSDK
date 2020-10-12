@@ -64,6 +64,8 @@ service TelemetryService {
     rpc SubscribeHealthAllOk(SubscribeHealthAllOkRequest) returns(stream HealthAllOkResponse) {}
     // Subscribe to 'unix epoch time' updates.
     rpc SubscribeUnixEpochTime(SubscribeUnixEpochTimeRequest) returns(stream UnixEpochTimeResponse) {}
+        // Subscribe to 'Distance Sensor' updates.
+    rpc SubscribeDistanceSensor(SubscribeDistanceSensorRequest) returns(stream DistanceSensorResponse) {}
 
     // Set rate to 'position' updates.
     rpc SetRatePosition(SetRatePositionRequest) returns(SetRatePositionResponse) {}
@@ -101,6 +103,8 @@ service TelemetryService {
     rpc SetRateImu(SetRateImuRequest) returns(SetRateImuResponse) {}
     // Set rate to 'unix epoch time' updates.
     rpc SetRateUnixEpochTime(SetRateUnixEpochTimeRequest) returns(SetRateUnixEpochTimeResponse) {}
+    // Set rate to 'Distance Sensor' updates.
+    rpc SetRateDistanceSensor(SetRateDistanceSensorRequest) returns(SetRateDistanceSensorResponse) {}
 }
 
 message SubscribePositionRequest {}
@@ -231,6 +235,11 @@ message HealthAllOkResponse {
 message SubscribeUnixEpochTimeRequest {}
 message UnixEpochTimeResponse {
     uint64 time_us = 1; // The next 'unix epoch time' status
+}
+
+message SubscribeDistanceSensorRequest {}
+message DistanceSensorResponse {
+    DistanceSensor distance_sensor = 1; // The next Distance Sensor status
 }
 
 message SetRatePositionRequest {
@@ -370,6 +379,13 @@ message SetRateUnixEpochTimeRequest {
     double rate_hz = 1; // The requested rate (in Hertz)
 }
 message SetRateUnixEpochTimeResponse {
+    TelemetryResult telemetry_result = 1;
+}
+
+message SetRateDistanceSensorRequest {
+    double rate_hz = 1; // The requested rate (in Hertz)
+}
+message SetRateDistanceSensorResponse {
     TelemetryResult telemetry_result = 1;
 }
 
@@ -567,6 +583,13 @@ message Odometry {
     AngularVelocityBody angular_velocity_body = 7; // Angular velocity (rad/s).
     Covariance pose_covariance = 8; // Pose cross-covariance matrix.
     Covariance velocity_covariance = 9; // Velocity cross-covariance matrix.
+}
+
+// DistanceSensor message type.
+message DistanceSensor {
+    float minimum_distance_m = 1 [(mavsdk.options.default_value)="NaN"]; // Minimum distance the sensor can measure, NaN if unknown.
+    float maximum_distance = 2 [(mavsdk.options.default_value)="NaN"]; // Maximum distance the sensor can measure, NaN if unknown.
+    float current_distance_m = 3 [(mavsdk.options.default_value)="NaN"]; // Current distance reading, NaN if unknown.
 }
 
 // PositionNed message type.
