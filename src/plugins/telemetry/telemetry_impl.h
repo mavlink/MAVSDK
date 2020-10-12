@@ -306,7 +306,6 @@ private:
     Telemetry::DistanceSensorCallback _distance_sensor_subscription{nullptr};
 
     // The velocity (former ground speed) and position are coupled to the same message, therefore,
-    // The velocity (former ground speed) and position are coupled to the same message, therefore,
     // we just use the faster between the two.
     double _velocity_ned_rate_hz{0.0};
     double _position_rate_hz{-1.0};
