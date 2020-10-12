@@ -30,7 +30,7 @@
 /*
  * Returning NULL will abort the continued operation!
  */
-char *getpass_r(const char *prompt, char *buffer, size_t buflen);
+char* getpass_r(const char* prompt, char* buffer, size_t buflen);
 #endif
 
 #endif /* HEADER_CURL_TOOL_GETPASS_H */

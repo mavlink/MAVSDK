@@ -27,7 +27,7 @@
 #if defined(USE_NTLM) && !defined(USE_OPENSSL)
 
 /* Applies odd parity to the given byte array */
-void Curl_des_set_odd_parity(unsigned char *bytes, size_t length);
+void Curl_des_set_odd_parity(unsigned char* bytes, size_t length);
 
 #endif /* USE_NTLM && !USE_OPENSSL */
 

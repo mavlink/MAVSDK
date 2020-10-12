@@ -21,20 +21,19 @@
  ***************************************************************************/
 
 #ifdef CURL_STATICLIB
-#  define LIBHOSTNAME_EXTERN
+#define LIBHOSTNAME_EXTERN
 #elif defined(WIN32) || defined(__SYMBIAN32__)
-#  define LIBHOSTNAME_EXTERN  __declspec(dllexport)
+#define LIBHOSTNAME_EXTERN __declspec(dllexport)
 #elif defined(CURL_HIDDEN_SYMBOLS)
-#  define LIBHOSTNAME_EXTERN CURL_EXTERN_SYMBOL
+#define LIBHOSTNAME_EXTERN CURL_EXTERN_SYMBOL
 #else
-#  define LIBHOSTNAME_EXTERN
+#define LIBHOSTNAME_EXTERN
 #endif
 
 #ifdef USE_WINSOCK
-#  define FUNCALLCONV __stdcall
+#define FUNCALLCONV __stdcall
 #else
-#  define FUNCALLCONV
+#define FUNCALLCONV
 #endif
 
-LIBHOSTNAME_EXTERN int FUNCALLCONV
-  gethostname(char *name, GETHOSTNAME_TYPE_ARG2 namelen);
+LIBHOSTNAME_EXTERN int FUNCALLCONV gethostname(char* name, GETHOSTNAME_TYPE_ARG2 namelen);

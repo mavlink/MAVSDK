@@ -25,7 +25,7 @@
 
 /* global variable declarations, for libcurl run-time info */
 
-extern curl_version_info_data *curlinfo;
+extern curl_version_info_data* curlinfo;
 extern long built_in_protos;
 
 CURLcode get_libcurl_info(void);

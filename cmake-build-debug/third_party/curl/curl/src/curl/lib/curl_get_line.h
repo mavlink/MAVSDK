@@ -24,6 +24,6 @@
 
 /* get_line() makes sure to only return complete whole lines that fit in 'len'
  * bytes and end with a newline. */
-char *Curl_get_line(char *buf, int len, FILE *input);
+char* Curl_get_line(char* buf, int len, FILE* input);
 
 #endif /* HEADER_CURL_GET_LINE_H */

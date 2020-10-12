@@ -46,28 +46,28 @@
  */
 
 #if defined(macintosh) && defined(__MRC__)
-#  define main(x,y) curl_main(x,y)
+#define main(x, y) curl_main(x, y)
 #endif
 
 #ifdef TPF
-#  undef select
-   /* change which select is used for the curl command line tool */
-#  define select(a,b,c,d,e) tpf_select_bsd(a,b,c,d,e)
-   /* and turn off the progress meter */
-#  define CONF_DEFAULT (0|CONF_NOPROGRESS)
+#undef select
+/* change which select is used for the curl command line tool */
+#define select(a, b, c, d, e) tpf_select_bsd(a, b, c, d, e)
+/* and turn off the progress meter */
+#define CONF_DEFAULT (0 | CONF_NOPROGRESS)
 #endif
 
 #ifndef OS
-#  define OS "unknown"
+#define OS "unknown"
 #endif
 
 #ifndef UNPRINTABLE_CHAR
-   /* define what to use for unprintable characters */
-#  define UNPRINTABLE_CHAR '.'
+/* define what to use for unprintable characters */
+#define UNPRINTABLE_CHAR '.'
 #endif
 
 #ifndef HAVE_STRDUP
-#  include "tool_strdup.h"
+#include "tool_strdup.h"
 #endif
 
 #endif /* HEADER_CURL_TOOL_SETUP_H */

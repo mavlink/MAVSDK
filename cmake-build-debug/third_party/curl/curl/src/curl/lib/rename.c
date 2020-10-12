@@ -24,8 +24,7 @@
 
 #include "curl_setup.h"
 
-#if (!defined(CURL_DISABLE_HTTP) && !defined(CURL_DISABLE_COOKIES)) ||  \
-  defined(USE_ALTSVC)
+#if (!defined(CURL_DISABLE_HTTP) && !defined(CURL_DISABLE_COOKIES)) || defined(USE_ALTSVC)
 
 #include "timeval.h"
 
@@ -35,28 +34,28 @@
 #include "memdebug.h"
 
 /* return 0 on success, 1 on error */
-int Curl_rename(const char *oldpath, const char *newpath)
+int Curl_rename(const char* oldpath, const char* newpath)
 {
 #ifdef WIN32
-  /* rename() on Windows doesn't overwrite, so we can't use it here.
-     MoveFileExA() will overwrite and is usually atomic, however it fails
-     when there are open handles to the file. */
-  const int max_wait_ms = 1000;
-  struct curltime start = Curl_now();
-  for(;;) {
-    timediff_t diff;
-    if(MoveFileExA(oldpath, newpath, MOVEFILE_REPLACE_EXISTING))
-      break;
-    diff = Curl_timediff(Curl_now(), start);
-    if(diff < 0 || diff > max_wait_ms)
-      return 1;
-    Sleep(1);
-  }
+    /* rename() on Windows doesn't overwrite, so we can't use it here.
+       MoveFileExA() will overwrite and is usually atomic, however it fails
+       when there are open handles to the file. */
+    const int max_wait_ms = 1000;
+    struct curltime start = Curl_now();
+    for (;;) {
+        timediff_t diff;
+        if (MoveFileExA(oldpath, newpath, MOVEFILE_REPLACE_EXISTING))
+            break;
+        diff = Curl_timediff(Curl_now(), start);
+        if (diff < 0 || diff > max_wait_ms)
+            return 1;
+        Sleep(1);
+    }
 #else
-  if(rename(oldpath, newpath))
-    return 1;
+    if (rename(oldpath, newpath))
+        return 1;
 #endif
-  return 0;
+    return 0;
 }
 
 #endif

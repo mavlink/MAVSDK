@@ -22,6 +22,7 @@
 #include <fcntl.h>
 #include <ifaddrs.h>
 
-
-int main(void){return 0;}
-
+int main(void)
+{
+    return 0;
+}

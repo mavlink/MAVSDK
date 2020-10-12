@@ -28,11 +28,11 @@
 
 #define SEGSIZE 512 /* data segment size */
 
-#if defined(__GNUC__) && ((__GNUC__ >= 3) || \
-  ((__GNUC__ == 2) && defined(__GNUC_MINOR__) && (__GNUC_MINOR__ >= 7)))
-#  define PACKED_STRUCT __attribute__((__packed__))
+#if defined(__GNUC__) && \
+    ((__GNUC__ >= 3) || ((__GNUC__ == 2) && defined(__GNUC_MINOR__) && (__GNUC_MINOR__ >= 7)))
+#define PACKED_STRUCT __attribute__((__packed__))
 #else
-#  define PACKED_STRUCT /*NOTHING*/
+#define PACKED_STRUCT /*NOTHING*/
 #endif
 
 /* Using a packed struct as binary in a program is begging for problems, but
@@ -40,22 +40,22 @@
    things build. */
 
 struct tftphdr {
-  short th_opcode;         /* packet type */
-  unsigned short th_block; /* all sorts of things */
-  char th_data[1];         /* data or error string */
+    short th_opcode; /* packet type */
+    unsigned short th_block; /* all sorts of things */
+    char th_data[1]; /* data or error string */
 } PACKED_STRUCT;
 
 #define th_stuff th_block
-#define th_code  th_block
-#define th_msg   th_data
+#define th_code th_block
+#define th_msg th_data
 
-#define EUNDEF    0
+#define EUNDEF 0
 #define ENOTFOUND 1
-#define EACCESS   2
-#define ENOSPACE  3
-#define EBADOP    4
-#define EBADID    5
-#define EEXISTS   6
-#define ENOUSER   7
+#define EACCESS 2
+#define ENOSPACE 3
+#define EBADOP 4
+#define EBADID 5
+#define EEXISTS 6
+#define ENOUSER 7
 
 #endif /* HEADER_CURL_SERVER_TFTP_H */

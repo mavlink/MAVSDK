@@ -27,8 +27,8 @@
 
 int tool_ftruncate64(int fd, curl_off_t where);
 
-#undef  ftruncate
-#define ftruncate(fd,where) tool_ftruncate64(fd,where)
+#undef ftruncate
+#define ftruncate(fd, where) tool_ftruncate64(fd, where)
 
 #define HAVE_FTRUNCATE 1
 #define USE_TOOL_FTRUNCATE 1
@@ -39,6 +39,6 @@ int tool_ftruncate64(int fd, curl_off_t where);
 ** callback for CURLOPT_SEEKFUNCTION
 */
 
-int tool_seek_cb(void *userdata, curl_off_t offset, int whence);
+int tool_seek_cb(void* userdata, curl_off_t offset, int whence);
 
 #endif /* HEADER_CURL_TOOL_CB_SEE_H */

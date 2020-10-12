@@ -46,6 +46,7 @@
 #include <utime.h>
 #include <stddef.h>
 
-
-int main(void){return 0;}
-
+int main(void)
+{
+    return 0;
+}

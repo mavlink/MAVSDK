@@ -91,7 +91,7 @@
 /* #undef CURL_DISABLE_VERBOSE_STRINGS */
 
 /* to make a symbol visible */
-#define CURL_EXTERN_SYMBOL __attribute__ ((__visibility__ ("default")))
+#define CURL_EXTERN_SYMBOL __attribute__((__visibility__("default")))
 /* Ensure using CURL_EXTERN_SYMBOL is possible */
 #ifndef CURL_EXTERN_SYMBOL
 #define CURL_EXTERN_SYMBOL
@@ -350,7 +350,7 @@
 /* #undef HAVE_IOCTLSOCKET_CAMEL */
 
 /* Define to 1 if you have a working IoctlSocket camel case FIONBIO function.
-   */
+ */
 /* #undef HAVE_IOCTLSOCKET_CAMEL_FIONBIO */
 
 /* Define to 1 if you have a working ioctlsocket FIONBIO function. */
@@ -783,7 +783,7 @@
 /* #undef HAVE_ZLIB_H */
 
 /* Define to the sub-directory in which libtool stores uninstalled libraries.
-   */
+ */
 /* #undef LT_OBJDIR */
 
 /* If you lack a fine basename() prototype */
@@ -856,7 +856,7 @@
 #define RECV_TYPE_ARG1 int
 
 /* Define to the type of arg 2 for recv. */
-#define RECV_TYPE_ARG2 void *
+#define RECV_TYPE_ARG2 void*
 
 /* Define to the type of arg 3 for recv. */
 #define RECV_TYPE_ARG3 size_t
@@ -892,7 +892,7 @@
 #define SEND_TYPE_ARG1 int
 
 /* Define to the type of arg 2 for send. */
-#define SEND_TYPE_ARG2 void *
+#define SEND_TYPE_ARG2 void*
 
 /* Define to the type of arg 3 for send. */
 #define SEND_TYPE_ARG3 size_t
@@ -1013,7 +1013,7 @@
 
 /* Define to 1 if OS is AIX. */
 #ifndef _ALL_SOURCE
-#  undef _ALL_SOURCE
+#undef _ALL_SOURCE
 #endif
 
 /* Number of bits in a file offset, on hosts where this is settable. */

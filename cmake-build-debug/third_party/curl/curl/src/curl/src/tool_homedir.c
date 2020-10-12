@@ -22,7 +22,7 @@
 #include "tool_setup.h"
 
 #ifdef HAVE_PWD_H
-#  include <pwd.h>
+#include <pwd.h>
 #endif
 
 #include <curl/mprintf.h>
@@ -31,58 +31,58 @@
 
 #include "memdebug.h" /* keep this as LAST include */
 
-static char *GetEnv(const char *variable)
+static char* GetEnv(const char* variable)
 {
-  char *dupe, *env;
+    char *dupe, *env;
 
-  env = curl_getenv(variable);
-  if(!env)
-    return NULL;
+    env = curl_getenv(variable);
+    if (!env)
+        return NULL;
 
-  dupe = strdup(env);
-  curl_free(env);
-  return dupe;
+    dupe = strdup(env);
+    curl_free(env);
+    return dupe;
 }
 
 /* return the home directory of the current user as an allocated string */
-char *homedir(void)
+char* homedir(void)
 {
-  char *home;
+    char* home;
 
-  home = GetEnv("CURL_HOME");
-  if(home)
-    return home;
+    home = GetEnv("CURL_HOME");
+    if (home)
+        return home;
 
-  home = GetEnv("HOME");
-  if(home)
-    return home;
+    home = GetEnv("HOME");
+    if (home)
+        return home;
 
 #if defined(HAVE_GETPWUID) && defined(HAVE_GETEUID)
- {
-   struct passwd *pw = getpwuid(geteuid());
+    {
+        struct passwd* pw = getpwuid(geteuid());
 
-   if(pw) {
-     home = pw->pw_dir;
-     if(home && home[0])
-       home = strdup(home);
-     else
-       home = NULL;
-   }
- }
+        if (pw) {
+            home = pw->pw_dir;
+            if (home && home[0])
+                home = strdup(home);
+            else
+                home = NULL;
+        }
+    }
 #endif /* PWD-stuff */
 #ifdef WIN32
-  home = GetEnv("APPDATA");
-  if(!home) {
-    char *env = GetEnv("USERPROFILE");
-    if(env) {
-      char *path = curl_maprintf("%s\\Application Data", env);
-      if(path) {
-        home = strdup(path);
-        curl_free(path);
-      }
-      free(env);
+    home = GetEnv("APPDATA");
+    if (!home) {
+        char* env = GetEnv("USERPROFILE");
+        if (env) {
+            char* path = curl_maprintf("%s\\Application Data", env);
+            if (path) {
+                home = strdup(path);
+                curl_free(path);
+            }
+            free(env);
+        }
     }
-  }
 #endif /* WIN32 */
-  return home;
+    return home;
 }

@@ -11,42 +11,33 @@ namespace mavsdk {
 
 using TuneDescription = Tune::TuneDescription;
 
-
-
 Tune::Tune(System& system) : PluginBase(), _impl{new TuneImpl(system)} {}
 
 Tune::~Tune() {}
-
-
 
 void Tune::play_tune_async(TuneDescription tune_description, const ResultCallback callback)
 {
     _impl->play_tune_async(tune_description, callback);
 }
 
-
-
 Tune::Result Tune::play_tune(TuneDescription tune_description) const
 {
     return _impl->play_tune(tune_description);
 }
 
-
-
 bool operator==(const Tune::TuneDescription& lhs, const Tune::TuneDescription& rhs)
 {
-    return
-        (rhs.song_elements == lhs.song_elements) &&
-        (rhs.tempo == lhs.tempo);
+    return (rhs.song_elements == lhs.song_elements) && (rhs.tempo == lhs.tempo);
 }
 
 std::ostream& operator<<(std::ostream& str, Tune::TuneDescription const& tune_description)
 {
     str << std::setprecision(15);
-    str << "tune_description:" << '\n'
-        << "{\n";
+    str << "tune_description:" << '\n' << "{\n";
     str << "    song_elements: [";
-    for (auto it = tune_description.song_elements.begin(); it != tune_description.song_elements.end(); ++it) {
+    for (auto it = tune_description.song_elements.begin();
+         it != tune_description.song_elements.end();
+         ++it) {
         str << *it;
         str << (it + 1 != tune_description.song_elements.end() ? ", " : "]\n");
     }
@@ -54,8 +45,6 @@ std::ostream& operator<<(std::ostream& str, Tune::TuneDescription const& tune_de
     str << '}';
     return str;
 }
-
-
 
 std::ostream& operator<<(std::ostream& str, Tune::Result const& result)
 {
@@ -74,8 +63,6 @@ std::ostream& operator<<(std::ostream& str, Tune::Result const& result)
             return str << "Unknown";
     }
 }
-
-
 
 std::ostream& operator<<(std::ostream& str, Tune::SongElement const& song_element)
 {
@@ -126,6 +113,5 @@ std::ostream& operator<<(std::ostream& str, Tune::SongElement const& song_elemen
             return str << "Unknown";
     }
 }
-
 
 } // namespace mavsdk

@@ -86,7 +86,9 @@ void TelemetryImpl::init()
         MAVLINK_MSG_ID_ODOMETRY, std::bind(&TelemetryImpl::process_odometry, this, _1), this);
 
     _parent->register_mavlink_message_handler(
-        MAVLINK_MSG_ID_DISTANCE_SENSOR, std::bind(&TelemetryImpl::process_distance_sensor, this, _1), this);
+        MAVLINK_MSG_ID_DISTANCE_SENSOR,
+        std::bind(&TelemetryImpl::process_distance_sensor, this, _1),
+        this);
 
     _parent->register_mavlink_message_handler(
         MAVLINK_MSG_ID_UTM_GLOBAL_POSITION,
@@ -466,7 +468,8 @@ void TelemetryImpl::set_rate_odometry_async(double rate_hz, Telemetry::ResultCal
         std::bind(&TelemetryImpl::command_result_callback, std::placeholders::_1, callback));
 }
 
-void TelemetryImpl::set_rate_distance_sensor_async(double rate_hz, Telemetry::ResultCallback callback)
+void TelemetryImpl::set_rate_distance_sensor_async(
+    double rate_hz, Telemetry::ResultCallback callback)
 {
     _parent->set_msg_rate_async(
         MAVLINK_MSG_ID_DISTANCE_SENSOR,
@@ -1108,7 +1111,6 @@ void TelemetryImpl::process_distance_sensor(const mavlink_message_t& message)
     distance_sensor_struct.min_distance = distance_sensor_msg.min_distance;
     distance_sensor_struct.max_distance = distance_sensor_msg.max_distance;
     distance_sensor_struct.current_distance = distance_sensor_msg.current_distance;
-
 
     set_distance_sensor(distance_sensor_struct);
 
@@ -1771,7 +1773,6 @@ void TelemetryImpl::odometry_async(Telemetry::OdometryCallback& callback)
     std::lock_guard<std::mutex> lock(_subscription_mutex);
     _odometry_subscription = callback;
 }
-
 
 void TelemetryImpl::distance_sensor_async(Telemetry::DistanceSensorCallback& callback)
 {

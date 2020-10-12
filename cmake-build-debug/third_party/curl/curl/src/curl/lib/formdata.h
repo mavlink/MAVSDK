@@ -28,33 +28,33 @@
 
 /* used by FormAdd for temporary storage */
 typedef struct FormInfo {
-  char *name;
-  bool name_alloc;
-  size_t namelength;
-  char *value;
-  bool value_alloc;
-  curl_off_t contentslength;
-  char *contenttype;
-  bool contenttype_alloc;
-  long flags;
-  char *buffer;      /* pointer to existing buffer used for file upload */
-  size_t bufferlength;
-  char *showfilename; /* The file name to show. If not set, the actual
-                         file name will be used */
-  bool showfilename_alloc;
-  char *userp;        /* pointer for the read callback */
-  struct curl_slist *contentheader;
-  struct FormInfo *more;
+    char* name;
+    bool name_alloc;
+    size_t namelength;
+    char* value;
+    bool value_alloc;
+    curl_off_t contentslength;
+    char* contenttype;
+    bool contenttype_alloc;
+    long flags;
+    char* buffer; /* pointer to existing buffer used for file upload */
+    size_t bufferlength;
+    char* showfilename; /* The file name to show. If not set, the actual
+                           file name will be used */
+    bool showfilename_alloc;
+    char* userp; /* pointer for the read callback */
+    struct curl_slist* contentheader;
+    struct FormInfo* more;
 } FormInfo;
 
-CURLcode Curl_getformdata(struct Curl_easy *data,
-                          curl_mimepart *,
-                          struct curl_httppost *post,
-                          curl_read_callback fread_func);
+CURLcode Curl_getformdata(
+    struct Curl_easy* data,
+    curl_mimepart*,
+    struct curl_httppost* post,
+    curl_read_callback fread_func);
 #else
 /* disabled */
-#define Curl_getformdata(a,b,c,d) CURLE_NOT_BUILT_IN
+#define Curl_getformdata(a, b, c, d) CURLE_NOT_BUILT_IN
 #endif
-
 
 #endif /* HEADER_CURL_FORMDATA_H */

@@ -105,8 +105,8 @@
 
 #define RETSIGTYPE void
 #define SELECT_TYPE_ARG1 int
-#define SELECT_TYPE_ARG234 (fd_set *)
-#define SELECT_TYPE_ARG5 (struct timeval *)
+#define SELECT_TYPE_ARG234 (fd_set*)
+#define SELECT_TYPE_ARG5 (struct timeval*)
 
 #define STDC_HEADERS 1
 #define TIME_WITH_SYS_TIME 1
@@ -114,31 +114,31 @@
 #define in_addr_t int
 
 #ifndef F_OK
-#  define F_OK 0
+#define F_OK 0
 #endif
 
 #ifndef O_RDONLY
-#  define O_RDONLY 0x0000
+#define O_RDONLY 0x0000
 #endif
 
 #ifndef LONG_MAX
-#  define LONG_MAX 0x7fffffffL
+#define LONG_MAX 0x7fffffffL
 #endif
 
 #ifndef LONG_MIN
-#  define LONG_MIN (-0x7fffffffL-1)
+#define LONG_MIN (-0x7fffffffL - 1)
 #endif
 
 #define HAVE_GETNAMEINFO 1
 #define GETNAMEINFO_QUAL_ARG1 const
-#define GETNAMEINFO_TYPE_ARG1 struct sockaddr *
+#define GETNAMEINFO_TYPE_ARG1 struct sockaddr*
 #define GETNAMEINFO_TYPE_ARG2 int
 #define GETNAMEINFO_TYPE_ARG46 size_t
 #define GETNAMEINFO_TYPE_ARG7 int
 
 #define HAVE_RECV 1
 #define RECV_TYPE_ARG1 long
-#define RECV_TYPE_ARG2 char *
+#define RECV_TYPE_ARG2 char*
 #define RECV_TYPE_ARG3 long
 #define RECV_TYPE_ARG4 long
 #define RECV_TYPE_RETV long
@@ -155,7 +155,7 @@
 #define HAVE_SEND 1
 #define SEND_TYPE_ARG1 int
 #define SEND_QUAL_ARG2 const
-#define SEND_TYPE_ARG2 char *
+#define SEND_TYPE_ARG2 char*
 #define SEND_TYPE_ARG3 int
 #define SEND_TYPE_ARG4 int
 #define SEND_TYPE_RETV int

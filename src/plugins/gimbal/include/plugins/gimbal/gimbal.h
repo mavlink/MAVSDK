@@ -43,7 +43,6 @@ public:
      */
     ~Gimbal();
 
-
     /**
      * @brief Gimbal mode type.
      */
@@ -58,10 +57,6 @@ public:
      * @return A reference to the stream.
      */
     friend std::ostream& operator<<(std::ostream& str, Gimbal::GimbalMode const& gimbal_mode);
-
-
-
-
 
     /**
      * @brief Possible results returned for gimbal commands.
@@ -81,15 +76,10 @@ public:
      */
     friend std::ostream& operator<<(std::ostream& str, Gimbal::Result const& result);
 
-
-
     /**
      * @brief Callback type for asynchronous Gimbal calls.
      */
     using ResultCallback = std::function<void(Result)>;
-
-
-
 
     /**
      * @brief Set gimbal pitch and yaw angles.
@@ -101,8 +91,6 @@ public:
      * This function is non-blocking. See 'set_pitch_and_yaw' for the blocking counterpart.
      */
     void set_pitch_and_yaw_async(float pitch_deg, float yaw_deg, const ResultCallback callback);
-
-
 
     /**
      * @brief Set gimbal pitch and yaw angles.
@@ -117,9 +105,6 @@ public:
      */
     Result set_pitch_and_yaw(float pitch_deg, float yaw_deg) const;
 
-
-
-
     /**
      * @brief Set gimbal mode.
      *
@@ -130,8 +115,6 @@ public:
      * This function is non-blocking. See 'set_mode' for the blocking counterpart.
      */
     void set_mode_async(GimbalMode gimbal_mode, const ResultCallback callback);
-
-
 
     /**
      * @brief Set gimbal mode.
@@ -146,9 +129,6 @@ public:
      */
     Result set_mode(GimbalMode gimbal_mode) const;
 
-
-
-
     /**
      * @brief Set gimbal region of interest (ROI).
      *
@@ -160,9 +140,8 @@ public:
      *
      * This function is non-blocking. See 'set_roi_location' for the blocking counterpart.
      */
-    void set_roi_location_async(double latitude_deg, double longitude_deg, float altitude_m, const ResultCallback callback);
-
-
+    void set_roi_location_async(
+        double latitude_deg, double longitude_deg, float altitude_m, const ResultCallback callback);
 
     /**
      * @brief Set gimbal region of interest (ROI).
@@ -178,9 +157,6 @@ public:
      * @return Result of request.
      */
     Result set_roi_location(double latitude_deg, double longitude_deg, float altitude_m) const;
-
-
-
 
     /**
      * @brief Copy constructor (object is not copyable).

@@ -50,57 +50,55 @@
  * Returns a pointer to the newly allocated SPN.
  */
 #if !defined(USE_WINDOWS_SSPI)
-char *Curl_auth_build_spn(const char *service, const char *host,
-                          const char *realm)
+char* Curl_auth_build_spn(const char* service, const char* host, const char* realm)
 {
-  char *spn = NULL;
+    char* spn = NULL;
 
-  /* Generate our SPN */
-  if(host && realm)
-    spn = aprintf("%s/%s@%s", service, host, realm);
-  else if(host)
-    spn = aprintf("%s/%s", service, host);
-  else if(realm)
-    spn = aprintf("%s@%s", service, realm);
+    /* Generate our SPN */
+    if (host && realm)
+        spn = aprintf("%s/%s@%s", service, host, realm);
+    else if (host)
+        spn = aprintf("%s/%s", service, host);
+    else if (realm)
+        spn = aprintf("%s@%s", service, realm);
 
-  /* Return our newly allocated SPN */
-  return spn;
+    /* Return our newly allocated SPN */
+    return spn;
 }
 #else
-TCHAR *Curl_auth_build_spn(const char *service, const char *host,
-                           const char *realm)
+TCHAR* Curl_auth_build_spn(const char* service, const char* host, const char* realm)
 {
-  char *utf8_spn = NULL;
-  TCHAR *tchar_spn = NULL;
+    char* utf8_spn = NULL;
+    TCHAR* tchar_spn = NULL;
 
-  (void) realm;
+    (void)realm;
 
-  /* Note: We could use DsMakeSPN() or DsClientMakeSpnForTargetServer() rather
-     than doing this ourselves but the first is only available in Windows XP
-     and Windows Server 2003 and the latter is only available in Windows 2000
-     but not Windows95/98/ME or Windows NT4.0 unless the Active Directory
-     Client Extensions are installed. As such it is far simpler for us to
-     formulate the SPN instead. */
+    /* Note: We could use DsMakeSPN() or DsClientMakeSpnForTargetServer() rather
+       than doing this ourselves but the first is only available in Windows XP
+       and Windows Server 2003 and the latter is only available in Windows 2000
+       but not Windows95/98/ME or Windows NT4.0 unless the Active Directory
+       Client Extensions are installed. As such it is far simpler for us to
+       formulate the SPN instead. */
 
-  /* Generate our UTF8 based SPN */
-  utf8_spn = aprintf("%s/%s", service, host);
-  if(!utf8_spn) {
-    return NULL;
-  }
+    /* Generate our UTF8 based SPN */
+    utf8_spn = aprintf("%s/%s", service, host);
+    if (!utf8_spn) {
+        return NULL;
+    }
 
-  /* Allocate our TCHAR based SPN */
-  tchar_spn = Curl_convert_UTF8_to_tchar(utf8_spn);
-  if(!tchar_spn) {
-    free(utf8_spn);
+    /* Allocate our TCHAR based SPN */
+    tchar_spn = Curl_convert_UTF8_to_tchar(utf8_spn);
+    if (!tchar_spn) {
+        free(utf8_spn);
 
-    return NULL;
-  }
+        return NULL;
+    }
 
-  /* Release the UTF8 variant when operating with Unicode */
-  Curl_unicodefree(utf8_spn);
+    /* Release the UTF8 variant when operating with Unicode */
+    Curl_unicodefree(utf8_spn);
 
-  /* Return our newly allocated SPN */
-  return tchar_spn;
+    /* Return our newly allocated SPN */
+    return tchar_spn;
 }
 #endif /* USE_WINDOWS_SSPI */
 
@@ -125,23 +123,22 @@ TCHAR *Curl_auth_build_spn(const char *service, const char *host,
  *
  * Returns TRUE on success; otherwise FALSE.
  */
-bool Curl_auth_user_contains_domain(const char *user)
+bool Curl_auth_user_contains_domain(const char* user)
 {
-  bool valid = FALSE;
+    bool valid = FALSE;
 
-  if(user && *user) {
-    /* Check we have a domain name or UPN present */
-    char *p = strpbrk(user, "\\/@");
+    if (user && *user) {
+        /* Check we have a domain name or UPN present */
+        char* p = strpbrk(user, "\\/@");
 
-    valid = (p != NULL && p > user && p < user + strlen(user) - 1 ? TRUE :
-                                                                    FALSE);
-  }
+        valid = (p != NULL && p > user && p < user + strlen(user) - 1 ? TRUE : FALSE);
+    }
 #if defined(HAVE_GSSAPI) || defined(USE_WINDOWS_SSPI)
-  else
-    /* User and domain are obtained from the GSS-API credentials cache or the
-       currently logged in user from Windows */
-    valid = TRUE;
+    else
+        /* User and domain are obtained from the GSS-API credentials cache or the
+           currently logged in user from Windows */
+        valid = TRUE;
 #endif
 
-  return valid;
+    return valid;
 }

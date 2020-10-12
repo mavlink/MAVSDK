@@ -58,14 +58,14 @@
 
 #define HAVE_GETNAMEINFO 1
 #define GETNAMEINFO_QUAL_ARG1 const
-#define GETNAMEINFO_TYPE_ARG1 struct sockaddr *
+#define GETNAMEINFO_TYPE_ARG1 struct sockaddr*
 #define GETNAMEINFO_TYPE_ARG2 int
 #define GETNAMEINFO_TYPE_ARG46 long
 #define GETNAMEINFO_TYPE_ARG7 int
 
 #define HAVE_RECV 1
 #define RECV_TYPE_ARG1 int
-#define RECV_TYPE_ARG2 void *
+#define RECV_TYPE_ARG2 void*
 #define RECV_TYPE_ARG3 int
 #define RECV_TYPE_ARG4 int
 #define RECV_TYPE_RETV int
@@ -84,13 +84,13 @@
 
 #define HAVE_SELECT 1
 #define SELECT_TYPE_ARG1 int
-#define SELECT_TYPE_ARG234 fd_set *
-#define SELECT_TYPE_ARG5 struct timeval *
+#define SELECT_TYPE_ARG234 fd_set*
+#define SELECT_TYPE_ARG5 struct timeval*
 #define SELECT_TYPE_RETV int
 
 #define HAVE_SEND 1
 #define SEND_TYPE_ARG1 int
-#define SEND_TYPE_ARG2 void *
+#define SEND_TYPE_ARG2 void*
 #define SEND_QUAL_ARG2
 #define SEND_TYPE_ARG3 int
 #define SEND_TYPE_ARG4 int

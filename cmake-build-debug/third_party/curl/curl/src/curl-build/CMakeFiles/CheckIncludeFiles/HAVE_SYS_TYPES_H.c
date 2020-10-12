@@ -11,6 +11,7 @@
 #include <sys/time.h>
 #include <sys/types.h>
 
-
-int main(void){return 0;}
-
+int main(void)
+{
+    return 0;
+}

@@ -37,127 +37,120 @@
 
 static const char uploadthis[] =
 #ifdef CURL_DOES_CONVERSIONS
-  /* ASCII representation with escape sequences for non-ASCII platforms */
-  "\x74\x68\x69\x73\x20\x69\x73\x20\x74\x68\x65\x20\x62\x6c\x75\x72"
-  "\x62\x20\x77\x65\x20\x77\x61\x6e\x74\x20\x74\x6f\x20\x75\x70\x6c"
-  "\x6f\x61\x64\x0a";
+    /* ASCII representation with escape sequences for non-ASCII platforms */
+    "\x74\x68\x69\x73\x20\x69\x73\x20\x74\x68\x65\x20\x62\x6c\x75\x72"
+    "\x62\x20\x77\x65\x20\x77\x61\x6e\x74\x20\x74\x6f\x20\x75\x70\x6c"
+    "\x6f\x61\x64\x0a";
 #else
-  "this is the blurb we want to upload\n";
+    "this is the blurb we want to upload\n";
 #endif
 
-static size_t readcallback(void  *ptr,
-                           size_t size,
-                           size_t nmemb,
-                           void *clientp)
+static size_t readcallback(void* ptr, size_t size, size_t nmemb, void* clientp)
 {
-  int *counter = (int *)clientp;
+    int* counter = (int*)clientp;
 
-  if(*counter) {
-    /* only do this once and then require a clearing of this */
-    fprintf(stderr, "READ ALREADY DONE!\n");
+    if (*counter) {
+        /* only do this once and then require a clearing of this */
+        fprintf(stderr, "READ ALREADY DONE!\n");
+        return 0;
+    }
+    (*counter)++; /* bump */
+
+    if (size * nmemb > strlen(uploadthis)) {
+        fprintf(stderr, "READ!\n");
+        strcpy(ptr, uploadthis);
+        return strlen(uploadthis);
+    }
+    fprintf(stderr, "READ NOT FINE!\n");
     return 0;
-  }
-  (*counter)++; /* bump */
-
-  if(size * nmemb > strlen(uploadthis)) {
-    fprintf(stderr, "READ!\n");
-    strcpy(ptr, uploadthis);
-    return strlen(uploadthis);
-  }
-  fprintf(stderr, "READ NOT FINE!\n");
-  return 0;
 }
-static curlioerr ioctlcallback(CURL *handle,
-                               int cmd,
-                               void *clientp)
+static curlioerr ioctlcallback(CURL* handle, int cmd, void* clientp)
 {
-  int *counter = (int *)clientp;
-  (void)handle; /* unused */
-  if(cmd == CURLIOCMD_RESTARTREAD) {
-    fprintf(stderr, "REWIND!\n");
-    *counter = 0; /* clear counter to make the read callback restart */
-  }
-  return CURLIOE_OK;
+    int* counter = (int*)clientp;
+    (void)handle; /* unused */
+    if (cmd == CURLIOCMD_RESTARTREAD) {
+        fprintf(stderr, "REWIND!\n");
+        *counter = 0; /* clear counter to make the read callback restart */
+    }
+    return CURLIOE_OK;
 }
 
-
-int test(char *URL)
+int test(char* URL)
 {
-  int res = 0;
-  CURL *curl = NULL;
-  int counter = 0;
-  CURLM *m = NULL;
-  int running = 1;
+    int res = 0;
+    CURL* curl = NULL;
+    int counter = 0;
+    CURLM* m = NULL;
+    int running = 1;
 
-  start_test_timing();
+    start_test_timing();
 
-  global_init(CURL_GLOBAL_ALL);
+    global_init(CURL_GLOBAL_ALL);
 
-  easy_init(curl);
+    easy_init(curl);
 
-  easy_setopt(curl, CURLOPT_URL, URL);
-  easy_setopt(curl, CURLOPT_VERBOSE, 1L);
-  easy_setopt(curl, CURLOPT_HEADER, 1L);
+    easy_setopt(curl, CURLOPT_URL, URL);
+    easy_setopt(curl, CURLOPT_VERBOSE, 1L);
+    easy_setopt(curl, CURLOPT_HEADER, 1L);
 
-  /* read the POST data from a callback */
-  easy_setopt(curl, CURLOPT_IOCTLFUNCTION, ioctlcallback);
-  easy_setopt(curl, CURLOPT_IOCTLDATA, &counter);
-  easy_setopt(curl, CURLOPT_READFUNCTION, readcallback);
-  easy_setopt(curl, CURLOPT_READDATA, &counter);
-  /* We CANNOT do the POST fine without setting the size (or choose
-     chunked)! */
-  easy_setopt(curl, CURLOPT_POSTFIELDSIZE, (long)strlen(uploadthis));
+    /* read the POST data from a callback */
+    easy_setopt(curl, CURLOPT_IOCTLFUNCTION, ioctlcallback);
+    easy_setopt(curl, CURLOPT_IOCTLDATA, &counter);
+    easy_setopt(curl, CURLOPT_READFUNCTION, readcallback);
+    easy_setopt(curl, CURLOPT_READDATA, &counter);
+    /* We CANNOT do the POST fine without setting the size (or choose
+       chunked)! */
+    easy_setopt(curl, CURLOPT_POSTFIELDSIZE, (long)strlen(uploadthis));
 
-  easy_setopt(curl, CURLOPT_POST, 1L);
-  easy_setopt(curl, CURLOPT_PROXY, libtest_arg2);
-  easy_setopt(curl, CURLOPT_PROXYUSERPWD, libtest_arg3);
-  easy_setopt(curl, CURLOPT_PROXYAUTH,
-                   (long) (CURLAUTH_NTLM | CURLAUTH_DIGEST | CURLAUTH_BASIC) );
+    easy_setopt(curl, CURLOPT_POST, 1L);
+    easy_setopt(curl, CURLOPT_PROXY, libtest_arg2);
+    easy_setopt(curl, CURLOPT_PROXYUSERPWD, libtest_arg3);
+    easy_setopt(curl, CURLOPT_PROXYAUTH, (long)(CURLAUTH_NTLM | CURLAUTH_DIGEST | CURLAUTH_BASIC));
 
-  multi_init(m);
+    multi_init(m);
 
-  multi_add_handle(m, curl);
+    multi_add_handle(m, curl);
 
-  while(running) {
-    struct timeval timeout;
-    fd_set fdread, fdwrite, fdexcep;
-    int maxfd = -99;
+    while (running) {
+        struct timeval timeout;
+        fd_set fdread, fdwrite, fdexcep;
+        int maxfd = -99;
 
-    timeout.tv_sec = 0;
-    timeout.tv_usec = 100000L; /* 100 ms */
+        timeout.tv_sec = 0;
+        timeout.tv_usec = 100000L; /* 100 ms */
 
-    multi_perform(m, &running);
+        multi_perform(m, &running);
 
-    abort_on_test_timeout();
+        abort_on_test_timeout();
 
 #ifdef TPF
-    sleep(1); /* avoid ctl-10 dump */
+        sleep(1); /* avoid ctl-10 dump */
 #endif
 
-    if(!running)
-      break; /* done */
+        if (!running)
+            break; /* done */
 
-    FD_ZERO(&fdread);
-    FD_ZERO(&fdwrite);
-    FD_ZERO(&fdexcep);
+        FD_ZERO(&fdread);
+        FD_ZERO(&fdwrite);
+        FD_ZERO(&fdexcep);
 
-    multi_fdset(m, &fdread, &fdwrite, &fdexcep, &maxfd);
+        multi_fdset(m, &fdread, &fdwrite, &fdexcep, &maxfd);
 
-    /* At this point, maxfd is guaranteed to be greater or equal than -1. */
+        /* At this point, maxfd is guaranteed to be greater or equal than -1. */
 
-    select_test(maxfd + 1, &fdread, &fdwrite, &fdexcep, &timeout);
+        select_test(maxfd + 1, &fdread, &fdwrite, &fdexcep, &timeout);
 
-    abort_on_test_timeout();
-  }
+        abort_on_test_timeout();
+    }
 
 test_cleanup:
 
-  /* proper cleanup sequence - type PA */
+    /* proper cleanup sequence - type PA */
 
-  curl_multi_remove_handle(m, curl);
-  curl_multi_cleanup(m);
-  curl_easy_cleanup(curl);
-  curl_global_cleanup();
+    curl_multi_remove_handle(m, curl);
+    curl_multi_cleanup(m);
+    curl_easy_cleanup(curl);
+    curl_global_cleanup();
 
-  return res;
+    return res;
 }

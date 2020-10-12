@@ -24,8 +24,7 @@
 
 #include "curl_setup.h"
 
-#if !defined(CURL_DISABLE_IMAP) || !defined(CURL_DISABLE_SMTP) || \
-  !defined(CURL_DISABLE_POP3)
+#if !defined(CURL_DISABLE_IMAP) || !defined(CURL_DISABLE_SMTP) || !defined(CURL_DISABLE_POP3)
 
 #include <curl/curl.h>
 #include "urldata.h"
@@ -58,32 +57,32 @@
  *
  * Returns CURLE_OK on success.
  */
-CURLcode Curl_auth_create_oauth_bearer_message(struct Curl_easy *data,
-                                               const char *user,
-                                               const char *host,
-                                               const long port,
-                                               const char *bearer,
-                                               char **outptr, size_t *outlen)
+CURLcode Curl_auth_create_oauth_bearer_message(
+    struct Curl_easy* data,
+    const char* user,
+    const char* host,
+    const long port,
+    const char* bearer,
+    char** outptr,
+    size_t* outlen)
 {
-  CURLcode result = CURLE_OK;
-  char *oauth = NULL;
+    CURLcode result = CURLE_OK;
+    char* oauth = NULL;
 
-  /* Generate the message */
-  if(port == 0 || port == 80)
-    oauth = aprintf("n,a=%s,\1host=%s\1auth=Bearer %s\1\1", user, host,
-                    bearer);
-  else
-    oauth = aprintf("n,a=%s,\1host=%s\1port=%ld\1auth=Bearer %s\1\1", user,
-                    host, port, bearer);
-  if(!oauth)
-    return CURLE_OUT_OF_MEMORY;
+    /* Generate the message */
+    if (port == 0 || port == 80)
+        oauth = aprintf("n,a=%s,\1host=%s\1auth=Bearer %s\1\1", user, host, bearer);
+    else
+        oauth = aprintf("n,a=%s,\1host=%s\1port=%ld\1auth=Bearer %s\1\1", user, host, port, bearer);
+    if (!oauth)
+        return CURLE_OUT_OF_MEMORY;
 
-  /* Base64 encode the reply */
-  result = Curl_base64_encode(data, oauth, strlen(oauth), outptr, outlen);
+    /* Base64 encode the reply */
+    result = Curl_base64_encode(data, oauth, strlen(oauth), outptr, outlen);
 
-  free(oauth);
+    free(oauth);
 
-  return result;
+    return result;
 }
 
 /*
@@ -103,24 +102,21 @@ CURLcode Curl_auth_create_oauth_bearer_message(struct Curl_easy *data,
  *
  * Returns CURLE_OK on success.
  */
-CURLcode Curl_auth_create_xoauth_bearer_message(struct Curl_easy *data,
-                                               const char *user,
-                                               const char *bearer,
-                                               char **outptr, size_t *outlen)
+CURLcode Curl_auth_create_xoauth_bearer_message(
+    struct Curl_easy* data, const char* user, const char* bearer, char** outptr, size_t* outlen)
 {
-  CURLcode result = CURLE_OK;
+    CURLcode result = CURLE_OK;
 
-  /* Generate the message */
-  char *xoauth = aprintf("user=%s\1auth=Bearer %s\1\1", user, bearer);
-  if(!xoauth)
-    return CURLE_OUT_OF_MEMORY;
+    /* Generate the message */
+    char* xoauth = aprintf("user=%s\1auth=Bearer %s\1\1", user, bearer);
+    if (!xoauth)
+        return CURLE_OUT_OF_MEMORY;
 
-  /* Base64 encode the reply */
-  result = Curl_base64_encode(data, xoauth, strlen(xoauth), outptr, outlen);
+    /* Base64 encode the reply */
+    result = Curl_base64_encode(data, xoauth, strlen(xoauth), outptr, outlen);
 
-  free(xoauth);
+    free(xoauth);
 
-  return result;
+    return result;
 }
 #endif /* disabled, no users */
-

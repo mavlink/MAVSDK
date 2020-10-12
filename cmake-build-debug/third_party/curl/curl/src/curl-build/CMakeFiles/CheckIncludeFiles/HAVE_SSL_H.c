@@ -34,6 +34,7 @@
 #include <signal.h>
 #include <ssl.h>
 
-
-int main(void){return 0;}
-
+int main(void)
+{
+    return 0;
+}

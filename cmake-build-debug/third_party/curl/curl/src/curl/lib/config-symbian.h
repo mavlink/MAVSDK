@@ -84,7 +84,7 @@
 #define GETNAMEINFO_QUAL_ARG1 const
 
 /* Define to the type of arg 1 for getnameinfo. */
-#define GETNAMEINFO_TYPE_ARG1 struct sockaddr *
+#define GETNAMEINFO_TYPE_ARG1 struct sockaddr*
 
 /* Define to the type of arg 2 for getnameinfo. */
 #define GETNAMEINFO_TYPE_ARG2 socklen_t
@@ -349,7 +349,7 @@
 /* #undef HAVE_NO_STRERROR_R_DECL */
 
 /* if you have an old MIT gssapi library, lacking GSS_C_NT_HOSTBASED_SERVICE
-   */
+ */
 /* #undef HAVE_OLD_GSSMIT */
 
 /* Define to 1 if you have the <openssl/crypto.h> header file. */
@@ -658,7 +658,7 @@
 /*#define RANDOM_FILE "/dev/urandom"*/
 
 #define RECV_TYPE_ARG1 int
-#define RECV_TYPE_ARG2 void *
+#define RECV_TYPE_ARG2 void*
 #define RECV_TYPE_ARG3 size_t
 #define RECV_TYPE_ARG4 int
 #define RECV_TYPE_RETV ssize_t
@@ -674,11 +674,10 @@
 
 #define SEND_TYPE_ARG1 int
 #define SEND_QUAL_ARG2 const
-#define SEND_TYPE_ARG2 void *
+#define SEND_TYPE_ARG2 void*
 #define SEND_TYPE_ARG3 size_t
 #define SEND_TYPE_ARG4 int
 #define SEND_TYPE_RETV ssize_t
-
 
 /* Define as the return type of signal handlers (`int' or `void'). */
 /*#define RETSIGTYPE void*/
@@ -687,10 +686,10 @@
 #define SELECT_TYPE_ARG1 int
 
 /* Define to the type of args 2, 3 and 4 for `select'. */
-#define SELECT_TYPE_ARG234 (fd_set *)
+#define SELECT_TYPE_ARG234 (fd_set*)
 
 /* Define to the type of arg 5 for `select'. */
-#define SELECT_TYPE_ARG5 (struct timeval *)
+#define SELECT_TYPE_ARG5 (struct timeval*)
 
 /* The size of `int', as computed by sizeof. */
 #define SIZEOF_INT 4

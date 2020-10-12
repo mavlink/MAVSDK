@@ -36,36 +36,34 @@
 
 int main(void)
 {
-  CURL *curl;
-  CURLcode res = CURLE_OK;
+    CURL* curl;
+    CURLcode res = CURLE_OK;
 
-  curl = curl_easy_init();
-  if(curl) {
-    /* Set the username and password */
-    curl_easy_setopt(curl, CURLOPT_USERNAME, "user");
-    curl_easy_setopt(curl, CURLOPT_PASSWORD, "secret");
+    curl = curl_easy_init();
+    if (curl) {
+        /* Set the username and password */
+        curl_easy_setopt(curl, CURLOPT_USERNAME, "user");
+        curl_easy_setopt(curl, CURLOPT_PASSWORD, "secret");
 
-    /* Set the authorisation identity (identity to act as) */
-    curl_easy_setopt(curl, CURLOPT_SASL_AUTHZID, "shared-mailbox");
+        /* Set the authorisation identity (identity to act as) */
+        curl_easy_setopt(curl, CURLOPT_SASL_AUTHZID, "shared-mailbox");
 
-    /* Force PLAIN authentication */
-    curl_easy_setopt(curl, CURLOPT_LOGIN_OPTIONS, "AUTH=PLAIN");
+        /* Force PLAIN authentication */
+        curl_easy_setopt(curl, CURLOPT_LOGIN_OPTIONS, "AUTH=PLAIN");
 
-    /* This will fetch message 1 from the user's inbox */
-    curl_easy_setopt(curl, CURLOPT_URL,
-                     "imap://imap.example.com/INBOX/;UID=1");
+        /* This will fetch message 1 from the user's inbox */
+        curl_easy_setopt(curl, CURLOPT_URL, "imap://imap.example.com/INBOX/;UID=1");
 
-    /* Perform the fetch */
-    res = curl_easy_perform(curl);
+        /* Perform the fetch */
+        res = curl_easy_perform(curl);
 
-    /* Check for errors */
-    if(res != CURLE_OK)
-      fprintf(stderr, "curl_easy_perform() failed: %s\n",
-              curl_easy_strerror(res));
+        /* Check for errors */
+        if (res != CURLE_OK)
+            fprintf(stderr, "curl_easy_perform() failed: %s\n", curl_easy_strerror(res));
 
-    /* Always cleanup */
-    curl_easy_cleanup(curl);
-  }
+        /* Always cleanup */
+        curl_easy_cleanup(curl);
+    }
 
-  return (int)res;
+    return (int)res;
 }

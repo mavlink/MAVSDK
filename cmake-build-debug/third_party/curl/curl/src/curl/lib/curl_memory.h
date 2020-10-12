@@ -90,11 +90,11 @@
  * include curl/curl.h here. We avoid that include since it includes stdio.h
  * and other headers that may get messed up with defines done here.
  */
-typedef void *(*curl_malloc_callback)(size_t size);
-typedef void (*curl_free_callback)(void *ptr);
-typedef void *(*curl_realloc_callback)(void *ptr, size_t size);
-typedef char *(*curl_strdup_callback)(const char *str);
-typedef void *(*curl_calloc_callback)(size_t nmemb, size_t size);
+typedef void* (*curl_malloc_callback)(size_t size);
+typedef void (*curl_free_callback)(void* ptr);
+typedef void* (*curl_realloc_callback)(void* ptr, size_t size);
+typedef char* (*curl_strdup_callback)(const char* str);
+typedef void* (*curl_calloc_callback)(size_t nmemb, size_t size);
 #define CURL_DID_MEMORY_FUNC_TYPEDEFS
 #endif
 
@@ -123,24 +123,24 @@ extern curl_wcsdup_callback Curl_cwcsdup;
 #undef malloc
 #define malloc(size) Curl_cmalloc(size)
 #undef calloc
-#define calloc(nbelem,size) Curl_ccalloc(nbelem, size)
+#define calloc(nbelem, size) Curl_ccalloc(nbelem, size)
 #undef realloc
-#define realloc(ptr,size) Curl_crealloc(ptr, size)
+#define realloc(ptr, size) Curl_crealloc(ptr, size)
 #undef free
 #define free(ptr) Curl_cfree(ptr)
 
 #ifdef WIN32
-#  ifdef UNICODE
-#    undef wcsdup
-#    define wcsdup(ptr) Curl_cwcsdup(ptr)
-#    undef _wcsdup
-#    define _wcsdup(ptr) Curl_cwcsdup(ptr)
-#    undef _tcsdup
-#    define _tcsdup(ptr) Curl_cwcsdup(ptr)
-#  else
-#    undef _tcsdup
-#    define _tcsdup(ptr) Curl_cstrdup(ptr)
-#  endif
+#ifdef UNICODE
+#undef wcsdup
+#define wcsdup(ptr) Curl_cwcsdup(ptr)
+#undef _wcsdup
+#define _wcsdup(ptr) Curl_cwcsdup(ptr)
+#undef _tcsdup
+#define _tcsdup(ptr) Curl_cwcsdup(ptr)
+#else
+#undef _tcsdup
+#define _tcsdup(ptr) Curl_cstrdup(ptr)
+#endif
 #endif
 
 #endif /* CURLDEBUG */

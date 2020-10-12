@@ -35,22 +35,21 @@
 #include "urldata.h"
 
 /* functions provided by the specific backends */
-CURLcode Curl_quic_connect(struct connectdata *conn,
-                           curl_socket_t sockfd,
-                           int sockindex,
-                           const struct sockaddr *addr,
-                           socklen_t addrlen);
-CURLcode Curl_quic_is_connected(struct connectdata *conn,
-                                curl_socket_t sockfd,
-                                bool *connected);
-int Curl_quic_ver(char *p, size_t len);
-CURLcode Curl_quic_done_sending(struct connectdata *conn);
-void Curl_quic_done(struct Curl_easy *data, bool premature);
-bool Curl_quic_data_pending(const struct Curl_easy *data);
+CURLcode Curl_quic_connect(
+    struct connectdata* conn,
+    curl_socket_t sockfd,
+    int sockindex,
+    const struct sockaddr* addr,
+    socklen_t addrlen);
+CURLcode Curl_quic_is_connected(struct connectdata* conn, curl_socket_t sockfd, bool* connected);
+int Curl_quic_ver(char* p, size_t len);
+CURLcode Curl_quic_done_sending(struct connectdata* conn);
+void Curl_quic_done(struct Curl_easy* data, bool premature);
+bool Curl_quic_data_pending(const struct Curl_easy* data);
 
 #else /* ENABLE_QUIC */
 #define Curl_quic_done_sending(x)
-#define Curl_quic_done(x,y)
+#define Curl_quic_done(x, y)
 #define Curl_quic_data_pending(x)
 #endif /* !ENABLE_QUIC */
 

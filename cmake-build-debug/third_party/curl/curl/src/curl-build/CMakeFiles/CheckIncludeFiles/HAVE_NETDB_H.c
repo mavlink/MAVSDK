@@ -26,6 +26,7 @@
 #include <net/if.h>
 #include <netdb.h>
 
-
-int main(void){return 0;}
-
+int main(void)
+{
+    return 0;
+}

@@ -35,6 +35,7 @@
 #include <stdbool.h>
 #include <stdint.h>
 
-
-int main(void){return 0;}
-
+int main(void)
+{
+    return 0;
+}

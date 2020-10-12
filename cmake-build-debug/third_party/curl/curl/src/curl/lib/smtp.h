@@ -29,22 +29,22 @@
  * SMTP unique setup
  ***************************************************************************/
 typedef enum {
-  SMTP_STOP,        /* do nothing state, stops the state machine */
-  SMTP_SERVERGREET, /* waiting for the initial greeting immediately after
-                       a connect */
-  SMTP_EHLO,
-  SMTP_HELO,
-  SMTP_STARTTLS,
-  SMTP_UPGRADETLS,  /* asynchronously upgrade the connection to SSL/TLS
-                       (multi mode only) */
-  SMTP_AUTH,
-  SMTP_COMMAND,     /* VRFY, EXPN, NOOP, RSET and HELP */
-  SMTP_MAIL,        /* MAIL FROM */
-  SMTP_RCPT,        /* RCPT TO */
-  SMTP_DATA,
-  SMTP_POSTDATA,
-  SMTP_QUIT,
-  SMTP_LAST         /* never used */
+    SMTP_STOP, /* do nothing state, stops the state machine */
+    SMTP_SERVERGREET, /* waiting for the initial greeting immediately after
+                         a connect */
+    SMTP_EHLO,
+    SMTP_HELO,
+    SMTP_STARTTLS,
+    SMTP_UPGRADETLS, /* asynchronously upgrade the connection to SSL/TLS
+                        (multi mode only) */
+    SMTP_AUTH,
+    SMTP_COMMAND, /* VRFY, EXPN, NOOP, RSET and HELP */
+    SMTP_MAIL, /* MAIL FROM */
+    SMTP_RCPT, /* RCPT TO */
+    SMTP_DATA,
+    SMTP_POSTDATA,
+    SMTP_QUIT,
+    SMTP_LAST /* never used */
 } smtpstate;
 
 /* This SMTP struct is used in the Curl_easy. All SMTP data that is
@@ -52,31 +52,31 @@ typedef enum {
    perhaps the Curl_easy is changed between the times the connection is
    used. */
 struct SMTP {
-  curl_pp_transfer transfer;
-  char *custom;            /* Custom Request */
-  struct curl_slist *rcpt; /* Recipient list */
-  bool rcpt_had_ok;        /* Whether any of RCPT TO commands (depends on
-                              total number of recipients) succeeded so far */
-  int rcpt_last_error;     /* The last error received for RCPT TO command */
-  size_t eob;              /* Number of bytes of the EOB (End Of Body) that
-                              have been received so far */
-  bool trailing_crlf;      /* Specifies if the tailing CRLF is present */
+    curl_pp_transfer transfer;
+    char* custom; /* Custom Request */
+    struct curl_slist* rcpt; /* Recipient list */
+    bool rcpt_had_ok; /* Whether any of RCPT TO commands (depends on
+                         total number of recipients) succeeded so far */
+    int rcpt_last_error; /* The last error received for RCPT TO command */
+    size_t eob; /* Number of bytes of the EOB (End Of Body) that
+                   have been received so far */
+    bool trailing_crlf; /* Specifies if the tailing CRLF is present */
 };
 
 /* smtp_conn is used for struct connection-oriented data in the connectdata
    struct */
 struct smtp_conn {
-  struct pingpong pp;
-  smtpstate state;         /* Always use smtp.c:state() to change state! */
-  bool ssldone;            /* Is connect() over SSL done? */
-  char *domain;            /* Client address/name to send in the EHLO */
-  struct SASL sasl;        /* SASL-related storage */
-  bool tls_supported;      /* StartTLS capability supported by server */
-  bool size_supported;     /* If server supports SIZE extension according to
-                              RFC 1870 */
-  bool utf8_supported;     /* If server supports SMTPUTF8 extension according
-                              to RFC 6531 */
-  bool auth_supported;     /* AUTH capability supported by server */
+    struct pingpong pp;
+    smtpstate state; /* Always use smtp.c:state() to change state! */
+    bool ssldone; /* Is connect() over SSL done? */
+    char* domain; /* Client address/name to send in the EHLO */
+    struct SASL sasl; /* SASL-related storage */
+    bool tls_supported; /* StartTLS capability supported by server */
+    bool size_supported; /* If server supports SIZE extension according to
+                            RFC 1870 */
+    bool utf8_supported; /* If server supports SMTPUTF8 extension according
+                            to RFC 6531 */
+    bool auth_supported; /* AUTH capability supported by server */
 };
 
 extern const struct Curl_handler Curl_handler_smtp;
@@ -91,6 +91,6 @@ extern const struct Curl_handler Curl_handler_smtps;
 #define SMTP_EOB_REPL "\x0d\x0a\x2e\x2e"
 #define SMTP_EOB_REPL_LEN 4
 
-CURLcode Curl_smtp_escape_eob(struct connectdata *conn, const ssize_t nread);
+CURLcode Curl_smtp_escape_eob(struct connectdata* conn, const ssize_t nread);
 
 #endif /* HEADER_CURL_SMTP_H */

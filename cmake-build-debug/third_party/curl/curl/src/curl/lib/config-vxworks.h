@@ -87,7 +87,7 @@
 #define GETNAMEINFO_QUAL_ARG1 const
 
 /* Define to the type of arg 1 for getnameinfo. */
-#define GETNAMEINFO_TYPE_ARG1 struct sockaddr *
+#define GETNAMEINFO_TYPE_ARG1 struct sockaddr*
 
 /* Define to the type of arg 2 for getnameinfo. */
 #define GETNAMEINFO_TYPE_ARG2 socklen_t
@@ -303,7 +303,7 @@
 /* #undef HAVE_IOCTLSOCKET_CAMEL */
 
 /* Define to 1 if you have a working IoctlSocket camel case FIONBIO function.
-   */
+ */
 /* #undef HAVE_IOCTLSOCKET_CAMEL_FIONBIO */
 
 /* Define to 1 if you have a working ioctlsocket FIONBIO function. */
@@ -409,7 +409,7 @@
 /* #undef HAVE_NI_WITHSCOPEID */
 
 /* if you have an old MIT gssapi library, lacking GSS_C_NT_HOSTBASED_SERVICE
-   */
+ */
 /* #undef HAVE_OLD_GSSMIT */
 
 /* Define to 1 if you have the <openssl/crypto.h> header file. */
@@ -764,7 +764,7 @@
 #define RECV_TYPE_ARG1 int
 
 /* Define to the type of arg 2 for recv. */
-#define RECV_TYPE_ARG2 void *
+#define RECV_TYPE_ARG2 void*
 
 /* Define to the type of arg 3 for recv. */
 #define RECV_TYPE_ARG3 size_t
@@ -785,10 +785,10 @@
 #define SELECT_TYPE_ARG1 int
 
 /* Define to the type of args 2, 3 and 4 for select. */
-#define SELECT_TYPE_ARG234 fd_set *
+#define SELECT_TYPE_ARG234 fd_set*
 
 /* Define to the type of arg 5 for select. */
-#define SELECT_TYPE_ARG5 struct timeval *
+#define SELECT_TYPE_ARG5 struct timeval*
 
 /* Define to the function return type for select. */
 #define SELECT_TYPE_RETV int
@@ -800,7 +800,7 @@
 #define SEND_TYPE_ARG1 int
 
 /* Define to the type of arg 2 for send. */
-#define SEND_TYPE_ARG2 void *
+#define SEND_TYPE_ARG2 void*
 
 /* Define to the type of arg 3 for send. */
 #define SEND_TYPE_ARG3 size_t

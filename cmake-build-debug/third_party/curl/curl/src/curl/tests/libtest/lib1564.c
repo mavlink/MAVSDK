@@ -28,115 +28,109 @@
 #define TEST_HANG_TIMEOUT 60 * 1000
 #define WAKEUP_NUM 10
 
-int test(char *URL)
+int test(char* URL)
 {
-  CURLM *multi = NULL;
-  int numfds;
-  int i;
-  int res = 0;
-  struct timeval time_before_wait, time_after_wait;
+    CURLM* multi = NULL;
+    int numfds;
+    int i;
+    int res = 0;
+    struct timeval time_before_wait, time_after_wait;
 
-  (void)URL;
+    (void)URL;
 
-  start_test_timing();
+    start_test_timing();
 
-  global_init(CURL_GLOBAL_ALL);
+    global_init(CURL_GLOBAL_ALL);
 
-  multi_init(multi);
+    multi_init(multi);
 
-  /* no wakeup */
+    /* no wakeup */
 
-  time_before_wait = tutil_tvnow();
-  multi_poll(multi, NULL, 0, 1000, &numfds);
-  time_after_wait = tutil_tvnow();
+    time_before_wait = tutil_tvnow();
+    multi_poll(multi, NULL, 0, 1000, &numfds);
+    time_after_wait = tutil_tvnow();
 
-  if(tutil_tvdiff(time_after_wait, time_before_wait) < 500) {
-    fprintf(stderr, "%s:%d curl_multi_poll returned too early\n",
-            __FILE__, __LINE__);
-    res = TEST_ERR_MAJOR_BAD;
-    goto test_cleanup;
-  }
+    if (tutil_tvdiff(time_after_wait, time_before_wait) < 500) {
+        fprintf(stderr, "%s:%d curl_multi_poll returned too early\n", __FILE__, __LINE__);
+        res = TEST_ERR_MAJOR_BAD;
+        goto test_cleanup;
+    }
 
-  abort_on_test_timeout();
+    abort_on_test_timeout();
 
-  /* try a single wakeup */
+    /* try a single wakeup */
 
-  multi_wakeup(multi);
-
-  time_before_wait = tutil_tvnow();
-  multi_poll(multi, NULL, 0, 1000, &numfds);
-  time_after_wait = tutil_tvnow();
-
-  if(tutil_tvdiff(time_after_wait, time_before_wait) > 500) {
-    fprintf(stderr, "%s:%d curl_multi_poll returned too late\n",
-            __FILE__, __LINE__);
-    res = TEST_ERR_MAJOR_BAD;
-    goto test_cleanup;
-  }
-
-  abort_on_test_timeout();
-
-  /* previous wakeup should not wake up this */
-
-  time_before_wait = tutil_tvnow();
-  multi_poll(multi, NULL, 0, 1000, &numfds);
-  time_after_wait = tutil_tvnow();
-
-  if(tutil_tvdiff(time_after_wait, time_before_wait) < 500) {
-    fprintf(stderr, "%s:%d curl_multi_poll returned too early\n",
-            __FILE__, __LINE__);
-    res = TEST_ERR_MAJOR_BAD;
-    goto test_cleanup;
-  }
-
-  abort_on_test_timeout();
-
-  /* try lots of wakeup */
-
-  for(i = 0; i < WAKEUP_NUM; ++i)
     multi_wakeup(multi);
 
-  time_before_wait = tutil_tvnow();
-  multi_poll(multi, NULL, 0, 1000, &numfds);
-  time_after_wait = tutil_tvnow();
+    time_before_wait = tutil_tvnow();
+    multi_poll(multi, NULL, 0, 1000, &numfds);
+    time_after_wait = tutil_tvnow();
 
-  if(tutil_tvdiff(time_after_wait, time_before_wait) > 500) {
-    fprintf(stderr, "%s:%d curl_multi_poll returned too late\n",
-            __FILE__, __LINE__);
-    res = TEST_ERR_MAJOR_BAD;
-    goto test_cleanup;
-  }
+    if (tutil_tvdiff(time_after_wait, time_before_wait) > 500) {
+        fprintf(stderr, "%s:%d curl_multi_poll returned too late\n", __FILE__, __LINE__);
+        res = TEST_ERR_MAJOR_BAD;
+        goto test_cleanup;
+    }
 
-  abort_on_test_timeout();
+    abort_on_test_timeout();
 
-#if !defined(WIN32) && !defined(_WIN32) && !defined(__WIN32__) \
-    && !defined(__CYGWIN__)
-  /* Even lots of previous wakeups should not wake up this.
+    /* previous wakeup should not wake up this */
 
-     On Windows (particularly when using MinGW), the socketpair
-     used for curl_multi_wakeup() is really asynchronous,
-     meaning when it's called a lot, it can take some time
-     before all of the data can be read. Sometimes it can wake
-     up more than one curl_multi_poll() call. */
+    time_before_wait = tutil_tvnow();
+    multi_poll(multi, NULL, 0, 1000, &numfds);
+    time_after_wait = tutil_tvnow();
 
-  time_before_wait = tutil_tvnow();
-  multi_poll(multi, NULL, 0, 1000, &numfds);
-  time_after_wait = tutil_tvnow();
+    if (tutil_tvdiff(time_after_wait, time_before_wait) < 500) {
+        fprintf(stderr, "%s:%d curl_multi_poll returned too early\n", __FILE__, __LINE__);
+        res = TEST_ERR_MAJOR_BAD;
+        goto test_cleanup;
+    }
 
-  if(tutil_tvdiff(time_after_wait, time_before_wait) < 500) {
-    fprintf(stderr, "%s:%d curl_multi_poll returned too early\n",
-            __FILE__, __LINE__);
-    res = TEST_ERR_MAJOR_BAD;
-    goto test_cleanup;
-  }
+    abort_on_test_timeout();
 
-  abort_on_test_timeout();
+    /* try lots of wakeup */
+
+    for (i = 0; i < WAKEUP_NUM; ++i)
+        multi_wakeup(multi);
+
+    time_before_wait = tutil_tvnow();
+    multi_poll(multi, NULL, 0, 1000, &numfds);
+    time_after_wait = tutil_tvnow();
+
+    if (tutil_tvdiff(time_after_wait, time_before_wait) > 500) {
+        fprintf(stderr, "%s:%d curl_multi_poll returned too late\n", __FILE__, __LINE__);
+        res = TEST_ERR_MAJOR_BAD;
+        goto test_cleanup;
+    }
+
+    abort_on_test_timeout();
+
+#if !defined(WIN32) && !defined(_WIN32) && !defined(__WIN32__) && !defined(__CYGWIN__)
+    /* Even lots of previous wakeups should not wake up this.
+
+       On Windows (particularly when using MinGW), the socketpair
+       used for curl_multi_wakeup() is really asynchronous,
+       meaning when it's called a lot, it can take some time
+       before all of the data can be read. Sometimes it can wake
+       up more than one curl_multi_poll() call. */
+
+    time_before_wait = tutil_tvnow();
+    multi_poll(multi, NULL, 0, 1000, &numfds);
+    time_after_wait = tutil_tvnow();
+
+    if (tutil_tvdiff(time_after_wait, time_before_wait) < 500) {
+        fprintf(stderr, "%s:%d curl_multi_poll returned too early\n", __FILE__, __LINE__);
+        res = TEST_ERR_MAJOR_BAD;
+        goto test_cleanup;
+    }
+
+    abort_on_test_timeout();
 #endif
 
 test_cleanup:
 
-  curl_multi_cleanup(multi);
-  curl_global_cleanup();
+    curl_multi_cleanup(multi);
+    curl_global_cleanup();
 
-  return res;
+    return res;
 }

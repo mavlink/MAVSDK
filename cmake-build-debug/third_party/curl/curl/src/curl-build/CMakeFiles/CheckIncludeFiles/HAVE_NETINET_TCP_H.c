@@ -28,6 +28,7 @@
 #include <netinet/in.h>
 #include <netinet/tcp.h>
 
-
-int main(void){return 0;}
-
+int main(void)
+{
+    return 0;
+}

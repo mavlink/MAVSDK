@@ -25,10 +25,10 @@
 /* scheme is not URL encoded, the longest libcurl supported ones are... */
 #define MAX_SCHEME_LEN 40
 
-bool Curl_is_absolute_url(const char *url, char *scheme, size_t buflen);
+bool Curl_is_absolute_url(const char* url, char* scheme, size_t buflen);
 
 #ifdef DEBUGBUILD
-CURLUcode Curl_parse_port(struct Curl_URL *u, char *hostname);
+CURLUcode Curl_parse_port(struct Curl_URL* u, char* hostname);
 #endif
 
 #endif /* HEADER_CURL_URLAPI_INT_H */

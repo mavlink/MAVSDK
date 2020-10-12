@@ -23,13 +23,13 @@
 #include "curl_setup.h"
 
 #ifdef __AMIGA__
-#  include "amigaos.h"
-#  if defined(HAVE_PROTO_BSDSOCKET_H) && !defined(USE_AMISSL)
-#    include <amitcp/socketbasetags.h>
-#  endif
-#  ifdef __libnix__
-#    include <stabs.h>
-#  endif
+#include "amigaos.h"
+#if defined(HAVE_PROTO_BSDSOCKET_H) && !defined(USE_AMISSL)
+#include <amitcp/socketbasetags.h>
+#endif
+#ifdef __libnix__
+#include <stabs.h>
+#endif
 #endif
 
 /* The last #include files should be: */
@@ -38,45 +38,48 @@
 
 #ifdef __AMIGA__
 #if defined(HAVE_PROTO_BSDSOCKET_H) && !defined(USE_AMISSL)
-struct Library *SocketBase = NULL;
+struct Library* SocketBase = NULL;
 extern int errno, h_errno;
 
 #ifdef __libnix__
-void __request(const char *msg);
+void __request(const char* msg);
 #else
-# define __request(msg)       Printf(msg "\n\a")
+#define __request(msg) Printf(msg "\n\a")
 #endif
 
 void Curl_amiga_cleanup()
 {
-  if(SocketBase) {
-    CloseLibrary(SocketBase);
-    SocketBase = NULL;
-  }
+    if (SocketBase) {
+        CloseLibrary(SocketBase);
+        SocketBase = NULL;
+    }
 }
 
 bool Curl_amiga_init()
 {
-  if(!SocketBase)
-    SocketBase = OpenLibrary("bsdsocket.library", 4);
+    if (!SocketBase)
+        SocketBase = OpenLibrary("bsdsocket.library", 4);
 
-  if(!SocketBase) {
-    __request("No TCP/IP Stack running!");
-    return FALSE;
-  }
+    if (!SocketBase) {
+        __request("No TCP/IP Stack running!");
+        return FALSE;
+    }
 
-  if(SocketBaseTags(SBTM_SETVAL(SBTC_ERRNOPTR(sizeof(errno))), (ULONG) &errno,
-                    SBTM_SETVAL(SBTC_LOGTAGPTR), (ULONG) "curl",
-                    TAG_DONE)) {
-    __request("SocketBaseTags ERROR");
-    return FALSE;
-  }
+    if (SocketBaseTags(
+            SBTM_SETVAL(SBTC_ERRNOPTR(sizeof(errno))),
+            (ULONG)&errno,
+            SBTM_SETVAL(SBTC_LOGTAGPTR),
+            (ULONG) "curl",
+            TAG_DONE)) {
+        __request("SocketBaseTags ERROR");
+        return FALSE;
+    }
 
 #ifndef __libnix__
-  atexit(Curl_amiga_cleanup);
+    atexit(Curl_amiga_cleanup);
 #endif
 
-  return TRUE;
+    return TRUE;
 }
 
 #ifdef __libnix__
@@ -86,10 +89,9 @@ ADD2EXIT(Curl_amiga_cleanup, -50);
 #endif /* HAVE_PROTO_BSDSOCKET_H */
 
 #ifdef USE_AMISSL
-void Curl_amiga_X509_free(X509 *a)
+void Curl_amiga_X509_free(X509* a)
 {
-  X509_free(a);
+    X509_free(a);
 }
 #endif /* USE_AMISSL */
 #endif /* __AMIGA__ */
-

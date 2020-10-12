@@ -28,13 +28,13 @@
 #endif
 
 typedef union {
-  struct sockaddr      sa;
-  struct sockaddr_in   sa4;
+    struct sockaddr sa;
+    struct sockaddr_in sa4;
 #ifdef ENABLE_IPV6
-  struct sockaddr_in6  sa6;
+    struct sockaddr_in6 sa6;
 #endif
 #ifdef USE_UNIX_SOCKETS
-  struct sockaddr_un   sau;
+    struct sockaddr_un sau;
 #endif
 } srvr_sockaddr_union_t;
 

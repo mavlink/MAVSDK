@@ -32,48 +32,47 @@
 #include "curl_setup.h"
 #include <stdio.h>
 
-static const char *disabled[]={
+static const char* disabled[] = {
 #ifdef CURL_DISABLE_COOKIES
-  "cookies",
+    "cookies",
 #endif
 #ifdef CURL_DISABLE_CRYPTO_AUTH
-  "crypto",
+    "crypto",
 #endif
 #ifdef CURL_DISABLE_DOH
-  "DoH",
+    "DoH",
 #endif
 #ifdef CURL_DISABLE_HTTP_AUTH
-  "HTTP-auth",
+    "HTTP-auth",
 #endif
 #ifdef CURL_DISABLE_MIME
-  "Mime",
+    "Mime",
 #endif
 #ifdef CURL_DISABLE_NETRC
-  "netrc",
+    "netrc",
 #endif
 #ifdef CURL_DISABLE_PARSEDATE
-  "parsedate",
+    "parsedate",
 #endif
 #ifdef CURL_DISABLE_PROXY
-  "proxy",
+    "proxy",
 #endif
 #ifdef CURL_DISABLE_SHUFFLE_DNS
-  "shuffle-dns",
+    "shuffle-dns",
 #endif
 #ifdef CURL_DISABLE_TYPECHECK
-  "typecheck",
+    "typecheck",
 #endif
 #ifdef CURL_DISABLE_VERBOSE_STRINGS
-  "verbose-strings",
+    "verbose-strings",
 #endif
-  NULL
-};
+    NULL};
 
 int main(void)
 {
-  int i;
-  for(i = 0; disabled[i]; i++)
-    printf("%s\n", disabled[i]);
+    int i;
+    for (i = 0; disabled[i]; i++)
+        printf("%s\n", disabled[i]);
 
-  return 0;
+    return 0;
 }

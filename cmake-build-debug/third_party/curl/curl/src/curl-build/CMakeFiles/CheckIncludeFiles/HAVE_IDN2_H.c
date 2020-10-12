@@ -22,6 +22,7 @@
 #include <fcntl.h>
 #include <idn2.h>
 
-
-int main(void){return 0;}
-
+int main(void)
+{
+    return 0;
+}

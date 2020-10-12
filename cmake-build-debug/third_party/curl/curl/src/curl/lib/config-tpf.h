@@ -560,8 +560,7 @@
 #define PACKAGE "curl"
 
 /* Define to the address where bug reports for this package should be sent. */
-#define PACKAGE_BUGREPORT \
-  "a suitable curl mailing list => https://curl.haxx.se/mail/"
+#define PACKAGE_BUGREPORT "a suitable curl mailing list => https://curl.haxx.se/mail/"
 
 /* Define to the full name of this package. */
 #define PACKAGE_NAME "curl"
@@ -585,10 +584,10 @@
 #define SELECT_TYPE_ARG1 int
 
 /* Define to the type of args 2, 3 and 4 for `select'. */
-#define SELECT_TYPE_ARG234 (fd_set *)
+#define SELECT_TYPE_ARG234 (fd_set*)
 
 /* Define to the type of arg 5 for `select'. */
-#define SELECT_TYPE_ARG5 (struct timeval *)
+#define SELECT_TYPE_ARG5 (struct timeval*)
 
 /* The size of `int', as computed by sizeof. */
 #define SIZEOF_INT 4
@@ -691,7 +690,7 @@
 #define RECV_TYPE_ARG1 int
 
 /* Define to the type of arg 2 for recv. */
-#define RECV_TYPE_ARG2 char *
+#define RECV_TYPE_ARG2 char*
 
 /* Define to the type of arg 3 for recv. */
 #define RECV_TYPE_ARG3 int
@@ -736,7 +735,7 @@
 #define SEND_QUAL_ARG2 const
 
 /* Define to the type of arg 2 for send. */
-#define SEND_TYPE_ARG2 char *
+#define SEND_TYPE_ARG2 char*
 
 /* Define to the type of arg 3 for send. */
 #define SEND_TYPE_ARG3 int
@@ -751,6 +750,5 @@
 #ifndef CURL_ICONV_CODESET_OF_HOST
 #define CURL_ICONV_CODESET_OF_HOST "IBM-1047"
 #endif
-
 
 #endif /* HEADER_CURL_CONFIG_TPF_H */

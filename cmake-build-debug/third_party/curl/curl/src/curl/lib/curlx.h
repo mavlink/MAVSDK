@@ -78,26 +78,26 @@
 /* If this define is set, we define all "standard" printf() functions to use
    the curlx_* version instead. It makes the source code transparent and
    easier to understand/patch. Undefine them first. */
-# undef printf
-# undef fprintf
-# undef sprintf
-# undef msnprintf
-# undef vprintf
-# undef vfprintf
-# undef vsprintf
-# undef mvsnprintf
-# undef aprintf
-# undef vaprintf
+#undef printf
+#undef fprintf
+#undef sprintf
+#undef msnprintf
+#undef vprintf
+#undef vfprintf
+#undef vsprintf
+#undef mvsnprintf
+#undef aprintf
+#undef vaprintf
 
-# define printf curlx_mprintf
-# define fprintf curlx_mfprintf
-# define sprintf curlx_msprintf
-# define msnprintf curlx_msnprintf
-# define vprintf curlx_mvprintf
-# define vfprintf curlx_mvfprintf
-# define mvsnprintf curlx_mvsnprintf
-# define aprintf curlx_maprintf
-# define vaprintf curlx_mvaprintf
+#define printf curlx_mprintf
+#define fprintf curlx_mfprintf
+#define sprintf curlx_msprintf
+#define msnprintf curlx_msnprintf
+#define vprintf curlx_mvprintf
+#define vfprintf curlx_mvfprintf
+#define mvsnprintf curlx_mvsnprintf
+#define aprintf curlx_maprintf
+#define vaprintf curlx_mvaprintf
 #endif /* ENABLE_CURLX_PRINTF */
 
 #endif /* HEADER_CURL_CURLX_H */

@@ -22,12 +22,12 @@
 #include "tool_setup.h"
 
 #ifdef HAVE_FSETXATTR
-#  include <sys/xattr.h> /* header from libc, not from libattr */
-#  define USE_XATTR
+#include <sys/xattr.h> /* header from libc, not from libattr */
+#define USE_XATTR
 #elif defined(__FreeBSD_version) && (__FreeBSD_version > 500000)
-#  include <sys/types.h>
-#  include <sys/extattr.h>
-#  define USE_XATTR
+#include <sys/types.h>
+#include <sys/extattr.h>
+#define USE_XATTR
 #endif
 
 #include "tool_xattr.h"
@@ -38,102 +38,102 @@
 
 /* mapping table of curl metadata to extended attribute names */
 static const struct xattr_mapping {
-  const char *attr; /* name of the xattr */
-  CURLINFO info;
+    const char* attr; /* name of the xattr */
+    CURLINFO info;
 } mappings[] = {
-  /* mappings proposed by
-   * https://freedesktop.org/wiki/CommonExtendedAttributes/
-   */
-  { "user.xdg.origin.url", CURLINFO_EFFECTIVE_URL },
-  { "user.mime_type",      CURLINFO_CONTENT_TYPE },
-  { NULL,                  CURLINFO_NONE } /* last element, abort loop here */
+    /* mappings proposed by
+     * https://freedesktop.org/wiki/CommonExtendedAttributes/
+     */
+    {"user.xdg.origin.url", CURLINFO_EFFECTIVE_URL},
+    {"user.mime_type", CURLINFO_CONTENT_TYPE},
+    {NULL, CURLINFO_NONE} /* last element, abort loop here */
 };
 
 /* returns TRUE if a new URL is returned, that then needs to be freed */
 /* @unittest: 1621 */
 #ifdef UNITTESTS
-bool stripcredentials(char **url);
+bool stripcredentials(char** url);
 #else
 static
 #endif
-bool stripcredentials(char **url)
+bool stripcredentials(char** url)
 {
-  CURLU *u;
-  CURLUcode uc;
-  char *nurl;
-  u = curl_url();
-  if(u) {
-    uc = curl_url_set(u, CURLUPART_URL, *url, 0);
-    if(uc)
-      goto error;
+    CURLU* u;
+    CURLUcode uc;
+    char* nurl;
+    u = curl_url();
+    if (u) {
+        uc = curl_url_set(u, CURLUPART_URL, *url, 0);
+        if (uc)
+            goto error;
 
-    uc = curl_url_set(u, CURLUPART_USER, NULL, 0);
-    if(uc)
-      goto error;
+        uc = curl_url_set(u, CURLUPART_USER, NULL, 0);
+        if (uc)
+            goto error;
 
-    uc = curl_url_set(u, CURLUPART_PASSWORD, NULL, 0);
-    if(uc)
-      goto error;
+        uc = curl_url_set(u, CURLUPART_PASSWORD, NULL, 0);
+        if (uc)
+            goto error;
 
-    uc = curl_url_get(u, CURLUPART_URL, &nurl, 0);
-    if(uc)
-      goto error;
+        uc = curl_url_get(u, CURLUPART_URL, &nurl, 0);
+        if (uc)
+            goto error;
 
+        curl_url_cleanup(u);
+
+        *url = nurl;
+        return TRUE;
+    }
+error:
     curl_url_cleanup(u);
-
-    *url = nurl;
-    return TRUE;
-  }
-  error:
-  curl_url_cleanup(u);
-  return FALSE;
+    return FALSE;
 }
 
 /* store metadata from the curl request alongside the downloaded
  * file using extended attributes
  */
-int fwrite_xattr(CURL *curl, int fd)
+int fwrite_xattr(CURL* curl, int fd)
 {
-  int i = 0;
-  int err = 0;
+    int i = 0;
+    int err = 0;
 
-  /* loop through all xattr-curlinfo pairs and abort on a set error */
-  while(err == 0 && mappings[i].attr != NULL) {
-    char *value = NULL;
-    CURLcode result = curl_easy_getinfo(curl, mappings[i].info, &value);
-    if(!result && value) {
-      bool freeptr = FALSE;
-      if(CURLINFO_EFFECTIVE_URL == mappings[i].info)
-        freeptr = stripcredentials(&value);
-      if(value) {
+    /* loop through all xattr-curlinfo pairs and abort on a set error */
+    while (err == 0 && mappings[i].attr != NULL) {
+        char* value = NULL;
+        CURLcode result = curl_easy_getinfo(curl, mappings[i].info, &value);
+        if (!result && value) {
+            bool freeptr = FALSE;
+            if (CURLINFO_EFFECTIVE_URL == mappings[i].info)
+                freeptr = stripcredentials(&value);
+            if (value) {
 #ifdef HAVE_FSETXATTR_6
-        err = fsetxattr(fd, mappings[i].attr, value, strlen(value), 0, 0);
+                err = fsetxattr(fd, mappings[i].attr, value, strlen(value), 0, 0);
 #elif defined(HAVE_FSETXATTR_5)
-        err = fsetxattr(fd, mappings[i].attr, value, strlen(value), 0);
+                err = fsetxattr(fd, mappings[i].attr, value, strlen(value), 0);
 #elif defined(__FreeBSD_version)
-        {
-          ssize_t rc = extattr_set_fd(fd, EXTATTR_NAMESPACE_USER,
-                                      mappings[i].attr, value, strlen(value));
-          /* FreeBSD's extattr_set_fd returns the length of the extended
-             attribute */
-          err = (rc < 0 ? -1 : 0);
-        }
+                {
+                    ssize_t rc = extattr_set_fd(
+                        fd, EXTATTR_NAMESPACE_USER, mappings[i].attr, value, strlen(value));
+                    /* FreeBSD's extattr_set_fd returns the length of the extended
+                       attribute */
+                    err = (rc < 0 ? -1 : 0);
+                }
 #endif
-        if(freeptr)
-          curl_free(value);
-      }
+                if (freeptr)
+                    curl_free(value);
+            }
+        }
+        i++;
     }
-    i++;
-  }
 
-  return err;
+    return err;
 }
 #else
-int fwrite_xattr(CURL *curl, int fd)
+int fwrite_xattr(CURL* curl, int fd)
 {
-  (void)curl;
-  (void)fd;
+    (void)curl;
+    (void)fd;
 
-  return 0;
+    return 0;
 }
 #endif

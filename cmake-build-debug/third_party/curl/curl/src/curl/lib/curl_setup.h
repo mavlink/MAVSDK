@@ -31,15 +31,14 @@
  * 4127 "conditional expression is constant"
  */
 #ifdef _MSC_VER
-#pragma warning(disable:4127)
+#pragma warning(disable : 4127)
 #endif
 
 /*
  * Define WIN32 when build target is Win32 API
  */
 
-#if (defined(_WIN32) || defined(__WIN32__)) && !defined(WIN32) && \
-    !defined(__SYMBIAN32__)
+#if (defined(_WIN32) || defined(__WIN32__)) && !defined(WIN32) && !defined(__SYMBIAN32__)
 #define WIN32
 #endif
 
@@ -49,12 +48,12 @@
  * warnings and macro clashes.
  * Make sure to define this macro before including any Windows headers.
  */
-#  ifndef WIN32_LEAN_AND_MEAN
-#    define WIN32_LEAN_AND_MEAN
-#  endif
-#  ifndef NOGDI
-#    define NOGDI
-#  endif
+#ifndef WIN32_LEAN_AND_MEAN
+#define WIN32_LEAN_AND_MEAN
+#endif
+#ifndef NOGDI
+#define NOGDI
+#endif
 #endif
 
 /*
@@ -69,43 +68,43 @@
 #else /* HAVE_CONFIG_H */
 
 #ifdef _WIN32_WCE
-#  include "config-win32ce.h"
+#include "config-win32ce.h"
 #else
-#  ifdef WIN32
-#    include "config-win32.h"
-#  endif
+#ifdef WIN32
+#include "config-win32.h"
+#endif
 #endif
 
 #if defined(macintosh) && defined(__MRC__)
-#  include "config-mac.h"
+#include "config-mac.h"
 #endif
 
 #ifdef __riscos__
-#  include "config-riscos.h"
+#include "config-riscos.h"
 #endif
 
 #ifdef __AMIGA__
-#  include "config-amigaos.h"
+#include "config-amigaos.h"
 #endif
 
 #ifdef __SYMBIAN32__
-#  include "config-symbian.h"
+#include "config-symbian.h"
 #endif
 
 #ifdef __OS400__
-#  include "config-os400.h"
+#include "config-os400.h"
 #endif
 
 #ifdef TPF
-#  include "config-tpf.h"
+#include "config-tpf.h"
 #endif
 
 #ifdef __VXWORKS__
-#  include "config-vxworks.h"
+#include "config-vxworks.h"
 #endif
 
 #ifdef __PLAN9__
-#  include "config-plan9.h"
+#include "config-plan9.h"
 #endif
 
 #endif /* HAVE_CONFIG_H */
@@ -125,9 +124,9 @@
  */
 
 #ifdef NEED_THREAD_SAFE
-#  ifndef _THREAD_SAFE
-#    define _THREAD_SAFE
-#  endif
+#ifndef _THREAD_SAFE
+#define _THREAD_SAFE
+#endif
 #endif
 
 /*
@@ -137,16 +136,16 @@
  */
 
 #ifdef NEED_REENTRANT
-#  ifndef _REENTRANT
-#    define _REENTRANT
-#  endif
+#ifndef _REENTRANT
+#define _REENTRANT
+#endif
 #endif
 
 /* Solaris needs this to get a POSIX-conformant getpwuid_r */
 #if defined(sun) || defined(__sun)
-#  ifndef _POSIX_PTHREAD_SEMANTICS
-#    define _POSIX_PTHREAD_SEMANTICS 1
-#  endif
+#ifndef _POSIX_PTHREAD_SEMANTICS
+#define _POSIX_PTHREAD_SEMANTICS 1
+#endif
 #endif
 
 /* ================================================================ */
@@ -163,42 +162,42 @@
  */
 
 #ifdef HTTP_ONLY
-#  ifndef CURL_DISABLE_TFTP
-#    define CURL_DISABLE_TFTP
-#  endif
-#  ifndef CURL_DISABLE_FTP
-#    define CURL_DISABLE_FTP
-#  endif
-#  ifndef CURL_DISABLE_LDAP
-#    define CURL_DISABLE_LDAP
-#  endif
-#  ifndef CURL_DISABLE_TELNET
-#    define CURL_DISABLE_TELNET
-#  endif
-#  ifndef CURL_DISABLE_DICT
-#    define CURL_DISABLE_DICT
-#  endif
-#  ifndef CURL_DISABLE_FILE
-#    define CURL_DISABLE_FILE
-#  endif
-#  ifndef CURL_DISABLE_RTSP
-#    define CURL_DISABLE_RTSP
-#  endif
-#  ifndef CURL_DISABLE_POP3
-#    define CURL_DISABLE_POP3
-#  endif
-#  ifndef CURL_DISABLE_IMAP
-#    define CURL_DISABLE_IMAP
-#  endif
-#  ifndef CURL_DISABLE_SMTP
-#    define CURL_DISABLE_SMTP
-#  endif
-#  ifndef CURL_DISABLE_GOPHER
-#    define CURL_DISABLE_GOPHER
-#  endif
-#  ifndef CURL_DISABLE_SMB
-#    define CURL_DISABLE_SMB
-#  endif
+#ifndef CURL_DISABLE_TFTP
+#define CURL_DISABLE_TFTP
+#endif
+#ifndef CURL_DISABLE_FTP
+#define CURL_DISABLE_FTP
+#endif
+#ifndef CURL_DISABLE_LDAP
+#define CURL_DISABLE_LDAP
+#endif
+#ifndef CURL_DISABLE_TELNET
+#define CURL_DISABLE_TELNET
+#endif
+#ifndef CURL_DISABLE_DICT
+#define CURL_DISABLE_DICT
+#endif
+#ifndef CURL_DISABLE_FILE
+#define CURL_DISABLE_FILE
+#endif
+#ifndef CURL_DISABLE_RTSP
+#define CURL_DISABLE_RTSP
+#endif
+#ifndef CURL_DISABLE_POP3
+#define CURL_DISABLE_POP3
+#endif
+#ifndef CURL_DISABLE_IMAP
+#define CURL_DISABLE_IMAP
+#endif
+#ifndef CURL_DISABLE_SMTP
+#define CURL_DISABLE_SMTP
+#endif
+#ifndef CURL_DISABLE_GOPHER
+#define CURL_DISABLE_GOPHER
+#endif
+#ifndef CURL_DISABLE_SMB
+#define CURL_DISABLE_SMB
+#endif
 #endif
 
 /*
@@ -206,7 +205,7 @@
  */
 
 #if defined(CURL_DISABLE_HTTP) && !defined(CURL_DISABLE_RTSP)
-#  define CURL_DISABLE_RTSP
+#define CURL_DISABLE_RTSP
 #endif
 
 /* ================================================================ */
@@ -219,7 +218,7 @@
  */
 
 #ifdef __OS400__
-#  include "setup-os400.h"
+#include "setup-os400.h"
 #endif
 
 /*
@@ -227,7 +226,7 @@
  */
 
 #ifdef __VMS
-#  include "setup-vms.h"
+#include "setup-vms.h"
 #endif
 
 /*
@@ -235,7 +234,7 @@
  */
 
 #ifdef HAVE_WINDOWS_H
-#  include "setup-win32.h"
+#include "setup-win32.h"
 #endif
 
 /*
@@ -243,49 +242,49 @@
  * interface doesn't support IPv4, but supports IPv6, NAT64, and DNS64,
  * performing this task will result in a synthesized IPv6 address.
  */
-#ifdef  __APPLE__
+#ifdef __APPLE__
 #define USE_RESOLVE_ON_IPS 1
 #endif
 
 #ifdef USE_LWIPSOCK
-#  include <lwip/init.h>
-#  include <lwip/sockets.h>
-#  include <lwip/netdb.h>
+#include <lwip/init.h>
+#include <lwip/sockets.h>
+#include <lwip/netdb.h>
 #endif
 
 #ifdef HAVE_EXTRA_STRICMP_H
-#  include <extra/stricmp.h>
+#include <extra/stricmp.h>
 #endif
 
 #ifdef HAVE_EXTRA_STRDUP_H
-#  include <extra/strdup.h>
+#include <extra/strdup.h>
 #endif
 
 #ifdef TPF
-#  include <strings.h>    /* for bzero, strcasecmp, and strncasecmp */
-#  include <string.h>     /* for strcpy and strlen */
-#  include <stdlib.h>     /* for rand and srand */
-#  include <sys/socket.h> /* for select and ioctl*/
-#  include <netdb.h>      /* for in_addr_t definition */
-#  include <tpf/sysapi.h> /* for tpf_process_signals */
-   /* change which select is used for libcurl */
-#  define select(a,b,c,d,e) tpf_select_libcurl(a,b,c,d,e)
+#include <strings.h> /* for bzero, strcasecmp, and strncasecmp */
+#include <string.h> /* for strcpy and strlen */
+#include <stdlib.h> /* for rand and srand */
+#include <sys/socket.h> /* for select and ioctl*/
+#include <netdb.h> /* for in_addr_t definition */
+#include <tpf/sysapi.h> /* for tpf_process_signals */
+/* change which select is used for libcurl */
+#define select(a, b, c, d, e) tpf_select_libcurl(a, b, c, d, e)
 #endif
 
 #ifdef __VXWORKS__
-#  include <sockLib.h>    /* for generic BSD socket functions */
-#  include <ioLib.h>      /* for basic I/O interface functions */
+#include <sockLib.h> /* for generic BSD socket functions */
+#include <ioLib.h> /* for basic I/O interface functions */
 #endif
 
 #ifdef __AMIGA__
-#  include <exec/types.h>
-#  include <exec/execbase.h>
-#  include <proto/exec.h>
-#  include <proto/dos.h>
-#  ifdef HAVE_PROTO_BSDSOCKET_H
-#    include <proto/bsdsocket.h> /* ensure bsdsocket.library use */
-#    define select(a,b,c,d,e) WaitSelect(a,b,c,d,e,0)
-#  endif
+#include <exec/types.h>
+#include <exec/execbase.h>
+#include <proto/exec.h>
+#include <proto/dos.h>
+#ifdef HAVE_PROTO_BSDSOCKET_H
+#include <proto/bsdsocket.h> /* ensure bsdsocket.library use */
+#define select(a, b, c, d, e) WaitSelect(a, b, c, d, e, 0)
+#endif
 #endif
 
 #include <stdio.h>
@@ -302,20 +301,20 @@
 #endif
 
 #ifdef __POCC__
-#  include <sys/types.h>
-#  include <unistd.h>
-#  define sys_nerr EILSEQ
+#include <sys/types.h>
+#include <unistd.h>
+#define sys_nerr EILSEQ
 #endif
 
 /*
  * Salford-C kludge section (mostly borrowed from wxWidgets).
  */
 #ifdef __SALFORDC__
-  #pragma suppress 353             /* Possible nested comments */
-  #pragma suppress 593             /* Define not used */
-  #pragma suppress 61              /* enum has no name */
-  #pragma suppress 106             /* unnamed, unused parameter */
-  #include <clib.h>
+#pragma suppress 353 /* Possible nested comments */
+#pragma suppress 593 /* Define not used */
+#pragma suppress 61 /* enum has no name */
+#pragma suppress 106 /* unnamed, unused parameter */
+#include <clib.h>
 #endif
 
 /*
@@ -323,17 +322,17 @@
  */
 
 #ifdef USE_WIN32_LARGE_FILES
-#  include <io.h>
-#  include <sys/types.h>
-#  include <sys/stat.h>
-#  undef  lseek
-#  define lseek(fdes,offset,whence)  _lseeki64(fdes, offset, whence)
-#  undef  fstat
-#  define fstat(fdes,stp)            _fstati64(fdes, stp)
-#  undef  stat
-#  define stat(fname,stp)            _stati64(fname, stp)
-#  define struct_stat                struct _stati64
-#  define LSEEK_ERROR                (__int64)-1
+#include <io.h>
+#include <sys/types.h>
+#include <sys/stat.h>
+#undef lseek
+#define lseek(fdes, offset, whence) _lseeki64(fdes, offset, whence)
+#undef fstat
+#define fstat(fdes, stp) _fstati64(fdes, stp)
+#undef stat
+#define stat(fname, stp) _stati64(fname, stp)
+#define struct_stat struct _stati64
+#define LSEEK_ERROR (__int64)-1
 #endif
 
 /*
@@ -341,25 +340,25 @@
  */
 
 #ifdef USE_WIN32_SMALL_FILES
-#  include <io.h>
-#  include <sys/types.h>
-#  include <sys/stat.h>
-#  ifndef _WIN32_WCE
-#    undef  lseek
-#    define lseek(fdes,offset,whence)  _lseek(fdes, (long)offset, whence)
-#    define fstat(fdes,stp)            _fstat(fdes, stp)
-#    define stat(fname,stp)            _stat(fname, stp)
-#    define struct_stat                struct _stat
-#  endif
-#  define LSEEK_ERROR                (long)-1
+#include <io.h>
+#include <sys/types.h>
+#include <sys/stat.h>
+#ifndef _WIN32_WCE
+#undef lseek
+#define lseek(fdes, offset, whence) _lseek(fdes, (long)offset, whence)
+#define fstat(fdes, stp) _fstat(fdes, stp)
+#define stat(fname, stp) _stat(fname, stp)
+#define struct_stat struct _stat
+#endif
+#define LSEEK_ERROR (long)-1
 #endif
 
 #ifndef struct_stat
-#  define struct_stat struct stat
+#define struct_stat struct stat
 #endif
 
 #ifndef LSEEK_ERROR
-#  define LSEEK_ERROR (off_t)-1
+#define LSEEK_ERROR (off_t) - 1
 #endif
 
 #ifndef SIZEOF_TIME_T
@@ -372,52 +371,52 @@
  */
 
 #ifndef SIZEOF_OFF_T
-#  if defined(__VMS) && !defined(__VAX)
-#    if defined(_LARGEFILE)
-#      define SIZEOF_OFF_T 8
-#    endif
-#  elif defined(__OS400__) && defined(__ILEC400__)
-#    if defined(_LARGE_FILES)
-#      define SIZEOF_OFF_T 8
-#    endif
-#  elif defined(__MVS__) && defined(__IBMC__)
-#    if defined(_LP64) || defined(_LARGE_FILES)
-#      define SIZEOF_OFF_T 8
-#    endif
-#  elif defined(__370__) && defined(__IBMC__)
-#    if defined(_LP64) || defined(_LARGE_FILES)
-#      define SIZEOF_OFF_T 8
-#    endif
-#  endif
-#  ifndef SIZEOF_OFF_T
-#    define SIZEOF_OFF_T 4
-#  endif
+#if defined(__VMS) && !defined(__VAX)
+#if defined(_LARGEFILE)
+#define SIZEOF_OFF_T 8
+#endif
+#elif defined(__OS400__) && defined(__ILEC400__)
+#if defined(_LARGE_FILES)
+#define SIZEOF_OFF_T 8
+#endif
+#elif defined(__MVS__) && defined(__IBMC__)
+#if defined(_LP64) || defined(_LARGE_FILES)
+#define SIZEOF_OFF_T 8
+#endif
+#elif defined(__370__) && defined(__IBMC__)
+#if defined(_LP64) || defined(_LARGE_FILES)
+#define SIZEOF_OFF_T 8
+#endif
+#endif
+#ifndef SIZEOF_OFF_T
+#define SIZEOF_OFF_T 4
+#endif
 #endif
 
 #if (SIZEOF_CURL_OFF_T == 4)
-#  define CURL_OFF_T_MAX CURL_OFF_T_C(0x7FFFFFFF)
+#define CURL_OFF_T_MAX CURL_OFF_T_C(0x7FFFFFFF)
 #else
-   /* assume CURL_SIZEOF_CURL_OFF_T == 8 */
-#  define CURL_OFF_T_MAX CURL_OFF_T_C(0x7FFFFFFFFFFFFFFF)
+/* assume CURL_SIZEOF_CURL_OFF_T == 8 */
+#define CURL_OFF_T_MAX CURL_OFF_T_C(0x7FFFFFFFFFFFFFFF)
 #endif
 #define CURL_OFF_T_MIN (-CURL_OFF_T_MAX - CURL_OFF_T_C(1))
 
 #if (SIZEOF_TIME_T == 4)
-#  ifdef HAVE_TIME_T_UNSIGNED
-#  define TIME_T_MAX UINT_MAX
-#  define TIME_T_MIN 0
-#  else
-#  define TIME_T_MAX INT_MAX
-#  define TIME_T_MIN INT_MIN
-#  endif
+#ifdef HAVE_TIME_T_UNSIGNED
+#define TIME_T_MAX UINT_MAX
+#define TIME_T_MIN 0
 #else
-#  ifdef HAVE_TIME_T_UNSIGNED
-#  define TIME_T_MAX 0xFFFFFFFFFFFFFFFF
-#  define TIME_T_MIN 0
-#  else
-#  define TIME_T_MAX 0x7FFFFFFFFFFFFFFF
-#  define TIME_T_MIN (-TIME_T_MAX - 1)
-#  endif
+#define TIME_T_MAX INT_MAX
+#define TIME_T_MIN INT_MIN
+#endif
+#else
+#ifdef HAVE_TIME_T_UNSIGNED
+#define TIME_T_MAX 0xFFFFFFFFFFFFFFFF
+#define TIME_T_MIN 0
+#else
+#define TIME_T_MAX 0x7FFFFFFFFFFFFFFF
+#define TIME_T_MIN (-TIME_T_MAX - 1)
+#endif
 #endif
 
 #ifndef SIZE_T_MAX
@@ -434,11 +433,11 @@
  */
 
 #ifndef GETHOSTNAME_TYPE_ARG2
-#  ifdef USE_WINSOCK
-#    define GETHOSTNAME_TYPE_ARG2 int
-#  else
-#    define GETHOSTNAME_TYPE_ARG2 size_t
-#  endif
+#ifdef USE_WINSOCK
+#define GETHOSTNAME_TYPE_ARG2 int
+#else
+#define GETHOSTNAME_TYPE_ARG2 size_t
+#endif
 #endif
 
 /* Below we define some functions. They should
@@ -449,36 +448,36 @@
 
 #ifdef WIN32
 
-#  define DIR_CHAR      "\\"
+#define DIR_CHAR "\\"
 
 #else /* WIN32 */
 
-#  ifdef MSDOS  /* Watt-32 */
+#ifdef MSDOS /* Watt-32 */
 
-#    include <sys/ioctl.h>
-#    define select(n,r,w,x,t) select_s(n,r,w,x,t)
-#    define ioctl(x,y,z) ioctlsocket(x,y,(char *)(z))
-#    include <tcp.h>
-#    ifdef word
-#      undef word
-#    endif
-#    ifdef byte
-#      undef byte
-#    endif
+#include <sys/ioctl.h>
+#define select(n, r, w, x, t) select_s(n, r, w, x, t)
+#define ioctl(x, y, z) ioctlsocket(x, y, (char*)(z))
+#include <tcp.h>
+#ifdef word
+#undef word
+#endif
+#ifdef byte
+#undef byte
+#endif
 
-#  endif /* MSDOS */
+#endif /* MSDOS */
 
-#  ifdef __minix
-     /* Minix 3 versions up to at least 3.1.3 are missing these prototypes */
-     extern char *strtok_r(char *s, const char *delim, char **last);
-     extern struct tm *gmtime_r(const time_t * const timep, struct tm *tmp);
-#  endif
+#ifdef __minix
+/* Minix 3 versions up to at least 3.1.3 are missing these prototypes */
+extern char* strtok_r(char* s, const char* delim, char** last);
+extern struct tm* gmtime_r(const time_t* const timep, struct tm* tmp);
+#endif
 
-#  define DIR_CHAR      "/"
+#define DIR_CHAR "/"
 
-#  ifndef fileno /* sunos 4 have this as a macro! */
-     int fileno(FILE *stream);
-#  endif
+#ifndef fileno /* sunos 4 have this as a macro! */
+int fileno(FILE* stream);
+#endif
 
 #endif /* WIN32 */
 
@@ -489,14 +488,13 @@
  */
 
 #if defined(_MSC_VER) && !defined(__POCC__) && !defined(USE_LWIPSOCK)
-#  if !defined(HAVE_WS2TCPIP_H) || \
-     ((_MSC_VER < 1300) && !defined(INET6_ADDRSTRLEN))
-#    undef HAVE_GETADDRINFO_THREADSAFE
-#    undef HAVE_FREEADDRINFO
-#    undef HAVE_GETADDRINFO
-#    undef HAVE_GETNAMEINFO
-#    undef ENABLE_IPV6
-#  endif
+#if !defined(HAVE_WS2TCPIP_H) || ((_MSC_VER < 1300) && !defined(INET6_ADDRSTRLEN))
+#undef HAVE_GETADDRINFO_THREADSAFE
+#undef HAVE_FREEADDRINFO
+#undef HAVE_GETADDRINFO
+#undef HAVE_GETNAMEINFO
+#undef ENABLE_IPV6
+#endif
 #endif
 
 /* ---------------------------------------------------------------- */
@@ -509,8 +507,8 @@
  */
 
 #if defined(__LCC__) && defined(WIN32)
-#  undef USE_THREADS_POSIX
-#  undef USE_THREADS_WIN32
+#undef USE_THREADS_POSIX
+#undef USE_THREADS_WIN32
 #endif
 
 /*
@@ -519,8 +517,8 @@
  */
 
 #if defined(_MSC_VER) && !defined(__POCC__) && !defined(_MT)
-#  undef USE_THREADS_POSIX
-#  undef USE_THREADS_WIN32
+#undef USE_THREADS_POSIX
+#undef USE_THREADS_WIN32
 #endif
 
 /*
@@ -528,23 +526,23 @@
  */
 
 #if defined(ENABLE_IPV6) && defined(HAVE_GETADDRINFO)
-#  define CURLRES_IPV6
+#define CURLRES_IPV6
 #else
-#  define CURLRES_IPV4
+#define CURLRES_IPV4
 #endif
 
 #ifdef USE_ARES
-#  define CURLRES_ASYNCH
-#  define CURLRES_ARES
+#define CURLRES_ASYNCH
+#define CURLRES_ARES
 /* now undef the stock libc functions just to avoid them being used */
-#  undef HAVE_GETADDRINFO
-#  undef HAVE_FREEADDRINFO
-#  undef HAVE_GETHOSTBYNAME
+#undef HAVE_GETADDRINFO
+#undef HAVE_FREEADDRINFO
+#undef HAVE_GETHOSTBYNAME
 #elif defined(USE_THREADS_POSIX) || defined(USE_THREADS_WIN32)
-#  define CURLRES_ASYNCH
-#  define CURLRES_THREADED
+#define CURLRES_ASYNCH
+#define CURLRES_THREADED
 #else
-#  define CURLRES_SYNCH
+#define CURLRES_SYNCH
 #endif
 
 /* ---------------------------------------------------------------- */
@@ -554,7 +552,7 @@
  */
 
 #if defined(USE_WINSOCK) && (USE_WINSOCK != 2)
-#  define CURL_DISABLE_TELNET 1
+#define CURL_DISABLE_TELNET 1
 #endif
 
 /*
@@ -564,9 +562,9 @@
  */
 
 #if defined(_MSC_VER) && !defined(__POCC__)
-#  if !defined(HAVE_WINSOCK2_H) || ((_MSC_VER < 1300) && !defined(IPPROTO_ESP))
-#    undef HAVE_STRUCT_SOCKADDR_STORAGE
-#  endif
+#if !defined(HAVE_WINSOCK2_H) || ((_MSC_VER < 1300) && !defined(IPPROTO_ESP))
+#undef HAVE_STRUCT_SOCKADDR_STORAGE
+#endif
 #endif
 
 /*
@@ -576,14 +574,14 @@
  */
 
 #if defined(_MSC_VER) && !defined(__POCC__)
-#  if !defined(HAVE_WINDOWS_H) || ((_MSC_VER < 1300) && !defined(_FILETIME_))
-#    if !defined(ALLOW_MSVC6_WITHOUT_PSDK)
-#      error MSVC 6.0 requires "February 2003 Platform SDK" a.k.a. \
+#if !defined(HAVE_WINDOWS_H) || ((_MSC_VER < 1300) && !defined(_FILETIME_))
+#if !defined(ALLOW_MSVC6_WITHOUT_PSDK)
+#error MSVC 6.0 requires "February 2003 Platform SDK" a.k.a. \
              "Windows Server 2003 PSDK"
-#    else
-#      define CURL_DISABLE_LDAP 1
-#    endif
-#  endif
+#else
+#define CURL_DISABLE_LDAP 1
+#endif
+#endif
 #endif
 
 #ifdef NETWARE
@@ -605,39 +603,34 @@ int netware_init(void);
 
 #define LIBIDN_REQUIRED_VERSION "0.4.1"
 
-#if defined(USE_GNUTLS) || defined(USE_OPENSSL) || defined(USE_NSS) || \
-    defined(USE_MBEDTLS) || \
-    defined(USE_WOLFSSL) || defined(USE_SCHANNEL) || \
-    defined(USE_SECTRANSP) || defined(USE_GSKIT) || defined(USE_MESALINK) || \
-    defined(USE_BEARSSL)
-#define USE_SSL    /* SSL support has been enabled */
+#if defined(USE_GNUTLS) || defined(USE_OPENSSL) || defined(USE_NSS) || defined(USE_MBEDTLS) || \
+    defined(USE_WOLFSSL) || defined(USE_SCHANNEL) || defined(USE_SECTRANSP) || \
+    defined(USE_GSKIT) || defined(USE_MESALINK) || defined(USE_BEARSSL)
+#define USE_SSL /* SSL support has been enabled */
 #endif
 
 /* Single point where USE_SPNEGO definition might be defined */
-#if !defined(CURL_DISABLE_CRYPTO_AUTH) && \
-    (defined(HAVE_GSSAPI) || defined(USE_WINDOWS_SSPI))
+#if !defined(CURL_DISABLE_CRYPTO_AUTH) && (defined(HAVE_GSSAPI) || defined(USE_WINDOWS_SSPI))
 #define USE_SPNEGO
 #endif
 
 /* Single point where USE_KERBEROS5 definition might be defined */
-#if !defined(CURL_DISABLE_CRYPTO_AUTH) && \
-    (defined(HAVE_GSSAPI) || defined(USE_WINDOWS_SSPI))
+#if !defined(CURL_DISABLE_CRYPTO_AUTH) && (defined(HAVE_GSSAPI) || defined(USE_WINDOWS_SSPI))
 #define USE_KERBEROS5
 #endif
 
 /* Single point where USE_NTLM definition might be defined */
 #if !defined(CURL_DISABLE_NTLM) && !defined(CURL_DISABLE_CRYPTO_AUTH)
-#if defined(USE_OPENSSL) || defined(USE_WINDOWS_SSPI) || \
-    defined(USE_GNUTLS) || defined(USE_NSS) || defined(USE_SECTRANSP) || \
-    defined(USE_OS400CRYPTO) || defined(USE_WIN32_CRYPTO) || \
-    defined(USE_MBEDTLS)
+#if defined(USE_OPENSSL) || defined(USE_WINDOWS_SSPI) || defined(USE_GNUTLS) || \
+    defined(USE_NSS) || defined(USE_SECTRANSP) || defined(USE_OS400CRYPTO) || \
+    defined(USE_WIN32_CRYPTO) || defined(USE_MBEDTLS)
 
 #define USE_NTLM
 
-#  if defined(USE_MBEDTLS)
+#if defined(USE_MBEDTLS)
 /* Get definition of MBEDTLS_MD4_C */
-#  include <mbedtls/md4.h>
-#  endif
+#include <mbedtls/md4.h>
+#endif
 
 #endif
 #endif
@@ -656,13 +649,13 @@ int netware_init(void);
  * we have multiple implementations of the same interface it may happen.
  */
 
-#if defined(__GNUC__) && ((__GNUC__ >= 3) || \
-  ((__GNUC__ == 2) && defined(__GNUC_MINOR__) && (__GNUC_MINOR__ >= 7)))
-#  define UNUSED_PARAM __attribute__((__unused__))
-#  define WARN_UNUSED_RESULT __attribute__((warn_unused_result))
+#if defined(__GNUC__) && \
+    ((__GNUC__ >= 3) || ((__GNUC__ == 2) && defined(__GNUC_MINOR__) && (__GNUC_MINOR__ >= 7)))
+#define UNUSED_PARAM __attribute__((__unused__))
+#define WARN_UNUSED_RESULT __attribute__((warn_unused_result))
 #else
-#  define UNUSED_PARAM /*NOTHING*/
-#  define WARN_UNUSED_RESULT
+#define UNUSED_PARAM /*NOTHING*/
+#define WARN_UNUSED_RESULT
 #endif
 
 /*
@@ -678,7 +671,9 @@ int netware_init(void);
  */
 
 #ifndef Curl_nop_stmt
-#  define Curl_nop_stmt do { } while(0)
+#define Curl_nop_stmt \
+    do { \
+    } while (0)
 #endif
 
 /*
@@ -686,13 +681,10 @@ int netware_init(void);
  */
 
 #if defined(__LWIP_OPT_H__) || defined(LWIP_HDR_OPT_H)
-#  if defined(SOCKET) || \
-     defined(USE_WINSOCK) || \
-     defined(HAVE_WINSOCK_H) || \
-     defined(HAVE_WINSOCK2_H) || \
-     defined(HAVE_WS2TCPIP_H)
-#    error "Winsock and lwIP TCP/IP stack definitions shall not coexist!"
-#  endif
+#if defined(SOCKET) || defined(USE_WINSOCK) || defined(HAVE_WINSOCK_H) || \
+    defined(HAVE_WINSOCK2_H) || defined(HAVE_WS2TCPIP_H)
+#error "Winsock and lwIP TCP/IP stack definitions shall not coexist!"
+#endif
 #endif
 
 /*
@@ -700,19 +692,19 @@ int netware_init(void);
  */
 
 #ifdef USE_WINSOCK
-#  define SHUT_RD   0x00
-#  define SHUT_WR   0x01
-#  define SHUT_RDWR 0x02
+#define SHUT_RD 0x00
+#define SHUT_WR 0x01
+#define SHUT_RDWR 0x02
 #endif
 
 /* Define S_ISREG if not defined by system headers, f.e. MSVC */
 #if !defined(S_ISREG) && defined(S_IFMT) && defined(S_IFREG)
-#define S_ISREG(m) (((m) & S_IFMT) == S_IFREG)
+#define S_ISREG(m) (((m)&S_IFMT) == S_IFREG)
 #endif
 
 /* Define S_ISDIR if not defined by system headers, f.e. MSVC */
 #if !defined(S_ISDIR) && defined(S_IFMT) && defined(S_IFDIR)
-#define S_ISDIR(m) (((m) & S_IFMT) == S_IFDIR)
+#define S_ISDIR(m) (((m)&S_IFMT) == S_IFDIR)
 #endif
 
 /* In Windows the default file mode is text but an application can override it.
@@ -744,25 +736,24 @@ endings either CRLF or LF so 't' is appropriate.
  * Define DONT_USE_RECV_BEFORE_SEND_WORKAROUND to force disable workaround.
  */
 #if !defined(DONT_USE_RECV_BEFORE_SEND_WORKAROUND)
-#  if defined(WIN32) || defined(__CYGWIN__)
-#    define USE_RECV_BEFORE_SEND_WORKAROUND
-#  endif
-#else  /* DONT_USE_RECV_BEFORE_SEND_WORKAROUND */
-#  ifdef USE_RECV_BEFORE_SEND_WORKAROUND
-#    undef USE_RECV_BEFORE_SEND_WORKAROUND
-#  endif
+#if defined(WIN32) || defined(__CYGWIN__)
+#define USE_RECV_BEFORE_SEND_WORKAROUND
+#endif
+#else /* DONT_USE_RECV_BEFORE_SEND_WORKAROUND */
+#ifdef USE_RECV_BEFORE_SEND_WORKAROUND
+#undef USE_RECV_BEFORE_SEND_WORKAROUND
+#endif
 #endif /* DONT_USE_RECV_BEFORE_SEND_WORKAROUND */
 
 /* Detect Windows App environment which has a restricted access
  * to the Win32 APIs. */
-# if (defined(_WIN32_WINNT) && (_WIN32_WINNT >= 0x0602)) || \
-  defined(WINAPI_FAMILY)
-#  include <winapifamily.h>
-#  if WINAPI_FAMILY_PARTITION(WINAPI_PARTITION_APP) &&  \
-     !WINAPI_FAMILY_PARTITION(WINAPI_PARTITION_DESKTOP)
-#    define CURL_WINDOWS_APP
-#  endif
-# endif
+#if (defined(_WIN32_WINNT) && (_WIN32_WINNT >= 0x0602)) || defined(WINAPI_FAMILY)
+#include <winapifamily.h>
+#if WINAPI_FAMILY_PARTITION(WINAPI_PARTITION_APP) && \
+    !WINAPI_FAMILY_PARTITION(WINAPI_PARTITION_DESKTOP)
+#define CURL_WINDOWS_APP
+#endif
+#endif
 
 /* for systems that don't detect this in configure, use a sensible default */
 #ifndef CURL_SA_FAMILY_T
@@ -771,14 +762,13 @@ endings either CRLF or LF so 't' is appropriate.
 
 /* Some convenience macros to get the larger/smaller value out of two given.
    We prefix with CURL to prevent name collisions. */
-#define CURLMAX(x,y) ((x)>(y)?(x):(y))
-#define CURLMIN(x,y) ((x)<(y)?(x):(y))
+#define CURLMAX(x, y) ((x) > (y) ? (x) : (y))
+#define CURLMIN(x, y) ((x) < (y) ? (x) : (y))
 
 /* Some versions of the Android SDK is missing the declaration */
 #if defined(HAVE_GETPWUID_R) && defined(HAVE_DECL_GETPWUID_R_MISSING)
 struct passwd;
-int getpwuid_r(uid_t uid, struct passwd *pwd, char *buf,
-               size_t buflen, struct passwd **result);
+int getpwuid_r(uid_t uid, struct passwd* pwd, char* buf, size_t buflen, struct passwd** result);
 #endif
 
 #ifdef DEBUGBUILD
