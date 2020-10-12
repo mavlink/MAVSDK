@@ -762,7 +762,7 @@ public:
 
         rpc_obj->set_minimum_distance_m(distance_sensor.minimum_distance_m);
 
-        rpc_obj->set_maximum_distance(distance_sensor.maximum_distance);
+        rpc_obj->set_maximum_distance_m(distance_sensor.maximum_distance_m);
 
         rpc_obj->set_current_distance_m(distance_sensor.current_distance_m);
 
@@ -776,7 +776,7 @@ public:
 
         obj.minimum_distance_m = distance_sensor.minimum_distance_m();
 
-        obj.maximum_distance = distance_sensor.maximum_distance();
+        obj.maximum_distance_m = distance_sensor.maximum_distance_m();
 
         obj.current_distance_m = distance_sensor.current_distance_m();
 

@@ -15462,7 +15462,7 @@ class DistanceSensor :
 
   enum : int {
     kMinimumDistanceMFieldNumber = 1,
-    kMaximumDistanceFieldNumber = 2,
+    kMaximumDistanceMFieldNumber = 2,
     kCurrentDistanceMFieldNumber = 3,
   };
   // float minimum_distance_m = 1 [(.mavsdk.options.default_value) = "NaN"];
@@ -15474,13 +15474,13 @@ class DistanceSensor :
   void _internal_set_minimum_distance_m(float value);
   public:
 
-  // float maximum_distance = 2 [(.mavsdk.options.default_value) = "NaN"];
-  void clear_maximum_distance();
-  float maximum_distance() const;
-  void set_maximum_distance(float value);
+  // float maximum_distance_m = 2 [(.mavsdk.options.default_value) = "NaN"];
+  void clear_maximum_distance_m();
+  float maximum_distance_m() const;
+  void set_maximum_distance_m(float value);
   private:
-  float _internal_maximum_distance() const;
-  void _internal_set_maximum_distance(float value);
+  float _internal_maximum_distance_m() const;
+  void _internal_set_maximum_distance_m(float value);
   public:
 
   // float current_distance_m = 3 [(.mavsdk.options.default_value) = "NaN"];
@@ -15498,7 +15498,7 @@ class DistanceSensor :
 
   ::PROTOBUF_NAMESPACE_ID::internal::InternalMetadataWithArena _internal_metadata_;
   float minimum_distance_m_;
-  float maximum_distance_;
+  float maximum_distance_m_;
   float current_distance_m_;
   mutable ::PROTOBUF_NAMESPACE_ID::internal::CachedSize _cached_size_;
   friend struct ::TableStruct_telemetry_2ftelemetry_2eproto;
@@ -21965,24 +21965,24 @@ inline void DistanceSensor::set_minimum_distance_m(float value) {
   // @@protoc_insertion_point(field_set:mavsdk.rpc.telemetry.DistanceSensor.minimum_distance_m)
 }
 
-// float maximum_distance = 2 [(.mavsdk.options.default_value) = "NaN"];
-inline void DistanceSensor::clear_maximum_distance() {
-  maximum_distance_ = 0;
+// float maximum_distance_m = 2 [(.mavsdk.options.default_value) = "NaN"];
+inline void DistanceSensor::clear_maximum_distance_m() {
+  maximum_distance_m_ = 0;
 }
-inline float DistanceSensor::_internal_maximum_distance() const {
-  return maximum_distance_;
+inline float DistanceSensor::_internal_maximum_distance_m() const {
+  return maximum_distance_m_;
 }
-inline float DistanceSensor::maximum_distance() const {
-  // @@protoc_insertion_point(field_get:mavsdk.rpc.telemetry.DistanceSensor.maximum_distance)
-  return _internal_maximum_distance();
+inline float DistanceSensor::maximum_distance_m() const {
+  // @@protoc_insertion_point(field_get:mavsdk.rpc.telemetry.DistanceSensor.maximum_distance_m)
+  return _internal_maximum_distance_m();
 }
-inline void DistanceSensor::_internal_set_maximum_distance(float value) {
+inline void DistanceSensor::_internal_set_maximum_distance_m(float value) {
   
-  maximum_distance_ = value;
+  maximum_distance_m_ = value;
 }
-inline void DistanceSensor::set_maximum_distance(float value) {
-  _internal_set_maximum_distance(value);
-  // @@protoc_insertion_point(field_set:mavsdk.rpc.telemetry.DistanceSensor.maximum_distance)
+inline void DistanceSensor::set_maximum_distance_m(float value) {
+  _internal_set_maximum_distance_m(value);
+  // @@protoc_insertion_point(field_set:mavsdk.rpc.telemetry.DistanceSensor.maximum_distance_m)
 }
 
 // float current_distance_m = 3 [(.mavsdk.options.default_value) = "NaN"];

@@ -554,7 +554,7 @@ public:
     struct DistanceSensor {
         float minimum_distance_m{
             float(NAN)}; /**< @brief Minimum distance the sensor can measure, NaN if unknown. */
-        float maximum_distance{
+        float maximum_distance_m{
             float(NAN)}; /**< @brief Maximum distance the sensor can measure, NaN if unknown. */
         float current_distance_m{
             float(NAN)}; /**< @brief Current distance reading, NaN if unknown. */
