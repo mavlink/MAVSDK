@@ -588,7 +588,7 @@ message Odometry {
 // DistanceSensor message type.
 message DistanceSensor {
     float minimum_distance_m = 1 [(mavsdk.options.default_value)="NaN"]; // Minimum distance the sensor can measure, NaN if unknown.
-    float maximum_distance = 2 [(mavsdk.options.default_value)="NaN"]; // Maximum distance the sensor can measure, NaN if unknown.
+    float maximum_distance_m = 2 [(mavsdk.options.default_value)="NaN"]; // Maximum distance the sensor can measure, NaN if unknown.
     float current_distance_m = 3 [(mavsdk.options.default_value)="NaN"]; // Current distance reading, NaN if unknown.
 }
 
