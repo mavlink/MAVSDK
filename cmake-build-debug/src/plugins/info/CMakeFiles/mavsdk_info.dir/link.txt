@@ -1,1 +1,0 @@
-/usr/bin/c++ -fPIC -g  -shared -Wl,-soname,libmavsdk_info.so.0 -o libmavsdk_info.so.0.32.0 CMakeFiles/mavsdk_info.dir/info.cpp.o CMakeFiles/mavsdk_info.dir/info_impl.cpp.o  -Wl,-rpath,/home/amd/MAVSDK/cmake-build-debug/src/core: ../../core/libmavsdk.so.0.32.0 

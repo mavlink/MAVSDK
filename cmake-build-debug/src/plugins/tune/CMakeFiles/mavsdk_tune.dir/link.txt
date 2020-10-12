@@ -1,1 +1,0 @@
-/usr/bin/c++ -fPIC -g  -shared -Wl,-soname,libmavsdk_tune.so.0 -o libmavsdk_tune.so.0.32.0 CMakeFiles/mavsdk_tune.dir/tune.cpp.o CMakeFiles/mavsdk_tune.dir/tune_impl.cpp.o  -Wl,-rpath,/home/amd/MAVSDK/cmake-build-debug/src/core: ../../core/libmavsdk.so.0.32.0 

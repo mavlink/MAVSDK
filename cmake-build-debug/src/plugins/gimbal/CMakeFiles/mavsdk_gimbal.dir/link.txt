@@ -1,1 +1,0 @@
-/usr/bin/c++ -fPIC -g  -shared -Wl,-soname,libmavsdk_gimbal.so.0 -o libmavsdk_gimbal.so.0.32.0 CMakeFiles/mavsdk_gimbal.dir/gimbal.cpp.o CMakeFiles/mavsdk_gimbal.dir/gimbal_impl.cpp.o CMakeFiles/mavsdk_gimbal.dir/gimbal_protocol_v1.cpp.o CMakeFiles/mavsdk_gimbal.dir/gimbal_protocol_v2.cpp.o  -Wl,-rpath,/home/amd/MAVSDK/cmake-build-debug/src/core: ../../core/libmavsdk.so.0.32.0 

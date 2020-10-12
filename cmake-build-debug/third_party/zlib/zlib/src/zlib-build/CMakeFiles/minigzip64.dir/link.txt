@@ -1,1 +1,0 @@
-/usr/bin/cc -g  -rdynamic CMakeFiles/minigzip64.dir/test/minigzip.o  -o minigzip64  libz.a 

@@ -1,3 +1,0 @@
-/home/amd/MAVSDK/cmake-build-debug/third_party/tinyxml2/CMakeFiles/rebuild_cache.dir
-/home/amd/MAVSDK/cmake-build-debug/third_party/tinyxml2/CMakeFiles/edit_cache.dir
-/home/amd/MAVSDK/cmake-build-debug/third_party/tinyxml2/CMakeFiles/tinyxml2.dir

@@ -1,1 +1,0 @@
-/usr/bin/c++ -fPIC -g  -shared -Wl,-soname,libmavsdk_ftp.so.0 -o libmavsdk_ftp.so.0.32.0 CMakeFiles/mavsdk_ftp.dir/ftp.cpp.o CMakeFiles/mavsdk_ftp.dir/ftp_impl.cpp.o CMakeFiles/mavsdk_ftp.dir/fs.cpp.o CMakeFiles/mavsdk_ftp.dir/crc32.cpp.o  -Wl,-rpath,/home/amd/MAVSDK/cmake-build-debug/src/core: ../../core/libmavsdk.so.0.32.0 

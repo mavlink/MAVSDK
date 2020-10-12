@@ -1,1 +1,0 @@
-/usr/bin/c++ -fPIC -g  -shared -Wl,-soname,libmavsdk_manual_control.so -o libmavsdk_manual_control.so CMakeFiles/mavsdk_manual_control.dir/manual_control.cpp.o CMakeFiles/mavsdk_manual_control.dir/manual_control_impl.cpp.o  -Wl,-rpath,/home/amd/MAVSDK/cmake-build-debug/src/core: ../../core/libmavsdk.so.0.32.0 

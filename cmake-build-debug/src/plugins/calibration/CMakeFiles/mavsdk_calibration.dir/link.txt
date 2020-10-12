@@ -1,1 +1,0 @@
-/usr/bin/c++ -fPIC -g  -shared -Wl,-soname,libmavsdk_calibration.so.0 -o libmavsdk_calibration.so.0.32.0 CMakeFiles/mavsdk_calibration.dir/calibration.cpp.o CMakeFiles/mavsdk_calibration.dir/calibration_impl.cpp.o CMakeFiles/mavsdk_calibration.dir/calibration_statustext_parser.cpp.o  -Wl,-rpath,/home/amd/MAVSDK/cmake-build-debug/src/core: ../../core/libmavsdk.so.0.32.0 

@@ -1,3 +1,0 @@
-/home/amd/MAVSDK/cmake-build-debug/third_party/jsoncpp/CMakeFiles/rebuild_cache.dir
-/home/amd/MAVSDK/cmake-build-debug/third_party/jsoncpp/CMakeFiles/edit_cache.dir
-/home/amd/MAVSDK/cmake-build-debug/third_party/jsoncpp/CMakeFiles/jsoncpp.dir

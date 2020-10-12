@@ -1,3 +1,0 @@
-/home/amd/MAVSDK/cmake-build-debug/third_party/zlib/CMakeFiles/rebuild_cache.dir
-/home/amd/MAVSDK/cmake-build-debug/third_party/zlib/CMakeFiles/edit_cache.dir
-/home/amd/MAVSDK/cmake-build-debug/third_party/zlib/CMakeFiles/zlib.dir

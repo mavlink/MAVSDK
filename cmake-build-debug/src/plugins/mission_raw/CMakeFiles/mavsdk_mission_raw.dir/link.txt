@@ -1,1 +1,0 @@
-/usr/bin/c++ -fPIC -g  -shared -Wl,-soname,libmavsdk_mission_raw.so.0 -o libmavsdk_mission_raw.so.0.32.0 CMakeFiles/mavsdk_mission_raw.dir/mission_raw.cpp.o CMakeFiles/mavsdk_mission_raw.dir/mission_raw_impl.cpp.o  -Wl,-rpath,/home/amd/MAVSDK/cmake-build-debug/src/core: ../../core/libmavsdk.so.0.32.0 

@@ -1,1 +1,0 @@
-/usr/bin/c++ -fPIC -g  -shared -Wl,-soname,libmavsdk_mavlink_passthrough.so.0 -o libmavsdk_mavlink_passthrough.so.0.32.0 CMakeFiles/mavsdk_mavlink_passthrough.dir/mavlink_passthrough.cpp.o CMakeFiles/mavsdk_mavlink_passthrough.dir/mavlink_passthrough_impl.cpp.o  -Wl,-rpath,/home/amd/MAVSDK/cmake-build-debug/src/core: ../../core/libmavsdk.so.0.32.0 
