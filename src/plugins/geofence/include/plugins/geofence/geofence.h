@@ -43,15 +43,10 @@ public:
      */
     ~Geofence();
 
-
-
-
-
     /**
      * @brief Point type.
      */
     struct Point {
-        
         double latitude_deg{}; /**< @brief Latitude in degrees (range: -90 to +90) */
         double longitude_deg{}; /**< @brief Longitude in degrees (range: -180 to +180) */
     };
@@ -70,30 +65,26 @@ public:
      */
     friend std::ostream& operator<<(std::ostream& str, Geofence::Point const& point);
 
-
-
-
-
     /**
      * @brief Polygon type.
      */
     struct Polygon {
-        
         /**
-     * @brief Geofence polygon types.
-     */
-    enum class FenceType {
-        Inclusion, /**< @brief Type representing an inclusion fence. */
-        Exclusion, /**< @brief Type representing an exclusion fence. */
-    };
+         * @brief Geofence polygon types.
+         */
+        enum class FenceType {
+            Inclusion, /**< @brief Type representing an inclusion fence. */
+            Exclusion, /**< @brief Type representing an exclusion fence. */
+        };
 
-    /**
-     * @brief Stream operator to print information about a `Geofence::FenceType`.
-     *
-     * @return A reference to the stream.
-     */
-    friend std::ostream& operator<<(std::ostream& str, Geofence::Polygon::FenceType const& fence_type);
-        
+        /**
+         * @brief Stream operator to print information about a `Geofence::FenceType`.
+         *
+         * @return A reference to the stream.
+         */
+        friend std::ostream&
+        operator<<(std::ostream& str, Geofence::Polygon::FenceType const& fence_type);
+
         std::vector<Point> points{}; /**< @brief Points defining the polygon */
         FenceType fence_type{}; /**< @brief Fence type */
     };
@@ -111,10 +102,6 @@ public:
      * @return A reference to the stream.
      */
     friend std::ostream& operator<<(std::ostream& str, Geofence::Polygon const& polygon);
-
-
-
-
 
     /**
      * @brief Possible results returned for geofence requests.
@@ -136,15 +123,10 @@ public:
      */
     friend std::ostream& operator<<(std::ostream& str, Geofence::Result const& result);
 
-
-
     /**
      * @brief Callback type for asynchronous Geofence calls.
      */
     using ResultCallback = std::function<void(Result)>;
-
-
-
 
     /**
      * @brief Upload a geofence.
@@ -155,8 +137,6 @@ public:
      * This function is non-blocking. See 'upload_geofence' for the blocking counterpart.
      */
     void upload_geofence_async(std::vector<Polygon> polygons, const ResultCallback callback);
-
-
 
     /**
      * @brief Upload a geofence.
@@ -169,9 +149,6 @@ public:
      * @return Result of request.
      */
     Result upload_geofence(std::vector<Polygon> polygons) const;
-
-
-
 
     /**
      * @brief Copy constructor (object is not copyable).

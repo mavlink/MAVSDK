@@ -22,7 +22,6 @@ class InfoServiceImpl final : public rpc::info::InfoService::Service {
 public:
     InfoServiceImpl(Info& info) : _info(info) {}
 
-
     template<typename ResponseType>
     void fillResponseWithResult(ResponseType* response, mavsdk::Info::Result& result) const
     {
@@ -37,96 +36,62 @@ public:
         response->set_allocated_info_result(rpc_info_result);
     }
 
-
-
-
-    static std::unique_ptr<rpc::info::FlightInfo> translateToRpcFlightInfo(const mavsdk::Info::FlightInfo &flight_info)
+    static std::unique_ptr<rpc::info::FlightInfo>
+    translateToRpcFlightInfo(const mavsdk::Info::FlightInfo& flight_info)
     {
         std::unique_ptr<rpc::info::FlightInfo> rpc_obj(new rpc::info::FlightInfo());
 
-
-            
         rpc_obj->set_time_boot_ms(flight_info.time_boot_ms);
-            
-        
-            
+
         rpc_obj->set_flight_uid(flight_info.flight_uid);
-            
-        
 
         return rpc_obj;
     }
 
-    static mavsdk::Info::FlightInfo translateFromRpcFlightInfo(const rpc::info::FlightInfo& flight_info)
+    static mavsdk::Info::FlightInfo
+    translateFromRpcFlightInfo(const rpc::info::FlightInfo& flight_info)
     {
         mavsdk::Info::FlightInfo obj;
 
-
-            
         obj.time_boot_ms = flight_info.time_boot_ms();
-            
-        
-            
+
         obj.flight_uid = flight_info.flight_uid();
-            
-        
+
         return obj;
     }
 
-
-
-
-
-    static std::unique_ptr<rpc::info::Identification> translateToRpcIdentification(const mavsdk::Info::Identification &identification)
+    static std::unique_ptr<rpc::info::Identification>
+    translateToRpcIdentification(const mavsdk::Info::Identification& identification)
     {
         std::unique_ptr<rpc::info::Identification> rpc_obj(new rpc::info::Identification());
 
-
-            
         rpc_obj->set_hardware_uid(identification.hardware_uid);
-            
-        
 
         return rpc_obj;
     }
 
-    static mavsdk::Info::Identification translateFromRpcIdentification(const rpc::info::Identification& identification)
+    static mavsdk::Info::Identification
+    translateFromRpcIdentification(const rpc::info::Identification& identification)
     {
         mavsdk::Info::Identification obj;
 
-
-            
         obj.hardware_uid = identification.hardware_uid();
-            
-        
+
         return obj;
     }
 
-
-
-
-
-    static std::unique_ptr<rpc::info::Product> translateToRpcProduct(const mavsdk::Info::Product &product)
+    static std::unique_ptr<rpc::info::Product>
+    translateToRpcProduct(const mavsdk::Info::Product& product)
     {
         std::unique_ptr<rpc::info::Product> rpc_obj(new rpc::info::Product());
 
-
-            
         rpc_obj->set_vendor_id(product.vendor_id);
-            
-        
-            
+
         rpc_obj->set_vendor_name(product.vendor_name);
-            
-        
-            
+
         rpc_obj->set_product_id(product.product_id);
-            
-        
-            
+
         rpc_obj->set_product_name(product.product_name);
-            
-        
 
         return rpc_obj;
     }
@@ -135,79 +100,43 @@ public:
     {
         mavsdk::Info::Product obj;
 
-
-            
         obj.vendor_id = product.vendor_id();
-            
-        
-            
+
         obj.vendor_name = product.vendor_name();
-            
-        
-            
+
         obj.product_id = product.product_id();
-            
-        
-            
+
         obj.product_name = product.product_name();
-            
-        
+
         return obj;
     }
 
-
-
-
-
-    static std::unique_ptr<rpc::info::Version> translateToRpcVersion(const mavsdk::Info::Version &version)
+    static std::unique_ptr<rpc::info::Version>
+    translateToRpcVersion(const mavsdk::Info::Version& version)
     {
         std::unique_ptr<rpc::info::Version> rpc_obj(new rpc::info::Version());
 
-
-            
         rpc_obj->set_flight_sw_major(version.flight_sw_major);
-            
-        
-            
+
         rpc_obj->set_flight_sw_minor(version.flight_sw_minor);
-            
-        
-            
+
         rpc_obj->set_flight_sw_patch(version.flight_sw_patch);
-            
-        
-            
+
         rpc_obj->set_flight_sw_vendor_major(version.flight_sw_vendor_major);
-            
-        
-            
+
         rpc_obj->set_flight_sw_vendor_minor(version.flight_sw_vendor_minor);
-            
-        
-            
+
         rpc_obj->set_flight_sw_vendor_patch(version.flight_sw_vendor_patch);
-            
-        
-            
+
         rpc_obj->set_os_sw_major(version.os_sw_major);
-            
-        
-            
+
         rpc_obj->set_os_sw_minor(version.os_sw_minor);
-            
-        
-            
+
         rpc_obj->set_os_sw_patch(version.os_sw_patch);
-            
-        
-            
+
         rpc_obj->set_flight_sw_git_hash(version.flight_sw_git_hash);
-            
-        
-            
+
         rpc_obj->set_os_sw_git_hash(version.os_sw_git_hash);
-            
-        
 
         return rpc_obj;
     }
@@ -216,56 +145,30 @@ public:
     {
         mavsdk::Info::Version obj;
 
-
-            
         obj.flight_sw_major = version.flight_sw_major();
-            
-        
-            
+
         obj.flight_sw_minor = version.flight_sw_minor();
-            
-        
-            
+
         obj.flight_sw_patch = version.flight_sw_patch();
-            
-        
-            
+
         obj.flight_sw_vendor_major = version.flight_sw_vendor_major();
-            
-        
-            
+
         obj.flight_sw_vendor_minor = version.flight_sw_vendor_minor();
-            
-        
-            
+
         obj.flight_sw_vendor_patch = version.flight_sw_vendor_patch();
-            
-        
-            
+
         obj.os_sw_major = version.os_sw_major();
-            
-        
-            
+
         obj.os_sw_minor = version.os_sw_minor();
-            
-        
-            
+
         obj.os_sw_patch = version.os_sw_patch();
-            
-        
-            
+
         obj.flight_sw_git_hash = version.flight_sw_git_hash();
-            
-        
-            
+
         obj.os_sw_git_hash = version.os_sw_git_hash();
-            
-        
+
         return obj;
     }
-
-
-
 
     static rpc::info::InfoResult::Result translateToRpcResult(const mavsdk::Info::Result& result)
     {
@@ -297,25 +200,18 @@ public:
         }
     }
 
-
-
-
     grpc::Status GetFlightInformation(
         grpc::ServerContext* /* context */,
         const rpc::info::GetFlightInformationRequest* /* request */,
         rpc::info::GetFlightInformationResponse* response) override
     {
-        
-
         auto result = _info.get_flight_information();
 
         if (response != nullptr) {
             fillResponseWithResult(response, result.first);
-            
-            response->set_allocated_flight_info(translateToRpcFlightInfo(result.second).release());
-            
-        }
 
+            response->set_allocated_flight_info(translateToRpcFlightInfo(result.second).release());
+        }
 
         return grpc::Status::OK;
     }
@@ -325,17 +221,14 @@ public:
         const rpc::info::GetIdentificationRequest* /* request */,
         rpc::info::GetIdentificationResponse* response) override
     {
-        
-
         auto result = _info.get_identification();
 
         if (response != nullptr) {
             fillResponseWithResult(response, result.first);
-            
-            response->set_allocated_identification(translateToRpcIdentification(result.second).release());
-            
-        }
 
+            response->set_allocated_identification(
+                translateToRpcIdentification(result.second).release());
+        }
 
         return grpc::Status::OK;
     }
@@ -345,17 +238,13 @@ public:
         const rpc::info::GetProductRequest* /* request */,
         rpc::info::GetProductResponse* response) override
     {
-        
-
         auto result = _info.get_product();
 
         if (response != nullptr) {
             fillResponseWithResult(response, result.first);
-            
-            response->set_allocated_product(translateToRpcProduct(result.second).release());
-            
-        }
 
+            response->set_allocated_product(translateToRpcProduct(result.second).release());
+        }
 
         return grpc::Status::OK;
     }
@@ -365,17 +254,13 @@ public:
         const rpc::info::GetVersionRequest* /* request */,
         rpc::info::GetVersionResponse* response) override
     {
-        
-
         auto result = _info.get_version();
 
         if (response != nullptr) {
             fillResponseWithResult(response, result.first);
-            
-            response->set_allocated_version(translateToRpcVersion(result.second).release());
-            
-        }
 
+            response->set_allocated_version(translateToRpcVersion(result.second).release());
+        }
 
         return grpc::Status::OK;
     }
@@ -385,23 +270,19 @@ public:
         const rpc::info::GetSpeedFactorRequest* /* request */,
         rpc::info::GetSpeedFactorResponse* response) override
     {
-        
-
         auto result = _info.get_speed_factor();
 
         if (response != nullptr) {
             fillResponseWithResult(response, result.first);
-            
-            response->set_speed_factor(result.second);
-            
-        }
 
+            response->set_speed_factor(result.second);
+        }
 
         return grpc::Status::OK;
     }
 
-
-    void stop() {
+    void stop()
+    {
         _stopped.store(true);
         for (auto& prom : _stream_stop_promises) {
             if (auto handle = prom.lock()) {
@@ -411,7 +292,8 @@ public:
     }
 
 private:
-    void register_stream_stop_promise(std::weak_ptr<std::promise<void>> prom) {
+    void register_stream_stop_promise(std::weak_ptr<std::promise<void>> prom)
+    {
         // If we have already stopped, set promise immediately and don't add it to list.
         if (_stopped.load()) {
             if (auto handle = prom.lock()) {
@@ -422,8 +304,10 @@ private:
         }
     }
 
-    void unregister_stream_stop_promise(std::shared_ptr<std::promise<void>> prom) {
-        for (auto it = _stream_stop_promises.begin(); it != _stream_stop_promises.end(); /* ++it */) {
+    void unregister_stream_stop_promise(std::shared_ptr<std::promise<void>> prom)
+    {
+        for (auto it = _stream_stop_promises.begin(); it != _stream_stop_promises.end();
+             /* ++it */) {
             if (it->lock() == prom) {
                 it = _stream_stop_promises.erase(it);
             } else {
@@ -432,9 +316,9 @@ private:
         }
     }
 
-    Info &_info;
+    Info& _info;
     std::atomic<bool> _stopped{false};
-    std::vector<std::weak_ptr<std::promise<void>>> _stream_stop_promises {};
+    std::vector<std::weak_ptr<std::promise<void>>> _stream_stop_promises{};
 };
 
 } // namespace backend
