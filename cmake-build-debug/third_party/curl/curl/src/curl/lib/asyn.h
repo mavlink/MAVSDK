@@ -60,7 +60,7 @@ void Curl_resolver_global_cleanup(void);
  * Returning anything else than CURLE_OK fails curl_easy_init() with the
  * correspondent code.
  */
-CURLcode Curl_resolver_init(struct Curl_easy *easy, void **resolver);
+CURLcode Curl_resolver_init(struct Curl_easy* easy, void** resolver);
 
 /*
  * Curl_resolver_cleanup()
@@ -69,7 +69,7 @@ CURLcode Curl_resolver_init(struct Curl_easy *easy, void **resolver);
  * structure).  Should destroy the handler and free all resources connected to
  * it.
  */
-void Curl_resolver_cleanup(void *resolver);
+void Curl_resolver_cleanup(void* resolver);
 
 /*
  * Curl_resolver_duphandle()
@@ -79,8 +79,7 @@ void Curl_resolver_cleanup(void *resolver);
  * pointer.  Returning anything else than CURLE_OK causes failed
  * curl_easy_duphandle() call.
  */
-CURLcode Curl_resolver_duphandle(struct Curl_easy *easy, void **to,
-                                 void *from);
+CURLcode Curl_resolver_duphandle(struct Curl_easy* easy, void** to, void* from);
 
 /*
  * Curl_resolver_cancel().
@@ -91,7 +90,7 @@ CURLcode Curl_resolver_duphandle(struct Curl_easy *easy, void **to,
  *
  * It is safe to call this when conn is in any state.
  */
-void Curl_resolver_cancel(struct connectdata *conn);
+void Curl_resolver_cancel(struct connectdata* conn);
 
 /*
  * Curl_resolver_kill().
@@ -104,7 +103,7 @@ void Curl_resolver_cancel(struct connectdata *conn);
  *
  * It is safe to call this when conn is in any state.
  */
-void Curl_resolver_kill(struct connectdata *conn);
+void Curl_resolver_kill(struct connectdata* conn);
 
 /* Curl_resolver_getsock()
  *
@@ -114,7 +113,7 @@ void Curl_resolver_kill(struct connectdata *conn);
  * return bitmask indicating what file descriptors (referring to array indexes
  * in the 'sock' array) to wait for, read/write.
  */
-int Curl_resolver_getsock(struct connectdata *conn, curl_socket_t *sock);
+int Curl_resolver_getsock(struct connectdata* conn, curl_socket_t* sock);
 
 /*
  * Curl_resolver_is_resolved()
@@ -125,8 +124,7 @@ int Curl_resolver_getsock(struct connectdata *conn, curl_socket_t *sock);
  *
  * Returns normal CURLcode errors.
  */
-CURLcode Curl_resolver_is_resolved(struct connectdata *conn,
-                                   struct Curl_dns_entry **dns);
+CURLcode Curl_resolver_is_resolved(struct connectdata* conn, struct Curl_dns_entry** dns);
 
 /*
  * Curl_resolver_wait_resolv()
@@ -139,8 +137,7 @@ CURLcode Curl_resolver_is_resolved(struct connectdata *conn,
  * Returns CURLE_COULDNT_RESOLVE_HOST if the host was not resolved,
  * CURLE_OPERATION_TIMEDOUT if a time-out occurred, or other errors.
  */
-CURLcode Curl_resolver_wait_resolv(struct connectdata *conn,
-                                   struct Curl_dns_entry **dnsentry);
+CURLcode Curl_resolver_wait_resolv(struct connectdata* conn, struct Curl_dns_entry** dnsentry);
 
 /*
  * Curl_resolver_getaddrinfo() - when using this resolver
@@ -153,20 +150,18 @@ CURLcode Curl_resolver_wait_resolv(struct connectdata *conn,
  * Each resolver backend must of course make sure to return data in the
  * correct format to comply with this.
  */
-Curl_addrinfo *Curl_resolver_getaddrinfo(struct connectdata *conn,
-                                         const char *hostname,
-                                         int port,
-                                         int *waitp);
+Curl_addrinfo*
+Curl_resolver_getaddrinfo(struct connectdata* conn, const char* hostname, int port, int* waitp);
 
 #ifndef CURLRES_ASYNCH
 /* convert these functions if an asynch resolver isn't used */
 #define Curl_resolver_cancel(x) Curl_nop_stmt
 #define Curl_resolver_kill(x) Curl_nop_stmt
-#define Curl_resolver_is_resolved(x,y) CURLE_COULDNT_RESOLVE_HOST
-#define Curl_resolver_wait_resolv(x,y) CURLE_COULDNT_RESOLVE_HOST
-#define Curl_resolver_getsock(x,y,z) 0
-#define Curl_resolver_duphandle(x,y,z) CURLE_OK
-#define Curl_resolver_init(x,y) CURLE_OK
+#define Curl_resolver_is_resolved(x, y) CURLE_COULDNT_RESOLVE_HOST
+#define Curl_resolver_wait_resolv(x, y) CURLE_COULDNT_RESOLVE_HOST
+#define Curl_resolver_getsock(x, y, z) 0
+#define Curl_resolver_duphandle(x, y, z) CURLE_OK
+#define Curl_resolver_init(x, y) CURLE_OK
 #define Curl_resolver_global_init() CURLE_OK
 #define Curl_resolver_global_cleanup() Curl_nop_stmt
 #define Curl_resolver_cleanup(x) Curl_nop_stmt
@@ -177,7 +172,6 @@ Curl_addrinfo *Curl_resolver_getaddrinfo(struct connectdata *conn,
 #else
 #define Curl_resolver_asynch() 0
 #endif
-
 
 /********** end of generic resolver interface functions *****************/
 #endif /* HEADER_CURL_ASYN_H */

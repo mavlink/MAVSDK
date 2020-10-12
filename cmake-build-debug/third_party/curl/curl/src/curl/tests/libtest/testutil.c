@@ -28,77 +28,77 @@
 
 struct timeval tutil_tvnow(void)
 {
-  /*
-  ** GetTickCount() is available on _all_ Windows versions from W95 up
-  ** to nowadays. Returns milliseconds elapsed since last system boot,
-  ** increases monotonically and wraps once 49.7 days have elapsed.
-  */
-  struct timeval now;
-  DWORD milliseconds = GetTickCount();
-  now.tv_sec = milliseconds / 1000;
-  now.tv_usec = (milliseconds % 1000) * 1000;
-  return now;
+    /*
+    ** GetTickCount() is available on _all_ Windows versions from W95 up
+    ** to nowadays. Returns milliseconds elapsed since last system boot,
+    ** increases monotonically and wraps once 49.7 days have elapsed.
+    */
+    struct timeval now;
+    DWORD milliseconds = GetTickCount();
+    now.tv_sec = milliseconds / 1000;
+    now.tv_usec = (milliseconds % 1000) * 1000;
+    return now;
 }
 
 #elif defined(HAVE_CLOCK_GETTIME_MONOTONIC)
 
 struct timeval tutil_tvnow(void)
 {
-  /*
-  ** clock_gettime() is granted to be increased monotonically when the
-  ** monotonic clock is queried. Time starting point is unspecified, it
-  ** could be the system start-up time, the Epoch, or something else,
-  ** in any case the time starting point does not change once that the
-  ** system has started up.
-  */
-  struct timeval now;
-  struct timespec tsnow;
-  if(0 == clock_gettime(CLOCK_MONOTONIC, &tsnow)) {
-    now.tv_sec = tsnow.tv_sec;
-    now.tv_usec = tsnow.tv_nsec / 1000;
-  }
-  /*
-  ** Even when the configure process has truly detected monotonic clock
-  ** availability, it might happen that it is not actually available at
-  ** run-time. When this occurs simply fallback to other time source.
-  */
+    /*
+    ** clock_gettime() is granted to be increased monotonically when the
+    ** monotonic clock is queried. Time starting point is unspecified, it
+    ** could be the system start-up time, the Epoch, or something else,
+    ** in any case the time starting point does not change once that the
+    ** system has started up.
+    */
+    struct timeval now;
+    struct timespec tsnow;
+    if (0 == clock_gettime(CLOCK_MONOTONIC, &tsnow)) {
+        now.tv_sec = tsnow.tv_sec;
+        now.tv_usec = tsnow.tv_nsec / 1000;
+    }
+    /*
+    ** Even when the configure process has truly detected monotonic clock
+    ** availability, it might happen that it is not actually available at
+    ** run-time. When this occurs simply fallback to other time source.
+    */
 #ifdef HAVE_GETTIMEOFDAY
-  else
-    (void)gettimeofday(&now, NULL);
+    else
+        (void)gettimeofday(&now, NULL);
 #else
-  else {
-    now.tv_sec = (long)time(NULL);
-    now.tv_usec = 0;
-  }
+    else {
+        now.tv_sec = (long)time(NULL);
+        now.tv_usec = 0;
+    }
 #endif
-  return now;
+    return now;
 }
 
 #elif defined(HAVE_GETTIMEOFDAY)
 
 struct timeval tutil_tvnow(void)
 {
-  /*
-  ** gettimeofday() is not granted to be increased monotonically, due to
-  ** clock drifting and external source time synchronization it can jump
-  ** forward or backward in time.
-  */
-  struct timeval now;
-  (void)gettimeofday(&now, NULL);
-  return now;
+    /*
+    ** gettimeofday() is not granted to be increased monotonically, due to
+    ** clock drifting and external source time synchronization it can jump
+    ** forward or backward in time.
+    */
+    struct timeval now;
+    (void)gettimeofday(&now, NULL);
+    return now;
 }
 
 #else
 
 struct timeval tutil_tvnow(void)
 {
-  /*
-  ** time() returns the value of time in seconds since the Epoch.
-  */
-  struct timeval now;
-  now.tv_sec = (long)time(NULL);
-  now.tv_usec = 0;
-  return now;
+    /*
+    ** time() returns the value of time in seconds since the Epoch.
+    */
+    struct timeval now;
+    now.tv_sec = (long)time(NULL);
+    now.tv_usec = 0;
+    return now;
 }
 
 #endif
@@ -111,10 +111,9 @@ struct timeval tutil_tvnow(void)
  */
 long tutil_tvdiff(struct timeval newer, struct timeval older)
 {
-  return (long)(newer.tv_sec-older.tv_sec)*1000+
-    (long)(newer.tv_usec-older.tv_usec)/1000;
+    return (long)(newer.tv_sec - older.tv_sec) * 1000 +
+           (long)(newer.tv_usec - older.tv_usec) / 1000;
 }
-
 
 /*
  * Same as tutil_tvdiff but with full usec resolution.
@@ -123,8 +122,8 @@ long tutil_tvdiff(struct timeval newer, struct timeval older)
  */
 double tutil_tvdiff_secs(struct timeval newer, struct timeval older)
 {
-  if(newer.tv_sec != older.tv_sec)
-    return (double)(newer.tv_sec-older.tv_sec)+
-      (double)(newer.tv_usec-older.tv_usec)/1000000.0;
-  return (double)(newer.tv_usec-older.tv_usec)/1000000.0;
+    if (newer.tv_sec != older.tv_sec)
+        return (double)(newer.tv_sec - older.tv_sec) +
+               (double)(newer.tv_usec - older.tv_usec) / 1000000.0;
+    return (double)(newer.tv_usec - older.tv_usec) / 1000000.0;
 }

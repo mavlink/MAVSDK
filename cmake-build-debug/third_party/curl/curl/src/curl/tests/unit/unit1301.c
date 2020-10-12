@@ -23,7 +23,10 @@
 
 #include "strcase.h"
 
-static CURLcode unit_setup(void) {return CURLE_OK;}
+static CURLcode unit_setup(void)
+{
+    return CURLE_OK;
+}
 static void unit_stop(void) {}
 
 UNITTEST_START

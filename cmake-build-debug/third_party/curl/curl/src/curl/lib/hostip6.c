@@ -62,65 +62,65 @@
 /*
  * Curl_ipv6works() returns TRUE if IPv6 seems to work.
  */
-bool Curl_ipv6works(struct connectdata *conn)
+bool Curl_ipv6works(struct connectdata* conn)
 {
-  if(conn) {
-    /* the nature of most system is that IPv6 status doesn't come and go
-       during a program's lifetime so we only probe the first time and then we
-       have the info kept for fast re-use */
-    DEBUGASSERT(conn);
-    DEBUGASSERT(conn->data);
-    DEBUGASSERT(conn->data->multi);
-    return conn->data->multi->ipv6_works;
-  }
-  else {
-    int ipv6_works = -1;
-    /* probe to see if we have a working IPv6 stack */
-    curl_socket_t s = socket(PF_INET6, SOCK_DGRAM, 0);
-    if(s == CURL_SOCKET_BAD)
-      /* an IPv6 address was requested but we can't get/use one */
-      ipv6_works = 0;
-    else {
-      ipv6_works = 1;
-      Curl_closesocket(NULL, s);
+    if (conn) {
+        /* the nature of most system is that IPv6 status doesn't come and go
+           during a program's lifetime so we only probe the first time and then we
+           have the info kept for fast re-use */
+        DEBUGASSERT(conn);
+        DEBUGASSERT(conn->data);
+        DEBUGASSERT(conn->data->multi);
+        return conn->data->multi->ipv6_works;
+    } else {
+        int ipv6_works = -1;
+        /* probe to see if we have a working IPv6 stack */
+        curl_socket_t s = socket(PF_INET6, SOCK_DGRAM, 0);
+        if (s == CURL_SOCKET_BAD)
+            /* an IPv6 address was requested but we can't get/use one */
+            ipv6_works = 0;
+        else {
+            ipv6_works = 1;
+            Curl_closesocket(NULL, s);
+        }
+        return (ipv6_works > 0) ? TRUE : FALSE;
     }
-    return (ipv6_works>0)?TRUE:FALSE;
-  }
 }
 
 /*
  * Curl_ipvalid() checks what CURL_IPRESOLVE_* requirements that might've
  * been set and returns TRUE if they are OK.
  */
-bool Curl_ipvalid(struct connectdata *conn)
+bool Curl_ipvalid(struct connectdata* conn)
 {
-  if(conn->ip_version == CURL_IPRESOLVE_V6)
-    return Curl_ipv6works(conn);
+    if (conn->ip_version == CURL_IPRESOLVE_V6)
+        return Curl_ipv6works(conn);
 
-  return TRUE;
+    return TRUE;
 }
 
 #if defined(CURLRES_SYNCH)
 
 #ifdef DEBUG_ADDRINFO
-static void dump_addrinfo(struct connectdata *conn, const Curl_addrinfo *ai)
+static void dump_addrinfo(struct connectdata* conn, const Curl_addrinfo* ai)
 {
-  printf("dump_addrinfo:\n");
-  for(; ai; ai = ai->ai_next) {
-    char buf[INET6_ADDRSTRLEN];
-    printf("    fam %2d, CNAME %s, ",
-           ai->ai_family, ai->ai_canonname ? ai->ai_canonname : "<none>");
-    if(Curl_printable_address(ai, buf, sizeof(buf)))
-      printf("%s\n", buf);
-    else {
-      char buffer[STRERROR_LEN];
-      printf("failed; %s\n",
-             Curl_strerror(SOCKERRNO, buffer, sizeof(buffer)));
+    printf("dump_addrinfo:\n");
+    for (; ai; ai = ai->ai_next) {
+        char buf[INET6_ADDRSTRLEN];
+        printf(
+            "    fam %2d, CNAME %s, ",
+            ai->ai_family,
+            ai->ai_canonname ? ai->ai_canonname : "<none>");
+        if (Curl_printable_address(ai, buf, sizeof(buf)))
+            printf("%s\n", buf);
+        else {
+            char buffer[STRERROR_LEN];
+            printf("failed; %s\n", Curl_strerror(SOCKERRNO, buffer, sizeof(buffer)));
+        }
     }
-  }
 }
 #else
-#define dump_addrinfo(x,y) Curl_nop_stmt
+#define dump_addrinfo(x, y) Curl_nop_stmt
 #endif
 
 /*
@@ -132,78 +132,75 @@ static void dump_addrinfo(struct connectdata *conn, const Curl_addrinfo *ai)
  * memory we need to free after use. That memory *MUST* be freed with
  * Curl_freeaddrinfo(), nothing else.
  */
-Curl_addrinfo *Curl_getaddrinfo(struct connectdata *conn,
-                                const char *hostname,
-                                int port,
-                                int *waitp)
+Curl_addrinfo*
+Curl_getaddrinfo(struct connectdata* conn, const char* hostname, int port, int* waitp)
 {
-  struct addrinfo hints;
-  Curl_addrinfo *res;
-  int error;
-  char sbuf[12];
-  char *sbufptr = NULL;
+    struct addrinfo hints;
+    Curl_addrinfo* res;
+    int error;
+    char sbuf[12];
+    char* sbufptr = NULL;
 #ifndef USE_RESOLVE_ON_IPS
-  char addrbuf[128];
+    char addrbuf[128];
 #endif
-  int pf;
+    int pf;
 #if !defined(CURL_DISABLE_VERBOSE_STRINGS)
-  struct Curl_easy *data = conn->data;
+    struct Curl_easy* data = conn->data;
 #endif
 
-  *waitp = 0; /* synchronous response only */
+    *waitp = 0; /* synchronous response only */
 
-  /* Check if a limited name resolve has been requested */
-  switch(conn->ip_version) {
-  case CURL_IPRESOLVE_V4:
-    pf = PF_INET;
-    break;
-  case CURL_IPRESOLVE_V6:
-    pf = PF_INET6;
-    break;
-  default:
-    pf = PF_UNSPEC;
-    break;
-  }
+    /* Check if a limited name resolve has been requested */
+    switch (conn->ip_version) {
+        case CURL_IPRESOLVE_V4:
+            pf = PF_INET;
+            break;
+        case CURL_IPRESOLVE_V6:
+            pf = PF_INET6;
+            break;
+        default:
+            pf = PF_UNSPEC;
+            break;
+    }
 
-  if((pf != PF_INET) && !Curl_ipv6works(conn))
-    /* The stack seems to be a non-IPv6 one */
-    pf = PF_INET;
+    if ((pf != PF_INET) && !Curl_ipv6works(conn))
+        /* The stack seems to be a non-IPv6 one */
+        pf = PF_INET;
 
-  memset(&hints, 0, sizeof(hints));
-  hints.ai_family = pf;
-  hints.ai_socktype = (conn->transport == TRNSPRT_TCP) ?
-    SOCK_STREAM : SOCK_DGRAM;
+    memset(&hints, 0, sizeof(hints));
+    hints.ai_family = pf;
+    hints.ai_socktype = (conn->transport == TRNSPRT_TCP) ? SOCK_STREAM : SOCK_DGRAM;
 
 #ifndef USE_RESOLVE_ON_IPS
-  /*
-   * The AI_NUMERICHOST must not be set to get synthesized IPv6 address from
-   * an IPv4 address on iOS and Mac OS X.
-   */
-  if((1 == Curl_inet_pton(AF_INET, hostname, addrbuf)) ||
-     (1 == Curl_inet_pton(AF_INET6, hostname, addrbuf))) {
-    /* the given address is numerical only, prevent a reverse lookup */
-    hints.ai_flags = AI_NUMERICHOST;
-  }
+    /*
+     * The AI_NUMERICHOST must not be set to get synthesized IPv6 address from
+     * an IPv4 address on iOS and Mac OS X.
+     */
+    if ((1 == Curl_inet_pton(AF_INET, hostname, addrbuf)) ||
+        (1 == Curl_inet_pton(AF_INET6, hostname, addrbuf))) {
+        /* the given address is numerical only, prevent a reverse lookup */
+        hints.ai_flags = AI_NUMERICHOST;
+    }
 #endif
 
-  if(port) {
-    msnprintf(sbuf, sizeof(sbuf), "%d", port);
-    sbufptr = sbuf;
-  }
+    if (port) {
+        msnprintf(sbuf, sizeof(sbuf), "%d", port);
+        sbufptr = sbuf;
+    }
 
-  error = Curl_getaddrinfo_ex(hostname, sbufptr, &hints, &res);
-  if(error) {
-    infof(data, "getaddrinfo(3) failed for %s:%d\n", hostname, port);
-    return NULL;
-  }
+    error = Curl_getaddrinfo_ex(hostname, sbufptr, &hints, &res);
+    if (error) {
+        infof(data, "getaddrinfo(3) failed for %s:%d\n", hostname, port);
+        return NULL;
+    }
 
-  if(port) {
-    Curl_addrinfo_set_port(res, port);
-  }
+    if (port) {
+        Curl_addrinfo_set_port(res, port);
+    }
 
-  dump_addrinfo(conn, res);
+    dump_addrinfo(conn, res);
 
-  return res;
+    return res;
 }
 #endif /* CURLRES_SYNCH */
 

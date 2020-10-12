@@ -25,69 +25,68 @@
 #include "warnless.h"
 #include "memdebug.h"
 
-int test(char *URL)
+int test(char* URL)
 {
-  CURLSH *sh = NULL;
-  CURL *ch = NULL;
-  int unfinished;
+    CURLSH* sh = NULL;
+    CURL* ch = NULL;
+    int unfinished;
 
-  CURLM *cm = curl_multi_init();
-  if(!cm)
-    return 1;
-  sh = curl_share_init();
-  if(!sh)
-    goto cleanup;
+    CURLM* cm = curl_multi_init();
+    if (!cm)
+        return 1;
+    sh = curl_share_init();
+    if (!sh)
+        goto cleanup;
 
-  curl_share_setopt(sh, CURLSHOPT_SHARE, CURL_LOCK_DATA_COOKIE);
-  curl_share_setopt(sh, CURLSHOPT_SHARE, CURL_LOCK_DATA_COOKIE);
+    curl_share_setopt(sh, CURLSHOPT_SHARE, CURL_LOCK_DATA_COOKIE);
+    curl_share_setopt(sh, CURLSHOPT_SHARE, CURL_LOCK_DATA_COOKIE);
 
-  ch = curl_easy_init();
-  if(!ch)
-    goto cleanup;
+    ch = curl_easy_init();
+    if (!ch)
+        goto cleanup;
 
-  curl_easy_setopt(ch, CURLOPT_SHARE, sh);
-  curl_easy_setopt(ch, CURLOPT_URL, URL);
-  curl_easy_setopt(ch, CURLOPT_COOKIEFILE, "log/cookies1905");
-  curl_easy_setopt(ch, CURLOPT_COOKIEJAR, "log/cookies1905");
+    curl_easy_setopt(ch, CURLOPT_SHARE, sh);
+    curl_easy_setopt(ch, CURLOPT_URL, URL);
+    curl_easy_setopt(ch, CURLOPT_COOKIEFILE, "log/cookies1905");
+    curl_easy_setopt(ch, CURLOPT_COOKIEJAR, "log/cookies1905");
 
-  curl_multi_add_handle(cm, ch);
+    curl_multi_add_handle(cm, ch);
 
-  unfinished = 1;
-  while(unfinished) {
-    int MAX = 0;
-    long max_tout;
-    fd_set R, W, E;
-    struct timeval timeout;
+    unfinished = 1;
+    while (unfinished) {
+        int MAX = 0;
+        long max_tout;
+        fd_set R, W, E;
+        struct timeval timeout;
 
-    FD_ZERO(&R);
-    FD_ZERO(&W);
-    FD_ZERO(&E);
-    curl_multi_perform(cm, &unfinished);
+        FD_ZERO(&R);
+        FD_ZERO(&W);
+        FD_ZERO(&E);
+        curl_multi_perform(cm, &unfinished);
 
-    curl_multi_fdset(cm, &R, &W, &E, &MAX);
-    curl_multi_timeout(cm, &max_tout);
+        curl_multi_fdset(cm, &R, &W, &E, &MAX);
+        curl_multi_timeout(cm, &max_tout);
 
-    if(max_tout > 0) {
-      timeout.tv_sec = max_tout / 1000;
-      timeout.tv_usec = (max_tout % 1000) * 1000;
+        if (max_tout > 0) {
+            timeout.tv_sec = max_tout / 1000;
+            timeout.tv_usec = (max_tout % 1000) * 1000;
+        } else {
+            timeout.tv_sec = 0;
+            timeout.tv_usec = 1000;
+        }
+
+        select(MAX + 1, &R, &W, &E, &timeout);
     }
-    else {
-      timeout.tv_sec = 0;
-      timeout.tv_usec = 1000;
-    }
 
-    select(MAX + 1, &R, &W, &E, &timeout);
-  }
+    curl_easy_setopt(ch, CURLOPT_COOKIELIST, "FLUSH");
+    curl_easy_setopt(ch, CURLOPT_SHARE, NULL);
 
-  curl_easy_setopt(ch, CURLOPT_COOKIELIST, "FLUSH");
-  curl_easy_setopt(ch, CURLOPT_SHARE, NULL);
+    curl_multi_remove_handle(cm, ch);
+cleanup:
+    curl_easy_cleanup(ch);
+    curl_share_cleanup(sh);
+    curl_multi_cleanup(cm);
+    curl_global_cleanup();
 
-  curl_multi_remove_handle(cm, ch);
-  cleanup:
-  curl_easy_cleanup(ch);
-  curl_share_cleanup(sh);
-  curl_multi_cleanup(cm);
-  curl_global_cleanup();
-
-  return 0;
+    return 0;
 }

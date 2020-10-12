@@ -552,9 +552,12 @@ public:
      * @brief DistanceSensor message type.
      */
     struct DistanceSensor {
-        float min_distance{}; /**< @brief Minimum distance the sensor can measure. */
-        float max_distance{}; /**< @brief Maximum distance the sensor can measure. */
-        float current_distance{}; /**< @brief Current distance reading. */
+        float minimum_distance_m{
+            float(NAN)}; /**< @brief Minimum distance the sensor can measure, NaN if unknown. */
+        float maximum_distance{
+            float(NAN)}; /**< @brief Maximum distance the sensor can measure, NaN if unknown. */
+        float current_distance_m{
+            float(NAN)}; /**< @brief Current distance reading, NaN if unknown. */
     };
 
     /**

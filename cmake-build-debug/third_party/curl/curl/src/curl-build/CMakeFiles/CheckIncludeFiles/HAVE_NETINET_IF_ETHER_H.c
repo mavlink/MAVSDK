@@ -50,6 +50,7 @@
 #include <memory.h>
 #include <netinet/if_ether.h>
 
-
-int main(void){return 0;}
-
+int main(void)
+{
+    return 0;
+}

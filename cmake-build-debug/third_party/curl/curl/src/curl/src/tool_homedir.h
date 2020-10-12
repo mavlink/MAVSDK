@@ -23,6 +23,6 @@
  ***************************************************************************/
 #include "tool_setup.h"
 
-char *homedir(void);
+char* homedir(void);
 
 #endif /* HEADER_CURL_TOOL_HOMEDIR_H */

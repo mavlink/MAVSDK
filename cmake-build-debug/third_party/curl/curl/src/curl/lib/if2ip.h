@@ -24,23 +24,27 @@
 #include "curl_setup.h"
 
 /* IPv6 address scopes. */
-#define IPV6_SCOPE_GLOBAL       0       /* Global scope. */
-#define IPV6_SCOPE_LINKLOCAL    1       /* Link-local scope. */
-#define IPV6_SCOPE_SITELOCAL    2       /* Site-local scope (deprecated). */
-#define IPV6_SCOPE_UNIQUELOCAL  3       /* Unique local */
-#define IPV6_SCOPE_NODELOCAL    4       /* Loopback. */
+#define IPV6_SCOPE_GLOBAL 0 /* Global scope. */
+#define IPV6_SCOPE_LINKLOCAL 1 /* Link-local scope. */
+#define IPV6_SCOPE_SITELOCAL 2 /* Site-local scope (deprecated). */
+#define IPV6_SCOPE_UNIQUELOCAL 3 /* Unique local */
+#define IPV6_SCOPE_NODELOCAL 4 /* Loopback. */
 
-unsigned int Curl_ipv6_scope(const struct sockaddr *sa);
+unsigned int Curl_ipv6_scope(const struct sockaddr* sa);
 
 typedef enum {
-  IF2IP_NOT_FOUND = 0, /* Interface not found */
-  IF2IP_AF_NOT_SUPPORTED = 1, /* Int. exists but has no address for this af */
-  IF2IP_FOUND = 2 /* The address has been stored in "buf" */
+    IF2IP_NOT_FOUND = 0, /* Interface not found */
+    IF2IP_AF_NOT_SUPPORTED = 1, /* Int. exists but has no address for this af */
+    IF2IP_FOUND = 2 /* The address has been stored in "buf" */
 } if2ip_result_t;
 
-if2ip_result_t Curl_if2ip(int af, unsigned int remote_scope,
-                          unsigned int local_scope_id, const char *interf,
-                          char *buf, int buf_size);
+if2ip_result_t Curl_if2ip(
+    int af,
+    unsigned int remote_scope,
+    unsigned int local_scope_id,
+    const char* interf,
+    char* buf,
+    int buf_size);
 
 #ifdef __INTERIX
 
@@ -48,19 +52,19 @@ if2ip_result_t Curl_if2ip(int af, unsigned int remote_scope,
 struct ifreq {
 #define IFNAMSIZ 16
 #define IFHWADDRLEN 6
-  union {
-    char ifrn_name[IFNAMSIZ]; /* if name, e.g. "en0" */
-  } ifr_ifrn;
+    union {
+        char ifrn_name[IFNAMSIZ]; /* if name, e.g. "en0" */
+    } ifr_ifrn;
 
- union {
-   struct sockaddr ifru_addr;
-   struct sockaddr ifru_broadaddr;
-   struct sockaddr ifru_netmask;
-   struct sockaddr ifru_hwaddr;
-   short ifru_flags;
-   int ifru_metric;
-   int ifru_mtu;
- } ifr_ifru;
+    union {
+        struct sockaddr ifru_addr;
+        struct sockaddr ifru_broadaddr;
+        struct sockaddr ifru_netmask;
+        struct sockaddr ifru_hwaddr;
+        short ifru_flags;
+        int ifru_metric;
+        int ifru_mtu;
+    } ifr_ifru;
 };
 
 /* This define was added by Daniel to avoid an extra #ifdef INTERIX in the

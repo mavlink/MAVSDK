@@ -28,53 +28,53 @@
 
 #include "memdebug.h"
 
-static char data[]="dummy";
+static char data[] = "dummy";
 
 struct WriteThis {
-  char *readptr;
-  size_t sizeleft;
+    char* readptr;
+    size_t sizeleft;
 };
 
-static size_t read_callback(void *ptr, size_t size, size_t nmemb, void *userp)
+static size_t read_callback(void* ptr, size_t size, size_t nmemb, void* userp)
 {
-  struct WriteThis *pooh = (struct WriteThis *)userp;
+    struct WriteThis* pooh = (struct WriteThis*)userp;
 
-  if(size*nmemb < 1)
-    return 0;
+    if (size * nmemb < 1)
+        return 0;
 
-  if(pooh->sizeleft) {
-    *(char *)ptr = pooh->readptr[0]; /* copy one single byte */
-    pooh->readptr++;                 /* advance pointer */
-    pooh->sizeleft--;                /* less data left */
-    return 1;                        /* we return 1 byte at a time! */
-  }
+    if (pooh->sizeleft) {
+        *(char*)ptr = pooh->readptr[0]; /* copy one single byte */
+        pooh->readptr++; /* advance pointer */
+        pooh->sizeleft--; /* less data left */
+        return 1; /* we return 1 byte at a time! */
+    }
 
-  return 0;                         /* no more data left to deliver */
+    return 0; /* no more data left to deliver */
 }
 
-int test(char *URL)
+int test(char* URL)
 {
-  CURL *curl;
-  CURLcode result = CURLE_OK;
-  int res = 0;
-  struct WriteThis pooh = { data, sizeof(data)-1 };
+    CURL* curl;
+    CURLcode result = CURLE_OK;
+    int res = 0;
+    struct WriteThis pooh = {data, sizeof(data) - 1};
 
-  global_init(CURL_GLOBAL_ALL);
+    global_init(CURL_GLOBAL_ALL);
 
-  easy_init(curl);
+    easy_init(curl);
 
-  easy_setopt(curl, CURLOPT_URL, URL);
-  easy_setopt(curl, CURLOPT_POST, 1L);
-  /* Purposely omit to set CURLOPT_POSTFIELDSIZE */
-  easy_setopt(curl, CURLOPT_READFUNCTION, read_callback);
-  easy_setopt(curl, CURLOPT_READDATA, &pooh);
+    easy_setopt(curl, CURLOPT_URL, URL);
+    easy_setopt(curl, CURLOPT_POST, 1L);
+    /* Purposely omit to set CURLOPT_POSTFIELDSIZE */
+    easy_setopt(curl, CURLOPT_READFUNCTION, read_callback);
+    easy_setopt(curl, CURLOPT_READDATA, &pooh);
 
-  result = curl_easy_perform(curl);
+    result = curl_easy_perform(curl);
 
 test_cleanup:
 
-  curl_easy_cleanup(curl);
-  curl_global_cleanup();
+    curl_easy_cleanup(curl);
+    curl_global_cleanup();
 
-  return (int)result;
+    return (int)result;
 }

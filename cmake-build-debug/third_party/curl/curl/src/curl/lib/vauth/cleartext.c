@@ -25,8 +25,7 @@
 
 #include "curl_setup.h"
 
-#if !defined(CURL_DISABLE_IMAP) || !defined(CURL_DISABLE_SMTP) ||       \
-  !defined(CURL_DISABLE_POP3)
+#if !defined(CURL_DISABLE_IMAP) || !defined(CURL_DISABLE_SMTP) || !defined(CURL_DISABLE_POP3)
 
 #include <curl/curl.h>
 #include "urldata.h"
@@ -61,47 +60,49 @@
  *
  * Returns CURLE_OK on success.
  */
-CURLcode Curl_auth_create_plain_message(struct Curl_easy *data,
-                                        const char *authzid,
-                                        const char *authcid,
-                                        const char *passwd,
-                                        char **outptr, size_t *outlen)
+CURLcode Curl_auth_create_plain_message(
+    struct Curl_easy* data,
+    const char* authzid,
+    const char* authcid,
+    const char* passwd,
+    char** outptr,
+    size_t* outlen)
 {
-  CURLcode result;
-  char *plainauth;
-  size_t zlen;
-  size_t clen;
-  size_t plen;
-  size_t plainlen;
+    CURLcode result;
+    char* plainauth;
+    size_t zlen;
+    size_t clen;
+    size_t plen;
+    size_t plainlen;
 
-  *outlen = 0;
-  *outptr = NULL;
-  zlen = (authzid == NULL ? 0 : strlen(authzid));
-  clen = strlen(authcid);
-  plen = strlen(passwd);
+    *outlen = 0;
+    *outptr = NULL;
+    zlen = (authzid == NULL ? 0 : strlen(authzid));
+    clen = strlen(authcid);
+    plen = strlen(passwd);
 
-  /* Compute binary message length. Check for overflows. */
-  if(((zlen + clen) > SIZE_T_MAX/4) || (plen > (SIZE_T_MAX/2 - 2)))
-    return CURLE_OUT_OF_MEMORY;
-  plainlen = zlen + clen + plen + 2;
+    /* Compute binary message length. Check for overflows. */
+    if (((zlen + clen) > SIZE_T_MAX / 4) || (plen > (SIZE_T_MAX / 2 - 2)))
+        return CURLE_OUT_OF_MEMORY;
+    plainlen = zlen + clen + plen + 2;
 
-  plainauth = malloc(plainlen);
-  if(!plainauth)
-    return CURLE_OUT_OF_MEMORY;
+    plainauth = malloc(plainlen);
+    if (!plainauth)
+        return CURLE_OUT_OF_MEMORY;
 
-  /* Calculate the reply */
-  if(zlen != 0)
-    memcpy(plainauth, authzid, zlen);
-  plainauth[zlen] = '\0';
-  memcpy(plainauth + zlen + 1, authcid, clen);
-  plainauth[zlen + clen + 1] = '\0';
-  memcpy(plainauth + zlen + clen + 2, passwd, plen);
+    /* Calculate the reply */
+    if (zlen != 0)
+        memcpy(plainauth, authzid, zlen);
+    plainauth[zlen] = '\0';
+    memcpy(plainauth + zlen + 1, authcid, clen);
+    plainauth[zlen + clen + 1] = '\0';
+    memcpy(plainauth + zlen + clen + 2, passwd, plen);
 
-  /* Base64 encode the reply */
-  result = Curl_base64_encode(data, plainauth, plainlen, outptr, outlen);
-  free(plainauth);
+    /* Base64 encode the reply */
+    result = Curl_base64_encode(data, plainauth, plainlen, outptr, outlen);
+    free(plainauth);
 
-  return result;
+    return result;
 }
 
 /*
@@ -120,26 +121,25 @@ CURLcode Curl_auth_create_plain_message(struct Curl_easy *data,
  *
  * Returns CURLE_OK on success.
  */
-CURLcode Curl_auth_create_login_message(struct Curl_easy *data,
-                                        const char *valuep, char **outptr,
-                                        size_t *outlen)
+CURLcode Curl_auth_create_login_message(
+    struct Curl_easy* data, const char* valuep, char** outptr, size_t* outlen)
 {
-  size_t vlen = strlen(valuep);
+    size_t vlen = strlen(valuep);
 
-  if(!vlen) {
-    /* Calculate an empty reply */
-    *outptr = strdup("=");
-    if(*outptr) {
-      *outlen = (size_t) 1;
-      return CURLE_OK;
+    if (!vlen) {
+        /* Calculate an empty reply */
+        *outptr = strdup("=");
+        if (*outptr) {
+            *outlen = (size_t)1;
+            return CURLE_OK;
+        }
+
+        *outlen = 0;
+        return CURLE_OUT_OF_MEMORY;
     }
 
-    *outlen = 0;
-    return CURLE_OUT_OF_MEMORY;
-  }
-
-  /* Base64 encode the value */
-  return Curl_base64_encode(data, valuep, vlen, outptr, outlen);
+    /* Base64 encode the value */
+    return Curl_base64_encode(data, valuep, vlen, outptr, outlen);
 }
 
 /*
@@ -158,12 +158,11 @@ CURLcode Curl_auth_create_login_message(struct Curl_easy *data,
  *
  * Returns CURLE_OK on success.
  */
-CURLcode Curl_auth_create_external_message(struct Curl_easy *data,
-                                           const char *user, char **outptr,
-                                           size_t *outlen)
+CURLcode Curl_auth_create_external_message(
+    struct Curl_easy* data, const char* user, char** outptr, size_t* outlen)
 {
-  /* This is the same formatting as the login message */
-  return Curl_auth_create_login_message(data, user, outptr, outlen);
+    /* This is the same formatting as the login message */
+    return Curl_auth_create_login_message(data, user, outptr, outlen);
 }
 
 #endif /* if no users */

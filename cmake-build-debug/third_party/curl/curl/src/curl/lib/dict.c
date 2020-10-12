@@ -66,213 +66,212 @@
  * Forward declarations.
  */
 
-static CURLcode dict_do(struct connectdata *conn, bool *done);
+static CURLcode dict_do(struct connectdata* conn, bool* done);
 
 /*
  * DICT protocol handler.
  */
 
 const struct Curl_handler Curl_handler_dict = {
-  "DICT",                               /* scheme */
-  ZERO_NULL,                            /* setup_connection */
-  dict_do,                              /* do_it */
-  ZERO_NULL,                            /* done */
-  ZERO_NULL,                            /* do_more */
-  ZERO_NULL,                            /* connect_it */
-  ZERO_NULL,                            /* connecting */
-  ZERO_NULL,                            /* doing */
-  ZERO_NULL,                            /* proto_getsock */
-  ZERO_NULL,                            /* doing_getsock */
-  ZERO_NULL,                            /* domore_getsock */
-  ZERO_NULL,                            /* perform_getsock */
-  ZERO_NULL,                            /* disconnect */
-  ZERO_NULL,                            /* readwrite */
-  ZERO_NULL,                            /* connection_check */
-  PORT_DICT,                            /* defport */
-  CURLPROTO_DICT,                       /* protocol */
-  PROTOPT_NONE | PROTOPT_NOURLQUERY      /* flags */
+    "DICT", /* scheme */
+    ZERO_NULL, /* setup_connection */
+    dict_do, /* do_it */
+    ZERO_NULL, /* done */
+    ZERO_NULL, /* do_more */
+    ZERO_NULL, /* connect_it */
+    ZERO_NULL, /* connecting */
+    ZERO_NULL, /* doing */
+    ZERO_NULL, /* proto_getsock */
+    ZERO_NULL, /* doing_getsock */
+    ZERO_NULL, /* domore_getsock */
+    ZERO_NULL, /* perform_getsock */
+    ZERO_NULL, /* disconnect */
+    ZERO_NULL, /* readwrite */
+    ZERO_NULL, /* connection_check */
+    PORT_DICT, /* defport */
+    CURLPROTO_DICT, /* protocol */
+    PROTOPT_NONE | PROTOPT_NOURLQUERY /* flags */
 };
 
-static char *unescape_word(struct Curl_easy *data, const char *inputbuff)
+static char* unescape_word(struct Curl_easy* data, const char* inputbuff)
 {
-  char *newp = NULL;
-  char *dictp;
-  size_t len;
+    char* newp = NULL;
+    char* dictp;
+    size_t len;
 
-  CURLcode result = Curl_urldecode(data, inputbuff, 0, &newp, &len, FALSE);
-  if(!newp || result)
-    return NULL;
+    CURLcode result = Curl_urldecode(data, inputbuff, 0, &newp, &len, FALSE);
+    if (!newp || result)
+        return NULL;
 
-  dictp = malloc(len*2 + 1); /* add one for terminating zero */
-  if(dictp) {
-    char *ptr;
-    char ch;
-    int olen = 0;
-    /* According to RFC2229 section 2.2, these letters need to be escaped with
-       \[letter] */
-    for(ptr = newp;
-        (ch = *ptr) != 0;
-        ptr++) {
-      if((ch <= 32) || (ch == 127) ||
-          (ch == '\'') || (ch == '\"') || (ch == '\\')) {
-        dictp[olen++] = '\\';
-      }
-      dictp[olen++] = ch;
+    dictp = malloc(len * 2 + 1); /* add one for terminating zero */
+    if (dictp) {
+        char* ptr;
+        char ch;
+        int olen = 0;
+        /* According to RFC2229 section 2.2, these letters need to be escaped with
+           \[letter] */
+        for (ptr = newp; (ch = *ptr) != 0; ptr++) {
+            if ((ch <= 32) || (ch == 127) || (ch == '\'') || (ch == '\"') || (ch == '\\')) {
+                dictp[olen++] = '\\';
+            }
+            dictp[olen++] = ch;
+        }
+        dictp[olen] = 0;
     }
-    dictp[olen] = 0;
-  }
-  free(newp);
-  return dictp;
+    free(newp);
+    return dictp;
 }
 
-static CURLcode dict_do(struct connectdata *conn, bool *done)
+static CURLcode dict_do(struct connectdata* conn, bool* done)
 {
-  char *word;
-  char *eword;
-  char *ppath;
-  char *database = NULL;
-  char *strategy = NULL;
-  char *nthdef = NULL; /* This is not part of the protocol, but required
-                          by RFC 2229 */
-  CURLcode result = CURLE_OK;
-  struct Curl_easy *data = conn->data;
-  curl_socket_t sockfd = conn->sock[FIRSTSOCKET];
+    char* word;
+    char* eword;
+    char* ppath;
+    char* database = NULL;
+    char* strategy = NULL;
+    char* nthdef = NULL; /* This is not part of the protocol, but required
+                            by RFC 2229 */
+    CURLcode result = CURLE_OK;
+    struct Curl_easy* data = conn->data;
+    curl_socket_t sockfd = conn->sock[FIRSTSOCKET];
 
-  char *path = data->state.up.path;
+    char* path = data->state.up.path;
 
-  *done = TRUE; /* unconditionally */
+    *done = TRUE; /* unconditionally */
 
-  if(conn->bits.user_passwd) {
-    /* AUTH is missing */
-  }
+    if (conn->bits.user_passwd) {
+        /* AUTH is missing */
+    }
 
-  if(strncasecompare(path, DICT_MATCH, sizeof(DICT_MATCH)-1) ||
-     strncasecompare(path, DICT_MATCH2, sizeof(DICT_MATCH2)-1) ||
-     strncasecompare(path, DICT_MATCH3, sizeof(DICT_MATCH3)-1)) {
-
-    word = strchr(path, ':');
-    if(word) {
-      word++;
-      database = strchr(word, ':');
-      if(database) {
-        *database++ = (char)0;
-        strategy = strchr(database, ':');
-        if(strategy) {
-          *strategy++ = (char)0;
-          nthdef = strchr(strategy, ':');
-          if(nthdef) {
-            *nthdef = (char)0;
-          }
+    if (strncasecompare(path, DICT_MATCH, sizeof(DICT_MATCH) - 1) ||
+        strncasecompare(path, DICT_MATCH2, sizeof(DICT_MATCH2) - 1) ||
+        strncasecompare(path, DICT_MATCH3, sizeof(DICT_MATCH3) - 1)) {
+        word = strchr(path, ':');
+        if (word) {
+            word++;
+            database = strchr(word, ':');
+            if (database) {
+                *database++ = (char)0;
+                strategy = strchr(database, ':');
+                if (strategy) {
+                    *strategy++ = (char)0;
+                    nthdef = strchr(strategy, ':');
+                    if (nthdef) {
+                        *nthdef = (char)0;
+                    }
+                }
+            }
         }
-      }
-    }
 
-    if((word == NULL) || (*word == (char)0)) {
-      infof(data, "lookup word is missing\n");
-      word = (char *)"default";
-    }
-    if((database == NULL) || (*database == (char)0)) {
-      database = (char *)"!";
-    }
-    if((strategy == NULL) || (*strategy == (char)0)) {
-      strategy = (char *)".";
-    }
-
-    eword = unescape_word(data, word);
-    if(!eword)
-      return CURLE_OUT_OF_MEMORY;
-
-    result = Curl_sendf(sockfd, conn,
-                        "CLIENT " LIBCURL_NAME " " LIBCURL_VERSION "\r\n"
-                        "MATCH "
-                        "%s "    /* database */
-                        "%s "    /* strategy */
-                        "%s\r\n" /* word */
-                        "QUIT\r\n",
-
-                        database,
-                        strategy,
-                        eword
-                        );
-
-    free(eword);
-
-    if(result) {
-      failf(data, "Failed sending DICT request");
-      return result;
-    }
-    Curl_setup_transfer(data, FIRSTSOCKET, -1, FALSE, -1); /* no upload */
-  }
-  else if(strncasecompare(path, DICT_DEFINE, sizeof(DICT_DEFINE)-1) ||
-          strncasecompare(path, DICT_DEFINE2, sizeof(DICT_DEFINE2)-1) ||
-          strncasecompare(path, DICT_DEFINE3, sizeof(DICT_DEFINE3)-1)) {
-
-    word = strchr(path, ':');
-    if(word) {
-      word++;
-      database = strchr(word, ':');
-      if(database) {
-        *database++ = (char)0;
-        nthdef = strchr(database, ':');
-        if(nthdef) {
-          *nthdef = (char)0;
+        if ((word == NULL) || (*word == (char)0)) {
+            infof(data, "lookup word is missing\n");
+            word = (char*)"default";
         }
-      }
+        if ((database == NULL) || (*database == (char)0)) {
+            database = (char*)"!";
+        }
+        if ((strategy == NULL) || (*strategy == (char)0)) {
+            strategy = (char*)".";
+        }
+
+        eword = unescape_word(data, word);
+        if (!eword)
+            return CURLE_OUT_OF_MEMORY;
+
+        result = Curl_sendf(
+            sockfd,
+            conn,
+            "CLIENT " LIBCURL_NAME " " LIBCURL_VERSION "\r\n"
+            "MATCH "
+            "%s " /* database */
+            "%s " /* strategy */
+            "%s\r\n" /* word */
+            "QUIT\r\n",
+
+            database,
+            strategy,
+            eword);
+
+        free(eword);
+
+        if (result) {
+            failf(data, "Failed sending DICT request");
+            return result;
+        }
+        Curl_setup_transfer(data, FIRSTSOCKET, -1, FALSE, -1); /* no upload */
+    } else if (
+        strncasecompare(path, DICT_DEFINE, sizeof(DICT_DEFINE) - 1) ||
+        strncasecompare(path, DICT_DEFINE2, sizeof(DICT_DEFINE2) - 1) ||
+        strncasecompare(path, DICT_DEFINE3, sizeof(DICT_DEFINE3) - 1)) {
+        word = strchr(path, ':');
+        if (word) {
+            word++;
+            database = strchr(word, ':');
+            if (database) {
+                *database++ = (char)0;
+                nthdef = strchr(database, ':');
+                if (nthdef) {
+                    *nthdef = (char)0;
+                }
+            }
+        }
+
+        if ((word == NULL) || (*word == (char)0)) {
+            infof(data, "lookup word is missing\n");
+            word = (char*)"default";
+        }
+        if ((database == NULL) || (*database == (char)0)) {
+            database = (char*)"!";
+        }
+
+        eword = unescape_word(data, word);
+        if (!eword)
+            return CURLE_OUT_OF_MEMORY;
+
+        result = Curl_sendf(
+            sockfd,
+            conn,
+            "CLIENT " LIBCURL_NAME " " LIBCURL_VERSION "\r\n"
+            "DEFINE "
+            "%s " /* database */
+            "%s\r\n" /* word */
+            "QUIT\r\n",
+            database,
+            eword);
+
+        free(eword);
+
+        if (result) {
+            failf(data, "Failed sending DICT request");
+            return result;
+        }
+        Curl_setup_transfer(data, FIRSTSOCKET, -1, FALSE, -1);
+    } else {
+        ppath = strchr(path, '/');
+        if (ppath) {
+            int i;
+
+            ppath++;
+            for (i = 0; ppath[i]; i++) {
+                if (ppath[i] == ':')
+                    ppath[i] = ' ';
+            }
+            result = Curl_sendf(
+                sockfd,
+                conn,
+                "CLIENT " LIBCURL_NAME " " LIBCURL_VERSION "\r\n"
+                "%s\r\n"
+                "QUIT\r\n",
+                ppath);
+            if (result) {
+                failf(data, "Failed sending DICT request");
+                return result;
+            }
+
+            Curl_setup_transfer(data, FIRSTSOCKET, -1, FALSE, -1);
+        }
     }
 
-    if((word == NULL) || (*word == (char)0)) {
-      infof(data, "lookup word is missing\n");
-      word = (char *)"default";
-    }
-    if((database == NULL) || (*database == (char)0)) {
-      database = (char *)"!";
-    }
-
-    eword = unescape_word(data, word);
-    if(!eword)
-      return CURLE_OUT_OF_MEMORY;
-
-    result = Curl_sendf(sockfd, conn,
-                        "CLIENT " LIBCURL_NAME " " LIBCURL_VERSION "\r\n"
-                        "DEFINE "
-                        "%s "     /* database */
-                        "%s\r\n"  /* word */
-                        "QUIT\r\n",
-                        database,
-                        eword);
-
-    free(eword);
-
-    if(result) {
-      failf(data, "Failed sending DICT request");
-      return result;
-    }
-    Curl_setup_transfer(data, FIRSTSOCKET, -1, FALSE, -1);
-  }
-  else {
-
-    ppath = strchr(path, '/');
-    if(ppath) {
-      int i;
-
-      ppath++;
-      for(i = 0; ppath[i]; i++) {
-        if(ppath[i] == ':')
-          ppath[i] = ' ';
-      }
-      result = Curl_sendf(sockfd, conn,
-                          "CLIENT " LIBCURL_NAME " " LIBCURL_VERSION "\r\n"
-                          "%s\r\n"
-                          "QUIT\r\n", ppath);
-      if(result) {
-        failf(data, "Failed sending DICT request");
-        return result;
-      }
-
-      Curl_setup_transfer(data, FIRSTSOCKET, -1, FALSE, -1);
-    }
-  }
-
-  return CURLE_OK;
+    return CURLE_OK;
 }
 #endif /*CURL_DISABLE_DICT*/

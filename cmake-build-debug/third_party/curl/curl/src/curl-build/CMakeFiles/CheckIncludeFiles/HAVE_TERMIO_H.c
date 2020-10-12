@@ -41,6 +41,7 @@
 #include <stropts.h>
 #include <termio.h>
 
-
-int main(void){return 0;}
-
+int main(void)
+{
+    return 0;
+}

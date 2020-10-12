@@ -31,7 +31,7 @@
 #include "urldata.h"
 
 /* initialize NSS library if not already */
-CURLcode Curl_nss_force_init(struct Curl_easy *data);
+CURLcode Curl_nss_force_init(struct Curl_easy* data);
 
 extern const struct Curl_ssl Curl_ssl_nss;
 

@@ -39,11 +39,10 @@ must not be misrepresented as being the original software.
 distribution.
 */
 
-
 #include "../tinyxml2.h"
 #include <iostream>
 
-#if defined (_MSC_VER)
+#if defined(_MSC_VER)
 #define strcasecmp stricmp
 #endif
 
@@ -52,36 +51,50 @@ using namespace tinyxml2;
 // Contrived input containing a mix of void and non-void HTML5 elements.
 // When printed via XMLPrinter, some non-void elements will self-close (not valid HTML5).
 static const char input[] =
-"<html><body><p style='a'></p><br/>&copy;<col a='1' b='2'/><div a='1'></div></body></html>";
+    "<html><body><p style='a'></p><br/>&copy;<col a='1' b='2'/><div a='1'></div></body></html>";
 
 // XMLPrinterHTML5 is small enough, just put the entire implementation inline.
-class	XMLPrinterHTML5 : public XMLPrinter
-{
+class XMLPrinterHTML5 : public XMLPrinter {
 public:
-    XMLPrinterHTML5 (FILE* file=0, bool compact = false, int depth = 0) :
-        XMLPrinter (file, compact, depth)
+    XMLPrinterHTML5(FILE* file = 0, bool compact = false, int depth = 0) :
+        XMLPrinter(file, compact, depth)
     {}
 
 protected:
-    virtual void CloseElement () {
-        if (_elementJustOpened && !isVoidElement (_stack.PeekTop())) {
+    virtual void CloseElement()
+    {
+        if (_elementJustOpened && !isVoidElement(_stack.PeekTop())) {
             SealElementIfJustOpened();
-            }
+        }
         XMLPrinter::CloseElement();
     }
 
-    virtual bool isVoidElement (const char *name) {
-// Complete list of all HTML5 "void elements",
-// http://dev.w3.org/html5/markup/syntax.html
-        static const char *list[] = {
-            "area", "base", "br", "col", "command", "embed", "hr", "img",
-            "input", "keygen", "link", "meta", "param", "source", "track", "wbr",
-            NULL
-        };
+    virtual bool isVoidElement(const char* name)
+    {
+        // Complete list of all HTML5 "void elements",
+        // http://dev.w3.org/html5/markup/syntax.html
+        static const char* list[] = {
+            "area",
+            "base",
+            "br",
+            "col",
+            "command",
+            "embed",
+            "hr",
+            "img",
+            "input",
+            "keygen",
+            "link",
+            "meta",
+            "param",
+            "source",
+            "track",
+            "wbr",
+            NULL};
 
-// I could use 'bsearch', but I don't have MSVC to test on (it would work with gcc/libc).
-        for (const char **p = list; *p; ++p) {
-            if (!strcasecmp (name, *p)) {
+        // I could use 'bsearch', but I don't have MSVC to test on (it would work with gcc/libc).
+        for (const char** p = list; *p; ++p) {
+            if (!strcasecmp(name, *p)) {
                 return true;
             }
         }
@@ -90,18 +103,19 @@ protected:
     }
 };
 
-int	main (void) {
-    XMLDocument doc (false);
-    doc.Parse (input);
+int main(void)
+{
+    XMLDocument doc(false);
+    doc.Parse(input);
 
     std::cout << "INPUT:\n" << input << "\n\n";
 
-    XMLPrinter prn (NULL, true);
-    doc.Print (&prn);
+    XMLPrinter prn(NULL, true);
+    doc.Print(&prn);
     std::cout << "XMLPrinter (not valid HTML5):\n" << prn.CStr() << "\n\n";
 
-    XMLPrinterHTML5 html5 (NULL, true);
-    doc.Print (&html5);
+    XMLPrinterHTML5 html5(NULL, true);
+    doc.Print(&html5);
     std::cout << "XMLPrinterHTML5:\n" << html5.CStr() << "\n";
 
     return 0;

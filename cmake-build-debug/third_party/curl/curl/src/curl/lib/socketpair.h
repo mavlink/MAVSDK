@@ -24,10 +24,9 @@
 
 #include "curl_setup.h"
 #ifndef HAVE_SOCKETPAIR
-int Curl_socketpair(int domain, int type, int protocol,
-                    curl_socket_t socks[2]);
+int Curl_socketpair(int domain, int type, int protocol, curl_socket_t socks[2]);
 #else
-#define Curl_socketpair(a,b,c,d) socketpair(a,b,c,d)
+#define Curl_socketpair(a, b, c, d) socketpair(a, b, c, d)
 #endif
 
 /* Defined here to allow specific build configs to disable it completely */

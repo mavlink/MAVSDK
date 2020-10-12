@@ -14,6 +14,7 @@
 #include <sys/un.h>
 #include <sys/utime.h>
 
-
-int main(void){return 0;}
-
+int main(void)
+{
+    return 0;
+}

@@ -26,29 +26,29 @@
 #include "curl_base64.h"
 #include "memdebug.h" /* LAST include file */
 
-static struct Curl_easy *data;
+static struct Curl_easy* data;
 
 static CURLcode unit_setup(void)
 {
-  int res = CURLE_OK;
+    int res = CURLE_OK;
 
-  global_init(CURL_GLOBAL_ALL);
-  data = curl_easy_init();
-  if(!data)
-    return CURLE_OUT_OF_MEMORY;
-  return res;
+    global_init(CURL_GLOBAL_ALL);
+    data = curl_easy_init();
+    if (!data)
+        return CURLE_OUT_OF_MEMORY;
+    return res;
 }
 
 static void unit_stop(void)
 {
-  curl_easy_cleanup(data);
-  curl_global_cleanup();
+    curl_easy_cleanup(data);
+    curl_global_cleanup();
 }
 
 UNITTEST_START
 
-char *output;
-unsigned char *decoded;
+char* output;
+unsigned char* decoded;
 size_t size = 0;
 unsigned char anychar = 'x';
 CURLcode rc;
@@ -130,8 +130,7 @@ Curl_safefree(decoded);
 size = 1; /* not zero */
 decoded = &anychar; /* not NULL */
 rc = Curl_base64_decode("aQ", &decoded, &size);
-fail_unless(rc == CURLE_BAD_CONTENT_ENCODING,
-            "return code should be CURLE_BAD_CONTENT_ENCODING");
+fail_unless(rc == CURLE_BAD_CONTENT_ENCODING, "return code should be CURLE_BAD_CONTENT_ENCODING");
 fail_unless(size == 0, "size should be 0");
 fail_if(decoded, "returned pointer should be NULL");
 
@@ -139,8 +138,7 @@ fail_if(decoded, "returned pointer should be NULL");
 size = 1; /* not zero */
 decoded = &anychar; /* not NULL */
 rc = Curl_base64_decode("a===", &decoded, &size);
-fail_unless(rc == CURLE_BAD_CONTENT_ENCODING,
-            "return code should be CURLE_BAD_CONTENT_ENCODING");
+fail_unless(rc == CURLE_BAD_CONTENT_ENCODING, "return code should be CURLE_BAD_CONTENT_ENCODING");
 fail_unless(size == 0, "size should be 0");
 fail_if(decoded, "returned pointer should be NULL");
 
@@ -148,8 +146,7 @@ fail_if(decoded, "returned pointer should be NULL");
 size = 1; /* not zero */
 decoded = &anychar; /* not NULL */
 rc = Curl_base64_decode("a=Q=", &decoded, &size);
-fail_unless(rc == CURLE_BAD_CONTENT_ENCODING,
-            "return code should be CURLE_BAD_CONTENT_ENCODING");
+fail_unless(rc == CURLE_BAD_CONTENT_ENCODING, "return code should be CURLE_BAD_CONTENT_ENCODING");
 fail_unless(size == 0, "size should be 0");
 fail_if(decoded, "returned pointer should be NULL");
 
@@ -157,8 +154,7 @@ fail_if(decoded, "returned pointer should be NULL");
 size = 1; /* not zero */
 decoded = &anychar; /* not NULL */
 rc = Curl_base64_decode("a\x1f==", &decoded, &size);
-fail_unless(rc == CURLE_BAD_CONTENT_ENCODING,
-            "return code should be CURLE_BAD_CONTENT_ENCODING");
+fail_unless(rc == CURLE_BAD_CONTENT_ENCODING, "return code should be CURLE_BAD_CONTENT_ENCODING");
 fail_unless(size == 0, "size should be 0");
 fail_if(decoded, "returned pointer should be NULL");
 

@@ -30,6 +30,7 @@
 #include <poll.h>
 #include <pwd.h>
 
-
-int main(void){return 0;}
-
+int main(void)
+{
+    return 0;
+}

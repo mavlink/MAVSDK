@@ -25,14 +25,14 @@
 
 struct OperationConfig;
 
-void clean_getout(struct OperationConfig *config);
+void clean_getout(struct OperationConfig* config);
 
-bool output_expected(const char *url, const char *uploadfile);
+bool output_expected(const char* url, const char* uploadfile);
 
-bool stdin_upload(const char *uploadfile);
+bool stdin_upload(const char* uploadfile);
 
-char *add_file_name_to_url(char *url, const char *filename);
+char* add_file_name_to_url(char* url, const char* filename);
 
-CURLcode get_url_file_name(char **filename, const char *url);
+CURLcode get_url_file_name(char** filename, const char* url);
 
 #endif /* HEADER_CURL_TOOL_OPERHLP_H */

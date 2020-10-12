@@ -22,6 +22,6 @@
  *
  ***************************************************************************/
 
-int Curl_rename(const char *oldpath, const char *newpath);
+int Curl_rename(const char* oldpath, const char* newpath);
 
 #endif /* HEADER_CURL_RENAME_H */

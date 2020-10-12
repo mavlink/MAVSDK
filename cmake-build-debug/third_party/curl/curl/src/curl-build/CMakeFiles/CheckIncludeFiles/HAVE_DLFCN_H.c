@@ -47,6 +47,7 @@
 #include <stddef.h>
 #include <dlfcn.h>
 
-
-int main(void){return 0;}
-
+int main(void)
+{
+    return 0;
+}

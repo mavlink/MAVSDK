@@ -22,13 +22,13 @@
 #include "curlcheck.h"
 
 #ifdef HAVE_NETINET_IN_H
-#  include <netinet/in.h>
+#include <netinet/in.h>
 #endif
 #ifdef HAVE_NETDB_H
-#  include <netdb.h>
+#include <netdb.h>
 #endif
 #ifdef HAVE_ARPA_INET_H
-#  include <arpa/inet.h>
+#include <arpa/inet.h>
 #endif
 
 #define ENABLE_CURLX_PRINTF
@@ -39,92 +39,91 @@
 
 #include "memdebug.h" /* LAST include file */
 
-static struct Curl_easy *data;
+static struct Curl_easy* data;
 static struct curl_hash hp;
-static char *data_key;
-static struct Curl_dns_entry *data_node;
+static char* data_key;
+static struct Curl_dns_entry* data_node;
 
 static CURLcode unit_setup(void)
 {
-  int rc;
-  data = curl_easy_init();
-  if(!data)
-    return CURLE_OUT_OF_MEMORY;
+    int rc;
+    data = curl_easy_init();
+    if (!data)
+        return CURLE_OUT_OF_MEMORY;
 
-  rc = Curl_mk_dnscache(&hp);
-  if(rc) {
-    curl_easy_cleanup(data);
-    curl_global_cleanup();
-    return CURLE_OUT_OF_MEMORY;
-  }
-  return CURLE_OK;
+    rc = Curl_mk_dnscache(&hp);
+    if (rc) {
+        curl_easy_cleanup(data);
+        curl_global_cleanup();
+        return CURLE_OUT_OF_MEMORY;
+    }
+    return CURLE_OK;
 }
 
 static void unit_stop(void)
 {
-  if(data_node) {
-    Curl_freeaddrinfo(data_node->addr);
-    free(data_node);
-  }
-  free(data_key);
-  Curl_hash_destroy(&hp);
+    if (data_node) {
+        Curl_freeaddrinfo(data_node->addr);
+        free(data_node);
+    }
+    free(data_key);
+    Curl_hash_destroy(&hp);
 
-  curl_easy_cleanup(data);
-  curl_global_cleanup();
+    curl_easy_cleanup(data);
+    curl_global_cleanup();
 }
 
-static Curl_addrinfo *fake_ai(void)
+static Curl_addrinfo* fake_ai(void)
 {
-  static Curl_addrinfo *ai;
+    static Curl_addrinfo* ai;
 
-  ai = calloc(1, sizeof(Curl_addrinfo));
-  if(!ai)
-    return NULL;
+    ai = calloc(1, sizeof(Curl_addrinfo));
+    if (!ai)
+        return NULL;
 
-  ai->ai_canonname = strdup("dummy");
-  if(!ai->ai_canonname) {
-    free(ai);
-    return NULL;
-  }
+    ai->ai_canonname = strdup("dummy");
+    if (!ai->ai_canonname) {
+        free(ai);
+        return NULL;
+    }
 
-  ai->ai_addr = calloc(1, sizeof(struct sockaddr_in));
-  if(!ai->ai_addr) {
-    free(ai->ai_canonname);
-    free(ai);
-    return NULL;
-  }
+    ai->ai_addr = calloc(1, sizeof(struct sockaddr_in));
+    if (!ai->ai_addr) {
+        free(ai->ai_canonname);
+        free(ai);
+        return NULL;
+    }
 
-  ai->ai_family = AF_INET;
-  ai->ai_addrlen = sizeof(struct sockaddr_in);
+    ai->ai_family = AF_INET;
+    ai->ai_addrlen = sizeof(struct sockaddr_in);
 
-  return ai;
+    return ai;
 }
 
 static CURLcode create_node(void)
 {
-  data_key = aprintf("%s:%d", "dummy", 0);
-  if(!data_key)
-    return CURLE_OUT_OF_MEMORY;
+    data_key = aprintf("%s:%d", "dummy", 0);
+    if (!data_key)
+        return CURLE_OUT_OF_MEMORY;
 
-  data_node = calloc(1, sizeof(struct Curl_dns_entry));
-  if(!data_node)
-    return CURLE_OUT_OF_MEMORY;
+    data_node = calloc(1, sizeof(struct Curl_dns_entry));
+    if (!data_node)
+        return CURLE_OUT_OF_MEMORY;
 
-  data_node->addr = fake_ai();
-  if(!data_node->addr)
-    return CURLE_OUT_OF_MEMORY;
+    data_node->addr = fake_ai();
+    if (!data_node->addr)
+        return CURLE_OUT_OF_MEMORY;
 
-  return CURLE_OK;
+    return CURLE_OK;
 }
-
 
 UNITTEST_START
 
-  struct Curl_dns_entry *nodep;
-  size_t key_len;
+struct Curl_dns_entry* nodep;
+size_t key_len;
 
-  /* Test 1305 exits without adding anything to the hash */
-  if(strcmp(arg, "1305") != 0) {
+/* Test 1305 exits without adding anything to the hash */
+if (strcmp(arg, "1305") != 0) {
     CURLcode rc = create_node();
     abort_unless(rc == CURLE_OK, "data node creation failed");
     key_len = strlen(data_key);
@@ -134,6 +133,6 @@ UNITTEST_START
     abort_unless(nodep, "insertion into hash failed");
     /* Freeing will now be done by Curl_hash_destroy */
     data_node = NULL;
-  }
+}
 
 UNITTEST_STOP

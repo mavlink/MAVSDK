@@ -8,6 +8,7 @@
 #include <sys/select.h>
 #include <sys/socket.h>
 
-
-int main(void){return 0;}
-
+int main(void)
+{
+    return 0;
+}

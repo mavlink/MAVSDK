@@ -46,179 +46,162 @@
 pthread_mutex_t lock = PTHREAD_MUTEX_INITIALIZER;
 int j = 0;
 gint num_urls = 9; /* Just make sure this is less than urls[]*/
-const char * const urls[]= {
-  "90022",
-  "90023",
-  "90024",
-  "90025",
-  "90026",
-  "90027",
-  "90028",
-  "90029",
-  "90030"
-};
+const char* const urls[] = {
+    "90022", "90023", "90024", "90025", "90026", "90027", "90028", "90029", "90030"};
 
-size_t write_file(void *ptr, size_t size, size_t nmemb, FILE *stream)
+size_t write_file(void* ptr, size_t size, size_t nmemb, FILE* stream)
 {
-  /* printf("write_file\n"); */
-  return fwrite(ptr, size, nmemb, stream);
+    /* printf("write_file\n"); */
+    return fwrite(ptr, size, nmemb, stream);
 }
 
 /* https://weather.com/weather/today/l/46214?cc=*&dayf=5&unit=i */
-void *pull_one_url(void *NaN)
+void* pull_one_url(void* NaN)
 {
-  /* Stop threads from entering unless j is incremented */
-  pthread_mutex_lock(&lock);
-  while(j < num_urls) {
-    CURL *curl;
-    gchar *http;
+    /* Stop threads from entering unless j is incremented */
+    pthread_mutex_lock(&lock);
+    while (j < num_urls) {
+        CURL* curl;
+        gchar* http;
 
-    printf("j = %d\n", j);
+        printf("j = %d\n", j);
 
-    http =
-      g_strdup_printf("xoap.weather.com/weather/local/%s?cc=*&dayf=5&unit=i\n",
-                      urls[j]);
+        http = g_strdup_printf("xoap.weather.com/weather/local/%s?cc=*&dayf=5&unit=i\n", urls[j]);
 
-    printf("http %s", http);
+        printf("http %s", http);
 
-    curl = curl_easy_init();
-    if(curl) {
+        curl = curl_easy_init();
+        if (curl) {
+            FILE* outfile = fopen(urls[j], "wb");
 
-      FILE *outfile = fopen(urls[j], "wb");
+            /* Set the URL and transfer type */
+            curl_easy_setopt(curl, CURLOPT_URL, http);
 
-      /* Set the URL and transfer type */
-      curl_easy_setopt(curl, CURLOPT_URL, http);
+            /* Write to the file */
+            curl_easy_setopt(curl, CURLOPT_WRITEDATA, outfile);
+            curl_easy_setopt(curl, CURLOPT_WRITEFUNCTION, write_file);
 
-      /* Write to the file */
-      curl_easy_setopt(curl, CURLOPT_WRITEDATA, outfile);
-      curl_easy_setopt(curl, CURLOPT_WRITEFUNCTION, write_file);
+            j++; /* critical line */
+            pthread_mutex_unlock(&lock);
 
-      j++;  /* critical line */
-      pthread_mutex_unlock(&lock);
+            curl_easy_perform(curl);
 
-      curl_easy_perform(curl);
+            fclose(outfile);
+            printf("fclose\n");
 
-      fclose(outfile);
-      printf("fclose\n");
+            curl_easy_cleanup(curl);
+        }
+        g_free(http);
 
-      curl_easy_cleanup(curl);
-    }
-    g_free(http);
+        /* Adds more latency, testing the mutex.*/
+        sleep(1);
 
-    /* Adds more latency, testing the mutex.*/
-    sleep(1);
-
-  } /* end while */
-  return NULL;
+    } /* end while */
+    return NULL;
 }
-
 
 gboolean pulse_bar(gpointer data)
 {
-  gdk_threads_enter();
-  gtk_progress_bar_pulse(GTK_PROGRESS_BAR (data));
-  gdk_threads_leave();
+    gdk_threads_enter();
+    gtk_progress_bar_pulse(GTK_PROGRESS_BAR(data));
+    gdk_threads_leave();
 
-  /* Return true so the function will be called again;
-   * returning false removes this timeout function.
-   */
-  return TRUE;
+    /* Return true so the function will be called again;
+     * returning false removes this timeout function.
+     */
+    return TRUE;
 }
 
-void *create_thread(void *progress_bar)
+void* create_thread(void* progress_bar)
 {
-  pthread_t tid[NUMT];
-  int i;
+    pthread_t tid[NUMT];
+    int i;
 
-  /* Make sure I don't create more threads than urls. */
-  for(i = 0; i < NUMT && i < num_urls ; i++) {
-    int error = pthread_create(&tid[i],
-                               NULL, /* default attributes please */
-                               pull_one_url,
-                               NULL);
-    if(0 != error)
-      fprintf(stderr, "Couldn't run thread number %d, errno %d\n", i, error);
-    else
-      fprintf(stderr, "Thread %d, gets %s\n", i, urls[i]);
-  }
+    /* Make sure I don't create more threads than urls. */
+    for (i = 0; i < NUMT && i < num_urls; i++) {
+        int error = pthread_create(
+            &tid[i],
+            NULL, /* default attributes please */
+            pull_one_url,
+            NULL);
+        if (0 != error)
+            fprintf(stderr, "Couldn't run thread number %d, errno %d\n", i, error);
+        else
+            fprintf(stderr, "Thread %d, gets %s\n", i, urls[i]);
+    }
 
-  /* Wait for all threads to terminate. */
-  for(i = 0; i < NUMT && i < num_urls; i++) {
-    pthread_join(tid[i], NULL);
-    fprintf(stderr, "Thread %d terminated\n", i);
-  }
+    /* Wait for all threads to terminate. */
+    for (i = 0; i < NUMT && i < num_urls; i++) {
+        pthread_join(tid[i], NULL);
+        fprintf(stderr, "Thread %d terminated\n", i);
+    }
 
-  /* This stops the pulsing if you have it turned on in the progress bar
-     section */
-  g_source_remove(GPOINTER_TO_INT(g_object_get_data(G_OBJECT(progress_bar),
-                                                    "pulse_id")));
+    /* This stops the pulsing if you have it turned on in the progress bar
+       section */
+    g_source_remove(GPOINTER_TO_INT(g_object_get_data(G_OBJECT(progress_bar), "pulse_id")));
 
-  /* This destroys the progress bar */
-  gtk_widget_destroy(progress_bar);
+    /* This destroys the progress bar */
+    gtk_widget_destroy(progress_bar);
 
-  /* [Un]Comment this out to kill the program rather than pushing close. */
-  /* gtk_main_quit(); */
+    /* [Un]Comment this out to kill the program rather than pushing close. */
+    /* gtk_main_quit(); */
 
-
-  return NULL;
-
+    return NULL;
 }
 
-static gboolean cb_delete(GtkWidget *window, gpointer data)
+static gboolean cb_delete(GtkWidget* window, gpointer data)
 {
-  gtk_main_quit();
-  return FALSE;
+    gtk_main_quit();
+    return FALSE;
 }
 
-int main(int argc, char **argv)
+int main(int argc, char** argv)
 {
-  GtkWidget *top_window, *outside_frame, *inside_frame, *progress_bar;
+    GtkWidget *top_window, *outside_frame, *inside_frame, *progress_bar;
 
-  /* Must initialize libcurl before any threads are started */
-  curl_global_init(CURL_GLOBAL_ALL);
+    /* Must initialize libcurl before any threads are started */
+    curl_global_init(CURL_GLOBAL_ALL);
 
-  /* Init thread */
-  g_thread_init(NULL);
-  gdk_threads_init();
-  gdk_threads_enter();
+    /* Init thread */
+    g_thread_init(NULL);
+    gdk_threads_init();
+    gdk_threads_enter();
 
-  gtk_init(&argc, &argv);
+    gtk_init(&argc, &argv);
 
-  /* Base window */
-  top_window = gtk_window_new(GTK_WINDOW_TOPLEVEL);
+    /* Base window */
+    top_window = gtk_window_new(GTK_WINDOW_TOPLEVEL);
 
-  /* Frame */
-  outside_frame = gtk_frame_new(NULL);
-  gtk_frame_set_shadow_type(GTK_FRAME(outside_frame), GTK_SHADOW_OUT);
-  gtk_container_add(GTK_CONTAINER(top_window), outside_frame);
+    /* Frame */
+    outside_frame = gtk_frame_new(NULL);
+    gtk_frame_set_shadow_type(GTK_FRAME(outside_frame), GTK_SHADOW_OUT);
+    gtk_container_add(GTK_CONTAINER(top_window), outside_frame);
 
-  /* Frame */
-  inside_frame = gtk_frame_new(NULL);
-  gtk_frame_set_shadow_type(GTK_FRAME(inside_frame), GTK_SHADOW_IN);
-  gtk_container_set_border_width(GTK_CONTAINER(inside_frame), 5);
-  gtk_container_add(GTK_CONTAINER(outside_frame), inside_frame);
+    /* Frame */
+    inside_frame = gtk_frame_new(NULL);
+    gtk_frame_set_shadow_type(GTK_FRAME(inside_frame), GTK_SHADOW_IN);
+    gtk_container_set_border_width(GTK_CONTAINER(inside_frame), 5);
+    gtk_container_add(GTK_CONTAINER(outside_frame), inside_frame);
 
-  /* Progress bar */
-  progress_bar = gtk_progress_bar_new();
-  gtk_progress_bar_pulse(GTK_PROGRESS_BAR (progress_bar));
-  /* Make uniform pulsing */
-  gint pulse_ref = g_timeout_add(300, pulse_bar, progress_bar);
-  g_object_set_data(G_OBJECT(progress_bar), "pulse_id",
-                    GINT_TO_POINTER(pulse_ref));
-  gtk_container_add(GTK_CONTAINER(inside_frame), progress_bar);
+    /* Progress bar */
+    progress_bar = gtk_progress_bar_new();
+    gtk_progress_bar_pulse(GTK_PROGRESS_BAR(progress_bar));
+    /* Make uniform pulsing */
+    gint pulse_ref = g_timeout_add(300, pulse_bar, progress_bar);
+    g_object_set_data(G_OBJECT(progress_bar), "pulse_id", GINT_TO_POINTER(pulse_ref));
+    gtk_container_add(GTK_CONTAINER(inside_frame), progress_bar);
 
-  gtk_widget_show_all(top_window);
-  printf("gtk_widget_show_all\n");
+    gtk_widget_show_all(top_window);
+    printf("gtk_widget_show_all\n");
 
-  g_signal_connect(G_OBJECT (top_window), "delete-event",
-                   G_CALLBACK(cb_delete), NULL);
+    g_signal_connect(G_OBJECT(top_window), "delete-event", G_CALLBACK(cb_delete), NULL);
 
-  if(!g_thread_create(&create_thread, progress_bar, FALSE, NULL) != 0)
-    g_warning("can't create the thread");
+    if (!g_thread_create(&create_thread, progress_bar, FALSE, NULL) != 0)
+        g_warning("can't create the thread");
 
-  gtk_main();
-  gdk_threads_leave();
-  printf("gdk_threads_leave\n");
+    gtk_main();
+    gdk_threads_leave();
+    printf("gdk_threads_leave\n");
 
-  return 0;
+    return 0;
 }

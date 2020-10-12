@@ -45,7 +45,7 @@
  * Forward declarations.
  */
 
-static CURLcode gopher_do(struct connectdata *conn, bool *done);
+static CURLcode gopher_do(struct connectdata* conn, bool* done);
 
 /*
  * Gopher protocol handler.
@@ -54,134 +54,131 @@ static CURLcode gopher_do(struct connectdata *conn, bool *done);
  */
 
 const struct Curl_handler Curl_handler_gopher = {
-  "GOPHER",                             /* scheme */
-  ZERO_NULL,                            /* setup_connection */
-  gopher_do,                            /* do_it */
-  ZERO_NULL,                            /* done */
-  ZERO_NULL,                            /* do_more */
-  ZERO_NULL,                            /* connect_it */
-  ZERO_NULL,                            /* connecting */
-  ZERO_NULL,                            /* doing */
-  ZERO_NULL,                            /* proto_getsock */
-  ZERO_NULL,                            /* doing_getsock */
-  ZERO_NULL,                            /* domore_getsock */
-  ZERO_NULL,                            /* perform_getsock */
-  ZERO_NULL,                            /* disconnect */
-  ZERO_NULL,                            /* readwrite */
-  ZERO_NULL,                            /* connection_check */
-  PORT_GOPHER,                          /* defport */
-  CURLPROTO_GOPHER,                     /* protocol */
-  PROTOPT_NONE                          /* flags */
+    "GOPHER", /* scheme */
+    ZERO_NULL, /* setup_connection */
+    gopher_do, /* do_it */
+    ZERO_NULL, /* done */
+    ZERO_NULL, /* do_more */
+    ZERO_NULL, /* connect_it */
+    ZERO_NULL, /* connecting */
+    ZERO_NULL, /* doing */
+    ZERO_NULL, /* proto_getsock */
+    ZERO_NULL, /* doing_getsock */
+    ZERO_NULL, /* domore_getsock */
+    ZERO_NULL, /* perform_getsock */
+    ZERO_NULL, /* disconnect */
+    ZERO_NULL, /* readwrite */
+    ZERO_NULL, /* connection_check */
+    PORT_GOPHER, /* defport */
+    CURLPROTO_GOPHER, /* protocol */
+    PROTOPT_NONE /* flags */
 };
 
-static CURLcode gopher_do(struct connectdata *conn, bool *done)
+static CURLcode gopher_do(struct connectdata* conn, bool* done)
 {
-  CURLcode result = CURLE_OK;
-  struct Curl_easy *data = conn->data;
-  curl_socket_t sockfd = conn->sock[FIRSTSOCKET];
-  char *gopherpath;
-  char *path = data->state.up.path;
-  char *query = data->state.up.query;
-  char *sel = NULL;
-  char *sel_org = NULL;
-  timediff_t timeout_ms;
-  ssize_t amount, k;
-  size_t len;
-  int what;
+    CURLcode result = CURLE_OK;
+    struct Curl_easy* data = conn->data;
+    curl_socket_t sockfd = conn->sock[FIRSTSOCKET];
+    char* gopherpath;
+    char* path = data->state.up.path;
+    char* query = data->state.up.query;
+    char* sel = NULL;
+    char* sel_org = NULL;
+    timediff_t timeout_ms;
+    ssize_t amount, k;
+    size_t len;
+    int what;
 
-  *done = TRUE; /* unconditionally */
+    *done = TRUE; /* unconditionally */
 
-  /* path is guaranteed non-NULL */
-  DEBUGASSERT(path);
+    /* path is guaranteed non-NULL */
+    DEBUGASSERT(path);
 
-  if(query)
-    gopherpath = aprintf("%s?%s", path, query);
-  else
-    gopherpath = strdup(path);
-
-  if(!gopherpath)
-    return CURLE_OUT_OF_MEMORY;
-
-  /* Create selector. Degenerate cases: / and /1 => convert to "" */
-  if(strlen(gopherpath) <= 2) {
-    sel = (char *)"";
-    len = strlen(sel);
-    free(gopherpath);
-  }
-  else {
-    char *newp;
-
-    /* Otherwise, drop / and the first character (i.e., item type) ... */
-    newp = gopherpath;
-    newp += 2;
-
-    /* ... and finally unescape */
-    result = Curl_urldecode(data, newp, 0, &sel, &len, FALSE);
-    free(gopherpath);
-    if(result)
-      return result;
-    sel_org = sel;
-  }
-
-  /* We use Curl_write instead of Curl_sendf to make sure the entire buffer is
-     sent, which could be sizeable with long selectors. */
-  k = curlx_uztosz(len);
-
-  for(;;) {
-    result = Curl_write(conn, sockfd, sel, k, &amount);
-    if(!result) { /* Which may not have written it all! */
-      result = Curl_client_write(conn, CLIENTWRITE_HEADER, sel, amount);
-      if(result)
-        break;
-
-      k -= amount;
-      sel += amount;
-      if(k < 1)
-        break; /* but it did write it all */
-    }
+    if (query)
+        gopherpath = aprintf("%s?%s", path, query);
     else
-      break;
+        gopherpath = strdup(path);
 
-    timeout_ms = Curl_timeleft(conn->data, NULL, FALSE);
-    if(timeout_ms < 0) {
-      result = CURLE_OPERATION_TIMEDOUT;
-      break;
+    if (!gopherpath)
+        return CURLE_OUT_OF_MEMORY;
+
+    /* Create selector. Degenerate cases: / and /1 => convert to "" */
+    if (strlen(gopherpath) <= 2) {
+        sel = (char*)"";
+        len = strlen(sel);
+        free(gopherpath);
+    } else {
+        char* newp;
+
+        /* Otherwise, drop / and the first character (i.e., item type) ... */
+        newp = gopherpath;
+        newp += 2;
+
+        /* ... and finally unescape */
+        result = Curl_urldecode(data, newp, 0, &sel, &len, FALSE);
+        free(gopherpath);
+        if (result)
+            return result;
+        sel_org = sel;
     }
-    if(!timeout_ms)
-      timeout_ms = TIMEDIFF_T_MAX;
 
-    /* Don't busyloop. The entire loop thing is a work-around as it causes a
-       BLOCKING behavior which is a NO-NO. This function should rather be
-       split up in a do and a doing piece where the pieces that aren't
-       possible to send now will be sent in the doing function repeatedly
-       until the entire request is sent.
-    */
-    what = SOCKET_WRITABLE(sockfd, timeout_ms);
-    if(what < 0) {
-      result = CURLE_SEND_ERROR;
-      break;
+    /* We use Curl_write instead of Curl_sendf to make sure the entire buffer is
+       sent, which could be sizeable with long selectors. */
+    k = curlx_uztosz(len);
+
+    for (;;) {
+        result = Curl_write(conn, sockfd, sel, k, &amount);
+        if (!result) { /* Which may not have written it all! */
+            result = Curl_client_write(conn, CLIENTWRITE_HEADER, sel, amount);
+            if (result)
+                break;
+
+            k -= amount;
+            sel += amount;
+            if (k < 1)
+                break; /* but it did write it all */
+        } else
+            break;
+
+        timeout_ms = Curl_timeleft(conn->data, NULL, FALSE);
+        if (timeout_ms < 0) {
+            result = CURLE_OPERATION_TIMEDOUT;
+            break;
+        }
+        if (!timeout_ms)
+            timeout_ms = TIMEDIFF_T_MAX;
+
+        /* Don't busyloop. The entire loop thing is a work-around as it causes a
+           BLOCKING behavior which is a NO-NO. This function should rather be
+           split up in a do and a doing piece where the pieces that aren't
+           possible to send now will be sent in the doing function repeatedly
+           until the entire request is sent.
+        */
+        what = SOCKET_WRITABLE(sockfd, timeout_ms);
+        if (what < 0) {
+            result = CURLE_SEND_ERROR;
+            break;
+        } else if (!what) {
+            result = CURLE_OPERATION_TIMEDOUT;
+            break;
+        }
     }
-    else if(!what) {
-      result = CURLE_OPERATION_TIMEDOUT;
-      break;
+
+    free(sel_org);
+
+    if (!result)
+        /* We can use Curl_sendf to send the terminal \r\n relatively safely and
+           save allocing another string/doing another _write loop. */
+        result = Curl_sendf(sockfd, conn, "\r\n");
+    if (result) {
+        failf(data, "Failed sending Gopher request");
+        return result;
     }
-  }
+    result = Curl_client_write(conn, CLIENTWRITE_HEADER, (char*)"\r\n", 2);
+    if (result)
+        return result;
 
-  free(sel_org);
-
-  if(!result)
-    /* We can use Curl_sendf to send the terminal \r\n relatively safely and
-       save allocing another string/doing another _write loop. */
-    result = Curl_sendf(sockfd, conn, "\r\n");
-  if(result) {
-    failf(data, "Failed sending Gopher request");
-    return result;
-  }
-  result = Curl_client_write(conn, CLIENTWRITE_HEADER, (char *)"\r\n", 2);
-  if(result)
-    return result;
-
-  Curl_setup_transfer(data, FIRSTSOCKET, -1, FALSE, -1);
-  return CURLE_OK;
+    Curl_setup_transfer(data, FIRSTSOCKET, -1, FALSE, -1);
+    return CURLE_OK;
 }
 #endif /*CURL_DISABLE_GOPHER*/

@@ -66,49 +66,44 @@
  *
  * The storage operation locks and unlocks the DNS cache.
  */
-CURLcode Curl_addrinfo_callback(struct connectdata *conn,
-                                int status,
-                                struct Curl_addrinfo *ai)
+CURLcode Curl_addrinfo_callback(struct connectdata* conn, int status, struct Curl_addrinfo* ai)
 {
-  struct Curl_dns_entry *dns = NULL;
-  CURLcode result = CURLE_OK;
+    struct Curl_dns_entry* dns = NULL;
+    CURLcode result = CURLE_OK;
 
-  conn->async.status = status;
+    conn->async.status = status;
 
-  if(CURL_ASYNC_SUCCESS == status) {
-    if(ai) {
-      struct Curl_easy *data = conn->data;
+    if (CURL_ASYNC_SUCCESS == status) {
+        if (ai) {
+            struct Curl_easy* data = conn->data;
 
-      if(data->share)
-        Curl_share_lock(data, CURL_LOCK_DATA_DNS, CURL_LOCK_ACCESS_SINGLE);
+            if (data->share)
+                Curl_share_lock(data, CURL_LOCK_DATA_DNS, CURL_LOCK_ACCESS_SINGLE);
 
-      dns = Curl_cache_addr(data, ai,
-                            conn->async.hostname,
-                            conn->async.port);
-      if(data->share)
-        Curl_share_unlock(data, CURL_LOCK_DATA_DNS);
+            dns = Curl_cache_addr(data, ai, conn->async.hostname, conn->async.port);
+            if (data->share)
+                Curl_share_unlock(data, CURL_LOCK_DATA_DNS);
 
-      if(!dns) {
-        /* failed to store, cleanup and return error */
-        Curl_freeaddrinfo(ai);
-        result = CURLE_OUT_OF_MEMORY;
-      }
+            if (!dns) {
+                /* failed to store, cleanup and return error */
+                Curl_freeaddrinfo(ai);
+                result = CURLE_OUT_OF_MEMORY;
+            }
+        } else {
+            result = CURLE_OUT_OF_MEMORY;
+        }
     }
-    else {
-      result = CURLE_OUT_OF_MEMORY;
-    }
-  }
 
-  conn->async.dns = dns;
+    conn->async.dns = dns;
 
- /* Set async.done TRUE last in this function since it may be used multi-
-    threaded and once this is TRUE the other thread may read fields from the
-    async struct */
-  conn->async.done = TRUE;
+    /* Set async.done TRUE last in this function since it may be used multi-
+       threaded and once this is TRUE the other thread may read fields from the
+       async struct */
+    conn->async.done = TRUE;
 
-  /* IPv4: The input hostent struct will be freed by ares when we return from
-     this function */
-  return result;
+    /* IPv4: The input hostent struct will be freed by ares when we return from
+       this function */
+    return result;
 }
 
 /*
@@ -117,12 +112,10 @@ CURLcode Curl_addrinfo_callback(struct connectdata *conn,
  * name resolve layers (selected at build-time). They all take this same set
  * of arguments
  */
-Curl_addrinfo *Curl_getaddrinfo(struct connectdata *conn,
-                                const char *hostname,
-                                int port,
-                                int *waitp)
+Curl_addrinfo*
+Curl_getaddrinfo(struct connectdata* conn, const char* hostname, int port, int* waitp)
 {
-  return Curl_resolver_getaddrinfo(conn, hostname, port, waitp);
+    return Curl_resolver_getaddrinfo(conn, hostname, port, waitp);
 }
 
 #endif /* CURLRES_ASYNCH */

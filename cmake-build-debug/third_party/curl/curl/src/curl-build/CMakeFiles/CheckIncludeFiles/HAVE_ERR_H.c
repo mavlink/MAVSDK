@@ -19,6 +19,7 @@
 #include <assert.h>
 #include <err.h>
 
-
-int main(void){return 0;}
-
+int main(void)
+{
+    return 0;
+}

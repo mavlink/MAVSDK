@@ -27,18 +27,13 @@
 #include "sockaddr.h"
 #include "timeval.h"
 
-CURLcode Curl_is_connected(struct connectdata *conn,
-                           int sockindex,
-                           bool *connected);
+CURLcode Curl_is_connected(struct connectdata* conn, int sockindex, bool* connected);
 
-CURLcode Curl_connecthost(struct connectdata *conn,
-                          const struct Curl_dns_entry *host);
+CURLcode Curl_connecthost(struct connectdata* conn, const struct Curl_dns_entry* host);
 
 /* generic function that returns how much time there's left to run, according
    to the timeouts set */
-timediff_t Curl_timeleft(struct Curl_easy *data,
-                         struct curltime *nowp,
-                         bool duringconnect);
+timediff_t Curl_timeleft(struct Curl_easy* data, struct curltime* nowp, bool duringconnect);
 
 #define DEFAULT_CONNECT_TIMEOUT 300000 /* milliseconds == five minutes */
 
@@ -48,16 +43,14 @@ timediff_t Curl_timeleft(struct Curl_easy *data,
  *
  * The returned socket will be CURL_SOCKET_BAD in case of failure!
  */
-curl_socket_t Curl_getconnectinfo(struct Curl_easy *data,
-                                  struct connectdata **connp);
+curl_socket_t Curl_getconnectinfo(struct Curl_easy* data, struct connectdata** connp);
 
-bool Curl_addr2string(struct sockaddr *sa, curl_socklen_t salen,
-                      char *addr, long *port);
+bool Curl_addr2string(struct sockaddr* sa, curl_socklen_t salen, char* addr, long* port);
 
 /*
  * Check if a connection seems to be alive.
  */
-bool Curl_connalive(struct connectdata *conn);
+bool Curl_connalive(struct connectdata* conn);
 
 #ifdef USE_WINSOCK
 /* When you run a program that uses the Windows Sockets API, you may
@@ -74,9 +67,9 @@ void Curl_sndbufset(curl_socket_t sockfd);
 #define Curl_sndbufset(y) Curl_nop_stmt
 #endif
 
-void Curl_updateconninfo(struct connectdata *conn, curl_socket_t sockfd);
-void Curl_persistconninfo(struct connectdata *conn);
-int Curl_closesocket(struct connectdata *conn, curl_socket_t sock);
+void Curl_updateconninfo(struct connectdata* conn, curl_socket_t sockfd);
+void Curl_persistconninfo(struct connectdata* conn);
+int Curl_closesocket(struct connectdata* conn, curl_socket_t sock);
 
 /*
  * The Curl_sockaddr_ex structure is basically libcurl's external API
@@ -86,14 +79,14 @@ int Curl_closesocket(struct connectdata *conn, curl_socket_t sock);
  * been set, before that, it is initialized from parameters.
  */
 struct Curl_sockaddr_ex {
-  int family;
-  int socktype;
-  int protocol;
-  unsigned int addrlen;
-  union {
-    struct sockaddr addr;
-    struct Curl_sockaddr_storage buff;
-  } _sa_ex_u;
+    int family;
+    int socktype;
+    int protocol;
+    unsigned int addrlen;
+    union {
+        struct sockaddr addr;
+        struct Curl_sockaddr_storage buff;
+    } _sa_ex_u;
 };
 #define sa_addr _sa_ex_u.addr
 
@@ -104,10 +97,11 @@ struct Curl_sockaddr_ex {
  * socket callback is set, used that!
  *
  */
-CURLcode Curl_socket(struct connectdata *conn,
-                     const Curl_addrinfo *ai,
-                     struct Curl_sockaddr_ex *addr,
-                     curl_socket_t *sockfd);
+CURLcode Curl_socket(
+    struct connectdata* conn,
+    const Curl_addrinfo* ai,
+    struct Curl_sockaddr_ex* addr,
+    curl_socket_t* sockfd);
 
 /*
  * Curl_conncontrol() marks the end of a connection/stream. The 'closeit'
@@ -125,23 +119,25 @@ CURLcode Curl_socket(struct connectdata *conn,
 #define CONNCTRL_CONNECTION 1
 #define CONNCTRL_STREAM 2
 
-void Curl_conncontrol(struct connectdata *conn,
-                      int closeit
+void Curl_conncontrol(
+    struct connectdata* conn,
+    int closeit
 #if defined(DEBUGBUILD) && !defined(CURL_DISABLE_VERBOSE_STRINGS)
-                      , const char *reason
+    ,
+    const char* reason
 #endif
-  );
+);
 
 #if defined(DEBUGBUILD) && !defined(CURL_DISABLE_VERBOSE_STRINGS)
-#define streamclose(x,y) Curl_conncontrol(x, CONNCTRL_STREAM, y)
-#define connclose(x,y) Curl_conncontrol(x, CONNCTRL_CONNECTION, y)
-#define connkeep(x,y) Curl_conncontrol(x, CONNCTRL_KEEP, y)
+#define streamclose(x, y) Curl_conncontrol(x, CONNCTRL_STREAM, y)
+#define connclose(x, y) Curl_conncontrol(x, CONNCTRL_CONNECTION, y)
+#define connkeep(x, y) Curl_conncontrol(x, CONNCTRL_KEEP, y)
 #else /* if !DEBUGBUILD || CURL_DISABLE_VERBOSE_STRINGS */
-#define streamclose(x,y) Curl_conncontrol(x, CONNCTRL_STREAM)
-#define connclose(x,y) Curl_conncontrol(x, CONNCTRL_CONNECTION)
-#define connkeep(x,y) Curl_conncontrol(x, CONNCTRL_KEEP)
+#define streamclose(x, y) Curl_conncontrol(x, CONNCTRL_STREAM)
+#define connclose(x, y) Curl_conncontrol(x, CONNCTRL_CONNECTION)
+#define connkeep(x, y) Curl_conncontrol(x, CONNCTRL_KEEP)
 #endif
 
-bool Curl_conn_data_pending(struct connectdata *conn, int sockindex);
+bool Curl_conn_data_pending(struct connectdata* conn, int sockindex);
 
 #endif /* HEADER_CURL_CONNECT_H */

@@ -7,6 +7,7 @@
 #include <sys/resource.h>
 #include <sys/select.h>
 
-
-int main(void){return 0;}
-
+int main(void)
+{
+    return 0;
+}

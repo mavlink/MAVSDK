@@ -42,6 +42,7 @@
 #include <termio.h>
 #include <termios.h>
 
-
-int main(void){return 0;}
-
+int main(void)
+{
+    return 0;
+}

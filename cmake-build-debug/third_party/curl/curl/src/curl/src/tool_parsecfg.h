@@ -23,6 +23,6 @@
  ***************************************************************************/
 #include "tool_setup.h"
 
-int parseconfig(const char *filename, struct GlobalConfig *config);
+int parseconfig(const char* filename, struct GlobalConfig* config);
 
 #endif /* HEADER_CURL_TOOL_PARSECFG_H */

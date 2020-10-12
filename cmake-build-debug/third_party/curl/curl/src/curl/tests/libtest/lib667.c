@@ -23,95 +23,95 @@
 
 #include "memdebug.h"
 
-static char data[]=
+static char data[] =
 #ifdef CURL_DOES_CONVERSIONS
-  /* ASCII representation with escape sequences for non-ASCII platforms */
-  "\x64\x75\x6d\x6d\x79";
+    /* ASCII representation with escape sequences for non-ASCII platforms */
+    "\x64\x75\x6d\x6d\x79";
 #else
-  "dummy";
+    "dummy";
 #endif
 
 struct WriteThis {
-  char *readptr;
-  curl_off_t sizeleft;
+    char* readptr;
+    curl_off_t sizeleft;
 };
 
-static size_t read_callback(char *ptr, size_t size, size_t nmemb, void *userp)
+static size_t read_callback(char* ptr, size_t size, size_t nmemb, void* userp)
 {
-  struct WriteThis *pooh = (struct WriteThis *)userp;
-  int eof = !*pooh->readptr;
+    struct WriteThis* pooh = (struct WriteThis*)userp;
+    int eof = !*pooh->readptr;
 
-  if(size*nmemb < 1)
-    return 0;
+    if (size * nmemb < 1)
+        return 0;
 
-  eof = pooh->sizeleft <= 0;
-  if(!eof)
-    pooh->sizeleft--;
+    eof = pooh->sizeleft <= 0;
+    if (!eof)
+        pooh->sizeleft--;
 
-  if(!eof) {
-    *ptr = *pooh->readptr;           /* copy one single byte */
-    pooh->readptr++;                 /* advance pointer */
-    return 1;                        /* we return 1 byte at a time! */
-  }
+    if (!eof) {
+        *ptr = *pooh->readptr; /* copy one single byte */
+        pooh->readptr++; /* advance pointer */
+        return 1; /* we return 1 byte at a time! */
+    }
 
-  return 0;                         /* no more data left to deliver */
+    return 0; /* no more data left to deliver */
 }
 
-int test(char *URL)
+int test(char* URL)
 {
-  CURL *easy = NULL;
-  curl_mime *mime = NULL;
-  curl_mimepart *part;
-  CURLcode result;
-  int res = TEST_ERR_FAILURE;
-  struct WriteThis pooh;
+    CURL* easy = NULL;
+    curl_mime* mime = NULL;
+    curl_mimepart* part;
+    CURLcode result;
+    int res = TEST_ERR_FAILURE;
+    struct WriteThis pooh;
 
-  /*
-   * Check proper handling of mime encoder feature when the part read callback
-   * delivers data bytes one at a time. Use chunked encoding for accurate test.
-   */
+    /*
+     * Check proper handling of mime encoder feature when the part read callback
+     * delivers data bytes one at a time. Use chunked encoding for accurate test.
+     */
 
-  if(curl_global_init(CURL_GLOBAL_ALL) != CURLE_OK) {
-    fprintf(stderr, "curl_global_init() failed\n");
-    return TEST_ERR_MAJOR_BAD;
-  }
+    if (curl_global_init(CURL_GLOBAL_ALL) != CURLE_OK) {
+        fprintf(stderr, "curl_global_init() failed\n");
+        return TEST_ERR_MAJOR_BAD;
+    }
 
-  easy = curl_easy_init();
+    easy = curl_easy_init();
 
-  /* First set the URL that is about to receive our POST. */
-  test_setopt(easy, CURLOPT_URL, URL);
+    /* First set the URL that is about to receive our POST. */
+    test_setopt(easy, CURLOPT_URL, URL);
 
-  /* get verbose debug output please */
-  test_setopt(easy, CURLOPT_VERBOSE, 1L);
+    /* get verbose debug output please */
+    test_setopt(easy, CURLOPT_VERBOSE, 1L);
 
-  /* include headers in the output */
-  test_setopt(easy, CURLOPT_HEADER, 1L);
+    /* include headers in the output */
+    test_setopt(easy, CURLOPT_HEADER, 1L);
 
-  /* Prepare the callback structure. */
-  pooh.readptr = data;
-  pooh.sizeleft = (curl_off_t) strlen(data);
+    /* Prepare the callback structure. */
+    pooh.readptr = data;
+    pooh.sizeleft = (curl_off_t)strlen(data);
 
-  /* Build the mime tree. */
-  mime = curl_mime_init(easy);
-  part = curl_mime_addpart(mime);
-  curl_mime_name(part, "field");
-  curl_mime_encoder(part, "base64");
-  /* Using an undefined length forces chunked transfer. */
-  curl_mime_data_cb(part, (curl_off_t) -1, read_callback, NULL, NULL, &pooh);
+    /* Build the mime tree. */
+    mime = curl_mime_init(easy);
+    part = curl_mime_addpart(mime);
+    curl_mime_name(part, "field");
+    curl_mime_encoder(part, "base64");
+    /* Using an undefined length forces chunked transfer. */
+    curl_mime_data_cb(part, (curl_off_t)-1, read_callback, NULL, NULL, &pooh);
 
-  /* Bind mime data to its easy handle. */
-  test_setopt(easy, CURLOPT_MIMEPOST, mime);
+    /* Bind mime data to its easy handle. */
+    test_setopt(easy, CURLOPT_MIMEPOST, mime);
 
-  /* Send data. */
-  result = curl_easy_perform(easy);
-  if(result) {
-    fprintf(stderr, "curl_easy_perform() failed\n");
-    res = (int) result;
-  }
+    /* Send data. */
+    result = curl_easy_perform(easy);
+    if (result) {
+        fprintf(stderr, "curl_easy_perform() failed\n");
+        res = (int)result;
+    }
 
 test_cleanup:
-  curl_easy_cleanup(easy);
-  curl_mime_free(mime);
-  curl_global_cleanup();
-  return res;
+    curl_easy_cleanup(easy);
+    curl_mime_free(mime);
+    curl_global_cleanup();
+    return res;
 }

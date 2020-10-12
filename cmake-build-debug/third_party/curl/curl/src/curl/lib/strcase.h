@@ -32,20 +32,20 @@
  * non-ascii.
  */
 
-#define strcasecompare(a,b) Curl_strcasecompare(a,b)
-#define strncasecompare(a,b,c) Curl_strncasecompare(a,b,c)
+#define strcasecompare(a, b) Curl_strcasecompare(a, b)
+#define strncasecompare(a, b, c) Curl_strncasecompare(a, b, c)
 
-int Curl_strcasecompare(const char *first, const char *second);
-int Curl_safe_strcasecompare(const char *first, const char *second);
-int Curl_strncasecompare(const char *first, const char *second, size_t max);
+int Curl_strcasecompare(const char* first, const char* second);
+int Curl_safe_strcasecompare(const char* first, const char* second);
+int Curl_strncasecompare(const char* first, const char* second, size_t max);
 
 char Curl_raw_toupper(char in);
 
 /* checkprefix() is a shorter version of the above, used when the first
    argument is zero-byte terminated */
-#define checkprefix(a,b)    curl_strnequal(a,b,strlen(a))
+#define checkprefix(a, b) curl_strnequal(a, b, strlen(a))
 
-void Curl_strntoupper(char *dest, const char *src, size_t n);
-void Curl_strntolower(char *dest, const char *src, size_t n);
+void Curl_strntoupper(char* dest, const char* src, size_t n);
+void Curl_strntolower(char* dest, const char* src, size_t n);
 
 #endif /* HEADER_CURL_STRCASE_H */

@@ -827,21 +827,21 @@ std::ostream& operator<<(std::ostream& str, Telemetry::Odometry const& odometry)
 
 bool operator==(const Telemetry::DistanceSensor& lhs, const Telemetry::DistanceSensor& rhs)
 {
-    return ((std::isnan(rhs.min_distance) && std::isnan(lhs.min_distance)) ||
-            rhs.min_distance == lhs.min_distance) &&
-           ((std::isnan(rhs.max_distance) && std::isnan(lhs.max_distance)) ||
-            rhs.max_distance == lhs.max_distance) &&
-           ((std::isnan(rhs.current_distance) && std::isnan(lhs.current_distance)) ||
-            rhs.current_distance == lhs.current_distance);
+    return ((std::isnan(rhs.minimum_distance_m) && std::isnan(lhs.minimum_distance_m)) ||
+            rhs.minimum_distance_m == lhs.minimum_distance_m) &&
+           ((std::isnan(rhs.maximum_distance) && std::isnan(lhs.maximum_distance)) ||
+            rhs.maximum_distance == lhs.maximum_distance) &&
+           ((std::isnan(rhs.current_distance_m) && std::isnan(lhs.current_distance_m)) ||
+            rhs.current_distance_m == lhs.current_distance_m);
 }
 
 std::ostream& operator<<(std::ostream& str, Telemetry::DistanceSensor const& distance_sensor)
 {
     str << std::setprecision(15);
     str << "distance_sensor:" << '\n' << "{\n";
-    str << "    min_distance: " << distance_sensor.min_distance << '\n';
-    str << "    max_distance: " << distance_sensor.max_distance << '\n';
-    str << "    current_distance: " << distance_sensor.current_distance << '\n';
+    str << "    minimum_distance_m: " << distance_sensor.minimum_distance_m << '\n';
+    str << "    maximum_distance: " << distance_sensor.maximum_distance << '\n';
+    str << "    current_distance_m: " << distance_sensor.current_distance_m << '\n';
     str << '}';
     return str;
 }

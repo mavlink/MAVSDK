@@ -33,8 +33,8 @@ typedef curl_off_t timediff_t;
 #define TIMEDIFF_T_MIN CURL_OFF_T_MIN
 
 struct curltime {
-  time_t tv_sec; /* seconds */
-  int tv_usec;   /* microseconds */
+    time_t tv_sec; /* seconds */
+    int tv_usec; /* microseconds */
 };
 
 struct curltime Curl_now(void);

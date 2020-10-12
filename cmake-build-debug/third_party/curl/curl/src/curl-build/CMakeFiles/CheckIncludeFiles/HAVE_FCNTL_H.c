@@ -21,6 +21,7 @@
 #include <errno.h>
 #include <fcntl.h>
 
-
-int main(void){return 0;}
-
+int main(void)
+{
+    return 0;
+}

@@ -51,12 +51,11 @@
 //  libxml callback context structure
 //
 
-struct Context
-{
-  Context(): addTitle(false) { }
+struct Context {
+    Context() : addTitle(false) {}
 
-  bool addTitle;
-  std::string title;
+    bool addTitle;
+    std::string title;
 };
 
 //
@@ -69,226 +68,188 @@ static std::string buffer;
 //  libcurl write callback function
 //
 
-static int writer(char *data, size_t size, size_t nmemb,
-                  std::string *writerData)
+static int writer(char* data, size_t size, size_t nmemb, std::string* writerData)
 {
-  if(writerData == NULL)
-    return 0;
+    if (writerData == NULL)
+        return 0;
 
-  writerData->append(data, size*nmemb);
+    writerData->append(data, size * nmemb);
 
-  return size * nmemb;
+    return size * nmemb;
 }
 
 //
 //  libcurl connection initialization
 //
 
-static bool init(CURL *&conn, char *url)
+static bool init(CURL*& conn, char* url)
 {
-  CURLcode code;
+    CURLcode code;
 
-  conn = curl_easy_init();
+    conn = curl_easy_init();
 
-  if(conn == NULL) {
-    fprintf(stderr, "Failed to create CURL connection\n");
-    exit(EXIT_FAILURE);
-  }
+    if (conn == NULL) {
+        fprintf(stderr, "Failed to create CURL connection\n");
+        exit(EXIT_FAILURE);
+    }
 
-  code = curl_easy_setopt(conn, CURLOPT_ERRORBUFFER, errorBuffer);
-  if(code != CURLE_OK) {
-    fprintf(stderr, "Failed to set error buffer [%d]\n", code);
-    return false;
-  }
+    code = curl_easy_setopt(conn, CURLOPT_ERRORBUFFER, errorBuffer);
+    if (code != CURLE_OK) {
+        fprintf(stderr, "Failed to set error buffer [%d]\n", code);
+        return false;
+    }
 
-  code = curl_easy_setopt(conn, CURLOPT_URL, url);
-  if(code != CURLE_OK) {
-    fprintf(stderr, "Failed to set URL [%s]\n", errorBuffer);
-    return false;
-  }
+    code = curl_easy_setopt(conn, CURLOPT_URL, url);
+    if (code != CURLE_OK) {
+        fprintf(stderr, "Failed to set URL [%s]\n", errorBuffer);
+        return false;
+    }
 
-  code = curl_easy_setopt(conn, CURLOPT_FOLLOWLOCATION, 1L);
-  if(code != CURLE_OK) {
-    fprintf(stderr, "Failed to set redirect option [%s]\n", errorBuffer);
-    return false;
-  }
+    code = curl_easy_setopt(conn, CURLOPT_FOLLOWLOCATION, 1L);
+    if (code != CURLE_OK) {
+        fprintf(stderr, "Failed to set redirect option [%s]\n", errorBuffer);
+        return false;
+    }
 
-  code = curl_easy_setopt(conn, CURLOPT_WRITEFUNCTION, writer);
-  if(code != CURLE_OK) {
-    fprintf(stderr, "Failed to set writer [%s]\n", errorBuffer);
-    return false;
-  }
+    code = curl_easy_setopt(conn, CURLOPT_WRITEFUNCTION, writer);
+    if (code != CURLE_OK) {
+        fprintf(stderr, "Failed to set writer [%s]\n", errorBuffer);
+        return false;
+    }
 
-  code = curl_easy_setopt(conn, CURLOPT_WRITEDATA, &buffer);
-  if(code != CURLE_OK) {
-    fprintf(stderr, "Failed to set write data [%s]\n", errorBuffer);
-    return false;
-  }
+    code = curl_easy_setopt(conn, CURLOPT_WRITEDATA, &buffer);
+    if (code != CURLE_OK) {
+        fprintf(stderr, "Failed to set write data [%s]\n", errorBuffer);
+        return false;
+    }
 
-  return true;
+    return true;
 }
 
 //
 //  libxml start element callback function
 //
 
-static void StartElement(void *voidContext,
-                         const xmlChar *name,
-                         const xmlChar **attributes)
+static void StartElement(void* voidContext, const xmlChar* name, const xmlChar** attributes)
 {
-  Context *context = static_cast<Context *>(voidContext);
+    Context* context = static_cast<Context*>(voidContext);
 
-  if(COMPARE(reinterpret_cast<char *>(name), "TITLE")) {
-    context->title = "";
-    context->addTitle = true;
-  }
-  (void) attributes;
+    if (COMPARE(reinterpret_cast<char*>(name), "TITLE")) {
+        context->title = "";
+        context->addTitle = true;
+    }
+    (void)attributes;
 }
 
 //
 //  libxml end element callback function
 //
 
-static void EndElement(void *voidContext,
-                       const xmlChar *name)
+static void EndElement(void* voidContext, const xmlChar* name)
 {
-  Context *context = static_cast<Context *>(voidContext);
+    Context* context = static_cast<Context*>(voidContext);
 
-  if(COMPARE(reinterpret_cast<char *>(name), "TITLE"))
-    context->addTitle = false;
+    if (COMPARE(reinterpret_cast<char*>(name), "TITLE"))
+        context->addTitle = false;
 }
 
 //
 //  Text handling helper function
 //
 
-static void handleCharacters(Context *context,
-                             const xmlChar *chars,
-                             int length)
+static void handleCharacters(Context* context, const xmlChar* chars, int length)
 {
-  if(context->addTitle)
-    context->title.append(reinterpret_cast<char *>(chars), length);
+    if (context->addTitle)
+        context->title.append(reinterpret_cast<char*>(chars), length);
 }
 
 //
 //  libxml PCDATA callback function
 //
 
-static void Characters(void *voidContext,
-                       const xmlChar *chars,
-                       int length)
+static void Characters(void* voidContext, const xmlChar* chars, int length)
 {
-  Context *context = static_cast<Context *>(voidContext);
+    Context* context = static_cast<Context*>(voidContext);
 
-  handleCharacters(context, chars, length);
+    handleCharacters(context, chars, length);
 }
 
 //
 //  libxml CDATA callback function
 //
 
-static void cdata(void *voidContext,
-                  const xmlChar *chars,
-                  int length)
+static void cdata(void* voidContext, const xmlChar* chars, int length)
 {
-  Context *context = static_cast<Context *>(voidContext);
+    Context* context = static_cast<Context*>(voidContext);
 
-  handleCharacters(context, chars, length);
+    handleCharacters(context, chars, length);
 }
 
 //
 //  libxml SAX callback structure
 //
 
-static htmlSAXHandler saxHandler =
-{
-  NULL,
-  NULL,
-  NULL,
-  NULL,
-  NULL,
-  NULL,
-  NULL,
-  NULL,
-  NULL,
-  NULL,
-  NULL,
-  NULL,
-  NULL,
-  NULL,
-  StartElement,
-  EndElement,
-  NULL,
-  Characters,
-  NULL,
-  NULL,
-  NULL,
-  NULL,
-  NULL,
-  NULL,
-  NULL,
-  cdata,
-  NULL
-};
+static htmlSAXHandler saxHandler = {NULL,         NULL,       NULL, NULL,       NULL,  NULL, NULL,
+                                    NULL,         NULL,       NULL, NULL,       NULL,  NULL, NULL,
+                                    StartElement, EndElement, NULL, Characters, NULL,  NULL, NULL,
+                                    NULL,         NULL,       NULL, NULL,       cdata, NULL};
 
 //
 //  Parse given (assumed to be) HTML text and return the title
 //
 
-static void parseHtml(const std::string &html,
-                      std::string &title)
+static void parseHtml(const std::string& html, std::string& title)
 {
-  htmlParserCtxtPtr ctxt;
-  Context context;
+    htmlParserCtxtPtr ctxt;
+    Context context;
 
-  ctxt = htmlCreatePushParserCtxt(&saxHandler, &context, "", 0, "",
-                                  XML_CHAR_ENCODING_NONE);
+    ctxt = htmlCreatePushParserCtxt(&saxHandler, &context, "", 0, "", XML_CHAR_ENCODING_NONE);
 
-  htmlParseChunk(ctxt, html.c_str(), html.size(), 0);
-  htmlParseChunk(ctxt, "", 0, 1);
+    htmlParseChunk(ctxt, html.c_str(), html.size(), 0);
+    htmlParseChunk(ctxt, "", 0, 1);
 
-  htmlFreeParserCtxt(ctxt);
+    htmlFreeParserCtxt(ctxt);
 
-  title = context.title;
+    title = context.title;
 }
 
-int main(int argc, char *argv[])
+int main(int argc, char* argv[])
 {
-  CURL *conn = NULL;
-  CURLcode code;
-  std::string title;
+    CURL* conn = NULL;
+    CURLcode code;
+    std::string title;
 
-  // Ensure one argument is given
+    // Ensure one argument is given
 
-  if(argc != 2) {
-    fprintf(stderr, "Usage: %s <url>\n", argv[0]);
-    exit(EXIT_FAILURE);
-  }
+    if (argc != 2) {
+        fprintf(stderr, "Usage: %s <url>\n", argv[0]);
+        exit(EXIT_FAILURE);
+    }
 
-  curl_global_init(CURL_GLOBAL_DEFAULT);
+    curl_global_init(CURL_GLOBAL_DEFAULT);
 
-  // Initialize CURL connection
+    // Initialize CURL connection
 
-  if(!init(conn, argv[1])) {
-    fprintf(stderr, "Connection initializion failed\n");
-    exit(EXIT_FAILURE);
-  }
+    if (!init(conn, argv[1])) {
+        fprintf(stderr, "Connection initializion failed\n");
+        exit(EXIT_FAILURE);
+    }
 
-  // Retrieve content for the URL
+    // Retrieve content for the URL
 
-  code = curl_easy_perform(conn);
-  curl_easy_cleanup(conn);
+    code = curl_easy_perform(conn);
+    curl_easy_cleanup(conn);
 
-  if(code != CURLE_OK) {
-    fprintf(stderr, "Failed to get '%s' [%s]\n", argv[1], errorBuffer);
-    exit(EXIT_FAILURE);
-  }
+    if (code != CURLE_OK) {
+        fprintf(stderr, "Failed to get '%s' [%s]\n", argv[1], errorBuffer);
+        exit(EXIT_FAILURE);
+    }
 
-  // Parse the (assumed) HTML code
-  parseHtml(buffer, title);
+    // Parse the (assumed) HTML code
+    parseHtml(buffer, title);
 
-  // Display the extracted title
-  printf("Title: %s\n", title.c_str());
+    // Display the extracted title
+    printf("Title: %s\n", title.c_str());
 
-  return EXIT_SUCCESS;
+    return EXIT_SUCCESS;
 }

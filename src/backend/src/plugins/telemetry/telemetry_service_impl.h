@@ -760,11 +760,11 @@ public:
         std::unique_ptr<rpc::telemetry::DistanceSensor> rpc_obj(
             new rpc::telemetry::DistanceSensor());
 
-        rpc_obj->set_min_distance(distance_sensor.min_distance);
+        rpc_obj->set_minimum_distance_m(distance_sensor.minimum_distance_m);
 
-        rpc_obj->set_max_distance(distance_sensor.max_distance);
+        rpc_obj->set_maximum_distance(distance_sensor.maximum_distance);
 
-        rpc_obj->set_current_distance(distance_sensor.current_distance);
+        rpc_obj->set_current_distance_m(distance_sensor.current_distance_m);
 
         return rpc_obj;
     }
@@ -774,11 +774,11 @@ public:
     {
         mavsdk::Telemetry::DistanceSensor obj;
 
-        obj.min_distance = distance_sensor.min_distance();
+        obj.minimum_distance_m = distance_sensor.minimum_distance_m();
 
-        obj.max_distance = distance_sensor.max_distance();
+        obj.maximum_distance = distance_sensor.maximum_distance();
 
-        obj.current_distance = distance_sensor.current_distance();
+        obj.current_distance_m = distance_sensor.current_distance_m();
 
         return obj;
     }

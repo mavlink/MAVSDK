@@ -6,6 +6,7 @@
 #include <sys/poll.h>
 #include <sys/resource.h>
 
-
-int main(void){return 0;}
-
+int main(void)
+{
+    return 0;
+}

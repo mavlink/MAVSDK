@@ -27,8 +27,8 @@
 
 #ifdef HAVE_ICONV
 
-CURLcode convert_to_network(char *buffer, size_t length);
-CURLcode convert_from_network(char *buffer, size_t length);
+CURLcode convert_to_network(char* buffer, size_t length);
+CURLcode convert_from_network(char* buffer, size_t length);
 void convert_cleanup(void);
 
 #endif /* HAVE_ICONV */

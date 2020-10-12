@@ -23,7 +23,7 @@
  ***************************************************************************/
 #include "tool_setup.h"
 #ifdef USE_METALINK
-#  include <metalink/metalink.h>
+#include <metalink/metalink.h>
 #endif /* USE_METALINK */
 
 /*
@@ -63,19 +63,18 @@
  */
 
 struct OutStruct {
-  char *filename;
-  bool alloc_filename;
-  bool is_cd_filename;
-  bool s_isreg;
-  bool fopened;
-  FILE *stream;
-  curl_off_t bytes;
-  curl_off_t init;
+    char* filename;
+    bool alloc_filename;
+    bool is_cd_filename;
+    bool s_isreg;
+    bool fopened;
+    FILE* stream;
+    curl_off_t bytes;
+    curl_off_t init;
 #ifdef USE_METALINK
-  metalink_parser_context_t *metalink_parser;
+    metalink_parser_context_t* metalink_parser;
 #endif /* USE_METALINK */
 };
-
 
 /*
  * InStruct variables keep track of information relative to curl's
@@ -88,10 +87,9 @@ struct OutStruct {
  */
 
 struct InStruct {
-  int fd;
-  struct OperationConfig *config;
+    int fd;
+    struct OperationConfig* config;
 };
-
 
 /*
  * A linked list of these 'getout' nodes contain URL's to fetch,
@@ -100,44 +98,42 @@ struct InStruct {
  */
 
 struct getout {
-  struct getout *next;      /* next one */
-  char          *url;       /* the URL we deal with */
-  char          *outfile;   /* where to store the output */
-  char          *infile;    /* file to upload, if GETOUT_UPLOAD is set */
-  int            flags;     /* options - composed of GETOUT_* bits */
+    struct getout* next; /* next one */
+    char* url; /* the URL we deal with */
+    char* outfile; /* where to store the output */
+    char* infile; /* file to upload, if GETOUT_UPLOAD is set */
+    int flags; /* options - composed of GETOUT_* bits */
 };
 
-#define GETOUT_OUTFILE    (1<<0)  /* set when outfile is deemed done */
-#define GETOUT_URL        (1<<1)  /* set when URL is deemed done */
-#define GETOUT_USEREMOTE  (1<<2)  /* use remote file name locally */
-#define GETOUT_UPLOAD     (1<<3)  /* if set, -T has been used */
-#define GETOUT_NOUPLOAD   (1<<4)  /* if set, -T "" has been used */
-#define GETOUT_METALINK   (1<<5)  /* set when Metalink download */
+#define GETOUT_OUTFILE (1 << 0) /* set when outfile is deemed done */
+#define GETOUT_URL (1 << 1) /* set when URL is deemed done */
+#define GETOUT_USEREMOTE (1 << 2) /* use remote file name locally */
+#define GETOUT_UPLOAD (1 << 3) /* if set, -T has been used */
+#define GETOUT_NOUPLOAD (1 << 4) /* if set, -T "" has been used */
+#define GETOUT_METALINK (1 << 5) /* set when Metalink download */
 
 /*
  * 'trace' enumeration represents curl's output look'n feel possibilities.
  */
 
 typedef enum {
-  TRACE_NONE,  /* no trace/verbose output at all */
-  TRACE_BIN,   /* tcpdump inspired look */
-  TRACE_ASCII, /* like *BIN but without the hex output */
-  TRACE_PLAIN  /* -v/--verbose type */
+    TRACE_NONE, /* no trace/verbose output at all */
+    TRACE_BIN, /* tcpdump inspired look */
+    TRACE_ASCII, /* like *BIN but without the hex output */
+    TRACE_PLAIN /* -v/--verbose type */
 } trace;
-
 
 /*
  * 'HttpReq' enumeration represents HTTP request types.
  */
 
 typedef enum {
-  HTTPREQ_UNSPEC,  /* first in list */
-  HTTPREQ_GET,
-  HTTPREQ_HEAD,
-  HTTPREQ_MIMEPOST,
-  HTTPREQ_SIMPLEPOST
+    HTTPREQ_UNSPEC, /* first in list */
+    HTTPREQ_GET,
+    HTTPREQ_HEAD,
+    HTTPREQ_MIMEPOST,
+    HTTPREQ_SIMPLEPOST
 } HttpReq;
-
 
 /*
  * Complete struct declarations which have OperationConfig struct members,
