@@ -8,10 +8,10 @@
  * as altered versions, and   are not misrepresented as being the original software.
  * ========================================================================= */
 #include <stdlib.h> #include <string.h> #include <stdio.h> #include <Memory.h> #include <
-    GUSICommandLine.h> #include <stdlib.h> /* =========================================================================
-                                            */
-                                               DECLARE_MAIN(curl) REGISTER_MAIN_START
-    REGISTER_MAIN(curl) REGISTER_MAIN_END
+GUSICommandLine.h >
+    #include<stdlib.h> /* =========================================================================
+                        */
+        DECLARE_MAIN(curl) REGISTER_MAIN_START REGISTER_MAIN(curl) REGISTER_MAIN_END
     /* ========================================================================= */ int main()
 {
     ::MaxApplZone();
