@@ -754,6 +754,35 @@ public:
         return obj;
     }
 
+    static std::unique_ptr<rpc::telemetry::DistanceSensor>
+    translateToRpcDistanceSensor(const mavsdk::Telemetry::DistanceSensor& distance_sensor)
+    {
+        std::unique_ptr<rpc::telemetry::DistanceSensor> rpc_obj(
+            new rpc::telemetry::DistanceSensor());
+
+        rpc_obj->set_minimum_distance_m(distance_sensor.minimum_distance_m);
+
+        rpc_obj->set_maximum_distance_m(distance_sensor.maximum_distance_m);
+
+        rpc_obj->set_current_distance_m(distance_sensor.current_distance_m);
+
+        return rpc_obj;
+    }
+
+    static mavsdk::Telemetry::DistanceSensor
+    translateFromRpcDistanceSensor(const rpc::telemetry::DistanceSensor& distance_sensor)
+    {
+        mavsdk::Telemetry::DistanceSensor obj;
+
+        obj.minimum_distance_m = distance_sensor.minimum_distance_m();
+
+        obj.maximum_distance_m = distance_sensor.maximum_distance_m();
+
+        obj.current_distance_m = distance_sensor.current_distance_m();
+
+        return obj;
+    }
+
     static std::unique_ptr<rpc::telemetry::PositionNed>
     translateToRpcPositionNed(const mavsdk::Telemetry::PositionNed& position_ned)
     {
@@ -1984,6 +2013,42 @@ public:
         return grpc::Status::OK;
     }
 
+    grpc::Status SubscribeDistanceSensor(
+        grpc::ServerContext* /* context */,
+        const mavsdk::rpc::telemetry::SubscribeDistanceSensorRequest* /* request */,
+        grpc::ServerWriter<rpc::telemetry::DistanceSensorResponse>* writer) override
+    {
+        auto stream_closed_promise = std::make_shared<std::promise<void>>();
+        auto stream_closed_future = stream_closed_promise->get_future();
+        register_stream_stop_promise(stream_closed_promise);
+
+        auto is_finished = std::make_shared<bool>(false);
+
+        std::mutex subscribe_mutex{};
+
+        _telemetry.subscribe_distance_sensor(
+            [this, &writer, &stream_closed_promise, is_finished, &subscribe_mutex](
+                const mavsdk::Telemetry::DistanceSensor distance_sensor) {
+                rpc::telemetry::DistanceSensorResponse rpc_response;
+
+                rpc_response.set_allocated_distance_sensor(
+                    translateToRpcDistanceSensor(distance_sensor).release());
+
+                std::unique_lock<std::mutex> lock(subscribe_mutex);
+                if (!*is_finished && !writer->Write(rpc_response)) {
+                    _telemetry.subscribe_distance_sensor(nullptr);
+
+                    *is_finished = true;
+                    unregister_stream_stop_promise(stream_closed_promise);
+                    lock.unlock();
+                    stream_closed_promise->set_value();
+                }
+            });
+
+        stream_closed_future.wait();
+        return grpc::Status::OK;
+    }
+
     grpc::Status SetRatePosition(
         grpc::ServerContext* /* context */,
         const rpc::telemetry::SetRatePositionRequest* request,
@@ -2318,6 +2383,25 @@ public:
         }
 
         auto result = _telemetry.set_rate_unix_epoch_time(request->rate_hz());
+
+        if (response != nullptr) {
+            fillResponseWithResult(response, result);
+        }
+
+        return grpc::Status::OK;
+    }
+
+    grpc::Status SetRateDistanceSensor(
+        grpc::ServerContext* /* context */,
+        const rpc::telemetry::SetRateDistanceSensorRequest* request,
+        rpc::telemetry::SetRateDistanceSensorResponse* response) override
+    {
+        if (request == nullptr) {
+            LogWarn() << "SetRateDistanceSensor sent with a null request! Ignoring...";
+            return grpc::Status::OK;
+        }
+
+        auto result = _telemetry.set_rate_distance_sensor(request->rate_hz());
 
         if (response != nullptr) {
             fillResponseWithResult(response, result);

@@ -24,6 +24,7 @@ using Covariance = Telemetry::Covariance;
 using VelocityBody = Telemetry::VelocityBody;
 using PositionBody = Telemetry::PositionBody;
 using Odometry = Telemetry::Odometry;
+using DistanceSensor = Telemetry::DistanceSensor;
 using PositionNed = Telemetry::PositionNed;
 using VelocityNed = Telemetry::VelocityNed;
 using PositionVelocityNed = Telemetry::PositionVelocityNed;
@@ -299,6 +300,16 @@ uint64_t Telemetry::unix_epoch_time() const
     return _impl->unix_epoch_time();
 }
 
+void Telemetry::subscribe_distance_sensor(DistanceSensorCallback callback)
+{
+    _impl->distance_sensor_async(callback);
+}
+
+Telemetry::DistanceSensor Telemetry::distance_sensor() const
+{
+    return _impl->distance_sensor();
+}
+
 void Telemetry::set_rate_position_async(double rate_hz, const ResultCallback callback)
 {
     _impl->set_rate_position_async(rate_hz, callback);
@@ -478,6 +489,16 @@ void Telemetry::set_rate_unix_epoch_time_async(double rate_hz, const ResultCallb
 Telemetry::Result Telemetry::set_rate_unix_epoch_time(double rate_hz) const
 {
     return _impl->set_rate_unix_epoch_time(rate_hz);
+}
+
+void Telemetry::set_rate_distance_sensor_async(double rate_hz, const ResultCallback callback)
+{
+    _impl->set_rate_distance_sensor_async(rate_hz, callback);
+}
+
+Telemetry::Result Telemetry::set_rate_distance_sensor(double rate_hz) const
+{
+    return _impl->set_rate_distance_sensor(rate_hz);
 }
 
 bool operator==(const Telemetry::Position& lhs, const Telemetry::Position& rhs)
@@ -800,6 +821,27 @@ std::ostream& operator<<(std::ostream& str, Telemetry::Odometry const& odometry)
     str << "    angular_velocity_body: " << odometry.angular_velocity_body << '\n';
     str << "    pose_covariance: " << odometry.pose_covariance << '\n';
     str << "    velocity_covariance: " << odometry.velocity_covariance << '\n';
+    str << '}';
+    return str;
+}
+
+bool operator==(const Telemetry::DistanceSensor& lhs, const Telemetry::DistanceSensor& rhs)
+{
+    return ((std::isnan(rhs.minimum_distance_m) && std::isnan(lhs.minimum_distance_m)) ||
+            rhs.minimum_distance_m == lhs.minimum_distance_m) &&
+           ((std::isnan(rhs.maximum_distance_m) && std::isnan(lhs.maximum_distance_m)) ||
+            rhs.maximum_distance_m == lhs.maximum_distance_m) &&
+           ((std::isnan(rhs.current_distance_m) && std::isnan(lhs.current_distance_m)) ||
+            rhs.current_distance_m == lhs.current_distance_m);
+}
+
+std::ostream& operator<<(std::ostream& str, Telemetry::DistanceSensor const& distance_sensor)
+{
+    str << std::setprecision(15);
+    str << "distance_sensor:" << '\n' << "{\n";
+    str << "    minimum_distance_m: " << distance_sensor.minimum_distance_m << '\n';
+    str << "    maximum_distance_m: " << distance_sensor.maximum_distance_m << '\n';
+    str << "    current_distance_m: " << distance_sensor.current_distance_m << '\n';
     str << '}';
     return str;
 }

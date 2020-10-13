@@ -549,6 +549,34 @@ public:
     friend std::ostream& operator<<(std::ostream& str, Telemetry::Odometry const& odometry);
 
     /**
+     * @brief DistanceSensor message type.
+     */
+    struct DistanceSensor {
+        float minimum_distance_m{
+            float(NAN)}; /**< @brief Minimum distance the sensor can measure, NaN if unknown. */
+        float maximum_distance_m{
+            float(NAN)}; /**< @brief Maximum distance the sensor can measure, NaN if unknown. */
+        float current_distance_m{
+            float(NAN)}; /**< @brief Current distance reading, NaN if unknown. */
+    };
+
+    /**
+     * @brief Equal operator to compare two `Telemetry::DistanceSensor` objects.
+     *
+     * @return `true` if items are equal.
+     */
+    friend bool
+    operator==(const Telemetry::DistanceSensor& lhs, const Telemetry::DistanceSensor& rhs);
+
+    /**
+     * @brief Stream operator to print information about a `Telemetry::DistanceSensor`.
+     *
+     * @return A reference to the stream.
+     */
+    friend std::ostream&
+    operator<<(std::ostream& str, Telemetry::DistanceSensor const& distance_sensor);
+
+    /**
      * @brief PositionNed message type.
      */
     struct PositionNed {
@@ -1270,6 +1298,24 @@ public:
     uint64_t unix_epoch_time() const;
 
     /**
+     * @brief Callback type for subscribe_distance_sensor.
+     */
+
+    using DistanceSensorCallback = std::function<void(DistanceSensor)>;
+
+    /**
+     * @brief Subscribe to 'Distance Sensor' updates.
+     */
+    void subscribe_distance_sensor(DistanceSensorCallback callback);
+
+    /**
+     * @brief Poll for 'DistanceSensor' (blocking).
+     *
+     * @return One DistanceSensor update.
+     */
+    DistanceSensor distance_sensor() const;
+
+    /**
      * @brief Set rate to 'position' updates.
      *
      * This function is non-blocking. See 'set_rate_position' for the blocking counterpart.
@@ -1568,6 +1614,23 @@ public:
      * @return Result of request.
      */
     Result set_rate_unix_epoch_time(double rate_hz) const;
+
+    /**
+     * @brief Set rate to 'Distance Sensor' updates.
+     *
+     * This function is non-blocking. See 'set_rate_distance_sensor' for the blocking counterpart.
+     */
+    void set_rate_distance_sensor_async(double rate_hz, const ResultCallback callback);
+
+    /**
+     * @brief Set rate to 'Distance Sensor' updates.
+     *
+     * This function is blocking. See 'set_rate_distance_sensor_async' for the non-blocking
+     * counterpart.
+     *
+     * @return Result of request.
+     */
+    Result set_rate_distance_sensor(double rate_hz) const;
 
     /**
      * @brief Copy constructor (object is not copyable).
