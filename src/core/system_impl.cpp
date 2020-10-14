@@ -113,6 +113,12 @@ void SystemImpl::enable_timesync()
     _timesync.enable();
 }
 
+void SystemImpl::subscribe_is_connected(System::IsConnectedCallback callback)
+{
+    std::lock_guard<std::mutex> lock(_connection_mutex);
+    _is_connected_callback = callback;
+}
+
 void SystemImpl::process_mavlink_message(mavlink_message_t& message)
 {
     // This is a low level interface where incoming messages can be tampered
@@ -501,6 +507,11 @@ void SystemImpl::set_connected()
             }
             enable_needed = true;
 
+            if (_is_connected_callback) {
+                const auto temp_callback = _is_connected_callback;
+                _parent.call_user_callback([temp_callback]() { temp_callback(true); });
+            }
+
         } else if (_connected && !_always_connected) {
             refresh_timeout_handler(_heartbeat_timeout_cookie);
         }
@@ -526,6 +537,10 @@ void SystemImpl::set_disconnected()
 
         _connected = false;
         _parent.notify_on_timeout(_uuid);
+        if (_is_connected_callback) {
+            const auto temp_callback = _is_connected_callback;
+            _parent.call_user_callback([temp_callback]() { temp_callback(false); });
+        }
     }
 
     remove_call_every(_heartbeat_send_cookie);

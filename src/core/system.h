@@ -104,6 +104,19 @@ public:
     uint8_t get_system_id() const;
 
     /**
+     * @brief type for is connected callback.
+     */
+    using IsConnectedCallback = std::function<void(bool)>;
+
+    /**
+     * @brief Subscribe to callback to be called when system is discovered
+     *        or times out.
+     *
+     * @param callback Callback which will be called.
+     */
+    void subscribe_is_connected(IsConnectedCallback callback);
+
+    /**
      * @brief Register a callback to be called when a component is discovered.
      *
      * @param callback a function of type void(ComponentType) which will be called with the

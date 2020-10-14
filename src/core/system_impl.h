@@ -56,6 +56,8 @@ public:
 
     void enable_timesync();
 
+    void subscribe_is_connected(System::IsConnectedCallback callback);
+
     void process_mavlink_message(mavlink_message_t& message);
 
     typedef std::function<void(const mavlink_message_t&)> mavlink_message_handler_t;
@@ -305,6 +307,7 @@ private:
 
     std::mutex _connection_mutex{};
     bool _connected{false};
+    System::IsConnectedCallback _is_connected_callback{nullptr};
     void* _heartbeat_timeout_cookie = nullptr;
     void* _heartbeat_send_cookie = nullptr;
 
