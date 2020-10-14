@@ -9,7 +9,7 @@ namespace {
 
 using testing::_;
 
-using ChangeCallback = mavsdk::testing::ChangeCallback;
+using NewSystemCallback = mavsdk::testing::NewSystemCallback;
 using MockMavsdk = mavsdk::testing::MockMavsdk;
 using MockSystem = mavsdk::testing::MockSystem;
 using ConnectionInitiator = mavsdk::backend::ConnectionInitiator<MockMavsdk>;
@@ -25,7 +25,7 @@ TEST(ConnectionInitiator, subscribeChangeIsCalledExactlyOnce)
 {
     ConnectionInitiator initiator;
     MockMavsdk mavsdk;
-    EXPECT_CALL(mavsdk, subscribe_on_change(_)).Times(1);
+    EXPECT_CALL(mavsdk, subscribe_on_new_system(_)).Times(1);
 
     initiator.start(mavsdk, ARBITRARY_CONNECTION_URL);
 }
@@ -44,9 +44,9 @@ TEST(ConnectionInitiator, startHangsUntilSystemDiscovered)
 {
     ConnectionInitiator initiator;
     MockMavsdk mavsdk;
-    ChangeCallback change_callback;
+    NewSystemCallback change_callback;
 
-    EXPECT_CALL(mavsdk, subscribe_on_change(_)).WillOnce(SaveCallback(&change_callback));
+    EXPECT_CALL(mavsdk, subscribe_on_new_system(_)).WillOnce(SaveCallback(&change_callback));
 
     std::vector<std::shared_ptr<MockSystem>> systems;
     auto system = std::make_shared<MockSystem>();
@@ -70,9 +70,9 @@ TEST(ConnectionInitiator, connectionDetectedIfDiscoverCallbackCalledBeforeWait)
 {
     ConnectionInitiator initiator;
     MockMavsdk mavsdk;
-    ChangeCallback change_callback;
+    NewSystemCallback change_callback;
 
-    EXPECT_CALL(mavsdk, subscribe_on_change(_)).WillOnce(SaveCallback(&change_callback));
+    EXPECT_CALL(mavsdk, subscribe_on_new_system(_)).WillOnce(SaveCallback(&change_callback));
 
     std::vector<std::shared_ptr<MockSystem>> systems;
     auto system = std::make_shared<MockSystem>();
@@ -90,8 +90,8 @@ TEST(ConnectionInitiator, doesNotCrashIfDiscoverCallbackCalledMoreThanOnce)
 {
     ConnectionInitiator initiator;
     MockMavsdk mavsdk;
-    ChangeCallback change_callback;
-    EXPECT_CALL(mavsdk, subscribe_on_change(_)).WillOnce(SaveCallback(&change_callback));
+    NewSystemCallback change_callback;
+    EXPECT_CALL(mavsdk, subscribe_on_new_system(_)).WillOnce(SaveCallback(&change_callback));
 
     std::vector<std::shared_ptr<MockSystem>> systems;
     auto system = std::make_shared<MockSystem>();

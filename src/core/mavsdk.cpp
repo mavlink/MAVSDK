@@ -83,9 +83,9 @@ bool Mavsdk::is_connected(const uint64_t uuid) const
     return _impl->is_connected(uuid);
 }
 
-void Mavsdk::subscribe_on_change(const ChangeCallback callback)
+void Mavsdk::subscribe_on_new_system(const NewSystemCallback callback)
 {
-    _impl->subscribe_on_change(callback);
+    _impl->subscribe_on_new_system(callback);
 }
 
 void Mavsdk::register_on_discover(const event_callback_t callback)

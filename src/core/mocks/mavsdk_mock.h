@@ -10,12 +10,12 @@
 namespace mavsdk {
 namespace testing {
 
-typedef std::function<void()> ChangeCallback;
+typedef std::function<void()> NewSystemCallback;
 
 class MockMavsdk {
 public:
     MOCK_CONST_METHOD1(add_any_connection, ConnectionResult(const std::string&)){};
-    MOCK_CONST_METHOD1(subscribe_on_change, void(ChangeCallback)){};
+    MOCK_CONST_METHOD1(subscribe_on_new_system, void(NewSystemCallback)){};
     MOCK_CONST_METHOD0(systems, std::vector<std::shared_ptr<MockSystem>>()){};
 };
 

@@ -21,7 +21,7 @@ TEST_F(SitlTest, ActionHoverAsync)
         std::promise<void> prom;
         std::future<void> fut = prom.get_future();
 
-        mavsdk.subscribe_on_change([&prom, &mavsdk, &system]() {
+        mavsdk.subscribe_on_new_system([&prom, &mavsdk, &system]() {
             if (mavsdk.systems().size() == 1) {
                 system = mavsdk.systems().at(0);
                 prom.set_value();

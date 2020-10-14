@@ -458,7 +458,7 @@ void MavsdkImpl::notify_on_timeout(const uint64_t uuid)
     }
 }
 
-void MavsdkImpl::subscribe_on_change(Mavsdk::ChangeCallback callback)
+void MavsdkImpl::subscribe_on_new_system(Mavsdk::NewSystemCallback callback)
 {
     std::lock_guard<std::mutex> lock(_change_callback_mutex);
     _change_callback = callback;

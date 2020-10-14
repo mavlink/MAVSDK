@@ -111,7 +111,7 @@ TEST_F(CoreServiceImplTest, portIsDefaultInPluginInfos)
 
 TEST_F(CoreServiceImplTest, subscribeConnectionStateSubscribesToChange)
 {
-    EXPECT_CALL(*_dc, subscribe_on_change(_)).Times(1);
+    EXPECT_CALL(*_dc, subscribe_on_new_system(_)).Times(1);
     grpc::ClientContext context;
     mavsdk::rpc::core::SubscribeConnectionStateRequest request;
 

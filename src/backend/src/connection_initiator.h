@@ -19,7 +19,7 @@ public:
         init_mutex();
 
         LogInfo() << "Waiting to discover system on " << connection_url << "...";
-        _discovery_future = wrapped_subscribe_on_change(mavsdk);
+        _discovery_future = wrapped_subscribe_on_new_system(mavsdk);
 
         if (!add_any_connection(mavsdk, connection_url)) {
             return false;
@@ -45,11 +45,11 @@ private:
         return true;
     }
 
-    std::future<void> wrapped_subscribe_on_change(Mavsdk& mavsdk)
+    std::future<void> wrapped_subscribe_on_new_system(Mavsdk& mavsdk)
     {
         auto future = _discovery_promise->get_future();
 
-        mavsdk.subscribe_on_change([this, &mavsdk]() {
+        mavsdk.subscribe_on_new_system([this, &mavsdk]() {
             const auto system = mavsdk.systems().at(0);
 
             if (system->is_connected()) {

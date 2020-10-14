@@ -265,19 +265,19 @@ public:
     /**
      * @brief Callback type discover and timeout notifications.
      */
-    using ChangeCallback = std::function<void()>;
+    using NewSystemCallback = std::function<void()>;
 
     /**
      * @brief Get notification about a change in systems.
      *
-     * This gets called whenever a system is discovered or has timed out.
+     * This gets called whenever a system is added.
      *
      * @note Only one subscriber is possible at any time. On a second
      * subscription, the previous one is overwritten. To unsubscribe, pass nullptr;
      *
      * @param callback Callback to subscribe.
      */
-    void subscribe_on_change(ChangeCallback callback);
+    void subscribe_on_new_system(NewSystemCallback callback);
 
     /**
      * @brief Callback type for discover and timeout notifications (deprecated).
@@ -329,7 +329,7 @@ public:
      * times, previous callbacks will be overwritten.
      *
      * @note This method will be deprecated because event_callback_t is
-     *       deprecated and it will be replaced by `subscribe_on_change()`.
+     *       deprecated and it will be replaced by `subscribe_on_new_system()`.
      *
      * @param callback Callback to register.
      */
@@ -345,7 +345,7 @@ public:
      * times, previous callbacks will be overwritten.
      *
      * @note This method will be deprecated because event_callback_t is
-     *       deprecated and it will be replaced by `subscribe_on_change()`.
+     *       deprecated and it will be replaced by `subscribe_on_new_system()`.
      *
      * @param callback Callback to register.
      */

@@ -23,7 +23,7 @@ public:
     {
         std::mutex connection_state_mutex{};
 
-        _mavsdk.subscribe_on_change([this, &writer, &connection_state_mutex]() {
+        _mavsdk.subscribe_on_new_system([this, &writer, &connection_state_mutex]() {
             auto systems = _mavsdk.systems();
 
             for (auto system : systems) {

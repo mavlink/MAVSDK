@@ -16,7 +16,7 @@ TEST_F(SitlTest, MavlinkPassthrough)
         LogInfo() << "Waiting to discover vehicle";
         std::promise<void> prom;
         std::future<void> fut = prom.get_future();
-        mavsdk.subscribe_on_change([&mavsdk, &prom]() {
+        mavsdk.subscribe_on_new_system([&mavsdk, &prom]() {
             const auto system = mavsdk.systems().at(0);
 
             if (system->is_connected()) {
