@@ -46,7 +46,7 @@ int main(int argc, char** argv)
     auto system = mavsdk.systems().at(0);
 
     std::cout << "Waiting to discover system..." << std::endl;
-    mavsdk.subscribe_on_change([&mavsdk, &discovered_system]() {
+    mavsdk.subscribe_on_new_system([&mavsdk, &discovered_system]() {
         const auto system = mavsdk.systems().at(0);
 
         if (system->is_connected()) {

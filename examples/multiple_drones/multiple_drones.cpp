@@ -49,7 +49,7 @@ int main(int argc, char* argv[])
     std::atomic<size_t> num_systems_discovered{0};
 
     std::cout << "Waiting to discover system..." << std::endl;
-    mavsdk.subscribe_on_change([&mavsdk, &num_systems_discovered]() {
+    mavsdk.subscribe_on_new_system([&mavsdk, &num_systems_discovered]() {
         const auto systems = mavsdk.systems();
 
         if (systems.size() < num_systems_discovered) {

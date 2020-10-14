@@ -42,7 +42,7 @@ void wait_until_discover(Mavsdk& mavsdk)
     std::promise<void> discover_promise;
     auto discover_future = discover_promise.get_future();
 
-    mavsdk.subscribe_on_change([&mavsdk, &discover_promise]() {
+    mavsdk.subscribe_on_new_system([&mavsdk, &discover_promise]() {
         const auto system = mavsdk.systems().at(0);
 
         if (system->is_connected()) {

@@ -197,7 +197,7 @@ int main(int argc, char** argv)
     auto future_result = prom->get_future();
 
     std::cout << NORMAL_CONSOLE_TEXT << "Waiting to discover system..." << std::endl;
-    mavsdk.subscribe_on_change([&mavsdk, prom]() {
+    mavsdk.subscribe_on_new_system([&mavsdk, prom]() {
         const auto system = mavsdk.systems().at(0);
 
         if (system->is_connected()) {
