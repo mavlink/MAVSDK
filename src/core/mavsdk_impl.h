@@ -94,8 +94,8 @@ private:
     mutable std::recursive_mutex _systems_mutex{};
     std::unordered_map<uint8_t, std::shared_ptr<System>> _systems{};
 
-    std::mutex _change_callback_mutex{};
-    Mavsdk::NewSystemCallback _change_callback{nullptr};
+    std::mutex _new_system_callback_mutex{};
+    Mavsdk::NewSystemCallback _new_system_callback{nullptr};
 
     Mavsdk::event_callback_t _on_discover_callback{nullptr};
     Mavsdk::event_callback_t _on_timeout_callback{nullptr};
