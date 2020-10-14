@@ -25,6 +25,7 @@ mavsdk_sources = [
   'mavlink_mission_transfer.cpp',
   'mavlink_parameters.cpp',
   'mavlink_receiver.cpp',
+  'mavlink_statustext_handler.cpp',
   'mavlink_message_handler.cpp',
   'plugin_impl_base.cpp',
   'serial_connection.cpp',
@@ -37,16 +38,21 @@ mavsdk_sources = [
   'timesync.cpp',
 ]
 
-#message(curl.dependency('curl'))
-
-#message(curl.target_type('curl'))
-#message('CMaket targets:\n - ' + '\n - '.join(curl.target_list()))
-#message(curl.target_type('curl'))
+# TODO: curl as subproject
 mavsdk_lib = shared_library('mavsdk',
   mavsdk_sources,
   include_directories: mavlink_include,
-  dependencies: [threads, curl.dependency('curl')],
-  install: true)
+  dependencies: [threads, curl],
+  install: true
+)
+
+pkg.generate(
+  libraries: mavsdk_lib,
+  subdirs: '.',
+  version: version_str,
+  name: 'mavsdk',
+  description: 'API and library for MAVLink compatible systems written in C++11'
+)
 
 install_headers([
   'connection_result.h',
@@ -54,4 +60,5 @@ install_headers([
   'mavsdk.h',
   'plugin_base.h',
   'geometry.h',
-])
+],
+subdir: 'mavsdk')
