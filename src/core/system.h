@@ -109,8 +109,7 @@ public:
     using IsConnectedCallback = std::function<void(bool)>;
 
     /**
-     * @brief Subscribe to callback to be called when system is discovered
-     *        or times out.
+     * @brief Subscribe to callback to be called when system connection state changes.
      *
      * @param callback Callback which will be called.
      */
