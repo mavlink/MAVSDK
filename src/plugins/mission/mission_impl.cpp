@@ -952,6 +952,12 @@ void MissionImpl::assemble_mission_items()
                             new_mission_item->set_transition_mode(MAV_VTOL_STATE_FW);
                         }
                         break;
+                    case MAV_CMD_DO_JUMP:
+                        new_mission_item->set_cmd(MAV_CMD_DO_JUMP);
+                        new_mission_item->set_frame(MAV_FRAME_MISSION);
+                        new_mission_item->set_jump_item(it->param1);
+                        new_mission_item->set_jump_repeat(it->param2);
+                        break;
                 }
 
                 have_set_position = true;
@@ -964,11 +970,6 @@ void MissionImpl::assemble_mission_items()
                 }
 
                 new_mission_item->set_gimbal_pitch_and_yaw(it->param1, it->param3);
-
-            }else if(it->command == MAV_CMD_DO_JUMP){
-                new_mission_item->set_cmd(MAV_CMD_DO_JUMP);
-                new_mission_item->set_jump_item(it->param1);
-                new_mission_item->set_jump_repeat(it->param2);
 
             } else if (it->command == MAV_CMD_DO_MOUNT_CONFIGURE) {
                 if (int(it->param1) != MAV_MOUNT_MODE_MAVLINK_TARGETING) {
@@ -1011,8 +1012,8 @@ void MissionImpl::assemble_mission_items()
                 if (int(it->param1) == 1 && it->param3 < 0 && int(it->param4) == 0) {
                     new_mission_item->set_speed(it->param2);
                 } else {
-                    LogErr() << "Mission item DO_CHANGE_SPEED params unsupported";
-                    result = Mission::Result::UNSUPPORTED;
+                    LogWarn() << "Mission item for VTOL";
+                    new_mission_item->set_speed(it->param2);
                 }
 
             } else if (it->command == MAV_CMD_NAV_LOITER_TIME) {
@@ -1540,7 +1541,7 @@ Mission::Result MissionImpl::build_mission_items(
     // Choosen "Do-While(0)" loop for the convenience of using `break` statement.
     do {
         if (command == MAV_CMD_NAV_WAYPOINT || command == MAV_CMD_NAV_TAKEOFF ||
-            command == MAV_CMD_NAV_LAND || command ==MAV_CMD_NAV_VTOL_TAKEOFF || command ==MAV_CMD_NAV_VTOL_LAND || command==MAV_CMD_DO_VTOL_TRANSITION) {
+            command == MAV_CMD_NAV_LAND || command ==MAV_CMD_NAV_VTOL_TAKEOFF || command ==MAV_CMD_NAV_VTOL_LAND || command==MAV_CMD_DO_VTOL_TRANSITION || command==MAV_CMD_DO_JUMP) {
 
             if (new_mission_item->has_position_set()) {
                 all_mission_items.push_back(new_mission_item);
@@ -1564,14 +1565,16 @@ Mission::Result MissionImpl::build_mission_items(
                     new_mission_item->set_transition_mode(MAV_VTOL_STATE_FW);
                 }
             }
+            if(command == MAV_CMD_DO_JUMP) {
+                new_mission_item->set_cmd(MAV_CMD_DO_JUMP);
+                new_mission_item->set_frame(MAV_FRAME_MISSION);
+                new_mission_item->set_jump_item(params[0]);
+                new_mission_item->set_jump_repeat(params[1]);
+            }
             auto rel_alt = float(params[6]);
             new_mission_item->set_relative_altitude(rel_alt);
 
-        }else if(command == MAV_CMD_DO_JUMP){
-            new_mission_item->set_cmd(MAV_CMD_DO_JUMP);
-            new_mission_item->set_jump_item(params[0]);
-            new_mission_item->set_jump_repeat(params[1]);
-        }  else if (command == MAV_CMD_DO_MOUNT_CONTROL) {
+        }else if (command == MAV_CMD_DO_MOUNT_CONTROL) {
             auto pitch = float(params[0]), yaw = float(params[2]);
             new_mission_item->set_gimbal_pitch_and_yaw(pitch, yaw);
 
@@ -1613,9 +1616,8 @@ Mission::Result MissionImpl::build_mission_items(
             if (speed_type == int(GroundSpeed) && throttle < 0 && is_absolute) {
                 new_mission_item->set_speed(speed_m_s);
             } else {
-                LogErr() << command << "Mission item DO_CHANGE_SPEED params unsupported";
-                result = Mission::Result::UNSUPPORTED;
-                break;
+                LogWarn() << command << "Mission item for VTOL";
+                new_mission_item->set_speed(speed_m_s);
             }
         } else {
             LogWarn() << "UNSUPPORTED mission item command (" << command << ")";
