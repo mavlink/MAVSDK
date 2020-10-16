@@ -440,10 +440,10 @@ bool test_device_information(MavlinkPassthrough& mavlink_passthrough, AttitudeDa
                     // TODO: add these once they exist
                     // gimbal_limits.roll_min_deg = degrees(information.bank_min);
                     // gimbal_limits.roll_max_deg = degrees(information.bank_max);
-                    gimbal_limits.pitch_min_deg = degrees(information.tilt_min);
-                    gimbal_limits.pitch_max_deg = degrees(information.tilt_max);
-                    gimbal_limits.yaw_min_deg = degrees(information.pan_min);
-                    gimbal_limits.yaw_max_deg = degrees(information.pan_max);
+                    gimbal_limits.pitch_min_deg = degrees(information.pitch_min);
+                    gimbal_limits.pitch_max_deg = degrees(information.pitch_max);
+                    gimbal_limits.yaw_min_deg = degrees(information.yaw_min);
+                    gimbal_limits.yaw_max_deg = degrees(information.yaw_max);
                 });
 
             // We only need it once.
