@@ -524,17 +524,17 @@ int main(int argc, char** argv)
     {
         std::promise<void> prom;
         std::future<void> fut = prom.get_future();
-        mavsdk.register_on_discover([&prom](uint64_t /* uuid*/) { prom.set_value(); });
+        mavsdk.subscribe_on_new_system([&prom]() { prom.set_value(); });
 
         if (fut.wait_for(std::chrono::seconds(2)) != std::future_status::ready) {
             std::cout << "FAIL\n";
             std::cout << "-> no device found" << std::endl;
             return 1;
         }
-        mavsdk.register_on_discover(nullptr);
+        mavsdk.subscribe_on_new_system(nullptr);
     }
 
-    System& system = mavsdk.system();
+    auto system = mavsdk.systems().at(0);
     MavlinkPassthrough mavlink_passthrough(system);
 
     AttitudeData attitude_data{};
