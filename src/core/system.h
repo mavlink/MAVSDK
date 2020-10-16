@@ -3,12 +3,14 @@
 #include <memory>
 #include <functional>
 
+#include "deprecated.h"
+
 namespace mavsdk {
 
 /**
  * @brief Component Types
  */
-enum ComponentType { UNKNOWN = 0, AUTOPILOT, CAMERA, GIMBAL };
+enum class ComponentType { UNKNOWN, AUTOPILOT, CAMERA, GIMBAL };
 
 /**
  * @brief type for component discovery callback
@@ -85,9 +87,12 @@ public:
     /**
      * @brief Get the UUID of the system.
      *
+     * @note This method will be deprecated because the UUID will be replaced
+     *       by a uid with 18 bytes which can be accessed from the info plugin.
+     *
      * @return UUID of system.
      */
-    uint64_t get_uuid() const;
+    DEPRECATED uint64_t get_uuid() const;
 
     /**
      * @brief MAVLink System ID of connected system.
@@ -97,6 +102,18 @@ public:
      * @return the system ID.
      */
     uint8_t get_system_id() const;
+
+    /**
+     * @brief type for is connected callback.
+     */
+    using IsConnectedCallback = std::function<void(bool)>;
+
+    /**
+     * @brief Subscribe to callback to be called when system connection state changes.
+     *
+     * @param callback Callback which will be called.
+     */
+    void subscribe_is_connected(IsConnectedCallback callback);
 
     /**
      * @brief Register a callback to be called when a component is discovered.

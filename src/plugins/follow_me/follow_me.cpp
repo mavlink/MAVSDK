@@ -14,6 +14,9 @@ using TargetLocation = FollowMe::TargetLocation;
 
 FollowMe::FollowMe(System& system) : PluginBase(), _impl{new FollowMeImpl(system)} {}
 
+FollowMe::FollowMe(std::shared_ptr<System> system) : PluginBase(), _impl{new FollowMeImpl(system)}
+{}
+
 FollowMe::~FollowMe() {}
 
 FollowMe::Config FollowMe::get_config() const

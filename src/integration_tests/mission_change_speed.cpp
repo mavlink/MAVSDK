@@ -29,10 +29,20 @@ TEST_F(SitlTest, MissionChangeSpeed)
 
     // Wait for system to connect via heartbeat.
     ASSERT_TRUE(poll_condition_with_timeout(
-        [&mavsdk]() { return mavsdk.is_connected(); }, std::chrono::seconds(10)));
+        [&mavsdk]() {
+            const auto systems = mavsdk.systems();
 
-    System& system = mavsdk.system();
-    ASSERT_TRUE(system.has_autopilot());
+            if (systems.size() == 0) {
+                return false;
+            }
+
+            const auto system = mavsdk.systems().at(0);
+            return system->is_connected();
+        },
+        std::chrono::seconds(10)));
+
+    auto system = mavsdk.systems().at(0);
+    ASSERT_TRUE(system->has_autopilot());
 
     auto telemetry = std::make_shared<Telemetry>(system);
     auto mission = std::make_shared<Mission>(system);

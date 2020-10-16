@@ -10,7 +10,8 @@ namespace mavsdk {
 
 class ActionImpl : public PluginImplBase {
 public:
-    ActionImpl(System& system);
+    explicit ActionImpl(System& system);
+    explicit ActionImpl(std::shared_ptr<System> system_ptr);
     ~ActionImpl();
 
     void init() override;

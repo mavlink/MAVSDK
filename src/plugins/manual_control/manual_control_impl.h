@@ -7,7 +7,8 @@ namespace mavsdk {
 
 class ManualControlImpl : public PluginImplBase {
 public:
-    ManualControlImpl(System& system);
+    explicit ManualControlImpl(System& system);
+    explicit ManualControlImpl(std::shared_ptr<System> system);
     ~ManualControlImpl();
 
     void init() override;

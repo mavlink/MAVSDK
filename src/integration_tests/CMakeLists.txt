@@ -7,6 +7,16 @@ include_directories(
 
 set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -DTESTING")
 
+if(MSVC)
+    add_compile_options(
+         /wd4996 # ignore deprecated
+    )
+else()
+    add_compile_options(
+        -Wno-error=deprecated-declarations
+    )
+endif()
+
 # `make test` does not show output, but `make check` does
 add_custom_target(check COMMAND ${CMAKE_CTEST_COMMAND} --verbose)
 
@@ -47,7 +57,6 @@ add_executable(integration_tests_runner
     path_checker.cpp
     path_checker.h
     system_connection_async.cpp
-    system_connection_sync.cpp
     system_multi_components.cpp
     telemetry_async.cpp
     telemetry_health.cpp

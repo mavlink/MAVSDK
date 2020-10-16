@@ -31,12 +31,25 @@ public:
      * The plugin is typically created as shown below:
      *
      *     ```cpp
-     *     auto info = std::make_shared<Info>(system);
+     *     auto info = Info(system);
      *     ```
      *
      * @param system The specific system associated with this plugin.
      */
-    explicit Info(System& system);
+    explicit Info(System& system); // deprecated
+
+    /**
+     * @brief Constructor. Creates the plugin for a specific System.
+     *
+     * The plugin is typically created as shown below:
+     *
+     *     ```cpp
+     *     auto info = Info(system);
+     *     ```
+     *
+     * @param system The specific system associated with this plugin.
+     */
+    explicit Info(std::shared_ptr<System> system); // new
 
     /**
      * @brief Destructor (internal use only).
@@ -212,9 +225,9 @@ public:
     std::pair<Result, double> get_speed_factor() const;
 
     /**
-     * @brief Copy constructor (object is not copyable).
+     * @brief Copy constructor.
      */
-    Info(const Info&) = delete;
+    Info(const Info& other);
 
     /**
      * @brief Equality operator (object is not copyable).

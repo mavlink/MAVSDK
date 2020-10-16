@@ -32,12 +32,25 @@ public:
      * The plugin is typically created as shown below:
      *
      *     ```cpp
-     *     auto shell = std::make_shared<Shell>(system);
+     *     auto shell = Shell(system);
      *     ```
      *
      * @param system The specific system associated with this plugin.
      */
-    explicit Shell(System& system);
+    explicit Shell(System& system); // deprecated
+
+    /**
+     * @brief Constructor. Creates the plugin for a specific System.
+     *
+     * The plugin is typically created as shown below:
+     *
+     *     ```cpp
+     *     auto shell = Shell(system);
+     *     ```
+     *
+     * @param system The specific system associated with this plugin.
+     */
+    explicit Shell(std::shared_ptr<System> system); // new
 
     /**
      * @brief Destructor (internal use only).
@@ -92,9 +105,9 @@ public:
     void subscribe_receive(ReceiveCallback callback);
 
     /**
-     * @brief Copy constructor (object is not copyable).
+     * @brief Copy constructor.
      */
-    Shell(const Shell&) = delete;
+    Shell(const Shell& other);
 
     /**
      * @brief Equality operator (object is not copyable).

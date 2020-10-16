@@ -24,14 +24,14 @@ void usage(std::string bin_name)
 
 int main(int argc, char** argv)
 {
-    Mavsdk dc;
+    Mavsdk mavsdk;
     std::string connection_url;
     ConnectionResult connection_result;
 
     bool discovered_system = false;
     if (argc == 2) {
         connection_url = argv[1];
-        connection_result = dc.add_any_connection(connection_url);
+        connection_result = mavsdk.add_any_connection(connection_url);
     } else {
         usage(argv[0]);
         return 1;
@@ -43,15 +43,16 @@ int main(int argc, char** argv)
         return 1;
     }
 
-    // We don't need to specify the UUID if it's only one system anyway.
-    // If there were multiple, we could specify it with:
-    // dc.system(uint64_t uuid);
-    System& system = dc.system();
+    auto system = mavsdk.systems().at(0);
 
     std::cout << "Waiting to discover system..." << std::endl;
-    dc.register_on_discover([&discovered_system](uint64_t uuid) {
-        std::cout << "Discovered system with UUID: " << uuid << std::endl;
-        discovered_system = true;
+    mavsdk.subscribe_on_new_system([&mavsdk, &discovered_system]() {
+        const auto system = mavsdk.systems().at(0);
+
+        if (system->is_connected()) {
+            std::cout << "Discovered system" << std::endl;
+            discovered_system = true;
+        }
     });
 
     // We usually receive heartbeats at 1Hz, therefore we should find a system after around 2
@@ -114,8 +115,7 @@ int main(int argc, char** argv)
     tune_description.tempo = tempo;
 
     tune.play_tune_async(tune_description, [](const Tune::Result result) {
-        std::cout << NORMAL_CONSOLE_TEXT << "Tune sent with result: " << Tune::result_str(result)
-                  << std::endl;
+        std::cout << NORMAL_CONSOLE_TEXT << "Tune sent with result: " << result << std::endl;
     });
 
     return 0;

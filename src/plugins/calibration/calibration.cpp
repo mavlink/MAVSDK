@@ -13,6 +13,11 @@ using ProgressData = Calibration::ProgressData;
 
 Calibration::Calibration(System& system) : PluginBase(), _impl{new CalibrationImpl(system)} {}
 
+Calibration::Calibration(std::shared_ptr<System> system) :
+    PluginBase(),
+    _impl{new CalibrationImpl(system)}
+{}
+
 Calibration::~Calibration() {}
 
 void Calibration::calibrate_gyro_async(CalibrateGyroCallback callback)

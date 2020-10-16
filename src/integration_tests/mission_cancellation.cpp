@@ -23,17 +23,27 @@ static Mission::MissionItem add_waypoint(
 
 TEST_F(SitlTest, MissionUploadCancellation)
 {
-    Mavsdk dc;
+    Mavsdk mavsdk;
 
-    ConnectionResult ret = dc.add_udp_connection();
+    ConnectionResult ret = mavsdk.add_udp_connection();
     ASSERT_EQ(ret, ConnectionResult::Success);
 
     // Wait for system to connect via heartbeat.
     ASSERT_TRUE(poll_condition_with_timeout(
-        [&dc]() { return dc.is_connected(); }, std::chrono::seconds(10)));
+        [&mavsdk]() {
+            const auto systems = mavsdk.systems();
 
-    System& system = dc.system();
-    ASSERT_TRUE(system.has_autopilot());
+            if (systems.size() == 0) {
+                return false;
+            }
+
+            const auto system = mavsdk.systems().at(0);
+            return system->is_connected();
+        },
+        std::chrono::seconds(10)));
+
+    auto system = mavsdk.systems().at(0);
+    ASSERT_TRUE(system->has_autopilot());
 
     auto mission = std::make_shared<Mission>(system);
 
@@ -69,17 +79,27 @@ TEST_F(SitlTest, MissionUploadCancellation)
 
 TEST_F(SitlTest, MissionDownloadCancellation)
 {
-    Mavsdk dc;
+    Mavsdk mavsdk;
 
-    ConnectionResult ret = dc.add_udp_connection();
+    ConnectionResult ret = mavsdk.add_udp_connection();
     ASSERT_EQ(ret, ConnectionResult::Success);
 
     // Wait for system to connect via heartbeat.
     ASSERT_TRUE(poll_condition_with_timeout(
-        [&dc]() { return dc.is_connected(); }, std::chrono::seconds(10)));
+        [&mavsdk]() {
+            const auto systems = mavsdk.systems();
 
-    System& system = dc.system();
-    ASSERT_TRUE(system.has_autopilot());
+            if (systems.size() == 0) {
+                return false;
+            }
+
+            const auto system = mavsdk.systems().at(0);
+            return system->is_connected();
+        },
+        std::chrono::seconds(10)));
+
+    auto system = mavsdk.systems().at(0);
+    ASSERT_TRUE(system->has_autopilot());
 
     auto mission = std::make_shared<Mission>(system);
 

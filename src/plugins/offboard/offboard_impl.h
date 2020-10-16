@@ -11,7 +11,8 @@ namespace mavsdk {
 
 class OffboardImpl : public PluginImplBase {
 public:
-    OffboardImpl(System& system);
+    explicit OffboardImpl(System& system);
+    explicit OffboardImpl(std::shared_ptr<System> system);
     ~OffboardImpl();
 
     void init() override;
@@ -35,7 +36,7 @@ public:
     Offboard::Result set_attitude_rate(Offboard::AttitudeRate attitude_rate);
     Offboard::Result set_actuator_control(Offboard::ActuatorControl actuator_control);
 
-    OffboardImpl(const OffboardImpl&) = delete;
+    OffboardImpl(const OffboardImpl&);
     OffboardImpl& operator=(const OffboardImpl&) = delete;
 
 private:

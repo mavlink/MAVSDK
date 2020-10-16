@@ -13,25 +13,28 @@ static void set_link_lossy(std::shared_ptr<MavlinkPassthrough> mavlink_passthrou
 static std::vector<Mission::MissionItem> create_mission_items();
 static bool should_keep_message(const mavlink_message_t& message);
 
-static std::atomic<unsigned> _lossy_counter{0};
+static std::atomic<size_t> _lossy_counter{0};
 
 TEST_F(SitlTest, MissionTransferLossy)
 {
-    Mavsdk dc;
-    ASSERT_EQ(dc.add_udp_connection(), ConnectionResult::Success);
+    Mavsdk mavsdk;
+    ASSERT_EQ(mavsdk.add_udp_connection(), ConnectionResult::Success);
 
     {
         LogInfo() << "Waiting to discover vehicle";
         std::promise<void> prom;
         std::future<void> fut = prom.get_future();
-        dc.register_on_discover([&prom](uint64_t uuid) {
-            prom.set_value();
-            UNUSED(uuid);
+        mavsdk.subscribe_on_new_system([&mavsdk, &prom]() {
+            const auto system = mavsdk.systems().at(0);
+
+            if (system->is_connected()) {
+                prom.set_value();
+            }
         });
         ASSERT_EQ(fut.wait_for(std::chrono::seconds(2)), std::future_status::ready);
     }
 
-    System& system = dc.system();
+    auto system = mavsdk.systems().at(0);
     auto mavlink_passthrough = std::make_shared<MavlinkPassthrough>(system);
     auto mission = std::make_shared<Mission>(system);
 

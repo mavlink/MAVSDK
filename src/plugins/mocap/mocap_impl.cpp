@@ -20,6 +20,11 @@ MocapImpl::MocapImpl(System& system) : PluginImplBase(system)
     _parent->register_plugin(this);
 }
 
+MocapImpl::MocapImpl(std::shared_ptr<System> system) : PluginImplBase(system)
+{
+    _parent->register_plugin(this);
+}
+
 MocapImpl::~MocapImpl()
 {
     _parent->unregister_plugin(this);

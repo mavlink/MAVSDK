@@ -11,7 +11,8 @@ class System;
 
 class MocapImpl : public PluginImplBase {
 public:
-    MocapImpl(System& system);
+    explicit MocapImpl(System& system);
+    explicit MocapImpl(std::shared_ptr<System> system);
     ~MocapImpl();
 
     void init() override;

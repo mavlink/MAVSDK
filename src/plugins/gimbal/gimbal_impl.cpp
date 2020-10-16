@@ -14,6 +14,11 @@ GimbalImpl::GimbalImpl(System& system) : PluginImplBase(system)
     _parent->register_plugin(this);
 }
 
+GimbalImpl::GimbalImpl(std::shared_ptr<System> system) : PluginImplBase(system)
+{
+    _parent->register_plugin(this);
+}
+
 GimbalImpl::~GimbalImpl()
 {
     _parent->unregister_plugin(this);

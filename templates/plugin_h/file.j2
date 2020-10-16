@@ -31,12 +31,25 @@ public:
      * The plugin is typically created as shown below:
      *
      *     ```cpp
-     *     auto {{ plugin_name.lower_snake_case }} = std::make_shared<{{ plugin_name.upper_camel_case }}>(system);
+     *     auto {{ plugin_name.lower_snake_case }} = {{ plugin_name.upper_camel_case }}(system);
      *     ```
      *
      * @param system The specific system associated with this plugin.
      */
-    explicit {{ plugin_name.upper_camel_case }}(System& system);
+    explicit {{ plugin_name.upper_camel_case }}(System& system); // deprecated
+
+    /**
+     * @brief Constructor. Creates the plugin for a specific System.
+     *
+     * The plugin is typically created as shown below:
+     *
+     *     ```cpp
+     *     auto {{ plugin_name.lower_snake_case }} = {{ plugin_name.upper_camel_case }}(system);
+     *     ```
+     *
+     * @param system The specific system associated with this plugin.
+     */
+    explicit {{ plugin_name.upper_camel_case }}(std::shared_ptr<System> system); // new
 
     /**
      * @brief Destructor (internal use only).
@@ -63,9 +76,9 @@ public:
 {% endfor %}
 
     /**
-     * @brief Copy constructor (object is not copyable).
+     * @brief Copy constructor.
      */
-    {{ plugin_name.upper_camel_case }}(const {{ plugin_name.upper_camel_case }}&) = delete;
+    {{ plugin_name.upper_camel_case }}(const {{ plugin_name.upper_camel_case }}& other);
 
     /**
      * @brief Equality operator (object is not copyable).

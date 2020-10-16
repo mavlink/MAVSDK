@@ -35,29 +35,33 @@ TEST_F(SitlTest, MissionWithRTLHigherAnyway)
 
 void do_mission_with_rtl(float mission_altitude_m, float return_altitude_m)
 {
-    Mavsdk dc;
+    Mavsdk mavsdk;
 
     {
         auto prom = std::make_shared<std::promise<void>>();
         auto future_result = prom->get_future();
 
         LogInfo() << "Waiting to discover system...";
-        dc.register_on_discover([prom](uint64_t uuid) {
-            LogInfo() << "Discovered system with UUID: " << uuid;
-            prom->set_value();
+        mavsdk.subscribe_on_new_system([&mavsdk, prom]() {
+            const auto system = mavsdk.systems().at(0);
+
+            if (system->is_connected()) {
+                LogInfo() << "Discovered system";
+                prom->set_value();
+            }
         });
 
-        ConnectionResult ret = dc.add_udp_connection();
+        ConnectionResult ret = mavsdk.add_udp_connection();
         ASSERT_EQ(ret, ConnectionResult::Success);
 
         auto status = future_result.wait_for(std::chrono::seconds(2));
         ASSERT_EQ(status, std::future_status::ready);
         future_result.get();
         // FIXME: This hack is to prevent that the promise is set twice.
-        dc.register_on_discover(nullptr);
+        mavsdk.subscribe_on_new_system(nullptr);
     }
 
-    System& system = dc.system();
+    auto system = mavsdk.systems().at(0);
     auto telemetry = std::make_shared<Telemetry>(system);
     auto mission = std::make_shared<Mission>(system);
     auto action = std::make_shared<Action>(system);

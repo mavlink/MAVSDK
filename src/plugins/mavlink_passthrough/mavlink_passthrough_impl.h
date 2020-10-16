@@ -10,7 +10,8 @@ namespace mavsdk {
 
 class MavlinkPassthroughImpl : public PluginImplBase {
 public:
-    MavlinkPassthroughImpl(System& system);
+    explicit MavlinkPassthroughImpl(System& system);
+    explicit MavlinkPassthroughImpl(std::shared_ptr<System> system);
     ~MavlinkPassthroughImpl();
 
     void init() override;

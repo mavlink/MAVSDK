@@ -233,15 +233,19 @@ bool offb_ctrl_attitude(std::shared_ptr<mavsdk::Offboard> offboard)
     return true;
 }
 
-void wait_until_discover(Mavsdk& dc)
+void wait_until_discover(Mavsdk& mavsdk)
 {
     std::cout << "Waiting to discover system..." << std::endl;
     std::promise<void> discover_promise;
     auto discover_future = discover_promise.get_future();
 
-    dc.register_on_discover([&discover_promise](uint64_t uuid) {
-        std::cout << "Discovered system with UUID: " << uuid << std::endl;
-        discover_promise.set_value();
+    mavsdk.subscribe_on_new_system([&mavsdk, &discover_promise]() {
+        const auto system = mavsdk.systems().at(0);
+
+        if (system->is_connected()) {
+            std::cout << "Discovered system" << std::endl;
+            discover_promise.set_value();
+        }
     });
 
     discover_future.wait();
@@ -285,13 +289,13 @@ landed_state_callback(std::shared_ptr<Telemetry>& telemetry, std::promise<void>&
 
 int main(int argc, char** argv)
 {
-    Mavsdk dc;
+    Mavsdk mavsdk;
     std::string connection_url;
     ConnectionResult connection_result;
 
     if (argc == 2) {
         connection_url = argv[1];
-        connection_result = dc.add_any_connection(connection_url);
+        connection_result = mavsdk.add_any_connection(connection_url);
     } else {
         usage(argv[0]);
         return 1;
@@ -304,10 +308,10 @@ int main(int argc, char** argv)
     }
 
     // Wait for the system to connect via heartbeat
-    wait_until_discover(dc);
+    wait_until_discover(mavsdk);
 
     // System got discovered.
-    System& system = dc.system();
+    auto system = mavsdk.systems().at(0);
     auto action = std::make_shared<Action>(system);
     auto offboard = std::make_shared<Offboard>(system);
     auto telemetry = std::make_shared<Telemetry>(system);

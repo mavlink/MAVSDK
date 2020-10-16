@@ -14,6 +14,11 @@ using MissionItem = MissionRaw::MissionItem;
 
 MissionRaw::MissionRaw(System& system) : PluginBase(), _impl{new MissionRawImpl(system)} {}
 
+MissionRaw::MissionRaw(std::shared_ptr<System> system) :
+    PluginBase(),
+    _impl{new MissionRawImpl(system)}
+{}
+
 MissionRaw::~MissionRaw() {}
 
 void MissionRaw::upload_mission_async(

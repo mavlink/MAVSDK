@@ -113,6 +113,12 @@ void SystemImpl::enable_timesync()
     _timesync.enable();
 }
 
+void SystemImpl::subscribe_is_connected(System::IsConnectedCallback callback)
+{
+    std::lock_guard<std::mutex> lock(_connection_mutex);
+    _is_connected_callback = callback;
+}
+
 void SystemImpl::process_mavlink_message(mavlink_message_t& message)
 {
     // This is a low level interface where incoming messages can be tampered
@@ -277,18 +283,18 @@ ComponentType SystemImpl::component_type(uint8_t component_id)
 {
     switch (component_id) {
         case MAV_COMP_ID_AUTOPILOT1:
-            return AUTOPILOT;
+            return ComponentType::AUTOPILOT;
         case MAV_COMP_ID_CAMERA:
         case MAV_COMP_ID_CAMERA2:
         case MAV_COMP_ID_CAMERA3:
         case MAV_COMP_ID_CAMERA4:
         case MAV_COMP_ID_CAMERA5:
         case MAV_COMP_ID_CAMERA6:
-            return CAMERA;
+            return ComponentType::CAMERA;
         case MAV_COMP_ID_GIMBAL:
-            return GIMBAL;
+            return ComponentType::GIMBAL;
         default:
-            return UNKNOWN;
+            return ComponentType::UNKNOWN;
     }
 }
 
@@ -501,6 +507,11 @@ void SystemImpl::set_connected()
             }
             enable_needed = true;
 
+            if (_is_connected_callback) {
+                const auto temp_callback = _is_connected_callback;
+                _parent.call_user_callback([temp_callback]() { temp_callback(true); });
+            }
+
         } else if (_connected && !_always_connected) {
             refresh_timeout_handler(_heartbeat_timeout_cookie);
         }
@@ -526,6 +537,10 @@ void SystemImpl::set_disconnected()
 
         _connected = false;
         _parent.notify_on_timeout(_uuid);
+        if (_is_connected_callback) {
+            const auto temp_callback = _is_connected_callback;
+            _parent.call_user_callback([temp_callback]() { temp_callback(false); });
+        }
     }
 
     remove_call_every(_heartbeat_send_cookie);

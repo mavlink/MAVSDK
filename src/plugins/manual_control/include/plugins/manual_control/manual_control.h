@@ -32,12 +32,25 @@ public:
      * The plugin is typically created as shown below:
      *
      *     ```cpp
-     *     auto manual_control = std::make_shared<ManualControl>(system);
+     *     auto manual_control = ManualControl(system);
      *     ```
      *
      * @param system The specific system associated with this plugin.
      */
-    explicit ManualControl(System& system);
+    explicit ManualControl(System& system); // deprecated
+
+    /**
+     * @brief Constructor. Creates the plugin for a specific System.
+     *
+     * The plugin is typically created as shown below:
+     *
+     *     ```cpp
+     *     auto manual_control = ManualControl(system);
+     *     ```
+     *
+     * @param system The specific system associated with this plugin.
+     */
+    explicit ManualControl(std::shared_ptr<System> system); // new
 
     /**
      * @brief Destructor (internal use only).
@@ -129,9 +142,9 @@ public:
     Result set_manual_control_input(float x, float y, float z, float r) const;
 
     /**
-     * @brief Copy constructor (object is not copyable).
+     * @brief Copy constructor.
      */
-    ManualControl(const ManualControl&) = delete;
+    ManualControl(const ManualControl& other);
 
     /**
      * @brief Equality operator (object is not copyable).

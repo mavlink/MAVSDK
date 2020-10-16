@@ -48,45 +48,45 @@ namespace backend {
 
 class GRPCServer {
 public:
-    GRPCServer(Mavsdk& dc) :
+    GRPCServer(Mavsdk& mavsdk) :
         _port(0),
-        _dc(dc),
-        _core(_dc),
-        _action(_dc.system()),
+        _mavsdk(mavsdk),
+        _core(_mavsdk),
+        _action(_mavsdk.systems().at(0)),
         _action_service(_action),
-        _calibration(_dc.system()),
+        _calibration(_mavsdk.systems().at(0)),
         _calibration_service(_calibration),
-        _camera(_dc.system()),
+        _camera(_mavsdk.systems().at(0)),
         _camera_service(_camera),
-        _follow_me(_dc.system()),
+        _follow_me(_mavsdk.systems().at(0)),
         _follow_me_service(_follow_me),
-        _ftp(_dc.system()),
+        _ftp(_mavsdk.systems().at(0)),
         _ftp_service(_ftp),
-        _geofence(_dc.system()),
+        _geofence(_mavsdk.systems().at(0)),
         _geofence_service(_geofence),
-        _gimbal(_dc.system()),
+        _gimbal(_mavsdk.systems().at(0)),
         _gimbal_service(_gimbal),
-        _info(_dc.system()),
+        _info(_mavsdk.systems().at(0)),
         _info_service(_info),
-        _log_files(_dc.system()),
+        _log_files(_mavsdk.systems().at(0)),
         _log_files_service(_log_files),
-        _manual_control(_dc.system()),
+        _manual_control(_mavsdk.systems().at(0)),
         _manual_control_service(_manual_control),
-        _mission(_dc.system()),
+        _mission(_mavsdk.systems().at(0)),
         _mission_service(_mission),
-        _mission_raw(_dc.system()),
+        _mission_raw(_mavsdk.systems().at(0)),
         _mission_raw_service(_mission_raw),
-        _mocap(_dc.system()),
+        _mocap(_mavsdk.systems().at(0)),
         _mocap_service(_mocap),
-        _offboard(_dc.system()),
+        _offboard(_mavsdk.systems().at(0)),
         _offboard_service(_offboard),
-        _param(_dc.system()),
+        _param(_mavsdk.systems().at(0)),
         _param_service(_param),
-        _shell(_dc.system()),
+        _shell(_mavsdk.systems().at(0)),
         _shell_service(_shell),
-        _telemetry(_dc.system()),
+        _telemetry(_mavsdk.systems().at(0)),
         _telemetry_service(_telemetry),
-        _tune(_dc.system()),
+        _tune(_mavsdk.systems().at(0)),
         _tune_service(_tune)
     {}
 
@@ -98,7 +98,7 @@ public:
 private:
     void setup_port(grpc::ServerBuilder& builder);
 
-    Mavsdk& _dc;
+    Mavsdk& _mavsdk;
     CoreServiceImpl<> _core;
     Action _action;
     ActionServiceImpl<> _action_service;

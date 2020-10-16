@@ -8,6 +8,11 @@ ManualControlImpl::ManualControlImpl(System& system) : PluginImplBase(system)
     _parent->register_plugin(this);
 }
 
+ManualControlImpl::ManualControlImpl(std::shared_ptr<System> system) : PluginImplBase(system)
+{
+    _parent->register_plugin(this);
+}
+
 ManualControlImpl::~ManualControlImpl()
 {
     _parent->unregister_plugin(this);

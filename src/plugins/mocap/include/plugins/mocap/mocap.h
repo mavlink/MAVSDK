@@ -34,12 +34,25 @@ public:
      * The plugin is typically created as shown below:
      *
      *     ```cpp
-     *     auto mocap = std::make_shared<Mocap>(system);
+     *     auto mocap = Mocap(system);
      *     ```
      *
      * @param system The specific system associated with this plugin.
      */
-    explicit Mocap(System& system);
+    explicit Mocap(System& system); // deprecated
+
+    /**
+     * @brief Constructor. Creates the plugin for a specific System.
+     *
+     * The plugin is typically created as shown below:
+     *
+     *     ```cpp
+     *     auto mocap = Mocap(system);
+     *     ```
+     *
+     * @param system The specific system associated with this plugin.
+     */
+    explicit Mocap(std::shared_ptr<System> system); // new
 
     /**
      * @brief Destructor (internal use only).
@@ -350,9 +363,9 @@ public:
     Result set_odometry(Odometry odometry) const;
 
     /**
-     * @brief Copy constructor (object is not copyable).
+     * @brief Copy constructor.
      */
-    Mocap(const Mocap&) = delete;
+    Mocap(const Mocap& other);
 
     /**
      * @brief Equality operator (object is not copyable).

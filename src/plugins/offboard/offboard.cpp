@@ -19,6 +19,9 @@ using VelocityNedYaw = Offboard::VelocityNedYaw;
 
 Offboard::Offboard(System& system) : PluginBase(), _impl{new OffboardImpl(system)} {}
 
+Offboard::Offboard(std::shared_ptr<System> system) : PluginBase(), _impl{new OffboardImpl(system)}
+{}
+
 Offboard::~Offboard() {}
 
 void Offboard::start_async(const ResultCallback callback)

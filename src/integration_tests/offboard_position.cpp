@@ -11,17 +11,17 @@ using namespace mavsdk;
 
 TEST_F(SitlTest, OffboardPositionNED)
 {
-    Mavsdk dc;
+    Mavsdk mavsdk;
 
-    ConnectionResult ret = dc.add_udp_connection();
+    ConnectionResult ret = mavsdk.add_udp_connection();
     ASSERT_EQ(ConnectionResult::Success, ret);
 
     // Wait for system to connect via heartbeat.
     std::this_thread::sleep_for(std::chrono::seconds(2));
 
-    ASSERT_TRUE(dc.system().has_autopilot());
+    ASSERT_TRUE(mavsdk.systems().at(0)->has_autopilot());
 
-    System& system = dc.system();
+    auto system = mavsdk.systems().at(0);
     auto telemetry = std::make_shared<Telemetry>(system);
     auto action = std::make_shared<Action>(system);
     auto offboard = std::make_shared<Offboard>(system);

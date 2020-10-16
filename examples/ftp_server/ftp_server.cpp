@@ -45,7 +45,8 @@ int main(int argc, char** argv)
         std::cout << ERROR_CONSOLE_TEXT << "Error setting up Mavlink FTP server." << std::endl;
         return 1;
     }
-    System& system_cc = mavsdk.system();
+
+    auto system_cc = mavsdk.systems().at(0);
 
     auto ftp_server = std::make_shared<Ftp>(system_cc);
     ftp_server->set_root_directory(argv[3]);

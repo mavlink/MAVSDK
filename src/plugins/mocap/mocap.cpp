@@ -21,6 +21,8 @@ using Odometry = Mocap::Odometry;
 
 Mocap::Mocap(System& system) : PluginBase(), _impl{new MocapImpl(system)} {}
 
+Mocap::Mocap(std::shared_ptr<System> system) : PluginBase(), _impl{new MocapImpl(system)} {}
+
 Mocap::~Mocap() {}
 
 Mocap::Result

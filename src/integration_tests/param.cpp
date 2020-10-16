@@ -7,16 +7,16 @@ using namespace mavsdk;
 
 TEST_F(SitlTest, ParamSad)
 {
-    Mavsdk dc;
+    Mavsdk mavsdk;
 
-    ConnectionResult ret = dc.add_udp_connection();
+    ConnectionResult ret = mavsdk.add_udp_connection();
     ASSERT_EQ(ret, ConnectionResult::Success);
 
     // Wait for system to connect via heartbeat.
     std::this_thread::sleep_for(std::chrono::seconds(2));
 
-    auto& system = dc.system();
-    ASSERT_TRUE(system.has_autopilot());
+    auto system = mavsdk.systems().at(0);
+    ASSERT_TRUE(system->has_autopilot());
 
     auto param = std::make_shared<Param>(system);
 
@@ -45,16 +45,16 @@ TEST_F(SitlTest, ParamSad)
 
 TEST_F(SitlTest, ParamHappy)
 {
-    Mavsdk dc;
+    Mavsdk mavsdk;
 
-    ConnectionResult ret = dc.add_udp_connection();
+    ConnectionResult ret = mavsdk.add_udp_connection();
     ASSERT_EQ(ret, ConnectionResult::Success);
 
     // Wait for system to connect via heartbeat.
     std::this_thread::sleep_for(std::chrono::seconds(2));
 
-    auto& system = dc.system();
-    ASSERT_TRUE(system.has_autopilot());
+    auto system = mavsdk.systems().at(0);
+    ASSERT_TRUE(system->has_autopilot());
 
     auto param = std::make_shared<Param>(system);
 

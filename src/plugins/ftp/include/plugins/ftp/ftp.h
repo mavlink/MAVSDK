@@ -31,12 +31,25 @@ public:
      * The plugin is typically created as shown below:
      *
      *     ```cpp
-     *     auto ftp = std::make_shared<Ftp>(system);
+     *     auto ftp = Ftp(system);
      *     ```
      *
      * @param system The specific system associated with this plugin.
      */
-    explicit Ftp(System& system);
+    explicit Ftp(System& system); // deprecated
+
+    /**
+     * @brief Constructor. Creates the plugin for a specific System.
+     *
+     * The plugin is typically created as shown below:
+     *
+     *     ```cpp
+     *     auto ftp = Ftp(system);
+     *     ```
+     *
+     * @param system The specific system associated with this plugin.
+     */
+    explicit Ftp(std::shared_ptr<System> system); // new
 
     /**
      * @brief Destructor (internal use only).
@@ -264,9 +277,9 @@ public:
     uint32_t get_our_compid() const;
 
     /**
-     * @brief Copy constructor (object is not copyable).
+     * @brief Copy constructor.
      */
-    Ftp(const Ftp&) = delete;
+    Ftp(const Ftp& other);
 
     /**
      * @brief Equality operator (object is not copyable).

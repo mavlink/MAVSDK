@@ -10,7 +10,8 @@ namespace mavsdk {
 
 class CameraImpl : public PluginImplBase {
 public:
-    CameraImpl(System& system);
+    explicit CameraImpl(System& system);
+    explicit CameraImpl(std::shared_ptr<System> system);
     ~CameraImpl();
 
     void init() override;
@@ -19,7 +20,7 @@ public:
     void enable() override;
     void disable() override;
 
-    Camera::Result select_camera(unsigned id);
+    Camera::Result select_camera(size_t id);
 
     Camera::Result take_photo();
 
@@ -167,7 +168,7 @@ private:
 
     std::unique_ptr<CameraDefinition> _camera_definition{};
 
-    std::atomic<unsigned> _camera_id{0};
+    std::atomic<size_t> _camera_id{0};
     std::atomic<bool> _camera_found{false};
 
     struct {

@@ -197,9 +197,13 @@ int main(int argc, char** argv)
     auto future_result = prom->get_future();
 
     std::cout << NORMAL_CONSOLE_TEXT << "Waiting to discover system..." << std::endl;
-    mavsdk.register_on_discover([prom](uint64_t uuid) {
-        std::cout << "Discovered system with UUID: " << uuid << std::endl;
-        prom->set_value();
+    mavsdk.subscribe_on_new_system([&mavsdk, prom]() {
+        const auto system = mavsdk.systems().at(0);
+
+        if (system->is_connected()) {
+            std::cout << "Discovered system" << std::endl;
+            prom->set_value();
+        }
     });
 
     std::string connection_url;
@@ -227,7 +231,7 @@ int main(int argc, char** argv)
 
     future_result.get();
 
-    System& system = mavsdk.system();
+    auto system = mavsdk.systems().at(0);
     auto ftp = std::make_shared<Ftp>(system);
     try {
         ftp->set_target_compid(std::stoi(argv[2]));

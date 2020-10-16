@@ -9,7 +9,8 @@ namespace mavsdk {
 
 class GimbalImpl : public PluginImplBase {
 public:
-    GimbalImpl(System& system);
+    explicit GimbalImpl(System& system);
+    explicit GimbalImpl(std::shared_ptr<System> system);
     ~GimbalImpl();
 
     void init() override;

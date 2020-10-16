@@ -39,12 +39,25 @@ public:
      * The plugin is typically created as shown below:
      *
      *     ```cpp
-     *     auto offboard = std::make_shared<Offboard>(system);
+     *     auto offboard = Offboard(system);
      *     ```
      *
      * @param system The specific system associated with this plugin.
      */
-    explicit Offboard(System& system);
+    explicit Offboard(System& system); // deprecated
+
+    /**
+     * @brief Constructor. Creates the plugin for a specific System.
+     *
+     * The plugin is typically created as shown below:
+     *
+     *     ```cpp
+     *     auto offboard = Offboard(system);
+     *     ```
+     *
+     * @param system The specific system associated with this plugin.
+     */
+    explicit Offboard(std::shared_ptr<System> system); // new
 
     /**
      * @brief Destructor (internal use only).
@@ -378,9 +391,9 @@ public:
     Result set_velocity_ned(VelocityNedYaw velocity_ned_yaw) const;
 
     /**
-     * @brief Copy constructor (object is not copyable).
+     * @brief Copy constructor.
      */
-    Offboard(const Offboard&) = delete;
+    Offboard(const Offboard& other);
 
     /**
      * @brief Equality operator (object is not copyable).

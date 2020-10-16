@@ -20,13 +20,13 @@ static void usage(const std::string& bin_name);
 
 int main(int argc, char** argv)
 {
-    Mavsdk dc;
+    Mavsdk mavsdk;
     std::string connection_url;
     ConnectionResult connection_result;
 
     if (argc == 2) {
         connection_url = argv[1];
-        connection_result = dc.add_any_connection(connection_url);
+        connection_result = mavsdk.add_any_connection(connection_url);
     } else {
         usage(argv[0]);
         return 1;
@@ -40,14 +40,20 @@ int main(int argc, char** argv)
     std::promise<void> prom;
     std::future<void> fut = prom.get_future();
     std::cout << "Waiting to discover system..." << std::endl;
-    dc.register_on_discover([&prom](uint64_t /* uuid*/) { prom.set_value(); });
+    mavsdk.subscribe_on_new_system([&mavsdk, &prom]() {
+        const auto system = mavsdk.systems().at(0);
+
+        if (system->is_connected()) {
+            prom.set_value();
+        }
+    });
 
     if (fut.wait_for(std::chrono::seconds(2)) != std::future_status::ready) {
         std::cout << "No device found, exiting." << std::endl;
         return 1;
     }
 
-    System& system = dc.system();
+    auto system = mavsdk.systems().at(0);
 
     auto telemetry = std::make_shared<Telemetry>(system);
     auto mavlink_passthrough = std::make_shared<MavlinkPassthrough>(system);

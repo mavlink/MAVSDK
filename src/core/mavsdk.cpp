@@ -5,7 +5,10 @@
 
 namespace mavsdk {
 
-Mavsdk::Mavsdk() : _impl{new MavsdkImpl()} {}
+Mavsdk::Mavsdk()
+{
+    _impl = std::make_shared<MavsdkImpl>();
+}
 
 Mavsdk::~Mavsdk() {}
 
@@ -45,6 +48,11 @@ Mavsdk::add_serial_connection(const std::string& dev_path, const int baudrate, b
     return _impl->add_serial_connection(dev_path, baudrate, flow_control);
 }
 
+std::vector<std::shared_ptr<System>> Mavsdk::systems() const
+{
+    return _impl->systems();
+}
+
 void Mavsdk::set_configuration(Configuration configuration)
 {
     _impl->set_configuration(configuration);
@@ -73,6 +81,11 @@ bool Mavsdk::is_connected() const
 bool Mavsdk::is_connected(const uint64_t uuid) const
 {
     return _impl->is_connected(uuid);
+}
+
+void Mavsdk::subscribe_on_new_system(const NewSystemCallback callback)
+{
+    _impl->subscribe_on_new_system(callback);
 }
 
 void Mavsdk::register_on_discover(const event_callback_t callback)
@@ -116,8 +129,6 @@ Mavsdk::Configuration::Configuration(UsageType usage_type) :
             break;
     }
 }
-
-Mavsdk::Configuration::~Configuration() {}
 
 uint8_t Mavsdk::Configuration::get_system_id() const
 {

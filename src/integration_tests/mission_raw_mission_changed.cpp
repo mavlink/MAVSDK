@@ -16,17 +16,17 @@ static void validate_items(const std::vector<MissionRaw::MissionItem>& items);
 
 TEST_F(SitlTest, MissionRawMissionChanged)
 {
-    Mavsdk dc;
+    Mavsdk mavsdk;
 
-    ConnectionResult ret = dc.add_udp_connection();
+    ConnectionResult ret = mavsdk.add_udp_connection();
     ASSERT_EQ(ret, ConnectionResult::Success);
 
     // Wait for system to connect via heartbeat.
     std::this_thread::sleep_for(std::chrono::seconds(2));
-    ASSERT_TRUE(dc.is_connected());
 
-    System& system = dc.system();
-    ASSERT_TRUE(system.has_autopilot());
+    auto system = mavsdk.systems().at(0);
+    ASSERT_TRUE(system->is_connected());
+    ASSERT_TRUE(system->has_autopilot());
 
     auto mission_raw = std::make_shared<MissionRaw>(system);
 

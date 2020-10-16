@@ -20,7 +20,8 @@ namespace mavsdk {
 
 class FtpImpl : public PluginImplBase {
 public:
-    FtpImpl(System& system);
+    explicit FtpImpl(System& system);
+    explicit FtpImpl(std::shared_ptr<System> system);
     FtpImpl(const FtpImpl&) = delete;
     const FtpImpl& operator=(const FtpImpl&) = delete;
 

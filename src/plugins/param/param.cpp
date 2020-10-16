@@ -15,6 +15,8 @@ using AllParams = Param::AllParams;
 
 Param::Param(System& system) : PluginBase(), _impl{new ParamImpl(system)} {}
 
+Param::Param(std::shared_ptr<System> system) : PluginBase(), _impl{new ParamImpl(system)} {}
+
 Param::~Param() {}
 
 std::pair<Param::Result, int32_t> Param::get_param_int(std::string name) const

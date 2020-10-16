@@ -16,6 +16,11 @@ CalibrationImpl::CalibrationImpl(System& system) : PluginImplBase(system)
     _parent->register_plugin(this);
 }
 
+CalibrationImpl::CalibrationImpl(std::shared_ptr<System> system) : PluginImplBase(system)
+{
+    _parent->register_plugin(this);
+}
+
 CalibrationImpl::~CalibrationImpl()
 {
     _parent->unregister_plugin(this);

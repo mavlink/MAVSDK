@@ -10,7 +10,8 @@ namespace mavsdk {
 
 class LogFilesImpl : public PluginImplBase {
 public:
-    LogFilesImpl(System& system);
+    explicit LogFilesImpl(System& system);
+    explicit LogFilesImpl(std::shared_ptr<System> system);
     ~LogFilesImpl();
 
     void init() override;

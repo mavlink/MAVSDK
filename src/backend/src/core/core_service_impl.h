@@ -10,8 +10,8 @@ namespace backend {
 template<typename Mavsdk = Mavsdk>
 class CoreServiceImpl final : public mavsdk::rpc::core::CoreService::Service {
 public:
-    CoreServiceImpl(Mavsdk& dc) :
-        _dc(dc),
+    CoreServiceImpl(Mavsdk& mavsdk) :
+        _mavsdk(mavsdk),
         _stop_promise(std::promise<void>()),
         _stop_future(_stop_promise.get_future())
     {}
@@ -23,19 +23,16 @@ public:
     {
         std::mutex connection_state_mutex{};
 
-        _dc.register_on_discover([&writer, &connection_state_mutex](const uint64_t uuid) {
-            const auto rpc_connection_state_response = createRpcConnectionStateResponse(uuid, true);
+        _mavsdk.subscribe_on_new_system([this, &writer, &connection_state_mutex]() {
+            auto systems = _mavsdk.systems();
 
-            std::lock_guard<std::mutex> lock(connection_state_mutex);
-            writer->Write(rpc_connection_state_response);
-        });
+            for (auto system : systems) {
+                const auto rpc_connection_state_response =
+                    createRpcConnectionStateResponse(system->is_connected());
 
-        _dc.register_on_timeout([&writer, &connection_state_mutex](const uint64_t uuid) {
-            const auto rpc_connection_state_response =
-                createRpcConnectionStateResponse(uuid, false);
-
-            std::lock_guard<std::mutex> lock(connection_state_mutex);
-            writer->Write(rpc_connection_state_response);
+                std::lock_guard<std::mutex> lock(connection_state_mutex);
+                writer->Write(rpc_connection_state_response);
+            }
         });
 
         _stop_future.wait();
@@ -76,18 +73,17 @@ public:
     void stop() { _stop_promise.set_value(); }
 
 private:
-    Mavsdk& _dc;
+    Mavsdk& _mavsdk;
     std::promise<void> _stop_promise;
 
     std::future<void> _stop_future;
 
     static mavsdk::rpc::core::ConnectionStateResponse
-    createRpcConnectionStateResponse(const uint64_t uuid, const bool is_connected)
+    createRpcConnectionStateResponse(const bool is_connected)
     {
         mavsdk::rpc::core::ConnectionStateResponse rpc_connection_state_response;
 
         auto* rpc_connection_state = rpc_connection_state_response.mutable_connection_state();
-        rpc_connection_state->set_uuid(uuid);
         rpc_connection_state->set_is_connected(is_connected);
 
         return rpc_connection_state_response;

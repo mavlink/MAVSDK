@@ -169,7 +169,7 @@ TEST(FtpTest, ListDirectory)
 
     ConnectionResult ret = mavsdk.add_udp_connection();
     ASSERT_EQ(ret, ConnectionResult::Success);
-    System& system = mavsdk.system();
+    auto system = mavsdk.systems().at(0);
     auto ftp = std::make_shared<Ftp>(system);
 
     // Wait for system to connect via heartbeat.
@@ -186,7 +186,7 @@ TEST(FtpTest, DownloadFile)
 
     ConnectionResult ret = mavsdk.add_udp_connection();
     ASSERT_EQ(ret, ConnectionResult::Success);
-    System& system = mavsdk.system();
+    auto system = mavsdk.systems().at(0);
     auto ftp = std::make_shared<Ftp>(system);
 
     // Wait for system to connect via heartbeat.
@@ -218,7 +218,7 @@ TEST(FtpTest, UploadFiles)
 
     ConnectionResult ret = mavsdk.add_udp_connection();
     ASSERT_EQ(ret, ConnectionResult::Success);
-    System& system = mavsdk.system();
+    auto system = mavsdk.systems().at(0);
     auto ftp = std::make_shared<Ftp>(system);
 
     // Wait for system to connect via heartbeat.
@@ -282,14 +282,14 @@ TEST(FtpTest, TestServer)
     mavsdk_gcs.set_configuration(config_gcs);
     ret = mavsdk_gcs.add_udp_connection(24550);
     ASSERT_EQ(ret, ConnectionResult::Success);
-    System& system_gcs = mavsdk_gcs.system();
+    auto system_gcs = mavsdk_gcs.systems().at(0);
 
     Mavsdk mavsdk_cc;
     Mavsdk::Configuration config_cc(Mavsdk::Configuration::UsageType::GroundStation);
     mavsdk_cc.set_configuration(config_cc);
     ret = mavsdk_cc.setup_udp_remote("127.0.0.1", 24550);
     ASSERT_EQ(ret, ConnectionResult::Success);
-    System& system_cc = mavsdk_cc.system();
+    auto system_cc = mavsdk_cc.systems().at(0);
 
     auto mavlink_passthrough_cc = std::make_shared<MavlinkPassthrough>(system_cc);
     mavlink_passthrough_cc->intercept_incoming_messages_async([this](mavlink_message_t& message) {

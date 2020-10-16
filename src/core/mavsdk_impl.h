@@ -49,6 +49,8 @@ public:
     add_serial_connection(const std::string& dev_path, int baudrate, bool flow_control);
     ConnectionResult setup_udp_remote(const std::string& remote_ip, int remote_port);
 
+    std::vector<std::shared_ptr<System>> systems() const;
+
     void set_configuration(Mavsdk::Configuration configuration);
 
     std::vector<uint64_t> get_system_uuids() const;
@@ -62,6 +64,7 @@ public:
     bool is_connected() const;
     bool is_connected(uint64_t uuid) const;
 
+    void subscribe_on_new_system(Mavsdk::NewSystemCallback callback);
     void register_on_discover(Mavsdk::event_callback_t callback);
     void register_on_timeout(Mavsdk::event_callback_t callback);
 
@@ -85,18 +88,21 @@ private:
 
     using system_entry_t = std::pair<uint8_t, std::shared_ptr<System>>;
 
-    std::mutex _connections_mutex;
-    std::vector<std::shared_ptr<Connection>> _connections;
+    std::mutex _connections_mutex{};
+    std::vector<std::shared_ptr<Connection>> _connections{};
 
-    mutable std::recursive_mutex _systems_mutex;
-    std::unordered_map<uint8_t, std::shared_ptr<System>> _systems;
+    mutable std::recursive_mutex _systems_mutex{};
+    std::unordered_map<uint8_t, std::shared_ptr<System>> _systems{};
 
-    Mavsdk::event_callback_t _on_discover_callback;
-    Mavsdk::event_callback_t _on_timeout_callback;
+    std::mutex _new_system_callback_mutex{};
+    Mavsdk::NewSystemCallback _new_system_callback{nullptr};
+
+    Mavsdk::event_callback_t _on_discover_callback{nullptr};
+    Mavsdk::event_callback_t _on_timeout_callback{nullptr};
 
     Time _time{};
 
-    Mavsdk::Configuration _configuration;
+    Mavsdk::Configuration _configuration{Mavsdk::Configuration::UsageType::GroundStation};
     bool _is_single_system{false};
 
     struct UserCallback {

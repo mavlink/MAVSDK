@@ -37,6 +37,11 @@ using Imu = Telemetry::Imu;
 
 Telemetry::Telemetry(System& system) : PluginBase(), _impl{new TelemetryImpl(system)} {}
 
+Telemetry::Telemetry(std::shared_ptr<System> system) :
+    PluginBase(),
+    _impl{new TelemetryImpl(system)}
+{}
+
 Telemetry::~Telemetry() {}
 
 void Telemetry::subscribe_position(PositionCallback callback)

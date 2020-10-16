@@ -25,6 +25,11 @@ ShellImpl::ShellImpl(System& system) : PluginImplBase(system)
     _parent->register_plugin(this);
 }
 
+ShellImpl::ShellImpl(std::shared_ptr<System> system) : PluginImplBase(system)
+{
+    _parent->register_plugin(this);
+}
+
 ShellImpl::~ShellImpl()
 {
     _parent->unregister_plugin(this);

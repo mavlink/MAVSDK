@@ -31,12 +31,25 @@ public:
      * The plugin is typically created as shown below:
      *
      *     ```cpp
-     *     auto failure = std::make_shared<Failure>(system);
+     *     auto failure = Failure(system);
      *     ```
      *
      * @param system The specific system associated with this plugin.
      */
-    explicit Failure(System& system);
+    explicit Failure(System& system); // deprecated
+
+    /**
+     * @brief Constructor. Creates the plugin for a specific System.
+     *
+     * The plugin is typically created as shown below:
+     *
+     *     ```cpp
+     *     auto failure = Failure(system);
+     *     ```
+     *
+     * @param system The specific system associated with this plugin.
+     */
+    explicit Failure(std::shared_ptr<System> system); // new
 
     /**
      * @brief Destructor (internal use only).
@@ -128,9 +141,9 @@ public:
     Result inject(FailureUnit failure_unit, FailureType failure_type, int32_t instance) const;
 
     /**
-     * @brief Copy constructor (object is not copyable).
+     * @brief Copy constructor.
      */
-    Failure(const Failure&) = delete;
+    Failure(const Failure& other);
 
     /**
      * @brief Equality operator (object is not copyable).

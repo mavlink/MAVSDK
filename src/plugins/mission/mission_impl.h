@@ -15,7 +15,8 @@ namespace mavsdk {
 
 class MissionImpl : public PluginImplBase {
 public:
-    MissionImpl(System& system);
+    explicit MissionImpl(System& system);
+    explicit MissionImpl(std::shared_ptr<System> system);
     ~MissionImpl();
 
     void init() override;

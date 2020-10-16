@@ -8,6 +8,11 @@ MavlinkPassthrough::MavlinkPassthrough(System& system) :
     _impl{new MavlinkPassthroughImpl(system)}
 {}
 
+MavlinkPassthrough::MavlinkPassthrough(std::shared_ptr<System> system) :
+    PluginBase(),
+    _impl{new MavlinkPassthroughImpl(system)}
+{}
+
 MavlinkPassthrough::~MavlinkPassthrough() {}
 
 MavlinkPassthrough::Result MavlinkPassthrough::send_message(mavlink_message_t& message)

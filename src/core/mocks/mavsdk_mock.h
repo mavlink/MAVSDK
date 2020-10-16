@@ -1,18 +1,22 @@
+#pragma once
+
 #include <string>
+#include <memory>
 #include <gmock/gmock.h>
 
 #include "connection_result.h"
+#include "system_mock.h"
 
 namespace mavsdk {
 namespace testing {
 
-typedef std::function<void(uint64_t uuid)> event_callback_t;
+typedef std::function<void()> NewSystemCallback;
 
 class MockMavsdk {
 public:
     MOCK_CONST_METHOD1(add_any_connection, ConnectionResult(const std::string&)){};
-    MOCK_CONST_METHOD1(register_on_discover, void(event_callback_t)){};
-    MOCK_CONST_METHOD1(register_on_timeout, void(event_callback_t)){};
+    MOCK_CONST_METHOD1(subscribe_on_new_system, void(NewSystemCallback)){};
+    MOCK_CONST_METHOD0(systems, std::vector<std::shared_ptr<MockSystem>>()){};
 };
 
 } // namespace testing
