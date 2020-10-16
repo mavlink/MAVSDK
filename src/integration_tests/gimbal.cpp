@@ -45,10 +45,9 @@ TEST(SitlTestGimbal, GimbalMove)
 
     telemetry->subscribe_camera_attitude_euler(&receive_gimbal_attitude_euler_angles);
 
-    for (int i = 0; i < 500; i += 1) {
-        send_new_gimbal_command(gimbal, i);
-        std::this_thread::sleep_for(std::chrono::milliseconds(10));
-    }
+    EXPECT_EQ(gimbal->set_mode(Gimbal::GimbalMode::YawFollow), Gimbal::Result::Success);
+
+    gimbal_pattern(gimbal);
 }
 
 TEST(SitlTestGimbal, GimbalTakeoffAndMove)
@@ -121,38 +120,42 @@ void gimbal_pattern(std::shared_ptr<Gimbal> gimbal)
     std::this_thread::sleep_for(std::chrono::seconds(1));
 
     // Look right
-    for (int i = 0; i < 90; ++i) {
+    for (int i = 0; i < 60; ++i) {
         gimbal->set_pitch_and_yaw_async(0.0f, static_cast<float>(i), &receive_gimbal_result);
-        std::this_thread::sleep_for(std::chrono::milliseconds(20));
+        std::this_thread::sleep_for(std::chrono::milliseconds(50));
     }
     std::this_thread::sleep_for(std::chrono::seconds(1));
 
     // Look left
-    for (int i = 90; i >= -90; --i) {
+    for (int i = 60; i >= -60; --i) {
         gimbal->set_pitch_and_yaw_async(0.0f, static_cast<float>(i), &receive_gimbal_result);
-        std::this_thread::sleep_for(std::chrono::milliseconds(20));
+        std::this_thread::sleep_for(std::chrono::milliseconds(50));
     }
     std::this_thread::sleep_for(std::chrono::seconds(1));
 
-    // Look forward
-    for (int i = -90; i <= 0; ++i) {
+    // Look up
+    for (int i = -60; i <= 0; ++i) {
         gimbal->set_pitch_and_yaw_async(0.0f, static_cast<float>(i), &receive_gimbal_result);
-        std::this_thread::sleep_for(std::chrono::milliseconds(20));
+        std::this_thread::sleep_for(std::chrono::milliseconds(50));
     }
     std::this_thread::sleep_for(std::chrono::seconds(1));
 
     // Tilt down
-    for (int i = 0; i > -90; --i) {
+    for (int i = 0; i > -60; --i) {
         gimbal->set_pitch_and_yaw_async(static_cast<float>(i), 0.0f, &receive_gimbal_result);
-        std::this_thread::sleep_for(std::chrono::milliseconds(20));
+        std::this_thread::sleep_for(std::chrono::milliseconds(50));
     }
     std::this_thread::sleep_for(std::chrono::seconds(1));
 
     // And back up
-    for (int i = -90; i <= 0; ++i) {
+    for (int i = -60; i <= 0; ++i) {
         gimbal->set_pitch_and_yaw_async(static_cast<float>(i), 0.0f, &receive_gimbal_result);
-        std::this_thread::sleep_for(std::chrono::milliseconds(20));
+        std::this_thread::sleep_for(std::chrono::milliseconds(50));
     }
+
+    // Look forward
+    gimbal->set_pitch_and_yaw_async(0.0f, 0.0f, &receive_gimbal_result);
+    std::this_thread::sleep_for(std::chrono::seconds(1));
 }
 
 TEST(SitlTestGimbal, GimbalROIOffboard)
