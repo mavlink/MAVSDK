@@ -908,7 +908,7 @@ void MissionImpl::assemble_mission_items()
             LogDebug() << "Assembling Message: " << int(it->seq);
 
             if (it->command == MAV_CMD_NAV_WAYPOINT || it->command == MAV_CMD_NAV_TAKEOFF ||
-                    it->command == MAV_CMD_NAV_LAND || it->command ==MAV_CMD_NAV_VTOL_TAKEOFF || it->command == MAV_CMD_NAV_VTOL_LAND || it->command == MAV_CMD_DO_VTOL_TRANSITION) {
+                    it->command == MAV_CMD_NAV_LAND || it->command ==MAV_CMD_NAV_VTOL_TAKEOFF || it->command == MAV_CMD_NAV_VTOL_LAND || it->command == MAV_CMD_DO_VTOL_TRANSITION || it->command == MAV_CMD_DO_JUMP) {
                 if (it->frame != MAV_FRAME_GLOBAL_RELATIVE_ALT_INT) {
                     LogErr() << "Waypoint frame not supported unsupported";
                     result = Mission::Result::UNSUPPORTED;
@@ -1541,7 +1541,7 @@ Mission::Result MissionImpl::build_mission_items(
     // Choosen "Do-While(0)" loop for the convenience of using `break` statement.
     do {
         if (command == MAV_CMD_NAV_WAYPOINT || command == MAV_CMD_NAV_TAKEOFF ||
-            command == MAV_CMD_NAV_LAND || command ==MAV_CMD_NAV_VTOL_TAKEOFF || command ==MAV_CMD_NAV_VTOL_LAND || command==MAV_CMD_DO_VTOL_TRANSITION || command==MAV_CMD_DO_JUMP) {
+            command == MAV_CMD_NAV_LAND || command ==MAV_CMD_NAV_VTOL_TAKEOFF || command ==MAV_CMD_NAV_VTOL_LAND || command==MAV_CMD_DO_VTOL_TRANSITION) {
 
             if (new_mission_item->has_position_set()) {
                 all_mission_items.push_back(new_mission_item);
@@ -1565,7 +1565,7 @@ Mission::Result MissionImpl::build_mission_items(
                     new_mission_item->set_transition_mode(MAV_VTOL_STATE_FW);
                 }
             }
-            if(command == MAV_CMD_DO_JUMP) {
+            if(command == MAV_CMD_DO_JUMP){
                 new_mission_item->set_cmd(MAV_CMD_DO_JUMP);
                 new_mission_item->set_frame(MAV_FRAME_MISSION);
                 new_mission_item->set_jump_item(params[0]);
