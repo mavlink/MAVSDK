@@ -1,4 +1,4 @@
-offboard_include = include_directories('include')
+offboard_include = include_directories(['include'])
 
 # TODO: target properties
 offboard = shared_library('mavsdk_offboard',
@@ -8,4 +8,13 @@ offboard = shared_library('mavsdk_offboard',
   install: true
 )
 
-install_headers('include/plugins/offboard/offboard.h')
+pkg.generate(
+  libraries: [offboard],
+  subdirs: ['mavsdk/plugins/offboard', 'mavsdk/'],
+  version: version_str,
+  name: 'mavsdk_offboard',
+  description: 'API and library for MAVLink compatible systems written in C++11'
+)
+
+install_headers('include/plugins/offboard/offboard.h',
+  subdir: 'mavsdk/plugins/offboard')

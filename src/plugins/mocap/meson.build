@@ -1,4 +1,4 @@
-mocap_include = include_directories('include')
+mocap_include = include_directories(['include'])
 
 # TODO: target properties
 mocap = shared_library('mavsdk_mocap',
@@ -8,4 +8,13 @@ mocap = shared_library('mavsdk_mocap',
   install: true
 )
 
-install_headers('include/plugins/mocap/mocap.h')
+pkg.generate(
+  libraries: [mocap],
+  subdirs: ['mavsdk/plugins/mocap', 'mavsdk/'],
+  version: version_str,
+  name: 'mavsdk_mocap',
+  description: 'API and library for MAVLink compatible systems written in C++11'
+)
+
+install_headers('include/plugins/mocap/mocap.h',
+  subdir: 'mavsdk/plugins/mocap')

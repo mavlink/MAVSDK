@@ -1,4 +1,4 @@
-ftp_include = include_directories('include')
+ftp_include = include_directories(['include'])
 
 # TODO: target properties
 ftp = shared_library('mavsdk_ftp',
@@ -8,4 +8,13 @@ ftp = shared_library('mavsdk_ftp',
   install: true
 )
 
-install_headers('include/plugins/ftp/ftp.h')
+pkg.generate(
+  libraries: [ftp],
+  subdirs: ['mavsdk/plugins/ftp', 'mavsdk/'],
+  version: version_str,
+  name: 'mavsdk_ftp',
+  description: 'API and library for MAVLink compatible systems written in C++11'
+)
+
+install_headers('include/plugins/ftp/ftp.h',
+  subdir: 'mavsdk/plugins/ftp')

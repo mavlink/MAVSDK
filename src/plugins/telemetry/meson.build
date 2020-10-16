@@ -9,8 +9,8 @@ telemetry = shared_library('mavsdk_telemetry',
 )
 
 pkg.generate(
-  libraries: telemetry,
-  subdirs: ['include'],
+  libraries: [telemetry],
+  subdirs: ['mavsdk/plugins/telemetry', 'mavsdk/'],
   version: version_str,
   name: 'mavsdk_telemetry',
   description: 'API and library for MAVLink compatible systems written in C++11'

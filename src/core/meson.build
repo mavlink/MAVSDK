@@ -42,7 +42,7 @@ mavsdk_sources = [
 mavsdk_lib = shared_library('mavsdk',
   mavsdk_sources,
   include_directories: mavlink_include,
-  dependencies: [threads, curl],
+  dependencies: [threads, curl_dep],
   install: true
 )
 

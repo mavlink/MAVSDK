@@ -1,4 +1,4 @@
-gimbal_include = include_directories('include')
+gimbal_include = include_directories(['include'])
 
 # TODO: target properties
 gimbal = shared_library('mavsdk_gimbal',
@@ -8,4 +8,13 @@ gimbal = shared_library('mavsdk_gimbal',
   install: true
 )
 
-install_headers('include/plugins/gimbal/gimbal.h')
+pkg.generate(
+  libraries: [gimbal],
+  subdirs: ['mavsdk/plugins/gimbal', 'mavsdk/'],
+  version: version_str,
+  name: 'mavsdk_gimbal',
+  description: 'API and library for MAVLink compatible systems written in C++11'
+)
+
+install_headers('include/plugins/gimbal/gimbal.h',
+  subdir: 'mavsdk/plugins/gimbal')
