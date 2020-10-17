@@ -132,24 +132,65 @@ jobs:
       - name: test (mavsdk_server)
         run: ./build/release/src/backend/test/unit_tests_backend
 
-  alpine-linux-arm32v7:
-    name: alpine arm32v7 (musl)
+  alpine-linux-qemu:
     runs-on: ubuntu-18.04
-    container: arm32v7/alpine
+    name: Build on alpine for ${{ matrix.arch }}
+
+    strategy:
+      matrix:
+        include:
+          - arch: armv6
+            distro: alpine_latest
+          - arch: armv7
+            distro: alpine_latest
+          - arch: aarch64
+            distro: alpine_latest
+
     steps:
-      - name: install tools
-        run: apk update && apk add build-base cmake git linux-headers libexecinfo-dev
       - uses: actions/checkout@v2
         with:
           submodules: recursive
-      - name: configure
-        run: cmake -DCMAKE_BUILD_TYPE=Release -DBUILD_BACKEND=ON -DBUILD_SHARED_LIBS=OFF -DBUILD_STATIC_MAVSDK_SERVER=ON -DCMAKE_INSTALL_PREFIX=install -DWERROR=ON -j 2 -Bbuild/release -H.
-      - name: build
-        run: cmake --build build/release --target install -- -j2
-      - name: test
-        run: ./build/release/src/unit_tests_runner
-      - name: test (mavsdk_server)
-        run: ./build/release/src/backend/test/unit_tests_backend
+      - uses: uraimo/run-on-arch-action@v2.0.6
+        name: Build
+        id: build
+        with:
+          arch: ${{ matrix.arch }}
+          distro: ${{ matrix.distro }}
+
+          # Not required, but speeds up builds
+          githubToken: ${{ github.token }}
+
+          # Mount the source directory in the container
+          dockerRunArgs: |
+            --volume "${PWD}:/root/MAVSDK"
+
+          # Pass some environment variables to the container
+          #env: | # YAML, but pipe character is necessary
+          #  artifact_name: git-${{ matrix.distro }}_${{ matrix.arch }}
+
+          # The shell to run commands with in the container
+          shell: /bin/sh
+
+          # Install some dependencies in the container. This speeds up builds if
+          # you are also using githubToken. Any dependencies installed here will
+          # be part of the container image that gets cached, so subsequent
+          # builds don't have to re-install them. The image layer is cached
+          # publicly in your project's package repository, so it is vital that
+          # no secrets are present in the container state or logs.
+          install: |
+            apk update
+            apk add build-base cmake git linux-headers libexecinfo-dev
+
+          run: |
+            cd /root/MAVSDK
+            cmake -DCMAKE_BUILD_TYPE=Release -DBUILD_BACKEND=ON -DBUILD_SHARED_LIBS=OFF -DBUILD_STATIC_MAVSDK_SERVER=ON -DCMAKE_INSTALL_PREFIX=install -DWERROR=ON -j 2 -Bbuild/release -H.
+            cmake --build build/release --target install -- -j2
+            ./build/release/src/unit_tests_runner
+            ./build/release/src/backend/test/unit_tests_backend
+
+      - name: Check the artifact
+        run: |
+          file "${PWD}/install/bin/mavsdk_server"
 
   px4-sitl-older:
     name: PX4 SITL ${{ matrix.px4_version }} (ubuntu-18.04)
