@@ -45,6 +45,6 @@ TEST(Geoemtry, LocalToGlobalAndBack)
     CoordinateTransformation::LocalCoordinate location{-140.0, 240.0};
     auto location_again = ct.local_from_global(ct.global_from_local(location));
 
-    EXPECT_NEAR(location.north_m, location_again.north_m, 1e-9);
-    EXPECT_NEAR(location.east_m, location_again.east_m, 1e-9);
+    EXPECT_NEAR(location.north_m, location_again.north_m, 1e-8);
+    EXPECT_NEAR(location.east_m, location_again.east_m, 1e-8);
 }
