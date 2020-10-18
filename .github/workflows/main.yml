@@ -150,6 +150,21 @@ jobs:
       - uses: actions/checkout@v2
         with:
           submodules: recursive
+
+      - name: Prepare ccache timestamp
+        id: ccache_cache_timestamp
+        shell: cmake -P {0}
+        run: |
+          string(TIMESTAMP current_date "%Y-%m-%d-%H;%M;%S" UTC)
+          message("::set-output name=timestamp::${current_date}")
+      - name: ccache cache files
+        uses: actions/cache@v1.1.0
+        with:
+          path: .ccache
+          key: ${{ matrix.arch }}-ccache-${{ steps.ccache_cache_timestamp.outputs.timestamp }}
+          restore-keys: |
+            ${{ matrix.arch }}-ccache-
+
       - uses: uraimo/run-on-arch-action@v2.0.6
         name: Build
         id: build
@@ -163,6 +178,7 @@ jobs:
           # Mount the source directory in the container
           dockerRunArgs: |
             --volume "${PWD}:/root/MAVSDK"
+            --volume "${PWD}/.ccache:/root/.ccache"
 
           # Pass some environment variables to the container
           #env: | # YAML, but pipe character is necessary
@@ -179,14 +195,19 @@ jobs:
           # no secrets are present in the container state or logs.
           install: |
             apk update
-            apk add build-base cmake git linux-headers libexecinfo-dev
+            apk add build-base cmake git linux-headers libexecinfo-dev ccache
 
           run: |
             cd /root/MAVSDK
+            export CC=/usr/lib/ccache/bin/gcc
+            export CXX=/usr/lib/ccache/bin/g++
+            export CCACHE_COMPRESS="true"
+            export CCACHE_MAXSIZE="400M"
             cmake -DCMAKE_BUILD_TYPE=Release -DBUILD_BACKEND=ON -DBUILD_SHARED_LIBS=OFF -DBUILD_STATIC_MAVSDK_SERVER=ON -DCMAKE_INSTALL_PREFIX=install -DWERROR=ON -j 2 -Bbuild/release -H.
             cmake --build build/release --target install -- -j2
             ./build/release/src/unit_tests_runner
             ./build/release/src/backend/test/unit_tests_backend
+            ccache -s
 
       - name: Check the artifact
         run: |
