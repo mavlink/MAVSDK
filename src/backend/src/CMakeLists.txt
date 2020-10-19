@@ -88,6 +88,13 @@ if(NOT IOS AND NOT ANDROID)
         mavsdk
     )
 
+    if (BUILD_STATIC_MAVSDK_SERVER)
+        target_link_options(mavsdk_server_bin PRIVATE -static-libgcc -static-libstdc++ -static)
+        set(CMAKE_FIND_LIBRARY_SUFFIXES ".a")
+        set_target_properties(mavsdk_server_bin PROPERTIES LINK_SEARCH_START_STATIC ON)
+        set_target_properties(mavsdk_server_bin PROPERTIES LINK_SEARCH_END_STATIC ON)
+    endif()
+
     # MSVC fails to generate the `mavsdk_server` binary while having
     # a library called `mavsdk_server` as well. This means that with
     # MSVC, we build `mavsdk_server_bin.exe`.
