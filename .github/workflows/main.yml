@@ -212,6 +212,15 @@ jobs:
       - name: Check the artifact
         run: |
           file "${PWD}/install/bin/mavsdk_server"
+      - name: Publish artefacts
+        if: startsWith(github.ref, 'refs/tags/v')
+        uses: svenstaro/upload-release-action@v1-release
+        with:
+          repo_token: ${{ secrets.GITHUB_TOKEN }}
+          file: "${PWD}/install/bin/mavsdk_server"
+          asset_name: 'mavsdk_server_musl_${{ matrix.arch }}'
+          tag: ${{ github.ref }}
+          overwrite: true
 
   px4-sitl-older:
     name: PX4 SITL ${{ matrix.px4_version }} (ubuntu-18.04)
