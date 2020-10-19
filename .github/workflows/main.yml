@@ -131,6 +131,18 @@ jobs:
         run: ./build/release/src/unit_tests_runner
       - name: test (mavsdk_server)
         run: ./build/release/src/backend/test/unit_tests_backend
+      - name: Check the artifact
+        run: |
+          file "./install/bin/mavsdk_server"
+      - name: Publish artefacts
+        if: startsWith(github.ref, 'refs/tags/v')
+        uses: svenstaro/upload-release-action@v1-release
+        with:
+          repo_token: ${{ secrets.GITHUB_TOKEN }}
+          file: 'install/bin/mavsdk_server'
+          asset_name: 'mavsdk_server_musl_x86_64'
+          tag: ${{ github.ref }}
+          overwrite: true
 
   alpine-linux-qemu:
     runs-on: ubuntu-18.04
