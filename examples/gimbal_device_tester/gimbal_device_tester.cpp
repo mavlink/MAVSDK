@@ -238,7 +238,7 @@ class Tester {
 public:
     explicit Tester(AttitudeData& attitude_data) : _attitude_data(attitude_data) {}
 
-    bool test_pitch()
+    bool test_pitch_angle()
     {
         const auto gimbal_limits = _attitude_data.gimbal_limits();
 
@@ -261,7 +261,7 @@ public:
                test_pitch_yaw("Look forward again", 0.0f, 0.0f, AttitudeData::Mode::Follow);
     }
 
-    bool test_yaw_follow()
+    bool test_yaw_angle_follow()
     {
         if (!test_pitch_yaw("Switch to follow mode", 0.0f, 0.0f, AttitudeData::Mode::Follow)) {
             return false;
@@ -295,7 +295,7 @@ public:
                test_pitch_yaw("Look forward again", 0.0f, 0.0f, AttitudeData::Mode::Follow);
     }
 
-    bool test_yaw_lock()
+    bool test_yaw_angle_lock()
     {
         if (!test_pitch_yaw("Switch to lock mode", 0.0f, 0.0f, AttitudeData::Mode::Lock)) {
             return false;
@@ -643,15 +643,15 @@ int main(int argc, char** argv)
 
     Tester tester(attitude_data);
 
-    if (!tester.test_pitch()) {
+    if (!tester.test_pitch_angle()) {
         return 1;
     }
 
-    if (!tester.test_yaw_follow()) {
+    if (!tester.test_yaw_angle_follow()) {
         return 1;
     }
 
-    if (!tester.test_yaw_lock()) {
+    if (!tester.test_yaw_angle_lock()) {
         return 1;
     }
 
