@@ -66,9 +66,12 @@ public:
 
     struct AttitudeSetpoint {
         Mode mode{Mode::Follow};
-        float roll_deg{0.0f};
-        float pitch_deg{0.0f};
-        float yaw_deg{0.0f};
+        float roll_deg{NAN};
+        float pitch_deg{NAN};
+        float yaw_deg{NAN};
+        float roll_rate_deg{NAN};
+        float pitch_rate_deg{NAN};
+        float yaw_rate_deg{NAN};
     };
 
     GimbalAttitude gimbal_attitude() const
@@ -218,10 +221,9 @@ private:
             0, // broadcast
             flags,
             q,
-            NAN, // angular velocity X
-            NAN, // angular velocity Y
-            NAN // angular velocity Z
-        );
+            radians(attitude_setpoint.roll_rate_deg),
+            radians(attitude_setpoint.pitch_rate_deg),
+            radians(attitude_setpoint.yaw_rate_deg));
 
         _mavlink_passthrough.send_message(message);
     }
@@ -236,7 +238,7 @@ class Tester {
 public:
     explicit Tester(AttitudeData& attitude_data) : _attitude_data(attitude_data) {}
 
-    bool test_pitch()
+    bool test_pitch_angle()
     {
         const auto gimbal_limits = _attitude_data.gimbal_limits();
 
@@ -251,17 +253,20 @@ public:
         std::stringstream limit_up;
         limit_up << "Tilt " << pitch_max << " up";
 
-        return test_pitch_yaw("Look forward", 0.0f, 0.0f, AttitudeData::Mode::Follow) &&
+        return test_pitch_yaw_angle("Look forward", 0.0f, 0.0f, AttitudeData::Mode::Follow) &&
                // FIXME: We assume that -45 degrees is possible.
-               test_pitch_yaw("Tilt 45 degrees down", -45.0f, 0.0f, AttitudeData::Mode::Follow) &&
-               test_pitch_yaw(limit_down.str(), pitch_min, 0.0f, AttitudeData::Mode::Follow) &&
-               test_pitch_yaw(limit_up.str(), pitch_max, 0.0f, AttitudeData::Mode::Follow) &&
-               test_pitch_yaw("Look forward again", 0.0f, 0.0f, AttitudeData::Mode::Follow);
+               test_pitch_yaw_angle(
+                   "Tilt 45 degrees down", -45.0f, 0.0f, AttitudeData::Mode::Follow) &&
+               test_pitch_yaw_angle(
+                   limit_down.str(), pitch_min, 0.0f, AttitudeData::Mode::Follow) &&
+               test_pitch_yaw_angle(limit_up.str(), pitch_max, 0.0f, AttitudeData::Mode::Follow) &&
+               test_pitch_yaw_angle("Look forward again", 0.0f, 0.0f, AttitudeData::Mode::Follow);
     }
 
-    bool test_yaw_follow()
+    bool test_yaw_angle_follow()
     {
-        if (!test_pitch_yaw("Switch to follow mode", 0.0f, 0.0f, AttitudeData::Mode::Follow)) {
+        if (!test_pitch_yaw_angle(
+                "Switch to follow mode", 0.0f, 0.0f, AttitudeData::Mode::Follow)) {
             return false;
         }
 
@@ -284,18 +289,21 @@ public:
         std::stringstream limit_left;
         limit_left << "Pan " << -yaw_min << " left";
 
-        return test_pitch_yaw(limit_right.str(), 0.0f, yaw_max, AttitudeData::Mode::Follow) &&
-               test_pitch_yaw(limit_left.str(), 0.0f, yaw_min, AttitudeData::Mode::Follow) &&
+        return test_pitch_yaw_angle(limit_right.str(), 0.0f, yaw_max, AttitudeData::Mode::Follow) &&
+               test_pitch_yaw_angle(limit_left.str(), 0.0f, yaw_min, AttitudeData::Mode::Follow) &&
                // FIXME: We assume that -45 degrees is possible.
-               test_pitch_yaw("Tilt 45 degrees down", -45.0f, 0.0f, AttitudeData::Mode::Follow) &&
-               test_pitch_yaw(limit_right.str(), -45.0f, yaw_max, AttitudeData::Mode::Follow) &&
-               test_pitch_yaw(limit_left.str(), -45.0f, yaw_min, AttitudeData::Mode::Follow) &&
-               test_pitch_yaw("Look forward again", 0.0f, 0.0f, AttitudeData::Mode::Follow);
+               test_pitch_yaw_angle(
+                   "Tilt 45 degrees down", -45.0f, 0.0f, AttitudeData::Mode::Follow) &&
+               test_pitch_yaw_angle(
+                   limit_right.str(), -45.0f, yaw_max, AttitudeData::Mode::Follow) &&
+               test_pitch_yaw_angle(
+                   limit_left.str(), -45.0f, yaw_min, AttitudeData::Mode::Follow) &&
+               test_pitch_yaw_angle("Look forward again", 0.0f, 0.0f, AttitudeData::Mode::Follow);
     }
 
-    bool test_yaw_lock()
+    bool test_yaw_angle_lock()
     {
-        if (!test_pitch_yaw("Switch to lock mode", 0.0f, 0.0f, AttitudeData::Mode::Lock)) {
+        if (!test_pitch_yaw_angle("Switch to lock mode", 0.0f, 0.0f, AttitudeData::Mode::Lock)) {
             return false;
         }
 
@@ -319,24 +327,64 @@ public:
         std::stringstream limit_left;
         limit_left << "Pan " << -yaw_min << " left";
 
-        return test_pitch_yaw(limit_right.str(), 0.0f, yaw_max, AttitudeData::Mode::Lock) &&
-               test_pitch_yaw(limit_left.str(), 0.0f, yaw_min, AttitudeData::Mode::Lock) &&
+        return test_pitch_yaw_angle(limit_right.str(), 0.0f, yaw_max, AttitudeData::Mode::Lock) &&
+               test_pitch_yaw_angle(limit_left.str(), 0.0f, yaw_min, AttitudeData::Mode::Lock) &&
                // FIXME: We assume that -45 degrees is possible.
-               test_pitch_yaw("Tilt 45 degrees down", -45.0f, 0.0f, AttitudeData::Mode::Lock) &&
-               test_pitch_yaw(limit_right.str(), -45.0f, yaw_max, AttitudeData::Mode::Lock) &&
-               test_pitch_yaw(limit_left.str(), -45.0f, yaw_min, AttitudeData::Mode::Lock) &&
-               test_pitch_yaw("Look forward again", 0.0f, 0.0f, AttitudeData::Mode::Lock);
+               test_pitch_yaw_angle(
+                   "Tilt 45 degrees down", -45.0f, 0.0f, AttitudeData::Mode::Lock) &&
+               test_pitch_yaw_angle(limit_right.str(), -45.0f, yaw_max, AttitudeData::Mode::Lock) &&
+               test_pitch_yaw_angle(limit_left.str(), -45.0f, yaw_min, AttitudeData::Mode::Lock) &&
+               test_pitch_yaw_angle("Look forward again", 0.0f, 0.0f, AttitudeData::Mode::Lock);
     }
 
-    bool test_pitch_yaw(
+    bool test_pitch_rate()
+    {
+        // FIXME: We assume that -50 degrees is possible.
+
+        return test_pitch_yaw_angle("Look forward first", 0.0f, 0.0f, AttitudeData::Mode::Follow) &&
+               test_pitch_yaw_rate("Tilt down with 10 deg/s for 5s", -10.0f, 0.0f, 5.0f) &&
+               test_pitch_yaw_rate("Tilt back up with 20 deg/s for 2.5s", 20.0f, 0.0f, 2.5f) &&
+               test_pitch_yaw_angle("Look forward again", 0.0f, 0.0f, AttitudeData::Mode::Follow);
+    }
+
+    bool test_pitch_angle_and_rate()
+    {
+        // FIXME: We assume that -20 degrees is possible.
+
+        return test_pitch_yaw_angle("Look forward first", 0.0f, 0.0f, AttitudeData::Mode::Follow) &&
+               test_pitch_angle_and_rate(
+                   "Tilt down with 10 deg/s until 20 deg",
+                   -10.0f,
+                   -20.0f,
+                   AttitudeData::Mode::Follow) &&
+               test_pitch_angle_and_rate(
+                   "Tilt back up with 5 deg/s", 5.0f, 0.0f, AttitudeData::Mode::Follow) &&
+               test_pitch_yaw_angle("Look forward again", 0.0f, 0.0f, AttitudeData::Mode::Follow);
+    }
+
+    bool test_yaw_rate()
+    {
+        // FIXME: We assume that +/-25 degrees is possible.
+
+        return test_pitch_yaw_angle("Look forward first", 0.0f, 0.0f, AttitudeData::Mode::Follow) &&
+               test_pitch_yaw_rate("Pan right 5 deg/s for 5s", 0.0f, 5.0f, 5.0f) &&
+               test_pitch_yaw_rate("Pan to the right with 10 deg/s for 5s", 0.0f, -10.0f, 5.0f) &&
+               test_pitch_yaw_angle("Look forward again", 0.0f, 0.0f, AttitudeData::Mode::Follow);
+    }
+
+    bool test_pitch_yaw_angle(
         const std::string& description, float pitch_deg, float yaw_deg, AttitudeData::Mode mode)
     {
         std::cout << test_prefix << description << "... " << std::flush;
 
         _attitude_data.change_attitude_setpoint(
             [&](AttitudeData::AttitudeSetpoint& attitude_setpoint) {
+                attitude_setpoint.roll_deg = 0.0f;
                 attitude_setpoint.pitch_deg = pitch_deg;
                 attitude_setpoint.yaw_deg = yaw_deg;
+                attitude_setpoint.roll_rate_deg = NAN;
+                attitude_setpoint.pitch_rate_deg = NAN;
+                attitude_setpoint.yaw_rate_deg = NAN;
                 attitude_setpoint.mode = mode;
             });
 
@@ -388,6 +436,146 @@ public:
         }
 
         return !(pitch_fail || yaw_fail);
+    }
+
+    bool test_pitch_yaw_rate(
+        const std::string& description, float pitch_rate_deg, float yaw_rate_deg, float duration_s)
+    {
+        std::cout << test_prefix << description << "... " << std::flush;
+
+        const auto initial_attitude = _attitude_data.gimbal_attitude();
+
+        _attitude_data.change_attitude_setpoint(
+            [&](AttitudeData::AttitudeSetpoint& attitude_setpoint) {
+                attitude_setpoint.roll_deg = NAN;
+                attitude_setpoint.pitch_deg = NAN;
+                attitude_setpoint.yaw_deg = NAN;
+                attitude_setpoint.roll_rate_deg = 0.0f;
+                attitude_setpoint.pitch_rate_deg = pitch_rate_deg;
+                attitude_setpoint.yaw_rate_deg = yaw_rate_deg;
+                attitude_setpoint.mode = AttitudeData::Mode::Follow;
+            });
+
+        std::this_thread::sleep_for(
+            std::chrono::milliseconds(static_cast<unsigned>(duration_s * 1000.0f)));
+
+        const auto new_attitude = _attitude_data.gimbal_attitude();
+
+        float expected_pitch_deg = initial_attitude.pitch_deg + pitch_rate_deg * duration_s;
+        float expected_yaw_deg = initial_attitude.yaw_deg + yaw_rate_deg * duration_s;
+
+        // TODO: check for wrap-arounds.
+
+        bool pitch_fail = false;
+        bool yaw_fail = false;
+
+        const float margin_deg = 5.0f;
+
+        if (new_attitude.pitch_deg > expected_pitch_deg + margin_deg) {
+            pitch_fail = true;
+        } else if (new_attitude.pitch_deg < expected_pitch_deg - margin_deg) {
+            pitch_fail = true;
+        }
+
+        if (new_attitude.yaw_deg > expected_yaw_deg + margin_deg) {
+            yaw_fail = true;
+        } else if (new_attitude.yaw_deg < expected_yaw_deg - margin_deg) {
+            yaw_fail = true;
+        }
+
+        if (pitch_fail || yaw_fail) {
+            std::cout << "FAIL\n";
+        } else {
+            std::cout << "PASS\n";
+        }
+
+        if (pitch_fail) {
+            std::cout << "-> pitch is " << new_attitude.pitch_deg << " deg instead of "
+                      << expected_pitch_deg << " deg\n";
+        }
+
+        if (yaw_fail) {
+            std::cout << "-> yaw is " << new_attitude.yaw_deg << " deg instead of "
+                      << expected_yaw_deg << " deg\n";
+        }
+
+        return !(pitch_fail || yaw_fail);
+    }
+
+    bool test_pitch_angle_and_rate(
+        const std::string& description,
+        float pitch_rate_deg,
+        float pitch_deg,
+        AttitudeData::Mode mode)
+    {
+        // FIXME: this only works when started from 0.
+
+        std::cout << test_prefix << description << "... " << std::flush;
+
+        const auto initial_attitude = _attitude_data.gimbal_attitude();
+
+        const auto time_needed_s = pitch_deg / pitch_rate_deg;
+
+        _attitude_data.change_attitude_setpoint(
+            [&](AttitudeData::AttitudeSetpoint& attitude_setpoint) {
+                attitude_setpoint.roll_deg = 0.0f;
+                attitude_setpoint.pitch_deg = pitch_deg;
+                attitude_setpoint.yaw_deg = 0.0f;
+                attitude_setpoint.roll_rate_deg = 0.0f;
+                attitude_setpoint.pitch_rate_deg = pitch_rate_deg;
+                attitude_setpoint.yaw_rate_deg = 0.0f;
+                attitude_setpoint.mode = mode;
+            });
+
+        // We wait for half the time, then check to assess if the speed is corrct.
+        std::this_thread::sleep_for(
+            std::chrono::milliseconds(static_cast<unsigned>(time_needed_s / 2.0f * 1000.0f)));
+
+        bool halftime_fail = false;
+        const auto halftime_attitude = _attitude_data.gimbal_attitude();
+        const float halftime_expected_pitch_deg =
+            initial_attitude.pitch_deg + pitch_rate_deg * time_needed_s / 2.0f;
+
+        const float margin_deg = 3.0f;
+
+        if (halftime_attitude.pitch_deg > halftime_expected_pitch_deg + margin_deg) {
+            halftime_fail = true;
+        } else if (halftime_attitude.pitch_deg < halftime_expected_pitch_deg - margin_deg) {
+            halftime_fail = true;
+        }
+
+        // Then we wait longer to let it finish and add some margin.
+        std::this_thread::sleep_for(
+            std::chrono::milliseconds(static_cast<unsigned>(time_needed_s / 2.0f * 1000.0f) + 1));
+
+        bool end_fail = false;
+        const auto end_attitude = _attitude_data.gimbal_attitude();
+        const float end_expected_pitch_deg =
+            initial_attitude.pitch_deg + pitch_rate_deg * time_needed_s;
+
+        if (end_attitude.pitch_deg > end_expected_pitch_deg + margin_deg) {
+            end_fail = true;
+        } else if (end_attitude.pitch_deg < end_expected_pitch_deg - margin_deg) {
+            end_fail = true;
+        }
+
+        if (halftime_fail || end_fail) {
+            std::cout << "FAIL\n";
+        } else {
+            std::cout << "PASS\n";
+        }
+
+        if (halftime_fail) {
+            std::cout << "-> pitch is " << halftime_attitude.pitch_deg << " deg instead of "
+                      << halftime_expected_pitch_deg << " at halftime deg\n";
+        }
+
+        if (end_fail) {
+            std::cout << "-> pitch is " << end_attitude.pitch_deg << " deg instead of "
+                      << end_expected_pitch_deg << " at end deg\n";
+        }
+
+        return !(halftime_fail || end_fail);
     }
 
 private:
@@ -553,15 +741,27 @@ int main(int argc, char** argv)
 
     Tester tester(attitude_data);
 
-    if (!tester.test_pitch()) {
+    if (!tester.test_pitch_angle()) {
         return 1;
     }
 
-    if (!tester.test_yaw_follow()) {
+    if (!tester.test_yaw_angle_follow()) {
         return 1;
     }
 
-    if (!tester.test_yaw_lock()) {
+    if (!tester.test_yaw_angle_lock()) {
+        return 1;
+    }
+
+    if (!tester.test_pitch_rate()) {
+        return 1;
+    }
+
+    if (!tester.test_yaw_rate()) {
+        return 1;
+    }
+
+    if (!tester.test_pitch_angle_and_rate()) {
         return 1;
     }
 
