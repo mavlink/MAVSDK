@@ -66,9 +66,12 @@ public:
 
     struct AttitudeSetpoint {
         Mode mode{Mode::Follow};
-        float roll_deg{0.0f};
-        float pitch_deg{0.0f};
-        float yaw_deg{0.0f};
+        float roll_deg{NAN};
+        float pitch_deg{NAN};
+        float yaw_deg{NAN};
+        float roll_rate_deg{NAN};
+        float pitch_rate_deg{NAN};
+        float yaw_rate_deg{NAN};
     };
 
     GimbalAttitude gimbal_attitude() const
@@ -218,10 +221,9 @@ private:
             0, // broadcast
             flags,
             q,
-            NAN, // angular velocity X
-            NAN, // angular velocity Y
-            NAN // angular velocity Z
-        );
+            radians(attitude_setpoint.roll_rate_deg),
+            radians(attitude_setpoint.pitch_rate_deg),
+            radians(attitude_setpoint.yaw_rate_deg));
 
         _mavlink_passthrough.send_message(message);
     }
@@ -328,6 +330,26 @@ public:
                test_pitch_yaw("Look forward again", 0.0f, 0.0f, AttitudeData::Mode::Lock);
     }
 
+    bool test_pitch_rate()
+    {
+        // FIXME: We assume that -50 degrees is possible.
+
+        return test_pitch_yaw("Look forward first", 0.0f, 0.0f, AttitudeData::Mode::Follow) &&
+               test_pitch_yaw_rate("Tilt down with 10 deg/s for 5s", -10.0f, 0.0f, 5.0f) &&
+               test_pitch_yaw_rate("Tilt back up with 20 deg/s for 2.5s", 20.0f, 0.0f, 2.5f) &&
+               test_pitch_yaw("Look forward again", 0.0f, 0.0f, AttitudeData::Mode::Follow);
+    }
+
+    bool test_yaw_rate()
+    {
+        // FIXME: We assume that +/-25 degrees is possible.
+
+        return test_pitch_yaw("Look forward first", 0.0f, 0.0f, AttitudeData::Mode::Follow) &&
+               test_pitch_yaw_rate("Pan right 5 deg/s for 5s", 0.0f, 5.0f, 5.0f) &&
+               test_pitch_yaw_rate("Pan to the right with 10 deg/s for 5s", 0.0f, -10.0f, 5.0f) &&
+               test_pitch_yaw("Look forward again", 0.0f, 0.0f, AttitudeData::Mode::Follow);
+    }
+
     bool test_pitch_yaw(
         const std::string& description, float pitch_deg, float yaw_deg, AttitudeData::Mode mode)
     {
@@ -335,8 +357,12 @@ public:
 
         _attitude_data.change_attitude_setpoint(
             [&](AttitudeData::AttitudeSetpoint& attitude_setpoint) {
+                attitude_setpoint.roll_deg = 0.0f;
                 attitude_setpoint.pitch_deg = pitch_deg;
                 attitude_setpoint.yaw_deg = yaw_deg;
+                attitude_setpoint.roll_rate_deg = NAN;
+                attitude_setpoint.pitch_rate_deg = NAN;
+                attitude_setpoint.yaw_rate_deg = NAN;
                 attitude_setpoint.mode = mode;
             });
 
@@ -385,6 +411,70 @@ public:
         if (yaw_fail) {
             std::cout << "-> yaw is " << gimbal_attitude.yaw_deg << " deg instead of " << yaw_deg
                       << " deg\n";
+        }
+
+        return !(pitch_fail || yaw_fail);
+    }
+
+    bool test_pitch_yaw_rate(
+        const std::string& description, float pitch_rate_deg, float yaw_rate_deg, float duration_s)
+    {
+        std::cout << test_prefix << description << "... " << std::flush;
+
+        const auto initial_attitude = _attitude_data.gimbal_attitude();
+
+        _attitude_data.change_attitude_setpoint(
+            [&](AttitudeData::AttitudeSetpoint& attitude_setpoint) {
+                attitude_setpoint.roll_deg = NAN;
+                attitude_setpoint.pitch_deg = NAN;
+                attitude_setpoint.yaw_deg = NAN;
+                attitude_setpoint.roll_rate_deg = 0.0f;
+                attitude_setpoint.pitch_rate_deg = pitch_rate_deg;
+                attitude_setpoint.yaw_rate_deg = yaw_rate_deg;
+                attitude_setpoint.mode = AttitudeData::Mode::Follow;
+            });
+
+        std::this_thread::sleep_for(
+            std::chrono::milliseconds(static_cast<unsigned>(duration_s * 1000.0)));
+
+        const auto new_attitude = _attitude_data.gimbal_attitude();
+
+        float expected_pitch_deg = initial_attitude.pitch_deg + pitch_rate_deg * duration_s;
+        float expected_yaw_deg = initial_attitude.yaw_deg + yaw_rate_deg * duration_s;
+
+        // TODO: check for wrap-arounds.
+
+        bool pitch_fail = false;
+        bool yaw_fail = false;
+
+        const float margin_deg = 5.0f;
+
+        if (new_attitude.pitch_deg > expected_pitch_deg + margin_deg) {
+            pitch_fail = true;
+        } else if (new_attitude.pitch_deg < expected_pitch_deg - margin_deg) {
+            pitch_fail = true;
+        }
+
+        if (new_attitude.yaw_deg > expected_yaw_deg + margin_deg) {
+            yaw_fail = true;
+        } else if (new_attitude.yaw_deg < expected_yaw_deg - margin_deg) {
+            yaw_fail = true;
+        }
+
+        if (pitch_fail || yaw_fail) {
+            std::cout << "FAIL\n";
+        } else {
+            std::cout << "PASS\n";
+        }
+
+        if (pitch_fail) {
+            std::cout << "-> pitch is " << new_attitude.pitch_deg << " deg instead of "
+                      << expected_pitch_deg << " deg\n";
+        }
+
+        if (yaw_fail) {
+            std::cout << "-> yaw is " << new_attitude.yaw_deg << " deg instead of "
+                      << expected_yaw_deg << " deg\n";
         }
 
         return !(pitch_fail || yaw_fail);
@@ -562,6 +652,14 @@ int main(int argc, char** argv)
     }
 
     if (!tester.test_yaw_lock()) {
+        return 1;
+    }
+
+    if (!tester.test_pitch_rate()) {
+        return 1;
+    }
+
+    if (!tester.test_yaw_rate()) {
         return 1;
     }
 
