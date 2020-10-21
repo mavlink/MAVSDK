@@ -529,20 +529,6 @@ bool CameraDefinition::set_setting(
         return false;
     }
 
-    // FIXME: this is a hack because some params have the wrong type
-    //        when they come from the camera.
-    MAVLinkParameters::ParamValue changed_value = value;
-    if (name.compare("CAM_MODE") == 0 || name.compare("CAM_COLORMODE") == 0 ||
-        name.compare("CAM_EXPMODE") == 0 || name.compare("CAM_METERING") == 0 ||
-        name.compare("CAM_PHOTOFMT") == 0 || name.compare("CAM_PHOTOQUAL") == 0 ||
-        name.compare("CAM_VIDRES") == 0 || name.compare("CAM_WBMODE") == 0 ||
-        name.compare("CAM_COLORENCODE") == 0 || name.compare("CAM_FLICKER") == 0) {
-        if (changed_value.is_uint8()) {
-            uint8_t temp = changed_value.get_uint8();
-            changed_value.set_uint32(uint32_t(temp));
-        }
-    }
-
     // For range params, we need to verify the range.
     if (_parameter_map[name]->is_range) {
         // Check against the minimum
@@ -559,8 +545,7 @@ bool CameraDefinition::set_setting(
         // TODO: Check step as well, until now we have only seen steps of 1 in the wild though.
     }
 
-    // LogDebug() << "Setting " << name << " of type: " << changed_value.typestr();
-    _current_settings[name].value = changed_value;
+    _current_settings[name].value = value;
     _current_settings[name].needs_updating = false;
 
     // Some param changes cause other params to change, so they need to be updated.
