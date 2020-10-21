@@ -58,6 +58,11 @@ void TelemetryImpl::init()
         this);
 
     _parent->register_mavlink_message_handler(
+        MAVLINK_MSG_ID_GIMBAL_DEVICE_ATTITUDE_STATUS,
+        std::bind(&TelemetryImpl::process_gimbal_device_attitude_status, this, _1),
+        this);
+
+    _parent->register_mavlink_message_handler(
         MAVLINK_MSG_ID_GPS_RAW_INT, std::bind(&TelemetryImpl::process_gps_raw_int, this, _1), this);
 
     _parent->register_mavlink_message_handler(
@@ -675,6 +680,7 @@ void TelemetryImpl::process_attitude_quaternion(const mavlink_message_t& message
 
 void TelemetryImpl::process_mount_orientation(const mavlink_message_t& message)
 {
+    // TODO: remove this one once we move all the way to gimbal v2 protocol
     mavlink_mount_orientation_t mount_orientation;
     mavlink_msg_mount_orientation_decode(&message, &mount_orientation);
 
@@ -682,6 +688,38 @@ void TelemetryImpl::process_mount_orientation(const mavlink_message_t& message)
     euler_angle.roll_deg = mount_orientation.roll;
     euler_angle.pitch_deg = mount_orientation.pitch;
     euler_angle.yaw_deg = mount_orientation.yaw_absolute;
+
+    set_camera_attitude_euler_angle(euler_angle);
+
+    std::lock_guard<std::mutex> lock(_subscription_mutex);
+    if (_camera_attitude_quaternion_subscription) {
+        auto callback = _camera_attitude_quaternion_subscription;
+        auto arg = camera_attitude_quaternion();
+        _parent->call_user_callback([callback, arg]() { callback(arg); });
+    }
+
+    if (_camera_attitude_euler_angle_subscription) {
+        auto callback = _camera_attitude_euler_angle_subscription;
+        auto arg = camera_attitude_euler();
+        _parent->call_user_callback([callback, arg]() { callback(arg); });
+    }
+}
+
+void TelemetryImpl::process_gimbal_device_attitude_status(const mavlink_message_t& message)
+{
+    // We accept both MOUNT_ORIENTATION and GIMBAL_DEVICE_ATTITUDE_STATUS for now,
+    // in order to support both gimbal v1 and v2 protocols.
+
+    mavlink_gimbal_device_attitude_status_t attitude_status;
+    mavlink_msg_gimbal_device_attitude_status_decode(&message, &attitude_status);
+
+    Telemetry::Quaternion q;
+    q.w = attitude_status.q[0];
+    q.x = attitude_status.q[1];
+    q.y = attitude_status.q[2];
+    q.z = attitude_status.q[3];
+
+    Telemetry::EulerAngle euler_angle = to_euler_angle_from_quaternion(q);
 
     set_camera_attitude_euler_angle(euler_angle);
 
