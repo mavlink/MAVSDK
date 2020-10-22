@@ -231,20 +231,20 @@ bool FollowMeImpl::is_config_ok(const FollowMe::Config& config) const
     return config_ok;
 }
 
-FollowMe::Result FollowMeImpl::to_follow_me_result(MAVLinkCommands::Result result) const
+FollowMe::Result FollowMeImpl::to_follow_me_result(MavlinkCommandSender::Result result) const
 {
     switch (result) {
-        case MAVLinkCommands::Result::Success:
+        case MavlinkCommandSender::Result::Success:
             return FollowMe::Result::Success;
-        case MAVLinkCommands::Result::NoSystem:
+        case MavlinkCommandSender::Result::NoSystem:
             return FollowMe::Result::NoSystem;
-        case MAVLinkCommands::Result::ConnectionError:
+        case MavlinkCommandSender::Result::ConnectionError:
             return FollowMe::Result::ConnectionError;
-        case MAVLinkCommands::Result::Busy:
+        case MavlinkCommandSender::Result::Busy:
             return FollowMe::Result::Busy;
-        case MAVLinkCommands::Result::CommandDenied:
+        case MavlinkCommandSender::Result::CommandDenied:
             return FollowMe::Result::CommandDenied;
-        case MAVLinkCommands::Result::Timeout:
+        case MavlinkCommandSender::Result::Timeout:
             return FollowMe::Result::Timeout;
         default:
             return FollowMe::Result::Unknown;

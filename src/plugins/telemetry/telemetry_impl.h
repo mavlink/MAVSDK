@@ -194,10 +194,10 @@ private:
     void receive_unix_epoch_timeout();
 
     static Telemetry::Result
-    telemetry_result_from_command_result(MAVLinkCommands::Result command_result);
+    telemetry_result_from_command_result(MavlinkCommandSender::Result command_result);
 
     static void command_result_callback(
-        MAVLinkCommands::Result command_result, const Telemetry::ResultCallback& callback);
+        MavlinkCommandSender::Result command_result, const Telemetry::ResultCallback& callback);
 
     static Telemetry::LandedState to_landed_state(mavlink_extended_sys_state_t extended_sys_state);
 

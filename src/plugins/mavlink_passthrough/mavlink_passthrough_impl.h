@@ -37,7 +37,7 @@ public:
 
 private:
     static MavlinkPassthrough::Result
-    to_mavlink_passthrough_result_from_mavlink_commands_result(MAVLinkCommands::Result result);
+    to_mavlink_passthrough_result_from_mavlink_commands_result(MavlinkCommandSender::Result result);
 };
 
 } // namespace mavsdk

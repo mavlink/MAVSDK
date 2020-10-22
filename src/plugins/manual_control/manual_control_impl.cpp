@@ -29,7 +29,8 @@ void ManualControlImpl::disable() {}
 void ManualControlImpl::start_position_control_async(const ManualControl::ResultCallback callback)
 {
     _parent->set_flight_mode_async(
-        SystemImpl::FlightMode::Posctl, [this, callback](MAVLinkCommands::Result result, float) {
+        SystemImpl::FlightMode::Posctl,
+        [this, callback](MavlinkCommandSender::Result result, float) {
             command_result_callback(result, callback);
         });
 }
@@ -47,7 +48,8 @@ ManualControl::Result ManualControlImpl::start_position_control()
 void ManualControlImpl::start_altitude_control_async(const ManualControl::ResultCallback callback)
 {
     _parent->set_flight_mode_async(
-        SystemImpl::FlightMode::Altctl, [this, callback](MAVLinkCommands::Result result, float) {
+        SystemImpl::FlightMode::Altctl,
+        [this, callback](MavlinkCommandSender::Result result, float) {
             command_result_callback(result, callback);
         });
 }
@@ -88,20 +90,20 @@ ManualControlImpl::set_manual_control_input(float x, float y, float z, float r)
 }
 
 ManualControl::Result
-ManualControlImpl::manual_control_result_from_command_result(MAVLinkCommands::Result result)
+ManualControlImpl::manual_control_result_from_command_result(MavlinkCommandSender::Result result)
 {
     switch (result) {
-        case MAVLinkCommands::Result::Success:
+        case MavlinkCommandSender::Result::Success:
             return ManualControl::Result::Success;
-        case MAVLinkCommands::Result::NoSystem:
+        case MavlinkCommandSender::Result::NoSystem:
             return ManualControl::Result::NoSystem;
-        case MAVLinkCommands::Result::ConnectionError:
+        case MavlinkCommandSender::Result::ConnectionError:
             return ManualControl::Result::ConnectionError;
-        case MAVLinkCommands::Result::Busy:
+        case MavlinkCommandSender::Result::Busy:
             return ManualControl::Result::Busy;
-        case MAVLinkCommands::Result::CommandDenied:
+        case MavlinkCommandSender::Result::CommandDenied:
             return ManualControl::Result::CommandDenied;
-        case MAVLinkCommands::Result::Timeout:
+        case MavlinkCommandSender::Result::Timeout:
             return ManualControl::Result::Timeout;
         default:
             return ManualControl::Result::Unknown;
@@ -109,7 +111,7 @@ ManualControlImpl::manual_control_result_from_command_result(MAVLinkCommands::Re
 }
 
 void ManualControlImpl::command_result_callback(
-    MAVLinkCommands::Result command_result, const ManualControl::ResultCallback& callback)
+    MavlinkCommandSender::Result command_result, const ManualControl::ResultCallback& callback)
 {
     ManualControl::Result action_result = manual_control_result_from_command_result(command_result);
 

@@ -45,7 +45,7 @@ MavlinkPassthrough::Result MavlinkPassthroughImpl::send_message(mavlink_message_
 MavlinkPassthrough::Result
 MavlinkPassthroughImpl::send_command_long(const MavlinkPassthrough::CommandLong& command)
 {
-    MAVLinkCommands::CommandLong command_internal{};
+    MavlinkCommandSender::CommandLong command_internal{};
     command_internal.target_system_id = command.target_sysid;
     command_internal.target_component_id = command.target_compid;
     command_internal.command = command.command;
@@ -64,7 +64,7 @@ MavlinkPassthroughImpl::send_command_long(const MavlinkPassthrough::CommandLong&
 MavlinkPassthrough::Result
 MavlinkPassthroughImpl::send_command_int(const MavlinkPassthrough::CommandInt& command)
 {
-    MAVLinkCommands::CommandInt command_internal{};
+    MavlinkCommandSender::CommandInt command_internal{};
     command_internal.target_system_id = command.target_sysid;
     command_internal.target_component_id = command.target_compid;
     command_internal.frame = command.frame;
@@ -83,28 +83,28 @@ MavlinkPassthroughImpl::send_command_int(const MavlinkPassthrough::CommandInt& c
 
 MavlinkPassthrough::Result
 MavlinkPassthroughImpl::to_mavlink_passthrough_result_from_mavlink_commands_result(
-    MAVLinkCommands::Result result)
+    MavlinkCommandSender::Result result)
 {
     switch (result) {
-        case MAVLinkCommands::Result::Success:
+        case MavlinkCommandSender::Result::Success:
             return MavlinkPassthrough::Result::Success;
-        case MAVLinkCommands::Result::NoSystem:
+        case MavlinkCommandSender::Result::NoSystem:
             return MavlinkPassthrough::Result::CommandNoSystem;
-        case MAVLinkCommands::Result::ConnectionError:
+        case MavlinkCommandSender::Result::ConnectionError:
             return MavlinkPassthrough::Result::ConnectionError;
-        case MAVLinkCommands::Result::Busy:
+        case MavlinkCommandSender::Result::Busy:
             return MavlinkPassthrough::Result::CommandBusy;
-        case MAVLinkCommands::Result::CommandDenied:
+        case MavlinkCommandSender::Result::CommandDenied:
             return MavlinkPassthrough::Result::CommandDenied;
-        case MAVLinkCommands::Result::Unsupported:
+        case MavlinkCommandSender::Result::Unsupported:
             return MavlinkPassthrough::Result::CommandUnsupported;
-        case MAVLinkCommands::Result::Timeout:
+        case MavlinkCommandSender::Result::Timeout:
             return MavlinkPassthrough::Result::CommandTimeout;
         default:
             // FALLTHROUGH
-        case MAVLinkCommands::Result::InProgress: // FIXME: currently not expected
-                                                  // FALLTHROUGH
-        case MAVLinkCommands::Result::UnknownError:
+        case MavlinkCommandSender::Result::InProgress: // FIXME: currently not expected
+                                                       // FALLTHROUGH
+        case MavlinkCommandSender::Result::UnknownError:
             return MavlinkPassthrough::Result::Unknown;
     }
 }

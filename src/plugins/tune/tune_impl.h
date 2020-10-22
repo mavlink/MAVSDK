@@ -32,7 +32,7 @@ private:
     void report_tune_result(const Tune::ResultCallback& callback, Tune::Result result);
 
     void receive_command_result(
-        MAVLinkCommands::Result command_result, const Tune::ResultCallback& callback);
+        MavlinkCommandSender::Result command_result, const Tune::ResultCallback& callback);
 
     Tune::ResultCallback _result_callback = nullptr;
 

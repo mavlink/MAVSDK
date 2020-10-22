@@ -43,7 +43,7 @@ private:
     enum class ConfigParameter;
     // Config methods
     bool is_config_ok(const FollowMe::Config& config) const;
-    FollowMe::Result to_follow_me_result(MAVLinkCommands::Result result) const;
+    FollowMe::Result to_follow_me_result(MavlinkCommandSender::Result result) const;
 
     bool is_target_location_set() const;
     void send_target_location();

@@ -14,20 +14,21 @@ namespace mavsdk {
 //       - The queue used does not support going through and checking each and every
 //         item yet.
 
-MAVLinkCommands::MAVLinkCommands(SystemImpl& parent) : _parent(parent)
+MavlinkCommandSender::MavlinkCommandSender(SystemImpl& system_impl) : _parent(system_impl)
 {
     _parent.register_mavlink_message_handler(
         MAVLINK_MSG_ID_COMMAND_ACK,
-        std::bind(&MAVLinkCommands::receive_command_ack, this, std::placeholders::_1),
+        std::bind(&MavlinkCommandSender::receive_command_ack, this, std::placeholders::_1),
         this);
 }
 
-MAVLinkCommands::~MAVLinkCommands()
+MavlinkCommandSender::~MavlinkCommandSender()
 {
     _parent.unregister_all_mavlink_message_handlers(this);
 }
 
-MAVLinkCommands::Result MAVLinkCommands::send_command(const MAVLinkCommands::CommandInt& command)
+MavlinkCommandSender::Result
+MavlinkCommandSender::send_command(const MavlinkCommandSender::CommandInt& command)
 {
     // We wrap the async call with a promise and future.
     auto prom = std::make_shared<std::promise<Result>>();
@@ -47,7 +48,8 @@ MAVLinkCommands::Result MAVLinkCommands::send_command(const MAVLinkCommands::Com
     return res.get();
 }
 
-MAVLinkCommands::Result MAVLinkCommands::send_command(const MAVLinkCommands::CommandLong& command)
+MavlinkCommandSender::Result
+MavlinkCommandSender::send_command(const MavlinkCommandSender::CommandLong& command)
 {
     // We wrap the async call with a promise and future.
     auto prom = std::make_shared<std::promise<Result>>();
@@ -66,7 +68,8 @@ MAVLinkCommands::Result MAVLinkCommands::send_command(const MAVLinkCommands::Com
     return res.get();
 }
 
-void MAVLinkCommands::queue_command_async(const CommandInt& command, CommandResultCallback callback)
+void MavlinkCommandSender::queue_command_async(
+    const CommandInt& command, CommandResultCallback callback)
 {
     // LogDebug() << "Command " << (int)(command.command) << " to send to "
     //  << (int)(command.target_system_id)<< ", " << (int)(command.target_component_id);
@@ -96,7 +99,7 @@ void MAVLinkCommands::queue_command_async(const CommandInt& command, CommandResu
     _work_queue.push_back(new_work);
 }
 
-void MAVLinkCommands::queue_command_async(
+void MavlinkCommandSender::queue_command_async(
     const CommandLong& command, CommandResultCallback callback)
 {
     // LogDebug() << "Command " << (int)(command.command) << " to send to "
@@ -125,7 +128,7 @@ void MAVLinkCommands::queue_command_async(
     _work_queue.push_back(new_work);
 }
 
-void MAVLinkCommands::receive_command_ack(mavlink_message_t message)
+void MavlinkCommandSender::receive_command_ack(mavlink_message_t message)
 {
     mavlink_command_ack_t command_ack;
     mavlink_msg_command_ack_decode(&message, &command_ack);
@@ -199,7 +202,7 @@ void MAVLinkCommands::receive_command_ack(mavlink_message_t message)
                 // case where there is no progress update and we keep trying.
                 _parent.unregister_timeout_handler(_timeout_cookie);
                 _parent.register_timeout_handler(
-                    std::bind(&MAVLinkCommands::receive_timeout, this),
+                    std::bind(&MavlinkCommandSender::receive_timeout, this),
                     work->retries_to_do * work->timeout_s,
                     &_timeout_cookie);
                 // FIXME: We can only call callbacks with promises once, so let's not do it
@@ -219,7 +222,7 @@ void MAVLinkCommands::receive_command_ack(mavlink_message_t message)
     }
 }
 
-void MAVLinkCommands::receive_timeout()
+void MavlinkCommandSender::receive_timeout()
 {
     CommandResultCallback temp_callback = nullptr;
     std::pair<Result, float> temp_result{Result::UnknownError, NAN};
@@ -250,7 +253,7 @@ void MAVLinkCommands::receive_timeout()
             } else {
                 --work->retries_to_do;
                 _parent.register_timeout_handler(
-                    std::bind(&MAVLinkCommands::receive_timeout, this),
+                    std::bind(&MavlinkCommandSender::receive_timeout, this),
                     work->timeout_s,
                     &_timeout_cookie);
             }
@@ -270,7 +273,7 @@ void MAVLinkCommands::receive_timeout()
     }
 }
 
-void MAVLinkCommands::do_work()
+void MavlinkCommandSender::do_work()
 {
     CommandResultCallback temp_callback = nullptr;
     std::pair<Result, float> temp_result{Result::UnknownError, NAN};
@@ -295,7 +298,7 @@ void MAVLinkCommands::do_work()
             } else {
                 work->already_sent = true;
                 _parent.register_timeout_handler(
-                    std::bind(&MAVLinkCommands::receive_timeout, this),
+                    std::bind(&MavlinkCommandSender::receive_timeout, this),
                     work->timeout_s,
                     &_timeout_cookie);
             }
@@ -307,7 +310,7 @@ void MAVLinkCommands::do_work()
     }
 }
 
-void MAVLinkCommands::call_callback(
+void MavlinkCommandSender::call_callback(
     const CommandResultCallback& callback, Result result, float progress)
 {
     if (!callback) {
@@ -317,6 +320,132 @@ void MAVLinkCommands::call_callback(
     // It seems that we need to queue the callback on the thread pool otherwise
     // we lock ourselves out when we send a command in the callback receiving a command result.
     _parent.call_user_callback([callback, result, progress]() { callback(result, progress); });
+}
+
+MavlinkCommandReceiver::MavlinkCommandReceiver(SystemImpl& system_impl) : _parent(system_impl)
+{
+    _parent.register_mavlink_message_handler(
+        MAVLINK_MSG_ID_COMMAND_LONG,
+        std::bind(&MavlinkCommandReceiver::receive_command_long, this, std::placeholders::_1),
+        this);
+
+    _parent.register_mavlink_message_handler(
+        MAVLINK_MSG_ID_COMMAND_INT,
+        std::bind(&MavlinkCommandReceiver::receive_command_int, this, std::placeholders::_1),
+        this);
+}
+
+MavlinkCommandReceiver::~MavlinkCommandReceiver()
+{
+    unregister_all_mavlink_command_handlers(this);
+
+    _parent.unregister_all_mavlink_message_handlers(this);
+}
+
+void MavlinkCommandReceiver::receive_command_int(const mavlink_message_t& message)
+{
+    mavlink_command_int_t command_int;
+    mavlink_msg_command_int_decode(&message, &command_int);
+    MavlinkCommandReceiver::CommandInt cmd(command_int);
+
+    std::lock_guard<std::mutex> lock(_mavlink_command_handler_table_mutex);
+
+    for (auto it = _mavlink_command_int_handler_table.begin();
+         it != _mavlink_command_int_handler_table.end();
+         ++it) {
+        if (it->cmd_id == command_int.command) {
+            it->callback(cmd);
+        }
+    }
+}
+
+void MavlinkCommandReceiver::receive_command_long(const mavlink_message_t& message)
+{
+    mavlink_command_long_t command_long;
+    mavlink_msg_command_long_decode(&message, &command_long);
+    MavlinkCommandReceiver::CommandLong cmd(command_long);
+
+    std::lock_guard<std::mutex> lock(_mavlink_command_handler_table_mutex);
+
+    for (auto it = _mavlink_command_long_handler_table.begin();
+         it != _mavlink_command_long_handler_table.end();
+         ++it) {
+        if (it->cmd_id == command_long.command) {
+            it->callback(cmd);
+        }
+    }
+}
+
+void MavlinkCommandReceiver::register_mavlink_command_handler(
+    uint16_t cmd_id, mavlink_command_int_handler_t callback, const void* cookie)
+{
+    std::lock_guard<std::mutex> lock(_mavlink_command_handler_table_mutex);
+
+    MAVLinkCommandIntHandlerTableEntry entry = {cmd_id, callback, cookie};
+    _mavlink_command_int_handler_table.push_back(entry);
+}
+
+void MavlinkCommandReceiver::register_mavlink_command_handler(
+    uint16_t cmd_id, mavlink_command_long_handler_t callback, const void* cookie)
+{
+    std::lock_guard<std::mutex> lock(_mavlink_command_handler_table_mutex);
+
+    MAVLinkCommandLongHandlerTableEntry entry = {cmd_id, callback, cookie};
+    _mavlink_command_long_handler_table.push_back(entry);
+}
+
+void MavlinkCommandReceiver::unregister_mavlink_command_handler(uint16_t cmd_id, const void* cookie)
+{
+    std::lock_guard<std::mutex> lock(_mavlink_command_handler_table_mutex);
+
+    // COMMAND_INT
+    for (auto it = _mavlink_command_int_handler_table.begin();
+         it != _mavlink_command_int_handler_table.end();
+         /* no ++it */) {
+        if (it->cmd_id == cmd_id && it->cookie == cookie) {
+            it = _mavlink_command_int_handler_table.erase(it);
+        } else {
+            ++it;
+        }
+    }
+
+    // COMMAND_LONG
+    for (auto it = _mavlink_command_long_handler_table.begin();
+         it != _mavlink_command_long_handler_table.end();
+         /* no ++it */) {
+        if (it->cmd_id == cmd_id && it->cookie == cookie) {
+            it = _mavlink_command_long_handler_table.erase(it);
+        } else {
+            ++it;
+        }
+    }
+}
+
+void MavlinkCommandReceiver::unregister_all_mavlink_command_handlers(const void* cookie)
+{
+    std::lock_guard<std::mutex> lock(_mavlink_command_handler_table_mutex);
+
+    // COMMAND_INT
+    for (auto it = _mavlink_command_int_handler_table.begin();
+         it != _mavlink_command_int_handler_table.end();
+         /* no ++it */) {
+        if (it->cookie == cookie) {
+            it = _mavlink_command_int_handler_table.erase(it);
+        } else {
+            ++it;
+        }
+    }
+
+    // COMMAND_LONG
+    for (auto it = _mavlink_command_long_handler_table.begin();
+         it != _mavlink_command_long_handler_table.end();
+         /* no ++it */) {
+        if (it->cookie == cookie) {
+            it = _mavlink_command_long_handler_table.erase(it);
+        } else {
+            ++it;
+        }
+    }
 }
 
 } // namespace mavsdk

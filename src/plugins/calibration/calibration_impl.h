@@ -39,10 +39,10 @@ private:
         const Calibration::ProgressData progress_data);
     void process_statustext(const mavlink_message_t& message);
 
-    void command_result_callback(MAVLinkCommands::Result command_result, float progress);
+    void command_result_callback(MavlinkCommandSender::Result command_result, float progress);
 
     static Calibration::Result
-    calibration_result_from_command_result(MAVLinkCommands::Result result);
+    calibration_result_from_command_result(MavlinkCommandSender::Result result);
 
     void report_started();
     void report_done();

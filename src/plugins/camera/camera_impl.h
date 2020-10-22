@@ -100,15 +100,15 @@ private:
     void manual_disable();
 
     void receive_set_mode_command_result(
-        const MAVLinkCommands::Result command_result,
+        const MavlinkCommandSender::Result command_result,
         const Camera::ResultCallback callback,
         const Camera::Mode mode);
 
     static Camera::Result
-    camera_result_from_command_result(const MAVLinkCommands::Result command_result);
+    camera_result_from_command_result(const MavlinkCommandSender::Result command_result);
 
     void receive_command_result(
-        MAVLinkCommands::Result command_result, const Camera::ResultCallback& callback);
+        MavlinkCommandSender::Result command_result, const Camera::ResultCallback& callback);
 
     static bool interval_valid(float interval_s);
 
@@ -148,23 +148,23 @@ private:
     void request_status();
     void request_flight_information();
 
-    MAVLinkCommands::CommandLong make_command_take_photo(float interval_s, float no_of_photos);
-    MAVLinkCommands::CommandLong make_command_stop_photo();
+    MavlinkCommandSender::CommandLong make_command_take_photo(float interval_s, float no_of_photos);
+    MavlinkCommandSender::CommandLong make_command_stop_photo();
 
-    MAVLinkCommands::CommandLong make_command_request_flight_information();
-    MAVLinkCommands::CommandLong make_command_request_camera_info();
-    MAVLinkCommands::CommandLong make_command_set_camera_mode(float mavlink_mode);
-    MAVLinkCommands::CommandLong make_command_request_camera_settings();
-    MAVLinkCommands::CommandLong make_command_request_camera_capture_status();
-    MAVLinkCommands::CommandLong make_command_request_storage_info();
+    MavlinkCommandSender::CommandLong make_command_request_flight_information();
+    MavlinkCommandSender::CommandLong make_command_request_camera_info();
+    MavlinkCommandSender::CommandLong make_command_set_camera_mode(float mavlink_mode);
+    MavlinkCommandSender::CommandLong make_command_request_camera_settings();
+    MavlinkCommandSender::CommandLong make_command_request_camera_capture_status();
+    MavlinkCommandSender::CommandLong make_command_request_storage_info();
 
-    MAVLinkCommands::CommandLong make_command_start_video(float capture_status_rate_hz);
-    MAVLinkCommands::CommandLong make_command_stop_video();
+    MavlinkCommandSender::CommandLong make_command_start_video(float capture_status_rate_hz);
+    MavlinkCommandSender::CommandLong make_command_stop_video();
 
-    MAVLinkCommands::CommandLong make_command_start_video_streaming();
-    MAVLinkCommands::CommandLong make_command_stop_video_streaming();
+    MavlinkCommandSender::CommandLong make_command_start_video_streaming();
+    MavlinkCommandSender::CommandLong make_command_stop_video_streaming();
 
-    MAVLinkCommands::CommandLong make_command_request_video_stream_info();
+    MavlinkCommandSender::CommandLong make_command_request_video_stream_info();
 
     std::unique_ptr<CameraDefinition> _camera_definition{};
 

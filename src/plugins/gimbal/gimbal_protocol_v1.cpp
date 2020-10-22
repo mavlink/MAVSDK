@@ -11,7 +11,7 @@ GimbalProtocolV1::GimbalProtocolV1(SystemImpl& system_impl) : GimbalProtocolBase
 Gimbal::Result GimbalProtocolV1::set_pitch_and_yaw(float pitch_deg, float yaw_deg)
 {
     const float roll_deg = 0.0f;
-    MAVLinkCommands::CommandLong command{};
+    MavlinkCommandSender::CommandLong command{};
 
     command.command = MAV_CMD_DO_MOUNT_CONTROL;
     command.params.param1 = pitch_deg;
@@ -27,7 +27,7 @@ void GimbalProtocolV1::set_pitch_and_yaw_async(
     float pitch_deg, float yaw_deg, Gimbal::ResultCallback callback)
 {
     const float roll_deg = 0.0f;
-    MAVLinkCommands::CommandLong command{};
+    MavlinkCommandSender::CommandLong command{};
 
     command.command = MAV_CMD_DO_MOUNT_CONTROL;
     command.params.param1 = pitch_deg;
@@ -37,7 +37,7 @@ void GimbalProtocolV1::set_pitch_and_yaw_async(
     command.target_component_id = _system_impl.get_autopilot_id();
 
     _system_impl.send_command_async(
-        command, [callback](MAVLinkCommands::Result command_result, float progress) {
+        command, [callback](MavlinkCommandSender::Result command_result, float progress) {
             UNUSED(progress);
             GimbalImpl::receive_command_result(command_result, callback);
         });
@@ -45,7 +45,7 @@ void GimbalProtocolV1::set_pitch_and_yaw_async(
 
 Gimbal::Result GimbalProtocolV1::set_mode(const Gimbal::GimbalMode gimbal_mode)
 {
-    MAVLinkCommands::CommandInt command{};
+    MavlinkCommandSender::CommandInt command{};
 
     // Correct here would actually be to:
     // - set yaw stabilize / param4 to 0 as usual
@@ -68,7 +68,7 @@ Gimbal::Result GimbalProtocolV1::set_mode(const Gimbal::GimbalMode gimbal_mode)
 void GimbalProtocolV1::set_mode_async(
     const Gimbal::GimbalMode gimbal_mode, Gimbal::ResultCallback callback)
 {
-    MAVLinkCommands::CommandInt command{};
+    MavlinkCommandSender::CommandInt command{};
 
     // Correct here would actually be to:
     // - set yaw stabilize / param4 to 0 as usual
@@ -85,7 +85,7 @@ void GimbalProtocolV1::set_mode_async(
     command.target_component_id = _system_impl.get_autopilot_id();
 
     _system_impl.send_command_async(
-        command, [callback](MAVLinkCommands::Result command_result, float progress) {
+        command, [callback](MavlinkCommandSender::Result command_result, float progress) {
             UNUSED(progress);
             GimbalImpl::receive_command_result(command_result, callback);
         });
@@ -106,7 +106,7 @@ float GimbalProtocolV1::to_float_gimbal_mode(const Gimbal::GimbalMode gimbal_mod
 Gimbal::Result
 GimbalProtocolV1::set_roi_location(double latitude_deg, double longitude_deg, float altitude_m)
 {
-    MAVLinkCommands::CommandInt command{};
+    MavlinkCommandSender::CommandInt command{};
 
     command.command = MAV_CMD_DO_SET_ROI_LOCATION;
     command.params.x = int32_t(std::round(latitude_deg * 1e7));
@@ -120,7 +120,7 @@ GimbalProtocolV1::set_roi_location(double latitude_deg, double longitude_deg, fl
 void GimbalProtocolV1::set_roi_location_async(
     double latitude_deg, double longitude_deg, float altitude_m, Gimbal::ResultCallback callback)
 {
-    MAVLinkCommands::CommandInt command{};
+    MavlinkCommandSender::CommandInt command{};
 
     command.command = MAV_CMD_DO_SET_ROI_LOCATION;
     command.params.x = int32_t(std::round(latitude_deg * 1e7));
@@ -129,7 +129,7 @@ void GimbalProtocolV1::set_roi_location_async(
     command.target_component_id = _system_impl.get_autopilot_id();
 
     _system_impl.send_command_async(
-        command, [callback](MAVLinkCommands::Result command_result, float progress) {
+        command, [callback](MavlinkCommandSender::Result command_result, float progress) {
             UNUSED(progress);
             GimbalImpl::receive_command_result(command_result, callback);
         });

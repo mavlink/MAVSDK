@@ -82,17 +82,17 @@ public:
 
     static FlightMode to_flight_mode_from_custom_mode(uint32_t custom_mode);
 
-    using CommandResultCallback = MAVLinkCommands::CommandResultCallback;
+    using CommandResultCallback = MavlinkCommandSender::CommandResultCallback;
 
-    MAVLinkCommands::Result send_command(MAVLinkCommands::CommandLong& command);
-    MAVLinkCommands::Result send_command(MAVLinkCommands::CommandInt& command);
+    MavlinkCommandSender::Result send_command(MavlinkCommandSender::CommandLong& command);
+    MavlinkCommandSender::Result send_command(MavlinkCommandSender::CommandInt& command);
 
-    void
-    send_command_async(MAVLinkCommands::CommandLong command, const CommandResultCallback callback);
-    void
-    send_command_async(MAVLinkCommands::CommandInt command, const CommandResultCallback callback);
+    void send_command_async(
+        MavlinkCommandSender::CommandLong command, const CommandResultCallback callback);
+    void send_command_async(
+        MavlinkCommandSender::CommandInt command, const CommandResultCallback callback);
 
-    MAVLinkCommands::Result set_msg_rate(
+    MavlinkCommandSender::Result set_msg_rate(
         uint16_t message_id, double rate_hz, uint8_t component_id = MAV_COMP_ID_AUTOPILOT1);
 
     void set_msg_rate_async(
@@ -154,7 +154,7 @@ public:
 
     FlightMode get_flight_mode() const;
 
-    MAVLinkCommands::Result
+    MavlinkCommandSender::Result
     set_flight_mode(FlightMode mode, uint8_t component_id = MAV_COMP_ID_AUTOPILOT1);
 
     void set_flight_mode_async(
@@ -236,6 +236,17 @@ public:
     SystemImpl(const SystemImpl&) = delete;
     const SystemImpl& operator=(const SystemImpl&) = delete;
 
+    void register_mavlink_command_handler(
+        uint16_t cmd_id,
+        MavlinkCommandReceiver::mavlink_command_int_handler_t callback,
+        const void* cookie);
+    void register_mavlink_command_handler(
+        uint16_t cmd_id,
+        MavlinkCommandReceiver::mavlink_command_long_handler_t callback,
+        const void* cookie);
+    void unregister_mavlink_command_handler(uint16_t cmd_id, const void* cookie);
+    void unregister_all_mavlink_command_handlers(const void* cookie);
+
 private:
     static bool is_autopilot(uint8_t comp_id);
     static bool is_camera(uint8_t comp_id);
@@ -258,10 +269,10 @@ private:
     void send_heartbeat();
 
     // We use std::pair instead of a std::optional.
-    std::pair<MAVLinkCommands::Result, MAVLinkCommands::CommandLong>
+    std::pair<MavlinkCommandSender::Result, MavlinkCommandSender::CommandLong>
     make_command_flight_mode(FlightMode mode, uint8_t component_id);
 
-    MAVLinkCommands::CommandLong
+    MavlinkCommandSender::CommandLong
     make_command_msg_rate(uint16_t message_id, double rate_hz, uint8_t component_id);
 
     static void receive_float_param(
@@ -317,7 +328,8 @@ private:
     static constexpr double _HEARTBEAT_SEND_INTERVAL_S = 1.0;
 
     MAVLinkParameters _params;
-    MAVLinkCommands _commands;
+    MavlinkCommandSender _send_commands;
+    MavlinkCommandReceiver _receive_commands;
 
     Timesync _timesync;
 

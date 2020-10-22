@@ -73,7 +73,7 @@ Failure::Result FailureImpl::inject(
         return Failure::Result::Disabled;
     }
 
-    MAVLinkCommands::CommandLong command{};
+    MavlinkCommandSender::CommandLong command{};
 
     command.command = MAV_CMD_INJECT_FAILURE;
     command.params.param1 = static_cast<float>(failure_unit);
@@ -85,20 +85,20 @@ Failure::Result FailureImpl::inject(
 }
 
 Failure::Result
-FailureImpl::failure_result_from_command_result(MAVLinkCommands::Result command_result)
+FailureImpl::failure_result_from_command_result(MavlinkCommandSender::Result command_result)
 {
     switch (command_result) {
-        case MAVLinkCommands::Result::Success:
+        case MavlinkCommandSender::Result::Success:
             return Failure::Result::Success;
-        case MAVLinkCommands::Result::NoSystem:
+        case MavlinkCommandSender::Result::NoSystem:
             return Failure::Result::NoSystem;
-        case MAVLinkCommands::Result::ConnectionError:
+        case MavlinkCommandSender::Result::ConnectionError:
             return Failure::Result::ConnectionError;
-        case MAVLinkCommands::Result::CommandDenied:
+        case MavlinkCommandSender::Result::CommandDenied:
             return Failure::Result::Denied;
-        case MAVLinkCommands::Result::Unsupported:
+        case MavlinkCommandSender::Result::Unsupported:
             return Failure::Result::Unsupported;
-        case MAVLinkCommands::Result::Timeout:
+        case MavlinkCommandSender::Result::Timeout:
             return Failure::Result::Timeout;
         default:
             return Failure::Result::Unknown;
