@@ -238,7 +238,11 @@ public:
 
     void register_mavlink_command_handler(
         uint16_t cmd_id,
-        MavlinkCommandReceiver::mavlink_command_handler_t callback,
+        MavlinkCommandReceiver::mavlink_command_int_handler_t callback,
+        const void* cookie);
+    void register_mavlink_command_handler(
+        uint16_t cmd_id,
+        MavlinkCommandReceiver::mavlink_command_long_handler_t callback,
         const void* cookie);
     void unregister_mavlink_command_handler(uint16_t cmd_id, const void* cookie);
     void unregister_all_mavlink_command_handlers(const void* cookie);

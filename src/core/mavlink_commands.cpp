@@ -346,12 +346,12 @@ void MavlinkCommandReceiver::receive_command_int(const mavlink_message_t& messag
 {
     mavlink_command_int_t command_int;
     mavlink_msg_command_int_decode(&message, &command_int);
-    MavlinkCommandReceiver::Command cmd(command_int);
+    MavlinkCommandReceiver::CommandInt cmd(command_int);
 
     std::lock_guard<std::mutex> lock(_mavlink_command_handler_table_mutex);
 
-    for (auto it = _mavlink_command_handler_table.begin();
-         it != _mavlink_command_handler_table.end();
+    for (auto it = _mavlink_command_int_handler_table.begin();
+         it != _mavlink_command_int_handler_table.end();
          ++it) {
         if (it->cmd_id == command_int.command) {
             it->callback(cmd);
@@ -363,12 +363,12 @@ void MavlinkCommandReceiver::receive_command_long(const mavlink_message_t& messa
 {
     mavlink_command_long_t command_long;
     mavlink_msg_command_long_decode(&message, &command_long);
-    MavlinkCommandReceiver::Command cmd(command_long);
+    MavlinkCommandReceiver::CommandLong cmd(command_long);
 
     std::lock_guard<std::mutex> lock(_mavlink_command_handler_table_mutex);
 
-    for (auto it = _mavlink_command_handler_table.begin();
-         it != _mavlink_command_handler_table.end();
+    for (auto it = _mavlink_command_long_handler_table.begin();
+         it != _mavlink_command_long_handler_table.end();
          ++it) {
         if (it->cmd_id == command_long.command) {
             it->callback(cmd);
@@ -377,23 +377,44 @@ void MavlinkCommandReceiver::receive_command_long(const mavlink_message_t& messa
 }
 
 void MavlinkCommandReceiver::register_mavlink_command_handler(
-    uint16_t cmd_id, mavlink_command_handler_t callback, const void* cookie)
+    uint16_t cmd_id, mavlink_command_int_handler_t callback, const void* cookie)
 {
     std::lock_guard<std::mutex> lock(_mavlink_command_handler_table_mutex);
 
-    MAVLinkCommandHandlerTableEntry entry = {cmd_id, callback, cookie};
-    _mavlink_command_handler_table.push_back(entry);
+    MAVLinkCommandIntHandlerTableEntry entry = {cmd_id, callback, cookie};
+    _mavlink_command_int_handler_table.push_back(entry);
+}
+
+void MavlinkCommandReceiver::register_mavlink_command_handler(
+    uint16_t cmd_id, mavlink_command_long_handler_t callback, const void* cookie)
+{
+    std::lock_guard<std::mutex> lock(_mavlink_command_handler_table_mutex);
+
+    MAVLinkCommandLongHandlerTableEntry entry = {cmd_id, callback, cookie};
+    _mavlink_command_long_handler_table.push_back(entry);
 }
 
 void MavlinkCommandReceiver::unregister_mavlink_command_handler(uint16_t cmd_id, const void* cookie)
 {
     std::lock_guard<std::mutex> lock(_mavlink_command_handler_table_mutex);
 
-    for (auto it = _mavlink_command_handler_table.begin();
-         it != _mavlink_command_handler_table.end();
+    // COMMAND_INT
+    for (auto it = _mavlink_command_int_handler_table.begin();
+         it != _mavlink_command_int_handler_table.end();
          /* no ++it */) {
         if (it->cmd_id == cmd_id && it->cookie == cookie) {
-            it = _mavlink_command_handler_table.erase(it);
+            it = _mavlink_command_int_handler_table.erase(it);
+        } else {
+            ++it;
+        }
+    }
+
+    // COMMAND_LONG
+    for (auto it = _mavlink_command_long_handler_table.begin();
+         it != _mavlink_command_long_handler_table.end();
+         /* no ++it */) {
+        if (it->cmd_id == cmd_id && it->cookie == cookie) {
+            it = _mavlink_command_long_handler_table.erase(it);
         } else {
             ++it;
         }
@@ -404,11 +425,23 @@ void MavlinkCommandReceiver::unregister_all_mavlink_command_handlers(const void*
 {
     std::lock_guard<std::mutex> lock(_mavlink_command_handler_table_mutex);
 
-    for (auto it = _mavlink_command_handler_table.begin();
-         it != _mavlink_command_handler_table.end();
+    // COMMAND_INT
+    for (auto it = _mavlink_command_int_handler_table.begin();
+         it != _mavlink_command_int_handler_table.end();
          /* no ++it */) {
         if (it->cookie == cookie) {
-            it = _mavlink_command_handler_table.erase(it);
+            it = _mavlink_command_int_handler_table.erase(it);
+        } else {
+            ++it;
+        }
+    }
+
+    // COMMAND_LONG
+    for (auto it = _mavlink_command_long_handler_table.begin();
+         it != _mavlink_command_long_handler_table.end();
+         /* no ++it */) {
+        if (it->cookie == cookie) {
+            it = _mavlink_command_long_handler_table.erase(it);
         } else {
             ++it;
         }

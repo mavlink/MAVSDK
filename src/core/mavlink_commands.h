@@ -133,34 +133,25 @@ public:
     explicit MavlinkCommandReceiver(SystemImpl& system_impl);
     ~MavlinkCommandReceiver();
 
-    struct Command {
+    struct CommandInt {
         uint8_t target_system_id{0};
         uint8_t target_component_id{0};
+        MAV_FRAME frame = MAV_FRAME_GLOBAL_RELATIVE_ALT;
         uint16_t command{0};
-
-        // Int
-        MAV_FRAME frame{MAV_FRAME_GLOBAL_RELATIVE_ALT};
         bool current{0};
         bool autocontinue{false};
-
-        // Long
-        uint8_t confirmation{0};
-
-        // Mixed
+        // Most of the "Reserved" values in MAVLink spec are NAN.
         struct Params {
-            float param1{NAN};
-            float param2{NAN};
-            float param3{NAN};
-            float param4{NAN};
-            float param5{NAN};
-            float param6{NAN};
-            float param7{NAN};
-            int32_t x{0};
-            int32_t y{0};
-            float z{NAN};
+            float param1 = NAN;
+            float param2 = NAN;
+            float param3 = NAN;
+            float param4 = NAN;
+            int32_t x = 0;
+            int32_t y = 0;
+            float z = NAN;
         } params{};
 
-        Command(mavlink_command_int_t command_int)
+        CommandInt(const mavlink_command_int_t& command_int)
         {
             target_system_id = command_int.target_system;
             target_component_id = command_int.target_component;
@@ -176,8 +167,24 @@ public:
             params.y = command_int.y;
             params.z = command_int.z;
         }
+    };
 
-        Command(mavlink_command_long_t command_long)
+    struct CommandLong {
+        uint8_t target_system_id{0};
+        uint8_t target_component_id{0};
+        uint16_t command{0};
+        uint8_t confirmation{0};
+        struct Params {
+            float param1 = NAN;
+            float param2 = NAN;
+            float param3 = NAN;
+            float param4 = NAN;
+            float param5 = NAN;
+            float param6 = NAN;
+            float param7 = NAN;
+        } params{};
+
+        CommandLong(const mavlink_command_long_t& command_long)
         {
             target_system_id = command_long.target_system;
             target_component_id = command_long.target_component;
@@ -193,9 +200,13 @@ public:
         }
     };
 
-    typedef std::function<void(const Command&)> mavlink_command_handler_t;
+    typedef std::function<void(const CommandInt&)> mavlink_command_int_handler_t;
+    typedef std::function<void(const CommandLong&)> mavlink_command_long_handler_t;
+
     void register_mavlink_command_handler(
-        uint16_t cmd_id, mavlink_command_handler_t callback, const void* cookie);
+        uint16_t cmd_id, mavlink_command_int_handler_t callback, const void* cookie);
+    void register_mavlink_command_handler(
+        uint16_t cmd_id, mavlink_command_long_handler_t callback, const void* cookie);
 
     void unregister_mavlink_command_handler(uint16_t cmd_id, const void* cookie);
     void unregister_all_mavlink_command_handlers(const void* cookie);
@@ -205,14 +216,21 @@ public:
     void receive_command_int(const mavlink_message_t& message);
     void receive_command_long(const mavlink_message_t& message);
 
-    struct MAVLinkCommandHandlerTableEntry {
+    struct MAVLinkCommandIntHandlerTableEntry {
         uint16_t cmd_id;
-        mavlink_command_handler_t callback;
+        mavlink_command_int_handler_t callback;
+        const void* cookie; // This is the identification to unregister.
+    };
+
+    struct MAVLinkCommandLongHandlerTableEntry {
+        uint16_t cmd_id;
+        mavlink_command_long_handler_t callback;
         const void* cookie; // This is the identification to unregister.
     };
 
     std::mutex _mavlink_command_handler_table_mutex{};
-    std::vector<MAVLinkCommandHandlerTableEntry> _mavlink_command_handler_table{};
+    std::vector<MAVLinkCommandIntHandlerTableEntry> _mavlink_command_int_handler_table{};
+    std::vector<MAVLinkCommandLongHandlerTableEntry> _mavlink_command_long_handler_table{};
 };
 
 } // namespace mavsdk
