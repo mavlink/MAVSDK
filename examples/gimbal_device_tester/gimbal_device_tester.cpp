@@ -394,7 +394,7 @@ public:
 
         std::this_thread::sleep_for(std::chrono::seconds(2));
 
-        const float margin_deg = 2.0f;
+        const float margin_deg = 5.0f;
 
         if (mode == AttitudeData::Mode::Follow) {
             const auto vehicle_attitude = _attitude_data.vehicle_attitude();
@@ -559,7 +559,7 @@ public:
         const float halftime_expected_pitch_deg =
             initial_attitude.pitch_deg + pitch_rate_deg * time_needed_s / 2.0f;
 
-        const float margin_deg = 3.0f;
+        const float margin_deg = 5.0f;
 
         if (halftime_attitude.pitch_deg > halftime_expected_pitch_deg + margin_deg) {
             halftime_fail = true;
