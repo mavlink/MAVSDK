@@ -14,8 +14,7 @@ namespace mavsdk {
 //       - The queue used does not support going through and checking each and every
 //         item yet.
 
-// MavlinkCommandSender class
-MavlinkCommandSender::MavlinkCommandSender(SystemImpl& parent) : _parent(parent)
+MavlinkCommandSender::MavlinkCommandSender(SystemImpl& system_impl) : _parent(system_impl)
 {
     _parent.register_mavlink_message_handler(
         MAVLINK_MSG_ID_COMMAND_ACK,
@@ -28,7 +27,8 @@ MavlinkCommandSender::~MavlinkCommandSender()
     _parent.unregister_all_mavlink_message_handlers(this);
 }
 
-MavlinkCommandSender::Result MavlinkCommandSender::send_command(const MavlinkCommandSender::CommandInt& command)
+MavlinkCommandSender::Result
+MavlinkCommandSender::send_command(const MavlinkCommandSender::CommandInt& command)
 {
     // We wrap the async call with a promise and future.
     auto prom = std::make_shared<std::promise<Result>>();
@@ -48,7 +48,8 @@ MavlinkCommandSender::Result MavlinkCommandSender::send_command(const MavlinkCom
     return res.get();
 }
 
-MavlinkCommandSender::Result MavlinkCommandSender::send_command(const MavlinkCommandSender::CommandLong& command)
+MavlinkCommandSender::Result
+MavlinkCommandSender::send_command(const MavlinkCommandSender::CommandLong& command)
 {
     // We wrap the async call with a promise and future.
     auto prom = std::make_shared<std::promise<Result>>();
@@ -67,7 +68,8 @@ MavlinkCommandSender::Result MavlinkCommandSender::send_command(const MavlinkCom
     return res.get();
 }
 
-void MavlinkCommandSender::queue_command_async(const CommandInt& command, CommandResultCallback callback)
+void MavlinkCommandSender::queue_command_async(
+    const CommandInt& command, CommandResultCallback callback)
 {
     // LogDebug() << "Command " << (int)(command.command) << " to send to "
     //  << (int)(command.target_system_id)<< ", " << (int)(command.target_component_id);
@@ -319,10 +321,8 @@ void MavlinkCommandSender::call_callback(
     // we lock ourselves out when we send a command in the callback receiving a command result.
     _parent.call_user_callback([callback, result, progress]() { callback(result, progress); });
 }
-// MavlinkCommandSender class
 
-// MavlinkCommandReceiver class
-MavlinkCommandReceiver::MavlinkCommandReceiver(SystemImpl& parent) : _parent(parent)
+MavlinkCommandReceiver::MavlinkCommandReceiver(SystemImpl& system_impl) : _parent(system_impl)
 {
     _parent.register_mavlink_message_handler(
         MAVLINK_MSG_ID_COMMAND_LONG,
@@ -342,7 +342,7 @@ MavlinkCommandReceiver::~MavlinkCommandReceiver()
     _parent.unregister_all_mavlink_message_handlers(this);
 }
 
-void MavlinkCommandReceiver::receive_command_int(mavlink_message_t message)
+void MavlinkCommandReceiver::receive_command_int(const mavlink_message_t& message)
 {
     mavlink_command_int_t command_int;
     mavlink_msg_command_int_decode(&message, &command_int);
@@ -350,14 +350,16 @@ void MavlinkCommandReceiver::receive_command_int(mavlink_message_t message)
 
     std::lock_guard<std::mutex> lock(_mavlink_command_handler_table_mutex);
 
-    for (auto it = _mavlink_command_handler_table.begin(); it != _mavlink_command_handler_table.end(); ++it) {
+    for (auto it = _mavlink_command_handler_table.begin();
+         it != _mavlink_command_handler_table.end();
+         ++it) {
         if (it->cmd_id == command_int.command) {
             it->callback(cmd);
         }
     }
 }
 
-void MavlinkCommandReceiver::receive_command_long(mavlink_message_t message)
+void MavlinkCommandReceiver::receive_command_long(const mavlink_message_t& message)
 {
     mavlink_command_long_t command_long;
     mavlink_msg_command_long_decode(&message, &command_long);
@@ -365,7 +367,9 @@ void MavlinkCommandReceiver::receive_command_long(mavlink_message_t message)
 
     std::lock_guard<std::mutex> lock(_mavlink_command_handler_table_mutex);
 
-    for (auto it = _mavlink_command_handler_table.begin(); it != _mavlink_command_handler_table.end(); ++it) {
+    for (auto it = _mavlink_command_handler_table.begin();
+         it != _mavlink_command_handler_table.end();
+         ++it) {
         if (it->cmd_id == command_long.command) {
             it->callback(cmd);
         }
@@ -385,7 +389,8 @@ void MavlinkCommandReceiver::unregister_mavlink_command_handler(uint16_t cmd_id,
 {
     std::lock_guard<std::mutex> lock(_mavlink_command_handler_table_mutex);
 
-    for (auto it = _mavlink_command_handler_table.begin(); it != _mavlink_command_handler_table.end();
+    for (auto it = _mavlink_command_handler_table.begin();
+         it != _mavlink_command_handler_table.end();
          /* no ++it */) {
         if (it->cmd_id == cmd_id && it->cookie == cookie) {
             it = _mavlink_command_handler_table.erase(it);
@@ -399,7 +404,8 @@ void MavlinkCommandReceiver::unregister_all_mavlink_command_handlers(const void*
 {
     std::lock_guard<std::mutex> lock(_mavlink_command_handler_table_mutex);
 
-    for (auto it = _mavlink_command_handler_table.begin(); it != _mavlink_command_handler_table.end();
+    for (auto it = _mavlink_command_handler_table.begin();
+         it != _mavlink_command_handler_table.end();
          /* no ++it */) {
         if (it->cookie == cookie) {
             it = _mavlink_command_handler_table.erase(it);
@@ -408,6 +414,5 @@ void MavlinkCommandReceiver::unregister_all_mavlink_command_handlers(const void*
         }
     }
 }
-// MavlinkCommandReceiver class
 
 } // namespace mavsdk

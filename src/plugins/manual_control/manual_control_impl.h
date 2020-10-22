@@ -28,7 +28,8 @@ public:
     ManualControl::Result set_manual_control_input(float x, float y, float z, float r);
 
 private:
-    ManualControl::Result manual_control_result_from_command_result(MavlinkCommandSender::Result result);
+    ManualControl::Result
+    manual_control_result_from_command_result(MavlinkCommandSender::Result result);
     void command_result_callback(
         MavlinkCommandSender::Result command_result, const ManualControl::ResultCallback& callback);
 };

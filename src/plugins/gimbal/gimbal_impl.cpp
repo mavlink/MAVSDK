@@ -136,7 +136,8 @@ void GimbalImpl::receive_command_result(
     }
 }
 
-Gimbal::Result GimbalImpl::gimbal_result_from_command_result(MavlinkCommandSender::Result command_result)
+Gimbal::Result
+GimbalImpl::gimbal_result_from_command_result(MavlinkCommandSender::Result command_result)
 {
     switch (command_result) {
         case MavlinkCommandSender::Result::Success:

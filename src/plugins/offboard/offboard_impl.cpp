@@ -608,7 +608,8 @@ void OffboardImpl::stop_sending_setpoints()
     _mode = Mode::NotActive;
 }
 
-Offboard::Result OffboardImpl::offboard_result_from_command_result(MavlinkCommandSender::Result result)
+Offboard::Result
+OffboardImpl::offboard_result_from_command_result(MavlinkCommandSender::Result result)
 {
     switch (result) {
         case MavlinkCommandSender::Result::Success:

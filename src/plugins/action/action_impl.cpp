@@ -230,9 +230,10 @@ void ActionImpl::disarm_async(const Action::ResultCallback& callback) const
     command.params.param1 = 0.0f; // disarm
     command.target_component_id = _parent->get_autopilot_id();
 
-    _parent->send_command_async(command, [this, callback](MavlinkCommandSender::Result result, float) {
-        command_result_callback(result, callback);
-    });
+    _parent->send_command_async(
+        command, [this, callback](MavlinkCommandSender::Result result, float) {
+            command_result_callback(result, callback);
+        });
 }
 
 void ActionImpl::terminate_async(const Action::ResultCallback& callback) const
@@ -243,9 +244,10 @@ void ActionImpl::terminate_async(const Action::ResultCallback& callback) const
     command.params.param1 = 1;
     command.target_component_id = _parent->get_autopilot_id();
 
-    _parent->send_command_async(command, [this, callback](MavlinkCommandSender::Result result, float) {
-        command_result_callback(result, callback);
-    });
+    _parent->send_command_async(
+        command, [this, callback](MavlinkCommandSender::Result result, float) {
+            command_result_callback(result, callback);
+        });
 }
 
 void ActionImpl::kill_async(const Action::ResultCallback& callback) const
@@ -257,9 +259,10 @@ void ActionImpl::kill_async(const Action::ResultCallback& callback) const
     command.params.param2 = 21196.f; // magic number to enforce in-air
     command.target_component_id = _parent->get_autopilot_id();
 
-    _parent->send_command_async(command, [this, callback](MavlinkCommandSender::Result result, float) {
-        command_result_callback(result, callback);
-    });
+    _parent->send_command_async(
+        command, [this, callback](MavlinkCommandSender::Result result, float) {
+            command_result_callback(result, callback);
+        });
 }
 
 void ActionImpl::reboot_async(const Action::ResultCallback& callback) const
@@ -273,9 +276,10 @@ void ActionImpl::reboot_async(const Action::ResultCallback& callback) const
     command.params.param4 = 1.0f; // reboot gimbal
     command.target_component_id = _parent->get_autopilot_id();
 
-    _parent->send_command_async(command, [this, callback](MavlinkCommandSender::Result result, float) {
-        command_result_callback(result, callback);
-    });
+    _parent->send_command_async(
+        command, [this, callback](MavlinkCommandSender::Result result, float) {
+            command_result_callback(result, callback);
+        });
 }
 
 void ActionImpl::shutdown_async(const Action::ResultCallback& callback) const
@@ -289,9 +293,10 @@ void ActionImpl::shutdown_async(const Action::ResultCallback& callback) const
     command.params.param4 = 2.0f; // shutdown gimbal
     command.target_component_id = _parent->get_autopilot_id();
 
-    _parent->send_command_async(command, [this, callback](MavlinkCommandSender::Result result, float) {
-        command_result_callback(result, callback);
-    });
+    _parent->send_command_async(
+        command, [this, callback](MavlinkCommandSender::Result result, float) {
+            command_result_callback(result, callback);
+        });
 }
 
 void ActionImpl::takeoff_async(const Action::ResultCallback& callback) const
@@ -301,9 +306,10 @@ void ActionImpl::takeoff_async(const Action::ResultCallback& callback) const
     command.command = MAV_CMD_NAV_TAKEOFF;
     command.target_component_id = _parent->get_autopilot_id();
 
-    _parent->send_command_async(command, [this, callback](MavlinkCommandSender::Result result, float) {
-        command_result_callback(result, callback);
-    });
+    _parent->send_command_async(
+        command, [this, callback](MavlinkCommandSender::Result result, float) {
+            command_result_callback(result, callback);
+        });
 }
 
 void ActionImpl::land_async(const Action::ResultCallback& callback) const
@@ -314,9 +320,10 @@ void ActionImpl::land_async(const Action::ResultCallback& callback) const
     command.params.param4 = NAN; // Don't change yaw.
     command.target_component_id = _parent->get_autopilot_id();
 
-    _parent->send_command_async(command, [this, callback](MavlinkCommandSender::Result result, float) {
-        command_result_callback(result, callback);
-    });
+    _parent->send_command_async(
+        command, [this, callback](MavlinkCommandSender::Result result, float) {
+            command_result_callback(result, callback);
+        });
 }
 
 void ActionImpl::return_to_launch_async(const Action::ResultCallback& callback) const
@@ -344,9 +351,10 @@ void ActionImpl::goto_location_async(
     command.params.y = int32_t(std::round(longitude_deg * 1e7));
     command.params.z = altitude_amsl_m;
 
-    _parent->send_command_async(command, [this, callback](MavlinkCommandSender::Result result, float) {
-        command_result_callback(result, callback);
-    });
+    _parent->send_command_async(
+        command, [this, callback](MavlinkCommandSender::Result result, float) {
+            command_result_callback(result, callback);
+        });
 }
 
 void ActionImpl::transition_to_fixedwing_async(const Action::ResultCallback& callback) const
@@ -371,9 +379,10 @@ void ActionImpl::transition_to_fixedwing_async(const Action::ResultCallback& cal
     command.params.param1 = float(MAV_VTOL_STATE_FW);
     command.target_component_id = _parent->get_autopilot_id();
 
-    _parent->send_command_async(command, [this, callback](MavlinkCommandSender::Result result, float) {
-        command_result_callback(result, callback);
-    });
+    _parent->send_command_async(
+        command, [this, callback](MavlinkCommandSender::Result result, float) {
+            command_result_callback(result, callback);
+        });
 }
 
 void ActionImpl::transition_to_multicopter_async(const Action::ResultCallback& callback) const
@@ -397,9 +406,10 @@ void ActionImpl::transition_to_multicopter_async(const Action::ResultCallback& c
     command.params.param1 = float(MAV_VTOL_STATE_MC);
     command.target_component_id = _parent->get_autopilot_id();
 
-    _parent->send_command_async(command, [this, callback](MavlinkCommandSender::Result result, float) {
-        command_result_callback(result, callback);
-    });
+    _parent->send_command_async(
+        command, [this, callback](MavlinkCommandSender::Result result, float) {
+            command_result_callback(result, callback);
+        });
 }
 
 Action::Result ActionImpl::taking_off_allowed() const

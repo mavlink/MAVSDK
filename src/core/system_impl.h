@@ -87,10 +87,10 @@ public:
     MavlinkCommandSender::Result send_command(MavlinkCommandSender::CommandLong& command);
     MavlinkCommandSender::Result send_command(MavlinkCommandSender::CommandInt& command);
 
-    void
-    send_command_async(MavlinkCommandSender::CommandLong command, const CommandResultCallback callback);
-    void
-    send_command_async(MavlinkCommandSender::CommandInt command, const CommandResultCallback callback);
+    void send_command_async(
+        MavlinkCommandSender::CommandLong command, const CommandResultCallback callback);
+    void send_command_async(
+        MavlinkCommandSender::CommandInt command, const CommandResultCallback callback);
 
     MavlinkCommandSender::Result set_msg_rate(
         uint16_t message_id, double rate_hz, uint8_t component_id = MAV_COMP_ID_AUTOPILOT1);
@@ -236,9 +236,10 @@ public:
     SystemImpl(const SystemImpl&) = delete;
     const SystemImpl& operator=(const SystemImpl&) = delete;
 
-    void register_mavlink_command_handler(uint16_t cmd_id,
-                                      MavlinkCommandReceiver::mavlink_command_handler_t callback,
-                                      const void* cookie);
+    void register_mavlink_command_handler(
+        uint16_t cmd_id,
+        MavlinkCommandReceiver::mavlink_command_handler_t callback,
+        const void* cookie);
     void unregister_mavlink_command_handler(uint16_t cmd_id, const void* cookie);
     void unregister_all_mavlink_command_handlers(const void* cookie);
 

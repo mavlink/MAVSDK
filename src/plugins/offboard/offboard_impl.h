@@ -52,7 +52,8 @@ private:
     void receive_command_result(
         MavlinkCommandSender::Result result, const Offboard::ResultCallback& callback);
 
-    static Offboard::Result offboard_result_from_command_result(MavlinkCommandSender::Result result);
+    static Offboard::Result
+    offboard_result_from_command_result(MavlinkCommandSender::Result result);
 
     void stop_sending_setpoints();
 

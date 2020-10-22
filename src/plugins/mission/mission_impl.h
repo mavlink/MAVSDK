@@ -87,8 +87,8 @@ private:
     void report_progress();
     void reset_mission_progress();
 
-    void
-    report_flight_mode_change(Mission::ResultCallback callback, MavlinkCommandSender::Result result);
+    void report_flight_mode_change(
+        Mission::ResultCallback callback, MavlinkCommandSender::Result result);
     static Mission::Result command_result_to_mission_result(MavlinkCommandSender::Result result);
 
     // FIXME: make static

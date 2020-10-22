@@ -103,7 +103,7 @@ MavlinkPassthroughImpl::to_mavlink_passthrough_result_from_mavlink_commands_resu
         default:
             // FALLTHROUGH
         case MavlinkCommandSender::Result::InProgress: // FIXME: currently not expected
-                                                  // FALLTHROUGH
+                                                       // FALLTHROUGH
         case MavlinkCommandSender::Result::UnknownError:
             return MavlinkPassthrough::Result::Unknown;
     }

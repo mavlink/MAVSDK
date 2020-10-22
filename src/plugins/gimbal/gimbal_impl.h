@@ -35,7 +35,8 @@ public:
         float altitude_m,
         Gimbal::ResultCallback callback);
 
-    static Gimbal::Result gimbal_result_from_command_result(MavlinkCommandSender::Result command_result);
+    static Gimbal::Result
+    gimbal_result_from_command_result(MavlinkCommandSender::Result command_result);
 
     static void receive_command_result(
         MavlinkCommandSender::Result command_result, const Gimbal::ResultCallback& callback);

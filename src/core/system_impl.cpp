@@ -972,7 +972,8 @@ SystemImpl::FlightMode SystemImpl::to_flight_mode_from_custom_mode(uint32_t cust
     }
 }
 
-MavlinkCommandSender::Result SystemImpl::set_flight_mode(FlightMode system_mode, uint8_t component_id)
+MavlinkCommandSender::Result
+SystemImpl::set_flight_mode(FlightMode system_mode, uint8_t component_id)
 {
     std::pair<MavlinkCommandSender::Result, MavlinkCommandSender::CommandLong> result =
         make_command_flight_mode(system_mode, component_id);
@@ -1107,14 +1108,16 @@ void SystemImpl::send_command_async(
 MavlinkCommandSender::Result
 SystemImpl::set_msg_rate(uint16_t message_id, double rate_hz, uint8_t component_id)
 {
-    MavlinkCommandSender::CommandLong command = make_command_msg_rate(message_id, rate_hz, component_id);
+    MavlinkCommandSender::CommandLong command =
+        make_command_msg_rate(message_id, rate_hz, component_id);
     return send_command(command);
 }
 
 void SystemImpl::set_msg_rate_async(
     uint16_t message_id, double rate_hz, CommandResultCallback callback, uint8_t component_id)
 {
-    MavlinkCommandSender::CommandLong command = make_command_msg_rate(message_id, rate_hz, component_id);
+    MavlinkCommandSender::CommandLong command =
+        make_command_msg_rate(message_id, rate_hz, component_id);
     send_command_async(command, callback);
 }
 
@@ -1230,9 +1233,8 @@ void SystemImpl::intercept_outgoing_messages(std::function<bool(mavlink_message_
     _outgoing_messages_intercept_callback = callback;
 }
 
-void SystemImpl::register_mavlink_command_handler(uint16_t cmd_id,
-                                      MavlinkCommandReceiver::mavlink_command_handler_t callback,
-                                      const void* cookie)
+void SystemImpl::register_mavlink_command_handler(
+    uint16_t cmd_id, MavlinkCommandReceiver::mavlink_command_handler_t callback, const void* cookie)
 {
     _receive_commands.register_mavlink_command_handler(cmd_id, callback, cookie);
 }

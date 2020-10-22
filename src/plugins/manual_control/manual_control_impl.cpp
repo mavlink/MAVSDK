@@ -29,7 +29,8 @@ void ManualControlImpl::disable() {}
 void ManualControlImpl::start_position_control_async(const ManualControl::ResultCallback callback)
 {
     _parent->set_flight_mode_async(
-        SystemImpl::FlightMode::Posctl, [this, callback](MavlinkCommandSender::Result result, float) {
+        SystemImpl::FlightMode::Posctl,
+        [this, callback](MavlinkCommandSender::Result result, float) {
             command_result_callback(result, callback);
         });
 }
@@ -47,7 +48,8 @@ ManualControl::Result ManualControlImpl::start_position_control()
 void ManualControlImpl::start_altitude_control_async(const ManualControl::ResultCallback callback)
 {
     _parent->set_flight_mode_async(
-        SystemImpl::FlightMode::Altctl, [this, callback](MavlinkCommandSender::Result result, float) {
+        SystemImpl::FlightMode::Altctl,
+        [this, callback](MavlinkCommandSender::Result result, float) {
             command_result_callback(result, callback);
         });
 }

@@ -61,8 +61,8 @@ private:
 
     void report_progress_current();
 
-    void
-    report_flight_mode_change(MissionRaw::ResultCallback callback, MavlinkCommandSender::Result result);
+    void report_flight_mode_change(
+        MissionRaw::ResultCallback callback, MavlinkCommandSender::Result result);
     static MissionRaw::Result command_result_to_mission_result(MavlinkCommandSender::Result result);
 
     std::vector<MAVLinkMissionTransfer::ItemInt>
