@@ -289,7 +289,7 @@ public:
         std::stringstream limit_right;
         limit_right << "Pan " << yaw_max << " right";
         std::stringstream limit_left;
-        limit_left << "Pan " << -yaw_min << " left";
+        limit_left << "Pan " << yaw_min << " left";
 
         return test_pitch_yaw_angle(limit_right.str(), 0.0f, yaw_max, AttitudeData::Mode::Follow) &&
                test_pitch_yaw_angle(limit_left.str(), 0.0f, yaw_min, AttitudeData::Mode::Follow) &&
@@ -327,7 +327,7 @@ public:
         std::stringstream limit_right;
         limit_right << "Pan " << yaw_max << " right";
         std::stringstream limit_left;
-        limit_left << "Pan " << -yaw_min << " left";
+        limit_left << "Pan " << yaw_min << " left";
 
         return test_pitch_yaw_angle(limit_right.str(), 0.0f, yaw_max, AttitudeData::Mode::Lock) &&
                test_pitch_yaw_angle(limit_left.str(), 0.0f, yaw_min, AttitudeData::Mode::Lock) &&
