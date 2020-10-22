@@ -39,7 +39,7 @@ void GimbalImpl::enable()
     _parent->register_timeout_handler(
         [this]() { receive_protocol_timeout(); }, 1.0, &_protocol_cookie);
 
-    MAVLinkCommands::CommandLong command{};
+    MavlinkCommandSender::CommandLong command{};
     command.command = MAV_CMD_REQUEST_MESSAGE;
     command.params.param1 = static_cast<float>(MAVLINK_MSG_ID_GIMBAL_MANAGER_INFORMATION);
     command.target_component_id = 0; // any component
@@ -127,7 +127,7 @@ void GimbalImpl::wait_for_protocol_async(std::function<void()> callback)
 }
 
 void GimbalImpl::receive_command_result(
-    MAVLinkCommands::Result command_result, const Gimbal::ResultCallback& callback)
+    MavlinkCommandSender::Result command_result, const Gimbal::ResultCallback& callback)
 {
     Gimbal::Result gimbal_result = gimbal_result_from_command_result(command_result);
 
@@ -136,17 +136,17 @@ void GimbalImpl::receive_command_result(
     }
 }
 
-Gimbal::Result GimbalImpl::gimbal_result_from_command_result(MAVLinkCommands::Result command_result)
+Gimbal::Result GimbalImpl::gimbal_result_from_command_result(MavlinkCommandSender::Result command_result)
 {
     switch (command_result) {
-        case MAVLinkCommands::Result::Success:
+        case MavlinkCommandSender::Result::Success:
             return Gimbal::Result::Success;
-        case MAVLinkCommands::Result::Timeout:
+        case MavlinkCommandSender::Result::Timeout:
             return Gimbal::Result::Timeout;
-        case MAVLinkCommands::Result::NoSystem:
-        case MAVLinkCommands::Result::ConnectionError:
-        case MAVLinkCommands::Result::Busy:
-        case MAVLinkCommands::Result::CommandDenied:
+        case MavlinkCommandSender::Result::NoSystem:
+        case MavlinkCommandSender::Result::ConnectionError:
+        case MavlinkCommandSender::Result::Busy:
+        case MavlinkCommandSender::Result::CommandDenied:
         default:
             return Gimbal::Result::Error;
     }

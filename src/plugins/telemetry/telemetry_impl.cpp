@@ -483,20 +483,20 @@ void TelemetryImpl::set_rate_distance_sensor_async(
 }
 
 Telemetry::Result
-TelemetryImpl::telemetry_result_from_command_result(MAVLinkCommands::Result command_result)
+TelemetryImpl::telemetry_result_from_command_result(MavlinkCommandSender::Result command_result)
 {
     switch (command_result) {
-        case MAVLinkCommands::Result::Success:
+        case MavlinkCommandSender::Result::Success:
             return Telemetry::Result::Success;
-        case MAVLinkCommands::Result::NoSystem:
+        case MavlinkCommandSender::Result::NoSystem:
             return Telemetry::Result::NoSystem;
-        case MAVLinkCommands::Result::ConnectionError:
+        case MavlinkCommandSender::Result::ConnectionError:
             return Telemetry::Result::ConnectionError;
-        case MAVLinkCommands::Result::Busy:
+        case MavlinkCommandSender::Result::Busy:
             return Telemetry::Result::Busy;
-        case MAVLinkCommands::Result::CommandDenied:
+        case MavlinkCommandSender::Result::CommandDenied:
             return Telemetry::Result::CommandDenied;
-        case MAVLinkCommands::Result::Timeout:
+        case MavlinkCommandSender::Result::Timeout:
             return Telemetry::Result::Timeout;
         default:
             return Telemetry::Result::Unknown;
@@ -504,7 +504,7 @@ TelemetryImpl::telemetry_result_from_command_result(MAVLinkCommands::Result comm
 }
 
 void TelemetryImpl::command_result_callback(
-    MAVLinkCommands::Result command_result, const Telemetry::ResultCallback& callback)
+    MavlinkCommandSender::Result command_result, const Telemetry::ResultCallback& callback)
 {
     Telemetry::Result action_result = telemetry_result_from_command_result(command_result);
 

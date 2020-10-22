@@ -88,8 +88,8 @@ private:
     void reset_mission_progress();
 
     void
-    report_flight_mode_change(Mission::ResultCallback callback, MAVLinkCommands::Result result);
-    static Mission::Result command_result_to_mission_result(MAVLinkCommands::Result result);
+    report_flight_mode_change(Mission::ResultCallback callback, MavlinkCommandSender::Result result);
+    static Mission::Result command_result_to_mission_result(MavlinkCommandSender::Result result);
 
     // FIXME: make static
     std::pair<Mission::Result, Mission::MissionPlan> convert_to_result_and_mission_items(

@@ -60,9 +60,9 @@ void CalibrationImpl::calibrate_gyro_async(const CalibrationCallback& callback)
     _state = State::GyroCalibration;
     _calibration_callback = callback;
 
-    MAVLinkCommands::CommandLong command{};
+    MavlinkCommandSender::CommandLong command{};
     command.command = MAV_CMD_PREFLIGHT_CALIBRATION;
-    MAVLinkCommands::CommandLong::set_as_reserved(command.params, 0.0f);
+    MavlinkCommandSender::CommandLong::set_as_reserved(command.params, 0.0f);
     command.params.param1 = 1.0f; // Gyro
     command.target_component_id = MAV_COMP_ID_AUTOPILOT1;
     _parent->send_command_async(
@@ -99,9 +99,9 @@ void CalibrationImpl::calibrate_accelerometer_async(const CalibrationCallback& c
     _state = State::AccelerometerCalibration;
     _calibration_callback = callback;
 
-    MAVLinkCommands::CommandLong command{};
+    MavlinkCommandSender::CommandLong command{};
     command.command = MAV_CMD_PREFLIGHT_CALIBRATION;
-    MAVLinkCommands::CommandLong::set_as_reserved(command.params, 0.0f);
+    MavlinkCommandSender::CommandLong::set_as_reserved(command.params, 0.0f);
     command.params.param5 = 1.0f; // Accel
     command.target_component_id = MAV_COMP_ID_AUTOPILOT1;
     _parent->send_command_async(
@@ -127,9 +127,9 @@ void CalibrationImpl::calibrate_magnetometer_async(const CalibrationCallback& ca
     _state = State::MagnetometerCalibration;
     _calibration_callback = callback;
 
-    MAVLinkCommands::CommandLong command{};
+    MavlinkCommandSender::CommandLong command{};
     command.command = MAV_CMD_PREFLIGHT_CALIBRATION;
-    MAVLinkCommands::CommandLong::set_as_reserved(command.params, 0.0f);
+    MavlinkCommandSender::CommandLong::set_as_reserved(command.params, 0.0f);
     command.params.param2 = 1.0f; // Mag
     command.target_component_id = MAV_COMP_ID_AUTOPILOT1;
     _parent->send_command_async(
@@ -155,9 +155,9 @@ void CalibrationImpl::calibrate_level_horizon_async(const CalibrationCallback& c
     _state = State::AccelerometerCalibration;
     _calibration_callback = callback;
 
-    MAVLinkCommands::CommandLong command{};
+    MavlinkCommandSender::CommandLong command{};
     command.command = MAV_CMD_PREFLIGHT_CALIBRATION;
-    MAVLinkCommands::CommandLong::set_as_reserved(command.params, 0.0f);
+    MavlinkCommandSender::CommandLong::set_as_reserved(command.params, 0.0f);
     command.params.param5 = 2.0f; // Board Level
     command.target_component_id = MAV_COMP_ID_AUTOPILOT1;
     _parent->send_command_async(
@@ -183,9 +183,9 @@ void CalibrationImpl::calibrate_gimbal_accelerometer_async(const CalibrationCall
     _state = State::GimbalAccelerometerCalibration;
     _calibration_callback = callback;
 
-    MAVLinkCommands::CommandLong command{};
+    MavlinkCommandSender::CommandLong command{};
     command.command = MAV_CMD_PREFLIGHT_CALIBRATION;
-    MAVLinkCommands::CommandLong::set_as_reserved(command.params, 0.0f);
+    MavlinkCommandSender::CommandLong::set_as_reserved(command.params, 0.0f);
     command.params.param5 = 1.0f; // Accel
     command.target_component_id = MAV_COMP_ID_GIMBAL;
     _parent->send_command_async(
@@ -215,17 +215,17 @@ void CalibrationImpl::cancel() const
             break;
     }
 
-    MAVLinkCommands::CommandLong command{};
+    MavlinkCommandSender::CommandLong command{};
     command.command = MAV_CMD_PREFLIGHT_CALIBRATION;
     // All params 0 signal cancellation of a calibration.
-    MAVLinkCommands::CommandLong::set_as_reserved(command.params, 0.0f);
+    MavlinkCommandSender::CommandLong::set_as_reserved(command.params, 0.0f);
     command.target_component_id = target_component_id;
     // We don't care about the result, the initial callback should get notified about it.
     _parent->send_command_async(command, nullptr);
 }
 
 void CalibrationImpl::command_result_callback(
-    MAVLinkCommands::Result command_result, float progress)
+    MavlinkCommandSender::Result command_result, float progress)
 {
     std::lock_guard<std::mutex> lock(_calibration_mutex);
 
@@ -239,23 +239,23 @@ void CalibrationImpl::command_result_callback(
     // use the progress info. If we get an ack, we need to translate that to
     // a first progress update, and then parse the statustexts for progress.
     switch (command_result) {
-        case MAVLinkCommands::Result::Success:
+        case MavlinkCommandSender::Result::Success:
             // Silently ignore.
             break;
 
-        case MAVLinkCommands::Result::NoSystem:
+        case MavlinkCommandSender::Result::NoSystem:
             // FALLTHROUGH
-        case MAVLinkCommands::Result::ConnectionError:
+        case MavlinkCommandSender::Result::ConnectionError:
             // FALLTHROUGH
-        case MAVLinkCommands::Result::Busy:
+        case MavlinkCommandSender::Result::Busy:
             // FALLTHROUGH
-        case MAVLinkCommands::Result::CommandDenied:
+        case MavlinkCommandSender::Result::CommandDenied:
             // FALLTHROUGH
-        case MAVLinkCommands::Result::Unsupported:
+        case MavlinkCommandSender::Result::Unsupported:
             // FALLTHROUGH
-        case MAVLinkCommands::Result::UnknownError:
+        case MavlinkCommandSender::Result::UnknownError:
             // FALLTHROUGH
-        case MAVLinkCommands::Result::Timeout: {
+        case MavlinkCommandSender::Result::Timeout: {
             // Report all error cases.
             const auto timeout_result = calibration_result_from_command_result(command_result);
             call_callback(_calibration_callback, timeout_result, Calibration::ProgressData());
@@ -264,7 +264,7 @@ void CalibrationImpl::command_result_callback(
             break;
         }
 
-        case MAVLinkCommands::Result::InProgress: {
+        case MavlinkCommandSender::Result::InProgress: {
             const auto progress_result = calibration_result_from_command_result(command_result);
             Calibration::ProgressData progress_data;
             progress_data.has_progress = true;
@@ -277,22 +277,22 @@ void CalibrationImpl::command_result_callback(
 }
 
 Calibration::Result
-CalibrationImpl::calibration_result_from_command_result(MAVLinkCommands::Result result)
+CalibrationImpl::calibration_result_from_command_result(MavlinkCommandSender::Result result)
 {
     switch (result) {
-        case MAVLinkCommands::Result::Success:
+        case MavlinkCommandSender::Result::Success:
             return Calibration::Result::Success;
-        case MAVLinkCommands::Result::NoSystem:
+        case MavlinkCommandSender::Result::NoSystem:
             return Calibration::Result::NoSystem;
-        case MAVLinkCommands::Result::ConnectionError:
+        case MavlinkCommandSender::Result::ConnectionError:
             return Calibration::Result::ConnectionError;
-        case MAVLinkCommands::Result::Busy:
+        case MavlinkCommandSender::Result::Busy:
             return Calibration::Result::Busy;
-        case MAVLinkCommands::Result::CommandDenied:
+        case MavlinkCommandSender::Result::CommandDenied:
             return Calibration::Result::CommandDenied;
-        case MAVLinkCommands::Result::Timeout:
+        case MavlinkCommandSender::Result::Timeout:
             return Calibration::Result::Timeout;
-        case MAVLinkCommands::Result::InProgress:
+        case MavlinkCommandSender::Result::InProgress:
             return Calibration::Result::Next;
         default:
             return Calibration::Result::Unknown;

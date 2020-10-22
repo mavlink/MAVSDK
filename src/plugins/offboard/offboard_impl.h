@@ -50,9 +50,9 @@ private:
 
     void process_heartbeat(const mavlink_message_t& message);
     void receive_command_result(
-        MAVLinkCommands::Result result, const Offboard::ResultCallback& callback);
+        MavlinkCommandSender::Result result, const Offboard::ResultCallback& callback);
 
-    static Offboard::Result offboard_result_from_command_result(MAVLinkCommands::Result result);
+    static Offboard::Result offboard_result_from_command_result(MavlinkCommandSender::Result result);
 
     void stop_sending_setpoints();
 

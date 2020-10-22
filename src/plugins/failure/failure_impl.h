@@ -21,7 +21,7 @@ public:
     inject(Failure::FailureUnit failure_unit, Failure::FailureType failure_type, int32_t instance);
 
 private:
-    Failure::Result failure_result_from_command_result(MAVLinkCommands::Result command_result);
+    Failure::Result failure_result_from_command_result(MavlinkCommandSender::Result command_result);
 
     enum class EnabledState {
         Init,

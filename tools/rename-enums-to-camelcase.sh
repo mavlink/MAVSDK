@@ -236,14 +236,14 @@ sed -i 's/MAVLinkParameters::Result::CONNECTION_ERROR/MAVLinkParameters::Result:
 sed -i 's/MAVLinkParameters::Result::WRONG_TYPE/MAVLinkParameters::Result::WrongType/g' $files
 sed -i 's/MAVLinkParameters::Result::PARAM_NAME_TOO_LONG/MAVLinkParameters::Result::ParamNameTooLong/g' $files
 
-sed -i 's/MAVLinkCommands::Result::SUCCESS/MAVLinkCommands::Result::Success/g' $files
-sed -i 's/MAVLinkCommands::Result::NO_SYSTEM/MAVLinkCommands::Result::NoSystem/g' $files
-sed -i 's/MAVLinkCommands::Result::CONNECTION_ERROR/MAVLinkCommands::Result::ConnectionError/g' $files
-sed -i 's/MAVLinkCommands::Result::BUSY/MAVLinkCommands::Result::Busy/g' $files
-sed -i 's/MAVLinkCommands::Result::COMMAND_DENIED/MAVLinkCommands::Result::CommandDenied/g' $files
-sed -i 's/MAVLinkCommands::Result::TIMEOUT/MAVLinkCommands::Result::Timeout/g' $files
-sed -i 's/MAVLinkCommands::Result::IN_PROGRESS/MAVLinkCommands::Result::InProgress/g' $files
-sed -i 's/MAVLinkCommands::Result::UNKNOWN_ERROR/MAVLinkCommands::Result::UnknownError/g' $files
+sed -i 's/MavlinkCommandSender::Result::SUCCESS/MavlinkCommandSender::Result::Success/g' $files
+sed -i 's/MavlinkCommandSender::Result::NO_SYSTEM/MavlinkCommandSender::Result::NoSystem/g' $files
+sed -i 's/MavlinkCommandSender::Result::CONNECTION_ERROR/MavlinkCommandSender::Result::ConnectionError/g' $files
+sed -i 's/MavlinkCommandSender::Result::BUSY/MavlinkCommandSender::Result::Busy/g' $files
+sed -i 's/MavlinkCommandSender::Result::COMMAND_DENIED/MavlinkCommandSender::Result::CommandDenied/g' $files
+sed -i 's/MavlinkCommandSender::Result::TIMEOUT/MavlinkCommandSender::Result::Timeout/g' $files
+sed -i 's/MavlinkCommandSender::Result::IN_PROGRESS/MavlinkCommandSender::Result::InProgress/g' $files
+sed -i 's/MavlinkCommandSender::Result::UNKNOWN_ERROR/MavlinkCommandSender::Result::UnknownError/g' $files
 
 sed -i 's/Color::RED/Color::Red/g' $files
 sed -i 's/Color::GREEN/Color::Green/g' $files
