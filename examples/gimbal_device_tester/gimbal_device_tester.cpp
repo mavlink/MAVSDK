@@ -405,26 +405,31 @@ public:
 
         bool pitch_fail = false;
         bool yaw_fail = false;
+        bool skip = false;
 
         // TODO: We should do this check in quaternion to avoid gimbal locks.
         //       For now we avoid the check close to it.
 
-        if (gimbal_attitude.pitch_deg > pitch_deg + margin_deg) {
-            pitch_fail = true;
-        } else if (gimbal_attitude.pitch_deg < pitch_deg - margin_deg) {
-            pitch_fail = true;
-        }
+        if (pitch_deg < 80.0f && pitch_deg > -80.0) {
+            if (gimbal_attitude.pitch_deg > pitch_deg + margin_deg) {
+                pitch_fail = true;
+            } else if (gimbal_attitude.pitch_deg < pitch_deg - margin_deg) {
+                pitch_fail = true;
+            }
 
-        if (gimbal_attitude.pitch_deg < 80.0f && gimbal_attitude.pitch_deg > -80.0) {
             if (gimbal_attitude.yaw_deg > yaw_deg + margin_deg) {
                 yaw_fail = true;
             } else if (gimbal_attitude.yaw_deg < yaw_deg - margin_deg) {
                 yaw_fail = true;
             }
+        } else {
+            skip = true;
         }
 
         if (pitch_fail || yaw_fail) {
             std::cout << "FAIL\n";
+        } else if (skip) {
+            std::cout << "SKIP\n";
         } else {
             std::cout << "PASS\n";
         }
