@@ -755,6 +755,13 @@ int main(int argc, char** argv)
 
     AttitudeData attitude_data{};
 
+    // Drive it to 0 for initial convergence phase.
+    attitude_data.change_attitude_setpoint([&](AttitudeData::AttitudeSetpoint& attitude_setpoint) {
+        attitude_setpoint.roll_deg = 0.0f;
+        attitude_setpoint.pitch_deg = 0.0f;
+        attitude_setpoint.yaw_deg = 0.0f;
+    });
+
     if (!test_device_information(mavlink_passthrough, attitude_data)) {
         return 1;
     }
