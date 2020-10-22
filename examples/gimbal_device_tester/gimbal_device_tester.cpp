@@ -282,9 +282,9 @@ public:
         const auto gimbal_limits = _attitude_data.gimbal_limits();
 
         const float yaw_min =
-            (!std::isinf(gimbal_limits.yaw_min_deg) ? gimbal_limits.yaw_min_deg : -60.0f);
+            (!std::isinf(gimbal_limits.yaw_min_deg) ? degrees(gimbal_limits.yaw_min_deg) : -60.0f);
         const float yaw_max =
-            (!std::isinf(gimbal_limits.yaw_max_deg) ? gimbal_limits.yaw_max_deg : 60.0f);
+            (!std::isinf(gimbal_limits.yaw_max_deg) ? degrees(gimbal_limits.yaw_max_deg) : 60.0f);
 
         std::stringstream limit_right;
         limit_right << "Pan " << yaw_max << " right";
