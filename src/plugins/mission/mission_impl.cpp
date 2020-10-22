@@ -351,7 +351,8 @@ MissionImpl::convert_to_int_items(const std::vector<MissionItem>& mission_items)
         }
 
         if (std::isfinite(item.gimbal_yaw_deg) || std::isfinite(item.gimbal_pitch_deg)) {
-            switch (_gimbal_protocol) {
+            const auto temp_gimbal_protocol = _gimbal_protocol.load();
+            switch (temp_gimbal_protocol) {
                 case GimbalProtocol::V1:
                     add_gimbal_items_v1(
                         int_items, item_i, item.gimbal_pitch_deg, item.gimbal_yaw_deg);
