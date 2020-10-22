@@ -106,8 +106,6 @@ void MissionImpl::process_mission_item_reached(const mavlink_message_t& message)
 
 void MissionImpl::process_gimbal_manager_information(const mavlink_message_t& message)
 {
-    // mavlink_gimbal_manager_information_t gimbal_manager_information;
-    // mavlink_msg_gimbal_manager_information_decode(&message, &gimbal_manager_information);
     UNUSED(message);
     LogDebug() << "Using gimbal protocol v2";
     _gimbal_protocol = GimbalProtocol::V2;
