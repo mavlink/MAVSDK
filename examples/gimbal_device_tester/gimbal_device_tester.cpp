@@ -270,12 +270,14 @@ public:
             return false;
         }
 
-        std::cout << test_prefix << "Yaw 20 degrees to the right... ";
-        _attitude_data.change_vehicle_attitude([](AttitudeData::VehicleAttitude& vehicle_attitude) {
-            vehicle_attitude.yaw_deg = 20.0f;
-        });
-        std::this_thread::sleep_for(std::chrono::seconds(2));
-        std::cout << "DONE\n";
+        // Let's not yaw for now because it is confusing for a gimbal.
+        // std::cout << test_prefix << "Yaw 20 degrees to the right... ";
+        //_attitude_data.change_vehicle_attitude([](AttitudeData::VehicleAttitude& vehicle_attitude)
+        //{
+        //    vehicle_attitude.yaw_deg = 20.0f;
+        //});
+        // std::this_thread::sleep_for(std::chrono::seconds(25));
+        // std::cout << "DONE\n";
 
         const auto gimbal_limits = _attitude_data.gimbal_limits();
 
