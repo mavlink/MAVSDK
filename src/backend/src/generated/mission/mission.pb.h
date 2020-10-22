@@ -3813,7 +3813,7 @@ class MissionItem :
   void _internal_set_is_fly_through(bool value);
   public:
 
-  // float gimbal_pitch_deg = 6 [(.mavsdk.options.default_value) = "NaN"];
+  // float gimbal_pitch_deg = 6 [(.mavsdk.options.default_value) = "NaN", (.mavsdk.options.epsilon) = 0.0001];
   void clear_gimbal_pitch_deg();
   float gimbal_pitch_deg() const;
   void set_gimbal_pitch_deg(float value);
@@ -3822,7 +3822,7 @@ class MissionItem :
   void _internal_set_gimbal_pitch_deg(float value);
   public:
 
-  // float gimbal_yaw_deg = 7 [(.mavsdk.options.default_value) = "NaN"];
+  // float gimbal_yaw_deg = 7 [(.mavsdk.options.default_value) = "NaN", (.mavsdk.options.epsilon) = 0.0001];
   void clear_gimbal_yaw_deg();
   float gimbal_yaw_deg() const;
   void set_gimbal_yaw_deg(float value);
@@ -5665,7 +5665,7 @@ inline void MissionItem::set_is_fly_through(bool value) {
   // @@protoc_insertion_point(field_set:mavsdk.rpc.mission.MissionItem.is_fly_through)
 }
 
-// float gimbal_pitch_deg = 6 [(.mavsdk.options.default_value) = "NaN"];
+// float gimbal_pitch_deg = 6 [(.mavsdk.options.default_value) = "NaN", (.mavsdk.options.epsilon) = 0.0001];
 inline void MissionItem::clear_gimbal_pitch_deg() {
   gimbal_pitch_deg_ = 0;
 }
@@ -5685,7 +5685,7 @@ inline void MissionItem::set_gimbal_pitch_deg(float value) {
   // @@protoc_insertion_point(field_set:mavsdk.rpc.mission.MissionItem.gimbal_pitch_deg)
 }
 
-// float gimbal_yaw_deg = 7 [(.mavsdk.options.default_value) = "NaN"];
+// float gimbal_yaw_deg = 7 [(.mavsdk.options.default_value) = "NaN", (.mavsdk.options.epsilon) = 0.0001];
 inline void MissionItem::clear_gimbal_yaw_deg() {
   gimbal_yaw_deg_ = 0;
 }

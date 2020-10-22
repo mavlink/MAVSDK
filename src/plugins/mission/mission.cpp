@@ -157,7 +157,7 @@ bool operator==(const Mission::MissionItem& lhs, const Mission::MissionItem& rhs
             rhs.speed_m_s == lhs.speed_m_s) &&
            (rhs.is_fly_through == lhs.is_fly_through) &&
            ((std::isnan(rhs.gimbal_pitch_deg) && std::isnan(lhs.gimbal_pitch_deg)) ||
-            (std::fabs(rhs.gimbal_pitch_deg - lhs.gimbal_pitch_deg) < 1e-4f)) &&
+            rhs.gimbal_pitch_deg == lhs.gimbal_pitch_deg) &&
            ((std::isnan(rhs.gimbal_yaw_deg) && std::isnan(lhs.gimbal_yaw_deg)) ||
             rhs.gimbal_yaw_deg == lhs.gimbal_yaw_deg) &&
            (rhs.camera_action == lhs.camera_action) &&
