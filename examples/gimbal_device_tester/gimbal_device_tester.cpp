@@ -345,6 +345,7 @@ public:
 
         return test_pitch_yaw_angle("Look forward first", 0.0f, 0.0f, AttitudeData::Mode::Follow) &&
                test_pitch_yaw_rate("Tilt down with 10 deg/s for 5s", -10.0f, 0.0f, 5.0f) &&
+               stop_rate() &&
                test_pitch_yaw_rate("Tilt back up with 20 deg/s for 2.5s", 20.0f, 0.0f, 2.5f) &&
                test_pitch_yaw_angle("Look forward again", 0.0f, 0.0f, AttitudeData::Mode::Follow);
     }
@@ -359,6 +360,7 @@ public:
                    -10.0f,
                    -20.0f,
                    AttitudeData::Mode::Follow) &&
+               stop_rate() &&
                test_pitch_angle_and_rate(
                    "Tilt back up with 5 deg/s", 5.0f, 0.0f, AttitudeData::Mode::Follow) &&
                test_pitch_yaw_angle("Look forward again", 0.0f, 0.0f, AttitudeData::Mode::Follow);
@@ -369,7 +371,7 @@ public:
         // FIXME: We assume that +/-25 degrees is possible.
 
         return test_pitch_yaw_angle("Look forward first", 0.0f, 0.0f, AttitudeData::Mode::Follow) &&
-               test_pitch_yaw_rate("Pan right 5 deg/s for 5s", 0.0f, 5.0f, 5.0f) &&
+               test_pitch_yaw_rate("Pan right 5 deg/s for 5s", 0.0f, 5.0f, 5.0f) && stop_rate() &&
                test_pitch_yaw_rate("Pan to the right with 10 deg/s for 5s", 0.0f, -10.0f, 5.0f) &&
                test_pitch_yaw_angle("Look forward again", 0.0f, 0.0f, AttitudeData::Mode::Follow);
     }
@@ -502,6 +504,25 @@ public:
         }
 
         return !(pitch_fail || yaw_fail);
+    }
+
+    bool stop_rate()
+    {
+        // Set rates to 0 and give it time to stop
+
+        _attitude_data.change_attitude_setpoint(
+            [&](AttitudeData::AttitudeSetpoint& attitude_setpoint) {
+                attitude_setpoint.roll_deg = NAN;
+                attitude_setpoint.pitch_deg = NAN;
+                attitude_setpoint.yaw_deg = NAN;
+                attitude_setpoint.roll_rate_deg = 0.0f;
+                attitude_setpoint.pitch_rate_deg = 0.0f;
+                attitude_setpoint.yaw_rate_deg = 0.0f;
+            });
+
+        std::this_thread::sleep_for(std::chrono::milliseconds(500));
+
+        return true;
     }
 
     bool test_pitch_angle_and_rate(
