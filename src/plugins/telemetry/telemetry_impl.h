@@ -164,6 +164,7 @@ private:
     void process_home_position(const mavlink_message_t& message);
     void process_attitude(const mavlink_message_t& message);
     void process_attitude_quaternion(const mavlink_message_t& message);
+    void process_gimbal_device_attitude_status(const mavlink_message_t& message);
     void process_mount_orientation(const mavlink_message_t& message);
     void process_imu_reading_ned(const mavlink_message_t& message);
     void process_gps_raw_int(const mavlink_message_t& message);

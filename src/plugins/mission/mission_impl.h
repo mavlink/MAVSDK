@@ -1,5 +1,6 @@
 #pragma once
 
+#include <atomic>
 #include <json/json.h>
 #include <vector>
 #include <memory>
@@ -76,6 +77,11 @@ public:
 private:
     void process_mission_current(const mavlink_message_t& message);
     void process_mission_item_reached(const mavlink_message_t& message);
+    void process_gimbal_information(const mavlink_message_t& message);
+    void process_gimbal_manager_information(const mavlink_message_t& message);
+    void receive_protocol_timeout();
+    void wait_for_protocol();
+    void wait_for_protocol_async(std::function<void()> callback);
 
     static bool has_valid_position(const Mission::MissionItem& item);
     static float hold_time(const Mission::MissionItem& item);
@@ -117,6 +123,17 @@ private:
         Mission::MissionItem& new_mission_item,
         std::vector<Mission::MissionItem>& all_mission_items);
 
+    void add_gimbal_items_v1(
+        std::vector<MAVLinkMissionTransfer::ItemInt>& int_items,
+        unsigned item_i,
+        float pitch_deg,
+        float yaw_deg);
+    void add_gimbal_items_v2(
+        std::vector<MAVLinkMissionTransfer::ItemInt>& int_items,
+        unsigned item_i,
+        float pitch_deg,
+        float yaw_deg);
+
     struct MissionData {
         mutable std::recursive_mutex mutex{};
         int last_current_mavlink_mission_item{-1};
@@ -154,6 +171,10 @@ private:
     static constexpr uint8_t PX4_CUSTOM_SUB_MODE_AUTO_MISSION = 4;
 
     static constexpr double RETRY_TIMEOUT_S = 0.250;
+
+    void* _gimbal_protocol_cookie{nullptr};
+    enum class GimbalProtocol { Unknown, V1, V2 };
+    std::atomic<GimbalProtocol> _gimbal_protocol{GimbalProtocol::Unknown};
 };
 
 } // namespace mavsdk
