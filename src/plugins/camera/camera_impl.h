@@ -129,7 +129,11 @@ private:
 
     void check_status();
 
-    bool load_definition_file(const std::string& uri, std::string& content);
+    bool fetch_camera_definition(
+        const mavlink_camera_information_t& camera_information, std::string& camera_definition_out);
+    bool download_definition_file(const std::string& uri, std::string& camera_definition_out);
+    bool
+    load_stored_definition(const mavlink_camera_information_t&, std::string& camera_definition_out);
 
     void refresh_params();
     void invalidate_params();

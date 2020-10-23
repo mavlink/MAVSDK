@@ -813,43 +813,76 @@ void CameraImpl::process_camera_information(const mavlink_message_t& message)
         }
     }
 
-    std::string content{};
-    bool found_content = false;
+    if (!_camera_definition) {
+        std::string content{};
+        auto succeeded = fetch_camera_definition(camera_information, content);
 
+        if (succeeded) {
+            _camera_definition.reset(new CameraDefinition());
+            _camera_definition->load_string(content);
+            refresh_params();
+            LogDebug() << "Successfully loaded camera definition";
+        } else {
+            LogDebug() << "Failed to fetch camera definition!";
+        }
+    }
+}
+
+bool CameraImpl::fetch_camera_definition(
+    const mavlink_camera_information_t& camera_information, std::string& camera_definition_out)
+{
+    auto download_succeeded =
+        download_definition_file(camera_information.cam_definition_uri, camera_definition_out);
+
+    if (download_succeeded) {
+        return true;
+    }
+
+    return load_stored_definition(camera_information, camera_definition_out);
+}
+
+bool CameraImpl::download_definition_file(
+    const std::string& uri, std::string& camera_definition_out)
+{
+    HttpLoader http_loader;
+    LogInfo() << "Downloading camera definition from: " << uri;
+    if (!http_loader.download_text_sync(uri, camera_definition_out)) {
+        LogErr() << "Failed to download camera definition.";
+        return false;
+    }
+
+    return true;
+}
+
+bool CameraImpl::load_stored_definition(
+    const mavlink_camera_information_t& camera_information, std::string& camera_definition_out)
+{
     // TODO: we might also try to support the correct version of the xml files.
     if (strcmp((const char*)(camera_information.vendor_name), "Yuneec") == 0) {
         if (strcmp((const char*)(camera_information.model_name), "E90") == 0) {
             LogInfo() << "Using cached file for Yuneec E90.";
-            content = e90xml;
-            found_content = true;
+            camera_definition_out = e90xml;
+            return true;
         } else if (strcmp((const char*)(camera_information.model_name), "E50") == 0) {
             LogInfo() << "Using cached file for Yuneec E50.";
-            content = e50xml;
-            found_content = true;
+            camera_definition_out = e50xml;
+            return true;
         } else if (strcmp((const char*)(camera_information.model_name), "CGOET") == 0) {
             LogInfo() << "Using cached file for Yuneec ET.";
-            content = cgoetxml;
-            found_content = true;
+            camera_definition_out = cgoetxml;
+            return true;
         } else if (strcmp((const char*)(camera_information.model_name), "E10T") == 0) {
             LogInfo() << "Using cached file for Yuneec E10T.";
-            content = e10txml;
-            found_content = true;
+            camera_definition_out = e10txml;
+            return true;
         } else if (strcmp((const char*)(camera_information.model_name), "E30Z") == 0) {
             LogInfo() << "Using cached file for Yuneec E30Z.";
-            content = e30zxml;
-            found_content = true;
+            camera_definition_out = e30zxml;
+            return true;
         }
-    } else {
-        content = camera_information.cam_definition_uri;
-        LogDebug() << "downloading camera definition file from: " << content;
-        found_content = load_definition_file(camera_information.cam_definition_uri, content);
     }
 
-    if (found_content) {
-        _camera_definition.reset(new CameraDefinition());
-        _camera_definition->load_string(content);
-        refresh_params();
-    }
+    return false;
 }
 
 void CameraImpl::process_video_information(const mavlink_message_t& message)
@@ -990,18 +1023,6 @@ void CameraImpl::notify_mode()
     std::lock_guard<std::mutex> lock(_mode.mutex);
     auto mode = _mode.data;
     _parent->call_user_callback([mode, temp_callback]() { temp_callback(mode); });
-}
-
-bool CameraImpl::load_definition_file(const std::string& uri, std::string& content)
-{
-    HttpLoader http_loader;
-    LogInfo() << "Downloading camera definition from: " << uri;
-    if (!http_loader.download_text_sync(uri, content)) {
-        LogErr() << "Failed to download camera definition.";
-        return false;
-    }
-
-    return true;
 }
 
 bool CameraImpl::get_possible_setting_options(std::vector<std::string>& settings)
