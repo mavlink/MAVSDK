@@ -37,5 +37,6 @@ ExternalProject_add(
     curl
     URL https://github.com/curl/curl/archive/curl-7_70_0.zip
     PREFIX curl
+    PATCH_COMMAND patch CMakeLists.txt < ${PROJECT_SOURCE_DIR}/curl.patch
     CMAKE_ARGS "${CMAKE_ARGS}"
     )

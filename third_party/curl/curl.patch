@@ -1,0 +1,12 @@
+--- CMakeLists.txt	2020-10-22 13:52:47.849069912 -0800
++++ CMakeLists.txt	2020-10-22 13:52:36.053060360 -0800
+@@ -371,6 +371,9 @@
+   set(SSL_ENABLED ON)
+   set(USE_OPENSSL ON)
+
++  list(APPEND OPENSSL_LIBRARIES rt)
++  list(APPEND CURL_LIBS rt)
++
+   # Depend on OpenSSL via imported targets if supported by the running
+   # version of CMake.  This allows our dependents to get our dependencies
+   # transitively.
