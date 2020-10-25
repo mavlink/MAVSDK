@@ -485,6 +485,12 @@ bool CameraDefinition::get_possible_settings(
     std::vector<std::string> exclusions{};
 
     for (const auto& parameter : _parameter_map) {
+        if (parameter.first == "CAM_MODE") {
+            // CAM_MODE is a "special" parameter that gets set through a specific MAVLink message
+            // (MAV_CMD_SET_CAMERA_MODE)
+            continue;
+        }
+
         for (const auto& option : parameter.second->options) {
             if (_current_settings[parameter.first].needs_updating) {
                 continue;
@@ -533,12 +539,12 @@ bool CameraDefinition::set_setting(
     if (_parameter_map[name]->is_range) {
         // Check against the minimum
         if (value < _parameter_map[name]->options[0]->value) {
-            LogErr() << "Chosen value smaller than minimum";
+            LogErr() << name << " (range): chosen value smaller than minimum";
             return false;
         }
 
         if (value > _parameter_map[name]->options[1]->value) {
-            LogErr() << "Chosen value bigger than maximum";
+            LogErr() << name << " (range): chosen value bigger than maximum";
             return false;
         }
 
@@ -647,6 +653,12 @@ bool CameraDefinition::get_possible_options(
     std::vector<std::string> exclusions{};
 
     for (const auto& parameter : _parameter_map) {
+        if (parameter.first == "CAM_MODE") {
+            // CAM_MODE is a "special" parameter that gets set through a specific MAVLink message
+            // (MAV_CMD_SET_CAMERA_MODE)
+            continue;
+        }
+
         for (const auto& option : parameter.second->options) {
             if (_current_settings[parameter.first].needs_updating) {
                 // LogWarn() << parameter.first << " needs updating";
