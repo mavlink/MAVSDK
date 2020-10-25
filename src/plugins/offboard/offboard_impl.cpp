@@ -564,12 +564,11 @@ Offboard::Result OffboardImpl::send_actuator_control()
 
 void OffboardImpl::process_heartbeat(const mavlink_message_t& message)
 {
-
     // Process only Heartbeat coming from the autopilot
     if (message.compid != MAV_COMP_ID_AUTOPILOT1) {
         return;
     }
-    
+
     mavlink_heartbeat_t heartbeat;
     mavlink_msg_heartbeat_decode(&message, &heartbeat);
 
