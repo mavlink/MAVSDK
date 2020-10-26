@@ -15,10 +15,9 @@
 
 namespace mavsdk {
 
-MavsdkImpl::MavsdkImpl() : timeout_handler(_time)
+MavsdkImpl::MavsdkImpl() : timeout_handler(_time), call_every_handler(_time)
 {
     LogInfo() << "MAVSDK version: " << mavsdk_version;
-    set_configuration(_configuration);
 
     if (const char* env_p = std::getenv("MAVSDK_CALLBACK_DEBUGGING")) {
         if (env_p && std::string("1").compare(env_p) == 0) {
@@ -35,6 +34,8 @@ MavsdkImpl::MavsdkImpl() : timeout_handler(_time)
 
 MavsdkImpl::~MavsdkImpl()
 {
+    call_every_handler.remove(_heartbeat_send_cookie);
+
     _should_exit = true;
 
     if (_process_user_callbacks_thread != nullptr) {
@@ -282,9 +283,11 @@ void MavsdkImpl::add_connection(std::shared_ptr<Connection> new_connection)
 
 void MavsdkImpl::set_configuration(Mavsdk::Configuration configuration)
 {
-    own_address.system_id = configuration.get_system_id();
-    own_address.component_id = configuration.get_component_id();
-    _configuration.set_usage_type(configuration.get_usage_type());
+    _configuration = configuration;
+
+    if (configuration.get_always_send_heartbeats()) {
+        start_sending_heartbeat();
+    }
 }
 
 std::vector<uint64_t> MavsdkImpl::get_system_uuids() const
@@ -350,14 +353,12 @@ System& MavsdkImpl::get_system(const uint64_t uuid)
 
 uint8_t MavsdkImpl::get_own_system_id() const
 {
-    // TODO: To be deprecated.
-    return own_address.system_id;
+    return _configuration.get_system_id();
 }
 
 uint8_t MavsdkImpl::get_own_component_id() const
 {
-    // TODO: To be deprecated.
-    return own_address.component_id;
+    return _configuration.get_component_id();
 }
 
 uint8_t MavsdkImpl::get_mav_type() const
@@ -492,6 +493,7 @@ void MavsdkImpl::work_thread()
 {
     while (!_should_exit) {
         timeout_handler.run_once();
+        call_every_handler.run_once();
         std::this_thread::sleep_for(std::chrono::milliseconds(10));
     }
 }
@@ -552,6 +554,28 @@ void MavsdkImpl::process_user_callbacks_thread()
         callback.second.func();
         timeout_handler.remove(cookie);
     }
+}
+
+void MavsdkImpl::start_sending_heartbeat()
+{
+    call_every_handler.add(
+        [this]() { send_heartbeat(); }, _HEARTBEAT_SEND_INTERVAL_S, &_heartbeat_send_cookie);
+}
+
+void MavsdkImpl::send_heartbeat()
+{
+    mavlink_message_t message;
+    mavlink_msg_heartbeat_pack(
+        get_own_system_id(),
+        get_own_component_id(),
+        &message,
+        get_mav_type(),
+        get_own_component_id() == MAV_COMP_ID_AUTOPILOT1 ? MAV_AUTOPILOT_GENERIC :
+                                                           MAV_AUTOPILOT_INVALID,
+        0,
+        0,
+        0);
+    send_message(message);
 }
 
 } // namespace mavsdk

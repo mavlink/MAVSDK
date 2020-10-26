@@ -163,8 +163,10 @@ public:
          * system and component ID.
          * @param system_id the system id to store in this configuration
          * @param component_id the component id to store in this configuration
+         * @param always_send_heartbeats send heartbeats by default even without a system connected
          */
-        explicit Configuration(uint8_t system_id, uint8_t component_id);
+        explicit Configuration(
+            uint8_t system_id, uint8_t component_id, bool always_send_heartbeats);
         /**
          * @brief Create new Configuration using a usage type.
          * In this mode, the system and component ID will be automatically chosen.
@@ -197,6 +199,17 @@ public:
          */
         void set_component_id(uint8_t component_id);
 
+        /**
+         * @brief Get whether to send heartbeats by default.
+         * @return whether to always send heartbeats
+         */
+        bool get_always_send_heartbeats() const;
+
+        /**
+         * @brief Set whether to send heartbeats by default.
+         */
+        void set_always_send_heartbeats(bool always_send_heartbeats);
+
         /** @brief Usage type of this configuration, used for automatic ID set */
         UsageType get_usage_type() const;
 
@@ -208,6 +221,7 @@ public:
     private:
         uint8_t _system_id;
         uint8_t _component_id;
+        bool _always_send_heartbeats;
         UsageType _usage_type;
     };
 

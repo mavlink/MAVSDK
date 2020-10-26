@@ -9,7 +9,6 @@
 #include "mavlink_mission_transfer.h"
 #include "mavlink_statustext_handler.h"
 #include "timeout_handler.h"
-#include "call_every_handler.h"
 #include "safe_queue.h"
 #include "timesync.h"
 #include "system.h"
@@ -266,7 +265,6 @@ private:
     static ComponentType component_type(uint8_t component_id);
 
     void system_thread();
-    void send_heartbeat();
 
     // We use std::pair instead of a std::optional.
     std::pair<MavlinkCommandSender::Result, MavlinkCommandSender::CommandLong>
@@ -320,20 +318,15 @@ private:
     bool _connected{false};
     System::IsConnectedCallback _is_connected_callback{nullptr};
     void* _heartbeat_timeout_cookie = nullptr;
-    void* _heartbeat_send_cookie = nullptr;
 
     std::atomic<bool> _autopilot_version_pending{false};
     void* _autopilot_version_timed_out_cookie = nullptr;
-
-    static constexpr double _HEARTBEAT_SEND_INTERVAL_S = 1.0;
 
     MAVLinkParameters _params;
     MavlinkCommandSender _send_commands;
     MavlinkCommandReceiver _receive_commands;
 
     Timesync _timesync;
-
-    CallEveryHandler _call_every_handler;
 
     MAVLinkMissionTransfer _mission_transfer;
 
