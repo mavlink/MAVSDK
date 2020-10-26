@@ -76,6 +76,21 @@ jobs:
       - name: test (mavsdk_server)
         run: ./build/release/src/backend/test/unit_tests_backend
 
+  ubuntu20-meson-non-superbuild:
+    name: ubuntu-20.04 (meson, non-backend, non-superbuild)
+    runs-on: ubuntu-20.04
+    steps:
+      - uses: actions/checkout@v2
+        with:
+          submodules: recursive
+      - name: install meson
+        run: sudo -H pip3 install meson
+      - name: configure
+        run: meson build
+      - name: build
+        run: meson compile -C build
+      - name: install
+        run: sudo meson install -C build
   ubuntu20-proto-check:
     name: ubuntu-20.04 (proto check)
     runs-on: ubuntu-20.04
