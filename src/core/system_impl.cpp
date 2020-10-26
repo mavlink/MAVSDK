@@ -24,7 +24,6 @@ SystemImpl::SystemImpl(MavsdkImpl& parent, uint8_t system_id, uint8_t comp_id, b
     _send_commands(*this),
     _receive_commands(*this),
     _timesync(*this),
-    _call_every_handler(_time),
     _mission_transfer(*this, _message_handler, _parent.timeout_handler)
 {
     _target_address.system_id = system_id;
@@ -137,22 +136,22 @@ void SystemImpl::process_mavlink_message(mavlink_message_t& message)
 
 void SystemImpl::add_call_every(std::function<void()> callback, float interval_s, void** cookie)
 {
-    _call_every_handler.add(callback, interval_s, cookie);
+    _parent.call_every_handler.add(callback, interval_s, cookie);
 }
 
 void SystemImpl::change_call_every(float interval_s, const void* cookie)
 {
-    _call_every_handler.change(interval_s, cookie);
+    _parent.call_every_handler.change(interval_s, cookie);
 }
 
 void SystemImpl::reset_call_every(const void* cookie)
 {
-    _call_every_handler.reset(cookie);
+    _parent.call_every_handler.reset(cookie);
 }
 
 void SystemImpl::remove_call_every(const void* cookie)
 {
-    _call_every_handler.remove(cookie);
+    _parent.call_every_handler.remove(cookie);
 }
 
 void SystemImpl::process_heartbeat(const mavlink_message_t& message)
@@ -240,7 +239,6 @@ void SystemImpl::heartbeats_timed_out()
 void SystemImpl::system_thread()
 {
     while (!_should_exit) {
-        _call_every_handler.run_once();
         _params.do_work();
         _send_commands.do_work();
         _timesync.do_work();
@@ -382,22 +380,6 @@ bool SystemImpl::has_gimbal() const
     return get_gimbal_id() == MAV_COMP_ID_GIMBAL;
 }
 
-void SystemImpl::send_heartbeat()
-{
-    mavlink_message_t message;
-    // GCSClient is not autopilot!; hence MAV_AUTOPILOT_INVALID.
-    mavlink_msg_heartbeat_pack(
-        get_own_system_id(),
-        get_own_component_id(),
-        &message,
-        get_own_mav_type(),
-        MAV_AUTOPILOT_INVALID,
-        0,
-        0,
-        0);
-    send_message(message);
-}
-
 bool SystemImpl::send_message(mavlink_message_t& message)
 {
     // This is a low level interface where incoming messages can be tampered
@@ -493,12 +475,7 @@ void SystemImpl::set_connected()
             _connected = true;
 
             // Send a heartbeat back immediately.
-            send_heartbeat();
-            // And then schedule sending one at a fixed interval.
-            add_call_every(
-                [this]() { send_heartbeat(); },
-                SystemImpl::_HEARTBEAT_SEND_INTERVAL_S,
-                &_heartbeat_send_cookie);
+            _parent.start_sending_heartbeat();
 
             if (!_always_connected) {
                 register_timeout_handler(
@@ -543,8 +520,6 @@ void SystemImpl::set_disconnected()
             _parent.call_user_callback([temp_callback]() { temp_callback(false); });
         }
     }
-
-    remove_call_every(_heartbeat_send_cookie);
 
     {
         std::lock_guard<std::mutex> lock(_plugin_impls_mutex);

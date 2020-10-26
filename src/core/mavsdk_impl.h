@@ -5,6 +5,7 @@
 #include <vector>
 #include <atomic>
 
+#include "call_every_handler.h"
 #include "connection.h"
 #include "mavsdk.h"
 #include "mavlink_include.h"
@@ -71,7 +72,10 @@ public:
     void notify_on_discover(uint64_t uuid);
     void notify_on_timeout(uint64_t uuid);
 
+    void start_sending_heartbeat();
+
     TimeoutHandler timeout_handler;
+    CallEveryHandler call_every_handler;
 
     void call_user_callback_located(
         const std::string& filename, const int linenumber, const std::function<void()>& func);
@@ -85,6 +89,8 @@ private:
 
     void work_thread();
     void process_user_callbacks_thread();
+
+    void send_heartbeat();
 
     using system_entry_t = std::pair<uint8_t, std::shared_ptr<System>>;
 
@@ -126,6 +132,10 @@ private:
     std::thread* _process_user_callbacks_thread{nullptr};
     SafeQueue<UserCallback> _user_callback_queue{};
     bool _callback_debugging{false};
+
+    static constexpr double _HEARTBEAT_SEND_INTERVAL_S = 1.0;
+    std::atomic<bool> _sending_heartbeats{false};
+    void* _heartbeat_send_cookie = nullptr;
 
     std::atomic<bool> _should_exit = {false};
 };
