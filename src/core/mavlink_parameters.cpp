@@ -35,11 +35,12 @@ void MAVLinkParameters::set_param_async(
     const void* cookie,
     bool extended)
 {
-    // if (value.is_float()) {
-    //     LogDebug() << "setting param " << name << " to " << value.get_float();
-    // } else {
-    //     LogDebug() << "setting param " << name << " to " << value.get_int();
-    // }
+    // LogDebug() << "setting param " << name << ", extended: " << (extended ? "yes" : "no");
+
+    if (name.compare("CAM_MODE") == 0) {
+        LogErr() << "CAM_MODE should be set through the MAV_CMD_SET_CAMERA_MODE message!";
+        return;
+    }
 
     if (name.size() > PARAM_ID_LEN) {
         LogErr() << "Error: param name too long";
@@ -80,6 +81,11 @@ void MAVLinkParameters::get_param_async(
     bool extended)
 {
     // LogDebug() << "getting param " << name << ", extended: " << (extended ? "yes" : "no");
+
+    if (name.compare("CAM_MODE") == 0) {
+        LogErr() << "CAM_MODE should be fetched from the CAMERA_SETTINGS message!";
+        return;
+    }
 
     if (name.size() > PARAM_ID_LEN) {
         LogErr() << "Error: param name too long";
@@ -451,28 +457,13 @@ void MAVLinkParameters::process_param_ext_value(const mavlink_message_t& message
         case WorkItem::Type::Get: {
             ParamValue value;
             value.set_from_mavlink_param_ext_value(param_ext_value);
+
             if (value.is_same_type(work->param_value)) {
                 if (work->get_param_callback) {
                     work->get_param_callback(MAVLinkParameters::Result::Success, value);
                 }
-            } else if (value.is_uint8() && work->param_value.is_uint16()) {
-                // FIXME: workaround for mismatching type uint8_t which should be uint16_t.
-                ParamValue correct_type_value;
-                correct_type_value.set_uint16(static_cast<uint16_t>(value.get_uint8()));
-                if (work->get_param_callback) {
-                    work->get_param_callback(
-                        MAVLinkParameters::Result::Success, correct_type_value);
-                }
-            } else if (value.is_uint8() && work->param_value.is_uint32()) {
-                // FIXME: workaround for mismatching type uint8_t which should be uint32_t.
-                ParamValue correct_type_value;
-                correct_type_value.set_uint32(static_cast<uint32_t>(value.get_uint8()));
-                if (work->get_param_callback) {
-                    work->get_param_callback(
-                        MAVLinkParameters::Result::Success, correct_type_value);
-                }
             } else {
-                LogErr() << "Param types don't match";
+                LogErr() << "Param types don't match for param: " << work->param_name;
                 ParamValue no_value;
                 if (work->get_param_callback) {
                     work->get_param_callback(MAVLinkParameters::Result::WrongType, no_value);

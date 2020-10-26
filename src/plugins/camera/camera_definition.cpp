@@ -99,6 +99,15 @@ bool CameraDefinition::parse_xml()
         }
 
         type_map[param_name] = type_str;
+
+        // CAM_MODE is not a 'normal' parameter, as it exists even if
+        // there is no camera definition. We hardcode it to uint32_t,
+        // and therefore when it is defined in the camera definition
+        // (i.e. here), we overwrite the type to stay consistent and
+        // avoid unexpected type errors.
+        if (strcmp(param_name, "CAM_MODE") == 0) {
+            type_map[param_name] = "uint32";
+        }
     }
 
     for (auto e_parameter = e_parameters->FirstChildElement("parameter"); e_parameter != nullptr;
@@ -111,18 +120,14 @@ bool CameraDefinition::parse_xml()
             return false;
         }
 
-        const char* type_str = e_parameter->Attribute("type");
-        if (!type_str) {
-            LogErr() << "type attribute missing";
-            return false;
-        }
+        const auto type_str = type_map[param_name];
 
-        if (strcmp(type_str, "string") == 0) {
+        if (type_str.compare("string") == 0) {
             LogDebug() << "Ignoring string params.";
             continue;
         }
 
-        if (strcmp(type_str, "custom") == 0) {
+        if (type_str.compare("custom") == 0) {
             LogDebug() << "Ignoring custom params.";
             continue;
         }
@@ -162,7 +167,7 @@ bool CameraDefinition::parse_xml()
             return false;
         }
 
-        // Be definition custom types do not have control.
+        // By definition custom types do not have control.
         if (strcmp(type_map[param_name].c_str(), "custom") == 0) {
             new_parameter->is_control = false;
         }
@@ -177,6 +182,7 @@ bool CameraDefinition::parse_xml()
 
         // LogDebug() << "Found: " << new_parameter->description
         //            << " (" << param_name
+        //            << ", type: " << type_map[param_name]
         //            << ", control: " << (new_parameter->is_control ? "yes" : "no")
         //            << ", readonly: " << (new_parameter->is_readonly ? "yes" : "no")
         //            << ", writeonly: " << (new_parameter->is_writeonly ? "yes" : "no")
@@ -480,24 +486,7 @@ bool CameraDefinition::get_possible_settings(
 
     settings.clear();
 
-    // Find all exclusions
-    // TODO: use set instead of vector
-    std::vector<std::string> exclusions{};
-
-    for (const auto& parameter : _parameter_map) {
-        for (const auto& option : parameter.second->options) {
-            if (_current_settings[parameter.first].needs_updating) {
-                continue;
-            }
-            if (_current_settings[parameter.first].value == option->value) {
-                for (const auto& exclusion : option->exclusions) {
-                    // LogDebug() << "found exclusion for " << parameter.first
-                    //            << "(" << option->value << "): " << exclusion;
-                    exclusions.push_back(exclusion);
-                }
-            }
-        }
-    }
+    auto exclusions = extract_exclusions();
 
     for (const auto& setting : _current_settings) {
         bool excluded = false;
@@ -519,8 +508,31 @@ bool CameraDefinition::get_possible_settings(
     return (settings.size() > 0);
 }
 
-bool CameraDefinition::set_setting(
-    const std::string& name, const MAVLinkParameters::ParamValue& value)
+std::vector<std::string> CameraDefinition::extract_exclusions()
+{
+    // TODO: use set instead of vector
+    std::vector<std::string> exclusions{};
+
+    for (const auto& parameter : _parameter_map) {
+        for (const auto& option : parameter.second->options) {
+            if (_current_settings[parameter.first].needs_updating) {
+                continue;
+            }
+
+            if (_current_settings[parameter.first].value == option->value) {
+                for (const auto& exclusion : option->exclusions) {
+                    // LogDebug() << "found exclusion for " << parameter.first
+                    //            << "(" << option->value << "): " << exclusion;
+                    exclusions.push_back(exclusion);
+                }
+            }
+        }
+    }
+
+    return exclusions;
+}
+
+bool CameraDefinition::set_setting(const std::string& name, MAVLinkParameters::ParamValue value)
 {
     std::lock_guard<std::recursive_mutex> lock(_mutex);
 
@@ -533,12 +545,12 @@ bool CameraDefinition::set_setting(
     if (_parameter_map[name]->is_range) {
         // Check against the minimum
         if (value < _parameter_map[name]->options[0]->value) {
-            LogErr() << "Chosen value smaller than minimum";
+            LogErr() << name << " (range): chosen value smaller than minimum";
             return false;
         }
 
         if (value > _parameter_map[name]->options[1]->value) {
-            LogErr() << "Chosen value bigger than maximum";
+            LogErr() << name << " (range): chosen value bigger than maximum";
             return false;
         }
 
@@ -641,26 +653,7 @@ bool CameraDefinition::get_possible_options(
         return false;
     }
 
-    // Find all exclusions because excluded parameters need to be neglected for range
-    // check below.
-    // TODO: use set instead of vector
-    std::vector<std::string> exclusions{};
-
-    for (const auto& parameter : _parameter_map) {
-        for (const auto& option : parameter.second->options) {
-            if (_current_settings[parameter.first].needs_updating) {
-                // LogWarn() << parameter.first << " needs updating";
-                continue;
-            }
-            if (_current_settings[parameter.first].value == option->value) {
-                for (const auto& exclusion : option->exclusions) {
-                    // LogDebug() << "found exclusion for " << parameter.first
-                    //            << "(" << option->value << "): " << exclusion;
-                    exclusions.push_back(exclusion);
-                }
-            }
-        }
-    }
+    auto exclusions = extract_exclusions();
 
     // TODO: use set instead of vector for this
     std::vector<MAVLinkParameters::ParamValue> allowed_ranges{};
@@ -723,6 +716,12 @@ void CameraDefinition::get_unknown_params(
     params.clear();
 
     for (const auto& parameter : _parameter_map) {
+        // CAM_MODE is not a 'normal' param, it should come from CAMERA_SETTINGS
+        // and be set through MAV_CMD_SET_CAMERA_MODE.
+        if (parameter.first.compare("CAM_MODE") == 0) {
+            return;
+        }
+
         if (_current_settings[parameter.first].needs_updating) {
             params.push_back(std::make_pair<>(parameter.first, parameter.second->type));
         }

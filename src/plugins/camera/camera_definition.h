@@ -30,7 +30,7 @@ public:
         MAVLinkParameters::ParamValue value;
     };
 
-    bool set_setting(const std::string& name, const MAVLinkParameters::ParamValue& value);
+    bool set_setting(const std::string& name, const MAVLinkParameters::ParamValue value);
     bool get_setting(const std::string& name, MAVLinkParameters::ParamValue& value);
     bool get_all_settings(std::unordered_map<std::string, MAVLinkParameters::ParamValue>& settings);
     bool
@@ -82,6 +82,7 @@ private:
     };
 
     bool parse_xml();
+    std::vector<std::string> extract_exclusions();
 
     // Until we have std::optional we need to use std::pair to return something that might be
     // nothing.
