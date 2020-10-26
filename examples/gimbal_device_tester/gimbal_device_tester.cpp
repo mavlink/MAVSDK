@@ -17,6 +17,7 @@
 using namespace mavsdk;
 
 static constexpr auto test_prefix = "[TEST] ";
+static constexpr uint8_t own_sysid = 33;
 
 float degrees(float radians)
 {
@@ -35,6 +36,17 @@ float radians(float degrees)
         return degrees;
     }
 }
+
+struct ReceiverData {
+    std::mutex mutex{};
+    uint8_t sysid{255};
+    uint8_t compid{255};
+    uint8_t target_sysid{255};
+    uint8_t target_compid{255};
+    uint8_t mav_type{255};
+};
+
+static ReceiverData receiver_data{};
 
 class AttitudeData {
 public:
@@ -628,6 +640,48 @@ bool wait_for_yaw_estimator_to_converge(const AttitudeData& attitude_data)
     return false;
 }
 
+bool sysid_compid_correct()
+{
+    std::cout << test_prefix << "Check sysid/compid/mav_type..." << std::flush;
+
+    std::lock_guard<std::mutex> lock(receiver_data.mutex);
+
+    if (receiver_data.sysid != own_sysid) {
+        std::cout << "FAIL\n";
+        std::cout << "-> sysid should be the same as sysid of this tester (" << int(own_sysid)
+                  << ", not " << int(receiver_data.sysid) << ")" << std::endl;
+        return false;
+    } else if (
+        receiver_data.compid != MAV_COMP_ID_GIMBAL && receiver_data.compid != MAV_COMP_ID_GIMBAL2 &&
+        receiver_data.compid != MAV_COMP_ID_GIMBAL3 &&
+        receiver_data.compid != MAV_COMP_ID_GIMBAL4 &&
+        receiver_data.compid != MAV_COMP_ID_GIMBAL5 &&
+        receiver_data.compid != MAV_COMP_ID_GIMBAL6) {
+        std::cout << "FAIL\n";
+        std::cout << "-> compid should be the MAV_COMP_ID_GIMBAL, MAV_COMP_ID_GIMBAL2..6"
+                  << std::endl;
+        return false;
+    } else if (receiver_data.target_sysid != 0) {
+        std::cout << "FAIL\n";
+        std::cout << "-> target_system should be 0 (all, not " << int(receiver_data.target_sysid)
+                  << ")" << std::endl;
+        return false;
+    } else if (receiver_data.target_compid != 0) {
+        std::cout << "FAIL\n";
+        std::cout << "-> target_component should be 0 (all, not" << int(receiver_data.target_compid)
+                  << ")" << std::endl;
+        return false;
+    } else if (receiver_data.mav_type != MAV_TYPE_GIMBAL) {
+        std::cout << "FAIL\n";
+        std::cout << "-> heartbeat.type should be MAV_TYPE_GIMBAL (all, not"
+                  << int(receiver_data.mav_type) << ")" << std::endl;
+        return false;
+    } else {
+        std::cout << "PASS\n";
+        return true;
+    }
+}
+
 bool request_gimbal_device_information(MavlinkPassthrough& mavlink_passthrough)
 {
     MavlinkPassthrough::CommandLong command;
@@ -684,6 +738,20 @@ bool test_device_information(MavlinkPassthrough& mavlink_passthrough, AttitudeDa
     return true;
 }
 
+void subscribe_to_heartbeat(MavlinkPassthrough& mavlink_passthrough)
+{
+    mavlink_passthrough.subscribe_message_async(
+        MAVLINK_MSG_ID_HEARTBEAT, [](const mavlink_message_t& message) {
+            mavlink_heartbeat_t heartbeat;
+            mavlink_msg_heartbeat_decode(&message, &heartbeat);
+
+            {
+                std::lock_guard<std::mutex> lock(receiver_data.mutex);
+                receiver_data.mav_type = heartbeat.type;
+            }
+        });
+}
+
 void subscribe_to_gimbal_device_attitude_status(
     MavlinkPassthrough& mavlink_passthrough, AttitudeData& attitude_data)
 {
@@ -692,6 +760,14 @@ void subscribe_to_gimbal_device_attitude_status(
         [&attitude_data](const mavlink_message_t& message) {
             mavlink_gimbal_device_attitude_status_t attitude_status;
             mavlink_msg_gimbal_device_attitude_status_decode(&message, &attitude_status);
+
+            {
+                std::lock_guard<std::mutex> lock(receiver_data.mutex);
+                receiver_data.sysid = message.sysid;
+                receiver_data.compid = message.compid;
+                receiver_data.target_sysid = attitude_status.target_system;
+                receiver_data.target_compid = attitude_status.target_component;
+            }
 
             float roll_rad, pitch_rad, yaw_rad;
             mavlink_quaternion_to_euler(attitude_status.q, &roll_rad, &pitch_rad, &yaw_rad);
@@ -737,12 +813,16 @@ int main(int argc, char** argv)
         return 1;
     }
 
+    Mavsdk::Configuration config(Mavsdk::Configuration::UsageType::Autopilot);
+    config.set_system_id(own_sysid);
+    mavsdk.set_configuration(config);
+
     {
         std::promise<void> prom;
         std::future<void> fut = prom.get_future();
         mavsdk.subscribe_on_new_system([&prom]() { prom.set_value(); });
 
-        if (fut.wait_for(std::chrono::seconds(2)) != std::future_status::ready) {
+        if (fut.wait_for(std::chrono::seconds(5)) != std::future_status::ready) {
             std::cout << "FAIL\n";
             std::cout << "-> no device found" << std::endl;
             return 1;
@@ -752,6 +832,8 @@ int main(int argc, char** argv)
 
     auto system = mavsdk.systems().at(0);
     MavlinkPassthrough mavlink_passthrough(system);
+
+    subscribe_to_heartbeat(mavlink_passthrough);
 
     AttitudeData attitude_data{};
 
@@ -771,6 +853,10 @@ int main(int argc, char** argv)
     Sender sender(mavlink_passthrough, attitude_data);
 
     if (!wait_for_yaw_estimator_to_converge(attitude_data)) {
+        return 1;
+    }
+
+    if (!sysid_compid_correct()) {
         return 1;
     }
 
