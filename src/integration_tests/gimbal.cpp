@@ -50,6 +50,53 @@ TEST(SitlTestGimbal, GimbalMove)
     gimbal_pattern(gimbal);
 }
 
+TEST(SitlTestGimbal, GimbalAngles)
+{
+    Mavsdk mavsdk;
+
+    ConnectionResult ret = mavsdk.add_udp_connection();
+    ASSERT_EQ(ret, ConnectionResult::Success);
+
+    // Wait for system to connect via heartbeat.
+    std::this_thread::sleep_for(std::chrono::seconds(2));
+    auto system = mavsdk.systems().at(0);
+
+    // FIXME: This is what it should be, for now though with the typhoon_h480
+    //        SITL simulation, the gimbal is hooked up to the autopilot.
+    // ASSERT_TRUE(system.has_gimbal());
+    ASSERT_TRUE(system->has_autopilot());
+
+    auto gimbal = std::make_shared<Gimbal>(system);
+
+    EXPECT_EQ(gimbal->set_mode(Gimbal::GimbalMode::YawFollow), Gimbal::Result::Success);
+
+    LogInfo() << "Pitch 45 degrees down";
+    EXPECT_EQ(gimbal->set_pitch_and_yaw(-45.0f, 0.0f), Gimbal::Result::Success);
+    std::this_thread::sleep_for(std::chrono::seconds(1));
+    LogInfo() << "Pitch back up";
+    EXPECT_EQ(gimbal->set_pitch_and_yaw(0.0f, 0.0f), Gimbal::Result::Success);
+    std::this_thread::sleep_for(std::chrono::seconds(1));
+    LogInfo() << "Pitch 45 degrees up";
+    EXPECT_EQ(gimbal->set_pitch_and_yaw(45.0f, 0.0f), Gimbal::Result::Success);
+    std::this_thread::sleep_for(std::chrono::seconds(1));
+    LogInfo() << "Pitch back down";
+    EXPECT_EQ(gimbal->set_pitch_and_yaw(0.0f, 0.0f), Gimbal::Result::Success);
+    std::this_thread::sleep_for(std::chrono::seconds(1));
+
+    LogInfo() << "Yaw 45 degrees to the right";
+    EXPECT_EQ(gimbal->set_pitch_and_yaw(0.0f, 45.0f), Gimbal::Result::Success);
+    std::this_thread::sleep_for(std::chrono::seconds(1));
+    LogInfo() << "Yaw forward";
+    EXPECT_EQ(gimbal->set_pitch_and_yaw(0.0f, 0.0f), Gimbal::Result::Success);
+    std::this_thread::sleep_for(std::chrono::seconds(1));
+    LogInfo() << "Yaw 45 degrees to the left";
+    EXPECT_EQ(gimbal->set_pitch_and_yaw(0.0f, -45.0f), Gimbal::Result::Success);
+    std::this_thread::sleep_for(std::chrono::seconds(1));
+    LogInfo() << "Yaw forward";
+    EXPECT_EQ(gimbal->set_pitch_and_yaw(0.0f, 0.0f), Gimbal::Result::Success);
+    std::this_thread::sleep_for(std::chrono::seconds(1));
+}
+
 TEST(SitlTestGimbal, GimbalTakeoffAndMove)
 {
     Mavsdk mavsdk;
