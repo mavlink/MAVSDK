@@ -707,9 +707,8 @@ bool test_device_information(MavlinkPassthrough& mavlink_passthrough, AttitudeDa
 
             attitude_data.change_gimbal_limits(
                 [&information](AttitudeData::GimbalLimits& gimbal_limits) {
-                    // TODO: add these once they exist
-                    // gimbal_limits.roll_min_deg = degrees(information.bank_min);
-                    // gimbal_limits.roll_max_deg = degrees(information.bank_max);
+                    gimbal_limits.roll_min_deg = degrees(information.roll_min);
+                    gimbal_limits.roll_max_deg = degrees(information.roll_max);
                     gimbal_limits.pitch_min_deg = degrees(information.pitch_min);
                     gimbal_limits.pitch_max_deg = degrees(information.pitch_max);
                     gimbal_limits.yaw_min_deg = degrees(information.yaw_min);
