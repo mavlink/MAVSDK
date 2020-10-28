@@ -451,33 +451,19 @@ void MAVLinkParameters::process_param_ext_value(const mavlink_message_t& message
         case WorkItem::Type::Get: {
             ParamValue value;
             value.set_from_mavlink_param_ext_value(param_ext_value);
+
             if (value.is_same_type(work->param_value)) {
                 if (work->get_param_callback) {
                     work->get_param_callback(MAVLinkParameters::Result::Success, value);
                 }
-            } else if (value.is_uint8() && work->param_value.is_uint16()) {
-                // FIXME: workaround for mismatching type uint8_t which should be uint16_t.
-                ParamValue correct_type_value;
-                correct_type_value.set_uint16(static_cast<uint16_t>(value.get_uint8()));
-                if (work->get_param_callback) {
-                    work->get_param_callback(
-                        MAVLinkParameters::Result::Success, correct_type_value);
-                }
-            } else if (value.is_uint8() && work->param_value.is_uint32()) {
-                // FIXME: workaround for mismatching type uint8_t which should be uint32_t.
-                ParamValue correct_type_value;
-                correct_type_value.set_uint32(static_cast<uint32_t>(value.get_uint8()));
-                if (work->get_param_callback) {
-                    work->get_param_callback(
-                        MAVLinkParameters::Result::Success, correct_type_value);
-                }
             } else {
-                LogErr() << "Param types don't match";
+                LogErr() << "Param types don't match for " << work->param_name;
                 ParamValue no_value;
                 if (work->get_param_callback) {
                     work->get_param_callback(MAVLinkParameters::Result::WrongType, no_value);
                 }
             }
+
             _parent.unregister_timeout_handler(_timeout_cookie);
             // LogDebug() << "time taken: " <<
             // _parent.get_time().elapsed_since_s(_last_request_time);
