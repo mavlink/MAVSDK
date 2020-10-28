@@ -10,10 +10,7 @@ fi
 sitl_model=$1
 echo "SITL model: $sitl_model"
 
-if [ "$PX4_VERSION" = "v1.11" ]; then
-    sitl_world="empty"
-    echo "SITL world: $sitl_world"
-fi
+sitl_world="empty"
 
 set -e
 
@@ -60,21 +57,22 @@ pushd .
 cd $px4_firmware_dir/build/px4_sitl_default/tmp/rootfs
 
 # And run
-if [ "$PX4_VERSION" = "v1.11" ]; then
+if [ "$PX4_VERSION" = "v1.9" ] || [ "$PX4_VERSION" = "v1.10" ]; then
+    $px4_firmware_dir/Tools/sitl_run.sh \
+        $px4_firmware_dir/build/px4_sitl_default/bin/px4 \
+        none \
+        gazebo \
+        $sitl_model \
+        $px4_firmware_dir \
+        $px4_firmware_dir/build/px4_sitl_default &
+else
+    # 1.11 onwards requires the world argument
     $px4_firmware_dir/Tools/sitl_run.sh \
         $px4_firmware_dir/build/px4_sitl_default/bin/px4 \
         none \
         gazebo \
         $sitl_model \
         $sitl_world \
-        $px4_firmware_dir \
-        $px4_firmware_dir/build/px4_sitl_default &
-else
-    $px4_firmware_dir/Tools/sitl_run.sh \
-        $px4_firmware_dir/build/px4_sitl_default/bin/px4 \
-        none \
-        gazebo \
-        $sitl_model \
         $px4_firmware_dir \
         $px4_firmware_dir/build/px4_sitl_default &
 fi
