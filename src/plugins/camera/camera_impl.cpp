@@ -581,8 +581,43 @@ void CameraImpl::save_camera_mode(const float mavlink_camera_mode)
         return;
     }
 
+    // If there is a camera definition (which is the case if we are
+    // in this function, and if CAM_MODE is defined there, then
+    // we reuse that type. Otherwise, we hardcode it to `uint32_t`.
+    // Note that it could be that the camera definition defines options
+    // different than {PHOTO, VIDEO}, in which case the mode received
+    // from CAMERA_SETTINGS will be wrong. Not sure if it means that
+    // it should be ignored in that case, but that may be tricky to
+    // maintain (what if the MAVLink CAMERA_MODE enum evolves?), so
+    // I am assuming here that in such a case, CAMERA_SETTINGS is
+    // never sent by the camera.
     MAVLinkParameters::ParamValue value;
-    value.set_uint32(uint32_t(mavlink_camera_mode));
+    if (_camera_definition->get_setting("CAM_MODE", value)) {
+        if (value.is_uint8()) {
+            value.set_uint8(uint8_t(mavlink_camera_mode));
+        } else if (value.is_int8()) {
+            value.set_int8(int8_t(mavlink_camera_mode));
+        } else if (value.is_uint16()) {
+            value.set_uint16(uint16_t(mavlink_camera_mode));
+        } else if (value.is_int16()) {
+            value.set_int16(int16_t(mavlink_camera_mode));
+        } else if (value.is_uint32()) {
+            value.set_uint32(uint32_t(mavlink_camera_mode));
+        } else if (value.is_int32()) {
+            value.set_int32(int32_t(mavlink_camera_mode));
+        } else if (value.is_uint64()) {
+            value.set_uint64(uint64_t(mavlink_camera_mode));
+        } else if (value.is_int64()) {
+            value.set_int64(int64_t(mavlink_camera_mode));
+        } else if (value.is_float()) {
+            value.set_float(float(mavlink_camera_mode));
+        } else if (value.is_double()) {
+            value.set_double(double(mavlink_camera_mode));
+        }
+    } else {
+        value.set_uint32(uint32_t(mavlink_camera_mode));
+    }
+
     _camera_definition->set_setting("CAM_MODE", value);
     refresh_params();
 }

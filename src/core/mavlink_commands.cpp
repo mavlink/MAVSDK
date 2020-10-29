@@ -34,7 +34,7 @@ MavlinkCommandSender::send_command(const MavlinkCommandSender::CommandInt& comma
     auto prom = std::make_shared<std::promise<Result>>();
     auto res = prom->get_future();
 
-    queue_command_async(command, [&prom](Result result, float progress) {
+    queue_command_async(command, [prom](Result result, float progress) {
         UNUSED(progress);
         // We can only fulfill the promise once in C++11.
         // Therefore we have to ignore the IN_PROGRESS state and wait
@@ -55,7 +55,7 @@ MavlinkCommandSender::send_command(const MavlinkCommandSender::CommandLong& comm
     auto prom = std::make_shared<std::promise<Result>>();
     auto res = prom->get_future();
 
-    queue_command_async(command, [&prom](Result result, float progress) {
+    queue_command_async(command, [prom](Result result, float progress) {
         UNUSED(progress);
         // We can only fulfill the promise once in C++11.
         // Therefore we have to ignore the IN_PROGRESS state and wait
@@ -151,9 +151,8 @@ void MavlinkCommandSender::receive_command_ack(mavlink_message_t message)
             return;
         }
 
-        // LogDebug() << "We got an ack: " << command_ack.command
-        //            << " after: " << _parent.get_time().elapsed_since_s(work->time_started) << "
-        //            s";
+        // LogDebug() << "We got an ack: " << command_ack.command << " after: "
+        //     << _parent.get_time().elapsed_since_s(work->time_started) << " s";
         temp_callback = work->callback;
 
         switch (command_ack.result) {
@@ -205,10 +204,8 @@ void MavlinkCommandSender::receive_command_ack(mavlink_message_t message)
                     std::bind(&MavlinkCommandSender::receive_timeout, this),
                     work->retries_to_do * work->timeout_s,
                     &_timeout_cookie);
-                // FIXME: We can only call callbacks with promises once, so let's not do it
-                //        on IN_PROGRESS.
-                // call_callback(work->callback, Result::IN_PROGRESS, command_ack.progress /
-                //               100.0f);
+
+                temp_result = {Result::InProgress, command_ack.progress / 100.0f};
                 break;
 
             default:
