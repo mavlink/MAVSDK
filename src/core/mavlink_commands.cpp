@@ -34,7 +34,7 @@ MavlinkCommandSender::send_command(const MavlinkCommandSender::CommandInt& comma
     auto prom = std::make_shared<std::promise<Result>>();
     auto res = prom->get_future();
 
-    queue_command_async(command, [&prom](Result result, float progress) {
+    queue_command_async(command, [prom](Result result, float progress) {
         UNUSED(progress);
         // We can only fulfill the promise once in C++11.
         // Therefore we have to ignore the IN_PROGRESS state and wait
@@ -55,7 +55,7 @@ MavlinkCommandSender::send_command(const MavlinkCommandSender::CommandLong& comm
     auto prom = std::make_shared<std::promise<Result>>();
     auto res = prom->get_future();
 
-    queue_command_async(command, [&prom](Result result, float progress) {
+    queue_command_async(command, [prom](Result result, float progress) {
         UNUSED(progress);
         // We can only fulfill the promise once in C++11.
         // Therefore we have to ignore the IN_PROGRESS state and wait
