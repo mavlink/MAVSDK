@@ -1078,7 +1078,7 @@ void TelemetryImpl::process_actuator_output_status(const mavlink_message_t& mess
     const unsigned actuators_size = sizeof(status.actuator) / sizeof(status.actuator[0]);
     // Can't use std::copy because status is packed.
     for (std::size_t i = 0; i < actuators_size; ++i) {
-        actuators[i] = status.actuator[i];
+        actuators.push_back(status.actuator[i]);
     }
 
     set_actuator_output_status(active, actuators);
