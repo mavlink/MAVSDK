@@ -205,10 +205,8 @@ void MavlinkCommandSender::receive_command_ack(mavlink_message_t message)
                     std::bind(&MavlinkCommandSender::receive_timeout, this),
                     work->retries_to_do * work->timeout_s,
                     &_timeout_cookie);
-                // FIXME: We can only call callbacks with promises once, so let's not do it
-                //        on IN_PROGRESS.
-                // call_callback(work->callback, Result::IN_PROGRESS, command_ack.progress /
-                //               100.0f);
+
+                temp_result = {Result::InProgress, command_ack.progress / 100.0f};
                 break;
 
             default:
