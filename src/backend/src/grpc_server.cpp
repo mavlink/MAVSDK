@@ -22,6 +22,7 @@ int GRPCServer::run()
     builder.RegisterService(&_action_service);
     builder.RegisterService(&_calibration_service);
     builder.RegisterService(&_camera_service);
+    builder.RegisterService(&_failure_service);
     builder.RegisterService(&_follow_me_service);
     builder.RegisterService(&_ftp_service);
     builder.RegisterService(&_geofence_service);
@@ -66,6 +67,7 @@ void GRPCServer::stop()
         _action_service.stop();
         _calibration_service.stop();
         _camera_service.stop();
+        _failure_service.stop();
         _follow_me_service.stop();
         _ftp_service.stop();
         _geofence_service.stop();

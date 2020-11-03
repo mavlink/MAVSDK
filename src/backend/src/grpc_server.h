@@ -12,6 +12,8 @@
 #include "plugins/camera/camera.h"
 #include "camera/camera_service_impl.h"
 #include "core/core_service_impl.h"
+#include "plugins/failure/failure.h"
+#include "failure/failure_service_impl.h"
 #include "plugins/follow_me/follow_me.h"
 #include "follow_me/follow_me_service_impl.h"
 #include "plugins/ftp/ftp.h"
@@ -58,6 +60,8 @@ public:
         _calibration_service(_calibration),
         _camera(_mavsdk.system()),
         _camera_service(_camera),
+        _failure(_mavsdk.system()),
+        _failure_service(_failure),
         _follow_me(_mavsdk.system()),
         _follow_me_service(_follow_me),
         _ftp(_mavsdk.system()),
@@ -106,6 +110,8 @@ private:
     CalibrationServiceImpl<> _calibration_service;
     Camera _camera;
     CameraServiceImpl<> _camera_service;
+    Failure _failure;
+    FailureServiceImpl<> _failure_service;
     FollowMe _follow_me;
     FollowMeServiceImpl<> _follow_me_service;
     Ftp _ftp;
