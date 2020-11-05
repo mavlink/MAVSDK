@@ -56,8 +56,6 @@ int main(int argc, char** argv)
         return 1;
     }
 
-    auto system = mavsdk.systems().at(0);
-
     std::cout << "Waiting to discover system..." << std::endl;
     mavsdk.subscribe_on_new_system([&mavsdk, &discovered_system]() {
         const auto system = mavsdk.systems().at(0);
@@ -77,7 +75,9 @@ int main(int argc, char** argv)
                   << std::endl;
         return 1;
     }
-
+    
+    const auto system = mavsdk.systems().at(0);
+    
     // Register a callback so we get told when components (camera, gimbal) etc
     // are found.
     system->register_component_discovered_callback(component_discovered);

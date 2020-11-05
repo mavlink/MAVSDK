@@ -52,7 +52,7 @@ int main(int argc, char* argv[])
     mavsdk.subscribe_on_new_system([&mavsdk, &num_systems_discovered]() {
         const auto systems = mavsdk.systems();
 
-        if (systems.size() < num_systems_discovered) {
+        if (systems.size() > num_systems_discovered) {
             std::cout << "Discovered system" << std::endl;
             num_systems_discovered = systems.size();
         }
@@ -73,6 +73,7 @@ int main(int argc, char* argv[])
     for (auto system : mavsdk.systems()) {
         std::thread t(&takeoff_and_land, std::ref(system));
         threads.push_back(std::move(t));
+        sleep_for(seconds(1));
     }
 
     for (auto& t : threads) {
