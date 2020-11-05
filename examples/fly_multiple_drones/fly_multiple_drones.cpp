@@ -121,7 +121,7 @@ int main(int argc, char* argv[])
     mavsdk.subscribe_on_new_system([&mavsdk, &num_systems_discovered]() {
         const auto systems = mavsdk.systems();
 
-        if (systems.size() < num_systems_discovered) {
+        if (systems.size() > num_systems_discovered) {
             std::cout << "Discovered system" << std::endl;
             num_systems_discovered = systems.size();
         }
@@ -146,6 +146,7 @@ int main(int argc, char* argv[])
         threads.push_back(
             std::move(t)); // Instead of copying, move t into the vector (less expensive)
         planFile_provided += 1;
+        sleep_for(seconds(1));
     }
 
     for (auto& t : threads) {

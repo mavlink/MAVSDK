@@ -86,12 +86,26 @@ int main(int argc, char** argv)
     action_error_exit(arm_result, "Arming failed");
     std::cout << "Armed" << std::endl;
 
+    const Telemetry::Result set_rate_result = telemetry->set_rate_position(1.0);
+    if (set_rate_result != Telemetry::Result::Success) {
+        std::cout << ERROR_CONSOLE_TEXT << "Setting rate failed:" << set_rate_result
+                  << NORMAL_CONSOLE_TEXT << std::endl;
+        return 1;
+    }
+
+    telemetry->subscribe_position([](Telemetry::Position position) {
+        std::cout << TELEMETRY_CONSOLE_TEXT // set to blue
+                  << "Vehicle is at: " << position.latitude_deg << ", " << position.longitude_deg
+                  << " degrees" << NORMAL_CONSOLE_TEXT // set to default color again
+                  << std::endl;
+    });
+
     // Subscribe to receive updates on flight mode. You can find out whether FollowMe is active.
     telemetry->subscribe_flight_mode(std::bind(
         [&](Telemetry::FlightMode flight_mode) {
             const FollowMe::TargetLocation last_location = follow_me->get_last_location();
             std::cout << "[FlightMode: " << flight_mode
-                      << "] Vehicle is at: " << last_location.latitude_deg << ", "
+                      << "] Target is at: " << last_location.latitude_deg << ", "
                       << last_location.longitude_deg << " degrees." << std::endl;
         },
         std::placeholders::_1));
