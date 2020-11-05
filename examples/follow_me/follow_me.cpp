@@ -95,9 +95,8 @@ int main(int argc, char** argv)
 
     telemetry->subscribe_position([](Telemetry::Position position) {
         std::cout << TELEMETRY_CONSOLE_TEXT // set to blue
-                  << "Vehicle is at: " << position.latitude_deg << ", "
-                  << position.longitude_deg << " degrees"
-                  << NORMAL_CONSOLE_TEXT // set to default color again
+                  << "Vehicle is at: " << position.latitude_deg << ", " << position.longitude_deg
+                  << " degrees" << NORMAL_CONSOLE_TEXT // set to default color again
                   << std::endl;
     });
 
@@ -135,7 +134,7 @@ int main(int argc, char** argv)
         FollowMe::TargetLocation target_location{};
         target_location.latitude_deg = lat;
         target_location.longitude_deg = lon;
-        follow_me->set_target_location(target_location); 
+        follow_me->set_target_location(target_location);
     });
 
     while (location_provider.is_running()) {
