@@ -27,7 +27,14 @@ void ManualControlImpl::enable() {}
 void ManualControlImpl::disable() {}
 
 void ManualControlImpl::start_position_control_async(const ManualControl::ResultCallback callback)
-{
+{   
+    if (_input == Input::NotSet){
+        if(callback){
+            callback(ManualControl::Result::Unknown);
+        }
+        return;
+    }
+
     _parent->set_flight_mode_async(
         SystemImpl::FlightMode::Posctl,
         [this, callback](MavlinkCommandSender::Result result, float) {
@@ -37,6 +44,10 @@ void ManualControlImpl::start_position_control_async(const ManualControl::Result
 
 ManualControl::Result ManualControlImpl::start_position_control()
 {
+    if (_input == Input::NotSet){
+        return ManualControl::Result::Unknown;
+    }
+    
     auto prom = std::promise<ManualControl::Result>();
     auto fut = prom.get_future();
 
@@ -47,6 +58,12 @@ ManualControl::Result ManualControlImpl::start_position_control()
 
 void ManualControlImpl::start_altitude_control_async(const ManualControl::ResultCallback callback)
 {
+    if (_input == Input::NotSet){
+        if(callback){
+            callback(ManualControl::Result::Unknown);
+        }
+        return;
+    }
     _parent->set_flight_mode_async(
         SystemImpl::FlightMode::Altctl,
         [this, callback](MavlinkCommandSender::Result result, float) {
@@ -56,6 +73,10 @@ void ManualControlImpl::start_altitude_control_async(const ManualControl::Result
 
 ManualControl::Result ManualControlImpl::start_altitude_control()
 {
+
+    if (_input == Input::NotSet){
+        return ManualControl::Result::Unknown;
+    }
     auto prom = std::promise<ManualControl::Result>();
     auto fut = prom.get_future();
 
@@ -69,6 +90,10 @@ ManualControlImpl::set_manual_control_input(float x, float y, float z, float r)
 {
     if (x > 1.f || x < -1.f || y > 1.f || y < -1.f || z > 1.f || z < 0.f || r > 1.f || r < -1.f) {
         return ManualControl::Result::InputOutOfRange;
+    }
+
+    if (_input == Input::NotSet){
+        _input = Input::Set;
     }
 
     // No buttons supported yet.
