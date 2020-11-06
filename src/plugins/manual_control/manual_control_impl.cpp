@@ -27,9 +27,9 @@ void ManualControlImpl::enable() {}
 void ManualControlImpl::disable() {}
 
 void ManualControlImpl::start_position_control_async(const ManualControl::ResultCallback callback)
-{   
-    if (_input == Input::NotSet){
-        if(callback){
+{
+    if (_input == Input::NotSet) {
+        if (callback) {
             callback(ManualControl::Result::Unknown);
         }
         return;
@@ -44,10 +44,10 @@ void ManualControlImpl::start_position_control_async(const ManualControl::Result
 
 ManualControl::Result ManualControlImpl::start_position_control()
 {
-    if (_input == Input::NotSet){
+    if (_input == Input::NotSet) {
         return ManualControl::Result::Unknown;
     }
-    
+
     auto prom = std::promise<ManualControl::Result>();
     auto fut = prom.get_future();
 
@@ -58,8 +58,8 @@ ManualControl::Result ManualControlImpl::start_position_control()
 
 void ManualControlImpl::start_altitude_control_async(const ManualControl::ResultCallback callback)
 {
-    if (_input == Input::NotSet){
-        if(callback){
+    if (_input == Input::NotSet) {
+        if (callback) {
             callback(ManualControl::Result::Unknown);
         }
         return;
@@ -73,8 +73,7 @@ void ManualControlImpl::start_altitude_control_async(const ManualControl::Result
 
 ManualControl::Result ManualControlImpl::start_altitude_control()
 {
-
-    if (_input == Input::NotSet){
+    if (_input == Input::NotSet) {
         return ManualControl::Result::Unknown;
     }
     auto prom = std::promise<ManualControl::Result>();
@@ -92,7 +91,7 @@ ManualControlImpl::set_manual_control_input(float x, float y, float z, float r)
         return ManualControl::Result::InputOutOfRange;
     }
 
-    if (_input == Input::NotSet){
+    if (_input == Input::NotSet) {
         _input = Input::Set;
     }
 
