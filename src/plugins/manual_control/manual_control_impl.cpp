@@ -30,7 +30,9 @@ void ManualControlImpl::start_position_control_async(const ManualControl::Result
 {
     if (_input == Input::NotSet) {
         if (callback) {
-            callback(ManualControl::Result::Unknown);
+            auto temp_callback = callback;
+            _parent->call_user_callback(
+                [temp_callback]() { temp_callback(ManualControl::Result::Unknown); });
         }
         return;
     }
@@ -60,7 +62,9 @@ void ManualControlImpl::start_altitude_control_async(const ManualControl::Result
 {
     if (_input == Input::NotSet) {
         if (callback) {
-            callback(ManualControl::Result::Unknown);
+            auto temp_callback = callback;
+            _parent->call_user_callback(
+                [temp_callback]() { temp_callback(ManualControl::Result::Unknown); });
         }
         return;
     }
