@@ -32,7 +32,7 @@ endif()
 
 ExternalProject_add(
     protobuf
-    URL https://github.com/protocolbuffers/protobuf/releases/download/v3.11.2/protobuf-cpp-3.11.2.tar.gz
+    URL https://github.com/protocolbuffers/protobuf/releases/download/v3.13.0/protobuf-cpp-3.13.0.tar.gz
     PREFIX protobuf
     CONFIGURE_COMMAND ${CMAKE_COMMAND} "${CMAKE_GENERATOR_PARAM}" "${CMAKE_ARGS}" <SOURCE_DIR>/cmake
     # CMAKE_ARGS + SOURCE_SUBDIR are more elegant than CONFIGURE_COMMAND,
