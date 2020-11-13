@@ -44,43 +44,38 @@ ShellService::Stub::Stub(const std::shared_ptr< ::grpc::ChannelInterface>& chann
 }
 
 void ShellService::Stub::experimental_async::Send(::grpc::ClientContext* context, const ::mavsdk::rpc::shell::SendRequest* request, ::mavsdk::rpc::shell::SendResponse* response, std::function<void(::grpc::Status)> f) {
-  ::grpc_impl::internal::CallbackUnaryCall(stub_->channel_.get(), stub_->rpcmethod_Send_, context, request, response, std::move(f));
-}
-
-void ShellService::Stub::experimental_async::Send(::grpc::ClientContext* context, const ::grpc::ByteBuffer* request, ::mavsdk::rpc::shell::SendResponse* response, std::function<void(::grpc::Status)> f) {
-  ::grpc_impl::internal::CallbackUnaryCall(stub_->channel_.get(), stub_->rpcmethod_Send_, context, request, response, std::move(f));
+  ::grpc::internal::CallbackUnaryCall(stub_->channel_.get(), stub_->rpcmethod_Send_, context, request, response, std::move(f));
 }
 
 void ShellService::Stub::experimental_async::Send(::grpc::ClientContext* context, const ::mavsdk::rpc::shell::SendRequest* request, ::mavsdk::rpc::shell::SendResponse* response, ::grpc::experimental::ClientUnaryReactor* reactor) {
-  ::grpc_impl::internal::ClientCallbackUnaryFactory::Create(stub_->channel_.get(), stub_->rpcmethod_Send_, context, request, response, reactor);
-}
-
-void ShellService::Stub::experimental_async::Send(::grpc::ClientContext* context, const ::grpc::ByteBuffer* request, ::mavsdk::rpc::shell::SendResponse* response, ::grpc::experimental::ClientUnaryReactor* reactor) {
-  ::grpc_impl::internal::ClientCallbackUnaryFactory::Create(stub_->channel_.get(), stub_->rpcmethod_Send_, context, request, response, reactor);
-}
-
-::grpc::ClientAsyncResponseReader< ::mavsdk::rpc::shell::SendResponse>* ShellService::Stub::AsyncSendRaw(::grpc::ClientContext* context, const ::mavsdk::rpc::shell::SendRequest& request, ::grpc::CompletionQueue* cq) {
-  return ::grpc_impl::internal::ClientAsyncResponseReaderFactory< ::mavsdk::rpc::shell::SendResponse>::Create(channel_.get(), cq, rpcmethod_Send_, context, request, true);
+  ::grpc::internal::ClientCallbackUnaryFactory::Create(stub_->channel_.get(), stub_->rpcmethod_Send_, context, request, response, reactor);
 }
 
 ::grpc::ClientAsyncResponseReader< ::mavsdk::rpc::shell::SendResponse>* ShellService::Stub::PrepareAsyncSendRaw(::grpc::ClientContext* context, const ::mavsdk::rpc::shell::SendRequest& request, ::grpc::CompletionQueue* cq) {
-  return ::grpc_impl::internal::ClientAsyncResponseReaderFactory< ::mavsdk::rpc::shell::SendResponse>::Create(channel_.get(), cq, rpcmethod_Send_, context, request, false);
+  return ::grpc::internal::ClientAsyncResponseReaderFactory< ::mavsdk::rpc::shell::SendResponse>::Create(channel_.get(), cq, rpcmethod_Send_, context, request, false);
+}
+
+::grpc::ClientAsyncResponseReader< ::mavsdk::rpc::shell::SendResponse>* ShellService::Stub::AsyncSendRaw(::grpc::ClientContext* context, const ::mavsdk::rpc::shell::SendRequest& request, ::grpc::CompletionQueue* cq) {
+  auto* result =
+    this->PrepareAsyncSendRaw(context, request, cq);
+  result->StartCall();
+  return result;
 }
 
 ::grpc::ClientReader< ::mavsdk::rpc::shell::ReceiveResponse>* ShellService::Stub::SubscribeReceiveRaw(::grpc::ClientContext* context, const ::mavsdk::rpc::shell::SubscribeReceiveRequest& request) {
-  return ::grpc_impl::internal::ClientReaderFactory< ::mavsdk::rpc::shell::ReceiveResponse>::Create(channel_.get(), rpcmethod_SubscribeReceive_, context, request);
+  return ::grpc::internal::ClientReaderFactory< ::mavsdk::rpc::shell::ReceiveResponse>::Create(channel_.get(), rpcmethod_SubscribeReceive_, context, request);
 }
 
 void ShellService::Stub::experimental_async::SubscribeReceive(::grpc::ClientContext* context, ::mavsdk::rpc::shell::SubscribeReceiveRequest* request, ::grpc::experimental::ClientReadReactor< ::mavsdk::rpc::shell::ReceiveResponse>* reactor) {
-  ::grpc_impl::internal::ClientCallbackReaderFactory< ::mavsdk::rpc::shell::ReceiveResponse>::Create(stub_->channel_.get(), stub_->rpcmethod_SubscribeReceive_, context, request, reactor);
+  ::grpc::internal::ClientCallbackReaderFactory< ::mavsdk::rpc::shell::ReceiveResponse>::Create(stub_->channel_.get(), stub_->rpcmethod_SubscribeReceive_, context, request, reactor);
 }
 
 ::grpc::ClientAsyncReader< ::mavsdk::rpc::shell::ReceiveResponse>* ShellService::Stub::AsyncSubscribeReceiveRaw(::grpc::ClientContext* context, const ::mavsdk::rpc::shell::SubscribeReceiveRequest& request, ::grpc::CompletionQueue* cq, void* tag) {
-  return ::grpc_impl::internal::ClientAsyncReaderFactory< ::mavsdk::rpc::shell::ReceiveResponse>::Create(channel_.get(), cq, rpcmethod_SubscribeReceive_, context, request, true, tag);
+  return ::grpc::internal::ClientAsyncReaderFactory< ::mavsdk::rpc::shell::ReceiveResponse>::Create(channel_.get(), cq, rpcmethod_SubscribeReceive_, context, request, true, tag);
 }
 
 ::grpc::ClientAsyncReader< ::mavsdk::rpc::shell::ReceiveResponse>* ShellService::Stub::PrepareAsyncSubscribeReceiveRaw(::grpc::ClientContext* context, const ::mavsdk::rpc::shell::SubscribeReceiveRequest& request, ::grpc::CompletionQueue* cq) {
-  return ::grpc_impl::internal::ClientAsyncReaderFactory< ::mavsdk::rpc::shell::ReceiveResponse>::Create(channel_.get(), cq, rpcmethod_SubscribeReceive_, context, request, false, nullptr);
+  return ::grpc::internal::ClientAsyncReaderFactory< ::mavsdk::rpc::shell::ReceiveResponse>::Create(channel_.get(), cq, rpcmethod_SubscribeReceive_, context, request, false, nullptr);
 }
 
 ShellService::Service::Service() {
@@ -88,12 +83,22 @@ ShellService::Service::Service() {
       ShellService_method_names[0],
       ::grpc::internal::RpcMethod::NORMAL_RPC,
       new ::grpc::internal::RpcMethodHandler< ShellService::Service, ::mavsdk::rpc::shell::SendRequest, ::mavsdk::rpc::shell::SendResponse>(
-          std::mem_fn(&ShellService::Service::Send), this)));
+          [](ShellService::Service* service,
+             ::grpc::ServerContext* ctx,
+             const ::mavsdk::rpc::shell::SendRequest* req,
+             ::mavsdk::rpc::shell::SendResponse* resp) {
+               return service->Send(ctx, req, resp);
+             }, this)));
   AddMethod(new ::grpc::internal::RpcServiceMethod(
       ShellService_method_names[1],
       ::grpc::internal::RpcMethod::SERVER_STREAMING,
       new ::grpc::internal::ServerStreamingHandler< ShellService::Service, ::mavsdk::rpc::shell::SubscribeReceiveRequest, ::mavsdk::rpc::shell::ReceiveResponse>(
-          std::mem_fn(&ShellService::Service::SubscribeReceive), this)));
+          [](ShellService::Service* service,
+             ::grpc::ServerContext* ctx,
+             const ::mavsdk::rpc::shell::SubscribeReceiveRequest* req,
+             ::grpc::ServerWriter<::mavsdk::rpc::shell::ReceiveResponse>* writer) {
+               return service->SubscribeReceive(ctx, req, writer);
+             }, this)));
 }
 
 ShellService::Service::~Service() {

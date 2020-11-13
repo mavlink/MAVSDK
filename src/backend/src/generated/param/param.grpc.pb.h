@@ -100,78 +100,48 @@ class ParamService final {
       //
       // If the type is wrong, the result will be `WRONG_TYPE`.
       virtual void GetParamInt(::grpc::ClientContext* context, const ::mavsdk::rpc::param::GetParamIntRequest* request, ::mavsdk::rpc::param::GetParamIntResponse* response, std::function<void(::grpc::Status)>) = 0;
-      virtual void GetParamInt(::grpc::ClientContext* context, const ::grpc::ByteBuffer* request, ::mavsdk::rpc::param::GetParamIntResponse* response, std::function<void(::grpc::Status)>) = 0;
       #ifdef GRPC_CALLBACK_API_NONEXPERIMENTAL
       virtual void GetParamInt(::grpc::ClientContext* context, const ::mavsdk::rpc::param::GetParamIntRequest* request, ::mavsdk::rpc::param::GetParamIntResponse* response, ::grpc::ClientUnaryReactor* reactor) = 0;
       #else
       virtual void GetParamInt(::grpc::ClientContext* context, const ::mavsdk::rpc::param::GetParamIntRequest* request, ::mavsdk::rpc::param::GetParamIntResponse* response, ::grpc::experimental::ClientUnaryReactor* reactor) = 0;
-      #endif
-      #ifdef GRPC_CALLBACK_API_NONEXPERIMENTAL
-      virtual void GetParamInt(::grpc::ClientContext* context, const ::grpc::ByteBuffer* request, ::mavsdk::rpc::param::GetParamIntResponse* response, ::grpc::ClientUnaryReactor* reactor) = 0;
-      #else
-      virtual void GetParamInt(::grpc::ClientContext* context, const ::grpc::ByteBuffer* request, ::mavsdk::rpc::param::GetParamIntResponse* response, ::grpc::experimental::ClientUnaryReactor* reactor) = 0;
       #endif
       //
       // Set an int parameter.
       //
       // If the type is wrong, the result will be `WRONG_TYPE`.
       virtual void SetParamInt(::grpc::ClientContext* context, const ::mavsdk::rpc::param::SetParamIntRequest* request, ::mavsdk::rpc::param::SetParamIntResponse* response, std::function<void(::grpc::Status)>) = 0;
-      virtual void SetParamInt(::grpc::ClientContext* context, const ::grpc::ByteBuffer* request, ::mavsdk::rpc::param::SetParamIntResponse* response, std::function<void(::grpc::Status)>) = 0;
       #ifdef GRPC_CALLBACK_API_NONEXPERIMENTAL
       virtual void SetParamInt(::grpc::ClientContext* context, const ::mavsdk::rpc::param::SetParamIntRequest* request, ::mavsdk::rpc::param::SetParamIntResponse* response, ::grpc::ClientUnaryReactor* reactor) = 0;
       #else
       virtual void SetParamInt(::grpc::ClientContext* context, const ::mavsdk::rpc::param::SetParamIntRequest* request, ::mavsdk::rpc::param::SetParamIntResponse* response, ::grpc::experimental::ClientUnaryReactor* reactor) = 0;
-      #endif
-      #ifdef GRPC_CALLBACK_API_NONEXPERIMENTAL
-      virtual void SetParamInt(::grpc::ClientContext* context, const ::grpc::ByteBuffer* request, ::mavsdk::rpc::param::SetParamIntResponse* response, ::grpc::ClientUnaryReactor* reactor) = 0;
-      #else
-      virtual void SetParamInt(::grpc::ClientContext* context, const ::grpc::ByteBuffer* request, ::mavsdk::rpc::param::SetParamIntResponse* response, ::grpc::experimental::ClientUnaryReactor* reactor) = 0;
       #endif
       //
       // Get a float parameter.
       //
       // If the type is wrong, the result will be `WRONG_TYPE`.
       virtual void GetParamFloat(::grpc::ClientContext* context, const ::mavsdk::rpc::param::GetParamFloatRequest* request, ::mavsdk::rpc::param::GetParamFloatResponse* response, std::function<void(::grpc::Status)>) = 0;
-      virtual void GetParamFloat(::grpc::ClientContext* context, const ::grpc::ByteBuffer* request, ::mavsdk::rpc::param::GetParamFloatResponse* response, std::function<void(::grpc::Status)>) = 0;
       #ifdef GRPC_CALLBACK_API_NONEXPERIMENTAL
       virtual void GetParamFloat(::grpc::ClientContext* context, const ::mavsdk::rpc::param::GetParamFloatRequest* request, ::mavsdk::rpc::param::GetParamFloatResponse* response, ::grpc::ClientUnaryReactor* reactor) = 0;
       #else
       virtual void GetParamFloat(::grpc::ClientContext* context, const ::mavsdk::rpc::param::GetParamFloatRequest* request, ::mavsdk::rpc::param::GetParamFloatResponse* response, ::grpc::experimental::ClientUnaryReactor* reactor) = 0;
-      #endif
-      #ifdef GRPC_CALLBACK_API_NONEXPERIMENTAL
-      virtual void GetParamFloat(::grpc::ClientContext* context, const ::grpc::ByteBuffer* request, ::mavsdk::rpc::param::GetParamFloatResponse* response, ::grpc::ClientUnaryReactor* reactor) = 0;
-      #else
-      virtual void GetParamFloat(::grpc::ClientContext* context, const ::grpc::ByteBuffer* request, ::mavsdk::rpc::param::GetParamFloatResponse* response, ::grpc::experimental::ClientUnaryReactor* reactor) = 0;
       #endif
       //
       // Set a float parameter.
       //
       // If the type is wrong, the result will be `WRONG_TYPE`.
       virtual void SetParamFloat(::grpc::ClientContext* context, const ::mavsdk::rpc::param::SetParamFloatRequest* request, ::mavsdk::rpc::param::SetParamFloatResponse* response, std::function<void(::grpc::Status)>) = 0;
-      virtual void SetParamFloat(::grpc::ClientContext* context, const ::grpc::ByteBuffer* request, ::mavsdk::rpc::param::SetParamFloatResponse* response, std::function<void(::grpc::Status)>) = 0;
       #ifdef GRPC_CALLBACK_API_NONEXPERIMENTAL
       virtual void SetParamFloat(::grpc::ClientContext* context, const ::mavsdk::rpc::param::SetParamFloatRequest* request, ::mavsdk::rpc::param::SetParamFloatResponse* response, ::grpc::ClientUnaryReactor* reactor) = 0;
       #else
       virtual void SetParamFloat(::grpc::ClientContext* context, const ::mavsdk::rpc::param::SetParamFloatRequest* request, ::mavsdk::rpc::param::SetParamFloatResponse* response, ::grpc::experimental::ClientUnaryReactor* reactor) = 0;
       #endif
-      #ifdef GRPC_CALLBACK_API_NONEXPERIMENTAL
-      virtual void SetParamFloat(::grpc::ClientContext* context, const ::grpc::ByteBuffer* request, ::mavsdk::rpc::param::SetParamFloatResponse* response, ::grpc::ClientUnaryReactor* reactor) = 0;
-      #else
-      virtual void SetParamFloat(::grpc::ClientContext* context, const ::grpc::ByteBuffer* request, ::mavsdk::rpc::param::SetParamFloatResponse* response, ::grpc::experimental::ClientUnaryReactor* reactor) = 0;
-      #endif
       //
       // Get all parameters.
       virtual void GetAllParams(::grpc::ClientContext* context, const ::mavsdk::rpc::param::GetAllParamsRequest* request, ::mavsdk::rpc::param::GetAllParamsResponse* response, std::function<void(::grpc::Status)>) = 0;
-      virtual void GetAllParams(::grpc::ClientContext* context, const ::grpc::ByteBuffer* request, ::mavsdk::rpc::param::GetAllParamsResponse* response, std::function<void(::grpc::Status)>) = 0;
       #ifdef GRPC_CALLBACK_API_NONEXPERIMENTAL
       virtual void GetAllParams(::grpc::ClientContext* context, const ::mavsdk::rpc::param::GetAllParamsRequest* request, ::mavsdk::rpc::param::GetAllParamsResponse* response, ::grpc::ClientUnaryReactor* reactor) = 0;
       #else
       virtual void GetAllParams(::grpc::ClientContext* context, const ::mavsdk::rpc::param::GetAllParamsRequest* request, ::mavsdk::rpc::param::GetAllParamsResponse* response, ::grpc::experimental::ClientUnaryReactor* reactor) = 0;
-      #endif
-      #ifdef GRPC_CALLBACK_API_NONEXPERIMENTAL
-      virtual void GetAllParams(::grpc::ClientContext* context, const ::grpc::ByteBuffer* request, ::mavsdk::rpc::param::GetAllParamsResponse* response, ::grpc::ClientUnaryReactor* reactor) = 0;
-      #else
-      virtual void GetAllParams(::grpc::ClientContext* context, const ::grpc::ByteBuffer* request, ::mavsdk::rpc::param::GetAllParamsResponse* response, ::grpc::experimental::ClientUnaryReactor* reactor) = 0;
       #endif
     };
     #ifdef GRPC_CALLBACK_API_NONEXPERIMENTAL
@@ -235,64 +205,34 @@ class ParamService final {
       public StubInterface::experimental_async_interface {
      public:
       void GetParamInt(::grpc::ClientContext* context, const ::mavsdk::rpc::param::GetParamIntRequest* request, ::mavsdk::rpc::param::GetParamIntResponse* response, std::function<void(::grpc::Status)>) override;
-      void GetParamInt(::grpc::ClientContext* context, const ::grpc::ByteBuffer* request, ::mavsdk::rpc::param::GetParamIntResponse* response, std::function<void(::grpc::Status)>) override;
       #ifdef GRPC_CALLBACK_API_NONEXPERIMENTAL
       void GetParamInt(::grpc::ClientContext* context, const ::mavsdk::rpc::param::GetParamIntRequest* request, ::mavsdk::rpc::param::GetParamIntResponse* response, ::grpc::ClientUnaryReactor* reactor) override;
       #else
       void GetParamInt(::grpc::ClientContext* context, const ::mavsdk::rpc::param::GetParamIntRequest* request, ::mavsdk::rpc::param::GetParamIntResponse* response, ::grpc::experimental::ClientUnaryReactor* reactor) override;
       #endif
-      #ifdef GRPC_CALLBACK_API_NONEXPERIMENTAL
-      void GetParamInt(::grpc::ClientContext* context, const ::grpc::ByteBuffer* request, ::mavsdk::rpc::param::GetParamIntResponse* response, ::grpc::ClientUnaryReactor* reactor) override;
-      #else
-      void GetParamInt(::grpc::ClientContext* context, const ::grpc::ByteBuffer* request, ::mavsdk::rpc::param::GetParamIntResponse* response, ::grpc::experimental::ClientUnaryReactor* reactor) override;
-      #endif
       void SetParamInt(::grpc::ClientContext* context, const ::mavsdk::rpc::param::SetParamIntRequest* request, ::mavsdk::rpc::param::SetParamIntResponse* response, std::function<void(::grpc::Status)>) override;
-      void SetParamInt(::grpc::ClientContext* context, const ::grpc::ByteBuffer* request, ::mavsdk::rpc::param::SetParamIntResponse* response, std::function<void(::grpc::Status)>) override;
       #ifdef GRPC_CALLBACK_API_NONEXPERIMENTAL
       void SetParamInt(::grpc::ClientContext* context, const ::mavsdk::rpc::param::SetParamIntRequest* request, ::mavsdk::rpc::param::SetParamIntResponse* response, ::grpc::ClientUnaryReactor* reactor) override;
       #else
       void SetParamInt(::grpc::ClientContext* context, const ::mavsdk::rpc::param::SetParamIntRequest* request, ::mavsdk::rpc::param::SetParamIntResponse* response, ::grpc::experimental::ClientUnaryReactor* reactor) override;
       #endif
-      #ifdef GRPC_CALLBACK_API_NONEXPERIMENTAL
-      void SetParamInt(::grpc::ClientContext* context, const ::grpc::ByteBuffer* request, ::mavsdk::rpc::param::SetParamIntResponse* response, ::grpc::ClientUnaryReactor* reactor) override;
-      #else
-      void SetParamInt(::grpc::ClientContext* context, const ::grpc::ByteBuffer* request, ::mavsdk::rpc::param::SetParamIntResponse* response, ::grpc::experimental::ClientUnaryReactor* reactor) override;
-      #endif
       void GetParamFloat(::grpc::ClientContext* context, const ::mavsdk::rpc::param::GetParamFloatRequest* request, ::mavsdk::rpc::param::GetParamFloatResponse* response, std::function<void(::grpc::Status)>) override;
-      void GetParamFloat(::grpc::ClientContext* context, const ::grpc::ByteBuffer* request, ::mavsdk::rpc::param::GetParamFloatResponse* response, std::function<void(::grpc::Status)>) override;
       #ifdef GRPC_CALLBACK_API_NONEXPERIMENTAL
       void GetParamFloat(::grpc::ClientContext* context, const ::mavsdk::rpc::param::GetParamFloatRequest* request, ::mavsdk::rpc::param::GetParamFloatResponse* response, ::grpc::ClientUnaryReactor* reactor) override;
       #else
       void GetParamFloat(::grpc::ClientContext* context, const ::mavsdk::rpc::param::GetParamFloatRequest* request, ::mavsdk::rpc::param::GetParamFloatResponse* response, ::grpc::experimental::ClientUnaryReactor* reactor) override;
       #endif
-      #ifdef GRPC_CALLBACK_API_NONEXPERIMENTAL
-      void GetParamFloat(::grpc::ClientContext* context, const ::grpc::ByteBuffer* request, ::mavsdk::rpc::param::GetParamFloatResponse* response, ::grpc::ClientUnaryReactor* reactor) override;
-      #else
-      void GetParamFloat(::grpc::ClientContext* context, const ::grpc::ByteBuffer* request, ::mavsdk::rpc::param::GetParamFloatResponse* response, ::grpc::experimental::ClientUnaryReactor* reactor) override;
-      #endif
       void SetParamFloat(::grpc::ClientContext* context, const ::mavsdk::rpc::param::SetParamFloatRequest* request, ::mavsdk::rpc::param::SetParamFloatResponse* response, std::function<void(::grpc::Status)>) override;
-      void SetParamFloat(::grpc::ClientContext* context, const ::grpc::ByteBuffer* request, ::mavsdk::rpc::param::SetParamFloatResponse* response, std::function<void(::grpc::Status)>) override;
       #ifdef GRPC_CALLBACK_API_NONEXPERIMENTAL
       void SetParamFloat(::grpc::ClientContext* context, const ::mavsdk::rpc::param::SetParamFloatRequest* request, ::mavsdk::rpc::param::SetParamFloatResponse* response, ::grpc::ClientUnaryReactor* reactor) override;
       #else
       void SetParamFloat(::grpc::ClientContext* context, const ::mavsdk::rpc::param::SetParamFloatRequest* request, ::mavsdk::rpc::param::SetParamFloatResponse* response, ::grpc::experimental::ClientUnaryReactor* reactor) override;
       #endif
-      #ifdef GRPC_CALLBACK_API_NONEXPERIMENTAL
-      void SetParamFloat(::grpc::ClientContext* context, const ::grpc::ByteBuffer* request, ::mavsdk::rpc::param::SetParamFloatResponse* response, ::grpc::ClientUnaryReactor* reactor) override;
-      #else
-      void SetParamFloat(::grpc::ClientContext* context, const ::grpc::ByteBuffer* request, ::mavsdk::rpc::param::SetParamFloatResponse* response, ::grpc::experimental::ClientUnaryReactor* reactor) override;
-      #endif
       void GetAllParams(::grpc::ClientContext* context, const ::mavsdk::rpc::param::GetAllParamsRequest* request, ::mavsdk::rpc::param::GetAllParamsResponse* response, std::function<void(::grpc::Status)>) override;
-      void GetAllParams(::grpc::ClientContext* context, const ::grpc::ByteBuffer* request, ::mavsdk::rpc::param::GetAllParamsResponse* response, std::function<void(::grpc::Status)>) override;
       #ifdef GRPC_CALLBACK_API_NONEXPERIMENTAL
       void GetAllParams(::grpc::ClientContext* context, const ::mavsdk::rpc::param::GetAllParamsRequest* request, ::mavsdk::rpc::param::GetAllParamsResponse* response, ::grpc::ClientUnaryReactor* reactor) override;
       #else
       void GetAllParams(::grpc::ClientContext* context, const ::mavsdk::rpc::param::GetAllParamsRequest* request, ::mavsdk::rpc::param::GetAllParamsResponse* response, ::grpc::experimental::ClientUnaryReactor* reactor) override;
-      #endif
-      #ifdef GRPC_CALLBACK_API_NONEXPERIMENTAL
-      void GetAllParams(::grpc::ClientContext* context, const ::grpc::ByteBuffer* request, ::mavsdk::rpc::param::GetAllParamsResponse* response, ::grpc::ClientUnaryReactor* reactor) override;
-      #else
-      void GetAllParams(::grpc::ClientContext* context, const ::grpc::ByteBuffer* request, ::mavsdk::rpc::param::GetAllParamsResponse* response, ::grpc::experimental::ClientUnaryReactor* reactor) override;
       #endif
      private:
       friend class Stub;
@@ -464,7 +404,7 @@ class ParamService final {
       ::grpc::Service::experimental().
     #endif
         MarkMethodCallback(0,
-          new ::grpc_impl::internal::CallbackUnaryHandler< ::mavsdk::rpc::param::GetParamIntRequest, ::mavsdk::rpc::param::GetParamIntResponse>(
+          new ::grpc::internal::CallbackUnaryHandler< ::mavsdk::rpc::param::GetParamIntRequest, ::mavsdk::rpc::param::GetParamIntResponse>(
             [this](
     #ifdef GRPC_CALLBACK_API_NONEXPERIMENTAL
                    ::grpc::CallbackServerContext*
@@ -479,7 +419,7 @@ class ParamService final {
     #else
       ::grpc::internal::MethodHandler* const handler = ::grpc::Service::experimental().GetHandler(0);
     #endif
-      static_cast<::grpc_impl::internal::CallbackUnaryHandler< ::mavsdk::rpc::param::GetParamIntRequest, ::mavsdk::rpc::param::GetParamIntResponse>*>(handler)
+      static_cast<::grpc::internal::CallbackUnaryHandler< ::mavsdk::rpc::param::GetParamIntRequest, ::mavsdk::rpc::param::GetParamIntResponse>*>(handler)
               ->SetMessageAllocator(allocator);
     }
     ~ExperimentalWithCallbackMethod_GetParamInt() override {
@@ -511,7 +451,7 @@ class ParamService final {
       ::grpc::Service::experimental().
     #endif
         MarkMethodCallback(1,
-          new ::grpc_impl::internal::CallbackUnaryHandler< ::mavsdk::rpc::param::SetParamIntRequest, ::mavsdk::rpc::param::SetParamIntResponse>(
+          new ::grpc::internal::CallbackUnaryHandler< ::mavsdk::rpc::param::SetParamIntRequest, ::mavsdk::rpc::param::SetParamIntResponse>(
             [this](
     #ifdef GRPC_CALLBACK_API_NONEXPERIMENTAL
                    ::grpc::CallbackServerContext*
@@ -526,7 +466,7 @@ class ParamService final {
     #else
       ::grpc::internal::MethodHandler* const handler = ::grpc::Service::experimental().GetHandler(1);
     #endif
-      static_cast<::grpc_impl::internal::CallbackUnaryHandler< ::mavsdk::rpc::param::SetParamIntRequest, ::mavsdk::rpc::param::SetParamIntResponse>*>(handler)
+      static_cast<::grpc::internal::CallbackUnaryHandler< ::mavsdk::rpc::param::SetParamIntRequest, ::mavsdk::rpc::param::SetParamIntResponse>*>(handler)
               ->SetMessageAllocator(allocator);
     }
     ~ExperimentalWithCallbackMethod_SetParamInt() override {
@@ -558,7 +498,7 @@ class ParamService final {
       ::grpc::Service::experimental().
     #endif
         MarkMethodCallback(2,
-          new ::grpc_impl::internal::CallbackUnaryHandler< ::mavsdk::rpc::param::GetParamFloatRequest, ::mavsdk::rpc::param::GetParamFloatResponse>(
+          new ::grpc::internal::CallbackUnaryHandler< ::mavsdk::rpc::param::GetParamFloatRequest, ::mavsdk::rpc::param::GetParamFloatResponse>(
             [this](
     #ifdef GRPC_CALLBACK_API_NONEXPERIMENTAL
                    ::grpc::CallbackServerContext*
@@ -573,7 +513,7 @@ class ParamService final {
     #else
       ::grpc::internal::MethodHandler* const handler = ::grpc::Service::experimental().GetHandler(2);
     #endif
-      static_cast<::grpc_impl::internal::CallbackUnaryHandler< ::mavsdk::rpc::param::GetParamFloatRequest, ::mavsdk::rpc::param::GetParamFloatResponse>*>(handler)
+      static_cast<::grpc::internal::CallbackUnaryHandler< ::mavsdk::rpc::param::GetParamFloatRequest, ::mavsdk::rpc::param::GetParamFloatResponse>*>(handler)
               ->SetMessageAllocator(allocator);
     }
     ~ExperimentalWithCallbackMethod_GetParamFloat() override {
@@ -605,7 +545,7 @@ class ParamService final {
       ::grpc::Service::experimental().
     #endif
         MarkMethodCallback(3,
-          new ::grpc_impl::internal::CallbackUnaryHandler< ::mavsdk::rpc::param::SetParamFloatRequest, ::mavsdk::rpc::param::SetParamFloatResponse>(
+          new ::grpc::internal::CallbackUnaryHandler< ::mavsdk::rpc::param::SetParamFloatRequest, ::mavsdk::rpc::param::SetParamFloatResponse>(
             [this](
     #ifdef GRPC_CALLBACK_API_NONEXPERIMENTAL
                    ::grpc::CallbackServerContext*
@@ -620,7 +560,7 @@ class ParamService final {
     #else
       ::grpc::internal::MethodHandler* const handler = ::grpc::Service::experimental().GetHandler(3);
     #endif
-      static_cast<::grpc_impl::internal::CallbackUnaryHandler< ::mavsdk::rpc::param::SetParamFloatRequest, ::mavsdk::rpc::param::SetParamFloatResponse>*>(handler)
+      static_cast<::grpc::internal::CallbackUnaryHandler< ::mavsdk::rpc::param::SetParamFloatRequest, ::mavsdk::rpc::param::SetParamFloatResponse>*>(handler)
               ->SetMessageAllocator(allocator);
     }
     ~ExperimentalWithCallbackMethod_SetParamFloat() override {
@@ -652,7 +592,7 @@ class ParamService final {
       ::grpc::Service::experimental().
     #endif
         MarkMethodCallback(4,
-          new ::grpc_impl::internal::CallbackUnaryHandler< ::mavsdk::rpc::param::GetAllParamsRequest, ::mavsdk::rpc::param::GetAllParamsResponse>(
+          new ::grpc::internal::CallbackUnaryHandler< ::mavsdk::rpc::param::GetAllParamsRequest, ::mavsdk::rpc::param::GetAllParamsResponse>(
             [this](
     #ifdef GRPC_CALLBACK_API_NONEXPERIMENTAL
                    ::grpc::CallbackServerContext*
@@ -667,7 +607,7 @@ class ParamService final {
     #else
       ::grpc::internal::MethodHandler* const handler = ::grpc::Service::experimental().GetHandler(4);
     #endif
-      static_cast<::grpc_impl::internal::CallbackUnaryHandler< ::mavsdk::rpc::param::GetAllParamsRequest, ::mavsdk::rpc::param::GetAllParamsResponse>*>(handler)
+      static_cast<::grpc::internal::CallbackUnaryHandler< ::mavsdk::rpc::param::GetAllParamsRequest, ::mavsdk::rpc::param::GetAllParamsResponse>*>(handler)
               ->SetMessageAllocator(allocator);
     }
     ~ExperimentalWithCallbackMethod_GetAllParams() override {
@@ -889,7 +829,7 @@ class ParamService final {
       ::grpc::Service::experimental().
     #endif
         MarkMethodRawCallback(0,
-          new ::grpc_impl::internal::CallbackUnaryHandler< ::grpc::ByteBuffer, ::grpc::ByteBuffer>(
+          new ::grpc::internal::CallbackUnaryHandler< ::grpc::ByteBuffer, ::grpc::ByteBuffer>(
             [this](
     #ifdef GRPC_CALLBACK_API_NONEXPERIMENTAL
                    ::grpc::CallbackServerContext*
@@ -927,7 +867,7 @@ class ParamService final {
       ::grpc::Service::experimental().
     #endif
         MarkMethodRawCallback(1,
-          new ::grpc_impl::internal::CallbackUnaryHandler< ::grpc::ByteBuffer, ::grpc::ByteBuffer>(
+          new ::grpc::internal::CallbackUnaryHandler< ::grpc::ByteBuffer, ::grpc::ByteBuffer>(
             [this](
     #ifdef GRPC_CALLBACK_API_NONEXPERIMENTAL
                    ::grpc::CallbackServerContext*
@@ -965,7 +905,7 @@ class ParamService final {
       ::grpc::Service::experimental().
     #endif
         MarkMethodRawCallback(2,
-          new ::grpc_impl::internal::CallbackUnaryHandler< ::grpc::ByteBuffer, ::grpc::ByteBuffer>(
+          new ::grpc::internal::CallbackUnaryHandler< ::grpc::ByteBuffer, ::grpc::ByteBuffer>(
             [this](
     #ifdef GRPC_CALLBACK_API_NONEXPERIMENTAL
                    ::grpc::CallbackServerContext*
@@ -1003,7 +943,7 @@ class ParamService final {
       ::grpc::Service::experimental().
     #endif
         MarkMethodRawCallback(3,
-          new ::grpc_impl::internal::CallbackUnaryHandler< ::grpc::ByteBuffer, ::grpc::ByteBuffer>(
+          new ::grpc::internal::CallbackUnaryHandler< ::grpc::ByteBuffer, ::grpc::ByteBuffer>(
             [this](
     #ifdef GRPC_CALLBACK_API_NONEXPERIMENTAL
                    ::grpc::CallbackServerContext*
@@ -1041,7 +981,7 @@ class ParamService final {
       ::grpc::Service::experimental().
     #endif
         MarkMethodRawCallback(4,
-          new ::grpc_impl::internal::CallbackUnaryHandler< ::grpc::ByteBuffer, ::grpc::ByteBuffer>(
+          new ::grpc::internal::CallbackUnaryHandler< ::grpc::ByteBuffer, ::grpc::ByteBuffer>(
             [this](
     #ifdef GRPC_CALLBACK_API_NONEXPERIMENTAL
                    ::grpc::CallbackServerContext*
@@ -1074,7 +1014,14 @@ class ParamService final {
    public:
     WithStreamedUnaryMethod_GetParamInt() {
       ::grpc::Service::MarkMethodStreamed(0,
-        new ::grpc::internal::StreamedUnaryHandler< ::mavsdk::rpc::param::GetParamIntRequest, ::mavsdk::rpc::param::GetParamIntResponse>(std::bind(&WithStreamedUnaryMethod_GetParamInt<BaseClass>::StreamedGetParamInt, this, std::placeholders::_1, std::placeholders::_2)));
+        new ::grpc::internal::StreamedUnaryHandler<
+          ::mavsdk::rpc::param::GetParamIntRequest, ::mavsdk::rpc::param::GetParamIntResponse>(
+            [this](::grpc::ServerContext* context,
+                   ::grpc::ServerUnaryStreamer<
+                     ::mavsdk::rpc::param::GetParamIntRequest, ::mavsdk::rpc::param::GetParamIntResponse>* streamer) {
+                       return this->StreamedGetParamInt(context,
+                         streamer);
+                  }));
     }
     ~WithStreamedUnaryMethod_GetParamInt() override {
       BaseClassMustBeDerivedFromService(this);
@@ -1094,7 +1041,14 @@ class ParamService final {
    public:
     WithStreamedUnaryMethod_SetParamInt() {
       ::grpc::Service::MarkMethodStreamed(1,
-        new ::grpc::internal::StreamedUnaryHandler< ::mavsdk::rpc::param::SetParamIntRequest, ::mavsdk::rpc::param::SetParamIntResponse>(std::bind(&WithStreamedUnaryMethod_SetParamInt<BaseClass>::StreamedSetParamInt, this, std::placeholders::_1, std::placeholders::_2)));
+        new ::grpc::internal::StreamedUnaryHandler<
+          ::mavsdk::rpc::param::SetParamIntRequest, ::mavsdk::rpc::param::SetParamIntResponse>(
+            [this](::grpc::ServerContext* context,
+                   ::grpc::ServerUnaryStreamer<
+                     ::mavsdk::rpc::param::SetParamIntRequest, ::mavsdk::rpc::param::SetParamIntResponse>* streamer) {
+                       return this->StreamedSetParamInt(context,
+                         streamer);
+                  }));
     }
     ~WithStreamedUnaryMethod_SetParamInt() override {
       BaseClassMustBeDerivedFromService(this);
@@ -1114,7 +1068,14 @@ class ParamService final {
    public:
     WithStreamedUnaryMethod_GetParamFloat() {
       ::grpc::Service::MarkMethodStreamed(2,
-        new ::grpc::internal::StreamedUnaryHandler< ::mavsdk::rpc::param::GetParamFloatRequest, ::mavsdk::rpc::param::GetParamFloatResponse>(std::bind(&WithStreamedUnaryMethod_GetParamFloat<BaseClass>::StreamedGetParamFloat, this, std::placeholders::_1, std::placeholders::_2)));
+        new ::grpc::internal::StreamedUnaryHandler<
+          ::mavsdk::rpc::param::GetParamFloatRequest, ::mavsdk::rpc::param::GetParamFloatResponse>(
+            [this](::grpc::ServerContext* context,
+                   ::grpc::ServerUnaryStreamer<
+                     ::mavsdk::rpc::param::GetParamFloatRequest, ::mavsdk::rpc::param::GetParamFloatResponse>* streamer) {
+                       return this->StreamedGetParamFloat(context,
+                         streamer);
+                  }));
     }
     ~WithStreamedUnaryMethod_GetParamFloat() override {
       BaseClassMustBeDerivedFromService(this);
@@ -1134,7 +1095,14 @@ class ParamService final {
    public:
     WithStreamedUnaryMethod_SetParamFloat() {
       ::grpc::Service::MarkMethodStreamed(3,
-        new ::grpc::internal::StreamedUnaryHandler< ::mavsdk::rpc::param::SetParamFloatRequest, ::mavsdk::rpc::param::SetParamFloatResponse>(std::bind(&WithStreamedUnaryMethod_SetParamFloat<BaseClass>::StreamedSetParamFloat, this, std::placeholders::_1, std::placeholders::_2)));
+        new ::grpc::internal::StreamedUnaryHandler<
+          ::mavsdk::rpc::param::SetParamFloatRequest, ::mavsdk::rpc::param::SetParamFloatResponse>(
+            [this](::grpc::ServerContext* context,
+                   ::grpc::ServerUnaryStreamer<
+                     ::mavsdk::rpc::param::SetParamFloatRequest, ::mavsdk::rpc::param::SetParamFloatResponse>* streamer) {
+                       return this->StreamedSetParamFloat(context,
+                         streamer);
+                  }));
     }
     ~WithStreamedUnaryMethod_SetParamFloat() override {
       BaseClassMustBeDerivedFromService(this);
@@ -1154,7 +1122,14 @@ class ParamService final {
    public:
     WithStreamedUnaryMethod_GetAllParams() {
       ::grpc::Service::MarkMethodStreamed(4,
-        new ::grpc::internal::StreamedUnaryHandler< ::mavsdk::rpc::param::GetAllParamsRequest, ::mavsdk::rpc::param::GetAllParamsResponse>(std::bind(&WithStreamedUnaryMethod_GetAllParams<BaseClass>::StreamedGetAllParams, this, std::placeholders::_1, std::placeholders::_2)));
+        new ::grpc::internal::StreamedUnaryHandler<
+          ::mavsdk::rpc::param::GetAllParamsRequest, ::mavsdk::rpc::param::GetAllParamsResponse>(
+            [this](::grpc::ServerContext* context,
+                   ::grpc::ServerUnaryStreamer<
+                     ::mavsdk::rpc::param::GetAllParamsRequest, ::mavsdk::rpc::param::GetAllParamsResponse>* streamer) {
+                       return this->StreamedGetAllParams(context,
+                         streamer);
+                  }));
     }
     ~WithStreamedUnaryMethod_GetAllParams() override {
       BaseClassMustBeDerivedFromService(this);

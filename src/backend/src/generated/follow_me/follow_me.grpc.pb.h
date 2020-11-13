@@ -102,94 +102,52 @@ class FollowMeService final {
       virtual ~experimental_async_interface() {}
       // Get current configuration.
       virtual void GetConfig(::grpc::ClientContext* context, const ::mavsdk::rpc::follow_me::GetConfigRequest* request, ::mavsdk::rpc::follow_me::GetConfigResponse* response, std::function<void(::grpc::Status)>) = 0;
-      virtual void GetConfig(::grpc::ClientContext* context, const ::grpc::ByteBuffer* request, ::mavsdk::rpc::follow_me::GetConfigResponse* response, std::function<void(::grpc::Status)>) = 0;
       #ifdef GRPC_CALLBACK_API_NONEXPERIMENTAL
       virtual void GetConfig(::grpc::ClientContext* context, const ::mavsdk::rpc::follow_me::GetConfigRequest* request, ::mavsdk::rpc::follow_me::GetConfigResponse* response, ::grpc::ClientUnaryReactor* reactor) = 0;
       #else
       virtual void GetConfig(::grpc::ClientContext* context, const ::mavsdk::rpc::follow_me::GetConfigRequest* request, ::mavsdk::rpc::follow_me::GetConfigResponse* response, ::grpc::experimental::ClientUnaryReactor* reactor) = 0;
       #endif
-      #ifdef GRPC_CALLBACK_API_NONEXPERIMENTAL
-      virtual void GetConfig(::grpc::ClientContext* context, const ::grpc::ByteBuffer* request, ::mavsdk::rpc::follow_me::GetConfigResponse* response, ::grpc::ClientUnaryReactor* reactor) = 0;
-      #else
-      virtual void GetConfig(::grpc::ClientContext* context, const ::grpc::ByteBuffer* request, ::mavsdk::rpc::follow_me::GetConfigResponse* response, ::grpc::experimental::ClientUnaryReactor* reactor) = 0;
-      #endif
       // Apply configuration by sending it to the system.
       virtual void SetConfig(::grpc::ClientContext* context, const ::mavsdk::rpc::follow_me::SetConfigRequest* request, ::mavsdk::rpc::follow_me::SetConfigResponse* response, std::function<void(::grpc::Status)>) = 0;
-      virtual void SetConfig(::grpc::ClientContext* context, const ::grpc::ByteBuffer* request, ::mavsdk::rpc::follow_me::SetConfigResponse* response, std::function<void(::grpc::Status)>) = 0;
       #ifdef GRPC_CALLBACK_API_NONEXPERIMENTAL
       virtual void SetConfig(::grpc::ClientContext* context, const ::mavsdk::rpc::follow_me::SetConfigRequest* request, ::mavsdk::rpc::follow_me::SetConfigResponse* response, ::grpc::ClientUnaryReactor* reactor) = 0;
       #else
       virtual void SetConfig(::grpc::ClientContext* context, const ::mavsdk::rpc::follow_me::SetConfigRequest* request, ::mavsdk::rpc::follow_me::SetConfigResponse* response, ::grpc::experimental::ClientUnaryReactor* reactor) = 0;
       #endif
-      #ifdef GRPC_CALLBACK_API_NONEXPERIMENTAL
-      virtual void SetConfig(::grpc::ClientContext* context, const ::grpc::ByteBuffer* request, ::mavsdk::rpc::follow_me::SetConfigResponse* response, ::grpc::ClientUnaryReactor* reactor) = 0;
-      #else
-      virtual void SetConfig(::grpc::ClientContext* context, const ::grpc::ByteBuffer* request, ::mavsdk::rpc::follow_me::SetConfigResponse* response, ::grpc::experimental::ClientUnaryReactor* reactor) = 0;
-      #endif
       // Check if FollowMe is active.
       virtual void IsActive(::grpc::ClientContext* context, const ::mavsdk::rpc::follow_me::IsActiveRequest* request, ::mavsdk::rpc::follow_me::IsActiveResponse* response, std::function<void(::grpc::Status)>) = 0;
-      virtual void IsActive(::grpc::ClientContext* context, const ::grpc::ByteBuffer* request, ::mavsdk::rpc::follow_me::IsActiveResponse* response, std::function<void(::grpc::Status)>) = 0;
       #ifdef GRPC_CALLBACK_API_NONEXPERIMENTAL
       virtual void IsActive(::grpc::ClientContext* context, const ::mavsdk::rpc::follow_me::IsActiveRequest* request, ::mavsdk::rpc::follow_me::IsActiveResponse* response, ::grpc::ClientUnaryReactor* reactor) = 0;
       #else
       virtual void IsActive(::grpc::ClientContext* context, const ::mavsdk::rpc::follow_me::IsActiveRequest* request, ::mavsdk::rpc::follow_me::IsActiveResponse* response, ::grpc::experimental::ClientUnaryReactor* reactor) = 0;
       #endif
-      #ifdef GRPC_CALLBACK_API_NONEXPERIMENTAL
-      virtual void IsActive(::grpc::ClientContext* context, const ::grpc::ByteBuffer* request, ::mavsdk::rpc::follow_me::IsActiveResponse* response, ::grpc::ClientUnaryReactor* reactor) = 0;
-      #else
-      virtual void IsActive(::grpc::ClientContext* context, const ::grpc::ByteBuffer* request, ::mavsdk::rpc::follow_me::IsActiveResponse* response, ::grpc::experimental::ClientUnaryReactor* reactor) = 0;
-      #endif
       // Set location of the moving target.
       virtual void SetTargetLocation(::grpc::ClientContext* context, const ::mavsdk::rpc::follow_me::SetTargetLocationRequest* request, ::mavsdk::rpc::follow_me::SetTargetLocationResponse* response, std::function<void(::grpc::Status)>) = 0;
-      virtual void SetTargetLocation(::grpc::ClientContext* context, const ::grpc::ByteBuffer* request, ::mavsdk::rpc::follow_me::SetTargetLocationResponse* response, std::function<void(::grpc::Status)>) = 0;
       #ifdef GRPC_CALLBACK_API_NONEXPERIMENTAL
       virtual void SetTargetLocation(::grpc::ClientContext* context, const ::mavsdk::rpc::follow_me::SetTargetLocationRequest* request, ::mavsdk::rpc::follow_me::SetTargetLocationResponse* response, ::grpc::ClientUnaryReactor* reactor) = 0;
       #else
       virtual void SetTargetLocation(::grpc::ClientContext* context, const ::mavsdk::rpc::follow_me::SetTargetLocationRequest* request, ::mavsdk::rpc::follow_me::SetTargetLocationResponse* response, ::grpc::experimental::ClientUnaryReactor* reactor) = 0;
       #endif
-      #ifdef GRPC_CALLBACK_API_NONEXPERIMENTAL
-      virtual void SetTargetLocation(::grpc::ClientContext* context, const ::grpc::ByteBuffer* request, ::mavsdk::rpc::follow_me::SetTargetLocationResponse* response, ::grpc::ClientUnaryReactor* reactor) = 0;
-      #else
-      virtual void SetTargetLocation(::grpc::ClientContext* context, const ::grpc::ByteBuffer* request, ::mavsdk::rpc::follow_me::SetTargetLocationResponse* response, ::grpc::experimental::ClientUnaryReactor* reactor) = 0;
-      #endif
       // Get the last location of the target.
       virtual void GetLastLocation(::grpc::ClientContext* context, const ::mavsdk::rpc::follow_me::GetLastLocationRequest* request, ::mavsdk::rpc::follow_me::GetLastLocationResponse* response, std::function<void(::grpc::Status)>) = 0;
-      virtual void GetLastLocation(::grpc::ClientContext* context, const ::grpc::ByteBuffer* request, ::mavsdk::rpc::follow_me::GetLastLocationResponse* response, std::function<void(::grpc::Status)>) = 0;
       #ifdef GRPC_CALLBACK_API_NONEXPERIMENTAL
       virtual void GetLastLocation(::grpc::ClientContext* context, const ::mavsdk::rpc::follow_me::GetLastLocationRequest* request, ::mavsdk::rpc::follow_me::GetLastLocationResponse* response, ::grpc::ClientUnaryReactor* reactor) = 0;
       #else
       virtual void GetLastLocation(::grpc::ClientContext* context, const ::mavsdk::rpc::follow_me::GetLastLocationRequest* request, ::mavsdk::rpc::follow_me::GetLastLocationResponse* response, ::grpc::experimental::ClientUnaryReactor* reactor) = 0;
       #endif
-      #ifdef GRPC_CALLBACK_API_NONEXPERIMENTAL
-      virtual void GetLastLocation(::grpc::ClientContext* context, const ::grpc::ByteBuffer* request, ::mavsdk::rpc::follow_me::GetLastLocationResponse* response, ::grpc::ClientUnaryReactor* reactor) = 0;
-      #else
-      virtual void GetLastLocation(::grpc::ClientContext* context, const ::grpc::ByteBuffer* request, ::mavsdk::rpc::follow_me::GetLastLocationResponse* response, ::grpc::experimental::ClientUnaryReactor* reactor) = 0;
-      #endif
       // Start FollowMe mode.
       virtual void Start(::grpc::ClientContext* context, const ::mavsdk::rpc::follow_me::StartRequest* request, ::mavsdk::rpc::follow_me::StartResponse* response, std::function<void(::grpc::Status)>) = 0;
-      virtual void Start(::grpc::ClientContext* context, const ::grpc::ByteBuffer* request, ::mavsdk::rpc::follow_me::StartResponse* response, std::function<void(::grpc::Status)>) = 0;
       #ifdef GRPC_CALLBACK_API_NONEXPERIMENTAL
       virtual void Start(::grpc::ClientContext* context, const ::mavsdk::rpc::follow_me::StartRequest* request, ::mavsdk::rpc::follow_me::StartResponse* response, ::grpc::ClientUnaryReactor* reactor) = 0;
       #else
       virtual void Start(::grpc::ClientContext* context, const ::mavsdk::rpc::follow_me::StartRequest* request, ::mavsdk::rpc::follow_me::StartResponse* response, ::grpc::experimental::ClientUnaryReactor* reactor) = 0;
       #endif
-      #ifdef GRPC_CALLBACK_API_NONEXPERIMENTAL
-      virtual void Start(::grpc::ClientContext* context, const ::grpc::ByteBuffer* request, ::mavsdk::rpc::follow_me::StartResponse* response, ::grpc::ClientUnaryReactor* reactor) = 0;
-      #else
-      virtual void Start(::grpc::ClientContext* context, const ::grpc::ByteBuffer* request, ::mavsdk::rpc::follow_me::StartResponse* response, ::grpc::experimental::ClientUnaryReactor* reactor) = 0;
-      #endif
       // Stop FollowMe mode.
       virtual void Stop(::grpc::ClientContext* context, const ::mavsdk::rpc::follow_me::StopRequest* request, ::mavsdk::rpc::follow_me::StopResponse* response, std::function<void(::grpc::Status)>) = 0;
-      virtual void Stop(::grpc::ClientContext* context, const ::grpc::ByteBuffer* request, ::mavsdk::rpc::follow_me::StopResponse* response, std::function<void(::grpc::Status)>) = 0;
       #ifdef GRPC_CALLBACK_API_NONEXPERIMENTAL
       virtual void Stop(::grpc::ClientContext* context, const ::mavsdk::rpc::follow_me::StopRequest* request, ::mavsdk::rpc::follow_me::StopResponse* response, ::grpc::ClientUnaryReactor* reactor) = 0;
       #else
       virtual void Stop(::grpc::ClientContext* context, const ::mavsdk::rpc::follow_me::StopRequest* request, ::mavsdk::rpc::follow_me::StopResponse* response, ::grpc::experimental::ClientUnaryReactor* reactor) = 0;
-      #endif
-      #ifdef GRPC_CALLBACK_API_NONEXPERIMENTAL
-      virtual void Stop(::grpc::ClientContext* context, const ::grpc::ByteBuffer* request, ::mavsdk::rpc::follow_me::StopResponse* response, ::grpc::ClientUnaryReactor* reactor) = 0;
-      #else
-      virtual void Stop(::grpc::ClientContext* context, const ::grpc::ByteBuffer* request, ::mavsdk::rpc::follow_me::StopResponse* response, ::grpc::experimental::ClientUnaryReactor* reactor) = 0;
       #endif
     };
     #ifdef GRPC_CALLBACK_API_NONEXPERIMENTAL
@@ -271,88 +229,46 @@ class FollowMeService final {
       public StubInterface::experimental_async_interface {
      public:
       void GetConfig(::grpc::ClientContext* context, const ::mavsdk::rpc::follow_me::GetConfigRequest* request, ::mavsdk::rpc::follow_me::GetConfigResponse* response, std::function<void(::grpc::Status)>) override;
-      void GetConfig(::grpc::ClientContext* context, const ::grpc::ByteBuffer* request, ::mavsdk::rpc::follow_me::GetConfigResponse* response, std::function<void(::grpc::Status)>) override;
       #ifdef GRPC_CALLBACK_API_NONEXPERIMENTAL
       void GetConfig(::grpc::ClientContext* context, const ::mavsdk::rpc::follow_me::GetConfigRequest* request, ::mavsdk::rpc::follow_me::GetConfigResponse* response, ::grpc::ClientUnaryReactor* reactor) override;
       #else
       void GetConfig(::grpc::ClientContext* context, const ::mavsdk::rpc::follow_me::GetConfigRequest* request, ::mavsdk::rpc::follow_me::GetConfigResponse* response, ::grpc::experimental::ClientUnaryReactor* reactor) override;
       #endif
-      #ifdef GRPC_CALLBACK_API_NONEXPERIMENTAL
-      void GetConfig(::grpc::ClientContext* context, const ::grpc::ByteBuffer* request, ::mavsdk::rpc::follow_me::GetConfigResponse* response, ::grpc::ClientUnaryReactor* reactor) override;
-      #else
-      void GetConfig(::grpc::ClientContext* context, const ::grpc::ByteBuffer* request, ::mavsdk::rpc::follow_me::GetConfigResponse* response, ::grpc::experimental::ClientUnaryReactor* reactor) override;
-      #endif
       void SetConfig(::grpc::ClientContext* context, const ::mavsdk::rpc::follow_me::SetConfigRequest* request, ::mavsdk::rpc::follow_me::SetConfigResponse* response, std::function<void(::grpc::Status)>) override;
-      void SetConfig(::grpc::ClientContext* context, const ::grpc::ByteBuffer* request, ::mavsdk::rpc::follow_me::SetConfigResponse* response, std::function<void(::grpc::Status)>) override;
       #ifdef GRPC_CALLBACK_API_NONEXPERIMENTAL
       void SetConfig(::grpc::ClientContext* context, const ::mavsdk::rpc::follow_me::SetConfigRequest* request, ::mavsdk::rpc::follow_me::SetConfigResponse* response, ::grpc::ClientUnaryReactor* reactor) override;
       #else
       void SetConfig(::grpc::ClientContext* context, const ::mavsdk::rpc::follow_me::SetConfigRequest* request, ::mavsdk::rpc::follow_me::SetConfigResponse* response, ::grpc::experimental::ClientUnaryReactor* reactor) override;
       #endif
-      #ifdef GRPC_CALLBACK_API_NONEXPERIMENTAL
-      void SetConfig(::grpc::ClientContext* context, const ::grpc::ByteBuffer* request, ::mavsdk::rpc::follow_me::SetConfigResponse* response, ::grpc::ClientUnaryReactor* reactor) override;
-      #else
-      void SetConfig(::grpc::ClientContext* context, const ::grpc::ByteBuffer* request, ::mavsdk::rpc::follow_me::SetConfigResponse* response, ::grpc::experimental::ClientUnaryReactor* reactor) override;
-      #endif
       void IsActive(::grpc::ClientContext* context, const ::mavsdk::rpc::follow_me::IsActiveRequest* request, ::mavsdk::rpc::follow_me::IsActiveResponse* response, std::function<void(::grpc::Status)>) override;
-      void IsActive(::grpc::ClientContext* context, const ::grpc::ByteBuffer* request, ::mavsdk::rpc::follow_me::IsActiveResponse* response, std::function<void(::grpc::Status)>) override;
       #ifdef GRPC_CALLBACK_API_NONEXPERIMENTAL
       void IsActive(::grpc::ClientContext* context, const ::mavsdk::rpc::follow_me::IsActiveRequest* request, ::mavsdk::rpc::follow_me::IsActiveResponse* response, ::grpc::ClientUnaryReactor* reactor) override;
       #else
       void IsActive(::grpc::ClientContext* context, const ::mavsdk::rpc::follow_me::IsActiveRequest* request, ::mavsdk::rpc::follow_me::IsActiveResponse* response, ::grpc::experimental::ClientUnaryReactor* reactor) override;
       #endif
-      #ifdef GRPC_CALLBACK_API_NONEXPERIMENTAL
-      void IsActive(::grpc::ClientContext* context, const ::grpc::ByteBuffer* request, ::mavsdk::rpc::follow_me::IsActiveResponse* response, ::grpc::ClientUnaryReactor* reactor) override;
-      #else
-      void IsActive(::grpc::ClientContext* context, const ::grpc::ByteBuffer* request, ::mavsdk::rpc::follow_me::IsActiveResponse* response, ::grpc::experimental::ClientUnaryReactor* reactor) override;
-      #endif
       void SetTargetLocation(::grpc::ClientContext* context, const ::mavsdk::rpc::follow_me::SetTargetLocationRequest* request, ::mavsdk::rpc::follow_me::SetTargetLocationResponse* response, std::function<void(::grpc::Status)>) override;
-      void SetTargetLocation(::grpc::ClientContext* context, const ::grpc::ByteBuffer* request, ::mavsdk::rpc::follow_me::SetTargetLocationResponse* response, std::function<void(::grpc::Status)>) override;
       #ifdef GRPC_CALLBACK_API_NONEXPERIMENTAL
       void SetTargetLocation(::grpc::ClientContext* context, const ::mavsdk::rpc::follow_me::SetTargetLocationRequest* request, ::mavsdk::rpc::follow_me::SetTargetLocationResponse* response, ::grpc::ClientUnaryReactor* reactor) override;
       #else
       void SetTargetLocation(::grpc::ClientContext* context, const ::mavsdk::rpc::follow_me::SetTargetLocationRequest* request, ::mavsdk::rpc::follow_me::SetTargetLocationResponse* response, ::grpc::experimental::ClientUnaryReactor* reactor) override;
       #endif
-      #ifdef GRPC_CALLBACK_API_NONEXPERIMENTAL
-      void SetTargetLocation(::grpc::ClientContext* context, const ::grpc::ByteBuffer* request, ::mavsdk::rpc::follow_me::SetTargetLocationResponse* response, ::grpc::ClientUnaryReactor* reactor) override;
-      #else
-      void SetTargetLocation(::grpc::ClientContext* context, const ::grpc::ByteBuffer* request, ::mavsdk::rpc::follow_me::SetTargetLocationResponse* response, ::grpc::experimental::ClientUnaryReactor* reactor) override;
-      #endif
       void GetLastLocation(::grpc::ClientContext* context, const ::mavsdk::rpc::follow_me::GetLastLocationRequest* request, ::mavsdk::rpc::follow_me::GetLastLocationResponse* response, std::function<void(::grpc::Status)>) override;
-      void GetLastLocation(::grpc::ClientContext* context, const ::grpc::ByteBuffer* request, ::mavsdk::rpc::follow_me::GetLastLocationResponse* response, std::function<void(::grpc::Status)>) override;
       #ifdef GRPC_CALLBACK_API_NONEXPERIMENTAL
       void GetLastLocation(::grpc::ClientContext* context, const ::mavsdk::rpc::follow_me::GetLastLocationRequest* request, ::mavsdk::rpc::follow_me::GetLastLocationResponse* response, ::grpc::ClientUnaryReactor* reactor) override;
       #else
       void GetLastLocation(::grpc::ClientContext* context, const ::mavsdk::rpc::follow_me::GetLastLocationRequest* request, ::mavsdk::rpc::follow_me::GetLastLocationResponse* response, ::grpc::experimental::ClientUnaryReactor* reactor) override;
       #endif
-      #ifdef GRPC_CALLBACK_API_NONEXPERIMENTAL
-      void GetLastLocation(::grpc::ClientContext* context, const ::grpc::ByteBuffer* request, ::mavsdk::rpc::follow_me::GetLastLocationResponse* response, ::grpc::ClientUnaryReactor* reactor) override;
-      #else
-      void GetLastLocation(::grpc::ClientContext* context, const ::grpc::ByteBuffer* request, ::mavsdk::rpc::follow_me::GetLastLocationResponse* response, ::grpc::experimental::ClientUnaryReactor* reactor) override;
-      #endif
       void Start(::grpc::ClientContext* context, const ::mavsdk::rpc::follow_me::StartRequest* request, ::mavsdk::rpc::follow_me::StartResponse* response, std::function<void(::grpc::Status)>) override;
-      void Start(::grpc::ClientContext* context, const ::grpc::ByteBuffer* request, ::mavsdk::rpc::follow_me::StartResponse* response, std::function<void(::grpc::Status)>) override;
       #ifdef GRPC_CALLBACK_API_NONEXPERIMENTAL
       void Start(::grpc::ClientContext* context, const ::mavsdk::rpc::follow_me::StartRequest* request, ::mavsdk::rpc::follow_me::StartResponse* response, ::grpc::ClientUnaryReactor* reactor) override;
       #else
       void Start(::grpc::ClientContext* context, const ::mavsdk::rpc::follow_me::StartRequest* request, ::mavsdk::rpc::follow_me::StartResponse* response, ::grpc::experimental::ClientUnaryReactor* reactor) override;
       #endif
-      #ifdef GRPC_CALLBACK_API_NONEXPERIMENTAL
-      void Start(::grpc::ClientContext* context, const ::grpc::ByteBuffer* request, ::mavsdk::rpc::follow_me::StartResponse* response, ::grpc::ClientUnaryReactor* reactor) override;
-      #else
-      void Start(::grpc::ClientContext* context, const ::grpc::ByteBuffer* request, ::mavsdk::rpc::follow_me::StartResponse* response, ::grpc::experimental::ClientUnaryReactor* reactor) override;
-      #endif
       void Stop(::grpc::ClientContext* context, const ::mavsdk::rpc::follow_me::StopRequest* request, ::mavsdk::rpc::follow_me::StopResponse* response, std::function<void(::grpc::Status)>) override;
-      void Stop(::grpc::ClientContext* context, const ::grpc::ByteBuffer* request, ::mavsdk::rpc::follow_me::StopResponse* response, std::function<void(::grpc::Status)>) override;
       #ifdef GRPC_CALLBACK_API_NONEXPERIMENTAL
       void Stop(::grpc::ClientContext* context, const ::mavsdk::rpc::follow_me::StopRequest* request, ::mavsdk::rpc::follow_me::StopResponse* response, ::grpc::ClientUnaryReactor* reactor) override;
       #else
       void Stop(::grpc::ClientContext* context, const ::mavsdk::rpc::follow_me::StopRequest* request, ::mavsdk::rpc::follow_me::StopResponse* response, ::grpc::experimental::ClientUnaryReactor* reactor) override;
-      #endif
-      #ifdef GRPC_CALLBACK_API_NONEXPERIMENTAL
-      void Stop(::grpc::ClientContext* context, const ::grpc::ByteBuffer* request, ::mavsdk::rpc::follow_me::StopResponse* response, ::grpc::ClientUnaryReactor* reactor) override;
-      #else
-      void Stop(::grpc::ClientContext* context, const ::grpc::ByteBuffer* request, ::mavsdk::rpc::follow_me::StopResponse* response, ::grpc::experimental::ClientUnaryReactor* reactor) override;
       #endif
      private:
       friend class Stub;
@@ -561,7 +477,7 @@ class FollowMeService final {
       ::grpc::Service::experimental().
     #endif
         MarkMethodCallback(0,
-          new ::grpc_impl::internal::CallbackUnaryHandler< ::mavsdk::rpc::follow_me::GetConfigRequest, ::mavsdk::rpc::follow_me::GetConfigResponse>(
+          new ::grpc::internal::CallbackUnaryHandler< ::mavsdk::rpc::follow_me::GetConfigRequest, ::mavsdk::rpc::follow_me::GetConfigResponse>(
             [this](
     #ifdef GRPC_CALLBACK_API_NONEXPERIMENTAL
                    ::grpc::CallbackServerContext*
@@ -576,7 +492,7 @@ class FollowMeService final {
     #else
       ::grpc::internal::MethodHandler* const handler = ::grpc::Service::experimental().GetHandler(0);
     #endif
-      static_cast<::grpc_impl::internal::CallbackUnaryHandler< ::mavsdk::rpc::follow_me::GetConfigRequest, ::mavsdk::rpc::follow_me::GetConfigResponse>*>(handler)
+      static_cast<::grpc::internal::CallbackUnaryHandler< ::mavsdk::rpc::follow_me::GetConfigRequest, ::mavsdk::rpc::follow_me::GetConfigResponse>*>(handler)
               ->SetMessageAllocator(allocator);
     }
     ~ExperimentalWithCallbackMethod_GetConfig() override {
@@ -608,7 +524,7 @@ class FollowMeService final {
       ::grpc::Service::experimental().
     #endif
         MarkMethodCallback(1,
-          new ::grpc_impl::internal::CallbackUnaryHandler< ::mavsdk::rpc::follow_me::SetConfigRequest, ::mavsdk::rpc::follow_me::SetConfigResponse>(
+          new ::grpc::internal::CallbackUnaryHandler< ::mavsdk::rpc::follow_me::SetConfigRequest, ::mavsdk::rpc::follow_me::SetConfigResponse>(
             [this](
     #ifdef GRPC_CALLBACK_API_NONEXPERIMENTAL
                    ::grpc::CallbackServerContext*
@@ -623,7 +539,7 @@ class FollowMeService final {
     #else
       ::grpc::internal::MethodHandler* const handler = ::grpc::Service::experimental().GetHandler(1);
     #endif
-      static_cast<::grpc_impl::internal::CallbackUnaryHandler< ::mavsdk::rpc::follow_me::SetConfigRequest, ::mavsdk::rpc::follow_me::SetConfigResponse>*>(handler)
+      static_cast<::grpc::internal::CallbackUnaryHandler< ::mavsdk::rpc::follow_me::SetConfigRequest, ::mavsdk::rpc::follow_me::SetConfigResponse>*>(handler)
               ->SetMessageAllocator(allocator);
     }
     ~ExperimentalWithCallbackMethod_SetConfig() override {
@@ -655,7 +571,7 @@ class FollowMeService final {
       ::grpc::Service::experimental().
     #endif
         MarkMethodCallback(2,
-          new ::grpc_impl::internal::CallbackUnaryHandler< ::mavsdk::rpc::follow_me::IsActiveRequest, ::mavsdk::rpc::follow_me::IsActiveResponse>(
+          new ::grpc::internal::CallbackUnaryHandler< ::mavsdk::rpc::follow_me::IsActiveRequest, ::mavsdk::rpc::follow_me::IsActiveResponse>(
             [this](
     #ifdef GRPC_CALLBACK_API_NONEXPERIMENTAL
                    ::grpc::CallbackServerContext*
@@ -670,7 +586,7 @@ class FollowMeService final {
     #else
       ::grpc::internal::MethodHandler* const handler = ::grpc::Service::experimental().GetHandler(2);
     #endif
-      static_cast<::grpc_impl::internal::CallbackUnaryHandler< ::mavsdk::rpc::follow_me::IsActiveRequest, ::mavsdk::rpc::follow_me::IsActiveResponse>*>(handler)
+      static_cast<::grpc::internal::CallbackUnaryHandler< ::mavsdk::rpc::follow_me::IsActiveRequest, ::mavsdk::rpc::follow_me::IsActiveResponse>*>(handler)
               ->SetMessageAllocator(allocator);
     }
     ~ExperimentalWithCallbackMethod_IsActive() override {
@@ -702,7 +618,7 @@ class FollowMeService final {
       ::grpc::Service::experimental().
     #endif
         MarkMethodCallback(3,
-          new ::grpc_impl::internal::CallbackUnaryHandler< ::mavsdk::rpc::follow_me::SetTargetLocationRequest, ::mavsdk::rpc::follow_me::SetTargetLocationResponse>(
+          new ::grpc::internal::CallbackUnaryHandler< ::mavsdk::rpc::follow_me::SetTargetLocationRequest, ::mavsdk::rpc::follow_me::SetTargetLocationResponse>(
             [this](
     #ifdef GRPC_CALLBACK_API_NONEXPERIMENTAL
                    ::grpc::CallbackServerContext*
@@ -717,7 +633,7 @@ class FollowMeService final {
     #else
       ::grpc::internal::MethodHandler* const handler = ::grpc::Service::experimental().GetHandler(3);
     #endif
-      static_cast<::grpc_impl::internal::CallbackUnaryHandler< ::mavsdk::rpc::follow_me::SetTargetLocationRequest, ::mavsdk::rpc::follow_me::SetTargetLocationResponse>*>(handler)
+      static_cast<::grpc::internal::CallbackUnaryHandler< ::mavsdk::rpc::follow_me::SetTargetLocationRequest, ::mavsdk::rpc::follow_me::SetTargetLocationResponse>*>(handler)
               ->SetMessageAllocator(allocator);
     }
     ~ExperimentalWithCallbackMethod_SetTargetLocation() override {
@@ -749,7 +665,7 @@ class FollowMeService final {
       ::grpc::Service::experimental().
     #endif
         MarkMethodCallback(4,
-          new ::grpc_impl::internal::CallbackUnaryHandler< ::mavsdk::rpc::follow_me::GetLastLocationRequest, ::mavsdk::rpc::follow_me::GetLastLocationResponse>(
+          new ::grpc::internal::CallbackUnaryHandler< ::mavsdk::rpc::follow_me::GetLastLocationRequest, ::mavsdk::rpc::follow_me::GetLastLocationResponse>(
             [this](
     #ifdef GRPC_CALLBACK_API_NONEXPERIMENTAL
                    ::grpc::CallbackServerContext*
@@ -764,7 +680,7 @@ class FollowMeService final {
     #else
       ::grpc::internal::MethodHandler* const handler = ::grpc::Service::experimental().GetHandler(4);
     #endif
-      static_cast<::grpc_impl::internal::CallbackUnaryHandler< ::mavsdk::rpc::follow_me::GetLastLocationRequest, ::mavsdk::rpc::follow_me::GetLastLocationResponse>*>(handler)
+      static_cast<::grpc::internal::CallbackUnaryHandler< ::mavsdk::rpc::follow_me::GetLastLocationRequest, ::mavsdk::rpc::follow_me::GetLastLocationResponse>*>(handler)
               ->SetMessageAllocator(allocator);
     }
     ~ExperimentalWithCallbackMethod_GetLastLocation() override {
@@ -796,7 +712,7 @@ class FollowMeService final {
       ::grpc::Service::experimental().
     #endif
         MarkMethodCallback(5,
-          new ::grpc_impl::internal::CallbackUnaryHandler< ::mavsdk::rpc::follow_me::StartRequest, ::mavsdk::rpc::follow_me::StartResponse>(
+          new ::grpc::internal::CallbackUnaryHandler< ::mavsdk::rpc::follow_me::StartRequest, ::mavsdk::rpc::follow_me::StartResponse>(
             [this](
     #ifdef GRPC_CALLBACK_API_NONEXPERIMENTAL
                    ::grpc::CallbackServerContext*
@@ -811,7 +727,7 @@ class FollowMeService final {
     #else
       ::grpc::internal::MethodHandler* const handler = ::grpc::Service::experimental().GetHandler(5);
     #endif
-      static_cast<::grpc_impl::internal::CallbackUnaryHandler< ::mavsdk::rpc::follow_me::StartRequest, ::mavsdk::rpc::follow_me::StartResponse>*>(handler)
+      static_cast<::grpc::internal::CallbackUnaryHandler< ::mavsdk::rpc::follow_me::StartRequest, ::mavsdk::rpc::follow_me::StartResponse>*>(handler)
               ->SetMessageAllocator(allocator);
     }
     ~ExperimentalWithCallbackMethod_Start() override {
@@ -843,7 +759,7 @@ class FollowMeService final {
       ::grpc::Service::experimental().
     #endif
         MarkMethodCallback(6,
-          new ::grpc_impl::internal::CallbackUnaryHandler< ::mavsdk::rpc::follow_me::StopRequest, ::mavsdk::rpc::follow_me::StopResponse>(
+          new ::grpc::internal::CallbackUnaryHandler< ::mavsdk::rpc::follow_me::StopRequest, ::mavsdk::rpc::follow_me::StopResponse>(
             [this](
     #ifdef GRPC_CALLBACK_API_NONEXPERIMENTAL
                    ::grpc::CallbackServerContext*
@@ -858,7 +774,7 @@ class FollowMeService final {
     #else
       ::grpc::internal::MethodHandler* const handler = ::grpc::Service::experimental().GetHandler(6);
     #endif
-      static_cast<::grpc_impl::internal::CallbackUnaryHandler< ::mavsdk::rpc::follow_me::StopRequest, ::mavsdk::rpc::follow_me::StopResponse>*>(handler)
+      static_cast<::grpc::internal::CallbackUnaryHandler< ::mavsdk::rpc::follow_me::StopRequest, ::mavsdk::rpc::follow_me::StopResponse>*>(handler)
               ->SetMessageAllocator(allocator);
     }
     ~ExperimentalWithCallbackMethod_Stop() override {
@@ -1154,7 +1070,7 @@ class FollowMeService final {
       ::grpc::Service::experimental().
     #endif
         MarkMethodRawCallback(0,
-          new ::grpc_impl::internal::CallbackUnaryHandler< ::grpc::ByteBuffer, ::grpc::ByteBuffer>(
+          new ::grpc::internal::CallbackUnaryHandler< ::grpc::ByteBuffer, ::grpc::ByteBuffer>(
             [this](
     #ifdef GRPC_CALLBACK_API_NONEXPERIMENTAL
                    ::grpc::CallbackServerContext*
@@ -1192,7 +1108,7 @@ class FollowMeService final {
       ::grpc::Service::experimental().
     #endif
         MarkMethodRawCallback(1,
-          new ::grpc_impl::internal::CallbackUnaryHandler< ::grpc::ByteBuffer, ::grpc::ByteBuffer>(
+          new ::grpc::internal::CallbackUnaryHandler< ::grpc::ByteBuffer, ::grpc::ByteBuffer>(
             [this](
     #ifdef GRPC_CALLBACK_API_NONEXPERIMENTAL
                    ::grpc::CallbackServerContext*
@@ -1230,7 +1146,7 @@ class FollowMeService final {
       ::grpc::Service::experimental().
     #endif
         MarkMethodRawCallback(2,
-          new ::grpc_impl::internal::CallbackUnaryHandler< ::grpc::ByteBuffer, ::grpc::ByteBuffer>(
+          new ::grpc::internal::CallbackUnaryHandler< ::grpc::ByteBuffer, ::grpc::ByteBuffer>(
             [this](
     #ifdef GRPC_CALLBACK_API_NONEXPERIMENTAL
                    ::grpc::CallbackServerContext*
@@ -1268,7 +1184,7 @@ class FollowMeService final {
       ::grpc::Service::experimental().
     #endif
         MarkMethodRawCallback(3,
-          new ::grpc_impl::internal::CallbackUnaryHandler< ::grpc::ByteBuffer, ::grpc::ByteBuffer>(
+          new ::grpc::internal::CallbackUnaryHandler< ::grpc::ByteBuffer, ::grpc::ByteBuffer>(
             [this](
     #ifdef GRPC_CALLBACK_API_NONEXPERIMENTAL
                    ::grpc::CallbackServerContext*
@@ -1306,7 +1222,7 @@ class FollowMeService final {
       ::grpc::Service::experimental().
     #endif
         MarkMethodRawCallback(4,
-          new ::grpc_impl::internal::CallbackUnaryHandler< ::grpc::ByteBuffer, ::grpc::ByteBuffer>(
+          new ::grpc::internal::CallbackUnaryHandler< ::grpc::ByteBuffer, ::grpc::ByteBuffer>(
             [this](
     #ifdef GRPC_CALLBACK_API_NONEXPERIMENTAL
                    ::grpc::CallbackServerContext*
@@ -1344,7 +1260,7 @@ class FollowMeService final {
       ::grpc::Service::experimental().
     #endif
         MarkMethodRawCallback(5,
-          new ::grpc_impl::internal::CallbackUnaryHandler< ::grpc::ByteBuffer, ::grpc::ByteBuffer>(
+          new ::grpc::internal::CallbackUnaryHandler< ::grpc::ByteBuffer, ::grpc::ByteBuffer>(
             [this](
     #ifdef GRPC_CALLBACK_API_NONEXPERIMENTAL
                    ::grpc::CallbackServerContext*
@@ -1382,7 +1298,7 @@ class FollowMeService final {
       ::grpc::Service::experimental().
     #endif
         MarkMethodRawCallback(6,
-          new ::grpc_impl::internal::CallbackUnaryHandler< ::grpc::ByteBuffer, ::grpc::ByteBuffer>(
+          new ::grpc::internal::CallbackUnaryHandler< ::grpc::ByteBuffer, ::grpc::ByteBuffer>(
             [this](
     #ifdef GRPC_CALLBACK_API_NONEXPERIMENTAL
                    ::grpc::CallbackServerContext*
@@ -1415,7 +1331,14 @@ class FollowMeService final {
    public:
     WithStreamedUnaryMethod_GetConfig() {
       ::grpc::Service::MarkMethodStreamed(0,
-        new ::grpc::internal::StreamedUnaryHandler< ::mavsdk::rpc::follow_me::GetConfigRequest, ::mavsdk::rpc::follow_me::GetConfigResponse>(std::bind(&WithStreamedUnaryMethod_GetConfig<BaseClass>::StreamedGetConfig, this, std::placeholders::_1, std::placeholders::_2)));
+        new ::grpc::internal::StreamedUnaryHandler<
+          ::mavsdk::rpc::follow_me::GetConfigRequest, ::mavsdk::rpc::follow_me::GetConfigResponse>(
+            [this](::grpc::ServerContext* context,
+                   ::grpc::ServerUnaryStreamer<
+                     ::mavsdk::rpc::follow_me::GetConfigRequest, ::mavsdk::rpc::follow_me::GetConfigResponse>* streamer) {
+                       return this->StreamedGetConfig(context,
+                         streamer);
+                  }));
     }
     ~WithStreamedUnaryMethod_GetConfig() override {
       BaseClassMustBeDerivedFromService(this);
@@ -1435,7 +1358,14 @@ class FollowMeService final {
    public:
     WithStreamedUnaryMethod_SetConfig() {
       ::grpc::Service::MarkMethodStreamed(1,
-        new ::grpc::internal::StreamedUnaryHandler< ::mavsdk::rpc::follow_me::SetConfigRequest, ::mavsdk::rpc::follow_me::SetConfigResponse>(std::bind(&WithStreamedUnaryMethod_SetConfig<BaseClass>::StreamedSetConfig, this, std::placeholders::_1, std::placeholders::_2)));
+        new ::grpc::internal::StreamedUnaryHandler<
+          ::mavsdk::rpc::follow_me::SetConfigRequest, ::mavsdk::rpc::follow_me::SetConfigResponse>(
+            [this](::grpc::ServerContext* context,
+                   ::grpc::ServerUnaryStreamer<
+                     ::mavsdk::rpc::follow_me::SetConfigRequest, ::mavsdk::rpc::follow_me::SetConfigResponse>* streamer) {
+                       return this->StreamedSetConfig(context,
+                         streamer);
+                  }));
     }
     ~WithStreamedUnaryMethod_SetConfig() override {
       BaseClassMustBeDerivedFromService(this);
@@ -1455,7 +1385,14 @@ class FollowMeService final {
    public:
     WithStreamedUnaryMethod_IsActive() {
       ::grpc::Service::MarkMethodStreamed(2,
-        new ::grpc::internal::StreamedUnaryHandler< ::mavsdk::rpc::follow_me::IsActiveRequest, ::mavsdk::rpc::follow_me::IsActiveResponse>(std::bind(&WithStreamedUnaryMethod_IsActive<BaseClass>::StreamedIsActive, this, std::placeholders::_1, std::placeholders::_2)));
+        new ::grpc::internal::StreamedUnaryHandler<
+          ::mavsdk::rpc::follow_me::IsActiveRequest, ::mavsdk::rpc::follow_me::IsActiveResponse>(
+            [this](::grpc::ServerContext* context,
+                   ::grpc::ServerUnaryStreamer<
+                     ::mavsdk::rpc::follow_me::IsActiveRequest, ::mavsdk::rpc::follow_me::IsActiveResponse>* streamer) {
+                       return this->StreamedIsActive(context,
+                         streamer);
+                  }));
     }
     ~WithStreamedUnaryMethod_IsActive() override {
       BaseClassMustBeDerivedFromService(this);
@@ -1475,7 +1412,14 @@ class FollowMeService final {
    public:
     WithStreamedUnaryMethod_SetTargetLocation() {
       ::grpc::Service::MarkMethodStreamed(3,
-        new ::grpc::internal::StreamedUnaryHandler< ::mavsdk::rpc::follow_me::SetTargetLocationRequest, ::mavsdk::rpc::follow_me::SetTargetLocationResponse>(std::bind(&WithStreamedUnaryMethod_SetTargetLocation<BaseClass>::StreamedSetTargetLocation, this, std::placeholders::_1, std::placeholders::_2)));
+        new ::grpc::internal::StreamedUnaryHandler<
+          ::mavsdk::rpc::follow_me::SetTargetLocationRequest, ::mavsdk::rpc::follow_me::SetTargetLocationResponse>(
+            [this](::grpc::ServerContext* context,
+                   ::grpc::ServerUnaryStreamer<
+                     ::mavsdk::rpc::follow_me::SetTargetLocationRequest, ::mavsdk::rpc::follow_me::SetTargetLocationResponse>* streamer) {
+                       return this->StreamedSetTargetLocation(context,
+                         streamer);
+                  }));
     }
     ~WithStreamedUnaryMethod_SetTargetLocation() override {
       BaseClassMustBeDerivedFromService(this);
@@ -1495,7 +1439,14 @@ class FollowMeService final {
    public:
     WithStreamedUnaryMethod_GetLastLocation() {
       ::grpc::Service::MarkMethodStreamed(4,
-        new ::grpc::internal::StreamedUnaryHandler< ::mavsdk::rpc::follow_me::GetLastLocationRequest, ::mavsdk::rpc::follow_me::GetLastLocationResponse>(std::bind(&WithStreamedUnaryMethod_GetLastLocation<BaseClass>::StreamedGetLastLocation, this, std::placeholders::_1, std::placeholders::_2)));
+        new ::grpc::internal::StreamedUnaryHandler<
+          ::mavsdk::rpc::follow_me::GetLastLocationRequest, ::mavsdk::rpc::follow_me::GetLastLocationResponse>(
+            [this](::grpc::ServerContext* context,
+                   ::grpc::ServerUnaryStreamer<
+                     ::mavsdk::rpc::follow_me::GetLastLocationRequest, ::mavsdk::rpc::follow_me::GetLastLocationResponse>* streamer) {
+                       return this->StreamedGetLastLocation(context,
+                         streamer);
+                  }));
     }
     ~WithStreamedUnaryMethod_GetLastLocation() override {
       BaseClassMustBeDerivedFromService(this);
@@ -1515,7 +1466,14 @@ class FollowMeService final {
    public:
     WithStreamedUnaryMethod_Start() {
       ::grpc::Service::MarkMethodStreamed(5,
-        new ::grpc::internal::StreamedUnaryHandler< ::mavsdk::rpc::follow_me::StartRequest, ::mavsdk::rpc::follow_me::StartResponse>(std::bind(&WithStreamedUnaryMethod_Start<BaseClass>::StreamedStart, this, std::placeholders::_1, std::placeholders::_2)));
+        new ::grpc::internal::StreamedUnaryHandler<
+          ::mavsdk::rpc::follow_me::StartRequest, ::mavsdk::rpc::follow_me::StartResponse>(
+            [this](::grpc::ServerContext* context,
+                   ::grpc::ServerUnaryStreamer<
+                     ::mavsdk::rpc::follow_me::StartRequest, ::mavsdk::rpc::follow_me::StartResponse>* streamer) {
+                       return this->StreamedStart(context,
+                         streamer);
+                  }));
     }
     ~WithStreamedUnaryMethod_Start() override {
       BaseClassMustBeDerivedFromService(this);
@@ -1535,7 +1493,14 @@ class FollowMeService final {
    public:
     WithStreamedUnaryMethod_Stop() {
       ::grpc::Service::MarkMethodStreamed(6,
-        new ::grpc::internal::StreamedUnaryHandler< ::mavsdk::rpc::follow_me::StopRequest, ::mavsdk::rpc::follow_me::StopResponse>(std::bind(&WithStreamedUnaryMethod_Stop<BaseClass>::StreamedStop, this, std::placeholders::_1, std::placeholders::_2)));
+        new ::grpc::internal::StreamedUnaryHandler<
+          ::mavsdk::rpc::follow_me::StopRequest, ::mavsdk::rpc::follow_me::StopResponse>(
+            [this](::grpc::ServerContext* context,
+                   ::grpc::ServerUnaryStreamer<
+                     ::mavsdk::rpc::follow_me::StopRequest, ::mavsdk::rpc::follow_me::StopResponse>* streamer) {
+                       return this->StreamedStop(context,
+                         streamer);
+                  }));
     }
     ~WithStreamedUnaryMethod_Stop() override {
       BaseClassMustBeDerivedFromService(this);

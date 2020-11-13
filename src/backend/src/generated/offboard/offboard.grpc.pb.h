@@ -142,32 +142,20 @@ class OffboardService final {
       //
       // Start offboard control.
       virtual void Start(::grpc::ClientContext* context, const ::mavsdk::rpc::offboard::StartRequest* request, ::mavsdk::rpc::offboard::StartResponse* response, std::function<void(::grpc::Status)>) = 0;
-      virtual void Start(::grpc::ClientContext* context, const ::grpc::ByteBuffer* request, ::mavsdk::rpc::offboard::StartResponse* response, std::function<void(::grpc::Status)>) = 0;
       #ifdef GRPC_CALLBACK_API_NONEXPERIMENTAL
       virtual void Start(::grpc::ClientContext* context, const ::mavsdk::rpc::offboard::StartRequest* request, ::mavsdk::rpc::offboard::StartResponse* response, ::grpc::ClientUnaryReactor* reactor) = 0;
       #else
       virtual void Start(::grpc::ClientContext* context, const ::mavsdk::rpc::offboard::StartRequest* request, ::mavsdk::rpc::offboard::StartResponse* response, ::grpc::experimental::ClientUnaryReactor* reactor) = 0;
-      #endif
-      #ifdef GRPC_CALLBACK_API_NONEXPERIMENTAL
-      virtual void Start(::grpc::ClientContext* context, const ::grpc::ByteBuffer* request, ::mavsdk::rpc::offboard::StartResponse* response, ::grpc::ClientUnaryReactor* reactor) = 0;
-      #else
-      virtual void Start(::grpc::ClientContext* context, const ::grpc::ByteBuffer* request, ::mavsdk::rpc::offboard::StartResponse* response, ::grpc::experimental::ClientUnaryReactor* reactor) = 0;
       #endif
       //
       // Stop offboard control.
       //
       // The vehicle will be put into Hold mode: https://docs.px4.io/en/flight_modes/hold.html
       virtual void Stop(::grpc::ClientContext* context, const ::mavsdk::rpc::offboard::StopRequest* request, ::mavsdk::rpc::offboard::StopResponse* response, std::function<void(::grpc::Status)>) = 0;
-      virtual void Stop(::grpc::ClientContext* context, const ::grpc::ByteBuffer* request, ::mavsdk::rpc::offboard::StopResponse* response, std::function<void(::grpc::Status)>) = 0;
       #ifdef GRPC_CALLBACK_API_NONEXPERIMENTAL
       virtual void Stop(::grpc::ClientContext* context, const ::mavsdk::rpc::offboard::StopRequest* request, ::mavsdk::rpc::offboard::StopResponse* response, ::grpc::ClientUnaryReactor* reactor) = 0;
       #else
       virtual void Stop(::grpc::ClientContext* context, const ::mavsdk::rpc::offboard::StopRequest* request, ::mavsdk::rpc::offboard::StopResponse* response, ::grpc::experimental::ClientUnaryReactor* reactor) = 0;
-      #endif
-      #ifdef GRPC_CALLBACK_API_NONEXPERIMENTAL
-      virtual void Stop(::grpc::ClientContext* context, const ::grpc::ByteBuffer* request, ::mavsdk::rpc::offboard::StopResponse* response, ::grpc::ClientUnaryReactor* reactor) = 0;
-      #else
-      virtual void Stop(::grpc::ClientContext* context, const ::grpc::ByteBuffer* request, ::mavsdk::rpc::offboard::StopResponse* response, ::grpc::experimental::ClientUnaryReactor* reactor) = 0;
       #endif
       //
       // Check if offboard control is active.
@@ -175,30 +163,18 @@ class OffboardService final {
       // True means that the vehicle is in offboard mode and we are actively sending
       // setpoints.
       virtual void IsActive(::grpc::ClientContext* context, const ::mavsdk::rpc::offboard::IsActiveRequest* request, ::mavsdk::rpc::offboard::IsActiveResponse* response, std::function<void(::grpc::Status)>) = 0;
-      virtual void IsActive(::grpc::ClientContext* context, const ::grpc::ByteBuffer* request, ::mavsdk::rpc::offboard::IsActiveResponse* response, std::function<void(::grpc::Status)>) = 0;
       #ifdef GRPC_CALLBACK_API_NONEXPERIMENTAL
       virtual void IsActive(::grpc::ClientContext* context, const ::mavsdk::rpc::offboard::IsActiveRequest* request, ::mavsdk::rpc::offboard::IsActiveResponse* response, ::grpc::ClientUnaryReactor* reactor) = 0;
       #else
       virtual void IsActive(::grpc::ClientContext* context, const ::mavsdk::rpc::offboard::IsActiveRequest* request, ::mavsdk::rpc::offboard::IsActiveResponse* response, ::grpc::experimental::ClientUnaryReactor* reactor) = 0;
       #endif
-      #ifdef GRPC_CALLBACK_API_NONEXPERIMENTAL
-      virtual void IsActive(::grpc::ClientContext* context, const ::grpc::ByteBuffer* request, ::mavsdk::rpc::offboard::IsActiveResponse* response, ::grpc::ClientUnaryReactor* reactor) = 0;
-      #else
-      virtual void IsActive(::grpc::ClientContext* context, const ::grpc::ByteBuffer* request, ::mavsdk::rpc::offboard::IsActiveResponse* response, ::grpc::experimental::ClientUnaryReactor* reactor) = 0;
-      #endif
       //
       // Set the attitude in terms of roll, pitch and yaw in degrees with thrust.
       virtual void SetAttitude(::grpc::ClientContext* context, const ::mavsdk::rpc::offboard::SetAttitudeRequest* request, ::mavsdk::rpc::offboard::SetAttitudeResponse* response, std::function<void(::grpc::Status)>) = 0;
-      virtual void SetAttitude(::grpc::ClientContext* context, const ::grpc::ByteBuffer* request, ::mavsdk::rpc::offboard::SetAttitudeResponse* response, std::function<void(::grpc::Status)>) = 0;
       #ifdef GRPC_CALLBACK_API_NONEXPERIMENTAL
       virtual void SetAttitude(::grpc::ClientContext* context, const ::mavsdk::rpc::offboard::SetAttitudeRequest* request, ::mavsdk::rpc::offboard::SetAttitudeResponse* response, ::grpc::ClientUnaryReactor* reactor) = 0;
       #else
       virtual void SetAttitude(::grpc::ClientContext* context, const ::mavsdk::rpc::offboard::SetAttitudeRequest* request, ::mavsdk::rpc::offboard::SetAttitudeResponse* response, ::grpc::experimental::ClientUnaryReactor* reactor) = 0;
-      #endif
-      #ifdef GRPC_CALLBACK_API_NONEXPERIMENTAL
-      virtual void SetAttitude(::grpc::ClientContext* context, const ::grpc::ByteBuffer* request, ::mavsdk::rpc::offboard::SetAttitudeResponse* response, ::grpc::ClientUnaryReactor* reactor) = 0;
-      #else
-      virtual void SetAttitude(::grpc::ClientContext* context, const ::grpc::ByteBuffer* request, ::mavsdk::rpc::offboard::SetAttitudeResponse* response, ::grpc::experimental::ClientUnaryReactor* reactor) = 0;
       #endif
       //
       // Set direct actuator control values to groups #0 and #1.
@@ -206,72 +182,42 @@ class OffboardService final {
       // First 8 controls will go to control group 0, the following 8 controls to control group 1 (if
       // actuator_control.num_controls more than 8).
       virtual void SetActuatorControl(::grpc::ClientContext* context, const ::mavsdk::rpc::offboard::SetActuatorControlRequest* request, ::mavsdk::rpc::offboard::SetActuatorControlResponse* response, std::function<void(::grpc::Status)>) = 0;
-      virtual void SetActuatorControl(::grpc::ClientContext* context, const ::grpc::ByteBuffer* request, ::mavsdk::rpc::offboard::SetActuatorControlResponse* response, std::function<void(::grpc::Status)>) = 0;
       #ifdef GRPC_CALLBACK_API_NONEXPERIMENTAL
       virtual void SetActuatorControl(::grpc::ClientContext* context, const ::mavsdk::rpc::offboard::SetActuatorControlRequest* request, ::mavsdk::rpc::offboard::SetActuatorControlResponse* response, ::grpc::ClientUnaryReactor* reactor) = 0;
       #else
       virtual void SetActuatorControl(::grpc::ClientContext* context, const ::mavsdk::rpc::offboard::SetActuatorControlRequest* request, ::mavsdk::rpc::offboard::SetActuatorControlResponse* response, ::grpc::experimental::ClientUnaryReactor* reactor) = 0;
       #endif
-      #ifdef GRPC_CALLBACK_API_NONEXPERIMENTAL
-      virtual void SetActuatorControl(::grpc::ClientContext* context, const ::grpc::ByteBuffer* request, ::mavsdk::rpc::offboard::SetActuatorControlResponse* response, ::grpc::ClientUnaryReactor* reactor) = 0;
-      #else
-      virtual void SetActuatorControl(::grpc::ClientContext* context, const ::grpc::ByteBuffer* request, ::mavsdk::rpc::offboard::SetActuatorControlResponse* response, ::grpc::experimental::ClientUnaryReactor* reactor) = 0;
-      #endif
       //
       // Set the attitude rate in terms of pitch, roll and yaw angular rate along with thrust.
       virtual void SetAttitudeRate(::grpc::ClientContext* context, const ::mavsdk::rpc::offboard::SetAttitudeRateRequest* request, ::mavsdk::rpc::offboard::SetAttitudeRateResponse* response, std::function<void(::grpc::Status)>) = 0;
-      virtual void SetAttitudeRate(::grpc::ClientContext* context, const ::grpc::ByteBuffer* request, ::mavsdk::rpc::offboard::SetAttitudeRateResponse* response, std::function<void(::grpc::Status)>) = 0;
       #ifdef GRPC_CALLBACK_API_NONEXPERIMENTAL
       virtual void SetAttitudeRate(::grpc::ClientContext* context, const ::mavsdk::rpc::offboard::SetAttitudeRateRequest* request, ::mavsdk::rpc::offboard::SetAttitudeRateResponse* response, ::grpc::ClientUnaryReactor* reactor) = 0;
       #else
       virtual void SetAttitudeRate(::grpc::ClientContext* context, const ::mavsdk::rpc::offboard::SetAttitudeRateRequest* request, ::mavsdk::rpc::offboard::SetAttitudeRateResponse* response, ::grpc::experimental::ClientUnaryReactor* reactor) = 0;
       #endif
-      #ifdef GRPC_CALLBACK_API_NONEXPERIMENTAL
-      virtual void SetAttitudeRate(::grpc::ClientContext* context, const ::grpc::ByteBuffer* request, ::mavsdk::rpc::offboard::SetAttitudeRateResponse* response, ::grpc::ClientUnaryReactor* reactor) = 0;
-      #else
-      virtual void SetAttitudeRate(::grpc::ClientContext* context, const ::grpc::ByteBuffer* request, ::mavsdk::rpc::offboard::SetAttitudeRateResponse* response, ::grpc::experimental::ClientUnaryReactor* reactor) = 0;
-      #endif
       //
       // Set the position in NED coordinates and yaw.
       virtual void SetPositionNed(::grpc::ClientContext* context, const ::mavsdk::rpc::offboard::SetPositionNedRequest* request, ::mavsdk::rpc::offboard::SetPositionNedResponse* response, std::function<void(::grpc::Status)>) = 0;
-      virtual void SetPositionNed(::grpc::ClientContext* context, const ::grpc::ByteBuffer* request, ::mavsdk::rpc::offboard::SetPositionNedResponse* response, std::function<void(::grpc::Status)>) = 0;
       #ifdef GRPC_CALLBACK_API_NONEXPERIMENTAL
       virtual void SetPositionNed(::grpc::ClientContext* context, const ::mavsdk::rpc::offboard::SetPositionNedRequest* request, ::mavsdk::rpc::offboard::SetPositionNedResponse* response, ::grpc::ClientUnaryReactor* reactor) = 0;
       #else
       virtual void SetPositionNed(::grpc::ClientContext* context, const ::mavsdk::rpc::offboard::SetPositionNedRequest* request, ::mavsdk::rpc::offboard::SetPositionNedResponse* response, ::grpc::experimental::ClientUnaryReactor* reactor) = 0;
       #endif
-      #ifdef GRPC_CALLBACK_API_NONEXPERIMENTAL
-      virtual void SetPositionNed(::grpc::ClientContext* context, const ::grpc::ByteBuffer* request, ::mavsdk::rpc::offboard::SetPositionNedResponse* response, ::grpc::ClientUnaryReactor* reactor) = 0;
-      #else
-      virtual void SetPositionNed(::grpc::ClientContext* context, const ::grpc::ByteBuffer* request, ::mavsdk::rpc::offboard::SetPositionNedResponse* response, ::grpc::experimental::ClientUnaryReactor* reactor) = 0;
-      #endif
       //
       // Set the velocity in body coordinates and yaw angular rate. Not available for fixed-wing aircraft.
       virtual void SetVelocityBody(::grpc::ClientContext* context, const ::mavsdk::rpc::offboard::SetVelocityBodyRequest* request, ::mavsdk::rpc::offboard::SetVelocityBodyResponse* response, std::function<void(::grpc::Status)>) = 0;
-      virtual void SetVelocityBody(::grpc::ClientContext* context, const ::grpc::ByteBuffer* request, ::mavsdk::rpc::offboard::SetVelocityBodyResponse* response, std::function<void(::grpc::Status)>) = 0;
       #ifdef GRPC_CALLBACK_API_NONEXPERIMENTAL
       virtual void SetVelocityBody(::grpc::ClientContext* context, const ::mavsdk::rpc::offboard::SetVelocityBodyRequest* request, ::mavsdk::rpc::offboard::SetVelocityBodyResponse* response, ::grpc::ClientUnaryReactor* reactor) = 0;
       #else
       virtual void SetVelocityBody(::grpc::ClientContext* context, const ::mavsdk::rpc::offboard::SetVelocityBodyRequest* request, ::mavsdk::rpc::offboard::SetVelocityBodyResponse* response, ::grpc::experimental::ClientUnaryReactor* reactor) = 0;
       #endif
-      #ifdef GRPC_CALLBACK_API_NONEXPERIMENTAL
-      virtual void SetVelocityBody(::grpc::ClientContext* context, const ::grpc::ByteBuffer* request, ::mavsdk::rpc::offboard::SetVelocityBodyResponse* response, ::grpc::ClientUnaryReactor* reactor) = 0;
-      #else
-      virtual void SetVelocityBody(::grpc::ClientContext* context, const ::grpc::ByteBuffer* request, ::mavsdk::rpc::offboard::SetVelocityBodyResponse* response, ::grpc::experimental::ClientUnaryReactor* reactor) = 0;
-      #endif
       //
       // Set the velocity in NED coordinates and yaw. Not available for fixed-wing aircraft.
       virtual void SetVelocityNed(::grpc::ClientContext* context, const ::mavsdk::rpc::offboard::SetVelocityNedRequest* request, ::mavsdk::rpc::offboard::SetVelocityNedResponse* response, std::function<void(::grpc::Status)>) = 0;
-      virtual void SetVelocityNed(::grpc::ClientContext* context, const ::grpc::ByteBuffer* request, ::mavsdk::rpc::offboard::SetVelocityNedResponse* response, std::function<void(::grpc::Status)>) = 0;
       #ifdef GRPC_CALLBACK_API_NONEXPERIMENTAL
       virtual void SetVelocityNed(::grpc::ClientContext* context, const ::mavsdk::rpc::offboard::SetVelocityNedRequest* request, ::mavsdk::rpc::offboard::SetVelocityNedResponse* response, ::grpc::ClientUnaryReactor* reactor) = 0;
       #else
       virtual void SetVelocityNed(::grpc::ClientContext* context, const ::mavsdk::rpc::offboard::SetVelocityNedRequest* request, ::mavsdk::rpc::offboard::SetVelocityNedResponse* response, ::grpc::experimental::ClientUnaryReactor* reactor) = 0;
-      #endif
-      #ifdef GRPC_CALLBACK_API_NONEXPERIMENTAL
-      virtual void SetVelocityNed(::grpc::ClientContext* context, const ::grpc::ByteBuffer* request, ::mavsdk::rpc::offboard::SetVelocityNedResponse* response, ::grpc::ClientUnaryReactor* reactor) = 0;
-      #else
-      virtual void SetVelocityNed(::grpc::ClientContext* context, const ::grpc::ByteBuffer* request, ::mavsdk::rpc::offboard::SetVelocityNedResponse* response, ::grpc::experimental::ClientUnaryReactor* reactor) = 0;
       #endif
     };
     #ifdef GRPC_CALLBACK_API_NONEXPERIMENTAL
@@ -371,112 +317,58 @@ class OffboardService final {
       public StubInterface::experimental_async_interface {
      public:
       void Start(::grpc::ClientContext* context, const ::mavsdk::rpc::offboard::StartRequest* request, ::mavsdk::rpc::offboard::StartResponse* response, std::function<void(::grpc::Status)>) override;
-      void Start(::grpc::ClientContext* context, const ::grpc::ByteBuffer* request, ::mavsdk::rpc::offboard::StartResponse* response, std::function<void(::grpc::Status)>) override;
       #ifdef GRPC_CALLBACK_API_NONEXPERIMENTAL
       void Start(::grpc::ClientContext* context, const ::mavsdk::rpc::offboard::StartRequest* request, ::mavsdk::rpc::offboard::StartResponse* response, ::grpc::ClientUnaryReactor* reactor) override;
       #else
       void Start(::grpc::ClientContext* context, const ::mavsdk::rpc::offboard::StartRequest* request, ::mavsdk::rpc::offboard::StartResponse* response, ::grpc::experimental::ClientUnaryReactor* reactor) override;
       #endif
-      #ifdef GRPC_CALLBACK_API_NONEXPERIMENTAL
-      void Start(::grpc::ClientContext* context, const ::grpc::ByteBuffer* request, ::mavsdk::rpc::offboard::StartResponse* response, ::grpc::ClientUnaryReactor* reactor) override;
-      #else
-      void Start(::grpc::ClientContext* context, const ::grpc::ByteBuffer* request, ::mavsdk::rpc::offboard::StartResponse* response, ::grpc::experimental::ClientUnaryReactor* reactor) override;
-      #endif
       void Stop(::grpc::ClientContext* context, const ::mavsdk::rpc::offboard::StopRequest* request, ::mavsdk::rpc::offboard::StopResponse* response, std::function<void(::grpc::Status)>) override;
-      void Stop(::grpc::ClientContext* context, const ::grpc::ByteBuffer* request, ::mavsdk::rpc::offboard::StopResponse* response, std::function<void(::grpc::Status)>) override;
       #ifdef GRPC_CALLBACK_API_NONEXPERIMENTAL
       void Stop(::grpc::ClientContext* context, const ::mavsdk::rpc::offboard::StopRequest* request, ::mavsdk::rpc::offboard::StopResponse* response, ::grpc::ClientUnaryReactor* reactor) override;
       #else
       void Stop(::grpc::ClientContext* context, const ::mavsdk::rpc::offboard::StopRequest* request, ::mavsdk::rpc::offboard::StopResponse* response, ::grpc::experimental::ClientUnaryReactor* reactor) override;
       #endif
-      #ifdef GRPC_CALLBACK_API_NONEXPERIMENTAL
-      void Stop(::grpc::ClientContext* context, const ::grpc::ByteBuffer* request, ::mavsdk::rpc::offboard::StopResponse* response, ::grpc::ClientUnaryReactor* reactor) override;
-      #else
-      void Stop(::grpc::ClientContext* context, const ::grpc::ByteBuffer* request, ::mavsdk::rpc::offboard::StopResponse* response, ::grpc::experimental::ClientUnaryReactor* reactor) override;
-      #endif
       void IsActive(::grpc::ClientContext* context, const ::mavsdk::rpc::offboard::IsActiveRequest* request, ::mavsdk::rpc::offboard::IsActiveResponse* response, std::function<void(::grpc::Status)>) override;
-      void IsActive(::grpc::ClientContext* context, const ::grpc::ByteBuffer* request, ::mavsdk::rpc::offboard::IsActiveResponse* response, std::function<void(::grpc::Status)>) override;
       #ifdef GRPC_CALLBACK_API_NONEXPERIMENTAL
       void IsActive(::grpc::ClientContext* context, const ::mavsdk::rpc::offboard::IsActiveRequest* request, ::mavsdk::rpc::offboard::IsActiveResponse* response, ::grpc::ClientUnaryReactor* reactor) override;
       #else
       void IsActive(::grpc::ClientContext* context, const ::mavsdk::rpc::offboard::IsActiveRequest* request, ::mavsdk::rpc::offboard::IsActiveResponse* response, ::grpc::experimental::ClientUnaryReactor* reactor) override;
       #endif
-      #ifdef GRPC_CALLBACK_API_NONEXPERIMENTAL
-      void IsActive(::grpc::ClientContext* context, const ::grpc::ByteBuffer* request, ::mavsdk::rpc::offboard::IsActiveResponse* response, ::grpc::ClientUnaryReactor* reactor) override;
-      #else
-      void IsActive(::grpc::ClientContext* context, const ::grpc::ByteBuffer* request, ::mavsdk::rpc::offboard::IsActiveResponse* response, ::grpc::experimental::ClientUnaryReactor* reactor) override;
-      #endif
       void SetAttitude(::grpc::ClientContext* context, const ::mavsdk::rpc::offboard::SetAttitudeRequest* request, ::mavsdk::rpc::offboard::SetAttitudeResponse* response, std::function<void(::grpc::Status)>) override;
-      void SetAttitude(::grpc::ClientContext* context, const ::grpc::ByteBuffer* request, ::mavsdk::rpc::offboard::SetAttitudeResponse* response, std::function<void(::grpc::Status)>) override;
       #ifdef GRPC_CALLBACK_API_NONEXPERIMENTAL
       void SetAttitude(::grpc::ClientContext* context, const ::mavsdk::rpc::offboard::SetAttitudeRequest* request, ::mavsdk::rpc::offboard::SetAttitudeResponse* response, ::grpc::ClientUnaryReactor* reactor) override;
       #else
       void SetAttitude(::grpc::ClientContext* context, const ::mavsdk::rpc::offboard::SetAttitudeRequest* request, ::mavsdk::rpc::offboard::SetAttitudeResponse* response, ::grpc::experimental::ClientUnaryReactor* reactor) override;
       #endif
-      #ifdef GRPC_CALLBACK_API_NONEXPERIMENTAL
-      void SetAttitude(::grpc::ClientContext* context, const ::grpc::ByteBuffer* request, ::mavsdk::rpc::offboard::SetAttitudeResponse* response, ::grpc::ClientUnaryReactor* reactor) override;
-      #else
-      void SetAttitude(::grpc::ClientContext* context, const ::grpc::ByteBuffer* request, ::mavsdk::rpc::offboard::SetAttitudeResponse* response, ::grpc::experimental::ClientUnaryReactor* reactor) override;
-      #endif
       void SetActuatorControl(::grpc::ClientContext* context, const ::mavsdk::rpc::offboard::SetActuatorControlRequest* request, ::mavsdk::rpc::offboard::SetActuatorControlResponse* response, std::function<void(::grpc::Status)>) override;
-      void SetActuatorControl(::grpc::ClientContext* context, const ::grpc::ByteBuffer* request, ::mavsdk::rpc::offboard::SetActuatorControlResponse* response, std::function<void(::grpc::Status)>) override;
       #ifdef GRPC_CALLBACK_API_NONEXPERIMENTAL
       void SetActuatorControl(::grpc::ClientContext* context, const ::mavsdk::rpc::offboard::SetActuatorControlRequest* request, ::mavsdk::rpc::offboard::SetActuatorControlResponse* response, ::grpc::ClientUnaryReactor* reactor) override;
       #else
       void SetActuatorControl(::grpc::ClientContext* context, const ::mavsdk::rpc::offboard::SetActuatorControlRequest* request, ::mavsdk::rpc::offboard::SetActuatorControlResponse* response, ::grpc::experimental::ClientUnaryReactor* reactor) override;
       #endif
-      #ifdef GRPC_CALLBACK_API_NONEXPERIMENTAL
-      void SetActuatorControl(::grpc::ClientContext* context, const ::grpc::ByteBuffer* request, ::mavsdk::rpc::offboard::SetActuatorControlResponse* response, ::grpc::ClientUnaryReactor* reactor) override;
-      #else
-      void SetActuatorControl(::grpc::ClientContext* context, const ::grpc::ByteBuffer* request, ::mavsdk::rpc::offboard::SetActuatorControlResponse* response, ::grpc::experimental::ClientUnaryReactor* reactor) override;
-      #endif
       void SetAttitudeRate(::grpc::ClientContext* context, const ::mavsdk::rpc::offboard::SetAttitudeRateRequest* request, ::mavsdk::rpc::offboard::SetAttitudeRateResponse* response, std::function<void(::grpc::Status)>) override;
-      void SetAttitudeRate(::grpc::ClientContext* context, const ::grpc::ByteBuffer* request, ::mavsdk::rpc::offboard::SetAttitudeRateResponse* response, std::function<void(::grpc::Status)>) override;
       #ifdef GRPC_CALLBACK_API_NONEXPERIMENTAL
       void SetAttitudeRate(::grpc::ClientContext* context, const ::mavsdk::rpc::offboard::SetAttitudeRateRequest* request, ::mavsdk::rpc::offboard::SetAttitudeRateResponse* response, ::grpc::ClientUnaryReactor* reactor) override;
       #else
       void SetAttitudeRate(::grpc::ClientContext* context, const ::mavsdk::rpc::offboard::SetAttitudeRateRequest* request, ::mavsdk::rpc::offboard::SetAttitudeRateResponse* response, ::grpc::experimental::ClientUnaryReactor* reactor) override;
       #endif
-      #ifdef GRPC_CALLBACK_API_NONEXPERIMENTAL
-      void SetAttitudeRate(::grpc::ClientContext* context, const ::grpc::ByteBuffer* request, ::mavsdk::rpc::offboard::SetAttitudeRateResponse* response, ::grpc::ClientUnaryReactor* reactor) override;
-      #else
-      void SetAttitudeRate(::grpc::ClientContext* context, const ::grpc::ByteBuffer* request, ::mavsdk::rpc::offboard::SetAttitudeRateResponse* response, ::grpc::experimental::ClientUnaryReactor* reactor) override;
-      #endif
       void SetPositionNed(::grpc::ClientContext* context, const ::mavsdk::rpc::offboard::SetPositionNedRequest* request, ::mavsdk::rpc::offboard::SetPositionNedResponse* response, std::function<void(::grpc::Status)>) override;
-      void SetPositionNed(::grpc::ClientContext* context, const ::grpc::ByteBuffer* request, ::mavsdk::rpc::offboard::SetPositionNedResponse* response, std::function<void(::grpc::Status)>) override;
       #ifdef GRPC_CALLBACK_API_NONEXPERIMENTAL
       void SetPositionNed(::grpc::ClientContext* context, const ::mavsdk::rpc::offboard::SetPositionNedRequest* request, ::mavsdk::rpc::offboard::SetPositionNedResponse* response, ::grpc::ClientUnaryReactor* reactor) override;
       #else
       void SetPositionNed(::grpc::ClientContext* context, const ::mavsdk::rpc::offboard::SetPositionNedRequest* request, ::mavsdk::rpc::offboard::SetPositionNedResponse* response, ::grpc::experimental::ClientUnaryReactor* reactor) override;
       #endif
-      #ifdef GRPC_CALLBACK_API_NONEXPERIMENTAL
-      void SetPositionNed(::grpc::ClientContext* context, const ::grpc::ByteBuffer* request, ::mavsdk::rpc::offboard::SetPositionNedResponse* response, ::grpc::ClientUnaryReactor* reactor) override;
-      #else
-      void SetPositionNed(::grpc::ClientContext* context, const ::grpc::ByteBuffer* request, ::mavsdk::rpc::offboard::SetPositionNedResponse* response, ::grpc::experimental::ClientUnaryReactor* reactor) override;
-      #endif
       void SetVelocityBody(::grpc::ClientContext* context, const ::mavsdk::rpc::offboard::SetVelocityBodyRequest* request, ::mavsdk::rpc::offboard::SetVelocityBodyResponse* response, std::function<void(::grpc::Status)>) override;
-      void SetVelocityBody(::grpc::ClientContext* context, const ::grpc::ByteBuffer* request, ::mavsdk::rpc::offboard::SetVelocityBodyResponse* response, std::function<void(::grpc::Status)>) override;
       #ifdef GRPC_CALLBACK_API_NONEXPERIMENTAL
       void SetVelocityBody(::grpc::ClientContext* context, const ::mavsdk::rpc::offboard::SetVelocityBodyRequest* request, ::mavsdk::rpc::offboard::SetVelocityBodyResponse* response, ::grpc::ClientUnaryReactor* reactor) override;
       #else
       void SetVelocityBody(::grpc::ClientContext* context, const ::mavsdk::rpc::offboard::SetVelocityBodyRequest* request, ::mavsdk::rpc::offboard::SetVelocityBodyResponse* response, ::grpc::experimental::ClientUnaryReactor* reactor) override;
       #endif
-      #ifdef GRPC_CALLBACK_API_NONEXPERIMENTAL
-      void SetVelocityBody(::grpc::ClientContext* context, const ::grpc::ByteBuffer* request, ::mavsdk::rpc::offboard::SetVelocityBodyResponse* response, ::grpc::ClientUnaryReactor* reactor) override;
-      #else
-      void SetVelocityBody(::grpc::ClientContext* context, const ::grpc::ByteBuffer* request, ::mavsdk::rpc::offboard::SetVelocityBodyResponse* response, ::grpc::experimental::ClientUnaryReactor* reactor) override;
-      #endif
       void SetVelocityNed(::grpc::ClientContext* context, const ::mavsdk::rpc::offboard::SetVelocityNedRequest* request, ::mavsdk::rpc::offboard::SetVelocityNedResponse* response, std::function<void(::grpc::Status)>) override;
-      void SetVelocityNed(::grpc::ClientContext* context, const ::grpc::ByteBuffer* request, ::mavsdk::rpc::offboard::SetVelocityNedResponse* response, std::function<void(::grpc::Status)>) override;
       #ifdef GRPC_CALLBACK_API_NONEXPERIMENTAL
       void SetVelocityNed(::grpc::ClientContext* context, const ::mavsdk::rpc::offboard::SetVelocityNedRequest* request, ::mavsdk::rpc::offboard::SetVelocityNedResponse* response, ::grpc::ClientUnaryReactor* reactor) override;
       #else
       void SetVelocityNed(::grpc::ClientContext* context, const ::mavsdk::rpc::offboard::SetVelocityNedRequest* request, ::mavsdk::rpc::offboard::SetVelocityNedResponse* response, ::grpc::experimental::ClientUnaryReactor* reactor) override;
-      #endif
-      #ifdef GRPC_CALLBACK_API_NONEXPERIMENTAL
-      void SetVelocityNed(::grpc::ClientContext* context, const ::grpc::ByteBuffer* request, ::mavsdk::rpc::offboard::SetVelocityNedResponse* response, ::grpc::ClientUnaryReactor* reactor) override;
-      #else
-      void SetVelocityNed(::grpc::ClientContext* context, const ::grpc::ByteBuffer* request, ::mavsdk::rpc::offboard::SetVelocityNedResponse* response, ::grpc::experimental::ClientUnaryReactor* reactor) override;
       #endif
      private:
       friend class Stub;
@@ -752,7 +644,7 @@ class OffboardService final {
       ::grpc::Service::experimental().
     #endif
         MarkMethodCallback(0,
-          new ::grpc_impl::internal::CallbackUnaryHandler< ::mavsdk::rpc::offboard::StartRequest, ::mavsdk::rpc::offboard::StartResponse>(
+          new ::grpc::internal::CallbackUnaryHandler< ::mavsdk::rpc::offboard::StartRequest, ::mavsdk::rpc::offboard::StartResponse>(
             [this](
     #ifdef GRPC_CALLBACK_API_NONEXPERIMENTAL
                    ::grpc::CallbackServerContext*
@@ -767,7 +659,7 @@ class OffboardService final {
     #else
       ::grpc::internal::MethodHandler* const handler = ::grpc::Service::experimental().GetHandler(0);
     #endif
-      static_cast<::grpc_impl::internal::CallbackUnaryHandler< ::mavsdk::rpc::offboard::StartRequest, ::mavsdk::rpc::offboard::StartResponse>*>(handler)
+      static_cast<::grpc::internal::CallbackUnaryHandler< ::mavsdk::rpc::offboard::StartRequest, ::mavsdk::rpc::offboard::StartResponse>*>(handler)
               ->SetMessageAllocator(allocator);
     }
     ~ExperimentalWithCallbackMethod_Start() override {
@@ -799,7 +691,7 @@ class OffboardService final {
       ::grpc::Service::experimental().
     #endif
         MarkMethodCallback(1,
-          new ::grpc_impl::internal::CallbackUnaryHandler< ::mavsdk::rpc::offboard::StopRequest, ::mavsdk::rpc::offboard::StopResponse>(
+          new ::grpc::internal::CallbackUnaryHandler< ::mavsdk::rpc::offboard::StopRequest, ::mavsdk::rpc::offboard::StopResponse>(
             [this](
     #ifdef GRPC_CALLBACK_API_NONEXPERIMENTAL
                    ::grpc::CallbackServerContext*
@@ -814,7 +706,7 @@ class OffboardService final {
     #else
       ::grpc::internal::MethodHandler* const handler = ::grpc::Service::experimental().GetHandler(1);
     #endif
-      static_cast<::grpc_impl::internal::CallbackUnaryHandler< ::mavsdk::rpc::offboard::StopRequest, ::mavsdk::rpc::offboard::StopResponse>*>(handler)
+      static_cast<::grpc::internal::CallbackUnaryHandler< ::mavsdk::rpc::offboard::StopRequest, ::mavsdk::rpc::offboard::StopResponse>*>(handler)
               ->SetMessageAllocator(allocator);
     }
     ~ExperimentalWithCallbackMethod_Stop() override {
@@ -846,7 +738,7 @@ class OffboardService final {
       ::grpc::Service::experimental().
     #endif
         MarkMethodCallback(2,
-          new ::grpc_impl::internal::CallbackUnaryHandler< ::mavsdk::rpc::offboard::IsActiveRequest, ::mavsdk::rpc::offboard::IsActiveResponse>(
+          new ::grpc::internal::CallbackUnaryHandler< ::mavsdk::rpc::offboard::IsActiveRequest, ::mavsdk::rpc::offboard::IsActiveResponse>(
             [this](
     #ifdef GRPC_CALLBACK_API_NONEXPERIMENTAL
                    ::grpc::CallbackServerContext*
@@ -861,7 +753,7 @@ class OffboardService final {
     #else
       ::grpc::internal::MethodHandler* const handler = ::grpc::Service::experimental().GetHandler(2);
     #endif
-      static_cast<::grpc_impl::internal::CallbackUnaryHandler< ::mavsdk::rpc::offboard::IsActiveRequest, ::mavsdk::rpc::offboard::IsActiveResponse>*>(handler)
+      static_cast<::grpc::internal::CallbackUnaryHandler< ::mavsdk::rpc::offboard::IsActiveRequest, ::mavsdk::rpc::offboard::IsActiveResponse>*>(handler)
               ->SetMessageAllocator(allocator);
     }
     ~ExperimentalWithCallbackMethod_IsActive() override {
@@ -893,7 +785,7 @@ class OffboardService final {
       ::grpc::Service::experimental().
     #endif
         MarkMethodCallback(3,
-          new ::grpc_impl::internal::CallbackUnaryHandler< ::mavsdk::rpc::offboard::SetAttitudeRequest, ::mavsdk::rpc::offboard::SetAttitudeResponse>(
+          new ::grpc::internal::CallbackUnaryHandler< ::mavsdk::rpc::offboard::SetAttitudeRequest, ::mavsdk::rpc::offboard::SetAttitudeResponse>(
             [this](
     #ifdef GRPC_CALLBACK_API_NONEXPERIMENTAL
                    ::grpc::CallbackServerContext*
@@ -908,7 +800,7 @@ class OffboardService final {
     #else
       ::grpc::internal::MethodHandler* const handler = ::grpc::Service::experimental().GetHandler(3);
     #endif
-      static_cast<::grpc_impl::internal::CallbackUnaryHandler< ::mavsdk::rpc::offboard::SetAttitudeRequest, ::mavsdk::rpc::offboard::SetAttitudeResponse>*>(handler)
+      static_cast<::grpc::internal::CallbackUnaryHandler< ::mavsdk::rpc::offboard::SetAttitudeRequest, ::mavsdk::rpc::offboard::SetAttitudeResponse>*>(handler)
               ->SetMessageAllocator(allocator);
     }
     ~ExperimentalWithCallbackMethod_SetAttitude() override {
@@ -940,7 +832,7 @@ class OffboardService final {
       ::grpc::Service::experimental().
     #endif
         MarkMethodCallback(4,
-          new ::grpc_impl::internal::CallbackUnaryHandler< ::mavsdk::rpc::offboard::SetActuatorControlRequest, ::mavsdk::rpc::offboard::SetActuatorControlResponse>(
+          new ::grpc::internal::CallbackUnaryHandler< ::mavsdk::rpc::offboard::SetActuatorControlRequest, ::mavsdk::rpc::offboard::SetActuatorControlResponse>(
             [this](
     #ifdef GRPC_CALLBACK_API_NONEXPERIMENTAL
                    ::grpc::CallbackServerContext*
@@ -955,7 +847,7 @@ class OffboardService final {
     #else
       ::grpc::internal::MethodHandler* const handler = ::grpc::Service::experimental().GetHandler(4);
     #endif
-      static_cast<::grpc_impl::internal::CallbackUnaryHandler< ::mavsdk::rpc::offboard::SetActuatorControlRequest, ::mavsdk::rpc::offboard::SetActuatorControlResponse>*>(handler)
+      static_cast<::grpc::internal::CallbackUnaryHandler< ::mavsdk::rpc::offboard::SetActuatorControlRequest, ::mavsdk::rpc::offboard::SetActuatorControlResponse>*>(handler)
               ->SetMessageAllocator(allocator);
     }
     ~ExperimentalWithCallbackMethod_SetActuatorControl() override {
@@ -987,7 +879,7 @@ class OffboardService final {
       ::grpc::Service::experimental().
     #endif
         MarkMethodCallback(5,
-          new ::grpc_impl::internal::CallbackUnaryHandler< ::mavsdk::rpc::offboard::SetAttitudeRateRequest, ::mavsdk::rpc::offboard::SetAttitudeRateResponse>(
+          new ::grpc::internal::CallbackUnaryHandler< ::mavsdk::rpc::offboard::SetAttitudeRateRequest, ::mavsdk::rpc::offboard::SetAttitudeRateResponse>(
             [this](
     #ifdef GRPC_CALLBACK_API_NONEXPERIMENTAL
                    ::grpc::CallbackServerContext*
@@ -1002,7 +894,7 @@ class OffboardService final {
     #else
       ::grpc::internal::MethodHandler* const handler = ::grpc::Service::experimental().GetHandler(5);
     #endif
-      static_cast<::grpc_impl::internal::CallbackUnaryHandler< ::mavsdk::rpc::offboard::SetAttitudeRateRequest, ::mavsdk::rpc::offboard::SetAttitudeRateResponse>*>(handler)
+      static_cast<::grpc::internal::CallbackUnaryHandler< ::mavsdk::rpc::offboard::SetAttitudeRateRequest, ::mavsdk::rpc::offboard::SetAttitudeRateResponse>*>(handler)
               ->SetMessageAllocator(allocator);
     }
     ~ExperimentalWithCallbackMethod_SetAttitudeRate() override {
@@ -1034,7 +926,7 @@ class OffboardService final {
       ::grpc::Service::experimental().
     #endif
         MarkMethodCallback(6,
-          new ::grpc_impl::internal::CallbackUnaryHandler< ::mavsdk::rpc::offboard::SetPositionNedRequest, ::mavsdk::rpc::offboard::SetPositionNedResponse>(
+          new ::grpc::internal::CallbackUnaryHandler< ::mavsdk::rpc::offboard::SetPositionNedRequest, ::mavsdk::rpc::offboard::SetPositionNedResponse>(
             [this](
     #ifdef GRPC_CALLBACK_API_NONEXPERIMENTAL
                    ::grpc::CallbackServerContext*
@@ -1049,7 +941,7 @@ class OffboardService final {
     #else
       ::grpc::internal::MethodHandler* const handler = ::grpc::Service::experimental().GetHandler(6);
     #endif
-      static_cast<::grpc_impl::internal::CallbackUnaryHandler< ::mavsdk::rpc::offboard::SetPositionNedRequest, ::mavsdk::rpc::offboard::SetPositionNedResponse>*>(handler)
+      static_cast<::grpc::internal::CallbackUnaryHandler< ::mavsdk::rpc::offboard::SetPositionNedRequest, ::mavsdk::rpc::offboard::SetPositionNedResponse>*>(handler)
               ->SetMessageAllocator(allocator);
     }
     ~ExperimentalWithCallbackMethod_SetPositionNed() override {
@@ -1081,7 +973,7 @@ class OffboardService final {
       ::grpc::Service::experimental().
     #endif
         MarkMethodCallback(7,
-          new ::grpc_impl::internal::CallbackUnaryHandler< ::mavsdk::rpc::offboard::SetVelocityBodyRequest, ::mavsdk::rpc::offboard::SetVelocityBodyResponse>(
+          new ::grpc::internal::CallbackUnaryHandler< ::mavsdk::rpc::offboard::SetVelocityBodyRequest, ::mavsdk::rpc::offboard::SetVelocityBodyResponse>(
             [this](
     #ifdef GRPC_CALLBACK_API_NONEXPERIMENTAL
                    ::grpc::CallbackServerContext*
@@ -1096,7 +988,7 @@ class OffboardService final {
     #else
       ::grpc::internal::MethodHandler* const handler = ::grpc::Service::experimental().GetHandler(7);
     #endif
-      static_cast<::grpc_impl::internal::CallbackUnaryHandler< ::mavsdk::rpc::offboard::SetVelocityBodyRequest, ::mavsdk::rpc::offboard::SetVelocityBodyResponse>*>(handler)
+      static_cast<::grpc::internal::CallbackUnaryHandler< ::mavsdk::rpc::offboard::SetVelocityBodyRequest, ::mavsdk::rpc::offboard::SetVelocityBodyResponse>*>(handler)
               ->SetMessageAllocator(allocator);
     }
     ~ExperimentalWithCallbackMethod_SetVelocityBody() override {
@@ -1128,7 +1020,7 @@ class OffboardService final {
       ::grpc::Service::experimental().
     #endif
         MarkMethodCallback(8,
-          new ::grpc_impl::internal::CallbackUnaryHandler< ::mavsdk::rpc::offboard::SetVelocityNedRequest, ::mavsdk::rpc::offboard::SetVelocityNedResponse>(
+          new ::grpc::internal::CallbackUnaryHandler< ::mavsdk::rpc::offboard::SetVelocityNedRequest, ::mavsdk::rpc::offboard::SetVelocityNedResponse>(
             [this](
     #ifdef GRPC_CALLBACK_API_NONEXPERIMENTAL
                    ::grpc::CallbackServerContext*
@@ -1143,7 +1035,7 @@ class OffboardService final {
     #else
       ::grpc::internal::MethodHandler* const handler = ::grpc::Service::experimental().GetHandler(8);
     #endif
-      static_cast<::grpc_impl::internal::CallbackUnaryHandler< ::mavsdk::rpc::offboard::SetVelocityNedRequest, ::mavsdk::rpc::offboard::SetVelocityNedResponse>*>(handler)
+      static_cast<::grpc::internal::CallbackUnaryHandler< ::mavsdk::rpc::offboard::SetVelocityNedRequest, ::mavsdk::rpc::offboard::SetVelocityNedResponse>*>(handler)
               ->SetMessageAllocator(allocator);
     }
     ~ExperimentalWithCallbackMethod_SetVelocityNed() override {
@@ -1513,7 +1405,7 @@ class OffboardService final {
       ::grpc::Service::experimental().
     #endif
         MarkMethodRawCallback(0,
-          new ::grpc_impl::internal::CallbackUnaryHandler< ::grpc::ByteBuffer, ::grpc::ByteBuffer>(
+          new ::grpc::internal::CallbackUnaryHandler< ::grpc::ByteBuffer, ::grpc::ByteBuffer>(
             [this](
     #ifdef GRPC_CALLBACK_API_NONEXPERIMENTAL
                    ::grpc::CallbackServerContext*
@@ -1551,7 +1443,7 @@ class OffboardService final {
       ::grpc::Service::experimental().
     #endif
         MarkMethodRawCallback(1,
-          new ::grpc_impl::internal::CallbackUnaryHandler< ::grpc::ByteBuffer, ::grpc::ByteBuffer>(
+          new ::grpc::internal::CallbackUnaryHandler< ::grpc::ByteBuffer, ::grpc::ByteBuffer>(
             [this](
     #ifdef GRPC_CALLBACK_API_NONEXPERIMENTAL
                    ::grpc::CallbackServerContext*
@@ -1589,7 +1481,7 @@ class OffboardService final {
       ::grpc::Service::experimental().
     #endif
         MarkMethodRawCallback(2,
-          new ::grpc_impl::internal::CallbackUnaryHandler< ::grpc::ByteBuffer, ::grpc::ByteBuffer>(
+          new ::grpc::internal::CallbackUnaryHandler< ::grpc::ByteBuffer, ::grpc::ByteBuffer>(
             [this](
     #ifdef GRPC_CALLBACK_API_NONEXPERIMENTAL
                    ::grpc::CallbackServerContext*
@@ -1627,7 +1519,7 @@ class OffboardService final {
       ::grpc::Service::experimental().
     #endif
         MarkMethodRawCallback(3,
-          new ::grpc_impl::internal::CallbackUnaryHandler< ::grpc::ByteBuffer, ::grpc::ByteBuffer>(
+          new ::grpc::internal::CallbackUnaryHandler< ::grpc::ByteBuffer, ::grpc::ByteBuffer>(
             [this](
     #ifdef GRPC_CALLBACK_API_NONEXPERIMENTAL
                    ::grpc::CallbackServerContext*
@@ -1665,7 +1557,7 @@ class OffboardService final {
       ::grpc::Service::experimental().
     #endif
         MarkMethodRawCallback(4,
-          new ::grpc_impl::internal::CallbackUnaryHandler< ::grpc::ByteBuffer, ::grpc::ByteBuffer>(
+          new ::grpc::internal::CallbackUnaryHandler< ::grpc::ByteBuffer, ::grpc::ByteBuffer>(
             [this](
     #ifdef GRPC_CALLBACK_API_NONEXPERIMENTAL
                    ::grpc::CallbackServerContext*
@@ -1703,7 +1595,7 @@ class OffboardService final {
       ::grpc::Service::experimental().
     #endif
         MarkMethodRawCallback(5,
-          new ::grpc_impl::internal::CallbackUnaryHandler< ::grpc::ByteBuffer, ::grpc::ByteBuffer>(
+          new ::grpc::internal::CallbackUnaryHandler< ::grpc::ByteBuffer, ::grpc::ByteBuffer>(
             [this](
     #ifdef GRPC_CALLBACK_API_NONEXPERIMENTAL
                    ::grpc::CallbackServerContext*
@@ -1741,7 +1633,7 @@ class OffboardService final {
       ::grpc::Service::experimental().
     #endif
         MarkMethodRawCallback(6,
-          new ::grpc_impl::internal::CallbackUnaryHandler< ::grpc::ByteBuffer, ::grpc::ByteBuffer>(
+          new ::grpc::internal::CallbackUnaryHandler< ::grpc::ByteBuffer, ::grpc::ByteBuffer>(
             [this](
     #ifdef GRPC_CALLBACK_API_NONEXPERIMENTAL
                    ::grpc::CallbackServerContext*
@@ -1779,7 +1671,7 @@ class OffboardService final {
       ::grpc::Service::experimental().
     #endif
         MarkMethodRawCallback(7,
-          new ::grpc_impl::internal::CallbackUnaryHandler< ::grpc::ByteBuffer, ::grpc::ByteBuffer>(
+          new ::grpc::internal::CallbackUnaryHandler< ::grpc::ByteBuffer, ::grpc::ByteBuffer>(
             [this](
     #ifdef GRPC_CALLBACK_API_NONEXPERIMENTAL
                    ::grpc::CallbackServerContext*
@@ -1817,7 +1709,7 @@ class OffboardService final {
       ::grpc::Service::experimental().
     #endif
         MarkMethodRawCallback(8,
-          new ::grpc_impl::internal::CallbackUnaryHandler< ::grpc::ByteBuffer, ::grpc::ByteBuffer>(
+          new ::grpc::internal::CallbackUnaryHandler< ::grpc::ByteBuffer, ::grpc::ByteBuffer>(
             [this](
     #ifdef GRPC_CALLBACK_API_NONEXPERIMENTAL
                    ::grpc::CallbackServerContext*
@@ -1850,7 +1742,14 @@ class OffboardService final {
    public:
     WithStreamedUnaryMethod_Start() {
       ::grpc::Service::MarkMethodStreamed(0,
-        new ::grpc::internal::StreamedUnaryHandler< ::mavsdk::rpc::offboard::StartRequest, ::mavsdk::rpc::offboard::StartResponse>(std::bind(&WithStreamedUnaryMethod_Start<BaseClass>::StreamedStart, this, std::placeholders::_1, std::placeholders::_2)));
+        new ::grpc::internal::StreamedUnaryHandler<
+          ::mavsdk::rpc::offboard::StartRequest, ::mavsdk::rpc::offboard::StartResponse>(
+            [this](::grpc::ServerContext* context,
+                   ::grpc::ServerUnaryStreamer<
+                     ::mavsdk::rpc::offboard::StartRequest, ::mavsdk::rpc::offboard::StartResponse>* streamer) {
+                       return this->StreamedStart(context,
+                         streamer);
+                  }));
     }
     ~WithStreamedUnaryMethod_Start() override {
       BaseClassMustBeDerivedFromService(this);
@@ -1870,7 +1769,14 @@ class OffboardService final {
    public:
     WithStreamedUnaryMethod_Stop() {
       ::grpc::Service::MarkMethodStreamed(1,
-        new ::grpc::internal::StreamedUnaryHandler< ::mavsdk::rpc::offboard::StopRequest, ::mavsdk::rpc::offboard::StopResponse>(std::bind(&WithStreamedUnaryMethod_Stop<BaseClass>::StreamedStop, this, std::placeholders::_1, std::placeholders::_2)));
+        new ::grpc::internal::StreamedUnaryHandler<
+          ::mavsdk::rpc::offboard::StopRequest, ::mavsdk::rpc::offboard::StopResponse>(
+            [this](::grpc::ServerContext* context,
+                   ::grpc::ServerUnaryStreamer<
+                     ::mavsdk::rpc::offboard::StopRequest, ::mavsdk::rpc::offboard::StopResponse>* streamer) {
+                       return this->StreamedStop(context,
+                         streamer);
+                  }));
     }
     ~WithStreamedUnaryMethod_Stop() override {
       BaseClassMustBeDerivedFromService(this);
@@ -1890,7 +1796,14 @@ class OffboardService final {
    public:
     WithStreamedUnaryMethod_IsActive() {
       ::grpc::Service::MarkMethodStreamed(2,
-        new ::grpc::internal::StreamedUnaryHandler< ::mavsdk::rpc::offboard::IsActiveRequest, ::mavsdk::rpc::offboard::IsActiveResponse>(std::bind(&WithStreamedUnaryMethod_IsActive<BaseClass>::StreamedIsActive, this, std::placeholders::_1, std::placeholders::_2)));
+        new ::grpc::internal::StreamedUnaryHandler<
+          ::mavsdk::rpc::offboard::IsActiveRequest, ::mavsdk::rpc::offboard::IsActiveResponse>(
+            [this](::grpc::ServerContext* context,
+                   ::grpc::ServerUnaryStreamer<
+                     ::mavsdk::rpc::offboard::IsActiveRequest, ::mavsdk::rpc::offboard::IsActiveResponse>* streamer) {
+                       return this->StreamedIsActive(context,
+                         streamer);
+                  }));
     }
     ~WithStreamedUnaryMethod_IsActive() override {
       BaseClassMustBeDerivedFromService(this);
@@ -1910,7 +1823,14 @@ class OffboardService final {
    public:
     WithStreamedUnaryMethod_SetAttitude() {
       ::grpc::Service::MarkMethodStreamed(3,
-        new ::grpc::internal::StreamedUnaryHandler< ::mavsdk::rpc::offboard::SetAttitudeRequest, ::mavsdk::rpc::offboard::SetAttitudeResponse>(std::bind(&WithStreamedUnaryMethod_SetAttitude<BaseClass>::StreamedSetAttitude, this, std::placeholders::_1, std::placeholders::_2)));
+        new ::grpc::internal::StreamedUnaryHandler<
+          ::mavsdk::rpc::offboard::SetAttitudeRequest, ::mavsdk::rpc::offboard::SetAttitudeResponse>(
+            [this](::grpc::ServerContext* context,
+                   ::grpc::ServerUnaryStreamer<
+                     ::mavsdk::rpc::offboard::SetAttitudeRequest, ::mavsdk::rpc::offboard::SetAttitudeResponse>* streamer) {
+                       return this->StreamedSetAttitude(context,
+                         streamer);
+                  }));
     }
     ~WithStreamedUnaryMethod_SetAttitude() override {
       BaseClassMustBeDerivedFromService(this);
@@ -1930,7 +1850,14 @@ class OffboardService final {
    public:
     WithStreamedUnaryMethod_SetActuatorControl() {
       ::grpc::Service::MarkMethodStreamed(4,
-        new ::grpc::internal::StreamedUnaryHandler< ::mavsdk::rpc::offboard::SetActuatorControlRequest, ::mavsdk::rpc::offboard::SetActuatorControlResponse>(std::bind(&WithStreamedUnaryMethod_SetActuatorControl<BaseClass>::StreamedSetActuatorControl, this, std::placeholders::_1, std::placeholders::_2)));
+        new ::grpc::internal::StreamedUnaryHandler<
+          ::mavsdk::rpc::offboard::SetActuatorControlRequest, ::mavsdk::rpc::offboard::SetActuatorControlResponse>(
+            [this](::grpc::ServerContext* context,
+                   ::grpc::ServerUnaryStreamer<
+                     ::mavsdk::rpc::offboard::SetActuatorControlRequest, ::mavsdk::rpc::offboard::SetActuatorControlResponse>* streamer) {
+                       return this->StreamedSetActuatorControl(context,
+                         streamer);
+                  }));
     }
     ~WithStreamedUnaryMethod_SetActuatorControl() override {
       BaseClassMustBeDerivedFromService(this);
@@ -1950,7 +1877,14 @@ class OffboardService final {
    public:
     WithStreamedUnaryMethod_SetAttitudeRate() {
       ::grpc::Service::MarkMethodStreamed(5,
-        new ::grpc::internal::StreamedUnaryHandler< ::mavsdk::rpc::offboard::SetAttitudeRateRequest, ::mavsdk::rpc::offboard::SetAttitudeRateResponse>(std::bind(&WithStreamedUnaryMethod_SetAttitudeRate<BaseClass>::StreamedSetAttitudeRate, this, std::placeholders::_1, std::placeholders::_2)));
+        new ::grpc::internal::StreamedUnaryHandler<
+          ::mavsdk::rpc::offboard::SetAttitudeRateRequest, ::mavsdk::rpc::offboard::SetAttitudeRateResponse>(
+            [this](::grpc::ServerContext* context,
+                   ::grpc::ServerUnaryStreamer<
+                     ::mavsdk::rpc::offboard::SetAttitudeRateRequest, ::mavsdk::rpc::offboard::SetAttitudeRateResponse>* streamer) {
+                       return this->StreamedSetAttitudeRate(context,
+                         streamer);
+                  }));
     }
     ~WithStreamedUnaryMethod_SetAttitudeRate() override {
       BaseClassMustBeDerivedFromService(this);
@@ -1970,7 +1904,14 @@ class OffboardService final {
    public:
     WithStreamedUnaryMethod_SetPositionNed() {
       ::grpc::Service::MarkMethodStreamed(6,
-        new ::grpc::internal::StreamedUnaryHandler< ::mavsdk::rpc::offboard::SetPositionNedRequest, ::mavsdk::rpc::offboard::SetPositionNedResponse>(std::bind(&WithStreamedUnaryMethod_SetPositionNed<BaseClass>::StreamedSetPositionNed, this, std::placeholders::_1, std::placeholders::_2)));
+        new ::grpc::internal::StreamedUnaryHandler<
+          ::mavsdk::rpc::offboard::SetPositionNedRequest, ::mavsdk::rpc::offboard::SetPositionNedResponse>(
+            [this](::grpc::ServerContext* context,
+                   ::grpc::ServerUnaryStreamer<
+                     ::mavsdk::rpc::offboard::SetPositionNedRequest, ::mavsdk::rpc::offboard::SetPositionNedResponse>* streamer) {
+                       return this->StreamedSetPositionNed(context,
+                         streamer);
+                  }));
     }
     ~WithStreamedUnaryMethod_SetPositionNed() override {
       BaseClassMustBeDerivedFromService(this);
@@ -1990,7 +1931,14 @@ class OffboardService final {
    public:
     WithStreamedUnaryMethod_SetVelocityBody() {
       ::grpc::Service::MarkMethodStreamed(7,
-        new ::grpc::internal::StreamedUnaryHandler< ::mavsdk::rpc::offboard::SetVelocityBodyRequest, ::mavsdk::rpc::offboard::SetVelocityBodyResponse>(std::bind(&WithStreamedUnaryMethod_SetVelocityBody<BaseClass>::StreamedSetVelocityBody, this, std::placeholders::_1, std::placeholders::_2)));
+        new ::grpc::internal::StreamedUnaryHandler<
+          ::mavsdk::rpc::offboard::SetVelocityBodyRequest, ::mavsdk::rpc::offboard::SetVelocityBodyResponse>(
+            [this](::grpc::ServerContext* context,
+                   ::grpc::ServerUnaryStreamer<
+                     ::mavsdk::rpc::offboard::SetVelocityBodyRequest, ::mavsdk::rpc::offboard::SetVelocityBodyResponse>* streamer) {
+                       return this->StreamedSetVelocityBody(context,
+                         streamer);
+                  }));
     }
     ~WithStreamedUnaryMethod_SetVelocityBody() override {
       BaseClassMustBeDerivedFromService(this);
@@ -2010,7 +1958,14 @@ class OffboardService final {
    public:
     WithStreamedUnaryMethod_SetVelocityNed() {
       ::grpc::Service::MarkMethodStreamed(8,
-        new ::grpc::internal::StreamedUnaryHandler< ::mavsdk::rpc::offboard::SetVelocityNedRequest, ::mavsdk::rpc::offboard::SetVelocityNedResponse>(std::bind(&WithStreamedUnaryMethod_SetVelocityNed<BaseClass>::StreamedSetVelocityNed, this, std::placeholders::_1, std::placeholders::_2)));
+        new ::grpc::internal::StreamedUnaryHandler<
+          ::mavsdk::rpc::offboard::SetVelocityNedRequest, ::mavsdk::rpc::offboard::SetVelocityNedResponse>(
+            [this](::grpc::ServerContext* context,
+                   ::grpc::ServerUnaryStreamer<
+                     ::mavsdk::rpc::offboard::SetVelocityNedRequest, ::mavsdk::rpc::offboard::SetVelocityNedResponse>* streamer) {
+                       return this->StreamedSetVelocityNed(context,
+                         streamer);
+                  }));
     }
     ~WithStreamedUnaryMethod_SetVelocityNed() override {
       BaseClassMustBeDerivedFromService(this);

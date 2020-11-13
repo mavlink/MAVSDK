@@ -60,16 +60,10 @@ class GeofenceService final {
       // Polygons are uploaded to a drone. Once uploaded, the geofence will remain
       // on the drone even if a connection is lost.
       virtual void UploadGeofence(::grpc::ClientContext* context, const ::mavsdk::rpc::geofence::UploadGeofenceRequest* request, ::mavsdk::rpc::geofence::UploadGeofenceResponse* response, std::function<void(::grpc::Status)>) = 0;
-      virtual void UploadGeofence(::grpc::ClientContext* context, const ::grpc::ByteBuffer* request, ::mavsdk::rpc::geofence::UploadGeofenceResponse* response, std::function<void(::grpc::Status)>) = 0;
       #ifdef GRPC_CALLBACK_API_NONEXPERIMENTAL
       virtual void UploadGeofence(::grpc::ClientContext* context, const ::mavsdk::rpc::geofence::UploadGeofenceRequest* request, ::mavsdk::rpc::geofence::UploadGeofenceResponse* response, ::grpc::ClientUnaryReactor* reactor) = 0;
       #else
       virtual void UploadGeofence(::grpc::ClientContext* context, const ::mavsdk::rpc::geofence::UploadGeofenceRequest* request, ::mavsdk::rpc::geofence::UploadGeofenceResponse* response, ::grpc::experimental::ClientUnaryReactor* reactor) = 0;
-      #endif
-      #ifdef GRPC_CALLBACK_API_NONEXPERIMENTAL
-      virtual void UploadGeofence(::grpc::ClientContext* context, const ::grpc::ByteBuffer* request, ::mavsdk::rpc::geofence::UploadGeofenceResponse* response, ::grpc::ClientUnaryReactor* reactor) = 0;
-      #else
-      virtual void UploadGeofence(::grpc::ClientContext* context, const ::grpc::ByteBuffer* request, ::mavsdk::rpc::geofence::UploadGeofenceResponse* response, ::grpc::experimental::ClientUnaryReactor* reactor) = 0;
       #endif
     };
     #ifdef GRPC_CALLBACK_API_NONEXPERIMENTAL
@@ -97,16 +91,10 @@ class GeofenceService final {
       public StubInterface::experimental_async_interface {
      public:
       void UploadGeofence(::grpc::ClientContext* context, const ::mavsdk::rpc::geofence::UploadGeofenceRequest* request, ::mavsdk::rpc::geofence::UploadGeofenceResponse* response, std::function<void(::grpc::Status)>) override;
-      void UploadGeofence(::grpc::ClientContext* context, const ::grpc::ByteBuffer* request, ::mavsdk::rpc::geofence::UploadGeofenceResponse* response, std::function<void(::grpc::Status)>) override;
       #ifdef GRPC_CALLBACK_API_NONEXPERIMENTAL
       void UploadGeofence(::grpc::ClientContext* context, const ::mavsdk::rpc::geofence::UploadGeofenceRequest* request, ::mavsdk::rpc::geofence::UploadGeofenceResponse* response, ::grpc::ClientUnaryReactor* reactor) override;
       #else
       void UploadGeofence(::grpc::ClientContext* context, const ::mavsdk::rpc::geofence::UploadGeofenceRequest* request, ::mavsdk::rpc::geofence::UploadGeofenceResponse* response, ::grpc::experimental::ClientUnaryReactor* reactor) override;
-      #endif
-      #ifdef GRPC_CALLBACK_API_NONEXPERIMENTAL
-      void UploadGeofence(::grpc::ClientContext* context, const ::grpc::ByteBuffer* request, ::mavsdk::rpc::geofence::UploadGeofenceResponse* response, ::grpc::ClientUnaryReactor* reactor) override;
-      #else
-      void UploadGeofence(::grpc::ClientContext* context, const ::grpc::ByteBuffer* request, ::mavsdk::rpc::geofence::UploadGeofenceResponse* response, ::grpc::experimental::ClientUnaryReactor* reactor) override;
       #endif
      private:
       friend class Stub;
@@ -169,7 +157,7 @@ class GeofenceService final {
       ::grpc::Service::experimental().
     #endif
         MarkMethodCallback(0,
-          new ::grpc_impl::internal::CallbackUnaryHandler< ::mavsdk::rpc::geofence::UploadGeofenceRequest, ::mavsdk::rpc::geofence::UploadGeofenceResponse>(
+          new ::grpc::internal::CallbackUnaryHandler< ::mavsdk::rpc::geofence::UploadGeofenceRequest, ::mavsdk::rpc::geofence::UploadGeofenceResponse>(
             [this](
     #ifdef GRPC_CALLBACK_API_NONEXPERIMENTAL
                    ::grpc::CallbackServerContext*
@@ -184,7 +172,7 @@ class GeofenceService final {
     #else
       ::grpc::internal::MethodHandler* const handler = ::grpc::Service::experimental().GetHandler(0);
     #endif
-      static_cast<::grpc_impl::internal::CallbackUnaryHandler< ::mavsdk::rpc::geofence::UploadGeofenceRequest, ::mavsdk::rpc::geofence::UploadGeofenceResponse>*>(handler)
+      static_cast<::grpc::internal::CallbackUnaryHandler< ::mavsdk::rpc::geofence::UploadGeofenceRequest, ::mavsdk::rpc::geofence::UploadGeofenceResponse>*>(handler)
               ->SetMessageAllocator(allocator);
     }
     ~ExperimentalWithCallbackMethod_UploadGeofence() override {
@@ -258,7 +246,7 @@ class GeofenceService final {
       ::grpc::Service::experimental().
     #endif
         MarkMethodRawCallback(0,
-          new ::grpc_impl::internal::CallbackUnaryHandler< ::grpc::ByteBuffer, ::grpc::ByteBuffer>(
+          new ::grpc::internal::CallbackUnaryHandler< ::grpc::ByteBuffer, ::grpc::ByteBuffer>(
             [this](
     #ifdef GRPC_CALLBACK_API_NONEXPERIMENTAL
                    ::grpc::CallbackServerContext*
@@ -291,7 +279,14 @@ class GeofenceService final {
    public:
     WithStreamedUnaryMethod_UploadGeofence() {
       ::grpc::Service::MarkMethodStreamed(0,
-        new ::grpc::internal::StreamedUnaryHandler< ::mavsdk::rpc::geofence::UploadGeofenceRequest, ::mavsdk::rpc::geofence::UploadGeofenceResponse>(std::bind(&WithStreamedUnaryMethod_UploadGeofence<BaseClass>::StreamedUploadGeofence, this, std::placeholders::_1, std::placeholders::_2)));
+        new ::grpc::internal::StreamedUnaryHandler<
+          ::mavsdk::rpc::geofence::UploadGeofenceRequest, ::mavsdk::rpc::geofence::UploadGeofenceResponse>(
+            [this](::grpc::ServerContext* context,
+                   ::grpc::ServerUnaryStreamer<
+                     ::mavsdk::rpc::geofence::UploadGeofenceRequest, ::mavsdk::rpc::geofence::UploadGeofenceResponse>* streamer) {
+                       return this->StreamedUploadGeofence(context,
+                         streamer);
+                  }));
     }
     ~WithStreamedUnaryMethod_UploadGeofence() override {
       BaseClassMustBeDerivedFromService(this);

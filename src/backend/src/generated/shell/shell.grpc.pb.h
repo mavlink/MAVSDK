@@ -68,16 +68,10 @@ class ShellService final {
       //
       // Send a command line.
       virtual void Send(::grpc::ClientContext* context, const ::mavsdk::rpc::shell::SendRequest* request, ::mavsdk::rpc::shell::SendResponse* response, std::function<void(::grpc::Status)>) = 0;
-      virtual void Send(::grpc::ClientContext* context, const ::grpc::ByteBuffer* request, ::mavsdk::rpc::shell::SendResponse* response, std::function<void(::grpc::Status)>) = 0;
       #ifdef GRPC_CALLBACK_API_NONEXPERIMENTAL
       virtual void Send(::grpc::ClientContext* context, const ::mavsdk::rpc::shell::SendRequest* request, ::mavsdk::rpc::shell::SendResponse* response, ::grpc::ClientUnaryReactor* reactor) = 0;
       #else
       virtual void Send(::grpc::ClientContext* context, const ::mavsdk::rpc::shell::SendRequest* request, ::mavsdk::rpc::shell::SendResponse* response, ::grpc::experimental::ClientUnaryReactor* reactor) = 0;
-      #endif
-      #ifdef GRPC_CALLBACK_API_NONEXPERIMENTAL
-      virtual void Send(::grpc::ClientContext* context, const ::grpc::ByteBuffer* request, ::mavsdk::rpc::shell::SendResponse* response, ::grpc::ClientUnaryReactor* reactor) = 0;
-      #else
-      virtual void Send(::grpc::ClientContext* context, const ::grpc::ByteBuffer* request, ::mavsdk::rpc::shell::SendResponse* response, ::grpc::experimental::ClientUnaryReactor* reactor) = 0;
       #endif
       //
       // Receive feedback from a sent command line.
@@ -126,16 +120,10 @@ class ShellService final {
       public StubInterface::experimental_async_interface {
      public:
       void Send(::grpc::ClientContext* context, const ::mavsdk::rpc::shell::SendRequest* request, ::mavsdk::rpc::shell::SendResponse* response, std::function<void(::grpc::Status)>) override;
-      void Send(::grpc::ClientContext* context, const ::grpc::ByteBuffer* request, ::mavsdk::rpc::shell::SendResponse* response, std::function<void(::grpc::Status)>) override;
       #ifdef GRPC_CALLBACK_API_NONEXPERIMENTAL
       void Send(::grpc::ClientContext* context, const ::mavsdk::rpc::shell::SendRequest* request, ::mavsdk::rpc::shell::SendResponse* response, ::grpc::ClientUnaryReactor* reactor) override;
       #else
       void Send(::grpc::ClientContext* context, const ::mavsdk::rpc::shell::SendRequest* request, ::mavsdk::rpc::shell::SendResponse* response, ::grpc::experimental::ClientUnaryReactor* reactor) override;
-      #endif
-      #ifdef GRPC_CALLBACK_API_NONEXPERIMENTAL
-      void Send(::grpc::ClientContext* context, const ::grpc::ByteBuffer* request, ::mavsdk::rpc::shell::SendResponse* response, ::grpc::ClientUnaryReactor* reactor) override;
-      #else
-      void Send(::grpc::ClientContext* context, const ::grpc::ByteBuffer* request, ::mavsdk::rpc::shell::SendResponse* response, ::grpc::experimental::ClientUnaryReactor* reactor) override;
       #endif
       #ifdef GRPC_CALLBACK_API_NONEXPERIMENTAL
       void SubscribeReceive(::grpc::ClientContext* context, ::mavsdk::rpc::shell::SubscribeReceiveRequest* request, ::grpc::ClientReadReactor< ::mavsdk::rpc::shell::ReceiveResponse>* reactor) override;
@@ -229,7 +217,7 @@ class ShellService final {
       ::grpc::Service::experimental().
     #endif
         MarkMethodCallback(0,
-          new ::grpc_impl::internal::CallbackUnaryHandler< ::mavsdk::rpc::shell::SendRequest, ::mavsdk::rpc::shell::SendResponse>(
+          new ::grpc::internal::CallbackUnaryHandler< ::mavsdk::rpc::shell::SendRequest, ::mavsdk::rpc::shell::SendResponse>(
             [this](
     #ifdef GRPC_CALLBACK_API_NONEXPERIMENTAL
                    ::grpc::CallbackServerContext*
@@ -244,7 +232,7 @@ class ShellService final {
     #else
       ::grpc::internal::MethodHandler* const handler = ::grpc::Service::experimental().GetHandler(0);
     #endif
-      static_cast<::grpc_impl::internal::CallbackUnaryHandler< ::mavsdk::rpc::shell::SendRequest, ::mavsdk::rpc::shell::SendResponse>*>(handler)
+      static_cast<::grpc::internal::CallbackUnaryHandler< ::mavsdk::rpc::shell::SendRequest, ::mavsdk::rpc::shell::SendResponse>*>(handler)
               ->SetMessageAllocator(allocator);
     }
     ~ExperimentalWithCallbackMethod_Send() override {
@@ -276,7 +264,7 @@ class ShellService final {
       ::grpc::Service::experimental().
     #endif
         MarkMethodCallback(1,
-          new ::grpc_impl::internal::CallbackServerStreamingHandler< ::mavsdk::rpc::shell::SubscribeReceiveRequest, ::mavsdk::rpc::shell::ReceiveResponse>(
+          new ::grpc::internal::CallbackServerStreamingHandler< ::mavsdk::rpc::shell::SubscribeReceiveRequest, ::mavsdk::rpc::shell::ReceiveResponse>(
             [this](
     #ifdef GRPC_CALLBACK_API_NONEXPERIMENTAL
                    ::grpc::CallbackServerContext*
@@ -393,7 +381,7 @@ class ShellService final {
       ::grpc::Service::experimental().
     #endif
         MarkMethodRawCallback(0,
-          new ::grpc_impl::internal::CallbackUnaryHandler< ::grpc::ByteBuffer, ::grpc::ByteBuffer>(
+          new ::grpc::internal::CallbackUnaryHandler< ::grpc::ByteBuffer, ::grpc::ByteBuffer>(
             [this](
     #ifdef GRPC_CALLBACK_API_NONEXPERIMENTAL
                    ::grpc::CallbackServerContext*
@@ -431,7 +419,7 @@ class ShellService final {
       ::grpc::Service::experimental().
     #endif
         MarkMethodRawCallback(1,
-          new ::grpc_impl::internal::CallbackServerStreamingHandler< ::grpc::ByteBuffer, ::grpc::ByteBuffer>(
+          new ::grpc::internal::CallbackServerStreamingHandler< ::grpc::ByteBuffer, ::grpc::ByteBuffer>(
             [this](
     #ifdef GRPC_CALLBACK_API_NONEXPERIMENTAL
                    ::grpc::CallbackServerContext*
@@ -464,7 +452,14 @@ class ShellService final {
    public:
     WithStreamedUnaryMethod_Send() {
       ::grpc::Service::MarkMethodStreamed(0,
-        new ::grpc::internal::StreamedUnaryHandler< ::mavsdk::rpc::shell::SendRequest, ::mavsdk::rpc::shell::SendResponse>(std::bind(&WithStreamedUnaryMethod_Send<BaseClass>::StreamedSend, this, std::placeholders::_1, std::placeholders::_2)));
+        new ::grpc::internal::StreamedUnaryHandler<
+          ::mavsdk::rpc::shell::SendRequest, ::mavsdk::rpc::shell::SendResponse>(
+            [this](::grpc::ServerContext* context,
+                   ::grpc::ServerUnaryStreamer<
+                     ::mavsdk::rpc::shell::SendRequest, ::mavsdk::rpc::shell::SendResponse>* streamer) {
+                       return this->StreamedSend(context,
+                         streamer);
+                  }));
     }
     ~WithStreamedUnaryMethod_Send() override {
       BaseClassMustBeDerivedFromService(this);
@@ -485,7 +480,14 @@ class ShellService final {
    public:
     WithSplitStreamingMethod_SubscribeReceive() {
       ::grpc::Service::MarkMethodStreamed(1,
-        new ::grpc::internal::SplitServerStreamingHandler< ::mavsdk::rpc::shell::SubscribeReceiveRequest, ::mavsdk::rpc::shell::ReceiveResponse>(std::bind(&WithSplitStreamingMethod_SubscribeReceive<BaseClass>::StreamedSubscribeReceive, this, std::placeholders::_1, std::placeholders::_2)));
+        new ::grpc::internal::SplitServerStreamingHandler<
+          ::mavsdk::rpc::shell::SubscribeReceiveRequest, ::mavsdk::rpc::shell::ReceiveResponse>(
+            [this](::grpc::ServerContext* context,
+                   ::grpc::ServerSplitStreamer<
+                     ::mavsdk::rpc::shell::SubscribeReceiveRequest, ::mavsdk::rpc::shell::ReceiveResponse>* streamer) {
+                       return this->StreamedSubscribeReceive(context,
+                         streamer);
+                  }));
     }
     ~WithSplitStreamingMethod_SubscribeReceive() override {
       BaseClassMustBeDerivedFromService(this);
