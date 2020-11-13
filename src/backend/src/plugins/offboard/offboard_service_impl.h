@@ -462,6 +462,27 @@ public:
         return grpc::Status::OK;
     }
 
+    grpc::Status SetPositionVelocityNed(
+        grpc::ServerContext* /* context */,
+        const rpc::offboard::SetPositionVelocityNedRequest* request,
+        rpc::offboard::SetPositionVelocityNedResponse* response) override
+    {
+        if (request == nullptr) {
+            LogWarn() << "SetPositionVelocityNed sent with a null request! Ignoring...";
+            return grpc::Status::OK;
+        }
+
+        auto result = _offboard.set_position_velocity_ned(
+            translateFromRpcPositionNedYaw(request->position_ned_yaw()),
+            translateFromRpcVelocityNedYaw(request->velocity_ned_yaw()));
+
+        if (response != nullptr) {
+            fillResponseWithResult(response, result);
+        }
+
+        return grpc::Status::OK;
+    }
+
     void stop()
     {
         _stopped.store(true);

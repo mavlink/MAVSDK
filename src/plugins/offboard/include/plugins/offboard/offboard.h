@@ -391,6 +391,16 @@ public:
     Result set_velocity_ned(VelocityNedYaw velocity_ned_yaw) const;
 
     /**
+     * @brief Set the position in NED coordinates, with the velocity to be used as feed-forward.
+     *
+     * This function is blocking.
+     *
+     * @return Result of request.
+     */
+    Result set_position_velocity_ned(
+        PositionNedYaw position_ned_yaw, VelocityNedYaw velocity_ned_yaw) const;
+
+    /**
      * @brief Copy constructor.
      */
     Offboard(const Offboard& other);
