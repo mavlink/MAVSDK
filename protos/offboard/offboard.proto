@@ -62,6 +62,10 @@ service OffboardService {
      * Set the velocity in NED coordinates and yaw. Not available for fixed-wing aircraft.
      */
     rpc SetVelocityNed(SetVelocityNedRequest) returns(SetVelocityNedResponse) { option (mavsdk.options.async_type) = SYNC; }
+    /*
+    * Set the position in NED coordinates, with the velocity to be used as feed-forward.
+    */
+    rpc SetPositionVelocityNed(SetPositionVelocityNedRequest) returns(SetPositionVelocityNedResponse) { option (mavsdk.options.async_type) = SYNC; }
 }
 
 message StartRequest {}
@@ -118,6 +122,14 @@ message SetVelocityNedRequest {
     VelocityNedYaw velocity_ned_yaw = 1; // Velocity and yaw
 }
 message SetVelocityNedResponse {
+    OffboardResult offboard_result = 1;
+}
+
+message SetPositionVelocityNedRequest {
+    PositionNedYaw position_ned_yaw = 1; // Position and yaw
+    VelocityNedYaw velocity_ned_yaw = 2; // Velocity and yaw
+}
+message SetPositionVelocityNedResponse {
     OffboardResult offboard_result = 1;
 }
 
