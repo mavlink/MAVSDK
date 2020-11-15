@@ -323,7 +323,7 @@ jobs:
     runs-on: ubuntu-18.04
     strategy:
       matrix:
-        arch_name: [linux-armv6, linux-armv7, linux-arm64, manylinux2010-x64, manylinux2014-aarch64]
+        arch_name: [linux-armv6, linux-armv7, linux-arm64, manylinux2010-x64]
     steps:
       - uses: actions/checkout@v2
         with:
