@@ -24,7 +24,7 @@ TEST(CallEveryHandler, Single)
         time.sleep_for(std::chrono::milliseconds(10));
         ceh.run_once();
     }
-    EXPECT_EQ(num_called, 1);
+    EXPECT_EQ(num_called, 2);
 
     UNUSED(cookie);
 }
@@ -40,8 +40,8 @@ TEST(CallEveryHandler, Multiple)
     ceh.add([&num_called]() { ++num_called; }, 0.1f, &cookie);
 
     for (int i = 0; i < 10; ++i) {
-        time.sleep_for(std::chrono::milliseconds(100));
         ceh.run_once();
+        time.sleep_for(std::chrono::milliseconds(100));
     }
     EXPECT_EQ(num_called, 10);
 
@@ -76,8 +76,8 @@ TEST(CallEveryHandler, InParallel)
     ceh.add([&num_called2]() { ++num_called2; }, 0.2f, &cookie2);
 
     for (int i = 0; i < 10; ++i) {
-        time.sleep_for(std::chrono::milliseconds(100));
         ceh.run_once();
+        time.sleep_for(std::chrono::milliseconds(100));
     }
 
     EXPECT_EQ(num_called1, 10);
@@ -90,8 +90,8 @@ TEST(CallEveryHandler, InParallel)
     ceh.change(0.1f, cookie2);
 
     for (int i = 0; i < 10; ++i) {
-        time.sleep_for(std::chrono::milliseconds(100));
         ceh.run_once();
+        time.sleep_for(std::chrono::milliseconds(100));
     }
 
     EXPECT_EQ(num_called1, 2);
@@ -109,23 +109,37 @@ TEST(CallEveryHandler, Reset)
     ceh.add([&num_called]() { ++num_called; }, 0.1f, &cookie);
 
     for (int i = 0; i < 8; ++i) {
-        time.sleep_for(std::chrono::milliseconds(10));
         ceh.run_once();
-        if (i == 8) {
-        }
+        time.sleep_for(std::chrono::milliseconds(10));
     }
-    EXPECT_EQ(num_called, 0);
+    EXPECT_EQ(num_called, 1);
 
     ceh.reset(cookie);
 
     for (int i = 0; i < 8; ++i) {
-        time.sleep_for(std::chrono::milliseconds(10));
         ceh.run_once();
+        time.sleep_for(std::chrono::milliseconds(10));
     }
-    EXPECT_EQ(num_called, 0);
+    EXPECT_EQ(num_called, 1);
 
     for (int i = 0; i < 3; ++i) {
+        ceh.run_once();
         time.sleep_for(std::chrono::milliseconds(10));
+    }
+    EXPECT_EQ(num_called, 2);
+}
+
+TEST(CallEveryHandler, CallImmediately)
+{
+    Time time{};
+    CallEveryHandler ceh(time);
+
+    int num_called = 0;
+
+    void* cookie = nullptr;
+    ceh.add([&num_called]() { ++num_called; }, 0.1f, &cookie);
+
+    for (int i = 0; i < 1; ++i) {
         ceh.run_once();
     }
     EXPECT_EQ(num_called, 1);

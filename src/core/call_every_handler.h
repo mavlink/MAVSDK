@@ -19,8 +19,8 @@ public:
     CallEveryHandler& operator=(CallEveryHandler const&) = delete; // Copy assign
     CallEveryHandler& operator=(CallEveryHandler&&) = delete; // Move assign
 
-    void add(std::function<void()> callback, float interval_s, void** cookie);
-    void change(float interval_s, const void* cookie);
+    void add(std::function<void()> callback, double interval_s, void** cookie);
+    void change(double interval_s, const void* cookie);
     void reset(const void* cookie);
     void remove(const void* cookie);
 
@@ -30,7 +30,7 @@ private:
     struct Entry {
         std::function<void()> callback{nullptr};
         dl_time_t last_time{};
-        float interval_s{0.0f};
+        double interval_s{0.0f};
     };
 
     std::unordered_map<void*, std::shared_ptr<Entry>> _entries{};
