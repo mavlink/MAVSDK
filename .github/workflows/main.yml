@@ -144,96 +144,6 @@ jobs:
           tag: ${{ github.ref }}
           overwrite: true
 
-  alpine-linux-qemu:
-    runs-on: ubuntu-18.04
-    name: Build on alpine for ${{ matrix.arch }}
-
-    strategy:
-      matrix:
-        include:
-          - arch: armv6
-            distro: alpine_latest
-          - arch: armv7
-            distro: alpine_latest
-          - arch: aarch64
-            distro: alpine_latest
-
-    steps:
-      - uses: actions/checkout@v2
-        with:
-          submodules: recursive
-
-      - name: Prepare ccache timestamp
-        id: ccache_cache_timestamp
-        shell: cmake -P {0}
-        run: |
-          string(TIMESTAMP current_date "%Y-%m-%d-%H;%M;%S" UTC)
-          message("::set-output name=timestamp::${current_date}")
-      - name: ccache cache files
-        uses: actions/cache@v1.1.0
-        with:
-          path: .ccache
-          key: ${{ matrix.arch }}-ccache-${{ steps.ccache_cache_timestamp.outputs.timestamp }}
-          restore-keys: |
-            ${{ matrix.arch }}-ccache-
-
-      - uses: uraimo/run-on-arch-action@v2.0.6
-        name: Build
-        id: build
-        with:
-          arch: ${{ matrix.arch }}
-          distro: ${{ matrix.distro }}
-
-          # Not required, but speeds up builds
-          githubToken: ${{ github.token }}
-
-          # Mount the source directory in the container
-          dockerRunArgs: |
-            --volume "${PWD}:/root/MAVSDK"
-            --volume "${PWD}/.ccache:/root/.ccache"
-
-          # Pass some environment variables to the container
-          #env: | # YAML, but pipe character is necessary
-          #  artifact_name: git-${{ matrix.distro }}_${{ matrix.arch }}
-
-          # The shell to run commands with in the container
-          shell: /bin/sh
-
-          # Install some dependencies in the container. This speeds up builds if
-          # you are also using githubToken. Any dependencies installed here will
-          # be part of the container image that gets cached, so subsequent
-          # builds don't have to re-install them. The image layer is cached
-          # publicly in your project's package repository, so it is vital that
-          # no secrets are present in the container state or logs.
-          install: |
-            apk update
-            apk add build-base cmake git linux-headers libexecinfo-dev ccache
-
-          run: |
-            cd /root/MAVSDK
-            export CC=/usr/lib/ccache/bin/gcc
-            export CXX=/usr/lib/ccache/bin/g++
-            export CCACHE_COMPRESS="true"
-            export CCACHE_MAXSIZE="400M"
-            cmake -DCMAKE_BUILD_TYPE=Release -DBUILD_BACKEND=ON -DBUILD_SHARED_LIBS=OFF -DBUILD_STATIC_MAVSDK_SERVER=ON -DCMAKE_INSTALL_PREFIX=install -DWERROR=OFF -j 2 -Bbuild/release -H.
-            cmake --build build/release --target install -- -j2
-            ./build/release/src/unit_tests_runner
-            ./build/release/src/backend/test/unit_tests_backend
-            ccache -s
-
-      - name: Check the artifact
-        run: |
-          file "${PWD}/install/bin/mavsdk_server"
-      - name: Publish artefacts
-        if: startsWith(github.ref, 'refs/tags/v')
-        uses: svenstaro/upload-release-action@v1-release
-        with:
-          repo_token: ${{ secrets.GITHUB_TOKEN }}
-          file: 'install/bin/mavsdk_server'
-          asset_name: 'mavsdk_server_musl_${{ matrix.arch }}'
-          tag: ${{ github.ref }}
-          overwrite: true
-
   px4-sitl-older:
     name: PX4 SITL ${{ matrix.px4_version }} (ubuntu-18.04)
     runs-on: ubuntu-18.04
@@ -323,7 +233,7 @@ jobs:
     runs-on: ubuntu-18.04
     strategy:
       matrix:
-        arch_name: [linux-armv6, linux-armv7, linux-arm64, manylinux2010-x64]
+        arch_name: [linux-armv7-musl, linux-arm64-musl, manylinux2010-x64]
     steps:
       - uses: actions/checkout@v2
         with:
@@ -332,6 +242,32 @@ jobs:
         run: docker run --rm dockcross/${{ matrix.arch_name }} > ./dockcross-${{ matrix.arch_name }}; chmod +x ./dockcross-${{ matrix.arch_name }}
       - name: configure
         run: ./dockcross-${{ matrix.arch_name }} cmake -DCMAKE_BUILD_TYPE=Release -DCMAKE_INSTALL_PREFIX=build/${{ matrix.arch_name }}/install -DBUILD_BACKEND=ON -DBUILD_SHARED_LIBS=OFF -DWERROR=OFF -j 2 -Bbuild/${{ matrix.arch_name }} -H.
+      - name: build
+        run: ./dockcross-${{ matrix.arch_name }} cmake --build build/${{ matrix.arch_name }} -j 2 --target install
+      - name: Publish artefacts
+        if: startsWith(github.ref, 'refs/tags/v')
+        uses: svenstaro/upload-release-action@v1-release
+        with:
+          repo_token: ${{ secrets.GITHUB_TOKEN }}
+          file: 'build/${{ matrix.arch_name }}/install/bin/mavsdk_server'
+          asset_name: 'mavsdk_server_${{ matrix.arch_name }}'
+          tag: ${{ github.ref }}
+          overwrite: true
+
+  dockcross-linux-musl:
+    name: ${{ matrix.arch_name }}
+    runs-on: ubuntu-18.04
+    strategy:
+      matrix:
+        arch_name: [linux-armv7l-musl, linux-arm64-musl]
+    steps:
+      - uses: actions/checkout@v2
+        with:
+          submodules: recursive
+      - name: setup dockcross
+        run: docker run --rm dockcross/${{ matrix.arch_name }} > ./dockcross-${{ matrix.arch_name }}; chmod +x ./dockcross-${{ matrix.arch_name }}
+      - name: configure
+        run: ./dockcross-${{ matrix.arch_name }} cmake -DCMAKE_BUILD_TYPE=Release -DCMAKE_INSTALL_PREFIX=build/${{ matrix.arch_name }}/install -DBUILD_BACKEND=ON -DBUILD_SHARED_LIBS=OFF -DBUILD_STATIC_MAVSDK_SERVER=ON -DWERROR=OFF -j 2 -Bbuild/${{ matrix.arch_name }} -H.
       - name: build
         run: ./dockcross-${{ matrix.arch_name }} cmake --build build/${{ matrix.arch_name }} -j 2 --target install
       - name: Publish artefacts
