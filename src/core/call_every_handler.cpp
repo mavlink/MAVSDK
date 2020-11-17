@@ -6,11 +6,15 @@ CallEveryHandler::CallEveryHandler(Time& time) : _time(time) {}
 
 CallEveryHandler::~CallEveryHandler() {}
 
-void CallEveryHandler::add(std::function<void()> callback, float interval_s, void** cookie)
+void CallEveryHandler::add(std::function<void()> callback, double interval_s, void** cookie)
 {
     auto new_entry = std::make_shared<Entry>();
     new_entry->callback = callback;
-    new_entry->last_time = _time.steady_time();
+    auto before = _time.steady_time();
+    // Make sure it gets run straightaway. The epsilon seemed not enough so
+    // we use the arbitrary value of 1 ms.
+    _time.shift_steady_time_by(before, -interval_s - 0.001);
+    new_entry->last_time = before;
     new_entry->interval_s = interval_s;
 
     void* new_cookie = static_cast<void*>(new_entry.get());
@@ -25,7 +29,7 @@ void CallEveryHandler::add(std::function<void()> callback, float interval_s, voi
     }
 }
 
-void CallEveryHandler::change(float interval_s, const void* cookie)
+void CallEveryHandler::change(double interval_s, const void* cookie)
 {
     std::lock_guard<std::mutex> lock(_entries_mutex);
 
