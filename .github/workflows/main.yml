@@ -228,12 +228,12 @@ jobs:
           tag: ${{ github.ref }}
           overwrite: true
 
-  dockcross-linux:
+  dockcross-manylinux:
     name: ${{ matrix.arch_name }}
     runs-on: ubuntu-18.04
     strategy:
       matrix:
-        arch_name: [linux-armv7-musl, linux-arm64-musl, manylinux2010-x64]
+        arch_name: [manylinux2010-x64]
     steps:
       - uses: actions/checkout@v2
         with:
