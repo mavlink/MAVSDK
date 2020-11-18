@@ -66,6 +66,7 @@ target_link_libraries(mavsdk_server
     mavsdk
     gRPC::grpc++
     ${COMPONENTS_PROTOGENS}
+    ${PROTOBUF_LIBRARIES}
 )
 
 if(BUILD_STATIC_MAVSDK_SERVER AND ("${CMAKE_C_COMPILER_ID}" STREQUAL "GNU"))
