@@ -44,43 +44,38 @@ LogFilesService::Stub::Stub(const std::shared_ptr< ::grpc::ChannelInterface>& ch
 }
 
 void LogFilesService::Stub::experimental_async::GetEntries(::grpc::ClientContext* context, const ::mavsdk::rpc::log_files::GetEntriesRequest* request, ::mavsdk::rpc::log_files::GetEntriesResponse* response, std::function<void(::grpc::Status)> f) {
-  ::grpc_impl::internal::CallbackUnaryCall(stub_->channel_.get(), stub_->rpcmethod_GetEntries_, context, request, response, std::move(f));
-}
-
-void LogFilesService::Stub::experimental_async::GetEntries(::grpc::ClientContext* context, const ::grpc::ByteBuffer* request, ::mavsdk::rpc::log_files::GetEntriesResponse* response, std::function<void(::grpc::Status)> f) {
-  ::grpc_impl::internal::CallbackUnaryCall(stub_->channel_.get(), stub_->rpcmethod_GetEntries_, context, request, response, std::move(f));
+  ::grpc::internal::CallbackUnaryCall(stub_->channel_.get(), stub_->rpcmethod_GetEntries_, context, request, response, std::move(f));
 }
 
 void LogFilesService::Stub::experimental_async::GetEntries(::grpc::ClientContext* context, const ::mavsdk::rpc::log_files::GetEntriesRequest* request, ::mavsdk::rpc::log_files::GetEntriesResponse* response, ::grpc::experimental::ClientUnaryReactor* reactor) {
-  ::grpc_impl::internal::ClientCallbackUnaryFactory::Create(stub_->channel_.get(), stub_->rpcmethod_GetEntries_, context, request, response, reactor);
-}
-
-void LogFilesService::Stub::experimental_async::GetEntries(::grpc::ClientContext* context, const ::grpc::ByteBuffer* request, ::mavsdk::rpc::log_files::GetEntriesResponse* response, ::grpc::experimental::ClientUnaryReactor* reactor) {
-  ::grpc_impl::internal::ClientCallbackUnaryFactory::Create(stub_->channel_.get(), stub_->rpcmethod_GetEntries_, context, request, response, reactor);
-}
-
-::grpc::ClientAsyncResponseReader< ::mavsdk::rpc::log_files::GetEntriesResponse>* LogFilesService::Stub::AsyncGetEntriesRaw(::grpc::ClientContext* context, const ::mavsdk::rpc::log_files::GetEntriesRequest& request, ::grpc::CompletionQueue* cq) {
-  return ::grpc_impl::internal::ClientAsyncResponseReaderFactory< ::mavsdk::rpc::log_files::GetEntriesResponse>::Create(channel_.get(), cq, rpcmethod_GetEntries_, context, request, true);
+  ::grpc::internal::ClientCallbackUnaryFactory::Create(stub_->channel_.get(), stub_->rpcmethod_GetEntries_, context, request, response, reactor);
 }
 
 ::grpc::ClientAsyncResponseReader< ::mavsdk::rpc::log_files::GetEntriesResponse>* LogFilesService::Stub::PrepareAsyncGetEntriesRaw(::grpc::ClientContext* context, const ::mavsdk::rpc::log_files::GetEntriesRequest& request, ::grpc::CompletionQueue* cq) {
-  return ::grpc_impl::internal::ClientAsyncResponseReaderFactory< ::mavsdk::rpc::log_files::GetEntriesResponse>::Create(channel_.get(), cq, rpcmethod_GetEntries_, context, request, false);
+  return ::grpc::internal::ClientAsyncResponseReaderFactory< ::mavsdk::rpc::log_files::GetEntriesResponse>::Create(channel_.get(), cq, rpcmethod_GetEntries_, context, request, false);
+}
+
+::grpc::ClientAsyncResponseReader< ::mavsdk::rpc::log_files::GetEntriesResponse>* LogFilesService::Stub::AsyncGetEntriesRaw(::grpc::ClientContext* context, const ::mavsdk::rpc::log_files::GetEntriesRequest& request, ::grpc::CompletionQueue* cq) {
+  auto* result =
+    this->PrepareAsyncGetEntriesRaw(context, request, cq);
+  result->StartCall();
+  return result;
 }
 
 ::grpc::ClientReader< ::mavsdk::rpc::log_files::DownloadLogFileResponse>* LogFilesService::Stub::SubscribeDownloadLogFileRaw(::grpc::ClientContext* context, const ::mavsdk::rpc::log_files::SubscribeDownloadLogFileRequest& request) {
-  return ::grpc_impl::internal::ClientReaderFactory< ::mavsdk::rpc::log_files::DownloadLogFileResponse>::Create(channel_.get(), rpcmethod_SubscribeDownloadLogFile_, context, request);
+  return ::grpc::internal::ClientReaderFactory< ::mavsdk::rpc::log_files::DownloadLogFileResponse>::Create(channel_.get(), rpcmethod_SubscribeDownloadLogFile_, context, request);
 }
 
 void LogFilesService::Stub::experimental_async::SubscribeDownloadLogFile(::grpc::ClientContext* context, ::mavsdk::rpc::log_files::SubscribeDownloadLogFileRequest* request, ::grpc::experimental::ClientReadReactor< ::mavsdk::rpc::log_files::DownloadLogFileResponse>* reactor) {
-  ::grpc_impl::internal::ClientCallbackReaderFactory< ::mavsdk::rpc::log_files::DownloadLogFileResponse>::Create(stub_->channel_.get(), stub_->rpcmethod_SubscribeDownloadLogFile_, context, request, reactor);
+  ::grpc::internal::ClientCallbackReaderFactory< ::mavsdk::rpc::log_files::DownloadLogFileResponse>::Create(stub_->channel_.get(), stub_->rpcmethod_SubscribeDownloadLogFile_, context, request, reactor);
 }
 
 ::grpc::ClientAsyncReader< ::mavsdk::rpc::log_files::DownloadLogFileResponse>* LogFilesService::Stub::AsyncSubscribeDownloadLogFileRaw(::grpc::ClientContext* context, const ::mavsdk::rpc::log_files::SubscribeDownloadLogFileRequest& request, ::grpc::CompletionQueue* cq, void* tag) {
-  return ::grpc_impl::internal::ClientAsyncReaderFactory< ::mavsdk::rpc::log_files::DownloadLogFileResponse>::Create(channel_.get(), cq, rpcmethod_SubscribeDownloadLogFile_, context, request, true, tag);
+  return ::grpc::internal::ClientAsyncReaderFactory< ::mavsdk::rpc::log_files::DownloadLogFileResponse>::Create(channel_.get(), cq, rpcmethod_SubscribeDownloadLogFile_, context, request, true, tag);
 }
 
 ::grpc::ClientAsyncReader< ::mavsdk::rpc::log_files::DownloadLogFileResponse>* LogFilesService::Stub::PrepareAsyncSubscribeDownloadLogFileRaw(::grpc::ClientContext* context, const ::mavsdk::rpc::log_files::SubscribeDownloadLogFileRequest& request, ::grpc::CompletionQueue* cq) {
-  return ::grpc_impl::internal::ClientAsyncReaderFactory< ::mavsdk::rpc::log_files::DownloadLogFileResponse>::Create(channel_.get(), cq, rpcmethod_SubscribeDownloadLogFile_, context, request, false, nullptr);
+  return ::grpc::internal::ClientAsyncReaderFactory< ::mavsdk::rpc::log_files::DownloadLogFileResponse>::Create(channel_.get(), cq, rpcmethod_SubscribeDownloadLogFile_, context, request, false, nullptr);
 }
 
 LogFilesService::Service::Service() {
@@ -88,12 +83,22 @@ LogFilesService::Service::Service() {
       LogFilesService_method_names[0],
       ::grpc::internal::RpcMethod::NORMAL_RPC,
       new ::grpc::internal::RpcMethodHandler< LogFilesService::Service, ::mavsdk::rpc::log_files::GetEntriesRequest, ::mavsdk::rpc::log_files::GetEntriesResponse>(
-          std::mem_fn(&LogFilesService::Service::GetEntries), this)));
+          [](LogFilesService::Service* service,
+             ::grpc::ServerContext* ctx,
+             const ::mavsdk::rpc::log_files::GetEntriesRequest* req,
+             ::mavsdk::rpc::log_files::GetEntriesResponse* resp) {
+               return service->GetEntries(ctx, req, resp);
+             }, this)));
   AddMethod(new ::grpc::internal::RpcServiceMethod(
       LogFilesService_method_names[1],
       ::grpc::internal::RpcMethod::SERVER_STREAMING,
       new ::grpc::internal::ServerStreamingHandler< LogFilesService::Service, ::mavsdk::rpc::log_files::SubscribeDownloadLogFileRequest, ::mavsdk::rpc::log_files::DownloadLogFileResponse>(
-          std::mem_fn(&LogFilesService::Service::SubscribeDownloadLogFile), this)));
+          [](LogFilesService::Service* service,
+             ::grpc::ServerContext* ctx,
+             const ::mavsdk::rpc::log_files::SubscribeDownloadLogFileRequest* req,
+             ::grpc::ServerWriter<::mavsdk::rpc::log_files::DownloadLogFileResponse>* writer) {
+               return service->SubscribeDownloadLogFile(ctx, req, writer);
+             }, this)));
 }
 
 LogFilesService::Service::~Service() {

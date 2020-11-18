@@ -68,6 +68,10 @@ target_link_libraries(mavsdk_server
     ${COMPONENTS_PROTOGENS}
 )
 
+if(BUILD_STATIC_MAVSDK_SERVER AND ("${CMAKE_C_COMPILER_ID}" STREQUAL "GNU"))
+    target_link_libraries(mavsdk_server PRIVATE atomic)
+endif()
+
 target_include_directories(mavsdk_server
     PRIVATE
     $<BUILD_INTERFACE:${PROJECT_SOURCE_DIR}/core>

@@ -1,13 +1,12 @@
 diff --git a/CMakeLists.txt b/CMakeLists.txt
-index 4767045..dd4c569 100644
+index c1ae8d5..a8c47e7 100644
 --- a/CMakeLists.txt
 +++ b/CMakeLists.txt
-@@ -32,6 +32,9 @@ cmake_policy(SET CMP0048 NEW)
+@@ -43,6 +43,8 @@ endif (POLICY CMP0077)
  
  project(absl CXX)
  
-+# Hack currently needed when building with Clang5 for arm.
-+add_definitions(-DABSL_NO_XRAY_ATTRIBUTES)
++set(CMAKE_CXX_STANDARD 11)
 +
  # Output directory is correct by default for most build setups. However, when
  # building Abseil as a DLL, it is important to have the DLL in the same

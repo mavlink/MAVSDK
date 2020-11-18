@@ -498,16 +498,15 @@ static ::PROTOBUF_NAMESPACE_ID::internal::SCCInfoBase*const descriptor_table_cal
   &scc_info_SubscribeCalibrateMagnetometerRequest_calibration_2fcalibration_2eproto.base,
 };
 static ::PROTOBUF_NAMESPACE_ID::internal::once_flag descriptor_table_calibration_2fcalibration_2eproto_once;
-static bool descriptor_table_calibration_2fcalibration_2eproto_initialized = false;
 const ::PROTOBUF_NAMESPACE_ID::internal::DescriptorTable descriptor_table_calibration_2fcalibration_2eproto = {
-  &descriptor_table_calibration_2fcalibration_2eproto_initialized, descriptor_table_protodef_calibration_2fcalibration_2eproto, "calibration/calibration.proto", 2632,
+  false, false, descriptor_table_protodef_calibration_2fcalibration_2eproto, "calibration/calibration.proto", 2632,
   &descriptor_table_calibration_2fcalibration_2eproto_once, descriptor_table_calibration_2fcalibration_2eproto_sccs, descriptor_table_calibration_2fcalibration_2eproto_deps, 14, 1,
   schemas, file_default_instances, TableStruct_calibration_2fcalibration_2eproto::offsets,
   file_level_metadata_calibration_2fcalibration_2eproto, 14, file_level_enum_descriptors_calibration_2fcalibration_2eproto, file_level_service_descriptors_calibration_2fcalibration_2eproto,
 };
 
 // Force running AddDescriptors() at dynamic initialization time.
-static bool dynamic_init_dummy_calibration_2fcalibration_2eproto = (  ::PROTOBUF_NAMESPACE_ID::internal::AddDescriptors(&descriptor_table_calibration_2fcalibration_2eproto), true);
+static bool dynamic_init_dummy_calibration_2fcalibration_2eproto = (static_cast<void>(::PROTOBUF_NAMESPACE_ID::internal::AddDescriptors(&descriptor_table_calibration_2fcalibration_2eproto)), true);
 namespace mavsdk {
 namespace rpc {
 namespace calibration {
@@ -559,15 +558,15 @@ class SubscribeCalibrateGyroRequest::_Internal {
  public:
 };
 
-SubscribeCalibrateGyroRequest::SubscribeCalibrateGyroRequest()
-  : ::PROTOBUF_NAMESPACE_ID::Message(), _internal_metadata_(nullptr) {
+SubscribeCalibrateGyroRequest::SubscribeCalibrateGyroRequest(::PROTOBUF_NAMESPACE_ID::Arena* arena)
+  : ::PROTOBUF_NAMESPACE_ID::Message(arena) {
   SharedCtor();
-  // @@protoc_insertion_point(constructor:mavsdk.rpc.calibration.SubscribeCalibrateGyroRequest)
+  RegisterArenaDtor(arena);
+  // @@protoc_insertion_point(arena_constructor:mavsdk.rpc.calibration.SubscribeCalibrateGyroRequest)
 }
 SubscribeCalibrateGyroRequest::SubscribeCalibrateGyroRequest(const SubscribeCalibrateGyroRequest& from)
-  : ::PROTOBUF_NAMESPACE_ID::Message(),
-      _internal_metadata_(nullptr) {
-  _internal_metadata_.MergeFrom(from._internal_metadata_);
+  : ::PROTOBUF_NAMESPACE_ID::Message() {
+  _internal_metadata_.MergeFrom<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>(from._internal_metadata_);
   // @@protoc_insertion_point(copy_constructor:mavsdk.rpc.calibration.SubscribeCalibrateGyroRequest)
 }
 
@@ -577,11 +576,19 @@ void SubscribeCalibrateGyroRequest::SharedCtor() {
 SubscribeCalibrateGyroRequest::~SubscribeCalibrateGyroRequest() {
   // @@protoc_insertion_point(destructor:mavsdk.rpc.calibration.SubscribeCalibrateGyroRequest)
   SharedDtor();
+  _internal_metadata_.Delete<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>();
 }
 
 void SubscribeCalibrateGyroRequest::SharedDtor() {
+  GOOGLE_DCHECK(GetArena() == nullptr);
 }
 
+void SubscribeCalibrateGyroRequest::ArenaDtor(void* object) {
+  SubscribeCalibrateGyroRequest* _this = reinterpret_cast< SubscribeCalibrateGyroRequest* >(object);
+  (void)_this;
+}
+void SubscribeCalibrateGyroRequest::RegisterArenaDtor(::PROTOBUF_NAMESPACE_ID::Arena*) {
+}
 void SubscribeCalibrateGyroRequest::SetCachedSize(int size) const {
   _cached_size_.Set(size);
 }
@@ -597,11 +604,12 @@ void SubscribeCalibrateGyroRequest::Clear() {
   // Prevent compiler warnings about cached_has_bits being unused
   (void) cached_has_bits;
 
-  _internal_metadata_.Clear();
+  _internal_metadata_.Clear<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>();
 }
 
 const char* SubscribeCalibrateGyroRequest::_InternalParse(const char* ptr, ::PROTOBUF_NAMESPACE_ID::internal::ParseContext* ctx) {
 #define CHK_(x) if (PROTOBUF_PREDICT_FALSE(!(x))) goto failure
+  ::PROTOBUF_NAMESPACE_ID::Arena* arena = GetArena(); (void)arena;
   while (!ctx->Done(&ptr)) {
     ::PROTOBUF_NAMESPACE_ID::uint32 tag;
     ptr = ::PROTOBUF_NAMESPACE_ID::internal::ReadTag(ptr, &tag);
@@ -610,7 +618,9 @@ const char* SubscribeCalibrateGyroRequest::_InternalParse(const char* ptr, ::PRO
           ctx->SetLastTag(tag);
           goto success;
         }
-        ptr = UnknownFieldParse(tag, &_internal_metadata_, ptr, ctx);
+        ptr = UnknownFieldParse(tag,
+            _internal_metadata_.mutable_unknown_fields<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>(),
+            ptr, ctx);
         CHK_(ptr != nullptr);
         continue;
   }  // while
@@ -630,7 +640,7 @@ failure:
 
   if (PROTOBUF_PREDICT_FALSE(_internal_metadata_.have_unknown_fields())) {
     target = ::PROTOBUF_NAMESPACE_ID::internal::WireFormat::InternalSerializeUnknownFieldsToArray(
-        _internal_metadata_.unknown_fields(), target, stream);
+        _internal_metadata_.unknown_fields<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>(::PROTOBUF_NAMESPACE_ID::UnknownFieldSet::default_instance), target, stream);
   }
   // @@protoc_insertion_point(serialize_to_array_end:mavsdk.rpc.calibration.SubscribeCalibrateGyroRequest)
   return target;
@@ -671,7 +681,7 @@ void SubscribeCalibrateGyroRequest::MergeFrom(const ::PROTOBUF_NAMESPACE_ID::Mes
 void SubscribeCalibrateGyroRequest::MergeFrom(const SubscribeCalibrateGyroRequest& from) {
 // @@protoc_insertion_point(class_specific_merge_from_start:mavsdk.rpc.calibration.SubscribeCalibrateGyroRequest)
   GOOGLE_DCHECK_NE(&from, this);
-  _internal_metadata_.MergeFrom(from._internal_metadata_);
+  _internal_metadata_.MergeFrom<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>(from._internal_metadata_);
   ::PROTOBUF_NAMESPACE_ID::uint32 cached_has_bits = 0;
   (void) cached_has_bits;
 
@@ -697,7 +707,7 @@ bool SubscribeCalibrateGyroRequest::IsInitialized() const {
 
 void SubscribeCalibrateGyroRequest::InternalSwap(SubscribeCalibrateGyroRequest* other) {
   using std::swap;
-  _internal_metadata_.Swap(&other->_internal_metadata_);
+  _internal_metadata_.Swap<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>(&other->_internal_metadata_);
 }
 
 ::PROTOBUF_NAMESPACE_ID::Metadata SubscribeCalibrateGyroRequest::GetMetadata() const {
@@ -727,15 +737,15 @@ const ::mavsdk::rpc::calibration::ProgressData&
 CalibrateGyroResponse::_Internal::progress_data(const CalibrateGyroResponse* msg) {
   return *msg->progress_data_;
 }
-CalibrateGyroResponse::CalibrateGyroResponse()
-  : ::PROTOBUF_NAMESPACE_ID::Message(), _internal_metadata_(nullptr) {
+CalibrateGyroResponse::CalibrateGyroResponse(::PROTOBUF_NAMESPACE_ID::Arena* arena)
+  : ::PROTOBUF_NAMESPACE_ID::Message(arena) {
   SharedCtor();
-  // @@protoc_insertion_point(constructor:mavsdk.rpc.calibration.CalibrateGyroResponse)
+  RegisterArenaDtor(arena);
+  // @@protoc_insertion_point(arena_constructor:mavsdk.rpc.calibration.CalibrateGyroResponse)
 }
 CalibrateGyroResponse::CalibrateGyroResponse(const CalibrateGyroResponse& from)
-  : ::PROTOBUF_NAMESPACE_ID::Message(),
-      _internal_metadata_(nullptr) {
-  _internal_metadata_.MergeFrom(from._internal_metadata_);
+  : ::PROTOBUF_NAMESPACE_ID::Message() {
+  _internal_metadata_.MergeFrom<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>(from._internal_metadata_);
   if (from._internal_has_calibration_result()) {
     calibration_result_ = new ::mavsdk::rpc::calibration::CalibrationResult(*from.calibration_result_);
   } else {
@@ -759,13 +769,21 @@ void CalibrateGyroResponse::SharedCtor() {
 CalibrateGyroResponse::~CalibrateGyroResponse() {
   // @@protoc_insertion_point(destructor:mavsdk.rpc.calibration.CalibrateGyroResponse)
   SharedDtor();
+  _internal_metadata_.Delete<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>();
 }
 
 void CalibrateGyroResponse::SharedDtor() {
+  GOOGLE_DCHECK(GetArena() == nullptr);
   if (this != internal_default_instance()) delete calibration_result_;
   if (this != internal_default_instance()) delete progress_data_;
 }
 
+void CalibrateGyroResponse::ArenaDtor(void* object) {
+  CalibrateGyroResponse* _this = reinterpret_cast< CalibrateGyroResponse* >(object);
+  (void)_this;
+}
+void CalibrateGyroResponse::RegisterArenaDtor(::PROTOBUF_NAMESPACE_ID::Arena*) {
+}
 void CalibrateGyroResponse::SetCachedSize(int size) const {
   _cached_size_.Set(size);
 }
@@ -781,19 +799,20 @@ void CalibrateGyroResponse::Clear() {
   // Prevent compiler warnings about cached_has_bits being unused
   (void) cached_has_bits;
 
-  if (GetArenaNoVirtual() == nullptr && calibration_result_ != nullptr) {
+  if (GetArena() == nullptr && calibration_result_ != nullptr) {
     delete calibration_result_;
   }
   calibration_result_ = nullptr;
-  if (GetArenaNoVirtual() == nullptr && progress_data_ != nullptr) {
+  if (GetArena() == nullptr && progress_data_ != nullptr) {
     delete progress_data_;
   }
   progress_data_ = nullptr;
-  _internal_metadata_.Clear();
+  _internal_metadata_.Clear<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>();
 }
 
 const char* CalibrateGyroResponse::_InternalParse(const char* ptr, ::PROTOBUF_NAMESPACE_ID::internal::ParseContext* ctx) {
 #define CHK_(x) if (PROTOBUF_PREDICT_FALSE(!(x))) goto failure
+  ::PROTOBUF_NAMESPACE_ID::Arena* arena = GetArena(); (void)arena;
   while (!ctx->Done(&ptr)) {
     ::PROTOBUF_NAMESPACE_ID::uint32 tag;
     ptr = ::PROTOBUF_NAMESPACE_ID::internal::ReadTag(ptr, &tag);
@@ -819,7 +838,9 @@ const char* CalibrateGyroResponse::_InternalParse(const char* ptr, ::PROTOBUF_NA
           ctx->SetLastTag(tag);
           goto success;
         }
-        ptr = UnknownFieldParse(tag, &_internal_metadata_, ptr, ctx);
+        ptr = UnknownFieldParse(tag,
+            _internal_metadata_.mutable_unknown_fields<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>(),
+            ptr, ctx);
         CHK_(ptr != nullptr);
         continue;
       }
@@ -857,7 +878,7 @@ failure:
 
   if (PROTOBUF_PREDICT_FALSE(_internal_metadata_.have_unknown_fields())) {
     target = ::PROTOBUF_NAMESPACE_ID::internal::WireFormat::InternalSerializeUnknownFieldsToArray(
-        _internal_metadata_.unknown_fields(), target, stream);
+        _internal_metadata_.unknown_fields<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>(::PROTOBUF_NAMESPACE_ID::UnknownFieldSet::default_instance), target, stream);
   }
   // @@protoc_insertion_point(serialize_to_array_end:mavsdk.rpc.calibration.CalibrateGyroResponse)
   return target;
@@ -912,7 +933,7 @@ void CalibrateGyroResponse::MergeFrom(const ::PROTOBUF_NAMESPACE_ID::Message& fr
 void CalibrateGyroResponse::MergeFrom(const CalibrateGyroResponse& from) {
 // @@protoc_insertion_point(class_specific_merge_from_start:mavsdk.rpc.calibration.CalibrateGyroResponse)
   GOOGLE_DCHECK_NE(&from, this);
-  _internal_metadata_.MergeFrom(from._internal_metadata_);
+  _internal_metadata_.MergeFrom<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>(from._internal_metadata_);
   ::PROTOBUF_NAMESPACE_ID::uint32 cached_has_bits = 0;
   (void) cached_has_bits;
 
@@ -944,9 +965,13 @@ bool CalibrateGyroResponse::IsInitialized() const {
 
 void CalibrateGyroResponse::InternalSwap(CalibrateGyroResponse* other) {
   using std::swap;
-  _internal_metadata_.Swap(&other->_internal_metadata_);
-  swap(calibration_result_, other->calibration_result_);
-  swap(progress_data_, other->progress_data_);
+  _internal_metadata_.Swap<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>(&other->_internal_metadata_);
+  ::PROTOBUF_NAMESPACE_ID::internal::memswap<
+      PROTOBUF_FIELD_OFFSET(CalibrateGyroResponse, progress_data_)
+      + sizeof(CalibrateGyroResponse::progress_data_)
+      - PROTOBUF_FIELD_OFFSET(CalibrateGyroResponse, calibration_result_)>(
+          reinterpret_cast<char*>(&calibration_result_),
+          reinterpret_cast<char*>(&other->calibration_result_));
 }
 
 ::PROTOBUF_NAMESPACE_ID::Metadata CalibrateGyroResponse::GetMetadata() const {
@@ -962,15 +987,15 @@ class SubscribeCalibrateAccelerometerRequest::_Internal {
  public:
 };
 
-SubscribeCalibrateAccelerometerRequest::SubscribeCalibrateAccelerometerRequest()
-  : ::PROTOBUF_NAMESPACE_ID::Message(), _internal_metadata_(nullptr) {
+SubscribeCalibrateAccelerometerRequest::SubscribeCalibrateAccelerometerRequest(::PROTOBUF_NAMESPACE_ID::Arena* arena)
+  : ::PROTOBUF_NAMESPACE_ID::Message(arena) {
   SharedCtor();
-  // @@protoc_insertion_point(constructor:mavsdk.rpc.calibration.SubscribeCalibrateAccelerometerRequest)
+  RegisterArenaDtor(arena);
+  // @@protoc_insertion_point(arena_constructor:mavsdk.rpc.calibration.SubscribeCalibrateAccelerometerRequest)
 }
 SubscribeCalibrateAccelerometerRequest::SubscribeCalibrateAccelerometerRequest(const SubscribeCalibrateAccelerometerRequest& from)
-  : ::PROTOBUF_NAMESPACE_ID::Message(),
-      _internal_metadata_(nullptr) {
-  _internal_metadata_.MergeFrom(from._internal_metadata_);
+  : ::PROTOBUF_NAMESPACE_ID::Message() {
+  _internal_metadata_.MergeFrom<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>(from._internal_metadata_);
   // @@protoc_insertion_point(copy_constructor:mavsdk.rpc.calibration.SubscribeCalibrateAccelerometerRequest)
 }
 
@@ -980,11 +1005,19 @@ void SubscribeCalibrateAccelerometerRequest::SharedCtor() {
 SubscribeCalibrateAccelerometerRequest::~SubscribeCalibrateAccelerometerRequest() {
   // @@protoc_insertion_point(destructor:mavsdk.rpc.calibration.SubscribeCalibrateAccelerometerRequest)
   SharedDtor();
+  _internal_metadata_.Delete<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>();
 }
 
 void SubscribeCalibrateAccelerometerRequest::SharedDtor() {
+  GOOGLE_DCHECK(GetArena() == nullptr);
 }
 
+void SubscribeCalibrateAccelerometerRequest::ArenaDtor(void* object) {
+  SubscribeCalibrateAccelerometerRequest* _this = reinterpret_cast< SubscribeCalibrateAccelerometerRequest* >(object);
+  (void)_this;
+}
+void SubscribeCalibrateAccelerometerRequest::RegisterArenaDtor(::PROTOBUF_NAMESPACE_ID::Arena*) {
+}
 void SubscribeCalibrateAccelerometerRequest::SetCachedSize(int size) const {
   _cached_size_.Set(size);
 }
@@ -1000,11 +1033,12 @@ void SubscribeCalibrateAccelerometerRequest::Clear() {
   // Prevent compiler warnings about cached_has_bits being unused
   (void) cached_has_bits;
 
-  _internal_metadata_.Clear();
+  _internal_metadata_.Clear<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>();
 }
 
 const char* SubscribeCalibrateAccelerometerRequest::_InternalParse(const char* ptr, ::PROTOBUF_NAMESPACE_ID::internal::ParseContext* ctx) {
 #define CHK_(x) if (PROTOBUF_PREDICT_FALSE(!(x))) goto failure
+  ::PROTOBUF_NAMESPACE_ID::Arena* arena = GetArena(); (void)arena;
   while (!ctx->Done(&ptr)) {
     ::PROTOBUF_NAMESPACE_ID::uint32 tag;
     ptr = ::PROTOBUF_NAMESPACE_ID::internal::ReadTag(ptr, &tag);
@@ -1013,7 +1047,9 @@ const char* SubscribeCalibrateAccelerometerRequest::_InternalParse(const char* p
           ctx->SetLastTag(tag);
           goto success;
         }
-        ptr = UnknownFieldParse(tag, &_internal_metadata_, ptr, ctx);
+        ptr = UnknownFieldParse(tag,
+            _internal_metadata_.mutable_unknown_fields<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>(),
+            ptr, ctx);
         CHK_(ptr != nullptr);
         continue;
   }  // while
@@ -1033,7 +1069,7 @@ failure:
 
   if (PROTOBUF_PREDICT_FALSE(_internal_metadata_.have_unknown_fields())) {
     target = ::PROTOBUF_NAMESPACE_ID::internal::WireFormat::InternalSerializeUnknownFieldsToArray(
-        _internal_metadata_.unknown_fields(), target, stream);
+        _internal_metadata_.unknown_fields<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>(::PROTOBUF_NAMESPACE_ID::UnknownFieldSet::default_instance), target, stream);
   }
   // @@protoc_insertion_point(serialize_to_array_end:mavsdk.rpc.calibration.SubscribeCalibrateAccelerometerRequest)
   return target;
@@ -1074,7 +1110,7 @@ void SubscribeCalibrateAccelerometerRequest::MergeFrom(const ::PROTOBUF_NAMESPAC
 void SubscribeCalibrateAccelerometerRequest::MergeFrom(const SubscribeCalibrateAccelerometerRequest& from) {
 // @@protoc_insertion_point(class_specific_merge_from_start:mavsdk.rpc.calibration.SubscribeCalibrateAccelerometerRequest)
   GOOGLE_DCHECK_NE(&from, this);
-  _internal_metadata_.MergeFrom(from._internal_metadata_);
+  _internal_metadata_.MergeFrom<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>(from._internal_metadata_);
   ::PROTOBUF_NAMESPACE_ID::uint32 cached_has_bits = 0;
   (void) cached_has_bits;
 
@@ -1100,7 +1136,7 @@ bool SubscribeCalibrateAccelerometerRequest::IsInitialized() const {
 
 void SubscribeCalibrateAccelerometerRequest::InternalSwap(SubscribeCalibrateAccelerometerRequest* other) {
   using std::swap;
-  _internal_metadata_.Swap(&other->_internal_metadata_);
+  _internal_metadata_.Swap<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>(&other->_internal_metadata_);
 }
 
 ::PROTOBUF_NAMESPACE_ID::Metadata SubscribeCalibrateAccelerometerRequest::GetMetadata() const {
@@ -1130,15 +1166,15 @@ const ::mavsdk::rpc::calibration::ProgressData&
 CalibrateAccelerometerResponse::_Internal::progress_data(const CalibrateAccelerometerResponse* msg) {
   return *msg->progress_data_;
 }
-CalibrateAccelerometerResponse::CalibrateAccelerometerResponse()
-  : ::PROTOBUF_NAMESPACE_ID::Message(), _internal_metadata_(nullptr) {
+CalibrateAccelerometerResponse::CalibrateAccelerometerResponse(::PROTOBUF_NAMESPACE_ID::Arena* arena)
+  : ::PROTOBUF_NAMESPACE_ID::Message(arena) {
   SharedCtor();
-  // @@protoc_insertion_point(constructor:mavsdk.rpc.calibration.CalibrateAccelerometerResponse)
+  RegisterArenaDtor(arena);
+  // @@protoc_insertion_point(arena_constructor:mavsdk.rpc.calibration.CalibrateAccelerometerResponse)
 }
 CalibrateAccelerometerResponse::CalibrateAccelerometerResponse(const CalibrateAccelerometerResponse& from)
-  : ::PROTOBUF_NAMESPACE_ID::Message(),
-      _internal_metadata_(nullptr) {
-  _internal_metadata_.MergeFrom(from._internal_metadata_);
+  : ::PROTOBUF_NAMESPACE_ID::Message() {
+  _internal_metadata_.MergeFrom<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>(from._internal_metadata_);
   if (from._internal_has_calibration_result()) {
     calibration_result_ = new ::mavsdk::rpc::calibration::CalibrationResult(*from.calibration_result_);
   } else {
@@ -1162,13 +1198,21 @@ void CalibrateAccelerometerResponse::SharedCtor() {
 CalibrateAccelerometerResponse::~CalibrateAccelerometerResponse() {
   // @@protoc_insertion_point(destructor:mavsdk.rpc.calibration.CalibrateAccelerometerResponse)
   SharedDtor();
+  _internal_metadata_.Delete<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>();
 }
 
 void CalibrateAccelerometerResponse::SharedDtor() {
+  GOOGLE_DCHECK(GetArena() == nullptr);
   if (this != internal_default_instance()) delete calibration_result_;
   if (this != internal_default_instance()) delete progress_data_;
 }
 
+void CalibrateAccelerometerResponse::ArenaDtor(void* object) {
+  CalibrateAccelerometerResponse* _this = reinterpret_cast< CalibrateAccelerometerResponse* >(object);
+  (void)_this;
+}
+void CalibrateAccelerometerResponse::RegisterArenaDtor(::PROTOBUF_NAMESPACE_ID::Arena*) {
+}
 void CalibrateAccelerometerResponse::SetCachedSize(int size) const {
   _cached_size_.Set(size);
 }
@@ -1184,19 +1228,20 @@ void CalibrateAccelerometerResponse::Clear() {
   // Prevent compiler warnings about cached_has_bits being unused
   (void) cached_has_bits;
 
-  if (GetArenaNoVirtual() == nullptr && calibration_result_ != nullptr) {
+  if (GetArena() == nullptr && calibration_result_ != nullptr) {
     delete calibration_result_;
   }
   calibration_result_ = nullptr;
-  if (GetArenaNoVirtual() == nullptr && progress_data_ != nullptr) {
+  if (GetArena() == nullptr && progress_data_ != nullptr) {
     delete progress_data_;
   }
   progress_data_ = nullptr;
-  _internal_metadata_.Clear();
+  _internal_metadata_.Clear<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>();
 }
 
 const char* CalibrateAccelerometerResponse::_InternalParse(const char* ptr, ::PROTOBUF_NAMESPACE_ID::internal::ParseContext* ctx) {
 #define CHK_(x) if (PROTOBUF_PREDICT_FALSE(!(x))) goto failure
+  ::PROTOBUF_NAMESPACE_ID::Arena* arena = GetArena(); (void)arena;
   while (!ctx->Done(&ptr)) {
     ::PROTOBUF_NAMESPACE_ID::uint32 tag;
     ptr = ::PROTOBUF_NAMESPACE_ID::internal::ReadTag(ptr, &tag);
@@ -1222,7 +1267,9 @@ const char* CalibrateAccelerometerResponse::_InternalParse(const char* ptr, ::PR
           ctx->SetLastTag(tag);
           goto success;
         }
-        ptr = UnknownFieldParse(tag, &_internal_metadata_, ptr, ctx);
+        ptr = UnknownFieldParse(tag,
+            _internal_metadata_.mutable_unknown_fields<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>(),
+            ptr, ctx);
         CHK_(ptr != nullptr);
         continue;
       }
@@ -1260,7 +1307,7 @@ failure:
 
   if (PROTOBUF_PREDICT_FALSE(_internal_metadata_.have_unknown_fields())) {
     target = ::PROTOBUF_NAMESPACE_ID::internal::WireFormat::InternalSerializeUnknownFieldsToArray(
-        _internal_metadata_.unknown_fields(), target, stream);
+        _internal_metadata_.unknown_fields<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>(::PROTOBUF_NAMESPACE_ID::UnknownFieldSet::default_instance), target, stream);
   }
   // @@protoc_insertion_point(serialize_to_array_end:mavsdk.rpc.calibration.CalibrateAccelerometerResponse)
   return target;
@@ -1315,7 +1362,7 @@ void CalibrateAccelerometerResponse::MergeFrom(const ::PROTOBUF_NAMESPACE_ID::Me
 void CalibrateAccelerometerResponse::MergeFrom(const CalibrateAccelerometerResponse& from) {
 // @@protoc_insertion_point(class_specific_merge_from_start:mavsdk.rpc.calibration.CalibrateAccelerometerResponse)
   GOOGLE_DCHECK_NE(&from, this);
-  _internal_metadata_.MergeFrom(from._internal_metadata_);
+  _internal_metadata_.MergeFrom<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>(from._internal_metadata_);
   ::PROTOBUF_NAMESPACE_ID::uint32 cached_has_bits = 0;
   (void) cached_has_bits;
 
@@ -1347,9 +1394,13 @@ bool CalibrateAccelerometerResponse::IsInitialized() const {
 
 void CalibrateAccelerometerResponse::InternalSwap(CalibrateAccelerometerResponse* other) {
   using std::swap;
-  _internal_metadata_.Swap(&other->_internal_metadata_);
-  swap(calibration_result_, other->calibration_result_);
-  swap(progress_data_, other->progress_data_);
+  _internal_metadata_.Swap<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>(&other->_internal_metadata_);
+  ::PROTOBUF_NAMESPACE_ID::internal::memswap<
+      PROTOBUF_FIELD_OFFSET(CalibrateAccelerometerResponse, progress_data_)
+      + sizeof(CalibrateAccelerometerResponse::progress_data_)
+      - PROTOBUF_FIELD_OFFSET(CalibrateAccelerometerResponse, calibration_result_)>(
+          reinterpret_cast<char*>(&calibration_result_),
+          reinterpret_cast<char*>(&other->calibration_result_));
 }
 
 ::PROTOBUF_NAMESPACE_ID::Metadata CalibrateAccelerometerResponse::GetMetadata() const {
@@ -1365,15 +1416,15 @@ class SubscribeCalibrateMagnetometerRequest::_Internal {
  public:
 };
 
-SubscribeCalibrateMagnetometerRequest::SubscribeCalibrateMagnetometerRequest()
-  : ::PROTOBUF_NAMESPACE_ID::Message(), _internal_metadata_(nullptr) {
+SubscribeCalibrateMagnetometerRequest::SubscribeCalibrateMagnetometerRequest(::PROTOBUF_NAMESPACE_ID::Arena* arena)
+  : ::PROTOBUF_NAMESPACE_ID::Message(arena) {
   SharedCtor();
-  // @@protoc_insertion_point(constructor:mavsdk.rpc.calibration.SubscribeCalibrateMagnetometerRequest)
+  RegisterArenaDtor(arena);
+  // @@protoc_insertion_point(arena_constructor:mavsdk.rpc.calibration.SubscribeCalibrateMagnetometerRequest)
 }
 SubscribeCalibrateMagnetometerRequest::SubscribeCalibrateMagnetometerRequest(const SubscribeCalibrateMagnetometerRequest& from)
-  : ::PROTOBUF_NAMESPACE_ID::Message(),
-      _internal_metadata_(nullptr) {
-  _internal_metadata_.MergeFrom(from._internal_metadata_);
+  : ::PROTOBUF_NAMESPACE_ID::Message() {
+  _internal_metadata_.MergeFrom<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>(from._internal_metadata_);
   // @@protoc_insertion_point(copy_constructor:mavsdk.rpc.calibration.SubscribeCalibrateMagnetometerRequest)
 }
 
@@ -1383,11 +1434,19 @@ void SubscribeCalibrateMagnetometerRequest::SharedCtor() {
 SubscribeCalibrateMagnetometerRequest::~SubscribeCalibrateMagnetometerRequest() {
   // @@protoc_insertion_point(destructor:mavsdk.rpc.calibration.SubscribeCalibrateMagnetometerRequest)
   SharedDtor();
+  _internal_metadata_.Delete<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>();
 }
 
 void SubscribeCalibrateMagnetometerRequest::SharedDtor() {
+  GOOGLE_DCHECK(GetArena() == nullptr);
 }
 
+void SubscribeCalibrateMagnetometerRequest::ArenaDtor(void* object) {
+  SubscribeCalibrateMagnetometerRequest* _this = reinterpret_cast< SubscribeCalibrateMagnetometerRequest* >(object);
+  (void)_this;
+}
+void SubscribeCalibrateMagnetometerRequest::RegisterArenaDtor(::PROTOBUF_NAMESPACE_ID::Arena*) {
+}
 void SubscribeCalibrateMagnetometerRequest::SetCachedSize(int size) const {
   _cached_size_.Set(size);
 }
@@ -1403,11 +1462,12 @@ void SubscribeCalibrateMagnetometerRequest::Clear() {
   // Prevent compiler warnings about cached_has_bits being unused
   (void) cached_has_bits;
 
-  _internal_metadata_.Clear();
+  _internal_metadata_.Clear<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>();
 }
 
 const char* SubscribeCalibrateMagnetometerRequest::_InternalParse(const char* ptr, ::PROTOBUF_NAMESPACE_ID::internal::ParseContext* ctx) {
 #define CHK_(x) if (PROTOBUF_PREDICT_FALSE(!(x))) goto failure
+  ::PROTOBUF_NAMESPACE_ID::Arena* arena = GetArena(); (void)arena;
   while (!ctx->Done(&ptr)) {
     ::PROTOBUF_NAMESPACE_ID::uint32 tag;
     ptr = ::PROTOBUF_NAMESPACE_ID::internal::ReadTag(ptr, &tag);
@@ -1416,7 +1476,9 @@ const char* SubscribeCalibrateMagnetometerRequest::_InternalParse(const char* pt
           ctx->SetLastTag(tag);
           goto success;
         }
-        ptr = UnknownFieldParse(tag, &_internal_metadata_, ptr, ctx);
+        ptr = UnknownFieldParse(tag,
+            _internal_metadata_.mutable_unknown_fields<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>(),
+            ptr, ctx);
         CHK_(ptr != nullptr);
         continue;
   }  // while
@@ -1436,7 +1498,7 @@ failure:
 
   if (PROTOBUF_PREDICT_FALSE(_internal_metadata_.have_unknown_fields())) {
     target = ::PROTOBUF_NAMESPACE_ID::internal::WireFormat::InternalSerializeUnknownFieldsToArray(
-        _internal_metadata_.unknown_fields(), target, stream);
+        _internal_metadata_.unknown_fields<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>(::PROTOBUF_NAMESPACE_ID::UnknownFieldSet::default_instance), target, stream);
   }
   // @@protoc_insertion_point(serialize_to_array_end:mavsdk.rpc.calibration.SubscribeCalibrateMagnetometerRequest)
   return target;
@@ -1477,7 +1539,7 @@ void SubscribeCalibrateMagnetometerRequest::MergeFrom(const ::PROTOBUF_NAMESPACE
 void SubscribeCalibrateMagnetometerRequest::MergeFrom(const SubscribeCalibrateMagnetometerRequest& from) {
 // @@protoc_insertion_point(class_specific_merge_from_start:mavsdk.rpc.calibration.SubscribeCalibrateMagnetometerRequest)
   GOOGLE_DCHECK_NE(&from, this);
-  _internal_metadata_.MergeFrom(from._internal_metadata_);
+  _internal_metadata_.MergeFrom<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>(from._internal_metadata_);
   ::PROTOBUF_NAMESPACE_ID::uint32 cached_has_bits = 0;
   (void) cached_has_bits;
 
@@ -1503,7 +1565,7 @@ bool SubscribeCalibrateMagnetometerRequest::IsInitialized() const {
 
 void SubscribeCalibrateMagnetometerRequest::InternalSwap(SubscribeCalibrateMagnetometerRequest* other) {
   using std::swap;
-  _internal_metadata_.Swap(&other->_internal_metadata_);
+  _internal_metadata_.Swap<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>(&other->_internal_metadata_);
 }
 
 ::PROTOBUF_NAMESPACE_ID::Metadata SubscribeCalibrateMagnetometerRequest::GetMetadata() const {
@@ -1533,15 +1595,15 @@ const ::mavsdk::rpc::calibration::ProgressData&
 CalibrateMagnetometerResponse::_Internal::progress_data(const CalibrateMagnetometerResponse* msg) {
   return *msg->progress_data_;
 }
-CalibrateMagnetometerResponse::CalibrateMagnetometerResponse()
-  : ::PROTOBUF_NAMESPACE_ID::Message(), _internal_metadata_(nullptr) {
+CalibrateMagnetometerResponse::CalibrateMagnetometerResponse(::PROTOBUF_NAMESPACE_ID::Arena* arena)
+  : ::PROTOBUF_NAMESPACE_ID::Message(arena) {
   SharedCtor();
-  // @@protoc_insertion_point(constructor:mavsdk.rpc.calibration.CalibrateMagnetometerResponse)
+  RegisterArenaDtor(arena);
+  // @@protoc_insertion_point(arena_constructor:mavsdk.rpc.calibration.CalibrateMagnetometerResponse)
 }
 CalibrateMagnetometerResponse::CalibrateMagnetometerResponse(const CalibrateMagnetometerResponse& from)
-  : ::PROTOBUF_NAMESPACE_ID::Message(),
-      _internal_metadata_(nullptr) {
-  _internal_metadata_.MergeFrom(from._internal_metadata_);
+  : ::PROTOBUF_NAMESPACE_ID::Message() {
+  _internal_metadata_.MergeFrom<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>(from._internal_metadata_);
   if (from._internal_has_calibration_result()) {
     calibration_result_ = new ::mavsdk::rpc::calibration::CalibrationResult(*from.calibration_result_);
   } else {
@@ -1565,13 +1627,21 @@ void CalibrateMagnetometerResponse::SharedCtor() {
 CalibrateMagnetometerResponse::~CalibrateMagnetometerResponse() {
   // @@protoc_insertion_point(destructor:mavsdk.rpc.calibration.CalibrateMagnetometerResponse)
   SharedDtor();
+  _internal_metadata_.Delete<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>();
 }
 
 void CalibrateMagnetometerResponse::SharedDtor() {
+  GOOGLE_DCHECK(GetArena() == nullptr);
   if (this != internal_default_instance()) delete calibration_result_;
   if (this != internal_default_instance()) delete progress_data_;
 }
 
+void CalibrateMagnetometerResponse::ArenaDtor(void* object) {
+  CalibrateMagnetometerResponse* _this = reinterpret_cast< CalibrateMagnetometerResponse* >(object);
+  (void)_this;
+}
+void CalibrateMagnetometerResponse::RegisterArenaDtor(::PROTOBUF_NAMESPACE_ID::Arena*) {
+}
 void CalibrateMagnetometerResponse::SetCachedSize(int size) const {
   _cached_size_.Set(size);
 }
@@ -1587,19 +1657,20 @@ void CalibrateMagnetometerResponse::Clear() {
   // Prevent compiler warnings about cached_has_bits being unused
   (void) cached_has_bits;
 
-  if (GetArenaNoVirtual() == nullptr && calibration_result_ != nullptr) {
+  if (GetArena() == nullptr && calibration_result_ != nullptr) {
     delete calibration_result_;
   }
   calibration_result_ = nullptr;
-  if (GetArenaNoVirtual() == nullptr && progress_data_ != nullptr) {
+  if (GetArena() == nullptr && progress_data_ != nullptr) {
     delete progress_data_;
   }
   progress_data_ = nullptr;
-  _internal_metadata_.Clear();
+  _internal_metadata_.Clear<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>();
 }
 
 const char* CalibrateMagnetometerResponse::_InternalParse(const char* ptr, ::PROTOBUF_NAMESPACE_ID::internal::ParseContext* ctx) {
 #define CHK_(x) if (PROTOBUF_PREDICT_FALSE(!(x))) goto failure
+  ::PROTOBUF_NAMESPACE_ID::Arena* arena = GetArena(); (void)arena;
   while (!ctx->Done(&ptr)) {
     ::PROTOBUF_NAMESPACE_ID::uint32 tag;
     ptr = ::PROTOBUF_NAMESPACE_ID::internal::ReadTag(ptr, &tag);
@@ -1625,7 +1696,9 @@ const char* CalibrateMagnetometerResponse::_InternalParse(const char* ptr, ::PRO
           ctx->SetLastTag(tag);
           goto success;
         }
-        ptr = UnknownFieldParse(tag, &_internal_metadata_, ptr, ctx);
+        ptr = UnknownFieldParse(tag,
+            _internal_metadata_.mutable_unknown_fields<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>(),
+            ptr, ctx);
         CHK_(ptr != nullptr);
         continue;
       }
@@ -1663,7 +1736,7 @@ failure:
 
   if (PROTOBUF_PREDICT_FALSE(_internal_metadata_.have_unknown_fields())) {
     target = ::PROTOBUF_NAMESPACE_ID::internal::WireFormat::InternalSerializeUnknownFieldsToArray(
-        _internal_metadata_.unknown_fields(), target, stream);
+        _internal_metadata_.unknown_fields<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>(::PROTOBUF_NAMESPACE_ID::UnknownFieldSet::default_instance), target, stream);
   }
   // @@protoc_insertion_point(serialize_to_array_end:mavsdk.rpc.calibration.CalibrateMagnetometerResponse)
   return target;
@@ -1718,7 +1791,7 @@ void CalibrateMagnetometerResponse::MergeFrom(const ::PROTOBUF_NAMESPACE_ID::Mes
 void CalibrateMagnetometerResponse::MergeFrom(const CalibrateMagnetometerResponse& from) {
 // @@protoc_insertion_point(class_specific_merge_from_start:mavsdk.rpc.calibration.CalibrateMagnetometerResponse)
   GOOGLE_DCHECK_NE(&from, this);
-  _internal_metadata_.MergeFrom(from._internal_metadata_);
+  _internal_metadata_.MergeFrom<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>(from._internal_metadata_);
   ::PROTOBUF_NAMESPACE_ID::uint32 cached_has_bits = 0;
   (void) cached_has_bits;
 
@@ -1750,9 +1823,13 @@ bool CalibrateMagnetometerResponse::IsInitialized() const {
 
 void CalibrateMagnetometerResponse::InternalSwap(CalibrateMagnetometerResponse* other) {
   using std::swap;
-  _internal_metadata_.Swap(&other->_internal_metadata_);
-  swap(calibration_result_, other->calibration_result_);
-  swap(progress_data_, other->progress_data_);
+  _internal_metadata_.Swap<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>(&other->_internal_metadata_);
+  ::PROTOBUF_NAMESPACE_ID::internal::memswap<
+      PROTOBUF_FIELD_OFFSET(CalibrateMagnetometerResponse, progress_data_)
+      + sizeof(CalibrateMagnetometerResponse::progress_data_)
+      - PROTOBUF_FIELD_OFFSET(CalibrateMagnetometerResponse, calibration_result_)>(
+          reinterpret_cast<char*>(&calibration_result_),
+          reinterpret_cast<char*>(&other->calibration_result_));
 }
 
 ::PROTOBUF_NAMESPACE_ID::Metadata CalibrateMagnetometerResponse::GetMetadata() const {
@@ -1768,15 +1845,15 @@ class SubscribeCalibrateLevelHorizonRequest::_Internal {
  public:
 };
 
-SubscribeCalibrateLevelHorizonRequest::SubscribeCalibrateLevelHorizonRequest()
-  : ::PROTOBUF_NAMESPACE_ID::Message(), _internal_metadata_(nullptr) {
+SubscribeCalibrateLevelHorizonRequest::SubscribeCalibrateLevelHorizonRequest(::PROTOBUF_NAMESPACE_ID::Arena* arena)
+  : ::PROTOBUF_NAMESPACE_ID::Message(arena) {
   SharedCtor();
-  // @@protoc_insertion_point(constructor:mavsdk.rpc.calibration.SubscribeCalibrateLevelHorizonRequest)
+  RegisterArenaDtor(arena);
+  // @@protoc_insertion_point(arena_constructor:mavsdk.rpc.calibration.SubscribeCalibrateLevelHorizonRequest)
 }
 SubscribeCalibrateLevelHorizonRequest::SubscribeCalibrateLevelHorizonRequest(const SubscribeCalibrateLevelHorizonRequest& from)
-  : ::PROTOBUF_NAMESPACE_ID::Message(),
-      _internal_metadata_(nullptr) {
-  _internal_metadata_.MergeFrom(from._internal_metadata_);
+  : ::PROTOBUF_NAMESPACE_ID::Message() {
+  _internal_metadata_.MergeFrom<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>(from._internal_metadata_);
   // @@protoc_insertion_point(copy_constructor:mavsdk.rpc.calibration.SubscribeCalibrateLevelHorizonRequest)
 }
 
@@ -1786,11 +1863,19 @@ void SubscribeCalibrateLevelHorizonRequest::SharedCtor() {
 SubscribeCalibrateLevelHorizonRequest::~SubscribeCalibrateLevelHorizonRequest() {
   // @@protoc_insertion_point(destructor:mavsdk.rpc.calibration.SubscribeCalibrateLevelHorizonRequest)
   SharedDtor();
+  _internal_metadata_.Delete<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>();
 }
 
 void SubscribeCalibrateLevelHorizonRequest::SharedDtor() {
+  GOOGLE_DCHECK(GetArena() == nullptr);
 }
 
+void SubscribeCalibrateLevelHorizonRequest::ArenaDtor(void* object) {
+  SubscribeCalibrateLevelHorizonRequest* _this = reinterpret_cast< SubscribeCalibrateLevelHorizonRequest* >(object);
+  (void)_this;
+}
+void SubscribeCalibrateLevelHorizonRequest::RegisterArenaDtor(::PROTOBUF_NAMESPACE_ID::Arena*) {
+}
 void SubscribeCalibrateLevelHorizonRequest::SetCachedSize(int size) const {
   _cached_size_.Set(size);
 }
@@ -1806,11 +1891,12 @@ void SubscribeCalibrateLevelHorizonRequest::Clear() {
   // Prevent compiler warnings about cached_has_bits being unused
   (void) cached_has_bits;
 
-  _internal_metadata_.Clear();
+  _internal_metadata_.Clear<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>();
 }
 
 const char* SubscribeCalibrateLevelHorizonRequest::_InternalParse(const char* ptr, ::PROTOBUF_NAMESPACE_ID::internal::ParseContext* ctx) {
 #define CHK_(x) if (PROTOBUF_PREDICT_FALSE(!(x))) goto failure
+  ::PROTOBUF_NAMESPACE_ID::Arena* arena = GetArena(); (void)arena;
   while (!ctx->Done(&ptr)) {
     ::PROTOBUF_NAMESPACE_ID::uint32 tag;
     ptr = ::PROTOBUF_NAMESPACE_ID::internal::ReadTag(ptr, &tag);
@@ -1819,7 +1905,9 @@ const char* SubscribeCalibrateLevelHorizonRequest::_InternalParse(const char* pt
           ctx->SetLastTag(tag);
           goto success;
         }
-        ptr = UnknownFieldParse(tag, &_internal_metadata_, ptr, ctx);
+        ptr = UnknownFieldParse(tag,
+            _internal_metadata_.mutable_unknown_fields<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>(),
+            ptr, ctx);
         CHK_(ptr != nullptr);
         continue;
   }  // while
@@ -1839,7 +1927,7 @@ failure:
 
   if (PROTOBUF_PREDICT_FALSE(_internal_metadata_.have_unknown_fields())) {
     target = ::PROTOBUF_NAMESPACE_ID::internal::WireFormat::InternalSerializeUnknownFieldsToArray(
-        _internal_metadata_.unknown_fields(), target, stream);
+        _internal_metadata_.unknown_fields<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>(::PROTOBUF_NAMESPACE_ID::UnknownFieldSet::default_instance), target, stream);
   }
   // @@protoc_insertion_point(serialize_to_array_end:mavsdk.rpc.calibration.SubscribeCalibrateLevelHorizonRequest)
   return target;
@@ -1880,7 +1968,7 @@ void SubscribeCalibrateLevelHorizonRequest::MergeFrom(const ::PROTOBUF_NAMESPACE
 void SubscribeCalibrateLevelHorizonRequest::MergeFrom(const SubscribeCalibrateLevelHorizonRequest& from) {
 // @@protoc_insertion_point(class_specific_merge_from_start:mavsdk.rpc.calibration.SubscribeCalibrateLevelHorizonRequest)
   GOOGLE_DCHECK_NE(&from, this);
-  _internal_metadata_.MergeFrom(from._internal_metadata_);
+  _internal_metadata_.MergeFrom<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>(from._internal_metadata_);
   ::PROTOBUF_NAMESPACE_ID::uint32 cached_has_bits = 0;
   (void) cached_has_bits;
 
@@ -1906,7 +1994,7 @@ bool SubscribeCalibrateLevelHorizonRequest::IsInitialized() const {
 
 void SubscribeCalibrateLevelHorizonRequest::InternalSwap(SubscribeCalibrateLevelHorizonRequest* other) {
   using std::swap;
-  _internal_metadata_.Swap(&other->_internal_metadata_);
+  _internal_metadata_.Swap<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>(&other->_internal_metadata_);
 }
 
 ::PROTOBUF_NAMESPACE_ID::Metadata SubscribeCalibrateLevelHorizonRequest::GetMetadata() const {
@@ -1936,15 +2024,15 @@ const ::mavsdk::rpc::calibration::ProgressData&
 CalibrateLevelHorizonResponse::_Internal::progress_data(const CalibrateLevelHorizonResponse* msg) {
   return *msg->progress_data_;
 }
-CalibrateLevelHorizonResponse::CalibrateLevelHorizonResponse()
-  : ::PROTOBUF_NAMESPACE_ID::Message(), _internal_metadata_(nullptr) {
+CalibrateLevelHorizonResponse::CalibrateLevelHorizonResponse(::PROTOBUF_NAMESPACE_ID::Arena* arena)
+  : ::PROTOBUF_NAMESPACE_ID::Message(arena) {
   SharedCtor();
-  // @@protoc_insertion_point(constructor:mavsdk.rpc.calibration.CalibrateLevelHorizonResponse)
+  RegisterArenaDtor(arena);
+  // @@protoc_insertion_point(arena_constructor:mavsdk.rpc.calibration.CalibrateLevelHorizonResponse)
 }
 CalibrateLevelHorizonResponse::CalibrateLevelHorizonResponse(const CalibrateLevelHorizonResponse& from)
-  : ::PROTOBUF_NAMESPACE_ID::Message(),
-      _internal_metadata_(nullptr) {
-  _internal_metadata_.MergeFrom(from._internal_metadata_);
+  : ::PROTOBUF_NAMESPACE_ID::Message() {
+  _internal_metadata_.MergeFrom<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>(from._internal_metadata_);
   if (from._internal_has_calibration_result()) {
     calibration_result_ = new ::mavsdk::rpc::calibration::CalibrationResult(*from.calibration_result_);
   } else {
@@ -1968,13 +2056,21 @@ void CalibrateLevelHorizonResponse::SharedCtor() {
 CalibrateLevelHorizonResponse::~CalibrateLevelHorizonResponse() {
   // @@protoc_insertion_point(destructor:mavsdk.rpc.calibration.CalibrateLevelHorizonResponse)
   SharedDtor();
+  _internal_metadata_.Delete<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>();
 }
 
 void CalibrateLevelHorizonResponse::SharedDtor() {
+  GOOGLE_DCHECK(GetArena() == nullptr);
   if (this != internal_default_instance()) delete calibration_result_;
   if (this != internal_default_instance()) delete progress_data_;
 }
 
+void CalibrateLevelHorizonResponse::ArenaDtor(void* object) {
+  CalibrateLevelHorizonResponse* _this = reinterpret_cast< CalibrateLevelHorizonResponse* >(object);
+  (void)_this;
+}
+void CalibrateLevelHorizonResponse::RegisterArenaDtor(::PROTOBUF_NAMESPACE_ID::Arena*) {
+}
 void CalibrateLevelHorizonResponse::SetCachedSize(int size) const {
   _cached_size_.Set(size);
 }
@@ -1990,19 +2086,20 @@ void CalibrateLevelHorizonResponse::Clear() {
   // Prevent compiler warnings about cached_has_bits being unused
   (void) cached_has_bits;
 
-  if (GetArenaNoVirtual() == nullptr && calibration_result_ != nullptr) {
+  if (GetArena() == nullptr && calibration_result_ != nullptr) {
     delete calibration_result_;
   }
   calibration_result_ = nullptr;
-  if (GetArenaNoVirtual() == nullptr && progress_data_ != nullptr) {
+  if (GetArena() == nullptr && progress_data_ != nullptr) {
     delete progress_data_;
   }
   progress_data_ = nullptr;
-  _internal_metadata_.Clear();
+  _internal_metadata_.Clear<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>();
 }
 
 const char* CalibrateLevelHorizonResponse::_InternalParse(const char* ptr, ::PROTOBUF_NAMESPACE_ID::internal::ParseContext* ctx) {
 #define CHK_(x) if (PROTOBUF_PREDICT_FALSE(!(x))) goto failure
+  ::PROTOBUF_NAMESPACE_ID::Arena* arena = GetArena(); (void)arena;
   while (!ctx->Done(&ptr)) {
     ::PROTOBUF_NAMESPACE_ID::uint32 tag;
     ptr = ::PROTOBUF_NAMESPACE_ID::internal::ReadTag(ptr, &tag);
@@ -2028,7 +2125,9 @@ const char* CalibrateLevelHorizonResponse::_InternalParse(const char* ptr, ::PRO
           ctx->SetLastTag(tag);
           goto success;
         }
-        ptr = UnknownFieldParse(tag, &_internal_metadata_, ptr, ctx);
+        ptr = UnknownFieldParse(tag,
+            _internal_metadata_.mutable_unknown_fields<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>(),
+            ptr, ctx);
         CHK_(ptr != nullptr);
         continue;
       }
@@ -2066,7 +2165,7 @@ failure:
 
   if (PROTOBUF_PREDICT_FALSE(_internal_metadata_.have_unknown_fields())) {
     target = ::PROTOBUF_NAMESPACE_ID::internal::WireFormat::InternalSerializeUnknownFieldsToArray(
-        _internal_metadata_.unknown_fields(), target, stream);
+        _internal_metadata_.unknown_fields<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>(::PROTOBUF_NAMESPACE_ID::UnknownFieldSet::default_instance), target, stream);
   }
   // @@protoc_insertion_point(serialize_to_array_end:mavsdk.rpc.calibration.CalibrateLevelHorizonResponse)
   return target;
@@ -2121,7 +2220,7 @@ void CalibrateLevelHorizonResponse::MergeFrom(const ::PROTOBUF_NAMESPACE_ID::Mes
 void CalibrateLevelHorizonResponse::MergeFrom(const CalibrateLevelHorizonResponse& from) {
 // @@protoc_insertion_point(class_specific_merge_from_start:mavsdk.rpc.calibration.CalibrateLevelHorizonResponse)
   GOOGLE_DCHECK_NE(&from, this);
-  _internal_metadata_.MergeFrom(from._internal_metadata_);
+  _internal_metadata_.MergeFrom<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>(from._internal_metadata_);
   ::PROTOBUF_NAMESPACE_ID::uint32 cached_has_bits = 0;
   (void) cached_has_bits;
 
@@ -2153,9 +2252,13 @@ bool CalibrateLevelHorizonResponse::IsInitialized() const {
 
 void CalibrateLevelHorizonResponse::InternalSwap(CalibrateLevelHorizonResponse* other) {
   using std::swap;
-  _internal_metadata_.Swap(&other->_internal_metadata_);
-  swap(calibration_result_, other->calibration_result_);
-  swap(progress_data_, other->progress_data_);
+  _internal_metadata_.Swap<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>(&other->_internal_metadata_);
+  ::PROTOBUF_NAMESPACE_ID::internal::memswap<
+      PROTOBUF_FIELD_OFFSET(CalibrateLevelHorizonResponse, progress_data_)
+      + sizeof(CalibrateLevelHorizonResponse::progress_data_)
+      - PROTOBUF_FIELD_OFFSET(CalibrateLevelHorizonResponse, calibration_result_)>(
+          reinterpret_cast<char*>(&calibration_result_),
+          reinterpret_cast<char*>(&other->calibration_result_));
 }
 
 ::PROTOBUF_NAMESPACE_ID::Metadata CalibrateLevelHorizonResponse::GetMetadata() const {
@@ -2171,15 +2274,15 @@ class SubscribeCalibrateGimbalAccelerometerRequest::_Internal {
  public:
 };
 
-SubscribeCalibrateGimbalAccelerometerRequest::SubscribeCalibrateGimbalAccelerometerRequest()
-  : ::PROTOBUF_NAMESPACE_ID::Message(), _internal_metadata_(nullptr) {
+SubscribeCalibrateGimbalAccelerometerRequest::SubscribeCalibrateGimbalAccelerometerRequest(::PROTOBUF_NAMESPACE_ID::Arena* arena)
+  : ::PROTOBUF_NAMESPACE_ID::Message(arena) {
   SharedCtor();
-  // @@protoc_insertion_point(constructor:mavsdk.rpc.calibration.SubscribeCalibrateGimbalAccelerometerRequest)
+  RegisterArenaDtor(arena);
+  // @@protoc_insertion_point(arena_constructor:mavsdk.rpc.calibration.SubscribeCalibrateGimbalAccelerometerRequest)
 }
 SubscribeCalibrateGimbalAccelerometerRequest::SubscribeCalibrateGimbalAccelerometerRequest(const SubscribeCalibrateGimbalAccelerometerRequest& from)
-  : ::PROTOBUF_NAMESPACE_ID::Message(),
-      _internal_metadata_(nullptr) {
-  _internal_metadata_.MergeFrom(from._internal_metadata_);
+  : ::PROTOBUF_NAMESPACE_ID::Message() {
+  _internal_metadata_.MergeFrom<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>(from._internal_metadata_);
   // @@protoc_insertion_point(copy_constructor:mavsdk.rpc.calibration.SubscribeCalibrateGimbalAccelerometerRequest)
 }
 
@@ -2189,11 +2292,19 @@ void SubscribeCalibrateGimbalAccelerometerRequest::SharedCtor() {
 SubscribeCalibrateGimbalAccelerometerRequest::~SubscribeCalibrateGimbalAccelerometerRequest() {
   // @@protoc_insertion_point(destructor:mavsdk.rpc.calibration.SubscribeCalibrateGimbalAccelerometerRequest)
   SharedDtor();
+  _internal_metadata_.Delete<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>();
 }
 
 void SubscribeCalibrateGimbalAccelerometerRequest::SharedDtor() {
+  GOOGLE_DCHECK(GetArena() == nullptr);
 }
 
+void SubscribeCalibrateGimbalAccelerometerRequest::ArenaDtor(void* object) {
+  SubscribeCalibrateGimbalAccelerometerRequest* _this = reinterpret_cast< SubscribeCalibrateGimbalAccelerometerRequest* >(object);
+  (void)_this;
+}
+void SubscribeCalibrateGimbalAccelerometerRequest::RegisterArenaDtor(::PROTOBUF_NAMESPACE_ID::Arena*) {
+}
 void SubscribeCalibrateGimbalAccelerometerRequest::SetCachedSize(int size) const {
   _cached_size_.Set(size);
 }
@@ -2209,11 +2320,12 @@ void SubscribeCalibrateGimbalAccelerometerRequest::Clear() {
   // Prevent compiler warnings about cached_has_bits being unused
   (void) cached_has_bits;
 
-  _internal_metadata_.Clear();
+  _internal_metadata_.Clear<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>();
 }
 
 const char* SubscribeCalibrateGimbalAccelerometerRequest::_InternalParse(const char* ptr, ::PROTOBUF_NAMESPACE_ID::internal::ParseContext* ctx) {
 #define CHK_(x) if (PROTOBUF_PREDICT_FALSE(!(x))) goto failure
+  ::PROTOBUF_NAMESPACE_ID::Arena* arena = GetArena(); (void)arena;
   while (!ctx->Done(&ptr)) {
     ::PROTOBUF_NAMESPACE_ID::uint32 tag;
     ptr = ::PROTOBUF_NAMESPACE_ID::internal::ReadTag(ptr, &tag);
@@ -2222,7 +2334,9 @@ const char* SubscribeCalibrateGimbalAccelerometerRequest::_InternalParse(const c
           ctx->SetLastTag(tag);
           goto success;
         }
-        ptr = UnknownFieldParse(tag, &_internal_metadata_, ptr, ctx);
+        ptr = UnknownFieldParse(tag,
+            _internal_metadata_.mutable_unknown_fields<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>(),
+            ptr, ctx);
         CHK_(ptr != nullptr);
         continue;
   }  // while
@@ -2242,7 +2356,7 @@ failure:
 
   if (PROTOBUF_PREDICT_FALSE(_internal_metadata_.have_unknown_fields())) {
     target = ::PROTOBUF_NAMESPACE_ID::internal::WireFormat::InternalSerializeUnknownFieldsToArray(
-        _internal_metadata_.unknown_fields(), target, stream);
+        _internal_metadata_.unknown_fields<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>(::PROTOBUF_NAMESPACE_ID::UnknownFieldSet::default_instance), target, stream);
   }
   // @@protoc_insertion_point(serialize_to_array_end:mavsdk.rpc.calibration.SubscribeCalibrateGimbalAccelerometerRequest)
   return target;
@@ -2283,7 +2397,7 @@ void SubscribeCalibrateGimbalAccelerometerRequest::MergeFrom(const ::PROTOBUF_NA
 void SubscribeCalibrateGimbalAccelerometerRequest::MergeFrom(const SubscribeCalibrateGimbalAccelerometerRequest& from) {
 // @@protoc_insertion_point(class_specific_merge_from_start:mavsdk.rpc.calibration.SubscribeCalibrateGimbalAccelerometerRequest)
   GOOGLE_DCHECK_NE(&from, this);
-  _internal_metadata_.MergeFrom(from._internal_metadata_);
+  _internal_metadata_.MergeFrom<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>(from._internal_metadata_);
   ::PROTOBUF_NAMESPACE_ID::uint32 cached_has_bits = 0;
   (void) cached_has_bits;
 
@@ -2309,7 +2423,7 @@ bool SubscribeCalibrateGimbalAccelerometerRequest::IsInitialized() const {
 
 void SubscribeCalibrateGimbalAccelerometerRequest::InternalSwap(SubscribeCalibrateGimbalAccelerometerRequest* other) {
   using std::swap;
-  _internal_metadata_.Swap(&other->_internal_metadata_);
+  _internal_metadata_.Swap<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>(&other->_internal_metadata_);
 }
 
 ::PROTOBUF_NAMESPACE_ID::Metadata SubscribeCalibrateGimbalAccelerometerRequest::GetMetadata() const {
@@ -2339,15 +2453,15 @@ const ::mavsdk::rpc::calibration::ProgressData&
 CalibrateGimbalAccelerometerResponse::_Internal::progress_data(const CalibrateGimbalAccelerometerResponse* msg) {
   return *msg->progress_data_;
 }
-CalibrateGimbalAccelerometerResponse::CalibrateGimbalAccelerometerResponse()
-  : ::PROTOBUF_NAMESPACE_ID::Message(), _internal_metadata_(nullptr) {
+CalibrateGimbalAccelerometerResponse::CalibrateGimbalAccelerometerResponse(::PROTOBUF_NAMESPACE_ID::Arena* arena)
+  : ::PROTOBUF_NAMESPACE_ID::Message(arena) {
   SharedCtor();
-  // @@protoc_insertion_point(constructor:mavsdk.rpc.calibration.CalibrateGimbalAccelerometerResponse)
+  RegisterArenaDtor(arena);
+  // @@protoc_insertion_point(arena_constructor:mavsdk.rpc.calibration.CalibrateGimbalAccelerometerResponse)
 }
 CalibrateGimbalAccelerometerResponse::CalibrateGimbalAccelerometerResponse(const CalibrateGimbalAccelerometerResponse& from)
-  : ::PROTOBUF_NAMESPACE_ID::Message(),
-      _internal_metadata_(nullptr) {
-  _internal_metadata_.MergeFrom(from._internal_metadata_);
+  : ::PROTOBUF_NAMESPACE_ID::Message() {
+  _internal_metadata_.MergeFrom<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>(from._internal_metadata_);
   if (from._internal_has_calibration_result()) {
     calibration_result_ = new ::mavsdk::rpc::calibration::CalibrationResult(*from.calibration_result_);
   } else {
@@ -2371,13 +2485,21 @@ void CalibrateGimbalAccelerometerResponse::SharedCtor() {
 CalibrateGimbalAccelerometerResponse::~CalibrateGimbalAccelerometerResponse() {
   // @@protoc_insertion_point(destructor:mavsdk.rpc.calibration.CalibrateGimbalAccelerometerResponse)
   SharedDtor();
+  _internal_metadata_.Delete<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>();
 }
 
 void CalibrateGimbalAccelerometerResponse::SharedDtor() {
+  GOOGLE_DCHECK(GetArena() == nullptr);
   if (this != internal_default_instance()) delete calibration_result_;
   if (this != internal_default_instance()) delete progress_data_;
 }
 
+void CalibrateGimbalAccelerometerResponse::ArenaDtor(void* object) {
+  CalibrateGimbalAccelerometerResponse* _this = reinterpret_cast< CalibrateGimbalAccelerometerResponse* >(object);
+  (void)_this;
+}
+void CalibrateGimbalAccelerometerResponse::RegisterArenaDtor(::PROTOBUF_NAMESPACE_ID::Arena*) {
+}
 void CalibrateGimbalAccelerometerResponse::SetCachedSize(int size) const {
   _cached_size_.Set(size);
 }
@@ -2393,19 +2515,20 @@ void CalibrateGimbalAccelerometerResponse::Clear() {
   // Prevent compiler warnings about cached_has_bits being unused
   (void) cached_has_bits;
 
-  if (GetArenaNoVirtual() == nullptr && calibration_result_ != nullptr) {
+  if (GetArena() == nullptr && calibration_result_ != nullptr) {
     delete calibration_result_;
   }
   calibration_result_ = nullptr;
-  if (GetArenaNoVirtual() == nullptr && progress_data_ != nullptr) {
+  if (GetArena() == nullptr && progress_data_ != nullptr) {
     delete progress_data_;
   }
   progress_data_ = nullptr;
-  _internal_metadata_.Clear();
+  _internal_metadata_.Clear<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>();
 }
 
 const char* CalibrateGimbalAccelerometerResponse::_InternalParse(const char* ptr, ::PROTOBUF_NAMESPACE_ID::internal::ParseContext* ctx) {
 #define CHK_(x) if (PROTOBUF_PREDICT_FALSE(!(x))) goto failure
+  ::PROTOBUF_NAMESPACE_ID::Arena* arena = GetArena(); (void)arena;
   while (!ctx->Done(&ptr)) {
     ::PROTOBUF_NAMESPACE_ID::uint32 tag;
     ptr = ::PROTOBUF_NAMESPACE_ID::internal::ReadTag(ptr, &tag);
@@ -2431,7 +2554,9 @@ const char* CalibrateGimbalAccelerometerResponse::_InternalParse(const char* ptr
           ctx->SetLastTag(tag);
           goto success;
         }
-        ptr = UnknownFieldParse(tag, &_internal_metadata_, ptr, ctx);
+        ptr = UnknownFieldParse(tag,
+            _internal_metadata_.mutable_unknown_fields<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>(),
+            ptr, ctx);
         CHK_(ptr != nullptr);
         continue;
       }
@@ -2469,7 +2594,7 @@ failure:
 
   if (PROTOBUF_PREDICT_FALSE(_internal_metadata_.have_unknown_fields())) {
     target = ::PROTOBUF_NAMESPACE_ID::internal::WireFormat::InternalSerializeUnknownFieldsToArray(
-        _internal_metadata_.unknown_fields(), target, stream);
+        _internal_metadata_.unknown_fields<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>(::PROTOBUF_NAMESPACE_ID::UnknownFieldSet::default_instance), target, stream);
   }
   // @@protoc_insertion_point(serialize_to_array_end:mavsdk.rpc.calibration.CalibrateGimbalAccelerometerResponse)
   return target;
@@ -2524,7 +2649,7 @@ void CalibrateGimbalAccelerometerResponse::MergeFrom(const ::PROTOBUF_NAMESPACE_
 void CalibrateGimbalAccelerometerResponse::MergeFrom(const CalibrateGimbalAccelerometerResponse& from) {
 // @@protoc_insertion_point(class_specific_merge_from_start:mavsdk.rpc.calibration.CalibrateGimbalAccelerometerResponse)
   GOOGLE_DCHECK_NE(&from, this);
-  _internal_metadata_.MergeFrom(from._internal_metadata_);
+  _internal_metadata_.MergeFrom<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>(from._internal_metadata_);
   ::PROTOBUF_NAMESPACE_ID::uint32 cached_has_bits = 0;
   (void) cached_has_bits;
 
@@ -2556,9 +2681,13 @@ bool CalibrateGimbalAccelerometerResponse::IsInitialized() const {
 
 void CalibrateGimbalAccelerometerResponse::InternalSwap(CalibrateGimbalAccelerometerResponse* other) {
   using std::swap;
-  _internal_metadata_.Swap(&other->_internal_metadata_);
-  swap(calibration_result_, other->calibration_result_);
-  swap(progress_data_, other->progress_data_);
+  _internal_metadata_.Swap<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>(&other->_internal_metadata_);
+  ::PROTOBUF_NAMESPACE_ID::internal::memswap<
+      PROTOBUF_FIELD_OFFSET(CalibrateGimbalAccelerometerResponse, progress_data_)
+      + sizeof(CalibrateGimbalAccelerometerResponse::progress_data_)
+      - PROTOBUF_FIELD_OFFSET(CalibrateGimbalAccelerometerResponse, calibration_result_)>(
+          reinterpret_cast<char*>(&calibration_result_),
+          reinterpret_cast<char*>(&other->calibration_result_));
 }
 
 ::PROTOBUF_NAMESPACE_ID::Metadata CalibrateGimbalAccelerometerResponse::GetMetadata() const {
@@ -2574,15 +2703,15 @@ class CancelRequest::_Internal {
  public:
 };
 
-CancelRequest::CancelRequest()
-  : ::PROTOBUF_NAMESPACE_ID::Message(), _internal_metadata_(nullptr) {
+CancelRequest::CancelRequest(::PROTOBUF_NAMESPACE_ID::Arena* arena)
+  : ::PROTOBUF_NAMESPACE_ID::Message(arena) {
   SharedCtor();
-  // @@protoc_insertion_point(constructor:mavsdk.rpc.calibration.CancelRequest)
+  RegisterArenaDtor(arena);
+  // @@protoc_insertion_point(arena_constructor:mavsdk.rpc.calibration.CancelRequest)
 }
 CancelRequest::CancelRequest(const CancelRequest& from)
-  : ::PROTOBUF_NAMESPACE_ID::Message(),
-      _internal_metadata_(nullptr) {
-  _internal_metadata_.MergeFrom(from._internal_metadata_);
+  : ::PROTOBUF_NAMESPACE_ID::Message() {
+  _internal_metadata_.MergeFrom<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>(from._internal_metadata_);
   // @@protoc_insertion_point(copy_constructor:mavsdk.rpc.calibration.CancelRequest)
 }
 
@@ -2592,11 +2721,19 @@ void CancelRequest::SharedCtor() {
 CancelRequest::~CancelRequest() {
   // @@protoc_insertion_point(destructor:mavsdk.rpc.calibration.CancelRequest)
   SharedDtor();
+  _internal_metadata_.Delete<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>();
 }
 
 void CancelRequest::SharedDtor() {
+  GOOGLE_DCHECK(GetArena() == nullptr);
 }
 
+void CancelRequest::ArenaDtor(void* object) {
+  CancelRequest* _this = reinterpret_cast< CancelRequest* >(object);
+  (void)_this;
+}
+void CancelRequest::RegisterArenaDtor(::PROTOBUF_NAMESPACE_ID::Arena*) {
+}
 void CancelRequest::SetCachedSize(int size) const {
   _cached_size_.Set(size);
 }
@@ -2612,11 +2749,12 @@ void CancelRequest::Clear() {
   // Prevent compiler warnings about cached_has_bits being unused
   (void) cached_has_bits;
 
-  _internal_metadata_.Clear();
+  _internal_metadata_.Clear<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>();
 }
 
 const char* CancelRequest::_InternalParse(const char* ptr, ::PROTOBUF_NAMESPACE_ID::internal::ParseContext* ctx) {
 #define CHK_(x) if (PROTOBUF_PREDICT_FALSE(!(x))) goto failure
+  ::PROTOBUF_NAMESPACE_ID::Arena* arena = GetArena(); (void)arena;
   while (!ctx->Done(&ptr)) {
     ::PROTOBUF_NAMESPACE_ID::uint32 tag;
     ptr = ::PROTOBUF_NAMESPACE_ID::internal::ReadTag(ptr, &tag);
@@ -2625,7 +2763,9 @@ const char* CancelRequest::_InternalParse(const char* ptr, ::PROTOBUF_NAMESPACE_
           ctx->SetLastTag(tag);
           goto success;
         }
-        ptr = UnknownFieldParse(tag, &_internal_metadata_, ptr, ctx);
+        ptr = UnknownFieldParse(tag,
+            _internal_metadata_.mutable_unknown_fields<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>(),
+            ptr, ctx);
         CHK_(ptr != nullptr);
         continue;
   }  // while
@@ -2645,7 +2785,7 @@ failure:
 
   if (PROTOBUF_PREDICT_FALSE(_internal_metadata_.have_unknown_fields())) {
     target = ::PROTOBUF_NAMESPACE_ID::internal::WireFormat::InternalSerializeUnknownFieldsToArray(
-        _internal_metadata_.unknown_fields(), target, stream);
+        _internal_metadata_.unknown_fields<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>(::PROTOBUF_NAMESPACE_ID::UnknownFieldSet::default_instance), target, stream);
   }
   // @@protoc_insertion_point(serialize_to_array_end:mavsdk.rpc.calibration.CancelRequest)
   return target;
@@ -2686,7 +2826,7 @@ void CancelRequest::MergeFrom(const ::PROTOBUF_NAMESPACE_ID::Message& from) {
 void CancelRequest::MergeFrom(const CancelRequest& from) {
 // @@protoc_insertion_point(class_specific_merge_from_start:mavsdk.rpc.calibration.CancelRequest)
   GOOGLE_DCHECK_NE(&from, this);
-  _internal_metadata_.MergeFrom(from._internal_metadata_);
+  _internal_metadata_.MergeFrom<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>(from._internal_metadata_);
   ::PROTOBUF_NAMESPACE_ID::uint32 cached_has_bits = 0;
   (void) cached_has_bits;
 
@@ -2712,7 +2852,7 @@ bool CancelRequest::IsInitialized() const {
 
 void CancelRequest::InternalSwap(CancelRequest* other) {
   using std::swap;
-  _internal_metadata_.Swap(&other->_internal_metadata_);
+  _internal_metadata_.Swap<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>(&other->_internal_metadata_);
 }
 
 ::PROTOBUF_NAMESPACE_ID::Metadata CancelRequest::GetMetadata() const {
@@ -2728,15 +2868,15 @@ class CancelResponse::_Internal {
  public:
 };
 
-CancelResponse::CancelResponse()
-  : ::PROTOBUF_NAMESPACE_ID::Message(), _internal_metadata_(nullptr) {
+CancelResponse::CancelResponse(::PROTOBUF_NAMESPACE_ID::Arena* arena)
+  : ::PROTOBUF_NAMESPACE_ID::Message(arena) {
   SharedCtor();
-  // @@protoc_insertion_point(constructor:mavsdk.rpc.calibration.CancelResponse)
+  RegisterArenaDtor(arena);
+  // @@protoc_insertion_point(arena_constructor:mavsdk.rpc.calibration.CancelResponse)
 }
 CancelResponse::CancelResponse(const CancelResponse& from)
-  : ::PROTOBUF_NAMESPACE_ID::Message(),
-      _internal_metadata_(nullptr) {
-  _internal_metadata_.MergeFrom(from._internal_metadata_);
+  : ::PROTOBUF_NAMESPACE_ID::Message() {
+  _internal_metadata_.MergeFrom<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>(from._internal_metadata_);
   // @@protoc_insertion_point(copy_constructor:mavsdk.rpc.calibration.CancelResponse)
 }
 
@@ -2746,11 +2886,19 @@ void CancelResponse::SharedCtor() {
 CancelResponse::~CancelResponse() {
   // @@protoc_insertion_point(destructor:mavsdk.rpc.calibration.CancelResponse)
   SharedDtor();
+  _internal_metadata_.Delete<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>();
 }
 
 void CancelResponse::SharedDtor() {
+  GOOGLE_DCHECK(GetArena() == nullptr);
 }
 
+void CancelResponse::ArenaDtor(void* object) {
+  CancelResponse* _this = reinterpret_cast< CancelResponse* >(object);
+  (void)_this;
+}
+void CancelResponse::RegisterArenaDtor(::PROTOBUF_NAMESPACE_ID::Arena*) {
+}
 void CancelResponse::SetCachedSize(int size) const {
   _cached_size_.Set(size);
 }
@@ -2766,11 +2914,12 @@ void CancelResponse::Clear() {
   // Prevent compiler warnings about cached_has_bits being unused
   (void) cached_has_bits;
 
-  _internal_metadata_.Clear();
+  _internal_metadata_.Clear<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>();
 }
 
 const char* CancelResponse::_InternalParse(const char* ptr, ::PROTOBUF_NAMESPACE_ID::internal::ParseContext* ctx) {
 #define CHK_(x) if (PROTOBUF_PREDICT_FALSE(!(x))) goto failure
+  ::PROTOBUF_NAMESPACE_ID::Arena* arena = GetArena(); (void)arena;
   while (!ctx->Done(&ptr)) {
     ::PROTOBUF_NAMESPACE_ID::uint32 tag;
     ptr = ::PROTOBUF_NAMESPACE_ID::internal::ReadTag(ptr, &tag);
@@ -2779,7 +2928,9 @@ const char* CancelResponse::_InternalParse(const char* ptr, ::PROTOBUF_NAMESPACE
           ctx->SetLastTag(tag);
           goto success;
         }
-        ptr = UnknownFieldParse(tag, &_internal_metadata_, ptr, ctx);
+        ptr = UnknownFieldParse(tag,
+            _internal_metadata_.mutable_unknown_fields<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>(),
+            ptr, ctx);
         CHK_(ptr != nullptr);
         continue;
   }  // while
@@ -2799,7 +2950,7 @@ failure:
 
   if (PROTOBUF_PREDICT_FALSE(_internal_metadata_.have_unknown_fields())) {
     target = ::PROTOBUF_NAMESPACE_ID::internal::WireFormat::InternalSerializeUnknownFieldsToArray(
-        _internal_metadata_.unknown_fields(), target, stream);
+        _internal_metadata_.unknown_fields<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>(::PROTOBUF_NAMESPACE_ID::UnknownFieldSet::default_instance), target, stream);
   }
   // @@protoc_insertion_point(serialize_to_array_end:mavsdk.rpc.calibration.CancelResponse)
   return target;
@@ -2840,7 +2991,7 @@ void CancelResponse::MergeFrom(const ::PROTOBUF_NAMESPACE_ID::Message& from) {
 void CancelResponse::MergeFrom(const CancelResponse& from) {
 // @@protoc_insertion_point(class_specific_merge_from_start:mavsdk.rpc.calibration.CancelResponse)
   GOOGLE_DCHECK_NE(&from, this);
-  _internal_metadata_.MergeFrom(from._internal_metadata_);
+  _internal_metadata_.MergeFrom<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>(from._internal_metadata_);
   ::PROTOBUF_NAMESPACE_ID::uint32 cached_has_bits = 0;
   (void) cached_has_bits;
 
@@ -2866,7 +3017,7 @@ bool CancelResponse::IsInitialized() const {
 
 void CancelResponse::InternalSwap(CancelResponse* other) {
   using std::swap;
-  _internal_metadata_.Swap(&other->_internal_metadata_);
+  _internal_metadata_.Swap<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>(&other->_internal_metadata_);
 }
 
 ::PROTOBUF_NAMESPACE_ID::Metadata CancelResponse::GetMetadata() const {
@@ -2882,18 +3033,19 @@ class CalibrationResult::_Internal {
  public:
 };
 
-CalibrationResult::CalibrationResult()
-  : ::PROTOBUF_NAMESPACE_ID::Message(), _internal_metadata_(nullptr) {
+CalibrationResult::CalibrationResult(::PROTOBUF_NAMESPACE_ID::Arena* arena)
+  : ::PROTOBUF_NAMESPACE_ID::Message(arena) {
   SharedCtor();
-  // @@protoc_insertion_point(constructor:mavsdk.rpc.calibration.CalibrationResult)
+  RegisterArenaDtor(arena);
+  // @@protoc_insertion_point(arena_constructor:mavsdk.rpc.calibration.CalibrationResult)
 }
 CalibrationResult::CalibrationResult(const CalibrationResult& from)
-  : ::PROTOBUF_NAMESPACE_ID::Message(),
-      _internal_metadata_(nullptr) {
-  _internal_metadata_.MergeFrom(from._internal_metadata_);
+  : ::PROTOBUF_NAMESPACE_ID::Message() {
+  _internal_metadata_.MergeFrom<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>(from._internal_metadata_);
   result_str_.UnsafeSetDefault(&::PROTOBUF_NAMESPACE_ID::internal::GetEmptyStringAlreadyInited());
   if (!from._internal_result_str().empty()) {
-    result_str_.AssignWithDefault(&::PROTOBUF_NAMESPACE_ID::internal::GetEmptyStringAlreadyInited(), from.result_str_);
+    result_str_.Set(&::PROTOBUF_NAMESPACE_ID::internal::GetEmptyStringAlreadyInited(), from._internal_result_str(),
+      GetArena());
   }
   result_ = from.result_;
   // @@protoc_insertion_point(copy_constructor:mavsdk.rpc.calibration.CalibrationResult)
@@ -2908,12 +3060,20 @@ void CalibrationResult::SharedCtor() {
 CalibrationResult::~CalibrationResult() {
   // @@protoc_insertion_point(destructor:mavsdk.rpc.calibration.CalibrationResult)
   SharedDtor();
+  _internal_metadata_.Delete<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>();
 }
 
 void CalibrationResult::SharedDtor() {
+  GOOGLE_DCHECK(GetArena() == nullptr);
   result_str_.DestroyNoArena(&::PROTOBUF_NAMESPACE_ID::internal::GetEmptyStringAlreadyInited());
 }
 
+void CalibrationResult::ArenaDtor(void* object) {
+  CalibrationResult* _this = reinterpret_cast< CalibrationResult* >(object);
+  (void)_this;
+}
+void CalibrationResult::RegisterArenaDtor(::PROTOBUF_NAMESPACE_ID::Arena*) {
+}
 void CalibrationResult::SetCachedSize(int size) const {
   _cached_size_.Set(size);
 }
@@ -2929,13 +3089,14 @@ void CalibrationResult::Clear() {
   // Prevent compiler warnings about cached_has_bits being unused
   (void) cached_has_bits;
 
-  result_str_.ClearToEmptyNoArena(&::PROTOBUF_NAMESPACE_ID::internal::GetEmptyStringAlreadyInited());
+  result_str_.ClearToEmpty(&::PROTOBUF_NAMESPACE_ID::internal::GetEmptyStringAlreadyInited(), GetArena());
   result_ = 0;
-  _internal_metadata_.Clear();
+  _internal_metadata_.Clear<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>();
 }
 
 const char* CalibrationResult::_InternalParse(const char* ptr, ::PROTOBUF_NAMESPACE_ID::internal::ParseContext* ctx) {
 #define CHK_(x) if (PROTOBUF_PREDICT_FALSE(!(x))) goto failure
+  ::PROTOBUF_NAMESPACE_ID::Arena* arena = GetArena(); (void)arena;
   while (!ctx->Done(&ptr)) {
     ::PROTOBUF_NAMESPACE_ID::uint32 tag;
     ptr = ::PROTOBUF_NAMESPACE_ID::internal::ReadTag(ptr, &tag);
@@ -2944,7 +3105,7 @@ const char* CalibrationResult::_InternalParse(const char* ptr, ::PROTOBUF_NAMESP
       // .mavsdk.rpc.calibration.CalibrationResult.Result result = 1;
       case 1:
         if (PROTOBUF_PREDICT_TRUE(static_cast<::PROTOBUF_NAMESPACE_ID::uint8>(tag) == 8)) {
-          ::PROTOBUF_NAMESPACE_ID::uint64 val = ::PROTOBUF_NAMESPACE_ID::internal::ReadVarint(&ptr);
+          ::PROTOBUF_NAMESPACE_ID::uint64 val = ::PROTOBUF_NAMESPACE_ID::internal::ReadVarint64(&ptr);
           CHK_(ptr);
           _internal_set_result(static_cast<::mavsdk::rpc::calibration::CalibrationResult_Result>(val));
         } else goto handle_unusual;
@@ -2964,7 +3125,9 @@ const char* CalibrationResult::_InternalParse(const char* ptr, ::PROTOBUF_NAMESP
           ctx->SetLastTag(tag);
           goto success;
         }
-        ptr = UnknownFieldParse(tag, &_internal_metadata_, ptr, ctx);
+        ptr = UnknownFieldParse(tag,
+            _internal_metadata_.mutable_unknown_fields<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>(),
+            ptr, ctx);
         CHK_(ptr != nullptr);
         continue;
       }
@@ -3003,7 +3166,7 @@ failure:
 
   if (PROTOBUF_PREDICT_FALSE(_internal_metadata_.have_unknown_fields())) {
     target = ::PROTOBUF_NAMESPACE_ID::internal::WireFormat::InternalSerializeUnknownFieldsToArray(
-        _internal_metadata_.unknown_fields(), target, stream);
+        _internal_metadata_.unknown_fields<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>(::PROTOBUF_NAMESPACE_ID::UnknownFieldSet::default_instance), target, stream);
   }
   // @@protoc_insertion_point(serialize_to_array_end:mavsdk.rpc.calibration.CalibrationResult)
   return target;
@@ -3057,13 +3220,12 @@ void CalibrationResult::MergeFrom(const ::PROTOBUF_NAMESPACE_ID::Message& from) 
 void CalibrationResult::MergeFrom(const CalibrationResult& from) {
 // @@protoc_insertion_point(class_specific_merge_from_start:mavsdk.rpc.calibration.CalibrationResult)
   GOOGLE_DCHECK_NE(&from, this);
-  _internal_metadata_.MergeFrom(from._internal_metadata_);
+  _internal_metadata_.MergeFrom<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>(from._internal_metadata_);
   ::PROTOBUF_NAMESPACE_ID::uint32 cached_has_bits = 0;
   (void) cached_has_bits;
 
   if (from.result_str().size() > 0) {
-
-    result_str_.AssignWithDefault(&::PROTOBUF_NAMESPACE_ID::internal::GetEmptyStringAlreadyInited(), from.result_str_);
+    _internal_set_result_str(from._internal_result_str());
   }
   if (from.result() != 0) {
     _internal_set_result(from._internal_result());
@@ -3090,9 +3252,8 @@ bool CalibrationResult::IsInitialized() const {
 
 void CalibrationResult::InternalSwap(CalibrationResult* other) {
   using std::swap;
-  _internal_metadata_.Swap(&other->_internal_metadata_);
-  result_str_.Swap(&other->result_str_, &::PROTOBUF_NAMESPACE_ID::internal::GetEmptyStringAlreadyInited(),
-    GetArenaNoVirtual());
+  _internal_metadata_.Swap<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>(&other->_internal_metadata_);
+  result_str_.Swap(&other->result_str_, &::PROTOBUF_NAMESPACE_ID::internal::GetEmptyStringAlreadyInited(), GetArena());
   swap(result_, other->result_);
 }
 
@@ -3109,18 +3270,19 @@ class ProgressData::_Internal {
  public:
 };
 
-ProgressData::ProgressData()
-  : ::PROTOBUF_NAMESPACE_ID::Message(), _internal_metadata_(nullptr) {
+ProgressData::ProgressData(::PROTOBUF_NAMESPACE_ID::Arena* arena)
+  : ::PROTOBUF_NAMESPACE_ID::Message(arena) {
   SharedCtor();
-  // @@protoc_insertion_point(constructor:mavsdk.rpc.calibration.ProgressData)
+  RegisterArenaDtor(arena);
+  // @@protoc_insertion_point(arena_constructor:mavsdk.rpc.calibration.ProgressData)
 }
 ProgressData::ProgressData(const ProgressData& from)
-  : ::PROTOBUF_NAMESPACE_ID::Message(),
-      _internal_metadata_(nullptr) {
-  _internal_metadata_.MergeFrom(from._internal_metadata_);
+  : ::PROTOBUF_NAMESPACE_ID::Message() {
+  _internal_metadata_.MergeFrom<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>(from._internal_metadata_);
   status_text_.UnsafeSetDefault(&::PROTOBUF_NAMESPACE_ID::internal::GetEmptyStringAlreadyInited());
   if (!from._internal_status_text().empty()) {
-    status_text_.AssignWithDefault(&::PROTOBUF_NAMESPACE_ID::internal::GetEmptyStringAlreadyInited(), from.status_text_);
+    status_text_.Set(&::PROTOBUF_NAMESPACE_ID::internal::GetEmptyStringAlreadyInited(), from._internal_status_text(),
+      GetArena());
   }
   ::memcpy(&progress_, &from.progress_,
     static_cast<size_t>(reinterpret_cast<char*>(&has_status_text_) -
@@ -3139,12 +3301,20 @@ void ProgressData::SharedCtor() {
 ProgressData::~ProgressData() {
   // @@protoc_insertion_point(destructor:mavsdk.rpc.calibration.ProgressData)
   SharedDtor();
+  _internal_metadata_.Delete<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>();
 }
 
 void ProgressData::SharedDtor() {
+  GOOGLE_DCHECK(GetArena() == nullptr);
   status_text_.DestroyNoArena(&::PROTOBUF_NAMESPACE_ID::internal::GetEmptyStringAlreadyInited());
 }
 
+void ProgressData::ArenaDtor(void* object) {
+  ProgressData* _this = reinterpret_cast< ProgressData* >(object);
+  (void)_this;
+}
+void ProgressData::RegisterArenaDtor(::PROTOBUF_NAMESPACE_ID::Arena*) {
+}
 void ProgressData::SetCachedSize(int size) const {
   _cached_size_.Set(size);
 }
@@ -3160,15 +3330,16 @@ void ProgressData::Clear() {
   // Prevent compiler warnings about cached_has_bits being unused
   (void) cached_has_bits;
 
-  status_text_.ClearToEmptyNoArena(&::PROTOBUF_NAMESPACE_ID::internal::GetEmptyStringAlreadyInited());
+  status_text_.ClearToEmpty(&::PROTOBUF_NAMESPACE_ID::internal::GetEmptyStringAlreadyInited(), GetArena());
   ::memset(&progress_, 0, static_cast<size_t>(
       reinterpret_cast<char*>(&has_status_text_) -
       reinterpret_cast<char*>(&progress_)) + sizeof(has_status_text_));
-  _internal_metadata_.Clear();
+  _internal_metadata_.Clear<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>();
 }
 
 const char* ProgressData::_InternalParse(const char* ptr, ::PROTOBUF_NAMESPACE_ID::internal::ParseContext* ctx) {
 #define CHK_(x) if (PROTOBUF_PREDICT_FALSE(!(x))) goto failure
+  ::PROTOBUF_NAMESPACE_ID::Arena* arena = GetArena(); (void)arena;
   while (!ctx->Done(&ptr)) {
     ::PROTOBUF_NAMESPACE_ID::uint32 tag;
     ptr = ::PROTOBUF_NAMESPACE_ID::internal::ReadTag(ptr, &tag);
@@ -3177,7 +3348,7 @@ const char* ProgressData::_InternalParse(const char* ptr, ::PROTOBUF_NAMESPACE_I
       // bool has_progress = 1 [(.mavsdk.options.default_value) = "false"];
       case 1:
         if (PROTOBUF_PREDICT_TRUE(static_cast<::PROTOBUF_NAMESPACE_ID::uint8>(tag) == 8)) {
-          has_progress_ = ::PROTOBUF_NAMESPACE_ID::internal::ReadVarint(&ptr);
+          has_progress_ = ::PROTOBUF_NAMESPACE_ID::internal::ReadVarint64(&ptr);
           CHK_(ptr);
         } else goto handle_unusual;
         continue;
@@ -3191,7 +3362,7 @@ const char* ProgressData::_InternalParse(const char* ptr, ::PROTOBUF_NAMESPACE_I
       // bool has_status_text = 3 [(.mavsdk.options.default_value) = "false"];
       case 3:
         if (PROTOBUF_PREDICT_TRUE(static_cast<::PROTOBUF_NAMESPACE_ID::uint8>(tag) == 24)) {
-          has_status_text_ = ::PROTOBUF_NAMESPACE_ID::internal::ReadVarint(&ptr);
+          has_status_text_ = ::PROTOBUF_NAMESPACE_ID::internal::ReadVarint64(&ptr);
           CHK_(ptr);
         } else goto handle_unusual;
         continue;
@@ -3210,7 +3381,9 @@ const char* ProgressData::_InternalParse(const char* ptr, ::PROTOBUF_NAMESPACE_I
           ctx->SetLastTag(tag);
           goto success;
         }
-        ptr = UnknownFieldParse(tag, &_internal_metadata_, ptr, ctx);
+        ptr = UnknownFieldParse(tag,
+            _internal_metadata_.mutable_unknown_fields<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>(),
+            ptr, ctx);
         CHK_(ptr != nullptr);
         continue;
       }
@@ -3260,7 +3433,7 @@ failure:
 
   if (PROTOBUF_PREDICT_FALSE(_internal_metadata_.have_unknown_fields())) {
     target = ::PROTOBUF_NAMESPACE_ID::internal::WireFormat::InternalSerializeUnknownFieldsToArray(
-        _internal_metadata_.unknown_fields(), target, stream);
+        _internal_metadata_.unknown_fields<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>(::PROTOBUF_NAMESPACE_ID::UnknownFieldSet::default_instance), target, stream);
   }
   // @@protoc_insertion_point(serialize_to_array_end:mavsdk.rpc.calibration.ProgressData)
   return target;
@@ -3323,13 +3496,12 @@ void ProgressData::MergeFrom(const ::PROTOBUF_NAMESPACE_ID::Message& from) {
 void ProgressData::MergeFrom(const ProgressData& from) {
 // @@protoc_insertion_point(class_specific_merge_from_start:mavsdk.rpc.calibration.ProgressData)
   GOOGLE_DCHECK_NE(&from, this);
-  _internal_metadata_.MergeFrom(from._internal_metadata_);
+  _internal_metadata_.MergeFrom<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>(from._internal_metadata_);
   ::PROTOBUF_NAMESPACE_ID::uint32 cached_has_bits = 0;
   (void) cached_has_bits;
 
   if (from.status_text().size() > 0) {
-
-    status_text_.AssignWithDefault(&::PROTOBUF_NAMESPACE_ID::internal::GetEmptyStringAlreadyInited(), from.status_text_);
+    _internal_set_status_text(from._internal_status_text());
   }
   if (!(from.progress() <= 0 && from.progress() >= 0)) {
     _internal_set_progress(from._internal_progress());
@@ -3362,12 +3534,14 @@ bool ProgressData::IsInitialized() const {
 
 void ProgressData::InternalSwap(ProgressData* other) {
   using std::swap;
-  _internal_metadata_.Swap(&other->_internal_metadata_);
-  status_text_.Swap(&other->status_text_, &::PROTOBUF_NAMESPACE_ID::internal::GetEmptyStringAlreadyInited(),
-    GetArenaNoVirtual());
-  swap(progress_, other->progress_);
-  swap(has_progress_, other->has_progress_);
-  swap(has_status_text_, other->has_status_text_);
+  _internal_metadata_.Swap<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>(&other->_internal_metadata_);
+  status_text_.Swap(&other->status_text_, &::PROTOBUF_NAMESPACE_ID::internal::GetEmptyStringAlreadyInited(), GetArena());
+  ::PROTOBUF_NAMESPACE_ID::internal::memswap<
+      PROTOBUF_FIELD_OFFSET(ProgressData, has_status_text_)
+      + sizeof(ProgressData::has_status_text_)
+      - PROTOBUF_FIELD_OFFSET(ProgressData, progress_)>(
+          reinterpret_cast<char*>(&progress_),
+          reinterpret_cast<char*>(&other->progress_));
 }
 
 ::PROTOBUF_NAMESPACE_ID::Metadata ProgressData::GetMetadata() const {
@@ -3381,46 +3555,46 @@ void ProgressData::InternalSwap(ProgressData* other) {
 }  // namespace mavsdk
 PROTOBUF_NAMESPACE_OPEN
 template<> PROTOBUF_NOINLINE ::mavsdk::rpc::calibration::SubscribeCalibrateGyroRequest* Arena::CreateMaybeMessage< ::mavsdk::rpc::calibration::SubscribeCalibrateGyroRequest >(Arena* arena) {
-  return Arena::CreateInternal< ::mavsdk::rpc::calibration::SubscribeCalibrateGyroRequest >(arena);
+  return Arena::CreateMessageInternal< ::mavsdk::rpc::calibration::SubscribeCalibrateGyroRequest >(arena);
 }
 template<> PROTOBUF_NOINLINE ::mavsdk::rpc::calibration::CalibrateGyroResponse* Arena::CreateMaybeMessage< ::mavsdk::rpc::calibration::CalibrateGyroResponse >(Arena* arena) {
-  return Arena::CreateInternal< ::mavsdk::rpc::calibration::CalibrateGyroResponse >(arena);
+  return Arena::CreateMessageInternal< ::mavsdk::rpc::calibration::CalibrateGyroResponse >(arena);
 }
 template<> PROTOBUF_NOINLINE ::mavsdk::rpc::calibration::SubscribeCalibrateAccelerometerRequest* Arena::CreateMaybeMessage< ::mavsdk::rpc::calibration::SubscribeCalibrateAccelerometerRequest >(Arena* arena) {
-  return Arena::CreateInternal< ::mavsdk::rpc::calibration::SubscribeCalibrateAccelerometerRequest >(arena);
+  return Arena::CreateMessageInternal< ::mavsdk::rpc::calibration::SubscribeCalibrateAccelerometerRequest >(arena);
 }
 template<> PROTOBUF_NOINLINE ::mavsdk::rpc::calibration::CalibrateAccelerometerResponse* Arena::CreateMaybeMessage< ::mavsdk::rpc::calibration::CalibrateAccelerometerResponse >(Arena* arena) {
-  return Arena::CreateInternal< ::mavsdk::rpc::calibration::CalibrateAccelerometerResponse >(arena);
+  return Arena::CreateMessageInternal< ::mavsdk::rpc::calibration::CalibrateAccelerometerResponse >(arena);
 }
 template<> PROTOBUF_NOINLINE ::mavsdk::rpc::calibration::SubscribeCalibrateMagnetometerRequest* Arena::CreateMaybeMessage< ::mavsdk::rpc::calibration::SubscribeCalibrateMagnetometerRequest >(Arena* arena) {
-  return Arena::CreateInternal< ::mavsdk::rpc::calibration::SubscribeCalibrateMagnetometerRequest >(arena);
+  return Arena::CreateMessageInternal< ::mavsdk::rpc::calibration::SubscribeCalibrateMagnetometerRequest >(arena);
 }
 template<> PROTOBUF_NOINLINE ::mavsdk::rpc::calibration::CalibrateMagnetometerResponse* Arena::CreateMaybeMessage< ::mavsdk::rpc::calibration::CalibrateMagnetometerResponse >(Arena* arena) {
-  return Arena::CreateInternal< ::mavsdk::rpc::calibration::CalibrateMagnetometerResponse >(arena);
+  return Arena::CreateMessageInternal< ::mavsdk::rpc::calibration::CalibrateMagnetometerResponse >(arena);
 }
 template<> PROTOBUF_NOINLINE ::mavsdk::rpc::calibration::SubscribeCalibrateLevelHorizonRequest* Arena::CreateMaybeMessage< ::mavsdk::rpc::calibration::SubscribeCalibrateLevelHorizonRequest >(Arena* arena) {
-  return Arena::CreateInternal< ::mavsdk::rpc::calibration::SubscribeCalibrateLevelHorizonRequest >(arena);
+  return Arena::CreateMessageInternal< ::mavsdk::rpc::calibration::SubscribeCalibrateLevelHorizonRequest >(arena);
 }
 template<> PROTOBUF_NOINLINE ::mavsdk::rpc::calibration::CalibrateLevelHorizonResponse* Arena::CreateMaybeMessage< ::mavsdk::rpc::calibration::CalibrateLevelHorizonResponse >(Arena* arena) {
-  return Arena::CreateInternal< ::mavsdk::rpc::calibration::CalibrateLevelHorizonResponse >(arena);
+  return Arena::CreateMessageInternal< ::mavsdk::rpc::calibration::CalibrateLevelHorizonResponse >(arena);
 }
 template<> PROTOBUF_NOINLINE ::mavsdk::rpc::calibration::SubscribeCalibrateGimbalAccelerometerRequest* Arena::CreateMaybeMessage< ::mavsdk::rpc::calibration::SubscribeCalibrateGimbalAccelerometerRequest >(Arena* arena) {
-  return Arena::CreateInternal< ::mavsdk::rpc::calibration::SubscribeCalibrateGimbalAccelerometerRequest >(arena);
+  return Arena::CreateMessageInternal< ::mavsdk::rpc::calibration::SubscribeCalibrateGimbalAccelerometerRequest >(arena);
 }
 template<> PROTOBUF_NOINLINE ::mavsdk::rpc::calibration::CalibrateGimbalAccelerometerResponse* Arena::CreateMaybeMessage< ::mavsdk::rpc::calibration::CalibrateGimbalAccelerometerResponse >(Arena* arena) {
-  return Arena::CreateInternal< ::mavsdk::rpc::calibration::CalibrateGimbalAccelerometerResponse >(arena);
+  return Arena::CreateMessageInternal< ::mavsdk::rpc::calibration::CalibrateGimbalAccelerometerResponse >(arena);
 }
 template<> PROTOBUF_NOINLINE ::mavsdk::rpc::calibration::CancelRequest* Arena::CreateMaybeMessage< ::mavsdk::rpc::calibration::CancelRequest >(Arena* arena) {
-  return Arena::CreateInternal< ::mavsdk::rpc::calibration::CancelRequest >(arena);
+  return Arena::CreateMessageInternal< ::mavsdk::rpc::calibration::CancelRequest >(arena);
 }
 template<> PROTOBUF_NOINLINE ::mavsdk::rpc::calibration::CancelResponse* Arena::CreateMaybeMessage< ::mavsdk::rpc::calibration::CancelResponse >(Arena* arena) {
-  return Arena::CreateInternal< ::mavsdk::rpc::calibration::CancelResponse >(arena);
+  return Arena::CreateMessageInternal< ::mavsdk::rpc::calibration::CancelResponse >(arena);
 }
 template<> PROTOBUF_NOINLINE ::mavsdk::rpc::calibration::CalibrationResult* Arena::CreateMaybeMessage< ::mavsdk::rpc::calibration::CalibrationResult >(Arena* arena) {
-  return Arena::CreateInternal< ::mavsdk::rpc::calibration::CalibrationResult >(arena);
+  return Arena::CreateMessageInternal< ::mavsdk::rpc::calibration::CalibrationResult >(arena);
 }
 template<> PROTOBUF_NOINLINE ::mavsdk::rpc::calibration::ProgressData* Arena::CreateMaybeMessage< ::mavsdk::rpc::calibration::ProgressData >(Arena* arena) {
-  return Arena::CreateInternal< ::mavsdk::rpc::calibration::ProgressData >(arena);
+  return Arena::CreateMessageInternal< ::mavsdk::rpc::calibration::ProgressData >(arena);
 }
 PROTOBUF_NAMESPACE_CLOSE
 
