@@ -4,10 +4,9 @@ set -e
 
 script_dir="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 
-
 if [ "$1" == "--no-superbuild" ]; then
-    protoc_binary=$(command -v protoc)
-    protoc_grpc_binary=$(command -v grpc_cpp_plugin)
+    protoc_binary=$(command -v protoc) || { echo >&2 "Protobuf (protoc) needs to be installed for this script to run!"; exit 1; }
+    protoc_grpc_binary=$(command -v grpc_cpp_plugin) || { echo >&2 "grpc_cpp_plugin needs to be installed for this script to run!"; exit 1; }
 else
     protoc_binary="${third_party_dir}/install/bin/protoc"
     protoc_grpc_binary="${third_party_dir}/install/bin/grpc_cpp_plugin"
@@ -16,7 +15,6 @@ fi
 proto_dir="${script_dir}/../proto/protos"
 backend_generated_dir="${script_dir}/../src/backend/src/generated"
 third_party_dir="${script_dir}/../build/default/third_party"
-
 
 function snake_case_to_camel_case {
     echo $1 | sed -r 's/(^|_)([a-z])/\U\2/g'
