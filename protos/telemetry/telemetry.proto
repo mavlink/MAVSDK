@@ -105,6 +105,9 @@ service TelemetryService {
     rpc SetRateUnixEpochTime(SetRateUnixEpochTimeRequest) returns(SetRateUnixEpochTimeResponse) {}
     // Set rate to 'Distance Sensor' updates.
     rpc SetRateDistanceSensor(SetRateDistanceSensorRequest) returns(SetRateDistanceSensorResponse) {}
+
+    // Get the GPS global origin.
+    rpc GetGpsGlobalOrigin(GetGpsGlobalOriginRequest) returns(GetGpsGlobalOriginResponse) {}
 }
 
 message SubscribePositionRequest {}
@@ -389,6 +392,12 @@ message SetRateDistanceSensorResponse {
     TelemetryResult telemetry_result = 1;
 }
 
+message GetGpsGlobalOriginRequest {}
+message GetGpsGlobalOriginResponse {
+    TelemetryResult telemetry_result = 1;
+    GpsGlobalOrigin gps_global_origin = 2;
+}
+
 // Position type in global coordinates.
 message Position {
     double latitude_deg = 1 [(mavsdk.options.default_value)="NaN"]; // Latitude in degrees (range: -90 to +90)
@@ -653,6 +662,13 @@ message Imu {
     AngularVelocityFrd angular_velocity_frd = 2; // Angular velocity
     MagneticFieldFrd magnetic_field_frd = 3; // Magnetic field
     float temperature_degc = 4 [(mavsdk.options.default_value)="NaN"]; // Temperature
+}
+
+// Gps global origin type.
+message GpsGlobalOrigin {
+    double latitude_deg = 1 [(mavsdk.options.default_value)="NaN"]; // Latitude of the origin
+    double longitude_deg = 2 [(mavsdk.options.default_value)="NaN"]; // Longitude of the origin
+    float altitude_m = 3 [(mavsdk.options.default_value)="NaN"]; // Altitude AMSL (above mean sea level) in metres
 }
 
 // Result type.
