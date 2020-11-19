@@ -49,7 +49,7 @@ struct TableStruct_telemetry_2ftelemetry_2eproto {
     PROTOBUF_SECTION_VARIABLE(protodesc_cold);
   static const ::PROTOBUF_NAMESPACE_ID::internal::AuxiliaryParseTableField aux[]
     PROTOBUF_SECTION_VARIABLE(protodesc_cold);
-  static const ::PROTOBUF_NAMESPACE_ID::internal::ParseTable schema[122]
+  static const ::PROTOBUF_NAMESPACE_ID::internal::ParseTable schema[125]
     PROTOBUF_SECTION_VARIABLE(protodesc_cold);
   static const ::PROTOBUF_NAMESPACE_ID::internal::FieldMetadata field_metadata[];
   static const ::PROTOBUF_NAMESPACE_ID::internal::SerializationTable serialization_table[];
@@ -125,6 +125,15 @@ extern FixedwingMetricsResponseDefaultTypeInternal _FixedwingMetricsResponse_def
 class FlightModeResponse;
 class FlightModeResponseDefaultTypeInternal;
 extern FlightModeResponseDefaultTypeInternal _FlightModeResponse_default_instance_;
+class GetGpsGlobalOriginRequest;
+class GetGpsGlobalOriginRequestDefaultTypeInternal;
+extern GetGpsGlobalOriginRequestDefaultTypeInternal _GetGpsGlobalOriginRequest_default_instance_;
+class GetGpsGlobalOriginResponse;
+class GetGpsGlobalOriginResponseDefaultTypeInternal;
+extern GetGpsGlobalOriginResponseDefaultTypeInternal _GetGpsGlobalOriginResponse_default_instance_;
+class GpsGlobalOrigin;
+class GpsGlobalOriginDefaultTypeInternal;
+extern GpsGlobalOriginDefaultTypeInternal _GpsGlobalOrigin_default_instance_;
 class GpsInfo;
 class GpsInfoDefaultTypeInternal;
 extern GpsInfoDefaultTypeInternal _GpsInfo_default_instance_;
@@ -451,6 +460,9 @@ template<> ::mavsdk::rpc::telemetry::EulerAngle* Arena::CreateMaybeMessage<::mav
 template<> ::mavsdk::rpc::telemetry::FixedwingMetrics* Arena::CreateMaybeMessage<::mavsdk::rpc::telemetry::FixedwingMetrics>(Arena*);
 template<> ::mavsdk::rpc::telemetry::FixedwingMetricsResponse* Arena::CreateMaybeMessage<::mavsdk::rpc::telemetry::FixedwingMetricsResponse>(Arena*);
 template<> ::mavsdk::rpc::telemetry::FlightModeResponse* Arena::CreateMaybeMessage<::mavsdk::rpc::telemetry::FlightModeResponse>(Arena*);
+template<> ::mavsdk::rpc::telemetry::GetGpsGlobalOriginRequest* Arena::CreateMaybeMessage<::mavsdk::rpc::telemetry::GetGpsGlobalOriginRequest>(Arena*);
+template<> ::mavsdk::rpc::telemetry::GetGpsGlobalOriginResponse* Arena::CreateMaybeMessage<::mavsdk::rpc::telemetry::GetGpsGlobalOriginResponse>(Arena*);
+template<> ::mavsdk::rpc::telemetry::GpsGlobalOrigin* Arena::CreateMaybeMessage<::mavsdk::rpc::telemetry::GpsGlobalOrigin>(Arena*);
 template<> ::mavsdk::rpc::telemetry::GpsInfo* Arena::CreateMaybeMessage<::mavsdk::rpc::telemetry::GpsInfo>(Arena*);
 template<> ::mavsdk::rpc::telemetry::GpsInfoResponse* Arena::CreateMaybeMessage<::mavsdk::rpc::telemetry::GpsInfoResponse>(Arena*);
 template<> ::mavsdk::rpc::telemetry::GroundTruth* Arena::CreateMaybeMessage<::mavsdk::rpc::telemetry::GroundTruth>(Arena*);
@@ -13921,6 +13933,296 @@ class SetRateDistanceSensorResponse PROTOBUF_FINAL :
 };
 // -------------------------------------------------------------------
 
+class GetGpsGlobalOriginRequest PROTOBUF_FINAL :
+    public ::PROTOBUF_NAMESPACE_ID::Message /* @@protoc_insertion_point(class_definition:mavsdk.rpc.telemetry.GetGpsGlobalOriginRequest) */ {
+ public:
+  inline GetGpsGlobalOriginRequest() : GetGpsGlobalOriginRequest(nullptr) {}
+  virtual ~GetGpsGlobalOriginRequest();
+
+  GetGpsGlobalOriginRequest(const GetGpsGlobalOriginRequest& from);
+  GetGpsGlobalOriginRequest(GetGpsGlobalOriginRequest&& from) noexcept
+    : GetGpsGlobalOriginRequest() {
+    *this = ::std::move(from);
+  }
+
+  inline GetGpsGlobalOriginRequest& operator=(const GetGpsGlobalOriginRequest& from) {
+    CopyFrom(from);
+    return *this;
+  }
+  inline GetGpsGlobalOriginRequest& operator=(GetGpsGlobalOriginRequest&& from) noexcept {
+    if (GetArena() == from.GetArena()) {
+      if (this != &from) InternalSwap(&from);
+    } else {
+      CopyFrom(from);
+    }
+    return *this;
+  }
+
+  static const ::PROTOBUF_NAMESPACE_ID::Descriptor* descriptor() {
+    return GetDescriptor();
+  }
+  static const ::PROTOBUF_NAMESPACE_ID::Descriptor* GetDescriptor() {
+    return GetMetadataStatic().descriptor;
+  }
+  static const ::PROTOBUF_NAMESPACE_ID::Reflection* GetReflection() {
+    return GetMetadataStatic().reflection;
+  }
+  static const GetGpsGlobalOriginRequest& default_instance();
+
+  static void InitAsDefaultInstance();  // FOR INTERNAL USE ONLY
+  static inline const GetGpsGlobalOriginRequest* internal_default_instance() {
+    return reinterpret_cast<const GetGpsGlobalOriginRequest*>(
+               &_GetGpsGlobalOriginRequest_default_instance_);
+  }
+  static constexpr int kIndexInFileMessages =
+    96;
+
+  friend void swap(GetGpsGlobalOriginRequest& a, GetGpsGlobalOriginRequest& b) {
+    a.Swap(&b);
+  }
+  inline void Swap(GetGpsGlobalOriginRequest* other) {
+    if (other == this) return;
+    if (GetArena() == other->GetArena()) {
+      InternalSwap(other);
+    } else {
+      ::PROTOBUF_NAMESPACE_ID::internal::GenericSwap(this, other);
+    }
+  }
+  void UnsafeArenaSwap(GetGpsGlobalOriginRequest* other) {
+    if (other == this) return;
+    GOOGLE_DCHECK(GetArena() == other->GetArena());
+    InternalSwap(other);
+  }
+
+  // implements Message ----------------------------------------------
+
+  inline GetGpsGlobalOriginRequest* New() const final {
+    return CreateMaybeMessage<GetGpsGlobalOriginRequest>(nullptr);
+  }
+
+  GetGpsGlobalOriginRequest* New(::PROTOBUF_NAMESPACE_ID::Arena* arena) const final {
+    return CreateMaybeMessage<GetGpsGlobalOriginRequest>(arena);
+  }
+  void CopyFrom(const ::PROTOBUF_NAMESPACE_ID::Message& from) final;
+  void MergeFrom(const ::PROTOBUF_NAMESPACE_ID::Message& from) final;
+  void CopyFrom(const GetGpsGlobalOriginRequest& from);
+  void MergeFrom(const GetGpsGlobalOriginRequest& from);
+  PROTOBUF_ATTRIBUTE_REINITIALIZES void Clear() final;
+  bool IsInitialized() const final;
+
+  size_t ByteSizeLong() const final;
+  const char* _InternalParse(const char* ptr, ::PROTOBUF_NAMESPACE_ID::internal::ParseContext* ctx) final;
+  ::PROTOBUF_NAMESPACE_ID::uint8* _InternalSerialize(
+      ::PROTOBUF_NAMESPACE_ID::uint8* target, ::PROTOBUF_NAMESPACE_ID::io::EpsCopyOutputStream* stream) const final;
+  int GetCachedSize() const final { return _cached_size_.Get(); }
+
+  private:
+  inline void SharedCtor();
+  inline void SharedDtor();
+  void SetCachedSize(int size) const final;
+  void InternalSwap(GetGpsGlobalOriginRequest* other);
+  friend class ::PROTOBUF_NAMESPACE_ID::internal::AnyMetadata;
+  static ::PROTOBUF_NAMESPACE_ID::StringPiece FullMessageName() {
+    return "mavsdk.rpc.telemetry.GetGpsGlobalOriginRequest";
+  }
+  protected:
+  explicit GetGpsGlobalOriginRequest(::PROTOBUF_NAMESPACE_ID::Arena* arena);
+  private:
+  static void ArenaDtor(void* object);
+  inline void RegisterArenaDtor(::PROTOBUF_NAMESPACE_ID::Arena* arena);
+  public:
+
+  ::PROTOBUF_NAMESPACE_ID::Metadata GetMetadata() const final;
+  private:
+  static ::PROTOBUF_NAMESPACE_ID::Metadata GetMetadataStatic() {
+    ::PROTOBUF_NAMESPACE_ID::internal::AssignDescriptors(&::descriptor_table_telemetry_2ftelemetry_2eproto);
+    return ::descriptor_table_telemetry_2ftelemetry_2eproto.file_level_metadata[kIndexInFileMessages];
+  }
+
+  public:
+
+  // nested types ----------------------------------------------------
+
+  // accessors -------------------------------------------------------
+
+  // @@protoc_insertion_point(class_scope:mavsdk.rpc.telemetry.GetGpsGlobalOriginRequest)
+ private:
+  class _Internal;
+
+  template <typename T> friend class ::PROTOBUF_NAMESPACE_ID::Arena::InternalHelper;
+  typedef void InternalArenaConstructable_;
+  typedef void DestructorSkippable_;
+  mutable ::PROTOBUF_NAMESPACE_ID::internal::CachedSize _cached_size_;
+  friend struct ::TableStruct_telemetry_2ftelemetry_2eproto;
+};
+// -------------------------------------------------------------------
+
+class GetGpsGlobalOriginResponse PROTOBUF_FINAL :
+    public ::PROTOBUF_NAMESPACE_ID::Message /* @@protoc_insertion_point(class_definition:mavsdk.rpc.telemetry.GetGpsGlobalOriginResponse) */ {
+ public:
+  inline GetGpsGlobalOriginResponse() : GetGpsGlobalOriginResponse(nullptr) {}
+  virtual ~GetGpsGlobalOriginResponse();
+
+  GetGpsGlobalOriginResponse(const GetGpsGlobalOriginResponse& from);
+  GetGpsGlobalOriginResponse(GetGpsGlobalOriginResponse&& from) noexcept
+    : GetGpsGlobalOriginResponse() {
+    *this = ::std::move(from);
+  }
+
+  inline GetGpsGlobalOriginResponse& operator=(const GetGpsGlobalOriginResponse& from) {
+    CopyFrom(from);
+    return *this;
+  }
+  inline GetGpsGlobalOriginResponse& operator=(GetGpsGlobalOriginResponse&& from) noexcept {
+    if (GetArena() == from.GetArena()) {
+      if (this != &from) InternalSwap(&from);
+    } else {
+      CopyFrom(from);
+    }
+    return *this;
+  }
+
+  static const ::PROTOBUF_NAMESPACE_ID::Descriptor* descriptor() {
+    return GetDescriptor();
+  }
+  static const ::PROTOBUF_NAMESPACE_ID::Descriptor* GetDescriptor() {
+    return GetMetadataStatic().descriptor;
+  }
+  static const ::PROTOBUF_NAMESPACE_ID::Reflection* GetReflection() {
+    return GetMetadataStatic().reflection;
+  }
+  static const GetGpsGlobalOriginResponse& default_instance();
+
+  static void InitAsDefaultInstance();  // FOR INTERNAL USE ONLY
+  static inline const GetGpsGlobalOriginResponse* internal_default_instance() {
+    return reinterpret_cast<const GetGpsGlobalOriginResponse*>(
+               &_GetGpsGlobalOriginResponse_default_instance_);
+  }
+  static constexpr int kIndexInFileMessages =
+    97;
+
+  friend void swap(GetGpsGlobalOriginResponse& a, GetGpsGlobalOriginResponse& b) {
+    a.Swap(&b);
+  }
+  inline void Swap(GetGpsGlobalOriginResponse* other) {
+    if (other == this) return;
+    if (GetArena() == other->GetArena()) {
+      InternalSwap(other);
+    } else {
+      ::PROTOBUF_NAMESPACE_ID::internal::GenericSwap(this, other);
+    }
+  }
+  void UnsafeArenaSwap(GetGpsGlobalOriginResponse* other) {
+    if (other == this) return;
+    GOOGLE_DCHECK(GetArena() == other->GetArena());
+    InternalSwap(other);
+  }
+
+  // implements Message ----------------------------------------------
+
+  inline GetGpsGlobalOriginResponse* New() const final {
+    return CreateMaybeMessage<GetGpsGlobalOriginResponse>(nullptr);
+  }
+
+  GetGpsGlobalOriginResponse* New(::PROTOBUF_NAMESPACE_ID::Arena* arena) const final {
+    return CreateMaybeMessage<GetGpsGlobalOriginResponse>(arena);
+  }
+  void CopyFrom(const ::PROTOBUF_NAMESPACE_ID::Message& from) final;
+  void MergeFrom(const ::PROTOBUF_NAMESPACE_ID::Message& from) final;
+  void CopyFrom(const GetGpsGlobalOriginResponse& from);
+  void MergeFrom(const GetGpsGlobalOriginResponse& from);
+  PROTOBUF_ATTRIBUTE_REINITIALIZES void Clear() final;
+  bool IsInitialized() const final;
+
+  size_t ByteSizeLong() const final;
+  const char* _InternalParse(const char* ptr, ::PROTOBUF_NAMESPACE_ID::internal::ParseContext* ctx) final;
+  ::PROTOBUF_NAMESPACE_ID::uint8* _InternalSerialize(
+      ::PROTOBUF_NAMESPACE_ID::uint8* target, ::PROTOBUF_NAMESPACE_ID::io::EpsCopyOutputStream* stream) const final;
+  int GetCachedSize() const final { return _cached_size_.Get(); }
+
+  private:
+  inline void SharedCtor();
+  inline void SharedDtor();
+  void SetCachedSize(int size) const final;
+  void InternalSwap(GetGpsGlobalOriginResponse* other);
+  friend class ::PROTOBUF_NAMESPACE_ID::internal::AnyMetadata;
+  static ::PROTOBUF_NAMESPACE_ID::StringPiece FullMessageName() {
+    return "mavsdk.rpc.telemetry.GetGpsGlobalOriginResponse";
+  }
+  protected:
+  explicit GetGpsGlobalOriginResponse(::PROTOBUF_NAMESPACE_ID::Arena* arena);
+  private:
+  static void ArenaDtor(void* object);
+  inline void RegisterArenaDtor(::PROTOBUF_NAMESPACE_ID::Arena* arena);
+  public:
+
+  ::PROTOBUF_NAMESPACE_ID::Metadata GetMetadata() const final;
+  private:
+  static ::PROTOBUF_NAMESPACE_ID::Metadata GetMetadataStatic() {
+    ::PROTOBUF_NAMESPACE_ID::internal::AssignDescriptors(&::descriptor_table_telemetry_2ftelemetry_2eproto);
+    return ::descriptor_table_telemetry_2ftelemetry_2eproto.file_level_metadata[kIndexInFileMessages];
+  }
+
+  public:
+
+  // nested types ----------------------------------------------------
+
+  // accessors -------------------------------------------------------
+
+  enum : int {
+    kTelemetryResultFieldNumber = 1,
+    kGpsGlobalOriginFieldNumber = 2,
+  };
+  // .mavsdk.rpc.telemetry.TelemetryResult telemetry_result = 1;
+  bool has_telemetry_result() const;
+  private:
+  bool _internal_has_telemetry_result() const;
+  public:
+  void clear_telemetry_result();
+  const ::mavsdk::rpc::telemetry::TelemetryResult& telemetry_result() const;
+  ::mavsdk::rpc::telemetry::TelemetryResult* release_telemetry_result();
+  ::mavsdk::rpc::telemetry::TelemetryResult* mutable_telemetry_result();
+  void set_allocated_telemetry_result(::mavsdk::rpc::telemetry::TelemetryResult* telemetry_result);
+  private:
+  const ::mavsdk::rpc::telemetry::TelemetryResult& _internal_telemetry_result() const;
+  ::mavsdk::rpc::telemetry::TelemetryResult* _internal_mutable_telemetry_result();
+  public:
+  void unsafe_arena_set_allocated_telemetry_result(
+      ::mavsdk::rpc::telemetry::TelemetryResult* telemetry_result);
+  ::mavsdk::rpc::telemetry::TelemetryResult* unsafe_arena_release_telemetry_result();
+
+  // .mavsdk.rpc.telemetry.GpsGlobalOrigin gps_global_origin = 2;
+  bool has_gps_global_origin() const;
+  private:
+  bool _internal_has_gps_global_origin() const;
+  public:
+  void clear_gps_global_origin();
+  const ::mavsdk::rpc::telemetry::GpsGlobalOrigin& gps_global_origin() const;
+  ::mavsdk::rpc::telemetry::GpsGlobalOrigin* release_gps_global_origin();
+  ::mavsdk::rpc::telemetry::GpsGlobalOrigin* mutable_gps_global_origin();
+  void set_allocated_gps_global_origin(::mavsdk::rpc::telemetry::GpsGlobalOrigin* gps_global_origin);
+  private:
+  const ::mavsdk::rpc::telemetry::GpsGlobalOrigin& _internal_gps_global_origin() const;
+  ::mavsdk::rpc::telemetry::GpsGlobalOrigin* _internal_mutable_gps_global_origin();
+  public:
+  void unsafe_arena_set_allocated_gps_global_origin(
+      ::mavsdk::rpc::telemetry::GpsGlobalOrigin* gps_global_origin);
+  ::mavsdk::rpc::telemetry::GpsGlobalOrigin* unsafe_arena_release_gps_global_origin();
+
+  // @@protoc_insertion_point(class_scope:mavsdk.rpc.telemetry.GetGpsGlobalOriginResponse)
+ private:
+  class _Internal;
+
+  template <typename T> friend class ::PROTOBUF_NAMESPACE_ID::Arena::InternalHelper;
+  typedef void InternalArenaConstructable_;
+  typedef void DestructorSkippable_;
+  ::mavsdk::rpc::telemetry::TelemetryResult* telemetry_result_;
+  ::mavsdk::rpc::telemetry::GpsGlobalOrigin* gps_global_origin_;
+  mutable ::PROTOBUF_NAMESPACE_ID::internal::CachedSize _cached_size_;
+  friend struct ::TableStruct_telemetry_2ftelemetry_2eproto;
+};
+// -------------------------------------------------------------------
+
 class Position PROTOBUF_FINAL :
     public ::PROTOBUF_NAMESPACE_ID::Message /* @@protoc_insertion_point(class_definition:mavsdk.rpc.telemetry.Position) */ {
  public:
@@ -13963,7 +14265,7 @@ class Position PROTOBUF_FINAL :
                &_Position_default_instance_);
   }
   static constexpr int kIndexInFileMessages =
-    96;
+    98;
 
   friend void swap(Position& a, Position& b) {
     a.Swap(&b);
@@ -14133,7 +14435,7 @@ class Quaternion PROTOBUF_FINAL :
                &_Quaternion_default_instance_);
   }
   static constexpr int kIndexInFileMessages =
-    97;
+    99;
 
   friend void swap(Quaternion& a, Quaternion& b) {
     a.Swap(&b);
@@ -14303,7 +14605,7 @@ class EulerAngle PROTOBUF_FINAL :
                &_EulerAngle_default_instance_);
   }
   static constexpr int kIndexInFileMessages =
-    98;
+    100;
 
   friend void swap(EulerAngle& a, EulerAngle& b) {
     a.Swap(&b);
@@ -14462,7 +14764,7 @@ class AngularVelocityBody PROTOBUF_FINAL :
                &_AngularVelocityBody_default_instance_);
   }
   static constexpr int kIndexInFileMessages =
-    99;
+    101;
 
   friend void swap(AngularVelocityBody& a, AngularVelocityBody& b) {
     a.Swap(&b);
@@ -14621,7 +14923,7 @@ class GpsInfo PROTOBUF_FINAL :
                &_GpsInfo_default_instance_);
   }
   static constexpr int kIndexInFileMessages =
-    100;
+    102;
 
   friend void swap(GpsInfo& a, GpsInfo& b) {
     a.Swap(&b);
@@ -14769,7 +15071,7 @@ class Battery PROTOBUF_FINAL :
                &_Battery_default_instance_);
   }
   static constexpr int kIndexInFileMessages =
-    101;
+    103;
 
   friend void swap(Battery& a, Battery& b) {
     a.Swap(&b);
@@ -14917,7 +15219,7 @@ class Health PROTOBUF_FINAL :
                &_Health_default_instance_);
   }
   static constexpr int kIndexInFileMessages =
-    102;
+    104;
 
   friend void swap(Health& a, Health& b) {
     a.Swap(&b);
@@ -15120,7 +15422,7 @@ class RcStatus PROTOBUF_FINAL :
                &_RcStatus_default_instance_);
   }
   static constexpr int kIndexInFileMessages =
-    103;
+    105;
 
   friend void swap(RcStatus& a, RcStatus& b) {
     a.Swap(&b);
@@ -15279,7 +15581,7 @@ class StatusText PROTOBUF_FINAL :
                &_StatusText_default_instance_);
   }
   static constexpr int kIndexInFileMessages =
-    104;
+    106;
 
   friend void swap(StatusText& a, StatusText& b) {
     a.Swap(&b);
@@ -15434,7 +15736,7 @@ class ActuatorControlTarget PROTOBUF_FINAL :
                &_ActuatorControlTarget_default_instance_);
   }
   static constexpr int kIndexInFileMessages =
-    105;
+    107;
 
   friend void swap(ActuatorControlTarget& a, ActuatorControlTarget& b) {
     a.Swap(&b);
@@ -15596,7 +15898,7 @@ class ActuatorOutputStatus PROTOBUF_FINAL :
                &_ActuatorOutputStatus_default_instance_);
   }
   static constexpr int kIndexInFileMessages =
-    106;
+    108;
 
   friend void swap(ActuatorOutputStatus& a, ActuatorOutputStatus& b) {
     a.Swap(&b);
@@ -15758,7 +16060,7 @@ class Covariance PROTOBUF_FINAL :
                &_Covariance_default_instance_);
   }
   static constexpr int kIndexInFileMessages =
-    107;
+    109;
 
   friend void swap(Covariance& a, Covariance& b) {
     a.Swap(&b);
@@ -15909,7 +16211,7 @@ class VelocityBody PROTOBUF_FINAL :
                &_VelocityBody_default_instance_);
   }
   static constexpr int kIndexInFileMessages =
-    108;
+    110;
 
   friend void swap(VelocityBody& a, VelocityBody& b) {
     a.Swap(&b);
@@ -16068,7 +16370,7 @@ class PositionBody PROTOBUF_FINAL :
                &_PositionBody_default_instance_);
   }
   static constexpr int kIndexInFileMessages =
-    109;
+    111;
 
   friend void swap(PositionBody& a, PositionBody& b) {
     a.Swap(&b);
@@ -16227,7 +16529,7 @@ class Odometry PROTOBUF_FINAL :
                &_Odometry_default_instance_);
   }
   static constexpr int kIndexInFileMessages =
-    110;
+    112;
 
   friend void swap(Odometry& a, Odometry& b) {
     a.Swap(&b);
@@ -16540,7 +16842,7 @@ class DistanceSensor PROTOBUF_FINAL :
                &_DistanceSensor_default_instance_);
   }
   static constexpr int kIndexInFileMessages =
-    111;
+    113;
 
   friend void swap(DistanceSensor& a, DistanceSensor& b) {
     a.Swap(&b);
@@ -16699,7 +17001,7 @@ class PositionNed PROTOBUF_FINAL :
                &_PositionNed_default_instance_);
   }
   static constexpr int kIndexInFileMessages =
-    112;
+    114;
 
   friend void swap(PositionNed& a, PositionNed& b) {
     a.Swap(&b);
@@ -16858,7 +17160,7 @@ class VelocityNed PROTOBUF_FINAL :
                &_VelocityNed_default_instance_);
   }
   static constexpr int kIndexInFileMessages =
-    113;
+    115;
 
   friend void swap(VelocityNed& a, VelocityNed& b) {
     a.Swap(&b);
@@ -17017,7 +17319,7 @@ class PositionVelocityNed PROTOBUF_FINAL :
                &_PositionVelocityNed_default_instance_);
   }
   static constexpr int kIndexInFileMessages =
-    114;
+    116;
 
   friend void swap(PositionVelocityNed& a, PositionVelocityNed& b) {
     a.Swap(&b);
@@ -17183,7 +17485,7 @@ class GroundTruth PROTOBUF_FINAL :
                &_GroundTruth_default_instance_);
   }
   static constexpr int kIndexInFileMessages =
-    115;
+    117;
 
   friend void swap(GroundTruth& a, GroundTruth& b) {
     a.Swap(&b);
@@ -17342,7 +17644,7 @@ class FixedwingMetrics PROTOBUF_FINAL :
                &_FixedwingMetrics_default_instance_);
   }
   static constexpr int kIndexInFileMessages =
-    116;
+    118;
 
   friend void swap(FixedwingMetrics& a, FixedwingMetrics& b) {
     a.Swap(&b);
@@ -17501,7 +17803,7 @@ class AccelerationFrd PROTOBUF_FINAL :
                &_AccelerationFrd_default_instance_);
   }
   static constexpr int kIndexInFileMessages =
-    117;
+    119;
 
   friend void swap(AccelerationFrd& a, AccelerationFrd& b) {
     a.Swap(&b);
@@ -17660,7 +17962,7 @@ class AngularVelocityFrd PROTOBUF_FINAL :
                &_AngularVelocityFrd_default_instance_);
   }
   static constexpr int kIndexInFileMessages =
-    118;
+    120;
 
   friend void swap(AngularVelocityFrd& a, AngularVelocityFrd& b) {
     a.Swap(&b);
@@ -17819,7 +18121,7 @@ class MagneticFieldFrd PROTOBUF_FINAL :
                &_MagneticFieldFrd_default_instance_);
   }
   static constexpr int kIndexInFileMessages =
-    119;
+    121;
 
   friend void swap(MagneticFieldFrd& a, MagneticFieldFrd& b) {
     a.Swap(&b);
@@ -17978,7 +18280,7 @@ class Imu PROTOBUF_FINAL :
                &_Imu_default_instance_);
   }
   static constexpr int kIndexInFileMessages =
-    120;
+    122;
 
   friend void swap(Imu& a, Imu& b) {
     a.Swap(&b);
@@ -18133,6 +18435,165 @@ class Imu PROTOBUF_FINAL :
 };
 // -------------------------------------------------------------------
 
+class GpsGlobalOrigin PROTOBUF_FINAL :
+    public ::PROTOBUF_NAMESPACE_ID::Message /* @@protoc_insertion_point(class_definition:mavsdk.rpc.telemetry.GpsGlobalOrigin) */ {
+ public:
+  inline GpsGlobalOrigin() : GpsGlobalOrigin(nullptr) {}
+  virtual ~GpsGlobalOrigin();
+
+  GpsGlobalOrigin(const GpsGlobalOrigin& from);
+  GpsGlobalOrigin(GpsGlobalOrigin&& from) noexcept
+    : GpsGlobalOrigin() {
+    *this = ::std::move(from);
+  }
+
+  inline GpsGlobalOrigin& operator=(const GpsGlobalOrigin& from) {
+    CopyFrom(from);
+    return *this;
+  }
+  inline GpsGlobalOrigin& operator=(GpsGlobalOrigin&& from) noexcept {
+    if (GetArena() == from.GetArena()) {
+      if (this != &from) InternalSwap(&from);
+    } else {
+      CopyFrom(from);
+    }
+    return *this;
+  }
+
+  static const ::PROTOBUF_NAMESPACE_ID::Descriptor* descriptor() {
+    return GetDescriptor();
+  }
+  static const ::PROTOBUF_NAMESPACE_ID::Descriptor* GetDescriptor() {
+    return GetMetadataStatic().descriptor;
+  }
+  static const ::PROTOBUF_NAMESPACE_ID::Reflection* GetReflection() {
+    return GetMetadataStatic().reflection;
+  }
+  static const GpsGlobalOrigin& default_instance();
+
+  static void InitAsDefaultInstance();  // FOR INTERNAL USE ONLY
+  static inline const GpsGlobalOrigin* internal_default_instance() {
+    return reinterpret_cast<const GpsGlobalOrigin*>(
+               &_GpsGlobalOrigin_default_instance_);
+  }
+  static constexpr int kIndexInFileMessages =
+    123;
+
+  friend void swap(GpsGlobalOrigin& a, GpsGlobalOrigin& b) {
+    a.Swap(&b);
+  }
+  inline void Swap(GpsGlobalOrigin* other) {
+    if (other == this) return;
+    if (GetArena() == other->GetArena()) {
+      InternalSwap(other);
+    } else {
+      ::PROTOBUF_NAMESPACE_ID::internal::GenericSwap(this, other);
+    }
+  }
+  void UnsafeArenaSwap(GpsGlobalOrigin* other) {
+    if (other == this) return;
+    GOOGLE_DCHECK(GetArena() == other->GetArena());
+    InternalSwap(other);
+  }
+
+  // implements Message ----------------------------------------------
+
+  inline GpsGlobalOrigin* New() const final {
+    return CreateMaybeMessage<GpsGlobalOrigin>(nullptr);
+  }
+
+  GpsGlobalOrigin* New(::PROTOBUF_NAMESPACE_ID::Arena* arena) const final {
+    return CreateMaybeMessage<GpsGlobalOrigin>(arena);
+  }
+  void CopyFrom(const ::PROTOBUF_NAMESPACE_ID::Message& from) final;
+  void MergeFrom(const ::PROTOBUF_NAMESPACE_ID::Message& from) final;
+  void CopyFrom(const GpsGlobalOrigin& from);
+  void MergeFrom(const GpsGlobalOrigin& from);
+  PROTOBUF_ATTRIBUTE_REINITIALIZES void Clear() final;
+  bool IsInitialized() const final;
+
+  size_t ByteSizeLong() const final;
+  const char* _InternalParse(const char* ptr, ::PROTOBUF_NAMESPACE_ID::internal::ParseContext* ctx) final;
+  ::PROTOBUF_NAMESPACE_ID::uint8* _InternalSerialize(
+      ::PROTOBUF_NAMESPACE_ID::uint8* target, ::PROTOBUF_NAMESPACE_ID::io::EpsCopyOutputStream* stream) const final;
+  int GetCachedSize() const final { return _cached_size_.Get(); }
+
+  private:
+  inline void SharedCtor();
+  inline void SharedDtor();
+  void SetCachedSize(int size) const final;
+  void InternalSwap(GpsGlobalOrigin* other);
+  friend class ::PROTOBUF_NAMESPACE_ID::internal::AnyMetadata;
+  static ::PROTOBUF_NAMESPACE_ID::StringPiece FullMessageName() {
+    return "mavsdk.rpc.telemetry.GpsGlobalOrigin";
+  }
+  protected:
+  explicit GpsGlobalOrigin(::PROTOBUF_NAMESPACE_ID::Arena* arena);
+  private:
+  static void ArenaDtor(void* object);
+  inline void RegisterArenaDtor(::PROTOBUF_NAMESPACE_ID::Arena* arena);
+  public:
+
+  ::PROTOBUF_NAMESPACE_ID::Metadata GetMetadata() const final;
+  private:
+  static ::PROTOBUF_NAMESPACE_ID::Metadata GetMetadataStatic() {
+    ::PROTOBUF_NAMESPACE_ID::internal::AssignDescriptors(&::descriptor_table_telemetry_2ftelemetry_2eproto);
+    return ::descriptor_table_telemetry_2ftelemetry_2eproto.file_level_metadata[kIndexInFileMessages];
+  }
+
+  public:
+
+  // nested types ----------------------------------------------------
+
+  // accessors -------------------------------------------------------
+
+  enum : int {
+    kLatitudeDegFieldNumber = 1,
+    kLongitudeDegFieldNumber = 2,
+    kAltitudeMFieldNumber = 3,
+  };
+  // double latitude_deg = 1 [(.mavsdk.options.default_value) = "NaN"];
+  void clear_latitude_deg();
+  double latitude_deg() const;
+  void set_latitude_deg(double value);
+  private:
+  double _internal_latitude_deg() const;
+  void _internal_set_latitude_deg(double value);
+  public:
+
+  // double longitude_deg = 2 [(.mavsdk.options.default_value) = "NaN"];
+  void clear_longitude_deg();
+  double longitude_deg() const;
+  void set_longitude_deg(double value);
+  private:
+  double _internal_longitude_deg() const;
+  void _internal_set_longitude_deg(double value);
+  public:
+
+  // float altitude_m = 3 [(.mavsdk.options.default_value) = "NaN"];
+  void clear_altitude_m();
+  float altitude_m() const;
+  void set_altitude_m(float value);
+  private:
+  float _internal_altitude_m() const;
+  void _internal_set_altitude_m(float value);
+  public:
+
+  // @@protoc_insertion_point(class_scope:mavsdk.rpc.telemetry.GpsGlobalOrigin)
+ private:
+  class _Internal;
+
+  template <typename T> friend class ::PROTOBUF_NAMESPACE_ID::Arena::InternalHelper;
+  typedef void InternalArenaConstructable_;
+  typedef void DestructorSkippable_;
+  double latitude_deg_;
+  double longitude_deg_;
+  float altitude_m_;
+  mutable ::PROTOBUF_NAMESPACE_ID::internal::CachedSize _cached_size_;
+  friend struct ::TableStruct_telemetry_2ftelemetry_2eproto;
+};
+// -------------------------------------------------------------------
+
 class TelemetryResult PROTOBUF_FINAL :
     public ::PROTOBUF_NAMESPACE_ID::Message /* @@protoc_insertion_point(class_definition:mavsdk.rpc.telemetry.TelemetryResult) */ {
  public:
@@ -18175,7 +18636,7 @@ class TelemetryResult PROTOBUF_FINAL :
                &_TelemetryResult_default_instance_);
   }
   static constexpr int kIndexInFileMessages =
-    121;
+    124;
 
   friend void swap(TelemetryResult& a, TelemetryResult& b) {
     a.Swap(&b);
@@ -22745,6 +23206,180 @@ inline void SetRateDistanceSensorResponse::set_allocated_telemetry_result(::mavs
 
 // -------------------------------------------------------------------
 
+// GetGpsGlobalOriginRequest
+
+// -------------------------------------------------------------------
+
+// GetGpsGlobalOriginResponse
+
+// .mavsdk.rpc.telemetry.TelemetryResult telemetry_result = 1;
+inline bool GetGpsGlobalOriginResponse::_internal_has_telemetry_result() const {
+  return this != internal_default_instance() && telemetry_result_ != nullptr;
+}
+inline bool GetGpsGlobalOriginResponse::has_telemetry_result() const {
+  return _internal_has_telemetry_result();
+}
+inline void GetGpsGlobalOriginResponse::clear_telemetry_result() {
+  if (GetArena() == nullptr && telemetry_result_ != nullptr) {
+    delete telemetry_result_;
+  }
+  telemetry_result_ = nullptr;
+}
+inline const ::mavsdk::rpc::telemetry::TelemetryResult& GetGpsGlobalOriginResponse::_internal_telemetry_result() const {
+  const ::mavsdk::rpc::telemetry::TelemetryResult* p = telemetry_result_;
+  return p != nullptr ? *p : *reinterpret_cast<const ::mavsdk::rpc::telemetry::TelemetryResult*>(
+      &::mavsdk::rpc::telemetry::_TelemetryResult_default_instance_);
+}
+inline const ::mavsdk::rpc::telemetry::TelemetryResult& GetGpsGlobalOriginResponse::telemetry_result() const {
+  // @@protoc_insertion_point(field_get:mavsdk.rpc.telemetry.GetGpsGlobalOriginResponse.telemetry_result)
+  return _internal_telemetry_result();
+}
+inline void GetGpsGlobalOriginResponse::unsafe_arena_set_allocated_telemetry_result(
+    ::mavsdk::rpc::telemetry::TelemetryResult* telemetry_result) {
+  if (GetArena() == nullptr) {
+    delete reinterpret_cast<::PROTOBUF_NAMESPACE_ID::MessageLite*>(telemetry_result_);
+  }
+  telemetry_result_ = telemetry_result;
+  if (telemetry_result) {
+    
+  } else {
+    
+  }
+  // @@protoc_insertion_point(field_unsafe_arena_set_allocated:mavsdk.rpc.telemetry.GetGpsGlobalOriginResponse.telemetry_result)
+}
+inline ::mavsdk::rpc::telemetry::TelemetryResult* GetGpsGlobalOriginResponse::release_telemetry_result() {
+  
+  ::mavsdk::rpc::telemetry::TelemetryResult* temp = telemetry_result_;
+  telemetry_result_ = nullptr;
+  if (GetArena() != nullptr) {
+    temp = ::PROTOBUF_NAMESPACE_ID::internal::DuplicateIfNonNull(temp);
+  }
+  return temp;
+}
+inline ::mavsdk::rpc::telemetry::TelemetryResult* GetGpsGlobalOriginResponse::unsafe_arena_release_telemetry_result() {
+  // @@protoc_insertion_point(field_release:mavsdk.rpc.telemetry.GetGpsGlobalOriginResponse.telemetry_result)
+  
+  ::mavsdk::rpc::telemetry::TelemetryResult* temp = telemetry_result_;
+  telemetry_result_ = nullptr;
+  return temp;
+}
+inline ::mavsdk::rpc::telemetry::TelemetryResult* GetGpsGlobalOriginResponse::_internal_mutable_telemetry_result() {
+  
+  if (telemetry_result_ == nullptr) {
+    auto* p = CreateMaybeMessage<::mavsdk::rpc::telemetry::TelemetryResult>(GetArena());
+    telemetry_result_ = p;
+  }
+  return telemetry_result_;
+}
+inline ::mavsdk::rpc::telemetry::TelemetryResult* GetGpsGlobalOriginResponse::mutable_telemetry_result() {
+  // @@protoc_insertion_point(field_mutable:mavsdk.rpc.telemetry.GetGpsGlobalOriginResponse.telemetry_result)
+  return _internal_mutable_telemetry_result();
+}
+inline void GetGpsGlobalOriginResponse::set_allocated_telemetry_result(::mavsdk::rpc::telemetry::TelemetryResult* telemetry_result) {
+  ::PROTOBUF_NAMESPACE_ID::Arena* message_arena = GetArena();
+  if (message_arena == nullptr) {
+    delete telemetry_result_;
+  }
+  if (telemetry_result) {
+    ::PROTOBUF_NAMESPACE_ID::Arena* submessage_arena =
+      ::PROTOBUF_NAMESPACE_ID::Arena::GetArena(telemetry_result);
+    if (message_arena != submessage_arena) {
+      telemetry_result = ::PROTOBUF_NAMESPACE_ID::internal::GetOwnedMessage(
+          message_arena, telemetry_result, submessage_arena);
+    }
+    
+  } else {
+    
+  }
+  telemetry_result_ = telemetry_result;
+  // @@protoc_insertion_point(field_set_allocated:mavsdk.rpc.telemetry.GetGpsGlobalOriginResponse.telemetry_result)
+}
+
+// .mavsdk.rpc.telemetry.GpsGlobalOrigin gps_global_origin = 2;
+inline bool GetGpsGlobalOriginResponse::_internal_has_gps_global_origin() const {
+  return this != internal_default_instance() && gps_global_origin_ != nullptr;
+}
+inline bool GetGpsGlobalOriginResponse::has_gps_global_origin() const {
+  return _internal_has_gps_global_origin();
+}
+inline void GetGpsGlobalOriginResponse::clear_gps_global_origin() {
+  if (GetArena() == nullptr && gps_global_origin_ != nullptr) {
+    delete gps_global_origin_;
+  }
+  gps_global_origin_ = nullptr;
+}
+inline const ::mavsdk::rpc::telemetry::GpsGlobalOrigin& GetGpsGlobalOriginResponse::_internal_gps_global_origin() const {
+  const ::mavsdk::rpc::telemetry::GpsGlobalOrigin* p = gps_global_origin_;
+  return p != nullptr ? *p : *reinterpret_cast<const ::mavsdk::rpc::telemetry::GpsGlobalOrigin*>(
+      &::mavsdk::rpc::telemetry::_GpsGlobalOrigin_default_instance_);
+}
+inline const ::mavsdk::rpc::telemetry::GpsGlobalOrigin& GetGpsGlobalOriginResponse::gps_global_origin() const {
+  // @@protoc_insertion_point(field_get:mavsdk.rpc.telemetry.GetGpsGlobalOriginResponse.gps_global_origin)
+  return _internal_gps_global_origin();
+}
+inline void GetGpsGlobalOriginResponse::unsafe_arena_set_allocated_gps_global_origin(
+    ::mavsdk::rpc::telemetry::GpsGlobalOrigin* gps_global_origin) {
+  if (GetArena() == nullptr) {
+    delete reinterpret_cast<::PROTOBUF_NAMESPACE_ID::MessageLite*>(gps_global_origin_);
+  }
+  gps_global_origin_ = gps_global_origin;
+  if (gps_global_origin) {
+    
+  } else {
+    
+  }
+  // @@protoc_insertion_point(field_unsafe_arena_set_allocated:mavsdk.rpc.telemetry.GetGpsGlobalOriginResponse.gps_global_origin)
+}
+inline ::mavsdk::rpc::telemetry::GpsGlobalOrigin* GetGpsGlobalOriginResponse::release_gps_global_origin() {
+  
+  ::mavsdk::rpc::telemetry::GpsGlobalOrigin* temp = gps_global_origin_;
+  gps_global_origin_ = nullptr;
+  if (GetArena() != nullptr) {
+    temp = ::PROTOBUF_NAMESPACE_ID::internal::DuplicateIfNonNull(temp);
+  }
+  return temp;
+}
+inline ::mavsdk::rpc::telemetry::GpsGlobalOrigin* GetGpsGlobalOriginResponse::unsafe_arena_release_gps_global_origin() {
+  // @@protoc_insertion_point(field_release:mavsdk.rpc.telemetry.GetGpsGlobalOriginResponse.gps_global_origin)
+  
+  ::mavsdk::rpc::telemetry::GpsGlobalOrigin* temp = gps_global_origin_;
+  gps_global_origin_ = nullptr;
+  return temp;
+}
+inline ::mavsdk::rpc::telemetry::GpsGlobalOrigin* GetGpsGlobalOriginResponse::_internal_mutable_gps_global_origin() {
+  
+  if (gps_global_origin_ == nullptr) {
+    auto* p = CreateMaybeMessage<::mavsdk::rpc::telemetry::GpsGlobalOrigin>(GetArena());
+    gps_global_origin_ = p;
+  }
+  return gps_global_origin_;
+}
+inline ::mavsdk::rpc::telemetry::GpsGlobalOrigin* GetGpsGlobalOriginResponse::mutable_gps_global_origin() {
+  // @@protoc_insertion_point(field_mutable:mavsdk.rpc.telemetry.GetGpsGlobalOriginResponse.gps_global_origin)
+  return _internal_mutable_gps_global_origin();
+}
+inline void GetGpsGlobalOriginResponse::set_allocated_gps_global_origin(::mavsdk::rpc::telemetry::GpsGlobalOrigin* gps_global_origin) {
+  ::PROTOBUF_NAMESPACE_ID::Arena* message_arena = GetArena();
+  if (message_arena == nullptr) {
+    delete gps_global_origin_;
+  }
+  if (gps_global_origin) {
+    ::PROTOBUF_NAMESPACE_ID::Arena* submessage_arena =
+      ::PROTOBUF_NAMESPACE_ID::Arena::GetArena(gps_global_origin);
+    if (message_arena != submessage_arena) {
+      gps_global_origin = ::PROTOBUF_NAMESPACE_ID::internal::GetOwnedMessage(
+          message_arena, gps_global_origin, submessage_arena);
+    }
+    
+  } else {
+    
+  }
+  gps_global_origin_ = gps_global_origin;
+  // @@protoc_insertion_point(field_set_allocated:mavsdk.rpc.telemetry.GetGpsGlobalOriginResponse.gps_global_origin)
+}
+
+// -------------------------------------------------------------------
+
 // Position
 
 // double latitude_deg = 1 [(.mavsdk.options.default_value) = "NaN"];
@@ -25261,6 +25896,70 @@ inline void Imu::set_temperature_degc(float value) {
 
 // -------------------------------------------------------------------
 
+// GpsGlobalOrigin
+
+// double latitude_deg = 1 [(.mavsdk.options.default_value) = "NaN"];
+inline void GpsGlobalOrigin::clear_latitude_deg() {
+  latitude_deg_ = 0;
+}
+inline double GpsGlobalOrigin::_internal_latitude_deg() const {
+  return latitude_deg_;
+}
+inline double GpsGlobalOrigin::latitude_deg() const {
+  // @@protoc_insertion_point(field_get:mavsdk.rpc.telemetry.GpsGlobalOrigin.latitude_deg)
+  return _internal_latitude_deg();
+}
+inline void GpsGlobalOrigin::_internal_set_latitude_deg(double value) {
+  
+  latitude_deg_ = value;
+}
+inline void GpsGlobalOrigin::set_latitude_deg(double value) {
+  _internal_set_latitude_deg(value);
+  // @@protoc_insertion_point(field_set:mavsdk.rpc.telemetry.GpsGlobalOrigin.latitude_deg)
+}
+
+// double longitude_deg = 2 [(.mavsdk.options.default_value) = "NaN"];
+inline void GpsGlobalOrigin::clear_longitude_deg() {
+  longitude_deg_ = 0;
+}
+inline double GpsGlobalOrigin::_internal_longitude_deg() const {
+  return longitude_deg_;
+}
+inline double GpsGlobalOrigin::longitude_deg() const {
+  // @@protoc_insertion_point(field_get:mavsdk.rpc.telemetry.GpsGlobalOrigin.longitude_deg)
+  return _internal_longitude_deg();
+}
+inline void GpsGlobalOrigin::_internal_set_longitude_deg(double value) {
+  
+  longitude_deg_ = value;
+}
+inline void GpsGlobalOrigin::set_longitude_deg(double value) {
+  _internal_set_longitude_deg(value);
+  // @@protoc_insertion_point(field_set:mavsdk.rpc.telemetry.GpsGlobalOrigin.longitude_deg)
+}
+
+// float altitude_m = 3 [(.mavsdk.options.default_value) = "NaN"];
+inline void GpsGlobalOrigin::clear_altitude_m() {
+  altitude_m_ = 0;
+}
+inline float GpsGlobalOrigin::_internal_altitude_m() const {
+  return altitude_m_;
+}
+inline float GpsGlobalOrigin::altitude_m() const {
+  // @@protoc_insertion_point(field_get:mavsdk.rpc.telemetry.GpsGlobalOrigin.altitude_m)
+  return _internal_altitude_m();
+}
+inline void GpsGlobalOrigin::_internal_set_altitude_m(float value) {
+  
+  altitude_m_ = value;
+}
+inline void GpsGlobalOrigin::set_altitude_m(float value) {
+  _internal_set_altitude_m(value);
+  // @@protoc_insertion_point(field_set:mavsdk.rpc.telemetry.GpsGlobalOrigin.altitude_m)
+}
+
+// -------------------------------------------------------------------
+
 // TelemetryResult
 
 // .mavsdk.rpc.telemetry.TelemetryResult.Result result = 1;
@@ -25348,6 +26047,12 @@ inline void TelemetryResult::set_allocated_result_str(std::string* result_str) {
 #ifdef __GNUC__
   #pragma GCC diagnostic pop
 #endif  // __GNUC__
+// -------------------------------------------------------------------
+
+// -------------------------------------------------------------------
+
+// -------------------------------------------------------------------
+
 // -------------------------------------------------------------------
 
 // -------------------------------------------------------------------

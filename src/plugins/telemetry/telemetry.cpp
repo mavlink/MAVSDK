@@ -34,6 +34,7 @@ using AccelerationFrd = Telemetry::AccelerationFrd;
 using AngularVelocityFrd = Telemetry::AngularVelocityFrd;
 using MagneticFieldFrd = Telemetry::MagneticFieldFrd;
 using Imu = Telemetry::Imu;
+using GpsGlobalOrigin = Telemetry::GpsGlobalOrigin;
 
 Telemetry::Telemetry(System& system) : PluginBase(), _impl{new TelemetryImpl(system)} {}
 
@@ -504,6 +505,16 @@ void Telemetry::set_rate_distance_sensor_async(double rate_hz, const ResultCallb
 Telemetry::Result Telemetry::set_rate_distance_sensor(double rate_hz) const
 {
     return _impl->set_rate_distance_sensor(rate_hz);
+}
+
+void Telemetry::get_gps_global_origin_async(const GetGpsGlobalOriginCallback callback)
+{
+    _impl->get_gps_global_origin_async(callback);
+}
+
+std::pair<Telemetry::Result, Telemetry::GpsGlobalOrigin> Telemetry::get_gps_global_origin() const
+{
+    return _impl->get_gps_global_origin();
 }
 
 bool operator==(const Telemetry::Position& lhs, const Telemetry::Position& rhs)
@@ -1029,6 +1040,27 @@ std::ostream& operator<<(std::ostream& str, Telemetry::Imu const& imu)
     str << "    angular_velocity_frd: " << imu.angular_velocity_frd << '\n';
     str << "    magnetic_field_frd: " << imu.magnetic_field_frd << '\n';
     str << "    temperature_degc: " << imu.temperature_degc << '\n';
+    str << '}';
+    return str;
+}
+
+bool operator==(const Telemetry::GpsGlobalOrigin& lhs, const Telemetry::GpsGlobalOrigin& rhs)
+{
+    return ((std::isnan(rhs.latitude_deg) && std::isnan(lhs.latitude_deg)) ||
+            rhs.latitude_deg == lhs.latitude_deg) &&
+           ((std::isnan(rhs.longitude_deg) && std::isnan(lhs.longitude_deg)) ||
+            rhs.longitude_deg == lhs.longitude_deg) &&
+           ((std::isnan(rhs.altitude_m) && std::isnan(lhs.altitude_m)) ||
+            rhs.altitude_m == lhs.altitude_m);
+}
+
+std::ostream& operator<<(std::ostream& str, Telemetry::GpsGlobalOrigin const& gps_global_origin)
+{
+    str << std::setprecision(15);
+    str << "gps_global_origin:" << '\n' << "{\n";
+    str << "    latitude_deg: " << gps_global_origin.latitude_deg << '\n';
+    str << "    longitude_deg: " << gps_global_origin.longitude_deg << '\n';
+    str << "    altitude_m: " << gps_global_origin.altitude_m << '\n';
     str << '}';
     return str;
 }

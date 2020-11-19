@@ -818,6 +818,31 @@ public:
     friend std::ostream& operator<<(std::ostream& str, Telemetry::Imu const& imu);
 
     /**
+     * @brief Gps global origin type.
+     */
+    struct GpsGlobalOrigin {
+        double latitude_deg{double(NAN)}; /**< @brief Latitude of the origin */
+        double longitude_deg{double(NAN)}; /**< @brief Longitude of the origin */
+        float altitude_m{float(NAN)}; /**< @brief Altitude AMSL (above mean sea level) in metres */
+    };
+
+    /**
+     * @brief Equal operator to compare two `Telemetry::GpsGlobalOrigin` objects.
+     *
+     * @return `true` if items are equal.
+     */
+    friend bool
+    operator==(const Telemetry::GpsGlobalOrigin& lhs, const Telemetry::GpsGlobalOrigin& rhs);
+
+    /**
+     * @brief Stream operator to print information about a `Telemetry::GpsGlobalOrigin`.
+     *
+     * @return A reference to the stream.
+     */
+    friend std::ostream&
+    operator<<(std::ostream& str, Telemetry::GpsGlobalOrigin const& gps_global_origin);
+
+    /**
      * @brief Possible results returned for telemetry requests.
      */
     enum class Result {
@@ -1644,6 +1669,28 @@ public:
      * @return Result of request.
      */
     Result set_rate_distance_sensor(double rate_hz) const;
+
+    /**
+     * @brief Callback type for get_gps_global_origin_async.
+     */
+    using GetGpsGlobalOriginCallback = std::function<void(Result, GpsGlobalOrigin)>;
+
+    /**
+     * @brief Get the GPS global origin.
+     *
+     * This function is non-blocking. See 'get_gps_global_origin' for the blocking counterpart.
+     */
+    void get_gps_global_origin_async(const GetGpsGlobalOriginCallback callback);
+
+    /**
+     * @brief Get the GPS global origin.
+     *
+     * This function is blocking. See 'get_gps_global_origin_async' for the non-blocking
+     * counterpart.
+     *
+     * @return Result of request.
+     */
+    std::pair<Result, Telemetry::GpsGlobalOrigin> get_gps_global_origin() const;
 
     /**
      * @brief Copy constructor.
