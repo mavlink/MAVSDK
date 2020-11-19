@@ -1823,6 +1823,24 @@ void TelemetryImpl::distance_sensor_async(Telemetry::DistanceSensorCallback& cal
     _distance_sensor_subscription = callback;
 }
 
+
+void TelemetryImpl::get_gps_global_origin_async(const Telemetry::GetGpsGlobalOriginCallback callback)
+{
+}
+
+std::pair<Telemetry::Result, Telemetry::GpsGlobalOrigin> TelemetryImpl::get_gps_global_origin()
+{
+    auto prom = std::promise<std::pair<Telemetry::Result, Telemetry::GpsGlobalOrigin>>();
+    auto fut = prom.get_future();
+
+    get_gps_global_origin_async(
+        [&prom](Telemetry::Result result, Telemetry::GpsGlobalOrigin gps_global_origin) {
+            prom.set_value(std::make_pair(result, gps_global_origin));
+        });
+
+    return fut.get();
+}
+
 void TelemetryImpl::process_parameter_update(const std::string& name)
 {
     if (name.compare("CAL_GYRO0_ID") == 0) {

@@ -68,6 +68,9 @@ public:
     void set_rate_distance_sensor_async(double rate_hz, Telemetry::ResultCallback callback);
     void set_rate_unix_epoch_time_async(double rate_hz, Telemetry::ResultCallback callback);
 
+    void get_gps_global_origin_async(const Telemetry::GetGpsGlobalOriginCallback callback);
+    std::pair<Telemetry::Result, Telemetry::GpsGlobalOrigin> get_gps_global_origin();
+
     Telemetry::PositionVelocityNed position_velocity_ned() const;
     Telemetry::Position position() const;
     Telemetry::Position home() const;
