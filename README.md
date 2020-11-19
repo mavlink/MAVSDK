@@ -1,4 +1,4 @@
-[![Build Status](https://travis-ci.org/mavlink/MAVSDK-Proto.svg?branch=master)](https://travis-ci.org/mavlink/MAVSDK-Proto)
+[![Build Status](https://travis-ci.org/mavlink/MAVSDK-Proto.svg?branch=main)](https://travis-ci.org/mavlink/MAVSDK-Proto)
 
 # MAVSDK-Proto
 
