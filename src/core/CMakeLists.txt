@@ -1,3 +1,4 @@
+set(THREADS_PREFER_PTHREAD_FLAG ON)
 find_package(Threads REQUIRED)
 
 include_directories(
@@ -38,7 +39,7 @@ add_library(mavsdk
 target_link_libraries(mavsdk
     PRIVATE
     CURL::libcurl
-    ${CMAKE_THREAD_LIBS_INIT}
+    Threads::Threads
 )
 set_target_properties(mavsdk PROPERTIES
     VERSION ${MAVSDK_VERSION_STRING}

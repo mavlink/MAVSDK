@@ -42,4 +42,11 @@ target_link_libraries(unit_tests_backend
     gmock_main
 )
 
+if (BUILD_STATIC_MAVSDK_SERVER)
+    target_link_options(unit_tests_backend PRIVATE -static-libgcc -static-libstdc++ -static)
+    set(CMAKE_FIND_LIBRARY_SUFFIXES ".a")
+    set_target_properties(unit_tests_backend PROPERTIES LINK_SEARCH_START_STATIC ON)
+    set_target_properties(unit_tests_backend PROPERTIES LINK_SEARCH_END_STATIC ON)
+endif()
+
 add_test(unit_tests unit_tests_backend)

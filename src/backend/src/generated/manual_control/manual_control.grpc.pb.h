@@ -84,16 +84,10 @@ class ManualControlService final {
       // Requires manual control input to be sent regularly already.
       // Requires a valid position using e.g. GPS, external vision, or optical flow.
       virtual void StartPositionControl(::grpc::ClientContext* context, const ::mavsdk::rpc::manual_control::StartPositionControlRequest* request, ::mavsdk::rpc::manual_control::StartPositionControlResponse* response, std::function<void(::grpc::Status)>) = 0;
-      virtual void StartPositionControl(::grpc::ClientContext* context, const ::grpc::ByteBuffer* request, ::mavsdk::rpc::manual_control::StartPositionControlResponse* response, std::function<void(::grpc::Status)>) = 0;
       #ifdef GRPC_CALLBACK_API_NONEXPERIMENTAL
       virtual void StartPositionControl(::grpc::ClientContext* context, const ::mavsdk::rpc::manual_control::StartPositionControlRequest* request, ::mavsdk::rpc::manual_control::StartPositionControlResponse* response, ::grpc::ClientUnaryReactor* reactor) = 0;
       #else
       virtual void StartPositionControl(::grpc::ClientContext* context, const ::mavsdk::rpc::manual_control::StartPositionControlRequest* request, ::mavsdk::rpc::manual_control::StartPositionControlResponse* response, ::grpc::experimental::ClientUnaryReactor* reactor) = 0;
-      #endif
-      #ifdef GRPC_CALLBACK_API_NONEXPERIMENTAL
-      virtual void StartPositionControl(::grpc::ClientContext* context, const ::grpc::ByteBuffer* request, ::mavsdk::rpc::manual_control::StartPositionControlResponse* response, ::grpc::ClientUnaryReactor* reactor) = 0;
-      #else
-      virtual void StartPositionControl(::grpc::ClientContext* context, const ::grpc::ByteBuffer* request, ::mavsdk::rpc::manual_control::StartPositionControlResponse* response, ::grpc::experimental::ClientUnaryReactor* reactor) = 0;
       #endif
       //
       // Start altitude control
@@ -101,16 +95,10 @@ class ManualControlService final {
       // Requires manual control input to be sent regularly already.
       // Does not require a  valid position e.g. GPS.
       virtual void StartAltitudeControl(::grpc::ClientContext* context, const ::mavsdk::rpc::manual_control::StartAltitudeControlRequest* request, ::mavsdk::rpc::manual_control::StartAltitudeControlResponse* response, std::function<void(::grpc::Status)>) = 0;
-      virtual void StartAltitudeControl(::grpc::ClientContext* context, const ::grpc::ByteBuffer* request, ::mavsdk::rpc::manual_control::StartAltitudeControlResponse* response, std::function<void(::grpc::Status)>) = 0;
       #ifdef GRPC_CALLBACK_API_NONEXPERIMENTAL
       virtual void StartAltitudeControl(::grpc::ClientContext* context, const ::mavsdk::rpc::manual_control::StartAltitudeControlRequest* request, ::mavsdk::rpc::manual_control::StartAltitudeControlResponse* response, ::grpc::ClientUnaryReactor* reactor) = 0;
       #else
       virtual void StartAltitudeControl(::grpc::ClientContext* context, const ::mavsdk::rpc::manual_control::StartAltitudeControlRequest* request, ::mavsdk::rpc::manual_control::StartAltitudeControlResponse* response, ::grpc::experimental::ClientUnaryReactor* reactor) = 0;
-      #endif
-      #ifdef GRPC_CALLBACK_API_NONEXPERIMENTAL
-      virtual void StartAltitudeControl(::grpc::ClientContext* context, const ::grpc::ByteBuffer* request, ::mavsdk::rpc::manual_control::StartAltitudeControlResponse* response, ::grpc::ClientUnaryReactor* reactor) = 0;
-      #else
-      virtual void StartAltitudeControl(::grpc::ClientContext* context, const ::grpc::ByteBuffer* request, ::mavsdk::rpc::manual_control::StartAltitudeControlResponse* response, ::grpc::experimental::ClientUnaryReactor* reactor) = 0;
       #endif
       //
       // Set manual control input
@@ -118,16 +106,10 @@ class ManualControlService final {
       // The manual control input needs to be sent at a rate high enough to prevent
       // triggering of RC loss, a good minimum rate is 10 Hz.
       virtual void SetManualControlInput(::grpc::ClientContext* context, const ::mavsdk::rpc::manual_control::SetManualControlInputRequest* request, ::mavsdk::rpc::manual_control::SetManualControlInputResponse* response, std::function<void(::grpc::Status)>) = 0;
-      virtual void SetManualControlInput(::grpc::ClientContext* context, const ::grpc::ByteBuffer* request, ::mavsdk::rpc::manual_control::SetManualControlInputResponse* response, std::function<void(::grpc::Status)>) = 0;
       #ifdef GRPC_CALLBACK_API_NONEXPERIMENTAL
       virtual void SetManualControlInput(::grpc::ClientContext* context, const ::mavsdk::rpc::manual_control::SetManualControlInputRequest* request, ::mavsdk::rpc::manual_control::SetManualControlInputResponse* response, ::grpc::ClientUnaryReactor* reactor) = 0;
       #else
       virtual void SetManualControlInput(::grpc::ClientContext* context, const ::mavsdk::rpc::manual_control::SetManualControlInputRequest* request, ::mavsdk::rpc::manual_control::SetManualControlInputResponse* response, ::grpc::experimental::ClientUnaryReactor* reactor) = 0;
-      #endif
-      #ifdef GRPC_CALLBACK_API_NONEXPERIMENTAL
-      virtual void SetManualControlInput(::grpc::ClientContext* context, const ::grpc::ByteBuffer* request, ::mavsdk::rpc::manual_control::SetManualControlInputResponse* response, ::grpc::ClientUnaryReactor* reactor) = 0;
-      #else
-      virtual void SetManualControlInput(::grpc::ClientContext* context, const ::grpc::ByteBuffer* request, ::mavsdk::rpc::manual_control::SetManualControlInputResponse* response, ::grpc::experimental::ClientUnaryReactor* reactor) = 0;
       #endif
     };
     #ifdef GRPC_CALLBACK_API_NONEXPERIMENTAL
@@ -173,40 +155,22 @@ class ManualControlService final {
       public StubInterface::experimental_async_interface {
      public:
       void StartPositionControl(::grpc::ClientContext* context, const ::mavsdk::rpc::manual_control::StartPositionControlRequest* request, ::mavsdk::rpc::manual_control::StartPositionControlResponse* response, std::function<void(::grpc::Status)>) override;
-      void StartPositionControl(::grpc::ClientContext* context, const ::grpc::ByteBuffer* request, ::mavsdk::rpc::manual_control::StartPositionControlResponse* response, std::function<void(::grpc::Status)>) override;
       #ifdef GRPC_CALLBACK_API_NONEXPERIMENTAL
       void StartPositionControl(::grpc::ClientContext* context, const ::mavsdk::rpc::manual_control::StartPositionControlRequest* request, ::mavsdk::rpc::manual_control::StartPositionControlResponse* response, ::grpc::ClientUnaryReactor* reactor) override;
       #else
       void StartPositionControl(::grpc::ClientContext* context, const ::mavsdk::rpc::manual_control::StartPositionControlRequest* request, ::mavsdk::rpc::manual_control::StartPositionControlResponse* response, ::grpc::experimental::ClientUnaryReactor* reactor) override;
       #endif
-      #ifdef GRPC_CALLBACK_API_NONEXPERIMENTAL
-      void StartPositionControl(::grpc::ClientContext* context, const ::grpc::ByteBuffer* request, ::mavsdk::rpc::manual_control::StartPositionControlResponse* response, ::grpc::ClientUnaryReactor* reactor) override;
-      #else
-      void StartPositionControl(::grpc::ClientContext* context, const ::grpc::ByteBuffer* request, ::mavsdk::rpc::manual_control::StartPositionControlResponse* response, ::grpc::experimental::ClientUnaryReactor* reactor) override;
-      #endif
       void StartAltitudeControl(::grpc::ClientContext* context, const ::mavsdk::rpc::manual_control::StartAltitudeControlRequest* request, ::mavsdk::rpc::manual_control::StartAltitudeControlResponse* response, std::function<void(::grpc::Status)>) override;
-      void StartAltitudeControl(::grpc::ClientContext* context, const ::grpc::ByteBuffer* request, ::mavsdk::rpc::manual_control::StartAltitudeControlResponse* response, std::function<void(::grpc::Status)>) override;
       #ifdef GRPC_CALLBACK_API_NONEXPERIMENTAL
       void StartAltitudeControl(::grpc::ClientContext* context, const ::mavsdk::rpc::manual_control::StartAltitudeControlRequest* request, ::mavsdk::rpc::manual_control::StartAltitudeControlResponse* response, ::grpc::ClientUnaryReactor* reactor) override;
       #else
       void StartAltitudeControl(::grpc::ClientContext* context, const ::mavsdk::rpc::manual_control::StartAltitudeControlRequest* request, ::mavsdk::rpc::manual_control::StartAltitudeControlResponse* response, ::grpc::experimental::ClientUnaryReactor* reactor) override;
       #endif
-      #ifdef GRPC_CALLBACK_API_NONEXPERIMENTAL
-      void StartAltitudeControl(::grpc::ClientContext* context, const ::grpc::ByteBuffer* request, ::mavsdk::rpc::manual_control::StartAltitudeControlResponse* response, ::grpc::ClientUnaryReactor* reactor) override;
-      #else
-      void StartAltitudeControl(::grpc::ClientContext* context, const ::grpc::ByteBuffer* request, ::mavsdk::rpc::manual_control::StartAltitudeControlResponse* response, ::grpc::experimental::ClientUnaryReactor* reactor) override;
-      #endif
       void SetManualControlInput(::grpc::ClientContext* context, const ::mavsdk::rpc::manual_control::SetManualControlInputRequest* request, ::mavsdk::rpc::manual_control::SetManualControlInputResponse* response, std::function<void(::grpc::Status)>) override;
-      void SetManualControlInput(::grpc::ClientContext* context, const ::grpc::ByteBuffer* request, ::mavsdk::rpc::manual_control::SetManualControlInputResponse* response, std::function<void(::grpc::Status)>) override;
       #ifdef GRPC_CALLBACK_API_NONEXPERIMENTAL
       void SetManualControlInput(::grpc::ClientContext* context, const ::mavsdk::rpc::manual_control::SetManualControlInputRequest* request, ::mavsdk::rpc::manual_control::SetManualControlInputResponse* response, ::grpc::ClientUnaryReactor* reactor) override;
       #else
       void SetManualControlInput(::grpc::ClientContext* context, const ::mavsdk::rpc::manual_control::SetManualControlInputRequest* request, ::mavsdk::rpc::manual_control::SetManualControlInputResponse* response, ::grpc::experimental::ClientUnaryReactor* reactor) override;
-      #endif
-      #ifdef GRPC_CALLBACK_API_NONEXPERIMENTAL
-      void SetManualControlInput(::grpc::ClientContext* context, const ::grpc::ByteBuffer* request, ::mavsdk::rpc::manual_control::SetManualControlInputResponse* response, ::grpc::ClientUnaryReactor* reactor) override;
-      #else
-      void SetManualControlInput(::grpc::ClientContext* context, const ::grpc::ByteBuffer* request, ::mavsdk::rpc::manual_control::SetManualControlInputResponse* response, ::grpc::experimental::ClientUnaryReactor* reactor) override;
       #endif
      private:
       friend class Stub;
@@ -327,7 +291,7 @@ class ManualControlService final {
       ::grpc::Service::experimental().
     #endif
         MarkMethodCallback(0,
-          new ::grpc_impl::internal::CallbackUnaryHandler< ::mavsdk::rpc::manual_control::StartPositionControlRequest, ::mavsdk::rpc::manual_control::StartPositionControlResponse>(
+          new ::grpc::internal::CallbackUnaryHandler< ::mavsdk::rpc::manual_control::StartPositionControlRequest, ::mavsdk::rpc::manual_control::StartPositionControlResponse>(
             [this](
     #ifdef GRPC_CALLBACK_API_NONEXPERIMENTAL
                    ::grpc::CallbackServerContext*
@@ -342,7 +306,7 @@ class ManualControlService final {
     #else
       ::grpc::internal::MethodHandler* const handler = ::grpc::Service::experimental().GetHandler(0);
     #endif
-      static_cast<::grpc_impl::internal::CallbackUnaryHandler< ::mavsdk::rpc::manual_control::StartPositionControlRequest, ::mavsdk::rpc::manual_control::StartPositionControlResponse>*>(handler)
+      static_cast<::grpc::internal::CallbackUnaryHandler< ::mavsdk::rpc::manual_control::StartPositionControlRequest, ::mavsdk::rpc::manual_control::StartPositionControlResponse>*>(handler)
               ->SetMessageAllocator(allocator);
     }
     ~ExperimentalWithCallbackMethod_StartPositionControl() override {
@@ -374,7 +338,7 @@ class ManualControlService final {
       ::grpc::Service::experimental().
     #endif
         MarkMethodCallback(1,
-          new ::grpc_impl::internal::CallbackUnaryHandler< ::mavsdk::rpc::manual_control::StartAltitudeControlRequest, ::mavsdk::rpc::manual_control::StartAltitudeControlResponse>(
+          new ::grpc::internal::CallbackUnaryHandler< ::mavsdk::rpc::manual_control::StartAltitudeControlRequest, ::mavsdk::rpc::manual_control::StartAltitudeControlResponse>(
             [this](
     #ifdef GRPC_CALLBACK_API_NONEXPERIMENTAL
                    ::grpc::CallbackServerContext*
@@ -389,7 +353,7 @@ class ManualControlService final {
     #else
       ::grpc::internal::MethodHandler* const handler = ::grpc::Service::experimental().GetHandler(1);
     #endif
-      static_cast<::grpc_impl::internal::CallbackUnaryHandler< ::mavsdk::rpc::manual_control::StartAltitudeControlRequest, ::mavsdk::rpc::manual_control::StartAltitudeControlResponse>*>(handler)
+      static_cast<::grpc::internal::CallbackUnaryHandler< ::mavsdk::rpc::manual_control::StartAltitudeControlRequest, ::mavsdk::rpc::manual_control::StartAltitudeControlResponse>*>(handler)
               ->SetMessageAllocator(allocator);
     }
     ~ExperimentalWithCallbackMethod_StartAltitudeControl() override {
@@ -421,7 +385,7 @@ class ManualControlService final {
       ::grpc::Service::experimental().
     #endif
         MarkMethodCallback(2,
-          new ::grpc_impl::internal::CallbackUnaryHandler< ::mavsdk::rpc::manual_control::SetManualControlInputRequest, ::mavsdk::rpc::manual_control::SetManualControlInputResponse>(
+          new ::grpc::internal::CallbackUnaryHandler< ::mavsdk::rpc::manual_control::SetManualControlInputRequest, ::mavsdk::rpc::manual_control::SetManualControlInputResponse>(
             [this](
     #ifdef GRPC_CALLBACK_API_NONEXPERIMENTAL
                    ::grpc::CallbackServerContext*
@@ -436,7 +400,7 @@ class ManualControlService final {
     #else
       ::grpc::internal::MethodHandler* const handler = ::grpc::Service::experimental().GetHandler(2);
     #endif
-      static_cast<::grpc_impl::internal::CallbackUnaryHandler< ::mavsdk::rpc::manual_control::SetManualControlInputRequest, ::mavsdk::rpc::manual_control::SetManualControlInputResponse>*>(handler)
+      static_cast<::grpc::internal::CallbackUnaryHandler< ::mavsdk::rpc::manual_control::SetManualControlInputRequest, ::mavsdk::rpc::manual_control::SetManualControlInputResponse>*>(handler)
               ->SetMessageAllocator(allocator);
     }
     ~ExperimentalWithCallbackMethod_SetManualControlInput() override {
@@ -584,7 +548,7 @@ class ManualControlService final {
       ::grpc::Service::experimental().
     #endif
         MarkMethodRawCallback(0,
-          new ::grpc_impl::internal::CallbackUnaryHandler< ::grpc::ByteBuffer, ::grpc::ByteBuffer>(
+          new ::grpc::internal::CallbackUnaryHandler< ::grpc::ByteBuffer, ::grpc::ByteBuffer>(
             [this](
     #ifdef GRPC_CALLBACK_API_NONEXPERIMENTAL
                    ::grpc::CallbackServerContext*
@@ -622,7 +586,7 @@ class ManualControlService final {
       ::grpc::Service::experimental().
     #endif
         MarkMethodRawCallback(1,
-          new ::grpc_impl::internal::CallbackUnaryHandler< ::grpc::ByteBuffer, ::grpc::ByteBuffer>(
+          new ::grpc::internal::CallbackUnaryHandler< ::grpc::ByteBuffer, ::grpc::ByteBuffer>(
             [this](
     #ifdef GRPC_CALLBACK_API_NONEXPERIMENTAL
                    ::grpc::CallbackServerContext*
@@ -660,7 +624,7 @@ class ManualControlService final {
       ::grpc::Service::experimental().
     #endif
         MarkMethodRawCallback(2,
-          new ::grpc_impl::internal::CallbackUnaryHandler< ::grpc::ByteBuffer, ::grpc::ByteBuffer>(
+          new ::grpc::internal::CallbackUnaryHandler< ::grpc::ByteBuffer, ::grpc::ByteBuffer>(
             [this](
     #ifdef GRPC_CALLBACK_API_NONEXPERIMENTAL
                    ::grpc::CallbackServerContext*
@@ -693,7 +657,14 @@ class ManualControlService final {
    public:
     WithStreamedUnaryMethod_StartPositionControl() {
       ::grpc::Service::MarkMethodStreamed(0,
-        new ::grpc::internal::StreamedUnaryHandler< ::mavsdk::rpc::manual_control::StartPositionControlRequest, ::mavsdk::rpc::manual_control::StartPositionControlResponse>(std::bind(&WithStreamedUnaryMethod_StartPositionControl<BaseClass>::StreamedStartPositionControl, this, std::placeholders::_1, std::placeholders::_2)));
+        new ::grpc::internal::StreamedUnaryHandler<
+          ::mavsdk::rpc::manual_control::StartPositionControlRequest, ::mavsdk::rpc::manual_control::StartPositionControlResponse>(
+            [this](::grpc::ServerContext* context,
+                   ::grpc::ServerUnaryStreamer<
+                     ::mavsdk::rpc::manual_control::StartPositionControlRequest, ::mavsdk::rpc::manual_control::StartPositionControlResponse>* streamer) {
+                       return this->StreamedStartPositionControl(context,
+                         streamer);
+                  }));
     }
     ~WithStreamedUnaryMethod_StartPositionControl() override {
       BaseClassMustBeDerivedFromService(this);
@@ -713,7 +684,14 @@ class ManualControlService final {
    public:
     WithStreamedUnaryMethod_StartAltitudeControl() {
       ::grpc::Service::MarkMethodStreamed(1,
-        new ::grpc::internal::StreamedUnaryHandler< ::mavsdk::rpc::manual_control::StartAltitudeControlRequest, ::mavsdk::rpc::manual_control::StartAltitudeControlResponse>(std::bind(&WithStreamedUnaryMethod_StartAltitudeControl<BaseClass>::StreamedStartAltitudeControl, this, std::placeholders::_1, std::placeholders::_2)));
+        new ::grpc::internal::StreamedUnaryHandler<
+          ::mavsdk::rpc::manual_control::StartAltitudeControlRequest, ::mavsdk::rpc::manual_control::StartAltitudeControlResponse>(
+            [this](::grpc::ServerContext* context,
+                   ::grpc::ServerUnaryStreamer<
+                     ::mavsdk::rpc::manual_control::StartAltitudeControlRequest, ::mavsdk::rpc::manual_control::StartAltitudeControlResponse>* streamer) {
+                       return this->StreamedStartAltitudeControl(context,
+                         streamer);
+                  }));
     }
     ~WithStreamedUnaryMethod_StartAltitudeControl() override {
       BaseClassMustBeDerivedFromService(this);
@@ -733,7 +711,14 @@ class ManualControlService final {
    public:
     WithStreamedUnaryMethod_SetManualControlInput() {
       ::grpc::Service::MarkMethodStreamed(2,
-        new ::grpc::internal::StreamedUnaryHandler< ::mavsdk::rpc::manual_control::SetManualControlInputRequest, ::mavsdk::rpc::manual_control::SetManualControlInputResponse>(std::bind(&WithStreamedUnaryMethod_SetManualControlInput<BaseClass>::StreamedSetManualControlInput, this, std::placeholders::_1, std::placeholders::_2)));
+        new ::grpc::internal::StreamedUnaryHandler<
+          ::mavsdk::rpc::manual_control::SetManualControlInputRequest, ::mavsdk::rpc::manual_control::SetManualControlInputResponse>(
+            [this](::grpc::ServerContext* context,
+                   ::grpc::ServerUnaryStreamer<
+                     ::mavsdk::rpc::manual_control::SetManualControlInputRequest, ::mavsdk::rpc::manual_control::SetManualControlInputResponse>* streamer) {
+                       return this->StreamedSetManualControlInput(context,
+                         streamer);
+                  }));
     }
     ~WithStreamedUnaryMethod_SetManualControlInput() override {
       BaseClassMustBeDerivedFromService(this);

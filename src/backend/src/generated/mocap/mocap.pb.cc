@@ -587,16 +587,15 @@ static ::PROTOBUF_NAMESPACE_ID::internal::SCCInfoBase*const descriptor_table_moc
   &scc_info_VisionPositionEstimate_mocap_2fmocap_2eproto.base,
 };
 static ::PROTOBUF_NAMESPACE_ID::internal::once_flag descriptor_table_mocap_2fmocap_2eproto_once;
-static bool descriptor_table_mocap_2fmocap_2eproto_initialized = false;
 const ::PROTOBUF_NAMESPACE_ID::internal::DescriptorTable descriptor_table_mocap_2fmocap_2eproto = {
-  &descriptor_table_mocap_2fmocap_2eproto_initialized, descriptor_table_protodef_mocap_2fmocap_2eproto, "mocap/mocap.proto", 2502,
+  false, false, descriptor_table_protodef_mocap_2fmocap_2eproto, "mocap/mocap.proto", 2502,
   &descriptor_table_mocap_2fmocap_2eproto_once, descriptor_table_mocap_2fmocap_2eproto_sccs, descriptor_table_mocap_2fmocap_2eproto_deps, 16, 1,
   schemas, file_default_instances, TableStruct_mocap_2fmocap_2eproto::offsets,
   file_level_metadata_mocap_2fmocap_2eproto, 16, file_level_enum_descriptors_mocap_2fmocap_2eproto, file_level_service_descriptors_mocap_2fmocap_2eproto,
 };
 
 // Force running AddDescriptors() at dynamic initialization time.
-static bool dynamic_init_dummy_mocap_2fmocap_2eproto = (  ::PROTOBUF_NAMESPACE_ID::internal::AddDescriptors(&descriptor_table_mocap_2fmocap_2eproto), true);
+static bool dynamic_init_dummy_mocap_2fmocap_2eproto = (static_cast<void>(::PROTOBUF_NAMESPACE_ID::internal::AddDescriptors(&descriptor_table_mocap_2fmocap_2eproto)), true);
 namespace mavsdk {
 namespace rpc {
 namespace mocap {
@@ -664,15 +663,15 @@ const ::mavsdk::rpc::mocap::VisionPositionEstimate&
 SetVisionPositionEstimateRequest::_Internal::vision_position_estimate(const SetVisionPositionEstimateRequest* msg) {
   return *msg->vision_position_estimate_;
 }
-SetVisionPositionEstimateRequest::SetVisionPositionEstimateRequest()
-  : ::PROTOBUF_NAMESPACE_ID::Message(), _internal_metadata_(nullptr) {
+SetVisionPositionEstimateRequest::SetVisionPositionEstimateRequest(::PROTOBUF_NAMESPACE_ID::Arena* arena)
+  : ::PROTOBUF_NAMESPACE_ID::Message(arena) {
   SharedCtor();
-  // @@protoc_insertion_point(constructor:mavsdk.rpc.mocap.SetVisionPositionEstimateRequest)
+  RegisterArenaDtor(arena);
+  // @@protoc_insertion_point(arena_constructor:mavsdk.rpc.mocap.SetVisionPositionEstimateRequest)
 }
 SetVisionPositionEstimateRequest::SetVisionPositionEstimateRequest(const SetVisionPositionEstimateRequest& from)
-  : ::PROTOBUF_NAMESPACE_ID::Message(),
-      _internal_metadata_(nullptr) {
-  _internal_metadata_.MergeFrom(from._internal_metadata_);
+  : ::PROTOBUF_NAMESPACE_ID::Message() {
+  _internal_metadata_.MergeFrom<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>(from._internal_metadata_);
   if (from._internal_has_vision_position_estimate()) {
     vision_position_estimate_ = new ::mavsdk::rpc::mocap::VisionPositionEstimate(*from.vision_position_estimate_);
   } else {
@@ -689,12 +688,20 @@ void SetVisionPositionEstimateRequest::SharedCtor() {
 SetVisionPositionEstimateRequest::~SetVisionPositionEstimateRequest() {
   // @@protoc_insertion_point(destructor:mavsdk.rpc.mocap.SetVisionPositionEstimateRequest)
   SharedDtor();
+  _internal_metadata_.Delete<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>();
 }
 
 void SetVisionPositionEstimateRequest::SharedDtor() {
+  GOOGLE_DCHECK(GetArena() == nullptr);
   if (this != internal_default_instance()) delete vision_position_estimate_;
 }
 
+void SetVisionPositionEstimateRequest::ArenaDtor(void* object) {
+  SetVisionPositionEstimateRequest* _this = reinterpret_cast< SetVisionPositionEstimateRequest* >(object);
+  (void)_this;
+}
+void SetVisionPositionEstimateRequest::RegisterArenaDtor(::PROTOBUF_NAMESPACE_ID::Arena*) {
+}
 void SetVisionPositionEstimateRequest::SetCachedSize(int size) const {
   _cached_size_.Set(size);
 }
@@ -710,15 +717,16 @@ void SetVisionPositionEstimateRequest::Clear() {
   // Prevent compiler warnings about cached_has_bits being unused
   (void) cached_has_bits;
 
-  if (GetArenaNoVirtual() == nullptr && vision_position_estimate_ != nullptr) {
+  if (GetArena() == nullptr && vision_position_estimate_ != nullptr) {
     delete vision_position_estimate_;
   }
   vision_position_estimate_ = nullptr;
-  _internal_metadata_.Clear();
+  _internal_metadata_.Clear<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>();
 }
 
 const char* SetVisionPositionEstimateRequest::_InternalParse(const char* ptr, ::PROTOBUF_NAMESPACE_ID::internal::ParseContext* ctx) {
 #define CHK_(x) if (PROTOBUF_PREDICT_FALSE(!(x))) goto failure
+  ::PROTOBUF_NAMESPACE_ID::Arena* arena = GetArena(); (void)arena;
   while (!ctx->Done(&ptr)) {
     ::PROTOBUF_NAMESPACE_ID::uint32 tag;
     ptr = ::PROTOBUF_NAMESPACE_ID::internal::ReadTag(ptr, &tag);
@@ -737,7 +745,9 @@ const char* SetVisionPositionEstimateRequest::_InternalParse(const char* ptr, ::
           ctx->SetLastTag(tag);
           goto success;
         }
-        ptr = UnknownFieldParse(tag, &_internal_metadata_, ptr, ctx);
+        ptr = UnknownFieldParse(tag,
+            _internal_metadata_.mutable_unknown_fields<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>(),
+            ptr, ctx);
         CHK_(ptr != nullptr);
         continue;
       }
@@ -767,7 +777,7 @@ failure:
 
   if (PROTOBUF_PREDICT_FALSE(_internal_metadata_.have_unknown_fields())) {
     target = ::PROTOBUF_NAMESPACE_ID::internal::WireFormat::InternalSerializeUnknownFieldsToArray(
-        _internal_metadata_.unknown_fields(), target, stream);
+        _internal_metadata_.unknown_fields<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>(::PROTOBUF_NAMESPACE_ID::UnknownFieldSet::default_instance), target, stream);
   }
   // @@protoc_insertion_point(serialize_to_array_end:mavsdk.rpc.mocap.SetVisionPositionEstimateRequest)
   return target;
@@ -815,7 +825,7 @@ void SetVisionPositionEstimateRequest::MergeFrom(const ::PROTOBUF_NAMESPACE_ID::
 void SetVisionPositionEstimateRequest::MergeFrom(const SetVisionPositionEstimateRequest& from) {
 // @@protoc_insertion_point(class_specific_merge_from_start:mavsdk.rpc.mocap.SetVisionPositionEstimateRequest)
   GOOGLE_DCHECK_NE(&from, this);
-  _internal_metadata_.MergeFrom(from._internal_metadata_);
+  _internal_metadata_.MergeFrom<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>(from._internal_metadata_);
   ::PROTOBUF_NAMESPACE_ID::uint32 cached_has_bits = 0;
   (void) cached_has_bits;
 
@@ -844,7 +854,7 @@ bool SetVisionPositionEstimateRequest::IsInitialized() const {
 
 void SetVisionPositionEstimateRequest::InternalSwap(SetVisionPositionEstimateRequest* other) {
   using std::swap;
-  _internal_metadata_.Swap(&other->_internal_metadata_);
+  _internal_metadata_.Swap<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>(&other->_internal_metadata_);
   swap(vision_position_estimate_, other->vision_position_estimate_);
 }
 
@@ -868,15 +878,15 @@ const ::mavsdk::rpc::mocap::MocapResult&
 SetVisionPositionEstimateResponse::_Internal::mocap_result(const SetVisionPositionEstimateResponse* msg) {
   return *msg->mocap_result_;
 }
-SetVisionPositionEstimateResponse::SetVisionPositionEstimateResponse()
-  : ::PROTOBUF_NAMESPACE_ID::Message(), _internal_metadata_(nullptr) {
+SetVisionPositionEstimateResponse::SetVisionPositionEstimateResponse(::PROTOBUF_NAMESPACE_ID::Arena* arena)
+  : ::PROTOBUF_NAMESPACE_ID::Message(arena) {
   SharedCtor();
-  // @@protoc_insertion_point(constructor:mavsdk.rpc.mocap.SetVisionPositionEstimateResponse)
+  RegisterArenaDtor(arena);
+  // @@protoc_insertion_point(arena_constructor:mavsdk.rpc.mocap.SetVisionPositionEstimateResponse)
 }
 SetVisionPositionEstimateResponse::SetVisionPositionEstimateResponse(const SetVisionPositionEstimateResponse& from)
-  : ::PROTOBUF_NAMESPACE_ID::Message(),
-      _internal_metadata_(nullptr) {
-  _internal_metadata_.MergeFrom(from._internal_metadata_);
+  : ::PROTOBUF_NAMESPACE_ID::Message() {
+  _internal_metadata_.MergeFrom<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>(from._internal_metadata_);
   if (from._internal_has_mocap_result()) {
     mocap_result_ = new ::mavsdk::rpc::mocap::MocapResult(*from.mocap_result_);
   } else {
@@ -893,12 +903,20 @@ void SetVisionPositionEstimateResponse::SharedCtor() {
 SetVisionPositionEstimateResponse::~SetVisionPositionEstimateResponse() {
   // @@protoc_insertion_point(destructor:mavsdk.rpc.mocap.SetVisionPositionEstimateResponse)
   SharedDtor();
+  _internal_metadata_.Delete<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>();
 }
 
 void SetVisionPositionEstimateResponse::SharedDtor() {
+  GOOGLE_DCHECK(GetArena() == nullptr);
   if (this != internal_default_instance()) delete mocap_result_;
 }
 
+void SetVisionPositionEstimateResponse::ArenaDtor(void* object) {
+  SetVisionPositionEstimateResponse* _this = reinterpret_cast< SetVisionPositionEstimateResponse* >(object);
+  (void)_this;
+}
+void SetVisionPositionEstimateResponse::RegisterArenaDtor(::PROTOBUF_NAMESPACE_ID::Arena*) {
+}
 void SetVisionPositionEstimateResponse::SetCachedSize(int size) const {
   _cached_size_.Set(size);
 }
@@ -914,15 +932,16 @@ void SetVisionPositionEstimateResponse::Clear() {
   // Prevent compiler warnings about cached_has_bits being unused
   (void) cached_has_bits;
 
-  if (GetArenaNoVirtual() == nullptr && mocap_result_ != nullptr) {
+  if (GetArena() == nullptr && mocap_result_ != nullptr) {
     delete mocap_result_;
   }
   mocap_result_ = nullptr;
-  _internal_metadata_.Clear();
+  _internal_metadata_.Clear<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>();
 }
 
 const char* SetVisionPositionEstimateResponse::_InternalParse(const char* ptr, ::PROTOBUF_NAMESPACE_ID::internal::ParseContext* ctx) {
 #define CHK_(x) if (PROTOBUF_PREDICT_FALSE(!(x))) goto failure
+  ::PROTOBUF_NAMESPACE_ID::Arena* arena = GetArena(); (void)arena;
   while (!ctx->Done(&ptr)) {
     ::PROTOBUF_NAMESPACE_ID::uint32 tag;
     ptr = ::PROTOBUF_NAMESPACE_ID::internal::ReadTag(ptr, &tag);
@@ -941,7 +960,9 @@ const char* SetVisionPositionEstimateResponse::_InternalParse(const char* ptr, :
           ctx->SetLastTag(tag);
           goto success;
         }
-        ptr = UnknownFieldParse(tag, &_internal_metadata_, ptr, ctx);
+        ptr = UnknownFieldParse(tag,
+            _internal_metadata_.mutable_unknown_fields<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>(),
+            ptr, ctx);
         CHK_(ptr != nullptr);
         continue;
       }
@@ -971,7 +992,7 @@ failure:
 
   if (PROTOBUF_PREDICT_FALSE(_internal_metadata_.have_unknown_fields())) {
     target = ::PROTOBUF_NAMESPACE_ID::internal::WireFormat::InternalSerializeUnknownFieldsToArray(
-        _internal_metadata_.unknown_fields(), target, stream);
+        _internal_metadata_.unknown_fields<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>(::PROTOBUF_NAMESPACE_ID::UnknownFieldSet::default_instance), target, stream);
   }
   // @@protoc_insertion_point(serialize_to_array_end:mavsdk.rpc.mocap.SetVisionPositionEstimateResponse)
   return target;
@@ -1019,7 +1040,7 @@ void SetVisionPositionEstimateResponse::MergeFrom(const ::PROTOBUF_NAMESPACE_ID:
 void SetVisionPositionEstimateResponse::MergeFrom(const SetVisionPositionEstimateResponse& from) {
 // @@protoc_insertion_point(class_specific_merge_from_start:mavsdk.rpc.mocap.SetVisionPositionEstimateResponse)
   GOOGLE_DCHECK_NE(&from, this);
-  _internal_metadata_.MergeFrom(from._internal_metadata_);
+  _internal_metadata_.MergeFrom<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>(from._internal_metadata_);
   ::PROTOBUF_NAMESPACE_ID::uint32 cached_has_bits = 0;
   (void) cached_has_bits;
 
@@ -1048,7 +1069,7 @@ bool SetVisionPositionEstimateResponse::IsInitialized() const {
 
 void SetVisionPositionEstimateResponse::InternalSwap(SetVisionPositionEstimateResponse* other) {
   using std::swap;
-  _internal_metadata_.Swap(&other->_internal_metadata_);
+  _internal_metadata_.Swap<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>(&other->_internal_metadata_);
   swap(mocap_result_, other->mocap_result_);
 }
 
@@ -1072,15 +1093,15 @@ const ::mavsdk::rpc::mocap::AttitudePositionMocap&
 SetAttitudePositionMocapRequest::_Internal::attitude_position_mocap(const SetAttitudePositionMocapRequest* msg) {
   return *msg->attitude_position_mocap_;
 }
-SetAttitudePositionMocapRequest::SetAttitudePositionMocapRequest()
-  : ::PROTOBUF_NAMESPACE_ID::Message(), _internal_metadata_(nullptr) {
+SetAttitudePositionMocapRequest::SetAttitudePositionMocapRequest(::PROTOBUF_NAMESPACE_ID::Arena* arena)
+  : ::PROTOBUF_NAMESPACE_ID::Message(arena) {
   SharedCtor();
-  // @@protoc_insertion_point(constructor:mavsdk.rpc.mocap.SetAttitudePositionMocapRequest)
+  RegisterArenaDtor(arena);
+  // @@protoc_insertion_point(arena_constructor:mavsdk.rpc.mocap.SetAttitudePositionMocapRequest)
 }
 SetAttitudePositionMocapRequest::SetAttitudePositionMocapRequest(const SetAttitudePositionMocapRequest& from)
-  : ::PROTOBUF_NAMESPACE_ID::Message(),
-      _internal_metadata_(nullptr) {
-  _internal_metadata_.MergeFrom(from._internal_metadata_);
+  : ::PROTOBUF_NAMESPACE_ID::Message() {
+  _internal_metadata_.MergeFrom<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>(from._internal_metadata_);
   if (from._internal_has_attitude_position_mocap()) {
     attitude_position_mocap_ = new ::mavsdk::rpc::mocap::AttitudePositionMocap(*from.attitude_position_mocap_);
   } else {
@@ -1097,12 +1118,20 @@ void SetAttitudePositionMocapRequest::SharedCtor() {
 SetAttitudePositionMocapRequest::~SetAttitudePositionMocapRequest() {
   // @@protoc_insertion_point(destructor:mavsdk.rpc.mocap.SetAttitudePositionMocapRequest)
   SharedDtor();
+  _internal_metadata_.Delete<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>();
 }
 
 void SetAttitudePositionMocapRequest::SharedDtor() {
+  GOOGLE_DCHECK(GetArena() == nullptr);
   if (this != internal_default_instance()) delete attitude_position_mocap_;
 }
 
+void SetAttitudePositionMocapRequest::ArenaDtor(void* object) {
+  SetAttitudePositionMocapRequest* _this = reinterpret_cast< SetAttitudePositionMocapRequest* >(object);
+  (void)_this;
+}
+void SetAttitudePositionMocapRequest::RegisterArenaDtor(::PROTOBUF_NAMESPACE_ID::Arena*) {
+}
 void SetAttitudePositionMocapRequest::SetCachedSize(int size) const {
   _cached_size_.Set(size);
 }
@@ -1118,15 +1147,16 @@ void SetAttitudePositionMocapRequest::Clear() {
   // Prevent compiler warnings about cached_has_bits being unused
   (void) cached_has_bits;
 
-  if (GetArenaNoVirtual() == nullptr && attitude_position_mocap_ != nullptr) {
+  if (GetArena() == nullptr && attitude_position_mocap_ != nullptr) {
     delete attitude_position_mocap_;
   }
   attitude_position_mocap_ = nullptr;
-  _internal_metadata_.Clear();
+  _internal_metadata_.Clear<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>();
 }
 
 const char* SetAttitudePositionMocapRequest::_InternalParse(const char* ptr, ::PROTOBUF_NAMESPACE_ID::internal::ParseContext* ctx) {
 #define CHK_(x) if (PROTOBUF_PREDICT_FALSE(!(x))) goto failure
+  ::PROTOBUF_NAMESPACE_ID::Arena* arena = GetArena(); (void)arena;
   while (!ctx->Done(&ptr)) {
     ::PROTOBUF_NAMESPACE_ID::uint32 tag;
     ptr = ::PROTOBUF_NAMESPACE_ID::internal::ReadTag(ptr, &tag);
@@ -1145,7 +1175,9 @@ const char* SetAttitudePositionMocapRequest::_InternalParse(const char* ptr, ::P
           ctx->SetLastTag(tag);
           goto success;
         }
-        ptr = UnknownFieldParse(tag, &_internal_metadata_, ptr, ctx);
+        ptr = UnknownFieldParse(tag,
+            _internal_metadata_.mutable_unknown_fields<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>(),
+            ptr, ctx);
         CHK_(ptr != nullptr);
         continue;
       }
@@ -1175,7 +1207,7 @@ failure:
 
   if (PROTOBUF_PREDICT_FALSE(_internal_metadata_.have_unknown_fields())) {
     target = ::PROTOBUF_NAMESPACE_ID::internal::WireFormat::InternalSerializeUnknownFieldsToArray(
-        _internal_metadata_.unknown_fields(), target, stream);
+        _internal_metadata_.unknown_fields<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>(::PROTOBUF_NAMESPACE_ID::UnknownFieldSet::default_instance), target, stream);
   }
   // @@protoc_insertion_point(serialize_to_array_end:mavsdk.rpc.mocap.SetAttitudePositionMocapRequest)
   return target;
@@ -1223,7 +1255,7 @@ void SetAttitudePositionMocapRequest::MergeFrom(const ::PROTOBUF_NAMESPACE_ID::M
 void SetAttitudePositionMocapRequest::MergeFrom(const SetAttitudePositionMocapRequest& from) {
 // @@protoc_insertion_point(class_specific_merge_from_start:mavsdk.rpc.mocap.SetAttitudePositionMocapRequest)
   GOOGLE_DCHECK_NE(&from, this);
-  _internal_metadata_.MergeFrom(from._internal_metadata_);
+  _internal_metadata_.MergeFrom<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>(from._internal_metadata_);
   ::PROTOBUF_NAMESPACE_ID::uint32 cached_has_bits = 0;
   (void) cached_has_bits;
 
@@ -1252,7 +1284,7 @@ bool SetAttitudePositionMocapRequest::IsInitialized() const {
 
 void SetAttitudePositionMocapRequest::InternalSwap(SetAttitudePositionMocapRequest* other) {
   using std::swap;
-  _internal_metadata_.Swap(&other->_internal_metadata_);
+  _internal_metadata_.Swap<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>(&other->_internal_metadata_);
   swap(attitude_position_mocap_, other->attitude_position_mocap_);
 }
 
@@ -1276,15 +1308,15 @@ const ::mavsdk::rpc::mocap::MocapResult&
 SetAttitudePositionMocapResponse::_Internal::mocap_result(const SetAttitudePositionMocapResponse* msg) {
   return *msg->mocap_result_;
 }
-SetAttitudePositionMocapResponse::SetAttitudePositionMocapResponse()
-  : ::PROTOBUF_NAMESPACE_ID::Message(), _internal_metadata_(nullptr) {
+SetAttitudePositionMocapResponse::SetAttitudePositionMocapResponse(::PROTOBUF_NAMESPACE_ID::Arena* arena)
+  : ::PROTOBUF_NAMESPACE_ID::Message(arena) {
   SharedCtor();
-  // @@protoc_insertion_point(constructor:mavsdk.rpc.mocap.SetAttitudePositionMocapResponse)
+  RegisterArenaDtor(arena);
+  // @@protoc_insertion_point(arena_constructor:mavsdk.rpc.mocap.SetAttitudePositionMocapResponse)
 }
 SetAttitudePositionMocapResponse::SetAttitudePositionMocapResponse(const SetAttitudePositionMocapResponse& from)
-  : ::PROTOBUF_NAMESPACE_ID::Message(),
-      _internal_metadata_(nullptr) {
-  _internal_metadata_.MergeFrom(from._internal_metadata_);
+  : ::PROTOBUF_NAMESPACE_ID::Message() {
+  _internal_metadata_.MergeFrom<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>(from._internal_metadata_);
   if (from._internal_has_mocap_result()) {
     mocap_result_ = new ::mavsdk::rpc::mocap::MocapResult(*from.mocap_result_);
   } else {
@@ -1301,12 +1333,20 @@ void SetAttitudePositionMocapResponse::SharedCtor() {
 SetAttitudePositionMocapResponse::~SetAttitudePositionMocapResponse() {
   // @@protoc_insertion_point(destructor:mavsdk.rpc.mocap.SetAttitudePositionMocapResponse)
   SharedDtor();
+  _internal_metadata_.Delete<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>();
 }
 
 void SetAttitudePositionMocapResponse::SharedDtor() {
+  GOOGLE_DCHECK(GetArena() == nullptr);
   if (this != internal_default_instance()) delete mocap_result_;
 }
 
+void SetAttitudePositionMocapResponse::ArenaDtor(void* object) {
+  SetAttitudePositionMocapResponse* _this = reinterpret_cast< SetAttitudePositionMocapResponse* >(object);
+  (void)_this;
+}
+void SetAttitudePositionMocapResponse::RegisterArenaDtor(::PROTOBUF_NAMESPACE_ID::Arena*) {
+}
 void SetAttitudePositionMocapResponse::SetCachedSize(int size) const {
   _cached_size_.Set(size);
 }
@@ -1322,15 +1362,16 @@ void SetAttitudePositionMocapResponse::Clear() {
   // Prevent compiler warnings about cached_has_bits being unused
   (void) cached_has_bits;
 
-  if (GetArenaNoVirtual() == nullptr && mocap_result_ != nullptr) {
+  if (GetArena() == nullptr && mocap_result_ != nullptr) {
     delete mocap_result_;
   }
   mocap_result_ = nullptr;
-  _internal_metadata_.Clear();
+  _internal_metadata_.Clear<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>();
 }
 
 const char* SetAttitudePositionMocapResponse::_InternalParse(const char* ptr, ::PROTOBUF_NAMESPACE_ID::internal::ParseContext* ctx) {
 #define CHK_(x) if (PROTOBUF_PREDICT_FALSE(!(x))) goto failure
+  ::PROTOBUF_NAMESPACE_ID::Arena* arena = GetArena(); (void)arena;
   while (!ctx->Done(&ptr)) {
     ::PROTOBUF_NAMESPACE_ID::uint32 tag;
     ptr = ::PROTOBUF_NAMESPACE_ID::internal::ReadTag(ptr, &tag);
@@ -1349,7 +1390,9 @@ const char* SetAttitudePositionMocapResponse::_InternalParse(const char* ptr, ::
           ctx->SetLastTag(tag);
           goto success;
         }
-        ptr = UnknownFieldParse(tag, &_internal_metadata_, ptr, ctx);
+        ptr = UnknownFieldParse(tag,
+            _internal_metadata_.mutable_unknown_fields<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>(),
+            ptr, ctx);
         CHK_(ptr != nullptr);
         continue;
       }
@@ -1379,7 +1422,7 @@ failure:
 
   if (PROTOBUF_PREDICT_FALSE(_internal_metadata_.have_unknown_fields())) {
     target = ::PROTOBUF_NAMESPACE_ID::internal::WireFormat::InternalSerializeUnknownFieldsToArray(
-        _internal_metadata_.unknown_fields(), target, stream);
+        _internal_metadata_.unknown_fields<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>(::PROTOBUF_NAMESPACE_ID::UnknownFieldSet::default_instance), target, stream);
   }
   // @@protoc_insertion_point(serialize_to_array_end:mavsdk.rpc.mocap.SetAttitudePositionMocapResponse)
   return target;
@@ -1427,7 +1470,7 @@ void SetAttitudePositionMocapResponse::MergeFrom(const ::PROTOBUF_NAMESPACE_ID::
 void SetAttitudePositionMocapResponse::MergeFrom(const SetAttitudePositionMocapResponse& from) {
 // @@protoc_insertion_point(class_specific_merge_from_start:mavsdk.rpc.mocap.SetAttitudePositionMocapResponse)
   GOOGLE_DCHECK_NE(&from, this);
-  _internal_metadata_.MergeFrom(from._internal_metadata_);
+  _internal_metadata_.MergeFrom<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>(from._internal_metadata_);
   ::PROTOBUF_NAMESPACE_ID::uint32 cached_has_bits = 0;
   (void) cached_has_bits;
 
@@ -1456,7 +1499,7 @@ bool SetAttitudePositionMocapResponse::IsInitialized() const {
 
 void SetAttitudePositionMocapResponse::InternalSwap(SetAttitudePositionMocapResponse* other) {
   using std::swap;
-  _internal_metadata_.Swap(&other->_internal_metadata_);
+  _internal_metadata_.Swap<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>(&other->_internal_metadata_);
   swap(mocap_result_, other->mocap_result_);
 }
 
@@ -1480,15 +1523,15 @@ const ::mavsdk::rpc::mocap::Odometry&
 SetOdometryRequest::_Internal::odometry(const SetOdometryRequest* msg) {
   return *msg->odometry_;
 }
-SetOdometryRequest::SetOdometryRequest()
-  : ::PROTOBUF_NAMESPACE_ID::Message(), _internal_metadata_(nullptr) {
+SetOdometryRequest::SetOdometryRequest(::PROTOBUF_NAMESPACE_ID::Arena* arena)
+  : ::PROTOBUF_NAMESPACE_ID::Message(arena) {
   SharedCtor();
-  // @@protoc_insertion_point(constructor:mavsdk.rpc.mocap.SetOdometryRequest)
+  RegisterArenaDtor(arena);
+  // @@protoc_insertion_point(arena_constructor:mavsdk.rpc.mocap.SetOdometryRequest)
 }
 SetOdometryRequest::SetOdometryRequest(const SetOdometryRequest& from)
-  : ::PROTOBUF_NAMESPACE_ID::Message(),
-      _internal_metadata_(nullptr) {
-  _internal_metadata_.MergeFrom(from._internal_metadata_);
+  : ::PROTOBUF_NAMESPACE_ID::Message() {
+  _internal_metadata_.MergeFrom<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>(from._internal_metadata_);
   if (from._internal_has_odometry()) {
     odometry_ = new ::mavsdk::rpc::mocap::Odometry(*from.odometry_);
   } else {
@@ -1505,12 +1548,20 @@ void SetOdometryRequest::SharedCtor() {
 SetOdometryRequest::~SetOdometryRequest() {
   // @@protoc_insertion_point(destructor:mavsdk.rpc.mocap.SetOdometryRequest)
   SharedDtor();
+  _internal_metadata_.Delete<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>();
 }
 
 void SetOdometryRequest::SharedDtor() {
+  GOOGLE_DCHECK(GetArena() == nullptr);
   if (this != internal_default_instance()) delete odometry_;
 }
 
+void SetOdometryRequest::ArenaDtor(void* object) {
+  SetOdometryRequest* _this = reinterpret_cast< SetOdometryRequest* >(object);
+  (void)_this;
+}
+void SetOdometryRequest::RegisterArenaDtor(::PROTOBUF_NAMESPACE_ID::Arena*) {
+}
 void SetOdometryRequest::SetCachedSize(int size) const {
   _cached_size_.Set(size);
 }
@@ -1526,15 +1577,16 @@ void SetOdometryRequest::Clear() {
   // Prevent compiler warnings about cached_has_bits being unused
   (void) cached_has_bits;
 
-  if (GetArenaNoVirtual() == nullptr && odometry_ != nullptr) {
+  if (GetArena() == nullptr && odometry_ != nullptr) {
     delete odometry_;
   }
   odometry_ = nullptr;
-  _internal_metadata_.Clear();
+  _internal_metadata_.Clear<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>();
 }
 
 const char* SetOdometryRequest::_InternalParse(const char* ptr, ::PROTOBUF_NAMESPACE_ID::internal::ParseContext* ctx) {
 #define CHK_(x) if (PROTOBUF_PREDICT_FALSE(!(x))) goto failure
+  ::PROTOBUF_NAMESPACE_ID::Arena* arena = GetArena(); (void)arena;
   while (!ctx->Done(&ptr)) {
     ::PROTOBUF_NAMESPACE_ID::uint32 tag;
     ptr = ::PROTOBUF_NAMESPACE_ID::internal::ReadTag(ptr, &tag);
@@ -1553,7 +1605,9 @@ const char* SetOdometryRequest::_InternalParse(const char* ptr, ::PROTOBUF_NAMES
           ctx->SetLastTag(tag);
           goto success;
         }
-        ptr = UnknownFieldParse(tag, &_internal_metadata_, ptr, ctx);
+        ptr = UnknownFieldParse(tag,
+            _internal_metadata_.mutable_unknown_fields<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>(),
+            ptr, ctx);
         CHK_(ptr != nullptr);
         continue;
       }
@@ -1583,7 +1637,7 @@ failure:
 
   if (PROTOBUF_PREDICT_FALSE(_internal_metadata_.have_unknown_fields())) {
     target = ::PROTOBUF_NAMESPACE_ID::internal::WireFormat::InternalSerializeUnknownFieldsToArray(
-        _internal_metadata_.unknown_fields(), target, stream);
+        _internal_metadata_.unknown_fields<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>(::PROTOBUF_NAMESPACE_ID::UnknownFieldSet::default_instance), target, stream);
   }
   // @@protoc_insertion_point(serialize_to_array_end:mavsdk.rpc.mocap.SetOdometryRequest)
   return target;
@@ -1631,7 +1685,7 @@ void SetOdometryRequest::MergeFrom(const ::PROTOBUF_NAMESPACE_ID::Message& from)
 void SetOdometryRequest::MergeFrom(const SetOdometryRequest& from) {
 // @@protoc_insertion_point(class_specific_merge_from_start:mavsdk.rpc.mocap.SetOdometryRequest)
   GOOGLE_DCHECK_NE(&from, this);
-  _internal_metadata_.MergeFrom(from._internal_metadata_);
+  _internal_metadata_.MergeFrom<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>(from._internal_metadata_);
   ::PROTOBUF_NAMESPACE_ID::uint32 cached_has_bits = 0;
   (void) cached_has_bits;
 
@@ -1660,7 +1714,7 @@ bool SetOdometryRequest::IsInitialized() const {
 
 void SetOdometryRequest::InternalSwap(SetOdometryRequest* other) {
   using std::swap;
-  _internal_metadata_.Swap(&other->_internal_metadata_);
+  _internal_metadata_.Swap<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>(&other->_internal_metadata_);
   swap(odometry_, other->odometry_);
 }
 
@@ -1684,15 +1738,15 @@ const ::mavsdk::rpc::mocap::MocapResult&
 SetOdometryResponse::_Internal::mocap_result(const SetOdometryResponse* msg) {
   return *msg->mocap_result_;
 }
-SetOdometryResponse::SetOdometryResponse()
-  : ::PROTOBUF_NAMESPACE_ID::Message(), _internal_metadata_(nullptr) {
+SetOdometryResponse::SetOdometryResponse(::PROTOBUF_NAMESPACE_ID::Arena* arena)
+  : ::PROTOBUF_NAMESPACE_ID::Message(arena) {
   SharedCtor();
-  // @@protoc_insertion_point(constructor:mavsdk.rpc.mocap.SetOdometryResponse)
+  RegisterArenaDtor(arena);
+  // @@protoc_insertion_point(arena_constructor:mavsdk.rpc.mocap.SetOdometryResponse)
 }
 SetOdometryResponse::SetOdometryResponse(const SetOdometryResponse& from)
-  : ::PROTOBUF_NAMESPACE_ID::Message(),
-      _internal_metadata_(nullptr) {
-  _internal_metadata_.MergeFrom(from._internal_metadata_);
+  : ::PROTOBUF_NAMESPACE_ID::Message() {
+  _internal_metadata_.MergeFrom<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>(from._internal_metadata_);
   if (from._internal_has_mocap_result()) {
     mocap_result_ = new ::mavsdk::rpc::mocap::MocapResult(*from.mocap_result_);
   } else {
@@ -1709,12 +1763,20 @@ void SetOdometryResponse::SharedCtor() {
 SetOdometryResponse::~SetOdometryResponse() {
   // @@protoc_insertion_point(destructor:mavsdk.rpc.mocap.SetOdometryResponse)
   SharedDtor();
+  _internal_metadata_.Delete<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>();
 }
 
 void SetOdometryResponse::SharedDtor() {
+  GOOGLE_DCHECK(GetArena() == nullptr);
   if (this != internal_default_instance()) delete mocap_result_;
 }
 
+void SetOdometryResponse::ArenaDtor(void* object) {
+  SetOdometryResponse* _this = reinterpret_cast< SetOdometryResponse* >(object);
+  (void)_this;
+}
+void SetOdometryResponse::RegisterArenaDtor(::PROTOBUF_NAMESPACE_ID::Arena*) {
+}
 void SetOdometryResponse::SetCachedSize(int size) const {
   _cached_size_.Set(size);
 }
@@ -1730,15 +1792,16 @@ void SetOdometryResponse::Clear() {
   // Prevent compiler warnings about cached_has_bits being unused
   (void) cached_has_bits;
 
-  if (GetArenaNoVirtual() == nullptr && mocap_result_ != nullptr) {
+  if (GetArena() == nullptr && mocap_result_ != nullptr) {
     delete mocap_result_;
   }
   mocap_result_ = nullptr;
-  _internal_metadata_.Clear();
+  _internal_metadata_.Clear<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>();
 }
 
 const char* SetOdometryResponse::_InternalParse(const char* ptr, ::PROTOBUF_NAMESPACE_ID::internal::ParseContext* ctx) {
 #define CHK_(x) if (PROTOBUF_PREDICT_FALSE(!(x))) goto failure
+  ::PROTOBUF_NAMESPACE_ID::Arena* arena = GetArena(); (void)arena;
   while (!ctx->Done(&ptr)) {
     ::PROTOBUF_NAMESPACE_ID::uint32 tag;
     ptr = ::PROTOBUF_NAMESPACE_ID::internal::ReadTag(ptr, &tag);
@@ -1757,7 +1820,9 @@ const char* SetOdometryResponse::_InternalParse(const char* ptr, ::PROTOBUF_NAME
           ctx->SetLastTag(tag);
           goto success;
         }
-        ptr = UnknownFieldParse(tag, &_internal_metadata_, ptr, ctx);
+        ptr = UnknownFieldParse(tag,
+            _internal_metadata_.mutable_unknown_fields<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>(),
+            ptr, ctx);
         CHK_(ptr != nullptr);
         continue;
       }
@@ -1787,7 +1852,7 @@ failure:
 
   if (PROTOBUF_PREDICT_FALSE(_internal_metadata_.have_unknown_fields())) {
     target = ::PROTOBUF_NAMESPACE_ID::internal::WireFormat::InternalSerializeUnknownFieldsToArray(
-        _internal_metadata_.unknown_fields(), target, stream);
+        _internal_metadata_.unknown_fields<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>(::PROTOBUF_NAMESPACE_ID::UnknownFieldSet::default_instance), target, stream);
   }
   // @@protoc_insertion_point(serialize_to_array_end:mavsdk.rpc.mocap.SetOdometryResponse)
   return target;
@@ -1835,7 +1900,7 @@ void SetOdometryResponse::MergeFrom(const ::PROTOBUF_NAMESPACE_ID::Message& from
 void SetOdometryResponse::MergeFrom(const SetOdometryResponse& from) {
 // @@protoc_insertion_point(class_specific_merge_from_start:mavsdk.rpc.mocap.SetOdometryResponse)
   GOOGLE_DCHECK_NE(&from, this);
-  _internal_metadata_.MergeFrom(from._internal_metadata_);
+  _internal_metadata_.MergeFrom<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>(from._internal_metadata_);
   ::PROTOBUF_NAMESPACE_ID::uint32 cached_has_bits = 0;
   (void) cached_has_bits;
 
@@ -1864,7 +1929,7 @@ bool SetOdometryResponse::IsInitialized() const {
 
 void SetOdometryResponse::InternalSwap(SetOdometryResponse* other) {
   using std::swap;
-  _internal_metadata_.Swap(&other->_internal_metadata_);
+  _internal_metadata_.Swap<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>(&other->_internal_metadata_);
   swap(mocap_result_, other->mocap_result_);
 }
 
@@ -1881,15 +1946,15 @@ class PositionBody::_Internal {
  public:
 };
 
-PositionBody::PositionBody()
-  : ::PROTOBUF_NAMESPACE_ID::Message(), _internal_metadata_(nullptr) {
+PositionBody::PositionBody(::PROTOBUF_NAMESPACE_ID::Arena* arena)
+  : ::PROTOBUF_NAMESPACE_ID::Message(arena) {
   SharedCtor();
-  // @@protoc_insertion_point(constructor:mavsdk.rpc.mocap.PositionBody)
+  RegisterArenaDtor(arena);
+  // @@protoc_insertion_point(arena_constructor:mavsdk.rpc.mocap.PositionBody)
 }
 PositionBody::PositionBody(const PositionBody& from)
-  : ::PROTOBUF_NAMESPACE_ID::Message(),
-      _internal_metadata_(nullptr) {
-  _internal_metadata_.MergeFrom(from._internal_metadata_);
+  : ::PROTOBUF_NAMESPACE_ID::Message() {
+  _internal_metadata_.MergeFrom<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>(from._internal_metadata_);
   ::memcpy(&x_m_, &from.x_m_,
     static_cast<size_t>(reinterpret_cast<char*>(&z_m_) -
     reinterpret_cast<char*>(&x_m_)) + sizeof(z_m_));
@@ -1905,11 +1970,19 @@ void PositionBody::SharedCtor() {
 PositionBody::~PositionBody() {
   // @@protoc_insertion_point(destructor:mavsdk.rpc.mocap.PositionBody)
   SharedDtor();
+  _internal_metadata_.Delete<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>();
 }
 
 void PositionBody::SharedDtor() {
+  GOOGLE_DCHECK(GetArena() == nullptr);
 }
 
+void PositionBody::ArenaDtor(void* object) {
+  PositionBody* _this = reinterpret_cast< PositionBody* >(object);
+  (void)_this;
+}
+void PositionBody::RegisterArenaDtor(::PROTOBUF_NAMESPACE_ID::Arena*) {
+}
 void PositionBody::SetCachedSize(int size) const {
   _cached_size_.Set(size);
 }
@@ -1928,11 +2001,12 @@ void PositionBody::Clear() {
   ::memset(&x_m_, 0, static_cast<size_t>(
       reinterpret_cast<char*>(&z_m_) -
       reinterpret_cast<char*>(&x_m_)) + sizeof(z_m_));
-  _internal_metadata_.Clear();
+  _internal_metadata_.Clear<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>();
 }
 
 const char* PositionBody::_InternalParse(const char* ptr, ::PROTOBUF_NAMESPACE_ID::internal::ParseContext* ctx) {
 #define CHK_(x) if (PROTOBUF_PREDICT_FALSE(!(x))) goto failure
+  ::PROTOBUF_NAMESPACE_ID::Arena* arena = GetArena(); (void)arena;
   while (!ctx->Done(&ptr)) {
     ::PROTOBUF_NAMESPACE_ID::uint32 tag;
     ptr = ::PROTOBUF_NAMESPACE_ID::internal::ReadTag(ptr, &tag);
@@ -1965,7 +2039,9 @@ const char* PositionBody::_InternalParse(const char* ptr, ::PROTOBUF_NAMESPACE_I
           ctx->SetLastTag(tag);
           goto success;
         }
-        ptr = UnknownFieldParse(tag, &_internal_metadata_, ptr, ctx);
+        ptr = UnknownFieldParse(tag,
+            _internal_metadata_.mutable_unknown_fields<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>(),
+            ptr, ctx);
         CHK_(ptr != nullptr);
         continue;
       }
@@ -2005,7 +2081,7 @@ failure:
 
   if (PROTOBUF_PREDICT_FALSE(_internal_metadata_.have_unknown_fields())) {
     target = ::PROTOBUF_NAMESPACE_ID::internal::WireFormat::InternalSerializeUnknownFieldsToArray(
-        _internal_metadata_.unknown_fields(), target, stream);
+        _internal_metadata_.unknown_fields<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>(::PROTOBUF_NAMESPACE_ID::UnknownFieldSet::default_instance), target, stream);
   }
   // @@protoc_insertion_point(serialize_to_array_end:mavsdk.rpc.mocap.PositionBody)
   return target;
@@ -2061,7 +2137,7 @@ void PositionBody::MergeFrom(const ::PROTOBUF_NAMESPACE_ID::Message& from) {
 void PositionBody::MergeFrom(const PositionBody& from) {
 // @@protoc_insertion_point(class_specific_merge_from_start:mavsdk.rpc.mocap.PositionBody)
   GOOGLE_DCHECK_NE(&from, this);
-  _internal_metadata_.MergeFrom(from._internal_metadata_);
+  _internal_metadata_.MergeFrom<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>(from._internal_metadata_);
   ::PROTOBUF_NAMESPACE_ID::uint32 cached_has_bits = 0;
   (void) cached_has_bits;
 
@@ -2096,10 +2172,13 @@ bool PositionBody::IsInitialized() const {
 
 void PositionBody::InternalSwap(PositionBody* other) {
   using std::swap;
-  _internal_metadata_.Swap(&other->_internal_metadata_);
-  swap(x_m_, other->x_m_);
-  swap(y_m_, other->y_m_);
-  swap(z_m_, other->z_m_);
+  _internal_metadata_.Swap<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>(&other->_internal_metadata_);
+  ::PROTOBUF_NAMESPACE_ID::internal::memswap<
+      PROTOBUF_FIELD_OFFSET(PositionBody, z_m_)
+      + sizeof(PositionBody::z_m_)
+      - PROTOBUF_FIELD_OFFSET(PositionBody, x_m_)>(
+          reinterpret_cast<char*>(&x_m_),
+          reinterpret_cast<char*>(&other->x_m_));
 }
 
 ::PROTOBUF_NAMESPACE_ID::Metadata PositionBody::GetMetadata() const {
@@ -2115,15 +2194,15 @@ class AngleBody::_Internal {
  public:
 };
 
-AngleBody::AngleBody()
-  : ::PROTOBUF_NAMESPACE_ID::Message(), _internal_metadata_(nullptr) {
+AngleBody::AngleBody(::PROTOBUF_NAMESPACE_ID::Arena* arena)
+  : ::PROTOBUF_NAMESPACE_ID::Message(arena) {
   SharedCtor();
-  // @@protoc_insertion_point(constructor:mavsdk.rpc.mocap.AngleBody)
+  RegisterArenaDtor(arena);
+  // @@protoc_insertion_point(arena_constructor:mavsdk.rpc.mocap.AngleBody)
 }
 AngleBody::AngleBody(const AngleBody& from)
-  : ::PROTOBUF_NAMESPACE_ID::Message(),
-      _internal_metadata_(nullptr) {
-  _internal_metadata_.MergeFrom(from._internal_metadata_);
+  : ::PROTOBUF_NAMESPACE_ID::Message() {
+  _internal_metadata_.MergeFrom<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>(from._internal_metadata_);
   ::memcpy(&roll_rad_, &from.roll_rad_,
     static_cast<size_t>(reinterpret_cast<char*>(&yaw_rad_) -
     reinterpret_cast<char*>(&roll_rad_)) + sizeof(yaw_rad_));
@@ -2139,11 +2218,19 @@ void AngleBody::SharedCtor() {
 AngleBody::~AngleBody() {
   // @@protoc_insertion_point(destructor:mavsdk.rpc.mocap.AngleBody)
   SharedDtor();
+  _internal_metadata_.Delete<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>();
 }
 
 void AngleBody::SharedDtor() {
+  GOOGLE_DCHECK(GetArena() == nullptr);
 }
 
+void AngleBody::ArenaDtor(void* object) {
+  AngleBody* _this = reinterpret_cast< AngleBody* >(object);
+  (void)_this;
+}
+void AngleBody::RegisterArenaDtor(::PROTOBUF_NAMESPACE_ID::Arena*) {
+}
 void AngleBody::SetCachedSize(int size) const {
   _cached_size_.Set(size);
 }
@@ -2162,11 +2249,12 @@ void AngleBody::Clear() {
   ::memset(&roll_rad_, 0, static_cast<size_t>(
       reinterpret_cast<char*>(&yaw_rad_) -
       reinterpret_cast<char*>(&roll_rad_)) + sizeof(yaw_rad_));
-  _internal_metadata_.Clear();
+  _internal_metadata_.Clear<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>();
 }
 
 const char* AngleBody::_InternalParse(const char* ptr, ::PROTOBUF_NAMESPACE_ID::internal::ParseContext* ctx) {
 #define CHK_(x) if (PROTOBUF_PREDICT_FALSE(!(x))) goto failure
+  ::PROTOBUF_NAMESPACE_ID::Arena* arena = GetArena(); (void)arena;
   while (!ctx->Done(&ptr)) {
     ::PROTOBUF_NAMESPACE_ID::uint32 tag;
     ptr = ::PROTOBUF_NAMESPACE_ID::internal::ReadTag(ptr, &tag);
@@ -2199,7 +2287,9 @@ const char* AngleBody::_InternalParse(const char* ptr, ::PROTOBUF_NAMESPACE_ID::
           ctx->SetLastTag(tag);
           goto success;
         }
-        ptr = UnknownFieldParse(tag, &_internal_metadata_, ptr, ctx);
+        ptr = UnknownFieldParse(tag,
+            _internal_metadata_.mutable_unknown_fields<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>(),
+            ptr, ctx);
         CHK_(ptr != nullptr);
         continue;
       }
@@ -2239,7 +2329,7 @@ failure:
 
   if (PROTOBUF_PREDICT_FALSE(_internal_metadata_.have_unknown_fields())) {
     target = ::PROTOBUF_NAMESPACE_ID::internal::WireFormat::InternalSerializeUnknownFieldsToArray(
-        _internal_metadata_.unknown_fields(), target, stream);
+        _internal_metadata_.unknown_fields<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>(::PROTOBUF_NAMESPACE_ID::UnknownFieldSet::default_instance), target, stream);
   }
   // @@protoc_insertion_point(serialize_to_array_end:mavsdk.rpc.mocap.AngleBody)
   return target;
@@ -2295,7 +2385,7 @@ void AngleBody::MergeFrom(const ::PROTOBUF_NAMESPACE_ID::Message& from) {
 void AngleBody::MergeFrom(const AngleBody& from) {
 // @@protoc_insertion_point(class_specific_merge_from_start:mavsdk.rpc.mocap.AngleBody)
   GOOGLE_DCHECK_NE(&from, this);
-  _internal_metadata_.MergeFrom(from._internal_metadata_);
+  _internal_metadata_.MergeFrom<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>(from._internal_metadata_);
   ::PROTOBUF_NAMESPACE_ID::uint32 cached_has_bits = 0;
   (void) cached_has_bits;
 
@@ -2330,10 +2420,13 @@ bool AngleBody::IsInitialized() const {
 
 void AngleBody::InternalSwap(AngleBody* other) {
   using std::swap;
-  _internal_metadata_.Swap(&other->_internal_metadata_);
-  swap(roll_rad_, other->roll_rad_);
-  swap(pitch_rad_, other->pitch_rad_);
-  swap(yaw_rad_, other->yaw_rad_);
+  _internal_metadata_.Swap<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>(&other->_internal_metadata_);
+  ::PROTOBUF_NAMESPACE_ID::internal::memswap<
+      PROTOBUF_FIELD_OFFSET(AngleBody, yaw_rad_)
+      + sizeof(AngleBody::yaw_rad_)
+      - PROTOBUF_FIELD_OFFSET(AngleBody, roll_rad_)>(
+          reinterpret_cast<char*>(&roll_rad_),
+          reinterpret_cast<char*>(&other->roll_rad_));
 }
 
 ::PROTOBUF_NAMESPACE_ID::Metadata AngleBody::GetMetadata() const {
@@ -2349,15 +2442,15 @@ class SpeedBody::_Internal {
  public:
 };
 
-SpeedBody::SpeedBody()
-  : ::PROTOBUF_NAMESPACE_ID::Message(), _internal_metadata_(nullptr) {
+SpeedBody::SpeedBody(::PROTOBUF_NAMESPACE_ID::Arena* arena)
+  : ::PROTOBUF_NAMESPACE_ID::Message(arena) {
   SharedCtor();
-  // @@protoc_insertion_point(constructor:mavsdk.rpc.mocap.SpeedBody)
+  RegisterArenaDtor(arena);
+  // @@protoc_insertion_point(arena_constructor:mavsdk.rpc.mocap.SpeedBody)
 }
 SpeedBody::SpeedBody(const SpeedBody& from)
-  : ::PROTOBUF_NAMESPACE_ID::Message(),
-      _internal_metadata_(nullptr) {
-  _internal_metadata_.MergeFrom(from._internal_metadata_);
+  : ::PROTOBUF_NAMESPACE_ID::Message() {
+  _internal_metadata_.MergeFrom<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>(from._internal_metadata_);
   ::memcpy(&x_m_s_, &from.x_m_s_,
     static_cast<size_t>(reinterpret_cast<char*>(&z_m_s_) -
     reinterpret_cast<char*>(&x_m_s_)) + sizeof(z_m_s_));
@@ -2373,11 +2466,19 @@ void SpeedBody::SharedCtor() {
 SpeedBody::~SpeedBody() {
   // @@protoc_insertion_point(destructor:mavsdk.rpc.mocap.SpeedBody)
   SharedDtor();
+  _internal_metadata_.Delete<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>();
 }
 
 void SpeedBody::SharedDtor() {
+  GOOGLE_DCHECK(GetArena() == nullptr);
 }
 
+void SpeedBody::ArenaDtor(void* object) {
+  SpeedBody* _this = reinterpret_cast< SpeedBody* >(object);
+  (void)_this;
+}
+void SpeedBody::RegisterArenaDtor(::PROTOBUF_NAMESPACE_ID::Arena*) {
+}
 void SpeedBody::SetCachedSize(int size) const {
   _cached_size_.Set(size);
 }
@@ -2396,11 +2497,12 @@ void SpeedBody::Clear() {
   ::memset(&x_m_s_, 0, static_cast<size_t>(
       reinterpret_cast<char*>(&z_m_s_) -
       reinterpret_cast<char*>(&x_m_s_)) + sizeof(z_m_s_));
-  _internal_metadata_.Clear();
+  _internal_metadata_.Clear<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>();
 }
 
 const char* SpeedBody::_InternalParse(const char* ptr, ::PROTOBUF_NAMESPACE_ID::internal::ParseContext* ctx) {
 #define CHK_(x) if (PROTOBUF_PREDICT_FALSE(!(x))) goto failure
+  ::PROTOBUF_NAMESPACE_ID::Arena* arena = GetArena(); (void)arena;
   while (!ctx->Done(&ptr)) {
     ::PROTOBUF_NAMESPACE_ID::uint32 tag;
     ptr = ::PROTOBUF_NAMESPACE_ID::internal::ReadTag(ptr, &tag);
@@ -2433,7 +2535,9 @@ const char* SpeedBody::_InternalParse(const char* ptr, ::PROTOBUF_NAMESPACE_ID::
           ctx->SetLastTag(tag);
           goto success;
         }
-        ptr = UnknownFieldParse(tag, &_internal_metadata_, ptr, ctx);
+        ptr = UnknownFieldParse(tag,
+            _internal_metadata_.mutable_unknown_fields<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>(),
+            ptr, ctx);
         CHK_(ptr != nullptr);
         continue;
       }
@@ -2473,7 +2577,7 @@ failure:
 
   if (PROTOBUF_PREDICT_FALSE(_internal_metadata_.have_unknown_fields())) {
     target = ::PROTOBUF_NAMESPACE_ID::internal::WireFormat::InternalSerializeUnknownFieldsToArray(
-        _internal_metadata_.unknown_fields(), target, stream);
+        _internal_metadata_.unknown_fields<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>(::PROTOBUF_NAMESPACE_ID::UnknownFieldSet::default_instance), target, stream);
   }
   // @@protoc_insertion_point(serialize_to_array_end:mavsdk.rpc.mocap.SpeedBody)
   return target;
@@ -2529,7 +2633,7 @@ void SpeedBody::MergeFrom(const ::PROTOBUF_NAMESPACE_ID::Message& from) {
 void SpeedBody::MergeFrom(const SpeedBody& from) {
 // @@protoc_insertion_point(class_specific_merge_from_start:mavsdk.rpc.mocap.SpeedBody)
   GOOGLE_DCHECK_NE(&from, this);
-  _internal_metadata_.MergeFrom(from._internal_metadata_);
+  _internal_metadata_.MergeFrom<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>(from._internal_metadata_);
   ::PROTOBUF_NAMESPACE_ID::uint32 cached_has_bits = 0;
   (void) cached_has_bits;
 
@@ -2564,10 +2668,13 @@ bool SpeedBody::IsInitialized() const {
 
 void SpeedBody::InternalSwap(SpeedBody* other) {
   using std::swap;
-  _internal_metadata_.Swap(&other->_internal_metadata_);
-  swap(x_m_s_, other->x_m_s_);
-  swap(y_m_s_, other->y_m_s_);
-  swap(z_m_s_, other->z_m_s_);
+  _internal_metadata_.Swap<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>(&other->_internal_metadata_);
+  ::PROTOBUF_NAMESPACE_ID::internal::memswap<
+      PROTOBUF_FIELD_OFFSET(SpeedBody, z_m_s_)
+      + sizeof(SpeedBody::z_m_s_)
+      - PROTOBUF_FIELD_OFFSET(SpeedBody, x_m_s_)>(
+          reinterpret_cast<char*>(&x_m_s_),
+          reinterpret_cast<char*>(&other->x_m_s_));
 }
 
 ::PROTOBUF_NAMESPACE_ID::Metadata SpeedBody::GetMetadata() const {
@@ -2583,15 +2690,15 @@ class AngularVelocityBody::_Internal {
  public:
 };
 
-AngularVelocityBody::AngularVelocityBody()
-  : ::PROTOBUF_NAMESPACE_ID::Message(), _internal_metadata_(nullptr) {
+AngularVelocityBody::AngularVelocityBody(::PROTOBUF_NAMESPACE_ID::Arena* arena)
+  : ::PROTOBUF_NAMESPACE_ID::Message(arena) {
   SharedCtor();
-  // @@protoc_insertion_point(constructor:mavsdk.rpc.mocap.AngularVelocityBody)
+  RegisterArenaDtor(arena);
+  // @@protoc_insertion_point(arena_constructor:mavsdk.rpc.mocap.AngularVelocityBody)
 }
 AngularVelocityBody::AngularVelocityBody(const AngularVelocityBody& from)
-  : ::PROTOBUF_NAMESPACE_ID::Message(),
-      _internal_metadata_(nullptr) {
-  _internal_metadata_.MergeFrom(from._internal_metadata_);
+  : ::PROTOBUF_NAMESPACE_ID::Message() {
+  _internal_metadata_.MergeFrom<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>(from._internal_metadata_);
   ::memcpy(&roll_rad_s_, &from.roll_rad_s_,
     static_cast<size_t>(reinterpret_cast<char*>(&yaw_rad_s_) -
     reinterpret_cast<char*>(&roll_rad_s_)) + sizeof(yaw_rad_s_));
@@ -2607,11 +2714,19 @@ void AngularVelocityBody::SharedCtor() {
 AngularVelocityBody::~AngularVelocityBody() {
   // @@protoc_insertion_point(destructor:mavsdk.rpc.mocap.AngularVelocityBody)
   SharedDtor();
+  _internal_metadata_.Delete<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>();
 }
 
 void AngularVelocityBody::SharedDtor() {
+  GOOGLE_DCHECK(GetArena() == nullptr);
 }
 
+void AngularVelocityBody::ArenaDtor(void* object) {
+  AngularVelocityBody* _this = reinterpret_cast< AngularVelocityBody* >(object);
+  (void)_this;
+}
+void AngularVelocityBody::RegisterArenaDtor(::PROTOBUF_NAMESPACE_ID::Arena*) {
+}
 void AngularVelocityBody::SetCachedSize(int size) const {
   _cached_size_.Set(size);
 }
@@ -2630,11 +2745,12 @@ void AngularVelocityBody::Clear() {
   ::memset(&roll_rad_s_, 0, static_cast<size_t>(
       reinterpret_cast<char*>(&yaw_rad_s_) -
       reinterpret_cast<char*>(&roll_rad_s_)) + sizeof(yaw_rad_s_));
-  _internal_metadata_.Clear();
+  _internal_metadata_.Clear<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>();
 }
 
 const char* AngularVelocityBody::_InternalParse(const char* ptr, ::PROTOBUF_NAMESPACE_ID::internal::ParseContext* ctx) {
 #define CHK_(x) if (PROTOBUF_PREDICT_FALSE(!(x))) goto failure
+  ::PROTOBUF_NAMESPACE_ID::Arena* arena = GetArena(); (void)arena;
   while (!ctx->Done(&ptr)) {
     ::PROTOBUF_NAMESPACE_ID::uint32 tag;
     ptr = ::PROTOBUF_NAMESPACE_ID::internal::ReadTag(ptr, &tag);
@@ -2667,7 +2783,9 @@ const char* AngularVelocityBody::_InternalParse(const char* ptr, ::PROTOBUF_NAME
           ctx->SetLastTag(tag);
           goto success;
         }
-        ptr = UnknownFieldParse(tag, &_internal_metadata_, ptr, ctx);
+        ptr = UnknownFieldParse(tag,
+            _internal_metadata_.mutable_unknown_fields<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>(),
+            ptr, ctx);
         CHK_(ptr != nullptr);
         continue;
       }
@@ -2707,7 +2825,7 @@ failure:
 
   if (PROTOBUF_PREDICT_FALSE(_internal_metadata_.have_unknown_fields())) {
     target = ::PROTOBUF_NAMESPACE_ID::internal::WireFormat::InternalSerializeUnknownFieldsToArray(
-        _internal_metadata_.unknown_fields(), target, stream);
+        _internal_metadata_.unknown_fields<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>(::PROTOBUF_NAMESPACE_ID::UnknownFieldSet::default_instance), target, stream);
   }
   // @@protoc_insertion_point(serialize_to_array_end:mavsdk.rpc.mocap.AngularVelocityBody)
   return target;
@@ -2763,7 +2881,7 @@ void AngularVelocityBody::MergeFrom(const ::PROTOBUF_NAMESPACE_ID::Message& from
 void AngularVelocityBody::MergeFrom(const AngularVelocityBody& from) {
 // @@protoc_insertion_point(class_specific_merge_from_start:mavsdk.rpc.mocap.AngularVelocityBody)
   GOOGLE_DCHECK_NE(&from, this);
-  _internal_metadata_.MergeFrom(from._internal_metadata_);
+  _internal_metadata_.MergeFrom<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>(from._internal_metadata_);
   ::PROTOBUF_NAMESPACE_ID::uint32 cached_has_bits = 0;
   (void) cached_has_bits;
 
@@ -2798,10 +2916,13 @@ bool AngularVelocityBody::IsInitialized() const {
 
 void AngularVelocityBody::InternalSwap(AngularVelocityBody* other) {
   using std::swap;
-  _internal_metadata_.Swap(&other->_internal_metadata_);
-  swap(roll_rad_s_, other->roll_rad_s_);
-  swap(pitch_rad_s_, other->pitch_rad_s_);
-  swap(yaw_rad_s_, other->yaw_rad_s_);
+  _internal_metadata_.Swap<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>(&other->_internal_metadata_);
+  ::PROTOBUF_NAMESPACE_ID::internal::memswap<
+      PROTOBUF_FIELD_OFFSET(AngularVelocityBody, yaw_rad_s_)
+      + sizeof(AngularVelocityBody::yaw_rad_s_)
+      - PROTOBUF_FIELD_OFFSET(AngularVelocityBody, roll_rad_s_)>(
+          reinterpret_cast<char*>(&roll_rad_s_),
+          reinterpret_cast<char*>(&other->roll_rad_s_));
 }
 
 ::PROTOBUF_NAMESPACE_ID::Metadata AngularVelocityBody::GetMetadata() const {
@@ -2817,16 +2938,17 @@ class Covariance::_Internal {
  public:
 };
 
-Covariance::Covariance()
-  : ::PROTOBUF_NAMESPACE_ID::Message(), _internal_metadata_(nullptr) {
+Covariance::Covariance(::PROTOBUF_NAMESPACE_ID::Arena* arena)
+  : ::PROTOBUF_NAMESPACE_ID::Message(arena),
+  covariance_matrix_(arena) {
   SharedCtor();
-  // @@protoc_insertion_point(constructor:mavsdk.rpc.mocap.Covariance)
+  RegisterArenaDtor(arena);
+  // @@protoc_insertion_point(arena_constructor:mavsdk.rpc.mocap.Covariance)
 }
 Covariance::Covariance(const Covariance& from)
   : ::PROTOBUF_NAMESPACE_ID::Message(),
-      _internal_metadata_(nullptr),
       covariance_matrix_(from.covariance_matrix_) {
-  _internal_metadata_.MergeFrom(from._internal_metadata_);
+  _internal_metadata_.MergeFrom<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>(from._internal_metadata_);
   // @@protoc_insertion_point(copy_constructor:mavsdk.rpc.mocap.Covariance)
 }
 
@@ -2836,11 +2958,19 @@ void Covariance::SharedCtor() {
 Covariance::~Covariance() {
   // @@protoc_insertion_point(destructor:mavsdk.rpc.mocap.Covariance)
   SharedDtor();
+  _internal_metadata_.Delete<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>();
 }
 
 void Covariance::SharedDtor() {
+  GOOGLE_DCHECK(GetArena() == nullptr);
 }
 
+void Covariance::ArenaDtor(void* object) {
+  Covariance* _this = reinterpret_cast< Covariance* >(object);
+  (void)_this;
+}
+void Covariance::RegisterArenaDtor(::PROTOBUF_NAMESPACE_ID::Arena*) {
+}
 void Covariance::SetCachedSize(int size) const {
   _cached_size_.Set(size);
 }
@@ -2857,11 +2987,12 @@ void Covariance::Clear() {
   (void) cached_has_bits;
 
   covariance_matrix_.Clear();
-  _internal_metadata_.Clear();
+  _internal_metadata_.Clear<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>();
 }
 
 const char* Covariance::_InternalParse(const char* ptr, ::PROTOBUF_NAMESPACE_ID::internal::ParseContext* ctx) {
 #define CHK_(x) if (PROTOBUF_PREDICT_FALSE(!(x))) goto failure
+  ::PROTOBUF_NAMESPACE_ID::Arena* arena = GetArena(); (void)arena;
   while (!ctx->Done(&ptr)) {
     ::PROTOBUF_NAMESPACE_ID::uint32 tag;
     ptr = ::PROTOBUF_NAMESPACE_ID::internal::ReadTag(ptr, &tag);
@@ -2883,7 +3014,9 @@ const char* Covariance::_InternalParse(const char* ptr, ::PROTOBUF_NAMESPACE_ID:
           ctx->SetLastTag(tag);
           goto success;
         }
-        ptr = UnknownFieldParse(tag, &_internal_metadata_, ptr, ctx);
+        ptr = UnknownFieldParse(tag,
+            _internal_metadata_.mutable_unknown_fields<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>(),
+            ptr, ctx);
         CHK_(ptr != nullptr);
         continue;
       }
@@ -2910,7 +3043,7 @@ failure:
 
   if (PROTOBUF_PREDICT_FALSE(_internal_metadata_.have_unknown_fields())) {
     target = ::PROTOBUF_NAMESPACE_ID::internal::WireFormat::InternalSerializeUnknownFieldsToArray(
-        _internal_metadata_.unknown_fields(), target, stream);
+        _internal_metadata_.unknown_fields<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>(::PROTOBUF_NAMESPACE_ID::UnknownFieldSet::default_instance), target, stream);
   }
   // @@protoc_insertion_point(serialize_to_array_end:mavsdk.rpc.mocap.Covariance)
   return target;
@@ -2966,7 +3099,7 @@ void Covariance::MergeFrom(const ::PROTOBUF_NAMESPACE_ID::Message& from) {
 void Covariance::MergeFrom(const Covariance& from) {
 // @@protoc_insertion_point(class_specific_merge_from_start:mavsdk.rpc.mocap.Covariance)
   GOOGLE_DCHECK_NE(&from, this);
-  _internal_metadata_.MergeFrom(from._internal_metadata_);
+  _internal_metadata_.MergeFrom<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>(from._internal_metadata_);
   ::PROTOBUF_NAMESPACE_ID::uint32 cached_has_bits = 0;
   (void) cached_has_bits;
 
@@ -2993,7 +3126,7 @@ bool Covariance::IsInitialized() const {
 
 void Covariance::InternalSwap(Covariance* other) {
   using std::swap;
-  _internal_metadata_.Swap(&other->_internal_metadata_);
+  _internal_metadata_.Swap<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>(&other->_internal_metadata_);
   covariance_matrix_.InternalSwap(&other->covariance_matrix_);
 }
 
@@ -3010,15 +3143,15 @@ class Quaternion::_Internal {
  public:
 };
 
-Quaternion::Quaternion()
-  : ::PROTOBUF_NAMESPACE_ID::Message(), _internal_metadata_(nullptr) {
+Quaternion::Quaternion(::PROTOBUF_NAMESPACE_ID::Arena* arena)
+  : ::PROTOBUF_NAMESPACE_ID::Message(arena) {
   SharedCtor();
-  // @@protoc_insertion_point(constructor:mavsdk.rpc.mocap.Quaternion)
+  RegisterArenaDtor(arena);
+  // @@protoc_insertion_point(arena_constructor:mavsdk.rpc.mocap.Quaternion)
 }
 Quaternion::Quaternion(const Quaternion& from)
-  : ::PROTOBUF_NAMESPACE_ID::Message(),
-      _internal_metadata_(nullptr) {
-  _internal_metadata_.MergeFrom(from._internal_metadata_);
+  : ::PROTOBUF_NAMESPACE_ID::Message() {
+  _internal_metadata_.MergeFrom<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>(from._internal_metadata_);
   ::memcpy(&w_, &from.w_,
     static_cast<size_t>(reinterpret_cast<char*>(&z_) -
     reinterpret_cast<char*>(&w_)) + sizeof(z_));
@@ -3034,11 +3167,19 @@ void Quaternion::SharedCtor() {
 Quaternion::~Quaternion() {
   // @@protoc_insertion_point(destructor:mavsdk.rpc.mocap.Quaternion)
   SharedDtor();
+  _internal_metadata_.Delete<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>();
 }
 
 void Quaternion::SharedDtor() {
+  GOOGLE_DCHECK(GetArena() == nullptr);
 }
 
+void Quaternion::ArenaDtor(void* object) {
+  Quaternion* _this = reinterpret_cast< Quaternion* >(object);
+  (void)_this;
+}
+void Quaternion::RegisterArenaDtor(::PROTOBUF_NAMESPACE_ID::Arena*) {
+}
 void Quaternion::SetCachedSize(int size) const {
   _cached_size_.Set(size);
 }
@@ -3057,11 +3198,12 @@ void Quaternion::Clear() {
   ::memset(&w_, 0, static_cast<size_t>(
       reinterpret_cast<char*>(&z_) -
       reinterpret_cast<char*>(&w_)) + sizeof(z_));
-  _internal_metadata_.Clear();
+  _internal_metadata_.Clear<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>();
 }
 
 const char* Quaternion::_InternalParse(const char* ptr, ::PROTOBUF_NAMESPACE_ID::internal::ParseContext* ctx) {
 #define CHK_(x) if (PROTOBUF_PREDICT_FALSE(!(x))) goto failure
+  ::PROTOBUF_NAMESPACE_ID::Arena* arena = GetArena(); (void)arena;
   while (!ctx->Done(&ptr)) {
     ::PROTOBUF_NAMESPACE_ID::uint32 tag;
     ptr = ::PROTOBUF_NAMESPACE_ID::internal::ReadTag(ptr, &tag);
@@ -3101,7 +3243,9 @@ const char* Quaternion::_InternalParse(const char* ptr, ::PROTOBUF_NAMESPACE_ID:
           ctx->SetLastTag(tag);
           goto success;
         }
-        ptr = UnknownFieldParse(tag, &_internal_metadata_, ptr, ctx);
+        ptr = UnknownFieldParse(tag,
+            _internal_metadata_.mutable_unknown_fields<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>(),
+            ptr, ctx);
         CHK_(ptr != nullptr);
         continue;
       }
@@ -3147,7 +3291,7 @@ failure:
 
   if (PROTOBUF_PREDICT_FALSE(_internal_metadata_.have_unknown_fields())) {
     target = ::PROTOBUF_NAMESPACE_ID::internal::WireFormat::InternalSerializeUnknownFieldsToArray(
-        _internal_metadata_.unknown_fields(), target, stream);
+        _internal_metadata_.unknown_fields<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>(::PROTOBUF_NAMESPACE_ID::UnknownFieldSet::default_instance), target, stream);
   }
   // @@protoc_insertion_point(serialize_to_array_end:mavsdk.rpc.mocap.Quaternion)
   return target;
@@ -3208,7 +3352,7 @@ void Quaternion::MergeFrom(const ::PROTOBUF_NAMESPACE_ID::Message& from) {
 void Quaternion::MergeFrom(const Quaternion& from) {
 // @@protoc_insertion_point(class_specific_merge_from_start:mavsdk.rpc.mocap.Quaternion)
   GOOGLE_DCHECK_NE(&from, this);
-  _internal_metadata_.MergeFrom(from._internal_metadata_);
+  _internal_metadata_.MergeFrom<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>(from._internal_metadata_);
   ::PROTOBUF_NAMESPACE_ID::uint32 cached_has_bits = 0;
   (void) cached_has_bits;
 
@@ -3246,11 +3390,13 @@ bool Quaternion::IsInitialized() const {
 
 void Quaternion::InternalSwap(Quaternion* other) {
   using std::swap;
-  _internal_metadata_.Swap(&other->_internal_metadata_);
-  swap(w_, other->w_);
-  swap(x_, other->x_);
-  swap(y_, other->y_);
-  swap(z_, other->z_);
+  _internal_metadata_.Swap<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>(&other->_internal_metadata_);
+  ::PROTOBUF_NAMESPACE_ID::internal::memswap<
+      PROTOBUF_FIELD_OFFSET(Quaternion, z_)
+      + sizeof(Quaternion::z_)
+      - PROTOBUF_FIELD_OFFSET(Quaternion, w_)>(
+          reinterpret_cast<char*>(&w_),
+          reinterpret_cast<char*>(&other->w_));
 }
 
 ::PROTOBUF_NAMESPACE_ID::Metadata Quaternion::GetMetadata() const {
@@ -3287,15 +3433,15 @@ const ::mavsdk::rpc::mocap::Covariance&
 VisionPositionEstimate::_Internal::pose_covariance(const VisionPositionEstimate* msg) {
   return *msg->pose_covariance_;
 }
-VisionPositionEstimate::VisionPositionEstimate()
-  : ::PROTOBUF_NAMESPACE_ID::Message(), _internal_metadata_(nullptr) {
+VisionPositionEstimate::VisionPositionEstimate(::PROTOBUF_NAMESPACE_ID::Arena* arena)
+  : ::PROTOBUF_NAMESPACE_ID::Message(arena) {
   SharedCtor();
-  // @@protoc_insertion_point(constructor:mavsdk.rpc.mocap.VisionPositionEstimate)
+  RegisterArenaDtor(arena);
+  // @@protoc_insertion_point(arena_constructor:mavsdk.rpc.mocap.VisionPositionEstimate)
 }
 VisionPositionEstimate::VisionPositionEstimate(const VisionPositionEstimate& from)
-  : ::PROTOBUF_NAMESPACE_ID::Message(),
-      _internal_metadata_(nullptr) {
-  _internal_metadata_.MergeFrom(from._internal_metadata_);
+  : ::PROTOBUF_NAMESPACE_ID::Message() {
+  _internal_metadata_.MergeFrom<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>(from._internal_metadata_);
   if (from._internal_has_position_body()) {
     position_body_ = new ::mavsdk::rpc::mocap::PositionBody(*from.position_body_);
   } else {
@@ -3325,14 +3471,22 @@ void VisionPositionEstimate::SharedCtor() {
 VisionPositionEstimate::~VisionPositionEstimate() {
   // @@protoc_insertion_point(destructor:mavsdk.rpc.mocap.VisionPositionEstimate)
   SharedDtor();
+  _internal_metadata_.Delete<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>();
 }
 
 void VisionPositionEstimate::SharedDtor() {
+  GOOGLE_DCHECK(GetArena() == nullptr);
   if (this != internal_default_instance()) delete position_body_;
   if (this != internal_default_instance()) delete angle_body_;
   if (this != internal_default_instance()) delete pose_covariance_;
 }
 
+void VisionPositionEstimate::ArenaDtor(void* object) {
+  VisionPositionEstimate* _this = reinterpret_cast< VisionPositionEstimate* >(object);
+  (void)_this;
+}
+void VisionPositionEstimate::RegisterArenaDtor(::PROTOBUF_NAMESPACE_ID::Arena*) {
+}
 void VisionPositionEstimate::SetCachedSize(int size) const {
   _cached_size_.Set(size);
 }
@@ -3348,24 +3502,25 @@ void VisionPositionEstimate::Clear() {
   // Prevent compiler warnings about cached_has_bits being unused
   (void) cached_has_bits;
 
-  if (GetArenaNoVirtual() == nullptr && position_body_ != nullptr) {
+  if (GetArena() == nullptr && position_body_ != nullptr) {
     delete position_body_;
   }
   position_body_ = nullptr;
-  if (GetArenaNoVirtual() == nullptr && angle_body_ != nullptr) {
+  if (GetArena() == nullptr && angle_body_ != nullptr) {
     delete angle_body_;
   }
   angle_body_ = nullptr;
-  if (GetArenaNoVirtual() == nullptr && pose_covariance_ != nullptr) {
+  if (GetArena() == nullptr && pose_covariance_ != nullptr) {
     delete pose_covariance_;
   }
   pose_covariance_ = nullptr;
   time_usec_ = PROTOBUF_ULONGLONG(0);
-  _internal_metadata_.Clear();
+  _internal_metadata_.Clear<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>();
 }
 
 const char* VisionPositionEstimate::_InternalParse(const char* ptr, ::PROTOBUF_NAMESPACE_ID::internal::ParseContext* ctx) {
 #define CHK_(x) if (PROTOBUF_PREDICT_FALSE(!(x))) goto failure
+  ::PROTOBUF_NAMESPACE_ID::Arena* arena = GetArena(); (void)arena;
   while (!ctx->Done(&ptr)) {
     ::PROTOBUF_NAMESPACE_ID::uint32 tag;
     ptr = ::PROTOBUF_NAMESPACE_ID::internal::ReadTag(ptr, &tag);
@@ -3374,7 +3529,7 @@ const char* VisionPositionEstimate::_InternalParse(const char* ptr, ::PROTOBUF_N
       // uint64 time_usec = 1;
       case 1:
         if (PROTOBUF_PREDICT_TRUE(static_cast<::PROTOBUF_NAMESPACE_ID::uint8>(tag) == 8)) {
-          time_usec_ = ::PROTOBUF_NAMESPACE_ID::internal::ReadVarint(&ptr);
+          time_usec_ = ::PROTOBUF_NAMESPACE_ID::internal::ReadVarint64(&ptr);
           CHK_(ptr);
         } else goto handle_unusual;
         continue;
@@ -3405,7 +3560,9 @@ const char* VisionPositionEstimate::_InternalParse(const char* ptr, ::PROTOBUF_N
           ctx->SetLastTag(tag);
           goto success;
         }
-        ptr = UnknownFieldParse(tag, &_internal_metadata_, ptr, ctx);
+        ptr = UnknownFieldParse(tag,
+            _internal_metadata_.mutable_unknown_fields<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>(),
+            ptr, ctx);
         CHK_(ptr != nullptr);
         continue;
       }
@@ -3457,7 +3614,7 @@ failure:
 
   if (PROTOBUF_PREDICT_FALSE(_internal_metadata_.have_unknown_fields())) {
     target = ::PROTOBUF_NAMESPACE_ID::internal::WireFormat::InternalSerializeUnknownFieldsToArray(
-        _internal_metadata_.unknown_fields(), target, stream);
+        _internal_metadata_.unknown_fields<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>(::PROTOBUF_NAMESPACE_ID::UnknownFieldSet::default_instance), target, stream);
   }
   // @@protoc_insertion_point(serialize_to_array_end:mavsdk.rpc.mocap.VisionPositionEstimate)
   return target;
@@ -3526,7 +3683,7 @@ void VisionPositionEstimate::MergeFrom(const ::PROTOBUF_NAMESPACE_ID::Message& f
 void VisionPositionEstimate::MergeFrom(const VisionPositionEstimate& from) {
 // @@protoc_insertion_point(class_specific_merge_from_start:mavsdk.rpc.mocap.VisionPositionEstimate)
   GOOGLE_DCHECK_NE(&from, this);
-  _internal_metadata_.MergeFrom(from._internal_metadata_);
+  _internal_metadata_.MergeFrom<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>(from._internal_metadata_);
   ::PROTOBUF_NAMESPACE_ID::uint32 cached_has_bits = 0;
   (void) cached_has_bits;
 
@@ -3564,11 +3721,13 @@ bool VisionPositionEstimate::IsInitialized() const {
 
 void VisionPositionEstimate::InternalSwap(VisionPositionEstimate* other) {
   using std::swap;
-  _internal_metadata_.Swap(&other->_internal_metadata_);
-  swap(position_body_, other->position_body_);
-  swap(angle_body_, other->angle_body_);
-  swap(pose_covariance_, other->pose_covariance_);
-  swap(time_usec_, other->time_usec_);
+  _internal_metadata_.Swap<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>(&other->_internal_metadata_);
+  ::PROTOBUF_NAMESPACE_ID::internal::memswap<
+      PROTOBUF_FIELD_OFFSET(VisionPositionEstimate, time_usec_)
+      + sizeof(VisionPositionEstimate::time_usec_)
+      - PROTOBUF_FIELD_OFFSET(VisionPositionEstimate, position_body_)>(
+          reinterpret_cast<char*>(&position_body_),
+          reinterpret_cast<char*>(&other->position_body_));
 }
 
 ::PROTOBUF_NAMESPACE_ID::Metadata VisionPositionEstimate::GetMetadata() const {
@@ -3605,15 +3764,15 @@ const ::mavsdk::rpc::mocap::Covariance&
 AttitudePositionMocap::_Internal::pose_covariance(const AttitudePositionMocap* msg) {
   return *msg->pose_covariance_;
 }
-AttitudePositionMocap::AttitudePositionMocap()
-  : ::PROTOBUF_NAMESPACE_ID::Message(), _internal_metadata_(nullptr) {
+AttitudePositionMocap::AttitudePositionMocap(::PROTOBUF_NAMESPACE_ID::Arena* arena)
+  : ::PROTOBUF_NAMESPACE_ID::Message(arena) {
   SharedCtor();
-  // @@protoc_insertion_point(constructor:mavsdk.rpc.mocap.AttitudePositionMocap)
+  RegisterArenaDtor(arena);
+  // @@protoc_insertion_point(arena_constructor:mavsdk.rpc.mocap.AttitudePositionMocap)
 }
 AttitudePositionMocap::AttitudePositionMocap(const AttitudePositionMocap& from)
-  : ::PROTOBUF_NAMESPACE_ID::Message(),
-      _internal_metadata_(nullptr) {
-  _internal_metadata_.MergeFrom(from._internal_metadata_);
+  : ::PROTOBUF_NAMESPACE_ID::Message() {
+  _internal_metadata_.MergeFrom<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>(from._internal_metadata_);
   if (from._internal_has_q()) {
     q_ = new ::mavsdk::rpc::mocap::Quaternion(*from.q_);
   } else {
@@ -3643,14 +3802,22 @@ void AttitudePositionMocap::SharedCtor() {
 AttitudePositionMocap::~AttitudePositionMocap() {
   // @@protoc_insertion_point(destructor:mavsdk.rpc.mocap.AttitudePositionMocap)
   SharedDtor();
+  _internal_metadata_.Delete<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>();
 }
 
 void AttitudePositionMocap::SharedDtor() {
+  GOOGLE_DCHECK(GetArena() == nullptr);
   if (this != internal_default_instance()) delete q_;
   if (this != internal_default_instance()) delete position_body_;
   if (this != internal_default_instance()) delete pose_covariance_;
 }
 
+void AttitudePositionMocap::ArenaDtor(void* object) {
+  AttitudePositionMocap* _this = reinterpret_cast< AttitudePositionMocap* >(object);
+  (void)_this;
+}
+void AttitudePositionMocap::RegisterArenaDtor(::PROTOBUF_NAMESPACE_ID::Arena*) {
+}
 void AttitudePositionMocap::SetCachedSize(int size) const {
   _cached_size_.Set(size);
 }
@@ -3666,24 +3833,25 @@ void AttitudePositionMocap::Clear() {
   // Prevent compiler warnings about cached_has_bits being unused
   (void) cached_has_bits;
 
-  if (GetArenaNoVirtual() == nullptr && q_ != nullptr) {
+  if (GetArena() == nullptr && q_ != nullptr) {
     delete q_;
   }
   q_ = nullptr;
-  if (GetArenaNoVirtual() == nullptr && position_body_ != nullptr) {
+  if (GetArena() == nullptr && position_body_ != nullptr) {
     delete position_body_;
   }
   position_body_ = nullptr;
-  if (GetArenaNoVirtual() == nullptr && pose_covariance_ != nullptr) {
+  if (GetArena() == nullptr && pose_covariance_ != nullptr) {
     delete pose_covariance_;
   }
   pose_covariance_ = nullptr;
   time_usec_ = PROTOBUF_ULONGLONG(0);
-  _internal_metadata_.Clear();
+  _internal_metadata_.Clear<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>();
 }
 
 const char* AttitudePositionMocap::_InternalParse(const char* ptr, ::PROTOBUF_NAMESPACE_ID::internal::ParseContext* ctx) {
 #define CHK_(x) if (PROTOBUF_PREDICT_FALSE(!(x))) goto failure
+  ::PROTOBUF_NAMESPACE_ID::Arena* arena = GetArena(); (void)arena;
   while (!ctx->Done(&ptr)) {
     ::PROTOBUF_NAMESPACE_ID::uint32 tag;
     ptr = ::PROTOBUF_NAMESPACE_ID::internal::ReadTag(ptr, &tag);
@@ -3692,7 +3860,7 @@ const char* AttitudePositionMocap::_InternalParse(const char* ptr, ::PROTOBUF_NA
       // uint64 time_usec = 1;
       case 1:
         if (PROTOBUF_PREDICT_TRUE(static_cast<::PROTOBUF_NAMESPACE_ID::uint8>(tag) == 8)) {
-          time_usec_ = ::PROTOBUF_NAMESPACE_ID::internal::ReadVarint(&ptr);
+          time_usec_ = ::PROTOBUF_NAMESPACE_ID::internal::ReadVarint64(&ptr);
           CHK_(ptr);
         } else goto handle_unusual;
         continue;
@@ -3723,7 +3891,9 @@ const char* AttitudePositionMocap::_InternalParse(const char* ptr, ::PROTOBUF_NA
           ctx->SetLastTag(tag);
           goto success;
         }
-        ptr = UnknownFieldParse(tag, &_internal_metadata_, ptr, ctx);
+        ptr = UnknownFieldParse(tag,
+            _internal_metadata_.mutable_unknown_fields<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>(),
+            ptr, ctx);
         CHK_(ptr != nullptr);
         continue;
       }
@@ -3775,7 +3945,7 @@ failure:
 
   if (PROTOBUF_PREDICT_FALSE(_internal_metadata_.have_unknown_fields())) {
     target = ::PROTOBUF_NAMESPACE_ID::internal::WireFormat::InternalSerializeUnknownFieldsToArray(
-        _internal_metadata_.unknown_fields(), target, stream);
+        _internal_metadata_.unknown_fields<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>(::PROTOBUF_NAMESPACE_ID::UnknownFieldSet::default_instance), target, stream);
   }
   // @@protoc_insertion_point(serialize_to_array_end:mavsdk.rpc.mocap.AttitudePositionMocap)
   return target;
@@ -3844,7 +4014,7 @@ void AttitudePositionMocap::MergeFrom(const ::PROTOBUF_NAMESPACE_ID::Message& fr
 void AttitudePositionMocap::MergeFrom(const AttitudePositionMocap& from) {
 // @@protoc_insertion_point(class_specific_merge_from_start:mavsdk.rpc.mocap.AttitudePositionMocap)
   GOOGLE_DCHECK_NE(&from, this);
-  _internal_metadata_.MergeFrom(from._internal_metadata_);
+  _internal_metadata_.MergeFrom<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>(from._internal_metadata_);
   ::PROTOBUF_NAMESPACE_ID::uint32 cached_has_bits = 0;
   (void) cached_has_bits;
 
@@ -3882,11 +4052,13 @@ bool AttitudePositionMocap::IsInitialized() const {
 
 void AttitudePositionMocap::InternalSwap(AttitudePositionMocap* other) {
   using std::swap;
-  _internal_metadata_.Swap(&other->_internal_metadata_);
-  swap(q_, other->q_);
-  swap(position_body_, other->position_body_);
-  swap(pose_covariance_, other->pose_covariance_);
-  swap(time_usec_, other->time_usec_);
+  _internal_metadata_.Swap<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>(&other->_internal_metadata_);
+  ::PROTOBUF_NAMESPACE_ID::internal::memswap<
+      PROTOBUF_FIELD_OFFSET(AttitudePositionMocap, time_usec_)
+      + sizeof(AttitudePositionMocap::time_usec_)
+      - PROTOBUF_FIELD_OFFSET(AttitudePositionMocap, q_)>(
+          reinterpret_cast<char*>(&q_),
+          reinterpret_cast<char*>(&other->q_));
 }
 
 ::PROTOBUF_NAMESPACE_ID::Metadata AttitudePositionMocap::GetMetadata() const {
@@ -3944,15 +4116,15 @@ const ::mavsdk::rpc::mocap::Covariance&
 Odometry::_Internal::velocity_covariance(const Odometry* msg) {
   return *msg->velocity_covariance_;
 }
-Odometry::Odometry()
-  : ::PROTOBUF_NAMESPACE_ID::Message(), _internal_metadata_(nullptr) {
+Odometry::Odometry(::PROTOBUF_NAMESPACE_ID::Arena* arena)
+  : ::PROTOBUF_NAMESPACE_ID::Message(arena) {
   SharedCtor();
-  // @@protoc_insertion_point(constructor:mavsdk.rpc.mocap.Odometry)
+  RegisterArenaDtor(arena);
+  // @@protoc_insertion_point(arena_constructor:mavsdk.rpc.mocap.Odometry)
 }
 Odometry::Odometry(const Odometry& from)
-  : ::PROTOBUF_NAMESPACE_ID::Message(),
-      _internal_metadata_(nullptr) {
-  _internal_metadata_.MergeFrom(from._internal_metadata_);
+  : ::PROTOBUF_NAMESPACE_ID::Message() {
+  _internal_metadata_.MergeFrom<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>(from._internal_metadata_);
   if (from._internal_has_position_body()) {
     position_body_ = new ::mavsdk::rpc::mocap::PositionBody(*from.position_body_);
   } else {
@@ -3999,9 +4171,11 @@ void Odometry::SharedCtor() {
 Odometry::~Odometry() {
   // @@protoc_insertion_point(destructor:mavsdk.rpc.mocap.Odometry)
   SharedDtor();
+  _internal_metadata_.Delete<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>();
 }
 
 void Odometry::SharedDtor() {
+  GOOGLE_DCHECK(GetArena() == nullptr);
   if (this != internal_default_instance()) delete position_body_;
   if (this != internal_default_instance()) delete q_;
   if (this != internal_default_instance()) delete speed_body_;
@@ -4010,6 +4184,12 @@ void Odometry::SharedDtor() {
   if (this != internal_default_instance()) delete velocity_covariance_;
 }
 
+void Odometry::ArenaDtor(void* object) {
+  Odometry* _this = reinterpret_cast< Odometry* >(object);
+  (void)_this;
+}
+void Odometry::RegisterArenaDtor(::PROTOBUF_NAMESPACE_ID::Arena*) {
+}
 void Odometry::SetCachedSize(int size) const {
   _cached_size_.Set(size);
 }
@@ -4025,38 +4205,39 @@ void Odometry::Clear() {
   // Prevent compiler warnings about cached_has_bits being unused
   (void) cached_has_bits;
 
-  if (GetArenaNoVirtual() == nullptr && position_body_ != nullptr) {
+  if (GetArena() == nullptr && position_body_ != nullptr) {
     delete position_body_;
   }
   position_body_ = nullptr;
-  if (GetArenaNoVirtual() == nullptr && q_ != nullptr) {
+  if (GetArena() == nullptr && q_ != nullptr) {
     delete q_;
   }
   q_ = nullptr;
-  if (GetArenaNoVirtual() == nullptr && speed_body_ != nullptr) {
+  if (GetArena() == nullptr && speed_body_ != nullptr) {
     delete speed_body_;
   }
   speed_body_ = nullptr;
-  if (GetArenaNoVirtual() == nullptr && angular_velocity_body_ != nullptr) {
+  if (GetArena() == nullptr && angular_velocity_body_ != nullptr) {
     delete angular_velocity_body_;
   }
   angular_velocity_body_ = nullptr;
-  if (GetArenaNoVirtual() == nullptr && pose_covariance_ != nullptr) {
+  if (GetArena() == nullptr && pose_covariance_ != nullptr) {
     delete pose_covariance_;
   }
   pose_covariance_ = nullptr;
-  if (GetArenaNoVirtual() == nullptr && velocity_covariance_ != nullptr) {
+  if (GetArena() == nullptr && velocity_covariance_ != nullptr) {
     delete velocity_covariance_;
   }
   velocity_covariance_ = nullptr;
   ::memset(&time_usec_, 0, static_cast<size_t>(
       reinterpret_cast<char*>(&frame_id_) -
       reinterpret_cast<char*>(&time_usec_)) + sizeof(frame_id_));
-  _internal_metadata_.Clear();
+  _internal_metadata_.Clear<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>();
 }
 
 const char* Odometry::_InternalParse(const char* ptr, ::PROTOBUF_NAMESPACE_ID::internal::ParseContext* ctx) {
 #define CHK_(x) if (PROTOBUF_PREDICT_FALSE(!(x))) goto failure
+  ::PROTOBUF_NAMESPACE_ID::Arena* arena = GetArena(); (void)arena;
   while (!ctx->Done(&ptr)) {
     ::PROTOBUF_NAMESPACE_ID::uint32 tag;
     ptr = ::PROTOBUF_NAMESPACE_ID::internal::ReadTag(ptr, &tag);
@@ -4065,14 +4246,14 @@ const char* Odometry::_InternalParse(const char* ptr, ::PROTOBUF_NAMESPACE_ID::i
       // uint64 time_usec = 1;
       case 1:
         if (PROTOBUF_PREDICT_TRUE(static_cast<::PROTOBUF_NAMESPACE_ID::uint8>(tag) == 8)) {
-          time_usec_ = ::PROTOBUF_NAMESPACE_ID::internal::ReadVarint(&ptr);
+          time_usec_ = ::PROTOBUF_NAMESPACE_ID::internal::ReadVarint64(&ptr);
           CHK_(ptr);
         } else goto handle_unusual;
         continue;
       // .mavsdk.rpc.mocap.Odometry.MavFrame frame_id = 2;
       case 2:
         if (PROTOBUF_PREDICT_TRUE(static_cast<::PROTOBUF_NAMESPACE_ID::uint8>(tag) == 16)) {
-          ::PROTOBUF_NAMESPACE_ID::uint64 val = ::PROTOBUF_NAMESPACE_ID::internal::ReadVarint(&ptr);
+          ::PROTOBUF_NAMESPACE_ID::uint64 val = ::PROTOBUF_NAMESPACE_ID::internal::ReadVarint64(&ptr);
           CHK_(ptr);
           _internal_set_frame_id(static_cast<::mavsdk::rpc::mocap::Odometry_MavFrame>(val));
         } else goto handle_unusual;
@@ -4125,7 +4306,9 @@ const char* Odometry::_InternalParse(const char* ptr, ::PROTOBUF_NAMESPACE_ID::i
           ctx->SetLastTag(tag);
           goto success;
         }
-        ptr = UnknownFieldParse(tag, &_internal_metadata_, ptr, ctx);
+        ptr = UnknownFieldParse(tag,
+            _internal_metadata_.mutable_unknown_fields<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>(),
+            ptr, ctx);
         CHK_(ptr != nullptr);
         continue;
       }
@@ -4208,7 +4391,7 @@ failure:
 
   if (PROTOBUF_PREDICT_FALSE(_internal_metadata_.have_unknown_fields())) {
     target = ::PROTOBUF_NAMESPACE_ID::internal::WireFormat::InternalSerializeUnknownFieldsToArray(
-        _internal_metadata_.unknown_fields(), target, stream);
+        _internal_metadata_.unknown_fields<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>(::PROTOBUF_NAMESPACE_ID::UnknownFieldSet::default_instance), target, stream);
   }
   // @@protoc_insertion_point(serialize_to_array_end:mavsdk.rpc.mocap.Odometry)
   return target;
@@ -4304,7 +4487,7 @@ void Odometry::MergeFrom(const ::PROTOBUF_NAMESPACE_ID::Message& from) {
 void Odometry::MergeFrom(const Odometry& from) {
 // @@protoc_insertion_point(class_specific_merge_from_start:mavsdk.rpc.mocap.Odometry)
   GOOGLE_DCHECK_NE(&from, this);
-  _internal_metadata_.MergeFrom(from._internal_metadata_);
+  _internal_metadata_.MergeFrom<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>(from._internal_metadata_);
   ::PROTOBUF_NAMESPACE_ID::uint32 cached_has_bits = 0;
   (void) cached_has_bits;
 
@@ -4354,15 +4537,13 @@ bool Odometry::IsInitialized() const {
 
 void Odometry::InternalSwap(Odometry* other) {
   using std::swap;
-  _internal_metadata_.Swap(&other->_internal_metadata_);
-  swap(position_body_, other->position_body_);
-  swap(q_, other->q_);
-  swap(speed_body_, other->speed_body_);
-  swap(angular_velocity_body_, other->angular_velocity_body_);
-  swap(pose_covariance_, other->pose_covariance_);
-  swap(velocity_covariance_, other->velocity_covariance_);
-  swap(time_usec_, other->time_usec_);
-  swap(frame_id_, other->frame_id_);
+  _internal_metadata_.Swap<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>(&other->_internal_metadata_);
+  ::PROTOBUF_NAMESPACE_ID::internal::memswap<
+      PROTOBUF_FIELD_OFFSET(Odometry, frame_id_)
+      + sizeof(Odometry::frame_id_)
+      - PROTOBUF_FIELD_OFFSET(Odometry, position_body_)>(
+          reinterpret_cast<char*>(&position_body_),
+          reinterpret_cast<char*>(&other->position_body_));
 }
 
 ::PROTOBUF_NAMESPACE_ID::Metadata Odometry::GetMetadata() const {
@@ -4378,18 +4559,19 @@ class MocapResult::_Internal {
  public:
 };
 
-MocapResult::MocapResult()
-  : ::PROTOBUF_NAMESPACE_ID::Message(), _internal_metadata_(nullptr) {
+MocapResult::MocapResult(::PROTOBUF_NAMESPACE_ID::Arena* arena)
+  : ::PROTOBUF_NAMESPACE_ID::Message(arena) {
   SharedCtor();
-  // @@protoc_insertion_point(constructor:mavsdk.rpc.mocap.MocapResult)
+  RegisterArenaDtor(arena);
+  // @@protoc_insertion_point(arena_constructor:mavsdk.rpc.mocap.MocapResult)
 }
 MocapResult::MocapResult(const MocapResult& from)
-  : ::PROTOBUF_NAMESPACE_ID::Message(),
-      _internal_metadata_(nullptr) {
-  _internal_metadata_.MergeFrom(from._internal_metadata_);
+  : ::PROTOBUF_NAMESPACE_ID::Message() {
+  _internal_metadata_.MergeFrom<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>(from._internal_metadata_);
   result_str_.UnsafeSetDefault(&::PROTOBUF_NAMESPACE_ID::internal::GetEmptyStringAlreadyInited());
   if (!from._internal_result_str().empty()) {
-    result_str_.AssignWithDefault(&::PROTOBUF_NAMESPACE_ID::internal::GetEmptyStringAlreadyInited(), from.result_str_);
+    result_str_.Set(&::PROTOBUF_NAMESPACE_ID::internal::GetEmptyStringAlreadyInited(), from._internal_result_str(),
+      GetArena());
   }
   result_ = from.result_;
   // @@protoc_insertion_point(copy_constructor:mavsdk.rpc.mocap.MocapResult)
@@ -4404,12 +4586,20 @@ void MocapResult::SharedCtor() {
 MocapResult::~MocapResult() {
   // @@protoc_insertion_point(destructor:mavsdk.rpc.mocap.MocapResult)
   SharedDtor();
+  _internal_metadata_.Delete<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>();
 }
 
 void MocapResult::SharedDtor() {
+  GOOGLE_DCHECK(GetArena() == nullptr);
   result_str_.DestroyNoArena(&::PROTOBUF_NAMESPACE_ID::internal::GetEmptyStringAlreadyInited());
 }
 
+void MocapResult::ArenaDtor(void* object) {
+  MocapResult* _this = reinterpret_cast< MocapResult* >(object);
+  (void)_this;
+}
+void MocapResult::RegisterArenaDtor(::PROTOBUF_NAMESPACE_ID::Arena*) {
+}
 void MocapResult::SetCachedSize(int size) const {
   _cached_size_.Set(size);
 }
@@ -4425,13 +4615,14 @@ void MocapResult::Clear() {
   // Prevent compiler warnings about cached_has_bits being unused
   (void) cached_has_bits;
 
-  result_str_.ClearToEmptyNoArena(&::PROTOBUF_NAMESPACE_ID::internal::GetEmptyStringAlreadyInited());
+  result_str_.ClearToEmpty(&::PROTOBUF_NAMESPACE_ID::internal::GetEmptyStringAlreadyInited(), GetArena());
   result_ = 0;
-  _internal_metadata_.Clear();
+  _internal_metadata_.Clear<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>();
 }
 
 const char* MocapResult::_InternalParse(const char* ptr, ::PROTOBUF_NAMESPACE_ID::internal::ParseContext* ctx) {
 #define CHK_(x) if (PROTOBUF_PREDICT_FALSE(!(x))) goto failure
+  ::PROTOBUF_NAMESPACE_ID::Arena* arena = GetArena(); (void)arena;
   while (!ctx->Done(&ptr)) {
     ::PROTOBUF_NAMESPACE_ID::uint32 tag;
     ptr = ::PROTOBUF_NAMESPACE_ID::internal::ReadTag(ptr, &tag);
@@ -4440,7 +4631,7 @@ const char* MocapResult::_InternalParse(const char* ptr, ::PROTOBUF_NAMESPACE_ID
       // .mavsdk.rpc.mocap.MocapResult.Result result = 1;
       case 1:
         if (PROTOBUF_PREDICT_TRUE(static_cast<::PROTOBUF_NAMESPACE_ID::uint8>(tag) == 8)) {
-          ::PROTOBUF_NAMESPACE_ID::uint64 val = ::PROTOBUF_NAMESPACE_ID::internal::ReadVarint(&ptr);
+          ::PROTOBUF_NAMESPACE_ID::uint64 val = ::PROTOBUF_NAMESPACE_ID::internal::ReadVarint64(&ptr);
           CHK_(ptr);
           _internal_set_result(static_cast<::mavsdk::rpc::mocap::MocapResult_Result>(val));
         } else goto handle_unusual;
@@ -4460,7 +4651,9 @@ const char* MocapResult::_InternalParse(const char* ptr, ::PROTOBUF_NAMESPACE_ID
           ctx->SetLastTag(tag);
           goto success;
         }
-        ptr = UnknownFieldParse(tag, &_internal_metadata_, ptr, ctx);
+        ptr = UnknownFieldParse(tag,
+            _internal_metadata_.mutable_unknown_fields<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>(),
+            ptr, ctx);
         CHK_(ptr != nullptr);
         continue;
       }
@@ -4499,7 +4692,7 @@ failure:
 
   if (PROTOBUF_PREDICT_FALSE(_internal_metadata_.have_unknown_fields())) {
     target = ::PROTOBUF_NAMESPACE_ID::internal::WireFormat::InternalSerializeUnknownFieldsToArray(
-        _internal_metadata_.unknown_fields(), target, stream);
+        _internal_metadata_.unknown_fields<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>(::PROTOBUF_NAMESPACE_ID::UnknownFieldSet::default_instance), target, stream);
   }
   // @@protoc_insertion_point(serialize_to_array_end:mavsdk.rpc.mocap.MocapResult)
   return target;
@@ -4553,13 +4746,12 @@ void MocapResult::MergeFrom(const ::PROTOBUF_NAMESPACE_ID::Message& from) {
 void MocapResult::MergeFrom(const MocapResult& from) {
 // @@protoc_insertion_point(class_specific_merge_from_start:mavsdk.rpc.mocap.MocapResult)
   GOOGLE_DCHECK_NE(&from, this);
-  _internal_metadata_.MergeFrom(from._internal_metadata_);
+  _internal_metadata_.MergeFrom<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>(from._internal_metadata_);
   ::PROTOBUF_NAMESPACE_ID::uint32 cached_has_bits = 0;
   (void) cached_has_bits;
 
   if (from.result_str().size() > 0) {
-
-    result_str_.AssignWithDefault(&::PROTOBUF_NAMESPACE_ID::internal::GetEmptyStringAlreadyInited(), from.result_str_);
+    _internal_set_result_str(from._internal_result_str());
   }
   if (from.result() != 0) {
     _internal_set_result(from._internal_result());
@@ -4586,9 +4778,8 @@ bool MocapResult::IsInitialized() const {
 
 void MocapResult::InternalSwap(MocapResult* other) {
   using std::swap;
-  _internal_metadata_.Swap(&other->_internal_metadata_);
-  result_str_.Swap(&other->result_str_, &::PROTOBUF_NAMESPACE_ID::internal::GetEmptyStringAlreadyInited(),
-    GetArenaNoVirtual());
+  _internal_metadata_.Swap<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>(&other->_internal_metadata_);
+  result_str_.Swap(&other->result_str_, &::PROTOBUF_NAMESPACE_ID::internal::GetEmptyStringAlreadyInited(), GetArena());
   swap(result_, other->result_);
 }
 
@@ -4603,52 +4794,52 @@ void MocapResult::InternalSwap(MocapResult* other) {
 }  // namespace mavsdk
 PROTOBUF_NAMESPACE_OPEN
 template<> PROTOBUF_NOINLINE ::mavsdk::rpc::mocap::SetVisionPositionEstimateRequest* Arena::CreateMaybeMessage< ::mavsdk::rpc::mocap::SetVisionPositionEstimateRequest >(Arena* arena) {
-  return Arena::CreateInternal< ::mavsdk::rpc::mocap::SetVisionPositionEstimateRequest >(arena);
+  return Arena::CreateMessageInternal< ::mavsdk::rpc::mocap::SetVisionPositionEstimateRequest >(arena);
 }
 template<> PROTOBUF_NOINLINE ::mavsdk::rpc::mocap::SetVisionPositionEstimateResponse* Arena::CreateMaybeMessage< ::mavsdk::rpc::mocap::SetVisionPositionEstimateResponse >(Arena* arena) {
-  return Arena::CreateInternal< ::mavsdk::rpc::mocap::SetVisionPositionEstimateResponse >(arena);
+  return Arena::CreateMessageInternal< ::mavsdk::rpc::mocap::SetVisionPositionEstimateResponse >(arena);
 }
 template<> PROTOBUF_NOINLINE ::mavsdk::rpc::mocap::SetAttitudePositionMocapRequest* Arena::CreateMaybeMessage< ::mavsdk::rpc::mocap::SetAttitudePositionMocapRequest >(Arena* arena) {
-  return Arena::CreateInternal< ::mavsdk::rpc::mocap::SetAttitudePositionMocapRequest >(arena);
+  return Arena::CreateMessageInternal< ::mavsdk::rpc::mocap::SetAttitudePositionMocapRequest >(arena);
 }
 template<> PROTOBUF_NOINLINE ::mavsdk::rpc::mocap::SetAttitudePositionMocapResponse* Arena::CreateMaybeMessage< ::mavsdk::rpc::mocap::SetAttitudePositionMocapResponse >(Arena* arena) {
-  return Arena::CreateInternal< ::mavsdk::rpc::mocap::SetAttitudePositionMocapResponse >(arena);
+  return Arena::CreateMessageInternal< ::mavsdk::rpc::mocap::SetAttitudePositionMocapResponse >(arena);
 }
 template<> PROTOBUF_NOINLINE ::mavsdk::rpc::mocap::SetOdometryRequest* Arena::CreateMaybeMessage< ::mavsdk::rpc::mocap::SetOdometryRequest >(Arena* arena) {
-  return Arena::CreateInternal< ::mavsdk::rpc::mocap::SetOdometryRequest >(arena);
+  return Arena::CreateMessageInternal< ::mavsdk::rpc::mocap::SetOdometryRequest >(arena);
 }
 template<> PROTOBUF_NOINLINE ::mavsdk::rpc::mocap::SetOdometryResponse* Arena::CreateMaybeMessage< ::mavsdk::rpc::mocap::SetOdometryResponse >(Arena* arena) {
-  return Arena::CreateInternal< ::mavsdk::rpc::mocap::SetOdometryResponse >(arena);
+  return Arena::CreateMessageInternal< ::mavsdk::rpc::mocap::SetOdometryResponse >(arena);
 }
 template<> PROTOBUF_NOINLINE ::mavsdk::rpc::mocap::PositionBody* Arena::CreateMaybeMessage< ::mavsdk::rpc::mocap::PositionBody >(Arena* arena) {
-  return Arena::CreateInternal< ::mavsdk::rpc::mocap::PositionBody >(arena);
+  return Arena::CreateMessageInternal< ::mavsdk::rpc::mocap::PositionBody >(arena);
 }
 template<> PROTOBUF_NOINLINE ::mavsdk::rpc::mocap::AngleBody* Arena::CreateMaybeMessage< ::mavsdk::rpc::mocap::AngleBody >(Arena* arena) {
-  return Arena::CreateInternal< ::mavsdk::rpc::mocap::AngleBody >(arena);
+  return Arena::CreateMessageInternal< ::mavsdk::rpc::mocap::AngleBody >(arena);
 }
 template<> PROTOBUF_NOINLINE ::mavsdk::rpc::mocap::SpeedBody* Arena::CreateMaybeMessage< ::mavsdk::rpc::mocap::SpeedBody >(Arena* arena) {
-  return Arena::CreateInternal< ::mavsdk::rpc::mocap::SpeedBody >(arena);
+  return Arena::CreateMessageInternal< ::mavsdk::rpc::mocap::SpeedBody >(arena);
 }
 template<> PROTOBUF_NOINLINE ::mavsdk::rpc::mocap::AngularVelocityBody* Arena::CreateMaybeMessage< ::mavsdk::rpc::mocap::AngularVelocityBody >(Arena* arena) {
-  return Arena::CreateInternal< ::mavsdk::rpc::mocap::AngularVelocityBody >(arena);
+  return Arena::CreateMessageInternal< ::mavsdk::rpc::mocap::AngularVelocityBody >(arena);
 }
 template<> PROTOBUF_NOINLINE ::mavsdk::rpc::mocap::Covariance* Arena::CreateMaybeMessage< ::mavsdk::rpc::mocap::Covariance >(Arena* arena) {
-  return Arena::CreateInternal< ::mavsdk::rpc::mocap::Covariance >(arena);
+  return Arena::CreateMessageInternal< ::mavsdk::rpc::mocap::Covariance >(arena);
 }
 template<> PROTOBUF_NOINLINE ::mavsdk::rpc::mocap::Quaternion* Arena::CreateMaybeMessage< ::mavsdk::rpc::mocap::Quaternion >(Arena* arena) {
-  return Arena::CreateInternal< ::mavsdk::rpc::mocap::Quaternion >(arena);
+  return Arena::CreateMessageInternal< ::mavsdk::rpc::mocap::Quaternion >(arena);
 }
 template<> PROTOBUF_NOINLINE ::mavsdk::rpc::mocap::VisionPositionEstimate* Arena::CreateMaybeMessage< ::mavsdk::rpc::mocap::VisionPositionEstimate >(Arena* arena) {
-  return Arena::CreateInternal< ::mavsdk::rpc::mocap::VisionPositionEstimate >(arena);
+  return Arena::CreateMessageInternal< ::mavsdk::rpc::mocap::VisionPositionEstimate >(arena);
 }
 template<> PROTOBUF_NOINLINE ::mavsdk::rpc::mocap::AttitudePositionMocap* Arena::CreateMaybeMessage< ::mavsdk::rpc::mocap::AttitudePositionMocap >(Arena* arena) {
-  return Arena::CreateInternal< ::mavsdk::rpc::mocap::AttitudePositionMocap >(arena);
+  return Arena::CreateMessageInternal< ::mavsdk::rpc::mocap::AttitudePositionMocap >(arena);
 }
 template<> PROTOBUF_NOINLINE ::mavsdk::rpc::mocap::Odometry* Arena::CreateMaybeMessage< ::mavsdk::rpc::mocap::Odometry >(Arena* arena) {
-  return Arena::CreateInternal< ::mavsdk::rpc::mocap::Odometry >(arena);
+  return Arena::CreateMessageInternal< ::mavsdk::rpc::mocap::Odometry >(arena);
 }
 template<> PROTOBUF_NOINLINE ::mavsdk::rpc::mocap::MocapResult* Arena::CreateMaybeMessage< ::mavsdk::rpc::mocap::MocapResult >(Arena* arena) {
-  return Arena::CreateInternal< ::mavsdk::rpc::mocap::MocapResult >(arena);
+  return Arena::CreateMessageInternal< ::mavsdk::rpc::mocap::MocapResult >(arena);
 }
 PROTOBUF_NAMESPACE_CLOSE
 

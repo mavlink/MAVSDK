@@ -42,27 +42,22 @@ GeofenceService::Stub::Stub(const std::shared_ptr< ::grpc::ChannelInterface>& ch
 }
 
 void GeofenceService::Stub::experimental_async::UploadGeofence(::grpc::ClientContext* context, const ::mavsdk::rpc::geofence::UploadGeofenceRequest* request, ::mavsdk::rpc::geofence::UploadGeofenceResponse* response, std::function<void(::grpc::Status)> f) {
-  ::grpc_impl::internal::CallbackUnaryCall(stub_->channel_.get(), stub_->rpcmethod_UploadGeofence_, context, request, response, std::move(f));
-}
-
-void GeofenceService::Stub::experimental_async::UploadGeofence(::grpc::ClientContext* context, const ::grpc::ByteBuffer* request, ::mavsdk::rpc::geofence::UploadGeofenceResponse* response, std::function<void(::grpc::Status)> f) {
-  ::grpc_impl::internal::CallbackUnaryCall(stub_->channel_.get(), stub_->rpcmethod_UploadGeofence_, context, request, response, std::move(f));
+  ::grpc::internal::CallbackUnaryCall(stub_->channel_.get(), stub_->rpcmethod_UploadGeofence_, context, request, response, std::move(f));
 }
 
 void GeofenceService::Stub::experimental_async::UploadGeofence(::grpc::ClientContext* context, const ::mavsdk::rpc::geofence::UploadGeofenceRequest* request, ::mavsdk::rpc::geofence::UploadGeofenceResponse* response, ::grpc::experimental::ClientUnaryReactor* reactor) {
-  ::grpc_impl::internal::ClientCallbackUnaryFactory::Create(stub_->channel_.get(), stub_->rpcmethod_UploadGeofence_, context, request, response, reactor);
-}
-
-void GeofenceService::Stub::experimental_async::UploadGeofence(::grpc::ClientContext* context, const ::grpc::ByteBuffer* request, ::mavsdk::rpc::geofence::UploadGeofenceResponse* response, ::grpc::experimental::ClientUnaryReactor* reactor) {
-  ::grpc_impl::internal::ClientCallbackUnaryFactory::Create(stub_->channel_.get(), stub_->rpcmethod_UploadGeofence_, context, request, response, reactor);
-}
-
-::grpc::ClientAsyncResponseReader< ::mavsdk::rpc::geofence::UploadGeofenceResponse>* GeofenceService::Stub::AsyncUploadGeofenceRaw(::grpc::ClientContext* context, const ::mavsdk::rpc::geofence::UploadGeofenceRequest& request, ::grpc::CompletionQueue* cq) {
-  return ::grpc_impl::internal::ClientAsyncResponseReaderFactory< ::mavsdk::rpc::geofence::UploadGeofenceResponse>::Create(channel_.get(), cq, rpcmethod_UploadGeofence_, context, request, true);
+  ::grpc::internal::ClientCallbackUnaryFactory::Create(stub_->channel_.get(), stub_->rpcmethod_UploadGeofence_, context, request, response, reactor);
 }
 
 ::grpc::ClientAsyncResponseReader< ::mavsdk::rpc::geofence::UploadGeofenceResponse>* GeofenceService::Stub::PrepareAsyncUploadGeofenceRaw(::grpc::ClientContext* context, const ::mavsdk::rpc::geofence::UploadGeofenceRequest& request, ::grpc::CompletionQueue* cq) {
-  return ::grpc_impl::internal::ClientAsyncResponseReaderFactory< ::mavsdk::rpc::geofence::UploadGeofenceResponse>::Create(channel_.get(), cq, rpcmethod_UploadGeofence_, context, request, false);
+  return ::grpc::internal::ClientAsyncResponseReaderFactory< ::mavsdk::rpc::geofence::UploadGeofenceResponse>::Create(channel_.get(), cq, rpcmethod_UploadGeofence_, context, request, false);
+}
+
+::grpc::ClientAsyncResponseReader< ::mavsdk::rpc::geofence::UploadGeofenceResponse>* GeofenceService::Stub::AsyncUploadGeofenceRaw(::grpc::ClientContext* context, const ::mavsdk::rpc::geofence::UploadGeofenceRequest& request, ::grpc::CompletionQueue* cq) {
+  auto* result =
+    this->PrepareAsyncUploadGeofenceRaw(context, request, cq);
+  result->StartCall();
+  return result;
 }
 
 GeofenceService::Service::Service() {
@@ -70,7 +65,12 @@ GeofenceService::Service::Service() {
       GeofenceService_method_names[0],
       ::grpc::internal::RpcMethod::NORMAL_RPC,
       new ::grpc::internal::RpcMethodHandler< GeofenceService::Service, ::mavsdk::rpc::geofence::UploadGeofenceRequest, ::mavsdk::rpc::geofence::UploadGeofenceResponse>(
-          std::mem_fn(&GeofenceService::Service::UploadGeofence), this)));
+          [](GeofenceService::Service* service,
+             ::grpc::ServerContext* ctx,
+             const ::mavsdk::rpc::geofence::UploadGeofenceRequest* req,
+             ::mavsdk::rpc::geofence::UploadGeofenceResponse* resp) {
+               return service->UploadGeofence(ctx, req, resp);
+             }, this)));
 }
 
 GeofenceService::Service::~Service() {

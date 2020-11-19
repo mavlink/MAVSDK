@@ -52,16 +52,10 @@ class FailureService final {
       virtual ~experimental_async_interface() {}
       // Injects a failure.
       virtual void Inject(::grpc::ClientContext* context, const ::mavsdk::rpc::failure::InjectRequest* request, ::mavsdk::rpc::failure::InjectResponse* response, std::function<void(::grpc::Status)>) = 0;
-      virtual void Inject(::grpc::ClientContext* context, const ::grpc::ByteBuffer* request, ::mavsdk::rpc::failure::InjectResponse* response, std::function<void(::grpc::Status)>) = 0;
       #ifdef GRPC_CALLBACK_API_NONEXPERIMENTAL
       virtual void Inject(::grpc::ClientContext* context, const ::mavsdk::rpc::failure::InjectRequest* request, ::mavsdk::rpc::failure::InjectResponse* response, ::grpc::ClientUnaryReactor* reactor) = 0;
       #else
       virtual void Inject(::grpc::ClientContext* context, const ::mavsdk::rpc::failure::InjectRequest* request, ::mavsdk::rpc::failure::InjectResponse* response, ::grpc::experimental::ClientUnaryReactor* reactor) = 0;
-      #endif
-      #ifdef GRPC_CALLBACK_API_NONEXPERIMENTAL
-      virtual void Inject(::grpc::ClientContext* context, const ::grpc::ByteBuffer* request, ::mavsdk::rpc::failure::InjectResponse* response, ::grpc::ClientUnaryReactor* reactor) = 0;
-      #else
-      virtual void Inject(::grpc::ClientContext* context, const ::grpc::ByteBuffer* request, ::mavsdk::rpc::failure::InjectResponse* response, ::grpc::experimental::ClientUnaryReactor* reactor) = 0;
       #endif
     };
     #ifdef GRPC_CALLBACK_API_NONEXPERIMENTAL
@@ -89,16 +83,10 @@ class FailureService final {
       public StubInterface::experimental_async_interface {
      public:
       void Inject(::grpc::ClientContext* context, const ::mavsdk::rpc::failure::InjectRequest* request, ::mavsdk::rpc::failure::InjectResponse* response, std::function<void(::grpc::Status)>) override;
-      void Inject(::grpc::ClientContext* context, const ::grpc::ByteBuffer* request, ::mavsdk::rpc::failure::InjectResponse* response, std::function<void(::grpc::Status)>) override;
       #ifdef GRPC_CALLBACK_API_NONEXPERIMENTAL
       void Inject(::grpc::ClientContext* context, const ::mavsdk::rpc::failure::InjectRequest* request, ::mavsdk::rpc::failure::InjectResponse* response, ::grpc::ClientUnaryReactor* reactor) override;
       #else
       void Inject(::grpc::ClientContext* context, const ::mavsdk::rpc::failure::InjectRequest* request, ::mavsdk::rpc::failure::InjectResponse* response, ::grpc::experimental::ClientUnaryReactor* reactor) override;
-      #endif
-      #ifdef GRPC_CALLBACK_API_NONEXPERIMENTAL
-      void Inject(::grpc::ClientContext* context, const ::grpc::ByteBuffer* request, ::mavsdk::rpc::failure::InjectResponse* response, ::grpc::ClientUnaryReactor* reactor) override;
-      #else
-      void Inject(::grpc::ClientContext* context, const ::grpc::ByteBuffer* request, ::mavsdk::rpc::failure::InjectResponse* response, ::grpc::experimental::ClientUnaryReactor* reactor) override;
       #endif
      private:
       friend class Stub;
@@ -157,7 +145,7 @@ class FailureService final {
       ::grpc::Service::experimental().
     #endif
         MarkMethodCallback(0,
-          new ::grpc_impl::internal::CallbackUnaryHandler< ::mavsdk::rpc::failure::InjectRequest, ::mavsdk::rpc::failure::InjectResponse>(
+          new ::grpc::internal::CallbackUnaryHandler< ::mavsdk::rpc::failure::InjectRequest, ::mavsdk::rpc::failure::InjectResponse>(
             [this](
     #ifdef GRPC_CALLBACK_API_NONEXPERIMENTAL
                    ::grpc::CallbackServerContext*
@@ -172,7 +160,7 @@ class FailureService final {
     #else
       ::grpc::internal::MethodHandler* const handler = ::grpc::Service::experimental().GetHandler(0);
     #endif
-      static_cast<::grpc_impl::internal::CallbackUnaryHandler< ::mavsdk::rpc::failure::InjectRequest, ::mavsdk::rpc::failure::InjectResponse>*>(handler)
+      static_cast<::grpc::internal::CallbackUnaryHandler< ::mavsdk::rpc::failure::InjectRequest, ::mavsdk::rpc::failure::InjectResponse>*>(handler)
               ->SetMessageAllocator(allocator);
     }
     ~ExperimentalWithCallbackMethod_Inject() override {
@@ -246,7 +234,7 @@ class FailureService final {
       ::grpc::Service::experimental().
     #endif
         MarkMethodRawCallback(0,
-          new ::grpc_impl::internal::CallbackUnaryHandler< ::grpc::ByteBuffer, ::grpc::ByteBuffer>(
+          new ::grpc::internal::CallbackUnaryHandler< ::grpc::ByteBuffer, ::grpc::ByteBuffer>(
             [this](
     #ifdef GRPC_CALLBACK_API_NONEXPERIMENTAL
                    ::grpc::CallbackServerContext*
@@ -279,7 +267,14 @@ class FailureService final {
    public:
     WithStreamedUnaryMethod_Inject() {
       ::grpc::Service::MarkMethodStreamed(0,
-        new ::grpc::internal::StreamedUnaryHandler< ::mavsdk::rpc::failure::InjectRequest, ::mavsdk::rpc::failure::InjectResponse>(std::bind(&WithStreamedUnaryMethod_Inject<BaseClass>::StreamedInject, this, std::placeholders::_1, std::placeholders::_2)));
+        new ::grpc::internal::StreamedUnaryHandler<
+          ::mavsdk::rpc::failure::InjectRequest, ::mavsdk::rpc::failure::InjectResponse>(
+            [this](::grpc::ServerContext* context,
+                   ::grpc::ServerUnaryStreamer<
+                     ::mavsdk::rpc::failure::InjectRequest, ::mavsdk::rpc::failure::InjectResponse>* streamer) {
+                       return this->StreamedInject(context,
+                         streamer);
+                  }));
     }
     ~WithStreamedUnaryMethod_Inject() override {
       BaseClassMustBeDerivedFromService(this);

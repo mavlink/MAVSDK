@@ -46,27 +46,22 @@ ManualControlService::Stub::Stub(const std::shared_ptr< ::grpc::ChannelInterface
 }
 
 void ManualControlService::Stub::experimental_async::StartPositionControl(::grpc::ClientContext* context, const ::mavsdk::rpc::manual_control::StartPositionControlRequest* request, ::mavsdk::rpc::manual_control::StartPositionControlResponse* response, std::function<void(::grpc::Status)> f) {
-  ::grpc_impl::internal::CallbackUnaryCall(stub_->channel_.get(), stub_->rpcmethod_StartPositionControl_, context, request, response, std::move(f));
-}
-
-void ManualControlService::Stub::experimental_async::StartPositionControl(::grpc::ClientContext* context, const ::grpc::ByteBuffer* request, ::mavsdk::rpc::manual_control::StartPositionControlResponse* response, std::function<void(::grpc::Status)> f) {
-  ::grpc_impl::internal::CallbackUnaryCall(stub_->channel_.get(), stub_->rpcmethod_StartPositionControl_, context, request, response, std::move(f));
+  ::grpc::internal::CallbackUnaryCall(stub_->channel_.get(), stub_->rpcmethod_StartPositionControl_, context, request, response, std::move(f));
 }
 
 void ManualControlService::Stub::experimental_async::StartPositionControl(::grpc::ClientContext* context, const ::mavsdk::rpc::manual_control::StartPositionControlRequest* request, ::mavsdk::rpc::manual_control::StartPositionControlResponse* response, ::grpc::experimental::ClientUnaryReactor* reactor) {
-  ::grpc_impl::internal::ClientCallbackUnaryFactory::Create(stub_->channel_.get(), stub_->rpcmethod_StartPositionControl_, context, request, response, reactor);
-}
-
-void ManualControlService::Stub::experimental_async::StartPositionControl(::grpc::ClientContext* context, const ::grpc::ByteBuffer* request, ::mavsdk::rpc::manual_control::StartPositionControlResponse* response, ::grpc::experimental::ClientUnaryReactor* reactor) {
-  ::grpc_impl::internal::ClientCallbackUnaryFactory::Create(stub_->channel_.get(), stub_->rpcmethod_StartPositionControl_, context, request, response, reactor);
-}
-
-::grpc::ClientAsyncResponseReader< ::mavsdk::rpc::manual_control::StartPositionControlResponse>* ManualControlService::Stub::AsyncStartPositionControlRaw(::grpc::ClientContext* context, const ::mavsdk::rpc::manual_control::StartPositionControlRequest& request, ::grpc::CompletionQueue* cq) {
-  return ::grpc_impl::internal::ClientAsyncResponseReaderFactory< ::mavsdk::rpc::manual_control::StartPositionControlResponse>::Create(channel_.get(), cq, rpcmethod_StartPositionControl_, context, request, true);
+  ::grpc::internal::ClientCallbackUnaryFactory::Create(stub_->channel_.get(), stub_->rpcmethod_StartPositionControl_, context, request, response, reactor);
 }
 
 ::grpc::ClientAsyncResponseReader< ::mavsdk::rpc::manual_control::StartPositionControlResponse>* ManualControlService::Stub::PrepareAsyncStartPositionControlRaw(::grpc::ClientContext* context, const ::mavsdk::rpc::manual_control::StartPositionControlRequest& request, ::grpc::CompletionQueue* cq) {
-  return ::grpc_impl::internal::ClientAsyncResponseReaderFactory< ::mavsdk::rpc::manual_control::StartPositionControlResponse>::Create(channel_.get(), cq, rpcmethod_StartPositionControl_, context, request, false);
+  return ::grpc::internal::ClientAsyncResponseReaderFactory< ::mavsdk::rpc::manual_control::StartPositionControlResponse>::Create(channel_.get(), cq, rpcmethod_StartPositionControl_, context, request, false);
+}
+
+::grpc::ClientAsyncResponseReader< ::mavsdk::rpc::manual_control::StartPositionControlResponse>* ManualControlService::Stub::AsyncStartPositionControlRaw(::grpc::ClientContext* context, const ::mavsdk::rpc::manual_control::StartPositionControlRequest& request, ::grpc::CompletionQueue* cq) {
+  auto* result =
+    this->PrepareAsyncStartPositionControlRaw(context, request, cq);
+  result->StartCall();
+  return result;
 }
 
 ::grpc::Status ManualControlService::Stub::StartAltitudeControl(::grpc::ClientContext* context, const ::mavsdk::rpc::manual_control::StartAltitudeControlRequest& request, ::mavsdk::rpc::manual_control::StartAltitudeControlResponse* response) {
@@ -74,27 +69,22 @@ void ManualControlService::Stub::experimental_async::StartPositionControl(::grpc
 }
 
 void ManualControlService::Stub::experimental_async::StartAltitudeControl(::grpc::ClientContext* context, const ::mavsdk::rpc::manual_control::StartAltitudeControlRequest* request, ::mavsdk::rpc::manual_control::StartAltitudeControlResponse* response, std::function<void(::grpc::Status)> f) {
-  ::grpc_impl::internal::CallbackUnaryCall(stub_->channel_.get(), stub_->rpcmethod_StartAltitudeControl_, context, request, response, std::move(f));
-}
-
-void ManualControlService::Stub::experimental_async::StartAltitudeControl(::grpc::ClientContext* context, const ::grpc::ByteBuffer* request, ::mavsdk::rpc::manual_control::StartAltitudeControlResponse* response, std::function<void(::grpc::Status)> f) {
-  ::grpc_impl::internal::CallbackUnaryCall(stub_->channel_.get(), stub_->rpcmethod_StartAltitudeControl_, context, request, response, std::move(f));
+  ::grpc::internal::CallbackUnaryCall(stub_->channel_.get(), stub_->rpcmethod_StartAltitudeControl_, context, request, response, std::move(f));
 }
 
 void ManualControlService::Stub::experimental_async::StartAltitudeControl(::grpc::ClientContext* context, const ::mavsdk::rpc::manual_control::StartAltitudeControlRequest* request, ::mavsdk::rpc::manual_control::StartAltitudeControlResponse* response, ::grpc::experimental::ClientUnaryReactor* reactor) {
-  ::grpc_impl::internal::ClientCallbackUnaryFactory::Create(stub_->channel_.get(), stub_->rpcmethod_StartAltitudeControl_, context, request, response, reactor);
-}
-
-void ManualControlService::Stub::experimental_async::StartAltitudeControl(::grpc::ClientContext* context, const ::grpc::ByteBuffer* request, ::mavsdk::rpc::manual_control::StartAltitudeControlResponse* response, ::grpc::experimental::ClientUnaryReactor* reactor) {
-  ::grpc_impl::internal::ClientCallbackUnaryFactory::Create(stub_->channel_.get(), stub_->rpcmethod_StartAltitudeControl_, context, request, response, reactor);
-}
-
-::grpc::ClientAsyncResponseReader< ::mavsdk::rpc::manual_control::StartAltitudeControlResponse>* ManualControlService::Stub::AsyncStartAltitudeControlRaw(::grpc::ClientContext* context, const ::mavsdk::rpc::manual_control::StartAltitudeControlRequest& request, ::grpc::CompletionQueue* cq) {
-  return ::grpc_impl::internal::ClientAsyncResponseReaderFactory< ::mavsdk::rpc::manual_control::StartAltitudeControlResponse>::Create(channel_.get(), cq, rpcmethod_StartAltitudeControl_, context, request, true);
+  ::grpc::internal::ClientCallbackUnaryFactory::Create(stub_->channel_.get(), stub_->rpcmethod_StartAltitudeControl_, context, request, response, reactor);
 }
 
 ::grpc::ClientAsyncResponseReader< ::mavsdk::rpc::manual_control::StartAltitudeControlResponse>* ManualControlService::Stub::PrepareAsyncStartAltitudeControlRaw(::grpc::ClientContext* context, const ::mavsdk::rpc::manual_control::StartAltitudeControlRequest& request, ::grpc::CompletionQueue* cq) {
-  return ::grpc_impl::internal::ClientAsyncResponseReaderFactory< ::mavsdk::rpc::manual_control::StartAltitudeControlResponse>::Create(channel_.get(), cq, rpcmethod_StartAltitudeControl_, context, request, false);
+  return ::grpc::internal::ClientAsyncResponseReaderFactory< ::mavsdk::rpc::manual_control::StartAltitudeControlResponse>::Create(channel_.get(), cq, rpcmethod_StartAltitudeControl_, context, request, false);
+}
+
+::grpc::ClientAsyncResponseReader< ::mavsdk::rpc::manual_control::StartAltitudeControlResponse>* ManualControlService::Stub::AsyncStartAltitudeControlRaw(::grpc::ClientContext* context, const ::mavsdk::rpc::manual_control::StartAltitudeControlRequest& request, ::grpc::CompletionQueue* cq) {
+  auto* result =
+    this->PrepareAsyncStartAltitudeControlRaw(context, request, cq);
+  result->StartCall();
+  return result;
 }
 
 ::grpc::Status ManualControlService::Stub::SetManualControlInput(::grpc::ClientContext* context, const ::mavsdk::rpc::manual_control::SetManualControlInputRequest& request, ::mavsdk::rpc::manual_control::SetManualControlInputResponse* response) {
@@ -102,27 +92,22 @@ void ManualControlService::Stub::experimental_async::StartAltitudeControl(::grpc
 }
 
 void ManualControlService::Stub::experimental_async::SetManualControlInput(::grpc::ClientContext* context, const ::mavsdk::rpc::manual_control::SetManualControlInputRequest* request, ::mavsdk::rpc::manual_control::SetManualControlInputResponse* response, std::function<void(::grpc::Status)> f) {
-  ::grpc_impl::internal::CallbackUnaryCall(stub_->channel_.get(), stub_->rpcmethod_SetManualControlInput_, context, request, response, std::move(f));
-}
-
-void ManualControlService::Stub::experimental_async::SetManualControlInput(::grpc::ClientContext* context, const ::grpc::ByteBuffer* request, ::mavsdk::rpc::manual_control::SetManualControlInputResponse* response, std::function<void(::grpc::Status)> f) {
-  ::grpc_impl::internal::CallbackUnaryCall(stub_->channel_.get(), stub_->rpcmethod_SetManualControlInput_, context, request, response, std::move(f));
+  ::grpc::internal::CallbackUnaryCall(stub_->channel_.get(), stub_->rpcmethod_SetManualControlInput_, context, request, response, std::move(f));
 }
 
 void ManualControlService::Stub::experimental_async::SetManualControlInput(::grpc::ClientContext* context, const ::mavsdk::rpc::manual_control::SetManualControlInputRequest* request, ::mavsdk::rpc::manual_control::SetManualControlInputResponse* response, ::grpc::experimental::ClientUnaryReactor* reactor) {
-  ::grpc_impl::internal::ClientCallbackUnaryFactory::Create(stub_->channel_.get(), stub_->rpcmethod_SetManualControlInput_, context, request, response, reactor);
-}
-
-void ManualControlService::Stub::experimental_async::SetManualControlInput(::grpc::ClientContext* context, const ::grpc::ByteBuffer* request, ::mavsdk::rpc::manual_control::SetManualControlInputResponse* response, ::grpc::experimental::ClientUnaryReactor* reactor) {
-  ::grpc_impl::internal::ClientCallbackUnaryFactory::Create(stub_->channel_.get(), stub_->rpcmethod_SetManualControlInput_, context, request, response, reactor);
-}
-
-::grpc::ClientAsyncResponseReader< ::mavsdk::rpc::manual_control::SetManualControlInputResponse>* ManualControlService::Stub::AsyncSetManualControlInputRaw(::grpc::ClientContext* context, const ::mavsdk::rpc::manual_control::SetManualControlInputRequest& request, ::grpc::CompletionQueue* cq) {
-  return ::grpc_impl::internal::ClientAsyncResponseReaderFactory< ::mavsdk::rpc::manual_control::SetManualControlInputResponse>::Create(channel_.get(), cq, rpcmethod_SetManualControlInput_, context, request, true);
+  ::grpc::internal::ClientCallbackUnaryFactory::Create(stub_->channel_.get(), stub_->rpcmethod_SetManualControlInput_, context, request, response, reactor);
 }
 
 ::grpc::ClientAsyncResponseReader< ::mavsdk::rpc::manual_control::SetManualControlInputResponse>* ManualControlService::Stub::PrepareAsyncSetManualControlInputRaw(::grpc::ClientContext* context, const ::mavsdk::rpc::manual_control::SetManualControlInputRequest& request, ::grpc::CompletionQueue* cq) {
-  return ::grpc_impl::internal::ClientAsyncResponseReaderFactory< ::mavsdk::rpc::manual_control::SetManualControlInputResponse>::Create(channel_.get(), cq, rpcmethod_SetManualControlInput_, context, request, false);
+  return ::grpc::internal::ClientAsyncResponseReaderFactory< ::mavsdk::rpc::manual_control::SetManualControlInputResponse>::Create(channel_.get(), cq, rpcmethod_SetManualControlInput_, context, request, false);
+}
+
+::grpc::ClientAsyncResponseReader< ::mavsdk::rpc::manual_control::SetManualControlInputResponse>* ManualControlService::Stub::AsyncSetManualControlInputRaw(::grpc::ClientContext* context, const ::mavsdk::rpc::manual_control::SetManualControlInputRequest& request, ::grpc::CompletionQueue* cq) {
+  auto* result =
+    this->PrepareAsyncSetManualControlInputRaw(context, request, cq);
+  result->StartCall();
+  return result;
 }
 
 ManualControlService::Service::Service() {
@@ -130,17 +115,32 @@ ManualControlService::Service::Service() {
       ManualControlService_method_names[0],
       ::grpc::internal::RpcMethod::NORMAL_RPC,
       new ::grpc::internal::RpcMethodHandler< ManualControlService::Service, ::mavsdk::rpc::manual_control::StartPositionControlRequest, ::mavsdk::rpc::manual_control::StartPositionControlResponse>(
-          std::mem_fn(&ManualControlService::Service::StartPositionControl), this)));
+          [](ManualControlService::Service* service,
+             ::grpc::ServerContext* ctx,
+             const ::mavsdk::rpc::manual_control::StartPositionControlRequest* req,
+             ::mavsdk::rpc::manual_control::StartPositionControlResponse* resp) {
+               return service->StartPositionControl(ctx, req, resp);
+             }, this)));
   AddMethod(new ::grpc::internal::RpcServiceMethod(
       ManualControlService_method_names[1],
       ::grpc::internal::RpcMethod::NORMAL_RPC,
       new ::grpc::internal::RpcMethodHandler< ManualControlService::Service, ::mavsdk::rpc::manual_control::StartAltitudeControlRequest, ::mavsdk::rpc::manual_control::StartAltitudeControlResponse>(
-          std::mem_fn(&ManualControlService::Service::StartAltitudeControl), this)));
+          [](ManualControlService::Service* service,
+             ::grpc::ServerContext* ctx,
+             const ::mavsdk::rpc::manual_control::StartAltitudeControlRequest* req,
+             ::mavsdk::rpc::manual_control::StartAltitudeControlResponse* resp) {
+               return service->StartAltitudeControl(ctx, req, resp);
+             }, this)));
   AddMethod(new ::grpc::internal::RpcServiceMethod(
       ManualControlService_method_names[2],
       ::grpc::internal::RpcMethod::NORMAL_RPC,
       new ::grpc::internal::RpcMethodHandler< ManualControlService::Service, ::mavsdk::rpc::manual_control::SetManualControlInputRequest, ::mavsdk::rpc::manual_control::SetManualControlInputResponse>(
-          std::mem_fn(&ManualControlService::Service::SetManualControlInput), this)));
+          [](ManualControlService::Service* service,
+             ::grpc::ServerContext* ctx,
+             const ::mavsdk::rpc::manual_control::SetManualControlInputRequest* req,
+             ::mavsdk::rpc::manual_control::SetManualControlInputResponse* resp) {
+               return service->SetManualControlInput(ctx, req, resp);
+             }, this)));
 }
 
 ManualControlService::Service::~Service() {

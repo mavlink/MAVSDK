@@ -270,16 +270,15 @@ static ::PROTOBUF_NAMESPACE_ID::internal::SCCInfoBase*const descriptor_table_man
   &scc_info_StartPositionControlResponse_manual_5fcontrol_2fmanual_5fcontrol_2eproto.base,
 };
 static ::PROTOBUF_NAMESPACE_ID::internal::once_flag descriptor_table_manual_5fcontrol_2fmanual_5fcontrol_2eproto_once;
-static bool descriptor_table_manual_5fcontrol_2fmanual_5fcontrol_2eproto_initialized = false;
 const ::PROTOBUF_NAMESPACE_ID::internal::DescriptorTable descriptor_table_manual_5fcontrol_2fmanual_5fcontrol_2eproto = {
-  &descriptor_table_manual_5fcontrol_2fmanual_5fcontrol_2eproto_initialized, descriptor_table_protodef_manual_5fcontrol_2fmanual_5fcontrol_2eproto, "manual_control/manual_control.proto", 1378,
+  false, false, descriptor_table_protodef_manual_5fcontrol_2fmanual_5fcontrol_2eproto, "manual_control/manual_control.proto", 1378,
   &descriptor_table_manual_5fcontrol_2fmanual_5fcontrol_2eproto_once, descriptor_table_manual_5fcontrol_2fmanual_5fcontrol_2eproto_sccs, descriptor_table_manual_5fcontrol_2fmanual_5fcontrol_2eproto_deps, 7, 1,
   schemas, file_default_instances, TableStruct_manual_5fcontrol_2fmanual_5fcontrol_2eproto::offsets,
   file_level_metadata_manual_5fcontrol_2fmanual_5fcontrol_2eproto, 7, file_level_enum_descriptors_manual_5fcontrol_2fmanual_5fcontrol_2eproto, file_level_service_descriptors_manual_5fcontrol_2fmanual_5fcontrol_2eproto,
 };
 
 // Force running AddDescriptors() at dynamic initialization time.
-static bool dynamic_init_dummy_manual_5fcontrol_2fmanual_5fcontrol_2eproto = (  ::PROTOBUF_NAMESPACE_ID::internal::AddDescriptors(&descriptor_table_manual_5fcontrol_2fmanual_5fcontrol_2eproto), true);
+static bool dynamic_init_dummy_manual_5fcontrol_2fmanual_5fcontrol_2eproto = (static_cast<void>(::PROTOBUF_NAMESPACE_ID::internal::AddDescriptors(&descriptor_table_manual_5fcontrol_2fmanual_5fcontrol_2eproto)), true);
 namespace mavsdk {
 namespace rpc {
 namespace manual_control {
@@ -325,15 +324,15 @@ class StartPositionControlRequest::_Internal {
  public:
 };
 
-StartPositionControlRequest::StartPositionControlRequest()
-  : ::PROTOBUF_NAMESPACE_ID::Message(), _internal_metadata_(nullptr) {
+StartPositionControlRequest::StartPositionControlRequest(::PROTOBUF_NAMESPACE_ID::Arena* arena)
+  : ::PROTOBUF_NAMESPACE_ID::Message(arena) {
   SharedCtor();
-  // @@protoc_insertion_point(constructor:mavsdk.rpc.manual_control.StartPositionControlRequest)
+  RegisterArenaDtor(arena);
+  // @@protoc_insertion_point(arena_constructor:mavsdk.rpc.manual_control.StartPositionControlRequest)
 }
 StartPositionControlRequest::StartPositionControlRequest(const StartPositionControlRequest& from)
-  : ::PROTOBUF_NAMESPACE_ID::Message(),
-      _internal_metadata_(nullptr) {
-  _internal_metadata_.MergeFrom(from._internal_metadata_);
+  : ::PROTOBUF_NAMESPACE_ID::Message() {
+  _internal_metadata_.MergeFrom<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>(from._internal_metadata_);
   // @@protoc_insertion_point(copy_constructor:mavsdk.rpc.manual_control.StartPositionControlRequest)
 }
 
@@ -343,11 +342,19 @@ void StartPositionControlRequest::SharedCtor() {
 StartPositionControlRequest::~StartPositionControlRequest() {
   // @@protoc_insertion_point(destructor:mavsdk.rpc.manual_control.StartPositionControlRequest)
   SharedDtor();
+  _internal_metadata_.Delete<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>();
 }
 
 void StartPositionControlRequest::SharedDtor() {
+  GOOGLE_DCHECK(GetArena() == nullptr);
 }
 
+void StartPositionControlRequest::ArenaDtor(void* object) {
+  StartPositionControlRequest* _this = reinterpret_cast< StartPositionControlRequest* >(object);
+  (void)_this;
+}
+void StartPositionControlRequest::RegisterArenaDtor(::PROTOBUF_NAMESPACE_ID::Arena*) {
+}
 void StartPositionControlRequest::SetCachedSize(int size) const {
   _cached_size_.Set(size);
 }
@@ -363,11 +370,12 @@ void StartPositionControlRequest::Clear() {
   // Prevent compiler warnings about cached_has_bits being unused
   (void) cached_has_bits;
 
-  _internal_metadata_.Clear();
+  _internal_metadata_.Clear<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>();
 }
 
 const char* StartPositionControlRequest::_InternalParse(const char* ptr, ::PROTOBUF_NAMESPACE_ID::internal::ParseContext* ctx) {
 #define CHK_(x) if (PROTOBUF_PREDICT_FALSE(!(x))) goto failure
+  ::PROTOBUF_NAMESPACE_ID::Arena* arena = GetArena(); (void)arena;
   while (!ctx->Done(&ptr)) {
     ::PROTOBUF_NAMESPACE_ID::uint32 tag;
     ptr = ::PROTOBUF_NAMESPACE_ID::internal::ReadTag(ptr, &tag);
@@ -376,7 +384,9 @@ const char* StartPositionControlRequest::_InternalParse(const char* ptr, ::PROTO
           ctx->SetLastTag(tag);
           goto success;
         }
-        ptr = UnknownFieldParse(tag, &_internal_metadata_, ptr, ctx);
+        ptr = UnknownFieldParse(tag,
+            _internal_metadata_.mutable_unknown_fields<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>(),
+            ptr, ctx);
         CHK_(ptr != nullptr);
         continue;
   }  // while
@@ -396,7 +406,7 @@ failure:
 
   if (PROTOBUF_PREDICT_FALSE(_internal_metadata_.have_unknown_fields())) {
     target = ::PROTOBUF_NAMESPACE_ID::internal::WireFormat::InternalSerializeUnknownFieldsToArray(
-        _internal_metadata_.unknown_fields(), target, stream);
+        _internal_metadata_.unknown_fields<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>(::PROTOBUF_NAMESPACE_ID::UnknownFieldSet::default_instance), target, stream);
   }
   // @@protoc_insertion_point(serialize_to_array_end:mavsdk.rpc.manual_control.StartPositionControlRequest)
   return target;
@@ -437,7 +447,7 @@ void StartPositionControlRequest::MergeFrom(const ::PROTOBUF_NAMESPACE_ID::Messa
 void StartPositionControlRequest::MergeFrom(const StartPositionControlRequest& from) {
 // @@protoc_insertion_point(class_specific_merge_from_start:mavsdk.rpc.manual_control.StartPositionControlRequest)
   GOOGLE_DCHECK_NE(&from, this);
-  _internal_metadata_.MergeFrom(from._internal_metadata_);
+  _internal_metadata_.MergeFrom<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>(from._internal_metadata_);
   ::PROTOBUF_NAMESPACE_ID::uint32 cached_has_bits = 0;
   (void) cached_has_bits;
 
@@ -463,7 +473,7 @@ bool StartPositionControlRequest::IsInitialized() const {
 
 void StartPositionControlRequest::InternalSwap(StartPositionControlRequest* other) {
   using std::swap;
-  _internal_metadata_.Swap(&other->_internal_metadata_);
+  _internal_metadata_.Swap<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>(&other->_internal_metadata_);
 }
 
 ::PROTOBUF_NAMESPACE_ID::Metadata StartPositionControlRequest::GetMetadata() const {
@@ -486,15 +496,15 @@ const ::mavsdk::rpc::manual_control::ManualControlResult&
 StartPositionControlResponse::_Internal::manual_control_result(const StartPositionControlResponse* msg) {
   return *msg->manual_control_result_;
 }
-StartPositionControlResponse::StartPositionControlResponse()
-  : ::PROTOBUF_NAMESPACE_ID::Message(), _internal_metadata_(nullptr) {
+StartPositionControlResponse::StartPositionControlResponse(::PROTOBUF_NAMESPACE_ID::Arena* arena)
+  : ::PROTOBUF_NAMESPACE_ID::Message(arena) {
   SharedCtor();
-  // @@protoc_insertion_point(constructor:mavsdk.rpc.manual_control.StartPositionControlResponse)
+  RegisterArenaDtor(arena);
+  // @@protoc_insertion_point(arena_constructor:mavsdk.rpc.manual_control.StartPositionControlResponse)
 }
 StartPositionControlResponse::StartPositionControlResponse(const StartPositionControlResponse& from)
-  : ::PROTOBUF_NAMESPACE_ID::Message(),
-      _internal_metadata_(nullptr) {
-  _internal_metadata_.MergeFrom(from._internal_metadata_);
+  : ::PROTOBUF_NAMESPACE_ID::Message() {
+  _internal_metadata_.MergeFrom<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>(from._internal_metadata_);
   if (from._internal_has_manual_control_result()) {
     manual_control_result_ = new ::mavsdk::rpc::manual_control::ManualControlResult(*from.manual_control_result_);
   } else {
@@ -511,12 +521,20 @@ void StartPositionControlResponse::SharedCtor() {
 StartPositionControlResponse::~StartPositionControlResponse() {
   // @@protoc_insertion_point(destructor:mavsdk.rpc.manual_control.StartPositionControlResponse)
   SharedDtor();
+  _internal_metadata_.Delete<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>();
 }
 
 void StartPositionControlResponse::SharedDtor() {
+  GOOGLE_DCHECK(GetArena() == nullptr);
   if (this != internal_default_instance()) delete manual_control_result_;
 }
 
+void StartPositionControlResponse::ArenaDtor(void* object) {
+  StartPositionControlResponse* _this = reinterpret_cast< StartPositionControlResponse* >(object);
+  (void)_this;
+}
+void StartPositionControlResponse::RegisterArenaDtor(::PROTOBUF_NAMESPACE_ID::Arena*) {
+}
 void StartPositionControlResponse::SetCachedSize(int size) const {
   _cached_size_.Set(size);
 }
@@ -532,15 +550,16 @@ void StartPositionControlResponse::Clear() {
   // Prevent compiler warnings about cached_has_bits being unused
   (void) cached_has_bits;
 
-  if (GetArenaNoVirtual() == nullptr && manual_control_result_ != nullptr) {
+  if (GetArena() == nullptr && manual_control_result_ != nullptr) {
     delete manual_control_result_;
   }
   manual_control_result_ = nullptr;
-  _internal_metadata_.Clear();
+  _internal_metadata_.Clear<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>();
 }
 
 const char* StartPositionControlResponse::_InternalParse(const char* ptr, ::PROTOBUF_NAMESPACE_ID::internal::ParseContext* ctx) {
 #define CHK_(x) if (PROTOBUF_PREDICT_FALSE(!(x))) goto failure
+  ::PROTOBUF_NAMESPACE_ID::Arena* arena = GetArena(); (void)arena;
   while (!ctx->Done(&ptr)) {
     ::PROTOBUF_NAMESPACE_ID::uint32 tag;
     ptr = ::PROTOBUF_NAMESPACE_ID::internal::ReadTag(ptr, &tag);
@@ -559,7 +578,9 @@ const char* StartPositionControlResponse::_InternalParse(const char* ptr, ::PROT
           ctx->SetLastTag(tag);
           goto success;
         }
-        ptr = UnknownFieldParse(tag, &_internal_metadata_, ptr, ctx);
+        ptr = UnknownFieldParse(tag,
+            _internal_metadata_.mutable_unknown_fields<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>(),
+            ptr, ctx);
         CHK_(ptr != nullptr);
         continue;
       }
@@ -589,7 +610,7 @@ failure:
 
   if (PROTOBUF_PREDICT_FALSE(_internal_metadata_.have_unknown_fields())) {
     target = ::PROTOBUF_NAMESPACE_ID::internal::WireFormat::InternalSerializeUnknownFieldsToArray(
-        _internal_metadata_.unknown_fields(), target, stream);
+        _internal_metadata_.unknown_fields<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>(::PROTOBUF_NAMESPACE_ID::UnknownFieldSet::default_instance), target, stream);
   }
   // @@protoc_insertion_point(serialize_to_array_end:mavsdk.rpc.manual_control.StartPositionControlResponse)
   return target;
@@ -637,7 +658,7 @@ void StartPositionControlResponse::MergeFrom(const ::PROTOBUF_NAMESPACE_ID::Mess
 void StartPositionControlResponse::MergeFrom(const StartPositionControlResponse& from) {
 // @@protoc_insertion_point(class_specific_merge_from_start:mavsdk.rpc.manual_control.StartPositionControlResponse)
   GOOGLE_DCHECK_NE(&from, this);
-  _internal_metadata_.MergeFrom(from._internal_metadata_);
+  _internal_metadata_.MergeFrom<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>(from._internal_metadata_);
   ::PROTOBUF_NAMESPACE_ID::uint32 cached_has_bits = 0;
   (void) cached_has_bits;
 
@@ -666,7 +687,7 @@ bool StartPositionControlResponse::IsInitialized() const {
 
 void StartPositionControlResponse::InternalSwap(StartPositionControlResponse* other) {
   using std::swap;
-  _internal_metadata_.Swap(&other->_internal_metadata_);
+  _internal_metadata_.Swap<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>(&other->_internal_metadata_);
   swap(manual_control_result_, other->manual_control_result_);
 }
 
@@ -683,15 +704,15 @@ class StartAltitudeControlRequest::_Internal {
  public:
 };
 
-StartAltitudeControlRequest::StartAltitudeControlRequest()
-  : ::PROTOBUF_NAMESPACE_ID::Message(), _internal_metadata_(nullptr) {
+StartAltitudeControlRequest::StartAltitudeControlRequest(::PROTOBUF_NAMESPACE_ID::Arena* arena)
+  : ::PROTOBUF_NAMESPACE_ID::Message(arena) {
   SharedCtor();
-  // @@protoc_insertion_point(constructor:mavsdk.rpc.manual_control.StartAltitudeControlRequest)
+  RegisterArenaDtor(arena);
+  // @@protoc_insertion_point(arena_constructor:mavsdk.rpc.manual_control.StartAltitudeControlRequest)
 }
 StartAltitudeControlRequest::StartAltitudeControlRequest(const StartAltitudeControlRequest& from)
-  : ::PROTOBUF_NAMESPACE_ID::Message(),
-      _internal_metadata_(nullptr) {
-  _internal_metadata_.MergeFrom(from._internal_metadata_);
+  : ::PROTOBUF_NAMESPACE_ID::Message() {
+  _internal_metadata_.MergeFrom<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>(from._internal_metadata_);
   // @@protoc_insertion_point(copy_constructor:mavsdk.rpc.manual_control.StartAltitudeControlRequest)
 }
 
@@ -701,11 +722,19 @@ void StartAltitudeControlRequest::SharedCtor() {
 StartAltitudeControlRequest::~StartAltitudeControlRequest() {
   // @@protoc_insertion_point(destructor:mavsdk.rpc.manual_control.StartAltitudeControlRequest)
   SharedDtor();
+  _internal_metadata_.Delete<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>();
 }
 
 void StartAltitudeControlRequest::SharedDtor() {
+  GOOGLE_DCHECK(GetArena() == nullptr);
 }
 
+void StartAltitudeControlRequest::ArenaDtor(void* object) {
+  StartAltitudeControlRequest* _this = reinterpret_cast< StartAltitudeControlRequest* >(object);
+  (void)_this;
+}
+void StartAltitudeControlRequest::RegisterArenaDtor(::PROTOBUF_NAMESPACE_ID::Arena*) {
+}
 void StartAltitudeControlRequest::SetCachedSize(int size) const {
   _cached_size_.Set(size);
 }
@@ -721,11 +750,12 @@ void StartAltitudeControlRequest::Clear() {
   // Prevent compiler warnings about cached_has_bits being unused
   (void) cached_has_bits;
 
-  _internal_metadata_.Clear();
+  _internal_metadata_.Clear<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>();
 }
 
 const char* StartAltitudeControlRequest::_InternalParse(const char* ptr, ::PROTOBUF_NAMESPACE_ID::internal::ParseContext* ctx) {
 #define CHK_(x) if (PROTOBUF_PREDICT_FALSE(!(x))) goto failure
+  ::PROTOBUF_NAMESPACE_ID::Arena* arena = GetArena(); (void)arena;
   while (!ctx->Done(&ptr)) {
     ::PROTOBUF_NAMESPACE_ID::uint32 tag;
     ptr = ::PROTOBUF_NAMESPACE_ID::internal::ReadTag(ptr, &tag);
@@ -734,7 +764,9 @@ const char* StartAltitudeControlRequest::_InternalParse(const char* ptr, ::PROTO
           ctx->SetLastTag(tag);
           goto success;
         }
-        ptr = UnknownFieldParse(tag, &_internal_metadata_, ptr, ctx);
+        ptr = UnknownFieldParse(tag,
+            _internal_metadata_.mutable_unknown_fields<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>(),
+            ptr, ctx);
         CHK_(ptr != nullptr);
         continue;
   }  // while
@@ -754,7 +786,7 @@ failure:
 
   if (PROTOBUF_PREDICT_FALSE(_internal_metadata_.have_unknown_fields())) {
     target = ::PROTOBUF_NAMESPACE_ID::internal::WireFormat::InternalSerializeUnknownFieldsToArray(
-        _internal_metadata_.unknown_fields(), target, stream);
+        _internal_metadata_.unknown_fields<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>(::PROTOBUF_NAMESPACE_ID::UnknownFieldSet::default_instance), target, stream);
   }
   // @@protoc_insertion_point(serialize_to_array_end:mavsdk.rpc.manual_control.StartAltitudeControlRequest)
   return target;
@@ -795,7 +827,7 @@ void StartAltitudeControlRequest::MergeFrom(const ::PROTOBUF_NAMESPACE_ID::Messa
 void StartAltitudeControlRequest::MergeFrom(const StartAltitudeControlRequest& from) {
 // @@protoc_insertion_point(class_specific_merge_from_start:mavsdk.rpc.manual_control.StartAltitudeControlRequest)
   GOOGLE_DCHECK_NE(&from, this);
-  _internal_metadata_.MergeFrom(from._internal_metadata_);
+  _internal_metadata_.MergeFrom<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>(from._internal_metadata_);
   ::PROTOBUF_NAMESPACE_ID::uint32 cached_has_bits = 0;
   (void) cached_has_bits;
 
@@ -821,7 +853,7 @@ bool StartAltitudeControlRequest::IsInitialized() const {
 
 void StartAltitudeControlRequest::InternalSwap(StartAltitudeControlRequest* other) {
   using std::swap;
-  _internal_metadata_.Swap(&other->_internal_metadata_);
+  _internal_metadata_.Swap<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>(&other->_internal_metadata_);
 }
 
 ::PROTOBUF_NAMESPACE_ID::Metadata StartAltitudeControlRequest::GetMetadata() const {
@@ -844,15 +876,15 @@ const ::mavsdk::rpc::manual_control::ManualControlResult&
 StartAltitudeControlResponse::_Internal::manual_control_result(const StartAltitudeControlResponse* msg) {
   return *msg->manual_control_result_;
 }
-StartAltitudeControlResponse::StartAltitudeControlResponse()
-  : ::PROTOBUF_NAMESPACE_ID::Message(), _internal_metadata_(nullptr) {
+StartAltitudeControlResponse::StartAltitudeControlResponse(::PROTOBUF_NAMESPACE_ID::Arena* arena)
+  : ::PROTOBUF_NAMESPACE_ID::Message(arena) {
   SharedCtor();
-  // @@protoc_insertion_point(constructor:mavsdk.rpc.manual_control.StartAltitudeControlResponse)
+  RegisterArenaDtor(arena);
+  // @@protoc_insertion_point(arena_constructor:mavsdk.rpc.manual_control.StartAltitudeControlResponse)
 }
 StartAltitudeControlResponse::StartAltitudeControlResponse(const StartAltitudeControlResponse& from)
-  : ::PROTOBUF_NAMESPACE_ID::Message(),
-      _internal_metadata_(nullptr) {
-  _internal_metadata_.MergeFrom(from._internal_metadata_);
+  : ::PROTOBUF_NAMESPACE_ID::Message() {
+  _internal_metadata_.MergeFrom<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>(from._internal_metadata_);
   if (from._internal_has_manual_control_result()) {
     manual_control_result_ = new ::mavsdk::rpc::manual_control::ManualControlResult(*from.manual_control_result_);
   } else {
@@ -869,12 +901,20 @@ void StartAltitudeControlResponse::SharedCtor() {
 StartAltitudeControlResponse::~StartAltitudeControlResponse() {
   // @@protoc_insertion_point(destructor:mavsdk.rpc.manual_control.StartAltitudeControlResponse)
   SharedDtor();
+  _internal_metadata_.Delete<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>();
 }
 
 void StartAltitudeControlResponse::SharedDtor() {
+  GOOGLE_DCHECK(GetArena() == nullptr);
   if (this != internal_default_instance()) delete manual_control_result_;
 }
 
+void StartAltitudeControlResponse::ArenaDtor(void* object) {
+  StartAltitudeControlResponse* _this = reinterpret_cast< StartAltitudeControlResponse* >(object);
+  (void)_this;
+}
+void StartAltitudeControlResponse::RegisterArenaDtor(::PROTOBUF_NAMESPACE_ID::Arena*) {
+}
 void StartAltitudeControlResponse::SetCachedSize(int size) const {
   _cached_size_.Set(size);
 }
@@ -890,15 +930,16 @@ void StartAltitudeControlResponse::Clear() {
   // Prevent compiler warnings about cached_has_bits being unused
   (void) cached_has_bits;
 
-  if (GetArenaNoVirtual() == nullptr && manual_control_result_ != nullptr) {
+  if (GetArena() == nullptr && manual_control_result_ != nullptr) {
     delete manual_control_result_;
   }
   manual_control_result_ = nullptr;
-  _internal_metadata_.Clear();
+  _internal_metadata_.Clear<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>();
 }
 
 const char* StartAltitudeControlResponse::_InternalParse(const char* ptr, ::PROTOBUF_NAMESPACE_ID::internal::ParseContext* ctx) {
 #define CHK_(x) if (PROTOBUF_PREDICT_FALSE(!(x))) goto failure
+  ::PROTOBUF_NAMESPACE_ID::Arena* arena = GetArena(); (void)arena;
   while (!ctx->Done(&ptr)) {
     ::PROTOBUF_NAMESPACE_ID::uint32 tag;
     ptr = ::PROTOBUF_NAMESPACE_ID::internal::ReadTag(ptr, &tag);
@@ -917,7 +958,9 @@ const char* StartAltitudeControlResponse::_InternalParse(const char* ptr, ::PROT
           ctx->SetLastTag(tag);
           goto success;
         }
-        ptr = UnknownFieldParse(tag, &_internal_metadata_, ptr, ctx);
+        ptr = UnknownFieldParse(tag,
+            _internal_metadata_.mutable_unknown_fields<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>(),
+            ptr, ctx);
         CHK_(ptr != nullptr);
         continue;
       }
@@ -947,7 +990,7 @@ failure:
 
   if (PROTOBUF_PREDICT_FALSE(_internal_metadata_.have_unknown_fields())) {
     target = ::PROTOBUF_NAMESPACE_ID::internal::WireFormat::InternalSerializeUnknownFieldsToArray(
-        _internal_metadata_.unknown_fields(), target, stream);
+        _internal_metadata_.unknown_fields<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>(::PROTOBUF_NAMESPACE_ID::UnknownFieldSet::default_instance), target, stream);
   }
   // @@protoc_insertion_point(serialize_to_array_end:mavsdk.rpc.manual_control.StartAltitudeControlResponse)
   return target;
@@ -995,7 +1038,7 @@ void StartAltitudeControlResponse::MergeFrom(const ::PROTOBUF_NAMESPACE_ID::Mess
 void StartAltitudeControlResponse::MergeFrom(const StartAltitudeControlResponse& from) {
 // @@protoc_insertion_point(class_specific_merge_from_start:mavsdk.rpc.manual_control.StartAltitudeControlResponse)
   GOOGLE_DCHECK_NE(&from, this);
-  _internal_metadata_.MergeFrom(from._internal_metadata_);
+  _internal_metadata_.MergeFrom<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>(from._internal_metadata_);
   ::PROTOBUF_NAMESPACE_ID::uint32 cached_has_bits = 0;
   (void) cached_has_bits;
 
@@ -1024,7 +1067,7 @@ bool StartAltitudeControlResponse::IsInitialized() const {
 
 void StartAltitudeControlResponse::InternalSwap(StartAltitudeControlResponse* other) {
   using std::swap;
-  _internal_metadata_.Swap(&other->_internal_metadata_);
+  _internal_metadata_.Swap<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>(&other->_internal_metadata_);
   swap(manual_control_result_, other->manual_control_result_);
 }
 
@@ -1041,15 +1084,15 @@ class SetManualControlInputRequest::_Internal {
  public:
 };
 
-SetManualControlInputRequest::SetManualControlInputRequest()
-  : ::PROTOBUF_NAMESPACE_ID::Message(), _internal_metadata_(nullptr) {
+SetManualControlInputRequest::SetManualControlInputRequest(::PROTOBUF_NAMESPACE_ID::Arena* arena)
+  : ::PROTOBUF_NAMESPACE_ID::Message(arena) {
   SharedCtor();
-  // @@protoc_insertion_point(constructor:mavsdk.rpc.manual_control.SetManualControlInputRequest)
+  RegisterArenaDtor(arena);
+  // @@protoc_insertion_point(arena_constructor:mavsdk.rpc.manual_control.SetManualControlInputRequest)
 }
 SetManualControlInputRequest::SetManualControlInputRequest(const SetManualControlInputRequest& from)
-  : ::PROTOBUF_NAMESPACE_ID::Message(),
-      _internal_metadata_(nullptr) {
-  _internal_metadata_.MergeFrom(from._internal_metadata_);
+  : ::PROTOBUF_NAMESPACE_ID::Message() {
+  _internal_metadata_.MergeFrom<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>(from._internal_metadata_);
   ::memcpy(&x_, &from.x_,
     static_cast<size_t>(reinterpret_cast<char*>(&r_) -
     reinterpret_cast<char*>(&x_)) + sizeof(r_));
@@ -1065,11 +1108,19 @@ void SetManualControlInputRequest::SharedCtor() {
 SetManualControlInputRequest::~SetManualControlInputRequest() {
   // @@protoc_insertion_point(destructor:mavsdk.rpc.manual_control.SetManualControlInputRequest)
   SharedDtor();
+  _internal_metadata_.Delete<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>();
 }
 
 void SetManualControlInputRequest::SharedDtor() {
+  GOOGLE_DCHECK(GetArena() == nullptr);
 }
 
+void SetManualControlInputRequest::ArenaDtor(void* object) {
+  SetManualControlInputRequest* _this = reinterpret_cast< SetManualControlInputRequest* >(object);
+  (void)_this;
+}
+void SetManualControlInputRequest::RegisterArenaDtor(::PROTOBUF_NAMESPACE_ID::Arena*) {
+}
 void SetManualControlInputRequest::SetCachedSize(int size) const {
   _cached_size_.Set(size);
 }
@@ -1088,11 +1139,12 @@ void SetManualControlInputRequest::Clear() {
   ::memset(&x_, 0, static_cast<size_t>(
       reinterpret_cast<char*>(&r_) -
       reinterpret_cast<char*>(&x_)) + sizeof(r_));
-  _internal_metadata_.Clear();
+  _internal_metadata_.Clear<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>();
 }
 
 const char* SetManualControlInputRequest::_InternalParse(const char* ptr, ::PROTOBUF_NAMESPACE_ID::internal::ParseContext* ctx) {
 #define CHK_(x) if (PROTOBUF_PREDICT_FALSE(!(x))) goto failure
+  ::PROTOBUF_NAMESPACE_ID::Arena* arena = GetArena(); (void)arena;
   while (!ctx->Done(&ptr)) {
     ::PROTOBUF_NAMESPACE_ID::uint32 tag;
     ptr = ::PROTOBUF_NAMESPACE_ID::internal::ReadTag(ptr, &tag);
@@ -1132,7 +1184,9 @@ const char* SetManualControlInputRequest::_InternalParse(const char* ptr, ::PROT
           ctx->SetLastTag(tag);
           goto success;
         }
-        ptr = UnknownFieldParse(tag, &_internal_metadata_, ptr, ctx);
+        ptr = UnknownFieldParse(tag,
+            _internal_metadata_.mutable_unknown_fields<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>(),
+            ptr, ctx);
         CHK_(ptr != nullptr);
         continue;
       }
@@ -1178,7 +1232,7 @@ failure:
 
   if (PROTOBUF_PREDICT_FALSE(_internal_metadata_.have_unknown_fields())) {
     target = ::PROTOBUF_NAMESPACE_ID::internal::WireFormat::InternalSerializeUnknownFieldsToArray(
-        _internal_metadata_.unknown_fields(), target, stream);
+        _internal_metadata_.unknown_fields<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>(::PROTOBUF_NAMESPACE_ID::UnknownFieldSet::default_instance), target, stream);
   }
   // @@protoc_insertion_point(serialize_to_array_end:mavsdk.rpc.manual_control.SetManualControlInputRequest)
   return target;
@@ -1239,7 +1293,7 @@ void SetManualControlInputRequest::MergeFrom(const ::PROTOBUF_NAMESPACE_ID::Mess
 void SetManualControlInputRequest::MergeFrom(const SetManualControlInputRequest& from) {
 // @@protoc_insertion_point(class_specific_merge_from_start:mavsdk.rpc.manual_control.SetManualControlInputRequest)
   GOOGLE_DCHECK_NE(&from, this);
-  _internal_metadata_.MergeFrom(from._internal_metadata_);
+  _internal_metadata_.MergeFrom<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>(from._internal_metadata_);
   ::PROTOBUF_NAMESPACE_ID::uint32 cached_has_bits = 0;
   (void) cached_has_bits;
 
@@ -1277,11 +1331,13 @@ bool SetManualControlInputRequest::IsInitialized() const {
 
 void SetManualControlInputRequest::InternalSwap(SetManualControlInputRequest* other) {
   using std::swap;
-  _internal_metadata_.Swap(&other->_internal_metadata_);
-  swap(x_, other->x_);
-  swap(y_, other->y_);
-  swap(z_, other->z_);
-  swap(r_, other->r_);
+  _internal_metadata_.Swap<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>(&other->_internal_metadata_);
+  ::PROTOBUF_NAMESPACE_ID::internal::memswap<
+      PROTOBUF_FIELD_OFFSET(SetManualControlInputRequest, r_)
+      + sizeof(SetManualControlInputRequest::r_)
+      - PROTOBUF_FIELD_OFFSET(SetManualControlInputRequest, x_)>(
+          reinterpret_cast<char*>(&x_),
+          reinterpret_cast<char*>(&other->x_));
 }
 
 ::PROTOBUF_NAMESPACE_ID::Metadata SetManualControlInputRequest::GetMetadata() const {
@@ -1304,15 +1360,15 @@ const ::mavsdk::rpc::manual_control::ManualControlResult&
 SetManualControlInputResponse::_Internal::manual_control_result(const SetManualControlInputResponse* msg) {
   return *msg->manual_control_result_;
 }
-SetManualControlInputResponse::SetManualControlInputResponse()
-  : ::PROTOBUF_NAMESPACE_ID::Message(), _internal_metadata_(nullptr) {
+SetManualControlInputResponse::SetManualControlInputResponse(::PROTOBUF_NAMESPACE_ID::Arena* arena)
+  : ::PROTOBUF_NAMESPACE_ID::Message(arena) {
   SharedCtor();
-  // @@protoc_insertion_point(constructor:mavsdk.rpc.manual_control.SetManualControlInputResponse)
+  RegisterArenaDtor(arena);
+  // @@protoc_insertion_point(arena_constructor:mavsdk.rpc.manual_control.SetManualControlInputResponse)
 }
 SetManualControlInputResponse::SetManualControlInputResponse(const SetManualControlInputResponse& from)
-  : ::PROTOBUF_NAMESPACE_ID::Message(),
-      _internal_metadata_(nullptr) {
-  _internal_metadata_.MergeFrom(from._internal_metadata_);
+  : ::PROTOBUF_NAMESPACE_ID::Message() {
+  _internal_metadata_.MergeFrom<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>(from._internal_metadata_);
   if (from._internal_has_manual_control_result()) {
     manual_control_result_ = new ::mavsdk::rpc::manual_control::ManualControlResult(*from.manual_control_result_);
   } else {
@@ -1329,12 +1385,20 @@ void SetManualControlInputResponse::SharedCtor() {
 SetManualControlInputResponse::~SetManualControlInputResponse() {
   // @@protoc_insertion_point(destructor:mavsdk.rpc.manual_control.SetManualControlInputResponse)
   SharedDtor();
+  _internal_metadata_.Delete<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>();
 }
 
 void SetManualControlInputResponse::SharedDtor() {
+  GOOGLE_DCHECK(GetArena() == nullptr);
   if (this != internal_default_instance()) delete manual_control_result_;
 }
 
+void SetManualControlInputResponse::ArenaDtor(void* object) {
+  SetManualControlInputResponse* _this = reinterpret_cast< SetManualControlInputResponse* >(object);
+  (void)_this;
+}
+void SetManualControlInputResponse::RegisterArenaDtor(::PROTOBUF_NAMESPACE_ID::Arena*) {
+}
 void SetManualControlInputResponse::SetCachedSize(int size) const {
   _cached_size_.Set(size);
 }
@@ -1350,15 +1414,16 @@ void SetManualControlInputResponse::Clear() {
   // Prevent compiler warnings about cached_has_bits being unused
   (void) cached_has_bits;
 
-  if (GetArenaNoVirtual() == nullptr && manual_control_result_ != nullptr) {
+  if (GetArena() == nullptr && manual_control_result_ != nullptr) {
     delete manual_control_result_;
   }
   manual_control_result_ = nullptr;
-  _internal_metadata_.Clear();
+  _internal_metadata_.Clear<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>();
 }
 
 const char* SetManualControlInputResponse::_InternalParse(const char* ptr, ::PROTOBUF_NAMESPACE_ID::internal::ParseContext* ctx) {
 #define CHK_(x) if (PROTOBUF_PREDICT_FALSE(!(x))) goto failure
+  ::PROTOBUF_NAMESPACE_ID::Arena* arena = GetArena(); (void)arena;
   while (!ctx->Done(&ptr)) {
     ::PROTOBUF_NAMESPACE_ID::uint32 tag;
     ptr = ::PROTOBUF_NAMESPACE_ID::internal::ReadTag(ptr, &tag);
@@ -1377,7 +1442,9 @@ const char* SetManualControlInputResponse::_InternalParse(const char* ptr, ::PRO
           ctx->SetLastTag(tag);
           goto success;
         }
-        ptr = UnknownFieldParse(tag, &_internal_metadata_, ptr, ctx);
+        ptr = UnknownFieldParse(tag,
+            _internal_metadata_.mutable_unknown_fields<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>(),
+            ptr, ctx);
         CHK_(ptr != nullptr);
         continue;
       }
@@ -1407,7 +1474,7 @@ failure:
 
   if (PROTOBUF_PREDICT_FALSE(_internal_metadata_.have_unknown_fields())) {
     target = ::PROTOBUF_NAMESPACE_ID::internal::WireFormat::InternalSerializeUnknownFieldsToArray(
-        _internal_metadata_.unknown_fields(), target, stream);
+        _internal_metadata_.unknown_fields<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>(::PROTOBUF_NAMESPACE_ID::UnknownFieldSet::default_instance), target, stream);
   }
   // @@protoc_insertion_point(serialize_to_array_end:mavsdk.rpc.manual_control.SetManualControlInputResponse)
   return target;
@@ -1455,7 +1522,7 @@ void SetManualControlInputResponse::MergeFrom(const ::PROTOBUF_NAMESPACE_ID::Mes
 void SetManualControlInputResponse::MergeFrom(const SetManualControlInputResponse& from) {
 // @@protoc_insertion_point(class_specific_merge_from_start:mavsdk.rpc.manual_control.SetManualControlInputResponse)
   GOOGLE_DCHECK_NE(&from, this);
-  _internal_metadata_.MergeFrom(from._internal_metadata_);
+  _internal_metadata_.MergeFrom<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>(from._internal_metadata_);
   ::PROTOBUF_NAMESPACE_ID::uint32 cached_has_bits = 0;
   (void) cached_has_bits;
 
@@ -1484,7 +1551,7 @@ bool SetManualControlInputResponse::IsInitialized() const {
 
 void SetManualControlInputResponse::InternalSwap(SetManualControlInputResponse* other) {
   using std::swap;
-  _internal_metadata_.Swap(&other->_internal_metadata_);
+  _internal_metadata_.Swap<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>(&other->_internal_metadata_);
   swap(manual_control_result_, other->manual_control_result_);
 }
 
@@ -1501,18 +1568,19 @@ class ManualControlResult::_Internal {
  public:
 };
 
-ManualControlResult::ManualControlResult()
-  : ::PROTOBUF_NAMESPACE_ID::Message(), _internal_metadata_(nullptr) {
+ManualControlResult::ManualControlResult(::PROTOBUF_NAMESPACE_ID::Arena* arena)
+  : ::PROTOBUF_NAMESPACE_ID::Message(arena) {
   SharedCtor();
-  // @@protoc_insertion_point(constructor:mavsdk.rpc.manual_control.ManualControlResult)
+  RegisterArenaDtor(arena);
+  // @@protoc_insertion_point(arena_constructor:mavsdk.rpc.manual_control.ManualControlResult)
 }
 ManualControlResult::ManualControlResult(const ManualControlResult& from)
-  : ::PROTOBUF_NAMESPACE_ID::Message(),
-      _internal_metadata_(nullptr) {
-  _internal_metadata_.MergeFrom(from._internal_metadata_);
+  : ::PROTOBUF_NAMESPACE_ID::Message() {
+  _internal_metadata_.MergeFrom<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>(from._internal_metadata_);
   result_str_.UnsafeSetDefault(&::PROTOBUF_NAMESPACE_ID::internal::GetEmptyStringAlreadyInited());
   if (!from._internal_result_str().empty()) {
-    result_str_.AssignWithDefault(&::PROTOBUF_NAMESPACE_ID::internal::GetEmptyStringAlreadyInited(), from.result_str_);
+    result_str_.Set(&::PROTOBUF_NAMESPACE_ID::internal::GetEmptyStringAlreadyInited(), from._internal_result_str(),
+      GetArena());
   }
   result_ = from.result_;
   // @@protoc_insertion_point(copy_constructor:mavsdk.rpc.manual_control.ManualControlResult)
@@ -1527,12 +1595,20 @@ void ManualControlResult::SharedCtor() {
 ManualControlResult::~ManualControlResult() {
   // @@protoc_insertion_point(destructor:mavsdk.rpc.manual_control.ManualControlResult)
   SharedDtor();
+  _internal_metadata_.Delete<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>();
 }
 
 void ManualControlResult::SharedDtor() {
+  GOOGLE_DCHECK(GetArena() == nullptr);
   result_str_.DestroyNoArena(&::PROTOBUF_NAMESPACE_ID::internal::GetEmptyStringAlreadyInited());
 }
 
+void ManualControlResult::ArenaDtor(void* object) {
+  ManualControlResult* _this = reinterpret_cast< ManualControlResult* >(object);
+  (void)_this;
+}
+void ManualControlResult::RegisterArenaDtor(::PROTOBUF_NAMESPACE_ID::Arena*) {
+}
 void ManualControlResult::SetCachedSize(int size) const {
   _cached_size_.Set(size);
 }
@@ -1548,13 +1624,14 @@ void ManualControlResult::Clear() {
   // Prevent compiler warnings about cached_has_bits being unused
   (void) cached_has_bits;
 
-  result_str_.ClearToEmptyNoArena(&::PROTOBUF_NAMESPACE_ID::internal::GetEmptyStringAlreadyInited());
+  result_str_.ClearToEmpty(&::PROTOBUF_NAMESPACE_ID::internal::GetEmptyStringAlreadyInited(), GetArena());
   result_ = 0;
-  _internal_metadata_.Clear();
+  _internal_metadata_.Clear<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>();
 }
 
 const char* ManualControlResult::_InternalParse(const char* ptr, ::PROTOBUF_NAMESPACE_ID::internal::ParseContext* ctx) {
 #define CHK_(x) if (PROTOBUF_PREDICT_FALSE(!(x))) goto failure
+  ::PROTOBUF_NAMESPACE_ID::Arena* arena = GetArena(); (void)arena;
   while (!ctx->Done(&ptr)) {
     ::PROTOBUF_NAMESPACE_ID::uint32 tag;
     ptr = ::PROTOBUF_NAMESPACE_ID::internal::ReadTag(ptr, &tag);
@@ -1563,7 +1640,7 @@ const char* ManualControlResult::_InternalParse(const char* ptr, ::PROTOBUF_NAME
       // .mavsdk.rpc.manual_control.ManualControlResult.Result result = 1;
       case 1:
         if (PROTOBUF_PREDICT_TRUE(static_cast<::PROTOBUF_NAMESPACE_ID::uint8>(tag) == 8)) {
-          ::PROTOBUF_NAMESPACE_ID::uint64 val = ::PROTOBUF_NAMESPACE_ID::internal::ReadVarint(&ptr);
+          ::PROTOBUF_NAMESPACE_ID::uint64 val = ::PROTOBUF_NAMESPACE_ID::internal::ReadVarint64(&ptr);
           CHK_(ptr);
           _internal_set_result(static_cast<::mavsdk::rpc::manual_control::ManualControlResult_Result>(val));
         } else goto handle_unusual;
@@ -1583,7 +1660,9 @@ const char* ManualControlResult::_InternalParse(const char* ptr, ::PROTOBUF_NAME
           ctx->SetLastTag(tag);
           goto success;
         }
-        ptr = UnknownFieldParse(tag, &_internal_metadata_, ptr, ctx);
+        ptr = UnknownFieldParse(tag,
+            _internal_metadata_.mutable_unknown_fields<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>(),
+            ptr, ctx);
         CHK_(ptr != nullptr);
         continue;
       }
@@ -1622,7 +1701,7 @@ failure:
 
   if (PROTOBUF_PREDICT_FALSE(_internal_metadata_.have_unknown_fields())) {
     target = ::PROTOBUF_NAMESPACE_ID::internal::WireFormat::InternalSerializeUnknownFieldsToArray(
-        _internal_metadata_.unknown_fields(), target, stream);
+        _internal_metadata_.unknown_fields<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>(::PROTOBUF_NAMESPACE_ID::UnknownFieldSet::default_instance), target, stream);
   }
   // @@protoc_insertion_point(serialize_to_array_end:mavsdk.rpc.manual_control.ManualControlResult)
   return target;
@@ -1676,13 +1755,12 @@ void ManualControlResult::MergeFrom(const ::PROTOBUF_NAMESPACE_ID::Message& from
 void ManualControlResult::MergeFrom(const ManualControlResult& from) {
 // @@protoc_insertion_point(class_specific_merge_from_start:mavsdk.rpc.manual_control.ManualControlResult)
   GOOGLE_DCHECK_NE(&from, this);
-  _internal_metadata_.MergeFrom(from._internal_metadata_);
+  _internal_metadata_.MergeFrom<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>(from._internal_metadata_);
   ::PROTOBUF_NAMESPACE_ID::uint32 cached_has_bits = 0;
   (void) cached_has_bits;
 
   if (from.result_str().size() > 0) {
-
-    result_str_.AssignWithDefault(&::PROTOBUF_NAMESPACE_ID::internal::GetEmptyStringAlreadyInited(), from.result_str_);
+    _internal_set_result_str(from._internal_result_str());
   }
   if (from.result() != 0) {
     _internal_set_result(from._internal_result());
@@ -1709,9 +1787,8 @@ bool ManualControlResult::IsInitialized() const {
 
 void ManualControlResult::InternalSwap(ManualControlResult* other) {
   using std::swap;
-  _internal_metadata_.Swap(&other->_internal_metadata_);
-  result_str_.Swap(&other->result_str_, &::PROTOBUF_NAMESPACE_ID::internal::GetEmptyStringAlreadyInited(),
-    GetArenaNoVirtual());
+  _internal_metadata_.Swap<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>(&other->_internal_metadata_);
+  result_str_.Swap(&other->result_str_, &::PROTOBUF_NAMESPACE_ID::internal::GetEmptyStringAlreadyInited(), GetArena());
   swap(result_, other->result_);
 }
 
@@ -1726,25 +1803,25 @@ void ManualControlResult::InternalSwap(ManualControlResult* other) {
 }  // namespace mavsdk
 PROTOBUF_NAMESPACE_OPEN
 template<> PROTOBUF_NOINLINE ::mavsdk::rpc::manual_control::StartPositionControlRequest* Arena::CreateMaybeMessage< ::mavsdk::rpc::manual_control::StartPositionControlRequest >(Arena* arena) {
-  return Arena::CreateInternal< ::mavsdk::rpc::manual_control::StartPositionControlRequest >(arena);
+  return Arena::CreateMessageInternal< ::mavsdk::rpc::manual_control::StartPositionControlRequest >(arena);
 }
 template<> PROTOBUF_NOINLINE ::mavsdk::rpc::manual_control::StartPositionControlResponse* Arena::CreateMaybeMessage< ::mavsdk::rpc::manual_control::StartPositionControlResponse >(Arena* arena) {
-  return Arena::CreateInternal< ::mavsdk::rpc::manual_control::StartPositionControlResponse >(arena);
+  return Arena::CreateMessageInternal< ::mavsdk::rpc::manual_control::StartPositionControlResponse >(arena);
 }
 template<> PROTOBUF_NOINLINE ::mavsdk::rpc::manual_control::StartAltitudeControlRequest* Arena::CreateMaybeMessage< ::mavsdk::rpc::manual_control::StartAltitudeControlRequest >(Arena* arena) {
-  return Arena::CreateInternal< ::mavsdk::rpc::manual_control::StartAltitudeControlRequest >(arena);
+  return Arena::CreateMessageInternal< ::mavsdk::rpc::manual_control::StartAltitudeControlRequest >(arena);
 }
 template<> PROTOBUF_NOINLINE ::mavsdk::rpc::manual_control::StartAltitudeControlResponse* Arena::CreateMaybeMessage< ::mavsdk::rpc::manual_control::StartAltitudeControlResponse >(Arena* arena) {
-  return Arena::CreateInternal< ::mavsdk::rpc::manual_control::StartAltitudeControlResponse >(arena);
+  return Arena::CreateMessageInternal< ::mavsdk::rpc::manual_control::StartAltitudeControlResponse >(arena);
 }
 template<> PROTOBUF_NOINLINE ::mavsdk::rpc::manual_control::SetManualControlInputRequest* Arena::CreateMaybeMessage< ::mavsdk::rpc::manual_control::SetManualControlInputRequest >(Arena* arena) {
-  return Arena::CreateInternal< ::mavsdk::rpc::manual_control::SetManualControlInputRequest >(arena);
+  return Arena::CreateMessageInternal< ::mavsdk::rpc::manual_control::SetManualControlInputRequest >(arena);
 }
 template<> PROTOBUF_NOINLINE ::mavsdk::rpc::manual_control::SetManualControlInputResponse* Arena::CreateMaybeMessage< ::mavsdk::rpc::manual_control::SetManualControlInputResponse >(Arena* arena) {
-  return Arena::CreateInternal< ::mavsdk::rpc::manual_control::SetManualControlInputResponse >(arena);
+  return Arena::CreateMessageInternal< ::mavsdk::rpc::manual_control::SetManualControlInputResponse >(arena);
 }
 template<> PROTOBUF_NOINLINE ::mavsdk::rpc::manual_control::ManualControlResult* Arena::CreateMaybeMessage< ::mavsdk::rpc::manual_control::ManualControlResult >(Arena* arena) {
-  return Arena::CreateInternal< ::mavsdk::rpc::manual_control::ManualControlResult >(arena);
+  return Arena::CreateMessageInternal< ::mavsdk::rpc::manual_control::ManualControlResult >(arena);
 }
 PROTOBUF_NAMESPACE_CLOSE
 
