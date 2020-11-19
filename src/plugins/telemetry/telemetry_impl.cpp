@@ -1823,9 +1823,58 @@ void TelemetryImpl::distance_sensor_async(Telemetry::DistanceSensorCallback& cal
     _distance_sensor_subscription = callback;
 }
 
-
-void TelemetryImpl::get_gps_global_origin_async(const Telemetry::GetGpsGlobalOriginCallback callback)
+void TelemetryImpl::get_gps_global_origin_async(
+    const Telemetry::GetGpsGlobalOriginCallback callback)
 {
+    void* message_cookie{};
+    void* timeout_cookie{};
+    auto response_received = std::make_shared<bool>(false);
+
+    _parent->register_mavlink_message_handler(
+        MAVLINK_MSG_ID_GPS_GLOBAL_ORIGIN,
+        [this, callback, &message_cookie, &timeout_cookie, response_received](
+            const mavlink_message_t& mavlink_message) {
+            if (*response_received) {
+                return;
+            }
+            *response_received = true;
+
+            _parent->unregister_timeout_handler(timeout_cookie);
+            _parent->call_user_callback([this, &message_cookie]() {
+                _parent->unregister_mavlink_message_handler(
+                    MAVLINK_MSG_ID_GPS_GLOBAL_ORIGIN, &message_cookie);
+            });
+
+            mavlink_gps_global_origin_t mavlink_gps_global_origin;
+            mavlink_msg_gps_global_origin_decode(&mavlink_message, &mavlink_gps_global_origin);
+
+            Telemetry::GpsGlobalOrigin gps_global_origin;
+            gps_global_origin.latitude_deg = mavlink_gps_global_origin.latitude * 1e-7;
+            gps_global_origin.longitude_deg = mavlink_gps_global_origin.longitude * 1e-7;
+            gps_global_origin.altitude_m = mavlink_gps_global_origin.altitude * 1e-3f;
+
+            _parent->call_user_callback([callback, gps_global_origin]() {
+                callback(Telemetry::Result::Success, gps_global_origin);
+            });
+        },
+        &message_cookie);
+
+    MavlinkCommandSender::CommandLong command_request_message;
+    command_request_message.command = MAV_CMD_REQUEST_MESSAGE;
+    command_request_message.params.param1 = MAVLINK_MSG_ID_GPS_GLOBAL_ORIGIN;
+
+    _parent->send_command_async(command_request_message, nullptr);
+    _parent->register_timeout_handler(
+        [this, callback, response_received]() {
+            if (!*response_received) {
+                *response_received = true;
+                _parent->call_user_callback([callback]() {
+                    callback(Telemetry::Result::Timeout, Telemetry::GpsGlobalOrigin{});
+                });
+            }
+        },
+        5, // timeout of 5 seconds
+        &timeout_cookie);
 }
 
 std::pair<Telemetry::Result, Telemetry::GpsGlobalOrigin> TelemetryImpl::get_gps_global_origin()
