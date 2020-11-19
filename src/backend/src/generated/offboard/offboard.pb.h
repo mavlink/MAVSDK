@@ -2766,11 +2766,10 @@ class SetVelocityNedResponse PROTOBUF_FINAL :
 };
 // -------------------------------------------------------------------
 
-<<<<<<< HEAD
-class SetPositionVelocityNedRequest :
+class SetPositionVelocityNedRequest PROTOBUF_FINAL :
     public ::PROTOBUF_NAMESPACE_ID::Message /* @@protoc_insertion_point(class_definition:mavsdk.rpc.offboard.SetPositionVelocityNedRequest) */ {
  public:
-  SetPositionVelocityNedRequest();
+  inline SetPositionVelocityNedRequest() : SetPositionVelocityNedRequest(nullptr) {}
   virtual ~SetPositionVelocityNedRequest();
 
   SetPositionVelocityNedRequest(const SetPositionVelocityNedRequest& from);
@@ -2784,7 +2783,7 @@ class SetPositionVelocityNedRequest :
     return *this;
   }
   inline SetPositionVelocityNedRequest& operator=(SetPositionVelocityNedRequest&& from) noexcept {
-    if (GetArenaNoVirtual() == from.GetArenaNoVirtual()) {
+    if (GetArena() == from.GetArena()) {
       if (this != &from) InternalSwap(&from);
     } else {
       CopyFrom(from);
@@ -2816,6 +2815,15 @@ class SetPositionVelocityNedRequest :
   }
   inline void Swap(SetPositionVelocityNedRequest* other) {
     if (other == this) return;
+    if (GetArena() == other->GetArena()) {
+      InternalSwap(other);
+    } else {
+      ::PROTOBUF_NAMESPACE_ID::internal::GenericSwap(this, other);
+    }
+  }
+  void UnsafeArenaSwap(SetPositionVelocityNedRequest* other) {
+    if (other == this) return;
+    GOOGLE_DCHECK(GetArena() == other->GetArena());
     InternalSwap(other);
   }
 
@@ -2850,13 +2858,11 @@ class SetPositionVelocityNedRequest :
   static ::PROTOBUF_NAMESPACE_ID::StringPiece FullMessageName() {
     return "mavsdk.rpc.offboard.SetPositionVelocityNedRequest";
   }
+  protected:
+  explicit SetPositionVelocityNedRequest(::PROTOBUF_NAMESPACE_ID::Arena* arena);
   private:
-  inline ::PROTOBUF_NAMESPACE_ID::Arena* GetArenaNoVirtual() const {
-    return nullptr;
-  }
-  inline void* MaybeArenaPtr() const {
-    return nullptr;
-  }
+  static void ArenaDtor(void* object);
+  inline void RegisterArenaDtor(::PROTOBUF_NAMESPACE_ID::Arena* arena);
   public:
 
   ::PROTOBUF_NAMESPACE_ID::Metadata GetMetadata() const final;
@@ -2890,6 +2896,9 @@ class SetPositionVelocityNedRequest :
   const ::mavsdk::rpc::offboard::PositionNedYaw& _internal_position_ned_yaw() const;
   ::mavsdk::rpc::offboard::PositionNedYaw* _internal_mutable_position_ned_yaw();
   public:
+  void unsafe_arena_set_allocated_position_ned_yaw(
+      ::mavsdk::rpc::offboard::PositionNedYaw* position_ned_yaw);
+  ::mavsdk::rpc::offboard::PositionNedYaw* unsafe_arena_release_position_ned_yaw();
 
   // .mavsdk.rpc.offboard.VelocityNedYaw velocity_ned_yaw = 2;
   bool has_velocity_ned_yaw() const;
@@ -2905,12 +2914,17 @@ class SetPositionVelocityNedRequest :
   const ::mavsdk::rpc::offboard::VelocityNedYaw& _internal_velocity_ned_yaw() const;
   ::mavsdk::rpc::offboard::VelocityNedYaw* _internal_mutable_velocity_ned_yaw();
   public:
+  void unsafe_arena_set_allocated_velocity_ned_yaw(
+      ::mavsdk::rpc::offboard::VelocityNedYaw* velocity_ned_yaw);
+  ::mavsdk::rpc::offboard::VelocityNedYaw* unsafe_arena_release_velocity_ned_yaw();
 
   // @@protoc_insertion_point(class_scope:mavsdk.rpc.offboard.SetPositionVelocityNedRequest)
  private:
   class _Internal;
 
-  ::PROTOBUF_NAMESPACE_ID::internal::InternalMetadataWithArena _internal_metadata_;
+  template <typename T> friend class ::PROTOBUF_NAMESPACE_ID::Arena::InternalHelper;
+  typedef void InternalArenaConstructable_;
+  typedef void DestructorSkippable_;
   ::mavsdk::rpc::offboard::PositionNedYaw* position_ned_yaw_;
   ::mavsdk::rpc::offboard::VelocityNedYaw* velocity_ned_yaw_;
   mutable ::PROTOBUF_NAMESPACE_ID::internal::CachedSize _cached_size_;
@@ -2918,10 +2932,10 @@ class SetPositionVelocityNedRequest :
 };
 // -------------------------------------------------------------------
 
-class SetPositionVelocityNedResponse :
+class SetPositionVelocityNedResponse PROTOBUF_FINAL :
     public ::PROTOBUF_NAMESPACE_ID::Message /* @@protoc_insertion_point(class_definition:mavsdk.rpc.offboard.SetPositionVelocityNedResponse) */ {
  public:
-  SetPositionVelocityNedResponse();
+  inline SetPositionVelocityNedResponse() : SetPositionVelocityNedResponse(nullptr) {}
   virtual ~SetPositionVelocityNedResponse();
 
   SetPositionVelocityNedResponse(const SetPositionVelocityNedResponse& from);
@@ -2935,7 +2949,7 @@ class SetPositionVelocityNedResponse :
     return *this;
   }
   inline SetPositionVelocityNedResponse& operator=(SetPositionVelocityNedResponse&& from) noexcept {
-    if (GetArenaNoVirtual() == from.GetArenaNoVirtual()) {
+    if (GetArena() == from.GetArena()) {
       if (this != &from) InternalSwap(&from);
     } else {
       CopyFrom(from);
@@ -2967,6 +2981,15 @@ class SetPositionVelocityNedResponse :
   }
   inline void Swap(SetPositionVelocityNedResponse* other) {
     if (other == this) return;
+    if (GetArena() == other->GetArena()) {
+      InternalSwap(other);
+    } else {
+      ::PROTOBUF_NAMESPACE_ID::internal::GenericSwap(this, other);
+    }
+  }
+  void UnsafeArenaSwap(SetPositionVelocityNedResponse* other) {
+    if (other == this) return;
+    GOOGLE_DCHECK(GetArena() == other->GetArena());
     InternalSwap(other);
   }
 
@@ -3001,13 +3024,11 @@ class SetPositionVelocityNedResponse :
   static ::PROTOBUF_NAMESPACE_ID::StringPiece FullMessageName() {
     return "mavsdk.rpc.offboard.SetPositionVelocityNedResponse";
   }
+  protected:
+  explicit SetPositionVelocityNedResponse(::PROTOBUF_NAMESPACE_ID::Arena* arena);
   private:
-  inline ::PROTOBUF_NAMESPACE_ID::Arena* GetArenaNoVirtual() const {
-    return nullptr;
-  }
-  inline void* MaybeArenaPtr() const {
-    return nullptr;
-  }
+  static void ArenaDtor(void* object);
+  inline void RegisterArenaDtor(::PROTOBUF_NAMESPACE_ID::Arena* arena);
   public:
 
   ::PROTOBUF_NAMESPACE_ID::Metadata GetMetadata() const final;
@@ -3040,22 +3061,24 @@ class SetPositionVelocityNedResponse :
   const ::mavsdk::rpc::offboard::OffboardResult& _internal_offboard_result() const;
   ::mavsdk::rpc::offboard::OffboardResult* _internal_mutable_offboard_result();
   public:
+  void unsafe_arena_set_allocated_offboard_result(
+      ::mavsdk::rpc::offboard::OffboardResult* offboard_result);
+  ::mavsdk::rpc::offboard::OffboardResult* unsafe_arena_release_offboard_result();
 
   // @@protoc_insertion_point(class_scope:mavsdk.rpc.offboard.SetPositionVelocityNedResponse)
  private:
   class _Internal;
 
-  ::PROTOBUF_NAMESPACE_ID::internal::InternalMetadataWithArena _internal_metadata_;
+  template <typename T> friend class ::PROTOBUF_NAMESPACE_ID::Arena::InternalHelper;
+  typedef void InternalArenaConstructable_;
+  typedef void DestructorSkippable_;
   ::mavsdk::rpc::offboard::OffboardResult* offboard_result_;
   mutable ::PROTOBUF_NAMESPACE_ID::internal::CachedSize _cached_size_;
   friend struct ::TableStruct_offboard_2foffboard_2eproto;
 };
 // -------------------------------------------------------------------
 
-class Attitude :
-=======
 class Attitude PROTOBUF_FINAL :
->>>>>>> develop
     public ::PROTOBUF_NAMESPACE_ID::Message /* @@protoc_insertion_point(class_definition:mavsdk.rpc.offboard.Attitude) */ {
  public:
   inline Attitude() : Attitude(nullptr) {}
@@ -5670,7 +5693,7 @@ inline bool SetPositionVelocityNedRequest::has_position_ned_yaw() const {
   return _internal_has_position_ned_yaw();
 }
 inline void SetPositionVelocityNedRequest::clear_position_ned_yaw() {
-  if (GetArenaNoVirtual() == nullptr && position_ned_yaw_ != nullptr) {
+  if (GetArena() == nullptr && position_ned_yaw_ != nullptr) {
     delete position_ned_yaw_;
   }
   position_ned_yaw_ = nullptr;
@@ -5684,7 +5707,29 @@ inline const ::mavsdk::rpc::offboard::PositionNedYaw& SetPositionVelocityNedRequ
   // @@protoc_insertion_point(field_get:mavsdk.rpc.offboard.SetPositionVelocityNedRequest.position_ned_yaw)
   return _internal_position_ned_yaw();
 }
+inline void SetPositionVelocityNedRequest::unsafe_arena_set_allocated_position_ned_yaw(
+    ::mavsdk::rpc::offboard::PositionNedYaw* position_ned_yaw) {
+  if (GetArena() == nullptr) {
+    delete reinterpret_cast<::PROTOBUF_NAMESPACE_ID::MessageLite*>(position_ned_yaw_);
+  }
+  position_ned_yaw_ = position_ned_yaw;
+  if (position_ned_yaw) {
+    
+  } else {
+    
+  }
+  // @@protoc_insertion_point(field_unsafe_arena_set_allocated:mavsdk.rpc.offboard.SetPositionVelocityNedRequest.position_ned_yaw)
+}
 inline ::mavsdk::rpc::offboard::PositionNedYaw* SetPositionVelocityNedRequest::release_position_ned_yaw() {
+  
+  ::mavsdk::rpc::offboard::PositionNedYaw* temp = position_ned_yaw_;
+  position_ned_yaw_ = nullptr;
+  if (GetArena() != nullptr) {
+    temp = ::PROTOBUF_NAMESPACE_ID::internal::DuplicateIfNonNull(temp);
+  }
+  return temp;
+}
+inline ::mavsdk::rpc::offboard::PositionNedYaw* SetPositionVelocityNedRequest::unsafe_arena_release_position_ned_yaw() {
   // @@protoc_insertion_point(field_release:mavsdk.rpc.offboard.SetPositionVelocityNedRequest.position_ned_yaw)
   
   ::mavsdk::rpc::offboard::PositionNedYaw* temp = position_ned_yaw_;
@@ -5694,7 +5739,7 @@ inline ::mavsdk::rpc::offboard::PositionNedYaw* SetPositionVelocityNedRequest::r
 inline ::mavsdk::rpc::offboard::PositionNedYaw* SetPositionVelocityNedRequest::_internal_mutable_position_ned_yaw() {
   
   if (position_ned_yaw_ == nullptr) {
-    auto* p = CreateMaybeMessage<::mavsdk::rpc::offboard::PositionNedYaw>(GetArenaNoVirtual());
+    auto* p = CreateMaybeMessage<::mavsdk::rpc::offboard::PositionNedYaw>(GetArena());
     position_ned_yaw_ = p;
   }
   return position_ned_yaw_;
@@ -5704,12 +5749,13 @@ inline ::mavsdk::rpc::offboard::PositionNedYaw* SetPositionVelocityNedRequest::m
   return _internal_mutable_position_ned_yaw();
 }
 inline void SetPositionVelocityNedRequest::set_allocated_position_ned_yaw(::mavsdk::rpc::offboard::PositionNedYaw* position_ned_yaw) {
-  ::PROTOBUF_NAMESPACE_ID::Arena* message_arena = GetArenaNoVirtual();
+  ::PROTOBUF_NAMESPACE_ID::Arena* message_arena = GetArena();
   if (message_arena == nullptr) {
     delete position_ned_yaw_;
   }
   if (position_ned_yaw) {
-    ::PROTOBUF_NAMESPACE_ID::Arena* submessage_arena = nullptr;
+    ::PROTOBUF_NAMESPACE_ID::Arena* submessage_arena =
+      ::PROTOBUF_NAMESPACE_ID::Arena::GetArena(position_ned_yaw);
     if (message_arena != submessage_arena) {
       position_ned_yaw = ::PROTOBUF_NAMESPACE_ID::internal::GetOwnedMessage(
           message_arena, position_ned_yaw, submessage_arena);
@@ -5730,7 +5776,7 @@ inline bool SetPositionVelocityNedRequest::has_velocity_ned_yaw() const {
   return _internal_has_velocity_ned_yaw();
 }
 inline void SetPositionVelocityNedRequest::clear_velocity_ned_yaw() {
-  if (GetArenaNoVirtual() == nullptr && velocity_ned_yaw_ != nullptr) {
+  if (GetArena() == nullptr && velocity_ned_yaw_ != nullptr) {
     delete velocity_ned_yaw_;
   }
   velocity_ned_yaw_ = nullptr;
@@ -5744,7 +5790,29 @@ inline const ::mavsdk::rpc::offboard::VelocityNedYaw& SetPositionVelocityNedRequ
   // @@protoc_insertion_point(field_get:mavsdk.rpc.offboard.SetPositionVelocityNedRequest.velocity_ned_yaw)
   return _internal_velocity_ned_yaw();
 }
+inline void SetPositionVelocityNedRequest::unsafe_arena_set_allocated_velocity_ned_yaw(
+    ::mavsdk::rpc::offboard::VelocityNedYaw* velocity_ned_yaw) {
+  if (GetArena() == nullptr) {
+    delete reinterpret_cast<::PROTOBUF_NAMESPACE_ID::MessageLite*>(velocity_ned_yaw_);
+  }
+  velocity_ned_yaw_ = velocity_ned_yaw;
+  if (velocity_ned_yaw) {
+    
+  } else {
+    
+  }
+  // @@protoc_insertion_point(field_unsafe_arena_set_allocated:mavsdk.rpc.offboard.SetPositionVelocityNedRequest.velocity_ned_yaw)
+}
 inline ::mavsdk::rpc::offboard::VelocityNedYaw* SetPositionVelocityNedRequest::release_velocity_ned_yaw() {
+  
+  ::mavsdk::rpc::offboard::VelocityNedYaw* temp = velocity_ned_yaw_;
+  velocity_ned_yaw_ = nullptr;
+  if (GetArena() != nullptr) {
+    temp = ::PROTOBUF_NAMESPACE_ID::internal::DuplicateIfNonNull(temp);
+  }
+  return temp;
+}
+inline ::mavsdk::rpc::offboard::VelocityNedYaw* SetPositionVelocityNedRequest::unsafe_arena_release_velocity_ned_yaw() {
   // @@protoc_insertion_point(field_release:mavsdk.rpc.offboard.SetPositionVelocityNedRequest.velocity_ned_yaw)
   
   ::mavsdk::rpc::offboard::VelocityNedYaw* temp = velocity_ned_yaw_;
@@ -5754,7 +5822,7 @@ inline ::mavsdk::rpc::offboard::VelocityNedYaw* SetPositionVelocityNedRequest::r
 inline ::mavsdk::rpc::offboard::VelocityNedYaw* SetPositionVelocityNedRequest::_internal_mutable_velocity_ned_yaw() {
   
   if (velocity_ned_yaw_ == nullptr) {
-    auto* p = CreateMaybeMessage<::mavsdk::rpc::offboard::VelocityNedYaw>(GetArenaNoVirtual());
+    auto* p = CreateMaybeMessage<::mavsdk::rpc::offboard::VelocityNedYaw>(GetArena());
     velocity_ned_yaw_ = p;
   }
   return velocity_ned_yaw_;
@@ -5764,12 +5832,13 @@ inline ::mavsdk::rpc::offboard::VelocityNedYaw* SetPositionVelocityNedRequest::m
   return _internal_mutable_velocity_ned_yaw();
 }
 inline void SetPositionVelocityNedRequest::set_allocated_velocity_ned_yaw(::mavsdk::rpc::offboard::VelocityNedYaw* velocity_ned_yaw) {
-  ::PROTOBUF_NAMESPACE_ID::Arena* message_arena = GetArenaNoVirtual();
+  ::PROTOBUF_NAMESPACE_ID::Arena* message_arena = GetArena();
   if (message_arena == nullptr) {
     delete velocity_ned_yaw_;
   }
   if (velocity_ned_yaw) {
-    ::PROTOBUF_NAMESPACE_ID::Arena* submessage_arena = nullptr;
+    ::PROTOBUF_NAMESPACE_ID::Arena* submessage_arena =
+      ::PROTOBUF_NAMESPACE_ID::Arena::GetArena(velocity_ned_yaw);
     if (message_arena != submessage_arena) {
       velocity_ned_yaw = ::PROTOBUF_NAMESPACE_ID::internal::GetOwnedMessage(
           message_arena, velocity_ned_yaw, submessage_arena);
@@ -5794,7 +5863,7 @@ inline bool SetPositionVelocityNedResponse::has_offboard_result() const {
   return _internal_has_offboard_result();
 }
 inline void SetPositionVelocityNedResponse::clear_offboard_result() {
-  if (GetArenaNoVirtual() == nullptr && offboard_result_ != nullptr) {
+  if (GetArena() == nullptr && offboard_result_ != nullptr) {
     delete offboard_result_;
   }
   offboard_result_ = nullptr;
@@ -5808,7 +5877,29 @@ inline const ::mavsdk::rpc::offboard::OffboardResult& SetPositionVelocityNedResp
   // @@protoc_insertion_point(field_get:mavsdk.rpc.offboard.SetPositionVelocityNedResponse.offboard_result)
   return _internal_offboard_result();
 }
+inline void SetPositionVelocityNedResponse::unsafe_arena_set_allocated_offboard_result(
+    ::mavsdk::rpc::offboard::OffboardResult* offboard_result) {
+  if (GetArena() == nullptr) {
+    delete reinterpret_cast<::PROTOBUF_NAMESPACE_ID::MessageLite*>(offboard_result_);
+  }
+  offboard_result_ = offboard_result;
+  if (offboard_result) {
+    
+  } else {
+    
+  }
+  // @@protoc_insertion_point(field_unsafe_arena_set_allocated:mavsdk.rpc.offboard.SetPositionVelocityNedResponse.offboard_result)
+}
 inline ::mavsdk::rpc::offboard::OffboardResult* SetPositionVelocityNedResponse::release_offboard_result() {
+  
+  ::mavsdk::rpc::offboard::OffboardResult* temp = offboard_result_;
+  offboard_result_ = nullptr;
+  if (GetArena() != nullptr) {
+    temp = ::PROTOBUF_NAMESPACE_ID::internal::DuplicateIfNonNull(temp);
+  }
+  return temp;
+}
+inline ::mavsdk::rpc::offboard::OffboardResult* SetPositionVelocityNedResponse::unsafe_arena_release_offboard_result() {
   // @@protoc_insertion_point(field_release:mavsdk.rpc.offboard.SetPositionVelocityNedResponse.offboard_result)
   
   ::mavsdk::rpc::offboard::OffboardResult* temp = offboard_result_;
@@ -5818,7 +5909,7 @@ inline ::mavsdk::rpc::offboard::OffboardResult* SetPositionVelocityNedResponse::
 inline ::mavsdk::rpc::offboard::OffboardResult* SetPositionVelocityNedResponse::_internal_mutable_offboard_result() {
   
   if (offboard_result_ == nullptr) {
-    auto* p = CreateMaybeMessage<::mavsdk::rpc::offboard::OffboardResult>(GetArenaNoVirtual());
+    auto* p = CreateMaybeMessage<::mavsdk::rpc::offboard::OffboardResult>(GetArena());
     offboard_result_ = p;
   }
   return offboard_result_;
@@ -5828,12 +5919,13 @@ inline ::mavsdk::rpc::offboard::OffboardResult* SetPositionVelocityNedResponse::
   return _internal_mutable_offboard_result();
 }
 inline void SetPositionVelocityNedResponse::set_allocated_offboard_result(::mavsdk::rpc::offboard::OffboardResult* offboard_result) {
-  ::PROTOBUF_NAMESPACE_ID::Arena* message_arena = GetArenaNoVirtual();
+  ::PROTOBUF_NAMESPACE_ID::Arena* message_arena = GetArena();
   if (message_arena == nullptr) {
     delete offboard_result_;
   }
   if (offboard_result) {
-    ::PROTOBUF_NAMESPACE_ID::Arena* submessage_arena = nullptr;
+    ::PROTOBUF_NAMESPACE_ID::Arena* submessage_arena =
+      ::PROTOBUF_NAMESPACE_ID::Arena::GetArena(offboard_result);
     if (message_arena != submessage_arena) {
       offboard_result = ::PROTOBUF_NAMESPACE_ID::internal::GetOwnedMessage(
           message_arena, offboard_result, submessage_arena);

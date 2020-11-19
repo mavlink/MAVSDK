@@ -929,13 +929,8 @@ static ::PROTOBUF_NAMESPACE_ID::internal::SCCInfoBase*const descriptor_table_off
 };
 static ::PROTOBUF_NAMESPACE_ID::internal::once_flag descriptor_table_offboard_2foffboard_2eproto_once;
 const ::PROTOBUF_NAMESPACE_ID::internal::DescriptorTable descriptor_table_offboard_2foffboard_2eproto = {
-<<<<<<< HEAD
-  &descriptor_table_offboard_2foffboard_2eproto_initialized, descriptor_table_protodef_offboard_2foffboard_2eproto, "offboard/offboard.proto", 3651,
+  false, false, descriptor_table_protodef_offboard_2foffboard_2eproto, "offboard/offboard.proto", 3651,
   &descriptor_table_offboard_2foffboard_2eproto_once, descriptor_table_offboard_2foffboard_2eproto_sccs, descriptor_table_offboard_2foffboard_2eproto_deps, 28, 1,
-=======
-  false, false, descriptor_table_protodef_offboard_2foffboard_2eproto, "offboard/offboard.proto", 3257,
-  &descriptor_table_offboard_2foffboard_2eproto_once, descriptor_table_offboard_2foffboard_2eproto_sccs, descriptor_table_offboard_2foffboard_2eproto_deps, 26, 1,
->>>>>>> develop
   schemas, file_default_instances, TableStruct_offboard_2foffboard_2eproto::offsets,
   file_level_metadata_offboard_2foffboard_2eproto, 28, file_level_enum_descriptors_offboard_2foffboard_2eproto, file_level_service_descriptors_offboard_2foffboard_2eproto,
 };
@@ -4701,15 +4696,15 @@ const ::mavsdk::rpc::offboard::VelocityNedYaw&
 SetPositionVelocityNedRequest::_Internal::velocity_ned_yaw(const SetPositionVelocityNedRequest* msg) {
   return *msg->velocity_ned_yaw_;
 }
-SetPositionVelocityNedRequest::SetPositionVelocityNedRequest()
-  : ::PROTOBUF_NAMESPACE_ID::Message(), _internal_metadata_(nullptr) {
+SetPositionVelocityNedRequest::SetPositionVelocityNedRequest(::PROTOBUF_NAMESPACE_ID::Arena* arena)
+  : ::PROTOBUF_NAMESPACE_ID::Message(arena) {
   SharedCtor();
-  // @@protoc_insertion_point(constructor:mavsdk.rpc.offboard.SetPositionVelocityNedRequest)
+  RegisterArenaDtor(arena);
+  // @@protoc_insertion_point(arena_constructor:mavsdk.rpc.offboard.SetPositionVelocityNedRequest)
 }
 SetPositionVelocityNedRequest::SetPositionVelocityNedRequest(const SetPositionVelocityNedRequest& from)
-  : ::PROTOBUF_NAMESPACE_ID::Message(),
-      _internal_metadata_(nullptr) {
-  _internal_metadata_.MergeFrom(from._internal_metadata_);
+  : ::PROTOBUF_NAMESPACE_ID::Message() {
+  _internal_metadata_.MergeFrom<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>(from._internal_metadata_);
   if (from._internal_has_position_ned_yaw()) {
     position_ned_yaw_ = new ::mavsdk::rpc::offboard::PositionNedYaw(*from.position_ned_yaw_);
   } else {
@@ -4733,13 +4728,21 @@ void SetPositionVelocityNedRequest::SharedCtor() {
 SetPositionVelocityNedRequest::~SetPositionVelocityNedRequest() {
   // @@protoc_insertion_point(destructor:mavsdk.rpc.offboard.SetPositionVelocityNedRequest)
   SharedDtor();
+  _internal_metadata_.Delete<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>();
 }
 
 void SetPositionVelocityNedRequest::SharedDtor() {
+  GOOGLE_DCHECK(GetArena() == nullptr);
   if (this != internal_default_instance()) delete position_ned_yaw_;
   if (this != internal_default_instance()) delete velocity_ned_yaw_;
 }
 
+void SetPositionVelocityNedRequest::ArenaDtor(void* object) {
+  SetPositionVelocityNedRequest* _this = reinterpret_cast< SetPositionVelocityNedRequest* >(object);
+  (void)_this;
+}
+void SetPositionVelocityNedRequest::RegisterArenaDtor(::PROTOBUF_NAMESPACE_ID::Arena*) {
+}
 void SetPositionVelocityNedRequest::SetCachedSize(int size) const {
   _cached_size_.Set(size);
 }
@@ -4755,19 +4758,20 @@ void SetPositionVelocityNedRequest::Clear() {
   // Prevent compiler warnings about cached_has_bits being unused
   (void) cached_has_bits;
 
-  if (GetArenaNoVirtual() == nullptr && position_ned_yaw_ != nullptr) {
+  if (GetArena() == nullptr && position_ned_yaw_ != nullptr) {
     delete position_ned_yaw_;
   }
   position_ned_yaw_ = nullptr;
-  if (GetArenaNoVirtual() == nullptr && velocity_ned_yaw_ != nullptr) {
+  if (GetArena() == nullptr && velocity_ned_yaw_ != nullptr) {
     delete velocity_ned_yaw_;
   }
   velocity_ned_yaw_ = nullptr;
-  _internal_metadata_.Clear();
+  _internal_metadata_.Clear<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>();
 }
 
 const char* SetPositionVelocityNedRequest::_InternalParse(const char* ptr, ::PROTOBUF_NAMESPACE_ID::internal::ParseContext* ctx) {
 #define CHK_(x) if (PROTOBUF_PREDICT_FALSE(!(x))) goto failure
+  ::PROTOBUF_NAMESPACE_ID::Arena* arena = GetArena(); (void)arena;
   while (!ctx->Done(&ptr)) {
     ::PROTOBUF_NAMESPACE_ID::uint32 tag;
     ptr = ::PROTOBUF_NAMESPACE_ID::internal::ReadTag(ptr, &tag);
@@ -4793,7 +4797,9 @@ const char* SetPositionVelocityNedRequest::_InternalParse(const char* ptr, ::PRO
           ctx->SetLastTag(tag);
           goto success;
         }
-        ptr = UnknownFieldParse(tag, &_internal_metadata_, ptr, ctx);
+        ptr = UnknownFieldParse(tag,
+            _internal_metadata_.mutable_unknown_fields<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>(),
+            ptr, ctx);
         CHK_(ptr != nullptr);
         continue;
       }
@@ -4831,7 +4837,7 @@ failure:
 
   if (PROTOBUF_PREDICT_FALSE(_internal_metadata_.have_unknown_fields())) {
     target = ::PROTOBUF_NAMESPACE_ID::internal::WireFormat::InternalSerializeUnknownFieldsToArray(
-        _internal_metadata_.unknown_fields(), target, stream);
+        _internal_metadata_.unknown_fields<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>(::PROTOBUF_NAMESPACE_ID::UnknownFieldSet::default_instance), target, stream);
   }
   // @@protoc_insertion_point(serialize_to_array_end:mavsdk.rpc.offboard.SetPositionVelocityNedRequest)
   return target;
@@ -4886,7 +4892,7 @@ void SetPositionVelocityNedRequest::MergeFrom(const ::PROTOBUF_NAMESPACE_ID::Mes
 void SetPositionVelocityNedRequest::MergeFrom(const SetPositionVelocityNedRequest& from) {
 // @@protoc_insertion_point(class_specific_merge_from_start:mavsdk.rpc.offboard.SetPositionVelocityNedRequest)
   GOOGLE_DCHECK_NE(&from, this);
-  _internal_metadata_.MergeFrom(from._internal_metadata_);
+  _internal_metadata_.MergeFrom<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>(from._internal_metadata_);
   ::PROTOBUF_NAMESPACE_ID::uint32 cached_has_bits = 0;
   (void) cached_has_bits;
 
@@ -4918,9 +4924,13 @@ bool SetPositionVelocityNedRequest::IsInitialized() const {
 
 void SetPositionVelocityNedRequest::InternalSwap(SetPositionVelocityNedRequest* other) {
   using std::swap;
-  _internal_metadata_.Swap(&other->_internal_metadata_);
-  swap(position_ned_yaw_, other->position_ned_yaw_);
-  swap(velocity_ned_yaw_, other->velocity_ned_yaw_);
+  _internal_metadata_.Swap<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>(&other->_internal_metadata_);
+  ::PROTOBUF_NAMESPACE_ID::internal::memswap<
+      PROTOBUF_FIELD_OFFSET(SetPositionVelocityNedRequest, velocity_ned_yaw_)
+      + sizeof(SetPositionVelocityNedRequest::velocity_ned_yaw_)
+      - PROTOBUF_FIELD_OFFSET(SetPositionVelocityNedRequest, position_ned_yaw_)>(
+          reinterpret_cast<char*>(&position_ned_yaw_),
+          reinterpret_cast<char*>(&other->position_ned_yaw_));
 }
 
 ::PROTOBUF_NAMESPACE_ID::Metadata SetPositionVelocityNedRequest::GetMetadata() const {
@@ -4943,15 +4953,15 @@ const ::mavsdk::rpc::offboard::OffboardResult&
 SetPositionVelocityNedResponse::_Internal::offboard_result(const SetPositionVelocityNedResponse* msg) {
   return *msg->offboard_result_;
 }
-SetPositionVelocityNedResponse::SetPositionVelocityNedResponse()
-  : ::PROTOBUF_NAMESPACE_ID::Message(), _internal_metadata_(nullptr) {
+SetPositionVelocityNedResponse::SetPositionVelocityNedResponse(::PROTOBUF_NAMESPACE_ID::Arena* arena)
+  : ::PROTOBUF_NAMESPACE_ID::Message(arena) {
   SharedCtor();
-  // @@protoc_insertion_point(constructor:mavsdk.rpc.offboard.SetPositionVelocityNedResponse)
+  RegisterArenaDtor(arena);
+  // @@protoc_insertion_point(arena_constructor:mavsdk.rpc.offboard.SetPositionVelocityNedResponse)
 }
 SetPositionVelocityNedResponse::SetPositionVelocityNedResponse(const SetPositionVelocityNedResponse& from)
-  : ::PROTOBUF_NAMESPACE_ID::Message(),
-      _internal_metadata_(nullptr) {
-  _internal_metadata_.MergeFrom(from._internal_metadata_);
+  : ::PROTOBUF_NAMESPACE_ID::Message() {
+  _internal_metadata_.MergeFrom<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>(from._internal_metadata_);
   if (from._internal_has_offboard_result()) {
     offboard_result_ = new ::mavsdk::rpc::offboard::OffboardResult(*from.offboard_result_);
   } else {
@@ -4968,12 +4978,20 @@ void SetPositionVelocityNedResponse::SharedCtor() {
 SetPositionVelocityNedResponse::~SetPositionVelocityNedResponse() {
   // @@protoc_insertion_point(destructor:mavsdk.rpc.offboard.SetPositionVelocityNedResponse)
   SharedDtor();
+  _internal_metadata_.Delete<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>();
 }
 
 void SetPositionVelocityNedResponse::SharedDtor() {
+  GOOGLE_DCHECK(GetArena() == nullptr);
   if (this != internal_default_instance()) delete offboard_result_;
 }
 
+void SetPositionVelocityNedResponse::ArenaDtor(void* object) {
+  SetPositionVelocityNedResponse* _this = reinterpret_cast< SetPositionVelocityNedResponse* >(object);
+  (void)_this;
+}
+void SetPositionVelocityNedResponse::RegisterArenaDtor(::PROTOBUF_NAMESPACE_ID::Arena*) {
+}
 void SetPositionVelocityNedResponse::SetCachedSize(int size) const {
   _cached_size_.Set(size);
 }
@@ -4989,15 +5007,16 @@ void SetPositionVelocityNedResponse::Clear() {
   // Prevent compiler warnings about cached_has_bits being unused
   (void) cached_has_bits;
 
-  if (GetArenaNoVirtual() == nullptr && offboard_result_ != nullptr) {
+  if (GetArena() == nullptr && offboard_result_ != nullptr) {
     delete offboard_result_;
   }
   offboard_result_ = nullptr;
-  _internal_metadata_.Clear();
+  _internal_metadata_.Clear<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>();
 }
 
 const char* SetPositionVelocityNedResponse::_InternalParse(const char* ptr, ::PROTOBUF_NAMESPACE_ID::internal::ParseContext* ctx) {
 #define CHK_(x) if (PROTOBUF_PREDICT_FALSE(!(x))) goto failure
+  ::PROTOBUF_NAMESPACE_ID::Arena* arena = GetArena(); (void)arena;
   while (!ctx->Done(&ptr)) {
     ::PROTOBUF_NAMESPACE_ID::uint32 tag;
     ptr = ::PROTOBUF_NAMESPACE_ID::internal::ReadTag(ptr, &tag);
@@ -5016,7 +5035,9 @@ const char* SetPositionVelocityNedResponse::_InternalParse(const char* ptr, ::PR
           ctx->SetLastTag(tag);
           goto success;
         }
-        ptr = UnknownFieldParse(tag, &_internal_metadata_, ptr, ctx);
+        ptr = UnknownFieldParse(tag,
+            _internal_metadata_.mutable_unknown_fields<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>(),
+            ptr, ctx);
         CHK_(ptr != nullptr);
         continue;
       }
@@ -5046,7 +5067,7 @@ failure:
 
   if (PROTOBUF_PREDICT_FALSE(_internal_metadata_.have_unknown_fields())) {
     target = ::PROTOBUF_NAMESPACE_ID::internal::WireFormat::InternalSerializeUnknownFieldsToArray(
-        _internal_metadata_.unknown_fields(), target, stream);
+        _internal_metadata_.unknown_fields<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>(::PROTOBUF_NAMESPACE_ID::UnknownFieldSet::default_instance), target, stream);
   }
   // @@protoc_insertion_point(serialize_to_array_end:mavsdk.rpc.offboard.SetPositionVelocityNedResponse)
   return target;
@@ -5094,7 +5115,7 @@ void SetPositionVelocityNedResponse::MergeFrom(const ::PROTOBUF_NAMESPACE_ID::Me
 void SetPositionVelocityNedResponse::MergeFrom(const SetPositionVelocityNedResponse& from) {
 // @@protoc_insertion_point(class_specific_merge_from_start:mavsdk.rpc.offboard.SetPositionVelocityNedResponse)
   GOOGLE_DCHECK_NE(&from, this);
-  _internal_metadata_.MergeFrom(from._internal_metadata_);
+  _internal_metadata_.MergeFrom<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>(from._internal_metadata_);
   ::PROTOBUF_NAMESPACE_ID::uint32 cached_has_bits = 0;
   (void) cached_has_bits;
 
@@ -5123,7 +5144,7 @@ bool SetPositionVelocityNedResponse::IsInitialized() const {
 
 void SetPositionVelocityNedResponse::InternalSwap(SetPositionVelocityNedResponse* other) {
   using std::swap;
-  _internal_metadata_.Swap(&other->_internal_metadata_);
+  _internal_metadata_.Swap<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>(&other->_internal_metadata_);
   swap(offboard_result_, other->offboard_result_);
 }
 
@@ -7182,10 +7203,10 @@ template<> PROTOBUF_NOINLINE ::mavsdk::rpc::offboard::SetVelocityNedResponse* Ar
   return Arena::CreateMessageInternal< ::mavsdk::rpc::offboard::SetVelocityNedResponse >(arena);
 }
 template<> PROTOBUF_NOINLINE ::mavsdk::rpc::offboard::SetPositionVelocityNedRequest* Arena::CreateMaybeMessage< ::mavsdk::rpc::offboard::SetPositionVelocityNedRequest >(Arena* arena) {
-  return Arena::CreateInternal< ::mavsdk::rpc::offboard::SetPositionVelocityNedRequest >(arena);
+  return Arena::CreateMessageInternal< ::mavsdk::rpc::offboard::SetPositionVelocityNedRequest >(arena);
 }
 template<> PROTOBUF_NOINLINE ::mavsdk::rpc::offboard::SetPositionVelocityNedResponse* Arena::CreateMaybeMessage< ::mavsdk::rpc::offboard::SetPositionVelocityNedResponse >(Arena* arena) {
-  return Arena::CreateInternal< ::mavsdk::rpc::offboard::SetPositionVelocityNedResponse >(arena);
+  return Arena::CreateMessageInternal< ::mavsdk::rpc::offboard::SetPositionVelocityNedResponse >(arena);
 }
 template<> PROTOBUF_NOINLINE ::mavsdk::rpc::offboard::Attitude* Arena::CreateMaybeMessage< ::mavsdk::rpc::offboard::Attitude >(Arena* arena) {
   return Arena::CreateMessageInternal< ::mavsdk::rpc::offboard::Attitude >(arena);
