@@ -65,6 +65,7 @@ message ManualControlResult {
         RESULT_COMMAND_DENIED = 5; // Command refused by vehicle
         RESULT_TIMEOUT = 6; // Request timed out
         RESULT_INPUT_OUT_OF_RANGE = 7; // Input out of range
+        RESULT_INPUT_NOT_SET = 8; // No Input set
     }
 
     Result result = 1; // Result enum value
