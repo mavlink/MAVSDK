@@ -1,5 +1,5 @@
 #
-# PX4 v1.10.1 SITL testing environment for MAVSDK based on Ubuntu 18.04.
+# PX4 v1.10.2 SITL testing environment for MAVSDK based on Ubuntu 18.04.
 # Author: Julian Oes <julian@oes.ch>
 #
 FROM mavsdk/mavsdk-ubuntu-18.04
@@ -34,6 +34,6 @@ RUN apt-get update && \
     && rm -rf /var/lib/apt/lists/{apt,dpkg,cache,log} /tmp/* /var/tmp/*
 
 RUN git clone https://github.com/PX4/Firmware.git ${FIRMWARE_DIR}
-RUN git -C ${FIRMWARE_DIR} checkout v1.10.1
+RUN git -C ${FIRMWARE_DIR} checkout v1.10.2
 RUN git -C ${FIRMWARE_DIR} submodule update --init --recursive
 RUN cd ${FIRMWARE_DIR} && DONT_RUN=1 make px4_sitl gazebo && DONT_RUN=1 make px4_sitl gazebo
