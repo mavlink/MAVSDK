@@ -106,7 +106,7 @@ service TelemetryService {
     // Set rate to 'Distance Sensor' updates.
     rpc SetRateDistanceSensor(SetRateDistanceSensorRequest) returns(SetRateDistanceSensorResponse) {}
 
-    // Get the GPS global origin.
+    // Get the GPS location of where the estimator has been initialized.
     rpc GetGpsGlobalOrigin(GetGpsGlobalOriginRequest) returns(GetGpsGlobalOriginResponse) {}
 }
 
