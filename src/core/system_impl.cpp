@@ -471,8 +471,8 @@ void SystemImpl::set_connected()
             LogDebug() << "Discovered " << _components.size() << " component(s) "
                        << "(UUID: " << _uuid << ")";
 
-            _parent.notify_on_discover(_uuid);
             _connected = true;
+            _parent.notify_on_discover(_uuid);
 
             // Send a heartbeat back immediately.
             _parent.start_sending_heartbeat();
