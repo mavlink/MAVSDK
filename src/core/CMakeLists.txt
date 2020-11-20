@@ -70,6 +70,10 @@ if(ANDROID)
     )
 endif()
 
+if(BUILD_STATIC_MAVSDK_SERVER AND ("${CMAKE_C_COMPILER_ID}" STREQUAL "GNU"))
+    target_link_libraries(mavsdk PRIVATE atomic)
+endif()
+
 set_target_properties(mavsdk
     PROPERTIES COMPILE_FLAGS ${warnings}
     )
