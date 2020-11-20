@@ -32,7 +32,7 @@ void ManualControlImpl::start_position_control_async(const ManualControl::Result
         if (callback) {
             auto temp_callback = callback;
             _parent->call_user_callback(
-                [temp_callback]() { temp_callback(ManualControl::Result::Unknown); });
+                [temp_callback]() { temp_callback(ManualControl::Result::InputNotSet); });
         }
         return;
     }
@@ -47,7 +47,7 @@ void ManualControlImpl::start_position_control_async(const ManualControl::Result
 ManualControl::Result ManualControlImpl::start_position_control()
 {
     if (_input == Input::NotSet) {
-        return ManualControl::Result::Unknown;
+        return ManualControl::Result::InputNotSet;
     }
 
     auto prom = std::promise<ManualControl::Result>();
@@ -64,7 +64,7 @@ void ManualControlImpl::start_altitude_control_async(const ManualControl::Result
         if (callback) {
             auto temp_callback = callback;
             _parent->call_user_callback(
-                [temp_callback]() { temp_callback(ManualControl::Result::Unknown); });
+                [temp_callback]() { temp_callback(ManualControl::Result::InputNotSet); });
         }
         return;
     }
@@ -78,7 +78,7 @@ void ManualControlImpl::start_altitude_control_async(const ManualControl::Result
 ManualControl::Result ManualControlImpl::start_altitude_control()
 {
     if (_input == Input::NotSet) {
-        return ManualControl::Result::Unknown;
+        return ManualControl::Result::InputNotSet;
     }
     auto prom = std::promise<ManualControl::Result>();
     auto fut = prom.get_future();
