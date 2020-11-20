@@ -1676,14 +1676,14 @@ public:
     using GetGpsGlobalOriginCallback = std::function<void(Result, GpsGlobalOrigin)>;
 
     /**
-     * @brief Get the GPS global origin.
+     * @brief Get the GPS location of where the estimator has been initialized.
      *
      * This function is non-blocking. See 'get_gps_global_origin' for the blocking counterpart.
      */
     void get_gps_global_origin_async(const GetGpsGlobalOriginCallback callback);
 
     /**
-     * @brief Get the GPS global origin.
+     * @brief Get the GPS location of where the estimator has been initialized.
      *
      * This function is blocking. See 'get_gps_global_origin_async' for the non-blocking
      * counterpart.

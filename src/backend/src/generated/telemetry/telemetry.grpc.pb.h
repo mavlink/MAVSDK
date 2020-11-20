@@ -463,7 +463,7 @@ class TelemetryService final {
     std::unique_ptr< ::grpc::ClientAsyncResponseReaderInterface< ::mavsdk::rpc::telemetry::SetRateDistanceSensorResponse>> PrepareAsyncSetRateDistanceSensor(::grpc::ClientContext* context, const ::mavsdk::rpc::telemetry::SetRateDistanceSensorRequest& request, ::grpc::CompletionQueue* cq) {
       return std::unique_ptr< ::grpc::ClientAsyncResponseReaderInterface< ::mavsdk::rpc::telemetry::SetRateDistanceSensorResponse>>(PrepareAsyncSetRateDistanceSensorRaw(context, request, cq));
     }
-    // Get the GPS global origin.
+    // Get the GPS location of where the estimator has been initialized.
     virtual ::grpc::Status GetGpsGlobalOrigin(::grpc::ClientContext* context, const ::mavsdk::rpc::telemetry::GetGpsGlobalOriginRequest& request, ::mavsdk::rpc::telemetry::GetGpsGlobalOriginResponse* response) = 0;
     std::unique_ptr< ::grpc::ClientAsyncResponseReaderInterface< ::mavsdk::rpc::telemetry::GetGpsGlobalOriginResponse>> AsyncGetGpsGlobalOrigin(::grpc::ClientContext* context, const ::mavsdk::rpc::telemetry::GetGpsGlobalOriginRequest& request, ::grpc::CompletionQueue* cq) {
       return std::unique_ptr< ::grpc::ClientAsyncResponseReaderInterface< ::mavsdk::rpc::telemetry::GetGpsGlobalOriginResponse>>(AsyncGetGpsGlobalOriginRaw(context, request, cq));
@@ -769,7 +769,7 @@ class TelemetryService final {
       #else
       virtual void SetRateDistanceSensor(::grpc::ClientContext* context, const ::mavsdk::rpc::telemetry::SetRateDistanceSensorRequest* request, ::mavsdk::rpc::telemetry::SetRateDistanceSensorResponse* response, ::grpc::experimental::ClientUnaryReactor* reactor) = 0;
       #endif
-      // Get the GPS global origin.
+      // Get the GPS location of where the estimator has been initialized.
       virtual void GetGpsGlobalOrigin(::grpc::ClientContext* context, const ::mavsdk::rpc::telemetry::GetGpsGlobalOriginRequest* request, ::mavsdk::rpc::telemetry::GetGpsGlobalOriginResponse* response, std::function<void(::grpc::Status)>) = 0;
       #ifdef GRPC_CALLBACK_API_NONEXPERIMENTAL
       virtual void GetGpsGlobalOrigin(::grpc::ClientContext* context, const ::mavsdk::rpc::telemetry::GetGpsGlobalOriginRequest* request, ::mavsdk::rpc::telemetry::GetGpsGlobalOriginResponse* response, ::grpc::ClientUnaryReactor* reactor) = 0;
@@ -1829,7 +1829,7 @@ class TelemetryService final {
     virtual ::grpc::Status SetRateUnixEpochTime(::grpc::ServerContext* context, const ::mavsdk::rpc::telemetry::SetRateUnixEpochTimeRequest* request, ::mavsdk::rpc::telemetry::SetRateUnixEpochTimeResponse* response);
     // Set rate to 'Distance Sensor' updates.
     virtual ::grpc::Status SetRateDistanceSensor(::grpc::ServerContext* context, const ::mavsdk::rpc::telemetry::SetRateDistanceSensorRequest* request, ::mavsdk::rpc::telemetry::SetRateDistanceSensorResponse* response);
-    // Get the GPS global origin.
+    // Get the GPS location of where the estimator has been initialized.
     virtual ::grpc::Status GetGpsGlobalOrigin(::grpc::ServerContext* context, const ::mavsdk::rpc::telemetry::GetGpsGlobalOriginRequest* request, ::mavsdk::rpc::telemetry::GetGpsGlobalOriginResponse* response);
   };
   template <class BaseClass>

@@ -234,28 +234,29 @@ const char descriptor_table_protodef_manual_5fcontrol_2fmanual_5fcontrol_2eproto
   "st\022\t\n\001x\030\001 \001(\002\022\t\n\001y\030\002 \001(\002\022\t\n\001z\030\003 \001(\002\022\t\n\001r"
   "\030\004 \001(\002\"n\n\035SetManualControlInputResponse\022"
   "M\n\025manual_control_result\030\001 \001(\0132..mavsdk."
-  "rpc.manual_control.ManualControlResult\"\265"
+  "rpc.manual_control.ManualControlResult\"\317"
   "\002\n\023ManualControlResult\022E\n\006result\030\001 \001(\01625"
   ".mavsdk.rpc.manual_control.ManualControl"
-  "Result.Result\022\022\n\nresult_str\030\002 \001(\t\"\302\001\n\006Re"
+  "Result.Result\022\022\n\nresult_str\030\002 \001(\t\"\334\001\n\006Re"
   "sult\022\022\n\016RESULT_UNKNOWN\020\000\022\022\n\016RESULT_SUCCE"
   "SS\020\001\022\024\n\020RESULT_NO_SYSTEM\020\002\022\033\n\027RESULT_CON"
   "NECTION_ERROR\020\003\022\017\n\013RESULT_BUSY\020\004\022\031\n\025RESU"
   "LT_COMMAND_DENIED\020\005\022\022\n\016RESULT_TIMEOUT\020\006\022"
-  "\035\n\031RESULT_INPUT_OUT_OF_RANGE\020\0072\301\003\n\024Manua"
-  "lControlService\022\211\001\n\024StartPositionControl"
-  "\0226.mavsdk.rpc.manual_control.StartPositi"
-  "onControlRequest\0327.mavsdk.rpc.manual_con"
-  "trol.StartPositionControlResponse\"\000\022\211\001\n\024"
-  "StartAltitudeControl\0226.mavsdk.rpc.manual"
-  "_control.StartAltitudeControlRequest\0327.m"
-  "avsdk.rpc.manual_control.StartAltitudeCo"
-  "ntrolResponse\"\000\022\220\001\n\025SetManualControlInpu"
-  "t\0227.mavsdk.rpc.manual_control.SetManualC"
-  "ontrolInputRequest\0328.mavsdk.rpc.manual_c"
-  "ontrol.SetManualControlInputResponse\"\004\200\265"
-  "\030\001B.\n\030io.mavsdk.manual_controlB\022ManualCo"
-  "ntrolProtob\006proto3"
+  "\035\n\031RESULT_INPUT_OUT_OF_RANGE\020\007\022\030\n\024RESULT"
+  "_INPUT_NOT_SET\020\0102\301\003\n\024ManualControlServic"
+  "e\022\211\001\n\024StartPositionControl\0226.mavsdk.rpc."
+  "manual_control.StartPositionControlReque"
+  "st\0327.mavsdk.rpc.manual_control.StartPosi"
+  "tionControlResponse\"\000\022\211\001\n\024StartAltitudeC"
+  "ontrol\0226.mavsdk.rpc.manual_control.Start"
+  "AltitudeControlRequest\0327.mavsdk.rpc.manu"
+  "al_control.StartAltitudeControlResponse\""
+  "\000\022\220\001\n\025SetManualControlInput\0227.mavsdk.rpc"
+  ".manual_control.SetManualControlInputReq"
+  "uest\0328.mavsdk.rpc.manual_control.SetManu"
+  "alControlInputResponse\"\004\200\265\030\001B.\n\030io.mavsd"
+  "k.manual_controlB\022ManualControlProtob\006pr"
+  "oto3"
   ;
 static const ::PROTOBUF_NAMESPACE_ID::internal::DescriptorTable*const descriptor_table_manual_5fcontrol_2fmanual_5fcontrol_2eproto_deps[1] = {
   &::descriptor_table_mavsdk_5foptions_2eproto,
@@ -271,7 +272,7 @@ static ::PROTOBUF_NAMESPACE_ID::internal::SCCInfoBase*const descriptor_table_man
 };
 static ::PROTOBUF_NAMESPACE_ID::internal::once_flag descriptor_table_manual_5fcontrol_2fmanual_5fcontrol_2eproto_once;
 const ::PROTOBUF_NAMESPACE_ID::internal::DescriptorTable descriptor_table_manual_5fcontrol_2fmanual_5fcontrol_2eproto = {
-  false, false, descriptor_table_protodef_manual_5fcontrol_2fmanual_5fcontrol_2eproto, "manual_control/manual_control.proto", 1378,
+  false, false, descriptor_table_protodef_manual_5fcontrol_2fmanual_5fcontrol_2eproto, "manual_control/manual_control.proto", 1404,
   &descriptor_table_manual_5fcontrol_2fmanual_5fcontrol_2eproto_once, descriptor_table_manual_5fcontrol_2fmanual_5fcontrol_2eproto_sccs, descriptor_table_manual_5fcontrol_2fmanual_5fcontrol_2eproto_deps, 7, 1,
   schemas, file_default_instances, TableStruct_manual_5fcontrol_2fmanual_5fcontrol_2eproto::offsets,
   file_level_metadata_manual_5fcontrol_2fmanual_5fcontrol_2eproto, 7, file_level_enum_descriptors_manual_5fcontrol_2fmanual_5fcontrol_2eproto, file_level_service_descriptors_manual_5fcontrol_2fmanual_5fcontrol_2eproto,
@@ -296,6 +297,7 @@ bool ManualControlResult_Result_IsValid(int value) {
     case 5:
     case 6:
     case 7:
+    case 8:
       return true;
     default:
       return false;
@@ -311,6 +313,7 @@ constexpr ManualControlResult_Result ManualControlResult::RESULT_BUSY;
 constexpr ManualControlResult_Result ManualControlResult::RESULT_COMMAND_DENIED;
 constexpr ManualControlResult_Result ManualControlResult::RESULT_TIMEOUT;
 constexpr ManualControlResult_Result ManualControlResult::RESULT_INPUT_OUT_OF_RANGE;
+constexpr ManualControlResult_Result ManualControlResult::RESULT_INPUT_NOT_SET;
 constexpr ManualControlResult_Result ManualControlResult::Result_MIN;
 constexpr ManualControlResult_Result ManualControlResult::Result_MAX;
 constexpr int ManualControlResult::Result_ARRAYSIZE;
