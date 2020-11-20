@@ -79,6 +79,12 @@ Offboard::Result Offboard::set_velocity_ned(VelocityNedYaw velocity_ned_yaw) con
     return _impl->set_velocity_ned(velocity_ned_yaw);
 }
 
+Offboard::Result Offboard::set_position_velocity_ned(
+    PositionNedYaw position_ned_yaw, VelocityNedYaw velocity_ned_yaw) const
+{
+    return _impl->set_position_velocity_ned(position_ned_yaw, velocity_ned_yaw);
+}
+
 bool operator==(const Offboard::Attitude& lhs, const Offboard::Attitude& rhs)
 {
     return ((std::isnan(rhs.roll_deg) && std::isnan(lhs.roll_deg)) ||

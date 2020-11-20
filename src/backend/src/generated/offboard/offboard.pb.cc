@@ -97,6 +97,14 @@ class SetVelocityNedResponseDefaultTypeInternal {
  public:
   ::PROTOBUF_NAMESPACE_ID::internal::ExplicitlyConstructed<SetVelocityNedResponse> _instance;
 } _SetVelocityNedResponse_default_instance_;
+class SetPositionVelocityNedRequestDefaultTypeInternal {
+ public:
+  ::PROTOBUF_NAMESPACE_ID::internal::ExplicitlyConstructed<SetPositionVelocityNedRequest> _instance;
+} _SetPositionVelocityNedRequest_default_instance_;
+class SetPositionVelocityNedResponseDefaultTypeInternal {
+ public:
+  ::PROTOBUF_NAMESPACE_ID::internal::ExplicitlyConstructed<SetPositionVelocityNedResponse> _instance;
+} _SetPositionVelocityNedResponse_default_instance_;
 class AttitudeDefaultTypeInternal {
  public:
   ::PROTOBUF_NAMESPACE_ID::internal::ExplicitlyConstructed<Attitude> _instance;
@@ -365,6 +373,37 @@ static void InitDefaultsscc_info_SetPositionNedResponse_offboard_2foffboard_2epr
     {{ATOMIC_VAR_INIT(::PROTOBUF_NAMESPACE_ID::internal::SCCInfoBase::kUninitialized), 1, 0, InitDefaultsscc_info_SetPositionNedResponse_offboard_2foffboard_2eproto}, {
       &scc_info_OffboardResult_offboard_2foffboard_2eproto.base,}};
 
+static void InitDefaultsscc_info_SetPositionVelocityNedRequest_offboard_2foffboard_2eproto() {
+  GOOGLE_PROTOBUF_VERIFY_VERSION;
+
+  {
+    void* ptr = &::mavsdk::rpc::offboard::_SetPositionVelocityNedRequest_default_instance_;
+    new (ptr) ::mavsdk::rpc::offboard::SetPositionVelocityNedRequest();
+    ::PROTOBUF_NAMESPACE_ID::internal::OnShutdownDestroyMessage(ptr);
+  }
+  ::mavsdk::rpc::offboard::SetPositionVelocityNedRequest::InitAsDefaultInstance();
+}
+
+::PROTOBUF_NAMESPACE_ID::internal::SCCInfo<2> scc_info_SetPositionVelocityNedRequest_offboard_2foffboard_2eproto =
+    {{ATOMIC_VAR_INIT(::PROTOBUF_NAMESPACE_ID::internal::SCCInfoBase::kUninitialized), 2, 0, InitDefaultsscc_info_SetPositionVelocityNedRequest_offboard_2foffboard_2eproto}, {
+      &scc_info_PositionNedYaw_offboard_2foffboard_2eproto.base,
+      &scc_info_VelocityNedYaw_offboard_2foffboard_2eproto.base,}};
+
+static void InitDefaultsscc_info_SetPositionVelocityNedResponse_offboard_2foffboard_2eproto() {
+  GOOGLE_PROTOBUF_VERIFY_VERSION;
+
+  {
+    void* ptr = &::mavsdk::rpc::offboard::_SetPositionVelocityNedResponse_default_instance_;
+    new (ptr) ::mavsdk::rpc::offboard::SetPositionVelocityNedResponse();
+    ::PROTOBUF_NAMESPACE_ID::internal::OnShutdownDestroyMessage(ptr);
+  }
+  ::mavsdk::rpc::offboard::SetPositionVelocityNedResponse::InitAsDefaultInstance();
+}
+
+::PROTOBUF_NAMESPACE_ID::internal::SCCInfo<1> scc_info_SetPositionVelocityNedResponse_offboard_2foffboard_2eproto =
+    {{ATOMIC_VAR_INIT(::PROTOBUF_NAMESPACE_ID::internal::SCCInfoBase::kUninitialized), 1, 0, InitDefaultsscc_info_SetPositionVelocityNedResponse_offboard_2foffboard_2eproto}, {
+      &scc_info_OffboardResult_offboard_2foffboard_2eproto.base,}};
+
 static void InitDefaultsscc_info_SetVelocityBodyRequest_offboard_2foffboard_2eproto() {
   GOOGLE_PROTOBUF_VERIFY_VERSION;
 
@@ -511,7 +550,7 @@ static void InitDefaultsscc_info_VelocityNedYaw_offboard_2foffboard_2eproto() {
 ::PROTOBUF_NAMESPACE_ID::internal::SCCInfo<0> scc_info_VelocityNedYaw_offboard_2foffboard_2eproto =
     {{ATOMIC_VAR_INIT(::PROTOBUF_NAMESPACE_ID::internal::SCCInfoBase::kUninitialized), 0, 0, InitDefaultsscc_info_VelocityNedYaw_offboard_2foffboard_2eproto}, {}};
 
-static ::PROTOBUF_NAMESPACE_ID::Metadata file_level_metadata_offboard_2foffboard_2eproto[26];
+static ::PROTOBUF_NAMESPACE_ID::Metadata file_level_metadata_offboard_2foffboard_2eproto[28];
 static const ::PROTOBUF_NAMESPACE_ID::EnumDescriptor* file_level_enum_descriptors_offboard_2foffboard_2eproto[1];
 static constexpr ::PROTOBUF_NAMESPACE_ID::ServiceDescriptor const** file_level_service_descriptors_offboard_2foffboard_2eproto = nullptr;
 
@@ -622,6 +661,19 @@ const ::PROTOBUF_NAMESPACE_ID::uint32 TableStruct_offboard_2foffboard_2eproto::o
   ~0u,  // no _weak_field_map_
   PROTOBUF_FIELD_OFFSET(::mavsdk::rpc::offboard::SetVelocityNedResponse, offboard_result_),
   ~0u,  // no _has_bits_
+  PROTOBUF_FIELD_OFFSET(::mavsdk::rpc::offboard::SetPositionVelocityNedRequest, _internal_metadata_),
+  ~0u,  // no _extensions_
+  ~0u,  // no _oneof_case_
+  ~0u,  // no _weak_field_map_
+  PROTOBUF_FIELD_OFFSET(::mavsdk::rpc::offboard::SetPositionVelocityNedRequest, position_ned_yaw_),
+  PROTOBUF_FIELD_OFFSET(::mavsdk::rpc::offboard::SetPositionVelocityNedRequest, velocity_ned_yaw_),
+  ~0u,  // no _has_bits_
+  PROTOBUF_FIELD_OFFSET(::mavsdk::rpc::offboard::SetPositionVelocityNedResponse, _internal_metadata_),
+  ~0u,  // no _extensions_
+  ~0u,  // no _oneof_case_
+  ~0u,  // no _weak_field_map_
+  PROTOBUF_FIELD_OFFSET(::mavsdk::rpc::offboard::SetPositionVelocityNedResponse, offboard_result_),
+  ~0u,  // no _has_bits_
   PROTOBUF_FIELD_OFFSET(::mavsdk::rpc::offboard::Attitude, _internal_metadata_),
   ~0u,  // no _extensions_
   ~0u,  // no _oneof_case_
@@ -705,14 +757,16 @@ static const ::PROTOBUF_NAMESPACE_ID::internal::MigrationSchema schemas[] PROTOB
   { 87, -1, sizeof(::mavsdk::rpc::offboard::SetVelocityBodyResponse)},
   { 93, -1, sizeof(::mavsdk::rpc::offboard::SetVelocityNedRequest)},
   { 99, -1, sizeof(::mavsdk::rpc::offboard::SetVelocityNedResponse)},
-  { 105, -1, sizeof(::mavsdk::rpc::offboard::Attitude)},
-  { 114, -1, sizeof(::mavsdk::rpc::offboard::ActuatorControlGroup)},
-  { 120, -1, sizeof(::mavsdk::rpc::offboard::ActuatorControl)},
-  { 126, -1, sizeof(::mavsdk::rpc::offboard::AttitudeRate)},
-  { 135, -1, sizeof(::mavsdk::rpc::offboard::PositionNedYaw)},
-  { 144, -1, sizeof(::mavsdk::rpc::offboard::VelocityBodyYawspeed)},
-  { 153, -1, sizeof(::mavsdk::rpc::offboard::VelocityNedYaw)},
-  { 162, -1, sizeof(::mavsdk::rpc::offboard::OffboardResult)},
+  { 105, -1, sizeof(::mavsdk::rpc::offboard::SetPositionVelocityNedRequest)},
+  { 112, -1, sizeof(::mavsdk::rpc::offboard::SetPositionVelocityNedResponse)},
+  { 118, -1, sizeof(::mavsdk::rpc::offboard::Attitude)},
+  { 127, -1, sizeof(::mavsdk::rpc::offboard::ActuatorControlGroup)},
+  { 133, -1, sizeof(::mavsdk::rpc::offboard::ActuatorControl)},
+  { 139, -1, sizeof(::mavsdk::rpc::offboard::AttitudeRate)},
+  { 148, -1, sizeof(::mavsdk::rpc::offboard::PositionNedYaw)},
+  { 157, -1, sizeof(::mavsdk::rpc::offboard::VelocityBodyYawspeed)},
+  { 166, -1, sizeof(::mavsdk::rpc::offboard::VelocityNedYaw)},
+  { 175, -1, sizeof(::mavsdk::rpc::offboard::OffboardResult)},
 };
 
 static ::PROTOBUF_NAMESPACE_ID::Message const * const file_default_instances[] = {
@@ -734,6 +788,8 @@ static ::PROTOBUF_NAMESPACE_ID::Message const * const file_default_instances[] =
   reinterpret_cast<const ::PROTOBUF_NAMESPACE_ID::Message*>(&::mavsdk::rpc::offboard::_SetVelocityBodyResponse_default_instance_),
   reinterpret_cast<const ::PROTOBUF_NAMESPACE_ID::Message*>(&::mavsdk::rpc::offboard::_SetVelocityNedRequest_default_instance_),
   reinterpret_cast<const ::PROTOBUF_NAMESPACE_ID::Message*>(&::mavsdk::rpc::offboard::_SetVelocityNedResponse_default_instance_),
+  reinterpret_cast<const ::PROTOBUF_NAMESPACE_ID::Message*>(&::mavsdk::rpc::offboard::_SetPositionVelocityNedRequest_default_instance_),
+  reinterpret_cast<const ::PROTOBUF_NAMESPACE_ID::Message*>(&::mavsdk::rpc::offboard::_SetPositionVelocityNedResponse_default_instance_),
   reinterpret_cast<const ::PROTOBUF_NAMESPACE_ID::Message*>(&::mavsdk::rpc::offboard::_Attitude_default_instance_),
   reinterpret_cast<const ::PROTOBUF_NAMESPACE_ID::Message*>(&::mavsdk::rpc::offboard::_ActuatorControlGroup_default_instance_),
   reinterpret_cast<const ::PROTOBUF_NAMESPACE_ID::Message*>(&::mavsdk::rpc::offboard::_ActuatorControl_default_instance_),
@@ -779,59 +835,69 @@ const char descriptor_table_protodef_offboard_2foffboard_2eproto[] PROTOBUF_SECT
   "\001 \001(\0132#.mavsdk.rpc.offboard.VelocityNedY"
   "aw\"V\n\026SetVelocityNedResponse\022<\n\017offboard"
   "_result\030\001 \001(\0132#.mavsdk.rpc.offboard.Offb"
-  "oardResult\"V\n\010Attitude\022\020\n\010roll_deg\030\001 \001(\002"
-  "\022\021\n\tpitch_deg\030\002 \001(\002\022\017\n\007yaw_deg\030\003 \001(\002\022\024\n\014"
-  "thrust_value\030\004 \001(\002\"(\n\024ActuatorControlGro"
-  "up\022\020\n\010controls\030\001 \003(\002\"L\n\017ActuatorControl\022"
-  "9\n\006groups\030\001 \003(\0132).mavsdk.rpc.offboard.Ac"
-  "tuatorControlGroup\"`\n\014AttitudeRate\022\022\n\nro"
-  "ll_deg_s\030\001 \001(\002\022\023\n\013pitch_deg_s\030\002 \001(\002\022\021\n\ty"
-  "aw_deg_s\030\003 \001(\002\022\024\n\014thrust_value\030\004 \001(\002\"R\n\016"
-  "PositionNedYaw\022\017\n\007north_m\030\001 \001(\002\022\016\n\006east_"
-  "m\030\002 \001(\002\022\016\n\006down_m\030\003 \001(\002\022\017\n\007yaw_deg\030\004 \001(\002"
-  "\"h\n\024VelocityBodyYawspeed\022\023\n\013forward_m_s\030"
-  "\001 \001(\002\022\021\n\tright_m_s\030\002 \001(\002\022\020\n\010down_m_s\030\003 \001"
-  "(\002\022\026\n\016yawspeed_deg_s\030\004 \001(\002\"X\n\016VelocityNe"
-  "dYaw\022\021\n\tnorth_m_s\030\001 \001(\002\022\020\n\010east_m_s\030\002 \001("
-  "\002\022\020\n\010down_m_s\030\003 \001(\002\022\017\n\007yaw_deg\030\004 \001(\002\"\242\002\n"
-  "\016OffboardResult\022:\n\006result\030\001 \001(\0162*.mavsdk"
-  ".rpc.offboard.OffboardResult.Result\022\022\n\nr"
-  "esult_str\030\002 \001(\t\"\277\001\n\006Result\022\022\n\016RESULT_UNK"
-  "NOWN\020\000\022\022\n\016RESULT_SUCCESS\020\001\022\024\n\020RESULT_NO_"
-  "SYSTEM\020\002\022\033\n\027RESULT_CONNECTION_ERROR\020\003\022\017\n"
-  "\013RESULT_BUSY\020\004\022\031\n\025RESULT_COMMAND_DENIED\020"
-  "\005\022\022\n\016RESULT_TIMEOUT\020\006\022\032\n\026RESULT_NO_SETPO"
-  "INT_SET\020\0072\300\007\n\017OffboardService\022P\n\005Start\022!"
-  ".mavsdk.rpc.offboard.StartRequest\032\".mavs"
-  "dk.rpc.offboard.StartResponse\"\000\022M\n\004Stop\022"
-  " .mavsdk.rpc.offboard.StopRequest\032!.mavs"
-  "dk.rpc.offboard.StopResponse\"\000\022]\n\010IsActi"
-  "ve\022$.mavsdk.rpc.offboard.IsActiveRequest"
-  "\032%.mavsdk.rpc.offboard.IsActiveResponse\""
-  "\004\200\265\030\001\022f\n\013SetAttitude\022\'.mavsdk.rpc.offboa"
-  "rd.SetAttitudeRequest\032(.mavsdk.rpc.offbo"
-  "ard.SetAttitudeResponse\"\004\200\265\030\001\022{\n\022SetActu"
-  "atorControl\022..mavsdk.rpc.offboard.SetAct"
-  "uatorControlRequest\032/.mavsdk.rpc.offboar"
-  "d.SetActuatorControlResponse\"\004\200\265\030\001\022r\n\017Se"
-  "tAttitudeRate\022+.mavsdk.rpc.offboard.SetA"
-  "ttitudeRateRequest\032,.mavsdk.rpc.offboard"
-  ".SetAttitudeRateResponse\"\004\200\265\030\001\022o\n\016SetPos"
-  "itionNed\022*.mavsdk.rpc.offboard.SetPositi"
-  "onNedRequest\032+.mavsdk.rpc.offboard.SetPo"
-  "sitionNedResponse\"\004\200\265\030\001\022r\n\017SetVelocityBo"
-  "dy\022+.mavsdk.rpc.offboard.SetVelocityBody"
-  "Request\032,.mavsdk.rpc.offboard.SetVelocit"
-  "yBodyResponse\"\004\200\265\030\001\022o\n\016SetVelocityNed\022*."
-  "mavsdk.rpc.offboard.SetVelocityNedReques"
-  "t\032+.mavsdk.rpc.offboard.SetVelocityNedRe"
-  "sponse\"\004\200\265\030\001B#\n\022io.mavsdk.offboardB\rOffb"
-  "oardProtob\006proto3"
+  "oardResult\"\235\001\n\035SetPositionVelocityNedReq"
+  "uest\022=\n\020position_ned_yaw\030\001 \001(\0132#.mavsdk."
+  "rpc.offboard.PositionNedYaw\022=\n\020velocity_"
+  "ned_yaw\030\002 \001(\0132#.mavsdk.rpc.offboard.Velo"
+  "cityNedYaw\"^\n\036SetPositionVelocityNedResp"
+  "onse\022<\n\017offboard_result\030\001 \001(\0132#.mavsdk.r"
+  "pc.offboard.OffboardResult\"V\n\010Attitude\022\020"
+  "\n\010roll_deg\030\001 \001(\002\022\021\n\tpitch_deg\030\002 \001(\002\022\017\n\007y"
+  "aw_deg\030\003 \001(\002\022\024\n\014thrust_value\030\004 \001(\002\"(\n\024Ac"
+  "tuatorControlGroup\022\020\n\010controls\030\001 \003(\002\"L\n\017"
+  "ActuatorControl\0229\n\006groups\030\001 \003(\0132).mavsdk"
+  ".rpc.offboard.ActuatorControlGroup\"`\n\014At"
+  "titudeRate\022\022\n\nroll_deg_s\030\001 \001(\002\022\023\n\013pitch_"
+  "deg_s\030\002 \001(\002\022\021\n\tyaw_deg_s\030\003 \001(\002\022\024\n\014thrust"
+  "_value\030\004 \001(\002\"R\n\016PositionNedYaw\022\017\n\007north_"
+  "m\030\001 \001(\002\022\016\n\006east_m\030\002 \001(\002\022\016\n\006down_m\030\003 \001(\002\022"
+  "\017\n\007yaw_deg\030\004 \001(\002\"h\n\024VelocityBodyYawspeed"
+  "\022\023\n\013forward_m_s\030\001 \001(\002\022\021\n\tright_m_s\030\002 \001(\002"
+  "\022\020\n\010down_m_s\030\003 \001(\002\022\026\n\016yawspeed_deg_s\030\004 \001"
+  "(\002\"X\n\016VelocityNedYaw\022\021\n\tnorth_m_s\030\001 \001(\002\022"
+  "\020\n\010east_m_s\030\002 \001(\002\022\020\n\010down_m_s\030\003 \001(\002\022\017\n\007y"
+  "aw_deg\030\004 \001(\002\"\242\002\n\016OffboardResult\022:\n\006resul"
+  "t\030\001 \001(\0162*.mavsdk.rpc.offboard.OffboardRe"
+  "sult.Result\022\022\n\nresult_str\030\002 \001(\t\"\277\001\n\006Resu"
+  "lt\022\022\n\016RESULT_UNKNOWN\020\000\022\022\n\016RESULT_SUCCESS"
+  "\020\001\022\024\n\020RESULT_NO_SYSTEM\020\002\022\033\n\027RESULT_CONNE"
+  "CTION_ERROR\020\003\022\017\n\013RESULT_BUSY\020\004\022\031\n\025RESULT"
+  "_COMMAND_DENIED\020\005\022\022\n\016RESULT_TIMEOUT\020\006\022\032\n"
+  "\026RESULT_NO_SETPOINT_SET\020\0072\312\010\n\017OffboardSe"
+  "rvice\022P\n\005Start\022!.mavsdk.rpc.offboard.Sta"
+  "rtRequest\032\".mavsdk.rpc.offboard.StartRes"
+  "ponse\"\000\022M\n\004Stop\022 .mavsdk.rpc.offboard.St"
+  "opRequest\032!.mavsdk.rpc.offboard.StopResp"
+  "onse\"\000\022]\n\010IsActive\022$.mavsdk.rpc.offboard"
+  ".IsActiveRequest\032%.mavsdk.rpc.offboard.I"
+  "sActiveResponse\"\004\200\265\030\001\022f\n\013SetAttitude\022\'.m"
+  "avsdk.rpc.offboard.SetAttitudeRequest\032(."
+  "mavsdk.rpc.offboard.SetAttitudeResponse\""
+  "\004\200\265\030\001\022{\n\022SetActuatorControl\022..mavsdk.rpc"
+  ".offboard.SetActuatorControlRequest\032/.ma"
+  "vsdk.rpc.offboard.SetActuatorControlResp"
+  "onse\"\004\200\265\030\001\022r\n\017SetAttitudeRate\022+.mavsdk.r"
+  "pc.offboard.SetAttitudeRateRequest\032,.mav"
+  "sdk.rpc.offboard.SetAttitudeRateResponse"
+  "\"\004\200\265\030\001\022o\n\016SetPositionNed\022*.mavsdk.rpc.of"
+  "fboard.SetPositionNedRequest\032+.mavsdk.rp"
+  "c.offboard.SetPositionNedResponse\"\004\200\265\030\001\022"
+  "r\n\017SetVelocityBody\022+.mavsdk.rpc.offboard"
+  ".SetVelocityBodyRequest\032,.mavsdk.rpc.off"
+  "board.SetVelocityBodyResponse\"\004\200\265\030\001\022o\n\016S"
+  "etVelocityNed\022*.mavsdk.rpc.offboard.SetV"
+  "elocityNedRequest\032+.mavsdk.rpc.offboard."
+  "SetVelocityNedResponse\"\004\200\265\030\001\022\207\001\n\026SetPosi"
+  "tionVelocityNed\0222.mavsdk.rpc.offboard.Se"
+  "tPositionVelocityNedRequest\0323.mavsdk.rpc"
+  ".offboard.SetPositionVelocityNedResponse"
+  "\"\004\200\265\030\001B#\n\022io.mavsdk.offboardB\rOffboardPr"
+  "otob\006proto3"
   ;
 static const ::PROTOBUF_NAMESPACE_ID::internal::DescriptorTable*const descriptor_table_offboard_2foffboard_2eproto_deps[1] = {
   &::descriptor_table_mavsdk_5foptions_2eproto,
 };
-static ::PROTOBUF_NAMESPACE_ID::internal::SCCInfoBase*const descriptor_table_offboard_2foffboard_2eproto_sccs[26] = {
+static ::PROTOBUF_NAMESPACE_ID::internal::SCCInfoBase*const descriptor_table_offboard_2foffboard_2eproto_sccs[28] = {
   &scc_info_ActuatorControl_offboard_2foffboard_2eproto.base,
   &scc_info_ActuatorControlGroup_offboard_2foffboard_2eproto.base,
   &scc_info_Attitude_offboard_2foffboard_2eproto.base,
@@ -848,6 +914,8 @@ static ::PROTOBUF_NAMESPACE_ID::internal::SCCInfoBase*const descriptor_table_off
   &scc_info_SetAttitudeResponse_offboard_2foffboard_2eproto.base,
   &scc_info_SetPositionNedRequest_offboard_2foffboard_2eproto.base,
   &scc_info_SetPositionNedResponse_offboard_2foffboard_2eproto.base,
+  &scc_info_SetPositionVelocityNedRequest_offboard_2foffboard_2eproto.base,
+  &scc_info_SetPositionVelocityNedResponse_offboard_2foffboard_2eproto.base,
   &scc_info_SetVelocityBodyRequest_offboard_2foffboard_2eproto.base,
   &scc_info_SetVelocityBodyResponse_offboard_2foffboard_2eproto.base,
   &scc_info_SetVelocityNedRequest_offboard_2foffboard_2eproto.base,
@@ -861,10 +929,10 @@ static ::PROTOBUF_NAMESPACE_ID::internal::SCCInfoBase*const descriptor_table_off
 };
 static ::PROTOBUF_NAMESPACE_ID::internal::once_flag descriptor_table_offboard_2foffboard_2eproto_once;
 const ::PROTOBUF_NAMESPACE_ID::internal::DescriptorTable descriptor_table_offboard_2foffboard_2eproto = {
-  false, false, descriptor_table_protodef_offboard_2foffboard_2eproto, "offboard/offboard.proto", 3257,
-  &descriptor_table_offboard_2foffboard_2eproto_once, descriptor_table_offboard_2foffboard_2eproto_sccs, descriptor_table_offboard_2foffboard_2eproto_deps, 26, 1,
+  false, false, descriptor_table_protodef_offboard_2foffboard_2eproto, "offboard/offboard.proto", 3651,
+  &descriptor_table_offboard_2foffboard_2eproto_once, descriptor_table_offboard_2foffboard_2eproto_sccs, descriptor_table_offboard_2foffboard_2eproto_deps, 28, 1,
   schemas, file_default_instances, TableStruct_offboard_2foffboard_2eproto::offsets,
-  file_level_metadata_offboard_2foffboard_2eproto, 26, file_level_enum_descriptors_offboard_2foffboard_2eproto, file_level_service_descriptors_offboard_2foffboard_2eproto,
+  file_level_metadata_offboard_2foffboard_2eproto, 28, file_level_enum_descriptors_offboard_2foffboard_2eproto, file_level_service_descriptors_offboard_2foffboard_2eproto,
 };
 
 // Force running AddDescriptors() at dynamic initialization time.
@@ -4608,6 +4676,485 @@ void SetVelocityNedResponse::InternalSwap(SetVelocityNedResponse* other) {
 
 // ===================================================================
 
+void SetPositionVelocityNedRequest::InitAsDefaultInstance() {
+  ::mavsdk::rpc::offboard::_SetPositionVelocityNedRequest_default_instance_._instance.get_mutable()->position_ned_yaw_ = const_cast< ::mavsdk::rpc::offboard::PositionNedYaw*>(
+      ::mavsdk::rpc::offboard::PositionNedYaw::internal_default_instance());
+  ::mavsdk::rpc::offboard::_SetPositionVelocityNedRequest_default_instance_._instance.get_mutable()->velocity_ned_yaw_ = const_cast< ::mavsdk::rpc::offboard::VelocityNedYaw*>(
+      ::mavsdk::rpc::offboard::VelocityNedYaw::internal_default_instance());
+}
+class SetPositionVelocityNedRequest::_Internal {
+ public:
+  static const ::mavsdk::rpc::offboard::PositionNedYaw& position_ned_yaw(const SetPositionVelocityNedRequest* msg);
+  static const ::mavsdk::rpc::offboard::VelocityNedYaw& velocity_ned_yaw(const SetPositionVelocityNedRequest* msg);
+};
+
+const ::mavsdk::rpc::offboard::PositionNedYaw&
+SetPositionVelocityNedRequest::_Internal::position_ned_yaw(const SetPositionVelocityNedRequest* msg) {
+  return *msg->position_ned_yaw_;
+}
+const ::mavsdk::rpc::offboard::VelocityNedYaw&
+SetPositionVelocityNedRequest::_Internal::velocity_ned_yaw(const SetPositionVelocityNedRequest* msg) {
+  return *msg->velocity_ned_yaw_;
+}
+SetPositionVelocityNedRequest::SetPositionVelocityNedRequest(::PROTOBUF_NAMESPACE_ID::Arena* arena)
+  : ::PROTOBUF_NAMESPACE_ID::Message(arena) {
+  SharedCtor();
+  RegisterArenaDtor(arena);
+  // @@protoc_insertion_point(arena_constructor:mavsdk.rpc.offboard.SetPositionVelocityNedRequest)
+}
+SetPositionVelocityNedRequest::SetPositionVelocityNedRequest(const SetPositionVelocityNedRequest& from)
+  : ::PROTOBUF_NAMESPACE_ID::Message() {
+  _internal_metadata_.MergeFrom<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>(from._internal_metadata_);
+  if (from._internal_has_position_ned_yaw()) {
+    position_ned_yaw_ = new ::mavsdk::rpc::offboard::PositionNedYaw(*from.position_ned_yaw_);
+  } else {
+    position_ned_yaw_ = nullptr;
+  }
+  if (from._internal_has_velocity_ned_yaw()) {
+    velocity_ned_yaw_ = new ::mavsdk::rpc::offboard::VelocityNedYaw(*from.velocity_ned_yaw_);
+  } else {
+    velocity_ned_yaw_ = nullptr;
+  }
+  // @@protoc_insertion_point(copy_constructor:mavsdk.rpc.offboard.SetPositionVelocityNedRequest)
+}
+
+void SetPositionVelocityNedRequest::SharedCtor() {
+  ::PROTOBUF_NAMESPACE_ID::internal::InitSCC(&scc_info_SetPositionVelocityNedRequest_offboard_2foffboard_2eproto.base);
+  ::memset(&position_ned_yaw_, 0, static_cast<size_t>(
+      reinterpret_cast<char*>(&velocity_ned_yaw_) -
+      reinterpret_cast<char*>(&position_ned_yaw_)) + sizeof(velocity_ned_yaw_));
+}
+
+SetPositionVelocityNedRequest::~SetPositionVelocityNedRequest() {
+  // @@protoc_insertion_point(destructor:mavsdk.rpc.offboard.SetPositionVelocityNedRequest)
+  SharedDtor();
+  _internal_metadata_.Delete<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>();
+}
+
+void SetPositionVelocityNedRequest::SharedDtor() {
+  GOOGLE_DCHECK(GetArena() == nullptr);
+  if (this != internal_default_instance()) delete position_ned_yaw_;
+  if (this != internal_default_instance()) delete velocity_ned_yaw_;
+}
+
+void SetPositionVelocityNedRequest::ArenaDtor(void* object) {
+  SetPositionVelocityNedRequest* _this = reinterpret_cast< SetPositionVelocityNedRequest* >(object);
+  (void)_this;
+}
+void SetPositionVelocityNedRequest::RegisterArenaDtor(::PROTOBUF_NAMESPACE_ID::Arena*) {
+}
+void SetPositionVelocityNedRequest::SetCachedSize(int size) const {
+  _cached_size_.Set(size);
+}
+const SetPositionVelocityNedRequest& SetPositionVelocityNedRequest::default_instance() {
+  ::PROTOBUF_NAMESPACE_ID::internal::InitSCC(&::scc_info_SetPositionVelocityNedRequest_offboard_2foffboard_2eproto.base);
+  return *internal_default_instance();
+}
+
+
+void SetPositionVelocityNedRequest::Clear() {
+// @@protoc_insertion_point(message_clear_start:mavsdk.rpc.offboard.SetPositionVelocityNedRequest)
+  ::PROTOBUF_NAMESPACE_ID::uint32 cached_has_bits = 0;
+  // Prevent compiler warnings about cached_has_bits being unused
+  (void) cached_has_bits;
+
+  if (GetArena() == nullptr && position_ned_yaw_ != nullptr) {
+    delete position_ned_yaw_;
+  }
+  position_ned_yaw_ = nullptr;
+  if (GetArena() == nullptr && velocity_ned_yaw_ != nullptr) {
+    delete velocity_ned_yaw_;
+  }
+  velocity_ned_yaw_ = nullptr;
+  _internal_metadata_.Clear<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>();
+}
+
+const char* SetPositionVelocityNedRequest::_InternalParse(const char* ptr, ::PROTOBUF_NAMESPACE_ID::internal::ParseContext* ctx) {
+#define CHK_(x) if (PROTOBUF_PREDICT_FALSE(!(x))) goto failure
+  ::PROTOBUF_NAMESPACE_ID::Arena* arena = GetArena(); (void)arena;
+  while (!ctx->Done(&ptr)) {
+    ::PROTOBUF_NAMESPACE_ID::uint32 tag;
+    ptr = ::PROTOBUF_NAMESPACE_ID::internal::ReadTag(ptr, &tag);
+    CHK_(ptr);
+    switch (tag >> 3) {
+      // .mavsdk.rpc.offboard.PositionNedYaw position_ned_yaw = 1;
+      case 1:
+        if (PROTOBUF_PREDICT_TRUE(static_cast<::PROTOBUF_NAMESPACE_ID::uint8>(tag) == 10)) {
+          ptr = ctx->ParseMessage(_internal_mutable_position_ned_yaw(), ptr);
+          CHK_(ptr);
+        } else goto handle_unusual;
+        continue;
+      // .mavsdk.rpc.offboard.VelocityNedYaw velocity_ned_yaw = 2;
+      case 2:
+        if (PROTOBUF_PREDICT_TRUE(static_cast<::PROTOBUF_NAMESPACE_ID::uint8>(tag) == 18)) {
+          ptr = ctx->ParseMessage(_internal_mutable_velocity_ned_yaw(), ptr);
+          CHK_(ptr);
+        } else goto handle_unusual;
+        continue;
+      default: {
+      handle_unusual:
+        if ((tag & 7) == 4 || tag == 0) {
+          ctx->SetLastTag(tag);
+          goto success;
+        }
+        ptr = UnknownFieldParse(tag,
+            _internal_metadata_.mutable_unknown_fields<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>(),
+            ptr, ctx);
+        CHK_(ptr != nullptr);
+        continue;
+      }
+    }  // switch
+  }  // while
+success:
+  return ptr;
+failure:
+  ptr = nullptr;
+  goto success;
+#undef CHK_
+}
+
+::PROTOBUF_NAMESPACE_ID::uint8* SetPositionVelocityNedRequest::_InternalSerialize(
+    ::PROTOBUF_NAMESPACE_ID::uint8* target, ::PROTOBUF_NAMESPACE_ID::io::EpsCopyOutputStream* stream) const {
+  // @@protoc_insertion_point(serialize_to_array_start:mavsdk.rpc.offboard.SetPositionVelocityNedRequest)
+  ::PROTOBUF_NAMESPACE_ID::uint32 cached_has_bits = 0;
+  (void) cached_has_bits;
+
+  // .mavsdk.rpc.offboard.PositionNedYaw position_ned_yaw = 1;
+  if (this->has_position_ned_yaw()) {
+    target = stream->EnsureSpace(target);
+    target = ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::
+      InternalWriteMessage(
+        1, _Internal::position_ned_yaw(this), target, stream);
+  }
+
+  // .mavsdk.rpc.offboard.VelocityNedYaw velocity_ned_yaw = 2;
+  if (this->has_velocity_ned_yaw()) {
+    target = stream->EnsureSpace(target);
+    target = ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::
+      InternalWriteMessage(
+        2, _Internal::velocity_ned_yaw(this), target, stream);
+  }
+
+  if (PROTOBUF_PREDICT_FALSE(_internal_metadata_.have_unknown_fields())) {
+    target = ::PROTOBUF_NAMESPACE_ID::internal::WireFormat::InternalSerializeUnknownFieldsToArray(
+        _internal_metadata_.unknown_fields<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>(::PROTOBUF_NAMESPACE_ID::UnknownFieldSet::default_instance), target, stream);
+  }
+  // @@protoc_insertion_point(serialize_to_array_end:mavsdk.rpc.offboard.SetPositionVelocityNedRequest)
+  return target;
+}
+
+size_t SetPositionVelocityNedRequest::ByteSizeLong() const {
+// @@protoc_insertion_point(message_byte_size_start:mavsdk.rpc.offboard.SetPositionVelocityNedRequest)
+  size_t total_size = 0;
+
+  ::PROTOBUF_NAMESPACE_ID::uint32 cached_has_bits = 0;
+  // Prevent compiler warnings about cached_has_bits being unused
+  (void) cached_has_bits;
+
+  // .mavsdk.rpc.offboard.PositionNedYaw position_ned_yaw = 1;
+  if (this->has_position_ned_yaw()) {
+    total_size += 1 +
+      ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::MessageSize(
+        *position_ned_yaw_);
+  }
+
+  // .mavsdk.rpc.offboard.VelocityNedYaw velocity_ned_yaw = 2;
+  if (this->has_velocity_ned_yaw()) {
+    total_size += 1 +
+      ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::MessageSize(
+        *velocity_ned_yaw_);
+  }
+
+  if (PROTOBUF_PREDICT_FALSE(_internal_metadata_.have_unknown_fields())) {
+    return ::PROTOBUF_NAMESPACE_ID::internal::ComputeUnknownFieldsSize(
+        _internal_metadata_, total_size, &_cached_size_);
+  }
+  int cached_size = ::PROTOBUF_NAMESPACE_ID::internal::ToCachedSize(total_size);
+  SetCachedSize(cached_size);
+  return total_size;
+}
+
+void SetPositionVelocityNedRequest::MergeFrom(const ::PROTOBUF_NAMESPACE_ID::Message& from) {
+// @@protoc_insertion_point(generalized_merge_from_start:mavsdk.rpc.offboard.SetPositionVelocityNedRequest)
+  GOOGLE_DCHECK_NE(&from, this);
+  const SetPositionVelocityNedRequest* source =
+      ::PROTOBUF_NAMESPACE_ID::DynamicCastToGenerated<SetPositionVelocityNedRequest>(
+          &from);
+  if (source == nullptr) {
+  // @@protoc_insertion_point(generalized_merge_from_cast_fail:mavsdk.rpc.offboard.SetPositionVelocityNedRequest)
+    ::PROTOBUF_NAMESPACE_ID::internal::ReflectionOps::Merge(from, this);
+  } else {
+  // @@protoc_insertion_point(generalized_merge_from_cast_success:mavsdk.rpc.offboard.SetPositionVelocityNedRequest)
+    MergeFrom(*source);
+  }
+}
+
+void SetPositionVelocityNedRequest::MergeFrom(const SetPositionVelocityNedRequest& from) {
+// @@protoc_insertion_point(class_specific_merge_from_start:mavsdk.rpc.offboard.SetPositionVelocityNedRequest)
+  GOOGLE_DCHECK_NE(&from, this);
+  _internal_metadata_.MergeFrom<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>(from._internal_metadata_);
+  ::PROTOBUF_NAMESPACE_ID::uint32 cached_has_bits = 0;
+  (void) cached_has_bits;
+
+  if (from.has_position_ned_yaw()) {
+    _internal_mutable_position_ned_yaw()->::mavsdk::rpc::offboard::PositionNedYaw::MergeFrom(from._internal_position_ned_yaw());
+  }
+  if (from.has_velocity_ned_yaw()) {
+    _internal_mutable_velocity_ned_yaw()->::mavsdk::rpc::offboard::VelocityNedYaw::MergeFrom(from._internal_velocity_ned_yaw());
+  }
+}
+
+void SetPositionVelocityNedRequest::CopyFrom(const ::PROTOBUF_NAMESPACE_ID::Message& from) {
+// @@protoc_insertion_point(generalized_copy_from_start:mavsdk.rpc.offboard.SetPositionVelocityNedRequest)
+  if (&from == this) return;
+  Clear();
+  MergeFrom(from);
+}
+
+void SetPositionVelocityNedRequest::CopyFrom(const SetPositionVelocityNedRequest& from) {
+// @@protoc_insertion_point(class_specific_copy_from_start:mavsdk.rpc.offboard.SetPositionVelocityNedRequest)
+  if (&from == this) return;
+  Clear();
+  MergeFrom(from);
+}
+
+bool SetPositionVelocityNedRequest::IsInitialized() const {
+  return true;
+}
+
+void SetPositionVelocityNedRequest::InternalSwap(SetPositionVelocityNedRequest* other) {
+  using std::swap;
+  _internal_metadata_.Swap<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>(&other->_internal_metadata_);
+  ::PROTOBUF_NAMESPACE_ID::internal::memswap<
+      PROTOBUF_FIELD_OFFSET(SetPositionVelocityNedRequest, velocity_ned_yaw_)
+      + sizeof(SetPositionVelocityNedRequest::velocity_ned_yaw_)
+      - PROTOBUF_FIELD_OFFSET(SetPositionVelocityNedRequest, position_ned_yaw_)>(
+          reinterpret_cast<char*>(&position_ned_yaw_),
+          reinterpret_cast<char*>(&other->position_ned_yaw_));
+}
+
+::PROTOBUF_NAMESPACE_ID::Metadata SetPositionVelocityNedRequest::GetMetadata() const {
+  return GetMetadataStatic();
+}
+
+
+// ===================================================================
+
+void SetPositionVelocityNedResponse::InitAsDefaultInstance() {
+  ::mavsdk::rpc::offboard::_SetPositionVelocityNedResponse_default_instance_._instance.get_mutable()->offboard_result_ = const_cast< ::mavsdk::rpc::offboard::OffboardResult*>(
+      ::mavsdk::rpc::offboard::OffboardResult::internal_default_instance());
+}
+class SetPositionVelocityNedResponse::_Internal {
+ public:
+  static const ::mavsdk::rpc::offboard::OffboardResult& offboard_result(const SetPositionVelocityNedResponse* msg);
+};
+
+const ::mavsdk::rpc::offboard::OffboardResult&
+SetPositionVelocityNedResponse::_Internal::offboard_result(const SetPositionVelocityNedResponse* msg) {
+  return *msg->offboard_result_;
+}
+SetPositionVelocityNedResponse::SetPositionVelocityNedResponse(::PROTOBUF_NAMESPACE_ID::Arena* arena)
+  : ::PROTOBUF_NAMESPACE_ID::Message(arena) {
+  SharedCtor();
+  RegisterArenaDtor(arena);
+  // @@protoc_insertion_point(arena_constructor:mavsdk.rpc.offboard.SetPositionVelocityNedResponse)
+}
+SetPositionVelocityNedResponse::SetPositionVelocityNedResponse(const SetPositionVelocityNedResponse& from)
+  : ::PROTOBUF_NAMESPACE_ID::Message() {
+  _internal_metadata_.MergeFrom<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>(from._internal_metadata_);
+  if (from._internal_has_offboard_result()) {
+    offboard_result_ = new ::mavsdk::rpc::offboard::OffboardResult(*from.offboard_result_);
+  } else {
+    offboard_result_ = nullptr;
+  }
+  // @@protoc_insertion_point(copy_constructor:mavsdk.rpc.offboard.SetPositionVelocityNedResponse)
+}
+
+void SetPositionVelocityNedResponse::SharedCtor() {
+  ::PROTOBUF_NAMESPACE_ID::internal::InitSCC(&scc_info_SetPositionVelocityNedResponse_offboard_2foffboard_2eproto.base);
+  offboard_result_ = nullptr;
+}
+
+SetPositionVelocityNedResponse::~SetPositionVelocityNedResponse() {
+  // @@protoc_insertion_point(destructor:mavsdk.rpc.offboard.SetPositionVelocityNedResponse)
+  SharedDtor();
+  _internal_metadata_.Delete<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>();
+}
+
+void SetPositionVelocityNedResponse::SharedDtor() {
+  GOOGLE_DCHECK(GetArena() == nullptr);
+  if (this != internal_default_instance()) delete offboard_result_;
+}
+
+void SetPositionVelocityNedResponse::ArenaDtor(void* object) {
+  SetPositionVelocityNedResponse* _this = reinterpret_cast< SetPositionVelocityNedResponse* >(object);
+  (void)_this;
+}
+void SetPositionVelocityNedResponse::RegisterArenaDtor(::PROTOBUF_NAMESPACE_ID::Arena*) {
+}
+void SetPositionVelocityNedResponse::SetCachedSize(int size) const {
+  _cached_size_.Set(size);
+}
+const SetPositionVelocityNedResponse& SetPositionVelocityNedResponse::default_instance() {
+  ::PROTOBUF_NAMESPACE_ID::internal::InitSCC(&::scc_info_SetPositionVelocityNedResponse_offboard_2foffboard_2eproto.base);
+  return *internal_default_instance();
+}
+
+
+void SetPositionVelocityNedResponse::Clear() {
+// @@protoc_insertion_point(message_clear_start:mavsdk.rpc.offboard.SetPositionVelocityNedResponse)
+  ::PROTOBUF_NAMESPACE_ID::uint32 cached_has_bits = 0;
+  // Prevent compiler warnings about cached_has_bits being unused
+  (void) cached_has_bits;
+
+  if (GetArena() == nullptr && offboard_result_ != nullptr) {
+    delete offboard_result_;
+  }
+  offboard_result_ = nullptr;
+  _internal_metadata_.Clear<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>();
+}
+
+const char* SetPositionVelocityNedResponse::_InternalParse(const char* ptr, ::PROTOBUF_NAMESPACE_ID::internal::ParseContext* ctx) {
+#define CHK_(x) if (PROTOBUF_PREDICT_FALSE(!(x))) goto failure
+  ::PROTOBUF_NAMESPACE_ID::Arena* arena = GetArena(); (void)arena;
+  while (!ctx->Done(&ptr)) {
+    ::PROTOBUF_NAMESPACE_ID::uint32 tag;
+    ptr = ::PROTOBUF_NAMESPACE_ID::internal::ReadTag(ptr, &tag);
+    CHK_(ptr);
+    switch (tag >> 3) {
+      // .mavsdk.rpc.offboard.OffboardResult offboard_result = 1;
+      case 1:
+        if (PROTOBUF_PREDICT_TRUE(static_cast<::PROTOBUF_NAMESPACE_ID::uint8>(tag) == 10)) {
+          ptr = ctx->ParseMessage(_internal_mutable_offboard_result(), ptr);
+          CHK_(ptr);
+        } else goto handle_unusual;
+        continue;
+      default: {
+      handle_unusual:
+        if ((tag & 7) == 4 || tag == 0) {
+          ctx->SetLastTag(tag);
+          goto success;
+        }
+        ptr = UnknownFieldParse(tag,
+            _internal_metadata_.mutable_unknown_fields<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>(),
+            ptr, ctx);
+        CHK_(ptr != nullptr);
+        continue;
+      }
+    }  // switch
+  }  // while
+success:
+  return ptr;
+failure:
+  ptr = nullptr;
+  goto success;
+#undef CHK_
+}
+
+::PROTOBUF_NAMESPACE_ID::uint8* SetPositionVelocityNedResponse::_InternalSerialize(
+    ::PROTOBUF_NAMESPACE_ID::uint8* target, ::PROTOBUF_NAMESPACE_ID::io::EpsCopyOutputStream* stream) const {
+  // @@protoc_insertion_point(serialize_to_array_start:mavsdk.rpc.offboard.SetPositionVelocityNedResponse)
+  ::PROTOBUF_NAMESPACE_ID::uint32 cached_has_bits = 0;
+  (void) cached_has_bits;
+
+  // .mavsdk.rpc.offboard.OffboardResult offboard_result = 1;
+  if (this->has_offboard_result()) {
+    target = stream->EnsureSpace(target);
+    target = ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::
+      InternalWriteMessage(
+        1, _Internal::offboard_result(this), target, stream);
+  }
+
+  if (PROTOBUF_PREDICT_FALSE(_internal_metadata_.have_unknown_fields())) {
+    target = ::PROTOBUF_NAMESPACE_ID::internal::WireFormat::InternalSerializeUnknownFieldsToArray(
+        _internal_metadata_.unknown_fields<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>(::PROTOBUF_NAMESPACE_ID::UnknownFieldSet::default_instance), target, stream);
+  }
+  // @@protoc_insertion_point(serialize_to_array_end:mavsdk.rpc.offboard.SetPositionVelocityNedResponse)
+  return target;
+}
+
+size_t SetPositionVelocityNedResponse::ByteSizeLong() const {
+// @@protoc_insertion_point(message_byte_size_start:mavsdk.rpc.offboard.SetPositionVelocityNedResponse)
+  size_t total_size = 0;
+
+  ::PROTOBUF_NAMESPACE_ID::uint32 cached_has_bits = 0;
+  // Prevent compiler warnings about cached_has_bits being unused
+  (void) cached_has_bits;
+
+  // .mavsdk.rpc.offboard.OffboardResult offboard_result = 1;
+  if (this->has_offboard_result()) {
+    total_size += 1 +
+      ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::MessageSize(
+        *offboard_result_);
+  }
+
+  if (PROTOBUF_PREDICT_FALSE(_internal_metadata_.have_unknown_fields())) {
+    return ::PROTOBUF_NAMESPACE_ID::internal::ComputeUnknownFieldsSize(
+        _internal_metadata_, total_size, &_cached_size_);
+  }
+  int cached_size = ::PROTOBUF_NAMESPACE_ID::internal::ToCachedSize(total_size);
+  SetCachedSize(cached_size);
+  return total_size;
+}
+
+void SetPositionVelocityNedResponse::MergeFrom(const ::PROTOBUF_NAMESPACE_ID::Message& from) {
+// @@protoc_insertion_point(generalized_merge_from_start:mavsdk.rpc.offboard.SetPositionVelocityNedResponse)
+  GOOGLE_DCHECK_NE(&from, this);
+  const SetPositionVelocityNedResponse* source =
+      ::PROTOBUF_NAMESPACE_ID::DynamicCastToGenerated<SetPositionVelocityNedResponse>(
+          &from);
+  if (source == nullptr) {
+  // @@protoc_insertion_point(generalized_merge_from_cast_fail:mavsdk.rpc.offboard.SetPositionVelocityNedResponse)
+    ::PROTOBUF_NAMESPACE_ID::internal::ReflectionOps::Merge(from, this);
+  } else {
+  // @@protoc_insertion_point(generalized_merge_from_cast_success:mavsdk.rpc.offboard.SetPositionVelocityNedResponse)
+    MergeFrom(*source);
+  }
+}
+
+void SetPositionVelocityNedResponse::MergeFrom(const SetPositionVelocityNedResponse& from) {
+// @@protoc_insertion_point(class_specific_merge_from_start:mavsdk.rpc.offboard.SetPositionVelocityNedResponse)
+  GOOGLE_DCHECK_NE(&from, this);
+  _internal_metadata_.MergeFrom<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>(from._internal_metadata_);
+  ::PROTOBUF_NAMESPACE_ID::uint32 cached_has_bits = 0;
+  (void) cached_has_bits;
+
+  if (from.has_offboard_result()) {
+    _internal_mutable_offboard_result()->::mavsdk::rpc::offboard::OffboardResult::MergeFrom(from._internal_offboard_result());
+  }
+}
+
+void SetPositionVelocityNedResponse::CopyFrom(const ::PROTOBUF_NAMESPACE_ID::Message& from) {
+// @@protoc_insertion_point(generalized_copy_from_start:mavsdk.rpc.offboard.SetPositionVelocityNedResponse)
+  if (&from == this) return;
+  Clear();
+  MergeFrom(from);
+}
+
+void SetPositionVelocityNedResponse::CopyFrom(const SetPositionVelocityNedResponse& from) {
+// @@protoc_insertion_point(class_specific_copy_from_start:mavsdk.rpc.offboard.SetPositionVelocityNedResponse)
+  if (&from == this) return;
+  Clear();
+  MergeFrom(from);
+}
+
+bool SetPositionVelocityNedResponse::IsInitialized() const {
+  return true;
+}
+
+void SetPositionVelocityNedResponse::InternalSwap(SetPositionVelocityNedResponse* other) {
+  using std::swap;
+  _internal_metadata_.Swap<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>(&other->_internal_metadata_);
+  swap(offboard_result_, other->offboard_result_);
+}
+
+::PROTOBUF_NAMESPACE_ID::Metadata SetPositionVelocityNedResponse::GetMetadata() const {
+  return GetMetadataStatic();
+}
+
+
+// ===================================================================
+
 void Attitude::InitAsDefaultInstance() {
 }
 class Attitude::_Internal {
@@ -6654,6 +7201,12 @@ template<> PROTOBUF_NOINLINE ::mavsdk::rpc::offboard::SetVelocityNedRequest* Are
 }
 template<> PROTOBUF_NOINLINE ::mavsdk::rpc::offboard::SetVelocityNedResponse* Arena::CreateMaybeMessage< ::mavsdk::rpc::offboard::SetVelocityNedResponse >(Arena* arena) {
   return Arena::CreateMessageInternal< ::mavsdk::rpc::offboard::SetVelocityNedResponse >(arena);
+}
+template<> PROTOBUF_NOINLINE ::mavsdk::rpc::offboard::SetPositionVelocityNedRequest* Arena::CreateMaybeMessage< ::mavsdk::rpc::offboard::SetPositionVelocityNedRequest >(Arena* arena) {
+  return Arena::CreateMessageInternal< ::mavsdk::rpc::offboard::SetPositionVelocityNedRequest >(arena);
+}
+template<> PROTOBUF_NOINLINE ::mavsdk::rpc::offboard::SetPositionVelocityNedResponse* Arena::CreateMaybeMessage< ::mavsdk::rpc::offboard::SetPositionVelocityNedResponse >(Arena* arena) {
+  return Arena::CreateMessageInternal< ::mavsdk::rpc::offboard::SetPositionVelocityNedResponse >(arena);
 }
 template<> PROTOBUF_NOINLINE ::mavsdk::rpc::offboard::Attitude* Arena::CreateMaybeMessage< ::mavsdk::rpc::offboard::Attitude >(Arena* arena) {
   return Arena::CreateMessageInternal< ::mavsdk::rpc::offboard::Attitude >(arena);
