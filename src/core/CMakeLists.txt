@@ -25,6 +25,7 @@ add_library(mavsdk
     mavlink_receiver.cpp
     mavlink_statustext_handler.cpp
     mavlink_message_handler.cpp
+    ping.cpp
     plugin_impl_base.cpp
     serial_connection.cpp
     tcp_connection.cpp
@@ -67,6 +68,10 @@ if(ANDROID)
         PRIVATE
         log
     )
+endif()
+
+if(BUILD_STATIC_MAVSDK_SERVER AND ("${CMAKE_C_COMPILER_ID}" STREQUAL "GNU"))
+    target_link_libraries(mavsdk PRIVATE atomic)
 endif()
 
 set_target_properties(mavsdk
