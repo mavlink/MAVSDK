@@ -377,17 +377,56 @@ jobs:
       - uses: actions/checkout@v2
         with:
           submodules: recursive
-      - name: configure (ios)
-        run: cmake -DCMAKE_BUILD_TYPE=Release -DCMAKE_TOOLCHAIN_FILE=$(pwd)/tools/ios.toolchain.cmake -DPLATFORM=OS -DBUILD_BACKEND=ON -DBUILD_SHARED_LIBS=OFF -DWERROR=OFF -DDEPLOYMENT_TARGET=11.0 -j 2 -Bbuild/ios -H.
-      - name: build (ios)
+      - name: configure
+        run: cmake -DCMAKE_BUILD_TYPE=Release -DCMAKE_TOOLCHAIN_FILE=$(pwd)/tools/ios.toolchain.cmake -DPLATFORM=OS -DDEPLOYMENT_TARGET=11.0 -DBUILD_BACKEND=ON -DBUILD_SHARED_LIBS=OFF -DWERROR=OFF -j 2 -Bbuild/ios -H.
+      - name: build
         run: cmake --build build/ios -j 2
-      - name: configure (ios_simulator)
-        run: cmake -DCMAKE_BUILD_TYPE=Release -DCMAKE_TOOLCHAIN_FILE=$(pwd)/tools/ios.toolchain.cmake -DPLATFORM=SIMULATOR64 -DBUILD_BACKEND=ON -DBUILD_SHARED_LIBS=OFF -DWERROR=OFF -DDEPLOYMENT_TARGET=11.0 -j 2 -Bbuild/ios_simulator -H.
-      - name: build (ios_simulator)
+      - uses: actions/upload-artifact@v2
+        with:
+          name: mavsdk_server_ios.framework
+          path: ./build/ios/src/backend/src/mavsdk_server.framework
+          retention-days: 2
+
+  iOS-Simulator:
+    name: iOS Simulator
+    runs-on: macos-latest
+    steps:
+      - uses: actions/checkout@v2
+        with:
+          submodules: recursive
+      - name: configure
+        run: cmake -DCMAKE_BUILD_TYPE=Release -DCMAKE_TOOLCHAIN_FILE=$(pwd)/tools/ios.toolchain.cmake -DPLATFORM=SIMULATOR64 -DDEPLOYMENT_TARGET=11.0 -DBUILD_BACKEND=ON -DBUILD_SHARED_LIBS=OFF -DWERROR=OFF -j 2 -Bbuild/ios_simulator -H.
+      - name: build
         run: cmake --build build/ios_simulator -j 2
+      - uses: actions/upload-artifact@v2
+        with:
+          name: mavsdk_server_ios_simulator.framework
+          path: ./build/ios_simulator/src/backend/src/mavsdk_server.framework
+          retention-days: 2
+
+  iOS-XCFramework:
+    name: iOS XCFramework
+    needs: [iOS, iOS-Simulator]
+    runs-on: macos-latest
+    steps:
+      - uses: actions/checkout@v2
+        with:
+          submodules: recursive
+      - uses: actions/download-artifact@v2
+        with:
+          name: mavsdk_server_ios.framework
+          path: ./build/ios/src/backend/src/mavsdk_server.framework
+      - uses: actions/download-artifact@v2
+        with:
+          name: mavsdk_server_ios_simulator.framework
+          path: ./build/ios_simulator/src/backend/src/mavsdk_server.framework
       - name: Package
-        if: startsWith(github.ref, 'refs/tags/v')
         run: bash ./src/backend/tools/package_backend_framework.bash
+      - uses: actions/upload-artifact@v2
+        with:
+          name: mavsdk_server_ios.xcframework
+          path: ./build/mavsdk_server.xcframework
+          retention-days: 2
       - name: Publish artefacts
         if: startsWith(github.ref, 'refs/tags/v')
         uses: svenstaro/upload-release-action@v1-release
