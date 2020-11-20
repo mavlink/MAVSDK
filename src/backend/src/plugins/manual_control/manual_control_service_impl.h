@@ -60,6 +60,8 @@ public:
                 return rpc::manual_control::ManualControlResult_Result_RESULT_TIMEOUT;
             case mavsdk::ManualControl::Result::InputOutOfRange:
                 return rpc::manual_control::ManualControlResult_Result_RESULT_INPUT_OUT_OF_RANGE;
+            case mavsdk::ManualControl::Result::InputNotSet:
+                return rpc::manual_control::ManualControlResult_Result_RESULT_INPUT_NOT_SET;
         }
     }
 
@@ -86,6 +88,8 @@ public:
                 return mavsdk::ManualControl::Result::Timeout;
             case rpc::manual_control::ManualControlResult_Result_RESULT_INPUT_OUT_OF_RANGE:
                 return mavsdk::ManualControl::Result::InputOutOfRange;
+            case rpc::manual_control::ManualControlResult_Result_RESULT_INPUT_NOT_SET:
+                return mavsdk::ManualControl::Result::InputNotSet;
         }
     }
 

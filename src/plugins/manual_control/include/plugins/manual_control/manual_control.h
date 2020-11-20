@@ -69,6 +69,7 @@ public:
         CommandDenied, /**< @brief Command refused by vehicle. */
         Timeout, /**< @brief Request timed out. */
         InputOutOfRange, /**< @brief Input out of range. */
+        InputNotSet, /**< @brief No Input set. */
     };
 
     /**

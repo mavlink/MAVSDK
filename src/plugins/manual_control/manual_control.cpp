@@ -64,6 +64,8 @@ std::ostream& operator<<(std::ostream& str, ManualControl::Result const& result)
             return str << "Timeout";
         case ManualControl::Result::InputOutOfRange:
             return str << "Input Out Of Range";
+        case ManualControl::Result::InputNotSet:
+            return str << "Input Not Set";
         default:
             return str << "Unknown";
     }

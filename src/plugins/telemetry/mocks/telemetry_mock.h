@@ -84,6 +84,10 @@ public:
     MOCK_CONST_METHOD2(set_rate_fixedwing_metrics_async, void(double, Telemetry::ResultCallback)){};
     MOCK_CONST_METHOD2(set_rate_imu_async, void(double, Telemetry::ResultCallback)){};
     MOCK_CONST_METHOD2(set_rate_unix_epoch_time_async, void(double, Telemetry::ResultCallback)){};
+
+    MOCK_METHOD0(
+        get_gps_global_origin, std::pair<Telemetry::Result, Telemetry::GpsGlobalOrigin>()){};
+    MOCK_METHOD1(get_gps_global_origin_async, void(Telemetry::GetGpsGlobalOriginCallback)){};
 };
 
 } // namespace testing

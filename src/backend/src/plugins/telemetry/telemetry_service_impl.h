@@ -1043,6 +1043,35 @@ public:
         return obj;
     }
 
+    static std::unique_ptr<rpc::telemetry::GpsGlobalOrigin>
+    translateToRpcGpsGlobalOrigin(const mavsdk::Telemetry::GpsGlobalOrigin& gps_global_origin)
+    {
+        std::unique_ptr<rpc::telemetry::GpsGlobalOrigin> rpc_obj(
+            new rpc::telemetry::GpsGlobalOrigin());
+
+        rpc_obj->set_latitude_deg(gps_global_origin.latitude_deg);
+
+        rpc_obj->set_longitude_deg(gps_global_origin.longitude_deg);
+
+        rpc_obj->set_altitude_m(gps_global_origin.altitude_m);
+
+        return rpc_obj;
+    }
+
+    static mavsdk::Telemetry::GpsGlobalOrigin
+    translateFromRpcGpsGlobalOrigin(const rpc::telemetry::GpsGlobalOrigin& gps_global_origin)
+    {
+        mavsdk::Telemetry::GpsGlobalOrigin obj;
+
+        obj.latitude_deg = gps_global_origin.latitude_deg();
+
+        obj.longitude_deg = gps_global_origin.longitude_deg();
+
+        obj.altitude_m = gps_global_origin.altitude_m();
+
+        return obj;
+    }
+
     static rpc::telemetry::TelemetryResult::Result
     translateToRpcResult(const mavsdk::Telemetry::Result& result)
     {
@@ -2405,6 +2434,23 @@ public:
 
         if (response != nullptr) {
             fillResponseWithResult(response, result);
+        }
+
+        return grpc::Status::OK;
+    }
+
+    grpc::Status GetGpsGlobalOrigin(
+        grpc::ServerContext* /* context */,
+        const rpc::telemetry::GetGpsGlobalOriginRequest* /* request */,
+        rpc::telemetry::GetGpsGlobalOriginResponse* response) override
+    {
+        auto result = _telemetry.get_gps_global_origin();
+
+        if (response != nullptr) {
+            fillResponseWithResult(response, result.first);
+
+            response->set_allocated_gps_global_origin(
+                translateToRpcGpsGlobalOrigin(result.second).release());
         }
 
         return grpc::Status::OK;

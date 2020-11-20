@@ -105,12 +105,13 @@ enum ManualControlResult_Result : int {
   ManualControlResult_Result_RESULT_COMMAND_DENIED = 5,
   ManualControlResult_Result_RESULT_TIMEOUT = 6,
   ManualControlResult_Result_RESULT_INPUT_OUT_OF_RANGE = 7,
+  ManualControlResult_Result_RESULT_INPUT_NOT_SET = 8,
   ManualControlResult_Result_ManualControlResult_Result_INT_MIN_SENTINEL_DO_NOT_USE_ = std::numeric_limits<::PROTOBUF_NAMESPACE_ID::int32>::min(),
   ManualControlResult_Result_ManualControlResult_Result_INT_MAX_SENTINEL_DO_NOT_USE_ = std::numeric_limits<::PROTOBUF_NAMESPACE_ID::int32>::max()
 };
 bool ManualControlResult_Result_IsValid(int value);
 constexpr ManualControlResult_Result ManualControlResult_Result_Result_MIN = ManualControlResult_Result_RESULT_UNKNOWN;
-constexpr ManualControlResult_Result ManualControlResult_Result_Result_MAX = ManualControlResult_Result_RESULT_INPUT_OUT_OF_RANGE;
+constexpr ManualControlResult_Result ManualControlResult_Result_Result_MAX = ManualControlResult_Result_RESULT_INPUT_NOT_SET;
 constexpr int ManualControlResult_Result_Result_ARRAYSIZE = ManualControlResult_Result_Result_MAX + 1;
 
 const ::PROTOBUF_NAMESPACE_ID::EnumDescriptor* ManualControlResult_Result_descriptor();
@@ -1112,6 +1113,8 @@ class ManualControlResult PROTOBUF_FINAL :
     ManualControlResult_Result_RESULT_TIMEOUT;
   static constexpr Result RESULT_INPUT_OUT_OF_RANGE =
     ManualControlResult_Result_RESULT_INPUT_OUT_OF_RANGE;
+  static constexpr Result RESULT_INPUT_NOT_SET =
+    ManualControlResult_Result_RESULT_INPUT_NOT_SET;
   static inline bool Result_IsValid(int value) {
     return ManualControlResult_Result_IsValid(value);
   }

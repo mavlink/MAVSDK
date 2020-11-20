@@ -70,6 +70,7 @@ static const char* TelemetryService_method_names[] = {
   "/mavsdk.rpc.telemetry.TelemetryService/SetRateImu",
   "/mavsdk.rpc.telemetry.TelemetryService/SetRateUnixEpochTime",
   "/mavsdk.rpc.telemetry.TelemetryService/SetRateDistanceSensor",
+  "/mavsdk.rpc.telemetry.TelemetryService/GetGpsGlobalOrigin",
 };
 
 std::unique_ptr< TelemetryService::Stub> TelemetryService::NewStub(const std::shared_ptr< ::grpc::ChannelInterface>& channel, const ::grpc::StubOptions& options) {
@@ -125,6 +126,7 @@ TelemetryService::Stub::Stub(const std::shared_ptr< ::grpc::ChannelInterface>& c
   , rpcmethod_SetRateImu_(TelemetryService_method_names[43], ::grpc::internal::RpcMethod::NORMAL_RPC, channel)
   , rpcmethod_SetRateUnixEpochTime_(TelemetryService_method_names[44], ::grpc::internal::RpcMethod::NORMAL_RPC, channel)
   , rpcmethod_SetRateDistanceSensor_(TelemetryService_method_names[45], ::grpc::internal::RpcMethod::NORMAL_RPC, channel)
+  , rpcmethod_GetGpsGlobalOrigin_(TelemetryService_method_names[46], ::grpc::internal::RpcMethod::NORMAL_RPC, channel)
   {}
 
 ::grpc::ClientReader< ::mavsdk::rpc::telemetry::PositionResponse>* TelemetryService::Stub::SubscribePositionRaw(::grpc::ClientContext* context, const ::mavsdk::rpc::telemetry::SubscribePositionRequest& request) {
@@ -996,6 +998,29 @@ void TelemetryService::Stub::experimental_async::SetRateDistanceSensor(::grpc::C
   return result;
 }
 
+::grpc::Status TelemetryService::Stub::GetGpsGlobalOrigin(::grpc::ClientContext* context, const ::mavsdk::rpc::telemetry::GetGpsGlobalOriginRequest& request, ::mavsdk::rpc::telemetry::GetGpsGlobalOriginResponse* response) {
+  return ::grpc::internal::BlockingUnaryCall(channel_.get(), rpcmethod_GetGpsGlobalOrigin_, context, request, response);
+}
+
+void TelemetryService::Stub::experimental_async::GetGpsGlobalOrigin(::grpc::ClientContext* context, const ::mavsdk::rpc::telemetry::GetGpsGlobalOriginRequest* request, ::mavsdk::rpc::telemetry::GetGpsGlobalOriginResponse* response, std::function<void(::grpc::Status)> f) {
+  ::grpc::internal::CallbackUnaryCall(stub_->channel_.get(), stub_->rpcmethod_GetGpsGlobalOrigin_, context, request, response, std::move(f));
+}
+
+void TelemetryService::Stub::experimental_async::GetGpsGlobalOrigin(::grpc::ClientContext* context, const ::mavsdk::rpc::telemetry::GetGpsGlobalOriginRequest* request, ::mavsdk::rpc::telemetry::GetGpsGlobalOriginResponse* response, ::grpc::experimental::ClientUnaryReactor* reactor) {
+  ::grpc::internal::ClientCallbackUnaryFactory::Create(stub_->channel_.get(), stub_->rpcmethod_GetGpsGlobalOrigin_, context, request, response, reactor);
+}
+
+::grpc::ClientAsyncResponseReader< ::mavsdk::rpc::telemetry::GetGpsGlobalOriginResponse>* TelemetryService::Stub::PrepareAsyncGetGpsGlobalOriginRaw(::grpc::ClientContext* context, const ::mavsdk::rpc::telemetry::GetGpsGlobalOriginRequest& request, ::grpc::CompletionQueue* cq) {
+  return ::grpc::internal::ClientAsyncResponseReaderFactory< ::mavsdk::rpc::telemetry::GetGpsGlobalOriginResponse>::Create(channel_.get(), cq, rpcmethod_GetGpsGlobalOrigin_, context, request, false);
+}
+
+::grpc::ClientAsyncResponseReader< ::mavsdk::rpc::telemetry::GetGpsGlobalOriginResponse>* TelemetryService::Stub::AsyncGetGpsGlobalOriginRaw(::grpc::ClientContext* context, const ::mavsdk::rpc::telemetry::GetGpsGlobalOriginRequest& request, ::grpc::CompletionQueue* cq) {
+  auto* result =
+    this->PrepareAsyncGetGpsGlobalOriginRaw(context, request, cq);
+  result->StartCall();
+  return result;
+}
+
 TelemetryService::Service::Service() {
   AddMethod(new ::grpc::internal::RpcServiceMethod(
       TelemetryService_method_names[0],
@@ -1457,6 +1482,16 @@ TelemetryService::Service::Service() {
              ::mavsdk::rpc::telemetry::SetRateDistanceSensorResponse* resp) {
                return service->SetRateDistanceSensor(ctx, req, resp);
              }, this)));
+  AddMethod(new ::grpc::internal::RpcServiceMethod(
+      TelemetryService_method_names[46],
+      ::grpc::internal::RpcMethod::NORMAL_RPC,
+      new ::grpc::internal::RpcMethodHandler< TelemetryService::Service, ::mavsdk::rpc::telemetry::GetGpsGlobalOriginRequest, ::mavsdk::rpc::telemetry::GetGpsGlobalOriginResponse>(
+          [](TelemetryService::Service* service,
+             ::grpc::ServerContext* ctx,
+             const ::mavsdk::rpc::telemetry::GetGpsGlobalOriginRequest* req,
+             ::mavsdk::rpc::telemetry::GetGpsGlobalOriginResponse* resp) {
+               return service->GetGpsGlobalOrigin(ctx, req, resp);
+             }, this)));
 }
 
 TelemetryService::Service::~Service() {
@@ -1778,6 +1813,13 @@ TelemetryService::Service::~Service() {
 }
 
 ::grpc::Status TelemetryService::Service::SetRateDistanceSensor(::grpc::ServerContext* context, const ::mavsdk::rpc::telemetry::SetRateDistanceSensorRequest* request, ::mavsdk::rpc::telemetry::SetRateDistanceSensorResponse* response) {
+  (void) context;
+  (void) request;
+  (void) response;
+  return ::grpc::Status(::grpc::StatusCode::UNIMPLEMENTED, "");
+}
+
+::grpc::Status TelemetryService::Service::GetGpsGlobalOrigin(::grpc::ServerContext* context, const ::mavsdk::rpc::telemetry::GetGpsGlobalOriginRequest* request, ::mavsdk::rpc::telemetry::GetGpsGlobalOriginResponse* response) {
   (void) context;
   (void) request;
   (void) response;
