@@ -754,8 +754,7 @@ public:
     static std::unique_ptr<rpc::telemetry::DistanceSensor>
     translateToRpcDistanceSensor(const mavsdk::Telemetry::DistanceSensor& distance_sensor)
     {
-        std::unique_ptr<rpc::telemetry::DistanceSensor> rpc_obj(
-            new rpc::telemetry::DistanceSensor());
+        auto rpc_obj = std::make_unique<rpc::telemetry::DistanceSensor>();
 
         rpc_obj->set_minimum_distance_m(distance_sensor.minimum_distance_m);
 
@@ -1038,8 +1037,7 @@ public:
     static std::unique_ptr<rpc::telemetry::GpsGlobalOrigin>
     translateToRpcGpsGlobalOrigin(const mavsdk::Telemetry::GpsGlobalOrigin& gps_global_origin)
     {
-        std::unique_ptr<rpc::telemetry::GpsGlobalOrigin> rpc_obj(
-            new rpc::telemetry::GpsGlobalOrigin());
+        auto rpc_obj = std::make_unique<rpc::telemetry::GpsGlobalOrigin>();
 
         rpc_obj->set_latitude_deg(gps_global_origin.latitude_deg);
 
