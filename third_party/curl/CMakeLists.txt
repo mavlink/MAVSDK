@@ -35,8 +35,10 @@ endforeach()
 
 ExternalProject_add(
     curl
-    URL https://github.com/curl/curl/archive/curl-7_73_0.zip
+    GIT_REPOSITORY https://github.com/curl/curl.git
+    GIT_TAG curl-7_73_0
+    GIT_SHALLOW ON
     PREFIX curl
-    PATCH_COMMAND patch CMakeLists.txt < ${PROJECT_SOURCE_DIR}/curl.patch
+    PATCH_COMMAND git apply ${PROJECT_SOURCE_DIR}/curl.patch
     CMAKE_ARGS "${CMAKE_ARGS}"
     )
