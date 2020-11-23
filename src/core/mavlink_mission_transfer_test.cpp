@@ -1700,3 +1700,41 @@ TEST(MAVLinkMissionTransfer, SetCurrentWithInvalidInput)
     mmt.do_work();
     EXPECT_TRUE(mmt.is_idle());
 }
+
+TEST(MAVLinkMissionTransfer, SetCurrentWithRetransmissionWhenWrong)
+{
+    MockSender mock_sender(own_address, target_address);
+    MAVLinkMessageHandler message_handler;
+    FakeTime time;
+    TimeoutHandler timeout_handler(time);
+
+    MAVLinkMissionTransfer mmt(mock_sender, message_handler, timeout_handler);
+
+    ON_CALL(mock_sender, send_message(_)).WillByDefault(Return(true));
+
+    EXPECT_CALL(mock_sender, send_message(Truly([](const mavlink_message_t& message) {
+                    return is_correct_mission_set_current(2, message);
+                })));
+
+    std::promise<void> prom;
+    auto fut = prom.get_future();
+
+    mmt.set_current_item_async(2, [&prom](Result result) {
+        EXPECT_EQ(result, Result::Success);
+        prom.set_value();
+    });
+    mmt.do_work();
+
+    // Retransmit to get correct feedback.
+    EXPECT_CALL(mock_sender, send_message(Truly([](const mavlink_message_t& message) {
+                    return is_correct_mission_set_current(2, message);
+                })));
+
+    message_handler.process_message(make_mission_current(1));
+    mmt.do_work();
+
+    message_handler.process_message(make_mission_current(2));
+
+    mmt.do_work();
+    EXPECT_TRUE(mmt.is_idle());
+}
