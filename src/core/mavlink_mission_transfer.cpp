@@ -855,13 +855,14 @@ void MAVLinkMissionTransfer::SetCurrentWorkItem::process_mission_current(
     mavlink_msg_mission_current_decode(&message, &mission_current);
 
     _timeout_handler.remove(_cookie);
-    _current = mission_current.seq;
 
-    if (_current >= 0) {
+    if (_current == mission_current.seq) {
+        _current = mission_current.seq;
         callback_and_reset(Result::Success);
         return;
     } else {
-        callback_and_reset(Result::CurrentInvalid);
+        _timeout_handler.refresh(&_cookie);
+        send_current_mission_item();
         return;
     }
 }
