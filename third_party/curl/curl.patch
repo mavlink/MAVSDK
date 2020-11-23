@@ -1,9 +1,11 @@
---- CMakeLists.txt	2020-10-22 13:52:47.849069912 -0800
-+++ CMakeLists.txt	2020-10-22 13:52:36.053060360 -0800
-@@ -371,6 +371,9 @@
+diff --git a/CMakeLists.txt b/CMakeLists.txt
+index ec1cfa782..bb95041d2 100644
+--- a/CMakeLists.txt
++++ b/CMakeLists.txt
+@@ -386,6 +386,9 @@ if(CMAKE_USE_OPENSSL)
    set(SSL_ENABLED ON)
    set(USE_OPENSSL ON)
-
+ 
 +  list(APPEND OPENSSL_LIBRARIES rt)
 +  list(APPEND CURL_LIBS rt)
 +
