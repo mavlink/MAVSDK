@@ -1,3 +1,4 @@
+#include <future>
 #include <iostream>
 #include "integration_test_helper.h"
 #include "mavsdk.h"
@@ -8,6 +9,7 @@ using namespace mavsdk;
 
 // static void connect(Mavsdk);
 static void takeoff(std::shared_ptr<Action> action, std::shared_ptr<Telemetry> telemetry);
+void wait_until_hovering(std::shared_ptr<Telemetry> telemetry);
 static void takeoff_and_transition_to_fixedwing();
 static void land_and_disarm(std::shared_ptr<Action> action, std::shared_ptr<Telemetry> telemetry);
 
@@ -44,6 +46,9 @@ void takeoff_and_transition_to_fixedwing()
 
     // We need to takeoff first, otherwise we can't actually transition
     takeoff(action, telemetry);
+
+    LogInfo() << "Waiting until hovering";
+    wait_until_hovering(telemetry);
 
     LogInfo() << "Transitioning to fixedwing";
     Action::Result transition_result = action->transition_to_fixedwing();
@@ -92,10 +97,19 @@ void takeoff(std::shared_ptr<Action> action, std::shared_ptr<Telemetry> telemetr
     LogInfo() << "Taking off";
     action_ret = action->takeoff();
     EXPECT_EQ(action_ret, Action::Result::Success);
-    const int wait_time_s = 15;
-    std::this_thread::sleep_for(std::chrono::seconds(wait_time_s));
+}
 
-    // TODO: enable again later with the path checker
-    // EXPECT_GT(telemetry->position().relative_altitude_m, altitude_m - 1.0f);
-    // EXPECT_LT(telemetry->position().relative_altitude_m, altitude_m + 1.0f);
+void wait_until_hovering(std::shared_ptr<Telemetry> telemetry)
+{
+    auto prom = std::promise<void>{};
+    auto fut = prom.get_future();
+    // Wait until hovering.
+    telemetry->subscribe_flight_mode([&telemetry, &prom](Telemetry::FlightMode mode) {
+        if (mode == Telemetry::FlightMode::Hold) {
+            telemetry->subscribe_flight_mode(nullptr);
+            prom.set_value();
+        }
+    });
+
+    ASSERT_EQ(fut.wait_for(std::chrono::seconds(10)), std::future_status::ready);
 }

@@ -21,7 +21,7 @@ jobs:
         with:
           submodules: recursive
       - name: Install lcov
-        run: sudo apt-get install -y lcov
+        run: sudo apt-get update && sudo apt-get install -y lcov
       - name: configure
         run: cmake -DCMAKE_BUILD_TYPE=Coverage -DASAN=ON -DUBSAN=ON -DLSAN=ON -DWERROR=OFF -j 2 -Bbuild -H.
       - name: build
@@ -66,7 +66,7 @@ jobs:
       - name: install
         run: sudo cmake --build build/release --target install
       - name: install examples dependencies
-        run: sudo apt-get install -y libsdl2-dev
+        run: sudo apt-get update && sudo apt-get install -y libsdl2-dev
       - name: configure examples
         run: (cd examples && cmake -DCMAKE_BUILD_TYPE=Release -DWERROR=OFF -j 2 -Bbuild -H.)
       - name: build examples
@@ -84,7 +84,7 @@ jobs:
         with:
           submodules: recursive
       - name: install clang-format
-        run: sudo apt-get install -y clang-format-10
+        run: sudo apt-get update && sudo apt-get install -y clang-format-10
       - name: install dcsdkgen
         run: |
              cd proto/pb_plugins
@@ -107,7 +107,7 @@ jobs:
         with:
           submodules: recursive
       - name: install dependencies
-        run: sudo apt-get install -y doxygen clang-format-10
+        run: sudo apt-get update && sudo apt-get install -y doxygen clang-format-10
       - name: check style
         run: ./tools/fix_style.sh .
       - name: check docs
