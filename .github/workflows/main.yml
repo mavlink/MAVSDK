@@ -445,7 +445,7 @@ jobs:
         run: bash ./src/backend/tools/package_backend_framework.bash
       - uses: actions/upload-artifact@v2
         with:
-          name: mavsdk_server_ios.xcframework
+          name: mavsdk_server.xcframework
           path: ./build/mavsdk_server.xcframework
           retention-days: 2
       - name: Publish artefacts
@@ -453,8 +453,8 @@ jobs:
         uses: svenstaro/upload-release-action@v1-release
         with:
           repo_token: ${{ secrets.GITHUB_TOKEN }}
-          file: 'build/mavsdk_server.zip'
-          asset_name: 'mavsdk_server_ios.zip'
+          file: 'build/mavsdk_server.xcframework.zip'
+          asset_name: 'mavsdk_server.xcframework.zip'
           tag: ${{ github.ref }}
           overwrite: true
 

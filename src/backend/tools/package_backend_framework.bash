@@ -14,12 +14,12 @@ if [ -d ${BUILD_DIR}/mavsdk_server.xcframework ]; then
 fi
 
 echo "Fixing Modules in macOS framework"
-ln -s Versions/Current/Modules ${MACOS_BACKEND_DIR}/mavsdk_server.framework
+ln -sf Versions/Current/Modules ${MACOS_BACKEND_DIR}/mavsdk_server.framework
 
 echo "Creating xcframework..."
 xcodebuild -create-xcframework -framework ${IOS_BACKEND_DIR}/mavsdk_server.framework -framework ${IOS_SIM_BACKEND_DIR}/mavsdk_server.framework -framework ${MACOS_BACKEND_DIR}/mavsdk_server.framework -output ${BUILD_DIR}/mavsdk_server.xcframework
 
 cd ${BUILD_DIR}
-zip -9 -r mavsdk_server.zip mavsdk_server.xcframework
+zip -9 -r mavsdk_server.xcframework.zip mavsdk_server.xcframework
 
 echo "Success! You will find the xcframework in ${BUILD_DIR}!"
