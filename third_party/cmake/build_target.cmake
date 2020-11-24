@@ -16,7 +16,6 @@ function(build_target TARGET_NAME)
             "-G${CMAKE_GENERATOR}"
             "${PLATFORM_ARGUMENT}"
             "-DCMAKE_TOOLCHAIN_FILE:PATH=${CMAKE_TOOLCHAIN_FILE}"
-            "${CL_ARGS}"
             "-DCL_ARGS=${CL_ARGS}"
             "-DCMAKE_INSTALL_PREFIX:PATH=${TARGET_INSTALL_DIR}"
             "-DCMAKE_PREFIX_PATH:PATH=${CMAKE_PREFIX_PATH}"
