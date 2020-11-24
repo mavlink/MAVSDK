@@ -39,7 +39,7 @@ public:
     static std::unique_ptr<rpc::log_files::ProgressData>
     translateToRpcProgressData(const mavsdk::LogFiles::ProgressData& progress_data)
     {
-        std::unique_ptr<rpc::log_files::ProgressData> rpc_obj(new rpc::log_files::ProgressData());
+        auto rpc_obj = std::make_unique<rpc::log_files::ProgressData>();
 
         rpc_obj->set_progress(progress_data.progress);
 
@@ -59,7 +59,7 @@ public:
     static std::unique_ptr<rpc::log_files::Entry>
     translateToRpcEntry(const mavsdk::LogFiles::Entry& entry)
     {
-        std::unique_ptr<rpc::log_files::Entry> rpc_obj(new rpc::log_files::Entry());
+        auto rpc_obj = std::make_unique<rpc::log_files::Entry>();
 
         rpc_obj->set_id(entry.id);
 

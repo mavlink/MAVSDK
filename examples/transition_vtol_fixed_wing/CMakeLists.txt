@@ -1,11 +1,14 @@
-cmake_minimum_required(VERSION 2.8.12)
+cmake_minimum_required(VERSION 3.10.2)
+
+set(CMAKE_CXX_STANDARD 17)
+set(CMAKE_CXX_STANDARD_REQUIRED ON)
 
 project(transition_vtol_fixed_wing)
 
 if(NOT MSVC)
-    add_definitions("-std=c++11 -Wall -Wextra")
+    add_definitions("-Wall -Wextra")
 else()
-    add_definitions("-std=c++11 -WX -W2")
+    add_definitions("-WX -W2")
 endif()
 
 find_package(MAVSDK REQUIRED)

@@ -260,7 +260,7 @@ public:
     static std::unique_ptr<rpc::telemetry::Position>
     translateToRpcPosition(const mavsdk::Telemetry::Position& position)
     {
-        std::unique_ptr<rpc::telemetry::Position> rpc_obj(new rpc::telemetry::Position());
+        auto rpc_obj = std::make_unique<rpc::telemetry::Position>();
 
         rpc_obj->set_latitude_deg(position.latitude_deg);
 
@@ -292,7 +292,7 @@ public:
     static std::unique_ptr<rpc::telemetry::Quaternion>
     translateToRpcQuaternion(const mavsdk::Telemetry::Quaternion& quaternion)
     {
-        std::unique_ptr<rpc::telemetry::Quaternion> rpc_obj(new rpc::telemetry::Quaternion());
+        auto rpc_obj = std::make_unique<rpc::telemetry::Quaternion>();
 
         rpc_obj->set_w(quaternion.w);
 
@@ -324,7 +324,7 @@ public:
     static std::unique_ptr<rpc::telemetry::EulerAngle>
     translateToRpcEulerAngle(const mavsdk::Telemetry::EulerAngle& euler_angle)
     {
-        std::unique_ptr<rpc::telemetry::EulerAngle> rpc_obj(new rpc::telemetry::EulerAngle());
+        auto rpc_obj = std::make_unique<rpc::telemetry::EulerAngle>();
 
         rpc_obj->set_roll_deg(euler_angle.roll_deg);
 
@@ -352,8 +352,7 @@ public:
     static std::unique_ptr<rpc::telemetry::AngularVelocityBody> translateToRpcAngularVelocityBody(
         const mavsdk::Telemetry::AngularVelocityBody& angular_velocity_body)
     {
-        std::unique_ptr<rpc::telemetry::AngularVelocityBody> rpc_obj(
-            new rpc::telemetry::AngularVelocityBody());
+        auto rpc_obj = std::make_unique<rpc::telemetry::AngularVelocityBody>();
 
         rpc_obj->set_roll_rad_s(angular_velocity_body.roll_rad_s);
 
@@ -381,7 +380,7 @@ public:
     static std::unique_ptr<rpc::telemetry::GpsInfo>
     translateToRpcGpsInfo(const mavsdk::Telemetry::GpsInfo& gps_info)
     {
-        std::unique_ptr<rpc::telemetry::GpsInfo> rpc_obj(new rpc::telemetry::GpsInfo());
+        auto rpc_obj = std::make_unique<rpc::telemetry::GpsInfo>();
 
         rpc_obj->set_num_satellites(gps_info.num_satellites);
 
@@ -405,7 +404,7 @@ public:
     static std::unique_ptr<rpc::telemetry::Battery>
     translateToRpcBattery(const mavsdk::Telemetry::Battery& battery)
     {
-        std::unique_ptr<rpc::telemetry::Battery> rpc_obj(new rpc::telemetry::Battery());
+        auto rpc_obj = std::make_unique<rpc::telemetry::Battery>();
 
         rpc_obj->set_voltage_v(battery.voltage_v);
 
@@ -429,7 +428,7 @@ public:
     static std::unique_ptr<rpc::telemetry::Health>
     translateToRpcHealth(const mavsdk::Telemetry::Health& health)
     {
-        std::unique_ptr<rpc::telemetry::Health> rpc_obj(new rpc::telemetry::Health());
+        auto rpc_obj = std::make_unique<rpc::telemetry::Health>();
 
         rpc_obj->set_is_gyrometer_calibration_ok(health.is_gyrometer_calibration_ok);
 
@@ -472,7 +471,7 @@ public:
     static std::unique_ptr<rpc::telemetry::RcStatus>
     translateToRpcRcStatus(const mavsdk::Telemetry::RcStatus& rc_status)
     {
-        std::unique_ptr<rpc::telemetry::RcStatus> rpc_obj(new rpc::telemetry::RcStatus());
+        auto rpc_obj = std::make_unique<rpc::telemetry::RcStatus>();
 
         rpc_obj->set_was_available_once(rc_status.was_available_once);
 
@@ -500,7 +499,7 @@ public:
     static std::unique_ptr<rpc::telemetry::StatusText>
     translateToRpcStatusText(const mavsdk::Telemetry::StatusText& status_text)
     {
-        std::unique_ptr<rpc::telemetry::StatusText> rpc_obj(new rpc::telemetry::StatusText());
+        auto rpc_obj = std::make_unique<rpc::telemetry::StatusText>();
 
         rpc_obj->set_type(translateToRpcStatusTextType(status_text.type));
 
@@ -525,8 +524,7 @@ public:
     translateToRpcActuatorControlTarget(
         const mavsdk::Telemetry::ActuatorControlTarget& actuator_control_target)
     {
-        std::unique_ptr<rpc::telemetry::ActuatorControlTarget> rpc_obj(
-            new rpc::telemetry::ActuatorControlTarget());
+        auto rpc_obj = std::make_unique<rpc::telemetry::ActuatorControlTarget>();
 
         rpc_obj->set_group(actuator_control_target.group);
 
@@ -554,8 +552,7 @@ public:
     static std::unique_ptr<rpc::telemetry::ActuatorOutputStatus> translateToRpcActuatorOutputStatus(
         const mavsdk::Telemetry::ActuatorOutputStatus& actuator_output_status)
     {
-        std::unique_ptr<rpc::telemetry::ActuatorOutputStatus> rpc_obj(
-            new rpc::telemetry::ActuatorOutputStatus());
+        auto rpc_obj = std::make_unique<rpc::telemetry::ActuatorOutputStatus>();
 
         rpc_obj->set_active(actuator_output_status.active);
 
@@ -583,7 +580,7 @@ public:
     static std::unique_ptr<rpc::telemetry::Covariance>
     translateToRpcCovariance(const mavsdk::Telemetry::Covariance& covariance)
     {
-        std::unique_ptr<rpc::telemetry::Covariance> rpc_obj(new rpc::telemetry::Covariance());
+        auto rpc_obj = std::make_unique<rpc::telemetry::Covariance>();
 
         for (const auto& elem : covariance.covariance_matrix) {
             rpc_obj->add_covariance_matrix(elem);
@@ -607,7 +604,7 @@ public:
     static std::unique_ptr<rpc::telemetry::VelocityBody>
     translateToRpcVelocityBody(const mavsdk::Telemetry::VelocityBody& velocity_body)
     {
-        std::unique_ptr<rpc::telemetry::VelocityBody> rpc_obj(new rpc::telemetry::VelocityBody());
+        auto rpc_obj = std::make_unique<rpc::telemetry::VelocityBody>();
 
         rpc_obj->set_x_m_s(velocity_body.x_m_s);
 
@@ -635,7 +632,7 @@ public:
     static std::unique_ptr<rpc::telemetry::PositionBody>
     translateToRpcPositionBody(const mavsdk::Telemetry::PositionBody& position_body)
     {
-        std::unique_ptr<rpc::telemetry::PositionBody> rpc_obj(new rpc::telemetry::PositionBody());
+        auto rpc_obj = std::make_unique<rpc::telemetry::PositionBody>();
 
         rpc_obj->set_x_m(position_body.x_m);
 
@@ -699,7 +696,7 @@ public:
     static std::unique_ptr<rpc::telemetry::Odometry>
     translateToRpcOdometry(const mavsdk::Telemetry::Odometry& odometry)
     {
-        std::unique_ptr<rpc::telemetry::Odometry> rpc_obj(new rpc::telemetry::Odometry());
+        auto rpc_obj = std::make_unique<rpc::telemetry::Odometry>();
 
         rpc_obj->set_time_usec(odometry.time_usec);
 
@@ -757,8 +754,7 @@ public:
     static std::unique_ptr<rpc::telemetry::DistanceSensor>
     translateToRpcDistanceSensor(const mavsdk::Telemetry::DistanceSensor& distance_sensor)
     {
-        std::unique_ptr<rpc::telemetry::DistanceSensor> rpc_obj(
-            new rpc::telemetry::DistanceSensor());
+        auto rpc_obj = std::make_unique<rpc::telemetry::DistanceSensor>();
 
         rpc_obj->set_minimum_distance_m(distance_sensor.minimum_distance_m);
 
@@ -786,7 +782,7 @@ public:
     static std::unique_ptr<rpc::telemetry::PositionNed>
     translateToRpcPositionNed(const mavsdk::Telemetry::PositionNed& position_ned)
     {
-        std::unique_ptr<rpc::telemetry::PositionNed> rpc_obj(new rpc::telemetry::PositionNed());
+        auto rpc_obj = std::make_unique<rpc::telemetry::PositionNed>();
 
         rpc_obj->set_north_m(position_ned.north_m);
 
@@ -814,7 +810,7 @@ public:
     static std::unique_ptr<rpc::telemetry::VelocityNed>
     translateToRpcVelocityNed(const mavsdk::Telemetry::VelocityNed& velocity_ned)
     {
-        std::unique_ptr<rpc::telemetry::VelocityNed> rpc_obj(new rpc::telemetry::VelocityNed());
+        auto rpc_obj = std::make_unique<rpc::telemetry::VelocityNed>();
 
         rpc_obj->set_north_m_s(velocity_ned.north_m_s);
 
@@ -842,8 +838,7 @@ public:
     static std::unique_ptr<rpc::telemetry::PositionVelocityNed> translateToRpcPositionVelocityNed(
         const mavsdk::Telemetry::PositionVelocityNed& position_velocity_ned)
     {
-        std::unique_ptr<rpc::telemetry::PositionVelocityNed> rpc_obj(
-            new rpc::telemetry::PositionVelocityNed());
+        auto rpc_obj = std::make_unique<rpc::telemetry::PositionVelocityNed>();
 
         rpc_obj->set_allocated_position(
             translateToRpcPositionNed(position_velocity_ned.position).release());
@@ -869,7 +864,7 @@ public:
     static std::unique_ptr<rpc::telemetry::GroundTruth>
     translateToRpcGroundTruth(const mavsdk::Telemetry::GroundTruth& ground_truth)
     {
-        std::unique_ptr<rpc::telemetry::GroundTruth> rpc_obj(new rpc::telemetry::GroundTruth());
+        auto rpc_obj = std::make_unique<rpc::telemetry::GroundTruth>();
 
         rpc_obj->set_latitude_deg(ground_truth.latitude_deg);
 
@@ -897,8 +892,7 @@ public:
     static std::unique_ptr<rpc::telemetry::FixedwingMetrics>
     translateToRpcFixedwingMetrics(const mavsdk::Telemetry::FixedwingMetrics& fixedwing_metrics)
     {
-        std::unique_ptr<rpc::telemetry::FixedwingMetrics> rpc_obj(
-            new rpc::telemetry::FixedwingMetrics());
+        auto rpc_obj = std::make_unique<rpc::telemetry::FixedwingMetrics>();
 
         rpc_obj->set_airspeed_m_s(fixedwing_metrics.airspeed_m_s);
 
@@ -926,8 +920,7 @@ public:
     static std::unique_ptr<rpc::telemetry::AccelerationFrd>
     translateToRpcAccelerationFrd(const mavsdk::Telemetry::AccelerationFrd& acceleration_frd)
     {
-        std::unique_ptr<rpc::telemetry::AccelerationFrd> rpc_obj(
-            new rpc::telemetry::AccelerationFrd());
+        auto rpc_obj = std::make_unique<rpc::telemetry::AccelerationFrd>();
 
         rpc_obj->set_forward_m_s2(acceleration_frd.forward_m_s2);
 
@@ -955,8 +948,7 @@ public:
     static std::unique_ptr<rpc::telemetry::AngularVelocityFrd> translateToRpcAngularVelocityFrd(
         const mavsdk::Telemetry::AngularVelocityFrd& angular_velocity_frd)
     {
-        std::unique_ptr<rpc::telemetry::AngularVelocityFrd> rpc_obj(
-            new rpc::telemetry::AngularVelocityFrd());
+        auto rpc_obj = std::make_unique<rpc::telemetry::AngularVelocityFrd>();
 
         rpc_obj->set_forward_rad_s(angular_velocity_frd.forward_rad_s);
 
@@ -984,8 +976,7 @@ public:
     static std::unique_ptr<rpc::telemetry::MagneticFieldFrd>
     translateToRpcMagneticFieldFrd(const mavsdk::Telemetry::MagneticFieldFrd& magnetic_field_frd)
     {
-        std::unique_ptr<rpc::telemetry::MagneticFieldFrd> rpc_obj(
-            new rpc::telemetry::MagneticFieldFrd());
+        auto rpc_obj = std::make_unique<rpc::telemetry::MagneticFieldFrd>();
 
         rpc_obj->set_forward_gauss(magnetic_field_frd.forward_gauss);
 
@@ -1012,7 +1003,7 @@ public:
 
     static std::unique_ptr<rpc::telemetry::Imu> translateToRpcImu(const mavsdk::Telemetry::Imu& imu)
     {
-        std::unique_ptr<rpc::telemetry::Imu> rpc_obj(new rpc::telemetry::Imu());
+        auto rpc_obj = std::make_unique<rpc::telemetry::Imu>();
 
         rpc_obj->set_allocated_acceleration_frd(
             translateToRpcAccelerationFrd(imu.acceleration_frd).release());
@@ -1046,8 +1037,7 @@ public:
     static std::unique_ptr<rpc::telemetry::GpsGlobalOrigin>
     translateToRpcGpsGlobalOrigin(const mavsdk::Telemetry::GpsGlobalOrigin& gps_global_origin)
     {
-        std::unique_ptr<rpc::telemetry::GpsGlobalOrigin> rpc_obj(
-            new rpc::telemetry::GpsGlobalOrigin());
+        auto rpc_obj = std::make_unique<rpc::telemetry::GpsGlobalOrigin>();
 
         rpc_obj->set_latitude_deg(gps_global_origin.latitude_deg);
 

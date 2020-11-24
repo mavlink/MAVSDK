@@ -5,7 +5,7 @@
 {% if not name.upper_camel_case.endswith('Result') -%}
 static std::unique_ptr<rpc::{{ plugin_name.lower_snake_case }}::{{ name.upper_camel_case }}> translateToRpc{{ name.upper_camel_case }}(const {{ package.lower_snake_case.split('.')[0] }}::{{ plugin_name.upper_camel_case }}::{{ name.upper_camel_case }} &{{ name.lower_snake_case }})
 {
-    std::unique_ptr<rpc::{{ plugin_name.lower_snake_case }}::{{ name.upper_camel_case }}> rpc_obj(new rpc::{{ plugin_name.lower_snake_case }}::{{ name.upper_camel_case }}());
+    auto rpc_obj = std::make_unique<rpc::{{ plugin_name.lower_snake_case }}::{{ name.upper_camel_case }}>();
 
 {% for field in fields -%}
     {% if field.type_info.is_primitive %}

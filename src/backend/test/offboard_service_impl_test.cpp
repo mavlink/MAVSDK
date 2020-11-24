@@ -203,8 +203,7 @@ TEST_F(OffboardServiceImplTest, setsActuatorControlCorrectly)
 std::unique_ptr<mavsdk::rpc::offboard::ActuatorControl>
 OffboardServiceImplTest::createArbitraryRPCActuatorControl() const
 {
-    auto rpc_actuator_control = std::unique_ptr<mavsdk::rpc::offboard::ActuatorControl>(
-        new mavsdk::rpc::offboard::ActuatorControl());
+    auto rpc_actuator_control = std::make_unique<mavsdk::rpc::offboard::ActuatorControl>();
 
     auto rpc_actuator_group_0 = rpc_actuator_control.get()->add_groups();
 
@@ -258,8 +257,7 @@ TEST_F(OffboardServiceImplTest, setAttitudeRateDoesNotFailWithNullResponse)
 std::unique_ptr<mavsdk::rpc::offboard::Attitude>
 OffboardServiceImplTest::createArbitraryRPCAttitude() const
 {
-    auto rpc_attitude =
-        std::unique_ptr<mavsdk::rpc::offboard::Attitude>(new mavsdk::rpc::offboard::Attitude());
+    auto rpc_attitude = std::make_unique<mavsdk::rpc::offboard::Attitude>();
     rpc_attitude->set_roll_deg(ARBITRARY_ROLL);
     rpc_attitude->set_pitch_deg(ARBITRARY_PITCH);
     rpc_attitude->set_yaw_deg(ARBITRARY_YAW);
@@ -270,8 +268,7 @@ OffboardServiceImplTest::createArbitraryRPCAttitude() const
 std::unique_ptr<mavsdk::rpc::offboard::AttitudeRate>
 OffboardServiceImplTest::createArbitraryRPCAttitudeRate() const
 {
-    auto rpc_attitude_rate = std::unique_ptr<mavsdk::rpc::offboard::AttitudeRate>(
-        new mavsdk::rpc::offboard::AttitudeRate());
+    auto rpc_attitude_rate = std::make_unique<mavsdk::rpc::offboard::AttitudeRate>();
     rpc_attitude_rate->set_roll_deg_s(ARBITRARY_ROLL_RATE);
     rpc_attitude_rate->set_pitch_deg_s(ARBITRARY_PITCH_RATE);
     rpc_attitude_rate->set_yaw_deg_s(ARBITRARY_YAW_RATE);
@@ -334,8 +331,7 @@ TEST_F(OffboardServiceImplTest, setPositionNedYawDoesNotFailWithNullResponse)
 std::unique_ptr<mavsdk::rpc::offboard::PositionNedYaw>
 OffboardServiceImplTest::createArbitraryRPCPositionNedYaw() const
 {
-    auto rpc_position_ned_yaw = std::unique_ptr<mavsdk::rpc::offboard::PositionNedYaw>(
-        new mavsdk::rpc::offboard::PositionNedYaw());
+    auto rpc_position_ned_yaw = std::make_unique<mavsdk::rpc::offboard::PositionNedYaw>();
     rpc_position_ned_yaw->set_north_m(ARBITRARY_NORTH_M);
     rpc_position_ned_yaw->set_east_m(ARBITRARY_EAST_M);
     rpc_position_ned_yaw->set_down_m(ARBITRARY_DOWN_M);
@@ -383,8 +379,7 @@ TEST_F(OffboardServiceImplTest, setVelocityBodyDoesNotFailWithNullResponse)
 std::unique_ptr<mavsdk::rpc::offboard::VelocityBodyYawspeed>
 OffboardServiceImplTest::createArbitraryRPCVelocityBodyYawspeed() const
 {
-    auto rpc_velocity_body = std::unique_ptr<mavsdk::rpc::offboard::VelocityBodyYawspeed>(
-        new mavsdk::rpc::offboard::VelocityBodyYawspeed());
+    auto rpc_velocity_body = std::make_unique<mavsdk::rpc::offboard::VelocityBodyYawspeed>();
     rpc_velocity_body->set_forward_m_s(ARBITRARY_VELOCITY_HIGH);
     rpc_velocity_body->set_right_m_s(ARBITRARY_VELOCITY_LOW);
     rpc_velocity_body->set_down_m_s(ARBITRARY_VELOCITY_NEG);
@@ -432,8 +427,7 @@ TEST_F(OffboardServiceImplTest, setVelocityNedDoesNotFailWithNullResponse)
 std::unique_ptr<mavsdk::rpc::offboard::VelocityNedYaw>
 OffboardServiceImplTest::createArbitraryRPCVelocityNedYaw() const
 {
-    auto rpc_velocity_ned = std::unique_ptr<mavsdk::rpc::offboard::VelocityNedYaw>(
-        new mavsdk::rpc::offboard::VelocityNedYaw());
+    auto rpc_velocity_ned = std::make_unique<mavsdk::rpc::offboard::VelocityNedYaw>();
     rpc_velocity_ned->set_north_m_s(ARBITRARY_VELOCITY_MID);
     rpc_velocity_ned->set_east_m_s(ARBITRARY_VELOCITY_LOW);
     rpc_velocity_ned->set_down_m_s(ARBITRARY_VELOCITY_NEG);

@@ -143,7 +143,7 @@ public:
     static std::unique_ptr<rpc::tune::TuneDescription>
     translateToRpcTuneDescription(const mavsdk::Tune::TuneDescription& tune_description)
     {
-        std::unique_ptr<rpc::tune::TuneDescription> rpc_obj(new rpc::tune::TuneDescription());
+        auto rpc_obj = std::make_unique<rpc::tune::TuneDescription>();
 
         for (const auto& elem : tune_description.song_elements) {
             rpc_obj->add_song_elements(translateToRpcSongElement(elem));

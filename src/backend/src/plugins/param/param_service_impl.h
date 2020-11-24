@@ -39,7 +39,7 @@ public:
     static std::unique_ptr<rpc::param::IntParam>
     translateToRpcIntParam(const mavsdk::Param::IntParam& int_param)
     {
-        std::unique_ptr<rpc::param::IntParam> rpc_obj(new rpc::param::IntParam());
+        auto rpc_obj = std::make_unique<rpc::param::IntParam>();
 
         rpc_obj->set_name(int_param.name);
 
@@ -62,7 +62,7 @@ public:
     static std::unique_ptr<rpc::param::FloatParam>
     translateToRpcFloatParam(const mavsdk::Param::FloatParam& float_param)
     {
-        std::unique_ptr<rpc::param::FloatParam> rpc_obj(new rpc::param::FloatParam());
+        auto rpc_obj = std::make_unique<rpc::param::FloatParam>();
 
         rpc_obj->set_name(float_param.name);
 
@@ -86,7 +86,7 @@ public:
     static std::unique_ptr<rpc::param::AllParams>
     translateToRpcAllParams(const mavsdk::Param::AllParams& all_params)
     {
-        std::unique_ptr<rpc::param::AllParams> rpc_obj(new rpc::param::AllParams());
+        auto rpc_obj = std::make_unique<rpc::param::AllParams>();
 
         for (const auto& elem : all_params.int_params) {
             auto* ptr = rpc_obj->add_int_params();

@@ -83,7 +83,7 @@ public:
     static std::unique_ptr<rpc::mission::MissionItem>
     translateToRpcMissionItem(const mavsdk::Mission::MissionItem& mission_item)
     {
-        std::unique_ptr<rpc::mission::MissionItem> rpc_obj(new rpc::mission::MissionItem());
+        auto rpc_obj = std::make_unique<rpc::mission::MissionItem>();
 
         rpc_obj->set_latitude_deg(mission_item.latitude_deg);
 
@@ -139,7 +139,7 @@ public:
     static std::unique_ptr<rpc::mission::MissionPlan>
     translateToRpcMissionPlan(const mavsdk::Mission::MissionPlan& mission_plan)
     {
-        std::unique_ptr<rpc::mission::MissionPlan> rpc_obj(new rpc::mission::MissionPlan());
+        auto rpc_obj = std::make_unique<rpc::mission::MissionPlan>();
 
         for (const auto& elem : mission_plan.mission_items) {
             auto* ptr = rpc_obj->add_mission_items();
@@ -165,7 +165,7 @@ public:
     static std::unique_ptr<rpc::mission::MissionProgress>
     translateToRpcMissionProgress(const mavsdk::Mission::MissionProgress& mission_progress)
     {
-        std::unique_ptr<rpc::mission::MissionProgress> rpc_obj(new rpc::mission::MissionProgress());
+        auto rpc_obj = std::make_unique<rpc::mission::MissionProgress>();
 
         rpc_obj->set_current(mission_progress.current);
 

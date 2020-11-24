@@ -121,7 +121,7 @@ public:
     static std::unique_ptr<rpc::camera::Position>
     translateToRpcPosition(const mavsdk::Camera::Position& position)
     {
-        std::unique_ptr<rpc::camera::Position> rpc_obj(new rpc::camera::Position());
+        auto rpc_obj = std::make_unique<rpc::camera::Position>();
 
         rpc_obj->set_latitude_deg(position.latitude_deg);
 
@@ -152,7 +152,7 @@ public:
     static std::unique_ptr<rpc::camera::Quaternion>
     translateToRpcQuaternion(const mavsdk::Camera::Quaternion& quaternion)
     {
-        std::unique_ptr<rpc::camera::Quaternion> rpc_obj(new rpc::camera::Quaternion());
+        auto rpc_obj = std::make_unique<rpc::camera::Quaternion>();
 
         rpc_obj->set_w(quaternion.w);
 
@@ -184,7 +184,7 @@ public:
     static std::unique_ptr<rpc::camera::EulerAngle>
     translateToRpcEulerAngle(const mavsdk::Camera::EulerAngle& euler_angle)
     {
-        std::unique_ptr<rpc::camera::EulerAngle> rpc_obj(new rpc::camera::EulerAngle());
+        auto rpc_obj = std::make_unique<rpc::camera::EulerAngle>();
 
         rpc_obj->set_roll_deg(euler_angle.roll_deg);
 
@@ -212,7 +212,7 @@ public:
     static std::unique_ptr<rpc::camera::CaptureInfo>
     translateToRpcCaptureInfo(const mavsdk::Camera::CaptureInfo& capture_info)
     {
-        std::unique_ptr<rpc::camera::CaptureInfo> rpc_obj(new rpc::camera::CaptureInfo());
+        auto rpc_obj = std::make_unique<rpc::camera::CaptureInfo>();
 
         rpc_obj->set_allocated_position(translateToRpcPosition(capture_info.position).release());
 
@@ -258,8 +258,7 @@ public:
     static std::unique_ptr<rpc::camera::VideoStreamSettings> translateToRpcVideoStreamSettings(
         const mavsdk::Camera::VideoStreamSettings& video_stream_settings)
     {
-        std::unique_ptr<rpc::camera::VideoStreamSettings> rpc_obj(
-            new rpc::camera::VideoStreamSettings());
+        auto rpc_obj = std::make_unique<rpc::camera::VideoStreamSettings>();
 
         rpc_obj->set_frame_rate_hz(video_stream_settings.frame_rate_hz);
 
@@ -327,7 +326,7 @@ public:
     static std::unique_ptr<rpc::camera::VideoStreamInfo>
     translateToRpcVideoStreamInfo(const mavsdk::Camera::VideoStreamInfo& video_stream_info)
     {
-        std::unique_ptr<rpc::camera::VideoStreamInfo> rpc_obj(new rpc::camera::VideoStreamInfo());
+        auto rpc_obj = std::make_unique<rpc::camera::VideoStreamInfo>();
 
         rpc_obj->set_allocated_settings(
             translateToRpcVideoStreamSettings(video_stream_info.settings).release());
@@ -386,7 +385,7 @@ public:
     static std::unique_ptr<rpc::camera::Status>
     translateToRpcStatus(const mavsdk::Camera::Status& status)
     {
-        std::unique_ptr<rpc::camera::Status> rpc_obj(new rpc::camera::Status());
+        auto rpc_obj = std::make_unique<rpc::camera::Status>();
 
         rpc_obj->set_video_on(status.video_on);
 
@@ -433,7 +432,7 @@ public:
     static std::unique_ptr<rpc::camera::Option>
     translateToRpcOption(const mavsdk::Camera::Option& option)
     {
-        std::unique_ptr<rpc::camera::Option> rpc_obj(new rpc::camera::Option());
+        auto rpc_obj = std::make_unique<rpc::camera::Option>();
 
         rpc_obj->set_option_id(option.option_id);
 
@@ -456,7 +455,7 @@ public:
     static std::unique_ptr<rpc::camera::Setting>
     translateToRpcSetting(const mavsdk::Camera::Setting& setting)
     {
-        std::unique_ptr<rpc::camera::Setting> rpc_obj(new rpc::camera::Setting());
+        auto rpc_obj = std::make_unique<rpc::camera::Setting>();
 
         rpc_obj->set_setting_id(setting.setting_id);
 
@@ -487,7 +486,7 @@ public:
     static std::unique_ptr<rpc::camera::SettingOptions>
     translateToRpcSettingOptions(const mavsdk::Camera::SettingOptions& setting_options)
     {
-        std::unique_ptr<rpc::camera::SettingOptions> rpc_obj(new rpc::camera::SettingOptions());
+        auto rpc_obj = std::make_unique<rpc::camera::SettingOptions>();
 
         rpc_obj->set_setting_id(setting_options.setting_id);
 
@@ -525,7 +524,7 @@ public:
     static std::unique_ptr<rpc::camera::Information>
     translateToRpcInformation(const mavsdk::Camera::Information& information)
     {
-        std::unique_ptr<rpc::camera::Information> rpc_obj(new rpc::camera::Information());
+        auto rpc_obj = std::make_unique<rpc::camera::Information>();
 
         rpc_obj->set_vendor_name(information.vendor_name);
 

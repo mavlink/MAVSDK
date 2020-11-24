@@ -378,11 +378,11 @@ jobs:
         with:
           submodules: recursive
       - name: configure (ios)
-        run: cmake -DCMAKE_BUILD_TYPE=Release -DCMAKE_TOOLCHAIN_FILE=$(pwd)/tools/ios.toolchain.cmake -DPLATFORM=OS -DBUILD_BACKEND=ON -DBUILD_SHARED_LIBS=OFF -DWERROR=OFF -j 2 -Bbuild/ios -H.
+        run: cmake -DCMAKE_BUILD_TYPE=Release -DCMAKE_TOOLCHAIN_FILE=$(pwd)/tools/ios.toolchain.cmake -DPLATFORM=OS -DBUILD_BACKEND=ON -DBUILD_SHARED_LIBS=OFF -DWERROR=OFF -DDEPLOYMENT_TARGET=11.0 -j 2 -Bbuild/ios -H.
       - name: build (ios)
         run: cmake --build build/ios -j 2
       - name: configure (ios_simulator)
-        run: cmake -DCMAKE_BUILD_TYPE=Release -DCMAKE_TOOLCHAIN_FILE=$(pwd)/tools/ios.toolchain.cmake -DPLATFORM=SIMULATOR64 -DBUILD_BACKEND=ON -DBUILD_SHARED_LIBS=OFF -DWERROR=OFF -j 2 -Bbuild/ios_simulator -H.
+        run: cmake -DCMAKE_BUILD_TYPE=Release -DCMAKE_TOOLCHAIN_FILE=$(pwd)/tools/ios.toolchain.cmake -DPLATFORM=SIMULATOR64 -DBUILD_BACKEND=ON -DBUILD_SHARED_LIBS=OFF -DWERROR=OFF -DDEPLOYMENT_TARGET=11.0 -j 2 -Bbuild/ios_simulator -H.
       - name: build (ios_simulator)
         run: cmake --build build/ios_simulator -j 2
       - name: Package

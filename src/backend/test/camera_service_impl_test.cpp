@@ -453,8 +453,7 @@ TEST_F(CameraServiceImplTest, sendsMultipleModes)
 std::unique_ptr<mavsdk::rpc::camera::VideoStreamSettings>
 CameraServiceImplTest::createArbitraryRPCVideoStreamSettings() const
 {
-    auto rpc_settings = std::unique_ptr<mavsdk::rpc::camera::VideoStreamSettings>(
-        new mavsdk::rpc::camera::VideoStreamSettings());
+    auto rpc_settings = std::make_unique<mavsdk::rpc::camera::VideoStreamSettings>();
     rpc_settings->set_frame_rate_hz(ARBITRARY_FRAME_RATE);
     rpc_settings->set_horizontal_resolution_pix(ARBITRARY_RESOLUTION);
     rpc_settings->set_vertical_resolution_pix(ARBITRARY_RESOLUTION);
@@ -506,8 +505,7 @@ std::future<void> CameraServiceImplTest::subscribeVideoStreamInfoAsync(
 std::unique_ptr<mavsdk::rpc::camera::VideoStreamInfo>
 CameraServiceImplTest::createArbitraryRPCVideoStreamInfo() const
 {
-    auto rpc_info = std::unique_ptr<mavsdk::rpc::camera::VideoStreamInfo>(
-        new mavsdk::rpc::camera::VideoStreamInfo());
+    auto rpc_info = std::make_unique<mavsdk::rpc::camera::VideoStreamInfo>();
     rpc_info->set_status(ARBITRARY_VIDEO_STREAM_STATUS);
     rpc_info->set_allocated_settings(createArbitraryRPCVideoStreamSettings().release());
 
@@ -596,8 +594,7 @@ std::future<void> CameraServiceImplTest::subscribeCaptureInfoAsync(
 std::unique_ptr<mavsdk::rpc::camera::CaptureInfo>
 CameraServiceImplTest::createArbitraryRPCCaptureInfo() const
 {
-    auto rpc_info =
-        std::unique_ptr<mavsdk::rpc::camera::CaptureInfo>(new mavsdk::rpc::camera::CaptureInfo());
+    auto rpc_info = std::make_unique<mavsdk::rpc::camera::CaptureInfo>();
     rpc_info->set_allocated_position(
         createRPCPosition(41.848695, 75.132751, 3002.1f, 50.3f).release());
     rpc_info->set_allocated_attitude_quaternion(
@@ -615,8 +612,7 @@ CameraServiceImplTest::createArbitraryRPCCaptureInfo() const
 std::unique_ptr<mavsdk::rpc::camera::Position> CameraServiceImplTest::createRPCPosition(
     const double lat, const double lng, const float abs_alt, const float rel_alt) const
 {
-    auto expected_position =
-        std::unique_ptr<mavsdk::rpc::camera::Position>(new mavsdk::rpc::camera::Position());
+    auto expected_position = std::make_unique<mavsdk::rpc::camera::Position>();
 
     expected_position->set_latitude_deg(lat);
     expected_position->set_longitude_deg(lng);
@@ -629,8 +625,7 @@ std::unique_ptr<mavsdk::rpc::camera::Position> CameraServiceImplTest::createRPCP
 std::unique_ptr<mavsdk::rpc::camera::Quaternion> CameraServiceImplTest::createRPCAttitudeQuaternion(
     const float w, const float x, const float y, const float z) const
 {
-    auto quaternion =
-        std::unique_ptr<mavsdk::rpc::camera::Quaternion>(new mavsdk::rpc::camera::Quaternion());
+    auto quaternion = std::make_unique<mavsdk::rpc::camera::Quaternion>();
 
     quaternion->set_w(w);
     quaternion->set_x(x);
@@ -643,8 +638,7 @@ std::unique_ptr<mavsdk::rpc::camera::Quaternion> CameraServiceImplTest::createRP
 std::unique_ptr<mavsdk::rpc::camera::EulerAngle> CameraServiceImplTest::createRPCAttitudeEulerAngle(
     const float yaw_deg, const float pitch_deg, const float roll_deg) const
 {
-    auto euler_angle =
-        std::unique_ptr<mavsdk::rpc::camera::EulerAngle>(new mavsdk::rpc::camera::EulerAngle());
+    auto euler_angle = std::make_unique<mavsdk::rpc::camera::EulerAngle>();
 
     euler_angle->set_yaw_deg(yaw_deg);
     euler_angle->set_pitch_deg(pitch_deg);
@@ -1209,11 +1203,11 @@ std::unique_ptr<mavsdk::rpc::camera::Setting> CameraServiceImplTest::createRPCSe
     const std::string& option_id,
     const std::string& option_description)
 {
-    auto setting = std::unique_ptr<mavsdk::rpc::camera::Setting>(new mavsdk::rpc::camera::Setting);
+    auto setting = std::make_unique<mavsdk::rpc::camera::Setting>();
     setting->set_setting_id(setting_id);
     setting->set_setting_description(setting_description);
 
-    auto option = std::unique_ptr<mavsdk::rpc::camera::Option>(new mavsdk::rpc::camera::Option);
+    auto option = std::make_unique<mavsdk::rpc::camera::Option>();
     option->set_option_id(option_id);
     option->set_option_description(option_description);
     setting->set_allocated_option(option.release());

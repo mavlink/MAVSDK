@@ -39,7 +39,7 @@ public:
     static std::unique_ptr<rpc::mocap::PositionBody>
     translateToRpcPositionBody(const mavsdk::Mocap::PositionBody& position_body)
     {
-        std::unique_ptr<rpc::mocap::PositionBody> rpc_obj(new rpc::mocap::PositionBody());
+        auto rpc_obj = std::make_unique<rpc::mocap::PositionBody>();
 
         rpc_obj->set_x_m(position_body.x_m);
 
@@ -67,7 +67,7 @@ public:
     static std::unique_ptr<rpc::mocap::AngleBody>
     translateToRpcAngleBody(const mavsdk::Mocap::AngleBody& angle_body)
     {
-        std::unique_ptr<rpc::mocap::AngleBody> rpc_obj(new rpc::mocap::AngleBody());
+        auto rpc_obj = std::make_unique<rpc::mocap::AngleBody>();
 
         rpc_obj->set_roll_rad(angle_body.roll_rad);
 
@@ -95,7 +95,7 @@ public:
     static std::unique_ptr<rpc::mocap::SpeedBody>
     translateToRpcSpeedBody(const mavsdk::Mocap::SpeedBody& speed_body)
     {
-        std::unique_ptr<rpc::mocap::SpeedBody> rpc_obj(new rpc::mocap::SpeedBody());
+        auto rpc_obj = std::make_unique<rpc::mocap::SpeedBody>();
 
         rpc_obj->set_x_m_s(speed_body.x_m_s);
 
@@ -123,8 +123,7 @@ public:
     static std::unique_ptr<rpc::mocap::AngularVelocityBody> translateToRpcAngularVelocityBody(
         const mavsdk::Mocap::AngularVelocityBody& angular_velocity_body)
     {
-        std::unique_ptr<rpc::mocap::AngularVelocityBody> rpc_obj(
-            new rpc::mocap::AngularVelocityBody());
+        auto rpc_obj = std::make_unique<rpc::mocap::AngularVelocityBody>();
 
         rpc_obj->set_roll_rad_s(angular_velocity_body.roll_rad_s);
 
@@ -152,7 +151,7 @@ public:
     static std::unique_ptr<rpc::mocap::Covariance>
     translateToRpcCovariance(const mavsdk::Mocap::Covariance& covariance)
     {
-        std::unique_ptr<rpc::mocap::Covariance> rpc_obj(new rpc::mocap::Covariance());
+        auto rpc_obj = std::make_unique<rpc::mocap::Covariance>();
 
         for (const auto& elem : covariance.covariance_matrix) {
             rpc_obj->add_covariance_matrix(elem);
@@ -176,7 +175,7 @@ public:
     static std::unique_ptr<rpc::mocap::Quaternion>
     translateToRpcQuaternion(const mavsdk::Mocap::Quaternion& quaternion)
     {
-        std::unique_ptr<rpc::mocap::Quaternion> rpc_obj(new rpc::mocap::Quaternion());
+        auto rpc_obj = std::make_unique<rpc::mocap::Quaternion>();
 
         rpc_obj->set_w(quaternion.w);
 
@@ -208,8 +207,7 @@ public:
     static std::unique_ptr<rpc::mocap::VisionPositionEstimate> translateToRpcVisionPositionEstimate(
         const mavsdk::Mocap::VisionPositionEstimate& vision_position_estimate)
     {
-        std::unique_ptr<rpc::mocap::VisionPositionEstimate> rpc_obj(
-            new rpc::mocap::VisionPositionEstimate());
+        auto rpc_obj = std::make_unique<rpc::mocap::VisionPositionEstimate>();
 
         rpc_obj->set_time_usec(vision_position_estimate.time_usec);
 
@@ -245,8 +243,7 @@ public:
     static std::unique_ptr<rpc::mocap::AttitudePositionMocap> translateToRpcAttitudePositionMocap(
         const mavsdk::Mocap::AttitudePositionMocap& attitude_position_mocap)
     {
-        std::unique_ptr<rpc::mocap::AttitudePositionMocap> rpc_obj(
-            new rpc::mocap::AttitudePositionMocap());
+        auto rpc_obj = std::make_unique<rpc::mocap::AttitudePositionMocap>();
 
         rpc_obj->set_time_usec(attitude_position_mocap.time_usec);
 
@@ -308,7 +305,7 @@ public:
     static std::unique_ptr<rpc::mocap::Odometry>
     translateToRpcOdometry(const mavsdk::Mocap::Odometry& odometry)
     {
-        std::unique_ptr<rpc::mocap::Odometry> rpc_obj(new rpc::mocap::Odometry());
+        auto rpc_obj = std::make_unique<rpc::mocap::Odometry>();
 
         rpc_obj->set_time_usec(odometry.time_usec);
 

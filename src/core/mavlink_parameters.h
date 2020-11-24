@@ -4,13 +4,13 @@
 #include "global_include.h"
 #include "mavlink_include.h"
 #include "locked_queue.h"
-#include "any.h"
 #include <cstdint>
 #include <string>
 #include <functional>
 #include <cassert>
 #include <vector>
 #include <map>
+#include <variant>
 
 namespace mavsdk {
 
@@ -23,34 +23,22 @@ public:
 
     class ParamValue {
     public:
-        typedef char custom_type_t[128];
-
-        ParamValue() {}
-
-        ParamValue(ParamValue& rhs) { _value = rhs._value; }
-
-        ParamValue(const ParamValue& rhs) { _value = rhs._value; }
-
-        ParamValue& operator=(ParamValue rhs)
-        {
-            _value = rhs._value;
-            return *this;
-        }
-
         void set_from_mavlink_param_value(mavlink_param_value_t mavlink_value)
         {
+            union {
+                float float_value;
+                int32_t int32_value;
+            } temp;
+
+            temp.float_value = mavlink_value.param_value;
             switch (mavlink_value.param_type) {
                 case MAV_PARAM_TYPE_UINT32:
                 // FALLTHROUGH
-                case MAV_PARAM_TYPE_INT32: {
-                    int32_t temp;
-                    memcpy(&temp, &mavlink_value.param_value, sizeof(temp));
-                    _value = temp;
-                } break;
+                case MAV_PARAM_TYPE_INT32:
+                    _value = temp.int32_value;
+                    break;
                 case MAV_PARAM_TYPE_REAL32:
-                    float temp;
-                    memcpy(&temp, &mavlink_value.param_value, sizeof(temp));
-                    _value = temp;
+                    _value = temp.float_value;
                     break;
                 default:
                     // This would be worrying
@@ -112,11 +100,9 @@ public:
                     memcpy(&temp, &mavlink_ext_value.param_value[0], sizeof(temp));
                     _value = temp;
                 } break;
-                case MAV_PARAM_EXT_TYPE_CUSTOM: {
-                    custom_type_t temp;
-                    memcpy(&temp, &mavlink_ext_value.param_value[0], sizeof(temp));
-                    _value = temp;
-                } break;
+                case MAV_PARAM_EXT_TYPE_CUSTOM:
+                    LogErr() << "EXT_TYPE_CUSTOM is not supported";
+                    break;
                 default:
                     // This would be worrying
                     LogErr() << "Error: unknown mavlink ext param type";
@@ -195,9 +181,9 @@ public:
 
         MAV_PARAM_TYPE get_mav_param_type() const
         {
-            if (_value.is<float>()) {
+            if (std::get_if<float>(&_value)) {
                 return MAV_PARAM_TYPE_REAL32;
-            } else if (_value.is<int32_t>()) {
+            } else if (std::get_if<int32_t>(&_value)) {
                 return MAV_PARAM_TYPE_INT32;
             } else {
                 LogErr() << "Unknown param type sent";
@@ -207,28 +193,26 @@ public:
 
         MAV_PARAM_EXT_TYPE get_mav_param_ext_type() const
         {
-            if (_value.is<uint8_t>()) {
+            if (std::get_if<uint8_t>(&_value)) {
                 return MAV_PARAM_EXT_TYPE_UINT8;
-            } else if (_value.is<int8_t>()) {
+            } else if (std::get_if<int8_t>(&_value)) {
                 return MAV_PARAM_EXT_TYPE_INT8;
-            } else if (_value.is<uint16_t>()) {
+            } else if (std::get_if<uint16_t>(&_value)) {
                 return MAV_PARAM_EXT_TYPE_UINT16;
-            } else if (_value.is<int16_t>()) {
+            } else if (std::get_if<int16_t>(&_value)) {
                 return MAV_PARAM_EXT_TYPE_INT16;
-            } else if (_value.is<uint32_t>()) {
+            } else if (std::get_if<uint32_t>(&_value)) {
                 return MAV_PARAM_EXT_TYPE_UINT32;
-            } else if (_value.is<int32_t>()) {
+            } else if (std::get_if<int32_t>(&_value)) {
                 return MAV_PARAM_EXT_TYPE_INT32;
-            } else if (_value.is<uint64_t>()) {
+            } else if (std::get_if<uint64_t>(&_value)) {
                 return MAV_PARAM_EXT_TYPE_UINT64;
-            } else if (_value.is<int64_t>()) {
+            } else if (std::get_if<int64_t>(&_value)) {
                 return MAV_PARAM_EXT_TYPE_INT64;
-            } else if (_value.is<float>()) {
+            } else if (std::get_if<float>(&_value)) {
                 return MAV_PARAM_EXT_TYPE_REAL32;
-            } else if (_value.is<double>()) {
+            } else if (std::get_if<double>(&_value)) {
                 return MAV_PARAM_EXT_TYPE_REAL64;
-            } else if (_value.is<custom_type_t>()) {
-                return MAV_PARAM_EXT_TYPE_CUSTOM;
             } else {
                 LogErr() << "Unknown data type for param.";
                 assert(false);
@@ -238,25 +222,25 @@ public:
 
         bool set_as_same_type(const std::string& value_str)
         {
-            if (_value.is<uint8_t>()) {
+            if (std::get_if<uint8_t>(&_value)) {
                 _value = uint8_t(std::stoi(value_str.c_str()));
-            } else if (_value.is<int8_t>()) {
+            } else if (std::get_if<int8_t>(&_value)) {
                 _value = int8_t(std::stoi(value_str.c_str()));
-            } else if (_value.is<uint16_t>()) {
+            } else if (std::get_if<uint16_t>(&_value)) {
                 _value = uint16_t(std::stoi(value_str.c_str()));
-            } else if (_value.is<int16_t>()) {
+            } else if (std::get_if<int16_t>(&_value)) {
                 _value = int16_t(std::stoi(value_str.c_str()));
-            } else if (_value.is<uint32_t>()) {
+            } else if (std::get_if<uint32_t>(&_value)) {
                 _value = uint32_t(std::stoi(value_str.c_str()));
-            } else if (_value.is<int32_t>()) {
+            } else if (std::get_if<int32_t>(&_value)) {
                 _value = int32_t(std::stoi(value_str.c_str()));
-            } else if (_value.is<uint64_t>()) {
+            } else if (std::get_if<uint64_t>(&_value)) {
                 _value = uint64_t(std::stoll(value_str.c_str()));
-            } else if (_value.is<int64_t>()) {
+            } else if (std::get_if<int64_t>(&_value)) {
                 _value = int64_t(std::stoll(value_str.c_str()));
-            } else if (_value.is<float>()) {
+            } else if (std::get_if<float>(&_value)) {
                 _value = float(std::stof(value_str.c_str()));
-            } else if (_value.is<double>()) {
+            } else if (std::get_if<double>(&_value)) {
                 _value = double(std::stod(value_str.c_str()));
             } else {
                 LogErr() << "Unknown type";
@@ -267,142 +251,92 @@ public:
 
         float get_4_float_bytes() const
         {
-            if (_value.is<float>()) {
-                return _value.as<float>();
+            if (std::get_if<float>(&_value)) {
+                return std::get<float>(_value);
+            } else if (std::get_if<int32_t>(&_value)) {
+                return *(reinterpret_cast<const float*>(&std::get<int32_t>(_value)));
             } else {
-                return *(reinterpret_cast<const float*>(&_value.as<int32_t>()));
+                LogErr() << "Unknown type";
+                assert(false);
+                return NAN;
             }
         }
 
         void get_128_bytes(char* bytes) const
         {
-            if (_value.is<uint8_t>()) {
-                memcpy(bytes, &_value.as<uint8_t>(), sizeof(uint8_t));
-            } else if (_value.is<int8_t>()) {
-                memcpy(bytes, &_value.as<int8_t>(), sizeof(int8_t));
-            } else if (_value.is<uint16_t>()) {
-                memcpy(bytes, &_value.as<uint16_t>(), sizeof(uint16_t));
-            } else if (_value.is<int16_t>()) {
-                memcpy(bytes, &_value.as<int16_t>(), sizeof(int16_t));
-            } else if (_value.is<uint32_t>()) {
-                memcpy(bytes, &_value.as<uint32_t>(), sizeof(uint32_t));
-            } else if (_value.is<int32_t>()) {
-                memcpy(bytes, &_value.as<int32_t>(), sizeof(int32_t));
-            } else if (_value.is<uint64_t>()) {
-                memcpy(bytes, &_value.as<uint64_t>(), sizeof(uint64_t));
-            } else if (_value.is<int64_t>()) {
-                memcpy(bytes, &_value.as<int64_t>(), sizeof(int64_t));
-            } else if (_value.is<float>()) {
-                memcpy(bytes, &_value.as<float>(), sizeof(float));
-            } else if (_value.is<double>()) {
-                memcpy(bytes, &_value.as<double>(), sizeof(double));
-            } else if (_value.is<custom_type_t>()) {
-                memcpy(bytes, &_value.as<custom_type_t>(), sizeof(custom_type_t));
+            if (std::get_if<uint8_t>(&_value)) {
+                memcpy(bytes, &std::get<uint8_t>(_value), sizeof(uint8_t));
+            } else if (std::get_if<int8_t>(&_value)) {
+                memcpy(bytes, &std::get<int8_t>(_value), sizeof(int8_t));
+            } else if (std::get_if<uint16_t>(&_value)) {
+                memcpy(bytes, &std::get<uint16_t>(_value), sizeof(uint16_t));
+            } else if (std::get_if<int16_t>(&_value)) {
+                memcpy(bytes, &std::get<int16_t>(_value), sizeof(int16_t));
+            } else if (std::get_if<uint32_t>(&_value)) {
+                memcpy(bytes, &std::get<uint32_t>(_value), sizeof(uint32_t));
+            } else if (std::get_if<int32_t>(&_value)) {
+                memcpy(bytes, &std::get<int32_t>(_value), sizeof(int32_t));
+            } else if (std::get_if<uint64_t>(&_value)) {
+                memcpy(bytes, &std::get<uint64_t>(_value), sizeof(uint64_t));
+            } else if (std::get_if<int64_t>(&_value)) {
+                memcpy(bytes, &std::get<int64_t>(_value), sizeof(int64_t));
+            } else if (std::get_if<float>(&_value)) {
+                memcpy(bytes, &std::get<float>(_value), sizeof(float));
+            } else if (std::get_if<double>(&_value)) {
+                memcpy(bytes, &std::get<double>(_value), sizeof(double));
             } else {
-                LogErr() << "Unknown data type for param.";
+                LogErr() << "Unknown type";
                 assert(false);
             }
         }
 
         std::string get_string() const
         {
-            if (_value.is<uint8_t>()) {
-                return std::to_string(_value.as<uint8_t>());
-            } else if (_value.is<int8_t>()) {
-                return std::to_string(_value.as<int8_t>());
-            } else if (_value.is<uint16_t>()) {
-                return std::to_string(_value.as<uint16_t>());
-            } else if (_value.is<int16_t>()) {
-                return std::to_string(_value.as<int16_t>());
-            } else if (_value.is<uint32_t>()) {
-                return std::to_string(_value.as<uint32_t>());
-            } else if (_value.is<int32_t>()) {
-                return std::to_string(_value.as<int32_t>());
-            } else if (_value.is<uint64_t>()) {
-                return std::to_string(_value.as<uint64_t>());
-            } else if (_value.is<int64_t>()) {
-                return std::to_string(_value.as<int64_t>());
-            } else if (_value.is<float>()) {
-                return std::to_string(_value.as<float>());
-            } else if (_value.is<double>()) {
-                return std::to_string(_value.as<double>());
-            } else if (_value.is<custom_type_t>()) {
-                return std::string("(custom type)");
+            if (std::get_if<uint8_t>(&_value)) {
+                return std::to_string(std::get<uint8_t>(_value));
+            } else if (std::get_if<int8_t>(&_value)) {
+                return std::to_string(std::get<int8_t>(_value));
+            } else if (std::get_if<uint16_t>(&_value)) {
+                return std::to_string(std::get<uint16_t>(_value));
+            } else if (std::get_if<int16_t>(&_value)) {
+                return std::to_string(std::get<int16_t>(_value));
+            } else if (std::get_if<uint32_t>(&_value)) {
+                return std::to_string(std::get<uint32_t>(_value));
+            } else if (std::get_if<int32_t>(&_value)) {
+                return std::to_string(std::get<int32_t>(_value));
+            } else if (std::get_if<uint64_t>(&_value)) {
+                return std::to_string(std::get<uint64_t>(_value));
+            } else if (std::get_if<int64_t>(&_value)) {
+                return std::to_string(std::get<int64_t>(_value));
+            } else if (std::get_if<float>(&_value)) {
+                return std::to_string(std::get<float>(_value));
+            } else if (std::get_if<double>(&_value)) {
+                return std::to_string(std::get<double>(_value));
             } else {
                 LogErr() << "Unknown data type for param.";
                 assert(false);
                 return std::string("(unknown)");
             }
         }
-        float get_float() const { return float(_value); }
 
-        double get_double() const { return double(_value); }
+        template<typename T> bool is() const { return (std::get_if<T>(&_value) != nullptr); }
 
-        int8_t get_int8() const { return int8_t(_value); }
+        template<typename T> T get() const { return std::get<T>(_value); }
 
-        uint8_t get_uint8() const { return uint8_t(_value); }
-
-        int16_t get_int16() const { return int16_t(_value); }
-
-        uint16_t get_uint16() const { return uint16_t(_value); }
-
-        int32_t get_int32() const { return int32_t(_value); }
-
-        uint32_t get_uint32() const { return uint32_t(_value); }
-
-        void set_float(float value) { _value = value; }
-
-        void set_double(double value) { _value = value; }
-
-        void set_int8(int8_t value) { _value = value; }
-
-        void set_uint8(uint8_t value) { _value = value; }
-
-        void set_int16(int16_t value) { _value = value; }
-
-        void set_uint16(uint16_t value) { _value = value; }
-
-        void set_int32(int32_t value) { _value = value; }
-
-        void set_uint32(uint32_t value) { _value = value; }
-
-        void set_int64(int64_t value) { _value = value; }
-
-        void set_uint64(uint64_t value) { _value = value; }
-
-        bool is_uint8() const { return (_value.is<uint8_t>()); }
-
-        bool is_int8() const { return (_value.is<int8_t>()); }
-
-        bool is_uint16() const { return (_value.is<uint16_t>()); }
-
-        bool is_int16() const { return (_value.is<int16_t>()); }
-
-        bool is_uint32() const { return (_value.is<uint32_t>()); }
-
-        bool is_int32() const { return (_value.is<int32_t>()); }
-
-        bool is_uint64() const { return (_value.is<uint64_t>()); }
-
-        bool is_int64() const { return (_value.is<int64_t>()); }
-
-        bool is_float() const { return (_value.is<float>()); }
-
-        bool is_double() const { return (_value.is<double>()); }
+        template<typename T> void set(T new_value) { _value = new_value; }
 
         bool is_same_type(const ParamValue& rhs) const
         {
-            if ((_value.is<uint8_t>() && rhs._value.is<uint8_t>()) ||
-                (_value.is<int8_t>() && rhs._value.is<int8_t>()) ||
-                (_value.is<uint16_t>() && rhs._value.is<uint16_t>()) ||
-                (_value.is<int16_t>() && rhs._value.is<int16_t>()) ||
-                (_value.is<uint32_t>() && rhs._value.is<uint32_t>()) ||
-                (_value.is<int32_t>() && rhs._value.is<int32_t>()) ||
-                (_value.is<uint64_t>() && rhs._value.is<uint64_t>()) ||
-                (_value.is<int64_t>() && rhs._value.is<int64_t>()) ||
-                (_value.is<float>() && rhs._value.is<float>()) ||
-                (_value.is<double>() && rhs._value.is<double>()) ||
-                (_value.is<custom_type_t>() && rhs._value.is<custom_type_t>())) {
+            if ((std::get_if<uint8_t>(&_value) && std::get_if<uint8_t>(&rhs._value)) ||
+                (std::get_if<int8_t>(&_value) && std::get_if<int8_t>(&rhs._value)) ||
+                (std::get_if<uint16_t>(&_value) && std::get_if<uint16_t>(&rhs._value)) ||
+                (std::get_if<int16_t>(&_value) && std::get_if<int16_t>(&rhs._value)) ||
+                (std::get_if<uint32_t>(&_value) && std::get_if<uint32_t>(&rhs._value)) ||
+                (std::get_if<int32_t>(&_value) && std::get_if<int32_t>(&rhs._value)) ||
+                (std::get_if<uint64_t>(&_value) && std::get_if<uint64_t>(&rhs._value)) ||
+                (std::get_if<int64_t>(&_value) && std::get_if<int64_t>(&rhs._value)) ||
+                (std::get_if<float>(&_value) && std::get_if<float>(&rhs._value)) ||
+                (std::get_if<double>(&_value) && std::get_if<double>(&rhs._value))) {
                 return true;
             } else {
                 LogWarn() << "Comparison type mismatch between " << typestr() << " and "
@@ -417,33 +351,8 @@ public:
                 LogWarn() << "Trying to compare different types.";
                 return false;
             }
-            if (_value.is<uint8_t>()) {
-                return _value.as<uint8_t>() == rhs._value.as<uint8_t>();
-            } else if (_value.is<int8_t>()) {
-                return _value.as<int8_t>() == rhs._value.as<int8_t>();
-            } else if (_value.is<uint16_t>()) {
-                return _value.as<uint16_t>() == rhs._value.as<uint16_t>();
-            } else if (_value.is<int16_t>()) {
-                return _value.as<int16_t>() == rhs._value.as<int16_t>();
-            } else if (_value.is<uint32_t>()) {
-                return _value.as<uint32_t>() == rhs._value.as<uint32_t>();
-            } else if (_value.is<int32_t>()) {
-                return _value.as<int32_t>() == rhs._value.as<int32_t>();
-            } else if (_value.is<uint64_t>()) {
-                return _value.as<uint64_t>() == rhs._value.as<uint64_t>();
-            } else if (_value.is<int64_t>()) {
-                return _value.as<int64_t>() == rhs._value.as<int64_t>();
-            } else if (_value.is<float>()) {
-                return _value.as<float>() == rhs._value.as<float>();
-            } else if (_value.is<double>()) {
-                return _value.as<double>() == rhs._value.as<double>();
-            } else if (_value.is<custom_type_t>()) {
-                LogErr() << "Comparing custom_type not supported.";
-                return false;
-            } else {
-                LogErr() << "Comparing unknown types";
-                return false;
-            }
+
+            return _value == rhs._value;
         }
 
         bool operator<(const ParamValue& rhs) const
@@ -452,33 +361,8 @@ public:
                 LogWarn() << "Trying to compare different types.";
                 return false;
             }
-            if (_value.is<uint8_t>()) {
-                return _value.as<uint8_t>() < rhs._value.as<uint8_t>();
-            } else if (_value.is<int8_t>()) {
-                return _value.as<int8_t>() < rhs._value.as<int8_t>();
-            } else if (_value.is<uint16_t>()) {
-                return _value.as<uint16_t>() < rhs._value.as<uint16_t>();
-            } else if (_value.is<int16_t>()) {
-                return _value.as<int16_t>() < rhs._value.as<int16_t>();
-            } else if (_value.is<uint32_t>()) {
-                return _value.as<uint32_t>() < rhs._value.as<uint32_t>();
-            } else if (_value.is<int32_t>()) {
-                return _value.as<int32_t>() < rhs._value.as<int32_t>();
-            } else if (_value.is<uint64_t>()) {
-                return _value.as<uint64_t>() < rhs._value.as<uint64_t>();
-            } else if (_value.is<int64_t>()) {
-                return _value.as<int64_t>() < rhs._value.as<int64_t>();
-            } else if (_value.is<float>()) {
-                return _value.as<float>() < rhs._value.as<float>();
-            } else if (_value.is<double>()) {
-                return _value.as<double>() < rhs._value.as<double>();
-            } else if (_value.is<custom_type_t>()) {
-                LogErr() << "Comparing custom_type not supported.";
-                return false;
-            } else {
-                LogErr() << "Comparing unknown types";
-                return false;
-            }
+
+            return _value < rhs._value;
         }
 
         bool operator>(const ParamValue& rhs) const
@@ -487,58 +371,33 @@ public:
                 LogWarn() << "Trying to compare different types.";
                 return false;
             }
-            if (_value.is<uint8_t>()) {
-                return _value.as<uint8_t>() > rhs._value.as<uint8_t>();
-            } else if (_value.is<int8_t>()) {
-                return _value.as<int8_t>() > rhs._value.as<int8_t>();
-            } else if (_value.is<uint16_t>()) {
-                return _value.as<uint16_t>() > rhs._value.as<uint16_t>();
-            } else if (_value.is<int16_t>()) {
-                return _value.as<int16_t>() > rhs._value.as<int16_t>();
-            } else if (_value.is<uint32_t>()) {
-                return _value.as<uint32_t>() > rhs._value.as<uint32_t>();
-            } else if (_value.is<int32_t>()) {
-                return _value.as<int32_t>() > rhs._value.as<int32_t>();
-            } else if (_value.is<uint64_t>()) {
-                return _value.as<uint64_t>() > rhs._value.as<uint64_t>();
-            } else if (_value.is<int64_t>()) {
-                return _value.as<int64_t>() > rhs._value.as<int64_t>();
-            } else if (_value.is<float>()) {
-                return _value.as<float>() > rhs._value.as<float>();
-            } else if (_value.is<double>()) {
-                return _value.as<double>() > rhs._value.as<double>();
-            } else if (_value.is<custom_type_t>()) {
-                LogErr() << "Comparing custom_type not supported.";
-                return false;
-            } else {
-                LogErr() << "Comparing unknown types";
-                return false;
-            }
+
+            return _value > rhs._value;
         }
 
         bool operator==(const std::string& value_str) const
         {
             // LogDebug() << "Compare " << typestr() << " and " << rhs.typestr();
-            if (_value.is<uint8_t>()) {
-                return _value.as<uint8_t>() == std::stoi(value_str.c_str());
-            } else if (_value.is<int8_t>()) {
-                return _value.as<int8_t>() == std::stoi(value_str.c_str());
-            } else if (_value.is<uint16_t>()) {
-                return _value.as<uint16_t>() == std::stoi(value_str.c_str());
-            } else if (_value.is<int16_t>()) {
-                return _value.as<int16_t>() == std::stoi(value_str.c_str());
-            } else if (_value.is<uint32_t>()) {
-                return _value.as<uint32_t>() == std::stoul(value_str.c_str());
-            } else if (_value.is<int32_t>()) {
-                return _value.as<int32_t>() == std::stol(value_str.c_str());
-            } else if (_value.is<uint64_t>()) {
-                return _value.as<uint64_t>() == std::stoull(value_str.c_str());
-            } else if (_value.is<int64_t>()) {
-                return _value.as<int64_t>() == std::stoll(value_str.c_str());
-            } else if (_value.is<float>()) {
-                return _value.as<float>() == std::stof(value_str.c_str());
-            } else if (_value.is<double>()) {
-                return _value.as<double>() == std::stod(value_str.c_str());
+            if (std::get_if<uint8_t>(&_value)) {
+                return std::get<uint8_t>(_value) == std::stoi(value_str.c_str());
+            } else if (std::get_if<int8_t>(&_value)) {
+                return std::get<int8_t>(_value) == std::stoi(value_str.c_str());
+            } else if (std::get_if<uint16_t>(&_value)) {
+                return std::get<uint16_t>(_value) == std::stoi(value_str.c_str());
+            } else if (std::get_if<int16_t>(&_value)) {
+                return std::get<int16_t>(_value) == std::stoi(value_str.c_str());
+            } else if (std::get_if<uint32_t>(&_value)) {
+                return std::get<uint32_t>(_value) == std::stoul(value_str.c_str());
+            } else if (std::get_if<int32_t>(&_value)) {
+                return std::get<int32_t>(_value) == std::stol(value_str.c_str());
+            } else if (std::get_if<uint64_t>(&_value)) {
+                return std::get<uint64_t>(_value) == std::stoull(value_str.c_str());
+            } else if (std::get_if<int64_t>(&_value)) {
+                return std::get<int64_t>(_value) == std::stoll(value_str.c_str());
+            } else if (std::get_if<float>(&_value)) {
+                return std::get<float>(_value) == std::stof(value_str.c_str());
+            } else if (std::get_if<double>(&_value)) {
+                return std::get<double>(_value) == std::stod(value_str.c_str());
             } else {
                 // This also covers custom_type_t
                 return false;
@@ -547,36 +406,44 @@ public:
 
         std::string typestr() const
         {
-            if (_value.is<uint8_t>()) {
+            if (std::get_if<uint8_t>(&_value)) {
                 return "uint8_t";
-            } else if (_value.is<int8_t>()) {
+            } else if (std::get_if<int8_t>(&_value)) {
                 return "int8_t";
-            } else if (_value.is<uint16_t>()) {
+            } else if (std::get_if<uint16_t>(&_value)) {
                 return "uint16_t";
-            } else if (_value.is<int16_t>()) {
+            } else if (std::get_if<int16_t>(&_value)) {
                 return "int16_t";
-            } else if (_value.is<uint32_t>()) {
+            } else if (std::get_if<uint32_t>(&_value)) {
                 return "uint32_t";
-            } else if (_value.is<int32_t>()) {
+            } else if (std::get_if<int32_t>(&_value)) {
                 return "int32_t";
-            } else if (_value.is<uint64_t>()) {
+            } else if (std::get_if<uint64_t>(&_value)) {
                 return "uint64_t";
-            } else if (_value.is<int64_t>()) {
+            } else if (std::get_if<int64_t>(&_value)) {
                 return "int64_t";
-            } else if (_value.is<float>()) {
+            } else if (std::get_if<float>(&_value)) {
                 return "float";
-            } else if (_value.is<double>()) {
+            } else if (std::get_if<double>(&_value)) {
                 return "double";
-            } else if (_value.is<custom_type_t>()) {
-                // FIXME: not clear how to handle this
-                return "unknown";
             }
             // FIXME: Added to fix CI error (control reading end of non-void function)
             return "unknown";
         }
 
     private:
-        Any _value{};
+        std::variant<
+            uint8_t,
+            int8_t,
+            uint16_t,
+            int16_t,
+            uint32_t,
+            int32_t,
+            uint64_t,
+            int64_t,
+            float,
+            double>
+            _value{};
     };
 
     enum class Result { Success, Timeout, ConnectionError, WrongType, ParamNameTooLong };

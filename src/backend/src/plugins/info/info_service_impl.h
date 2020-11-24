@@ -39,7 +39,7 @@ public:
     static std::unique_ptr<rpc::info::FlightInfo>
     translateToRpcFlightInfo(const mavsdk::Info::FlightInfo& flight_info)
     {
-        std::unique_ptr<rpc::info::FlightInfo> rpc_obj(new rpc::info::FlightInfo());
+        auto rpc_obj = std::make_unique<rpc::info::FlightInfo>();
 
         rpc_obj->set_time_boot_ms(flight_info.time_boot_ms);
 
@@ -63,7 +63,7 @@ public:
     static std::unique_ptr<rpc::info::Identification>
     translateToRpcIdentification(const mavsdk::Info::Identification& identification)
     {
-        std::unique_ptr<rpc::info::Identification> rpc_obj(new rpc::info::Identification());
+        auto rpc_obj = std::make_unique<rpc::info::Identification>();
 
         rpc_obj->set_hardware_uid(identification.hardware_uid);
 
@@ -83,7 +83,7 @@ public:
     static std::unique_ptr<rpc::info::Product>
     translateToRpcProduct(const mavsdk::Info::Product& product)
     {
-        std::unique_ptr<rpc::info::Product> rpc_obj(new rpc::info::Product());
+        auto rpc_obj = std::make_unique<rpc::info::Product>();
 
         rpc_obj->set_vendor_id(product.vendor_id);
 
@@ -114,7 +114,7 @@ public:
     static std::unique_ptr<rpc::info::Version>
     translateToRpcVersion(const mavsdk::Info::Version& version)
     {
-        std::unique_ptr<rpc::info::Version> rpc_obj(new rpc::info::Version());
+        auto rpc_obj = std::make_unique<rpc::info::Version>();
 
         rpc_obj->set_flight_sw_major(version.flight_sw_major);
 
