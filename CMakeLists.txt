@@ -31,8 +31,12 @@ endforeach()
 
 project(mavsdk_superbuild)
 
+if (BUILD_BACKEND)
+    set(BUILD_MAVSDK_SERVER, ON)
+endif()
+
 option(SUPERBUILD "Build dependencies" ON)
-option(BUILD_BACKEND "Build gRPC backend server" OFF)
+option(BUILD_MAVSDK_SERVER "Build mavsdk_server" OFF)
 option(BUILD_SHARED_LIBS "Build core as shared libraries instead of static ones" ON)
 
 set(DEPS_BUILD_PATH "${PROJECT_BINARY_DIR}/third_party" CACHE PATH "Install path for the dependencies. Ignored if SUPERBUILD=OFF.")
