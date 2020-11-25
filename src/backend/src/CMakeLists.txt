@@ -29,14 +29,14 @@ set(BACKEND_SOURCES
     grpc_server.cpp
 )
 
-if(IOS)
+if(IOS OR (APPLE AND MACOS_FRAMEWORK))
     set_property(SOURCE module.modulemap
         PROPERTY MACOSX_PACKAGE_LOCATION "Modules")
 
     list(APPEND BACKEND_SOURCES module.modulemap)
 endif()
 
-if(IOS OR ANDROID)
+if(IOS OR ANDROID OR (APPLE AND MACOS_FRAMEWORK))
     add_library(mavsdk_server SHARED ${BACKEND_SOURCES})
 else()
     add_library(mavsdk_server ${BACKEND_SOURCES})
@@ -116,7 +116,7 @@ if(NOT IOS AND NOT ANDROID)
 endif()
 
 # iOS builds mavsdk_server.framework
-if(IOS)
+if(IOS OR (APPLE AND MACOS_FRAMEWORK))
     set_target_properties(mavsdk_server PROPERTIES
         FRAMEWORK TRUE
         BUILD_WITH_INSTALL_RPATH TRUE

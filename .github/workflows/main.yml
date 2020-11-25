@@ -370,6 +370,23 @@ jobs:
           tag: ${{ github.ref }}
           overwrite: true
 
+  macOS-framework:
+    name: macOS-framework
+    runs-on: macos-latest
+    steps:
+      - uses: actions/checkout@v2
+        with:
+          submodules: recursive
+      - name: configure
+        run: cmake -DCMAKE_BUILD_TYPE=Release -DCMAKE_INSTALL_PREFIX=build/release/install -DBUILD_BACKEND=ON -DBUILD_SHARED_LIBS=OFF -DMACOS_FRAMEWORK=ON -DWERROR=OFF -j 2 -Bbuild/macos -H.
+      - name: build
+        run: cmake --build build/macos -j 2 --target install
+      - uses: actions/upload-artifact@v2
+        with:
+          name: mavsdk_server_macos.framework
+          path: ./build/macos/src/backend/src/mavsdk_server.framework
+          retention-days: 2
+
   iOS:
     name: iOS
     runs-on: macos-latest
@@ -406,7 +423,7 @@ jobs:
 
   iOS-XCFramework:
     name: iOS XCFramework
-    needs: [iOS, iOS-Simulator]
+    needs: [macOS-framework, iOS, iOS-Simulator]
     runs-on: macos-latest
     steps:
       - uses: actions/checkout@v2
@@ -420,11 +437,15 @@ jobs:
         with:
           name: mavsdk_server_ios_simulator.framework
           path: ./build/ios_simulator/src/backend/src/mavsdk_server.framework
+      - uses: actions/download-artifact@v2
+        with:
+          name: mavsdk_server_macos.framework
+          path: ./build/macos/src/backend/src/mavsdk_server.framework
       - name: Package
         run: bash ./src/backend/tools/package_backend_framework.bash
       - uses: actions/upload-artifact@v2
         with:
-          name: mavsdk_server_ios.xcframework
+          name: mavsdk_server.xcframework
           path: ./build/mavsdk_server.xcframework
           retention-days: 2
       - name: Publish artefacts
@@ -432,8 +453,8 @@ jobs:
         uses: svenstaro/upload-release-action@v1-release
         with:
           repo_token: ${{ secrets.GITHUB_TOKEN }}
-          file: 'build/mavsdk_server.zip'
-          asset_name: 'mavsdk_server_ios.zip'
+          file: 'build/mavsdk_server.xcframework.zip'
+          asset_name: 'mavsdk_server.xcframework.zip'
           tag: ${{ github.ref }}
           overwrite: true
 
