@@ -51,7 +51,6 @@ namespace backend {
 class GRPCServer {
 public:
     GRPCServer(Mavsdk& mavsdk) :
-        _port(0),
         _mavsdk(mavsdk),
         _core(_mavsdk),
         _action(_mavsdk.system()),
@@ -145,8 +144,8 @@ private:
 
     std::unique_ptr<grpc::Server> _server;
 
-    int _port;
-    int _bound_port = 0;
+    int _port{0};
+    int _bound_port{0};
 };
 
 } // namespace backend

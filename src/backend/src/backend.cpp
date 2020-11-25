@@ -10,17 +10,17 @@ using namespace mavsdk::backend;
 
 class MavsdkBackend::Impl {
 public:
-    Impl() {}
-    ~Impl() {}
+    Impl() = default;
+    ~Impl() = default;
 
     void connect(const std::string& connection_url)
     {
-        _connection_initiator.start(_dc, connection_url);
+        _connection_initiator.start(_mavsdk, connection_url);
     }
 
     int startGRPCServer(const int port)
     {
-        _server = std::make_unique<GRPCServer>(_dc);
+        _server = std::make_unique<GRPCServer>(_mavsdk);
         _server->set_port(port);
         _grpc_port = _server->run();
         return _grpc_port;
@@ -33,10 +33,10 @@ public:
     int getPort() { return _grpc_port; }
 
 private:
-    mavsdk::Mavsdk _dc;
-    ConnectionInitiator<mavsdk::Mavsdk> _connection_initiator;
-    std::unique_ptr<GRPCServer> _server;
-    int _grpc_port;
+    mavsdk::Mavsdk _mavsdk{};
+    ConnectionInitiator<mavsdk::Mavsdk> _connection_initiator{};
+    std::unique_ptr<GRPCServer> _server{};
+    int _grpc_port{};
 };
 
 MavsdkBackend::MavsdkBackend() : _impl(new Impl()) {}
