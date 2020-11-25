@@ -89,7 +89,7 @@ target_include_directories(mavsdk_server
 # Build and install mavsdk_server for all but iOS and Android
 if(NOT IOS AND NOT ANDROID)
     add_executable(mavsdk_server_bin
-        mavsdk_server.cpp
+        mavsdk_server_bin.cpp
     )
 
     target_link_libraries(mavsdk_server_bin

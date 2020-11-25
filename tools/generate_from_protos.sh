@@ -5,7 +5,7 @@ set -e
 script_dir="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 
 proto_dir="${script_dir}/../proto/protos"
-backend_generated_dir="${script_dir}/../src/backend/src/generated"
+mavsdk_server_generated_dir="${script_dir}/../src/mavsdk_server/src/generated"
 third_party_dir="${script_dir}/../build/default/third_party"
 protoc_binary="${third_party_dir}/install/bin/protoc"
 protoc_grpc_binary="${third_party_dir}/install/bin/grpc_cpp_plugin"
@@ -24,7 +24,7 @@ command -v ${protoc_binary} > /dev/null && command -v ${protoc_grpc_binary} > /d
     echo >&2 ""
     echo >&2 "You may want to run the CMake configure step first:"
     echo >&2 ""
-    echo >&2 "    cmake -DBUILD_BACKEND=ON -Bbuild/default -H."
+    echo >&2 "    cmake -DBUILD_MAVSDK_SERVER=ON -Bbuild/default -H."
     exit 1
 }
 
@@ -47,7 +47,7 @@ echo "Found grpc_cpp_plugin: ${protoc_grpc_binary}"
 plugin_list_and_core=$(cd ${script_dir}/../proto/protos && ls -d */ | sed 's:/*$::')
 
 echo "Processing mavsdk_options.proto"
-${protoc_binary} -I ${proto_dir} --cpp_out=${backend_generated_dir} --grpc_out=${backend_generated_dir} --plugin=protoc-gen-grpc=${protoc_grpc_binary} ${proto_dir}/mavsdk_options.proto
+${protoc_binary} -I ${proto_dir} --cpp_out=${mavsdk_server_generated_dir} --grpc_out=${mavsdk_server_generated_dir} --plugin=protoc-gen-grpc=${protoc_grpc_binary} ${proto_dir}/mavsdk_options.proto
 
 tmp_output_dir="$(mktemp -d)"
 protoc_gen_mavsdk=$(which protoc-gen-mavsdk)
@@ -62,8 +62,8 @@ for plugin in ${plugin_list_and_core}; do
 
     echo "Processing ${plugin}/${plugin}.proto"
 
-    mkdir -p ${backend_generated_dir}
-    ${protoc_binary} -I ${proto_dir} --cpp_out=${backend_generated_dir} --grpc_out=${backend_generated_dir} --plugin=protoc-gen-grpc=${protoc_grpc_binary} ${proto_dir}/${plugin}/${plugin}.proto
+    mkdir -p ${mavsdk_server_generated_dir}
+    ${protoc_binary} -I ${proto_dir} --cpp_out=${mavsdk_server_generated_dir} --grpc_out=${mavsdk_server_generated_dir} --plugin=protoc-gen-grpc=${protoc_grpc_binary} ${proto_dir}/${plugin}/${plugin}.proto
 
     if [[ "${plugin}" == "core" ]]; then
         continue
@@ -77,8 +77,8 @@ for plugin in ${plugin_list_and_core}; do
     mv ${tmp_output_dir}/${plugin}/$(snake_case_to_camel_case ${plugin}).cpp ${script_dir}/../src/plugins/${plugin}/${plugin}.cpp
 
     ${protoc_binary} -I ${proto_dir} --custom_out=${tmp_output_dir} --plugin=protoc-gen-custom=${protoc_gen_mavsdk} --custom_opt="file_ext=h,template_path=${template_path_mavsdk_server}" ${proto_dir}/${plugin}/${plugin}.proto
-    mkdir -p ${script_dir}/../src/backend/src/plugins/${plugin}
-    mv ${tmp_output_dir}/${plugin}/$(snake_case_to_camel_case ${plugin}).h ${script_dir}/../src/backend/src/plugins/${plugin}/${plugin}_service_impl.h
+    mkdir -p ${script_dir}/../src/mavsdk_server/src/plugins/${plugin}
+    mv ${tmp_output_dir}/${plugin}/$(snake_case_to_camel_case ${plugin}).h ${script_dir}/../src/mavsdk_server/src/plugins/${plugin}/${plugin}_service_impl.h
 
     file_impl_h="${script_dir}/../src/plugins/${plugin}/${plugin}_impl.h"
     if [[ ! -f "${file_impl_h}" ]]; then

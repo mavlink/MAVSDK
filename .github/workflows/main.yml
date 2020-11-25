@@ -37,7 +37,7 @@ jobs:
           path-to-lcov: "./lcov.info"
 
   ubuntu18-non-superbuild:
-    name: ubuntu-18.04 (non-backend, non-superbuild)
+    name: ubuntu-18.04 (non-mavsdk_server, non-superbuild)
     runs-on: ubuntu-18.04
     steps:
       - uses: actions/checkout@v2
@@ -53,14 +53,14 @@ jobs:
         run: ./build/release/src/unit_tests_runner
 
   ubuntu18-superbuild:
-    name: ubuntu-18.04 (backend, superbuild)
+    name: ubuntu-18.04 (mavsdk_server, superbuild)
     runs-on: ubuntu-18.04
     steps:
       - uses: actions/checkout@v2
         with:
           submodules: recursive
       - name: configure
-        run: cmake -DCMAKE_BUILD_TYPE=Release -DSUPERBUILD=ON -DBUILD_BACKEND=ON -DWERROR=OFF -j 2 -Bbuild/release -H.
+        run: cmake -DCMAKE_BUILD_TYPE=Release -DSUPERBUILD=ON -DBUILD_MAVSDK_SERVER=ON -DWERROR=OFF -j 2 -Bbuild/release -H.
       - name: build
         run: cmake --build build/release -j 2
       - name: install
@@ -74,7 +74,7 @@ jobs:
       - name: test
         run: ./build/release/src/unit_tests_runner
       - name: test (mavsdk_server)
-        run: ./build/release/src/backend/test/unit_tests_backend
+        run: ./build/release/src/mavsdk_server/test/unit_tests_mavsdk_server
 
   ubuntu20-proto-check:
     name: ubuntu-20.04 (proto check)
@@ -91,7 +91,7 @@ jobs:
              pip3 install --user -r requirements.txt
              pip3 install --user -e .
       - name: build necessary protoc tooling
-        run: cmake -DBUILD_BACKEND=ON -Bbuild/default -H.
+        run: cmake -DBUILD_MAVSDK_SERVER=ON -Bbuild/default -H.
       - name: generate code from protos
         run: PATH="$PATH:$HOME/.local/bin" tools/generate_from_protos.sh
       - name: fix style
@@ -124,13 +124,13 @@ jobs:
         with:
           submodules: recursive
       - name: configure
-        run: cmake -DCMAKE_BUILD_TYPE=Release -DBUILD_BACKEND=ON -DBUILD_SHARED_LIBS=OFF -DBUILD_STATIC_MAVSDK_SERVER=ON -DCMAKE_INSTALL_PREFIX=install -DWERROR=OFF -j 2 -Bbuild/release -H.
+        run: cmake -DCMAKE_BUILD_TYPE=Release -DBUILD_MAVSDK_SERVER=ON -DBUILD_SHARED_LIBS=OFF -DBUILD_STATIC_MAVSDK_SERVER=ON -DCMAKE_INSTALL_PREFIX=install -DWERROR=OFF -j 2 -Bbuild/release -H.
       - name: build
         run: cmake --build build/release --target install -- -j2
       - name: test
         run: ./build/release/src/unit_tests_runner
       - name: test (mavsdk_server)
-        run: ./build/release/src/backend/test/unit_tests_backend
+        run: ./build/release/src/mavsdk_server/test/unit_tests_mavsdk_server
       - name: Check the artifact
         run: |
           file "./install/bin/mavsdk_server"
@@ -173,7 +173,7 @@ jobs:
         run: PX4_VERSION=${{ matrix.px4_version }} tools/run-sitl-tests.sh /home/user/Firmware
 
   deb-package:
-    name: ${{ matrix.container_name }} (package, non-backend)
+    name: ${{ matrix.container_name }} (package, non-mavsdk_server)
     runs-on: ubuntu-18.04
     container: mavsdk/mavsdk-${{ matrix.container_name }}
     strategy:
@@ -184,7 +184,7 @@ jobs:
         with:
           submodules: recursive
       - name: configure
-        run: cmake -DCMAKE_BUILD_TYPE=Release -DBUILD_BACKEND=OFF -DBUILD_SHARED_LIBS=ON -DCMAKE_INSTALL_PREFIX=install -DWERROR=OFF -j 2 -Bbuild/release -H.
+        run: cmake -DCMAKE_BUILD_TYPE=Release -DBUILD_MAVSDK_SERVER=OFF -DBUILD_SHARED_LIBS=ON -DCMAKE_INSTALL_PREFIX=install -DWERROR=OFF -j 2 -Bbuild/release -H.
       - name: build
         run: cmake --build build/release --target install -- -j2
       - name: Package
@@ -201,7 +201,7 @@ jobs:
           overwrite: true
 
   rpm-package:
-    name: ${{ matrix.container_name }} (package, non-backend)
+    name: ${{ matrix.container_name }} (package, non-mavsdk_server)
     runs-on: ubuntu-18.04
     container: mavsdk/mavsdk-${{ matrix.container_name }}
     strategy:
@@ -212,7 +212,7 @@ jobs:
         with:
           submodules: recursive
       - name: configure
-        run: cmake -DCMAKE_BUILD_TYPE=Release -DBUILD_BACKEND=OFF -DBUILD_SHARED_LIBS=ON -DCMAKE_INSTALL_PREFIX=install -DWERROR=OFF  -j 2 -Bbuild/release -H.
+        run: cmake -DCMAKE_BUILD_TYPE=Release -DBUILD_MAVSDK_SERVER=OFF -DBUILD_SHARED_LIBS=ON -DCMAKE_INSTALL_PREFIX=install -DWERROR=OFF  -j 2 -Bbuild/release -H.
       - name: build
         run: cmake --build build/release --target install -- -j2
       - name: Package
@@ -241,7 +241,7 @@ jobs:
       - name: setup dockcross
         run: docker run --rm dockcross/${{ matrix.arch_name }} > ./dockcross-${{ matrix.arch_name }}; chmod +x ./dockcross-${{ matrix.arch_name }}
       - name: configure
-        run: ./dockcross-${{ matrix.arch_name }} cmake -DCMAKE_BUILD_TYPE=Release -DCMAKE_INSTALL_PREFIX=build/${{ matrix.arch_name }}/install -DBUILD_BACKEND=ON -DBUILD_SHARED_LIBS=OFF -DWERROR=OFF -j 2 -Bbuild/${{ matrix.arch_name }} -H.
+        run: ./dockcross-${{ matrix.arch_name }} cmake -DCMAKE_BUILD_TYPE=Release -DCMAKE_INSTALL_PREFIX=build/${{ matrix.arch_name }}/install -DBUILD_MAVSDK_SERVER=ON -DBUILD_SHARED_LIBS=OFF -DWERROR=OFF -j 2 -Bbuild/${{ matrix.arch_name }} -H.
       - name: build
         run: ./dockcross-${{ matrix.arch_name }} cmake --build build/${{ matrix.arch_name }} -j 2 --target install
       - name: Publish artefacts
@@ -267,7 +267,7 @@ jobs:
       - name: setup dockcross
         run: docker run --rm dockcross/${{ matrix.arch_name }} > ./dockcross-${{ matrix.arch_name }}; chmod +x ./dockcross-${{ matrix.arch_name }}
       - name: configure
-        run: ./dockcross-${{ matrix.arch_name }} cmake -DCMAKE_BUILD_TYPE=Release -DCMAKE_INSTALL_PREFIX=build/${{ matrix.arch_name }}/install -DBUILD_BACKEND=ON -DBUILD_SHARED_LIBS=OFF -DBUILD_STATIC_MAVSDK_SERVER=ON -DWERROR=OFF -j 2 -Bbuild/${{ matrix.arch_name }} -H.
+        run: ./dockcross-${{ matrix.arch_name }} cmake -DCMAKE_BUILD_TYPE=Release -DCMAKE_INSTALL_PREFIX=build/${{ matrix.arch_name }}/install -DBUILD_MAVSDK_SERVER=ON -DBUILD_SHARED_LIBS=OFF -DBUILD_STATIC_MAVSDK_SERVER=ON -DWERROR=OFF -j 2 -Bbuild/${{ matrix.arch_name }} -H.
       - name: build
         run: ./dockcross-${{ matrix.arch_name }} cmake --build build/${{ matrix.arch_name }} -j 2 --target install
       - name: Publish artefacts
@@ -290,11 +290,11 @@ jobs:
       - name: setup dockcross
         run: docker run --rm dockcross/android-arm > ./dockcross-android-arm; chmod +x ./dockcross-android-arm
       - name: configure
-        run: ./dockcross-android-arm cmake -DCMAKE_BUILD_TYPE=Release -DCMAKE_INSTALL_PREFIX=build/android-arm/install -DBUILD_BACKEND=ON -DBUILD_SHARED_LIBS=OFF -DWERROR=OFF -j 2 -Bbuild/android-arm -H.
+        run: ./dockcross-android-arm cmake -DCMAKE_BUILD_TYPE=Release -DCMAKE_INSTALL_PREFIX=build/android-arm/install -DBUILD_MAVSDK_SERVER=ON -DBUILD_SHARED_LIBS=OFF -DWERROR=OFF -j 2 -Bbuild/android-arm -H.
       - name: build
         run: ./dockcross-android-arm cmake --build build/android-arm -j 2 --target install
       - name: create tar with header and library
-        run: mkdir -p build/android-arm/export/include; cp build/android-arm/install/include/mavsdk/backend/backend_api.h build/android-arm/export/include; mkdir -p build/android-arm/export/armeabi-v7a; cp build/android-arm/install/lib/libmavsdk_server.so build/android-arm/export/armeabi-v7a; tar -C build/android-arm/export -cf build/android-arm/export/mavsdk_server_android-arm.tar armeabi-v7a include;
+        run: mkdir -p build/android-arm/export/include; cp build/android-arm/install/include/mavsdk/mavsdk_server/mavsdk_server_api.h build/android-arm/export/include; mkdir -p build/android-arm/export/armeabi-v7a; cp build/android-arm/install/lib/libmavsdk_server.so build/android-arm/export/armeabi-v7a; tar -C build/android-arm/export -cf build/android-arm/export/mavsdk_server_android-arm.tar armeabi-v7a include;
       - name: Publish artefacts
         if: startsWith(github.ref, 'refs/tags/v')
         uses: svenstaro/upload-release-action@v1-release
@@ -315,11 +315,11 @@ jobs:
       - name: setup dockcross
         run: docker run --rm dockcross/android-arm64 > ./dockcross-android-arm64; chmod +x ./dockcross-android-arm64
       - name: configure
-        run: ./dockcross-android-arm64 cmake -DCMAKE_BUILD_TYPE=Release -DCMAKE_INSTALL_PREFIX=build/android-arm64/install -DBUILD_BACKEND=ON -DBUILD_SHARED_LIBS=OFF -DWERROR=OFF -j 2 -Bbuild/android-arm64 -H.
+        run: ./dockcross-android-arm64 cmake -DCMAKE_BUILD_TYPE=Release -DCMAKE_INSTALL_PREFIX=build/android-arm64/install -DBUILD_MAVSDK_SERVER=ON -DBUILD_SHARED_LIBS=OFF -DWERROR=OFF -j 2 -Bbuild/android-arm64 -H.
       - name: build
         run: ./dockcross-android-arm64 cmake --build build/android-arm64 -j 2 --target install
       - name: create tar with header and library
-        run: mkdir -p build/android-arm64/export/include; cp build/android-arm64/install/include/mavsdk/backend/backend_api.h build/android-arm64/export/include; mkdir -p build/android-arm64/export/arm64-v8a; cp build/android-arm64/install/lib/libmavsdk_server.so build/android-arm64/export/arm64-v8a; tar -C build/android-arm64/export -cf build/android-arm64/export/mavsdk_server_android-arm64.tar arm64-v8a include;
+        run: mkdir -p build/android-arm64/export/include; cp build/android-arm64/install/include/mavsdk/mavsdk_serverkend/mavsdk_server_api.h build/android-arm64/export/include; mkdir -p build/android-arm64/export/arm64-v8a; cp build/android-arm64/install/lib/libmavsdk_server.so build/android-arm64/export/arm64-v8a; tar -C build/android-arm64/export -cf build/android-arm64/export/mavsdk_server_android-arm64.tar arm64-v8a include;
       - name: Publish artefacts
         if: startsWith(github.ref, 'refs/tags/v')
         uses: svenstaro/upload-release-action@v1-release
@@ -353,13 +353,13 @@ jobs:
         with:
           submodules: recursive
       - name: configure
-        run: cmake -DCMAKE_BUILD_TYPE=Release -DCMAKE_INSTALL_PREFIX=build/release/install -DBUILD_BACKEND=ON -DBUILD_SHARED_LIBS=OFF -DWERROR=OFF -j 2 -Bbuild/release -H.
+        run: cmake -DCMAKE_BUILD_TYPE=Release -DCMAKE_INSTALL_PREFIX=build/release/install -DBUILD_MAVSDK_SERVER=ON -DBUILD_SHARED_LIBS=OFF -DWERROR=OFF -j 2 -Bbuild/release -H.
       - name: build
         run: cmake --build build/release -j 2 --target install
       - name: test (core)
         run: ./build/release/src/unit_tests_runner
       - name: test (mavsdk_server)
-        run: ./build/release/src/backend/test/unit_tests_backend
+        run: ./build/release/src/mavsdk_serverkend/test/unit_tests_mavsdk_server
       - name: Publish artefacts
         if: startsWith(github.ref, 'refs/tags/v')
         uses: svenstaro/upload-release-action@v1-release
@@ -384,7 +384,7 @@ jobs:
       - uses: actions/upload-artifact@v2
         with:
           name: mavsdk_server_macos.framework
-          path: ./build/macos/src/backend/src/mavsdk_server.framework
+          path: ./build/macos/src/mavsdk_server/src/mavsdk_server.framework
           retention-days: 2
 
   iOS:
@@ -395,13 +395,13 @@ jobs:
         with:
           submodules: recursive
       - name: configure
-        run: cmake -DCMAKE_BUILD_TYPE=Release -DCMAKE_TOOLCHAIN_FILE=$(pwd)/tools/ios.toolchain.cmake -DPLATFORM=OS -DDEPLOYMENT_TARGET=11.0 -DBUILD_BACKEND=ON -DBUILD_SHARED_LIBS=OFF -DWERROR=OFF -j 2 -Bbuild/ios -H.
+        run: cmake -DCMAKE_BUILD_TYPE=Release -DCMAKE_TOOLCHAIN_FILE=$(pwd)/tools/ios.toolchain.cmake -DPLATFORM=OS -DDEPLOYMENT_TARGET=11.0 -DBUILD_MAVSDK_SERVER=ON -DBUILD_SHARED_LIBS=OFF -DWERROR=OFF -j 2 -Bbuild/ios -H.
       - name: build
         run: cmake --build build/ios -j 2
       - uses: actions/upload-artifact@v2
         with:
           name: mavsdk_server_ios.framework
-          path: ./build/ios/src/backend/src/mavsdk_server.framework
+          path: ./build/ios/src/mavsdk_server/src/mavsdk_server.framework
           retention-days: 2
 
   iOS-Simulator:
@@ -412,13 +412,13 @@ jobs:
         with:
           submodules: recursive
       - name: configure
-        run: cmake -DCMAKE_BUILD_TYPE=Release -DCMAKE_TOOLCHAIN_FILE=$(pwd)/tools/ios.toolchain.cmake -DPLATFORM=SIMULATOR64 -DDEPLOYMENT_TARGET=11.0 -DBUILD_BACKEND=ON -DBUILD_SHARED_LIBS=OFF -DWERROR=OFF -j 2 -Bbuild/ios_simulator -H.
+        run: cmake -DCMAKE_BUILD_TYPE=Release -DCMAKE_TOOLCHAIN_FILE=$(pwd)/tools/ios.toolchain.cmake -DPLATFORM=SIMULATOR64 -DDEPLOYMENT_TARGET=11.0 -DBUILD_MAVSDK_SERVER=ON -DBUILD_SHARED_LIBS=OFF -DWERROR=OFF -j 2 -Bbuild/ios_simulator -H.
       - name: build
         run: cmake --build build/ios_simulator -j 2
       - uses: actions/upload-artifact@v2
         with:
           name: mavsdk_server_ios_simulator.framework
-          path: ./build/ios_simulator/src/backend/src/mavsdk_server.framework
+          path: ./build/ios_simulator/src/mavsdk_server/src/mavsdk_server.framework
           retention-days: 2
 
   iOS-XCFramework:
@@ -432,17 +432,17 @@ jobs:
       - uses: actions/download-artifact@v2
         with:
           name: mavsdk_server_ios.framework
-          path: ./build/ios/src/backend/src/mavsdk_server.framework
+          path: ./build/ios/src/mavsdk_server/src/mavsdk_server.framework
       - uses: actions/download-artifact@v2
         with:
           name: mavsdk_server_ios_simulator.framework
-          path: ./build/ios_simulator/src/backend/src/mavsdk_server.framework
+          path: ./build/ios_simulator/src/mavsdk_server/src/mavsdk_server.framework
       - uses: actions/download-artifact@v2
         with:
           name: mavsdk_server_macos.framework
-          path: ./build/macos/src/backend/src/mavsdk_server.framework
+          path: ./build/macos/src/mavsdk_server/src/mavsdk_server.framework
       - name: Package
-        run: bash ./src/backend/tools/package_backend_framework.bash
+        run: bash ./src/mavsdk_server/tools/package_mavsdk_server.bash
       - uses: actions/upload-artifact@v2
         with:
           name: mavsdk_server.xcframework
@@ -466,7 +466,7 @@ jobs:
         with:
           submodules: recursive
       - name: configure
-        run: cmake -G "Visual Studio 16 2019" -DCMAKE_BUILD_TYPE=Release -DCMAKE_INSTALL_PREFIX=build/release/install -DBUILD_BACKEND=ON -DBUILD_SHARED_LIBS=OFF -DWERROR=OFF -j 2 -Bbuild/release -S.
+        run: cmake -G "Visual Studio 16 2019" -DCMAKE_BUILD_TYPE=Release -DCMAKE_INSTALL_PREFIX=build/release/install -DBUILD_MAVSDK_SERVER=ON -DBUILD_SHARED_LIBS=OFF -DWERROR=OFF -j 2 -Bbuild/release -S.
       - name: build
         run: cmake --build build/release -j 2 --config Release --target install
       - name: Publish artefacts
