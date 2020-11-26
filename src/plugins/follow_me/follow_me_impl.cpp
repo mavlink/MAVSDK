@@ -143,24 +143,24 @@ FollowMe::Result FollowMeImpl::set_config(const FollowMe::Config& config)
 
 FollowMe::Result FollowMeImpl::set_target_location(const FollowMe::TargetLocation& location)
 {
-    _mutex.lock();
-    _target_location = location;
-    // We're interested only in lat, long.
-    _estimation_capabilities |= (1 << static_cast<int>(EstimationCapabilities::POS));
+    {
+        std::lock_guard<std::mutex> lock(_mutex);
+        _target_location = location;
+        // We're interested only in lat, long.
+        _estimation_capabilities |= (1 << static_cast<int>(EstimationCapabilities::POS));
 
-    if (_mode != Mode::ACTIVE) {
-        _mutex.unlock();
-        return FollowMe::Result::NotActive;
+        if (_mode != Mode::ACTIVE) {
+            return FollowMe::Result::NotActive;
+        }
+        // If set already, reschedule it.
+        if (_target_location_cookie) {
+            _parent->reset_call_every(_target_location_cookie);
+        } else {
+            // Register now for sending in the next cycle.
+            _parent->add_call_every(
+                [this]() { send_target_location(); }, SENDER_RATE, &_target_location_cookie);
+        }
     }
-    // If set already, reschedule it.
-    if (_target_location_cookie) {
-        _parent->reset_call_every(_target_location_cookie);
-    } else {
-        // Register now for sending in the next cycle.
-        _parent->add_call_every(
-            [this]() { send_target_location(); }, SENDER_RATE, &_target_location_cookie);
-    }
-    _mutex.unlock();
 
     // Send it immediately for now.
     send_target_location();
@@ -270,14 +270,13 @@ void FollowMeImpl::send_target_location()
     uint64_t elapsed_msec =
         static_cast<uint64_t>(_time.elapsed_since_s(now) * 1000); // milliseconds
 
-    _mutex.lock();
+    std::lock_guard<std::mutex> lock(_mutex);
     //   LogDebug() << debug_str <<  "Lat: " << _target_location.latitude_deg << " Lon: " <<
     //   _target_location.longitude_deg <<
     //	" Alt: " << _target_location.absolute_altitude_m;
     const int32_t lat_int = int32_t(std::round(_target_location.latitude_deg * 1e7));
     const int32_t lon_int = int32_t(std::round(_target_location.longitude_deg * 1e7));
     const float alt = static_cast<float>(_target_location.absolute_altitude_m);
-    _mutex.unlock();
 
     const float pos_std_dev[] = {NAN, NAN, NAN};
     const float vel[] = {NAN, NAN, NAN};
@@ -306,7 +305,6 @@ void FollowMeImpl::send_target_location()
     if (!_parent->send_message(msg)) {
         LogErr() << debug_str << "send_target_location() failed..";
     } else {
-        std::lock_guard<std::mutex> lock(_mutex);
         _last_location = _target_location;
     }
 }
