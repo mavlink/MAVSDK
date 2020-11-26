@@ -117,7 +117,7 @@ void OffboardImpl::receive_command_result(
 
 Offboard::Result OffboardImpl::set_position_ned(Offboard::PositionNedYaw position_ned_yaw)
 {
-    _mutex.lock();
+    std::lock_guard<std::mutex> lock(_mutex);
     _position_ned_yaw = position_ned_yaw;
 
     if (_mode != Mode::PositionNed) {
@@ -136,7 +136,6 @@ Offboard::Result OffboardImpl::set_position_ned(Offboard::PositionNedYaw positio
         // reschedule the next call, so we don't send setpoints too often.
         _parent->reset_call_every(_call_every_cookie);
     }
-    _mutex.unlock();
 
     // also send it right now to reduce latency
     return send_position_ned();
@@ -144,7 +143,7 @@ Offboard::Result OffboardImpl::set_position_ned(Offboard::PositionNedYaw positio
 
 Offboard::Result OffboardImpl::set_velocity_ned(Offboard::VelocityNedYaw velocity_ned_yaw)
 {
-    _mutex.lock();
+    std::lock_guard<std::mutex> lock(_mutex);
     _velocity_ned_yaw = velocity_ned_yaw;
 
     if (_mode != Mode::VelocityNed) {
@@ -163,7 +162,6 @@ Offboard::Result OffboardImpl::set_velocity_ned(Offboard::VelocityNedYaw velocit
         // reschedule the next call, so we don't send setpoints too often.
         _parent->reset_call_every(_call_every_cookie);
     }
-    _mutex.unlock();
 
     // also send it right now to reduce latency
     return send_velocity_ned();
@@ -172,7 +170,7 @@ Offboard::Result OffboardImpl::set_velocity_ned(Offboard::VelocityNedYaw velocit
 Offboard::Result OffboardImpl::set_position_velocity_ned(
     Offboard::PositionNedYaw position_ned_yaw, Offboard::VelocityNedYaw velocity_ned_yaw)
 {
-    _mutex.lock();
+    std::lock_guard<std::mutex> lock(_mutex);
     _position_ned_yaw = position_ned_yaw;
     _velocity_ned_yaw = velocity_ned_yaw;
 
@@ -192,7 +190,6 @@ Offboard::Result OffboardImpl::set_position_velocity_ned(
         // reschedule the next call, so we don't send setpoints too often.
         _parent->reset_call_every(_call_every_cookie);
     }
-    _mutex.unlock();
 
     // also send it right now to reduce latency
     return send_position_velocity_ned();
@@ -201,7 +198,7 @@ Offboard::Result OffboardImpl::set_position_velocity_ned(
 Offboard::Result
 OffboardImpl::set_velocity_body(Offboard::VelocityBodyYawspeed velocity_body_yawspeed)
 {
-    _mutex.lock();
+    std::lock_guard<std::mutex> lock(_mutex);
     _velocity_body_yawspeed = velocity_body_yawspeed;
 
     if (_mode != Mode::VelocityBody) {
@@ -220,7 +217,6 @@ OffboardImpl::set_velocity_body(Offboard::VelocityBodyYawspeed velocity_body_yaw
         // reschedule the next call, so we don't send setpoints too often.
         _parent->reset_call_every(_call_every_cookie);
     }
-    _mutex.unlock();
 
     // also send it right now to reduce latency
     return send_velocity_body();
@@ -228,7 +224,7 @@ OffboardImpl::set_velocity_body(Offboard::VelocityBodyYawspeed velocity_body_yaw
 
 Offboard::Result OffboardImpl::set_attitude(Offboard::Attitude attitude)
 {
-    _mutex.lock();
+    std::lock_guard<std::mutex> lock(_mutex);
     _attitude = attitude;
 
     if (_mode != Mode::Attitude) {
@@ -247,7 +243,6 @@ Offboard::Result OffboardImpl::set_attitude(Offboard::Attitude attitude)
         // reschedule the next call, so we don't send setpoints too often.
         _parent->reset_call_every(_call_every_cookie);
     }
-    _mutex.unlock();
 
     // also send it right now to reduce latency
     return send_attitude();
@@ -255,7 +250,7 @@ Offboard::Result OffboardImpl::set_attitude(Offboard::Attitude attitude)
 
 Offboard::Result OffboardImpl::set_attitude_rate(Offboard::AttitudeRate attitude_rate)
 {
-    _mutex.lock();
+    std::lock_guard<std::mutex> lock(_mutex);
     _attitude_rate = attitude_rate;
 
     if (_mode != Mode::AttitudeRate) {
@@ -274,7 +269,6 @@ Offboard::Result OffboardImpl::set_attitude_rate(Offboard::AttitudeRate attitude
         // reschedule the next call, so we don't send setpoints too often.
         _parent->reset_call_every(_call_every_cookie);
     }
-    _mutex.unlock();
 
     // also send it right now to reduce latency
     return send_attitude_rate();
@@ -282,7 +276,7 @@ Offboard::Result OffboardImpl::set_attitude_rate(Offboard::AttitudeRate attitude
 
 Offboard::Result OffboardImpl::set_actuator_control(Offboard::ActuatorControl actuator_control)
 {
-    _mutex.lock();
+    std::lock_guard<std::mutex> lock(_mutex);
     _actuator_control = actuator_control;
 
     if (_mode != Mode::ActuatorControl) {
@@ -301,7 +295,6 @@ Offboard::Result OffboardImpl::set_actuator_control(Offboard::ActuatorControl ac
         // reschedule the next call, so we don't send values too often.
         _parent->reset_call_every(_call_every_cookie);
     }
-    _mutex.unlock();
 
     // also send it right now to reduce latency
     return send_actuator_control();
@@ -322,7 +315,8 @@ Offboard::Result OffboardImpl::send_position_ned()
     // const static uint16_t IGNORE_YAW = (1 << 10);
     const static uint16_t IGNORE_YAW_RATE = (1 << 11);
 
-    _mutex.lock();
+    std::lock_guard<std::mutex> lock(_mutex);
+
     const float yaw = to_rad_from_deg(_position_ned_yaw.yaw_deg);
     const float yaw_rate = 0.0f;
     const float x = _position_ned_yaw.north_m;
@@ -334,7 +328,6 @@ Offboard::Result OffboardImpl::send_position_ned()
     const float afx = 0.0f;
     const float afy = 0.0f;
     const float afz = 0.0f;
-    _mutex.unlock();
 
     mavlink_message_t message;
     mavlink_msg_set_position_target_local_ned_pack(
@@ -376,7 +369,7 @@ Offboard::Result OffboardImpl::send_velocity_ned()
     // const static uint16_t IGNORE_YAW = (1 << 10);
     const static uint16_t IGNORE_YAW_RATE = (1 << 11);
 
-    _mutex.lock();
+    std::lock_guard<std::mutex> lock(_mutex);
     const float yaw = to_rad_from_deg(_velocity_ned_yaw.yaw_deg);
     const float yaw_rate = 0.0f;
     const float x = 0.0f;
@@ -388,7 +381,6 @@ Offboard::Result OffboardImpl::send_velocity_ned()
     const float afx = 0.0f;
     const float afy = 0.0f;
     const float afz = 0.0f;
-    _mutex.unlock();
 
     mavlink_message_t message;
     mavlink_msg_set_position_target_local_ned_pack(
@@ -430,7 +422,7 @@ Offboard::Result OffboardImpl::send_position_velocity_ned()
     // const static uint16_t IGNORE_YAW = (1 << 10);
     const static uint16_t IGNORE_YAW_RATE = (1 << 11);
 
-    _mutex.lock();
+    std::lock_guard<std::mutex> lock(_mutex);
     const float yaw = to_rad_from_deg(_position_ned_yaw.yaw_deg);
     const float yaw_rate = 0.0f;
     const float x = _position_ned_yaw.north_m;
@@ -442,7 +434,6 @@ Offboard::Result OffboardImpl::send_position_velocity_ned()
     const float afx = 0.0f;
     const float afy = 0.0f;
     const float afz = 0.0f;
-    _mutex.unlock();
 
     mavlink_message_t message;
     mavlink_msg_set_position_target_local_ned_pack(
@@ -484,7 +475,7 @@ Offboard::Result OffboardImpl::send_velocity_body()
     const static uint16_t IGNORE_YAW = (1 << 10);
     // const static uint16_t IGNORE_YAW_RATE = (1 << 11);
 
-    _mutex.lock();
+    std::lock_guard<std::mutex> lock(_mutex);
     const float yaw = 0.0f;
     const float yaw_rate = to_rad_from_deg(_velocity_body_yawspeed.yawspeed_deg_s);
     const float x = 0.0f;
@@ -496,7 +487,6 @@ Offboard::Result OffboardImpl::send_velocity_body()
     const float afx = 0.0f;
     const float afy = 0.0f;
     const float afz = 0.0f;
-    _mutex.unlock();
 
     mavlink_message_t message;
     mavlink_msg_set_position_target_local_ned_pack(
@@ -534,12 +524,11 @@ Offboard::Result OffboardImpl::send_attitude()
     // const static uint8_t IGNORE_THRUST = (1 << 6);
     // const static uint8_t IGNORE_ATTITUDE = (1 << 7);
 
-    _mutex.lock();
+    std::lock_guard<std::mutex> lock(_mutex);
     const float thrust = _attitude.thrust_value;
     const float roll = to_rad_from_deg(_attitude.roll_deg);
     const float pitch = to_rad_from_deg(_attitude.pitch_deg);
     const float yaw = to_rad_from_deg(_attitude.yaw_deg);
-    _mutex.unlock();
 
     const double cos_phi_2 = cos(double(roll) / 2.0);
     const double sin_phi_2 = sin(double(roll) / 2.0);
@@ -584,12 +573,11 @@ Offboard::Result OffboardImpl::send_attitude_rate()
     // const static uint8_t IGNORE_THRUST = (1 << 6);
     const static uint8_t IGNORE_ATTITUDE = (1 << 7);
 
-    _mutex.lock();
+    std::lock_guard<std::mutex> lock(_mutex);
     const float thrust = _attitude_rate.thrust_value;
     const float body_roll_rate = to_rad_from_deg(_attitude_rate.roll_deg_s);
     const float body_pitch_rate = to_rad_from_deg(_attitude_rate.pitch_deg_s);
     const float body_yaw_rate = to_rad_from_deg(_attitude_rate.yaw_deg_s);
-    _mutex.unlock();
 
     mavlink_message_t message;
     mavlink_msg_set_attitude_target_pack(
@@ -628,9 +616,8 @@ OffboardImpl::send_actuator_control_message(const float* controls, uint8_t group
 
 Offboard::Result OffboardImpl::send_actuator_control()
 {
-    _mutex.lock();
+    std::lock_guard<std::mutex> lock(_mutex);
     Offboard::ActuatorControl actuator_control = _actuator_control;
-    _mutex.unlock();
 
     for (int i = 0; i < 2; i++) {
         int nan_count = 0;
