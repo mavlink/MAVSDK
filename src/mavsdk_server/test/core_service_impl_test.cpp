@@ -27,8 +27,8 @@ class CoreServiceImplTest : public ::testing::Test {
 protected:
     virtual void SetUp()
     {
-        _dc = std::make_unique<MockMavsdk>();
-        _core_service = std::make_unique<CoreServiceImpl>(*_dc);
+        _mavsdk = std::make_unique<MockMavsdk>();
+        _core_service = std::make_unique<CoreServiceImpl>(*_mavsdk);
 
         grpc::ServerBuilder builder;
         builder.RegisterService(_core_service.get());
@@ -45,7 +45,7 @@ protected:
     std::future<void> subscribeConnectionStateAsync(std::vector<std::pair<uint64_t, bool>>& events);
 
     std::unique_ptr<CoreServiceImpl> _core_service{};
-    std::unique_ptr<MockMavsdk> _dc{};
+    std::unique_ptr<MockMavsdk> _mavsdk{};
     std::unique_ptr<grpc::Server> _server{};
     std::unique_ptr<CoreService::Stub> _stub{};
 };
@@ -111,7 +111,7 @@ TEST_F(CoreServiceImplTest, portIsDefaultInPluginInfos)
 
 TEST_F(CoreServiceImplTest, subscribeConnectionStateSubscribesToChange)
 {
-    EXPECT_CALL(*_dc, subscribe_on_new_system(_)).Times(1);
+    EXPECT_CALL(*_mavsdk, subscribe_on_new_system(_)).Times(1);
     grpc::ClientContext context;
     mavsdk::rpc::core::SubscribeConnectionStateRequest request;
 
