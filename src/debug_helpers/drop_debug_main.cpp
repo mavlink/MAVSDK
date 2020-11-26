@@ -20,16 +20,16 @@ int main(int argc, const char* argv[])
     UNUSED(argc);
     UNUSED(argv);
 
-    mavsdk::Mavsdk dc;
+    mavsdk::Mavsdk mavsdk;
 
-    mavsdk::ConnectionResult ret = dc.add_udp_connection();
+    mavsdk::ConnectionResult ret = mavsdk.add_udp_connection();
     if (ret != mavsdk::ConnectionResult::Success) {
         std::cout << "failed to add connection" << std::endl;
         return -1;
     }
 
-    dc.register_on_discover(std::bind(&on_discover, std::placeholders::_1));
-    dc.register_on_timeout(std::bind(&on_timeout, std::placeholders::_1));
+    mavsdk.register_on_discover(std::bind(&on_discover, std::placeholders::_1));
+    mavsdk.register_on_timeout(std::bind(&on_timeout, std::placeholders::_1));
 
     while (true) {
         if (!_discovered_system) {
