@@ -31,8 +31,8 @@ TEST(MavlinkStatustextHandler, Severities)
 
         MavlinkStatustextHandler handler;
         auto result = handler.process_severity(statustext);
-        EXPECT_TRUE(result.first);
-        EXPECT_EQ(severity.second, result.second);
+        ASSERT_TRUE(result);
+        EXPECT_EQ(severity.second, result.value());
     }
 }
 
@@ -43,7 +43,7 @@ TEST(MavlinkStatustextHandler, WrongSeverity)
 
     MavlinkStatustextHandler handler;
     auto result = handler.process_severity(statustext);
-    EXPECT_FALSE(result.first);
+    EXPECT_FALSE(result);
 }
 
 TEST(MavlinkStatustextHandler, SingleStatustextWithNull)
@@ -54,8 +54,8 @@ TEST(MavlinkStatustextHandler, SingleStatustextWithNull)
 
     MavlinkStatustextHandler handler;
     auto result = handler.process_text(statustext);
-    EXPECT_TRUE(result.first);
-    EXPECT_EQ(str, result.second);
+    ASSERT_TRUE(result);
+    EXPECT_EQ(str, result.value());
 }
 
 TEST(MavlinkStatustextHandler, SingleStatustextWithoutNull)
@@ -66,8 +66,8 @@ TEST(MavlinkStatustextHandler, SingleStatustextWithoutNull)
 
     MavlinkStatustextHandler handler;
     auto result = handler.process_text(statustext);
-    EXPECT_TRUE(result.first);
-    EXPECT_EQ(str, result.second);
+    ASSERT_TRUE(result);
+    EXPECT_EQ(str, result.value());
 }
 
 TEST(MavlinkStatustextHandler, MultiStatustext)
@@ -100,10 +100,10 @@ TEST(MavlinkStatustextHandler, MultiStatustext)
         const auto result = handler.process_text(statustext);
 
         if (is_last) {
-            EXPECT_TRUE(result.first);
-            EXPECT_EQ(result.second, str);
+            ASSERT_TRUE(result);
+            EXPECT_EQ(result.value(), str);
         } else {
-            EXPECT_FALSE(result.first);
+            EXPECT_FALSE(result);
         }
         ++chunk_seq;
     }
@@ -139,10 +139,10 @@ TEST(MavlinkStatustextHandler, MultiStatustextDivisibleByChunkLen)
         const auto result = handler.process_text(statustext);
 
         if (is_last) {
-            EXPECT_TRUE(result.first);
-            EXPECT_EQ(result.second, str);
+            ASSERT_TRUE(result);
+            EXPECT_EQ(result.value(), str);
         } else {
-            EXPECT_FALSE(result.first);
+            EXPECT_FALSE(result);
         }
         ++chunk_seq;
     }
@@ -188,10 +188,10 @@ TEST(MavlinkStatustextHandler, MultiStatustextMissingPart)
             const auto result = handler.process_text(statustext);
 
             if (is_last) {
-                EXPECT_TRUE(result.first);
-                EXPECT_EQ(result.second, str_missing);
+                ASSERT_TRUE(result);
+                EXPECT_EQ(result.value(), str_missing);
             } else {
-                EXPECT_FALSE(result.first);
+                EXPECT_FALSE(result);
             }
         }
         ++chunk_seq;
@@ -229,10 +229,10 @@ TEST(MavlinkStatustextHandler, MultiStatustextConsecutive)
             const auto result = handler.process_text(statustext);
 
             if (is_last) {
-                EXPECT_TRUE(result.first);
-                EXPECT_EQ(result.second, str);
+                ASSERT_TRUE(result);
+                EXPECT_EQ(result.value(), str);
             } else {
-                EXPECT_FALSE(result.first);
+                EXPECT_FALSE(result);
             }
             ++chunk_seq;
         }
@@ -259,10 +259,10 @@ TEST(MavlinkStatustextHandler, MultiStatustextConsecutive)
             const auto result = handler.process_text(statustext);
 
             if (is_last) {
-                EXPECT_TRUE(result.first);
-                EXPECT_EQ(result.second, str);
+                ASSERT_TRUE(result);
+                EXPECT_EQ(result.value(), str);
             } else {
-                EXPECT_FALSE(result.first);
+                EXPECT_FALSE(result);
             }
             ++chunk_seq;
         }

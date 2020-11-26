@@ -2,7 +2,7 @@
 
 #include "mavlink_include.h"
 #include <string>
-#include <utility>
+#include <optional>
 
 namespace mavsdk {
 
@@ -11,8 +11,8 @@ public:
     MavlinkStatustextHandler() = default;
     ~MavlinkStatustextHandler() = default;
 
-    std::pair<bool, std::string> process_severity(const mavlink_statustext_t& statustext);
-    std::pair<bool, std::string> process_text(const mavlink_statustext_t& statustext);
+    std::optional<std::string> process_severity(const mavlink_statustext_t& statustext);
+    std::optional<std::string> process_text(const mavlink_statustext_t& statustext);
 
 private:
     std::string _temp_multi_str{};
