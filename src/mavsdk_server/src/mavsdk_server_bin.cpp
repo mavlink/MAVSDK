@@ -7,7 +7,7 @@
 static auto constexpr default_connection = "udp://:14540";
 static auto default_mavsdk_server_port = 0;
 
-static void usage();
+static void usage(const char* bin_name);
 static bool is_integer(const std::string& tested_integer);
 
 int main(int argc, char** argv)
@@ -19,11 +19,11 @@ int main(int argc, char** argv)
         const std::string current_arg = argv[i];
 
         if (current_arg == "-h" || current_arg == "--help") {
-            usage();
+            usage(argv[0]);
             return 0;
         } else if (current_arg == "-p") {
             if (argc <= i + 1) {
-                usage();
+                usage(argv[0]);
                 return 1;
             }
 
@@ -31,7 +31,7 @@ int main(int argc, char** argv)
             i++;
 
             if (!is_integer(port)) {
-                usage();
+                usage(argv[0]);
                 return 1;
             }
 
@@ -45,10 +45,10 @@ int main(int argc, char** argv)
     mavsdk_server_attach(mavsdk_server);
 }
 
-void usage()
+void usage(const char* bin_name)
 {
-    std::cout << "Usage: mavsdk_server_bin [-h | --help]" << std::endl
-              << "       mavsdk_server_bin [-p mavsdk_server_port] [Connection URL]" << std::endl
+    std::cout << "Usage: " << bin_name << " [-h | --help]" << std::endl
+              << "       " << bin_name << " [-p mavsdk_server_port] [Connection URL]" << std::endl
               << std::endl
               << "Connection URL format should be:" << std::endl
               << "  Serial: serial:///path/to/serial/dev[:baudrate]" << std::endl
