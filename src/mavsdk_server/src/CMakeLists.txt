@@ -15,7 +15,7 @@ foreach(COMPONENT_NAME ${COMPONENTS_LIST})
     )
 
     target_include_directories(${COMPONENT_NAME}_proto_gens
-        SYSTEM PRIVATE
+        PRIVATE
         ${PROJECT_SOURCE_DIR}/mavsdk_server/src/generated
     )
 
@@ -81,7 +81,7 @@ target_include_directories(mavsdk_server
     $<BUILD_INTERFACE:${PROJECT_SOURCE_DIR}/core>
     $<BUILD_INTERFACE:${PROJECT_SOURCE_DIR}/plugins>
     $<BUILD_INTERFACE:${PROJECT_SOURCE_DIR}/mavsdk_server/src/plugins>
-    SYSTEM PUBLIC
+    PUBLIC
     $<BUILD_INTERFACE:${PROJECT_SOURCE_DIR}/mavsdk_server/src/generated>
     $<INSTALL_INTERFACE:include>
 )
