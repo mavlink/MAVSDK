@@ -717,11 +717,12 @@ void FtpImpl::_command_timeout()
 {
     if (_last_command_retries >= _max_last_command_retries) {
         LogErr() << "Response timeout " << _curr_op;
-        _timer_mutex.lock();
-        _last_command_timer_running = false;
-        _session_result = ServerResult::ERR_TIMEOUT;
-        _session_valid = false;
-        _timer_mutex.unlock();
+        {
+            std::lock_guard<std::mutex> lock(_timer_mutex);
+            _last_command_timer_running = false;
+            _session_result = ServerResult::ERR_TIMEOUT;
+            _session_valid = false;
+        }
         _process_nak(ServerResult::ERR_TIMEOUT);
     } else {
         _last_command_retries++;
