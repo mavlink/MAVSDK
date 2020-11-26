@@ -107,11 +107,11 @@ int main(int argc, char** argv)
     }
 
     auto system = mavsdk.systems().at(0);
-    auto action = std::make_shared<Action>(system);
-    auto mission = std::make_shared<Mission>(system);
-    auto telemetry = std::make_shared<Telemetry>(system);
+    auto action = Action{system};
+    auto mission = Mission{system};
+    auto telemetry = Telemetry{system};
 
-    while (!telemetry->health_all_ok()) {
+    while (!telemetry.health_all_ok()) {
         std::cout << "Waiting for system to be ready" << std::endl;
         sleep_for(seconds(1));
     }
@@ -120,7 +120,7 @@ int main(int argc, char** argv)
 
     // Import Mission items from QGC plan
     std::pair<Mission::Result, Mission::MissionPlan> import_res =
-        mission->import_qgroundcontrol_mission(qgc_plan);
+        mission.import_qgroundcontrol_mission(qgc_plan);
     handle_mission_err_exit(import_res.first, "Failed to import mission items: ");
 
     if (import_res.second.mission_items.size() == 0) {
@@ -135,7 +135,7 @@ int main(int argc, char** argv)
         // Wrap the asynchronous upload_mission function using std::future.
         auto prom = std::make_shared<std::promise<Mission::Result>>();
         auto future_result = prom->get_future();
-        mission->upload_mission_async(
+        mission.upload_mission_async(
             import_res.second, [prom](Mission::Result result) { prom->set_value(result); });
 
         const Mission::Result result = future_result.get();
@@ -144,12 +144,12 @@ int main(int argc, char** argv)
     }
 
     std::cout << "Arming..." << std::endl;
-    const Action::Result arm_result = action->arm();
+    const Action::Result arm_result = action.arm();
     handle_action_err_exit(arm_result, "Arm failed: ");
     std::cout << "Armed." << std::endl;
 
     // Before starting the mission subscribe to the mission progress.
-    mission->subscribe_mission_progress([](Mission::MissionProgress mission_progress) {
+    mission.subscribe_mission_progress([](Mission::MissionProgress mission_progress) {
         std::cout << "Mission status update: " << mission_progress.current << " / "
                   << mission_progress.total << std::endl;
     });
@@ -158,7 +158,7 @@ int main(int argc, char** argv)
         std::cout << "Starting mission." << std::endl;
         auto prom = std::make_shared<std::promise<Mission::Result>>();
         auto future_result = prom->get_future();
-        mission->start_mission_async([prom](Mission::Result result) {
+        mission.start_mission_async([prom](Mission::Result result) {
             prom->set_value(result);
             std::cout << "Started mission." << std::endl;
         });
@@ -167,7 +167,7 @@ int main(int argc, char** argv)
         handle_mission_err_exit(result, "Mission start failed: ");
     }
 
-    while (!mission->is_mission_finished().second) {
+    while (!mission.is_mission_finished().second) {
         sleep_for(seconds(1));
     }
 
@@ -177,7 +177,7 @@ int main(int argc, char** argv)
     {
         // Mission complete. Command RTL to go home.
         std::cout << "Commanding RTL..." << std::endl;
-        const Action::Result result = action->return_to_launch();
+        const Action::Result result = action.return_to_launch();
         if (result != Action::Result::Success) {
             std::cout << "Failed to command RTL (" << result << ")" << std::endl;
         } else {

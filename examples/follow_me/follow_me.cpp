@@ -71,29 +71,29 @@ int main(int argc, char** argv)
 
     // System got discovered.
     auto system = mavsdk.systems().at(0);
-    auto action = std::make_shared<Action>(system);
-    auto follow_me = std::make_shared<FollowMe>(system);
-    auto telemetry = std::make_shared<Telemetry>(system);
+    auto action = Action{system};
+    auto follow_me = FollowMe{system};
+    auto telemetry = Telemetry{system};
 
-    while (!telemetry->health_all_ok()) {
+    while (!telemetry.health_all_ok()) {
         std::cout << "Waiting for system to be ready" << std::endl;
         sleep_for(seconds(1));
     }
     std::cout << "System is ready" << std::endl;
 
     // Arm
-    Action::Result arm_result = action->arm();
+    Action::Result arm_result = action.arm();
     action_error_exit(arm_result, "Arming failed");
     std::cout << "Armed" << std::endl;
 
-    const Telemetry::Result set_rate_result = telemetry->set_rate_position(1.0);
+    const Telemetry::Result set_rate_result = telemetry.set_rate_position(1.0);
     if (set_rate_result != Telemetry::Result::Success) {
         std::cout << ERROR_CONSOLE_TEXT << "Setting rate failed:" << set_rate_result
                   << NORMAL_CONSOLE_TEXT << std::endl;
         return 1;
     }
 
-    telemetry->subscribe_position([](Telemetry::Position position) {
+    telemetry.subscribe_position([](Telemetry::Position position) {
         std::cout << TELEMETRY_CONSOLE_TEXT // set to blue
                   << "Vehicle is at: " << position.latitude_deg << ", " << position.longitude_deg
                   << " degrees" << NORMAL_CONSOLE_TEXT // set to default color again
@@ -101,9 +101,9 @@ int main(int argc, char** argv)
     });
 
     // Subscribe to receive updates on flight mode. You can find out whether FollowMe is active.
-    telemetry->subscribe_flight_mode(std::bind(
+    telemetry.subscribe_flight_mode(std::bind(
         [&](Telemetry::FlightMode flight_mode) {
-            const FollowMe::TargetLocation last_location = follow_me->get_last_location();
+            const FollowMe::TargetLocation last_location = follow_me.get_last_location();
             std::cout << "[FlightMode: " << flight_mode
                       << "] Target is at: " << last_location.latitude_deg << ", "
                       << last_location.longitude_deg << " degrees." << std::endl;
@@ -111,7 +111,7 @@ int main(int argc, char** argv)
         std::placeholders::_1));
 
     // Takeoff
-    Action::Result takeoff_result = action->takeoff();
+    Action::Result takeoff_result = action.takeoff();
     action_error_exit(takeoff_result, "Takeoff failed");
     std::cout << "In Air..." << std::endl;
     sleep_for(seconds(5)); // Wait for drone to reach takeoff altitude
@@ -121,10 +121,10 @@ int main(int argc, char** argv)
     FollowMe::Config config;
     config.min_height_m = 10.0;
     config.follow_direction = FollowMe::Config::FollowDirection::Behind;
-    FollowMe::Result follow_me_result = follow_me->set_config(config);
+    FollowMe::Result follow_me_result = follow_me.set_config(config);
 
     // Start Follow Me
-    follow_me_result = follow_me->start();
+    follow_me_result = follow_me.start();
     follow_me_error_exit(follow_me_result, "Failed to start FollowMe mode");
 
     FakeLocationProvider location_provider;
@@ -134,7 +134,7 @@ int main(int argc, char** argv)
         FollowMe::TargetLocation target_location{};
         target_location.latitude_deg = lat;
         target_location.longitude_deg = lon;
-        follow_me->set_target_location(target_location);
+        follow_me.set_target_location(target_location);
     });
 
     while (location_provider.is_running()) {
@@ -142,16 +142,16 @@ int main(int argc, char** argv)
     }
 
     // Stop Follow Me
-    follow_me_result = follow_me->stop();
+    follow_me_result = follow_me.stop();
     follow_me_error_exit(follow_me_result, "Failed to stop FollowMe mode");
 
     // Stop flight mode updates.
-    telemetry->subscribe_flight_mode(nullptr);
+    telemetry.subscribe_flight_mode(nullptr);
 
     // Land
-    const Action::Result land_result = action->land();
+    const Action::Result land_result = action.land();
     action_error_exit(land_result, "Landing failed");
-    while (telemetry->in_air()) {
+    while (telemetry.in_air()) {
         std::cout << "waiting until landed" << std::endl;
         sleep_for(seconds(1));
     }

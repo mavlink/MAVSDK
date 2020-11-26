@@ -45,11 +45,11 @@ int main(int argc, char** argv)
 
     // Get system and plugins.
     auto system = mavsdk.systems().at(0);
-    auto telemetry = std::make_shared<Telemetry>(system);
-    auto action = std::make_shared<Action>(system);
+    auto telemetry = Telemetry{system};
+    auto action = Action{system};
 
     // We want to listen to the altitude of the drone at 1 Hz.
-    const Telemetry::Result set_rate_result = telemetry->set_rate_position(1.0);
+    const Telemetry::Result set_rate_result = telemetry.set_rate_position(1.0);
     if (set_rate_result != Telemetry::Result::Success) {
         std::cout << ERROR_CONSOLE_TEXT << "Setting rate failed: " << set_rate_result
                   << NORMAL_CONSOLE_TEXT << std::endl;
@@ -57,20 +57,20 @@ int main(int argc, char** argv)
     }
 
     // Set up callback to monitor altitude.
-    telemetry->subscribe_position([](Telemetry::Position position) {
+    telemetry.subscribe_position([](Telemetry::Position position) {
         std::cout << TELEMETRY_CONSOLE_TEXT << "Altitude: " << position.relative_altitude_m << " m"
                   << NORMAL_CONSOLE_TEXT << std::endl;
     });
 
     // Wait until we are ready to arm.
-    while (!telemetry->health_all_ok()) {
+    while (!telemetry.health_all_ok()) {
         std::cout << "Waiting for vehicle to be ready to arm..." << std::endl;
         sleep_for(seconds(1));
     }
 
     // Arm vehicle
     std::cout << "Arming." << std::endl;
-    const Action::Result arm_result = action->arm();
+    const Action::Result arm_result = action.arm();
 
     if (arm_result != Action::Result::Success) {
         std::cout << ERROR_CONSOLE_TEXT << "Arming failed: " << arm_result << NORMAL_CONSOLE_TEXT
@@ -80,7 +80,7 @@ int main(int argc, char** argv)
 
     // Take off
     std::cout << "Taking off." << std::endl;
-    const Action::Result takeoff_result = action->takeoff();
+    const Action::Result takeoff_result = action.takeoff();
     if (takeoff_result != Action::Result::Success) {
         std::cout << ERROR_CONSOLE_TEXT << "Takeoff failed:n" << takeoff_result
                   << NORMAL_CONSOLE_TEXT << std::endl;
@@ -91,7 +91,7 @@ int main(int argc, char** argv)
     sleep_for(seconds(10));
 
     std::cout << "Transition to fixedwing." << std::endl;
-    const Action::Result fw_result = action->transition_to_fixedwing();
+    const Action::Result fw_result = action.transition_to_fixedwing();
 
     if (fw_result != Action::Result::Success) {
         std::cout << ERROR_CONSOLE_TEXT << "Transition to fixed wing failed: " << fw_result
@@ -105,7 +105,7 @@ int main(int argc, char** argv)
     // Send it South.
     std::cout << "Sending it to location." << std::endl;
     // We pass latitude and longitude but leave altitude and yaw unset by passing NAN.
-    const Action::Result goto_result = action->goto_location(47.3633001, 8.5428515, NAN, NAN);
+    const Action::Result goto_result = action.goto_location(47.3633001, 8.5428515, NAN, NAN);
     if (goto_result != Action::Result::Success) {
         std::cout << ERROR_CONSOLE_TEXT << "Goto command failed: " << goto_result
                   << NORMAL_CONSOLE_TEXT << std::endl;
@@ -117,7 +117,7 @@ int main(int argc, char** argv)
 
     // Let's stop before reaching the goto point and go back to hover.
     std::cout << "Transition back to multicopter..." << std::endl;
-    const Action::Result mc_result = action->transition_to_multicopter();
+    const Action::Result mc_result = action.transition_to_multicopter();
     if (mc_result != Action::Result::Success) {
         std::cout << ERROR_CONSOLE_TEXT << "Transition to multi copter failed: " << mc_result
                   << NORMAL_CONSOLE_TEXT << std::endl;
@@ -129,7 +129,7 @@ int main(int argc, char** argv)
 
     // Now just land here.
     std::cout << "Landing..." << std::endl;
-    const Action::Result land_result = action->land();
+    const Action::Result land_result = action.land();
     if (land_result != Action::Result::Success) {
         std::cout << ERROR_CONSOLE_TEXT << "Land failed: " << land_result << NORMAL_CONSOLE_TEXT
                   << std::endl;
@@ -137,7 +137,7 @@ int main(int argc, char** argv)
     }
 
     // Wait until disarmed.
-    while (telemetry->armed()) {
+    while (telemetry.armed()) {
         std::cout << "Waiting for vehicle to land and disarm." << std::endl;
         sleep_for(seconds(1));
     }

@@ -82,11 +82,11 @@ int main(int argc, char** argv)
     // are found.
     system->register_component_discovered_callback(component_discovered);
 
-    auto telemetry = std::make_shared<Telemetry>(system);
-    auto action = std::make_shared<Action>(system);
+    auto telemetry = Telemetry{system};
+    auto action = Action{system};
 
     // We want to listen to the altitude of the drone at 1 Hz.
-    const Telemetry::Result set_rate_result = telemetry->set_rate_position(1.0);
+    const Telemetry::Result set_rate_result = telemetry.set_rate_position(1.0);
     if (set_rate_result != Telemetry::Result::Success) {
         std::cout << ERROR_CONSOLE_TEXT << "Setting rate failed:" << set_rate_result
                   << NORMAL_CONSOLE_TEXT << std::endl;
@@ -94,7 +94,7 @@ int main(int argc, char** argv)
     }
 
     // Set up callback to monitor altitude while the vehicle is in flight
-    telemetry->subscribe_position([](Telemetry::Position position) {
+    telemetry.subscribe_position([](Telemetry::Position position) {
         std::cout << TELEMETRY_CONSOLE_TEXT // set to blue
                   << "Altitude: " << position.relative_altitude_m << " m"
                   << NORMAL_CONSOLE_TEXT // set to default color again
@@ -102,14 +102,14 @@ int main(int argc, char** argv)
     });
 
     // Check if vehicle is ready to arm
-    while (telemetry->health_all_ok() != true) {
+    while (telemetry.health_all_ok() != true) {
         std::cout << "Vehicle is getting ready to arm" << std::endl;
         sleep_for(seconds(1));
     }
 
     // Arm vehicle
     std::cout << "Arming..." << std::endl;
-    const Action::Result arm_result = action->arm();
+    const Action::Result arm_result = action.arm();
 
     if (arm_result != Action::Result::Success) {
         std::cout << ERROR_CONSOLE_TEXT << "Arming failed:" << arm_result << NORMAL_CONSOLE_TEXT
@@ -119,7 +119,7 @@ int main(int argc, char** argv)
 
     // Take off
     std::cout << "Taking off..." << std::endl;
-    const Action::Result takeoff_result = action->takeoff();
+    const Action::Result takeoff_result = action.takeoff();
     if (takeoff_result != Action::Result::Success) {
         std::cout << ERROR_CONSOLE_TEXT << "Takeoff failed:" << takeoff_result
                   << NORMAL_CONSOLE_TEXT << std::endl;
@@ -130,7 +130,7 @@ int main(int argc, char** argv)
     sleep_for(seconds(10));
 
     std::cout << "Landing..." << std::endl;
-    const Action::Result land_result = action->land();
+    const Action::Result land_result = action.land();
     if (land_result != Action::Result::Success) {
         std::cout << ERROR_CONSOLE_TEXT << "Land failed:" << land_result << NORMAL_CONSOLE_TEXT
                   << std::endl;
@@ -138,7 +138,7 @@ int main(int argc, char** argv)
     }
 
     // Check if vehicle is still in air
-    while (telemetry->in_air()) {
+    while (telemetry.in_air()) {
         std::cout << "Vehicle is landing..." << std::endl;
         sleep_for(seconds(1));
     }

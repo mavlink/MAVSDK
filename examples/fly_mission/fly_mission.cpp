@@ -101,11 +101,11 @@ int main(int argc, char** argv)
     }
 
     auto system = mavsdk.systems().at(0);
-    auto action = std::make_shared<Action>(system);
-    auto mission = std::make_shared<Mission>(system);
-    auto telemetry = std::make_shared<Telemetry>(system);
+    auto action = Action{system};
+    auto mission = Mission{system};
+    auto telemetry = Telemetry{system};
 
-    while (!telemetry->health_all_ok()) {
+    while (!telemetry.health_all_ok()) {
         std::cout << "Waiting for system to be ready" << std::endl;
         sleep_for(seconds(1));
     }
@@ -183,7 +183,7 @@ int main(int argc, char** argv)
         auto future_result = prom->get_future();
         Mission::MissionPlan mission_plan{};
         mission_plan.mission_items = mission_items;
-        mission->upload_mission_async(
+        mission.upload_mission_async(
             mission_plan, [prom](Mission::Result result) { prom->set_value(result); });
 
         const Mission::Result result = future_result.get();
@@ -195,13 +195,13 @@ int main(int argc, char** argv)
     }
 
     std::cout << "Arming..." << std::endl;
-    const Action::Result arm_result = action->arm();
+    const Action::Result arm_result = action.arm();
     handle_action_err_exit(arm_result, "Arm failed: ");
     std::cout << "Armed." << std::endl;
 
     std::atomic<bool> want_to_pause{false};
     // Before starting the mission, we want to be sure to subscribe to the mission progress.
-    mission->subscribe_mission_progress(
+    mission.subscribe_mission_progress(
         [&want_to_pause](Mission::MissionProgress mission_progress) {
             std::cout << "Mission status update: " << mission_progress.current << " / "
                       << mission_progress.total << std::endl;
@@ -217,7 +217,7 @@ int main(int argc, char** argv)
         std::cout << "Starting mission." << std::endl;
         auto prom = std::make_shared<std::promise<Mission::Result>>();
         auto future_result = prom->get_future();
-        mission->start_mission_async([prom](Mission::Result result) {
+        mission.start_mission_async([prom](Mission::Result result) {
             prom->set_value(result);
             std::cout << "Started mission." << std::endl;
         });
@@ -235,7 +235,7 @@ int main(int argc, char** argv)
         auto future_result = prom->get_future();
 
         std::cout << "Pausing mission..." << std::endl;
-        mission->pause_mission_async([prom](Mission::Result result) { prom->set_value(result); });
+        mission.pause_mission_async([prom](Mission::Result result) { prom->set_value(result); });
 
         const Mission::Result result = future_result.get();
         if (result != Mission::Result::Success) {
@@ -254,7 +254,7 @@ int main(int argc, char** argv)
         auto future_result = prom->get_future();
 
         std::cout << "Resuming mission..." << std::endl;
-        mission->start_mission_async([prom](Mission::Result result) { prom->set_value(result); });
+        mission.start_mission_async([prom](Mission::Result result) { prom->set_value(result); });
 
         const Mission::Result result = future_result.get();
         if (result != Mission::Result::Success) {
@@ -264,14 +264,14 @@ int main(int argc, char** argv)
         }
     }
 
-    while (!mission->is_mission_finished().second) {
+    while (!mission.is_mission_finished().second) {
         sleep_for(seconds(1));
     }
 
     {
         // We are done, and can do RTL to go home.
         std::cout << "Commanding RTL..." << std::endl;
-        const Action::Result result = action->return_to_launch();
+        const Action::Result result = action.return_to_launch();
         if (result != Action::Result::Success) {
             std::cout << "Failed to command RTL (" << result << ")" << std::endl;
         } else {
@@ -282,7 +282,7 @@ int main(int argc, char** argv)
     // We need to wait a bit, otherwise the armed state might not be correct yet.
     sleep_for(seconds(2));
 
-    while (telemetry->armed()) {
+    while (telemetry.armed()) {
         // Wait until we're done.
         sleep_for(seconds(1));
     }

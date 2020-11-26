@@ -14,8 +14,8 @@
 
 using namespace mavsdk;
 
-static void subscribe_armed(std::shared_ptr<Telemetry> telemetry);
-static void send_battery_status(std::shared_ptr<MavlinkPassthrough> mavlink_passthrough);
+static void subscribe_armed(Telemetry& telemetry);
+static void send_battery_status(MavlinkPassthrough& mavlink_passthrough);
 static void usage(const std::string& bin_name);
 
 int main(int argc, char** argv)
@@ -55,8 +55,8 @@ int main(int argc, char** argv)
 
     auto system = mavsdk.systems().at(0);
 
-    auto telemetry = std::make_shared<Telemetry>(system);
-    auto mavlink_passthrough = std::make_shared<MavlinkPassthrough>(system);
+    auto telemetry = Telemetry{system};
+    auto mavlink_passthrough = MavlinkPassthrough{system};
 
     subscribe_armed(telemetry);
 
@@ -68,13 +68,13 @@ int main(int argc, char** argv)
     return 0;
 }
 
-void subscribe_armed(std::shared_ptr<Telemetry> telemetry)
+void subscribe_armed(Telemetry& telemetry)
 {
-    telemetry->subscribe_armed(
+    telemetry.subscribe_armed(
         [](bool is_armed) { std::cout << (is_armed ? "armed" : "disarmed") << std::endl; });
 }
 
-void send_battery_status(std::shared_ptr<MavlinkPassthrough> mavlink_passthrough)
+void send_battery_status(MavlinkPassthrough& mavlink_passthrough)
 {
     const uint16_t voltages[10]{
         3700,
@@ -92,8 +92,8 @@ void send_battery_status(std::shared_ptr<MavlinkPassthrough> mavlink_passthrough
 
     mavlink_message_t message;
     mavlink_msg_battery_status_pack(
-        mavlink_passthrough->get_our_sysid(),
-        mavlink_passthrough->get_our_compid(),
+        mavlink_passthrough.get_our_sysid(),
+        mavlink_passthrough.get_our_compid(),
         &message,
         0, // id
         MAV_BATTERY_FUNCTION_ALL, // battery_function
@@ -110,7 +110,7 @@ void send_battery_status(std::shared_ptr<MavlinkPassthrough> mavlink_passthrough
         MAV_BATTERY_MODE_UNKNOWN, // mode
         0); // fault_bitmask
 
-    mavlink_passthrough->send_message(message);
+    mavlink_passthrough.send_message(message);
 }
 
 void usage(const std::string& bin_name)

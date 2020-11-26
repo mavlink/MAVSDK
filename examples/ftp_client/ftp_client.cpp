@@ -53,42 +53,42 @@ void usage(const std::string& bin_name)
               << " 3 : Files are different (cmp command)" << std::endl;
 }
 
-Ftp::Result reset_server(std::shared_ptr<Ftp>& ftp)
+Ftp::Result reset_server(Ftp& ftp)
 {
     auto prom = std::make_shared<std::promise<Ftp::Result>>();
     auto future_result = prom->get_future();
-    ftp->reset_async([prom](Ftp::Result result) { prom->set_value(result); });
+    ftp.reset_async([prom](Ftp::Result result) { prom->set_value(result); });
     return future_result.get();
 }
 
-Ftp::Result create_directory(std::shared_ptr<Ftp>& ftp, const std::string& path)
+Ftp::Result create_directory(Ftp& ftp, const std::string& path)
 {
     std::cout << "Creating directory: " << path << std::endl;
     auto prom = std::make_shared<std::promise<Ftp::Result>>();
     auto future_result = prom->get_future();
-    ftp->create_directory_async(path, [prom](Ftp::Result result) { prom->set_value(result); });
+    ftp.create_directory_async(path, [prom](Ftp::Result result) { prom->set_value(result); });
 
     return future_result.get();
 }
 
-Ftp::Result remove_file(std::shared_ptr<Ftp>& ftp, const std::string& path)
+Ftp::Result remove_file(Ftp& ftp, const std::string& path)
 {
     std::cout << "Removing file: " << path << std::endl;
     auto prom = std::make_shared<std::promise<Ftp::Result>>();
     auto future_result = prom->get_future();
-    ftp->remove_file_async(path, [prom](Ftp::Result result) { prom->set_value(result); });
+    ftp.remove_file_async(path, [prom](Ftp::Result result) { prom->set_value(result); });
 
     return future_result.get();
 }
 
 Ftp::Result
-remove_directory(std::shared_ptr<Ftp>& ftp, const std::string& path, bool recursive = true)
+remove_directory(Ftp& ftp, const std::string& path, bool recursive = true)
 {
     if (recursive) {
         auto prom =
             std::make_shared<std::promise<std::pair<Ftp::Result, std::vector<std::string>>>>();
         auto future_result = prom->get_future();
-        ftp->list_directory_async(path, [prom](Ftp::Result result, std::vector<std::string> list) {
+        ftp.list_directory_async(path, [prom](Ftp::Result result, std::vector<std::string> list) {
             prom->set_value(std::pair<Ftp::Result, std::vector<std::string>>(result, list));
         });
 
@@ -109,17 +109,17 @@ remove_directory(std::shared_ptr<Ftp>& ftp, const std::string& path, bool recurs
 
     auto prom = std::make_shared<std::promise<Ftp::Result>>();
     auto future_result = prom->get_future();
-    ftp->remove_directory_async(path, [prom](Ftp::Result result) { prom->set_value(result); });
+    ftp.remove_directory_async(path, [prom](Ftp::Result result) { prom->set_value(result); });
 
     return future_result.get();
 }
 
-Ftp::Result list_directory(std::shared_ptr<Ftp>& ftp, const std::string& path)
+Ftp::Result list_directory(Ftp& ftp, const std::string& path)
 {
     std::cout << "List directory: " << path << std::endl;
     auto prom = std::make_shared<std::promise<std::pair<Ftp::Result, std::vector<std::string>>>>();
     auto future_result = prom->get_future();
-    ftp->list_directory_async(path, [prom](Ftp::Result result, std::vector<std::string> list) {
+    ftp.list_directory_async(path, [prom](Ftp::Result result, std::vector<std::string> list) {
         prom->set_value(std::pair<Ftp::Result, std::vector<std::string>>(result, list));
     });
 
@@ -133,12 +133,12 @@ Ftp::Result list_directory(std::shared_ptr<Ftp>& ftp, const std::string& path)
 }
 
 Ftp::Result download_file(
-    std::shared_ptr<Ftp>& ftp, const std::string& remote_file_path, const std::string& local_path)
+    Ftp& ftp, const std::string& remote_file_path, const std::string& local_path)
 {
     std::cout << "Download file: " << remote_file_path << " to " << local_path << std::endl;
     auto prom = std::make_shared<std::promise<Ftp::Result>>();
     auto future_result = prom->get_future();
-    ftp->download_async(
+    ftp.download_async(
         remote_file_path, local_path, [prom](Ftp::Result result, Ftp::ProgressData progress) {
             if (result == Ftp::Result::Next) {
                 int percentage = progress.bytes_transferred * 100 / progress.total_bytes;
@@ -156,12 +156,12 @@ Ftp::Result download_file(
 }
 
 Ftp::Result upload_file(
-    std::shared_ptr<Ftp>& ftp, const std::string& local_file_path, const std::string& remote_path)
+    Ftp& ftp, const std::string& local_file_path, const std::string& remote_path)
 {
     std::cout << "Upload file: " << local_file_path << " to " << remote_path << std::endl;
     auto prom = std::make_shared<std::promise<Ftp::Result>>();
     auto future_result = prom->get_future();
-    ftp->upload_async(
+    ftp.upload_async(
         local_file_path, remote_path, [prom](Ftp::Result result, Ftp::ProgressData progress) {
             if (result == Ftp::Result::Next) {
                 int percentage = progress.bytes_transferred * 100 / progress.total_bytes;
@@ -179,12 +179,12 @@ Ftp::Result upload_file(
 }
 
 Ftp::Result
-rename_file(std::shared_ptr<Ftp>& ftp, const std::string& old_name, const std::string& new_name)
+rename_file(Ftp& ftp, const std::string& old_name, const std::string& new_name)
 {
     std::cout << "Rename file: " << old_name << " to " << new_name << std::endl;
     auto prom = std::make_shared<std::promise<Ftp::Result>>();
     auto future_result = prom->get_future();
-    ftp->rename_async(old_name, new_name, [prom](Ftp::Result result) { prom->set_value(result); });
+    ftp.rename_async(old_name, new_name, [prom](Ftp::Result result) { prom->set_value(result); });
 
     return future_result.get();
 }
@@ -232,9 +232,9 @@ int main(int argc, char** argv)
     future_result.get();
 
     auto system = mavsdk.systems().at(0);
-    auto ftp = std::make_shared<Ftp>(system);
+    auto ftp = Ftp{system};
     try {
-        ftp->set_target_compid(std::stoi(argv[2]));
+        ftp.set_target_compid(std::stoi(argv[2]));
     } catch (...) {
         std::cout << ERROR_CONSOLE_TEXT << "Invalid argument: " << argv[2] << NORMAL_CONSOLE_TEXT
                   << std::endl;
@@ -372,7 +372,7 @@ int main(int argc, char** argv)
         auto prom = std::make_shared<std::promise<std::pair<Ftp::Result, bool>>>();
         auto future_result = prom->get_future();
 
-        ftp->are_files_identical_async(
+        ftp.are_files_identical_async(
             argv[4], argv[5], [&prom](Ftp::Result result, bool identical) {
                 prom->set_value(std::make_pair<>(result, identical));
             });
