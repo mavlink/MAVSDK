@@ -4,7 +4,7 @@
  *
  * This function is non-blocking.{% if is_sync %} See '{{ name.lower_snake_case }}' for the blocking counterpart.{% endif %}
  */
-void {{ name.lower_snake_case }}_async({% for param in params %}{{ param.type_info.name }} {{ param.name.lower_snake_case }}, {% endfor %}const ResultCallback callback);
+void {{ name.lower_snake_case }}_async({% for param in params %}{% if param.type_info.name.endswith("Result") %}Result{% else %}{{ param.type_info.name }}{% endif %} {{ param.name.lower_snake_case }}, {% endfor %}const ResultCallback callback);
 {% endif %}
 
 {% if is_sync %}
@@ -15,5 +15,5 @@ void {{ name.lower_snake_case }}_async({% for param in params %}{{ param.type_in
  *
  * @return Result of request.
  */
-{% if has_result %}Result{% else %}void{% endif %} {{ name.lower_snake_case }}({% for param in params %}{{ param.type_info.name }} {{ param.name.lower_snake_case }}{{ ", " if not loop.last }}{% endfor %}) const;
+{% if has_result %}Result{% else %}void{% endif %} {{ name.lower_snake_case }}({% for param in params %}{% if param.type_info.name.endswith("Result") %}Result{% else %}{{ param.type_info.name }}{% endif %} {{ param.name.lower_snake_case }}{{ ", " if not loop.last }}{% endfor %}) const;
 {% endif %}
