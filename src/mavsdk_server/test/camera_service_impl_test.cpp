@@ -419,15 +419,15 @@ void CameraServiceImplTest::checkSendsModes(const std::vector<mavsdk::Camera::Mo
     mode_events_future.wait();
 
     if (modes.size() != received_modes.size()) {
-        std::cout << "modes: " << std::endl;
+        std::cout << "modes: " << '\n';
         for (size_t i = 0; i < modes.size(); i++) {
-            std::cout << i << ": " << modes[i] << std::endl;
+            std::cout << i << ": " << modes[i] << '\n';
         }
 
-        std::cout << "received_modes: " << std::endl;
+        std::cout << "received_modes: " << '\n';
 
         for (size_t i = 0; i < received_modes.size(); i++) {
-            std::cout << i << ": " << received_modes[i] << std::endl;
+            std::cout << i << ": " << received_modes[i] << '\n';
         }
     }
 

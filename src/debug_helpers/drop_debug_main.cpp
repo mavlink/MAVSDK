@@ -24,7 +24,7 @@ int main(int argc, const char* argv[])
 
     mavsdk::ConnectionResult ret = mavsdk.add_udp_connection();
     if (ret != mavsdk::ConnectionResult::Success) {
-        std::cout << "failed to add connection" << std::endl;
+        std::cout << "failed to add connection" << '\n';
         return -1;
     }
 
@@ -33,7 +33,7 @@ int main(int argc, const char* argv[])
 
     while (true) {
         if (!_discovered_system) {
-            std::cout << "waiting for system to appear..." << std::endl;
+            std::cout << "waiting for system to appear..." << '\n';
         }
         std::this_thread::sleep_for(std::chrono::seconds(1));
     }
@@ -43,12 +43,12 @@ int main(int argc, const char* argv[])
 
 void on_discover(uint64_t uuid)
 {
-    std::cout << "Found system with UUID: " << uuid << std::endl;
+    std::cout << "Found system with UUID: " << uuid << '\n';
     _discovered_system = true;
 }
 
 void on_timeout(uint64_t uuid)
 {
-    std::cout << "Lost system with UUID: " << uuid << std::endl;
+    std::cout << "Lost system with UUID: " << uuid << '\n';
     _timeouted_system = true;
 }

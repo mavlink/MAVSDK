@@ -201,17 +201,16 @@ int main(int argc, char** argv)
 
     std::atomic<bool> want_to_pause{false};
     // Before starting the mission, we want to be sure to subscribe to the mission progress.
-    mission.subscribe_mission_progress(
-        [&want_to_pause](Mission::MissionProgress mission_progress) {
-            std::cout << "Mission status update: " << mission_progress.current << " / "
-                      << mission_progress.total << std::endl;
+    mission.subscribe_mission_progress([&want_to_pause](Mission::MissionProgress mission_progress) {
+        std::cout << "Mission status update: " << mission_progress.current << " / "
+                  << mission_progress.total << std::endl;
 
-            if (mission_progress.current >= 2) {
-                // We can only set a flag here. If we do more request inside the callback,
-                // we risk blocking the system.
-                want_to_pause = true;
-            }
-        });
+        if (mission_progress.current >= 2) {
+            // We can only set a flag here. If we do more request inside the callback,
+            // we risk blocking the system.
+            want_to_pause = true;
+        }
+    });
 
     {
         std::cout << "Starting mission." << std::endl;

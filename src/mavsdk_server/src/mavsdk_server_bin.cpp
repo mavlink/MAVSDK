@@ -47,19 +47,19 @@ int main(int argc, char** argv)
 
 void usage(const char* bin_name)
 {
-    std::cout << "Usage: " << bin_name << " [-h | --help]" << std::endl
-              << "       " << bin_name << " [-p mavsdk_server_port] [Connection URL]" << std::endl
-              << std::endl
-              << "Connection URL format should be:" << std::endl
-              << "  Serial: serial:///path/to/serial/dev[:baudrate]" << std::endl
-              << "  UDP:    udp://[bind_host][:bind_port]" << std::endl
-              << "  TCP:    tcp://[server_host][:server_port]" << std::endl
-              << std::endl
-              << "For example to connect to SITL use: udp://:14540" << std::endl
-              << std::endl
-              << "Options:" << std::endl
-              << "  -h | --help : show this help" << std::endl
-              << "  -p          : set the port on which to run the gRPC server" << std::endl;
+    std::cout << "Usage: " << bin_name << " [-h | --help]" << '\n'
+              << "       " << bin_name << " [-p mavsdk_server_port] [Connection URL]" << '\n'
+              << '\n'
+              << "Connection URL format should be:" << '\n'
+              << "  Serial: serial:///path/to/serial/dev[:baudrate]" << '\n'
+              << "  UDP:    udp://[bind_host][:bind_port]" << '\n'
+              << "  TCP:    tcp://[server_host][:server_port]" << '\n'
+              << '\n'
+              << "For example to connect to SITL use: udp://:14540" << '\n'
+              << '\n'
+              << "Options:" << '\n'
+              << "  -h | --help : show this help" << '\n'
+              << "  -p          : set the port on which to run the gRPC server" << '\n';
 }
 
 bool is_integer(const std::string& tested_integer)

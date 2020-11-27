@@ -81,8 +81,7 @@ Ftp::Result remove_file(Ftp& ftp, const std::string& path)
     return future_result.get();
 }
 
-Ftp::Result
-remove_directory(Ftp& ftp, const std::string& path, bool recursive = true)
+Ftp::Result remove_directory(Ftp& ftp, const std::string& path, bool recursive = true)
 {
     if (recursive) {
         auto prom =
@@ -132,8 +131,8 @@ Ftp::Result list_directory(Ftp& ftp, const std::string& path)
     return result.first;
 }
 
-Ftp::Result download_file(
-    Ftp& ftp, const std::string& remote_file_path, const std::string& local_path)
+Ftp::Result
+download_file(Ftp& ftp, const std::string& remote_file_path, const std::string& local_path)
 {
     std::cout << "Download file: " << remote_file_path << " to " << local_path << std::endl;
     auto prom = std::make_shared<std::promise<Ftp::Result>>();
@@ -155,8 +154,8 @@ Ftp::Result download_file(
     return future_result.get();
 }
 
-Ftp::Result upload_file(
-    Ftp& ftp, const std::string& local_file_path, const std::string& remote_path)
+Ftp::Result
+upload_file(Ftp& ftp, const std::string& local_file_path, const std::string& remote_path)
 {
     std::cout << "Upload file: " << local_file_path << " to " << remote_path << std::endl;
     auto prom = std::make_shared<std::promise<Ftp::Result>>();
@@ -178,8 +177,7 @@ Ftp::Result upload_file(
     return future_result.get();
 }
 
-Ftp::Result
-rename_file(Ftp& ftp, const std::string& old_name, const std::string& new_name)
+Ftp::Result rename_file(Ftp& ftp, const std::string& old_name, const std::string& new_name)
 {
     std::cout << "Rename file: " << old_name << " to " << new_name << std::endl;
     auto prom = std::make_shared<std::promise<Ftp::Result>>();

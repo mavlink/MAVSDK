@@ -38,7 +38,7 @@ TEST_F(SitlTest, FollowMeOneLocation)
     auto action = std::make_shared<Action>(system);
 
     while (!telemetry->health_all_ok()) {
-        std::cout << "waiting for system to be ready" << std::endl;
+        std::cout << "waiting for system to be ready" << '\n';
         sleep_for(seconds(1));
     }
 
@@ -51,7 +51,7 @@ TEST_F(SitlTest, FollowMeOneLocation)
 
             std::cout << "[FlightMode: " << flight_mode
                       << "] Vehicle is at Lat: " << last_location.latitude_deg << " deg, "
-                      << "Lon: " << last_location.longitude_deg << " deg." << std::endl;
+                      << "Lon: " << last_location.longitude_deg << " deg." << '\n';
         },
         std::placeholders::_1));
 
@@ -78,7 +78,7 @@ TEST_F(SitlTest, FollowMeOneLocation)
     ASSERT_EQ(FollowMe::Result::Success, follow_me_result);
     sleep_for(seconds(1));
 
-    std::cout << "We're waiting (for 5s) to see the drone moving target location set." << std::endl;
+    std::cout << "We're waiting (for 5s) to see the drone moving target location set." << '\n';
     sleep_for(seconds(5));
 
     // stop following
@@ -91,7 +91,7 @@ TEST_F(SitlTest, FollowMeOneLocation)
     sleep_for(seconds(2)); // let the system land
 
     while (telemetry->armed()) {
-        std::cout << "waiting for system to disarm" << std::endl;
+        std::cout << "waiting for system to disarm" << '\n';
         sleep_for(seconds(1));
     }
 }
@@ -124,7 +124,7 @@ TEST_F(SitlTest, FollowMeMultiLocationWithConfig)
     auto action = std::make_shared<Action>(system);
 
     while (!telemetry->health_all_ok()) {
-        std::cout << "Waiting for system to be ready" << std::endl;
+        std::cout << "Waiting for system to be ready" << '\n';
         sleep_for(seconds(1));
     }
 
@@ -137,7 +137,7 @@ TEST_F(SitlTest, FollowMeMultiLocationWithConfig)
 
             std::cout << "[FlightMode: " << flight_mode
                       << "] Vehicle is at Lat: " << last_location.latitude_deg << " deg, "
-                      << "Lon: " << last_location.longitude_deg << " deg." << std::endl;
+                      << "Lon: " << last_location.longitude_deg << " deg." << '\n';
         },
         std::placeholders::_1));
 
@@ -175,20 +175,20 @@ TEST_F(SitlTest, FollowMeMultiLocationWithConfig)
     sleep_for(seconds(2)); // let it land
 
     while (telemetry->armed()) {
-        std::cout << "waiting for system to disarm" << std::endl;
+        std::cout << "waiting for system to disarm" << '\n';
         sleep_for(seconds(1));
     }
 }
 
 void print(const FollowMe::Config& config)
 {
-    std::cout << "Current FollowMe configuration of the system" << std::endl;
-    std::cout << "---------------------------" << std::endl;
-    std::cout << "Min Height: " << config.min_height_m << "m" << std::endl;
-    std::cout << "Distance: " << config.follow_distance_m << "m" << std::endl;
-    std::cout << "Responsiveness: " << config.responsiveness << std::endl;
-    std::cout << "Following from: " << config.follow_direction << std::endl;
-    std::cout << "---------------------------" << std::endl;
+    std::cout << "Current FollowMe configuration of the system" << '\n';
+    std::cout << "---------------------------" << '\n';
+    std::cout << "Min Height: " << config.min_height_m << "m" << '\n';
+    std::cout << "Distance: " << config.follow_distance_m << "m" << '\n';
+    std::cout << "Responsiveness: " << config.responsiveness << '\n';
+    std::cout << "Following from: " << config.follow_direction << '\n';
+    std::cout << "---------------------------" << '\n';
 }
 
 FollowMe::TargetLocation create_target_location(double latitude_deg, double longitude_deg)
@@ -311,7 +311,7 @@ void send_location_updates(std::shared_ptr<FollowMe> follow_me, size_t count, fl
 
     // We're limiting to N_LOCATIONS for testing.
     count = (count > N_LOCATIONS) ? N_LOCATIONS : count;
-    std::cout << "# of Target locations: " << count << " @ Rate: " << rate << "Hz." << std::endl;
+    std::cout << "# of Target locations: " << count << " @ Rate: " << rate << "Hz." << '\n';
 
     for (auto pos : spiral_path) {
         if (count-- == 0) {

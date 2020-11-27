@@ -26,7 +26,7 @@ TEST(SitlTestDisabled, TelemetryFlightModes)
     telemetry->subscribe_flight_mode(std::bind(&observe_mode, std::placeholders::_1));
 
     while (!telemetry->health_all_ok()) {
-        std::cout << "waiting for system to be ready" << std::endl;
+        std::cout << "waiting for system to be ready" << '\n';
         std::this_thread::sleep_for(std::chrono::seconds(1));
     }
 
@@ -51,6 +51,6 @@ TEST(SitlTestDisabled, TelemetryFlightModes)
 
 void observe_mode(Telemetry::FlightMode flight_mode)
 {
-    std::cout << "Got FlightMode: " << flight_mode << std::endl;
+    std::cout << "Got FlightMode: " << flight_mode << '\n';
     _flight_mode = flight_mode;
 }

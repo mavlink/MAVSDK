@@ -93,7 +93,7 @@ void test_download(
                 std::cout << "\rDownloading [" << std::setw(3) << percentage << "%] "
                           << progress.bytes_transferred << " of " << progress.total_bytes;
                 if (progress.bytes_transferred >= progress.total_bytes) {
-                    std::cout << std::endl;
+                    std::cout << '\n';
                 }
                 _bytes_transferred = progress.bytes_transferred;
                 _file_size = progress.total_bytes;
@@ -122,7 +122,7 @@ void test_upload(
                           << "[" << std::setw(3) << percentage << "%] "
                           << progress.bytes_transferred << " of " << progress.total_bytes;
                 if (progress.bytes_transferred == progress.total_bytes) {
-                    std::cout << std::endl;
+                    std::cout << '\n';
                 }
                 _bytes_transferred = progress.bytes_transferred;
                 _file_size = progress.total_bytes;
