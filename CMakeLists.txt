@@ -32,7 +32,7 @@ endforeach()
 project(mavsdk_superbuild)
 
 if (BUILD_BACKEND)
-    set(BUILD_MAVSDK_SERVER, ON)
+    message(FATAL_ERROR "The argument BUILD_BACKEND has been replaced by BUILD_MAVSDK_SERVER. To build mavsdk_server, use -DBUILD_MAVSDK_SERVER=ON.")
 endif()
 
 option(SUPERBUILD "Build dependencies" ON)
