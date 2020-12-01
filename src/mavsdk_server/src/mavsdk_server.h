@@ -3,7 +3,8 @@
 #include <memory>
 #include <string>
 
-class MavsdkServer {
+// This is a struct because it is also exported to the C interface.
+struct MavsdkServer {
 public:
     MavsdkServer();
     ~MavsdkServer();

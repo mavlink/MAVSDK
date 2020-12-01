@@ -319,7 +319,7 @@ jobs:
       - name: build
         run: ./dockcross-android-arm64 cmake --build build/android-arm64 -j 2 --target install
       - name: create tar with header and library
-        run: mkdir -p build/android-arm64/export/include; cp build/android-arm64/install/include/mavsdk/mavsdk_serverkend/mavsdk_server_api.h build/android-arm64/export/include; mkdir -p build/android-arm64/export/arm64-v8a; cp build/android-arm64/install/lib/libmavsdk_server.so build/android-arm64/export/arm64-v8a; tar -C build/android-arm64/export -cf build/android-arm64/export/mavsdk_server_android-arm64.tar arm64-v8a include;
+        run: mkdir -p build/android-arm64/export/include; cp build/android-arm64/install/include/mavsdk/mavsdk_server/mavsdk_server_api.h build/android-arm64/export/include; mkdir -p build/android-arm64/export/arm64-v8a; cp build/android-arm64/install/lib/libmavsdk_server.so build/android-arm64/export/arm64-v8a; tar -C build/android-arm64/export -cf build/android-arm64/export/mavsdk_server_android-arm64.tar arm64-v8a include;
       - name: Publish artefacts
         if: startsWith(github.ref, 'refs/tags/v')
         uses: svenstaro/upload-release-action@v1-release
@@ -359,7 +359,7 @@ jobs:
       - name: test (core)
         run: ./build/release/src/unit_tests_runner
       - name: test (mavsdk_server)
-        run: ./build/release/src/mavsdk_serverkend/test/unit_tests_mavsdk_server
+        run: ./build/release/src/mavsdk_server/test/unit_tests_mavsdk_server
       - name: Publish artefacts
         if: startsWith(github.ref, 'refs/tags/v')
         uses: svenstaro/upload-release-action@v1-release
