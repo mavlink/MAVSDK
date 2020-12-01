@@ -378,7 +378,7 @@ jobs:
         with:
           submodules: recursive
       - name: configure
-        run: cmake -DCMAKE_BUILD_TYPE=Release -DCMAKE_INSTALL_PREFIX=build/release/install -DBUILD_BACKEND=ON -DBUILD_SHARED_LIBS=OFF -DMACOS_FRAMEWORK=ON -DWERROR=OFF -j 2 -Bbuild/macos -H.
+        run: cmake -DCMAKE_BUILD_TYPE=Release -DCMAKE_INSTALL_PREFIX=build/macos/install -DBUILD_MAVSDK_SERVER=ON -DBUILD_SHARED_LIBS=OFF -DMACOS_FRAMEWORK=ON -DWERROR=OFF -j 2 -Bbuild/macos -H.
       - name: build
         run: cmake --build build/macos -j 2 --target install
       - uses: actions/upload-artifact@v2
@@ -442,7 +442,7 @@ jobs:
           name: mavsdk_server_macos.framework
           path: ./build/macos/src/mavsdk_server/src/mavsdk_server.framework
       - name: Package
-        run: bash ./src/mavsdk_server/tools/package_mavsdk_server.bash
+        run: bash ./src/mavsdk_server/tools/package_mavsdk_server_framework.bash
       - uses: actions/upload-artifact@v2
         with:
           name: mavsdk_server.xcframework
