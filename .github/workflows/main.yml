@@ -347,7 +347,7 @@ jobs:
 
   macOS:
     name: macOS
-    runs-on: macos-latest
+    runs-on: macos-11.0
     steps:
       - uses: actions/checkout@v2
         with:
@@ -372,7 +372,7 @@ jobs:
 
   macOS-framework:
     name: macOS-framework
-    runs-on: macos-latest
+    runs-on: macos-11.0
     steps:
       - uses: actions/checkout@v2
         with:
@@ -389,7 +389,7 @@ jobs:
 
   iOS:
     name: iOS
-    runs-on: macos-latest
+    runs-on: macos-11.0
     steps:
       - uses: actions/checkout@v2
         with:
@@ -406,7 +406,7 @@ jobs:
 
   iOS-Simulator:
     name: iOS Simulator
-    runs-on: macos-latest
+    runs-on: macos-11.0
     steps:
       - uses: actions/checkout@v2
         with:
@@ -424,7 +424,7 @@ jobs:
   iOS-XCFramework:
     name: iOS XCFramework
     needs: [macOS-framework, iOS, iOS-Simulator]
-    runs-on: macos-latest
+    runs-on: macos-11.0
     steps:
       - uses: actions/checkout@v2
         with:
