@@ -76,7 +76,7 @@ jobs:
         if: steps.cache.outputs.cache-hit == 'true'
         run: echo "superbuild=-DSUPERBUILD=OFF" >> $GITHUB_ENV && echo "cmake_prefix_path=-DCMAKE_PREFIX_PATH=$(pwd)/build/release/third_party/install" >> $GITHUB_ENV
       - name: configure
-        run: cmake $superbuild $cmake_prefix_path -DCMAKE_BUILD_TYPE=Release -DSUPERBUILD=ON -DBUILD_MAVSDK_SERVER=ON -DWERROR=OFF -j 2 -Bbuild/release -H.
+        run: cmake $superbuild $cmake_prefix_path -DCMAKE_BUILD_TYPE=Release -DBUILD_MAVSDK_SERVER=ON -DWERROR=OFF -j 2 -Bbuild/release -H.
       - name: build
         run: cmake --build build/release -j 2
       - name: install
