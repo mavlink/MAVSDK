@@ -2,6 +2,7 @@
 
 #include <queue>
 #include <mutex>
+#include <optional>
 #include <condition_variable>
 #include <cstdio>
 
@@ -24,24 +25,22 @@ public:
         _condition_var.notify_one();
     }
 
-    std::pair<bool, T> dequeue()
+    std::optional<T> dequeue()
     {
         std::unique_lock<std::mutex> lock(_mutex);
         while (_queue.empty()) {
             if (_should_exit) {
-                T nothing{};
-                return std::pair<bool, T>(false, nothing);
+                return std::nullopt;
             }
             // Release lock during the wait and re-aquire it afterwards.
             _condition_var.wait(lock);
         }
         if (_should_exit) {
-            T nothing;
-            return std::pair<bool, T>(false, nothing);
+            return std::nullopt;
         } else {
             T item = _queue.front();
             _queue.pop();
-            return std::pair<bool, T>(true, item);
+            return {item};
         }
     }
 

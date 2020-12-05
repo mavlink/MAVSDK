@@ -75,10 +75,10 @@ void HttpLoader::work_thread(HttpLoader* self)
     while (!self->_should_exit) {
         auto item = self->_work_queue.dequeue();
         auto curl_wrapper = self->_curl_wrapper;
-        if (!item.first || curl_wrapper == nullptr) {
+        if (!item || curl_wrapper == nullptr) {
             continue;
         }
-        do_item(item.second, curl_wrapper);
+        do_item(item.value(), curl_wrapper);
     }
 }
 

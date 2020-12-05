@@ -36,7 +36,7 @@ TEST(SitlTestDisabled, OffboardAttitudeRate)
     auto offboard = Offboard{system};
 
     while (!telemetry->health_all_ok()) {
-        std::cout << "waiting for system to be ready" << std::endl;
+        std::cout << "waiting for system to be ready" << '\n';
         std::this_thread::sleep_for(std::chrono::seconds(1));
     }
 

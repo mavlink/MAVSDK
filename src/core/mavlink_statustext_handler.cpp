@@ -3,32 +3,32 @@
 
 namespace mavsdk {
 
-std::pair<bool, std::string>
+std::optional<std::string>
 MavlinkStatustextHandler::process_severity(const mavlink_statustext_t& statustext)
 {
     switch (statustext.severity) {
         case MAV_SEVERITY_EMERGENCY:
-            return {true, "emergency"};
+            return {"emergency"};
         case MAV_SEVERITY_ALERT:
-            return {true, "alert"};
+            return {"alert"};
         case MAV_SEVERITY_CRITICAL:
-            return {true, "critical"};
+            return {"critical"};
         case MAV_SEVERITY_ERROR:
-            return {true, "error"};
+            return {"error"};
         case MAV_SEVERITY_WARNING:
-            return {true, "warning"};
+            return {"warning"};
         case MAV_SEVERITY_NOTICE:
-            return {true, "notice"};
+            return {"notice"};
         case MAV_SEVERITY_INFO:
-            return {true, "info"};
+            return {"info"};
         case MAV_SEVERITY_DEBUG:
-            return {true, "debug"};
+            return {"debug"};
         default:
-            return {false, ""};
+            return std::nullopt;
     }
 }
 
-std::pair<bool, std::string>
+std::optional<std::string>
 MavlinkStatustextHandler::process_text(const mavlink_statustext_t& statustext)
 {
     char text_with_null[sizeof(statustext.text) + 1]{};
@@ -52,13 +52,13 @@ MavlinkStatustextHandler::process_text(const mavlink_statustext_t& statustext)
 
         if (strlen(text_with_null) == sizeof(statustext.text)) {
             // No zero termination yet, keep going.
-            return {false, ""};
+            return std::nullopt;
         } else {
-            return {true, _temp_multi_str};
+            return {_temp_multi_str};
         }
     }
 
-    return std::make_pair<bool, std::string>(true, text_with_null);
+    return {text_with_null};
 }
 
 } // namespace mavsdk

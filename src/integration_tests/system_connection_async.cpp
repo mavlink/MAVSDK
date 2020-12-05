@@ -25,13 +25,13 @@ TEST_F(SitlTest, SystemConnectionAsync)
         const auto sysid = system->get_system_id();
 
         if (system->is_connected()) {
-            std::cout << "Found system with system ID: " << sysid << std::endl;
+            std::cout << "Found system with system ID: " << sysid << '\n';
             _discovered_system = true;
             _sysid = sysid;
             // The sysid should not be 0.
             EXPECT_NE(_sysid, 0);
         } else {
-            std::cout << "Lost system with system ID: " << sysid << std::endl;
+            std::cout << "Lost system with system ID: " << sysid << '\n';
             _timeouted_system = true;
 
             // The UUID should still be the same.
@@ -40,7 +40,7 @@ TEST_F(SitlTest, SystemConnectionAsync)
     });
 
     while (!_discovered_system) {
-        std::cout << "waiting for system to appear..." << std::endl;
+        std::cout << "waiting for system to appear..." << '\n';
         std::this_thread::sleep_for(std::chrono::seconds(1));
     }
 
@@ -52,7 +52,7 @@ TEST_F(SitlTest, SystemConnectionAsync)
         TearDown();
 
         while (!_timeouted_system) {
-            std::cout << "waiting for system to disappear..." << std::endl;
+            std::cout << "waiting for system to disappear..." << '\n';
             std::this_thread::sleep_for(std::chrono::seconds(1));
         }
     }

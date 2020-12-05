@@ -30,21 +30,20 @@ TEST_F(SitlTest, TelemetrySync)
     EXPECT_EQ(telemetry->set_rate_ground_truth(10.0), Telemetry::Result::Success);
 
     for (unsigned i = 0; i < 10; ++i) {
-        std::cout << "Position: " << telemetry->position() << std::endl;
-        std::cout << "Home Position: " << telemetry->home() << std::endl;
-        std::cout << "Attitude: " << telemetry->attitude_quaternion() << std::endl;
-        std::cout << "Attitude: " << telemetry->attitude_euler() << std::endl;
-        std::cout << "Angular velocity: " << telemetry->attitude_angular_velocity_body()
-                  << std::endl;
-        std::cout << "Fixed wing metrics: " << telemetry->fixedwing_metrics() << std::endl;
-        std::cout << "Ground Truth: " << telemetry->ground_truth() << std::endl;
-        std::cout << "Velocity: " << telemetry->velocity_ned() << std::endl;
-        std::cout << "GPS Info: " << telemetry->gps_info() << std::endl;
-        std::cout << "Battery: " << telemetry->battery() << std::endl;
-        std::cout << "Actuators: " << telemetry->actuator_control_target() << std::endl;
-        std::cout << "Flight mode: " << telemetry->flight_mode() << std::endl;
+        std::cout << "Position: " << telemetry->position() << '\n';
+        std::cout << "Home Position: " << telemetry->home() << '\n';
+        std::cout << "Attitude: " << telemetry->attitude_quaternion() << '\n';
+        std::cout << "Attitude: " << telemetry->attitude_euler() << '\n';
+        std::cout << "Angular velocity: " << telemetry->attitude_angular_velocity_body() << '\n';
+        std::cout << "Fixed wing metrics: " << telemetry->fixedwing_metrics() << '\n';
+        std::cout << "Ground Truth: " << telemetry->ground_truth() << '\n';
+        std::cout << "Velocity: " << telemetry->velocity_ned() << '\n';
+        std::cout << "GPS Info: " << telemetry->gps_info() << '\n';
+        std::cout << "Battery: " << telemetry->battery() << '\n';
+        std::cout << "Actuators: " << telemetry->actuator_control_target() << '\n';
+        std::cout << "Flight mode: " << telemetry->flight_mode() << '\n';
         std::cout << "Landed state: " << telemetry->landed_state()
-                  << "(in air: " << telemetry->in_air() << ")" << std::endl;
+                  << "(in air: " << telemetry->in_air() << ")" << '\n';
 
         std::this_thread::sleep_for(std::chrono::milliseconds(500));
     }

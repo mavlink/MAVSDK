@@ -1,0 +1,6 @@
+framework module mavsdk_server {
+  umbrella header "mavsdk_server_api.h"
+
+  export *
+  module * { export * }
+}

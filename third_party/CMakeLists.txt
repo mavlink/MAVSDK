@@ -16,7 +16,7 @@ endif()
 
 build_target(curl)
 
-if(${BUILD_BACKEND})
+if(BUILD_MAVSDK_SERVER)
     build_target(libressl)
     build_target(cares)
     build_target(protobuf)

@@ -15,7 +15,7 @@
 #include <vector>
 
 namespace {{ package.lower_snake_case.split('.')[0] }} {
-namespace backend {
+namespace mavsdk_server {
 
 template<typename {{ plugin_name.upper_camel_case }} = {{ plugin_name.upper_camel_case }}>
 class {{ plugin_name.upper_camel_case }}ServiceImpl final : public rpc::{{ plugin_name.lower_snake_case }}::{{ plugin_name.upper_camel_case }}Service::Service {
@@ -88,5 +88,5 @@ private:
     std::vector<std::weak_ptr<std::promise<void>>> _stream_stop_promises {};
 };
 
-} // namespace backend
+} // namespace mavsdk_server
 } // namespace {{ package.lower_snake_case.split('.')[0] }}

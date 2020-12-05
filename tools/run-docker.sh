@@ -1,3 +1,4 @@
 #!/usr/bin/env sh
 
-docker run -it --rm -v $(pwd):/home/user/MAVSDK:z -e LOCAL_USER_ID=`id -u` mavsdk/mavsdk-ubuntu-20.04-px4-sitl-v1.11 "$@"
+podman run -it --rm -v $(pwd):/home/user/MAVSDK:z mavsdk/mavsdk-ubuntu-20.04-px4-sitl-v1.11 "$@"
+sudo chown -R $USER:$USER .
