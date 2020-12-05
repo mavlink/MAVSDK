@@ -434,8 +434,7 @@ jobs:
         if: steps.cache.outputs.cache-hit == 'true'
         run: echo "superbuild=-DSUPERBUILD=OFF" >> $GITHUB_ENV && echo "cmake_prefix_path=-DCMAKE_PREFIX_PATH=$(pwd)/build/release/third_party/install" >> $GITHUB_ENV
       - name: set SDKROOT value
-        run: |
-          export VAR_SDKROOT="$(xcrun --sdk macosx --show-sdk-path)"
+        run: echo "SDKROOT=$(xcrun --sdk macosx --show-sdk-path)" >> $GITHUB_ENV
       - name: configure
         run: cmake $superbuild $cmake_prefix_path -DCMAKE_BUILD_TYPE=Release -DCMAKE_INSTALL_PREFIX=build/release/install -DBUILD_MAVSDK_SERVER=ON -DBUILD_SHARED_LIBS=OFF -DWERROR=OFF -j 2 -Bbuild/release -H.
       - name: build
@@ -469,6 +468,8 @@ jobs:
       - name: disable superbuild on cache hit
         if: steps.cache.outputs.cache-hit == 'true'
         run: echo "superbuild=-DSUPERBUILD=OFF" >> $GITHUB_ENV && echo "cmake_prefix_path=-DCMAKE_PREFIX_PATH=$(pwd)/build/macos/third_party/install" >> $GITHUB_ENV
+      - name: set SDKROOT value
+        run: echo "SDKROOT=$(xcrun --sdk macosx --show-sdk-path)" >> $GITHUB_ENV
       - name: configure
         run: cmake $superbuild $cmake_prefix_path -DCMAKE_BUILD_TYPE=Release -DCMAKE_INSTALL_PREFIX=build/macos/install -DBUILD_MAVSDK_SERVER=ON -DBUILD_SHARED_LIBS=OFF -DMACOS_FRAMEWORK=ON -DWERROR=OFF -j 2 -Bbuild/macos -H.
       - name: build
@@ -496,8 +497,8 @@ jobs:
         run: echo "superbuild=-DSUPERBUILD=OFF" >> $GITHUB_ENV && echo "cmake_prefix_path=-DCMAKE_PREFIX_PATH=$(pwd)/build/ios/third_party/install" >> $GITHUB_ENV
       - name: set CROSS_SDK value
         run: |
-          export VAR_CROSS_TOP="$(dirname $(dirname $(xcrun --sdk iphoneos --show-sdk-path)))"
-          export VAR_CROSS_SDK="$(basename $(xcrun --sdk iphoneos --show-sdk-path))"
+          echo "CROSS_TOP=$(dirname $(dirname $(xcrun --sdk iphoneos --show-sdk-path)))" >> $GITHUB_ENV
+          echo "CROSS_SDK=$(basename $(xcrun --sdk iphoneos --show-sdk-path))" >> $GITHUB_ENV
       - name: configure
         run: cmake $superbuild $cmake_prefix_path -DCMAKE_BUILD_TYPE=Release -DCMAKE_TOOLCHAIN_FILE=$(pwd)/tools/ios.toolchain.cmake -DPLATFORM=OS -DDEPLOYMENT_TARGET=11.0 -DBUILD_MAVSDK_SERVER=ON -DBUILD_SHARED_LIBS=OFF -DWERROR=OFF -j 2 -Bbuild/ios -H.
       - name: build
@@ -523,6 +524,10 @@ jobs:
       - name: disable superbuild on cache hit
         if: steps.cache.outputs.cache-hit == 'true'
         run: echo "superbuild=-DSUPERBUILD=OFF" >> $GITHUB_ENV && echo "cmake_prefix_path=-DCMAKE_PREFIX_PATH=$(pwd)/build/ios_simulator/third_party/install" >> $GITHUB_ENV
+      - name: set CROSS_SDK value
+        run: |
+          echo "CROSS_TOP=$(dirname $(dirname $(xcrun --sdk iphonesimulator --show-sdk-path)))" >> $GITHUB_ENV
+          echo "CROSS_SDK=$(basename $(xcrun --sdk iphonesimulator --show-sdk-path))" >> $GITHUB_ENV
       - name: configure
         run: cmake $superbuild $cmake_prefix_path -DCMAKE_BUILD_TYPE=Release -DCMAKE_TOOLCHAIN_FILE=$(pwd)/tools/ios.toolchain.cmake -DPLATFORM=SIMULATOR64 -DDEPLOYMENT_TARGET=11.0 -DBUILD_MAVSDK_SERVER=ON -DBUILD_SHARED_LIBS=OFF -DWERROR=OFF -j 2 -Bbuild/ios_simulator -H.
       - name: build
