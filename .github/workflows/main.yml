@@ -436,7 +436,6 @@ jobs:
       - name: set SDKROOT value
         run: |
           export VAR_SDKROOT="$(xcrun --sdk macosx --show-sdk-path)"
-          echo "::set-env name=SDKROOT::$VAR_SDKROOT"
       - name: configure
         run: cmake $superbuild $cmake_prefix_path -DCMAKE_BUILD_TYPE=Release -DCMAKE_INSTALL_PREFIX=build/release/install -DBUILD_MAVSDK_SERVER=ON -DBUILD_SHARED_LIBS=OFF -DWERROR=OFF -j 2 -Bbuild/release -H.
       - name: build
@@ -498,9 +497,7 @@ jobs:
       - name: set CROSS_SDK value
         run: |
           export VAR_CROSS_TOP="$(dirname $(dirname $(xcrun --sdk iphoneos --show-sdk-path)))"
-          echo "::set-env name=CROSS_TOP::$VAR_CROSS_TOP"
           export VAR_CROSS_SDK="$(basename $(xcrun --sdk iphoneos --show-sdk-path))"
-          echo "::set-env name=CROSS_SDK::$VAR_CROSS_SDK"
       - name: configure
         run: cmake $superbuild $cmake_prefix_path -DCMAKE_BUILD_TYPE=Release -DCMAKE_TOOLCHAIN_FILE=$(pwd)/tools/ios.toolchain.cmake -DPLATFORM=OS -DDEPLOYMENT_TARGET=11.0 -DBUILD_MAVSDK_SERVER=ON -DBUILD_SHARED_LIBS=OFF -DWERROR=OFF -j 2 -Bbuild/ios -H.
       - name: build
