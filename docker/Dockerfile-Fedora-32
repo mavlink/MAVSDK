@@ -24,6 +24,7 @@ RUN dnf -y install \
     libtool \
     make \
     ninja-build \
+    perl-FindBin \
     python \
     redhat-rpm-config \
     rpm-build \
