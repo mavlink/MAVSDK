@@ -595,7 +595,7 @@ jobs:
       - name: install packages
         run: choco install nasm
       - name: configure
-        run: cmake -G "Visual Studio 16 2019" $env:superbuild $env:cmake_prefix_path OPENSSL_PLATFORM=VC-WIN64A -DCMAKE_BUILD_TYPE=Release -DCMAKE_INSTALL_PREFIX=build/release/install -DBUILD_MAVSDK_SERVER=ON -DBUILD_SHARED_LIBS=OFF -DWERROR=OFF -j 2 -Bbuild/release -S.
+        run: OPENSSL_PLATFORM=VC-WIN64A cmake -G "Visual Studio 16 2019" $env:superbuild $env:cmake_prefix_path -DCMAKE_BUILD_TYPE=Release -DCMAKE_INSTALL_PREFIX=build/release/install -DBUILD_MAVSDK_SERVER=ON -DBUILD_SHARED_LIBS=OFF -DWERROR=OFF -j 2 -Bbuild/release -S.
       - name: build
         run: cmake --build build/release -j 2 --config Release --target install
       - name: Publish artefacts
