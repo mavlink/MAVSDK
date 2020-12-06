@@ -29,6 +29,13 @@ elseif(CMAKE_CROSSCOMPILING) # This assumes we use dockcross
         CONFIGURE_COMMAND ${CMAKE_COMMAND} -E env CROSS_COMPILE="" <SOURCE_DIR>/Configure $ENV{OPENSSL_PLATFORM} --prefix=${CMAKE_INSTALL_PREFIX} no-shared
         BUILD_COMMAND make
         )
+elseif(MSVC)
+    ExternalProject_add(
+        openssl
+        URL https://www.openssl.org/source/openssl-1.1.1h.tar.gz
+        PREFIX openssl
+        CONFIGURE_COMMAND perl <SOURCE_DIR>/Configure $ENV{OPENSSL_PLATFORM} --prefix=${CMAKE_INSTALL_PREFIX} no-shared
+        )
 else()
     ExternalProject_add(
         openssl
