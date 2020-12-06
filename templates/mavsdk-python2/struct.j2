@@ -1,0 +1,21 @@
+
+{% for nested_enum in nested_enums %}
+{% if nested_enum.endswith('Result') -%}
+{{ nested_enums[nested_enum] }}
+{% endif -%}
+{% endfor -%}
+
+{% if not name.upper_camel_case.endswith('Result') -%}
+
+py::class_<mavsdk::{{ plugin_name.upper_camel_case }}::{{ name.upper_camel_case }}> {{ name.lower_snake_case  }}({% if parent_struct and not name.upper_camel_case.endswith("Result") %}{{ parent_struct.lower_snake_case }}{% else %}{{ plugin_name.lower_snake_case }}{% endif %}, "{{ name.upper_camel_case }}");
+{{ name.lower_snake_case  }}
+    .def(py::init<>())
+    {%- for field in fields %}
+    .def_readwrite("{{ field.name.lower_snake_case }}", &mavsdk::{{ plugin_name.upper_camel_case }}::{{ name.upper_camel_case }}::{{ field.name.lower_snake_case }})
+    {%- endfor %};
+
+{% for nested_enum in nested_enums %}
+{{ nested_enums[nested_enum] }}
+{% endfor -%}
+
+{% endif %}

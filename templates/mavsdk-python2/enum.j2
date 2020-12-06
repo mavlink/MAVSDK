@@ -1,0 +1,4 @@
+py::enum_<mavsdk::{{ plugin_name.upper_camel_case }}::{% if parent_struct and not name.upper_camel_case.endswith("Result") %}{{ parent_struct.upper_camel_case }}::{% endif %}{{ name.upper_camel_case }}>({% if parent_struct and not name.upper_camel_case.endswith("Result") %}{{ parent_struct.lower_snake_case }}{% else %}{{ plugin_name.lower_snake_case }}{% endif %}, "{{ name.upper_camel_case }}")
+{%- for value in values %}
+    .value("{{ value.name.upper_camel_case }}", mavsdk::{{ plugin_name.upper_camel_case }}::{% if parent_struct and not name.upper_camel_case.endswith("Result") %}{{ parent_struct.upper_camel_case }}::{% endif %}{{ name.upper_camel_case }}::{{ value.name.upper_camel_case }})
+{%- endfor %};
