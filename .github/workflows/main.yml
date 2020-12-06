@@ -592,6 +592,8 @@ jobs:
         run: |
             echo "superbuild=-DSUPERBUILD=OFF" | Out-File -FilePath $env:GITHUB_ENV -Encoding utf8 -Append
             echo "cmake_prefix_path=-DCMAKE_PREFIX_PATH=$(pwd)/build/release/third_party/install" | Out-File -FilePath $env:GITHUB_ENV -Encoding utf8 -Append
+      - name: install packages
+        run: choco install nasm
       - name: configure
         run: cmake -G "Visual Studio 16 2019" $env:superbuild $env:cmake_prefix_path OPENSSL_PLATFORM=VC-WIN64A -DCMAKE_BUILD_TYPE=Release -DCMAKE_INSTALL_PREFIX=build/release/install -DBUILD_MAVSDK_SERVER=ON -DBUILD_SHARED_LIBS=OFF -DWERROR=OFF -j 2 -Bbuild/release -S.
       - name: build
