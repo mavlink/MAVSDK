@@ -57,6 +57,7 @@ template_path_plugin_impl_h="${script_dir}/../templates/plugin_impl_h"
 template_path_plugin_impl_cpp="${script_dir}/../templates/plugin_impl_cpp"
 template_path_mavsdk_server="${script_dir}/../templates/mavsdk_server"
 template_path_cmake="${script_dir}/../templates/cmake"
+template_path_plugin_py="${script_dir}/../templates/mavsdk-python2"
 
 for plugin in ${plugin_list_and_core}; do
 
@@ -127,4 +128,7 @@ for plugin in ${plugin_list_and_core}; do
         last_line=$(($last_line+1))
         sed -i "${last_line}iadd_subdirectory(${plugin})" ${plugins_cmake_file}
     fi
+
+    ${protoc_binary} -I ${proto_dir} --custom_out=${tmp_output_dir} --plugin=protoc-gen-custom=${protoc_gen_mavsdk} --custom_opt="file_ext=cpp,template_path=${template_path_plugin_py}" ${proto_dir}/${plugin}/${plugin}.proto
+    mv ${tmp_output_dir}/${plugin}/$(snake_case_to_camel_case ${plugin}).cpp ${script_dir}/../mavsdk-python2/plugin-${plugin}.cpp
 done

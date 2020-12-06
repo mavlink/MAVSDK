@@ -1,0 +1,3 @@
+{% if is_sync -%}
+.def("{{ name.lower_snake_case }}", &mavsdk::{{ plugin_name.upper_camel_case }}::{{ name.lower_snake_case }})
+{%- endif %}
