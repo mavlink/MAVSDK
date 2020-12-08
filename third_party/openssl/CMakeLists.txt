@@ -36,7 +36,9 @@ elseif(MSVC)
         openssl
         URL https://www.openssl.org/source/openssl-${OPENSSL_VERSION}.tar.gz
         PREFIX openssl
-        CONFIGURE_COMMAND perl <SOURCE_DIR>/Configure VC-WIN32 --prefix=${CMAKE_INSTALL_PREFIX} no-shared
+	CONFIGURE_COMMAND perl <SOURCE_DIR>/Configure VC-WIN64A --prefix=${CMAKE_INSTALL_PREFIX} no-shared
+        BUILD_COMMAND set MAKEFLAGS= && nmake
+        INSTALL_COMMAND set MAKEFLAGS= && nmake install
         )
 else()
     ExternalProject_add(
