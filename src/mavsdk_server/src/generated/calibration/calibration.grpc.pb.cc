@@ -128,19 +128,19 @@ void CalibrationService::Stub::experimental_async::SubscribeCalibrateGimbalAccel
 }
 
 ::grpc::Status CalibrationService::Stub::Cancel(::grpc::ClientContext* context, const ::mavsdk::rpc::calibration::CancelRequest& request, ::mavsdk::rpc::calibration::CancelResponse* response) {
-  return ::grpc::internal::BlockingUnaryCall(channel_.get(), rpcmethod_Cancel_, context, request, response);
+  return ::grpc::internal::BlockingUnaryCall< ::mavsdk::rpc::calibration::CancelRequest, ::mavsdk::rpc::calibration::CancelResponse, ::grpc::protobuf::MessageLite, ::grpc::protobuf::MessageLite>(channel_.get(), rpcmethod_Cancel_, context, request, response);
 }
 
 void CalibrationService::Stub::experimental_async::Cancel(::grpc::ClientContext* context, const ::mavsdk::rpc::calibration::CancelRequest* request, ::mavsdk::rpc::calibration::CancelResponse* response, std::function<void(::grpc::Status)> f) {
-  ::grpc::internal::CallbackUnaryCall(stub_->channel_.get(), stub_->rpcmethod_Cancel_, context, request, response, std::move(f));
+  ::grpc::internal::CallbackUnaryCall< ::mavsdk::rpc::calibration::CancelRequest, ::mavsdk::rpc::calibration::CancelResponse, ::grpc::protobuf::MessageLite, ::grpc::protobuf::MessageLite>(stub_->channel_.get(), stub_->rpcmethod_Cancel_, context, request, response, std::move(f));
 }
 
 void CalibrationService::Stub::experimental_async::Cancel(::grpc::ClientContext* context, const ::mavsdk::rpc::calibration::CancelRequest* request, ::mavsdk::rpc::calibration::CancelResponse* response, ::grpc::experimental::ClientUnaryReactor* reactor) {
-  ::grpc::internal::ClientCallbackUnaryFactory::Create(stub_->channel_.get(), stub_->rpcmethod_Cancel_, context, request, response, reactor);
+  ::grpc::internal::ClientCallbackUnaryFactory::Create< ::grpc::protobuf::MessageLite, ::grpc::protobuf::MessageLite>(stub_->channel_.get(), stub_->rpcmethod_Cancel_, context, request, response, reactor);
 }
 
 ::grpc::ClientAsyncResponseReader< ::mavsdk::rpc::calibration::CancelResponse>* CalibrationService::Stub::PrepareAsyncCancelRaw(::grpc::ClientContext* context, const ::mavsdk::rpc::calibration::CancelRequest& request, ::grpc::CompletionQueue* cq) {
-  return ::grpc::internal::ClientAsyncResponseReaderFactory< ::mavsdk::rpc::calibration::CancelResponse>::Create(channel_.get(), cq, rpcmethod_Cancel_, context, request, false);
+  return ::grpc::internal::ClientAsyncResponseReaderHelper::Create< ::mavsdk::rpc::calibration::CancelResponse, ::mavsdk::rpc::calibration::CancelRequest, ::grpc::protobuf::MessageLite, ::grpc::protobuf::MessageLite>(channel_.get(), cq, rpcmethod_Cancel_, context, request);
 }
 
 ::grpc::ClientAsyncResponseReader< ::mavsdk::rpc::calibration::CancelResponse>* CalibrationService::Stub::AsyncCancelRaw(::grpc::ClientContext* context, const ::mavsdk::rpc::calibration::CancelRequest& request, ::grpc::CompletionQueue* cq) {
@@ -204,7 +204,7 @@ CalibrationService::Service::Service() {
   AddMethod(new ::grpc::internal::RpcServiceMethod(
       CalibrationService_method_names[5],
       ::grpc::internal::RpcMethod::NORMAL_RPC,
-      new ::grpc::internal::RpcMethodHandler< CalibrationService::Service, ::mavsdk::rpc::calibration::CancelRequest, ::mavsdk::rpc::calibration::CancelResponse>(
+      new ::grpc::internal::RpcMethodHandler< CalibrationService::Service, ::mavsdk::rpc::calibration::CancelRequest, ::mavsdk::rpc::calibration::CancelResponse, ::grpc::protobuf::MessageLite, ::grpc::protobuf::MessageLite>(
           [](CalibrationService::Service* service,
              ::grpc::ServerContext* ctx,
              const ::mavsdk::rpc::calibration::CancelRequest* req,

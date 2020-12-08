@@ -50,19 +50,19 @@ FollowMeService::Stub::Stub(const std::shared_ptr< ::grpc::ChannelInterface>& ch
   {}
 
 ::grpc::Status FollowMeService::Stub::GetConfig(::grpc::ClientContext* context, const ::mavsdk::rpc::follow_me::GetConfigRequest& request, ::mavsdk::rpc::follow_me::GetConfigResponse* response) {
-  return ::grpc::internal::BlockingUnaryCall(channel_.get(), rpcmethod_GetConfig_, context, request, response);
+  return ::grpc::internal::BlockingUnaryCall< ::mavsdk::rpc::follow_me::GetConfigRequest, ::mavsdk::rpc::follow_me::GetConfigResponse, ::grpc::protobuf::MessageLite, ::grpc::protobuf::MessageLite>(channel_.get(), rpcmethod_GetConfig_, context, request, response);
 }
 
 void FollowMeService::Stub::experimental_async::GetConfig(::grpc::ClientContext* context, const ::mavsdk::rpc::follow_me::GetConfigRequest* request, ::mavsdk::rpc::follow_me::GetConfigResponse* response, std::function<void(::grpc::Status)> f) {
-  ::grpc::internal::CallbackUnaryCall(stub_->channel_.get(), stub_->rpcmethod_GetConfig_, context, request, response, std::move(f));
+  ::grpc::internal::CallbackUnaryCall< ::mavsdk::rpc::follow_me::GetConfigRequest, ::mavsdk::rpc::follow_me::GetConfigResponse, ::grpc::protobuf::MessageLite, ::grpc::protobuf::MessageLite>(stub_->channel_.get(), stub_->rpcmethod_GetConfig_, context, request, response, std::move(f));
 }
 
 void FollowMeService::Stub::experimental_async::GetConfig(::grpc::ClientContext* context, const ::mavsdk::rpc::follow_me::GetConfigRequest* request, ::mavsdk::rpc::follow_me::GetConfigResponse* response, ::grpc::experimental::ClientUnaryReactor* reactor) {
-  ::grpc::internal::ClientCallbackUnaryFactory::Create(stub_->channel_.get(), stub_->rpcmethod_GetConfig_, context, request, response, reactor);
+  ::grpc::internal::ClientCallbackUnaryFactory::Create< ::grpc::protobuf::MessageLite, ::grpc::protobuf::MessageLite>(stub_->channel_.get(), stub_->rpcmethod_GetConfig_, context, request, response, reactor);
 }
 
 ::grpc::ClientAsyncResponseReader< ::mavsdk::rpc::follow_me::GetConfigResponse>* FollowMeService::Stub::PrepareAsyncGetConfigRaw(::grpc::ClientContext* context, const ::mavsdk::rpc::follow_me::GetConfigRequest& request, ::grpc::CompletionQueue* cq) {
-  return ::grpc::internal::ClientAsyncResponseReaderFactory< ::mavsdk::rpc::follow_me::GetConfigResponse>::Create(channel_.get(), cq, rpcmethod_GetConfig_, context, request, false);
+  return ::grpc::internal::ClientAsyncResponseReaderHelper::Create< ::mavsdk::rpc::follow_me::GetConfigResponse, ::mavsdk::rpc::follow_me::GetConfigRequest, ::grpc::protobuf::MessageLite, ::grpc::protobuf::MessageLite>(channel_.get(), cq, rpcmethod_GetConfig_, context, request);
 }
 
 ::grpc::ClientAsyncResponseReader< ::mavsdk::rpc::follow_me::GetConfigResponse>* FollowMeService::Stub::AsyncGetConfigRaw(::grpc::ClientContext* context, const ::mavsdk::rpc::follow_me::GetConfigRequest& request, ::grpc::CompletionQueue* cq) {
@@ -73,19 +73,19 @@ void FollowMeService::Stub::experimental_async::GetConfig(::grpc::ClientContext*
 }
 
 ::grpc::Status FollowMeService::Stub::SetConfig(::grpc::ClientContext* context, const ::mavsdk::rpc::follow_me::SetConfigRequest& request, ::mavsdk::rpc::follow_me::SetConfigResponse* response) {
-  return ::grpc::internal::BlockingUnaryCall(channel_.get(), rpcmethod_SetConfig_, context, request, response);
+  return ::grpc::internal::BlockingUnaryCall< ::mavsdk::rpc::follow_me::SetConfigRequest, ::mavsdk::rpc::follow_me::SetConfigResponse, ::grpc::protobuf::MessageLite, ::grpc::protobuf::MessageLite>(channel_.get(), rpcmethod_SetConfig_, context, request, response);
 }
 
 void FollowMeService::Stub::experimental_async::SetConfig(::grpc::ClientContext* context, const ::mavsdk::rpc::follow_me::SetConfigRequest* request, ::mavsdk::rpc::follow_me::SetConfigResponse* response, std::function<void(::grpc::Status)> f) {
-  ::grpc::internal::CallbackUnaryCall(stub_->channel_.get(), stub_->rpcmethod_SetConfig_, context, request, response, std::move(f));
+  ::grpc::internal::CallbackUnaryCall< ::mavsdk::rpc::follow_me::SetConfigRequest, ::mavsdk::rpc::follow_me::SetConfigResponse, ::grpc::protobuf::MessageLite, ::grpc::protobuf::MessageLite>(stub_->channel_.get(), stub_->rpcmethod_SetConfig_, context, request, response, std::move(f));
 }
 
 void FollowMeService::Stub::experimental_async::SetConfig(::grpc::ClientContext* context, const ::mavsdk::rpc::follow_me::SetConfigRequest* request, ::mavsdk::rpc::follow_me::SetConfigResponse* response, ::grpc::experimental::ClientUnaryReactor* reactor) {
-  ::grpc::internal::ClientCallbackUnaryFactory::Create(stub_->channel_.get(), stub_->rpcmethod_SetConfig_, context, request, response, reactor);
+  ::grpc::internal::ClientCallbackUnaryFactory::Create< ::grpc::protobuf::MessageLite, ::grpc::protobuf::MessageLite>(stub_->channel_.get(), stub_->rpcmethod_SetConfig_, context, request, response, reactor);
 }
 
 ::grpc::ClientAsyncResponseReader< ::mavsdk::rpc::follow_me::SetConfigResponse>* FollowMeService::Stub::PrepareAsyncSetConfigRaw(::grpc::ClientContext* context, const ::mavsdk::rpc::follow_me::SetConfigRequest& request, ::grpc::CompletionQueue* cq) {
-  return ::grpc::internal::ClientAsyncResponseReaderFactory< ::mavsdk::rpc::follow_me::SetConfigResponse>::Create(channel_.get(), cq, rpcmethod_SetConfig_, context, request, false);
+  return ::grpc::internal::ClientAsyncResponseReaderHelper::Create< ::mavsdk::rpc::follow_me::SetConfigResponse, ::mavsdk::rpc::follow_me::SetConfigRequest, ::grpc::protobuf::MessageLite, ::grpc::protobuf::MessageLite>(channel_.get(), cq, rpcmethod_SetConfig_, context, request);
 }
 
 ::grpc::ClientAsyncResponseReader< ::mavsdk::rpc::follow_me::SetConfigResponse>* FollowMeService::Stub::AsyncSetConfigRaw(::grpc::ClientContext* context, const ::mavsdk::rpc::follow_me::SetConfigRequest& request, ::grpc::CompletionQueue* cq) {
@@ -96,19 +96,19 @@ void FollowMeService::Stub::experimental_async::SetConfig(::grpc::ClientContext*
 }
 
 ::grpc::Status FollowMeService::Stub::IsActive(::grpc::ClientContext* context, const ::mavsdk::rpc::follow_me::IsActiveRequest& request, ::mavsdk::rpc::follow_me::IsActiveResponse* response) {
-  return ::grpc::internal::BlockingUnaryCall(channel_.get(), rpcmethod_IsActive_, context, request, response);
+  return ::grpc::internal::BlockingUnaryCall< ::mavsdk::rpc::follow_me::IsActiveRequest, ::mavsdk::rpc::follow_me::IsActiveResponse, ::grpc::protobuf::MessageLite, ::grpc::protobuf::MessageLite>(channel_.get(), rpcmethod_IsActive_, context, request, response);
 }
 
 void FollowMeService::Stub::experimental_async::IsActive(::grpc::ClientContext* context, const ::mavsdk::rpc::follow_me::IsActiveRequest* request, ::mavsdk::rpc::follow_me::IsActiveResponse* response, std::function<void(::grpc::Status)> f) {
-  ::grpc::internal::CallbackUnaryCall(stub_->channel_.get(), stub_->rpcmethod_IsActive_, context, request, response, std::move(f));
+  ::grpc::internal::CallbackUnaryCall< ::mavsdk::rpc::follow_me::IsActiveRequest, ::mavsdk::rpc::follow_me::IsActiveResponse, ::grpc::protobuf::MessageLite, ::grpc::protobuf::MessageLite>(stub_->channel_.get(), stub_->rpcmethod_IsActive_, context, request, response, std::move(f));
 }
 
 void FollowMeService::Stub::experimental_async::IsActive(::grpc::ClientContext* context, const ::mavsdk::rpc::follow_me::IsActiveRequest* request, ::mavsdk::rpc::follow_me::IsActiveResponse* response, ::grpc::experimental::ClientUnaryReactor* reactor) {
-  ::grpc::internal::ClientCallbackUnaryFactory::Create(stub_->channel_.get(), stub_->rpcmethod_IsActive_, context, request, response, reactor);
+  ::grpc::internal::ClientCallbackUnaryFactory::Create< ::grpc::protobuf::MessageLite, ::grpc::protobuf::MessageLite>(stub_->channel_.get(), stub_->rpcmethod_IsActive_, context, request, response, reactor);
 }
 
 ::grpc::ClientAsyncResponseReader< ::mavsdk::rpc::follow_me::IsActiveResponse>* FollowMeService::Stub::PrepareAsyncIsActiveRaw(::grpc::ClientContext* context, const ::mavsdk::rpc::follow_me::IsActiveRequest& request, ::grpc::CompletionQueue* cq) {
-  return ::grpc::internal::ClientAsyncResponseReaderFactory< ::mavsdk::rpc::follow_me::IsActiveResponse>::Create(channel_.get(), cq, rpcmethod_IsActive_, context, request, false);
+  return ::grpc::internal::ClientAsyncResponseReaderHelper::Create< ::mavsdk::rpc::follow_me::IsActiveResponse, ::mavsdk::rpc::follow_me::IsActiveRequest, ::grpc::protobuf::MessageLite, ::grpc::protobuf::MessageLite>(channel_.get(), cq, rpcmethod_IsActive_, context, request);
 }
 
 ::grpc::ClientAsyncResponseReader< ::mavsdk::rpc::follow_me::IsActiveResponse>* FollowMeService::Stub::AsyncIsActiveRaw(::grpc::ClientContext* context, const ::mavsdk::rpc::follow_me::IsActiveRequest& request, ::grpc::CompletionQueue* cq) {
@@ -119,19 +119,19 @@ void FollowMeService::Stub::experimental_async::IsActive(::grpc::ClientContext* 
 }
 
 ::grpc::Status FollowMeService::Stub::SetTargetLocation(::grpc::ClientContext* context, const ::mavsdk::rpc::follow_me::SetTargetLocationRequest& request, ::mavsdk::rpc::follow_me::SetTargetLocationResponse* response) {
-  return ::grpc::internal::BlockingUnaryCall(channel_.get(), rpcmethod_SetTargetLocation_, context, request, response);
+  return ::grpc::internal::BlockingUnaryCall< ::mavsdk::rpc::follow_me::SetTargetLocationRequest, ::mavsdk::rpc::follow_me::SetTargetLocationResponse, ::grpc::protobuf::MessageLite, ::grpc::protobuf::MessageLite>(channel_.get(), rpcmethod_SetTargetLocation_, context, request, response);
 }
 
 void FollowMeService::Stub::experimental_async::SetTargetLocation(::grpc::ClientContext* context, const ::mavsdk::rpc::follow_me::SetTargetLocationRequest* request, ::mavsdk::rpc::follow_me::SetTargetLocationResponse* response, std::function<void(::grpc::Status)> f) {
-  ::grpc::internal::CallbackUnaryCall(stub_->channel_.get(), stub_->rpcmethod_SetTargetLocation_, context, request, response, std::move(f));
+  ::grpc::internal::CallbackUnaryCall< ::mavsdk::rpc::follow_me::SetTargetLocationRequest, ::mavsdk::rpc::follow_me::SetTargetLocationResponse, ::grpc::protobuf::MessageLite, ::grpc::protobuf::MessageLite>(stub_->channel_.get(), stub_->rpcmethod_SetTargetLocation_, context, request, response, std::move(f));
 }
 
 void FollowMeService::Stub::experimental_async::SetTargetLocation(::grpc::ClientContext* context, const ::mavsdk::rpc::follow_me::SetTargetLocationRequest* request, ::mavsdk::rpc::follow_me::SetTargetLocationResponse* response, ::grpc::experimental::ClientUnaryReactor* reactor) {
-  ::grpc::internal::ClientCallbackUnaryFactory::Create(stub_->channel_.get(), stub_->rpcmethod_SetTargetLocation_, context, request, response, reactor);
+  ::grpc::internal::ClientCallbackUnaryFactory::Create< ::grpc::protobuf::MessageLite, ::grpc::protobuf::MessageLite>(stub_->channel_.get(), stub_->rpcmethod_SetTargetLocation_, context, request, response, reactor);
 }
 
 ::grpc::ClientAsyncResponseReader< ::mavsdk::rpc::follow_me::SetTargetLocationResponse>* FollowMeService::Stub::PrepareAsyncSetTargetLocationRaw(::grpc::ClientContext* context, const ::mavsdk::rpc::follow_me::SetTargetLocationRequest& request, ::grpc::CompletionQueue* cq) {
-  return ::grpc::internal::ClientAsyncResponseReaderFactory< ::mavsdk::rpc::follow_me::SetTargetLocationResponse>::Create(channel_.get(), cq, rpcmethod_SetTargetLocation_, context, request, false);
+  return ::grpc::internal::ClientAsyncResponseReaderHelper::Create< ::mavsdk::rpc::follow_me::SetTargetLocationResponse, ::mavsdk::rpc::follow_me::SetTargetLocationRequest, ::grpc::protobuf::MessageLite, ::grpc::protobuf::MessageLite>(channel_.get(), cq, rpcmethod_SetTargetLocation_, context, request);
 }
 
 ::grpc::ClientAsyncResponseReader< ::mavsdk::rpc::follow_me::SetTargetLocationResponse>* FollowMeService::Stub::AsyncSetTargetLocationRaw(::grpc::ClientContext* context, const ::mavsdk::rpc::follow_me::SetTargetLocationRequest& request, ::grpc::CompletionQueue* cq) {
@@ -142,19 +142,19 @@ void FollowMeService::Stub::experimental_async::SetTargetLocation(::grpc::Client
 }
 
 ::grpc::Status FollowMeService::Stub::GetLastLocation(::grpc::ClientContext* context, const ::mavsdk::rpc::follow_me::GetLastLocationRequest& request, ::mavsdk::rpc::follow_me::GetLastLocationResponse* response) {
-  return ::grpc::internal::BlockingUnaryCall(channel_.get(), rpcmethod_GetLastLocation_, context, request, response);
+  return ::grpc::internal::BlockingUnaryCall< ::mavsdk::rpc::follow_me::GetLastLocationRequest, ::mavsdk::rpc::follow_me::GetLastLocationResponse, ::grpc::protobuf::MessageLite, ::grpc::protobuf::MessageLite>(channel_.get(), rpcmethod_GetLastLocation_, context, request, response);
 }
 
 void FollowMeService::Stub::experimental_async::GetLastLocation(::grpc::ClientContext* context, const ::mavsdk::rpc::follow_me::GetLastLocationRequest* request, ::mavsdk::rpc::follow_me::GetLastLocationResponse* response, std::function<void(::grpc::Status)> f) {
-  ::grpc::internal::CallbackUnaryCall(stub_->channel_.get(), stub_->rpcmethod_GetLastLocation_, context, request, response, std::move(f));
+  ::grpc::internal::CallbackUnaryCall< ::mavsdk::rpc::follow_me::GetLastLocationRequest, ::mavsdk::rpc::follow_me::GetLastLocationResponse, ::grpc::protobuf::MessageLite, ::grpc::protobuf::MessageLite>(stub_->channel_.get(), stub_->rpcmethod_GetLastLocation_, context, request, response, std::move(f));
 }
 
 void FollowMeService::Stub::experimental_async::GetLastLocation(::grpc::ClientContext* context, const ::mavsdk::rpc::follow_me::GetLastLocationRequest* request, ::mavsdk::rpc::follow_me::GetLastLocationResponse* response, ::grpc::experimental::ClientUnaryReactor* reactor) {
-  ::grpc::internal::ClientCallbackUnaryFactory::Create(stub_->channel_.get(), stub_->rpcmethod_GetLastLocation_, context, request, response, reactor);
+  ::grpc::internal::ClientCallbackUnaryFactory::Create< ::grpc::protobuf::MessageLite, ::grpc::protobuf::MessageLite>(stub_->channel_.get(), stub_->rpcmethod_GetLastLocation_, context, request, response, reactor);
 }
 
 ::grpc::ClientAsyncResponseReader< ::mavsdk::rpc::follow_me::GetLastLocationResponse>* FollowMeService::Stub::PrepareAsyncGetLastLocationRaw(::grpc::ClientContext* context, const ::mavsdk::rpc::follow_me::GetLastLocationRequest& request, ::grpc::CompletionQueue* cq) {
-  return ::grpc::internal::ClientAsyncResponseReaderFactory< ::mavsdk::rpc::follow_me::GetLastLocationResponse>::Create(channel_.get(), cq, rpcmethod_GetLastLocation_, context, request, false);
+  return ::grpc::internal::ClientAsyncResponseReaderHelper::Create< ::mavsdk::rpc::follow_me::GetLastLocationResponse, ::mavsdk::rpc::follow_me::GetLastLocationRequest, ::grpc::protobuf::MessageLite, ::grpc::protobuf::MessageLite>(channel_.get(), cq, rpcmethod_GetLastLocation_, context, request);
 }
 
 ::grpc::ClientAsyncResponseReader< ::mavsdk::rpc::follow_me::GetLastLocationResponse>* FollowMeService::Stub::AsyncGetLastLocationRaw(::grpc::ClientContext* context, const ::mavsdk::rpc::follow_me::GetLastLocationRequest& request, ::grpc::CompletionQueue* cq) {
@@ -165,19 +165,19 @@ void FollowMeService::Stub::experimental_async::GetLastLocation(::grpc::ClientCo
 }
 
 ::grpc::Status FollowMeService::Stub::Start(::grpc::ClientContext* context, const ::mavsdk::rpc::follow_me::StartRequest& request, ::mavsdk::rpc::follow_me::StartResponse* response) {
-  return ::grpc::internal::BlockingUnaryCall(channel_.get(), rpcmethod_Start_, context, request, response);
+  return ::grpc::internal::BlockingUnaryCall< ::mavsdk::rpc::follow_me::StartRequest, ::mavsdk::rpc::follow_me::StartResponse, ::grpc::protobuf::MessageLite, ::grpc::protobuf::MessageLite>(channel_.get(), rpcmethod_Start_, context, request, response);
 }
 
 void FollowMeService::Stub::experimental_async::Start(::grpc::ClientContext* context, const ::mavsdk::rpc::follow_me::StartRequest* request, ::mavsdk::rpc::follow_me::StartResponse* response, std::function<void(::grpc::Status)> f) {
-  ::grpc::internal::CallbackUnaryCall(stub_->channel_.get(), stub_->rpcmethod_Start_, context, request, response, std::move(f));
+  ::grpc::internal::CallbackUnaryCall< ::mavsdk::rpc::follow_me::StartRequest, ::mavsdk::rpc::follow_me::StartResponse, ::grpc::protobuf::MessageLite, ::grpc::protobuf::MessageLite>(stub_->channel_.get(), stub_->rpcmethod_Start_, context, request, response, std::move(f));
 }
 
 void FollowMeService::Stub::experimental_async::Start(::grpc::ClientContext* context, const ::mavsdk::rpc::follow_me::StartRequest* request, ::mavsdk::rpc::follow_me::StartResponse* response, ::grpc::experimental::ClientUnaryReactor* reactor) {
-  ::grpc::internal::ClientCallbackUnaryFactory::Create(stub_->channel_.get(), stub_->rpcmethod_Start_, context, request, response, reactor);
+  ::grpc::internal::ClientCallbackUnaryFactory::Create< ::grpc::protobuf::MessageLite, ::grpc::protobuf::MessageLite>(stub_->channel_.get(), stub_->rpcmethod_Start_, context, request, response, reactor);
 }
 
 ::grpc::ClientAsyncResponseReader< ::mavsdk::rpc::follow_me::StartResponse>* FollowMeService::Stub::PrepareAsyncStartRaw(::grpc::ClientContext* context, const ::mavsdk::rpc::follow_me::StartRequest& request, ::grpc::CompletionQueue* cq) {
-  return ::grpc::internal::ClientAsyncResponseReaderFactory< ::mavsdk::rpc::follow_me::StartResponse>::Create(channel_.get(), cq, rpcmethod_Start_, context, request, false);
+  return ::grpc::internal::ClientAsyncResponseReaderHelper::Create< ::mavsdk::rpc::follow_me::StartResponse, ::mavsdk::rpc::follow_me::StartRequest, ::grpc::protobuf::MessageLite, ::grpc::protobuf::MessageLite>(channel_.get(), cq, rpcmethod_Start_, context, request);
 }
 
 ::grpc::ClientAsyncResponseReader< ::mavsdk::rpc::follow_me::StartResponse>* FollowMeService::Stub::AsyncStartRaw(::grpc::ClientContext* context, const ::mavsdk::rpc::follow_me::StartRequest& request, ::grpc::CompletionQueue* cq) {
@@ -188,19 +188,19 @@ void FollowMeService::Stub::experimental_async::Start(::grpc::ClientContext* con
 }
 
 ::grpc::Status FollowMeService::Stub::Stop(::grpc::ClientContext* context, const ::mavsdk::rpc::follow_me::StopRequest& request, ::mavsdk::rpc::follow_me::StopResponse* response) {
-  return ::grpc::internal::BlockingUnaryCall(channel_.get(), rpcmethod_Stop_, context, request, response);
+  return ::grpc::internal::BlockingUnaryCall< ::mavsdk::rpc::follow_me::StopRequest, ::mavsdk::rpc::follow_me::StopResponse, ::grpc::protobuf::MessageLite, ::grpc::protobuf::MessageLite>(channel_.get(), rpcmethod_Stop_, context, request, response);
 }
 
 void FollowMeService::Stub::experimental_async::Stop(::grpc::ClientContext* context, const ::mavsdk::rpc::follow_me::StopRequest* request, ::mavsdk::rpc::follow_me::StopResponse* response, std::function<void(::grpc::Status)> f) {
-  ::grpc::internal::CallbackUnaryCall(stub_->channel_.get(), stub_->rpcmethod_Stop_, context, request, response, std::move(f));
+  ::grpc::internal::CallbackUnaryCall< ::mavsdk::rpc::follow_me::StopRequest, ::mavsdk::rpc::follow_me::StopResponse, ::grpc::protobuf::MessageLite, ::grpc::protobuf::MessageLite>(stub_->channel_.get(), stub_->rpcmethod_Stop_, context, request, response, std::move(f));
 }
 
 void FollowMeService::Stub::experimental_async::Stop(::grpc::ClientContext* context, const ::mavsdk::rpc::follow_me::StopRequest* request, ::mavsdk::rpc::follow_me::StopResponse* response, ::grpc::experimental::ClientUnaryReactor* reactor) {
-  ::grpc::internal::ClientCallbackUnaryFactory::Create(stub_->channel_.get(), stub_->rpcmethod_Stop_, context, request, response, reactor);
+  ::grpc::internal::ClientCallbackUnaryFactory::Create< ::grpc::protobuf::MessageLite, ::grpc::protobuf::MessageLite>(stub_->channel_.get(), stub_->rpcmethod_Stop_, context, request, response, reactor);
 }
 
 ::grpc::ClientAsyncResponseReader< ::mavsdk::rpc::follow_me::StopResponse>* FollowMeService::Stub::PrepareAsyncStopRaw(::grpc::ClientContext* context, const ::mavsdk::rpc::follow_me::StopRequest& request, ::grpc::CompletionQueue* cq) {
-  return ::grpc::internal::ClientAsyncResponseReaderFactory< ::mavsdk::rpc::follow_me::StopResponse>::Create(channel_.get(), cq, rpcmethod_Stop_, context, request, false);
+  return ::grpc::internal::ClientAsyncResponseReaderHelper::Create< ::mavsdk::rpc::follow_me::StopResponse, ::mavsdk::rpc::follow_me::StopRequest, ::grpc::protobuf::MessageLite, ::grpc::protobuf::MessageLite>(channel_.get(), cq, rpcmethod_Stop_, context, request);
 }
 
 ::grpc::ClientAsyncResponseReader< ::mavsdk::rpc::follow_me::StopResponse>* FollowMeService::Stub::AsyncStopRaw(::grpc::ClientContext* context, const ::mavsdk::rpc::follow_me::StopRequest& request, ::grpc::CompletionQueue* cq) {
@@ -214,7 +214,7 @@ FollowMeService::Service::Service() {
   AddMethod(new ::grpc::internal::RpcServiceMethod(
       FollowMeService_method_names[0],
       ::grpc::internal::RpcMethod::NORMAL_RPC,
-      new ::grpc::internal::RpcMethodHandler< FollowMeService::Service, ::mavsdk::rpc::follow_me::GetConfigRequest, ::mavsdk::rpc::follow_me::GetConfigResponse>(
+      new ::grpc::internal::RpcMethodHandler< FollowMeService::Service, ::mavsdk::rpc::follow_me::GetConfigRequest, ::mavsdk::rpc::follow_me::GetConfigResponse, ::grpc::protobuf::MessageLite, ::grpc::protobuf::MessageLite>(
           [](FollowMeService::Service* service,
              ::grpc::ServerContext* ctx,
              const ::mavsdk::rpc::follow_me::GetConfigRequest* req,
@@ -224,7 +224,7 @@ FollowMeService::Service::Service() {
   AddMethod(new ::grpc::internal::RpcServiceMethod(
       FollowMeService_method_names[1],
       ::grpc::internal::RpcMethod::NORMAL_RPC,
-      new ::grpc::internal::RpcMethodHandler< FollowMeService::Service, ::mavsdk::rpc::follow_me::SetConfigRequest, ::mavsdk::rpc::follow_me::SetConfigResponse>(
+      new ::grpc::internal::RpcMethodHandler< FollowMeService::Service, ::mavsdk::rpc::follow_me::SetConfigRequest, ::mavsdk::rpc::follow_me::SetConfigResponse, ::grpc::protobuf::MessageLite, ::grpc::protobuf::MessageLite>(
           [](FollowMeService::Service* service,
              ::grpc::ServerContext* ctx,
              const ::mavsdk::rpc::follow_me::SetConfigRequest* req,
@@ -234,7 +234,7 @@ FollowMeService::Service::Service() {
   AddMethod(new ::grpc::internal::RpcServiceMethod(
       FollowMeService_method_names[2],
       ::grpc::internal::RpcMethod::NORMAL_RPC,
-      new ::grpc::internal::RpcMethodHandler< FollowMeService::Service, ::mavsdk::rpc::follow_me::IsActiveRequest, ::mavsdk::rpc::follow_me::IsActiveResponse>(
+      new ::grpc::internal::RpcMethodHandler< FollowMeService::Service, ::mavsdk::rpc::follow_me::IsActiveRequest, ::mavsdk::rpc::follow_me::IsActiveResponse, ::grpc::protobuf::MessageLite, ::grpc::protobuf::MessageLite>(
           [](FollowMeService::Service* service,
              ::grpc::ServerContext* ctx,
              const ::mavsdk::rpc::follow_me::IsActiveRequest* req,
@@ -244,7 +244,7 @@ FollowMeService::Service::Service() {
   AddMethod(new ::grpc::internal::RpcServiceMethod(
       FollowMeService_method_names[3],
       ::grpc::internal::RpcMethod::NORMAL_RPC,
-      new ::grpc::internal::RpcMethodHandler< FollowMeService::Service, ::mavsdk::rpc::follow_me::SetTargetLocationRequest, ::mavsdk::rpc::follow_me::SetTargetLocationResponse>(
+      new ::grpc::internal::RpcMethodHandler< FollowMeService::Service, ::mavsdk::rpc::follow_me::SetTargetLocationRequest, ::mavsdk::rpc::follow_me::SetTargetLocationResponse, ::grpc::protobuf::MessageLite, ::grpc::protobuf::MessageLite>(
           [](FollowMeService::Service* service,
              ::grpc::ServerContext* ctx,
              const ::mavsdk::rpc::follow_me::SetTargetLocationRequest* req,
@@ -254,7 +254,7 @@ FollowMeService::Service::Service() {
   AddMethod(new ::grpc::internal::RpcServiceMethod(
       FollowMeService_method_names[4],
       ::grpc::internal::RpcMethod::NORMAL_RPC,
-      new ::grpc::internal::RpcMethodHandler< FollowMeService::Service, ::mavsdk::rpc::follow_me::GetLastLocationRequest, ::mavsdk::rpc::follow_me::GetLastLocationResponse>(
+      new ::grpc::internal::RpcMethodHandler< FollowMeService::Service, ::mavsdk::rpc::follow_me::GetLastLocationRequest, ::mavsdk::rpc::follow_me::GetLastLocationResponse, ::grpc::protobuf::MessageLite, ::grpc::protobuf::MessageLite>(
           [](FollowMeService::Service* service,
              ::grpc::ServerContext* ctx,
              const ::mavsdk::rpc::follow_me::GetLastLocationRequest* req,
@@ -264,7 +264,7 @@ FollowMeService::Service::Service() {
   AddMethod(new ::grpc::internal::RpcServiceMethod(
       FollowMeService_method_names[5],
       ::grpc::internal::RpcMethod::NORMAL_RPC,
-      new ::grpc::internal::RpcMethodHandler< FollowMeService::Service, ::mavsdk::rpc::follow_me::StartRequest, ::mavsdk::rpc::follow_me::StartResponse>(
+      new ::grpc::internal::RpcMethodHandler< FollowMeService::Service, ::mavsdk::rpc::follow_me::StartRequest, ::mavsdk::rpc::follow_me::StartResponse, ::grpc::protobuf::MessageLite, ::grpc::protobuf::MessageLite>(
           [](FollowMeService::Service* service,
              ::grpc::ServerContext* ctx,
              const ::mavsdk::rpc::follow_me::StartRequest* req,
@@ -274,7 +274,7 @@ FollowMeService::Service::Service() {
   AddMethod(new ::grpc::internal::RpcServiceMethod(
       FollowMeService_method_names[6],
       ::grpc::internal::RpcMethod::NORMAL_RPC,
-      new ::grpc::internal::RpcMethodHandler< FollowMeService::Service, ::mavsdk::rpc::follow_me::StopRequest, ::mavsdk::rpc::follow_me::StopResponse>(
+      new ::grpc::internal::RpcMethodHandler< FollowMeService::Service, ::mavsdk::rpc::follow_me::StopRequest, ::mavsdk::rpc::follow_me::StopResponse, ::grpc::protobuf::MessageLite, ::grpc::protobuf::MessageLite>(
           [](FollowMeService::Service* service,
              ::grpc::ServerContext* ctx,
              const ::mavsdk::rpc::follow_me::StopRequest* req,

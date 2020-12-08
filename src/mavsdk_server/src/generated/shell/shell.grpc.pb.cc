@@ -40,19 +40,19 @@ ShellService::Stub::Stub(const std::shared_ptr< ::grpc::ChannelInterface>& chann
   {}
 
 ::grpc::Status ShellService::Stub::Send(::grpc::ClientContext* context, const ::mavsdk::rpc::shell::SendRequest& request, ::mavsdk::rpc::shell::SendResponse* response) {
-  return ::grpc::internal::BlockingUnaryCall(channel_.get(), rpcmethod_Send_, context, request, response);
+  return ::grpc::internal::BlockingUnaryCall< ::mavsdk::rpc::shell::SendRequest, ::mavsdk::rpc::shell::SendResponse, ::grpc::protobuf::MessageLite, ::grpc::protobuf::MessageLite>(channel_.get(), rpcmethod_Send_, context, request, response);
 }
 
 void ShellService::Stub::experimental_async::Send(::grpc::ClientContext* context, const ::mavsdk::rpc::shell::SendRequest* request, ::mavsdk::rpc::shell::SendResponse* response, std::function<void(::grpc::Status)> f) {
-  ::grpc::internal::CallbackUnaryCall(stub_->channel_.get(), stub_->rpcmethod_Send_, context, request, response, std::move(f));
+  ::grpc::internal::CallbackUnaryCall< ::mavsdk::rpc::shell::SendRequest, ::mavsdk::rpc::shell::SendResponse, ::grpc::protobuf::MessageLite, ::grpc::protobuf::MessageLite>(stub_->channel_.get(), stub_->rpcmethod_Send_, context, request, response, std::move(f));
 }
 
 void ShellService::Stub::experimental_async::Send(::grpc::ClientContext* context, const ::mavsdk::rpc::shell::SendRequest* request, ::mavsdk::rpc::shell::SendResponse* response, ::grpc::experimental::ClientUnaryReactor* reactor) {
-  ::grpc::internal::ClientCallbackUnaryFactory::Create(stub_->channel_.get(), stub_->rpcmethod_Send_, context, request, response, reactor);
+  ::grpc::internal::ClientCallbackUnaryFactory::Create< ::grpc::protobuf::MessageLite, ::grpc::protobuf::MessageLite>(stub_->channel_.get(), stub_->rpcmethod_Send_, context, request, response, reactor);
 }
 
 ::grpc::ClientAsyncResponseReader< ::mavsdk::rpc::shell::SendResponse>* ShellService::Stub::PrepareAsyncSendRaw(::grpc::ClientContext* context, const ::mavsdk::rpc::shell::SendRequest& request, ::grpc::CompletionQueue* cq) {
-  return ::grpc::internal::ClientAsyncResponseReaderFactory< ::mavsdk::rpc::shell::SendResponse>::Create(channel_.get(), cq, rpcmethod_Send_, context, request, false);
+  return ::grpc::internal::ClientAsyncResponseReaderHelper::Create< ::mavsdk::rpc::shell::SendResponse, ::mavsdk::rpc::shell::SendRequest, ::grpc::protobuf::MessageLite, ::grpc::protobuf::MessageLite>(channel_.get(), cq, rpcmethod_Send_, context, request);
 }
 
 ::grpc::ClientAsyncResponseReader< ::mavsdk::rpc::shell::SendResponse>* ShellService::Stub::AsyncSendRaw(::grpc::ClientContext* context, const ::mavsdk::rpc::shell::SendRequest& request, ::grpc::CompletionQueue* cq) {
@@ -82,7 +82,7 @@ ShellService::Service::Service() {
   AddMethod(new ::grpc::internal::RpcServiceMethod(
       ShellService_method_names[0],
       ::grpc::internal::RpcMethod::NORMAL_RPC,
-      new ::grpc::internal::RpcMethodHandler< ShellService::Service, ::mavsdk::rpc::shell::SendRequest, ::mavsdk::rpc::shell::SendResponse>(
+      new ::grpc::internal::RpcMethodHandler< ShellService::Service, ::mavsdk::rpc::shell::SendRequest, ::mavsdk::rpc::shell::SendResponse, ::grpc::protobuf::MessageLite, ::grpc::protobuf::MessageLite>(
           [](ShellService::Service* service,
              ::grpc::ServerContext* ctx,
              const ::mavsdk::rpc::shell::SendRequest* req,
