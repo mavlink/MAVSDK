@@ -335,6 +335,9 @@ if(USED_CMAKE_GENERATOR MATCHES "Xcode")
   endif()
 endif()
 
+# Required from Xcode 12 on, because it now builds for arm macbooks and we don't support that.
+set(CMAKE_XCODE_ATTRIBUTE_EXCLUDED_ARCHS[sdk=iphonesimulator*] "arm64")
+
 # Specify minimum version of deployment target.
 if(NOT DEFINED DEPLOYMENT_TARGET)
   if (PLATFORM_INT STREQUAL "WATCHOS" OR PLATFORM_INT STREQUAL "SIMULATOR_WATCHOS")

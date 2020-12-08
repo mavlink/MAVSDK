@@ -56,19 +56,19 @@ void CoreService::Stub::experimental_async::SubscribeConnectionState(::grpc::Cli
 }
 
 ::grpc::Status CoreService::Stub::ListRunningPlugins(::grpc::ClientContext* context, const ::mavsdk::rpc::core::ListRunningPluginsRequest& request, ::mavsdk::rpc::core::ListRunningPluginsResponse* response) {
-  return ::grpc::internal::BlockingUnaryCall(channel_.get(), rpcmethod_ListRunningPlugins_, context, request, response);
+  return ::grpc::internal::BlockingUnaryCall< ::mavsdk::rpc::core::ListRunningPluginsRequest, ::mavsdk::rpc::core::ListRunningPluginsResponse, ::grpc::protobuf::MessageLite, ::grpc::protobuf::MessageLite>(channel_.get(), rpcmethod_ListRunningPlugins_, context, request, response);
 }
 
 void CoreService::Stub::experimental_async::ListRunningPlugins(::grpc::ClientContext* context, const ::mavsdk::rpc::core::ListRunningPluginsRequest* request, ::mavsdk::rpc::core::ListRunningPluginsResponse* response, std::function<void(::grpc::Status)> f) {
-  ::grpc::internal::CallbackUnaryCall(stub_->channel_.get(), stub_->rpcmethod_ListRunningPlugins_, context, request, response, std::move(f));
+  ::grpc::internal::CallbackUnaryCall< ::mavsdk::rpc::core::ListRunningPluginsRequest, ::mavsdk::rpc::core::ListRunningPluginsResponse, ::grpc::protobuf::MessageLite, ::grpc::protobuf::MessageLite>(stub_->channel_.get(), stub_->rpcmethod_ListRunningPlugins_, context, request, response, std::move(f));
 }
 
 void CoreService::Stub::experimental_async::ListRunningPlugins(::grpc::ClientContext* context, const ::mavsdk::rpc::core::ListRunningPluginsRequest* request, ::mavsdk::rpc::core::ListRunningPluginsResponse* response, ::grpc::experimental::ClientUnaryReactor* reactor) {
-  ::grpc::internal::ClientCallbackUnaryFactory::Create(stub_->channel_.get(), stub_->rpcmethod_ListRunningPlugins_, context, request, response, reactor);
+  ::grpc::internal::ClientCallbackUnaryFactory::Create< ::grpc::protobuf::MessageLite, ::grpc::protobuf::MessageLite>(stub_->channel_.get(), stub_->rpcmethod_ListRunningPlugins_, context, request, response, reactor);
 }
 
 ::grpc::ClientAsyncResponseReader< ::mavsdk::rpc::core::ListRunningPluginsResponse>* CoreService::Stub::PrepareAsyncListRunningPluginsRaw(::grpc::ClientContext* context, const ::mavsdk::rpc::core::ListRunningPluginsRequest& request, ::grpc::CompletionQueue* cq) {
-  return ::grpc::internal::ClientAsyncResponseReaderFactory< ::mavsdk::rpc::core::ListRunningPluginsResponse>::Create(channel_.get(), cq, rpcmethod_ListRunningPlugins_, context, request, false);
+  return ::grpc::internal::ClientAsyncResponseReaderHelper::Create< ::mavsdk::rpc::core::ListRunningPluginsResponse, ::mavsdk::rpc::core::ListRunningPluginsRequest, ::grpc::protobuf::MessageLite, ::grpc::protobuf::MessageLite>(channel_.get(), cq, rpcmethod_ListRunningPlugins_, context, request);
 }
 
 ::grpc::ClientAsyncResponseReader< ::mavsdk::rpc::core::ListRunningPluginsResponse>* CoreService::Stub::AsyncListRunningPluginsRaw(::grpc::ClientContext* context, const ::mavsdk::rpc::core::ListRunningPluginsRequest& request, ::grpc::CompletionQueue* cq) {
@@ -92,7 +92,7 @@ CoreService::Service::Service() {
   AddMethod(new ::grpc::internal::RpcServiceMethod(
       CoreService_method_names[1],
       ::grpc::internal::RpcMethod::NORMAL_RPC,
-      new ::grpc::internal::RpcMethodHandler< CoreService::Service, ::mavsdk::rpc::core::ListRunningPluginsRequest, ::mavsdk::rpc::core::ListRunningPluginsResponse>(
+      new ::grpc::internal::RpcMethodHandler< CoreService::Service, ::mavsdk::rpc::core::ListRunningPluginsRequest, ::mavsdk::rpc::core::ListRunningPluginsResponse, ::grpc::protobuf::MessageLite, ::grpc::protobuf::MessageLite>(
           [](CoreService::Service* service,
              ::grpc::ServerContext* ctx,
              const ::mavsdk::rpc::core::ListRunningPluginsRequest* req,

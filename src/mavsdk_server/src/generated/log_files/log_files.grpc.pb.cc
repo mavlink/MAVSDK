@@ -40,19 +40,19 @@ LogFilesService::Stub::Stub(const std::shared_ptr< ::grpc::ChannelInterface>& ch
   {}
 
 ::grpc::Status LogFilesService::Stub::GetEntries(::grpc::ClientContext* context, const ::mavsdk::rpc::log_files::GetEntriesRequest& request, ::mavsdk::rpc::log_files::GetEntriesResponse* response) {
-  return ::grpc::internal::BlockingUnaryCall(channel_.get(), rpcmethod_GetEntries_, context, request, response);
+  return ::grpc::internal::BlockingUnaryCall< ::mavsdk::rpc::log_files::GetEntriesRequest, ::mavsdk::rpc::log_files::GetEntriesResponse, ::grpc::protobuf::MessageLite, ::grpc::protobuf::MessageLite>(channel_.get(), rpcmethod_GetEntries_, context, request, response);
 }
 
 void LogFilesService::Stub::experimental_async::GetEntries(::grpc::ClientContext* context, const ::mavsdk::rpc::log_files::GetEntriesRequest* request, ::mavsdk::rpc::log_files::GetEntriesResponse* response, std::function<void(::grpc::Status)> f) {
-  ::grpc::internal::CallbackUnaryCall(stub_->channel_.get(), stub_->rpcmethod_GetEntries_, context, request, response, std::move(f));
+  ::grpc::internal::CallbackUnaryCall< ::mavsdk::rpc::log_files::GetEntriesRequest, ::mavsdk::rpc::log_files::GetEntriesResponse, ::grpc::protobuf::MessageLite, ::grpc::protobuf::MessageLite>(stub_->channel_.get(), stub_->rpcmethod_GetEntries_, context, request, response, std::move(f));
 }
 
 void LogFilesService::Stub::experimental_async::GetEntries(::grpc::ClientContext* context, const ::mavsdk::rpc::log_files::GetEntriesRequest* request, ::mavsdk::rpc::log_files::GetEntriesResponse* response, ::grpc::experimental::ClientUnaryReactor* reactor) {
-  ::grpc::internal::ClientCallbackUnaryFactory::Create(stub_->channel_.get(), stub_->rpcmethod_GetEntries_, context, request, response, reactor);
+  ::grpc::internal::ClientCallbackUnaryFactory::Create< ::grpc::protobuf::MessageLite, ::grpc::protobuf::MessageLite>(stub_->channel_.get(), stub_->rpcmethod_GetEntries_, context, request, response, reactor);
 }
 
 ::grpc::ClientAsyncResponseReader< ::mavsdk::rpc::log_files::GetEntriesResponse>* LogFilesService::Stub::PrepareAsyncGetEntriesRaw(::grpc::ClientContext* context, const ::mavsdk::rpc::log_files::GetEntriesRequest& request, ::grpc::CompletionQueue* cq) {
-  return ::grpc::internal::ClientAsyncResponseReaderFactory< ::mavsdk::rpc::log_files::GetEntriesResponse>::Create(channel_.get(), cq, rpcmethod_GetEntries_, context, request, false);
+  return ::grpc::internal::ClientAsyncResponseReaderHelper::Create< ::mavsdk::rpc::log_files::GetEntriesResponse, ::mavsdk::rpc::log_files::GetEntriesRequest, ::grpc::protobuf::MessageLite, ::grpc::protobuf::MessageLite>(channel_.get(), cq, rpcmethod_GetEntries_, context, request);
 }
 
 ::grpc::ClientAsyncResponseReader< ::mavsdk::rpc::log_files::GetEntriesResponse>* LogFilesService::Stub::AsyncGetEntriesRaw(::grpc::ClientContext* context, const ::mavsdk::rpc::log_files::GetEntriesRequest& request, ::grpc::CompletionQueue* cq) {
@@ -82,7 +82,7 @@ LogFilesService::Service::Service() {
   AddMethod(new ::grpc::internal::RpcServiceMethod(
       LogFilesService_method_names[0],
       ::grpc::internal::RpcMethod::NORMAL_RPC,
-      new ::grpc::internal::RpcMethodHandler< LogFilesService::Service, ::mavsdk::rpc::log_files::GetEntriesRequest, ::mavsdk::rpc::log_files::GetEntriesResponse>(
+      new ::grpc::internal::RpcMethodHandler< LogFilesService::Service, ::mavsdk::rpc::log_files::GetEntriesRequest, ::mavsdk::rpc::log_files::GetEntriesResponse, ::grpc::protobuf::MessageLite, ::grpc::protobuf::MessageLite>(
           [](LogFilesService::Service* service,
              ::grpc::ServerContext* ctx,
              const ::mavsdk::rpc::log_files::GetEntriesRequest* req,

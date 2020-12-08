@@ -38,19 +38,19 @@ TuneService::Stub::Stub(const std::shared_ptr< ::grpc::ChannelInterface>& channe
   {}
 
 ::grpc::Status TuneService::Stub::PlayTune(::grpc::ClientContext* context, const ::mavsdk::rpc::tune::PlayTuneRequest& request, ::mavsdk::rpc::tune::PlayTuneResponse* response) {
-  return ::grpc::internal::BlockingUnaryCall(channel_.get(), rpcmethod_PlayTune_, context, request, response);
+  return ::grpc::internal::BlockingUnaryCall< ::mavsdk::rpc::tune::PlayTuneRequest, ::mavsdk::rpc::tune::PlayTuneResponse, ::grpc::protobuf::MessageLite, ::grpc::protobuf::MessageLite>(channel_.get(), rpcmethod_PlayTune_, context, request, response);
 }
 
 void TuneService::Stub::experimental_async::PlayTune(::grpc::ClientContext* context, const ::mavsdk::rpc::tune::PlayTuneRequest* request, ::mavsdk::rpc::tune::PlayTuneResponse* response, std::function<void(::grpc::Status)> f) {
-  ::grpc::internal::CallbackUnaryCall(stub_->channel_.get(), stub_->rpcmethod_PlayTune_, context, request, response, std::move(f));
+  ::grpc::internal::CallbackUnaryCall< ::mavsdk::rpc::tune::PlayTuneRequest, ::mavsdk::rpc::tune::PlayTuneResponse, ::grpc::protobuf::MessageLite, ::grpc::protobuf::MessageLite>(stub_->channel_.get(), stub_->rpcmethod_PlayTune_, context, request, response, std::move(f));
 }
 
 void TuneService::Stub::experimental_async::PlayTune(::grpc::ClientContext* context, const ::mavsdk::rpc::tune::PlayTuneRequest* request, ::mavsdk::rpc::tune::PlayTuneResponse* response, ::grpc::experimental::ClientUnaryReactor* reactor) {
-  ::grpc::internal::ClientCallbackUnaryFactory::Create(stub_->channel_.get(), stub_->rpcmethod_PlayTune_, context, request, response, reactor);
+  ::grpc::internal::ClientCallbackUnaryFactory::Create< ::grpc::protobuf::MessageLite, ::grpc::protobuf::MessageLite>(stub_->channel_.get(), stub_->rpcmethod_PlayTune_, context, request, response, reactor);
 }
 
 ::grpc::ClientAsyncResponseReader< ::mavsdk::rpc::tune::PlayTuneResponse>* TuneService::Stub::PrepareAsyncPlayTuneRaw(::grpc::ClientContext* context, const ::mavsdk::rpc::tune::PlayTuneRequest& request, ::grpc::CompletionQueue* cq) {
-  return ::grpc::internal::ClientAsyncResponseReaderFactory< ::mavsdk::rpc::tune::PlayTuneResponse>::Create(channel_.get(), cq, rpcmethod_PlayTune_, context, request, false);
+  return ::grpc::internal::ClientAsyncResponseReaderHelper::Create< ::mavsdk::rpc::tune::PlayTuneResponse, ::mavsdk::rpc::tune::PlayTuneRequest, ::grpc::protobuf::MessageLite, ::grpc::protobuf::MessageLite>(channel_.get(), cq, rpcmethod_PlayTune_, context, request);
 }
 
 ::grpc::ClientAsyncResponseReader< ::mavsdk::rpc::tune::PlayTuneResponse>* TuneService::Stub::AsyncPlayTuneRaw(::grpc::ClientContext* context, const ::mavsdk::rpc::tune::PlayTuneRequest& request, ::grpc::CompletionQueue* cq) {
@@ -64,7 +64,7 @@ TuneService::Service::Service() {
   AddMethod(new ::grpc::internal::RpcServiceMethod(
       TuneService_method_names[0],
       ::grpc::internal::RpcMethod::NORMAL_RPC,
-      new ::grpc::internal::RpcMethodHandler< TuneService::Service, ::mavsdk::rpc::tune::PlayTuneRequest, ::mavsdk::rpc::tune::PlayTuneResponse>(
+      new ::grpc::internal::RpcMethodHandler< TuneService::Service, ::mavsdk::rpc::tune::PlayTuneRequest, ::mavsdk::rpc::tune::PlayTuneResponse, ::grpc::protobuf::MessageLite, ::grpc::protobuf::MessageLite>(
           [](TuneService::Service* service,
              ::grpc::ServerContext* ctx,
              const ::mavsdk::rpc::tune::PlayTuneRequest* req,

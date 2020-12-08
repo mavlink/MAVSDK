@@ -56,19 +56,19 @@ OffboardService::Stub::Stub(const std::shared_ptr< ::grpc::ChannelInterface>& ch
   {}
 
 ::grpc::Status OffboardService::Stub::Start(::grpc::ClientContext* context, const ::mavsdk::rpc::offboard::StartRequest& request, ::mavsdk::rpc::offboard::StartResponse* response) {
-  return ::grpc::internal::BlockingUnaryCall(channel_.get(), rpcmethod_Start_, context, request, response);
+  return ::grpc::internal::BlockingUnaryCall< ::mavsdk::rpc::offboard::StartRequest, ::mavsdk::rpc::offboard::StartResponse, ::grpc::protobuf::MessageLite, ::grpc::protobuf::MessageLite>(channel_.get(), rpcmethod_Start_, context, request, response);
 }
 
 void OffboardService::Stub::experimental_async::Start(::grpc::ClientContext* context, const ::mavsdk::rpc::offboard::StartRequest* request, ::mavsdk::rpc::offboard::StartResponse* response, std::function<void(::grpc::Status)> f) {
-  ::grpc::internal::CallbackUnaryCall(stub_->channel_.get(), stub_->rpcmethod_Start_, context, request, response, std::move(f));
+  ::grpc::internal::CallbackUnaryCall< ::mavsdk::rpc::offboard::StartRequest, ::mavsdk::rpc::offboard::StartResponse, ::grpc::protobuf::MessageLite, ::grpc::protobuf::MessageLite>(stub_->channel_.get(), stub_->rpcmethod_Start_, context, request, response, std::move(f));
 }
 
 void OffboardService::Stub::experimental_async::Start(::grpc::ClientContext* context, const ::mavsdk::rpc::offboard::StartRequest* request, ::mavsdk::rpc::offboard::StartResponse* response, ::grpc::experimental::ClientUnaryReactor* reactor) {
-  ::grpc::internal::ClientCallbackUnaryFactory::Create(stub_->channel_.get(), stub_->rpcmethod_Start_, context, request, response, reactor);
+  ::grpc::internal::ClientCallbackUnaryFactory::Create< ::grpc::protobuf::MessageLite, ::grpc::protobuf::MessageLite>(stub_->channel_.get(), stub_->rpcmethod_Start_, context, request, response, reactor);
 }
 
 ::grpc::ClientAsyncResponseReader< ::mavsdk::rpc::offboard::StartResponse>* OffboardService::Stub::PrepareAsyncStartRaw(::grpc::ClientContext* context, const ::mavsdk::rpc::offboard::StartRequest& request, ::grpc::CompletionQueue* cq) {
-  return ::grpc::internal::ClientAsyncResponseReaderFactory< ::mavsdk::rpc::offboard::StartResponse>::Create(channel_.get(), cq, rpcmethod_Start_, context, request, false);
+  return ::grpc::internal::ClientAsyncResponseReaderHelper::Create< ::mavsdk::rpc::offboard::StartResponse, ::mavsdk::rpc::offboard::StartRequest, ::grpc::protobuf::MessageLite, ::grpc::protobuf::MessageLite>(channel_.get(), cq, rpcmethod_Start_, context, request);
 }
 
 ::grpc::ClientAsyncResponseReader< ::mavsdk::rpc::offboard::StartResponse>* OffboardService::Stub::AsyncStartRaw(::grpc::ClientContext* context, const ::mavsdk::rpc::offboard::StartRequest& request, ::grpc::CompletionQueue* cq) {
@@ -79,19 +79,19 @@ void OffboardService::Stub::experimental_async::Start(::grpc::ClientContext* con
 }
 
 ::grpc::Status OffboardService::Stub::Stop(::grpc::ClientContext* context, const ::mavsdk::rpc::offboard::StopRequest& request, ::mavsdk::rpc::offboard::StopResponse* response) {
-  return ::grpc::internal::BlockingUnaryCall(channel_.get(), rpcmethod_Stop_, context, request, response);
+  return ::grpc::internal::BlockingUnaryCall< ::mavsdk::rpc::offboard::StopRequest, ::mavsdk::rpc::offboard::StopResponse, ::grpc::protobuf::MessageLite, ::grpc::protobuf::MessageLite>(channel_.get(), rpcmethod_Stop_, context, request, response);
 }
 
 void OffboardService::Stub::experimental_async::Stop(::grpc::ClientContext* context, const ::mavsdk::rpc::offboard::StopRequest* request, ::mavsdk::rpc::offboard::StopResponse* response, std::function<void(::grpc::Status)> f) {
-  ::grpc::internal::CallbackUnaryCall(stub_->channel_.get(), stub_->rpcmethod_Stop_, context, request, response, std::move(f));
+  ::grpc::internal::CallbackUnaryCall< ::mavsdk::rpc::offboard::StopRequest, ::mavsdk::rpc::offboard::StopResponse, ::grpc::protobuf::MessageLite, ::grpc::protobuf::MessageLite>(stub_->channel_.get(), stub_->rpcmethod_Stop_, context, request, response, std::move(f));
 }
 
 void OffboardService::Stub::experimental_async::Stop(::grpc::ClientContext* context, const ::mavsdk::rpc::offboard::StopRequest* request, ::mavsdk::rpc::offboard::StopResponse* response, ::grpc::experimental::ClientUnaryReactor* reactor) {
-  ::grpc::internal::ClientCallbackUnaryFactory::Create(stub_->channel_.get(), stub_->rpcmethod_Stop_, context, request, response, reactor);
+  ::grpc::internal::ClientCallbackUnaryFactory::Create< ::grpc::protobuf::MessageLite, ::grpc::protobuf::MessageLite>(stub_->channel_.get(), stub_->rpcmethod_Stop_, context, request, response, reactor);
 }
 
 ::grpc::ClientAsyncResponseReader< ::mavsdk::rpc::offboard::StopResponse>* OffboardService::Stub::PrepareAsyncStopRaw(::grpc::ClientContext* context, const ::mavsdk::rpc::offboard::StopRequest& request, ::grpc::CompletionQueue* cq) {
-  return ::grpc::internal::ClientAsyncResponseReaderFactory< ::mavsdk::rpc::offboard::StopResponse>::Create(channel_.get(), cq, rpcmethod_Stop_, context, request, false);
+  return ::grpc::internal::ClientAsyncResponseReaderHelper::Create< ::mavsdk::rpc::offboard::StopResponse, ::mavsdk::rpc::offboard::StopRequest, ::grpc::protobuf::MessageLite, ::grpc::protobuf::MessageLite>(channel_.get(), cq, rpcmethod_Stop_, context, request);
 }
 
 ::grpc::ClientAsyncResponseReader< ::mavsdk::rpc::offboard::StopResponse>* OffboardService::Stub::AsyncStopRaw(::grpc::ClientContext* context, const ::mavsdk::rpc::offboard::StopRequest& request, ::grpc::CompletionQueue* cq) {
@@ -102,19 +102,19 @@ void OffboardService::Stub::experimental_async::Stop(::grpc::ClientContext* cont
 }
 
 ::grpc::Status OffboardService::Stub::IsActive(::grpc::ClientContext* context, const ::mavsdk::rpc::offboard::IsActiveRequest& request, ::mavsdk::rpc::offboard::IsActiveResponse* response) {
-  return ::grpc::internal::BlockingUnaryCall(channel_.get(), rpcmethod_IsActive_, context, request, response);
+  return ::grpc::internal::BlockingUnaryCall< ::mavsdk::rpc::offboard::IsActiveRequest, ::mavsdk::rpc::offboard::IsActiveResponse, ::grpc::protobuf::MessageLite, ::grpc::protobuf::MessageLite>(channel_.get(), rpcmethod_IsActive_, context, request, response);
 }
 
 void OffboardService::Stub::experimental_async::IsActive(::grpc::ClientContext* context, const ::mavsdk::rpc::offboard::IsActiveRequest* request, ::mavsdk::rpc::offboard::IsActiveResponse* response, std::function<void(::grpc::Status)> f) {
-  ::grpc::internal::CallbackUnaryCall(stub_->channel_.get(), stub_->rpcmethod_IsActive_, context, request, response, std::move(f));
+  ::grpc::internal::CallbackUnaryCall< ::mavsdk::rpc::offboard::IsActiveRequest, ::mavsdk::rpc::offboard::IsActiveResponse, ::grpc::protobuf::MessageLite, ::grpc::protobuf::MessageLite>(stub_->channel_.get(), stub_->rpcmethod_IsActive_, context, request, response, std::move(f));
 }
 
 void OffboardService::Stub::experimental_async::IsActive(::grpc::ClientContext* context, const ::mavsdk::rpc::offboard::IsActiveRequest* request, ::mavsdk::rpc::offboard::IsActiveResponse* response, ::grpc::experimental::ClientUnaryReactor* reactor) {
-  ::grpc::internal::ClientCallbackUnaryFactory::Create(stub_->channel_.get(), stub_->rpcmethod_IsActive_, context, request, response, reactor);
+  ::grpc::internal::ClientCallbackUnaryFactory::Create< ::grpc::protobuf::MessageLite, ::grpc::protobuf::MessageLite>(stub_->channel_.get(), stub_->rpcmethod_IsActive_, context, request, response, reactor);
 }
 
 ::grpc::ClientAsyncResponseReader< ::mavsdk::rpc::offboard::IsActiveResponse>* OffboardService::Stub::PrepareAsyncIsActiveRaw(::grpc::ClientContext* context, const ::mavsdk::rpc::offboard::IsActiveRequest& request, ::grpc::CompletionQueue* cq) {
-  return ::grpc::internal::ClientAsyncResponseReaderFactory< ::mavsdk::rpc::offboard::IsActiveResponse>::Create(channel_.get(), cq, rpcmethod_IsActive_, context, request, false);
+  return ::grpc::internal::ClientAsyncResponseReaderHelper::Create< ::mavsdk::rpc::offboard::IsActiveResponse, ::mavsdk::rpc::offboard::IsActiveRequest, ::grpc::protobuf::MessageLite, ::grpc::protobuf::MessageLite>(channel_.get(), cq, rpcmethod_IsActive_, context, request);
 }
 
 ::grpc::ClientAsyncResponseReader< ::mavsdk::rpc::offboard::IsActiveResponse>* OffboardService::Stub::AsyncIsActiveRaw(::grpc::ClientContext* context, const ::mavsdk::rpc::offboard::IsActiveRequest& request, ::grpc::CompletionQueue* cq) {
@@ -125,19 +125,19 @@ void OffboardService::Stub::experimental_async::IsActive(::grpc::ClientContext* 
 }
 
 ::grpc::Status OffboardService::Stub::SetAttitude(::grpc::ClientContext* context, const ::mavsdk::rpc::offboard::SetAttitudeRequest& request, ::mavsdk::rpc::offboard::SetAttitudeResponse* response) {
-  return ::grpc::internal::BlockingUnaryCall(channel_.get(), rpcmethod_SetAttitude_, context, request, response);
+  return ::grpc::internal::BlockingUnaryCall< ::mavsdk::rpc::offboard::SetAttitudeRequest, ::mavsdk::rpc::offboard::SetAttitudeResponse, ::grpc::protobuf::MessageLite, ::grpc::protobuf::MessageLite>(channel_.get(), rpcmethod_SetAttitude_, context, request, response);
 }
 
 void OffboardService::Stub::experimental_async::SetAttitude(::grpc::ClientContext* context, const ::mavsdk::rpc::offboard::SetAttitudeRequest* request, ::mavsdk::rpc::offboard::SetAttitudeResponse* response, std::function<void(::grpc::Status)> f) {
-  ::grpc::internal::CallbackUnaryCall(stub_->channel_.get(), stub_->rpcmethod_SetAttitude_, context, request, response, std::move(f));
+  ::grpc::internal::CallbackUnaryCall< ::mavsdk::rpc::offboard::SetAttitudeRequest, ::mavsdk::rpc::offboard::SetAttitudeResponse, ::grpc::protobuf::MessageLite, ::grpc::protobuf::MessageLite>(stub_->channel_.get(), stub_->rpcmethod_SetAttitude_, context, request, response, std::move(f));
 }
 
 void OffboardService::Stub::experimental_async::SetAttitude(::grpc::ClientContext* context, const ::mavsdk::rpc::offboard::SetAttitudeRequest* request, ::mavsdk::rpc::offboard::SetAttitudeResponse* response, ::grpc::experimental::ClientUnaryReactor* reactor) {
-  ::grpc::internal::ClientCallbackUnaryFactory::Create(stub_->channel_.get(), stub_->rpcmethod_SetAttitude_, context, request, response, reactor);
+  ::grpc::internal::ClientCallbackUnaryFactory::Create< ::grpc::protobuf::MessageLite, ::grpc::protobuf::MessageLite>(stub_->channel_.get(), stub_->rpcmethod_SetAttitude_, context, request, response, reactor);
 }
 
 ::grpc::ClientAsyncResponseReader< ::mavsdk::rpc::offboard::SetAttitudeResponse>* OffboardService::Stub::PrepareAsyncSetAttitudeRaw(::grpc::ClientContext* context, const ::mavsdk::rpc::offboard::SetAttitudeRequest& request, ::grpc::CompletionQueue* cq) {
-  return ::grpc::internal::ClientAsyncResponseReaderFactory< ::mavsdk::rpc::offboard::SetAttitudeResponse>::Create(channel_.get(), cq, rpcmethod_SetAttitude_, context, request, false);
+  return ::grpc::internal::ClientAsyncResponseReaderHelper::Create< ::mavsdk::rpc::offboard::SetAttitudeResponse, ::mavsdk::rpc::offboard::SetAttitudeRequest, ::grpc::protobuf::MessageLite, ::grpc::protobuf::MessageLite>(channel_.get(), cq, rpcmethod_SetAttitude_, context, request);
 }
 
 ::grpc::ClientAsyncResponseReader< ::mavsdk::rpc::offboard::SetAttitudeResponse>* OffboardService::Stub::AsyncSetAttitudeRaw(::grpc::ClientContext* context, const ::mavsdk::rpc::offboard::SetAttitudeRequest& request, ::grpc::CompletionQueue* cq) {
@@ -148,19 +148,19 @@ void OffboardService::Stub::experimental_async::SetAttitude(::grpc::ClientContex
 }
 
 ::grpc::Status OffboardService::Stub::SetActuatorControl(::grpc::ClientContext* context, const ::mavsdk::rpc::offboard::SetActuatorControlRequest& request, ::mavsdk::rpc::offboard::SetActuatorControlResponse* response) {
-  return ::grpc::internal::BlockingUnaryCall(channel_.get(), rpcmethod_SetActuatorControl_, context, request, response);
+  return ::grpc::internal::BlockingUnaryCall< ::mavsdk::rpc::offboard::SetActuatorControlRequest, ::mavsdk::rpc::offboard::SetActuatorControlResponse, ::grpc::protobuf::MessageLite, ::grpc::protobuf::MessageLite>(channel_.get(), rpcmethod_SetActuatorControl_, context, request, response);
 }
 
 void OffboardService::Stub::experimental_async::SetActuatorControl(::grpc::ClientContext* context, const ::mavsdk::rpc::offboard::SetActuatorControlRequest* request, ::mavsdk::rpc::offboard::SetActuatorControlResponse* response, std::function<void(::grpc::Status)> f) {
-  ::grpc::internal::CallbackUnaryCall(stub_->channel_.get(), stub_->rpcmethod_SetActuatorControl_, context, request, response, std::move(f));
+  ::grpc::internal::CallbackUnaryCall< ::mavsdk::rpc::offboard::SetActuatorControlRequest, ::mavsdk::rpc::offboard::SetActuatorControlResponse, ::grpc::protobuf::MessageLite, ::grpc::protobuf::MessageLite>(stub_->channel_.get(), stub_->rpcmethod_SetActuatorControl_, context, request, response, std::move(f));
 }
 
 void OffboardService::Stub::experimental_async::SetActuatorControl(::grpc::ClientContext* context, const ::mavsdk::rpc::offboard::SetActuatorControlRequest* request, ::mavsdk::rpc::offboard::SetActuatorControlResponse* response, ::grpc::experimental::ClientUnaryReactor* reactor) {
-  ::grpc::internal::ClientCallbackUnaryFactory::Create(stub_->channel_.get(), stub_->rpcmethod_SetActuatorControl_, context, request, response, reactor);
+  ::grpc::internal::ClientCallbackUnaryFactory::Create< ::grpc::protobuf::MessageLite, ::grpc::protobuf::MessageLite>(stub_->channel_.get(), stub_->rpcmethod_SetActuatorControl_, context, request, response, reactor);
 }
 
 ::grpc::ClientAsyncResponseReader< ::mavsdk::rpc::offboard::SetActuatorControlResponse>* OffboardService::Stub::PrepareAsyncSetActuatorControlRaw(::grpc::ClientContext* context, const ::mavsdk::rpc::offboard::SetActuatorControlRequest& request, ::grpc::CompletionQueue* cq) {
-  return ::grpc::internal::ClientAsyncResponseReaderFactory< ::mavsdk::rpc::offboard::SetActuatorControlResponse>::Create(channel_.get(), cq, rpcmethod_SetActuatorControl_, context, request, false);
+  return ::grpc::internal::ClientAsyncResponseReaderHelper::Create< ::mavsdk::rpc::offboard::SetActuatorControlResponse, ::mavsdk::rpc::offboard::SetActuatorControlRequest, ::grpc::protobuf::MessageLite, ::grpc::protobuf::MessageLite>(channel_.get(), cq, rpcmethod_SetActuatorControl_, context, request);
 }
 
 ::grpc::ClientAsyncResponseReader< ::mavsdk::rpc::offboard::SetActuatorControlResponse>* OffboardService::Stub::AsyncSetActuatorControlRaw(::grpc::ClientContext* context, const ::mavsdk::rpc::offboard::SetActuatorControlRequest& request, ::grpc::CompletionQueue* cq) {
@@ -171,19 +171,19 @@ void OffboardService::Stub::experimental_async::SetActuatorControl(::grpc::Clien
 }
 
 ::grpc::Status OffboardService::Stub::SetAttitudeRate(::grpc::ClientContext* context, const ::mavsdk::rpc::offboard::SetAttitudeRateRequest& request, ::mavsdk::rpc::offboard::SetAttitudeRateResponse* response) {
-  return ::grpc::internal::BlockingUnaryCall(channel_.get(), rpcmethod_SetAttitudeRate_, context, request, response);
+  return ::grpc::internal::BlockingUnaryCall< ::mavsdk::rpc::offboard::SetAttitudeRateRequest, ::mavsdk::rpc::offboard::SetAttitudeRateResponse, ::grpc::protobuf::MessageLite, ::grpc::protobuf::MessageLite>(channel_.get(), rpcmethod_SetAttitudeRate_, context, request, response);
 }
 
 void OffboardService::Stub::experimental_async::SetAttitudeRate(::grpc::ClientContext* context, const ::mavsdk::rpc::offboard::SetAttitudeRateRequest* request, ::mavsdk::rpc::offboard::SetAttitudeRateResponse* response, std::function<void(::grpc::Status)> f) {
-  ::grpc::internal::CallbackUnaryCall(stub_->channel_.get(), stub_->rpcmethod_SetAttitudeRate_, context, request, response, std::move(f));
+  ::grpc::internal::CallbackUnaryCall< ::mavsdk::rpc::offboard::SetAttitudeRateRequest, ::mavsdk::rpc::offboard::SetAttitudeRateResponse, ::grpc::protobuf::MessageLite, ::grpc::protobuf::MessageLite>(stub_->channel_.get(), stub_->rpcmethod_SetAttitudeRate_, context, request, response, std::move(f));
 }
 
 void OffboardService::Stub::experimental_async::SetAttitudeRate(::grpc::ClientContext* context, const ::mavsdk::rpc::offboard::SetAttitudeRateRequest* request, ::mavsdk::rpc::offboard::SetAttitudeRateResponse* response, ::grpc::experimental::ClientUnaryReactor* reactor) {
-  ::grpc::internal::ClientCallbackUnaryFactory::Create(stub_->channel_.get(), stub_->rpcmethod_SetAttitudeRate_, context, request, response, reactor);
+  ::grpc::internal::ClientCallbackUnaryFactory::Create< ::grpc::protobuf::MessageLite, ::grpc::protobuf::MessageLite>(stub_->channel_.get(), stub_->rpcmethod_SetAttitudeRate_, context, request, response, reactor);
 }
 
 ::grpc::ClientAsyncResponseReader< ::mavsdk::rpc::offboard::SetAttitudeRateResponse>* OffboardService::Stub::PrepareAsyncSetAttitudeRateRaw(::grpc::ClientContext* context, const ::mavsdk::rpc::offboard::SetAttitudeRateRequest& request, ::grpc::CompletionQueue* cq) {
-  return ::grpc::internal::ClientAsyncResponseReaderFactory< ::mavsdk::rpc::offboard::SetAttitudeRateResponse>::Create(channel_.get(), cq, rpcmethod_SetAttitudeRate_, context, request, false);
+  return ::grpc::internal::ClientAsyncResponseReaderHelper::Create< ::mavsdk::rpc::offboard::SetAttitudeRateResponse, ::mavsdk::rpc::offboard::SetAttitudeRateRequest, ::grpc::protobuf::MessageLite, ::grpc::protobuf::MessageLite>(channel_.get(), cq, rpcmethod_SetAttitudeRate_, context, request);
 }
 
 ::grpc::ClientAsyncResponseReader< ::mavsdk::rpc::offboard::SetAttitudeRateResponse>* OffboardService::Stub::AsyncSetAttitudeRateRaw(::grpc::ClientContext* context, const ::mavsdk::rpc::offboard::SetAttitudeRateRequest& request, ::grpc::CompletionQueue* cq) {
@@ -194,19 +194,19 @@ void OffboardService::Stub::experimental_async::SetAttitudeRate(::grpc::ClientCo
 }
 
 ::grpc::Status OffboardService::Stub::SetPositionNed(::grpc::ClientContext* context, const ::mavsdk::rpc::offboard::SetPositionNedRequest& request, ::mavsdk::rpc::offboard::SetPositionNedResponse* response) {
-  return ::grpc::internal::BlockingUnaryCall(channel_.get(), rpcmethod_SetPositionNed_, context, request, response);
+  return ::grpc::internal::BlockingUnaryCall< ::mavsdk::rpc::offboard::SetPositionNedRequest, ::mavsdk::rpc::offboard::SetPositionNedResponse, ::grpc::protobuf::MessageLite, ::grpc::protobuf::MessageLite>(channel_.get(), rpcmethod_SetPositionNed_, context, request, response);
 }
 
 void OffboardService::Stub::experimental_async::SetPositionNed(::grpc::ClientContext* context, const ::mavsdk::rpc::offboard::SetPositionNedRequest* request, ::mavsdk::rpc::offboard::SetPositionNedResponse* response, std::function<void(::grpc::Status)> f) {
-  ::grpc::internal::CallbackUnaryCall(stub_->channel_.get(), stub_->rpcmethod_SetPositionNed_, context, request, response, std::move(f));
+  ::grpc::internal::CallbackUnaryCall< ::mavsdk::rpc::offboard::SetPositionNedRequest, ::mavsdk::rpc::offboard::SetPositionNedResponse, ::grpc::protobuf::MessageLite, ::grpc::protobuf::MessageLite>(stub_->channel_.get(), stub_->rpcmethod_SetPositionNed_, context, request, response, std::move(f));
 }
 
 void OffboardService::Stub::experimental_async::SetPositionNed(::grpc::ClientContext* context, const ::mavsdk::rpc::offboard::SetPositionNedRequest* request, ::mavsdk::rpc::offboard::SetPositionNedResponse* response, ::grpc::experimental::ClientUnaryReactor* reactor) {
-  ::grpc::internal::ClientCallbackUnaryFactory::Create(stub_->channel_.get(), stub_->rpcmethod_SetPositionNed_, context, request, response, reactor);
+  ::grpc::internal::ClientCallbackUnaryFactory::Create< ::grpc::protobuf::MessageLite, ::grpc::protobuf::MessageLite>(stub_->channel_.get(), stub_->rpcmethod_SetPositionNed_, context, request, response, reactor);
 }
 
 ::grpc::ClientAsyncResponseReader< ::mavsdk::rpc::offboard::SetPositionNedResponse>* OffboardService::Stub::PrepareAsyncSetPositionNedRaw(::grpc::ClientContext* context, const ::mavsdk::rpc::offboard::SetPositionNedRequest& request, ::grpc::CompletionQueue* cq) {
-  return ::grpc::internal::ClientAsyncResponseReaderFactory< ::mavsdk::rpc::offboard::SetPositionNedResponse>::Create(channel_.get(), cq, rpcmethod_SetPositionNed_, context, request, false);
+  return ::grpc::internal::ClientAsyncResponseReaderHelper::Create< ::mavsdk::rpc::offboard::SetPositionNedResponse, ::mavsdk::rpc::offboard::SetPositionNedRequest, ::grpc::protobuf::MessageLite, ::grpc::protobuf::MessageLite>(channel_.get(), cq, rpcmethod_SetPositionNed_, context, request);
 }
 
 ::grpc::ClientAsyncResponseReader< ::mavsdk::rpc::offboard::SetPositionNedResponse>* OffboardService::Stub::AsyncSetPositionNedRaw(::grpc::ClientContext* context, const ::mavsdk::rpc::offboard::SetPositionNedRequest& request, ::grpc::CompletionQueue* cq) {
@@ -217,19 +217,19 @@ void OffboardService::Stub::experimental_async::SetPositionNed(::grpc::ClientCon
 }
 
 ::grpc::Status OffboardService::Stub::SetVelocityBody(::grpc::ClientContext* context, const ::mavsdk::rpc::offboard::SetVelocityBodyRequest& request, ::mavsdk::rpc::offboard::SetVelocityBodyResponse* response) {
-  return ::grpc::internal::BlockingUnaryCall(channel_.get(), rpcmethod_SetVelocityBody_, context, request, response);
+  return ::grpc::internal::BlockingUnaryCall< ::mavsdk::rpc::offboard::SetVelocityBodyRequest, ::mavsdk::rpc::offboard::SetVelocityBodyResponse, ::grpc::protobuf::MessageLite, ::grpc::protobuf::MessageLite>(channel_.get(), rpcmethod_SetVelocityBody_, context, request, response);
 }
 
 void OffboardService::Stub::experimental_async::SetVelocityBody(::grpc::ClientContext* context, const ::mavsdk::rpc::offboard::SetVelocityBodyRequest* request, ::mavsdk::rpc::offboard::SetVelocityBodyResponse* response, std::function<void(::grpc::Status)> f) {
-  ::grpc::internal::CallbackUnaryCall(stub_->channel_.get(), stub_->rpcmethod_SetVelocityBody_, context, request, response, std::move(f));
+  ::grpc::internal::CallbackUnaryCall< ::mavsdk::rpc::offboard::SetVelocityBodyRequest, ::mavsdk::rpc::offboard::SetVelocityBodyResponse, ::grpc::protobuf::MessageLite, ::grpc::protobuf::MessageLite>(stub_->channel_.get(), stub_->rpcmethod_SetVelocityBody_, context, request, response, std::move(f));
 }
 
 void OffboardService::Stub::experimental_async::SetVelocityBody(::grpc::ClientContext* context, const ::mavsdk::rpc::offboard::SetVelocityBodyRequest* request, ::mavsdk::rpc::offboard::SetVelocityBodyResponse* response, ::grpc::experimental::ClientUnaryReactor* reactor) {
-  ::grpc::internal::ClientCallbackUnaryFactory::Create(stub_->channel_.get(), stub_->rpcmethod_SetVelocityBody_, context, request, response, reactor);
+  ::grpc::internal::ClientCallbackUnaryFactory::Create< ::grpc::protobuf::MessageLite, ::grpc::protobuf::MessageLite>(stub_->channel_.get(), stub_->rpcmethod_SetVelocityBody_, context, request, response, reactor);
 }
 
 ::grpc::ClientAsyncResponseReader< ::mavsdk::rpc::offboard::SetVelocityBodyResponse>* OffboardService::Stub::PrepareAsyncSetVelocityBodyRaw(::grpc::ClientContext* context, const ::mavsdk::rpc::offboard::SetVelocityBodyRequest& request, ::grpc::CompletionQueue* cq) {
-  return ::grpc::internal::ClientAsyncResponseReaderFactory< ::mavsdk::rpc::offboard::SetVelocityBodyResponse>::Create(channel_.get(), cq, rpcmethod_SetVelocityBody_, context, request, false);
+  return ::grpc::internal::ClientAsyncResponseReaderHelper::Create< ::mavsdk::rpc::offboard::SetVelocityBodyResponse, ::mavsdk::rpc::offboard::SetVelocityBodyRequest, ::grpc::protobuf::MessageLite, ::grpc::protobuf::MessageLite>(channel_.get(), cq, rpcmethod_SetVelocityBody_, context, request);
 }
 
 ::grpc::ClientAsyncResponseReader< ::mavsdk::rpc::offboard::SetVelocityBodyResponse>* OffboardService::Stub::AsyncSetVelocityBodyRaw(::grpc::ClientContext* context, const ::mavsdk::rpc::offboard::SetVelocityBodyRequest& request, ::grpc::CompletionQueue* cq) {
@@ -240,19 +240,19 @@ void OffboardService::Stub::experimental_async::SetVelocityBody(::grpc::ClientCo
 }
 
 ::grpc::Status OffboardService::Stub::SetVelocityNed(::grpc::ClientContext* context, const ::mavsdk::rpc::offboard::SetVelocityNedRequest& request, ::mavsdk::rpc::offboard::SetVelocityNedResponse* response) {
-  return ::grpc::internal::BlockingUnaryCall(channel_.get(), rpcmethod_SetVelocityNed_, context, request, response);
+  return ::grpc::internal::BlockingUnaryCall< ::mavsdk::rpc::offboard::SetVelocityNedRequest, ::mavsdk::rpc::offboard::SetVelocityNedResponse, ::grpc::protobuf::MessageLite, ::grpc::protobuf::MessageLite>(channel_.get(), rpcmethod_SetVelocityNed_, context, request, response);
 }
 
 void OffboardService::Stub::experimental_async::SetVelocityNed(::grpc::ClientContext* context, const ::mavsdk::rpc::offboard::SetVelocityNedRequest* request, ::mavsdk::rpc::offboard::SetVelocityNedResponse* response, std::function<void(::grpc::Status)> f) {
-  ::grpc::internal::CallbackUnaryCall(stub_->channel_.get(), stub_->rpcmethod_SetVelocityNed_, context, request, response, std::move(f));
+  ::grpc::internal::CallbackUnaryCall< ::mavsdk::rpc::offboard::SetVelocityNedRequest, ::mavsdk::rpc::offboard::SetVelocityNedResponse, ::grpc::protobuf::MessageLite, ::grpc::protobuf::MessageLite>(stub_->channel_.get(), stub_->rpcmethod_SetVelocityNed_, context, request, response, std::move(f));
 }
 
 void OffboardService::Stub::experimental_async::SetVelocityNed(::grpc::ClientContext* context, const ::mavsdk::rpc::offboard::SetVelocityNedRequest* request, ::mavsdk::rpc::offboard::SetVelocityNedResponse* response, ::grpc::experimental::ClientUnaryReactor* reactor) {
-  ::grpc::internal::ClientCallbackUnaryFactory::Create(stub_->channel_.get(), stub_->rpcmethod_SetVelocityNed_, context, request, response, reactor);
+  ::grpc::internal::ClientCallbackUnaryFactory::Create< ::grpc::protobuf::MessageLite, ::grpc::protobuf::MessageLite>(stub_->channel_.get(), stub_->rpcmethod_SetVelocityNed_, context, request, response, reactor);
 }
 
 ::grpc::ClientAsyncResponseReader< ::mavsdk::rpc::offboard::SetVelocityNedResponse>* OffboardService::Stub::PrepareAsyncSetVelocityNedRaw(::grpc::ClientContext* context, const ::mavsdk::rpc::offboard::SetVelocityNedRequest& request, ::grpc::CompletionQueue* cq) {
-  return ::grpc::internal::ClientAsyncResponseReaderFactory< ::mavsdk::rpc::offboard::SetVelocityNedResponse>::Create(channel_.get(), cq, rpcmethod_SetVelocityNed_, context, request, false);
+  return ::grpc::internal::ClientAsyncResponseReaderHelper::Create< ::mavsdk::rpc::offboard::SetVelocityNedResponse, ::mavsdk::rpc::offboard::SetVelocityNedRequest, ::grpc::protobuf::MessageLite, ::grpc::protobuf::MessageLite>(channel_.get(), cq, rpcmethod_SetVelocityNed_, context, request);
 }
 
 ::grpc::ClientAsyncResponseReader< ::mavsdk::rpc::offboard::SetVelocityNedResponse>* OffboardService::Stub::AsyncSetVelocityNedRaw(::grpc::ClientContext* context, const ::mavsdk::rpc::offboard::SetVelocityNedRequest& request, ::grpc::CompletionQueue* cq) {
@@ -263,19 +263,19 @@ void OffboardService::Stub::experimental_async::SetVelocityNed(::grpc::ClientCon
 }
 
 ::grpc::Status OffboardService::Stub::SetPositionVelocityNed(::grpc::ClientContext* context, const ::mavsdk::rpc::offboard::SetPositionVelocityNedRequest& request, ::mavsdk::rpc::offboard::SetPositionVelocityNedResponse* response) {
-  return ::grpc::internal::BlockingUnaryCall(channel_.get(), rpcmethod_SetPositionVelocityNed_, context, request, response);
+  return ::grpc::internal::BlockingUnaryCall< ::mavsdk::rpc::offboard::SetPositionVelocityNedRequest, ::mavsdk::rpc::offboard::SetPositionVelocityNedResponse, ::grpc::protobuf::MessageLite, ::grpc::protobuf::MessageLite>(channel_.get(), rpcmethod_SetPositionVelocityNed_, context, request, response);
 }
 
 void OffboardService::Stub::experimental_async::SetPositionVelocityNed(::grpc::ClientContext* context, const ::mavsdk::rpc::offboard::SetPositionVelocityNedRequest* request, ::mavsdk::rpc::offboard::SetPositionVelocityNedResponse* response, std::function<void(::grpc::Status)> f) {
-  ::grpc::internal::CallbackUnaryCall(stub_->channel_.get(), stub_->rpcmethod_SetPositionVelocityNed_, context, request, response, std::move(f));
+  ::grpc::internal::CallbackUnaryCall< ::mavsdk::rpc::offboard::SetPositionVelocityNedRequest, ::mavsdk::rpc::offboard::SetPositionVelocityNedResponse, ::grpc::protobuf::MessageLite, ::grpc::protobuf::MessageLite>(stub_->channel_.get(), stub_->rpcmethod_SetPositionVelocityNed_, context, request, response, std::move(f));
 }
 
 void OffboardService::Stub::experimental_async::SetPositionVelocityNed(::grpc::ClientContext* context, const ::mavsdk::rpc::offboard::SetPositionVelocityNedRequest* request, ::mavsdk::rpc::offboard::SetPositionVelocityNedResponse* response, ::grpc::experimental::ClientUnaryReactor* reactor) {
-  ::grpc::internal::ClientCallbackUnaryFactory::Create(stub_->channel_.get(), stub_->rpcmethod_SetPositionVelocityNed_, context, request, response, reactor);
+  ::grpc::internal::ClientCallbackUnaryFactory::Create< ::grpc::protobuf::MessageLite, ::grpc::protobuf::MessageLite>(stub_->channel_.get(), stub_->rpcmethod_SetPositionVelocityNed_, context, request, response, reactor);
 }
 
 ::grpc::ClientAsyncResponseReader< ::mavsdk::rpc::offboard::SetPositionVelocityNedResponse>* OffboardService::Stub::PrepareAsyncSetPositionVelocityNedRaw(::grpc::ClientContext* context, const ::mavsdk::rpc::offboard::SetPositionVelocityNedRequest& request, ::grpc::CompletionQueue* cq) {
-  return ::grpc::internal::ClientAsyncResponseReaderFactory< ::mavsdk::rpc::offboard::SetPositionVelocityNedResponse>::Create(channel_.get(), cq, rpcmethod_SetPositionVelocityNed_, context, request, false);
+  return ::grpc::internal::ClientAsyncResponseReaderHelper::Create< ::mavsdk::rpc::offboard::SetPositionVelocityNedResponse, ::mavsdk::rpc::offboard::SetPositionVelocityNedRequest, ::grpc::protobuf::MessageLite, ::grpc::protobuf::MessageLite>(channel_.get(), cq, rpcmethod_SetPositionVelocityNed_, context, request);
 }
 
 ::grpc::ClientAsyncResponseReader< ::mavsdk::rpc::offboard::SetPositionVelocityNedResponse>* OffboardService::Stub::AsyncSetPositionVelocityNedRaw(::grpc::ClientContext* context, const ::mavsdk::rpc::offboard::SetPositionVelocityNedRequest& request, ::grpc::CompletionQueue* cq) {
@@ -289,7 +289,7 @@ OffboardService::Service::Service() {
   AddMethod(new ::grpc::internal::RpcServiceMethod(
       OffboardService_method_names[0],
       ::grpc::internal::RpcMethod::NORMAL_RPC,
-      new ::grpc::internal::RpcMethodHandler< OffboardService::Service, ::mavsdk::rpc::offboard::StartRequest, ::mavsdk::rpc::offboard::StartResponse>(
+      new ::grpc::internal::RpcMethodHandler< OffboardService::Service, ::mavsdk::rpc::offboard::StartRequest, ::mavsdk::rpc::offboard::StartResponse, ::grpc::protobuf::MessageLite, ::grpc::protobuf::MessageLite>(
           [](OffboardService::Service* service,
              ::grpc::ServerContext* ctx,
              const ::mavsdk::rpc::offboard::StartRequest* req,
@@ -299,7 +299,7 @@ OffboardService::Service::Service() {
   AddMethod(new ::grpc::internal::RpcServiceMethod(
       OffboardService_method_names[1],
       ::grpc::internal::RpcMethod::NORMAL_RPC,
-      new ::grpc::internal::RpcMethodHandler< OffboardService::Service, ::mavsdk::rpc::offboard::StopRequest, ::mavsdk::rpc::offboard::StopResponse>(
+      new ::grpc::internal::RpcMethodHandler< OffboardService::Service, ::mavsdk::rpc::offboard::StopRequest, ::mavsdk::rpc::offboard::StopResponse, ::grpc::protobuf::MessageLite, ::grpc::protobuf::MessageLite>(
           [](OffboardService::Service* service,
              ::grpc::ServerContext* ctx,
              const ::mavsdk::rpc::offboard::StopRequest* req,
@@ -309,7 +309,7 @@ OffboardService::Service::Service() {
   AddMethod(new ::grpc::internal::RpcServiceMethod(
       OffboardService_method_names[2],
       ::grpc::internal::RpcMethod::NORMAL_RPC,
-      new ::grpc::internal::RpcMethodHandler< OffboardService::Service, ::mavsdk::rpc::offboard::IsActiveRequest, ::mavsdk::rpc::offboard::IsActiveResponse>(
+      new ::grpc::internal::RpcMethodHandler< OffboardService::Service, ::mavsdk::rpc::offboard::IsActiveRequest, ::mavsdk::rpc::offboard::IsActiveResponse, ::grpc::protobuf::MessageLite, ::grpc::protobuf::MessageLite>(
           [](OffboardService::Service* service,
              ::grpc::ServerContext* ctx,
              const ::mavsdk::rpc::offboard::IsActiveRequest* req,
@@ -319,7 +319,7 @@ OffboardService::Service::Service() {
   AddMethod(new ::grpc::internal::RpcServiceMethod(
       OffboardService_method_names[3],
       ::grpc::internal::RpcMethod::NORMAL_RPC,
-      new ::grpc::internal::RpcMethodHandler< OffboardService::Service, ::mavsdk::rpc::offboard::SetAttitudeRequest, ::mavsdk::rpc::offboard::SetAttitudeResponse>(
+      new ::grpc::internal::RpcMethodHandler< OffboardService::Service, ::mavsdk::rpc::offboard::SetAttitudeRequest, ::mavsdk::rpc::offboard::SetAttitudeResponse, ::grpc::protobuf::MessageLite, ::grpc::protobuf::MessageLite>(
           [](OffboardService::Service* service,
              ::grpc::ServerContext* ctx,
              const ::mavsdk::rpc::offboard::SetAttitudeRequest* req,
@@ -329,7 +329,7 @@ OffboardService::Service::Service() {
   AddMethod(new ::grpc::internal::RpcServiceMethod(
       OffboardService_method_names[4],
       ::grpc::internal::RpcMethod::NORMAL_RPC,
-      new ::grpc::internal::RpcMethodHandler< OffboardService::Service, ::mavsdk::rpc::offboard::SetActuatorControlRequest, ::mavsdk::rpc::offboard::SetActuatorControlResponse>(
+      new ::grpc::internal::RpcMethodHandler< OffboardService::Service, ::mavsdk::rpc::offboard::SetActuatorControlRequest, ::mavsdk::rpc::offboard::SetActuatorControlResponse, ::grpc::protobuf::MessageLite, ::grpc::protobuf::MessageLite>(
           [](OffboardService::Service* service,
              ::grpc::ServerContext* ctx,
              const ::mavsdk::rpc::offboard::SetActuatorControlRequest* req,
@@ -339,7 +339,7 @@ OffboardService::Service::Service() {
   AddMethod(new ::grpc::internal::RpcServiceMethod(
       OffboardService_method_names[5],
       ::grpc::internal::RpcMethod::NORMAL_RPC,
-      new ::grpc::internal::RpcMethodHandler< OffboardService::Service, ::mavsdk::rpc::offboard::SetAttitudeRateRequest, ::mavsdk::rpc::offboard::SetAttitudeRateResponse>(
+      new ::grpc::internal::RpcMethodHandler< OffboardService::Service, ::mavsdk::rpc::offboard::SetAttitudeRateRequest, ::mavsdk::rpc::offboard::SetAttitudeRateResponse, ::grpc::protobuf::MessageLite, ::grpc::protobuf::MessageLite>(
           [](OffboardService::Service* service,
              ::grpc::ServerContext* ctx,
              const ::mavsdk::rpc::offboard::SetAttitudeRateRequest* req,
@@ -349,7 +349,7 @@ OffboardService::Service::Service() {
   AddMethod(new ::grpc::internal::RpcServiceMethod(
       OffboardService_method_names[6],
       ::grpc::internal::RpcMethod::NORMAL_RPC,
-      new ::grpc::internal::RpcMethodHandler< OffboardService::Service, ::mavsdk::rpc::offboard::SetPositionNedRequest, ::mavsdk::rpc::offboard::SetPositionNedResponse>(
+      new ::grpc::internal::RpcMethodHandler< OffboardService::Service, ::mavsdk::rpc::offboard::SetPositionNedRequest, ::mavsdk::rpc::offboard::SetPositionNedResponse, ::grpc::protobuf::MessageLite, ::grpc::protobuf::MessageLite>(
           [](OffboardService::Service* service,
              ::grpc::ServerContext* ctx,
              const ::mavsdk::rpc::offboard::SetPositionNedRequest* req,
@@ -359,7 +359,7 @@ OffboardService::Service::Service() {
   AddMethod(new ::grpc::internal::RpcServiceMethod(
       OffboardService_method_names[7],
       ::grpc::internal::RpcMethod::NORMAL_RPC,
-      new ::grpc::internal::RpcMethodHandler< OffboardService::Service, ::mavsdk::rpc::offboard::SetVelocityBodyRequest, ::mavsdk::rpc::offboard::SetVelocityBodyResponse>(
+      new ::grpc::internal::RpcMethodHandler< OffboardService::Service, ::mavsdk::rpc::offboard::SetVelocityBodyRequest, ::mavsdk::rpc::offboard::SetVelocityBodyResponse, ::grpc::protobuf::MessageLite, ::grpc::protobuf::MessageLite>(
           [](OffboardService::Service* service,
              ::grpc::ServerContext* ctx,
              const ::mavsdk::rpc::offboard::SetVelocityBodyRequest* req,
@@ -369,7 +369,7 @@ OffboardService::Service::Service() {
   AddMethod(new ::grpc::internal::RpcServiceMethod(
       OffboardService_method_names[8],
       ::grpc::internal::RpcMethod::NORMAL_RPC,
-      new ::grpc::internal::RpcMethodHandler< OffboardService::Service, ::mavsdk::rpc::offboard::SetVelocityNedRequest, ::mavsdk::rpc::offboard::SetVelocityNedResponse>(
+      new ::grpc::internal::RpcMethodHandler< OffboardService::Service, ::mavsdk::rpc::offboard::SetVelocityNedRequest, ::mavsdk::rpc::offboard::SetVelocityNedResponse, ::grpc::protobuf::MessageLite, ::grpc::protobuf::MessageLite>(
           [](OffboardService::Service* service,
              ::grpc::ServerContext* ctx,
              const ::mavsdk::rpc::offboard::SetVelocityNedRequest* req,
@@ -379,7 +379,7 @@ OffboardService::Service::Service() {
   AddMethod(new ::grpc::internal::RpcServiceMethod(
       OffboardService_method_names[9],
       ::grpc::internal::RpcMethod::NORMAL_RPC,
-      new ::grpc::internal::RpcMethodHandler< OffboardService::Service, ::mavsdk::rpc::offboard::SetPositionVelocityNedRequest, ::mavsdk::rpc::offboard::SetPositionVelocityNedResponse>(
+      new ::grpc::internal::RpcMethodHandler< OffboardService::Service, ::mavsdk::rpc::offboard::SetPositionVelocityNedRequest, ::mavsdk::rpc::offboard::SetPositionVelocityNedResponse, ::grpc::protobuf::MessageLite, ::grpc::protobuf::MessageLite>(
           [](OffboardService::Service* service,
              ::grpc::ServerContext* ctx,
              const ::mavsdk::rpc::offboard::SetPositionVelocityNedRequest* req,
