@@ -1,3 +1,5 @@
+option(CMAKE_POSITION_INDEPENDENT_CODE "Position independent code" ON)
+
 if(MINGW)
     add_definitions(-DWINDOWS -DMINGW)
 endif()
