@@ -44,6 +44,7 @@ target_link_libraries(mavsdk2
     MAVSDK::mavsdk_info
     MAVSDK::mavsdk_log_files
     MAVSDK::mavsdk_manual_control
+    MAVSDK::mavsdk_mavlink_passthrough
     MAVSDK::mavsdk_mission
     MAVSDK::mavsdk_mission_raw
     MAVSDK::mavsdk_mocap
