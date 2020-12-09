@@ -5,11 +5,11 @@
 #include <mavsdk/plugins/{{ plugin_name.lower_snake_case }}/{{ plugin_name.lower_snake_case }}.h>
 
 namespace py = pybind11;
-void init_{{ plugin_name.lower_snake_case }}(py::module_ &m) {
+void init_{{ plugin_name.lower_snake_case }}(py::module_ &m, py::class_<mavsdk::System>& system) {
     py::class_<mavsdk::{{ plugin_name.upper_camel_case }}> {{ plugin_name.lower_snake_case }}(m, "{{ plugin_name.upper_camel_case }}");
 
 
-{{ plugin_name.lower_snake_case }}.def(py::init<std::shared_ptr<mavsdk::System>>())
+{{ plugin_name.lower_snake_case }}
 {% for method in methods -%}
 {{ indent(method, 1) }}
 {% endfor %};
@@ -21,4 +21,6 @@ void init_{{ plugin_name.lower_snake_case }}(py::module_ &m) {
 {% for struct in structs %}
 {{ struct }}
 {% endfor %}
+
+    system.def("{{ plugin_name.lower_snake_case }}", &mavsdk::System::{{ plugin_name.lower_snake_case }}, py::return_value_policy::reference_internal, py::keep_alive<1,0>());
 }

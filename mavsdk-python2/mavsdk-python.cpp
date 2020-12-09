@@ -5,32 +5,33 @@
 
 namespace py = pybind11;
 
-void init_action(py::module_ &);
-void init_calibration(py::module_ &);
-void init_camera(py::module_ &);
-void init_failure(py::module_ &);
-void init_follow_me(py::module_ &);
-void init_ftp(py::module_ &);
-void init_geofence(py::module_ &);
-void init_gimbal(py::module_ &);
-void init_info(py::module_ &);
-void init_log_files(py::module_ &);
-void init_manual_control(py::module_ &);
-void init_mission(py::module_ &);
-void init_mission_raw(py::module_ &);
-void init_mocap(py::module_ &);
-void init_offboard(py::module_ &);
-void init_param(py::module_ &);
-void init_shell(py::module_ &);
-void init_telemetry(py::module_ &);
-void init_tune(py::module_ &);
+void init_action(py::module_&, py::class_<mavsdk::System>&);
+void init_calibration(py::module_&, py::class_<mavsdk::System>&);
+void init_camera(py::module_&, py::class_<mavsdk::System>&);
+void init_failure(py::module_&, py::class_<mavsdk::System>&);
+void init_follow_me(py::module_&, py::class_<mavsdk::System>&);
+void init_ftp(py::module_&, py::class_<mavsdk::System>&);
+void init_geofence(py::module_&, py::class_<mavsdk::System>&);
+void init_gimbal(py::module_&, py::class_<mavsdk::System>&);
+void init_info(py::module_&, py::class_<mavsdk::System>&);
+void init_log_files(py::module_&, py::class_<mavsdk::System>&);
+void init_manual_control(py::module_&, py::class_<mavsdk::System>&);
+void init_mission(py::module_&, py::class_<mavsdk::System>&);
+void init_mission_raw(py::module_&, py::class_<mavsdk::System>&);
+void init_mocap(py::module_&, py::class_<mavsdk::System>&);
+void init_offboard(py::module_&, py::class_<mavsdk::System>&);
+void init_param(py::module_&, py::class_<mavsdk::System>&);
+void init_shell(py::module_&, py::class_<mavsdk::System>&);
+void init_telemetry(py::module_&, py::class_<mavsdk::System>&);
+void init_tune(py::module_&, py::class_<mavsdk::System>&);
 
-PYBIND11_MODULE(mavsdk2, m) {
+PYBIND11_MODULE(mavsdk2, m)
+{
     py::class_<mavsdk::Mavsdk>(m, "Mavsdk")
         .def(py::init<>())
         .def("version", &mavsdk::Mavsdk::version)
         .def("add_any_connection", &mavsdk::Mavsdk::add_any_connection)
-        .def("systems", &mavsdk::Mavsdk::systems, py::return_value_policy::reference);
+        .def("systems", &mavsdk::Mavsdk::systems, py::keep_alive<1, 0>());
 
     py::enum_<mavsdk::ConnectionResult>(m, "ConnectionResult")
         .value("Success", mavsdk::ConnectionResult::Success)
@@ -48,25 +49,25 @@ PYBIND11_MODULE(mavsdk2, m) {
         .value("ConnectionUrlInvalid", mavsdk::ConnectionResult::ConnectionUrlInvalid)
         .value("BaudrateUnknown", mavsdk::ConnectionResult::BaudrateUnknown);
 
-    py::class_<mavsdk::System, std::shared_ptr<mavsdk::System>>(m, "System");
+    py::class_<mavsdk::System> system(m, "System");
 
-    init_action(m);
-    init_calibration(m);
-    init_camera(m);
-    init_failure(m);
-    init_follow_me(m);
-    init_ftp(m);
-    init_geofence(m);
-    init_gimbal(m);
-    init_info(m);
-    init_log_files(m);
-    init_manual_control(m);
-    init_mission(m);
-    init_mission_raw(m);
-    init_mocap(m);
-    init_offboard(m);
-    init_param(m);
-    init_shell(m);
-    init_telemetry(m);
-    init_tune(m);
+    init_action(m, system);
+    init_calibration(m, system);
+    init_camera(m, system);
+    init_failure(m, system);
+    init_follow_me(m, system);
+    init_ftp(m, system);
+    init_geofence(m, system);
+    init_gimbal(m, system);
+    init_info(m, system);
+    init_log_files(m, system);
+    init_manual_control(m, system);
+    init_mission(m, system);
+    init_mission_raw(m, system);
+    init_mocap(m, system);
+    init_offboard(m, system);
+    init_param(m, system);
+    init_shell(m, system);
+    init_telemetry(m, system);
+    init_tune(m, system);
 }

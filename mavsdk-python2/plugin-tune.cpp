@@ -5,14 +5,11 @@
 #include <mavsdk/plugins/tune/tune.h>
 
 namespace py = pybind11;
-void init_tune(py::module_ &m) {
+void init_tune(py::module_& m, py::class_<mavsdk::System>& system)
+{
     py::class_<mavsdk::Tune> tune(m, "Tune");
 
-
-tune.def(py::init<std::shared_ptr<mavsdk::System>>())
-    .def("play_tune", &mavsdk::Tune::play_tune)
-;
-
+    tune.def("play_tune", &mavsdk::Tune::play_tune);
 
     py::enum_<mavsdk::Tune::SongElement>(tune, "SongElement")
         .value("StyleLegato", mavsdk::Tune::SongElement::StyleLegato)
@@ -37,25 +34,21 @@ tune.def(py::init<std::shared_ptr<mavsdk::System>>())
         .value("OctaveUp", mavsdk::Tune::SongElement::OctaveUp)
         .value("OctaveDown", mavsdk::Tune::SongElement::OctaveDown);
 
+    py::class_<mavsdk::Tune::TuneDescription> tune_description(tune, "TuneDescription");
+    tune_description.def(py::init<>())
+        .def_readwrite("song_elements", &mavsdk::Tune::TuneDescription::song_elements)
+        .def_readwrite("tempo", &mavsdk::Tune::TuneDescription::tempo);
 
+    py::enum_<mavsdk::Tune::Result>(tune, "Result")
+        .value("Unknown", mavsdk::Tune::Result::Unknown)
+        .value("Success", mavsdk::Tune::Result::Success)
+        .value("InvalidTempo", mavsdk::Tune::Result::InvalidTempo)
+        .value("TuneTooLong", mavsdk::Tune::Result::TuneTooLong)
+        .value("Error", mavsdk::Tune::Result::Error);
 
-
-py::class_<mavsdk::Tune::TuneDescription> tune_description(tune, "TuneDescription");
-tune_description
-    .def(py::init<>())
-    .def_readwrite("song_elements", &mavsdk::Tune::TuneDescription::song_elements)
-    .def_readwrite("tempo", &mavsdk::Tune::TuneDescription::tempo);
-
-
-
-
-
-py::enum_<mavsdk::Tune::Result>(tune, "Result")
-    .value("Unknown", mavsdk::Tune::Result::Unknown)
-    .value("Success", mavsdk::Tune::Result::Success)
-    .value("InvalidTempo", mavsdk::Tune::Result::InvalidTempo)
-    .value("TuneTooLong", mavsdk::Tune::Result::TuneTooLong)
-    .value("Error", mavsdk::Tune::Result::Error);
-
-
+    system.def(
+        "tune",
+        &mavsdk::System::tune,
+        py::return_value_policy::reference_internal,
+        py::keep_alive<1, 0>());
 }
