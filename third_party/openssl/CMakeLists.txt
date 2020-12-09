@@ -21,7 +21,7 @@ elseif(IOS)
         openssl
         URL https://www.openssl.org/source/openssl-${OPENSSL_VERSION}.tar.gz
         PREFIX openssl
-        CONFIGURE_COMMAND <SOURCE_DIR>/Configure ios64-cross --prefix=${CMAKE_INSTALL_PREFIX} no-shared
+        CONFIGURE_COMMAND <SOURCE_DIR>/Configure $ENV{OPENSSL_PLATFORM} --prefix=${CMAKE_INSTALL_PREFIX} no-shared
         )
 elseif(CMAKE_CROSSCOMPILING) # This assumes we use dockcross
     ExternalProject_add(
@@ -36,7 +36,7 @@ elseif(MSVC)
         openssl
         URL https://www.openssl.org/source/openssl-${OPENSSL_VERSION}.tar.gz
         PREFIX openssl
-	CONFIGURE_COMMAND perl <SOURCE_DIR>/Configure VC-WIN64A --prefix=${CMAKE_INSTALL_PREFIX} no-shared
+        CONFIGURE_COMMAND perl <SOURCE_DIR>/Configure VC-WIN64A --prefix=${CMAKE_INSTALL_PREFIX} no-shared
         BUILD_COMMAND set MAKEFLAGS= && nmake
         INSTALL_COMMAND set MAKEFLAGS= && nmake install
         )
