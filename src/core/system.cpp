@@ -16,7 +16,7 @@ namespace mavsdk {
 using namespace std::placeholders; // for `_1`
 
 System::System(MavsdkImpl& parent, uint8_t system_id, uint8_t component_id, bool connected) :
-    _system_impl(std::make_shared<SystemImpl>(parent, system_id, component_id, connected))
+    _system_impl(std::make_unique<SystemImpl>(parent, system_id, component_id, connected))
 {}
 
 System::~System() {}
@@ -70,6 +70,106 @@ void System::register_component_discovered_callback(discover_callback_t callback
 void System::enable_timesync()
 {
     _system_impl->enable_timesync();
+}
+
+Action* System::action()
+{
+    return _system_impl->action();
+}
+
+Calibration* System::calibration()
+{
+    return _system_impl->calibration();
+}
+
+Camera* System::camera()
+{
+    return _system_impl->camera();
+}
+
+Failure* System::failure()
+{
+    return _system_impl->failure();
+}
+
+FollowMe* System::follow_me()
+{
+    return _system_impl->follow_me();
+}
+
+Ftp* System::ftp()
+{
+    return _system_impl->ftp();
+}
+
+Geofence* System::geofence()
+{
+    return _system_impl->geofence();
+}
+
+Gimbal* System::gimbal()
+{
+    return _system_impl->gimbal();
+}
+
+Info* System::info()
+{
+    return _system_impl->info();
+}
+
+LogFiles* System::log_files()
+{
+    return _system_impl->log_files();
+}
+
+ManualControl* System::manual_control()
+{
+    return _system_impl->manual_control();
+}
+
+MavlinkPassthrough* System::mavlink_passthrough()
+{
+    return _system_impl->mavlink_passthrough();
+}
+
+Mission* System::mission()
+{
+    return _system_impl->mission();
+}
+
+MissionRaw* System::mission_raw()
+{
+    return _system_impl->mission_raw();
+}
+
+Mocap* System::mocap()
+{
+    return _system_impl->mocap();
+}
+
+Offboard* System::offboard()
+{
+    return _system_impl->offboard();
+}
+
+Param* System::param()
+{
+    return _system_impl->param();
+}
+
+Shell* System::shell()
+{
+    return _system_impl->shell();
+}
+
+Telemetry* System::telemetry()
+{
+    return _system_impl->telemetry();
+}
+
+Tune* System::tune()
+{
+    return _system_impl->tune();
 }
 
 } // namespace mavsdk

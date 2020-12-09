@@ -18,6 +18,11 @@ LogFilesImpl::LogFilesImpl(std::shared_ptr<System> system) : PluginImplBase(syst
     _parent->register_plugin(this);
 }
 
+LogFilesImpl::LogFilesImpl(SystemImpl* system_impl) : PluginImplBase(system_impl)
+{
+    _parent->register_plugin(this);
+}
+
 LogFilesImpl::~LogFilesImpl()
 {
     _parent->unregister_plugin(this);

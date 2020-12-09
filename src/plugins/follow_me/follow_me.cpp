@@ -17,6 +17,8 @@ FollowMe::FollowMe(System& system) : PluginBase(), _impl{new FollowMeImpl(system
 FollowMe::FollowMe(std::shared_ptr<System> system) : PluginBase(), _impl{new FollowMeImpl(system)}
 {}
 
+FollowMe::FollowMe(SystemImpl* system_impl) : PluginBase(), _impl{new FollowMeImpl(system_impl)} {}
+
 FollowMe::~FollowMe() {}
 
 FollowMe::Config FollowMe::get_config() const

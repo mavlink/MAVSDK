@@ -13,6 +13,8 @@ Shell::Shell(System& system) : PluginBase(), _impl{new ShellImpl(system)} {}
 
 Shell::Shell(std::shared_ptr<System> system) : PluginBase(), _impl{new ShellImpl(system)} {}
 
+Shell::Shell(SystemImpl* system_impl) : PluginBase(), _impl{new ShellImpl(system_impl)} {}
+
 Shell::~Shell() {}
 
 Shell::Result Shell::send(std::string command) const

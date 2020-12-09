@@ -16,6 +16,12 @@ MavlinkPassthroughImpl::MavlinkPassthroughImpl(std::shared_ptr<System> system) :
     _parent->register_plugin(this);
 }
 
+MavlinkPassthroughImpl::MavlinkPassthroughImpl(SystemImpl* system_impl) :
+    PluginImplBase(system_impl)
+{
+    _parent->register_plugin(this);
+}
+
 MavlinkPassthroughImpl::~MavlinkPassthroughImpl()
 {
     _parent->unregister_plugin(this);

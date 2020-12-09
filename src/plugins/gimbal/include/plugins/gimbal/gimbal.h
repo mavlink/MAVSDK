@@ -18,6 +18,7 @@
 namespace mavsdk {
 
 class System;
+class SystemImpl;
 class GimbalImpl;
 
 /**
@@ -50,6 +51,8 @@ public:
      * @param system The specific system associated with this plugin.
      */
     explicit Gimbal(std::shared_ptr<System> system); // new
+
+    explicit Gimbal(SystemImpl* system_impl); // new
 
     /**
      * @brief Destructor (internal use only).
@@ -318,10 +321,9 @@ public:
      */
     ControlStatus control() const;
 
-    /**
-     * @brief Copy constructor.
+     * @brief Copy constructor (object is not copyable).
      */
-    Gimbal(const Gimbal& other);
+    Gimbal(const Gimbal& other) = delete;
 
     /**
      * @brief Equality operator (object is not copyable).

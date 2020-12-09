@@ -21,6 +21,27 @@ class SystemImpl;
 class MavsdkImpl;
 class PluginImplBase;
 
+class Action;
+class Calibration;
+class Camera;
+class Failure;
+class FollowMe;
+class Ftp;
+class Geofence;
+class Gimbal;
+class Info;
+class LogFiles;
+class ManualControl;
+class MavlinkPassthrough;
+class Mission;
+class MissionRaw;
+class Mocap;
+class Offboard;
+class Param;
+class Shell;
+class Telemetry;
+class Tune;
+
 /**
  * @brief This class represents a system, made up of one or more components
  * (e.g. autopilot, cameras, servos, gimbals, etc).
@@ -128,6 +149,27 @@ public:
      */
     void enable_timesync();
 
+    Action* action();
+    Calibration* calibration();
+    Camera* camera();
+    Failure* failure();
+    FollowMe* follow_me();
+    Ftp* ftp();
+    Geofence* geofence();
+    Gimbal* gimbal();
+    Info* info();
+    LogFiles* log_files();
+    ManualControl* manual_control();
+    MavlinkPassthrough* mavlink_passthrough();
+    Mission* mission();
+    MissionRaw* mission_raw();
+    Mocap* mocap();
+    Offboard* offboard();
+    Param* param();
+    Shell* shell();
+    Telemetry* telemetry();
+    Tune* tune();
+
     /**
      * @brief Copy constructor (object is not copyable).
      */
@@ -139,7 +181,7 @@ public:
     const System& operator=(const System&) = delete;
 
 private:
-    std::shared_ptr<SystemImpl> system_impl() { return _system_impl; };
+    SystemImpl* system_impl() { return _system_impl.get(); };
 
     /*
      * MavsdkImpl and PluginImplBase need access to SystemImpl class.
@@ -149,7 +191,7 @@ private:
     friend MavsdkImpl;
     friend PluginImplBase;
 
-    std::shared_ptr<SystemImpl> _system_impl;
+    std::unique_ptr<SystemImpl> _system_impl;
 };
 
 } // namespace mavsdk

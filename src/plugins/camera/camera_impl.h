@@ -14,6 +14,7 @@ class CameraImpl : public PluginImplBase {
 public:
     explicit CameraImpl(System& system);
     explicit CameraImpl(std::shared_ptr<System> system);
+    explicit CameraImpl(SystemImpl* system_impl);
     ~CameraImpl();
 
     void init() override;

@@ -18,6 +18,7 @@
 namespace mavsdk {
 
 class System;
+class SystemImpl;
 class ShellImpl;
 
 /**
@@ -51,6 +52,8 @@ public:
      * @param system The specific system associated with this plugin.
      */
     explicit Shell(std::shared_ptr<System> system); // new
+
+    explicit Shell(SystemImpl* system_impl); // new
 
     /**
      * @brief Destructor (internal use only).
@@ -105,9 +108,9 @@ public:
     void subscribe_receive(ReceiveCallback callback);
 
     /**
-     * @brief Copy constructor.
+     * @brief Copy constructor (object is not copyable).
      */
-    Shell(const Shell& other);
+    Shell(const Shell& other) = delete;
 
     /**
      * @brief Equality operator (object is not copyable).

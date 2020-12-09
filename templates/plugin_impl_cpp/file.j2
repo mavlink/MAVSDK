@@ -12,6 +12,11 @@ namespace mavsdk {
     _parent->register_plugin(this);
 }
 
+{{ plugin_name.upper_camel_case }}Impl::{{ plugin_name.upper_camel_case }}Impl(SystemImpl* system) : PluginImplBase(system_impl)
+{
+    _parent->register_plugin(this);
+}
+
 {{ plugin_name.upper_camel_case }}Impl::~{{ plugin_name.upper_camel_case }}Impl()
 {
     _parent->unregister_plugin(this);

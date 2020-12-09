@@ -19,6 +19,7 @@
 namespace mavsdk {
 
 class System;
+class SystemImpl;
 class ManualControlImpl;
 
 /**
@@ -51,6 +52,8 @@ public:
      * @param system The specific system associated with this plugin.
      */
     explicit ManualControl(std::shared_ptr<System> system); // new
+
+    explicit ManualControl(SystemImpl* system_impl); // new
 
     /**
      * @brief Destructor (internal use only).
@@ -143,9 +146,9 @@ public:
     Result set_manual_control_input(float x, float y, float z, float r) const;
 
     /**
-     * @brief Copy constructor.
+     * @brief Copy constructor (object is not copyable).
      */
-    ManualControl(const ManualControl& other);
+    ManualControl(const ManualControl& other) = delete;
 
     /**
      * @brief Equality operator (object is not copyable).

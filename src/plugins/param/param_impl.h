@@ -12,6 +12,7 @@ class ParamImpl : public PluginImplBase {
 public:
     explicit ParamImpl(System& system);
     explicit ParamImpl(std::shared_ptr<System> system);
+    explicit ParamImpl(SystemImpl* system_impl);
     ~ParamImpl();
 
     void init() override;

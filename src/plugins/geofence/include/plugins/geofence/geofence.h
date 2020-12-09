@@ -18,6 +18,7 @@
 namespace mavsdk {
 
 class System;
+class SystemImpl;
 class GeofenceImpl;
 
 /**
@@ -50,6 +51,8 @@ public:
      * @param system The specific system associated with this plugin.
      */
     explicit Geofence(std::shared_ptr<System> system); // new
+
+    explicit Geofence(SystemImpl* system_impl); // new
 
     /**
      * @brief Destructor (internal use only).
@@ -164,9 +167,9 @@ public:
     Result upload_geofence(std::vector<Polygon> polygons) const;
 
     /**
-     * @brief Copy constructor.
+     * @brief Copy constructor (object is not copyable).
      */
-    Geofence(const Geofence& other);
+    Geofence(const Geofence& other) = delete;
 
     /**
      * @brief Equality operator (object is not copyable).

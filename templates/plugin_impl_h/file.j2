@@ -9,6 +9,7 @@ class {{ plugin_name.upper_camel_case }}Impl : public PluginImplBase {
 public:
     explicit {{ plugin_name.upper_camel_case }}Impl(System& system);
     explicit {{ plugin_name.upper_camel_case }}Impl(std::shared_ptr<System> system);
+    explicit {{ plugin_name.upper_camel_case }}Impl(SystemImpl* system_impl);
     ~{{ plugin_name.upper_camel_case }}Impl();
 
     void init() override;

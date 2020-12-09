@@ -8,15 +8,16 @@ namespace mavsdk {
 
 FollowMeImpl::FollowMeImpl(System& system) : PluginImplBase(system)
 {
-    // (Lat, Lon, Alt) => double, (vx, vy, vz) => float
-    _last_location = _target_location = FollowMe::TargetLocation{};
     _parent->register_plugin(this);
 }
 
 FollowMeImpl::FollowMeImpl(std::shared_ptr<System> system) : PluginImplBase(system)
 {
-    // (Lat, Lon, Alt) => double, (vx, vy, vz) => float
-    _last_location = _target_location = FollowMe::TargetLocation{};
+    _parent->register_plugin(this);
+}
+
+FollowMeImpl::FollowMeImpl(SystemImpl* system_impl) : PluginImplBase(system_impl)
+{
     _parent->register_plugin(this);
 }
 
@@ -30,6 +31,9 @@ FollowMeImpl::~FollowMeImpl()
 
 void FollowMeImpl::init()
 {
+    // (Lat, Lon, Alt) => double, (vx, vy, vz) => float
+    _last_location = _target_location = FollowMe::TargetLocation{};
+
     _parent->register_mavlink_message_handler(
         MAVLINK_MSG_ID_HEARTBEAT,
         std::bind(&FollowMeImpl::process_heartbeat, this, std::placeholders::_1),

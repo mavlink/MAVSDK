@@ -18,6 +18,7 @@
 namespace mavsdk {
 
 class System;
+class SystemImpl;
 class OffboardImpl;
 
 /**
@@ -58,6 +59,8 @@ public:
      * @param system The specific system associated with this plugin.
      */
     explicit Offboard(std::shared_ptr<System> system); // new
+
+    explicit Offboard(SystemImpl* system_impl); // new
 
     /**
      * @brief Destructor (internal use only).
@@ -401,9 +404,9 @@ public:
         PositionNedYaw position_ned_yaw, VelocityNedYaw velocity_ned_yaw) const;
 
     /**
-     * @brief Copy constructor.
+     * @brief Copy constructor (object is not copyable).
      */
-    Offboard(const Offboard& other);
+    Offboard(const Offboard& other) = delete;
 
     /**
      * @brief Equality operator (object is not copyable).

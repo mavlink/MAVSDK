@@ -18,6 +18,7 @@
 namespace mavsdk {
 
 class System;
+class SystemImpl;
 class MissionRawImpl;
 
 /**
@@ -50,6 +51,8 @@ public:
      * @param system The specific system associated with this plugin.
      */
     explicit MissionRaw(std::shared_ptr<System> system); // new
+
+    explicit MissionRaw(SystemImpl* system_impl); // new
 
     /**
      * @brief Destructor (internal use only).
@@ -327,9 +330,9 @@ public:
     void subscribe_mission_changed(MissionChangedCallback callback);
 
     /**
-     * @brief Copy constructor.
+     * @brief Copy constructor (object is not copyable).
      */
-    MissionRaw(const MissionRaw& other);
+    MissionRaw(const MissionRaw& other) = delete;
 
     /**
      * @brief Equality operator (object is not copyable).

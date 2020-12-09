@@ -18,6 +18,7 @@
 namespace mavsdk {
 
 class System;
+class SystemImpl;
 class InfoImpl;
 
 /**
@@ -50,6 +51,8 @@ public:
      * @param system The specific system associated with this plugin.
      */
     explicit Info(std::shared_ptr<System> system); // new
+
+    explicit Info(SystemImpl* system_impl); // new
 
     /**
      * @brief Destructor (internal use only).
@@ -225,9 +228,9 @@ public:
     std::pair<Result, double> get_speed_factor() const;
 
     /**
-     * @brief Copy constructor.
+     * @brief Copy constructor (object is not copyable).
      */
-    Info(const Info& other);
+    Info(const Info& other) = delete;
 
     /**
      * @brief Equality operator (object is not copyable).

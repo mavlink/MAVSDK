@@ -22,6 +22,8 @@ Offboard::Offboard(System& system) : PluginBase(), _impl{new OffboardImpl(system
 Offboard::Offboard(std::shared_ptr<System> system) : PluginBase(), _impl{new OffboardImpl(system)}
 {}
 
+Offboard::Offboard(SystemImpl* system_impl) : PluginBase(), _impl{new OffboardImpl(system_impl)} {}
+
 Offboard::~Offboard() {}
 
 void Offboard::start_async(const ResultCallback callback)

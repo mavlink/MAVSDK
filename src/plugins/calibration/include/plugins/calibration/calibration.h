@@ -18,6 +18,7 @@
 namespace mavsdk {
 
 class System;
+class SystemImpl;
 class CalibrationImpl;
 
 /**
@@ -50,6 +51,8 @@ public:
      * @param system The specific system associated with this plugin.
      */
     explicit Calibration(std::shared_ptr<System> system); // new
+
+    explicit Calibration(SystemImpl* system_impl); // new
 
     /**
      * @brief Destructor (internal use only).
@@ -182,9 +185,9 @@ public:
     void cancel() const;
 
     /**
-     * @brief Copy constructor.
+     * @brief Copy constructor (object is not copyable).
      */
-    Calibration(const Calibration& other);
+    Calibration(const Calibration& other) = delete;
 
     /**
      * @brief Equality operator (object is not copyable).

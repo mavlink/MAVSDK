@@ -18,6 +18,7 @@
 namespace mavsdk {
 
 class System;
+class SystemImpl;
 class ParamImpl;
 
 /**
@@ -50,6 +51,8 @@ public:
      * @param system The specific system associated with this plugin.
      */
     explicit Param(std::shared_ptr<System> system); // new
+
+    explicit Param(SystemImpl* system_impl); // new
 
     /**
      * @brief Destructor (internal use only).
@@ -202,9 +205,9 @@ public:
     Param::AllParams get_all_params() const;
 
     /**
-     * @brief Copy constructor.
+     * @brief Copy constructor (object is not copyable).
      */
-    Param(const Param& other);
+    Param(const Param& other) = delete;
 
     /**
      * @brief Equality operator (object is not copyable).

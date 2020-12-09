@@ -4,14 +4,17 @@
 
 namespace mavsdk {
 
-TuneImpl::TuneImpl(System& system) : PluginImplBase(system), _mavlink_tune_item_messages()
+TuneImpl::TuneImpl(System& system) : PluginImplBase(system)
 {
     _parent->register_plugin(this);
 }
 
-TuneImpl::TuneImpl(std::shared_ptr<System> system) :
-    PluginImplBase(system),
-    _mavlink_tune_item_messages()
+TuneImpl::TuneImpl(std::shared_ptr<System> system) : PluginImplBase(system)
+{
+    _parent->register_plugin(this);
+}
+
+TuneImpl::TuneImpl(SystemImpl* system_impl) : PluginImplBase(system_impl)
 {
     _parent->register_plugin(this);
 }

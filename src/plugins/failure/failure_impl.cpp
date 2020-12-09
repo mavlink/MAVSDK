@@ -12,6 +12,11 @@ FailureImpl::FailureImpl(std::shared_ptr<System> system) : PluginImplBase(system
     _parent->register_plugin(this);
 }
 
+FailureImpl::FailureImpl(SystemImpl* system_impl) : PluginImplBase(system_impl)
+{
+    _parent->register_plugin(this);
+}
+
 FailureImpl::~FailureImpl()
 {
     _parent->unregister_plugin(this);
