@@ -25,36 +25,8 @@ if(BUILD_TESTS AND (IOS OR ANDROID))
     set(BUILD_TESTS OFF)
 endif()
 
-configure_file(core/version.h.in core/version.h)
-
 add_library(mavsdk
-    core/call_every_handler.cpp
-    core/connection.cpp
-    core/connection_result.cpp
-    core/curl_wrapper.cpp
-    core/system.cpp
-    core/system_impl.cpp
-    core/mavsdk.cpp
-    core/mavsdk_impl.cpp
-    core/global_include.cpp
-    core/http_loader.cpp
-    core/mavlink_channels.cpp
-    core/mavlink_commands.cpp
-    core/mavlink_mission_transfer.cpp
-    core/mavlink_parameters.cpp
-    core/mavlink_receiver.cpp
-    core/mavlink_statustext_handler.cpp
-    core/mavlink_message_handler.cpp
-    core/ping.cpp
-    core/plugin_impl_base.cpp
-    core/serial_connection.cpp
-    core/tcp_connection.cpp
-    core/timeout_handler.cpp
-    core/udp_connection.cpp
-    core/log.cpp
-    core/cli_arg.cpp
-    core/geometry.cpp
-    core/timesync.cpp
+    # source files are added in subdirectories.
 )
 
 target_link_libraries(mavsdk
@@ -91,30 +63,13 @@ set_target_properties(mavsdk
     PROPERTIES COMPILE_FLAGS ${warnings}
 )
 
-target_include_directories(mavsdk
-    PUBLIC
-    $<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/core>
-    $<INSTALL_INTERFACE:include>
-    PRIVATE
-    $<BUILD_INTERFACE:${CMAKE_CURRENT_BINARY_DIR}/core>
-    )
-
 install(TARGETS mavsdk
     EXPORT mavsdk-targets
     LIBRARY DESTINATION ${CMAKE_INSTALL_LIBDIR}
     ARCHIVE DESTINATION ${CMAKE_INSTALL_LIBDIR}
     )
 
-install(FILES
-    core/connection_result.h
-    core/deprecated.h
-    core/system.h
-    core/mavsdk.h
-    core/plugin_base.h
-    core/geometry.h
-    DESTINATION "${CMAKE_INSTALL_INCLUDEDIR}/mavsdk"
-)
-
+add_subdirectory(core)
 add_subdirectory(plugins)
 
 include_directories(
