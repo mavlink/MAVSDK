@@ -18,6 +18,8 @@ Info::Info(System& system) : PluginBase(), _impl{new InfoImpl(system)} {}
 
 Info::Info(std::shared_ptr<System> system) : PluginBase(), _impl{new InfoImpl(system)} {}
 
+Info::Info(SystemImpl* system_impl) : PluginBase(), _impl{new InfoImpl(system_impl)} {}
+
 Info::~Info() {}
 
 std::pair<Info::Result, Info::FlightInfo> Info::get_flight_information() const

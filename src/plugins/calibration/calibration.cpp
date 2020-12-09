@@ -18,6 +18,11 @@ Calibration::Calibration(std::shared_ptr<System> system) :
     _impl{new CalibrationImpl(system)}
 {}
 
+Calibration::Calibration(SystemImpl* system_impl) :
+    PluginBase(),
+    _impl{new CalibrationImpl(system_impl)}
+{}
+
 Calibration::~Calibration() {}
 
 void Calibration::calibrate_gyro_async(CalibrateGyroCallback callback)

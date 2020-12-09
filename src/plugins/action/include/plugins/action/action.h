@@ -18,6 +18,7 @@
 namespace mavsdk {
 
 class System;
+class SystemImpl;
 class ActionImpl;
 
 /**
@@ -50,6 +51,8 @@ public:
      * @param system The specific system associated with this plugin.
      */
     explicit Action(std::shared_ptr<System> system); // new
+
+    explicit Action(SystemImpl* system_impl); // new
 
     /**
      * @brief Destructor (internal use only).
@@ -543,9 +546,9 @@ public:
     Result set_return_to_launch_altitude(float relative_altitude_m) const;
 
     /**
-     * @brief Copy constructor.
+     * @brief Copy constructor (object is not copyable).
      */
-    Action(const Action& other);
+    Action(const Action& other) = delete;
 
     /**
      * @brief Equality operator (object is not copyable).

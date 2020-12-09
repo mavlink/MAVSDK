@@ -18,6 +18,7 @@
 namespace mavsdk {
 
 class System;
+class SystemImpl;
 class FtpImpl;
 
 /**
@@ -50,6 +51,8 @@ public:
      * @param system The specific system associated with this plugin.
      */
     explicit Ftp(std::shared_ptr<System> system); // new
+
+    explicit Ftp(SystemImpl* system_impl); // new
 
     /**
      * @brief Destructor (internal use only).
@@ -277,9 +280,9 @@ public:
     uint32_t get_our_compid() const;
 
     /**
-     * @brief Copy constructor.
+     * @brief Copy constructor (object is not copyable).
      */
-    Ftp(const Ftp& other);
+    Ftp(const Ftp& other) = delete;
 
     /**
      * @brief Equality operator (object is not copyable).

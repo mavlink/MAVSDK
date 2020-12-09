@@ -18,6 +18,7 @@
 namespace mavsdk {
 
 class System;
+class SystemImpl;
 class MocapImpl;
 
 /**
@@ -53,6 +54,8 @@ public:
      * @param system The specific system associated with this plugin.
      */
     explicit Mocap(std::shared_ptr<System> system); // new
+
+    explicit Mocap(SystemImpl* system_impl); // new
 
     /**
      * @brief Destructor (internal use only).
@@ -363,9 +366,9 @@ public:
     Result set_odometry(Odometry odometry) const;
 
     /**
-     * @brief Copy constructor.
+     * @brief Copy constructor (object is not copyable).
      */
-    Mocap(const Mocap& other);
+    Mocap(const Mocap& other) = delete;
 
     /**
      * @brief Equality operator (object is not copyable).

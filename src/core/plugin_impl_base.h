@@ -11,6 +11,7 @@ class PluginImplBase {
 public:
     explicit PluginImplBase(System& system); // to be deprecated
     explicit PluginImplBase(std::shared_ptr<System> system); // new
+    explicit PluginImplBase(SystemImpl* system); // new
     virtual ~PluginImplBase() = default;
 
     /*
@@ -59,7 +60,7 @@ public:
     const PluginImplBase& operator=(const PluginImplBase&) = delete;
 
 protected:
-    std::shared_ptr<SystemImpl> _parent;
+    SystemImpl* _parent;
 };
 
 } // namespace mavsdk

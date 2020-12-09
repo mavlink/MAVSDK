@@ -11,6 +11,7 @@ class TuneImpl : public PluginImplBase {
 public:
     explicit TuneImpl(System& system);
     explicit TuneImpl(std::shared_ptr<System> system);
+    explicit TuneImpl(SystemImpl* system_impl);
     ~TuneImpl();
 
     void init() override;
@@ -36,7 +37,7 @@ private:
 
     Tune::ResultCallback _result_callback = nullptr;
 
-    std::vector<std::shared_ptr<mavlink_message_t>> _mavlink_tune_item_messages;
+    std::vector<std::shared_ptr<mavlink_message_t>> _mavlink_tune_item_messages{};
 };
 
 } // namespace mavsdk

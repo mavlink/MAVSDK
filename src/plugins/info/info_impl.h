@@ -13,6 +13,7 @@ class InfoImpl : public PluginImplBase {
 public:
     explicit InfoImpl(System& system);
     explicit InfoImpl(std::shared_ptr<System> system);
+    explicit InfoImpl(SystemImpl* system_impl);
     ~InfoImpl();
 
     void init() override;

@@ -17,6 +17,11 @@ ManualControl::ManualControl(std::shared_ptr<System> system) :
     _impl{new ManualControlImpl(system)}
 {}
 
+ManualControl::ManualControl(SystemImpl* system_impl) :
+    PluginBase(),
+    _impl{new ManualControlImpl(system_impl)}
+{}
+
 ManualControl::~ManualControl() {}
 
 void ManualControl::start_position_control_async(const ResultCallback callback)

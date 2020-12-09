@@ -22,6 +22,7 @@ class FtpImpl : public PluginImplBase {
 public:
     explicit FtpImpl(System& system);
     explicit FtpImpl(std::shared_ptr<System> system);
+    explicit FtpImpl(SystemImpl* system_impl);
     FtpImpl(const FtpImpl&) = delete;
     const FtpImpl& operator=(const FtpImpl&) = delete;
 

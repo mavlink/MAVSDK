@@ -114,6 +114,186 @@ void SystemImpl::enable_timesync()
     _timesync.enable();
 }
 
+Action* SystemImpl::action()
+{
+    std::lock_guard<std::mutex> lock(_plugins_mutex);
+    if (_action == nullptr) {
+        _action = std::make_unique<Action>(this);
+    }
+    return _action.get();
+}
+
+Calibration* SystemImpl::calibration()
+{
+    std::lock_guard<std::mutex> lock(_plugins_mutex);
+    if (_calibration == nullptr) {
+        _calibration = std::make_unique<Calibration>(this);
+    }
+    return _calibration.get();
+}
+
+Camera* SystemImpl::camera()
+{
+    std::lock_guard<std::mutex> lock(_plugins_mutex);
+    if (_camera == nullptr) {
+        _camera = std::make_unique<Camera>(this);
+    }
+    return _camera.get();
+}
+
+Failure* SystemImpl::failure()
+{
+    std::lock_guard<std::mutex> lock(_plugins_mutex);
+    if (_failure == nullptr) {
+        _failure = std::make_unique<Failure>(this);
+    }
+    return _failure.get();
+}
+
+FollowMe* SystemImpl::follow_me()
+{
+    std::lock_guard<std::mutex> lock(_plugins_mutex);
+    if (_follow_me == nullptr) {
+        _follow_me = std::make_unique<FollowMe>(this);
+    }
+    return _follow_me.get();
+}
+
+Ftp* SystemImpl::ftp()
+{
+    std::lock_guard<std::mutex> lock(_plugins_mutex);
+    if (_ftp == nullptr) {
+        _ftp = std::make_unique<Ftp>(this);
+    }
+    return _ftp.get();
+}
+
+Geofence* SystemImpl::geofence()
+{
+    std::lock_guard<std::mutex> lock(_plugins_mutex);
+    if (_geofence == nullptr) {
+        _geofence = std::make_unique<Geofence>(this);
+    }
+    return _geofence.get();
+}
+
+Gimbal* SystemImpl::gimbal()
+{
+    std::lock_guard<std::mutex> lock(_plugins_mutex);
+    if (_gimbal == nullptr) {
+        _gimbal = std::make_unique<Gimbal>(this);
+    }
+    return _gimbal.get();
+}
+
+Info* SystemImpl::info()
+{
+    std::lock_guard<std::mutex> lock(_plugins_mutex);
+    if (_info == nullptr) {
+        _info = std::make_unique<Info>(this);
+    }
+    return _info.get();
+}
+
+LogFiles* SystemImpl::log_files()
+{
+    std::lock_guard<std::mutex> lock(_plugins_mutex);
+    if (_log_files == nullptr) {
+        _log_files = std::make_unique<LogFiles>(this);
+    }
+    return _log_files.get();
+}
+
+ManualControl* SystemImpl::manual_control()
+{
+    std::lock_guard<std::mutex> lock(_plugins_mutex);
+    if (_manual_control == nullptr) {
+        _manual_control = std::make_unique<ManualControl>(this);
+    }
+    return _manual_control.get();
+}
+
+MavlinkPassthrough* SystemImpl::mavlink_passthrough()
+{
+    std::lock_guard<std::mutex> lock(_plugins_mutex);
+    if (_mavlink_passthrough == nullptr) {
+        _mavlink_passthrough = std::make_unique<MavlinkPassthrough>(this);
+    }
+    return _mavlink_passthrough.get();
+}
+
+Mission* SystemImpl::mission()
+{
+    std::lock_guard<std::mutex> lock(_plugins_mutex);
+    if (_mission == nullptr) {
+        _mission = std::make_unique<Mission>(this);
+    }
+    return _mission.get();
+}
+
+MissionRaw* SystemImpl::mission_raw()
+{
+    std::lock_guard<std::mutex> lock(_plugins_mutex);
+    if (_mission_raw == nullptr) {
+        _mission_raw = std::make_unique<MissionRaw>(this);
+    }
+    return _mission_raw.get();
+}
+
+Mocap* SystemImpl::mocap()
+{
+    std::lock_guard<std::mutex> lock(_plugins_mutex);
+    if (_mocap == nullptr) {
+        _mocap = std::make_unique<Mocap>(this);
+    }
+    return _mocap.get();
+}
+
+Offboard* SystemImpl::offboard()
+{
+    std::lock_guard<std::mutex> lock(_plugins_mutex);
+    if (_offboard == nullptr) {
+        _offboard = std::make_unique<Offboard>(this);
+    }
+    return _offboard.get();
+}
+
+Param* SystemImpl::param()
+{
+    std::lock_guard<std::mutex> lock(_plugins_mutex);
+    if (_param == nullptr) {
+        _param = std::make_unique<Param>(this);
+    }
+    return _param.get();
+}
+
+Shell* SystemImpl::shell()
+{
+    std::lock_guard<std::mutex> lock(_plugins_mutex);
+    if (_shell == nullptr) {
+        _shell = std::make_unique<Shell>(this);
+    }
+    return _shell.get();
+}
+
+Telemetry* SystemImpl::telemetry()
+{
+    std::lock_guard<std::mutex> lock(_plugins_mutex);
+    if (_telemetry == nullptr) {
+        _telemetry = std::make_unique<Telemetry>(this);
+    }
+    return _telemetry.get();
+}
+
+Tune* SystemImpl::tune()
+{
+    std::lock_guard<std::mutex> lock(_plugins_mutex);
+    if (_tune == nullptr) {
+        _tune = std::make_unique<Tune>(this);
+    }
+    return _tune.get();
+}
+
 void SystemImpl::subscribe_is_connected(System::IsConnectedCallback callback)
 {
     std::lock_guard<std::mutex> lock(_connection_mutex);

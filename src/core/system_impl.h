@@ -23,6 +23,27 @@
 #include <mutex>
 #include <future>
 
+#include "../plugins/action/include/plugins/action/action.h"
+#include "../plugins/calibration/include/plugins/calibration/calibration.h"
+#include "../plugins/camera/include/plugins/camera/camera.h"
+#include "../plugins/failure/include/plugins/failure/failure.h"
+#include "../plugins/follow_me/include/plugins/follow_me/follow_me.h"
+#include "../plugins/ftp/include/plugins/ftp/ftp.h"
+#include "../plugins/geofence/include/plugins/geofence/geofence.h"
+#include "../plugins/gimbal/include/plugins/gimbal/gimbal.h"
+#include "../plugins/info/include/plugins/info/info.h"
+#include "../plugins/log_files/include/plugins/log_files/log_files.h"
+#include "../plugins/manual_control/include/plugins/manual_control/manual_control.h"
+#include "../plugins/mavlink_passthrough/include/plugins/mavlink_passthrough/mavlink_passthrough.h"
+#include "../plugins/mission/include/plugins/mission/mission.h"
+#include "../plugins/mission_raw/include/plugins/mission_raw/mission_raw.h"
+#include "../plugins/mocap/include/plugins/mocap/mocap.h"
+#include "../plugins/offboard/include/plugins/offboard/offboard.h"
+#include "../plugins/param/include/plugins/param/param.h"
+#include "../plugins/shell/include/plugins/shell/shell.h"
+#include "../plugins/telemetry/include/plugins/telemetry/telemetry.h"
+#include "../plugins/tune/include/plugins/tune/tune.h"
+
 namespace mavsdk {
 
 class MavsdkImpl;
@@ -53,6 +74,27 @@ public:
     explicit SystemImpl(
         MavsdkImpl& parent, uint8_t system_id, uint8_t component_id, bool connected);
     ~SystemImpl();
+
+    Action* action();
+    Calibration* calibration();
+    Camera* camera();
+    Failure* failure();
+    FollowMe* follow_me();
+    Ftp* ftp();
+    Geofence* geofence();
+    Gimbal* gimbal();
+    Info* info();
+    LogFiles* log_files();
+    ManualControl* manual_control();
+    MavlinkPassthrough* mavlink_passthrough();
+    Mission* mission();
+    MissionRaw* mission_raw();
+    Mocap* mocap();
+    Offboard* offboard();
+    Param* param();
+    Shell* shell();
+    Telemetry* telemetry();
+    Tune* tune();
 
     void enable_timesync();
 
@@ -349,6 +391,28 @@ private:
     std::function<bool(mavlink_message_t&)> _outgoing_messages_intercept_callback{nullptr};
 
     std::atomic<FlightMode> _flight_mode{FlightMode::Unknown};
+
+    std::mutex _plugins_mutex{};
+    std::unique_ptr<Action> _action{};
+    std::unique_ptr<Calibration> _calibration{};
+    std::unique_ptr<Camera> _camera{};
+    std::unique_ptr<Failure> _failure{};
+    std::unique_ptr<FollowMe> _follow_me{};
+    std::unique_ptr<Ftp> _ftp{};
+    std::unique_ptr<Geofence> _geofence{};
+    std::unique_ptr<Gimbal> _gimbal{};
+    std::unique_ptr<Info> _info{};
+    std::unique_ptr<LogFiles> _log_files{};
+    std::unique_ptr<ManualControl> _manual_control{};
+    std::unique_ptr<MavlinkPassthrough> _mavlink_passthrough{};
+    std::unique_ptr<Mission> _mission{};
+    std::unique_ptr<MissionRaw> _mission_raw{};
+    std::unique_ptr<Mocap> _mocap{};
+    std::unique_ptr<Offboard> _offboard{};
+    std::unique_ptr<Param> _param{};
+    std::unique_ptr<Shell> _shell{};
+    std::unique_ptr<Telemetry> _telemetry{};
+    std::unique_ptr<Tune> _tune{};
 };
 
 } // namespace mavsdk

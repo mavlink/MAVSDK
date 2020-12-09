@@ -18,6 +18,7 @@
 namespace mavsdk {
 
 class System;
+class SystemImpl;
 class FollowMeImpl;
 
 /**
@@ -51,6 +52,8 @@ public:
      * @param system The specific system associated with this plugin.
      */
     explicit FollowMe(std::shared_ptr<System> system); // new
+
+    explicit FollowMe(SystemImpl* system_impl); // new
 
     /**
      * @brief Destructor (internal use only).
@@ -225,9 +228,9 @@ public:
     Result stop() const;
 
     /**
-     * @brief Copy constructor.
+     * @brief Copy constructor (object is not copyable).
      */
-    FollowMe(const FollowMe& other);
+    FollowMe(const FollowMe& other) = delete;
 
     /**
      * @brief Equality operator (object is not copyable).

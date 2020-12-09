@@ -18,6 +18,7 @@
 namespace mavsdk {
 
 class System;
+class SystemImpl;
 class CameraImpl;
 
 /**
@@ -56,6 +57,8 @@ public:
      * @param system The specific system associated with this plugin.
      */
     explicit Camera(std::shared_ptr<System> system); // new
+
+    explicit Camera(SystemImpl* system_impl); // new
 
     /**
      * @brief Destructor (internal use only).
@@ -720,9 +723,9 @@ public:
     Result format_storage() const;
 
     /**
-     * @brief Copy constructor.
+     * @brief Copy constructor (object is not copyable).
      */
-    Camera(const Camera& other);
+    Camera(const Camera& other) = delete;
 
     /**
      * @brief Equality operator (object is not copyable).

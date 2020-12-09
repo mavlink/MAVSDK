@@ -18,6 +18,7 @@
 namespace mavsdk {
 
 class System;
+class SystemImpl;
 class {{ plugin_name.upper_camel_case }}Impl;
 
 /**
@@ -51,6 +52,8 @@ public:
      */
     explicit {{ plugin_name.upper_camel_case }}(std::shared_ptr<System> system); // new
 
+    explicit {{ plugin_name.upper_camel_case }}(SystemImpl* system_impl); // new
+
     /**
      * @brief Destructor (internal use only).
      */
@@ -76,9 +79,9 @@ public:
 {% endfor %}
 
     /**
-     * @brief Copy constructor.
+     * @brief Copy constructor (object is not copyable).
      */
-    {{ plugin_name.upper_camel_case }}(const {{ plugin_name.upper_camel_case }}& other);
+    {{ plugin_name.upper_camel_case }}(const {{ plugin_name.upper_camel_case }}& other) = delete;
 
     /**
      * @brief Equality operator (object is not copyable).

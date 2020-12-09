@@ -15,6 +15,11 @@ GeofenceImpl::GeofenceImpl(std::shared_ptr<System> system) : PluginImplBase(syst
     _parent->register_plugin(this);
 }
 
+GeofenceImpl::GeofenceImpl(SystemImpl* system_impl) : PluginImplBase(system_impl)
+{
+    _parent->register_plugin(this);
+}
+
 GeofenceImpl::~GeofenceImpl()
 {
     _parent->unregister_plugin(this);

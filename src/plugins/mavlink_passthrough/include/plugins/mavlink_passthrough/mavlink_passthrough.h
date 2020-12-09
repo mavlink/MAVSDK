@@ -11,6 +11,7 @@
 namespace mavsdk {
 
 class System;
+class SystemImpl;
 class MavlinkPassthroughImpl;
 
 /**
@@ -47,6 +48,8 @@ public:
      * @param system The specific system associated with this plugin.
      */
     explicit MavlinkPassthrough(std::shared_ptr<System> system); // new
+
+    explicit MavlinkPassthrough(SystemImpl* system_impl); // new
 
     /**
      * @brief Destructor (internal use only).

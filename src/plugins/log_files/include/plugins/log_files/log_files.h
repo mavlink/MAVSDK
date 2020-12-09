@@ -18,6 +18,7 @@
 namespace mavsdk {
 
 class System;
+class SystemImpl;
 class LogFilesImpl;
 
 /**
@@ -51,6 +52,8 @@ public:
      * @param system The specific system associated with this plugin.
      */
     explicit LogFiles(std::shared_ptr<System> system); // new
+
+    explicit LogFiles(SystemImpl* system_impl); // new
 
     /**
      * @brief Destructor (internal use only).
@@ -160,9 +163,9 @@ public:
     void download_log_file_async(uint32_t id, std::string path, DownloadLogFileCallback callback);
 
     /**
-     * @brief Copy constructor.
+     * @brief Copy constructor (object is not copyable).
      */
-    LogFiles(const LogFiles& other);
+    LogFiles(const LogFiles& other) = delete;
 
     /**
      * @brief Equality operator (object is not copyable).

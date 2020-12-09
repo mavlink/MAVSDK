@@ -23,6 +23,8 @@ Mocap::Mocap(System& system) : PluginBase(), _impl{new MocapImpl(system)} {}
 
 Mocap::Mocap(std::shared_ptr<System> system) : PluginBase(), _impl{new MocapImpl(system)} {}
 
+Mocap::Mocap(SystemImpl* system_impl) : PluginBase(), _impl{new MocapImpl(system_impl)} {}
+
 Mocap::~Mocap() {}
 
 Mocap::Result

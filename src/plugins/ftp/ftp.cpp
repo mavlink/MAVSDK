@@ -15,6 +15,8 @@ Ftp::Ftp(System& system) : PluginBase(), _impl{new FtpImpl(system)} {}
 
 Ftp::Ftp(std::shared_ptr<System> system) : PluginBase(), _impl{new FtpImpl(system)} {}
 
+Ftp::Ftp(SystemImpl* system_impl) : PluginBase(), _impl{new FtpImpl(system_impl)} {}
+
 Ftp::~Ftp() {}
 
 void Ftp::reset_async(const ResultCallback callback)

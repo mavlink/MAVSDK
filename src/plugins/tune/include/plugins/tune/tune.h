@@ -18,6 +18,7 @@
 namespace mavsdk {
 
 class System;
+class SystemImpl;
 class TuneImpl;
 
 /**
@@ -50,6 +51,8 @@ public:
      * @param system The specific system associated with this plugin.
      */
     explicit Tune(std::shared_ptr<System> system); // new
+
+    explicit Tune(SystemImpl* system_impl); // new
 
     /**
      * @brief Destructor (internal use only).
@@ -154,9 +157,9 @@ public:
     Result play_tune(TuneDescription tune_description) const;
 
     /**
-     * @brief Copy constructor.
+     * @brief Copy constructor (object is not copyable).
      */
-    Tune(const Tune& other);
+    Tune(const Tune& other) = delete;
 
     /**
      * @brief Equality operator (object is not copyable).

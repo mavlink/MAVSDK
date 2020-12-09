@@ -18,6 +18,7 @@
 namespace mavsdk {
 
 class System;
+class SystemImpl;
 class TelemetryImpl;
 
 /**
@@ -51,6 +52,8 @@ public:
      * @param system The specific system associated with this plugin.
      */
     explicit Telemetry(std::shared_ptr<System> system); // new
+
+    explicit Telemetry(SystemImpl* system_impl); // new
 
     /**
      * @brief Destructor (internal use only).
@@ -1695,9 +1698,9 @@ public:
     std::pair<Result, Telemetry::GpsGlobalOrigin> get_gps_global_origin() const;
 
     /**
-     * @brief Copy constructor.
+     * @brief Copy constructor (object is not copyable).
      */
-    Telemetry(const Telemetry& other);
+    Telemetry(const Telemetry& other) = delete;
 
     /**
      * @brief Equality operator (object is not copyable).

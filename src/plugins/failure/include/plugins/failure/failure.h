@@ -18,6 +18,7 @@
 namespace mavsdk {
 
 class System;
+class SystemImpl;
 class FailureImpl;
 
 /**
@@ -50,6 +51,8 @@ public:
      * @param system The specific system associated with this plugin.
      */
     explicit Failure(std::shared_ptr<System> system); // new
+
+    explicit Failure(SystemImpl* system_impl); // new
 
     /**
      * @brief Destructor (internal use only).
@@ -141,9 +144,9 @@ public:
     Result inject(FailureUnit failure_unit, FailureType failure_type, int32_t instance) const;
 
     /**
-     * @brief Copy constructor.
+     * @brief Copy constructor (object is not copyable).
      */
-    Failure(const Failure& other);
+    Failure(const Failure& other) = delete;
 
     /**
      * @brief Equality operator (object is not copyable).

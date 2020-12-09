@@ -12,6 +12,7 @@ class LogFilesImpl : public PluginImplBase {
 public:
     explicit LogFilesImpl(System& system);
     explicit LogFilesImpl(std::shared_ptr<System> system);
+    explicit LogFilesImpl(SystemImpl* system_impl);
     ~LogFilesImpl();
 
     void init() override;

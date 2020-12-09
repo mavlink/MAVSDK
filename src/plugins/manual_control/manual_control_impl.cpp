@@ -13,6 +13,11 @@ ManualControlImpl::ManualControlImpl(std::shared_ptr<System> system) : PluginImp
     _parent->register_plugin(this);
 }
 
+ManualControlImpl::ManualControlImpl(SystemImpl* system_impl) : PluginImplBase(system_impl)
+{
+    _parent->register_plugin(this);
+}
+
 ManualControlImpl::~ManualControlImpl()
 {
     _parent->unregister_plugin(this);

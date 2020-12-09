@@ -16,6 +16,11 @@ MissionRawImpl::MissionRawImpl(std::shared_ptr<System> system) : PluginImplBase(
     _parent->register_plugin(this);
 }
 
+MissionRawImpl::MissionRawImpl(SystemImpl* system_impl) : PluginImplBase(system_impl)
+{
+    _parent->register_plugin(this);
+}
+
 MissionRawImpl::~MissionRawImpl()
 {
     _parent->unregister_plugin(this);

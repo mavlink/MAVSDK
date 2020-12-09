@@ -18,6 +18,7 @@
 namespace mavsdk {
 
 class System;
+class SystemImpl;
 class MissionImpl;
 
 /**
@@ -50,6 +51,8 @@ public:
      * @param system The specific system associated with this plugin.
      */
     explicit Mission(std::shared_ptr<System> system); // new
+
+    explicit Mission(SystemImpl* system_impl); // new
 
     /**
      * @brief Destructor (internal use only).
@@ -433,9 +436,9 @@ public:
     import_qgroundcontrol_mission(std::string qgc_plan_path) const;
 
     /**
-     * @brief Copy constructor.
+     * @brief Copy constructor (object is not copyable).
      */
-    Mission(const Mission& other);
+    Mission(const Mission& other) = delete;
 
     /**
      * @brief Equality operator (object is not copyable).
