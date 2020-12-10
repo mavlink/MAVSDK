@@ -275,7 +275,7 @@ jobs:
       - name: setup dockcross
         run: docker run --rm dockcross/linux-armv7l-musl > ./dockcross-linux-armv7l-musl; chmod +x ./dockcross-linux-armv7l-musl
       - name: configure
-        run: ./dockcross-linux-armv7l-musl /bin/bash -c 'OPENSSL_PLATFORM=linux-armv4 cmake -DCMAKE_BUILD_TYPE=Release -DCMAKE_INSTALL_PREFIX=build/linux-armv7l-musl/install -DBUILD_MAVSDK_SERVER=ON -DBUILD_SHARED_LIBS=OFF -DBUILD_STATIC_MAVSDK_SERVER=ON -DWERROR=OFF -j 2 -Bbuild/linux-armv7l-musl -H.'
+        run: ./dockcross-linux-armv7l-musl /bin/bash -c 'cmake -DCMAKE_BUILD_TYPE=Release -DCMAKE_INSTALL_PREFIX=build/linux-armv7l-musl/install -DBUILD_MAVSDK_SERVER=ON -DBUILD_SHARED_LIBS=OFF -DBUILD_STATIC_MAVSDK_SERVER=ON -DWERROR=OFF -j 2 -Bbuild/linux-armv7l-musl -H.'
       - name: build
         run: ./dockcross-linux-armv7l-musl cmake --build build/linux-armv7l-musl -j 2 --target install
       - name: Publish artefacts
@@ -298,7 +298,7 @@ jobs:
       - name: setup dockcross
         run: docker run --rm dockcross/linux-arm64-musl > ./dockcross-linux-arm64-musl; chmod +x ./dockcross-linux-arm64-musl
       - name: configure
-        run: ./dockcross-linux-arm64-musl /bin/bash -c 'OPENSSL_PLATFORM=linux-aarch64 cmake -DCMAKE_BUILD_TYPE=Release -DCMAKE_INSTALL_PREFIX=build/linux-arm64-musl/install -DBUILD_MAVSDK_SERVER=ON -DBUILD_SHARED_LIBS=OFF -DBUILD_STATIC_MAVSDK_SERVER=ON -DWERROR=OFF -j 2 -Bbuild/linux-arm64-musl -H.'
+        run: ./dockcross-linux-arm64-musl /bin/bash -c 'cmake -DCMAKE_BUILD_TYPE=Release -DCMAKE_INSTALL_PREFIX=build/linux-arm64-musl/install -DBUILD_MAVSDK_SERVER=ON -DBUILD_SHARED_LIBS=OFF -DBUILD_STATIC_MAVSDK_SERVER=ON -DWERROR=OFF -j 2 -Bbuild/linux-arm64-musl -H.'
       - name: build
         run: ./dockcross-linux-arm64-musl cmake --build build/linux-arm64-musl -j 2 --target install
       - name: Publish artefacts
@@ -329,7 +329,7 @@ jobs:
         if: steps.cache.outputs.cache-hit == 'true'
         run: echo "superbuild=-DSUPERBUILD=OFF" >> $GITHUB_ENV && echo "cmake_prefix_path=-DCMAKE_PREFIX_PATH=/work/build/android-arm/third_party/install" >> $GITHUB_ENV
       - name: configure
-        run: ./dockcross-android-arm /bin/bash -c 'ANDROID_NDK=${CROSS_ROOT} OPENSSL_PLATFORM=android-arm cmake $superbuild $cmake_prefix_path -DCMAKE_BUILD_TYPE=Release -DCMAKE_INSTALL_PREFIX=build/android-arm/install -DBUILD_MAVSDK_SERVER=ON -DBUILD_SHARED_LIBS=OFF -DWERROR=OFF -j 2 -Bbuild/android-arm -H.'
+        run: ./dockcross-android-arm /bin/bash -c 'cmake $superbuild $cmake_prefix_path -DCMAKE_BUILD_TYPE=Release -DCMAKE_INSTALL_PREFIX=build/android-arm/install -DBUILD_MAVSDK_SERVER=ON -DBUILD_SHARED_LIBS=OFF -DWERROR=OFF -j 2 -Bbuild/android-arm -H.'
       - name: build
         run: ./dockcross-android-arm cmake --build build/android-arm -j 2 --target install
       - name: create tar with header and library
@@ -362,7 +362,7 @@ jobs:
         if: steps.cache.outputs.cache-hit == 'true'
         run: echo "superbuild=-DSUPERBUILD=OFF" >> $GITHUB_ENV && echo "cmake_prefix_path=-DCMAKE_PREFIX_PATH=/work/build/android-arm64/third_party/install" >> $GITHUB_ENV
       - name: configure
-        run: ./dockcross-android-arm64 /bin/bash -c 'ANDROID_NDK=${CROSS_ROOT} OPENSSL_PLATFORM=android-arm64 cmake $superbuild $cmake_prefix_path -DCMAKE_BUILD_TYPE=Release -DCMAKE_INSTALL_PREFIX=build/android-arm64/install -DBUILD_MAVSDK_SERVER=ON -DBUILD_SHARED_LIBS=OFF -j 2 -Bbuild/android-arm64 -H.'
+        run: ./dockcross-android-arm64 /bin/bash -c 'cmake $superbuild $cmake_prefix_path -DCMAKE_BUILD_TYPE=Release -DCMAKE_INSTALL_PREFIX=build/android-arm64/install -DBUILD_MAVSDK_SERVER=ON -DBUILD_SHARED_LIBS=OFF -j 2 -Bbuild/android-arm64 -H.'
       - name: build
         run: ./dockcross-android-arm64 cmake --build build/android-arm64 -j 2 --target install
       - name: create tar with header and library

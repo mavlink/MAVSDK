@@ -8,12 +8,24 @@ message(STATUS "Preparing external project \"openssl\"")
 set(OPENSSL_VERSION 1.1.1h)
 
 if(ANDROID)
+    if(${CMAKE_ANDROID_ARCH_ABI} STREQUAL "armeabi-v7a")
+        set(OPENSSL_PLATFORM "android-arm")
+    elseif(${CMAKE_ANDROID_ARCH_ABI} STREQUAL "arm64-v8a")
+        set(OPENSSL_PLATFORM "android-arm64")
+    else()
+        message(FATAL_ERROR "Unexpected PLATFORM: \"${PLATFORM}\"")
+    endif()
+
+    message("OPENSSL_PLATFORM set to ${OPENSSL_PLATFORM}")
+
+    set(ENV{ANDROID_NDK} $ENV{CROSS_ROOT})
+
     ExternalProject_add(
         openssl
         URL https://www.openssl.org/source/openssl-${OPENSSL_VERSION}.tar.gz
         PREFIX openssl
         PATCH_COMMAND patch -p 0 < ${PROJECT_SOURCE_DIR}/dockcross-android.patch
-        CONFIGURE_COMMAND <SOURCE_DIR>/Configure --sysroot=$ENV{CROSS_ROOT}/sysroot $ENV{OPENSSL_PLATFORM} --prefix=${CMAKE_INSTALL_PREFIX} no-shared
+        CONFIGURE_COMMAND <SOURCE_DIR>/Configure --sysroot=$ENV{CROSS_ROOT}/sysroot ${OPENSSL_PLATFORM} --prefix=${CMAKE_INSTALL_PREFIX} no-shared
         BUILD_COMMAND make
         )
 elseif(IOS)
@@ -34,11 +46,21 @@ elseif(IOS)
         CONFIGURE_COMMAND ${CMAKE_COMMAND} -E env CFLAGS=-fembed-bitcode <SOURCE_DIR>/Configure ${OPENSSL_PLATFORM} --prefix=${CMAKE_INSTALL_PREFIX} no-shared
         )
 elseif(CMAKE_CROSSCOMPILING) # This assumes we use dockcross
+    if(${CMAKE_SYSTEM_PROCESSOR} STREQUAL "arm")
+        set(OPENSSL_PLATFORM "linux-armv4")
+    elseif(${CMAKE_SYSTEM_PROCESSOR} STREQUAL "aarch64")
+        set(OPENSSL_PLATFORM "linux-aarch64")
+    else()
+        message(FATAL_ERROR "Unexpected PLATFORM: \"${PLATFORM}\"")
+    endif()
+
+    message("OPENSSL_PLATFORM set to ${OPENSSL_PLATFORM}")
+
     ExternalProject_add(
         openssl
         URL https://www.openssl.org/source/openssl-${OPENSSL_VERSION}.tar.gz
         PREFIX openssl
-        CONFIGURE_COMMAND ${CMAKE_COMMAND} -E env CROSS_COMPILE="" <SOURCE_DIR>/Configure $ENV{OPENSSL_PLATFORM} --prefix=${CMAKE_INSTALL_PREFIX} no-shared
+        CONFIGURE_COMMAND ${CMAKE_COMMAND} -E env CROSS_COMPILE="" <SOURCE_DIR>/Configure ${OPENSSL_PLATFORM} --prefix=${CMAKE_INSTALL_PREFIX} no-shared
         BUILD_COMMAND make
         )
 elseif(MSVC)
@@ -55,6 +77,6 @@ else()
         openssl
         URL https://www.openssl.org/source/openssl-${OPENSSL_VERSION}.tar.gz
         PREFIX openssl
-        CONFIGURE_COMMAND <SOURCE_DIR>/config $ENV{OPENSSL_PLATFORM} --prefix=${CMAKE_INSTALL_PREFIX} no-shared
+        CONFIGURE_COMMAND <SOURCE_DIR>/config --prefix=${CMAKE_INSTALL_PREFIX} no-shared
         )
 endif()
