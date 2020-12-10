@@ -211,6 +211,7 @@ public:
     void unregister_mavlink_command_handler(uint16_t cmd_id, const void* cookie);
     void unregister_all_mavlink_command_handlers(const void* cookie);
 
+private:
     SystemImpl& _parent;
 
     void receive_command_int(const mavlink_message_t& message);
