@@ -19,16 +19,6 @@ message(STATUS "Version patch: ${MAVSDK_VERSION_PATCH}")
 set(MAVSDK_SOVERSION_STRING ${MAVSDK_VERSION_MAJOR})
 set(MAVSDK_VERSION_STRING ${MAVSDK_VERSION_MAJOR}.${MAVSDK_VERSION_MINOR}.${MAVSDK_VERSION_PATCH})
 
-# Extract command line args into ${CL_ARGS} in order to propagate them to the superbuild dependencies
-get_cmake_property(vars CACHE_VARIABLES)
-foreach(var ${vars})
-  get_property(currentHelpString CACHE "${var}" PROPERTY HELPSTRING)
-    if("${currentHelpString}" MATCHES "No help, variable specified on the command line." OR "${currentHelpString}" STREQUAL "")
-        #message("${var} = [${${var}}]  --  ${currentHelpString}") # uncomment to see the variables being processed
-        list(APPEND CL_ARGS "-D${var}=${${var}}")
-    endif()
-endforeach()
-
 project(mavsdk_superbuild)
 
 if (BUILD_BACKEND)

@@ -1,0 +1,17 @@
+--- Configurations/15-android.conf	2020-06-17 14:47:59.460780213 +0200
++++ Configurations/15-android.conf.patched	2020-06-17 15:12:15.747017872 +0200
+@@ -112,11 +112,11 @@
+                 # *after* announcement that gcc is being phased out, so
+                 # favouring clang is considered adequate. Those who insist
+                 # have option to enforce test for gcc with CC=gcc.
+-                if (which("$triarch-$cc") !~ m|^$ndk|) {
+-                    die "no NDK $triarch-$cc on \$PATH";
++                if (which("$cc") !~ m|^$ndk|) {
++                    die "no NDK $cc on \$PATH";
+                 }
+                 $user{CC} = $cc;
+-                $user{CROSS_COMPILE} = "$triarch-";
++                $user{CROSS_COMPILE} = "";
+             } elsif ($user{CC} eq "clang") {
+                 die "no NDK clang on \$PATH";
+             } else {

@@ -4,13 +4,22 @@ project(external-cares)
 include(ExternalProject)
 
 list(APPEND CMAKE_ARGS
-    "${CL_ARGS}"
     "-DCMAKE_INSTALL_PREFIX:PATH=${CMAKE_INSTALL_PREFIX}"
+    "-DCMAKE_TOOLCHAIN_FILE:PATH=${CMAKE_TOOLCHAIN_FILE}"
+    "-DCMAKE_BUILD_TYPE=Release"
     "-DCARES_STATIC=ON"
     "-DCARES_SHARED=OFF"
     "-DCARES_STATIC_PIC=ON"
     "-DCARES_BUILD_TOOLS=OFF"
     )
+
+if(IOS)
+    list(APPEND CMAKE_ARGS
+        "-DPLATFORM=${PLATFORM}"
+        "-DDEPLOYMENT_TARGET=${DEPLOYMENT_TARGET}"
+        "-DENABLE_STRICT_TRY_COMPILE=${ENABLE_STRICT_TRY_COMPILE}"
+        )
+endif()
 
 message(STATUS "Preparing external project \"c-ares\" with args:")
 foreach(CMAKE_ARG ${CMAKE_ARGS})
