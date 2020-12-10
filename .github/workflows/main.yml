@@ -439,7 +439,7 @@ jobs:
 
   iOS-XCFramework:
     name: iOS XCFramework
-    needs: [macOS-framework, iOS, iOS-Simulator]
+    needs: [macOS, iOS]
     runs-on: macos-latest
     steps:
       - uses: actions/checkout@v2
