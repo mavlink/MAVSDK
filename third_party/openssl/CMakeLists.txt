@@ -17,11 +17,21 @@ if(ANDROID)
         BUILD_COMMAND make
         )
 elseif(IOS)
+    if(${PLATFORM} STREQUAL "OS")
+        set(OPENSSL_PLATFORM "ios64-xcrun")
+    elseif(${PLATFORM} STREQUAL "SIMULATOR64")
+        set(OPENSSL_PLATFORM "iossimulator-xcrun")
+    else()
+        message(FATAL_ERROR "Unexpected PLATFORM: \"${PLATFORM}\"")
+    endif()
+
+    message("OPENSSL_PLATFORM set to ${OPENSSL_PLATFORM}")
+
     ExternalProject_add(
         openssl
         URL https://www.openssl.org/source/openssl-${OPENSSL_VERSION}.tar.gz
         PREFIX openssl
-        CONFIGURE_COMMAND ${CMAKE_COMMAND} -E env CFLAGS=-fembed-bitcode <SOURCE_DIR>/Configure $ENV{OPENSSL_PLATFORM} --prefix=${CMAKE_INSTALL_PREFIX} no-shared
+        CONFIGURE_COMMAND ${CMAKE_COMMAND} -E env CFLAGS=-fembed-bitcode <SOURCE_DIR>/Configure ${OPENSSL_PLATFORM} --prefix=${CMAKE_INSTALL_PREFIX} no-shared
         )
 elseif(CMAKE_CROSSCOMPILING) # This assumes we use dockcross
     ExternalProject_add(
