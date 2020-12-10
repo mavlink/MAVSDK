@@ -1,5 +1,6 @@
 #include "mavsdk_impl.h"
 
+#include <algorithm>
 #include <mutex>
 #include <utility>
 
@@ -458,7 +459,13 @@ void MavsdkImpl::subscribe_on_new_system(Mavsdk::NewSystemCallback callback)
     std::lock_guard<std::mutex> lock(_new_system_callback_mutex);
     _new_system_callback = callback;
 
-    if (_new_system_callback != nullptr && systems().size() > 0) {
+    const auto is_any_system_connected = [this]() {
+        return std::any_of(systems().cbegin(), systems().cend(), [](auto& system) {
+            return system->is_connected();
+        });
+    };
+
+    if (_new_system_callback != nullptr && is_any_system_connected()) {
         _new_system_callback();
     }
 }
