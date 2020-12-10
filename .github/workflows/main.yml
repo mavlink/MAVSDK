@@ -414,8 +414,17 @@ jobs:
           retention-days: 2
 
   iOS:
-    name: iOS
+    name: ${{ matrix.name }}
     runs-on: macos-latest
+    strategy:
+      matrix:
+        include:
+          - name: ios
+            platform: OS
+            sdk: iphoneos
+          - name: ios_simulator
+            platform: SIMULATOR64
+            sdk: iphonesimulator
     steps:
       - uses: actions/checkout@v2
         with:
@@ -423,50 +432,22 @@ jobs:
       - uses: actions/cache@v2
         id: cache
         with:
-          path: ./build/ios/third_party/install
-          key: ${{ github.job }}-${{ hashFiles('./third_party/**') }}
+          path: ./build/${{ matrix.name }}/third_party/install
+          key: ${{ github.job }}-${{ matrix.name }}-${{ hashFiles('./third_party/**') }}
       - name: disable superbuild on cache hit
         if: steps.cache.outputs.cache-hit == 'true'
-        run: echo "superbuild=-DSUPERBUILD=OFF" >> $GITHUB_ENV && echo "cmake_prefix_path=-DCMAKE_PREFIX_PATH=$(pwd)/build/ios/third_party/install" >> $GITHUB_ENV
-      - name: set SDK-related environment variables
+        run: echo "superbuild=-DSUPERBUILD=OFF" >> $GITHUB_ENV && echo "cmake_prefix_path=-DCMAKE_PREFIX_PATH=$(pwd)/build/${{ matrix.name }}/third_party/install" >> $GITHUB_ENV
+      - name: set SDK-related environment variables (for non-cmake deps)
         run: |
-          echo "SDKROOT=$(xcrun --sdk iphoneos --show-sdk-path)" >> $GITHUB_ENV
+          echo "SDKROOT=$(xcrun --sdk ${{ matrix.sdk }} --show-sdk-path)" >> $GITHUB_ENV
       - name: configure
-        run: cmake $superbuild $cmake_prefix_path -DENABLE_STRICT_TRY_COMPILE=ON -DCMAKE_BUILD_TYPE=Release -DCMAKE_TOOLCHAIN_FILE=$(pwd)/tools/ios.toolchain.cmake -DPLATFORM=OS -DDEPLOYMENT_TARGET=11.0 -DBUILD_MAVSDK_SERVER=ON -DBUILD_SHARED_LIBS=OFF -DWERROR=OFF -j 2 -Bbuild/ios -H.
+        run: cmake $superbuild $cmake_prefix_path -DENABLE_STRICT_TRY_COMPILE=ON -DCMAKE_BUILD_TYPE=Release -DCMAKE_TOOLCHAIN_FILE=$(pwd)/tools/ios.toolchain.cmake -DPLATFORM=${{ matrix.platform }} -DDEPLOYMENT_TARGET=11.0 -DBUILD_MAVSDK_SERVER=ON -DBUILD_SHARED_LIBS=OFF -DWERROR=OFF -j 2 -Bbuild/${{ matrix.name }} -H.
       - name: build
-        run: cmake --build build/ios -j 2
+        run: cmake --build build/${{ matrix.name }} -j 2
       - uses: actions/upload-artifact@v2
         with:
-          name: mavsdk_server_ios.framework
-          path: ./build/ios/src/mavsdk_server/src/mavsdk_server.framework
-          retention-days: 2
-
-  iOS-Simulator:
-    name: iOS Simulator
-    runs-on: macos-latest
-    steps:
-      - uses: actions/checkout@v2
-        with:
-          submodules: recursive
-      - uses: actions/cache@v2
-        id: cache
-        with:
-          path: ./build/ios_simulator/third_party/install
-          key: ${{ github.job }}-${{ hashFiles('./third_party/**') }}
-      - name: disable superbuild on cache hit
-        if: steps.cache.outputs.cache-hit == 'true'
-        run: echo "superbuild=-DSUPERBUILD=OFF" >> $GITHUB_ENV && echo "cmake_prefix_path=-DCMAKE_PREFIX_PATH=$(pwd)/build/ios_simulator/third_party/install" >> $GITHUB_ENV
-      - name: set SDK-related environment variables
-        run: |
-          echo "SDKROOT=$(xcrun --sdk iphonesimulator --show-sdk-path)" >> $GITHUB_ENV
-      - name: configure
-        run: cmake $superbuild $cmake_prefix_path -DENABLE_STRICT_TRY_COMPILE=ON -DCMAKE_BUILD_TYPE=Release -DCMAKE_TOOLCHAIN_FILE=$(pwd)/tools/ios.toolchain.cmake -DPLATFORM=SIMULATOR64 -DDEPLOYMENT_TARGET=11.0 -DBUILD_MAVSDK_SERVER=ON -DBUILD_SHARED_LIBS=OFF -DWERROR=OFF -j 2 -Bbuild/ios_simulator -H.
-      - name: build
-        run: cmake --build build/ios_simulator -j 2
-      - uses: actions/upload-artifact@v2
-        with:
-          name: mavsdk_server_ios_simulator.framework
-          path: ./build/ios_simulator/src/mavsdk_server/src/mavsdk_server.framework
+          name: mavsdk_server_${{ matrix.name }}.framework
+          path: ./build/${{ matrix.name }}/src/mavsdk_server/src/mavsdk_server.framework
           retention-days: 2
 
   iOS-XCFramework:
