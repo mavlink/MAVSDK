@@ -224,7 +224,7 @@ jobs:
           key: ${{ github.job }}-${{ hashFiles('./third_party/**') }}
       - name: disable superbuild on cache hit
         if: steps.cache.outputs.cache-hit == 'true'
-        run: echo "superbuild=-DSUPERBUILD=OFF" >> $GITHUB_ENV && echo "cmake_prefix_path=-DCMAKE_PREFIX_PATH=/work/build/${{ matrix.arch_name }}/third_party/install" >> $GITHUB_ENV
+        run: echo "superbuild=-DSUPERBUILD=OFF" >> $GITHUB_ENV && echo "cmake_prefix_path=-DCMAKE_PREFIX_PATH=/work/build/manylinux2010-x64/third_party/install" >> $GITHUB_ENV
       - name: setup dockcross
         run: docker run --rm dockcross/manylinux2010-x64 > ./dockcross-manylinux2010-x64; chmod +x ./dockcross-manylinux2010-x64
       - name: configure
