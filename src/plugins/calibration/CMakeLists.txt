@@ -2,6 +2,7 @@ target_sources(mavsdk
     PRIVATE
     ${CMAKE_CURRENT_SOURCE_DIR}/calibration.cpp
     ${CMAKE_CURRENT_SOURCE_DIR}/calibration_impl.cpp
+    ${CMAKE_CURRENT_SOURCE_DIR}/calibration_statustext_parser.cpp
 )
 
 target_include_directories(mavsdk PUBLIC

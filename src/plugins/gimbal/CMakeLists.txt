@@ -2,6 +2,8 @@ target_sources(mavsdk
     PRIVATE
     ${CMAKE_CURRENT_SOURCE_DIR}/gimbal.cpp
     ${CMAKE_CURRENT_SOURCE_DIR}/gimbal_impl.cpp
+    ${CMAKE_CURRENT_SOURCE_DIR}/gimbal_protocol_v1.cpp
+    ${CMAKE_CURRENT_SOURCE_DIR}/gimbal_protocol_v2.cpp
 )
 
 target_include_directories(mavsdk PUBLIC

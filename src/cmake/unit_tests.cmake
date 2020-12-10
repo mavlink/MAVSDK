@@ -15,26 +15,6 @@ set_target_properties(unit_tests_runner
 
 target_link_libraries(unit_tests_runner
     mavsdk
-    mavsdk_action
-    mavsdk_calibration
-    mavsdk_camera
-    mavsdk_failure
-    mavsdk_follow_me
-    mavsdk_ftp
-    mavsdk_geofence
-    mavsdk_gimbal
-    mavsdk_info
-    mavsdk_log_files
-    mavsdk_manual_control
-    mavsdk_mavlink_passthrough
-    mavsdk_mission
-    mavsdk_mission_raw
-    mavsdk_mocap
-    mavsdk_offboard
-    mavsdk_param
-    mavsdk_shell
-    mavsdk_telemetry
-    mavsdk_tune
     CURL::libcurl
     JsonCpp::jsoncpp
     gtest

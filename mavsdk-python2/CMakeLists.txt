@@ -33,23 +33,4 @@ find_package(MAVSDK)
 target_link_libraries(mavsdk2
     PRIVATE pybind11::module
     MAVSDK::mavsdk
-    MAVSDK::mavsdk_action
-    MAVSDK::mavsdk_calibration
-    MAVSDK::mavsdk_camera
-    MAVSDK::mavsdk_failure
-    MAVSDK::mavsdk_follow_me
-    MAVSDK::mavsdk_ftp
-    MAVSDK::mavsdk_geofence
-    MAVSDK::mavsdk_gimbal
-    MAVSDK::mavsdk_info
-    MAVSDK::mavsdk_log_files
-    MAVSDK::mavsdk_manual_control
-    MAVSDK::mavsdk_mavlink_passthrough
-    MAVSDK::mavsdk_mission
-    MAVSDK::mavsdk_mission_raw
-    MAVSDK::mavsdk_mocap
-    MAVSDK::mavsdk_offboard
-    MAVSDK::mavsdk_param
-    MAVSDK::mavsdk_shell
-    MAVSDK::mavsdk_telemetry
-    MAVSDK::mavsdk_tune)
+)
