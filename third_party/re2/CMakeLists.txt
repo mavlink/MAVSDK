@@ -1,23 +1,20 @@
 cmake_minimum_required(VERSION 3.1)
 
-project(external-curl)
+project(external-re2)
 include(ExternalProject)
 
 list(APPEND CMAKE_ARGS
-    "${CL_ARGS}"
     "-DCMAKE_INSTALL_PREFIX:PATH=${CMAKE_INSTALL_PREFIX}"
-    "-DCMAKE_PREFIX_PATH=${CMAKE_PREFIX_PATH}"
+    "-DCMAKE_TOOLCHAIN_FILE:PATH=${CMAKE_TOOLCHAIN_FILE}"
     "-DCMAKE_POSITION_INDEPENDENT_CODE=ON"
     "-DBUILD_SHARED_LIBS=OFF"
     )
 
-if(ANDROID)
+if(IOS)
     list(APPEND CMAKE_ARGS
-        "-DBUILD_CURL_EXE=OFF"
-        )
-elseif(IOS)
-    list(APPEND CMAKE_ARGS
-        "-DBUILD_CURL_EXE=OFF"
+        "-DPLATFORM=${PLATFORM}"
+        "-DDEPLOYMENT_TARGET=${DEPLOYMENT_TARGET}"
+        "-DENABLE_STRICT_TRY_COMPILE=${ENABLE_STRICT_TRY_COMPILE}"
         )
 endif()
 
