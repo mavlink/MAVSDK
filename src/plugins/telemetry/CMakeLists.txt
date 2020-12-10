@@ -1,5 +1,6 @@
 target_sources(mavsdk
     PRIVATE
+    ${CMAKE_CURRENT_SOURCE_DIR}/math_conversions.cpp
     ${CMAKE_CURRENT_SOURCE_DIR}/telemetry.cpp
     ${CMAKE_CURRENT_SOURCE_DIR}/telemetry_impl.cpp
 )

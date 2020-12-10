@@ -2,6 +2,8 @@ target_sources(mavsdk
     PRIVATE
     ${CMAKE_CURRENT_SOURCE_DIR}/camera.cpp
     ${CMAKE_CURRENT_SOURCE_DIR}/camera_impl.cpp
+    ${CMAKE_CURRENT_SOURCE_DIR}/camera_definition.cpp
+    ${CMAKE_CURRENT_SOURCE_DIR}/camera_definition_files/generated/camera_definition_files.cpp
 )
 
 target_include_directories(mavsdk PUBLIC
