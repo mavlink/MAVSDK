@@ -384,14 +384,14 @@ jobs:
       - name: test (mavsdk_server)
         run: ./build/macos/src/mavsdk_server/test/unit_tests_mavsdk_server
       - name: Upload framework as artefact
-        if: ${{ matrix.build-framework }} == 'ON'
+        if: ${{ matrix.build-framework == 'ON' }}
         uses: actions/upload-artifact@v2
         with:
           name: mavsdk_server_macos.framework
           path: ./build/macos/src/mavsdk_server/src/mavsdk_server.framework
           retention-days: 2
       - name: Publish mavsdk_server_macos to github release
-        if: startsWith(github.ref, 'refs/tags/v') && ${{ matrix.build-framework }} == 'OFF'
+        if: ${{ startsWith(github.ref, 'refs/tags/v') && matrix.build-framework == 'OFF' }}
         uses: svenstaro/upload-release-action@v1-release
         with:
           repo_token: ${{ secrets.GITHUB_TOKEN }}
