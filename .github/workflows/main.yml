@@ -298,7 +298,7 @@ jobs:
         if: steps.cache.outputs.cache-hit == 'true'
         run: echo "superbuild=-DSUPERBUILD=OFF" >> $GITHUB_ENV && echo "cmake_prefix_path=-DCMAKE_PREFIX_PATH=/work/build/${{ matrix.arch_name }}/third_party/install" >> $GITHUB_ENV
       - name: configure
-        run: ./dockcross-${{ matrix.arch_name }} /bin/bash -c 'cmake $superbuild $cmake_prefix_path -DCMAKE_BUILD_TYPE=Release -DCMAKE_INSTALL_PREFIX=build/${{ matrix.arch_name }}/install -DBUILD_MAVSDK_SERVER=ON -DBUILD_SHARED_LIBS=OFF -DBUILD_STATIC_MAVSDK_SERVER=ON -DWERROR=OFF -j 2 -Bbuild/${{ matrix.arch_name }} -H.'
+        run: ./dockcross-${{ matrix.arch_name }} /bin/bash -c "cmake $superbuild $cmake_prefix_path -DCMAKE_BUILD_TYPE=Release -DCMAKE_INSTALL_PREFIX=build/${{ matrix.arch_name }}/install -DBUILD_MAVSDK_SERVER=ON -DBUILD_SHARED_LIBS=OFF -DBUILD_STATIC_MAVSDK_SERVER=ON -DWERROR=OFF -j 2 -Bbuild/${{ matrix.arch_name }} -H."
       - name: build
         run: ./dockcross-${{ matrix.arch_name }} cmake --build build/${{ matrix.arch_name }} -j 2 --target install
       - name: Publish artefacts
@@ -336,7 +336,7 @@ jobs:
         if: steps.cache.outputs.cache-hit == 'true'
         run: echo "superbuild=-DSUPERBUILD=OFF" >> $GITHUB_ENV && echo "cmake_prefix_path=-DCMAKE_PREFIX_PATH=/work/build/${{ matrix.name }}/third_party/install" >> $GITHUB_ENV
       - name: configure
-        run: ./dockcross-${{ matrix.name }} /bin/bash -c 'cmake $superbuild $cmake_prefix_path -DCMAKE_BUILD_TYPE=Release -DCMAKE_INSTALL_PREFIX=build/${{ matrix.name }}/install -DBUILD_MAVSDK_SERVER=ON -DBUILD_SHARED_LIBS=OFF -DWERROR=OFF -j 2 -Bbuild/${{ matrix.name }} -H.'
+        run: ./dockcross-${{ matrix.name }} /bin/bash -c "cmake $superbuild $cmake_prefix_path -DCMAKE_BUILD_TYPE=Release -DCMAKE_INSTALL_PREFIX=build/${{ matrix.name }}/install -DBUILD_MAVSDK_SERVER=ON -DBUILD_SHARED_LIBS=OFF -DWERROR=OFF -j 2 -Bbuild/${{ matrix.name }} -H."
       - name: build
         run: ./dockcross-${{ matrix.name }} cmake --build build/${{ matrix.name }} -j 2 --target install
       - name: create tar with header and library
