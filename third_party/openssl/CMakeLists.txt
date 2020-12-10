@@ -18,14 +18,12 @@ if(ANDROID)
 
     message("OPENSSL_PLATFORM set to ${OPENSSL_PLATFORM}")
 
-    set(ENV{ANDROID_NDK} $ENV{CROSS_ROOT})
-
     ExternalProject_add(
         openssl
         URL https://www.openssl.org/source/openssl-${OPENSSL_VERSION}.tar.gz
         PREFIX openssl
         PATCH_COMMAND patch -p 0 < ${PROJECT_SOURCE_DIR}/dockcross-android.patch
-        CONFIGURE_COMMAND <SOURCE_DIR>/Configure --sysroot=$ENV{CROSS_ROOT}/sysroot ${OPENSSL_PLATFORM} --prefix=${CMAKE_INSTALL_PREFIX} no-shared
+        CONFIGURE_COMMAND ${CMAKE_COMMAND} -E env ANDROID_NDK=$ENV{CROSS_ROOT} <SOURCE_DIR>/Configure --sysroot=$ENV{CROSS_ROOT}/sysroot ${OPENSSL_PLATFORM} --prefix=${CMAKE_INSTALL_PREFIX} no-shared
         BUILD_COMMAND make
         )
 elseif(IOS)
@@ -39,11 +37,15 @@ elseif(IOS)
 
     message("OPENSSL_PLATFORM set to ${OPENSSL_PLATFORM}")
 
+    if(${ENABLE_BITCODE})
+        set(CFLAGS "-fembed-bitcode")
+    endif()
+
     ExternalProject_add(
         openssl
         URL https://www.openssl.org/source/openssl-${OPENSSL_VERSION}.tar.gz
         PREFIX openssl
-        CONFIGURE_COMMAND ${CMAKE_COMMAND} -E env CFLAGS=-fembed-bitcode <SOURCE_DIR>/Configure ${OPENSSL_PLATFORM} --prefix=${CMAKE_INSTALL_PREFIX} no-shared
+        CONFIGURE_COMMAND ${CMAKE_COMMAND} -E env CFLAGS=${CFLAGS} <SOURCE_DIR>/Configure ${OPENSSL_PLATFORM} --prefix=${CMAKE_INSTALL_PREFIX} no-shared
         )
 elseif(CMAKE_CROSSCOMPILING) # This assumes we use dockcross
     if(${CMAKE_SYSTEM_PROCESSOR} STREQUAL "arm")
