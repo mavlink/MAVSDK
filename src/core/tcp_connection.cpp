@@ -153,11 +153,17 @@ bool TcpConnection::send_message(const mavlink_message_t& message)
     // TODO: remove this assert again
     assert(buffer_len <= MAVLINK_MAX_PACKET_LEN);
 
+#if defined(WINDOWS)
+    auto flags = 0;
+#else
+    auto flags = MSG_NOSIGNAL;
+#endif
+
     const auto send_len = sendto(
         _socket_fd,
         reinterpret_cast<char*>(buffer),
         buffer_len,
-        0,
+        flags,
         reinterpret_cast<const sockaddr*>(&dest_addr),
         sizeof(dest_addr));
 
