@@ -23,17 +23,12 @@ public:
     {
         std::mutex connection_state_mutex{};
 
-        _mavsdk.subscribe_on_new_system([this, &writer, &connection_state_mutex]() {
-            auto systems = _mavsdk.systems();
-
-            for (auto system : systems) {
-                const auto rpc_connection_state_response =
-                    createRpcConnectionStateResponse(system->is_connected());
-
-                std::lock_guard<std::mutex> lock(connection_state_mutex);
-                writer->Write(rpc_connection_state_response);
-            }
+        _mavsdk.subscribe_on_new_system([this, writer, &connection_state_mutex]() {
+            publish_system_state(writer, connection_state_mutex);
         });
+
+        // Publish the current state on subscribe
+        publish_system_state(writer, connection_state_mutex);
 
         _stop_future.wait();
         return grpc::Status::OK;
@@ -87,6 +82,21 @@ private:
         rpc_connection_state->set_is_connected(is_connected);
 
         return rpc_connection_state_response;
+    }
+
+    void publish_system_state(
+        grpc::ServerWriter<rpc::core::ConnectionStateResponse>* writer,
+        std::mutex& connection_state_mutex)
+    {
+        auto systems = _mavsdk.systems();
+
+        for (auto system : systems) {
+            const auto rpc_connection_state_response =
+                createRpcConnectionStateResponse(system->is_connected());
+
+            std::lock_guard<std::mutex> lock(connection_state_mutex);
+            writer->Write(rpc_connection_state_response);
+        }
     }
 };
 
