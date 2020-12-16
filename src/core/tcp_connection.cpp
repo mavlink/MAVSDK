@@ -130,6 +130,10 @@ ConnectionResult TcpConnection::stop()
 
 bool TcpConnection::send_message(const mavlink_message_t& message)
 {
+    if (!_is_ok) {
+        return false;
+    }
+
     if (_remote_ip.empty()) {
         LogErr() << "Remote IP unknown";
         return false;
