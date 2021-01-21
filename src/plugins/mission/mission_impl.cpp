@@ -180,10 +180,11 @@ Mission::Result MissionImpl::cancel_mission_upload()
     auto ptr = _mission_data.last_upload.lock();
     if (ptr) {
         ptr->cancel();
-        return Mission::Result::Success;
     } else {
-        return Mission::Result::Error;
+        LogWarn() << "No mission upload to cancel... ignoring";
     }
+
+    return Mission::Result::Success;
 }
 
 std::pair<Mission::Result, Mission::MissionPlan> MissionImpl::download_mission()
@@ -226,10 +227,11 @@ Mission::Result MissionImpl::cancel_mission_download()
     auto ptr = _mission_data.last_download.lock();
     if (ptr) {
         ptr->cancel();
-        return Mission::Result::Success;
     } else {
-        return Mission::Result::Error;
+        LogWarn() << "No mission download to cancel... ignoring";
     }
+
+    return Mission::Result::Success;
 }
 
 Mission::Result MissionImpl::set_return_to_launch_after_mission(bool enable_rtl)
