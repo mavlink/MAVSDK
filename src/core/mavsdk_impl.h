@@ -38,7 +38,8 @@ public:
 
     std::string version() const;
 
-    void receive_message(mavlink_message_t& message);
+    void forward_message(mavlink_message_t& message, Connection *connection);
+    void receive_message(mavlink_message_t& message, Connection *connection);
     bool send_message(mavlink_message_t& message);
 
     ConnectionResult add_any_connection(const std::string& connection_url);

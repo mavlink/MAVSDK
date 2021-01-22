@@ -109,8 +109,63 @@ std::vector<std::shared_ptr<System>> MavsdkImpl::systems() const
     return systems_result;
 }
 
-void MavsdkImpl::receive_message(mavlink_message_t& message)
+void MavsdkImpl::forward_message(mavlink_message_t &message, Connection *connection)
 {
+    /**
+     * @brief forward_message Function implementing Mavlink routing rules.
+     * See https://mavlink.io/en/guide/routing.html
+     *
+     * This function was adapted from PX4 Firmware v1.11.3
+     * https://github.com/PX4/PX4-Autopilot/blob/v1.11.3/src/modules/mavlink/mavlink_main.cpp
+     */
+    const mavlink_msg_entry_t *meta = mavlink_get_msg_entry(message.msgid);
+
+    bool forward_heartbeats_enabled = false;
+    int target_system_id = 0;
+    int target_component_id = 0;
+
+    // might be nullptr if message is unknown
+    if (meta) {
+        // Extract target system and target component if set
+        if (meta->flags & MAV_MSG_ENTRY_FLAG_HAVE_TARGET_SYSTEM) {
+            target_system_id = (_MAV_PAYLOAD(&message))[meta->target_system_ofs];
+        }
+
+        if (meta->flags & MAV_MSG_ENTRY_FLAG_HAVE_TARGET_COMPONENT) {
+            target_component_id = (_MAV_PAYLOAD(&message))[meta->target_component_ofs];
+        }
+    }
+
+    // If it's a message only for us, we keep it, otherwise, we forward it.
+    const bool targeted_only_at_us =
+        (target_system_id == get_own_system_id() &&
+         target_component_id == get_own_component_id());
+
+    // We don't forward heartbeats unless it's specifically enabled.
+    const bool heartbeat_check_ok =
+        (message.msgid != MAVLINK_MSG_ID_HEARTBEAT || forward_heartbeats_enabled);
+
+    if (!targeted_only_at_us && heartbeat_check_ok) {
+        std::lock_guard<std::mutex> lock(_connections_mutex);
+
+        for (auto it = _connections.begin(); it != _connections.end(); ++it) {
+            if ((*it).get() == connection) {
+                continue;
+            }
+            if (!(**it).send_message(message)) {
+                LogErr() << "forward fail";
+            }
+        }
+    }
+}
+
+void MavsdkImpl::receive_message(mavlink_message_t& message, Connection *connection)
+{
+    // Forward message if option enabled and multiple interfaces connected.
+    if (_configuration.get_forward_messages() && _connections.size() > 1) {
+        forward_message(message, connection);
+    }
+
     // Don't ever create a system with sysid 0.
     if (message.sysid == 0) {
         return;
@@ -213,7 +268,8 @@ ConnectionResult MavsdkImpl::add_any_connection(const std::string& connection_ur
 ConnectionResult MavsdkImpl::add_udp_connection(const std::string& local_ip, const int local_port)
 {
     auto new_conn = std::make_shared<UdpConnection>(
-        std::bind(&MavsdkImpl::receive_message, this, std::placeholders::_1), local_ip, local_port);
+        std::bind(&MavsdkImpl::receive_message, this, std::placeholders::_1, std::placeholders::_2),
+                  local_ip, local_port);
     if (!new_conn) {
         return ConnectionResult::ConnectionError;
     }
@@ -227,7 +283,8 @@ ConnectionResult MavsdkImpl::add_udp_connection(const std::string& local_ip, con
 ConnectionResult MavsdkImpl::setup_udp_remote(const std::string& remote_ip, int remote_port)
 {
     auto new_conn = std::make_shared<UdpConnection>(
-        std::bind(&MavsdkImpl::receive_message, this, std::placeholders::_1), "0.0.0.0", 0);
+        std::bind(&MavsdkImpl::receive_message, this, std::placeholders::_1, std::placeholders::_2),
+                  "0.0.0.0", 0);
     if (!new_conn) {
         return ConnectionResult::ConnectionError;
     }
@@ -244,7 +301,7 @@ ConnectionResult MavsdkImpl::setup_udp_remote(const std::string& remote_ip, int 
 ConnectionResult MavsdkImpl::add_tcp_connection(const std::string& remote_ip, int remote_port)
 {
     auto new_conn = std::make_shared<TcpConnection>(
-        std::bind(&MavsdkImpl::receive_message, this, std::placeholders::_1),
+        std::bind(&MavsdkImpl::receive_message, this, std::placeholders::_1, std::placeholders::_2),
         remote_ip,
         remote_port);
     if (!new_conn) {
@@ -261,7 +318,7 @@ ConnectionResult
 MavsdkImpl::add_serial_connection(const std::string& dev_path, int baudrate, bool flow_control)
 {
     auto new_conn = std::make_shared<SerialConnection>(
-        std::bind(&MavsdkImpl::receive_message, this, std::placeholders::_1),
+        std::bind(&MavsdkImpl::receive_message, this, std::placeholders::_1, std::placeholders::_2),
         dev_path,
         baudrate,
         flow_control);

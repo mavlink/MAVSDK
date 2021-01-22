@@ -236,7 +236,7 @@ void UdpConnection::receive()
                     inet_ntoa(src_addr.sin_addr), ntohs(src_addr.sin_port), sysid);
             }
 
-            receive_message(_mavlink_receiver->get_last_message());
+            receive_message(_mavlink_receiver->get_last_message(), this);
         }
     }
 }

@@ -8,7 +8,7 @@ namespace mavsdk {
 
 class Connection {
 public:
-    typedef std::function<void(mavlink_message_t& message)> receiver_callback_t;
+    typedef std::function<void(mavlink_message_t& message, Connection *connection)> receiver_callback_t;
 
     Connection(receiver_callback_t receiver_callback);
     virtual ~Connection();
@@ -25,7 +25,7 @@ public:
 protected:
     bool start_mavlink_receiver();
     void stop_mavlink_receiver();
-    void receive_message(mavlink_message_t& message);
+    void receive_message(mavlink_message_t& message, Connection *connection);
 
     receiver_callback_t _receiver_callback{};
     std::unique_ptr<MAVLinkReceiver> _mavlink_receiver;

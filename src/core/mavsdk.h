@@ -164,9 +164,10 @@ public:
          * @param system_id the system id to store in this configuration
          * @param component_id the component id to store in this configuration
          * @param always_send_heartbeats send heartbeats by default even without a system connected
+         * @param forward_messages forward messages by default when multiple interfaces are used.
          */
         explicit Configuration(
-            uint8_t system_id, uint8_t component_id, bool always_send_heartbeats);
+            uint8_t system_id, uint8_t component_id, bool always_send_heartbeats, bool forward_messages = false);
         /**
          * @brief Create new Configuration using a usage type.
          * In this mode, the system and component ID will be automatically chosen.
@@ -210,6 +211,17 @@ public:
          */
         void set_always_send_heartbeats(bool always_send_heartbeats);
 
+        /**
+         * @brief Get whether to forward messages by default.
+         * @return whether to always forward messages
+         */
+        bool get_forward_messages() const;
+
+        /**
+         * @brief Set whether to forward messages by default.
+         */
+        void set_forward_messages(bool forward_messages);
+
         /** @brief Usage type of this configuration, used for automatic ID set */
         UsageType get_usage_type() const;
 
@@ -222,6 +234,7 @@ public:
         uint8_t _system_id;
         uint8_t _component_id;
         bool _always_send_heartbeats;
+        bool _forward_messages;
         UsageType _usage_type;
     };
 

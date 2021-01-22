@@ -203,7 +203,7 @@ void TcpConnection::receive()
 
         // Parse all mavlink messages in one data packet. Once exhausted, we'll exit while.
         while (_mavlink_receiver->parse_message()) {
-            receive_message(_mavlink_receiver->get_last_message());
+            receive_message(_mavlink_receiver->get_last_message(), this);
         }
     }
 }

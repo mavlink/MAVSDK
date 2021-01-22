@@ -99,10 +99,11 @@ void Mavsdk::register_on_timeout(const event_callback_t callback)
 }
 
 Mavsdk::Configuration::Configuration(
-    uint8_t system_id, uint8_t component_id, bool always_send_heartbeats) :
+    uint8_t system_id, uint8_t component_id, bool always_send_heartbeats, bool forward_messages) :
     _system_id(system_id),
     _component_id(component_id),
     _always_send_heartbeats(always_send_heartbeats),
+    _forward_messages(forward_messages),
     _usage_type(Mavsdk::Configuration::UsageType::Custom)
 {}
 
@@ -110,6 +111,7 @@ Mavsdk::Configuration::Configuration(UsageType usage_type) :
     _system_id(MavsdkImpl::DEFAULT_SYSTEM_ID_GCS),
     _component_id(MavsdkImpl::DEFAULT_COMPONENT_ID_GCS),
     _always_send_heartbeats(false),
+    _forward_messages(false),
     _usage_type(usage_type)
 {
     switch (usage_type) {
@@ -117,17 +119,20 @@ Mavsdk::Configuration::Configuration(UsageType usage_type) :
             _system_id = MavsdkImpl::DEFAULT_SYSTEM_ID_GCS;
             _component_id = MavsdkImpl::DEFAULT_COMPONENT_ID_GCS;
             _always_send_heartbeats = false;
+            _forward_messages = false;
             break;
         case Mavsdk::Configuration::UsageType::CompanionComputer:
             // TODO implement autodetection of system ID - maybe from heartbeats?
             _system_id = MavsdkImpl::DEFAULT_SYSTEM_ID_CC;
             _component_id = MavsdkImpl::DEFAULT_COMPONENT_ID_CC;
             _always_send_heartbeats = true;
+            _forward_messages = true;
             break;
         case Mavsdk::Configuration::UsageType::Autopilot:
             _system_id = MavsdkImpl::DEFAULT_SYSTEM_ID_AUTOPILOT;
             _component_id = MavsdkImpl::DEFAULT_COMPONENT_ID_AUTOPILOT;
             _always_send_heartbeats = true;
+            _forward_messages = true;
             break;
         default:
             break;
@@ -162,6 +167,16 @@ bool Mavsdk::Configuration::get_always_send_heartbeats() const
 void Mavsdk::Configuration::set_always_send_heartbeats(bool always_send_heartbeats)
 {
     _always_send_heartbeats = always_send_heartbeats;
+}
+
+bool Mavsdk::Configuration::get_forward_messages() const
+{
+    return _forward_messages;
+}
+
+void Mavsdk::Configuration::set_forward_messages(bool forward_messages)
+{
+    _forward_messages = forward_messages;
 }
 
 Mavsdk::Configuration::UsageType Mavsdk::Configuration::get_usage_type() const
