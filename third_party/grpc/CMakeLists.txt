@@ -4,9 +4,11 @@ project(external-grpc)
 include(ExternalProject)
 
 list(APPEND CMAKE_ARGS
-    "${CL_ARGS}"
     "-DCMAKE_INSTALL_PREFIX:PATH=${CMAKE_INSTALL_PREFIX}"
+    "-DCMAKE_TOOLCHAIN_FILE:PATH=${CMAKE_TOOLCHAIN_FILE}"
     "-DCMAKE_PREFIX_PATH:PATH=${CMAKE_PREFIX_PATH}"
+    "-DCMAKE_POSITION_INDEPENDENT_CODE=ON"
+    "-DCMAKE_BUILD_TYPE=Release"
     "-DRUN_HAVE_STD_REGEX=0"
     "-DRUN_HAVE_POSIX_REGEX=0"
     "-DRUN_HAVE_STEADY_CLOCK=0"
@@ -21,7 +23,6 @@ list(APPEND CMAKE_ARGS
     "-DgRPC_INSTALL_default=ON"
     "-DgRPC_MSVC_STATIC_RUNTIME=OFF"
     "-DgRPC_BUILD_CSHARP_EXT=OFF"
-    "-DCMAKE_POSITION_INDEPENDENT_CODE=ON"
     )
 
 if(CMAKE_CROSSCOMPILING)
@@ -36,14 +37,32 @@ if(MANYLINUX1)
         )
 endif()
 
+if(IOS)
+    list(APPEND CMAKE_ARGS
+        "-DPLATFORM=${PLATFORM}"
+        "-DDEPLOYMENT_TARGET=${DEPLOYMENT_TARGET}"
+        "-DENABLE_STRICT_TRY_COMPILE=${ENABLE_STRICT_TRY_COMPILE}"
+        )
+endif()
+
 message(STATUS "Preparing external project \"grpc\" with args:")
 foreach(CMAKE_ARG ${CMAKE_ARGS})
     message(STATUS "-- ${CMAKE_ARG}")
 endforeach()
 
-ExternalProject_add(
-    grpc
-    URL https://github.com/grpc/grpc/archive/v1.33.2.tar.gz
-    PREFIX grpc
-    CMAKE_ARGS "${CMAKE_ARGS}"
-    )
+if(IOS)
+    ExternalProject_add(
+        grpc
+        URL https://github.com/grpc/grpc/archive/v1.34.0.tar.gz
+        PREFIX grpc
+        PATCH_COMMAND patch -p 1 < ${PROJECT_SOURCE_DIR}/grpc_openssl_ios.patch
+        CMAKE_ARGS "${CMAKE_ARGS}"
+        )
+else()
+    ExternalProject_add(
+        grpc
+        URL https://github.com/grpc/grpc/archive/v1.34.0.tar.gz
+        PREFIX grpc
+        CMAKE_ARGS "${CMAKE_ARGS}"
+        )
+endif()

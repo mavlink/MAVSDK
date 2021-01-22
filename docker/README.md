@@ -7,7 +7,7 @@ You can use them simply by :
 
 ```bash
 cd /whereever/MAVSDK
-./run-docker.sh
+./tools/run-docker.sh
 ```
 
 Should you wish to create and use your own local images, use the following.
@@ -23,7 +23,7 @@ To use the image :
 
 ```bash
 cd /whereever/MAVSDK
-./run-docker.sh
+./tools/run-docker.sh
 ```
 
 This will create and run a container based on your image.

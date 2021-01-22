@@ -19,7 +19,7 @@ This architecture allows the clients to be implemented in idiomatic patterns, so
 The MAVSDK C++ part consists of:
 - The [core library](https://github.com/mavlink/MAVSDK/tree/develop/src/core) implementing the basic MAVLink communication.
 - The [plugin libraries](https://github.com/mavlink/MAVSDK/tree/develop/src/plugins) implementing the MAVLink communication specific to a feature.
-- The [mavsdk_server](https://github.com/mavlink/MAVSDK/tree/develop/src/backend) implementing the gRPC server for the language clients.
+- The [mavsdk_server](https://github.com/mavlink/MAVSDK/tree/develop/src/mavsdk_server) implementing the gRPC server for the language clients.
 
 ## Repos
 

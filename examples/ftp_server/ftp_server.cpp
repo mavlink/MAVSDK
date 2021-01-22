@@ -48,12 +48,12 @@ int main(int argc, char** argv)
 
     auto system_cc = mavsdk.systems().at(0);
 
-    auto ftp_server = std::make_shared<Ftp>(system_cc);
-    ftp_server->set_root_directory(argv[3]);
+    auto ftp_server = Ftp{system_cc};
+    ftp_server.set_root_directory(argv[3]);
 
     std::cout << NORMAL_CONSOLE_TEXT << "Mavlink FTP server running." << std::endl
               << "Remote:       " << argv[1] << ":" << argv[2] << std::endl
-              << "Component ID: " << static_cast<int>(ftp_server->get_our_compid()) << std::endl;
+              << "Component ID: " << static_cast<int>(ftp_server.get_our_compid()) << std::endl;
 
     for (;;) {
         std::this_thread::sleep_for(std::chrono::seconds(1));

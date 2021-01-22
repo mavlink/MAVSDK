@@ -10,7 +10,7 @@ if(NOT @BUILD_SHARED_LIBS@)
     find_dependency(jsoncpp)
     find_dependency(tinyxml2)
 
-    if(@BUILD_BACKEND@)
+    if(@BUILD_MAVSDK_SERVER@)
         find_dependency(gRPC)
     endif()
 endif()

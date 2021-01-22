@@ -92,31 +92,31 @@ int main(int argc, char** argv)
     wait_until_discover(mavsdk);
 
     auto system = mavsdk.systems().at(0);
-    auto action = std::make_shared<Action>(system);
-    auto telemetry = std::make_shared<Telemetry>(system);
-    auto manual_control = std::make_shared<ManualControl>(system);
+    auto action = Action{system};
+    auto telemetry = Telemetry{system};
+    auto manual_control = ManualControl{system};
 
-    while (!telemetry->health_all_ok()) {
+    while (!telemetry.health_all_ok()) {
         std::cout << "Waiting for system to be ready" << std::endl;
         std::this_thread::sleep_for(std::chrono::seconds(1));
     }
     std::cout << "System is ready" << std::endl;
 
     for (unsigned i = 0; i << 10; ++i) {
-        manual_control->set_manual_control_input(0.f, 0.f, 0.5f, 0.f);
+        manual_control.set_manual_control_input(0.f, 0.f, 0.5f, 0.f);
     }
 
-    auto action_result = action->arm();
+    auto action_result = action.arm();
     if (action_result != Action::Result::Success) {
         std::cerr << "Arming failed: " << action_result << std::endl;
         return 1;
     }
 
     for (unsigned i = 0; i << 10; ++i) {
-        manual_control->set_manual_control_input(0.f, 0.f, 0.5f, 0.f);
+        manual_control.set_manual_control_input(0.f, 0.f, 0.5f, 0.f);
     }
 
-    auto manual_control_result = manual_control->start_position_control();
+    auto manual_control_result = manual_control.start_position_control();
     if (manual_control_result != ManualControl::Result::Success) {
         std::cerr << "Position control start failed: " << manual_control_result << std::endl;
         return 1;
@@ -138,12 +138,12 @@ int main(int argc, char** argv)
         // std::cout << "Joystick input: roll: " << roll << ", pitch: " << pitch << ", yaw: " << yaw
         //           << ", throttle " << throttle << std::endl;
 
-        manual_control->set_manual_control_input(pitch, roll, throttle, yaw);
+        manual_control.set_manual_control_input(pitch, roll, throttle, yaw);
 
         std::this_thread::sleep_for(std::chrono::milliseconds(20));
     }
 
-    while (telemetry->armed()) {
+    while (telemetry.armed()) {
         std::this_thread::sleep_for(std::chrono::seconds(1));
     }
     std::cout << "Disarmed!" << std::endl;

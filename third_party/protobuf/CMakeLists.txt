@@ -4,9 +4,10 @@ project(external-protobuf)
 include(ExternalProject)
 
 list(APPEND CMAKE_ARGS
-    "${CL_ARGS}"
     "-DCMAKE_INSTALL_PREFIX:PATH=${CMAKE_INSTALL_PREFIX}"
+    "-DCMAKE_TOOLCHAIN_FILE:PATH=${CMAKE_TOOLCHAIN_FILE}"
     "-DCMAKE_PREFIX_PATH:PATH=${CMAKE_PREFIX_PATH}"
+    "-DCMAKE_BUILD_TYPE=Release"
     "-Dprotobuf_BUILD_TESTS=OFF"
     "-Dprotobuf_BUILD_SHARED_LIBS=OFF"
     "-Dprotobuf_MODULE_COMPATIBLE=ON"
@@ -20,23 +21,23 @@ if(CMAKE_CROSSCOMPILING)
         )
 endif()
 
+if(IOS)
+    list(APPEND CMAKE_ARGS
+        "-DPLATFORM=${PLATFORM}"
+        "-DDEPLOYMENT_TARGET=${DEPLOYMENT_TARGET}"
+        "-DENABLE_STRICT_TRY_COMPILE=${ENABLE_STRICT_TRY_COMPILE}"
+        )
+endif()
+
 message(STATUS "Preparing external project \"protobuf\" with args:")
 foreach(CMAKE_ARG ${CMAKE_ARGS})
     message(STATUS "-- ${CMAKE_ARG}")
 endforeach()
 
-# This wouldn't be necessary with CMAKE_ARGS + SOURCE_SUBDIR (see below)
-if(DEFINED CMAKE_GENERATOR)
-    set(CMAKE_GENERATOR_PARAM "-G${CMAKE_GENERATOR}")
-endif()
-
 ExternalProject_add(
     protobuf
     URL https://github.com/protocolbuffers/protobuf/releases/download/v3.13.0/protobuf-cpp-3.13.0.tar.gz
     PREFIX protobuf
-    CONFIGURE_COMMAND ${CMAKE_COMMAND} "${CMAKE_GENERATOR_PARAM}" "${CMAKE_ARGS}" <SOURCE_DIR>/cmake
-    # CMAKE_ARGS + SOURCE_SUBDIR are more elegant than CONFIGURE_COMMAND,
-    # but not supported by CMake 3.5.1 (Ubuntu 16.04)
-    #CMAKE_ARGS "${CMAKE_ARGS}"
-    #SOURCE_SUBDIR cmake
+    CMAKE_ARGS "${CMAKE_ARGS}"
+    SOURCE_SUBDIR cmake
     )

@@ -6,11 +6,11 @@ set(CMAKE_CXX_STANDARD_REQUIRED ON)
 project(battery)
 
 if(NOT MSVC)
-    add_definitions("-std=c++17 -Wall -Wextra ")
+    add_definitions("-Wall -Wextra ")
     # This warning is triggered by the MAVLink includes.
     add_definitions("-Wno-address-of-packed-member")
 else()
-    add_definitions("-std=c++17 -WX -W2")
+    add_definitions("-WX -W2")
 endif()
 
 find_package(MAVSDK REQUIRED)

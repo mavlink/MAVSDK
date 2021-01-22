@@ -15,16 +15,16 @@ TEST(SafeQueue, FillAndEmpty)
     EXPECT_EQ(safe_queue.size(), 1);
     safe_queue.enqueue(two);
     safe_queue.enqueue(three);
-    EXPECT_EQ(safe_queue.size(), 3);
+    ASSERT_EQ(safe_queue.size(), 3);
 
-    EXPECT_EQ(safe_queue.dequeue(), std::make_pair<>(true, 1));
+    EXPECT_EQ(safe_queue.dequeue().value(), 1);
     EXPECT_EQ(safe_queue.size(), 2);
-    EXPECT_EQ(safe_queue.dequeue(), std::make_pair<>(true, 2));
-    EXPECT_EQ(safe_queue.dequeue(), std::make_pair<>(true, 3));
+    EXPECT_EQ(safe_queue.dequeue().value(), 2);
+    EXPECT_EQ(safe_queue.dequeue().value(), 3);
     EXPECT_EQ(safe_queue.size(), 0);
 
     safe_queue.stop();
-    EXPECT_EQ(safe_queue.dequeue().first, false);
+    EXPECT_EQ(safe_queue.dequeue(), std::nullopt);
 }
 
 TEST(SafeQueue, StopEarly)
@@ -37,9 +37,10 @@ TEST(SafeQueue, StopEarly)
     safe_queue.enqueue(one);
     safe_queue.enqueue(two);
 
-    EXPECT_EQ(safe_queue.dequeue(), std::make_pair<>(true, 1));
+    ASSERT_EQ(safe_queue.size(), 2);
+    EXPECT_EQ(safe_queue.dequeue().value(), 1);
     EXPECT_EQ(safe_queue.size(), 1);
 
     safe_queue.stop();
-    EXPECT_EQ(safe_queue.dequeue().first, false);
+    EXPECT_EQ(safe_queue.dequeue(), std::nullopt);
 }

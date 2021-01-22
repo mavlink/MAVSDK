@@ -31,14 +31,14 @@ TEST_F(SitlTest, Info)
             std::cout << "Flight version: " << version_result.second.flight_sw_major << "."
                       << version_result.second.flight_sw_minor << "."
                       << version_result.second.flight_sw_patch << " ("
-                      << std::string(version_result.second.flight_sw_git_hash) << ")" << std::endl;
+                      << std::string(version_result.second.flight_sw_git_hash) << ")" << '\n';
             std::cout << "Flight vendor version: " << version_result.second.flight_sw_vendor_major
                       << "." << version_result.second.flight_sw_vendor_minor << "."
-                      << version_result.second.flight_sw_vendor_patch << std::endl;
+                      << version_result.second.flight_sw_vendor_patch << '\n';
             std::cout << "OS version: " << version_result.second.os_sw_major << "."
                       << version_result.second.os_sw_minor << "."
                       << version_result.second.os_sw_patch << " ("
-                      << std::string(version_result.second.os_sw_git_hash) << ")" << std::endl;
+                      << std::string(version_result.second.os_sw_git_hash) << ")" << '\n';
 
             EXPECT_NE(version_result.second.flight_sw_major, 0);
         } else {
@@ -49,8 +49,8 @@ TEST_F(SitlTest, Info)
         EXPECT_EQ(product_result.first, Info::Result::Success);
 
         if (product_result.first == Info::Result::Success) {
-            std::cout << "Vendor: " << product_result.second.vendor_name << std::endl;
-            std::cout << "Product: " << product_result.second.product_name << std::endl;
+            std::cout << "Vendor: " << product_result.second.vendor_name << '\n';
+            std::cout << "Product: " << product_result.second.product_name << '\n';
         } else {
             LogWarn() << "Product request result: " << product_result.first;
         }
@@ -61,7 +61,7 @@ TEST_F(SitlTest, Info)
         EXPECT_EQ(identification_result.first, Info::Result::Success);
 
         if (identification_result.first == Info::Result::Success) {
-            std::cout << "Hardware UID: " << identification_result.second.hardware_uid << std::endl;
+            std::cout << "Hardware UID: " << identification_result.second.hardware_uid << '\n';
         } else {
             LogWarn() << "Identification request result: " << identification_result.first;
         }
@@ -72,8 +72,8 @@ TEST_F(SitlTest, Info)
 
         if (flight_info_result.first == Info::Result::Success) {
             std::cout << "Time since boot (ms): "
-                      << std::to_string(flight_info_result.second.time_boot_ms) << std::endl;
-            std::cout << "Flight UID: " << flight_info_result.second.flight_uid << std::endl;
+                      << std::to_string(flight_info_result.second.time_boot_ms) << '\n';
+            std::cout << "Flight UID: " << flight_info_result.second.flight_uid << '\n';
         } else {
             LogWarn() << "Product request result: " << flight_info_result.first;
         }

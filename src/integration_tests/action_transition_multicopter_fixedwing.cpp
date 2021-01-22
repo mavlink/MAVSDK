@@ -83,7 +83,7 @@ void land_and_disarm(std::shared_ptr<Action> action, std::shared_ptr<Telemetry> 
 void takeoff(std::shared_ptr<Action> action, std::shared_ptr<Telemetry> telemetry)
 {
     while (!telemetry->health_all_ok()) {
-        std::cout << "waiting for system to be ready" << std::endl;
+        std::cout << "waiting for system to be ready" << '\n';
         std::this_thread::sleep_for(std::chrono::seconds(1));
     }
 

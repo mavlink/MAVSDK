@@ -1,5 +1,6 @@
 #include "mavsdk_impl.h"
 
+#include <algorithm>
 #include <mutex>
 #include <utility>
 
@@ -508,6 +509,12 @@ void MavsdkImpl::notify_on_timeout(const uint64_t uuid)
     if (_on_timeout_callback) {
         _on_timeout_callback(uuid);
     }
+
+    std::lock_guard<std::mutex> lock(_new_system_callback_mutex);
+    if (_new_system_callback) {
+        auto temp_callback = _new_system_callback;
+        call_user_callback([temp_callback]() { temp_callback(); });
+    }
 }
 
 void MavsdkImpl::subscribe_on_new_system(Mavsdk::NewSystemCallback callback)
@@ -515,7 +522,13 @@ void MavsdkImpl::subscribe_on_new_system(Mavsdk::NewSystemCallback callback)
     std::lock_guard<std::mutex> lock(_new_system_callback_mutex);
     _new_system_callback = callback;
 
-    if (_new_system_callback != nullptr && systems().size() > 0) {
+    const auto is_any_system_connected = [this]() {
+        return std::any_of(systems().cbegin(), systems().cend(), [](auto& system) {
+            return system->is_connected();
+        });
+    };
+
+    if (_new_system_callback != nullptr && is_any_system_connected()) {
         _new_system_callback();
     }
 }
@@ -584,7 +597,7 @@ void MavsdkImpl::process_user_callbacks_thread()
 {
     while (!_should_exit) {
         auto callback = _user_callback_queue.dequeue();
-        if (!callback.first) {
+        if (!callback) {
             continue;
         }
 
@@ -594,8 +607,8 @@ void MavsdkImpl::process_user_callbacks_thread()
         timeout_handler.add(
             [&]() {
                 if (_callback_debugging) {
-                    LogWarn() << "Callback called from " << callback.second.filename << ":"
-                              << callback.second.linenumber << " took more than " << timeout_s
+                    LogWarn() << "Callback called from " << callback.value().filename << ":"
+                              << callback.value().linenumber << " took more than " << timeout_s
                               << " second to run.";
                     fflush(stdout);
                     fflush(stderr);
@@ -608,7 +621,7 @@ void MavsdkImpl::process_user_callbacks_thread()
             },
             timeout_s,
             &cookie);
-        callback.second.func();
+        callback.value().func();
         timeout_handler.remove(cookie);
     }
 }

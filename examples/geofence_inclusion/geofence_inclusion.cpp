@@ -84,12 +84,12 @@ int main(int argc, char** argv)
     }
 
     auto system = mavsdk.systems().at(0);
-    auto action = std::make_shared<Action>(system);
-    auto mission = std::make_shared<Mission>(system);
-    auto telemetry = std::make_shared<Telemetry>(system);
-    auto geofence = std::make_shared<Geofence>(system);
+    auto action = Action{system};
+    auto mission = Mission{system};
+    auto telemetry = Telemetry{system};
+    auto geofence = Geofence{system};
 
-    while (!telemetry->health_all_ok()) {
+    while (!telemetry.health_all_ok()) {
         std::cout << "Waiting for system to be ready" << std::endl;
         sleep_for(seconds(1));
     }
@@ -113,7 +113,7 @@ int main(int argc, char** argv)
     {
         std::cout << "Uploading geofence..." << std::endl;
 
-        const Geofence::Result result = geofence->upload_geofence(polygons);
+        const Geofence::Result result = geofence.upload_geofence(polygons);
 
         if (result != Geofence::Result::Success) {
             std::cout << "Geofence upload failed (" << result << "), exiting." << std::endl;

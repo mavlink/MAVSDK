@@ -16,9 +16,11 @@ function(build_target TARGET_NAME)
             "-G${CMAKE_GENERATOR}"
             "${PLATFORM_ARGUMENT}"
             "-DCMAKE_TOOLCHAIN_FILE:PATH=${CMAKE_TOOLCHAIN_FILE}"
-            "-DCL_ARGS=${CL_ARGS}"
             "-DCMAKE_INSTALL_PREFIX:PATH=${TARGET_INSTALL_DIR}"
             "-DCMAKE_PREFIX_PATH:PATH=${CMAKE_PREFIX_PATH}"
+            "-DPLATFORM=${PLATFORM}" # for iOS toolchain
+            "-DDEPLOYMENT_TARGET=${DEPLOYMENT_TARGET}" # for iOS toolchain
+            "-DENABLE_STRICT_TRY_COMPILE=${ENABLE_STRICT_TRY_COMPILE}" # for iOS toolchain
             "${TARGET_SOURCE_DIR}"
         WORKING_DIRECTORY "${TARGET_BINARY_DIR}"
         RESULT_VARIABLE CONFIGURE_FAILED

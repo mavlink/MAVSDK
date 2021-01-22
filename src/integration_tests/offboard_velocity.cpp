@@ -27,7 +27,7 @@ TEST_F(SitlTest, OffboardVelocityNED)
     auto mission = std::make_shared<Mission>(system);
 
     while (!telemetry->health_all_ok()) {
-        std::cout << "waiting for system to be ready" << std::endl;
+        std::cout << "waiting for system to be ready" << '\n';
         std::this_thread::sleep_for(std::chrono::seconds(1));
     }
 
@@ -61,7 +61,7 @@ TEST_F(SitlTest, OffboardVelocityNED)
 
         for (unsigned i = 0; i < steps; ++i) {
             float vx = 5.0f * sinf(i * step_size);
-            // std::cout << "vx: " << vx << std::endl;
+            // std::cout << "vx: " << vx << '\n';
             Offboard::VelocityNedYaw north_and_yaw_right{};
             north_and_yaw_right.north_m_s = vx;
             north_and_yaw_right.yaw_deg = 90.0f;
@@ -146,7 +146,7 @@ TEST_F(SitlTest, OffboardVelocityBody)
     auto offboard = std::make_shared<Offboard>(system);
 
     while (!telemetry->health_all_ok()) {
-        std::cout << "waiting for system to be ready" << std::endl;
+        std::cout << "waiting for system to be ready" << '\n';
         std::this_thread::sleep_for(std::chrono::seconds(1));
     }
 

@@ -226,8 +226,8 @@ void SystemImpl::process_statustext(const mavlink_message_t& message)
     const auto result_severity = _statustext_handler.process_severity(statustext);
     const auto result_text = _statustext_handler.process_text(statustext);
 
-    if (result_severity.first && result_text.first) {
-        LogDebug() << "MAVLink: " + result_severity.second + ": " + result_text.second;
+    if (result_severity && result_text) {
+        LogDebug() << "MAVLink: " << result_severity.value() << ": " << result_text.value();
     }
 }
 

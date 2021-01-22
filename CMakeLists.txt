@@ -19,20 +19,14 @@ message(STATUS "Version patch: ${MAVSDK_VERSION_PATCH}")
 set(MAVSDK_SOVERSION_STRING ${MAVSDK_VERSION_MAJOR})
 set(MAVSDK_VERSION_STRING ${MAVSDK_VERSION_MAJOR}.${MAVSDK_VERSION_MINOR}.${MAVSDK_VERSION_PATCH})
 
-# Extract command line args into ${CL_ARGS} in order to propagate them to the superbuild dependencies
-get_cmake_property(vars CACHE_VARIABLES)
-foreach(var ${vars})
-  get_property(currentHelpString CACHE "${var}" PROPERTY HELPSTRING)
-    if("${currentHelpString}" MATCHES "No help, variable specified on the command line." OR "${currentHelpString}" STREQUAL "")
-        #message("${var} = [${${var}}]  --  ${currentHelpString}") # uncomment to see the variables being processed
-        list(APPEND CL_ARGS "-D${var}=${${var}}")
-    endif()
-endforeach()
-
 project(mavsdk_superbuild)
 
+if (BUILD_BACKEND)
+    message(FATAL_ERROR "The argument BUILD_BACKEND has been replaced by BUILD_MAVSDK_SERVER. To build mavsdk_server, use -DBUILD_MAVSDK_SERVER=ON.")
+endif()
+
 option(SUPERBUILD "Build dependencies" ON)
-option(BUILD_BACKEND "Build gRPC backend server" OFF)
+option(BUILD_MAVSDK_SERVER "Build mavsdk_server" OFF)
 option(BUILD_SHARED_LIBS "Build core as shared libraries instead of static ones" ON)
 
 set(DEPS_BUILD_PATH "${PROJECT_BINARY_DIR}/third_party" CACHE PATH "Install path for the dependencies. Ignored if SUPERBUILD=OFF.")
