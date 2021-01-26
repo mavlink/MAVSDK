@@ -195,9 +195,9 @@ message DoOrbitRequest {
     float radius_m = 1; // Radius of circle (in meters)
     float velocity_ms = 2; // Tangential velocity (in m/s)
     ORBIT_YAW_BEHAVIOR yaw_behavior = 3; // Yaw behavior of vehicle (ORBIT_YAW_BEHAVIOUR)
-    double latitude_x = 5; //Center point latitude (no mav_frame) / X coord to mav_frame. NAN: current
-    double longitude_y = 6; //Center point longitude (no mav_fram) / Y coord to mav_frame. NAN: current
-    double altitude_z = 7; //Center point altitude (MSL, no mav_frame) / Z coord to mav_frame. NAN: current
+    double latitude_x = 5; // Center point latitude (no mav_frame) / X coord to mav_frame. NAN: current
+    double longitude_y = 6; // Center point longitude (no mav_fram) / Y coord to mav_frame. NAN: current
+    double altitude_z = 7; // Center point altitude (MSL, no mav_frame) / Z coord to mav_frame. NAN: current
 }
 message DoOrbitResponse {
     ActionResult action_result = 1;
