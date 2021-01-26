@@ -81,6 +81,12 @@ service ActionService {
      */
     rpc GotoLocation(GotoLocationRequest) returns(GotoLocationResponse) {}
     /*
+     *Send command do orbit to the drone.
+     *
+     *This will run the do orbit routine with the given parameters.
+     */
+    rpc DoOrbit(DoOrbitRequest) returns(DoOrbitResponse) {}
+    /*
      * Send command to transition the drone to fixedwing.
      *
      * The associated action will only be executed for VTOL vehicles (on other vehicle types the
@@ -174,6 +180,18 @@ message GotoLocationRequest {
     float yaw_deg = 4; // Yaw angle (in degrees, frame is NED, 0 is North, positive is clockwise)
 }
 message GotoLocationResponse {
+    ActionResult action_result = 1;
+}
+
+message DoOrbitRequest {
+    float radius_m = 1; // Radius of circle (in meters)
+    float velocity_ms = 2; // Tangential velocity (in m/s)
+    float yaw_behavior = 3; // Yaw behavior of vehicle (ORBIT_YAW_BEHAVIOUR)
+    double latitude_x = 5; //Center point latitude (no mav_frame) / X coord to mav_frame. NAN: current
+    double longitude_y = 6; //Center point longitude (no mav_fram) / Y coord to mav_frame. NAN: current
+    double altitude_z = 7; //Center point altitude (MSL, no mav_frame) / Z coord to mav_frame. NAN: current
+}
+message DoOrbitResponse {
     ActionResult action_result = 1;
 }
 
