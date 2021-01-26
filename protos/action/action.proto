@@ -184,7 +184,7 @@ message GotoLocationResponse {
 }
 
 message DoOrbitRequest {
-    enum ORBIT_YAW_BEHAVIOR {
+    enum OrbitYawBehavior {
         ORBIT_YAW_BEHAVIOUR_HOLD_FRONT_TO_CIRCLE_CENTER = 0;
         ORBIT_YAW_BEHAVIOUR_HOLD_INITIAL_HEADING = 1;
         ORBIT_YAW_BEHAVIOUR_UNCONTROLLED = 2;
@@ -194,7 +194,7 @@ message DoOrbitRequest {
     
     float radius_m = 1; // Radius of circle (in meters)
     float velocity_ms = 2; // Tangential velocity (in m/s)
-    ORBIT_YAW_BEHAVIOR yaw_behavior = 3; // Yaw behavior of vehicle (ORBIT_YAW_BEHAVIOUR)
+    OrbitYawBehavior yaw_behavior = 3; // Yaw behavior of vehicle (ORBIT_YAW_BEHAVIOUR)
     double latitude_x = 5; // Center point latitude (no mav_frame) / X coord to mav_frame. NAN: current
     double longitude_y = 6; // Center point longitude (no mav_fram) / Y coord to mav_frame. NAN: current
     double altitude_z = 7; // Center point altitude (MSL, no mav_frame) / Z coord to mav_frame. NAN: current
