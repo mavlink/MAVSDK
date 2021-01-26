@@ -83,7 +83,7 @@ service ActionService {
     /*
      * Send command do orbit to the drone.
      *
-     *This will run the do orbit routine with the given parameters.
+     * This will run the orbit routine with the given parameters.
      */
     rpc DoOrbit(DoOrbitRequest) returns(DoOrbitResponse) {}
     /*
