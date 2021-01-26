@@ -81,7 +81,7 @@ service ActionService {
      */
     rpc GotoLocation(GotoLocationRequest) returns(GotoLocationResponse) {}
     /*
-     *Send command do orbit to the drone.
+     * Send command do orbit to the drone.
      *
      *This will run the do orbit routine with the given parameters.
      */
