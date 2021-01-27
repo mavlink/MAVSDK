@@ -2,6 +2,8 @@ syntax = "proto3";
 
 package mavsdk.rpc.action;
 
+import "mavsdk_options.proto";
+
 option java_package = "io.mavsdk.action";
 option java_outer_classname = "ActionProto";
 
@@ -80,6 +82,12 @@ service ActionService {
      * The yaw angle is in degrees (frame is NED, 0 is North, positive is clockwise).
      */
     rpc GotoLocation(GotoLocationRequest) returns(GotoLocationResponse) {}
+    /*
+     * Send command do orbit to the drone.
+     *
+     * This will run the orbit routine with the given parameters.
+     */
+    rpc DoOrbit(DoOrbitRequest) returns(DoOrbitResponse) {}
     /*
      * Send command to transition the drone to fixedwing.
      *
@@ -174,6 +182,26 @@ message GotoLocationRequest {
     float yaw_deg = 4; // Yaw angle (in degrees, frame is NED, 0 is North, positive is clockwise)
 }
 message GotoLocationResponse {
+    ActionResult action_result = 1;
+}
+
+enum OrbitYawBehavior {
+    ORBIT_YAW_BEHAVIOUR_HOLD_FRONT_TO_CIRCLE_CENTER = 0;
+    ORBIT_YAW_BEHAVIOUR_HOLD_INITIAL_HEADING = 1;
+    ORBIT_YAW_BEHAVIOUR_UNCONTROLLED = 2;
+    ORBIT_YAW_BEHAVIOUR_HOLD_FRONT_TANGENT_TO_CIRCLE = 3;
+    ORBIT_YAW_BEHAVIOUR_RC_CONTROLLED = 4;
+}
+    
+message DoOrbitRequest {    
+    float radius_m = 1; // Radius of circle (in meters)
+    float velocity_ms = 2; // Tangential velocity (in m/s)
+    OrbitYawBehavior yaw_behavior = 3; // Yaw behavior of vehicle (ORBIT_YAW_BEHAVIOUR)
+    double latitude_deg = 5 [(mavsdk.options.default_value)="NaN"]; // Center point latitude in degrees. NAN: use current latitude for center
+    double longitude_deg = 6 [(mavsdk.options.default_value)="NaN"]; // Center point longitude in degrees. NAN: use current longitude for center
+    double absolute_altitude_m = 7 [(mavsdk.options.default_value)="NaN"]; // Center point altitude in meters. NAN: use current altitude for center
+}
+message DoOrbitResponse {
     ActionResult action_result = 1;
 }
 
