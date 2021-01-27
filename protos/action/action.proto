@@ -183,15 +183,15 @@ message GotoLocationResponse {
     ActionResult action_result = 1;
 }
 
-message DoOrbitRequest {
-    enum OrbitYawBehavior {
+enum OrbitYawBehavior {
         ORBIT_YAW_BEHAVIOUR_HOLD_FRONT_TO_CIRCLE_CENTER = 0;
         ORBIT_YAW_BEHAVIOUR_HOLD_INITIAL_HEADING = 1;
         ORBIT_YAW_BEHAVIOUR_UNCONTROLLED = 2;
         ORBIT_YAW_BEHAVIOUR_HOLD_FRONT_TANGENT_TO_CIRCLE = 3;
         ORBIT_YAW_BEHAVIOUR_RC_CONTROLLED = 4;
-    }
+}
     
+message DoOrbitRequest {    
     float radius_m = 1; // Radius of circle (in meters)
     float velocity_ms = 2; // Tangential velocity (in m/s)
     OrbitYawBehavior yaw_behavior = 3; // Yaw behavior of vehicle (ORBIT_YAW_BEHAVIOUR)
