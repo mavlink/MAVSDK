@@ -1,7 +1,8 @@
 syntax = "proto3";
 
 package mavsdk.rpc.action;
-package mavsdk.options.default_value;
+
+import "mavsdk_options.proto";
 
 option java_package = "io.mavsdk.action";
 option java_outer_classname = "ActionProto";
