@@ -34,6 +34,13 @@ public:
         const double longitude_deg,
         const float altitude_amsl_m,
         const float yaw_deg);
+    Action::Result do_orbit(
+        const float radius_m,
+        const float velocity_ms,
+        const ORBIT_YAW_BEHAVIOUR yaw_behavior,
+        const double latitude_deg,
+        const double longitude_deg,
+        const double absolute_altitude_m);
     Action::Result transition_to_fixedwing() const;
     Action::Result transition_to_multicopter() const;
 
@@ -51,6 +58,14 @@ public:
         const double longitude_deg,
         const float altitude_amsl_m,
         const float yaw_deg,
+        const Action::ResultCallback& callback);
+    void do_orbit_async(
+        const float radius_m,
+        const float velocity_ms,
+        const ORBIT_YAW_BEHAVIOUR yaw_behavior,
+        const double latitude_deg,
+        const double longitude_deg,
+        const double absolute_altitude_m,
         const Action::ResultCallback& callback);
     void transition_to_fixedwing_async(const Action::ResultCallback& callback) const;
     void transition_to_multicopter_async(const Action::ResultCallback& callback) const;
