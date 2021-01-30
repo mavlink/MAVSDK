@@ -33,6 +33,7 @@
 #include <google/protobuf/extension_set.h>  // IWYU pragma: export
 #include <google/protobuf/generated_enum_reflection.h>
 #include <google/protobuf/unknown_field_set.h>
+#include "mavsdk_options.pb.h"
 // @@protoc_insertion_point(includes)
 #include <google/protobuf/port_def.inc>
 #define PROTOBUF_INTERNAL_EXPORT_action_2faction_2eproto
@@ -48,7 +49,7 @@ struct TableStruct_action_2faction_2eproto {
     PROTOBUF_SECTION_VARIABLE(protodesc_cold);
   static const ::PROTOBUF_NAMESPACE_ID::internal::AuxiliaryParseTableField aux[]
     PROTOBUF_SECTION_VARIABLE(protodesc_cold);
-  static const ::PROTOBUF_NAMESPACE_ID::internal::ParseTable schema[37]
+  static const ::PROTOBUF_NAMESPACE_ID::internal::ParseTable schema[39]
     PROTOBUF_SECTION_VARIABLE(protodesc_cold);
   static const ::PROTOBUF_NAMESPACE_ID::internal::FieldMetadata field_metadata[];
   static const ::PROTOBUF_NAMESPACE_ID::internal::SerializationTable serialization_table[];
@@ -73,6 +74,12 @@ extern DisarmRequestDefaultTypeInternal _DisarmRequest_default_instance_;
 class DisarmResponse;
 class DisarmResponseDefaultTypeInternal;
 extern DisarmResponseDefaultTypeInternal _DisarmResponse_default_instance_;
+class DoOrbitRequest;
+class DoOrbitRequestDefaultTypeInternal;
+extern DoOrbitRequestDefaultTypeInternal _DoOrbitRequest_default_instance_;
+class DoOrbitResponse;
+class DoOrbitResponseDefaultTypeInternal;
+extern DoOrbitResponseDefaultTypeInternal _DoOrbitResponse_default_instance_;
 class GetMaximumSpeedRequest;
 class GetMaximumSpeedRequestDefaultTypeInternal;
 extern GetMaximumSpeedRequestDefaultTypeInternal _GetMaximumSpeedRequest_default_instance_;
@@ -178,6 +185,8 @@ template<> ::mavsdk::rpc::action::ArmRequest* Arena::CreateMaybeMessage<::mavsdk
 template<> ::mavsdk::rpc::action::ArmResponse* Arena::CreateMaybeMessage<::mavsdk::rpc::action::ArmResponse>(Arena*);
 template<> ::mavsdk::rpc::action::DisarmRequest* Arena::CreateMaybeMessage<::mavsdk::rpc::action::DisarmRequest>(Arena*);
 template<> ::mavsdk::rpc::action::DisarmResponse* Arena::CreateMaybeMessage<::mavsdk::rpc::action::DisarmResponse>(Arena*);
+template<> ::mavsdk::rpc::action::DoOrbitRequest* Arena::CreateMaybeMessage<::mavsdk::rpc::action::DoOrbitRequest>(Arena*);
+template<> ::mavsdk::rpc::action::DoOrbitResponse* Arena::CreateMaybeMessage<::mavsdk::rpc::action::DoOrbitResponse>(Arena*);
 template<> ::mavsdk::rpc::action::GetMaximumSpeedRequest* Arena::CreateMaybeMessage<::mavsdk::rpc::action::GetMaximumSpeedRequest>(Arena*);
 template<> ::mavsdk::rpc::action::GetMaximumSpeedResponse* Arena::CreateMaybeMessage<::mavsdk::rpc::action::GetMaximumSpeedResponse>(Arena*);
 template<> ::mavsdk::rpc::action::GetReturnToLaunchAltitudeRequest* Arena::CreateMaybeMessage<::mavsdk::rpc::action::GetReturnToLaunchAltitudeRequest>(Arena*);
@@ -249,6 +258,34 @@ inline bool ActionResult_Result_Parse(
     ::PROTOBUF_NAMESPACE_ID::ConstStringParam name, ActionResult_Result* value) {
   return ::PROTOBUF_NAMESPACE_ID::internal::ParseNamedEnum<ActionResult_Result>(
     ActionResult_Result_descriptor(), name, value);
+}
+enum OrbitYawBehavior : int {
+  ORBIT_YAW_BEHAVIOR_HOLD_FRONT_TO_CIRCLE_CENTER = 0,
+  ORBIT_YAW_BEHAVIOR_HOLD_INITIAL_HEADING = 1,
+  ORBIT_YAW_BEHAVIOR_UNCONTROLLED = 2,
+  ORBIT_YAW_BEHAVIOR_HOLD_FRONT_TANGENT_TO_CIRCLE = 3,
+  ORBIT_YAW_BEHAVIOR_RC_CONTROLLED = 4,
+  OrbitYawBehavior_INT_MIN_SENTINEL_DO_NOT_USE_ = std::numeric_limits<::PROTOBUF_NAMESPACE_ID::int32>::min(),
+  OrbitYawBehavior_INT_MAX_SENTINEL_DO_NOT_USE_ = std::numeric_limits<::PROTOBUF_NAMESPACE_ID::int32>::max()
+};
+bool OrbitYawBehavior_IsValid(int value);
+constexpr OrbitYawBehavior OrbitYawBehavior_MIN = ORBIT_YAW_BEHAVIOR_HOLD_FRONT_TO_CIRCLE_CENTER;
+constexpr OrbitYawBehavior OrbitYawBehavior_MAX = ORBIT_YAW_BEHAVIOR_RC_CONTROLLED;
+constexpr int OrbitYawBehavior_ARRAYSIZE = OrbitYawBehavior_MAX + 1;
+
+const ::PROTOBUF_NAMESPACE_ID::EnumDescriptor* OrbitYawBehavior_descriptor();
+template<typename T>
+inline const std::string& OrbitYawBehavior_Name(T enum_t_value) {
+  static_assert(::std::is_same<T, OrbitYawBehavior>::value ||
+    ::std::is_integral<T>::value,
+    "Incorrect type passed to function OrbitYawBehavior_Name.");
+  return ::PROTOBUF_NAMESPACE_ID::internal::NameOfEnum(
+    OrbitYawBehavior_descriptor(), enum_t_value);
+}
+inline bool OrbitYawBehavior_Parse(
+    ::PROTOBUF_NAMESPACE_ID::ConstStringParam name, OrbitYawBehavior* value) {
+  return ::PROTOBUF_NAMESPACE_ID::internal::ParseNamedEnum<OrbitYawBehavior>(
+    OrbitYawBehavior_descriptor(), name, value);
 }
 // ===================================================================
 
@@ -2998,6 +3035,344 @@ class GotoLocationResponse PROTOBUF_FINAL :
 };
 // -------------------------------------------------------------------
 
+class DoOrbitRequest PROTOBUF_FINAL :
+    public ::PROTOBUF_NAMESPACE_ID::Message /* @@protoc_insertion_point(class_definition:mavsdk.rpc.action.DoOrbitRequest) */ {
+ public:
+  inline DoOrbitRequest() : DoOrbitRequest(nullptr) {}
+  virtual ~DoOrbitRequest();
+
+  DoOrbitRequest(const DoOrbitRequest& from);
+  DoOrbitRequest(DoOrbitRequest&& from) noexcept
+    : DoOrbitRequest() {
+    *this = ::std::move(from);
+  }
+
+  inline DoOrbitRequest& operator=(const DoOrbitRequest& from) {
+    CopyFrom(from);
+    return *this;
+  }
+  inline DoOrbitRequest& operator=(DoOrbitRequest&& from) noexcept {
+    if (GetArena() == from.GetArena()) {
+      if (this != &from) InternalSwap(&from);
+    } else {
+      CopyFrom(from);
+    }
+    return *this;
+  }
+
+  static const ::PROTOBUF_NAMESPACE_ID::Descriptor* descriptor() {
+    return GetDescriptor();
+  }
+  static const ::PROTOBUF_NAMESPACE_ID::Descriptor* GetDescriptor() {
+    return GetMetadataStatic().descriptor;
+  }
+  static const ::PROTOBUF_NAMESPACE_ID::Reflection* GetReflection() {
+    return GetMetadataStatic().reflection;
+  }
+  static const DoOrbitRequest& default_instance();
+
+  static void InitAsDefaultInstance();  // FOR INTERNAL USE ONLY
+  static inline const DoOrbitRequest* internal_default_instance() {
+    return reinterpret_cast<const DoOrbitRequest*>(
+               &_DoOrbitRequest_default_instance_);
+  }
+  static constexpr int kIndexInFileMessages =
+    20;
+
+  friend void swap(DoOrbitRequest& a, DoOrbitRequest& b) {
+    a.Swap(&b);
+  }
+  inline void Swap(DoOrbitRequest* other) {
+    if (other == this) return;
+    if (GetArena() == other->GetArena()) {
+      InternalSwap(other);
+    } else {
+      ::PROTOBUF_NAMESPACE_ID::internal::GenericSwap(this, other);
+    }
+  }
+  void UnsafeArenaSwap(DoOrbitRequest* other) {
+    if (other == this) return;
+    GOOGLE_DCHECK(GetArena() == other->GetArena());
+    InternalSwap(other);
+  }
+
+  // implements Message ----------------------------------------------
+
+  inline DoOrbitRequest* New() const final {
+    return CreateMaybeMessage<DoOrbitRequest>(nullptr);
+  }
+
+  DoOrbitRequest* New(::PROTOBUF_NAMESPACE_ID::Arena* arena) const final {
+    return CreateMaybeMessage<DoOrbitRequest>(arena);
+  }
+  void CopyFrom(const ::PROTOBUF_NAMESPACE_ID::Message& from) final;
+  void MergeFrom(const ::PROTOBUF_NAMESPACE_ID::Message& from) final;
+  void CopyFrom(const DoOrbitRequest& from);
+  void MergeFrom(const DoOrbitRequest& from);
+  PROTOBUF_ATTRIBUTE_REINITIALIZES void Clear() final;
+  bool IsInitialized() const final;
+
+  size_t ByteSizeLong() const final;
+  const char* _InternalParse(const char* ptr, ::PROTOBUF_NAMESPACE_ID::internal::ParseContext* ctx) final;
+  ::PROTOBUF_NAMESPACE_ID::uint8* _InternalSerialize(
+      ::PROTOBUF_NAMESPACE_ID::uint8* target, ::PROTOBUF_NAMESPACE_ID::io::EpsCopyOutputStream* stream) const final;
+  int GetCachedSize() const final { return _cached_size_.Get(); }
+
+  private:
+  inline void SharedCtor();
+  inline void SharedDtor();
+  void SetCachedSize(int size) const final;
+  void InternalSwap(DoOrbitRequest* other);
+  friend class ::PROTOBUF_NAMESPACE_ID::internal::AnyMetadata;
+  static ::PROTOBUF_NAMESPACE_ID::StringPiece FullMessageName() {
+    return "mavsdk.rpc.action.DoOrbitRequest";
+  }
+  protected:
+  explicit DoOrbitRequest(::PROTOBUF_NAMESPACE_ID::Arena* arena);
+  private:
+  static void ArenaDtor(void* object);
+  inline void RegisterArenaDtor(::PROTOBUF_NAMESPACE_ID::Arena* arena);
+  public:
+
+  ::PROTOBUF_NAMESPACE_ID::Metadata GetMetadata() const final;
+  private:
+  static ::PROTOBUF_NAMESPACE_ID::Metadata GetMetadataStatic() {
+    ::PROTOBUF_NAMESPACE_ID::internal::AssignDescriptors(&::descriptor_table_action_2faction_2eproto);
+    return ::descriptor_table_action_2faction_2eproto.file_level_metadata[kIndexInFileMessages];
+  }
+
+  public:
+
+  // nested types ----------------------------------------------------
+
+  // accessors -------------------------------------------------------
+
+  enum : int {
+    kRadiusMFieldNumber = 1,
+    kVelocityMsFieldNumber = 2,
+    kLatitudeDegFieldNumber = 5,
+    kLongitudeDegFieldNumber = 6,
+    kAbsoluteAltitudeMFieldNumber = 7,
+    kYawBehaviorFieldNumber = 3,
+  };
+  // float radius_m = 1;
+  void clear_radius_m();
+  float radius_m() const;
+  void set_radius_m(float value);
+  private:
+  float _internal_radius_m() const;
+  void _internal_set_radius_m(float value);
+  public:
+
+  // float velocity_ms = 2;
+  void clear_velocity_ms();
+  float velocity_ms() const;
+  void set_velocity_ms(float value);
+  private:
+  float _internal_velocity_ms() const;
+  void _internal_set_velocity_ms(float value);
+  public:
+
+  // double latitude_deg = 5 [(.mavsdk.options.default_value) = "NaN"];
+  void clear_latitude_deg();
+  double latitude_deg() const;
+  void set_latitude_deg(double value);
+  private:
+  double _internal_latitude_deg() const;
+  void _internal_set_latitude_deg(double value);
+  public:
+
+  // double longitude_deg = 6 [(.mavsdk.options.default_value) = "NaN"];
+  void clear_longitude_deg();
+  double longitude_deg() const;
+  void set_longitude_deg(double value);
+  private:
+  double _internal_longitude_deg() const;
+  void _internal_set_longitude_deg(double value);
+  public:
+
+  // double absolute_altitude_m = 7 [(.mavsdk.options.default_value) = "NaN"];
+  void clear_absolute_altitude_m();
+  double absolute_altitude_m() const;
+  void set_absolute_altitude_m(double value);
+  private:
+  double _internal_absolute_altitude_m() const;
+  void _internal_set_absolute_altitude_m(double value);
+  public:
+
+  // .mavsdk.rpc.action.OrbitYawBehavior yaw_behavior = 3;
+  void clear_yaw_behavior();
+  ::mavsdk::rpc::action::OrbitYawBehavior yaw_behavior() const;
+  void set_yaw_behavior(::mavsdk::rpc::action::OrbitYawBehavior value);
+  private:
+  ::mavsdk::rpc::action::OrbitYawBehavior _internal_yaw_behavior() const;
+  void _internal_set_yaw_behavior(::mavsdk::rpc::action::OrbitYawBehavior value);
+  public:
+
+  // @@protoc_insertion_point(class_scope:mavsdk.rpc.action.DoOrbitRequest)
+ private:
+  class _Internal;
+
+  template <typename T> friend class ::PROTOBUF_NAMESPACE_ID::Arena::InternalHelper;
+  typedef void InternalArenaConstructable_;
+  typedef void DestructorSkippable_;
+  float radius_m_;
+  float velocity_ms_;
+  double latitude_deg_;
+  double longitude_deg_;
+  double absolute_altitude_m_;
+  int yaw_behavior_;
+  mutable ::PROTOBUF_NAMESPACE_ID::internal::CachedSize _cached_size_;
+  friend struct ::TableStruct_action_2faction_2eproto;
+};
+// -------------------------------------------------------------------
+
+class DoOrbitResponse PROTOBUF_FINAL :
+    public ::PROTOBUF_NAMESPACE_ID::Message /* @@protoc_insertion_point(class_definition:mavsdk.rpc.action.DoOrbitResponse) */ {
+ public:
+  inline DoOrbitResponse() : DoOrbitResponse(nullptr) {}
+  virtual ~DoOrbitResponse();
+
+  DoOrbitResponse(const DoOrbitResponse& from);
+  DoOrbitResponse(DoOrbitResponse&& from) noexcept
+    : DoOrbitResponse() {
+    *this = ::std::move(from);
+  }
+
+  inline DoOrbitResponse& operator=(const DoOrbitResponse& from) {
+    CopyFrom(from);
+    return *this;
+  }
+  inline DoOrbitResponse& operator=(DoOrbitResponse&& from) noexcept {
+    if (GetArena() == from.GetArena()) {
+      if (this != &from) InternalSwap(&from);
+    } else {
+      CopyFrom(from);
+    }
+    return *this;
+  }
+
+  static const ::PROTOBUF_NAMESPACE_ID::Descriptor* descriptor() {
+    return GetDescriptor();
+  }
+  static const ::PROTOBUF_NAMESPACE_ID::Descriptor* GetDescriptor() {
+    return GetMetadataStatic().descriptor;
+  }
+  static const ::PROTOBUF_NAMESPACE_ID::Reflection* GetReflection() {
+    return GetMetadataStatic().reflection;
+  }
+  static const DoOrbitResponse& default_instance();
+
+  static void InitAsDefaultInstance();  // FOR INTERNAL USE ONLY
+  static inline const DoOrbitResponse* internal_default_instance() {
+    return reinterpret_cast<const DoOrbitResponse*>(
+               &_DoOrbitResponse_default_instance_);
+  }
+  static constexpr int kIndexInFileMessages =
+    21;
+
+  friend void swap(DoOrbitResponse& a, DoOrbitResponse& b) {
+    a.Swap(&b);
+  }
+  inline void Swap(DoOrbitResponse* other) {
+    if (other == this) return;
+    if (GetArena() == other->GetArena()) {
+      InternalSwap(other);
+    } else {
+      ::PROTOBUF_NAMESPACE_ID::internal::GenericSwap(this, other);
+    }
+  }
+  void UnsafeArenaSwap(DoOrbitResponse* other) {
+    if (other == this) return;
+    GOOGLE_DCHECK(GetArena() == other->GetArena());
+    InternalSwap(other);
+  }
+
+  // implements Message ----------------------------------------------
+
+  inline DoOrbitResponse* New() const final {
+    return CreateMaybeMessage<DoOrbitResponse>(nullptr);
+  }
+
+  DoOrbitResponse* New(::PROTOBUF_NAMESPACE_ID::Arena* arena) const final {
+    return CreateMaybeMessage<DoOrbitResponse>(arena);
+  }
+  void CopyFrom(const ::PROTOBUF_NAMESPACE_ID::Message& from) final;
+  void MergeFrom(const ::PROTOBUF_NAMESPACE_ID::Message& from) final;
+  void CopyFrom(const DoOrbitResponse& from);
+  void MergeFrom(const DoOrbitResponse& from);
+  PROTOBUF_ATTRIBUTE_REINITIALIZES void Clear() final;
+  bool IsInitialized() const final;
+
+  size_t ByteSizeLong() const final;
+  const char* _InternalParse(const char* ptr, ::PROTOBUF_NAMESPACE_ID::internal::ParseContext* ctx) final;
+  ::PROTOBUF_NAMESPACE_ID::uint8* _InternalSerialize(
+      ::PROTOBUF_NAMESPACE_ID::uint8* target, ::PROTOBUF_NAMESPACE_ID::io::EpsCopyOutputStream* stream) const final;
+  int GetCachedSize() const final { return _cached_size_.Get(); }
+
+  private:
+  inline void SharedCtor();
+  inline void SharedDtor();
+  void SetCachedSize(int size) const final;
+  void InternalSwap(DoOrbitResponse* other);
+  friend class ::PROTOBUF_NAMESPACE_ID::internal::AnyMetadata;
+  static ::PROTOBUF_NAMESPACE_ID::StringPiece FullMessageName() {
+    return "mavsdk.rpc.action.DoOrbitResponse";
+  }
+  protected:
+  explicit DoOrbitResponse(::PROTOBUF_NAMESPACE_ID::Arena* arena);
+  private:
+  static void ArenaDtor(void* object);
+  inline void RegisterArenaDtor(::PROTOBUF_NAMESPACE_ID::Arena* arena);
+  public:
+
+  ::PROTOBUF_NAMESPACE_ID::Metadata GetMetadata() const final;
+  private:
+  static ::PROTOBUF_NAMESPACE_ID::Metadata GetMetadataStatic() {
+    ::PROTOBUF_NAMESPACE_ID::internal::AssignDescriptors(&::descriptor_table_action_2faction_2eproto);
+    return ::descriptor_table_action_2faction_2eproto.file_level_metadata[kIndexInFileMessages];
+  }
+
+  public:
+
+  // nested types ----------------------------------------------------
+
+  // accessors -------------------------------------------------------
+
+  enum : int {
+    kActionResultFieldNumber = 1,
+  };
+  // .mavsdk.rpc.action.ActionResult action_result = 1;
+  bool has_action_result() const;
+  private:
+  bool _internal_has_action_result() const;
+  public:
+  void clear_action_result();
+  const ::mavsdk::rpc::action::ActionResult& action_result() const;
+  ::mavsdk::rpc::action::ActionResult* release_action_result();
+  ::mavsdk::rpc::action::ActionResult* mutable_action_result();
+  void set_allocated_action_result(::mavsdk::rpc::action::ActionResult* action_result);
+  private:
+  const ::mavsdk::rpc::action::ActionResult& _internal_action_result() const;
+  ::mavsdk::rpc::action::ActionResult* _internal_mutable_action_result();
+  public:
+  void unsafe_arena_set_allocated_action_result(
+      ::mavsdk::rpc::action::ActionResult* action_result);
+  ::mavsdk::rpc::action::ActionResult* unsafe_arena_release_action_result();
+
+  // @@protoc_insertion_point(class_scope:mavsdk.rpc.action.DoOrbitResponse)
+ private:
+  class _Internal;
+
+  template <typename T> friend class ::PROTOBUF_NAMESPACE_ID::Arena::InternalHelper;
+  typedef void InternalArenaConstructable_;
+  typedef void DestructorSkippable_;
+  ::mavsdk::rpc::action::ActionResult* action_result_;
+  mutable ::PROTOBUF_NAMESPACE_ID::internal::CachedSize _cached_size_;
+  friend struct ::TableStruct_action_2faction_2eproto;
+};
+// -------------------------------------------------------------------
+
 class TransitionToFixedwingRequest PROTOBUF_FINAL :
     public ::PROTOBUF_NAMESPACE_ID::Message /* @@protoc_insertion_point(class_definition:mavsdk.rpc.action.TransitionToFixedwingRequest) */ {
  public:
@@ -3040,7 +3415,7 @@ class TransitionToFixedwingRequest PROTOBUF_FINAL :
                &_TransitionToFixedwingRequest_default_instance_);
   }
   static constexpr int kIndexInFileMessages =
-    20;
+    22;
 
   friend void swap(TransitionToFixedwingRequest& a, TransitionToFixedwingRequest& b) {
     a.Swap(&b);
@@ -3164,7 +3539,7 @@ class TransitionToFixedwingResponse PROTOBUF_FINAL :
                &_TransitionToFixedwingResponse_default_instance_);
   }
   static constexpr int kIndexInFileMessages =
-    21;
+    23;
 
   friend void swap(TransitionToFixedwingResponse& a, TransitionToFixedwingResponse& b) {
     a.Swap(&b);
@@ -3310,7 +3685,7 @@ class TransitionToMulticopterRequest PROTOBUF_FINAL :
                &_TransitionToMulticopterRequest_default_instance_);
   }
   static constexpr int kIndexInFileMessages =
-    22;
+    24;
 
   friend void swap(TransitionToMulticopterRequest& a, TransitionToMulticopterRequest& b) {
     a.Swap(&b);
@@ -3434,7 +3809,7 @@ class TransitionToMulticopterResponse PROTOBUF_FINAL :
                &_TransitionToMulticopterResponse_default_instance_);
   }
   static constexpr int kIndexInFileMessages =
-    23;
+    25;
 
   friend void swap(TransitionToMulticopterResponse& a, TransitionToMulticopterResponse& b) {
     a.Swap(&b);
@@ -3580,7 +3955,7 @@ class GetTakeoffAltitudeRequest PROTOBUF_FINAL :
                &_GetTakeoffAltitudeRequest_default_instance_);
   }
   static constexpr int kIndexInFileMessages =
-    24;
+    26;
 
   friend void swap(GetTakeoffAltitudeRequest& a, GetTakeoffAltitudeRequest& b) {
     a.Swap(&b);
@@ -3704,7 +4079,7 @@ class GetTakeoffAltitudeResponse PROTOBUF_FINAL :
                &_GetTakeoffAltitudeResponse_default_instance_);
   }
   static constexpr int kIndexInFileMessages =
-    25;
+    27;
 
   friend void swap(GetTakeoffAltitudeResponse& a, GetTakeoffAltitudeResponse& b) {
     a.Swap(&b);
@@ -3861,7 +4236,7 @@ class SetTakeoffAltitudeRequest PROTOBUF_FINAL :
                &_SetTakeoffAltitudeRequest_default_instance_);
   }
   static constexpr int kIndexInFileMessages =
-    26;
+    28;
 
   friend void swap(SetTakeoffAltitudeRequest& a, SetTakeoffAltitudeRequest& b) {
     a.Swap(&b);
@@ -3998,7 +4373,7 @@ class SetTakeoffAltitudeResponse PROTOBUF_FINAL :
                &_SetTakeoffAltitudeResponse_default_instance_);
   }
   static constexpr int kIndexInFileMessages =
-    27;
+    29;
 
   friend void swap(SetTakeoffAltitudeResponse& a, SetTakeoffAltitudeResponse& b) {
     a.Swap(&b);
@@ -4144,7 +4519,7 @@ class GetMaximumSpeedRequest PROTOBUF_FINAL :
                &_GetMaximumSpeedRequest_default_instance_);
   }
   static constexpr int kIndexInFileMessages =
-    28;
+    30;
 
   friend void swap(GetMaximumSpeedRequest& a, GetMaximumSpeedRequest& b) {
     a.Swap(&b);
@@ -4268,7 +4643,7 @@ class GetMaximumSpeedResponse PROTOBUF_FINAL :
                &_GetMaximumSpeedResponse_default_instance_);
   }
   static constexpr int kIndexInFileMessages =
-    29;
+    31;
 
   friend void swap(GetMaximumSpeedResponse& a, GetMaximumSpeedResponse& b) {
     a.Swap(&b);
@@ -4425,7 +4800,7 @@ class SetMaximumSpeedRequest PROTOBUF_FINAL :
                &_SetMaximumSpeedRequest_default_instance_);
   }
   static constexpr int kIndexInFileMessages =
-    30;
+    32;
 
   friend void swap(SetMaximumSpeedRequest& a, SetMaximumSpeedRequest& b) {
     a.Swap(&b);
@@ -4562,7 +4937,7 @@ class SetMaximumSpeedResponse PROTOBUF_FINAL :
                &_SetMaximumSpeedResponse_default_instance_);
   }
   static constexpr int kIndexInFileMessages =
-    31;
+    33;
 
   friend void swap(SetMaximumSpeedResponse& a, SetMaximumSpeedResponse& b) {
     a.Swap(&b);
@@ -4708,7 +5083,7 @@ class GetReturnToLaunchAltitudeRequest PROTOBUF_FINAL :
                &_GetReturnToLaunchAltitudeRequest_default_instance_);
   }
   static constexpr int kIndexInFileMessages =
-    32;
+    34;
 
   friend void swap(GetReturnToLaunchAltitudeRequest& a, GetReturnToLaunchAltitudeRequest& b) {
     a.Swap(&b);
@@ -4832,7 +5207,7 @@ class GetReturnToLaunchAltitudeResponse PROTOBUF_FINAL :
                &_GetReturnToLaunchAltitudeResponse_default_instance_);
   }
   static constexpr int kIndexInFileMessages =
-    33;
+    35;
 
   friend void swap(GetReturnToLaunchAltitudeResponse& a, GetReturnToLaunchAltitudeResponse& b) {
     a.Swap(&b);
@@ -4989,7 +5364,7 @@ class SetReturnToLaunchAltitudeRequest PROTOBUF_FINAL :
                &_SetReturnToLaunchAltitudeRequest_default_instance_);
   }
   static constexpr int kIndexInFileMessages =
-    34;
+    36;
 
   friend void swap(SetReturnToLaunchAltitudeRequest& a, SetReturnToLaunchAltitudeRequest& b) {
     a.Swap(&b);
@@ -5126,7 +5501,7 @@ class SetReturnToLaunchAltitudeResponse PROTOBUF_FINAL :
                &_SetReturnToLaunchAltitudeResponse_default_instance_);
   }
   static constexpr int kIndexInFileMessages =
-    35;
+    37;
 
   friend void swap(SetReturnToLaunchAltitudeResponse& a, SetReturnToLaunchAltitudeResponse& b) {
     a.Swap(&b);
@@ -5272,7 +5647,7 @@ class ActionResult PROTOBUF_FINAL :
                &_ActionResult_default_instance_);
   }
   static constexpr int kIndexInFileMessages =
-    36;
+    38;
 
   friend void swap(ActionResult& a, ActionResult& b) {
     a.Swap(&b);
@@ -6432,6 +6807,217 @@ inline void GotoLocationResponse::set_allocated_action_result(::mavsdk::rpc::act
 
 // -------------------------------------------------------------------
 
+// DoOrbitRequest
+
+// float radius_m = 1;
+inline void DoOrbitRequest::clear_radius_m() {
+  radius_m_ = 0;
+}
+inline float DoOrbitRequest::_internal_radius_m() const {
+  return radius_m_;
+}
+inline float DoOrbitRequest::radius_m() const {
+  // @@protoc_insertion_point(field_get:mavsdk.rpc.action.DoOrbitRequest.radius_m)
+  return _internal_radius_m();
+}
+inline void DoOrbitRequest::_internal_set_radius_m(float value) {
+  
+  radius_m_ = value;
+}
+inline void DoOrbitRequest::set_radius_m(float value) {
+  _internal_set_radius_m(value);
+  // @@protoc_insertion_point(field_set:mavsdk.rpc.action.DoOrbitRequest.radius_m)
+}
+
+// float velocity_ms = 2;
+inline void DoOrbitRequest::clear_velocity_ms() {
+  velocity_ms_ = 0;
+}
+inline float DoOrbitRequest::_internal_velocity_ms() const {
+  return velocity_ms_;
+}
+inline float DoOrbitRequest::velocity_ms() const {
+  // @@protoc_insertion_point(field_get:mavsdk.rpc.action.DoOrbitRequest.velocity_ms)
+  return _internal_velocity_ms();
+}
+inline void DoOrbitRequest::_internal_set_velocity_ms(float value) {
+  
+  velocity_ms_ = value;
+}
+inline void DoOrbitRequest::set_velocity_ms(float value) {
+  _internal_set_velocity_ms(value);
+  // @@protoc_insertion_point(field_set:mavsdk.rpc.action.DoOrbitRequest.velocity_ms)
+}
+
+// .mavsdk.rpc.action.OrbitYawBehavior yaw_behavior = 3;
+inline void DoOrbitRequest::clear_yaw_behavior() {
+  yaw_behavior_ = 0;
+}
+inline ::mavsdk::rpc::action::OrbitYawBehavior DoOrbitRequest::_internal_yaw_behavior() const {
+  return static_cast< ::mavsdk::rpc::action::OrbitYawBehavior >(yaw_behavior_);
+}
+inline ::mavsdk::rpc::action::OrbitYawBehavior DoOrbitRequest::yaw_behavior() const {
+  // @@protoc_insertion_point(field_get:mavsdk.rpc.action.DoOrbitRequest.yaw_behavior)
+  return _internal_yaw_behavior();
+}
+inline void DoOrbitRequest::_internal_set_yaw_behavior(::mavsdk::rpc::action::OrbitYawBehavior value) {
+  
+  yaw_behavior_ = value;
+}
+inline void DoOrbitRequest::set_yaw_behavior(::mavsdk::rpc::action::OrbitYawBehavior value) {
+  _internal_set_yaw_behavior(value);
+  // @@protoc_insertion_point(field_set:mavsdk.rpc.action.DoOrbitRequest.yaw_behavior)
+}
+
+// double latitude_deg = 5 [(.mavsdk.options.default_value) = "NaN"];
+inline void DoOrbitRequest::clear_latitude_deg() {
+  latitude_deg_ = 0;
+}
+inline double DoOrbitRequest::_internal_latitude_deg() const {
+  return latitude_deg_;
+}
+inline double DoOrbitRequest::latitude_deg() const {
+  // @@protoc_insertion_point(field_get:mavsdk.rpc.action.DoOrbitRequest.latitude_deg)
+  return _internal_latitude_deg();
+}
+inline void DoOrbitRequest::_internal_set_latitude_deg(double value) {
+  
+  latitude_deg_ = value;
+}
+inline void DoOrbitRequest::set_latitude_deg(double value) {
+  _internal_set_latitude_deg(value);
+  // @@protoc_insertion_point(field_set:mavsdk.rpc.action.DoOrbitRequest.latitude_deg)
+}
+
+// double longitude_deg = 6 [(.mavsdk.options.default_value) = "NaN"];
+inline void DoOrbitRequest::clear_longitude_deg() {
+  longitude_deg_ = 0;
+}
+inline double DoOrbitRequest::_internal_longitude_deg() const {
+  return longitude_deg_;
+}
+inline double DoOrbitRequest::longitude_deg() const {
+  // @@protoc_insertion_point(field_get:mavsdk.rpc.action.DoOrbitRequest.longitude_deg)
+  return _internal_longitude_deg();
+}
+inline void DoOrbitRequest::_internal_set_longitude_deg(double value) {
+  
+  longitude_deg_ = value;
+}
+inline void DoOrbitRequest::set_longitude_deg(double value) {
+  _internal_set_longitude_deg(value);
+  // @@protoc_insertion_point(field_set:mavsdk.rpc.action.DoOrbitRequest.longitude_deg)
+}
+
+// double absolute_altitude_m = 7 [(.mavsdk.options.default_value) = "NaN"];
+inline void DoOrbitRequest::clear_absolute_altitude_m() {
+  absolute_altitude_m_ = 0;
+}
+inline double DoOrbitRequest::_internal_absolute_altitude_m() const {
+  return absolute_altitude_m_;
+}
+inline double DoOrbitRequest::absolute_altitude_m() const {
+  // @@protoc_insertion_point(field_get:mavsdk.rpc.action.DoOrbitRequest.absolute_altitude_m)
+  return _internal_absolute_altitude_m();
+}
+inline void DoOrbitRequest::_internal_set_absolute_altitude_m(double value) {
+  
+  absolute_altitude_m_ = value;
+}
+inline void DoOrbitRequest::set_absolute_altitude_m(double value) {
+  _internal_set_absolute_altitude_m(value);
+  // @@protoc_insertion_point(field_set:mavsdk.rpc.action.DoOrbitRequest.absolute_altitude_m)
+}
+
+// -------------------------------------------------------------------
+
+// DoOrbitResponse
+
+// .mavsdk.rpc.action.ActionResult action_result = 1;
+inline bool DoOrbitResponse::_internal_has_action_result() const {
+  return this != internal_default_instance() && action_result_ != nullptr;
+}
+inline bool DoOrbitResponse::has_action_result() const {
+  return _internal_has_action_result();
+}
+inline void DoOrbitResponse::clear_action_result() {
+  if (GetArena() == nullptr && action_result_ != nullptr) {
+    delete action_result_;
+  }
+  action_result_ = nullptr;
+}
+inline const ::mavsdk::rpc::action::ActionResult& DoOrbitResponse::_internal_action_result() const {
+  const ::mavsdk::rpc::action::ActionResult* p = action_result_;
+  return p != nullptr ? *p : *reinterpret_cast<const ::mavsdk::rpc::action::ActionResult*>(
+      &::mavsdk::rpc::action::_ActionResult_default_instance_);
+}
+inline const ::mavsdk::rpc::action::ActionResult& DoOrbitResponse::action_result() const {
+  // @@protoc_insertion_point(field_get:mavsdk.rpc.action.DoOrbitResponse.action_result)
+  return _internal_action_result();
+}
+inline void DoOrbitResponse::unsafe_arena_set_allocated_action_result(
+    ::mavsdk::rpc::action::ActionResult* action_result) {
+  if (GetArena() == nullptr) {
+    delete reinterpret_cast<::PROTOBUF_NAMESPACE_ID::MessageLite*>(action_result_);
+  }
+  action_result_ = action_result;
+  if (action_result) {
+    
+  } else {
+    
+  }
+  // @@protoc_insertion_point(field_unsafe_arena_set_allocated:mavsdk.rpc.action.DoOrbitResponse.action_result)
+}
+inline ::mavsdk::rpc::action::ActionResult* DoOrbitResponse::release_action_result() {
+  
+  ::mavsdk::rpc::action::ActionResult* temp = action_result_;
+  action_result_ = nullptr;
+  if (GetArena() != nullptr) {
+    temp = ::PROTOBUF_NAMESPACE_ID::internal::DuplicateIfNonNull(temp);
+  }
+  return temp;
+}
+inline ::mavsdk::rpc::action::ActionResult* DoOrbitResponse::unsafe_arena_release_action_result() {
+  // @@protoc_insertion_point(field_release:mavsdk.rpc.action.DoOrbitResponse.action_result)
+  
+  ::mavsdk::rpc::action::ActionResult* temp = action_result_;
+  action_result_ = nullptr;
+  return temp;
+}
+inline ::mavsdk::rpc::action::ActionResult* DoOrbitResponse::_internal_mutable_action_result() {
+  
+  if (action_result_ == nullptr) {
+    auto* p = CreateMaybeMessage<::mavsdk::rpc::action::ActionResult>(GetArena());
+    action_result_ = p;
+  }
+  return action_result_;
+}
+inline ::mavsdk::rpc::action::ActionResult* DoOrbitResponse::mutable_action_result() {
+  // @@protoc_insertion_point(field_mutable:mavsdk.rpc.action.DoOrbitResponse.action_result)
+  return _internal_mutable_action_result();
+}
+inline void DoOrbitResponse::set_allocated_action_result(::mavsdk::rpc::action::ActionResult* action_result) {
+  ::PROTOBUF_NAMESPACE_ID::Arena* message_arena = GetArena();
+  if (message_arena == nullptr) {
+    delete action_result_;
+  }
+  if (action_result) {
+    ::PROTOBUF_NAMESPACE_ID::Arena* submessage_arena =
+      ::PROTOBUF_NAMESPACE_ID::Arena::GetArena(action_result);
+    if (message_arena != submessage_arena) {
+      action_result = ::PROTOBUF_NAMESPACE_ID::internal::GetOwnedMessage(
+          message_arena, action_result, submessage_arena);
+    }
+    
+  } else {
+    
+  }
+  action_result_ = action_result;
+  // @@protoc_insertion_point(field_set_allocated:mavsdk.rpc.action.DoOrbitResponse.action_result)
+}
+
+// -------------------------------------------------------------------
+
 // TransitionToFixedwingRequest
 
 // -------------------------------------------------------------------
@@ -7439,6 +8025,10 @@ inline void ActionResult::set_allocated_result_str(std::string* result_str) {
 
 // -------------------------------------------------------------------
 
+// -------------------------------------------------------------------
+
+// -------------------------------------------------------------------
+
 
 // @@protoc_insertion_point(namespace_scope)
 
@@ -7452,6 +8042,11 @@ template <> struct is_proto_enum< ::mavsdk::rpc::action::ActionResult_Result> : 
 template <>
 inline const EnumDescriptor* GetEnumDescriptor< ::mavsdk::rpc::action::ActionResult_Result>() {
   return ::mavsdk::rpc::action::ActionResult_Result_descriptor();
+}
+template <> struct is_proto_enum< ::mavsdk::rpc::action::OrbitYawBehavior> : ::std::true_type {};
+template <>
+inline const EnumDescriptor* GetEnumDescriptor< ::mavsdk::rpc::action::OrbitYawBehavior>() {
+  return ::mavsdk::rpc::action::OrbitYawBehavior_descriptor();
 }
 
 PROTOBUF_NAMESPACE_CLOSE
