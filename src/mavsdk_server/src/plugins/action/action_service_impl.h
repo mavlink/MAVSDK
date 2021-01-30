@@ -44,16 +44,16 @@ public:
             default:
                 LogErr() << "Unknown orbit_yaw_behavior enum value: " << static_cast<int>(orbit_yaw_behavior);
             // FALLTHROUGH
-            case mavsdk::Action::OrbitYawBehavior::ORBIT_YAW_BEHAVIOUR_HOLD_FRONT_TO_CIRCLE_CENTER:
-                return rpc::action::ORBIT_YAW_BEHAVIOUR_HOLD_FRONT_TO_CIRCLE_CENTER;
-            case mavsdk::Action::OrbitYawBehavior::ORBIT_YAW_BEHAVIOUR_HOLD_INITIAL_HEADING:
-                return rpc::action::ORBIT_YAW_BEHAVIOUR_HOLD_INITIAL_HEADING;
-            case mavsdk::Action::OrbitYawBehavior::ORBIT_YAW_BEHAVIOUR_UNCONTROLLED:
-                return rpc::action::ORBIT_YAW_BEHAVIOUR_UNCONTROLLED;
-            case mavsdk::Action::OrbitYawBehavior::ORBIT_YAW_BEHAVIOUR_HOLD_FRONT_TANGENT_TO_CIRCLE:
-                return rpc::action::ORBIT_YAW_BEHAVIOUR_HOLD_FRONT_TANGENT_TO_CIRCLE;
-            case mavsdk::Action::OrbitYawBehavior::ORBIT_YAW_BEHAVIOUR_RC_CONTROLLED:
-                return rpc::action::ORBIT_YAW_BEHAVIOUR_RC_CONTROLLED;
+            case mavsdk::Action::OrbitYawBehavior::HoldFrontToCircleCenter:
+                return rpc::action::ORBIT_YAW_BEHAVIOR_HOLD_FRONT_TO_CIRCLE_CENTER;
+            case mavsdk::Action::OrbitYawBehavior::HoldInitialHeading:
+                return rpc::action::ORBIT_YAW_BEHAVIOR_HOLD_INITIAL_HEADING;
+            case mavsdk::Action::OrbitYawBehavior::Uncontrolled:
+                return rpc::action::ORBIT_YAW_BEHAVIOR_UNCONTROLLED;
+            case mavsdk::Action::OrbitYawBehavior::HoldFrontTangentToCircle:
+                return rpc::action::ORBIT_YAW_BEHAVIOR_HOLD_FRONT_TANGENT_TO_CIRCLE;
+            case mavsdk::Action::OrbitYawBehavior::RcControlled:
+                return rpc::action::ORBIT_YAW_BEHAVIOR_RC_CONTROLLED;
         }
     }
 
@@ -63,16 +63,16 @@ public:
             default:
                 LogErr() << "Unknown orbit_yaw_behavior enum value: " << static_cast<int>(orbit_yaw_behavior);
             // FALLTHROUGH
-            case rpc::action::ORBIT_YAW_BEHAVIOUR_HOLD_FRONT_TO_CIRCLE_CENTER:
-                return mavsdk::Action::OrbitYawBehavior::ORBIT_YAW_BEHAVIOUR_HOLD_FRONT_TO_CIRCLE_CENTER;
-            case rpc::action::ORBIT_YAW_BEHAVIOUR_HOLD_INITIAL_HEADING:
-                return mavsdk::Action::OrbitYawBehavior::ORBIT_YAW_BEHAVIOUR_HOLD_INITIAL_HEADING;
-            case rpc::action::ORBIT_YAW_BEHAVIOUR_UNCONTROLLED:
-                return mavsdk::Action::OrbitYawBehavior::ORBIT_YAW_BEHAVIOUR_UNCONTROLLED;
-            case rpc::action::ORBIT_YAW_BEHAVIOUR_HOLD_FRONT_TANGENT_TO_CIRCLE:
-                return mavsdk::Action::OrbitYawBehavior::ORBIT_YAW_BEHAVIOUR_HOLD_FRONT_TANGENT_TO_CIRCLE;
-            case rpc::action::ORBIT_YAW_BEHAVIOUR_RC_CONTROLLED:
-                return mavsdk::Action::OrbitYawBehavior::ORBIT_YAW_BEHAVIOUR_RC_CONTROLLED;
+            case rpc::action::ORBIT_YAW_BEHAVIOR_HOLD_FRONT_TO_CIRCLE_CENTER:
+                return mavsdk::Action::OrbitYawBehavior::HoldFrontToCircleCenter;
+            case rpc::action::ORBIT_YAW_BEHAVIOR_HOLD_INITIAL_HEADING:
+                return mavsdk::Action::OrbitYawBehavior::HoldInitialHeading;
+            case rpc::action::ORBIT_YAW_BEHAVIOR_UNCONTROLLED:
+                return mavsdk::Action::OrbitYawBehavior::Uncontrolled;
+            case rpc::action::ORBIT_YAW_BEHAVIOR_HOLD_FRONT_TANGENT_TO_CIRCLE:
+                return mavsdk::Action::OrbitYawBehavior::HoldFrontTangentToCircle;
+            case rpc::action::ORBIT_YAW_BEHAVIOR_RC_CONTROLLED:
+                return mavsdk::Action::OrbitYawBehavior::RcControlled;
         }
     }
 
