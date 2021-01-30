@@ -37,7 +37,7 @@ public:
     Action::Result do_orbit(
         const float radius_m,
         const float velocity_ms,
-        const ORBIT_YAW_BEHAVIOUR yaw_behavior,
+        const Action::OrbitYawBehavior yaw_behavior,
         const double latitude_deg,
         const double longitude_deg,
         const double absolute_altitude_m);
@@ -62,7 +62,7 @@ public:
     void do_orbit_async(
         const float radius_m,
         const float velocity_ms,
-        const ORBIT_YAW_BEHAVIOUR yaw_behavior,
+        const Action::OrbitYawBehavior yaw_behavior,
         const double latitude_deg,
         const double longitude_deg,
         const double absolute_altitude_m,

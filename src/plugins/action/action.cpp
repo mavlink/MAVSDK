@@ -162,14 +162,14 @@ Action::Result Action::goto_location(double latitude_deg, double longitude_deg, 
 
 void Action::do_orbit_async(float radius_m, float velocity_ms, OrbitYawBehavior yaw_behavior, double latitude_deg, double longitude_deg, double absolute_altitude_m, const ResultCallback callback)
 {
-    _impl->do_orbit_async(radius_m, velocity_ms, ORBIT_YAW_BEHAVIOUR(yaw_behavior), latitude_deg, longitude_deg, absolute_altitude_m, callback);
+    _impl->do_orbit_async(radius_m, velocity_ms, yaw_behavior, latitude_deg, longitude_deg, absolute_altitude_m, callback);
 }
 
 
 
 Action::Result Action::do_orbit(float radius_m, float velocity_ms, OrbitYawBehavior yaw_behavior, double latitude_deg, double longitude_deg, double absolute_altitude_m) const
 {
-    return _impl->do_orbit(radius_m, velocity_ms, ORBIT_YAW_BEHAVIOUR(yaw_behavior), latitude_deg, longitude_deg, absolute_altitude_m);
+    return _impl->do_orbit(radius_m, velocity_ms, yaw_behavior, latitude_deg, longitude_deg, absolute_altitude_m);
 }
 
 
@@ -324,16 +324,16 @@ std::ostream& operator<<(std::ostream& str, Action::Result const& result)
 std::ostream& operator<<(std::ostream& str, Action::OrbitYawBehavior const& orbit_yaw_behavior)
 {
     switch (orbit_yaw_behavior) {
-        case Action::OrbitYawBehavior::ORBIT_YAW_BEHAVIOUR_HOLD_FRONT_TO_CIRCLE_CENTER:
-            return str << "Orbit Yaw Behaviour Hold Front To Circle Center";
-        case Action::OrbitYawBehavior::ORBIT_YAW_BEHAVIOUR_HOLD_INITIAL_HEADING:
-            return str << "Orbit Yaw Behaviour Hold Initial Heading";
-        case Action::OrbitYawBehavior::ORBIT_YAW_BEHAVIOUR_UNCONTROLLED:
-            return str << "Orbit Yaw Behaviour Uncontrolled";
-        case Action::OrbitYawBehavior::ORBIT_YAW_BEHAVIOUR_HOLD_FRONT_TANGENT_TO_CIRCLE:
-            return str << "Orbit Yaw Behaviour Hold Front Tangent To Circle";
-        case Action::OrbitYawBehavior::ORBIT_YAW_BEHAVIOUR_RC_CONTROLLED:
-            return str << "Orbit Yaw Behaviour Rc Controlled";
+        case Action::OrbitYawBehavior::HoldFrontToCircleCenter:
+            return str << "Hold Front To Circle Center";
+        case Action::OrbitYawBehavior::HoldInitialHeading:
+            return str << "Hold Initial Heading";
+        case Action::OrbitYawBehavior::Uncontrolled:
+            return str << "Uncontrolled";
+        case Action::OrbitYawBehavior::HoldFrontTangentToCircle:
+            return str << "Hold Front Tangent To Circle";
+        case Action::OrbitYawBehavior::RcControlled:
+            return str << "Rc Controlled";
         default:
             return str << "Unknown";
     }

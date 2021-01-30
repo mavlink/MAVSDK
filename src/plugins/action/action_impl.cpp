@@ -163,7 +163,7 @@ Action::Result ActionImpl::goto_location(
 Action::Result ActionImpl::do_orbit(
     const float radius_m,
     const float velocity_ms,
-    const ORBIT_YAW_BEHAVIOUR yaw_behavior,
+    const Action::OrbitYawBehavior yaw_behavior,
     const double latitude_deg,
     const double longitude_deg,
     const double absolute_altitude_m)
@@ -379,7 +379,7 @@ void ActionImpl::goto_location_async(
 void ActionImpl::do_orbit_async(
     const float radius_m,
     const float velocity_ms,
-    const ORBIT_YAW_BEHAVIOUR yaw_behavior,
+    const Action::OrbitYawBehavior yaw_behavior,
     const double latitude_deg,
     const double longitude_deg,
     const double absolute_altitude_m,
