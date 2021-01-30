@@ -61,11 +61,11 @@ public:
      * @brief 
      */
     enum class OrbitYawBehavior {
-        ORBIT_YAW_BEHAVIOUR_HOLD_FRONT_TO_CIRCLE_CENTER, /**< @brief. */
-        ORBIT_YAW_BEHAVIOUR_HOLD_INITIAL_HEADING, /**< @brief. */
-        ORBIT_YAW_BEHAVIOUR_UNCONTROLLED, /**< @brief. */
-        ORBIT_YAW_BEHAVIOUR_HOLD_FRONT_TANGENT_TO_CIRCLE, /**< @brief. */
-        ORBIT_YAW_BEHAVIOUR_RC_CONTROLLED, /**< @brief. */
+        HoldFrontToCircleCenter, /**< @brief. */
+        HoldInitialHeading, /**< @brief. */
+        Uncontrolled, /**< @brief. */
+        HoldFrontTangentToCircle, /**< @brief. */
+        RcControlled, /**< @brief. */
     };
 
     /**
@@ -410,7 +410,7 @@ public:
      *
      * @return Result of request.
      */
-    Result do_orbit(float radius_m, float velocity_ms,  OrbitYawBehavior yaw_behavior, double latitude_deg, double longitude_deg, double absolute_altitude_m) const;
+    Result do_orbit(float radius_m, float velocity_ms, OrbitYawBehavior yaw_behavior, double latitude_deg, double longitude_deg, double absolute_altitude_m) const;
 
 
 
