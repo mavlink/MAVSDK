@@ -172,9 +172,13 @@ Action::Result ActionImpl::do_orbit(
     auto fut = prom.get_future();
 
     do_orbit_async(
-        radius_m, velocity_ms, yaw_behavior, latitude_deg, longitude_deg, absolute_altitude_m, [&prom](Action::Result result) {
-            prom.set_value(result);
-        });
+        radius_m,
+        velocity_ms,
+        yaw_behavior,
+        latitude_deg,
+        longitude_deg,
+        absolute_altitude_m,
+        [&prom](Action::Result result) { prom.set_value(result); });
 
     return fut.get();
 }
