@@ -185,6 +185,7 @@ message GotoLocationResponse {
     ActionResult action_result = 1;
 }
 
+// Yaw behaviour during orbit flight.
 enum OrbitYawBehavior {
     ORBIT_YAW_BEHAVIOR_HOLD_FRONT_TO_CIRCLE_CENTER = 0;
     ORBIT_YAW_BEHAVIOR_HOLD_INITIAL_HEADING = 1;
