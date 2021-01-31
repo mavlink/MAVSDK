@@ -187,11 +187,11 @@ message GotoLocationResponse {
 
 // Yaw behaviour during orbit flight.
 enum OrbitYawBehavior {
-    ORBIT_YAW_BEHAVIOR_HOLD_FRONT_TO_CIRCLE_CENTER = 0;
-    ORBIT_YAW_BEHAVIOR_HOLD_INITIAL_HEADING = 1;
-    ORBIT_YAW_BEHAVIOR_UNCONTROLLED = 2;
-    ORBIT_YAW_BEHAVIOR_HOLD_FRONT_TANGENT_TO_CIRCLE = 3;
-    ORBIT_YAW_BEHAVIOR_RC_CONTROLLED = 4;
+    ORBIT_YAW_BEHAVIOR_HOLD_FRONT_TO_CIRCLE_CENTER = 0; // Vehicle front points to the center (default)
+    ORBIT_YAW_BEHAVIOR_HOLD_INITIAL_HEADING = 1; // Vehicle front holds heading when message received
+    ORBIT_YAW_BEHAVIOR_UNCONTROLLED = 2; // Yaw uncontrolled
+    ORBIT_YAW_BEHAVIOR_HOLD_FRONT_TANGENT_TO_CIRCLE = 3; // Vehicle front follows flight path (tangential to circle)
+    ORBIT_YAW_BEHAVIOR_RC_CONTROLLED = 4; // Yaw controlled by RC input
 }
     
 message DoOrbitRequest {    
