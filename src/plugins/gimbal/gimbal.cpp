@@ -47,6 +47,36 @@ Gimbal::set_roi_location(double latitude_deg, double longitude_deg, float altitu
     return _impl->set_roi_location(latitude_deg, longitude_deg, altitude_m);
 }
 
+void Gimbal::take_control_async(ControlMode control_mode, const ResultCallback callback)
+{
+    _impl->take_control_async(control_mode, callback);
+}
+
+Gimbal::Result Gimbal::take_control(ControlMode control_mode) const
+{
+    return _impl->take_control(control_mode);
+}
+
+void Gimbal::release_control_async(const ResultCallback callback)
+{
+    _impl->release_control_async(callback);
+}
+
+Gimbal::Result Gimbal::release_control() const
+{
+    return _impl->release_control();
+}
+
+void Gimbal::subscribe_control(ControlCallback callback)
+{
+    _impl->control_async(callback);
+}
+
+Gimbal::ControlMode Gimbal::control() const
+{
+    return _impl->control();
+}
+
 std::ostream& operator<<(std::ostream& str, Gimbal::Result const& result)
 {
     switch (result) {
@@ -72,6 +102,20 @@ std::ostream& operator<<(std::ostream& str, Gimbal::GimbalMode const& gimbal_mod
             return str << "Yaw Follow";
         case Gimbal::GimbalMode::YawLock:
             return str << "Yaw Lock";
+        default:
+            return str << "Unknown";
+    }
+}
+
+std::ostream& operator<<(std::ostream& str, Gimbal::ControlMode const& control_mode)
+{
+    switch (control_mode) {
+        case Gimbal::ControlMode::None:
+            return str << "None";
+        case Gimbal::ControlMode::Primary:
+            return str << "Primary";
+        case Gimbal::ControlMode::Secondary:
+            return str << "Secondary";
         default:
             return str << "Unknown";
     }

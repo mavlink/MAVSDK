@@ -72,6 +72,22 @@ public:
     friend std::ostream& operator<<(std::ostream& str, Gimbal::GimbalMode const& gimbal_mode);
 
     /**
+     * @brief Control mode
+     */
+    enum class ControlMode {
+        None, /**< @brief Indicates that the component does not have control over the gimbal. */
+        Primary, /**< @brief To take primary control over the gimbal. */
+        Secondary, /**< @brief To take secondary control over the gimbal. */
+    };
+
+    /**
+     * @brief Stream operator to print information about a `Gimbal::ControlMode`.
+     *
+     * @return A reference to the stream.
+     */
+    friend std::ostream& operator<<(std::ostream& str, Gimbal::ControlMode const& control_mode);
+
+    /**
      * @brief Possible results returned for gimbal commands.
      */
     enum class Result {
@@ -170,6 +186,79 @@ public:
      * @return Result of request.
      */
     Result set_roi_location(double latitude_deg, double longitude_deg, float altitude_m) const;
+
+    /**
+     * @brief Take control.
+     *
+     * There can be only two components in control of a gimbal at any given time.
+     * One with "primary" control, and one with "secondary" control. The way the
+     * secondary control is implemented is not specified and hence depends on the
+     * vehicle.
+     *
+     * Components are expected to be cooperative, which means that they can
+     * override each other and should therefore do it carefully.
+     *
+     * This function is non-blocking. See 'take_control' for the blocking counterpart.
+     */
+    void take_control_async(ControlMode control_mode, const ResultCallback callback);
+
+    /**
+     * @brief Take control.
+     *
+     * There can be only two components in control of a gimbal at any given time.
+     * One with "primary" control, and one with "secondary" control. The way the
+     * secondary control is implemented is not specified and hence depends on the
+     * vehicle.
+     *
+     * Components are expected to be cooperative, which means that they can
+     * override each other and should therefore do it carefully.
+     *
+     * This function is blocking. See 'take_control_async' for the non-blocking counterpart.
+     *
+     * @return Result of request.
+     */
+    Result take_control(ControlMode control_mode) const;
+
+    /**
+     * @brief Release control.
+     *
+     * Release control, such that other components can control the gimbal.
+     *
+     * This function is non-blocking. See 'release_control' for the blocking counterpart.
+     */
+    void release_control_async(const ResultCallback callback);
+
+    /**
+     * @brief Release control.
+     *
+     * Release control, such that other components can control the gimbal.
+     *
+     * This function is blocking. See 'release_control_async' for the non-blocking counterpart.
+     *
+     * @return Result of request.
+     */
+    Result release_control() const;
+
+    /**
+     * @brief Callback type for subscribe_control.
+     */
+
+    using ControlCallback = std::function<void(ControlMode)>;
+
+    /**
+     * @brief Subscribe to control status updates.
+     *
+     * This allows a component to know if it has primary, secondary or
+     * no control over the gimbal.
+     */
+    void subscribe_control(ControlCallback callback);
+
+    /**
+     * @brief Poll for 'ControlMode' (blocking).
+     *
+     * @return One ControlMode update.
+     */
+    ControlMode control() const;
 
     /**
      * @brief Copy constructor.

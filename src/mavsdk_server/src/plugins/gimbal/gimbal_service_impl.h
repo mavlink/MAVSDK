@@ -64,6 +64,38 @@ public:
         }
     }
 
+    static rpc::gimbal::ControlMode
+    translateToRpcControlMode(const mavsdk::Gimbal::ControlMode& control_mode)
+    {
+        switch (control_mode) {
+            default:
+                LogErr() << "Unknown control_mode enum value: " << static_cast<int>(control_mode);
+            // FALLTHROUGH
+            case mavsdk::Gimbal::ControlMode::None:
+                return rpc::gimbal::CONTROL_MODE_NONE;
+            case mavsdk::Gimbal::ControlMode::Primary:
+                return rpc::gimbal::CONTROL_MODE_PRIMARY;
+            case mavsdk::Gimbal::ControlMode::Secondary:
+                return rpc::gimbal::CONTROL_MODE_SECONDARY;
+        }
+    }
+
+    static mavsdk::Gimbal::ControlMode
+    translateFromRpcControlMode(const rpc::gimbal::ControlMode control_mode)
+    {
+        switch (control_mode) {
+            default:
+                LogErr() << "Unknown control_mode enum value: " << static_cast<int>(control_mode);
+            // FALLTHROUGH
+            case rpc::gimbal::CONTROL_MODE_NONE:
+                return mavsdk::Gimbal::ControlMode::None;
+            case rpc::gimbal::CONTROL_MODE_PRIMARY:
+                return mavsdk::Gimbal::ControlMode::Primary;
+            case rpc::gimbal::CONTROL_MODE_SECONDARY:
+                return mavsdk::Gimbal::ControlMode::Secondary;
+        }
+    }
+
     static rpc::gimbal::GimbalResult::Result
     translateToRpcResult(const mavsdk::Gimbal::Result& result)
     {
@@ -159,6 +191,74 @@ public:
             fillResponseWithResult(response, result);
         }
 
+        return grpc::Status::OK;
+    }
+
+    grpc::Status TakeControl(
+        grpc::ServerContext* /* context */,
+        const rpc::gimbal::TakeControlRequest* request,
+        rpc::gimbal::TakeControlResponse* response) override
+    {
+        if (request == nullptr) {
+            LogWarn() << "TakeControl sent with a null request! Ignoring...";
+            return grpc::Status::OK;
+        }
+
+        auto result = _gimbal.take_control(translateFromRpcControlMode(request->control_mode()));
+
+        if (response != nullptr) {
+            fillResponseWithResult(response, result);
+        }
+
+        return grpc::Status::OK;
+    }
+
+    grpc::Status ReleaseControl(
+        grpc::ServerContext* /* context */,
+        const rpc::gimbal::ReleaseControlRequest* /* request */,
+        rpc::gimbal::ReleaseControlResponse* response) override
+    {
+        auto result = _gimbal.release_control();
+
+        if (response != nullptr) {
+            fillResponseWithResult(response, result);
+        }
+
+        return grpc::Status::OK;
+    }
+
+    grpc::Status SubscribeControl(
+        grpc::ServerContext* /* context */,
+        const mavsdk::rpc::gimbal::SubscribeControlRequest* /* request */,
+        grpc::ServerWriter<rpc::gimbal::ControlResponse>* writer) override
+    {
+        auto stream_closed_promise = std::make_shared<std::promise<void>>();
+        auto stream_closed_future = stream_closed_promise->get_future();
+        register_stream_stop_promise(stream_closed_promise);
+
+        auto is_finished = std::make_shared<bool>(false);
+
+        std::mutex subscribe_mutex{};
+
+        _gimbal.subscribe_control(
+            [this, &writer, &stream_closed_promise, is_finished, &subscribe_mutex](
+                const mavsdk::Gimbal::ControlMode control) {
+                rpc::gimbal::ControlResponse rpc_response;
+
+                rpc_response.set_control_mode(translateToRpcControlMode(control));
+
+                std::unique_lock<std::mutex> lock(subscribe_mutex);
+                if (!*is_finished && !writer->Write(rpc_response)) {
+                    _gimbal.subscribe_control(nullptr);
+
+                    *is_finished = true;
+                    unregister_stream_stop_promise(stream_closed_promise);
+                    lock.unlock();
+                    stream_closed_promise->set_value();
+                }
+            });
+
+        stream_closed_future.wait();
         return grpc::Status::OK;
     }
 
