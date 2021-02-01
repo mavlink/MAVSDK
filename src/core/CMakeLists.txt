@@ -70,7 +70,8 @@ if(ANDROID)
     )
 endif()
 
-if(BUILD_STATIC_MAVSDK_SERVER AND ("${CMAKE_C_COMPILER_ID}" STREQUAL "GNU"))
+if( (BUILD_STATIC_MAVSDK_SERVER AND ("${CMAKE_C_COMPILER_ID}" STREQUAL "GNU")) 
+    OR (${CMAKE_HOST_SYSTEM_PROCESSOR} MATCHES "(armv6|armv7)") )
     target_link_libraries(mavsdk PRIVATE atomic)
 endif()
 
