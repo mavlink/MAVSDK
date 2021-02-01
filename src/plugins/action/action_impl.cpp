@@ -160,6 +160,29 @@ Action::Result ActionImpl::goto_location(
     return fut.get();
 }
 
+Action::Result ActionImpl::do_orbit(
+    const float radius_m,
+    const float velocity_ms,
+    const Action::OrbitYawBehavior yaw_behavior,
+    const double latitude_deg,
+    const double longitude_deg,
+    const double absolute_altitude_m)
+{
+    auto prom = std::promise<Action::Result>();
+    auto fut = prom.get_future();
+
+    do_orbit_async(
+        radius_m,
+        velocity_ms,
+        yaw_behavior,
+        latitude_deg,
+        longitude_deg,
+        absolute_altitude_m,
+        [&prom](Action::Result result) { prom.set_value(result); });
+
+    return fut.get();
+}
+
 Action::Result ActionImpl::transition_to_fixedwing() const
 {
     auto prom = std::promise<Action::Result>();
@@ -350,6 +373,32 @@ void ActionImpl::goto_location_async(
     command.params.x = int32_t(std::round(latitude_deg * 1e7));
     command.params.y = int32_t(std::round(longitude_deg * 1e7));
     command.params.z = altitude_amsl_m;
+
+    _parent->send_command_async(
+        command, [this, callback](MavlinkCommandSender::Result result, float) {
+            command_result_callback(result, callback);
+        });
+}
+
+void ActionImpl::do_orbit_async(
+    const float radius_m,
+    const float velocity_ms,
+    const Action::OrbitYawBehavior yaw_behavior,
+    const double latitude_deg,
+    const double longitude_deg,
+    const double absolute_altitude_m,
+    const Action::ResultCallback& callback)
+{
+    MavlinkCommandSender::CommandInt command{};
+
+    command.command = MAV_CMD_DO_ORBIT;
+    command.target_component_id = _parent->get_autopilot_id();
+    command.params.param1 = radius_m;
+    command.params.param2 = velocity_ms;
+    command.params.param3 = float(yaw_behavior);
+    command.params.x = int32_t(std::round(latitude_deg * 1e7));
+    command.params.y = int32_t(std::round(longitude_deg * 1e7));
+    command.params.z = float(absolute_altitude_m);
 
     _parent->send_command_async(
         command, [this, callback](MavlinkCommandSender::Result result, float) {

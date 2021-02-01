@@ -36,6 +36,48 @@ public:
         response->set_allocated_action_result(rpc_action_result);
     }
 
+    static rpc::action::OrbitYawBehavior
+    translateToRpcOrbitYawBehavior(const mavsdk::Action::OrbitYawBehavior& orbit_yaw_behavior)
+    {
+        switch (orbit_yaw_behavior) {
+            default:
+                LogErr() << "Unknown orbit_yaw_behavior enum value: "
+                         << static_cast<int>(orbit_yaw_behavior);
+            // FALLTHROUGH
+            case mavsdk::Action::OrbitYawBehavior::HoldFrontToCircleCenter:
+                return rpc::action::ORBIT_YAW_BEHAVIOR_HOLD_FRONT_TO_CIRCLE_CENTER;
+            case mavsdk::Action::OrbitYawBehavior::HoldInitialHeading:
+                return rpc::action::ORBIT_YAW_BEHAVIOR_HOLD_INITIAL_HEADING;
+            case mavsdk::Action::OrbitYawBehavior::Uncontrolled:
+                return rpc::action::ORBIT_YAW_BEHAVIOR_UNCONTROLLED;
+            case mavsdk::Action::OrbitYawBehavior::HoldFrontTangentToCircle:
+                return rpc::action::ORBIT_YAW_BEHAVIOR_HOLD_FRONT_TANGENT_TO_CIRCLE;
+            case mavsdk::Action::OrbitYawBehavior::RcControlled:
+                return rpc::action::ORBIT_YAW_BEHAVIOR_RC_CONTROLLED;
+        }
+    }
+
+    static mavsdk::Action::OrbitYawBehavior
+    translateFromRpcOrbitYawBehavior(const rpc::action::OrbitYawBehavior orbit_yaw_behavior)
+    {
+        switch (orbit_yaw_behavior) {
+            default:
+                LogErr() << "Unknown orbit_yaw_behavior enum value: "
+                         << static_cast<int>(orbit_yaw_behavior);
+            // FALLTHROUGH
+            case rpc::action::ORBIT_YAW_BEHAVIOR_HOLD_FRONT_TO_CIRCLE_CENTER:
+                return mavsdk::Action::OrbitYawBehavior::HoldFrontToCircleCenter;
+            case rpc::action::ORBIT_YAW_BEHAVIOR_HOLD_INITIAL_HEADING:
+                return mavsdk::Action::OrbitYawBehavior::HoldInitialHeading;
+            case rpc::action::ORBIT_YAW_BEHAVIOR_UNCONTROLLED:
+                return mavsdk::Action::OrbitYawBehavior::Uncontrolled;
+            case rpc::action::ORBIT_YAW_BEHAVIOR_HOLD_FRONT_TANGENT_TO_CIRCLE:
+                return mavsdk::Action::OrbitYawBehavior::HoldFrontTangentToCircle;
+            case rpc::action::ORBIT_YAW_BEHAVIOR_RC_CONTROLLED:
+                return mavsdk::Action::OrbitYawBehavior::RcControlled;
+        }
+    }
+
     static rpc::action::ActionResult::Result
     translateToRpcResult(const mavsdk::Action::Result& result)
     {
@@ -245,6 +287,31 @@ public:
             request->longitude_deg(),
             request->absolute_altitude_m(),
             request->yaw_deg());
+
+        if (response != nullptr) {
+            fillResponseWithResult(response, result);
+        }
+
+        return grpc::Status::OK;
+    }
+
+    grpc::Status DoOrbit(
+        grpc::ServerContext* /* context */,
+        const rpc::action::DoOrbitRequest* request,
+        rpc::action::DoOrbitResponse* response) override
+    {
+        if (request == nullptr) {
+            LogWarn() << "DoOrbit sent with a null request! Ignoring...";
+            return grpc::Status::OK;
+        }
+
+        auto result = _action.do_orbit(
+            request->radius_m(),
+            request->velocity_ms(),
+            translateFromRpcOrbitYawBehavior(request->yaw_behavior()),
+            request->latitude_deg(),
+            request->longitude_deg(),
+            request->absolute_altitude_m());
 
         if (response != nullptr) {
             fillResponseWithResult(response, result);

@@ -98,6 +98,14 @@ class GotoLocationResponseDefaultTypeInternal {
  public:
   ::PROTOBUF_NAMESPACE_ID::internal::ExplicitlyConstructed<GotoLocationResponse> _instance;
 } _GotoLocationResponse_default_instance_;
+class DoOrbitRequestDefaultTypeInternal {
+ public:
+  ::PROTOBUF_NAMESPACE_ID::internal::ExplicitlyConstructed<DoOrbitRequest> _instance;
+} _DoOrbitRequest_default_instance_;
+class DoOrbitResponseDefaultTypeInternal {
+ public:
+  ::PROTOBUF_NAMESPACE_ID::internal::ExplicitlyConstructed<DoOrbitResponse> _instance;
+} _DoOrbitResponse_default_instance_;
 class TransitionToFixedwingRequestDefaultTypeInternal {
  public:
   ::PROTOBUF_NAMESPACE_ID::internal::ExplicitlyConstructed<TransitionToFixedwingRequest> _instance;
@@ -239,6 +247,35 @@ static void InitDefaultsscc_info_DisarmResponse_action_2faction_2eproto() {
 
 ::PROTOBUF_NAMESPACE_ID::internal::SCCInfo<1> scc_info_DisarmResponse_action_2faction_2eproto =
     {{ATOMIC_VAR_INIT(::PROTOBUF_NAMESPACE_ID::internal::SCCInfoBase::kUninitialized), 1, 0, InitDefaultsscc_info_DisarmResponse_action_2faction_2eproto}, {
+      &scc_info_ActionResult_action_2faction_2eproto.base,}};
+
+static void InitDefaultsscc_info_DoOrbitRequest_action_2faction_2eproto() {
+  GOOGLE_PROTOBUF_VERIFY_VERSION;
+
+  {
+    void* ptr = &::mavsdk::rpc::action::_DoOrbitRequest_default_instance_;
+    new (ptr) ::mavsdk::rpc::action::DoOrbitRequest();
+    ::PROTOBUF_NAMESPACE_ID::internal::OnShutdownDestroyMessage(ptr);
+  }
+  ::mavsdk::rpc::action::DoOrbitRequest::InitAsDefaultInstance();
+}
+
+::PROTOBUF_NAMESPACE_ID::internal::SCCInfo<0> scc_info_DoOrbitRequest_action_2faction_2eproto =
+    {{ATOMIC_VAR_INIT(::PROTOBUF_NAMESPACE_ID::internal::SCCInfoBase::kUninitialized), 0, 0, InitDefaultsscc_info_DoOrbitRequest_action_2faction_2eproto}, {}};
+
+static void InitDefaultsscc_info_DoOrbitResponse_action_2faction_2eproto() {
+  GOOGLE_PROTOBUF_VERIFY_VERSION;
+
+  {
+    void* ptr = &::mavsdk::rpc::action::_DoOrbitResponse_default_instance_;
+    new (ptr) ::mavsdk::rpc::action::DoOrbitResponse();
+    ::PROTOBUF_NAMESPACE_ID::internal::OnShutdownDestroyMessage(ptr);
+  }
+  ::mavsdk::rpc::action::DoOrbitResponse::InitAsDefaultInstance();
+}
+
+::PROTOBUF_NAMESPACE_ID::internal::SCCInfo<1> scc_info_DoOrbitResponse_action_2faction_2eproto =
+    {{ATOMIC_VAR_INIT(::PROTOBUF_NAMESPACE_ID::internal::SCCInfoBase::kUninitialized), 1, 0, InitDefaultsscc_info_DoOrbitResponse_action_2faction_2eproto}, {
       &scc_info_ActionResult_action_2faction_2eproto.base,}};
 
 static void InitDefaultsscc_info_GetMaximumSpeedRequest_action_2faction_2eproto() {
@@ -705,8 +742,8 @@ static void InitDefaultsscc_info_TransitionToMulticopterResponse_action_2faction
     {{ATOMIC_VAR_INIT(::PROTOBUF_NAMESPACE_ID::internal::SCCInfoBase::kUninitialized), 1, 0, InitDefaultsscc_info_TransitionToMulticopterResponse_action_2faction_2eproto}, {
       &scc_info_ActionResult_action_2faction_2eproto.base,}};
 
-static ::PROTOBUF_NAMESPACE_ID::Metadata file_level_metadata_action_2faction_2eproto[37];
-static const ::PROTOBUF_NAMESPACE_ID::EnumDescriptor* file_level_enum_descriptors_action_2faction_2eproto[1];
+static ::PROTOBUF_NAMESPACE_ID::Metadata file_level_metadata_action_2faction_2eproto[39];
+static const ::PROTOBUF_NAMESPACE_ID::EnumDescriptor* file_level_enum_descriptors_action_2faction_2eproto[2];
 static constexpr ::PROTOBUF_NAMESPACE_ID::ServiceDescriptor const** file_level_service_descriptors_action_2faction_2eproto = nullptr;
 
 const ::PROTOBUF_NAMESPACE_ID::uint32 TableStruct_action_2faction_2eproto::offsets[] PROTOBUF_SECTION_VARIABLE(protodesc_cold) = {
@@ -824,6 +861,23 @@ const ::PROTOBUF_NAMESPACE_ID::uint32 TableStruct_action_2faction_2eproto::offse
   ~0u,  // no _oneof_case_
   ~0u,  // no _weak_field_map_
   PROTOBUF_FIELD_OFFSET(::mavsdk::rpc::action::GotoLocationResponse, action_result_),
+  ~0u,  // no _has_bits_
+  PROTOBUF_FIELD_OFFSET(::mavsdk::rpc::action::DoOrbitRequest, _internal_metadata_),
+  ~0u,  // no _extensions_
+  ~0u,  // no _oneof_case_
+  ~0u,  // no _weak_field_map_
+  PROTOBUF_FIELD_OFFSET(::mavsdk::rpc::action::DoOrbitRequest, radius_m_),
+  PROTOBUF_FIELD_OFFSET(::mavsdk::rpc::action::DoOrbitRequest, velocity_ms_),
+  PROTOBUF_FIELD_OFFSET(::mavsdk::rpc::action::DoOrbitRequest, yaw_behavior_),
+  PROTOBUF_FIELD_OFFSET(::mavsdk::rpc::action::DoOrbitRequest, latitude_deg_),
+  PROTOBUF_FIELD_OFFSET(::mavsdk::rpc::action::DoOrbitRequest, longitude_deg_),
+  PROTOBUF_FIELD_OFFSET(::mavsdk::rpc::action::DoOrbitRequest, absolute_altitude_m_),
+  ~0u,  // no _has_bits_
+  PROTOBUF_FIELD_OFFSET(::mavsdk::rpc::action::DoOrbitResponse, _internal_metadata_),
+  ~0u,  // no _extensions_
+  ~0u,  // no _oneof_case_
+  ~0u,  // no _weak_field_map_
+  PROTOBUF_FIELD_OFFSET(::mavsdk::rpc::action::DoOrbitResponse, action_result_),
   ~0u,  // no _has_bits_
   PROTOBUF_FIELD_OFFSET(::mavsdk::rpc::action::TransitionToFixedwingRequest, _internal_metadata_),
   ~0u,  // no _extensions_
@@ -947,23 +1001,25 @@ static const ::PROTOBUF_NAMESPACE_ID::internal::MigrationSchema schemas[] PROTOB
   { 93, -1, sizeof(::mavsdk::rpc::action::ReturnToLaunchResponse)},
   { 99, -1, sizeof(::mavsdk::rpc::action::GotoLocationRequest)},
   { 108, -1, sizeof(::mavsdk::rpc::action::GotoLocationResponse)},
-  { 114, -1, sizeof(::mavsdk::rpc::action::TransitionToFixedwingRequest)},
-  { 119, -1, sizeof(::mavsdk::rpc::action::TransitionToFixedwingResponse)},
-  { 125, -1, sizeof(::mavsdk::rpc::action::TransitionToMulticopterRequest)},
-  { 130, -1, sizeof(::mavsdk::rpc::action::TransitionToMulticopterResponse)},
-  { 136, -1, sizeof(::mavsdk::rpc::action::GetTakeoffAltitudeRequest)},
-  { 141, -1, sizeof(::mavsdk::rpc::action::GetTakeoffAltitudeResponse)},
-  { 148, -1, sizeof(::mavsdk::rpc::action::SetTakeoffAltitudeRequest)},
-  { 154, -1, sizeof(::mavsdk::rpc::action::SetTakeoffAltitudeResponse)},
-  { 160, -1, sizeof(::mavsdk::rpc::action::GetMaximumSpeedRequest)},
-  { 165, -1, sizeof(::mavsdk::rpc::action::GetMaximumSpeedResponse)},
-  { 172, -1, sizeof(::mavsdk::rpc::action::SetMaximumSpeedRequest)},
-  { 178, -1, sizeof(::mavsdk::rpc::action::SetMaximumSpeedResponse)},
-  { 184, -1, sizeof(::mavsdk::rpc::action::GetReturnToLaunchAltitudeRequest)},
-  { 189, -1, sizeof(::mavsdk::rpc::action::GetReturnToLaunchAltitudeResponse)},
-  { 196, -1, sizeof(::mavsdk::rpc::action::SetReturnToLaunchAltitudeRequest)},
-  { 202, -1, sizeof(::mavsdk::rpc::action::SetReturnToLaunchAltitudeResponse)},
-  { 208, -1, sizeof(::mavsdk::rpc::action::ActionResult)},
+  { 114, -1, sizeof(::mavsdk::rpc::action::DoOrbitRequest)},
+  { 125, -1, sizeof(::mavsdk::rpc::action::DoOrbitResponse)},
+  { 131, -1, sizeof(::mavsdk::rpc::action::TransitionToFixedwingRequest)},
+  { 136, -1, sizeof(::mavsdk::rpc::action::TransitionToFixedwingResponse)},
+  { 142, -1, sizeof(::mavsdk::rpc::action::TransitionToMulticopterRequest)},
+  { 147, -1, sizeof(::mavsdk::rpc::action::TransitionToMulticopterResponse)},
+  { 153, -1, sizeof(::mavsdk::rpc::action::GetTakeoffAltitudeRequest)},
+  { 158, -1, sizeof(::mavsdk::rpc::action::GetTakeoffAltitudeResponse)},
+  { 165, -1, sizeof(::mavsdk::rpc::action::SetTakeoffAltitudeRequest)},
+  { 171, -1, sizeof(::mavsdk::rpc::action::SetTakeoffAltitudeResponse)},
+  { 177, -1, sizeof(::mavsdk::rpc::action::GetMaximumSpeedRequest)},
+  { 182, -1, sizeof(::mavsdk::rpc::action::GetMaximumSpeedResponse)},
+  { 189, -1, sizeof(::mavsdk::rpc::action::SetMaximumSpeedRequest)},
+  { 195, -1, sizeof(::mavsdk::rpc::action::SetMaximumSpeedResponse)},
+  { 201, -1, sizeof(::mavsdk::rpc::action::GetReturnToLaunchAltitudeRequest)},
+  { 206, -1, sizeof(::mavsdk::rpc::action::GetReturnToLaunchAltitudeResponse)},
+  { 213, -1, sizeof(::mavsdk::rpc::action::SetReturnToLaunchAltitudeRequest)},
+  { 219, -1, sizeof(::mavsdk::rpc::action::SetReturnToLaunchAltitudeResponse)},
+  { 225, -1, sizeof(::mavsdk::rpc::action::ActionResult)},
 };
 
 static ::PROTOBUF_NAMESPACE_ID::Message const * const file_default_instances[] = {
@@ -987,6 +1043,8 @@ static ::PROTOBUF_NAMESPACE_ID::Message const * const file_default_instances[] =
   reinterpret_cast<const ::PROTOBUF_NAMESPACE_ID::Message*>(&::mavsdk::rpc::action::_ReturnToLaunchResponse_default_instance_),
   reinterpret_cast<const ::PROTOBUF_NAMESPACE_ID::Message*>(&::mavsdk::rpc::action::_GotoLocationRequest_default_instance_),
   reinterpret_cast<const ::PROTOBUF_NAMESPACE_ID::Message*>(&::mavsdk::rpc::action::_GotoLocationResponse_default_instance_),
+  reinterpret_cast<const ::PROTOBUF_NAMESPACE_ID::Message*>(&::mavsdk::rpc::action::_DoOrbitRequest_default_instance_),
+  reinterpret_cast<const ::PROTOBUF_NAMESPACE_ID::Message*>(&::mavsdk::rpc::action::_DoOrbitResponse_default_instance_),
   reinterpret_cast<const ::PROTOBUF_NAMESPACE_ID::Message*>(&::mavsdk::rpc::action::_TransitionToFixedwingRequest_default_instance_),
   reinterpret_cast<const ::PROTOBUF_NAMESPACE_ID::Message*>(&::mavsdk::rpc::action::_TransitionToFixedwingResponse_default_instance_),
   reinterpret_cast<const ::PROTOBUF_NAMESPACE_ID::Message*>(&::mavsdk::rpc::action::_TransitionToMulticopterRequest_default_instance_),
@@ -1008,127 +1066,146 @@ static ::PROTOBUF_NAMESPACE_ID::Message const * const file_default_instances[] =
 
 const char descriptor_table_protodef_action_2faction_2eproto[] PROTOBUF_SECTION_VARIABLE(protodesc_cold) =
   "\n\023action/action.proto\022\021mavsdk.rpc.action"
-  "\"\014\n\nArmRequest\"E\n\013ArmResponse\0226\n\raction_"
-  "result\030\001 \001(\0132\037.mavsdk.rpc.action.ActionR"
-  "esult\"\017\n\rDisarmRequest\"H\n\016DisarmResponse"
-  "\0226\n\raction_result\030\001 \001(\0132\037.mavsdk.rpc.act"
-  "ion.ActionResult\"\020\n\016TakeoffRequest\"I\n\017Ta"
-  "keoffResponse\0226\n\raction_result\030\001 \001(\0132\037.m"
-  "avsdk.rpc.action.ActionResult\"\r\n\013LandReq"
-  "uest\"F\n\014LandResponse\0226\n\raction_result\030\001 "
-  "\001(\0132\037.mavsdk.rpc.action.ActionResult\"\017\n\r"
-  "RebootRequest\"H\n\016RebootResponse\0226\n\ractio"
-  "n_result\030\001 \001(\0132\037.mavsdk.rpc.action.Actio"
-  "nResult\"\021\n\017ShutdownRequest\"J\n\020ShutdownRe"
+  "\032\024mavsdk_options.proto\"\014\n\nArmRequest\"E\n\013"
+  "ArmResponse\0226\n\raction_result\030\001 \001(\0132\037.mav"
+  "sdk.rpc.action.ActionResult\"\017\n\rDisarmReq"
+  "uest\"H\n\016DisarmResponse\0226\n\raction_result\030"
+  "\001 \001(\0132\037.mavsdk.rpc.action.ActionResult\"\020"
+  "\n\016TakeoffRequest\"I\n\017TakeoffResponse\0226\n\ra"
+  "ction_result\030\001 \001(\0132\037.mavsdk.rpc.action.A"
+  "ctionResult\"\r\n\013LandRequest\"F\n\014LandRespon"
+  "se\0226\n\raction_result\030\001 \001(\0132\037.mavsdk.rpc.a"
+  "ction.ActionResult\"\017\n\rRebootRequest\"H\n\016R"
+  "ebootResponse\0226\n\raction_result\030\001 \001(\0132\037.m"
+  "avsdk.rpc.action.ActionResult\"\021\n\017Shutdow"
+  "nRequest\"J\n\020ShutdownResponse\0226\n\raction_r"
+  "esult\030\001 \001(\0132\037.mavsdk.rpc.action.ActionRe"
+  "sult\"\022\n\020TerminateRequest\"K\n\021TerminateRes"
+  "ponse\0226\n\raction_result\030\001 \001(\0132\037.mavsdk.rp"
+  "c.action.ActionResult\"\r\n\013KillRequest\"F\n\014"
+  "KillResponse\0226\n\raction_result\030\001 \001(\0132\037.ma"
+  "vsdk.rpc.action.ActionResult\"\027\n\025ReturnTo"
+  "LaunchRequest\"P\n\026ReturnToLaunchResponse\022"
+  "6\n\raction_result\030\001 \001(\0132\037.mavsdk.rpc.acti"
+  "on.ActionResult\"p\n\023GotoLocationRequest\022\024"
+  "\n\014latitude_deg\030\001 \001(\001\022\025\n\rlongitude_deg\030\002 "
+  "\001(\001\022\033\n\023absolute_altitude_m\030\003 \001(\002\022\017\n\007yaw_"
+  "deg\030\004 \001(\002\"N\n\024GotoLocationResponse\0226\n\ract"
+  "ion_result\030\001 \001(\0132\037.mavsdk.rpc.action.Act"
+  "ionResult\"\327\001\n\016DoOrbitRequest\022\020\n\010radius_m"
+  "\030\001 \001(\002\022\023\n\013velocity_ms\030\002 \001(\002\0229\n\014yaw_behav"
+  "ior\030\003 \001(\0162#.mavsdk.rpc.action.OrbitYawBe"
+  "havior\022\035\n\014latitude_deg\030\005 \001(\001B\007\202\265\030\003NaN\022\036\n"
+  "\rlongitude_deg\030\006 \001(\001B\007\202\265\030\003NaN\022$\n\023absolut"
+  "e_altitude_m\030\007 \001(\001B\007\202\265\030\003NaN\"I\n\017DoOrbitRe"
   "sponse\0226\n\raction_result\030\001 \001(\0132\037.mavsdk.r"
-  "pc.action.ActionResult\"\022\n\020TerminateReque"
-  "st\"K\n\021TerminateResponse\0226\n\raction_result"
-  "\030\001 \001(\0132\037.mavsdk.rpc.action.ActionResult\""
-  "\r\n\013KillRequest\"F\n\014KillResponse\0226\n\raction"
-  "_result\030\001 \001(\0132\037.mavsdk.rpc.action.Action"
-  "Result\"\027\n\025ReturnToLaunchRequest\"P\n\026Retur"
-  "nToLaunchResponse\0226\n\raction_result\030\001 \001(\013"
-  "2\037.mavsdk.rpc.action.ActionResult\"p\n\023Got"
-  "oLocationRequest\022\024\n\014latitude_deg\030\001 \001(\001\022\025"
-  "\n\rlongitude_deg\030\002 \001(\001\022\033\n\023absolute_altitu"
-  "de_m\030\003 \001(\002\022\017\n\007yaw_deg\030\004 \001(\002\"N\n\024GotoLocat"
-  "ionResponse\0226\n\raction_result\030\001 \001(\0132\037.mav"
-  "sdk.rpc.action.ActionResult\"\036\n\034Transitio"
-  "nToFixedwingRequest\"W\n\035TransitionToFixed"
-  "wingResponse\0226\n\raction_result\030\001 \001(\0132\037.ma"
-  "vsdk.rpc.action.ActionResult\" \n\036Transiti"
-  "onToMulticopterRequest\"Y\n\037TransitionToMu"
-  "lticopterResponse\0226\n\raction_result\030\001 \001(\013"
-  "2\037.mavsdk.rpc.action.ActionResult\"\033\n\031Get"
-  "TakeoffAltitudeRequest\"f\n\032GetTakeoffAlti"
-  "tudeResponse\0226\n\raction_result\030\001 \001(\0132\037.ma"
-  "vsdk.rpc.action.ActionResult\022\020\n\010altitude"
-  "\030\002 \001(\002\"-\n\031SetTakeoffAltitudeRequest\022\020\n\010a"
-  "ltitude\030\001 \001(\002\"T\n\032SetTakeoffAltitudeRespo"
-  "nse\0226\n\raction_result\030\001 \001(\0132\037.mavsdk.rpc."
-  "action.ActionResult\"\030\n\026GetMaximumSpeedRe"
-  "quest\"`\n\027GetMaximumSpeedResponse\0226\n\racti"
-  "on_result\030\001 \001(\0132\037.mavsdk.rpc.action.Acti"
-  "onResult\022\r\n\005speed\030\002 \001(\002\"\'\n\026SetMaximumSpe"
-  "edRequest\022\r\n\005speed\030\001 \001(\002\"Q\n\027SetMaximumSp"
-  "eedResponse\0226\n\raction_result\030\001 \001(\0132\037.mav"
-  "sdk.rpc.action.ActionResult\"\"\n GetReturn"
-  "ToLaunchAltitudeRequest\"x\n!GetReturnToLa"
-  "unchAltitudeResponse\0226\n\raction_result\030\001 "
-  "\001(\0132\037.mavsdk.rpc.action.ActionResult\022\033\n\023"
-  "relative_altitude_m\030\002 \001(\002\"\?\n SetReturnTo"
-  "LaunchAltitudeRequest\022\033\n\023relative_altitu"
-  "de_m\030\001 \001(\002\"[\n!SetReturnToLaunchAltitudeR"
+  "pc.action.ActionResult\"\036\n\034TransitionToFi"
+  "xedwingRequest\"W\n\035TransitionToFixedwingR"
   "esponse\0226\n\raction_result\030\001 \001(\0132\037.mavsdk."
-  "rpc.action.ActionResult\"\305\003\n\014ActionResult"
-  "\0226\n\006result\030\001 \001(\0162&.mavsdk.rpc.action.Act"
-  "ionResult.Result\022\022\n\nresult_str\030\002 \001(\t\"\350\002\n"
-  "\006Result\022\022\n\016RESULT_UNKNOWN\020\000\022\022\n\016RESULT_SU"
-  "CCESS\020\001\022\024\n\020RESULT_NO_SYSTEM\020\002\022\033\n\027RESULT_"
-  "CONNECTION_ERROR\020\003\022\017\n\013RESULT_BUSY\020\004\022\031\n\025R"
-  "ESULT_COMMAND_DENIED\020\005\022.\n*RESULT_COMMAND"
-  "_DENIED_LANDED_STATE_UNKNOWN\020\006\022$\n RESULT"
-  "_COMMAND_DENIED_NOT_LANDED\020\007\022\022\n\016RESULT_T"
-  "IMEOUT\020\010\022*\n&RESULT_VTOL_TRANSITION_SUPPO"
-  "RT_UNKNOWN\020\t\022%\n!RESULT_NO_VTOL_TRANSITIO"
-  "N_SUPPORT\020\n\022\032\n\026RESULT_PARAMETER_ERROR\020\0132"
-  "\273\016\n\rActionService\022F\n\003Arm\022\035.mavsdk.rpc.ac"
-  "tion.ArmRequest\032\036.mavsdk.rpc.action.ArmR"
-  "esponse\"\000\022O\n\006Disarm\022 .mavsdk.rpc.action."
-  "DisarmRequest\032!.mavsdk.rpc.action.Disarm"
-  "Response\"\000\022R\n\007Takeoff\022!.mavsdk.rpc.actio"
-  "n.TakeoffRequest\032\".mavsdk.rpc.action.Tak"
-  "eoffResponse\"\000\022I\n\004Land\022\036.mavsdk.rpc.acti"
-  "on.LandRequest\032\037.mavsdk.rpc.action.LandR"
-  "esponse\"\000\022O\n\006Reboot\022 .mavsdk.rpc.action."
-  "RebootRequest\032!.mavsdk.rpc.action.Reboot"
-  "Response\"\000\022U\n\010Shutdown\022\".mavsdk.rpc.acti"
-  "on.ShutdownRequest\032#.mavsdk.rpc.action.S"
-  "hutdownResponse\"\000\022X\n\tTerminate\022#.mavsdk."
-  "rpc.action.TerminateRequest\032$.mavsdk.rpc"
-  ".action.TerminateResponse\"\000\022I\n\004Kill\022\036.ma"
-  "vsdk.rpc.action.KillRequest\032\037.mavsdk.rpc"
-  ".action.KillResponse\"\000\022g\n\016ReturnToLaunch"
-  "\022(.mavsdk.rpc.action.ReturnToLaunchReque"
-  "st\032).mavsdk.rpc.action.ReturnToLaunchRes"
-  "ponse\"\000\022a\n\014GotoLocation\022&.mavsdk.rpc.act"
-  "ion.GotoLocationRequest\032\'.mavsdk.rpc.act"
-  "ion.GotoLocationResponse\"\000\022|\n\025Transition"
-  "ToFixedwing\022/.mavsdk.rpc.action.Transiti"
-  "onToFixedwingRequest\0320.mavsdk.rpc.action"
-  ".TransitionToFixedwingResponse\"\000\022\202\001\n\027Tra"
-  "nsitionToMulticopter\0221.mavsdk.rpc.action"
-  ".TransitionToMulticopterRequest\0322.mavsdk"
-  ".rpc.action.TransitionToMulticopterRespo"
-  "nse\"\000\022s\n\022GetTakeoffAltitude\022,.mavsdk.rpc"
-  ".action.GetTakeoffAltitudeRequest\032-.mavs"
-  "dk.rpc.action.GetTakeoffAltitudeResponse"
-  "\"\000\022s\n\022SetTakeoffAltitude\022,.mavsdk.rpc.ac"
-  "tion.SetTakeoffAltitudeRequest\032-.mavsdk."
-  "rpc.action.SetTakeoffAltitudeResponse\"\000\022"
-  "j\n\017GetMaximumSpeed\022).mavsdk.rpc.action.G"
-  "etMaximumSpeedRequest\032*.mavsdk.rpc.actio"
-  "n.GetMaximumSpeedResponse\"\000\022j\n\017SetMaximu"
-  "mSpeed\022).mavsdk.rpc.action.SetMaximumSpe"
-  "edRequest\032*.mavsdk.rpc.action.SetMaximum"
-  "SpeedResponse\"\000\022\210\001\n\031GetReturnToLaunchAlt"
-  "itude\0223.mavsdk.rpc.action.GetReturnToLau"
-  "nchAltitudeRequest\0324.mavsdk.rpc.action.G"
-  "etReturnToLaunchAltitudeResponse\"\000\022\210\001\n\031S"
-  "etReturnToLaunchAltitude\0223.mavsdk.rpc.ac"
-  "tion.SetReturnToLaunchAltitudeRequest\0324."
-  "mavsdk.rpc.action.SetReturnToLaunchAltit"
-  "udeResponse\"\000B\037\n\020io.mavsdk.actionB\013Actio"
-  "nProtob\006proto3"
+  "rpc.action.ActionResult\" \n\036TransitionToM"
+  "ulticopterRequest\"Y\n\037TransitionToMultico"
+  "pterResponse\0226\n\raction_result\030\001 \001(\0132\037.ma"
+  "vsdk.rpc.action.ActionResult\"\033\n\031GetTakeo"
+  "ffAltitudeRequest\"f\n\032GetTakeoffAltitudeR"
+  "esponse\0226\n\raction_result\030\001 \001(\0132\037.mavsdk."
+  "rpc.action.ActionResult\022\020\n\010altitude\030\002 \001("
+  "\002\"-\n\031SetTakeoffAltitudeRequest\022\020\n\010altitu"
+  "de\030\001 \001(\002\"T\n\032SetTakeoffAltitudeResponse\0226"
+  "\n\raction_result\030\001 \001(\0132\037.mavsdk.rpc.actio"
+  "n.ActionResult\"\030\n\026GetMaximumSpeedRequest"
+  "\"`\n\027GetMaximumSpeedResponse\0226\n\raction_re"
+  "sult\030\001 \001(\0132\037.mavsdk.rpc.action.ActionRes"
+  "ult\022\r\n\005speed\030\002 \001(\002\"\'\n\026SetMaximumSpeedReq"
+  "uest\022\r\n\005speed\030\001 \001(\002\"Q\n\027SetMaximumSpeedRe"
+  "sponse\0226\n\raction_result\030\001 \001(\0132\037.mavsdk.r"
+  "pc.action.ActionResult\"\"\n GetReturnToLau"
+  "nchAltitudeRequest\"x\n!GetReturnToLaunchA"
+  "ltitudeResponse\0226\n\raction_result\030\001 \001(\0132\037"
+  ".mavsdk.rpc.action.ActionResult\022\033\n\023relat"
+  "ive_altitude_m\030\002 \001(\002\"\?\n SetReturnToLaunc"
+  "hAltitudeRequest\022\033\n\023relative_altitude_m\030"
+  "\001 \001(\002\"[\n!SetReturnToLaunchAltitudeRespon"
+  "se\0226\n\raction_result\030\001 \001(\0132\037.mavsdk.rpc.a"
+  "ction.ActionResult\"\305\003\n\014ActionResult\0226\n\006r"
+  "esult\030\001 \001(\0162&.mavsdk.rpc.action.ActionRe"
+  "sult.Result\022\022\n\nresult_str\030\002 \001(\t\"\350\002\n\006Resu"
+  "lt\022\022\n\016RESULT_UNKNOWN\020\000\022\022\n\016RESULT_SUCCESS"
+  "\020\001\022\024\n\020RESULT_NO_SYSTEM\020\002\022\033\n\027RESULT_CONNE"
+  "CTION_ERROR\020\003\022\017\n\013RESULT_BUSY\020\004\022\031\n\025RESULT"
+  "_COMMAND_DENIED\020\005\022.\n*RESULT_COMMAND_DENI"
+  "ED_LANDED_STATE_UNKNOWN\020\006\022$\n RESULT_COMM"
+  "AND_DENIED_NOT_LANDED\020\007\022\022\n\016RESULT_TIMEOU"
+  "T\020\010\022*\n&RESULT_VTOL_TRANSITION_SUPPORT_UN"
+  "KNOWN\020\t\022%\n!RESULT_NO_VTOL_TRANSITION_SUP"
+  "PORT\020\n\022\032\n\026RESULT_PARAMETER_ERROR\020\013*\363\001\n\020O"
+  "rbitYawBehavior\0222\n.ORBIT_YAW_BEHAVIOR_HO"
+  "LD_FRONT_TO_CIRCLE_CENTER\020\000\022+\n\'ORBIT_YAW"
+  "_BEHAVIOR_HOLD_INITIAL_HEADING\020\001\022#\n\037ORBI"
+  "T_YAW_BEHAVIOR_UNCONTROLLED\020\002\0223\n/ORBIT_Y"
+  "AW_BEHAVIOR_HOLD_FRONT_TANGENT_TO_CIRCLE"
+  "\020\003\022$\n ORBIT_YAW_BEHAVIOR_RC_CONTROLLED\020\004"
+  "2\217\017\n\rActionService\022F\n\003Arm\022\035.mavsdk.rpc.a"
+  "ction.ArmRequest\032\036.mavsdk.rpc.action.Arm"
+  "Response\"\000\022O\n\006Disarm\022 .mavsdk.rpc.action"
+  ".DisarmRequest\032!.mavsdk.rpc.action.Disar"
+  "mResponse\"\000\022R\n\007Takeoff\022!.mavsdk.rpc.acti"
+  "on.TakeoffRequest\032\".mavsdk.rpc.action.Ta"
+  "keoffResponse\"\000\022I\n\004Land\022\036.mavsdk.rpc.act"
+  "ion.LandRequest\032\037.mavsdk.rpc.action.Land"
+  "Response\"\000\022O\n\006Reboot\022 .mavsdk.rpc.action"
+  ".RebootRequest\032!.mavsdk.rpc.action.Reboo"
+  "tResponse\"\000\022U\n\010Shutdown\022\".mavsdk.rpc.act"
+  "ion.ShutdownRequest\032#.mavsdk.rpc.action."
+  "ShutdownResponse\"\000\022X\n\tTerminate\022#.mavsdk"
+  ".rpc.action.TerminateRequest\032$.mavsdk.rp"
+  "c.action.TerminateResponse\"\000\022I\n\004Kill\022\036.m"
+  "avsdk.rpc.action.KillRequest\032\037.mavsdk.rp"
+  "c.action.KillResponse\"\000\022g\n\016ReturnToLaunc"
+  "h\022(.mavsdk.rpc.action.ReturnToLaunchRequ"
+  "est\032).mavsdk.rpc.action.ReturnToLaunchRe"
+  "sponse\"\000\022a\n\014GotoLocation\022&.mavsdk.rpc.ac"
+  "tion.GotoLocationRequest\032\'.mavsdk.rpc.ac"
+  "tion.GotoLocationResponse\"\000\022R\n\007DoOrbit\022!"
+  ".mavsdk.rpc.action.DoOrbitRequest\032\".mavs"
+  "dk.rpc.action.DoOrbitResponse\"\000\022|\n\025Trans"
+  "itionToFixedwing\022/.mavsdk.rpc.action.Tra"
+  "nsitionToFixedwingRequest\0320.mavsdk.rpc.a"
+  "ction.TransitionToFixedwingResponse\"\000\022\202\001"
+  "\n\027TransitionToMulticopter\0221.mavsdk.rpc.a"
+  "ction.TransitionToMulticopterRequest\0322.m"
+  "avsdk.rpc.action.TransitionToMulticopter"
+  "Response\"\000\022s\n\022GetTakeoffAltitude\022,.mavsd"
+  "k.rpc.action.GetTakeoffAltitudeRequest\032-"
+  ".mavsdk.rpc.action.GetTakeoffAltitudeRes"
+  "ponse\"\000\022s\n\022SetTakeoffAltitude\022,.mavsdk.r"
+  "pc.action.SetTakeoffAltitudeRequest\032-.ma"
+  "vsdk.rpc.action.SetTakeoffAltitudeRespon"
+  "se\"\000\022j\n\017GetMaximumSpeed\022).mavsdk.rpc.act"
+  "ion.GetMaximumSpeedRequest\032*.mavsdk.rpc."
+  "action.GetMaximumSpeedResponse\"\000\022j\n\017SetM"
+  "aximumSpeed\022).mavsdk.rpc.action.SetMaxim"
+  "umSpeedRequest\032*.mavsdk.rpc.action.SetMa"
+  "ximumSpeedResponse\"\000\022\210\001\n\031GetReturnToLaun"
+  "chAltitude\0223.mavsdk.rpc.action.GetReturn"
+  "ToLaunchAltitudeRequest\0324.mavsdk.rpc.act"
+  "ion.GetReturnToLaunchAltitudeResponse\"\000\022"
+  "\210\001\n\031SetReturnToLaunchAltitude\0223.mavsdk.r"
+  "pc.action.SetReturnToLaunchAltitudeReque"
+  "st\0324.mavsdk.rpc.action.SetReturnToLaunch"
+  "AltitudeResponse\"\000B\037\n\020io.mavsdk.actionB\013"
+  "ActionProtob\006proto3"
   ;
 static const ::PROTOBUF_NAMESPACE_ID::internal::DescriptorTable*const descriptor_table_action_2faction_2eproto_deps[1] = {
+  &::descriptor_table_mavsdk_5foptions_2eproto,
 };
-static ::PROTOBUF_NAMESPACE_ID::internal::SCCInfoBase*const descriptor_table_action_2faction_2eproto_sccs[37] = {
+static ::PROTOBUF_NAMESPACE_ID::internal::SCCInfoBase*const descriptor_table_action_2faction_2eproto_sccs[39] = {
   &scc_info_ActionResult_action_2faction_2eproto.base,
   &scc_info_ArmRequest_action_2faction_2eproto.base,
   &scc_info_ArmResponse_action_2faction_2eproto.base,
   &scc_info_DisarmRequest_action_2faction_2eproto.base,
   &scc_info_DisarmResponse_action_2faction_2eproto.base,
+  &scc_info_DoOrbitRequest_action_2faction_2eproto.base,
+  &scc_info_DoOrbitResponse_action_2faction_2eproto.base,
   &scc_info_GetMaximumSpeedRequest_action_2faction_2eproto.base,
   &scc_info_GetMaximumSpeedResponse_action_2faction_2eproto.base,
   &scc_info_GetReturnToLaunchAltitudeRequest_action_2faction_2eproto.base,
@@ -1164,10 +1241,10 @@ static ::PROTOBUF_NAMESPACE_ID::internal::SCCInfoBase*const descriptor_table_act
 };
 static ::PROTOBUF_NAMESPACE_ID::internal::once_flag descriptor_table_action_2faction_2eproto_once;
 const ::PROTOBUF_NAMESPACE_ID::internal::DescriptorTable descriptor_table_action_2faction_2eproto = {
-  false, false, descriptor_table_protodef_action_2faction_2eproto, "action/action.proto", 4494,
-  &descriptor_table_action_2faction_2eproto_once, descriptor_table_action_2faction_2eproto_sccs, descriptor_table_action_2faction_2eproto_deps, 37, 0,
+  false, false, descriptor_table_protodef_action_2faction_2eproto, "action/action.proto", 5139,
+  &descriptor_table_action_2faction_2eproto_once, descriptor_table_action_2faction_2eproto_sccs, descriptor_table_action_2faction_2eproto_deps, 39, 1,
   schemas, file_default_instances, TableStruct_action_2faction_2eproto::offsets,
-  file_level_metadata_action_2faction_2eproto, 37, file_level_enum_descriptors_action_2faction_2eproto, file_level_service_descriptors_action_2faction_2eproto,
+  file_level_metadata_action_2faction_2eproto, 39, file_level_enum_descriptors_action_2faction_2eproto, file_level_service_descriptors_action_2faction_2eproto,
 };
 
 // Force running AddDescriptors() at dynamic initialization time.
@@ -1216,6 +1293,23 @@ constexpr ActionResult_Result ActionResult::Result_MIN;
 constexpr ActionResult_Result ActionResult::Result_MAX;
 constexpr int ActionResult::Result_ARRAYSIZE;
 #endif  // (__cplusplus < 201703) && (!defined(_MSC_VER) || _MSC_VER >= 1900)
+const ::PROTOBUF_NAMESPACE_ID::EnumDescriptor* OrbitYawBehavior_descriptor() {
+  ::PROTOBUF_NAMESPACE_ID::internal::AssignDescriptors(&descriptor_table_action_2faction_2eproto);
+  return file_level_enum_descriptors_action_2faction_2eproto[1];
+}
+bool OrbitYawBehavior_IsValid(int value) {
+  switch (value) {
+    case 0:
+    case 1:
+    case 2:
+    case 3:
+    case 4:
+      return true;
+    default:
+      return false;
+  }
+}
+
 
 // ===================================================================
 
@@ -5123,6 +5217,535 @@ void GotoLocationResponse::InternalSwap(GotoLocationResponse* other) {
 
 // ===================================================================
 
+void DoOrbitRequest::InitAsDefaultInstance() {
+}
+class DoOrbitRequest::_Internal {
+ public:
+};
+
+DoOrbitRequest::DoOrbitRequest(::PROTOBUF_NAMESPACE_ID::Arena* arena)
+  : ::PROTOBUF_NAMESPACE_ID::Message(arena) {
+  SharedCtor();
+  RegisterArenaDtor(arena);
+  // @@protoc_insertion_point(arena_constructor:mavsdk.rpc.action.DoOrbitRequest)
+}
+DoOrbitRequest::DoOrbitRequest(const DoOrbitRequest& from)
+  : ::PROTOBUF_NAMESPACE_ID::Message() {
+  _internal_metadata_.MergeFrom<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>(from._internal_metadata_);
+  ::memcpy(&radius_m_, &from.radius_m_,
+    static_cast<size_t>(reinterpret_cast<char*>(&yaw_behavior_) -
+    reinterpret_cast<char*>(&radius_m_)) + sizeof(yaw_behavior_));
+  // @@protoc_insertion_point(copy_constructor:mavsdk.rpc.action.DoOrbitRequest)
+}
+
+void DoOrbitRequest::SharedCtor() {
+  ::memset(&radius_m_, 0, static_cast<size_t>(
+      reinterpret_cast<char*>(&yaw_behavior_) -
+      reinterpret_cast<char*>(&radius_m_)) + sizeof(yaw_behavior_));
+}
+
+DoOrbitRequest::~DoOrbitRequest() {
+  // @@protoc_insertion_point(destructor:mavsdk.rpc.action.DoOrbitRequest)
+  SharedDtor();
+  _internal_metadata_.Delete<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>();
+}
+
+void DoOrbitRequest::SharedDtor() {
+  GOOGLE_DCHECK(GetArena() == nullptr);
+}
+
+void DoOrbitRequest::ArenaDtor(void* object) {
+  DoOrbitRequest* _this = reinterpret_cast< DoOrbitRequest* >(object);
+  (void)_this;
+}
+void DoOrbitRequest::RegisterArenaDtor(::PROTOBUF_NAMESPACE_ID::Arena*) {
+}
+void DoOrbitRequest::SetCachedSize(int size) const {
+  _cached_size_.Set(size);
+}
+const DoOrbitRequest& DoOrbitRequest::default_instance() {
+  ::PROTOBUF_NAMESPACE_ID::internal::InitSCC(&::scc_info_DoOrbitRequest_action_2faction_2eproto.base);
+  return *internal_default_instance();
+}
+
+
+void DoOrbitRequest::Clear() {
+// @@protoc_insertion_point(message_clear_start:mavsdk.rpc.action.DoOrbitRequest)
+  ::PROTOBUF_NAMESPACE_ID::uint32 cached_has_bits = 0;
+  // Prevent compiler warnings about cached_has_bits being unused
+  (void) cached_has_bits;
+
+  ::memset(&radius_m_, 0, static_cast<size_t>(
+      reinterpret_cast<char*>(&yaw_behavior_) -
+      reinterpret_cast<char*>(&radius_m_)) + sizeof(yaw_behavior_));
+  _internal_metadata_.Clear<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>();
+}
+
+const char* DoOrbitRequest::_InternalParse(const char* ptr, ::PROTOBUF_NAMESPACE_ID::internal::ParseContext* ctx) {
+#define CHK_(x) if (PROTOBUF_PREDICT_FALSE(!(x))) goto failure
+  ::PROTOBUF_NAMESPACE_ID::Arena* arena = GetArena(); (void)arena;
+  while (!ctx->Done(&ptr)) {
+    ::PROTOBUF_NAMESPACE_ID::uint32 tag;
+    ptr = ::PROTOBUF_NAMESPACE_ID::internal::ReadTag(ptr, &tag);
+    CHK_(ptr);
+    switch (tag >> 3) {
+      // float radius_m = 1;
+      case 1:
+        if (PROTOBUF_PREDICT_TRUE(static_cast<::PROTOBUF_NAMESPACE_ID::uint8>(tag) == 13)) {
+          radius_m_ = ::PROTOBUF_NAMESPACE_ID::internal::UnalignedLoad<float>(ptr);
+          ptr += sizeof(float);
+        } else goto handle_unusual;
+        continue;
+      // float velocity_ms = 2;
+      case 2:
+        if (PROTOBUF_PREDICT_TRUE(static_cast<::PROTOBUF_NAMESPACE_ID::uint8>(tag) == 21)) {
+          velocity_ms_ = ::PROTOBUF_NAMESPACE_ID::internal::UnalignedLoad<float>(ptr);
+          ptr += sizeof(float);
+        } else goto handle_unusual;
+        continue;
+      // .mavsdk.rpc.action.OrbitYawBehavior yaw_behavior = 3;
+      case 3:
+        if (PROTOBUF_PREDICT_TRUE(static_cast<::PROTOBUF_NAMESPACE_ID::uint8>(tag) == 24)) {
+          ::PROTOBUF_NAMESPACE_ID::uint64 val = ::PROTOBUF_NAMESPACE_ID::internal::ReadVarint64(&ptr);
+          CHK_(ptr);
+          _internal_set_yaw_behavior(static_cast<::mavsdk::rpc::action::OrbitYawBehavior>(val));
+        } else goto handle_unusual;
+        continue;
+      // double latitude_deg = 5 [(.mavsdk.options.default_value) = "NaN"];
+      case 5:
+        if (PROTOBUF_PREDICT_TRUE(static_cast<::PROTOBUF_NAMESPACE_ID::uint8>(tag) == 41)) {
+          latitude_deg_ = ::PROTOBUF_NAMESPACE_ID::internal::UnalignedLoad<double>(ptr);
+          ptr += sizeof(double);
+        } else goto handle_unusual;
+        continue;
+      // double longitude_deg = 6 [(.mavsdk.options.default_value) = "NaN"];
+      case 6:
+        if (PROTOBUF_PREDICT_TRUE(static_cast<::PROTOBUF_NAMESPACE_ID::uint8>(tag) == 49)) {
+          longitude_deg_ = ::PROTOBUF_NAMESPACE_ID::internal::UnalignedLoad<double>(ptr);
+          ptr += sizeof(double);
+        } else goto handle_unusual;
+        continue;
+      // double absolute_altitude_m = 7 [(.mavsdk.options.default_value) = "NaN"];
+      case 7:
+        if (PROTOBUF_PREDICT_TRUE(static_cast<::PROTOBUF_NAMESPACE_ID::uint8>(tag) == 57)) {
+          absolute_altitude_m_ = ::PROTOBUF_NAMESPACE_ID::internal::UnalignedLoad<double>(ptr);
+          ptr += sizeof(double);
+        } else goto handle_unusual;
+        continue;
+      default: {
+      handle_unusual:
+        if ((tag & 7) == 4 || tag == 0) {
+          ctx->SetLastTag(tag);
+          goto success;
+        }
+        ptr = UnknownFieldParse(tag,
+            _internal_metadata_.mutable_unknown_fields<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>(),
+            ptr, ctx);
+        CHK_(ptr != nullptr);
+        continue;
+      }
+    }  // switch
+  }  // while
+success:
+  return ptr;
+failure:
+  ptr = nullptr;
+  goto success;
+#undef CHK_
+}
+
+::PROTOBUF_NAMESPACE_ID::uint8* DoOrbitRequest::_InternalSerialize(
+    ::PROTOBUF_NAMESPACE_ID::uint8* target, ::PROTOBUF_NAMESPACE_ID::io::EpsCopyOutputStream* stream) const {
+  // @@protoc_insertion_point(serialize_to_array_start:mavsdk.rpc.action.DoOrbitRequest)
+  ::PROTOBUF_NAMESPACE_ID::uint32 cached_has_bits = 0;
+  (void) cached_has_bits;
+
+  // float radius_m = 1;
+  if (!(this->radius_m() <= 0 && this->radius_m() >= 0)) {
+    target = stream->EnsureSpace(target);
+    target = ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::WriteFloatToArray(1, this->_internal_radius_m(), target);
+  }
+
+  // float velocity_ms = 2;
+  if (!(this->velocity_ms() <= 0 && this->velocity_ms() >= 0)) {
+    target = stream->EnsureSpace(target);
+    target = ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::WriteFloatToArray(2, this->_internal_velocity_ms(), target);
+  }
+
+  // .mavsdk.rpc.action.OrbitYawBehavior yaw_behavior = 3;
+  if (this->yaw_behavior() != 0) {
+    target = stream->EnsureSpace(target);
+    target = ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::WriteEnumToArray(
+      3, this->_internal_yaw_behavior(), target);
+  }
+
+  // double latitude_deg = 5 [(.mavsdk.options.default_value) = "NaN"];
+  if (!(this->latitude_deg() <= 0 && this->latitude_deg() >= 0)) {
+    target = stream->EnsureSpace(target);
+    target = ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::WriteDoubleToArray(5, this->_internal_latitude_deg(), target);
+  }
+
+  // double longitude_deg = 6 [(.mavsdk.options.default_value) = "NaN"];
+  if (!(this->longitude_deg() <= 0 && this->longitude_deg() >= 0)) {
+    target = stream->EnsureSpace(target);
+    target = ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::WriteDoubleToArray(6, this->_internal_longitude_deg(), target);
+  }
+
+  // double absolute_altitude_m = 7 [(.mavsdk.options.default_value) = "NaN"];
+  if (!(this->absolute_altitude_m() <= 0 && this->absolute_altitude_m() >= 0)) {
+    target = stream->EnsureSpace(target);
+    target = ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::WriteDoubleToArray(7, this->_internal_absolute_altitude_m(), target);
+  }
+
+  if (PROTOBUF_PREDICT_FALSE(_internal_metadata_.have_unknown_fields())) {
+    target = ::PROTOBUF_NAMESPACE_ID::internal::WireFormat::InternalSerializeUnknownFieldsToArray(
+        _internal_metadata_.unknown_fields<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>(::PROTOBUF_NAMESPACE_ID::UnknownFieldSet::default_instance), target, stream);
+  }
+  // @@protoc_insertion_point(serialize_to_array_end:mavsdk.rpc.action.DoOrbitRequest)
+  return target;
+}
+
+size_t DoOrbitRequest::ByteSizeLong() const {
+// @@protoc_insertion_point(message_byte_size_start:mavsdk.rpc.action.DoOrbitRequest)
+  size_t total_size = 0;
+
+  ::PROTOBUF_NAMESPACE_ID::uint32 cached_has_bits = 0;
+  // Prevent compiler warnings about cached_has_bits being unused
+  (void) cached_has_bits;
+
+  // float radius_m = 1;
+  if (!(this->radius_m() <= 0 && this->radius_m() >= 0)) {
+    total_size += 1 + 4;
+  }
+
+  // float velocity_ms = 2;
+  if (!(this->velocity_ms() <= 0 && this->velocity_ms() >= 0)) {
+    total_size += 1 + 4;
+  }
+
+  // double latitude_deg = 5 [(.mavsdk.options.default_value) = "NaN"];
+  if (!(this->latitude_deg() <= 0 && this->latitude_deg() >= 0)) {
+    total_size += 1 + 8;
+  }
+
+  // double longitude_deg = 6 [(.mavsdk.options.default_value) = "NaN"];
+  if (!(this->longitude_deg() <= 0 && this->longitude_deg() >= 0)) {
+    total_size += 1 + 8;
+  }
+
+  // double absolute_altitude_m = 7 [(.mavsdk.options.default_value) = "NaN"];
+  if (!(this->absolute_altitude_m() <= 0 && this->absolute_altitude_m() >= 0)) {
+    total_size += 1 + 8;
+  }
+
+  // .mavsdk.rpc.action.OrbitYawBehavior yaw_behavior = 3;
+  if (this->yaw_behavior() != 0) {
+    total_size += 1 +
+      ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::EnumSize(this->_internal_yaw_behavior());
+  }
+
+  if (PROTOBUF_PREDICT_FALSE(_internal_metadata_.have_unknown_fields())) {
+    return ::PROTOBUF_NAMESPACE_ID::internal::ComputeUnknownFieldsSize(
+        _internal_metadata_, total_size, &_cached_size_);
+  }
+  int cached_size = ::PROTOBUF_NAMESPACE_ID::internal::ToCachedSize(total_size);
+  SetCachedSize(cached_size);
+  return total_size;
+}
+
+void DoOrbitRequest::MergeFrom(const ::PROTOBUF_NAMESPACE_ID::Message& from) {
+// @@protoc_insertion_point(generalized_merge_from_start:mavsdk.rpc.action.DoOrbitRequest)
+  GOOGLE_DCHECK_NE(&from, this);
+  const DoOrbitRequest* source =
+      ::PROTOBUF_NAMESPACE_ID::DynamicCastToGenerated<DoOrbitRequest>(
+          &from);
+  if (source == nullptr) {
+  // @@protoc_insertion_point(generalized_merge_from_cast_fail:mavsdk.rpc.action.DoOrbitRequest)
+    ::PROTOBUF_NAMESPACE_ID::internal::ReflectionOps::Merge(from, this);
+  } else {
+  // @@protoc_insertion_point(generalized_merge_from_cast_success:mavsdk.rpc.action.DoOrbitRequest)
+    MergeFrom(*source);
+  }
+}
+
+void DoOrbitRequest::MergeFrom(const DoOrbitRequest& from) {
+// @@protoc_insertion_point(class_specific_merge_from_start:mavsdk.rpc.action.DoOrbitRequest)
+  GOOGLE_DCHECK_NE(&from, this);
+  _internal_metadata_.MergeFrom<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>(from._internal_metadata_);
+  ::PROTOBUF_NAMESPACE_ID::uint32 cached_has_bits = 0;
+  (void) cached_has_bits;
+
+  if (!(from.radius_m() <= 0 && from.radius_m() >= 0)) {
+    _internal_set_radius_m(from._internal_radius_m());
+  }
+  if (!(from.velocity_ms() <= 0 && from.velocity_ms() >= 0)) {
+    _internal_set_velocity_ms(from._internal_velocity_ms());
+  }
+  if (!(from.latitude_deg() <= 0 && from.latitude_deg() >= 0)) {
+    _internal_set_latitude_deg(from._internal_latitude_deg());
+  }
+  if (!(from.longitude_deg() <= 0 && from.longitude_deg() >= 0)) {
+    _internal_set_longitude_deg(from._internal_longitude_deg());
+  }
+  if (!(from.absolute_altitude_m() <= 0 && from.absolute_altitude_m() >= 0)) {
+    _internal_set_absolute_altitude_m(from._internal_absolute_altitude_m());
+  }
+  if (from.yaw_behavior() != 0) {
+    _internal_set_yaw_behavior(from._internal_yaw_behavior());
+  }
+}
+
+void DoOrbitRequest::CopyFrom(const ::PROTOBUF_NAMESPACE_ID::Message& from) {
+// @@protoc_insertion_point(generalized_copy_from_start:mavsdk.rpc.action.DoOrbitRequest)
+  if (&from == this) return;
+  Clear();
+  MergeFrom(from);
+}
+
+void DoOrbitRequest::CopyFrom(const DoOrbitRequest& from) {
+// @@protoc_insertion_point(class_specific_copy_from_start:mavsdk.rpc.action.DoOrbitRequest)
+  if (&from == this) return;
+  Clear();
+  MergeFrom(from);
+}
+
+bool DoOrbitRequest::IsInitialized() const {
+  return true;
+}
+
+void DoOrbitRequest::InternalSwap(DoOrbitRequest* other) {
+  using std::swap;
+  _internal_metadata_.Swap<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>(&other->_internal_metadata_);
+  ::PROTOBUF_NAMESPACE_ID::internal::memswap<
+      PROTOBUF_FIELD_OFFSET(DoOrbitRequest, yaw_behavior_)
+      + sizeof(DoOrbitRequest::yaw_behavior_)
+      - PROTOBUF_FIELD_OFFSET(DoOrbitRequest, radius_m_)>(
+          reinterpret_cast<char*>(&radius_m_),
+          reinterpret_cast<char*>(&other->radius_m_));
+}
+
+::PROTOBUF_NAMESPACE_ID::Metadata DoOrbitRequest::GetMetadata() const {
+  return GetMetadataStatic();
+}
+
+
+// ===================================================================
+
+void DoOrbitResponse::InitAsDefaultInstance() {
+  ::mavsdk::rpc::action::_DoOrbitResponse_default_instance_._instance.get_mutable()->action_result_ = const_cast< ::mavsdk::rpc::action::ActionResult*>(
+      ::mavsdk::rpc::action::ActionResult::internal_default_instance());
+}
+class DoOrbitResponse::_Internal {
+ public:
+  static const ::mavsdk::rpc::action::ActionResult& action_result(const DoOrbitResponse* msg);
+};
+
+const ::mavsdk::rpc::action::ActionResult&
+DoOrbitResponse::_Internal::action_result(const DoOrbitResponse* msg) {
+  return *msg->action_result_;
+}
+DoOrbitResponse::DoOrbitResponse(::PROTOBUF_NAMESPACE_ID::Arena* arena)
+  : ::PROTOBUF_NAMESPACE_ID::Message(arena) {
+  SharedCtor();
+  RegisterArenaDtor(arena);
+  // @@protoc_insertion_point(arena_constructor:mavsdk.rpc.action.DoOrbitResponse)
+}
+DoOrbitResponse::DoOrbitResponse(const DoOrbitResponse& from)
+  : ::PROTOBUF_NAMESPACE_ID::Message() {
+  _internal_metadata_.MergeFrom<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>(from._internal_metadata_);
+  if (from._internal_has_action_result()) {
+    action_result_ = new ::mavsdk::rpc::action::ActionResult(*from.action_result_);
+  } else {
+    action_result_ = nullptr;
+  }
+  // @@protoc_insertion_point(copy_constructor:mavsdk.rpc.action.DoOrbitResponse)
+}
+
+void DoOrbitResponse::SharedCtor() {
+  ::PROTOBUF_NAMESPACE_ID::internal::InitSCC(&scc_info_DoOrbitResponse_action_2faction_2eproto.base);
+  action_result_ = nullptr;
+}
+
+DoOrbitResponse::~DoOrbitResponse() {
+  // @@protoc_insertion_point(destructor:mavsdk.rpc.action.DoOrbitResponse)
+  SharedDtor();
+  _internal_metadata_.Delete<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>();
+}
+
+void DoOrbitResponse::SharedDtor() {
+  GOOGLE_DCHECK(GetArena() == nullptr);
+  if (this != internal_default_instance()) delete action_result_;
+}
+
+void DoOrbitResponse::ArenaDtor(void* object) {
+  DoOrbitResponse* _this = reinterpret_cast< DoOrbitResponse* >(object);
+  (void)_this;
+}
+void DoOrbitResponse::RegisterArenaDtor(::PROTOBUF_NAMESPACE_ID::Arena*) {
+}
+void DoOrbitResponse::SetCachedSize(int size) const {
+  _cached_size_.Set(size);
+}
+const DoOrbitResponse& DoOrbitResponse::default_instance() {
+  ::PROTOBUF_NAMESPACE_ID::internal::InitSCC(&::scc_info_DoOrbitResponse_action_2faction_2eproto.base);
+  return *internal_default_instance();
+}
+
+
+void DoOrbitResponse::Clear() {
+// @@protoc_insertion_point(message_clear_start:mavsdk.rpc.action.DoOrbitResponse)
+  ::PROTOBUF_NAMESPACE_ID::uint32 cached_has_bits = 0;
+  // Prevent compiler warnings about cached_has_bits being unused
+  (void) cached_has_bits;
+
+  if (GetArena() == nullptr && action_result_ != nullptr) {
+    delete action_result_;
+  }
+  action_result_ = nullptr;
+  _internal_metadata_.Clear<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>();
+}
+
+const char* DoOrbitResponse::_InternalParse(const char* ptr, ::PROTOBUF_NAMESPACE_ID::internal::ParseContext* ctx) {
+#define CHK_(x) if (PROTOBUF_PREDICT_FALSE(!(x))) goto failure
+  ::PROTOBUF_NAMESPACE_ID::Arena* arena = GetArena(); (void)arena;
+  while (!ctx->Done(&ptr)) {
+    ::PROTOBUF_NAMESPACE_ID::uint32 tag;
+    ptr = ::PROTOBUF_NAMESPACE_ID::internal::ReadTag(ptr, &tag);
+    CHK_(ptr);
+    switch (tag >> 3) {
+      // .mavsdk.rpc.action.ActionResult action_result = 1;
+      case 1:
+        if (PROTOBUF_PREDICT_TRUE(static_cast<::PROTOBUF_NAMESPACE_ID::uint8>(tag) == 10)) {
+          ptr = ctx->ParseMessage(_internal_mutable_action_result(), ptr);
+          CHK_(ptr);
+        } else goto handle_unusual;
+        continue;
+      default: {
+      handle_unusual:
+        if ((tag & 7) == 4 || tag == 0) {
+          ctx->SetLastTag(tag);
+          goto success;
+        }
+        ptr = UnknownFieldParse(tag,
+            _internal_metadata_.mutable_unknown_fields<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>(),
+            ptr, ctx);
+        CHK_(ptr != nullptr);
+        continue;
+      }
+    }  // switch
+  }  // while
+success:
+  return ptr;
+failure:
+  ptr = nullptr;
+  goto success;
+#undef CHK_
+}
+
+::PROTOBUF_NAMESPACE_ID::uint8* DoOrbitResponse::_InternalSerialize(
+    ::PROTOBUF_NAMESPACE_ID::uint8* target, ::PROTOBUF_NAMESPACE_ID::io::EpsCopyOutputStream* stream) const {
+  // @@protoc_insertion_point(serialize_to_array_start:mavsdk.rpc.action.DoOrbitResponse)
+  ::PROTOBUF_NAMESPACE_ID::uint32 cached_has_bits = 0;
+  (void) cached_has_bits;
+
+  // .mavsdk.rpc.action.ActionResult action_result = 1;
+  if (this->has_action_result()) {
+    target = stream->EnsureSpace(target);
+    target = ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::
+      InternalWriteMessage(
+        1, _Internal::action_result(this), target, stream);
+  }
+
+  if (PROTOBUF_PREDICT_FALSE(_internal_metadata_.have_unknown_fields())) {
+    target = ::PROTOBUF_NAMESPACE_ID::internal::WireFormat::InternalSerializeUnknownFieldsToArray(
+        _internal_metadata_.unknown_fields<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>(::PROTOBUF_NAMESPACE_ID::UnknownFieldSet::default_instance), target, stream);
+  }
+  // @@protoc_insertion_point(serialize_to_array_end:mavsdk.rpc.action.DoOrbitResponse)
+  return target;
+}
+
+size_t DoOrbitResponse::ByteSizeLong() const {
+// @@protoc_insertion_point(message_byte_size_start:mavsdk.rpc.action.DoOrbitResponse)
+  size_t total_size = 0;
+
+  ::PROTOBUF_NAMESPACE_ID::uint32 cached_has_bits = 0;
+  // Prevent compiler warnings about cached_has_bits being unused
+  (void) cached_has_bits;
+
+  // .mavsdk.rpc.action.ActionResult action_result = 1;
+  if (this->has_action_result()) {
+    total_size += 1 +
+      ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::MessageSize(
+        *action_result_);
+  }
+
+  if (PROTOBUF_PREDICT_FALSE(_internal_metadata_.have_unknown_fields())) {
+    return ::PROTOBUF_NAMESPACE_ID::internal::ComputeUnknownFieldsSize(
+        _internal_metadata_, total_size, &_cached_size_);
+  }
+  int cached_size = ::PROTOBUF_NAMESPACE_ID::internal::ToCachedSize(total_size);
+  SetCachedSize(cached_size);
+  return total_size;
+}
+
+void DoOrbitResponse::MergeFrom(const ::PROTOBUF_NAMESPACE_ID::Message& from) {
+// @@protoc_insertion_point(generalized_merge_from_start:mavsdk.rpc.action.DoOrbitResponse)
+  GOOGLE_DCHECK_NE(&from, this);
+  const DoOrbitResponse* source =
+      ::PROTOBUF_NAMESPACE_ID::DynamicCastToGenerated<DoOrbitResponse>(
+          &from);
+  if (source == nullptr) {
+  // @@protoc_insertion_point(generalized_merge_from_cast_fail:mavsdk.rpc.action.DoOrbitResponse)
+    ::PROTOBUF_NAMESPACE_ID::internal::ReflectionOps::Merge(from, this);
+  } else {
+  // @@protoc_insertion_point(generalized_merge_from_cast_success:mavsdk.rpc.action.DoOrbitResponse)
+    MergeFrom(*source);
+  }
+}
+
+void DoOrbitResponse::MergeFrom(const DoOrbitResponse& from) {
+// @@protoc_insertion_point(class_specific_merge_from_start:mavsdk.rpc.action.DoOrbitResponse)
+  GOOGLE_DCHECK_NE(&from, this);
+  _internal_metadata_.MergeFrom<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>(from._internal_metadata_);
+  ::PROTOBUF_NAMESPACE_ID::uint32 cached_has_bits = 0;
+  (void) cached_has_bits;
+
+  if (from.has_action_result()) {
+    _internal_mutable_action_result()->::mavsdk::rpc::action::ActionResult::MergeFrom(from._internal_action_result());
+  }
+}
+
+void DoOrbitResponse::CopyFrom(const ::PROTOBUF_NAMESPACE_ID::Message& from) {
+// @@protoc_insertion_point(generalized_copy_from_start:mavsdk.rpc.action.DoOrbitResponse)
+  if (&from == this) return;
+  Clear();
+  MergeFrom(from);
+}
+
+void DoOrbitResponse::CopyFrom(const DoOrbitResponse& from) {
+// @@protoc_insertion_point(class_specific_copy_from_start:mavsdk.rpc.action.DoOrbitResponse)
+  if (&from == this) return;
+  Clear();
+  MergeFrom(from);
+}
+
+bool DoOrbitResponse::IsInitialized() const {
+  return true;
+}
+
+void DoOrbitResponse::InternalSwap(DoOrbitResponse* other) {
+  using std::swap;
+  _internal_metadata_.Swap<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>(&other->_internal_metadata_);
+  swap(action_result_, other->action_result_);
+}
+
+::PROTOBUF_NAMESPACE_ID::Metadata DoOrbitResponse::GetMetadata() const {
+  return GetMetadataStatic();
+}
+
+
+// ===================================================================
+
 void TransitionToFixedwingRequest::InitAsDefaultInstance() {
 }
 class TransitionToFixedwingRequest::_Internal {
@@ -8642,6 +9265,12 @@ template<> PROTOBUF_NOINLINE ::mavsdk::rpc::action::GotoLocationRequest* Arena::
 }
 template<> PROTOBUF_NOINLINE ::mavsdk::rpc::action::GotoLocationResponse* Arena::CreateMaybeMessage< ::mavsdk::rpc::action::GotoLocationResponse >(Arena* arena) {
   return Arena::CreateMessageInternal< ::mavsdk::rpc::action::GotoLocationResponse >(arena);
+}
+template<> PROTOBUF_NOINLINE ::mavsdk::rpc::action::DoOrbitRequest* Arena::CreateMaybeMessage< ::mavsdk::rpc::action::DoOrbitRequest >(Arena* arena) {
+  return Arena::CreateMessageInternal< ::mavsdk::rpc::action::DoOrbitRequest >(arena);
+}
+template<> PROTOBUF_NOINLINE ::mavsdk::rpc::action::DoOrbitResponse* Arena::CreateMaybeMessage< ::mavsdk::rpc::action::DoOrbitResponse >(Arena* arena) {
+  return Arena::CreateMessageInternal< ::mavsdk::rpc::action::DoOrbitResponse >(arena);
 }
 template<> PROTOBUF_NOINLINE ::mavsdk::rpc::action::TransitionToFixedwingRequest* Arena::CreateMaybeMessage< ::mavsdk::rpc::action::TransitionToFixedwingRequest >(Arena* arena) {
   return Arena::CreateMessageInternal< ::mavsdk::rpc::action::TransitionToFixedwingRequest >(arena);
