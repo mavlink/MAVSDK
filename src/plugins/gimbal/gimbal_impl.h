@@ -20,20 +20,26 @@ public:
     void disable() override;
 
     Gimbal::Result set_pitch_and_yaw(float pitch_deg, float yaw_deg);
-
     void set_pitch_and_yaw_async(float pitch_deg, float yaw_deg, Gimbal::ResultCallback callback);
 
     Gimbal::Result set_mode(const Gimbal::GimbalMode gimbal_mode);
-
     void set_mode_async(const Gimbal::GimbalMode gimbal_mode, Gimbal::ResultCallback callback);
 
     Gimbal::Result set_roi_location(double latitude_deg, double longitude_deg, float altitude_m);
-
     void set_roi_location_async(
         double latitude_deg,
         double longitude_deg,
         float altitude_m,
         Gimbal::ResultCallback callback);
+
+    Gimbal::Result take_control(Gimbal::ControlMode control_mode);
+    void take_control_async(Gimbal::ControlMode control_mode, Gimbal::ResultCallback callback);
+
+    Gimbal::Result release_control();
+    void release_control_async(Gimbal::ResultCallback callback);
+
+    Gimbal::ControlMode control();
+    void control_async(Gimbal::ControlCallback callback);
 
     static Gimbal::Result
     gimbal_result_from_command_result(MavlinkCommandSender::Result command_result);
