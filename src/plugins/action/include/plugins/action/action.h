@@ -57,14 +57,15 @@ public:
     ~Action();
 
     /**
-     * @brief
+     * @brief Yaw behaviour during orbit flight.
      */
     enum class OrbitYawBehavior {
-        HoldFrontToCircleCenter, /**< @brief. */
-        HoldInitialHeading, /**< @brief. */
-        Uncontrolled, /**< @brief. */
-        HoldFrontTangentToCircle, /**< @brief. */
-        RcControlled, /**< @brief. */
+        HoldFrontToCircleCenter, /**< @brief Vehicle front points to the center (default). */
+        HoldInitialHeading, /**< @brief Vehicle front holds heading when message received. */
+        Uncontrolled, /**< @brief Yaw uncontrolled. */
+        HoldFrontTangentToCircle, /**< @brief Vehicle front follows flight path (tangential to
+                                     circle). */
+        RcControlled, /**< @brief Yaw controlled by RC input. */
     };
 
     /**
