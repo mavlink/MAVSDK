@@ -31,6 +31,7 @@ TEST(SitlTestGimbal, GimbalMove)
 
     // Wait for system to connect via heartbeat.
     std::this_thread::sleep_for(std::chrono::seconds(2));
+    ASSERT_EQ(mavsdk.systems().size(), 1);
     auto system = mavsdk.systems().at(0);
 
     // FIXME: This is what it should be, for now though with the typhoon_h480
@@ -59,6 +60,7 @@ TEST(SitlTestGimbal, GimbalAngles)
 
     // Wait for system to connect via heartbeat.
     std::this_thread::sleep_for(std::chrono::seconds(2));
+    ASSERT_EQ(mavsdk.systems().size(), 1);
     auto system = mavsdk.systems().at(0);
 
     // FIXME: This is what it should be, for now though with the typhoon_h480
@@ -106,6 +108,7 @@ TEST(SitlTestGimbal, GimbalTakeoffAndMove)
 
     // Wait for system to connect via heartbeat.
     std::this_thread::sleep_for(std::chrono::seconds(2));
+    ASSERT_EQ(mavsdk.systems().size(), 1);
     auto system = mavsdk.systems().at(0);
     // ASSERT_TRUE(system.has_gimbal());
     ASSERT_TRUE(system->has_autopilot());
@@ -214,6 +217,7 @@ TEST(SitlTestGimbal, GimbalROIOffboard)
 
     // Wait for system to connect via heartbeat.
     std::this_thread::sleep_for(std::chrono::seconds(2));
+    ASSERT_EQ(mavsdk.systems().size(), 1);
     auto system = mavsdk.systems().at(0);
     // ASSERT_TRUE(system.has_gimbal());
     ASSERT_TRUE(system->has_autopilot());
