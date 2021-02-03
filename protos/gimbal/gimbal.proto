@@ -17,6 +17,15 @@ service GimbalService {
      */
     rpc SetPitchAndYaw(SetPitchAndYawRequest) returns(SetPitchAndYawResponse) {}
     /*
+     *
+     * Set gimbal angular rates around pitch and yaw axes.
+     *
+     * This sets the desired angular rates around pitch and yaw axes of a gimbal.
+     * Will return when the command is accepted, however, it might
+     * take the gimbal longer to actually reach the angular rate.
+     */
+    rpc SetPitchRateAndYawRate(SetPitchRateAndYawRateRequest) returns(SetPitchRateAndYawRateResponse) {}
+    /*
      * Set gimbal mode.
      *
      * This sets the desired yaw mode of a gimbal.
@@ -41,6 +50,14 @@ message SetPitchAndYawRequest {
     float yaw_deg = 2; // Yaw angle in degrees (positive is clock-wise, range: -180 to 180 or 0 to 360)
 }
 message SetPitchAndYawResponse {
+    GimbalResult gimbal_result = 1;
+}
+
+message SetPitchRateAndYawRateRequest {
+    float pitch_rate_deg_s = 1; // Angular rate around pitch axis in degrees/second (negative downward)
+    float yaw_rate_deg_s = 2; // Angular rate around yaw axis in degrees/second (positive is clock-wise)
+}
+message SetPitchRateAndYawRateResponse {
     GimbalResult gimbal_result = 1;
 }
 
