@@ -138,6 +138,8 @@ void MissionRawImpl::upload_mission_async(
         return;
     }
 
+    reset_mission_progress();
+
     const auto int_items = convert_to_int_items(mission_raw);
 
     _last_upload = _parent->mission_transfer().upload_items_async(
@@ -371,6 +373,8 @@ MissionRaw::Result MissionRawImpl::clear_mission()
 
 void MissionRawImpl::clear_mission_async(const MissionRaw::ResultCallback& callback)
 {
+    reset_mission_progress();
+
     _parent->mission_transfer().clear_items_async(
         MAV_MISSION_TYPE_MISSION, [this, callback](MAVLinkMissionTransfer::Result result) {
             auto converted_result = convert_result(result);
