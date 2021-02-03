@@ -59,6 +59,7 @@ void MissionImpl::enable()
 
 void MissionImpl::disable()
 {
+    reset_mission_progress();
     _gimbal_protocol = GimbalProtocol::Unknown;
 }
 
@@ -157,6 +158,8 @@ void MissionImpl::upload_mission_async(
         // report_mission_result(callback, Mission::Result::Error);
         return;
     }
+
+    reset_mission_progress();
 
     wait_for_protocol_async([callback, mission_plan, this]() {
         const auto int_items = convert_to_int_items(mission_plan.mission_items);
@@ -719,6 +722,8 @@ Mission::Result MissionImpl::clear_mission()
 
 void MissionImpl::clear_mission_async(const Mission::ResultCallback& callback)
 {
+    reset_mission_progress();
+
     _parent->mission_transfer().clear_items_async(
         MAV_MISSION_TYPE_MISSION, [this, callback](MAVLinkMissionTransfer::Result result) {
             auto converted_result = convert_result(result);
