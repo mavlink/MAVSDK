@@ -19,10 +19,13 @@ TEST(CliArg, UDPConnections)
     EXPECT_STREQ(ca.get_path().c_str(), "");
     EXPECT_EQ(0, ca.get_port());
 
-    ca.parse("udp://:7");
+    // Not a valid hostname
+    EXPECT_FALSE(ca.parse("udp://555"));
+
+    ca.parse("udp://:777");
     EXPECT_EQ(ca.get_protocol(), CliArg::Protocol::Udp);
     EXPECT_STREQ(ca.get_path().c_str(), "");
-    EXPECT_EQ(7, ca.get_port());
+    EXPECT_EQ(777, ca.get_port());
 
     ca.parse("udp://0.0.0.0");
     EXPECT_EQ(ca.get_protocol(), CliArg::Protocol::Udp);
