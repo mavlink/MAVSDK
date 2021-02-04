@@ -136,10 +136,10 @@ enum ControlMode {
 // Control status
 message ControlStatus {
     ControlMode control_mode = 1; // Control mode (none, primary or secondary)
-    int32 sysid_primary_control = 2; // Sysid of the component that has primary control over the gimbal
-    int32 compid_primary_control = 3; // Compid of the component that has primary control over the gimbal
-    int32 sysid_secondary_control = 4; // Sysid of the component that has secondary control over the gimbal
-    int32 compid_secondary_control = 5; // Compid of the component that has secondary control over the gimbal
+    int32 sysid_primary_control = 2; // Sysid of the component that has primary control over the gimbal (0 if no one is in control)
+    int32 compid_primary_control = 3; // Compid of the component that has primary control over the gimbal (0 if no one is in control)
+    int32 sysid_secondary_control = 4; // Sysid of the component that has secondary control over the gimbal (0 if no one is in control)
+    int32 compid_secondary_control = 5; // Compid of the component that has secondary control over the gimbal (0 if no one is in control)
 }
 
 // Result type.
