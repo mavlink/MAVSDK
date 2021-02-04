@@ -7,17 +7,15 @@
 namespace mavsdk {
 
 GimbalProtocolV2::GimbalProtocolV2(
-    SystemImpl& system_impl, const mavlink_gimbal_manager_information_t& information) :
-    GimbalProtocolBase(system_impl)
-{
-    set_gimbal_information(information);
-}
-
-void GimbalProtocolV2::set_gimbal_information(
-    const mavlink_gimbal_manager_information_t& information)
-{
-    _gimbal_device_id = information.gimbal_device_id;
-}
+    SystemImpl& system_impl,
+    const mavlink_gimbal_manager_information_t& information,
+    uint8_t gimbal_manager_sysid,
+    uint8_t gimbal_manager_compid) :
+    GimbalProtocolBase(system_impl),
+    _gimbal_device_id(information.gimbal_device_id),
+    _gimbal_manager_sysid(gimbal_manager_sysid),
+    _gimbal_manager_compid(gimbal_manager_compid)
+{}
 
 Gimbal::Result GimbalProtocolV2::set_pitch_and_yaw(float pitch_deg, float yaw_deg)
 {
@@ -37,8 +35,8 @@ Gimbal::Result GimbalProtocolV2::set_pitch_and_yaw(float pitch_deg, float yaw_de
         _system_impl.get_own_system_id(),
         _system_impl.get_own_component_id(),
         &message,
-        _system_impl.get_system_id(),
-        _system_impl.get_autopilot_id(), // FIXME: this is hard-coded to autopilot for now
+        _gimbal_manager_sysid,
+        _gimbal_manager_compid,
         flags,
         _gimbal_device_id,
         quaternion,
@@ -75,8 +73,8 @@ GimbalProtocolV2::set_pitch_rate_and_yaw_rate(float pitch_rate_deg_s, float yaw_
         _system_impl.get_own_system_id(),
         _system_impl.get_own_component_id(),
         &message,
-        _system_impl.get_system_id(),
-        _system_impl.get_autopilot_id(), // FIXME: this is hard-coded to autopilot for now
+        _gimbal_manager_sysid,
+        _gimbal_manager_compid,
         flags,
         _gimbal_device_id,
         quaternion,
