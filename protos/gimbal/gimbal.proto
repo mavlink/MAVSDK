@@ -43,6 +43,32 @@ service GimbalService {
      * take the gimbal longer to actually rotate to the ROI.
      */
      rpc SetRoiLocation(SetRoiLocationRequest) returns(SetRoiLocationResponse) {}
+     /*
+      * Take control.
+      *
+      * There can be only two components in control of a gimbal at any given time.
+      * One with "primary" control, and one with "secondary" control. The way the
+      * secondary control is implemented is not specified and hence depends on the
+      * vehicle.
+      *
+      * Components are expected to be cooperative, which means that they can
+      * override each other and should therefore do it carefully.
+      */
+     rpc TakeControl(TakeControlRequest) returns(TakeControlResponse) {}
+     /*
+      * Release control.
+      *
+      * Release control, such that other components can control the gimbal.
+      */
+     rpc ReleaseControl(ReleaseControlRequest) returns(ReleaseControlResponse) {}
+     /*
+      * Subscribe to control status updates.
+      *
+      * This allows a component to know if it has primary, secondary or
+      * no control over the gimbal. Also, it gives the system and component ids
+      * of the other components in control (if any).
+      */
+     rpc SubscribeControl(SubscribeControlRequest) returns(stream ControlResponse) {}
 }
 
 message SetPitchAndYawRequest {
@@ -77,10 +103,43 @@ message SetRoiLocationResponse {
     GimbalResult gimbal_result = 1;
 }
 
+message TakeControlRequest {
+    ControlMode control_mode = 1; // Control mode (primary or secondary)
+}
+message TakeControlResponse {
+    GimbalResult gimbal_result = 1;
+}
+
+message ReleaseControlRequest {}
+message ReleaseControlResponse {
+    GimbalResult gimbal_result = 1;
+}
+
+message SubscribeControlRequest {}
+message ControlResponse {
+    ControlStatus control_status = 1; // Control status
+}
+
 // Gimbal mode type.
 enum GimbalMode {
     GIMBAL_MODE_YAW_FOLLOW = 0; // Yaw follow will point the gimbal to the vehicle heading
     GIMBAL_MODE_YAW_LOCK = 1; // Yaw lock will fix the gimbal poiting to an absolute direction
+}
+
+// Control mode
+enum ControlMode {
+    CONTROL_MODE_NONE = 0; // Indicates that the component does not have control over the gimbal
+    CONTROL_MODE_PRIMARY = 1; // To take primary control over the gimbal
+    CONTROL_MODE_SECONDARY = 2; // To take secondary control over the gimbal
+}
+
+// Control status
+message ControlStatus {
+    ControlMode control_mode = 1; // Control mode (none, primary or secondary)
+    int32 sysid_primary_control = 2; // Sysid of the component that has primary control over the gimbal (0 if no one is in control)
+    int32 compid_primary_control = 3; // Compid of the component that has primary control over the gimbal (0 if no one is in control)
+    int32 sysid_secondary_control = 4; // Sysid of the component that has secondary control over the gimbal (0 if no one is in control)
+    int32 compid_secondary_control = 5; // Compid of the component that has secondary control over the gimbal (0 if no one is in control)
 }
 
 // Result type.
