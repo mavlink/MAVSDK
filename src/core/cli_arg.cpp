@@ -1,9 +1,10 @@
 #include "global_include.h"
 #include "cli_arg.h"
 #include "log.h"
-#include <vector>
 #include <cctype>
 #include <climits>
+#include <algorithm>
+#include <vector>
 
 namespace mavsdk {
 
@@ -91,8 +92,16 @@ bool CliArg::find_path(std::string& rest)
         _path = rest.substr(0, pos);
         rest.erase(0, pos + delimiter.length());
     } else {
-        _path = rest;
-        rest = "";
+        const auto path_is_only_numbers = std::all_of(
+            rest.cbegin(), rest.cend(), [](unsigned char c) { return std::isdigit(c); });
+
+        if (path_is_only_numbers) {
+            LogWarn() << "Path can't be numbers only.";
+            return false;
+        } else {
+            _path = rest;
+            rest = "";
+        }
     }
 
     if (_protocol == Protocol::Serial) {

@@ -69,7 +69,8 @@ void GimbalImpl::process_gimbal_manager_information(const mavlink_message_t& mes
                << " was discovered";
 
     _parent->unregister_timeout_handler(_protocol_cookie);
-    _gimbal_protocol.reset(new GimbalProtocolV2(*_parent, gimbal_manager_information));
+    _gimbal_protocol.reset(
+        new GimbalProtocolV2(*_parent, gimbal_manager_information, message.sysid, message.compid));
 }
 
 Gimbal::Result GimbalImpl::set_pitch_and_yaw(float pitch_deg, float yaw_deg)
@@ -84,6 +85,22 @@ void GimbalImpl::set_pitch_and_yaw_async(
 {
     wait_for_protocol_async(
         [=]() { _gimbal_protocol->set_pitch_and_yaw_async(pitch_deg, yaw_deg, callback); });
+}
+
+Gimbal::Result GimbalImpl::set_pitch_rate_and_yaw_rate(float pitch_rate_deg_s, float yaw_rate_deg_s)
+{
+    wait_for_protocol();
+
+    return _gimbal_protocol->set_pitch_rate_and_yaw_rate(pitch_rate_deg_s, yaw_rate_deg_s);
+}
+
+void GimbalImpl::set_pitch_rate_and_yaw_rate_async(
+    float pitch_rate_deg_s, float yaw_rate_deg_s, Gimbal::ResultCallback callback)
+{
+    wait_for_protocol_async([=]() {
+        _gimbal_protocol->set_pitch_rate_and_yaw_rate_async(
+            pitch_rate_deg_s, yaw_rate_deg_s, callback);
+    });
 }
 
 Gimbal::Result GimbalImpl::set_mode(const Gimbal::GimbalMode gimbal_mode)
@@ -119,11 +136,11 @@ Gimbal::Result GimbalImpl::take_control(Gimbal::ControlMode control_mode)
     return _gimbal_protocol->take_control(control_mode);
 }
 
-void GimbalImpl::take_control_async(Gimbal::ControlMode control_mode, Gimbal::ResultCallback callback)
+void GimbalImpl::take_control_async(
+    Gimbal::ControlMode control_mode, Gimbal::ResultCallback callback)
 {
-    wait_for_protocol_async([=]() {
-        _gimbal_protocol->take_control_async(control_mode, callback);
-    });
+    wait_for_protocol_async(
+        [=]() { _gimbal_protocol->take_control_async(control_mode, callback); });
 }
 
 Gimbal::Result GimbalImpl::release_control()
@@ -134,9 +151,7 @@ Gimbal::Result GimbalImpl::release_control()
 
 void GimbalImpl::release_control_async(Gimbal::ResultCallback callback)
 {
-    wait_for_protocol_async([=]() {
-        _gimbal_protocol->release_control_async(callback);
-    });
+    wait_for_protocol_async([=]() { _gimbal_protocol->release_control_async(callback); });
 }
 
 Gimbal::ControlMode GimbalImpl::control()
@@ -147,9 +162,7 @@ Gimbal::ControlMode GimbalImpl::control()
 
 void GimbalImpl::control_async(Gimbal::ControlCallback callback)
 {
-    wait_for_protocol_async([=]() {
-        _gimbal_protocol->control_async(callback);
-    });
+    wait_for_protocol_async([=]() { _gimbal_protocol->control_async(callback); });
 }
 
 void GimbalImpl::wait_for_protocol()

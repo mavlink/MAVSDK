@@ -15,6 +15,12 @@ public:
     virtual void
     set_pitch_and_yaw_async(float pitch_deg, float yaw_deg, Gimbal::ResultCallback callback) = 0;
 
+    virtual Gimbal::Result
+    set_pitch_rate_and_yaw_rate(float pitch_rate_deg_s, float yaw_rate_deg_s) = 0;
+
+    virtual void set_pitch_rate_and_yaw_rate_async(
+        float pitch_rate_deg_s, float yaw_rate_deg_s, Gimbal::ResultCallback callback) = 0;
+
     virtual Gimbal::Result set_mode(const Gimbal::GimbalMode gimbal_mode) = 0;
     virtual void
     set_mode_async(const Gimbal::GimbalMode gimbal_mode, Gimbal::ResultCallback callback) = 0;
@@ -28,7 +34,8 @@ public:
         Gimbal::ResultCallback callback) = 0;
 
     virtual Gimbal::Result take_control(Gimbal::ControlMode control_mode) = 0;
-    virtual void take_control_async(Gimbal::ControlMode control_mode, Gimbal::ResultCallback callback) = 0;
+    virtual void
+    take_control_async(Gimbal::ControlMode control_mode, Gimbal::ResultCallback callback) = 0;
 
     virtual Gimbal::Result release_control() = 0;
     virtual void release_control_async(Gimbal::ResultCallback callback) = 0;

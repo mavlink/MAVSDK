@@ -7,17 +7,15 @@
 namespace mavsdk {
 
 GimbalProtocolV2::GimbalProtocolV2(
-    SystemImpl& system_impl, const mavlink_gimbal_manager_information_t& information) :
-    GimbalProtocolBase(system_impl)
-{
-    set_gimbal_information(information);
-}
-
-void GimbalProtocolV2::set_gimbal_information(
-    const mavlink_gimbal_manager_information_t& information)
-{
-    _gimbal_device_id = information.gimbal_device_id;
-}
+    SystemImpl& system_impl,
+    const mavlink_gimbal_manager_information_t& information,
+    uint8_t gimbal_manager_sysid,
+    uint8_t gimbal_manager_compid) :
+    GimbalProtocolBase(system_impl),
+    _gimbal_device_id(information.gimbal_device_id),
+    _gimbal_manager_sysid(gimbal_manager_sysid),
+    _gimbal_manager_compid(gimbal_manager_compid)
+{}
 
 void GimbalProtocolV2::process_gimbal_manager_status(const mavlink_message_t& message)
 {
@@ -25,11 +23,16 @@ void GimbalProtocolV2::process_gimbal_manager_status(const mavlink_message_t& me
     mavlink_gimbal_manager_status_t gimbal_manager_status;
     mavlink_msg_gimbal_manager_status_decode(&message, &gimbal_manager_status);
 
-    if (static_cast<int>(gimbal_manager_status.primary_control_sysid) == static_cast<int>(_system_impl.get_own_system_id())
-            && static_cast<int>(gimbal_manager_status.primary_control_compid) == static_cast<int>(_system_impl.get_own_component_id())) {
+    if (static_cast<int>(gimbal_manager_status.primary_control_sysid) ==
+            static_cast<int>(_system_impl.get_own_system_id()) &&
+        static_cast<int>(gimbal_manager_status.primary_control_compid) ==
+            static_cast<int>(_system_impl.get_own_component_id())) {
         new_control_mode = Gimbal::ControlMode::Primary;
-    } else if (static_cast<int>(gimbal_manager_status.secondary_control_sysid) == static_cast<int>(_system_impl.get_own_system_id())
-            && static_cast<int>(gimbal_manager_status.secondary_control_compid) == static_cast<int>(_system_impl.get_own_component_id())) {
+    } else if (
+        static_cast<int>(gimbal_manager_status.secondary_control_sysid) ==
+            static_cast<int>(_system_impl.get_own_system_id()) &&
+        static_cast<int>(gimbal_manager_status.secondary_control_compid) ==
+            static_cast<int>(_system_impl.get_own_component_id())) {
         new_control_mode = Gimbal::ControlMode::Secondary;
     } else {
         new_control_mode = Gimbal::ControlMode::None;
@@ -39,7 +42,8 @@ void GimbalProtocolV2::process_gimbal_manager_status(const mavlink_message_t& me
 
     if (_control_callback) {
         auto temp_callback = _control_callback;
-        _system_impl.call_user_callback([temp_callback, new_control_mode]() { temp_callback(new_control_mode); });
+        _system_impl.call_user_callback(
+            [temp_callback, new_control_mode]() { temp_callback(new_control_mode); });
     }
 }
 
@@ -61,8 +65,8 @@ Gimbal::Result GimbalProtocolV2::set_pitch_and_yaw(float pitch_deg, float yaw_de
         _system_impl.get_own_system_id(),
         _system_impl.get_own_component_id(),
         &message,
-        _system_impl.get_system_id(),
-        _system_impl.get_autopilot_id(), // FIXME: this is hard-coded to autopilot for now
+        _gimbal_manager_sysid,
+        _gimbal_manager_compid,
         flags,
         _gimbal_device_id,
         quaternion,
@@ -81,6 +85,44 @@ void GimbalProtocolV2::set_pitch_and_yaw_async(
 
     if (callback) {
         _system_impl.call_user_callback([callback, result]() { callback(result); });
+    }
+}
+
+Gimbal::Result
+GimbalProtocolV2::set_pitch_rate_and_yaw_rate(float pitch_rate_deg_s, float yaw_rate_deg_s)
+{
+    const uint32_t flags =
+        GIMBAL_MANAGER_FLAGS_ROLL_LOCK | GIMBAL_MANAGER_FLAGS_PITCH_LOCK |
+        ((_gimbal_mode == Gimbal::GimbalMode::YawLock) ? GIMBAL_MANAGER_FLAGS_YAW_LOCK : 0);
+
+    const float quaternion[4] = {NAN, NAN, NAN, NAN};
+
+    mavlink_message_t message;
+    mavlink_msg_gimbal_manager_set_attitude_pack(
+        _system_impl.get_own_system_id(),
+        _system_impl.get_own_component_id(),
+        &message,
+        _gimbal_manager_sysid,
+        _gimbal_manager_compid,
+        flags,
+        _gimbal_device_id,
+        quaternion,
+        0.0f,
+        to_rad_from_deg(pitch_rate_deg_s),
+        to_rad_from_deg(yaw_rate_deg_s));
+
+    return _system_impl.send_message(message) ? Gimbal::Result::Success : Gimbal::Result::Error;
+}
+
+void GimbalProtocolV2::set_pitch_rate_and_yaw_rate_async(
+    float pitch_rate_deg_s, float yaw_rate_deg_s, Gimbal::ResultCallback callback)
+{
+    // Sending the message should be quick and we can just do that straighaway.
+    Gimbal::Result result = set_pitch_rate_and_yaw_rate(pitch_rate_deg_s, yaw_rate_deg_s);
+
+    if (callback) {
+        auto temp_callback = callback;
+        _system_impl.call_user_callback([temp_callback, result]() { temp_callback(result); });
     }
 }
 
@@ -118,8 +160,7 @@ void GimbalProtocolV2::set_roi_location_async(
     UNUSED(altitude_m);
 
     if (callback) {
-        _system_impl.call_user_callback(
-            [callback]() { callback(Gimbal::Result::Unsupported); });
+        _system_impl.call_user_callback([callback]() { callback(Gimbal::Result::Unsupported); });
     }
 }
 
@@ -133,13 +174,13 @@ Gimbal::Result GimbalProtocolV2::take_control(Gimbal::ControlMode control_mode)
     return fut.get();
 }
 
-void GimbalProtocolV2::take_control_async(Gimbal::ControlMode control_mode, Gimbal::ResultCallback callback)
+void GimbalProtocolV2::take_control_async(
+    Gimbal::ControlMode control_mode, Gimbal::ResultCallback callback)
 {
     if (control_mode == Gimbal::ControlMode::None) {
         release_control_async(callback);
         return;
-    }
-    else if (control_mode == Gimbal::ControlMode::Secondary) {
+    } else if (control_mode == Gimbal::ControlMode::Secondary) {
         _system_impl.call_user_callback([callback]() { callback(Gimbal::Result::Unsupported); });
         LogErr() << "Gimbal secondary control is not implemented yet!";
         return;
@@ -151,17 +192,23 @@ void GimbalProtocolV2::take_control_async(Gimbal::ControlMode control_mode, Gimb
     MavlinkCommandSender::CommandLong command{};
 
     command.command = MAV_CMD_DO_GIMBAL_MANAGER_CONFIGURE;
-    command.params.param1 = control_mode == Gimbal::ControlMode::Primary ? own_sysid : -3.0f; // sysid primary control
-    command.params.param2 = control_mode == Gimbal::ControlMode::Primary ? own_compid : -3.0f; // compid primary control
-    command.params.param3 = control_mode == Gimbal::ControlMode::Primary ? own_sysid : -3.0f; // sysid secondary control
-    command.params.param4 = control_mode == Gimbal::ControlMode::Primary ? own_compid : -3.0f; // compid secondary control
+    command.params.param1 =
+        control_mode == Gimbal::ControlMode::Primary ? own_sysid : -3.0f; // sysid primary control
+    command.params.param2 =
+        control_mode == Gimbal::ControlMode::Primary ? own_compid : -3.0f; // compid primary control
+    command.params.param3 =
+        control_mode == Gimbal::ControlMode::Primary ? own_sysid : -3.0f; // sysid secondary control
+    command.params.param4 = control_mode == Gimbal::ControlMode::Primary ?
+                                own_compid :
+                                -3.0f; // compid secondary control
     command.params.param5 = 0.0f; // gimbal device id
-    command.target_component_id = _system_impl.get_autopilot_id(), // FIXME: this is hard-coded to autopilot for now
+    command.target_component_id =
+        _system_impl.get_autopilot_id(), // FIXME: this is hard-coded to autopilot for now
 
-    _system_impl.send_command_async(
-        command, [this, callback](MavlinkCommandSender::Result result, float) {
-            GimbalImpl::receive_command_result(result, callback);
-        });
+        _system_impl.send_command_async(
+            command, [this, callback](MavlinkCommandSender::Result result, float) {
+                GimbalImpl::receive_command_result(result, callback);
+            });
 }
 
 Gimbal::Result GimbalProtocolV2::release_control()
@@ -184,12 +231,13 @@ void GimbalProtocolV2::release_control_async(Gimbal::ResultCallback callback)
     command.params.param3 = -3.0f; // sysid secondary control
     command.params.param4 = -3.0f; // compid secondary control
     command.params.param5 = 0.0f; // gimbal device id
-    command.target_component_id = _system_impl.get_autopilot_id(), // FIXME: this is hard-coded to autopilot for now
+    command.target_component_id =
+        _system_impl.get_autopilot_id(), // FIXME: this is hard-coded to autopilot for now
 
-    _system_impl.send_command_async(
-        command, [this, callback](MavlinkCommandSender::Result result, float) {
-            GimbalImpl::receive_command_result(result, callback);
-        });
+        _system_impl.send_command_async(
+            command, [this, callback](MavlinkCommandSender::Result result, float) {
+                GimbalImpl::receive_command_result(result, callback);
+            });
 }
 
 Gimbal::ControlMode GimbalProtocolV2::control()
@@ -209,7 +257,8 @@ void GimbalProtocolV2::control_async(Gimbal::ControlCallback callback)
 
         _system_impl.register_mavlink_message_handler(
             MAVLINK_MSG_ID_GIMBAL_MANAGER_STATUS,
-            std::bind(&GimbalProtocolV2::process_gimbal_manager_status, this, std::placeholders::_1),
+            std::bind(
+                &GimbalProtocolV2::process_gimbal_manager_status, this, std::placeholders::_1),
             this);
     }
 

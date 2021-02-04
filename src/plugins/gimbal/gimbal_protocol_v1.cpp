@@ -43,6 +43,27 @@ void GimbalProtocolV1::set_pitch_and_yaw_async(
         });
 }
 
+Gimbal::Result
+GimbalProtocolV1::set_pitch_rate_and_yaw_rate(float pitch_rate_deg_s, float yaw_rate_deg_s)
+{
+    UNUSED(pitch_rate_deg_s);
+    UNUSED(yaw_rate_deg_s);
+    return Gimbal::Result::Unsupported;
+}
+
+void GimbalProtocolV1::set_pitch_rate_and_yaw_rate_async(
+    float pitch_rate_deg_s, float yaw_rate_deg_s, Gimbal::ResultCallback callback)
+{
+    UNUSED(pitch_rate_deg_s);
+    UNUSED(yaw_rate_deg_s);
+
+    if (callback) {
+        auto temp_callback = callback;
+        _system_impl.call_user_callback(
+            [temp_callback]() { temp_callback(Gimbal::Result::Unsupported); });
+    }
+}
+
 Gimbal::Result GimbalProtocolV1::set_mode(const Gimbal::GimbalMode gimbal_mode)
 {
     MavlinkCommandSender::CommandInt command{};
@@ -141,7 +162,8 @@ Gimbal::Result GimbalProtocolV1::take_control(Gimbal::ControlMode control_mode)
     return Gimbal::Result::Success;
 }
 
-void GimbalProtocolV1::take_control_async(Gimbal::ControlMode control_mode, Gimbal::ResultCallback callback)
+void GimbalProtocolV1::take_control_async(
+    Gimbal::ControlMode control_mode, Gimbal::ResultCallback callback)
 {
     _current_control_mode = control_mode;
 
@@ -179,7 +201,8 @@ void GimbalProtocolV1::control_async(Gimbal::ControlCallback callback)
         std::unique_lock<std::mutex> lock(_control_thread_mutex);
 
         while (_control_callback) {
-            _system_impl.call_user_callback([this, callback]() { callback(_current_control_mode); });
+            _system_impl.call_user_callback(
+                [this, callback]() { callback(_current_control_mode); });
             _control_thread_cv.wait_for(lock, std::chrono::seconds(1));
         }
     });

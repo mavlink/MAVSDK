@@ -17,6 +17,12 @@ public:
     void set_pitch_and_yaw_async(
         float pitch_deg, float yaw_deg, Gimbal::ResultCallback callback) override;
 
+    Gimbal::Result
+    set_pitch_rate_and_yaw_rate(float pitch_rate_deg_s, float yaw_rate_deg_s) override;
+
+    void set_pitch_rate_and_yaw_rate_async(
+        float pitch_rate_deg_s, float yaw_rate_deg_s, Gimbal::ResultCallback callback) override;
+
     Gimbal::Result set_mode(const Gimbal::GimbalMode gimbal_mode) override;
     void
     set_mode_async(const Gimbal::GimbalMode gimbal_mode, Gimbal::ResultCallback callback) override;
@@ -30,7 +36,8 @@ public:
         Gimbal::ResultCallback callback) override;
 
     Gimbal::Result take_control(Gimbal::ControlMode control_mode) override;
-    void take_control_async(Gimbal::ControlMode control_mode, Gimbal::ResultCallback callback) override;
+    void
+    take_control_async(Gimbal::ControlMode control_mode, Gimbal::ResultCallback callback) override;
 
     Gimbal::Result release_control() override;
     void release_control_async(Gimbal::ResultCallback callback) override;

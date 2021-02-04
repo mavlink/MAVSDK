@@ -155,6 +155,26 @@ public:
         return grpc::Status::OK;
     }
 
+    grpc::Status SetPitchRateAndYawRate(
+        grpc::ServerContext* /* context */,
+        const rpc::gimbal::SetPitchRateAndYawRateRequest* request,
+        rpc::gimbal::SetPitchRateAndYawRateResponse* response) override
+    {
+        if (request == nullptr) {
+            LogWarn() << "SetPitchRateAndYawRate sent with a null request! Ignoring...";
+            return grpc::Status::OK;
+        }
+
+        auto result = _gimbal.set_pitch_rate_and_yaw_rate(
+            request->pitch_rate_deg_s(), request->yaw_rate_deg_s());
+
+        if (response != nullptr) {
+            fillResponseWithResult(response, result);
+        }
+
+        return grpc::Status::OK;
+    }
+
     grpc::Status SetMode(
         grpc::ServerContext* /* context */,
         const rpc::gimbal::SetModeRequest* request,
