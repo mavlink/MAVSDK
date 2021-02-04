@@ -119,6 +119,33 @@ public:
     Result set_pitch_and_yaw(float pitch_deg, float yaw_deg) const;
 
     /**
+     * @brief Set gimbal angular rates around pitch and yaw axes.
+     *
+     * This sets the desired angular rates around pitch and yaw axes of a gimbal.
+     * Will return when the command is accepted, however, it might
+     * take the gimbal longer to actually reach the angular rate.
+     *
+     * This function is non-blocking. See 'set_pitch_rate_and_yaw_rate' for the blocking
+     * counterpart.
+     */
+    void set_pitch_rate_and_yaw_rate_async(
+        float pitch_rate_deg_s, float yaw_rate_deg_s, const ResultCallback callback);
+
+    /**
+     * @brief Set gimbal angular rates around pitch and yaw axes.
+     *
+     * This sets the desired angular rates around pitch and yaw axes of a gimbal.
+     * Will return when the command is accepted, however, it might
+     * take the gimbal longer to actually reach the angular rate.
+     *
+     * This function is blocking. See 'set_pitch_rate_and_yaw_rate_async' for the non-blocking
+     * counterpart.
+     *
+     * @return Result of request.
+     */
+    Result set_pitch_rate_and_yaw_rate(float pitch_rate_deg_s, float yaw_rate_deg_s) const;
+
+    /**
      * @brief Set gimbal mode.
      *
      * This sets the desired yaw mode of a gimbal.
