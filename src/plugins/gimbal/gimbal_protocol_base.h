@@ -40,7 +40,7 @@ public:
     virtual Gimbal::Result release_control() = 0;
     virtual void release_control_async(Gimbal::ResultCallback callback) = 0;
 
-    virtual Gimbal::ControlMode control() = 0;
+    virtual Gimbal::ControlStatus control() = 0;
     virtual void control_async(Gimbal::ControlCallback callback) = 0;
 
 protected:

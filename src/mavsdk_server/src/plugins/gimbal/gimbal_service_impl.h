@@ -96,6 +96,42 @@ public:
         }
     }
 
+    static std::unique_ptr<rpc::gimbal::ControlStatus>
+    translateToRpcControlStatus(const mavsdk::Gimbal::ControlStatus& control_status)
+    {
+        auto rpc_obj = std::make_unique<rpc::gimbal::ControlStatus>();
+
+        rpc_obj->set_control_mode(translateToRpcControlMode(control_status.control_mode));
+
+        rpc_obj->set_sysid_primary_control(control_status.sysid_primary_control);
+
+        rpc_obj->set_compid_primary_control(control_status.compid_primary_control);
+
+        rpc_obj->set_sysid_secondary_control(control_status.sysid_secondary_control);
+
+        rpc_obj->set_compid_secondary_control(control_status.compid_secondary_control);
+
+        return rpc_obj;
+    }
+
+    static mavsdk::Gimbal::ControlStatus
+    translateFromRpcControlStatus(const rpc::gimbal::ControlStatus& control_status)
+    {
+        mavsdk::Gimbal::ControlStatus obj;
+
+        obj.control_mode = translateFromRpcControlMode(control_status.control_mode());
+
+        obj.sysid_primary_control = control_status.sysid_primary_control();
+
+        obj.compid_primary_control = control_status.compid_primary_control();
+
+        obj.sysid_secondary_control = control_status.sysid_secondary_control();
+
+        obj.compid_secondary_control = control_status.compid_secondary_control();
+
+        return obj;
+    }
+
     static rpc::gimbal::GimbalResult::Result
     translateToRpcResult(const mavsdk::Gimbal::Result& result)
     {
@@ -262,10 +298,11 @@ public:
 
         _gimbal.subscribe_control(
             [this, &writer, &stream_closed_promise, is_finished, &subscribe_mutex](
-                const mavsdk::Gimbal::ControlMode control) {
+                const mavsdk::Gimbal::ControlStatus control) {
                 rpc::gimbal::ControlResponse rpc_response;
 
-                rpc_response.set_control_mode(translateToRpcControlMode(control));
+                rpc_response.set_allocated_control_status(
+                    translateToRpcControlStatus(control).release());
 
                 std::unique_lock<std::mutex> lock(subscribe_mutex);
                 if (!*is_finished && !writer->Write(rpc_response)) {

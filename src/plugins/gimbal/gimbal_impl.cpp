@@ -154,7 +154,7 @@ void GimbalImpl::release_control_async(Gimbal::ResultCallback callback)
     wait_for_protocol_async([=]() { _gimbal_protocol->release_control_async(callback); });
 }
 
-Gimbal::ControlMode GimbalImpl::control()
+Gimbal::ControlStatus GimbalImpl::control()
 {
     wait_for_protocol();
     return _gimbal_protocol->control();

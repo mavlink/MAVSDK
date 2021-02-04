@@ -42,13 +42,13 @@ public:
     Gimbal::Result release_control() override;
     void release_control_async(Gimbal::ResultCallback callback) override;
 
-    Gimbal::ControlMode control() override;
+    Gimbal::ControlStatus control() override;
     void control_async(Gimbal::ControlCallback callback) override;
 
 private:
     static float to_float_gimbal_mode(const Gimbal::GimbalMode gimbal_mode);
 
-    Gimbal::ControlMode _current_control_mode = Gimbal::ControlMode::None;
+    Gimbal::ControlStatus _current_control_status{Gimbal::ControlMode::None, 0, 0, 0, 0};
     Gimbal::ControlCallback _control_callback;
 
     std::condition_variable _control_thread_cv;

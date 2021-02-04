@@ -127,7 +127,8 @@ class GimbalService final {
     // Subscribe to control status updates.
     //
     // This allows a component to know if it has primary, secondary or
-    // no control over the gimbal.
+    // no control over the gimbal. Also, it gives the system and component ids
+    // of the other components in control (if any).
     std::unique_ptr< ::grpc::ClientReaderInterface< ::mavsdk::rpc::gimbal::ControlResponse>> SubscribeControl(::grpc::ClientContext* context, const ::mavsdk::rpc::gimbal::SubscribeControlRequest& request) {
       return std::unique_ptr< ::grpc::ClientReaderInterface< ::mavsdk::rpc::gimbal::ControlResponse>>(SubscribeControlRaw(context, request));
     }
@@ -222,7 +223,8 @@ class GimbalService final {
       // Subscribe to control status updates.
       //
       // This allows a component to know if it has primary, secondary or
-      // no control over the gimbal.
+      // no control over the gimbal. Also, it gives the system and component ids
+      // of the other components in control (if any).
       #ifdef GRPC_CALLBACK_API_NONEXPERIMENTAL
       virtual void SubscribeControl(::grpc::ClientContext* context, ::mavsdk::rpc::gimbal::SubscribeControlRequest* request, ::grpc::ClientReadReactor< ::mavsdk::rpc::gimbal::ControlResponse>* reactor) = 0;
       #else
@@ -443,7 +445,8 @@ class GimbalService final {
     // Subscribe to control status updates.
     //
     // This allows a component to know if it has primary, secondary or
-    // no control over the gimbal.
+    // no control over the gimbal. Also, it gives the system and component ids
+    // of the other components in control (if any).
     virtual ::grpc::Status SubscribeControl(::grpc::ServerContext* context, const ::mavsdk::rpc::gimbal::SubscribeControlRequest* request, ::grpc::ServerWriter< ::mavsdk::rpc::gimbal::ControlResponse>* writer);
   };
   template <class BaseClass>

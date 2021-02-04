@@ -9,6 +9,8 @@
 
 namespace mavsdk {
 
+using ControlStatus = Gimbal::ControlStatus;
+
 Gimbal::Gimbal(System& system) : PluginBase(), _impl{new GimbalImpl(system)} {}
 
 Gimbal::Gimbal(std::shared_ptr<System> system) : PluginBase(), _impl{new GimbalImpl(system)} {}
@@ -84,9 +86,31 @@ void Gimbal::subscribe_control(ControlCallback callback)
     _impl->control_async(callback);
 }
 
-Gimbal::ControlMode Gimbal::control() const
+Gimbal::ControlStatus Gimbal::control() const
 {
     return _impl->control();
+}
+
+bool operator==(const Gimbal::ControlStatus& lhs, const Gimbal::ControlStatus& rhs)
+{
+    return (rhs.control_mode == lhs.control_mode) &&
+           (rhs.sysid_primary_control == lhs.sysid_primary_control) &&
+           (rhs.compid_primary_control == lhs.compid_primary_control) &&
+           (rhs.sysid_secondary_control == lhs.sysid_secondary_control) &&
+           (rhs.compid_secondary_control == lhs.compid_secondary_control);
+}
+
+std::ostream& operator<<(std::ostream& str, Gimbal::ControlStatus const& control_status)
+{
+    str << std::setprecision(15);
+    str << "control_status:" << '\n' << "{\n";
+    str << "    control_mode: " << control_status.control_mode << '\n';
+    str << "    sysid_primary_control: " << control_status.sysid_primary_control << '\n';
+    str << "    compid_primary_control: " << control_status.compid_primary_control << '\n';
+    str << "    sysid_secondary_control: " << control_status.sysid_secondary_control << '\n';
+    str << "    compid_secondary_control: " << control_status.compid_secondary_control << '\n';
+    str << '}';
+    return str;
 }
 
 std::ostream& operator<<(std::ostream& str, Gimbal::Result const& result)

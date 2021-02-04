@@ -88,6 +88,36 @@ public:
     friend std::ostream& operator<<(std::ostream& str, Gimbal::ControlMode const& control_mode);
 
     /**
+     * @brief Control status
+     */
+    struct ControlStatus {
+        ControlMode control_mode{}; /**< @brief Control mode (none, primary or secondary) */
+        int32_t sysid_primary_control{}; /**< @brief Sysid of the component that has primary control
+                                            over the gimbal (0 if no one is in control) */
+        int32_t compid_primary_control{}; /**< @brief Compid of the component that has primary
+                                             control over the gimbal (0 if no one is in control) */
+        int32_t sysid_secondary_control{}; /**< @brief Sysid of the component that has secondary
+                                              control over the gimbal (0 if no one is in control) */
+        int32_t
+            compid_secondary_control{}; /**< @brief Compid of the component that has secondary
+                                           control over the gimbal (0 if no one is in control) */
+    };
+
+    /**
+     * @brief Equal operator to compare two `Gimbal::ControlStatus` objects.
+     *
+     * @return `true` if items are equal.
+     */
+    friend bool operator==(const Gimbal::ControlStatus& lhs, const Gimbal::ControlStatus& rhs);
+
+    /**
+     * @brief Stream operator to print information about a `Gimbal::ControlStatus`.
+     *
+     * @return A reference to the stream.
+     */
+    friend std::ostream& operator<<(std::ostream& str, Gimbal::ControlStatus const& control_status);
+
+    /**
      * @brief Possible results returned for gimbal commands.
      */
     enum class Result {
@@ -270,22 +300,23 @@ public:
      * @brief Callback type for subscribe_control.
      */
 
-    using ControlCallback = std::function<void(ControlMode)>;
+    using ControlCallback = std::function<void(ControlStatus)>;
 
     /**
      * @brief Subscribe to control status updates.
      *
      * This allows a component to know if it has primary, secondary or
-     * no control over the gimbal.
+     * no control over the gimbal. Also, it gives the system and component ids
+     * of the other components in control (if any).
      */
     void subscribe_control(ControlCallback callback);
 
     /**
-     * @brief Poll for 'ControlMode' (blocking).
+     * @brief Poll for 'ControlStatus' (blocking).
      *
-     * @return One ControlMode update.
+     * @return One ControlStatus update.
      */
-    ControlMode control() const;
+    ControlStatus control() const;
 
     /**
      * @brief Copy constructor.

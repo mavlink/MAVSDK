@@ -43,22 +43,20 @@ public:
     Gimbal::Result release_control() override;
     void release_control_async(Gimbal::ResultCallback callback) override;
 
-    Gimbal::ControlMode control() override;
+    Gimbal::ControlStatus control() override;
     void control_async(Gimbal::ControlCallback callback) override;
 
 private:
-<<<<<<< HEAD
     void set_gimbal_information(const mavlink_gimbal_manager_information_t& information);
     void process_gimbal_manager_status(const mavlink_message_t& message);
-=======
+
+    uint8_t _gimbal_device_id;
     uint8_t _gimbal_manager_sysid;
     uint8_t _gimbal_manager_compid;
-    uint8_t _gimbal_device_id;
->>>>>>> develop
 
     Gimbal::GimbalMode _gimbal_mode{Gimbal::GimbalMode::YawFollow};
 
-    Gimbal::ControlMode _current_control_mode = Gimbal::ControlMode::None;
+    Gimbal::ControlStatus _current_control_status{Gimbal::ControlMode::None, 0, 0, 0, 0};
     Gimbal::ControlCallback _control_callback;
 
     std::condition_variable _control_thread_cv;

@@ -23,27 +23,33 @@ void GimbalProtocolV2::process_gimbal_manager_status(const mavlink_message_t& me
     mavlink_gimbal_manager_status_t gimbal_manager_status;
     mavlink_msg_gimbal_manager_status_decode(&message, &gimbal_manager_status);
 
-    if (static_cast<int>(gimbal_manager_status.primary_control_sysid) ==
-            static_cast<int>(_system_impl.get_own_system_id()) &&
-        static_cast<int>(gimbal_manager_status.primary_control_compid) ==
-            static_cast<int>(_system_impl.get_own_component_id())) {
+    const int primary_control_sysid = gimbal_manager_status.primary_control_sysid;
+    const int primary_control_compid = gimbal_manager_status.primary_control_compid;
+    const int secondary_control_sysid = gimbal_manager_status.secondary_control_sysid;
+    const int secondary_control_compid = gimbal_manager_status.secondary_control_compid;
+
+    if (primary_control_sysid == static_cast<int>(_system_impl.get_own_system_id()) &&
+        primary_control_compid == static_cast<int>(_system_impl.get_own_component_id())) {
         new_control_mode = Gimbal::ControlMode::Primary;
     } else if (
-        static_cast<int>(gimbal_manager_status.secondary_control_sysid) ==
-            static_cast<int>(_system_impl.get_own_system_id()) &&
-        static_cast<int>(gimbal_manager_status.secondary_control_compid) ==
-            static_cast<int>(_system_impl.get_own_component_id())) {
+        secondary_control_sysid == static_cast<int>(_system_impl.get_own_system_id()) &&
+        secondary_control_compid == static_cast<int>(_system_impl.get_own_component_id())) {
         new_control_mode = Gimbal::ControlMode::Secondary;
     } else {
         new_control_mode = Gimbal::ControlMode::None;
     }
 
-    _current_control_mode = new_control_mode;
+    _current_control_status.control_mode = new_control_mode;
+    _current_control_status.sysid_primary_control = primary_control_sysid;
+    _current_control_status.compid_primary_control = primary_control_compid;
+    _current_control_status.sysid_secondary_control = secondary_control_sysid;
+    _current_control_status.compid_secondary_control = secondary_control_compid;
 
     if (_control_callback) {
+        auto temp_status = _current_control_status;
         auto temp_callback = _control_callback;
         _system_impl.call_user_callback(
-            [temp_callback, new_control_mode]() { temp_callback(new_control_mode); });
+            [temp_callback, temp_status]() { temp_callback(temp_status); });
     }
 }
 
@@ -240,12 +246,13 @@ void GimbalProtocolV2::release_control_async(Gimbal::ResultCallback callback)
             });
 }
 
-Gimbal::ControlMode GimbalProtocolV2::control()
+Gimbal::ControlStatus GimbalProtocolV2::control()
 {
-    auto prom = std::promise<Gimbal::ControlMode>();
+    auto prom = std::promise<Gimbal::ControlStatus>();
     auto fut = prom.get_future();
 
-    control_async([&prom](Gimbal::ControlMode control_mode) { prom.set_value(control_mode); });
+    control_async(
+        [&prom](Gimbal::ControlStatus control_status) { prom.set_value(control_status); });
 
     return fut.get();
 }
@@ -263,7 +270,7 @@ void GimbalProtocolV2::control_async(Gimbal::ControlCallback callback)
     }
 
     _control_callback = callback;
-    _system_impl.call_user_callback([this, callback]() { callback(_current_control_mode); });
+    _system_impl.call_user_callback([this, callback]() { callback(_current_control_status); });
 }
 
 } // namespace mavsdk

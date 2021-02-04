@@ -43,7 +43,7 @@ public:
     Gimbal::Result release_control();
     void release_control_async(Gimbal::ResultCallback callback);
 
-    Gimbal::ControlMode control();
+    Gimbal::ControlStatus control();
     void control_async(Gimbal::ControlCallback callback);
 
     static Gimbal::Result

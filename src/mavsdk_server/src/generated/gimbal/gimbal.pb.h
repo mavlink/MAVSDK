@@ -48,7 +48,7 @@ struct TableStruct_gimbal_2fgimbal_2eproto {
     PROTOBUF_SECTION_VARIABLE(protodesc_cold);
   static const ::PROTOBUF_NAMESPACE_ID::internal::AuxiliaryParseTableField aux[]
     PROTOBUF_SECTION_VARIABLE(protodesc_cold);
-  static const ::PROTOBUF_NAMESPACE_ID::internal::ParseTable schema[15]
+  static const ::PROTOBUF_NAMESPACE_ID::internal::ParseTable schema[16]
     PROTOBUF_SECTION_VARIABLE(protodesc_cold);
   static const ::PROTOBUF_NAMESPACE_ID::internal::FieldMetadata field_metadata[];
   static const ::PROTOBUF_NAMESPACE_ID::internal::SerializationTable serialization_table[];
@@ -61,6 +61,9 @@ namespace gimbal {
 class ControlResponse;
 class ControlResponseDefaultTypeInternal;
 extern ControlResponseDefaultTypeInternal _ControlResponse_default_instance_;
+class ControlStatus;
+class ControlStatusDefaultTypeInternal;
+extern ControlStatusDefaultTypeInternal _ControlStatus_default_instance_;
 class GimbalResult;
 class GimbalResultDefaultTypeInternal;
 extern GimbalResultDefaultTypeInternal _GimbalResult_default_instance_;
@@ -108,6 +111,7 @@ extern TakeControlResponseDefaultTypeInternal _TakeControlResponse_default_insta
 }  // namespace mavsdk
 PROTOBUF_NAMESPACE_OPEN
 template<> ::mavsdk::rpc::gimbal::ControlResponse* Arena::CreateMaybeMessage<::mavsdk::rpc::gimbal::ControlResponse>(Arena*);
+template<> ::mavsdk::rpc::gimbal::ControlStatus* Arena::CreateMaybeMessage<::mavsdk::rpc::gimbal::ControlStatus>(Arena*);
 template<> ::mavsdk::rpc::gimbal::GimbalResult* Arena::CreateMaybeMessage<::mavsdk::rpc::gimbal::GimbalResult>(Arena*);
 template<> ::mavsdk::rpc::gimbal::ReleaseControlRequest* Arena::CreateMaybeMessage<::mavsdk::rpc::gimbal::ReleaseControlRequest>(Arena*);
 template<> ::mavsdk::rpc::gimbal::ReleaseControlResponse* Arena::CreateMaybeMessage<::mavsdk::rpc::gimbal::ReleaseControlResponse>(Arena*);
@@ -2174,7 +2178,157 @@ class ControlResponse PROTOBUF_FINAL :
   // accessors -------------------------------------------------------
 
   enum : int {
+    kControlStatusFieldNumber = 1,
+  };
+  // .mavsdk.rpc.gimbal.ControlStatus control_status = 1;
+  bool has_control_status() const;
+  private:
+  bool _internal_has_control_status() const;
+  public:
+  void clear_control_status();
+  const ::mavsdk::rpc::gimbal::ControlStatus& control_status() const;
+  ::mavsdk::rpc::gimbal::ControlStatus* release_control_status();
+  ::mavsdk::rpc::gimbal::ControlStatus* mutable_control_status();
+  void set_allocated_control_status(::mavsdk::rpc::gimbal::ControlStatus* control_status);
+  private:
+  const ::mavsdk::rpc::gimbal::ControlStatus& _internal_control_status() const;
+  ::mavsdk::rpc::gimbal::ControlStatus* _internal_mutable_control_status();
+  public:
+  void unsafe_arena_set_allocated_control_status(
+      ::mavsdk::rpc::gimbal::ControlStatus* control_status);
+  ::mavsdk::rpc::gimbal::ControlStatus* unsafe_arena_release_control_status();
+
+  // @@protoc_insertion_point(class_scope:mavsdk.rpc.gimbal.ControlResponse)
+ private:
+  class _Internal;
+
+  template <typename T> friend class ::PROTOBUF_NAMESPACE_ID::Arena::InternalHelper;
+  typedef void InternalArenaConstructable_;
+  typedef void DestructorSkippable_;
+  ::mavsdk::rpc::gimbal::ControlStatus* control_status_;
+  mutable ::PROTOBUF_NAMESPACE_ID::internal::CachedSize _cached_size_;
+  friend struct ::TableStruct_gimbal_2fgimbal_2eproto;
+};
+// -------------------------------------------------------------------
+
+class ControlStatus PROTOBUF_FINAL :
+    public ::PROTOBUF_NAMESPACE_ID::Message /* @@protoc_insertion_point(class_definition:mavsdk.rpc.gimbal.ControlStatus) */ {
+ public:
+  inline ControlStatus() : ControlStatus(nullptr) {}
+  virtual ~ControlStatus();
+
+  ControlStatus(const ControlStatus& from);
+  ControlStatus(ControlStatus&& from) noexcept
+    : ControlStatus() {
+    *this = ::std::move(from);
+  }
+
+  inline ControlStatus& operator=(const ControlStatus& from) {
+    CopyFrom(from);
+    return *this;
+  }
+  inline ControlStatus& operator=(ControlStatus&& from) noexcept {
+    if (GetArena() == from.GetArena()) {
+      if (this != &from) InternalSwap(&from);
+    } else {
+      CopyFrom(from);
+    }
+    return *this;
+  }
+
+  static const ::PROTOBUF_NAMESPACE_ID::Descriptor* descriptor() {
+    return GetDescriptor();
+  }
+  static const ::PROTOBUF_NAMESPACE_ID::Descriptor* GetDescriptor() {
+    return GetMetadataStatic().descriptor;
+  }
+  static const ::PROTOBUF_NAMESPACE_ID::Reflection* GetReflection() {
+    return GetMetadataStatic().reflection;
+  }
+  static const ControlStatus& default_instance();
+
+  static void InitAsDefaultInstance();  // FOR INTERNAL USE ONLY
+  static inline const ControlStatus* internal_default_instance() {
+    return reinterpret_cast<const ControlStatus*>(
+               &_ControlStatus_default_instance_);
+  }
+  static constexpr int kIndexInFileMessages =
+    14;
+
+  friend void swap(ControlStatus& a, ControlStatus& b) {
+    a.Swap(&b);
+  }
+  inline void Swap(ControlStatus* other) {
+    if (other == this) return;
+    if (GetArena() == other->GetArena()) {
+      InternalSwap(other);
+    } else {
+      ::PROTOBUF_NAMESPACE_ID::internal::GenericSwap(this, other);
+    }
+  }
+  void UnsafeArenaSwap(ControlStatus* other) {
+    if (other == this) return;
+    GOOGLE_DCHECK(GetArena() == other->GetArena());
+    InternalSwap(other);
+  }
+
+  // implements Message ----------------------------------------------
+
+  inline ControlStatus* New() const final {
+    return CreateMaybeMessage<ControlStatus>(nullptr);
+  }
+
+  ControlStatus* New(::PROTOBUF_NAMESPACE_ID::Arena* arena) const final {
+    return CreateMaybeMessage<ControlStatus>(arena);
+  }
+  void CopyFrom(const ::PROTOBUF_NAMESPACE_ID::Message& from) final;
+  void MergeFrom(const ::PROTOBUF_NAMESPACE_ID::Message& from) final;
+  void CopyFrom(const ControlStatus& from);
+  void MergeFrom(const ControlStatus& from);
+  PROTOBUF_ATTRIBUTE_REINITIALIZES void Clear() final;
+  bool IsInitialized() const final;
+
+  size_t ByteSizeLong() const final;
+  const char* _InternalParse(const char* ptr, ::PROTOBUF_NAMESPACE_ID::internal::ParseContext* ctx) final;
+  ::PROTOBUF_NAMESPACE_ID::uint8* _InternalSerialize(
+      ::PROTOBUF_NAMESPACE_ID::uint8* target, ::PROTOBUF_NAMESPACE_ID::io::EpsCopyOutputStream* stream) const final;
+  int GetCachedSize() const final { return _cached_size_.Get(); }
+
+  private:
+  inline void SharedCtor();
+  inline void SharedDtor();
+  void SetCachedSize(int size) const final;
+  void InternalSwap(ControlStatus* other);
+  friend class ::PROTOBUF_NAMESPACE_ID::internal::AnyMetadata;
+  static ::PROTOBUF_NAMESPACE_ID::StringPiece FullMessageName() {
+    return "mavsdk.rpc.gimbal.ControlStatus";
+  }
+  protected:
+  explicit ControlStatus(::PROTOBUF_NAMESPACE_ID::Arena* arena);
+  private:
+  static void ArenaDtor(void* object);
+  inline void RegisterArenaDtor(::PROTOBUF_NAMESPACE_ID::Arena* arena);
+  public:
+
+  ::PROTOBUF_NAMESPACE_ID::Metadata GetMetadata() const final;
+  private:
+  static ::PROTOBUF_NAMESPACE_ID::Metadata GetMetadataStatic() {
+    ::PROTOBUF_NAMESPACE_ID::internal::AssignDescriptors(&::descriptor_table_gimbal_2fgimbal_2eproto);
+    return ::descriptor_table_gimbal_2fgimbal_2eproto.file_level_metadata[kIndexInFileMessages];
+  }
+
+  public:
+
+  // nested types ----------------------------------------------------
+
+  // accessors -------------------------------------------------------
+
+  enum : int {
     kControlModeFieldNumber = 1,
+    kSysidPrimaryControlFieldNumber = 2,
+    kCompidPrimaryControlFieldNumber = 3,
+    kSysidSecondaryControlFieldNumber = 4,
+    kCompidSecondaryControlFieldNumber = 5,
   };
   // .mavsdk.rpc.gimbal.ControlMode control_mode = 1;
   void clear_control_mode();
@@ -2185,7 +2339,43 @@ class ControlResponse PROTOBUF_FINAL :
   void _internal_set_control_mode(::mavsdk::rpc::gimbal::ControlMode value);
   public:
 
-  // @@protoc_insertion_point(class_scope:mavsdk.rpc.gimbal.ControlResponse)
+  // int32 sysid_primary_control = 2;
+  void clear_sysid_primary_control();
+  ::PROTOBUF_NAMESPACE_ID::int32 sysid_primary_control() const;
+  void set_sysid_primary_control(::PROTOBUF_NAMESPACE_ID::int32 value);
+  private:
+  ::PROTOBUF_NAMESPACE_ID::int32 _internal_sysid_primary_control() const;
+  void _internal_set_sysid_primary_control(::PROTOBUF_NAMESPACE_ID::int32 value);
+  public:
+
+  // int32 compid_primary_control = 3;
+  void clear_compid_primary_control();
+  ::PROTOBUF_NAMESPACE_ID::int32 compid_primary_control() const;
+  void set_compid_primary_control(::PROTOBUF_NAMESPACE_ID::int32 value);
+  private:
+  ::PROTOBUF_NAMESPACE_ID::int32 _internal_compid_primary_control() const;
+  void _internal_set_compid_primary_control(::PROTOBUF_NAMESPACE_ID::int32 value);
+  public:
+
+  // int32 sysid_secondary_control = 4;
+  void clear_sysid_secondary_control();
+  ::PROTOBUF_NAMESPACE_ID::int32 sysid_secondary_control() const;
+  void set_sysid_secondary_control(::PROTOBUF_NAMESPACE_ID::int32 value);
+  private:
+  ::PROTOBUF_NAMESPACE_ID::int32 _internal_sysid_secondary_control() const;
+  void _internal_set_sysid_secondary_control(::PROTOBUF_NAMESPACE_ID::int32 value);
+  public:
+
+  // int32 compid_secondary_control = 5;
+  void clear_compid_secondary_control();
+  ::PROTOBUF_NAMESPACE_ID::int32 compid_secondary_control() const;
+  void set_compid_secondary_control(::PROTOBUF_NAMESPACE_ID::int32 value);
+  private:
+  ::PROTOBUF_NAMESPACE_ID::int32 _internal_compid_secondary_control() const;
+  void _internal_set_compid_secondary_control(::PROTOBUF_NAMESPACE_ID::int32 value);
+  public:
+
+  // @@protoc_insertion_point(class_scope:mavsdk.rpc.gimbal.ControlStatus)
  private:
   class _Internal;
 
@@ -2193,6 +2383,10 @@ class ControlResponse PROTOBUF_FINAL :
   typedef void InternalArenaConstructable_;
   typedef void DestructorSkippable_;
   int control_mode_;
+  ::PROTOBUF_NAMESPACE_ID::int32 sysid_primary_control_;
+  ::PROTOBUF_NAMESPACE_ID::int32 compid_primary_control_;
+  ::PROTOBUF_NAMESPACE_ID::int32 sysid_secondary_control_;
+  ::PROTOBUF_NAMESPACE_ID::int32 compid_secondary_control_;
   mutable ::PROTOBUF_NAMESPACE_ID::internal::CachedSize _cached_size_;
   friend struct ::TableStruct_gimbal_2fgimbal_2eproto;
 };
@@ -2240,7 +2434,7 @@ class GimbalResult PROTOBUF_FINAL :
                &_GimbalResult_default_instance_);
   }
   static constexpr int kIndexInFileMessages =
-    14;
+    15;
 
   friend void swap(GimbalResult& a, GimbalResult& b) {
     a.Swap(&b);
@@ -3128,24 +3322,191 @@ inline void ReleaseControlResponse::set_allocated_gimbal_result(::mavsdk::rpc::g
 
 // ControlResponse
 
+// .mavsdk.rpc.gimbal.ControlStatus control_status = 1;
+inline bool ControlResponse::_internal_has_control_status() const {
+  return this != internal_default_instance() && control_status_ != nullptr;
+}
+inline bool ControlResponse::has_control_status() const {
+  return _internal_has_control_status();
+}
+inline void ControlResponse::clear_control_status() {
+  if (GetArena() == nullptr && control_status_ != nullptr) {
+    delete control_status_;
+  }
+  control_status_ = nullptr;
+}
+inline const ::mavsdk::rpc::gimbal::ControlStatus& ControlResponse::_internal_control_status() const {
+  const ::mavsdk::rpc::gimbal::ControlStatus* p = control_status_;
+  return p != nullptr ? *p : *reinterpret_cast<const ::mavsdk::rpc::gimbal::ControlStatus*>(
+      &::mavsdk::rpc::gimbal::_ControlStatus_default_instance_);
+}
+inline const ::mavsdk::rpc::gimbal::ControlStatus& ControlResponse::control_status() const {
+  // @@protoc_insertion_point(field_get:mavsdk.rpc.gimbal.ControlResponse.control_status)
+  return _internal_control_status();
+}
+inline void ControlResponse::unsafe_arena_set_allocated_control_status(
+    ::mavsdk::rpc::gimbal::ControlStatus* control_status) {
+  if (GetArena() == nullptr) {
+    delete reinterpret_cast<::PROTOBUF_NAMESPACE_ID::MessageLite*>(control_status_);
+  }
+  control_status_ = control_status;
+  if (control_status) {
+    
+  } else {
+    
+  }
+  // @@protoc_insertion_point(field_unsafe_arena_set_allocated:mavsdk.rpc.gimbal.ControlResponse.control_status)
+}
+inline ::mavsdk::rpc::gimbal::ControlStatus* ControlResponse::release_control_status() {
+  
+  ::mavsdk::rpc::gimbal::ControlStatus* temp = control_status_;
+  control_status_ = nullptr;
+  if (GetArena() != nullptr) {
+    temp = ::PROTOBUF_NAMESPACE_ID::internal::DuplicateIfNonNull(temp);
+  }
+  return temp;
+}
+inline ::mavsdk::rpc::gimbal::ControlStatus* ControlResponse::unsafe_arena_release_control_status() {
+  // @@protoc_insertion_point(field_release:mavsdk.rpc.gimbal.ControlResponse.control_status)
+  
+  ::mavsdk::rpc::gimbal::ControlStatus* temp = control_status_;
+  control_status_ = nullptr;
+  return temp;
+}
+inline ::mavsdk::rpc::gimbal::ControlStatus* ControlResponse::_internal_mutable_control_status() {
+  
+  if (control_status_ == nullptr) {
+    auto* p = CreateMaybeMessage<::mavsdk::rpc::gimbal::ControlStatus>(GetArena());
+    control_status_ = p;
+  }
+  return control_status_;
+}
+inline ::mavsdk::rpc::gimbal::ControlStatus* ControlResponse::mutable_control_status() {
+  // @@protoc_insertion_point(field_mutable:mavsdk.rpc.gimbal.ControlResponse.control_status)
+  return _internal_mutable_control_status();
+}
+inline void ControlResponse::set_allocated_control_status(::mavsdk::rpc::gimbal::ControlStatus* control_status) {
+  ::PROTOBUF_NAMESPACE_ID::Arena* message_arena = GetArena();
+  if (message_arena == nullptr) {
+    delete control_status_;
+  }
+  if (control_status) {
+    ::PROTOBUF_NAMESPACE_ID::Arena* submessage_arena =
+      ::PROTOBUF_NAMESPACE_ID::Arena::GetArena(control_status);
+    if (message_arena != submessage_arena) {
+      control_status = ::PROTOBUF_NAMESPACE_ID::internal::GetOwnedMessage(
+          message_arena, control_status, submessage_arena);
+    }
+    
+  } else {
+    
+  }
+  control_status_ = control_status;
+  // @@protoc_insertion_point(field_set_allocated:mavsdk.rpc.gimbal.ControlResponse.control_status)
+}
+
+// -------------------------------------------------------------------
+
+// ControlStatus
+
 // .mavsdk.rpc.gimbal.ControlMode control_mode = 1;
-inline void ControlResponse::clear_control_mode() {
+inline void ControlStatus::clear_control_mode() {
   control_mode_ = 0;
 }
-inline ::mavsdk::rpc::gimbal::ControlMode ControlResponse::_internal_control_mode() const {
+inline ::mavsdk::rpc::gimbal::ControlMode ControlStatus::_internal_control_mode() const {
   return static_cast< ::mavsdk::rpc::gimbal::ControlMode >(control_mode_);
 }
-inline ::mavsdk::rpc::gimbal::ControlMode ControlResponse::control_mode() const {
-  // @@protoc_insertion_point(field_get:mavsdk.rpc.gimbal.ControlResponse.control_mode)
+inline ::mavsdk::rpc::gimbal::ControlMode ControlStatus::control_mode() const {
+  // @@protoc_insertion_point(field_get:mavsdk.rpc.gimbal.ControlStatus.control_mode)
   return _internal_control_mode();
 }
-inline void ControlResponse::_internal_set_control_mode(::mavsdk::rpc::gimbal::ControlMode value) {
+inline void ControlStatus::_internal_set_control_mode(::mavsdk::rpc::gimbal::ControlMode value) {
   
   control_mode_ = value;
 }
-inline void ControlResponse::set_control_mode(::mavsdk::rpc::gimbal::ControlMode value) {
+inline void ControlStatus::set_control_mode(::mavsdk::rpc::gimbal::ControlMode value) {
   _internal_set_control_mode(value);
-  // @@protoc_insertion_point(field_set:mavsdk.rpc.gimbal.ControlResponse.control_mode)
+  // @@protoc_insertion_point(field_set:mavsdk.rpc.gimbal.ControlStatus.control_mode)
+}
+
+// int32 sysid_primary_control = 2;
+inline void ControlStatus::clear_sysid_primary_control() {
+  sysid_primary_control_ = 0;
+}
+inline ::PROTOBUF_NAMESPACE_ID::int32 ControlStatus::_internal_sysid_primary_control() const {
+  return sysid_primary_control_;
+}
+inline ::PROTOBUF_NAMESPACE_ID::int32 ControlStatus::sysid_primary_control() const {
+  // @@protoc_insertion_point(field_get:mavsdk.rpc.gimbal.ControlStatus.sysid_primary_control)
+  return _internal_sysid_primary_control();
+}
+inline void ControlStatus::_internal_set_sysid_primary_control(::PROTOBUF_NAMESPACE_ID::int32 value) {
+  
+  sysid_primary_control_ = value;
+}
+inline void ControlStatus::set_sysid_primary_control(::PROTOBUF_NAMESPACE_ID::int32 value) {
+  _internal_set_sysid_primary_control(value);
+  // @@protoc_insertion_point(field_set:mavsdk.rpc.gimbal.ControlStatus.sysid_primary_control)
+}
+
+// int32 compid_primary_control = 3;
+inline void ControlStatus::clear_compid_primary_control() {
+  compid_primary_control_ = 0;
+}
+inline ::PROTOBUF_NAMESPACE_ID::int32 ControlStatus::_internal_compid_primary_control() const {
+  return compid_primary_control_;
+}
+inline ::PROTOBUF_NAMESPACE_ID::int32 ControlStatus::compid_primary_control() const {
+  // @@protoc_insertion_point(field_get:mavsdk.rpc.gimbal.ControlStatus.compid_primary_control)
+  return _internal_compid_primary_control();
+}
+inline void ControlStatus::_internal_set_compid_primary_control(::PROTOBUF_NAMESPACE_ID::int32 value) {
+  
+  compid_primary_control_ = value;
+}
+inline void ControlStatus::set_compid_primary_control(::PROTOBUF_NAMESPACE_ID::int32 value) {
+  _internal_set_compid_primary_control(value);
+  // @@protoc_insertion_point(field_set:mavsdk.rpc.gimbal.ControlStatus.compid_primary_control)
+}
+
+// int32 sysid_secondary_control = 4;
+inline void ControlStatus::clear_sysid_secondary_control() {
+  sysid_secondary_control_ = 0;
+}
+inline ::PROTOBUF_NAMESPACE_ID::int32 ControlStatus::_internal_sysid_secondary_control() const {
+  return sysid_secondary_control_;
+}
+inline ::PROTOBUF_NAMESPACE_ID::int32 ControlStatus::sysid_secondary_control() const {
+  // @@protoc_insertion_point(field_get:mavsdk.rpc.gimbal.ControlStatus.sysid_secondary_control)
+  return _internal_sysid_secondary_control();
+}
+inline void ControlStatus::_internal_set_sysid_secondary_control(::PROTOBUF_NAMESPACE_ID::int32 value) {
+  
+  sysid_secondary_control_ = value;
+}
+inline void ControlStatus::set_sysid_secondary_control(::PROTOBUF_NAMESPACE_ID::int32 value) {
+  _internal_set_sysid_secondary_control(value);
+  // @@protoc_insertion_point(field_set:mavsdk.rpc.gimbal.ControlStatus.sysid_secondary_control)
+}
+
+// int32 compid_secondary_control = 5;
+inline void ControlStatus::clear_compid_secondary_control() {
+  compid_secondary_control_ = 0;
+}
+inline ::PROTOBUF_NAMESPACE_ID::int32 ControlStatus::_internal_compid_secondary_control() const {
+  return compid_secondary_control_;
+}
+inline ::PROTOBUF_NAMESPACE_ID::int32 ControlStatus::compid_secondary_control() const {
+  // @@protoc_insertion_point(field_get:mavsdk.rpc.gimbal.ControlStatus.compid_secondary_control)
+  return _internal_compid_secondary_control();
+}
+inline void ControlStatus::_internal_set_compid_secondary_control(::PROTOBUF_NAMESPACE_ID::int32 value) {
+  
+  compid_secondary_control_ = value;
+}
+inline void ControlStatus::set_compid_secondary_control(::PROTOBUF_NAMESPACE_ID::int32 value) {
+  _internal_set_compid_secondary_control(value);
+  // @@protoc_insertion_point(field_set:mavsdk.rpc.gimbal.ControlStatus.compid_secondary_control)
 }
 
 // -------------------------------------------------------------------
@@ -3237,6 +3598,8 @@ inline void GimbalResult::set_allocated_result_str(std::string* result_str) {
 #ifdef __GNUC__
   #pragma GCC diagnostic pop
 #endif  // __GNUC__
+// -------------------------------------------------------------------
+
 // -------------------------------------------------------------------
 
 // -------------------------------------------------------------------
