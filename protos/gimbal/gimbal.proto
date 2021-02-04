@@ -65,7 +65,8 @@ service GimbalService {
       * Subscribe to control status updates.
       *
       * This allows a component to know if it has primary, secondary or
-      * no control over the gimbal.
+      * no control over the gimbal. Also, it gives the system and component ids
+      * of the other components in control (if any).
       */
      rpc SubscribeControl(SubscribeControlRequest) returns(stream ControlResponse) {}
 }
@@ -116,7 +117,7 @@ message ReleaseControlResponse {
 
 message SubscribeControlRequest {}
 message ControlResponse {
-    ControlMode control_mode = 1; // Control mode (none, primary or secondary)
+    ControlStatus control_status = 1; // Control status
 }
 
 // Gimbal mode type.
@@ -130,6 +131,15 @@ enum ControlMode {
     CONTROL_MODE_NONE = 0; // Indicates that the component does not have control over the gimbal
     CONTROL_MODE_PRIMARY = 1; // To take primary control over the gimbal
     CONTROL_MODE_SECONDARY = 2; // To take secondary control over the gimbal
+}
+
+// Control status
+message ControlStatus {
+    ControlMode control_mode = 1; // Control mode (none, primary or secondary)
+    int32 sysid_primary_control = 2; // Sysid of the component that has primary control over the gimbal
+    int32 compid_primary_control = 3; // Compid of the component that has primary control over the gimbal
+    int32 sysid_secondary_control = 4; // Sysid of the component that has secondary control over the gimbal
+    int32 compid_secondary_control = 5; // Compid of the component that has secondary control over the gimbal
 }
 
 // Result type.
