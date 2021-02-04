@@ -61,6 +61,44 @@ void GimbalProtocolV2::set_pitch_and_yaw_async(
     }
 }
 
+Gimbal::Result
+GimbalProtocolV2::set_pitch_rate_and_yaw_rate(float pitch_rate_deg_s, float yaw_rate_deg_s)
+{
+    const uint32_t flags =
+        GIMBAL_MANAGER_FLAGS_ROLL_LOCK | GIMBAL_MANAGER_FLAGS_PITCH_LOCK |
+        ((_gimbal_mode == Gimbal::GimbalMode::YawLock) ? GIMBAL_MANAGER_FLAGS_YAW_LOCK : 0);
+
+    const float quaternion[4] = {NAN, NAN, NAN, NAN};
+
+    mavlink_message_t message;
+    mavlink_msg_gimbal_manager_set_attitude_pack(
+        _system_impl.get_own_system_id(),
+        _system_impl.get_own_component_id(),
+        &message,
+        _system_impl.get_system_id(),
+        _system_impl.get_autopilot_id(), // FIXME: this is hard-coded to autopilot for now
+        flags,
+        _gimbal_device_id,
+        quaternion,
+        0.0f,
+        to_rad_from_deg(pitch_rate_deg_s),
+        to_rad_from_deg(yaw_rate_deg_s));
+
+    return _system_impl.send_message(message) ? Gimbal::Result::Success : Gimbal::Result::Error;
+}
+
+void GimbalProtocolV2::set_pitch_rate_and_yaw_rate_async(
+    float pitch_rate_deg_s, float yaw_rate_deg_s, Gimbal::ResultCallback callback)
+{
+    // Sending the message should be quick and we can just do that straighaway.
+    Gimbal::Result result = set_pitch_rate_and_yaw_rate(pitch_rate_deg_s, yaw_rate_deg_s);
+
+    if (callback) {
+        auto temp_callback = callback;
+        _system_impl.call_user_callback([temp_callback, result]() { temp_callback(result); });
+    }
+}
+
 Gimbal::Result GimbalProtocolV2::set_mode(const Gimbal::GimbalMode gimbal_mode)
 {
     _gimbal_mode = gimbal_mode;

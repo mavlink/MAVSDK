@@ -16,6 +16,12 @@ public:
     void set_pitch_and_yaw_async(
         float pitch_deg, float yaw_deg, Gimbal::ResultCallback callback) override;
 
+    Gimbal::Result
+    set_pitch_rate_and_yaw_rate(float pitch_rate_deg_s, float yaw_rate_deg_s) override;
+
+    void set_pitch_rate_and_yaw_rate_async(
+        float pitch_rate_deg_s, float yaw_rate_deg_s, Gimbal::ResultCallback callback) override;
+
     Gimbal::Result set_mode(const Gimbal::GimbalMode gimbal_mode) override;
 
     void

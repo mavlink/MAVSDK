@@ -86,6 +86,22 @@ void GimbalImpl::set_pitch_and_yaw_async(
         [=]() { _gimbal_protocol->set_pitch_and_yaw_async(pitch_deg, yaw_deg, callback); });
 }
 
+Gimbal::Result GimbalImpl::set_pitch_rate_and_yaw_rate(float pitch_rate_deg_s, float yaw_rate_deg_s)
+{
+    wait_for_protocol();
+
+    return _gimbal_protocol->set_pitch_rate_and_yaw_rate(pitch_rate_deg_s, yaw_rate_deg_s);
+}
+
+void GimbalImpl::set_pitch_rate_and_yaw_rate_async(
+    float pitch_rate_deg_s, float yaw_rate_deg_s, Gimbal::ResultCallback callback)
+{
+    wait_for_protocol_async([=]() {
+        _gimbal_protocol->set_pitch_rate_and_yaw_rate_async(
+            pitch_rate_deg_s, yaw_rate_deg_s, callback);
+    });
+}
+
 Gimbal::Result GimbalImpl::set_mode(const Gimbal::GimbalMode gimbal_mode)
 {
     wait_for_protocol();

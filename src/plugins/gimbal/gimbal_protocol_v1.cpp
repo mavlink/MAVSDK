@@ -43,6 +43,27 @@ void GimbalProtocolV1::set_pitch_and_yaw_async(
         });
 }
 
+Gimbal::Result
+GimbalProtocolV1::set_pitch_rate_and_yaw_rate(float pitch_rate_deg_s, float yaw_rate_deg_s)
+{
+    UNUSED(pitch_rate_deg_s);
+    UNUSED(yaw_rate_deg_s);
+    return Gimbal::Result::Unsupported;
+}
+
+void GimbalProtocolV1::set_pitch_rate_and_yaw_rate_async(
+    float pitch_rate_deg_s, float yaw_rate_deg_s, Gimbal::ResultCallback callback)
+{
+    UNUSED(pitch_rate_deg_s);
+    UNUSED(yaw_rate_deg_s);
+
+    if (callback) {
+        auto temp_callback = callback;
+        _system_impl.call_user_callback(
+            [temp_callback]() { temp_callback(Gimbal::Result::Unsupported); });
+    }
+}
+
 Gimbal::Result GimbalProtocolV1::set_mode(const Gimbal::GimbalMode gimbal_mode)
 {
     MavlinkCommandSender::CommandInt command{};
