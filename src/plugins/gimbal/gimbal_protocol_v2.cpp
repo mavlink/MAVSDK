@@ -207,14 +207,15 @@ void GimbalProtocolV2::take_control_async(
     command.params.param4 = control_mode == Gimbal::ControlMode::Primary ?
                                 own_compid :
                                 -3.0f; // compid secondary control
-    command.params.param5 = 0.0f; // gimbal device id
-    command.target_component_id =
-        _system_impl.get_autopilot_id(), // FIXME: this is hard-coded to autopilot for now
 
-        _system_impl.send_command_async(
-            command, [this, callback](MavlinkCommandSender::Result result, float) {
-                GimbalImpl::receive_command_result(result, callback);
-            });
+    command.params.param7 = _gimbal_device_id;
+    command.target_system_id = _gimbal_manager_sysid;
+    command.target_component_id = _gimbal_manager_compid;
+
+    _system_impl.send_command_async(
+        command, [this, callback](MavlinkCommandSender::Result result, float) {
+            GimbalImpl::receive_command_result(result, callback);
+        });
 }
 
 Gimbal::Result GimbalProtocolV2::release_control()
@@ -236,14 +237,14 @@ void GimbalProtocolV2::release_control_async(Gimbal::ResultCallback callback)
     command.params.param2 = -3.0f; // compid primary control
     command.params.param3 = -3.0f; // sysid secondary control
     command.params.param4 = -3.0f; // compid secondary control
-    command.params.param5 = 0.0f; // gimbal device id
-    command.target_component_id =
-        _system_impl.get_autopilot_id(), // FIXME: this is hard-coded to autopilot for now
+    command.params.param7 = _gimbal_device_id;
+    command.target_system_id = _gimbal_manager_sysid;
+    command.target_component_id = _gimbal_manager_compid;
 
-        _system_impl.send_command_async(
-            command, [this, callback](MavlinkCommandSender::Result result, float) {
-                GimbalImpl::receive_command_result(result, callback);
-            });
+    _system_impl.send_command_async(
+        command, [this, callback](MavlinkCommandSender::Result result, float) {
+            GimbalImpl::receive_command_result(result, callback);
+        });
 }
 
 Gimbal::ControlStatus GimbalProtocolV2::control()
