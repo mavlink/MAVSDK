@@ -44,6 +44,8 @@ TEST(SitlTestGimbal, GimbalMove)
 
     telemetry->subscribe_camera_attitude_euler(&receive_gimbal_attitude_euler_angles);
 
+    EXPECT_EQ(gimbal->take_control(Gimbal::ControlMode::Primary), Gimbal::Result::Success);
+
     EXPECT_EQ(gimbal->set_mode(Gimbal::GimbalMode::YawFollow), Gimbal::Result::Success);
 
     LogInfo() << "Pitch down for a  bit";
@@ -66,6 +68,8 @@ TEST(SitlTestGimbal, GimbalMove)
     EXPECT_EQ(gimbal->set_pitch_and_yaw(0.0f, 0.0f), Gimbal::Result::Success);
 
     std::this_thread::sleep_for(std::chrono::seconds(1));
+
+    EXPECT_EQ(gimbal->take_control(Gimbal::ControlMode::None), Gimbal::Result::Success);
 }
 
 TEST(SitlTestGimbal, GimbalAngles)
@@ -86,6 +90,8 @@ TEST(SitlTestGimbal, GimbalAngles)
     ASSERT_TRUE(system->has_autopilot());
 
     auto gimbal = std::make_shared<Gimbal>(system);
+
+    EXPECT_EQ(gimbal->take_control(Gimbal::ControlMode::Primary), Gimbal::Result::Success);
 
     EXPECT_EQ(gimbal->set_mode(Gimbal::GimbalMode::YawFollow), Gimbal::Result::Success);
 
@@ -114,6 +120,8 @@ TEST(SitlTestGimbal, GimbalAngles)
     LogInfo() << "Yaw forward";
     EXPECT_EQ(gimbal->set_pitch_and_yaw(0.0f, 0.0f), Gimbal::Result::Success);
     std::this_thread::sleep_for(std::chrono::seconds(1));
+
+    EXPECT_EQ(gimbal->take_control(Gimbal::ControlMode::None), Gimbal::Result::Success);
 }
 
 TEST(SitlTestGimbal, GimbalTakeoffAndMove)
@@ -164,6 +172,8 @@ TEST(SitlTestGimbal, GimbalTakeoffAndMove)
 
     std::this_thread::sleep_for(std::chrono::seconds(1));
 
+    EXPECT_EQ(gimbal->take_control(Gimbal::ControlMode::Primary), Gimbal::Result::Success);
+
     // First use gimbal in yaw follow mode.
     EXPECT_EQ(gimbal->set_mode(Gimbal::GimbalMode::YawFollow), Gimbal::Result::Success);
 
@@ -175,6 +185,8 @@ TEST(SitlTestGimbal, GimbalTakeoffAndMove)
 
     gimbal_pattern(gimbal);
     std::this_thread::sleep_for(std::chrono::seconds(1));
+
+    EXPECT_EQ(gimbal->take_control(Gimbal::ControlMode::None), Gimbal::Result::Success);
 
     action->land();
     std::this_thread::sleep_for(std::chrono::seconds(3));
