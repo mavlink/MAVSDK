@@ -95,6 +95,49 @@ class GimbalService final {
     std::unique_ptr< ::grpc::ClientAsyncResponseReaderInterface< ::mavsdk::rpc::gimbal::SetRoiLocationResponse>> PrepareAsyncSetRoiLocation(::grpc::ClientContext* context, const ::mavsdk::rpc::gimbal::SetRoiLocationRequest& request, ::grpc::CompletionQueue* cq) {
       return std::unique_ptr< ::grpc::ClientAsyncResponseReaderInterface< ::mavsdk::rpc::gimbal::SetRoiLocationResponse>>(PrepareAsyncSetRoiLocationRaw(context, request, cq));
     }
+    //
+    // Take control.
+    //
+    // There can be only two components in control of a gimbal at any given time.
+    // One with "primary" control, and one with "secondary" control. The way the
+    // secondary control is implemented is not specified and hence depends on the
+    // vehicle.
+    //
+    // Components are expected to be cooperative, which means that they can
+    // override each other and should therefore do it carefully.
+    virtual ::grpc::Status TakeControl(::grpc::ClientContext* context, const ::mavsdk::rpc::gimbal::TakeControlRequest& request, ::mavsdk::rpc::gimbal::TakeControlResponse* response) = 0;
+    std::unique_ptr< ::grpc::ClientAsyncResponseReaderInterface< ::mavsdk::rpc::gimbal::TakeControlResponse>> AsyncTakeControl(::grpc::ClientContext* context, const ::mavsdk::rpc::gimbal::TakeControlRequest& request, ::grpc::CompletionQueue* cq) {
+      return std::unique_ptr< ::grpc::ClientAsyncResponseReaderInterface< ::mavsdk::rpc::gimbal::TakeControlResponse>>(AsyncTakeControlRaw(context, request, cq));
+    }
+    std::unique_ptr< ::grpc::ClientAsyncResponseReaderInterface< ::mavsdk::rpc::gimbal::TakeControlResponse>> PrepareAsyncTakeControl(::grpc::ClientContext* context, const ::mavsdk::rpc::gimbal::TakeControlRequest& request, ::grpc::CompletionQueue* cq) {
+      return std::unique_ptr< ::grpc::ClientAsyncResponseReaderInterface< ::mavsdk::rpc::gimbal::TakeControlResponse>>(PrepareAsyncTakeControlRaw(context, request, cq));
+    }
+    //
+    // Release control.
+    //
+    // Release control, such that other components can control the gimbal.
+    virtual ::grpc::Status ReleaseControl(::grpc::ClientContext* context, const ::mavsdk::rpc::gimbal::ReleaseControlRequest& request, ::mavsdk::rpc::gimbal::ReleaseControlResponse* response) = 0;
+    std::unique_ptr< ::grpc::ClientAsyncResponseReaderInterface< ::mavsdk::rpc::gimbal::ReleaseControlResponse>> AsyncReleaseControl(::grpc::ClientContext* context, const ::mavsdk::rpc::gimbal::ReleaseControlRequest& request, ::grpc::CompletionQueue* cq) {
+      return std::unique_ptr< ::grpc::ClientAsyncResponseReaderInterface< ::mavsdk::rpc::gimbal::ReleaseControlResponse>>(AsyncReleaseControlRaw(context, request, cq));
+    }
+    std::unique_ptr< ::grpc::ClientAsyncResponseReaderInterface< ::mavsdk::rpc::gimbal::ReleaseControlResponse>> PrepareAsyncReleaseControl(::grpc::ClientContext* context, const ::mavsdk::rpc::gimbal::ReleaseControlRequest& request, ::grpc::CompletionQueue* cq) {
+      return std::unique_ptr< ::grpc::ClientAsyncResponseReaderInterface< ::mavsdk::rpc::gimbal::ReleaseControlResponse>>(PrepareAsyncReleaseControlRaw(context, request, cq));
+    }
+    //
+    // Subscribe to control status updates.
+    //
+    // This allows a component to know if it has primary, secondary or
+    // no control over the gimbal. Also, it gives the system and component ids
+    // of the other components in control (if any).
+    std::unique_ptr< ::grpc::ClientReaderInterface< ::mavsdk::rpc::gimbal::ControlResponse>> SubscribeControl(::grpc::ClientContext* context, const ::mavsdk::rpc::gimbal::SubscribeControlRequest& request) {
+      return std::unique_ptr< ::grpc::ClientReaderInterface< ::mavsdk::rpc::gimbal::ControlResponse>>(SubscribeControlRaw(context, request));
+    }
+    std::unique_ptr< ::grpc::ClientAsyncReaderInterface< ::mavsdk::rpc::gimbal::ControlResponse>> AsyncSubscribeControl(::grpc::ClientContext* context, const ::mavsdk::rpc::gimbal::SubscribeControlRequest& request, ::grpc::CompletionQueue* cq, void* tag) {
+      return std::unique_ptr< ::grpc::ClientAsyncReaderInterface< ::mavsdk::rpc::gimbal::ControlResponse>>(AsyncSubscribeControlRaw(context, request, cq, tag));
+    }
+    std::unique_ptr< ::grpc::ClientAsyncReaderInterface< ::mavsdk::rpc::gimbal::ControlResponse>> PrepareAsyncSubscribeControl(::grpc::ClientContext* context, const ::mavsdk::rpc::gimbal::SubscribeControlRequest& request, ::grpc::CompletionQueue* cq) {
+      return std::unique_ptr< ::grpc::ClientAsyncReaderInterface< ::mavsdk::rpc::gimbal::ControlResponse>>(PrepareAsyncSubscribeControlRaw(context, request, cq));
+    }
     class experimental_async_interface {
      public:
       virtual ~experimental_async_interface() {}
@@ -150,6 +193,43 @@ class GimbalService final {
       #else
       virtual void SetRoiLocation(::grpc::ClientContext* context, const ::mavsdk::rpc::gimbal::SetRoiLocationRequest* request, ::mavsdk::rpc::gimbal::SetRoiLocationResponse* response, ::grpc::experimental::ClientUnaryReactor* reactor) = 0;
       #endif
+      //
+      // Take control.
+      //
+      // There can be only two components in control of a gimbal at any given time.
+      // One with "primary" control, and one with "secondary" control. The way the
+      // secondary control is implemented is not specified and hence depends on the
+      // vehicle.
+      //
+      // Components are expected to be cooperative, which means that they can
+      // override each other and should therefore do it carefully.
+      virtual void TakeControl(::grpc::ClientContext* context, const ::mavsdk::rpc::gimbal::TakeControlRequest* request, ::mavsdk::rpc::gimbal::TakeControlResponse* response, std::function<void(::grpc::Status)>) = 0;
+      #ifdef GRPC_CALLBACK_API_NONEXPERIMENTAL
+      virtual void TakeControl(::grpc::ClientContext* context, const ::mavsdk::rpc::gimbal::TakeControlRequest* request, ::mavsdk::rpc::gimbal::TakeControlResponse* response, ::grpc::ClientUnaryReactor* reactor) = 0;
+      #else
+      virtual void TakeControl(::grpc::ClientContext* context, const ::mavsdk::rpc::gimbal::TakeControlRequest* request, ::mavsdk::rpc::gimbal::TakeControlResponse* response, ::grpc::experimental::ClientUnaryReactor* reactor) = 0;
+      #endif
+      //
+      // Release control.
+      //
+      // Release control, such that other components can control the gimbal.
+      virtual void ReleaseControl(::grpc::ClientContext* context, const ::mavsdk::rpc::gimbal::ReleaseControlRequest* request, ::mavsdk::rpc::gimbal::ReleaseControlResponse* response, std::function<void(::grpc::Status)>) = 0;
+      #ifdef GRPC_CALLBACK_API_NONEXPERIMENTAL
+      virtual void ReleaseControl(::grpc::ClientContext* context, const ::mavsdk::rpc::gimbal::ReleaseControlRequest* request, ::mavsdk::rpc::gimbal::ReleaseControlResponse* response, ::grpc::ClientUnaryReactor* reactor) = 0;
+      #else
+      virtual void ReleaseControl(::grpc::ClientContext* context, const ::mavsdk::rpc::gimbal::ReleaseControlRequest* request, ::mavsdk::rpc::gimbal::ReleaseControlResponse* response, ::grpc::experimental::ClientUnaryReactor* reactor) = 0;
+      #endif
+      //
+      // Subscribe to control status updates.
+      //
+      // This allows a component to know if it has primary, secondary or
+      // no control over the gimbal. Also, it gives the system and component ids
+      // of the other components in control (if any).
+      #ifdef GRPC_CALLBACK_API_NONEXPERIMENTAL
+      virtual void SubscribeControl(::grpc::ClientContext* context, ::mavsdk::rpc::gimbal::SubscribeControlRequest* request, ::grpc::ClientReadReactor< ::mavsdk::rpc::gimbal::ControlResponse>* reactor) = 0;
+      #else
+      virtual void SubscribeControl(::grpc::ClientContext* context, ::mavsdk::rpc::gimbal::SubscribeControlRequest* request, ::grpc::experimental::ClientReadReactor< ::mavsdk::rpc::gimbal::ControlResponse>* reactor) = 0;
+      #endif
     };
     #ifdef GRPC_CALLBACK_API_NONEXPERIMENTAL
     typedef class experimental_async_interface async_interface;
@@ -167,6 +247,13 @@ class GimbalService final {
     virtual ::grpc::ClientAsyncResponseReaderInterface< ::mavsdk::rpc::gimbal::SetModeResponse>* PrepareAsyncSetModeRaw(::grpc::ClientContext* context, const ::mavsdk::rpc::gimbal::SetModeRequest& request, ::grpc::CompletionQueue* cq) = 0;
     virtual ::grpc::ClientAsyncResponseReaderInterface< ::mavsdk::rpc::gimbal::SetRoiLocationResponse>* AsyncSetRoiLocationRaw(::grpc::ClientContext* context, const ::mavsdk::rpc::gimbal::SetRoiLocationRequest& request, ::grpc::CompletionQueue* cq) = 0;
     virtual ::grpc::ClientAsyncResponseReaderInterface< ::mavsdk::rpc::gimbal::SetRoiLocationResponse>* PrepareAsyncSetRoiLocationRaw(::grpc::ClientContext* context, const ::mavsdk::rpc::gimbal::SetRoiLocationRequest& request, ::grpc::CompletionQueue* cq) = 0;
+    virtual ::grpc::ClientAsyncResponseReaderInterface< ::mavsdk::rpc::gimbal::TakeControlResponse>* AsyncTakeControlRaw(::grpc::ClientContext* context, const ::mavsdk::rpc::gimbal::TakeControlRequest& request, ::grpc::CompletionQueue* cq) = 0;
+    virtual ::grpc::ClientAsyncResponseReaderInterface< ::mavsdk::rpc::gimbal::TakeControlResponse>* PrepareAsyncTakeControlRaw(::grpc::ClientContext* context, const ::mavsdk::rpc::gimbal::TakeControlRequest& request, ::grpc::CompletionQueue* cq) = 0;
+    virtual ::grpc::ClientAsyncResponseReaderInterface< ::mavsdk::rpc::gimbal::ReleaseControlResponse>* AsyncReleaseControlRaw(::grpc::ClientContext* context, const ::mavsdk::rpc::gimbal::ReleaseControlRequest& request, ::grpc::CompletionQueue* cq) = 0;
+    virtual ::grpc::ClientAsyncResponseReaderInterface< ::mavsdk::rpc::gimbal::ReleaseControlResponse>* PrepareAsyncReleaseControlRaw(::grpc::ClientContext* context, const ::mavsdk::rpc::gimbal::ReleaseControlRequest& request, ::grpc::CompletionQueue* cq) = 0;
+    virtual ::grpc::ClientReaderInterface< ::mavsdk::rpc::gimbal::ControlResponse>* SubscribeControlRaw(::grpc::ClientContext* context, const ::mavsdk::rpc::gimbal::SubscribeControlRequest& request) = 0;
+    virtual ::grpc::ClientAsyncReaderInterface< ::mavsdk::rpc::gimbal::ControlResponse>* AsyncSubscribeControlRaw(::grpc::ClientContext* context, const ::mavsdk::rpc::gimbal::SubscribeControlRequest& request, ::grpc::CompletionQueue* cq, void* tag) = 0;
+    virtual ::grpc::ClientAsyncReaderInterface< ::mavsdk::rpc::gimbal::ControlResponse>* PrepareAsyncSubscribeControlRaw(::grpc::ClientContext* context, const ::mavsdk::rpc::gimbal::SubscribeControlRequest& request, ::grpc::CompletionQueue* cq) = 0;
   };
   class Stub final : public StubInterface {
    public:
@@ -199,6 +286,29 @@ class GimbalService final {
     std::unique_ptr< ::grpc::ClientAsyncResponseReader< ::mavsdk::rpc::gimbal::SetRoiLocationResponse>> PrepareAsyncSetRoiLocation(::grpc::ClientContext* context, const ::mavsdk::rpc::gimbal::SetRoiLocationRequest& request, ::grpc::CompletionQueue* cq) {
       return std::unique_ptr< ::grpc::ClientAsyncResponseReader< ::mavsdk::rpc::gimbal::SetRoiLocationResponse>>(PrepareAsyncSetRoiLocationRaw(context, request, cq));
     }
+    ::grpc::Status TakeControl(::grpc::ClientContext* context, const ::mavsdk::rpc::gimbal::TakeControlRequest& request, ::mavsdk::rpc::gimbal::TakeControlResponse* response) override;
+    std::unique_ptr< ::grpc::ClientAsyncResponseReader< ::mavsdk::rpc::gimbal::TakeControlResponse>> AsyncTakeControl(::grpc::ClientContext* context, const ::mavsdk::rpc::gimbal::TakeControlRequest& request, ::grpc::CompletionQueue* cq) {
+      return std::unique_ptr< ::grpc::ClientAsyncResponseReader< ::mavsdk::rpc::gimbal::TakeControlResponse>>(AsyncTakeControlRaw(context, request, cq));
+    }
+    std::unique_ptr< ::grpc::ClientAsyncResponseReader< ::mavsdk::rpc::gimbal::TakeControlResponse>> PrepareAsyncTakeControl(::grpc::ClientContext* context, const ::mavsdk::rpc::gimbal::TakeControlRequest& request, ::grpc::CompletionQueue* cq) {
+      return std::unique_ptr< ::grpc::ClientAsyncResponseReader< ::mavsdk::rpc::gimbal::TakeControlResponse>>(PrepareAsyncTakeControlRaw(context, request, cq));
+    }
+    ::grpc::Status ReleaseControl(::grpc::ClientContext* context, const ::mavsdk::rpc::gimbal::ReleaseControlRequest& request, ::mavsdk::rpc::gimbal::ReleaseControlResponse* response) override;
+    std::unique_ptr< ::grpc::ClientAsyncResponseReader< ::mavsdk::rpc::gimbal::ReleaseControlResponse>> AsyncReleaseControl(::grpc::ClientContext* context, const ::mavsdk::rpc::gimbal::ReleaseControlRequest& request, ::grpc::CompletionQueue* cq) {
+      return std::unique_ptr< ::grpc::ClientAsyncResponseReader< ::mavsdk::rpc::gimbal::ReleaseControlResponse>>(AsyncReleaseControlRaw(context, request, cq));
+    }
+    std::unique_ptr< ::grpc::ClientAsyncResponseReader< ::mavsdk::rpc::gimbal::ReleaseControlResponse>> PrepareAsyncReleaseControl(::grpc::ClientContext* context, const ::mavsdk::rpc::gimbal::ReleaseControlRequest& request, ::grpc::CompletionQueue* cq) {
+      return std::unique_ptr< ::grpc::ClientAsyncResponseReader< ::mavsdk::rpc::gimbal::ReleaseControlResponse>>(PrepareAsyncReleaseControlRaw(context, request, cq));
+    }
+    std::unique_ptr< ::grpc::ClientReader< ::mavsdk::rpc::gimbal::ControlResponse>> SubscribeControl(::grpc::ClientContext* context, const ::mavsdk::rpc::gimbal::SubscribeControlRequest& request) {
+      return std::unique_ptr< ::grpc::ClientReader< ::mavsdk::rpc::gimbal::ControlResponse>>(SubscribeControlRaw(context, request));
+    }
+    std::unique_ptr< ::grpc::ClientAsyncReader< ::mavsdk::rpc::gimbal::ControlResponse>> AsyncSubscribeControl(::grpc::ClientContext* context, const ::mavsdk::rpc::gimbal::SubscribeControlRequest& request, ::grpc::CompletionQueue* cq, void* tag) {
+      return std::unique_ptr< ::grpc::ClientAsyncReader< ::mavsdk::rpc::gimbal::ControlResponse>>(AsyncSubscribeControlRaw(context, request, cq, tag));
+    }
+    std::unique_ptr< ::grpc::ClientAsyncReader< ::mavsdk::rpc::gimbal::ControlResponse>> PrepareAsyncSubscribeControl(::grpc::ClientContext* context, const ::mavsdk::rpc::gimbal::SubscribeControlRequest& request, ::grpc::CompletionQueue* cq) {
+      return std::unique_ptr< ::grpc::ClientAsyncReader< ::mavsdk::rpc::gimbal::ControlResponse>>(PrepareAsyncSubscribeControlRaw(context, request, cq));
+    }
     class experimental_async final :
       public StubInterface::experimental_async_interface {
      public:
@@ -226,6 +336,23 @@ class GimbalService final {
       #else
       void SetRoiLocation(::grpc::ClientContext* context, const ::mavsdk::rpc::gimbal::SetRoiLocationRequest* request, ::mavsdk::rpc::gimbal::SetRoiLocationResponse* response, ::grpc::experimental::ClientUnaryReactor* reactor) override;
       #endif
+      void TakeControl(::grpc::ClientContext* context, const ::mavsdk::rpc::gimbal::TakeControlRequest* request, ::mavsdk::rpc::gimbal::TakeControlResponse* response, std::function<void(::grpc::Status)>) override;
+      #ifdef GRPC_CALLBACK_API_NONEXPERIMENTAL
+      void TakeControl(::grpc::ClientContext* context, const ::mavsdk::rpc::gimbal::TakeControlRequest* request, ::mavsdk::rpc::gimbal::TakeControlResponse* response, ::grpc::ClientUnaryReactor* reactor) override;
+      #else
+      void TakeControl(::grpc::ClientContext* context, const ::mavsdk::rpc::gimbal::TakeControlRequest* request, ::mavsdk::rpc::gimbal::TakeControlResponse* response, ::grpc::experimental::ClientUnaryReactor* reactor) override;
+      #endif
+      void ReleaseControl(::grpc::ClientContext* context, const ::mavsdk::rpc::gimbal::ReleaseControlRequest* request, ::mavsdk::rpc::gimbal::ReleaseControlResponse* response, std::function<void(::grpc::Status)>) override;
+      #ifdef GRPC_CALLBACK_API_NONEXPERIMENTAL
+      void ReleaseControl(::grpc::ClientContext* context, const ::mavsdk::rpc::gimbal::ReleaseControlRequest* request, ::mavsdk::rpc::gimbal::ReleaseControlResponse* response, ::grpc::ClientUnaryReactor* reactor) override;
+      #else
+      void ReleaseControl(::grpc::ClientContext* context, const ::mavsdk::rpc::gimbal::ReleaseControlRequest* request, ::mavsdk::rpc::gimbal::ReleaseControlResponse* response, ::grpc::experimental::ClientUnaryReactor* reactor) override;
+      #endif
+      #ifdef GRPC_CALLBACK_API_NONEXPERIMENTAL
+      void SubscribeControl(::grpc::ClientContext* context, ::mavsdk::rpc::gimbal::SubscribeControlRequest* request, ::grpc::ClientReadReactor< ::mavsdk::rpc::gimbal::ControlResponse>* reactor) override;
+      #else
+      void SubscribeControl(::grpc::ClientContext* context, ::mavsdk::rpc::gimbal::SubscribeControlRequest* request, ::grpc::experimental::ClientReadReactor< ::mavsdk::rpc::gimbal::ControlResponse>* reactor) override;
+      #endif
      private:
       friend class Stub;
       explicit experimental_async(Stub* stub): stub_(stub) { }
@@ -245,10 +372,20 @@ class GimbalService final {
     ::grpc::ClientAsyncResponseReader< ::mavsdk::rpc::gimbal::SetModeResponse>* PrepareAsyncSetModeRaw(::grpc::ClientContext* context, const ::mavsdk::rpc::gimbal::SetModeRequest& request, ::grpc::CompletionQueue* cq) override;
     ::grpc::ClientAsyncResponseReader< ::mavsdk::rpc::gimbal::SetRoiLocationResponse>* AsyncSetRoiLocationRaw(::grpc::ClientContext* context, const ::mavsdk::rpc::gimbal::SetRoiLocationRequest& request, ::grpc::CompletionQueue* cq) override;
     ::grpc::ClientAsyncResponseReader< ::mavsdk::rpc::gimbal::SetRoiLocationResponse>* PrepareAsyncSetRoiLocationRaw(::grpc::ClientContext* context, const ::mavsdk::rpc::gimbal::SetRoiLocationRequest& request, ::grpc::CompletionQueue* cq) override;
+    ::grpc::ClientAsyncResponseReader< ::mavsdk::rpc::gimbal::TakeControlResponse>* AsyncTakeControlRaw(::grpc::ClientContext* context, const ::mavsdk::rpc::gimbal::TakeControlRequest& request, ::grpc::CompletionQueue* cq) override;
+    ::grpc::ClientAsyncResponseReader< ::mavsdk::rpc::gimbal::TakeControlResponse>* PrepareAsyncTakeControlRaw(::grpc::ClientContext* context, const ::mavsdk::rpc::gimbal::TakeControlRequest& request, ::grpc::CompletionQueue* cq) override;
+    ::grpc::ClientAsyncResponseReader< ::mavsdk::rpc::gimbal::ReleaseControlResponse>* AsyncReleaseControlRaw(::grpc::ClientContext* context, const ::mavsdk::rpc::gimbal::ReleaseControlRequest& request, ::grpc::CompletionQueue* cq) override;
+    ::grpc::ClientAsyncResponseReader< ::mavsdk::rpc::gimbal::ReleaseControlResponse>* PrepareAsyncReleaseControlRaw(::grpc::ClientContext* context, const ::mavsdk::rpc::gimbal::ReleaseControlRequest& request, ::grpc::CompletionQueue* cq) override;
+    ::grpc::ClientReader< ::mavsdk::rpc::gimbal::ControlResponse>* SubscribeControlRaw(::grpc::ClientContext* context, const ::mavsdk::rpc::gimbal::SubscribeControlRequest& request) override;
+    ::grpc::ClientAsyncReader< ::mavsdk::rpc::gimbal::ControlResponse>* AsyncSubscribeControlRaw(::grpc::ClientContext* context, const ::mavsdk::rpc::gimbal::SubscribeControlRequest& request, ::grpc::CompletionQueue* cq, void* tag) override;
+    ::grpc::ClientAsyncReader< ::mavsdk::rpc::gimbal::ControlResponse>* PrepareAsyncSubscribeControlRaw(::grpc::ClientContext* context, const ::mavsdk::rpc::gimbal::SubscribeControlRequest& request, ::grpc::CompletionQueue* cq) override;
     const ::grpc::internal::RpcMethod rpcmethod_SetPitchAndYaw_;
     const ::grpc::internal::RpcMethod rpcmethod_SetPitchRateAndYawRate_;
     const ::grpc::internal::RpcMethod rpcmethod_SetMode_;
     const ::grpc::internal::RpcMethod rpcmethod_SetRoiLocation_;
+    const ::grpc::internal::RpcMethod rpcmethod_TakeControl_;
+    const ::grpc::internal::RpcMethod rpcmethod_ReleaseControl_;
+    const ::grpc::internal::RpcMethod rpcmethod_SubscribeControl_;
   };
   static std::unique_ptr<Stub> NewStub(const std::shared_ptr< ::grpc::ChannelInterface>& channel, const ::grpc::StubOptions& options = ::grpc::StubOptions());
 
@@ -288,6 +425,29 @@ class GimbalService final {
     // The function will return when the command is accepted, however, it might
     // take the gimbal longer to actually rotate to the ROI.
     virtual ::grpc::Status SetRoiLocation(::grpc::ServerContext* context, const ::mavsdk::rpc::gimbal::SetRoiLocationRequest* request, ::mavsdk::rpc::gimbal::SetRoiLocationResponse* response);
+    //
+    // Take control.
+    //
+    // There can be only two components in control of a gimbal at any given time.
+    // One with "primary" control, and one with "secondary" control. The way the
+    // secondary control is implemented is not specified and hence depends on the
+    // vehicle.
+    //
+    // Components are expected to be cooperative, which means that they can
+    // override each other and should therefore do it carefully.
+    virtual ::grpc::Status TakeControl(::grpc::ServerContext* context, const ::mavsdk::rpc::gimbal::TakeControlRequest* request, ::mavsdk::rpc::gimbal::TakeControlResponse* response);
+    //
+    // Release control.
+    //
+    // Release control, such that other components can control the gimbal.
+    virtual ::grpc::Status ReleaseControl(::grpc::ServerContext* context, const ::mavsdk::rpc::gimbal::ReleaseControlRequest* request, ::mavsdk::rpc::gimbal::ReleaseControlResponse* response);
+    //
+    // Subscribe to control status updates.
+    //
+    // This allows a component to know if it has primary, secondary or
+    // no control over the gimbal. Also, it gives the system and component ids
+    // of the other components in control (if any).
+    virtual ::grpc::Status SubscribeControl(::grpc::ServerContext* context, const ::mavsdk::rpc::gimbal::SubscribeControlRequest* request, ::grpc::ServerWriter< ::mavsdk::rpc::gimbal::ControlResponse>* writer);
   };
   template <class BaseClass>
   class WithAsyncMethod_SetPitchAndYaw : public BaseClass {
@@ -369,7 +529,67 @@ class GimbalService final {
       ::grpc::Service::RequestAsyncUnary(3, context, request, response, new_call_cq, notification_cq, tag);
     }
   };
-  typedef WithAsyncMethod_SetPitchAndYaw<WithAsyncMethod_SetPitchRateAndYawRate<WithAsyncMethod_SetMode<WithAsyncMethod_SetRoiLocation<Service > > > > AsyncService;
+  template <class BaseClass>
+  class WithAsyncMethod_TakeControl : public BaseClass {
+   private:
+    void BaseClassMustBeDerivedFromService(const Service* /*service*/) {}
+   public:
+    WithAsyncMethod_TakeControl() {
+      ::grpc::Service::MarkMethodAsync(4);
+    }
+    ~WithAsyncMethod_TakeControl() override {
+      BaseClassMustBeDerivedFromService(this);
+    }
+    // disable synchronous version of this method
+    ::grpc::Status TakeControl(::grpc::ServerContext* /*context*/, const ::mavsdk::rpc::gimbal::TakeControlRequest* /*request*/, ::mavsdk::rpc::gimbal::TakeControlResponse* /*response*/) override {
+      abort();
+      return ::grpc::Status(::grpc::StatusCode::UNIMPLEMENTED, "");
+    }
+    void RequestTakeControl(::grpc::ServerContext* context, ::mavsdk::rpc::gimbal::TakeControlRequest* request, ::grpc::ServerAsyncResponseWriter< ::mavsdk::rpc::gimbal::TakeControlResponse>* response, ::grpc::CompletionQueue* new_call_cq, ::grpc::ServerCompletionQueue* notification_cq, void *tag) {
+      ::grpc::Service::RequestAsyncUnary(4, context, request, response, new_call_cq, notification_cq, tag);
+    }
+  };
+  template <class BaseClass>
+  class WithAsyncMethod_ReleaseControl : public BaseClass {
+   private:
+    void BaseClassMustBeDerivedFromService(const Service* /*service*/) {}
+   public:
+    WithAsyncMethod_ReleaseControl() {
+      ::grpc::Service::MarkMethodAsync(5);
+    }
+    ~WithAsyncMethod_ReleaseControl() override {
+      BaseClassMustBeDerivedFromService(this);
+    }
+    // disable synchronous version of this method
+    ::grpc::Status ReleaseControl(::grpc::ServerContext* /*context*/, const ::mavsdk::rpc::gimbal::ReleaseControlRequest* /*request*/, ::mavsdk::rpc::gimbal::ReleaseControlResponse* /*response*/) override {
+      abort();
+      return ::grpc::Status(::grpc::StatusCode::UNIMPLEMENTED, "");
+    }
+    void RequestReleaseControl(::grpc::ServerContext* context, ::mavsdk::rpc::gimbal::ReleaseControlRequest* request, ::grpc::ServerAsyncResponseWriter< ::mavsdk::rpc::gimbal::ReleaseControlResponse>* response, ::grpc::CompletionQueue* new_call_cq, ::grpc::ServerCompletionQueue* notification_cq, void *tag) {
+      ::grpc::Service::RequestAsyncUnary(5, context, request, response, new_call_cq, notification_cq, tag);
+    }
+  };
+  template <class BaseClass>
+  class WithAsyncMethod_SubscribeControl : public BaseClass {
+   private:
+    void BaseClassMustBeDerivedFromService(const Service* /*service*/) {}
+   public:
+    WithAsyncMethod_SubscribeControl() {
+      ::grpc::Service::MarkMethodAsync(6);
+    }
+    ~WithAsyncMethod_SubscribeControl() override {
+      BaseClassMustBeDerivedFromService(this);
+    }
+    // disable synchronous version of this method
+    ::grpc::Status SubscribeControl(::grpc::ServerContext* /*context*/, const ::mavsdk::rpc::gimbal::SubscribeControlRequest* /*request*/, ::grpc::ServerWriter< ::mavsdk::rpc::gimbal::ControlResponse>* /*writer*/) override {
+      abort();
+      return ::grpc::Status(::grpc::StatusCode::UNIMPLEMENTED, "");
+    }
+    void RequestSubscribeControl(::grpc::ServerContext* context, ::mavsdk::rpc::gimbal::SubscribeControlRequest* request, ::grpc::ServerAsyncWriter< ::mavsdk::rpc::gimbal::ControlResponse>* writer, ::grpc::CompletionQueue* new_call_cq, ::grpc::ServerCompletionQueue* notification_cq, void *tag) {
+      ::grpc::Service::RequestAsyncServerStreaming(6, context, request, writer, new_call_cq, notification_cq, tag);
+    }
+  };
+  typedef WithAsyncMethod_SetPitchAndYaw<WithAsyncMethod_SetPitchRateAndYawRate<WithAsyncMethod_SetMode<WithAsyncMethod_SetRoiLocation<WithAsyncMethod_TakeControl<WithAsyncMethod_ReleaseControl<WithAsyncMethod_SubscribeControl<Service > > > > > > > AsyncService;
   template <class BaseClass>
   class ExperimentalWithCallbackMethod_SetPitchAndYaw : public BaseClass {
    private:
@@ -558,11 +778,143 @@ class GimbalService final {
     #endif
       { return nullptr; }
   };
+  template <class BaseClass>
+  class ExperimentalWithCallbackMethod_TakeControl : public BaseClass {
+   private:
+    void BaseClassMustBeDerivedFromService(const Service* /*service*/) {}
+   public:
+    ExperimentalWithCallbackMethod_TakeControl() {
+    #ifdef GRPC_CALLBACK_API_NONEXPERIMENTAL
+      ::grpc::Service::
+    #else
+      ::grpc::Service::experimental().
+    #endif
+        MarkMethodCallback(4,
+          new ::grpc::internal::CallbackUnaryHandler< ::mavsdk::rpc::gimbal::TakeControlRequest, ::mavsdk::rpc::gimbal::TakeControlResponse>(
+            [this](
+    #ifdef GRPC_CALLBACK_API_NONEXPERIMENTAL
+                   ::grpc::CallbackServerContext*
+    #else
+                   ::grpc::experimental::CallbackServerContext*
+    #endif
+                     context, const ::mavsdk::rpc::gimbal::TakeControlRequest* request, ::mavsdk::rpc::gimbal::TakeControlResponse* response) { return this->TakeControl(context, request, response); }));}
+    void SetMessageAllocatorFor_TakeControl(
+        ::grpc::experimental::MessageAllocator< ::mavsdk::rpc::gimbal::TakeControlRequest, ::mavsdk::rpc::gimbal::TakeControlResponse>* allocator) {
+    #ifdef GRPC_CALLBACK_API_NONEXPERIMENTAL
+      ::grpc::internal::MethodHandler* const handler = ::grpc::Service::GetHandler(4);
+    #else
+      ::grpc::internal::MethodHandler* const handler = ::grpc::Service::experimental().GetHandler(4);
+    #endif
+      static_cast<::grpc::internal::CallbackUnaryHandler< ::mavsdk::rpc::gimbal::TakeControlRequest, ::mavsdk::rpc::gimbal::TakeControlResponse>*>(handler)
+              ->SetMessageAllocator(allocator);
+    }
+    ~ExperimentalWithCallbackMethod_TakeControl() override {
+      BaseClassMustBeDerivedFromService(this);
+    }
+    // disable synchronous version of this method
+    ::grpc::Status TakeControl(::grpc::ServerContext* /*context*/, const ::mavsdk::rpc::gimbal::TakeControlRequest* /*request*/, ::mavsdk::rpc::gimbal::TakeControlResponse* /*response*/) override {
+      abort();
+      return ::grpc::Status(::grpc::StatusCode::UNIMPLEMENTED, "");
+    }
+    #ifdef GRPC_CALLBACK_API_NONEXPERIMENTAL
+    virtual ::grpc::ServerUnaryReactor* TakeControl(
+      ::grpc::CallbackServerContext* /*context*/, const ::mavsdk::rpc::gimbal::TakeControlRequest* /*request*/, ::mavsdk::rpc::gimbal::TakeControlResponse* /*response*/)
+    #else
+    virtual ::grpc::experimental::ServerUnaryReactor* TakeControl(
+      ::grpc::experimental::CallbackServerContext* /*context*/, const ::mavsdk::rpc::gimbal::TakeControlRequest* /*request*/, ::mavsdk::rpc::gimbal::TakeControlResponse* /*response*/)
+    #endif
+      { return nullptr; }
+  };
+  template <class BaseClass>
+  class ExperimentalWithCallbackMethod_ReleaseControl : public BaseClass {
+   private:
+    void BaseClassMustBeDerivedFromService(const Service* /*service*/) {}
+   public:
+    ExperimentalWithCallbackMethod_ReleaseControl() {
+    #ifdef GRPC_CALLBACK_API_NONEXPERIMENTAL
+      ::grpc::Service::
+    #else
+      ::grpc::Service::experimental().
+    #endif
+        MarkMethodCallback(5,
+          new ::grpc::internal::CallbackUnaryHandler< ::mavsdk::rpc::gimbal::ReleaseControlRequest, ::mavsdk::rpc::gimbal::ReleaseControlResponse>(
+            [this](
+    #ifdef GRPC_CALLBACK_API_NONEXPERIMENTAL
+                   ::grpc::CallbackServerContext*
+    #else
+                   ::grpc::experimental::CallbackServerContext*
+    #endif
+                     context, const ::mavsdk::rpc::gimbal::ReleaseControlRequest* request, ::mavsdk::rpc::gimbal::ReleaseControlResponse* response) { return this->ReleaseControl(context, request, response); }));}
+    void SetMessageAllocatorFor_ReleaseControl(
+        ::grpc::experimental::MessageAllocator< ::mavsdk::rpc::gimbal::ReleaseControlRequest, ::mavsdk::rpc::gimbal::ReleaseControlResponse>* allocator) {
+    #ifdef GRPC_CALLBACK_API_NONEXPERIMENTAL
+      ::grpc::internal::MethodHandler* const handler = ::grpc::Service::GetHandler(5);
+    #else
+      ::grpc::internal::MethodHandler* const handler = ::grpc::Service::experimental().GetHandler(5);
+    #endif
+      static_cast<::grpc::internal::CallbackUnaryHandler< ::mavsdk::rpc::gimbal::ReleaseControlRequest, ::mavsdk::rpc::gimbal::ReleaseControlResponse>*>(handler)
+              ->SetMessageAllocator(allocator);
+    }
+    ~ExperimentalWithCallbackMethod_ReleaseControl() override {
+      BaseClassMustBeDerivedFromService(this);
+    }
+    // disable synchronous version of this method
+    ::grpc::Status ReleaseControl(::grpc::ServerContext* /*context*/, const ::mavsdk::rpc::gimbal::ReleaseControlRequest* /*request*/, ::mavsdk::rpc::gimbal::ReleaseControlResponse* /*response*/) override {
+      abort();
+      return ::grpc::Status(::grpc::StatusCode::UNIMPLEMENTED, "");
+    }
+    #ifdef GRPC_CALLBACK_API_NONEXPERIMENTAL
+    virtual ::grpc::ServerUnaryReactor* ReleaseControl(
+      ::grpc::CallbackServerContext* /*context*/, const ::mavsdk::rpc::gimbal::ReleaseControlRequest* /*request*/, ::mavsdk::rpc::gimbal::ReleaseControlResponse* /*response*/)
+    #else
+    virtual ::grpc::experimental::ServerUnaryReactor* ReleaseControl(
+      ::grpc::experimental::CallbackServerContext* /*context*/, const ::mavsdk::rpc::gimbal::ReleaseControlRequest* /*request*/, ::mavsdk::rpc::gimbal::ReleaseControlResponse* /*response*/)
+    #endif
+      { return nullptr; }
+  };
+  template <class BaseClass>
+  class ExperimentalWithCallbackMethod_SubscribeControl : public BaseClass {
+   private:
+    void BaseClassMustBeDerivedFromService(const Service* /*service*/) {}
+   public:
+    ExperimentalWithCallbackMethod_SubscribeControl() {
+    #ifdef GRPC_CALLBACK_API_NONEXPERIMENTAL
+      ::grpc::Service::
+    #else
+      ::grpc::Service::experimental().
+    #endif
+        MarkMethodCallback(6,
+          new ::grpc::internal::CallbackServerStreamingHandler< ::mavsdk::rpc::gimbal::SubscribeControlRequest, ::mavsdk::rpc::gimbal::ControlResponse>(
+            [this](
+    #ifdef GRPC_CALLBACK_API_NONEXPERIMENTAL
+                   ::grpc::CallbackServerContext*
+    #else
+                   ::grpc::experimental::CallbackServerContext*
+    #endif
+                     context, const ::mavsdk::rpc::gimbal::SubscribeControlRequest* request) { return this->SubscribeControl(context, request); }));
+    }
+    ~ExperimentalWithCallbackMethod_SubscribeControl() override {
+      BaseClassMustBeDerivedFromService(this);
+    }
+    // disable synchronous version of this method
+    ::grpc::Status SubscribeControl(::grpc::ServerContext* /*context*/, const ::mavsdk::rpc::gimbal::SubscribeControlRequest* /*request*/, ::grpc::ServerWriter< ::mavsdk::rpc::gimbal::ControlResponse>* /*writer*/) override {
+      abort();
+      return ::grpc::Status(::grpc::StatusCode::UNIMPLEMENTED, "");
+    }
+    #ifdef GRPC_CALLBACK_API_NONEXPERIMENTAL
+    virtual ::grpc::ServerWriteReactor< ::mavsdk::rpc::gimbal::ControlResponse>* SubscribeControl(
+      ::grpc::CallbackServerContext* /*context*/, const ::mavsdk::rpc::gimbal::SubscribeControlRequest* /*request*/)
+    #else
+    virtual ::grpc::experimental::ServerWriteReactor< ::mavsdk::rpc::gimbal::ControlResponse>* SubscribeControl(
+      ::grpc::experimental::CallbackServerContext* /*context*/, const ::mavsdk::rpc::gimbal::SubscribeControlRequest* /*request*/)
+    #endif
+      { return nullptr; }
+  };
   #ifdef GRPC_CALLBACK_API_NONEXPERIMENTAL
-  typedef ExperimentalWithCallbackMethod_SetPitchAndYaw<ExperimentalWithCallbackMethod_SetPitchRateAndYawRate<ExperimentalWithCallbackMethod_SetMode<ExperimentalWithCallbackMethod_SetRoiLocation<Service > > > > CallbackService;
+  typedef ExperimentalWithCallbackMethod_SetPitchAndYaw<ExperimentalWithCallbackMethod_SetPitchRateAndYawRate<ExperimentalWithCallbackMethod_SetMode<ExperimentalWithCallbackMethod_SetRoiLocation<ExperimentalWithCallbackMethod_TakeControl<ExperimentalWithCallbackMethod_ReleaseControl<ExperimentalWithCallbackMethod_SubscribeControl<Service > > > > > > > CallbackService;
   #endif
 
-  typedef ExperimentalWithCallbackMethod_SetPitchAndYaw<ExperimentalWithCallbackMethod_SetPitchRateAndYawRate<ExperimentalWithCallbackMethod_SetMode<ExperimentalWithCallbackMethod_SetRoiLocation<Service > > > > ExperimentalCallbackService;
+  typedef ExperimentalWithCallbackMethod_SetPitchAndYaw<ExperimentalWithCallbackMethod_SetPitchRateAndYawRate<ExperimentalWithCallbackMethod_SetMode<ExperimentalWithCallbackMethod_SetRoiLocation<ExperimentalWithCallbackMethod_TakeControl<ExperimentalWithCallbackMethod_ReleaseControl<ExperimentalWithCallbackMethod_SubscribeControl<Service > > > > > > > ExperimentalCallbackService;
   template <class BaseClass>
   class WithGenericMethod_SetPitchAndYaw : public BaseClass {
    private:
@@ -627,6 +979,57 @@ class GimbalService final {
     }
     // disable synchronous version of this method
     ::grpc::Status SetRoiLocation(::grpc::ServerContext* /*context*/, const ::mavsdk::rpc::gimbal::SetRoiLocationRequest* /*request*/, ::mavsdk::rpc::gimbal::SetRoiLocationResponse* /*response*/) override {
+      abort();
+      return ::grpc::Status(::grpc::StatusCode::UNIMPLEMENTED, "");
+    }
+  };
+  template <class BaseClass>
+  class WithGenericMethod_TakeControl : public BaseClass {
+   private:
+    void BaseClassMustBeDerivedFromService(const Service* /*service*/) {}
+   public:
+    WithGenericMethod_TakeControl() {
+      ::grpc::Service::MarkMethodGeneric(4);
+    }
+    ~WithGenericMethod_TakeControl() override {
+      BaseClassMustBeDerivedFromService(this);
+    }
+    // disable synchronous version of this method
+    ::grpc::Status TakeControl(::grpc::ServerContext* /*context*/, const ::mavsdk::rpc::gimbal::TakeControlRequest* /*request*/, ::mavsdk::rpc::gimbal::TakeControlResponse* /*response*/) override {
+      abort();
+      return ::grpc::Status(::grpc::StatusCode::UNIMPLEMENTED, "");
+    }
+  };
+  template <class BaseClass>
+  class WithGenericMethod_ReleaseControl : public BaseClass {
+   private:
+    void BaseClassMustBeDerivedFromService(const Service* /*service*/) {}
+   public:
+    WithGenericMethod_ReleaseControl() {
+      ::grpc::Service::MarkMethodGeneric(5);
+    }
+    ~WithGenericMethod_ReleaseControl() override {
+      BaseClassMustBeDerivedFromService(this);
+    }
+    // disable synchronous version of this method
+    ::grpc::Status ReleaseControl(::grpc::ServerContext* /*context*/, const ::mavsdk::rpc::gimbal::ReleaseControlRequest* /*request*/, ::mavsdk::rpc::gimbal::ReleaseControlResponse* /*response*/) override {
+      abort();
+      return ::grpc::Status(::grpc::StatusCode::UNIMPLEMENTED, "");
+    }
+  };
+  template <class BaseClass>
+  class WithGenericMethod_SubscribeControl : public BaseClass {
+   private:
+    void BaseClassMustBeDerivedFromService(const Service* /*service*/) {}
+   public:
+    WithGenericMethod_SubscribeControl() {
+      ::grpc::Service::MarkMethodGeneric(6);
+    }
+    ~WithGenericMethod_SubscribeControl() override {
+      BaseClassMustBeDerivedFromService(this);
+    }
+    // disable synchronous version of this method
+    ::grpc::Status SubscribeControl(::grpc::ServerContext* /*context*/, const ::mavsdk::rpc::gimbal::SubscribeControlRequest* /*request*/, ::grpc::ServerWriter< ::mavsdk::rpc::gimbal::ControlResponse>* /*writer*/) override {
       abort();
       return ::grpc::Status(::grpc::StatusCode::UNIMPLEMENTED, "");
     }
@@ -709,6 +1112,66 @@ class GimbalService final {
     }
     void RequestSetRoiLocation(::grpc::ServerContext* context, ::grpc::ByteBuffer* request, ::grpc::ServerAsyncResponseWriter< ::grpc::ByteBuffer>* response, ::grpc::CompletionQueue* new_call_cq, ::grpc::ServerCompletionQueue* notification_cq, void *tag) {
       ::grpc::Service::RequestAsyncUnary(3, context, request, response, new_call_cq, notification_cq, tag);
+    }
+  };
+  template <class BaseClass>
+  class WithRawMethod_TakeControl : public BaseClass {
+   private:
+    void BaseClassMustBeDerivedFromService(const Service* /*service*/) {}
+   public:
+    WithRawMethod_TakeControl() {
+      ::grpc::Service::MarkMethodRaw(4);
+    }
+    ~WithRawMethod_TakeControl() override {
+      BaseClassMustBeDerivedFromService(this);
+    }
+    // disable synchronous version of this method
+    ::grpc::Status TakeControl(::grpc::ServerContext* /*context*/, const ::mavsdk::rpc::gimbal::TakeControlRequest* /*request*/, ::mavsdk::rpc::gimbal::TakeControlResponse* /*response*/) override {
+      abort();
+      return ::grpc::Status(::grpc::StatusCode::UNIMPLEMENTED, "");
+    }
+    void RequestTakeControl(::grpc::ServerContext* context, ::grpc::ByteBuffer* request, ::grpc::ServerAsyncResponseWriter< ::grpc::ByteBuffer>* response, ::grpc::CompletionQueue* new_call_cq, ::grpc::ServerCompletionQueue* notification_cq, void *tag) {
+      ::grpc::Service::RequestAsyncUnary(4, context, request, response, new_call_cq, notification_cq, tag);
+    }
+  };
+  template <class BaseClass>
+  class WithRawMethod_ReleaseControl : public BaseClass {
+   private:
+    void BaseClassMustBeDerivedFromService(const Service* /*service*/) {}
+   public:
+    WithRawMethod_ReleaseControl() {
+      ::grpc::Service::MarkMethodRaw(5);
+    }
+    ~WithRawMethod_ReleaseControl() override {
+      BaseClassMustBeDerivedFromService(this);
+    }
+    // disable synchronous version of this method
+    ::grpc::Status ReleaseControl(::grpc::ServerContext* /*context*/, const ::mavsdk::rpc::gimbal::ReleaseControlRequest* /*request*/, ::mavsdk::rpc::gimbal::ReleaseControlResponse* /*response*/) override {
+      abort();
+      return ::grpc::Status(::grpc::StatusCode::UNIMPLEMENTED, "");
+    }
+    void RequestReleaseControl(::grpc::ServerContext* context, ::grpc::ByteBuffer* request, ::grpc::ServerAsyncResponseWriter< ::grpc::ByteBuffer>* response, ::grpc::CompletionQueue* new_call_cq, ::grpc::ServerCompletionQueue* notification_cq, void *tag) {
+      ::grpc::Service::RequestAsyncUnary(5, context, request, response, new_call_cq, notification_cq, tag);
+    }
+  };
+  template <class BaseClass>
+  class WithRawMethod_SubscribeControl : public BaseClass {
+   private:
+    void BaseClassMustBeDerivedFromService(const Service* /*service*/) {}
+   public:
+    WithRawMethod_SubscribeControl() {
+      ::grpc::Service::MarkMethodRaw(6);
+    }
+    ~WithRawMethod_SubscribeControl() override {
+      BaseClassMustBeDerivedFromService(this);
+    }
+    // disable synchronous version of this method
+    ::grpc::Status SubscribeControl(::grpc::ServerContext* /*context*/, const ::mavsdk::rpc::gimbal::SubscribeControlRequest* /*request*/, ::grpc::ServerWriter< ::mavsdk::rpc::gimbal::ControlResponse>* /*writer*/) override {
+      abort();
+      return ::grpc::Status(::grpc::StatusCode::UNIMPLEMENTED, "");
+    }
+    void RequestSubscribeControl(::grpc::ServerContext* context, ::grpc::ByteBuffer* request, ::grpc::ServerAsyncWriter< ::grpc::ByteBuffer>* writer, ::grpc::CompletionQueue* new_call_cq, ::grpc::ServerCompletionQueue* notification_cq, void *tag) {
+      ::grpc::Service::RequestAsyncServerStreaming(6, context, request, writer, new_call_cq, notification_cq, tag);
     }
   };
   template <class BaseClass>
@@ -864,6 +1327,120 @@ class GimbalService final {
       { return nullptr; }
   };
   template <class BaseClass>
+  class ExperimentalWithRawCallbackMethod_TakeControl : public BaseClass {
+   private:
+    void BaseClassMustBeDerivedFromService(const Service* /*service*/) {}
+   public:
+    ExperimentalWithRawCallbackMethod_TakeControl() {
+    #ifdef GRPC_CALLBACK_API_NONEXPERIMENTAL
+      ::grpc::Service::
+    #else
+      ::grpc::Service::experimental().
+    #endif
+        MarkMethodRawCallback(4,
+          new ::grpc::internal::CallbackUnaryHandler< ::grpc::ByteBuffer, ::grpc::ByteBuffer>(
+            [this](
+    #ifdef GRPC_CALLBACK_API_NONEXPERIMENTAL
+                   ::grpc::CallbackServerContext*
+    #else
+                   ::grpc::experimental::CallbackServerContext*
+    #endif
+                     context, const ::grpc::ByteBuffer* request, ::grpc::ByteBuffer* response) { return this->TakeControl(context, request, response); }));
+    }
+    ~ExperimentalWithRawCallbackMethod_TakeControl() override {
+      BaseClassMustBeDerivedFromService(this);
+    }
+    // disable synchronous version of this method
+    ::grpc::Status TakeControl(::grpc::ServerContext* /*context*/, const ::mavsdk::rpc::gimbal::TakeControlRequest* /*request*/, ::mavsdk::rpc::gimbal::TakeControlResponse* /*response*/) override {
+      abort();
+      return ::grpc::Status(::grpc::StatusCode::UNIMPLEMENTED, "");
+    }
+    #ifdef GRPC_CALLBACK_API_NONEXPERIMENTAL
+    virtual ::grpc::ServerUnaryReactor* TakeControl(
+      ::grpc::CallbackServerContext* /*context*/, const ::grpc::ByteBuffer* /*request*/, ::grpc::ByteBuffer* /*response*/)
+    #else
+    virtual ::grpc::experimental::ServerUnaryReactor* TakeControl(
+      ::grpc::experimental::CallbackServerContext* /*context*/, const ::grpc::ByteBuffer* /*request*/, ::grpc::ByteBuffer* /*response*/)
+    #endif
+      { return nullptr; }
+  };
+  template <class BaseClass>
+  class ExperimentalWithRawCallbackMethod_ReleaseControl : public BaseClass {
+   private:
+    void BaseClassMustBeDerivedFromService(const Service* /*service*/) {}
+   public:
+    ExperimentalWithRawCallbackMethod_ReleaseControl() {
+    #ifdef GRPC_CALLBACK_API_NONEXPERIMENTAL
+      ::grpc::Service::
+    #else
+      ::grpc::Service::experimental().
+    #endif
+        MarkMethodRawCallback(5,
+          new ::grpc::internal::CallbackUnaryHandler< ::grpc::ByteBuffer, ::grpc::ByteBuffer>(
+            [this](
+    #ifdef GRPC_CALLBACK_API_NONEXPERIMENTAL
+                   ::grpc::CallbackServerContext*
+    #else
+                   ::grpc::experimental::CallbackServerContext*
+    #endif
+                     context, const ::grpc::ByteBuffer* request, ::grpc::ByteBuffer* response) { return this->ReleaseControl(context, request, response); }));
+    }
+    ~ExperimentalWithRawCallbackMethod_ReleaseControl() override {
+      BaseClassMustBeDerivedFromService(this);
+    }
+    // disable synchronous version of this method
+    ::grpc::Status ReleaseControl(::grpc::ServerContext* /*context*/, const ::mavsdk::rpc::gimbal::ReleaseControlRequest* /*request*/, ::mavsdk::rpc::gimbal::ReleaseControlResponse* /*response*/) override {
+      abort();
+      return ::grpc::Status(::grpc::StatusCode::UNIMPLEMENTED, "");
+    }
+    #ifdef GRPC_CALLBACK_API_NONEXPERIMENTAL
+    virtual ::grpc::ServerUnaryReactor* ReleaseControl(
+      ::grpc::CallbackServerContext* /*context*/, const ::grpc::ByteBuffer* /*request*/, ::grpc::ByteBuffer* /*response*/)
+    #else
+    virtual ::grpc::experimental::ServerUnaryReactor* ReleaseControl(
+      ::grpc::experimental::CallbackServerContext* /*context*/, const ::grpc::ByteBuffer* /*request*/, ::grpc::ByteBuffer* /*response*/)
+    #endif
+      { return nullptr; }
+  };
+  template <class BaseClass>
+  class ExperimentalWithRawCallbackMethod_SubscribeControl : public BaseClass {
+   private:
+    void BaseClassMustBeDerivedFromService(const Service* /*service*/) {}
+   public:
+    ExperimentalWithRawCallbackMethod_SubscribeControl() {
+    #ifdef GRPC_CALLBACK_API_NONEXPERIMENTAL
+      ::grpc::Service::
+    #else
+      ::grpc::Service::experimental().
+    #endif
+        MarkMethodRawCallback(6,
+          new ::grpc::internal::CallbackServerStreamingHandler< ::grpc::ByteBuffer, ::grpc::ByteBuffer>(
+            [this](
+    #ifdef GRPC_CALLBACK_API_NONEXPERIMENTAL
+                   ::grpc::CallbackServerContext*
+    #else
+                   ::grpc::experimental::CallbackServerContext*
+    #endif
+                     context, const::grpc::ByteBuffer* request) { return this->SubscribeControl(context, request); }));
+    }
+    ~ExperimentalWithRawCallbackMethod_SubscribeControl() override {
+      BaseClassMustBeDerivedFromService(this);
+    }
+    // disable synchronous version of this method
+    ::grpc::Status SubscribeControl(::grpc::ServerContext* /*context*/, const ::mavsdk::rpc::gimbal::SubscribeControlRequest* /*request*/, ::grpc::ServerWriter< ::mavsdk::rpc::gimbal::ControlResponse>* /*writer*/) override {
+      abort();
+      return ::grpc::Status(::grpc::StatusCode::UNIMPLEMENTED, "");
+    }
+    #ifdef GRPC_CALLBACK_API_NONEXPERIMENTAL
+    virtual ::grpc::ServerWriteReactor< ::grpc::ByteBuffer>* SubscribeControl(
+      ::grpc::CallbackServerContext* /*context*/, const ::grpc::ByteBuffer* /*request*/)
+    #else
+    virtual ::grpc::experimental::ServerWriteReactor< ::grpc::ByteBuffer>* SubscribeControl(
+      ::grpc::experimental::CallbackServerContext* /*context*/, const ::grpc::ByteBuffer* /*request*/)
+    #endif
+      { return nullptr; }
+  };
+  template <class BaseClass>
   class WithStreamedUnaryMethod_SetPitchAndYaw : public BaseClass {
    private:
     void BaseClassMustBeDerivedFromService(const Service* /*service*/) {}
@@ -971,9 +1548,90 @@ class GimbalService final {
     // replace default version of method with streamed unary
     virtual ::grpc::Status StreamedSetRoiLocation(::grpc::ServerContext* context, ::grpc::ServerUnaryStreamer< ::mavsdk::rpc::gimbal::SetRoiLocationRequest,::mavsdk::rpc::gimbal::SetRoiLocationResponse>* server_unary_streamer) = 0;
   };
-  typedef WithStreamedUnaryMethod_SetPitchAndYaw<WithStreamedUnaryMethod_SetPitchRateAndYawRate<WithStreamedUnaryMethod_SetMode<WithStreamedUnaryMethod_SetRoiLocation<Service > > > > StreamedUnaryService;
-  typedef Service SplitStreamedService;
-  typedef WithStreamedUnaryMethod_SetPitchAndYaw<WithStreamedUnaryMethod_SetPitchRateAndYawRate<WithStreamedUnaryMethod_SetMode<WithStreamedUnaryMethod_SetRoiLocation<Service > > > > StreamedService;
+  template <class BaseClass>
+  class WithStreamedUnaryMethod_TakeControl : public BaseClass {
+   private:
+    void BaseClassMustBeDerivedFromService(const Service* /*service*/) {}
+   public:
+    WithStreamedUnaryMethod_TakeControl() {
+      ::grpc::Service::MarkMethodStreamed(4,
+        new ::grpc::internal::StreamedUnaryHandler<
+          ::mavsdk::rpc::gimbal::TakeControlRequest, ::mavsdk::rpc::gimbal::TakeControlResponse>(
+            [this](::grpc::ServerContext* context,
+                   ::grpc::ServerUnaryStreamer<
+                     ::mavsdk::rpc::gimbal::TakeControlRequest, ::mavsdk::rpc::gimbal::TakeControlResponse>* streamer) {
+                       return this->StreamedTakeControl(context,
+                         streamer);
+                  }));
+    }
+    ~WithStreamedUnaryMethod_TakeControl() override {
+      BaseClassMustBeDerivedFromService(this);
+    }
+    // disable regular version of this method
+    ::grpc::Status TakeControl(::grpc::ServerContext* /*context*/, const ::mavsdk::rpc::gimbal::TakeControlRequest* /*request*/, ::mavsdk::rpc::gimbal::TakeControlResponse* /*response*/) override {
+      abort();
+      return ::grpc::Status(::grpc::StatusCode::UNIMPLEMENTED, "");
+    }
+    // replace default version of method with streamed unary
+    virtual ::grpc::Status StreamedTakeControl(::grpc::ServerContext* context, ::grpc::ServerUnaryStreamer< ::mavsdk::rpc::gimbal::TakeControlRequest,::mavsdk::rpc::gimbal::TakeControlResponse>* server_unary_streamer) = 0;
+  };
+  template <class BaseClass>
+  class WithStreamedUnaryMethod_ReleaseControl : public BaseClass {
+   private:
+    void BaseClassMustBeDerivedFromService(const Service* /*service*/) {}
+   public:
+    WithStreamedUnaryMethod_ReleaseControl() {
+      ::grpc::Service::MarkMethodStreamed(5,
+        new ::grpc::internal::StreamedUnaryHandler<
+          ::mavsdk::rpc::gimbal::ReleaseControlRequest, ::mavsdk::rpc::gimbal::ReleaseControlResponse>(
+            [this](::grpc::ServerContext* context,
+                   ::grpc::ServerUnaryStreamer<
+                     ::mavsdk::rpc::gimbal::ReleaseControlRequest, ::mavsdk::rpc::gimbal::ReleaseControlResponse>* streamer) {
+                       return this->StreamedReleaseControl(context,
+                         streamer);
+                  }));
+    }
+    ~WithStreamedUnaryMethod_ReleaseControl() override {
+      BaseClassMustBeDerivedFromService(this);
+    }
+    // disable regular version of this method
+    ::grpc::Status ReleaseControl(::grpc::ServerContext* /*context*/, const ::mavsdk::rpc::gimbal::ReleaseControlRequest* /*request*/, ::mavsdk::rpc::gimbal::ReleaseControlResponse* /*response*/) override {
+      abort();
+      return ::grpc::Status(::grpc::StatusCode::UNIMPLEMENTED, "");
+    }
+    // replace default version of method with streamed unary
+    virtual ::grpc::Status StreamedReleaseControl(::grpc::ServerContext* context, ::grpc::ServerUnaryStreamer< ::mavsdk::rpc::gimbal::ReleaseControlRequest,::mavsdk::rpc::gimbal::ReleaseControlResponse>* server_unary_streamer) = 0;
+  };
+  typedef WithStreamedUnaryMethod_SetPitchAndYaw<WithStreamedUnaryMethod_SetPitchRateAndYawRate<WithStreamedUnaryMethod_SetMode<WithStreamedUnaryMethod_SetRoiLocation<WithStreamedUnaryMethod_TakeControl<WithStreamedUnaryMethod_ReleaseControl<Service > > > > > > StreamedUnaryService;
+  template <class BaseClass>
+  class WithSplitStreamingMethod_SubscribeControl : public BaseClass {
+   private:
+    void BaseClassMustBeDerivedFromService(const Service* /*service*/) {}
+   public:
+    WithSplitStreamingMethod_SubscribeControl() {
+      ::grpc::Service::MarkMethodStreamed(6,
+        new ::grpc::internal::SplitServerStreamingHandler<
+          ::mavsdk::rpc::gimbal::SubscribeControlRequest, ::mavsdk::rpc::gimbal::ControlResponse>(
+            [this](::grpc::ServerContext* context,
+                   ::grpc::ServerSplitStreamer<
+                     ::mavsdk::rpc::gimbal::SubscribeControlRequest, ::mavsdk::rpc::gimbal::ControlResponse>* streamer) {
+                       return this->StreamedSubscribeControl(context,
+                         streamer);
+                  }));
+    }
+    ~WithSplitStreamingMethod_SubscribeControl() override {
+      BaseClassMustBeDerivedFromService(this);
+    }
+    // disable regular version of this method
+    ::grpc::Status SubscribeControl(::grpc::ServerContext* /*context*/, const ::mavsdk::rpc::gimbal::SubscribeControlRequest* /*request*/, ::grpc::ServerWriter< ::mavsdk::rpc::gimbal::ControlResponse>* /*writer*/) override {
+      abort();
+      return ::grpc::Status(::grpc::StatusCode::UNIMPLEMENTED, "");
+    }
+    // replace default version of method with split streamed
+    virtual ::grpc::Status StreamedSubscribeControl(::grpc::ServerContext* context, ::grpc::ServerSplitStreamer< ::mavsdk::rpc::gimbal::SubscribeControlRequest,::mavsdk::rpc::gimbal::ControlResponse>* server_split_streamer) = 0;
+  };
+  typedef WithSplitStreamingMethod_SubscribeControl<Service > SplitStreamedService;
+  typedef WithStreamedUnaryMethod_SetPitchAndYaw<WithStreamedUnaryMethod_SetPitchRateAndYawRate<WithStreamedUnaryMethod_SetMode<WithStreamedUnaryMethod_SetRoiLocation<WithStreamedUnaryMethod_TakeControl<WithStreamedUnaryMethod_ReleaseControl<WithSplitStreamingMethod_SubscribeControl<Service > > > > > > > StreamedService;
 };
 
 }  // namespace gimbal

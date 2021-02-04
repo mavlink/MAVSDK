@@ -14,6 +14,7 @@
 #include <google/protobuf/wire_format.h>
 // @@protoc_insertion_point(includes)
 #include <google/protobuf/port_def.inc>
+extern PROTOBUF_INTERNAL_EXPORT_gimbal_2fgimbal_2eproto ::PROTOBUF_NAMESPACE_ID::internal::SCCInfo<0> scc_info_ControlStatus_gimbal_2fgimbal_2eproto;
 extern PROTOBUF_INTERNAL_EXPORT_gimbal_2fgimbal_2eproto ::PROTOBUF_NAMESPACE_ID::internal::SCCInfo<0> scc_info_GimbalResult_gimbal_2fgimbal_2eproto;
 namespace mavsdk {
 namespace rpc {
@@ -50,6 +51,34 @@ class SetRoiLocationResponseDefaultTypeInternal {
  public:
   ::PROTOBUF_NAMESPACE_ID::internal::ExplicitlyConstructed<SetRoiLocationResponse> _instance;
 } _SetRoiLocationResponse_default_instance_;
+class TakeControlRequestDefaultTypeInternal {
+ public:
+  ::PROTOBUF_NAMESPACE_ID::internal::ExplicitlyConstructed<TakeControlRequest> _instance;
+} _TakeControlRequest_default_instance_;
+class TakeControlResponseDefaultTypeInternal {
+ public:
+  ::PROTOBUF_NAMESPACE_ID::internal::ExplicitlyConstructed<TakeControlResponse> _instance;
+} _TakeControlResponse_default_instance_;
+class ReleaseControlRequestDefaultTypeInternal {
+ public:
+  ::PROTOBUF_NAMESPACE_ID::internal::ExplicitlyConstructed<ReleaseControlRequest> _instance;
+} _ReleaseControlRequest_default_instance_;
+class ReleaseControlResponseDefaultTypeInternal {
+ public:
+  ::PROTOBUF_NAMESPACE_ID::internal::ExplicitlyConstructed<ReleaseControlResponse> _instance;
+} _ReleaseControlResponse_default_instance_;
+class SubscribeControlRequestDefaultTypeInternal {
+ public:
+  ::PROTOBUF_NAMESPACE_ID::internal::ExplicitlyConstructed<SubscribeControlRequest> _instance;
+} _SubscribeControlRequest_default_instance_;
+class ControlResponseDefaultTypeInternal {
+ public:
+  ::PROTOBUF_NAMESPACE_ID::internal::ExplicitlyConstructed<ControlResponse> _instance;
+} _ControlResponse_default_instance_;
+class ControlStatusDefaultTypeInternal {
+ public:
+  ::PROTOBUF_NAMESPACE_ID::internal::ExplicitlyConstructed<ControlStatus> _instance;
+} _ControlStatus_default_instance_;
 class GimbalResultDefaultTypeInternal {
  public:
   ::PROTOBUF_NAMESPACE_ID::internal::ExplicitlyConstructed<GimbalResult> _instance;
@@ -57,6 +86,35 @@ class GimbalResultDefaultTypeInternal {
 }  // namespace gimbal
 }  // namespace rpc
 }  // namespace mavsdk
+static void InitDefaultsscc_info_ControlResponse_gimbal_2fgimbal_2eproto() {
+  GOOGLE_PROTOBUF_VERIFY_VERSION;
+
+  {
+    void* ptr = &::mavsdk::rpc::gimbal::_ControlResponse_default_instance_;
+    new (ptr) ::mavsdk::rpc::gimbal::ControlResponse();
+    ::PROTOBUF_NAMESPACE_ID::internal::OnShutdownDestroyMessage(ptr);
+  }
+  ::mavsdk::rpc::gimbal::ControlResponse::InitAsDefaultInstance();
+}
+
+::PROTOBUF_NAMESPACE_ID::internal::SCCInfo<1> scc_info_ControlResponse_gimbal_2fgimbal_2eproto =
+    {{ATOMIC_VAR_INIT(::PROTOBUF_NAMESPACE_ID::internal::SCCInfoBase::kUninitialized), 1, 0, InitDefaultsscc_info_ControlResponse_gimbal_2fgimbal_2eproto}, {
+      &scc_info_ControlStatus_gimbal_2fgimbal_2eproto.base,}};
+
+static void InitDefaultsscc_info_ControlStatus_gimbal_2fgimbal_2eproto() {
+  GOOGLE_PROTOBUF_VERIFY_VERSION;
+
+  {
+    void* ptr = &::mavsdk::rpc::gimbal::_ControlStatus_default_instance_;
+    new (ptr) ::mavsdk::rpc::gimbal::ControlStatus();
+    ::PROTOBUF_NAMESPACE_ID::internal::OnShutdownDestroyMessage(ptr);
+  }
+  ::mavsdk::rpc::gimbal::ControlStatus::InitAsDefaultInstance();
+}
+
+::PROTOBUF_NAMESPACE_ID::internal::SCCInfo<0> scc_info_ControlStatus_gimbal_2fgimbal_2eproto =
+    {{ATOMIC_VAR_INIT(::PROTOBUF_NAMESPACE_ID::internal::SCCInfoBase::kUninitialized), 0, 0, InitDefaultsscc_info_ControlStatus_gimbal_2fgimbal_2eproto}, {}};
+
 static void InitDefaultsscc_info_GimbalResult_gimbal_2fgimbal_2eproto() {
   GOOGLE_PROTOBUF_VERIFY_VERSION;
 
@@ -70,6 +128,35 @@ static void InitDefaultsscc_info_GimbalResult_gimbal_2fgimbal_2eproto() {
 
 ::PROTOBUF_NAMESPACE_ID::internal::SCCInfo<0> scc_info_GimbalResult_gimbal_2fgimbal_2eproto =
     {{ATOMIC_VAR_INIT(::PROTOBUF_NAMESPACE_ID::internal::SCCInfoBase::kUninitialized), 0, 0, InitDefaultsscc_info_GimbalResult_gimbal_2fgimbal_2eproto}, {}};
+
+static void InitDefaultsscc_info_ReleaseControlRequest_gimbal_2fgimbal_2eproto() {
+  GOOGLE_PROTOBUF_VERIFY_VERSION;
+
+  {
+    void* ptr = &::mavsdk::rpc::gimbal::_ReleaseControlRequest_default_instance_;
+    new (ptr) ::mavsdk::rpc::gimbal::ReleaseControlRequest();
+    ::PROTOBUF_NAMESPACE_ID::internal::OnShutdownDestroyMessage(ptr);
+  }
+  ::mavsdk::rpc::gimbal::ReleaseControlRequest::InitAsDefaultInstance();
+}
+
+::PROTOBUF_NAMESPACE_ID::internal::SCCInfo<0> scc_info_ReleaseControlRequest_gimbal_2fgimbal_2eproto =
+    {{ATOMIC_VAR_INIT(::PROTOBUF_NAMESPACE_ID::internal::SCCInfoBase::kUninitialized), 0, 0, InitDefaultsscc_info_ReleaseControlRequest_gimbal_2fgimbal_2eproto}, {}};
+
+static void InitDefaultsscc_info_ReleaseControlResponse_gimbal_2fgimbal_2eproto() {
+  GOOGLE_PROTOBUF_VERIFY_VERSION;
+
+  {
+    void* ptr = &::mavsdk::rpc::gimbal::_ReleaseControlResponse_default_instance_;
+    new (ptr) ::mavsdk::rpc::gimbal::ReleaseControlResponse();
+    ::PROTOBUF_NAMESPACE_ID::internal::OnShutdownDestroyMessage(ptr);
+  }
+  ::mavsdk::rpc::gimbal::ReleaseControlResponse::InitAsDefaultInstance();
+}
+
+::PROTOBUF_NAMESPACE_ID::internal::SCCInfo<1> scc_info_ReleaseControlResponse_gimbal_2fgimbal_2eproto =
+    {{ATOMIC_VAR_INIT(::PROTOBUF_NAMESPACE_ID::internal::SCCInfoBase::kUninitialized), 1, 0, InitDefaultsscc_info_ReleaseControlResponse_gimbal_2fgimbal_2eproto}, {
+      &scc_info_GimbalResult_gimbal_2fgimbal_2eproto.base,}};
 
 static void InitDefaultsscc_info_SetModeRequest_gimbal_2fgimbal_2eproto() {
   GOOGLE_PROTOBUF_VERIFY_VERSION;
@@ -187,8 +274,51 @@ static void InitDefaultsscc_info_SetRoiLocationResponse_gimbal_2fgimbal_2eproto(
     {{ATOMIC_VAR_INIT(::PROTOBUF_NAMESPACE_ID::internal::SCCInfoBase::kUninitialized), 1, 0, InitDefaultsscc_info_SetRoiLocationResponse_gimbal_2fgimbal_2eproto}, {
       &scc_info_GimbalResult_gimbal_2fgimbal_2eproto.base,}};
 
-static ::PROTOBUF_NAMESPACE_ID::Metadata file_level_metadata_gimbal_2fgimbal_2eproto[9];
-static const ::PROTOBUF_NAMESPACE_ID::EnumDescriptor* file_level_enum_descriptors_gimbal_2fgimbal_2eproto[2];
+static void InitDefaultsscc_info_SubscribeControlRequest_gimbal_2fgimbal_2eproto() {
+  GOOGLE_PROTOBUF_VERIFY_VERSION;
+
+  {
+    void* ptr = &::mavsdk::rpc::gimbal::_SubscribeControlRequest_default_instance_;
+    new (ptr) ::mavsdk::rpc::gimbal::SubscribeControlRequest();
+    ::PROTOBUF_NAMESPACE_ID::internal::OnShutdownDestroyMessage(ptr);
+  }
+  ::mavsdk::rpc::gimbal::SubscribeControlRequest::InitAsDefaultInstance();
+}
+
+::PROTOBUF_NAMESPACE_ID::internal::SCCInfo<0> scc_info_SubscribeControlRequest_gimbal_2fgimbal_2eproto =
+    {{ATOMIC_VAR_INIT(::PROTOBUF_NAMESPACE_ID::internal::SCCInfoBase::kUninitialized), 0, 0, InitDefaultsscc_info_SubscribeControlRequest_gimbal_2fgimbal_2eproto}, {}};
+
+static void InitDefaultsscc_info_TakeControlRequest_gimbal_2fgimbal_2eproto() {
+  GOOGLE_PROTOBUF_VERIFY_VERSION;
+
+  {
+    void* ptr = &::mavsdk::rpc::gimbal::_TakeControlRequest_default_instance_;
+    new (ptr) ::mavsdk::rpc::gimbal::TakeControlRequest();
+    ::PROTOBUF_NAMESPACE_ID::internal::OnShutdownDestroyMessage(ptr);
+  }
+  ::mavsdk::rpc::gimbal::TakeControlRequest::InitAsDefaultInstance();
+}
+
+::PROTOBUF_NAMESPACE_ID::internal::SCCInfo<0> scc_info_TakeControlRequest_gimbal_2fgimbal_2eproto =
+    {{ATOMIC_VAR_INIT(::PROTOBUF_NAMESPACE_ID::internal::SCCInfoBase::kUninitialized), 0, 0, InitDefaultsscc_info_TakeControlRequest_gimbal_2fgimbal_2eproto}, {}};
+
+static void InitDefaultsscc_info_TakeControlResponse_gimbal_2fgimbal_2eproto() {
+  GOOGLE_PROTOBUF_VERIFY_VERSION;
+
+  {
+    void* ptr = &::mavsdk::rpc::gimbal::_TakeControlResponse_default_instance_;
+    new (ptr) ::mavsdk::rpc::gimbal::TakeControlResponse();
+    ::PROTOBUF_NAMESPACE_ID::internal::OnShutdownDestroyMessage(ptr);
+  }
+  ::mavsdk::rpc::gimbal::TakeControlResponse::InitAsDefaultInstance();
+}
+
+::PROTOBUF_NAMESPACE_ID::internal::SCCInfo<1> scc_info_TakeControlResponse_gimbal_2fgimbal_2eproto =
+    {{ATOMIC_VAR_INIT(::PROTOBUF_NAMESPACE_ID::internal::SCCInfoBase::kUninitialized), 1, 0, InitDefaultsscc_info_TakeControlResponse_gimbal_2fgimbal_2eproto}, {
+      &scc_info_GimbalResult_gimbal_2fgimbal_2eproto.base,}};
+
+static ::PROTOBUF_NAMESPACE_ID::Metadata file_level_metadata_gimbal_2fgimbal_2eproto[16];
+static const ::PROTOBUF_NAMESPACE_ID::EnumDescriptor* file_level_enum_descriptors_gimbal_2fgimbal_2eproto[3];
 static constexpr ::PROTOBUF_NAMESPACE_ID::ServiceDescriptor const** file_level_service_descriptors_gimbal_2fgimbal_2eproto = nullptr;
 
 const ::PROTOBUF_NAMESPACE_ID::uint32 TableStruct_gimbal_2fgimbal_2eproto::offsets[] PROTOBUF_SECTION_VARIABLE(protodesc_cold) = {
@@ -245,6 +375,50 @@ const ::PROTOBUF_NAMESPACE_ID::uint32 TableStruct_gimbal_2fgimbal_2eproto::offse
   ~0u,  // no _weak_field_map_
   PROTOBUF_FIELD_OFFSET(::mavsdk::rpc::gimbal::SetRoiLocationResponse, gimbal_result_),
   ~0u,  // no _has_bits_
+  PROTOBUF_FIELD_OFFSET(::mavsdk::rpc::gimbal::TakeControlRequest, _internal_metadata_),
+  ~0u,  // no _extensions_
+  ~0u,  // no _oneof_case_
+  ~0u,  // no _weak_field_map_
+  PROTOBUF_FIELD_OFFSET(::mavsdk::rpc::gimbal::TakeControlRequest, control_mode_),
+  ~0u,  // no _has_bits_
+  PROTOBUF_FIELD_OFFSET(::mavsdk::rpc::gimbal::TakeControlResponse, _internal_metadata_),
+  ~0u,  // no _extensions_
+  ~0u,  // no _oneof_case_
+  ~0u,  // no _weak_field_map_
+  PROTOBUF_FIELD_OFFSET(::mavsdk::rpc::gimbal::TakeControlResponse, gimbal_result_),
+  ~0u,  // no _has_bits_
+  PROTOBUF_FIELD_OFFSET(::mavsdk::rpc::gimbal::ReleaseControlRequest, _internal_metadata_),
+  ~0u,  // no _extensions_
+  ~0u,  // no _oneof_case_
+  ~0u,  // no _weak_field_map_
+  ~0u,  // no _has_bits_
+  PROTOBUF_FIELD_OFFSET(::mavsdk::rpc::gimbal::ReleaseControlResponse, _internal_metadata_),
+  ~0u,  // no _extensions_
+  ~0u,  // no _oneof_case_
+  ~0u,  // no _weak_field_map_
+  PROTOBUF_FIELD_OFFSET(::mavsdk::rpc::gimbal::ReleaseControlResponse, gimbal_result_),
+  ~0u,  // no _has_bits_
+  PROTOBUF_FIELD_OFFSET(::mavsdk::rpc::gimbal::SubscribeControlRequest, _internal_metadata_),
+  ~0u,  // no _extensions_
+  ~0u,  // no _oneof_case_
+  ~0u,  // no _weak_field_map_
+  ~0u,  // no _has_bits_
+  PROTOBUF_FIELD_OFFSET(::mavsdk::rpc::gimbal::ControlResponse, _internal_metadata_),
+  ~0u,  // no _extensions_
+  ~0u,  // no _oneof_case_
+  ~0u,  // no _weak_field_map_
+  PROTOBUF_FIELD_OFFSET(::mavsdk::rpc::gimbal::ControlResponse, control_status_),
+  ~0u,  // no _has_bits_
+  PROTOBUF_FIELD_OFFSET(::mavsdk::rpc::gimbal::ControlStatus, _internal_metadata_),
+  ~0u,  // no _extensions_
+  ~0u,  // no _oneof_case_
+  ~0u,  // no _weak_field_map_
+  PROTOBUF_FIELD_OFFSET(::mavsdk::rpc::gimbal::ControlStatus, control_mode_),
+  PROTOBUF_FIELD_OFFSET(::mavsdk::rpc::gimbal::ControlStatus, sysid_primary_control_),
+  PROTOBUF_FIELD_OFFSET(::mavsdk::rpc::gimbal::ControlStatus, compid_primary_control_),
+  PROTOBUF_FIELD_OFFSET(::mavsdk::rpc::gimbal::ControlStatus, sysid_secondary_control_),
+  PROTOBUF_FIELD_OFFSET(::mavsdk::rpc::gimbal::ControlStatus, compid_secondary_control_),
+  ~0u,  // no _has_bits_
   PROTOBUF_FIELD_OFFSET(::mavsdk::rpc::gimbal::GimbalResult, _internal_metadata_),
   ~0u,  // no _extensions_
   ~0u,  // no _oneof_case_
@@ -261,7 +435,14 @@ static const ::PROTOBUF_NAMESPACE_ID::internal::MigrationSchema schemas[] PROTOB
   { 32, -1, sizeof(::mavsdk::rpc::gimbal::SetModeResponse)},
   { 38, -1, sizeof(::mavsdk::rpc::gimbal::SetRoiLocationRequest)},
   { 46, -1, sizeof(::mavsdk::rpc::gimbal::SetRoiLocationResponse)},
-  { 52, -1, sizeof(::mavsdk::rpc::gimbal::GimbalResult)},
+  { 52, -1, sizeof(::mavsdk::rpc::gimbal::TakeControlRequest)},
+  { 58, -1, sizeof(::mavsdk::rpc::gimbal::TakeControlResponse)},
+  { 64, -1, sizeof(::mavsdk::rpc::gimbal::ReleaseControlRequest)},
+  { 69, -1, sizeof(::mavsdk::rpc::gimbal::ReleaseControlResponse)},
+  { 75, -1, sizeof(::mavsdk::rpc::gimbal::SubscribeControlRequest)},
+  { 80, -1, sizeof(::mavsdk::rpc::gimbal::ControlResponse)},
+  { 86, -1, sizeof(::mavsdk::rpc::gimbal::ControlStatus)},
+  { 96, -1, sizeof(::mavsdk::rpc::gimbal::GimbalResult)},
 };
 
 static ::PROTOBUF_NAMESPACE_ID::Message const * const file_default_instances[] = {
@@ -273,6 +454,13 @@ static ::PROTOBUF_NAMESPACE_ID::Message const * const file_default_instances[] =
   reinterpret_cast<const ::PROTOBUF_NAMESPACE_ID::Message*>(&::mavsdk::rpc::gimbal::_SetModeResponse_default_instance_),
   reinterpret_cast<const ::PROTOBUF_NAMESPACE_ID::Message*>(&::mavsdk::rpc::gimbal::_SetRoiLocationRequest_default_instance_),
   reinterpret_cast<const ::PROTOBUF_NAMESPACE_ID::Message*>(&::mavsdk::rpc::gimbal::_SetRoiLocationResponse_default_instance_),
+  reinterpret_cast<const ::PROTOBUF_NAMESPACE_ID::Message*>(&::mavsdk::rpc::gimbal::_TakeControlRequest_default_instance_),
+  reinterpret_cast<const ::PROTOBUF_NAMESPACE_ID::Message*>(&::mavsdk::rpc::gimbal::_TakeControlResponse_default_instance_),
+  reinterpret_cast<const ::PROTOBUF_NAMESPACE_ID::Message*>(&::mavsdk::rpc::gimbal::_ReleaseControlRequest_default_instance_),
+  reinterpret_cast<const ::PROTOBUF_NAMESPACE_ID::Message*>(&::mavsdk::rpc::gimbal::_ReleaseControlResponse_default_instance_),
+  reinterpret_cast<const ::PROTOBUF_NAMESPACE_ID::Message*>(&::mavsdk::rpc::gimbal::_SubscribeControlRequest_default_instance_),
+  reinterpret_cast<const ::PROTOBUF_NAMESPACE_ID::Message*>(&::mavsdk::rpc::gimbal::_ControlResponse_default_instance_),
+  reinterpret_cast<const ::PROTOBUF_NAMESPACE_ID::Message*>(&::mavsdk::rpc::gimbal::_ControlStatus_default_instance_),
   reinterpret_cast<const ::PROTOBUF_NAMESPACE_ID::Message*>(&::mavsdk::rpc::gimbal::_GimbalResult_default_instance_),
 };
 
@@ -293,31 +481,59 @@ const char descriptor_table_protodef_gimbal_2fgimbal_2eproto[] PROTOBUF_SECTION_
   "equest\022\024\n\014latitude_deg\030\001 \001(\001\022\025\n\rlongitud"
   "e_deg\030\002 \001(\001\022\022\n\naltitude_m\030\003 \001(\002\"P\n\026SetRo"
   "iLocationResponse\0226\n\rgimbal_result\030\001 \001(\013"
-  "2\037.mavsdk.rpc.gimbal.GimbalResult\"\312\001\n\014Gi"
-  "mbalResult\0226\n\006result\030\001 \001(\0162&.mavsdk.rpc."
-  "gimbal.GimbalResult.Result\022\022\n\nresult_str"
-  "\030\002 \001(\t\"n\n\006Result\022\022\n\016RESULT_UNKNOWN\020\000\022\022\n\016"
-  "RESULT_SUCCESS\020\001\022\020\n\014RESULT_ERROR\020\002\022\022\n\016RE"
-  "SULT_TIMEOUT\020\003\022\026\n\022RESULT_UNSUPPORTED\020\004*B"
-  "\n\nGimbalMode\022\032\n\026GIMBAL_MODE_YAW_FOLLOW\020\000"
-  "\022\030\n\024GIMBAL_MODE_YAW_LOCK\020\0012\266\003\n\rGimbalSer"
-  "vice\022g\n\016SetPitchAndYaw\022(.mavsdk.rpc.gimb"
-  "al.SetPitchAndYawRequest\032).mavsdk.rpc.gi"
-  "mbal.SetPitchAndYawResponse\"\000\022\177\n\026SetPitc"
-  "hRateAndYawRate\0220.mavsdk.rpc.gimbal.SetP"
-  "itchRateAndYawRateRequest\0321.mavsdk.rpc.g"
-  "imbal.SetPitchRateAndYawRateResponse\"\000\022R"
-  "\n\007SetMode\022!.mavsdk.rpc.gimbal.SetModeReq"
-  "uest\032\".mavsdk.rpc.gimbal.SetModeResponse"
-  "\"\000\022g\n\016SetRoiLocation\022(.mavsdk.rpc.gimbal"
-  ".SetRoiLocationRequest\032).mavsdk.rpc.gimb"
-  "al.SetRoiLocationResponse\"\000B\037\n\020io.mavsdk"
-  ".gimbalB\013GimbalProtob\006proto3"
+  "2\037.mavsdk.rpc.gimbal.GimbalResult\"J\n\022Tak"
+  "eControlRequest\0224\n\014control_mode\030\001 \001(\0162\036."
+  "mavsdk.rpc.gimbal.ControlMode\"M\n\023TakeCon"
+  "trolResponse\0226\n\rgimbal_result\030\001 \001(\0132\037.ma"
+  "vsdk.rpc.gimbal.GimbalResult\"\027\n\025ReleaseC"
+  "ontrolRequest\"P\n\026ReleaseControlResponse\022"
+  "6\n\rgimbal_result\030\001 \001(\0132\037.mavsdk.rpc.gimb"
+  "al.GimbalResult\"\031\n\027SubscribeControlReque"
+  "st\"K\n\017ControlResponse\0228\n\016control_status\030"
+  "\001 \001(\0132 .mavsdk.rpc.gimbal.ControlStatus\""
+  "\307\001\n\rControlStatus\0224\n\014control_mode\030\001 \001(\0162"
+  "\036.mavsdk.rpc.gimbal.ControlMode\022\035\n\025sysid"
+  "_primary_control\030\002 \001(\005\022\036\n\026compid_primary"
+  "_control\030\003 \001(\005\022\037\n\027sysid_secondary_contro"
+  "l\030\004 \001(\005\022 \n\030compid_secondary_control\030\005 \001("
+  "\005\"\312\001\n\014GimbalResult\0226\n\006result\030\001 \001(\0162&.mav"
+  "sdk.rpc.gimbal.GimbalResult.Result\022\022\n\nre"
+  "sult_str\030\002 \001(\t\"n\n\006Result\022\022\n\016RESULT_UNKNO"
+  "WN\020\000\022\022\n\016RESULT_SUCCESS\020\001\022\020\n\014RESULT_ERROR"
+  "\020\002\022\022\n\016RESULT_TIMEOUT\020\003\022\026\n\022RESULT_UNSUPPO"
+  "RTED\020\004*B\n\nGimbalMode\022\032\n\026GIMBAL_MODE_YAW_"
+  "FOLLOW\020\000\022\030\n\024GIMBAL_MODE_YAW_LOCK\020\001*Z\n\013Co"
+  "ntrolMode\022\025\n\021CONTROL_MODE_NONE\020\000\022\030\n\024CONT"
+  "ROL_MODE_PRIMARY\020\001\022\032\n\026CONTROL_MODE_SECON"
+  "DARY\020\0022\347\005\n\rGimbalService\022g\n\016SetPitchAndY"
+  "aw\022(.mavsdk.rpc.gimbal.SetPitchAndYawReq"
+  "uest\032).mavsdk.rpc.gimbal.SetPitchAndYawR"
+  "esponse\"\000\022\177\n\026SetPitchRateAndYawRate\0220.ma"
+  "vsdk.rpc.gimbal.SetPitchRateAndYawRateRe"
+  "quest\0321.mavsdk.rpc.gimbal.SetPitchRateAn"
+  "dYawRateResponse\"\000\022R\n\007SetMode\022!.mavsdk.r"
+  "pc.gimbal.SetModeRequest\032\".mavsdk.rpc.gi"
+  "mbal.SetModeResponse\"\000\022g\n\016SetRoiLocation"
+  "\022(.mavsdk.rpc.gimbal.SetRoiLocationReque"
+  "st\032).mavsdk.rpc.gimbal.SetRoiLocationRes"
+  "ponse\"\000\022^\n\013TakeControl\022%.mavsdk.rpc.gimb"
+  "al.TakeControlRequest\032&.mavsdk.rpc.gimba"
+  "l.TakeControlResponse\"\000\022g\n\016ReleaseContro"
+  "l\022(.mavsdk.rpc.gimbal.ReleaseControlRequ"
+  "est\032).mavsdk.rpc.gimbal.ReleaseControlRe"
+  "sponse\"\000\022f\n\020SubscribeControl\022*.mavsdk.rp"
+  "c.gimbal.SubscribeControlRequest\032\".mavsd"
+  "k.rpc.gimbal.ControlResponse\"\0000\001B\037\n\020io.m"
+  "avsdk.gimbalB\013GimbalProtob\006proto3"
   ;
 static const ::PROTOBUF_NAMESPACE_ID::internal::DescriptorTable*const descriptor_table_gimbal_2fgimbal_2eproto_deps[1] = {
 };
-static ::PROTOBUF_NAMESPACE_ID::internal::SCCInfoBase*const descriptor_table_gimbal_2fgimbal_2eproto_sccs[9] = {
+static ::PROTOBUF_NAMESPACE_ID::internal::SCCInfoBase*const descriptor_table_gimbal_2fgimbal_2eproto_sccs[16] = {
+  &scc_info_ControlResponse_gimbal_2fgimbal_2eproto.base,
+  &scc_info_ControlStatus_gimbal_2fgimbal_2eproto.base,
   &scc_info_GimbalResult_gimbal_2fgimbal_2eproto.base,
+  &scc_info_ReleaseControlRequest_gimbal_2fgimbal_2eproto.base,
+  &scc_info_ReleaseControlResponse_gimbal_2fgimbal_2eproto.base,
   &scc_info_SetModeRequest_gimbal_2fgimbal_2eproto.base,
   &scc_info_SetModeResponse_gimbal_2fgimbal_2eproto.base,
   &scc_info_SetPitchAndYawRequest_gimbal_2fgimbal_2eproto.base,
@@ -326,13 +542,16 @@ static ::PROTOBUF_NAMESPACE_ID::internal::SCCInfoBase*const descriptor_table_gim
   &scc_info_SetPitchRateAndYawRateResponse_gimbal_2fgimbal_2eproto.base,
   &scc_info_SetRoiLocationRequest_gimbal_2fgimbal_2eproto.base,
   &scc_info_SetRoiLocationResponse_gimbal_2fgimbal_2eproto.base,
+  &scc_info_SubscribeControlRequest_gimbal_2fgimbal_2eproto.base,
+  &scc_info_TakeControlRequest_gimbal_2fgimbal_2eproto.base,
+  &scc_info_TakeControlResponse_gimbal_2fgimbal_2eproto.base,
 };
 static ::PROTOBUF_NAMESPACE_ID::internal::once_flag descriptor_table_gimbal_2fgimbal_2eproto_once;
 const ::PROTOBUF_NAMESPACE_ID::internal::DescriptorTable descriptor_table_gimbal_2fgimbal_2eproto = {
-  false, false, descriptor_table_protodef_gimbal_2fgimbal_2eproto, "gimbal/gimbal.proto", 1428,
-  &descriptor_table_gimbal_2fgimbal_2eproto_once, descriptor_table_gimbal_2fgimbal_2eproto_sccs, descriptor_table_gimbal_2fgimbal_2eproto_deps, 9, 0,
+  false, false, descriptor_table_protodef_gimbal_2fgimbal_2eproto, "gimbal/gimbal.proto", 2393,
+  &descriptor_table_gimbal_2fgimbal_2eproto_once, descriptor_table_gimbal_2fgimbal_2eproto_sccs, descriptor_table_gimbal_2fgimbal_2eproto_deps, 16, 0,
   schemas, file_default_instances, TableStruct_gimbal_2fgimbal_2eproto::offsets,
-  file_level_metadata_gimbal_2fgimbal_2eproto, 9, file_level_enum_descriptors_gimbal_2fgimbal_2eproto, file_level_service_descriptors_gimbal_2fgimbal_2eproto,
+  file_level_metadata_gimbal_2fgimbal_2eproto, 16, file_level_enum_descriptors_gimbal_2fgimbal_2eproto, file_level_service_descriptors_gimbal_2fgimbal_2eproto,
 };
 
 // Force running AddDescriptors() at dynamic initialization time.
@@ -375,6 +594,21 @@ bool GimbalMode_IsValid(int value) {
   switch (value) {
     case 0:
     case 1:
+      return true;
+    default:
+      return false;
+  }
+}
+
+const ::PROTOBUF_NAMESPACE_ID::EnumDescriptor* ControlMode_descriptor() {
+  ::PROTOBUF_NAMESPACE_ID::internal::AssignDescriptors(&descriptor_table_gimbal_2fgimbal_2eproto);
+  return file_level_enum_descriptors_gimbal_2fgimbal_2eproto[2];
+}
+bool ControlMode_IsValid(int value) {
+  switch (value) {
+    case 0:
+    case 1:
+    case 2:
       return true;
     default:
       return false;
@@ -2144,6 +2378,1480 @@ void SetRoiLocationResponse::InternalSwap(SetRoiLocationResponse* other) {
 
 // ===================================================================
 
+void TakeControlRequest::InitAsDefaultInstance() {
+}
+class TakeControlRequest::_Internal {
+ public:
+};
+
+TakeControlRequest::TakeControlRequest(::PROTOBUF_NAMESPACE_ID::Arena* arena)
+  : ::PROTOBUF_NAMESPACE_ID::Message(arena) {
+  SharedCtor();
+  RegisterArenaDtor(arena);
+  // @@protoc_insertion_point(arena_constructor:mavsdk.rpc.gimbal.TakeControlRequest)
+}
+TakeControlRequest::TakeControlRequest(const TakeControlRequest& from)
+  : ::PROTOBUF_NAMESPACE_ID::Message() {
+  _internal_metadata_.MergeFrom<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>(from._internal_metadata_);
+  control_mode_ = from.control_mode_;
+  // @@protoc_insertion_point(copy_constructor:mavsdk.rpc.gimbal.TakeControlRequest)
+}
+
+void TakeControlRequest::SharedCtor() {
+  control_mode_ = 0;
+}
+
+TakeControlRequest::~TakeControlRequest() {
+  // @@protoc_insertion_point(destructor:mavsdk.rpc.gimbal.TakeControlRequest)
+  SharedDtor();
+  _internal_metadata_.Delete<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>();
+}
+
+void TakeControlRequest::SharedDtor() {
+  GOOGLE_DCHECK(GetArena() == nullptr);
+}
+
+void TakeControlRequest::ArenaDtor(void* object) {
+  TakeControlRequest* _this = reinterpret_cast< TakeControlRequest* >(object);
+  (void)_this;
+}
+void TakeControlRequest::RegisterArenaDtor(::PROTOBUF_NAMESPACE_ID::Arena*) {
+}
+void TakeControlRequest::SetCachedSize(int size) const {
+  _cached_size_.Set(size);
+}
+const TakeControlRequest& TakeControlRequest::default_instance() {
+  ::PROTOBUF_NAMESPACE_ID::internal::InitSCC(&::scc_info_TakeControlRequest_gimbal_2fgimbal_2eproto.base);
+  return *internal_default_instance();
+}
+
+
+void TakeControlRequest::Clear() {
+// @@protoc_insertion_point(message_clear_start:mavsdk.rpc.gimbal.TakeControlRequest)
+  ::PROTOBUF_NAMESPACE_ID::uint32 cached_has_bits = 0;
+  // Prevent compiler warnings about cached_has_bits being unused
+  (void) cached_has_bits;
+
+  control_mode_ = 0;
+  _internal_metadata_.Clear<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>();
+}
+
+const char* TakeControlRequest::_InternalParse(const char* ptr, ::PROTOBUF_NAMESPACE_ID::internal::ParseContext* ctx) {
+#define CHK_(x) if (PROTOBUF_PREDICT_FALSE(!(x))) goto failure
+  ::PROTOBUF_NAMESPACE_ID::Arena* arena = GetArena(); (void)arena;
+  while (!ctx->Done(&ptr)) {
+    ::PROTOBUF_NAMESPACE_ID::uint32 tag;
+    ptr = ::PROTOBUF_NAMESPACE_ID::internal::ReadTag(ptr, &tag);
+    CHK_(ptr);
+    switch (tag >> 3) {
+      // .mavsdk.rpc.gimbal.ControlMode control_mode = 1;
+      case 1:
+        if (PROTOBUF_PREDICT_TRUE(static_cast<::PROTOBUF_NAMESPACE_ID::uint8>(tag) == 8)) {
+          ::PROTOBUF_NAMESPACE_ID::uint64 val = ::PROTOBUF_NAMESPACE_ID::internal::ReadVarint64(&ptr);
+          CHK_(ptr);
+          _internal_set_control_mode(static_cast<::mavsdk::rpc::gimbal::ControlMode>(val));
+        } else goto handle_unusual;
+        continue;
+      default: {
+      handle_unusual:
+        if ((tag & 7) == 4 || tag == 0) {
+          ctx->SetLastTag(tag);
+          goto success;
+        }
+        ptr = UnknownFieldParse(tag,
+            _internal_metadata_.mutable_unknown_fields<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>(),
+            ptr, ctx);
+        CHK_(ptr != nullptr);
+        continue;
+      }
+    }  // switch
+  }  // while
+success:
+  return ptr;
+failure:
+  ptr = nullptr;
+  goto success;
+#undef CHK_
+}
+
+::PROTOBUF_NAMESPACE_ID::uint8* TakeControlRequest::_InternalSerialize(
+    ::PROTOBUF_NAMESPACE_ID::uint8* target, ::PROTOBUF_NAMESPACE_ID::io::EpsCopyOutputStream* stream) const {
+  // @@protoc_insertion_point(serialize_to_array_start:mavsdk.rpc.gimbal.TakeControlRequest)
+  ::PROTOBUF_NAMESPACE_ID::uint32 cached_has_bits = 0;
+  (void) cached_has_bits;
+
+  // .mavsdk.rpc.gimbal.ControlMode control_mode = 1;
+  if (this->control_mode() != 0) {
+    target = stream->EnsureSpace(target);
+    target = ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::WriteEnumToArray(
+      1, this->_internal_control_mode(), target);
+  }
+
+  if (PROTOBUF_PREDICT_FALSE(_internal_metadata_.have_unknown_fields())) {
+    target = ::PROTOBUF_NAMESPACE_ID::internal::WireFormat::InternalSerializeUnknownFieldsToArray(
+        _internal_metadata_.unknown_fields<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>(::PROTOBUF_NAMESPACE_ID::UnknownFieldSet::default_instance), target, stream);
+  }
+  // @@protoc_insertion_point(serialize_to_array_end:mavsdk.rpc.gimbal.TakeControlRequest)
+  return target;
+}
+
+size_t TakeControlRequest::ByteSizeLong() const {
+// @@protoc_insertion_point(message_byte_size_start:mavsdk.rpc.gimbal.TakeControlRequest)
+  size_t total_size = 0;
+
+  ::PROTOBUF_NAMESPACE_ID::uint32 cached_has_bits = 0;
+  // Prevent compiler warnings about cached_has_bits being unused
+  (void) cached_has_bits;
+
+  // .mavsdk.rpc.gimbal.ControlMode control_mode = 1;
+  if (this->control_mode() != 0) {
+    total_size += 1 +
+      ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::EnumSize(this->_internal_control_mode());
+  }
+
+  if (PROTOBUF_PREDICT_FALSE(_internal_metadata_.have_unknown_fields())) {
+    return ::PROTOBUF_NAMESPACE_ID::internal::ComputeUnknownFieldsSize(
+        _internal_metadata_, total_size, &_cached_size_);
+  }
+  int cached_size = ::PROTOBUF_NAMESPACE_ID::internal::ToCachedSize(total_size);
+  SetCachedSize(cached_size);
+  return total_size;
+}
+
+void TakeControlRequest::MergeFrom(const ::PROTOBUF_NAMESPACE_ID::Message& from) {
+// @@protoc_insertion_point(generalized_merge_from_start:mavsdk.rpc.gimbal.TakeControlRequest)
+  GOOGLE_DCHECK_NE(&from, this);
+  const TakeControlRequest* source =
+      ::PROTOBUF_NAMESPACE_ID::DynamicCastToGenerated<TakeControlRequest>(
+          &from);
+  if (source == nullptr) {
+  // @@protoc_insertion_point(generalized_merge_from_cast_fail:mavsdk.rpc.gimbal.TakeControlRequest)
+    ::PROTOBUF_NAMESPACE_ID::internal::ReflectionOps::Merge(from, this);
+  } else {
+  // @@protoc_insertion_point(generalized_merge_from_cast_success:mavsdk.rpc.gimbal.TakeControlRequest)
+    MergeFrom(*source);
+  }
+}
+
+void TakeControlRequest::MergeFrom(const TakeControlRequest& from) {
+// @@protoc_insertion_point(class_specific_merge_from_start:mavsdk.rpc.gimbal.TakeControlRequest)
+  GOOGLE_DCHECK_NE(&from, this);
+  _internal_metadata_.MergeFrom<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>(from._internal_metadata_);
+  ::PROTOBUF_NAMESPACE_ID::uint32 cached_has_bits = 0;
+  (void) cached_has_bits;
+
+  if (from.control_mode() != 0) {
+    _internal_set_control_mode(from._internal_control_mode());
+  }
+}
+
+void TakeControlRequest::CopyFrom(const ::PROTOBUF_NAMESPACE_ID::Message& from) {
+// @@protoc_insertion_point(generalized_copy_from_start:mavsdk.rpc.gimbal.TakeControlRequest)
+  if (&from == this) return;
+  Clear();
+  MergeFrom(from);
+}
+
+void TakeControlRequest::CopyFrom(const TakeControlRequest& from) {
+// @@protoc_insertion_point(class_specific_copy_from_start:mavsdk.rpc.gimbal.TakeControlRequest)
+  if (&from == this) return;
+  Clear();
+  MergeFrom(from);
+}
+
+bool TakeControlRequest::IsInitialized() const {
+  return true;
+}
+
+void TakeControlRequest::InternalSwap(TakeControlRequest* other) {
+  using std::swap;
+  _internal_metadata_.Swap<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>(&other->_internal_metadata_);
+  swap(control_mode_, other->control_mode_);
+}
+
+::PROTOBUF_NAMESPACE_ID::Metadata TakeControlRequest::GetMetadata() const {
+  return GetMetadataStatic();
+}
+
+
+// ===================================================================
+
+void TakeControlResponse::InitAsDefaultInstance() {
+  ::mavsdk::rpc::gimbal::_TakeControlResponse_default_instance_._instance.get_mutable()->gimbal_result_ = const_cast< ::mavsdk::rpc::gimbal::GimbalResult*>(
+      ::mavsdk::rpc::gimbal::GimbalResult::internal_default_instance());
+}
+class TakeControlResponse::_Internal {
+ public:
+  static const ::mavsdk::rpc::gimbal::GimbalResult& gimbal_result(const TakeControlResponse* msg);
+};
+
+const ::mavsdk::rpc::gimbal::GimbalResult&
+TakeControlResponse::_Internal::gimbal_result(const TakeControlResponse* msg) {
+  return *msg->gimbal_result_;
+}
+TakeControlResponse::TakeControlResponse(::PROTOBUF_NAMESPACE_ID::Arena* arena)
+  : ::PROTOBUF_NAMESPACE_ID::Message(arena) {
+  SharedCtor();
+  RegisterArenaDtor(arena);
+  // @@protoc_insertion_point(arena_constructor:mavsdk.rpc.gimbal.TakeControlResponse)
+}
+TakeControlResponse::TakeControlResponse(const TakeControlResponse& from)
+  : ::PROTOBUF_NAMESPACE_ID::Message() {
+  _internal_metadata_.MergeFrom<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>(from._internal_metadata_);
+  if (from._internal_has_gimbal_result()) {
+    gimbal_result_ = new ::mavsdk::rpc::gimbal::GimbalResult(*from.gimbal_result_);
+  } else {
+    gimbal_result_ = nullptr;
+  }
+  // @@protoc_insertion_point(copy_constructor:mavsdk.rpc.gimbal.TakeControlResponse)
+}
+
+void TakeControlResponse::SharedCtor() {
+  ::PROTOBUF_NAMESPACE_ID::internal::InitSCC(&scc_info_TakeControlResponse_gimbal_2fgimbal_2eproto.base);
+  gimbal_result_ = nullptr;
+}
+
+TakeControlResponse::~TakeControlResponse() {
+  // @@protoc_insertion_point(destructor:mavsdk.rpc.gimbal.TakeControlResponse)
+  SharedDtor();
+  _internal_metadata_.Delete<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>();
+}
+
+void TakeControlResponse::SharedDtor() {
+  GOOGLE_DCHECK(GetArena() == nullptr);
+  if (this != internal_default_instance()) delete gimbal_result_;
+}
+
+void TakeControlResponse::ArenaDtor(void* object) {
+  TakeControlResponse* _this = reinterpret_cast< TakeControlResponse* >(object);
+  (void)_this;
+}
+void TakeControlResponse::RegisterArenaDtor(::PROTOBUF_NAMESPACE_ID::Arena*) {
+}
+void TakeControlResponse::SetCachedSize(int size) const {
+  _cached_size_.Set(size);
+}
+const TakeControlResponse& TakeControlResponse::default_instance() {
+  ::PROTOBUF_NAMESPACE_ID::internal::InitSCC(&::scc_info_TakeControlResponse_gimbal_2fgimbal_2eproto.base);
+  return *internal_default_instance();
+}
+
+
+void TakeControlResponse::Clear() {
+// @@protoc_insertion_point(message_clear_start:mavsdk.rpc.gimbal.TakeControlResponse)
+  ::PROTOBUF_NAMESPACE_ID::uint32 cached_has_bits = 0;
+  // Prevent compiler warnings about cached_has_bits being unused
+  (void) cached_has_bits;
+
+  if (GetArena() == nullptr && gimbal_result_ != nullptr) {
+    delete gimbal_result_;
+  }
+  gimbal_result_ = nullptr;
+  _internal_metadata_.Clear<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>();
+}
+
+const char* TakeControlResponse::_InternalParse(const char* ptr, ::PROTOBUF_NAMESPACE_ID::internal::ParseContext* ctx) {
+#define CHK_(x) if (PROTOBUF_PREDICT_FALSE(!(x))) goto failure
+  ::PROTOBUF_NAMESPACE_ID::Arena* arena = GetArena(); (void)arena;
+  while (!ctx->Done(&ptr)) {
+    ::PROTOBUF_NAMESPACE_ID::uint32 tag;
+    ptr = ::PROTOBUF_NAMESPACE_ID::internal::ReadTag(ptr, &tag);
+    CHK_(ptr);
+    switch (tag >> 3) {
+      // .mavsdk.rpc.gimbal.GimbalResult gimbal_result = 1;
+      case 1:
+        if (PROTOBUF_PREDICT_TRUE(static_cast<::PROTOBUF_NAMESPACE_ID::uint8>(tag) == 10)) {
+          ptr = ctx->ParseMessage(_internal_mutable_gimbal_result(), ptr);
+          CHK_(ptr);
+        } else goto handle_unusual;
+        continue;
+      default: {
+      handle_unusual:
+        if ((tag & 7) == 4 || tag == 0) {
+          ctx->SetLastTag(tag);
+          goto success;
+        }
+        ptr = UnknownFieldParse(tag,
+            _internal_metadata_.mutable_unknown_fields<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>(),
+            ptr, ctx);
+        CHK_(ptr != nullptr);
+        continue;
+      }
+    }  // switch
+  }  // while
+success:
+  return ptr;
+failure:
+  ptr = nullptr;
+  goto success;
+#undef CHK_
+}
+
+::PROTOBUF_NAMESPACE_ID::uint8* TakeControlResponse::_InternalSerialize(
+    ::PROTOBUF_NAMESPACE_ID::uint8* target, ::PROTOBUF_NAMESPACE_ID::io::EpsCopyOutputStream* stream) const {
+  // @@protoc_insertion_point(serialize_to_array_start:mavsdk.rpc.gimbal.TakeControlResponse)
+  ::PROTOBUF_NAMESPACE_ID::uint32 cached_has_bits = 0;
+  (void) cached_has_bits;
+
+  // .mavsdk.rpc.gimbal.GimbalResult gimbal_result = 1;
+  if (this->has_gimbal_result()) {
+    target = stream->EnsureSpace(target);
+    target = ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::
+      InternalWriteMessage(
+        1, _Internal::gimbal_result(this), target, stream);
+  }
+
+  if (PROTOBUF_PREDICT_FALSE(_internal_metadata_.have_unknown_fields())) {
+    target = ::PROTOBUF_NAMESPACE_ID::internal::WireFormat::InternalSerializeUnknownFieldsToArray(
+        _internal_metadata_.unknown_fields<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>(::PROTOBUF_NAMESPACE_ID::UnknownFieldSet::default_instance), target, stream);
+  }
+  // @@protoc_insertion_point(serialize_to_array_end:mavsdk.rpc.gimbal.TakeControlResponse)
+  return target;
+}
+
+size_t TakeControlResponse::ByteSizeLong() const {
+// @@protoc_insertion_point(message_byte_size_start:mavsdk.rpc.gimbal.TakeControlResponse)
+  size_t total_size = 0;
+
+  ::PROTOBUF_NAMESPACE_ID::uint32 cached_has_bits = 0;
+  // Prevent compiler warnings about cached_has_bits being unused
+  (void) cached_has_bits;
+
+  // .mavsdk.rpc.gimbal.GimbalResult gimbal_result = 1;
+  if (this->has_gimbal_result()) {
+    total_size += 1 +
+      ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::MessageSize(
+        *gimbal_result_);
+  }
+
+  if (PROTOBUF_PREDICT_FALSE(_internal_metadata_.have_unknown_fields())) {
+    return ::PROTOBUF_NAMESPACE_ID::internal::ComputeUnknownFieldsSize(
+        _internal_metadata_, total_size, &_cached_size_);
+  }
+  int cached_size = ::PROTOBUF_NAMESPACE_ID::internal::ToCachedSize(total_size);
+  SetCachedSize(cached_size);
+  return total_size;
+}
+
+void TakeControlResponse::MergeFrom(const ::PROTOBUF_NAMESPACE_ID::Message& from) {
+// @@protoc_insertion_point(generalized_merge_from_start:mavsdk.rpc.gimbal.TakeControlResponse)
+  GOOGLE_DCHECK_NE(&from, this);
+  const TakeControlResponse* source =
+      ::PROTOBUF_NAMESPACE_ID::DynamicCastToGenerated<TakeControlResponse>(
+          &from);
+  if (source == nullptr) {
+  // @@protoc_insertion_point(generalized_merge_from_cast_fail:mavsdk.rpc.gimbal.TakeControlResponse)
+    ::PROTOBUF_NAMESPACE_ID::internal::ReflectionOps::Merge(from, this);
+  } else {
+  // @@protoc_insertion_point(generalized_merge_from_cast_success:mavsdk.rpc.gimbal.TakeControlResponse)
+    MergeFrom(*source);
+  }
+}
+
+void TakeControlResponse::MergeFrom(const TakeControlResponse& from) {
+// @@protoc_insertion_point(class_specific_merge_from_start:mavsdk.rpc.gimbal.TakeControlResponse)
+  GOOGLE_DCHECK_NE(&from, this);
+  _internal_metadata_.MergeFrom<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>(from._internal_metadata_);
+  ::PROTOBUF_NAMESPACE_ID::uint32 cached_has_bits = 0;
+  (void) cached_has_bits;
+
+  if (from.has_gimbal_result()) {
+    _internal_mutable_gimbal_result()->::mavsdk::rpc::gimbal::GimbalResult::MergeFrom(from._internal_gimbal_result());
+  }
+}
+
+void TakeControlResponse::CopyFrom(const ::PROTOBUF_NAMESPACE_ID::Message& from) {
+// @@protoc_insertion_point(generalized_copy_from_start:mavsdk.rpc.gimbal.TakeControlResponse)
+  if (&from == this) return;
+  Clear();
+  MergeFrom(from);
+}
+
+void TakeControlResponse::CopyFrom(const TakeControlResponse& from) {
+// @@protoc_insertion_point(class_specific_copy_from_start:mavsdk.rpc.gimbal.TakeControlResponse)
+  if (&from == this) return;
+  Clear();
+  MergeFrom(from);
+}
+
+bool TakeControlResponse::IsInitialized() const {
+  return true;
+}
+
+void TakeControlResponse::InternalSwap(TakeControlResponse* other) {
+  using std::swap;
+  _internal_metadata_.Swap<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>(&other->_internal_metadata_);
+  swap(gimbal_result_, other->gimbal_result_);
+}
+
+::PROTOBUF_NAMESPACE_ID::Metadata TakeControlResponse::GetMetadata() const {
+  return GetMetadataStatic();
+}
+
+
+// ===================================================================
+
+void ReleaseControlRequest::InitAsDefaultInstance() {
+}
+class ReleaseControlRequest::_Internal {
+ public:
+};
+
+ReleaseControlRequest::ReleaseControlRequest(::PROTOBUF_NAMESPACE_ID::Arena* arena)
+  : ::PROTOBUF_NAMESPACE_ID::Message(arena) {
+  SharedCtor();
+  RegisterArenaDtor(arena);
+  // @@protoc_insertion_point(arena_constructor:mavsdk.rpc.gimbal.ReleaseControlRequest)
+}
+ReleaseControlRequest::ReleaseControlRequest(const ReleaseControlRequest& from)
+  : ::PROTOBUF_NAMESPACE_ID::Message() {
+  _internal_metadata_.MergeFrom<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>(from._internal_metadata_);
+  // @@protoc_insertion_point(copy_constructor:mavsdk.rpc.gimbal.ReleaseControlRequest)
+}
+
+void ReleaseControlRequest::SharedCtor() {
+}
+
+ReleaseControlRequest::~ReleaseControlRequest() {
+  // @@protoc_insertion_point(destructor:mavsdk.rpc.gimbal.ReleaseControlRequest)
+  SharedDtor();
+  _internal_metadata_.Delete<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>();
+}
+
+void ReleaseControlRequest::SharedDtor() {
+  GOOGLE_DCHECK(GetArena() == nullptr);
+}
+
+void ReleaseControlRequest::ArenaDtor(void* object) {
+  ReleaseControlRequest* _this = reinterpret_cast< ReleaseControlRequest* >(object);
+  (void)_this;
+}
+void ReleaseControlRequest::RegisterArenaDtor(::PROTOBUF_NAMESPACE_ID::Arena*) {
+}
+void ReleaseControlRequest::SetCachedSize(int size) const {
+  _cached_size_.Set(size);
+}
+const ReleaseControlRequest& ReleaseControlRequest::default_instance() {
+  ::PROTOBUF_NAMESPACE_ID::internal::InitSCC(&::scc_info_ReleaseControlRequest_gimbal_2fgimbal_2eproto.base);
+  return *internal_default_instance();
+}
+
+
+void ReleaseControlRequest::Clear() {
+// @@protoc_insertion_point(message_clear_start:mavsdk.rpc.gimbal.ReleaseControlRequest)
+  ::PROTOBUF_NAMESPACE_ID::uint32 cached_has_bits = 0;
+  // Prevent compiler warnings about cached_has_bits being unused
+  (void) cached_has_bits;
+
+  _internal_metadata_.Clear<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>();
+}
+
+const char* ReleaseControlRequest::_InternalParse(const char* ptr, ::PROTOBUF_NAMESPACE_ID::internal::ParseContext* ctx) {
+#define CHK_(x) if (PROTOBUF_PREDICT_FALSE(!(x))) goto failure
+  ::PROTOBUF_NAMESPACE_ID::Arena* arena = GetArena(); (void)arena;
+  while (!ctx->Done(&ptr)) {
+    ::PROTOBUF_NAMESPACE_ID::uint32 tag;
+    ptr = ::PROTOBUF_NAMESPACE_ID::internal::ReadTag(ptr, &tag);
+    CHK_(ptr);
+        if ((tag & 7) == 4 || tag == 0) {
+          ctx->SetLastTag(tag);
+          goto success;
+        }
+        ptr = UnknownFieldParse(tag,
+            _internal_metadata_.mutable_unknown_fields<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>(),
+            ptr, ctx);
+        CHK_(ptr != nullptr);
+        continue;
+  }  // while
+success:
+  return ptr;
+failure:
+  ptr = nullptr;
+  goto success;
+#undef CHK_
+}
+
+::PROTOBUF_NAMESPACE_ID::uint8* ReleaseControlRequest::_InternalSerialize(
+    ::PROTOBUF_NAMESPACE_ID::uint8* target, ::PROTOBUF_NAMESPACE_ID::io::EpsCopyOutputStream* stream) const {
+  // @@protoc_insertion_point(serialize_to_array_start:mavsdk.rpc.gimbal.ReleaseControlRequest)
+  ::PROTOBUF_NAMESPACE_ID::uint32 cached_has_bits = 0;
+  (void) cached_has_bits;
+
+  if (PROTOBUF_PREDICT_FALSE(_internal_metadata_.have_unknown_fields())) {
+    target = ::PROTOBUF_NAMESPACE_ID::internal::WireFormat::InternalSerializeUnknownFieldsToArray(
+        _internal_metadata_.unknown_fields<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>(::PROTOBUF_NAMESPACE_ID::UnknownFieldSet::default_instance), target, stream);
+  }
+  // @@protoc_insertion_point(serialize_to_array_end:mavsdk.rpc.gimbal.ReleaseControlRequest)
+  return target;
+}
+
+size_t ReleaseControlRequest::ByteSizeLong() const {
+// @@protoc_insertion_point(message_byte_size_start:mavsdk.rpc.gimbal.ReleaseControlRequest)
+  size_t total_size = 0;
+
+  ::PROTOBUF_NAMESPACE_ID::uint32 cached_has_bits = 0;
+  // Prevent compiler warnings about cached_has_bits being unused
+  (void) cached_has_bits;
+
+  if (PROTOBUF_PREDICT_FALSE(_internal_metadata_.have_unknown_fields())) {
+    return ::PROTOBUF_NAMESPACE_ID::internal::ComputeUnknownFieldsSize(
+        _internal_metadata_, total_size, &_cached_size_);
+  }
+  int cached_size = ::PROTOBUF_NAMESPACE_ID::internal::ToCachedSize(total_size);
+  SetCachedSize(cached_size);
+  return total_size;
+}
+
+void ReleaseControlRequest::MergeFrom(const ::PROTOBUF_NAMESPACE_ID::Message& from) {
+// @@protoc_insertion_point(generalized_merge_from_start:mavsdk.rpc.gimbal.ReleaseControlRequest)
+  GOOGLE_DCHECK_NE(&from, this);
+  const ReleaseControlRequest* source =
+      ::PROTOBUF_NAMESPACE_ID::DynamicCastToGenerated<ReleaseControlRequest>(
+          &from);
+  if (source == nullptr) {
+  // @@protoc_insertion_point(generalized_merge_from_cast_fail:mavsdk.rpc.gimbal.ReleaseControlRequest)
+    ::PROTOBUF_NAMESPACE_ID::internal::ReflectionOps::Merge(from, this);
+  } else {
+  // @@protoc_insertion_point(generalized_merge_from_cast_success:mavsdk.rpc.gimbal.ReleaseControlRequest)
+    MergeFrom(*source);
+  }
+}
+
+void ReleaseControlRequest::MergeFrom(const ReleaseControlRequest& from) {
+// @@protoc_insertion_point(class_specific_merge_from_start:mavsdk.rpc.gimbal.ReleaseControlRequest)
+  GOOGLE_DCHECK_NE(&from, this);
+  _internal_metadata_.MergeFrom<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>(from._internal_metadata_);
+  ::PROTOBUF_NAMESPACE_ID::uint32 cached_has_bits = 0;
+  (void) cached_has_bits;
+
+}
+
+void ReleaseControlRequest::CopyFrom(const ::PROTOBUF_NAMESPACE_ID::Message& from) {
+// @@protoc_insertion_point(generalized_copy_from_start:mavsdk.rpc.gimbal.ReleaseControlRequest)
+  if (&from == this) return;
+  Clear();
+  MergeFrom(from);
+}
+
+void ReleaseControlRequest::CopyFrom(const ReleaseControlRequest& from) {
+// @@protoc_insertion_point(class_specific_copy_from_start:mavsdk.rpc.gimbal.ReleaseControlRequest)
+  if (&from == this) return;
+  Clear();
+  MergeFrom(from);
+}
+
+bool ReleaseControlRequest::IsInitialized() const {
+  return true;
+}
+
+void ReleaseControlRequest::InternalSwap(ReleaseControlRequest* other) {
+  using std::swap;
+  _internal_metadata_.Swap<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>(&other->_internal_metadata_);
+}
+
+::PROTOBUF_NAMESPACE_ID::Metadata ReleaseControlRequest::GetMetadata() const {
+  return GetMetadataStatic();
+}
+
+
+// ===================================================================
+
+void ReleaseControlResponse::InitAsDefaultInstance() {
+  ::mavsdk::rpc::gimbal::_ReleaseControlResponse_default_instance_._instance.get_mutable()->gimbal_result_ = const_cast< ::mavsdk::rpc::gimbal::GimbalResult*>(
+      ::mavsdk::rpc::gimbal::GimbalResult::internal_default_instance());
+}
+class ReleaseControlResponse::_Internal {
+ public:
+  static const ::mavsdk::rpc::gimbal::GimbalResult& gimbal_result(const ReleaseControlResponse* msg);
+};
+
+const ::mavsdk::rpc::gimbal::GimbalResult&
+ReleaseControlResponse::_Internal::gimbal_result(const ReleaseControlResponse* msg) {
+  return *msg->gimbal_result_;
+}
+ReleaseControlResponse::ReleaseControlResponse(::PROTOBUF_NAMESPACE_ID::Arena* arena)
+  : ::PROTOBUF_NAMESPACE_ID::Message(arena) {
+  SharedCtor();
+  RegisterArenaDtor(arena);
+  // @@protoc_insertion_point(arena_constructor:mavsdk.rpc.gimbal.ReleaseControlResponse)
+}
+ReleaseControlResponse::ReleaseControlResponse(const ReleaseControlResponse& from)
+  : ::PROTOBUF_NAMESPACE_ID::Message() {
+  _internal_metadata_.MergeFrom<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>(from._internal_metadata_);
+  if (from._internal_has_gimbal_result()) {
+    gimbal_result_ = new ::mavsdk::rpc::gimbal::GimbalResult(*from.gimbal_result_);
+  } else {
+    gimbal_result_ = nullptr;
+  }
+  // @@protoc_insertion_point(copy_constructor:mavsdk.rpc.gimbal.ReleaseControlResponse)
+}
+
+void ReleaseControlResponse::SharedCtor() {
+  ::PROTOBUF_NAMESPACE_ID::internal::InitSCC(&scc_info_ReleaseControlResponse_gimbal_2fgimbal_2eproto.base);
+  gimbal_result_ = nullptr;
+}
+
+ReleaseControlResponse::~ReleaseControlResponse() {
+  // @@protoc_insertion_point(destructor:mavsdk.rpc.gimbal.ReleaseControlResponse)
+  SharedDtor();
+  _internal_metadata_.Delete<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>();
+}
+
+void ReleaseControlResponse::SharedDtor() {
+  GOOGLE_DCHECK(GetArena() == nullptr);
+  if (this != internal_default_instance()) delete gimbal_result_;
+}
+
+void ReleaseControlResponse::ArenaDtor(void* object) {
+  ReleaseControlResponse* _this = reinterpret_cast< ReleaseControlResponse* >(object);
+  (void)_this;
+}
+void ReleaseControlResponse::RegisterArenaDtor(::PROTOBUF_NAMESPACE_ID::Arena*) {
+}
+void ReleaseControlResponse::SetCachedSize(int size) const {
+  _cached_size_.Set(size);
+}
+const ReleaseControlResponse& ReleaseControlResponse::default_instance() {
+  ::PROTOBUF_NAMESPACE_ID::internal::InitSCC(&::scc_info_ReleaseControlResponse_gimbal_2fgimbal_2eproto.base);
+  return *internal_default_instance();
+}
+
+
+void ReleaseControlResponse::Clear() {
+// @@protoc_insertion_point(message_clear_start:mavsdk.rpc.gimbal.ReleaseControlResponse)
+  ::PROTOBUF_NAMESPACE_ID::uint32 cached_has_bits = 0;
+  // Prevent compiler warnings about cached_has_bits being unused
+  (void) cached_has_bits;
+
+  if (GetArena() == nullptr && gimbal_result_ != nullptr) {
+    delete gimbal_result_;
+  }
+  gimbal_result_ = nullptr;
+  _internal_metadata_.Clear<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>();
+}
+
+const char* ReleaseControlResponse::_InternalParse(const char* ptr, ::PROTOBUF_NAMESPACE_ID::internal::ParseContext* ctx) {
+#define CHK_(x) if (PROTOBUF_PREDICT_FALSE(!(x))) goto failure
+  ::PROTOBUF_NAMESPACE_ID::Arena* arena = GetArena(); (void)arena;
+  while (!ctx->Done(&ptr)) {
+    ::PROTOBUF_NAMESPACE_ID::uint32 tag;
+    ptr = ::PROTOBUF_NAMESPACE_ID::internal::ReadTag(ptr, &tag);
+    CHK_(ptr);
+    switch (tag >> 3) {
+      // .mavsdk.rpc.gimbal.GimbalResult gimbal_result = 1;
+      case 1:
+        if (PROTOBUF_PREDICT_TRUE(static_cast<::PROTOBUF_NAMESPACE_ID::uint8>(tag) == 10)) {
+          ptr = ctx->ParseMessage(_internal_mutable_gimbal_result(), ptr);
+          CHK_(ptr);
+        } else goto handle_unusual;
+        continue;
+      default: {
+      handle_unusual:
+        if ((tag & 7) == 4 || tag == 0) {
+          ctx->SetLastTag(tag);
+          goto success;
+        }
+        ptr = UnknownFieldParse(tag,
+            _internal_metadata_.mutable_unknown_fields<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>(),
+            ptr, ctx);
+        CHK_(ptr != nullptr);
+        continue;
+      }
+    }  // switch
+  }  // while
+success:
+  return ptr;
+failure:
+  ptr = nullptr;
+  goto success;
+#undef CHK_
+}
+
+::PROTOBUF_NAMESPACE_ID::uint8* ReleaseControlResponse::_InternalSerialize(
+    ::PROTOBUF_NAMESPACE_ID::uint8* target, ::PROTOBUF_NAMESPACE_ID::io::EpsCopyOutputStream* stream) const {
+  // @@protoc_insertion_point(serialize_to_array_start:mavsdk.rpc.gimbal.ReleaseControlResponse)
+  ::PROTOBUF_NAMESPACE_ID::uint32 cached_has_bits = 0;
+  (void) cached_has_bits;
+
+  // .mavsdk.rpc.gimbal.GimbalResult gimbal_result = 1;
+  if (this->has_gimbal_result()) {
+    target = stream->EnsureSpace(target);
+    target = ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::
+      InternalWriteMessage(
+        1, _Internal::gimbal_result(this), target, stream);
+  }
+
+  if (PROTOBUF_PREDICT_FALSE(_internal_metadata_.have_unknown_fields())) {
+    target = ::PROTOBUF_NAMESPACE_ID::internal::WireFormat::InternalSerializeUnknownFieldsToArray(
+        _internal_metadata_.unknown_fields<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>(::PROTOBUF_NAMESPACE_ID::UnknownFieldSet::default_instance), target, stream);
+  }
+  // @@protoc_insertion_point(serialize_to_array_end:mavsdk.rpc.gimbal.ReleaseControlResponse)
+  return target;
+}
+
+size_t ReleaseControlResponse::ByteSizeLong() const {
+// @@protoc_insertion_point(message_byte_size_start:mavsdk.rpc.gimbal.ReleaseControlResponse)
+  size_t total_size = 0;
+
+  ::PROTOBUF_NAMESPACE_ID::uint32 cached_has_bits = 0;
+  // Prevent compiler warnings about cached_has_bits being unused
+  (void) cached_has_bits;
+
+  // .mavsdk.rpc.gimbal.GimbalResult gimbal_result = 1;
+  if (this->has_gimbal_result()) {
+    total_size += 1 +
+      ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::MessageSize(
+        *gimbal_result_);
+  }
+
+  if (PROTOBUF_PREDICT_FALSE(_internal_metadata_.have_unknown_fields())) {
+    return ::PROTOBUF_NAMESPACE_ID::internal::ComputeUnknownFieldsSize(
+        _internal_metadata_, total_size, &_cached_size_);
+  }
+  int cached_size = ::PROTOBUF_NAMESPACE_ID::internal::ToCachedSize(total_size);
+  SetCachedSize(cached_size);
+  return total_size;
+}
+
+void ReleaseControlResponse::MergeFrom(const ::PROTOBUF_NAMESPACE_ID::Message& from) {
+// @@protoc_insertion_point(generalized_merge_from_start:mavsdk.rpc.gimbal.ReleaseControlResponse)
+  GOOGLE_DCHECK_NE(&from, this);
+  const ReleaseControlResponse* source =
+      ::PROTOBUF_NAMESPACE_ID::DynamicCastToGenerated<ReleaseControlResponse>(
+          &from);
+  if (source == nullptr) {
+  // @@protoc_insertion_point(generalized_merge_from_cast_fail:mavsdk.rpc.gimbal.ReleaseControlResponse)
+    ::PROTOBUF_NAMESPACE_ID::internal::ReflectionOps::Merge(from, this);
+  } else {
+  // @@protoc_insertion_point(generalized_merge_from_cast_success:mavsdk.rpc.gimbal.ReleaseControlResponse)
+    MergeFrom(*source);
+  }
+}
+
+void ReleaseControlResponse::MergeFrom(const ReleaseControlResponse& from) {
+// @@protoc_insertion_point(class_specific_merge_from_start:mavsdk.rpc.gimbal.ReleaseControlResponse)
+  GOOGLE_DCHECK_NE(&from, this);
+  _internal_metadata_.MergeFrom<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>(from._internal_metadata_);
+  ::PROTOBUF_NAMESPACE_ID::uint32 cached_has_bits = 0;
+  (void) cached_has_bits;
+
+  if (from.has_gimbal_result()) {
+    _internal_mutable_gimbal_result()->::mavsdk::rpc::gimbal::GimbalResult::MergeFrom(from._internal_gimbal_result());
+  }
+}
+
+void ReleaseControlResponse::CopyFrom(const ::PROTOBUF_NAMESPACE_ID::Message& from) {
+// @@protoc_insertion_point(generalized_copy_from_start:mavsdk.rpc.gimbal.ReleaseControlResponse)
+  if (&from == this) return;
+  Clear();
+  MergeFrom(from);
+}
+
+void ReleaseControlResponse::CopyFrom(const ReleaseControlResponse& from) {
+// @@protoc_insertion_point(class_specific_copy_from_start:mavsdk.rpc.gimbal.ReleaseControlResponse)
+  if (&from == this) return;
+  Clear();
+  MergeFrom(from);
+}
+
+bool ReleaseControlResponse::IsInitialized() const {
+  return true;
+}
+
+void ReleaseControlResponse::InternalSwap(ReleaseControlResponse* other) {
+  using std::swap;
+  _internal_metadata_.Swap<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>(&other->_internal_metadata_);
+  swap(gimbal_result_, other->gimbal_result_);
+}
+
+::PROTOBUF_NAMESPACE_ID::Metadata ReleaseControlResponse::GetMetadata() const {
+  return GetMetadataStatic();
+}
+
+
+// ===================================================================
+
+void SubscribeControlRequest::InitAsDefaultInstance() {
+}
+class SubscribeControlRequest::_Internal {
+ public:
+};
+
+SubscribeControlRequest::SubscribeControlRequest(::PROTOBUF_NAMESPACE_ID::Arena* arena)
+  : ::PROTOBUF_NAMESPACE_ID::Message(arena) {
+  SharedCtor();
+  RegisterArenaDtor(arena);
+  // @@protoc_insertion_point(arena_constructor:mavsdk.rpc.gimbal.SubscribeControlRequest)
+}
+SubscribeControlRequest::SubscribeControlRequest(const SubscribeControlRequest& from)
+  : ::PROTOBUF_NAMESPACE_ID::Message() {
+  _internal_metadata_.MergeFrom<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>(from._internal_metadata_);
+  // @@protoc_insertion_point(copy_constructor:mavsdk.rpc.gimbal.SubscribeControlRequest)
+}
+
+void SubscribeControlRequest::SharedCtor() {
+}
+
+SubscribeControlRequest::~SubscribeControlRequest() {
+  // @@protoc_insertion_point(destructor:mavsdk.rpc.gimbal.SubscribeControlRequest)
+  SharedDtor();
+  _internal_metadata_.Delete<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>();
+}
+
+void SubscribeControlRequest::SharedDtor() {
+  GOOGLE_DCHECK(GetArena() == nullptr);
+}
+
+void SubscribeControlRequest::ArenaDtor(void* object) {
+  SubscribeControlRequest* _this = reinterpret_cast< SubscribeControlRequest* >(object);
+  (void)_this;
+}
+void SubscribeControlRequest::RegisterArenaDtor(::PROTOBUF_NAMESPACE_ID::Arena*) {
+}
+void SubscribeControlRequest::SetCachedSize(int size) const {
+  _cached_size_.Set(size);
+}
+const SubscribeControlRequest& SubscribeControlRequest::default_instance() {
+  ::PROTOBUF_NAMESPACE_ID::internal::InitSCC(&::scc_info_SubscribeControlRequest_gimbal_2fgimbal_2eproto.base);
+  return *internal_default_instance();
+}
+
+
+void SubscribeControlRequest::Clear() {
+// @@protoc_insertion_point(message_clear_start:mavsdk.rpc.gimbal.SubscribeControlRequest)
+  ::PROTOBUF_NAMESPACE_ID::uint32 cached_has_bits = 0;
+  // Prevent compiler warnings about cached_has_bits being unused
+  (void) cached_has_bits;
+
+  _internal_metadata_.Clear<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>();
+}
+
+const char* SubscribeControlRequest::_InternalParse(const char* ptr, ::PROTOBUF_NAMESPACE_ID::internal::ParseContext* ctx) {
+#define CHK_(x) if (PROTOBUF_PREDICT_FALSE(!(x))) goto failure
+  ::PROTOBUF_NAMESPACE_ID::Arena* arena = GetArena(); (void)arena;
+  while (!ctx->Done(&ptr)) {
+    ::PROTOBUF_NAMESPACE_ID::uint32 tag;
+    ptr = ::PROTOBUF_NAMESPACE_ID::internal::ReadTag(ptr, &tag);
+    CHK_(ptr);
+        if ((tag & 7) == 4 || tag == 0) {
+          ctx->SetLastTag(tag);
+          goto success;
+        }
+        ptr = UnknownFieldParse(tag,
+            _internal_metadata_.mutable_unknown_fields<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>(),
+            ptr, ctx);
+        CHK_(ptr != nullptr);
+        continue;
+  }  // while
+success:
+  return ptr;
+failure:
+  ptr = nullptr;
+  goto success;
+#undef CHK_
+}
+
+::PROTOBUF_NAMESPACE_ID::uint8* SubscribeControlRequest::_InternalSerialize(
+    ::PROTOBUF_NAMESPACE_ID::uint8* target, ::PROTOBUF_NAMESPACE_ID::io::EpsCopyOutputStream* stream) const {
+  // @@protoc_insertion_point(serialize_to_array_start:mavsdk.rpc.gimbal.SubscribeControlRequest)
+  ::PROTOBUF_NAMESPACE_ID::uint32 cached_has_bits = 0;
+  (void) cached_has_bits;
+
+  if (PROTOBUF_PREDICT_FALSE(_internal_metadata_.have_unknown_fields())) {
+    target = ::PROTOBUF_NAMESPACE_ID::internal::WireFormat::InternalSerializeUnknownFieldsToArray(
+        _internal_metadata_.unknown_fields<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>(::PROTOBUF_NAMESPACE_ID::UnknownFieldSet::default_instance), target, stream);
+  }
+  // @@protoc_insertion_point(serialize_to_array_end:mavsdk.rpc.gimbal.SubscribeControlRequest)
+  return target;
+}
+
+size_t SubscribeControlRequest::ByteSizeLong() const {
+// @@protoc_insertion_point(message_byte_size_start:mavsdk.rpc.gimbal.SubscribeControlRequest)
+  size_t total_size = 0;
+
+  ::PROTOBUF_NAMESPACE_ID::uint32 cached_has_bits = 0;
+  // Prevent compiler warnings about cached_has_bits being unused
+  (void) cached_has_bits;
+
+  if (PROTOBUF_PREDICT_FALSE(_internal_metadata_.have_unknown_fields())) {
+    return ::PROTOBUF_NAMESPACE_ID::internal::ComputeUnknownFieldsSize(
+        _internal_metadata_, total_size, &_cached_size_);
+  }
+  int cached_size = ::PROTOBUF_NAMESPACE_ID::internal::ToCachedSize(total_size);
+  SetCachedSize(cached_size);
+  return total_size;
+}
+
+void SubscribeControlRequest::MergeFrom(const ::PROTOBUF_NAMESPACE_ID::Message& from) {
+// @@protoc_insertion_point(generalized_merge_from_start:mavsdk.rpc.gimbal.SubscribeControlRequest)
+  GOOGLE_DCHECK_NE(&from, this);
+  const SubscribeControlRequest* source =
+      ::PROTOBUF_NAMESPACE_ID::DynamicCastToGenerated<SubscribeControlRequest>(
+          &from);
+  if (source == nullptr) {
+  // @@protoc_insertion_point(generalized_merge_from_cast_fail:mavsdk.rpc.gimbal.SubscribeControlRequest)
+    ::PROTOBUF_NAMESPACE_ID::internal::ReflectionOps::Merge(from, this);
+  } else {
+  // @@protoc_insertion_point(generalized_merge_from_cast_success:mavsdk.rpc.gimbal.SubscribeControlRequest)
+    MergeFrom(*source);
+  }
+}
+
+void SubscribeControlRequest::MergeFrom(const SubscribeControlRequest& from) {
+// @@protoc_insertion_point(class_specific_merge_from_start:mavsdk.rpc.gimbal.SubscribeControlRequest)
+  GOOGLE_DCHECK_NE(&from, this);
+  _internal_metadata_.MergeFrom<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>(from._internal_metadata_);
+  ::PROTOBUF_NAMESPACE_ID::uint32 cached_has_bits = 0;
+  (void) cached_has_bits;
+
+}
+
+void SubscribeControlRequest::CopyFrom(const ::PROTOBUF_NAMESPACE_ID::Message& from) {
+// @@protoc_insertion_point(generalized_copy_from_start:mavsdk.rpc.gimbal.SubscribeControlRequest)
+  if (&from == this) return;
+  Clear();
+  MergeFrom(from);
+}
+
+void SubscribeControlRequest::CopyFrom(const SubscribeControlRequest& from) {
+// @@protoc_insertion_point(class_specific_copy_from_start:mavsdk.rpc.gimbal.SubscribeControlRequest)
+  if (&from == this) return;
+  Clear();
+  MergeFrom(from);
+}
+
+bool SubscribeControlRequest::IsInitialized() const {
+  return true;
+}
+
+void SubscribeControlRequest::InternalSwap(SubscribeControlRequest* other) {
+  using std::swap;
+  _internal_metadata_.Swap<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>(&other->_internal_metadata_);
+}
+
+::PROTOBUF_NAMESPACE_ID::Metadata SubscribeControlRequest::GetMetadata() const {
+  return GetMetadataStatic();
+}
+
+
+// ===================================================================
+
+void ControlResponse::InitAsDefaultInstance() {
+  ::mavsdk::rpc::gimbal::_ControlResponse_default_instance_._instance.get_mutable()->control_status_ = const_cast< ::mavsdk::rpc::gimbal::ControlStatus*>(
+      ::mavsdk::rpc::gimbal::ControlStatus::internal_default_instance());
+}
+class ControlResponse::_Internal {
+ public:
+  static const ::mavsdk::rpc::gimbal::ControlStatus& control_status(const ControlResponse* msg);
+};
+
+const ::mavsdk::rpc::gimbal::ControlStatus&
+ControlResponse::_Internal::control_status(const ControlResponse* msg) {
+  return *msg->control_status_;
+}
+ControlResponse::ControlResponse(::PROTOBUF_NAMESPACE_ID::Arena* arena)
+  : ::PROTOBUF_NAMESPACE_ID::Message(arena) {
+  SharedCtor();
+  RegisterArenaDtor(arena);
+  // @@protoc_insertion_point(arena_constructor:mavsdk.rpc.gimbal.ControlResponse)
+}
+ControlResponse::ControlResponse(const ControlResponse& from)
+  : ::PROTOBUF_NAMESPACE_ID::Message() {
+  _internal_metadata_.MergeFrom<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>(from._internal_metadata_);
+  if (from._internal_has_control_status()) {
+    control_status_ = new ::mavsdk::rpc::gimbal::ControlStatus(*from.control_status_);
+  } else {
+    control_status_ = nullptr;
+  }
+  // @@protoc_insertion_point(copy_constructor:mavsdk.rpc.gimbal.ControlResponse)
+}
+
+void ControlResponse::SharedCtor() {
+  ::PROTOBUF_NAMESPACE_ID::internal::InitSCC(&scc_info_ControlResponse_gimbal_2fgimbal_2eproto.base);
+  control_status_ = nullptr;
+}
+
+ControlResponse::~ControlResponse() {
+  // @@protoc_insertion_point(destructor:mavsdk.rpc.gimbal.ControlResponse)
+  SharedDtor();
+  _internal_metadata_.Delete<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>();
+}
+
+void ControlResponse::SharedDtor() {
+  GOOGLE_DCHECK(GetArena() == nullptr);
+  if (this != internal_default_instance()) delete control_status_;
+}
+
+void ControlResponse::ArenaDtor(void* object) {
+  ControlResponse* _this = reinterpret_cast< ControlResponse* >(object);
+  (void)_this;
+}
+void ControlResponse::RegisterArenaDtor(::PROTOBUF_NAMESPACE_ID::Arena*) {
+}
+void ControlResponse::SetCachedSize(int size) const {
+  _cached_size_.Set(size);
+}
+const ControlResponse& ControlResponse::default_instance() {
+  ::PROTOBUF_NAMESPACE_ID::internal::InitSCC(&::scc_info_ControlResponse_gimbal_2fgimbal_2eproto.base);
+  return *internal_default_instance();
+}
+
+
+void ControlResponse::Clear() {
+// @@protoc_insertion_point(message_clear_start:mavsdk.rpc.gimbal.ControlResponse)
+  ::PROTOBUF_NAMESPACE_ID::uint32 cached_has_bits = 0;
+  // Prevent compiler warnings about cached_has_bits being unused
+  (void) cached_has_bits;
+
+  if (GetArena() == nullptr && control_status_ != nullptr) {
+    delete control_status_;
+  }
+  control_status_ = nullptr;
+  _internal_metadata_.Clear<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>();
+}
+
+const char* ControlResponse::_InternalParse(const char* ptr, ::PROTOBUF_NAMESPACE_ID::internal::ParseContext* ctx) {
+#define CHK_(x) if (PROTOBUF_PREDICT_FALSE(!(x))) goto failure
+  ::PROTOBUF_NAMESPACE_ID::Arena* arena = GetArena(); (void)arena;
+  while (!ctx->Done(&ptr)) {
+    ::PROTOBUF_NAMESPACE_ID::uint32 tag;
+    ptr = ::PROTOBUF_NAMESPACE_ID::internal::ReadTag(ptr, &tag);
+    CHK_(ptr);
+    switch (tag >> 3) {
+      // .mavsdk.rpc.gimbal.ControlStatus control_status = 1;
+      case 1:
+        if (PROTOBUF_PREDICT_TRUE(static_cast<::PROTOBUF_NAMESPACE_ID::uint8>(tag) == 10)) {
+          ptr = ctx->ParseMessage(_internal_mutable_control_status(), ptr);
+          CHK_(ptr);
+        } else goto handle_unusual;
+        continue;
+      default: {
+      handle_unusual:
+        if ((tag & 7) == 4 || tag == 0) {
+          ctx->SetLastTag(tag);
+          goto success;
+        }
+        ptr = UnknownFieldParse(tag,
+            _internal_metadata_.mutable_unknown_fields<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>(),
+            ptr, ctx);
+        CHK_(ptr != nullptr);
+        continue;
+      }
+    }  // switch
+  }  // while
+success:
+  return ptr;
+failure:
+  ptr = nullptr;
+  goto success;
+#undef CHK_
+}
+
+::PROTOBUF_NAMESPACE_ID::uint8* ControlResponse::_InternalSerialize(
+    ::PROTOBUF_NAMESPACE_ID::uint8* target, ::PROTOBUF_NAMESPACE_ID::io::EpsCopyOutputStream* stream) const {
+  // @@protoc_insertion_point(serialize_to_array_start:mavsdk.rpc.gimbal.ControlResponse)
+  ::PROTOBUF_NAMESPACE_ID::uint32 cached_has_bits = 0;
+  (void) cached_has_bits;
+
+  // .mavsdk.rpc.gimbal.ControlStatus control_status = 1;
+  if (this->has_control_status()) {
+    target = stream->EnsureSpace(target);
+    target = ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::
+      InternalWriteMessage(
+        1, _Internal::control_status(this), target, stream);
+  }
+
+  if (PROTOBUF_PREDICT_FALSE(_internal_metadata_.have_unknown_fields())) {
+    target = ::PROTOBUF_NAMESPACE_ID::internal::WireFormat::InternalSerializeUnknownFieldsToArray(
+        _internal_metadata_.unknown_fields<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>(::PROTOBUF_NAMESPACE_ID::UnknownFieldSet::default_instance), target, stream);
+  }
+  // @@protoc_insertion_point(serialize_to_array_end:mavsdk.rpc.gimbal.ControlResponse)
+  return target;
+}
+
+size_t ControlResponse::ByteSizeLong() const {
+// @@protoc_insertion_point(message_byte_size_start:mavsdk.rpc.gimbal.ControlResponse)
+  size_t total_size = 0;
+
+  ::PROTOBUF_NAMESPACE_ID::uint32 cached_has_bits = 0;
+  // Prevent compiler warnings about cached_has_bits being unused
+  (void) cached_has_bits;
+
+  // .mavsdk.rpc.gimbal.ControlStatus control_status = 1;
+  if (this->has_control_status()) {
+    total_size += 1 +
+      ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::MessageSize(
+        *control_status_);
+  }
+
+  if (PROTOBUF_PREDICT_FALSE(_internal_metadata_.have_unknown_fields())) {
+    return ::PROTOBUF_NAMESPACE_ID::internal::ComputeUnknownFieldsSize(
+        _internal_metadata_, total_size, &_cached_size_);
+  }
+  int cached_size = ::PROTOBUF_NAMESPACE_ID::internal::ToCachedSize(total_size);
+  SetCachedSize(cached_size);
+  return total_size;
+}
+
+void ControlResponse::MergeFrom(const ::PROTOBUF_NAMESPACE_ID::Message& from) {
+// @@protoc_insertion_point(generalized_merge_from_start:mavsdk.rpc.gimbal.ControlResponse)
+  GOOGLE_DCHECK_NE(&from, this);
+  const ControlResponse* source =
+      ::PROTOBUF_NAMESPACE_ID::DynamicCastToGenerated<ControlResponse>(
+          &from);
+  if (source == nullptr) {
+  // @@protoc_insertion_point(generalized_merge_from_cast_fail:mavsdk.rpc.gimbal.ControlResponse)
+    ::PROTOBUF_NAMESPACE_ID::internal::ReflectionOps::Merge(from, this);
+  } else {
+  // @@protoc_insertion_point(generalized_merge_from_cast_success:mavsdk.rpc.gimbal.ControlResponse)
+    MergeFrom(*source);
+  }
+}
+
+void ControlResponse::MergeFrom(const ControlResponse& from) {
+// @@protoc_insertion_point(class_specific_merge_from_start:mavsdk.rpc.gimbal.ControlResponse)
+  GOOGLE_DCHECK_NE(&from, this);
+  _internal_metadata_.MergeFrom<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>(from._internal_metadata_);
+  ::PROTOBUF_NAMESPACE_ID::uint32 cached_has_bits = 0;
+  (void) cached_has_bits;
+
+  if (from.has_control_status()) {
+    _internal_mutable_control_status()->::mavsdk::rpc::gimbal::ControlStatus::MergeFrom(from._internal_control_status());
+  }
+}
+
+void ControlResponse::CopyFrom(const ::PROTOBUF_NAMESPACE_ID::Message& from) {
+// @@protoc_insertion_point(generalized_copy_from_start:mavsdk.rpc.gimbal.ControlResponse)
+  if (&from == this) return;
+  Clear();
+  MergeFrom(from);
+}
+
+void ControlResponse::CopyFrom(const ControlResponse& from) {
+// @@protoc_insertion_point(class_specific_copy_from_start:mavsdk.rpc.gimbal.ControlResponse)
+  if (&from == this) return;
+  Clear();
+  MergeFrom(from);
+}
+
+bool ControlResponse::IsInitialized() const {
+  return true;
+}
+
+void ControlResponse::InternalSwap(ControlResponse* other) {
+  using std::swap;
+  _internal_metadata_.Swap<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>(&other->_internal_metadata_);
+  swap(control_status_, other->control_status_);
+}
+
+::PROTOBUF_NAMESPACE_ID::Metadata ControlResponse::GetMetadata() const {
+  return GetMetadataStatic();
+}
+
+
+// ===================================================================
+
+void ControlStatus::InitAsDefaultInstance() {
+}
+class ControlStatus::_Internal {
+ public:
+};
+
+ControlStatus::ControlStatus(::PROTOBUF_NAMESPACE_ID::Arena* arena)
+  : ::PROTOBUF_NAMESPACE_ID::Message(arena) {
+  SharedCtor();
+  RegisterArenaDtor(arena);
+  // @@protoc_insertion_point(arena_constructor:mavsdk.rpc.gimbal.ControlStatus)
+}
+ControlStatus::ControlStatus(const ControlStatus& from)
+  : ::PROTOBUF_NAMESPACE_ID::Message() {
+  _internal_metadata_.MergeFrom<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>(from._internal_metadata_);
+  ::memcpy(&control_mode_, &from.control_mode_,
+    static_cast<size_t>(reinterpret_cast<char*>(&compid_secondary_control_) -
+    reinterpret_cast<char*>(&control_mode_)) + sizeof(compid_secondary_control_));
+  // @@protoc_insertion_point(copy_constructor:mavsdk.rpc.gimbal.ControlStatus)
+}
+
+void ControlStatus::SharedCtor() {
+  ::memset(&control_mode_, 0, static_cast<size_t>(
+      reinterpret_cast<char*>(&compid_secondary_control_) -
+      reinterpret_cast<char*>(&control_mode_)) + sizeof(compid_secondary_control_));
+}
+
+ControlStatus::~ControlStatus() {
+  // @@protoc_insertion_point(destructor:mavsdk.rpc.gimbal.ControlStatus)
+  SharedDtor();
+  _internal_metadata_.Delete<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>();
+}
+
+void ControlStatus::SharedDtor() {
+  GOOGLE_DCHECK(GetArena() == nullptr);
+}
+
+void ControlStatus::ArenaDtor(void* object) {
+  ControlStatus* _this = reinterpret_cast< ControlStatus* >(object);
+  (void)_this;
+}
+void ControlStatus::RegisterArenaDtor(::PROTOBUF_NAMESPACE_ID::Arena*) {
+}
+void ControlStatus::SetCachedSize(int size) const {
+  _cached_size_.Set(size);
+}
+const ControlStatus& ControlStatus::default_instance() {
+  ::PROTOBUF_NAMESPACE_ID::internal::InitSCC(&::scc_info_ControlStatus_gimbal_2fgimbal_2eproto.base);
+  return *internal_default_instance();
+}
+
+
+void ControlStatus::Clear() {
+// @@protoc_insertion_point(message_clear_start:mavsdk.rpc.gimbal.ControlStatus)
+  ::PROTOBUF_NAMESPACE_ID::uint32 cached_has_bits = 0;
+  // Prevent compiler warnings about cached_has_bits being unused
+  (void) cached_has_bits;
+
+  ::memset(&control_mode_, 0, static_cast<size_t>(
+      reinterpret_cast<char*>(&compid_secondary_control_) -
+      reinterpret_cast<char*>(&control_mode_)) + sizeof(compid_secondary_control_));
+  _internal_metadata_.Clear<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>();
+}
+
+const char* ControlStatus::_InternalParse(const char* ptr, ::PROTOBUF_NAMESPACE_ID::internal::ParseContext* ctx) {
+#define CHK_(x) if (PROTOBUF_PREDICT_FALSE(!(x))) goto failure
+  ::PROTOBUF_NAMESPACE_ID::Arena* arena = GetArena(); (void)arena;
+  while (!ctx->Done(&ptr)) {
+    ::PROTOBUF_NAMESPACE_ID::uint32 tag;
+    ptr = ::PROTOBUF_NAMESPACE_ID::internal::ReadTag(ptr, &tag);
+    CHK_(ptr);
+    switch (tag >> 3) {
+      // .mavsdk.rpc.gimbal.ControlMode control_mode = 1;
+      case 1:
+        if (PROTOBUF_PREDICT_TRUE(static_cast<::PROTOBUF_NAMESPACE_ID::uint8>(tag) == 8)) {
+          ::PROTOBUF_NAMESPACE_ID::uint64 val = ::PROTOBUF_NAMESPACE_ID::internal::ReadVarint64(&ptr);
+          CHK_(ptr);
+          _internal_set_control_mode(static_cast<::mavsdk::rpc::gimbal::ControlMode>(val));
+        } else goto handle_unusual;
+        continue;
+      // int32 sysid_primary_control = 2;
+      case 2:
+        if (PROTOBUF_PREDICT_TRUE(static_cast<::PROTOBUF_NAMESPACE_ID::uint8>(tag) == 16)) {
+          sysid_primary_control_ = ::PROTOBUF_NAMESPACE_ID::internal::ReadVarint64(&ptr);
+          CHK_(ptr);
+        } else goto handle_unusual;
+        continue;
+      // int32 compid_primary_control = 3;
+      case 3:
+        if (PROTOBUF_PREDICT_TRUE(static_cast<::PROTOBUF_NAMESPACE_ID::uint8>(tag) == 24)) {
+          compid_primary_control_ = ::PROTOBUF_NAMESPACE_ID::internal::ReadVarint64(&ptr);
+          CHK_(ptr);
+        } else goto handle_unusual;
+        continue;
+      // int32 sysid_secondary_control = 4;
+      case 4:
+        if (PROTOBUF_PREDICT_TRUE(static_cast<::PROTOBUF_NAMESPACE_ID::uint8>(tag) == 32)) {
+          sysid_secondary_control_ = ::PROTOBUF_NAMESPACE_ID::internal::ReadVarint64(&ptr);
+          CHK_(ptr);
+        } else goto handle_unusual;
+        continue;
+      // int32 compid_secondary_control = 5;
+      case 5:
+        if (PROTOBUF_PREDICT_TRUE(static_cast<::PROTOBUF_NAMESPACE_ID::uint8>(tag) == 40)) {
+          compid_secondary_control_ = ::PROTOBUF_NAMESPACE_ID::internal::ReadVarint64(&ptr);
+          CHK_(ptr);
+        } else goto handle_unusual;
+        continue;
+      default: {
+      handle_unusual:
+        if ((tag & 7) == 4 || tag == 0) {
+          ctx->SetLastTag(tag);
+          goto success;
+        }
+        ptr = UnknownFieldParse(tag,
+            _internal_metadata_.mutable_unknown_fields<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>(),
+            ptr, ctx);
+        CHK_(ptr != nullptr);
+        continue;
+      }
+    }  // switch
+  }  // while
+success:
+  return ptr;
+failure:
+  ptr = nullptr;
+  goto success;
+#undef CHK_
+}
+
+::PROTOBUF_NAMESPACE_ID::uint8* ControlStatus::_InternalSerialize(
+    ::PROTOBUF_NAMESPACE_ID::uint8* target, ::PROTOBUF_NAMESPACE_ID::io::EpsCopyOutputStream* stream) const {
+  // @@protoc_insertion_point(serialize_to_array_start:mavsdk.rpc.gimbal.ControlStatus)
+  ::PROTOBUF_NAMESPACE_ID::uint32 cached_has_bits = 0;
+  (void) cached_has_bits;
+
+  // .mavsdk.rpc.gimbal.ControlMode control_mode = 1;
+  if (this->control_mode() != 0) {
+    target = stream->EnsureSpace(target);
+    target = ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::WriteEnumToArray(
+      1, this->_internal_control_mode(), target);
+  }
+
+  // int32 sysid_primary_control = 2;
+  if (this->sysid_primary_control() != 0) {
+    target = stream->EnsureSpace(target);
+    target = ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::WriteInt32ToArray(2, this->_internal_sysid_primary_control(), target);
+  }
+
+  // int32 compid_primary_control = 3;
+  if (this->compid_primary_control() != 0) {
+    target = stream->EnsureSpace(target);
+    target = ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::WriteInt32ToArray(3, this->_internal_compid_primary_control(), target);
+  }
+
+  // int32 sysid_secondary_control = 4;
+  if (this->sysid_secondary_control() != 0) {
+    target = stream->EnsureSpace(target);
+    target = ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::WriteInt32ToArray(4, this->_internal_sysid_secondary_control(), target);
+  }
+
+  // int32 compid_secondary_control = 5;
+  if (this->compid_secondary_control() != 0) {
+    target = stream->EnsureSpace(target);
+    target = ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::WriteInt32ToArray(5, this->_internal_compid_secondary_control(), target);
+  }
+
+  if (PROTOBUF_PREDICT_FALSE(_internal_metadata_.have_unknown_fields())) {
+    target = ::PROTOBUF_NAMESPACE_ID::internal::WireFormat::InternalSerializeUnknownFieldsToArray(
+        _internal_metadata_.unknown_fields<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>(::PROTOBUF_NAMESPACE_ID::UnknownFieldSet::default_instance), target, stream);
+  }
+  // @@protoc_insertion_point(serialize_to_array_end:mavsdk.rpc.gimbal.ControlStatus)
+  return target;
+}
+
+size_t ControlStatus::ByteSizeLong() const {
+// @@protoc_insertion_point(message_byte_size_start:mavsdk.rpc.gimbal.ControlStatus)
+  size_t total_size = 0;
+
+  ::PROTOBUF_NAMESPACE_ID::uint32 cached_has_bits = 0;
+  // Prevent compiler warnings about cached_has_bits being unused
+  (void) cached_has_bits;
+
+  // .mavsdk.rpc.gimbal.ControlMode control_mode = 1;
+  if (this->control_mode() != 0) {
+    total_size += 1 +
+      ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::EnumSize(this->_internal_control_mode());
+  }
+
+  // int32 sysid_primary_control = 2;
+  if (this->sysid_primary_control() != 0) {
+    total_size += 1 +
+      ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::Int32Size(
+        this->_internal_sysid_primary_control());
+  }
+
+  // int32 compid_primary_control = 3;
+  if (this->compid_primary_control() != 0) {
+    total_size += 1 +
+      ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::Int32Size(
+        this->_internal_compid_primary_control());
+  }
+
+  // int32 sysid_secondary_control = 4;
+  if (this->sysid_secondary_control() != 0) {
+    total_size += 1 +
+      ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::Int32Size(
+        this->_internal_sysid_secondary_control());
+  }
+
+  // int32 compid_secondary_control = 5;
+  if (this->compid_secondary_control() != 0) {
+    total_size += 1 +
+      ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::Int32Size(
+        this->_internal_compid_secondary_control());
+  }
+
+  if (PROTOBUF_PREDICT_FALSE(_internal_metadata_.have_unknown_fields())) {
+    return ::PROTOBUF_NAMESPACE_ID::internal::ComputeUnknownFieldsSize(
+        _internal_metadata_, total_size, &_cached_size_);
+  }
+  int cached_size = ::PROTOBUF_NAMESPACE_ID::internal::ToCachedSize(total_size);
+  SetCachedSize(cached_size);
+  return total_size;
+}
+
+void ControlStatus::MergeFrom(const ::PROTOBUF_NAMESPACE_ID::Message& from) {
+// @@protoc_insertion_point(generalized_merge_from_start:mavsdk.rpc.gimbal.ControlStatus)
+  GOOGLE_DCHECK_NE(&from, this);
+  const ControlStatus* source =
+      ::PROTOBUF_NAMESPACE_ID::DynamicCastToGenerated<ControlStatus>(
+          &from);
+  if (source == nullptr) {
+  // @@protoc_insertion_point(generalized_merge_from_cast_fail:mavsdk.rpc.gimbal.ControlStatus)
+    ::PROTOBUF_NAMESPACE_ID::internal::ReflectionOps::Merge(from, this);
+  } else {
+  // @@protoc_insertion_point(generalized_merge_from_cast_success:mavsdk.rpc.gimbal.ControlStatus)
+    MergeFrom(*source);
+  }
+}
+
+void ControlStatus::MergeFrom(const ControlStatus& from) {
+// @@protoc_insertion_point(class_specific_merge_from_start:mavsdk.rpc.gimbal.ControlStatus)
+  GOOGLE_DCHECK_NE(&from, this);
+  _internal_metadata_.MergeFrom<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>(from._internal_metadata_);
+  ::PROTOBUF_NAMESPACE_ID::uint32 cached_has_bits = 0;
+  (void) cached_has_bits;
+
+  if (from.control_mode() != 0) {
+    _internal_set_control_mode(from._internal_control_mode());
+  }
+  if (from.sysid_primary_control() != 0) {
+    _internal_set_sysid_primary_control(from._internal_sysid_primary_control());
+  }
+  if (from.compid_primary_control() != 0) {
+    _internal_set_compid_primary_control(from._internal_compid_primary_control());
+  }
+  if (from.sysid_secondary_control() != 0) {
+    _internal_set_sysid_secondary_control(from._internal_sysid_secondary_control());
+  }
+  if (from.compid_secondary_control() != 0) {
+    _internal_set_compid_secondary_control(from._internal_compid_secondary_control());
+  }
+}
+
+void ControlStatus::CopyFrom(const ::PROTOBUF_NAMESPACE_ID::Message& from) {
+// @@protoc_insertion_point(generalized_copy_from_start:mavsdk.rpc.gimbal.ControlStatus)
+  if (&from == this) return;
+  Clear();
+  MergeFrom(from);
+}
+
+void ControlStatus::CopyFrom(const ControlStatus& from) {
+// @@protoc_insertion_point(class_specific_copy_from_start:mavsdk.rpc.gimbal.ControlStatus)
+  if (&from == this) return;
+  Clear();
+  MergeFrom(from);
+}
+
+bool ControlStatus::IsInitialized() const {
+  return true;
+}
+
+void ControlStatus::InternalSwap(ControlStatus* other) {
+  using std::swap;
+  _internal_metadata_.Swap<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>(&other->_internal_metadata_);
+  ::PROTOBUF_NAMESPACE_ID::internal::memswap<
+      PROTOBUF_FIELD_OFFSET(ControlStatus, compid_secondary_control_)
+      + sizeof(ControlStatus::compid_secondary_control_)
+      - PROTOBUF_FIELD_OFFSET(ControlStatus, control_mode_)>(
+          reinterpret_cast<char*>(&control_mode_),
+          reinterpret_cast<char*>(&other->control_mode_));
+}
+
+::PROTOBUF_NAMESPACE_ID::Metadata ControlStatus::GetMetadata() const {
+  return GetMetadataStatic();
+}
+
+
+// ===================================================================
+
 void GimbalResult::InitAsDefaultInstance() {
 }
 class GimbalResult::_Internal {
@@ -2407,6 +4115,27 @@ template<> PROTOBUF_NOINLINE ::mavsdk::rpc::gimbal::SetRoiLocationRequest* Arena
 }
 template<> PROTOBUF_NOINLINE ::mavsdk::rpc::gimbal::SetRoiLocationResponse* Arena::CreateMaybeMessage< ::mavsdk::rpc::gimbal::SetRoiLocationResponse >(Arena* arena) {
   return Arena::CreateMessageInternal< ::mavsdk::rpc::gimbal::SetRoiLocationResponse >(arena);
+}
+template<> PROTOBUF_NOINLINE ::mavsdk::rpc::gimbal::TakeControlRequest* Arena::CreateMaybeMessage< ::mavsdk::rpc::gimbal::TakeControlRequest >(Arena* arena) {
+  return Arena::CreateMessageInternal< ::mavsdk::rpc::gimbal::TakeControlRequest >(arena);
+}
+template<> PROTOBUF_NOINLINE ::mavsdk::rpc::gimbal::TakeControlResponse* Arena::CreateMaybeMessage< ::mavsdk::rpc::gimbal::TakeControlResponse >(Arena* arena) {
+  return Arena::CreateMessageInternal< ::mavsdk::rpc::gimbal::TakeControlResponse >(arena);
+}
+template<> PROTOBUF_NOINLINE ::mavsdk::rpc::gimbal::ReleaseControlRequest* Arena::CreateMaybeMessage< ::mavsdk::rpc::gimbal::ReleaseControlRequest >(Arena* arena) {
+  return Arena::CreateMessageInternal< ::mavsdk::rpc::gimbal::ReleaseControlRequest >(arena);
+}
+template<> PROTOBUF_NOINLINE ::mavsdk::rpc::gimbal::ReleaseControlResponse* Arena::CreateMaybeMessage< ::mavsdk::rpc::gimbal::ReleaseControlResponse >(Arena* arena) {
+  return Arena::CreateMessageInternal< ::mavsdk::rpc::gimbal::ReleaseControlResponse >(arena);
+}
+template<> PROTOBUF_NOINLINE ::mavsdk::rpc::gimbal::SubscribeControlRequest* Arena::CreateMaybeMessage< ::mavsdk::rpc::gimbal::SubscribeControlRequest >(Arena* arena) {
+  return Arena::CreateMessageInternal< ::mavsdk::rpc::gimbal::SubscribeControlRequest >(arena);
+}
+template<> PROTOBUF_NOINLINE ::mavsdk::rpc::gimbal::ControlResponse* Arena::CreateMaybeMessage< ::mavsdk::rpc::gimbal::ControlResponse >(Arena* arena) {
+  return Arena::CreateMessageInternal< ::mavsdk::rpc::gimbal::ControlResponse >(arena);
+}
+template<> PROTOBUF_NOINLINE ::mavsdk::rpc::gimbal::ControlStatus* Arena::CreateMaybeMessage< ::mavsdk::rpc::gimbal::ControlStatus >(Arena* arena) {
+  return Arena::CreateMessageInternal< ::mavsdk::rpc::gimbal::ControlStatus >(arena);
 }
 template<> PROTOBUF_NOINLINE ::mavsdk::rpc::gimbal::GimbalResult* Arena::CreateMaybeMessage< ::mavsdk::rpc::gimbal::GimbalResult >(Arena* arena) {
   return Arena::CreateMessageInternal< ::mavsdk::rpc::gimbal::GimbalResult >(arena);

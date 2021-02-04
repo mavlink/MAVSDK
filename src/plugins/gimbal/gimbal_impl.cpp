@@ -130,6 +130,41 @@ void GimbalImpl::set_roi_location_async(
     });
 }
 
+Gimbal::Result GimbalImpl::take_control(Gimbal::ControlMode control_mode)
+{
+    wait_for_protocol();
+    return _gimbal_protocol->take_control(control_mode);
+}
+
+void GimbalImpl::take_control_async(
+    Gimbal::ControlMode control_mode, Gimbal::ResultCallback callback)
+{
+    wait_for_protocol_async(
+        [=]() { _gimbal_protocol->take_control_async(control_mode, callback); });
+}
+
+Gimbal::Result GimbalImpl::release_control()
+{
+    wait_for_protocol();
+    return _gimbal_protocol->release_control();
+}
+
+void GimbalImpl::release_control_async(Gimbal::ResultCallback callback)
+{
+    wait_for_protocol_async([=]() { _gimbal_protocol->release_control_async(callback); });
+}
+
+Gimbal::ControlStatus GimbalImpl::control()
+{
+    wait_for_protocol();
+    return _gimbal_protocol->control();
+}
+
+void GimbalImpl::control_async(Gimbal::ControlCallback callback)
+{
+    wait_for_protocol_async([=]() { _gimbal_protocol->control_async(callback); });
+}
+
 void GimbalImpl::wait_for_protocol()
 {
     while (_gimbal_protocol == nullptr) {
