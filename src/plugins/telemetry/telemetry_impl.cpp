@@ -608,6 +608,7 @@ void TelemetryImpl::process_attitude(const mavlink_message_t& message)
     euler_angle.roll_deg = to_deg_from_rad(attitude.roll);
     euler_angle.pitch_deg = to_deg_from_rad(attitude.pitch);
     euler_angle.yaw_deg = to_deg_from_rad(attitude.yaw);
+    euler_angle.timestamp_us = static_cast<uint64_t>(attitude.time_boot_ms) * 1000;
 
     Telemetry::AngularVelocityBody angular_velocity_body;
     angular_velocity_body.roll_rad_s = attitude.rollspeed;
@@ -648,6 +649,8 @@ void TelemetryImpl::process_attitude_quaternion(const mavlink_message_t& message
     quaternion.x = mavlink_attitude_quaternion.q2;
     quaternion.y = mavlink_attitude_quaternion.q3;
     quaternion.z = mavlink_attitude_quaternion.q4;
+    quaternion.timestamp_us =
+        static_cast<uint64_t>(mavlink_attitude_quaternion.time_boot_ms) * 1000;
 
     Telemetry::AngularVelocityBody angular_velocity_body;
     angular_velocity_body.roll_rad_s = mavlink_attitude_quaternion.rollspeed;
