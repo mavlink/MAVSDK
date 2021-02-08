@@ -421,6 +421,7 @@ message Quaternion {
     float x = 2 [(mavsdk.options.default_value)="NaN"]; // Quaternion entry 1, also denoted as b
     float y = 3 [(mavsdk.options.default_value)="NaN"]; // Quaternion entry 2, also denoted as c
     float z = 4 [(mavsdk.options.default_value)="NaN"]; // Quaternion entry 3, also denoted as d
+    uint64 timestamp_us = 5; // Timestamp in microseconds
 }
 
 /*
@@ -435,6 +436,7 @@ message EulerAngle {
     float roll_deg = 1 [(mavsdk.options.default_value)="NaN"]; // Roll angle in degrees, positive is banking to the right
     float pitch_deg = 2 [(mavsdk.options.default_value)="NaN"]; // Pitch angle in degrees, positive is pitching nose up
     float yaw_deg = 3 [(mavsdk.options.default_value)="NaN"]; // Yaw angle in degrees, positive is clock-wise seen from above
+    uint64 timestamp_us = 4; // Timestamp in microseconds
 }
 
 // Angular velocity type.
