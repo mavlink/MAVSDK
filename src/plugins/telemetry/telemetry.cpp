@@ -546,7 +546,8 @@ bool operator==(const Telemetry::Quaternion& lhs, const Telemetry::Quaternion& r
     return ((std::isnan(rhs.w) && std::isnan(lhs.w)) || rhs.w == lhs.w) &&
            ((std::isnan(rhs.x) && std::isnan(lhs.x)) || rhs.x == lhs.x) &&
            ((std::isnan(rhs.y) && std::isnan(lhs.y)) || rhs.y == lhs.y) &&
-           ((std::isnan(rhs.z) && std::isnan(lhs.z)) || rhs.z == lhs.z);
+           ((std::isnan(rhs.z) && std::isnan(lhs.z)) || rhs.z == lhs.z) &&
+           (rhs.timestamp_us == lhs.timestamp_us);
 }
 
 std::ostream& operator<<(std::ostream& str, Telemetry::Quaternion const& quaternion)
@@ -557,6 +558,7 @@ std::ostream& operator<<(std::ostream& str, Telemetry::Quaternion const& quatern
     str << "    x: " << quaternion.x << '\n';
     str << "    y: " << quaternion.y << '\n';
     str << "    z: " << quaternion.z << '\n';
+    str << "    timestamp_us: " << quaternion.timestamp_us << '\n';
     str << '}';
     return str;
 }
@@ -567,7 +569,8 @@ bool operator==(const Telemetry::EulerAngle& lhs, const Telemetry::EulerAngle& r
             rhs.roll_deg == lhs.roll_deg) &&
            ((std::isnan(rhs.pitch_deg) && std::isnan(lhs.pitch_deg)) ||
             rhs.pitch_deg == lhs.pitch_deg) &&
-           ((std::isnan(rhs.yaw_deg) && std::isnan(lhs.yaw_deg)) || rhs.yaw_deg == lhs.yaw_deg);
+           ((std::isnan(rhs.yaw_deg) && std::isnan(lhs.yaw_deg)) || rhs.yaw_deg == lhs.yaw_deg) &&
+           (rhs.timestamp_us == lhs.timestamp_us);
 }
 
 std::ostream& operator<<(std::ostream& str, Telemetry::EulerAngle const& euler_angle)
@@ -577,6 +580,7 @@ std::ostream& operator<<(std::ostream& str, Telemetry::EulerAngle const& euler_a
     str << "    roll_deg: " << euler_angle.roll_deg << '\n';
     str << "    pitch_deg: " << euler_angle.pitch_deg << '\n';
     str << "    yaw_deg: " << euler_angle.yaw_deg << '\n';
+    str << "    timestamp_us: " << euler_angle.timestamp_us << '\n';
     str << '}';
     return str;
 }
