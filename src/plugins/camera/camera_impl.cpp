@@ -940,9 +940,9 @@ void CameraImpl::process_video_information(const mavlink_message_t& message)
         video_stream_info.rotation_deg = received_video_info.rotation;
         video_stream_info.uri = received_video_info.uri;
         _video_stream_info.available = true;
-
-        notify_video_stream_info();
     }
+
+    notify_video_stream_info();
 }
 
 void CameraImpl::process_flight_information(const mavlink_message_t& message)
