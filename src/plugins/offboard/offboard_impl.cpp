@@ -24,10 +24,9 @@ OffboardImpl::~OffboardImpl()
 
 void OffboardImpl::init()
 {
-    // We need the system state.
     _parent->register_mavlink_message_handler(
         MAVLINK_MSG_ID_HEARTBEAT,
-        std::bind(&OffboardImpl::process_heartbeat, this, std::placeholders::_1),
+        [this](const mavlink_message_t& message) { process_heartbeat(message); },
         this);
 }
 
@@ -84,7 +83,9 @@ void OffboardImpl::start_async(Offboard::ResultCallback callback)
 
     _parent->set_flight_mode_async(
         SystemImpl::FlightMode::Offboard,
-        std::bind(&OffboardImpl::receive_command_result, this, std::placeholders::_1, callback));
+        [callback, this](MavlinkCommandSender::Result result, float) {
+            receive_command_result(result, callback);
+        });
 }
 
 void OffboardImpl::stop_async(Offboard::ResultCallback callback)
@@ -97,8 +98,9 @@ void OffboardImpl::stop_async(Offboard::ResultCallback callback)
     }
 
     _parent->set_flight_mode_async(
-        SystemImpl::FlightMode::Hold,
-        std::bind(&OffboardImpl::receive_command_result, this, std::placeholders::_1, callback));
+        SystemImpl::FlightMode::Hold, [callback, this](MavlinkCommandSender::Result result, float) {
+            receive_command_result(result, callback);
+        });
 }
 
 bool OffboardImpl::is_active()
