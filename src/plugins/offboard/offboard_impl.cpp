@@ -74,7 +74,8 @@ void OffboardImpl::start_async(Offboard::ResultCallback callback)
 
         if (_mode == Mode::NotActive) {
             if (callback) {
-                callback(Offboard::Result::NoSetpointSet);
+                _parent->call_user_callback(
+                    [callback]() { callback(Offboard::Result::NoSetpointSet); });
             }
             return;
         }
@@ -114,7 +115,7 @@ void OffboardImpl::receive_command_result(
 {
     Offboard::Result offboard_result = offboard_result_from_command_result(result);
     if (callback) {
-        callback(offboard_result);
+        _parent->call_user_callback([callback, offboard_result]() { callback(offboard_result); });
     }
 }
 
