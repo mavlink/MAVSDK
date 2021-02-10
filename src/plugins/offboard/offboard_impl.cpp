@@ -32,7 +32,10 @@ void OffboardImpl::init()
 
 void OffboardImpl::deinit()
 {
-    stop_sending_setpoints();
+    {
+        std::lock_guard<std::mutex> lock(_mutex);
+        stop_sending_setpoints();
+    }
     _parent->unregister_all_mavlink_message_handlers(this);
 }
 
