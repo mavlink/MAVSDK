@@ -621,7 +621,7 @@ void OffboardImpl::process_heartbeat(const mavlink_message_t& message)
         // possibly stale heartbeats for some time.
         std::lock_guard<std::mutex> lock(_mutex);
         if (!offboard_mode_active && _mode != Mode::NotActive &&
-            _time.elapsed_since_s(_last_started) > 1.5) {
+            _time.elapsed_since_s(_last_started) > 3.0) {
             // It seems that we are no longer in offboard mode but still trying to send
             // setpoints. Let's stop for now.
             stop_sending_setpoints();
