@@ -321,6 +321,7 @@ public:
      */
     ControlStatus control() const;
 
+    /**
      * @brief Copy constructor (object is not copyable).
      */
     Gimbal(const Gimbal& other) = delete;
