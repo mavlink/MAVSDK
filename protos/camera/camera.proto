@@ -50,6 +50,10 @@ service CameraService {
      */
     rpc SetMode(SetModeRequest) returns(SetModeResponse) {}
     /*
+     * List photos available on the camera.
+     */
+    rpc ListPhotos(ListPhotosRequest) returns(ListPhotosResponse) {}
+    /*
      * Subscribe to camera mode updates.
      */
     rpc SubscribeMode(SubscribeModeRequest) returns(stream ModeResponse) {}
@@ -141,6 +145,14 @@ message SetModeResponse {
     CameraResult camera_result = 1;
 }
 
+message ListPhotosRequest {
+    PhotosRange photos_range = 1; // Which photos should be listed (all or since connection)
+}
+message ListPhotosResponse {
+    CameraResult camera_result = 1;
+    repeated CaptureInfo capture_infos = 2; // List of capture infos (representing the photos)
+}
+
 message SubscribeInformationRequest {}
 message InformationResponse {
     Information information = 1; // Camera information
@@ -219,6 +231,12 @@ enum Mode {
     MODE_UNKNOWN = 0; // Unknown
     MODE_PHOTO = 1; // Photo mode
     MODE_VIDEO = 2; // Video mode
+}
+
+// Photos range type.
+enum PhotosRange {
+    PHOTOS_RANGE_ALL = 0; // All the photos present on the camera
+    PHOTOS_RANGE_SINCE_CONNECTION = 1; // Photos taken since MAVSDK got connected
 }
 
 // Position type in global coordinates.
