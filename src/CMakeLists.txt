@@ -34,7 +34,7 @@ target_link_libraries(mavsdk
     CURL::libcurl
     Threads::Threads
     JsonCpp::jsoncpp
-    tinyxml2
+    tinyxml2::tinyxml2
 )
 
 if (IOS)
