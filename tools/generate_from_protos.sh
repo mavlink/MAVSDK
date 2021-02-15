@@ -11,7 +11,7 @@ protoc_binary="${third_party_dir}/install/bin/protoc"
 protoc_grpc_binary="${third_party_dir}/install/bin/grpc_cpp_plugin"
 
 function snake_case_to_camel_case {
-    echo $1 | sed -r 's/(^|_)([a-z])/\U\2/g'
+    echo $1 | awk -v FS="_" -v OFS="" '{for (i=1;i<=NF;i++) $i=toupper(substr($i,1,1)) substr($i,2)} 1'
 }
 
 command -v ${protoc_binary} > /dev/null && command -v ${protoc_grpc_binary} > /dev/null || {
