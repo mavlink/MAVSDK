@@ -25,7 +25,7 @@ void init_camera(py::module_& m, py::class_<mavsdk::System>& system)
 
         .def("possible_setting_options", &mavsdk::Camera::possible_setting_options)
         .def("set_setting", &mavsdk::Camera::set_setting)
-
+        .def("get_setting", &mavsdk::Camera::get_setting)
         .def("format_storage", &mavsdk::Camera::format_storage);
 
     py::enum_<mavsdk::Camera::Mode>(camera, "Mode")

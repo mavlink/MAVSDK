@@ -11,15 +11,15 @@ void init_ftp(py::module_& m, py::class_<mavsdk::System>& system)
 
     ftp
 
+        .def("list_directory", &mavsdk::Ftp::list_directory)
         .def("create_directory", &mavsdk::Ftp::create_directory)
         .def("remove_directory", &mavsdk::Ftp::remove_directory)
         .def("remove_file", &mavsdk::Ftp::remove_file)
         .def("rename", &mavsdk::Ftp::rename)
-
+        .def("are_files_identical", &mavsdk::Ftp::are_files_identical)
         .def("set_root_directory", &mavsdk::Ftp::set_root_directory)
         .def("set_target_compid", &mavsdk::Ftp::set_target_compid)
-
-        ;
+        .def("get_our_compid", &mavsdk::Ftp::get_our_compid);
 
     py::class_<mavsdk::Ftp::ProgressData> progress_data(ftp, "ProgressData");
     progress_data.def(py::init<>())

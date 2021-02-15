@@ -11,20 +11,21 @@ void init_mission(py::module_& m, py::class_<mavsdk::System>& system)
 
     mission.def("upload_mission", &mavsdk::Mission::upload_mission)
         .def("cancel_mission_upload", &mavsdk::Mission::cancel_mission_upload)
-
+        .def("download_mission", &mavsdk::Mission::download_mission)
         .def("cancel_mission_download", &mavsdk::Mission::cancel_mission_download)
         .def("start_mission", &mavsdk::Mission::start_mission)
         .def("pause_mission", &mavsdk::Mission::pause_mission)
         .def("clear_mission", &mavsdk::Mission::clear_mission)
         .def("set_current_mission_item", &mavsdk::Mission::set_current_mission_item)
-
+        .def("is_mission_finished", &mavsdk::Mission::is_mission_finished)
         .def("mission_progress", &mavsdk::Mission::mission_progress)
-
+        .def(
+            "get_return_to_launch_after_mission",
+            &mavsdk::Mission::get_return_to_launch_after_mission)
         .def(
             "set_return_to_launch_after_mission",
             &mavsdk::Mission::set_return_to_launch_after_mission)
-
-        ;
+        .def("import_qgroundcontrol_mission", &mavsdk::Mission::import_qgroundcontrol_mission);
 
     py::class_<mavsdk::Mission::MissionItem> mission_item(mission, "MissionItem");
     mission_item.def(py::init<>())

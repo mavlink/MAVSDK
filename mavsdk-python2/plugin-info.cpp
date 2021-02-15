@@ -9,9 +9,11 @@ void init_info(py::module_& m, py::class_<mavsdk::System>& system)
 {
     py::class_<mavsdk::Info> info(m, "Info");
 
-    info
-
-        ;
+    info.def("get_flight_information", &mavsdk::Info::get_flight_information)
+        .def("get_identification", &mavsdk::Info::get_identification)
+        .def("get_product", &mavsdk::Info::get_product)
+        .def("get_version", &mavsdk::Info::get_version)
+        .def("get_speed_factor", &mavsdk::Info::get_speed_factor);
 
     py::class_<mavsdk::Info::FlightInfo> flight_info(info, "FlightInfo");
     flight_info.def(py::init<>())

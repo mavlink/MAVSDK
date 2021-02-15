@@ -11,7 +11,7 @@ void init_mission_raw(py::module_& m, py::class_<mavsdk::System>& system)
 
     mission_raw.def("upload_mission", &mavsdk::MissionRaw::upload_mission)
         .def("cancel_mission_upload", &mavsdk::MissionRaw::cancel_mission_upload)
-
+        .def("download_mission", &mavsdk::MissionRaw::download_mission)
         .def("cancel_mission_download", &mavsdk::MissionRaw::cancel_mission_download)
         .def("start_mission", &mavsdk::MissionRaw::start_mission)
         .def("pause_mission", &mavsdk::MissionRaw::pause_mission)

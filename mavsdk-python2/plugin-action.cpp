@@ -22,11 +22,11 @@ void init_action(py::module_& m, py::class_<mavsdk::System>& system)
         .def("do_orbit", &mavsdk::Action::do_orbit)
         .def("transition_to_fixedwing", &mavsdk::Action::transition_to_fixedwing)
         .def("transition_to_multicopter", &mavsdk::Action::transition_to_multicopter)
-
+        .def("get_takeoff_altitude", &mavsdk::Action::get_takeoff_altitude)
         .def("set_takeoff_altitude", &mavsdk::Action::set_takeoff_altitude)
-
+        .def("get_maximum_speed", &mavsdk::Action::get_maximum_speed)
         .def("set_maximum_speed", &mavsdk::Action::set_maximum_speed)
-
+        .def("get_return_to_launch_altitude", &mavsdk::Action::get_return_to_launch_altitude)
         .def("set_return_to_launch_altitude", &mavsdk::Action::set_return_to_launch_altitude);
 
     py::enum_<mavsdk::Action::OrbitYawBehavior>(action, "OrbitYawBehavior")

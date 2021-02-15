@@ -11,7 +11,7 @@ void init_offboard(py::module_& m, py::class_<mavsdk::System>& system)
 
     offboard.def("start", &mavsdk::Offboard::start)
         .def("stop", &mavsdk::Offboard::stop)
-
+        .def("is_active", &mavsdk::Offboard::is_active)
         .def("set_attitude", &mavsdk::Offboard::set_attitude)
         .def("set_actuator_control", &mavsdk::Offboard::set_actuator_control)
         .def("set_attitude_rate", &mavsdk::Offboard::set_attitude_rate)

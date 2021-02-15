@@ -9,12 +9,11 @@ void init_follow_me(py::module_& m, py::class_<mavsdk::System>& system)
 {
     py::class_<mavsdk::FollowMe> follow_me(m, "FollowMe");
 
-    follow_me
-
+    follow_me.def("get_config", &mavsdk::FollowMe::get_config)
         .def("set_config", &mavsdk::FollowMe::set_config)
-
+        .def("is_active", &mavsdk::FollowMe::is_active)
         .def("set_target_location", &mavsdk::FollowMe::set_target_location)
-
+        .def("get_last_location", &mavsdk::FollowMe::get_last_location)
         .def("start", &mavsdk::FollowMe::start)
         .def("stop", &mavsdk::FollowMe::stop);
 

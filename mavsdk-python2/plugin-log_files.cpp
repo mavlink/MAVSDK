@@ -9,7 +9,7 @@ void init_log_files(py::module_& m, py::class_<mavsdk::System>& system)
 {
     py::class_<mavsdk::LogFiles> log_files(m, "LogFiles");
 
-    log_files
+    log_files.def("get_entries", &mavsdk::LogFiles::get_entries)
 
         ;
 

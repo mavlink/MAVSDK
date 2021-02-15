@@ -57,8 +57,7 @@ void init_telemetry(py::module_& m, py::class_<mavsdk::System>& system)
         .def("set_rate_imu", &mavsdk::Telemetry::set_rate_imu)
         .def("set_rate_unix_epoch_time", &mavsdk::Telemetry::set_rate_unix_epoch_time)
         .def("set_rate_distance_sensor", &mavsdk::Telemetry::set_rate_distance_sensor)
-
-        ;
+        .def("get_gps_global_origin", &mavsdk::Telemetry::get_gps_global_origin);
 
     py::enum_<mavsdk::Telemetry::FixType>(telemetry, "FixType")
         .value("NoGps", mavsdk::Telemetry::FixType::NoGps)

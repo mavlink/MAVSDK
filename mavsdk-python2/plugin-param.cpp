@@ -9,13 +9,11 @@ void init_param(py::module_& m, py::class_<mavsdk::System>& system)
 {
     py::class_<mavsdk::Param> param(m, "Param");
 
-    param
-
+    param.def("get_param_int", &mavsdk::Param::get_param_int)
         .def("set_param_int", &mavsdk::Param::set_param_int)
-
+        .def("get_param_float", &mavsdk::Param::get_param_float)
         .def("set_param_float", &mavsdk::Param::set_param_float)
-
-        ;
+        .def("get_all_params", &mavsdk::Param::get_all_params);
 
     py::class_<mavsdk::Param::IntParam> int_param(param, "IntParam");
     int_param.def(py::init<>())
