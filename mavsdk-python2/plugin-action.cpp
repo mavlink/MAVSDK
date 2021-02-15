@@ -19,6 +19,7 @@ void init_action(py::module_& m, py::class_<mavsdk::System>& system)
         .def("kill", &mavsdk::Action::kill)
         .def("return_to_launch", &mavsdk::Action::return_to_launch)
         .def("goto_location", &mavsdk::Action::goto_location)
+        .def("do_orbit", &mavsdk::Action::do_orbit)
         .def("transition_to_fixedwing", &mavsdk::Action::transition_to_fixedwing)
         .def("transition_to_multicopter", &mavsdk::Action::transition_to_multicopter)
 
@@ -27,6 +28,14 @@ void init_action(py::module_& m, py::class_<mavsdk::System>& system)
         .def("set_maximum_speed", &mavsdk::Action::set_maximum_speed)
 
         .def("set_return_to_launch_altitude", &mavsdk::Action::set_return_to_launch_altitude);
+
+    py::enum_<mavsdk::Action::OrbitYawBehavior>(action, "OrbitYawBehavior")
+        .value("HoldFrontToCircleCenter", mavsdk::Action::OrbitYawBehavior::HoldFrontToCircleCenter)
+        .value("HoldInitialHeading", mavsdk::Action::OrbitYawBehavior::HoldInitialHeading)
+        .value("Uncontrolled", mavsdk::Action::OrbitYawBehavior::Uncontrolled)
+        .value(
+            "HoldFrontTangentToCircle", mavsdk::Action::OrbitYawBehavior::HoldFrontTangentToCircle)
+        .value("RcControlled", mavsdk::Action::OrbitYawBehavior::RcControlled);
 
     py::enum_<mavsdk::Action::Result>(action, "Result")
         .value("Unknown", mavsdk::Action::Result::Unknown)

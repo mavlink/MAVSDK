@@ -115,13 +115,15 @@ void init_telemetry(py::module_& m, py::class_<mavsdk::System>& system)
         .def_readwrite("w", &mavsdk::Telemetry::Quaternion::w)
         .def_readwrite("x", &mavsdk::Telemetry::Quaternion::x)
         .def_readwrite("y", &mavsdk::Telemetry::Quaternion::y)
-        .def_readwrite("z", &mavsdk::Telemetry::Quaternion::z);
+        .def_readwrite("z", &mavsdk::Telemetry::Quaternion::z)
+        .def_readwrite("timestamp_us", &mavsdk::Telemetry::Quaternion::timestamp_us);
 
     py::class_<mavsdk::Telemetry::EulerAngle> euler_angle(telemetry, "EulerAngle");
     euler_angle.def(py::init<>())
         .def_readwrite("roll_deg", &mavsdk::Telemetry::EulerAngle::roll_deg)
         .def_readwrite("pitch_deg", &mavsdk::Telemetry::EulerAngle::pitch_deg)
-        .def_readwrite("yaw_deg", &mavsdk::Telemetry::EulerAngle::yaw_deg);
+        .def_readwrite("yaw_deg", &mavsdk::Telemetry::EulerAngle::yaw_deg)
+        .def_readwrite("timestamp_us", &mavsdk::Telemetry::EulerAngle::timestamp_us);
 
     py::class_<mavsdk::Telemetry::AngularVelocityBody> angular_velocity_body(
         telemetry, "AngularVelocityBody");
