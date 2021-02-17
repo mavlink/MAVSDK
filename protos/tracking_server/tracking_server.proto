@@ -59,21 +59,21 @@ message RespondTrackingPointCommandRequest {
     TrackingServerResult result = 1; // The result to answer to the incoming command
 }
 message RespondTrackingPointCommandResponse {
-    TrackingServerResult result = 1; // The result of sending the response.
+    TrackingServerResult tracking_server_result = 1; // The result of sending the response.
 }
 
 message RespondTrackingRectangleCommandRequest {
     TrackingServerResult result = 1; // The result to answer to the incoming command
 }
 message RespondTrackingRectangleCommandResponse {
-    TrackingServerResult result = 1; // The result of sending the response.
+    TrackingServerResult tracking_server_result = 1; // The result of sending the response.
 }
 
 message RespondTrackingOffCommandRequest {
     TrackingServerResult result = 1; // The result to answer to the incoming command
 }
 message RespondTrackingOffCommandResponse {
-    TrackingServerResult result = 1; // The result of sending the response.
+    TrackingServerResult tracking_server_result = 1; // The result of sending the response.
 }
 
 message TrackPoint {
