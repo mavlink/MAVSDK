@@ -53,7 +53,9 @@ message TrackingRectangleCommandResponse {
 }
 
 message SubscribeTrackingOffCommandRequest {}
-message TrackingOffCommandResponse {}
+message TrackingOffCommandResponse {
+    int32 dummy = 1; // Unused
+}
 
 message RespondTrackingPointCommandRequest {
     TrackingServerResult result = 1; // The result to answer to the incoming command
