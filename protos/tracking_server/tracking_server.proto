@@ -1,0 +1,76 @@
+syntax = "proto3";
+
+package mavsdk.rpc.tracking_server;
+
+import "mavsdk_options.proto";
+
+option java_package = "io.mavsdk.tracking_server";
+option java_outer_classname = "TrackingServerProto";
+
+// API for an onboard image tracking software.
+service TrackingServerService {
+    // Set/update the current tracking status.
+    rpc SetTrackingStatus(SetTrackingStatusRequest) returns(SetTrackingStatusResponse) { option (mavsdk.options.async_type) = SYNC; }
+    // Subscribe to incoming tracking commands.
+    rpc SubscribeTrackingCommand(SubscribeTrackingCommandRequest) returns(stream TrackingCommandResponse) { option (mavsdk.options.async_type) = ASYNC; }
+    // Respond to an incoming tracking command.
+    rpc RespondTrackingCommand(RespondTrackingCommandRequest) returns(RespondTrackingCommandResponse) { option (mavsdk.options.async_type) = SYNC; }
+}
+
+// Tracking mode.
+enum TrackingMode {
+    TRACKING_MODE_NONE = 0; // Tracking off
+    TRACKING_MODE_POINT = 1; // Tracking point
+    TRACKING_MODE_RECTANGLE = 2; // Tracking rectangle
+}
+
+message SetTrackingStatusRequest {
+    TrackingMode tracking_mode = 1; // The current tracking mode
+    TrackPoint tracked_point = 2; // The tracked point if the mode is point
+    TrackRectangle tracked_rectangle = 3; // The tracked rectangle if the mode is rectangle
+}
+message SetTrackingStatusResponse {}
+
+message SubscribeTrackingCommandRequest {}
+message TrackingCommandResponse {
+    TrackingMode tracking_mode = 1; // The tracking mode requested
+    TrackPoint track_point = 2; // The point to track if a point is to be tracked
+    TrackRectangle track_rectangle = 3; // The rectanle to track if a rectangle is to be tracked
+}
+
+message RespondTrackingCommandRequest {
+    TrackingMode tracking_mode = 1;
+    TrackingServerResult result = 2;
+}
+message RespondTrackingCommandResponse {
+    TrackingServerResult result = 1;
+}
+
+message TrackPoint {
+    float point_x = 1;
+    float point_y = 2;
+    float radius = 3;
+}
+
+message TrackRectangle {
+    float top_left_corner_x = 1;
+    float top_left_corner_y = 2;
+    float bottom_right_corner_x = 3;
+    float bottom_right_corner_y = 4;
+}
+
+message TrackingServerResult {
+    // Possible results returned for tracking_server requests.
+    enum Result {
+        RESULT_UNKNOWN = 0; // Unknown result
+        RESULT_SUCCESS = 1; // Request succeeded
+        RESULT_NO_SYSTEM = 2; // No system is connected
+        RESULT_CONNECTION_ERROR = 3; // Connection error
+        RESULT_UNSUPPORTED = 4; // Command not supported
+        RESULT_DISABLED = 5; // Tracking is disabled
+        RESULT_FAILED = 6; // Tracking command failed
+    }
+
+    Result result = 1; // Result enum value
+    string result_str = 2; // Human-readable English string describing the result
+}
