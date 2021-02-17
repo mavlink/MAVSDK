@@ -39,24 +39,24 @@ message TrackingCommandResponse {
 }
 
 message RespondTrackingCommandRequest {
-    TrackingMode tracking_mode = 1;
-    TrackingServerResult result = 2;
+    TrackingMode tracking_mode = 1; // The tracking mode
+    TrackingServerResult result = 2; // The result to answer to the incoming command
 }
 message RespondTrackingCommandResponse {
-    TrackingServerResult result = 1;
+    TrackingServerResult result = 1; // The result of sending the response.
 }
 
 message TrackPoint {
-    float point_x = 1;
-    float point_y = 2;
-    float radius = 3;
+    float point_x = 1; // Point to track x value (normalized 0..1, 0 is left, 1 is right).
+    float point_y = 2; // Point to track y value (normalized 0..1, 0 is top, 1 is bottom).
+    float radius = 3; // Point to track y value (normalized 0..1, 0 is top, 1 is bottom).
 }
 
 message TrackRectangle {
-    float top_left_corner_x = 1;
-    float top_left_corner_y = 2;
-    float bottom_right_corner_x = 3;
-    float bottom_right_corner_y = 4;
+    float top_left_corner_x = 1; // Top left corner of rectangle x value (normalized 0..1, 0 is left, 1 is right).
+    float top_left_corner_y = 2; // Top left corner of rectangle y value (normalized 0..1, 0 is top, 1 is bottom).
+    float bottom_right_corner_x = 3; // Bottom right corner of rectangle x value (normalized 0..1, 0 is left, 1 is right).
+    float bottom_right_corner_y = 4; // Bottom right corner of rectangle y value (normalized 0..1, 0 is top, 1 is bottom).
 }
 
 message TrackingServerResult {
