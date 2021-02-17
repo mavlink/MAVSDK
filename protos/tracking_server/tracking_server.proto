@@ -58,32 +58,34 @@ message TrackingOffCommandResponse {
 }
 
 message RespondTrackingPointCommandRequest {
-    TrackingServerResult result = 1; // The result to answer to the incoming command
+    CommandAnswer command_answer = 1; // The ack to answer to the incoming command
 }
 message RespondTrackingPointCommandResponse {
-    TrackingServerResult tracking_server_result = 1; // The result of sending the response.
+    TrackingServerResult result = 1; // The result of sending the response.
 }
 
 message RespondTrackingRectangleCommandRequest {
-    TrackingServerResult result = 1; // The result to answer to the incoming command
+    CommandAnswer command_answer = 1; // The ack to answer to the incoming command
 }
 message RespondTrackingRectangleCommandResponse {
-    TrackingServerResult tracking_server_result = 1; // The result of sending the response.
+    TrackingServerResult result = 1; // The result of sending the response.
 }
 
 message RespondTrackingOffCommandRequest {
-    TrackingServerResult result = 1; // The result to answer to the incoming command
+    CommandAnswer command_answer = 1; // The ack to answer to the incoming command
 }
 message RespondTrackingOffCommandResponse {
-    TrackingServerResult tracking_server_result = 1; // The result of sending the response.
+    TrackingServerResult result = 1; // The result of sending the response.
 }
 
+// Point description type
 message TrackPoint {
     float point_x = 1; // Point to track x value (normalized 0..1, 0 is left, 1 is right).
     float point_y = 2; // Point to track y value (normalized 0..1, 0 is top, 1 is bottom).
     float radius = 3; // Point to track y value (normalized 0..1, 0 is top, 1 is bottom).
 }
 
+// Rectangle description type
 message TrackRectangle {
     float top_left_corner_x = 1; // Top left corner of rectangle x value (normalized 0..1, 0 is left, 1 is right).
     float top_left_corner_y = 2; // Top left corner of rectangle y value (normalized 0..1, 0 is top, 1 is bottom).
@@ -91,6 +93,16 @@ message TrackRectangle {
     float bottom_right_corner_y = 4; // Bottom right corner of rectangle y value (normalized 0..1, 0 is top, 1 is bottom).
 }
 
+// Answer to respond to an incoming command
+enum CommandAnswer {
+    COMMAND_ANSWER_ACCEPTED = 0; // Command accepted
+    COMMAND_ANSWER_TEMPORARILY_REJECTED = 1; // Command temporarily rejected
+    COMMAND_ANSWER_DENIED = 2; // Command denied
+    COMMAND_ANSWER_UNSUPPORTED = 3; // Command unsupported
+    COMMAND_ANSWER_FAILED = 4; // Command failed
+}
+
+// Result type
 message TrackingServerResult {
     // Possible results returned for tracking_server requests.
     enum Result {
@@ -98,9 +110,6 @@ message TrackingServerResult {
         RESULT_SUCCESS = 1; // Request succeeded
         RESULT_NO_SYSTEM = 2; // No system is connected
         RESULT_CONNECTION_ERROR = 3; // Connection error
-        RESULT_UNSUPPORTED = 4; // Command not supported
-        RESULT_DISABLED = 5; // Tracking is disabled
-        RESULT_FAILED = 6; // Tracking command failed
     }
 
     Result result = 1; // Result enum value
