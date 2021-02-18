@@ -276,8 +276,7 @@ void MAVLinkParameters::do_work()
                     _parent.get_system_id(),
                     MAV_COMP_ID_CAMERA,
                     param_id,
-                    -1,
-                    0);
+                    -1);
 
             } else {
                 // LogDebug() << "request read: "
