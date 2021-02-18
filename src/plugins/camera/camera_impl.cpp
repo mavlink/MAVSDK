@@ -139,6 +139,7 @@ void CameraImpl::manual_enable()
 {
     refresh_params();
 
+    request_status();
     request_camera_information();
     request_flight_information();
 
@@ -285,6 +286,19 @@ MavlinkCommandSender::CommandLong CameraImpl::make_command_request_camera_captur
     cmd_req_camera_cap_stat.target_component_id = _camera_id + MAV_COMP_ID_CAMERA;
 
     return cmd_req_camera_cap_stat;
+}
+
+MavlinkCommandSender::CommandLong
+CameraImpl::make_command_request_camera_image_captured(const size_t photo_id)
+{
+    MavlinkCommandSender::CommandLong cmd_req_camera_image_captured{};
+
+    cmd_req_camera_image_captured.command = MAV_CMD_REQUEST_MESSAGE;
+    cmd_req_camera_image_captured.params.param1 = static_cast<float>(MAVLINK_MSG_ID_CAMERA_IMAGE_CAPTURED);
+    cmd_req_camera_image_captured.params.param2 = static_cast<float>(photo_id);
+    cmd_req_camera_image_captured.target_component_id = _camera_id + MAV_COMP_ID_CAMERA;
+
+    return cmd_req_camera_image_captured;
 }
 
 MavlinkCommandSender::CommandLong CameraImpl::make_command_request_storage_info()
@@ -726,6 +740,15 @@ void CameraImpl::process_camera_capture_status(const mavlink_message_t& message)
             (camera_capture_status.image_status == 2 || camera_capture_status.image_status == 3);
         _status.received_camera_capture_status = true;
         _status.data.recording_time_s = float(camera_capture_status.recording_time_ms) / 1e3f;
+        _status.image_count = camera_capture_status.image_count;
+
+        if (_status.image_count_at_connection == -1) {
+            _status.image_count_at_connection = camera_capture_status.image_count;
+        }
+
+        if (_status.last_advertised_image_index == -1) {
+            _status.last_advertised_image_index = camera_capture_status.image_count - 1;
+        }
     }
 
     check_status();
@@ -760,25 +783,31 @@ void CameraImpl::process_camera_image_captured(const mavlink_message_t& message)
     mavlink_msg_camera_image_captured_decode(&message, &image_captured);
 
     {
+        Camera::CaptureInfo capture_info = {};
+        capture_info.position.latitude_deg = image_captured.lat / 1e7;
+        capture_info.position.longitude_deg = image_captured.lon / 1e7;
+        capture_info.position.absolute_altitude_m = image_captured.alt / 1e3f;
+        capture_info.position.relative_altitude_m = image_captured.relative_alt / 1e3f;
+        capture_info.time_utc_us = image_captured.time_utc;
+        capture_info.attitude_quaternion.w = image_captured.q[0];
+        capture_info.attitude_quaternion.x = image_captured.q[1];
+        capture_info.attitude_quaternion.y = image_captured.q[2];
+        capture_info.attitude_quaternion.z = image_captured.q[3];
+        capture_info.attitude_euler_angle =
+            to_euler_angle_from_quaternion(capture_info.attitude_quaternion);
+        capture_info.file_url = std::string(image_captured.file_url);
+        capture_info.is_success = (image_captured.capture_result == 1);
+        capture_info.index = image_captured.image_index;
+
+        if (capture_info.is_success) {
+            _status.photo_list.insert(std::make_pair(image_captured.image_index, capture_info));
+        }
+
+        _captured_request_cv.notify_all();
+
         std::lock_guard<std::mutex> lock(_capture_info.mutex);
-
-        if (_capture_info.callback) {
-            Camera::CaptureInfo capture_info = {};
-            capture_info.position.latitude_deg = image_captured.lat / 1e7;
-            capture_info.position.longitude_deg = image_captured.lon / 1e7;
-            capture_info.position.absolute_altitude_m = image_captured.alt / 1e3f;
-            capture_info.position.relative_altitude_m = image_captured.relative_alt / 1e3f;
-            capture_info.time_utc_us = image_captured.time_utc;
-            capture_info.attitude_quaternion.w = image_captured.q[0];
-            capture_info.attitude_quaternion.x = image_captured.q[1];
-            capture_info.attitude_quaternion.y = image_captured.q[2];
-            capture_info.attitude_quaternion.z = image_captured.q[3];
-            capture_info.attitude_euler_angle =
-                to_euler_angle_from_quaternion(capture_info.attitude_quaternion);
-            capture_info.file_url = std::string(image_captured.file_url);
-            capture_info.is_success = (image_captured.capture_result == 1);
-            capture_info.index = image_captured.image_index;
-
+        if (_status.last_advertised_image_index < capture_info.index && _capture_info.callback) {
+            _status.last_advertised_image_index = capture_info.index;
             const auto temp_callback = _capture_info.callback;
             _parent->call_user_callback(
                 [temp_callback, capture_info]() { temp_callback(capture_info); });
@@ -1581,6 +1610,117 @@ void CameraImpl::format_storage_async(Camera::ResultCallback callback)
 
     _parent->send_command_async(
         cmd_format, std::bind(&CameraImpl::receive_command_result, this, _1, callback));
+}
+
+std::pair<Camera::Result, std::vector<Camera::CaptureInfo>>
+CameraImpl::list_photos(Camera::PhotosRange photos_range)
+{
+    auto prom = std::make_shared<
+        std::promise<std::pair<Camera::Result, std::vector<Camera::CaptureInfo>>>>();
+    auto ret = prom->get_future();
+
+    list_photos_async(
+        photos_range, [prom](Camera::Result result, std::vector<Camera::CaptureInfo> photo_list) {
+            prom->set_value(std::make_pair(result, photo_list));
+        });
+
+    return ret.get();
+}
+
+void CameraImpl::list_photos_async(
+    Camera::PhotosRange photos_range, const Camera::ListPhotosCallback callback)
+{
+    {
+        std::lock_guard<std::mutex> lock(_status.mutex);
+
+        if (_status.is_fetching_photos) {
+            _parent->call_user_callback([callback]() {
+                callback(Camera::Result::Busy, std::vector<Camera::CaptureInfo>{});
+            });
+            return;
+        } else {
+            _status.is_fetching_photos = true;
+        }
+
+        if (_status.image_count == -1) {
+            LogErr() << "Cannot list photos: camera status has not been received yet!";
+            _parent->call_user_callback([callback]() {
+                callback(Camera::Result::Error, std::vector<Camera::CaptureInfo>{});
+            });
+            return;
+        }
+    }
+
+    const int start_index = [photos_range]() {
+        switch (photos_range) {
+            case Camera::PhotosRange::SinceConnection:
+               return _status.image_count_at_connection;
+            case Camera::PhotosRange::All:
+            // FALLTHROUGH
+            default:
+                return 0;
+    }();
+
+    std::thread([this, start_index, callback]() {
+        std::unique_lock<std::mutex> lock(_captured_request_mutex);
+
+        for (int i = start_index; i < _status.image_count; i++) {
+            // In case the vehicle sends capture info, but not those we are asking, we do not
+            // want to loop infinitely. The safety_count is here to abort if this happens.
+            auto safety_count = 0;
+            const auto safety_count_boundary = 3;
+
+            while (_status.photo_list.find(i) == _status.photo_list.end() &&
+                   safety_count < safety_count_boundary) {
+                safety_count++;
+
+                auto request_try_number = 0;
+                const auto request_try_limit =
+                    3; // Timeout if the request times out that many times
+                auto cv_status = std::cv_status::timeout;
+
+                while (cv_status == std::cv_status::timeout) {
+                    request_try_number++;
+                    if (request_try_number >= request_try_limit) {
+                        _parent->call_user_callback([callback]() {
+                            callback(Camera::Result::Timeout, std::vector<Camera::CaptureInfo>{});
+                        });
+                        return;
+                    }
+
+                    _parent->send_command_async(
+                        make_command_request_camera_image_captured(i), nullptr);
+                    cv_status =
+                        _captured_request_cv.wait_for(lock, std::chrono::duration<double>(1));
+                }
+            }
+
+            if (safety_count == safety_count_boundary) {
+                _parent->call_user_callback([callback]() {
+                    callback(Camera::Result::Error, std::vector<Camera::CaptureInfo>{});
+                });
+                return;
+            }
+        }
+
+        std::vector<Camera::CaptureInfo> photo_list;
+        {
+            std::lock_guard<std::mutex> status_lock(_status.mutex);
+
+            for (auto capture_info : _status.photo_list) {
+                if (capture_info.first >= start_index) {
+                    photo_list.push_back(capture_info.second);
+                }
+            }
+
+            _status.is_fetching_photos = false;
+
+            const auto temp_callback = callback;
+            _parent->call_user_callback([temp_callback, photo_list]() {
+                temp_callback(Camera::Result::Success, photo_list);
+            });
+        }
+    }).detach();
 }
 
 } // namespace mavsdk

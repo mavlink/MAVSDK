@@ -59,8 +59,6 @@ private:
     Gimbal::ControlStatus _current_control_status{Gimbal::ControlMode::None, 0, 0, 0, 0};
     Gimbal::ControlCallback _control_callback;
 
-    std::condition_variable _control_thread_cv;
-    std::mutex _control_thread_mutex;
     bool _is_mavlink_manager_status_registered = false;
 };
 

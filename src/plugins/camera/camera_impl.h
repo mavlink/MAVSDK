@@ -1,5 +1,7 @@
 #pragma once
 
+#include <map>
+
 #include "camera_definition.h"
 #include "mavlink_include.h"
 #include "plugins/camera/camera.h"
@@ -73,6 +75,11 @@ public:
 
     Camera::Result format_storage();
     void format_storage_async(Camera::ResultCallback callback);
+
+    std::pair<Camera::Result, std::vector<Camera::CaptureInfo>>
+    list_photos(Camera::PhotosRange photos_range);
+    void
+    list_photos_async(Camera::PhotosRange photos_range, const Camera::ListPhotosCallback callback);
 
     CameraImpl(const CameraImpl&) = delete;
     CameraImpl& operator=(const CameraImpl&) = delete;
@@ -160,6 +167,7 @@ private:
     MavlinkCommandSender::CommandLong make_command_set_camera_mode(float mavlink_mode);
     MavlinkCommandSender::CommandLong make_command_request_camera_settings();
     MavlinkCommandSender::CommandLong make_command_request_camera_capture_status();
+    MavlinkCommandSender::CommandLong make_command_request_camera_image_captured(size_t photo_id);
     MavlinkCommandSender::CommandLong make_command_request_storage_info();
 
     MavlinkCommandSender::CommandLong make_command_start_video(float capture_status_rate_hz);
@@ -180,6 +188,11 @@ private:
         Camera::Status data{};
         bool received_camera_capture_status{false};
         bool received_storage_information{false};
+        int image_count{-1};
+        int image_count_at_connection{-1};
+        int last_advertised_image_index{-1};
+        std::map<int, Camera::CaptureInfo> photo_list;
+        bool is_fetching_photos{false};
 
         Camera::StatusCallback subscription_callback{nullptr};
         void* call_every_cookie{nullptr};
@@ -227,6 +240,9 @@ private:
         std::mutex mutex{};
         Camera::PossibleSettingOptionsCallback callback{nullptr};
     } _subscribe_possible_setting_options{};
+
+    std::condition_variable _captured_request_cv;
+    std::mutex _captured_request_mutex;
 };
 
 } // namespace mavsdk

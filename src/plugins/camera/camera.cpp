@@ -97,6 +97,17 @@ Camera::Result Camera::set_mode(Mode mode) const
     return _impl->set_mode(mode);
 }
 
+void Camera::list_photos_async(PhotosRange photos_range, const ListPhotosCallback callback)
+{
+    _impl->list_photos_async(photos_range, callback);
+}
+
+std::pair<Camera::Result, std::vector<Camera::CaptureInfo>>
+Camera::list_photos(PhotosRange photos_range) const
+{
+    return _impl->list_photos(photos_range);
+}
+
 void Camera::subscribe_mode(ModeCallback callback)
 {
     _impl->subscribe_mode(callback);
@@ -475,6 +486,18 @@ std::ostream& operator<<(std::ostream& str, Camera::Mode const& mode)
             return str << "Photo";
         case Camera::Mode::Video:
             return str << "Video";
+        default:
+            return str << "Unknown";
+    }
+}
+
+std::ostream& operator<<(std::ostream& str, Camera::PhotosRange const& photos_range)
+{
+    switch (photos_range) {
+        case Camera::PhotosRange::All:
+            return str << "All";
+        case Camera::PhotosRange::SinceConnection:
+            return str << "Since Connection";
         default:
             return str << "Unknown";
     }
