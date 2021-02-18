@@ -2,6 +2,7 @@
 
 #include "plugins/tracking_server/tracking_server.h"
 #include "plugin_impl_base.h"
+#include <optional>
 
 namespace mavsdk {
 
@@ -40,6 +41,27 @@ public:
     respond_tracking_off_command(TrackingServer::CommandAnswer command_answer);
 
 private:
+    std::optional<mavlink_message_t>
+    process_track_point_command(const MavlinkCommandReceiver::CommandLong& command);
+    std::optional<mavlink_message_t>
+    process_track_rectangle_command(const MavlinkCommandReceiver::CommandLong& command);
+    std::optional<mavlink_message_t>
+    process_track_off_command(const MavlinkCommandReceiver::CommandLong& command);
+
+    bool is_command_sender_ok(const MavlinkCommandReceiver::CommandLong& command);
+    MAV_RESULT mav_result_from_command_answer(TrackingServer::CommandAnswer command_answer);
+
+    std::mutex _mutex{};
+    TrackingServer::TrackingPointCommandCallback _tracking_point_callback{nullptr};
+    TrackingServer::TrackingRectangleCommandCallback _tracking_rectangle_callback{nullptr};
+    TrackingServer::TrackingOffCommandCallback _tracking_off_callback{nullptr};
+
+    uint8_t _tracking_point_command_sysid{0};
+    uint8_t _tracking_point_command_compid{0};
+    uint8_t _tracking_rectangle_command_sysid{0};
+    uint8_t _tracking_rectangle_command_compid{0};
+    uint8_t _tracking_off_command_sysid{0};
+    uint8_t _tracking_off_command_compid{0};
 };
 
 } // namespace mavsdk
