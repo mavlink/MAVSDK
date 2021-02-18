@@ -1,0 +1,117 @@
+syntax = "proto3";
+
+package mavsdk.rpc.tracking_server;
+
+import "mavsdk_options.proto";
+
+option java_package = "io.mavsdk.tracking_server";
+option java_outer_classname = "TrackingServerProto";
+
+// API for an onboard image tracking software.
+service TrackingServerService {
+    // Set/update the current point tracking status.
+    rpc SetTrackingPointStatus(SetTrackingPointStatusRequest) returns(SetTrackingPointStatusResponse) { option (mavsdk.options.async_type) = SYNC; }
+    // Set/update the current rectangle tracking status.
+    rpc SetTrackingRectangleStatus(SetTrackingRectangleStatusRequest) returns(SetTrackingRectangleStatusResponse) { option (mavsdk.options.async_type) = SYNC; }
+    // Set the current tracking status to off.
+    rpc SetTrackingOffStatus(SetTrackingOffStatusRequest) returns(SetTrackingOffStatusResponse) { option (mavsdk.options.async_type) = SYNC; }
+    // Subscribe to incoming tracking point command.
+    rpc SubscribeTrackingPointCommand(SubscribeTrackingPointCommandRequest) returns(stream TrackingPointCommandResponse) { option (mavsdk.options.async_type) = ASYNC; }
+    // Subscribe to incoming tracking rectangle command.
+    rpc SubscribeTrackingRectangleCommand(SubscribeTrackingRectangleCommandRequest) returns(stream TrackingRectangleCommandResponse) { option (mavsdk.options.async_type) = ASYNC; }
+    // Subscribe to incoming tracking off command.
+    rpc SubscribeTrackingOffCommand(SubscribeTrackingOffCommandRequest) returns(stream TrackingOffCommandResponse) { option (mavsdk.options.async_type) = ASYNC; }
+    // Respond to an incoming tracking point command.
+    rpc RespondTrackingPointCommand(RespondTrackingPointCommandRequest) returns(RespondTrackingPointCommandResponse) { option (mavsdk.options.async_type) = SYNC; }
+    // Respond to an incoming tracking rectangle command.
+    rpc RespondTrackingRectangleCommand(RespondTrackingRectangleCommandRequest) returns(RespondTrackingRectangleCommandResponse) { option (mavsdk.options.async_type) = SYNC; }
+    // Respond to an incoming tracking off command.
+    rpc RespondTrackingOffCommand(RespondTrackingOffCommandRequest) returns(RespondTrackingOffCommandResponse) { option (mavsdk.options.async_type) = SYNC; }
+}
+
+message SetTrackingPointStatusRequest {
+    TrackPoint tracked_point = 1; // The tracked point
+}
+message SetTrackingPointStatusResponse {}
+
+message SetTrackingRectangleStatusRequest {
+    TrackRectangle tracked_rectangle = 1; // The tracked rectangle
+}
+message SetTrackingRectangleStatusResponse {}
+
+message SetTrackingOffStatusRequest {}
+message SetTrackingOffStatusResponse {}
+
+message SubscribeTrackingPointCommandRequest {}
+message TrackingPointCommandResponse {
+    TrackPoint track_point = 1; // The point to track if a point is to be tracked
+}
+
+message SubscribeTrackingRectangleCommandRequest {}
+message TrackingRectangleCommandResponse {
+    TrackRectangle track_rectangle = 1; // The point to track if a point is to be tracked
+}
+
+message SubscribeTrackingOffCommandRequest {}
+message TrackingOffCommandResponse {
+    int32 dummy = 1; // Unused
+}
+
+message RespondTrackingPointCommandRequest {
+    CommandAnswer command_answer = 1; // The ack to answer to the incoming command
+}
+message RespondTrackingPointCommandResponse {
+    TrackingServerResult result = 1; // The result of sending the response.
+}
+
+message RespondTrackingRectangleCommandRequest {
+    CommandAnswer command_answer = 1; // The ack to answer to the incoming command
+}
+message RespondTrackingRectangleCommandResponse {
+    TrackingServerResult result = 1; // The result of sending the response.
+}
+
+message RespondTrackingOffCommandRequest {
+    CommandAnswer command_answer = 1; // The ack to answer to the incoming command
+}
+message RespondTrackingOffCommandResponse {
+    TrackingServerResult result = 1; // The result of sending the response.
+}
+
+// Point description type
+message TrackPoint {
+    float point_x = 1; // Point to track x value (normalized 0..1, 0 is left, 1 is right).
+    float point_y = 2; // Point to track y value (normalized 0..1, 0 is top, 1 is bottom).
+    float radius = 3; // Point to track y value (normalized 0..1, 0 is top, 1 is bottom).
+}
+
+// Rectangle description type
+message TrackRectangle {
+    float top_left_corner_x = 1; // Top left corner of rectangle x value (normalized 0..1, 0 is left, 1 is right).
+    float top_left_corner_y = 2; // Top left corner of rectangle y value (normalized 0..1, 0 is top, 1 is bottom).
+    float bottom_right_corner_x = 3; // Bottom right corner of rectangle x value (normalized 0..1, 0 is left, 1 is right).
+    float bottom_right_corner_y = 4; // Bottom right corner of rectangle y value (normalized 0..1, 0 is top, 1 is bottom).
+}
+
+// Answer to respond to an incoming command
+enum CommandAnswer {
+    COMMAND_ANSWER_ACCEPTED = 0; // Command accepted
+    COMMAND_ANSWER_TEMPORARILY_REJECTED = 1; // Command temporarily rejected
+    COMMAND_ANSWER_DENIED = 2; // Command denied
+    COMMAND_ANSWER_UNSUPPORTED = 3; // Command unsupported
+    COMMAND_ANSWER_FAILED = 4; // Command failed
+}
+
+// Result type
+message TrackingServerResult {
+    // Possible results returned for tracking_server requests.
+    enum Result {
+        RESULT_UNKNOWN = 0; // Unknown result
+        RESULT_SUCCESS = 1; // Request succeeded
+        RESULT_NO_SYSTEM = 2; // No system is connected
+        RESULT_CONNECTION_ERROR = 3; // Connection error
+    }
+
+    Result result = 1; // Result enum value
+    string result_str = 2; // Human-readable English string describing the result
+}
