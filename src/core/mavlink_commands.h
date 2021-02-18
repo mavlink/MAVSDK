@@ -7,6 +7,7 @@
 #include <string>
 #include <functional>
 #include <mutex>
+#include <optional>
 
 namespace mavsdk {
 
@@ -214,13 +215,15 @@ public:
         }
     };
 
-    typedef std::function<void(const CommandInt&)> mavlink_command_int_handler_t;
-    typedef std::function<void(const CommandLong&)> mavlink_command_long_handler_t;
+    using MavlinkCommandIntHandler =
+        std::function<std::optional<mavlink_message_t>(const CommandInt&)>;
+    using MavlinkCommandLongHandler =
+        std::function<std::optional<mavlink_message_t>(const CommandLong&)>;
 
     void register_mavlink_command_handler(
-        uint16_t cmd_id, mavlink_command_int_handler_t callback, const void* cookie);
+        uint16_t cmd_id, MavlinkCommandIntHandler callback, const void* cookie);
     void register_mavlink_command_handler(
-        uint16_t cmd_id, mavlink_command_long_handler_t callback, const void* cookie);
+        uint16_t cmd_id, MavlinkCommandLongHandler callback, const void* cookie);
 
     void unregister_mavlink_command_handler(uint16_t cmd_id, const void* cookie);
     void unregister_all_mavlink_command_handlers(const void* cookie);
@@ -233,13 +236,13 @@ private:
 
     struct MAVLinkCommandIntHandlerTableEntry {
         uint16_t cmd_id;
-        mavlink_command_int_handler_t callback;
+        MavlinkCommandIntHandler callback;
         const void* cookie; // This is the identification to unregister.
     };
 
     struct MAVLinkCommandLongHandlerTableEntry {
         uint16_t cmd_id;
-        mavlink_command_long_handler_t callback;
+        MavlinkCommandLongHandler callback;
         const void* cookie; // This is the identification to unregister.
     };
 

@@ -1219,17 +1219,13 @@ void SystemImpl::intercept_outgoing_messages(std::function<bool(mavlink_message_
 }
 
 void SystemImpl::register_mavlink_command_handler(
-    uint16_t cmd_id,
-    MavlinkCommandReceiver::mavlink_command_int_handler_t callback,
-    const void* cookie)
+    uint16_t cmd_id, MavlinkCommandReceiver::MavlinkCommandIntHandler callback, const void* cookie)
 {
     _receive_commands.register_mavlink_command_handler(cmd_id, callback, cookie);
 }
 
 void SystemImpl::register_mavlink_command_handler(
-    uint16_t cmd_id,
-    MavlinkCommandReceiver::mavlink_command_long_handler_t callback,
-    const void* cookie)
+    uint16_t cmd_id, MavlinkCommandReceiver::MavlinkCommandLongHandler callback, const void* cookie)
 {
     _receive_commands.register_mavlink_command_handler(cmd_id, callback, cookie);
 }

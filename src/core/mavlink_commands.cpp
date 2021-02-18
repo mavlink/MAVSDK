@@ -349,7 +349,11 @@ void MavlinkCommandReceiver::receive_command_int(const mavlink_message_t& messag
          it != _mavlink_command_int_handler_table.end();
          ++it) {
         if (it->cmd_id == cmd.command) {
-            it->callback(cmd);
+            // The client side can pack a COMMAND_ACK as a response to receiving the command.
+            auto maybe_message = it->callback(cmd);
+            if (maybe_message) {
+                _parent.send_message(maybe_message.value());
+            }
         }
     }
 }
@@ -364,13 +368,17 @@ void MavlinkCommandReceiver::receive_command_long(const mavlink_message_t& messa
          it != _mavlink_command_long_handler_table.end();
          ++it) {
         if (it->cmd_id == cmd.command) {
-            it->callback(cmd);
+            // The client side can pack a COMMAND_ACK as a response to receiving the command.
+            auto maybe_message = it->callback(cmd);
+            if (maybe_message) {
+                _parent.send_message(maybe_message.value());
+            }
         }
     }
 }
 
 void MavlinkCommandReceiver::register_mavlink_command_handler(
-    uint16_t cmd_id, mavlink_command_int_handler_t callback, const void* cookie)
+    uint16_t cmd_id, MavlinkCommandIntHandler callback, const void* cookie)
 {
     std::lock_guard<std::mutex> lock(_mavlink_command_handler_table_mutex);
 
@@ -379,7 +387,7 @@ void MavlinkCommandReceiver::register_mavlink_command_handler(
 }
 
 void MavlinkCommandReceiver::register_mavlink_command_handler(
-    uint16_t cmd_id, mavlink_command_long_handler_t callback, const void* cookie)
+    uint16_t cmd_id, MavlinkCommandLongHandler callback, const void* cookie)
 {
     std::lock_guard<std::mutex> lock(_mavlink_command_handler_table_mutex);
 
