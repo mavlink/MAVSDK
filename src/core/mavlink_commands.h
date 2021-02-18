@@ -136,6 +136,8 @@ public:
     struct CommandInt {
         uint8_t target_system_id{0};
         uint8_t target_component_id{0};
+        uint8_t origin_system_id{0};
+        uint8_t origin_component_id{0};
         MAV_FRAME frame = MAV_FRAME_GLOBAL_RELATIVE_ALT;
         uint16_t command{0};
         bool current{0};
@@ -151,10 +153,15 @@ public:
             float z = NAN;
         } params{};
 
-        CommandInt(const mavlink_command_int_t& command_int)
+        CommandInt(const mavlink_message_t& message)
         {
+            mavlink_command_int_t command_int;
+            mavlink_msg_command_int_decode(&message, &command_int);
+
             target_system_id = command_int.target_system;
             target_component_id = command_int.target_component;
+            origin_system_id = message.sysid;
+            origin_component_id = message.compid;
             command = command_int.command;
             frame = static_cast<MAV_FRAME>(command_int.frame);
             current = command_int.current;
@@ -172,6 +179,8 @@ public:
     struct CommandLong {
         uint8_t target_system_id{0};
         uint8_t target_component_id{0};
+        uint8_t origin_system_id{0};
+        uint8_t origin_component_id{0};
         uint16_t command{0};
         uint8_t confirmation{0};
         struct Params {
@@ -184,10 +193,15 @@ public:
             float param7 = NAN;
         } params{};
 
-        CommandLong(const mavlink_command_long_t& command_long)
+        CommandLong(const mavlink_message_t& message)
         {
+            mavlink_command_long_t command_long;
+            mavlink_msg_command_long_decode(&message, &command_long);
+
             target_system_id = command_long.target_system;
             target_component_id = command_long.target_component;
+            origin_system_id = message.sysid;
+            origin_component_id = message.compid;
             command = command_long.command;
             confirmation = command_long.confirmation;
             params.param1 = command_long.param1;
