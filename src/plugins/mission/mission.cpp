@@ -96,7 +96,7 @@ std::pair<Mission::Result, bool> Mission::is_mission_finished() const
 
 void Mission::subscribe_mission_progress(MissionProgressCallback callback)
 {
-    _impl->mission_progress_async(callback);
+    _impl->subscribe_mission_progress(callback);
 }
 
 Mission::MissionProgress Mission::mission_progress() const

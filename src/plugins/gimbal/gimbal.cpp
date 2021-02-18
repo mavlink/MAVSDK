@@ -83,7 +83,7 @@ Gimbal::Result Gimbal::release_control() const
 
 void Gimbal::subscribe_control(ControlCallback callback)
 {
-    _impl->control_async(callback);
+    _impl->subscribe_control(callback);
 }
 
 Gimbal::ControlStatus Gimbal::control() const

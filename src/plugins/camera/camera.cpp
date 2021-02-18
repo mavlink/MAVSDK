@@ -99,7 +99,7 @@ Camera::Result Camera::set_mode(Mode mode) const
 
 void Camera::subscribe_mode(ModeCallback callback)
 {
-    _impl->mode_async(callback);
+    _impl->subscribe_mode(callback);
 }
 
 Camera::Mode Camera::mode() const
@@ -109,7 +109,7 @@ Camera::Mode Camera::mode() const
 
 void Camera::subscribe_information(InformationCallback callback)
 {
-    _impl->information_async(callback);
+    _impl->subscribe_information(callback);
 }
 
 Camera::Information Camera::information() const
@@ -119,7 +119,7 @@ Camera::Information Camera::information() const
 
 void Camera::subscribe_video_stream_info(VideoStreamInfoCallback callback)
 {
-    _impl->video_stream_info_async(callback);
+    _impl->subscribe_video_stream_info(callback);
 }
 
 Camera::VideoStreamInfo Camera::video_stream_info() const
@@ -129,12 +129,12 @@ Camera::VideoStreamInfo Camera::video_stream_info() const
 
 void Camera::subscribe_capture_info(CaptureInfoCallback callback)
 {
-    _impl->capture_info_async(callback);
+    _impl->subscribe_capture_info(callback);
 }
 
 void Camera::subscribe_status(StatusCallback callback)
 {
-    _impl->status_async(callback);
+    _impl->subscribe_status(callback);
 }
 
 Camera::Status Camera::status() const
@@ -144,12 +144,12 @@ Camera::Status Camera::status() const
 
 void Camera::subscribe_current_settings(CurrentSettingsCallback callback)
 {
-    _impl->current_settings_async(callback);
+    _impl->subscribe_current_settings(callback);
 }
 
 void Camera::subscribe_possible_setting_options(PossibleSettingOptionsCallback callback)
 {
-    _impl->possible_setting_options_async(callback);
+    _impl->subscribe_possible_setting_options(callback);
 }
 
 std::vector<Camera::SettingOptions> Camera::possible_setting_options() const

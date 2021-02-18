@@ -31,7 +31,7 @@ public:
         const MissionRaw::ResultCallback& callback);
     MissionRaw::Result cancel_mission_upload();
 
-    void mission_changed_async(MissionRaw::MissionChangedCallback callback);
+    void subscribe_mission_changed(MissionRaw::MissionChangedCallback callback);
 
     MissionRaw::Result start_mission();
     void start_mission_async(const MissionRaw::ResultCallback& callback);
@@ -47,7 +47,7 @@ public:
     int total_mavlink_mission_items() const;
 
     MissionRaw::MissionProgress mission_progress();
-    void mission_progress_async(MissionRaw::MissionProgressCallback callback);
+    void subscribe_mission_progress(MissionRaw::MissionProgressCallback callback);
 
     MissionRawImpl(const MissionRawImpl&) = delete;
     const MissionRawImpl& operator=(const MissionRawImpl&) = delete;

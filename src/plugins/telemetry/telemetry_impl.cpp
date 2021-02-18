@@ -1661,166 +1661,168 @@ void TelemetryImpl::set_distance_sensor(Telemetry::DistanceSensor& distance_sens
     _distance_sensor = distance_sensor;
 }
 
-void TelemetryImpl::position_velocity_ned_async(Telemetry::PositionVelocityNedCallback& callback)
+void TelemetryImpl::subscribe_position_velocity_ned(
+    Telemetry::PositionVelocityNedCallback& callback)
 {
     std::lock_guard<std::mutex> lock(_subscription_mutex);
     _position_velocity_ned_subscription = callback;
 }
 
-void TelemetryImpl::position_async(Telemetry::PositionCallback& callback)
+void TelemetryImpl::subscribe_position(Telemetry::PositionCallback& callback)
 {
     std::lock_guard<std::mutex> lock(_subscription_mutex);
     _position_subscription = callback;
 }
 
-void TelemetryImpl::home_async(Telemetry::PositionCallback& callback)
+void TelemetryImpl::subscribe_home(Telemetry::PositionCallback& callback)
 {
     std::lock_guard<std::mutex> lock(_subscription_mutex);
     _home_position_subscription = callback;
 }
 
-void TelemetryImpl::in_air_async(Telemetry::InAirCallback& callback)
+void TelemetryImpl::subscribe_in_air(Telemetry::InAirCallback& callback)
 {
     std::lock_guard<std::mutex> lock(_subscription_mutex);
     _in_air_subscription = callback;
 }
 
-void TelemetryImpl::status_text_async(Telemetry::StatusTextCallback& callback)
+void TelemetryImpl::subscribe_status_text(Telemetry::StatusTextCallback& callback)
 {
     std::lock_guard<std::mutex> lock(_subscription_mutex);
     _status_text_subscription = callback;
 }
 
-void TelemetryImpl::armed_async(Telemetry::ArmedCallback& callback)
+void TelemetryImpl::subscribe_armed(Telemetry::ArmedCallback& callback)
 {
     std::lock_guard<std::mutex> lock(_subscription_mutex);
     _armed_subscription = callback;
 }
 
-void TelemetryImpl::attitude_quaternion_async(Telemetry::AttitudeQuaternionCallback& callback)
+void TelemetryImpl::subscribe_attitude_quaternion(Telemetry::AttitudeQuaternionCallback& callback)
 {
     std::lock_guard<std::mutex> lock(_subscription_mutex);
     _attitude_quaternion_angle_subscription = callback;
 }
 
-void TelemetryImpl::attitude_euler_async(Telemetry::AttitudeEulerCallback& callback)
+void TelemetryImpl::subscribe_attitude_euler(Telemetry::AttitudeEulerCallback& callback)
 {
     std::lock_guard<std::mutex> lock(_subscription_mutex);
     _attitude_euler_angle_subscription = callback;
 }
 
-void TelemetryImpl::attitude_angular_velocity_body_async(
+void TelemetryImpl::subscribe_attitude_angular_velocity_body(
     Telemetry::AttitudeAngularVelocityBodyCallback& callback)
 {
     std::lock_guard<std::mutex> lock(_subscription_mutex);
     _attitude_angular_velocity_body_subscription = callback;
 }
 
-void TelemetryImpl::fixedwing_metrics_async(Telemetry::FixedwingMetricsCallback& callback)
+void TelemetryImpl::subscribe_fixedwing_metrics(Telemetry::FixedwingMetricsCallback& callback)
 {
     std::lock_guard<std::mutex> lock(_subscription_mutex);
     _fixedwing_metrics_subscription = callback;
 }
 
-void TelemetryImpl::ground_truth_async(Telemetry::GroundTruthCallback& callback)
+void TelemetryImpl::subscribe_ground_truth(Telemetry::GroundTruthCallback& callback)
 {
     std::lock_guard<std::mutex> lock(_subscription_mutex);
     _ground_truth_subscription = callback;
 }
 
-void TelemetryImpl::camera_attitude_quaternion_async(
+void TelemetryImpl::subscribe_camera_attitude_quaternion(
     Telemetry::AttitudeQuaternionCallback& callback)
 {
     std::lock_guard<std::mutex> lock(_subscription_mutex);
     _camera_attitude_quaternion_subscription = callback;
 }
 
-void TelemetryImpl::camera_attitude_euler_async(Telemetry::AttitudeEulerCallback& callback)
+void TelemetryImpl::subscribe_camera_attitude_euler(Telemetry::AttitudeEulerCallback& callback)
 {
     std::lock_guard<std::mutex> lock(_subscription_mutex);
     _camera_attitude_euler_angle_subscription = callback;
 }
 
-void TelemetryImpl::velocity_ned_async(Telemetry::VelocityNedCallback& callback)
+void TelemetryImpl::subscribe_velocity_ned(Telemetry::VelocityNedCallback& callback)
 {
     std::lock_guard<std::mutex> lock(_subscription_mutex);
     _velocity_ned_subscription = callback;
 }
 
-void TelemetryImpl::imu_async(Telemetry::ImuCallback& callback)
+void TelemetryImpl::subscribe_imu(Telemetry::ImuCallback& callback)
 {
     std::lock_guard<std::mutex> lock(_subscription_mutex);
     _imu_reading_ned_subscription = callback;
 }
 
-void TelemetryImpl::gps_info_async(Telemetry::GpsInfoCallback& callback)
+void TelemetryImpl::subscribe_gps_info(Telemetry::GpsInfoCallback& callback)
 {
     std::lock_guard<std::mutex> lock(_subscription_mutex);
     _gps_info_subscription = callback;
 }
 
-void TelemetryImpl::battery_async(Telemetry::BatteryCallback& callback)
+void TelemetryImpl::subscribe_battery(Telemetry::BatteryCallback& callback)
 {
     std::lock_guard<std::mutex> lock(_subscription_mutex);
     _battery_subscription = callback;
 }
 
-void TelemetryImpl::flight_mode_async(Telemetry::FlightModeCallback& callback)
+void TelemetryImpl::subscribe_flight_mode(Telemetry::FlightModeCallback& callback)
 {
     std::lock_guard<std::mutex> lock(_subscription_mutex);
     _flight_mode_subscription = callback;
 }
 
-void TelemetryImpl::health_async(Telemetry::HealthCallback& callback)
+void TelemetryImpl::subscribe_health(Telemetry::HealthCallback& callback)
 {
     std::lock_guard<std::mutex> lock(_subscription_mutex);
     _health_subscription = callback;
 }
 
-void TelemetryImpl::health_all_ok_async(Telemetry::HealthAllOkCallback& callback)
+void TelemetryImpl::subscribe_health_all_ok(Telemetry::HealthAllOkCallback& callback)
 {
     std::lock_guard<std::mutex> lock(_subscription_mutex);
     _health_all_ok_subscription = callback;
 }
 
-void TelemetryImpl::landed_state_async(Telemetry::LandedStateCallback& callback)
+void TelemetryImpl::subscribe_landed_state(Telemetry::LandedStateCallback& callback)
 {
     std::lock_guard<std::mutex> lock(_subscription_mutex);
     _landed_state_subscription = callback;
 }
 
-void TelemetryImpl::rc_status_async(Telemetry::RcStatusCallback& callback)
+void TelemetryImpl::subscribe_rc_status(Telemetry::RcStatusCallback& callback)
 {
     std::lock_guard<std::mutex> lock(_subscription_mutex);
     _rc_status_subscription = callback;
 }
 
-void TelemetryImpl::unix_epoch_time_async(Telemetry::UnixEpochTimeCallback& callback)
+void TelemetryImpl::subscribe_unix_epoch_time(Telemetry::UnixEpochTimeCallback& callback)
 {
     std::lock_guard<std::mutex> lock(_subscription_mutex);
     _unix_epoch_time_subscription = callback;
 }
 
-void TelemetryImpl::actuator_control_target_async(
+void TelemetryImpl::subscribe_actuator_control_target(
     Telemetry::ActuatorControlTargetCallback& callback)
 {
     std::lock_guard<std::mutex> lock(_subscription_mutex);
     _actuator_control_target_subscription = callback;
 }
 
-void TelemetryImpl::actuator_output_status_async(Telemetry::ActuatorOutputStatusCallback& callback)
+void TelemetryImpl::subscribe_actuator_output_status(
+    Telemetry::ActuatorOutputStatusCallback& callback)
 {
     std::lock_guard<std::mutex> lock(_subscription_mutex);
     _actuator_output_status_subscription = callback;
 }
 
-void TelemetryImpl::odometry_async(Telemetry::OdometryCallback& callback)
+void TelemetryImpl::subscribe_odometry(Telemetry::OdometryCallback& callback)
 {
     std::lock_guard<std::mutex> lock(_subscription_mutex);
     _odometry_subscription = callback;
 }
 
-void TelemetryImpl::distance_sensor_async(Telemetry::DistanceSensorCallback& callback)
+void TelemetryImpl::subscribe_distance_sensor(Telemetry::DistanceSensorCallback& callback)
 {
     std::lock_guard<std::mutex> lock(_subscription_mutex);
     _distance_sensor_subscription = callback;

@@ -446,7 +446,7 @@ void MissionRawImpl::report_progress_current()
     }
 }
 
-void MissionRawImpl::mission_progress_async(MissionRaw::MissionProgressCallback callback)
+void MissionRawImpl::subscribe_mission_progress(MissionRaw::MissionProgressCallback callback)
 {
     std::lock_guard<std::mutex> lock(_mission_progress.mutex);
     _mission_progress.callback = callback;
@@ -458,7 +458,7 @@ MissionRaw::MissionProgress MissionRawImpl::mission_progress()
     return _mission_progress.last;
 }
 
-void MissionRawImpl::mission_changed_async(MissionRaw::MissionChangedCallback callback)
+void MissionRawImpl::subscribe_mission_changed(MissionRaw::MissionChangedCallback callback)
 {
     std::lock_guard<std::mutex> lock(_mission_changed.mutex);
     _mission_changed.callback = callback;

@@ -47,7 +47,7 @@ Telemetry::~Telemetry() {}
 
 void Telemetry::subscribe_position(PositionCallback callback)
 {
-    _impl->position_async(callback);
+    _impl->subscribe_position(callback);
 }
 
 Telemetry::Position Telemetry::position() const
@@ -57,7 +57,7 @@ Telemetry::Position Telemetry::position() const
 
 void Telemetry::subscribe_home(HomeCallback callback)
 {
-    _impl->home_async(callback);
+    _impl->subscribe_home(callback);
 }
 
 Telemetry::Position Telemetry::home() const
@@ -67,7 +67,7 @@ Telemetry::Position Telemetry::home() const
 
 void Telemetry::subscribe_in_air(InAirCallback callback)
 {
-    _impl->in_air_async(callback);
+    _impl->subscribe_in_air(callback);
 }
 
 bool Telemetry::in_air() const
@@ -77,7 +77,7 @@ bool Telemetry::in_air() const
 
 void Telemetry::subscribe_landed_state(LandedStateCallback callback)
 {
-    _impl->landed_state_async(callback);
+    _impl->subscribe_landed_state(callback);
 }
 
 Telemetry::LandedState Telemetry::landed_state() const
@@ -87,7 +87,7 @@ Telemetry::LandedState Telemetry::landed_state() const
 
 void Telemetry::subscribe_armed(ArmedCallback callback)
 {
-    _impl->armed_async(callback);
+    _impl->subscribe_armed(callback);
 }
 
 bool Telemetry::armed() const
@@ -97,7 +97,7 @@ bool Telemetry::armed() const
 
 void Telemetry::subscribe_attitude_quaternion(AttitudeQuaternionCallback callback)
 {
-    _impl->attitude_quaternion_async(callback);
+    _impl->subscribe_attitude_quaternion(callback);
 }
 
 Telemetry::Quaternion Telemetry::attitude_quaternion() const
@@ -107,7 +107,7 @@ Telemetry::Quaternion Telemetry::attitude_quaternion() const
 
 void Telemetry::subscribe_attitude_euler(AttitudeEulerCallback callback)
 {
-    _impl->attitude_euler_async(callback);
+    _impl->subscribe_attitude_euler(callback);
 }
 
 Telemetry::EulerAngle Telemetry::attitude_euler() const
@@ -118,7 +118,7 @@ Telemetry::EulerAngle Telemetry::attitude_euler() const
 void Telemetry::subscribe_attitude_angular_velocity_body(
     AttitudeAngularVelocityBodyCallback callback)
 {
-    _impl->attitude_angular_velocity_body_async(callback);
+    _impl->subscribe_attitude_angular_velocity_body(callback);
 }
 
 Telemetry::AngularVelocityBody Telemetry::attitude_angular_velocity_body() const
@@ -128,7 +128,7 @@ Telemetry::AngularVelocityBody Telemetry::attitude_angular_velocity_body() const
 
 void Telemetry::subscribe_camera_attitude_quaternion(CameraAttitudeQuaternionCallback callback)
 {
-    _impl->camera_attitude_quaternion_async(callback);
+    _impl->subscribe_camera_attitude_quaternion(callback);
 }
 
 Telemetry::Quaternion Telemetry::camera_attitude_quaternion() const
@@ -138,7 +138,7 @@ Telemetry::Quaternion Telemetry::camera_attitude_quaternion() const
 
 void Telemetry::subscribe_camera_attitude_euler(CameraAttitudeEulerCallback callback)
 {
-    _impl->camera_attitude_euler_async(callback);
+    _impl->subscribe_camera_attitude_euler(callback);
 }
 
 Telemetry::EulerAngle Telemetry::camera_attitude_euler() const
@@ -148,7 +148,7 @@ Telemetry::EulerAngle Telemetry::camera_attitude_euler() const
 
 void Telemetry::subscribe_velocity_ned(VelocityNedCallback callback)
 {
-    _impl->velocity_ned_async(callback);
+    _impl->subscribe_velocity_ned(callback);
 }
 
 Telemetry::VelocityNed Telemetry::velocity_ned() const
@@ -158,7 +158,7 @@ Telemetry::VelocityNed Telemetry::velocity_ned() const
 
 void Telemetry::subscribe_gps_info(GpsInfoCallback callback)
 {
-    _impl->gps_info_async(callback);
+    _impl->subscribe_gps_info(callback);
 }
 
 Telemetry::GpsInfo Telemetry::gps_info() const
@@ -168,7 +168,7 @@ Telemetry::GpsInfo Telemetry::gps_info() const
 
 void Telemetry::subscribe_battery(BatteryCallback callback)
 {
-    _impl->battery_async(callback);
+    _impl->subscribe_battery(callback);
 }
 
 Telemetry::Battery Telemetry::battery() const
@@ -178,7 +178,7 @@ Telemetry::Battery Telemetry::battery() const
 
 void Telemetry::subscribe_flight_mode(FlightModeCallback callback)
 {
-    _impl->flight_mode_async(callback);
+    _impl->subscribe_flight_mode(callback);
 }
 
 Telemetry::FlightMode Telemetry::flight_mode() const
@@ -188,7 +188,7 @@ Telemetry::FlightMode Telemetry::flight_mode() const
 
 void Telemetry::subscribe_health(HealthCallback callback)
 {
-    _impl->health_async(callback);
+    _impl->subscribe_health(callback);
 }
 
 Telemetry::Health Telemetry::health() const
@@ -198,7 +198,7 @@ Telemetry::Health Telemetry::health() const
 
 void Telemetry::subscribe_rc_status(RcStatusCallback callback)
 {
-    _impl->rc_status_async(callback);
+    _impl->subscribe_rc_status(callback);
 }
 
 Telemetry::RcStatus Telemetry::rc_status() const
@@ -208,7 +208,7 @@ Telemetry::RcStatus Telemetry::rc_status() const
 
 void Telemetry::subscribe_status_text(StatusTextCallback callback)
 {
-    _impl->status_text_async(callback);
+    _impl->subscribe_status_text(callback);
 }
 
 Telemetry::StatusText Telemetry::status_text() const
@@ -218,7 +218,7 @@ Telemetry::StatusText Telemetry::status_text() const
 
 void Telemetry::subscribe_actuator_control_target(ActuatorControlTargetCallback callback)
 {
-    _impl->actuator_control_target_async(callback);
+    _impl->subscribe_actuator_control_target(callback);
 }
 
 Telemetry::ActuatorControlTarget Telemetry::actuator_control_target() const
@@ -228,7 +228,7 @@ Telemetry::ActuatorControlTarget Telemetry::actuator_control_target() const
 
 void Telemetry::subscribe_actuator_output_status(ActuatorOutputStatusCallback callback)
 {
-    _impl->actuator_output_status_async(callback);
+    _impl->subscribe_actuator_output_status(callback);
 }
 
 Telemetry::ActuatorOutputStatus Telemetry::actuator_output_status() const
@@ -238,7 +238,7 @@ Telemetry::ActuatorOutputStatus Telemetry::actuator_output_status() const
 
 void Telemetry::subscribe_odometry(OdometryCallback callback)
 {
-    _impl->odometry_async(callback);
+    _impl->subscribe_odometry(callback);
 }
 
 Telemetry::Odometry Telemetry::odometry() const
@@ -248,7 +248,7 @@ Telemetry::Odometry Telemetry::odometry() const
 
 void Telemetry::subscribe_position_velocity_ned(PositionVelocityNedCallback callback)
 {
-    _impl->position_velocity_ned_async(callback);
+    _impl->subscribe_position_velocity_ned(callback);
 }
 
 Telemetry::PositionVelocityNed Telemetry::position_velocity_ned() const
@@ -258,7 +258,7 @@ Telemetry::PositionVelocityNed Telemetry::position_velocity_ned() const
 
 void Telemetry::subscribe_ground_truth(GroundTruthCallback callback)
 {
-    _impl->ground_truth_async(callback);
+    _impl->subscribe_ground_truth(callback);
 }
 
 Telemetry::GroundTruth Telemetry::ground_truth() const
@@ -268,7 +268,7 @@ Telemetry::GroundTruth Telemetry::ground_truth() const
 
 void Telemetry::subscribe_fixedwing_metrics(FixedwingMetricsCallback callback)
 {
-    _impl->fixedwing_metrics_async(callback);
+    _impl->subscribe_fixedwing_metrics(callback);
 }
 
 Telemetry::FixedwingMetrics Telemetry::fixedwing_metrics() const
@@ -278,7 +278,7 @@ Telemetry::FixedwingMetrics Telemetry::fixedwing_metrics() const
 
 void Telemetry::subscribe_imu(ImuCallback callback)
 {
-    _impl->imu_async(callback);
+    _impl->subscribe_imu(callback);
 }
 
 Telemetry::Imu Telemetry::imu() const
@@ -288,7 +288,7 @@ Telemetry::Imu Telemetry::imu() const
 
 void Telemetry::subscribe_health_all_ok(HealthAllOkCallback callback)
 {
-    _impl->health_all_ok_async(callback);
+    _impl->subscribe_health_all_ok(callback);
 }
 
 bool Telemetry::health_all_ok() const
@@ -298,7 +298,7 @@ bool Telemetry::health_all_ok() const
 
 void Telemetry::subscribe_unix_epoch_time(UnixEpochTimeCallback callback)
 {
-    _impl->unix_epoch_time_async(callback);
+    _impl->subscribe_unix_epoch_time(callback);
 }
 
 uint64_t Telemetry::unix_epoch_time() const
@@ -308,7 +308,7 @@ uint64_t Telemetry::unix_epoch_time() const
 
 void Telemetry::subscribe_distance_sensor(DistanceSensorCallback callback)
 {
-    _impl->distance_sensor_async(callback);
+    _impl->subscribe_distance_sensor(callback);
 }
 
 Telemetry::DistanceSensor Telemetry::distance_sensor() const

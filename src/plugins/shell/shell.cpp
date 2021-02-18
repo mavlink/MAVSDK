@@ -22,7 +22,7 @@ Shell::Result Shell::send(std::string command) const
 
 void Shell::subscribe_receive(ReceiveCallback callback)
 {
-    _impl->receive_async(callback);
+    _impl->subscribe_receive(callback);
 }
 
 std::ostream& operator<<(std::ostream& str, Shell::Result const& result)
