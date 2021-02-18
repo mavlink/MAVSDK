@@ -1,7 +1,10 @@
 {% if is_async %}
-void {{ plugin_name.upper_camel_case }}::{% if not is_finite %}subscribe_{% endif %}{{ name.lower_snake_case }}{% if is_finite %}_async{% endif %}({% for param in params %}{{ param.type_info.name }} {{ param.name.lower_snake_case }}, {% endfor %}{{ name.upper_camel_case }}Callback callback)
+void {{ plugin_name.upper_camel_case }}Impl::{% if not is_finite %}subscribe_{% endif %}{{ name.lower_snake_case }}{% if is_finite %}_async{% endif %}({% for param in params %}{{ plugin_name.upper_camel_case }}::{{ param.type_info.name }} {{ param.name.lower_snake_case }}, {% endfor %}{{ plugin_name.upper_camel_case }}::{{ name.upper_camel_case }}Callback callback)
 {
-    _impl->{{ name.lower_snake_case }}_async({% for param in params %}{{ param.name.lower_snake_case }}, {% endfor %}callback);
+    {% for param in params %}
+    UNUSED({{ param.name.lower_snake_case }});
+    {% endfor %}
+    UNUSED(callback);
 }
 {% endif %}
 
@@ -10,8 +13,10 @@ void {{ plugin_name.upper_camel_case }}::{% if not is_finite %}subscribe_{% endi
 std::vector<{% if not return_type.is_primitive %}{{ plugin_name.upper_camel_case }}::{% endif %}{{ return_type.inner_name }}>
 {% else %}
 {% if not return_type.is_primitive %}{{ plugin_name.upper_camel_case }}::{% endif %}{{ return_type.name }}
-{%endif -%} {{ plugin_name.upper_camel_case }}::{{ name.lower_snake_case }}({% for param in params %}{{ param.type_info.name }} {{ param.name.lower_snake_case }}{% if not loop.last %}, {% endif %}{% endfor %}) const
+{%endif -%} {{ plugin_name.upper_camel_case }}Impl::{{ name.lower_snake_case }}({% for param in params %}{{ plugin_name.upper_camel_case }}::{{ param.type_info.name }} {{ param.name.lower_snake_case }}{% if not loop.last %}, {% endif %}{% endfor %}) const
 {
-    return _impl->{{ name.lower_snake_case }}({% for param in params %}{{ param.name.lower_snake_case }}{% if not loop.last %}, {% endif %}{% endfor %});
+    {% for param in params %}
+    UNUSED({{ param.name.lower_snake_case }});
+    {% endfor %}
 }
 {% endif %}

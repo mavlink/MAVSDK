@@ -44,7 +44,7 @@ public:
     void release_control_async(Gimbal::ResultCallback callback);
 
     Gimbal::ControlStatus control();
-    void control_async(Gimbal::ControlCallback callback);
+    void subscribe_control(Gimbal::ControlCallback callback);
 
     static Gimbal::Result
     gimbal_result_from_command_result(MavlinkCommandSender::Result command_result);

@@ -160,7 +160,7 @@ Gimbal::ControlStatus GimbalImpl::control()
     return _gimbal_protocol->control();
 }
 
-void GimbalImpl::control_async(Gimbal::ControlCallback callback)
+void GimbalImpl::subscribe_control(Gimbal::ControlCallback callback)
 {
     wait_for_protocol_async([=]() { _gimbal_protocol->control_async(callback); });
 }

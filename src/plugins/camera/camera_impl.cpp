@@ -457,7 +457,7 @@ Camera::Information CameraImpl::information() const
     return _information.data;
 }
 
-void CameraImpl::information_async(const Camera::InformationCallback& callback)
+void CameraImpl::subscribe_information(const Camera::InformationCallback& callback)
 {
     std::lock_guard<std::mutex> lock(_information.mutex);
     _information.subscription_callback = callback;
@@ -518,7 +518,7 @@ Camera::VideoStreamInfo CameraImpl::video_stream_info()
     return _video_stream_info.data;
 }
 
-void CameraImpl::video_stream_info_async(const Camera::VideoStreamInfoCallback callback)
+void CameraImpl::subscribe_video_stream_info(const Camera::VideoStreamInfoCallback callback)
 {
     std::lock_guard<std::mutex> lock(_video_stream_info.mutex);
 
@@ -654,7 +654,7 @@ Camera::Mode CameraImpl::mode()
     return _mode.data;
 }
 
-void CameraImpl::mode_async(const Camera::ModeCallback callback)
+void CameraImpl::subscribe_mode(const Camera::ModeCallback callback)
 {
     {
         std::lock_guard<std::mutex> lock(_mode.mutex);
@@ -688,7 +688,7 @@ void CameraImpl::request_status()
     _parent->send_command_async(make_command_request_storage_info(), nullptr);
 }
 
-void CameraImpl::status_async(const Camera::StatusCallback callback)
+void CameraImpl::subscribe_status(const Camera::StatusCallback callback)
 {
     std::lock_guard<std::mutex> lock(_status.mutex);
 
@@ -707,7 +707,7 @@ Camera::Status CameraImpl::status()
     return _status.data;
 }
 
-void CameraImpl::capture_info_async(Camera::CaptureInfoCallback callback)
+void CameraImpl::subscribe_capture_info(Camera::CaptureInfoCallback callback)
 {
     std::lock_guard<std::mutex> lock(_capture_info.mutex);
     _capture_info.callback = callback;
@@ -1347,7 +1347,7 @@ void CameraImpl::get_option_async(
     }
 }
 
-void CameraImpl::current_settings_async(const Camera::CurrentSettingsCallback& callback)
+void CameraImpl::subscribe_current_settings(const Camera::CurrentSettingsCallback& callback)
 {
     {
         std::lock_guard<std::mutex> lock(_subscribe_current_settings.mutex);
@@ -1356,7 +1356,7 @@ void CameraImpl::current_settings_async(const Camera::CurrentSettingsCallback& c
     notify_current_settings();
 }
 
-void CameraImpl::possible_setting_options_async(
+void CameraImpl::subscribe_possible_setting_options(
     const Camera::PossibleSettingOptionsCallback& callback)
 {
     {

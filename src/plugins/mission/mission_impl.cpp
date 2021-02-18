@@ -891,7 +891,7 @@ Mission::MissionProgress MissionImpl::mission_progress()
     return mission_progress;
 }
 
-void MissionImpl::mission_progress_async(Mission::MissionProgressCallback callback)
+void MissionImpl::subscribe_mission_progress(Mission::MissionProgressCallback callback)
 {
     std::lock_guard<std::recursive_mutex> lock(_mission_data.mutex);
     _mission_data.mission_progress_callback = callback;

@@ -37,12 +37,12 @@ public:
     void stop_video_async(const Camera::ResultCallback& callback);
 
     Camera::Information information() const;
-    void information_async(const Camera::InformationCallback& callback);
+    void subscribe_information(const Camera::InformationCallback& callback);
 
     std::pair<Camera::Result, Camera::VideoStreamInfo> get_video_stream_info();
 
     Camera::VideoStreamInfo video_stream_info();
-    void video_stream_info_async(Camera::VideoStreamInfoCallback callback);
+    void subscribe_video_stream_info(Camera::VideoStreamInfoCallback callback);
 
     Camera::Result start_video_streaming();
     Camera::Result stop_video_streaming();
@@ -51,12 +51,12 @@ public:
     void set_mode_async(const Camera::Mode mode, const Camera::ResultCallback& callback);
 
     Camera::Mode mode();
-    void mode_async(const Camera::ModeCallback callback);
+    void subscribe_mode(const Camera::ModeCallback callback);
 
-    void capture_info_async(Camera::CaptureInfoCallback callback);
+    void subscribe_capture_info(Camera::CaptureInfoCallback callback);
 
     Camera::Status status();
-    void status_async(const Camera::StatusCallback callback);
+    void subscribe_status(const Camera::StatusCallback callback);
 
     Camera::Result set_setting(Camera::Setting setting);
     void set_setting_async(Camera::Setting setting, const Camera::ResultCallback callback);
@@ -68,8 +68,8 @@ public:
 
     bool is_setting_range(const std::string& setting_id);
 
-    void current_settings_async(const Camera::CurrentSettingsCallback& callback);
-    void possible_setting_options_async(const Camera::PossibleSettingOptionsCallback& callback);
+    void subscribe_current_settings(const Camera::CurrentSettingsCallback& callback);
+    void subscribe_possible_setting_options(const Camera::PossibleSettingOptionsCallback& callback);
 
     Camera::Result format_storage();
     void format_storage_async(Camera::ResultCallback callback);
