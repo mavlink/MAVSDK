@@ -190,7 +190,6 @@ private:
         bool received_storage_information{false};
         int image_count{-1};
         int image_count_at_connection{-1};
-        int last_advertised_image_index{-1};
         std::map<int, Camera::CaptureInfo> photo_list;
         bool is_fetching_photos{false};
 
@@ -215,6 +214,7 @@ private:
     struct {
         std::mutex mutex{};
         Camera::CaptureInfoCallback callback{nullptr};
+        int last_advertised_image_index{-1};
     } _capture_info{};
 
     struct {

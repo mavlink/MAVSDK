@@ -294,7 +294,8 @@ CameraImpl::make_command_request_camera_image_captured(const size_t photo_id)
     MavlinkCommandSender::CommandLong cmd_req_camera_image_captured{};
 
     cmd_req_camera_image_captured.command = MAV_CMD_REQUEST_MESSAGE;
-    cmd_req_camera_image_captured.params.param1 = static_cast<float>(MAVLINK_MSG_ID_CAMERA_IMAGE_CAPTURED);
+    cmd_req_camera_image_captured.params.param1 =
+        static_cast<float>(MAVLINK_MSG_ID_CAMERA_IMAGE_CAPTURED);
     cmd_req_camera_image_captured.params.param2 = static_cast<float>(photo_id);
     cmd_req_camera_image_captured.target_component_id = _camera_id + MAV_COMP_ID_CAMERA;
 
@@ -745,9 +746,13 @@ void CameraImpl::process_camera_capture_status(const mavlink_message_t& message)
         if (_status.image_count_at_connection == -1) {
             _status.image_count_at_connection = camera_capture_status.image_count;
         }
+    }
 
-        if (_status.last_advertised_image_index == -1) {
-            _status.last_advertised_image_index = camera_capture_status.image_count - 1;
+    {
+        std::lock_guard<std::mutex> lock(_capture_info.mutex);
+
+        if (_capture_info.last_advertised_image_index == -1) {
+            _capture_info.last_advertised_image_index = camera_capture_status.image_count - 1;
         }
     }
 
@@ -806,8 +811,9 @@ void CameraImpl::process_camera_image_captured(const mavlink_message_t& message)
         _captured_request_cv.notify_all();
 
         std::lock_guard<std::mutex> lock(_capture_info.mutex);
-        if (_status.last_advertised_image_index < capture_info.index && _capture_info.callback) {
-            _status.last_advertised_image_index = capture_info.index;
+        if (_capture_info.last_advertised_image_index < capture_info.index &&
+            _capture_info.callback) {
+            _capture_info.last_advertised_image_index = capture_info.index;
             const auto temp_callback = _capture_info.callback;
             _parent->call_user_callback(
                 [temp_callback, capture_info]() { temp_callback(capture_info); });
@@ -1615,13 +1621,12 @@ void CameraImpl::format_storage_async(Camera::ResultCallback callback)
 std::pair<Camera::Result, std::vector<Camera::CaptureInfo>>
 CameraImpl::list_photos(Camera::PhotosRange photos_range)
 {
-    auto prom = std::make_shared<
-        std::promise<std::pair<Camera::Result, std::vector<Camera::CaptureInfo>>>>();
-    auto ret = prom->get_future();
+    std::promise<std::pair<Camera::Result, std::vector<Camera::CaptureInfo>>> prom;
+    auto ret = prom.get_future();
 
     list_photos_async(
-        photos_range, [prom](Camera::Result result, std::vector<Camera::CaptureInfo> photo_list) {
-            prom->set_value(std::make_pair(result, photo_list));
+        photos_range, [&prom](Camera::Result result, std::vector<Camera::CaptureInfo> photo_list) {
+            prom.set_value(std::make_pair(result, photo_list));
         });
 
     return ret.get();
@@ -1630,6 +1635,11 @@ CameraImpl::list_photos(Camera::PhotosRange photos_range)
 void CameraImpl::list_photos_async(
     Camera::PhotosRange photos_range, const Camera::ListPhotosCallback callback)
 {
+    if (!callback) {
+        LogWarn() << "Trying to get a photo list with a null callback, ignoring...";
+        return;
+    }
+
     {
         std::lock_guard<std::mutex> lock(_status.mutex);
 
@@ -1651,14 +1661,15 @@ void CameraImpl::list_photos_async(
         }
     }
 
-    const int start_index = [photos_range]() {
+    const int start_index = [this, photos_range]() {
         switch (photos_range) {
             case Camera::PhotosRange::SinceConnection:
-               return _status.image_count_at_connection;
+                return _status.image_count_at_connection;
             case Camera::PhotosRange::All:
             // FALLTHROUGH
             default:
                 return 0;
+        }
     }();
 
     std::thread([this, start_index, callback]() {
