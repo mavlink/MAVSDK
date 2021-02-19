@@ -109,6 +109,24 @@ class TestTypeInfo(unittest.TestCase):
             self.assertFalse(complex_type.is_result)
 
     @patch("builtins.open", new_callable=mock_open, read_data=_conversion_dict_data)
+    def test_is_string_false_for_non_string_types(self, mock_file):
+        type_info_factory = TypeInfoFactory()
+        type_info_factory.set_template_path("random/path")
+
+        for type_id in {1, 2, 3, 4, 5, 8, 12, 13}:
+            string_type = type_info_factory.create(self.primitive_field(type_id, self.non_repeated_label))
+            self.assertFalse(string_type.is_string)
+
+    @patch("builtins.open", new_callable=mock_open, read_data=_conversion_dict_data)
+    def test_is_string_true_for_string_types(self, mock_file):
+        type_info_factory = TypeInfoFactory()
+        type_info_factory.set_template_path("random/path")
+
+        for type_id in {9}:
+            string_type = type_info_factory.create(self.primitive_field(type_id, self.non_repeated_label))
+            self.assertTrue(string_type.is_string)
+
+    @patch("builtins.open", new_callable=mock_open, read_data=_conversion_dict_data)
     def test_is_result_true_for_result_types(self, mock_file):
         type_info_factory = TypeInfoFactory()
         type_info_factory.set_template_path("random/path")

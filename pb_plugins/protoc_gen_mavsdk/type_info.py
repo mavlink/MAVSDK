@@ -109,3 +109,8 @@ class TypeInfo:
         """ Check if the field is a repeated type (in which
         case it is converted to a list) """
         return self._field.label == 3
+
+    @property
+    def is_string(self):
+        """ Check if the field is a string type"""
+        return self._field.type == 9
