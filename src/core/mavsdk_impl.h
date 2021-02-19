@@ -84,7 +84,7 @@ public:
 
 private:
     void add_connection(std::shared_ptr<Connection>);
-    void make_system_with_component(uint8_t system_id, uint8_t component_id);
+    void make_system_with_component(uint8_t system_id, uint8_t component_id, bool always_connected = false);
     bool does_system_exist(uint8_t system_id);
 
     void work_thread();
@@ -109,7 +109,6 @@ private:
     Time _time{};
 
     Mavsdk::Configuration _configuration{Mavsdk::Configuration::UsageType::GroundStation};
-    bool _is_single_system{false};
 
     struct UserCallback {
         UserCallback() {}
