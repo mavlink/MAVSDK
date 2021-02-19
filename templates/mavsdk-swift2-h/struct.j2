@@ -1,0 +1,33 @@
+
+{% for nested_enum in nested_enums %}
+{% if nested_enum.endswith('Result') -%}
+{{ nested_enums[nested_enum] }}
+{% endif -%}
+{% endfor -%}
+
+{% if not name.upper_camel_case.endswith('Result') -%}
+
+@interface MVS{{ name.upper_camel_case }} : NSObject
+
+{% for nested_enum in nested_enums %}
+{{ nested_enums[nested_enum] }}
+{% endfor -%}
+
+{%- for field in fields %}
+{% if field.type_info.is_string %}
+@property (nonatomic, strong) {{ field.type_info.name }} *{{ field.name.lower_camel_case }};
+{% elif field.type_info.is_primitive %}
+@property (nonatomic, assign) {{ field.type_info.name }} {{ field.name.lower_camel_case }};
+{% elif field.type_info.is_enum %}
+@property (nonatomic, assign) MVS{{ field.type_info.name }} {{ field.name.lower_camel_case }};
+{% elif field.type_info.is_repeated %}
+@property (nonatomic, strong) NSMutableArray *{{ field.name.lower_camel_case }};
+{% else %}
+@property (nonatomic, strong) MVS{{ field.type_info.name }} *{{ field.name.lower_camel_case }};
+{% endif %}
+{%- endfor %}
+
+
+@end
+
+{% endif %}

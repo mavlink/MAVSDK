@@ -3,10 +3,12 @@
 # This script runs clang-format over all files ending in .h, .c, .cpp listed
 # by git in the given directory.
 
-version_required_major="10"
+version_required_major="11"
 
 # Try to find the latest version of clang
-if command -v clang-format-10 >/dev/null; then
+if command -v clang-format-11 >/dev/null; then
+    clang_format=clang-format-11
+elif command -v clang-format-10 >/dev/null; then
     clang_format=clang-format-10
 elif command -v clang-format-9 >/dev/null; then
     clang_format=clang-format-9
@@ -29,14 +31,14 @@ if [[ $version =~ $semver_regex ]]; then
 version_major=${BASH_REMATCH[1]}
 if [ "$version_required_major" -gt "$version_major" ]; then
     echo "Clang version $version_major too old (required: $version_required_major)"
-    echo "You can use clang-format-10 from docker:"
+    echo "You can use clang-format-11 from docker:"
     echo ""
     echo "    'tools/run-docker.sh tools/fix_style.sh .'"
     exit 1
 
 elif [ "$version_required_major" -lt "$version_major" ]; then
     echo "Clang version $version_major too new (required: $version_required_major)"
-    echo "You can use clang-format-10 from docker:"
+    echo "You can use clang-format-11 from docker:"
     echo ""
     echo "    'tools/run-docker.sh tools/fix_style.sh .'"
     exit 1

@@ -1,0 +1,20 @@
+#import <Foundation/Foundation.h>
+
+#include <mavsdk/mavsdk.h>
+#include <mavsdk/plugins/{{ plugin_name.lower_snake_case }}/{{ plugin_name.lower_snake_case }}.h>
+
+{% for enum in enums %}
+{{ enum }}
+{% endfor %}
+
+{% for struct in structs %}
+{{ struct }}
+{% endfor %}
+
+@interface MVS{{ plugin_name.upper_camel_case }} : NSObject
+
+{% for method in methods -%}
+{{ method }}
+{% endfor %}
+
+@end
