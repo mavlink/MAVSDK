@@ -66,6 +66,34 @@ public:
         }
     }
 
+    static rpc::camera::PhotosRange
+    translateToRpcPhotosRange(const mavsdk::Camera::PhotosRange& photos_range)
+    {
+        switch (photos_range) {
+            default:
+                LogErr() << "Unknown photos_range enum value: " << static_cast<int>(photos_range);
+            // FALLTHROUGH
+            case mavsdk::Camera::PhotosRange::All:
+                return rpc::camera::PHOTOS_RANGE_ALL;
+            case mavsdk::Camera::PhotosRange::SinceConnection:
+                return rpc::camera::PHOTOS_RANGE_SINCE_CONNECTION;
+        }
+    }
+
+    static mavsdk::Camera::PhotosRange
+    translateFromRpcPhotosRange(const rpc::camera::PhotosRange photos_range)
+    {
+        switch (photos_range) {
+            default:
+                LogErr() << "Unknown photos_range enum value: " << static_cast<int>(photos_range);
+            // FALLTHROUGH
+            case rpc::camera::PHOTOS_RANGE_ALL:
+                return mavsdk::Camera::PhotosRange::All;
+            case rpc::camera::PHOTOS_RANGE_SINCE_CONNECTION:
+                return mavsdk::Camera::PhotosRange::SinceConnection;
+        }
+    }
+
     static rpc::camera::CameraResult::Result
     translateToRpcResult(const mavsdk::Camera::Result& result)
     {
@@ -662,6 +690,30 @@ public:
 
         if (response != nullptr) {
             fillResponseWithResult(response, result);
+        }
+
+        return grpc::Status::OK;
+    }
+
+    grpc::Status ListPhotos(
+        grpc::ServerContext* /* context */,
+        const rpc::camera::ListPhotosRequest* request,
+        rpc::camera::ListPhotosResponse* response) override
+    {
+        if (request == nullptr) {
+            LogWarn() << "ListPhotos sent with a null request! Ignoring...";
+            return grpc::Status::OK;
+        }
+
+        auto result = _camera.list_photos(translateFromRpcPhotosRange(request->photos_range()));
+
+        if (response != nullptr) {
+            fillResponseWithResult(response, result.first);
+
+            for (auto elem : result.second) {
+                auto* ptr = response->add_capture_infos();
+                ptr->CopyFrom(*translateToRpcCaptureInfo(elem).release());
+            }
         }
 
         return grpc::Status::OK;
