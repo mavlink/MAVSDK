@@ -302,13 +302,13 @@ message VideoStreamSettings {
 // Information about the video stream.
 message VideoStreamInfo {
     // Video stream status type.
-    enum Status {
-        STATUS_NOT_RUNNING = 0; // Video stream is not running
-        STATUS_IN_PROGRESS = 1; // Video stream is running
+    enum VideoStreamStatus {
+        VIDEO_STREAM_STATUS_NOT_RUNNING = 0; // Video stream is not running
+        VIDEO_STREAM_STATUS_IN_PROGRESS = 1; // Video stream is running
     }
 
     VideoStreamSettings settings = 1; // Video stream settings
-    Status status = 2; // Current status of video streaming
+    VideoStreamStatus status = 2; // Current status of video streaming
 }
 
 // Information about the camera status.
