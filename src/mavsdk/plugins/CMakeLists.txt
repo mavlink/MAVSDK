@@ -1,5 +1,5 @@
 include_directories(
-    ${PROJECT_SOURCE_DIR}/core
+    ${PROJECT_SOURCE_DIR}/mavsdk
     SYSTEM  ${PROJECT_SOURCE_DIR}/third_party/mavlink/include
 )
 

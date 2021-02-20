@@ -50,3 +50,4 @@ install(FILES
     DESTINATION "${CMAKE_INSTALL_INCLUDEDIR}/mavsdk"
 )
 
+add_subdirectory(plugins)

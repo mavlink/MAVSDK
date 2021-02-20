@@ -71,8 +71,7 @@ install(TARGETS mavsdk
     ARCHIVE DESTINATION ${CMAKE_INSTALL_LIBDIR}
     )
 
-add_subdirectory(core)
-add_subdirectory(plugins)
+add_subdirectory(mavsdk)
 
 include_directories(
     SYSTEM ${PROJECT_SOURCE_DIR}/third_party/mavlink/include
@@ -82,24 +81,24 @@ if(BUILD_TESTS)
     enable_testing()
     add_subdirectory(${CMAKE_CURRENT_SOURCE_DIR}/third_party/gtest EXCLUDE_FROM_ALL)
 
-    add_subdirectory(integration_tests)
+    #add_subdirectory(integration_tests)
 
     list(APPEND UNIT_TEST_SOURCES
-        ${PROJECT_SOURCE_DIR}/core/global_include_test.cpp
-        ${PROJECT_SOURCE_DIR}/core/mavlink_channels_test.cpp
-        ${PROJECT_SOURCE_DIR}/core/unittests_main.cpp
+        ${PROJECT_SOURCE_DIR}/mavsdk/global_include_test.cpp
+        ${PROJECT_SOURCE_DIR}/mavsdk/mavlink_channels_test.cpp
+        ${PROJECT_SOURCE_DIR}/mavsdk/unittests_main.cpp
         # TODO: add this again
-        #${PROJECT_SOURCE_DIR}/core/http_loader_test.cpp
-        ${PROJECT_SOURCE_DIR}/core/timeout_handler_test.cpp
-        ${PROJECT_SOURCE_DIR}/core/call_every_handler_test.cpp
-        ${PROJECT_SOURCE_DIR}/core/curl_test.cpp
-        ${PROJECT_SOURCE_DIR}/core/cli_arg_test.cpp
-        ${PROJECT_SOURCE_DIR}/core/locked_queue_test.cpp
-        ${PROJECT_SOURCE_DIR}/core/safe_queue_test.cpp
-        ${PROJECT_SOURCE_DIR}/core/mavsdk_test.cpp
-        ${PROJECT_SOURCE_DIR}/core/mavlink_mission_transfer_test.cpp
-        ${PROJECT_SOURCE_DIR}/core/mavlink_statustext_handler_test.cpp
-        ${PROJECT_SOURCE_DIR}/core/geometry_test.cpp
+        #${PROJECT_SOURCE_DIR}/mavsdk/http_loader_test.cpp
+        ${PROJECT_SOURCE_DIR}/mavsdk/timeout_handler_test.cpp
+        ${PROJECT_SOURCE_DIR}/mavsdk/call_every_handler_test.cpp
+        ${PROJECT_SOURCE_DIR}/mavsdk/curl_test.cpp
+        ${PROJECT_SOURCE_DIR}/mavsdk/cli_arg_test.cpp
+        ${PROJECT_SOURCE_DIR}/mavsdk/locked_queue_test.cpp
+        ${PROJECT_SOURCE_DIR}/mavsdk/safe_queue_test.cpp
+        ${PROJECT_SOURCE_DIR}/mavsdk/mavsdk_test.cpp
+        ${PROJECT_SOURCE_DIR}/mavsdk/mavlink_mission_transfer_test.cpp
+        ${PROJECT_SOURCE_DIR}/mavsdk/mavlink_statustext_handler_test.cpp
+        ${PROJECT_SOURCE_DIR}/mavsdk/geometry_test.cpp
     )
     set(UNIT_TEST_SOURCES ${UNIT_TEST_SOURCES} PARENT_SCOPE)
 
