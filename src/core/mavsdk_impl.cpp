@@ -148,14 +148,14 @@ bool MavsdkImpl::send_message(mavlink_message_t& message)
 {
     std::lock_guard<std::mutex> lock(_connections_mutex);
 
-    uint succesful_emissions = 0;
+    uint succesfull_emissions = 0;
     for (auto it = _connections.begin(); it != _connections.end(); ++it) {
         if ((**it).send_message(message)) {
-            succesful_emissions++;
+            succesfull_emissions++;
         }
     }
 
-    if (succesful_emissions == 0) {
+    if (succesfull_emissions == 0) {
         LogErr() << "send fail";
         return false;
     }
