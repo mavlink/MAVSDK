@@ -15,7 +15,8 @@ public:
     explicit UdpConnection(
         Connection::receiver_callback_t receiver_callback,
         const std::string& local_ip,
-        int local_port);
+        int local_port,
+        bool forward_messages = false);
     ~UdpConnection();
     ConnectionResult start() override;
     ConnectionResult stop() override;

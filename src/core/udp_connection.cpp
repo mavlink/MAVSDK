@@ -31,8 +31,9 @@ namespace mavsdk {
 UdpConnection::UdpConnection(
     Connection::receiver_callback_t receiver_callback,
     const std::string& local_ip,
-    int local_port_number) :
-    Connection(receiver_callback),
+    int local_port_number,
+    bool forward_messages) :
+    Connection(receiver_callback, forward_messages),
     _local_ip(local_ip),
     _local_port_number(local_port_number)
 {}

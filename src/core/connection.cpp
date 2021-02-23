@@ -5,10 +5,17 @@
 
 namespace mavsdk {
 
-Connection::Connection(receiver_callback_t receiver_callback) :
+uint8_t Connection::_forwarding_connections_count = 0;
+
+Connection::Connection(receiver_callback_t receiver_callback, bool forward_messages) :
     _receiver_callback(receiver_callback),
-    _mavlink_receiver()
-{}
+    _mavlink_receiver(),
+    _forward_messages(forward_messages)
+{
+    if (forward_messages) {
+        _forwarding_connections_count++;
+    }
+}
 
 Connection::~Connection()
 {
@@ -41,6 +48,16 @@ void Connection::stop_mavlink_receiver()
 void Connection::receive_message(mavlink_message_t& message, Connection *connection)
 {
     _receiver_callback(message, connection);
+}
+
+bool Connection::do_forward_messages() const
+{
+    return _forward_messages;
+}
+
+uint8_t Connection::forwarding_connections_count() const
+{
+    return _forwarding_connections_count;
 }
 
 } // namespace mavsdk

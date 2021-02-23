@@ -20,7 +20,8 @@ public:
     explicit TcpConnection(
         Connection::receiver_callback_t receiver_callback,
         const std::string& remote_ip,
-        int remote_port);
+        int remote_port,
+        bool forward_messages = false);
     ~TcpConnection();
     ConnectionResult start() override;
     ConnectionResult stop() override;

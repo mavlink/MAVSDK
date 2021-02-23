@@ -66,9 +66,10 @@ public:
      * - Serial - serial://Dev_Node[:Baudrate]
      *
      * @param connection_url connection URL string.
+     * @param forward_messages forward messages by default when multiple interfaces are used.
      * @return The result of adding the connection.
      */
-    ConnectionResult add_any_connection(const std::string& connection_url);
+    ConnectionResult add_any_connection(const std::string& connection_url, bool forward_messages = false);
 
     /**
      * @brief Adds a UDP connection to the specified port number.
@@ -76,9 +77,10 @@ public:
      * Any incoming connections are accepted (0.0.0.0).
      *
      * @param local_port The local UDP port to listen to (defaults to 14540, the same as MAVROS).
+     * @param forward_messages forward messages by default when multiple interfaces are used.
      * @return The result of adding the connection.
      */
-    ConnectionResult add_udp_connection(int local_port = DEFAULT_UDP_PORT);
+    ConnectionResult add_udp_connection(int local_port = DEFAULT_UDP_PORT, bool forward_messages = false);
 
     /**
      * @brief Adds a UDP connection to the specified port number and local interface.
@@ -88,37 +90,41 @@ public:
      *
      * @param local_ip The local UDP IP address to listen to.
      * @param local_port The local UDP port to listen to (defaults to 14540, the same as MAVROS).
+     * @param forward_messages forward messages by default when multiple interfaces are used.
      * @return The result of adding the connection.
      */
     ConnectionResult
-    add_udp_connection(const std::string& local_ip, int local_port = DEFAULT_UDP_PORT);
+    add_udp_connection(const std::string& local_ip, int local_port = DEFAULT_UDP_PORT, bool forward_messages = false);
 
     /**
      * @brief Sets up instance to send heartbeats to the specified remote interface and port number.
      *
      * @param remote_ip The remote UDP IP address to report to.
      * @param remote_port The local UDP port to report to.
+     * @param forward_messages forward messages by default when multiple interfaces are used.
      * @return The result of operation.
      */
-    ConnectionResult setup_udp_remote(const std::string& remote_ip, int remote_port);
+    ConnectionResult setup_udp_remote(const std::string& remote_ip, int remote_port, bool forward_messages = false);
 
     /**
      * @brief Adds a TCP connection with a specific port number on localhost.
      *
      * @param remote_port The TCP port to connect to (defaults to 5760).
+     * @param forward_messages forward messages by default when multiple interfaces are used.
      * @return The result of adding the connection.
      */
-    ConnectionResult add_tcp_connection(int remote_port = DEFAULT_TCP_REMOTE_PORT);
+    ConnectionResult add_tcp_connection(int remote_port = DEFAULT_TCP_REMOTE_PORT, bool forward_messages = false);
 
     /**
      * @brief Adds a TCP connection with a specific IP address and port number.
      *
      * @param remote_ip Remote IP address to connect to.
      * @param remote_port The TCP port to connect to (defaults to 5760).
+     * @param forward_messages forward messages by default when multiple interfaces are used.
      * @return The result of adding the connection.
      */
     ConnectionResult
-    add_tcp_connection(const std::string& remote_ip, int remote_port = DEFAULT_TCP_REMOTE_PORT);
+    add_tcp_connection(const std::string& remote_ip, int remote_port = DEFAULT_TCP_REMOTE_PORT, bool forward_messages = false);
 
     /**
      * @brief Adds a serial connection with a specific port (COM or UART dev node) and baudrate as
@@ -127,13 +133,15 @@ public:
      *
      * @param dev_path COM or UART dev node name/path (e.g. "/dev/ttyS0", or "COM3" on Windows).
      * @param baudrate Baudrate of the serial port (defaults to 57600).
-     * @param flow_control enable/disable flow control
+     * @param flow_control enable/disable flow control.
+     * @param forward_messages forward messages by default when multiple interfaces are used.
      * @return The result of adding the connection.
      */
     ConnectionResult add_serial_connection(
         const std::string& dev_path,
         int baudrate = DEFAULT_SERIAL_BAUDRATE,
-        bool flow_control = false);
+        bool flow_control = false,
+        bool forward_messages = false);
 
     /**
      * @brief Get a vector of systems which have been discovered or set-up.
@@ -164,10 +172,9 @@ public:
          * @param system_id the system id to store in this configuration
          * @param component_id the component id to store in this configuration
          * @param always_send_heartbeats send heartbeats by default even without a system connected
-         * @param forward_messages forward messages by default when multiple interfaces are used.
          */
         explicit Configuration(
-            uint8_t system_id, uint8_t component_id, bool always_send_heartbeats, bool forward_messages = false);
+            uint8_t system_id, uint8_t component_id, bool always_send_heartbeats);
         /**
          * @brief Create new Configuration using a usage type.
          * In this mode, the system and component ID will be automatically chosen.
@@ -211,17 +218,6 @@ public:
          */
         void set_always_send_heartbeats(bool always_send_heartbeats);
 
-        /**
-         * @brief Get whether to forward messages by default.
-         * @return whether to always forward messages
-         */
-        bool get_forward_messages() const;
-
-        /**
-         * @brief Set whether to forward messages by default.
-         */
-        void set_forward_messages(bool forward_messages);
-
         /** @brief Usage type of this configuration, used for automatic ID set */
         UsageType get_usage_type() const;
 
@@ -234,7 +230,6 @@ public:
         uint8_t _system_id;
         uint8_t _component_id;
         bool _always_send_heartbeats;
-        bool _forward_messages;
         UsageType _usage_type;
     };
 

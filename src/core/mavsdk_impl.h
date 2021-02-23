@@ -42,14 +42,14 @@ public:
     void receive_message(mavlink_message_t& message, Connection *connection);
     bool send_message(mavlink_message_t& message);
 
-    ConnectionResult add_any_connection(const std::string& connection_url);
+    ConnectionResult add_any_connection(const std::string& connection_url, bool forward_messages);
     ConnectionResult
     add_link_connection(const std::string& protocol, const std::string& ip, int port);
-    ConnectionResult add_udp_connection(const std::string& local_ip, int local_port_number);
-    ConnectionResult add_tcp_connection(const std::string& remote_ip, int remote_port);
+    ConnectionResult add_udp_connection(const std::string& local_ip, int local_port_number, bool forward_messages);
+    ConnectionResult add_tcp_connection(const std::string& remote_ip, int remote_port, bool forward_messages);
     ConnectionResult
-    add_serial_connection(const std::string& dev_path, int baudrate, bool flow_control);
-    ConnectionResult setup_udp_remote(const std::string& remote_ip, int remote_port);
+    add_serial_connection(const std::string& dev_path, int baudrate, bool flow_control, bool forward_messages);
+    ConnectionResult setup_udp_remote(const std::string& remote_ip, int remote_port, bool forward_messages);
 
     std::vector<std::shared_ptr<System>> systems() const;
 

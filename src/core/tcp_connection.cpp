@@ -28,8 +28,9 @@ namespace mavsdk {
 TcpConnection::TcpConnection(
     Connection::receiver_callback_t receiver_callback,
     const std::string& remote_ip,
-    int remote_port) :
-    Connection(receiver_callback),
+    int remote_port,
+    bool forward_messages) :
+    Connection(receiver_callback, forward_messages),
     _remote_ip(remote_ip),
     _remote_port_number(remote_port),
     _should_exit(false)

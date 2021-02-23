@@ -17,35 +17,35 @@ std::string Mavsdk::version() const
     return _impl->version();
 }
 
-ConnectionResult Mavsdk::add_any_connection(const std::string& connection_url)
+ConnectionResult Mavsdk::add_any_connection(const std::string& connection_url, bool forward_messages)
 {
-    return _impl->add_any_connection(connection_url);
+    return _impl->add_any_connection(connection_url, forward_messages);
 }
 
-ConnectionResult Mavsdk::add_udp_connection(int local_port)
+ConnectionResult Mavsdk::add_udp_connection(int local_port, bool forward_messages)
 {
-    return Mavsdk::add_udp_connection(DEFAULT_UDP_BIND_IP, local_port);
+    return Mavsdk::add_udp_connection(DEFAULT_UDP_BIND_IP, local_port, forward_messages);
 }
 
-ConnectionResult Mavsdk::add_udp_connection(const std::string& local_bind_ip, const int local_port)
+ConnectionResult Mavsdk::add_udp_connection(const std::string& local_bind_ip, const int local_port, bool forward_messages)
 {
-    return _impl->add_udp_connection(local_bind_ip, local_port);
+    return _impl->add_udp_connection(local_bind_ip, local_port, forward_messages);
 }
 
-ConnectionResult Mavsdk::setup_udp_remote(const std::string& remote_ip, int remote_port)
+ConnectionResult Mavsdk::setup_udp_remote(const std::string& remote_ip, int remote_port, bool forward_messages)
 {
-    return _impl->setup_udp_remote(remote_ip, remote_port);
+    return _impl->setup_udp_remote(remote_ip, remote_port, forward_messages);
 }
 
-ConnectionResult Mavsdk::add_tcp_connection(const std::string& remote_ip, const int remote_port)
+ConnectionResult Mavsdk::add_tcp_connection(const std::string& remote_ip, const int remote_port, bool forward_messages)
 {
-    return _impl->add_tcp_connection(remote_ip, remote_port);
+    return _impl->add_tcp_connection(remote_ip, remote_port, forward_messages);
 }
 
 ConnectionResult
-Mavsdk::add_serial_connection(const std::string& dev_path, const int baudrate, bool flow_control)
+Mavsdk::add_serial_connection(const std::string& dev_path, const int baudrate, bool flow_control, bool forward_messages)
 {
-    return _impl->add_serial_connection(dev_path, baudrate, flow_control);
+    return _impl->add_serial_connection(dev_path, baudrate, flow_control, forward_messages);
 }
 
 std::vector<std::shared_ptr<System>> Mavsdk::systems() const
@@ -99,11 +99,10 @@ void Mavsdk::register_on_timeout(const event_callback_t callback)
 }
 
 Mavsdk::Configuration::Configuration(
-    uint8_t system_id, uint8_t component_id, bool always_send_heartbeats, bool forward_messages) :
+    uint8_t system_id, uint8_t component_id, bool always_send_heartbeats) :
     _system_id(system_id),
     _component_id(component_id),
     _always_send_heartbeats(always_send_heartbeats),
-    _forward_messages(forward_messages),
     _usage_type(Mavsdk::Configuration::UsageType::Custom)
 {}
 
@@ -111,7 +110,6 @@ Mavsdk::Configuration::Configuration(UsageType usage_type) :
     _system_id(MavsdkImpl::DEFAULT_SYSTEM_ID_GCS),
     _component_id(MavsdkImpl::DEFAULT_COMPONENT_ID_GCS),
     _always_send_heartbeats(false),
-    _forward_messages(false),
     _usage_type(usage_type)
 {
     switch (usage_type) {
@@ -119,20 +117,17 @@ Mavsdk::Configuration::Configuration(UsageType usage_type) :
             _system_id = MavsdkImpl::DEFAULT_SYSTEM_ID_GCS;
             _component_id = MavsdkImpl::DEFAULT_COMPONENT_ID_GCS;
             _always_send_heartbeats = false;
-            _forward_messages = false;
             break;
         case Mavsdk::Configuration::UsageType::CompanionComputer:
             // TODO implement autodetection of system ID - maybe from heartbeats?
             _system_id = MavsdkImpl::DEFAULT_SYSTEM_ID_CC;
             _component_id = MavsdkImpl::DEFAULT_COMPONENT_ID_CC;
             _always_send_heartbeats = true;
-            _forward_messages = true;
             break;
         case Mavsdk::Configuration::UsageType::Autopilot:
             _system_id = MavsdkImpl::DEFAULT_SYSTEM_ID_AUTOPILOT;
             _component_id = MavsdkImpl::DEFAULT_COMPONENT_ID_AUTOPILOT;
             _always_send_heartbeats = true;
-            _forward_messages = true;
             break;
         default:
             break;
@@ -167,16 +162,6 @@ bool Mavsdk::Configuration::get_always_send_heartbeats() const
 void Mavsdk::Configuration::set_always_send_heartbeats(bool always_send_heartbeats)
 {
     _always_send_heartbeats = always_send_heartbeats;
-}
-
-bool Mavsdk::Configuration::get_forward_messages() const
-{
-    return _forward_messages;
-}
-
-void Mavsdk::Configuration::set_forward_messages(bool forward_messages)
-{
-    _forward_messages = forward_messages;
 }
 
 Mavsdk::Configuration::UsageType Mavsdk::Configuration::get_usage_type() const

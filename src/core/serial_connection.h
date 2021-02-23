@@ -16,7 +16,8 @@ public:
         Connection::receiver_callback_t receiver_callback,
         const std::string& path,
         int baudrate,
-        bool flow_control);
+        bool flow_control,
+        bool forward_messages = false);
     ConnectionResult start() override;
     ConnectionResult stop() override;
     ~SerialConnection();
