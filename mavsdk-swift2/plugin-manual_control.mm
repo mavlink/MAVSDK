@@ -19,13 +19,16 @@ mavsdk::ManualControl *manualControl;
 }
 
 - (MAVSDKManualControlResult)startPositionControl {
-    return (MAVSDKManualControlResult)manual_control->start_position_control();
+    //return (MAVSDKManualControlResult)manual_control->start_position_control();
+    return MAVSDKManualControlResultUnknown;
 }
 - (MAVSDKManualControlResult)startAltitudeControl {
-    return (MAVSDKManualControlResult)manual_control->start_altitude_control();
+    //return (MAVSDKManualControlResult)manual_control->start_altitude_control();
+    return MAVSDKManualControlResultUnknown;
 }
 - (MAVSDKManualControlResult)setManualControlInput:(float)x :(float)y :(float)z :(float)r {
-    return (MAVSDKManualControlResult)manual_control->set_manual_control_input(x, y, z, r);
+    //return (MAVSDKManualControlResult)manual_control->set_manual_control_input(x, y, z, r);
+    return MAVSDKManualControlResultUnknown;
 }
 
 

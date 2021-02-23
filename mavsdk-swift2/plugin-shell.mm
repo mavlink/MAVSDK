@@ -19,7 +19,7 @@ mavsdk::Shell *shell;
 }
 
 - (MAVSDKShellResult)send:(NSString*)command {
-    return (MAVSDKShellResult)shell->send(command);
+    return (MAVSDKShellResult)shell->send([command UTF8String]);
 }
 
 

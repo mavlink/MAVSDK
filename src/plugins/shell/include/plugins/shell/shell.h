@@ -13,7 +13,7 @@
 #include <utility>
 #include <vector>
 
-#include "plugin_base.h"
+#include <mavsdk/plugin_base.h>
 
 namespace mavsdk {
 
@@ -60,6 +60,11 @@ public:
      */
     ~Shell();
 
+
+
+
+
+
     /**
      * @brief Possible results returned for shell requests
      */
@@ -79,10 +84,17 @@ public:
      */
     friend std::ostream& operator<<(std::ostream& str, Shell::Result const& result);
 
+
+
     /**
      * @brief Callback type for asynchronous Shell calls.
      */
     using ResultCallback = std::function<void(Result)>;
+
+
+
+
+
 
     /**
      * @brief Send a command line.
@@ -93,19 +105,27 @@ public:
      */
     Result send(std::string command) const;
 
-    /**
-     * @brief Callback type for subscribe_receive.
-     */
 
+
+
+        
+    /**
+    * @brief Callback type for subscribe_receive.
+    */
+        
     using ReceiveCallback = std::function<void(std::string)>;
 
     /**
      * @brief Receive feedback from a sent command line.
      *
-     * This subscription needs to be made before a command line is sent, otherwise, no response will
-     * be sent.
+     * This subscription needs to be made before a command line is sent, otherwise, no response will be sent.
      */
     void subscribe_receive(ReceiveCallback callback);
+
+
+
+
+
 
     /**
      * @brief Copy constructor (object is not copyable).

@@ -13,7 +13,7 @@
 #include <utility>
 #include <vector>
 
-#include "plugin_base.h"
+#include <mavsdk/plugin_base.h>
 
 namespace mavsdk {
 
@@ -59,6 +59,11 @@ public:
      */
     ~Mission();
 
+
+
+
+
+
     /**
      * @brief Type representing a mission item.
      *
@@ -68,41 +73,36 @@ public:
      * They cannot be used independently.
      */
     struct MissionItem {
+        
         /**
-         * @brief Possible camera actions at a mission item.
-         */
-        enum class CameraAction {
-            None, /**< @brief No action. */
-            TakePhoto, /**< @brief Take a single photo. */
-            StartPhotoInterval, /**< @brief Start capturing photos at regular intervals. */
-            StopPhotoInterval, /**< @brief Stop capturing photos at regular intervals. */
-            StartVideo, /**< @brief Start capturing video. */
-            StopVideo, /**< @brief Stop capturing video. */
-        };
+     * @brief Possible camera actions at a mission item.
+     */
+    enum class CameraAction {
+        None, /**< @brief No action. */
+        TakePhoto, /**< @brief Take a single photo. */
+        StartPhotoInterval, /**< @brief Start capturing photos at regular intervals. */
+        StopPhotoInterval, /**< @brief Stop capturing photos at regular intervals. */
+        StartVideo, /**< @brief Start capturing video. */
+        StopVideo, /**< @brief Stop capturing video. */
+    };
 
-        /**
-         * @brief Stream operator to print information about a `Mission::CameraAction`.
-         *
-         * @return A reference to the stream.
-         */
-        friend std::ostream&
-        operator<<(std::ostream& str, Mission::MissionItem::CameraAction const& camera_action);
-
+    /**
+     * @brief Stream operator to print information about a `Mission::CameraAction`.
+     *
+     * @return A reference to the stream.
+     */
+    friend std::ostream& operator<<(std::ostream& str, Mission::MissionItem::CameraAction const& camera_action);
+        
         double latitude_deg{double(NAN)}; /**< @brief Latitude in degrees (range: -90 to +90) */
         double longitude_deg{double(NAN)}; /**< @brief Longitude in degrees (range: -180 to +180) */
-        float relative_altitude_m{
-            float(NAN)}; /**< @brief Altitude relative to takeoff altitude in metres */
-        float speed_m_s{
-            float(NAN)}; /**< @brief Speed to use after this mission item (in metres/second) */
-        bool is_fly_through{
-            false}; /**< @brief True will make the drone fly through without stopping, while false
-                       will make the drone stop on the waypoint */
+        float relative_altitude_m{float(NAN)}; /**< @brief Altitude relative to takeoff altitude in metres */
+        float speed_m_s{float(NAN)}; /**< @brief Speed to use after this mission item (in metres/second) */
+        bool is_fly_through{false}; /**< @brief True will make the drone fly through without stopping, while false will make the drone stop on the waypoint */
         float gimbal_pitch_deg{float(NAN)}; /**< @brief Gimbal pitch (in degrees) */
         float gimbal_yaw_deg{float(NAN)}; /**< @brief Gimbal yaw (in degrees) */
         CameraAction camera_action{}; /**< @brief Camera action to trigger at this mission item */
         float loiter_time_s{float(NAN)}; /**< @brief Loiter time (in seconds) */
-        double camera_photo_interval_s{
-            1.0}; /**< @brief Camera photo interval to use after this mission item (in seconds) */
+        double camera_photo_interval_s{1.0}; /**< @brief Camera photo interval to use after this mission item (in seconds) */
     };
 
     /**
@@ -119,10 +119,14 @@ public:
      */
     friend std::ostream& operator<<(std::ostream& str, Mission::MissionItem const& mission_item);
 
+
+
+
     /**
      * @brief Mission plan type
      */
     struct MissionPlan {
+        
         std::vector<MissionItem> mission_items{}; /**< @brief The mission items */
     };
 
@@ -140,10 +144,14 @@ public:
      */
     friend std::ostream& operator<<(std::ostream& str, Mission::MissionPlan const& mission_plan);
 
+
+
+
     /**
      * @brief Mission progress type.
      */
     struct MissionProgress {
+        
         int32_t current{}; /**< @brief Current mission item index (0-based) */
         int32_t total{}; /**< @brief Total number of mission items */
     };
@@ -153,16 +161,18 @@ public:
      *
      * @return `true` if items are equal.
      */
-    friend bool
-    operator==(const Mission::MissionProgress& lhs, const Mission::MissionProgress& rhs);
+    friend bool operator==(const Mission::MissionProgress& lhs, const Mission::MissionProgress& rhs);
 
     /**
      * @brief Stream operator to print information about a `Mission::MissionProgress`.
      *
      * @return A reference to the stream.
      */
-    friend std::ostream&
-    operator<<(std::ostream& str, Mission::MissionProgress const& mission_progress);
+    friend std::ostream& operator<<(std::ostream& str, Mission::MissionProgress const& mission_progress);
+
+
+
+
 
     /**
      * @brief Possible results returned for action requests.
@@ -190,10 +200,15 @@ public:
      */
     friend std::ostream& operator<<(std::ostream& str, Mission::Result const& result);
 
+
+
     /**
      * @brief Callback type for asynchronous Mission calls.
      */
     using ResultCallback = std::function<void(Result)>;
+
+
+
 
     /**
      * @brief Upload a list of mission items to the system.
@@ -204,6 +219,8 @@ public:
      * This function is non-blocking. See 'upload_mission' for the blocking counterpart.
      */
     void upload_mission_async(MissionPlan mission_plan, const ResultCallback callback);
+
+
 
     /**
      * @brief Upload a list of mission items to the system.
@@ -217,6 +234,11 @@ public:
      */
     Result upload_mission(MissionPlan mission_plan) const;
 
+
+
+
+
+
     /**
      * @brief Cancel an ongoing mission upload.
      *
@@ -226,9 +248,12 @@ public:
      */
     Result cancel_mission_upload() const;
 
+
+
+
     /**
-     * @brief Callback type for download_mission_async.
-     */
+    * @brief Callback type for download_mission_async.
+    */
     using DownloadMissionCallback = std::function<void(Result, MissionPlan)>;
 
     /**
@@ -240,6 +265,8 @@ public:
      * This function is non-blocking. See 'download_mission' for the blocking counterpart.
      */
     void download_mission_async(const DownloadMissionCallback callback);
+
+
 
     /**
      * @brief Download a list of mission items from the system (asynchronous).
@@ -253,6 +280,11 @@ public:
      */
     std::pair<Result, Mission::MissionPlan> download_mission() const;
 
+
+
+
+
+
     /**
      * @brief Cancel an ongoing mission download.
      *
@@ -262,6 +294,9 @@ public:
      */
     Result cancel_mission_download() const;
 
+
+
+
     /**
      * @brief Start the mission.
      *
@@ -270,6 +305,8 @@ public:
      * This function is non-blocking. See 'start_mission' for the blocking counterpart.
      */
     void start_mission_async(const ResultCallback callback);
+
+
 
     /**
      * @brief Start the mission.
@@ -282,6 +319,9 @@ public:
      */
     Result start_mission() const;
 
+
+
+
     /**
      * @brief Pause the mission.
      *
@@ -293,6 +333,8 @@ public:
      * This function is non-blocking. See 'pause_mission' for the blocking counterpart.
      */
     void pause_mission_async(const ResultCallback callback);
+
+
 
     /**
      * @brief Pause the mission.
@@ -308,12 +350,17 @@ public:
      */
     Result pause_mission() const;
 
+
+
+
     /**
      * @brief Clear the mission saved on the vehicle.
      *
      * This function is non-blocking. See 'clear_mission' for the blocking counterpart.
      */
     void clear_mission_async(const ResultCallback callback);
+
+
 
     /**
      * @brief Clear the mission saved on the vehicle.
@@ -323,6 +370,9 @@ public:
      * @return Result of request.
      */
     Result clear_mission() const;
+
+
+
 
     /**
      * @brief Sets the mission item index to go to.
@@ -337,6 +387,8 @@ public:
      */
     void set_current_mission_item_async(int32_t index, const ResultCallback callback);
 
+
+
     /**
      * @brief Sets the mission item index to go to.
      *
@@ -346,12 +398,16 @@ public:
      * Note that this is not necessarily true for general missions using MAVLink if loop counters
      * are used.
      *
-     * This function is blocking. See 'set_current_mission_item_async' for the non-blocking
-     * counterpart.
+     * This function is blocking. See 'set_current_mission_item_async' for the non-blocking counterpart.
      *
      * @return Result of request.
      */
     Result set_current_mission_item(int32_t index) const;
+
+
+
+
+
 
     /**
      * @brief Check if the mission has been finished.
@@ -362,10 +418,14 @@ public:
      */
     std::pair<Result, bool> is_mission_finished() const;
 
-    /**
-     * @brief Callback type for subscribe_mission_progress.
-     */
 
+
+
+        
+    /**
+    * @brief Callback type for subscribe_mission_progress.
+    */
+        
     using MissionProgressCallback = std::function<void(MissionProgress)>;
 
     /**
@@ -373,12 +433,19 @@ public:
      */
     void subscribe_mission_progress(MissionProgressCallback callback);
 
+
+
     /**
      * @brief Poll for 'MissionProgress' (blocking).
      *
      * @return One MissionProgress update.
      */
     MissionProgress mission_progress() const;
+
+
+
+
+
 
     /**
      * @brief Get whether to trigger Return-to-Launch (RTL) after mission is complete.
@@ -392,6 +459,11 @@ public:
      */
     std::pair<Result, bool> get_return_to_launch_after_mission() const;
 
+
+
+
+
+
     /**
      * @brief Set whether to trigger Return-to-Launch (RTL) after the mission is complete.
      *
@@ -404,9 +476,12 @@ public:
      */
     Result set_return_to_launch_after_mission(bool enable) const;
 
+
+
+
     /**
-     * @brief Callback type for import_qgroundcontrol_mission_async.
-     */
+    * @brief Callback type for import_qgroundcontrol_mission_async.
+    */
     using ImportQgroundcontrolMissionCallback = std::function<void(Result, MissionPlan)>;
 
     /**
@@ -415,11 +490,11 @@ public:
      * The method will fail if any of the imported mission items are not supported
      * by the MAVSDK API.
      *
-     * This function is non-blocking. See 'import_qgroundcontrol_mission' for the blocking
-     * counterpart.
+     * This function is non-blocking. See 'import_qgroundcontrol_mission' for the blocking counterpart.
      */
-    void import_qgroundcontrol_mission_async(
-        std::string qgc_plan_path, const ImportQgroundcontrolMissionCallback callback);
+    void import_qgroundcontrol_mission_async(std::string qgc_plan_path, const ImportQgroundcontrolMissionCallback callback);
+
+
 
     /**
      * @brief Import a QGroundControl (QGC) mission plan.
@@ -427,13 +502,14 @@ public:
      * The method will fail if any of the imported mission items are not supported
      * by the MAVSDK API.
      *
-     * This function is blocking. See 'import_qgroundcontrol_mission_async' for the non-blocking
-     * counterpart.
+     * This function is blocking. See 'import_qgroundcontrol_mission_async' for the non-blocking counterpart.
      *
      * @return Result of request.
      */
-    std::pair<Result, Mission::MissionPlan>
-    import_qgroundcontrol_mission(std::string qgc_plan_path) const;
+    std::pair<Result, Mission::MissionPlan> import_qgroundcontrol_mission(std::string qgc_plan_path) const;
+
+
+
 
     /**
      * @brief Copy constructor (object is not copyable).

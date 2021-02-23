@@ -20,11 +20,11 @@ mavsdk::Param *param;
 
 
 - (MAVSDKParamResult)setParamInt:(NSString*)name :(NSInteger)value {
-    return (MAVSDKParamResult)param->set_param_int(name, value);
+    return (MAVSDKParamResult)param->set_param_int([name UTF8String], value);
 }
 
 - (MAVSDKParamResult)setParamFloat:(NSString*)name :(float)value {
-    return (MAVSDKParamResult)param->set_param_float(name, value);
+    return (MAVSDKParamResult)param->set_param_float([name UTF8String], value);
 }
 
 

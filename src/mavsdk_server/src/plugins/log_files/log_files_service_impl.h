@@ -22,6 +22,7 @@ class LogFilesServiceImpl final : public rpc::log_files::LogFilesService::Servic
 public:
     LogFilesServiceImpl(LogFiles& log_files) : _log_files(log_files) {}
 
+
     template<typename ResponseType>
     void fillResponseWithResult(ResponseType* response, mavsdk::LogFiles::Result& result) const
     {
@@ -36,36 +37,55 @@ public:
         response->set_allocated_log_files_result(rpc_log_files_result);
     }
 
-    static std::unique_ptr<rpc::log_files::ProgressData>
-    translateToRpcProgressData(const mavsdk::LogFiles::ProgressData& progress_data)
+
+
+
+    static std::unique_ptr<rpc::log_files::ProgressData> translateToRpcProgressData(const mavsdk::LogFiles::ProgressData &progress_data)
     {
         auto rpc_obj = std::make_unique<rpc::log_files::ProgressData>();
 
+
+            
         rpc_obj->set_progress(progress_data.progress);
+            
+        
 
         return rpc_obj;
     }
 
-    static mavsdk::LogFiles::ProgressData
-    translateFromRpcProgressData(const rpc::log_files::ProgressData& progress_data)
+    static mavsdk::LogFiles::ProgressData translateFromRpcProgressData(const rpc::log_files::ProgressData& progress_data)
     {
         mavsdk::LogFiles::ProgressData obj;
 
-        obj.progress = progress_data.progress();
 
+            
+        obj.progress = progress_data.progress();
+            
+        
         return obj;
     }
 
-    static std::unique_ptr<rpc::log_files::Entry>
-    translateToRpcEntry(const mavsdk::LogFiles::Entry& entry)
+
+
+
+
+    static std::unique_ptr<rpc::log_files::Entry> translateToRpcEntry(const mavsdk::LogFiles::Entry &entry)
     {
         auto rpc_obj = std::make_unique<rpc::log_files::Entry>();
 
+
+            
         rpc_obj->set_id(entry.id);
-
+            
+        
+            
         rpc_obj->set_date(entry.date);
-
+            
+        
+            
         rpc_obj->set_size_bytes(entry.size_bytes);
+            
+        
 
         return rpc_obj;
     }
@@ -74,17 +94,26 @@ public:
     {
         mavsdk::LogFiles::Entry obj;
 
+
+            
         obj.id = entry.id();
-
+            
+        
+            
         obj.date = entry.date();
-
+            
+        
+            
         obj.size_bytes = entry.size_bytes();
-
+            
+        
         return obj;
     }
 
-    static rpc::log_files::LogFilesResult::Result
-    translateToRpcResult(const mavsdk::LogFiles::Result& result)
+
+
+
+    static rpc::log_files::LogFilesResult::Result translateToRpcResult(const mavsdk::LogFiles::Result& result)
     {
         switch (result) {
             default:
@@ -107,8 +136,7 @@ public:
         }
     }
 
-    static mavsdk::LogFiles::Result
-    translateFromRpcResult(const rpc::log_files::LogFilesResult::Result result)
+    static mavsdk::LogFiles::Result translateFromRpcResult(const rpc::log_files::LogFilesResult::Result result)
     {
         switch (result) {
             default:
@@ -131,29 +159,35 @@ public:
         }
     }
 
+
+
+
     grpc::Status GetEntries(
         grpc::ServerContext* /* context */,
         const rpc::log_files::GetEntriesRequest* /* request */,
         rpc::log_files::GetEntriesResponse* response) override
     {
+        
+
         auto result = _log_files.get_entries();
 
         if (response != nullptr) {
             fillResponseWithResult(response, result.first);
-
+            
             for (auto elem : result.second) {
+                
                 auto* ptr = response->add_entries();
                 ptr->CopyFrom(*translateToRpcEntry(elem).release());
+                
             }
+            
         }
+
 
         return grpc::Status::OK;
     }
 
-    grpc::Status SubscribeDownloadLogFile(
-        grpc::ServerContext* /* context */,
-        const mavsdk::rpc::log_files::SubscribeDownloadLogFileRequest* request,
-        grpc::ServerWriter<rpc::log_files::DownloadLogFileResponse>* writer) override
+    grpc::Status SubscribeDownloadLogFile(grpc::ServerContext* /* context */, const mavsdk::rpc::log_files::SubscribeDownloadLogFileRequest* request, grpc::ServerWriter<rpc::log_files::DownloadLogFileResponse>* writer) override
     {
         auto stream_closed_promise = std::make_shared<std::promise<void>>();
         auto stream_closed_future = stream_closed_promise->get_future();
@@ -163,40 +197,40 @@ public:
 
         std::mutex subscribe_mutex{};
 
-        _log_files.download_log_file_async(
-            request->id(),
-            request->path(),
-            [this, &writer, &stream_closed_promise, is_finished, &subscribe_mutex](
-                mavsdk::LogFiles::Result result,
-                const mavsdk::LogFiles::ProgressData download_log_file) {
-                rpc::log_files::DownloadLogFileResponse rpc_response;
+        _log_files.download_log_file_async(request->id(), request->path(), 
+            [this, &writer, &stream_closed_promise, is_finished, &subscribe_mutex](mavsdk::LogFiles::Result result,const mavsdk::LogFiles::ProgressData download_log_file) {
 
-                rpc_response.set_allocated_progress(
-                    translateToRpcProgressData(download_log_file).release());
+            rpc::log_files::DownloadLogFileResponse rpc_response;
+        
+            rpc_response.set_allocated_progress(translateToRpcProgressData(download_log_file).release());
+        
 
-                auto rpc_result = translateToRpcResult(result);
-                auto* rpc_log_files_result = new rpc::log_files::LogFilesResult();
-                rpc_log_files_result->set_result(rpc_result);
-                std::stringstream ss;
-                ss << result;
-                rpc_log_files_result->set_result_str(ss.str());
-                rpc_response.set_allocated_log_files_result(rpc_log_files_result);
+        
+            auto rpc_result = translateToRpcResult(result);
+            auto* rpc_log_files_result = new rpc::log_files::LogFilesResult();
+            rpc_log_files_result->set_result(rpc_result);
+            std::stringstream ss;
+            ss << result;
+            rpc_log_files_result->set_result_str(ss.str());
+            rpc_response.set_allocated_log_files_result(rpc_log_files_result);
+        
 
-                std::unique_lock<std::mutex> lock(subscribe_mutex);
-                if (!*is_finished && !writer->Write(rpc_response)) {
-                    *is_finished = true;
-                    unregister_stream_stop_promise(stream_closed_promise);
-                    lock.unlock();
-                    stream_closed_promise->set_value();
-                }
-            });
+            std::unique_lock<std::mutex> lock(subscribe_mutex);
+            if (!*is_finished && !writer->Write(rpc_response)) {
+                
+                *is_finished = true;
+                unregister_stream_stop_promise(stream_closed_promise);
+                lock.unlock();
+                stream_closed_promise->set_value();
+            }
+        });
 
         stream_closed_future.wait();
         return grpc::Status::OK;
     }
 
-    void stop()
-    {
+
+    void stop() {
         _stopped.store(true);
         for (auto& prom : _stream_stop_promises) {
             if (auto handle = prom.lock()) {
@@ -206,8 +240,7 @@ public:
     }
 
 private:
-    void register_stream_stop_promise(std::weak_ptr<std::promise<void>> prom)
-    {
+    void register_stream_stop_promise(std::weak_ptr<std::promise<void>> prom) {
         // If we have already stopped, set promise immediately and don't add it to list.
         if (_stopped.load()) {
             if (auto handle = prom.lock()) {
@@ -218,10 +251,8 @@ private:
         }
     }
 
-    void unregister_stream_stop_promise(std::shared_ptr<std::promise<void>> prom)
-    {
-        for (auto it = _stream_stop_promises.begin(); it != _stream_stop_promises.end();
-             /* ++it */) {
+    void unregister_stream_stop_promise(std::shared_ptr<std::promise<void>> prom) {
+        for (auto it = _stream_stop_promises.begin(); it != _stream_stop_promises.end(); /* ++it */) {
             if (it->lock() == prom) {
                 it = _stream_stop_promises.erase(it);
             } else {
@@ -230,9 +261,9 @@ private:
         }
     }
 
-    LogFiles& _log_files;
+    LogFiles &_log_files;
     std::atomic<bool> _stopped{false};
-    std::vector<std::weak_ptr<std::promise<void>>> _stream_stop_promises{};
+    std::vector<std::weak_ptr<std::promise<void>>> _stream_stop_promises {};
 };
 
 } // namespace mavsdk_server

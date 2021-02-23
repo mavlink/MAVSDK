@@ -22,6 +22,7 @@ class GimbalServiceImpl final : public rpc::gimbal::GimbalService::Service {
 public:
     GimbalServiceImpl(Gimbal& gimbal) : _gimbal(gimbal) {}
 
+
     template<typename ResponseType>
     void fillResponseWithResult(ResponseType* response, mavsdk::Gimbal::Result& result) const
     {
@@ -36,8 +37,8 @@ public:
         response->set_allocated_gimbal_result(rpc_gimbal_result);
     }
 
-    static rpc::gimbal::GimbalMode
-    translateToRpcGimbalMode(const mavsdk::Gimbal::GimbalMode& gimbal_mode)
+
+    static rpc::gimbal::GimbalMode translateToRpcGimbalMode(const mavsdk::Gimbal::GimbalMode& gimbal_mode)
     {
         switch (gimbal_mode) {
             default:
@@ -50,8 +51,7 @@ public:
         }
     }
 
-    static mavsdk::Gimbal::GimbalMode
-    translateFromRpcGimbalMode(const rpc::gimbal::GimbalMode gimbal_mode)
+    static mavsdk::Gimbal::GimbalMode translateFromRpcGimbalMode(const rpc::gimbal::GimbalMode gimbal_mode)
     {
         switch (gimbal_mode) {
             default:
@@ -64,8 +64,7 @@ public:
         }
     }
 
-    static rpc::gimbal::ControlMode
-    translateToRpcControlMode(const mavsdk::Gimbal::ControlMode& control_mode)
+    static rpc::gimbal::ControlMode translateToRpcControlMode(const mavsdk::Gimbal::ControlMode& control_mode)
     {
         switch (control_mode) {
             default:
@@ -80,8 +79,7 @@ public:
         }
     }
 
-    static mavsdk::Gimbal::ControlMode
-    translateFromRpcControlMode(const rpc::gimbal::ControlMode control_mode)
+    static mavsdk::Gimbal::ControlMode translateFromRpcControlMode(const rpc::gimbal::ControlMode control_mode)
     {
         switch (control_mode) {
             default:
@@ -96,44 +94,71 @@ public:
         }
     }
 
-    static std::unique_ptr<rpc::gimbal::ControlStatus>
-    translateToRpcControlStatus(const mavsdk::Gimbal::ControlStatus& control_status)
+
+
+    static std::unique_ptr<rpc::gimbal::ControlStatus> translateToRpcControlStatus(const mavsdk::Gimbal::ControlStatus &control_status)
     {
         auto rpc_obj = std::make_unique<rpc::gimbal::ControlStatus>();
 
+
+            
+                
         rpc_obj->set_control_mode(translateToRpcControlMode(control_status.control_mode));
-
+                
+            
+        
+            
         rpc_obj->set_sysid_primary_control(control_status.sysid_primary_control);
-
+            
+        
+            
         rpc_obj->set_compid_primary_control(control_status.compid_primary_control);
-
+            
+        
+            
         rpc_obj->set_sysid_secondary_control(control_status.sysid_secondary_control);
-
+            
+        
+            
         rpc_obj->set_compid_secondary_control(control_status.compid_secondary_control);
+            
+        
 
         return rpc_obj;
     }
 
-    static mavsdk::Gimbal::ControlStatus
-    translateFromRpcControlStatus(const rpc::gimbal::ControlStatus& control_status)
+    static mavsdk::Gimbal::ControlStatus translateFromRpcControlStatus(const rpc::gimbal::ControlStatus& control_status)
     {
         mavsdk::Gimbal::ControlStatus obj;
 
+
+            
         obj.control_mode = translateFromRpcControlMode(control_status.control_mode());
-
+            
+        
+            
         obj.sysid_primary_control = control_status.sysid_primary_control();
-
+            
+        
+            
         obj.compid_primary_control = control_status.compid_primary_control();
-
+            
+        
+            
         obj.sysid_secondary_control = control_status.sysid_secondary_control();
-
+            
+        
+            
         obj.compid_secondary_control = control_status.compid_secondary_control();
-
+            
+        
         return obj;
     }
 
-    static rpc::gimbal::GimbalResult::Result
-    translateToRpcResult(const mavsdk::Gimbal::Result& result)
+
+
+
+    static rpc::gimbal::GimbalResult::Result translateToRpcResult(const mavsdk::Gimbal::Result& result)
     {
         switch (result) {
             default:
@@ -152,8 +177,7 @@ public:
         }
     }
 
-    static mavsdk::Gimbal::Result
-    translateFromRpcResult(const rpc::gimbal::GimbalResult::Result result)
+    static mavsdk::Gimbal::Result translateFromRpcResult(const rpc::gimbal::GimbalResult::Result result)
     {
         switch (result) {
             default:
@@ -172,6 +196,9 @@ public:
         }
     }
 
+
+
+
     grpc::Status SetPitchAndYaw(
         grpc::ServerContext* /* context */,
         const rpc::gimbal::SetPitchAndYawRequest* request,
@@ -181,12 +208,18 @@ public:
             LogWarn() << "SetPitchAndYaw sent with a null request! Ignoring...";
             return grpc::Status::OK;
         }
-
+            
+        
+            
+        
         auto result = _gimbal.set_pitch_and_yaw(request->pitch_deg(), request->yaw_deg());
+        
 
+        
         if (response != nullptr) {
             fillResponseWithResult(response, result);
         }
+        
 
         return grpc::Status::OK;
     }
@@ -200,13 +233,18 @@ public:
             LogWarn() << "SetPitchRateAndYawRate sent with a null request! Ignoring...";
             return grpc::Status::OK;
         }
+            
+        
+            
+        
+        auto result = _gimbal.set_pitch_rate_and_yaw_rate(request->pitch_rate_deg_s(), request->yaw_rate_deg_s());
+        
 
-        auto result = _gimbal.set_pitch_rate_and_yaw_rate(
-            request->pitch_rate_deg_s(), request->yaw_rate_deg_s());
-
+        
         if (response != nullptr) {
             fillResponseWithResult(response, result);
         }
+        
 
         return grpc::Status::OK;
     }
@@ -220,12 +258,16 @@ public:
             LogWarn() << "SetMode sent with a null request! Ignoring...";
             return grpc::Status::OK;
         }
-
+            
+        
         auto result = _gimbal.set_mode(translateFromRpcGimbalMode(request->gimbal_mode()));
+        
 
+        
         if (response != nullptr) {
             fillResponseWithResult(response, result);
         }
+        
 
         return grpc::Status::OK;
     }
@@ -239,13 +281,20 @@ public:
             LogWarn() << "SetRoiLocation sent with a null request! Ignoring...";
             return grpc::Status::OK;
         }
+            
+        
+            
+        
+            
+        
+        auto result = _gimbal.set_roi_location(request->latitude_deg(), request->longitude_deg(), request->altitude_m());
+        
 
-        auto result = _gimbal.set_roi_location(
-            request->latitude_deg(), request->longitude_deg(), request->altitude_m());
-
+        
         if (response != nullptr) {
             fillResponseWithResult(response, result);
         }
+        
 
         return grpc::Status::OK;
     }
@@ -259,12 +308,16 @@ public:
             LogWarn() << "TakeControl sent with a null request! Ignoring...";
             return grpc::Status::OK;
         }
-
+            
+        
         auto result = _gimbal.take_control(translateFromRpcControlMode(request->control_mode()));
+        
 
+        
         if (response != nullptr) {
             fillResponseWithResult(response, result);
         }
+        
 
         return grpc::Status::OK;
     }
@@ -274,19 +327,20 @@ public:
         const rpc::gimbal::ReleaseControlRequest* /* request */,
         rpc::gimbal::ReleaseControlResponse* response) override
     {
+        
         auto result = _gimbal.release_control();
+        
 
+        
         if (response != nullptr) {
             fillResponseWithResult(response, result);
         }
+        
 
         return grpc::Status::OK;
     }
 
-    grpc::Status SubscribeControl(
-        grpc::ServerContext* /* context */,
-        const mavsdk::rpc::gimbal::SubscribeControlRequest* /* request */,
-        grpc::ServerWriter<rpc::gimbal::ControlResponse>* writer) override
+    grpc::Status SubscribeControl(grpc::ServerContext* /* context */, const mavsdk::rpc::gimbal::SubscribeControlRequest* /* request */, grpc::ServerWriter<rpc::gimbal::ControlResponse>* writer) override
     {
         auto stream_closed_promise = std::make_shared<std::promise<void>>();
         auto stream_closed_future = stream_closed_promise->get_future();
@@ -297,30 +351,33 @@ public:
         std::mutex subscribe_mutex{};
 
         _gimbal.subscribe_control(
-            [this, &writer, &stream_closed_promise, is_finished, &subscribe_mutex](
-                const mavsdk::Gimbal::ControlStatus control) {
-                rpc::gimbal::ControlResponse rpc_response;
+            [this, &writer, &stream_closed_promise, is_finished, &subscribe_mutex](const mavsdk::Gimbal::ControlStatus control) {
 
-                rpc_response.set_allocated_control_status(
-                    translateToRpcControlStatus(control).release());
+            rpc::gimbal::ControlResponse rpc_response;
+        
+            rpc_response.set_allocated_control_status(translateToRpcControlStatus(control).release());
+        
 
-                std::unique_lock<std::mutex> lock(subscribe_mutex);
-                if (!*is_finished && !writer->Write(rpc_response)) {
-                    _gimbal.subscribe_control(nullptr);
+        
 
-                    *is_finished = true;
-                    unregister_stream_stop_promise(stream_closed_promise);
-                    lock.unlock();
-                    stream_closed_promise->set_value();
-                }
-            });
+            std::unique_lock<std::mutex> lock(subscribe_mutex);
+            if (!*is_finished && !writer->Write(rpc_response)) {
+                
+                _gimbal.subscribe_control(nullptr);
+                
+                *is_finished = true;
+                unregister_stream_stop_promise(stream_closed_promise);
+                lock.unlock();
+                stream_closed_promise->set_value();
+            }
+        });
 
         stream_closed_future.wait();
         return grpc::Status::OK;
     }
 
-    void stop()
-    {
+
+    void stop() {
         _stopped.store(true);
         for (auto& prom : _stream_stop_promises) {
             if (auto handle = prom.lock()) {
@@ -330,8 +387,7 @@ public:
     }
 
 private:
-    void register_stream_stop_promise(std::weak_ptr<std::promise<void>> prom)
-    {
+    void register_stream_stop_promise(std::weak_ptr<std::promise<void>> prom) {
         // If we have already stopped, set promise immediately and don't add it to list.
         if (_stopped.load()) {
             if (auto handle = prom.lock()) {
@@ -342,10 +398,8 @@ private:
         }
     }
 
-    void unregister_stream_stop_promise(std::shared_ptr<std::promise<void>> prom)
-    {
-        for (auto it = _stream_stop_promises.begin(); it != _stream_stop_promises.end();
-             /* ++it */) {
+    void unregister_stream_stop_promise(std::shared_ptr<std::promise<void>> prom) {
+        for (auto it = _stream_stop_promises.begin(); it != _stream_stop_promises.end(); /* ++it */) {
             if (it->lock() == prom) {
                 it = _stream_stop_promises.erase(it);
             } else {
@@ -354,9 +408,9 @@ private:
         }
     }
 
-    Gimbal& _gimbal;
+    Gimbal &_gimbal;
     std::atomic<bool> _stopped{false};
-    std::vector<std::weak_ptr<std::promise<void>>> _stream_stop_promises{};
+    std::vector<std::weak_ptr<std::promise<void>>> _stream_stop_promises {};
 };
 
 } // namespace mavsdk_server

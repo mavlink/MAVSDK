@@ -23,20 +23,20 @@ mavsdk::Ftp *ftp;
 
 
 - (MAVSDKFtpResult)createDirectory:(NSString*)remoteDir {
-    return (MAVSDKFtpResult)ftp->create_directory(remoteDir);
+    return (MAVSDKFtpResult)ftp->create_directory([remoteDir UTF8String]);
 }
 - (MAVSDKFtpResult)removeDirectory:(NSString*)remoteDir {
-    return (MAVSDKFtpResult)ftp->remove_directory(remoteDir);
+    return (MAVSDKFtpResult)ftp->remove_directory([remoteDir UTF8String]);
 }
 - (MAVSDKFtpResult)removeFile:(NSString*)remoteFilePath {
-    return (MAVSDKFtpResult)ftp->remove_file(remoteFilePath);
+    return (MAVSDKFtpResult)ftp->remove_file([remoteFilePath UTF8String]);
 }
 - (MAVSDKFtpResult)rename:(NSString*)remoteFromPath :(NSString*)remoteToPath {
-    return (MAVSDKFtpResult)ftp->rename(remoteFromPath, remoteToPath);
+    return (MAVSDKFtpResult)ftp->rename([remoteFromPath UTF8String], [remoteToPath UTF8String]);
 }
 
 - (MAVSDKFtpResult)setRootDirectory:(NSString*)rootDir {
-    return (MAVSDKFtpResult)ftp->set_root_directory(rootDir);
+    return (MAVSDKFtpResult)ftp->set_root_directory([rootDir UTF8String]);
 }
 - (MAVSDKFtpResult)setTargetCompid:(UInt32)compid {
     return (MAVSDKFtpResult)ftp->set_target_compid(compid);

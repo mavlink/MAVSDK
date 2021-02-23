@@ -19,7 +19,8 @@ mavsdk::Geofence *geofence;
 }
 
 - (MAVSDKGeofenceResult)uploadGeofence:(MAVSDKGeofencePolygon*)polygons {
-    return (MAVSDKGeofenceResult)geofence->upload_geofence(translateToCppPolygons(polygons));
+    //return (MAVSDKGeofenceResult)geofence->upload_geofence(translateToCppPolygons(polygons));
+    return MAVSDKGeofenceResultUnknown;
 }
 
 

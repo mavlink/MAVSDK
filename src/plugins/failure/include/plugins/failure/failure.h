@@ -13,7 +13,7 @@
 #include <utility>
 #include <vector>
 
-#include "plugin_base.h"
+#include <mavsdk/plugin_base.h>
 
 namespace mavsdk {
 
@@ -58,6 +58,7 @@ public:
      * @brief Destructor (internal use only).
      */
     ~Failure();
+
 
     /**
      * @brief A failure unit.
@@ -108,6 +109,10 @@ public:
      */
     friend std::ostream& operator<<(std::ostream& str, Failure::FailureType const& failure_type);
 
+
+
+
+
     /**
      * @brief Possible results returned for failure requests.
      */
@@ -129,10 +134,17 @@ public:
      */
     friend std::ostream& operator<<(std::ostream& str, Failure::Result const& result);
 
+
+
     /**
      * @brief Callback type for asynchronous Failure calls.
      */
     using ResultCallback = std::function<void(Result)>;
+
+
+
+
+
 
     /**
      * @brief Injects a failure.
@@ -142,6 +154,9 @@ public:
      * @return Result of request.
      */
     Result inject(FailureUnit failure_unit, FailureType failure_type, int32_t instance) const;
+
+
+
 
     /**
      * @brief Copy constructor (object is not copyable).

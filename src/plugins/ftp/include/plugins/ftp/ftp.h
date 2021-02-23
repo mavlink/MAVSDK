@@ -13,7 +13,7 @@
 #include <utility>
 #include <vector>
 
-#include "plugin_base.h"
+#include <mavsdk/plugin_base.h>
 
 namespace mavsdk {
 
@@ -59,10 +59,15 @@ public:
      */
     ~Ftp();
 
+
+
+
+
     /**
      * @brief Progress data type for file transfer.
      */
     struct ProgressData {
+        
         uint32_t bytes_transferred{}; /**< @brief The number of bytes already transferred. */
         uint32_t total_bytes{}; /**< @brief The total bytes to transfer. */
     };
@@ -80,6 +85,10 @@ public:
      * @return A reference to the stream.
      */
     friend std::ostream& operator<<(std::ostream& str, Ftp::ProgressData const& progress_data);
+
+
+
+
 
     /**
      * @brief Possible results returned for FTP commands
@@ -106,10 +115,15 @@ public:
      */
     friend std::ostream& operator<<(std::ostream& str, Ftp::Result const& result);
 
+
+
     /**
      * @brief Callback type for asynchronous Ftp calls.
      */
     using ResultCallback = std::function<void(Result)>;
+
+
+
 
     /**
      * @brief Resets FTP server in case there are stale open sessions.
@@ -118,22 +132,33 @@ public:
      */
     void reset_async(const ResultCallback callback);
 
-    /**
-     * @brief Callback type for download_async.
-     */
 
+
+
+
+
+        
+    /**
+    * @brief Callback type for download_async.
+    */
+        
     using DownloadCallback = std::function<void(Ftp::Result, ProgressData)>;
 
     /**
      * @brief Downloads a file to local directory.
      */
-    void
-    download_async(std::string remote_file_path, std::string local_dir, DownloadCallback callback);
+    void download_async(std::string remote_file_path, std::string local_dir, DownloadCallback callback);
 
+
+
+
+
+
+        
     /**
-     * @brief Callback type for upload_async.
-     */
-
+    * @brief Callback type for upload_async.
+    */
+        
     using UploadCallback = std::function<void(Ftp::Result, ProgressData)>;
 
     /**
@@ -141,9 +166,14 @@ public:
      */
     void upload_async(std::string local_file_path, std::string remote_dir, UploadCallback callback);
 
+
+
+
+
+
     /**
-     * @brief Callback type for list_directory_async.
-     */
+    * @brief Callback type for list_directory_async.
+    */
     using ListDirectoryCallback = std::function<void(Result, std::vector<std::string>)>;
 
     /**
@@ -152,6 +182,8 @@ public:
      * This function is non-blocking. See 'list_directory' for the blocking counterpart.
      */
     void list_directory_async(std::string remote_dir, const ListDirectoryCallback callback);
+
+
 
     /**
      * @brief Lists items from a remote directory.
@@ -162,12 +194,17 @@ public:
      */
     std::pair<Result, std::vector<std::string>> list_directory(std::string remote_dir) const;
 
+
+
+
     /**
      * @brief Creates a remote directory.
      *
      * This function is non-blocking. See 'create_directory' for the blocking counterpart.
      */
     void create_directory_async(std::string remote_dir, const ResultCallback callback);
+
+
 
     /**
      * @brief Creates a remote directory.
@@ -178,12 +215,17 @@ public:
      */
     Result create_directory(std::string remote_dir) const;
 
+
+
+
     /**
      * @brief Removes a remote directory.
      *
      * This function is non-blocking. See 'remove_directory' for the blocking counterpart.
      */
     void remove_directory_async(std::string remote_dir, const ResultCallback callback);
+
+
 
     /**
      * @brief Removes a remote directory.
@@ -194,12 +236,17 @@ public:
      */
     Result remove_directory(std::string remote_dir) const;
 
+
+
+
     /**
      * @brief Removes a remote file.
      *
      * This function is non-blocking. See 'remove_file' for the blocking counterpart.
      */
     void remove_file_async(std::string remote_file_path, const ResultCallback callback);
+
+
 
     /**
      * @brief Removes a remote file.
@@ -210,13 +257,17 @@ public:
      */
     Result remove_file(std::string remote_file_path) const;
 
+
+
+
     /**
      * @brief Renames a remote file or remote directory.
      *
      * This function is non-blocking. See 'rename' for the blocking counterpart.
      */
-    void rename_async(
-        std::string remote_from_path, std::string remote_to_path, const ResultCallback callback);
+    void rename_async(std::string remote_from_path, std::string remote_to_path, const ResultCallback callback);
+
+
 
     /**
      * @brief Renames a remote file or remote directory.
@@ -227,9 +278,12 @@ public:
      */
     Result rename(std::string remote_from_path, std::string remote_to_path) const;
 
+
+
+
     /**
-     * @brief Callback type for are_files_identical_async.
-     */
+    * @brief Callback type for are_files_identical_async.
+    */
     using AreFilesIdenticalCallback = std::function<void(Result, bool)>;
 
     /**
@@ -237,10 +291,9 @@ public:
      *
      * This function is non-blocking. See 'are_files_identical' for the blocking counterpart.
      */
-    void are_files_identical_async(
-        std::string local_file_path,
-        std::string remote_file_path,
-        const AreFilesIdenticalCallback callback);
+    void are_files_identical_async(std::string local_file_path, std::string remote_file_path, const AreFilesIdenticalCallback callback);
+
+
 
     /**
      * @brief Compares a local file to a remote file using a CRC32 checksum.
@@ -249,8 +302,12 @@ public:
      *
      * @return Result of request.
      */
-    std::pair<Result, bool>
-    are_files_identical(std::string local_file_path, std::string remote_file_path) const;
+    std::pair<Result, bool> are_files_identical(std::string local_file_path, std::string remote_file_path) const;
+
+
+
+
+
 
     /**
      * @brief Set root directory for MAVLink FTP server.
@@ -261,6 +318,11 @@ public:
      */
     Result set_root_directory(std::string root_dir) const;
 
+
+
+
+
+
     /**
      * @brief Set target component ID. By default it is the autopilot.
      *
@@ -270,6 +332,11 @@ public:
      */
     Result set_target_compid(uint32_t compid) const;
 
+
+
+
+
+
     /**
      * @brief Get our own component ID.
      *
@@ -278,6 +345,9 @@ public:
      * @return Result of request.
      */
     uint32_t get_our_compid() const;
+
+
+
 
     /**
      * @brief Copy constructor (object is not copyable).

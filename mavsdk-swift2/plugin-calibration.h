@@ -49,7 +49,7 @@ typedef NS_ENUM(NSInteger, MAVSDKCalibrationResult)  {
 
 
 
-- (MAVSDKCalibrationResult)cancel ;
+- (void)cancel ;
 
 
 @end

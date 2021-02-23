@@ -13,7 +13,7 @@
 #include <utility>
 #include <vector>
 
-#include "plugin_base.h"
+#include <mavsdk/plugin_base.h>
 
 namespace mavsdk {
 
@@ -60,10 +60,15 @@ public:
      */
     ~LogFiles();
 
+
+
+
+
     /**
      * @brief Progress data coming when downloading a log file.
      */
     struct ProgressData {
+        
         float progress{float(NAN)}; /**< @brief Progress from 0 to 1 */
     };
 
@@ -81,13 +86,16 @@ public:
      */
     friend std::ostream& operator<<(std::ostream& str, LogFiles::ProgressData const& progress_data);
 
+
+
+
     /**
      * @brief Log file entry type.
      */
     struct Entry {
+        
         uint32_t id{}; /**< @brief ID of the log file, to specify a file to be downloaded */
-        std::string date{}; /**< @brief Date of the log file in UTC in ISO 8601 format
-                               "yyyy-mm-ddThh:mm:ssZ" */
+        std::string date{}; /**< @brief Date of the log file in UTC in ISO 8601 format "yyyy-mm-ddThh:mm:ssZ" */
         uint32_t size_bytes{}; /**< @brief Size of file in bytes */
     };
 
@@ -104,6 +112,10 @@ public:
      * @return A reference to the stream.
      */
     friend std::ostream& operator<<(std::ostream& str, LogFiles::Entry const& entry);
+
+
+
+
 
     /**
      * @brief Possible results returned for calibration commands
@@ -125,14 +137,19 @@ public:
      */
     friend std::ostream& operator<<(std::ostream& str, LogFiles::Result const& result);
 
+
+
     /**
      * @brief Callback type for asynchronous LogFiles calls.
      */
     using ResultCallback = std::function<void(Result)>;
 
+
+
+
     /**
-     * @brief Callback type for get_entries_async.
-     */
+    * @brief Callback type for get_entries_async.
+    */
     using GetEntriesCallback = std::function<void(Result, std::vector<Entry>)>;
 
     /**
@@ -141,6 +158,8 @@ public:
      * This function is non-blocking. See 'get_entries' for the blocking counterpart.
      */
     void get_entries_async(const GetEntriesCallback callback);
+
+
 
     /**
      * @brief Get List of log files.
@@ -151,16 +170,25 @@ public:
      */
     std::pair<Result, std::vector<LogFiles::Entry>> get_entries() const;
 
-    /**
-     * @brief Callback type for download_log_file_async.
-     */
 
+
+
+        
+    /**
+    * @brief Callback type for download_log_file_async.
+    */
+        
     using DownloadLogFileCallback = std::function<void(LogFiles::Result, ProgressData)>;
 
     /**
      * @brief Download log file.
      */
     void download_log_file_async(uint32_t id, std::string path, DownloadLogFileCallback callback);
+
+
+
+
+
 
     /**
      * @brief Copy constructor (object is not copyable).

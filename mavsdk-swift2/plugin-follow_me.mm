@@ -20,18 +20,25 @@ mavsdk::FollowMe *followMe;
 
 
 - (MAVSDKFollowMeResult)setConfig:(MAVSDKFollowMeConfig*)config {
-    return (MAVSDKFollowMeResult)follow_me->set_config(translateToCppConfig(config));
+    //return (MAVSDKFollowMeResult)follow_me->set_config(translateToCppConfig(config));
+    return MAVSDKFollowMeResultUnknown;
 }
 
 - (MAVSDKFollowMeResult)setTargetLocation:(MAVSDKFollowMeTargetLocation*)location {
-    return (MAVSDKFollowMeResult)follow_me->set_target_location(translateToCppLocation(location));
+    //return (MAVSDKFollowMeResult)follow_me->set_target_location(translateToCppLocation(location));
+    return MAVSDKFollowMeResultUnknown;
+
 }
 
 - (MAVSDKFollowMeResult)start {
-    return (MAVSDKFollowMeResult)follow_me->start();
+    //return (MAVSDKFollowMeResult)follow_me->start();
+    return MAVSDKFollowMeResultUnknown;
+
 }
 - (MAVSDKFollowMeResult)stop {
-    return (MAVSDKFollowMeResult)follow_me->stop();
+    //return (MAVSDKFollowMeResult)follow_me->stop();
+    return MAVSDKFollowMeResultUnknown;
+
 }
 
 

@@ -2048,25 +2048,25 @@ class RespondTrackingPointCommandResponse PROTOBUF_FINAL :
   // accessors -------------------------------------------------------
 
   enum : int {
-    kResultFieldNumber = 1,
+    kTrackingServerResultFieldNumber = 1,
   };
-  // .mavsdk.rpc.tracking_server.TrackingServerResult result = 1;
-  bool has_result() const;
+  // .mavsdk.rpc.tracking_server.TrackingServerResult tracking_server_result = 1;
+  bool has_tracking_server_result() const;
   private:
-  bool _internal_has_result() const;
+  bool _internal_has_tracking_server_result() const;
   public:
-  void clear_result();
-  const ::mavsdk::rpc::tracking_server::TrackingServerResult& result() const;
-  ::mavsdk::rpc::tracking_server::TrackingServerResult* release_result();
-  ::mavsdk::rpc::tracking_server::TrackingServerResult* mutable_result();
-  void set_allocated_result(::mavsdk::rpc::tracking_server::TrackingServerResult* result);
+  void clear_tracking_server_result();
+  const ::mavsdk::rpc::tracking_server::TrackingServerResult& tracking_server_result() const;
+  ::mavsdk::rpc::tracking_server::TrackingServerResult* release_tracking_server_result();
+  ::mavsdk::rpc::tracking_server::TrackingServerResult* mutable_tracking_server_result();
+  void set_allocated_tracking_server_result(::mavsdk::rpc::tracking_server::TrackingServerResult* tracking_server_result);
   private:
-  const ::mavsdk::rpc::tracking_server::TrackingServerResult& _internal_result() const;
-  ::mavsdk::rpc::tracking_server::TrackingServerResult* _internal_mutable_result();
+  const ::mavsdk::rpc::tracking_server::TrackingServerResult& _internal_tracking_server_result() const;
+  ::mavsdk::rpc::tracking_server::TrackingServerResult* _internal_mutable_tracking_server_result();
   public:
-  void unsafe_arena_set_allocated_result(
-      ::mavsdk::rpc::tracking_server::TrackingServerResult* result);
-  ::mavsdk::rpc::tracking_server::TrackingServerResult* unsafe_arena_release_result();
+  void unsafe_arena_set_allocated_tracking_server_result(
+      ::mavsdk::rpc::tracking_server::TrackingServerResult* tracking_server_result);
+  ::mavsdk::rpc::tracking_server::TrackingServerResult* unsafe_arena_release_tracking_server_result();
 
   // @@protoc_insertion_point(class_scope:mavsdk.rpc.tracking_server.RespondTrackingPointCommandResponse)
  private:
@@ -2075,7 +2075,7 @@ class RespondTrackingPointCommandResponse PROTOBUF_FINAL :
   template <typename T> friend class ::PROTOBUF_NAMESPACE_ID::Arena::InternalHelper;
   typedef void InternalArenaConstructable_;
   typedef void DestructorSkippable_;
-  ::mavsdk::rpc::tracking_server::TrackingServerResult* result_;
+  ::mavsdk::rpc::tracking_server::TrackingServerResult* tracking_server_result_;
   mutable ::PROTOBUF_NAMESPACE_ID::internal::CachedSize _cached_size_;
   friend struct ::TableStruct_tracking_5fserver_2ftracking_5fserver_2eproto;
 };
@@ -2331,25 +2331,25 @@ class RespondTrackingRectangleCommandResponse PROTOBUF_FINAL :
   // accessors -------------------------------------------------------
 
   enum : int {
-    kResultFieldNumber = 1,
+    kTrackingServerResultFieldNumber = 1,
   };
-  // .mavsdk.rpc.tracking_server.TrackingServerResult result = 1;
-  bool has_result() const;
+  // .mavsdk.rpc.tracking_server.TrackingServerResult tracking_server_result = 1;
+  bool has_tracking_server_result() const;
   private:
-  bool _internal_has_result() const;
+  bool _internal_has_tracking_server_result() const;
   public:
-  void clear_result();
-  const ::mavsdk::rpc::tracking_server::TrackingServerResult& result() const;
-  ::mavsdk::rpc::tracking_server::TrackingServerResult* release_result();
-  ::mavsdk::rpc::tracking_server::TrackingServerResult* mutable_result();
-  void set_allocated_result(::mavsdk::rpc::tracking_server::TrackingServerResult* result);
+  void clear_tracking_server_result();
+  const ::mavsdk::rpc::tracking_server::TrackingServerResult& tracking_server_result() const;
+  ::mavsdk::rpc::tracking_server::TrackingServerResult* release_tracking_server_result();
+  ::mavsdk::rpc::tracking_server::TrackingServerResult* mutable_tracking_server_result();
+  void set_allocated_tracking_server_result(::mavsdk::rpc::tracking_server::TrackingServerResult* tracking_server_result);
   private:
-  const ::mavsdk::rpc::tracking_server::TrackingServerResult& _internal_result() const;
-  ::mavsdk::rpc::tracking_server::TrackingServerResult* _internal_mutable_result();
+  const ::mavsdk::rpc::tracking_server::TrackingServerResult& _internal_tracking_server_result() const;
+  ::mavsdk::rpc::tracking_server::TrackingServerResult* _internal_mutable_tracking_server_result();
   public:
-  void unsafe_arena_set_allocated_result(
-      ::mavsdk::rpc::tracking_server::TrackingServerResult* result);
-  ::mavsdk::rpc::tracking_server::TrackingServerResult* unsafe_arena_release_result();
+  void unsafe_arena_set_allocated_tracking_server_result(
+      ::mavsdk::rpc::tracking_server::TrackingServerResult* tracking_server_result);
+  ::mavsdk::rpc::tracking_server::TrackingServerResult* unsafe_arena_release_tracking_server_result();
 
   // @@protoc_insertion_point(class_scope:mavsdk.rpc.tracking_server.RespondTrackingRectangleCommandResponse)
  private:
@@ -2358,7 +2358,7 @@ class RespondTrackingRectangleCommandResponse PROTOBUF_FINAL :
   template <typename T> friend class ::PROTOBUF_NAMESPACE_ID::Arena::InternalHelper;
   typedef void InternalArenaConstructable_;
   typedef void DestructorSkippable_;
-  ::mavsdk::rpc::tracking_server::TrackingServerResult* result_;
+  ::mavsdk::rpc::tracking_server::TrackingServerResult* tracking_server_result_;
   mutable ::PROTOBUF_NAMESPACE_ID::internal::CachedSize _cached_size_;
   friend struct ::TableStruct_tracking_5fserver_2ftracking_5fserver_2eproto;
 };
@@ -2614,25 +2614,25 @@ class RespondTrackingOffCommandResponse PROTOBUF_FINAL :
   // accessors -------------------------------------------------------
 
   enum : int {
-    kResultFieldNumber = 1,
+    kTrackingServerResultFieldNumber = 1,
   };
-  // .mavsdk.rpc.tracking_server.TrackingServerResult result = 1;
-  bool has_result() const;
+  // .mavsdk.rpc.tracking_server.TrackingServerResult tracking_server_result = 1;
+  bool has_tracking_server_result() const;
   private:
-  bool _internal_has_result() const;
+  bool _internal_has_tracking_server_result() const;
   public:
-  void clear_result();
-  const ::mavsdk::rpc::tracking_server::TrackingServerResult& result() const;
-  ::mavsdk::rpc::tracking_server::TrackingServerResult* release_result();
-  ::mavsdk::rpc::tracking_server::TrackingServerResult* mutable_result();
-  void set_allocated_result(::mavsdk::rpc::tracking_server::TrackingServerResult* result);
+  void clear_tracking_server_result();
+  const ::mavsdk::rpc::tracking_server::TrackingServerResult& tracking_server_result() const;
+  ::mavsdk::rpc::tracking_server::TrackingServerResult* release_tracking_server_result();
+  ::mavsdk::rpc::tracking_server::TrackingServerResult* mutable_tracking_server_result();
+  void set_allocated_tracking_server_result(::mavsdk::rpc::tracking_server::TrackingServerResult* tracking_server_result);
   private:
-  const ::mavsdk::rpc::tracking_server::TrackingServerResult& _internal_result() const;
-  ::mavsdk::rpc::tracking_server::TrackingServerResult* _internal_mutable_result();
+  const ::mavsdk::rpc::tracking_server::TrackingServerResult& _internal_tracking_server_result() const;
+  ::mavsdk::rpc::tracking_server::TrackingServerResult* _internal_mutable_tracking_server_result();
   public:
-  void unsafe_arena_set_allocated_result(
-      ::mavsdk::rpc::tracking_server::TrackingServerResult* result);
-  ::mavsdk::rpc::tracking_server::TrackingServerResult* unsafe_arena_release_result();
+  void unsafe_arena_set_allocated_tracking_server_result(
+      ::mavsdk::rpc::tracking_server::TrackingServerResult* tracking_server_result);
+  ::mavsdk::rpc::tracking_server::TrackingServerResult* unsafe_arena_release_tracking_server_result();
 
   // @@protoc_insertion_point(class_scope:mavsdk.rpc.tracking_server.RespondTrackingOffCommandResponse)
  private:
@@ -2641,7 +2641,7 @@ class RespondTrackingOffCommandResponse PROTOBUF_FINAL :
   template <typename T> friend class ::PROTOBUF_NAMESPACE_ID::Arena::InternalHelper;
   typedef void InternalArenaConstructable_;
   typedef void DestructorSkippable_;
-  ::mavsdk::rpc::tracking_server::TrackingServerResult* result_;
+  ::mavsdk::rpc::tracking_server::TrackingServerResult* tracking_server_result_;
   mutable ::PROTOBUF_NAMESPACE_ID::internal::CachedSize _cached_size_;
   friend struct ::TableStruct_tracking_5fserver_2ftracking_5fserver_2eproto;
 };
@@ -3598,87 +3598,87 @@ inline void RespondTrackingPointCommandRequest::set_command_answer(::mavsdk::rpc
 
 // RespondTrackingPointCommandResponse
 
-// .mavsdk.rpc.tracking_server.TrackingServerResult result = 1;
-inline bool RespondTrackingPointCommandResponse::_internal_has_result() const {
-  return this != internal_default_instance() && result_ != nullptr;
+// .mavsdk.rpc.tracking_server.TrackingServerResult tracking_server_result = 1;
+inline bool RespondTrackingPointCommandResponse::_internal_has_tracking_server_result() const {
+  return this != internal_default_instance() && tracking_server_result_ != nullptr;
 }
-inline bool RespondTrackingPointCommandResponse::has_result() const {
-  return _internal_has_result();
+inline bool RespondTrackingPointCommandResponse::has_tracking_server_result() const {
+  return _internal_has_tracking_server_result();
 }
-inline void RespondTrackingPointCommandResponse::clear_result() {
-  if (GetArena() == nullptr && result_ != nullptr) {
-    delete result_;
+inline void RespondTrackingPointCommandResponse::clear_tracking_server_result() {
+  if (GetArena() == nullptr && tracking_server_result_ != nullptr) {
+    delete tracking_server_result_;
   }
-  result_ = nullptr;
+  tracking_server_result_ = nullptr;
 }
-inline const ::mavsdk::rpc::tracking_server::TrackingServerResult& RespondTrackingPointCommandResponse::_internal_result() const {
-  const ::mavsdk::rpc::tracking_server::TrackingServerResult* p = result_;
+inline const ::mavsdk::rpc::tracking_server::TrackingServerResult& RespondTrackingPointCommandResponse::_internal_tracking_server_result() const {
+  const ::mavsdk::rpc::tracking_server::TrackingServerResult* p = tracking_server_result_;
   return p != nullptr ? *p : *reinterpret_cast<const ::mavsdk::rpc::tracking_server::TrackingServerResult*>(
       &::mavsdk::rpc::tracking_server::_TrackingServerResult_default_instance_);
 }
-inline const ::mavsdk::rpc::tracking_server::TrackingServerResult& RespondTrackingPointCommandResponse::result() const {
-  // @@protoc_insertion_point(field_get:mavsdk.rpc.tracking_server.RespondTrackingPointCommandResponse.result)
-  return _internal_result();
+inline const ::mavsdk::rpc::tracking_server::TrackingServerResult& RespondTrackingPointCommandResponse::tracking_server_result() const {
+  // @@protoc_insertion_point(field_get:mavsdk.rpc.tracking_server.RespondTrackingPointCommandResponse.tracking_server_result)
+  return _internal_tracking_server_result();
 }
-inline void RespondTrackingPointCommandResponse::unsafe_arena_set_allocated_result(
-    ::mavsdk::rpc::tracking_server::TrackingServerResult* result) {
+inline void RespondTrackingPointCommandResponse::unsafe_arena_set_allocated_tracking_server_result(
+    ::mavsdk::rpc::tracking_server::TrackingServerResult* tracking_server_result) {
   if (GetArena() == nullptr) {
-    delete reinterpret_cast<::PROTOBUF_NAMESPACE_ID::MessageLite*>(result_);
+    delete reinterpret_cast<::PROTOBUF_NAMESPACE_ID::MessageLite*>(tracking_server_result_);
   }
-  result_ = result;
-  if (result) {
+  tracking_server_result_ = tracking_server_result;
+  if (tracking_server_result) {
     
   } else {
     
   }
-  // @@protoc_insertion_point(field_unsafe_arena_set_allocated:mavsdk.rpc.tracking_server.RespondTrackingPointCommandResponse.result)
+  // @@protoc_insertion_point(field_unsafe_arena_set_allocated:mavsdk.rpc.tracking_server.RespondTrackingPointCommandResponse.tracking_server_result)
 }
-inline ::mavsdk::rpc::tracking_server::TrackingServerResult* RespondTrackingPointCommandResponse::release_result() {
+inline ::mavsdk::rpc::tracking_server::TrackingServerResult* RespondTrackingPointCommandResponse::release_tracking_server_result() {
   
-  ::mavsdk::rpc::tracking_server::TrackingServerResult* temp = result_;
-  result_ = nullptr;
+  ::mavsdk::rpc::tracking_server::TrackingServerResult* temp = tracking_server_result_;
+  tracking_server_result_ = nullptr;
   if (GetArena() != nullptr) {
     temp = ::PROTOBUF_NAMESPACE_ID::internal::DuplicateIfNonNull(temp);
   }
   return temp;
 }
-inline ::mavsdk::rpc::tracking_server::TrackingServerResult* RespondTrackingPointCommandResponse::unsafe_arena_release_result() {
-  // @@protoc_insertion_point(field_release:mavsdk.rpc.tracking_server.RespondTrackingPointCommandResponse.result)
+inline ::mavsdk::rpc::tracking_server::TrackingServerResult* RespondTrackingPointCommandResponse::unsafe_arena_release_tracking_server_result() {
+  // @@protoc_insertion_point(field_release:mavsdk.rpc.tracking_server.RespondTrackingPointCommandResponse.tracking_server_result)
   
-  ::mavsdk::rpc::tracking_server::TrackingServerResult* temp = result_;
-  result_ = nullptr;
+  ::mavsdk::rpc::tracking_server::TrackingServerResult* temp = tracking_server_result_;
+  tracking_server_result_ = nullptr;
   return temp;
 }
-inline ::mavsdk::rpc::tracking_server::TrackingServerResult* RespondTrackingPointCommandResponse::_internal_mutable_result() {
+inline ::mavsdk::rpc::tracking_server::TrackingServerResult* RespondTrackingPointCommandResponse::_internal_mutable_tracking_server_result() {
   
-  if (result_ == nullptr) {
+  if (tracking_server_result_ == nullptr) {
     auto* p = CreateMaybeMessage<::mavsdk::rpc::tracking_server::TrackingServerResult>(GetArena());
-    result_ = p;
+    tracking_server_result_ = p;
   }
-  return result_;
+  return tracking_server_result_;
 }
-inline ::mavsdk::rpc::tracking_server::TrackingServerResult* RespondTrackingPointCommandResponse::mutable_result() {
-  // @@protoc_insertion_point(field_mutable:mavsdk.rpc.tracking_server.RespondTrackingPointCommandResponse.result)
-  return _internal_mutable_result();
+inline ::mavsdk::rpc::tracking_server::TrackingServerResult* RespondTrackingPointCommandResponse::mutable_tracking_server_result() {
+  // @@protoc_insertion_point(field_mutable:mavsdk.rpc.tracking_server.RespondTrackingPointCommandResponse.tracking_server_result)
+  return _internal_mutable_tracking_server_result();
 }
-inline void RespondTrackingPointCommandResponse::set_allocated_result(::mavsdk::rpc::tracking_server::TrackingServerResult* result) {
+inline void RespondTrackingPointCommandResponse::set_allocated_tracking_server_result(::mavsdk::rpc::tracking_server::TrackingServerResult* tracking_server_result) {
   ::PROTOBUF_NAMESPACE_ID::Arena* message_arena = GetArena();
   if (message_arena == nullptr) {
-    delete result_;
+    delete tracking_server_result_;
   }
-  if (result) {
+  if (tracking_server_result) {
     ::PROTOBUF_NAMESPACE_ID::Arena* submessage_arena =
-      ::PROTOBUF_NAMESPACE_ID::Arena::GetArena(result);
+      ::PROTOBUF_NAMESPACE_ID::Arena::GetArena(tracking_server_result);
     if (message_arena != submessage_arena) {
-      result = ::PROTOBUF_NAMESPACE_ID::internal::GetOwnedMessage(
-          message_arena, result, submessage_arena);
+      tracking_server_result = ::PROTOBUF_NAMESPACE_ID::internal::GetOwnedMessage(
+          message_arena, tracking_server_result, submessage_arena);
     }
     
   } else {
     
   }
-  result_ = result;
-  // @@protoc_insertion_point(field_set_allocated:mavsdk.rpc.tracking_server.RespondTrackingPointCommandResponse.result)
+  tracking_server_result_ = tracking_server_result;
+  // @@protoc_insertion_point(field_set_allocated:mavsdk.rpc.tracking_server.RespondTrackingPointCommandResponse.tracking_server_result)
 }
 
 // -------------------------------------------------------------------
@@ -3709,87 +3709,87 @@ inline void RespondTrackingRectangleCommandRequest::set_command_answer(::mavsdk:
 
 // RespondTrackingRectangleCommandResponse
 
-// .mavsdk.rpc.tracking_server.TrackingServerResult result = 1;
-inline bool RespondTrackingRectangleCommandResponse::_internal_has_result() const {
-  return this != internal_default_instance() && result_ != nullptr;
+// .mavsdk.rpc.tracking_server.TrackingServerResult tracking_server_result = 1;
+inline bool RespondTrackingRectangleCommandResponse::_internal_has_tracking_server_result() const {
+  return this != internal_default_instance() && tracking_server_result_ != nullptr;
 }
-inline bool RespondTrackingRectangleCommandResponse::has_result() const {
-  return _internal_has_result();
+inline bool RespondTrackingRectangleCommandResponse::has_tracking_server_result() const {
+  return _internal_has_tracking_server_result();
 }
-inline void RespondTrackingRectangleCommandResponse::clear_result() {
-  if (GetArena() == nullptr && result_ != nullptr) {
-    delete result_;
+inline void RespondTrackingRectangleCommandResponse::clear_tracking_server_result() {
+  if (GetArena() == nullptr && tracking_server_result_ != nullptr) {
+    delete tracking_server_result_;
   }
-  result_ = nullptr;
+  tracking_server_result_ = nullptr;
 }
-inline const ::mavsdk::rpc::tracking_server::TrackingServerResult& RespondTrackingRectangleCommandResponse::_internal_result() const {
-  const ::mavsdk::rpc::tracking_server::TrackingServerResult* p = result_;
+inline const ::mavsdk::rpc::tracking_server::TrackingServerResult& RespondTrackingRectangleCommandResponse::_internal_tracking_server_result() const {
+  const ::mavsdk::rpc::tracking_server::TrackingServerResult* p = tracking_server_result_;
   return p != nullptr ? *p : *reinterpret_cast<const ::mavsdk::rpc::tracking_server::TrackingServerResult*>(
       &::mavsdk::rpc::tracking_server::_TrackingServerResult_default_instance_);
 }
-inline const ::mavsdk::rpc::tracking_server::TrackingServerResult& RespondTrackingRectangleCommandResponse::result() const {
-  // @@protoc_insertion_point(field_get:mavsdk.rpc.tracking_server.RespondTrackingRectangleCommandResponse.result)
-  return _internal_result();
+inline const ::mavsdk::rpc::tracking_server::TrackingServerResult& RespondTrackingRectangleCommandResponse::tracking_server_result() const {
+  // @@protoc_insertion_point(field_get:mavsdk.rpc.tracking_server.RespondTrackingRectangleCommandResponse.tracking_server_result)
+  return _internal_tracking_server_result();
 }
-inline void RespondTrackingRectangleCommandResponse::unsafe_arena_set_allocated_result(
-    ::mavsdk::rpc::tracking_server::TrackingServerResult* result) {
+inline void RespondTrackingRectangleCommandResponse::unsafe_arena_set_allocated_tracking_server_result(
+    ::mavsdk::rpc::tracking_server::TrackingServerResult* tracking_server_result) {
   if (GetArena() == nullptr) {
-    delete reinterpret_cast<::PROTOBUF_NAMESPACE_ID::MessageLite*>(result_);
+    delete reinterpret_cast<::PROTOBUF_NAMESPACE_ID::MessageLite*>(tracking_server_result_);
   }
-  result_ = result;
-  if (result) {
+  tracking_server_result_ = tracking_server_result;
+  if (tracking_server_result) {
     
   } else {
     
   }
-  // @@protoc_insertion_point(field_unsafe_arena_set_allocated:mavsdk.rpc.tracking_server.RespondTrackingRectangleCommandResponse.result)
+  // @@protoc_insertion_point(field_unsafe_arena_set_allocated:mavsdk.rpc.tracking_server.RespondTrackingRectangleCommandResponse.tracking_server_result)
 }
-inline ::mavsdk::rpc::tracking_server::TrackingServerResult* RespondTrackingRectangleCommandResponse::release_result() {
+inline ::mavsdk::rpc::tracking_server::TrackingServerResult* RespondTrackingRectangleCommandResponse::release_tracking_server_result() {
   
-  ::mavsdk::rpc::tracking_server::TrackingServerResult* temp = result_;
-  result_ = nullptr;
+  ::mavsdk::rpc::tracking_server::TrackingServerResult* temp = tracking_server_result_;
+  tracking_server_result_ = nullptr;
   if (GetArena() != nullptr) {
     temp = ::PROTOBUF_NAMESPACE_ID::internal::DuplicateIfNonNull(temp);
   }
   return temp;
 }
-inline ::mavsdk::rpc::tracking_server::TrackingServerResult* RespondTrackingRectangleCommandResponse::unsafe_arena_release_result() {
-  // @@protoc_insertion_point(field_release:mavsdk.rpc.tracking_server.RespondTrackingRectangleCommandResponse.result)
+inline ::mavsdk::rpc::tracking_server::TrackingServerResult* RespondTrackingRectangleCommandResponse::unsafe_arena_release_tracking_server_result() {
+  // @@protoc_insertion_point(field_release:mavsdk.rpc.tracking_server.RespondTrackingRectangleCommandResponse.tracking_server_result)
   
-  ::mavsdk::rpc::tracking_server::TrackingServerResult* temp = result_;
-  result_ = nullptr;
+  ::mavsdk::rpc::tracking_server::TrackingServerResult* temp = tracking_server_result_;
+  tracking_server_result_ = nullptr;
   return temp;
 }
-inline ::mavsdk::rpc::tracking_server::TrackingServerResult* RespondTrackingRectangleCommandResponse::_internal_mutable_result() {
+inline ::mavsdk::rpc::tracking_server::TrackingServerResult* RespondTrackingRectangleCommandResponse::_internal_mutable_tracking_server_result() {
   
-  if (result_ == nullptr) {
+  if (tracking_server_result_ == nullptr) {
     auto* p = CreateMaybeMessage<::mavsdk::rpc::tracking_server::TrackingServerResult>(GetArena());
-    result_ = p;
+    tracking_server_result_ = p;
   }
-  return result_;
+  return tracking_server_result_;
 }
-inline ::mavsdk::rpc::tracking_server::TrackingServerResult* RespondTrackingRectangleCommandResponse::mutable_result() {
-  // @@protoc_insertion_point(field_mutable:mavsdk.rpc.tracking_server.RespondTrackingRectangleCommandResponse.result)
-  return _internal_mutable_result();
+inline ::mavsdk::rpc::tracking_server::TrackingServerResult* RespondTrackingRectangleCommandResponse::mutable_tracking_server_result() {
+  // @@protoc_insertion_point(field_mutable:mavsdk.rpc.tracking_server.RespondTrackingRectangleCommandResponse.tracking_server_result)
+  return _internal_mutable_tracking_server_result();
 }
-inline void RespondTrackingRectangleCommandResponse::set_allocated_result(::mavsdk::rpc::tracking_server::TrackingServerResult* result) {
+inline void RespondTrackingRectangleCommandResponse::set_allocated_tracking_server_result(::mavsdk::rpc::tracking_server::TrackingServerResult* tracking_server_result) {
   ::PROTOBUF_NAMESPACE_ID::Arena* message_arena = GetArena();
   if (message_arena == nullptr) {
-    delete result_;
+    delete tracking_server_result_;
   }
-  if (result) {
+  if (tracking_server_result) {
     ::PROTOBUF_NAMESPACE_ID::Arena* submessage_arena =
-      ::PROTOBUF_NAMESPACE_ID::Arena::GetArena(result);
+      ::PROTOBUF_NAMESPACE_ID::Arena::GetArena(tracking_server_result);
     if (message_arena != submessage_arena) {
-      result = ::PROTOBUF_NAMESPACE_ID::internal::GetOwnedMessage(
-          message_arena, result, submessage_arena);
+      tracking_server_result = ::PROTOBUF_NAMESPACE_ID::internal::GetOwnedMessage(
+          message_arena, tracking_server_result, submessage_arena);
     }
     
   } else {
     
   }
-  result_ = result;
-  // @@protoc_insertion_point(field_set_allocated:mavsdk.rpc.tracking_server.RespondTrackingRectangleCommandResponse.result)
+  tracking_server_result_ = tracking_server_result;
+  // @@protoc_insertion_point(field_set_allocated:mavsdk.rpc.tracking_server.RespondTrackingRectangleCommandResponse.tracking_server_result)
 }
 
 // -------------------------------------------------------------------
@@ -3820,87 +3820,87 @@ inline void RespondTrackingOffCommandRequest::set_command_answer(::mavsdk::rpc::
 
 // RespondTrackingOffCommandResponse
 
-// .mavsdk.rpc.tracking_server.TrackingServerResult result = 1;
-inline bool RespondTrackingOffCommandResponse::_internal_has_result() const {
-  return this != internal_default_instance() && result_ != nullptr;
+// .mavsdk.rpc.tracking_server.TrackingServerResult tracking_server_result = 1;
+inline bool RespondTrackingOffCommandResponse::_internal_has_tracking_server_result() const {
+  return this != internal_default_instance() && tracking_server_result_ != nullptr;
 }
-inline bool RespondTrackingOffCommandResponse::has_result() const {
-  return _internal_has_result();
+inline bool RespondTrackingOffCommandResponse::has_tracking_server_result() const {
+  return _internal_has_tracking_server_result();
 }
-inline void RespondTrackingOffCommandResponse::clear_result() {
-  if (GetArena() == nullptr && result_ != nullptr) {
-    delete result_;
+inline void RespondTrackingOffCommandResponse::clear_tracking_server_result() {
+  if (GetArena() == nullptr && tracking_server_result_ != nullptr) {
+    delete tracking_server_result_;
   }
-  result_ = nullptr;
+  tracking_server_result_ = nullptr;
 }
-inline const ::mavsdk::rpc::tracking_server::TrackingServerResult& RespondTrackingOffCommandResponse::_internal_result() const {
-  const ::mavsdk::rpc::tracking_server::TrackingServerResult* p = result_;
+inline const ::mavsdk::rpc::tracking_server::TrackingServerResult& RespondTrackingOffCommandResponse::_internal_tracking_server_result() const {
+  const ::mavsdk::rpc::tracking_server::TrackingServerResult* p = tracking_server_result_;
   return p != nullptr ? *p : *reinterpret_cast<const ::mavsdk::rpc::tracking_server::TrackingServerResult*>(
       &::mavsdk::rpc::tracking_server::_TrackingServerResult_default_instance_);
 }
-inline const ::mavsdk::rpc::tracking_server::TrackingServerResult& RespondTrackingOffCommandResponse::result() const {
-  // @@protoc_insertion_point(field_get:mavsdk.rpc.tracking_server.RespondTrackingOffCommandResponse.result)
-  return _internal_result();
+inline const ::mavsdk::rpc::tracking_server::TrackingServerResult& RespondTrackingOffCommandResponse::tracking_server_result() const {
+  // @@protoc_insertion_point(field_get:mavsdk.rpc.tracking_server.RespondTrackingOffCommandResponse.tracking_server_result)
+  return _internal_tracking_server_result();
 }
-inline void RespondTrackingOffCommandResponse::unsafe_arena_set_allocated_result(
-    ::mavsdk::rpc::tracking_server::TrackingServerResult* result) {
+inline void RespondTrackingOffCommandResponse::unsafe_arena_set_allocated_tracking_server_result(
+    ::mavsdk::rpc::tracking_server::TrackingServerResult* tracking_server_result) {
   if (GetArena() == nullptr) {
-    delete reinterpret_cast<::PROTOBUF_NAMESPACE_ID::MessageLite*>(result_);
+    delete reinterpret_cast<::PROTOBUF_NAMESPACE_ID::MessageLite*>(tracking_server_result_);
   }
-  result_ = result;
-  if (result) {
+  tracking_server_result_ = tracking_server_result;
+  if (tracking_server_result) {
     
   } else {
     
   }
-  // @@protoc_insertion_point(field_unsafe_arena_set_allocated:mavsdk.rpc.tracking_server.RespondTrackingOffCommandResponse.result)
+  // @@protoc_insertion_point(field_unsafe_arena_set_allocated:mavsdk.rpc.tracking_server.RespondTrackingOffCommandResponse.tracking_server_result)
 }
-inline ::mavsdk::rpc::tracking_server::TrackingServerResult* RespondTrackingOffCommandResponse::release_result() {
+inline ::mavsdk::rpc::tracking_server::TrackingServerResult* RespondTrackingOffCommandResponse::release_tracking_server_result() {
   
-  ::mavsdk::rpc::tracking_server::TrackingServerResult* temp = result_;
-  result_ = nullptr;
+  ::mavsdk::rpc::tracking_server::TrackingServerResult* temp = tracking_server_result_;
+  tracking_server_result_ = nullptr;
   if (GetArena() != nullptr) {
     temp = ::PROTOBUF_NAMESPACE_ID::internal::DuplicateIfNonNull(temp);
   }
   return temp;
 }
-inline ::mavsdk::rpc::tracking_server::TrackingServerResult* RespondTrackingOffCommandResponse::unsafe_arena_release_result() {
-  // @@protoc_insertion_point(field_release:mavsdk.rpc.tracking_server.RespondTrackingOffCommandResponse.result)
+inline ::mavsdk::rpc::tracking_server::TrackingServerResult* RespondTrackingOffCommandResponse::unsafe_arena_release_tracking_server_result() {
+  // @@protoc_insertion_point(field_release:mavsdk.rpc.tracking_server.RespondTrackingOffCommandResponse.tracking_server_result)
   
-  ::mavsdk::rpc::tracking_server::TrackingServerResult* temp = result_;
-  result_ = nullptr;
+  ::mavsdk::rpc::tracking_server::TrackingServerResult* temp = tracking_server_result_;
+  tracking_server_result_ = nullptr;
   return temp;
 }
-inline ::mavsdk::rpc::tracking_server::TrackingServerResult* RespondTrackingOffCommandResponse::_internal_mutable_result() {
+inline ::mavsdk::rpc::tracking_server::TrackingServerResult* RespondTrackingOffCommandResponse::_internal_mutable_tracking_server_result() {
   
-  if (result_ == nullptr) {
+  if (tracking_server_result_ == nullptr) {
     auto* p = CreateMaybeMessage<::mavsdk::rpc::tracking_server::TrackingServerResult>(GetArena());
-    result_ = p;
+    tracking_server_result_ = p;
   }
-  return result_;
+  return tracking_server_result_;
 }
-inline ::mavsdk::rpc::tracking_server::TrackingServerResult* RespondTrackingOffCommandResponse::mutable_result() {
-  // @@protoc_insertion_point(field_mutable:mavsdk.rpc.tracking_server.RespondTrackingOffCommandResponse.result)
-  return _internal_mutable_result();
+inline ::mavsdk::rpc::tracking_server::TrackingServerResult* RespondTrackingOffCommandResponse::mutable_tracking_server_result() {
+  // @@protoc_insertion_point(field_mutable:mavsdk.rpc.tracking_server.RespondTrackingOffCommandResponse.tracking_server_result)
+  return _internal_mutable_tracking_server_result();
 }
-inline void RespondTrackingOffCommandResponse::set_allocated_result(::mavsdk::rpc::tracking_server::TrackingServerResult* result) {
+inline void RespondTrackingOffCommandResponse::set_allocated_tracking_server_result(::mavsdk::rpc::tracking_server::TrackingServerResult* tracking_server_result) {
   ::PROTOBUF_NAMESPACE_ID::Arena* message_arena = GetArena();
   if (message_arena == nullptr) {
-    delete result_;
+    delete tracking_server_result_;
   }
-  if (result) {
+  if (tracking_server_result) {
     ::PROTOBUF_NAMESPACE_ID::Arena* submessage_arena =
-      ::PROTOBUF_NAMESPACE_ID::Arena::GetArena(result);
+      ::PROTOBUF_NAMESPACE_ID::Arena::GetArena(tracking_server_result);
     if (message_arena != submessage_arena) {
-      result = ::PROTOBUF_NAMESPACE_ID::internal::GetOwnedMessage(
-          message_arena, result, submessage_arena);
+      tracking_server_result = ::PROTOBUF_NAMESPACE_ID::internal::GetOwnedMessage(
+          message_arena, tracking_server_result, submessage_arena);
     }
     
   } else {
     
   }
-  result_ = result;
-  // @@protoc_insertion_point(field_set_allocated:mavsdk.rpc.tracking_server.RespondTrackingOffCommandResponse.result)
+  tracking_server_result_ = tracking_server_result;
+  // @@protoc_insertion_point(field_set_allocated:mavsdk.rpc.tracking_server.RespondTrackingOffCommandResponse.tracking_server_result)
 }
 
 // -------------------------------------------------------------------

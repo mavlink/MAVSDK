@@ -13,6 +13,11 @@ TrackingServerImpl::TrackingServerImpl(std::shared_ptr<System> system) : PluginI
     _parent->register_plugin(this);
 }
 
+TrackingServerImpl::TrackingServerImpl(SystemImpl* system_impl) : PluginImplBase(system_impl)
+{
+    _parent->register_plugin(this);
+}
+
 TrackingServerImpl::~TrackingServerImpl()
 {
     _parent->unregister_plugin(this);

@@ -19,26 +19,39 @@ mavsdk::MissionRaw *missionRaw;
 }
 
 - (MAVSDKMissionRawResult)uploadMission:(MAVSDKMissionRawMissionItem*)missionItems {
-    return (MAVSDKMissionRawResult)mission_raw->upload_mission(translateToCppMissionItems(missionItems));
+    //return (MAVSDKMissionRawResult)mission_raw->upload_mission(translateToCppMissionItems(missionItems));
+    return MAVSDKMissionRawResultUnknown;
 }
 - (MAVSDKMissionRawResult)cancelMissionUpload {
-    return (MAVSDKMissionRawResult)mission_raw->cancel_mission_upload();
+    //return (MAVSDKMissionRawResult)mission_raw->cancel_mission_upload();
+    return MAVSDKMissionRawResultUnknown;
+
 }
 
 - (MAVSDKMissionRawResult)cancelMissionDownload {
-    return (MAVSDKMissionRawResult)mission_raw->cancel_mission_download();
+    //return (MAVSDKMissionRawResult)mission_raw->cancel_mission_download();
+    return MAVSDKMissionRawResultUnknown;
+
 }
 - (MAVSDKMissionRawResult)startMission {
-    return (MAVSDKMissionRawResult)mission_raw->start_mission();
+    //return (MAVSDKMissionRawResult)mission_raw->start_mission();
+    return MAVSDKMissionRawResultUnknown;
+
 }
 - (MAVSDKMissionRawResult)pauseMission {
-    return (MAVSDKMissionRawResult)mission_raw->pause_mission();
+    //return (MAVSDKMissionRawResult)mission_raw->pause_mission();
+    return MAVSDKMissionRawResultUnknown;
+
 }
 - (MAVSDKMissionRawResult)clearMission {
-    return (MAVSDKMissionRawResult)mission_raw->clear_mission();
+    //return (MAVSDKMissionRawResult)mission_raw->clear_mission();
+    return MAVSDKMissionRawResultUnknown;
+
 }
 - (MAVSDKMissionRawResult)setCurrentMissionItem:(NSInteger)index {
-    return (MAVSDKMissionRawResult)mission_raw->set_current_mission_item(index);
+    //return (MAVSDKMissionRawResult)mission_raw->set_current_mission_item(index);
+    return MAVSDKMissionRawResultUnknown;
+
 }
 
 

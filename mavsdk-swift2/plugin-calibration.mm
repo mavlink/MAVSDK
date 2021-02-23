@@ -23,8 +23,8 @@ mavsdk::Calibration *calibration;
 
 
 
-- (MAVSDKCalibrationResult)cancel {
-    return (MAVSDKCalibrationResult)calibration->cancel();
+- (void)cancel {
+    calibration->cancel();
 }
 
 

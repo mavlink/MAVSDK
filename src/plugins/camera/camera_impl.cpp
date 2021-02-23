@@ -401,7 +401,7 @@ Camera::Result CameraImpl::stop_video()
 
     {
         std::lock_guard<std::mutex> lock(_video_stream_info.mutex);
-        _video_stream_info.data.status = Camera::VideoStreamInfo::Status::NotRunning;
+        _video_stream_info.data.status = Camera::VideoStreamInfo::VideoStreamStatus::NotRunning;
     }
 
     return camera_result_from_command_result(_parent->send_command(cmd_stop_video));
@@ -494,7 +494,7 @@ Camera::Result CameraImpl::start_video_streaming()
     std::lock_guard<std::mutex> lock(_video_stream_info.mutex);
 
     if (_video_stream_info.available &&
-        _video_stream_info.data.status == Camera::VideoStreamInfo::Status::InProgress) {
+        _video_stream_info.data.status == Camera::VideoStreamInfo::VideoStreamStatus::InProgress) {
         return Camera::Result::InProgress;
     }
 
@@ -521,7 +521,7 @@ Camera::Result CameraImpl::stop_video_streaming()
     {
         std::lock_guard<std::mutex> lock(_video_stream_info.mutex);
         // TODO: check if we can/should do that.
-        _video_stream_info.data.status = Camera::VideoStreamInfo::Status::NotRunning;
+        _video_stream_info.data.status = Camera::VideoStreamInfo::VideoStreamStatus::NotRunning;
     }
     return result;
 }
@@ -970,8 +970,8 @@ void CameraImpl::process_video_information(const mavlink_message_t& message)
         // TODO: use stream_id and count
         _video_stream_info.data.status =
             (received_video_info.flags & VIDEO_STREAM_STATUS_FLAGS_RUNNING ?
-                 Camera::VideoStreamInfo::Status::InProgress :
-                 Camera::VideoStreamInfo::Status::NotRunning);
+                 Camera::VideoStreamInfo::VideoStreamStatus::InProgress :
+                 Camera::VideoStreamInfo::VideoStreamStatus::NotRunning);
         auto& video_stream_info = _video_stream_info.data.settings;
         video_stream_info.frame_rate_hz = received_video_info.framerate;
         video_stream_info.horizontal_resolution_pix = received_video_info.resolution_h;

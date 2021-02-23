@@ -206,9 +206,9 @@ MAVSDKMocapCovariance* translateFromCppCovariance(mavsdk::Mocap::Covariance cova
 
 
         
-            for (const auto& elem : covariance.covariance_matrix()) {
-                [obj.covarianceMatrix addObject:elem];
-            }
+            //for (const auto& elem : covariance.covariance_matrix()) {
+            //    [obj.covarianceMatrix addObject:elem];
+            //}
         
     
     return obj;
@@ -220,9 +220,9 @@ mavsdk::Mocap::Covariance translateToCppCovariance(MAVSDKMocapCovariance* covari
 
 
         
-            for (MAVSDKMocapfloat *elem in covariance.covarianceMatrix) {
-                [obj.covariance_matrix push_back(elem)];
-            }
+            //for (MAVSDKMocapfloat *elem in covariance.covarianceMatrix) {
+            //    [obj.covariance_matrix push_back(elem)];
+            //}
         
     
     return obj;

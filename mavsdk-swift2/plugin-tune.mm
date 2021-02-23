@@ -34,9 +34,9 @@ MAVSDKTuneTuneDescription* translateFromCppTuneDescription(mavsdk::Tune::TuneDes
 
 
         
-            for (const auto& elem : tune_description.song_elements) {
-                [obj.songElements addObject:translateFromCppSongElement(elem)];
-            }
+            //for (const auto& elem : tune_description.song_elements) {
+            //    [obj.songElements addObject:translateFromCppSongElement(elem)];
+            //}
         
     
         
@@ -52,9 +52,9 @@ mavsdk::Tune::TuneDescription translateToCppTuneDescription(MAVSDKTuneTuneDescri
 
 
         
-            for (MAVSDKTuneSongElement *elem in tuneDescription.songElements) {
-                obj.song_elements.push_back(translateToCppSongElement(elem));
-            }
+            //for (MAVSDKTuneSongElement *elem in tuneDescription.songElements) {
+            //    obj.song_elements.push_back(translateToCppSongElement(elem));
+            //}
         
     
         

@@ -342,7 +342,7 @@ mavsdk::Telemetry::GpsInfo translateToCppGpsInfo(MAVSDKTelemetryGpsInfo* gpsInfo
         
     
         
-    obj.fix_type = (mavsdk::Telemetry::GpsInfo::FixType)(gpsInfo.fixType);
+    //obj.fix_type = (mavsdk::Telemetry::GpsInfo::FixType)(gpsInfo.fixType);
         
     
     return obj;
@@ -523,7 +523,7 @@ mavsdk::Telemetry::StatusText translateToCppStatusText(MAVSDKTelemetryStatusText
 
 
         
-    obj.type = (mavsdk::Telemetry::StatusText::StatusTextType)(statusText.type);
+    //obj.type = (mavsdk::Telemetry::StatusText::StatusTextType)(statusText.type);
         
     
         
@@ -545,9 +545,9 @@ MAVSDKTelemetryActuatorControlTarget* translateFromCppActuatorControlTarget(mavs
         
     
         
-            for (const auto& elem : actuatorControlTarget.controls()) {
-                [obj.controls addObject:elem];
-            }
+            //for (const auto& elem : actuatorControlTarget.controls()) {
+            //    [obj.controls addObject:elem];
+            //}
         
     
     return obj;
@@ -563,9 +563,9 @@ mavsdk::Telemetry::ActuatorControlTarget translateToCppActuatorControlTarget(MAV
         
     
         
-            for (MAVSDKTelemetryfloat *elem in actuatorControlTarget.controls) {
-                [obj.controls push_back(elem)];
-            }
+            //for (MAVSDKTelemetryfloat *elem in actuatorControlTarget.controls) {
+             //   [obj.controls push_back(elem)];
+            //}
         
     
     return obj;
@@ -583,9 +583,9 @@ MAVSDKTelemetryActuatorOutputStatus* translateFromCppActuatorOutputStatus(mavsdk
         
     
         
-            for (const auto& elem : actuatorOutputStatus.actuator()) {
-                [obj.actuator addObject:elem];
-            }
+            //for (const auto& elem : actuatorOutputStatus.actuator()) {
+            //    [obj.actuator addObject:elem];
+            //}
         
     
     return obj;
@@ -601,9 +601,9 @@ mavsdk::Telemetry::ActuatorOutputStatus translateToCppActuatorOutputStatus(MAVSD
         
     
         
-            for (MAVSDKTelemetryfloat *elem in actuatorOutputStatus.actuator) {
-                [obj.actuator push_back(elem)];
-            }
+            //for (MAVSDKTelemetryfloat *elem in actuatorOutputStatus.actuator) {
+            //    [obj.actuator push_back(elem)];
+            //}
         
     
     return obj;
@@ -617,9 +617,9 @@ MAVSDKTelemetryCovariance* translateFromCppCovariance(mavsdk::Telemetry::Covaria
 
 
         
-            for (const auto& elem : covariance.covariance_matrix()) {
-                [obj.covarianceMatrix addObject:elem];
-            }
+            //for (const auto& elem : covariance.covariance_matrix()) {
+            //    [obj.covarianceMatrix addObject:elem];
+            //}
         
     
     return obj;
@@ -631,9 +631,9 @@ mavsdk::Telemetry::Covariance translateToCppCovariance(MAVSDKTelemetryCovariance
 
 
         
-            for (MAVSDKTelemetryfloat *elem in covariance.covarianceMatrix) {
-                [obj.covariance_matrix push_back(elem)];
-            }
+            //for (MAVSDKTelemetryfloat *elem in covariance.covarianceMatrix) {
+            //    [obj.covariance_matrix push_back(elem)];
+            //}
         
     
     return obj;

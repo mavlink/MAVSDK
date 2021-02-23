@@ -80,7 +80,7 @@ mavsdk::Gimbal::ControlStatus translateToCppControlStatus(MAVSDKGimbalControlSta
 
 
         
-    obj.control_mode = (mavsdk::Gimbal::ControlStatus::ControlMode)(controlStatus.controlMode);
+    //obj.control_mode = (mavsdk::Gimbal::ControlStatus::ControlMode)(controlStatus.controlMode);
         
     
         

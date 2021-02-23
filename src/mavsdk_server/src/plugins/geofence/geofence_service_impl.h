@@ -22,6 +22,7 @@ class GeofenceServiceImpl final : public rpc::geofence::GeofenceService::Service
 public:
     GeofenceServiceImpl(Geofence& geofence) : _geofence(geofence) {}
 
+
     template<typename ResponseType>
     void fillResponseWithResult(ResponseType* response, mavsdk::Geofence::Result& result) const
     {
@@ -36,14 +37,22 @@ public:
         response->set_allocated_geofence_result(rpc_geofence_result);
     }
 
-    static std::unique_ptr<rpc::geofence::Point>
-    translateToRpcPoint(const mavsdk::Geofence::Point& point)
+
+
+
+    static std::unique_ptr<rpc::geofence::Point> translateToRpcPoint(const mavsdk::Geofence::Point &point)
     {
         auto rpc_obj = std::make_unique<rpc::geofence::Point>();
 
-        rpc_obj->set_latitude_deg(point.latitude_deg);
 
+            
+        rpc_obj->set_latitude_deg(point.latitude_deg);
+            
+        
+            
         rpc_obj->set_longitude_deg(point.longitude_deg);
+            
+        
 
         return rpc_obj;
     }
@@ -52,15 +61,22 @@ public:
     {
         mavsdk::Geofence::Point obj;
 
+
+            
         obj.latitude_deg = point.latitude_deg();
-
+            
+        
+            
         obj.longitude_deg = point.longitude_deg();
-
+            
+        
         return obj;
     }
 
-    static rpc::geofence::Polygon::FenceType
-    translateToRpcFenceType(const mavsdk::Geofence::Polygon::FenceType& fence_type)
+
+
+
+    static rpc::geofence::Polygon::FenceType translateToRpcFenceType(const mavsdk::Geofence::Polygon::FenceType& fence_type)
     {
         switch (fence_type) {
             default:
@@ -73,8 +89,7 @@ public:
         }
     }
 
-    static mavsdk::Geofence::Polygon::FenceType
-    translateFromRpcFenceType(const rpc::geofence::Polygon::FenceType fence_type)
+    static mavsdk::Geofence::Polygon::FenceType translateFromRpcFenceType(const rpc::geofence::Polygon::FenceType fence_type)
     {
         switch (fence_type) {
             default:
@@ -87,17 +102,27 @@ public:
         }
     }
 
-    static std::unique_ptr<rpc::geofence::Polygon>
-    translateToRpcPolygon(const mavsdk::Geofence::Polygon& polygon)
+
+    static std::unique_ptr<rpc::geofence::Polygon> translateToRpcPolygon(const mavsdk::Geofence::Polygon &polygon)
     {
         auto rpc_obj = std::make_unique<rpc::geofence::Polygon>();
 
+
+            
+                
         for (const auto& elem : polygon.points) {
             auto* ptr = rpc_obj->add_points();
             ptr->CopyFrom(*translateToRpcPoint(elem).release());
         }
-
+                
+            
+        
+            
+                
         rpc_obj->set_fence_type(translateToRpcFenceType(polygon.fence_type));
+                
+            
+        
 
         return rpc_obj;
     }
@@ -106,18 +131,24 @@ public:
     {
         mavsdk::Geofence::Polygon obj;
 
-        for (const auto& elem : polygon.points()) {
-            obj.points.push_back(
-                translateFromRpcPoint(static_cast<mavsdk::rpc::geofence::Point>(elem)));
-        }
 
+            
+                for (const auto& elem : polygon.points()) {
+                    obj.points.push_back(translateFromRpcPoint(static_cast<mavsdk::rpc::geofence::Point>(elem)));
+                }
+            
+        
+            
         obj.fence_type = translateFromRpcFenceType(polygon.fence_type());
-
+            
+        
         return obj;
     }
 
-    static rpc::geofence::GeofenceResult::Result
-    translateToRpcResult(const mavsdk::Geofence::Result& result)
+
+
+
+    static rpc::geofence::GeofenceResult::Result translateToRpcResult(const mavsdk::Geofence::Result& result)
     {
         switch (result) {
             default:
@@ -140,8 +171,7 @@ public:
         }
     }
 
-    static mavsdk::Geofence::Result
-    translateFromRpcResult(const rpc::geofence::GeofenceResult::Result result)
+    static mavsdk::Geofence::Result translateFromRpcResult(const rpc::geofence::GeofenceResult::Result result)
     {
         switch (result) {
             default:
@@ -164,6 +194,9 @@ public:
         }
     }
 
+
+
+
     grpc::Status UploadGeofence(
         grpc::ServerContext* /* context */,
         const rpc::geofence::UploadGeofenceRequest* request,
@@ -173,23 +206,27 @@ public:
             LogWarn() << "UploadGeofence sent with a null request! Ignoring...";
             return grpc::Status::OK;
         }
-
+            
         std::vector<mavsdk::Geofence::Polygon> polygons_vec;
         for (const auto& elem : request->polygons()) {
             polygons_vec.push_back(translateFromRpcPolygon(elem));
         }
-
+            
+        
         auto result = _geofence.upload_geofence(polygons_vec);
+        
 
+        
         if (response != nullptr) {
             fillResponseWithResult(response, result);
         }
+        
 
         return grpc::Status::OK;
     }
 
-    void stop()
-    {
+
+    void stop() {
         _stopped.store(true);
         for (auto& prom : _stream_stop_promises) {
             if (auto handle = prom.lock()) {
@@ -199,8 +236,7 @@ public:
     }
 
 private:
-    void register_stream_stop_promise(std::weak_ptr<std::promise<void>> prom)
-    {
+    void register_stream_stop_promise(std::weak_ptr<std::promise<void>> prom) {
         // If we have already stopped, set promise immediately and don't add it to list.
         if (_stopped.load()) {
             if (auto handle = prom.lock()) {
@@ -211,10 +247,8 @@ private:
         }
     }
 
-    void unregister_stream_stop_promise(std::shared_ptr<std::promise<void>> prom)
-    {
-        for (auto it = _stream_stop_promises.begin(); it != _stream_stop_promises.end();
-             /* ++it */) {
+    void unregister_stream_stop_promise(std::shared_ptr<std::promise<void>> prom) {
+        for (auto it = _stream_stop_promises.begin(); it != _stream_stop_promises.end(); /* ++it */) {
             if (it->lock() == prom) {
                 it = _stream_stop_promises.erase(it);
             } else {
@@ -223,9 +257,9 @@ private:
         }
     }
 
-    Geofence& _geofence;
+    Geofence &_geofence;
     std::atomic<bool> _stopped{false};
-    std::vector<std::weak_ptr<std::promise<void>>> _stream_stop_promises{};
+    std::vector<std::weak_ptr<std::promise<void>>> _stream_stop_promises {};
 };
 
 } // namespace mavsdk_server

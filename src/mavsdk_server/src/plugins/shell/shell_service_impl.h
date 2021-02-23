@@ -22,6 +22,7 @@ class ShellServiceImpl final : public rpc::shell::ShellService::Service {
 public:
     ShellServiceImpl(Shell& shell) : _shell(shell) {}
 
+
     template<typename ResponseType>
     void fillResponseWithResult(ResponseType* response, mavsdk::Shell::Result& result) const
     {
@@ -35,6 +36,8 @@ public:
 
         response->set_allocated_shell_result(rpc_shell_result);
     }
+
+
 
     static rpc::shell::ShellResult::Result translateToRpcResult(const mavsdk::Shell::Result& result)
     {
@@ -57,8 +60,7 @@ public:
         }
     }
 
-    static mavsdk::Shell::Result
-    translateFromRpcResult(const rpc::shell::ShellResult::Result result)
+    static mavsdk::Shell::Result translateFromRpcResult(const rpc::shell::ShellResult::Result result)
     {
         switch (result) {
             default:
@@ -79,6 +81,9 @@ public:
         }
     }
 
+
+
+
     grpc::Status Send(
         grpc::ServerContext* /* context */,
         const rpc::shell::SendRequest* request,
@@ -88,20 +93,21 @@ public:
             LogWarn() << "Send sent with a null request! Ignoring...";
             return grpc::Status::OK;
         }
-
+            
+        
         auto result = _shell.send(request->command());
+        
 
+        
         if (response != nullptr) {
             fillResponseWithResult(response, result);
         }
+        
 
         return grpc::Status::OK;
     }
 
-    grpc::Status SubscribeReceive(
-        grpc::ServerContext* /* context */,
-        const mavsdk::rpc::shell::SubscribeReceiveRequest* /* request */,
-        grpc::ServerWriter<rpc::shell::ReceiveResponse>* writer) override
+    grpc::Status SubscribeReceive(grpc::ServerContext* /* context */, const mavsdk::rpc::shell::SubscribeReceiveRequest* /* request */, grpc::ServerWriter<rpc::shell::ReceiveResponse>* writer) override
     {
         auto stream_closed_promise = std::make_shared<std::promise<void>>();
         auto stream_closed_future = stream_closed_promise->get_future();
@@ -112,29 +118,33 @@ public:
         std::mutex subscribe_mutex{};
 
         _shell.subscribe_receive(
-            [this, &writer, &stream_closed_promise, is_finished, &subscribe_mutex](
-                const std::string receive) {
-                rpc::shell::ReceiveResponse rpc_response;
+            [this, &writer, &stream_closed_promise, is_finished, &subscribe_mutex](const std::string receive) {
 
-                rpc_response.set_data(receive);
+            rpc::shell::ReceiveResponse rpc_response;
+        
+            rpc_response.set_data(receive);
+        
 
-                std::unique_lock<std::mutex> lock(subscribe_mutex);
-                if (!*is_finished && !writer->Write(rpc_response)) {
-                    _shell.subscribe_receive(nullptr);
+        
 
-                    *is_finished = true;
-                    unregister_stream_stop_promise(stream_closed_promise);
-                    lock.unlock();
-                    stream_closed_promise->set_value();
-                }
-            });
+            std::unique_lock<std::mutex> lock(subscribe_mutex);
+            if (!*is_finished && !writer->Write(rpc_response)) {
+                
+                _shell.subscribe_receive(nullptr);
+                
+                *is_finished = true;
+                unregister_stream_stop_promise(stream_closed_promise);
+                lock.unlock();
+                stream_closed_promise->set_value();
+            }
+        });
 
         stream_closed_future.wait();
         return grpc::Status::OK;
     }
 
-    void stop()
-    {
+
+    void stop() {
         _stopped.store(true);
         for (auto& prom : _stream_stop_promises) {
             if (auto handle = prom.lock()) {
@@ -144,8 +154,7 @@ public:
     }
 
 private:
-    void register_stream_stop_promise(std::weak_ptr<std::promise<void>> prom)
-    {
+    void register_stream_stop_promise(std::weak_ptr<std::promise<void>> prom) {
         // If we have already stopped, set promise immediately and don't add it to list.
         if (_stopped.load()) {
             if (auto handle = prom.lock()) {
@@ -156,10 +165,8 @@ private:
         }
     }
 
-    void unregister_stream_stop_promise(std::shared_ptr<std::promise<void>> prom)
-    {
-        for (auto it = _stream_stop_promises.begin(); it != _stream_stop_promises.end();
-             /* ++it */) {
+    void unregister_stream_stop_promise(std::shared_ptr<std::promise<void>> prom) {
+        for (auto it = _stream_stop_promises.begin(); it != _stream_stop_promises.end(); /* ++it */) {
             if (it->lock() == prom) {
                 it = _stream_stop_promises.erase(it);
             } else {
@@ -168,9 +175,9 @@ private:
         }
     }
 
-    Shell& _shell;
+    Shell &_shell;
     std::atomic<bool> _stopped{false};
-    std::vector<std::weak_ptr<std::promise<void>>> _stream_stop_promises{};
+    std::vector<std::weak_ptr<std::promise<void>>> _stream_stop_promises {};
 };
 
 } // namespace mavsdk_server

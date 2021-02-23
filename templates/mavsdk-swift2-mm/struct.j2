@@ -52,9 +52,9 @@ mavsdk::{{ plugin_name.upper_camel_case }}::{{ name.upper_camel_case }} translat
                 obj.{{ field.name.lower_snake_case }}.push_back(translateToCpp{{ field.type_info.inner_name }}(elem));
             }
         {% elif field.type_info.is_enum %}
-    obj.{{ field.name.lower_snake_case }} = (mavsdk::{{ plugin_name.upper_camel_case }}::{% if field.parent_struct %}{{ field.parent_struct.name.upper_camel_case }}::{% endif%}{{ name.upper_camel_case }}::{{ field.type_info.name }})({{ name.lower_camel_case }}.{{ field.name.lower_camel_case }});
+    obj.{{ field.name.lower_snake_case }} = (mavsdk::{{ plugin_name.upper_camel_case }}::{% if field.parent_struct %}{{ field.parent_struct.upper_camel_case }}::{% endif%}{{ name.upper_camel_case }}::{{ field.type_info.name }})({{ name.lower_camel_case }}.{{ field.name.lower_camel_case }});
         {% else %}
-    obj.{{ field.name.lower_snake_case }} = translateToCpp{% if field.parent_struct %}{{ field.parent_struct.name.upper_camel_case }}{% endif%}{{ field.type_info.name }}({{ name.lower_camel_case }}.{{ field.name.lower_camel_case }});
+    obj.{{ field.name.lower_snake_case }} = translateToCpp{% if field.parent_struct %}{{ field.parent_struct.upper_camel_case }}{% endif%}{{ field.type_info.name }}({{ name.lower_camel_case }}.{{ field.name.lower_camel_case }});
         {% endif %}
     {% endif %}
 {%- endfor %}

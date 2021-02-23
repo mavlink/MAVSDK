@@ -107,9 +107,9 @@ MAVSDKOffboardActuatorControlGroup* translateFromCppActuatorControlGroup(mavsdk:
 
 
         
-            for (const auto& elem : actuatorControlGroup.controls()) {
-                [obj.controls addObject:elem];
-            }
+            //for (const auto& elem : actuatorControlGroup.controls()) {
+            //    [obj.controls addObject:elem];
+            //}
         
     
     return obj;
@@ -121,9 +121,9 @@ mavsdk::Offboard::ActuatorControlGroup translateToCppActuatorControlGroup(MAVSDK
 
 
         
-            for (MAVSDKOffboardfloat *elem in actuatorControlGroup.controls) {
-                [obj.controls push_back(elem)];
-            }
+            //for (MAVSDKOffboardfloat *elem in actuatorControlGroup.controls) {
+            //    [obj.controls push_back(elem)];
+            //}
         
     
     return obj;
