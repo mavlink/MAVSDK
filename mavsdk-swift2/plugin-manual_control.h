@@ -1,7 +1,9 @@
+#ifndef plugin_manual_control_h
+#define plugin_manual_control_h
+
 #import <Foundation/Foundation.h>
 
-#include <mavsdk/mavsdk.h>
-#include <mavsdk/plugins/manual_control/manual_control.h>
+@class MavsdkSwift2Impl;
 
 
 
@@ -9,36 +11,28 @@
 
 
 
-typedef NS_ENUM(NSInteger, MVSResult)  {
-    MVSResultUnknown,
-    MVSResultSuccess,
-    MVSResultNoSystem,
-    MVSResultConnectionError,
-    MVSResultBusy,
-    MVSResultCommandDenied,
-    MVSResultTimeout,
-    MVSResultInputOutOfRange,
-    MVSResultInputNotSet,
+typedef NS_ENUM(NSInteger, MAVSDKManualControlResult)  {
+    MAVSDKManualControlResultUnknown,
+    MAVSDKManualControlResultSuccess,
+    MAVSDKManualControlResultNoSystem,
+    MAVSDKManualControlResultConnectionError,
+    MAVSDKManualControlResultBusy,
+    MAVSDKManualControlResultCommandDenied,
+    MAVSDKManualControlResultTimeout,
+    MAVSDKManualControlResultInputOutOfRange,
+    MAVSDKManualControlResultInputNotSet,
 };
 
 
 
-@interface MVSManualControl : NSObject
+@interface MAVSDKManualControl : NSObject
 
-- (MVSResult)startPositionControl
-;
-- (MVSResult)startAltitudeControl
-;
-- (MVSResult)setManualControlInput
-:(
-float)
-x :(
-float)
-y :(
-float)
-z :(
-float)
-r;
+- (id)initWithMavsdkSwift2Impl:(MavsdkSwift2Impl*)mavsdkSwift2Impl;
+- (MAVSDKManualControlResult)startPositionControl ;
+- (MAVSDKManualControlResult)startAltitudeControl ;
+- (MAVSDKManualControlResult)setManualControlInput :( float) x :( float) y :( float) z :( float) r;
 
 
 @end
+
+#endif // plugin_manual_control_h

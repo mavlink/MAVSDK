@@ -1,35 +1,83 @@
 #import "plugin-ftp.h"
+#import "mavsdk-swift2-impl.h"
 
-@implementation MVSFtp
+#include <mavsdk/mavsdk.h>
+#include <mavsdk/plugins/ftp/ftp.h>
+
+@implementation MAVSDKFtp
+
+mavsdk::Ftp *ftp;
 
 
-
-
-
-- (MVSResult)createDirectory:(NSString*)remoteDir {
-    return MVSResultUnknown;
-}
-- (MVSResult)removeDirectory:(NSString*)remoteDir {
-    return MVSResultUnknown;
-}
-- (MVSResult)removeFile:(NSString*)remoteFilePath {
-    return MVSResultUnknown;
-}
-- (MVSResult)rename:(NSString*)remoteFromPath :(NSString*)remoteToPath {
-    return MVSResultUnknown;
++(id)alloc{
+    return [super alloc];
 }
 
-- (MVSResult)setRootDirectory:(NSString*)rootDir {
-    return MVSResultUnknown;
-}
-- (MVSResult)setTargetCompid:(UInt32)compid {
-    return MVSResultUnknown;
+- (id)initWithMavsdkSwift2Impl:(MavsdkSwift2Impl*)mavsdkSwift2Impl {
+    ftp = new mavsdk::Ftp(*[mavsdkSwift2Impl mavsdkSystem]);
+    return [super init];
 }
 
 
 
 
 
+- (MAVSDKFtpResult)createDirectory:(NSString*)remoteDir {
+    return (MAVSDKFtpResult)ftp->create_directory(remoteDir);
+}
+- (MAVSDKFtpResult)removeDirectory:(NSString*)remoteDir {
+    return (MAVSDKFtpResult)ftp->remove_directory(remoteDir);
+}
+- (MAVSDKFtpResult)removeFile:(NSString*)remoteFilePath {
+    return (MAVSDKFtpResult)ftp->remove_file(remoteFilePath);
+}
+- (MAVSDKFtpResult)rename:(NSString*)remoteFromPath :(NSString*)remoteToPath {
+    return (MAVSDKFtpResult)ftp->rename(remoteFromPath, remoteToPath);
+}
+
+- (MAVSDKFtpResult)setRootDirectory:(NSString*)rootDir {
+    return (MAVSDKFtpResult)ftp->set_root_directory(rootDir);
+}
+- (MAVSDKFtpResult)setTargetCompid:(UInt32)compid {
+    return (MAVSDKFtpResult)ftp->set_target_compid(compid);
+}
+
+
+
+
+
+
+MAVSDKFtpProgressData* translateFromCppProgressData(mavsdk::Ftp::ProgressData progress_data)
+{
+    MAVSDKFtpProgressData *obj = [[MAVSDKFtpProgressData alloc] init];
+
+
+        
+    obj.bytesTransferred = progress_data.bytes_transferred;
+        
+    
+        
+    obj.totalBytes = progress_data.total_bytes;
+        
+    
+    return obj;
+}
+
+mavsdk::Ftp::ProgressData translateToCppProgressData(MAVSDKFtpProgressData* progressData)
+{
+    mavsdk::Ftp::ProgressData obj;
+
+
+        
+    obj.bytes_transferred = progressData.bytesTransferred;
+        
+    
+        
+    obj.total_bytes = progressData.totalBytes;
+        
+    
+    return obj;
+}
 
 
 

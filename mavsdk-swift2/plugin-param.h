@@ -1,90 +1,73 @@
+#ifndef plugin_param_h
+#define plugin_param_h
+
 #import <Foundation/Foundation.h>
 
-#include <mavsdk/mavsdk.h>
-#include <mavsdk/plugins/param/param.h>
+@class MavsdkSwift2Impl;
 
 
 
 
 
-@interface MVSIntParam : NSObject
-
+@interface MAVSDKParamIntParam : NSObject
 
 
 @property (nonatomic, strong) NSString *name;
-
-
 @property (nonatomic, assign) NSInteger value;
 
 
-
 @end
 
 
 
 
-@interface MVSFloatParam : NSObject
-
+@interface MAVSDKParamFloatParam : NSObject
 
 
 @property (nonatomic, strong) NSString *name;
-
-
 @property (nonatomic, assign) float value;
 
 
+@end
+
+
+
+
+@interface MAVSDKParamAllParams : NSObject
+
+
+@property (nonatomic, strong) NSMutableArray *intParams; 
+@property (nonatomic, strong) NSMutableArray *floatParams; 
+
 
 @end
 
 
 
 
-@interface MVSAllParams : NSObject
 
 
-
-@property (nonatomic, strong) NSMutableArray *intParams;
-
-
-@property (nonatomic, strong) NSMutableArray *floatParams;
-
-
-
-@end
-
-
-
-
-
-
-typedef NS_ENUM(NSInteger, MVSResult)  {
-    MVSResultUnknown,
-    MVSResultSuccess,
-    MVSResultTimeout,
-    MVSResultConnectionError,
-    MVSResultWrongType,
-    MVSResultParamNameTooLong,
+typedef NS_ENUM(NSInteger, MAVSDKParamResult)  {
+    MAVSDKParamResultUnknown,
+    MAVSDKParamResultSuccess,
+    MAVSDKParamResultTimeout,
+    MAVSDKParamResultConnectionError,
+    MAVSDKParamResultWrongType,
+    MAVSDKParamResultParamNameTooLong,
 };
 
 
 
-@interface MVSParam : NSObject
+@interface MAVSDKParam : NSObject
 
+- (id)initWithMavsdkSwift2Impl:(MavsdkSwift2Impl*)mavsdkSwift2Impl;
 
-- (MVSResult)setParamInt
-:(
-NSString*)
-name :(
-NSInteger)
-value;
+- (MAVSDKParamResult)setParamInt :( NSString*) name :( NSInteger) value;
 
-- (MVSResult)setParamFloat
-:(
-NSString*)
-name :(
-float)
-value;
+- (MAVSDKParamResult)setParamFloat :( NSString*) name :( float) value;
 
 
 
 @end
+
+#endif // plugin_param_h

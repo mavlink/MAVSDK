@@ -1,6 +1,6 @@
 
-typedef NS_ENUM(NSInteger, MVS{{ name.upper_camel_case }})  {
+typedef NS_ENUM(NSInteger, MAVSDK{{ plugin_name.upper_camel_case }}{{ name.upper_camel_case }})  {
 {%- for value in values %}
-    MVS{{ name.upper_camel_case }}{{ value.name.upper_camel_case }},
+    MAVSDK{{ plugin_name.upper_camel_case }}{{ name.upper_camel_case }}{{ value.name.upper_camel_case }},
 {%- endfor %}
 };

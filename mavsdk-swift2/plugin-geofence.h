@@ -1,44 +1,38 @@
+#ifndef plugin_geofence_h
+#define plugin_geofence_h
+
 #import <Foundation/Foundation.h>
 
-#include <mavsdk/mavsdk.h>
-#include <mavsdk/plugins/geofence/geofence.h>
+@class MavsdkSwift2Impl;
 
 
 
 
 
-@interface MVSPoint : NSObject
-
+@interface MAVSDKGeofencePoint : NSObject
 
 
 @property (nonatomic, assign) double latitudeDeg;
-
-
 @property (nonatomic, assign) double longitudeDeg;
 
 
-
 @end
 
 
 
 
 
-@interface MVSPolygon : NSObject
+@interface MAVSDKGeofencePolygon : NSObject
 
 
 
-typedef NS_ENUM(NSInteger, MVSFenceType)  {
-    MVSFenceTypeInclusion,
-    MVSFenceTypeExclusion,
+typedef NS_ENUM(NSInteger, MAVSDKGeofenceFenceType)  {
+    MAVSDKGeofenceFenceTypeInclusion,
+    MAVSDKGeofenceFenceTypeExclusion,
 };
 
-
-@property (nonatomic, strong) NSMutableArray *points;
-
-
-@property (nonatomic, assign) MVSFenceType fenceType;
-
+@property (nonatomic, strong) NSMutableArray *points; 
+@property (nonatomic, assign) MAVSDKGeofenceFenceType fenceType;
 
 
 @end
@@ -48,24 +42,24 @@ typedef NS_ENUM(NSInteger, MVSFenceType)  {
 
 
 
-typedef NS_ENUM(NSInteger, MVSResult)  {
-    MVSResultUnknown,
-    MVSResultSuccess,
-    MVSResultError,
-    MVSResultTooManyGeofenceItems,
-    MVSResultBusy,
-    MVSResultTimeout,
-    MVSResultInvalidArgument,
+typedef NS_ENUM(NSInteger, MAVSDKGeofenceResult)  {
+    MAVSDKGeofenceResultUnknown,
+    MAVSDKGeofenceResultSuccess,
+    MAVSDKGeofenceResultError,
+    MAVSDKGeofenceResultTooManyGeofenceItems,
+    MAVSDKGeofenceResultBusy,
+    MAVSDKGeofenceResultTimeout,
+    MAVSDKGeofenceResultInvalidArgument,
 };
 
 
 
-@interface MVSGeofence : NSObject
+@interface MAVSDKGeofence : NSObject
 
-- (MVSResult)uploadGeofence
-:(
-MVSPolygon*)
-polygons;
+- (id)initWithMavsdkSwift2Impl:(MavsdkSwift2Impl*)mavsdkSwift2Impl;
+- (MAVSDKGeofenceResult)uploadGeofence :( MAVSDKGeofencePolygon*) polygons;
 
 
 @end
+
+#endif // plugin_geofence_h

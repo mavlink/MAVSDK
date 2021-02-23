@@ -1,7 +1,9 @@
+#ifndef plugin_shell_h
+#define plugin_shell_h
+
 #import <Foundation/Foundation.h>
 
-#include <mavsdk/mavsdk.h>
-#include <mavsdk/plugins/shell/shell.h>
+@class MavsdkSwift2Impl;
 
 
 
@@ -9,24 +11,24 @@
 
 
 
-typedef NS_ENUM(NSInteger, MVSResult)  {
-    MVSResultUnknown,
-    MVSResultSuccess,
-    MVSResultNoSystem,
-    MVSResultConnectionError,
-    MVSResultNoResponse,
-    MVSResultBusy,
+typedef NS_ENUM(NSInteger, MAVSDKShellResult)  {
+    MAVSDKShellResultUnknown,
+    MAVSDKShellResultSuccess,
+    MAVSDKShellResultNoSystem,
+    MAVSDKShellResultConnectionError,
+    MAVSDKShellResultNoResponse,
+    MAVSDKShellResultBusy,
 };
 
 
 
-@interface MVSShell : NSObject
+@interface MAVSDKShell : NSObject
 
-- (MVSResult)send
-:(
-NSString*)
-command;
+- (id)initWithMavsdkSwift2Impl:(MavsdkSwift2Impl*)mavsdkSwift2Impl;
+- (MAVSDKShellResult)send :( NSString*) command;
 
 
 
 @end
+
+#endif // plugin_shell_h

@@ -1,48 +1,46 @@
+#ifndef plugin_tune_h
+#define plugin_tune_h
+
 #import <Foundation/Foundation.h>
 
-#include <mavsdk/mavsdk.h>
-#include <mavsdk/plugins/tune/tune.h>
+@class MavsdkSwift2Impl;
 
 
 
-typedef NS_ENUM(NSInteger, MVSSongElement)  {
-    MVSSongElementStyleLegato,
-    MVSSongElementStyleNormal,
-    MVSSongElementStyleStaccato,
-    MVSSongElementDuration1,
-    MVSSongElementDuration2,
-    MVSSongElementDuration4,
-    MVSSongElementDuration8,
-    MVSSongElementDuration16,
-    MVSSongElementDuration32,
-    MVSSongElementNoteA,
-    MVSSongElementNoteB,
-    MVSSongElementNoteC,
-    MVSSongElementNoteD,
-    MVSSongElementNoteE,
-    MVSSongElementNoteF,
-    MVSSongElementNoteG,
-    MVSSongElementNotePause,
-    MVSSongElementSharp,
-    MVSSongElementFlat,
-    MVSSongElementOctaveUp,
-    MVSSongElementOctaveDown,
+typedef NS_ENUM(NSInteger, MAVSDKTuneSongElement)  {
+    MAVSDKTuneSongElementStyleLegato,
+    MAVSDKTuneSongElementStyleNormal,
+    MAVSDKTuneSongElementStyleStaccato,
+    MAVSDKTuneSongElementDuration1,
+    MAVSDKTuneSongElementDuration2,
+    MAVSDKTuneSongElementDuration4,
+    MAVSDKTuneSongElementDuration8,
+    MAVSDKTuneSongElementDuration16,
+    MAVSDKTuneSongElementDuration32,
+    MAVSDKTuneSongElementNoteA,
+    MAVSDKTuneSongElementNoteB,
+    MAVSDKTuneSongElementNoteC,
+    MAVSDKTuneSongElementNoteD,
+    MAVSDKTuneSongElementNoteE,
+    MAVSDKTuneSongElementNoteF,
+    MAVSDKTuneSongElementNoteG,
+    MAVSDKTuneSongElementNotePause,
+    MAVSDKTuneSongElementSharp,
+    MAVSDKTuneSongElementFlat,
+    MAVSDKTuneSongElementOctaveUp,
+    MAVSDKTuneSongElementOctaveDown,
 };
 
 
 
 
-@interface MVSTuneDescription : NSObject
+@interface MAVSDKTuneTuneDescription : NSObject
 
 
-
-@property (nonatomic, assign) MVSSongElement songElements;
-
-
+@property (nonatomic, assign) MAVSDKTuneSongElement songElements;
 @property (nonatomic, assign) NSInteger tempo;
 
 
-
 @end
 
 
@@ -50,22 +48,22 @@ typedef NS_ENUM(NSInteger, MVSSongElement)  {
 
 
 
-typedef NS_ENUM(NSInteger, MVSResult)  {
-    MVSResultUnknown,
-    MVSResultSuccess,
-    MVSResultInvalidTempo,
-    MVSResultTuneTooLong,
-    MVSResultError,
+typedef NS_ENUM(NSInteger, MAVSDKTuneResult)  {
+    MAVSDKTuneResultUnknown,
+    MAVSDKTuneResultSuccess,
+    MAVSDKTuneResultInvalidTempo,
+    MAVSDKTuneResultTuneTooLong,
+    MAVSDKTuneResultError,
 };
 
 
 
-@interface MVSTune : NSObject
+@interface MAVSDKTune : NSObject
 
-- (MVSResult)playTune
-:(
-MVSTuneDescription*)
-tuneDescription;
+- (id)initWithMavsdkSwift2Impl:(MavsdkSwift2Impl*)mavsdkSwift2Impl;
+- (MAVSDKTuneResult)playTune :( MAVSDKTuneTuneDescription*) tuneDescription;
 
 
 @end
+
+#endif // plugin_tune_h

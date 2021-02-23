@@ -1,7 +1,9 @@
+#ifndef plugin_calibration_h
+#define plugin_calibration_h
+
 #import <Foundation/Foundation.h>
 
-#include <mavsdk/mavsdk.h>
-#include <mavsdk/plugins/calibration/calibration.h>
+@class MavsdkSwift2Impl;
 
 
 
@@ -9,53 +11,47 @@
 
 
 
-typedef NS_ENUM(NSInteger, MVSResult)  {
-    MVSResultUnknown,
-    MVSResultSuccess,
-    MVSResultNext,
-    MVSResultFailed,
-    MVSResultNoSystem,
-    MVSResultConnectionError,
-    MVSResultBusy,
-    MVSResultCommandDenied,
-    MVSResultTimeout,
-    MVSResultCancelled,
-    MVSResultFailedArmed,
+typedef NS_ENUM(NSInteger, MAVSDKCalibrationResult)  {
+    MAVSDKCalibrationResultUnknown,
+    MAVSDKCalibrationResultSuccess,
+    MAVSDKCalibrationResultNext,
+    MAVSDKCalibrationResultFailed,
+    MAVSDKCalibrationResultNoSystem,
+    MAVSDKCalibrationResultConnectionError,
+    MAVSDKCalibrationResultBusy,
+    MAVSDKCalibrationResultCommandDenied,
+    MAVSDKCalibrationResultTimeout,
+    MAVSDKCalibrationResultCancelled,
+    MAVSDKCalibrationResultFailedArmed,
 };
 
 
 
-@interface MVSProgressData : NSObject
-
+@interface MAVSDKCalibrationProgressData : NSObject
 
 
 @property (nonatomic, assign) BOOL hasProgress;
-
-
 @property (nonatomic, assign) float progress;
-
-
 @property (nonatomic, assign) BOOL hasStatusText;
-
-
 @property (nonatomic, strong) NSString *statusText;
 
 
-
 @end
 
 
 
 
-@interface MVSCalibration : NSObject
+@interface MAVSDKCalibration : NSObject
+
+- (id)initWithMavsdkSwift2Impl:(MavsdkSwift2Impl*)mavsdkSwift2Impl;
 
 
 
 
 
-
-- (void)cancel
-;
+- (MAVSDKCalibrationResult)cancel ;
 
 
 @end
+
+#endif // plugin_calibration_h

@@ -1,85 +1,61 @@
+#ifndef plugin_mission_h
+#define plugin_mission_h
+
 #import <Foundation/Foundation.h>
 
-#include <mavsdk/mavsdk.h>
-#include <mavsdk/plugins/mission/mission.h>
+@class MavsdkSwift2Impl;
 
 
 
 
 
 
-@interface MVSMissionItem : NSObject
+@interface MAVSDKMissionMissionItem : NSObject
 
 
 
-typedef NS_ENUM(NSInteger, MVSCameraAction)  {
-    MVSCameraActionNone,
-    MVSCameraActionTakePhoto,
-    MVSCameraActionStartPhotoInterval,
-    MVSCameraActionStopPhotoInterval,
-    MVSCameraActionStartVideo,
-    MVSCameraActionStopVideo,
+typedef NS_ENUM(NSInteger, MAVSDKMissionCameraAction)  {
+    MAVSDKMissionCameraActionNone,
+    MAVSDKMissionCameraActionTakePhoto,
+    MAVSDKMissionCameraActionStartPhotoInterval,
+    MAVSDKMissionCameraActionStopPhotoInterval,
+    MAVSDKMissionCameraActionStartVideo,
+    MAVSDKMissionCameraActionStopVideo,
 };
 
-
 @property (nonatomic, assign) double latitudeDeg;
-
-
 @property (nonatomic, assign) double longitudeDeg;
-
-
 @property (nonatomic, assign) float relativeAltitudeM;
-
-
 @property (nonatomic, assign) float speedMS;
-
-
 @property (nonatomic, assign) BOOL isFlyThrough;
-
-
 @property (nonatomic, assign) float gimbalPitchDeg;
-
-
 @property (nonatomic, assign) float gimbalYawDeg;
-
-
-@property (nonatomic, assign) MVSCameraAction cameraAction;
-
-
+@property (nonatomic, assign) MAVSDKMissionCameraAction cameraAction;
 @property (nonatomic, assign) float loiterTimeS;
-
-
 @property (nonatomic, assign) double cameraPhotoIntervalS;
 
 
+@end
+
+
+
+
+@interface MAVSDKMissionMissionPlan : NSObject
+
+
+@property (nonatomic, strong) NSMutableArray *missionItems; 
+
 
 @end
 
 
 
 
-@interface MVSMissionPlan : NSObject
-
-
-
-@property (nonatomic, strong) NSMutableArray *missionItems;
-
-
-
-@end
-
-
-
-
-@interface MVSMissionProgress : NSObject
-
+@interface MAVSDKMissionMissionProgress : NSObject
 
 
 @property (nonatomic, assign) NSInteger current;
-
-
 @property (nonatomic, assign) NSInteger total;
-
 
 
 @end
@@ -89,53 +65,42 @@ typedef NS_ENUM(NSInteger, MVSCameraAction)  {
 
 
 
-typedef NS_ENUM(NSInteger, MVSResult)  {
-    MVSResultUnknown,
-    MVSResultSuccess,
-    MVSResultError,
-    MVSResultTooManyMissionItems,
-    MVSResultBusy,
-    MVSResultTimeout,
-    MVSResultInvalidArgument,
-    MVSResultUnsupported,
-    MVSResultNoMissionAvailable,
-    MVSResultFailedToOpenQgcPlan,
-    MVSResultFailedToParseQgcPlan,
-    MVSResultUnsupportedMissionCmd,
-    MVSResultTransferCancelled,
+typedef NS_ENUM(NSInteger, MAVSDKMissionResult)  {
+    MAVSDKMissionResultUnknown,
+    MAVSDKMissionResultSuccess,
+    MAVSDKMissionResultError,
+    MAVSDKMissionResultTooManyMissionItems,
+    MAVSDKMissionResultBusy,
+    MAVSDKMissionResultTimeout,
+    MAVSDKMissionResultInvalidArgument,
+    MAVSDKMissionResultUnsupported,
+    MAVSDKMissionResultNoMissionAvailable,
+    MAVSDKMissionResultFailedToOpenQgcPlan,
+    MAVSDKMissionResultFailedToParseQgcPlan,
+    MAVSDKMissionResultUnsupportedMissionCmd,
+    MAVSDKMissionResultTransferCancelled,
 };
 
 
 
-@interface MVSMission : NSObject
+@interface MAVSDKMission : NSObject
 
-- (MVSResult)uploadMission
-:(
-MVSMissionPlan*)
-missionPlan;
-- (MVSResult)cancelMissionUpload
-;
+- (id)initWithMavsdkSwift2Impl:(MavsdkSwift2Impl*)mavsdkSwift2Impl;
+- (MAVSDKMissionResult)uploadMission :( MAVSDKMissionMissionPlan*) missionPlan;
+- (MAVSDKMissionResult)cancelMissionUpload ;
 
-- (MVSResult)cancelMissionDownload
-;
-- (MVSResult)startMission
-;
-- (MVSResult)pauseMission
-;
-- (MVSResult)clearMission
-;
-- (MVSResult)setCurrentMissionItem
-:(
-NSInteger)
-index;
+- (MAVSDKMissionResult)cancelMissionDownload ;
+- (MAVSDKMissionResult)startMission ;
+- (MAVSDKMissionResult)pauseMission ;
+- (MAVSDKMissionResult)clearMission ;
+- (MAVSDKMissionResult)setCurrentMissionItem :( NSInteger) index;
 
 
 
-- (MVSResult)setReturnToLaunchAfterMission
-:(
-BOOL)
-enable;
+- (MAVSDKMissionResult)setReturnToLaunchAfterMission :( BOOL) enable;
 
 
 
 @end
+
+#endif // plugin_mission_h

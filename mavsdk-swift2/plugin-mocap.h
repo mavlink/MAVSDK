@@ -1,81 +1,59 @@
+#ifndef plugin_mocap_h
+#define plugin_mocap_h
+
 #import <Foundation/Foundation.h>
 
-#include <mavsdk/mavsdk.h>
-#include <mavsdk/plugins/mocap/mocap.h>
+@class MavsdkSwift2Impl;
 
 
 
 
 
-@interface MVSPositionBody : NSObject
-
+@interface MAVSDKMocapPositionBody : NSObject
 
 
 @property (nonatomic, assign) float xM;
-
-
 @property (nonatomic, assign) float yM;
-
-
 @property (nonatomic, assign) float zM;
 
 
-
 @end
 
 
 
 
-@interface MVSAngleBody : NSObject
-
+@interface MAVSDKMocapAngleBody : NSObject
 
 
 @property (nonatomic, assign) float rollRad;
-
-
 @property (nonatomic, assign) float pitchRad;
-
-
 @property (nonatomic, assign) float yawRad;
 
 
-
 @end
 
 
 
 
-@interface MVSSpeedBody : NSObject
-
+@interface MAVSDKMocapSpeedBody : NSObject
 
 
 @property (nonatomic, assign) float xMS;
-
-
 @property (nonatomic, assign) float yMS;
-
-
 @property (nonatomic, assign) float zMS;
 
 
-
 @end
 
 
 
 
-@interface MVSAngularVelocityBody : NSObject
-
+@interface MAVSDKMocapAngularVelocityBody : NSObject
 
 
 @property (nonatomic, assign) float rollRadS;
-
-
 @property (nonatomic, assign) float pitchRadS;
-
-
 @property (nonatomic, assign) float yawRadS;
-
 
 
 @end
@@ -83,56 +61,38 @@
 
 
 
-@interface MVSCovariance : NSObject
-
+@interface MAVSDKMocapCovariance : NSObject
 
 
 @property (nonatomic, assign) float covarianceMatrix;
 
 
-
 @end
 
 
 
 
-@interface MVSQuaternion : NSObject
-
+@interface MAVSDKMocapQuaternion : NSObject
 
 
 @property (nonatomic, assign) float w;
-
-
 @property (nonatomic, assign) float x;
-
-
 @property (nonatomic, assign) float y;
-
-
 @property (nonatomic, assign) float z;
 
 
-
 @end
 
 
 
 
-@interface MVSVisionPositionEstimate : NSObject
-
+@interface MAVSDKMocapVisionPositionEstimate : NSObject
 
 
 @property (nonatomic, assign) UInt64 timeUsec;
-
-
-@property (nonatomic, strong) MVSPositionBody *positionBody;
-
-
-@property (nonatomic, strong) MVSAngleBody *angleBody;
-
-
-@property (nonatomic, strong) MVSCovariance *poseCovariance;
-
+@property (nonatomic, strong) MAVSDKMocapPositionBody *positionBody;
+@property (nonatomic, strong) MAVSDKMocapAngleBody *angleBody;
+@property (nonatomic, strong) MAVSDKMocapCovariance *poseCovariance;
 
 
 @end
@@ -140,21 +100,13 @@
 
 
 
-@interface MVSAttitudePositionMocap : NSObject
-
+@interface MAVSDKMocapAttitudePositionMocap : NSObject
 
 
 @property (nonatomic, assign) UInt64 timeUsec;
-
-
-@property (nonatomic, strong) MVSQuaternion *q;
-
-
-@property (nonatomic, strong) MVSPositionBody *positionBody;
-
-
-@property (nonatomic, strong) MVSCovariance *poseCovariance;
-
+@property (nonatomic, strong) MAVSDKMocapQuaternion *q;
+@property (nonatomic, strong) MAVSDKMocapPositionBody *positionBody;
+@property (nonatomic, strong) MAVSDKMocapCovariance *poseCovariance;
 
 
 @end
@@ -163,39 +115,23 @@
 
 
 
-@interface MVSOdometry : NSObject
+@interface MAVSDKMocapOdometry : NSObject
 
 
 
-typedef NS_ENUM(NSInteger, MVSMavFrame)  {
-    MVSMavFrameMocapNed,
-    MVSMavFrameLocalFrd,
+typedef NS_ENUM(NSInteger, MAVSDKMocapMavFrame)  {
+    MAVSDKMocapMavFrameMocapNed,
+    MAVSDKMocapMavFrameLocalFrd,
 };
 
-
 @property (nonatomic, assign) UInt64 timeUsec;
-
-
-@property (nonatomic, assign) MVSMavFrame frameId;
-
-
-@property (nonatomic, strong) MVSPositionBody *positionBody;
-
-
-@property (nonatomic, strong) MVSQuaternion *q;
-
-
-@property (nonatomic, strong) MVSSpeedBody *speedBody;
-
-
-@property (nonatomic, strong) MVSAngularVelocityBody *angularVelocityBody;
-
-
-@property (nonatomic, strong) MVSCovariance *poseCovariance;
-
-
-@property (nonatomic, strong) MVSCovariance *velocityCovariance;
-
+@property (nonatomic, assign) MAVSDKMocapMavFrame frameId;
+@property (nonatomic, strong) MAVSDKMocapPositionBody *positionBody;
+@property (nonatomic, strong) MAVSDKMocapQuaternion *q;
+@property (nonatomic, strong) MAVSDKMocapSpeedBody *speedBody;
+@property (nonatomic, strong) MAVSDKMocapAngularVelocityBody *angularVelocityBody;
+@property (nonatomic, strong) MAVSDKMocapCovariance *poseCovariance;
+@property (nonatomic, strong) MAVSDKMocapCovariance *velocityCovariance;
 
 
 @end
@@ -205,30 +141,24 @@ typedef NS_ENUM(NSInteger, MVSMavFrame)  {
 
 
 
-typedef NS_ENUM(NSInteger, MVSResult)  {
-    MVSResultUnknown,
-    MVSResultSuccess,
-    MVSResultNoSystem,
-    MVSResultConnectionError,
-    MVSResultInvalidRequestData,
+typedef NS_ENUM(NSInteger, MAVSDKMocapResult)  {
+    MAVSDKMocapResultUnknown,
+    MAVSDKMocapResultSuccess,
+    MAVSDKMocapResultNoSystem,
+    MAVSDKMocapResultConnectionError,
+    MAVSDKMocapResultInvalidRequestData,
 };
 
 
 
-@interface MVSMocap : NSObject
+@interface MAVSDKMocap : NSObject
 
-- (MVSResult)setVisionPositionEstimate
-:(
-MVSVisionPositionEstimate*)
-visionPositionEstimate;
-- (MVSResult)setAttitudePositionMocap
-:(
-MVSAttitudePositionMocap*)
-attitudePositionMocap;
-- (MVSResult)setOdometry
-:(
-MVSOdometry*)
-odometry;
+- (id)initWithMavsdkSwift2Impl:(MavsdkSwift2Impl*)mavsdkSwift2Impl;
+- (MAVSDKMocapResult)setVisionPositionEstimate :( MAVSDKMocapVisionPositionEstimate*) visionPositionEstimate;
+- (MAVSDKMocapResult)setAttitudePositionMocap :( MAVSDKMocapAttitudePositionMocap*) attitudePositionMocap;
+- (MAVSDKMocapResult)setOdometry :( MAVSDKMocapOdometry*) odometry;
 
 
 @end
+
+#endif // plugin_mocap_h

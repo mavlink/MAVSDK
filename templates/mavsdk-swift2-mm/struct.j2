@@ -1,0 +1,64 @@
+{% if not name.upper_camel_case.endswith('Result') -%}
+
+MAVSDK{{ plugin_name.upper_camel_case }}{{ name.upper_camel_case }}* translateFromCpp{{ name.upper_camel_case }}(mavsdk::{{ plugin_name.upper_camel_case }}::{{ name.upper_camel_case }} {{ name.lower_snake_case }})
+{
+    MAVSDK{{ plugin_name.upper_camel_case }}{{ name.upper_camel_case }} *obj = [[MAVSDK{{ plugin_name.upper_camel_case }}{{ name.upper_camel_case }} alloc] init];
+
+{% for field in fields -%}
+    {% if field.type_info.is_primitive %}
+        {% if field.type_info.is_repeated %}
+            for (const auto& elem : {{ name.lower_camel_case }}.{{ field.name.lower_snake_case }}()) {
+                [obj.{{ field.name.lower_camel_case }} addObject:elem];
+            }
+        {% elif field.type_info.is_string %}
+    [NSString stringWithCString:{{ name.lower_snake_case }}.{{ field.name.lower_snake_case }}.c_str()
+                       encoding:[NSString defaultCStringEncoding]];
+        {% else %}
+    obj.{{ field.name.lower_camel_case }} = {{ name.lower_snake_case }}.{{ field.name.lower_snake_case }};
+        {% endif %}
+    {% else %}
+        {% if field.type_info.is_repeated %}
+            for (const auto& elem : {{ name.lower_snake_case }}.{{ field.name.lower_snake_case }}) {
+                [obj.{{ field.name.lower_camel_case }} addObject:translateFromCpp{{ field.type_info.inner_name }}(elem)];
+            }
+        {% elif field.type_info.is_enum %}
+    obj.{{ field.name.lower_camel_case }} = (MAVSDK{{ plugin_name.upper_camel_case }}{{ field.type_info.name }}){{ name.lower_snake_case }}.{{ field.name.lower_snake_case }};
+        {% else %}
+    obj.{{ field.name.lower_camel_case }} = translateFromCpp{% if field.parent_struct %}{{ field.parent_struct.name.upper_camel_case }}{% endif%}{{ field.type_info.name }}({{ name.lower_snake_case }}.{{ field.name.lower_snake_case }});
+        {% endif %}
+    {% endif %}
+{%- endfor %}
+    return obj;
+}
+
+mavsdk::{{ plugin_name.upper_camel_case }}::{{ name.upper_camel_case }} translateToCpp{{ name.upper_camel_case }}(MAVSDK{{ plugin_name.upper_camel_case }}{{ name.upper_camel_case }}* {{ name.lower_camel_case }})
+{
+    mavsdk::{{ plugin_name.upper_camel_case }}::{{ name.upper_camel_case }} obj;
+
+{% for field in fields -%}
+    {% if field.type_info.is_primitive %}
+        {% if field.type_info.is_repeated %}
+            for (MAVSDK{{ plugin_name.upper_camel_case }}{{ field.type_info.inner_name }} *elem in {{ name.lower_camel_case }}.{{ field.name.lower_camel_case }}) {
+                [obj.{{ field.name.lower_snake_case }} push_back(elem)];
+            }
+        {% elif field.type_info.is_string %}
+    obj.{{ field.name.lower_snake_case }} = [{{ name.lower_camel_case }}.{{ field.name.lower_camel_case }} UTF8String];
+        {% else %}
+    obj.{{ field.name.lower_snake_case }} = {{ name.lower_camel_case }}.{{ field.name.lower_camel_case }};
+        {% endif %}
+    {% else %}
+        {% if field.type_info.is_repeated %}
+            for (MAVSDK{{ plugin_name.upper_camel_case }}{{ field.type_info.inner_name }} *elem in {{ name.lower_camel_case }}.{{ field.name.lower_camel_case }}) {
+                obj.{{ field.name.lower_snake_case }}.push_back(translateToCpp{{ field.type_info.inner_name }}(elem));
+            }
+        {% elif field.type_info.is_enum %}
+    obj.{{ field.name.lower_snake_case }} = (mavsdk::{{ plugin_name.upper_camel_case }}::{% if field.parent_struct %}{{ field.parent_struct.name.upper_camel_case }}::{% endif%}{{ name.upper_camel_case }}::{{ field.type_info.name }})({{ name.lower_camel_case }}.{{ field.name.lower_camel_case }});
+        {% else %}
+    obj.{{ field.name.lower_snake_case }} = translateToCpp{% if field.parent_struct %}{{ field.parent_struct.name.upper_camel_case }}{% endif%}{{ field.type_info.name }}({{ name.lower_camel_case }}.{{ field.name.lower_camel_case }});
+        {% endif %}
+    {% endif %}
+{%- endfor %}
+    return obj;
+}
+
+{% endif %}

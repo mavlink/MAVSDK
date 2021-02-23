@@ -1,27 +1,21 @@
+#ifndef plugin_offboard_h
+#define plugin_offboard_h
+
 #import <Foundation/Foundation.h>
 
-#include <mavsdk/mavsdk.h>
-#include <mavsdk/plugins/offboard/offboard.h>
+@class MavsdkSwift2Impl;
 
 
 
 
 
-@interface MVSAttitude : NSObject
-
+@interface MAVSDKOffboardAttitude : NSObject
 
 
 @property (nonatomic, assign) float rollDeg;
-
-
 @property (nonatomic, assign) float pitchDeg;
-
-
 @property (nonatomic, assign) float yawDeg;
-
-
 @property (nonatomic, assign) float thrustValue;
-
 
 
 @end
@@ -29,69 +23,49 @@
 
 
 
-@interface MVSActuatorControlGroup : NSObject
-
+@interface MAVSDKOffboardActuatorControlGroup : NSObject
 
 
 @property (nonatomic, assign) float controls;
 
 
+@end
+
+
+
+
+@interface MAVSDKOffboardActuatorControl : NSObject
+
+
+@property (nonatomic, strong) NSMutableArray *groups; 
+
 
 @end
 
 
 
 
-@interface MVSActuatorControl : NSObject
-
-
-
-@property (nonatomic, strong) NSMutableArray *groups;
-
-
-
-@end
-
-
-
-
-@interface MVSAttitudeRate : NSObject
-
+@interface MAVSDKOffboardAttitudeRate : NSObject
 
 
 @property (nonatomic, assign) float rollDegS;
-
-
 @property (nonatomic, assign) float pitchDegS;
-
-
 @property (nonatomic, assign) float yawDegS;
-
-
 @property (nonatomic, assign) float thrustValue;
 
 
-
 @end
 
 
 
 
-@interface MVSPositionNedYaw : NSObject
-
+@interface MAVSDKOffboardPositionNedYaw : NSObject
 
 
 @property (nonatomic, assign) float northM;
-
-
 @property (nonatomic, assign) float eastM;
-
-
 @property (nonatomic, assign) float downM;
-
-
 @property (nonatomic, assign) float yawDeg;
-
 
 
 @end
@@ -99,43 +73,27 @@
 
 
 
-@interface MVSVelocityBodyYawspeed : NSObject
-
+@interface MAVSDKOffboardVelocityBodyYawspeed : NSObject
 
 
 @property (nonatomic, assign) float forwardMS;
-
-
 @property (nonatomic, assign) float rightMS;
-
-
 @property (nonatomic, assign) float downMS;
-
-
 @property (nonatomic, assign) float yawspeedDegS;
 
 
-
 @end
 
 
 
 
-@interface MVSVelocityNedYaw : NSObject
-
+@interface MAVSDKOffboardVelocityNedYaw : NSObject
 
 
 @property (nonatomic, assign) float northMS;
-
-
 @property (nonatomic, assign) float eastMS;
-
-
 @property (nonatomic, assign) float downMS;
-
-
 @property (nonatomic, assign) float yawDeg;
-
 
 
 @end
@@ -145,56 +103,34 @@
 
 
 
-typedef NS_ENUM(NSInteger, MVSResult)  {
-    MVSResultUnknown,
-    MVSResultSuccess,
-    MVSResultNoSystem,
-    MVSResultConnectionError,
-    MVSResultBusy,
-    MVSResultCommandDenied,
-    MVSResultTimeout,
-    MVSResultNoSetpointSet,
+typedef NS_ENUM(NSInteger, MAVSDKOffboardResult)  {
+    MAVSDKOffboardResultUnknown,
+    MAVSDKOffboardResultSuccess,
+    MAVSDKOffboardResultNoSystem,
+    MAVSDKOffboardResultConnectionError,
+    MAVSDKOffboardResultBusy,
+    MAVSDKOffboardResultCommandDenied,
+    MAVSDKOffboardResultTimeout,
+    MAVSDKOffboardResultNoSetpointSet,
 };
 
 
 
-@interface MVSOffboard : NSObject
+@interface MAVSDKOffboard : NSObject
 
-- (MVSResult)start
-;
-- (MVSResult)stop
-;
+- (id)initWithMavsdkSwift2Impl:(MavsdkSwift2Impl*)mavsdkSwift2Impl;
+- (MAVSDKOffboardResult)start ;
+- (MAVSDKOffboardResult)stop ;
 
-- (MVSResult)setAttitude
-:(
-MVSAttitude*)
-attitude;
-- (MVSResult)setActuatorControl
-:(
-MVSActuatorControl*)
-actuatorControl;
-- (MVSResult)setAttitudeRate
-:(
-MVSAttitudeRate*)
-attitudeRate;
-- (MVSResult)setPositionNed
-:(
-MVSPositionNedYaw*)
-positionNedYaw;
-- (MVSResult)setVelocityBody
-:(
-MVSVelocityBodyYawspeed*)
-velocityBodyYawspeed;
-- (MVSResult)setVelocityNed
-:(
-MVSVelocityNedYaw*)
-velocityNedYaw;
-- (MVSResult)setPositionVelocityNed
-:(
-MVSPositionNedYaw*)
-positionNedYaw :(
-MVSVelocityNedYaw*)
-velocityNedYaw;
+- (MAVSDKOffboardResult)setAttitude :( MAVSDKOffboardAttitude*) attitude;
+- (MAVSDKOffboardResult)setActuatorControl :( MAVSDKOffboardActuatorControl*) actuatorControl;
+- (MAVSDKOffboardResult)setAttitudeRate :( MAVSDKOffboardAttitudeRate*) attitudeRate;
+- (MAVSDKOffboardResult)setPositionNed :( MAVSDKOffboardPositionNedYaw*) positionNedYaw;
+- (MAVSDKOffboardResult)setVelocityBody :( MAVSDKOffboardVelocityBodyYawspeed*) velocityBodyYawspeed;
+- (MAVSDKOffboardResult)setVelocityNed :( MAVSDKOffboardVelocityNedYaw*) velocityNedYaw;
+- (MAVSDKOffboardResult)setPositionVelocityNed :( MAVSDKOffboardPositionNedYaw*) positionNedYaw :( MAVSDKOffboardVelocityNedYaw*) velocityNedYaw;
 
 
 @end
+
+#endif // plugin_offboard_h

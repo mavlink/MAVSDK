@@ -1,16 +1,18 @@
+#ifndef plugin_action_h
+#define plugin_action_h
+
 #import <Foundation/Foundation.h>
 
-#include <mavsdk/mavsdk.h>
-#include <mavsdk/plugins/action/action.h>
+@class MavsdkSwift2Impl;
 
 
 
-typedef NS_ENUM(NSInteger, MVSOrbitYawBehavior)  {
-    MVSOrbitYawBehaviorHoldFrontToCircleCenter,
-    MVSOrbitYawBehaviorHoldInitialHeading,
-    MVSOrbitYawBehaviorUncontrolled,
-    MVSOrbitYawBehaviorHoldFrontTangentToCircle,
-    MVSOrbitYawBehaviorRcControlled,
+typedef NS_ENUM(NSInteger, MAVSDKActionOrbitYawBehavior)  {
+    MAVSDKActionOrbitYawBehaviorHoldFrontToCircleCenter,
+    MAVSDKActionOrbitYawBehaviorHoldInitialHeading,
+    MAVSDKActionOrbitYawBehaviorUncontrolled,
+    MAVSDKActionOrbitYawBehaviorHoldFrontTangentToCircle,
+    MAVSDKActionOrbitYawBehaviorRcControlled,
 };
 
 
@@ -18,86 +20,47 @@ typedef NS_ENUM(NSInteger, MVSOrbitYawBehavior)  {
 
 
 
-typedef NS_ENUM(NSInteger, MVSResult)  {
-    MVSResultUnknown,
-    MVSResultSuccess,
-    MVSResultNoSystem,
-    MVSResultConnectionError,
-    MVSResultBusy,
-    MVSResultCommandDenied,
-    MVSResultCommandDeniedLandedStateUnknown,
-    MVSResultCommandDeniedNotLanded,
-    MVSResultTimeout,
-    MVSResultVtolTransitionSupportUnknown,
-    MVSResultNoVtolTransitionSupport,
-    MVSResultParameterError,
+typedef NS_ENUM(NSInteger, MAVSDKActionResult)  {
+    MAVSDKActionResultUnknown,
+    MAVSDKActionResultSuccess,
+    MAVSDKActionResultNoSystem,
+    MAVSDKActionResultConnectionError,
+    MAVSDKActionResultBusy,
+    MAVSDKActionResultCommandDenied,
+    MAVSDKActionResultCommandDeniedLandedStateUnknown,
+    MAVSDKActionResultCommandDeniedNotLanded,
+    MAVSDKActionResultTimeout,
+    MAVSDKActionResultVtolTransitionSupportUnknown,
+    MAVSDKActionResultNoVtolTransitionSupport,
+    MAVSDKActionResultParameterError,
 };
 
 
 
-@interface MVSAction : NSObject
+@interface MAVSDKAction : NSObject
 
-- (MVSResult)arm
-;
-- (MVSResult)disarm
-;
-- (MVSResult)takeoff
-;
-- (MVSResult)land
-;
-- (MVSResult)reboot
-;
-- (MVSResult)shutdown
-;
-- (MVSResult)terminate
-;
-- (MVSResult)kill
-;
-- (MVSResult)returnToLaunch
-;
-- (MVSResult)gotoLocation
-:(
-double)
-latitudeDeg :(
-double)
-longitudeDeg :(
-float)
-absoluteAltitudeM :(
-float)
-yawDeg;
-- (MVSResult)doOrbit
-:(
-float)
-radiusM :(
-float)
-velocityMs :(
-MVSOrbitYawBehavior*)
-yawBehavior :(
-double)
-latitudeDeg :(
-double)
-longitudeDeg :(
-double)
-absoluteAltitudeM;
-- (MVSResult)transitionToFixedwing
-;
-- (MVSResult)transitionToMulticopter
-;
+- (id)initWithMavsdkSwift2Impl:(MavsdkSwift2Impl*)mavsdkSwift2Impl;
+- (MAVSDKActionResult)arm ;
+- (MAVSDKActionResult)disarm ;
+- (MAVSDKActionResult)takeoff ;
+- (MAVSDKActionResult)land ;
+- (MAVSDKActionResult)reboot ;
+- (MAVSDKActionResult)shutdown ;
+- (MAVSDKActionResult)terminate ;
+- (MAVSDKActionResult)kill ;
+- (MAVSDKActionResult)returnToLaunch ;
+- (MAVSDKActionResult)gotoLocation :( double) latitudeDeg :( double) longitudeDeg :( float) absoluteAltitudeM :( float) yawDeg;
+- (MAVSDKActionResult)doOrbit :( float) radiusM :( float) velocityMs :( MAVSDKActionOrbitYawBehavior) yawBehavior :( double) latitudeDeg :( double) longitudeDeg :( double) absoluteAltitudeM;
+- (MAVSDKActionResult)transitionToFixedwing ;
+- (MAVSDKActionResult)transitionToMulticopter ;
 
-- (MVSResult)setTakeoffAltitude
-:(
-float)
-altitude;
+- (MAVSDKActionResult)setTakeoffAltitude :( float) altitude;
 
-- (MVSResult)setMaximumSpeed
-:(
-float)
-speed;
+- (MAVSDKActionResult)setMaximumSpeed :( float) speed;
 
-- (MVSResult)setReturnToLaunchAltitude
-:(
-float)
-relativeAltitudeM;
+- (MAVSDKActionResult)setReturnToLaunchAltitude :( float) relativeAltitudeM;
 
 
 @end
+
+#endif // plugin_action_h

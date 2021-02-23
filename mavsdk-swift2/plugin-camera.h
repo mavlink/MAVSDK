@@ -1,14 +1,22 @@
+#ifndef plugin_camera_h
+#define plugin_camera_h
+
 #import <Foundation/Foundation.h>
 
-#include <mavsdk/mavsdk.h>
-#include <mavsdk/plugins/camera/camera.h>
+@class MavsdkSwift2Impl;
 
 
 
-typedef NS_ENUM(NSInteger, MVSMode)  {
-    MVSModeUnknown,
-    MVSModePhoto,
-    MVSModeVideo,
+typedef NS_ENUM(NSInteger, MAVSDKCameraMode)  {
+    MAVSDKCameraModeUnknown,
+    MAVSDKCameraModePhoto,
+    MAVSDKCameraModeVideo,
+};
+
+
+typedef NS_ENUM(NSInteger, MAVSDKCameraPhotosRange)  {
+    MAVSDKCameraPhotosRangeAll,
+    MAVSDKCameraPhotosRangeSinceConnection,
 };
 
 
@@ -16,135 +24,106 @@ typedef NS_ENUM(NSInteger, MVSMode)  {
 
 
 
-typedef NS_ENUM(NSInteger, MVSResult)  {
-    MVSResultUnknown,
-    MVSResultSuccess,
-    MVSResultInProgress,
-    MVSResultBusy,
-    MVSResultDenied,
-    MVSResultError,
-    MVSResultTimeout,
-    MVSResultWrongArgument,
+typedef NS_ENUM(NSInteger, MAVSDKCameraResult)  {
+    MAVSDKCameraResultUnknown,
+    MAVSDKCameraResultSuccess,
+    MAVSDKCameraResultInProgress,
+    MAVSDKCameraResultBusy,
+    MAVSDKCameraResultDenied,
+    MAVSDKCameraResultError,
+    MAVSDKCameraResultTimeout,
+    MAVSDKCameraResultWrongArgument,
 };
 
 
 
-@interface MVSPosition : NSObject
-
+@interface MAVSDKCameraPosition : NSObject
 
 
 @property (nonatomic, assign) double latitudeDeg;
-
-
 @property (nonatomic, assign) double longitudeDeg;
-
-
 @property (nonatomic, assign) float absoluteAltitudeM;
-
-
 @property (nonatomic, assign) float relativeAltitudeM;
 
 
-
 @end
 
 
 
 
-@interface MVSQuaternion : NSObject
-
+@interface MAVSDKCameraQuaternion : NSObject
 
 
 @property (nonatomic, assign) float w;
-
-
 @property (nonatomic, assign) float x;
-
-
 @property (nonatomic, assign) float y;
-
-
 @property (nonatomic, assign) float z;
 
 
-
 @end
 
 
 
 
-@interface MVSEulerAngle : NSObject
-
+@interface MAVSDKCameraEulerAngle : NSObject
 
 
 @property (nonatomic, assign) float rollDeg;
-
-
 @property (nonatomic, assign) float pitchDeg;
-
-
 @property (nonatomic, assign) float yawDeg;
 
 
-
 @end
 
 
 
 
-@interface MVSCaptureInfo : NSObject
+@interface MAVSDKCameraCaptureInfo : NSObject
 
 
-
-@property (nonatomic, strong) MVSPosition *position;
-
-
-@property (nonatomic, strong) MVSQuaternion *attitudeQuaternion;
-
-
-@property (nonatomic, strong) MVSEulerAngle *attitudeEulerAngle;
-
-
+@property (nonatomic, strong) MAVSDKCameraPosition *position;
+@property (nonatomic, strong) MAVSDKCameraQuaternion *attitudeQuaternion;
+@property (nonatomic, strong) MAVSDKCameraEulerAngle *attitudeEulerAngle;
 @property (nonatomic, assign) UInt64 timeUtcUs;
-
-
 @property (nonatomic, assign) BOOL isSuccess;
-
-
 @property (nonatomic, assign) NSInteger index;
-
-
 @property (nonatomic, strong) NSString *fileUrl;
 
 
-
 @end
 
 
 
 
-@interface MVSVideoStreamSettings : NSObject
-
+@interface MAVSDKCameraVideoStreamSettings : NSObject
 
 
 @property (nonatomic, assign) float frameRateHz;
-
-
 @property (nonatomic, assign) UInt32 horizontalResolutionPix;
-
-
 @property (nonatomic, assign) UInt32 verticalResolutionPix;
-
-
 @property (nonatomic, assign) UInt32 bitRateBS;
-
-
 @property (nonatomic, assign) UInt32 rotationDeg;
-
-
 @property (nonatomic, strong) NSString *uri;
 
 
+@end
+
+
+
+
+
+@interface MAVSDKCameraVideoStreamInfo : NSObject
+
+
+
+typedef NS_ENUM(NSInteger, MAVSDKCameraVideoStreamStatus)  {
+    MAVSDKCameraVideoStreamStatusNotRunning,
+    MAVSDKCameraVideoStreamStatusInProgress,
+};
+
+@property (nonatomic, strong) MAVSDKCameraVideoStreamSettings *settings;
+@property (nonatomic, assign) MAVSDKCameraVideoStreamStatus status;
+
 
 @end
 
@@ -152,63 +131,24 @@ typedef NS_ENUM(NSInteger, MVSResult)  {
 
 
 
-@interface MVSVideoStreamInfo : NSObject
+@interface MAVSDKCameraStatus : NSObject
 
 
 
-typedef NS_ENUM(NSInteger, MVSStatus)  {
-    MVSStatusNotRunning,
-    MVSStatusInProgress,
+typedef NS_ENUM(NSInteger, MAVSDKCameraStorageStatus)  {
+    MAVSDKCameraStorageStatusNotAvailable,
+    MAVSDKCameraStorageStatusUnformatted,
+    MAVSDKCameraStorageStatusFormatted,
 };
-
-
-@property (nonatomic, strong) MVSVideoStreamSettings *settings;
-
-    
-@property (nonatomic, assign) MVSStatus status;
-
-
-
-@end
-
-
-
-
-
-@interface MVSStatus : NSObject
-
-
-
-typedef NS_ENUM(NSInteger, MVSStorageStatus)  {
-    MVSStorageStatusNotAvailable,
-    MVSStorageStatusUnformatted,
-    MVSStorageStatusFormatted,
-};
-
 
 @property (nonatomic, assign) BOOL videoOn;
-
-
 @property (nonatomic, assign) BOOL photoIntervalOn;
-
-
 @property (nonatomic, assign) float usedStorageMib;
-
-
 @property (nonatomic, assign) float availableStorageMib;
-
-
 @property (nonatomic, assign) float totalStorageMib;
-
-
 @property (nonatomic, assign) float recordingTimeS;
-
-
 @property (nonatomic, strong) NSString *mediaFolderName;
-
-
-@property (nonatomic, assign) MVSStorageStatus storageStatus;
-
+@property (nonatomic, assign) MAVSDKCameraStorageStatus storageStatus;
 
 
 @end
@@ -216,37 +156,25 @@ typedef NS_ENUM(NSInteger, MVSStorageStatus)  {
 
 
 
-@interface MVSOption : NSObject
-
+@interface MAVSDKCameraOption : NSObject
 
 
 @property (nonatomic, strong) NSString *optionId;
-
-
 @property (nonatomic, strong) NSString *optionDescription;
 
 
-
 @end
 
 
 
 
-@interface MVSSetting : NSObject
-
+@interface MAVSDKCameraSetting : NSObject
 
 
 @property (nonatomic, strong) NSString *settingId;
-
-
 @property (nonatomic, strong) NSString *settingDescription;
-
-
-@property (nonatomic, strong) MVSOption *option;
-
-
+@property (nonatomic, strong) MAVSDKCameraOption *option;
 @property (nonatomic, assign) BOOL isRange;
-
 
 
 @end
@@ -254,21 +182,13 @@ typedef NS_ENUM(NSInteger, MVSStorageStatus)  {
 
 
 
-@interface MVSSettingOptions : NSObject
-
+@interface MAVSDKCameraSettingOptions : NSObject
 
 
 @property (nonatomic, strong) NSString *settingId;
-
-
 @property (nonatomic, strong) NSString *settingDescription;
-
-
-@property (nonatomic, strong) NSMutableArray *options;
-
-
+@property (nonatomic, strong) NSMutableArray *options; 
 @property (nonatomic, assign) BOOL isRange;
-
 
 
 @end
@@ -276,44 +196,29 @@ typedef NS_ENUM(NSInteger, MVSStorageStatus)  {
 
 
 
-@interface MVSInformation : NSObject
-
+@interface MAVSDKCameraInformation : NSObject
 
 
 @property (nonatomic, strong) NSString *vendorName;
-
-
 @property (nonatomic, strong) NSString *modelName;
 
 
-
 @end
 
 
 
 
-@interface MVSCamera : NSObject
+@interface MAVSDKCamera : NSObject
 
-- (MVSResult)takePhoto
-;
-- (MVSResult)startPhotoInterval
-:(
-float)
-intervalS;
-- (MVSResult)stopPhotoInterval
-;
-- (MVSResult)startVideo
-;
-- (MVSResult)stopVideo
-;
-- (MVSResult)startVideoStreaming
-;
-- (MVSResult)stopVideoStreaming
-;
-- (MVSResult)setMode
-:(
-MVSMode*)
-mode;
+- (id)initWithMavsdkSwift2Impl:(MavsdkSwift2Impl*)mavsdkSwift2Impl;
+- (MAVSDKCameraResult)takePhoto ;
+- (MAVSDKCameraResult)startPhotoInterval :( float) intervalS;
+- (MAVSDKCameraResult)stopPhotoInterval ;
+- (MAVSDKCameraResult)startVideo ;
+- (MAVSDKCameraResult)stopVideo ;
+- (MAVSDKCameraResult)startVideoStreaming ;
+- (MAVSDKCameraResult)stopVideoStreaming ;
+- (MAVSDKCameraResult)setMode :( MAVSDKCameraMode) mode;
 
 
 
@@ -321,13 +226,12 @@ mode;
 
 
 
-- (MVSResult)setSetting
-:(
-MVSSetting*)
-setting;
 
-- (MVSResult)formatStorage
-;
+- (MAVSDKCameraResult)setSetting :( MAVSDKCameraSetting*) setting;
+
+- (MAVSDKCameraResult)formatStorage ;
 
 
 @end
+
+#endif // plugin_camera_h

@@ -1,6 +1,22 @@
 #import "plugin-{{ plugin_name.lower_snake_case }}.h"
+#import "mavsdk-swift2-impl.h"
 
-@implementation MVS{{ plugin_name.upper_camel_case }}
+#include <mavsdk/mavsdk.h>
+#include <mavsdk/plugins/{{ plugin_name.lower_snake_case }}/{{ plugin_name.lower_snake_case }}.h>
+
+@implementation MAVSDK{{ plugin_name.upper_camel_case }}
+
+mavsdk::{{ plugin_name.upper_camel_case }} *{{ plugin_name.lower_camel_case }};
+
+
++(id)alloc{
+    return [super alloc];
+}
+
+- (id)initWithMavsdkSwift2Impl:(MavsdkSwift2Impl*)mavsdkSwift2Impl {
+    {{ plugin_name.lower_camel_case }} = new mavsdk::{{ plugin_name.upper_camel_case }}(*[mavsdkSwift2Impl mavsdkSystem]);
+    return [super init];
+}
 
 {% for method in methods -%}
 {{ method }}

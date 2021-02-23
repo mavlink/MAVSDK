@@ -1,68 +1,66 @@
+#ifndef plugin_failure_h
+#define plugin_failure_h
+
 #import <Foundation/Foundation.h>
 
-#include <mavsdk/mavsdk.h>
-#include <mavsdk/plugins/failure/failure.h>
+@class MavsdkSwift2Impl;
 
 
 
-typedef NS_ENUM(NSInteger, MVSFailureUnit)  {
-    MVSFailureUnitSensorGyro,
-    MVSFailureUnitSensorAccel,
-    MVSFailureUnitSensorMag,
-    MVSFailureUnitSensorBaro,
-    MVSFailureUnitSensorGps,
-    MVSFailureUnitSensorOpticalFlow,
-    MVSFailureUnitSensorVio,
-    MVSFailureUnitSensorDistanceSensor,
-    MVSFailureUnitSensorAirspeed,
-    MVSFailureUnitSystemBattery,
-    MVSFailureUnitSystemMotor,
-    MVSFailureUnitSystemServo,
-    MVSFailureUnitSystemAvoidance,
-    MVSFailureUnitSystemRcSignal,
-    MVSFailureUnitSystemMavlinkSignal,
+typedef NS_ENUM(NSInteger, MAVSDKFailureFailureUnit)  {
+    MAVSDKFailureFailureUnitSensorGyro,
+    MAVSDKFailureFailureUnitSensorAccel,
+    MAVSDKFailureFailureUnitSensorMag,
+    MAVSDKFailureFailureUnitSensorBaro,
+    MAVSDKFailureFailureUnitSensorGps,
+    MAVSDKFailureFailureUnitSensorOpticalFlow,
+    MAVSDKFailureFailureUnitSensorVio,
+    MAVSDKFailureFailureUnitSensorDistanceSensor,
+    MAVSDKFailureFailureUnitSensorAirspeed,
+    MAVSDKFailureFailureUnitSystemBattery,
+    MAVSDKFailureFailureUnitSystemMotor,
+    MAVSDKFailureFailureUnitSystemServo,
+    MAVSDKFailureFailureUnitSystemAvoidance,
+    MAVSDKFailureFailureUnitSystemRcSignal,
+    MAVSDKFailureFailureUnitSystemMavlinkSignal,
 };
 
 
-typedef NS_ENUM(NSInteger, MVSFailureType)  {
-    MVSFailureTypeOk,
-    MVSFailureTypeOff,
-    MVSFailureTypeStuck,
-    MVSFailureTypeGarbage,
-    MVSFailureTypeWrong,
-    MVSFailureTypeSlow,
-    MVSFailureTypeDelayed,
-    MVSFailureTypeIntermittent,
-};
-
-
-
-
-
-
-typedef NS_ENUM(NSInteger, MVSResult)  {
-    MVSResultUnknown,
-    MVSResultSuccess,
-    MVSResultNoSystem,
-    MVSResultConnectionError,
-    MVSResultUnsupported,
-    MVSResultDenied,
-    MVSResultDisabled,
-    MVSResultTimeout,
+typedef NS_ENUM(NSInteger, MAVSDKFailureFailureType)  {
+    MAVSDKFailureFailureTypeOk,
+    MAVSDKFailureFailureTypeOff,
+    MAVSDKFailureFailureTypeStuck,
+    MAVSDKFailureFailureTypeGarbage,
+    MAVSDKFailureFailureTypeWrong,
+    MAVSDKFailureFailureTypeSlow,
+    MAVSDKFailureFailureTypeDelayed,
+    MAVSDKFailureFailureTypeIntermittent,
 };
 
 
 
-@interface MVSFailure : NSObject
 
-- (MVSResult)inject
-:(
-MVSFailureUnit*)
-failureUnit :(
-MVSFailureType*)
-failureType :(
-NSInteger)
-instance;
+
+
+typedef NS_ENUM(NSInteger, MAVSDKFailureResult)  {
+    MAVSDKFailureResultUnknown,
+    MAVSDKFailureResultSuccess,
+    MAVSDKFailureResultNoSystem,
+    MAVSDKFailureResultConnectionError,
+    MAVSDKFailureResultUnsupported,
+    MAVSDKFailureResultDenied,
+    MAVSDKFailureResultDisabled,
+    MAVSDKFailureResultTimeout,
+};
+
+
+
+@interface MAVSDKFailure : NSObject
+
+- (id)initWithMavsdkSwift2Impl:(MavsdkSwift2Impl*)mavsdkSwift2Impl;
+- (MAVSDKFailureResult)inject :( MAVSDKFailureFailureUnit) failureUnit :( MAVSDKFailureFailureType) failureType :( NSInteger) instance;
 
 
 @end
+
+#endif // plugin_failure_h

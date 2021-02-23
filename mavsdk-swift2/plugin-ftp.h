@@ -1,21 +1,19 @@
+#ifndef plugin_ftp_h
+#define plugin_ftp_h
+
 #import <Foundation/Foundation.h>
 
-#include <mavsdk/mavsdk.h>
-#include <mavsdk/plugins/ftp/ftp.h>
+@class MavsdkSwift2Impl;
 
 
 
 
 
-@interface MVSProgressData : NSObject
-
+@interface MAVSDKFtpProgressData : NSObject
 
 
 @property (nonatomic, assign) UInt32 bytesTransferred;
-
-
 @property (nonatomic, assign) UInt32 totalBytes;
-
 
 
 @end
@@ -25,57 +23,40 @@
 
 
 
-typedef NS_ENUM(NSInteger, MVSResult)  {
-    MVSResultUnknown,
-    MVSResultSuccess,
-    MVSResultNext,
-    MVSResultTimeout,
-    MVSResultBusy,
-    MVSResultFileIoError,
-    MVSResultFileExists,
-    MVSResultFileDoesNotExist,
-    MVSResultFileProtected,
-    MVSResultInvalidParameter,
-    MVSResultUnsupported,
-    MVSResultProtocolError,
+typedef NS_ENUM(NSInteger, MAVSDKFtpResult)  {
+    MAVSDKFtpResultUnknown,
+    MAVSDKFtpResultSuccess,
+    MAVSDKFtpResultNext,
+    MAVSDKFtpResultTimeout,
+    MAVSDKFtpResultBusy,
+    MAVSDKFtpResultFileIoError,
+    MAVSDKFtpResultFileExists,
+    MAVSDKFtpResultFileDoesNotExist,
+    MAVSDKFtpResultFileProtected,
+    MAVSDKFtpResultInvalidParameter,
+    MAVSDKFtpResultUnsupported,
+    MAVSDKFtpResultProtocolError,
 };
 
 
 
-@interface MVSFtp : NSObject
+@interface MAVSDKFtp : NSObject
+
+- (id)initWithMavsdkSwift2Impl:(MavsdkSwift2Impl*)mavsdkSwift2Impl;
 
 
 
 
+- (MAVSDKFtpResult)createDirectory :( NSString*) remoteDir;
+- (MAVSDKFtpResult)removeDirectory :( NSString*) remoteDir;
+- (MAVSDKFtpResult)removeFile :( NSString*) remoteFilePath;
+- (MAVSDKFtpResult)rename :( NSString*) remoteFromPath :( NSString*) remoteToPath;
 
-- (MVSResult)createDirectory
-:(
-NSString*)
-remoteDir;
-- (MVSResult)removeDirectory
-:(
-NSString*)
-remoteDir;
-- (MVSResult)removeFile
-:(
-NSString*)
-remoteFilePath;
-- (MVSResult)rename
-:(
-NSString*)
-remoteFromPath :(
-NSString*)
-remoteToPath;
-
-- (MVSResult)setRootDirectory
-:(
-NSString*)
-rootDir;
-- (MVSResult)setTargetCompid
-:(
-UInt32)
-compid;
+- (MAVSDKFtpResult)setRootDirectory :( NSString*) rootDir;
+- (MAVSDKFtpResult)setTargetCompid :( UInt32) compid;
 
 
 
 @end
+
+#endif // plugin_ftp_h

@@ -1,6 +1,3 @@
 {% if is_sync -%}
-- ({% if has_result %}MVSResult{% else %}void{% endif %}){{ name.lower_camel_case }}
-{% for param in params %}:(
-{% if param.type_info.name.endswith("Result") %}MVSResult{% else %}{% if param.type_info.is_string %}{{ param.type_info.name }}*{% elif param.type_info.is_primitive %}{{ param.type_info.name }}{% else %}MVS{{ param.type_info.name }}*{% endif %}{% endif %})
-{{ param.name.lower_camel_case }}{{ " " if not loop.last }}{% endfor %};
+- ({% if has_result %}MAVSDK{{ plugin_name.upper_camel_case }}Result{% else %}void{% endif %}){{ name.lower_camel_case }} {% for param in params %}:( {% if param.type_info.name.endswith("Result") %}MAVSDK{{ plugin_name.upper_camel_case }}Result{% else %}{% if param.type_info.is_string %}{{ param.type_info.name }}*{% elif param.type_info.is_enum %}MAVSDK{{ plugin_name.upper_camel_case }}{{ param.type_info.name }}{% elif param.type_info.is_primitive %}{{ param.type_info.name }}{% else %}MAVSDK{{ plugin_name.upper_camel_case }}{{ param.type_info.name }}*{% endif %}{% endif %}) {{ param.name.lower_camel_case }}{{ " " if not loop.last }}{% endfor %};
 {%- endif %}

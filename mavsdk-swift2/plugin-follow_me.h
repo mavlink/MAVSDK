@@ -1,65 +1,47 @@
+#ifndef plugin_follow_me_h
+#define plugin_follow_me_h
+
 #import <Foundation/Foundation.h>
 
-#include <mavsdk/mavsdk.h>
-#include <mavsdk/plugins/follow_me/follow_me.h>
+@class MavsdkSwift2Impl;
 
 
 
 
 
 
-@interface MVSConfig : NSObject
+@interface MAVSDKFollowMeConfig : NSObject
 
 
 
-typedef NS_ENUM(NSInteger, MVSFollowDirection)  {
-    MVSFollowDirectionNone,
-    MVSFollowDirectionBehind,
-    MVSFollowDirectionFront,
-    MVSFollowDirectionFrontRight,
-    MVSFollowDirectionFrontLeft,
+typedef NS_ENUM(NSInteger, MAVSDKFollowMeFollowDirection)  {
+    MAVSDKFollowMeFollowDirectionNone,
+    MAVSDKFollowMeFollowDirectionBehind,
+    MAVSDKFollowMeFollowDirectionFront,
+    MAVSDKFollowMeFollowDirectionFrontRight,
+    MAVSDKFollowMeFollowDirectionFrontLeft,
 };
 
-
 @property (nonatomic, assign) float minHeightM;
-
-
 @property (nonatomic, assign) float followDistanceM;
-
-
-@property (nonatomic, assign) MVSFollowDirection followDirection;
-
-
+@property (nonatomic, assign) MAVSDKFollowMeFollowDirection followDirection;
 @property (nonatomic, assign) float responsiveness;
 
 
-
 @end
 
 
 
 
-@interface MVSTargetLocation : NSObject
-
+@interface MAVSDKFollowMeTargetLocation : NSObject
 
 
 @property (nonatomic, assign) double latitudeDeg;
-
-
 @property (nonatomic, assign) double longitudeDeg;
-
-
 @property (nonatomic, assign) float absoluteAltitudeM;
-
-
 @property (nonatomic, assign) float velocityXMS;
-
-
 @property (nonatomic, assign) float velocityYMS;
-
-
 @property (nonatomic, assign) float velocityZMS;
-
 
 
 @end
@@ -69,37 +51,32 @@ typedef NS_ENUM(NSInteger, MVSFollowDirection)  {
 
 
 
-typedef NS_ENUM(NSInteger, MVSResult)  {
-    MVSResultUnknown,
-    MVSResultSuccess,
-    MVSResultNoSystem,
-    MVSResultConnectionError,
-    MVSResultBusy,
-    MVSResultCommandDenied,
-    MVSResultTimeout,
-    MVSResultNotActive,
-    MVSResultSetConfigFailed,
+typedef NS_ENUM(NSInteger, MAVSDKFollowMeResult)  {
+    MAVSDKFollowMeResultUnknown,
+    MAVSDKFollowMeResultSuccess,
+    MAVSDKFollowMeResultNoSystem,
+    MAVSDKFollowMeResultConnectionError,
+    MAVSDKFollowMeResultBusy,
+    MAVSDKFollowMeResultCommandDenied,
+    MAVSDKFollowMeResultTimeout,
+    MAVSDKFollowMeResultNotActive,
+    MAVSDKFollowMeResultSetConfigFailed,
 };
 
 
 
-@interface MVSFollowMe : NSObject
+@interface MAVSDKFollowMe : NSObject
 
+- (id)initWithMavsdkSwift2Impl:(MavsdkSwift2Impl*)mavsdkSwift2Impl;
 
-- (MVSResult)setConfig
-:(
-MVSConfig*)
-config;
+- (MAVSDKFollowMeResult)setConfig :( MAVSDKFollowMeConfig*) config;
 
-- (MVSResult)setTargetLocation
-:(
-MVSTargetLocation*)
-location;
+- (MAVSDKFollowMeResult)setTargetLocation :( MAVSDKFollowMeTargetLocation*) location;
 
-- (MVSResult)start
-;
-- (MVSResult)stop
-;
+- (MAVSDKFollowMeResult)start ;
+- (MAVSDKFollowMeResult)stop ;
 
 
 @end
+
+#endif // plugin_follow_me_h
