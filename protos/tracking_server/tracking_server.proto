@@ -61,21 +61,21 @@ message RespondTrackingPointCommandRequest {
     CommandAnswer command_answer = 1; // The ack to answer to the incoming command
 }
 message RespondTrackingPointCommandResponse {
-    TrackingServerResult result = 1; // The result of sending the response.
+    TrackingServerResult tracking_server_result = 1; // The result of sending the response.
 }
 
 message RespondTrackingRectangleCommandRequest {
     CommandAnswer command_answer = 1; // The ack to answer to the incoming command
 }
 message RespondTrackingRectangleCommandResponse {
-    TrackingServerResult result = 1; // The result of sending the response.
+    TrackingServerResult tracking_server_result = 1; // The result of sending the response.
 }
 
 message RespondTrackingOffCommandRequest {
     CommandAnswer command_answer = 1; // The ack to answer to the incoming command
 }
 message RespondTrackingOffCommandResponse {
-    TrackingServerResult result = 1; // The result of sending the response.
+    TrackingServerResult tracking_server_result = 1; // The result of sending the response.
 }
 
 // Point description type
