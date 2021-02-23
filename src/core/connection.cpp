@@ -8,7 +8,10 @@ namespace mavsdk {
 Connection::Connection(receiver_callback_t receiver_callback) :
     _receiver_callback(receiver_callback),
     _mavlink_receiver()
-{}
+{
+    // Insert system ID 0 in all connections for broadcast.
+    _system_ids.insert(0);
+}
 
 Connection::~Connection()
 {
@@ -40,7 +43,15 @@ void Connection::stop_mavlink_receiver()
 
 void Connection::receive_message(mavlink_message_t& message)
 {
+    if (_system_ids.find(message.sysid) != _system_ids.end()) {
+        _system_ids.insert(message.sysid);
+    }
     _receiver_callback(message);
+}
+
+bool Connection::has_system_id(uint8_t system_id)
+{
+    return _system_ids.find(system_id) != _system_ids.end();
 }
 
 } // namespace mavsdk

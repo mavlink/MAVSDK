@@ -150,6 +150,18 @@ bool MavsdkImpl::send_message(mavlink_message_t& message)
 
     uint succesfull_emissions = 0;
     for (auto it = _connections.begin(); it != _connections.end(); ++it) {
+        // Checks whether connection knows target system ID by extracting target system if set.
+        // ref:
+        // https://github.com/PX4/PX4-Autopilot/blob/v1.11.3/src/modules/mavlink/mavlink_main.cpp#L460
+        const mavlink_msg_entry_t* meta = mavlink_get_msg_entry(message.msgid);
+
+        if (meta && meta->flags & MAV_MSG_ENTRY_FLAG_HAVE_TARGET_SYSTEM) {
+            int target_system_id = (_MAV_PAYLOAD(&message))[meta->target_system_ofs];
+            if (!(**it).has_system_id(target_system_id)) {
+                continue;
+            }
+        }
+
         if ((**it).send_message(message)) {
             succesfull_emissions++;
         }
@@ -403,7 +415,8 @@ bool MavsdkImpl::is_connected(const uint64_t uuid) const
     return false;
 }
 
-void MavsdkImpl::make_system_with_component(uint8_t system_id, uint8_t comp_id, bool always_connected)
+void MavsdkImpl::make_system_with_component(
+    uint8_t system_id, uint8_t comp_id, bool always_connected)
 {
     std::lock_guard<std::recursive_mutex> lock(_systems_mutex);
 
