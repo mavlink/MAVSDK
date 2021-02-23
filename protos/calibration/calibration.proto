@@ -69,7 +69,9 @@ message CalibrateGimbalAccelerometerResponse {
 }
 
 message CancelRequest {}
-message CancelResponse {}
+message CancelResponse {
+    CalibrationResult calibration_result = 1;
+}
 
 // Result type.
 message CalibrationResult {
