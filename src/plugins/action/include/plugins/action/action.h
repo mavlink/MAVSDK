@@ -57,6 +57,26 @@ public:
     ~Action();
 
     /**
+     * @brief Yaw behaviour during orbit flight.
+     */
+    enum class OrbitYawBehavior {
+        HoldFrontToCircleCenter, /**< @brief Vehicle front points to the center (default). */
+        HoldInitialHeading, /**< @brief Vehicle front holds heading when message received. */
+        Uncontrolled, /**< @brief Yaw uncontrolled. */
+        HoldFrontTangentToCircle, /**< @brief Vehicle front follows flight path (tangential to
+                                     circle). */
+        RcControlled, /**< @brief Yaw controlled by RC input. */
+    };
+
+    /**
+     * @brief Stream operator to print information about a `Action::OrbitYawBehavior`.
+     *
+     * @return A reference to the stream.
+     */
+    friend std::ostream&
+    operator<<(std::ostream& str, Action::OrbitYawBehavior const& orbit_yaw_behavior);
+
+    /**
      * @brief Possible results returned for action requests.
      */
     enum class Result {
@@ -322,6 +342,39 @@ public:
      */
     Result goto_location(
         double latitude_deg, double longitude_deg, float absolute_altitude_m, float yaw_deg) const;
+
+    /**
+     * @brief Send command do orbit to the drone.
+     *
+     * This will run the orbit routine with the given parameters.
+     *
+     * This function is non-blocking. See 'do_orbit' for the blocking counterpart.
+     */
+    void do_orbit_async(
+        float radius_m,
+        float velocity_ms,
+        OrbitYawBehavior yaw_behavior,
+        double latitude_deg,
+        double longitude_deg,
+        double absolute_altitude_m,
+        const ResultCallback callback);
+
+    /**
+     * @brief Send command do orbit to the drone.
+     *
+     * This will run the orbit routine with the given parameters.
+     *
+     * This function is blocking. See 'do_orbit_async' for the non-blocking counterpart.
+     *
+     * @return Result of request.
+     */
+    Result do_orbit(
+        float radius_m,
+        float velocity_ms,
+        OrbitYawBehavior yaw_behavior,
+        double latitude_deg,
+        double longitude_deg,
+        double absolute_altitude_m) const;
 
     /**
      * @brief Send command to transition the drone to fixedwing.

@@ -29,6 +29,9 @@ public:
     MOCK_CONST_METHOD3(
         set_option_async, void(Camera::ResultCallback, const std::string&, const Camera::Option)){};
     MOCK_CONST_METHOD0(format_storage, Camera::Result()){};
+    MOCK_CONST_METHOD1(
+        list_photos,
+        std::pair<Camera::Result, std::vector<Camera::CaptureInfo>>(Camera::PhotosRange)){};
 };
 
 } // namespace testing

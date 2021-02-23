@@ -9,6 +9,8 @@
 
 namespace mavsdk {
 
+using ControlStatus = Gimbal::ControlStatus;
+
 Gimbal::Gimbal(System& system) : PluginBase(), _impl{new GimbalImpl(system)} {}
 
 Gimbal::Gimbal(std::shared_ptr<System> system) : PluginBase(), _impl{new GimbalImpl(system)} {}
@@ -23,6 +25,18 @@ void Gimbal::set_pitch_and_yaw_async(float pitch_deg, float yaw_deg, const Resul
 Gimbal::Result Gimbal::set_pitch_and_yaw(float pitch_deg, float yaw_deg) const
 {
     return _impl->set_pitch_and_yaw(pitch_deg, yaw_deg);
+}
+
+void Gimbal::set_pitch_rate_and_yaw_rate_async(
+    float pitch_rate_deg_s, float yaw_rate_deg_s, const ResultCallback callback)
+{
+    _impl->set_pitch_rate_and_yaw_rate_async(pitch_rate_deg_s, yaw_rate_deg_s, callback);
+}
+
+Gimbal::Result
+Gimbal::set_pitch_rate_and_yaw_rate(float pitch_rate_deg_s, float yaw_rate_deg_s) const
+{
+    return _impl->set_pitch_rate_and_yaw_rate(pitch_rate_deg_s, yaw_rate_deg_s);
 }
 
 void Gimbal::set_mode_async(GimbalMode gimbal_mode, const ResultCallback callback)
@@ -45,6 +59,58 @@ Gimbal::Result
 Gimbal::set_roi_location(double latitude_deg, double longitude_deg, float altitude_m) const
 {
     return _impl->set_roi_location(latitude_deg, longitude_deg, altitude_m);
+}
+
+void Gimbal::take_control_async(ControlMode control_mode, const ResultCallback callback)
+{
+    _impl->take_control_async(control_mode, callback);
+}
+
+Gimbal::Result Gimbal::take_control(ControlMode control_mode) const
+{
+    return _impl->take_control(control_mode);
+}
+
+void Gimbal::release_control_async(const ResultCallback callback)
+{
+    _impl->release_control_async(callback);
+}
+
+Gimbal::Result Gimbal::release_control() const
+{
+    return _impl->release_control();
+}
+
+void Gimbal::subscribe_control(ControlCallback callback)
+{
+    _impl->subscribe_control(callback);
+}
+
+Gimbal::ControlStatus Gimbal::control() const
+{
+    return _impl->control();
+}
+
+bool operator==(const Gimbal::ControlStatus& lhs, const Gimbal::ControlStatus& rhs)
+{
+    return (rhs.control_mode == lhs.control_mode) &&
+           (rhs.sysid_primary_control == lhs.sysid_primary_control) &&
+           (rhs.compid_primary_control == lhs.compid_primary_control) &&
+           (rhs.sysid_secondary_control == lhs.sysid_secondary_control) &&
+           (rhs.compid_secondary_control == lhs.compid_secondary_control);
+}
+
+std::ostream& operator<<(std::ostream& str, Gimbal::ControlStatus const& control_status)
+{
+    str << std::setprecision(15);
+    str << "control_status:" << '\n' << "{\n";
+    str << "    control_mode: " << control_status.control_mode << '\n';
+    str << "    sysid_primary_control: " << control_status.sysid_primary_control << '\n';
+    str << "    compid_primary_control: " << control_status.compid_primary_control << '\n';
+    str << "    sysid_secondary_control: " << control_status.sysid_secondary_control << '\n';
+    str << "    compid_secondary_control: " << control_status.compid_secondary_control << '\n';
+    str << '}';
+    return str;
 }
 
 std::ostream& operator<<(std::ostream& str, Gimbal::Result const& result)
@@ -72,6 +138,20 @@ std::ostream& operator<<(std::ostream& str, Gimbal::GimbalMode const& gimbal_mod
             return str << "Yaw Follow";
         case Gimbal::GimbalMode::YawLock:
             return str << "Yaw Lock";
+        default:
+            return str << "Unknown";
+    }
+}
+
+std::ostream& operator<<(std::ostream& str, Gimbal::ControlMode const& control_mode)
+{
+    switch (control_mode) {
+        case Gimbal::ControlMode::None:
+            return str << "None";
+        case Gimbal::ControlMode::Primary:
+            return str << "Primary";
+        case Gimbal::ControlMode::Secondary:
+            return str << "Secondary";
         default:
             return str << "Unknown";
     }

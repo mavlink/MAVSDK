@@ -59,6 +59,7 @@ void MissionImpl::enable()
 
 void MissionImpl::disable()
 {
+    reset_mission_progress();
     _gimbal_protocol = GimbalProtocol::Unknown;
 }
 
@@ -158,6 +159,8 @@ void MissionImpl::upload_mission_async(
         return;
     }
 
+    reset_mission_progress();
+
     wait_for_protocol_async([callback, mission_plan, this]() {
         const auto int_items = convert_to_int_items(mission_plan.mission_items);
 
@@ -180,10 +183,11 @@ Mission::Result MissionImpl::cancel_mission_upload()
     auto ptr = _mission_data.last_upload.lock();
     if (ptr) {
         ptr->cancel();
-        return Mission::Result::Success;
     } else {
-        return Mission::Result::Error;
+        LogWarn() << "No mission upload to cancel... ignoring";
     }
+
+    return Mission::Result::Success;
 }
 
 std::pair<Mission::Result, Mission::MissionPlan> MissionImpl::download_mission()
@@ -226,10 +230,11 @@ Mission::Result MissionImpl::cancel_mission_download()
     auto ptr = _mission_data.last_download.lock();
     if (ptr) {
         ptr->cancel();
-        return Mission::Result::Success;
     } else {
-        return Mission::Result::Error;
+        LogWarn() << "No mission download to cancel... ignoring";
     }
+
+    return Mission::Result::Success;
 }
 
 Mission::Result MissionImpl::set_return_to_launch_after_mission(bool enable_rtl)
@@ -717,6 +722,8 @@ Mission::Result MissionImpl::clear_mission()
 
 void MissionImpl::clear_mission_async(const Mission::ResultCallback& callback)
 {
+    reset_mission_progress();
+
     _parent->mission_transfer().clear_items_async(
         MAV_MISSION_TYPE_MISSION, [this, callback](MAVLinkMissionTransfer::Result result) {
             auto converted_result = convert_result(result);
@@ -884,7 +891,7 @@ Mission::MissionProgress MissionImpl::mission_progress()
     return mission_progress;
 }
 
-void MissionImpl::mission_progress_async(Mission::MissionProgressCallback callback)
+void MissionImpl::subscribe_mission_progress(Mission::MissionProgressCallback callback)
 {
     std::lock_guard<std::recursive_mutex> lock(_mission_data.mutex);
     _mission_data.mission_progress_callback = callback;

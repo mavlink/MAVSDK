@@ -15,6 +15,8 @@ Telemetry::EulerAngle to_euler_angle_from_quaternion(Telemetry::Quaternion quate
     euler_angle.yaw_deg = to_deg_from_rad(
         atan2f(2.0f * (q.w * q.z + q.x * q.y), 1.0f - 2.0f * (q.y * q.y + q.z * q.z)));
 
+    euler_angle.timestamp_us = quaternion.timestamp_us;
+
     return euler_angle;
 }
 
@@ -32,6 +34,8 @@ Telemetry::Quaternion to_quaternion_from_euler_angle(Telemetry::EulerAngle euler
     quaternion.x = float(sin_phi_2 * cos_theta_2 * cos_psi_2 - cos_phi_2 * sin_theta_2 * sin_psi_2);
     quaternion.y = float(cos_phi_2 * sin_theta_2 * cos_psi_2 + sin_phi_2 * cos_theta_2 * sin_psi_2);
     quaternion.z = float(cos_phi_2 * cos_theta_2 * sin_psi_2 - sin_phi_2 * sin_theta_2 * cos_psi_2);
+
+    quaternion.timestamp_us = euler_angle.timestamp_us;
 
     return quaternion;
 }

@@ -79,6 +79,21 @@ public:
     friend std::ostream& operator<<(std::ostream& str, Camera::Mode const& mode);
 
     /**
+     * @brief Photos range type.
+     */
+    enum class PhotosRange {
+        All, /**< @brief All the photos present on the camera. */
+        SinceConnection, /**< @brief Photos taken since MAVSDK got connected. */
+    };
+
+    /**
+     * @brief Stream operator to print information about a `Camera::PhotosRange`.
+     *
+     * @return A reference to the stream.
+     */
+    friend std::ostream& operator<<(std::ostream& str, Camera::PhotosRange const& photos_range);
+
+    /**
      * @brief Possible results returned for camera commands
      */
     enum class Result {
@@ -541,6 +556,27 @@ public:
      * @return Result of request.
      */
     Result set_mode(Mode mode) const;
+
+    /**
+     * @brief Callback type for list_photos_async.
+     */
+    using ListPhotosCallback = std::function<void(Result, std::vector<CaptureInfo>)>;
+
+    /**
+     * @brief List photos available on the camera.
+     *
+     * This function is non-blocking. See 'list_photos' for the blocking counterpart.
+     */
+    void list_photos_async(PhotosRange photos_range, const ListPhotosCallback callback);
+
+    /**
+     * @brief List photos available on the camera.
+     *
+     * This function is blocking. See 'list_photos_async' for the non-blocking counterpart.
+     *
+     * @return Result of request.
+     */
+    std::pair<Result, std::vector<Camera::CaptureInfo>> list_photos(PhotosRange photos_range) const;
 
     /**
      * @brief Callback type for subscribe_mode.

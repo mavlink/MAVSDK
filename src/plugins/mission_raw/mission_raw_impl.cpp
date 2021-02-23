@@ -138,6 +138,8 @@ void MissionRawImpl::upload_mission_async(
         return;
     }
 
+    reset_mission_progress();
+
     const auto int_items = convert_to_int_items(mission_raw);
 
     _last_upload = _parent->mission_transfer().upload_items_async(
@@ -371,6 +373,8 @@ MissionRaw::Result MissionRawImpl::clear_mission()
 
 void MissionRawImpl::clear_mission_async(const MissionRaw::ResultCallback& callback)
 {
+    reset_mission_progress();
+
     _parent->mission_transfer().clear_items_async(
         MAV_MISSION_TYPE_MISSION, [this, callback](MAVLinkMissionTransfer::Result result) {
             auto converted_result = convert_result(result);
@@ -442,7 +446,7 @@ void MissionRawImpl::report_progress_current()
     }
 }
 
-void MissionRawImpl::mission_progress_async(MissionRaw::MissionProgressCallback callback)
+void MissionRawImpl::subscribe_mission_progress(MissionRaw::MissionProgressCallback callback)
 {
     std::lock_guard<std::mutex> lock(_mission_progress.mutex);
     _mission_progress.callback = callback;
@@ -454,7 +458,7 @@ MissionRaw::MissionProgress MissionRawImpl::mission_progress()
     return _mission_progress.last;
 }
 
-void MissionRawImpl::mission_changed_async(MissionRaw::MissionChangedCallback callback)
+void MissionRawImpl::subscribe_mission_changed(MissionRaw::MissionChangedCallback callback)
 {
     std::lock_guard<std::mutex> lock(_mission_changed.mutex);
     _mission_changed.callback = callback;

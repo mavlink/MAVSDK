@@ -189,6 +189,7 @@ public:
         float x{float(NAN)}; /**< @brief Quaternion entry 1, also denoted as b */
         float y{float(NAN)}; /**< @brief Quaternion entry 2, also denoted as c */
         float z{float(NAN)}; /**< @brief Quaternion entry 3, also denoted as d */
+        uint64_t timestamp_us{}; /**< @brief Timestamp in microseconds */
     };
 
     /**
@@ -220,6 +221,7 @@ public:
             float(NAN)}; /**< @brief Pitch angle in degrees, positive is pitching nose up */
         float yaw_deg{
             float(NAN)}; /**< @brief Yaw angle in degrees, positive is clock-wise seen from above */
+        uint64_t timestamp_us{}; /**< @brief Timestamp in microseconds */
     };
 
     /**

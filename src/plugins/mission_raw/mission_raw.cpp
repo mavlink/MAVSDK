@@ -95,7 +95,7 @@ MissionRaw::Result MissionRaw::set_current_mission_item(int32_t index) const
 
 void MissionRaw::subscribe_mission_progress(MissionProgressCallback callback)
 {
-    _impl->mission_progress_async(callback);
+    _impl->subscribe_mission_progress(callback);
 }
 
 MissionRaw::MissionProgress MissionRaw::mission_progress() const
@@ -105,7 +105,7 @@ MissionRaw::MissionProgress MissionRaw::mission_progress() const
 
 void MissionRaw::subscribe_mission_changed(MissionChangedCallback callback)
 {
-    _impl->mission_changed_async(callback);
+    _impl->subscribe_mission_changed(callback);
 }
 
 bool operator==(const MissionRaw::MissionProgress& lhs, const MissionRaw::MissionProgress& rhs)

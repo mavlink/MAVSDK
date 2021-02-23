@@ -43,6 +43,27 @@ void GimbalProtocolV1::set_pitch_and_yaw_async(
         });
 }
 
+Gimbal::Result
+GimbalProtocolV1::set_pitch_rate_and_yaw_rate(float pitch_rate_deg_s, float yaw_rate_deg_s)
+{
+    UNUSED(pitch_rate_deg_s);
+    UNUSED(yaw_rate_deg_s);
+    return Gimbal::Result::Unsupported;
+}
+
+void GimbalProtocolV1::set_pitch_rate_and_yaw_rate_async(
+    float pitch_rate_deg_s, float yaw_rate_deg_s, Gimbal::ResultCallback callback)
+{
+    UNUSED(pitch_rate_deg_s);
+    UNUSED(yaw_rate_deg_s);
+
+    if (callback) {
+        auto temp_callback = callback;
+        _system_impl.call_user_callback(
+            [temp_callback]() { temp_callback(Gimbal::Result::Unsupported); });
+    }
+}
+
 Gimbal::Result GimbalProtocolV1::set_mode(const Gimbal::GimbalMode gimbal_mode)
 {
     MavlinkCommandSender::CommandInt command{};
@@ -133,6 +154,58 @@ void GimbalProtocolV1::set_roi_location_async(
             UNUSED(progress);
             GimbalImpl::receive_command_result(command_result, callback);
         });
+}
+
+Gimbal::Result GimbalProtocolV1::take_control(Gimbal::ControlMode control_mode)
+{
+    _current_control_status.control_mode = control_mode;
+    return Gimbal::Result::Success;
+}
+
+void GimbalProtocolV1::take_control_async(
+    Gimbal::ControlMode control_mode, Gimbal::ResultCallback callback)
+{
+    _current_control_status.control_mode = control_mode;
+
+    if (callback) {
+        _system_impl.call_user_callback([callback]() { callback(Gimbal::Result::Success); });
+    }
+}
+
+Gimbal::Result GimbalProtocolV1::release_control()
+{
+    _current_control_status.control_mode = Gimbal::ControlMode::None;
+    return Gimbal::Result::Success;
+}
+
+void GimbalProtocolV1::release_control_async(Gimbal::ResultCallback callback)
+{
+    _current_control_status.control_mode = Gimbal::ControlMode::None;
+
+    if (callback) {
+        _system_impl.call_user_callback([callback]() { callback(Gimbal::Result::Success); });
+    }
+}
+
+Gimbal::ControlStatus GimbalProtocolV1::control()
+{
+    return _current_control_status;
+}
+
+void GimbalProtocolV1::control_async(Gimbal::ControlCallback callback)
+{
+    _control_callback = callback;
+    _control_thread_cv.notify_one();
+
+    std::thread([this, &callback]() {
+        std::unique_lock<std::mutex> lock(_control_thread_mutex);
+
+        while (_control_callback) {
+            _system_impl.call_user_callback(
+                [this, callback]() { callback(_current_control_status); });
+            _control_thread_cv.wait_for(lock, std::chrono::seconds(1));
+        }
+    });
 }
 
 } // namespace mavsdk

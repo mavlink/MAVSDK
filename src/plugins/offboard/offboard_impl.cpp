@@ -24,16 +24,18 @@ OffboardImpl::~OffboardImpl()
 
 void OffboardImpl::init()
 {
-    // We need the system state.
     _parent->register_mavlink_message_handler(
         MAVLINK_MSG_ID_HEARTBEAT,
-        std::bind(&OffboardImpl::process_heartbeat, this, std::placeholders::_1),
+        [this](const mavlink_message_t& message) { process_heartbeat(message); },
         this);
 }
 
 void OffboardImpl::deinit()
 {
-    stop_sending_setpoints();
+    {
+        std::lock_guard<std::mutex> lock(_mutex);
+        stop_sending_setpoints();
+    }
     _parent->unregister_all_mavlink_message_handlers(this);
 }
 
@@ -75,7 +77,8 @@ void OffboardImpl::start_async(Offboard::ResultCallback callback)
 
         if (_mode == Mode::NotActive) {
             if (callback) {
-                callback(Offboard::Result::NoSetpointSet);
+                _parent->call_user_callback(
+                    [callback]() { callback(Offboard::Result::NoSetpointSet); });
             }
             return;
         }
@@ -84,7 +87,9 @@ void OffboardImpl::start_async(Offboard::ResultCallback callback)
 
     _parent->set_flight_mode_async(
         SystemImpl::FlightMode::Offboard,
-        std::bind(&OffboardImpl::receive_command_result, this, std::placeholders::_1, callback));
+        [callback, this](MavlinkCommandSender::Result result, float) {
+            receive_command_result(result, callback);
+        });
 }
 
 void OffboardImpl::stop_async(Offboard::ResultCallback callback)
@@ -97,8 +102,9 @@ void OffboardImpl::stop_async(Offboard::ResultCallback callback)
     }
 
     _parent->set_flight_mode_async(
-        SystemImpl::FlightMode::Hold,
-        std::bind(&OffboardImpl::receive_command_result, this, std::placeholders::_1, callback));
+        SystemImpl::FlightMode::Hold, [callback, this](MavlinkCommandSender::Result result, float) {
+            receive_command_result(result, callback);
+        });
 }
 
 bool OffboardImpl::is_active()
@@ -112,7 +118,7 @@ void OffboardImpl::receive_command_result(
 {
     Offboard::Result offboard_result = offboard_result_from_command_result(result);
     if (callback) {
-        callback(offboard_result);
+        _parent->call_user_callback([callback, offboard_result]() { callback(offboard_result); });
     }
 }
 
@@ -615,7 +621,7 @@ void OffboardImpl::process_heartbeat(const mavlink_message_t& message)
         // possibly stale heartbeats for some time.
         std::lock_guard<std::mutex> lock(_mutex);
         if (!offboard_mode_active && _mode != Mode::NotActive &&
-            _time.elapsed_since_s(_last_started) > 1.5) {
+            _time.elapsed_since_s(_last_started) > 3.0) {
             // It seems that we are no longer in offboard mode but still trying to send
             // setpoints. Let's stop for now.
             stop_sending_setpoints();
