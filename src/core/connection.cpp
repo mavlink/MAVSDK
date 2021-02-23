@@ -45,7 +45,7 @@ void Connection::stop_mavlink_receiver()
     }
 }
 
-void Connection::receive_message(mavlink_message_t& message, Connection *connection)
+void Connection::receive_message(mavlink_message_t& message, Connection* connection)
 {
     _receiver_callback(message, connection);
 }

@@ -69,7 +69,8 @@ public:
      * @param forward_messages forward messages when multiple interfaces are used.
      * @return The result of adding the connection.
      */
-    ConnectionResult add_any_connection(const std::string& connection_url, bool forward_messages = false);
+    ConnectionResult
+    add_any_connection(const std::string& connection_url, bool forward_messages = false);
 
     /**
      * @brief Adds a UDP connection to the specified port number.
@@ -80,7 +81,8 @@ public:
      * @param forward_messages forward messages when multiple interfaces are used.
      * @return The result of adding the connection.
      */
-    ConnectionResult add_udp_connection(int local_port = DEFAULT_UDP_PORT, bool forward_messages = false);
+    ConnectionResult
+    add_udp_connection(int local_port = DEFAULT_UDP_PORT, bool forward_messages = false);
 
     /**
      * @brief Adds a UDP connection to the specified port number and local interface.
@@ -93,8 +95,10 @@ public:
      * @param forward_messages forward messages when multiple interfaces are used.
      * @return The result of adding the connection.
      */
-    ConnectionResult
-    add_udp_connection(const std::string& local_ip, int local_port = DEFAULT_UDP_PORT, bool forward_messages = false);
+    ConnectionResult add_udp_connection(
+        const std::string& local_ip,
+        int local_port = DEFAULT_UDP_PORT,
+        bool forward_messages = false);
 
     /**
      * @brief Sets up instance to send heartbeats to the specified remote interface and port number.
@@ -104,7 +108,8 @@ public:
      * @param forward_messages forward messages when multiple interfaces are used.
      * @return The result of operation.
      */
-    ConnectionResult setup_udp_remote(const std::string& remote_ip, int remote_port, bool forward_messages = false);
+    ConnectionResult
+    setup_udp_remote(const std::string& remote_ip, int remote_port, bool forward_messages = false);
 
     /**
      * @brief Adds a TCP connection with a specific port number on localhost.
@@ -113,7 +118,8 @@ public:
      * @param forward_messages forward messages when multiple interfaces are used.
      * @return The result of adding the connection.
      */
-    ConnectionResult add_tcp_connection(int remote_port = DEFAULT_TCP_REMOTE_PORT, bool forward_messages = false);
+    ConnectionResult
+    add_tcp_connection(int remote_port = DEFAULT_TCP_REMOTE_PORT, bool forward_messages = false);
 
     /**
      * @brief Adds a TCP connection with a specific IP address and port number.
@@ -123,8 +129,10 @@ public:
      * @param forward_messages forward messages when multiple interfaces are used.
      * @return The result of adding the connection.
      */
-    ConnectionResult
-    add_tcp_connection(const std::string& remote_ip, int remote_port = DEFAULT_TCP_REMOTE_PORT, bool forward_messages = false);
+    ConnectionResult add_tcp_connection(
+        const std::string& remote_ip,
+        int remote_port = DEFAULT_TCP_REMOTE_PORT,
+        bool forward_messages = false);
 
     /**
      * @brief Adds a serial connection with a specific port (COM or UART dev node) and baudrate as
