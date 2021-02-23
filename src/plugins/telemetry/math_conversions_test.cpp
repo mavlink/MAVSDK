@@ -12,11 +12,13 @@ TEST(MathConversions, QuaternionToEulerAnglesAndBackBaseCase)
     q1.x = 0.0f;
     q1.y = 0.0f;
     q1.z = 0.0f;
+    q1.timestamp_us = 4242;
     Telemetry::EulerAngle e = to_euler_angle_from_quaternion(q1);
 
     EXPECT_FLOAT_EQ(e.roll_deg, 0.0f);
     EXPECT_FLOAT_EQ(e.pitch_deg, 0.0f);
     EXPECT_FLOAT_EQ(e.yaw_deg, 0.0f);
+    EXPECT_EQ(e.timestamp_us, q1.timestamp_us);
 
     Telemetry::Quaternion q2 = to_quaternion_from_euler_angle(e);
 
@@ -63,11 +65,13 @@ TEST(MathConversions, QuaternionToEulerAndBackSomeCase)
     q1.x = 0.280f;
     q1.y = 0.595f;
     q1.z = 0.739f;
+    q1.timestamp_us = 9999;
     Telemetry::EulerAngle e = to_euler_angle_from_quaternion(q1);
 
     EXPECT_NEAR(e.roll_deg, 82.086f, 0.2f);
     EXPECT_NEAR(e.pitch_deg, -14.142f, 0.2f);
     EXPECT_NEAR(e.yaw_deg, 145.774f, 0.2f);
+    EXPECT_EQ(e.timestamp_us, q1.timestamp_us);
 
     Telemetry::Quaternion q2 = to_quaternion_from_euler_angle(e);
 
@@ -75,6 +79,7 @@ TEST(MathConversions, QuaternionToEulerAndBackSomeCase)
     EXPECT_NEAR(q1.x, q2.x, 0.01f);
     EXPECT_NEAR(q1.y, q2.y, 0.01f);
     EXPECT_NEAR(q1.z, q2.z, 0.01f);
+    EXPECT_EQ(q1.timestamp_us, q2.timestamp_us);
 
     // We also compare against the MAVLink implementation and test
     // the MAVLink functions while we're at it.

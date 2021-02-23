@@ -121,6 +121,37 @@ Action::Result Action::goto_location(
     return _impl->goto_location(latitude_deg, longitude_deg, absolute_altitude_m, yaw_deg);
 }
 
+void Action::do_orbit_async(
+    float radius_m,
+    float velocity_ms,
+    OrbitYawBehavior yaw_behavior,
+    double latitude_deg,
+    double longitude_deg,
+    double absolute_altitude_m,
+    const ResultCallback callback)
+{
+    _impl->do_orbit_async(
+        radius_m,
+        velocity_ms,
+        yaw_behavior,
+        latitude_deg,
+        longitude_deg,
+        absolute_altitude_m,
+        callback);
+}
+
+Action::Result Action::do_orbit(
+    float radius_m,
+    float velocity_ms,
+    OrbitYawBehavior yaw_behavior,
+    double latitude_deg,
+    double longitude_deg,
+    double absolute_altitude_m) const
+{
+    return _impl->do_orbit(
+        radius_m, velocity_ms, yaw_behavior, latitude_deg, longitude_deg, absolute_altitude_m);
+}
+
 void Action::transition_to_fixedwing_async(const ResultCallback callback)
 {
     _impl->transition_to_fixedwing_async(callback);
@@ -229,6 +260,24 @@ std::ostream& operator<<(std::ostream& str, Action::Result const& result)
             return str << "No Vtol Transition Support";
         case Action::Result::ParameterError:
             return str << "Parameter Error";
+        default:
+            return str << "Unknown";
+    }
+}
+
+std::ostream& operator<<(std::ostream& str, Action::OrbitYawBehavior const& orbit_yaw_behavior)
+{
+    switch (orbit_yaw_behavior) {
+        case Action::OrbitYawBehavior::HoldFrontToCircleCenter:
+            return str << "Hold Front To Circle Center";
+        case Action::OrbitYawBehavior::HoldInitialHeading:
+            return str << "Hold Initial Heading";
+        case Action::OrbitYawBehavior::Uncontrolled:
+            return str << "Uncontrolled";
+        case Action::OrbitYawBehavior::HoldFrontTangentToCircle:
+            return str << "Hold Front Tangent To Circle";
+        case Action::OrbitYawBehavior::RcControlled:
+            return str << "Rc Controlled";
         default:
             return str << "Unknown";
     }

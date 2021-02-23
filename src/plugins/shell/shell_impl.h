@@ -24,7 +24,7 @@ public:
     void disable() override;
 
     Shell::Result send(std::string command);
-    void receive_async(Shell::ReceiveCallback callback);
+    void subscribe_receive(Shell::ReceiveCallback callback);
 
     ShellImpl(const ShellImpl&) = delete;
     ShellImpl& operator=(const ShellImpl&) = delete;

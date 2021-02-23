@@ -14510,6 +14510,7 @@ class Quaternion PROTOBUF_FINAL :
     kXFieldNumber = 2,
     kYFieldNumber = 3,
     kZFieldNumber = 4,
+    kTimestampUsFieldNumber = 5,
   };
   // float w = 1 [(.mavsdk.options.default_value) = "NaN"];
   void clear_w();
@@ -14547,6 +14548,15 @@ class Quaternion PROTOBUF_FINAL :
   void _internal_set_z(float value);
   public:
 
+  // uint64 timestamp_us = 5;
+  void clear_timestamp_us();
+  ::PROTOBUF_NAMESPACE_ID::uint64 timestamp_us() const;
+  void set_timestamp_us(::PROTOBUF_NAMESPACE_ID::uint64 value);
+  private:
+  ::PROTOBUF_NAMESPACE_ID::uint64 _internal_timestamp_us() const;
+  void _internal_set_timestamp_us(::PROTOBUF_NAMESPACE_ID::uint64 value);
+  public:
+
   // @@protoc_insertion_point(class_scope:mavsdk.rpc.telemetry.Quaternion)
  private:
   class _Internal;
@@ -14558,6 +14568,7 @@ class Quaternion PROTOBUF_FINAL :
   float x_;
   float y_;
   float z_;
+  ::PROTOBUF_NAMESPACE_ID::uint64 timestamp_us_;
   mutable ::PROTOBUF_NAMESPACE_ID::internal::CachedSize _cached_size_;
   friend struct ::TableStruct_telemetry_2ftelemetry_2eproto;
 };
@@ -14678,6 +14689,7 @@ class EulerAngle PROTOBUF_FINAL :
   enum : int {
     kRollDegFieldNumber = 1,
     kPitchDegFieldNumber = 2,
+    kTimestampUsFieldNumber = 4,
     kYawDegFieldNumber = 3,
   };
   // float roll_deg = 1 [(.mavsdk.options.default_value) = "NaN"];
@@ -14698,6 +14710,15 @@ class EulerAngle PROTOBUF_FINAL :
   void _internal_set_pitch_deg(float value);
   public:
 
+  // uint64 timestamp_us = 4;
+  void clear_timestamp_us();
+  ::PROTOBUF_NAMESPACE_ID::uint64 timestamp_us() const;
+  void set_timestamp_us(::PROTOBUF_NAMESPACE_ID::uint64 value);
+  private:
+  ::PROTOBUF_NAMESPACE_ID::uint64 _internal_timestamp_us() const;
+  void _internal_set_timestamp_us(::PROTOBUF_NAMESPACE_ID::uint64 value);
+  public:
+
   // float yaw_deg = 3 [(.mavsdk.options.default_value) = "NaN"];
   void clear_yaw_deg();
   float yaw_deg() const;
@@ -14716,6 +14737,7 @@ class EulerAngle PROTOBUF_FINAL :
   typedef void DestructorSkippable_;
   float roll_deg_;
   float pitch_deg_;
+  ::PROTOBUF_NAMESPACE_ID::uint64 timestamp_us_;
   float yaw_deg_;
   mutable ::PROTOBUF_NAMESPACE_ID::internal::CachedSize _cached_size_;
   friend struct ::TableStruct_telemetry_2ftelemetry_2eproto;
@@ -23546,6 +23568,26 @@ inline void Quaternion::set_z(float value) {
   // @@protoc_insertion_point(field_set:mavsdk.rpc.telemetry.Quaternion.z)
 }
 
+// uint64 timestamp_us = 5;
+inline void Quaternion::clear_timestamp_us() {
+  timestamp_us_ = PROTOBUF_ULONGLONG(0);
+}
+inline ::PROTOBUF_NAMESPACE_ID::uint64 Quaternion::_internal_timestamp_us() const {
+  return timestamp_us_;
+}
+inline ::PROTOBUF_NAMESPACE_ID::uint64 Quaternion::timestamp_us() const {
+  // @@protoc_insertion_point(field_get:mavsdk.rpc.telemetry.Quaternion.timestamp_us)
+  return _internal_timestamp_us();
+}
+inline void Quaternion::_internal_set_timestamp_us(::PROTOBUF_NAMESPACE_ID::uint64 value) {
+  
+  timestamp_us_ = value;
+}
+inline void Quaternion::set_timestamp_us(::PROTOBUF_NAMESPACE_ID::uint64 value) {
+  _internal_set_timestamp_us(value);
+  // @@protoc_insertion_point(field_set:mavsdk.rpc.telemetry.Quaternion.timestamp_us)
+}
+
 // -------------------------------------------------------------------
 
 // EulerAngle
@@ -23608,6 +23650,26 @@ inline void EulerAngle::_internal_set_yaw_deg(float value) {
 inline void EulerAngle::set_yaw_deg(float value) {
   _internal_set_yaw_deg(value);
   // @@protoc_insertion_point(field_set:mavsdk.rpc.telemetry.EulerAngle.yaw_deg)
+}
+
+// uint64 timestamp_us = 4;
+inline void EulerAngle::clear_timestamp_us() {
+  timestamp_us_ = PROTOBUF_ULONGLONG(0);
+}
+inline ::PROTOBUF_NAMESPACE_ID::uint64 EulerAngle::_internal_timestamp_us() const {
+  return timestamp_us_;
+}
+inline ::PROTOBUF_NAMESPACE_ID::uint64 EulerAngle::timestamp_us() const {
+  // @@protoc_insertion_point(field_get:mavsdk.rpc.telemetry.EulerAngle.timestamp_us)
+  return _internal_timestamp_us();
+}
+inline void EulerAngle::_internal_set_timestamp_us(::PROTOBUF_NAMESPACE_ID::uint64 value) {
+  
+  timestamp_us_ = value;
+}
+inline void EulerAngle::set_timestamp_us(::PROTOBUF_NAMESPACE_ID::uint64 value) {
+  _internal_set_timestamp_us(value);
+  // @@protoc_insertion_point(field_set:mavsdk.rpc.telemetry.EulerAngle.timestamp_us)
 }
 
 // -------------------------------------------------------------------

@@ -20,8 +20,6 @@ void send_gimbal_roi_location(
 void receive_gimbal_result(Gimbal::Result result);
 void receive_gimbal_attitude_euler_angles(Telemetry::EulerAngle euler_angle);
 
-// Note, this test does not work in SITL because the gimbal does not move
-// unless it is armed.
 TEST(SitlTestGimbal, GimbalMove)
 {
     Mavsdk mavsdk;
@@ -31,6 +29,7 @@ TEST(SitlTestGimbal, GimbalMove)
 
     // Wait for system to connect via heartbeat.
     std::this_thread::sleep_for(std::chrono::seconds(2));
+    ASSERT_EQ(mavsdk.systems().size(), 1);
     auto system = mavsdk.systems().at(0);
 
     // FIXME: This is what it should be, for now though with the typhoon_h480
@@ -45,9 +44,32 @@ TEST(SitlTestGimbal, GimbalMove)
 
     telemetry->subscribe_camera_attitude_euler(&receive_gimbal_attitude_euler_angles);
 
+    EXPECT_EQ(gimbal->take_control(Gimbal::ControlMode::Primary), Gimbal::Result::Success);
+
     EXPECT_EQ(gimbal->set_mode(Gimbal::GimbalMode::YawFollow), Gimbal::Result::Success);
 
-    gimbal_pattern(gimbal);
+    LogInfo() << "Pitch down for a  bit";
+    EXPECT_EQ(gimbal->set_pitch_rate_and_yaw_rate(-10.0f, 0.0f), Gimbal::Result::Success);
+    std::this_thread::sleep_for(std::chrono::seconds(2));
+
+    LogInfo() << "Pitch up for a bit";
+    EXPECT_EQ(gimbal->set_pitch_rate_and_yaw_rate(10.0f, 0.0f), Gimbal::Result::Success);
+    std::this_thread::sleep_for(std::chrono::seconds(2));
+
+    LogInfo() << "Yaw right for a bit";
+    EXPECT_EQ(gimbal->set_pitch_rate_and_yaw_rate(0.0f, 10.0f), Gimbal::Result::Success);
+    std::this_thread::sleep_for(std::chrono::seconds(2));
+
+    LogInfo() << "Yaw left for a bit";
+    EXPECT_EQ(gimbal->set_pitch_rate_and_yaw_rate(0.0f, -10.0f), Gimbal::Result::Success);
+    std::this_thread::sleep_for(std::chrono::seconds(2));
+
+    LogInfo() << "Reset back to 0,0";
+    EXPECT_EQ(gimbal->set_pitch_and_yaw(0.0f, 0.0f), Gimbal::Result::Success);
+
+    std::this_thread::sleep_for(std::chrono::seconds(1));
+
+    EXPECT_EQ(gimbal->take_control(Gimbal::ControlMode::None), Gimbal::Result::Success);
 }
 
 TEST(SitlTestGimbal, GimbalAngles)
@@ -59,6 +81,7 @@ TEST(SitlTestGimbal, GimbalAngles)
 
     // Wait for system to connect via heartbeat.
     std::this_thread::sleep_for(std::chrono::seconds(2));
+    ASSERT_EQ(mavsdk.systems().size(), 1);
     auto system = mavsdk.systems().at(0);
 
     // FIXME: This is what it should be, for now though with the typhoon_h480
@@ -67,6 +90,8 @@ TEST(SitlTestGimbal, GimbalAngles)
     ASSERT_TRUE(system->has_autopilot());
 
     auto gimbal = std::make_shared<Gimbal>(system);
+
+    EXPECT_EQ(gimbal->take_control(Gimbal::ControlMode::Primary), Gimbal::Result::Success);
 
     EXPECT_EQ(gimbal->set_mode(Gimbal::GimbalMode::YawFollow), Gimbal::Result::Success);
 
@@ -95,6 +120,8 @@ TEST(SitlTestGimbal, GimbalAngles)
     LogInfo() << "Yaw forward";
     EXPECT_EQ(gimbal->set_pitch_and_yaw(0.0f, 0.0f), Gimbal::Result::Success);
     std::this_thread::sleep_for(std::chrono::seconds(1));
+
+    EXPECT_EQ(gimbal->take_control(Gimbal::ControlMode::None), Gimbal::Result::Success);
 }
 
 TEST(SitlTestGimbal, GimbalTakeoffAndMove)
@@ -106,6 +133,7 @@ TEST(SitlTestGimbal, GimbalTakeoffAndMove)
 
     // Wait for system to connect via heartbeat.
     std::this_thread::sleep_for(std::chrono::seconds(2));
+    ASSERT_EQ(mavsdk.systems().size(), 1);
     auto system = mavsdk.systems().at(0);
     // ASSERT_TRUE(system.has_gimbal());
     ASSERT_TRUE(system->has_autopilot());
@@ -144,6 +172,8 @@ TEST(SitlTestGimbal, GimbalTakeoffAndMove)
 
     std::this_thread::sleep_for(std::chrono::seconds(1));
 
+    EXPECT_EQ(gimbal->take_control(Gimbal::ControlMode::Primary), Gimbal::Result::Success);
+
     // First use gimbal in yaw follow mode.
     EXPECT_EQ(gimbal->set_mode(Gimbal::GimbalMode::YawFollow), Gimbal::Result::Success);
 
@@ -155,6 +185,8 @@ TEST(SitlTestGimbal, GimbalTakeoffAndMove)
 
     gimbal_pattern(gimbal);
     std::this_thread::sleep_for(std::chrono::seconds(1));
+
+    EXPECT_EQ(gimbal->take_control(Gimbal::ControlMode::None), Gimbal::Result::Success);
 
     action->land();
     std::this_thread::sleep_for(std::chrono::seconds(3));
@@ -214,6 +246,7 @@ TEST(SitlTestGimbal, GimbalROIOffboard)
 
     // Wait for system to connect via heartbeat.
     std::this_thread::sleep_for(std::chrono::seconds(2));
+    ASSERT_EQ(mavsdk.systems().size(), 1);
     auto system = mavsdk.systems().at(0);
     // ASSERT_TRUE(system.has_gimbal());
     ASSERT_TRUE(system->has_autopilot());

@@ -302,6 +302,8 @@ public:
 
         rpc_obj->set_z(quaternion.z);
 
+        rpc_obj->set_timestamp_us(quaternion.timestamp_us);
+
         return rpc_obj;
     }
 
@@ -318,6 +320,8 @@ public:
 
         obj.z = quaternion.z();
 
+        obj.timestamp_us = quaternion.timestamp_us();
+
         return obj;
     }
 
@@ -332,6 +336,8 @@ public:
 
         rpc_obj->set_yaw_deg(euler_angle.yaw_deg);
 
+        rpc_obj->set_timestamp_us(euler_angle.timestamp_us);
+
         return rpc_obj;
     }
 
@@ -345,6 +351,8 @@ public:
         obj.pitch_deg = euler_angle.pitch_deg();
 
         obj.yaw_deg = euler_angle.yaw_deg();
+
+        obj.timestamp_us = euler_angle.timestamp_us();
 
         return obj;
     }

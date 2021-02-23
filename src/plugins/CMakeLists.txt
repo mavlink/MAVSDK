@@ -22,6 +22,7 @@ add_subdirectory(offboard)
 add_subdirectory(param)
 add_subdirectory(shell)
 add_subdirectory(telemetry)
+add_subdirectory(tracking_server)
 add_subdirectory(tune)
 
 set(UNIT_TEST_SOURCES ${UNIT_TEST_SOURCES} PARENT_SCOPE)

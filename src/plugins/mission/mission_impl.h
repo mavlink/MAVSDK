@@ -62,7 +62,7 @@ public:
     int total_mission_items() const;
 
     Mission::MissionProgress mission_progress();
-    void mission_progress_async(Mission::MissionProgressCallback callback);
+    void subscribe_mission_progress(Mission::MissionProgressCallback callback);
 
     void import_qgroundcontrol_mission_async(
         std::string qgc_plan_path, const Mission::ImportQgroundcontrolMissionCallback callback);

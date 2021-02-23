@@ -9,11 +9,13 @@
 #include <mavsdk/plugins/action/action.h>
 #include <mavsdk/plugins/telemetry/telemetry.h>
 #include <iostream>
+#include <future>
+#include <memory>
 #include <thread>
 
 using namespace mavsdk;
-using namespace std::this_thread;
-using namespace std::chrono;
+using std::chrono::seconds;
+using std::this_thread::sleep_for;
 
 #define ERROR_CONSOLE_TEXT "\033[31m" // Turn text on console red
 #define TELEMETRY_CONSOLE_TEXT "\033[34m" // Turn text on console blue
@@ -29,19 +31,12 @@ void usage(std::string bin_name)
               << "For example, to connect to the simulator use URL: udp://:14540" << std::endl;
 }
 
-void component_discovered(ComponentType component_type)
-{
-    std::cout << NORMAL_CONSOLE_TEXT << "Discovered a component with type "
-              << unsigned(component_type) << std::endl;
-}
-
 int main(int argc, char** argv)
 {
     Mavsdk mavsdk;
     std::string connection_url;
     ConnectionResult connection_result;
 
-    bool discovered_system = false;
     if (argc == 2) {
         connection_url = argv[1];
         connection_result = mavsdk.add_any_connection(connection_url);
@@ -57,30 +52,30 @@ int main(int argc, char** argv)
     }
 
     std::cout << "Waiting to discover system..." << std::endl;
-    mavsdk.subscribe_on_new_system([&mavsdk, &discovered_system]() {
-        const auto system = mavsdk.systems().at(0);
+    auto prom = std::promise<std::shared_ptr<System>>{};
+    auto fut = prom.get_future();
 
-        if (system->is_connected()) {
-            std::cout << "Discovered system" << std::endl;
-            discovered_system = true;
+    mavsdk.subscribe_on_new_system([&mavsdk, &prom]() {
+        auto system = mavsdk.systems().back();
+
+        if (system->has_autopilot()) {
+            std::cout << "Discovered autopilot" << std::endl;
+
+            // Unsubscribe again as we only want to find one system.
+            mavsdk.subscribe_on_new_system(nullptr);
+            prom.set_value(system);
         }
     });
 
-    // We usually receive heartbeats at 1Hz, therefore we should find a system after around 2
-    // seconds.
-    sleep_for(seconds(2));
-
-    if (!discovered_system) {
-        std::cout << ERROR_CONSOLE_TEXT << "No system found, exiting." << NORMAL_CONSOLE_TEXT
+    // We usually receive heartbeats at 1Hz, therefore we should find a
+    // system after around 3 seconds.
+    if (fut.wait_for(seconds(3)) == std::future_status::timeout) {
+        std::cout << ERROR_CONSOLE_TEXT << "No autopilot found, exiting." << NORMAL_CONSOLE_TEXT
                   << std::endl;
         return 1;
     }
 
-    const auto system = mavsdk.systems().at(0);
-
-    // Register a callback so we get told when components (camera, gimbal) etc
-    // are found.
-    system->register_component_discovered_callback(component_discovered);
+    auto system = fut.get();
 
     auto telemetry = Telemetry{system};
     auto action = Action{system};

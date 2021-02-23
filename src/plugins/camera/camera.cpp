@@ -97,9 +97,20 @@ Camera::Result Camera::set_mode(Mode mode) const
     return _impl->set_mode(mode);
 }
 
+void Camera::list_photos_async(PhotosRange photos_range, const ListPhotosCallback callback)
+{
+    _impl->list_photos_async(photos_range, callback);
+}
+
+std::pair<Camera::Result, std::vector<Camera::CaptureInfo>>
+Camera::list_photos(PhotosRange photos_range) const
+{
+    return _impl->list_photos(photos_range);
+}
+
 void Camera::subscribe_mode(ModeCallback callback)
 {
-    _impl->mode_async(callback);
+    _impl->subscribe_mode(callback);
 }
 
 Camera::Mode Camera::mode() const
@@ -109,7 +120,7 @@ Camera::Mode Camera::mode() const
 
 void Camera::subscribe_information(InformationCallback callback)
 {
-    _impl->information_async(callback);
+    _impl->subscribe_information(callback);
 }
 
 Camera::Information Camera::information() const
@@ -119,7 +130,7 @@ Camera::Information Camera::information() const
 
 void Camera::subscribe_video_stream_info(VideoStreamInfoCallback callback)
 {
-    _impl->video_stream_info_async(callback);
+    _impl->subscribe_video_stream_info(callback);
 }
 
 Camera::VideoStreamInfo Camera::video_stream_info() const
@@ -129,12 +140,12 @@ Camera::VideoStreamInfo Camera::video_stream_info() const
 
 void Camera::subscribe_capture_info(CaptureInfoCallback callback)
 {
-    _impl->capture_info_async(callback);
+    _impl->subscribe_capture_info(callback);
 }
 
 void Camera::subscribe_status(StatusCallback callback)
 {
-    _impl->status_async(callback);
+    _impl->subscribe_status(callback);
 }
 
 Camera::Status Camera::status() const
@@ -144,12 +155,12 @@ Camera::Status Camera::status() const
 
 void Camera::subscribe_current_settings(CurrentSettingsCallback callback)
 {
-    _impl->current_settings_async(callback);
+    _impl->subscribe_current_settings(callback);
 }
 
 void Camera::subscribe_possible_setting_options(PossibleSettingOptionsCallback callback)
 {
-    _impl->possible_setting_options_async(callback);
+    _impl->subscribe_possible_setting_options(callback);
 }
 
 std::vector<Camera::SettingOptions> Camera::possible_setting_options() const
@@ -475,6 +486,18 @@ std::ostream& operator<<(std::ostream& str, Camera::Mode const& mode)
             return str << "Photo";
         case Camera::Mode::Video:
             return str << "Video";
+        default:
+            return str << "Unknown";
+    }
+}
+
+std::ostream& operator<<(std::ostream& str, Camera::PhotosRange const& photos_range)
+{
+    switch (photos_range) {
+        case Camera::PhotosRange::All:
+            return str << "All";
+        case Camera::PhotosRange::SinceConnection:
+            return str << "Since Connection";
         default:
             return str << "Unknown";
     }

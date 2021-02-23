@@ -148,7 +148,7 @@ bool MavsdkImpl::send_message(mavlink_message_t& message)
 {
     std::lock_guard<std::mutex> lock(_connections_mutex);
 
-    uint succesfull_emissions = 0;
+    uint8_t successful_emissions = 0;
     for (auto it = _connections.begin(); it != _connections.end(); ++it) {
         // Checks whether connection knows target system ID by extracting target system if set.
         // ref:
@@ -163,11 +163,11 @@ bool MavsdkImpl::send_message(mavlink_message_t& message)
         }
 
         if ((**it).send_message(message)) {
-            succesfull_emissions++;
+            successful_emissions++;
         }
     }
 
-    if (succesfull_emissions == 0) {
+    if (successful_emissions == 0) {
         LogErr() << "send fail";
         return false;
     }

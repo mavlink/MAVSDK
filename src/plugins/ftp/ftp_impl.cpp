@@ -819,7 +819,7 @@ void FtpImpl::process_mavlink_ftp_message(const mavlink_message_t& msg)
 
             case CMD_CREATE_FILE:
                 LogInfo() << "OPC:CMD_CREATE_FILE";
-                error_code = _work_open(payload, O_CREAT | O_WRONLY);
+                error_code = _work_open(payload, O_CREAT | O_TRUNC | O_WRONLY);
                 break;
 
             case CMD_OPEN_FILE_WO:

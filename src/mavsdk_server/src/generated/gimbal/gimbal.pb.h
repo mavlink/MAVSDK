@@ -48,7 +48,7 @@ struct TableStruct_gimbal_2fgimbal_2eproto {
     PROTOBUF_SECTION_VARIABLE(protodesc_cold);
   static const ::PROTOBUF_NAMESPACE_ID::internal::AuxiliaryParseTableField aux[]
     PROTOBUF_SECTION_VARIABLE(protodesc_cold);
-  static const ::PROTOBUF_NAMESPACE_ID::internal::ParseTable schema[7]
+  static const ::PROTOBUF_NAMESPACE_ID::internal::ParseTable schema[16]
     PROTOBUF_SECTION_VARIABLE(protodesc_cold);
   static const ::PROTOBUF_NAMESPACE_ID::internal::FieldMetadata field_metadata[];
   static const ::PROTOBUF_NAMESPACE_ID::internal::SerializationTable serialization_table[];
@@ -58,9 +58,21 @@ extern const ::PROTOBUF_NAMESPACE_ID::internal::DescriptorTable descriptor_table
 namespace mavsdk {
 namespace rpc {
 namespace gimbal {
+class ControlResponse;
+class ControlResponseDefaultTypeInternal;
+extern ControlResponseDefaultTypeInternal _ControlResponse_default_instance_;
+class ControlStatus;
+class ControlStatusDefaultTypeInternal;
+extern ControlStatusDefaultTypeInternal _ControlStatus_default_instance_;
 class GimbalResult;
 class GimbalResultDefaultTypeInternal;
 extern GimbalResultDefaultTypeInternal _GimbalResult_default_instance_;
+class ReleaseControlRequest;
+class ReleaseControlRequestDefaultTypeInternal;
+extern ReleaseControlRequestDefaultTypeInternal _ReleaseControlRequest_default_instance_;
+class ReleaseControlResponse;
+class ReleaseControlResponseDefaultTypeInternal;
+extern ReleaseControlResponseDefaultTypeInternal _ReleaseControlResponse_default_instance_;
 class SetModeRequest;
 class SetModeRequestDefaultTypeInternal;
 extern SetModeRequestDefaultTypeInternal _SetModeRequest_default_instance_;
@@ -73,23 +85,47 @@ extern SetPitchAndYawRequestDefaultTypeInternal _SetPitchAndYawRequest_default_i
 class SetPitchAndYawResponse;
 class SetPitchAndYawResponseDefaultTypeInternal;
 extern SetPitchAndYawResponseDefaultTypeInternal _SetPitchAndYawResponse_default_instance_;
+class SetPitchRateAndYawRateRequest;
+class SetPitchRateAndYawRateRequestDefaultTypeInternal;
+extern SetPitchRateAndYawRateRequestDefaultTypeInternal _SetPitchRateAndYawRateRequest_default_instance_;
+class SetPitchRateAndYawRateResponse;
+class SetPitchRateAndYawRateResponseDefaultTypeInternal;
+extern SetPitchRateAndYawRateResponseDefaultTypeInternal _SetPitchRateAndYawRateResponse_default_instance_;
 class SetRoiLocationRequest;
 class SetRoiLocationRequestDefaultTypeInternal;
 extern SetRoiLocationRequestDefaultTypeInternal _SetRoiLocationRequest_default_instance_;
 class SetRoiLocationResponse;
 class SetRoiLocationResponseDefaultTypeInternal;
 extern SetRoiLocationResponseDefaultTypeInternal _SetRoiLocationResponse_default_instance_;
+class SubscribeControlRequest;
+class SubscribeControlRequestDefaultTypeInternal;
+extern SubscribeControlRequestDefaultTypeInternal _SubscribeControlRequest_default_instance_;
+class TakeControlRequest;
+class TakeControlRequestDefaultTypeInternal;
+extern TakeControlRequestDefaultTypeInternal _TakeControlRequest_default_instance_;
+class TakeControlResponse;
+class TakeControlResponseDefaultTypeInternal;
+extern TakeControlResponseDefaultTypeInternal _TakeControlResponse_default_instance_;
 }  // namespace gimbal
 }  // namespace rpc
 }  // namespace mavsdk
 PROTOBUF_NAMESPACE_OPEN
+template<> ::mavsdk::rpc::gimbal::ControlResponse* Arena::CreateMaybeMessage<::mavsdk::rpc::gimbal::ControlResponse>(Arena*);
+template<> ::mavsdk::rpc::gimbal::ControlStatus* Arena::CreateMaybeMessage<::mavsdk::rpc::gimbal::ControlStatus>(Arena*);
 template<> ::mavsdk::rpc::gimbal::GimbalResult* Arena::CreateMaybeMessage<::mavsdk::rpc::gimbal::GimbalResult>(Arena*);
+template<> ::mavsdk::rpc::gimbal::ReleaseControlRequest* Arena::CreateMaybeMessage<::mavsdk::rpc::gimbal::ReleaseControlRequest>(Arena*);
+template<> ::mavsdk::rpc::gimbal::ReleaseControlResponse* Arena::CreateMaybeMessage<::mavsdk::rpc::gimbal::ReleaseControlResponse>(Arena*);
 template<> ::mavsdk::rpc::gimbal::SetModeRequest* Arena::CreateMaybeMessage<::mavsdk::rpc::gimbal::SetModeRequest>(Arena*);
 template<> ::mavsdk::rpc::gimbal::SetModeResponse* Arena::CreateMaybeMessage<::mavsdk::rpc::gimbal::SetModeResponse>(Arena*);
 template<> ::mavsdk::rpc::gimbal::SetPitchAndYawRequest* Arena::CreateMaybeMessage<::mavsdk::rpc::gimbal::SetPitchAndYawRequest>(Arena*);
 template<> ::mavsdk::rpc::gimbal::SetPitchAndYawResponse* Arena::CreateMaybeMessage<::mavsdk::rpc::gimbal::SetPitchAndYawResponse>(Arena*);
+template<> ::mavsdk::rpc::gimbal::SetPitchRateAndYawRateRequest* Arena::CreateMaybeMessage<::mavsdk::rpc::gimbal::SetPitchRateAndYawRateRequest>(Arena*);
+template<> ::mavsdk::rpc::gimbal::SetPitchRateAndYawRateResponse* Arena::CreateMaybeMessage<::mavsdk::rpc::gimbal::SetPitchRateAndYawRateResponse>(Arena*);
 template<> ::mavsdk::rpc::gimbal::SetRoiLocationRequest* Arena::CreateMaybeMessage<::mavsdk::rpc::gimbal::SetRoiLocationRequest>(Arena*);
 template<> ::mavsdk::rpc::gimbal::SetRoiLocationResponse* Arena::CreateMaybeMessage<::mavsdk::rpc::gimbal::SetRoiLocationResponse>(Arena*);
+template<> ::mavsdk::rpc::gimbal::SubscribeControlRequest* Arena::CreateMaybeMessage<::mavsdk::rpc::gimbal::SubscribeControlRequest>(Arena*);
+template<> ::mavsdk::rpc::gimbal::TakeControlRequest* Arena::CreateMaybeMessage<::mavsdk::rpc::gimbal::TakeControlRequest>(Arena*);
+template<> ::mavsdk::rpc::gimbal::TakeControlResponse* Arena::CreateMaybeMessage<::mavsdk::rpc::gimbal::TakeControlResponse>(Arena*);
 PROTOBUF_NAMESPACE_CLOSE
 namespace mavsdk {
 namespace rpc {
@@ -147,6 +183,32 @@ inline bool GimbalMode_Parse(
     ::PROTOBUF_NAMESPACE_ID::ConstStringParam name, GimbalMode* value) {
   return ::PROTOBUF_NAMESPACE_ID::internal::ParseNamedEnum<GimbalMode>(
     GimbalMode_descriptor(), name, value);
+}
+enum ControlMode : int {
+  CONTROL_MODE_NONE = 0,
+  CONTROL_MODE_PRIMARY = 1,
+  CONTROL_MODE_SECONDARY = 2,
+  ControlMode_INT_MIN_SENTINEL_DO_NOT_USE_ = std::numeric_limits<::PROTOBUF_NAMESPACE_ID::int32>::min(),
+  ControlMode_INT_MAX_SENTINEL_DO_NOT_USE_ = std::numeric_limits<::PROTOBUF_NAMESPACE_ID::int32>::max()
+};
+bool ControlMode_IsValid(int value);
+constexpr ControlMode ControlMode_MIN = CONTROL_MODE_NONE;
+constexpr ControlMode ControlMode_MAX = CONTROL_MODE_SECONDARY;
+constexpr int ControlMode_ARRAYSIZE = ControlMode_MAX + 1;
+
+const ::PROTOBUF_NAMESPACE_ID::EnumDescriptor* ControlMode_descriptor();
+template<typename T>
+inline const std::string& ControlMode_Name(T enum_t_value) {
+  static_assert(::std::is_same<T, ControlMode>::value ||
+    ::std::is_integral<T>::value,
+    "Incorrect type passed to function ControlMode_Name.");
+  return ::PROTOBUF_NAMESPACE_ID::internal::NameOfEnum(
+    ControlMode_descriptor(), enum_t_value);
+}
+inline bool ControlMode_Parse(
+    ::PROTOBUF_NAMESPACE_ID::ConstStringParam name, ControlMode* value) {
+  return ::PROTOBUF_NAMESPACE_ID::internal::ParseNamedEnum<ControlMode>(
+    ControlMode_descriptor(), name, value);
 }
 // ===================================================================
 
@@ -444,6 +506,300 @@ class SetPitchAndYawResponse PROTOBUF_FINAL :
 };
 // -------------------------------------------------------------------
 
+class SetPitchRateAndYawRateRequest PROTOBUF_FINAL :
+    public ::PROTOBUF_NAMESPACE_ID::Message /* @@protoc_insertion_point(class_definition:mavsdk.rpc.gimbal.SetPitchRateAndYawRateRequest) */ {
+ public:
+  inline SetPitchRateAndYawRateRequest() : SetPitchRateAndYawRateRequest(nullptr) {}
+  virtual ~SetPitchRateAndYawRateRequest();
+
+  SetPitchRateAndYawRateRequest(const SetPitchRateAndYawRateRequest& from);
+  SetPitchRateAndYawRateRequest(SetPitchRateAndYawRateRequest&& from) noexcept
+    : SetPitchRateAndYawRateRequest() {
+    *this = ::std::move(from);
+  }
+
+  inline SetPitchRateAndYawRateRequest& operator=(const SetPitchRateAndYawRateRequest& from) {
+    CopyFrom(from);
+    return *this;
+  }
+  inline SetPitchRateAndYawRateRequest& operator=(SetPitchRateAndYawRateRequest&& from) noexcept {
+    if (GetArena() == from.GetArena()) {
+      if (this != &from) InternalSwap(&from);
+    } else {
+      CopyFrom(from);
+    }
+    return *this;
+  }
+
+  static const ::PROTOBUF_NAMESPACE_ID::Descriptor* descriptor() {
+    return GetDescriptor();
+  }
+  static const ::PROTOBUF_NAMESPACE_ID::Descriptor* GetDescriptor() {
+    return GetMetadataStatic().descriptor;
+  }
+  static const ::PROTOBUF_NAMESPACE_ID::Reflection* GetReflection() {
+    return GetMetadataStatic().reflection;
+  }
+  static const SetPitchRateAndYawRateRequest& default_instance();
+
+  static void InitAsDefaultInstance();  // FOR INTERNAL USE ONLY
+  static inline const SetPitchRateAndYawRateRequest* internal_default_instance() {
+    return reinterpret_cast<const SetPitchRateAndYawRateRequest*>(
+               &_SetPitchRateAndYawRateRequest_default_instance_);
+  }
+  static constexpr int kIndexInFileMessages =
+    2;
+
+  friend void swap(SetPitchRateAndYawRateRequest& a, SetPitchRateAndYawRateRequest& b) {
+    a.Swap(&b);
+  }
+  inline void Swap(SetPitchRateAndYawRateRequest* other) {
+    if (other == this) return;
+    if (GetArena() == other->GetArena()) {
+      InternalSwap(other);
+    } else {
+      ::PROTOBUF_NAMESPACE_ID::internal::GenericSwap(this, other);
+    }
+  }
+  void UnsafeArenaSwap(SetPitchRateAndYawRateRequest* other) {
+    if (other == this) return;
+    GOOGLE_DCHECK(GetArena() == other->GetArena());
+    InternalSwap(other);
+  }
+
+  // implements Message ----------------------------------------------
+
+  inline SetPitchRateAndYawRateRequest* New() const final {
+    return CreateMaybeMessage<SetPitchRateAndYawRateRequest>(nullptr);
+  }
+
+  SetPitchRateAndYawRateRequest* New(::PROTOBUF_NAMESPACE_ID::Arena* arena) const final {
+    return CreateMaybeMessage<SetPitchRateAndYawRateRequest>(arena);
+  }
+  void CopyFrom(const ::PROTOBUF_NAMESPACE_ID::Message& from) final;
+  void MergeFrom(const ::PROTOBUF_NAMESPACE_ID::Message& from) final;
+  void CopyFrom(const SetPitchRateAndYawRateRequest& from);
+  void MergeFrom(const SetPitchRateAndYawRateRequest& from);
+  PROTOBUF_ATTRIBUTE_REINITIALIZES void Clear() final;
+  bool IsInitialized() const final;
+
+  size_t ByteSizeLong() const final;
+  const char* _InternalParse(const char* ptr, ::PROTOBUF_NAMESPACE_ID::internal::ParseContext* ctx) final;
+  ::PROTOBUF_NAMESPACE_ID::uint8* _InternalSerialize(
+      ::PROTOBUF_NAMESPACE_ID::uint8* target, ::PROTOBUF_NAMESPACE_ID::io::EpsCopyOutputStream* stream) const final;
+  int GetCachedSize() const final { return _cached_size_.Get(); }
+
+  private:
+  inline void SharedCtor();
+  inline void SharedDtor();
+  void SetCachedSize(int size) const final;
+  void InternalSwap(SetPitchRateAndYawRateRequest* other);
+  friend class ::PROTOBUF_NAMESPACE_ID::internal::AnyMetadata;
+  static ::PROTOBUF_NAMESPACE_ID::StringPiece FullMessageName() {
+    return "mavsdk.rpc.gimbal.SetPitchRateAndYawRateRequest";
+  }
+  protected:
+  explicit SetPitchRateAndYawRateRequest(::PROTOBUF_NAMESPACE_ID::Arena* arena);
+  private:
+  static void ArenaDtor(void* object);
+  inline void RegisterArenaDtor(::PROTOBUF_NAMESPACE_ID::Arena* arena);
+  public:
+
+  ::PROTOBUF_NAMESPACE_ID::Metadata GetMetadata() const final;
+  private:
+  static ::PROTOBUF_NAMESPACE_ID::Metadata GetMetadataStatic() {
+    ::PROTOBUF_NAMESPACE_ID::internal::AssignDescriptors(&::descriptor_table_gimbal_2fgimbal_2eproto);
+    return ::descriptor_table_gimbal_2fgimbal_2eproto.file_level_metadata[kIndexInFileMessages];
+  }
+
+  public:
+
+  // nested types ----------------------------------------------------
+
+  // accessors -------------------------------------------------------
+
+  enum : int {
+    kPitchRateDegSFieldNumber = 1,
+    kYawRateDegSFieldNumber = 2,
+  };
+  // float pitch_rate_deg_s = 1;
+  void clear_pitch_rate_deg_s();
+  float pitch_rate_deg_s() const;
+  void set_pitch_rate_deg_s(float value);
+  private:
+  float _internal_pitch_rate_deg_s() const;
+  void _internal_set_pitch_rate_deg_s(float value);
+  public:
+
+  // float yaw_rate_deg_s = 2;
+  void clear_yaw_rate_deg_s();
+  float yaw_rate_deg_s() const;
+  void set_yaw_rate_deg_s(float value);
+  private:
+  float _internal_yaw_rate_deg_s() const;
+  void _internal_set_yaw_rate_deg_s(float value);
+  public:
+
+  // @@protoc_insertion_point(class_scope:mavsdk.rpc.gimbal.SetPitchRateAndYawRateRequest)
+ private:
+  class _Internal;
+
+  template <typename T> friend class ::PROTOBUF_NAMESPACE_ID::Arena::InternalHelper;
+  typedef void InternalArenaConstructable_;
+  typedef void DestructorSkippable_;
+  float pitch_rate_deg_s_;
+  float yaw_rate_deg_s_;
+  mutable ::PROTOBUF_NAMESPACE_ID::internal::CachedSize _cached_size_;
+  friend struct ::TableStruct_gimbal_2fgimbal_2eproto;
+};
+// -------------------------------------------------------------------
+
+class SetPitchRateAndYawRateResponse PROTOBUF_FINAL :
+    public ::PROTOBUF_NAMESPACE_ID::Message /* @@protoc_insertion_point(class_definition:mavsdk.rpc.gimbal.SetPitchRateAndYawRateResponse) */ {
+ public:
+  inline SetPitchRateAndYawRateResponse() : SetPitchRateAndYawRateResponse(nullptr) {}
+  virtual ~SetPitchRateAndYawRateResponse();
+
+  SetPitchRateAndYawRateResponse(const SetPitchRateAndYawRateResponse& from);
+  SetPitchRateAndYawRateResponse(SetPitchRateAndYawRateResponse&& from) noexcept
+    : SetPitchRateAndYawRateResponse() {
+    *this = ::std::move(from);
+  }
+
+  inline SetPitchRateAndYawRateResponse& operator=(const SetPitchRateAndYawRateResponse& from) {
+    CopyFrom(from);
+    return *this;
+  }
+  inline SetPitchRateAndYawRateResponse& operator=(SetPitchRateAndYawRateResponse&& from) noexcept {
+    if (GetArena() == from.GetArena()) {
+      if (this != &from) InternalSwap(&from);
+    } else {
+      CopyFrom(from);
+    }
+    return *this;
+  }
+
+  static const ::PROTOBUF_NAMESPACE_ID::Descriptor* descriptor() {
+    return GetDescriptor();
+  }
+  static const ::PROTOBUF_NAMESPACE_ID::Descriptor* GetDescriptor() {
+    return GetMetadataStatic().descriptor;
+  }
+  static const ::PROTOBUF_NAMESPACE_ID::Reflection* GetReflection() {
+    return GetMetadataStatic().reflection;
+  }
+  static const SetPitchRateAndYawRateResponse& default_instance();
+
+  static void InitAsDefaultInstance();  // FOR INTERNAL USE ONLY
+  static inline const SetPitchRateAndYawRateResponse* internal_default_instance() {
+    return reinterpret_cast<const SetPitchRateAndYawRateResponse*>(
+               &_SetPitchRateAndYawRateResponse_default_instance_);
+  }
+  static constexpr int kIndexInFileMessages =
+    3;
+
+  friend void swap(SetPitchRateAndYawRateResponse& a, SetPitchRateAndYawRateResponse& b) {
+    a.Swap(&b);
+  }
+  inline void Swap(SetPitchRateAndYawRateResponse* other) {
+    if (other == this) return;
+    if (GetArena() == other->GetArena()) {
+      InternalSwap(other);
+    } else {
+      ::PROTOBUF_NAMESPACE_ID::internal::GenericSwap(this, other);
+    }
+  }
+  void UnsafeArenaSwap(SetPitchRateAndYawRateResponse* other) {
+    if (other == this) return;
+    GOOGLE_DCHECK(GetArena() == other->GetArena());
+    InternalSwap(other);
+  }
+
+  // implements Message ----------------------------------------------
+
+  inline SetPitchRateAndYawRateResponse* New() const final {
+    return CreateMaybeMessage<SetPitchRateAndYawRateResponse>(nullptr);
+  }
+
+  SetPitchRateAndYawRateResponse* New(::PROTOBUF_NAMESPACE_ID::Arena* arena) const final {
+    return CreateMaybeMessage<SetPitchRateAndYawRateResponse>(arena);
+  }
+  void CopyFrom(const ::PROTOBUF_NAMESPACE_ID::Message& from) final;
+  void MergeFrom(const ::PROTOBUF_NAMESPACE_ID::Message& from) final;
+  void CopyFrom(const SetPitchRateAndYawRateResponse& from);
+  void MergeFrom(const SetPitchRateAndYawRateResponse& from);
+  PROTOBUF_ATTRIBUTE_REINITIALIZES void Clear() final;
+  bool IsInitialized() const final;
+
+  size_t ByteSizeLong() const final;
+  const char* _InternalParse(const char* ptr, ::PROTOBUF_NAMESPACE_ID::internal::ParseContext* ctx) final;
+  ::PROTOBUF_NAMESPACE_ID::uint8* _InternalSerialize(
+      ::PROTOBUF_NAMESPACE_ID::uint8* target, ::PROTOBUF_NAMESPACE_ID::io::EpsCopyOutputStream* stream) const final;
+  int GetCachedSize() const final { return _cached_size_.Get(); }
+
+  private:
+  inline void SharedCtor();
+  inline void SharedDtor();
+  void SetCachedSize(int size) const final;
+  void InternalSwap(SetPitchRateAndYawRateResponse* other);
+  friend class ::PROTOBUF_NAMESPACE_ID::internal::AnyMetadata;
+  static ::PROTOBUF_NAMESPACE_ID::StringPiece FullMessageName() {
+    return "mavsdk.rpc.gimbal.SetPitchRateAndYawRateResponse";
+  }
+  protected:
+  explicit SetPitchRateAndYawRateResponse(::PROTOBUF_NAMESPACE_ID::Arena* arena);
+  private:
+  static void ArenaDtor(void* object);
+  inline void RegisterArenaDtor(::PROTOBUF_NAMESPACE_ID::Arena* arena);
+  public:
+
+  ::PROTOBUF_NAMESPACE_ID::Metadata GetMetadata() const final;
+  private:
+  static ::PROTOBUF_NAMESPACE_ID::Metadata GetMetadataStatic() {
+    ::PROTOBUF_NAMESPACE_ID::internal::AssignDescriptors(&::descriptor_table_gimbal_2fgimbal_2eproto);
+    return ::descriptor_table_gimbal_2fgimbal_2eproto.file_level_metadata[kIndexInFileMessages];
+  }
+
+  public:
+
+  // nested types ----------------------------------------------------
+
+  // accessors -------------------------------------------------------
+
+  enum : int {
+    kGimbalResultFieldNumber = 1,
+  };
+  // .mavsdk.rpc.gimbal.GimbalResult gimbal_result = 1;
+  bool has_gimbal_result() const;
+  private:
+  bool _internal_has_gimbal_result() const;
+  public:
+  void clear_gimbal_result();
+  const ::mavsdk::rpc::gimbal::GimbalResult& gimbal_result() const;
+  ::mavsdk::rpc::gimbal::GimbalResult* release_gimbal_result();
+  ::mavsdk::rpc::gimbal::GimbalResult* mutable_gimbal_result();
+  void set_allocated_gimbal_result(::mavsdk::rpc::gimbal::GimbalResult* gimbal_result);
+  private:
+  const ::mavsdk::rpc::gimbal::GimbalResult& _internal_gimbal_result() const;
+  ::mavsdk::rpc::gimbal::GimbalResult* _internal_mutable_gimbal_result();
+  public:
+  void unsafe_arena_set_allocated_gimbal_result(
+      ::mavsdk::rpc::gimbal::GimbalResult* gimbal_result);
+  ::mavsdk::rpc::gimbal::GimbalResult* unsafe_arena_release_gimbal_result();
+
+  // @@protoc_insertion_point(class_scope:mavsdk.rpc.gimbal.SetPitchRateAndYawRateResponse)
+ private:
+  class _Internal;
+
+  template <typename T> friend class ::PROTOBUF_NAMESPACE_ID::Arena::InternalHelper;
+  typedef void InternalArenaConstructable_;
+  typedef void DestructorSkippable_;
+  ::mavsdk::rpc::gimbal::GimbalResult* gimbal_result_;
+  mutable ::PROTOBUF_NAMESPACE_ID::internal::CachedSize _cached_size_;
+  friend struct ::TableStruct_gimbal_2fgimbal_2eproto;
+};
+// -------------------------------------------------------------------
+
 class SetModeRequest PROTOBUF_FINAL :
     public ::PROTOBUF_NAMESPACE_ID::Message /* @@protoc_insertion_point(class_definition:mavsdk.rpc.gimbal.SetModeRequest) */ {
  public:
@@ -486,7 +842,7 @@ class SetModeRequest PROTOBUF_FINAL :
                &_SetModeRequest_default_instance_);
   }
   static constexpr int kIndexInFileMessages =
-    2;
+    4;
 
   friend void swap(SetModeRequest& a, SetModeRequest& b) {
     a.Swap(&b);
@@ -623,7 +979,7 @@ class SetModeResponse PROTOBUF_FINAL :
                &_SetModeResponse_default_instance_);
   }
   static constexpr int kIndexInFileMessages =
-    3;
+    5;
 
   friend void swap(SetModeResponse& a, SetModeResponse& b) {
     a.Swap(&b);
@@ -769,7 +1125,7 @@ class SetRoiLocationRequest PROTOBUF_FINAL :
                &_SetRoiLocationRequest_default_instance_);
   }
   static constexpr int kIndexInFileMessages =
-    4;
+    6;
 
   friend void swap(SetRoiLocationRequest& a, SetRoiLocationRequest& b) {
     a.Swap(&b);
@@ -928,7 +1284,7 @@ class SetRoiLocationResponse PROTOBUF_FINAL :
                &_SetRoiLocationResponse_default_instance_);
   }
   static constexpr int kIndexInFileMessages =
-    5;
+    7;
 
   friend void swap(SetRoiLocationResponse& a, SetRoiLocationResponse& b) {
     a.Swap(&b);
@@ -1032,6 +1388,1010 @@ class SetRoiLocationResponse PROTOBUF_FINAL :
 };
 // -------------------------------------------------------------------
 
+class TakeControlRequest PROTOBUF_FINAL :
+    public ::PROTOBUF_NAMESPACE_ID::Message /* @@protoc_insertion_point(class_definition:mavsdk.rpc.gimbal.TakeControlRequest) */ {
+ public:
+  inline TakeControlRequest() : TakeControlRequest(nullptr) {}
+  virtual ~TakeControlRequest();
+
+  TakeControlRequest(const TakeControlRequest& from);
+  TakeControlRequest(TakeControlRequest&& from) noexcept
+    : TakeControlRequest() {
+    *this = ::std::move(from);
+  }
+
+  inline TakeControlRequest& operator=(const TakeControlRequest& from) {
+    CopyFrom(from);
+    return *this;
+  }
+  inline TakeControlRequest& operator=(TakeControlRequest&& from) noexcept {
+    if (GetArena() == from.GetArena()) {
+      if (this != &from) InternalSwap(&from);
+    } else {
+      CopyFrom(from);
+    }
+    return *this;
+  }
+
+  static const ::PROTOBUF_NAMESPACE_ID::Descriptor* descriptor() {
+    return GetDescriptor();
+  }
+  static const ::PROTOBUF_NAMESPACE_ID::Descriptor* GetDescriptor() {
+    return GetMetadataStatic().descriptor;
+  }
+  static const ::PROTOBUF_NAMESPACE_ID::Reflection* GetReflection() {
+    return GetMetadataStatic().reflection;
+  }
+  static const TakeControlRequest& default_instance();
+
+  static void InitAsDefaultInstance();  // FOR INTERNAL USE ONLY
+  static inline const TakeControlRequest* internal_default_instance() {
+    return reinterpret_cast<const TakeControlRequest*>(
+               &_TakeControlRequest_default_instance_);
+  }
+  static constexpr int kIndexInFileMessages =
+    8;
+
+  friend void swap(TakeControlRequest& a, TakeControlRequest& b) {
+    a.Swap(&b);
+  }
+  inline void Swap(TakeControlRequest* other) {
+    if (other == this) return;
+    if (GetArena() == other->GetArena()) {
+      InternalSwap(other);
+    } else {
+      ::PROTOBUF_NAMESPACE_ID::internal::GenericSwap(this, other);
+    }
+  }
+  void UnsafeArenaSwap(TakeControlRequest* other) {
+    if (other == this) return;
+    GOOGLE_DCHECK(GetArena() == other->GetArena());
+    InternalSwap(other);
+  }
+
+  // implements Message ----------------------------------------------
+
+  inline TakeControlRequest* New() const final {
+    return CreateMaybeMessage<TakeControlRequest>(nullptr);
+  }
+
+  TakeControlRequest* New(::PROTOBUF_NAMESPACE_ID::Arena* arena) const final {
+    return CreateMaybeMessage<TakeControlRequest>(arena);
+  }
+  void CopyFrom(const ::PROTOBUF_NAMESPACE_ID::Message& from) final;
+  void MergeFrom(const ::PROTOBUF_NAMESPACE_ID::Message& from) final;
+  void CopyFrom(const TakeControlRequest& from);
+  void MergeFrom(const TakeControlRequest& from);
+  PROTOBUF_ATTRIBUTE_REINITIALIZES void Clear() final;
+  bool IsInitialized() const final;
+
+  size_t ByteSizeLong() const final;
+  const char* _InternalParse(const char* ptr, ::PROTOBUF_NAMESPACE_ID::internal::ParseContext* ctx) final;
+  ::PROTOBUF_NAMESPACE_ID::uint8* _InternalSerialize(
+      ::PROTOBUF_NAMESPACE_ID::uint8* target, ::PROTOBUF_NAMESPACE_ID::io::EpsCopyOutputStream* stream) const final;
+  int GetCachedSize() const final { return _cached_size_.Get(); }
+
+  private:
+  inline void SharedCtor();
+  inline void SharedDtor();
+  void SetCachedSize(int size) const final;
+  void InternalSwap(TakeControlRequest* other);
+  friend class ::PROTOBUF_NAMESPACE_ID::internal::AnyMetadata;
+  static ::PROTOBUF_NAMESPACE_ID::StringPiece FullMessageName() {
+    return "mavsdk.rpc.gimbal.TakeControlRequest";
+  }
+  protected:
+  explicit TakeControlRequest(::PROTOBUF_NAMESPACE_ID::Arena* arena);
+  private:
+  static void ArenaDtor(void* object);
+  inline void RegisterArenaDtor(::PROTOBUF_NAMESPACE_ID::Arena* arena);
+  public:
+
+  ::PROTOBUF_NAMESPACE_ID::Metadata GetMetadata() const final;
+  private:
+  static ::PROTOBUF_NAMESPACE_ID::Metadata GetMetadataStatic() {
+    ::PROTOBUF_NAMESPACE_ID::internal::AssignDescriptors(&::descriptor_table_gimbal_2fgimbal_2eproto);
+    return ::descriptor_table_gimbal_2fgimbal_2eproto.file_level_metadata[kIndexInFileMessages];
+  }
+
+  public:
+
+  // nested types ----------------------------------------------------
+
+  // accessors -------------------------------------------------------
+
+  enum : int {
+    kControlModeFieldNumber = 1,
+  };
+  // .mavsdk.rpc.gimbal.ControlMode control_mode = 1;
+  void clear_control_mode();
+  ::mavsdk::rpc::gimbal::ControlMode control_mode() const;
+  void set_control_mode(::mavsdk::rpc::gimbal::ControlMode value);
+  private:
+  ::mavsdk::rpc::gimbal::ControlMode _internal_control_mode() const;
+  void _internal_set_control_mode(::mavsdk::rpc::gimbal::ControlMode value);
+  public:
+
+  // @@protoc_insertion_point(class_scope:mavsdk.rpc.gimbal.TakeControlRequest)
+ private:
+  class _Internal;
+
+  template <typename T> friend class ::PROTOBUF_NAMESPACE_ID::Arena::InternalHelper;
+  typedef void InternalArenaConstructable_;
+  typedef void DestructorSkippable_;
+  int control_mode_;
+  mutable ::PROTOBUF_NAMESPACE_ID::internal::CachedSize _cached_size_;
+  friend struct ::TableStruct_gimbal_2fgimbal_2eproto;
+};
+// -------------------------------------------------------------------
+
+class TakeControlResponse PROTOBUF_FINAL :
+    public ::PROTOBUF_NAMESPACE_ID::Message /* @@protoc_insertion_point(class_definition:mavsdk.rpc.gimbal.TakeControlResponse) */ {
+ public:
+  inline TakeControlResponse() : TakeControlResponse(nullptr) {}
+  virtual ~TakeControlResponse();
+
+  TakeControlResponse(const TakeControlResponse& from);
+  TakeControlResponse(TakeControlResponse&& from) noexcept
+    : TakeControlResponse() {
+    *this = ::std::move(from);
+  }
+
+  inline TakeControlResponse& operator=(const TakeControlResponse& from) {
+    CopyFrom(from);
+    return *this;
+  }
+  inline TakeControlResponse& operator=(TakeControlResponse&& from) noexcept {
+    if (GetArena() == from.GetArena()) {
+      if (this != &from) InternalSwap(&from);
+    } else {
+      CopyFrom(from);
+    }
+    return *this;
+  }
+
+  static const ::PROTOBUF_NAMESPACE_ID::Descriptor* descriptor() {
+    return GetDescriptor();
+  }
+  static const ::PROTOBUF_NAMESPACE_ID::Descriptor* GetDescriptor() {
+    return GetMetadataStatic().descriptor;
+  }
+  static const ::PROTOBUF_NAMESPACE_ID::Reflection* GetReflection() {
+    return GetMetadataStatic().reflection;
+  }
+  static const TakeControlResponse& default_instance();
+
+  static void InitAsDefaultInstance();  // FOR INTERNAL USE ONLY
+  static inline const TakeControlResponse* internal_default_instance() {
+    return reinterpret_cast<const TakeControlResponse*>(
+               &_TakeControlResponse_default_instance_);
+  }
+  static constexpr int kIndexInFileMessages =
+    9;
+
+  friend void swap(TakeControlResponse& a, TakeControlResponse& b) {
+    a.Swap(&b);
+  }
+  inline void Swap(TakeControlResponse* other) {
+    if (other == this) return;
+    if (GetArena() == other->GetArena()) {
+      InternalSwap(other);
+    } else {
+      ::PROTOBUF_NAMESPACE_ID::internal::GenericSwap(this, other);
+    }
+  }
+  void UnsafeArenaSwap(TakeControlResponse* other) {
+    if (other == this) return;
+    GOOGLE_DCHECK(GetArena() == other->GetArena());
+    InternalSwap(other);
+  }
+
+  // implements Message ----------------------------------------------
+
+  inline TakeControlResponse* New() const final {
+    return CreateMaybeMessage<TakeControlResponse>(nullptr);
+  }
+
+  TakeControlResponse* New(::PROTOBUF_NAMESPACE_ID::Arena* arena) const final {
+    return CreateMaybeMessage<TakeControlResponse>(arena);
+  }
+  void CopyFrom(const ::PROTOBUF_NAMESPACE_ID::Message& from) final;
+  void MergeFrom(const ::PROTOBUF_NAMESPACE_ID::Message& from) final;
+  void CopyFrom(const TakeControlResponse& from);
+  void MergeFrom(const TakeControlResponse& from);
+  PROTOBUF_ATTRIBUTE_REINITIALIZES void Clear() final;
+  bool IsInitialized() const final;
+
+  size_t ByteSizeLong() const final;
+  const char* _InternalParse(const char* ptr, ::PROTOBUF_NAMESPACE_ID::internal::ParseContext* ctx) final;
+  ::PROTOBUF_NAMESPACE_ID::uint8* _InternalSerialize(
+      ::PROTOBUF_NAMESPACE_ID::uint8* target, ::PROTOBUF_NAMESPACE_ID::io::EpsCopyOutputStream* stream) const final;
+  int GetCachedSize() const final { return _cached_size_.Get(); }
+
+  private:
+  inline void SharedCtor();
+  inline void SharedDtor();
+  void SetCachedSize(int size) const final;
+  void InternalSwap(TakeControlResponse* other);
+  friend class ::PROTOBUF_NAMESPACE_ID::internal::AnyMetadata;
+  static ::PROTOBUF_NAMESPACE_ID::StringPiece FullMessageName() {
+    return "mavsdk.rpc.gimbal.TakeControlResponse";
+  }
+  protected:
+  explicit TakeControlResponse(::PROTOBUF_NAMESPACE_ID::Arena* arena);
+  private:
+  static void ArenaDtor(void* object);
+  inline void RegisterArenaDtor(::PROTOBUF_NAMESPACE_ID::Arena* arena);
+  public:
+
+  ::PROTOBUF_NAMESPACE_ID::Metadata GetMetadata() const final;
+  private:
+  static ::PROTOBUF_NAMESPACE_ID::Metadata GetMetadataStatic() {
+    ::PROTOBUF_NAMESPACE_ID::internal::AssignDescriptors(&::descriptor_table_gimbal_2fgimbal_2eproto);
+    return ::descriptor_table_gimbal_2fgimbal_2eproto.file_level_metadata[kIndexInFileMessages];
+  }
+
+  public:
+
+  // nested types ----------------------------------------------------
+
+  // accessors -------------------------------------------------------
+
+  enum : int {
+    kGimbalResultFieldNumber = 1,
+  };
+  // .mavsdk.rpc.gimbal.GimbalResult gimbal_result = 1;
+  bool has_gimbal_result() const;
+  private:
+  bool _internal_has_gimbal_result() const;
+  public:
+  void clear_gimbal_result();
+  const ::mavsdk::rpc::gimbal::GimbalResult& gimbal_result() const;
+  ::mavsdk::rpc::gimbal::GimbalResult* release_gimbal_result();
+  ::mavsdk::rpc::gimbal::GimbalResult* mutable_gimbal_result();
+  void set_allocated_gimbal_result(::mavsdk::rpc::gimbal::GimbalResult* gimbal_result);
+  private:
+  const ::mavsdk::rpc::gimbal::GimbalResult& _internal_gimbal_result() const;
+  ::mavsdk::rpc::gimbal::GimbalResult* _internal_mutable_gimbal_result();
+  public:
+  void unsafe_arena_set_allocated_gimbal_result(
+      ::mavsdk::rpc::gimbal::GimbalResult* gimbal_result);
+  ::mavsdk::rpc::gimbal::GimbalResult* unsafe_arena_release_gimbal_result();
+
+  // @@protoc_insertion_point(class_scope:mavsdk.rpc.gimbal.TakeControlResponse)
+ private:
+  class _Internal;
+
+  template <typename T> friend class ::PROTOBUF_NAMESPACE_ID::Arena::InternalHelper;
+  typedef void InternalArenaConstructable_;
+  typedef void DestructorSkippable_;
+  ::mavsdk::rpc::gimbal::GimbalResult* gimbal_result_;
+  mutable ::PROTOBUF_NAMESPACE_ID::internal::CachedSize _cached_size_;
+  friend struct ::TableStruct_gimbal_2fgimbal_2eproto;
+};
+// -------------------------------------------------------------------
+
+class ReleaseControlRequest PROTOBUF_FINAL :
+    public ::PROTOBUF_NAMESPACE_ID::Message /* @@protoc_insertion_point(class_definition:mavsdk.rpc.gimbal.ReleaseControlRequest) */ {
+ public:
+  inline ReleaseControlRequest() : ReleaseControlRequest(nullptr) {}
+  virtual ~ReleaseControlRequest();
+
+  ReleaseControlRequest(const ReleaseControlRequest& from);
+  ReleaseControlRequest(ReleaseControlRequest&& from) noexcept
+    : ReleaseControlRequest() {
+    *this = ::std::move(from);
+  }
+
+  inline ReleaseControlRequest& operator=(const ReleaseControlRequest& from) {
+    CopyFrom(from);
+    return *this;
+  }
+  inline ReleaseControlRequest& operator=(ReleaseControlRequest&& from) noexcept {
+    if (GetArena() == from.GetArena()) {
+      if (this != &from) InternalSwap(&from);
+    } else {
+      CopyFrom(from);
+    }
+    return *this;
+  }
+
+  static const ::PROTOBUF_NAMESPACE_ID::Descriptor* descriptor() {
+    return GetDescriptor();
+  }
+  static const ::PROTOBUF_NAMESPACE_ID::Descriptor* GetDescriptor() {
+    return GetMetadataStatic().descriptor;
+  }
+  static const ::PROTOBUF_NAMESPACE_ID::Reflection* GetReflection() {
+    return GetMetadataStatic().reflection;
+  }
+  static const ReleaseControlRequest& default_instance();
+
+  static void InitAsDefaultInstance();  // FOR INTERNAL USE ONLY
+  static inline const ReleaseControlRequest* internal_default_instance() {
+    return reinterpret_cast<const ReleaseControlRequest*>(
+               &_ReleaseControlRequest_default_instance_);
+  }
+  static constexpr int kIndexInFileMessages =
+    10;
+
+  friend void swap(ReleaseControlRequest& a, ReleaseControlRequest& b) {
+    a.Swap(&b);
+  }
+  inline void Swap(ReleaseControlRequest* other) {
+    if (other == this) return;
+    if (GetArena() == other->GetArena()) {
+      InternalSwap(other);
+    } else {
+      ::PROTOBUF_NAMESPACE_ID::internal::GenericSwap(this, other);
+    }
+  }
+  void UnsafeArenaSwap(ReleaseControlRequest* other) {
+    if (other == this) return;
+    GOOGLE_DCHECK(GetArena() == other->GetArena());
+    InternalSwap(other);
+  }
+
+  // implements Message ----------------------------------------------
+
+  inline ReleaseControlRequest* New() const final {
+    return CreateMaybeMessage<ReleaseControlRequest>(nullptr);
+  }
+
+  ReleaseControlRequest* New(::PROTOBUF_NAMESPACE_ID::Arena* arena) const final {
+    return CreateMaybeMessage<ReleaseControlRequest>(arena);
+  }
+  void CopyFrom(const ::PROTOBUF_NAMESPACE_ID::Message& from) final;
+  void MergeFrom(const ::PROTOBUF_NAMESPACE_ID::Message& from) final;
+  void CopyFrom(const ReleaseControlRequest& from);
+  void MergeFrom(const ReleaseControlRequest& from);
+  PROTOBUF_ATTRIBUTE_REINITIALIZES void Clear() final;
+  bool IsInitialized() const final;
+
+  size_t ByteSizeLong() const final;
+  const char* _InternalParse(const char* ptr, ::PROTOBUF_NAMESPACE_ID::internal::ParseContext* ctx) final;
+  ::PROTOBUF_NAMESPACE_ID::uint8* _InternalSerialize(
+      ::PROTOBUF_NAMESPACE_ID::uint8* target, ::PROTOBUF_NAMESPACE_ID::io::EpsCopyOutputStream* stream) const final;
+  int GetCachedSize() const final { return _cached_size_.Get(); }
+
+  private:
+  inline void SharedCtor();
+  inline void SharedDtor();
+  void SetCachedSize(int size) const final;
+  void InternalSwap(ReleaseControlRequest* other);
+  friend class ::PROTOBUF_NAMESPACE_ID::internal::AnyMetadata;
+  static ::PROTOBUF_NAMESPACE_ID::StringPiece FullMessageName() {
+    return "mavsdk.rpc.gimbal.ReleaseControlRequest";
+  }
+  protected:
+  explicit ReleaseControlRequest(::PROTOBUF_NAMESPACE_ID::Arena* arena);
+  private:
+  static void ArenaDtor(void* object);
+  inline void RegisterArenaDtor(::PROTOBUF_NAMESPACE_ID::Arena* arena);
+  public:
+
+  ::PROTOBUF_NAMESPACE_ID::Metadata GetMetadata() const final;
+  private:
+  static ::PROTOBUF_NAMESPACE_ID::Metadata GetMetadataStatic() {
+    ::PROTOBUF_NAMESPACE_ID::internal::AssignDescriptors(&::descriptor_table_gimbal_2fgimbal_2eproto);
+    return ::descriptor_table_gimbal_2fgimbal_2eproto.file_level_metadata[kIndexInFileMessages];
+  }
+
+  public:
+
+  // nested types ----------------------------------------------------
+
+  // accessors -------------------------------------------------------
+
+  // @@protoc_insertion_point(class_scope:mavsdk.rpc.gimbal.ReleaseControlRequest)
+ private:
+  class _Internal;
+
+  template <typename T> friend class ::PROTOBUF_NAMESPACE_ID::Arena::InternalHelper;
+  typedef void InternalArenaConstructable_;
+  typedef void DestructorSkippable_;
+  mutable ::PROTOBUF_NAMESPACE_ID::internal::CachedSize _cached_size_;
+  friend struct ::TableStruct_gimbal_2fgimbal_2eproto;
+};
+// -------------------------------------------------------------------
+
+class ReleaseControlResponse PROTOBUF_FINAL :
+    public ::PROTOBUF_NAMESPACE_ID::Message /* @@protoc_insertion_point(class_definition:mavsdk.rpc.gimbal.ReleaseControlResponse) */ {
+ public:
+  inline ReleaseControlResponse() : ReleaseControlResponse(nullptr) {}
+  virtual ~ReleaseControlResponse();
+
+  ReleaseControlResponse(const ReleaseControlResponse& from);
+  ReleaseControlResponse(ReleaseControlResponse&& from) noexcept
+    : ReleaseControlResponse() {
+    *this = ::std::move(from);
+  }
+
+  inline ReleaseControlResponse& operator=(const ReleaseControlResponse& from) {
+    CopyFrom(from);
+    return *this;
+  }
+  inline ReleaseControlResponse& operator=(ReleaseControlResponse&& from) noexcept {
+    if (GetArena() == from.GetArena()) {
+      if (this != &from) InternalSwap(&from);
+    } else {
+      CopyFrom(from);
+    }
+    return *this;
+  }
+
+  static const ::PROTOBUF_NAMESPACE_ID::Descriptor* descriptor() {
+    return GetDescriptor();
+  }
+  static const ::PROTOBUF_NAMESPACE_ID::Descriptor* GetDescriptor() {
+    return GetMetadataStatic().descriptor;
+  }
+  static const ::PROTOBUF_NAMESPACE_ID::Reflection* GetReflection() {
+    return GetMetadataStatic().reflection;
+  }
+  static const ReleaseControlResponse& default_instance();
+
+  static void InitAsDefaultInstance();  // FOR INTERNAL USE ONLY
+  static inline const ReleaseControlResponse* internal_default_instance() {
+    return reinterpret_cast<const ReleaseControlResponse*>(
+               &_ReleaseControlResponse_default_instance_);
+  }
+  static constexpr int kIndexInFileMessages =
+    11;
+
+  friend void swap(ReleaseControlResponse& a, ReleaseControlResponse& b) {
+    a.Swap(&b);
+  }
+  inline void Swap(ReleaseControlResponse* other) {
+    if (other == this) return;
+    if (GetArena() == other->GetArena()) {
+      InternalSwap(other);
+    } else {
+      ::PROTOBUF_NAMESPACE_ID::internal::GenericSwap(this, other);
+    }
+  }
+  void UnsafeArenaSwap(ReleaseControlResponse* other) {
+    if (other == this) return;
+    GOOGLE_DCHECK(GetArena() == other->GetArena());
+    InternalSwap(other);
+  }
+
+  // implements Message ----------------------------------------------
+
+  inline ReleaseControlResponse* New() const final {
+    return CreateMaybeMessage<ReleaseControlResponse>(nullptr);
+  }
+
+  ReleaseControlResponse* New(::PROTOBUF_NAMESPACE_ID::Arena* arena) const final {
+    return CreateMaybeMessage<ReleaseControlResponse>(arena);
+  }
+  void CopyFrom(const ::PROTOBUF_NAMESPACE_ID::Message& from) final;
+  void MergeFrom(const ::PROTOBUF_NAMESPACE_ID::Message& from) final;
+  void CopyFrom(const ReleaseControlResponse& from);
+  void MergeFrom(const ReleaseControlResponse& from);
+  PROTOBUF_ATTRIBUTE_REINITIALIZES void Clear() final;
+  bool IsInitialized() const final;
+
+  size_t ByteSizeLong() const final;
+  const char* _InternalParse(const char* ptr, ::PROTOBUF_NAMESPACE_ID::internal::ParseContext* ctx) final;
+  ::PROTOBUF_NAMESPACE_ID::uint8* _InternalSerialize(
+      ::PROTOBUF_NAMESPACE_ID::uint8* target, ::PROTOBUF_NAMESPACE_ID::io::EpsCopyOutputStream* stream) const final;
+  int GetCachedSize() const final { return _cached_size_.Get(); }
+
+  private:
+  inline void SharedCtor();
+  inline void SharedDtor();
+  void SetCachedSize(int size) const final;
+  void InternalSwap(ReleaseControlResponse* other);
+  friend class ::PROTOBUF_NAMESPACE_ID::internal::AnyMetadata;
+  static ::PROTOBUF_NAMESPACE_ID::StringPiece FullMessageName() {
+    return "mavsdk.rpc.gimbal.ReleaseControlResponse";
+  }
+  protected:
+  explicit ReleaseControlResponse(::PROTOBUF_NAMESPACE_ID::Arena* arena);
+  private:
+  static void ArenaDtor(void* object);
+  inline void RegisterArenaDtor(::PROTOBUF_NAMESPACE_ID::Arena* arena);
+  public:
+
+  ::PROTOBUF_NAMESPACE_ID::Metadata GetMetadata() const final;
+  private:
+  static ::PROTOBUF_NAMESPACE_ID::Metadata GetMetadataStatic() {
+    ::PROTOBUF_NAMESPACE_ID::internal::AssignDescriptors(&::descriptor_table_gimbal_2fgimbal_2eproto);
+    return ::descriptor_table_gimbal_2fgimbal_2eproto.file_level_metadata[kIndexInFileMessages];
+  }
+
+  public:
+
+  // nested types ----------------------------------------------------
+
+  // accessors -------------------------------------------------------
+
+  enum : int {
+    kGimbalResultFieldNumber = 1,
+  };
+  // .mavsdk.rpc.gimbal.GimbalResult gimbal_result = 1;
+  bool has_gimbal_result() const;
+  private:
+  bool _internal_has_gimbal_result() const;
+  public:
+  void clear_gimbal_result();
+  const ::mavsdk::rpc::gimbal::GimbalResult& gimbal_result() const;
+  ::mavsdk::rpc::gimbal::GimbalResult* release_gimbal_result();
+  ::mavsdk::rpc::gimbal::GimbalResult* mutable_gimbal_result();
+  void set_allocated_gimbal_result(::mavsdk::rpc::gimbal::GimbalResult* gimbal_result);
+  private:
+  const ::mavsdk::rpc::gimbal::GimbalResult& _internal_gimbal_result() const;
+  ::mavsdk::rpc::gimbal::GimbalResult* _internal_mutable_gimbal_result();
+  public:
+  void unsafe_arena_set_allocated_gimbal_result(
+      ::mavsdk::rpc::gimbal::GimbalResult* gimbal_result);
+  ::mavsdk::rpc::gimbal::GimbalResult* unsafe_arena_release_gimbal_result();
+
+  // @@protoc_insertion_point(class_scope:mavsdk.rpc.gimbal.ReleaseControlResponse)
+ private:
+  class _Internal;
+
+  template <typename T> friend class ::PROTOBUF_NAMESPACE_ID::Arena::InternalHelper;
+  typedef void InternalArenaConstructable_;
+  typedef void DestructorSkippable_;
+  ::mavsdk::rpc::gimbal::GimbalResult* gimbal_result_;
+  mutable ::PROTOBUF_NAMESPACE_ID::internal::CachedSize _cached_size_;
+  friend struct ::TableStruct_gimbal_2fgimbal_2eproto;
+};
+// -------------------------------------------------------------------
+
+class SubscribeControlRequest PROTOBUF_FINAL :
+    public ::PROTOBUF_NAMESPACE_ID::Message /* @@protoc_insertion_point(class_definition:mavsdk.rpc.gimbal.SubscribeControlRequest) */ {
+ public:
+  inline SubscribeControlRequest() : SubscribeControlRequest(nullptr) {}
+  virtual ~SubscribeControlRequest();
+
+  SubscribeControlRequest(const SubscribeControlRequest& from);
+  SubscribeControlRequest(SubscribeControlRequest&& from) noexcept
+    : SubscribeControlRequest() {
+    *this = ::std::move(from);
+  }
+
+  inline SubscribeControlRequest& operator=(const SubscribeControlRequest& from) {
+    CopyFrom(from);
+    return *this;
+  }
+  inline SubscribeControlRequest& operator=(SubscribeControlRequest&& from) noexcept {
+    if (GetArena() == from.GetArena()) {
+      if (this != &from) InternalSwap(&from);
+    } else {
+      CopyFrom(from);
+    }
+    return *this;
+  }
+
+  static const ::PROTOBUF_NAMESPACE_ID::Descriptor* descriptor() {
+    return GetDescriptor();
+  }
+  static const ::PROTOBUF_NAMESPACE_ID::Descriptor* GetDescriptor() {
+    return GetMetadataStatic().descriptor;
+  }
+  static const ::PROTOBUF_NAMESPACE_ID::Reflection* GetReflection() {
+    return GetMetadataStatic().reflection;
+  }
+  static const SubscribeControlRequest& default_instance();
+
+  static void InitAsDefaultInstance();  // FOR INTERNAL USE ONLY
+  static inline const SubscribeControlRequest* internal_default_instance() {
+    return reinterpret_cast<const SubscribeControlRequest*>(
+               &_SubscribeControlRequest_default_instance_);
+  }
+  static constexpr int kIndexInFileMessages =
+    12;
+
+  friend void swap(SubscribeControlRequest& a, SubscribeControlRequest& b) {
+    a.Swap(&b);
+  }
+  inline void Swap(SubscribeControlRequest* other) {
+    if (other == this) return;
+    if (GetArena() == other->GetArena()) {
+      InternalSwap(other);
+    } else {
+      ::PROTOBUF_NAMESPACE_ID::internal::GenericSwap(this, other);
+    }
+  }
+  void UnsafeArenaSwap(SubscribeControlRequest* other) {
+    if (other == this) return;
+    GOOGLE_DCHECK(GetArena() == other->GetArena());
+    InternalSwap(other);
+  }
+
+  // implements Message ----------------------------------------------
+
+  inline SubscribeControlRequest* New() const final {
+    return CreateMaybeMessage<SubscribeControlRequest>(nullptr);
+  }
+
+  SubscribeControlRequest* New(::PROTOBUF_NAMESPACE_ID::Arena* arena) const final {
+    return CreateMaybeMessage<SubscribeControlRequest>(arena);
+  }
+  void CopyFrom(const ::PROTOBUF_NAMESPACE_ID::Message& from) final;
+  void MergeFrom(const ::PROTOBUF_NAMESPACE_ID::Message& from) final;
+  void CopyFrom(const SubscribeControlRequest& from);
+  void MergeFrom(const SubscribeControlRequest& from);
+  PROTOBUF_ATTRIBUTE_REINITIALIZES void Clear() final;
+  bool IsInitialized() const final;
+
+  size_t ByteSizeLong() const final;
+  const char* _InternalParse(const char* ptr, ::PROTOBUF_NAMESPACE_ID::internal::ParseContext* ctx) final;
+  ::PROTOBUF_NAMESPACE_ID::uint8* _InternalSerialize(
+      ::PROTOBUF_NAMESPACE_ID::uint8* target, ::PROTOBUF_NAMESPACE_ID::io::EpsCopyOutputStream* stream) const final;
+  int GetCachedSize() const final { return _cached_size_.Get(); }
+
+  private:
+  inline void SharedCtor();
+  inline void SharedDtor();
+  void SetCachedSize(int size) const final;
+  void InternalSwap(SubscribeControlRequest* other);
+  friend class ::PROTOBUF_NAMESPACE_ID::internal::AnyMetadata;
+  static ::PROTOBUF_NAMESPACE_ID::StringPiece FullMessageName() {
+    return "mavsdk.rpc.gimbal.SubscribeControlRequest";
+  }
+  protected:
+  explicit SubscribeControlRequest(::PROTOBUF_NAMESPACE_ID::Arena* arena);
+  private:
+  static void ArenaDtor(void* object);
+  inline void RegisterArenaDtor(::PROTOBUF_NAMESPACE_ID::Arena* arena);
+  public:
+
+  ::PROTOBUF_NAMESPACE_ID::Metadata GetMetadata() const final;
+  private:
+  static ::PROTOBUF_NAMESPACE_ID::Metadata GetMetadataStatic() {
+    ::PROTOBUF_NAMESPACE_ID::internal::AssignDescriptors(&::descriptor_table_gimbal_2fgimbal_2eproto);
+    return ::descriptor_table_gimbal_2fgimbal_2eproto.file_level_metadata[kIndexInFileMessages];
+  }
+
+  public:
+
+  // nested types ----------------------------------------------------
+
+  // accessors -------------------------------------------------------
+
+  // @@protoc_insertion_point(class_scope:mavsdk.rpc.gimbal.SubscribeControlRequest)
+ private:
+  class _Internal;
+
+  template <typename T> friend class ::PROTOBUF_NAMESPACE_ID::Arena::InternalHelper;
+  typedef void InternalArenaConstructable_;
+  typedef void DestructorSkippable_;
+  mutable ::PROTOBUF_NAMESPACE_ID::internal::CachedSize _cached_size_;
+  friend struct ::TableStruct_gimbal_2fgimbal_2eproto;
+};
+// -------------------------------------------------------------------
+
+class ControlResponse PROTOBUF_FINAL :
+    public ::PROTOBUF_NAMESPACE_ID::Message /* @@protoc_insertion_point(class_definition:mavsdk.rpc.gimbal.ControlResponse) */ {
+ public:
+  inline ControlResponse() : ControlResponse(nullptr) {}
+  virtual ~ControlResponse();
+
+  ControlResponse(const ControlResponse& from);
+  ControlResponse(ControlResponse&& from) noexcept
+    : ControlResponse() {
+    *this = ::std::move(from);
+  }
+
+  inline ControlResponse& operator=(const ControlResponse& from) {
+    CopyFrom(from);
+    return *this;
+  }
+  inline ControlResponse& operator=(ControlResponse&& from) noexcept {
+    if (GetArena() == from.GetArena()) {
+      if (this != &from) InternalSwap(&from);
+    } else {
+      CopyFrom(from);
+    }
+    return *this;
+  }
+
+  static const ::PROTOBUF_NAMESPACE_ID::Descriptor* descriptor() {
+    return GetDescriptor();
+  }
+  static const ::PROTOBUF_NAMESPACE_ID::Descriptor* GetDescriptor() {
+    return GetMetadataStatic().descriptor;
+  }
+  static const ::PROTOBUF_NAMESPACE_ID::Reflection* GetReflection() {
+    return GetMetadataStatic().reflection;
+  }
+  static const ControlResponse& default_instance();
+
+  static void InitAsDefaultInstance();  // FOR INTERNAL USE ONLY
+  static inline const ControlResponse* internal_default_instance() {
+    return reinterpret_cast<const ControlResponse*>(
+               &_ControlResponse_default_instance_);
+  }
+  static constexpr int kIndexInFileMessages =
+    13;
+
+  friend void swap(ControlResponse& a, ControlResponse& b) {
+    a.Swap(&b);
+  }
+  inline void Swap(ControlResponse* other) {
+    if (other == this) return;
+    if (GetArena() == other->GetArena()) {
+      InternalSwap(other);
+    } else {
+      ::PROTOBUF_NAMESPACE_ID::internal::GenericSwap(this, other);
+    }
+  }
+  void UnsafeArenaSwap(ControlResponse* other) {
+    if (other == this) return;
+    GOOGLE_DCHECK(GetArena() == other->GetArena());
+    InternalSwap(other);
+  }
+
+  // implements Message ----------------------------------------------
+
+  inline ControlResponse* New() const final {
+    return CreateMaybeMessage<ControlResponse>(nullptr);
+  }
+
+  ControlResponse* New(::PROTOBUF_NAMESPACE_ID::Arena* arena) const final {
+    return CreateMaybeMessage<ControlResponse>(arena);
+  }
+  void CopyFrom(const ::PROTOBUF_NAMESPACE_ID::Message& from) final;
+  void MergeFrom(const ::PROTOBUF_NAMESPACE_ID::Message& from) final;
+  void CopyFrom(const ControlResponse& from);
+  void MergeFrom(const ControlResponse& from);
+  PROTOBUF_ATTRIBUTE_REINITIALIZES void Clear() final;
+  bool IsInitialized() const final;
+
+  size_t ByteSizeLong() const final;
+  const char* _InternalParse(const char* ptr, ::PROTOBUF_NAMESPACE_ID::internal::ParseContext* ctx) final;
+  ::PROTOBUF_NAMESPACE_ID::uint8* _InternalSerialize(
+      ::PROTOBUF_NAMESPACE_ID::uint8* target, ::PROTOBUF_NAMESPACE_ID::io::EpsCopyOutputStream* stream) const final;
+  int GetCachedSize() const final { return _cached_size_.Get(); }
+
+  private:
+  inline void SharedCtor();
+  inline void SharedDtor();
+  void SetCachedSize(int size) const final;
+  void InternalSwap(ControlResponse* other);
+  friend class ::PROTOBUF_NAMESPACE_ID::internal::AnyMetadata;
+  static ::PROTOBUF_NAMESPACE_ID::StringPiece FullMessageName() {
+    return "mavsdk.rpc.gimbal.ControlResponse";
+  }
+  protected:
+  explicit ControlResponse(::PROTOBUF_NAMESPACE_ID::Arena* arena);
+  private:
+  static void ArenaDtor(void* object);
+  inline void RegisterArenaDtor(::PROTOBUF_NAMESPACE_ID::Arena* arena);
+  public:
+
+  ::PROTOBUF_NAMESPACE_ID::Metadata GetMetadata() const final;
+  private:
+  static ::PROTOBUF_NAMESPACE_ID::Metadata GetMetadataStatic() {
+    ::PROTOBUF_NAMESPACE_ID::internal::AssignDescriptors(&::descriptor_table_gimbal_2fgimbal_2eproto);
+    return ::descriptor_table_gimbal_2fgimbal_2eproto.file_level_metadata[kIndexInFileMessages];
+  }
+
+  public:
+
+  // nested types ----------------------------------------------------
+
+  // accessors -------------------------------------------------------
+
+  enum : int {
+    kControlStatusFieldNumber = 1,
+  };
+  // .mavsdk.rpc.gimbal.ControlStatus control_status = 1;
+  bool has_control_status() const;
+  private:
+  bool _internal_has_control_status() const;
+  public:
+  void clear_control_status();
+  const ::mavsdk::rpc::gimbal::ControlStatus& control_status() const;
+  ::mavsdk::rpc::gimbal::ControlStatus* release_control_status();
+  ::mavsdk::rpc::gimbal::ControlStatus* mutable_control_status();
+  void set_allocated_control_status(::mavsdk::rpc::gimbal::ControlStatus* control_status);
+  private:
+  const ::mavsdk::rpc::gimbal::ControlStatus& _internal_control_status() const;
+  ::mavsdk::rpc::gimbal::ControlStatus* _internal_mutable_control_status();
+  public:
+  void unsafe_arena_set_allocated_control_status(
+      ::mavsdk::rpc::gimbal::ControlStatus* control_status);
+  ::mavsdk::rpc::gimbal::ControlStatus* unsafe_arena_release_control_status();
+
+  // @@protoc_insertion_point(class_scope:mavsdk.rpc.gimbal.ControlResponse)
+ private:
+  class _Internal;
+
+  template <typename T> friend class ::PROTOBUF_NAMESPACE_ID::Arena::InternalHelper;
+  typedef void InternalArenaConstructable_;
+  typedef void DestructorSkippable_;
+  ::mavsdk::rpc::gimbal::ControlStatus* control_status_;
+  mutable ::PROTOBUF_NAMESPACE_ID::internal::CachedSize _cached_size_;
+  friend struct ::TableStruct_gimbal_2fgimbal_2eproto;
+};
+// -------------------------------------------------------------------
+
+class ControlStatus PROTOBUF_FINAL :
+    public ::PROTOBUF_NAMESPACE_ID::Message /* @@protoc_insertion_point(class_definition:mavsdk.rpc.gimbal.ControlStatus) */ {
+ public:
+  inline ControlStatus() : ControlStatus(nullptr) {}
+  virtual ~ControlStatus();
+
+  ControlStatus(const ControlStatus& from);
+  ControlStatus(ControlStatus&& from) noexcept
+    : ControlStatus() {
+    *this = ::std::move(from);
+  }
+
+  inline ControlStatus& operator=(const ControlStatus& from) {
+    CopyFrom(from);
+    return *this;
+  }
+  inline ControlStatus& operator=(ControlStatus&& from) noexcept {
+    if (GetArena() == from.GetArena()) {
+      if (this != &from) InternalSwap(&from);
+    } else {
+      CopyFrom(from);
+    }
+    return *this;
+  }
+
+  static const ::PROTOBUF_NAMESPACE_ID::Descriptor* descriptor() {
+    return GetDescriptor();
+  }
+  static const ::PROTOBUF_NAMESPACE_ID::Descriptor* GetDescriptor() {
+    return GetMetadataStatic().descriptor;
+  }
+  static const ::PROTOBUF_NAMESPACE_ID::Reflection* GetReflection() {
+    return GetMetadataStatic().reflection;
+  }
+  static const ControlStatus& default_instance();
+
+  static void InitAsDefaultInstance();  // FOR INTERNAL USE ONLY
+  static inline const ControlStatus* internal_default_instance() {
+    return reinterpret_cast<const ControlStatus*>(
+               &_ControlStatus_default_instance_);
+  }
+  static constexpr int kIndexInFileMessages =
+    14;
+
+  friend void swap(ControlStatus& a, ControlStatus& b) {
+    a.Swap(&b);
+  }
+  inline void Swap(ControlStatus* other) {
+    if (other == this) return;
+    if (GetArena() == other->GetArena()) {
+      InternalSwap(other);
+    } else {
+      ::PROTOBUF_NAMESPACE_ID::internal::GenericSwap(this, other);
+    }
+  }
+  void UnsafeArenaSwap(ControlStatus* other) {
+    if (other == this) return;
+    GOOGLE_DCHECK(GetArena() == other->GetArena());
+    InternalSwap(other);
+  }
+
+  // implements Message ----------------------------------------------
+
+  inline ControlStatus* New() const final {
+    return CreateMaybeMessage<ControlStatus>(nullptr);
+  }
+
+  ControlStatus* New(::PROTOBUF_NAMESPACE_ID::Arena* arena) const final {
+    return CreateMaybeMessage<ControlStatus>(arena);
+  }
+  void CopyFrom(const ::PROTOBUF_NAMESPACE_ID::Message& from) final;
+  void MergeFrom(const ::PROTOBUF_NAMESPACE_ID::Message& from) final;
+  void CopyFrom(const ControlStatus& from);
+  void MergeFrom(const ControlStatus& from);
+  PROTOBUF_ATTRIBUTE_REINITIALIZES void Clear() final;
+  bool IsInitialized() const final;
+
+  size_t ByteSizeLong() const final;
+  const char* _InternalParse(const char* ptr, ::PROTOBUF_NAMESPACE_ID::internal::ParseContext* ctx) final;
+  ::PROTOBUF_NAMESPACE_ID::uint8* _InternalSerialize(
+      ::PROTOBUF_NAMESPACE_ID::uint8* target, ::PROTOBUF_NAMESPACE_ID::io::EpsCopyOutputStream* stream) const final;
+  int GetCachedSize() const final { return _cached_size_.Get(); }
+
+  private:
+  inline void SharedCtor();
+  inline void SharedDtor();
+  void SetCachedSize(int size) const final;
+  void InternalSwap(ControlStatus* other);
+  friend class ::PROTOBUF_NAMESPACE_ID::internal::AnyMetadata;
+  static ::PROTOBUF_NAMESPACE_ID::StringPiece FullMessageName() {
+    return "mavsdk.rpc.gimbal.ControlStatus";
+  }
+  protected:
+  explicit ControlStatus(::PROTOBUF_NAMESPACE_ID::Arena* arena);
+  private:
+  static void ArenaDtor(void* object);
+  inline void RegisterArenaDtor(::PROTOBUF_NAMESPACE_ID::Arena* arena);
+  public:
+
+  ::PROTOBUF_NAMESPACE_ID::Metadata GetMetadata() const final;
+  private:
+  static ::PROTOBUF_NAMESPACE_ID::Metadata GetMetadataStatic() {
+    ::PROTOBUF_NAMESPACE_ID::internal::AssignDescriptors(&::descriptor_table_gimbal_2fgimbal_2eproto);
+    return ::descriptor_table_gimbal_2fgimbal_2eproto.file_level_metadata[kIndexInFileMessages];
+  }
+
+  public:
+
+  // nested types ----------------------------------------------------
+
+  // accessors -------------------------------------------------------
+
+  enum : int {
+    kControlModeFieldNumber = 1,
+    kSysidPrimaryControlFieldNumber = 2,
+    kCompidPrimaryControlFieldNumber = 3,
+    kSysidSecondaryControlFieldNumber = 4,
+    kCompidSecondaryControlFieldNumber = 5,
+  };
+  // .mavsdk.rpc.gimbal.ControlMode control_mode = 1;
+  void clear_control_mode();
+  ::mavsdk::rpc::gimbal::ControlMode control_mode() const;
+  void set_control_mode(::mavsdk::rpc::gimbal::ControlMode value);
+  private:
+  ::mavsdk::rpc::gimbal::ControlMode _internal_control_mode() const;
+  void _internal_set_control_mode(::mavsdk::rpc::gimbal::ControlMode value);
+  public:
+
+  // int32 sysid_primary_control = 2;
+  void clear_sysid_primary_control();
+  ::PROTOBUF_NAMESPACE_ID::int32 sysid_primary_control() const;
+  void set_sysid_primary_control(::PROTOBUF_NAMESPACE_ID::int32 value);
+  private:
+  ::PROTOBUF_NAMESPACE_ID::int32 _internal_sysid_primary_control() const;
+  void _internal_set_sysid_primary_control(::PROTOBUF_NAMESPACE_ID::int32 value);
+  public:
+
+  // int32 compid_primary_control = 3;
+  void clear_compid_primary_control();
+  ::PROTOBUF_NAMESPACE_ID::int32 compid_primary_control() const;
+  void set_compid_primary_control(::PROTOBUF_NAMESPACE_ID::int32 value);
+  private:
+  ::PROTOBUF_NAMESPACE_ID::int32 _internal_compid_primary_control() const;
+  void _internal_set_compid_primary_control(::PROTOBUF_NAMESPACE_ID::int32 value);
+  public:
+
+  // int32 sysid_secondary_control = 4;
+  void clear_sysid_secondary_control();
+  ::PROTOBUF_NAMESPACE_ID::int32 sysid_secondary_control() const;
+  void set_sysid_secondary_control(::PROTOBUF_NAMESPACE_ID::int32 value);
+  private:
+  ::PROTOBUF_NAMESPACE_ID::int32 _internal_sysid_secondary_control() const;
+  void _internal_set_sysid_secondary_control(::PROTOBUF_NAMESPACE_ID::int32 value);
+  public:
+
+  // int32 compid_secondary_control = 5;
+  void clear_compid_secondary_control();
+  ::PROTOBUF_NAMESPACE_ID::int32 compid_secondary_control() const;
+  void set_compid_secondary_control(::PROTOBUF_NAMESPACE_ID::int32 value);
+  private:
+  ::PROTOBUF_NAMESPACE_ID::int32 _internal_compid_secondary_control() const;
+  void _internal_set_compid_secondary_control(::PROTOBUF_NAMESPACE_ID::int32 value);
+  public:
+
+  // @@protoc_insertion_point(class_scope:mavsdk.rpc.gimbal.ControlStatus)
+ private:
+  class _Internal;
+
+  template <typename T> friend class ::PROTOBUF_NAMESPACE_ID::Arena::InternalHelper;
+  typedef void InternalArenaConstructable_;
+  typedef void DestructorSkippable_;
+  int control_mode_;
+  ::PROTOBUF_NAMESPACE_ID::int32 sysid_primary_control_;
+  ::PROTOBUF_NAMESPACE_ID::int32 compid_primary_control_;
+  ::PROTOBUF_NAMESPACE_ID::int32 sysid_secondary_control_;
+  ::PROTOBUF_NAMESPACE_ID::int32 compid_secondary_control_;
+  mutable ::PROTOBUF_NAMESPACE_ID::internal::CachedSize _cached_size_;
+  friend struct ::TableStruct_gimbal_2fgimbal_2eproto;
+};
+// -------------------------------------------------------------------
+
 class GimbalResult PROTOBUF_FINAL :
     public ::PROTOBUF_NAMESPACE_ID::Message /* @@protoc_insertion_point(class_definition:mavsdk.rpc.gimbal.GimbalResult) */ {
  public:
@@ -1074,7 +2434,7 @@ class GimbalResult PROTOBUF_FINAL :
                &_GimbalResult_default_instance_);
   }
   static constexpr int kIndexInFileMessages =
-    6;
+    15;
 
   friend void swap(GimbalResult& a, GimbalResult& b) {
     a.Swap(&b);
@@ -1361,6 +2721,137 @@ inline void SetPitchAndYawResponse::set_allocated_gimbal_result(::mavsdk::rpc::g
 
 // -------------------------------------------------------------------
 
+// SetPitchRateAndYawRateRequest
+
+// float pitch_rate_deg_s = 1;
+inline void SetPitchRateAndYawRateRequest::clear_pitch_rate_deg_s() {
+  pitch_rate_deg_s_ = 0;
+}
+inline float SetPitchRateAndYawRateRequest::_internal_pitch_rate_deg_s() const {
+  return pitch_rate_deg_s_;
+}
+inline float SetPitchRateAndYawRateRequest::pitch_rate_deg_s() const {
+  // @@protoc_insertion_point(field_get:mavsdk.rpc.gimbal.SetPitchRateAndYawRateRequest.pitch_rate_deg_s)
+  return _internal_pitch_rate_deg_s();
+}
+inline void SetPitchRateAndYawRateRequest::_internal_set_pitch_rate_deg_s(float value) {
+  
+  pitch_rate_deg_s_ = value;
+}
+inline void SetPitchRateAndYawRateRequest::set_pitch_rate_deg_s(float value) {
+  _internal_set_pitch_rate_deg_s(value);
+  // @@protoc_insertion_point(field_set:mavsdk.rpc.gimbal.SetPitchRateAndYawRateRequest.pitch_rate_deg_s)
+}
+
+// float yaw_rate_deg_s = 2;
+inline void SetPitchRateAndYawRateRequest::clear_yaw_rate_deg_s() {
+  yaw_rate_deg_s_ = 0;
+}
+inline float SetPitchRateAndYawRateRequest::_internal_yaw_rate_deg_s() const {
+  return yaw_rate_deg_s_;
+}
+inline float SetPitchRateAndYawRateRequest::yaw_rate_deg_s() const {
+  // @@protoc_insertion_point(field_get:mavsdk.rpc.gimbal.SetPitchRateAndYawRateRequest.yaw_rate_deg_s)
+  return _internal_yaw_rate_deg_s();
+}
+inline void SetPitchRateAndYawRateRequest::_internal_set_yaw_rate_deg_s(float value) {
+  
+  yaw_rate_deg_s_ = value;
+}
+inline void SetPitchRateAndYawRateRequest::set_yaw_rate_deg_s(float value) {
+  _internal_set_yaw_rate_deg_s(value);
+  // @@protoc_insertion_point(field_set:mavsdk.rpc.gimbal.SetPitchRateAndYawRateRequest.yaw_rate_deg_s)
+}
+
+// -------------------------------------------------------------------
+
+// SetPitchRateAndYawRateResponse
+
+// .mavsdk.rpc.gimbal.GimbalResult gimbal_result = 1;
+inline bool SetPitchRateAndYawRateResponse::_internal_has_gimbal_result() const {
+  return this != internal_default_instance() && gimbal_result_ != nullptr;
+}
+inline bool SetPitchRateAndYawRateResponse::has_gimbal_result() const {
+  return _internal_has_gimbal_result();
+}
+inline void SetPitchRateAndYawRateResponse::clear_gimbal_result() {
+  if (GetArena() == nullptr && gimbal_result_ != nullptr) {
+    delete gimbal_result_;
+  }
+  gimbal_result_ = nullptr;
+}
+inline const ::mavsdk::rpc::gimbal::GimbalResult& SetPitchRateAndYawRateResponse::_internal_gimbal_result() const {
+  const ::mavsdk::rpc::gimbal::GimbalResult* p = gimbal_result_;
+  return p != nullptr ? *p : *reinterpret_cast<const ::mavsdk::rpc::gimbal::GimbalResult*>(
+      &::mavsdk::rpc::gimbal::_GimbalResult_default_instance_);
+}
+inline const ::mavsdk::rpc::gimbal::GimbalResult& SetPitchRateAndYawRateResponse::gimbal_result() const {
+  // @@protoc_insertion_point(field_get:mavsdk.rpc.gimbal.SetPitchRateAndYawRateResponse.gimbal_result)
+  return _internal_gimbal_result();
+}
+inline void SetPitchRateAndYawRateResponse::unsafe_arena_set_allocated_gimbal_result(
+    ::mavsdk::rpc::gimbal::GimbalResult* gimbal_result) {
+  if (GetArena() == nullptr) {
+    delete reinterpret_cast<::PROTOBUF_NAMESPACE_ID::MessageLite*>(gimbal_result_);
+  }
+  gimbal_result_ = gimbal_result;
+  if (gimbal_result) {
+    
+  } else {
+    
+  }
+  // @@protoc_insertion_point(field_unsafe_arena_set_allocated:mavsdk.rpc.gimbal.SetPitchRateAndYawRateResponse.gimbal_result)
+}
+inline ::mavsdk::rpc::gimbal::GimbalResult* SetPitchRateAndYawRateResponse::release_gimbal_result() {
+  
+  ::mavsdk::rpc::gimbal::GimbalResult* temp = gimbal_result_;
+  gimbal_result_ = nullptr;
+  if (GetArena() != nullptr) {
+    temp = ::PROTOBUF_NAMESPACE_ID::internal::DuplicateIfNonNull(temp);
+  }
+  return temp;
+}
+inline ::mavsdk::rpc::gimbal::GimbalResult* SetPitchRateAndYawRateResponse::unsafe_arena_release_gimbal_result() {
+  // @@protoc_insertion_point(field_release:mavsdk.rpc.gimbal.SetPitchRateAndYawRateResponse.gimbal_result)
+  
+  ::mavsdk::rpc::gimbal::GimbalResult* temp = gimbal_result_;
+  gimbal_result_ = nullptr;
+  return temp;
+}
+inline ::mavsdk::rpc::gimbal::GimbalResult* SetPitchRateAndYawRateResponse::_internal_mutable_gimbal_result() {
+  
+  if (gimbal_result_ == nullptr) {
+    auto* p = CreateMaybeMessage<::mavsdk::rpc::gimbal::GimbalResult>(GetArena());
+    gimbal_result_ = p;
+  }
+  return gimbal_result_;
+}
+inline ::mavsdk::rpc::gimbal::GimbalResult* SetPitchRateAndYawRateResponse::mutable_gimbal_result() {
+  // @@protoc_insertion_point(field_mutable:mavsdk.rpc.gimbal.SetPitchRateAndYawRateResponse.gimbal_result)
+  return _internal_mutable_gimbal_result();
+}
+inline void SetPitchRateAndYawRateResponse::set_allocated_gimbal_result(::mavsdk::rpc::gimbal::GimbalResult* gimbal_result) {
+  ::PROTOBUF_NAMESPACE_ID::Arena* message_arena = GetArena();
+  if (message_arena == nullptr) {
+    delete gimbal_result_;
+  }
+  if (gimbal_result) {
+    ::PROTOBUF_NAMESPACE_ID::Arena* submessage_arena =
+      ::PROTOBUF_NAMESPACE_ID::Arena::GetArena(gimbal_result);
+    if (message_arena != submessage_arena) {
+      gimbal_result = ::PROTOBUF_NAMESPACE_ID::internal::GetOwnedMessage(
+          message_arena, gimbal_result, submessage_arena);
+    }
+    
+  } else {
+    
+  }
+  gimbal_result_ = gimbal_result;
+  // @@protoc_insertion_point(field_set_allocated:mavsdk.rpc.gimbal.SetPitchRateAndYawRateResponse.gimbal_result)
+}
+
+// -------------------------------------------------------------------
+
 // SetModeRequest
 
 // .mavsdk.rpc.gimbal.GimbalMode gimbal_mode = 1;
@@ -1623,6 +3114,403 @@ inline void SetRoiLocationResponse::set_allocated_gimbal_result(::mavsdk::rpc::g
 
 // -------------------------------------------------------------------
 
+// TakeControlRequest
+
+// .mavsdk.rpc.gimbal.ControlMode control_mode = 1;
+inline void TakeControlRequest::clear_control_mode() {
+  control_mode_ = 0;
+}
+inline ::mavsdk::rpc::gimbal::ControlMode TakeControlRequest::_internal_control_mode() const {
+  return static_cast< ::mavsdk::rpc::gimbal::ControlMode >(control_mode_);
+}
+inline ::mavsdk::rpc::gimbal::ControlMode TakeControlRequest::control_mode() const {
+  // @@protoc_insertion_point(field_get:mavsdk.rpc.gimbal.TakeControlRequest.control_mode)
+  return _internal_control_mode();
+}
+inline void TakeControlRequest::_internal_set_control_mode(::mavsdk::rpc::gimbal::ControlMode value) {
+  
+  control_mode_ = value;
+}
+inline void TakeControlRequest::set_control_mode(::mavsdk::rpc::gimbal::ControlMode value) {
+  _internal_set_control_mode(value);
+  // @@protoc_insertion_point(field_set:mavsdk.rpc.gimbal.TakeControlRequest.control_mode)
+}
+
+// -------------------------------------------------------------------
+
+// TakeControlResponse
+
+// .mavsdk.rpc.gimbal.GimbalResult gimbal_result = 1;
+inline bool TakeControlResponse::_internal_has_gimbal_result() const {
+  return this != internal_default_instance() && gimbal_result_ != nullptr;
+}
+inline bool TakeControlResponse::has_gimbal_result() const {
+  return _internal_has_gimbal_result();
+}
+inline void TakeControlResponse::clear_gimbal_result() {
+  if (GetArena() == nullptr && gimbal_result_ != nullptr) {
+    delete gimbal_result_;
+  }
+  gimbal_result_ = nullptr;
+}
+inline const ::mavsdk::rpc::gimbal::GimbalResult& TakeControlResponse::_internal_gimbal_result() const {
+  const ::mavsdk::rpc::gimbal::GimbalResult* p = gimbal_result_;
+  return p != nullptr ? *p : *reinterpret_cast<const ::mavsdk::rpc::gimbal::GimbalResult*>(
+      &::mavsdk::rpc::gimbal::_GimbalResult_default_instance_);
+}
+inline const ::mavsdk::rpc::gimbal::GimbalResult& TakeControlResponse::gimbal_result() const {
+  // @@protoc_insertion_point(field_get:mavsdk.rpc.gimbal.TakeControlResponse.gimbal_result)
+  return _internal_gimbal_result();
+}
+inline void TakeControlResponse::unsafe_arena_set_allocated_gimbal_result(
+    ::mavsdk::rpc::gimbal::GimbalResult* gimbal_result) {
+  if (GetArena() == nullptr) {
+    delete reinterpret_cast<::PROTOBUF_NAMESPACE_ID::MessageLite*>(gimbal_result_);
+  }
+  gimbal_result_ = gimbal_result;
+  if (gimbal_result) {
+    
+  } else {
+    
+  }
+  // @@protoc_insertion_point(field_unsafe_arena_set_allocated:mavsdk.rpc.gimbal.TakeControlResponse.gimbal_result)
+}
+inline ::mavsdk::rpc::gimbal::GimbalResult* TakeControlResponse::release_gimbal_result() {
+  
+  ::mavsdk::rpc::gimbal::GimbalResult* temp = gimbal_result_;
+  gimbal_result_ = nullptr;
+  if (GetArena() != nullptr) {
+    temp = ::PROTOBUF_NAMESPACE_ID::internal::DuplicateIfNonNull(temp);
+  }
+  return temp;
+}
+inline ::mavsdk::rpc::gimbal::GimbalResult* TakeControlResponse::unsafe_arena_release_gimbal_result() {
+  // @@protoc_insertion_point(field_release:mavsdk.rpc.gimbal.TakeControlResponse.gimbal_result)
+  
+  ::mavsdk::rpc::gimbal::GimbalResult* temp = gimbal_result_;
+  gimbal_result_ = nullptr;
+  return temp;
+}
+inline ::mavsdk::rpc::gimbal::GimbalResult* TakeControlResponse::_internal_mutable_gimbal_result() {
+  
+  if (gimbal_result_ == nullptr) {
+    auto* p = CreateMaybeMessage<::mavsdk::rpc::gimbal::GimbalResult>(GetArena());
+    gimbal_result_ = p;
+  }
+  return gimbal_result_;
+}
+inline ::mavsdk::rpc::gimbal::GimbalResult* TakeControlResponse::mutable_gimbal_result() {
+  // @@protoc_insertion_point(field_mutable:mavsdk.rpc.gimbal.TakeControlResponse.gimbal_result)
+  return _internal_mutable_gimbal_result();
+}
+inline void TakeControlResponse::set_allocated_gimbal_result(::mavsdk::rpc::gimbal::GimbalResult* gimbal_result) {
+  ::PROTOBUF_NAMESPACE_ID::Arena* message_arena = GetArena();
+  if (message_arena == nullptr) {
+    delete gimbal_result_;
+  }
+  if (gimbal_result) {
+    ::PROTOBUF_NAMESPACE_ID::Arena* submessage_arena =
+      ::PROTOBUF_NAMESPACE_ID::Arena::GetArena(gimbal_result);
+    if (message_arena != submessage_arena) {
+      gimbal_result = ::PROTOBUF_NAMESPACE_ID::internal::GetOwnedMessage(
+          message_arena, gimbal_result, submessage_arena);
+    }
+    
+  } else {
+    
+  }
+  gimbal_result_ = gimbal_result;
+  // @@protoc_insertion_point(field_set_allocated:mavsdk.rpc.gimbal.TakeControlResponse.gimbal_result)
+}
+
+// -------------------------------------------------------------------
+
+// ReleaseControlRequest
+
+// -------------------------------------------------------------------
+
+// ReleaseControlResponse
+
+// .mavsdk.rpc.gimbal.GimbalResult gimbal_result = 1;
+inline bool ReleaseControlResponse::_internal_has_gimbal_result() const {
+  return this != internal_default_instance() && gimbal_result_ != nullptr;
+}
+inline bool ReleaseControlResponse::has_gimbal_result() const {
+  return _internal_has_gimbal_result();
+}
+inline void ReleaseControlResponse::clear_gimbal_result() {
+  if (GetArena() == nullptr && gimbal_result_ != nullptr) {
+    delete gimbal_result_;
+  }
+  gimbal_result_ = nullptr;
+}
+inline const ::mavsdk::rpc::gimbal::GimbalResult& ReleaseControlResponse::_internal_gimbal_result() const {
+  const ::mavsdk::rpc::gimbal::GimbalResult* p = gimbal_result_;
+  return p != nullptr ? *p : *reinterpret_cast<const ::mavsdk::rpc::gimbal::GimbalResult*>(
+      &::mavsdk::rpc::gimbal::_GimbalResult_default_instance_);
+}
+inline const ::mavsdk::rpc::gimbal::GimbalResult& ReleaseControlResponse::gimbal_result() const {
+  // @@protoc_insertion_point(field_get:mavsdk.rpc.gimbal.ReleaseControlResponse.gimbal_result)
+  return _internal_gimbal_result();
+}
+inline void ReleaseControlResponse::unsafe_arena_set_allocated_gimbal_result(
+    ::mavsdk::rpc::gimbal::GimbalResult* gimbal_result) {
+  if (GetArena() == nullptr) {
+    delete reinterpret_cast<::PROTOBUF_NAMESPACE_ID::MessageLite*>(gimbal_result_);
+  }
+  gimbal_result_ = gimbal_result;
+  if (gimbal_result) {
+    
+  } else {
+    
+  }
+  // @@protoc_insertion_point(field_unsafe_arena_set_allocated:mavsdk.rpc.gimbal.ReleaseControlResponse.gimbal_result)
+}
+inline ::mavsdk::rpc::gimbal::GimbalResult* ReleaseControlResponse::release_gimbal_result() {
+  
+  ::mavsdk::rpc::gimbal::GimbalResult* temp = gimbal_result_;
+  gimbal_result_ = nullptr;
+  if (GetArena() != nullptr) {
+    temp = ::PROTOBUF_NAMESPACE_ID::internal::DuplicateIfNonNull(temp);
+  }
+  return temp;
+}
+inline ::mavsdk::rpc::gimbal::GimbalResult* ReleaseControlResponse::unsafe_arena_release_gimbal_result() {
+  // @@protoc_insertion_point(field_release:mavsdk.rpc.gimbal.ReleaseControlResponse.gimbal_result)
+  
+  ::mavsdk::rpc::gimbal::GimbalResult* temp = gimbal_result_;
+  gimbal_result_ = nullptr;
+  return temp;
+}
+inline ::mavsdk::rpc::gimbal::GimbalResult* ReleaseControlResponse::_internal_mutable_gimbal_result() {
+  
+  if (gimbal_result_ == nullptr) {
+    auto* p = CreateMaybeMessage<::mavsdk::rpc::gimbal::GimbalResult>(GetArena());
+    gimbal_result_ = p;
+  }
+  return gimbal_result_;
+}
+inline ::mavsdk::rpc::gimbal::GimbalResult* ReleaseControlResponse::mutable_gimbal_result() {
+  // @@protoc_insertion_point(field_mutable:mavsdk.rpc.gimbal.ReleaseControlResponse.gimbal_result)
+  return _internal_mutable_gimbal_result();
+}
+inline void ReleaseControlResponse::set_allocated_gimbal_result(::mavsdk::rpc::gimbal::GimbalResult* gimbal_result) {
+  ::PROTOBUF_NAMESPACE_ID::Arena* message_arena = GetArena();
+  if (message_arena == nullptr) {
+    delete gimbal_result_;
+  }
+  if (gimbal_result) {
+    ::PROTOBUF_NAMESPACE_ID::Arena* submessage_arena =
+      ::PROTOBUF_NAMESPACE_ID::Arena::GetArena(gimbal_result);
+    if (message_arena != submessage_arena) {
+      gimbal_result = ::PROTOBUF_NAMESPACE_ID::internal::GetOwnedMessage(
+          message_arena, gimbal_result, submessage_arena);
+    }
+    
+  } else {
+    
+  }
+  gimbal_result_ = gimbal_result;
+  // @@protoc_insertion_point(field_set_allocated:mavsdk.rpc.gimbal.ReleaseControlResponse.gimbal_result)
+}
+
+// -------------------------------------------------------------------
+
+// SubscribeControlRequest
+
+// -------------------------------------------------------------------
+
+// ControlResponse
+
+// .mavsdk.rpc.gimbal.ControlStatus control_status = 1;
+inline bool ControlResponse::_internal_has_control_status() const {
+  return this != internal_default_instance() && control_status_ != nullptr;
+}
+inline bool ControlResponse::has_control_status() const {
+  return _internal_has_control_status();
+}
+inline void ControlResponse::clear_control_status() {
+  if (GetArena() == nullptr && control_status_ != nullptr) {
+    delete control_status_;
+  }
+  control_status_ = nullptr;
+}
+inline const ::mavsdk::rpc::gimbal::ControlStatus& ControlResponse::_internal_control_status() const {
+  const ::mavsdk::rpc::gimbal::ControlStatus* p = control_status_;
+  return p != nullptr ? *p : *reinterpret_cast<const ::mavsdk::rpc::gimbal::ControlStatus*>(
+      &::mavsdk::rpc::gimbal::_ControlStatus_default_instance_);
+}
+inline const ::mavsdk::rpc::gimbal::ControlStatus& ControlResponse::control_status() const {
+  // @@protoc_insertion_point(field_get:mavsdk.rpc.gimbal.ControlResponse.control_status)
+  return _internal_control_status();
+}
+inline void ControlResponse::unsafe_arena_set_allocated_control_status(
+    ::mavsdk::rpc::gimbal::ControlStatus* control_status) {
+  if (GetArena() == nullptr) {
+    delete reinterpret_cast<::PROTOBUF_NAMESPACE_ID::MessageLite*>(control_status_);
+  }
+  control_status_ = control_status;
+  if (control_status) {
+    
+  } else {
+    
+  }
+  // @@protoc_insertion_point(field_unsafe_arena_set_allocated:mavsdk.rpc.gimbal.ControlResponse.control_status)
+}
+inline ::mavsdk::rpc::gimbal::ControlStatus* ControlResponse::release_control_status() {
+  
+  ::mavsdk::rpc::gimbal::ControlStatus* temp = control_status_;
+  control_status_ = nullptr;
+  if (GetArena() != nullptr) {
+    temp = ::PROTOBUF_NAMESPACE_ID::internal::DuplicateIfNonNull(temp);
+  }
+  return temp;
+}
+inline ::mavsdk::rpc::gimbal::ControlStatus* ControlResponse::unsafe_arena_release_control_status() {
+  // @@protoc_insertion_point(field_release:mavsdk.rpc.gimbal.ControlResponse.control_status)
+  
+  ::mavsdk::rpc::gimbal::ControlStatus* temp = control_status_;
+  control_status_ = nullptr;
+  return temp;
+}
+inline ::mavsdk::rpc::gimbal::ControlStatus* ControlResponse::_internal_mutable_control_status() {
+  
+  if (control_status_ == nullptr) {
+    auto* p = CreateMaybeMessage<::mavsdk::rpc::gimbal::ControlStatus>(GetArena());
+    control_status_ = p;
+  }
+  return control_status_;
+}
+inline ::mavsdk::rpc::gimbal::ControlStatus* ControlResponse::mutable_control_status() {
+  // @@protoc_insertion_point(field_mutable:mavsdk.rpc.gimbal.ControlResponse.control_status)
+  return _internal_mutable_control_status();
+}
+inline void ControlResponse::set_allocated_control_status(::mavsdk::rpc::gimbal::ControlStatus* control_status) {
+  ::PROTOBUF_NAMESPACE_ID::Arena* message_arena = GetArena();
+  if (message_arena == nullptr) {
+    delete control_status_;
+  }
+  if (control_status) {
+    ::PROTOBUF_NAMESPACE_ID::Arena* submessage_arena =
+      ::PROTOBUF_NAMESPACE_ID::Arena::GetArena(control_status);
+    if (message_arena != submessage_arena) {
+      control_status = ::PROTOBUF_NAMESPACE_ID::internal::GetOwnedMessage(
+          message_arena, control_status, submessage_arena);
+    }
+    
+  } else {
+    
+  }
+  control_status_ = control_status;
+  // @@protoc_insertion_point(field_set_allocated:mavsdk.rpc.gimbal.ControlResponse.control_status)
+}
+
+// -------------------------------------------------------------------
+
+// ControlStatus
+
+// .mavsdk.rpc.gimbal.ControlMode control_mode = 1;
+inline void ControlStatus::clear_control_mode() {
+  control_mode_ = 0;
+}
+inline ::mavsdk::rpc::gimbal::ControlMode ControlStatus::_internal_control_mode() const {
+  return static_cast< ::mavsdk::rpc::gimbal::ControlMode >(control_mode_);
+}
+inline ::mavsdk::rpc::gimbal::ControlMode ControlStatus::control_mode() const {
+  // @@protoc_insertion_point(field_get:mavsdk.rpc.gimbal.ControlStatus.control_mode)
+  return _internal_control_mode();
+}
+inline void ControlStatus::_internal_set_control_mode(::mavsdk::rpc::gimbal::ControlMode value) {
+  
+  control_mode_ = value;
+}
+inline void ControlStatus::set_control_mode(::mavsdk::rpc::gimbal::ControlMode value) {
+  _internal_set_control_mode(value);
+  // @@protoc_insertion_point(field_set:mavsdk.rpc.gimbal.ControlStatus.control_mode)
+}
+
+// int32 sysid_primary_control = 2;
+inline void ControlStatus::clear_sysid_primary_control() {
+  sysid_primary_control_ = 0;
+}
+inline ::PROTOBUF_NAMESPACE_ID::int32 ControlStatus::_internal_sysid_primary_control() const {
+  return sysid_primary_control_;
+}
+inline ::PROTOBUF_NAMESPACE_ID::int32 ControlStatus::sysid_primary_control() const {
+  // @@protoc_insertion_point(field_get:mavsdk.rpc.gimbal.ControlStatus.sysid_primary_control)
+  return _internal_sysid_primary_control();
+}
+inline void ControlStatus::_internal_set_sysid_primary_control(::PROTOBUF_NAMESPACE_ID::int32 value) {
+  
+  sysid_primary_control_ = value;
+}
+inline void ControlStatus::set_sysid_primary_control(::PROTOBUF_NAMESPACE_ID::int32 value) {
+  _internal_set_sysid_primary_control(value);
+  // @@protoc_insertion_point(field_set:mavsdk.rpc.gimbal.ControlStatus.sysid_primary_control)
+}
+
+// int32 compid_primary_control = 3;
+inline void ControlStatus::clear_compid_primary_control() {
+  compid_primary_control_ = 0;
+}
+inline ::PROTOBUF_NAMESPACE_ID::int32 ControlStatus::_internal_compid_primary_control() const {
+  return compid_primary_control_;
+}
+inline ::PROTOBUF_NAMESPACE_ID::int32 ControlStatus::compid_primary_control() const {
+  // @@protoc_insertion_point(field_get:mavsdk.rpc.gimbal.ControlStatus.compid_primary_control)
+  return _internal_compid_primary_control();
+}
+inline void ControlStatus::_internal_set_compid_primary_control(::PROTOBUF_NAMESPACE_ID::int32 value) {
+  
+  compid_primary_control_ = value;
+}
+inline void ControlStatus::set_compid_primary_control(::PROTOBUF_NAMESPACE_ID::int32 value) {
+  _internal_set_compid_primary_control(value);
+  // @@protoc_insertion_point(field_set:mavsdk.rpc.gimbal.ControlStatus.compid_primary_control)
+}
+
+// int32 sysid_secondary_control = 4;
+inline void ControlStatus::clear_sysid_secondary_control() {
+  sysid_secondary_control_ = 0;
+}
+inline ::PROTOBUF_NAMESPACE_ID::int32 ControlStatus::_internal_sysid_secondary_control() const {
+  return sysid_secondary_control_;
+}
+inline ::PROTOBUF_NAMESPACE_ID::int32 ControlStatus::sysid_secondary_control() const {
+  // @@protoc_insertion_point(field_get:mavsdk.rpc.gimbal.ControlStatus.sysid_secondary_control)
+  return _internal_sysid_secondary_control();
+}
+inline void ControlStatus::_internal_set_sysid_secondary_control(::PROTOBUF_NAMESPACE_ID::int32 value) {
+  
+  sysid_secondary_control_ = value;
+}
+inline void ControlStatus::set_sysid_secondary_control(::PROTOBUF_NAMESPACE_ID::int32 value) {
+  _internal_set_sysid_secondary_control(value);
+  // @@protoc_insertion_point(field_set:mavsdk.rpc.gimbal.ControlStatus.sysid_secondary_control)
+}
+
+// int32 compid_secondary_control = 5;
+inline void ControlStatus::clear_compid_secondary_control() {
+  compid_secondary_control_ = 0;
+}
+inline ::PROTOBUF_NAMESPACE_ID::int32 ControlStatus::_internal_compid_secondary_control() const {
+  return compid_secondary_control_;
+}
+inline ::PROTOBUF_NAMESPACE_ID::int32 ControlStatus::compid_secondary_control() const {
+  // @@protoc_insertion_point(field_get:mavsdk.rpc.gimbal.ControlStatus.compid_secondary_control)
+  return _internal_compid_secondary_control();
+}
+inline void ControlStatus::_internal_set_compid_secondary_control(::PROTOBUF_NAMESPACE_ID::int32 value) {
+  
+  compid_secondary_control_ = value;
+}
+inline void ControlStatus::set_compid_secondary_control(::PROTOBUF_NAMESPACE_ID::int32 value) {
+  _internal_set_compid_secondary_control(value);
+  // @@protoc_insertion_point(field_set:mavsdk.rpc.gimbal.ControlStatus.compid_secondary_control)
+}
+
+// -------------------------------------------------------------------
+
 // GimbalResult
 
 // .mavsdk.rpc.gimbal.GimbalResult.Result result = 1;
@@ -1722,6 +3610,24 @@ inline void GimbalResult::set_allocated_result_str(std::string* result_str) {
 
 // -------------------------------------------------------------------
 
+// -------------------------------------------------------------------
+
+// -------------------------------------------------------------------
+
+// -------------------------------------------------------------------
+
+// -------------------------------------------------------------------
+
+// -------------------------------------------------------------------
+
+// -------------------------------------------------------------------
+
+// -------------------------------------------------------------------
+
+// -------------------------------------------------------------------
+
+// -------------------------------------------------------------------
+
 
 // @@protoc_insertion_point(namespace_scope)
 
@@ -1740,6 +3646,11 @@ template <> struct is_proto_enum< ::mavsdk::rpc::gimbal::GimbalMode> : ::std::tr
 template <>
 inline const EnumDescriptor* GetEnumDescriptor< ::mavsdk::rpc::gimbal::GimbalMode>() {
   return ::mavsdk::rpc::gimbal::GimbalMode_descriptor();
+}
+template <> struct is_proto_enum< ::mavsdk::rpc::gimbal::ControlMode> : ::std::true_type {};
+template <>
+inline const EnumDescriptor* GetEnumDescriptor< ::mavsdk::rpc::gimbal::ControlMode>() {
+  return ::mavsdk::rpc::gimbal::ControlMode_descriptor();
 }
 
 PROTOBUF_NAMESPACE_CLOSE
