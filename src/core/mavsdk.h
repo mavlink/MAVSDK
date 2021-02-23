@@ -66,7 +66,7 @@ public:
      * - Serial - serial://Dev_Node[:Baudrate]
      *
      * @param connection_url connection URL string.
-     * @param forward_messages forward messages by default when multiple interfaces are used.
+     * @param forward_messages forward messages when multiple interfaces are used.
      * @return The result of adding the connection.
      */
     ConnectionResult add_any_connection(const std::string& connection_url, bool forward_messages = false);
@@ -77,7 +77,7 @@ public:
      * Any incoming connections are accepted (0.0.0.0).
      *
      * @param local_port The local UDP port to listen to (defaults to 14540, the same as MAVROS).
-     * @param forward_messages forward messages by default when multiple interfaces are used.
+     * @param forward_messages forward messages when multiple interfaces are used.
      * @return The result of adding the connection.
      */
     ConnectionResult add_udp_connection(int local_port = DEFAULT_UDP_PORT, bool forward_messages = false);
@@ -90,7 +90,7 @@ public:
      *
      * @param local_ip The local UDP IP address to listen to.
      * @param local_port The local UDP port to listen to (defaults to 14540, the same as MAVROS).
-     * @param forward_messages forward messages by default when multiple interfaces are used.
+     * @param forward_messages forward messages when multiple interfaces are used.
      * @return The result of adding the connection.
      */
     ConnectionResult
@@ -101,7 +101,7 @@ public:
      *
      * @param remote_ip The remote UDP IP address to report to.
      * @param remote_port The local UDP port to report to.
-     * @param forward_messages forward messages by default when multiple interfaces are used.
+     * @param forward_messages forward messages when multiple interfaces are used.
      * @return The result of operation.
      */
     ConnectionResult setup_udp_remote(const std::string& remote_ip, int remote_port, bool forward_messages = false);
@@ -110,7 +110,7 @@ public:
      * @brief Adds a TCP connection with a specific port number on localhost.
      *
      * @param remote_port The TCP port to connect to (defaults to 5760).
-     * @param forward_messages forward messages by default when multiple interfaces are used.
+     * @param forward_messages forward messages when multiple interfaces are used.
      * @return The result of adding the connection.
      */
     ConnectionResult add_tcp_connection(int remote_port = DEFAULT_TCP_REMOTE_PORT, bool forward_messages = false);
@@ -120,7 +120,7 @@ public:
      *
      * @param remote_ip Remote IP address to connect to.
      * @param remote_port The TCP port to connect to (defaults to 5760).
-     * @param forward_messages forward messages by default when multiple interfaces are used.
+     * @param forward_messages forward messages when multiple interfaces are used.
      * @return The result of adding the connection.
      */
     ConnectionResult
@@ -134,7 +134,7 @@ public:
      * @param dev_path COM or UART dev node name/path (e.g. "/dev/ttyS0", or "COM3" on Windows).
      * @param baudrate Baudrate of the serial port (defaults to 57600).
      * @param flow_control enable/disable flow control.
-     * @param forward_messages forward messages by default when multiple interfaces are used.
+     * @param forward_messages forward messages when multiple interfaces are used.
      * @return The result of adding the connection.
      */
     ConnectionResult add_serial_connection(
