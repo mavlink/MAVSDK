@@ -148,13 +148,17 @@ void MavsdkImpl::forward_message(mavlink_message_t& message, Connection* connect
     if (!targeted_only_at_us && heartbeat_check_ok) {
         std::lock_guard<std::mutex> lock(_connections_mutex);
 
+        uint succesfull_emissions = 0;
         for (auto it = _connections.begin(); it != _connections.end(); ++it) {
             if ((*it).get() == connection || !(**it).do_forward_messages()) {
                 continue;
             }
-            if (!(**it).send_message(message)) {
-                LogErr() << "forward fail";
+            if ((**it).send_message(message)) {
+                succesfull_emissions++;
             }
+        }
+        if (succesfull_emissions == 0) {
+            LogErr() << "forward fail";
         }
     }
 }
