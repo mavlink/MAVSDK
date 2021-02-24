@@ -33,7 +33,7 @@ target_link_libraries(mavsdk
     PRIVATE
     CURL::libcurl
     Threads::Threads
-    JsonCpp::jsoncpp
+    #JsonCpp::jsoncpp
     tinyxml2::tinyxml2
 )
 
@@ -77,7 +77,7 @@ include_directories(
     SYSTEM ${PROJECT_SOURCE_DIR}/third_party/mavlink/include
 )
 
-if(BUILD_TESTS)
+if(BUILD_TESTS AND false)
     enable_testing()
     add_subdirectory(${CMAKE_CURRENT_SOURCE_DIR}/third_party/gtest EXCLUDE_FROM_ALL)
 
