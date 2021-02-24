@@ -30,7 +30,7 @@ typedef NS_ENUM(NSInteger, MAVSDKManualControlResult)  {
 - (id)initWithMavsdkSwift2Impl:(MavsdkSwift2Impl*)mavsdkSwift2Impl;
 - (MAVSDKManualControlResult)startPositionControl ;
 - (MAVSDKManualControlResult)startAltitudeControl ;
-- (MAVSDKManualControlResult)setManualControlInput :( float) x :( float) y :( float) z :( float) r;
+- (MAVSDKManualControlResult)setManualControlInput :(float) x :(float) y :(float) z :(float) r;
 
 
 @end

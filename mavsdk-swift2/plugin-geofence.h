@@ -57,7 +57,7 @@ typedef NS_ENUM(NSInteger, MAVSDKGeofenceResult)  {
 @interface MAVSDKGeofence : NSObject
 
 - (id)initWithMavsdkSwift2Impl:(MavsdkSwift2Impl*)mavsdkSwift2Impl;
-- (MAVSDKGeofenceResult)uploadGeofence :( MAVSDKGeofencePolygon*) polygons;
+- (MAVSDKGeofenceResult)uploadGeofence :(MAVSDKGeofencePolygon*) polygons;
 
 
 @end

@@ -61,7 +61,7 @@ typedef NS_ENUM(NSInteger, MAVSDKTuneResult)  {
 @interface MAVSDKTune : NSObject
 
 - (id)initWithMavsdkSwift2Impl:(MavsdkSwift2Impl*)mavsdkSwift2Impl;
-- (MAVSDKTuneResult)playTune :( MAVSDKTuneTuneDescription*) tuneDescription;
+- (MAVSDKTuneResult)playTune :(MAVSDKTuneTuneDescription*) tuneDescription;
 
 
 @end

@@ -86,18 +86,18 @@ typedef NS_ENUM(NSInteger, MAVSDKMissionResult)  {
 @interface MAVSDKMission : NSObject
 
 - (id)initWithMavsdkSwift2Impl:(MavsdkSwift2Impl*)mavsdkSwift2Impl;
-- (MAVSDKMissionResult)uploadMission :( MAVSDKMissionMissionPlan*) missionPlan;
+- (MAVSDKMissionResult)uploadMission :(MAVSDKMissionMissionPlan*) missionPlan;
 - (MAVSDKMissionResult)cancelMissionUpload ;
 
 - (MAVSDKMissionResult)cancelMissionDownload ;
 - (MAVSDKMissionResult)startMission ;
 - (MAVSDKMissionResult)pauseMission ;
 - (MAVSDKMissionResult)clearMission ;
-- (MAVSDKMissionResult)setCurrentMissionItem :( SInt32) index;
+- (MAVSDKMissionResult)setCurrentMissionItem :(SInt32) index;
 
 
 
-- (MAVSDKMissionResult)setReturnToLaunchAfterMission :( BOOL) enable;
+- (MAVSDKMissionResult)setReturnToLaunchAfterMission :(BOOL) enable;
 
 
 

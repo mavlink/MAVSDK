@@ -122,13 +122,13 @@ typedef NS_ENUM(NSInteger, MAVSDKOffboardResult)  {
 - (MAVSDKOffboardResult)start ;
 - (MAVSDKOffboardResult)stop ;
 
-- (MAVSDKOffboardResult)setAttitude :( MAVSDKOffboardAttitude*) attitude;
-- (MAVSDKOffboardResult)setActuatorControl :( MAVSDKOffboardActuatorControl*) actuatorControl;
-- (MAVSDKOffboardResult)setAttitudeRate :( MAVSDKOffboardAttitudeRate*) attitudeRate;
-- (MAVSDKOffboardResult)setPositionNed :( MAVSDKOffboardPositionNedYaw*) positionNedYaw;
-- (MAVSDKOffboardResult)setVelocityBody :( MAVSDKOffboardVelocityBodyYawspeed*) velocityBodyYawspeed;
-- (MAVSDKOffboardResult)setVelocityNed :( MAVSDKOffboardVelocityNedYaw*) velocityNedYaw;
-- (MAVSDKOffboardResult)setPositionVelocityNed :( MAVSDKOffboardPositionNedYaw*) positionNedYaw :( MAVSDKOffboardVelocityNedYaw*) velocityNedYaw;
+- (MAVSDKOffboardResult)setAttitude :(MAVSDKOffboardAttitude*) attitude;
+- (MAVSDKOffboardResult)setActuatorControl :(MAVSDKOffboardActuatorControl*) actuatorControl;
+- (MAVSDKOffboardResult)setAttitudeRate :(MAVSDKOffboardAttitudeRate*) attitudeRate;
+- (MAVSDKOffboardResult)setPositionNed :(MAVSDKOffboardPositionNedYaw*) positionNedYaw;
+- (MAVSDKOffboardResult)setVelocityBody :(MAVSDKOffboardVelocityBodyYawspeed*) velocityBodyYawspeed;
+- (MAVSDKOffboardResult)setVelocityNed :(MAVSDKOffboardVelocityNedYaw*) velocityNedYaw;
+- (MAVSDKOffboardResult)setPositionVelocityNed :(MAVSDKOffboardPositionNedYaw*) positionNedYaw :(MAVSDKOffboardVelocityNedYaw*) velocityNedYaw;
 
 
 @end

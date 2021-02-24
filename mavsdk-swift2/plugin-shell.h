@@ -25,7 +25,7 @@ typedef NS_ENUM(NSInteger, MAVSDKShellResult)  {
 @interface MAVSDKShell : NSObject
 
 - (id)initWithMavsdkSwift2Impl:(MavsdkSwift2Impl*)mavsdkSwift2Impl;
-- (MAVSDKShellResult)send :( NSString*) command;
+- (MAVSDKShellResult)send :(NSString*) command;
 
 
 

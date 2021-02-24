@@ -62,9 +62,9 @@ typedef NS_ENUM(NSInteger, MAVSDKParamResult)  {
 
 - (id)initWithMavsdkSwift2Impl:(MavsdkSwift2Impl*)mavsdkSwift2Impl;
 
-- (MAVSDKParamResult)setParamInt :( NSString*) name :( SInt32) value;
+- (MAVSDKParamResult)setParamInt :(NSString*) name :(SInt32) value;
 
-- (MAVSDKParamResult)setParamFloat :( NSString*) name :( float) value;
+- (MAVSDKParamResult)setParamFloat :(NSString*) name :(float) value;
 
 
 

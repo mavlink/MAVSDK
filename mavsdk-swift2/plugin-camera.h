@@ -212,13 +212,13 @@ typedef NS_ENUM(NSInteger, MAVSDKCameraStorageStatus)  {
 
 - (id)initWithMavsdkSwift2Impl:(MavsdkSwift2Impl*)mavsdkSwift2Impl;
 - (MAVSDKCameraResult)takePhoto ;
-- (MAVSDKCameraResult)startPhotoInterval :( float) intervalS;
+- (MAVSDKCameraResult)startPhotoInterval :(float) intervalS;
 - (MAVSDKCameraResult)stopPhotoInterval ;
 - (MAVSDKCameraResult)startVideo ;
 - (MAVSDKCameraResult)stopVideo ;
 - (MAVSDKCameraResult)startVideoStreaming ;
 - (MAVSDKCameraResult)stopVideoStreaming ;
-- (MAVSDKCameraResult)setMode :( MAVSDKCameraMode) mode;
+- (MAVSDKCameraResult)setMode :(MAVSDKCameraMode) mode;
 
 
 
@@ -227,7 +227,7 @@ typedef NS_ENUM(NSInteger, MAVSDKCameraStorageStatus)  {
 
 
 
-- (MAVSDKCameraResult)setSetting :( MAVSDKCameraSetting*) setting;
+- (MAVSDKCameraResult)setSetting :(MAVSDKCameraSetting*) setting;
 
 - (MAVSDKCameraResult)formatStorage ;
 

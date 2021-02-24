@@ -458,25 +458,25 @@ typedef NS_ENUM(NSInteger, MAVSDKTelemetryResult)  {
 
 
 
-- (MAVSDKTelemetryResult)setRatePosition :( double) rateHz;
-- (MAVSDKTelemetryResult)setRateHome :( double) rateHz;
-- (MAVSDKTelemetryResult)setRateInAir :( double) rateHz;
-- (MAVSDKTelemetryResult)setRateLandedState :( double) rateHz;
-- (MAVSDKTelemetryResult)setRateAttitude :( double) rateHz;
-- (MAVSDKTelemetryResult)setRateCameraAttitude :( double) rateHz;
-- (MAVSDKTelemetryResult)setRateVelocityNed :( double) rateHz;
-- (MAVSDKTelemetryResult)setRateGpsInfo :( double) rateHz;
-- (MAVSDKTelemetryResult)setRateBattery :( double) rateHz;
-- (MAVSDKTelemetryResult)setRateRcStatus :( double) rateHz;
-- (MAVSDKTelemetryResult)setRateActuatorControlTarget :( double) rateHz;
-- (MAVSDKTelemetryResult)setRateActuatorOutputStatus :( double) rateHz;
-- (MAVSDKTelemetryResult)setRateOdometry :( double) rateHz;
-- (MAVSDKTelemetryResult)setRatePositionVelocityNed :( double) rateHz;
-- (MAVSDKTelemetryResult)setRateGroundTruth :( double) rateHz;
-- (MAVSDKTelemetryResult)setRateFixedwingMetrics :( double) rateHz;
-- (MAVSDKTelemetryResult)setRateImu :( double) rateHz;
-- (MAVSDKTelemetryResult)setRateUnixEpochTime :( double) rateHz;
-- (MAVSDKTelemetryResult)setRateDistanceSensor :( double) rateHz;
+- (MAVSDKTelemetryResult)setRatePosition :(double) rateHz;
+- (MAVSDKTelemetryResult)setRateHome :(double) rateHz;
+- (MAVSDKTelemetryResult)setRateInAir :(double) rateHz;
+- (MAVSDKTelemetryResult)setRateLandedState :(double) rateHz;
+- (MAVSDKTelemetryResult)setRateAttitude :(double) rateHz;
+- (MAVSDKTelemetryResult)setRateCameraAttitude :(double) rateHz;
+- (MAVSDKTelemetryResult)setRateVelocityNed :(double) rateHz;
+- (MAVSDKTelemetryResult)setRateGpsInfo :(double) rateHz;
+- (MAVSDKTelemetryResult)setRateBattery :(double) rateHz;
+- (MAVSDKTelemetryResult)setRateRcStatus :(double) rateHz;
+- (MAVSDKTelemetryResult)setRateActuatorControlTarget :(double) rateHz;
+- (MAVSDKTelemetryResult)setRateActuatorOutputStatus :(double) rateHz;
+- (MAVSDKTelemetryResult)setRateOdometry :(double) rateHz;
+- (MAVSDKTelemetryResult)setRatePositionVelocityNed :(double) rateHz;
+- (MAVSDKTelemetryResult)setRateGroundTruth :(double) rateHz;
+- (MAVSDKTelemetryResult)setRateFixedwingMetrics :(double) rateHz;
+- (MAVSDKTelemetryResult)setRateImu :(double) rateHz;
+- (MAVSDKTelemetryResult)setRateUnixEpochTime :(double) rateHz;
+- (MAVSDKTelemetryResult)setRateDistanceSensor :(double) rateHz;
 
 
 

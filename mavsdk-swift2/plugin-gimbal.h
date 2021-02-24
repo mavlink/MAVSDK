@@ -52,11 +52,11 @@ typedef NS_ENUM(NSInteger, MAVSDKGimbalResult)  {
 @interface MAVSDKGimbal : NSObject
 
 - (id)initWithMavsdkSwift2Impl:(MavsdkSwift2Impl*)mavsdkSwift2Impl;
-- (MAVSDKGimbalResult)setPitchAndYaw :( float) pitchDeg :( float) yawDeg;
-- (MAVSDKGimbalResult)setPitchRateAndYawRate :( float) pitchRateDegS :( float) yawRateDegS;
-- (MAVSDKGimbalResult)setMode :( MAVSDKGimbalGimbalMode) gimbalMode;
-- (MAVSDKGimbalResult)setRoiLocation :( double) latitudeDeg :( double) longitudeDeg :( float) altitudeM;
-- (MAVSDKGimbalResult)takeControl :( MAVSDKGimbalControlMode) controlMode;
+- (MAVSDKGimbalResult)setPitchAndYaw :(float) pitchDeg :(float) yawDeg;
+- (MAVSDKGimbalResult)setPitchRateAndYawRate :(float) pitchRateDegS :(float) yawRateDegS;
+- (MAVSDKGimbalResult)setMode :(MAVSDKGimbalGimbalMode) gimbalMode;
+- (MAVSDKGimbalResult)setRoiLocation :(double) latitudeDeg :(double) longitudeDeg :(float) altitudeM;
+- (MAVSDKGimbalResult)takeControl :(MAVSDKGimbalControlMode) controlMode;
 - (MAVSDKGimbalResult)releaseControl ;
 
 

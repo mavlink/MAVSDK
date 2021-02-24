@@ -49,16 +49,16 @@ typedef NS_ENUM(NSInteger, MAVSDKActionResult)  {
 - (MAVSDKActionResult)terminate ;
 - (MAVSDKActionResult)kill ;
 - (MAVSDKActionResult)returnToLaunch ;
-- (MAVSDKActionResult)gotoLocation :( double) latitudeDeg :( double) longitudeDeg :( float) absoluteAltitudeM :( float) yawDeg;
-- (MAVSDKActionResult)doOrbit :( float) radiusM :( float) velocityMs :( MAVSDKActionOrbitYawBehavior) yawBehavior :( double) latitudeDeg :( double) longitudeDeg :( double) absoluteAltitudeM;
+- (MAVSDKActionResult)gotoLocation :(double) latitudeDeg :(double) longitudeDeg :(float) absoluteAltitudeM :(float) yawDeg;
+- (MAVSDKActionResult)doOrbit :(float) radiusM :(float) velocityMs :(MAVSDKActionOrbitYawBehavior) yawBehavior :(double) latitudeDeg :(double) longitudeDeg :(double) absoluteAltitudeM;
 - (MAVSDKActionResult)transitionToFixedwing ;
 - (MAVSDKActionResult)transitionToMulticopter ;
 
-- (MAVSDKActionResult)setTakeoffAltitude :( float) altitude;
+- (MAVSDKActionResult)setTakeoffAltitude :(float) altitude;
 
-- (MAVSDKActionResult)setMaximumSpeed :( float) speed;
+- (MAVSDKActionResult)setMaximumSpeed :(float) speed;
 
-- (MAVSDKActionResult)setReturnToLaunchAltitude :( float) relativeAltitudeM;
+- (MAVSDKActionResult)setReturnToLaunchAltitude :(float) relativeAltitudeM;
 
 
 @end

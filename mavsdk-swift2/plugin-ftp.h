@@ -47,13 +47,13 @@ typedef NS_ENUM(NSInteger, MAVSDKFtpResult)  {
 
 
 
-- (MAVSDKFtpResult)createDirectory :( NSString*) remoteDir;
-- (MAVSDKFtpResult)removeDirectory :( NSString*) remoteDir;
-- (MAVSDKFtpResult)removeFile :( NSString*) remoteFilePath;
-- (MAVSDKFtpResult)rename :( NSString*) remoteFromPath :( NSString*) remoteToPath;
+- (MAVSDKFtpResult)createDirectory :(NSString*) remoteDir;
+- (MAVSDKFtpResult)removeDirectory :(NSString*) remoteDir;
+- (MAVSDKFtpResult)removeFile :(NSString*) remoteFilePath;
+- (MAVSDKFtpResult)rename :(NSString*) remoteFromPath :(NSString*) remoteToPath;
 
-- (MAVSDKFtpResult)setRootDirectory :( NSString*) rootDir;
-- (MAVSDKFtpResult)setTargetCompid :( UInt32) compid;
+- (MAVSDKFtpResult)setRootDirectory :(NSString*) rootDir;
+- (MAVSDKFtpResult)setTargetCompid :(UInt32) compid;
 
 
 

@@ -64,14 +64,14 @@ typedef NS_ENUM(NSInteger, MAVSDKMissionRawResult)  {
 @interface MAVSDKMissionRaw : NSObject
 
 - (id)initWithMavsdkSwift2Impl:(MavsdkSwift2Impl*)mavsdkSwift2Impl;
-- (MAVSDKMissionRawResult)uploadMission :( MAVSDKMissionRawMissionItem*) missionItems;
+- (MAVSDKMissionRawResult)uploadMission :(MAVSDKMissionRawMissionItem*) missionItems;
 - (MAVSDKMissionRawResult)cancelMissionUpload ;
 
 - (MAVSDKMissionRawResult)cancelMissionDownload ;
 - (MAVSDKMissionRawResult)startMission ;
 - (MAVSDKMissionRawResult)pauseMission ;
 - (MAVSDKMissionRawResult)clearMission ;
-- (MAVSDKMissionRawResult)setCurrentMissionItem :( SInt32) index;
+- (MAVSDKMissionRawResult)setCurrentMissionItem :(SInt32) index;
 
 
 

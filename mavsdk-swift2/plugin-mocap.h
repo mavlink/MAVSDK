@@ -154,9 +154,9 @@ typedef NS_ENUM(NSInteger, MAVSDKMocapResult)  {
 @interface MAVSDKMocap : NSObject
 
 - (id)initWithMavsdkSwift2Impl:(MavsdkSwift2Impl*)mavsdkSwift2Impl;
-- (MAVSDKMocapResult)setVisionPositionEstimate :( MAVSDKMocapVisionPositionEstimate*) visionPositionEstimate;
-- (MAVSDKMocapResult)setAttitudePositionMocap :( MAVSDKMocapAttitudePositionMocap*) attitudePositionMocap;
-- (MAVSDKMocapResult)setOdometry :( MAVSDKMocapOdometry*) odometry;
+- (MAVSDKMocapResult)setVisionPositionEstimate :(MAVSDKMocapVisionPositionEstimate*) visionPositionEstimate;
+- (MAVSDKMocapResult)setAttitudePositionMocap :(MAVSDKMocapAttitudePositionMocap*) attitudePositionMocap;
+- (MAVSDKMocapResult)setOdometry :(MAVSDKMocapOdometry*) odometry;
 
 
 @end

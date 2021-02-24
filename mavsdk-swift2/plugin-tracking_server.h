@@ -59,15 +59,15 @@ typedef NS_ENUM(NSInteger, MAVSDKTrackingServerResult)  {
 @interface MAVSDKTrackingServer : NSObject
 
 - (id)initWithMavsdkSwift2Impl:(MavsdkSwift2Impl*)mavsdkSwift2Impl;
-- (void)setTrackingPointStatus :( MAVSDKTrackingServerTrackPoint*) trackedPoint;
-- (void)setTrackingRectangleStatus :( MAVSDKTrackingServerTrackRectangle*) trackedRectangle;
+- (void)setTrackingPointStatus :(MAVSDKTrackingServerTrackPoint*) trackedPoint;
+- (void)setTrackingRectangleStatus :(MAVSDKTrackingServerTrackRectangle*) trackedRectangle;
 - (void)setTrackingOffStatus ;
 
 
 
-- (MAVSDKTrackingServerResult)respondTrackingPointCommand :( MAVSDKTrackingServerCommandAnswer) commandAnswer;
-- (MAVSDKTrackingServerResult)respondTrackingRectangleCommand :( MAVSDKTrackingServerCommandAnswer) commandAnswer;
-- (MAVSDKTrackingServerResult)respondTrackingOffCommand :( MAVSDKTrackingServerCommandAnswer) commandAnswer;
+- (MAVSDKTrackingServerResult)respondTrackingPointCommand :(MAVSDKTrackingServerCommandAnswer) commandAnswer;
+- (MAVSDKTrackingServerResult)respondTrackingRectangleCommand :(MAVSDKTrackingServerCommandAnswer) commandAnswer;
+- (MAVSDKTrackingServerResult)respondTrackingOffCommand :(MAVSDKTrackingServerCommandAnswer) commandAnswer;
 
 
 @end

@@ -69,9 +69,9 @@ typedef NS_ENUM(NSInteger, MAVSDKFollowMeResult)  {
 
 - (id)initWithMavsdkSwift2Impl:(MavsdkSwift2Impl*)mavsdkSwift2Impl;
 
-- (MAVSDKFollowMeResult)setConfig :( MAVSDKFollowMeConfig*) config;
+- (MAVSDKFollowMeResult)setConfig :(MAVSDKFollowMeConfig*) config;
 
-- (MAVSDKFollowMeResult)setTargetLocation :( MAVSDKFollowMeTargetLocation*) location;
+- (MAVSDKFollowMeResult)setTargetLocation :(MAVSDKFollowMeTargetLocation*) location;
 
 - (MAVSDKFollowMeResult)start ;
 - (MAVSDKFollowMeResult)stop ;
