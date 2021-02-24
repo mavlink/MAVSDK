@@ -12,10 +12,10 @@
 @interface MAVSDKOffboardAttitude : NSObject
 
 
-@property (nonatomic, assign) float rollDeg;
-@property (nonatomic, assign) float pitchDeg;
-@property (nonatomic, assign) float yawDeg;
-@property (nonatomic, assign) float thrustValue;
+@property (nonatomic, assign) float rollDeg; 
+@property (nonatomic, assign) float pitchDeg; 
+@property (nonatomic, assign) float yawDeg; 
+@property (nonatomic, assign) float thrustValue; 
 
 
 @end
@@ -26,7 +26,7 @@
 @interface MAVSDKOffboardActuatorControlGroup : NSObject
 
 
-@property (nonatomic, assign) float controls;
+@property (nonatomic, strong) NSMutableArray *controls;
 
 
 @end
@@ -37,7 +37,7 @@
 @interface MAVSDKOffboardActuatorControl : NSObject
 
 
-@property (nonatomic, strong) NSMutableArray *groups; 
+@property (nonatomic, strong) NSMutableArray *groups;
 
 
 @end
@@ -48,10 +48,10 @@
 @interface MAVSDKOffboardAttitudeRate : NSObject
 
 
-@property (nonatomic, assign) float rollDegS;
-@property (nonatomic, assign) float pitchDegS;
-@property (nonatomic, assign) float yawDegS;
-@property (nonatomic, assign) float thrustValue;
+@property (nonatomic, assign) float rollDegS; 
+@property (nonatomic, assign) float pitchDegS; 
+@property (nonatomic, assign) float yawDegS; 
+@property (nonatomic, assign) float thrustValue; 
 
 
 @end
@@ -62,10 +62,10 @@
 @interface MAVSDKOffboardPositionNedYaw : NSObject
 
 
-@property (nonatomic, assign) float northM;
-@property (nonatomic, assign) float eastM;
-@property (nonatomic, assign) float downM;
-@property (nonatomic, assign) float yawDeg;
+@property (nonatomic, assign) float northM; 
+@property (nonatomic, assign) float eastM; 
+@property (nonatomic, assign) float downM; 
+@property (nonatomic, assign) float yawDeg; 
 
 
 @end
@@ -76,10 +76,10 @@
 @interface MAVSDKOffboardVelocityBodyYawspeed : NSObject
 
 
-@property (nonatomic, assign) float forwardMS;
-@property (nonatomic, assign) float rightMS;
-@property (nonatomic, assign) float downMS;
-@property (nonatomic, assign) float yawspeedDegS;
+@property (nonatomic, assign) float forwardMS; 
+@property (nonatomic, assign) float rightMS; 
+@property (nonatomic, assign) float downMS; 
+@property (nonatomic, assign) float yawspeedDegS; 
 
 
 @end
@@ -90,10 +90,10 @@
 @interface MAVSDKOffboardVelocityNedYaw : NSObject
 
 
-@property (nonatomic, assign) float northMS;
-@property (nonatomic, assign) float eastMS;
-@property (nonatomic, assign) float downMS;
-@property (nonatomic, assign) float yawDeg;
+@property (nonatomic, assign) float northMS; 
+@property (nonatomic, assign) float eastMS; 
+@property (nonatomic, assign) float downMS; 
+@property (nonatomic, assign) float yawDeg; 
 
 
 @end

@@ -40,10 +40,10 @@ typedef NS_ENUM(NSInteger, MAVSDKCameraResult)  {
 @interface MAVSDKCameraPosition : NSObject
 
 
-@property (nonatomic, assign) double latitudeDeg;
-@property (nonatomic, assign) double longitudeDeg;
-@property (nonatomic, assign) float absoluteAltitudeM;
-@property (nonatomic, assign) float relativeAltitudeM;
+@property (nonatomic, assign) double latitudeDeg; 
+@property (nonatomic, assign) double longitudeDeg; 
+@property (nonatomic, assign) float absoluteAltitudeM; 
+@property (nonatomic, assign) float relativeAltitudeM; 
 
 
 @end
@@ -54,10 +54,10 @@ typedef NS_ENUM(NSInteger, MAVSDKCameraResult)  {
 @interface MAVSDKCameraQuaternion : NSObject
 
 
-@property (nonatomic, assign) float w;
-@property (nonatomic, assign) float x;
-@property (nonatomic, assign) float y;
-@property (nonatomic, assign) float z;
+@property (nonatomic, assign) float w; 
+@property (nonatomic, assign) float x; 
+@property (nonatomic, assign) float y; 
+@property (nonatomic, assign) float z; 
 
 
 @end
@@ -68,9 +68,9 @@ typedef NS_ENUM(NSInteger, MAVSDKCameraResult)  {
 @interface MAVSDKCameraEulerAngle : NSObject
 
 
-@property (nonatomic, assign) float rollDeg;
-@property (nonatomic, assign) float pitchDeg;
-@property (nonatomic, assign) float yawDeg;
+@property (nonatomic, assign) float rollDeg; 
+@property (nonatomic, assign) float pitchDeg; 
+@property (nonatomic, assign) float yawDeg; 
 
 
 @end
@@ -84,9 +84,9 @@ typedef NS_ENUM(NSInteger, MAVSDKCameraResult)  {
 @property (nonatomic, strong) MAVSDKCameraPosition *position;
 @property (nonatomic, strong) MAVSDKCameraQuaternion *attitudeQuaternion;
 @property (nonatomic, strong) MAVSDKCameraEulerAngle *attitudeEulerAngle;
-@property (nonatomic, assign) UInt64 timeUtcUs;
-@property (nonatomic, assign) BOOL isSuccess;
-@property (nonatomic, assign) NSInteger index;
+@property (nonatomic, assign) UInt64 timeUtcUs; 
+@property (nonatomic, assign) BOOL isSuccess; 
+@property (nonatomic, assign) SInt32 index; 
 @property (nonatomic, strong) NSString *fileUrl;
 
 
@@ -98,11 +98,11 @@ typedef NS_ENUM(NSInteger, MAVSDKCameraResult)  {
 @interface MAVSDKCameraVideoStreamSettings : NSObject
 
 
-@property (nonatomic, assign) float frameRateHz;
-@property (nonatomic, assign) UInt32 horizontalResolutionPix;
-@property (nonatomic, assign) UInt32 verticalResolutionPix;
-@property (nonatomic, assign) UInt32 bitRateBS;
-@property (nonatomic, assign) UInt32 rotationDeg;
+@property (nonatomic, assign) float frameRateHz; 
+@property (nonatomic, assign) UInt32 horizontalResolutionPix; 
+@property (nonatomic, assign) UInt32 verticalResolutionPix; 
+@property (nonatomic, assign) UInt32 bitRateBS; 
+@property (nonatomic, assign) UInt32 rotationDeg; 
 @property (nonatomic, strong) NSString *uri;
 
 
@@ -141,12 +141,12 @@ typedef NS_ENUM(NSInteger, MAVSDKCameraStorageStatus)  {
     MAVSDKCameraStorageStatusFormatted,
 };
 
-@property (nonatomic, assign) BOOL videoOn;
-@property (nonatomic, assign) BOOL photoIntervalOn;
-@property (nonatomic, assign) float usedStorageMib;
-@property (nonatomic, assign) float availableStorageMib;
-@property (nonatomic, assign) float totalStorageMib;
-@property (nonatomic, assign) float recordingTimeS;
+@property (nonatomic, assign) BOOL videoOn; 
+@property (nonatomic, assign) BOOL photoIntervalOn; 
+@property (nonatomic, assign) float usedStorageMib; 
+@property (nonatomic, assign) float availableStorageMib; 
+@property (nonatomic, assign) float totalStorageMib; 
+@property (nonatomic, assign) float recordingTimeS; 
 @property (nonatomic, strong) NSString *mediaFolderName;
 @property (nonatomic, assign) MAVSDKCameraStorageStatus storageStatus;
 
@@ -174,7 +174,7 @@ typedef NS_ENUM(NSInteger, MAVSDKCameraStorageStatus)  {
 @property (nonatomic, strong) NSString *settingId;
 @property (nonatomic, strong) NSString *settingDescription;
 @property (nonatomic, strong) MAVSDKCameraOption *option;
-@property (nonatomic, assign) BOOL isRange;
+@property (nonatomic, assign) BOOL isRange; 
 
 
 @end
@@ -187,8 +187,8 @@ typedef NS_ENUM(NSInteger, MAVSDKCameraStorageStatus)  {
 
 @property (nonatomic, strong) NSString *settingId;
 @property (nonatomic, strong) NSString *settingDescription;
-@property (nonatomic, strong) NSMutableArray *options; 
-@property (nonatomic, assign) BOOL isRange;
+@property (nonatomic, strong) NSMutableArray *options;
+@property (nonatomic, assign) BOOL isRange; 
 
 
 @end

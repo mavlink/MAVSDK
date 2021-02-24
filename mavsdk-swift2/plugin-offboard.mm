@@ -4,50 +4,6 @@
 #include <mavsdk/mavsdk.h>
 #include <mavsdk/plugins/offboard/offboard.h>
 
-@implementation MAVSDKOffboard
-
-mavsdk::Offboard *offboard;
-
-
-+(id)alloc{
-    return [super alloc];
-}
-
-- (id)initWithMavsdkSwift2Impl:(MavsdkSwift2Impl*)mavsdkSwift2Impl {
-    offboard = new mavsdk::Offboard(*[mavsdkSwift2Impl mavsdkSystem]);
-    return [super init];
-}
-
-- (MAVSDKOffboardResult)start {
-    return (MAVSDKOffboardResult)offboard->start();
-}
-- (MAVSDKOffboardResult)stop {
-    return (MAVSDKOffboardResult)offboard->stop();
-}
-
-- (MAVSDKOffboardResult)setAttitude:(MAVSDKOffboardAttitude*)attitude {
-    return (MAVSDKOffboardResult)offboard->set_attitude(translateToCppAttitude(attitude));
-}
-- (MAVSDKOffboardResult)setActuatorControl:(MAVSDKOffboardActuatorControl*)actuatorControl {
-    return (MAVSDKOffboardResult)offboard->set_actuator_control(translateToCppActuatorControl(actuatorControl));
-}
-- (MAVSDKOffboardResult)setAttitudeRate:(MAVSDKOffboardAttitudeRate*)attitudeRate {
-    return (MAVSDKOffboardResult)offboard->set_attitude_rate(translateToCppAttitudeRate(attitudeRate));
-}
-- (MAVSDKOffboardResult)setPositionNed:(MAVSDKOffboardPositionNedYaw*)positionNedYaw {
-    return (MAVSDKOffboardResult)offboard->set_position_ned(translateToCppPositionNedYaw(positionNedYaw));
-}
-- (MAVSDKOffboardResult)setVelocityBody:(MAVSDKOffboardVelocityBodyYawspeed*)velocityBodyYawspeed {
-    return (MAVSDKOffboardResult)offboard->set_velocity_body(translateToCppVelocityBodyYawspeed(velocityBodyYawspeed));
-}
-- (MAVSDKOffboardResult)setVelocityNed:(MAVSDKOffboardVelocityNedYaw*)velocityNedYaw {
-    return (MAVSDKOffboardResult)offboard->set_velocity_ned(translateToCppVelocityNedYaw(velocityNedYaw));
-}
-- (MAVSDKOffboardResult)setPositionVelocityNed:(MAVSDKOffboardPositionNedYaw*)positionNedYaw :(MAVSDKOffboardVelocityNedYaw*)velocityNedYaw {
-    return (MAVSDKOffboardResult)offboard->set_position_velocity_ned(translateToCppPositionNedYaw(positionNedYaw), translateToCppVelocityNedYaw(velocityNedYaw));
-}
-
-
 
 
 
@@ -101,15 +57,22 @@ mavsdk::Offboard::Attitude translateToCppAttitude(MAVSDKOffboardAttitude* attitu
 
 
 
+@implementation MAVSDKOffboardAttitude
+@end
+
+
+
 MAVSDKOffboardActuatorControlGroup* translateFromCppActuatorControlGroup(mavsdk::Offboard::ActuatorControlGroup actuator_control_group)
 {
     MAVSDKOffboardActuatorControlGroup *obj = [[MAVSDKOffboardActuatorControlGroup alloc] init];
 
 
         
-            //for (const auto& elem : actuatorControlGroup.controls()) {
-            //    [obj.controls addObject:elem];
-            //}
+            
+    for (const auto& elem : actuator_control_group.controls) {
+        [obj.controls addObject:[NSNumber numberWithFloat:elem]];
+    }
+            
         
     
     return obj;
@@ -121,13 +84,20 @@ mavsdk::Offboard::ActuatorControlGroup translateToCppActuatorControlGroup(MAVSDK
 
 
         
-            //for (MAVSDKOffboardfloat *elem in actuatorControlGroup.controls) {
-            //    [obj.controls push_back(elem)];
-            //}
+            
+    for (id elem in actuatorControlGroup.controls) {
+        obj.controls.push_back([elem floatValue]);
+    }
+            
         
     
     return obj;
 }
+
+
+
+@implementation MAVSDKOffboardActuatorControlGroup
+@end
 
 
 
@@ -137,9 +107,11 @@ MAVSDKOffboardActuatorControl* translateFromCppActuatorControl(mavsdk::Offboard:
 
 
         
-            for (const auto& elem : actuator_control.groups) {
-                [obj.groups addObject:translateFromCppActuatorControlGroup(elem)];
-            }
+            
+    for (const auto& elem : actuator_control.groups) {
+        [obj.groups addObject:translateFromCppActuatorControlGroup(elem)];
+    }
+            
         
     
     return obj;
@@ -151,13 +123,20 @@ mavsdk::Offboard::ActuatorControl translateToCppActuatorControl(MAVSDKOffboardAc
 
 
         
-            for (MAVSDKOffboardActuatorControlGroup *elem in actuatorControl.groups) {
-                obj.groups.push_back(translateToCppActuatorControlGroup(elem));
-            }
+            
+    for (MAVSDKOffboardActuatorControlGroup *elem in actuatorControl.groups) {
+        obj.groups.push_back(translateToCppActuatorControlGroup(elem));
+    }
+            
         
     
     return obj;
 }
+
+
+
+@implementation MAVSDKOffboardActuatorControl
+@end
 
 
 
@@ -211,6 +190,11 @@ mavsdk::Offboard::AttitudeRate translateToCppAttitudeRate(MAVSDKOffboardAttitude
 
 
 
+@implementation MAVSDKOffboardAttitudeRate
+@end
+
+
+
 MAVSDKOffboardPositionNedYaw* translateFromCppPositionNedYaw(mavsdk::Offboard::PositionNedYaw position_ned_yaw)
 {
     MAVSDKOffboardPositionNedYaw *obj = [[MAVSDKOffboardPositionNedYaw alloc] init];
@@ -258,6 +242,11 @@ mavsdk::Offboard::PositionNedYaw translateToCppPositionNedYaw(MAVSDKOffboardPosi
     
     return obj;
 }
+
+
+
+@implementation MAVSDKOffboardPositionNedYaw
+@end
 
 
 
@@ -311,6 +300,11 @@ mavsdk::Offboard::VelocityBodyYawspeed translateToCppVelocityBodyYawspeed(MAVSDK
 
 
 
+@implementation MAVSDKOffboardVelocityBodyYawspeed
+@end
+
+
+
 MAVSDKOffboardVelocityNedYaw* translateFromCppVelocityNedYaw(mavsdk::Offboard::VelocityNedYaw velocity_ned_yaw)
 {
     MAVSDKOffboardVelocityNedYaw *obj = [[MAVSDKOffboardVelocityNedYaw alloc] init];
@@ -361,7 +355,59 @@ mavsdk::Offboard::VelocityNedYaw translateToCppVelocityNedYaw(MAVSDKOffboardVelo
 
 
 
+@implementation MAVSDKOffboardVelocityNedYaw
+@end
 
+
+
+
+
+
+
+
+@implementation MAVSDKOffboard
+
+mavsdk::Offboard *offboard;
+
+
++(id)alloc{
+    return [super alloc];
+}
+
+- (id)initWithMavsdkSwift2Impl:(MavsdkSwift2Impl*)mavsdkSwift2Impl {
+    offboard = new mavsdk::Offboard(*[mavsdkSwift2Impl mavsdkSystem]);
+    return [super init];
+}
+
+- (MAVSDKOffboardResult)start {
+    return (MAVSDKOffboardResult)offboard->start();
+}
+- (MAVSDKOffboardResult)stop {
+    return (MAVSDKOffboardResult)offboard->stop();
+}
+
+- (MAVSDKOffboardResult)setAttitude:(MAVSDKOffboardAttitude*)attitude {
+    return (MAVSDKOffboardResult)offboard->set_attitude(translateToCppAttitude(attitude));
+}
+- (MAVSDKOffboardResult)setActuatorControl:(MAVSDKOffboardActuatorControl*)actuatorControl {
+    return (MAVSDKOffboardResult)offboard->set_actuator_control(translateToCppActuatorControl(actuatorControl));
+}
+- (MAVSDKOffboardResult)setAttitudeRate:(MAVSDKOffboardAttitudeRate*)attitudeRate {
+    return (MAVSDKOffboardResult)offboard->set_attitude_rate(translateToCppAttitudeRate(attitudeRate));
+}
+- (MAVSDKOffboardResult)setPositionNed:(MAVSDKOffboardPositionNedYaw*)positionNedYaw {
+    return (MAVSDKOffboardResult)offboard->set_position_ned(translateToCppPositionNedYaw(positionNedYaw));
+}
+- (MAVSDKOffboardResult)setVelocityBody:(MAVSDKOffboardVelocityBodyYawspeed*)velocityBodyYawspeed {
+    return (MAVSDKOffboardResult)offboard->set_velocity_body(translateToCppVelocityBodyYawspeed(velocityBodyYawspeed));
+}
+- (MAVSDKOffboardResult)setVelocityNed:(MAVSDKOffboardVelocityNedYaw*)velocityNedYaw {
+    return (MAVSDKOffboardResult)offboard->set_velocity_ned(translateToCppVelocityNedYaw(velocityNedYaw));
+}
+- (MAVSDKOffboardResult)setPositionVelocityNed:(MAVSDKOffboardPositionNedYaw*)positionNedYaw :(MAVSDKOffboardVelocityNedYaw*)velocityNedYaw {
+    return (MAVSDKOffboardResult)offboard->set_position_velocity_ned(translateToCppPositionNedYaw(positionNedYaw), translateToCppVelocityNedYaw(velocityNedYaw));
+}
 
 
 @end
+

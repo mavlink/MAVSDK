@@ -4,54 +4,51 @@
 #include <mavsdk/mavsdk.h>
 #include <mavsdk/plugins/mission/mission.h>
 
-@implementation MAVSDKMission
-
-mavsdk::Mission *mission;
 
 
-+(id)alloc{
-    return [super alloc];
+
+
+MAVSDKMissionCameraAction translateFromCppCameraAction(mavsdk::Mission::MissionItem::CameraAction camera_action)
+{
+    switch (camera_action) {
+        default:
+            NSLog(@"Unknown camera_action enum value: %d", static_cast<int>(camera_action));
+        // FALLTHROUGH
+        case mavsdk::Mission::MissionItem::CameraAction::None:
+            return MAVSDKMissionCameraActionNone;
+        case mavsdk::Mission::MissionItem::CameraAction::TakePhoto:
+            return MAVSDKMissionCameraActionTakePhoto;
+        case mavsdk::Mission::MissionItem::CameraAction::StartPhotoInterval:
+            return MAVSDKMissionCameraActionStartPhotoInterval;
+        case mavsdk::Mission::MissionItem::CameraAction::StopPhotoInterval:
+            return MAVSDKMissionCameraActionStopPhotoInterval;
+        case mavsdk::Mission::MissionItem::CameraAction::StartVideo:
+            return MAVSDKMissionCameraActionStartVideo;
+        case mavsdk::Mission::MissionItem::CameraAction::StopVideo:
+            return MAVSDKMissionCameraActionStopVideo;
+    }
 }
 
-- (id)initWithMavsdkSwift2Impl:(MavsdkSwift2Impl*)mavsdkSwift2Impl {
-    mission = new mavsdk::Mission(*[mavsdkSwift2Impl mavsdkSystem]);
-    return [super init];
+mavsdk::Mission::MissionItem::CameraAction translateToCppCameraAction(MAVSDKMissionCameraAction cameraAction)
+{
+    switch (cameraAction) {
+        default:
+            NSLog(@"Unknown CameraAction enum value: %d", static_cast<int>(cameraAction));
+        // FALLTHROUGH
+        case MAVSDKMissionCameraActionNone:
+            return mavsdk::Mission::MissionItem::CameraAction::None;
+        case MAVSDKMissionCameraActionTakePhoto:
+            return mavsdk::Mission::MissionItem::CameraAction::TakePhoto;
+        case MAVSDKMissionCameraActionStartPhotoInterval:
+            return mavsdk::Mission::MissionItem::CameraAction::StartPhotoInterval;
+        case MAVSDKMissionCameraActionStopPhotoInterval:
+            return mavsdk::Mission::MissionItem::CameraAction::StopPhotoInterval;
+        case MAVSDKMissionCameraActionStartVideo:
+            return mavsdk::Mission::MissionItem::CameraAction::StartVideo;
+        case MAVSDKMissionCameraActionStopVideo:
+            return mavsdk::Mission::MissionItem::CameraAction::StopVideo;
+    }
 }
-
-- (MAVSDKMissionResult)uploadMission:(MAVSDKMissionMissionPlan*)missionPlan {
-    return (MAVSDKMissionResult)mission->upload_mission(translateToCppMissionPlan(missionPlan));
-}
-- (MAVSDKMissionResult)cancelMissionUpload {
-    return (MAVSDKMissionResult)mission->cancel_mission_upload();
-}
-
-- (MAVSDKMissionResult)cancelMissionDownload {
-    return (MAVSDKMissionResult)mission->cancel_mission_download();
-}
-- (MAVSDKMissionResult)startMission {
-    return (MAVSDKMissionResult)mission->start_mission();
-}
-- (MAVSDKMissionResult)pauseMission {
-    return (MAVSDKMissionResult)mission->pause_mission();
-}
-- (MAVSDKMissionResult)clearMission {
-    return (MAVSDKMissionResult)mission->clear_mission();
-}
-- (MAVSDKMissionResult)setCurrentMissionItem:(NSInteger)index {
-    return (MAVSDKMissionResult)mission->set_current_mission_item(index);
-}
-
-
-
-- (MAVSDKMissionResult)setReturnToLaunchAfterMission:(BOOL)enable {
-    return (MAVSDKMissionResult)mission->set_return_to_launch_after_mission(enable);
-}
-
-
-
-
-
-
 MAVSDKMissionMissionItem* translateFromCppMissionItem(mavsdk::Mission::MissionItem mission_item)
 {
     MAVSDKMissionMissionItem *obj = [[MAVSDKMissionMissionItem alloc] init];
@@ -134,7 +131,7 @@ mavsdk::Mission::MissionItem translateToCppMissionItem(MAVSDKMissionMissionItem*
         
     
         
-    obj.camera_action = (mavsdk::Mission::MissionItem::CameraAction)(missionItem.cameraAction);
+    obj.camera_action = translateToCppCameraAction(missionItem.cameraAction);
         
     
         
@@ -150,15 +147,22 @@ mavsdk::Mission::MissionItem translateToCppMissionItem(MAVSDKMissionMissionItem*
 
 
 
+@implementation MAVSDKMissionMissionItem
+@end
+
+
+
 MAVSDKMissionMissionPlan* translateFromCppMissionPlan(mavsdk::Mission::MissionPlan mission_plan)
 {
     MAVSDKMissionMissionPlan *obj = [[MAVSDKMissionMissionPlan alloc] init];
 
 
         
-            for (const auto& elem : mission_plan.mission_items) {
-                [obj.missionItems addObject:translateFromCppMissionItem(elem)];
-            }
+            
+    for (const auto& elem : mission_plan.mission_items) {
+        [obj.missionItems addObject:translateFromCppMissionItem(elem)];
+    }
+            
         
     
     return obj;
@@ -170,13 +174,20 @@ mavsdk::Mission::MissionPlan translateToCppMissionPlan(MAVSDKMissionMissionPlan*
 
 
         
-            for (MAVSDKMissionMissionItem *elem in missionPlan.missionItems) {
-                obj.mission_items.push_back(translateToCppMissionItem(elem));
-            }
+            
+    for (MAVSDKMissionMissionItem *elem in missionPlan.missionItems) {
+        obj.mission_items.push_back(translateToCppMissionItem(elem));
+    }
+            
         
     
     return obj;
 }
+
+
+
+@implementation MAVSDKMissionMissionPlan
+@end
 
 
 
@@ -214,7 +225,60 @@ mavsdk::Mission::MissionProgress translateToCppMissionProgress(MAVSDKMissionMiss
 
 
 
+@implementation MAVSDKMissionMissionProgress
+@end
+
+
+
+
+
+
+
+
+@implementation MAVSDKMission
+
+mavsdk::Mission *mission;
+
+
++(id)alloc{
+    return [super alloc];
+}
+
+- (id)initWithMavsdkSwift2Impl:(MavsdkSwift2Impl*)mavsdkSwift2Impl {
+    mission = new mavsdk::Mission(*[mavsdkSwift2Impl mavsdkSystem]);
+    return [super init];
+}
+
+- (MAVSDKMissionResult)uploadMission:(MAVSDKMissionMissionPlan*)missionPlan {
+    return (MAVSDKMissionResult)mission->upload_mission(translateToCppMissionPlan(missionPlan));
+}
+- (MAVSDKMissionResult)cancelMissionUpload {
+    return (MAVSDKMissionResult)mission->cancel_mission_upload();
+}
+
+- (MAVSDKMissionResult)cancelMissionDownload {
+    return (MAVSDKMissionResult)mission->cancel_mission_download();
+}
+- (MAVSDKMissionResult)startMission {
+    return (MAVSDKMissionResult)mission->start_mission();
+}
+- (MAVSDKMissionResult)pauseMission {
+    return (MAVSDKMissionResult)mission->pause_mission();
+}
+- (MAVSDKMissionResult)clearMission {
+    return (MAVSDKMissionResult)mission->clear_mission();
+}
+- (MAVSDKMissionResult)setCurrentMissionItem:(SInt32)index {
+    return (MAVSDKMissionResult)mission->set_current_mission_item(index);
+}
+
+
+
+- (MAVSDKMissionResult)setReturnToLaunchAfterMission:(BOOL)enable {
+    return (MAVSDKMissionResult)mission->set_return_to_launch_after_mission(enable);
+}
 
 
 
 @end
+

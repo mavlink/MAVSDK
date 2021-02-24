@@ -12,7 +12,7 @@
 @interface MAVSDKLogFilesProgressData : NSObject
 
 
-@property (nonatomic, assign) float progress;
+@property (nonatomic, assign) float progress; 
 
 
 @end
@@ -23,9 +23,9 @@
 @interface MAVSDKLogFilesEntry : NSObject
 
 
-@property (nonatomic, assign) UInt32 id;
+@property (nonatomic, assign) UInt32 id; 
 @property (nonatomic, strong) NSString *date;
-@property (nonatomic, assign) UInt32 sizeBytes;
+@property (nonatomic, assign) UInt32 sizeBytes; 
 
 
 @end

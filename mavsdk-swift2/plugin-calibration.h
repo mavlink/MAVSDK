@@ -30,9 +30,9 @@ typedef NS_ENUM(NSInteger, MAVSDKCalibrationResult)  {
 @interface MAVSDKCalibrationProgressData : NSObject
 
 
-@property (nonatomic, assign) BOOL hasProgress;
-@property (nonatomic, assign) float progress;
-@property (nonatomic, assign) BOOL hasStatusText;
+@property (nonatomic, assign) BOOL hasProgress; 
+@property (nonatomic, assign) float progress; 
+@property (nonatomic, assign) BOOL hasStatusText; 
 @property (nonatomic, strong) NSString *statusText;
 
 

@@ -58,7 +58,7 @@ typedef NS_ENUM(NSInteger, MAVSDKFailureResult)  {
 @interface MAVSDKFailure : NSObject
 
 - (id)initWithMavsdkSwift2Impl:(MavsdkSwift2Impl*)mavsdkSwift2Impl;
-- (MAVSDKFailureResult)inject :( MAVSDKFailureFailureUnit) failureUnit :( MAVSDKFailureFailureType) failureType :( NSInteger) instance;
+- (MAVSDKFailureResult)inject :( MAVSDKFailureFailureUnit) failureUnit :( MAVSDKFailureFailureType) failureType :( SInt32) instance;
 
 
 @end

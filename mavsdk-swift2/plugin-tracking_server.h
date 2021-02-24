@@ -21,9 +21,9 @@ typedef NS_ENUM(NSInteger, MAVSDKTrackingServerCommandAnswer)  {
 @interface MAVSDKTrackingServerTrackPoint : NSObject
 
 
-@property (nonatomic, assign) float pointX;
-@property (nonatomic, assign) float pointY;
-@property (nonatomic, assign) float radius;
+@property (nonatomic, assign) float pointX; 
+@property (nonatomic, assign) float pointY; 
+@property (nonatomic, assign) float radius; 
 
 
 @end
@@ -34,10 +34,10 @@ typedef NS_ENUM(NSInteger, MAVSDKTrackingServerCommandAnswer)  {
 @interface MAVSDKTrackingServerTrackRectangle : NSObject
 
 
-@property (nonatomic, assign) float topLeftCornerX;
-@property (nonatomic, assign) float topLeftCornerY;
-@property (nonatomic, assign) float bottomRightCornerX;
-@property (nonatomic, assign) float bottomRightCornerY;
+@property (nonatomic, assign) float topLeftCornerX; 
+@property (nonatomic, assign) float topLeftCornerY; 
+@property (nonatomic, assign) float bottomRightCornerX; 
+@property (nonatomic, assign) float bottomRightCornerY; 
 
 
 @end

@@ -23,16 +23,16 @@ typedef NS_ENUM(NSInteger, MAVSDKMissionCameraAction)  {
     MAVSDKMissionCameraActionStopVideo,
 };
 
-@property (nonatomic, assign) double latitudeDeg;
-@property (nonatomic, assign) double longitudeDeg;
-@property (nonatomic, assign) float relativeAltitudeM;
-@property (nonatomic, assign) float speedMS;
-@property (nonatomic, assign) BOOL isFlyThrough;
-@property (nonatomic, assign) float gimbalPitchDeg;
-@property (nonatomic, assign) float gimbalYawDeg;
+@property (nonatomic, assign) double latitudeDeg; 
+@property (nonatomic, assign) double longitudeDeg; 
+@property (nonatomic, assign) float relativeAltitudeM; 
+@property (nonatomic, assign) float speedMS; 
+@property (nonatomic, assign) BOOL isFlyThrough; 
+@property (nonatomic, assign) float gimbalPitchDeg; 
+@property (nonatomic, assign) float gimbalYawDeg; 
 @property (nonatomic, assign) MAVSDKMissionCameraAction cameraAction;
-@property (nonatomic, assign) float loiterTimeS;
-@property (nonatomic, assign) double cameraPhotoIntervalS;
+@property (nonatomic, assign) float loiterTimeS; 
+@property (nonatomic, assign) double cameraPhotoIntervalS; 
 
 
 @end
@@ -43,7 +43,7 @@ typedef NS_ENUM(NSInteger, MAVSDKMissionCameraAction)  {
 @interface MAVSDKMissionMissionPlan : NSObject
 
 
-@property (nonatomic, strong) NSMutableArray *missionItems; 
+@property (nonatomic, strong) NSMutableArray *missionItems;
 
 
 @end
@@ -54,8 +54,8 @@ typedef NS_ENUM(NSInteger, MAVSDKMissionCameraAction)  {
 @interface MAVSDKMissionMissionProgress : NSObject
 
 
-@property (nonatomic, assign) NSInteger current;
-@property (nonatomic, assign) NSInteger total;
+@property (nonatomic, assign) SInt32 current; 
+@property (nonatomic, assign) SInt32 total; 
 
 
 @end
@@ -93,7 +93,7 @@ typedef NS_ENUM(NSInteger, MAVSDKMissionResult)  {
 - (MAVSDKMissionResult)startMission ;
 - (MAVSDKMissionResult)pauseMission ;
 - (MAVSDKMissionResult)clearMission ;
-- (MAVSDKMissionResult)setCurrentMissionItem :( NSInteger) index;
+- (MAVSDKMissionResult)setCurrentMissionItem :( SInt32) index;
 
 
 

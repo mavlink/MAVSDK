@@ -4,45 +4,62 @@
 #include <mavsdk/mavsdk.h>
 #include <mavsdk/plugins/gimbal/gimbal.h>
 
-@implementation MAVSDKGimbal
 
-mavsdk::Gimbal *gimbal;
-
-
-+(id)alloc{
-    return [super alloc];
+MAVSDKGimbalGimbalMode translateFromCppGimbalMode(mavsdk::Gimbal::GimbalMode gimbal_mode)
+{
+    switch (gimbal_mode) {
+        default:
+            NSLog(@"Unknown gimbal_mode enum value: %d", static_cast<int>(gimbal_mode));
+        // FALLTHROUGH
+        case mavsdk::Gimbal::GimbalMode::YawFollow:
+            return MAVSDKGimbalGimbalModeYawFollow;
+        case mavsdk::Gimbal::GimbalMode::YawLock:
+            return MAVSDKGimbalGimbalModeYawLock;
+    }
 }
 
-- (id)initWithMavsdkSwift2Impl:(MavsdkSwift2Impl*)mavsdkSwift2Impl {
-    gimbal = new mavsdk::Gimbal(*[mavsdkSwift2Impl mavsdkSystem]);
-    return [super init];
+mavsdk::Gimbal::GimbalMode translateToCppGimbalMode(MAVSDKGimbalGimbalMode gimbalMode)
+{
+    switch (gimbalMode) {
+        default:
+            NSLog(@"Unknown GimbalMode enum value: %d", static_cast<int>(gimbalMode));
+        // FALLTHROUGH
+        case MAVSDKGimbalGimbalModeYawFollow:
+            return mavsdk::Gimbal::GimbalMode::YawFollow;
+        case MAVSDKGimbalGimbalModeYawLock:
+            return mavsdk::Gimbal::GimbalMode::YawLock;
+    }
 }
 
-- (MAVSDKGimbalResult)setPitchAndYaw:(float)pitchDeg :(float)yawDeg {
-    return (MAVSDKGimbalResult)gimbal->set_pitch_and_yaw(pitchDeg, yawDeg);
-}
-- (MAVSDKGimbalResult)setPitchRateAndYawRate:(float)pitchRateDegS :(float)yawRateDegS {
-    return (MAVSDKGimbalResult)gimbal->set_pitch_rate_and_yaw_rate(pitchRateDegS, yawRateDegS);
-}
-- (MAVSDKGimbalResult)setMode:(MAVSDKGimbalGimbalMode)gimbalMode {
-    return (MAVSDKGimbalResult)gimbal->set_mode((mavsdk::Gimbal::GimbalMode)gimbalMode);
-}
-- (MAVSDKGimbalResult)setRoiLocation:(double)latitudeDeg :(double)longitudeDeg :(float)altitudeM {
-    return (MAVSDKGimbalResult)gimbal->set_roi_location(latitudeDeg, longitudeDeg, altitudeM);
-}
-- (MAVSDKGimbalResult)takeControl:(MAVSDKGimbalControlMode)controlMode {
-    return (MAVSDKGimbalResult)gimbal->take_control((mavsdk::Gimbal::ControlMode)controlMode);
-}
-- (MAVSDKGimbalResult)releaseControl {
-    return (MAVSDKGimbalResult)gimbal->release_control();
+MAVSDKGimbalControlMode translateFromCppControlMode(mavsdk::Gimbal::ControlMode control_mode)
+{
+    switch (control_mode) {
+        default:
+            NSLog(@"Unknown control_mode enum value: %d", static_cast<int>(control_mode));
+        // FALLTHROUGH
+        case mavsdk::Gimbal::ControlMode::None:
+            return MAVSDKGimbalControlModeNone;
+        case mavsdk::Gimbal::ControlMode::Primary:
+            return MAVSDKGimbalControlModePrimary;
+        case mavsdk::Gimbal::ControlMode::Secondary:
+            return MAVSDKGimbalControlModeSecondary;
+    }
 }
 
-
-
-
-
-
-
+mavsdk::Gimbal::ControlMode translateToCppControlMode(MAVSDKGimbalControlMode controlMode)
+{
+    switch (controlMode) {
+        default:
+            NSLog(@"Unknown ControlMode enum value: %d", static_cast<int>(controlMode));
+        // FALLTHROUGH
+        case MAVSDKGimbalControlModeNone:
+            return mavsdk::Gimbal::ControlMode::None;
+        case MAVSDKGimbalControlModePrimary:
+            return mavsdk::Gimbal::ControlMode::Primary;
+        case MAVSDKGimbalControlModeSecondary:
+            return mavsdk::Gimbal::ControlMode::Secondary;
+    }
+}
 
 
 
@@ -80,7 +97,7 @@ mavsdk::Gimbal::ControlStatus translateToCppControlStatus(MAVSDKGimbalControlSta
 
 
         
-    //obj.control_mode = (mavsdk::Gimbal::ControlStatus::ControlMode)(controlStatus.controlMode);
+    obj.control_mode = translateToCppControlMode(controlStatus.controlMode);
         
     
         
@@ -104,7 +121,50 @@ mavsdk::Gimbal::ControlStatus translateToCppControlStatus(MAVSDKGimbalControlSta
 
 
 
+@implementation MAVSDKGimbalControlStatus
+@end
+
+
+
+
+
+
+
+
+@implementation MAVSDKGimbal
+
+mavsdk::Gimbal *gimbal;
+
+
++(id)alloc{
+    return [super alloc];
+}
+
+- (id)initWithMavsdkSwift2Impl:(MavsdkSwift2Impl*)mavsdkSwift2Impl {
+    gimbal = new mavsdk::Gimbal(*[mavsdkSwift2Impl mavsdkSystem]);
+    return [super init];
+}
+
+- (MAVSDKGimbalResult)setPitchAndYaw:(float)pitchDeg :(float)yawDeg {
+    return (MAVSDKGimbalResult)gimbal->set_pitch_and_yaw(pitchDeg, yawDeg);
+}
+- (MAVSDKGimbalResult)setPitchRateAndYawRate:(float)pitchRateDegS :(float)yawRateDegS {
+    return (MAVSDKGimbalResult)gimbal->set_pitch_rate_and_yaw_rate(pitchRateDegS, yawRateDegS);
+}
+- (MAVSDKGimbalResult)setMode:(MAVSDKGimbalGimbalMode)gimbalMode {
+    return (MAVSDKGimbalResult)gimbal->set_mode((mavsdk::Gimbal::GimbalMode)gimbalMode);
+}
+- (MAVSDKGimbalResult)setRoiLocation:(double)latitudeDeg :(double)longitudeDeg :(float)altitudeM {
+    return (MAVSDKGimbalResult)gimbal->set_roi_location(latitudeDeg, longitudeDeg, altitudeM);
+}
+- (MAVSDKGimbalResult)takeControl:(MAVSDKGimbalControlMode)controlMode {
+    return (MAVSDKGimbalResult)gimbal->take_control((mavsdk::Gimbal::ControlMode)controlMode);
+}
+- (MAVSDKGimbalResult)releaseControl {
+    return (MAVSDKGimbalResult)gimbal->release_control();
+}
 
 
 
 @end
+

@@ -26,10 +26,10 @@ typedef NS_ENUM(NSInteger, MAVSDKGimbalControlMode)  {
 
 
 @property (nonatomic, assign) MAVSDKGimbalControlMode controlMode;
-@property (nonatomic, assign) NSInteger sysidPrimaryControl;
-@property (nonatomic, assign) NSInteger compidPrimaryControl;
-@property (nonatomic, assign) NSInteger sysidSecondaryControl;
-@property (nonatomic, assign) NSInteger compidSecondaryControl;
+@property (nonatomic, assign) SInt32 sysidPrimaryControl; 
+@property (nonatomic, assign) SInt32 compidPrimaryControl; 
+@property (nonatomic, assign) SInt32 sysidSecondaryControl; 
+@property (nonatomic, assign) SInt32 compidSecondaryControl; 
 
 
 @end

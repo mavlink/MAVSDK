@@ -4,24 +4,6 @@
 #include <mavsdk/mavsdk.h>
 #include <mavsdk/plugins/log_files/log_files.h>
 
-@implementation MAVSDKLogFiles
-
-mavsdk::LogFiles *logFiles;
-
-
-+(id)alloc{
-    return [super alloc];
-}
-
-- (id)initWithMavsdkSwift2Impl:(MavsdkSwift2Impl*)mavsdkSwift2Impl {
-    logFiles = new mavsdk::LogFiles(*[mavsdkSwift2Impl mavsdkSystem]);
-    return [super init];
-}
-
-
-
-
-
 
 
 
@@ -48,6 +30,11 @@ mavsdk::LogFiles::ProgressData translateToCppProgressData(MAVSDKLogFilesProgress
     
     return obj;
 }
+
+
+
+@implementation MAVSDKLogFilesProgressData
+@end
 
 
 
@@ -94,7 +81,33 @@ mavsdk::LogFiles::Entry translateToCppEntry(MAVSDKLogFilesEntry* entry)
 
 
 
+@implementation MAVSDKLogFilesEntry
+@end
+
+
+
+
+
+
+
+
+@implementation MAVSDKLogFiles
+
+mavsdk::LogFiles *log_files;
+
+
++(id)alloc{
+    return [super alloc];
+}
+
+- (id)initWithMavsdkSwift2Impl:(MavsdkSwift2Impl*)mavsdkSwift2Impl {
+    log_files = new mavsdk::LogFiles(*[mavsdkSwift2Impl mavsdkSystem]);
+    return [super init];
+}
+
+
 
 
 
 @end
+

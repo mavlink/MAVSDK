@@ -1,9 +1,9 @@
 {
     "double": "double",
     "float": "float",
-    "int64_t": "Int64",
+    "int64_t": "SInt64",
     "uint64_t": "UInt64",
-    "int32_t": "NSInteger",
+    "int32_t": "SInt32",
     "bool": "BOOL",
     "std::string": "NSString",
     "std::byte": "Byte",

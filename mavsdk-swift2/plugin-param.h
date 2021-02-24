@@ -13,7 +13,7 @@
 
 
 @property (nonatomic, strong) NSString *name;
-@property (nonatomic, assign) NSInteger value;
+@property (nonatomic, assign) SInt32 value; 
 
 
 @end
@@ -25,7 +25,7 @@
 
 
 @property (nonatomic, strong) NSString *name;
-@property (nonatomic, assign) float value;
+@property (nonatomic, assign) float value; 
 
 
 @end
@@ -36,8 +36,8 @@
 @interface MAVSDKParamAllParams : NSObject
 
 
-@property (nonatomic, strong) NSMutableArray *intParams; 
-@property (nonatomic, strong) NSMutableArray *floatParams; 
+@property (nonatomic, strong) NSMutableArray *intParams;
+@property (nonatomic, strong) NSMutableArray *floatParams;
 
 
 @end
@@ -62,7 +62,7 @@ typedef NS_ENUM(NSInteger, MAVSDKParamResult)  {
 
 - (id)initWithMavsdkSwift2Impl:(MavsdkSwift2Impl*)mavsdkSwift2Impl;
 
-- (MAVSDKParamResult)setParamInt :( NSString*) name :( NSInteger) value;
+- (MAVSDKParamResult)setParamInt :( NSString*) name :( SInt32) value;
 
 - (MAVSDKParamResult)setParamFloat :( NSString*) name :( float) value;
 

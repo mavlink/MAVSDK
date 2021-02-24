@@ -4,59 +4,6 @@
 #include <mavsdk/mavsdk.h>
 #include <mavsdk/plugins/mission_raw/mission_raw.h>
 
-@implementation MAVSDKMissionRaw
-
-mavsdk::MissionRaw *missionRaw;
-
-
-+(id)alloc{
-    return [super alloc];
-}
-
-- (id)initWithMavsdkSwift2Impl:(MavsdkSwift2Impl*)mavsdkSwift2Impl {
-    missionRaw = new mavsdk::MissionRaw(*[mavsdkSwift2Impl mavsdkSystem]);
-    return [super init];
-}
-
-- (MAVSDKMissionRawResult)uploadMission:(MAVSDKMissionRawMissionItem*)missionItems {
-    //return (MAVSDKMissionRawResult)mission_raw->upload_mission(translateToCppMissionItems(missionItems));
-    return MAVSDKMissionRawResultUnknown;
-}
-- (MAVSDKMissionRawResult)cancelMissionUpload {
-    //return (MAVSDKMissionRawResult)mission_raw->cancel_mission_upload();
-    return MAVSDKMissionRawResultUnknown;
-
-}
-
-- (MAVSDKMissionRawResult)cancelMissionDownload {
-    //return (MAVSDKMissionRawResult)mission_raw->cancel_mission_download();
-    return MAVSDKMissionRawResultUnknown;
-
-}
-- (MAVSDKMissionRawResult)startMission {
-    //return (MAVSDKMissionRawResult)mission_raw->start_mission();
-    return MAVSDKMissionRawResultUnknown;
-
-}
-- (MAVSDKMissionRawResult)pauseMission {
-    //return (MAVSDKMissionRawResult)mission_raw->pause_mission();
-    return MAVSDKMissionRawResultUnknown;
-
-}
-- (MAVSDKMissionRawResult)clearMission {
-    //return (MAVSDKMissionRawResult)mission_raw->clear_mission();
-    return MAVSDKMissionRawResultUnknown;
-
-}
-- (MAVSDKMissionRawResult)setCurrentMissionItem:(NSInteger)index {
-    //return (MAVSDKMissionRawResult)mission_raw->set_current_mission_item(index);
-    return MAVSDKMissionRawResultUnknown;
-
-}
-
-
-
-
 
 
 
@@ -91,6 +38,11 @@ mavsdk::MissionRaw::MissionProgress translateToCppMissionProgress(MAVSDKMissionR
     
     return obj;
 }
+
+
+
+@implementation MAVSDKMissionRawMissionProgress
+@end
 
 
 
@@ -216,7 +168,55 @@ mavsdk::MissionRaw::MissionItem translateToCppMissionItem(MAVSDKMissionRawMissio
 
 
 
+@implementation MAVSDKMissionRawMissionItem
+@end
+
+
+
+
+
+
+
+
+@implementation MAVSDKMissionRaw
+
+mavsdk::MissionRaw *mission_raw;
+
+
++(id)alloc{
+    return [super alloc];
+}
+
+- (id)initWithMavsdkSwift2Impl:(MavsdkSwift2Impl*)mavsdkSwift2Impl {
+    mission_raw = new mavsdk::MissionRaw(*[mavsdkSwift2Impl mavsdkSystem]);
+    return [super init];
+}
+
+- (MAVSDKMissionRawResult)uploadMission:(MAVSDKMissionRawMissionItem*)missionItems {
+    return (MAVSDKMissionRawResult)mission_raw->upload_mission(translateToCppMissionItems(missionItems));
+}
+- (MAVSDKMissionRawResult)cancelMissionUpload {
+    return (MAVSDKMissionRawResult)mission_raw->cancel_mission_upload();
+}
+
+- (MAVSDKMissionRawResult)cancelMissionDownload {
+    return (MAVSDKMissionRawResult)mission_raw->cancel_mission_download();
+}
+- (MAVSDKMissionRawResult)startMission {
+    return (MAVSDKMissionRawResult)mission_raw->start_mission();
+}
+- (MAVSDKMissionRawResult)pauseMission {
+    return (MAVSDKMissionRawResult)mission_raw->pause_mission();
+}
+- (MAVSDKMissionRawResult)clearMission {
+    return (MAVSDKMissionRawResult)mission_raw->clear_mission();
+}
+- (MAVSDKMissionRawResult)setCurrentMissionItem:(SInt32)index {
+    return (MAVSDKMissionRawResult)mission_raw->set_current_mission_item(index);
+}
+
 
 
 
 @end
+

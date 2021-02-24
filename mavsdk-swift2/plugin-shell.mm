@@ -4,6 +4,14 @@
 #include <mavsdk/mavsdk.h>
 #include <mavsdk/plugins/shell/shell.h>
 
+
+
+
+
+
+
+
+
 @implementation MAVSDKShell
 
 mavsdk::Shell *shell;
@@ -24,10 +32,5 @@ mavsdk::Shell *shell;
 
 
 
-
-
-
-
-
-
 @end
+

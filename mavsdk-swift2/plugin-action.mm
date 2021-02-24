@@ -4,6 +4,52 @@
 #include <mavsdk/mavsdk.h>
 #include <mavsdk/plugins/action/action.h>
 
+
+MAVSDKActionOrbitYawBehavior translateFromCppOrbitYawBehavior(mavsdk::Action::OrbitYawBehavior orbit_yaw_behavior)
+{
+    switch (orbit_yaw_behavior) {
+        default:
+            NSLog(@"Unknown orbit_yaw_behavior enum value: %d", static_cast<int>(orbit_yaw_behavior));
+        // FALLTHROUGH
+        case mavsdk::Action::OrbitYawBehavior::HoldFrontToCircleCenter:
+            return MAVSDKActionOrbitYawBehaviorHoldFrontToCircleCenter;
+        case mavsdk::Action::OrbitYawBehavior::HoldInitialHeading:
+            return MAVSDKActionOrbitYawBehaviorHoldInitialHeading;
+        case mavsdk::Action::OrbitYawBehavior::Uncontrolled:
+            return MAVSDKActionOrbitYawBehaviorUncontrolled;
+        case mavsdk::Action::OrbitYawBehavior::HoldFrontTangentToCircle:
+            return MAVSDKActionOrbitYawBehaviorHoldFrontTangentToCircle;
+        case mavsdk::Action::OrbitYawBehavior::RcControlled:
+            return MAVSDKActionOrbitYawBehaviorRcControlled;
+    }
+}
+
+mavsdk::Action::OrbitYawBehavior translateToCppOrbitYawBehavior(MAVSDKActionOrbitYawBehavior orbitYawBehavior)
+{
+    switch (orbitYawBehavior) {
+        default:
+            NSLog(@"Unknown OrbitYawBehavior enum value: %d", static_cast<int>(orbitYawBehavior));
+        // FALLTHROUGH
+        case MAVSDKActionOrbitYawBehaviorHoldFrontToCircleCenter:
+            return mavsdk::Action::OrbitYawBehavior::HoldFrontToCircleCenter;
+        case MAVSDKActionOrbitYawBehaviorHoldInitialHeading:
+            return mavsdk::Action::OrbitYawBehavior::HoldInitialHeading;
+        case MAVSDKActionOrbitYawBehaviorUncontrolled:
+            return mavsdk::Action::OrbitYawBehavior::Uncontrolled;
+        case MAVSDKActionOrbitYawBehaviorHoldFrontTangentToCircle:
+            return mavsdk::Action::OrbitYawBehavior::HoldFrontTangentToCircle;
+        case MAVSDKActionOrbitYawBehaviorRcControlled:
+            return mavsdk::Action::OrbitYawBehavior::RcControlled;
+    }
+}
+
+
+
+
+
+
+
+
 @implementation MAVSDKAction
 
 mavsdk::Action *action;
@@ -71,12 +117,5 @@ mavsdk::Action *action;
 }
 
 
-
-
-
-
-
-
-
-
 @end
+

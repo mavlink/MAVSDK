@@ -4,28 +4,6 @@
 #include <mavsdk/mavsdk.h>
 #include <mavsdk/plugins/calibration/calibration.h>
 
-@implementation MAVSDKCalibration
-
-mavsdk::Calibration *calibration;
-
-
-+(id)alloc{
-    return [super alloc];
-}
-
-- (id)initWithMavsdkSwift2Impl:(MavsdkSwift2Impl*)mavsdkSwift2Impl {
-    calibration = new mavsdk::Calibration(*[mavsdkSwift2Impl mavsdkSystem]);
-    return [super init];
-}
-
-
-
-
-
-
-- (void)cancel {
-    calibration->cancel();
-}
 
 
 
@@ -84,5 +62,35 @@ mavsdk::Calibration::ProgressData translateToCppProgressData(MAVSDKCalibrationPr
 
 
 
+@implementation MAVSDKCalibrationProgressData
+@end
+
+
+
+
+@implementation MAVSDKCalibration
+
+mavsdk::Calibration *calibration;
+
+
++(id)alloc{
+    return [super alloc];
+}
+
+- (id)initWithMavsdkSwift2Impl:(MavsdkSwift2Impl*)mavsdkSwift2Impl {
+    calibration = new mavsdk::Calibration(*[mavsdkSwift2Impl mavsdkSystem]);
+    return [super init];
+}
+
+
+
+
+
+
+- (void)cancel {
+    calibration->cancel();
+}
+
 
 @end
+

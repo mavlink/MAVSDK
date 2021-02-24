@@ -4,45 +4,44 @@
 #include <mavsdk/mavsdk.h>
 #include <mavsdk/plugins/tracking_server/tracking_server.h>
 
-@implementation MAVSDKTrackingServer
 
-mavsdk::TrackingServer *trackingServer;
-
-
-+(id)alloc{
-    return [super alloc];
+MAVSDKTrackingServerCommandAnswer translateFromCppCommandAnswer(mavsdk::TrackingServer::CommandAnswer command_answer)
+{
+    switch (command_answer) {
+        default:
+            NSLog(@"Unknown command_answer enum value: %d", static_cast<int>(command_answer));
+        // FALLTHROUGH
+        case mavsdk::TrackingServer::CommandAnswer::Accepted:
+            return MAVSDKTrackingServerCommandAnswerAccepted;
+        case mavsdk::TrackingServer::CommandAnswer::TemporarilyRejected:
+            return MAVSDKTrackingServerCommandAnswerTemporarilyRejected;
+        case mavsdk::TrackingServer::CommandAnswer::Denied:
+            return MAVSDKTrackingServerCommandAnswerDenied;
+        case mavsdk::TrackingServer::CommandAnswer::Unsupported:
+            return MAVSDKTrackingServerCommandAnswerUnsupported;
+        case mavsdk::TrackingServer::CommandAnswer::Failed:
+            return MAVSDKTrackingServerCommandAnswerFailed;
+    }
 }
 
-- (id)initWithMavsdkSwift2Impl:(MavsdkSwift2Impl*)mavsdkSwift2Impl {
-    trackingServer = new mavsdk::TrackingServer(*[mavsdkSwift2Impl mavsdkSystem]);
-    return [super init];
+mavsdk::TrackingServer::CommandAnswer translateToCppCommandAnswer(MAVSDKTrackingServerCommandAnswer commandAnswer)
+{
+    switch (commandAnswer) {
+        default:
+            NSLog(@"Unknown CommandAnswer enum value: %d", static_cast<int>(commandAnswer));
+        // FALLTHROUGH
+        case MAVSDKTrackingServerCommandAnswerAccepted:
+            return mavsdk::TrackingServer::CommandAnswer::Accepted;
+        case MAVSDKTrackingServerCommandAnswerTemporarilyRejected:
+            return mavsdk::TrackingServer::CommandAnswer::TemporarilyRejected;
+        case MAVSDKTrackingServerCommandAnswerDenied:
+            return mavsdk::TrackingServer::CommandAnswer::Denied;
+        case MAVSDKTrackingServerCommandAnswerUnsupported:
+            return mavsdk::TrackingServer::CommandAnswer::Unsupported;
+        case MAVSDKTrackingServerCommandAnswerFailed:
+            return mavsdk::TrackingServer::CommandAnswer::Failed;
+    }
 }
-
-- (void)setTrackingPointStatus:(MAVSDKTrackingServerTrackPoint*)trackedPoint {
-    tracking_server->set_tracking_point_status(translateToCppTrackedPoint(trackedPoint));
-}
-- (void)setTrackingRectangleStatus:(MAVSDKTrackingServerTrackRectangle*)trackedRectangle {
-    tracking_server->set_tracking_rectangle_status(translateToCppTrackedRectangle(trackedRectangle));
-}
-- (void)setTrackingOffStatus {
-    tracking_server->set_tracking_off_status();
-}
-
-
-
-- (MAVSDKTrackingServerResult)respondTrackingPointCommand:(MAVSDKTrackingServerCommandAnswer)commandAnswer {
-    return (MAVSDKTrackingServerResult)tracking_server->respond_tracking_point_command((mavsdk::TrackingServer::CommandAnswer)commandAnswer);
-}
-- (MAVSDKTrackingServerResult)respondTrackingRectangleCommand:(MAVSDKTrackingServerCommandAnswer)commandAnswer {
-    return (MAVSDKTrackingServerResult)tracking_server->respond_tracking_rectangle_command((mavsdk::TrackingServer::CommandAnswer)commandAnswer);
-}
-- (MAVSDKTrackingServerResult)respondTrackingOffCommand:(MAVSDKTrackingServerCommandAnswer)commandAnswer {
-    return (MAVSDKTrackingServerResult)tracking_server->respond_tracking_off_command((mavsdk::TrackingServer::CommandAnswer)commandAnswer);
-}
-
-
-
-
 
 
 
@@ -85,6 +84,11 @@ mavsdk::TrackingServer::TrackPoint translateToCppTrackPoint(MAVSDKTrackingServer
     
     return obj;
 }
+
+
+
+@implementation MAVSDKTrackingServerTrackPoint
+@end
 
 
 
@@ -138,7 +142,52 @@ mavsdk::TrackingServer::TrackRectangle translateToCppTrackRectangle(MAVSDKTracki
 
 
 
+@implementation MAVSDKTrackingServerTrackRectangle
+@end
 
+
+
+
+
+
+
+
+@implementation MAVSDKTrackingServer
+
+mavsdk::TrackingServer *tracking_server;
+
+
++(id)alloc{
+    return [super alloc];
+}
+
+- (id)initWithMavsdkSwift2Impl:(MavsdkSwift2Impl*)mavsdkSwift2Impl {
+    tracking_server = new mavsdk::TrackingServer(*[mavsdkSwift2Impl mavsdkSystem]);
+    return [super init];
+}
+
+- (void)setTrackingPointStatus:(MAVSDKTrackingServerTrackPoint*)trackedPoint {
+    tracking_server->set_tracking_point_status(translateToCppTrackedPoint(trackedPoint));
+}
+- (void)setTrackingRectangleStatus:(MAVSDKTrackingServerTrackRectangle*)trackedRectangle {
+    tracking_server->set_tracking_rectangle_status(translateToCppTrackedRectangle(trackedRectangle));
+}
+- (void)setTrackingOffStatus {
+    tracking_server->set_tracking_off_status();
+}
+
+
+
+- (MAVSDKTrackingServerResult)respondTrackingPointCommand:(MAVSDKTrackingServerCommandAnswer)commandAnswer {
+    return (MAVSDKTrackingServerResult)tracking_server->respond_tracking_point_command((mavsdk::TrackingServer::CommandAnswer)commandAnswer);
+}
+- (MAVSDKTrackingServerResult)respondTrackingRectangleCommand:(MAVSDKTrackingServerCommandAnswer)commandAnswer {
+    return (MAVSDKTrackingServerResult)tracking_server->respond_tracking_rectangle_command((mavsdk::TrackingServer::CommandAnswer)commandAnswer);
+}
+- (MAVSDKTrackingServerResult)respondTrackingOffCommand:(MAVSDKTrackingServerCommandAnswer)commandAnswer {
+    return (MAVSDKTrackingServerResult)tracking_server->respond_tracking_off_command((mavsdk::TrackingServer::CommandAnswer)commandAnswer);
+}
 
 
 @end
+

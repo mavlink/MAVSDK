@@ -63,10 +63,10 @@ typedef NS_ENUM(NSInteger, MAVSDKTelemetryLandedState)  {
 @interface MAVSDKTelemetryPosition : NSObject
 
 
-@property (nonatomic, assign) double latitudeDeg;
-@property (nonatomic, assign) double longitudeDeg;
-@property (nonatomic, assign) float absoluteAltitudeM;
-@property (nonatomic, assign) float relativeAltitudeM;
+@property (nonatomic, assign) double latitudeDeg; 
+@property (nonatomic, assign) double longitudeDeg; 
+@property (nonatomic, assign) float absoluteAltitudeM; 
+@property (nonatomic, assign) float relativeAltitudeM; 
 
 
 @end
@@ -77,11 +77,11 @@ typedef NS_ENUM(NSInteger, MAVSDKTelemetryLandedState)  {
 @interface MAVSDKTelemetryQuaternion : NSObject
 
 
-@property (nonatomic, assign) float w;
-@property (nonatomic, assign) float x;
-@property (nonatomic, assign) float y;
-@property (nonatomic, assign) float z;
-@property (nonatomic, assign) UInt64 timestampUs;
+@property (nonatomic, assign) float w; 
+@property (nonatomic, assign) float x; 
+@property (nonatomic, assign) float y; 
+@property (nonatomic, assign) float z; 
+@property (nonatomic, assign) UInt64 timestampUs; 
 
 
 @end
@@ -92,10 +92,10 @@ typedef NS_ENUM(NSInteger, MAVSDKTelemetryLandedState)  {
 @interface MAVSDKTelemetryEulerAngle : NSObject
 
 
-@property (nonatomic, assign) float rollDeg;
-@property (nonatomic, assign) float pitchDeg;
-@property (nonatomic, assign) float yawDeg;
-@property (nonatomic, assign) UInt64 timestampUs;
+@property (nonatomic, assign) float rollDeg; 
+@property (nonatomic, assign) float pitchDeg; 
+@property (nonatomic, assign) float yawDeg; 
+@property (nonatomic, assign) UInt64 timestampUs; 
 
 
 @end
@@ -106,9 +106,9 @@ typedef NS_ENUM(NSInteger, MAVSDKTelemetryLandedState)  {
 @interface MAVSDKTelemetryAngularVelocityBody : NSObject
 
 
-@property (nonatomic, assign) float rollRadS;
-@property (nonatomic, assign) float pitchRadS;
-@property (nonatomic, assign) float yawRadS;
+@property (nonatomic, assign) float rollRadS; 
+@property (nonatomic, assign) float pitchRadS; 
+@property (nonatomic, assign) float yawRadS; 
 
 
 @end
@@ -119,7 +119,7 @@ typedef NS_ENUM(NSInteger, MAVSDKTelemetryLandedState)  {
 @interface MAVSDKTelemetryGpsInfo : NSObject
 
 
-@property (nonatomic, assign) NSInteger numSatellites;
+@property (nonatomic, assign) SInt32 numSatellites; 
 @property (nonatomic, assign) MAVSDKTelemetryFixType fixType;
 
 
@@ -131,8 +131,8 @@ typedef NS_ENUM(NSInteger, MAVSDKTelemetryLandedState)  {
 @interface MAVSDKTelemetryBattery : NSObject
 
 
-@property (nonatomic, assign) float voltageV;
-@property (nonatomic, assign) float remainingPercent;
+@property (nonatomic, assign) float voltageV; 
+@property (nonatomic, assign) float remainingPercent; 
 
 
 @end
@@ -143,13 +143,13 @@ typedef NS_ENUM(NSInteger, MAVSDKTelemetryLandedState)  {
 @interface MAVSDKTelemetryHealth : NSObject
 
 
-@property (nonatomic, assign) BOOL isGyrometerCalibrationOk;
-@property (nonatomic, assign) BOOL isAccelerometerCalibrationOk;
-@property (nonatomic, assign) BOOL isMagnetometerCalibrationOk;
-@property (nonatomic, assign) BOOL isLevelCalibrationOk;
-@property (nonatomic, assign) BOOL isLocalPositionOk;
-@property (nonatomic, assign) BOOL isGlobalPositionOk;
-@property (nonatomic, assign) BOOL isHomePositionOk;
+@property (nonatomic, assign) BOOL isGyrometerCalibrationOk; 
+@property (nonatomic, assign) BOOL isAccelerometerCalibrationOk; 
+@property (nonatomic, assign) BOOL isMagnetometerCalibrationOk; 
+@property (nonatomic, assign) BOOL isLevelCalibrationOk; 
+@property (nonatomic, assign) BOOL isLocalPositionOk; 
+@property (nonatomic, assign) BOOL isGlobalPositionOk; 
+@property (nonatomic, assign) BOOL isHomePositionOk; 
 
 
 @end
@@ -160,9 +160,9 @@ typedef NS_ENUM(NSInteger, MAVSDKTelemetryLandedState)  {
 @interface MAVSDKTelemetryRcStatus : NSObject
 
 
-@property (nonatomic, assign) BOOL wasAvailableOnce;
-@property (nonatomic, assign) BOOL isAvailable;
-@property (nonatomic, assign) float signalStrengthPercent;
+@property (nonatomic, assign) BOOL wasAvailableOnce; 
+@property (nonatomic, assign) BOOL isAvailable; 
+@property (nonatomic, assign) float signalStrengthPercent; 
 
 
 @end
@@ -185,8 +185,8 @@ typedef NS_ENUM(NSInteger, MAVSDKTelemetryLandedState)  {
 @interface MAVSDKTelemetryActuatorControlTarget : NSObject
 
 
-@property (nonatomic, assign) NSInteger group;
-@property (nonatomic, assign) float controls;
+@property (nonatomic, assign) SInt32 group; 
+@property (nonatomic, strong) NSMutableArray *controls;
 
 
 @end
@@ -197,8 +197,8 @@ typedef NS_ENUM(NSInteger, MAVSDKTelemetryLandedState)  {
 @interface MAVSDKTelemetryActuatorOutputStatus : NSObject
 
 
-@property (nonatomic, assign) UInt32 active;
-@property (nonatomic, assign) float actuator;
+@property (nonatomic, assign) UInt32 active; 
+@property (nonatomic, strong) NSMutableArray *actuator;
 
 
 @end
@@ -209,7 +209,7 @@ typedef NS_ENUM(NSInteger, MAVSDKTelemetryLandedState)  {
 @interface MAVSDKTelemetryCovariance : NSObject
 
 
-@property (nonatomic, assign) float covarianceMatrix;
+@property (nonatomic, strong) NSMutableArray *covarianceMatrix;
 
 
 @end
@@ -220,9 +220,9 @@ typedef NS_ENUM(NSInteger, MAVSDKTelemetryLandedState)  {
 @interface MAVSDKTelemetryVelocityBody : NSObject
 
 
-@property (nonatomic, assign) float xMS;
-@property (nonatomic, assign) float yMS;
-@property (nonatomic, assign) float zMS;
+@property (nonatomic, assign) float xMS; 
+@property (nonatomic, assign) float yMS; 
+@property (nonatomic, assign) float zMS; 
 
 
 @end
@@ -233,9 +233,9 @@ typedef NS_ENUM(NSInteger, MAVSDKTelemetryLandedState)  {
 @interface MAVSDKTelemetryPositionBody : NSObject
 
 
-@property (nonatomic, assign) float xM;
-@property (nonatomic, assign) float yM;
-@property (nonatomic, assign) float zM;
+@property (nonatomic, assign) float xM; 
+@property (nonatomic, assign) float yM; 
+@property (nonatomic, assign) float zM; 
 
 
 @end
@@ -255,7 +255,7 @@ typedef NS_ENUM(NSInteger, MAVSDKTelemetryMavFrame)  {
     MAVSDKTelemetryMavFrameEstimNed,
 };
 
-@property (nonatomic, assign) UInt64 timeUsec;
+@property (nonatomic, assign) UInt64 timeUsec; 
 @property (nonatomic, assign) MAVSDKTelemetryMavFrame frameId;
 @property (nonatomic, assign) MAVSDKTelemetryMavFrame childFrameId;
 @property (nonatomic, strong) MAVSDKTelemetryPositionBody *positionBody;
@@ -274,9 +274,9 @@ typedef NS_ENUM(NSInteger, MAVSDKTelemetryMavFrame)  {
 @interface MAVSDKTelemetryDistanceSensor : NSObject
 
 
-@property (nonatomic, assign) float minimumDistanceM;
-@property (nonatomic, assign) float maximumDistanceM;
-@property (nonatomic, assign) float currentDistanceM;
+@property (nonatomic, assign) float minimumDistanceM; 
+@property (nonatomic, assign) float maximumDistanceM; 
+@property (nonatomic, assign) float currentDistanceM; 
 
 
 @end
@@ -287,9 +287,9 @@ typedef NS_ENUM(NSInteger, MAVSDKTelemetryMavFrame)  {
 @interface MAVSDKTelemetryPositionNed : NSObject
 
 
-@property (nonatomic, assign) float northM;
-@property (nonatomic, assign) float eastM;
-@property (nonatomic, assign) float downM;
+@property (nonatomic, assign) float northM; 
+@property (nonatomic, assign) float eastM; 
+@property (nonatomic, assign) float downM; 
 
 
 @end
@@ -300,9 +300,9 @@ typedef NS_ENUM(NSInteger, MAVSDKTelemetryMavFrame)  {
 @interface MAVSDKTelemetryVelocityNed : NSObject
 
 
-@property (nonatomic, assign) float northMS;
-@property (nonatomic, assign) float eastMS;
-@property (nonatomic, assign) float downMS;
+@property (nonatomic, assign) float northMS; 
+@property (nonatomic, assign) float eastMS; 
+@property (nonatomic, assign) float downMS; 
 
 
 @end
@@ -325,9 +325,9 @@ typedef NS_ENUM(NSInteger, MAVSDKTelemetryMavFrame)  {
 @interface MAVSDKTelemetryGroundTruth : NSObject
 
 
-@property (nonatomic, assign) double latitudeDeg;
-@property (nonatomic, assign) double longitudeDeg;
-@property (nonatomic, assign) float absoluteAltitudeM;
+@property (nonatomic, assign) double latitudeDeg; 
+@property (nonatomic, assign) double longitudeDeg; 
+@property (nonatomic, assign) float absoluteAltitudeM; 
 
 
 @end
@@ -338,9 +338,9 @@ typedef NS_ENUM(NSInteger, MAVSDKTelemetryMavFrame)  {
 @interface MAVSDKTelemetryFixedwingMetrics : NSObject
 
 
-@property (nonatomic, assign) float airspeedMS;
-@property (nonatomic, assign) float throttlePercentage;
-@property (nonatomic, assign) float climbRateMS;
+@property (nonatomic, assign) float airspeedMS; 
+@property (nonatomic, assign) float throttlePercentage; 
+@property (nonatomic, assign) float climbRateMS; 
 
 
 @end
@@ -351,9 +351,9 @@ typedef NS_ENUM(NSInteger, MAVSDKTelemetryMavFrame)  {
 @interface MAVSDKTelemetryAccelerationFrd : NSObject
 
 
-@property (nonatomic, assign) float forwardMS2;
-@property (nonatomic, assign) float rightMS2;
-@property (nonatomic, assign) float downMS2;
+@property (nonatomic, assign) float forwardMS2; 
+@property (nonatomic, assign) float rightMS2; 
+@property (nonatomic, assign) float downMS2; 
 
 
 @end
@@ -364,9 +364,9 @@ typedef NS_ENUM(NSInteger, MAVSDKTelemetryMavFrame)  {
 @interface MAVSDKTelemetryAngularVelocityFrd : NSObject
 
 
-@property (nonatomic, assign) float forwardRadS;
-@property (nonatomic, assign) float rightRadS;
-@property (nonatomic, assign) float downRadS;
+@property (nonatomic, assign) float forwardRadS; 
+@property (nonatomic, assign) float rightRadS; 
+@property (nonatomic, assign) float downRadS; 
 
 
 @end
@@ -377,9 +377,9 @@ typedef NS_ENUM(NSInteger, MAVSDKTelemetryMavFrame)  {
 @interface MAVSDKTelemetryMagneticFieldFrd : NSObject
 
 
-@property (nonatomic, assign) float forwardGauss;
-@property (nonatomic, assign) float rightGauss;
-@property (nonatomic, assign) float downGauss;
+@property (nonatomic, assign) float forwardGauss; 
+@property (nonatomic, assign) float rightGauss; 
+@property (nonatomic, assign) float downGauss; 
 
 
 @end
@@ -393,7 +393,7 @@ typedef NS_ENUM(NSInteger, MAVSDKTelemetryMavFrame)  {
 @property (nonatomic, strong) MAVSDKTelemetryAccelerationFrd *accelerationFrd;
 @property (nonatomic, strong) MAVSDKTelemetryAngularVelocityFrd *angularVelocityFrd;
 @property (nonatomic, strong) MAVSDKTelemetryMagneticFieldFrd *magneticFieldFrd;
-@property (nonatomic, assign) float temperatureDegc;
+@property (nonatomic, assign) float temperatureDegc; 
 
 
 @end
@@ -404,9 +404,9 @@ typedef NS_ENUM(NSInteger, MAVSDKTelemetryMavFrame)  {
 @interface MAVSDKTelemetryGpsGlobalOrigin : NSObject
 
 
-@property (nonatomic, assign) double latitudeDeg;
-@property (nonatomic, assign) double longitudeDeg;
-@property (nonatomic, assign) float altitudeM;
+@property (nonatomic, assign) double latitudeDeg; 
+@property (nonatomic, assign) double longitudeDeg; 
+@property (nonatomic, assign) float altitudeM; 
 
 
 @end

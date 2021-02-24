@@ -12,8 +12,8 @@
 @interface MAVSDKGeofencePoint : NSObject
 
 
-@property (nonatomic, assign) double latitudeDeg;
-@property (nonatomic, assign) double longitudeDeg;
+@property (nonatomic, assign) double latitudeDeg; 
+@property (nonatomic, assign) double longitudeDeg; 
 
 
 @end
@@ -31,7 +31,7 @@ typedef NS_ENUM(NSInteger, MAVSDKGeofenceFenceType)  {
     MAVSDKGeofenceFenceTypeExclusion,
 };
 
-@property (nonatomic, strong) NSMutableArray *points; 
+@property (nonatomic, strong) NSMutableArray *points;
 @property (nonatomic, assign) MAVSDKGeofenceFenceType fenceType;
 
 

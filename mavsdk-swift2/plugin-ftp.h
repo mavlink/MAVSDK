@@ -12,8 +12,8 @@
 @interface MAVSDKFtpProgressData : NSObject
 
 
-@property (nonatomic, assign) UInt32 bytesTransferred;
-@property (nonatomic, assign) UInt32 totalBytes;
+@property (nonatomic, assign) UInt32 bytesTransferred; 
+@property (nonatomic, assign) UInt32 totalBytes; 
 
 
 @end

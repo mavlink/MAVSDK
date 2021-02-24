@@ -1,0 +1,35 @@
+MAVSDK{{ plugin_name.upper_camel_case }}{{ name.upper_camel_case }} translateFromCpp{{ name.upper_camel_case }}(mavsdk::{{ plugin_name.upper_camel_case }}::{% if parent_struct and not name.upper_camel_case.endswith("Result") %}{{ parent_struct.upper_camel_case }}::{% endif %}{{ name.upper_camel_case }} {{ name.lower_snake_case }})
+{
+    switch ({{ name.lower_snake_case }}) {
+        {%- for value in values %}
+        {%- if loop.first %}
+        default:
+            NSLog(@"Unknown {{ name.lower_snake_case }} enum value: %d", static_cast<int>({{ name.lower_snake_case }}));
+        // FALLTHROUGH
+        case mavsdk::{{ plugin_name.upper_camel_case }}::{% if parent_struct and not name.upper_camel_case.endswith("Result") %}{{ parent_struct.upper_camel_case }}::{% endif %}{{ name.upper_camel_case }}::{{ value.name.upper_camel_case }}:
+            return MAVSDK{{ plugin_name.upper_camel_case }}{{ name.upper_camel_case }}{{ value.name.upper_camel_case }};
+        {%- else %}
+        case mavsdk::{{ plugin_name.upper_camel_case }}::{% if parent_struct and not name.upper_camel_case.endswith("Result") %}{{ parent_struct.upper_camel_case }}::{% endif %}{{ name.upper_camel_case }}::{{ value.name.upper_camel_case }}:
+            return MAVSDK{{ plugin_name.upper_camel_case }}{{ name.upper_camel_case }}{{ value.name.upper_camel_case }};
+        {%- endif %}
+        {%- endfor %}
+    }
+}
+
+mavsdk::{{ plugin_name.upper_camel_case }}::{% if parent_struct and not name.upper_camel_case.endswith("Result") %}{{ parent_struct.upper_camel_case }}::{% endif %}{{ name.upper_camel_case }} translateToCpp{{ name.upper_camel_case }}(MAVSDK{{ plugin_name.upper_camel_case }}{{ name.upper_camel_case }} {{ name.lower_camel_case}})
+{
+    switch ({{ name.lower_camel_case }}) {
+        {%- for value in values %}
+            {%- if loop.first %}
+        default:
+            NSLog(@"Unknown {{ name.upper_camel_case }} enum value: %d", static_cast<int>({{ name.lower_camel_case }}));
+        // FALLTHROUGH
+        case MAVSDK{{ plugin_name.upper_camel_case }}{{ name.upper_camel_case }}{{ value.name.upper_camel_case }}:
+            return mavsdk::{{ plugin_name.upper_camel_case }}::{% if parent_struct and not name.upper_camel_case.endswith("Result") %}{{ parent_struct.upper_camel_case }}::{% endif %}{{ name.upper_camel_case }}::{{ value.name.upper_camel_case }};
+        {%- else %}
+        case MAVSDK{{ plugin_name.upper_camel_case }}{{ name.upper_camel_case }}{{ value.name.upper_camel_case }}:
+            return mavsdk::{{ plugin_name.upper_camel_case }}::{% if parent_struct and not name.upper_camel_case.endswith("Result") %}{{ parent_struct.upper_camel_case }}::{% endif %}{{ name.upper_camel_case }}::{{ value.name.upper_camel_case }};
+        {%- endif %}
+        {%- endfor %}
+    }
+}

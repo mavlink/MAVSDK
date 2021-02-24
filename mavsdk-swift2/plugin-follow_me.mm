@@ -4,47 +4,47 @@
 #include <mavsdk/mavsdk.h>
 #include <mavsdk/plugins/follow_me/follow_me.h>
 
-@implementation MAVSDKFollowMe
-
-mavsdk::FollowMe *followMe;
 
 
-+(id)alloc{
-    return [super alloc];
+
+
+MAVSDKFollowMeFollowDirection translateFromCppFollowDirection(mavsdk::FollowMe::Config::FollowDirection follow_direction)
+{
+    switch (follow_direction) {
+        default:
+            NSLog(@"Unknown follow_direction enum value: %d", static_cast<int>(follow_direction));
+        // FALLTHROUGH
+        case mavsdk::FollowMe::Config::FollowDirection::None:
+            return MAVSDKFollowMeFollowDirectionNone;
+        case mavsdk::FollowMe::Config::FollowDirection::Behind:
+            return MAVSDKFollowMeFollowDirectionBehind;
+        case mavsdk::FollowMe::Config::FollowDirection::Front:
+            return MAVSDKFollowMeFollowDirectionFront;
+        case mavsdk::FollowMe::Config::FollowDirection::FrontRight:
+            return MAVSDKFollowMeFollowDirectionFrontRight;
+        case mavsdk::FollowMe::Config::FollowDirection::FrontLeft:
+            return MAVSDKFollowMeFollowDirectionFrontLeft;
+    }
 }
 
-- (id)initWithMavsdkSwift2Impl:(MavsdkSwift2Impl*)mavsdkSwift2Impl {
-    followMe = new mavsdk::FollowMe(*[mavsdkSwift2Impl mavsdkSystem]);
-    return [super init];
+mavsdk::FollowMe::Config::FollowDirection translateToCppFollowDirection(MAVSDKFollowMeFollowDirection followDirection)
+{
+    switch (followDirection) {
+        default:
+            NSLog(@"Unknown FollowDirection enum value: %d", static_cast<int>(followDirection));
+        // FALLTHROUGH
+        case MAVSDKFollowMeFollowDirectionNone:
+            return mavsdk::FollowMe::Config::FollowDirection::None;
+        case MAVSDKFollowMeFollowDirectionBehind:
+            return mavsdk::FollowMe::Config::FollowDirection::Behind;
+        case MAVSDKFollowMeFollowDirectionFront:
+            return mavsdk::FollowMe::Config::FollowDirection::Front;
+        case MAVSDKFollowMeFollowDirectionFrontRight:
+            return mavsdk::FollowMe::Config::FollowDirection::FrontRight;
+        case MAVSDKFollowMeFollowDirectionFrontLeft:
+            return mavsdk::FollowMe::Config::FollowDirection::FrontLeft;
+    }
 }
-
-
-- (MAVSDKFollowMeResult)setConfig:(MAVSDKFollowMeConfig*)config {
-    //return (MAVSDKFollowMeResult)follow_me->set_config(translateToCppConfig(config));
-    return MAVSDKFollowMeResultUnknown;
-}
-
-- (MAVSDKFollowMeResult)setTargetLocation:(MAVSDKFollowMeTargetLocation*)location {
-    //return (MAVSDKFollowMeResult)follow_me->set_target_location(translateToCppLocation(location));
-    return MAVSDKFollowMeResultUnknown;
-
-}
-
-- (MAVSDKFollowMeResult)start {
-    //return (MAVSDKFollowMeResult)follow_me->start();
-    return MAVSDKFollowMeResultUnknown;
-
-}
-- (MAVSDKFollowMeResult)stop {
-    //return (MAVSDKFollowMeResult)follow_me->stop();
-    return MAVSDKFollowMeResultUnknown;
-
-}
-
-
-
-
-
 MAVSDKFollowMeConfig* translateFromCppConfig(mavsdk::FollowMe::Config config)
 {
     MAVSDKFollowMeConfig *obj = [[MAVSDKFollowMeConfig alloc] init];
@@ -83,7 +83,7 @@ mavsdk::FollowMe::Config translateToCppConfig(MAVSDKFollowMeConfig* config)
         
     
         
-    obj.follow_direction = (mavsdk::FollowMe::Config::FollowDirection)(config.followDirection);
+    obj.follow_direction = translateToCppFollowDirection(config.followDirection);
         
     
         
@@ -92,6 +92,11 @@ mavsdk::FollowMe::Config translateToCppConfig(MAVSDKFollowMeConfig* config)
     
     return obj;
 }
+
+
+
+@implementation MAVSDKFollowMeConfig
+@end
 
 
 
@@ -161,7 +166,46 @@ mavsdk::FollowMe::TargetLocation translateToCppTargetLocation(MAVSDKFollowMeTarg
 
 
 
+@implementation MAVSDKFollowMeTargetLocation
+@end
 
+
+
+
+
+
+
+
+@implementation MAVSDKFollowMe
+
+mavsdk::FollowMe *follow_me;
+
+
++(id)alloc{
+    return [super alloc];
+}
+
+- (id)initWithMavsdkSwift2Impl:(MavsdkSwift2Impl*)mavsdkSwift2Impl {
+    follow_me = new mavsdk::FollowMe(*[mavsdkSwift2Impl mavsdkSystem]);
+    return [super init];
+}
+
+
+- (MAVSDKFollowMeResult)setConfig:(MAVSDKFollowMeConfig*)config {
+    return (MAVSDKFollowMeResult)follow_me->set_config(translateToCppConfig(config));
+}
+
+- (MAVSDKFollowMeResult)setTargetLocation:(MAVSDKFollowMeTargetLocation*)location {
+    return (MAVSDKFollowMeResult)follow_me->set_target_location(translateToCppLocation(location));
+}
+
+- (MAVSDKFollowMeResult)start {
+    return (MAVSDKFollowMeResult)follow_me->start();
+}
+- (MAVSDKFollowMeResult)stop {
+    return (MAVSDKFollowMeResult)follow_me->stop();
+}
 
 
 @end
+

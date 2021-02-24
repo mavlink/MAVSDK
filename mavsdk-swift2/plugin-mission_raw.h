@@ -12,8 +12,8 @@
 @interface MAVSDKMissionRawMissionProgress : NSObject
 
 
-@property (nonatomic, assign) NSInteger current;
-@property (nonatomic, assign) NSInteger total;
+@property (nonatomic, assign) SInt32 current; 
+@property (nonatomic, assign) SInt32 total; 
 
 
 @end
@@ -24,19 +24,19 @@
 @interface MAVSDKMissionRawMissionItem : NSObject
 
 
-@property (nonatomic, assign) UInt32 seq;
-@property (nonatomic, assign) UInt32 frame;
-@property (nonatomic, assign) UInt32 command;
-@property (nonatomic, assign) UInt32 current;
-@property (nonatomic, assign) UInt32 autocontinue;
-@property (nonatomic, assign) float param1;
-@property (nonatomic, assign) float param2;
-@property (nonatomic, assign) float param3;
-@property (nonatomic, assign) float param4;
-@property (nonatomic, assign) NSInteger x;
-@property (nonatomic, assign) NSInteger y;
-@property (nonatomic, assign) float z;
-@property (nonatomic, assign) UInt32 missionType;
+@property (nonatomic, assign) UInt32 seq; 
+@property (nonatomic, assign) UInt32 frame; 
+@property (nonatomic, assign) UInt32 command; 
+@property (nonatomic, assign) UInt32 current; 
+@property (nonatomic, assign) UInt32 autocontinue; 
+@property (nonatomic, assign) float param1; 
+@property (nonatomic, assign) float param2; 
+@property (nonatomic, assign) float param3; 
+@property (nonatomic, assign) float param4; 
+@property (nonatomic, assign) SInt32 x; 
+@property (nonatomic, assign) SInt32 y; 
+@property (nonatomic, assign) float z; 
+@property (nonatomic, assign) UInt32 missionType; 
 
 
 @end
@@ -71,7 +71,7 @@ typedef NS_ENUM(NSInteger, MAVSDKMissionRawResult)  {
 - (MAVSDKMissionRawResult)startMission ;
 - (MAVSDKMissionRawResult)pauseMission ;
 - (MAVSDKMissionRawResult)clearMission ;
-- (MAVSDKMissionRawResult)setCurrentMissionItem :( NSInteger) index;
+- (MAVSDKMissionRawResult)setCurrentMissionItem :( SInt32) index;
 
 
 

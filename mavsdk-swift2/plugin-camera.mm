@@ -4,63 +4,62 @@
 #include <mavsdk/mavsdk.h>
 #include <mavsdk/plugins/camera/camera.h>
 
-@implementation MAVSDKCamera
 
-mavsdk::Camera *camera;
-
-
-+(id)alloc{
-    return [super alloc];
+MAVSDKCameraMode translateFromCppMode(mavsdk::Camera::Mode mode)
+{
+    switch (mode) {
+        default:
+            NSLog(@"Unknown mode enum value: %d", static_cast<int>(mode));
+        // FALLTHROUGH
+        case mavsdk::Camera::Mode::Unknown:
+            return MAVSDKCameraModeUnknown;
+        case mavsdk::Camera::Mode::Photo:
+            return MAVSDKCameraModePhoto;
+        case mavsdk::Camera::Mode::Video:
+            return MAVSDKCameraModeVideo;
+    }
 }
 
-- (id)initWithMavsdkSwift2Impl:(MavsdkSwift2Impl*)mavsdkSwift2Impl {
-    camera = new mavsdk::Camera(*[mavsdkSwift2Impl mavsdkSystem]);
-    return [super init];
+mavsdk::Camera::Mode translateToCppMode(MAVSDKCameraMode mode)
+{
+    switch (mode) {
+        default:
+            NSLog(@"Unknown Mode enum value: %d", static_cast<int>(mode));
+        // FALLTHROUGH
+        case MAVSDKCameraModeUnknown:
+            return mavsdk::Camera::Mode::Unknown;
+        case MAVSDKCameraModePhoto:
+            return mavsdk::Camera::Mode::Photo;
+        case MAVSDKCameraModeVideo:
+            return mavsdk::Camera::Mode::Video;
+    }
 }
 
-- (MAVSDKCameraResult)takePhoto {
-    return (MAVSDKCameraResult)camera->take_photo();
-}
-- (MAVSDKCameraResult)startPhotoInterval:(float)intervalS {
-    return (MAVSDKCameraResult)camera->start_photo_interval(intervalS);
-}
-- (MAVSDKCameraResult)stopPhotoInterval {
-    return (MAVSDKCameraResult)camera->stop_photo_interval();
-}
-- (MAVSDKCameraResult)startVideo {
-    return (MAVSDKCameraResult)camera->start_video();
-}
-- (MAVSDKCameraResult)stopVideo {
-    return (MAVSDKCameraResult)camera->stop_video();
-}
-- (MAVSDKCameraResult)startVideoStreaming {
-    return (MAVSDKCameraResult)camera->start_video_streaming();
-}
-- (MAVSDKCameraResult)stopVideoStreaming {
-    return (MAVSDKCameraResult)camera->stop_video_streaming();
-}
-- (MAVSDKCameraResult)setMode:(MAVSDKCameraMode)mode {
-    return (MAVSDKCameraResult)camera->set_mode((mavsdk::Camera::Mode)mode);
+MAVSDKCameraPhotosRange translateFromCppPhotosRange(mavsdk::Camera::PhotosRange photos_range)
+{
+    switch (photos_range) {
+        default:
+            NSLog(@"Unknown photos_range enum value: %d", static_cast<int>(photos_range));
+        // FALLTHROUGH
+        case mavsdk::Camera::PhotosRange::All:
+            return MAVSDKCameraPhotosRangeAll;
+        case mavsdk::Camera::PhotosRange::SinceConnection:
+            return MAVSDKCameraPhotosRangeSinceConnection;
+    }
 }
 
-
-
-
-
-
-
-
-- (MAVSDKCameraResult)setSetting:(MAVSDKCameraSetting*)setting {
-    return (MAVSDKCameraResult)camera->set_setting(translateToCppSetting(setting));
+mavsdk::Camera::PhotosRange translateToCppPhotosRange(MAVSDKCameraPhotosRange photosRange)
+{
+    switch (photosRange) {
+        default:
+            NSLog(@"Unknown PhotosRange enum value: %d", static_cast<int>(photosRange));
+        // FALLTHROUGH
+        case MAVSDKCameraPhotosRangeAll:
+            return mavsdk::Camera::PhotosRange::All;
+        case MAVSDKCameraPhotosRangeSinceConnection:
+            return mavsdk::Camera::PhotosRange::SinceConnection;
+    }
 }
-
-- (MAVSDKCameraResult)formatStorage {
-    return (MAVSDKCameraResult)camera->format_storage();
-}
-
-
-
-
 
 
 
@@ -118,6 +117,11 @@ mavsdk::Camera::Position translateToCppPosition(MAVSDKCameraPosition* position)
 
 
 
+@implementation MAVSDKCameraPosition
+@end
+
+
+
 MAVSDKCameraQuaternion* translateFromCppQuaternion(mavsdk::Camera::Quaternion quaternion)
 {
     MAVSDKCameraQuaternion *obj = [[MAVSDKCameraQuaternion alloc] init];
@@ -168,6 +172,11 @@ mavsdk::Camera::Quaternion translateToCppQuaternion(MAVSDKCameraQuaternion* quat
 
 
 
+@implementation MAVSDKCameraQuaternion
+@end
+
+
+
 MAVSDKCameraEulerAngle* translateFromCppEulerAngle(mavsdk::Camera::EulerAngle euler_angle)
 {
     MAVSDKCameraEulerAngle *obj = [[MAVSDKCameraEulerAngle alloc] init];
@@ -207,6 +216,11 @@ mavsdk::Camera::EulerAngle translateToCppEulerAngle(MAVSDKCameraEulerAngle* eule
     
     return obj;
 }
+
+
+
+@implementation MAVSDKCameraEulerAngle
+@end
 
 
 
@@ -285,6 +299,11 @@ mavsdk::Camera::CaptureInfo translateToCppCaptureInfo(MAVSDKCameraCaptureInfo* c
 
 
 
+@implementation MAVSDKCameraCaptureInfo
+@end
+
+
+
 MAVSDKCameraVideoStreamSettings* translateFromCppVideoStreamSettings(mavsdk::Camera::VideoStreamSettings video_stream_settings)
 {
     MAVSDKCameraVideoStreamSettings *obj = [[MAVSDKCameraVideoStreamSettings alloc] init];
@@ -352,6 +371,37 @@ mavsdk::Camera::VideoStreamSettings translateToCppVideoStreamSettings(MAVSDKCame
 
 
 
+@implementation MAVSDKCameraVideoStreamSettings
+@end
+
+
+
+
+MAVSDKCameraVideoStreamStatus translateFromCppVideoStreamStatus(mavsdk::Camera::VideoStreamInfo::VideoStreamStatus video_stream_status)
+{
+    switch (video_stream_status) {
+        default:
+            NSLog(@"Unknown video_stream_status enum value: %d", static_cast<int>(video_stream_status));
+        // FALLTHROUGH
+        case mavsdk::Camera::VideoStreamInfo::VideoStreamStatus::NotRunning:
+            return MAVSDKCameraVideoStreamStatusNotRunning;
+        case mavsdk::Camera::VideoStreamInfo::VideoStreamStatus::InProgress:
+            return MAVSDKCameraVideoStreamStatusInProgress;
+    }
+}
+
+mavsdk::Camera::VideoStreamInfo::VideoStreamStatus translateToCppVideoStreamStatus(MAVSDKCameraVideoStreamStatus videoStreamStatus)
+{
+    switch (videoStreamStatus) {
+        default:
+            NSLog(@"Unknown VideoStreamStatus enum value: %d", static_cast<int>(videoStreamStatus));
+        // FALLTHROUGH
+        case MAVSDKCameraVideoStreamStatusNotRunning:
+            return mavsdk::Camera::VideoStreamInfo::VideoStreamStatus::NotRunning;
+        case MAVSDKCameraVideoStreamStatusInProgress:
+            return mavsdk::Camera::VideoStreamInfo::VideoStreamStatus::InProgress;
+    }
+}
 MAVSDKCameraVideoStreamInfo* translateFromCppVideoStreamInfo(mavsdk::Camera::VideoStreamInfo video_stream_info)
 {
     MAVSDKCameraVideoStreamInfo *obj = [[MAVSDKCameraVideoStreamInfo alloc] init];
@@ -378,7 +428,7 @@ mavsdk::Camera::VideoStreamInfo translateToCppVideoStreamInfo(MAVSDKCameraVideoS
         
     
         
-    obj.status = (mavsdk::Camera::VideoStreamInfo::VideoStreamStatus)(videoStreamInfo.status);
+    obj.status = translateToCppVideoStreamStatus(videoStreamInfo.status);
         
     
     return obj;
@@ -386,6 +436,41 @@ mavsdk::Camera::VideoStreamInfo translateToCppVideoStreamInfo(MAVSDKCameraVideoS
 
 
 
+@implementation MAVSDKCameraVideoStreamInfo
+@end
+
+
+
+
+MAVSDKCameraStorageStatus translateFromCppStorageStatus(mavsdk::Camera::Status::StorageStatus storage_status)
+{
+    switch (storage_status) {
+        default:
+            NSLog(@"Unknown storage_status enum value: %d", static_cast<int>(storage_status));
+        // FALLTHROUGH
+        case mavsdk::Camera::Status::StorageStatus::NotAvailable:
+            return MAVSDKCameraStorageStatusNotAvailable;
+        case mavsdk::Camera::Status::StorageStatus::Unformatted:
+            return MAVSDKCameraStorageStatusUnformatted;
+        case mavsdk::Camera::Status::StorageStatus::Formatted:
+            return MAVSDKCameraStorageStatusFormatted;
+    }
+}
+
+mavsdk::Camera::Status::StorageStatus translateToCppStorageStatus(MAVSDKCameraStorageStatus storageStatus)
+{
+    switch (storageStatus) {
+        default:
+            NSLog(@"Unknown StorageStatus enum value: %d", static_cast<int>(storageStatus));
+        // FALLTHROUGH
+        case MAVSDKCameraStorageStatusNotAvailable:
+            return mavsdk::Camera::Status::StorageStatus::NotAvailable;
+        case MAVSDKCameraStorageStatusUnformatted:
+            return mavsdk::Camera::Status::StorageStatus::Unformatted;
+        case MAVSDKCameraStorageStatusFormatted:
+            return mavsdk::Camera::Status::StorageStatus::Formatted;
+    }
+}
 MAVSDKCameraStatus* translateFromCppStatus(mavsdk::Camera::Status status)
 {
     MAVSDKCameraStatus *obj = [[MAVSDKCameraStatus alloc] init];
@@ -461,11 +546,16 @@ mavsdk::Camera::Status translateToCppStatus(MAVSDKCameraStatus* status)
         
     
         
-    obj.storage_status = (mavsdk::Camera::Status::StorageStatus)(status.storageStatus);
+    obj.storage_status = translateToCppStorageStatus(status.storageStatus);
         
     
     return obj;
 }
+
+
+
+@implementation MAVSDKCameraStatus
+@end
 
 
 
@@ -502,6 +592,11 @@ mavsdk::Camera::Option translateToCppOption(MAVSDKCameraOption* option)
     
     return obj;
 }
+
+
+
+@implementation MAVSDKCameraOption
+@end
 
 
 
@@ -557,6 +652,11 @@ mavsdk::Camera::Setting translateToCppSetting(MAVSDKCameraSetting* setting)
 
 
 
+@implementation MAVSDKCameraSetting
+@end
+
+
+
 MAVSDKCameraSettingOptions* translateFromCppSettingOptions(mavsdk::Camera::SettingOptions setting_options)
 {
     MAVSDKCameraSettingOptions *obj = [[MAVSDKCameraSettingOptions alloc] init];
@@ -573,9 +673,11 @@ MAVSDKCameraSettingOptions* translateFromCppSettingOptions(mavsdk::Camera::Setti
         
     
         
-            for (const auto& elem : setting_options.options) {
-                [obj.options addObject:translateFromCppOption(elem)];
-            }
+            
+    for (const auto& elem : setting_options.options) {
+        [obj.options addObject:translateFromCppOption(elem)];
+    }
+            
         
     
         
@@ -599,9 +701,11 @@ mavsdk::Camera::SettingOptions translateToCppSettingOptions(MAVSDKCameraSettingO
         
     
         
-            for (MAVSDKCameraOption *elem in settingOptions.options) {
-                obj.options.push_back(translateToCppOption(elem));
-            }
+            
+    for (MAVSDKCameraOption *elem in settingOptions.options) {
+        obj.options.push_back(translateToCppOption(elem));
+    }
+            
         
     
         
@@ -610,6 +714,11 @@ mavsdk::Camera::SettingOptions translateToCppSettingOptions(MAVSDKCameraSettingO
     
     return obj;
 }
+
+
+
+@implementation MAVSDKCameraSettingOptions
+@end
 
 
 
@@ -649,5 +758,66 @@ mavsdk::Camera::Information translateToCppInformation(MAVSDKCameraInformation* i
 
 
 
+@implementation MAVSDKCameraInformation
+@end
+
+
+
+
+@implementation MAVSDKCamera
+
+mavsdk::Camera *camera;
+
+
++(id)alloc{
+    return [super alloc];
+}
+
+- (id)initWithMavsdkSwift2Impl:(MavsdkSwift2Impl*)mavsdkSwift2Impl {
+    camera = new mavsdk::Camera(*[mavsdkSwift2Impl mavsdkSystem]);
+    return [super init];
+}
+
+- (MAVSDKCameraResult)takePhoto {
+    return (MAVSDKCameraResult)camera->take_photo();
+}
+- (MAVSDKCameraResult)startPhotoInterval:(float)intervalS {
+    return (MAVSDKCameraResult)camera->start_photo_interval(intervalS);
+}
+- (MAVSDKCameraResult)stopPhotoInterval {
+    return (MAVSDKCameraResult)camera->stop_photo_interval();
+}
+- (MAVSDKCameraResult)startVideo {
+    return (MAVSDKCameraResult)camera->start_video();
+}
+- (MAVSDKCameraResult)stopVideo {
+    return (MAVSDKCameraResult)camera->stop_video();
+}
+- (MAVSDKCameraResult)startVideoStreaming {
+    return (MAVSDKCameraResult)camera->start_video_streaming();
+}
+- (MAVSDKCameraResult)stopVideoStreaming {
+    return (MAVSDKCameraResult)camera->stop_video_streaming();
+}
+- (MAVSDKCameraResult)setMode:(MAVSDKCameraMode)mode {
+    return (MAVSDKCameraResult)camera->set_mode((mavsdk::Camera::Mode)mode);
+}
+
+
+
+
+
+
+
+
+- (MAVSDKCameraResult)setSetting:(MAVSDKCameraSetting*)setting {
+    return (MAVSDKCameraResult)camera->set_setting(translateToCppSetting(setting));
+}
+
+- (MAVSDKCameraResult)formatStorage {
+    return (MAVSDKCameraResult)camera->format_storage();
+}
+
 
 @end
+

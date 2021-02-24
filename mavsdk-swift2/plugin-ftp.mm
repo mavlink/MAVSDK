@@ -4,6 +4,53 @@
 #include <mavsdk/mavsdk.h>
 #include <mavsdk/plugins/ftp/ftp.h>
 
+
+
+
+MAVSDKFtpProgressData* translateFromCppProgressData(mavsdk::Ftp::ProgressData progress_data)
+{
+    MAVSDKFtpProgressData *obj = [[MAVSDKFtpProgressData alloc] init];
+
+
+        
+    obj.bytesTransferred = progress_data.bytes_transferred;
+        
+    
+        
+    obj.totalBytes = progress_data.total_bytes;
+        
+    
+    return obj;
+}
+
+mavsdk::Ftp::ProgressData translateToCppProgressData(MAVSDKFtpProgressData* progressData)
+{
+    mavsdk::Ftp::ProgressData obj;
+
+
+        
+    obj.bytes_transferred = progressData.bytesTransferred;
+        
+    
+        
+    obj.total_bytes = progressData.totalBytes;
+        
+    
+    return obj;
+}
+
+
+
+@implementation MAVSDKFtpProgressData
+@end
+
+
+
+
+
+
+
+
 @implementation MAVSDKFtp
 
 mavsdk::Ftp *ftp;
@@ -44,44 +91,5 @@ mavsdk::Ftp *ftp;
 
 
 
-
-
-
-MAVSDKFtpProgressData* translateFromCppProgressData(mavsdk::Ftp::ProgressData progress_data)
-{
-    MAVSDKFtpProgressData *obj = [[MAVSDKFtpProgressData alloc] init];
-
-
-        
-    obj.bytesTransferred = progress_data.bytes_transferred;
-        
-    
-        
-    obj.totalBytes = progress_data.total_bytes;
-        
-    
-    return obj;
-}
-
-mavsdk::Ftp::ProgressData translateToCppProgressData(MAVSDKFtpProgressData* progressData)
-{
-    mavsdk::Ftp::ProgressData obj;
-
-
-        
-    obj.bytes_transferred = progressData.bytesTransferred;
-        
-    
-        
-    obj.total_bytes = progressData.totalBytes;
-        
-    
-    return obj;
-}
-
-
-
-
-
-
 @end
+

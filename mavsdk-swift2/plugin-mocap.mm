@@ -4,31 +4,6 @@
 #include <mavsdk/mavsdk.h>
 #include <mavsdk/plugins/mocap/mocap.h>
 
-@implementation MAVSDKMocap
-
-mavsdk::Mocap *mocap;
-
-
-+(id)alloc{
-    return [super alloc];
-}
-
-- (id)initWithMavsdkSwift2Impl:(MavsdkSwift2Impl*)mavsdkSwift2Impl {
-    mocap = new mavsdk::Mocap(*[mavsdkSwift2Impl mavsdkSystem]);
-    return [super init];
-}
-
-- (MAVSDKMocapResult)setVisionPositionEstimate:(MAVSDKMocapVisionPositionEstimate*)visionPositionEstimate {
-    return (MAVSDKMocapResult)mocap->set_vision_position_estimate(translateToCppVisionPositionEstimate(visionPositionEstimate));
-}
-- (MAVSDKMocapResult)setAttitudePositionMocap:(MAVSDKMocapAttitudePositionMocap*)attitudePositionMocap {
-    return (MAVSDKMocapResult)mocap->set_attitude_position_mocap(translateToCppAttitudePositionMocap(attitudePositionMocap));
-}
-- (MAVSDKMocapResult)setOdometry:(MAVSDKMocapOdometry*)odometry {
-    return (MAVSDKMocapResult)mocap->set_odometry(translateToCppOdometry(odometry));
-}
-
-
 
 
 
@@ -74,6 +49,11 @@ mavsdk::Mocap::PositionBody translateToCppPositionBody(MAVSDKMocapPositionBody* 
 
 
 
+@implementation MAVSDKMocapPositionBody
+@end
+
+
+
 MAVSDKMocapAngleBody* translateFromCppAngleBody(mavsdk::Mocap::AngleBody angle_body)
 {
     MAVSDKMocapAngleBody *obj = [[MAVSDKMocapAngleBody alloc] init];
@@ -113,6 +93,11 @@ mavsdk::Mocap::AngleBody translateToCppAngleBody(MAVSDKMocapAngleBody* angleBody
     
     return obj;
 }
+
+
+
+@implementation MAVSDKMocapAngleBody
+@end
 
 
 
@@ -158,6 +143,11 @@ mavsdk::Mocap::SpeedBody translateToCppSpeedBody(MAVSDKMocapSpeedBody* speedBody
 
 
 
+@implementation MAVSDKMocapSpeedBody
+@end
+
+
+
 MAVSDKMocapAngularVelocityBody* translateFromCppAngularVelocityBody(mavsdk::Mocap::AngularVelocityBody angular_velocity_body)
 {
     MAVSDKMocapAngularVelocityBody *obj = [[MAVSDKMocapAngularVelocityBody alloc] init];
@@ -200,15 +190,22 @@ mavsdk::Mocap::AngularVelocityBody translateToCppAngularVelocityBody(MAVSDKMocap
 
 
 
+@implementation MAVSDKMocapAngularVelocityBody
+@end
+
+
+
 MAVSDKMocapCovariance* translateFromCppCovariance(mavsdk::Mocap::Covariance covariance)
 {
     MAVSDKMocapCovariance *obj = [[MAVSDKMocapCovariance alloc] init];
 
 
         
-            //for (const auto& elem : covariance.covariance_matrix()) {
-            //    [obj.covarianceMatrix addObject:elem];
-            //}
+            
+    for (const auto& elem : covariance.covariance_matrix) {
+        [obj.covarianceMatrix addObject:[NSNumber numberWithFloat:elem]];
+    }
+            
         
     
     return obj;
@@ -220,13 +217,20 @@ mavsdk::Mocap::Covariance translateToCppCovariance(MAVSDKMocapCovariance* covari
 
 
         
-            //for (MAVSDKMocapfloat *elem in covariance.covarianceMatrix) {
-            //    [obj.covariance_matrix push_back(elem)];
-            //}
+            
+    for (id elem in covariance.covarianceMatrix) {
+        obj.covariance_matrix.push_back([elem floatValue]);
+    }
+            
         
     
     return obj;
 }
+
+
+
+@implementation MAVSDKMocapCovariance
+@end
 
 
 
@@ -280,6 +284,11 @@ mavsdk::Mocap::Quaternion translateToCppQuaternion(MAVSDKMocapQuaternion* quater
 
 
 
+@implementation MAVSDKMocapQuaternion
+@end
+
+
+
 MAVSDKMocapVisionPositionEstimate* translateFromCppVisionPositionEstimate(mavsdk::Mocap::VisionPositionEstimate vision_position_estimate)
 {
     MAVSDKMocapVisionPositionEstimate *obj = [[MAVSDKMocapVisionPositionEstimate alloc] init];
@@ -327,6 +336,11 @@ mavsdk::Mocap::VisionPositionEstimate translateToCppVisionPositionEstimate(MAVSD
     
     return obj;
 }
+
+
+
+@implementation MAVSDKMocapVisionPositionEstimate
+@end
 
 
 
@@ -380,6 +394,37 @@ mavsdk::Mocap::AttitudePositionMocap translateToCppAttitudePositionMocap(MAVSDKM
 
 
 
+@implementation MAVSDKMocapAttitudePositionMocap
+@end
+
+
+
+
+MAVSDKMocapMavFrame translateFromCppMavFrame(mavsdk::Mocap::Odometry::MavFrame mav_frame)
+{
+    switch (mav_frame) {
+        default:
+            NSLog(@"Unknown mav_frame enum value: %d", static_cast<int>(mav_frame));
+        // FALLTHROUGH
+        case mavsdk::Mocap::Odometry::MavFrame::MocapNed:
+            return MAVSDKMocapMavFrameMocapNed;
+        case mavsdk::Mocap::Odometry::MavFrame::LocalFrd:
+            return MAVSDKMocapMavFrameLocalFrd;
+    }
+}
+
+mavsdk::Mocap::Odometry::MavFrame translateToCppMavFrame(MAVSDKMocapMavFrame mavFrame)
+{
+    switch (mavFrame) {
+        default:
+            NSLog(@"Unknown MavFrame enum value: %d", static_cast<int>(mavFrame));
+        // FALLTHROUGH
+        case MAVSDKMocapMavFrameMocapNed:
+            return mavsdk::Mocap::Odometry::MavFrame::MocapNed;
+        case MAVSDKMocapMavFrameLocalFrd:
+            return mavsdk::Mocap::Odometry::MavFrame::LocalFrd;
+    }
+}
 MAVSDKMocapOdometry* translateFromCppOdometry(mavsdk::Mocap::Odometry odometry)
 {
     MAVSDKMocapOdometry *obj = [[MAVSDKMocapOdometry alloc] init];
@@ -430,7 +475,7 @@ mavsdk::Mocap::Odometry translateToCppOdometry(MAVSDKMocapOdometry* odometry)
         
     
         
-    obj.frame_id = (mavsdk::Mocap::Odometry::MavFrame)(odometry.frameId);
+    obj.frame_id = translateToCppMavFrame(odometry.frameId);
         
     
         
@@ -462,7 +507,40 @@ mavsdk::Mocap::Odometry translateToCppOdometry(MAVSDKMocapOdometry* odometry)
 
 
 
+@implementation MAVSDKMocapOdometry
+@end
 
+
+
+
+
+
+
+
+@implementation MAVSDKMocap
+
+mavsdk::Mocap *mocap;
+
+
++(id)alloc{
+    return [super alloc];
+}
+
+- (id)initWithMavsdkSwift2Impl:(MavsdkSwift2Impl*)mavsdkSwift2Impl {
+    mocap = new mavsdk::Mocap(*[mavsdkSwift2Impl mavsdkSystem]);
+    return [super init];
+}
+
+- (MAVSDKMocapResult)setVisionPositionEstimate:(MAVSDKMocapVisionPositionEstimate*)visionPositionEstimate {
+    return (MAVSDKMocapResult)mocap->set_vision_position_estimate(translateToCppVisionPositionEstimate(visionPositionEstimate));
+}
+- (MAVSDKMocapResult)setAttitudePositionMocap:(MAVSDKMocapAttitudePositionMocap*)attitudePositionMocap {
+    return (MAVSDKMocapResult)mocap->set_attitude_position_mocap(translateToCppAttitudePositionMocap(attitudePositionMocap));
+}
+- (MAVSDKMocapResult)setOdometry:(MAVSDKMocapOdometry*)odometry {
+    return (MAVSDKMocapResult)mocap->set_odometry(translateToCppOdometry(odometry));
+}
 
 
 @end
+

@@ -37,8 +37,8 @@ typedef NS_ENUM(NSInteger, MAVSDKTuneSongElement)  {
 @interface MAVSDKTuneTuneDescription : NSObject
 
 
-@property (nonatomic, assign) MAVSDKTuneSongElement songElements;
-@property (nonatomic, assign) NSInteger tempo;
+@property (nonatomic, strong) NSMutableArray *songElements;
+@property (nonatomic, assign) SInt32 tempo; 
 
 
 @end

@@ -4,31 +4,6 @@
 #include <mavsdk/mavsdk.h>
 #include <mavsdk/plugins/param/param.h>
 
-@implementation MAVSDKParam
-
-mavsdk::Param *param;
-
-
-+(id)alloc{
-    return [super alloc];
-}
-
-- (id)initWithMavsdkSwift2Impl:(MavsdkSwift2Impl*)mavsdkSwift2Impl {
-    param = new mavsdk::Param(*[mavsdkSwift2Impl mavsdkSystem]);
-    return [super init];
-}
-
-
-- (MAVSDKParamResult)setParamInt:(NSString*)name :(NSInteger)value {
-    return (MAVSDKParamResult)param->set_param_int([name UTF8String], value);
-}
-
-- (MAVSDKParamResult)setParamFloat:(NSString*)name :(float)value {
-    return (MAVSDKParamResult)param->set_param_float([name UTF8String], value);
-}
-
-
-
 
 
 
@@ -67,6 +42,11 @@ mavsdk::Param::IntParam translateToCppIntParam(MAVSDKParamIntParam* intParam)
 
 
 
+@implementation MAVSDKParamIntParam
+@end
+
+
+
 MAVSDKParamFloatParam* translateFromCppFloatParam(mavsdk::Param::FloatParam float_param)
 {
     MAVSDKParamFloatParam *obj = [[MAVSDKParamFloatParam alloc] init];
@@ -102,21 +82,30 @@ mavsdk::Param::FloatParam translateToCppFloatParam(MAVSDKParamFloatParam* floatP
 
 
 
+@implementation MAVSDKParamFloatParam
+@end
+
+
+
 MAVSDKParamAllParams* translateFromCppAllParams(mavsdk::Param::AllParams all_params)
 {
     MAVSDKParamAllParams *obj = [[MAVSDKParamAllParams alloc] init];
 
 
         
-            for (const auto& elem : all_params.int_params) {
-                [obj.intParams addObject:translateFromCppIntParam(elem)];
-            }
+            
+    for (const auto& elem : all_params.int_params) {
+        [obj.intParams addObject:translateFromCppIntParam(elem)];
+    }
+            
         
     
         
-            for (const auto& elem : all_params.float_params) {
-                [obj.floatParams addObject:translateFromCppFloatParam(elem)];
-            }
+            
+    for (const auto& elem : all_params.float_params) {
+        [obj.floatParams addObject:translateFromCppFloatParam(elem)];
+    }
+            
         
     
     return obj;
@@ -128,15 +117,19 @@ mavsdk::Param::AllParams translateToCppAllParams(MAVSDKParamAllParams* allParams
 
 
         
-            for (MAVSDKParamIntParam *elem in allParams.intParams) {
-                obj.int_params.push_back(translateToCppIntParam(elem));
-            }
+            
+    for (MAVSDKParamIntParam *elem in allParams.intParams) {
+        obj.int_params.push_back(translateToCppIntParam(elem));
+    }
+            
         
     
         
-            for (MAVSDKParamFloatParam *elem in allParams.floatParams) {
-                obj.float_params.push_back(translateToCppFloatParam(elem));
-            }
+            
+    for (MAVSDKParamFloatParam *elem in allParams.floatParams) {
+        obj.float_params.push_back(translateToCppFloatParam(elem));
+    }
+            
         
     
     return obj;
@@ -144,7 +137,40 @@ mavsdk::Param::AllParams translateToCppAllParams(MAVSDKParamAllParams* allParams
 
 
 
+@implementation MAVSDKParamAllParams
+@end
+
+
+
+
+
+
+
+
+@implementation MAVSDKParam
+
+mavsdk::Param *param;
+
+
++(id)alloc{
+    return [super alloc];
+}
+
+- (id)initWithMavsdkSwift2Impl:(MavsdkSwift2Impl*)mavsdkSwift2Impl {
+    param = new mavsdk::Param(*[mavsdkSwift2Impl mavsdkSystem]);
+    return [super init];
+}
+
+
+- (MAVSDKParamResult)setParamInt:(NSString*)name :(SInt32)value {
+    return (MAVSDKParamResult)param->set_param_int([name UTF8String], value);
+}
+
+- (MAVSDKParamResult)setParamFloat:(NSString*)name :(float)value {
+    return (MAVSDKParamResult)param->set_param_float([name UTF8String], value);
+}
 
 
 
 @end
+

@@ -4,27 +4,6 @@
 #include <mavsdk/mavsdk.h>
 #include <mavsdk/plugins/info/info.h>
 
-@implementation MAVSDKInfo
-
-mavsdk::Info *info;
-
-
-+(id)alloc{
-    return [super alloc];
-}
-
-- (id)initWithMavsdkSwift2Impl:(MavsdkSwift2Impl*)mavsdkSwift2Impl {
-    info = new mavsdk::Info(*[mavsdkSwift2Impl mavsdkSystem]);
-    return [super init];
-}
-
-
-
-
-
-
-
-
 
 
 
@@ -62,6 +41,11 @@ mavsdk::Info::FlightInfo translateToCppFlightInfo(MAVSDKInfoFlightInfo* flightIn
 
 
 
+@implementation MAVSDKInfoFlightInfo
+@end
+
+
+
 MAVSDKInfoIdentification* translateFromCppIdentification(mavsdk::Info::Identification identification)
 {
     MAVSDKInfoIdentification *obj = [[MAVSDKInfoIdentification alloc] init];
@@ -86,6 +70,11 @@ mavsdk::Info::Identification translateToCppIdentification(MAVSDKInfoIdentificati
     
     return obj;
 }
+
+
+
+@implementation MAVSDKInfoIdentification
+@end
 
 
 
@@ -138,6 +127,11 @@ mavsdk::Info::Product translateToCppProduct(MAVSDKInfoProduct* product)
     
     return obj;
 }
+
+
+
+@implementation MAVSDKInfoProduct
+@end
 
 
 
@@ -249,7 +243,36 @@ mavsdk::Info::Version translateToCppVersion(MAVSDKInfoVersion* version)
 
 
 
+@implementation MAVSDKInfoVersion
+@end
+
+
+
+
+
+
+
+
+@implementation MAVSDKInfo
+
+mavsdk::Info *info;
+
+
++(id)alloc{
+    return [super alloc];
+}
+
+- (id)initWithMavsdkSwift2Impl:(MavsdkSwift2Impl*)mavsdkSwift2Impl {
+    info = new mavsdk::Info(*[mavsdkSwift2Impl mavsdkSystem]);
+    return [super init];
+}
+
+
+
+
+
 
 
 
 @end
+

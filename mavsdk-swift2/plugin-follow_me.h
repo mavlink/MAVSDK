@@ -22,10 +22,10 @@ typedef NS_ENUM(NSInteger, MAVSDKFollowMeFollowDirection)  {
     MAVSDKFollowMeFollowDirectionFrontLeft,
 };
 
-@property (nonatomic, assign) float minHeightM;
-@property (nonatomic, assign) float followDistanceM;
+@property (nonatomic, assign) float minHeightM; 
+@property (nonatomic, assign) float followDistanceM; 
 @property (nonatomic, assign) MAVSDKFollowMeFollowDirection followDirection;
-@property (nonatomic, assign) float responsiveness;
+@property (nonatomic, assign) float responsiveness; 
 
 
 @end
@@ -36,12 +36,12 @@ typedef NS_ENUM(NSInteger, MAVSDKFollowMeFollowDirection)  {
 @interface MAVSDKFollowMeTargetLocation : NSObject
 
 
-@property (nonatomic, assign) double latitudeDeg;
-@property (nonatomic, assign) double longitudeDeg;
-@property (nonatomic, assign) float absoluteAltitudeM;
-@property (nonatomic, assign) float velocityXMS;
-@property (nonatomic, assign) float velocityYMS;
-@property (nonatomic, assign) float velocityZMS;
+@property (nonatomic, assign) double latitudeDeg; 
+@property (nonatomic, assign) double longitudeDeg; 
+@property (nonatomic, assign) float absoluteAltitudeM; 
+@property (nonatomic, assign) float velocityXMS; 
+@property (nonatomic, assign) float velocityYMS; 
+@property (nonatomic, assign) float velocityZMS; 
 
 
 @end
