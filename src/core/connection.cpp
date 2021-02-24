@@ -7,12 +7,12 @@ namespace mavsdk {
 
 uint8_t Connection::_forwarding_connections_count = 0;
 
-Connection::Connection(receiver_callback_t receiver_callback, bool forward_messages) :
+Connection::Connection(receiver_callback_t receiver_callback, ForwardingOption forwarding_option) :
     _receiver_callback(receiver_callback),
     _mavlink_receiver(),
-    _forward_messages(forward_messages)
+    _forwarding_option(forwarding_option)
 {
-    if (forward_messages) {
+    if (forwarding_option == ForwardingOption::ForwardingOn) {
         _forwarding_connections_count++;
     }
 }
@@ -52,7 +52,7 @@ void Connection::receive_message(mavlink_message_t& message, Connection* connect
 
 bool Connection::do_forward_messages() const
 {
-    return _forward_messages;
+    return _forwarding_option == ForwardingOption::ForwardingOn;
 }
 
 uint8_t Connection::forwarding_connections_count() const

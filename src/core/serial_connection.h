@@ -17,7 +17,7 @@ public:
         const std::string& path,
         int baudrate,
         bool flow_control,
-        bool forward_messages = false);
+        ForwardingOption forwarding_option = ForwardingOption::ForwardingOff);
     ConnectionResult start() override;
     ConnectionResult stop() override;
     ~SerialConnection();

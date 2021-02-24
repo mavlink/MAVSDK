@@ -11,7 +11,9 @@ public:
     typedef std::function<void(mavlink_message_t& message, Connection* connection)>
         receiver_callback_t;
 
-    Connection(receiver_callback_t receiver_callback, bool forward_messages = false);
+    Connection(
+        receiver_callback_t receiver_callback,
+        ForwardingOption forwarding_option = ForwardingOption::ForwardingOff);
     virtual ~Connection();
 
     virtual ConnectionResult start() = 0;
@@ -33,7 +35,7 @@ protected:
 
     receiver_callback_t _receiver_callback{};
     std::unique_ptr<MAVLinkReceiver> _mavlink_receiver;
-    bool _forward_messages;
+    ForwardingOption _forwarding_option;
 
     static uint8_t _forwarding_connections_count;
 

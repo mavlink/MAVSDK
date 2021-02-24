@@ -29,8 +29,8 @@ TcpConnection::TcpConnection(
     Connection::receiver_callback_t receiver_callback,
     const std::string& remote_ip,
     int remote_port,
-    bool forward_messages) :
-    Connection(receiver_callback, forward_messages),
+    ForwardingOption forwarding_option) :
+    Connection(receiver_callback, forwarding_option),
     _remote_ip(remote_ip),
     _remote_port_number(remote_port),
     _should_exit(false)

@@ -49,8 +49,8 @@ SerialConnection::SerialConnection(
     const std::string& path,
     int baudrate,
     bool flow_control,
-    bool forward_messages) :
-    Connection(receiver_callback, forward_messages),
+    ForwardingOption forwarding_option) :
+    Connection(receiver_callback, forwarding_option),
     _serial_node(path),
     _baudrate(baudrate),
     _flow_control(flow_control)

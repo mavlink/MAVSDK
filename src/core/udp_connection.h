@@ -16,7 +16,7 @@ public:
         Connection::receiver_callback_t receiver_callback,
         const std::string& local_ip,
         int local_port,
-        bool forward_messages = false);
+        ForwardingOption forwarding_option = ForwardingOption::ForwardingOff);
     ~UdpConnection();
     ConnectionResult start() override;
     ConnectionResult stop() override;
