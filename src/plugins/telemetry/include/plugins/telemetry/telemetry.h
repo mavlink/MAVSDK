@@ -803,6 +803,7 @@ public:
         AngularVelocityFrd angular_velocity_frd{}; /**< @brief Angular velocity */
         MagneticFieldFrd magnetic_field_frd{}; /**< @brief Magnetic field */
         float temperature_degc{float(NAN)}; /**< @brief Temperature */
+        uint64_t timestamp_us{}; /**< @brief Timestamp in microseconds */
     };
 
     /**
@@ -1290,7 +1291,7 @@ public:
     using ImuCallback = std::function<void(Imu)>;
 
     /**
-     * @brief Subscribe to 'IMU' updates.
+     * @brief Subscribe to 'IMU' updates (in SI units in NED body frame).
      */
     void subscribe_imu(ImuCallback callback);
 
@@ -1300,6 +1301,42 @@ public:
      * @return One Imu update.
      */
     Imu imu() const;
+
+    /**
+     * @brief Callback type for subscribe_scaled_imu.
+     */
+
+    using ScaledImuCallback = std::function<void(Imu)>;
+
+    /**
+     * @brief Subscribe to 'Scaled IMU' updates.
+     */
+    void subscribe_scaled_imu(ScaledImuCallback callback);
+
+    /**
+     * @brief Poll for 'Imu' (blocking).
+     *
+     * @return One Imu update.
+     */
+    Imu scaled_imu() const;
+
+    /**
+     * @brief Callback type for subscribe_raw_imu.
+     */
+
+    using RawImuCallback = std::function<void(Imu)>;
+
+    /**
+     * @brief Subscribe to 'Raw IMU' updates.
+     */
+    void subscribe_raw_imu(RawImuCallback callback);
+
+    /**
+     * @brief Poll for 'Imu' (blocking).
+     *
+     * @return One Imu update.
+     */
+    Imu raw_imu() const;
 
     /**
      * @brief Callback type for subscribe_health_all_ok.
@@ -1637,6 +1674,38 @@ public:
      * @return Result of request.
      */
     Result set_rate_imu(double rate_hz) const;
+
+    /**
+     * @brief Set rate to 'Scaled IMU' updates.
+     *
+     * This function is non-blocking. See 'set_rate_scaled_imu' for the blocking counterpart.
+     */
+    void set_rate_scaled_imu_async(double rate_hz, const ResultCallback callback);
+
+    /**
+     * @brief Set rate to 'Scaled IMU' updates.
+     *
+     * This function is blocking. See 'set_rate_scaled_imu_async' for the non-blocking counterpart.
+     *
+     * @return Result of request.
+     */
+    Result set_rate_scaled_imu(double rate_hz) const;
+
+    /**
+     * @brief Set rate to 'Raw IMU' updates.
+     *
+     * This function is non-blocking. See 'set_rate_raw_imu' for the blocking counterpart.
+     */
+    void set_rate_raw_imu_async(double rate_hz, const ResultCallback callback);
+
+    /**
+     * @brief Set rate to 'Raw IMU' updates.
+     *
+     * This function is blocking. See 'set_rate_raw_imu_async' for the non-blocking counterpart.
+     *
+     * @return Result of request.
+     */
+    Result set_rate_raw_imu(double rate_hz) const;
 
     /**
      * @brief Set rate to 'unix epoch time' updates.

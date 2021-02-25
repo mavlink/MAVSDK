@@ -111,6 +111,16 @@ void TelemetryImpl::init()
         this);
 
     _parent->register_mavlink_message_handler(
+        MAVLINK_MSG_ID_SCALED_IMU,
+        std::bind(&TelemetryImpl::process_scaled_imu, this, _1),
+        this);
+
+    _parent->register_mavlink_message_handler(
+        MAVLINK_MSG_ID_RAW_IMU,
+        std::bind(&TelemetryImpl::process_raw_imu, this, _1),
+        this);
+
+    _parent->register_mavlink_message_handler(
         MAVLINK_MSG_ID_VFR_HUD,
         std::bind(&TelemetryImpl::process_fixedwing_metrics, this, _1),
         this);
@@ -265,6 +275,18 @@ Telemetry::Result TelemetryImpl::set_rate_imu(double rate_hz)
         _parent->set_msg_rate(MAVLINK_MSG_ID_HIGHRES_IMU, rate_hz));
 }
 
+Telemetry::Result TelemetryImpl::set_rate_scaled_imu(double rate_hz)
+{
+    return telemetry_result_from_command_result(
+        _parent->set_msg_rate(MAVLINK_MSG_ID_SCALED_IMU, rate_hz));
+}
+
+Telemetry::Result TelemetryImpl::set_rate_raw_imu(double rate_hz)
+{
+    return telemetry_result_from_command_result(
+        _parent->set_msg_rate(MAVLINK_MSG_ID_RAW_IMU, rate_hz));
+}
+
 Telemetry::Result TelemetryImpl::set_rate_fixedwing_metrics(double rate_hz)
 {
     return telemetry_result_from_command_result(
@@ -398,6 +420,22 @@ void TelemetryImpl::set_rate_imu_async(double rate_hz, Telemetry::ResultCallback
 {
     _parent->set_msg_rate_async(
         MAVLINK_MSG_ID_HIGHRES_IMU,
+        rate_hz,
+        std::bind(&TelemetryImpl::command_result_callback, std::placeholders::_1, callback));
+}
+
+void TelemetryImpl::set_rate_scaled_imu_async(double rate_hz, Telemetry::ResultCallback callback)
+{
+    _parent->set_msg_rate_async(
+        MAVLINK_MSG_ID_SCALED_IMU,
+        rate_hz,
+        std::bind(&TelemetryImpl::command_result_callback, std::placeholders::_1, callback));
+}
+
+void TelemetryImpl::set_rate_raw_imu_async(double rate_hz, Telemetry::ResultCallback callback)
+{
+    _parent->set_msg_rate_async(
+        MAVLINK_MSG_ID_RAW_IMU,
         rate_hz,
         std::bind(&TelemetryImpl::command_result_callback, std::placeholders::_1, callback));
 }
@@ -755,6 +793,7 @@ void TelemetryImpl::process_imu_reading_ned(const mavlink_message_t& message)
     new_imu.magnetic_field_frd.right_gauss = highres_imu.ymag;
     new_imu.magnetic_field_frd.down_gauss = highres_imu.zmag;
     new_imu.temperature_degc = highres_imu.temperature;
+    new_imu.timestamp_us = highres_imu.time_usec;
 
     set_imu_reading_ned(new_imu);
 
@@ -762,6 +801,60 @@ void TelemetryImpl::process_imu_reading_ned(const mavlink_message_t& message)
     if (_imu_reading_ned_subscription) {
         auto callback = _imu_reading_ned_subscription;
         auto arg = imu();
+        _parent->call_user_callback([callback, arg]() { callback(arg); });
+    }
+}
+
+void TelemetryImpl::process_scaled_imu(const mavlink_message_t& message)
+{
+    mavlink_scaled_imu_t scaled_imu_reading;
+    mavlink_msg_scaled_imu_decode(&message, &scaled_imu_reading);
+    Telemetry::Imu new_imu;
+    new_imu.acceleration_frd.forward_m_s2 = scaled_imu_reading.xacc;
+    new_imu.acceleration_frd.right_m_s2 = scaled_imu_reading.yacc;
+    new_imu.acceleration_frd.down_m_s2 = scaled_imu_reading.zacc;
+    new_imu.angular_velocity_frd.forward_rad_s = scaled_imu_reading.xgyro;
+    new_imu.angular_velocity_frd.right_rad_s = scaled_imu_reading.ygyro;
+    new_imu.angular_velocity_frd.down_rad_s = scaled_imu_reading.zgyro;
+    new_imu.magnetic_field_frd.forward_gauss = scaled_imu_reading.xmag;
+    new_imu.magnetic_field_frd.right_gauss = scaled_imu_reading.ymag;
+    new_imu.magnetic_field_frd.down_gauss = scaled_imu_reading.zmag;
+    new_imu.temperature_degc = scaled_imu_reading.temperature;
+    new_imu.timestamp_us = static_cast<uint64_t>(scaled_imu_reading.time_boot_ms) * 1000;
+
+    set_scaled_imu(new_imu);
+
+    std::lock_guard<std::mutex> lock(_subscription_mutex);
+    if (_scaled_imu_subscription) {
+        auto callback = _scaled_imu_subscription;
+        auto arg = scaled_imu();
+        _parent->call_user_callback([callback, arg]() { callback(arg); });
+    }
+}
+
+void TelemetryImpl::process_raw_imu(const mavlink_message_t& message)
+{
+    mavlink_raw_imu_t raw_imu_reading;
+    mavlink_msg_raw_imu_decode(&message, &raw_imu_reading);
+    Telemetry::Imu new_imu;
+    new_imu.acceleration_frd.forward_m_s2 = raw_imu_reading.xacc;
+    new_imu.acceleration_frd.right_m_s2 = raw_imu_reading.yacc;
+    new_imu.acceleration_frd.down_m_s2 = raw_imu_reading.zacc;
+    new_imu.angular_velocity_frd.forward_rad_s = raw_imu_reading.xgyro;
+    new_imu.angular_velocity_frd.right_rad_s = raw_imu_reading.ygyro;
+    new_imu.angular_velocity_frd.down_rad_s = raw_imu_reading.zgyro;
+    new_imu.magnetic_field_frd.forward_gauss = raw_imu_reading.xmag;
+    new_imu.magnetic_field_frd.right_gauss = raw_imu_reading.ymag;
+    new_imu.magnetic_field_frd.down_gauss = raw_imu_reading.zmag;
+    new_imu.temperature_degc = raw_imu_reading.temperature;
+    new_imu.timestamp_us = raw_imu_reading.time_usec;
+
+    set_raw_imu(new_imu);
+
+    std::lock_guard<std::mutex> lock(_subscription_mutex);
+    if (_raw_imu_subscription) {
+        auto callback = _raw_imu_subscription;
+        auto arg = raw_imu();
         _parent->call_user_callback([callback, arg]() { callback(arg); });
     }
 }
@@ -1477,6 +1570,30 @@ void TelemetryImpl::set_imu_reading_ned(Telemetry::Imu imu_reading_ned)
     _imu_reading_ned = imu_reading_ned;
 }
 
+Telemetry::Imu TelemetryImpl::scaled_imu() const
+{
+    std::lock_guard<std::mutex> lock(_scaled_imu_mutex);
+    return _scaled_imu;
+}
+
+void TelemetryImpl::set_scaled_imu(Telemetry::Imu scaled_imu)
+{
+    std::lock_guard<std::mutex> lock(_scaled_imu_mutex);
+    _scaled_imu = scaled_imu;
+}
+
+Telemetry::Imu TelemetryImpl::raw_imu() const
+{
+    std::lock_guard<std::mutex> lock(_raw_imu_mutex);
+    return _raw_imu;
+}
+
+void TelemetryImpl::set_raw_imu(Telemetry::Imu raw_imu)
+{
+    std::lock_guard<std::mutex> lock(_raw_imu_mutex);
+    _raw_imu = raw_imu;
+}
+
 Telemetry::GpsInfo TelemetryImpl::gps_info() const
 {
     std::lock_guard<std::mutex> lock(_gps_info_mutex);
@@ -1752,6 +1869,18 @@ void TelemetryImpl::subscribe_imu(Telemetry::ImuCallback& callback)
 {
     std::lock_guard<std::mutex> lock(_subscription_mutex);
     _imu_reading_ned_subscription = callback;
+}
+
+void TelemetryImpl::subscribe_scaled_imu(Telemetry::ScaledImuCallback& callback)
+{
+    std::lock_guard<std::mutex> lock(_subscription_mutex);
+    _scaled_imu_subscription = callback;
+}
+
+void TelemetryImpl::subscribe_raw_imu(Telemetry::RawImuCallback& callback)
+{
+    std::lock_guard<std::mutex> lock(_subscription_mutex);
+    _raw_imu_subscription = callback;
 }
 
 void TelemetryImpl::subscribe_gps_info(Telemetry::GpsInfoCallback& callback)

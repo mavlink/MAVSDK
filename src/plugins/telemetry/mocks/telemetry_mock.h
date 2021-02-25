@@ -39,6 +39,8 @@ public:
     MOCK_CONST_METHOD1(subscribe_ground_truth, void(Telemetry::GroundTruthCallback)){};
     MOCK_CONST_METHOD1(subscribe_fixedwing_metrics, void(Telemetry::FixedwingMetricsCallback)){};
     MOCK_CONST_METHOD1(subscribe_imu, void(Telemetry::ImuCallback)){};
+    MOCK_CONST_METHOD1(subscribe_scaled_imu, void(Telemetry::ScaledImuCallback)){};
+    MOCK_CONST_METHOD1(subscribe_raw_imu, void(Telemetry::RawImuCallback)){};
     MOCK_CONST_METHOD1(subscribe_health_all_ok, void(Telemetry::HealthAllOkCallback)){};
     MOCK_CONST_METHOD1(subscribe_unix_epoch_time, void(Telemetry::UnixEpochTimeCallback)){};
 
@@ -60,6 +62,8 @@ public:
     MOCK_METHOD1(set_rate_ground_truth, Telemetry::Result(double)){};
     MOCK_METHOD1(set_rate_fixedwing_metrics, Telemetry::Result(double)){};
     MOCK_METHOD1(set_rate_imu, Telemetry::Result(double)){};
+    MOCK_METHOD1(set_rate_scaled_imu, Telemetry::Result(double)){};
+    MOCK_METHOD1(set_rate_raw_imu, Telemetry::Result(double)){};
     MOCK_METHOD1(set_rate_unix_epoch_time, Telemetry::Result(double)){};
 
     MOCK_CONST_METHOD2(set_rate_position_async, void(double, Telemetry::ResultCallback)){};
@@ -83,6 +87,8 @@ public:
     MOCK_CONST_METHOD2(set_rate_ground_truth_async, void(double, Telemetry::ResultCallback)){};
     MOCK_CONST_METHOD2(set_rate_fixedwing_metrics_async, void(double, Telemetry::ResultCallback)){};
     MOCK_CONST_METHOD2(set_rate_imu_async, void(double, Telemetry::ResultCallback)){};
+    MOCK_CONST_METHOD2(set_rate_scaled_imu_async, void(double, Telemetry::ResultCallback)){};
+    MOCK_CONST_METHOD2(set_rate_raw_imu_async, void(double, Telemetry::ResultCallback)){};
     MOCK_CONST_METHOD2(set_rate_unix_epoch_time_async, void(double, Telemetry::ResultCallback)){};
 
     MOCK_METHOD0(

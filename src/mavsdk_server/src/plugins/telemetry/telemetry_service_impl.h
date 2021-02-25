@@ -1024,6 +1024,8 @@ public:
 
         rpc_obj->set_temperature_degc(imu.temperature_degc);
 
+        rpc_obj->set_timestamp_us(imu.timestamp_us);
+
         return rpc_obj;
     }
 
@@ -1038,6 +1040,8 @@ public:
         obj.magnetic_field_frd = translateFromRpcMagneticFieldFrd(imu.magnetic_field_frd());
 
         obj.temperature_degc = imu.temperature_degc();
+
+        obj.timestamp_us = imu.timestamp_us();
 
         return obj;
     }
@@ -1970,6 +1974,76 @@ public:
         return grpc::Status::OK;
     }
 
+    grpc::Status SubscribeScaledImu(
+        grpc::ServerContext* /* context */,
+        const mavsdk::rpc::telemetry::SubscribeScaledImuRequest* /* request */,
+        grpc::ServerWriter<rpc::telemetry::ScaledImuResponse>* writer) override
+    {
+        auto stream_closed_promise = std::make_shared<std::promise<void>>();
+        auto stream_closed_future = stream_closed_promise->get_future();
+        register_stream_stop_promise(stream_closed_promise);
+
+        auto is_finished = std::make_shared<bool>(false);
+
+        std::mutex subscribe_mutex{};
+
+        _telemetry.subscribe_scaled_imu(
+            [this, &writer, &stream_closed_promise, is_finished, &subscribe_mutex](
+                const mavsdk::Telemetry::Imu scaled_imu) {
+                rpc::telemetry::ScaledImuResponse rpc_response;
+
+                rpc_response.set_allocated_imu(translateToRpcImu(scaled_imu).release());
+
+                std::unique_lock<std::mutex> lock(subscribe_mutex);
+                if (!*is_finished && !writer->Write(rpc_response)) {
+                    _telemetry.subscribe_scaled_imu(nullptr);
+
+                    *is_finished = true;
+                    unregister_stream_stop_promise(stream_closed_promise);
+                    lock.unlock();
+                    stream_closed_promise->set_value();
+                }
+            });
+
+        stream_closed_future.wait();
+        return grpc::Status::OK;
+    }
+
+    grpc::Status SubscribeRawImu(
+        grpc::ServerContext* /* context */,
+        const mavsdk::rpc::telemetry::SubscribeRawImuRequest* /* request */,
+        grpc::ServerWriter<rpc::telemetry::RawImuResponse>* writer) override
+    {
+        auto stream_closed_promise = std::make_shared<std::promise<void>>();
+        auto stream_closed_future = stream_closed_promise->get_future();
+        register_stream_stop_promise(stream_closed_promise);
+
+        auto is_finished = std::make_shared<bool>(false);
+
+        std::mutex subscribe_mutex{};
+
+        _telemetry.subscribe_raw_imu(
+            [this, &writer, &stream_closed_promise, is_finished, &subscribe_mutex](
+                const mavsdk::Telemetry::Imu raw_imu) {
+                rpc::telemetry::RawImuResponse rpc_response;
+
+                rpc_response.set_allocated_imu(translateToRpcImu(raw_imu).release());
+
+                std::unique_lock<std::mutex> lock(subscribe_mutex);
+                if (!*is_finished && !writer->Write(rpc_response)) {
+                    _telemetry.subscribe_raw_imu(nullptr);
+
+                    *is_finished = true;
+                    unregister_stream_stop_promise(stream_closed_promise);
+                    lock.unlock();
+                    stream_closed_promise->set_value();
+                }
+            });
+
+        stream_closed_future.wait();
+        return grpc::Status::OK;
+    }
+
     grpc::Status SubscribeHealthAllOk(
         grpc::ServerContext* /* context */,
         const mavsdk::rpc::telemetry::SubscribeHealthAllOkRequest* /* request */,
@@ -2391,6 +2465,44 @@ public:
         }
 
         auto result = _telemetry.set_rate_imu(request->rate_hz());
+
+        if (response != nullptr) {
+            fillResponseWithResult(response, result);
+        }
+
+        return grpc::Status::OK;
+    }
+
+    grpc::Status SetRateScaledImu(
+        grpc::ServerContext* /* context */,
+        const rpc::telemetry::SetRateScaledImuRequest* request,
+        rpc::telemetry::SetRateScaledImuResponse* response) override
+    {
+        if (request == nullptr) {
+            LogWarn() << "SetRateScaledImu sent with a null request! Ignoring...";
+            return grpc::Status::OK;
+        }
+
+        auto result = _telemetry.set_rate_scaled_imu(request->rate_hz());
+
+        if (response != nullptr) {
+            fillResponseWithResult(response, result);
+        }
+
+        return grpc::Status::OK;
+    }
+
+    grpc::Status SetRateRawImu(
+        grpc::ServerContext* /* context */,
+        const rpc::telemetry::SetRateRawImuRequest* request,
+        rpc::telemetry::SetRateRawImuResponse* response) override
+    {
+        if (request == nullptr) {
+            LogWarn() << "SetRateRawImu sent with a null request! Ignoring...";
+            return grpc::Status::OK;
+        }
+
+        auto result = _telemetry.set_rate_raw_imu(request->rate_hz());
 
         if (response != nullptr) {
             fillResponseWithResult(response, result);

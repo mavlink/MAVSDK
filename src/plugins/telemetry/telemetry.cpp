@@ -286,6 +286,26 @@ Telemetry::Imu Telemetry::imu() const
     return _impl->imu();
 }
 
+void Telemetry::subscribe_scaled_imu(ScaledImuCallback callback)
+{
+    _impl->subscribe_scaled_imu(callback);
+}
+
+Telemetry::Imu Telemetry::scaled_imu() const
+{
+    return _impl->scaled_imu();
+}
+
+void Telemetry::subscribe_raw_imu(RawImuCallback callback)
+{
+    _impl->subscribe_raw_imu(callback);
+}
+
+Telemetry::Imu Telemetry::raw_imu() const
+{
+    return _impl->raw_imu();
+}
+
 void Telemetry::subscribe_health_all_ok(HealthAllOkCallback callback)
 {
     _impl->subscribe_health_all_ok(callback);
@@ -485,6 +505,26 @@ void Telemetry::set_rate_imu_async(double rate_hz, const ResultCallback callback
 Telemetry::Result Telemetry::set_rate_imu(double rate_hz) const
 {
     return _impl->set_rate_imu(rate_hz);
+}
+
+void Telemetry::set_rate_scaled_imu_async(double rate_hz, const ResultCallback callback)
+{
+    _impl->set_rate_scaled_imu_async(rate_hz, callback);
+}
+
+Telemetry::Result Telemetry::set_rate_scaled_imu(double rate_hz) const
+{
+    return _impl->set_rate_scaled_imu(rate_hz);
+}
+
+void Telemetry::set_rate_raw_imu_async(double rate_hz, const ResultCallback callback)
+{
+    _impl->set_rate_raw_imu_async(rate_hz, callback);
+}
+
+Telemetry::Result Telemetry::set_rate_raw_imu(double rate_hz) const
+{
+    return _impl->set_rate_raw_imu(rate_hz);
 }
 
 void Telemetry::set_rate_unix_epoch_time_async(double rate_hz, const ResultCallback callback)
@@ -1033,7 +1073,8 @@ bool operator==(const Telemetry::Imu& lhs, const Telemetry::Imu& rhs)
            (rhs.angular_velocity_frd == lhs.angular_velocity_frd) &&
            (rhs.magnetic_field_frd == lhs.magnetic_field_frd) &&
            ((std::isnan(rhs.temperature_degc) && std::isnan(lhs.temperature_degc)) ||
-            rhs.temperature_degc == lhs.temperature_degc);
+            rhs.temperature_degc == lhs.temperature_degc) &&
+           (rhs.timestamp_us == lhs.timestamp_us);
 }
 
 std::ostream& operator<<(std::ostream& str, Telemetry::Imu const& imu)
@@ -1044,6 +1085,7 @@ std::ostream& operator<<(std::ostream& str, Telemetry::Imu const& imu)
     str << "    angular_velocity_frd: " << imu.angular_velocity_frd << '\n';
     str << "    magnetic_field_frd: " << imu.magnetic_field_frd << '\n';
     str << "    temperature_degc: " << imu.temperature_degc << '\n';
+    str << "    timestamp_us: " << imu.timestamp_us << '\n';
     str << '}';
     return str;
 }

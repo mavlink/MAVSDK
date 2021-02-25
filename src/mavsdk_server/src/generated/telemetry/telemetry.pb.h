@@ -49,7 +49,7 @@ struct TableStruct_telemetry_2ftelemetry_2eproto {
     PROTOBUF_SECTION_VARIABLE(protodesc_cold);
   static const ::PROTOBUF_NAMESPACE_ID::internal::AuxiliaryParseTableField aux[]
     PROTOBUF_SECTION_VARIABLE(protodesc_cold);
-  static const ::PROTOBUF_NAMESPACE_ID::internal::ParseTable schema[125]
+  static const ::PROTOBUF_NAMESPACE_ID::internal::ParseTable schema[133]
     PROTOBUF_SECTION_VARIABLE(protodesc_cold);
   static const ::PROTOBUF_NAMESPACE_ID::internal::FieldMetadata field_metadata[];
   static const ::PROTOBUF_NAMESPACE_ID::internal::SerializationTable serialization_table[];
@@ -200,12 +200,18 @@ extern PositionVelocityNedResponseDefaultTypeInternal _PositionVelocityNedRespon
 class Quaternion;
 class QuaternionDefaultTypeInternal;
 extern QuaternionDefaultTypeInternal _Quaternion_default_instance_;
+class RawImuResponse;
+class RawImuResponseDefaultTypeInternal;
+extern RawImuResponseDefaultTypeInternal _RawImuResponse_default_instance_;
 class RcStatus;
 class RcStatusDefaultTypeInternal;
 extern RcStatusDefaultTypeInternal _RcStatus_default_instance_;
 class RcStatusResponse;
 class RcStatusResponseDefaultTypeInternal;
 extern RcStatusResponseDefaultTypeInternal _RcStatusResponse_default_instance_;
+class ScaledImuResponse;
+class ScaledImuResponseDefaultTypeInternal;
+extern ScaledImuResponseDefaultTypeInternal _ScaledImuResponse_default_instance_;
 class SetRateActuatorControlTargetRequest;
 class SetRateActuatorControlTargetRequestDefaultTypeInternal;
 extern SetRateActuatorControlTargetRequestDefaultTypeInternal _SetRateActuatorControlTargetRequest_default_instance_;
@@ -314,12 +320,24 @@ extern SetRatePositionVelocityNedRequestDefaultTypeInternal _SetRatePositionVelo
 class SetRatePositionVelocityNedResponse;
 class SetRatePositionVelocityNedResponseDefaultTypeInternal;
 extern SetRatePositionVelocityNedResponseDefaultTypeInternal _SetRatePositionVelocityNedResponse_default_instance_;
+class SetRateRawImuRequest;
+class SetRateRawImuRequestDefaultTypeInternal;
+extern SetRateRawImuRequestDefaultTypeInternal _SetRateRawImuRequest_default_instance_;
+class SetRateRawImuResponse;
+class SetRateRawImuResponseDefaultTypeInternal;
+extern SetRateRawImuResponseDefaultTypeInternal _SetRateRawImuResponse_default_instance_;
 class SetRateRcStatusRequest;
 class SetRateRcStatusRequestDefaultTypeInternal;
 extern SetRateRcStatusRequestDefaultTypeInternal _SetRateRcStatusRequest_default_instance_;
 class SetRateRcStatusResponse;
 class SetRateRcStatusResponseDefaultTypeInternal;
 extern SetRateRcStatusResponseDefaultTypeInternal _SetRateRcStatusResponse_default_instance_;
+class SetRateScaledImuRequest;
+class SetRateScaledImuRequestDefaultTypeInternal;
+extern SetRateScaledImuRequestDefaultTypeInternal _SetRateScaledImuRequest_default_instance_;
+class SetRateScaledImuResponse;
+class SetRateScaledImuResponseDefaultTypeInternal;
+extern SetRateScaledImuResponseDefaultTypeInternal _SetRateScaledImuResponse_default_instance_;
 class SetRateUnixEpochTimeRequest;
 class SetRateUnixEpochTimeRequestDefaultTypeInternal;
 extern SetRateUnixEpochTimeRequestDefaultTypeInternal _SetRateUnixEpochTimeRequest_default_instance_;
@@ -407,9 +425,15 @@ extern SubscribePositionRequestDefaultTypeInternal _SubscribePositionRequest_def
 class SubscribePositionVelocityNedRequest;
 class SubscribePositionVelocityNedRequestDefaultTypeInternal;
 extern SubscribePositionVelocityNedRequestDefaultTypeInternal _SubscribePositionVelocityNedRequest_default_instance_;
+class SubscribeRawImuRequest;
+class SubscribeRawImuRequestDefaultTypeInternal;
+extern SubscribeRawImuRequestDefaultTypeInternal _SubscribeRawImuRequest_default_instance_;
 class SubscribeRcStatusRequest;
 class SubscribeRcStatusRequestDefaultTypeInternal;
 extern SubscribeRcStatusRequestDefaultTypeInternal _SubscribeRcStatusRequest_default_instance_;
+class SubscribeScaledImuRequest;
+class SubscribeScaledImuRequestDefaultTypeInternal;
+extern SubscribeScaledImuRequestDefaultTypeInternal _SubscribeScaledImuRequest_default_instance_;
 class SubscribeStatusTextRequest;
 class SubscribeStatusTextRequestDefaultTypeInternal;
 extern SubscribeStatusTextRequestDefaultTypeInternal _SubscribeStatusTextRequest_default_instance_;
@@ -485,8 +509,10 @@ template<> ::mavsdk::rpc::telemetry::PositionResponse* Arena::CreateMaybeMessage
 template<> ::mavsdk::rpc::telemetry::PositionVelocityNed* Arena::CreateMaybeMessage<::mavsdk::rpc::telemetry::PositionVelocityNed>(Arena*);
 template<> ::mavsdk::rpc::telemetry::PositionVelocityNedResponse* Arena::CreateMaybeMessage<::mavsdk::rpc::telemetry::PositionVelocityNedResponse>(Arena*);
 template<> ::mavsdk::rpc::telemetry::Quaternion* Arena::CreateMaybeMessage<::mavsdk::rpc::telemetry::Quaternion>(Arena*);
+template<> ::mavsdk::rpc::telemetry::RawImuResponse* Arena::CreateMaybeMessage<::mavsdk::rpc::telemetry::RawImuResponse>(Arena*);
 template<> ::mavsdk::rpc::telemetry::RcStatus* Arena::CreateMaybeMessage<::mavsdk::rpc::telemetry::RcStatus>(Arena*);
 template<> ::mavsdk::rpc::telemetry::RcStatusResponse* Arena::CreateMaybeMessage<::mavsdk::rpc::telemetry::RcStatusResponse>(Arena*);
+template<> ::mavsdk::rpc::telemetry::ScaledImuResponse* Arena::CreateMaybeMessage<::mavsdk::rpc::telemetry::ScaledImuResponse>(Arena*);
 template<> ::mavsdk::rpc::telemetry::SetRateActuatorControlTargetRequest* Arena::CreateMaybeMessage<::mavsdk::rpc::telemetry::SetRateActuatorControlTargetRequest>(Arena*);
 template<> ::mavsdk::rpc::telemetry::SetRateActuatorControlTargetResponse* Arena::CreateMaybeMessage<::mavsdk::rpc::telemetry::SetRateActuatorControlTargetResponse>(Arena*);
 template<> ::mavsdk::rpc::telemetry::SetRateActuatorOutputStatusRequest* Arena::CreateMaybeMessage<::mavsdk::rpc::telemetry::SetRateActuatorOutputStatusRequest>(Arena*);
@@ -523,8 +549,12 @@ template<> ::mavsdk::rpc::telemetry::SetRatePositionRequest* Arena::CreateMaybeM
 template<> ::mavsdk::rpc::telemetry::SetRatePositionResponse* Arena::CreateMaybeMessage<::mavsdk::rpc::telemetry::SetRatePositionResponse>(Arena*);
 template<> ::mavsdk::rpc::telemetry::SetRatePositionVelocityNedRequest* Arena::CreateMaybeMessage<::mavsdk::rpc::telemetry::SetRatePositionVelocityNedRequest>(Arena*);
 template<> ::mavsdk::rpc::telemetry::SetRatePositionVelocityNedResponse* Arena::CreateMaybeMessage<::mavsdk::rpc::telemetry::SetRatePositionVelocityNedResponse>(Arena*);
+template<> ::mavsdk::rpc::telemetry::SetRateRawImuRequest* Arena::CreateMaybeMessage<::mavsdk::rpc::telemetry::SetRateRawImuRequest>(Arena*);
+template<> ::mavsdk::rpc::telemetry::SetRateRawImuResponse* Arena::CreateMaybeMessage<::mavsdk::rpc::telemetry::SetRateRawImuResponse>(Arena*);
 template<> ::mavsdk::rpc::telemetry::SetRateRcStatusRequest* Arena::CreateMaybeMessage<::mavsdk::rpc::telemetry::SetRateRcStatusRequest>(Arena*);
 template<> ::mavsdk::rpc::telemetry::SetRateRcStatusResponse* Arena::CreateMaybeMessage<::mavsdk::rpc::telemetry::SetRateRcStatusResponse>(Arena*);
+template<> ::mavsdk::rpc::telemetry::SetRateScaledImuRequest* Arena::CreateMaybeMessage<::mavsdk::rpc::telemetry::SetRateScaledImuRequest>(Arena*);
+template<> ::mavsdk::rpc::telemetry::SetRateScaledImuResponse* Arena::CreateMaybeMessage<::mavsdk::rpc::telemetry::SetRateScaledImuResponse>(Arena*);
 template<> ::mavsdk::rpc::telemetry::SetRateUnixEpochTimeRequest* Arena::CreateMaybeMessage<::mavsdk::rpc::telemetry::SetRateUnixEpochTimeRequest>(Arena*);
 template<> ::mavsdk::rpc::telemetry::SetRateUnixEpochTimeResponse* Arena::CreateMaybeMessage<::mavsdk::rpc::telemetry::SetRateUnixEpochTimeResponse>(Arena*);
 template<> ::mavsdk::rpc::telemetry::SetRateVelocityNedRequest* Arena::CreateMaybeMessage<::mavsdk::rpc::telemetry::SetRateVelocityNedRequest>(Arena*);
@@ -554,7 +584,9 @@ template<> ::mavsdk::rpc::telemetry::SubscribeLandedStateRequest* Arena::CreateM
 template<> ::mavsdk::rpc::telemetry::SubscribeOdometryRequest* Arena::CreateMaybeMessage<::mavsdk::rpc::telemetry::SubscribeOdometryRequest>(Arena*);
 template<> ::mavsdk::rpc::telemetry::SubscribePositionRequest* Arena::CreateMaybeMessage<::mavsdk::rpc::telemetry::SubscribePositionRequest>(Arena*);
 template<> ::mavsdk::rpc::telemetry::SubscribePositionVelocityNedRequest* Arena::CreateMaybeMessage<::mavsdk::rpc::telemetry::SubscribePositionVelocityNedRequest>(Arena*);
+template<> ::mavsdk::rpc::telemetry::SubscribeRawImuRequest* Arena::CreateMaybeMessage<::mavsdk::rpc::telemetry::SubscribeRawImuRequest>(Arena*);
 template<> ::mavsdk::rpc::telemetry::SubscribeRcStatusRequest* Arena::CreateMaybeMessage<::mavsdk::rpc::telemetry::SubscribeRcStatusRequest>(Arena*);
+template<> ::mavsdk::rpc::telemetry::SubscribeScaledImuRequest* Arena::CreateMaybeMessage<::mavsdk::rpc::telemetry::SubscribeScaledImuRequest>(Arena*);
 template<> ::mavsdk::rpc::telemetry::SubscribeStatusTextRequest* Arena::CreateMaybeMessage<::mavsdk::rpc::telemetry::SubscribeStatusTextRequest>(Arena*);
 template<> ::mavsdk::rpc::telemetry::SubscribeUnixEpochTimeRequest* Arena::CreateMaybeMessage<::mavsdk::rpc::telemetry::SubscribeUnixEpochTimeRequest>(Arena*);
 template<> ::mavsdk::rpc::telemetry::SubscribeVelocityNedRequest* Arena::CreateMaybeMessage<::mavsdk::rpc::telemetry::SubscribeVelocityNedRequest>(Arena*);
@@ -7198,6 +7230,546 @@ class ImuResponse PROTOBUF_FINAL :
 };
 // -------------------------------------------------------------------
 
+class SubscribeScaledImuRequest PROTOBUF_FINAL :
+    public ::PROTOBUF_NAMESPACE_ID::Message /* @@protoc_insertion_point(class_definition:mavsdk.rpc.telemetry.SubscribeScaledImuRequest) */ {
+ public:
+  inline SubscribeScaledImuRequest() : SubscribeScaledImuRequest(nullptr) {}
+  virtual ~SubscribeScaledImuRequest();
+
+  SubscribeScaledImuRequest(const SubscribeScaledImuRequest& from);
+  SubscribeScaledImuRequest(SubscribeScaledImuRequest&& from) noexcept
+    : SubscribeScaledImuRequest() {
+    *this = ::std::move(from);
+  }
+
+  inline SubscribeScaledImuRequest& operator=(const SubscribeScaledImuRequest& from) {
+    CopyFrom(from);
+    return *this;
+  }
+  inline SubscribeScaledImuRequest& operator=(SubscribeScaledImuRequest&& from) noexcept {
+    if (GetArena() == from.GetArena()) {
+      if (this != &from) InternalSwap(&from);
+    } else {
+      CopyFrom(from);
+    }
+    return *this;
+  }
+
+  static const ::PROTOBUF_NAMESPACE_ID::Descriptor* descriptor() {
+    return GetDescriptor();
+  }
+  static const ::PROTOBUF_NAMESPACE_ID::Descriptor* GetDescriptor() {
+    return GetMetadataStatic().descriptor;
+  }
+  static const ::PROTOBUF_NAMESPACE_ID::Reflection* GetReflection() {
+    return GetMetadataStatic().reflection;
+  }
+  static const SubscribeScaledImuRequest& default_instance();
+
+  static void InitAsDefaultInstance();  // FOR INTERNAL USE ONLY
+  static inline const SubscribeScaledImuRequest* internal_default_instance() {
+    return reinterpret_cast<const SubscribeScaledImuRequest*>(
+               &_SubscribeScaledImuRequest_default_instance_);
+  }
+  static constexpr int kIndexInFileMessages =
+    48;
+
+  friend void swap(SubscribeScaledImuRequest& a, SubscribeScaledImuRequest& b) {
+    a.Swap(&b);
+  }
+  inline void Swap(SubscribeScaledImuRequest* other) {
+    if (other == this) return;
+    if (GetArena() == other->GetArena()) {
+      InternalSwap(other);
+    } else {
+      ::PROTOBUF_NAMESPACE_ID::internal::GenericSwap(this, other);
+    }
+  }
+  void UnsafeArenaSwap(SubscribeScaledImuRequest* other) {
+    if (other == this) return;
+    GOOGLE_DCHECK(GetArena() == other->GetArena());
+    InternalSwap(other);
+  }
+
+  // implements Message ----------------------------------------------
+
+  inline SubscribeScaledImuRequest* New() const final {
+    return CreateMaybeMessage<SubscribeScaledImuRequest>(nullptr);
+  }
+
+  SubscribeScaledImuRequest* New(::PROTOBUF_NAMESPACE_ID::Arena* arena) const final {
+    return CreateMaybeMessage<SubscribeScaledImuRequest>(arena);
+  }
+  void CopyFrom(const ::PROTOBUF_NAMESPACE_ID::Message& from) final;
+  void MergeFrom(const ::PROTOBUF_NAMESPACE_ID::Message& from) final;
+  void CopyFrom(const SubscribeScaledImuRequest& from);
+  void MergeFrom(const SubscribeScaledImuRequest& from);
+  PROTOBUF_ATTRIBUTE_REINITIALIZES void Clear() final;
+  bool IsInitialized() const final;
+
+  size_t ByteSizeLong() const final;
+  const char* _InternalParse(const char* ptr, ::PROTOBUF_NAMESPACE_ID::internal::ParseContext* ctx) final;
+  ::PROTOBUF_NAMESPACE_ID::uint8* _InternalSerialize(
+      ::PROTOBUF_NAMESPACE_ID::uint8* target, ::PROTOBUF_NAMESPACE_ID::io::EpsCopyOutputStream* stream) const final;
+  int GetCachedSize() const final { return _cached_size_.Get(); }
+
+  private:
+  inline void SharedCtor();
+  inline void SharedDtor();
+  void SetCachedSize(int size) const final;
+  void InternalSwap(SubscribeScaledImuRequest* other);
+  friend class ::PROTOBUF_NAMESPACE_ID::internal::AnyMetadata;
+  static ::PROTOBUF_NAMESPACE_ID::StringPiece FullMessageName() {
+    return "mavsdk.rpc.telemetry.SubscribeScaledImuRequest";
+  }
+  protected:
+  explicit SubscribeScaledImuRequest(::PROTOBUF_NAMESPACE_ID::Arena* arena);
+  private:
+  static void ArenaDtor(void* object);
+  inline void RegisterArenaDtor(::PROTOBUF_NAMESPACE_ID::Arena* arena);
+  public:
+
+  ::PROTOBUF_NAMESPACE_ID::Metadata GetMetadata() const final;
+  private:
+  static ::PROTOBUF_NAMESPACE_ID::Metadata GetMetadataStatic() {
+    ::PROTOBUF_NAMESPACE_ID::internal::AssignDescriptors(&::descriptor_table_telemetry_2ftelemetry_2eproto);
+    return ::descriptor_table_telemetry_2ftelemetry_2eproto.file_level_metadata[kIndexInFileMessages];
+  }
+
+  public:
+
+  // nested types ----------------------------------------------------
+
+  // accessors -------------------------------------------------------
+
+  // @@protoc_insertion_point(class_scope:mavsdk.rpc.telemetry.SubscribeScaledImuRequest)
+ private:
+  class _Internal;
+
+  template <typename T> friend class ::PROTOBUF_NAMESPACE_ID::Arena::InternalHelper;
+  typedef void InternalArenaConstructable_;
+  typedef void DestructorSkippable_;
+  mutable ::PROTOBUF_NAMESPACE_ID::internal::CachedSize _cached_size_;
+  friend struct ::TableStruct_telemetry_2ftelemetry_2eproto;
+};
+// -------------------------------------------------------------------
+
+class ScaledImuResponse PROTOBUF_FINAL :
+    public ::PROTOBUF_NAMESPACE_ID::Message /* @@protoc_insertion_point(class_definition:mavsdk.rpc.telemetry.ScaledImuResponse) */ {
+ public:
+  inline ScaledImuResponse() : ScaledImuResponse(nullptr) {}
+  virtual ~ScaledImuResponse();
+
+  ScaledImuResponse(const ScaledImuResponse& from);
+  ScaledImuResponse(ScaledImuResponse&& from) noexcept
+    : ScaledImuResponse() {
+    *this = ::std::move(from);
+  }
+
+  inline ScaledImuResponse& operator=(const ScaledImuResponse& from) {
+    CopyFrom(from);
+    return *this;
+  }
+  inline ScaledImuResponse& operator=(ScaledImuResponse&& from) noexcept {
+    if (GetArena() == from.GetArena()) {
+      if (this != &from) InternalSwap(&from);
+    } else {
+      CopyFrom(from);
+    }
+    return *this;
+  }
+
+  static const ::PROTOBUF_NAMESPACE_ID::Descriptor* descriptor() {
+    return GetDescriptor();
+  }
+  static const ::PROTOBUF_NAMESPACE_ID::Descriptor* GetDescriptor() {
+    return GetMetadataStatic().descriptor;
+  }
+  static const ::PROTOBUF_NAMESPACE_ID::Reflection* GetReflection() {
+    return GetMetadataStatic().reflection;
+  }
+  static const ScaledImuResponse& default_instance();
+
+  static void InitAsDefaultInstance();  // FOR INTERNAL USE ONLY
+  static inline const ScaledImuResponse* internal_default_instance() {
+    return reinterpret_cast<const ScaledImuResponse*>(
+               &_ScaledImuResponse_default_instance_);
+  }
+  static constexpr int kIndexInFileMessages =
+    49;
+
+  friend void swap(ScaledImuResponse& a, ScaledImuResponse& b) {
+    a.Swap(&b);
+  }
+  inline void Swap(ScaledImuResponse* other) {
+    if (other == this) return;
+    if (GetArena() == other->GetArena()) {
+      InternalSwap(other);
+    } else {
+      ::PROTOBUF_NAMESPACE_ID::internal::GenericSwap(this, other);
+    }
+  }
+  void UnsafeArenaSwap(ScaledImuResponse* other) {
+    if (other == this) return;
+    GOOGLE_DCHECK(GetArena() == other->GetArena());
+    InternalSwap(other);
+  }
+
+  // implements Message ----------------------------------------------
+
+  inline ScaledImuResponse* New() const final {
+    return CreateMaybeMessage<ScaledImuResponse>(nullptr);
+  }
+
+  ScaledImuResponse* New(::PROTOBUF_NAMESPACE_ID::Arena* arena) const final {
+    return CreateMaybeMessage<ScaledImuResponse>(arena);
+  }
+  void CopyFrom(const ::PROTOBUF_NAMESPACE_ID::Message& from) final;
+  void MergeFrom(const ::PROTOBUF_NAMESPACE_ID::Message& from) final;
+  void CopyFrom(const ScaledImuResponse& from);
+  void MergeFrom(const ScaledImuResponse& from);
+  PROTOBUF_ATTRIBUTE_REINITIALIZES void Clear() final;
+  bool IsInitialized() const final;
+
+  size_t ByteSizeLong() const final;
+  const char* _InternalParse(const char* ptr, ::PROTOBUF_NAMESPACE_ID::internal::ParseContext* ctx) final;
+  ::PROTOBUF_NAMESPACE_ID::uint8* _InternalSerialize(
+      ::PROTOBUF_NAMESPACE_ID::uint8* target, ::PROTOBUF_NAMESPACE_ID::io::EpsCopyOutputStream* stream) const final;
+  int GetCachedSize() const final { return _cached_size_.Get(); }
+
+  private:
+  inline void SharedCtor();
+  inline void SharedDtor();
+  void SetCachedSize(int size) const final;
+  void InternalSwap(ScaledImuResponse* other);
+  friend class ::PROTOBUF_NAMESPACE_ID::internal::AnyMetadata;
+  static ::PROTOBUF_NAMESPACE_ID::StringPiece FullMessageName() {
+    return "mavsdk.rpc.telemetry.ScaledImuResponse";
+  }
+  protected:
+  explicit ScaledImuResponse(::PROTOBUF_NAMESPACE_ID::Arena* arena);
+  private:
+  static void ArenaDtor(void* object);
+  inline void RegisterArenaDtor(::PROTOBUF_NAMESPACE_ID::Arena* arena);
+  public:
+
+  ::PROTOBUF_NAMESPACE_ID::Metadata GetMetadata() const final;
+  private:
+  static ::PROTOBUF_NAMESPACE_ID::Metadata GetMetadataStatic() {
+    ::PROTOBUF_NAMESPACE_ID::internal::AssignDescriptors(&::descriptor_table_telemetry_2ftelemetry_2eproto);
+    return ::descriptor_table_telemetry_2ftelemetry_2eproto.file_level_metadata[kIndexInFileMessages];
+  }
+
+  public:
+
+  // nested types ----------------------------------------------------
+
+  // accessors -------------------------------------------------------
+
+  enum : int {
+    kImuFieldNumber = 1,
+  };
+  // .mavsdk.rpc.telemetry.Imu imu = 1;
+  bool has_imu() const;
+  private:
+  bool _internal_has_imu() const;
+  public:
+  void clear_imu();
+  const ::mavsdk::rpc::telemetry::Imu& imu() const;
+  ::mavsdk::rpc::telemetry::Imu* release_imu();
+  ::mavsdk::rpc::telemetry::Imu* mutable_imu();
+  void set_allocated_imu(::mavsdk::rpc::telemetry::Imu* imu);
+  private:
+  const ::mavsdk::rpc::telemetry::Imu& _internal_imu() const;
+  ::mavsdk::rpc::telemetry::Imu* _internal_mutable_imu();
+  public:
+  void unsafe_arena_set_allocated_imu(
+      ::mavsdk::rpc::telemetry::Imu* imu);
+  ::mavsdk::rpc::telemetry::Imu* unsafe_arena_release_imu();
+
+  // @@protoc_insertion_point(class_scope:mavsdk.rpc.telemetry.ScaledImuResponse)
+ private:
+  class _Internal;
+
+  template <typename T> friend class ::PROTOBUF_NAMESPACE_ID::Arena::InternalHelper;
+  typedef void InternalArenaConstructable_;
+  typedef void DestructorSkippable_;
+  ::mavsdk::rpc::telemetry::Imu* imu_;
+  mutable ::PROTOBUF_NAMESPACE_ID::internal::CachedSize _cached_size_;
+  friend struct ::TableStruct_telemetry_2ftelemetry_2eproto;
+};
+// -------------------------------------------------------------------
+
+class SubscribeRawImuRequest PROTOBUF_FINAL :
+    public ::PROTOBUF_NAMESPACE_ID::Message /* @@protoc_insertion_point(class_definition:mavsdk.rpc.telemetry.SubscribeRawImuRequest) */ {
+ public:
+  inline SubscribeRawImuRequest() : SubscribeRawImuRequest(nullptr) {}
+  virtual ~SubscribeRawImuRequest();
+
+  SubscribeRawImuRequest(const SubscribeRawImuRequest& from);
+  SubscribeRawImuRequest(SubscribeRawImuRequest&& from) noexcept
+    : SubscribeRawImuRequest() {
+    *this = ::std::move(from);
+  }
+
+  inline SubscribeRawImuRequest& operator=(const SubscribeRawImuRequest& from) {
+    CopyFrom(from);
+    return *this;
+  }
+  inline SubscribeRawImuRequest& operator=(SubscribeRawImuRequest&& from) noexcept {
+    if (GetArena() == from.GetArena()) {
+      if (this != &from) InternalSwap(&from);
+    } else {
+      CopyFrom(from);
+    }
+    return *this;
+  }
+
+  static const ::PROTOBUF_NAMESPACE_ID::Descriptor* descriptor() {
+    return GetDescriptor();
+  }
+  static const ::PROTOBUF_NAMESPACE_ID::Descriptor* GetDescriptor() {
+    return GetMetadataStatic().descriptor;
+  }
+  static const ::PROTOBUF_NAMESPACE_ID::Reflection* GetReflection() {
+    return GetMetadataStatic().reflection;
+  }
+  static const SubscribeRawImuRequest& default_instance();
+
+  static void InitAsDefaultInstance();  // FOR INTERNAL USE ONLY
+  static inline const SubscribeRawImuRequest* internal_default_instance() {
+    return reinterpret_cast<const SubscribeRawImuRequest*>(
+               &_SubscribeRawImuRequest_default_instance_);
+  }
+  static constexpr int kIndexInFileMessages =
+    50;
+
+  friend void swap(SubscribeRawImuRequest& a, SubscribeRawImuRequest& b) {
+    a.Swap(&b);
+  }
+  inline void Swap(SubscribeRawImuRequest* other) {
+    if (other == this) return;
+    if (GetArena() == other->GetArena()) {
+      InternalSwap(other);
+    } else {
+      ::PROTOBUF_NAMESPACE_ID::internal::GenericSwap(this, other);
+    }
+  }
+  void UnsafeArenaSwap(SubscribeRawImuRequest* other) {
+    if (other == this) return;
+    GOOGLE_DCHECK(GetArena() == other->GetArena());
+    InternalSwap(other);
+  }
+
+  // implements Message ----------------------------------------------
+
+  inline SubscribeRawImuRequest* New() const final {
+    return CreateMaybeMessage<SubscribeRawImuRequest>(nullptr);
+  }
+
+  SubscribeRawImuRequest* New(::PROTOBUF_NAMESPACE_ID::Arena* arena) const final {
+    return CreateMaybeMessage<SubscribeRawImuRequest>(arena);
+  }
+  void CopyFrom(const ::PROTOBUF_NAMESPACE_ID::Message& from) final;
+  void MergeFrom(const ::PROTOBUF_NAMESPACE_ID::Message& from) final;
+  void CopyFrom(const SubscribeRawImuRequest& from);
+  void MergeFrom(const SubscribeRawImuRequest& from);
+  PROTOBUF_ATTRIBUTE_REINITIALIZES void Clear() final;
+  bool IsInitialized() const final;
+
+  size_t ByteSizeLong() const final;
+  const char* _InternalParse(const char* ptr, ::PROTOBUF_NAMESPACE_ID::internal::ParseContext* ctx) final;
+  ::PROTOBUF_NAMESPACE_ID::uint8* _InternalSerialize(
+      ::PROTOBUF_NAMESPACE_ID::uint8* target, ::PROTOBUF_NAMESPACE_ID::io::EpsCopyOutputStream* stream) const final;
+  int GetCachedSize() const final { return _cached_size_.Get(); }
+
+  private:
+  inline void SharedCtor();
+  inline void SharedDtor();
+  void SetCachedSize(int size) const final;
+  void InternalSwap(SubscribeRawImuRequest* other);
+  friend class ::PROTOBUF_NAMESPACE_ID::internal::AnyMetadata;
+  static ::PROTOBUF_NAMESPACE_ID::StringPiece FullMessageName() {
+    return "mavsdk.rpc.telemetry.SubscribeRawImuRequest";
+  }
+  protected:
+  explicit SubscribeRawImuRequest(::PROTOBUF_NAMESPACE_ID::Arena* arena);
+  private:
+  static void ArenaDtor(void* object);
+  inline void RegisterArenaDtor(::PROTOBUF_NAMESPACE_ID::Arena* arena);
+  public:
+
+  ::PROTOBUF_NAMESPACE_ID::Metadata GetMetadata() const final;
+  private:
+  static ::PROTOBUF_NAMESPACE_ID::Metadata GetMetadataStatic() {
+    ::PROTOBUF_NAMESPACE_ID::internal::AssignDescriptors(&::descriptor_table_telemetry_2ftelemetry_2eproto);
+    return ::descriptor_table_telemetry_2ftelemetry_2eproto.file_level_metadata[kIndexInFileMessages];
+  }
+
+  public:
+
+  // nested types ----------------------------------------------------
+
+  // accessors -------------------------------------------------------
+
+  // @@protoc_insertion_point(class_scope:mavsdk.rpc.telemetry.SubscribeRawImuRequest)
+ private:
+  class _Internal;
+
+  template <typename T> friend class ::PROTOBUF_NAMESPACE_ID::Arena::InternalHelper;
+  typedef void InternalArenaConstructable_;
+  typedef void DestructorSkippable_;
+  mutable ::PROTOBUF_NAMESPACE_ID::internal::CachedSize _cached_size_;
+  friend struct ::TableStruct_telemetry_2ftelemetry_2eproto;
+};
+// -------------------------------------------------------------------
+
+class RawImuResponse PROTOBUF_FINAL :
+    public ::PROTOBUF_NAMESPACE_ID::Message /* @@protoc_insertion_point(class_definition:mavsdk.rpc.telemetry.RawImuResponse) */ {
+ public:
+  inline RawImuResponse() : RawImuResponse(nullptr) {}
+  virtual ~RawImuResponse();
+
+  RawImuResponse(const RawImuResponse& from);
+  RawImuResponse(RawImuResponse&& from) noexcept
+    : RawImuResponse() {
+    *this = ::std::move(from);
+  }
+
+  inline RawImuResponse& operator=(const RawImuResponse& from) {
+    CopyFrom(from);
+    return *this;
+  }
+  inline RawImuResponse& operator=(RawImuResponse&& from) noexcept {
+    if (GetArena() == from.GetArena()) {
+      if (this != &from) InternalSwap(&from);
+    } else {
+      CopyFrom(from);
+    }
+    return *this;
+  }
+
+  static const ::PROTOBUF_NAMESPACE_ID::Descriptor* descriptor() {
+    return GetDescriptor();
+  }
+  static const ::PROTOBUF_NAMESPACE_ID::Descriptor* GetDescriptor() {
+    return GetMetadataStatic().descriptor;
+  }
+  static const ::PROTOBUF_NAMESPACE_ID::Reflection* GetReflection() {
+    return GetMetadataStatic().reflection;
+  }
+  static const RawImuResponse& default_instance();
+
+  static void InitAsDefaultInstance();  // FOR INTERNAL USE ONLY
+  static inline const RawImuResponse* internal_default_instance() {
+    return reinterpret_cast<const RawImuResponse*>(
+               &_RawImuResponse_default_instance_);
+  }
+  static constexpr int kIndexInFileMessages =
+    51;
+
+  friend void swap(RawImuResponse& a, RawImuResponse& b) {
+    a.Swap(&b);
+  }
+  inline void Swap(RawImuResponse* other) {
+    if (other == this) return;
+    if (GetArena() == other->GetArena()) {
+      InternalSwap(other);
+    } else {
+      ::PROTOBUF_NAMESPACE_ID::internal::GenericSwap(this, other);
+    }
+  }
+  void UnsafeArenaSwap(RawImuResponse* other) {
+    if (other == this) return;
+    GOOGLE_DCHECK(GetArena() == other->GetArena());
+    InternalSwap(other);
+  }
+
+  // implements Message ----------------------------------------------
+
+  inline RawImuResponse* New() const final {
+    return CreateMaybeMessage<RawImuResponse>(nullptr);
+  }
+
+  RawImuResponse* New(::PROTOBUF_NAMESPACE_ID::Arena* arena) const final {
+    return CreateMaybeMessage<RawImuResponse>(arena);
+  }
+  void CopyFrom(const ::PROTOBUF_NAMESPACE_ID::Message& from) final;
+  void MergeFrom(const ::PROTOBUF_NAMESPACE_ID::Message& from) final;
+  void CopyFrom(const RawImuResponse& from);
+  void MergeFrom(const RawImuResponse& from);
+  PROTOBUF_ATTRIBUTE_REINITIALIZES void Clear() final;
+  bool IsInitialized() const final;
+
+  size_t ByteSizeLong() const final;
+  const char* _InternalParse(const char* ptr, ::PROTOBUF_NAMESPACE_ID::internal::ParseContext* ctx) final;
+  ::PROTOBUF_NAMESPACE_ID::uint8* _InternalSerialize(
+      ::PROTOBUF_NAMESPACE_ID::uint8* target, ::PROTOBUF_NAMESPACE_ID::io::EpsCopyOutputStream* stream) const final;
+  int GetCachedSize() const final { return _cached_size_.Get(); }
+
+  private:
+  inline void SharedCtor();
+  inline void SharedDtor();
+  void SetCachedSize(int size) const final;
+  void InternalSwap(RawImuResponse* other);
+  friend class ::PROTOBUF_NAMESPACE_ID::internal::AnyMetadata;
+  static ::PROTOBUF_NAMESPACE_ID::StringPiece FullMessageName() {
+    return "mavsdk.rpc.telemetry.RawImuResponse";
+  }
+  protected:
+  explicit RawImuResponse(::PROTOBUF_NAMESPACE_ID::Arena* arena);
+  private:
+  static void ArenaDtor(void* object);
+  inline void RegisterArenaDtor(::PROTOBUF_NAMESPACE_ID::Arena* arena);
+  public:
+
+  ::PROTOBUF_NAMESPACE_ID::Metadata GetMetadata() const final;
+  private:
+  static ::PROTOBUF_NAMESPACE_ID::Metadata GetMetadataStatic() {
+    ::PROTOBUF_NAMESPACE_ID::internal::AssignDescriptors(&::descriptor_table_telemetry_2ftelemetry_2eproto);
+    return ::descriptor_table_telemetry_2ftelemetry_2eproto.file_level_metadata[kIndexInFileMessages];
+  }
+
+  public:
+
+  // nested types ----------------------------------------------------
+
+  // accessors -------------------------------------------------------
+
+  enum : int {
+    kImuFieldNumber = 1,
+  };
+  // .mavsdk.rpc.telemetry.Imu imu = 1;
+  bool has_imu() const;
+  private:
+  bool _internal_has_imu() const;
+  public:
+  void clear_imu();
+  const ::mavsdk::rpc::telemetry::Imu& imu() const;
+  ::mavsdk::rpc::telemetry::Imu* release_imu();
+  ::mavsdk::rpc::telemetry::Imu* mutable_imu();
+  void set_allocated_imu(::mavsdk::rpc::telemetry::Imu* imu);
+  private:
+  const ::mavsdk::rpc::telemetry::Imu& _internal_imu() const;
+  ::mavsdk::rpc::telemetry::Imu* _internal_mutable_imu();
+  public:
+  void unsafe_arena_set_allocated_imu(
+      ::mavsdk::rpc::telemetry::Imu* imu);
+  ::mavsdk::rpc::telemetry::Imu* unsafe_arena_release_imu();
+
+  // @@protoc_insertion_point(class_scope:mavsdk.rpc.telemetry.RawImuResponse)
+ private:
+  class _Internal;
+
+  template <typename T> friend class ::PROTOBUF_NAMESPACE_ID::Arena::InternalHelper;
+  typedef void InternalArenaConstructable_;
+  typedef void DestructorSkippable_;
+  ::mavsdk::rpc::telemetry::Imu* imu_;
+  mutable ::PROTOBUF_NAMESPACE_ID::internal::CachedSize _cached_size_;
+  friend struct ::TableStruct_telemetry_2ftelemetry_2eproto;
+};
+// -------------------------------------------------------------------
+
 class SubscribeHealthAllOkRequest PROTOBUF_FINAL :
     public ::PROTOBUF_NAMESPACE_ID::Message /* @@protoc_insertion_point(class_definition:mavsdk.rpc.telemetry.SubscribeHealthAllOkRequest) */ {
  public:
@@ -7240,7 +7812,7 @@ class SubscribeHealthAllOkRequest PROTOBUF_FINAL :
                &_SubscribeHealthAllOkRequest_default_instance_);
   }
   static constexpr int kIndexInFileMessages =
-    48;
+    52;
 
   friend void swap(SubscribeHealthAllOkRequest& a, SubscribeHealthAllOkRequest& b) {
     a.Swap(&b);
@@ -7364,7 +7936,7 @@ class HealthAllOkResponse PROTOBUF_FINAL :
                &_HealthAllOkResponse_default_instance_);
   }
   static constexpr int kIndexInFileMessages =
-    49;
+    53;
 
   friend void swap(HealthAllOkResponse& a, HealthAllOkResponse& b) {
     a.Swap(&b);
@@ -7501,7 +8073,7 @@ class SubscribeUnixEpochTimeRequest PROTOBUF_FINAL :
                &_SubscribeUnixEpochTimeRequest_default_instance_);
   }
   static constexpr int kIndexInFileMessages =
-    50;
+    54;
 
   friend void swap(SubscribeUnixEpochTimeRequest& a, SubscribeUnixEpochTimeRequest& b) {
     a.Swap(&b);
@@ -7625,7 +8197,7 @@ class UnixEpochTimeResponse PROTOBUF_FINAL :
                &_UnixEpochTimeResponse_default_instance_);
   }
   static constexpr int kIndexInFileMessages =
-    51;
+    55;
 
   friend void swap(UnixEpochTimeResponse& a, UnixEpochTimeResponse& b) {
     a.Swap(&b);
@@ -7762,7 +8334,7 @@ class SubscribeDistanceSensorRequest PROTOBUF_FINAL :
                &_SubscribeDistanceSensorRequest_default_instance_);
   }
   static constexpr int kIndexInFileMessages =
-    52;
+    56;
 
   friend void swap(SubscribeDistanceSensorRequest& a, SubscribeDistanceSensorRequest& b) {
     a.Swap(&b);
@@ -7886,7 +8458,7 @@ class DistanceSensorResponse PROTOBUF_FINAL :
                &_DistanceSensorResponse_default_instance_);
   }
   static constexpr int kIndexInFileMessages =
-    53;
+    57;
 
   friend void swap(DistanceSensorResponse& a, DistanceSensorResponse& b) {
     a.Swap(&b);
@@ -8032,7 +8604,7 @@ class SetRatePositionRequest PROTOBUF_FINAL :
                &_SetRatePositionRequest_default_instance_);
   }
   static constexpr int kIndexInFileMessages =
-    54;
+    58;
 
   friend void swap(SetRatePositionRequest& a, SetRatePositionRequest& b) {
     a.Swap(&b);
@@ -8169,7 +8741,7 @@ class SetRatePositionResponse PROTOBUF_FINAL :
                &_SetRatePositionResponse_default_instance_);
   }
   static constexpr int kIndexInFileMessages =
-    55;
+    59;
 
   friend void swap(SetRatePositionResponse& a, SetRatePositionResponse& b) {
     a.Swap(&b);
@@ -8315,7 +8887,7 @@ class SetRateHomeRequest PROTOBUF_FINAL :
                &_SetRateHomeRequest_default_instance_);
   }
   static constexpr int kIndexInFileMessages =
-    56;
+    60;
 
   friend void swap(SetRateHomeRequest& a, SetRateHomeRequest& b) {
     a.Swap(&b);
@@ -8452,7 +9024,7 @@ class SetRateHomeResponse PROTOBUF_FINAL :
                &_SetRateHomeResponse_default_instance_);
   }
   static constexpr int kIndexInFileMessages =
-    57;
+    61;
 
   friend void swap(SetRateHomeResponse& a, SetRateHomeResponse& b) {
     a.Swap(&b);
@@ -8598,7 +9170,7 @@ class SetRateInAirRequest PROTOBUF_FINAL :
                &_SetRateInAirRequest_default_instance_);
   }
   static constexpr int kIndexInFileMessages =
-    58;
+    62;
 
   friend void swap(SetRateInAirRequest& a, SetRateInAirRequest& b) {
     a.Swap(&b);
@@ -8735,7 +9307,7 @@ class SetRateInAirResponse PROTOBUF_FINAL :
                &_SetRateInAirResponse_default_instance_);
   }
   static constexpr int kIndexInFileMessages =
-    59;
+    63;
 
   friend void swap(SetRateInAirResponse& a, SetRateInAirResponse& b) {
     a.Swap(&b);
@@ -8881,7 +9453,7 @@ class SetRateLandedStateRequest PROTOBUF_FINAL :
                &_SetRateLandedStateRequest_default_instance_);
   }
   static constexpr int kIndexInFileMessages =
-    60;
+    64;
 
   friend void swap(SetRateLandedStateRequest& a, SetRateLandedStateRequest& b) {
     a.Swap(&b);
@@ -9018,7 +9590,7 @@ class SetRateLandedStateResponse PROTOBUF_FINAL :
                &_SetRateLandedStateResponse_default_instance_);
   }
   static constexpr int kIndexInFileMessages =
-    61;
+    65;
 
   friend void swap(SetRateLandedStateResponse& a, SetRateLandedStateResponse& b) {
     a.Swap(&b);
@@ -9164,7 +9736,7 @@ class SetRateAttitudeRequest PROTOBUF_FINAL :
                &_SetRateAttitudeRequest_default_instance_);
   }
   static constexpr int kIndexInFileMessages =
-    62;
+    66;
 
   friend void swap(SetRateAttitudeRequest& a, SetRateAttitudeRequest& b) {
     a.Swap(&b);
@@ -9301,7 +9873,7 @@ class SetRateAttitudeResponse PROTOBUF_FINAL :
                &_SetRateAttitudeResponse_default_instance_);
   }
   static constexpr int kIndexInFileMessages =
-    63;
+    67;
 
   friend void swap(SetRateAttitudeResponse& a, SetRateAttitudeResponse& b) {
     a.Swap(&b);
@@ -9447,7 +10019,7 @@ class SetRateAttitudeAngularVelocityBodyRequest PROTOBUF_FINAL :
                &_SetRateAttitudeAngularVelocityBodyRequest_default_instance_);
   }
   static constexpr int kIndexInFileMessages =
-    64;
+    68;
 
   friend void swap(SetRateAttitudeAngularVelocityBodyRequest& a, SetRateAttitudeAngularVelocityBodyRequest& b) {
     a.Swap(&b);
@@ -9584,7 +10156,7 @@ class SetRateAttitudeAngularVelocityBodyResponse PROTOBUF_FINAL :
                &_SetRateAttitudeAngularVelocityBodyResponse_default_instance_);
   }
   static constexpr int kIndexInFileMessages =
-    65;
+    69;
 
   friend void swap(SetRateAttitudeAngularVelocityBodyResponse& a, SetRateAttitudeAngularVelocityBodyResponse& b) {
     a.Swap(&b);
@@ -9730,7 +10302,7 @@ class SetRateCameraAttitudeQuaternionRequest PROTOBUF_FINAL :
                &_SetRateCameraAttitudeQuaternionRequest_default_instance_);
   }
   static constexpr int kIndexInFileMessages =
-    66;
+    70;
 
   friend void swap(SetRateCameraAttitudeQuaternionRequest& a, SetRateCameraAttitudeQuaternionRequest& b) {
     a.Swap(&b);
@@ -9867,7 +10439,7 @@ class SetRateCameraAttitudeQuaternionResponse PROTOBUF_FINAL :
                &_SetRateCameraAttitudeQuaternionResponse_default_instance_);
   }
   static constexpr int kIndexInFileMessages =
-    67;
+    71;
 
   friend void swap(SetRateCameraAttitudeQuaternionResponse& a, SetRateCameraAttitudeQuaternionResponse& b) {
     a.Swap(&b);
@@ -10013,7 +10585,7 @@ class SetRateCameraAttitudeRequest PROTOBUF_FINAL :
                &_SetRateCameraAttitudeRequest_default_instance_);
   }
   static constexpr int kIndexInFileMessages =
-    68;
+    72;
 
   friend void swap(SetRateCameraAttitudeRequest& a, SetRateCameraAttitudeRequest& b) {
     a.Swap(&b);
@@ -10150,7 +10722,7 @@ class SetRateCameraAttitudeResponse PROTOBUF_FINAL :
                &_SetRateCameraAttitudeResponse_default_instance_);
   }
   static constexpr int kIndexInFileMessages =
-    69;
+    73;
 
   friend void swap(SetRateCameraAttitudeResponse& a, SetRateCameraAttitudeResponse& b) {
     a.Swap(&b);
@@ -10296,7 +10868,7 @@ class SetRateVelocityNedRequest PROTOBUF_FINAL :
                &_SetRateVelocityNedRequest_default_instance_);
   }
   static constexpr int kIndexInFileMessages =
-    70;
+    74;
 
   friend void swap(SetRateVelocityNedRequest& a, SetRateVelocityNedRequest& b) {
     a.Swap(&b);
@@ -10433,7 +11005,7 @@ class SetRateVelocityNedResponse PROTOBUF_FINAL :
                &_SetRateVelocityNedResponse_default_instance_);
   }
   static constexpr int kIndexInFileMessages =
-    71;
+    75;
 
   friend void swap(SetRateVelocityNedResponse& a, SetRateVelocityNedResponse& b) {
     a.Swap(&b);
@@ -10579,7 +11151,7 @@ class SetRateGpsInfoRequest PROTOBUF_FINAL :
                &_SetRateGpsInfoRequest_default_instance_);
   }
   static constexpr int kIndexInFileMessages =
-    72;
+    76;
 
   friend void swap(SetRateGpsInfoRequest& a, SetRateGpsInfoRequest& b) {
     a.Swap(&b);
@@ -10716,7 +11288,7 @@ class SetRateGpsInfoResponse PROTOBUF_FINAL :
                &_SetRateGpsInfoResponse_default_instance_);
   }
   static constexpr int kIndexInFileMessages =
-    73;
+    77;
 
   friend void swap(SetRateGpsInfoResponse& a, SetRateGpsInfoResponse& b) {
     a.Swap(&b);
@@ -10862,7 +11434,7 @@ class SetRateBatteryRequest PROTOBUF_FINAL :
                &_SetRateBatteryRequest_default_instance_);
   }
   static constexpr int kIndexInFileMessages =
-    74;
+    78;
 
   friend void swap(SetRateBatteryRequest& a, SetRateBatteryRequest& b) {
     a.Swap(&b);
@@ -10999,7 +11571,7 @@ class SetRateBatteryResponse PROTOBUF_FINAL :
                &_SetRateBatteryResponse_default_instance_);
   }
   static constexpr int kIndexInFileMessages =
-    75;
+    79;
 
   friend void swap(SetRateBatteryResponse& a, SetRateBatteryResponse& b) {
     a.Swap(&b);
@@ -11145,7 +11717,7 @@ class SetRateRcStatusRequest PROTOBUF_FINAL :
                &_SetRateRcStatusRequest_default_instance_);
   }
   static constexpr int kIndexInFileMessages =
-    76;
+    80;
 
   friend void swap(SetRateRcStatusRequest& a, SetRateRcStatusRequest& b) {
     a.Swap(&b);
@@ -11282,7 +11854,7 @@ class SetRateRcStatusResponse PROTOBUF_FINAL :
                &_SetRateRcStatusResponse_default_instance_);
   }
   static constexpr int kIndexInFileMessages =
-    77;
+    81;
 
   friend void swap(SetRateRcStatusResponse& a, SetRateRcStatusResponse& b) {
     a.Swap(&b);
@@ -11428,7 +12000,7 @@ class SetRateActuatorControlTargetRequest PROTOBUF_FINAL :
                &_SetRateActuatorControlTargetRequest_default_instance_);
   }
   static constexpr int kIndexInFileMessages =
-    78;
+    82;
 
   friend void swap(SetRateActuatorControlTargetRequest& a, SetRateActuatorControlTargetRequest& b) {
     a.Swap(&b);
@@ -11565,7 +12137,7 @@ class SetRateActuatorControlTargetResponse PROTOBUF_FINAL :
                &_SetRateActuatorControlTargetResponse_default_instance_);
   }
   static constexpr int kIndexInFileMessages =
-    79;
+    83;
 
   friend void swap(SetRateActuatorControlTargetResponse& a, SetRateActuatorControlTargetResponse& b) {
     a.Swap(&b);
@@ -11711,7 +12283,7 @@ class SetRateActuatorOutputStatusRequest PROTOBUF_FINAL :
                &_SetRateActuatorOutputStatusRequest_default_instance_);
   }
   static constexpr int kIndexInFileMessages =
-    80;
+    84;
 
   friend void swap(SetRateActuatorOutputStatusRequest& a, SetRateActuatorOutputStatusRequest& b) {
     a.Swap(&b);
@@ -11848,7 +12420,7 @@ class SetRateActuatorOutputStatusResponse PROTOBUF_FINAL :
                &_SetRateActuatorOutputStatusResponse_default_instance_);
   }
   static constexpr int kIndexInFileMessages =
-    81;
+    85;
 
   friend void swap(SetRateActuatorOutputStatusResponse& a, SetRateActuatorOutputStatusResponse& b) {
     a.Swap(&b);
@@ -11994,7 +12566,7 @@ class SetRateOdometryRequest PROTOBUF_FINAL :
                &_SetRateOdometryRequest_default_instance_);
   }
   static constexpr int kIndexInFileMessages =
-    82;
+    86;
 
   friend void swap(SetRateOdometryRequest& a, SetRateOdometryRequest& b) {
     a.Swap(&b);
@@ -12131,7 +12703,7 @@ class SetRateOdometryResponse PROTOBUF_FINAL :
                &_SetRateOdometryResponse_default_instance_);
   }
   static constexpr int kIndexInFileMessages =
-    83;
+    87;
 
   friend void swap(SetRateOdometryResponse& a, SetRateOdometryResponse& b) {
     a.Swap(&b);
@@ -12277,7 +12849,7 @@ class SetRatePositionVelocityNedRequest PROTOBUF_FINAL :
                &_SetRatePositionVelocityNedRequest_default_instance_);
   }
   static constexpr int kIndexInFileMessages =
-    84;
+    88;
 
   friend void swap(SetRatePositionVelocityNedRequest& a, SetRatePositionVelocityNedRequest& b) {
     a.Swap(&b);
@@ -12414,7 +12986,7 @@ class SetRatePositionVelocityNedResponse PROTOBUF_FINAL :
                &_SetRatePositionVelocityNedResponse_default_instance_);
   }
   static constexpr int kIndexInFileMessages =
-    85;
+    89;
 
   friend void swap(SetRatePositionVelocityNedResponse& a, SetRatePositionVelocityNedResponse& b) {
     a.Swap(&b);
@@ -12560,7 +13132,7 @@ class SetRateGroundTruthRequest PROTOBUF_FINAL :
                &_SetRateGroundTruthRequest_default_instance_);
   }
   static constexpr int kIndexInFileMessages =
-    86;
+    90;
 
   friend void swap(SetRateGroundTruthRequest& a, SetRateGroundTruthRequest& b) {
     a.Swap(&b);
@@ -12697,7 +13269,7 @@ class SetRateGroundTruthResponse PROTOBUF_FINAL :
                &_SetRateGroundTruthResponse_default_instance_);
   }
   static constexpr int kIndexInFileMessages =
-    87;
+    91;
 
   friend void swap(SetRateGroundTruthResponse& a, SetRateGroundTruthResponse& b) {
     a.Swap(&b);
@@ -12843,7 +13415,7 @@ class SetRateFixedwingMetricsRequest PROTOBUF_FINAL :
                &_SetRateFixedwingMetricsRequest_default_instance_);
   }
   static constexpr int kIndexInFileMessages =
-    88;
+    92;
 
   friend void swap(SetRateFixedwingMetricsRequest& a, SetRateFixedwingMetricsRequest& b) {
     a.Swap(&b);
@@ -12980,7 +13552,7 @@ class SetRateFixedwingMetricsResponse PROTOBUF_FINAL :
                &_SetRateFixedwingMetricsResponse_default_instance_);
   }
   static constexpr int kIndexInFileMessages =
-    89;
+    93;
 
   friend void swap(SetRateFixedwingMetricsResponse& a, SetRateFixedwingMetricsResponse& b) {
     a.Swap(&b);
@@ -13126,7 +13698,7 @@ class SetRateImuRequest PROTOBUF_FINAL :
                &_SetRateImuRequest_default_instance_);
   }
   static constexpr int kIndexInFileMessages =
-    90;
+    94;
 
   friend void swap(SetRateImuRequest& a, SetRateImuRequest& b) {
     a.Swap(&b);
@@ -13263,7 +13835,7 @@ class SetRateImuResponse PROTOBUF_FINAL :
                &_SetRateImuResponse_default_instance_);
   }
   static constexpr int kIndexInFileMessages =
-    91;
+    95;
 
   friend void swap(SetRateImuResponse& a, SetRateImuResponse& b) {
     a.Swap(&b);
@@ -13367,6 +13939,572 @@ class SetRateImuResponse PROTOBUF_FINAL :
 };
 // -------------------------------------------------------------------
 
+class SetRateScaledImuRequest PROTOBUF_FINAL :
+    public ::PROTOBUF_NAMESPACE_ID::Message /* @@protoc_insertion_point(class_definition:mavsdk.rpc.telemetry.SetRateScaledImuRequest) */ {
+ public:
+  inline SetRateScaledImuRequest() : SetRateScaledImuRequest(nullptr) {}
+  virtual ~SetRateScaledImuRequest();
+
+  SetRateScaledImuRequest(const SetRateScaledImuRequest& from);
+  SetRateScaledImuRequest(SetRateScaledImuRequest&& from) noexcept
+    : SetRateScaledImuRequest() {
+    *this = ::std::move(from);
+  }
+
+  inline SetRateScaledImuRequest& operator=(const SetRateScaledImuRequest& from) {
+    CopyFrom(from);
+    return *this;
+  }
+  inline SetRateScaledImuRequest& operator=(SetRateScaledImuRequest&& from) noexcept {
+    if (GetArena() == from.GetArena()) {
+      if (this != &from) InternalSwap(&from);
+    } else {
+      CopyFrom(from);
+    }
+    return *this;
+  }
+
+  static const ::PROTOBUF_NAMESPACE_ID::Descriptor* descriptor() {
+    return GetDescriptor();
+  }
+  static const ::PROTOBUF_NAMESPACE_ID::Descriptor* GetDescriptor() {
+    return GetMetadataStatic().descriptor;
+  }
+  static const ::PROTOBUF_NAMESPACE_ID::Reflection* GetReflection() {
+    return GetMetadataStatic().reflection;
+  }
+  static const SetRateScaledImuRequest& default_instance();
+
+  static void InitAsDefaultInstance();  // FOR INTERNAL USE ONLY
+  static inline const SetRateScaledImuRequest* internal_default_instance() {
+    return reinterpret_cast<const SetRateScaledImuRequest*>(
+               &_SetRateScaledImuRequest_default_instance_);
+  }
+  static constexpr int kIndexInFileMessages =
+    96;
+
+  friend void swap(SetRateScaledImuRequest& a, SetRateScaledImuRequest& b) {
+    a.Swap(&b);
+  }
+  inline void Swap(SetRateScaledImuRequest* other) {
+    if (other == this) return;
+    if (GetArena() == other->GetArena()) {
+      InternalSwap(other);
+    } else {
+      ::PROTOBUF_NAMESPACE_ID::internal::GenericSwap(this, other);
+    }
+  }
+  void UnsafeArenaSwap(SetRateScaledImuRequest* other) {
+    if (other == this) return;
+    GOOGLE_DCHECK(GetArena() == other->GetArena());
+    InternalSwap(other);
+  }
+
+  // implements Message ----------------------------------------------
+
+  inline SetRateScaledImuRequest* New() const final {
+    return CreateMaybeMessage<SetRateScaledImuRequest>(nullptr);
+  }
+
+  SetRateScaledImuRequest* New(::PROTOBUF_NAMESPACE_ID::Arena* arena) const final {
+    return CreateMaybeMessage<SetRateScaledImuRequest>(arena);
+  }
+  void CopyFrom(const ::PROTOBUF_NAMESPACE_ID::Message& from) final;
+  void MergeFrom(const ::PROTOBUF_NAMESPACE_ID::Message& from) final;
+  void CopyFrom(const SetRateScaledImuRequest& from);
+  void MergeFrom(const SetRateScaledImuRequest& from);
+  PROTOBUF_ATTRIBUTE_REINITIALIZES void Clear() final;
+  bool IsInitialized() const final;
+
+  size_t ByteSizeLong() const final;
+  const char* _InternalParse(const char* ptr, ::PROTOBUF_NAMESPACE_ID::internal::ParseContext* ctx) final;
+  ::PROTOBUF_NAMESPACE_ID::uint8* _InternalSerialize(
+      ::PROTOBUF_NAMESPACE_ID::uint8* target, ::PROTOBUF_NAMESPACE_ID::io::EpsCopyOutputStream* stream) const final;
+  int GetCachedSize() const final { return _cached_size_.Get(); }
+
+  private:
+  inline void SharedCtor();
+  inline void SharedDtor();
+  void SetCachedSize(int size) const final;
+  void InternalSwap(SetRateScaledImuRequest* other);
+  friend class ::PROTOBUF_NAMESPACE_ID::internal::AnyMetadata;
+  static ::PROTOBUF_NAMESPACE_ID::StringPiece FullMessageName() {
+    return "mavsdk.rpc.telemetry.SetRateScaledImuRequest";
+  }
+  protected:
+  explicit SetRateScaledImuRequest(::PROTOBUF_NAMESPACE_ID::Arena* arena);
+  private:
+  static void ArenaDtor(void* object);
+  inline void RegisterArenaDtor(::PROTOBUF_NAMESPACE_ID::Arena* arena);
+  public:
+
+  ::PROTOBUF_NAMESPACE_ID::Metadata GetMetadata() const final;
+  private:
+  static ::PROTOBUF_NAMESPACE_ID::Metadata GetMetadataStatic() {
+    ::PROTOBUF_NAMESPACE_ID::internal::AssignDescriptors(&::descriptor_table_telemetry_2ftelemetry_2eproto);
+    return ::descriptor_table_telemetry_2ftelemetry_2eproto.file_level_metadata[kIndexInFileMessages];
+  }
+
+  public:
+
+  // nested types ----------------------------------------------------
+
+  // accessors -------------------------------------------------------
+
+  enum : int {
+    kRateHzFieldNumber = 1,
+  };
+  // double rate_hz = 1;
+  void clear_rate_hz();
+  double rate_hz() const;
+  void set_rate_hz(double value);
+  private:
+  double _internal_rate_hz() const;
+  void _internal_set_rate_hz(double value);
+  public:
+
+  // @@protoc_insertion_point(class_scope:mavsdk.rpc.telemetry.SetRateScaledImuRequest)
+ private:
+  class _Internal;
+
+  template <typename T> friend class ::PROTOBUF_NAMESPACE_ID::Arena::InternalHelper;
+  typedef void InternalArenaConstructable_;
+  typedef void DestructorSkippable_;
+  double rate_hz_;
+  mutable ::PROTOBUF_NAMESPACE_ID::internal::CachedSize _cached_size_;
+  friend struct ::TableStruct_telemetry_2ftelemetry_2eproto;
+};
+// -------------------------------------------------------------------
+
+class SetRateScaledImuResponse PROTOBUF_FINAL :
+    public ::PROTOBUF_NAMESPACE_ID::Message /* @@protoc_insertion_point(class_definition:mavsdk.rpc.telemetry.SetRateScaledImuResponse) */ {
+ public:
+  inline SetRateScaledImuResponse() : SetRateScaledImuResponse(nullptr) {}
+  virtual ~SetRateScaledImuResponse();
+
+  SetRateScaledImuResponse(const SetRateScaledImuResponse& from);
+  SetRateScaledImuResponse(SetRateScaledImuResponse&& from) noexcept
+    : SetRateScaledImuResponse() {
+    *this = ::std::move(from);
+  }
+
+  inline SetRateScaledImuResponse& operator=(const SetRateScaledImuResponse& from) {
+    CopyFrom(from);
+    return *this;
+  }
+  inline SetRateScaledImuResponse& operator=(SetRateScaledImuResponse&& from) noexcept {
+    if (GetArena() == from.GetArena()) {
+      if (this != &from) InternalSwap(&from);
+    } else {
+      CopyFrom(from);
+    }
+    return *this;
+  }
+
+  static const ::PROTOBUF_NAMESPACE_ID::Descriptor* descriptor() {
+    return GetDescriptor();
+  }
+  static const ::PROTOBUF_NAMESPACE_ID::Descriptor* GetDescriptor() {
+    return GetMetadataStatic().descriptor;
+  }
+  static const ::PROTOBUF_NAMESPACE_ID::Reflection* GetReflection() {
+    return GetMetadataStatic().reflection;
+  }
+  static const SetRateScaledImuResponse& default_instance();
+
+  static void InitAsDefaultInstance();  // FOR INTERNAL USE ONLY
+  static inline const SetRateScaledImuResponse* internal_default_instance() {
+    return reinterpret_cast<const SetRateScaledImuResponse*>(
+               &_SetRateScaledImuResponse_default_instance_);
+  }
+  static constexpr int kIndexInFileMessages =
+    97;
+
+  friend void swap(SetRateScaledImuResponse& a, SetRateScaledImuResponse& b) {
+    a.Swap(&b);
+  }
+  inline void Swap(SetRateScaledImuResponse* other) {
+    if (other == this) return;
+    if (GetArena() == other->GetArena()) {
+      InternalSwap(other);
+    } else {
+      ::PROTOBUF_NAMESPACE_ID::internal::GenericSwap(this, other);
+    }
+  }
+  void UnsafeArenaSwap(SetRateScaledImuResponse* other) {
+    if (other == this) return;
+    GOOGLE_DCHECK(GetArena() == other->GetArena());
+    InternalSwap(other);
+  }
+
+  // implements Message ----------------------------------------------
+
+  inline SetRateScaledImuResponse* New() const final {
+    return CreateMaybeMessage<SetRateScaledImuResponse>(nullptr);
+  }
+
+  SetRateScaledImuResponse* New(::PROTOBUF_NAMESPACE_ID::Arena* arena) const final {
+    return CreateMaybeMessage<SetRateScaledImuResponse>(arena);
+  }
+  void CopyFrom(const ::PROTOBUF_NAMESPACE_ID::Message& from) final;
+  void MergeFrom(const ::PROTOBUF_NAMESPACE_ID::Message& from) final;
+  void CopyFrom(const SetRateScaledImuResponse& from);
+  void MergeFrom(const SetRateScaledImuResponse& from);
+  PROTOBUF_ATTRIBUTE_REINITIALIZES void Clear() final;
+  bool IsInitialized() const final;
+
+  size_t ByteSizeLong() const final;
+  const char* _InternalParse(const char* ptr, ::PROTOBUF_NAMESPACE_ID::internal::ParseContext* ctx) final;
+  ::PROTOBUF_NAMESPACE_ID::uint8* _InternalSerialize(
+      ::PROTOBUF_NAMESPACE_ID::uint8* target, ::PROTOBUF_NAMESPACE_ID::io::EpsCopyOutputStream* stream) const final;
+  int GetCachedSize() const final { return _cached_size_.Get(); }
+
+  private:
+  inline void SharedCtor();
+  inline void SharedDtor();
+  void SetCachedSize(int size) const final;
+  void InternalSwap(SetRateScaledImuResponse* other);
+  friend class ::PROTOBUF_NAMESPACE_ID::internal::AnyMetadata;
+  static ::PROTOBUF_NAMESPACE_ID::StringPiece FullMessageName() {
+    return "mavsdk.rpc.telemetry.SetRateScaledImuResponse";
+  }
+  protected:
+  explicit SetRateScaledImuResponse(::PROTOBUF_NAMESPACE_ID::Arena* arena);
+  private:
+  static void ArenaDtor(void* object);
+  inline void RegisterArenaDtor(::PROTOBUF_NAMESPACE_ID::Arena* arena);
+  public:
+
+  ::PROTOBUF_NAMESPACE_ID::Metadata GetMetadata() const final;
+  private:
+  static ::PROTOBUF_NAMESPACE_ID::Metadata GetMetadataStatic() {
+    ::PROTOBUF_NAMESPACE_ID::internal::AssignDescriptors(&::descriptor_table_telemetry_2ftelemetry_2eproto);
+    return ::descriptor_table_telemetry_2ftelemetry_2eproto.file_level_metadata[kIndexInFileMessages];
+  }
+
+  public:
+
+  // nested types ----------------------------------------------------
+
+  // accessors -------------------------------------------------------
+
+  enum : int {
+    kTelemetryResultFieldNumber = 1,
+  };
+  // .mavsdk.rpc.telemetry.TelemetryResult telemetry_result = 1;
+  bool has_telemetry_result() const;
+  private:
+  bool _internal_has_telemetry_result() const;
+  public:
+  void clear_telemetry_result();
+  const ::mavsdk::rpc::telemetry::TelemetryResult& telemetry_result() const;
+  ::mavsdk::rpc::telemetry::TelemetryResult* release_telemetry_result();
+  ::mavsdk::rpc::telemetry::TelemetryResult* mutable_telemetry_result();
+  void set_allocated_telemetry_result(::mavsdk::rpc::telemetry::TelemetryResult* telemetry_result);
+  private:
+  const ::mavsdk::rpc::telemetry::TelemetryResult& _internal_telemetry_result() const;
+  ::mavsdk::rpc::telemetry::TelemetryResult* _internal_mutable_telemetry_result();
+  public:
+  void unsafe_arena_set_allocated_telemetry_result(
+      ::mavsdk::rpc::telemetry::TelemetryResult* telemetry_result);
+  ::mavsdk::rpc::telemetry::TelemetryResult* unsafe_arena_release_telemetry_result();
+
+  // @@protoc_insertion_point(class_scope:mavsdk.rpc.telemetry.SetRateScaledImuResponse)
+ private:
+  class _Internal;
+
+  template <typename T> friend class ::PROTOBUF_NAMESPACE_ID::Arena::InternalHelper;
+  typedef void InternalArenaConstructable_;
+  typedef void DestructorSkippable_;
+  ::mavsdk::rpc::telemetry::TelemetryResult* telemetry_result_;
+  mutable ::PROTOBUF_NAMESPACE_ID::internal::CachedSize _cached_size_;
+  friend struct ::TableStruct_telemetry_2ftelemetry_2eproto;
+};
+// -------------------------------------------------------------------
+
+class SetRateRawImuRequest PROTOBUF_FINAL :
+    public ::PROTOBUF_NAMESPACE_ID::Message /* @@protoc_insertion_point(class_definition:mavsdk.rpc.telemetry.SetRateRawImuRequest) */ {
+ public:
+  inline SetRateRawImuRequest() : SetRateRawImuRequest(nullptr) {}
+  virtual ~SetRateRawImuRequest();
+
+  SetRateRawImuRequest(const SetRateRawImuRequest& from);
+  SetRateRawImuRequest(SetRateRawImuRequest&& from) noexcept
+    : SetRateRawImuRequest() {
+    *this = ::std::move(from);
+  }
+
+  inline SetRateRawImuRequest& operator=(const SetRateRawImuRequest& from) {
+    CopyFrom(from);
+    return *this;
+  }
+  inline SetRateRawImuRequest& operator=(SetRateRawImuRequest&& from) noexcept {
+    if (GetArena() == from.GetArena()) {
+      if (this != &from) InternalSwap(&from);
+    } else {
+      CopyFrom(from);
+    }
+    return *this;
+  }
+
+  static const ::PROTOBUF_NAMESPACE_ID::Descriptor* descriptor() {
+    return GetDescriptor();
+  }
+  static const ::PROTOBUF_NAMESPACE_ID::Descriptor* GetDescriptor() {
+    return GetMetadataStatic().descriptor;
+  }
+  static const ::PROTOBUF_NAMESPACE_ID::Reflection* GetReflection() {
+    return GetMetadataStatic().reflection;
+  }
+  static const SetRateRawImuRequest& default_instance();
+
+  static void InitAsDefaultInstance();  // FOR INTERNAL USE ONLY
+  static inline const SetRateRawImuRequest* internal_default_instance() {
+    return reinterpret_cast<const SetRateRawImuRequest*>(
+               &_SetRateRawImuRequest_default_instance_);
+  }
+  static constexpr int kIndexInFileMessages =
+    98;
+
+  friend void swap(SetRateRawImuRequest& a, SetRateRawImuRequest& b) {
+    a.Swap(&b);
+  }
+  inline void Swap(SetRateRawImuRequest* other) {
+    if (other == this) return;
+    if (GetArena() == other->GetArena()) {
+      InternalSwap(other);
+    } else {
+      ::PROTOBUF_NAMESPACE_ID::internal::GenericSwap(this, other);
+    }
+  }
+  void UnsafeArenaSwap(SetRateRawImuRequest* other) {
+    if (other == this) return;
+    GOOGLE_DCHECK(GetArena() == other->GetArena());
+    InternalSwap(other);
+  }
+
+  // implements Message ----------------------------------------------
+
+  inline SetRateRawImuRequest* New() const final {
+    return CreateMaybeMessage<SetRateRawImuRequest>(nullptr);
+  }
+
+  SetRateRawImuRequest* New(::PROTOBUF_NAMESPACE_ID::Arena* arena) const final {
+    return CreateMaybeMessage<SetRateRawImuRequest>(arena);
+  }
+  void CopyFrom(const ::PROTOBUF_NAMESPACE_ID::Message& from) final;
+  void MergeFrom(const ::PROTOBUF_NAMESPACE_ID::Message& from) final;
+  void CopyFrom(const SetRateRawImuRequest& from);
+  void MergeFrom(const SetRateRawImuRequest& from);
+  PROTOBUF_ATTRIBUTE_REINITIALIZES void Clear() final;
+  bool IsInitialized() const final;
+
+  size_t ByteSizeLong() const final;
+  const char* _InternalParse(const char* ptr, ::PROTOBUF_NAMESPACE_ID::internal::ParseContext* ctx) final;
+  ::PROTOBUF_NAMESPACE_ID::uint8* _InternalSerialize(
+      ::PROTOBUF_NAMESPACE_ID::uint8* target, ::PROTOBUF_NAMESPACE_ID::io::EpsCopyOutputStream* stream) const final;
+  int GetCachedSize() const final { return _cached_size_.Get(); }
+
+  private:
+  inline void SharedCtor();
+  inline void SharedDtor();
+  void SetCachedSize(int size) const final;
+  void InternalSwap(SetRateRawImuRequest* other);
+  friend class ::PROTOBUF_NAMESPACE_ID::internal::AnyMetadata;
+  static ::PROTOBUF_NAMESPACE_ID::StringPiece FullMessageName() {
+    return "mavsdk.rpc.telemetry.SetRateRawImuRequest";
+  }
+  protected:
+  explicit SetRateRawImuRequest(::PROTOBUF_NAMESPACE_ID::Arena* arena);
+  private:
+  static void ArenaDtor(void* object);
+  inline void RegisterArenaDtor(::PROTOBUF_NAMESPACE_ID::Arena* arena);
+  public:
+
+  ::PROTOBUF_NAMESPACE_ID::Metadata GetMetadata() const final;
+  private:
+  static ::PROTOBUF_NAMESPACE_ID::Metadata GetMetadataStatic() {
+    ::PROTOBUF_NAMESPACE_ID::internal::AssignDescriptors(&::descriptor_table_telemetry_2ftelemetry_2eproto);
+    return ::descriptor_table_telemetry_2ftelemetry_2eproto.file_level_metadata[kIndexInFileMessages];
+  }
+
+  public:
+
+  // nested types ----------------------------------------------------
+
+  // accessors -------------------------------------------------------
+
+  enum : int {
+    kRateHzFieldNumber = 1,
+  };
+  // double rate_hz = 1;
+  void clear_rate_hz();
+  double rate_hz() const;
+  void set_rate_hz(double value);
+  private:
+  double _internal_rate_hz() const;
+  void _internal_set_rate_hz(double value);
+  public:
+
+  // @@protoc_insertion_point(class_scope:mavsdk.rpc.telemetry.SetRateRawImuRequest)
+ private:
+  class _Internal;
+
+  template <typename T> friend class ::PROTOBUF_NAMESPACE_ID::Arena::InternalHelper;
+  typedef void InternalArenaConstructable_;
+  typedef void DestructorSkippable_;
+  double rate_hz_;
+  mutable ::PROTOBUF_NAMESPACE_ID::internal::CachedSize _cached_size_;
+  friend struct ::TableStruct_telemetry_2ftelemetry_2eproto;
+};
+// -------------------------------------------------------------------
+
+class SetRateRawImuResponse PROTOBUF_FINAL :
+    public ::PROTOBUF_NAMESPACE_ID::Message /* @@protoc_insertion_point(class_definition:mavsdk.rpc.telemetry.SetRateRawImuResponse) */ {
+ public:
+  inline SetRateRawImuResponse() : SetRateRawImuResponse(nullptr) {}
+  virtual ~SetRateRawImuResponse();
+
+  SetRateRawImuResponse(const SetRateRawImuResponse& from);
+  SetRateRawImuResponse(SetRateRawImuResponse&& from) noexcept
+    : SetRateRawImuResponse() {
+    *this = ::std::move(from);
+  }
+
+  inline SetRateRawImuResponse& operator=(const SetRateRawImuResponse& from) {
+    CopyFrom(from);
+    return *this;
+  }
+  inline SetRateRawImuResponse& operator=(SetRateRawImuResponse&& from) noexcept {
+    if (GetArena() == from.GetArena()) {
+      if (this != &from) InternalSwap(&from);
+    } else {
+      CopyFrom(from);
+    }
+    return *this;
+  }
+
+  static const ::PROTOBUF_NAMESPACE_ID::Descriptor* descriptor() {
+    return GetDescriptor();
+  }
+  static const ::PROTOBUF_NAMESPACE_ID::Descriptor* GetDescriptor() {
+    return GetMetadataStatic().descriptor;
+  }
+  static const ::PROTOBUF_NAMESPACE_ID::Reflection* GetReflection() {
+    return GetMetadataStatic().reflection;
+  }
+  static const SetRateRawImuResponse& default_instance();
+
+  static void InitAsDefaultInstance();  // FOR INTERNAL USE ONLY
+  static inline const SetRateRawImuResponse* internal_default_instance() {
+    return reinterpret_cast<const SetRateRawImuResponse*>(
+               &_SetRateRawImuResponse_default_instance_);
+  }
+  static constexpr int kIndexInFileMessages =
+    99;
+
+  friend void swap(SetRateRawImuResponse& a, SetRateRawImuResponse& b) {
+    a.Swap(&b);
+  }
+  inline void Swap(SetRateRawImuResponse* other) {
+    if (other == this) return;
+    if (GetArena() == other->GetArena()) {
+      InternalSwap(other);
+    } else {
+      ::PROTOBUF_NAMESPACE_ID::internal::GenericSwap(this, other);
+    }
+  }
+  void UnsafeArenaSwap(SetRateRawImuResponse* other) {
+    if (other == this) return;
+    GOOGLE_DCHECK(GetArena() == other->GetArena());
+    InternalSwap(other);
+  }
+
+  // implements Message ----------------------------------------------
+
+  inline SetRateRawImuResponse* New() const final {
+    return CreateMaybeMessage<SetRateRawImuResponse>(nullptr);
+  }
+
+  SetRateRawImuResponse* New(::PROTOBUF_NAMESPACE_ID::Arena* arena) const final {
+    return CreateMaybeMessage<SetRateRawImuResponse>(arena);
+  }
+  void CopyFrom(const ::PROTOBUF_NAMESPACE_ID::Message& from) final;
+  void MergeFrom(const ::PROTOBUF_NAMESPACE_ID::Message& from) final;
+  void CopyFrom(const SetRateRawImuResponse& from);
+  void MergeFrom(const SetRateRawImuResponse& from);
+  PROTOBUF_ATTRIBUTE_REINITIALIZES void Clear() final;
+  bool IsInitialized() const final;
+
+  size_t ByteSizeLong() const final;
+  const char* _InternalParse(const char* ptr, ::PROTOBUF_NAMESPACE_ID::internal::ParseContext* ctx) final;
+  ::PROTOBUF_NAMESPACE_ID::uint8* _InternalSerialize(
+      ::PROTOBUF_NAMESPACE_ID::uint8* target, ::PROTOBUF_NAMESPACE_ID::io::EpsCopyOutputStream* stream) const final;
+  int GetCachedSize() const final { return _cached_size_.Get(); }
+
+  private:
+  inline void SharedCtor();
+  inline void SharedDtor();
+  void SetCachedSize(int size) const final;
+  void InternalSwap(SetRateRawImuResponse* other);
+  friend class ::PROTOBUF_NAMESPACE_ID::internal::AnyMetadata;
+  static ::PROTOBUF_NAMESPACE_ID::StringPiece FullMessageName() {
+    return "mavsdk.rpc.telemetry.SetRateRawImuResponse";
+  }
+  protected:
+  explicit SetRateRawImuResponse(::PROTOBUF_NAMESPACE_ID::Arena* arena);
+  private:
+  static void ArenaDtor(void* object);
+  inline void RegisterArenaDtor(::PROTOBUF_NAMESPACE_ID::Arena* arena);
+  public:
+
+  ::PROTOBUF_NAMESPACE_ID::Metadata GetMetadata() const final;
+  private:
+  static ::PROTOBUF_NAMESPACE_ID::Metadata GetMetadataStatic() {
+    ::PROTOBUF_NAMESPACE_ID::internal::AssignDescriptors(&::descriptor_table_telemetry_2ftelemetry_2eproto);
+    return ::descriptor_table_telemetry_2ftelemetry_2eproto.file_level_metadata[kIndexInFileMessages];
+  }
+
+  public:
+
+  // nested types ----------------------------------------------------
+
+  // accessors -------------------------------------------------------
+
+  enum : int {
+    kTelemetryResultFieldNumber = 1,
+  };
+  // .mavsdk.rpc.telemetry.TelemetryResult telemetry_result = 1;
+  bool has_telemetry_result() const;
+  private:
+  bool _internal_has_telemetry_result() const;
+  public:
+  void clear_telemetry_result();
+  const ::mavsdk::rpc::telemetry::TelemetryResult& telemetry_result() const;
+  ::mavsdk::rpc::telemetry::TelemetryResult* release_telemetry_result();
+  ::mavsdk::rpc::telemetry::TelemetryResult* mutable_telemetry_result();
+  void set_allocated_telemetry_result(::mavsdk::rpc::telemetry::TelemetryResult* telemetry_result);
+  private:
+  const ::mavsdk::rpc::telemetry::TelemetryResult& _internal_telemetry_result() const;
+  ::mavsdk::rpc::telemetry::TelemetryResult* _internal_mutable_telemetry_result();
+  public:
+  void unsafe_arena_set_allocated_telemetry_result(
+      ::mavsdk::rpc::telemetry::TelemetryResult* telemetry_result);
+  ::mavsdk::rpc::telemetry::TelemetryResult* unsafe_arena_release_telemetry_result();
+
+  // @@protoc_insertion_point(class_scope:mavsdk.rpc.telemetry.SetRateRawImuResponse)
+ private:
+  class _Internal;
+
+  template <typename T> friend class ::PROTOBUF_NAMESPACE_ID::Arena::InternalHelper;
+  typedef void InternalArenaConstructable_;
+  typedef void DestructorSkippable_;
+  ::mavsdk::rpc::telemetry::TelemetryResult* telemetry_result_;
+  mutable ::PROTOBUF_NAMESPACE_ID::internal::CachedSize _cached_size_;
+  friend struct ::TableStruct_telemetry_2ftelemetry_2eproto;
+};
+// -------------------------------------------------------------------
+
 class SetRateUnixEpochTimeRequest PROTOBUF_FINAL :
     public ::PROTOBUF_NAMESPACE_ID::Message /* @@protoc_insertion_point(class_definition:mavsdk.rpc.telemetry.SetRateUnixEpochTimeRequest) */ {
  public:
@@ -13409,7 +14547,7 @@ class SetRateUnixEpochTimeRequest PROTOBUF_FINAL :
                &_SetRateUnixEpochTimeRequest_default_instance_);
   }
   static constexpr int kIndexInFileMessages =
-    92;
+    100;
 
   friend void swap(SetRateUnixEpochTimeRequest& a, SetRateUnixEpochTimeRequest& b) {
     a.Swap(&b);
@@ -13546,7 +14684,7 @@ class SetRateUnixEpochTimeResponse PROTOBUF_FINAL :
                &_SetRateUnixEpochTimeResponse_default_instance_);
   }
   static constexpr int kIndexInFileMessages =
-    93;
+    101;
 
   friend void swap(SetRateUnixEpochTimeResponse& a, SetRateUnixEpochTimeResponse& b) {
     a.Swap(&b);
@@ -13692,7 +14830,7 @@ class SetRateDistanceSensorRequest PROTOBUF_FINAL :
                &_SetRateDistanceSensorRequest_default_instance_);
   }
   static constexpr int kIndexInFileMessages =
-    94;
+    102;
 
   friend void swap(SetRateDistanceSensorRequest& a, SetRateDistanceSensorRequest& b) {
     a.Swap(&b);
@@ -13829,7 +14967,7 @@ class SetRateDistanceSensorResponse PROTOBUF_FINAL :
                &_SetRateDistanceSensorResponse_default_instance_);
   }
   static constexpr int kIndexInFileMessages =
-    95;
+    103;
 
   friend void swap(SetRateDistanceSensorResponse& a, SetRateDistanceSensorResponse& b) {
     a.Swap(&b);
@@ -13975,7 +15113,7 @@ class GetGpsGlobalOriginRequest PROTOBUF_FINAL :
                &_GetGpsGlobalOriginRequest_default_instance_);
   }
   static constexpr int kIndexInFileMessages =
-    96;
+    104;
 
   friend void swap(GetGpsGlobalOriginRequest& a, GetGpsGlobalOriginRequest& b) {
     a.Swap(&b);
@@ -14099,7 +15237,7 @@ class GetGpsGlobalOriginResponse PROTOBUF_FINAL :
                &_GetGpsGlobalOriginResponse_default_instance_);
   }
   static constexpr int kIndexInFileMessages =
-    97;
+    105;
 
   friend void swap(GetGpsGlobalOriginResponse& a, GetGpsGlobalOriginResponse& b) {
     a.Swap(&b);
@@ -14265,7 +15403,7 @@ class Position PROTOBUF_FINAL :
                &_Position_default_instance_);
   }
   static constexpr int kIndexInFileMessages =
-    98;
+    106;
 
   friend void swap(Position& a, Position& b) {
     a.Swap(&b);
@@ -14435,7 +15573,7 @@ class Quaternion PROTOBUF_FINAL :
                &_Quaternion_default_instance_);
   }
   static constexpr int kIndexInFileMessages =
-    99;
+    107;
 
   friend void swap(Quaternion& a, Quaternion& b) {
     a.Swap(&b);
@@ -14616,7 +15754,7 @@ class EulerAngle PROTOBUF_FINAL :
                &_EulerAngle_default_instance_);
   }
   static constexpr int kIndexInFileMessages =
-    100;
+    108;
 
   friend void swap(EulerAngle& a, EulerAngle& b) {
     a.Swap(&b);
@@ -14786,7 +15924,7 @@ class AngularVelocityBody PROTOBUF_FINAL :
                &_AngularVelocityBody_default_instance_);
   }
   static constexpr int kIndexInFileMessages =
-    101;
+    109;
 
   friend void swap(AngularVelocityBody& a, AngularVelocityBody& b) {
     a.Swap(&b);
@@ -14945,7 +16083,7 @@ class GpsInfo PROTOBUF_FINAL :
                &_GpsInfo_default_instance_);
   }
   static constexpr int kIndexInFileMessages =
-    102;
+    110;
 
   friend void swap(GpsInfo& a, GpsInfo& b) {
     a.Swap(&b);
@@ -15093,7 +16231,7 @@ class Battery PROTOBUF_FINAL :
                &_Battery_default_instance_);
   }
   static constexpr int kIndexInFileMessages =
-    103;
+    111;
 
   friend void swap(Battery& a, Battery& b) {
     a.Swap(&b);
@@ -15241,7 +16379,7 @@ class Health PROTOBUF_FINAL :
                &_Health_default_instance_);
   }
   static constexpr int kIndexInFileMessages =
-    104;
+    112;
 
   friend void swap(Health& a, Health& b) {
     a.Swap(&b);
@@ -15444,7 +16582,7 @@ class RcStatus PROTOBUF_FINAL :
                &_RcStatus_default_instance_);
   }
   static constexpr int kIndexInFileMessages =
-    105;
+    113;
 
   friend void swap(RcStatus& a, RcStatus& b) {
     a.Swap(&b);
@@ -15603,7 +16741,7 @@ class StatusText PROTOBUF_FINAL :
                &_StatusText_default_instance_);
   }
   static constexpr int kIndexInFileMessages =
-    106;
+    114;
 
   friend void swap(StatusText& a, StatusText& b) {
     a.Swap(&b);
@@ -15758,7 +16896,7 @@ class ActuatorControlTarget PROTOBUF_FINAL :
                &_ActuatorControlTarget_default_instance_);
   }
   static constexpr int kIndexInFileMessages =
-    107;
+    115;
 
   friend void swap(ActuatorControlTarget& a, ActuatorControlTarget& b) {
     a.Swap(&b);
@@ -15920,7 +17058,7 @@ class ActuatorOutputStatus PROTOBUF_FINAL :
                &_ActuatorOutputStatus_default_instance_);
   }
   static constexpr int kIndexInFileMessages =
-    108;
+    116;
 
   friend void swap(ActuatorOutputStatus& a, ActuatorOutputStatus& b) {
     a.Swap(&b);
@@ -16082,7 +17220,7 @@ class Covariance PROTOBUF_FINAL :
                &_Covariance_default_instance_);
   }
   static constexpr int kIndexInFileMessages =
-    109;
+    117;
 
   friend void swap(Covariance& a, Covariance& b) {
     a.Swap(&b);
@@ -16233,7 +17371,7 @@ class VelocityBody PROTOBUF_FINAL :
                &_VelocityBody_default_instance_);
   }
   static constexpr int kIndexInFileMessages =
-    110;
+    118;
 
   friend void swap(VelocityBody& a, VelocityBody& b) {
     a.Swap(&b);
@@ -16392,7 +17530,7 @@ class PositionBody PROTOBUF_FINAL :
                &_PositionBody_default_instance_);
   }
   static constexpr int kIndexInFileMessages =
-    111;
+    119;
 
   friend void swap(PositionBody& a, PositionBody& b) {
     a.Swap(&b);
@@ -16551,7 +17689,7 @@ class Odometry PROTOBUF_FINAL :
                &_Odometry_default_instance_);
   }
   static constexpr int kIndexInFileMessages =
-    112;
+    120;
 
   friend void swap(Odometry& a, Odometry& b) {
     a.Swap(&b);
@@ -16864,7 +18002,7 @@ class DistanceSensor PROTOBUF_FINAL :
                &_DistanceSensor_default_instance_);
   }
   static constexpr int kIndexInFileMessages =
-    113;
+    121;
 
   friend void swap(DistanceSensor& a, DistanceSensor& b) {
     a.Swap(&b);
@@ -17023,7 +18161,7 @@ class PositionNed PROTOBUF_FINAL :
                &_PositionNed_default_instance_);
   }
   static constexpr int kIndexInFileMessages =
-    114;
+    122;
 
   friend void swap(PositionNed& a, PositionNed& b) {
     a.Swap(&b);
@@ -17182,7 +18320,7 @@ class VelocityNed PROTOBUF_FINAL :
                &_VelocityNed_default_instance_);
   }
   static constexpr int kIndexInFileMessages =
-    115;
+    123;
 
   friend void swap(VelocityNed& a, VelocityNed& b) {
     a.Swap(&b);
@@ -17341,7 +18479,7 @@ class PositionVelocityNed PROTOBUF_FINAL :
                &_PositionVelocityNed_default_instance_);
   }
   static constexpr int kIndexInFileMessages =
-    116;
+    124;
 
   friend void swap(PositionVelocityNed& a, PositionVelocityNed& b) {
     a.Swap(&b);
@@ -17507,7 +18645,7 @@ class GroundTruth PROTOBUF_FINAL :
                &_GroundTruth_default_instance_);
   }
   static constexpr int kIndexInFileMessages =
-    117;
+    125;
 
   friend void swap(GroundTruth& a, GroundTruth& b) {
     a.Swap(&b);
@@ -17666,7 +18804,7 @@ class FixedwingMetrics PROTOBUF_FINAL :
                &_FixedwingMetrics_default_instance_);
   }
   static constexpr int kIndexInFileMessages =
-    118;
+    126;
 
   friend void swap(FixedwingMetrics& a, FixedwingMetrics& b) {
     a.Swap(&b);
@@ -17825,7 +18963,7 @@ class AccelerationFrd PROTOBUF_FINAL :
                &_AccelerationFrd_default_instance_);
   }
   static constexpr int kIndexInFileMessages =
-    119;
+    127;
 
   friend void swap(AccelerationFrd& a, AccelerationFrd& b) {
     a.Swap(&b);
@@ -17984,7 +19122,7 @@ class AngularVelocityFrd PROTOBUF_FINAL :
                &_AngularVelocityFrd_default_instance_);
   }
   static constexpr int kIndexInFileMessages =
-    120;
+    128;
 
   friend void swap(AngularVelocityFrd& a, AngularVelocityFrd& b) {
     a.Swap(&b);
@@ -18143,7 +19281,7 @@ class MagneticFieldFrd PROTOBUF_FINAL :
                &_MagneticFieldFrd_default_instance_);
   }
   static constexpr int kIndexInFileMessages =
-    121;
+    129;
 
   friend void swap(MagneticFieldFrd& a, MagneticFieldFrd& b) {
     a.Swap(&b);
@@ -18302,7 +19440,7 @@ class Imu PROTOBUF_FINAL :
                &_Imu_default_instance_);
   }
   static constexpr int kIndexInFileMessages =
-    122;
+    130;
 
   friend void swap(Imu& a, Imu& b) {
     a.Swap(&b);
@@ -18376,6 +19514,7 @@ class Imu PROTOBUF_FINAL :
     kAccelerationFrdFieldNumber = 1,
     kAngularVelocityFrdFieldNumber = 2,
     kMagneticFieldFrdFieldNumber = 3,
+    kTimestampUsFieldNumber = 5,
     kTemperatureDegcFieldNumber = 4,
   };
   // .mavsdk.rpc.telemetry.AccelerationFrd acceleration_frd = 1;
@@ -18432,6 +19571,15 @@ class Imu PROTOBUF_FINAL :
       ::mavsdk::rpc::telemetry::MagneticFieldFrd* magnetic_field_frd);
   ::mavsdk::rpc::telemetry::MagneticFieldFrd* unsafe_arena_release_magnetic_field_frd();
 
+  // uint64 timestamp_us = 5;
+  void clear_timestamp_us();
+  ::PROTOBUF_NAMESPACE_ID::uint64 timestamp_us() const;
+  void set_timestamp_us(::PROTOBUF_NAMESPACE_ID::uint64 value);
+  private:
+  ::PROTOBUF_NAMESPACE_ID::uint64 _internal_timestamp_us() const;
+  void _internal_set_timestamp_us(::PROTOBUF_NAMESPACE_ID::uint64 value);
+  public:
+
   // float temperature_degc = 4 [(.mavsdk.options.default_value) = "NaN"];
   void clear_temperature_degc();
   float temperature_degc() const;
@@ -18451,6 +19599,7 @@ class Imu PROTOBUF_FINAL :
   ::mavsdk::rpc::telemetry::AccelerationFrd* acceleration_frd_;
   ::mavsdk::rpc::telemetry::AngularVelocityFrd* angular_velocity_frd_;
   ::mavsdk::rpc::telemetry::MagneticFieldFrd* magnetic_field_frd_;
+  ::PROTOBUF_NAMESPACE_ID::uint64 timestamp_us_;
   float temperature_degc_;
   mutable ::PROTOBUF_NAMESPACE_ID::internal::CachedSize _cached_size_;
   friend struct ::TableStruct_telemetry_2ftelemetry_2eproto;
@@ -18499,7 +19648,7 @@ class GpsGlobalOrigin PROTOBUF_FINAL :
                &_GpsGlobalOrigin_default_instance_);
   }
   static constexpr int kIndexInFileMessages =
-    123;
+    131;
 
   friend void swap(GpsGlobalOrigin& a, GpsGlobalOrigin& b) {
     a.Swap(&b);
@@ -18658,7 +19807,7 @@ class TelemetryResult PROTOBUF_FINAL :
                &_TelemetryResult_default_instance_);
   }
   static constexpr int kIndexInFileMessages =
-    124;
+    132;
 
   friend void swap(TelemetryResult& a, TelemetryResult& b) {
     a.Swap(&b);
@@ -20746,6 +21895,188 @@ inline void ImuResponse::set_allocated_imu(::mavsdk::rpc::telemetry::Imu* imu) {
   }
   imu_ = imu;
   // @@protoc_insertion_point(field_set_allocated:mavsdk.rpc.telemetry.ImuResponse.imu)
+}
+
+// -------------------------------------------------------------------
+
+// SubscribeScaledImuRequest
+
+// -------------------------------------------------------------------
+
+// ScaledImuResponse
+
+// .mavsdk.rpc.telemetry.Imu imu = 1;
+inline bool ScaledImuResponse::_internal_has_imu() const {
+  return this != internal_default_instance() && imu_ != nullptr;
+}
+inline bool ScaledImuResponse::has_imu() const {
+  return _internal_has_imu();
+}
+inline void ScaledImuResponse::clear_imu() {
+  if (GetArena() == nullptr && imu_ != nullptr) {
+    delete imu_;
+  }
+  imu_ = nullptr;
+}
+inline const ::mavsdk::rpc::telemetry::Imu& ScaledImuResponse::_internal_imu() const {
+  const ::mavsdk::rpc::telemetry::Imu* p = imu_;
+  return p != nullptr ? *p : *reinterpret_cast<const ::mavsdk::rpc::telemetry::Imu*>(
+      &::mavsdk::rpc::telemetry::_Imu_default_instance_);
+}
+inline const ::mavsdk::rpc::telemetry::Imu& ScaledImuResponse::imu() const {
+  // @@protoc_insertion_point(field_get:mavsdk.rpc.telemetry.ScaledImuResponse.imu)
+  return _internal_imu();
+}
+inline void ScaledImuResponse::unsafe_arena_set_allocated_imu(
+    ::mavsdk::rpc::telemetry::Imu* imu) {
+  if (GetArena() == nullptr) {
+    delete reinterpret_cast<::PROTOBUF_NAMESPACE_ID::MessageLite*>(imu_);
+  }
+  imu_ = imu;
+  if (imu) {
+    
+  } else {
+    
+  }
+  // @@protoc_insertion_point(field_unsafe_arena_set_allocated:mavsdk.rpc.telemetry.ScaledImuResponse.imu)
+}
+inline ::mavsdk::rpc::telemetry::Imu* ScaledImuResponse::release_imu() {
+  
+  ::mavsdk::rpc::telemetry::Imu* temp = imu_;
+  imu_ = nullptr;
+  if (GetArena() != nullptr) {
+    temp = ::PROTOBUF_NAMESPACE_ID::internal::DuplicateIfNonNull(temp);
+  }
+  return temp;
+}
+inline ::mavsdk::rpc::telemetry::Imu* ScaledImuResponse::unsafe_arena_release_imu() {
+  // @@protoc_insertion_point(field_release:mavsdk.rpc.telemetry.ScaledImuResponse.imu)
+  
+  ::mavsdk::rpc::telemetry::Imu* temp = imu_;
+  imu_ = nullptr;
+  return temp;
+}
+inline ::mavsdk::rpc::telemetry::Imu* ScaledImuResponse::_internal_mutable_imu() {
+  
+  if (imu_ == nullptr) {
+    auto* p = CreateMaybeMessage<::mavsdk::rpc::telemetry::Imu>(GetArena());
+    imu_ = p;
+  }
+  return imu_;
+}
+inline ::mavsdk::rpc::telemetry::Imu* ScaledImuResponse::mutable_imu() {
+  // @@protoc_insertion_point(field_mutable:mavsdk.rpc.telemetry.ScaledImuResponse.imu)
+  return _internal_mutable_imu();
+}
+inline void ScaledImuResponse::set_allocated_imu(::mavsdk::rpc::telemetry::Imu* imu) {
+  ::PROTOBUF_NAMESPACE_ID::Arena* message_arena = GetArena();
+  if (message_arena == nullptr) {
+    delete imu_;
+  }
+  if (imu) {
+    ::PROTOBUF_NAMESPACE_ID::Arena* submessage_arena =
+      ::PROTOBUF_NAMESPACE_ID::Arena::GetArena(imu);
+    if (message_arena != submessage_arena) {
+      imu = ::PROTOBUF_NAMESPACE_ID::internal::GetOwnedMessage(
+          message_arena, imu, submessage_arena);
+    }
+    
+  } else {
+    
+  }
+  imu_ = imu;
+  // @@protoc_insertion_point(field_set_allocated:mavsdk.rpc.telemetry.ScaledImuResponse.imu)
+}
+
+// -------------------------------------------------------------------
+
+// SubscribeRawImuRequest
+
+// -------------------------------------------------------------------
+
+// RawImuResponse
+
+// .mavsdk.rpc.telemetry.Imu imu = 1;
+inline bool RawImuResponse::_internal_has_imu() const {
+  return this != internal_default_instance() && imu_ != nullptr;
+}
+inline bool RawImuResponse::has_imu() const {
+  return _internal_has_imu();
+}
+inline void RawImuResponse::clear_imu() {
+  if (GetArena() == nullptr && imu_ != nullptr) {
+    delete imu_;
+  }
+  imu_ = nullptr;
+}
+inline const ::mavsdk::rpc::telemetry::Imu& RawImuResponse::_internal_imu() const {
+  const ::mavsdk::rpc::telemetry::Imu* p = imu_;
+  return p != nullptr ? *p : *reinterpret_cast<const ::mavsdk::rpc::telemetry::Imu*>(
+      &::mavsdk::rpc::telemetry::_Imu_default_instance_);
+}
+inline const ::mavsdk::rpc::telemetry::Imu& RawImuResponse::imu() const {
+  // @@protoc_insertion_point(field_get:mavsdk.rpc.telemetry.RawImuResponse.imu)
+  return _internal_imu();
+}
+inline void RawImuResponse::unsafe_arena_set_allocated_imu(
+    ::mavsdk::rpc::telemetry::Imu* imu) {
+  if (GetArena() == nullptr) {
+    delete reinterpret_cast<::PROTOBUF_NAMESPACE_ID::MessageLite*>(imu_);
+  }
+  imu_ = imu;
+  if (imu) {
+    
+  } else {
+    
+  }
+  // @@protoc_insertion_point(field_unsafe_arena_set_allocated:mavsdk.rpc.telemetry.RawImuResponse.imu)
+}
+inline ::mavsdk::rpc::telemetry::Imu* RawImuResponse::release_imu() {
+  
+  ::mavsdk::rpc::telemetry::Imu* temp = imu_;
+  imu_ = nullptr;
+  if (GetArena() != nullptr) {
+    temp = ::PROTOBUF_NAMESPACE_ID::internal::DuplicateIfNonNull(temp);
+  }
+  return temp;
+}
+inline ::mavsdk::rpc::telemetry::Imu* RawImuResponse::unsafe_arena_release_imu() {
+  // @@protoc_insertion_point(field_release:mavsdk.rpc.telemetry.RawImuResponse.imu)
+  
+  ::mavsdk::rpc::telemetry::Imu* temp = imu_;
+  imu_ = nullptr;
+  return temp;
+}
+inline ::mavsdk::rpc::telemetry::Imu* RawImuResponse::_internal_mutable_imu() {
+  
+  if (imu_ == nullptr) {
+    auto* p = CreateMaybeMessage<::mavsdk::rpc::telemetry::Imu>(GetArena());
+    imu_ = p;
+  }
+  return imu_;
+}
+inline ::mavsdk::rpc::telemetry::Imu* RawImuResponse::mutable_imu() {
+  // @@protoc_insertion_point(field_mutable:mavsdk.rpc.telemetry.RawImuResponse.imu)
+  return _internal_mutable_imu();
+}
+inline void RawImuResponse::set_allocated_imu(::mavsdk::rpc::telemetry::Imu* imu) {
+  ::PROTOBUF_NAMESPACE_ID::Arena* message_arena = GetArena();
+  if (message_arena == nullptr) {
+    delete imu_;
+  }
+  if (imu) {
+    ::PROTOBUF_NAMESPACE_ID::Arena* submessage_arena =
+      ::PROTOBUF_NAMESPACE_ID::Arena::GetArena(imu);
+    if (message_arena != submessage_arena) {
+      imu = ::PROTOBUF_NAMESPACE_ID::internal::GetOwnedMessage(
+          message_arena, imu, submessage_arena);
+    }
+    
+  } else {
+    
+  }
+  imu_ = imu;
+  // @@protoc_insertion_point(field_set_allocated:mavsdk.rpc.telemetry.RawImuResponse.imu)
 }
 
 // -------------------------------------------------------------------
@@ -23002,6 +24333,228 @@ inline void SetRateImuResponse::set_allocated_telemetry_result(::mavsdk::rpc::te
   }
   telemetry_result_ = telemetry_result;
   // @@protoc_insertion_point(field_set_allocated:mavsdk.rpc.telemetry.SetRateImuResponse.telemetry_result)
+}
+
+// -------------------------------------------------------------------
+
+// SetRateScaledImuRequest
+
+// double rate_hz = 1;
+inline void SetRateScaledImuRequest::clear_rate_hz() {
+  rate_hz_ = 0;
+}
+inline double SetRateScaledImuRequest::_internal_rate_hz() const {
+  return rate_hz_;
+}
+inline double SetRateScaledImuRequest::rate_hz() const {
+  // @@protoc_insertion_point(field_get:mavsdk.rpc.telemetry.SetRateScaledImuRequest.rate_hz)
+  return _internal_rate_hz();
+}
+inline void SetRateScaledImuRequest::_internal_set_rate_hz(double value) {
+  
+  rate_hz_ = value;
+}
+inline void SetRateScaledImuRequest::set_rate_hz(double value) {
+  _internal_set_rate_hz(value);
+  // @@protoc_insertion_point(field_set:mavsdk.rpc.telemetry.SetRateScaledImuRequest.rate_hz)
+}
+
+// -------------------------------------------------------------------
+
+// SetRateScaledImuResponse
+
+// .mavsdk.rpc.telemetry.TelemetryResult telemetry_result = 1;
+inline bool SetRateScaledImuResponse::_internal_has_telemetry_result() const {
+  return this != internal_default_instance() && telemetry_result_ != nullptr;
+}
+inline bool SetRateScaledImuResponse::has_telemetry_result() const {
+  return _internal_has_telemetry_result();
+}
+inline void SetRateScaledImuResponse::clear_telemetry_result() {
+  if (GetArena() == nullptr && telemetry_result_ != nullptr) {
+    delete telemetry_result_;
+  }
+  telemetry_result_ = nullptr;
+}
+inline const ::mavsdk::rpc::telemetry::TelemetryResult& SetRateScaledImuResponse::_internal_telemetry_result() const {
+  const ::mavsdk::rpc::telemetry::TelemetryResult* p = telemetry_result_;
+  return p != nullptr ? *p : *reinterpret_cast<const ::mavsdk::rpc::telemetry::TelemetryResult*>(
+      &::mavsdk::rpc::telemetry::_TelemetryResult_default_instance_);
+}
+inline const ::mavsdk::rpc::telemetry::TelemetryResult& SetRateScaledImuResponse::telemetry_result() const {
+  // @@protoc_insertion_point(field_get:mavsdk.rpc.telemetry.SetRateScaledImuResponse.telemetry_result)
+  return _internal_telemetry_result();
+}
+inline void SetRateScaledImuResponse::unsafe_arena_set_allocated_telemetry_result(
+    ::mavsdk::rpc::telemetry::TelemetryResult* telemetry_result) {
+  if (GetArena() == nullptr) {
+    delete reinterpret_cast<::PROTOBUF_NAMESPACE_ID::MessageLite*>(telemetry_result_);
+  }
+  telemetry_result_ = telemetry_result;
+  if (telemetry_result) {
+    
+  } else {
+    
+  }
+  // @@protoc_insertion_point(field_unsafe_arena_set_allocated:mavsdk.rpc.telemetry.SetRateScaledImuResponse.telemetry_result)
+}
+inline ::mavsdk::rpc::telemetry::TelemetryResult* SetRateScaledImuResponse::release_telemetry_result() {
+  
+  ::mavsdk::rpc::telemetry::TelemetryResult* temp = telemetry_result_;
+  telemetry_result_ = nullptr;
+  if (GetArena() != nullptr) {
+    temp = ::PROTOBUF_NAMESPACE_ID::internal::DuplicateIfNonNull(temp);
+  }
+  return temp;
+}
+inline ::mavsdk::rpc::telemetry::TelemetryResult* SetRateScaledImuResponse::unsafe_arena_release_telemetry_result() {
+  // @@protoc_insertion_point(field_release:mavsdk.rpc.telemetry.SetRateScaledImuResponse.telemetry_result)
+  
+  ::mavsdk::rpc::telemetry::TelemetryResult* temp = telemetry_result_;
+  telemetry_result_ = nullptr;
+  return temp;
+}
+inline ::mavsdk::rpc::telemetry::TelemetryResult* SetRateScaledImuResponse::_internal_mutable_telemetry_result() {
+  
+  if (telemetry_result_ == nullptr) {
+    auto* p = CreateMaybeMessage<::mavsdk::rpc::telemetry::TelemetryResult>(GetArena());
+    telemetry_result_ = p;
+  }
+  return telemetry_result_;
+}
+inline ::mavsdk::rpc::telemetry::TelemetryResult* SetRateScaledImuResponse::mutable_telemetry_result() {
+  // @@protoc_insertion_point(field_mutable:mavsdk.rpc.telemetry.SetRateScaledImuResponse.telemetry_result)
+  return _internal_mutable_telemetry_result();
+}
+inline void SetRateScaledImuResponse::set_allocated_telemetry_result(::mavsdk::rpc::telemetry::TelemetryResult* telemetry_result) {
+  ::PROTOBUF_NAMESPACE_ID::Arena* message_arena = GetArena();
+  if (message_arena == nullptr) {
+    delete telemetry_result_;
+  }
+  if (telemetry_result) {
+    ::PROTOBUF_NAMESPACE_ID::Arena* submessage_arena =
+      ::PROTOBUF_NAMESPACE_ID::Arena::GetArena(telemetry_result);
+    if (message_arena != submessage_arena) {
+      telemetry_result = ::PROTOBUF_NAMESPACE_ID::internal::GetOwnedMessage(
+          message_arena, telemetry_result, submessage_arena);
+    }
+    
+  } else {
+    
+  }
+  telemetry_result_ = telemetry_result;
+  // @@protoc_insertion_point(field_set_allocated:mavsdk.rpc.telemetry.SetRateScaledImuResponse.telemetry_result)
+}
+
+// -------------------------------------------------------------------
+
+// SetRateRawImuRequest
+
+// double rate_hz = 1;
+inline void SetRateRawImuRequest::clear_rate_hz() {
+  rate_hz_ = 0;
+}
+inline double SetRateRawImuRequest::_internal_rate_hz() const {
+  return rate_hz_;
+}
+inline double SetRateRawImuRequest::rate_hz() const {
+  // @@protoc_insertion_point(field_get:mavsdk.rpc.telemetry.SetRateRawImuRequest.rate_hz)
+  return _internal_rate_hz();
+}
+inline void SetRateRawImuRequest::_internal_set_rate_hz(double value) {
+  
+  rate_hz_ = value;
+}
+inline void SetRateRawImuRequest::set_rate_hz(double value) {
+  _internal_set_rate_hz(value);
+  // @@protoc_insertion_point(field_set:mavsdk.rpc.telemetry.SetRateRawImuRequest.rate_hz)
+}
+
+// -------------------------------------------------------------------
+
+// SetRateRawImuResponse
+
+// .mavsdk.rpc.telemetry.TelemetryResult telemetry_result = 1;
+inline bool SetRateRawImuResponse::_internal_has_telemetry_result() const {
+  return this != internal_default_instance() && telemetry_result_ != nullptr;
+}
+inline bool SetRateRawImuResponse::has_telemetry_result() const {
+  return _internal_has_telemetry_result();
+}
+inline void SetRateRawImuResponse::clear_telemetry_result() {
+  if (GetArena() == nullptr && telemetry_result_ != nullptr) {
+    delete telemetry_result_;
+  }
+  telemetry_result_ = nullptr;
+}
+inline const ::mavsdk::rpc::telemetry::TelemetryResult& SetRateRawImuResponse::_internal_telemetry_result() const {
+  const ::mavsdk::rpc::telemetry::TelemetryResult* p = telemetry_result_;
+  return p != nullptr ? *p : *reinterpret_cast<const ::mavsdk::rpc::telemetry::TelemetryResult*>(
+      &::mavsdk::rpc::telemetry::_TelemetryResult_default_instance_);
+}
+inline const ::mavsdk::rpc::telemetry::TelemetryResult& SetRateRawImuResponse::telemetry_result() const {
+  // @@protoc_insertion_point(field_get:mavsdk.rpc.telemetry.SetRateRawImuResponse.telemetry_result)
+  return _internal_telemetry_result();
+}
+inline void SetRateRawImuResponse::unsafe_arena_set_allocated_telemetry_result(
+    ::mavsdk::rpc::telemetry::TelemetryResult* telemetry_result) {
+  if (GetArena() == nullptr) {
+    delete reinterpret_cast<::PROTOBUF_NAMESPACE_ID::MessageLite*>(telemetry_result_);
+  }
+  telemetry_result_ = telemetry_result;
+  if (telemetry_result) {
+    
+  } else {
+    
+  }
+  // @@protoc_insertion_point(field_unsafe_arena_set_allocated:mavsdk.rpc.telemetry.SetRateRawImuResponse.telemetry_result)
+}
+inline ::mavsdk::rpc::telemetry::TelemetryResult* SetRateRawImuResponse::release_telemetry_result() {
+  
+  ::mavsdk::rpc::telemetry::TelemetryResult* temp = telemetry_result_;
+  telemetry_result_ = nullptr;
+  if (GetArena() != nullptr) {
+    temp = ::PROTOBUF_NAMESPACE_ID::internal::DuplicateIfNonNull(temp);
+  }
+  return temp;
+}
+inline ::mavsdk::rpc::telemetry::TelemetryResult* SetRateRawImuResponse::unsafe_arena_release_telemetry_result() {
+  // @@protoc_insertion_point(field_release:mavsdk.rpc.telemetry.SetRateRawImuResponse.telemetry_result)
+  
+  ::mavsdk::rpc::telemetry::TelemetryResult* temp = telemetry_result_;
+  telemetry_result_ = nullptr;
+  return temp;
+}
+inline ::mavsdk::rpc::telemetry::TelemetryResult* SetRateRawImuResponse::_internal_mutable_telemetry_result() {
+  
+  if (telemetry_result_ == nullptr) {
+    auto* p = CreateMaybeMessage<::mavsdk::rpc::telemetry::TelemetryResult>(GetArena());
+    telemetry_result_ = p;
+  }
+  return telemetry_result_;
+}
+inline ::mavsdk::rpc::telemetry::TelemetryResult* SetRateRawImuResponse::mutable_telemetry_result() {
+  // @@protoc_insertion_point(field_mutable:mavsdk.rpc.telemetry.SetRateRawImuResponse.telemetry_result)
+  return _internal_mutable_telemetry_result();
+}
+inline void SetRateRawImuResponse::set_allocated_telemetry_result(::mavsdk::rpc::telemetry::TelemetryResult* telemetry_result) {
+  ::PROTOBUF_NAMESPACE_ID::Arena* message_arena = GetArena();
+  if (message_arena == nullptr) {
+    delete telemetry_result_;
+  }
+  if (telemetry_result) {
+    ::PROTOBUF_NAMESPACE_ID::Arena* submessage_arena =
+      ::PROTOBUF_NAMESPACE_ID::Arena::GetArena(telemetry_result);
+    if (message_arena != submessage_arena) {
+      telemetry_result = ::PROTOBUF_NAMESPACE_ID::internal::GetOwnedMessage(
+          message_arena, telemetry_result, submessage_arena);
+    }
+    
+  } else {
+    
+  }
+  telemetry_result_ = telemetry_result;
+  // @@protoc_insertion_point(field_set_allocated:mavsdk.rpc.telemetry.SetRateRawImuResponse.telemetry_result)
 }
 
 // -------------------------------------------------------------------
@@ -25956,6 +27509,26 @@ inline void Imu::set_temperature_degc(float value) {
   // @@protoc_insertion_point(field_set:mavsdk.rpc.telemetry.Imu.temperature_degc)
 }
 
+// uint64 timestamp_us = 5;
+inline void Imu::clear_timestamp_us() {
+  timestamp_us_ = PROTOBUF_ULONGLONG(0);
+}
+inline ::PROTOBUF_NAMESPACE_ID::uint64 Imu::_internal_timestamp_us() const {
+  return timestamp_us_;
+}
+inline ::PROTOBUF_NAMESPACE_ID::uint64 Imu::timestamp_us() const {
+  // @@protoc_insertion_point(field_get:mavsdk.rpc.telemetry.Imu.timestamp_us)
+  return _internal_timestamp_us();
+}
+inline void Imu::_internal_set_timestamp_us(::PROTOBUF_NAMESPACE_ID::uint64 value) {
+  
+  timestamp_us_ = value;
+}
+inline void Imu::set_timestamp_us(::PROTOBUF_NAMESPACE_ID::uint64 value) {
+  _internal_set_timestamp_us(value);
+  // @@protoc_insertion_point(field_set:mavsdk.rpc.telemetry.Imu.timestamp_us)
+}
+
 // -------------------------------------------------------------------
 
 // GpsGlobalOrigin
@@ -26109,6 +27682,22 @@ inline void TelemetryResult::set_allocated_result_str(std::string* result_str) {
 #ifdef __GNUC__
   #pragma GCC diagnostic pop
 #endif  // __GNUC__
+// -------------------------------------------------------------------
+
+// -------------------------------------------------------------------
+
+// -------------------------------------------------------------------
+
+// -------------------------------------------------------------------
+
+// -------------------------------------------------------------------
+
+// -------------------------------------------------------------------
+
+// -------------------------------------------------------------------
+
+// -------------------------------------------------------------------
+
 // -------------------------------------------------------------------
 
 // -------------------------------------------------------------------

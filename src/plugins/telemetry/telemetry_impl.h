@@ -37,6 +37,8 @@ public:
     Telemetry::Result set_rate_camera_attitude(double rate_hz);
     Telemetry::Result set_rate_velocity_ned(double rate_hz);
     Telemetry::Result set_rate_imu(double rate_hz);
+    Telemetry::Result set_rate_scaled_imu(double rate_hz);
+    Telemetry::Result set_rate_raw_imu(double rate_hz);
     Telemetry::Result set_rate_fixedwing_metrics(double rate_hz);
     Telemetry::Result set_rate_ground_truth(double rate_hz);
     Telemetry::Result set_rate_gps_info(double rate_hz);
@@ -57,6 +59,8 @@ public:
     void set_rate_camera_attitude_async(double rate_hz, Telemetry::ResultCallback callback);
     void set_rate_velocity_ned_async(double rate_hz, Telemetry::ResultCallback callback);
     void set_rate_imu_async(double rate_hz, Telemetry::ResultCallback callback);
+    void set_rate_scaled_imu_async(double rate_hz, Telemetry::ResultCallback callback);
+    void set_rate_raw_imu_async(double rate_hz, Telemetry::ResultCallback callback);
     void set_rate_fixedwing_metrics_async(double rate_hz, Telemetry::ResultCallback callback);
     void set_rate_ground_truth_async(double rate_hz, Telemetry::ResultCallback callback);
     void set_rate_gps_info_async(double rate_hz, Telemetry::ResultCallback callback);
@@ -87,6 +91,8 @@ public:
     Telemetry::Quaternion camera_attitude_quaternion() const;
     Telemetry::VelocityNed velocity_ned() const;
     Telemetry::Imu imu() const;
+    Telemetry::Imu scaled_imu() const;
+    Telemetry::Imu raw_imu() const;
     Telemetry::GpsInfo gps_info() const;
     Telemetry::Battery battery() const;
     Telemetry::FlightMode flight_mode() const;
@@ -115,6 +121,8 @@ public:
     void subscribe_camera_attitude_euler(Telemetry::AttitudeEulerCallback& callback);
     void subscribe_velocity_ned(Telemetry::VelocityNedCallback& callback);
     void subscribe_imu(Telemetry::ImuCallback& callback);
+    void subscribe_scaled_imu(Telemetry::ScaledImuCallback& callback);
+    void subscribe_raw_imu(Telemetry::RawImuCallback& callback);
     void subscribe_gps_info(Telemetry::GpsInfoCallback& callback);
     void subscribe_battery(Telemetry::BatteryCallback& callback);
     void subscribe_flight_mode(Telemetry::FlightModeCallback& callback);
@@ -146,6 +154,8 @@ private:
     void set_camera_attitude_euler_angle(Telemetry::EulerAngle euler_angle);
     void set_velocity_ned(Telemetry::VelocityNed velocity_ned);
     void set_imu_reading_ned(Telemetry::Imu imu);
+    void set_scaled_imu(Telemetry::Imu imu);
+    void set_raw_imu(Telemetry::Imu imu);
     void set_gps_info(Telemetry::GpsInfo gps_info);
     void set_battery(Telemetry::Battery battery);
     void set_health_local_position(bool ok);
@@ -170,6 +180,8 @@ private:
     void process_gimbal_device_attitude_status(const mavlink_message_t& message);
     void process_mount_orientation(const mavlink_message_t& message);
     void process_imu_reading_ned(const mavlink_message_t& message);
+    void process_scaled_imu(const mavlink_message_t& message);
+    void process_raw_imu(const mavlink_message_t& message);
     void process_gps_raw_int(const mavlink_message_t& message);
     void process_ground_truth(const mavlink_message_t& message);
     void process_extended_sys_state(const mavlink_message_t& message);
@@ -248,6 +260,12 @@ private:
     mutable std::mutex _imu_reading_ned_mutex{};
     Telemetry::Imu _imu_reading_ned{};
 
+    mutable std::mutex _scaled_imu_mutex{};
+    Telemetry::Imu _scaled_imu{};
+
+    mutable std::mutex _raw_imu_mutex{};
+    Telemetry::Imu _raw_imu{};
+
     mutable std::mutex _gps_info_mutex{};
     Telemetry::GpsInfo _gps_info{};
 
@@ -297,6 +315,8 @@ private:
     Telemetry::AttitudeEulerCallback _camera_attitude_euler_angle_subscription{nullptr};
     Telemetry::VelocityNedCallback _velocity_ned_subscription{nullptr};
     Telemetry::ImuCallback _imu_reading_ned_subscription{nullptr};
+    Telemetry::ScaledImuCallback _scaled_imu_subscription{nullptr};
+    Telemetry::RawImuCallback _raw_imu_subscription{nullptr};
     Telemetry::GpsInfoCallback _gps_info_subscription{nullptr};
     Telemetry::BatteryCallback _battery_subscription{nullptr};
     Telemetry::FlightModeCallback _flight_mode_subscription{nullptr};
