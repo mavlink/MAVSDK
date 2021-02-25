@@ -58,13 +58,17 @@ service TelemetryService {
     rpc SubscribeGroundTruth(SubscribeGroundTruthRequest) returns(stream GroundTruthResponse) {}
     // Subscribe to 'fixedwing metrics' updates.
     rpc SubscribeFixedwingMetrics(SubscribeFixedwingMetricsRequest) returns(stream FixedwingMetricsResponse) {}
-    // Subscribe to 'IMU' updates.
+    // Subscribe to 'IMU' updates (in SI units in NED body frame).
     rpc SubscribeImu(SubscribeImuRequest) returns(stream ImuResponse) {}
+    // Subscribe to 'Scaled IMU' updates.
+    rpc SubscribeScaledImu(SubscribeScaledImuRequest) returns(stream ScaledImuResponse) {}
+    // Subscribe to 'Raw IMU' updates.
+    rpc SubscribeRawImu(SubscribeRawImuRequest) returns(stream RawImuResponse) {}
     // Subscribe to 'HealthAllOk' updates.
     rpc SubscribeHealthAllOk(SubscribeHealthAllOkRequest) returns(stream HealthAllOkResponse) {}
     // Subscribe to 'unix epoch time' updates.
     rpc SubscribeUnixEpochTime(SubscribeUnixEpochTimeRequest) returns(stream UnixEpochTimeResponse) {}
-        // Subscribe to 'Distance Sensor' updates.
+    // Subscribe to 'Distance Sensor' updates.
     rpc SubscribeDistanceSensor(SubscribeDistanceSensorRequest) returns(stream DistanceSensorResponse) {}
 
     // Set rate to 'position' updates.
@@ -101,6 +105,10 @@ service TelemetryService {
     rpc SetRateFixedwingMetrics(SetRateFixedwingMetricsRequest) returns(SetRateFixedwingMetricsResponse) {}
     // Set rate to 'IMU' updates.
     rpc SetRateImu(SetRateImuRequest) returns(SetRateImuResponse) {}
+    // Set rate to 'Scaled IMU' updates.
+    rpc SetRateScaledImu(SetRateScaledImuRequest) returns(SetRateScaledImuResponse) {}
+    // Set rate to 'Raw IMU' updates.
+    rpc SetRateRawImu(SetRateRawImuRequest) returns(SetRateRawImuResponse) {}
     // Set rate to 'unix epoch time' updates.
     rpc SetRateUnixEpochTime(SetRateUnixEpochTimeRequest) returns(SetRateUnixEpochTimeResponse) {}
     // Set rate to 'Distance Sensor' updates.
@@ -228,6 +236,16 @@ message FixedwingMetricsResponse {
 message SubscribeImuRequest {}
 message ImuResponse {
     Imu imu = 1; // The next IMU status
+}
+
+message SubscribeScaledImuRequest {}
+message ScaledImuResponse {
+    Imu imu = 1; // The next scaled IMU status
+}
+
+message SubscribeRawImuRequest {}
+message RawImuResponse {
+    Imu imu = 1; // The next raw IMU status
 }
 
 message SubscribeHealthAllOkRequest {}
@@ -375,6 +393,20 @@ message SetRateImuRequest {
     double rate_hz = 1; // The requested rate (in Hertz)
 }
 message SetRateImuResponse {
+    TelemetryResult telemetry_result = 1;
+}
+
+message SetRateScaledImuRequest {
+    double rate_hz = 1; // The requested rate (in Hertz)
+}
+message SetRateScaledImuResponse {
+    TelemetryResult telemetry_result = 1;
+}
+
+message SetRateRawImuRequest {
+    double rate_hz = 1; // The requested rate (in Hertz)
+}
+message SetRateRawImuResponse {
     TelemetryResult telemetry_result = 1;
 }
 
@@ -664,6 +696,7 @@ message Imu {
     AngularVelocityFrd angular_velocity_frd = 2; // Angular velocity
     MagneticFieldFrd magnetic_field_frd = 3; // Magnetic field
     float temperature_degc = 4 [(mavsdk.options.default_value)="NaN"]; // Temperature
+    uint64 timestamp_us = 5; // Timestamp in microseconds
 }
 
 // Gps global origin type.
