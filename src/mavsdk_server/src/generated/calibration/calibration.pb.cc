@@ -197,8 +197,9 @@ static void InitDefaultsscc_info_CancelResponse_calibration_2fcalibration_2eprot
   ::mavsdk::rpc::calibration::CancelResponse::InitAsDefaultInstance();
 }
 
-::PROTOBUF_NAMESPACE_ID::internal::SCCInfo<0> scc_info_CancelResponse_calibration_2fcalibration_2eproto =
-    {{ATOMIC_VAR_INIT(::PROTOBUF_NAMESPACE_ID::internal::SCCInfoBase::kUninitialized), 0, 0, InitDefaultsscc_info_CancelResponse_calibration_2fcalibration_2eproto}, {}};
+::PROTOBUF_NAMESPACE_ID::internal::SCCInfo<1> scc_info_CancelResponse_calibration_2fcalibration_2eproto =
+    {{ATOMIC_VAR_INIT(::PROTOBUF_NAMESPACE_ID::internal::SCCInfoBase::kUninitialized), 1, 0, InitDefaultsscc_info_CancelResponse_calibration_2fcalibration_2eproto}, {
+      &scc_info_CalibrationResult_calibration_2fcalibration_2eproto.base,}};
 
 static void InitDefaultsscc_info_ProgressData_calibration_2fcalibration_2eproto() {
   GOOGLE_PROTOBUF_VERIFY_VERSION;
@@ -359,6 +360,7 @@ const ::PROTOBUF_NAMESPACE_ID::uint32 TableStruct_calibration_2fcalibration_2epr
   ~0u,  // no _extensions_
   ~0u,  // no _oneof_case_
   ~0u,  // no _weak_field_map_
+  PROTOBUF_FIELD_OFFSET(::mavsdk::rpc::calibration::CancelResponse, calibration_result_),
   ~0u,  // no _has_bits_
   PROTOBUF_FIELD_OFFSET(::mavsdk::rpc::calibration::CalibrationResult, _internal_metadata_),
   ~0u,  // no _extensions_
@@ -389,8 +391,8 @@ static const ::PROTOBUF_NAMESPACE_ID::internal::MigrationSchema schemas[] PROTOB
   { 53, -1, sizeof(::mavsdk::rpc::calibration::CalibrateGimbalAccelerometerResponse)},
   { 60, -1, sizeof(::mavsdk::rpc::calibration::CancelRequest)},
   { 65, -1, sizeof(::mavsdk::rpc::calibration::CancelResponse)},
-  { 70, -1, sizeof(::mavsdk::rpc::calibration::CalibrationResult)},
-  { 77, -1, sizeof(::mavsdk::rpc::calibration::ProgressData)},
+  { 71, -1, sizeof(::mavsdk::rpc::calibration::CalibrationResult)},
+  { 78, -1, sizeof(::mavsdk::rpc::calibration::ProgressData)},
 };
 
 static ::PROTOBUF_NAMESPACE_ID::Message const * const file_default_instances[] = {
@@ -439,44 +441,46 @@ const char descriptor_table_protodef_calibration_2fcalibration_2eproto[] PROTOBU
   "lt\030\001 \001(\0132).mavsdk.rpc.calibration.Calibr"
   "ationResult\022;\n\rprogress_data\030\002 \001(\0132$.mav"
   "sdk.rpc.calibration.ProgressData\"\017\n\rCanc"
-  "elRequest\"\020\n\016CancelResponse\"\342\002\n\021Calibrat"
-  "ionResult\022@\n\006result\030\001 \001(\01620.mavsdk.rpc.c"
-  "alibration.CalibrationResult.Result\022\022\n\nr"
-  "esult_str\030\002 \001(\t\"\366\001\n\006Result\022\022\n\016RESULT_UNK"
-  "NOWN\020\000\022\022\n\016RESULT_SUCCESS\020\001\022\017\n\013RESULT_NEX"
-  "T\020\002\022\021\n\rRESULT_FAILED\020\003\022\024\n\020RESULT_NO_SYST"
-  "EM\020\004\022\033\n\027RESULT_CONNECTION_ERROR\020\005\022\017\n\013RES"
-  "ULT_BUSY\020\006\022\031\n\025RESULT_COMMAND_DENIED\020\007\022\022\n"
-  "\016RESULT_TIMEOUT\020\010\022\024\n\020RESULT_CANCELLED\020\t\022"
-  "\027\n\023RESULT_FAILED_ARMED\020\n\"\203\001\n\014ProgressDat"
-  "a\022\037\n\014has_progress\030\001 \001(\010B\t\202\265\030\005false\022\031\n\010pr"
-  "ogress\030\002 \001(\002B\007\202\265\030\003NaN\022\"\n\017has_status_text"
-  "\030\003 \001(\010B\t\202\265\030\005false\022\023\n\013status_text\030\004 \001(\t2\254"
-  "\007\n\022CalibrationService\022\212\001\n\026SubscribeCalib"
-  "rateGyro\0225.mavsdk.rpc.calibration.Subscr"
-  "ibeCalibrateGyroRequest\032-.mavsdk.rpc.cal"
-  "ibration.CalibrateGyroResponse\"\010\200\265\030\000\210\265\030\001"
-  "0\001\022\245\001\n\037SubscribeCalibrateAccelerometer\022>"
-  ".mavsdk.rpc.calibration.SubscribeCalibra"
-  "teAccelerometerRequest\0326.mavsdk.rpc.cali"
-  "bration.CalibrateAccelerometerResponse\"\010"
-  "\200\265\030\000\210\265\030\0010\001\022\242\001\n\036SubscribeCalibrateMagneto"
-  "meter\022=.mavsdk.rpc.calibration.Subscribe"
-  "CalibrateMagnetometerRequest\0325.mavsdk.rp"
-  "c.calibration.CalibrateMagnetometerRespo"
-  "nse\"\010\200\265\030\000\210\265\030\0010\001\022\242\001\n\036SubscribeCalibrateLe"
-  "velHorizon\022=.mavsdk.rpc.calibration.Subs"
-  "cribeCalibrateLevelHorizonRequest\0325.mavs"
-  "dk.rpc.calibration.CalibrateLevelHorizon"
-  "Response\"\010\200\265\030\000\210\265\030\0010\001\022\267\001\n%SubscribeCalibr"
-  "ateGimbalAccelerometer\022D.mavsdk.rpc.cali"
-  "bration.SubscribeCalibrateGimbalAccelero"
-  "meterRequest\032<.mavsdk.rpc.calibration.Ca"
-  "librateGimbalAccelerometerResponse\"\010\200\265\030\000"
-  "\210\265\030\0010\001\022]\n\006Cancel\022%.mavsdk.rpc.calibratio"
-  "n.CancelRequest\032&.mavsdk.rpc.calibration"
-  ".CancelResponse\"\004\200\265\030\001B)\n\025io.mavsdk.calib"
-  "rationB\020CalibrationProtob\006proto3"
+  "elRequest\"W\n\016CancelResponse\022E\n\022calibrati"
+  "on_result\030\001 \001(\0132).mavsdk.rpc.calibration"
+  ".CalibrationResult\"\342\002\n\021CalibrationResult"
+  "\022@\n\006result\030\001 \001(\01620.mavsdk.rpc.calibratio"
+  "n.CalibrationResult.Result\022\022\n\nresult_str"
+  "\030\002 \001(\t\"\366\001\n\006Result\022\022\n\016RESULT_UNKNOWN\020\000\022\022\n"
+  "\016RESULT_SUCCESS\020\001\022\017\n\013RESULT_NEXT\020\002\022\021\n\rRE"
+  "SULT_FAILED\020\003\022\024\n\020RESULT_NO_SYSTEM\020\004\022\033\n\027R"
+  "ESULT_CONNECTION_ERROR\020\005\022\017\n\013RESULT_BUSY\020"
+  "\006\022\031\n\025RESULT_COMMAND_DENIED\020\007\022\022\n\016RESULT_T"
+  "IMEOUT\020\010\022\024\n\020RESULT_CANCELLED\020\t\022\027\n\023RESULT"
+  "_FAILED_ARMED\020\n\"\203\001\n\014ProgressData\022\037\n\014has_"
+  "progress\030\001 \001(\010B\t\202\265\030\005false\022\031\n\010progress\030\002 "
+  "\001(\002B\007\202\265\030\003NaN\022\"\n\017has_status_text\030\003 \001(\010B\t\202"
+  "\265\030\005false\022\023\n\013status_text\030\004 \001(\t2\254\007\n\022Calibr"
+  "ationService\022\212\001\n\026SubscribeCalibrateGyro\022"
+  "5.mavsdk.rpc.calibration.SubscribeCalibr"
+  "ateGyroRequest\032-.mavsdk.rpc.calibration."
+  "CalibrateGyroResponse\"\010\200\265\030\000\210\265\030\0010\001\022\245\001\n\037Su"
+  "bscribeCalibrateAccelerometer\022>.mavsdk.r"
+  "pc.calibration.SubscribeCalibrateAcceler"
+  "ometerRequest\0326.mavsdk.rpc.calibration.C"
+  "alibrateAccelerometerResponse\"\010\200\265\030\000\210\265\030\0010"
+  "\001\022\242\001\n\036SubscribeCalibrateMagnetometer\022=.m"
+  "avsdk.rpc.calibration.SubscribeCalibrate"
+  "MagnetometerRequest\0325.mavsdk.rpc.calibra"
+  "tion.CalibrateMagnetometerResponse\"\010\200\265\030\000"
+  "\210\265\030\0010\001\022\242\001\n\036SubscribeCalibrateLevelHorizo"
+  "n\022=.mavsdk.rpc.calibration.SubscribeCali"
+  "brateLevelHorizonRequest\0325.mavsdk.rpc.ca"
+  "libration.CalibrateLevelHorizonResponse\""
+  "\010\200\265\030\000\210\265\030\0010\001\022\267\001\n%SubscribeCalibrateGimbal"
+  "Accelerometer\022D.mavsdk.rpc.calibration.S"
+  "ubscribeCalibrateGimbalAccelerometerRequ"
+  "est\032<.mavsdk.rpc.calibration.CalibrateGi"
+  "mbalAccelerometerResponse\"\010\200\265\030\000\210\265\030\0010\001\022]\n"
+  "\006Cancel\022%.mavsdk.rpc.calibration.CancelR"
+  "equest\032&.mavsdk.rpc.calibration.CancelRe"
+  "sponse\"\004\200\265\030\001B)\n\025io.mavsdk.calibrationB\020C"
+  "alibrationProtob\006proto3"
   ;
 static const ::PROTOBUF_NAMESPACE_ID::internal::DescriptorTable*const descriptor_table_calibration_2fcalibration_2eproto_deps[1] = {
   &::descriptor_table_mavsdk_5foptions_2eproto,
@@ -499,7 +503,7 @@ static ::PROTOBUF_NAMESPACE_ID::internal::SCCInfoBase*const descriptor_table_cal
 };
 static ::PROTOBUF_NAMESPACE_ID::internal::once_flag descriptor_table_calibration_2fcalibration_2eproto_once;
 const ::PROTOBUF_NAMESPACE_ID::internal::DescriptorTable descriptor_table_calibration_2fcalibration_2eproto = {
-  false, false, descriptor_table_protodef_calibration_2fcalibration_2eproto, "calibration/calibration.proto", 2632,
+  false, false, descriptor_table_protodef_calibration_2fcalibration_2eproto, "calibration/calibration.proto", 2703,
   &descriptor_table_calibration_2fcalibration_2eproto_once, descriptor_table_calibration_2fcalibration_2eproto_sccs, descriptor_table_calibration_2fcalibration_2eproto_deps, 14, 1,
   schemas, file_default_instances, TableStruct_calibration_2fcalibration_2eproto::offsets,
   file_level_metadata_calibration_2fcalibration_2eproto, 14, file_level_enum_descriptors_calibration_2fcalibration_2eproto, file_level_service_descriptors_calibration_2fcalibration_2eproto,
@@ -2863,11 +2867,18 @@ void CancelRequest::InternalSwap(CancelRequest* other) {
 // ===================================================================
 
 void CancelResponse::InitAsDefaultInstance() {
+  ::mavsdk::rpc::calibration::_CancelResponse_default_instance_._instance.get_mutable()->calibration_result_ = const_cast< ::mavsdk::rpc::calibration::CalibrationResult*>(
+      ::mavsdk::rpc::calibration::CalibrationResult::internal_default_instance());
 }
 class CancelResponse::_Internal {
  public:
+  static const ::mavsdk::rpc::calibration::CalibrationResult& calibration_result(const CancelResponse* msg);
 };
 
+const ::mavsdk::rpc::calibration::CalibrationResult&
+CancelResponse::_Internal::calibration_result(const CancelResponse* msg) {
+  return *msg->calibration_result_;
+}
 CancelResponse::CancelResponse(::PROTOBUF_NAMESPACE_ID::Arena* arena)
   : ::PROTOBUF_NAMESPACE_ID::Message(arena) {
   SharedCtor();
@@ -2877,10 +2888,17 @@ CancelResponse::CancelResponse(::PROTOBUF_NAMESPACE_ID::Arena* arena)
 CancelResponse::CancelResponse(const CancelResponse& from)
   : ::PROTOBUF_NAMESPACE_ID::Message() {
   _internal_metadata_.MergeFrom<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>(from._internal_metadata_);
+  if (from._internal_has_calibration_result()) {
+    calibration_result_ = new ::mavsdk::rpc::calibration::CalibrationResult(*from.calibration_result_);
+  } else {
+    calibration_result_ = nullptr;
+  }
   // @@protoc_insertion_point(copy_constructor:mavsdk.rpc.calibration.CancelResponse)
 }
 
 void CancelResponse::SharedCtor() {
+  ::PROTOBUF_NAMESPACE_ID::internal::InitSCC(&scc_info_CancelResponse_calibration_2fcalibration_2eproto.base);
+  calibration_result_ = nullptr;
 }
 
 CancelResponse::~CancelResponse() {
@@ -2891,6 +2909,7 @@ CancelResponse::~CancelResponse() {
 
 void CancelResponse::SharedDtor() {
   GOOGLE_DCHECK(GetArena() == nullptr);
+  if (this != internal_default_instance()) delete calibration_result_;
 }
 
 void CancelResponse::ArenaDtor(void* object) {
@@ -2914,6 +2933,10 @@ void CancelResponse::Clear() {
   // Prevent compiler warnings about cached_has_bits being unused
   (void) cached_has_bits;
 
+  if (GetArena() == nullptr && calibration_result_ != nullptr) {
+    delete calibration_result_;
+  }
+  calibration_result_ = nullptr;
   _internal_metadata_.Clear<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>();
 }
 
@@ -2924,6 +2947,16 @@ const char* CancelResponse::_InternalParse(const char* ptr, ::PROTOBUF_NAMESPACE
     ::PROTOBUF_NAMESPACE_ID::uint32 tag;
     ptr = ::PROTOBUF_NAMESPACE_ID::internal::ReadTag(ptr, &tag);
     CHK_(ptr);
+    switch (tag >> 3) {
+      // .mavsdk.rpc.calibration.CalibrationResult calibration_result = 1;
+      case 1:
+        if (PROTOBUF_PREDICT_TRUE(static_cast<::PROTOBUF_NAMESPACE_ID::uint8>(tag) == 10)) {
+          ptr = ctx->ParseMessage(_internal_mutable_calibration_result(), ptr);
+          CHK_(ptr);
+        } else goto handle_unusual;
+        continue;
+      default: {
+      handle_unusual:
         if ((tag & 7) == 4 || tag == 0) {
           ctx->SetLastTag(tag);
           goto success;
@@ -2933,6 +2966,8 @@ const char* CancelResponse::_InternalParse(const char* ptr, ::PROTOBUF_NAMESPACE
             ptr, ctx);
         CHK_(ptr != nullptr);
         continue;
+      }
+    }  // switch
   }  // while
 success:
   return ptr;
@@ -2947,6 +2982,14 @@ failure:
   // @@protoc_insertion_point(serialize_to_array_start:mavsdk.rpc.calibration.CancelResponse)
   ::PROTOBUF_NAMESPACE_ID::uint32 cached_has_bits = 0;
   (void) cached_has_bits;
+
+  // .mavsdk.rpc.calibration.CalibrationResult calibration_result = 1;
+  if (this->has_calibration_result()) {
+    target = stream->EnsureSpace(target);
+    target = ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::
+      InternalWriteMessage(
+        1, _Internal::calibration_result(this), target, stream);
+  }
 
   if (PROTOBUF_PREDICT_FALSE(_internal_metadata_.have_unknown_fields())) {
     target = ::PROTOBUF_NAMESPACE_ID::internal::WireFormat::InternalSerializeUnknownFieldsToArray(
@@ -2963,6 +3006,13 @@ size_t CancelResponse::ByteSizeLong() const {
   ::PROTOBUF_NAMESPACE_ID::uint32 cached_has_bits = 0;
   // Prevent compiler warnings about cached_has_bits being unused
   (void) cached_has_bits;
+
+  // .mavsdk.rpc.calibration.CalibrationResult calibration_result = 1;
+  if (this->has_calibration_result()) {
+    total_size += 1 +
+      ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::MessageSize(
+        *calibration_result_);
+  }
 
   if (PROTOBUF_PREDICT_FALSE(_internal_metadata_.have_unknown_fields())) {
     return ::PROTOBUF_NAMESPACE_ID::internal::ComputeUnknownFieldsSize(
@@ -2995,6 +3045,9 @@ void CancelResponse::MergeFrom(const CancelResponse& from) {
   ::PROTOBUF_NAMESPACE_ID::uint32 cached_has_bits = 0;
   (void) cached_has_bits;
 
+  if (from.has_calibration_result()) {
+    _internal_mutable_calibration_result()->::mavsdk::rpc::calibration::CalibrationResult::MergeFrom(from._internal_calibration_result());
+  }
 }
 
 void CancelResponse::CopyFrom(const ::PROTOBUF_NAMESPACE_ID::Message& from) {
@@ -3018,6 +3071,7 @@ bool CancelResponse::IsInitialized() const {
 void CancelResponse::InternalSwap(CancelResponse* other) {
   using std::swap;
   _internal_metadata_.Swap<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>(&other->_internal_metadata_);
+  swap(calibration_result_, other->calibration_result_);
 }
 
 ::PROTOBUF_NAMESPACE_ID::Metadata CancelResponse::GetMetadata() const {

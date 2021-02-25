@@ -179,7 +179,7 @@ public:
      *
      * @return Result of request.
      */
-    void cancel() const;
+    Result cancel() const;
 
     /**
      * @brief Copy constructor.

@@ -20,7 +20,7 @@ public:
     void enable() override;
     void disable() override;
 
-    void cancel() const;
+    Calibration::Result cancel() const;
 
     void calibrate_gyro_async(const Calibration::CalibrateGyroCallback& callback);
     void calibrate_accelerometer_async(const Calibration::CalibrateAccelerometerCallback& callback);

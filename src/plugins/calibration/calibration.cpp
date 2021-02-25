@@ -46,9 +46,9 @@ void Calibration::calibrate_gimbal_accelerometer_async(
     _impl->calibrate_gimbal_accelerometer_async(callback);
 }
 
-void Calibration::cancel() const
+Calibration::Result Calibration::cancel() const
 {
-    _impl->cancel();
+    return _impl->cancel();
 }
 
 std::ostream& operator<<(std::ostream& str, Calibration::Result const& result)

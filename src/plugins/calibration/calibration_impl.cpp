@@ -192,7 +192,7 @@ void CalibrationImpl::calibrate_gimbal_accelerometer_async(const CalibrationCall
         command, std::bind(&CalibrationImpl::command_result_callback, this, _1, _2));
 }
 
-void CalibrationImpl::cancel() const
+Calibration::Result CalibrationImpl::cancel() const
 {
     std::lock_guard<std::mutex> lock(_calibration_mutex);
 
@@ -201,7 +201,7 @@ void CalibrationImpl::cancel() const
     switch (_state) {
         case State::None:
             LogWarn() << "No calibration to cancel";
-            return;
+            return Calibration::Result::Success;
         case State::GyroCalibration:
             break;
         case State::AccelerometerCalibration:
@@ -220,8 +220,9 @@ void CalibrationImpl::cancel() const
     // All params 0 signal cancellation of a calibration.
     MavlinkCommandSender::CommandLong::set_as_reserved(command.params, 0.0f);
     command.target_component_id = target_component_id;
-    // We don't care about the result, the initial callback should get notified about it.
     _parent->send_command_async(command, nullptr);
+
+    return Calibration::Result::Success;
 }
 
 void CalibrationImpl::command_result_callback(
