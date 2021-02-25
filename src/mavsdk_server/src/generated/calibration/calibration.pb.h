@@ -1846,6 +1846,27 @@ class CancelResponse PROTOBUF_FINAL :
 
   // accessors -------------------------------------------------------
 
+  enum : int {
+    kCalibrationResultFieldNumber = 1,
+  };
+  // .mavsdk.rpc.calibration.CalibrationResult calibration_result = 1;
+  bool has_calibration_result() const;
+  private:
+  bool _internal_has_calibration_result() const;
+  public:
+  void clear_calibration_result();
+  const ::mavsdk::rpc::calibration::CalibrationResult& calibration_result() const;
+  ::mavsdk::rpc::calibration::CalibrationResult* release_calibration_result();
+  ::mavsdk::rpc::calibration::CalibrationResult* mutable_calibration_result();
+  void set_allocated_calibration_result(::mavsdk::rpc::calibration::CalibrationResult* calibration_result);
+  private:
+  const ::mavsdk::rpc::calibration::CalibrationResult& _internal_calibration_result() const;
+  ::mavsdk::rpc::calibration::CalibrationResult* _internal_mutable_calibration_result();
+  public:
+  void unsafe_arena_set_allocated_calibration_result(
+      ::mavsdk::rpc::calibration::CalibrationResult* calibration_result);
+  ::mavsdk::rpc::calibration::CalibrationResult* unsafe_arena_release_calibration_result();
+
   // @@protoc_insertion_point(class_scope:mavsdk.rpc.calibration.CancelResponse)
  private:
   class _Internal;
@@ -1853,6 +1874,7 @@ class CancelResponse PROTOBUF_FINAL :
   template <typename T> friend class ::PROTOBUF_NAMESPACE_ID::Arena::InternalHelper;
   typedef void InternalArenaConstructable_;
   typedef void DestructorSkippable_;
+  ::mavsdk::rpc::calibration::CalibrationResult* calibration_result_;
   mutable ::PROTOBUF_NAMESPACE_ID::internal::CachedSize _cached_size_;
   friend struct ::TableStruct_calibration_2fcalibration_2eproto;
 };
@@ -3120,6 +3142,89 @@ inline void CalibrateGimbalAccelerometerResponse::set_allocated_progress_data(::
 // -------------------------------------------------------------------
 
 // CancelResponse
+
+// .mavsdk.rpc.calibration.CalibrationResult calibration_result = 1;
+inline bool CancelResponse::_internal_has_calibration_result() const {
+  return this != internal_default_instance() && calibration_result_ != nullptr;
+}
+inline bool CancelResponse::has_calibration_result() const {
+  return _internal_has_calibration_result();
+}
+inline void CancelResponse::clear_calibration_result() {
+  if (GetArena() == nullptr && calibration_result_ != nullptr) {
+    delete calibration_result_;
+  }
+  calibration_result_ = nullptr;
+}
+inline const ::mavsdk::rpc::calibration::CalibrationResult& CancelResponse::_internal_calibration_result() const {
+  const ::mavsdk::rpc::calibration::CalibrationResult* p = calibration_result_;
+  return p != nullptr ? *p : *reinterpret_cast<const ::mavsdk::rpc::calibration::CalibrationResult*>(
+      &::mavsdk::rpc::calibration::_CalibrationResult_default_instance_);
+}
+inline const ::mavsdk::rpc::calibration::CalibrationResult& CancelResponse::calibration_result() const {
+  // @@protoc_insertion_point(field_get:mavsdk.rpc.calibration.CancelResponse.calibration_result)
+  return _internal_calibration_result();
+}
+inline void CancelResponse::unsafe_arena_set_allocated_calibration_result(
+    ::mavsdk::rpc::calibration::CalibrationResult* calibration_result) {
+  if (GetArena() == nullptr) {
+    delete reinterpret_cast<::PROTOBUF_NAMESPACE_ID::MessageLite*>(calibration_result_);
+  }
+  calibration_result_ = calibration_result;
+  if (calibration_result) {
+    
+  } else {
+    
+  }
+  // @@protoc_insertion_point(field_unsafe_arena_set_allocated:mavsdk.rpc.calibration.CancelResponse.calibration_result)
+}
+inline ::mavsdk::rpc::calibration::CalibrationResult* CancelResponse::release_calibration_result() {
+  
+  ::mavsdk::rpc::calibration::CalibrationResult* temp = calibration_result_;
+  calibration_result_ = nullptr;
+  if (GetArena() != nullptr) {
+    temp = ::PROTOBUF_NAMESPACE_ID::internal::DuplicateIfNonNull(temp);
+  }
+  return temp;
+}
+inline ::mavsdk::rpc::calibration::CalibrationResult* CancelResponse::unsafe_arena_release_calibration_result() {
+  // @@protoc_insertion_point(field_release:mavsdk.rpc.calibration.CancelResponse.calibration_result)
+  
+  ::mavsdk::rpc::calibration::CalibrationResult* temp = calibration_result_;
+  calibration_result_ = nullptr;
+  return temp;
+}
+inline ::mavsdk::rpc::calibration::CalibrationResult* CancelResponse::_internal_mutable_calibration_result() {
+  
+  if (calibration_result_ == nullptr) {
+    auto* p = CreateMaybeMessage<::mavsdk::rpc::calibration::CalibrationResult>(GetArena());
+    calibration_result_ = p;
+  }
+  return calibration_result_;
+}
+inline ::mavsdk::rpc::calibration::CalibrationResult* CancelResponse::mutable_calibration_result() {
+  // @@protoc_insertion_point(field_mutable:mavsdk.rpc.calibration.CancelResponse.calibration_result)
+  return _internal_mutable_calibration_result();
+}
+inline void CancelResponse::set_allocated_calibration_result(::mavsdk::rpc::calibration::CalibrationResult* calibration_result) {
+  ::PROTOBUF_NAMESPACE_ID::Arena* message_arena = GetArena();
+  if (message_arena == nullptr) {
+    delete calibration_result_;
+  }
+  if (calibration_result) {
+    ::PROTOBUF_NAMESPACE_ID::Arena* submessage_arena =
+      ::PROTOBUF_NAMESPACE_ID::Arena::GetArena(calibration_result);
+    if (message_arena != submessage_arena) {
+      calibration_result = ::PROTOBUF_NAMESPACE_ID::internal::GetOwnedMessage(
+          message_arena, calibration_result, submessage_arena);
+    }
+    
+  } else {
+    
+  }
+  calibration_result_ = calibration_result;
+  // @@protoc_insertion_point(field_set_allocated:mavsdk.rpc.calibration.CancelResponse.calibration_result)
+}
 
 // -------------------------------------------------------------------
 
