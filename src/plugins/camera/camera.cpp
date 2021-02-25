@@ -335,12 +335,13 @@ operator<<(std::ostream& str, Camera::VideoStreamSettings const& video_stream_se
     return str;
 }
 
-std::ostream& operator<<(std::ostream& str, Camera::VideoStreamInfo::Status const& status)
+std::ostream&
+operator<<(std::ostream& str, Camera::VideoStreamInfo::VideoStreamStatus const& video_stream_status)
 {
-    switch (status) {
-        case Camera::VideoStreamInfo::Status::NotRunning:
+    switch (video_stream_status) {
+        case Camera::VideoStreamInfo::VideoStreamStatus::NotRunning:
             return str << "Not Running";
-        case Camera::VideoStreamInfo::Status::InProgress:
+        case Camera::VideoStreamInfo::VideoStreamStatus::InProgress:
             return str << "In Progress";
         default:
             return str << "Unknown";

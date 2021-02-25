@@ -32,7 +32,7 @@ static constexpr auto ARBITRARY_BIT_RATE = 1492;
 static constexpr auto ARBITRARY_ROTATION = 24;
 static constexpr auto ARBITRARY_URI = "rtsp://blah:1337";
 static constexpr auto ARBITRARY_VIDEO_STREAM_STATUS =
-    mavsdk::rpc::camera::VideoStreamInfo_Status_STATUS_IN_PROGRESS;
+    mavsdk::rpc::camera::VideoStreamInfo_VideoStreamStatus_VIDEO_STREAM_STATUS_IN_PROGRESS;
 static constexpr auto ARBITRARY_INT = 123456;
 static constexpr auto ARBITRARY_BOOL = true;
 static constexpr auto ARBITRARY_CAMERA_STORAGE_STATUS =
@@ -81,7 +81,7 @@ protected:
         const std::vector<mavsdk::Camera::VideoStreamInfo>& video_info_events) const;
     mavsdk::Camera::VideoStreamInfo createVideoStreamInfo(
         const mavsdk::Camera::VideoStreamSettings settings,
-        const mavsdk::Camera::VideoStreamInfo::Status status) const;
+        const mavsdk::Camera::VideoStreamInfo::VideoStreamStatus status) const;
 
     std::future<void> subscribeCaptureInfoAsync(
         std::vector<mavsdk::Camera::CaptureInfo>& capture_info_events,

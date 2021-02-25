@@ -261,21 +261,22 @@ public:
         /**
          * @brief Video stream status type.
          */
-        enum class Status {
+        enum class VideoStreamStatus {
             NotRunning, /**< @brief Video stream is not running. */
             InProgress, /**< @brief Video stream is running. */
         };
 
         /**
-         * @brief Stream operator to print information about a `Camera::Status`.
+         * @brief Stream operator to print information about a `Camera::VideoStreamStatus`.
          *
          * @return A reference to the stream.
          */
-        friend std::ostream&
-        operator<<(std::ostream& str, Camera::VideoStreamInfo::Status const& status);
+        friend std::ostream& operator<<(
+            std::ostream& str,
+            Camera::VideoStreamInfo::VideoStreamStatus const& video_stream_status);
 
         VideoStreamSettings settings{}; /**< @brief Video stream settings */
-        Status status{}; /**< @brief Current status of video streaming */
+        VideoStreamStatus status{}; /**< @brief Current status of video streaming */
     };
 
     /**

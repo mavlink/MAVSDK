@@ -299,30 +299,30 @@ inline bool CameraResult_Result_Parse(
   return ::PROTOBUF_NAMESPACE_ID::internal::ParseNamedEnum<CameraResult_Result>(
     CameraResult_Result_descriptor(), name, value);
 }
-enum VideoStreamInfo_Status : int {
-  VideoStreamInfo_Status_STATUS_NOT_RUNNING = 0,
-  VideoStreamInfo_Status_STATUS_IN_PROGRESS = 1,
-  VideoStreamInfo_Status_VideoStreamInfo_Status_INT_MIN_SENTINEL_DO_NOT_USE_ = std::numeric_limits<::PROTOBUF_NAMESPACE_ID::int32>::min(),
-  VideoStreamInfo_Status_VideoStreamInfo_Status_INT_MAX_SENTINEL_DO_NOT_USE_ = std::numeric_limits<::PROTOBUF_NAMESPACE_ID::int32>::max()
+enum VideoStreamInfo_VideoStreamStatus : int {
+  VideoStreamInfo_VideoStreamStatus_VIDEO_STREAM_STATUS_NOT_RUNNING = 0,
+  VideoStreamInfo_VideoStreamStatus_VIDEO_STREAM_STATUS_IN_PROGRESS = 1,
+  VideoStreamInfo_VideoStreamStatus_VideoStreamInfo_VideoStreamStatus_INT_MIN_SENTINEL_DO_NOT_USE_ = std::numeric_limits<::PROTOBUF_NAMESPACE_ID::int32>::min(),
+  VideoStreamInfo_VideoStreamStatus_VideoStreamInfo_VideoStreamStatus_INT_MAX_SENTINEL_DO_NOT_USE_ = std::numeric_limits<::PROTOBUF_NAMESPACE_ID::int32>::max()
 };
-bool VideoStreamInfo_Status_IsValid(int value);
-constexpr VideoStreamInfo_Status VideoStreamInfo_Status_Status_MIN = VideoStreamInfo_Status_STATUS_NOT_RUNNING;
-constexpr VideoStreamInfo_Status VideoStreamInfo_Status_Status_MAX = VideoStreamInfo_Status_STATUS_IN_PROGRESS;
-constexpr int VideoStreamInfo_Status_Status_ARRAYSIZE = VideoStreamInfo_Status_Status_MAX + 1;
+bool VideoStreamInfo_VideoStreamStatus_IsValid(int value);
+constexpr VideoStreamInfo_VideoStreamStatus VideoStreamInfo_VideoStreamStatus_VideoStreamStatus_MIN = VideoStreamInfo_VideoStreamStatus_VIDEO_STREAM_STATUS_NOT_RUNNING;
+constexpr VideoStreamInfo_VideoStreamStatus VideoStreamInfo_VideoStreamStatus_VideoStreamStatus_MAX = VideoStreamInfo_VideoStreamStatus_VIDEO_STREAM_STATUS_IN_PROGRESS;
+constexpr int VideoStreamInfo_VideoStreamStatus_VideoStreamStatus_ARRAYSIZE = VideoStreamInfo_VideoStreamStatus_VideoStreamStatus_MAX + 1;
 
-const ::PROTOBUF_NAMESPACE_ID::EnumDescriptor* VideoStreamInfo_Status_descriptor();
+const ::PROTOBUF_NAMESPACE_ID::EnumDescriptor* VideoStreamInfo_VideoStreamStatus_descriptor();
 template<typename T>
-inline const std::string& VideoStreamInfo_Status_Name(T enum_t_value) {
-  static_assert(::std::is_same<T, VideoStreamInfo_Status>::value ||
+inline const std::string& VideoStreamInfo_VideoStreamStatus_Name(T enum_t_value) {
+  static_assert(::std::is_same<T, VideoStreamInfo_VideoStreamStatus>::value ||
     ::std::is_integral<T>::value,
-    "Incorrect type passed to function VideoStreamInfo_Status_Name.");
+    "Incorrect type passed to function VideoStreamInfo_VideoStreamStatus_Name.");
   return ::PROTOBUF_NAMESPACE_ID::internal::NameOfEnum(
-    VideoStreamInfo_Status_descriptor(), enum_t_value);
+    VideoStreamInfo_VideoStreamStatus_descriptor(), enum_t_value);
 }
-inline bool VideoStreamInfo_Status_Parse(
-    ::PROTOBUF_NAMESPACE_ID::ConstStringParam name, VideoStreamInfo_Status* value) {
-  return ::PROTOBUF_NAMESPACE_ID::internal::ParseNamedEnum<VideoStreamInfo_Status>(
-    VideoStreamInfo_Status_descriptor(), name, value);
+inline bool VideoStreamInfo_VideoStreamStatus_Parse(
+    ::PROTOBUF_NAMESPACE_ID::ConstStringParam name, VideoStreamInfo_VideoStreamStatus* value) {
+  return ::PROTOBUF_NAMESPACE_ID::internal::ParseNamedEnum<VideoStreamInfo_VideoStreamStatus>(
+    VideoStreamInfo_VideoStreamStatus_descriptor(), name, value);
 }
 enum Status_StorageStatus : int {
   Status_StorageStatus_STORAGE_STATUS_NOT_AVAILABLE = 0,
@@ -6889,34 +6889,34 @@ class VideoStreamInfo PROTOBUF_FINAL :
 
   // nested types ----------------------------------------------------
 
-  typedef VideoStreamInfo_Status Status;
-  static constexpr Status STATUS_NOT_RUNNING =
-    VideoStreamInfo_Status_STATUS_NOT_RUNNING;
-  static constexpr Status STATUS_IN_PROGRESS =
-    VideoStreamInfo_Status_STATUS_IN_PROGRESS;
-  static inline bool Status_IsValid(int value) {
-    return VideoStreamInfo_Status_IsValid(value);
+  typedef VideoStreamInfo_VideoStreamStatus VideoStreamStatus;
+  static constexpr VideoStreamStatus VIDEO_STREAM_STATUS_NOT_RUNNING =
+    VideoStreamInfo_VideoStreamStatus_VIDEO_STREAM_STATUS_NOT_RUNNING;
+  static constexpr VideoStreamStatus VIDEO_STREAM_STATUS_IN_PROGRESS =
+    VideoStreamInfo_VideoStreamStatus_VIDEO_STREAM_STATUS_IN_PROGRESS;
+  static inline bool VideoStreamStatus_IsValid(int value) {
+    return VideoStreamInfo_VideoStreamStatus_IsValid(value);
   }
-  static constexpr Status Status_MIN =
-    VideoStreamInfo_Status_Status_MIN;
-  static constexpr Status Status_MAX =
-    VideoStreamInfo_Status_Status_MAX;
-  static constexpr int Status_ARRAYSIZE =
-    VideoStreamInfo_Status_Status_ARRAYSIZE;
+  static constexpr VideoStreamStatus VideoStreamStatus_MIN =
+    VideoStreamInfo_VideoStreamStatus_VideoStreamStatus_MIN;
+  static constexpr VideoStreamStatus VideoStreamStatus_MAX =
+    VideoStreamInfo_VideoStreamStatus_VideoStreamStatus_MAX;
+  static constexpr int VideoStreamStatus_ARRAYSIZE =
+    VideoStreamInfo_VideoStreamStatus_VideoStreamStatus_ARRAYSIZE;
   static inline const ::PROTOBUF_NAMESPACE_ID::EnumDescriptor*
-  Status_descriptor() {
-    return VideoStreamInfo_Status_descriptor();
+  VideoStreamStatus_descriptor() {
+    return VideoStreamInfo_VideoStreamStatus_descriptor();
   }
   template<typename T>
-  static inline const std::string& Status_Name(T enum_t_value) {
-    static_assert(::std::is_same<T, Status>::value ||
+  static inline const std::string& VideoStreamStatus_Name(T enum_t_value) {
+    static_assert(::std::is_same<T, VideoStreamStatus>::value ||
       ::std::is_integral<T>::value,
-      "Incorrect type passed to function Status_Name.");
-    return VideoStreamInfo_Status_Name(enum_t_value);
+      "Incorrect type passed to function VideoStreamStatus_Name.");
+    return VideoStreamInfo_VideoStreamStatus_Name(enum_t_value);
   }
-  static inline bool Status_Parse(::PROTOBUF_NAMESPACE_ID::ConstStringParam name,
-      Status* value) {
-    return VideoStreamInfo_Status_Parse(name, value);
+  static inline bool VideoStreamStatus_Parse(::PROTOBUF_NAMESPACE_ID::ConstStringParam name,
+      VideoStreamStatus* value) {
+    return VideoStreamInfo_VideoStreamStatus_Parse(name, value);
   }
 
   // accessors -------------------------------------------------------
@@ -6943,13 +6943,13 @@ class VideoStreamInfo PROTOBUF_FINAL :
       ::mavsdk::rpc::camera::VideoStreamSettings* settings);
   ::mavsdk::rpc::camera::VideoStreamSettings* unsafe_arena_release_settings();
 
-  // .mavsdk.rpc.camera.VideoStreamInfo.Status status = 2;
+  // .mavsdk.rpc.camera.VideoStreamInfo.VideoStreamStatus status = 2;
   void clear_status();
-  ::mavsdk::rpc::camera::VideoStreamInfo_Status status() const;
-  void set_status(::mavsdk::rpc::camera::VideoStreamInfo_Status value);
+  ::mavsdk::rpc::camera::VideoStreamInfo_VideoStreamStatus status() const;
+  void set_status(::mavsdk::rpc::camera::VideoStreamInfo_VideoStreamStatus value);
   private:
-  ::mavsdk::rpc::camera::VideoStreamInfo_Status _internal_status() const;
-  void _internal_set_status(::mavsdk::rpc::camera::VideoStreamInfo_Status value);
+  ::mavsdk::rpc::camera::VideoStreamInfo_VideoStreamStatus _internal_status() const;
+  void _internal_set_status(::mavsdk::rpc::camera::VideoStreamInfo_VideoStreamStatus value);
   public:
 
   // @@protoc_insertion_point(class_scope:mavsdk.rpc.camera.VideoStreamInfo)
@@ -10806,22 +10806,22 @@ inline void VideoStreamInfo::set_allocated_settings(::mavsdk::rpc::camera::Video
   // @@protoc_insertion_point(field_set_allocated:mavsdk.rpc.camera.VideoStreamInfo.settings)
 }
 
-// .mavsdk.rpc.camera.VideoStreamInfo.Status status = 2;
+// .mavsdk.rpc.camera.VideoStreamInfo.VideoStreamStatus status = 2;
 inline void VideoStreamInfo::clear_status() {
   status_ = 0;
 }
-inline ::mavsdk::rpc::camera::VideoStreamInfo_Status VideoStreamInfo::_internal_status() const {
-  return static_cast< ::mavsdk::rpc::camera::VideoStreamInfo_Status >(status_);
+inline ::mavsdk::rpc::camera::VideoStreamInfo_VideoStreamStatus VideoStreamInfo::_internal_status() const {
+  return static_cast< ::mavsdk::rpc::camera::VideoStreamInfo_VideoStreamStatus >(status_);
 }
-inline ::mavsdk::rpc::camera::VideoStreamInfo_Status VideoStreamInfo::status() const {
+inline ::mavsdk::rpc::camera::VideoStreamInfo_VideoStreamStatus VideoStreamInfo::status() const {
   // @@protoc_insertion_point(field_get:mavsdk.rpc.camera.VideoStreamInfo.status)
   return _internal_status();
 }
-inline void VideoStreamInfo::_internal_set_status(::mavsdk::rpc::camera::VideoStreamInfo_Status value) {
+inline void VideoStreamInfo::_internal_set_status(::mavsdk::rpc::camera::VideoStreamInfo_VideoStreamStatus value) {
   
   status_ = value;
 }
-inline void VideoStreamInfo::set_status(::mavsdk::rpc::camera::VideoStreamInfo_Status value) {
+inline void VideoStreamInfo::set_status(::mavsdk::rpc::camera::VideoStreamInfo_VideoStreamStatus value) {
   _internal_set_status(value);
   // @@protoc_insertion_point(field_set:mavsdk.rpc.camera.VideoStreamInfo.status)
 }
@@ -11821,10 +11821,10 @@ template <>
 inline const EnumDescriptor* GetEnumDescriptor< ::mavsdk::rpc::camera::CameraResult_Result>() {
   return ::mavsdk::rpc::camera::CameraResult_Result_descriptor();
 }
-template <> struct is_proto_enum< ::mavsdk::rpc::camera::VideoStreamInfo_Status> : ::std::true_type {};
+template <> struct is_proto_enum< ::mavsdk::rpc::camera::VideoStreamInfo_VideoStreamStatus> : ::std::true_type {};
 template <>
-inline const EnumDescriptor* GetEnumDescriptor< ::mavsdk::rpc::camera::VideoStreamInfo_Status>() {
-  return ::mavsdk::rpc::camera::VideoStreamInfo_Status_descriptor();
+inline const EnumDescriptor* GetEnumDescriptor< ::mavsdk::rpc::camera::VideoStreamInfo_VideoStreamStatus>() {
+  return ::mavsdk::rpc::camera::VideoStreamInfo_VideoStreamStatus_descriptor();
 }
 template <> struct is_proto_enum< ::mavsdk::rpc::camera::Status_StorageStatus> : ::std::true_type {};
 template <>
