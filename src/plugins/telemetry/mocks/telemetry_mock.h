@@ -34,6 +34,8 @@ public:
         subscribe_actuator_output_status, void(Telemetry::ActuatorOutputStatusCallback)){};
     MOCK_CONST_METHOD1(subscribe_odometry, void(Telemetry::OdometryCallback)){};
     MOCK_CONST_METHOD1(subscribe_distance_sensor, void(Telemetry::DistanceSensorCallback)){};
+    MOCK_CONST_METHOD1(subscribe_raw_pressure, void(Telemetry::RawPressureCallback)){};
+    MOCK_CONST_METHOD1(subscribe_scaled_pressure, void(Telemetry::ScaledPressureCallback)){};
     MOCK_CONST_METHOD1(
         subscribe_position_velocity_ned, void(Telemetry::PositionVelocityNedCallback)){};
     MOCK_CONST_METHOD1(subscribe_ground_truth, void(Telemetry::GroundTruthCallback)){};
@@ -58,6 +60,8 @@ public:
     MOCK_METHOD1(set_rate_actuator_output_status, Telemetry::Result(double)){};
     MOCK_METHOD1(set_rate_odometry, Telemetry::Result(double)){};
     MOCK_METHOD1(set_rate_distance_sensor, Telemetry::Result(double)){};
+    MOCK_METHOD1(set_rate_raw_pressure, Telemetry::Result(double)){};
+    MOCK_METHOD1(set_rate_scaled_pressure, Telemetry::Result(double)){};
     MOCK_METHOD1(set_rate_position_velocity_ned, Telemetry::Result(double)){};
     MOCK_METHOD1(set_rate_ground_truth, Telemetry::Result(double)){};
     MOCK_METHOD1(set_rate_fixedwing_metrics, Telemetry::Result(double)){};
@@ -82,6 +86,9 @@ public:
         set_rate_actuator_output_status_async, void(double, Telemetry::ResultCallback)){};
     MOCK_CONST_METHOD2(set_rate_odometry_async, void(double, Telemetry::ResultCallback)){};
     MOCK_CONST_METHOD2(set_rate_distance_sensor_async, void(double, Telemetry::ResultCallback)){};
+    MOCK_CONST_METHOD2(set_rate_raw_pressure_async, void(double, Telemetry::RawPressureCallback)){};
+    MOCK_CONST_METHOD2(
+        set_rate_scaled_pressure_async, void(double, Telemetry::ScaledPressureCallback)){};
     MOCK_CONST_METHOD2(
         set_rate_position_velocity_ned_async, void(double, Telemetry::ResultCallback)){};
     MOCK_CONST_METHOD2(set_rate_ground_truth_async, void(double, Telemetry::ResultCallback)){};

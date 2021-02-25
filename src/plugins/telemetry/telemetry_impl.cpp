@@ -101,6 +101,16 @@ void TelemetryImpl::init()
         this);
 
     _parent->register_mavlink_message_handler(
+        MAVLINK_MSG_ID_RAW_PRESSURE,
+        std::bind(&TelemetryImpl::process_raw_pressure, this, _1),
+        this);
+
+    _parent->register_mavlink_message_handler(
+        MAVLINK_MSG_ID_SCALED_PRESSURE,
+        std::bind(&TelemetryImpl::process_scaled_pressure, this, _1),
+        this);
+
+    _parent->register_mavlink_message_handler(
         MAVLINK_MSG_ID_UTM_GLOBAL_POSITION,
         std::bind(&TelemetryImpl::process_unix_epoch_time, this, _1),
         this);
@@ -111,14 +121,10 @@ void TelemetryImpl::init()
         this);
 
     _parent->register_mavlink_message_handler(
-        MAVLINK_MSG_ID_SCALED_IMU,
-        std::bind(&TelemetryImpl::process_scaled_imu, this, _1),
-        this);
+        MAVLINK_MSG_ID_SCALED_IMU, std::bind(&TelemetryImpl::process_scaled_imu, this, _1), this);
 
     _parent->register_mavlink_message_handler(
-        MAVLINK_MSG_ID_RAW_IMU,
-        std::bind(&TelemetryImpl::process_raw_imu, this, _1),
-        this);
+        MAVLINK_MSG_ID_RAW_IMU, std::bind(&TelemetryImpl::process_raw_imu, this, _1), this);
 
     _parent->register_mavlink_message_handler(
         MAVLINK_MSG_ID_VFR_HUD,
@@ -341,6 +347,18 @@ Telemetry::Result TelemetryImpl::set_rate_distance_sensor(double rate_hz)
         _parent->set_msg_rate(MAVLINK_MSG_ID_DISTANCE_SENSOR, rate_hz));
 }
 
+Telemetry::Result TelemetryImpl::set_rate_raw_pressure(double rate_hz)
+{
+    return telemetry_result_from_command_result(
+        _parent->set_msg_rate(MAVLINK_MSG_ID_RAW_PRESSURE, rate_hz));
+}
+
+Telemetry::Result TelemetryImpl::set_rate_scaled_pressure(double rate_hz)
+{
+    return telemetry_result_from_command_result(
+        _parent->set_msg_rate(MAVLINK_MSG_ID_SCALED_PRESSURE, rate_hz));
+}
+
 Telemetry::Result TelemetryImpl::set_rate_unix_epoch_time(double rate_hz)
 {
     return telemetry_result_from_command_result(
@@ -521,6 +539,23 @@ void TelemetryImpl::set_rate_distance_sensor_async(
 {
     _parent->set_msg_rate_async(
         MAVLINK_MSG_ID_DISTANCE_SENSOR,
+        rate_hz,
+        std::bind(&TelemetryImpl::command_result_callback, std::placeholders::_1, callback));
+}
+
+void TelemetryImpl::set_rate_raw_pressure_async(double rate_hz, Telemetry::ResultCallback callback)
+{
+    _parent->set_msg_rate_async(
+        MAVLINK_MSG_ID_RAW_PRESSURE,
+        rate_hz,
+        std::bind(&TelemetryImpl::command_result_callback, std::placeholders::_1, callback));
+}
+
+void TelemetryImpl::set_rate_scaled_pressure_async(
+    double rate_hz, Telemetry::ResultCallback callback)
+{
+    _parent->set_msg_rate_async(
+        MAVLINK_MSG_ID_SCALED_PRESSURE,
         rate_hz,
         std::bind(&TelemetryImpl::command_result_callback, std::placeholders::_1, callback));
 }
@@ -1261,6 +1296,55 @@ void TelemetryImpl::process_distance_sensor(const mavlink_message_t& message)
     }
 }
 
+void TelemetryImpl::process_raw_pressure(const mavlink_message_t& message)
+{
+    mavlink_raw_pressure_t raw_pressure_msg;
+    mavlink_msg_raw_pressure_decode(&message, &raw_pressure_msg);
+
+    Telemetry::RawPressure raw_pressure_struct{};
+
+    raw_pressure_struct.timestamp_us = raw_pressure_msg.time_usec;
+    raw_pressure_struct.absolute_pressure = static_cast<int32_t>(raw_pressure_msg.press_abs);
+    raw_pressure_struct.differential_pressure_first =
+        static_cast<int32_t>(raw_pressure_msg.press_diff1);
+    raw_pressure_struct.differential_pressure_second =
+        static_cast<int32_t>(raw_pressure_msg.press_diff2);
+    raw_pressure_struct.temperature = static_cast<int32_t>(raw_pressure_msg.temperature);
+
+    set_raw_pressure(raw_pressure_struct);
+
+    std::lock_guard<std::mutex> lock(_subscription_mutex);
+    if (_raw_pressure_subscription) {
+        auto callback = _raw_pressure_subscription;
+        auto arg = raw_pressure();
+        _parent->call_user_callback([callback, arg]() { callback(arg); });
+    }
+}
+
+void TelemetryImpl::process_scaled_pressure(const mavlink_message_t& message)
+{
+    mavlink_scaled_pressure_t scaled_pressure_msg;
+    mavlink_msg_scaled_pressure_decode(&message, &scaled_pressure_msg);
+
+    Telemetry::ScaledPressure scaled_pressure_struct{};
+
+    scaled_pressure_struct.timestamp_us = static_cast<uint64_t>(scaled_pressure_msg.time_boot_ms);
+    scaled_pressure_struct.absolute_pressure_hpa = scaled_pressure_msg.press_abs;
+    scaled_pressure_struct.differential_pressure_hpa = scaled_pressure_msg.press_diff;
+    scaled_pressure_struct.temperature_deg = static_cast<uint32_t>(scaled_pressure_msg.temperature);
+    scaled_pressure_struct.differential_pressure_temperature_deg =
+        static_cast<uint32_t>(scaled_pressure_msg.temperature_press_diff);
+
+    set_scaled_pressure(scaled_pressure_struct);
+
+    std::lock_guard<std::mutex> lock(_subscription_mutex);
+    if (_scaled_pressure_subscription) {
+        auto callback = _scaled_pressure_subscription;
+        auto arg = scaled_pressure();
+        _parent->call_user_callback([callback, arg]() { callback(arg); });
+    }
+}
+
 Telemetry::LandedState
 TelemetryImpl::to_landed_state(mavlink_extended_sys_state_t extended_sys_state)
 {
@@ -1678,6 +1762,18 @@ Telemetry::DistanceSensor TelemetryImpl::distance_sensor() const
     return _distance_sensor;
 }
 
+Telemetry::RawPressure TelemetryImpl::raw_pressure() const
+{
+    std::lock_guard<std::mutex> lock(_raw_pressure_mutex);
+    return _raw_pressure;
+}
+
+Telemetry::ScaledPressure TelemetryImpl::scaled_pressure() const
+{
+    std::lock_guard<std::mutex> lock(_scaled_pressure_mutex);
+    return _scaled_pressure;
+}
+
 void TelemetryImpl::set_health_local_position(bool ok)
 {
     std::lock_guard<std::mutex> lock(_health_mutex);
@@ -1768,14 +1864,26 @@ void TelemetryImpl::set_actuator_output_status(uint32_t active, const std::vecto
 
 void TelemetryImpl::set_odometry(Telemetry::Odometry& odometry)
 {
-    std::lock_guard<std::mutex> lock(_actuator_output_status_mutex);
+    std::lock_guard<std::mutex> lock(_odometry_mutex);
     _odometry = odometry;
 }
 
 void TelemetryImpl::set_distance_sensor(Telemetry::DistanceSensor& distance_sensor)
 {
-    std::lock_guard<std::mutex> lock(_actuator_output_status_mutex);
+    std::lock_guard<std::mutex> lock(_distance_sensor_mutex);
     _distance_sensor = distance_sensor;
+}
+
+void TelemetryImpl::set_raw_pressure(Telemetry::RawPressure& raw_pressure)
+{
+    std::lock_guard<std::mutex> lock(_raw_pressure_mutex);
+    _raw_pressure = raw_pressure;
+}
+
+void TelemetryImpl::set_scaled_pressure(Telemetry::ScaledPressure& scaled_pressure)
+{
+    std::lock_guard<std::mutex> lock(_scaled_pressure_mutex);
+    _scaled_pressure = scaled_pressure;
 }
 
 void TelemetryImpl::subscribe_position_velocity_ned(
@@ -1955,6 +2063,18 @@ void TelemetryImpl::subscribe_distance_sensor(Telemetry::DistanceSensorCallback&
 {
     std::lock_guard<std::mutex> lock(_subscription_mutex);
     _distance_sensor_subscription = callback;
+}
+
+void TelemetryImpl::subscribe_raw_pressure(Telemetry::RawPressureCallback& callback)
+{
+    std::lock_guard<std::mutex> lock(_subscription_mutex);
+    _raw_pressure_subscription = callback;
+}
+
+void TelemetryImpl::subscribe_scaled_pressure(Telemetry::ScaledPressureCallback& callback)
+{
+    std::lock_guard<std::mutex> lock(_subscription_mutex);
+    _scaled_pressure_subscription = callback;
 }
 
 void TelemetryImpl::get_gps_global_origin_async(
