@@ -409,6 +409,77 @@ public:
         return obj;
     }
 
+    static std::unique_ptr<rpc::telemetry::RawGps>
+    translateToRpcRawGps(const mavsdk::Telemetry::RawGps& raw_gps)
+    {
+        auto rpc_obj = std::make_unique<rpc::telemetry::RawGps>();
+
+        rpc_obj->set_timestamp_us(raw_gps.timestamp_us);
+
+        rpc_obj->set_latitude_deg(raw_gps.latitude_deg);
+
+        rpc_obj->set_longitude_deg(raw_gps.longitude_deg);
+
+        rpc_obj->set_absolute_altitude_m(raw_gps.absolute_altitude_m);
+
+        rpc_obj->set_hdop(raw_gps.hdop);
+
+        rpc_obj->set_vdop(raw_gps.vdop);
+
+        rpc_obj->set_velocity_m_s(raw_gps.velocity_m_s);
+
+        rpc_obj->set_cog_deg(raw_gps.cog_deg);
+
+        rpc_obj->set_altitude_ellipsoid_m(raw_gps.altitude_ellipsoid_m);
+
+        rpc_obj->set_horizontal_uncertainty_m(raw_gps.horizontal_uncertainty_m);
+
+        rpc_obj->set_vertical_uncertainty_m(raw_gps.vertical_uncertainty_m);
+
+        rpc_obj->set_velocity_uncertainty_m_s(raw_gps.velocity_uncertainty_m_s);
+
+        rpc_obj->set_heading_uncertainty_deg(raw_gps.heading_uncertainty_deg);
+
+        rpc_obj->set_yaw_deg(raw_gps.yaw_deg);
+
+        return rpc_obj;
+    }
+
+    static mavsdk::Telemetry::RawGps translateFromRpcRawGps(const rpc::telemetry::RawGps& raw_gps)
+    {
+        mavsdk::Telemetry::RawGps obj;
+
+        obj.timestamp_us = raw_gps.timestamp_us();
+
+        obj.latitude_deg = raw_gps.latitude_deg();
+
+        obj.longitude_deg = raw_gps.longitude_deg();
+
+        obj.absolute_altitude_m = raw_gps.absolute_altitude_m();
+
+        obj.hdop = raw_gps.hdop();
+
+        obj.vdop = raw_gps.vdop();
+
+        obj.velocity_m_s = raw_gps.velocity_m_s();
+
+        obj.cog_deg = raw_gps.cog_deg();
+
+        obj.altitude_ellipsoid_m = raw_gps.altitude_ellipsoid_m();
+
+        obj.horizontal_uncertainty_m = raw_gps.horizontal_uncertainty_m();
+
+        obj.vertical_uncertainty_m = raw_gps.vertical_uncertainty_m();
+
+        obj.velocity_uncertainty_m_s = raw_gps.velocity_uncertainty_m_s();
+
+        obj.heading_uncertainty_deg = raw_gps.heading_uncertainty_deg();
+
+        obj.yaw_deg = raw_gps.yaw_deg();
+
+        return obj;
+    }
+
     static std::unique_ptr<rpc::telemetry::Battery>
     translateToRpcBattery(const mavsdk::Telemetry::Battery& battery)
     {
@@ -1610,6 +1681,41 @@ public:
                 std::unique_lock<std::mutex> lock(subscribe_mutex);
                 if (!*is_finished && !writer->Write(rpc_response)) {
                     _telemetry.subscribe_gps_info(nullptr);
+
+                    *is_finished = true;
+                    unregister_stream_stop_promise(stream_closed_promise);
+                    lock.unlock();
+                    stream_closed_promise->set_value();
+                }
+            });
+
+        stream_closed_future.wait();
+        return grpc::Status::OK;
+    }
+
+    grpc::Status SubscribeRawGps(
+        grpc::ServerContext* /* context */,
+        const mavsdk::rpc::telemetry::SubscribeRawGpsRequest* /* request */,
+        grpc::ServerWriter<rpc::telemetry::RawGpsResponse>* writer) override
+    {
+        auto stream_closed_promise = std::make_shared<std::promise<void>>();
+        auto stream_closed_future = stream_closed_promise->get_future();
+        register_stream_stop_promise(stream_closed_promise);
+
+        auto is_finished = std::make_shared<bool>(false);
+
+        std::mutex subscribe_mutex{};
+
+        _telemetry.subscribe_raw_gps(
+            [this, &writer, &stream_closed_promise, is_finished, &subscribe_mutex](
+                const mavsdk::Telemetry::RawGps raw_gps) {
+                rpc::telemetry::RawGpsResponse rpc_response;
+
+                rpc_response.set_allocated_raw_gps(translateToRpcRawGps(raw_gps).release());
+
+                std::unique_lock<std::mutex> lock(subscribe_mutex);
+                if (!*is_finished && !writer->Write(rpc_response)) {
+                    _telemetry.subscribe_raw_gps(nullptr);
 
                     *is_finished = true;
                     unregister_stream_stop_promise(stream_closed_promise);

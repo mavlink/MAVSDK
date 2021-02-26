@@ -36,6 +36,7 @@ extern PROTOBUF_INTERNAL_EXPORT_telemetry_2ftelemetry_2eproto ::PROTOBUF_NAMESPA
 extern PROTOBUF_INTERNAL_EXPORT_telemetry_2ftelemetry_2eproto ::PROTOBUF_NAMESPACE_ID::internal::SCCInfo<0> scc_info_PositionNed_telemetry_2ftelemetry_2eproto;
 extern PROTOBUF_INTERNAL_EXPORT_telemetry_2ftelemetry_2eproto ::PROTOBUF_NAMESPACE_ID::internal::SCCInfo<2> scc_info_PositionVelocityNed_telemetry_2ftelemetry_2eproto;
 extern PROTOBUF_INTERNAL_EXPORT_telemetry_2ftelemetry_2eproto ::PROTOBUF_NAMESPACE_ID::internal::SCCInfo<0> scc_info_Quaternion_telemetry_2ftelemetry_2eproto;
+extern PROTOBUF_INTERNAL_EXPORT_telemetry_2ftelemetry_2eproto ::PROTOBUF_NAMESPACE_ID::internal::SCCInfo<0> scc_info_RawGps_telemetry_2ftelemetry_2eproto;
 extern PROTOBUF_INTERNAL_EXPORT_telemetry_2ftelemetry_2eproto ::PROTOBUF_NAMESPACE_ID::internal::SCCInfo<0> scc_info_RawPressure_telemetry_2ftelemetry_2eproto;
 extern PROTOBUF_INTERNAL_EXPORT_telemetry_2ftelemetry_2eproto ::PROTOBUF_NAMESPACE_ID::internal::SCCInfo<0> scc_info_RcStatus_telemetry_2ftelemetry_2eproto;
 extern PROTOBUF_INTERNAL_EXPORT_telemetry_2ftelemetry_2eproto ::PROTOBUF_NAMESPACE_ID::internal::SCCInfo<0> scc_info_ScaledPressure_telemetry_2ftelemetry_2eproto;
@@ -142,6 +143,14 @@ class GpsInfoResponseDefaultTypeInternal {
  public:
   ::PROTOBUF_NAMESPACE_ID::internal::ExplicitlyConstructed<GpsInfoResponse> _instance;
 } _GpsInfoResponse_default_instance_;
+class SubscribeRawGpsRequestDefaultTypeInternal {
+ public:
+  ::PROTOBUF_NAMESPACE_ID::internal::ExplicitlyConstructed<SubscribeRawGpsRequest> _instance;
+} _SubscribeRawGpsRequest_default_instance_;
+class RawGpsResponseDefaultTypeInternal {
+ public:
+  ::PROTOBUF_NAMESPACE_ID::internal::ExplicitlyConstructed<RawGpsResponse> _instance;
+} _RawGpsResponse_default_instance_;
 class SubscribeBatteryRequestDefaultTypeInternal {
  public:
   ::PROTOBUF_NAMESPACE_ID::internal::ExplicitlyConstructed<SubscribeBatteryRequest> _instance;
@@ -374,6 +383,10 @@ class SetRateGpsInfoResponseDefaultTypeInternal {
  public:
   ::PROTOBUF_NAMESPACE_ID::internal::ExplicitlyConstructed<SetRateGpsInfoResponse> _instance;
 } _SetRateGpsInfoResponse_default_instance_;
+class SetRateRawGpsRequestDefaultTypeInternal {
+ public:
+  ::PROTOBUF_NAMESPACE_ID::internal::ExplicitlyConstructed<SetRateRawGpsRequest> _instance;
+} _SetRateRawGpsRequest_default_instance_;
 class SetRateBatteryRequestDefaultTypeInternal {
  public:
   ::PROTOBUF_NAMESPACE_ID::internal::ExplicitlyConstructed<SetRateBatteryRequest> _instance;
@@ -506,6 +519,10 @@ class GpsInfoDefaultTypeInternal {
  public:
   ::PROTOBUF_NAMESPACE_ID::internal::ExplicitlyConstructed<GpsInfo> _instance;
 } _GpsInfo_default_instance_;
+class RawGpsDefaultTypeInternal {
+ public:
+  ::PROTOBUF_NAMESPACE_ID::internal::ExplicitlyConstructed<RawGps> _instance;
+} _RawGps_default_instance_;
 class BatteryDefaultTypeInternal {
  public:
   ::PROTOBUF_NAMESPACE_ID::internal::ExplicitlyConstructed<Battery> _instance;
@@ -1293,6 +1310,35 @@ static void InitDefaultsscc_info_Quaternion_telemetry_2ftelemetry_2eproto() {
 ::PROTOBUF_NAMESPACE_ID::internal::SCCInfo<0> scc_info_Quaternion_telemetry_2ftelemetry_2eproto =
     {{ATOMIC_VAR_INIT(::PROTOBUF_NAMESPACE_ID::internal::SCCInfoBase::kUninitialized), 0, 0, InitDefaultsscc_info_Quaternion_telemetry_2ftelemetry_2eproto}, {}};
 
+static void InitDefaultsscc_info_RawGps_telemetry_2ftelemetry_2eproto() {
+  GOOGLE_PROTOBUF_VERIFY_VERSION;
+
+  {
+    void* ptr = &::mavsdk::rpc::telemetry::_RawGps_default_instance_;
+    new (ptr) ::mavsdk::rpc::telemetry::RawGps();
+    ::PROTOBUF_NAMESPACE_ID::internal::OnShutdownDestroyMessage(ptr);
+  }
+  ::mavsdk::rpc::telemetry::RawGps::InitAsDefaultInstance();
+}
+
+::PROTOBUF_NAMESPACE_ID::internal::SCCInfo<0> scc_info_RawGps_telemetry_2ftelemetry_2eproto =
+    {{ATOMIC_VAR_INIT(::PROTOBUF_NAMESPACE_ID::internal::SCCInfoBase::kUninitialized), 0, 0, InitDefaultsscc_info_RawGps_telemetry_2ftelemetry_2eproto}, {}};
+
+static void InitDefaultsscc_info_RawGpsResponse_telemetry_2ftelemetry_2eproto() {
+  GOOGLE_PROTOBUF_VERIFY_VERSION;
+
+  {
+    void* ptr = &::mavsdk::rpc::telemetry::_RawGpsResponse_default_instance_;
+    new (ptr) ::mavsdk::rpc::telemetry::RawGpsResponse();
+    ::PROTOBUF_NAMESPACE_ID::internal::OnShutdownDestroyMessage(ptr);
+  }
+  ::mavsdk::rpc::telemetry::RawGpsResponse::InitAsDefaultInstance();
+}
+
+::PROTOBUF_NAMESPACE_ID::internal::SCCInfo<1> scc_info_RawGpsResponse_telemetry_2ftelemetry_2eproto =
+    {{ATOMIC_VAR_INIT(::PROTOBUF_NAMESPACE_ID::internal::SCCInfoBase::kUninitialized), 1, 0, InitDefaultsscc_info_RawGpsResponse_telemetry_2ftelemetry_2eproto}, {
+      &scc_info_RawGps_telemetry_2ftelemetry_2eproto.base,}};
+
 static void InitDefaultsscc_info_RawImuResponse_telemetry_2ftelemetry_2eproto() {
   GOOGLE_PROTOBUF_VERIFY_VERSION;
 
@@ -1932,6 +1978,20 @@ static void InitDefaultsscc_info_SetRatePositionVelocityNedResponse_telemetry_2f
     {{ATOMIC_VAR_INIT(::PROTOBUF_NAMESPACE_ID::internal::SCCInfoBase::kUninitialized), 1, 0, InitDefaultsscc_info_SetRatePositionVelocityNedResponse_telemetry_2ftelemetry_2eproto}, {
       &scc_info_TelemetryResult_telemetry_2ftelemetry_2eproto.base,}};
 
+static void InitDefaultsscc_info_SetRateRawGpsRequest_telemetry_2ftelemetry_2eproto() {
+  GOOGLE_PROTOBUF_VERIFY_VERSION;
+
+  {
+    void* ptr = &::mavsdk::rpc::telemetry::_SetRateRawGpsRequest_default_instance_;
+    new (ptr) ::mavsdk::rpc::telemetry::SetRateRawGpsRequest();
+    ::PROTOBUF_NAMESPACE_ID::internal::OnShutdownDestroyMessage(ptr);
+  }
+  ::mavsdk::rpc::telemetry::SetRateRawGpsRequest::InitAsDefaultInstance();
+}
+
+::PROTOBUF_NAMESPACE_ID::internal::SCCInfo<0> scc_info_SetRateRawGpsRequest_telemetry_2ftelemetry_2eproto =
+    {{ATOMIC_VAR_INIT(::PROTOBUF_NAMESPACE_ID::internal::SCCInfoBase::kUninitialized), 0, 0, InitDefaultsscc_info_SetRateRawGpsRequest_telemetry_2ftelemetry_2eproto}, {}};
+
 static void InitDefaultsscc_info_SetRateRawImuRequest_telemetry_2ftelemetry_2eproto() {
   GOOGLE_PROTOBUF_VERIFY_VERSION;
 
@@ -2428,6 +2488,20 @@ static void InitDefaultsscc_info_SubscribePositionVelocityNedRequest_telemetry_2
 ::PROTOBUF_NAMESPACE_ID::internal::SCCInfo<0> scc_info_SubscribePositionVelocityNedRequest_telemetry_2ftelemetry_2eproto =
     {{ATOMIC_VAR_INIT(::PROTOBUF_NAMESPACE_ID::internal::SCCInfoBase::kUninitialized), 0, 0, InitDefaultsscc_info_SubscribePositionVelocityNedRequest_telemetry_2ftelemetry_2eproto}, {}};
 
+static void InitDefaultsscc_info_SubscribeRawGpsRequest_telemetry_2ftelemetry_2eproto() {
+  GOOGLE_PROTOBUF_VERIFY_VERSION;
+
+  {
+    void* ptr = &::mavsdk::rpc::telemetry::_SubscribeRawGpsRequest_default_instance_;
+    new (ptr) ::mavsdk::rpc::telemetry::SubscribeRawGpsRequest();
+    ::PROTOBUF_NAMESPACE_ID::internal::OnShutdownDestroyMessage(ptr);
+  }
+  ::mavsdk::rpc::telemetry::SubscribeRawGpsRequest::InitAsDefaultInstance();
+}
+
+::PROTOBUF_NAMESPACE_ID::internal::SCCInfo<0> scc_info_SubscribeRawGpsRequest_telemetry_2ftelemetry_2eproto =
+    {{ATOMIC_VAR_INIT(::PROTOBUF_NAMESPACE_ID::internal::SCCInfoBase::kUninitialized), 0, 0, InitDefaultsscc_info_SubscribeRawGpsRequest_telemetry_2ftelemetry_2eproto}, {}};
+
 static void InitDefaultsscc_info_SubscribeRawImuRequest_telemetry_2ftelemetry_2eproto() {
   GOOGLE_PROTOBUF_VERIFY_VERSION;
 
@@ -2611,7 +2685,7 @@ static void InitDefaultsscc_info_VelocityNedResponse_telemetry_2ftelemetry_2epro
     {{ATOMIC_VAR_INIT(::PROTOBUF_NAMESPACE_ID::internal::SCCInfoBase::kUninitialized), 1, 0, InitDefaultsscc_info_VelocityNedResponse_telemetry_2ftelemetry_2eproto}, {
       &scc_info_VelocityNed_telemetry_2ftelemetry_2eproto.base,}};
 
-static ::PROTOBUF_NAMESPACE_ID::Metadata file_level_metadata_telemetry_2ftelemetry_2eproto[139];
+static ::PROTOBUF_NAMESPACE_ID::Metadata file_level_metadata_telemetry_2ftelemetry_2eproto[143];
 static const ::PROTOBUF_NAMESPACE_ID::EnumDescriptor* file_level_enum_descriptors_telemetry_2ftelemetry_2eproto[6];
 static constexpr ::PROTOBUF_NAMESPACE_ID::ServiceDescriptor const** file_level_service_descriptors_telemetry_2ftelemetry_2eproto = nullptr;
 
@@ -2748,6 +2822,17 @@ const ::PROTOBUF_NAMESPACE_ID::uint32 TableStruct_telemetry_2ftelemetry_2eproto:
   ~0u,  // no _oneof_case_
   ~0u,  // no _weak_field_map_
   PROTOBUF_FIELD_OFFSET(::mavsdk::rpc::telemetry::GpsInfoResponse, gps_info_),
+  ~0u,  // no _has_bits_
+  PROTOBUF_FIELD_OFFSET(::mavsdk::rpc::telemetry::SubscribeRawGpsRequest, _internal_metadata_),
+  ~0u,  // no _extensions_
+  ~0u,  // no _oneof_case_
+  ~0u,  // no _weak_field_map_
+  ~0u,  // no _has_bits_
+  PROTOBUF_FIELD_OFFSET(::mavsdk::rpc::telemetry::RawGpsResponse, _internal_metadata_),
+  ~0u,  // no _extensions_
+  ~0u,  // no _oneof_case_
+  ~0u,  // no _weak_field_map_
+  PROTOBUF_FIELD_OFFSET(::mavsdk::rpc::telemetry::RawGpsResponse, raw_gps_),
   ~0u,  // no _has_bits_
   PROTOBUF_FIELD_OFFSET(::mavsdk::rpc::telemetry::SubscribeBatteryRequest, _internal_metadata_),
   ~0u,  // no _extensions_
@@ -3078,6 +3163,12 @@ const ::PROTOBUF_NAMESPACE_ID::uint32 TableStruct_telemetry_2ftelemetry_2eproto:
   ~0u,  // no _weak_field_map_
   PROTOBUF_FIELD_OFFSET(::mavsdk::rpc::telemetry::SetRateGpsInfoResponse, telemetry_result_),
   ~0u,  // no _has_bits_
+  PROTOBUF_FIELD_OFFSET(::mavsdk::rpc::telemetry::SetRateRawGpsRequest, _internal_metadata_),
+  ~0u,  // no _extensions_
+  ~0u,  // no _oneof_case_
+  ~0u,  // no _weak_field_map_
+  PROTOBUF_FIELD_OFFSET(::mavsdk::rpc::telemetry::SetRateRawGpsRequest, rate_hz_),
+  ~0u,  // no _has_bits_
   PROTOBUF_FIELD_OFFSET(::mavsdk::rpc::telemetry::SetRateBatteryRequest, _internal_metadata_),
   ~0u,  // no _extensions_
   ~0u,  // no _oneof_case_
@@ -3288,6 +3379,25 @@ const ::PROTOBUF_NAMESPACE_ID::uint32 TableStruct_telemetry_2ftelemetry_2eproto:
   ~0u,  // no _weak_field_map_
   PROTOBUF_FIELD_OFFSET(::mavsdk::rpc::telemetry::GpsInfo, num_satellites_),
   PROTOBUF_FIELD_OFFSET(::mavsdk::rpc::telemetry::GpsInfo, fix_type_),
+  ~0u,  // no _has_bits_
+  PROTOBUF_FIELD_OFFSET(::mavsdk::rpc::telemetry::RawGps, _internal_metadata_),
+  ~0u,  // no _extensions_
+  ~0u,  // no _oneof_case_
+  ~0u,  // no _weak_field_map_
+  PROTOBUF_FIELD_OFFSET(::mavsdk::rpc::telemetry::RawGps, timestamp_us_),
+  PROTOBUF_FIELD_OFFSET(::mavsdk::rpc::telemetry::RawGps, latitude_deg_),
+  PROTOBUF_FIELD_OFFSET(::mavsdk::rpc::telemetry::RawGps, longitude_deg_),
+  PROTOBUF_FIELD_OFFSET(::mavsdk::rpc::telemetry::RawGps, absolute_altitude_m_),
+  PROTOBUF_FIELD_OFFSET(::mavsdk::rpc::telemetry::RawGps, hdop_),
+  PROTOBUF_FIELD_OFFSET(::mavsdk::rpc::telemetry::RawGps, vdop_),
+  PROTOBUF_FIELD_OFFSET(::mavsdk::rpc::telemetry::RawGps, velocity_m_s_),
+  PROTOBUF_FIELD_OFFSET(::mavsdk::rpc::telemetry::RawGps, cog_deg_),
+  PROTOBUF_FIELD_OFFSET(::mavsdk::rpc::telemetry::RawGps, altitude_ellipsoid_m_),
+  PROTOBUF_FIELD_OFFSET(::mavsdk::rpc::telemetry::RawGps, horizontal_uncertainty_m_),
+  PROTOBUF_FIELD_OFFSET(::mavsdk::rpc::telemetry::RawGps, vertical_uncertainty_m_),
+  PROTOBUF_FIELD_OFFSET(::mavsdk::rpc::telemetry::RawGps, velocity_uncertainty_m_s_),
+  PROTOBUF_FIELD_OFFSET(::mavsdk::rpc::telemetry::RawGps, heading_uncertainty_deg_),
+  PROTOBUF_FIELD_OFFSET(::mavsdk::rpc::telemetry::RawGps, yaw_deg_),
   ~0u,  // no _has_bits_
   PROTOBUF_FIELD_OFFSET(::mavsdk::rpc::telemetry::Battery, _internal_metadata_),
   ~0u,  // no _extensions_
@@ -3514,121 +3624,125 @@ static const ::PROTOBUF_NAMESPACE_ID::internal::MigrationSchema schemas[] PROTOB
   { 115, -1, sizeof(::mavsdk::rpc::telemetry::VelocityNedResponse)},
   { 121, -1, sizeof(::mavsdk::rpc::telemetry::SubscribeGpsInfoRequest)},
   { 126, -1, sizeof(::mavsdk::rpc::telemetry::GpsInfoResponse)},
-  { 132, -1, sizeof(::mavsdk::rpc::telemetry::SubscribeBatteryRequest)},
-  { 137, -1, sizeof(::mavsdk::rpc::telemetry::BatteryResponse)},
-  { 143, -1, sizeof(::mavsdk::rpc::telemetry::SubscribeFlightModeRequest)},
-  { 148, -1, sizeof(::mavsdk::rpc::telemetry::FlightModeResponse)},
-  { 154, -1, sizeof(::mavsdk::rpc::telemetry::SubscribeHealthRequest)},
-  { 159, -1, sizeof(::mavsdk::rpc::telemetry::HealthResponse)},
-  { 165, -1, sizeof(::mavsdk::rpc::telemetry::SubscribeRcStatusRequest)},
-  { 170, -1, sizeof(::mavsdk::rpc::telemetry::RcStatusResponse)},
-  { 176, -1, sizeof(::mavsdk::rpc::telemetry::SubscribeStatusTextRequest)},
-  { 181, -1, sizeof(::mavsdk::rpc::telemetry::StatusTextResponse)},
-  { 187, -1, sizeof(::mavsdk::rpc::telemetry::SubscribeActuatorControlTargetRequest)},
-  { 192, -1, sizeof(::mavsdk::rpc::telemetry::ActuatorControlTargetResponse)},
-  { 198, -1, sizeof(::mavsdk::rpc::telemetry::SubscribeActuatorOutputStatusRequest)},
-  { 203, -1, sizeof(::mavsdk::rpc::telemetry::ActuatorOutputStatusResponse)},
-  { 209, -1, sizeof(::mavsdk::rpc::telemetry::SubscribeOdometryRequest)},
-  { 214, -1, sizeof(::mavsdk::rpc::telemetry::OdometryResponse)},
-  { 220, -1, sizeof(::mavsdk::rpc::telemetry::SubscribePositionVelocityNedRequest)},
-  { 225, -1, sizeof(::mavsdk::rpc::telemetry::PositionVelocityNedResponse)},
-  { 231, -1, sizeof(::mavsdk::rpc::telemetry::SubscribeGroundTruthRequest)},
-  { 236, -1, sizeof(::mavsdk::rpc::telemetry::GroundTruthResponse)},
-  { 242, -1, sizeof(::mavsdk::rpc::telemetry::SubscribeFixedwingMetricsRequest)},
-  { 247, -1, sizeof(::mavsdk::rpc::telemetry::FixedwingMetricsResponse)},
-  { 253, -1, sizeof(::mavsdk::rpc::telemetry::SubscribeImuRequest)},
-  { 258, -1, sizeof(::mavsdk::rpc::telemetry::ImuResponse)},
-  { 264, -1, sizeof(::mavsdk::rpc::telemetry::SubscribeScaledImuRequest)},
-  { 269, -1, sizeof(::mavsdk::rpc::telemetry::ScaledImuResponse)},
-  { 275, -1, sizeof(::mavsdk::rpc::telemetry::SubscribeRawImuRequest)},
-  { 280, -1, sizeof(::mavsdk::rpc::telemetry::RawImuResponse)},
-  { 286, -1, sizeof(::mavsdk::rpc::telemetry::SubscribeHealthAllOkRequest)},
-  { 291, -1, sizeof(::mavsdk::rpc::telemetry::HealthAllOkResponse)},
-  { 297, -1, sizeof(::mavsdk::rpc::telemetry::SubscribeUnixEpochTimeRequest)},
-  { 302, -1, sizeof(::mavsdk::rpc::telemetry::UnixEpochTimeResponse)},
-  { 308, -1, sizeof(::mavsdk::rpc::telemetry::SubscribeDistanceSensorRequest)},
-  { 313, -1, sizeof(::mavsdk::rpc::telemetry::DistanceSensorResponse)},
-  { 319, -1, sizeof(::mavsdk::rpc::telemetry::SubscribeRawPressureRequest)},
-  { 324, -1, sizeof(::mavsdk::rpc::telemetry::RawPressureResponse)},
-  { 330, -1, sizeof(::mavsdk::rpc::telemetry::SubscribeScaledPressureRequest)},
-  { 335, -1, sizeof(::mavsdk::rpc::telemetry::ScaledPressureResponse)},
-  { 341, -1, sizeof(::mavsdk::rpc::telemetry::SetRatePositionRequest)},
-  { 347, -1, sizeof(::mavsdk::rpc::telemetry::SetRatePositionResponse)},
-  { 353, -1, sizeof(::mavsdk::rpc::telemetry::SetRateHomeRequest)},
-  { 359, -1, sizeof(::mavsdk::rpc::telemetry::SetRateHomeResponse)},
-  { 365, -1, sizeof(::mavsdk::rpc::telemetry::SetRateInAirRequest)},
-  { 371, -1, sizeof(::mavsdk::rpc::telemetry::SetRateInAirResponse)},
-  { 377, -1, sizeof(::mavsdk::rpc::telemetry::SetRateLandedStateRequest)},
-  { 383, -1, sizeof(::mavsdk::rpc::telemetry::SetRateLandedStateResponse)},
-  { 389, -1, sizeof(::mavsdk::rpc::telemetry::SetRateAttitudeRequest)},
-  { 395, -1, sizeof(::mavsdk::rpc::telemetry::SetRateAttitudeResponse)},
-  { 401, -1, sizeof(::mavsdk::rpc::telemetry::SetRateAttitudeAngularVelocityBodyRequest)},
-  { 407, -1, sizeof(::mavsdk::rpc::telemetry::SetRateAttitudeAngularVelocityBodyResponse)},
-  { 413, -1, sizeof(::mavsdk::rpc::telemetry::SetRateCameraAttitudeQuaternionRequest)},
-  { 419, -1, sizeof(::mavsdk::rpc::telemetry::SetRateCameraAttitudeQuaternionResponse)},
-  { 425, -1, sizeof(::mavsdk::rpc::telemetry::SetRateCameraAttitudeRequest)},
-  { 431, -1, sizeof(::mavsdk::rpc::telemetry::SetRateCameraAttitudeResponse)},
-  { 437, -1, sizeof(::mavsdk::rpc::telemetry::SetRateVelocityNedRequest)},
-  { 443, -1, sizeof(::mavsdk::rpc::telemetry::SetRateVelocityNedResponse)},
-  { 449, -1, sizeof(::mavsdk::rpc::telemetry::SetRateGpsInfoRequest)},
-  { 455, -1, sizeof(::mavsdk::rpc::telemetry::SetRateGpsInfoResponse)},
-  { 461, -1, sizeof(::mavsdk::rpc::telemetry::SetRateBatteryRequest)},
-  { 467, -1, sizeof(::mavsdk::rpc::telemetry::SetRateBatteryResponse)},
-  { 473, -1, sizeof(::mavsdk::rpc::telemetry::SetRateRcStatusRequest)},
-  { 479, -1, sizeof(::mavsdk::rpc::telemetry::SetRateRcStatusResponse)},
-  { 485, -1, sizeof(::mavsdk::rpc::telemetry::SetRateActuatorControlTargetRequest)},
-  { 491, -1, sizeof(::mavsdk::rpc::telemetry::SetRateActuatorControlTargetResponse)},
-  { 497, -1, sizeof(::mavsdk::rpc::telemetry::SetRateActuatorOutputStatusRequest)},
-  { 503, -1, sizeof(::mavsdk::rpc::telemetry::SetRateActuatorOutputStatusResponse)},
-  { 509, -1, sizeof(::mavsdk::rpc::telemetry::SetRateOdometryRequest)},
-  { 515, -1, sizeof(::mavsdk::rpc::telemetry::SetRateOdometryResponse)},
-  { 521, -1, sizeof(::mavsdk::rpc::telemetry::SetRatePositionVelocityNedRequest)},
-  { 527, -1, sizeof(::mavsdk::rpc::telemetry::SetRatePositionVelocityNedResponse)},
-  { 533, -1, sizeof(::mavsdk::rpc::telemetry::SetRateGroundTruthRequest)},
-  { 539, -1, sizeof(::mavsdk::rpc::telemetry::SetRateGroundTruthResponse)},
-  { 545, -1, sizeof(::mavsdk::rpc::telemetry::SetRateFixedwingMetricsRequest)},
-  { 551, -1, sizeof(::mavsdk::rpc::telemetry::SetRateFixedwingMetricsResponse)},
-  { 557, -1, sizeof(::mavsdk::rpc::telemetry::SetRateImuRequest)},
-  { 563, -1, sizeof(::mavsdk::rpc::telemetry::SetRateImuResponse)},
-  { 569, -1, sizeof(::mavsdk::rpc::telemetry::SetRateScaledImuRequest)},
-  { 575, -1, sizeof(::mavsdk::rpc::telemetry::SetRateScaledImuResponse)},
-  { 581, -1, sizeof(::mavsdk::rpc::telemetry::SetRateRawImuRequest)},
-  { 587, -1, sizeof(::mavsdk::rpc::telemetry::SetRateRawImuResponse)},
-  { 593, -1, sizeof(::mavsdk::rpc::telemetry::SetRateUnixEpochTimeRequest)},
-  { 599, -1, sizeof(::mavsdk::rpc::telemetry::SetRateUnixEpochTimeResponse)},
-  { 605, -1, sizeof(::mavsdk::rpc::telemetry::SetRateDistanceSensorRequest)},
-  { 611, -1, sizeof(::mavsdk::rpc::telemetry::SetRateDistanceSensorResponse)},
-  { 617, -1, sizeof(::mavsdk::rpc::telemetry::GetGpsGlobalOriginRequest)},
-  { 622, -1, sizeof(::mavsdk::rpc::telemetry::GetGpsGlobalOriginResponse)},
-  { 629, -1, sizeof(::mavsdk::rpc::telemetry::Position)},
-  { 638, -1, sizeof(::mavsdk::rpc::telemetry::Quaternion)},
-  { 648, -1, sizeof(::mavsdk::rpc::telemetry::EulerAngle)},
-  { 657, -1, sizeof(::mavsdk::rpc::telemetry::AngularVelocityBody)},
-  { 665, -1, sizeof(::mavsdk::rpc::telemetry::GpsInfo)},
-  { 672, -1, sizeof(::mavsdk::rpc::telemetry::Battery)},
-  { 679, -1, sizeof(::mavsdk::rpc::telemetry::Health)},
-  { 691, -1, sizeof(::mavsdk::rpc::telemetry::RcStatus)},
-  { 699, -1, sizeof(::mavsdk::rpc::telemetry::StatusText)},
-  { 706, -1, sizeof(::mavsdk::rpc::telemetry::ActuatorControlTarget)},
-  { 713, -1, sizeof(::mavsdk::rpc::telemetry::ActuatorOutputStatus)},
-  { 720, -1, sizeof(::mavsdk::rpc::telemetry::Covariance)},
-  { 726, -1, sizeof(::mavsdk::rpc::telemetry::VelocityBody)},
-  { 734, -1, sizeof(::mavsdk::rpc::telemetry::PositionBody)},
-  { 742, -1, sizeof(::mavsdk::rpc::telemetry::Odometry)},
-  { 756, -1, sizeof(::mavsdk::rpc::telemetry::DistanceSensor)},
-  { 764, -1, sizeof(::mavsdk::rpc::telemetry::RawPressure)},
-  { 774, -1, sizeof(::mavsdk::rpc::telemetry::ScaledPressure)},
-  { 784, -1, sizeof(::mavsdk::rpc::telemetry::PositionNed)},
-  { 792, -1, sizeof(::mavsdk::rpc::telemetry::VelocityNed)},
-  { 800, -1, sizeof(::mavsdk::rpc::telemetry::PositionVelocityNed)},
-  { 807, -1, sizeof(::mavsdk::rpc::telemetry::GroundTruth)},
-  { 815, -1, sizeof(::mavsdk::rpc::telemetry::FixedwingMetrics)},
-  { 823, -1, sizeof(::mavsdk::rpc::telemetry::AccelerationFrd)},
-  { 831, -1, sizeof(::mavsdk::rpc::telemetry::AngularVelocityFrd)},
-  { 839, -1, sizeof(::mavsdk::rpc::telemetry::MagneticFieldFrd)},
-  { 847, -1, sizeof(::mavsdk::rpc::telemetry::Imu)},
-  { 857, -1, sizeof(::mavsdk::rpc::telemetry::GpsGlobalOrigin)},
-  { 865, -1, sizeof(::mavsdk::rpc::telemetry::TelemetryResult)},
+  { 132, -1, sizeof(::mavsdk::rpc::telemetry::SubscribeRawGpsRequest)},
+  { 137, -1, sizeof(::mavsdk::rpc::telemetry::RawGpsResponse)},
+  { 143, -1, sizeof(::mavsdk::rpc::telemetry::SubscribeBatteryRequest)},
+  { 148, -1, sizeof(::mavsdk::rpc::telemetry::BatteryResponse)},
+  { 154, -1, sizeof(::mavsdk::rpc::telemetry::SubscribeFlightModeRequest)},
+  { 159, -1, sizeof(::mavsdk::rpc::telemetry::FlightModeResponse)},
+  { 165, -1, sizeof(::mavsdk::rpc::telemetry::SubscribeHealthRequest)},
+  { 170, -1, sizeof(::mavsdk::rpc::telemetry::HealthResponse)},
+  { 176, -1, sizeof(::mavsdk::rpc::telemetry::SubscribeRcStatusRequest)},
+  { 181, -1, sizeof(::mavsdk::rpc::telemetry::RcStatusResponse)},
+  { 187, -1, sizeof(::mavsdk::rpc::telemetry::SubscribeStatusTextRequest)},
+  { 192, -1, sizeof(::mavsdk::rpc::telemetry::StatusTextResponse)},
+  { 198, -1, sizeof(::mavsdk::rpc::telemetry::SubscribeActuatorControlTargetRequest)},
+  { 203, -1, sizeof(::mavsdk::rpc::telemetry::ActuatorControlTargetResponse)},
+  { 209, -1, sizeof(::mavsdk::rpc::telemetry::SubscribeActuatorOutputStatusRequest)},
+  { 214, -1, sizeof(::mavsdk::rpc::telemetry::ActuatorOutputStatusResponse)},
+  { 220, -1, sizeof(::mavsdk::rpc::telemetry::SubscribeOdometryRequest)},
+  { 225, -1, sizeof(::mavsdk::rpc::telemetry::OdometryResponse)},
+  { 231, -1, sizeof(::mavsdk::rpc::telemetry::SubscribePositionVelocityNedRequest)},
+  { 236, -1, sizeof(::mavsdk::rpc::telemetry::PositionVelocityNedResponse)},
+  { 242, -1, sizeof(::mavsdk::rpc::telemetry::SubscribeGroundTruthRequest)},
+  { 247, -1, sizeof(::mavsdk::rpc::telemetry::GroundTruthResponse)},
+  { 253, -1, sizeof(::mavsdk::rpc::telemetry::SubscribeFixedwingMetricsRequest)},
+  { 258, -1, sizeof(::mavsdk::rpc::telemetry::FixedwingMetricsResponse)},
+  { 264, -1, sizeof(::mavsdk::rpc::telemetry::SubscribeImuRequest)},
+  { 269, -1, sizeof(::mavsdk::rpc::telemetry::ImuResponse)},
+  { 275, -1, sizeof(::mavsdk::rpc::telemetry::SubscribeScaledImuRequest)},
+  { 280, -1, sizeof(::mavsdk::rpc::telemetry::ScaledImuResponse)},
+  { 286, -1, sizeof(::mavsdk::rpc::telemetry::SubscribeRawImuRequest)},
+  { 291, -1, sizeof(::mavsdk::rpc::telemetry::RawImuResponse)},
+  { 297, -1, sizeof(::mavsdk::rpc::telemetry::SubscribeHealthAllOkRequest)},
+  { 302, -1, sizeof(::mavsdk::rpc::telemetry::HealthAllOkResponse)},
+  { 308, -1, sizeof(::mavsdk::rpc::telemetry::SubscribeUnixEpochTimeRequest)},
+  { 313, -1, sizeof(::mavsdk::rpc::telemetry::UnixEpochTimeResponse)},
+  { 319, -1, sizeof(::mavsdk::rpc::telemetry::SubscribeDistanceSensorRequest)},
+  { 324, -1, sizeof(::mavsdk::rpc::telemetry::DistanceSensorResponse)},
+  { 330, -1, sizeof(::mavsdk::rpc::telemetry::SubscribeRawPressureRequest)},
+  { 335, -1, sizeof(::mavsdk::rpc::telemetry::RawPressureResponse)},
+  { 341, -1, sizeof(::mavsdk::rpc::telemetry::SubscribeScaledPressureRequest)},
+  { 346, -1, sizeof(::mavsdk::rpc::telemetry::ScaledPressureResponse)},
+  { 352, -1, sizeof(::mavsdk::rpc::telemetry::SetRatePositionRequest)},
+  { 358, -1, sizeof(::mavsdk::rpc::telemetry::SetRatePositionResponse)},
+  { 364, -1, sizeof(::mavsdk::rpc::telemetry::SetRateHomeRequest)},
+  { 370, -1, sizeof(::mavsdk::rpc::telemetry::SetRateHomeResponse)},
+  { 376, -1, sizeof(::mavsdk::rpc::telemetry::SetRateInAirRequest)},
+  { 382, -1, sizeof(::mavsdk::rpc::telemetry::SetRateInAirResponse)},
+  { 388, -1, sizeof(::mavsdk::rpc::telemetry::SetRateLandedStateRequest)},
+  { 394, -1, sizeof(::mavsdk::rpc::telemetry::SetRateLandedStateResponse)},
+  { 400, -1, sizeof(::mavsdk::rpc::telemetry::SetRateAttitudeRequest)},
+  { 406, -1, sizeof(::mavsdk::rpc::telemetry::SetRateAttitudeResponse)},
+  { 412, -1, sizeof(::mavsdk::rpc::telemetry::SetRateAttitudeAngularVelocityBodyRequest)},
+  { 418, -1, sizeof(::mavsdk::rpc::telemetry::SetRateAttitudeAngularVelocityBodyResponse)},
+  { 424, -1, sizeof(::mavsdk::rpc::telemetry::SetRateCameraAttitudeQuaternionRequest)},
+  { 430, -1, sizeof(::mavsdk::rpc::telemetry::SetRateCameraAttitudeQuaternionResponse)},
+  { 436, -1, sizeof(::mavsdk::rpc::telemetry::SetRateCameraAttitudeRequest)},
+  { 442, -1, sizeof(::mavsdk::rpc::telemetry::SetRateCameraAttitudeResponse)},
+  { 448, -1, sizeof(::mavsdk::rpc::telemetry::SetRateVelocityNedRequest)},
+  { 454, -1, sizeof(::mavsdk::rpc::telemetry::SetRateVelocityNedResponse)},
+  { 460, -1, sizeof(::mavsdk::rpc::telemetry::SetRateGpsInfoRequest)},
+  { 466, -1, sizeof(::mavsdk::rpc::telemetry::SetRateGpsInfoResponse)},
+  { 472, -1, sizeof(::mavsdk::rpc::telemetry::SetRateRawGpsRequest)},
+  { 478, -1, sizeof(::mavsdk::rpc::telemetry::SetRateBatteryRequest)},
+  { 484, -1, sizeof(::mavsdk::rpc::telemetry::SetRateBatteryResponse)},
+  { 490, -1, sizeof(::mavsdk::rpc::telemetry::SetRateRcStatusRequest)},
+  { 496, -1, sizeof(::mavsdk::rpc::telemetry::SetRateRcStatusResponse)},
+  { 502, -1, sizeof(::mavsdk::rpc::telemetry::SetRateActuatorControlTargetRequest)},
+  { 508, -1, sizeof(::mavsdk::rpc::telemetry::SetRateActuatorControlTargetResponse)},
+  { 514, -1, sizeof(::mavsdk::rpc::telemetry::SetRateActuatorOutputStatusRequest)},
+  { 520, -1, sizeof(::mavsdk::rpc::telemetry::SetRateActuatorOutputStatusResponse)},
+  { 526, -1, sizeof(::mavsdk::rpc::telemetry::SetRateOdometryRequest)},
+  { 532, -1, sizeof(::mavsdk::rpc::telemetry::SetRateOdometryResponse)},
+  { 538, -1, sizeof(::mavsdk::rpc::telemetry::SetRatePositionVelocityNedRequest)},
+  { 544, -1, sizeof(::mavsdk::rpc::telemetry::SetRatePositionVelocityNedResponse)},
+  { 550, -1, sizeof(::mavsdk::rpc::telemetry::SetRateGroundTruthRequest)},
+  { 556, -1, sizeof(::mavsdk::rpc::telemetry::SetRateGroundTruthResponse)},
+  { 562, -1, sizeof(::mavsdk::rpc::telemetry::SetRateFixedwingMetricsRequest)},
+  { 568, -1, sizeof(::mavsdk::rpc::telemetry::SetRateFixedwingMetricsResponse)},
+  { 574, -1, sizeof(::mavsdk::rpc::telemetry::SetRateImuRequest)},
+  { 580, -1, sizeof(::mavsdk::rpc::telemetry::SetRateImuResponse)},
+  { 586, -1, sizeof(::mavsdk::rpc::telemetry::SetRateScaledImuRequest)},
+  { 592, -1, sizeof(::mavsdk::rpc::telemetry::SetRateScaledImuResponse)},
+  { 598, -1, sizeof(::mavsdk::rpc::telemetry::SetRateRawImuRequest)},
+  { 604, -1, sizeof(::mavsdk::rpc::telemetry::SetRateRawImuResponse)},
+  { 610, -1, sizeof(::mavsdk::rpc::telemetry::SetRateUnixEpochTimeRequest)},
+  { 616, -1, sizeof(::mavsdk::rpc::telemetry::SetRateUnixEpochTimeResponse)},
+  { 622, -1, sizeof(::mavsdk::rpc::telemetry::SetRateDistanceSensorRequest)},
+  { 628, -1, sizeof(::mavsdk::rpc::telemetry::SetRateDistanceSensorResponse)},
+  { 634, -1, sizeof(::mavsdk::rpc::telemetry::GetGpsGlobalOriginRequest)},
+  { 639, -1, sizeof(::mavsdk::rpc::telemetry::GetGpsGlobalOriginResponse)},
+  { 646, -1, sizeof(::mavsdk::rpc::telemetry::Position)},
+  { 655, -1, sizeof(::mavsdk::rpc::telemetry::Quaternion)},
+  { 665, -1, sizeof(::mavsdk::rpc::telemetry::EulerAngle)},
+  { 674, -1, sizeof(::mavsdk::rpc::telemetry::AngularVelocityBody)},
+  { 682, -1, sizeof(::mavsdk::rpc::telemetry::GpsInfo)},
+  { 689, -1, sizeof(::mavsdk::rpc::telemetry::RawGps)},
+  { 708, -1, sizeof(::mavsdk::rpc::telemetry::Battery)},
+  { 715, -1, sizeof(::mavsdk::rpc::telemetry::Health)},
+  { 727, -1, sizeof(::mavsdk::rpc::telemetry::RcStatus)},
+  { 735, -1, sizeof(::mavsdk::rpc::telemetry::StatusText)},
+  { 742, -1, sizeof(::mavsdk::rpc::telemetry::ActuatorControlTarget)},
+  { 749, -1, sizeof(::mavsdk::rpc::telemetry::ActuatorOutputStatus)},
+  { 756, -1, sizeof(::mavsdk::rpc::telemetry::Covariance)},
+  { 762, -1, sizeof(::mavsdk::rpc::telemetry::VelocityBody)},
+  { 770, -1, sizeof(::mavsdk::rpc::telemetry::PositionBody)},
+  { 778, -1, sizeof(::mavsdk::rpc::telemetry::Odometry)},
+  { 792, -1, sizeof(::mavsdk::rpc::telemetry::DistanceSensor)},
+  { 800, -1, sizeof(::mavsdk::rpc::telemetry::RawPressure)},
+  { 810, -1, sizeof(::mavsdk::rpc::telemetry::ScaledPressure)},
+  { 820, -1, sizeof(::mavsdk::rpc::telemetry::PositionNed)},
+  { 828, -1, sizeof(::mavsdk::rpc::telemetry::VelocityNed)},
+  { 836, -1, sizeof(::mavsdk::rpc::telemetry::PositionVelocityNed)},
+  { 843, -1, sizeof(::mavsdk::rpc::telemetry::GroundTruth)},
+  { 851, -1, sizeof(::mavsdk::rpc::telemetry::FixedwingMetrics)},
+  { 859, -1, sizeof(::mavsdk::rpc::telemetry::AccelerationFrd)},
+  { 867, -1, sizeof(::mavsdk::rpc::telemetry::AngularVelocityFrd)},
+  { 875, -1, sizeof(::mavsdk::rpc::telemetry::MagneticFieldFrd)},
+  { 883, -1, sizeof(::mavsdk::rpc::telemetry::Imu)},
+  { 893, -1, sizeof(::mavsdk::rpc::telemetry::GpsGlobalOrigin)},
+  { 901, -1, sizeof(::mavsdk::rpc::telemetry::TelemetryResult)},
 };
 
 static ::PROTOBUF_NAMESPACE_ID::Message const * const file_default_instances[] = {
@@ -3656,6 +3770,8 @@ static ::PROTOBUF_NAMESPACE_ID::Message const * const file_default_instances[] =
   reinterpret_cast<const ::PROTOBUF_NAMESPACE_ID::Message*>(&::mavsdk::rpc::telemetry::_VelocityNedResponse_default_instance_),
   reinterpret_cast<const ::PROTOBUF_NAMESPACE_ID::Message*>(&::mavsdk::rpc::telemetry::_SubscribeGpsInfoRequest_default_instance_),
   reinterpret_cast<const ::PROTOBUF_NAMESPACE_ID::Message*>(&::mavsdk::rpc::telemetry::_GpsInfoResponse_default_instance_),
+  reinterpret_cast<const ::PROTOBUF_NAMESPACE_ID::Message*>(&::mavsdk::rpc::telemetry::_SubscribeRawGpsRequest_default_instance_),
+  reinterpret_cast<const ::PROTOBUF_NAMESPACE_ID::Message*>(&::mavsdk::rpc::telemetry::_RawGpsResponse_default_instance_),
   reinterpret_cast<const ::PROTOBUF_NAMESPACE_ID::Message*>(&::mavsdk::rpc::telemetry::_SubscribeBatteryRequest_default_instance_),
   reinterpret_cast<const ::PROTOBUF_NAMESPACE_ID::Message*>(&::mavsdk::rpc::telemetry::_BatteryResponse_default_instance_),
   reinterpret_cast<const ::PROTOBUF_NAMESPACE_ID::Message*>(&::mavsdk::rpc::telemetry::_SubscribeFlightModeRequest_default_instance_),
@@ -3714,6 +3830,7 @@ static ::PROTOBUF_NAMESPACE_ID::Message const * const file_default_instances[] =
   reinterpret_cast<const ::PROTOBUF_NAMESPACE_ID::Message*>(&::mavsdk::rpc::telemetry::_SetRateVelocityNedResponse_default_instance_),
   reinterpret_cast<const ::PROTOBUF_NAMESPACE_ID::Message*>(&::mavsdk::rpc::telemetry::_SetRateGpsInfoRequest_default_instance_),
   reinterpret_cast<const ::PROTOBUF_NAMESPACE_ID::Message*>(&::mavsdk::rpc::telemetry::_SetRateGpsInfoResponse_default_instance_),
+  reinterpret_cast<const ::PROTOBUF_NAMESPACE_ID::Message*>(&::mavsdk::rpc::telemetry::_SetRateRawGpsRequest_default_instance_),
   reinterpret_cast<const ::PROTOBUF_NAMESPACE_ID::Message*>(&::mavsdk::rpc::telemetry::_SetRateBatteryRequest_default_instance_),
   reinterpret_cast<const ::PROTOBUF_NAMESPACE_ID::Message*>(&::mavsdk::rpc::telemetry::_SetRateBatteryResponse_default_instance_),
   reinterpret_cast<const ::PROTOBUF_NAMESPACE_ID::Message*>(&::mavsdk::rpc::telemetry::_SetRateRcStatusRequest_default_instance_),
@@ -3747,6 +3864,7 @@ static ::PROTOBUF_NAMESPACE_ID::Message const * const file_default_instances[] =
   reinterpret_cast<const ::PROTOBUF_NAMESPACE_ID::Message*>(&::mavsdk::rpc::telemetry::_EulerAngle_default_instance_),
   reinterpret_cast<const ::PROTOBUF_NAMESPACE_ID::Message*>(&::mavsdk::rpc::telemetry::_AngularVelocityBody_default_instance_),
   reinterpret_cast<const ::PROTOBUF_NAMESPACE_ID::Message*>(&::mavsdk::rpc::telemetry::_GpsInfo_default_instance_),
+  reinterpret_cast<const ::PROTOBUF_NAMESPACE_ID::Message*>(&::mavsdk::rpc::telemetry::_RawGps_default_instance_),
   reinterpret_cast<const ::PROTOBUF_NAMESPACE_ID::Message*>(&::mavsdk::rpc::telemetry::_Battery_default_instance_),
   reinterpret_cast<const ::PROTOBUF_NAMESPACE_ID::Message*>(&::mavsdk::rpc::telemetry::_Health_default_instance_),
   reinterpret_cast<const ::PROTOBUF_NAMESPACE_ID::Message*>(&::mavsdk::rpc::telemetry::_RcStatus_default_instance_),
@@ -3808,442 +3926,457 @@ const char descriptor_table_protodef_telemetry_2ftelemetry_2eproto[] PROTOBUF_SE
   "_ned\030\001 \001(\0132!.mavsdk.rpc.telemetry.Veloci"
   "tyNed\"\031\n\027SubscribeGpsInfoRequest\"B\n\017GpsI"
   "nfoResponse\022/\n\010gps_info\030\001 \001(\0132\035.mavsdk.r"
-  "pc.telemetry.GpsInfo\"\031\n\027SubscribeBattery"
-  "Request\"A\n\017BatteryResponse\022.\n\007battery\030\001 "
-  "\001(\0132\035.mavsdk.rpc.telemetry.Battery\"\034\n\032Su"
-  "bscribeFlightModeRequest\"K\n\022FlightModeRe"
-  "sponse\0225\n\013flight_mode\030\001 \001(\0162 .mavsdk.rpc"
-  ".telemetry.FlightMode\"\030\n\026SubscribeHealth"
-  "Request\">\n\016HealthResponse\022,\n\006health\030\001 \001("
-  "\0132\034.mavsdk.rpc.telemetry.Health\"\032\n\030Subsc"
-  "ribeRcStatusRequest\"E\n\020RcStatusResponse\022"
-  "1\n\trc_status\030\001 \001(\0132\036.mavsdk.rpc.telemetr"
-  "y.RcStatus\"\034\n\032SubscribeStatusTextRequest"
-  "\"K\n\022StatusTextResponse\0225\n\013status_text\030\001 "
-  "\001(\0132 .mavsdk.rpc.telemetry.StatusText\"\'\n"
-  "%SubscribeActuatorControlTargetRequest\"m"
-  "\n\035ActuatorControlTargetResponse\022L\n\027actua"
-  "tor_control_target\030\001 \001(\0132+.mavsdk.rpc.te"
-  "lemetry.ActuatorControlTarget\"&\n$Subscri"
-  "beActuatorOutputStatusRequest\"j\n\034Actuato"
-  "rOutputStatusResponse\022J\n\026actuator_output"
-  "_status\030\001 \001(\0132*.mavsdk.rpc.telemetry.Act"
-  "uatorOutputStatus\"\032\n\030SubscribeOdometryRe"
-  "quest\"D\n\020OdometryResponse\0220\n\010odometry\030\001 "
-  "\001(\0132\036.mavsdk.rpc.telemetry.Odometry\"%\n#S"
-  "ubscribePositionVelocityNedRequest\"g\n\033Po"
-  "sitionVelocityNedResponse\022H\n\025position_ve"
-  "locity_ned\030\001 \001(\0132).mavsdk.rpc.telemetry."
-  "PositionVelocityNed\"\035\n\033SubscribeGroundTr"
-  "uthRequest\"N\n\023GroundTruthResponse\0227\n\014gro"
-  "und_truth\030\001 \001(\0132!.mavsdk.rpc.telemetry.G"
-  "roundTruth\"\"\n SubscribeFixedwingMetricsR"
-  "equest\"]\n\030FixedwingMetricsResponse\022A\n\021fi"
-  "xedwing_metrics\030\001 \001(\0132&.mavsdk.rpc.telem"
-  "etry.FixedwingMetrics\"\025\n\023SubscribeImuReq"
-  "uest\"5\n\013ImuResponse\022&\n\003imu\030\001 \001(\0132\031.mavsd"
-  "k.rpc.telemetry.Imu\"\033\n\031SubscribeScaledIm"
-  "uRequest\";\n\021ScaledImuResponse\022&\n\003imu\030\001 \001"
-  "(\0132\031.mavsdk.rpc.telemetry.Imu\"\030\n\026Subscri"
-  "beRawImuRequest\"8\n\016RawImuResponse\022&\n\003imu"
-  "\030\001 \001(\0132\031.mavsdk.rpc.telemetry.Imu\"\035\n\033Sub"
-  "scribeHealthAllOkRequest\"/\n\023HealthAllOkR"
-  "esponse\022\030\n\020is_health_all_ok\030\001 \001(\010\"\037\n\035Sub"
-  "scribeUnixEpochTimeRequest\"(\n\025UnixEpochT"
-  "imeResponse\022\017\n\007time_us\030\001 \001(\004\" \n\036Subscrib"
-  "eDistanceSensorRequest\"W\n\026DistanceSensor"
-  "Response\022=\n\017distance_sensor\030\001 \001(\0132$.mavs"
-  "dk.rpc.telemetry.DistanceSensor\"\035\n\033Subsc"
-  "ribeRawPressureRequest\"N\n\023RawPressureRes"
-  "ponse\0227\n\014raw_pressure\030\001 \001(\0132!.mavsdk.rpc"
-  ".telemetry.RawPressure\" \n\036SubscribeScale"
-  "dPressureRequest\"W\n\026ScaledPressureRespon"
-  "se\022=\n\017scaled_pressure\030\001 \001(\0132$.mavsdk.rpc"
-  ".telemetry.ScaledPressure\")\n\026SetRatePosi"
-  "tionRequest\022\017\n\007rate_hz\030\001 \001(\001\"Z\n\027SetRateP"
-  "ositionResponse\022\?\n\020telemetry_result\030\001 \001("
-  "\0132%.mavsdk.rpc.telemetry.TelemetryResult"
-  "\"%\n\022SetRateHomeRequest\022\017\n\007rate_hz\030\001 \001(\001\""
-  "V\n\023SetRateHomeResponse\022\?\n\020telemetry_resu"
-  "lt\030\001 \001(\0132%.mavsdk.rpc.telemetry.Telemetr"
-  "yResult\"&\n\023SetRateInAirRequest\022\017\n\007rate_h"
-  "z\030\001 \001(\001\"W\n\024SetRateInAirResponse\022\?\n\020telem"
-  "etry_result\030\001 \001(\0132%.mavsdk.rpc.telemetry"
-  ".TelemetryResult\",\n\031SetRateLandedStateRe"
-  "quest\022\017\n\007rate_hz\030\001 \001(\001\"]\n\032SetRateLandedS"
-  "tateResponse\022\?\n\020telemetry_result\030\001 \001(\0132%"
-  ".mavsdk.rpc.telemetry.TelemetryResult\")\n"
-  "\026SetRateAttitudeRequest\022\017\n\007rate_hz\030\001 \001(\001"
-  "\"Z\n\027SetRateAttitudeResponse\022\?\n\020telemetry"
-  "_result\030\001 \001(\0132%.mavsdk.rpc.telemetry.Tel"
-  "emetryResult\"<\n)SetRateAttitudeAngularVe"
-  "locityBodyRequest\022\017\n\007rate_hz\030\001 \001(\001\"m\n*Se"
-  "tRateAttitudeAngularVelocityBodyResponse"
-  "\022\?\n\020telemetry_result\030\001 \001(\0132%.mavsdk.rpc."
-  "telemetry.TelemetryResult\"9\n&SetRateCame"
-  "raAttitudeQuaternionRequest\022\017\n\007rate_hz\030\001"
-  " \001(\001\"j\n\'SetRateCameraAttitudeQuaternionR"
-  "esponse\022\?\n\020telemetry_result\030\001 \001(\0132%.mavs"
-  "dk.rpc.telemetry.TelemetryResult\"/\n\034SetR"
-  "ateCameraAttitudeRequest\022\017\n\007rate_hz\030\001 \001("
-  "\001\"`\n\035SetRateCameraAttitudeResponse\022\?\n\020te"
-  "lemetry_result\030\001 \001(\0132%.mavsdk.rpc.teleme"
-  "try.TelemetryResult\",\n\031SetRateVelocityNe"
-  "dRequest\022\017\n\007rate_hz\030\001 \001(\001\"]\n\032SetRateVelo"
-  "cityNedResponse\022\?\n\020telemetry_result\030\001 \001("
-  "\0132%.mavsdk.rpc.telemetry.TelemetryResult"
-  "\"(\n\025SetRateGpsInfoRequest\022\017\n\007rate_hz\030\001 \001"
-  "(\001\"Y\n\026SetRateGpsInfoResponse\022\?\n\020telemetr"
-  "y_result\030\001 \001(\0132%.mavsdk.rpc.telemetry.Te"
-  "lemetryResult\"(\n\025SetRateBatteryRequest\022\017"
-  "\n\007rate_hz\030\001 \001(\001\"Y\n\026SetRateBatteryRespons"
-  "e\022\?\n\020telemetry_result\030\001 \001(\0132%.mavsdk.rpc"
-  ".telemetry.TelemetryResult\")\n\026SetRateRcS"
-  "tatusRequest\022\017\n\007rate_hz\030\001 \001(\001\"Z\n\027SetRate"
-  "RcStatusResponse\022\?\n\020telemetry_result\030\001 \001"
-  "(\0132%.mavsdk.rpc.telemetry.TelemetryResul"
-  "t\"6\n#SetRateActuatorControlTargetRequest"
-  "\022\017\n\007rate_hz\030\001 \001(\001\"g\n$SetRateActuatorCont"
-  "rolTargetResponse\022\?\n\020telemetry_result\030\001 "
-  "\001(\0132%.mavsdk.rpc.telemetry.TelemetryResu"
-  "lt\"5\n\"SetRateActuatorOutputStatusRequest"
-  "\022\017\n\007rate_hz\030\001 \001(\001\"f\n#SetRateActuatorOutp"
-  "utStatusResponse\022\?\n\020telemetry_result\030\001 \001"
-  "(\0132%.mavsdk.rpc.telemetry.TelemetryResul"
-  "t\")\n\026SetRateOdometryRequest\022\017\n\007rate_hz\030\001"
-  " \001(\001\"Z\n\027SetRateOdometryResponse\022\?\n\020telem"
-  "etry_result\030\001 \001(\0132%.mavsdk.rpc.telemetry"
-  ".TelemetryResult\"4\n!SetRatePositionVeloc"
-  "ityNedRequest\022\017\n\007rate_hz\030\001 \001(\001\"e\n\"SetRat"
-  "ePositionVelocityNedResponse\022\?\n\020telemetr"
-  "y_result\030\001 \001(\0132%.mavsdk.rpc.telemetry.Te"
-  "lemetryResult\",\n\031SetRateGroundTruthReque"
-  "st\022\017\n\007rate_hz\030\001 \001(\001\"]\n\032SetRateGroundTrut"
-  "hResponse\022\?\n\020telemetry_result\030\001 \001(\0132%.ma"
-  "vsdk.rpc.telemetry.TelemetryResult\"1\n\036Se"
-  "tRateFixedwingMetricsRequest\022\017\n\007rate_hz\030"
-  "\001 \001(\001\"b\n\037SetRateFixedwingMetricsResponse"
-  "\022\?\n\020telemetry_result\030\001 \001(\0132%.mavsdk.rpc."
-  "telemetry.TelemetryResult\"$\n\021SetRateImuR"
-  "equest\022\017\n\007rate_hz\030\001 \001(\001\"U\n\022SetRateImuRes"
-  "ponse\022\?\n\020telemetry_result\030\001 \001(\0132%.mavsdk"
-  ".rpc.telemetry.TelemetryResult\"*\n\027SetRat"
-  "eScaledImuRequest\022\017\n\007rate_hz\030\001 \001(\001\"[\n\030Se"
-  "tRateScaledImuResponse\022\?\n\020telemetry_resu"
-  "lt\030\001 \001(\0132%.mavsdk.rpc.telemetry.Telemetr"
-  "yResult\"\'\n\024SetRateRawImuRequest\022\017\n\007rate_"
-  "hz\030\001 \001(\001\"X\n\025SetRateRawImuResponse\022\?\n\020tel"
+  "pc.telemetry.GpsInfo\"\030\n\026SubscribeRawGpsR"
+  "equest\"\?\n\016RawGpsResponse\022-\n\007raw_gps\030\001 \001("
+  "\0132\034.mavsdk.rpc.telemetry.RawGps\"\031\n\027Subsc"
+  "ribeBatteryRequest\"A\n\017BatteryResponse\022.\n"
+  "\007battery\030\001 \001(\0132\035.mavsdk.rpc.telemetry.Ba"
+  "ttery\"\034\n\032SubscribeFlightModeRequest\"K\n\022F"
+  "lightModeResponse\0225\n\013flight_mode\030\001 \001(\0162 "
+  ".mavsdk.rpc.telemetry.FlightMode\"\030\n\026Subs"
+  "cribeHealthRequest\">\n\016HealthResponse\022,\n\006"
+  "health\030\001 \001(\0132\034.mavsdk.rpc.telemetry.Heal"
+  "th\"\032\n\030SubscribeRcStatusRequest\"E\n\020RcStat"
+  "usResponse\0221\n\trc_status\030\001 \001(\0132\036.mavsdk.r"
+  "pc.telemetry.RcStatus\"\034\n\032SubscribeStatus"
+  "TextRequest\"K\n\022StatusTextResponse\0225\n\013sta"
+  "tus_text\030\001 \001(\0132 .mavsdk.rpc.telemetry.St"
+  "atusText\"\'\n%SubscribeActuatorControlTarg"
+  "etRequest\"m\n\035ActuatorControlTargetRespon"
+  "se\022L\n\027actuator_control_target\030\001 \001(\0132+.ma"
+  "vsdk.rpc.telemetry.ActuatorControlTarget"
+  "\"&\n$SubscribeActuatorOutputStatusRequest"
+  "\"j\n\034ActuatorOutputStatusResponse\022J\n\026actu"
+  "ator_output_status\030\001 \001(\0132*.mavsdk.rpc.te"
+  "lemetry.ActuatorOutputStatus\"\032\n\030Subscrib"
+  "eOdometryRequest\"D\n\020OdometryResponse\0220\n\010"
+  "odometry\030\001 \001(\0132\036.mavsdk.rpc.telemetry.Od"
+  "ometry\"%\n#SubscribePositionVelocityNedRe"
+  "quest\"g\n\033PositionVelocityNedResponse\022H\n\025"
+  "position_velocity_ned\030\001 \001(\0132).mavsdk.rpc"
+  ".telemetry.PositionVelocityNed\"\035\n\033Subscr"
+  "ibeGroundTruthRequest\"N\n\023GroundTruthResp"
+  "onse\0227\n\014ground_truth\030\001 \001(\0132!.mavsdk.rpc."
+  "telemetry.GroundTruth\"\"\n SubscribeFixedw"
+  "ingMetricsRequest\"]\n\030FixedwingMetricsRes"
+  "ponse\022A\n\021fixedwing_metrics\030\001 \001(\0132&.mavsd"
+  "k.rpc.telemetry.FixedwingMetrics\"\025\n\023Subs"
+  "cribeImuRequest\"5\n\013ImuResponse\022&\n\003imu\030\001 "
+  "\001(\0132\031.mavsdk.rpc.telemetry.Imu\"\033\n\031Subscr"
+  "ibeScaledImuRequest\";\n\021ScaledImuResponse"
+  "\022&\n\003imu\030\001 \001(\0132\031.mavsdk.rpc.telemetry.Imu"
+  "\"\030\n\026SubscribeRawImuRequest\"8\n\016RawImuResp"
+  "onse\022&\n\003imu\030\001 \001(\0132\031.mavsdk.rpc.telemetry"
+  ".Imu\"\035\n\033SubscribeHealthAllOkRequest\"/\n\023H"
+  "ealthAllOkResponse\022\030\n\020is_health_all_ok\030\001"
+  " \001(\010\"\037\n\035SubscribeUnixEpochTimeRequest\"(\n"
+  "\025UnixEpochTimeResponse\022\017\n\007time_us\030\001 \001(\004\""
+  " \n\036SubscribeDistanceSensorRequest\"W\n\026Dis"
+  "tanceSensorResponse\022=\n\017distance_sensor\030\001"
+  " \001(\0132$.mavsdk.rpc.telemetry.DistanceSens"
+  "or\"\035\n\033SubscribeRawPressureRequest\"N\n\023Raw"
+  "PressureResponse\0227\n\014raw_pressure\030\001 \001(\0132!"
+  ".mavsdk.rpc.telemetry.RawPressure\" \n\036Sub"
+  "scribeScaledPressureRequest\"W\n\026ScaledPre"
+  "ssureResponse\022=\n\017scaled_pressure\030\001 \001(\0132$"
+  ".mavsdk.rpc.telemetry.ScaledPressure\")\n\026"
+  "SetRatePositionRequest\022\017\n\007rate_hz\030\001 \001(\001\""
+  "Z\n\027SetRatePositionResponse\022\?\n\020telemetry_"
+  "result\030\001 \001(\0132%.mavsdk.rpc.telemetry.Tele"
+  "metryResult\"%\n\022SetRateHomeRequest\022\017\n\007rat"
+  "e_hz\030\001 \001(\001\"V\n\023SetRateHomeResponse\022\?\n\020tel"
   "emetry_result\030\001 \001(\0132%.mavsdk.rpc.telemet"
-  "ry.TelemetryResult\".\n\033SetRateUnixEpochTi"
-  "meRequest\022\017\n\007rate_hz\030\001 \001(\001\"_\n\034SetRateUni"
-  "xEpochTimeResponse\022\?\n\020telemetry_result\030\001"
+  "ry.TelemetryResult\"&\n\023SetRateInAirReques"
+  "t\022\017\n\007rate_hz\030\001 \001(\001\"W\n\024SetRateInAirRespon"
+  "se\022\?\n\020telemetry_result\030\001 \001(\0132%.mavsdk.rp"
+  "c.telemetry.TelemetryResult\",\n\031SetRateLa"
+  "ndedStateRequest\022\017\n\007rate_hz\030\001 \001(\001\"]\n\032Set"
+  "RateLandedStateResponse\022\?\n\020telemetry_res"
+  "ult\030\001 \001(\0132%.mavsdk.rpc.telemetry.Telemet"
+  "ryResult\")\n\026SetRateAttitudeRequest\022\017\n\007ra"
+  "te_hz\030\001 \001(\001\"Z\n\027SetRateAttitudeResponse\022\?"
+  "\n\020telemetry_result\030\001 \001(\0132%.mavsdk.rpc.te"
+  "lemetry.TelemetryResult\"<\n)SetRateAttitu"
+  "deAngularVelocityBodyRequest\022\017\n\007rate_hz\030"
+  "\001 \001(\001\"m\n*SetRateAttitudeAngularVelocityB"
+  "odyResponse\022\?\n\020telemetry_result\030\001 \001(\0132%."
+  "mavsdk.rpc.telemetry.TelemetryResult\"9\n&"
+  "SetRateCameraAttitudeQuaternionRequest\022\017"
+  "\n\007rate_hz\030\001 \001(\001\"j\n\'SetRateCameraAttitude"
+  "QuaternionResponse\022\?\n\020telemetry_result\030\001"
   " \001(\0132%.mavsdk.rpc.telemetry.TelemetryRes"
-  "ult\"/\n\034SetRateDistanceSensorRequest\022\017\n\007r"
-  "ate_hz\030\001 \001(\001\"`\n\035SetRateDistanceSensorRes"
+  "ult\"/\n\034SetRateCameraAttitudeRequest\022\017\n\007r"
+  "ate_hz\030\001 \001(\001\"`\n\035SetRateCameraAttitudeRes"
   "ponse\022\?\n\020telemetry_result\030\001 \001(\0132%.mavsdk"
-  ".rpc.telemetry.TelemetryResult\"\033\n\031GetGps"
-  "GlobalOriginRequest\"\237\001\n\032GetGpsGlobalOrig"
-  "inResponse\022\?\n\020telemetry_result\030\001 \001(\0132%.m"
-  "avsdk.rpc.telemetry.TelemetryResult\022@\n\021g"
-  "ps_global_origin\030\002 \001(\0132%.mavsdk.rpc.tele"
-  "metry.GpsGlobalOrigin\"\225\001\n\010Position\022\035\n\014la"
-  "titude_deg\030\001 \001(\001B\007\202\265\030\003NaN\022\036\n\rlongitude_d"
-  "eg\030\002 \001(\001B\007\202\265\030\003NaN\022$\n\023absolute_altitude_m"
-  "\030\003 \001(\002B\007\202\265\030\003NaN\022$\n\023relative_altitude_m\030\004"
-  " \001(\002B\007\202\265\030\003NaN\"r\n\nQuaternion\022\022\n\001w\030\001 \001(\002B\007"
-  "\202\265\030\003NaN\022\022\n\001x\030\002 \001(\002B\007\202\265\030\003NaN\022\022\n\001y\030\003 \001(\002B\007"
-  "\202\265\030\003NaN\022\022\n\001z\030\004 \001(\002B\007\202\265\030\003NaN\022\024\n\014timestamp"
-  "_us\030\005 \001(\004\"s\n\nEulerAngle\022\031\n\010roll_deg\030\001 \001("
-  "\002B\007\202\265\030\003NaN\022\032\n\tpitch_deg\030\002 \001(\002B\007\202\265\030\003NaN\022\030"
-  "\n\007yaw_deg\030\003 \001(\002B\007\202\265\030\003NaN\022\024\n\014timestamp_us"
-  "\030\004 \001(\004\"l\n\023AngularVelocityBody\022\033\n\nroll_ra"
-  "d_s\030\001 \001(\002B\007\202\265\030\003NaN\022\034\n\013pitch_rad_s\030\002 \001(\002B"
-  "\007\202\265\030\003NaN\022\032\n\tyaw_rad_s\030\003 \001(\002B\007\202\265\030\003NaN\"Y\n\007"
-  "GpsInfo\022\035\n\016num_satellites\030\001 \001(\005B\005\202\265\030\0010\022/"
-  "\n\010fix_type\030\002 \001(\0162\035.mavsdk.rpc.telemetry."
-  "FixType\"I\n\007Battery\022\032\n\tvoltage_v\030\001 \001(\002B\007\202"
-  "\265\030\003NaN\022\"\n\021remaining_percent\030\002 \001(\002B\007\202\265\030\003N"
-  "aN\"\306\002\n\006Health\022.\n\033is_gyrometer_calibratio"
-  "n_ok\030\001 \001(\010B\t\202\265\030\005false\0222\n\037is_acceleromete"
-  "r_calibration_ok\030\002 \001(\010B\t\202\265\030\005false\0221\n\036is_"
-  "magnetometer_calibration_ok\030\003 \001(\010B\t\202\265\030\005f"
-  "alse\022*\n\027is_level_calibration_ok\030\004 \001(\010B\t\202"
-  "\265\030\005false\022\'\n\024is_local_position_ok\030\005 \001(\010B\t"
-  "\202\265\030\005false\022(\n\025is_global_position_ok\030\006 \001(\010"
-  "B\t\202\265\030\005false\022&\n\023is_home_position_ok\030\007 \001(\010"
-  "B\t\202\265\030\005false\"z\n\010RcStatus\022%\n\022was_available"
-  "_once\030\001 \001(\010B\t\202\265\030\005false\022\037\n\014is_available\030\002"
-  " \001(\010B\t\202\265\030\005false\022&\n\027signal_strength_perce"
-  "nt\030\003 \001(\002B\005\202\265\030\0010\"N\n\nStatusText\0222\n\004type\030\001 "
-  "\001(\0162$.mavsdk.rpc.telemetry.StatusTextTyp"
-  "e\022\014\n\004text\030\002 \001(\t\"\?\n\025ActuatorControlTarget"
-  "\022\024\n\005group\030\001 \001(\005B\005\202\265\030\0010\022\020\n\010controls\030\002 \003(\002"
-  "\"\?\n\024ActuatorOutputStatus\022\025\n\006active\030\001 \001(\r"
-  "B\005\202\265\030\0010\022\020\n\010actuator\030\002 \003(\002\"\'\n\nCovariance\022"
-  "\031\n\021covariance_matrix\030\001 \003(\002\";\n\014VelocityBo"
-  "dy\022\r\n\005x_m_s\030\001 \001(\002\022\r\n\005y_m_s\030\002 \001(\002\022\r\n\005z_m_"
-  "s\030\003 \001(\002\"5\n\014PositionBody\022\013\n\003x_m\030\001 \001(\002\022\013\n\003"
-  "y_m\030\002 \001(\002\022\013\n\003z_m\030\003 \001(\002\"\354\004\n\010Odometry\022\021\n\tt"
-  "ime_usec\030\001 \001(\004\0229\n\010frame_id\030\002 \001(\0162\'.mavsd"
-  "k.rpc.telemetry.Odometry.MavFrame\022\?\n\016chi"
-  "ld_frame_id\030\003 \001(\0162\'.mavsdk.rpc.telemetry"
-  ".Odometry.MavFrame\0229\n\rposition_body\030\004 \001("
-  "\0132\".mavsdk.rpc.telemetry.PositionBody\022+\n"
-  "\001q\030\005 \001(\0132 .mavsdk.rpc.telemetry.Quaterni"
-  "on\0229\n\rvelocity_body\030\006 \001(\0132\".mavsdk.rpc.t"
-  "elemetry.VelocityBody\022H\n\025angular_velocit"
-  "y_body\030\007 \001(\0132).mavsdk.rpc.telemetry.Angu"
-  "larVelocityBody\0229\n\017pose_covariance\030\010 \001(\013"
-  "2 .mavsdk.rpc.telemetry.Covariance\022=\n\023ve"
-  "locity_covariance\030\t \001(\0132 .mavsdk.rpc.tel"
-  "emetry.Covariance\"j\n\010MavFrame\022\023\n\017MAV_FRA"
-  "ME_UNDEF\020\000\022\026\n\022MAV_FRAME_BODY_NED\020\010\022\030\n\024MA"
-  "V_FRAME_VISION_NED\020\020\022\027\n\023MAV_FRAME_ESTIM_"
-  "NED\020\022\"\177\n\016DistanceSensor\022#\n\022minimum_dista"
-  "nce_m\030\001 \001(\002B\007\202\265\030\003NaN\022#\n\022maximum_distance"
-  "_m\030\002 \001(\002B\007\202\265\030\003NaN\022#\n\022current_distance_m\030"
-  "\003 \001(\002B\007\202\265\030\003NaN\"\236\001\n\013RawPressure\022\024\n\014timest"
-  "amp_us\030\001 \001(\004\022\031\n\021absolute_pressure\030\002 \001(\005\022"
-  "#\n\033differential_pressure_first\030\003 \001(\005\022$\n\034"
-  "differential_pressure_second\030\004 \001(\005\022\023\n\013te"
-  "mperature\030\005 \001(\005\"\260\001\n\016ScaledPressure\022\024\n\014ti"
-  "mestamp_us\030\001 \001(\004\022\035\n\025absolute_pressure_hp"
-  "a\030\002 \001(\002\022!\n\031differential_pressure_hpa\030\003 \001"
-  "(\002\022\027\n\017temperature_deg\030\004 \001(\005\022-\n%different"
-  "ial_pressure_temperature_deg\030\005 \001(\005\"Y\n\013Po"
-  "sitionNed\022\030\n\007north_m\030\001 \001(\002B\007\202\265\030\003NaN\022\027\n\006e"
-  "ast_m\030\002 \001(\002B\007\202\265\030\003NaN\022\027\n\006down_m\030\003 \001(\002B\007\202\265"
-  "\030\003NaN\"D\n\013VelocityNed\022\021\n\tnorth_m_s\030\001 \001(\002\022"
-  "\020\n\010east_m_s\030\002 \001(\002\022\020\n\010down_m_s\030\003 \001(\002\"\177\n\023P"
-  "ositionVelocityNed\0223\n\010position\030\001 \001(\0132!.m"
-  "avsdk.rpc.telemetry.PositionNed\0223\n\010veloc"
-  "ity\030\002 \001(\0132!.mavsdk.rpc.telemetry.Velocit"
-  "yNed\"r\n\013GroundTruth\022\035\n\014latitude_deg\030\001 \001("
-  "\001B\007\202\265\030\003NaN\022\036\n\rlongitude_deg\030\002 \001(\001B\007\202\265\030\003N"
-  "aN\022$\n\023absolute_altitude_m\030\003 \001(\002B\007\202\265\030\003NaN"
-  "\"x\n\020FixedwingMetrics\022\035\n\014airspeed_m_s\030\001 \001"
-  "(\002B\007\202\265\030\003NaN\022$\n\023throttle_percentage\030\002 \001(\002"
-  "B\007\202\265\030\003NaN\022\037\n\016climb_rate_m_s\030\003 \001(\002B\007\202\265\030\003N"
-  "aN\"i\n\017AccelerationFrd\022\035\n\014forward_m_s2\030\001 "
-  "\001(\002B\007\202\265\030\003NaN\022\033\n\nright_m_s2\030\002 \001(\002B\007\202\265\030\003Na"
-  "N\022\032\n\tdown_m_s2\030\003 \001(\002B\007\202\265\030\003NaN\"o\n\022Angular"
-  "VelocityFrd\022\036\n\rforward_rad_s\030\001 \001(\002B\007\202\265\030\003"
-  "NaN\022\034\n\013right_rad_s\030\002 \001(\002B\007\202\265\030\003NaN\022\033\n\ndow"
-  "n_rad_s\030\003 \001(\002B\007\202\265\030\003NaN\"m\n\020MagneticFieldF"
-  "rd\022\036\n\rforward_gauss\030\001 \001(\002B\007\202\265\030\003NaN\022\034\n\013ri"
-  "ght_gauss\030\002 \001(\002B\007\202\265\030\003NaN\022\033\n\ndown_gauss\030\003"
-  " \001(\002B\007\202\265\030\003NaN\"\213\002\n\003Imu\022\?\n\020acceleration_fr"
-  "d\030\001 \001(\0132%.mavsdk.rpc.telemetry.Accelerat"
-  "ionFrd\022F\n\024angular_velocity_frd\030\002 \001(\0132(.m"
-  "avsdk.rpc.telemetry.AngularVelocityFrd\022B"
-  "\n\022magnetic_field_frd\030\003 \001(\0132&.mavsdk.rpc."
-  "telemetry.MagneticFieldFrd\022!\n\020temperatur"
-  "e_degc\030\004 \001(\002B\007\202\265\030\003NaN\022\024\n\014timestamp_us\030\005 "
-  "\001(\004\"m\n\017GpsGlobalOrigin\022\035\n\014latitude_deg\030\001"
-  " \001(\001B\007\202\265\030\003NaN\022\036\n\rlongitude_deg\030\002 \001(\001B\007\202\265"
-  "\030\003NaN\022\033\n\naltitude_m\030\003 \001(\002B\007\202\265\030\003NaN\"\211\002\n\017T"
-  "elemetryResult\022<\n\006result\030\001 \001(\0162,.mavsdk."
-  "rpc.telemetry.TelemetryResult.Result\022\022\n\n"
-  "result_str\030\002 \001(\t\"\243\001\n\006Result\022\022\n\016RESULT_UN"
-  "KNOWN\020\000\022\022\n\016RESULT_SUCCESS\020\001\022\024\n\020RESULT_NO"
-  "_SYSTEM\020\002\022\033\n\027RESULT_CONNECTION_ERROR\020\003\022\017"
-  "\n\013RESULT_BUSY\020\004\022\031\n\025RESULT_COMMAND_DENIED"
-  "\020\005\022\022\n\016RESULT_TIMEOUT\020\006*\244\001\n\007FixType\022\023\n\017FI"
-  "X_TYPE_NO_GPS\020\000\022\023\n\017FIX_TYPE_NO_FIX\020\001\022\023\n\017"
-  "FIX_TYPE_FIX_2D\020\002\022\023\n\017FIX_TYPE_FIX_3D\020\003\022\025"
-  "\n\021FIX_TYPE_FIX_DGPS\020\004\022\026\n\022FIX_TYPE_RTK_FL"
-  "OAT\020\005\022\026\n\022FIX_TYPE_RTK_FIXED\020\006*\206\003\n\nFlight"
-  "Mode\022\027\n\023FLIGHT_MODE_UNKNOWN\020\000\022\025\n\021FLIGHT_"
-  "MODE_READY\020\001\022\027\n\023FLIGHT_MODE_TAKEOFF\020\002\022\024\n"
-  "\020FLIGHT_MODE_HOLD\020\003\022\027\n\023FLIGHT_MODE_MISSI"
-  "ON\020\004\022 \n\034FLIGHT_MODE_RETURN_TO_LAUNCH\020\005\022\024"
-  "\n\020FLIGHT_MODE_LAND\020\006\022\030\n\024FLIGHT_MODE_OFFB"
-  "OARD\020\007\022\031\n\025FLIGHT_MODE_FOLLOW_ME\020\010\022\026\n\022FLI"
-  "GHT_MODE_MANUAL\020\t\022\026\n\022FLIGHT_MODE_ALTCTL\020"
-  "\n\022\026\n\022FLIGHT_MODE_POSCTL\020\013\022\024\n\020FLIGHT_MODE"
-  "_ACRO\020\014\022\032\n\026FLIGHT_MODE_STABILIZED\020\r\022\031\n\025F"
-  "LIGHT_MODE_RATTITUDE\020\016*\371\001\n\016StatusTextTyp"
-  "e\022\032\n\026STATUS_TEXT_TYPE_DEBUG\020\000\022\031\n\025STATUS_"
-  "TEXT_TYPE_INFO\020\001\022\033\n\027STATUS_TEXT_TYPE_NOT"
-  "ICE\020\002\022\034\n\030STATUS_TEXT_TYPE_WARNING\020\003\022\032\n\026S"
-  "TATUS_TEXT_TYPE_ERROR\020\004\022\035\n\031STATUS_TEXT_T"
-  "YPE_CRITICAL\020\005\022\032\n\026STATUS_TEXT_TYPE_ALERT"
-  "\020\006\022\036\n\032STATUS_TEXT_TYPE_EMERGENCY\020\007*\223\001\n\013L"
-  "andedState\022\030\n\024LANDED_STATE_UNKNOWN\020\000\022\032\n\026"
-  "LANDED_STATE_ON_GROUND\020\001\022\027\n\023LANDED_STATE"
-  "_IN_AIR\020\002\022\033\n\027LANDED_STATE_TAKING_OFF\020\003\022\030"
-  "\n\024LANDED_STATE_LANDING\020\0042\2663\n\020TelemetrySe"
-  "rvice\022o\n\021SubscribePosition\022..mavsdk.rpc."
-  "telemetry.SubscribePositionRequest\032&.mav"
-  "sdk.rpc.telemetry.PositionResponse\"\0000\001\022c"
-  "\n\rSubscribeHome\022*.mavsdk.rpc.telemetry.S"
-  "ubscribeHomeRequest\032\".mavsdk.rpc.telemet"
-  "ry.HomeResponse\"\0000\001\022f\n\016SubscribeInAir\022+."
-  "mavsdk.rpc.telemetry.SubscribeInAirReque"
-  "st\032#.mavsdk.rpc.telemetry.InAirResponse\""
-  "\0000\001\022x\n\024SubscribeLandedState\0221.mavsdk.rpc"
-  ".telemetry.SubscribeLandedStateRequest\032)"
-  ".mavsdk.rpc.telemetry.LandedStateRespons"
-  "e\"\0000\001\022f\n\016SubscribeArmed\022+.mavsdk.rpc.tel"
-  "emetry.SubscribeArmedRequest\032#.mavsdk.rp"
-  "c.telemetry.ArmedResponse\"\0000\001\022\215\001\n\033Subscr"
-  "ibeAttitudeQuaternion\0228.mavsdk.rpc.telem"
-  "etry.SubscribeAttitudeQuaternionRequest\032"
-  "0.mavsdk.rpc.telemetry.AttitudeQuaternio"
-  "nResponse\"\0000\001\022~\n\026SubscribeAttitudeEuler\022"
-  "3.mavsdk.rpc.telemetry.SubscribeAttitude"
-  "EulerRequest\032+.mavsdk.rpc.telemetry.Atti"
-  "tudeEulerResponse\"\0000\001\022\250\001\n$SubscribeAttit"
-  "udeAngularVelocityBody\022A.mavsdk.rpc.tele"
-  "metry.SubscribeAttitudeAngularVelocityBo"
-  "dyRequest\0329.mavsdk.rpc.telemetry.Attitud"
-  "eAngularVelocityBodyResponse\"\0000\001\022\237\001\n!Sub"
-  "scribeCameraAttitudeQuaternion\022>.mavsdk."
-  "rpc.telemetry.SubscribeCameraAttitudeQua"
-  "ternionRequest\0326.mavsdk.rpc.telemetry.Ca"
-  "meraAttitudeQuaternionResponse\"\0000\001\022\220\001\n\034S"
-  "ubscribeCameraAttitudeEuler\0229.mavsdk.rpc"
-  ".telemetry.SubscribeCameraAttitudeEulerR"
-  "equest\0321.mavsdk.rpc.telemetry.CameraAtti"
-  "tudeEulerResponse\"\0000\001\022x\n\024SubscribeVeloci"
-  "tyNed\0221.mavsdk.rpc.telemetry.SubscribeVe"
-  "locityNedRequest\032).mavsdk.rpc.telemetry."
-  "VelocityNedResponse\"\0000\001\022l\n\020SubscribeGpsI"
-  "nfo\022-.mavsdk.rpc.telemetry.SubscribeGpsI"
-  "nfoRequest\032%.mavsdk.rpc.telemetry.GpsInf"
-  "oResponse\"\0000\001\022l\n\020SubscribeBattery\022-.mavs"
-  "dk.rpc.telemetry.SubscribeBatteryRequest"
-  "\032%.mavsdk.rpc.telemetry.BatteryResponse\""
-  "\0000\001\022u\n\023SubscribeFlightMode\0220.mavsdk.rpc."
-  "telemetry.SubscribeFlightModeRequest\032(.m"
-  "avsdk.rpc.telemetry.FlightModeResponse\"\000"
-  "0\001\022i\n\017SubscribeHealth\022,.mavsdk.rpc.telem"
-  "etry.SubscribeHealthRequest\032$.mavsdk.rpc"
-  ".telemetry.HealthResponse\"\0000\001\022o\n\021Subscri"
-  "beRcStatus\022..mavsdk.rpc.telemetry.Subscr"
-  "ibeRcStatusRequest\032&.mavsdk.rpc.telemetr"
-  "y.RcStatusResponse\"\0000\001\022u\n\023SubscribeStatu"
-  "sText\0220.mavsdk.rpc.telemetry.SubscribeSt"
-  "atusTextRequest\032(.mavsdk.rpc.telemetry.S"
-  "tatusTextResponse\"\0000\001\022\226\001\n\036SubscribeActua"
-  "torControlTarget\022;.mavsdk.rpc.telemetry."
-  "SubscribeActuatorControlTargetRequest\0323."
-  "mavsdk.rpc.telemetry.ActuatorControlTarg"
-  "etResponse\"\0000\001\022\223\001\n\035SubscribeActuatorOutp"
-  "utStatus\022:.mavsdk.rpc.telemetry.Subscrib"
-  "eActuatorOutputStatusRequest\0322.mavsdk.rp"
-  "c.telemetry.ActuatorOutputStatusResponse"
-  "\"\0000\001\022o\n\021SubscribeOdometry\022..mavsdk.rpc.t"
-  "elemetry.SubscribeOdometryRequest\032&.mavs"
-  "dk.rpc.telemetry.OdometryResponse\"\0000\001\022\220\001"
-  "\n\034SubscribePositionVelocityNed\0229.mavsdk."
-  "rpc.telemetry.SubscribePositionVelocityN"
-  "edRequest\0321.mavsdk.rpc.telemetry.Positio"
-  "nVelocityNedResponse\"\0000\001\022x\n\024SubscribeGro"
-  "undTruth\0221.mavsdk.rpc.telemetry.Subscrib"
-  "eGroundTruthRequest\032).mavsdk.rpc.telemet"
-  "ry.GroundTruthResponse\"\0000\001\022\207\001\n\031Subscribe"
-  "FixedwingMetrics\0226.mavsdk.rpc.telemetry."
-  "SubscribeFixedwingMetricsRequest\032..mavsd"
-  "k.rpc.telemetry.FixedwingMetricsResponse"
-  "\"\0000\001\022`\n\014SubscribeImu\022).mavsdk.rpc.teleme"
-  "try.SubscribeImuRequest\032!.mavsdk.rpc.tel"
-  "emetry.ImuResponse\"\0000\001\022r\n\022SubscribeScale"
-  "dImu\022/.mavsdk.rpc.telemetry.SubscribeSca"
-  "ledImuRequest\032\'.mavsdk.rpc.telemetry.Sca"
-  "ledImuResponse\"\0000\001\022i\n\017SubscribeRawImu\022,."
-  "mavsdk.rpc.telemetry.SubscribeRawImuRequ"
-  "est\032$.mavsdk.rpc.telemetry.RawImuRespons"
-  "e\"\0000\001\022x\n\024SubscribeHealthAllOk\0221.mavsdk.r"
-  "pc.telemetry.SubscribeHealthAllOkRequest"
-  "\032).mavsdk.rpc.telemetry.HealthAllOkRespo"
-  "nse\"\0000\001\022~\n\026SubscribeUnixEpochTime\0223.mavs"
-  "dk.rpc.telemetry.SubscribeUnixEpochTimeR"
-  "equest\032+.mavsdk.rpc.telemetry.UnixEpochT"
-  "imeResponse\"\0000\001\022\201\001\n\027SubscribeDistanceSen"
-  "sor\0224.mavsdk.rpc.telemetry.SubscribeDist"
-  "anceSensorRequest\032,.mavsdk.rpc.telemetry"
-  ".DistanceSensorResponse\"\0000\001\022x\n\024Subscribe"
-  "RawPressure\0221.mavsdk.rpc.telemetry.Subsc"
-  "ribeRawPressureRequest\032).mavsdk.rpc.tele"
-  "metry.RawPressureResponse\"\0000\001\022\201\001\n\027Subscr"
-  "ibeScaledPressure\0224.mavsdk.rpc.telemetry"
-  ".SubscribeScaledPressureRequest\032,.mavsdk"
-  ".rpc.telemetry.ScaledPressureResponse\"\0000"
-  "\001\022p\n\017SetRatePosition\022,.mavsdk.rpc.teleme"
-  "try.SetRatePositionRequest\032-.mavsdk.rpc."
-  "telemetry.SetRatePositionResponse\"\000\022d\n\013S"
-  "etRateHome\022(.mavsdk.rpc.telemetry.SetRat"
-  "eHomeRequest\032).mavsdk.rpc.telemetry.SetR"
-  "ateHomeResponse\"\000\022g\n\014SetRateInAir\022).mavs"
-  "dk.rpc.telemetry.SetRateInAirRequest\032*.m"
-  "avsdk.rpc.telemetry.SetRateInAirResponse"
-  "\"\000\022y\n\022SetRateLandedState\022/.mavsdk.rpc.te"
-  "lemetry.SetRateLandedStateRequest\0320.mavs"
-  "dk.rpc.telemetry.SetRateLandedStateRespo"
-  "nse\"\000\022p\n\017SetRateAttitude\022,.mavsdk.rpc.te"
-  "lemetry.SetRateAttitudeRequest\032-.mavsdk."
-  "rpc.telemetry.SetRateAttitudeResponse\"\000\022"
-  "\202\001\n\025SetRateCameraAttitude\0222.mavsdk.rpc.t"
-  "elemetry.SetRateCameraAttitudeRequest\0323."
-  "mavsdk.rpc.telemetry.SetRateCameraAttitu"
-  "deResponse\"\000\022y\n\022SetRateVelocityNed\022/.mav"
-  "sdk.rpc.telemetry.SetRateVelocityNedRequ"
-  "est\0320.mavsdk.rpc.telemetry.SetRateVeloci"
-  "tyNedResponse\"\000\022m\n\016SetRateGpsInfo\022+.mavs"
-  "dk.rpc.telemetry.SetRateGpsInfoRequest\032,"
-  ".mavsdk.rpc.telemetry.SetRateGpsInfoResp"
-  "onse\"\000\022m\n\016SetRateBattery\022+.mavsdk.rpc.te"
-  "lemetry.SetRateBatteryRequest\032,.mavsdk.r"
-  "pc.telemetry.SetRateBatteryResponse\"\000\022p\n"
-  "\017SetRateRcStatus\022,.mavsdk.rpc.telemetry."
-  "SetRateRcStatusRequest\032-.mavsdk.rpc.tele"
-  "metry.SetRateRcStatusResponse\"\000\022\227\001\n\034SetR"
-  "ateActuatorControlTarget\0229.mavsdk.rpc.te"
-  "lemetry.SetRateActuatorControlTargetRequ"
-  "est\032:.mavsdk.rpc.telemetry.SetRateActuat"
-  "orControlTargetResponse\"\000\022\224\001\n\033SetRateAct"
-  "uatorOutputStatus\0228.mavsdk.rpc.telemetry"
-  ".SetRateActuatorOutputStatusRequest\0329.ma"
-  "vsdk.rpc.telemetry.SetRateActuatorOutput"
-  "StatusResponse\"\000\022p\n\017SetRateOdometry\022,.ma"
-  "vsdk.rpc.telemetry.SetRateOdometryReques"
-  "t\032-.mavsdk.rpc.telemetry.SetRateOdometry"
-  "Response\"\000\022\221\001\n\032SetRatePositionVelocityNe"
-  "d\0227.mavsdk.rpc.telemetry.SetRatePosition"
-  "VelocityNedRequest\0328.mavsdk.rpc.telemetr"
-  "y.SetRatePositionVelocityNedResponse\"\000\022y"
-  "\n\022SetRateGroundTruth\022/.mavsdk.rpc.teleme"
-  "try.SetRateGroundTruthRequest\0320.mavsdk.r"
-  "pc.telemetry.SetRateGroundTruthResponse\""
-  "\000\022\210\001\n\027SetRateFixedwingMetrics\0224.mavsdk.r"
-  "pc.telemetry.SetRateFixedwingMetricsRequ"
-  "est\0325.mavsdk.rpc.telemetry.SetRateFixedw"
-  "ingMetricsResponse\"\000\022a\n\nSetRateImu\022\'.mav"
-  "sdk.rpc.telemetry.SetRateImuRequest\032(.ma"
-  "vsdk.rpc.telemetry.SetRateImuResponse\"\000\022"
-  "s\n\020SetRateScaledImu\022-.mavsdk.rpc.telemet"
-  "ry.SetRateScaledImuRequest\032..mavsdk.rpc."
-  "telemetry.SetRateScaledImuResponse\"\000\022j\n\r"
-  "SetRateRawImu\022*.mavsdk.rpc.telemetry.Set"
-  "RateRawImuRequest\032+.mavsdk.rpc.telemetry"
-  ".SetRateRawImuResponse\"\000\022\177\n\024SetRateUnixE"
-  "pochTime\0221.mavsdk.rpc.telemetry.SetRateU"
-  "nixEpochTimeRequest\0322.mavsdk.rpc.telemet"
-  "ry.SetRateUnixEpochTimeResponse\"\000\022\202\001\n\025Se"
-  "tRateDistanceSensor\0222.mavsdk.rpc.telemet"
-  "ry.SetRateDistanceSensorRequest\0323.mavsdk"
-  ".rpc.telemetry.SetRateDistanceSensorResp"
-  "onse\"\000\022y\n\022GetGpsGlobalOrigin\022/.mavsdk.rp"
-  "c.telemetry.GetGpsGlobalOriginRequest\0320."
-  "mavsdk.rpc.telemetry.GetGpsGlobalOriginR"
-  "esponse\"\000B%\n\023io.mavsdk.telemetryB\016Teleme"
-  "tryProtob\006proto3"
+  ".rpc.telemetry.TelemetryResult\",\n\031SetRat"
+  "eVelocityNedRequest\022\017\n\007rate_hz\030\001 \001(\001\"]\n\032"
+  "SetRateVelocityNedResponse\022\?\n\020telemetry_"
+  "result\030\001 \001(\0132%.mavsdk.rpc.telemetry.Tele"
+  "metryResult\"(\n\025SetRateGpsInfoRequest\022\017\n\007"
+  "rate_hz\030\001 \001(\001\"Y\n\026SetRateGpsInfoResponse\022"
+  "\?\n\020telemetry_result\030\001 \001(\0132%.mavsdk.rpc.t"
+  "elemetry.TelemetryResult\"\'\n\024SetRateRawGp"
+  "sRequest\022\017\n\007rate_hz\030\001 \001(\001\"(\n\025SetRateBatt"
+  "eryRequest\022\017\n\007rate_hz\030\001 \001(\001\"Y\n\026SetRateBa"
+  "tteryResponse\022\?\n\020telemetry_result\030\001 \001(\0132"
+  "%.mavsdk.rpc.telemetry.TelemetryResult\")"
+  "\n\026SetRateRcStatusRequest\022\017\n\007rate_hz\030\001 \001("
+  "\001\"Z\n\027SetRateRcStatusResponse\022\?\n\020telemetr"
+  "y_result\030\001 \001(\0132%.mavsdk.rpc.telemetry.Te"
+  "lemetryResult\"6\n#SetRateActuatorControlT"
+  "argetRequest\022\017\n\007rate_hz\030\001 \001(\001\"g\n$SetRate"
+  "ActuatorControlTargetResponse\022\?\n\020telemet"
+  "ry_result\030\001 \001(\0132%.mavsdk.rpc.telemetry.T"
+  "elemetryResult\"5\n\"SetRateActuatorOutputS"
+  "tatusRequest\022\017\n\007rate_hz\030\001 \001(\001\"f\n#SetRate"
+  "ActuatorOutputStatusResponse\022\?\n\020telemetr"
+  "y_result\030\001 \001(\0132%.mavsdk.rpc.telemetry.Te"
+  "lemetryResult\")\n\026SetRateOdometryRequest\022"
+  "\017\n\007rate_hz\030\001 \001(\001\"Z\n\027SetRateOdometryRespo"
+  "nse\022\?\n\020telemetry_result\030\001 \001(\0132%.mavsdk.r"
+  "pc.telemetry.TelemetryResult\"4\n!SetRateP"
+  "ositionVelocityNedRequest\022\017\n\007rate_hz\030\001 \001"
+  "(\001\"e\n\"SetRatePositionVelocityNedResponse"
+  "\022\?\n\020telemetry_result\030\001 \001(\0132%.mavsdk.rpc."
+  "telemetry.TelemetryResult\",\n\031SetRateGrou"
+  "ndTruthRequest\022\017\n\007rate_hz\030\001 \001(\001\"]\n\032SetRa"
+  "teGroundTruthResponse\022\?\n\020telemetry_resul"
+  "t\030\001 \001(\0132%.mavsdk.rpc.telemetry.Telemetry"
+  "Result\"1\n\036SetRateFixedwingMetricsRequest"
+  "\022\017\n\007rate_hz\030\001 \001(\001\"b\n\037SetRateFixedwingMet"
+  "ricsResponse\022\?\n\020telemetry_result\030\001 \001(\0132%"
+  ".mavsdk.rpc.telemetry.TelemetryResult\"$\n"
+  "\021SetRateImuRequest\022\017\n\007rate_hz\030\001 \001(\001\"U\n\022S"
+  "etRateImuResponse\022\?\n\020telemetry_result\030\001 "
+  "\001(\0132%.mavsdk.rpc.telemetry.TelemetryResu"
+  "lt\"*\n\027SetRateScaledImuRequest\022\017\n\007rate_hz"
+  "\030\001 \001(\001\"[\n\030SetRateScaledImuResponse\022\?\n\020te"
+  "lemetry_result\030\001 \001(\0132%.mavsdk.rpc.teleme"
+  "try.TelemetryResult\"\'\n\024SetRateRawImuRequ"
+  "est\022\017\n\007rate_hz\030\001 \001(\001\"X\n\025SetRateRawImuRes"
+  "ponse\022\?\n\020telemetry_result\030\001 \001(\0132%.mavsdk"
+  ".rpc.telemetry.TelemetryResult\".\n\033SetRat"
+  "eUnixEpochTimeRequest\022\017\n\007rate_hz\030\001 \001(\001\"_"
+  "\n\034SetRateUnixEpochTimeResponse\022\?\n\020teleme"
+  "try_result\030\001 \001(\0132%.mavsdk.rpc.telemetry."
+  "TelemetryResult\"/\n\034SetRateDistanceSensor"
+  "Request\022\017\n\007rate_hz\030\001 \001(\001\"`\n\035SetRateDista"
+  "nceSensorResponse\022\?\n\020telemetry_result\030\001 "
+  "\001(\0132%.mavsdk.rpc.telemetry.TelemetryResu"
+  "lt\"\033\n\031GetGpsGlobalOriginRequest\"\237\001\n\032GetG"
+  "psGlobalOriginResponse\022\?\n\020telemetry_resu"
+  "lt\030\001 \001(\0132%.mavsdk.rpc.telemetry.Telemetr"
+  "yResult\022@\n\021gps_global_origin\030\002 \001(\0132%.mav"
+  "sdk.rpc.telemetry.GpsGlobalOrigin\"\225\001\n\010Po"
+  "sition\022\035\n\014latitude_deg\030\001 \001(\001B\007\202\265\030\003NaN\022\036\n"
+  "\rlongitude_deg\030\002 \001(\001B\007\202\265\030\003NaN\022$\n\023absolut"
+  "e_altitude_m\030\003 \001(\002B\007\202\265\030\003NaN\022$\n\023relative_"
+  "altitude_m\030\004 \001(\002B\007\202\265\030\003NaN\"r\n\nQuaternion\022"
+  "\022\n\001w\030\001 \001(\002B\007\202\265\030\003NaN\022\022\n\001x\030\002 \001(\002B\007\202\265\030\003NaN\022"
+  "\022\n\001y\030\003 \001(\002B\007\202\265\030\003NaN\022\022\n\001z\030\004 \001(\002B\007\202\265\030\003NaN\022"
+  "\024\n\014timestamp_us\030\005 \001(\004\"s\n\nEulerAngle\022\031\n\010r"
+  "oll_deg\030\001 \001(\002B\007\202\265\030\003NaN\022\032\n\tpitch_deg\030\002 \001("
+  "\002B\007\202\265\030\003NaN\022\030\n\007yaw_deg\030\003 \001(\002B\007\202\265\030\003NaN\022\024\n\014"
+  "timestamp_us\030\004 \001(\004\"l\n\023AngularVelocityBod"
+  "y\022\033\n\nroll_rad_s\030\001 \001(\002B\007\202\265\030\003NaN\022\034\n\013pitch_"
+  "rad_s\030\002 \001(\002B\007\202\265\030\003NaN\022\032\n\tyaw_rad_s\030\003 \001(\002B"
+  "\007\202\265\030\003NaN\"Y\n\007GpsInfo\022\035\n\016num_satellites\030\001 "
+  "\001(\005B\005\202\265\030\0010\022/\n\010fix_type\030\002 \001(\0162\035.mavsdk.rp"
+  "c.telemetry.FixType\"\337\002\n\006RawGps\022\024\n\014timest"
+  "amp_us\030\001 \001(\004\022\024\n\014latitude_deg\030\002 \001(\001\022\025\n\rlo"
+  "ngitude_deg\030\003 \001(\001\022\033\n\023absolute_altitude_m"
+  "\030\004 \001(\002\022\014\n\004hdop\030\005 \001(\002\022\014\n\004vdop\030\006 \001(\002\022\024\n\014ve"
+  "locity_m_s\030\007 \001(\002\022\017\n\007cog_deg\030\010 \001(\002\022\034\n\024alt"
+  "itude_ellipsoid_m\030\t \001(\002\022 \n\030horizontal_un"
+  "certainty_m\030\n \001(\002\022\036\n\026vertical_uncertaint"
+  "y_m\030\013 \001(\002\022 \n\030velocity_uncertainty_m_s\030\014 "
+  "\001(\002\022\037\n\027heading_uncertainty_deg\030\r \001(\002\022\017\n\007"
+  "yaw_deg\030\016 \001(\002\"I\n\007Battery\022\032\n\tvoltage_v\030\001 "
+  "\001(\002B\007\202\265\030\003NaN\022\"\n\021remaining_percent\030\002 \001(\002B"
+  "\007\202\265\030\003NaN\"\306\002\n\006Health\022.\n\033is_gyrometer_cali"
+  "bration_ok\030\001 \001(\010B\t\202\265\030\005false\0222\n\037is_accele"
+  "rometer_calibration_ok\030\002 \001(\010B\t\202\265\030\005false\022"
+  "1\n\036is_magnetometer_calibration_ok\030\003 \001(\010B"
+  "\t\202\265\030\005false\022*\n\027is_level_calibration_ok\030\004 "
+  "\001(\010B\t\202\265\030\005false\022\'\n\024is_local_position_ok\030\005"
+  " \001(\010B\t\202\265\030\005false\022(\n\025is_global_position_ok"
+  "\030\006 \001(\010B\t\202\265\030\005false\022&\n\023is_home_position_ok"
+  "\030\007 \001(\010B\t\202\265\030\005false\"z\n\010RcStatus\022%\n\022was_ava"
+  "ilable_once\030\001 \001(\010B\t\202\265\030\005false\022\037\n\014is_avail"
+  "able\030\002 \001(\010B\t\202\265\030\005false\022&\n\027signal_strength"
+  "_percent\030\003 \001(\002B\005\202\265\030\0010\"N\n\nStatusText\0222\n\004t"
+  "ype\030\001 \001(\0162$.mavsdk.rpc.telemetry.StatusT"
+  "extType\022\014\n\004text\030\002 \001(\t\"\?\n\025ActuatorControl"
+  "Target\022\024\n\005group\030\001 \001(\005B\005\202\265\030\0010\022\020\n\010controls"
+  "\030\002 \003(\002\"\?\n\024ActuatorOutputStatus\022\025\n\006active"
+  "\030\001 \001(\rB\005\202\265\030\0010\022\020\n\010actuator\030\002 \003(\002\"\'\n\nCovar"
+  "iance\022\031\n\021covariance_matrix\030\001 \003(\002\";\n\014Velo"
+  "cityBody\022\r\n\005x_m_s\030\001 \001(\002\022\r\n\005y_m_s\030\002 \001(\002\022\r"
+  "\n\005z_m_s\030\003 \001(\002\"5\n\014PositionBody\022\013\n\003x_m\030\001 \001"
+  "(\002\022\013\n\003y_m\030\002 \001(\002\022\013\n\003z_m\030\003 \001(\002\"\354\004\n\010Odometr"
+  "y\022\021\n\ttime_usec\030\001 \001(\004\0229\n\010frame_id\030\002 \001(\0162\'"
+  ".mavsdk.rpc.telemetry.Odometry.MavFrame\022"
+  "\?\n\016child_frame_id\030\003 \001(\0162\'.mavsdk.rpc.tel"
+  "emetry.Odometry.MavFrame\0229\n\rposition_bod"
+  "y\030\004 \001(\0132\".mavsdk.rpc.telemetry.PositionB"
+  "ody\022+\n\001q\030\005 \001(\0132 .mavsdk.rpc.telemetry.Qu"
+  "aternion\0229\n\rvelocity_body\030\006 \001(\0132\".mavsdk"
+  ".rpc.telemetry.VelocityBody\022H\n\025angular_v"
+  "elocity_body\030\007 \001(\0132).mavsdk.rpc.telemetr"
+  "y.AngularVelocityBody\0229\n\017pose_covariance"
+  "\030\010 \001(\0132 .mavsdk.rpc.telemetry.Covariance"
+  "\022=\n\023velocity_covariance\030\t \001(\0132 .mavsdk.r"
+  "pc.telemetry.Covariance\"j\n\010MavFrame\022\023\n\017M"
+  "AV_FRAME_UNDEF\020\000\022\026\n\022MAV_FRAME_BODY_NED\020\010"
+  "\022\030\n\024MAV_FRAME_VISION_NED\020\020\022\027\n\023MAV_FRAME_"
+  "ESTIM_NED\020\022\"\177\n\016DistanceSensor\022#\n\022minimum"
+  "_distance_m\030\001 \001(\002B\007\202\265\030\003NaN\022#\n\022maximum_di"
+  "stance_m\030\002 \001(\002B\007\202\265\030\003NaN\022#\n\022current_dista"
+  "nce_m\030\003 \001(\002B\007\202\265\030\003NaN\"\236\001\n\013RawPressure\022\024\n\014"
+  "timestamp_us\030\001 \001(\004\022\031\n\021absolute_pressure\030"
+  "\002 \001(\005\022#\n\033differential_pressure_first\030\003 \001"
+  "(\005\022$\n\034differential_pressure_second\030\004 \001(\005"
+  "\022\023\n\013temperature\030\005 \001(\005\"\260\001\n\016ScaledPressure"
+  "\022\024\n\014timestamp_us\030\001 \001(\004\022\035\n\025absolute_press"
+  "ure_hpa\030\002 \001(\002\022!\n\031differential_pressure_h"
+  "pa\030\003 \001(\002\022\027\n\017temperature_deg\030\004 \001(\005\022-\n%dif"
+  "ferential_pressure_temperature_deg\030\005 \001(\005"
+  "\"Y\n\013PositionNed\022\030\n\007north_m\030\001 \001(\002B\007\202\265\030\003Na"
+  "N\022\027\n\006east_m\030\002 \001(\002B\007\202\265\030\003NaN\022\027\n\006down_m\030\003 \001"
+  "(\002B\007\202\265\030\003NaN\"D\n\013VelocityNed\022\021\n\tnorth_m_s\030"
+  "\001 \001(\002\022\020\n\010east_m_s\030\002 \001(\002\022\020\n\010down_m_s\030\003 \001("
+  "\002\"\177\n\023PositionVelocityNed\0223\n\010position\030\001 \001"
+  "(\0132!.mavsdk.rpc.telemetry.PositionNed\0223\n"
+  "\010velocity\030\002 \001(\0132!.mavsdk.rpc.telemetry.V"
+  "elocityNed\"r\n\013GroundTruth\022\035\n\014latitude_de"
+  "g\030\001 \001(\001B\007\202\265\030\003NaN\022\036\n\rlongitude_deg\030\002 \001(\001B"
+  "\007\202\265\030\003NaN\022$\n\023absolute_altitude_m\030\003 \001(\002B\007\202"
+  "\265\030\003NaN\"x\n\020FixedwingMetrics\022\035\n\014airspeed_m"
+  "_s\030\001 \001(\002B\007\202\265\030\003NaN\022$\n\023throttle_percentage"
+  "\030\002 \001(\002B\007\202\265\030\003NaN\022\037\n\016climb_rate_m_s\030\003 \001(\002B"
+  "\007\202\265\030\003NaN\"i\n\017AccelerationFrd\022\035\n\014forward_m"
+  "_s2\030\001 \001(\002B\007\202\265\030\003NaN\022\033\n\nright_m_s2\030\002 \001(\002B\007"
+  "\202\265\030\003NaN\022\032\n\tdown_m_s2\030\003 \001(\002B\007\202\265\030\003NaN\"o\n\022A"
+  "ngularVelocityFrd\022\036\n\rforward_rad_s\030\001 \001(\002"
+  "B\007\202\265\030\003NaN\022\034\n\013right_rad_s\030\002 \001(\002B\007\202\265\030\003NaN\022"
+  "\033\n\ndown_rad_s\030\003 \001(\002B\007\202\265\030\003NaN\"m\n\020Magnetic"
+  "FieldFrd\022\036\n\rforward_gauss\030\001 \001(\002B\007\202\265\030\003NaN"
+  "\022\034\n\013right_gauss\030\002 \001(\002B\007\202\265\030\003NaN\022\033\n\ndown_g"
+  "auss\030\003 \001(\002B\007\202\265\030\003NaN\"\213\002\n\003Imu\022\?\n\020accelerat"
+  "ion_frd\030\001 \001(\0132%.mavsdk.rpc.telemetry.Acc"
+  "elerationFrd\022F\n\024angular_velocity_frd\030\002 \001"
+  "(\0132(.mavsdk.rpc.telemetry.AngularVelocit"
+  "yFrd\022B\n\022magnetic_field_frd\030\003 \001(\0132&.mavsd"
+  "k.rpc.telemetry.MagneticFieldFrd\022!\n\020temp"
+  "erature_degc\030\004 \001(\002B\007\202\265\030\003NaN\022\024\n\014timestamp"
+  "_us\030\005 \001(\004\"m\n\017GpsGlobalOrigin\022\035\n\014latitude"
+  "_deg\030\001 \001(\001B\007\202\265\030\003NaN\022\036\n\rlongitude_deg\030\002 \001"
+  "(\001B\007\202\265\030\003NaN\022\033\n\naltitude_m\030\003 \001(\002B\007\202\265\030\003NaN"
+  "\"\211\002\n\017TelemetryResult\022<\n\006result\030\001 \001(\0162,.m"
+  "avsdk.rpc.telemetry.TelemetryResult.Resu"
+  "lt\022\022\n\nresult_str\030\002 \001(\t\"\243\001\n\006Result\022\022\n\016RES"
+  "ULT_UNKNOWN\020\000\022\022\n\016RESULT_SUCCESS\020\001\022\024\n\020RES"
+  "ULT_NO_SYSTEM\020\002\022\033\n\027RESULT_CONNECTION_ERR"
+  "OR\020\003\022\017\n\013RESULT_BUSY\020\004\022\031\n\025RESULT_COMMAND_"
+  "DENIED\020\005\022\022\n\016RESULT_TIMEOUT\020\006*\244\001\n\007FixType"
+  "\022\023\n\017FIX_TYPE_NO_GPS\020\000\022\023\n\017FIX_TYPE_NO_FIX"
+  "\020\001\022\023\n\017FIX_TYPE_FIX_2D\020\002\022\023\n\017FIX_TYPE_FIX_"
+  "3D\020\003\022\025\n\021FIX_TYPE_FIX_DGPS\020\004\022\026\n\022FIX_TYPE_"
+  "RTK_FLOAT\020\005\022\026\n\022FIX_TYPE_RTK_FIXED\020\006*\206\003\n\n"
+  "FlightMode\022\027\n\023FLIGHT_MODE_UNKNOWN\020\000\022\025\n\021F"
+  "LIGHT_MODE_READY\020\001\022\027\n\023FLIGHT_MODE_TAKEOF"
+  "F\020\002\022\024\n\020FLIGHT_MODE_HOLD\020\003\022\027\n\023FLIGHT_MODE"
+  "_MISSION\020\004\022 \n\034FLIGHT_MODE_RETURN_TO_LAUN"
+  "CH\020\005\022\024\n\020FLIGHT_MODE_LAND\020\006\022\030\n\024FLIGHT_MOD"
+  "E_OFFBOARD\020\007\022\031\n\025FLIGHT_MODE_FOLLOW_ME\020\010\022"
+  "\026\n\022FLIGHT_MODE_MANUAL\020\t\022\026\n\022FLIGHT_MODE_A"
+  "LTCTL\020\n\022\026\n\022FLIGHT_MODE_POSCTL\020\013\022\024\n\020FLIGH"
+  "T_MODE_ACRO\020\014\022\032\n\026FLIGHT_MODE_STABILIZED\020"
+  "\r\022\031\n\025FLIGHT_MODE_RATTITUDE\020\016*\371\001\n\016StatusT"
+  "extType\022\032\n\026STATUS_TEXT_TYPE_DEBUG\020\000\022\031\n\025S"
+  "TATUS_TEXT_TYPE_INFO\020\001\022\033\n\027STATUS_TEXT_TY"
+  "PE_NOTICE\020\002\022\034\n\030STATUS_TEXT_TYPE_WARNING\020"
+  "\003\022\032\n\026STATUS_TEXT_TYPE_ERROR\020\004\022\035\n\031STATUS_"
+  "TEXT_TYPE_CRITICAL\020\005\022\032\n\026STATUS_TEXT_TYPE"
+  "_ALERT\020\006\022\036\n\032STATUS_TEXT_TYPE_EMERGENCY\020\007"
+  "*\223\001\n\013LandedState\022\030\n\024LANDED_STATE_UNKNOWN"
+  "\020\000\022\032\n\026LANDED_STATE_ON_GROUND\020\001\022\027\n\023LANDED"
+  "_STATE_IN_AIR\020\002\022\033\n\027LANDED_STATE_TAKING_O"
+  "FF\020\003\022\030\n\024LANDED_STATE_LANDING\020\0042\2414\n\020Telem"
+  "etryService\022o\n\021SubscribePosition\022..mavsd"
+  "k.rpc.telemetry.SubscribePositionRequest"
+  "\032&.mavsdk.rpc.telemetry.PositionResponse"
+  "\"\0000\001\022c\n\rSubscribeHome\022*.mavsdk.rpc.telem"
+  "etry.SubscribeHomeRequest\032\".mavsdk.rpc.t"
+  "elemetry.HomeResponse\"\0000\001\022f\n\016SubscribeIn"
+  "Air\022+.mavsdk.rpc.telemetry.SubscribeInAi"
+  "rRequest\032#.mavsdk.rpc.telemetry.InAirRes"
+  "ponse\"\0000\001\022x\n\024SubscribeLandedState\0221.mavs"
+  "dk.rpc.telemetry.SubscribeLandedStateReq"
+  "uest\032).mavsdk.rpc.telemetry.LandedStateR"
+  "esponse\"\0000\001\022f\n\016SubscribeArmed\022+.mavsdk.r"
+  "pc.telemetry.SubscribeArmedRequest\032#.mav"
+  "sdk.rpc.telemetry.ArmedResponse\"\0000\001\022\215\001\n\033"
+  "SubscribeAttitudeQuaternion\0228.mavsdk.rpc"
+  ".telemetry.SubscribeAttitudeQuaternionRe"
+  "quest\0320.mavsdk.rpc.telemetry.AttitudeQua"
+  "ternionResponse\"\0000\001\022~\n\026SubscribeAttitude"
+  "Euler\0223.mavsdk.rpc.telemetry.SubscribeAt"
+  "titudeEulerRequest\032+.mavsdk.rpc.telemetr"
+  "y.AttitudeEulerResponse\"\0000\001\022\250\001\n$Subscrib"
+  "eAttitudeAngularVelocityBody\022A.mavsdk.rp"
+  "c.telemetry.SubscribeAttitudeAngularVelo"
+  "cityBodyRequest\0329.mavsdk.rpc.telemetry.A"
+  "ttitudeAngularVelocityBodyResponse\"\0000\001\022\237"
+  "\001\n!SubscribeCameraAttitudeQuaternion\022>.m"
+  "avsdk.rpc.telemetry.SubscribeCameraAttit"
+  "udeQuaternionRequest\0326.mavsdk.rpc.teleme"
+  "try.CameraAttitudeQuaternionResponse\"\0000\001"
+  "\022\220\001\n\034SubscribeCameraAttitudeEuler\0229.mavs"
+  "dk.rpc.telemetry.SubscribeCameraAttitude"
+  "EulerRequest\0321.mavsdk.rpc.telemetry.Came"
+  "raAttitudeEulerResponse\"\0000\001\022x\n\024Subscribe"
+  "VelocityNed\0221.mavsdk.rpc.telemetry.Subsc"
+  "ribeVelocityNedRequest\032).mavsdk.rpc.tele"
+  "metry.VelocityNedResponse\"\0000\001\022l\n\020Subscri"
+  "beGpsInfo\022-.mavsdk.rpc.telemetry.Subscri"
+  "beGpsInfoRequest\032%.mavsdk.rpc.telemetry."
+  "GpsInfoResponse\"\0000\001\022i\n\017SubscribeRawGps\022,"
+  ".mavsdk.rpc.telemetry.SubscribeRawGpsReq"
+  "uest\032$.mavsdk.rpc.telemetry.RawGpsRespon"
+  "se\"\0000\001\022l\n\020SubscribeBattery\022-.mavsdk.rpc."
+  "telemetry.SubscribeBatteryRequest\032%.mavs"
+  "dk.rpc.telemetry.BatteryResponse\"\0000\001\022u\n\023"
+  "SubscribeFlightMode\0220.mavsdk.rpc.telemet"
+  "ry.SubscribeFlightModeRequest\032(.mavsdk.r"
+  "pc.telemetry.FlightModeResponse\"\0000\001\022i\n\017S"
+  "ubscribeHealth\022,.mavsdk.rpc.telemetry.Su"
+  "bscribeHealthRequest\032$.mavsdk.rpc.teleme"
+  "try.HealthResponse\"\0000\001\022o\n\021SubscribeRcSta"
+  "tus\022..mavsdk.rpc.telemetry.SubscribeRcSt"
+  "atusRequest\032&.mavsdk.rpc.telemetry.RcSta"
+  "tusResponse\"\0000\001\022u\n\023SubscribeStatusText\0220"
+  ".mavsdk.rpc.telemetry.SubscribeStatusTex"
+  "tRequest\032(.mavsdk.rpc.telemetry.StatusTe"
+  "xtResponse\"\0000\001\022\226\001\n\036SubscribeActuatorCont"
+  "rolTarget\022;.mavsdk.rpc.telemetry.Subscri"
+  "beActuatorControlTargetRequest\0323.mavsdk."
+  "rpc.telemetry.ActuatorControlTargetRespo"
+  "nse\"\0000\001\022\223\001\n\035SubscribeActuatorOutputStatu"
+  "s\022:.mavsdk.rpc.telemetry.SubscribeActuat"
+  "orOutputStatusRequest\0322.mavsdk.rpc.telem"
+  "etry.ActuatorOutputStatusResponse\"\0000\001\022o\n"
+  "\021SubscribeOdometry\022..mavsdk.rpc.telemetr"
+  "y.SubscribeOdometryRequest\032&.mavsdk.rpc."
+  "telemetry.OdometryResponse\"\0000\001\022\220\001\n\034Subsc"
+  "ribePositionVelocityNed\0229.mavsdk.rpc.tel"
+  "emetry.SubscribePositionVelocityNedReque"
+  "st\0321.mavsdk.rpc.telemetry.PositionVeloci"
+  "tyNedResponse\"\0000\001\022x\n\024SubscribeGroundTrut"
+  "h\0221.mavsdk.rpc.telemetry.SubscribeGround"
+  "TruthRequest\032).mavsdk.rpc.telemetry.Grou"
+  "ndTruthResponse\"\0000\001\022\207\001\n\031SubscribeFixedwi"
+  "ngMetrics\0226.mavsdk.rpc.telemetry.Subscri"
+  "beFixedwingMetricsRequest\032..mavsdk.rpc.t"
+  "elemetry.FixedwingMetricsResponse\"\0000\001\022`\n"
+  "\014SubscribeImu\022).mavsdk.rpc.telemetry.Sub"
+  "scribeImuRequest\032!.mavsdk.rpc.telemetry."
+  "ImuResponse\"\0000\001\022r\n\022SubscribeScaledImu\022/."
+  "mavsdk.rpc.telemetry.SubscribeScaledImuR"
+  "equest\032\'.mavsdk.rpc.telemetry.ScaledImuR"
+  "esponse\"\0000\001\022i\n\017SubscribeRawImu\022,.mavsdk."
+  "rpc.telemetry.SubscribeRawImuRequest\032$.m"
+  "avsdk.rpc.telemetry.RawImuResponse\"\0000\001\022x"
+  "\n\024SubscribeHealthAllOk\0221.mavsdk.rpc.tele"
+  "metry.SubscribeHealthAllOkRequest\032).mavs"
+  "dk.rpc.telemetry.HealthAllOkResponse\"\0000\001"
+  "\022~\n\026SubscribeUnixEpochTime\0223.mavsdk.rpc."
+  "telemetry.SubscribeUnixEpochTimeRequest\032"
+  "+.mavsdk.rpc.telemetry.UnixEpochTimeResp"
+  "onse\"\0000\001\022\201\001\n\027SubscribeDistanceSensor\0224.m"
+  "avsdk.rpc.telemetry.SubscribeDistanceSen"
+  "sorRequest\032,.mavsdk.rpc.telemetry.Distan"
+  "ceSensorResponse\"\0000\001\022x\n\024SubscribeRawPres"
+  "sure\0221.mavsdk.rpc.telemetry.SubscribeRaw"
+  "PressureRequest\032).mavsdk.rpc.telemetry.R"
+  "awPressureResponse\"\0000\001\022\201\001\n\027SubscribeScal"
+  "edPressure\0224.mavsdk.rpc.telemetry.Subscr"
+  "ibeScaledPressureRequest\032,.mavsdk.rpc.te"
+  "lemetry.ScaledPressureResponse\"\0000\001\022p\n\017Se"
+  "tRatePosition\022,.mavsdk.rpc.telemetry.Set"
+  "RatePositionRequest\032-.mavsdk.rpc.telemet"
+  "ry.SetRatePositionResponse\"\000\022d\n\013SetRateH"
+  "ome\022(.mavsdk.rpc.telemetry.SetRateHomeRe"
+  "quest\032).mavsdk.rpc.telemetry.SetRateHome"
+  "Response\"\000\022g\n\014SetRateInAir\022).mavsdk.rpc."
+  "telemetry.SetRateInAirRequest\032*.mavsdk.r"
+  "pc.telemetry.SetRateInAirResponse\"\000\022y\n\022S"
+  "etRateLandedState\022/.mavsdk.rpc.telemetry"
+  ".SetRateLandedStateRequest\0320.mavsdk.rpc."
+  "telemetry.SetRateLandedStateResponse\"\000\022p"
+  "\n\017SetRateAttitude\022,.mavsdk.rpc.telemetry"
+  ".SetRateAttitudeRequest\032-.mavsdk.rpc.tel"
+  "emetry.SetRateAttitudeResponse\"\000\022\202\001\n\025Set"
+  "RateCameraAttitude\0222.mavsdk.rpc.telemetr"
+  "y.SetRateCameraAttitudeRequest\0323.mavsdk."
+  "rpc.telemetry.SetRateCameraAttitudeRespo"
+  "nse\"\000\022y\n\022SetRateVelocityNed\022/.mavsdk.rpc"
+  ".telemetry.SetRateVelocityNedRequest\0320.m"
+  "avsdk.rpc.telemetry.SetRateVelocityNedRe"
+  "sponse\"\000\022m\n\016SetRateGpsInfo\022+.mavsdk.rpc."
+  "telemetry.SetRateGpsInfoRequest\032,.mavsdk"
+  ".rpc.telemetry.SetRateGpsInfoResponse\"\000\022"
+  "m\n\016SetRateBattery\022+.mavsdk.rpc.telemetry"
+  ".SetRateBatteryRequest\032,.mavsdk.rpc.tele"
+  "metry.SetRateBatteryResponse\"\000\022p\n\017SetRat"
+  "eRcStatus\022,.mavsdk.rpc.telemetry.SetRate"
+  "RcStatusRequest\032-.mavsdk.rpc.telemetry.S"
+  "etRateRcStatusResponse\"\000\022\227\001\n\034SetRateActu"
+  "atorControlTarget\0229.mavsdk.rpc.telemetry"
+  ".SetRateActuatorControlTargetRequest\032:.m"
+  "avsdk.rpc.telemetry.SetRateActuatorContr"
+  "olTargetResponse\"\000\022\224\001\n\033SetRateActuatorOu"
+  "tputStatus\0228.mavsdk.rpc.telemetry.SetRat"
+  "eActuatorOutputStatusRequest\0329.mavsdk.rp"
+  "c.telemetry.SetRateActuatorOutputStatusR"
+  "esponse\"\000\022p\n\017SetRateOdometry\022,.mavsdk.rp"
+  "c.telemetry.SetRateOdometryRequest\032-.mav"
+  "sdk.rpc.telemetry.SetRateOdometryRespons"
+  "e\"\000\022\221\001\n\032SetRatePositionVelocityNed\0227.mav"
+  "sdk.rpc.telemetry.SetRatePositionVelocit"
+  "yNedRequest\0328.mavsdk.rpc.telemetry.SetRa"
+  "tePositionVelocityNedResponse\"\000\022y\n\022SetRa"
+  "teGroundTruth\022/.mavsdk.rpc.telemetry.Set"
+  "RateGroundTruthRequest\0320.mavsdk.rpc.tele"
+  "metry.SetRateGroundTruthResponse\"\000\022\210\001\n\027S"
+  "etRateFixedwingMetrics\0224.mavsdk.rpc.tele"
+  "metry.SetRateFixedwingMetricsRequest\0325.m"
+  "avsdk.rpc.telemetry.SetRateFixedwingMetr"
+  "icsResponse\"\000\022a\n\nSetRateImu\022\'.mavsdk.rpc"
+  ".telemetry.SetRateImuRequest\032(.mavsdk.rp"
+  "c.telemetry.SetRateImuResponse\"\000\022s\n\020SetR"
+  "ateScaledImu\022-.mavsdk.rpc.telemetry.SetR"
+  "ateScaledImuRequest\032..mavsdk.rpc.telemet"
+  "ry.SetRateScaledImuResponse\"\000\022j\n\rSetRate"
+  "RawImu\022*.mavsdk.rpc.telemetry.SetRateRaw"
+  "ImuRequest\032+.mavsdk.rpc.telemetry.SetRat"
+  "eRawImuResponse\"\000\022\177\n\024SetRateUnixEpochTim"
+  "e\0221.mavsdk.rpc.telemetry.SetRateUnixEpoc"
+  "hTimeRequest\0322.mavsdk.rpc.telemetry.SetR"
+  "ateUnixEpochTimeResponse\"\000\022\202\001\n\025SetRateDi"
+  "stanceSensor\0222.mavsdk.rpc.telemetry.SetR"
+  "ateDistanceSensorRequest\0323.mavsdk.rpc.te"
+  "lemetry.SetRateDistanceSensorResponse\"\000\022"
+  "y\n\022GetGpsGlobalOrigin\022/.mavsdk.rpc.telem"
+  "etry.GetGpsGlobalOriginRequest\0320.mavsdk."
+  "rpc.telemetry.GetGpsGlobalOriginResponse"
+  "\"\000B%\n\023io.mavsdk.telemetryB\016TelemetryProt"
+  "ob\006proto3"
   ;
 static const ::PROTOBUF_NAMESPACE_ID::internal::DescriptorTable*const descriptor_table_telemetry_2ftelemetry_2eproto_deps[1] = {
   &::descriptor_table_mavsdk_5foptions_2eproto,
 };
-static ::PROTOBUF_NAMESPACE_ID::internal::SCCInfoBase*const descriptor_table_telemetry_2ftelemetry_2eproto_sccs[139] = {
+static ::PROTOBUF_NAMESPACE_ID::internal::SCCInfoBase*const descriptor_table_telemetry_2ftelemetry_2eproto_sccs[143] = {
   &scc_info_AccelerationFrd_telemetry_2ftelemetry_2eproto.base,
   &scc_info_ActuatorControlTarget_telemetry_2ftelemetry_2eproto.base,
   &scc_info_ActuatorControlTargetResponse_telemetry_2ftelemetry_2eproto.base,
@@ -4291,6 +4424,8 @@ static ::PROTOBUF_NAMESPACE_ID::internal::SCCInfoBase*const descriptor_table_tel
   &scc_info_PositionVelocityNed_telemetry_2ftelemetry_2eproto.base,
   &scc_info_PositionVelocityNedResponse_telemetry_2ftelemetry_2eproto.base,
   &scc_info_Quaternion_telemetry_2ftelemetry_2eproto.base,
+  &scc_info_RawGps_telemetry_2ftelemetry_2eproto.base,
+  &scc_info_RawGpsResponse_telemetry_2ftelemetry_2eproto.base,
   &scc_info_RawImuResponse_telemetry_2ftelemetry_2eproto.base,
   &scc_info_RawPressure_telemetry_2ftelemetry_2eproto.base,
   &scc_info_RawPressureResponse_telemetry_2ftelemetry_2eproto.base,
@@ -4335,6 +4470,7 @@ static ::PROTOBUF_NAMESPACE_ID::internal::SCCInfoBase*const descriptor_table_tel
   &scc_info_SetRatePositionResponse_telemetry_2ftelemetry_2eproto.base,
   &scc_info_SetRatePositionVelocityNedRequest_telemetry_2ftelemetry_2eproto.base,
   &scc_info_SetRatePositionVelocityNedResponse_telemetry_2ftelemetry_2eproto.base,
+  &scc_info_SetRateRawGpsRequest_telemetry_2ftelemetry_2eproto.base,
   &scc_info_SetRateRawImuRequest_telemetry_2ftelemetry_2eproto.base,
   &scc_info_SetRateRawImuResponse_telemetry_2ftelemetry_2eproto.base,
   &scc_info_SetRateRcStatusRequest_telemetry_2ftelemetry_2eproto.base,
@@ -4370,6 +4506,7 @@ static ::PROTOBUF_NAMESPACE_ID::internal::SCCInfoBase*const descriptor_table_tel
   &scc_info_SubscribeOdometryRequest_telemetry_2ftelemetry_2eproto.base,
   &scc_info_SubscribePositionRequest_telemetry_2ftelemetry_2eproto.base,
   &scc_info_SubscribePositionVelocityNedRequest_telemetry_2ftelemetry_2eproto.base,
+  &scc_info_SubscribeRawGpsRequest_telemetry_2ftelemetry_2eproto.base,
   &scc_info_SubscribeRawImuRequest_telemetry_2ftelemetry_2eproto.base,
   &scc_info_SubscribeRawPressureRequest_telemetry_2ftelemetry_2eproto.base,
   &scc_info_SubscribeRcStatusRequest_telemetry_2ftelemetry_2eproto.base,
@@ -4386,10 +4523,10 @@ static ::PROTOBUF_NAMESPACE_ID::internal::SCCInfoBase*const descriptor_table_tel
 };
 static ::PROTOBUF_NAMESPACE_ID::internal::once_flag descriptor_table_telemetry_2ftelemetry_2eproto_once;
 const ::PROTOBUF_NAMESPACE_ID::internal::DescriptorTable descriptor_table_telemetry_2ftelemetry_2eproto = {
-  false, false, descriptor_table_protodef_telemetry_2ftelemetry_2eproto, "telemetry/telemetry.proto", 18576,
-  &descriptor_table_telemetry_2ftelemetry_2eproto_once, descriptor_table_telemetry_2ftelemetry_2eproto_sccs, descriptor_table_telemetry_2ftelemetry_2eproto_deps, 139, 1,
+  false, false, descriptor_table_protodef_telemetry_2ftelemetry_2eproto, "telemetry/telemetry.proto", 19169,
+  &descriptor_table_telemetry_2ftelemetry_2eproto_once, descriptor_table_telemetry_2ftelemetry_2eproto_sccs, descriptor_table_telemetry_2ftelemetry_2eproto_deps, 143, 1,
   schemas, file_default_instances, TableStruct_telemetry_2ftelemetry_2eproto::offsets,
-  file_level_metadata_telemetry_2ftelemetry_2eproto, 139, file_level_enum_descriptors_telemetry_2ftelemetry_2eproto, file_level_service_descriptors_telemetry_2ftelemetry_2eproto,
+  file_level_metadata_telemetry_2ftelemetry_2eproto, 143, file_level_enum_descriptors_telemetry_2ftelemetry_2eproto, file_level_service_descriptors_telemetry_2ftelemetry_2eproto,
 };
 
 // Force running AddDescriptors() at dynamic initialization time.
@@ -9036,6 +9173,386 @@ void GpsInfoResponse::InternalSwap(GpsInfoResponse* other) {
 }
 
 ::PROTOBUF_NAMESPACE_ID::Metadata GpsInfoResponse::GetMetadata() const {
+  return GetMetadataStatic();
+}
+
+
+// ===================================================================
+
+void SubscribeRawGpsRequest::InitAsDefaultInstance() {
+}
+class SubscribeRawGpsRequest::_Internal {
+ public:
+};
+
+SubscribeRawGpsRequest::SubscribeRawGpsRequest(::PROTOBUF_NAMESPACE_ID::Arena* arena)
+  : ::PROTOBUF_NAMESPACE_ID::Message(arena) {
+  SharedCtor();
+  RegisterArenaDtor(arena);
+  // @@protoc_insertion_point(arena_constructor:mavsdk.rpc.telemetry.SubscribeRawGpsRequest)
+}
+SubscribeRawGpsRequest::SubscribeRawGpsRequest(const SubscribeRawGpsRequest& from)
+  : ::PROTOBUF_NAMESPACE_ID::Message() {
+  _internal_metadata_.MergeFrom<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>(from._internal_metadata_);
+  // @@protoc_insertion_point(copy_constructor:mavsdk.rpc.telemetry.SubscribeRawGpsRequest)
+}
+
+void SubscribeRawGpsRequest::SharedCtor() {
+}
+
+SubscribeRawGpsRequest::~SubscribeRawGpsRequest() {
+  // @@protoc_insertion_point(destructor:mavsdk.rpc.telemetry.SubscribeRawGpsRequest)
+  SharedDtor();
+  _internal_metadata_.Delete<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>();
+}
+
+void SubscribeRawGpsRequest::SharedDtor() {
+  GOOGLE_DCHECK(GetArena() == nullptr);
+}
+
+void SubscribeRawGpsRequest::ArenaDtor(void* object) {
+  SubscribeRawGpsRequest* _this = reinterpret_cast< SubscribeRawGpsRequest* >(object);
+  (void)_this;
+}
+void SubscribeRawGpsRequest::RegisterArenaDtor(::PROTOBUF_NAMESPACE_ID::Arena*) {
+}
+void SubscribeRawGpsRequest::SetCachedSize(int size) const {
+  _cached_size_.Set(size);
+}
+const SubscribeRawGpsRequest& SubscribeRawGpsRequest::default_instance() {
+  ::PROTOBUF_NAMESPACE_ID::internal::InitSCC(&::scc_info_SubscribeRawGpsRequest_telemetry_2ftelemetry_2eproto.base);
+  return *internal_default_instance();
+}
+
+
+void SubscribeRawGpsRequest::Clear() {
+// @@protoc_insertion_point(message_clear_start:mavsdk.rpc.telemetry.SubscribeRawGpsRequest)
+  ::PROTOBUF_NAMESPACE_ID::uint32 cached_has_bits = 0;
+  // Prevent compiler warnings about cached_has_bits being unused
+  (void) cached_has_bits;
+
+  _internal_metadata_.Clear<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>();
+}
+
+const char* SubscribeRawGpsRequest::_InternalParse(const char* ptr, ::PROTOBUF_NAMESPACE_ID::internal::ParseContext* ctx) {
+#define CHK_(x) if (PROTOBUF_PREDICT_FALSE(!(x))) goto failure
+  ::PROTOBUF_NAMESPACE_ID::Arena* arena = GetArena(); (void)arena;
+  while (!ctx->Done(&ptr)) {
+    ::PROTOBUF_NAMESPACE_ID::uint32 tag;
+    ptr = ::PROTOBUF_NAMESPACE_ID::internal::ReadTag(ptr, &tag);
+    CHK_(ptr);
+        if ((tag & 7) == 4 || tag == 0) {
+          ctx->SetLastTag(tag);
+          goto success;
+        }
+        ptr = UnknownFieldParse(tag,
+            _internal_metadata_.mutable_unknown_fields<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>(),
+            ptr, ctx);
+        CHK_(ptr != nullptr);
+        continue;
+  }  // while
+success:
+  return ptr;
+failure:
+  ptr = nullptr;
+  goto success;
+#undef CHK_
+}
+
+::PROTOBUF_NAMESPACE_ID::uint8* SubscribeRawGpsRequest::_InternalSerialize(
+    ::PROTOBUF_NAMESPACE_ID::uint8* target, ::PROTOBUF_NAMESPACE_ID::io::EpsCopyOutputStream* stream) const {
+  // @@protoc_insertion_point(serialize_to_array_start:mavsdk.rpc.telemetry.SubscribeRawGpsRequest)
+  ::PROTOBUF_NAMESPACE_ID::uint32 cached_has_bits = 0;
+  (void) cached_has_bits;
+
+  if (PROTOBUF_PREDICT_FALSE(_internal_metadata_.have_unknown_fields())) {
+    target = ::PROTOBUF_NAMESPACE_ID::internal::WireFormat::InternalSerializeUnknownFieldsToArray(
+        _internal_metadata_.unknown_fields<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>(::PROTOBUF_NAMESPACE_ID::UnknownFieldSet::default_instance), target, stream);
+  }
+  // @@protoc_insertion_point(serialize_to_array_end:mavsdk.rpc.telemetry.SubscribeRawGpsRequest)
+  return target;
+}
+
+size_t SubscribeRawGpsRequest::ByteSizeLong() const {
+// @@protoc_insertion_point(message_byte_size_start:mavsdk.rpc.telemetry.SubscribeRawGpsRequest)
+  size_t total_size = 0;
+
+  ::PROTOBUF_NAMESPACE_ID::uint32 cached_has_bits = 0;
+  // Prevent compiler warnings about cached_has_bits being unused
+  (void) cached_has_bits;
+
+  if (PROTOBUF_PREDICT_FALSE(_internal_metadata_.have_unknown_fields())) {
+    return ::PROTOBUF_NAMESPACE_ID::internal::ComputeUnknownFieldsSize(
+        _internal_metadata_, total_size, &_cached_size_);
+  }
+  int cached_size = ::PROTOBUF_NAMESPACE_ID::internal::ToCachedSize(total_size);
+  SetCachedSize(cached_size);
+  return total_size;
+}
+
+void SubscribeRawGpsRequest::MergeFrom(const ::PROTOBUF_NAMESPACE_ID::Message& from) {
+// @@protoc_insertion_point(generalized_merge_from_start:mavsdk.rpc.telemetry.SubscribeRawGpsRequest)
+  GOOGLE_DCHECK_NE(&from, this);
+  const SubscribeRawGpsRequest* source =
+      ::PROTOBUF_NAMESPACE_ID::DynamicCastToGenerated<SubscribeRawGpsRequest>(
+          &from);
+  if (source == nullptr) {
+  // @@protoc_insertion_point(generalized_merge_from_cast_fail:mavsdk.rpc.telemetry.SubscribeRawGpsRequest)
+    ::PROTOBUF_NAMESPACE_ID::internal::ReflectionOps::Merge(from, this);
+  } else {
+  // @@protoc_insertion_point(generalized_merge_from_cast_success:mavsdk.rpc.telemetry.SubscribeRawGpsRequest)
+    MergeFrom(*source);
+  }
+}
+
+void SubscribeRawGpsRequest::MergeFrom(const SubscribeRawGpsRequest& from) {
+// @@protoc_insertion_point(class_specific_merge_from_start:mavsdk.rpc.telemetry.SubscribeRawGpsRequest)
+  GOOGLE_DCHECK_NE(&from, this);
+  _internal_metadata_.MergeFrom<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>(from._internal_metadata_);
+  ::PROTOBUF_NAMESPACE_ID::uint32 cached_has_bits = 0;
+  (void) cached_has_bits;
+
+}
+
+void SubscribeRawGpsRequest::CopyFrom(const ::PROTOBUF_NAMESPACE_ID::Message& from) {
+// @@protoc_insertion_point(generalized_copy_from_start:mavsdk.rpc.telemetry.SubscribeRawGpsRequest)
+  if (&from == this) return;
+  Clear();
+  MergeFrom(from);
+}
+
+void SubscribeRawGpsRequest::CopyFrom(const SubscribeRawGpsRequest& from) {
+// @@protoc_insertion_point(class_specific_copy_from_start:mavsdk.rpc.telemetry.SubscribeRawGpsRequest)
+  if (&from == this) return;
+  Clear();
+  MergeFrom(from);
+}
+
+bool SubscribeRawGpsRequest::IsInitialized() const {
+  return true;
+}
+
+void SubscribeRawGpsRequest::InternalSwap(SubscribeRawGpsRequest* other) {
+  using std::swap;
+  _internal_metadata_.Swap<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>(&other->_internal_metadata_);
+}
+
+::PROTOBUF_NAMESPACE_ID::Metadata SubscribeRawGpsRequest::GetMetadata() const {
+  return GetMetadataStatic();
+}
+
+
+// ===================================================================
+
+void RawGpsResponse::InitAsDefaultInstance() {
+  ::mavsdk::rpc::telemetry::_RawGpsResponse_default_instance_._instance.get_mutable()->raw_gps_ = const_cast< ::mavsdk::rpc::telemetry::RawGps*>(
+      ::mavsdk::rpc::telemetry::RawGps::internal_default_instance());
+}
+class RawGpsResponse::_Internal {
+ public:
+  static const ::mavsdk::rpc::telemetry::RawGps& raw_gps(const RawGpsResponse* msg);
+};
+
+const ::mavsdk::rpc::telemetry::RawGps&
+RawGpsResponse::_Internal::raw_gps(const RawGpsResponse* msg) {
+  return *msg->raw_gps_;
+}
+RawGpsResponse::RawGpsResponse(::PROTOBUF_NAMESPACE_ID::Arena* arena)
+  : ::PROTOBUF_NAMESPACE_ID::Message(arena) {
+  SharedCtor();
+  RegisterArenaDtor(arena);
+  // @@protoc_insertion_point(arena_constructor:mavsdk.rpc.telemetry.RawGpsResponse)
+}
+RawGpsResponse::RawGpsResponse(const RawGpsResponse& from)
+  : ::PROTOBUF_NAMESPACE_ID::Message() {
+  _internal_metadata_.MergeFrom<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>(from._internal_metadata_);
+  if (from._internal_has_raw_gps()) {
+    raw_gps_ = new ::mavsdk::rpc::telemetry::RawGps(*from.raw_gps_);
+  } else {
+    raw_gps_ = nullptr;
+  }
+  // @@protoc_insertion_point(copy_constructor:mavsdk.rpc.telemetry.RawGpsResponse)
+}
+
+void RawGpsResponse::SharedCtor() {
+  ::PROTOBUF_NAMESPACE_ID::internal::InitSCC(&scc_info_RawGpsResponse_telemetry_2ftelemetry_2eproto.base);
+  raw_gps_ = nullptr;
+}
+
+RawGpsResponse::~RawGpsResponse() {
+  // @@protoc_insertion_point(destructor:mavsdk.rpc.telemetry.RawGpsResponse)
+  SharedDtor();
+  _internal_metadata_.Delete<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>();
+}
+
+void RawGpsResponse::SharedDtor() {
+  GOOGLE_DCHECK(GetArena() == nullptr);
+  if (this != internal_default_instance()) delete raw_gps_;
+}
+
+void RawGpsResponse::ArenaDtor(void* object) {
+  RawGpsResponse* _this = reinterpret_cast< RawGpsResponse* >(object);
+  (void)_this;
+}
+void RawGpsResponse::RegisterArenaDtor(::PROTOBUF_NAMESPACE_ID::Arena*) {
+}
+void RawGpsResponse::SetCachedSize(int size) const {
+  _cached_size_.Set(size);
+}
+const RawGpsResponse& RawGpsResponse::default_instance() {
+  ::PROTOBUF_NAMESPACE_ID::internal::InitSCC(&::scc_info_RawGpsResponse_telemetry_2ftelemetry_2eproto.base);
+  return *internal_default_instance();
+}
+
+
+void RawGpsResponse::Clear() {
+// @@protoc_insertion_point(message_clear_start:mavsdk.rpc.telemetry.RawGpsResponse)
+  ::PROTOBUF_NAMESPACE_ID::uint32 cached_has_bits = 0;
+  // Prevent compiler warnings about cached_has_bits being unused
+  (void) cached_has_bits;
+
+  if (GetArena() == nullptr && raw_gps_ != nullptr) {
+    delete raw_gps_;
+  }
+  raw_gps_ = nullptr;
+  _internal_metadata_.Clear<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>();
+}
+
+const char* RawGpsResponse::_InternalParse(const char* ptr, ::PROTOBUF_NAMESPACE_ID::internal::ParseContext* ctx) {
+#define CHK_(x) if (PROTOBUF_PREDICT_FALSE(!(x))) goto failure
+  ::PROTOBUF_NAMESPACE_ID::Arena* arena = GetArena(); (void)arena;
+  while (!ctx->Done(&ptr)) {
+    ::PROTOBUF_NAMESPACE_ID::uint32 tag;
+    ptr = ::PROTOBUF_NAMESPACE_ID::internal::ReadTag(ptr, &tag);
+    CHK_(ptr);
+    switch (tag >> 3) {
+      // .mavsdk.rpc.telemetry.RawGps raw_gps = 1;
+      case 1:
+        if (PROTOBUF_PREDICT_TRUE(static_cast<::PROTOBUF_NAMESPACE_ID::uint8>(tag) == 10)) {
+          ptr = ctx->ParseMessage(_internal_mutable_raw_gps(), ptr);
+          CHK_(ptr);
+        } else goto handle_unusual;
+        continue;
+      default: {
+      handle_unusual:
+        if ((tag & 7) == 4 || tag == 0) {
+          ctx->SetLastTag(tag);
+          goto success;
+        }
+        ptr = UnknownFieldParse(tag,
+            _internal_metadata_.mutable_unknown_fields<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>(),
+            ptr, ctx);
+        CHK_(ptr != nullptr);
+        continue;
+      }
+    }  // switch
+  }  // while
+success:
+  return ptr;
+failure:
+  ptr = nullptr;
+  goto success;
+#undef CHK_
+}
+
+::PROTOBUF_NAMESPACE_ID::uint8* RawGpsResponse::_InternalSerialize(
+    ::PROTOBUF_NAMESPACE_ID::uint8* target, ::PROTOBUF_NAMESPACE_ID::io::EpsCopyOutputStream* stream) const {
+  // @@protoc_insertion_point(serialize_to_array_start:mavsdk.rpc.telemetry.RawGpsResponse)
+  ::PROTOBUF_NAMESPACE_ID::uint32 cached_has_bits = 0;
+  (void) cached_has_bits;
+
+  // .mavsdk.rpc.telemetry.RawGps raw_gps = 1;
+  if (this->has_raw_gps()) {
+    target = stream->EnsureSpace(target);
+    target = ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::
+      InternalWriteMessage(
+        1, _Internal::raw_gps(this), target, stream);
+  }
+
+  if (PROTOBUF_PREDICT_FALSE(_internal_metadata_.have_unknown_fields())) {
+    target = ::PROTOBUF_NAMESPACE_ID::internal::WireFormat::InternalSerializeUnknownFieldsToArray(
+        _internal_metadata_.unknown_fields<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>(::PROTOBUF_NAMESPACE_ID::UnknownFieldSet::default_instance), target, stream);
+  }
+  // @@protoc_insertion_point(serialize_to_array_end:mavsdk.rpc.telemetry.RawGpsResponse)
+  return target;
+}
+
+size_t RawGpsResponse::ByteSizeLong() const {
+// @@protoc_insertion_point(message_byte_size_start:mavsdk.rpc.telemetry.RawGpsResponse)
+  size_t total_size = 0;
+
+  ::PROTOBUF_NAMESPACE_ID::uint32 cached_has_bits = 0;
+  // Prevent compiler warnings about cached_has_bits being unused
+  (void) cached_has_bits;
+
+  // .mavsdk.rpc.telemetry.RawGps raw_gps = 1;
+  if (this->has_raw_gps()) {
+    total_size += 1 +
+      ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::MessageSize(
+        *raw_gps_);
+  }
+
+  if (PROTOBUF_PREDICT_FALSE(_internal_metadata_.have_unknown_fields())) {
+    return ::PROTOBUF_NAMESPACE_ID::internal::ComputeUnknownFieldsSize(
+        _internal_metadata_, total_size, &_cached_size_);
+  }
+  int cached_size = ::PROTOBUF_NAMESPACE_ID::internal::ToCachedSize(total_size);
+  SetCachedSize(cached_size);
+  return total_size;
+}
+
+void RawGpsResponse::MergeFrom(const ::PROTOBUF_NAMESPACE_ID::Message& from) {
+// @@protoc_insertion_point(generalized_merge_from_start:mavsdk.rpc.telemetry.RawGpsResponse)
+  GOOGLE_DCHECK_NE(&from, this);
+  const RawGpsResponse* source =
+      ::PROTOBUF_NAMESPACE_ID::DynamicCastToGenerated<RawGpsResponse>(
+          &from);
+  if (source == nullptr) {
+  // @@protoc_insertion_point(generalized_merge_from_cast_fail:mavsdk.rpc.telemetry.RawGpsResponse)
+    ::PROTOBUF_NAMESPACE_ID::internal::ReflectionOps::Merge(from, this);
+  } else {
+  // @@protoc_insertion_point(generalized_merge_from_cast_success:mavsdk.rpc.telemetry.RawGpsResponse)
+    MergeFrom(*source);
+  }
+}
+
+void RawGpsResponse::MergeFrom(const RawGpsResponse& from) {
+// @@protoc_insertion_point(class_specific_merge_from_start:mavsdk.rpc.telemetry.RawGpsResponse)
+  GOOGLE_DCHECK_NE(&from, this);
+  _internal_metadata_.MergeFrom<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>(from._internal_metadata_);
+  ::PROTOBUF_NAMESPACE_ID::uint32 cached_has_bits = 0;
+  (void) cached_has_bits;
+
+  if (from.has_raw_gps()) {
+    _internal_mutable_raw_gps()->::mavsdk::rpc::telemetry::RawGps::MergeFrom(from._internal_raw_gps());
+  }
+}
+
+void RawGpsResponse::CopyFrom(const ::PROTOBUF_NAMESPACE_ID::Message& from) {
+// @@protoc_insertion_point(generalized_copy_from_start:mavsdk.rpc.telemetry.RawGpsResponse)
+  if (&from == this) return;
+  Clear();
+  MergeFrom(from);
+}
+
+void RawGpsResponse::CopyFrom(const RawGpsResponse& from) {
+// @@protoc_insertion_point(class_specific_copy_from_start:mavsdk.rpc.telemetry.RawGpsResponse)
+  if (&from == this) return;
+  Clear();
+  MergeFrom(from);
+}
+
+bool RawGpsResponse::IsInitialized() const {
+  return true;
+}
+
+void RawGpsResponse::InternalSwap(RawGpsResponse* other) {
+  using std::swap;
+  _internal_metadata_.Swap<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>(&other->_internal_metadata_);
+  swap(raw_gps_, other->raw_gps_);
+}
+
+::PROTOBUF_NAMESPACE_ID::Metadata RawGpsResponse::GetMetadata() const {
   return GetMetadataStatic();
 }
 
@@ -20307,6 +20824,201 @@ void SetRateGpsInfoResponse::InternalSwap(SetRateGpsInfoResponse* other) {
 
 // ===================================================================
 
+void SetRateRawGpsRequest::InitAsDefaultInstance() {
+}
+class SetRateRawGpsRequest::_Internal {
+ public:
+};
+
+SetRateRawGpsRequest::SetRateRawGpsRequest(::PROTOBUF_NAMESPACE_ID::Arena* arena)
+  : ::PROTOBUF_NAMESPACE_ID::Message(arena) {
+  SharedCtor();
+  RegisterArenaDtor(arena);
+  // @@protoc_insertion_point(arena_constructor:mavsdk.rpc.telemetry.SetRateRawGpsRequest)
+}
+SetRateRawGpsRequest::SetRateRawGpsRequest(const SetRateRawGpsRequest& from)
+  : ::PROTOBUF_NAMESPACE_ID::Message() {
+  _internal_metadata_.MergeFrom<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>(from._internal_metadata_);
+  rate_hz_ = from.rate_hz_;
+  // @@protoc_insertion_point(copy_constructor:mavsdk.rpc.telemetry.SetRateRawGpsRequest)
+}
+
+void SetRateRawGpsRequest::SharedCtor() {
+  rate_hz_ = 0;
+}
+
+SetRateRawGpsRequest::~SetRateRawGpsRequest() {
+  // @@protoc_insertion_point(destructor:mavsdk.rpc.telemetry.SetRateRawGpsRequest)
+  SharedDtor();
+  _internal_metadata_.Delete<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>();
+}
+
+void SetRateRawGpsRequest::SharedDtor() {
+  GOOGLE_DCHECK(GetArena() == nullptr);
+}
+
+void SetRateRawGpsRequest::ArenaDtor(void* object) {
+  SetRateRawGpsRequest* _this = reinterpret_cast< SetRateRawGpsRequest* >(object);
+  (void)_this;
+}
+void SetRateRawGpsRequest::RegisterArenaDtor(::PROTOBUF_NAMESPACE_ID::Arena*) {
+}
+void SetRateRawGpsRequest::SetCachedSize(int size) const {
+  _cached_size_.Set(size);
+}
+const SetRateRawGpsRequest& SetRateRawGpsRequest::default_instance() {
+  ::PROTOBUF_NAMESPACE_ID::internal::InitSCC(&::scc_info_SetRateRawGpsRequest_telemetry_2ftelemetry_2eproto.base);
+  return *internal_default_instance();
+}
+
+
+void SetRateRawGpsRequest::Clear() {
+// @@protoc_insertion_point(message_clear_start:mavsdk.rpc.telemetry.SetRateRawGpsRequest)
+  ::PROTOBUF_NAMESPACE_ID::uint32 cached_has_bits = 0;
+  // Prevent compiler warnings about cached_has_bits being unused
+  (void) cached_has_bits;
+
+  rate_hz_ = 0;
+  _internal_metadata_.Clear<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>();
+}
+
+const char* SetRateRawGpsRequest::_InternalParse(const char* ptr, ::PROTOBUF_NAMESPACE_ID::internal::ParseContext* ctx) {
+#define CHK_(x) if (PROTOBUF_PREDICT_FALSE(!(x))) goto failure
+  ::PROTOBUF_NAMESPACE_ID::Arena* arena = GetArena(); (void)arena;
+  while (!ctx->Done(&ptr)) {
+    ::PROTOBUF_NAMESPACE_ID::uint32 tag;
+    ptr = ::PROTOBUF_NAMESPACE_ID::internal::ReadTag(ptr, &tag);
+    CHK_(ptr);
+    switch (tag >> 3) {
+      // double rate_hz = 1;
+      case 1:
+        if (PROTOBUF_PREDICT_TRUE(static_cast<::PROTOBUF_NAMESPACE_ID::uint8>(tag) == 9)) {
+          rate_hz_ = ::PROTOBUF_NAMESPACE_ID::internal::UnalignedLoad<double>(ptr);
+          ptr += sizeof(double);
+        } else goto handle_unusual;
+        continue;
+      default: {
+      handle_unusual:
+        if ((tag & 7) == 4 || tag == 0) {
+          ctx->SetLastTag(tag);
+          goto success;
+        }
+        ptr = UnknownFieldParse(tag,
+            _internal_metadata_.mutable_unknown_fields<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>(),
+            ptr, ctx);
+        CHK_(ptr != nullptr);
+        continue;
+      }
+    }  // switch
+  }  // while
+success:
+  return ptr;
+failure:
+  ptr = nullptr;
+  goto success;
+#undef CHK_
+}
+
+::PROTOBUF_NAMESPACE_ID::uint8* SetRateRawGpsRequest::_InternalSerialize(
+    ::PROTOBUF_NAMESPACE_ID::uint8* target, ::PROTOBUF_NAMESPACE_ID::io::EpsCopyOutputStream* stream) const {
+  // @@protoc_insertion_point(serialize_to_array_start:mavsdk.rpc.telemetry.SetRateRawGpsRequest)
+  ::PROTOBUF_NAMESPACE_ID::uint32 cached_has_bits = 0;
+  (void) cached_has_bits;
+
+  // double rate_hz = 1;
+  if (!(this->rate_hz() <= 0 && this->rate_hz() >= 0)) {
+    target = stream->EnsureSpace(target);
+    target = ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::WriteDoubleToArray(1, this->_internal_rate_hz(), target);
+  }
+
+  if (PROTOBUF_PREDICT_FALSE(_internal_metadata_.have_unknown_fields())) {
+    target = ::PROTOBUF_NAMESPACE_ID::internal::WireFormat::InternalSerializeUnknownFieldsToArray(
+        _internal_metadata_.unknown_fields<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>(::PROTOBUF_NAMESPACE_ID::UnknownFieldSet::default_instance), target, stream);
+  }
+  // @@protoc_insertion_point(serialize_to_array_end:mavsdk.rpc.telemetry.SetRateRawGpsRequest)
+  return target;
+}
+
+size_t SetRateRawGpsRequest::ByteSizeLong() const {
+// @@protoc_insertion_point(message_byte_size_start:mavsdk.rpc.telemetry.SetRateRawGpsRequest)
+  size_t total_size = 0;
+
+  ::PROTOBUF_NAMESPACE_ID::uint32 cached_has_bits = 0;
+  // Prevent compiler warnings about cached_has_bits being unused
+  (void) cached_has_bits;
+
+  // double rate_hz = 1;
+  if (!(this->rate_hz() <= 0 && this->rate_hz() >= 0)) {
+    total_size += 1 + 8;
+  }
+
+  if (PROTOBUF_PREDICT_FALSE(_internal_metadata_.have_unknown_fields())) {
+    return ::PROTOBUF_NAMESPACE_ID::internal::ComputeUnknownFieldsSize(
+        _internal_metadata_, total_size, &_cached_size_);
+  }
+  int cached_size = ::PROTOBUF_NAMESPACE_ID::internal::ToCachedSize(total_size);
+  SetCachedSize(cached_size);
+  return total_size;
+}
+
+void SetRateRawGpsRequest::MergeFrom(const ::PROTOBUF_NAMESPACE_ID::Message& from) {
+// @@protoc_insertion_point(generalized_merge_from_start:mavsdk.rpc.telemetry.SetRateRawGpsRequest)
+  GOOGLE_DCHECK_NE(&from, this);
+  const SetRateRawGpsRequest* source =
+      ::PROTOBUF_NAMESPACE_ID::DynamicCastToGenerated<SetRateRawGpsRequest>(
+          &from);
+  if (source == nullptr) {
+  // @@protoc_insertion_point(generalized_merge_from_cast_fail:mavsdk.rpc.telemetry.SetRateRawGpsRequest)
+    ::PROTOBUF_NAMESPACE_ID::internal::ReflectionOps::Merge(from, this);
+  } else {
+  // @@protoc_insertion_point(generalized_merge_from_cast_success:mavsdk.rpc.telemetry.SetRateRawGpsRequest)
+    MergeFrom(*source);
+  }
+}
+
+void SetRateRawGpsRequest::MergeFrom(const SetRateRawGpsRequest& from) {
+// @@protoc_insertion_point(class_specific_merge_from_start:mavsdk.rpc.telemetry.SetRateRawGpsRequest)
+  GOOGLE_DCHECK_NE(&from, this);
+  _internal_metadata_.MergeFrom<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>(from._internal_metadata_);
+  ::PROTOBUF_NAMESPACE_ID::uint32 cached_has_bits = 0;
+  (void) cached_has_bits;
+
+  if (!(from.rate_hz() <= 0 && from.rate_hz() >= 0)) {
+    _internal_set_rate_hz(from._internal_rate_hz());
+  }
+}
+
+void SetRateRawGpsRequest::CopyFrom(const ::PROTOBUF_NAMESPACE_ID::Message& from) {
+// @@protoc_insertion_point(generalized_copy_from_start:mavsdk.rpc.telemetry.SetRateRawGpsRequest)
+  if (&from == this) return;
+  Clear();
+  MergeFrom(from);
+}
+
+void SetRateRawGpsRequest::CopyFrom(const SetRateRawGpsRequest& from) {
+// @@protoc_insertion_point(class_specific_copy_from_start:mavsdk.rpc.telemetry.SetRateRawGpsRequest)
+  if (&from == this) return;
+  Clear();
+  MergeFrom(from);
+}
+
+bool SetRateRawGpsRequest::IsInitialized() const {
+  return true;
+}
+
+void SetRateRawGpsRequest::InternalSwap(SetRateRawGpsRequest* other) {
+  using std::swap;
+  _internal_metadata_.Swap<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>(&other->_internal_metadata_);
+  swap(rate_hz_, other->rate_hz_);
+}
+
+::PROTOBUF_NAMESPACE_ID::Metadata SetRateRawGpsRequest::GetMetadata() const {
+  return GetMetadataStatic();
+}
+
+
+// ===================================================================
+
 void SetRateBatteryRequest::InitAsDefaultInstance() {
 }
 class SetRateBatteryRequest::_Internal {
@@ -27378,6 +28090,487 @@ void GpsInfo::InternalSwap(GpsInfo* other) {
 
 // ===================================================================
 
+void RawGps::InitAsDefaultInstance() {
+}
+class RawGps::_Internal {
+ public:
+};
+
+RawGps::RawGps(::PROTOBUF_NAMESPACE_ID::Arena* arena)
+  : ::PROTOBUF_NAMESPACE_ID::Message(arena) {
+  SharedCtor();
+  RegisterArenaDtor(arena);
+  // @@protoc_insertion_point(arena_constructor:mavsdk.rpc.telemetry.RawGps)
+}
+RawGps::RawGps(const RawGps& from)
+  : ::PROTOBUF_NAMESPACE_ID::Message() {
+  _internal_metadata_.MergeFrom<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>(from._internal_metadata_);
+  ::memcpy(&timestamp_us_, &from.timestamp_us_,
+    static_cast<size_t>(reinterpret_cast<char*>(&yaw_deg_) -
+    reinterpret_cast<char*>(&timestamp_us_)) + sizeof(yaw_deg_));
+  // @@protoc_insertion_point(copy_constructor:mavsdk.rpc.telemetry.RawGps)
+}
+
+void RawGps::SharedCtor() {
+  ::memset(&timestamp_us_, 0, static_cast<size_t>(
+      reinterpret_cast<char*>(&yaw_deg_) -
+      reinterpret_cast<char*>(&timestamp_us_)) + sizeof(yaw_deg_));
+}
+
+RawGps::~RawGps() {
+  // @@protoc_insertion_point(destructor:mavsdk.rpc.telemetry.RawGps)
+  SharedDtor();
+  _internal_metadata_.Delete<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>();
+}
+
+void RawGps::SharedDtor() {
+  GOOGLE_DCHECK(GetArena() == nullptr);
+}
+
+void RawGps::ArenaDtor(void* object) {
+  RawGps* _this = reinterpret_cast< RawGps* >(object);
+  (void)_this;
+}
+void RawGps::RegisterArenaDtor(::PROTOBUF_NAMESPACE_ID::Arena*) {
+}
+void RawGps::SetCachedSize(int size) const {
+  _cached_size_.Set(size);
+}
+const RawGps& RawGps::default_instance() {
+  ::PROTOBUF_NAMESPACE_ID::internal::InitSCC(&::scc_info_RawGps_telemetry_2ftelemetry_2eproto.base);
+  return *internal_default_instance();
+}
+
+
+void RawGps::Clear() {
+// @@protoc_insertion_point(message_clear_start:mavsdk.rpc.telemetry.RawGps)
+  ::PROTOBUF_NAMESPACE_ID::uint32 cached_has_bits = 0;
+  // Prevent compiler warnings about cached_has_bits being unused
+  (void) cached_has_bits;
+
+  ::memset(&timestamp_us_, 0, static_cast<size_t>(
+      reinterpret_cast<char*>(&yaw_deg_) -
+      reinterpret_cast<char*>(&timestamp_us_)) + sizeof(yaw_deg_));
+  _internal_metadata_.Clear<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>();
+}
+
+const char* RawGps::_InternalParse(const char* ptr, ::PROTOBUF_NAMESPACE_ID::internal::ParseContext* ctx) {
+#define CHK_(x) if (PROTOBUF_PREDICT_FALSE(!(x))) goto failure
+  ::PROTOBUF_NAMESPACE_ID::Arena* arena = GetArena(); (void)arena;
+  while (!ctx->Done(&ptr)) {
+    ::PROTOBUF_NAMESPACE_ID::uint32 tag;
+    ptr = ::PROTOBUF_NAMESPACE_ID::internal::ReadTag(ptr, &tag);
+    CHK_(ptr);
+    switch (tag >> 3) {
+      // uint64 timestamp_us = 1;
+      case 1:
+        if (PROTOBUF_PREDICT_TRUE(static_cast<::PROTOBUF_NAMESPACE_ID::uint8>(tag) == 8)) {
+          timestamp_us_ = ::PROTOBUF_NAMESPACE_ID::internal::ReadVarint64(&ptr);
+          CHK_(ptr);
+        } else goto handle_unusual;
+        continue;
+      // double latitude_deg = 2;
+      case 2:
+        if (PROTOBUF_PREDICT_TRUE(static_cast<::PROTOBUF_NAMESPACE_ID::uint8>(tag) == 17)) {
+          latitude_deg_ = ::PROTOBUF_NAMESPACE_ID::internal::UnalignedLoad<double>(ptr);
+          ptr += sizeof(double);
+        } else goto handle_unusual;
+        continue;
+      // double longitude_deg = 3;
+      case 3:
+        if (PROTOBUF_PREDICT_TRUE(static_cast<::PROTOBUF_NAMESPACE_ID::uint8>(tag) == 25)) {
+          longitude_deg_ = ::PROTOBUF_NAMESPACE_ID::internal::UnalignedLoad<double>(ptr);
+          ptr += sizeof(double);
+        } else goto handle_unusual;
+        continue;
+      // float absolute_altitude_m = 4;
+      case 4:
+        if (PROTOBUF_PREDICT_TRUE(static_cast<::PROTOBUF_NAMESPACE_ID::uint8>(tag) == 37)) {
+          absolute_altitude_m_ = ::PROTOBUF_NAMESPACE_ID::internal::UnalignedLoad<float>(ptr);
+          ptr += sizeof(float);
+        } else goto handle_unusual;
+        continue;
+      // float hdop = 5;
+      case 5:
+        if (PROTOBUF_PREDICT_TRUE(static_cast<::PROTOBUF_NAMESPACE_ID::uint8>(tag) == 45)) {
+          hdop_ = ::PROTOBUF_NAMESPACE_ID::internal::UnalignedLoad<float>(ptr);
+          ptr += sizeof(float);
+        } else goto handle_unusual;
+        continue;
+      // float vdop = 6;
+      case 6:
+        if (PROTOBUF_PREDICT_TRUE(static_cast<::PROTOBUF_NAMESPACE_ID::uint8>(tag) == 53)) {
+          vdop_ = ::PROTOBUF_NAMESPACE_ID::internal::UnalignedLoad<float>(ptr);
+          ptr += sizeof(float);
+        } else goto handle_unusual;
+        continue;
+      // float velocity_m_s = 7;
+      case 7:
+        if (PROTOBUF_PREDICT_TRUE(static_cast<::PROTOBUF_NAMESPACE_ID::uint8>(tag) == 61)) {
+          velocity_m_s_ = ::PROTOBUF_NAMESPACE_ID::internal::UnalignedLoad<float>(ptr);
+          ptr += sizeof(float);
+        } else goto handle_unusual;
+        continue;
+      // float cog_deg = 8;
+      case 8:
+        if (PROTOBUF_PREDICT_TRUE(static_cast<::PROTOBUF_NAMESPACE_ID::uint8>(tag) == 69)) {
+          cog_deg_ = ::PROTOBUF_NAMESPACE_ID::internal::UnalignedLoad<float>(ptr);
+          ptr += sizeof(float);
+        } else goto handle_unusual;
+        continue;
+      // float altitude_ellipsoid_m = 9;
+      case 9:
+        if (PROTOBUF_PREDICT_TRUE(static_cast<::PROTOBUF_NAMESPACE_ID::uint8>(tag) == 77)) {
+          altitude_ellipsoid_m_ = ::PROTOBUF_NAMESPACE_ID::internal::UnalignedLoad<float>(ptr);
+          ptr += sizeof(float);
+        } else goto handle_unusual;
+        continue;
+      // float horizontal_uncertainty_m = 10;
+      case 10:
+        if (PROTOBUF_PREDICT_TRUE(static_cast<::PROTOBUF_NAMESPACE_ID::uint8>(tag) == 85)) {
+          horizontal_uncertainty_m_ = ::PROTOBUF_NAMESPACE_ID::internal::UnalignedLoad<float>(ptr);
+          ptr += sizeof(float);
+        } else goto handle_unusual;
+        continue;
+      // float vertical_uncertainty_m = 11;
+      case 11:
+        if (PROTOBUF_PREDICT_TRUE(static_cast<::PROTOBUF_NAMESPACE_ID::uint8>(tag) == 93)) {
+          vertical_uncertainty_m_ = ::PROTOBUF_NAMESPACE_ID::internal::UnalignedLoad<float>(ptr);
+          ptr += sizeof(float);
+        } else goto handle_unusual;
+        continue;
+      // float velocity_uncertainty_m_s = 12;
+      case 12:
+        if (PROTOBUF_PREDICT_TRUE(static_cast<::PROTOBUF_NAMESPACE_ID::uint8>(tag) == 101)) {
+          velocity_uncertainty_m_s_ = ::PROTOBUF_NAMESPACE_ID::internal::UnalignedLoad<float>(ptr);
+          ptr += sizeof(float);
+        } else goto handle_unusual;
+        continue;
+      // float heading_uncertainty_deg = 13;
+      case 13:
+        if (PROTOBUF_PREDICT_TRUE(static_cast<::PROTOBUF_NAMESPACE_ID::uint8>(tag) == 109)) {
+          heading_uncertainty_deg_ = ::PROTOBUF_NAMESPACE_ID::internal::UnalignedLoad<float>(ptr);
+          ptr += sizeof(float);
+        } else goto handle_unusual;
+        continue;
+      // float yaw_deg = 14;
+      case 14:
+        if (PROTOBUF_PREDICT_TRUE(static_cast<::PROTOBUF_NAMESPACE_ID::uint8>(tag) == 117)) {
+          yaw_deg_ = ::PROTOBUF_NAMESPACE_ID::internal::UnalignedLoad<float>(ptr);
+          ptr += sizeof(float);
+        } else goto handle_unusual;
+        continue;
+      default: {
+      handle_unusual:
+        if ((tag & 7) == 4 || tag == 0) {
+          ctx->SetLastTag(tag);
+          goto success;
+        }
+        ptr = UnknownFieldParse(tag,
+            _internal_metadata_.mutable_unknown_fields<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>(),
+            ptr, ctx);
+        CHK_(ptr != nullptr);
+        continue;
+      }
+    }  // switch
+  }  // while
+success:
+  return ptr;
+failure:
+  ptr = nullptr;
+  goto success;
+#undef CHK_
+}
+
+::PROTOBUF_NAMESPACE_ID::uint8* RawGps::_InternalSerialize(
+    ::PROTOBUF_NAMESPACE_ID::uint8* target, ::PROTOBUF_NAMESPACE_ID::io::EpsCopyOutputStream* stream) const {
+  // @@protoc_insertion_point(serialize_to_array_start:mavsdk.rpc.telemetry.RawGps)
+  ::PROTOBUF_NAMESPACE_ID::uint32 cached_has_bits = 0;
+  (void) cached_has_bits;
+
+  // uint64 timestamp_us = 1;
+  if (this->timestamp_us() != 0) {
+    target = stream->EnsureSpace(target);
+    target = ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::WriteUInt64ToArray(1, this->_internal_timestamp_us(), target);
+  }
+
+  // double latitude_deg = 2;
+  if (!(this->latitude_deg() <= 0 && this->latitude_deg() >= 0)) {
+    target = stream->EnsureSpace(target);
+    target = ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::WriteDoubleToArray(2, this->_internal_latitude_deg(), target);
+  }
+
+  // double longitude_deg = 3;
+  if (!(this->longitude_deg() <= 0 && this->longitude_deg() >= 0)) {
+    target = stream->EnsureSpace(target);
+    target = ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::WriteDoubleToArray(3, this->_internal_longitude_deg(), target);
+  }
+
+  // float absolute_altitude_m = 4;
+  if (!(this->absolute_altitude_m() <= 0 && this->absolute_altitude_m() >= 0)) {
+    target = stream->EnsureSpace(target);
+    target = ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::WriteFloatToArray(4, this->_internal_absolute_altitude_m(), target);
+  }
+
+  // float hdop = 5;
+  if (!(this->hdop() <= 0 && this->hdop() >= 0)) {
+    target = stream->EnsureSpace(target);
+    target = ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::WriteFloatToArray(5, this->_internal_hdop(), target);
+  }
+
+  // float vdop = 6;
+  if (!(this->vdop() <= 0 && this->vdop() >= 0)) {
+    target = stream->EnsureSpace(target);
+    target = ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::WriteFloatToArray(6, this->_internal_vdop(), target);
+  }
+
+  // float velocity_m_s = 7;
+  if (!(this->velocity_m_s() <= 0 && this->velocity_m_s() >= 0)) {
+    target = stream->EnsureSpace(target);
+    target = ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::WriteFloatToArray(7, this->_internal_velocity_m_s(), target);
+  }
+
+  // float cog_deg = 8;
+  if (!(this->cog_deg() <= 0 && this->cog_deg() >= 0)) {
+    target = stream->EnsureSpace(target);
+    target = ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::WriteFloatToArray(8, this->_internal_cog_deg(), target);
+  }
+
+  // float altitude_ellipsoid_m = 9;
+  if (!(this->altitude_ellipsoid_m() <= 0 && this->altitude_ellipsoid_m() >= 0)) {
+    target = stream->EnsureSpace(target);
+    target = ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::WriteFloatToArray(9, this->_internal_altitude_ellipsoid_m(), target);
+  }
+
+  // float horizontal_uncertainty_m = 10;
+  if (!(this->horizontal_uncertainty_m() <= 0 && this->horizontal_uncertainty_m() >= 0)) {
+    target = stream->EnsureSpace(target);
+    target = ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::WriteFloatToArray(10, this->_internal_horizontal_uncertainty_m(), target);
+  }
+
+  // float vertical_uncertainty_m = 11;
+  if (!(this->vertical_uncertainty_m() <= 0 && this->vertical_uncertainty_m() >= 0)) {
+    target = stream->EnsureSpace(target);
+    target = ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::WriteFloatToArray(11, this->_internal_vertical_uncertainty_m(), target);
+  }
+
+  // float velocity_uncertainty_m_s = 12;
+  if (!(this->velocity_uncertainty_m_s() <= 0 && this->velocity_uncertainty_m_s() >= 0)) {
+    target = stream->EnsureSpace(target);
+    target = ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::WriteFloatToArray(12, this->_internal_velocity_uncertainty_m_s(), target);
+  }
+
+  // float heading_uncertainty_deg = 13;
+  if (!(this->heading_uncertainty_deg() <= 0 && this->heading_uncertainty_deg() >= 0)) {
+    target = stream->EnsureSpace(target);
+    target = ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::WriteFloatToArray(13, this->_internal_heading_uncertainty_deg(), target);
+  }
+
+  // float yaw_deg = 14;
+  if (!(this->yaw_deg() <= 0 && this->yaw_deg() >= 0)) {
+    target = stream->EnsureSpace(target);
+    target = ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::WriteFloatToArray(14, this->_internal_yaw_deg(), target);
+  }
+
+  if (PROTOBUF_PREDICT_FALSE(_internal_metadata_.have_unknown_fields())) {
+    target = ::PROTOBUF_NAMESPACE_ID::internal::WireFormat::InternalSerializeUnknownFieldsToArray(
+        _internal_metadata_.unknown_fields<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>(::PROTOBUF_NAMESPACE_ID::UnknownFieldSet::default_instance), target, stream);
+  }
+  // @@protoc_insertion_point(serialize_to_array_end:mavsdk.rpc.telemetry.RawGps)
+  return target;
+}
+
+size_t RawGps::ByteSizeLong() const {
+// @@protoc_insertion_point(message_byte_size_start:mavsdk.rpc.telemetry.RawGps)
+  size_t total_size = 0;
+
+  ::PROTOBUF_NAMESPACE_ID::uint32 cached_has_bits = 0;
+  // Prevent compiler warnings about cached_has_bits being unused
+  (void) cached_has_bits;
+
+  // uint64 timestamp_us = 1;
+  if (this->timestamp_us() != 0) {
+    total_size += 1 +
+      ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::UInt64Size(
+        this->_internal_timestamp_us());
+  }
+
+  // double latitude_deg = 2;
+  if (!(this->latitude_deg() <= 0 && this->latitude_deg() >= 0)) {
+    total_size += 1 + 8;
+  }
+
+  // double longitude_deg = 3;
+  if (!(this->longitude_deg() <= 0 && this->longitude_deg() >= 0)) {
+    total_size += 1 + 8;
+  }
+
+  // float absolute_altitude_m = 4;
+  if (!(this->absolute_altitude_m() <= 0 && this->absolute_altitude_m() >= 0)) {
+    total_size += 1 + 4;
+  }
+
+  // float hdop = 5;
+  if (!(this->hdop() <= 0 && this->hdop() >= 0)) {
+    total_size += 1 + 4;
+  }
+
+  // float vdop = 6;
+  if (!(this->vdop() <= 0 && this->vdop() >= 0)) {
+    total_size += 1 + 4;
+  }
+
+  // float velocity_m_s = 7;
+  if (!(this->velocity_m_s() <= 0 && this->velocity_m_s() >= 0)) {
+    total_size += 1 + 4;
+  }
+
+  // float cog_deg = 8;
+  if (!(this->cog_deg() <= 0 && this->cog_deg() >= 0)) {
+    total_size += 1 + 4;
+  }
+
+  // float altitude_ellipsoid_m = 9;
+  if (!(this->altitude_ellipsoid_m() <= 0 && this->altitude_ellipsoid_m() >= 0)) {
+    total_size += 1 + 4;
+  }
+
+  // float horizontal_uncertainty_m = 10;
+  if (!(this->horizontal_uncertainty_m() <= 0 && this->horizontal_uncertainty_m() >= 0)) {
+    total_size += 1 + 4;
+  }
+
+  // float vertical_uncertainty_m = 11;
+  if (!(this->vertical_uncertainty_m() <= 0 && this->vertical_uncertainty_m() >= 0)) {
+    total_size += 1 + 4;
+  }
+
+  // float velocity_uncertainty_m_s = 12;
+  if (!(this->velocity_uncertainty_m_s() <= 0 && this->velocity_uncertainty_m_s() >= 0)) {
+    total_size += 1 + 4;
+  }
+
+  // float heading_uncertainty_deg = 13;
+  if (!(this->heading_uncertainty_deg() <= 0 && this->heading_uncertainty_deg() >= 0)) {
+    total_size += 1 + 4;
+  }
+
+  // float yaw_deg = 14;
+  if (!(this->yaw_deg() <= 0 && this->yaw_deg() >= 0)) {
+    total_size += 1 + 4;
+  }
+
+  if (PROTOBUF_PREDICT_FALSE(_internal_metadata_.have_unknown_fields())) {
+    return ::PROTOBUF_NAMESPACE_ID::internal::ComputeUnknownFieldsSize(
+        _internal_metadata_, total_size, &_cached_size_);
+  }
+  int cached_size = ::PROTOBUF_NAMESPACE_ID::internal::ToCachedSize(total_size);
+  SetCachedSize(cached_size);
+  return total_size;
+}
+
+void RawGps::MergeFrom(const ::PROTOBUF_NAMESPACE_ID::Message& from) {
+// @@protoc_insertion_point(generalized_merge_from_start:mavsdk.rpc.telemetry.RawGps)
+  GOOGLE_DCHECK_NE(&from, this);
+  const RawGps* source =
+      ::PROTOBUF_NAMESPACE_ID::DynamicCastToGenerated<RawGps>(
+          &from);
+  if (source == nullptr) {
+  // @@protoc_insertion_point(generalized_merge_from_cast_fail:mavsdk.rpc.telemetry.RawGps)
+    ::PROTOBUF_NAMESPACE_ID::internal::ReflectionOps::Merge(from, this);
+  } else {
+  // @@protoc_insertion_point(generalized_merge_from_cast_success:mavsdk.rpc.telemetry.RawGps)
+    MergeFrom(*source);
+  }
+}
+
+void RawGps::MergeFrom(const RawGps& from) {
+// @@protoc_insertion_point(class_specific_merge_from_start:mavsdk.rpc.telemetry.RawGps)
+  GOOGLE_DCHECK_NE(&from, this);
+  _internal_metadata_.MergeFrom<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>(from._internal_metadata_);
+  ::PROTOBUF_NAMESPACE_ID::uint32 cached_has_bits = 0;
+  (void) cached_has_bits;
+
+  if (from.timestamp_us() != 0) {
+    _internal_set_timestamp_us(from._internal_timestamp_us());
+  }
+  if (!(from.latitude_deg() <= 0 && from.latitude_deg() >= 0)) {
+    _internal_set_latitude_deg(from._internal_latitude_deg());
+  }
+  if (!(from.longitude_deg() <= 0 && from.longitude_deg() >= 0)) {
+    _internal_set_longitude_deg(from._internal_longitude_deg());
+  }
+  if (!(from.absolute_altitude_m() <= 0 && from.absolute_altitude_m() >= 0)) {
+    _internal_set_absolute_altitude_m(from._internal_absolute_altitude_m());
+  }
+  if (!(from.hdop() <= 0 && from.hdop() >= 0)) {
+    _internal_set_hdop(from._internal_hdop());
+  }
+  if (!(from.vdop() <= 0 && from.vdop() >= 0)) {
+    _internal_set_vdop(from._internal_vdop());
+  }
+  if (!(from.velocity_m_s() <= 0 && from.velocity_m_s() >= 0)) {
+    _internal_set_velocity_m_s(from._internal_velocity_m_s());
+  }
+  if (!(from.cog_deg() <= 0 && from.cog_deg() >= 0)) {
+    _internal_set_cog_deg(from._internal_cog_deg());
+  }
+  if (!(from.altitude_ellipsoid_m() <= 0 && from.altitude_ellipsoid_m() >= 0)) {
+    _internal_set_altitude_ellipsoid_m(from._internal_altitude_ellipsoid_m());
+  }
+  if (!(from.horizontal_uncertainty_m() <= 0 && from.horizontal_uncertainty_m() >= 0)) {
+    _internal_set_horizontal_uncertainty_m(from._internal_horizontal_uncertainty_m());
+  }
+  if (!(from.vertical_uncertainty_m() <= 0 && from.vertical_uncertainty_m() >= 0)) {
+    _internal_set_vertical_uncertainty_m(from._internal_vertical_uncertainty_m());
+  }
+  if (!(from.velocity_uncertainty_m_s() <= 0 && from.velocity_uncertainty_m_s() >= 0)) {
+    _internal_set_velocity_uncertainty_m_s(from._internal_velocity_uncertainty_m_s());
+  }
+  if (!(from.heading_uncertainty_deg() <= 0 && from.heading_uncertainty_deg() >= 0)) {
+    _internal_set_heading_uncertainty_deg(from._internal_heading_uncertainty_deg());
+  }
+  if (!(from.yaw_deg() <= 0 && from.yaw_deg() >= 0)) {
+    _internal_set_yaw_deg(from._internal_yaw_deg());
+  }
+}
+
+void RawGps::CopyFrom(const ::PROTOBUF_NAMESPACE_ID::Message& from) {
+// @@protoc_insertion_point(generalized_copy_from_start:mavsdk.rpc.telemetry.RawGps)
+  if (&from == this) return;
+  Clear();
+  MergeFrom(from);
+}
+
+void RawGps::CopyFrom(const RawGps& from) {
+// @@protoc_insertion_point(class_specific_copy_from_start:mavsdk.rpc.telemetry.RawGps)
+  if (&from == this) return;
+  Clear();
+  MergeFrom(from);
+}
+
+bool RawGps::IsInitialized() const {
+  return true;
+}
+
+void RawGps::InternalSwap(RawGps* other) {
+  using std::swap;
+  _internal_metadata_.Swap<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>(&other->_internal_metadata_);
+  ::PROTOBUF_NAMESPACE_ID::internal::memswap<
+      PROTOBUF_FIELD_OFFSET(RawGps, yaw_deg_)
+      + sizeof(RawGps::yaw_deg_)
+      - PROTOBUF_FIELD_OFFSET(RawGps, timestamp_us_)>(
+          reinterpret_cast<char*>(&timestamp_us_),
+          reinterpret_cast<char*>(&other->timestamp_us_));
+}
+
+::PROTOBUF_NAMESPACE_ID::Metadata RawGps::GetMetadata() const {
+  return GetMetadataStatic();
+}
+
+
+// ===================================================================
+
 void Battery::InitAsDefaultInstance() {
 }
 class Battery::_Internal {
@@ -33856,6 +35049,12 @@ template<> PROTOBUF_NOINLINE ::mavsdk::rpc::telemetry::SubscribeGpsInfoRequest* 
 template<> PROTOBUF_NOINLINE ::mavsdk::rpc::telemetry::GpsInfoResponse* Arena::CreateMaybeMessage< ::mavsdk::rpc::telemetry::GpsInfoResponse >(Arena* arena) {
   return Arena::CreateMessageInternal< ::mavsdk::rpc::telemetry::GpsInfoResponse >(arena);
 }
+template<> PROTOBUF_NOINLINE ::mavsdk::rpc::telemetry::SubscribeRawGpsRequest* Arena::CreateMaybeMessage< ::mavsdk::rpc::telemetry::SubscribeRawGpsRequest >(Arena* arena) {
+  return Arena::CreateMessageInternal< ::mavsdk::rpc::telemetry::SubscribeRawGpsRequest >(arena);
+}
+template<> PROTOBUF_NOINLINE ::mavsdk::rpc::telemetry::RawGpsResponse* Arena::CreateMaybeMessage< ::mavsdk::rpc::telemetry::RawGpsResponse >(Arena* arena) {
+  return Arena::CreateMessageInternal< ::mavsdk::rpc::telemetry::RawGpsResponse >(arena);
+}
 template<> PROTOBUF_NOINLINE ::mavsdk::rpc::telemetry::SubscribeBatteryRequest* Arena::CreateMaybeMessage< ::mavsdk::rpc::telemetry::SubscribeBatteryRequest >(Arena* arena) {
   return Arena::CreateMessageInternal< ::mavsdk::rpc::telemetry::SubscribeBatteryRequest >(arena);
 }
@@ -34030,6 +35229,9 @@ template<> PROTOBUF_NOINLINE ::mavsdk::rpc::telemetry::SetRateGpsInfoRequest* Ar
 template<> PROTOBUF_NOINLINE ::mavsdk::rpc::telemetry::SetRateGpsInfoResponse* Arena::CreateMaybeMessage< ::mavsdk::rpc::telemetry::SetRateGpsInfoResponse >(Arena* arena) {
   return Arena::CreateMessageInternal< ::mavsdk::rpc::telemetry::SetRateGpsInfoResponse >(arena);
 }
+template<> PROTOBUF_NOINLINE ::mavsdk::rpc::telemetry::SetRateRawGpsRequest* Arena::CreateMaybeMessage< ::mavsdk::rpc::telemetry::SetRateRawGpsRequest >(Arena* arena) {
+  return Arena::CreateMessageInternal< ::mavsdk::rpc::telemetry::SetRateRawGpsRequest >(arena);
+}
 template<> PROTOBUF_NOINLINE ::mavsdk::rpc::telemetry::SetRateBatteryRequest* Arena::CreateMaybeMessage< ::mavsdk::rpc::telemetry::SetRateBatteryRequest >(Arena* arena) {
   return Arena::CreateMessageInternal< ::mavsdk::rpc::telemetry::SetRateBatteryRequest >(arena);
 }
@@ -34128,6 +35330,9 @@ template<> PROTOBUF_NOINLINE ::mavsdk::rpc::telemetry::AngularVelocityBody* Aren
 }
 template<> PROTOBUF_NOINLINE ::mavsdk::rpc::telemetry::GpsInfo* Arena::CreateMaybeMessage< ::mavsdk::rpc::telemetry::GpsInfo >(Arena* arena) {
   return Arena::CreateMessageInternal< ::mavsdk::rpc::telemetry::GpsInfo >(arena);
+}
+template<> PROTOBUF_NOINLINE ::mavsdk::rpc::telemetry::RawGps* Arena::CreateMaybeMessage< ::mavsdk::rpc::telemetry::RawGps >(Arena* arena) {
+  return Arena::CreateMessageInternal< ::mavsdk::rpc::telemetry::RawGps >(arena);
 }
 template<> PROTOBUF_NOINLINE ::mavsdk::rpc::telemetry::Battery* Arena::CreateMaybeMessage< ::mavsdk::rpc::telemetry::Battery >(Arena* arena) {
   return Arena::CreateMessageInternal< ::mavsdk::rpc::telemetry::Battery >(arena);

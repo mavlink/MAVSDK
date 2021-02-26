@@ -14,6 +14,7 @@ public:
     MOCK_CONST_METHOD1(subscribe_status_text, void(Telemetry::StatusTextCallback)){};
     MOCK_CONST_METHOD1(subscribe_armed, void(Telemetry::ArmedCallback)){};
     MOCK_CONST_METHOD1(subscribe_gps_info, void(Telemetry::GpsInfoCallback)){};
+    MOCK_CONST_METHOD1(subscribe_raw_gps, void(Telemetry::RawGpsCallback)){};
     MOCK_CONST_METHOD1(subscribe_battery, void(Telemetry::BatteryCallback)){};
     MOCK_CONST_METHOD1(subscribe_flight_mode, void(Telemetry::FlightModeCallback)){};
     MOCK_CONST_METHOD1(subscribe_landed_state, void(Telemetry::LandedStateCallback)){};
@@ -54,6 +55,7 @@ public:
     MOCK_METHOD1(set_rate_camera_attitude, Telemetry::Result(double)){};
     MOCK_METHOD1(set_rate_velocity_ned, Telemetry::Result(double)){};
     MOCK_METHOD1(set_rate_gps_info, Telemetry::Result(double)){};
+    MOCK_METHOD1(set_rate_raw_gps, Telemetry::Result(double)){};
     MOCK_METHOD1(set_rate_battery, Telemetry::Result(double)){};
     MOCK_METHOD1(set_rate_rc_status, Telemetry::Result(double)){};
     MOCK_METHOD1(set_rate_actuator_control_target, Telemetry::Result(double)){};

@@ -286,6 +286,50 @@ public:
     friend std::ostream& operator<<(std::ostream& str, Telemetry::GpsInfo const& gps_info);
 
     /**
+     * @brief Raw GPS information type.
+     *
+     * Warning: this is an advanced type! If you want the location of the drone, use
+     * the position instead. This message exposes the raw values of the GNSS sensor.
+     */
+    struct RawGps {
+        uint64_t timestamp_us{}; /**< @brief Timestamp in microseconds (UNIX Epoch time or time
+                                    since system boot, to be inferred) */
+        double latitude_deg{}; /**< @brief Latitude in degrees (WGS84, EGM96 ellipsoid) */
+        double longitude_deg{}; /**< @brief Longitude in degrees (WGS84, EGM96 ellipsoid) */
+        float absolute_altitude_m{}; /**< @brief Altitude AMSL (above mean sea level) in metres */
+        float hdop{}; /**< @brief GPS HDOP horizontal dilution of position (unitless). If unknown,
+                         set to: UINT16_MAX */
+        float vdop{}; /**< @brief GPS VDOP vertical dilution of position (unitless). If unknown, set
+                         to: UINT16_MAX */
+        float velocity_m_s{}; /**< @brief Ground velocity in metres per second */
+        float cog_deg{}; /**< @brief Course over ground (NOT heading, but direction of movement) in
+                            degrees * 100, 0.0..359.99 degrees. If unknown, set to: UINT16_MAX */
+        float
+            altitude_ellipsoid_m{}; /**< @brief Altitude in metres (above WGS84, EGM96 ellipsoid) */
+        float horizontal_uncertainty_m{}; /**< @brief Position uncertainty in metres */
+        float vertical_uncertainty_m{}; /**< @brief Altitude uncertainty in metres */
+        float velocity_uncertainty_m_s{}; /**< @brief Velocity uncertainty in metres per second */
+        float heading_uncertainty_deg{}; /**< @brief Heading uncertainty in degrees */
+        float yaw_deg{}; /**< @brief Yaw in earth frame from north. Use 0 if this GPS does not
+                            provide yaw. Use 65535 if this GPS is configured to provide yaw and is
+                            currently unable to provide it. Use 36000 for north */
+    };
+
+    /**
+     * @brief Equal operator to compare two `Telemetry::RawGps` objects.
+     *
+     * @return `true` if items are equal.
+     */
+    friend bool operator==(const Telemetry::RawGps& lhs, const Telemetry::RawGps& rhs);
+
+    /**
+     * @brief Stream operator to print information about a `Telemetry::RawGps`.
+     *
+     * @return A reference to the stream.
+     */
+    friend std::ostream& operator<<(std::ostream& str, Telemetry::RawGps const& raw_gps);
+
+    /**
      * @brief Battery type.
      */
     struct Battery {
@@ -1142,6 +1186,24 @@ public:
      * @return One GpsInfo update.
      */
     GpsInfo gps_info() const;
+
+    /**
+     * @brief Callback type for subscribe_raw_gps.
+     */
+
+    using RawGpsCallback = std::function<void(RawGps)>;
+
+    /**
+     * @brief Subscribe to 'Raw GPS' updates.
+     */
+    void subscribe_raw_gps(RawGpsCallback callback);
+
+    /**
+     * @brief Poll for 'RawGps' (blocking).
+     *
+     * @return One RawGps update.
+     */
+    RawGps raw_gps() const;
 
     /**
      * @brief Callback type for subscribe_battery.

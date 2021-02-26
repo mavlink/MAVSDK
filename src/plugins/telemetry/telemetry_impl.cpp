@@ -934,6 +934,23 @@ void TelemetryImpl::process_gps_raw_int(const mavlink_message_t& message)
     new_gps_info.fix_type = fix_type;
     set_gps_info(new_gps_info);
 
+    Telemetry::RawGps raw_gps_info;
+    raw_gps_info.timestamp_us = gps_raw_int.time_usec;
+    raw_gps_info.latitude_deg = gps_raw_int.lat * 1e-7;
+    raw_gps_info.longitude_deg = gps_raw_int.lon * 1e-7;
+    raw_gps_info.absolute_altitude_m = gps_raw_int.alt * 1e-3f;
+    raw_gps_info.hdop = static_cast<float>(gps_raw_int.eph) * 1e-2f;
+    raw_gps_info.vdop = static_cast<float>(gps_raw_int.epv) * 1e-2f;
+    raw_gps_info.velocity_m_s = static_cast<float>(gps_raw_int.vel) * 1e2f;
+    raw_gps_info.cog_deg = static_cast<float>(gps_raw_int.cog) * 1e-2f;
+    raw_gps_info.altitude_ellipsoid_m = static_cast<float>(gps_raw_int.alt_ellipsoid) * 1e3f;
+    raw_gps_info.horizontal_uncertainty_m = static_cast<float>(gps_raw_int.h_acc) * 1e3f;
+    raw_gps_info.vertical_uncertainty_m = static_cast<float>(gps_raw_int.v_acc) * 1e3f;
+    raw_gps_info.velocity_uncertainty_m_s = static_cast<float>(gps_raw_int.vel_acc) * 1e3f;
+    raw_gps_info.heading_uncertainty_deg = static_cast<float>(gps_raw_int.hdg_acc) * 1e-5f;
+    raw_gps_info.yaw_deg = static_cast<uint32_t>(gps_raw_int.yaw) * 1e-2f;
+    set_raw_gps(raw_gps_info);
+
     // TODO: This is just an interim hack, we will have to look at
     //       estimator flags in order to decide if the position
     //       estimate is good enough.
@@ -946,6 +963,11 @@ void TelemetryImpl::process_gps_raw_int(const mavlink_message_t& message)
         if (_gps_info_subscription) {
             auto callback = _gps_info_subscription;
             auto arg = gps_info();
+            _parent->call_user_callback([callback, arg]() { callback(arg); });
+        }
+        if (_raw_gps_subscription) {
+            auto callback = _raw_gps_subscription;
+            auto arg = raw_gps();
             _parent->call_user_callback([callback, arg]() { callback(arg); });
         }
     }
@@ -1690,6 +1712,18 @@ void TelemetryImpl::set_gps_info(Telemetry::GpsInfo gps_info)
     _gps_info = gps_info;
 }
 
+Telemetry::RawGps TelemetryImpl::raw_gps() const
+{
+    std::lock_guard<std::mutex> lock(_raw_gps_mutex);
+    return _raw_gps;
+}
+
+void TelemetryImpl::set_raw_gps(Telemetry::RawGps raw_gps)
+{
+    std::lock_guard<std::mutex> lock(_raw_gps_mutex);
+    _raw_gps = raw_gps;
+}
+
 Telemetry::Battery TelemetryImpl::battery() const
 {
     std::lock_guard<std::mutex> lock(_battery_mutex);
@@ -1995,6 +2029,12 @@ void TelemetryImpl::subscribe_gps_info(Telemetry::GpsInfoCallback& callback)
 {
     std::lock_guard<std::mutex> lock(_subscription_mutex);
     _gps_info_subscription = callback;
+}
+
+void TelemetryImpl::subscribe_raw_gps(Telemetry::RawGpsCallback& callback)
+{
+    std::lock_guard<std::mutex> lock(_subscription_mutex);
+    _raw_gps_subscription = callback;
 }
 
 void TelemetryImpl::subscribe_battery(Telemetry::BatteryCallback& callback)

@@ -98,6 +98,7 @@ public:
     Telemetry::Imu scaled_imu() const;
     Telemetry::Imu raw_imu() const;
     Telemetry::GpsInfo gps_info() const;
+    Telemetry::RawGps raw_gps() const;
     Telemetry::Battery battery() const;
     Telemetry::FlightMode flight_mode() const;
     Telemetry::Health health() const;
@@ -130,6 +131,7 @@ public:
     void subscribe_scaled_imu(Telemetry::ScaledImuCallback& callback);
     void subscribe_raw_imu(Telemetry::RawImuCallback& callback);
     void subscribe_gps_info(Telemetry::GpsInfoCallback& callback);
+    void subscribe_raw_gps(Telemetry::RawGpsCallback& callback);
     void subscribe_battery(Telemetry::BatteryCallback& callback);
     void subscribe_flight_mode(Telemetry::FlightModeCallback& callback);
     void subscribe_health(Telemetry::HealthCallback& callback);
@@ -165,6 +167,7 @@ private:
     void set_scaled_imu(Telemetry::Imu imu);
     void set_raw_imu(Telemetry::Imu imu);
     void set_gps_info(Telemetry::GpsInfo gps_info);
+    void set_raw_gps(Telemetry::RawGps raw_gps);
     void set_battery(Telemetry::Battery battery);
     void set_health_local_position(bool ok);
     void set_health_global_position(bool ok);
@@ -281,6 +284,9 @@ private:
     mutable std::mutex _gps_info_mutex{};
     Telemetry::GpsInfo _gps_info{};
 
+    mutable std::mutex _raw_gps_mutex{};
+    Telemetry::RawGps _raw_gps{};
+
     mutable std::mutex _battery_mutex{};
     Telemetry::Battery _battery{};
 
@@ -336,6 +342,7 @@ private:
     Telemetry::ScaledImuCallback _scaled_imu_subscription{nullptr};
     Telemetry::RawImuCallback _raw_imu_subscription{nullptr};
     Telemetry::GpsInfoCallback _gps_info_subscription{nullptr};
+    Telemetry::RawGpsCallback _raw_gps_subscription{nullptr};
     Telemetry::BatteryCallback _battery_subscription{nullptr};
     Telemetry::FlightModeCallback _flight_mode_subscription{nullptr};
     Telemetry::HealthCallback _health_subscription{nullptr};
