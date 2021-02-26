@@ -192,7 +192,7 @@ void CalibrationImpl::calibrate_gimbal_accelerometer_async(const CalibrationCall
         command, std::bind(&CalibrationImpl::command_result_callback, this, _1, _2));
 }
 
-Calibration::Result CalibrationImpl::cancel() const
+Calibration::Result CalibrationImpl::cancel()
 {
     std::lock_guard<std::mutex> lock(_calibration_mutex);
 
@@ -222,7 +222,17 @@ Calibration::Result CalibrationImpl::cancel() const
     command.target_component_id = target_component_id;
     _parent->send_command_async(command, nullptr);
 
-    return Calibration::Result::Success;
+    auto prom = std::promise<Calibration::Result>();
+    auto fut = prom.get_future();
+    _parent->send_command_async(command, [&prom](MavlinkCommandSender::Result command_result, float) {
+        if (command_result != MavlinkCommandSender::Result::Success) {
+            prom.set_value(Calibration::Result::ConnectionError);
+        } else {
+            prom.set_value(Calibration::Result::Success);
+        }
+    });
+
+    return fut.get();
 }
 
 void CalibrationImpl::command_result_callback(
