@@ -298,21 +298,19 @@ public:
         double longitude_deg{}; /**< @brief Longitude in degrees (WGS84, EGM96 ellipsoid) */
         float absolute_altitude_m{}; /**< @brief Altitude AMSL (above mean sea level) in metres */
         float hdop{}; /**< @brief GPS HDOP horizontal dilution of position (unitless). If unknown,
-                         set to: UINT16_MAX */
+                         set to NaN */
         float vdop{}; /**< @brief GPS VDOP vertical dilution of position (unitless). If unknown, set
-                         to: UINT16_MAX */
+                         to NaN */
         float velocity_m_s{}; /**< @brief Ground velocity in metres per second */
         float cog_deg{}; /**< @brief Course over ground (NOT heading, but direction of movement) in
-                            degrees * 100, 0.0..359.99 degrees. If unknown, set to: UINT16_MAX */
+                            degrees. If unknown, set to NaN */
         float
             altitude_ellipsoid_m{}; /**< @brief Altitude in metres (above WGS84, EGM96 ellipsoid) */
         float horizontal_uncertainty_m{}; /**< @brief Position uncertainty in metres */
         float vertical_uncertainty_m{}; /**< @brief Altitude uncertainty in metres */
         float velocity_uncertainty_m_s{}; /**< @brief Velocity uncertainty in metres per second */
         float heading_uncertainty_deg{}; /**< @brief Heading uncertainty in degrees */
-        float yaw_deg{}; /**< @brief Yaw in earth frame from north. Use 0 if this GPS does not
-                            provide yaw. Use 65535 if this GPS is configured to provide yaw and is
-                            currently unable to provide it. Use 36000 for north */
+        float yaw_deg{}; /**< @brief Yaw in earth frame from north. */
     };
 
     /**
