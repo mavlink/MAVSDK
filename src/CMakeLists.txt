@@ -60,6 +60,8 @@ if (DEFINED EXTERNAL_DIR AND NOT EXTERNAL_DIR STREQUAL "")
     include_directories(${EXTERNAL_DIR})
 endif()
 
+include(cmake/static_analyzers.cmake)
+
 if(BUILD_TESTS)
     enable_testing()
     add_subdirectory(${CMAKE_CURRENT_SOURCE_DIR}/third_party/gtest EXCLUDE_FROM_ALL)
