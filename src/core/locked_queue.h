@@ -8,8 +8,8 @@ namespace mavsdk {
 
 template<class T> class LockedQueue {
 public:
-    LockedQueue(){};
-    ~LockedQueue(){};
+    LockedQueue() = default;
+    ~LockedQueue() = default;
 
     void push_back(std::shared_ptr<T> item_ptr)
     {
@@ -34,7 +34,7 @@ public:
     // Thus, no one can interfere between the two steps.
     class Guard {
     public:
-        Guard(LockedQueue& locked_queue) : _locked_queue(locked_queue)
+        explicit Guard(LockedQueue& locked_queue) : _locked_queue(locked_queue)
         {
             _locked_queue._mutex.lock();
         }

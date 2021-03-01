@@ -10,7 +10,7 @@ namespace mavsdk {
 
 class CallEveryHandler {
 public:
-    CallEveryHandler(Time& time);
+    explicit CallEveryHandler(Time& time);
     ~CallEveryHandler();
 
     // delete copy and move constructors and assign operators

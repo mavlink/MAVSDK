@@ -19,13 +19,13 @@ static void print_quaternion(Telemetry::Quaternion quaternion);
 static void print_euler_angle(Telemetry::EulerAngle euler_angle);
 static void print_angular_velocity_body(Telemetry::AngularVelocityBody angular_velocity_body);
 static void print_fixedwing_metrics(Telemetry::FixedwingMetrics fixedwing_metrics);
-static void print_ground_truth(Telemetry::GroundTruth ground_truth);
+static void print_ground_truth(const Telemetry::GroundTruth& ground_truth);
 #if CAMERA_AVAILABLE == 1
 static void print_camera_quaternion(Telemetry::Quaternion quaternion);
 static void print_camera_euler_angle(Telemetry::EulerAngle euler_angle);
 #endif
 static void print_velocity_ned(Telemetry::VelocityNed velocity_ned);
-static void print_imu_reading_ned(Telemetry::Imu imu_reading_ned);
+static void print_imu(Telemetry::Imu imu);
 static void print_gps_info(Telemetry::GpsInfo gps_info);
 static void print_battery(Telemetry::Battery battery);
 static void print_rc_status(Telemetry::RcStatus rc_status);
@@ -49,7 +49,7 @@ static bool _received_camera_quaternion = false;
 static bool _received_camera_euler_angle = false;
 #endif
 static bool _received_velocity = false;
-static bool _received_imu_reading_ned = false;
+static bool _received_imu = false;
 static bool _received_gps_info = false;
 static bool _received_battery = false;
 static bool _received_rc_status = false;
@@ -134,7 +134,7 @@ TEST_F(SitlTest, TelemetryAsync)
 
     telemetry->subscribe_velocity_ned(std::bind(&print_velocity_ned, _1));
 
-    telemetry->subscribe_imu(std::bind(&print_imu_reading_ned, _1));
+    telemetry->subscribe_imu(std::bind(&print_imu, _1));
 
     telemetry->subscribe_gps_info(std::bind(&print_gps_info, _1));
 
@@ -167,7 +167,7 @@ TEST_F(SitlTest, TelemetryAsync)
     EXPECT_TRUE(_received_camera_euler_angle);
 #endif
     EXPECT_TRUE(_received_velocity);
-    EXPECT_TRUE(_received_imu_reading_ned);
+    EXPECT_TRUE(_received_imu);
     EXPECT_TRUE(_received_gps_info);
     EXPECT_TRUE(_received_battery);
     // EXPECT_TRUE(_received_rc_status); // No RC is sent in SITL.
@@ -246,7 +246,7 @@ void print_fixedwing_metrics(Telemetry::FixedwingMetrics fixedwing_metrics)
     _received_fixedwing_metrics = true;
 }
 
-void print_ground_truth(Telemetry::GroundTruth ground_truth)
+void print_ground_truth(const Telemetry::GroundTruth& ground_truth)
 {
     std::cout << ground_truth << '\n';
     _received_ground_truth = true;
@@ -278,11 +278,11 @@ void print_velocity_ned(Telemetry::VelocityNed velocity_ned)
     _received_velocity = true;
 }
 
-void print_imu_reading_ned(Telemetry::Imu imu)
+void print_imu(Telemetry::Imu imu)
 {
     std::cout << imu << '\n';
 
-    _received_imu_reading_ned = true;
+    _received_imu = true;
 }
 
 void print_gps_info(Telemetry::GpsInfo gps_info)

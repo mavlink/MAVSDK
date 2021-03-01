@@ -10,7 +10,7 @@ public:
     void set_max_altitude(float relative_altitude_m);
     void set_min_altitude(float relative_altitude_m);
     void set_next_reach_altitude(float relative_altitude_m);
-    void set_margin(float margin);
+    void set_margin(float margin_m);
     void check_current_alitude(float current_altitude);
 
 private:
