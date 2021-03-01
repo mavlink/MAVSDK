@@ -1,4 +1,4 @@
-cmake_minimum_required(VERSION 3.10.2)
+cmake_minimum_required(VERSION 3.10.2..3.19.6)
 
 execute_process(
     COMMAND git describe --abbrev=8 --dirty --always --tags
