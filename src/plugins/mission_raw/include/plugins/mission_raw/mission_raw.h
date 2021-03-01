@@ -99,7 +99,7 @@ public:
                         longitude in degrees *10^7 */
         float z{}; /**< @brief PARAM7 / local: Z coordinate, global: altitude (relative or absolute,
                       depending on frame) */
-        uint32_t mission_type{}; /**< @brief @brief Mission type (actually uint8_t) */
+        uint32_t mission_type{}; /**< @brief Mission type (actually uint8_t) */
     };
 
     /**
