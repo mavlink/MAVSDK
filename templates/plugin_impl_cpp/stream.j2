@@ -18,5 +18,7 @@ std::vector<{% if not return_type.is_primitive %}{{ plugin_name.upper_camel_case
     {% for param in params %}
     UNUSED({{ param.name.lower_snake_case }});
     {% endfor %}
+
+    return {};
 }
 {% endif %}
