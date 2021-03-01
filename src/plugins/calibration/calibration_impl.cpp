@@ -224,13 +224,14 @@ Calibration::Result CalibrationImpl::cancel()
 
     auto prom = std::promise<Calibration::Result>();
     auto fut = prom.get_future();
-    _parent->send_command_async(command, [&prom](MavlinkCommandSender::Result command_result, float) {
-        if (command_result != MavlinkCommandSender::Result::Success) {
-            prom.set_value(Calibration::Result::ConnectionError);
-        } else {
-            prom.set_value(Calibration::Result::Success);
-        }
-    });
+    _parent->send_command_async(
+        command, [&prom](MavlinkCommandSender::Result command_result, float) {
+            if (command_result != MavlinkCommandSender::Result::Success) {
+                prom.set_value(Calibration::Result::ConnectionError);
+            } else {
+                prom.set_value(Calibration::Result::Success);
+            }
+        });
 
     return fut.get();
 }
