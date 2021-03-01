@@ -16,7 +16,7 @@ using namespace std::placeholders; // for `_1`
 
 // TODO: add checks that verify the return altitude
 
-void do_mission_with_rtl(float mission_altitude_m, float rtl_altitude_m);
+void do_mission_with_rtl(float mission_altitude_m, float return_altitude_m);
 
 TEST_F(SitlTest, MissionWithRTLHigh)
 {

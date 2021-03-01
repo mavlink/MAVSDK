@@ -10,7 +10,7 @@ namespace mavsdk {
 
 class TimeoutHandler {
 public:
-    TimeoutHandler(Time& time);
+    explicit TimeoutHandler(Time& time);
     ~TimeoutHandler();
 
     // delete copy and move constructors and assign operators

@@ -35,7 +35,6 @@ void set_mode_async(std::shared_ptr<Camera> camera, Camera::Mode mode)
 
     auto prom = std::make_shared<std::promise<void>>();
     auto ret = prom->get_future();
-
     camera->set_mode_async(mode, [mode, prom](Camera::Result result) {
         EXPECT_EQ(result, Camera::Result::Success);
         prom->set_value();

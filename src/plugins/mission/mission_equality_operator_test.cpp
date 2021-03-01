@@ -46,7 +46,7 @@ TEST(MissionOperator, MissionItemEqualsOperatorIsValidForArbitraryItems)
 TEST(MissionOperator, MissionItemEqualsOperatorIsValidForDifferentItems)
 {
     Mission::MissionItem mission_item1;
-    Mission::MissionItem mission_item2;
+    Mission::MissionItem mission_item2{};
 
     mission_item1.latitude_deg = 47.3982;
     mission_item1.longitude_deg = 8.54567;
@@ -180,7 +180,7 @@ TEST(MissionOperator, MissionPlanOperatorIsValidForDifferentPlans)
     mission_plan1.mission_items = mission_items1;
 
     // Second MissionPlan
-    Mission::MissionPlan mission_plan2;
+    Mission::MissionPlan mission_plan2{};
 
     ASSERT_FALSE(mission_plan1 == mission_plan2);
 }
