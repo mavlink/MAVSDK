@@ -50,19 +50,9 @@ foreach(CMAKE_ARG ${CMAKE_ARGS})
     message(STATUS "-- ${CMAKE_ARG}")
 endforeach()
 
-if(IOS)
-    ExternalProject_add(
-        grpc
-        URL https://github.com/grpc/grpc/archive/v1.34.0.tar.gz
-        PREFIX grpc
-        PATCH_COMMAND patch -p 1 < ${PROJECT_SOURCE_DIR}/grpc_openssl_ios.patch
-        CMAKE_ARGS "${CMAKE_ARGS}"
-        )
-else()
-    ExternalProject_add(
-        grpc
-        URL https://github.com/grpc/grpc/archive/v1.34.0.tar.gz
-        PREFIX grpc
-        CMAKE_ARGS "${CMAKE_ARGS}"
-        )
-endif()
+ExternalProject_add(
+    grpc
+    URL https://github.com/grpc/grpc/archive/v1.36.0.tar.gz
+    PREFIX grpc
+    CMAKE_ARGS "${CMAKE_ARGS}"
+    )
