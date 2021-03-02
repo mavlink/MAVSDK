@@ -125,6 +125,7 @@ private:
     void process_camera_settings(const mavlink_message_t& message);
     void process_camera_information(const mavlink_message_t& message);
     void process_video_information(const mavlink_message_t& message);
+    void process_video_stream_status(const mavlink_message_t& message);
     void process_flight_information(const mavlink_message_t& message);
 
     Camera::EulerAngle to_euler_angle_from_quaternion(Camera::Quaternion quaternion);
@@ -156,6 +157,7 @@ private:
     void request_camera_settings();
     void request_camera_information();
     void request_video_stream_info();
+    void request_video_stream_status();
     void request_status();
     void request_flight_information();
 
@@ -177,6 +179,7 @@ private:
     MavlinkCommandSender::CommandLong make_command_stop_video_streaming();
 
     MavlinkCommandSender::CommandLong make_command_request_video_stream_info();
+    MavlinkCommandSender::CommandLong make_command_request_video_stream_status();
 
     std::unique_ptr<CameraDefinition> _camera_definition{};
 

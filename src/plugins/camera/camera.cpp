@@ -316,6 +316,8 @@ bool operator==(const Camera::VideoStreamSettings& lhs, const Camera::VideoStrea
            (rhs.horizontal_resolution_pix == lhs.horizontal_resolution_pix) &&
            (rhs.vertical_resolution_pix == lhs.vertical_resolution_pix) &&
            (rhs.bit_rate_b_s == lhs.bit_rate_b_s) && (rhs.rotation_deg == lhs.rotation_deg) &&
+           ((std::isnan(rhs.horizontal_fov_deg) && std::isnan(lhs.horizontal_fov_deg)) ||
+            rhs.horizontal_fov_deg == lhs.horizontal_fov_deg) &&
            (rhs.uri == lhs.uri);
 }
 
@@ -330,6 +332,7 @@ operator<<(std::ostream& str, Camera::VideoStreamSettings const& video_stream_se
     str << "    vertical_resolution_pix: " << video_stream_settings.vertical_resolution_pix << '\n';
     str << "    bit_rate_b_s: " << video_stream_settings.bit_rate_b_s << '\n';
     str << "    rotation_deg: " << video_stream_settings.rotation_deg << '\n';
+    str << "    horizontal_fov_deg: " << video_stream_settings.horizontal_fov_deg << '\n';
     str << "    uri: " << video_stream_settings.uri << '\n';
     str << '}';
     return str;
@@ -347,9 +350,25 @@ operator<<(std::ostream& str, Camera::VideoStreamInfo::VideoStreamStatus const& 
             return str << "Unknown";
     }
 }
+
+std::ostream& operator<<(
+    std::ostream& str, Camera::VideoStreamInfo::VideoStreamSpectrum const& video_stream_spectrum)
+{
+    switch (video_stream_spectrum) {
+        case Camera::VideoStreamInfo::VideoStreamSpectrum::Unknown:
+            return str << "Unknown";
+        case Camera::VideoStreamInfo::VideoStreamSpectrum::VisibleLight:
+            return str << "Visible Light";
+        case Camera::VideoStreamInfo::VideoStreamSpectrum::Infrared:
+            return str << "Infrared";
+        default:
+            return str << "Unknown";
+    }
+}
 bool operator==(const Camera::VideoStreamInfo& lhs, const Camera::VideoStreamInfo& rhs)
 {
-    return (rhs.settings == lhs.settings) && (rhs.status == lhs.status);
+    return (rhs.settings == lhs.settings) && (rhs.status == lhs.status) &&
+           (rhs.spectrum == lhs.spectrum);
 }
 
 std::ostream& operator<<(std::ostream& str, Camera::VideoStreamInfo const& video_stream_info)
@@ -358,6 +377,7 @@ std::ostream& operator<<(std::ostream& str, Camera::VideoStreamInfo const& video
     str << "video_stream_info:" << '\n' << "{\n";
     str << "    settings: " << video_stream_info.settings << '\n';
     str << "    status: " << video_stream_info.status << '\n';
+    str << "    spectrum: " << video_stream_info.spectrum << '\n';
     str << '}';
     return str;
 }
