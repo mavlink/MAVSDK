@@ -105,6 +105,7 @@ jobs:
         run: |
              cd proto/pb_plugins
              pip3 install --user -r requirements.txt
+             pip3 install protobuf --upgrade
              pip3 install --user -e .
       - uses: actions/cache@v2
         id: cache
