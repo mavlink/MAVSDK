@@ -14,542 +14,366 @@
 #include <google/protobuf/wire_format.h>
 // @@protoc_insertion_point(includes)
 #include <google/protobuf/port_def.inc>
-extern PROTOBUF_INTERNAL_EXPORT_offboard_2foffboard_2eproto ::PROTOBUF_NAMESPACE_ID::internal::SCCInfo<1> scc_info_ActuatorControl_offboard_2foffboard_2eproto;
-extern PROTOBUF_INTERNAL_EXPORT_offboard_2foffboard_2eproto ::PROTOBUF_NAMESPACE_ID::internal::SCCInfo<0> scc_info_ActuatorControlGroup_offboard_2foffboard_2eproto;
-extern PROTOBUF_INTERNAL_EXPORT_offboard_2foffboard_2eproto ::PROTOBUF_NAMESPACE_ID::internal::SCCInfo<0> scc_info_Attitude_offboard_2foffboard_2eproto;
-extern PROTOBUF_INTERNAL_EXPORT_offboard_2foffboard_2eproto ::PROTOBUF_NAMESPACE_ID::internal::SCCInfo<0> scc_info_AttitudeRate_offboard_2foffboard_2eproto;
-extern PROTOBUF_INTERNAL_EXPORT_offboard_2foffboard_2eproto ::PROTOBUF_NAMESPACE_ID::internal::SCCInfo<0> scc_info_OffboardResult_offboard_2foffboard_2eproto;
-extern PROTOBUF_INTERNAL_EXPORT_offboard_2foffboard_2eproto ::PROTOBUF_NAMESPACE_ID::internal::SCCInfo<0> scc_info_PositionNedYaw_offboard_2foffboard_2eproto;
-extern PROTOBUF_INTERNAL_EXPORT_offboard_2foffboard_2eproto ::PROTOBUF_NAMESPACE_ID::internal::SCCInfo<0> scc_info_VelocityBodyYawspeed_offboard_2foffboard_2eproto;
-extern PROTOBUF_INTERNAL_EXPORT_offboard_2foffboard_2eproto ::PROTOBUF_NAMESPACE_ID::internal::SCCInfo<0> scc_info_VelocityNedYaw_offboard_2foffboard_2eproto;
+
+PROTOBUF_PRAGMA_INIT_SEG
 namespace mavsdk {
 namespace rpc {
 namespace offboard {
-class StartRequestDefaultTypeInternal {
- public:
-  ::PROTOBUF_NAMESPACE_ID::internal::ExplicitlyConstructed<StartRequest> _instance;
-} _StartRequest_default_instance_;
-class StartResponseDefaultTypeInternal {
- public:
-  ::PROTOBUF_NAMESPACE_ID::internal::ExplicitlyConstructed<StartResponse> _instance;
-} _StartResponse_default_instance_;
-class StopRequestDefaultTypeInternal {
- public:
-  ::PROTOBUF_NAMESPACE_ID::internal::ExplicitlyConstructed<StopRequest> _instance;
-} _StopRequest_default_instance_;
-class StopResponseDefaultTypeInternal {
- public:
-  ::PROTOBUF_NAMESPACE_ID::internal::ExplicitlyConstructed<StopResponse> _instance;
-} _StopResponse_default_instance_;
-class IsActiveRequestDefaultTypeInternal {
- public:
-  ::PROTOBUF_NAMESPACE_ID::internal::ExplicitlyConstructed<IsActiveRequest> _instance;
-} _IsActiveRequest_default_instance_;
-class IsActiveResponseDefaultTypeInternal {
- public:
-  ::PROTOBUF_NAMESPACE_ID::internal::ExplicitlyConstructed<IsActiveResponse> _instance;
-} _IsActiveResponse_default_instance_;
-class SetAttitudeRequestDefaultTypeInternal {
- public:
-  ::PROTOBUF_NAMESPACE_ID::internal::ExplicitlyConstructed<SetAttitudeRequest> _instance;
-} _SetAttitudeRequest_default_instance_;
-class SetAttitudeResponseDefaultTypeInternal {
- public:
-  ::PROTOBUF_NAMESPACE_ID::internal::ExplicitlyConstructed<SetAttitudeResponse> _instance;
-} _SetAttitudeResponse_default_instance_;
-class SetActuatorControlRequestDefaultTypeInternal {
- public:
-  ::PROTOBUF_NAMESPACE_ID::internal::ExplicitlyConstructed<SetActuatorControlRequest> _instance;
-} _SetActuatorControlRequest_default_instance_;
-class SetActuatorControlResponseDefaultTypeInternal {
- public:
-  ::PROTOBUF_NAMESPACE_ID::internal::ExplicitlyConstructed<SetActuatorControlResponse> _instance;
-} _SetActuatorControlResponse_default_instance_;
-class SetAttitudeRateRequestDefaultTypeInternal {
- public:
-  ::PROTOBUF_NAMESPACE_ID::internal::ExplicitlyConstructed<SetAttitudeRateRequest> _instance;
-} _SetAttitudeRateRequest_default_instance_;
-class SetAttitudeRateResponseDefaultTypeInternal {
- public:
-  ::PROTOBUF_NAMESPACE_ID::internal::ExplicitlyConstructed<SetAttitudeRateResponse> _instance;
-} _SetAttitudeRateResponse_default_instance_;
-class SetPositionNedRequestDefaultTypeInternal {
- public:
-  ::PROTOBUF_NAMESPACE_ID::internal::ExplicitlyConstructed<SetPositionNedRequest> _instance;
-} _SetPositionNedRequest_default_instance_;
-class SetPositionNedResponseDefaultTypeInternal {
- public:
-  ::PROTOBUF_NAMESPACE_ID::internal::ExplicitlyConstructed<SetPositionNedResponse> _instance;
-} _SetPositionNedResponse_default_instance_;
-class SetVelocityBodyRequestDefaultTypeInternal {
- public:
-  ::PROTOBUF_NAMESPACE_ID::internal::ExplicitlyConstructed<SetVelocityBodyRequest> _instance;
-} _SetVelocityBodyRequest_default_instance_;
-class SetVelocityBodyResponseDefaultTypeInternal {
- public:
-  ::PROTOBUF_NAMESPACE_ID::internal::ExplicitlyConstructed<SetVelocityBodyResponse> _instance;
-} _SetVelocityBodyResponse_default_instance_;
-class SetVelocityNedRequestDefaultTypeInternal {
- public:
-  ::PROTOBUF_NAMESPACE_ID::internal::ExplicitlyConstructed<SetVelocityNedRequest> _instance;
-} _SetVelocityNedRequest_default_instance_;
-class SetVelocityNedResponseDefaultTypeInternal {
- public:
-  ::PROTOBUF_NAMESPACE_ID::internal::ExplicitlyConstructed<SetVelocityNedResponse> _instance;
-} _SetVelocityNedResponse_default_instance_;
-class SetPositionVelocityNedRequestDefaultTypeInternal {
- public:
-  ::PROTOBUF_NAMESPACE_ID::internal::ExplicitlyConstructed<SetPositionVelocityNedRequest> _instance;
-} _SetPositionVelocityNedRequest_default_instance_;
-class SetPositionVelocityNedResponseDefaultTypeInternal {
- public:
-  ::PROTOBUF_NAMESPACE_ID::internal::ExplicitlyConstructed<SetPositionVelocityNedResponse> _instance;
-} _SetPositionVelocityNedResponse_default_instance_;
-class AttitudeDefaultTypeInternal {
- public:
-  ::PROTOBUF_NAMESPACE_ID::internal::ExplicitlyConstructed<Attitude> _instance;
-} _Attitude_default_instance_;
-class ActuatorControlGroupDefaultTypeInternal {
- public:
-  ::PROTOBUF_NAMESPACE_ID::internal::ExplicitlyConstructed<ActuatorControlGroup> _instance;
-} _ActuatorControlGroup_default_instance_;
-class ActuatorControlDefaultTypeInternal {
- public:
-  ::PROTOBUF_NAMESPACE_ID::internal::ExplicitlyConstructed<ActuatorControl> _instance;
-} _ActuatorControl_default_instance_;
-class AttitudeRateDefaultTypeInternal {
- public:
-  ::PROTOBUF_NAMESPACE_ID::internal::ExplicitlyConstructed<AttitudeRate> _instance;
-} _AttitudeRate_default_instance_;
-class PositionNedYawDefaultTypeInternal {
- public:
-  ::PROTOBUF_NAMESPACE_ID::internal::ExplicitlyConstructed<PositionNedYaw> _instance;
-} _PositionNedYaw_default_instance_;
-class VelocityBodyYawspeedDefaultTypeInternal {
- public:
-  ::PROTOBUF_NAMESPACE_ID::internal::ExplicitlyConstructed<VelocityBodyYawspeed> _instance;
-} _VelocityBodyYawspeed_default_instance_;
-class VelocityNedYawDefaultTypeInternal {
- public:
-  ::PROTOBUF_NAMESPACE_ID::internal::ExplicitlyConstructed<VelocityNedYaw> _instance;
-} _VelocityNedYaw_default_instance_;
-class OffboardResultDefaultTypeInternal {
- public:
-  ::PROTOBUF_NAMESPACE_ID::internal::ExplicitlyConstructed<OffboardResult> _instance;
-} _OffboardResult_default_instance_;
+constexpr StartRequest::StartRequest(
+  ::PROTOBUF_NAMESPACE_ID::internal::ConstantInitialized){}
+struct StartRequestDefaultTypeInternal {
+  constexpr StartRequestDefaultTypeInternal()
+    : _instance(::PROTOBUF_NAMESPACE_ID::internal::ConstantInitialized{}) {}
+  ~StartRequestDefaultTypeInternal() {}
+  union {
+    StartRequest _instance;
+  };
+};
+PROTOBUF_ATTRIBUTE_NO_DESTROY PROTOBUF_CONSTINIT StartRequestDefaultTypeInternal _StartRequest_default_instance_;
+constexpr StartResponse::StartResponse(
+  ::PROTOBUF_NAMESPACE_ID::internal::ConstantInitialized)
+  : offboard_result_(nullptr){}
+struct StartResponseDefaultTypeInternal {
+  constexpr StartResponseDefaultTypeInternal()
+    : _instance(::PROTOBUF_NAMESPACE_ID::internal::ConstantInitialized{}) {}
+  ~StartResponseDefaultTypeInternal() {}
+  union {
+    StartResponse _instance;
+  };
+};
+PROTOBUF_ATTRIBUTE_NO_DESTROY PROTOBUF_CONSTINIT StartResponseDefaultTypeInternal _StartResponse_default_instance_;
+constexpr StopRequest::StopRequest(
+  ::PROTOBUF_NAMESPACE_ID::internal::ConstantInitialized){}
+struct StopRequestDefaultTypeInternal {
+  constexpr StopRequestDefaultTypeInternal()
+    : _instance(::PROTOBUF_NAMESPACE_ID::internal::ConstantInitialized{}) {}
+  ~StopRequestDefaultTypeInternal() {}
+  union {
+    StopRequest _instance;
+  };
+};
+PROTOBUF_ATTRIBUTE_NO_DESTROY PROTOBUF_CONSTINIT StopRequestDefaultTypeInternal _StopRequest_default_instance_;
+constexpr StopResponse::StopResponse(
+  ::PROTOBUF_NAMESPACE_ID::internal::ConstantInitialized)
+  : offboard_result_(nullptr){}
+struct StopResponseDefaultTypeInternal {
+  constexpr StopResponseDefaultTypeInternal()
+    : _instance(::PROTOBUF_NAMESPACE_ID::internal::ConstantInitialized{}) {}
+  ~StopResponseDefaultTypeInternal() {}
+  union {
+    StopResponse _instance;
+  };
+};
+PROTOBUF_ATTRIBUTE_NO_DESTROY PROTOBUF_CONSTINIT StopResponseDefaultTypeInternal _StopResponse_default_instance_;
+constexpr IsActiveRequest::IsActiveRequest(
+  ::PROTOBUF_NAMESPACE_ID::internal::ConstantInitialized){}
+struct IsActiveRequestDefaultTypeInternal {
+  constexpr IsActiveRequestDefaultTypeInternal()
+    : _instance(::PROTOBUF_NAMESPACE_ID::internal::ConstantInitialized{}) {}
+  ~IsActiveRequestDefaultTypeInternal() {}
+  union {
+    IsActiveRequest _instance;
+  };
+};
+PROTOBUF_ATTRIBUTE_NO_DESTROY PROTOBUF_CONSTINIT IsActiveRequestDefaultTypeInternal _IsActiveRequest_default_instance_;
+constexpr IsActiveResponse::IsActiveResponse(
+  ::PROTOBUF_NAMESPACE_ID::internal::ConstantInitialized)
+  : is_active_(false){}
+struct IsActiveResponseDefaultTypeInternal {
+  constexpr IsActiveResponseDefaultTypeInternal()
+    : _instance(::PROTOBUF_NAMESPACE_ID::internal::ConstantInitialized{}) {}
+  ~IsActiveResponseDefaultTypeInternal() {}
+  union {
+    IsActiveResponse _instance;
+  };
+};
+PROTOBUF_ATTRIBUTE_NO_DESTROY PROTOBUF_CONSTINIT IsActiveResponseDefaultTypeInternal _IsActiveResponse_default_instance_;
+constexpr SetAttitudeRequest::SetAttitudeRequest(
+  ::PROTOBUF_NAMESPACE_ID::internal::ConstantInitialized)
+  : attitude_(nullptr){}
+struct SetAttitudeRequestDefaultTypeInternal {
+  constexpr SetAttitudeRequestDefaultTypeInternal()
+    : _instance(::PROTOBUF_NAMESPACE_ID::internal::ConstantInitialized{}) {}
+  ~SetAttitudeRequestDefaultTypeInternal() {}
+  union {
+    SetAttitudeRequest _instance;
+  };
+};
+PROTOBUF_ATTRIBUTE_NO_DESTROY PROTOBUF_CONSTINIT SetAttitudeRequestDefaultTypeInternal _SetAttitudeRequest_default_instance_;
+constexpr SetAttitudeResponse::SetAttitudeResponse(
+  ::PROTOBUF_NAMESPACE_ID::internal::ConstantInitialized)
+  : offboard_result_(nullptr){}
+struct SetAttitudeResponseDefaultTypeInternal {
+  constexpr SetAttitudeResponseDefaultTypeInternal()
+    : _instance(::PROTOBUF_NAMESPACE_ID::internal::ConstantInitialized{}) {}
+  ~SetAttitudeResponseDefaultTypeInternal() {}
+  union {
+    SetAttitudeResponse _instance;
+  };
+};
+PROTOBUF_ATTRIBUTE_NO_DESTROY PROTOBUF_CONSTINIT SetAttitudeResponseDefaultTypeInternal _SetAttitudeResponse_default_instance_;
+constexpr SetActuatorControlRequest::SetActuatorControlRequest(
+  ::PROTOBUF_NAMESPACE_ID::internal::ConstantInitialized)
+  : actuator_control_(nullptr){}
+struct SetActuatorControlRequestDefaultTypeInternal {
+  constexpr SetActuatorControlRequestDefaultTypeInternal()
+    : _instance(::PROTOBUF_NAMESPACE_ID::internal::ConstantInitialized{}) {}
+  ~SetActuatorControlRequestDefaultTypeInternal() {}
+  union {
+    SetActuatorControlRequest _instance;
+  };
+};
+PROTOBUF_ATTRIBUTE_NO_DESTROY PROTOBUF_CONSTINIT SetActuatorControlRequestDefaultTypeInternal _SetActuatorControlRequest_default_instance_;
+constexpr SetActuatorControlResponse::SetActuatorControlResponse(
+  ::PROTOBUF_NAMESPACE_ID::internal::ConstantInitialized)
+  : offboard_result_(nullptr){}
+struct SetActuatorControlResponseDefaultTypeInternal {
+  constexpr SetActuatorControlResponseDefaultTypeInternal()
+    : _instance(::PROTOBUF_NAMESPACE_ID::internal::ConstantInitialized{}) {}
+  ~SetActuatorControlResponseDefaultTypeInternal() {}
+  union {
+    SetActuatorControlResponse _instance;
+  };
+};
+PROTOBUF_ATTRIBUTE_NO_DESTROY PROTOBUF_CONSTINIT SetActuatorControlResponseDefaultTypeInternal _SetActuatorControlResponse_default_instance_;
+constexpr SetAttitudeRateRequest::SetAttitudeRateRequest(
+  ::PROTOBUF_NAMESPACE_ID::internal::ConstantInitialized)
+  : attitude_rate_(nullptr){}
+struct SetAttitudeRateRequestDefaultTypeInternal {
+  constexpr SetAttitudeRateRequestDefaultTypeInternal()
+    : _instance(::PROTOBUF_NAMESPACE_ID::internal::ConstantInitialized{}) {}
+  ~SetAttitudeRateRequestDefaultTypeInternal() {}
+  union {
+    SetAttitudeRateRequest _instance;
+  };
+};
+PROTOBUF_ATTRIBUTE_NO_DESTROY PROTOBUF_CONSTINIT SetAttitudeRateRequestDefaultTypeInternal _SetAttitudeRateRequest_default_instance_;
+constexpr SetAttitudeRateResponse::SetAttitudeRateResponse(
+  ::PROTOBUF_NAMESPACE_ID::internal::ConstantInitialized)
+  : offboard_result_(nullptr){}
+struct SetAttitudeRateResponseDefaultTypeInternal {
+  constexpr SetAttitudeRateResponseDefaultTypeInternal()
+    : _instance(::PROTOBUF_NAMESPACE_ID::internal::ConstantInitialized{}) {}
+  ~SetAttitudeRateResponseDefaultTypeInternal() {}
+  union {
+    SetAttitudeRateResponse _instance;
+  };
+};
+PROTOBUF_ATTRIBUTE_NO_DESTROY PROTOBUF_CONSTINIT SetAttitudeRateResponseDefaultTypeInternal _SetAttitudeRateResponse_default_instance_;
+constexpr SetPositionNedRequest::SetPositionNedRequest(
+  ::PROTOBUF_NAMESPACE_ID::internal::ConstantInitialized)
+  : position_ned_yaw_(nullptr){}
+struct SetPositionNedRequestDefaultTypeInternal {
+  constexpr SetPositionNedRequestDefaultTypeInternal()
+    : _instance(::PROTOBUF_NAMESPACE_ID::internal::ConstantInitialized{}) {}
+  ~SetPositionNedRequestDefaultTypeInternal() {}
+  union {
+    SetPositionNedRequest _instance;
+  };
+};
+PROTOBUF_ATTRIBUTE_NO_DESTROY PROTOBUF_CONSTINIT SetPositionNedRequestDefaultTypeInternal _SetPositionNedRequest_default_instance_;
+constexpr SetPositionNedResponse::SetPositionNedResponse(
+  ::PROTOBUF_NAMESPACE_ID::internal::ConstantInitialized)
+  : offboard_result_(nullptr){}
+struct SetPositionNedResponseDefaultTypeInternal {
+  constexpr SetPositionNedResponseDefaultTypeInternal()
+    : _instance(::PROTOBUF_NAMESPACE_ID::internal::ConstantInitialized{}) {}
+  ~SetPositionNedResponseDefaultTypeInternal() {}
+  union {
+    SetPositionNedResponse _instance;
+  };
+};
+PROTOBUF_ATTRIBUTE_NO_DESTROY PROTOBUF_CONSTINIT SetPositionNedResponseDefaultTypeInternal _SetPositionNedResponse_default_instance_;
+constexpr SetVelocityBodyRequest::SetVelocityBodyRequest(
+  ::PROTOBUF_NAMESPACE_ID::internal::ConstantInitialized)
+  : velocity_body_yawspeed_(nullptr){}
+struct SetVelocityBodyRequestDefaultTypeInternal {
+  constexpr SetVelocityBodyRequestDefaultTypeInternal()
+    : _instance(::PROTOBUF_NAMESPACE_ID::internal::ConstantInitialized{}) {}
+  ~SetVelocityBodyRequestDefaultTypeInternal() {}
+  union {
+    SetVelocityBodyRequest _instance;
+  };
+};
+PROTOBUF_ATTRIBUTE_NO_DESTROY PROTOBUF_CONSTINIT SetVelocityBodyRequestDefaultTypeInternal _SetVelocityBodyRequest_default_instance_;
+constexpr SetVelocityBodyResponse::SetVelocityBodyResponse(
+  ::PROTOBUF_NAMESPACE_ID::internal::ConstantInitialized)
+  : offboard_result_(nullptr){}
+struct SetVelocityBodyResponseDefaultTypeInternal {
+  constexpr SetVelocityBodyResponseDefaultTypeInternal()
+    : _instance(::PROTOBUF_NAMESPACE_ID::internal::ConstantInitialized{}) {}
+  ~SetVelocityBodyResponseDefaultTypeInternal() {}
+  union {
+    SetVelocityBodyResponse _instance;
+  };
+};
+PROTOBUF_ATTRIBUTE_NO_DESTROY PROTOBUF_CONSTINIT SetVelocityBodyResponseDefaultTypeInternal _SetVelocityBodyResponse_default_instance_;
+constexpr SetVelocityNedRequest::SetVelocityNedRequest(
+  ::PROTOBUF_NAMESPACE_ID::internal::ConstantInitialized)
+  : velocity_ned_yaw_(nullptr){}
+struct SetVelocityNedRequestDefaultTypeInternal {
+  constexpr SetVelocityNedRequestDefaultTypeInternal()
+    : _instance(::PROTOBUF_NAMESPACE_ID::internal::ConstantInitialized{}) {}
+  ~SetVelocityNedRequestDefaultTypeInternal() {}
+  union {
+    SetVelocityNedRequest _instance;
+  };
+};
+PROTOBUF_ATTRIBUTE_NO_DESTROY PROTOBUF_CONSTINIT SetVelocityNedRequestDefaultTypeInternal _SetVelocityNedRequest_default_instance_;
+constexpr SetVelocityNedResponse::SetVelocityNedResponse(
+  ::PROTOBUF_NAMESPACE_ID::internal::ConstantInitialized)
+  : offboard_result_(nullptr){}
+struct SetVelocityNedResponseDefaultTypeInternal {
+  constexpr SetVelocityNedResponseDefaultTypeInternal()
+    : _instance(::PROTOBUF_NAMESPACE_ID::internal::ConstantInitialized{}) {}
+  ~SetVelocityNedResponseDefaultTypeInternal() {}
+  union {
+    SetVelocityNedResponse _instance;
+  };
+};
+PROTOBUF_ATTRIBUTE_NO_DESTROY PROTOBUF_CONSTINIT SetVelocityNedResponseDefaultTypeInternal _SetVelocityNedResponse_default_instance_;
+constexpr SetPositionVelocityNedRequest::SetPositionVelocityNedRequest(
+  ::PROTOBUF_NAMESPACE_ID::internal::ConstantInitialized)
+  : position_ned_yaw_(nullptr)
+  , velocity_ned_yaw_(nullptr){}
+struct SetPositionVelocityNedRequestDefaultTypeInternal {
+  constexpr SetPositionVelocityNedRequestDefaultTypeInternal()
+    : _instance(::PROTOBUF_NAMESPACE_ID::internal::ConstantInitialized{}) {}
+  ~SetPositionVelocityNedRequestDefaultTypeInternal() {}
+  union {
+    SetPositionVelocityNedRequest _instance;
+  };
+};
+PROTOBUF_ATTRIBUTE_NO_DESTROY PROTOBUF_CONSTINIT SetPositionVelocityNedRequestDefaultTypeInternal _SetPositionVelocityNedRequest_default_instance_;
+constexpr SetPositionVelocityNedResponse::SetPositionVelocityNedResponse(
+  ::PROTOBUF_NAMESPACE_ID::internal::ConstantInitialized)
+  : offboard_result_(nullptr){}
+struct SetPositionVelocityNedResponseDefaultTypeInternal {
+  constexpr SetPositionVelocityNedResponseDefaultTypeInternal()
+    : _instance(::PROTOBUF_NAMESPACE_ID::internal::ConstantInitialized{}) {}
+  ~SetPositionVelocityNedResponseDefaultTypeInternal() {}
+  union {
+    SetPositionVelocityNedResponse _instance;
+  };
+};
+PROTOBUF_ATTRIBUTE_NO_DESTROY PROTOBUF_CONSTINIT SetPositionVelocityNedResponseDefaultTypeInternal _SetPositionVelocityNedResponse_default_instance_;
+constexpr Attitude::Attitude(
+  ::PROTOBUF_NAMESPACE_ID::internal::ConstantInitialized)
+  : roll_deg_(0)
+  , pitch_deg_(0)
+  , yaw_deg_(0)
+  , thrust_value_(0){}
+struct AttitudeDefaultTypeInternal {
+  constexpr AttitudeDefaultTypeInternal()
+    : _instance(::PROTOBUF_NAMESPACE_ID::internal::ConstantInitialized{}) {}
+  ~AttitudeDefaultTypeInternal() {}
+  union {
+    Attitude _instance;
+  };
+};
+PROTOBUF_ATTRIBUTE_NO_DESTROY PROTOBUF_CONSTINIT AttitudeDefaultTypeInternal _Attitude_default_instance_;
+constexpr ActuatorControlGroup::ActuatorControlGroup(
+  ::PROTOBUF_NAMESPACE_ID::internal::ConstantInitialized)
+  : controls_()
+  , _controls_cached_byte_size_(){}
+struct ActuatorControlGroupDefaultTypeInternal {
+  constexpr ActuatorControlGroupDefaultTypeInternal()
+    : _instance(::PROTOBUF_NAMESPACE_ID::internal::ConstantInitialized{}) {}
+  ~ActuatorControlGroupDefaultTypeInternal() {}
+  union {
+    ActuatorControlGroup _instance;
+  };
+};
+PROTOBUF_ATTRIBUTE_NO_DESTROY PROTOBUF_CONSTINIT ActuatorControlGroupDefaultTypeInternal _ActuatorControlGroup_default_instance_;
+constexpr ActuatorControl::ActuatorControl(
+  ::PROTOBUF_NAMESPACE_ID::internal::ConstantInitialized)
+  : groups_(){}
+struct ActuatorControlDefaultTypeInternal {
+  constexpr ActuatorControlDefaultTypeInternal()
+    : _instance(::PROTOBUF_NAMESPACE_ID::internal::ConstantInitialized{}) {}
+  ~ActuatorControlDefaultTypeInternal() {}
+  union {
+    ActuatorControl _instance;
+  };
+};
+PROTOBUF_ATTRIBUTE_NO_DESTROY PROTOBUF_CONSTINIT ActuatorControlDefaultTypeInternal _ActuatorControl_default_instance_;
+constexpr AttitudeRate::AttitudeRate(
+  ::PROTOBUF_NAMESPACE_ID::internal::ConstantInitialized)
+  : roll_deg_s_(0)
+  , pitch_deg_s_(0)
+  , yaw_deg_s_(0)
+  , thrust_value_(0){}
+struct AttitudeRateDefaultTypeInternal {
+  constexpr AttitudeRateDefaultTypeInternal()
+    : _instance(::PROTOBUF_NAMESPACE_ID::internal::ConstantInitialized{}) {}
+  ~AttitudeRateDefaultTypeInternal() {}
+  union {
+    AttitudeRate _instance;
+  };
+};
+PROTOBUF_ATTRIBUTE_NO_DESTROY PROTOBUF_CONSTINIT AttitudeRateDefaultTypeInternal _AttitudeRate_default_instance_;
+constexpr PositionNedYaw::PositionNedYaw(
+  ::PROTOBUF_NAMESPACE_ID::internal::ConstantInitialized)
+  : north_m_(0)
+  , east_m_(0)
+  , down_m_(0)
+  , yaw_deg_(0){}
+struct PositionNedYawDefaultTypeInternal {
+  constexpr PositionNedYawDefaultTypeInternal()
+    : _instance(::PROTOBUF_NAMESPACE_ID::internal::ConstantInitialized{}) {}
+  ~PositionNedYawDefaultTypeInternal() {}
+  union {
+    PositionNedYaw _instance;
+  };
+};
+PROTOBUF_ATTRIBUTE_NO_DESTROY PROTOBUF_CONSTINIT PositionNedYawDefaultTypeInternal _PositionNedYaw_default_instance_;
+constexpr VelocityBodyYawspeed::VelocityBodyYawspeed(
+  ::PROTOBUF_NAMESPACE_ID::internal::ConstantInitialized)
+  : forward_m_s_(0)
+  , right_m_s_(0)
+  , down_m_s_(0)
+  , yawspeed_deg_s_(0){}
+struct VelocityBodyYawspeedDefaultTypeInternal {
+  constexpr VelocityBodyYawspeedDefaultTypeInternal()
+    : _instance(::PROTOBUF_NAMESPACE_ID::internal::ConstantInitialized{}) {}
+  ~VelocityBodyYawspeedDefaultTypeInternal() {}
+  union {
+    VelocityBodyYawspeed _instance;
+  };
+};
+PROTOBUF_ATTRIBUTE_NO_DESTROY PROTOBUF_CONSTINIT VelocityBodyYawspeedDefaultTypeInternal _VelocityBodyYawspeed_default_instance_;
+constexpr VelocityNedYaw::VelocityNedYaw(
+  ::PROTOBUF_NAMESPACE_ID::internal::ConstantInitialized)
+  : north_m_s_(0)
+  , east_m_s_(0)
+  , down_m_s_(0)
+  , yaw_deg_(0){}
+struct VelocityNedYawDefaultTypeInternal {
+  constexpr VelocityNedYawDefaultTypeInternal()
+    : _instance(::PROTOBUF_NAMESPACE_ID::internal::ConstantInitialized{}) {}
+  ~VelocityNedYawDefaultTypeInternal() {}
+  union {
+    VelocityNedYaw _instance;
+  };
+};
+PROTOBUF_ATTRIBUTE_NO_DESTROY PROTOBUF_CONSTINIT VelocityNedYawDefaultTypeInternal _VelocityNedYaw_default_instance_;
+constexpr OffboardResult::OffboardResult(
+  ::PROTOBUF_NAMESPACE_ID::internal::ConstantInitialized)
+  : result_str_(&::PROTOBUF_NAMESPACE_ID::internal::fixed_address_empty_string)
+  , result_(0)
+{}
+struct OffboardResultDefaultTypeInternal {
+  constexpr OffboardResultDefaultTypeInternal()
+    : _instance(::PROTOBUF_NAMESPACE_ID::internal::ConstantInitialized{}) {}
+  ~OffboardResultDefaultTypeInternal() {}
+  union {
+    OffboardResult _instance;
+  };
+};
+PROTOBUF_ATTRIBUTE_NO_DESTROY PROTOBUF_CONSTINIT OffboardResultDefaultTypeInternal _OffboardResult_default_instance_;
 }  // namespace offboard
 }  // namespace rpc
 }  // namespace mavsdk
-static void InitDefaultsscc_info_ActuatorControl_offboard_2foffboard_2eproto() {
-  GOOGLE_PROTOBUF_VERIFY_VERSION;
-
-  {
-    void* ptr = &::mavsdk::rpc::offboard::_ActuatorControl_default_instance_;
-    new (ptr) ::mavsdk::rpc::offboard::ActuatorControl();
-    ::PROTOBUF_NAMESPACE_ID::internal::OnShutdownDestroyMessage(ptr);
-  }
-  ::mavsdk::rpc::offboard::ActuatorControl::InitAsDefaultInstance();
-}
-
-::PROTOBUF_NAMESPACE_ID::internal::SCCInfo<1> scc_info_ActuatorControl_offboard_2foffboard_2eproto =
-    {{ATOMIC_VAR_INIT(::PROTOBUF_NAMESPACE_ID::internal::SCCInfoBase::kUninitialized), 1, 0, InitDefaultsscc_info_ActuatorControl_offboard_2foffboard_2eproto}, {
-      &scc_info_ActuatorControlGroup_offboard_2foffboard_2eproto.base,}};
-
-static void InitDefaultsscc_info_ActuatorControlGroup_offboard_2foffboard_2eproto() {
-  GOOGLE_PROTOBUF_VERIFY_VERSION;
-
-  {
-    void* ptr = &::mavsdk::rpc::offboard::_ActuatorControlGroup_default_instance_;
-    new (ptr) ::mavsdk::rpc::offboard::ActuatorControlGroup();
-    ::PROTOBUF_NAMESPACE_ID::internal::OnShutdownDestroyMessage(ptr);
-  }
-  ::mavsdk::rpc::offboard::ActuatorControlGroup::InitAsDefaultInstance();
-}
-
-::PROTOBUF_NAMESPACE_ID::internal::SCCInfo<0> scc_info_ActuatorControlGroup_offboard_2foffboard_2eproto =
-    {{ATOMIC_VAR_INIT(::PROTOBUF_NAMESPACE_ID::internal::SCCInfoBase::kUninitialized), 0, 0, InitDefaultsscc_info_ActuatorControlGroup_offboard_2foffboard_2eproto}, {}};
-
-static void InitDefaultsscc_info_Attitude_offboard_2foffboard_2eproto() {
-  GOOGLE_PROTOBUF_VERIFY_VERSION;
-
-  {
-    void* ptr = &::mavsdk::rpc::offboard::_Attitude_default_instance_;
-    new (ptr) ::mavsdk::rpc::offboard::Attitude();
-    ::PROTOBUF_NAMESPACE_ID::internal::OnShutdownDestroyMessage(ptr);
-  }
-  ::mavsdk::rpc::offboard::Attitude::InitAsDefaultInstance();
-}
-
-::PROTOBUF_NAMESPACE_ID::internal::SCCInfo<0> scc_info_Attitude_offboard_2foffboard_2eproto =
-    {{ATOMIC_VAR_INIT(::PROTOBUF_NAMESPACE_ID::internal::SCCInfoBase::kUninitialized), 0, 0, InitDefaultsscc_info_Attitude_offboard_2foffboard_2eproto}, {}};
-
-static void InitDefaultsscc_info_AttitudeRate_offboard_2foffboard_2eproto() {
-  GOOGLE_PROTOBUF_VERIFY_VERSION;
-
-  {
-    void* ptr = &::mavsdk::rpc::offboard::_AttitudeRate_default_instance_;
-    new (ptr) ::mavsdk::rpc::offboard::AttitudeRate();
-    ::PROTOBUF_NAMESPACE_ID::internal::OnShutdownDestroyMessage(ptr);
-  }
-  ::mavsdk::rpc::offboard::AttitudeRate::InitAsDefaultInstance();
-}
-
-::PROTOBUF_NAMESPACE_ID::internal::SCCInfo<0> scc_info_AttitudeRate_offboard_2foffboard_2eproto =
-    {{ATOMIC_VAR_INIT(::PROTOBUF_NAMESPACE_ID::internal::SCCInfoBase::kUninitialized), 0, 0, InitDefaultsscc_info_AttitudeRate_offboard_2foffboard_2eproto}, {}};
-
-static void InitDefaultsscc_info_IsActiveRequest_offboard_2foffboard_2eproto() {
-  GOOGLE_PROTOBUF_VERIFY_VERSION;
-
-  {
-    void* ptr = &::mavsdk::rpc::offboard::_IsActiveRequest_default_instance_;
-    new (ptr) ::mavsdk::rpc::offboard::IsActiveRequest();
-    ::PROTOBUF_NAMESPACE_ID::internal::OnShutdownDestroyMessage(ptr);
-  }
-  ::mavsdk::rpc::offboard::IsActiveRequest::InitAsDefaultInstance();
-}
-
-::PROTOBUF_NAMESPACE_ID::internal::SCCInfo<0> scc_info_IsActiveRequest_offboard_2foffboard_2eproto =
-    {{ATOMIC_VAR_INIT(::PROTOBUF_NAMESPACE_ID::internal::SCCInfoBase::kUninitialized), 0, 0, InitDefaultsscc_info_IsActiveRequest_offboard_2foffboard_2eproto}, {}};
-
-static void InitDefaultsscc_info_IsActiveResponse_offboard_2foffboard_2eproto() {
-  GOOGLE_PROTOBUF_VERIFY_VERSION;
-
-  {
-    void* ptr = &::mavsdk::rpc::offboard::_IsActiveResponse_default_instance_;
-    new (ptr) ::mavsdk::rpc::offboard::IsActiveResponse();
-    ::PROTOBUF_NAMESPACE_ID::internal::OnShutdownDestroyMessage(ptr);
-  }
-  ::mavsdk::rpc::offboard::IsActiveResponse::InitAsDefaultInstance();
-}
-
-::PROTOBUF_NAMESPACE_ID::internal::SCCInfo<0> scc_info_IsActiveResponse_offboard_2foffboard_2eproto =
-    {{ATOMIC_VAR_INIT(::PROTOBUF_NAMESPACE_ID::internal::SCCInfoBase::kUninitialized), 0, 0, InitDefaultsscc_info_IsActiveResponse_offboard_2foffboard_2eproto}, {}};
-
-static void InitDefaultsscc_info_OffboardResult_offboard_2foffboard_2eproto() {
-  GOOGLE_PROTOBUF_VERIFY_VERSION;
-
-  {
-    void* ptr = &::mavsdk::rpc::offboard::_OffboardResult_default_instance_;
-    new (ptr) ::mavsdk::rpc::offboard::OffboardResult();
-    ::PROTOBUF_NAMESPACE_ID::internal::OnShutdownDestroyMessage(ptr);
-  }
-  ::mavsdk::rpc::offboard::OffboardResult::InitAsDefaultInstance();
-}
-
-::PROTOBUF_NAMESPACE_ID::internal::SCCInfo<0> scc_info_OffboardResult_offboard_2foffboard_2eproto =
-    {{ATOMIC_VAR_INIT(::PROTOBUF_NAMESPACE_ID::internal::SCCInfoBase::kUninitialized), 0, 0, InitDefaultsscc_info_OffboardResult_offboard_2foffboard_2eproto}, {}};
-
-static void InitDefaultsscc_info_PositionNedYaw_offboard_2foffboard_2eproto() {
-  GOOGLE_PROTOBUF_VERIFY_VERSION;
-
-  {
-    void* ptr = &::mavsdk::rpc::offboard::_PositionNedYaw_default_instance_;
-    new (ptr) ::mavsdk::rpc::offboard::PositionNedYaw();
-    ::PROTOBUF_NAMESPACE_ID::internal::OnShutdownDestroyMessage(ptr);
-  }
-  ::mavsdk::rpc::offboard::PositionNedYaw::InitAsDefaultInstance();
-}
-
-::PROTOBUF_NAMESPACE_ID::internal::SCCInfo<0> scc_info_PositionNedYaw_offboard_2foffboard_2eproto =
-    {{ATOMIC_VAR_INIT(::PROTOBUF_NAMESPACE_ID::internal::SCCInfoBase::kUninitialized), 0, 0, InitDefaultsscc_info_PositionNedYaw_offboard_2foffboard_2eproto}, {}};
-
-static void InitDefaultsscc_info_SetActuatorControlRequest_offboard_2foffboard_2eproto() {
-  GOOGLE_PROTOBUF_VERIFY_VERSION;
-
-  {
-    void* ptr = &::mavsdk::rpc::offboard::_SetActuatorControlRequest_default_instance_;
-    new (ptr) ::mavsdk::rpc::offboard::SetActuatorControlRequest();
-    ::PROTOBUF_NAMESPACE_ID::internal::OnShutdownDestroyMessage(ptr);
-  }
-  ::mavsdk::rpc::offboard::SetActuatorControlRequest::InitAsDefaultInstance();
-}
-
-::PROTOBUF_NAMESPACE_ID::internal::SCCInfo<1> scc_info_SetActuatorControlRequest_offboard_2foffboard_2eproto =
-    {{ATOMIC_VAR_INIT(::PROTOBUF_NAMESPACE_ID::internal::SCCInfoBase::kUninitialized), 1, 0, InitDefaultsscc_info_SetActuatorControlRequest_offboard_2foffboard_2eproto}, {
-      &scc_info_ActuatorControl_offboard_2foffboard_2eproto.base,}};
-
-static void InitDefaultsscc_info_SetActuatorControlResponse_offboard_2foffboard_2eproto() {
-  GOOGLE_PROTOBUF_VERIFY_VERSION;
-
-  {
-    void* ptr = &::mavsdk::rpc::offboard::_SetActuatorControlResponse_default_instance_;
-    new (ptr) ::mavsdk::rpc::offboard::SetActuatorControlResponse();
-    ::PROTOBUF_NAMESPACE_ID::internal::OnShutdownDestroyMessage(ptr);
-  }
-  ::mavsdk::rpc::offboard::SetActuatorControlResponse::InitAsDefaultInstance();
-}
-
-::PROTOBUF_NAMESPACE_ID::internal::SCCInfo<1> scc_info_SetActuatorControlResponse_offboard_2foffboard_2eproto =
-    {{ATOMIC_VAR_INIT(::PROTOBUF_NAMESPACE_ID::internal::SCCInfoBase::kUninitialized), 1, 0, InitDefaultsscc_info_SetActuatorControlResponse_offboard_2foffboard_2eproto}, {
-      &scc_info_OffboardResult_offboard_2foffboard_2eproto.base,}};
-
-static void InitDefaultsscc_info_SetAttitudeRateRequest_offboard_2foffboard_2eproto() {
-  GOOGLE_PROTOBUF_VERIFY_VERSION;
-
-  {
-    void* ptr = &::mavsdk::rpc::offboard::_SetAttitudeRateRequest_default_instance_;
-    new (ptr) ::mavsdk::rpc::offboard::SetAttitudeRateRequest();
-    ::PROTOBUF_NAMESPACE_ID::internal::OnShutdownDestroyMessage(ptr);
-  }
-  ::mavsdk::rpc::offboard::SetAttitudeRateRequest::InitAsDefaultInstance();
-}
-
-::PROTOBUF_NAMESPACE_ID::internal::SCCInfo<1> scc_info_SetAttitudeRateRequest_offboard_2foffboard_2eproto =
-    {{ATOMIC_VAR_INIT(::PROTOBUF_NAMESPACE_ID::internal::SCCInfoBase::kUninitialized), 1, 0, InitDefaultsscc_info_SetAttitudeRateRequest_offboard_2foffboard_2eproto}, {
-      &scc_info_AttitudeRate_offboard_2foffboard_2eproto.base,}};
-
-static void InitDefaultsscc_info_SetAttitudeRateResponse_offboard_2foffboard_2eproto() {
-  GOOGLE_PROTOBUF_VERIFY_VERSION;
-
-  {
-    void* ptr = &::mavsdk::rpc::offboard::_SetAttitudeRateResponse_default_instance_;
-    new (ptr) ::mavsdk::rpc::offboard::SetAttitudeRateResponse();
-    ::PROTOBUF_NAMESPACE_ID::internal::OnShutdownDestroyMessage(ptr);
-  }
-  ::mavsdk::rpc::offboard::SetAttitudeRateResponse::InitAsDefaultInstance();
-}
-
-::PROTOBUF_NAMESPACE_ID::internal::SCCInfo<1> scc_info_SetAttitudeRateResponse_offboard_2foffboard_2eproto =
-    {{ATOMIC_VAR_INIT(::PROTOBUF_NAMESPACE_ID::internal::SCCInfoBase::kUninitialized), 1, 0, InitDefaultsscc_info_SetAttitudeRateResponse_offboard_2foffboard_2eproto}, {
-      &scc_info_OffboardResult_offboard_2foffboard_2eproto.base,}};
-
-static void InitDefaultsscc_info_SetAttitudeRequest_offboard_2foffboard_2eproto() {
-  GOOGLE_PROTOBUF_VERIFY_VERSION;
-
-  {
-    void* ptr = &::mavsdk::rpc::offboard::_SetAttitudeRequest_default_instance_;
-    new (ptr) ::mavsdk::rpc::offboard::SetAttitudeRequest();
-    ::PROTOBUF_NAMESPACE_ID::internal::OnShutdownDestroyMessage(ptr);
-  }
-  ::mavsdk::rpc::offboard::SetAttitudeRequest::InitAsDefaultInstance();
-}
-
-::PROTOBUF_NAMESPACE_ID::internal::SCCInfo<1> scc_info_SetAttitudeRequest_offboard_2foffboard_2eproto =
-    {{ATOMIC_VAR_INIT(::PROTOBUF_NAMESPACE_ID::internal::SCCInfoBase::kUninitialized), 1, 0, InitDefaultsscc_info_SetAttitudeRequest_offboard_2foffboard_2eproto}, {
-      &scc_info_Attitude_offboard_2foffboard_2eproto.base,}};
-
-static void InitDefaultsscc_info_SetAttitudeResponse_offboard_2foffboard_2eproto() {
-  GOOGLE_PROTOBUF_VERIFY_VERSION;
-
-  {
-    void* ptr = &::mavsdk::rpc::offboard::_SetAttitudeResponse_default_instance_;
-    new (ptr) ::mavsdk::rpc::offboard::SetAttitudeResponse();
-    ::PROTOBUF_NAMESPACE_ID::internal::OnShutdownDestroyMessage(ptr);
-  }
-  ::mavsdk::rpc::offboard::SetAttitudeResponse::InitAsDefaultInstance();
-}
-
-::PROTOBUF_NAMESPACE_ID::internal::SCCInfo<1> scc_info_SetAttitudeResponse_offboard_2foffboard_2eproto =
-    {{ATOMIC_VAR_INIT(::PROTOBUF_NAMESPACE_ID::internal::SCCInfoBase::kUninitialized), 1, 0, InitDefaultsscc_info_SetAttitudeResponse_offboard_2foffboard_2eproto}, {
-      &scc_info_OffboardResult_offboard_2foffboard_2eproto.base,}};
-
-static void InitDefaultsscc_info_SetPositionNedRequest_offboard_2foffboard_2eproto() {
-  GOOGLE_PROTOBUF_VERIFY_VERSION;
-
-  {
-    void* ptr = &::mavsdk::rpc::offboard::_SetPositionNedRequest_default_instance_;
-    new (ptr) ::mavsdk::rpc::offboard::SetPositionNedRequest();
-    ::PROTOBUF_NAMESPACE_ID::internal::OnShutdownDestroyMessage(ptr);
-  }
-  ::mavsdk::rpc::offboard::SetPositionNedRequest::InitAsDefaultInstance();
-}
-
-::PROTOBUF_NAMESPACE_ID::internal::SCCInfo<1> scc_info_SetPositionNedRequest_offboard_2foffboard_2eproto =
-    {{ATOMIC_VAR_INIT(::PROTOBUF_NAMESPACE_ID::internal::SCCInfoBase::kUninitialized), 1, 0, InitDefaultsscc_info_SetPositionNedRequest_offboard_2foffboard_2eproto}, {
-      &scc_info_PositionNedYaw_offboard_2foffboard_2eproto.base,}};
-
-static void InitDefaultsscc_info_SetPositionNedResponse_offboard_2foffboard_2eproto() {
-  GOOGLE_PROTOBUF_VERIFY_VERSION;
-
-  {
-    void* ptr = &::mavsdk::rpc::offboard::_SetPositionNedResponse_default_instance_;
-    new (ptr) ::mavsdk::rpc::offboard::SetPositionNedResponse();
-    ::PROTOBUF_NAMESPACE_ID::internal::OnShutdownDestroyMessage(ptr);
-  }
-  ::mavsdk::rpc::offboard::SetPositionNedResponse::InitAsDefaultInstance();
-}
-
-::PROTOBUF_NAMESPACE_ID::internal::SCCInfo<1> scc_info_SetPositionNedResponse_offboard_2foffboard_2eproto =
-    {{ATOMIC_VAR_INIT(::PROTOBUF_NAMESPACE_ID::internal::SCCInfoBase::kUninitialized), 1, 0, InitDefaultsscc_info_SetPositionNedResponse_offboard_2foffboard_2eproto}, {
-      &scc_info_OffboardResult_offboard_2foffboard_2eproto.base,}};
-
-static void InitDefaultsscc_info_SetPositionVelocityNedRequest_offboard_2foffboard_2eproto() {
-  GOOGLE_PROTOBUF_VERIFY_VERSION;
-
-  {
-    void* ptr = &::mavsdk::rpc::offboard::_SetPositionVelocityNedRequest_default_instance_;
-    new (ptr) ::mavsdk::rpc::offboard::SetPositionVelocityNedRequest();
-    ::PROTOBUF_NAMESPACE_ID::internal::OnShutdownDestroyMessage(ptr);
-  }
-  ::mavsdk::rpc::offboard::SetPositionVelocityNedRequest::InitAsDefaultInstance();
-}
-
-::PROTOBUF_NAMESPACE_ID::internal::SCCInfo<2> scc_info_SetPositionVelocityNedRequest_offboard_2foffboard_2eproto =
-    {{ATOMIC_VAR_INIT(::PROTOBUF_NAMESPACE_ID::internal::SCCInfoBase::kUninitialized), 2, 0, InitDefaultsscc_info_SetPositionVelocityNedRequest_offboard_2foffboard_2eproto}, {
-      &scc_info_PositionNedYaw_offboard_2foffboard_2eproto.base,
-      &scc_info_VelocityNedYaw_offboard_2foffboard_2eproto.base,}};
-
-static void InitDefaultsscc_info_SetPositionVelocityNedResponse_offboard_2foffboard_2eproto() {
-  GOOGLE_PROTOBUF_VERIFY_VERSION;
-
-  {
-    void* ptr = &::mavsdk::rpc::offboard::_SetPositionVelocityNedResponse_default_instance_;
-    new (ptr) ::mavsdk::rpc::offboard::SetPositionVelocityNedResponse();
-    ::PROTOBUF_NAMESPACE_ID::internal::OnShutdownDestroyMessage(ptr);
-  }
-  ::mavsdk::rpc::offboard::SetPositionVelocityNedResponse::InitAsDefaultInstance();
-}
-
-::PROTOBUF_NAMESPACE_ID::internal::SCCInfo<1> scc_info_SetPositionVelocityNedResponse_offboard_2foffboard_2eproto =
-    {{ATOMIC_VAR_INIT(::PROTOBUF_NAMESPACE_ID::internal::SCCInfoBase::kUninitialized), 1, 0, InitDefaultsscc_info_SetPositionVelocityNedResponse_offboard_2foffboard_2eproto}, {
-      &scc_info_OffboardResult_offboard_2foffboard_2eproto.base,}};
-
-static void InitDefaultsscc_info_SetVelocityBodyRequest_offboard_2foffboard_2eproto() {
-  GOOGLE_PROTOBUF_VERIFY_VERSION;
-
-  {
-    void* ptr = &::mavsdk::rpc::offboard::_SetVelocityBodyRequest_default_instance_;
-    new (ptr) ::mavsdk::rpc::offboard::SetVelocityBodyRequest();
-    ::PROTOBUF_NAMESPACE_ID::internal::OnShutdownDestroyMessage(ptr);
-  }
-  ::mavsdk::rpc::offboard::SetVelocityBodyRequest::InitAsDefaultInstance();
-}
-
-::PROTOBUF_NAMESPACE_ID::internal::SCCInfo<1> scc_info_SetVelocityBodyRequest_offboard_2foffboard_2eproto =
-    {{ATOMIC_VAR_INIT(::PROTOBUF_NAMESPACE_ID::internal::SCCInfoBase::kUninitialized), 1, 0, InitDefaultsscc_info_SetVelocityBodyRequest_offboard_2foffboard_2eproto}, {
-      &scc_info_VelocityBodyYawspeed_offboard_2foffboard_2eproto.base,}};
-
-static void InitDefaultsscc_info_SetVelocityBodyResponse_offboard_2foffboard_2eproto() {
-  GOOGLE_PROTOBUF_VERIFY_VERSION;
-
-  {
-    void* ptr = &::mavsdk::rpc::offboard::_SetVelocityBodyResponse_default_instance_;
-    new (ptr) ::mavsdk::rpc::offboard::SetVelocityBodyResponse();
-    ::PROTOBUF_NAMESPACE_ID::internal::OnShutdownDestroyMessage(ptr);
-  }
-  ::mavsdk::rpc::offboard::SetVelocityBodyResponse::InitAsDefaultInstance();
-}
-
-::PROTOBUF_NAMESPACE_ID::internal::SCCInfo<1> scc_info_SetVelocityBodyResponse_offboard_2foffboard_2eproto =
-    {{ATOMIC_VAR_INIT(::PROTOBUF_NAMESPACE_ID::internal::SCCInfoBase::kUninitialized), 1, 0, InitDefaultsscc_info_SetVelocityBodyResponse_offboard_2foffboard_2eproto}, {
-      &scc_info_OffboardResult_offboard_2foffboard_2eproto.base,}};
-
-static void InitDefaultsscc_info_SetVelocityNedRequest_offboard_2foffboard_2eproto() {
-  GOOGLE_PROTOBUF_VERIFY_VERSION;
-
-  {
-    void* ptr = &::mavsdk::rpc::offboard::_SetVelocityNedRequest_default_instance_;
-    new (ptr) ::mavsdk::rpc::offboard::SetVelocityNedRequest();
-    ::PROTOBUF_NAMESPACE_ID::internal::OnShutdownDestroyMessage(ptr);
-  }
-  ::mavsdk::rpc::offboard::SetVelocityNedRequest::InitAsDefaultInstance();
-}
-
-::PROTOBUF_NAMESPACE_ID::internal::SCCInfo<1> scc_info_SetVelocityNedRequest_offboard_2foffboard_2eproto =
-    {{ATOMIC_VAR_INIT(::PROTOBUF_NAMESPACE_ID::internal::SCCInfoBase::kUninitialized), 1, 0, InitDefaultsscc_info_SetVelocityNedRequest_offboard_2foffboard_2eproto}, {
-      &scc_info_VelocityNedYaw_offboard_2foffboard_2eproto.base,}};
-
-static void InitDefaultsscc_info_SetVelocityNedResponse_offboard_2foffboard_2eproto() {
-  GOOGLE_PROTOBUF_VERIFY_VERSION;
-
-  {
-    void* ptr = &::mavsdk::rpc::offboard::_SetVelocityNedResponse_default_instance_;
-    new (ptr) ::mavsdk::rpc::offboard::SetVelocityNedResponse();
-    ::PROTOBUF_NAMESPACE_ID::internal::OnShutdownDestroyMessage(ptr);
-  }
-  ::mavsdk::rpc::offboard::SetVelocityNedResponse::InitAsDefaultInstance();
-}
-
-::PROTOBUF_NAMESPACE_ID::internal::SCCInfo<1> scc_info_SetVelocityNedResponse_offboard_2foffboard_2eproto =
-    {{ATOMIC_VAR_INIT(::PROTOBUF_NAMESPACE_ID::internal::SCCInfoBase::kUninitialized), 1, 0, InitDefaultsscc_info_SetVelocityNedResponse_offboard_2foffboard_2eproto}, {
-      &scc_info_OffboardResult_offboard_2foffboard_2eproto.base,}};
-
-static void InitDefaultsscc_info_StartRequest_offboard_2foffboard_2eproto() {
-  GOOGLE_PROTOBUF_VERIFY_VERSION;
-
-  {
-    void* ptr = &::mavsdk::rpc::offboard::_StartRequest_default_instance_;
-    new (ptr) ::mavsdk::rpc::offboard::StartRequest();
-    ::PROTOBUF_NAMESPACE_ID::internal::OnShutdownDestroyMessage(ptr);
-  }
-  ::mavsdk::rpc::offboard::StartRequest::InitAsDefaultInstance();
-}
-
-::PROTOBUF_NAMESPACE_ID::internal::SCCInfo<0> scc_info_StartRequest_offboard_2foffboard_2eproto =
-    {{ATOMIC_VAR_INIT(::PROTOBUF_NAMESPACE_ID::internal::SCCInfoBase::kUninitialized), 0, 0, InitDefaultsscc_info_StartRequest_offboard_2foffboard_2eproto}, {}};
-
-static void InitDefaultsscc_info_StartResponse_offboard_2foffboard_2eproto() {
-  GOOGLE_PROTOBUF_VERIFY_VERSION;
-
-  {
-    void* ptr = &::mavsdk::rpc::offboard::_StartResponse_default_instance_;
-    new (ptr) ::mavsdk::rpc::offboard::StartResponse();
-    ::PROTOBUF_NAMESPACE_ID::internal::OnShutdownDestroyMessage(ptr);
-  }
-  ::mavsdk::rpc::offboard::StartResponse::InitAsDefaultInstance();
-}
-
-::PROTOBUF_NAMESPACE_ID::internal::SCCInfo<1> scc_info_StartResponse_offboard_2foffboard_2eproto =
-    {{ATOMIC_VAR_INIT(::PROTOBUF_NAMESPACE_ID::internal::SCCInfoBase::kUninitialized), 1, 0, InitDefaultsscc_info_StartResponse_offboard_2foffboard_2eproto}, {
-      &scc_info_OffboardResult_offboard_2foffboard_2eproto.base,}};
-
-static void InitDefaultsscc_info_StopRequest_offboard_2foffboard_2eproto() {
-  GOOGLE_PROTOBUF_VERIFY_VERSION;
-
-  {
-    void* ptr = &::mavsdk::rpc::offboard::_StopRequest_default_instance_;
-    new (ptr) ::mavsdk::rpc::offboard::StopRequest();
-    ::PROTOBUF_NAMESPACE_ID::internal::OnShutdownDestroyMessage(ptr);
-  }
-  ::mavsdk::rpc::offboard::StopRequest::InitAsDefaultInstance();
-}
-
-::PROTOBUF_NAMESPACE_ID::internal::SCCInfo<0> scc_info_StopRequest_offboard_2foffboard_2eproto =
-    {{ATOMIC_VAR_INIT(::PROTOBUF_NAMESPACE_ID::internal::SCCInfoBase::kUninitialized), 0, 0, InitDefaultsscc_info_StopRequest_offboard_2foffboard_2eproto}, {}};
-
-static void InitDefaultsscc_info_StopResponse_offboard_2foffboard_2eproto() {
-  GOOGLE_PROTOBUF_VERIFY_VERSION;
-
-  {
-    void* ptr = &::mavsdk::rpc::offboard::_StopResponse_default_instance_;
-    new (ptr) ::mavsdk::rpc::offboard::StopResponse();
-    ::PROTOBUF_NAMESPACE_ID::internal::OnShutdownDestroyMessage(ptr);
-  }
-  ::mavsdk::rpc::offboard::StopResponse::InitAsDefaultInstance();
-}
-
-::PROTOBUF_NAMESPACE_ID::internal::SCCInfo<1> scc_info_StopResponse_offboard_2foffboard_2eproto =
-    {{ATOMIC_VAR_INIT(::PROTOBUF_NAMESPACE_ID::internal::SCCInfoBase::kUninitialized), 1, 0, InitDefaultsscc_info_StopResponse_offboard_2foffboard_2eproto}, {
-      &scc_info_OffboardResult_offboard_2foffboard_2eproto.base,}};
-
-static void InitDefaultsscc_info_VelocityBodyYawspeed_offboard_2foffboard_2eproto() {
-  GOOGLE_PROTOBUF_VERIFY_VERSION;
-
-  {
-    void* ptr = &::mavsdk::rpc::offboard::_VelocityBodyYawspeed_default_instance_;
-    new (ptr) ::mavsdk::rpc::offboard::VelocityBodyYawspeed();
-    ::PROTOBUF_NAMESPACE_ID::internal::OnShutdownDestroyMessage(ptr);
-  }
-  ::mavsdk::rpc::offboard::VelocityBodyYawspeed::InitAsDefaultInstance();
-}
-
-::PROTOBUF_NAMESPACE_ID::internal::SCCInfo<0> scc_info_VelocityBodyYawspeed_offboard_2foffboard_2eproto =
-    {{ATOMIC_VAR_INIT(::PROTOBUF_NAMESPACE_ID::internal::SCCInfoBase::kUninitialized), 0, 0, InitDefaultsscc_info_VelocityBodyYawspeed_offboard_2foffboard_2eproto}, {}};
-
-static void InitDefaultsscc_info_VelocityNedYaw_offboard_2foffboard_2eproto() {
-  GOOGLE_PROTOBUF_VERIFY_VERSION;
-
-  {
-    void* ptr = &::mavsdk::rpc::offboard::_VelocityNedYaw_default_instance_;
-    new (ptr) ::mavsdk::rpc::offboard::VelocityNedYaw();
-    ::PROTOBUF_NAMESPACE_ID::internal::OnShutdownDestroyMessage(ptr);
-  }
-  ::mavsdk::rpc::offboard::VelocityNedYaw::InitAsDefaultInstance();
-}
-
-::PROTOBUF_NAMESPACE_ID::internal::SCCInfo<0> scc_info_VelocityNedYaw_offboard_2foffboard_2eproto =
-    {{ATOMIC_VAR_INIT(::PROTOBUF_NAMESPACE_ID::internal::SCCInfoBase::kUninitialized), 0, 0, InitDefaultsscc_info_VelocityNedYaw_offboard_2foffboard_2eproto}, {}};
-
 static ::PROTOBUF_NAMESPACE_ID::Metadata file_level_metadata_offboard_2foffboard_2eproto[28];
 static const ::PROTOBUF_NAMESPACE_ID::EnumDescriptor* file_level_enum_descriptors_offboard_2foffboard_2eproto[1];
 static constexpr ::PROTOBUF_NAMESPACE_ID::ServiceDescriptor const** file_level_service_descriptors_offboard_2foffboard_2eproto = nullptr;
@@ -897,46 +721,21 @@ const char descriptor_table_protodef_offboard_2foffboard_2eproto[] PROTOBUF_SECT
 static const ::PROTOBUF_NAMESPACE_ID::internal::DescriptorTable*const descriptor_table_offboard_2foffboard_2eproto_deps[1] = {
   &::descriptor_table_mavsdk_5foptions_2eproto,
 };
-static ::PROTOBUF_NAMESPACE_ID::internal::SCCInfoBase*const descriptor_table_offboard_2foffboard_2eproto_sccs[28] = {
-  &scc_info_ActuatorControl_offboard_2foffboard_2eproto.base,
-  &scc_info_ActuatorControlGroup_offboard_2foffboard_2eproto.base,
-  &scc_info_Attitude_offboard_2foffboard_2eproto.base,
-  &scc_info_AttitudeRate_offboard_2foffboard_2eproto.base,
-  &scc_info_IsActiveRequest_offboard_2foffboard_2eproto.base,
-  &scc_info_IsActiveResponse_offboard_2foffboard_2eproto.base,
-  &scc_info_OffboardResult_offboard_2foffboard_2eproto.base,
-  &scc_info_PositionNedYaw_offboard_2foffboard_2eproto.base,
-  &scc_info_SetActuatorControlRequest_offboard_2foffboard_2eproto.base,
-  &scc_info_SetActuatorControlResponse_offboard_2foffboard_2eproto.base,
-  &scc_info_SetAttitudeRateRequest_offboard_2foffboard_2eproto.base,
-  &scc_info_SetAttitudeRateResponse_offboard_2foffboard_2eproto.base,
-  &scc_info_SetAttitudeRequest_offboard_2foffboard_2eproto.base,
-  &scc_info_SetAttitudeResponse_offboard_2foffboard_2eproto.base,
-  &scc_info_SetPositionNedRequest_offboard_2foffboard_2eproto.base,
-  &scc_info_SetPositionNedResponse_offboard_2foffboard_2eproto.base,
-  &scc_info_SetPositionVelocityNedRequest_offboard_2foffboard_2eproto.base,
-  &scc_info_SetPositionVelocityNedResponse_offboard_2foffboard_2eproto.base,
-  &scc_info_SetVelocityBodyRequest_offboard_2foffboard_2eproto.base,
-  &scc_info_SetVelocityBodyResponse_offboard_2foffboard_2eproto.base,
-  &scc_info_SetVelocityNedRequest_offboard_2foffboard_2eproto.base,
-  &scc_info_SetVelocityNedResponse_offboard_2foffboard_2eproto.base,
-  &scc_info_StartRequest_offboard_2foffboard_2eproto.base,
-  &scc_info_StartResponse_offboard_2foffboard_2eproto.base,
-  &scc_info_StopRequest_offboard_2foffboard_2eproto.base,
-  &scc_info_StopResponse_offboard_2foffboard_2eproto.base,
-  &scc_info_VelocityBodyYawspeed_offboard_2foffboard_2eproto.base,
-  &scc_info_VelocityNedYaw_offboard_2foffboard_2eproto.base,
-};
 static ::PROTOBUF_NAMESPACE_ID::internal::once_flag descriptor_table_offboard_2foffboard_2eproto_once;
 const ::PROTOBUF_NAMESPACE_ID::internal::DescriptorTable descriptor_table_offboard_2foffboard_2eproto = {
-  false, false, descriptor_table_protodef_offboard_2foffboard_2eproto, "offboard/offboard.proto", 3651,
-  &descriptor_table_offboard_2foffboard_2eproto_once, descriptor_table_offboard_2foffboard_2eproto_sccs, descriptor_table_offboard_2foffboard_2eproto_deps, 28, 1,
+  false, false, 3651, descriptor_table_protodef_offboard_2foffboard_2eproto, "offboard/offboard.proto", 
+  &descriptor_table_offboard_2foffboard_2eproto_once, descriptor_table_offboard_2foffboard_2eproto_deps, 1, 28,
   schemas, file_default_instances, TableStruct_offboard_2foffboard_2eproto::offsets,
-  file_level_metadata_offboard_2foffboard_2eproto, 28, file_level_enum_descriptors_offboard_2foffboard_2eproto, file_level_service_descriptors_offboard_2foffboard_2eproto,
+  file_level_metadata_offboard_2foffboard_2eproto, file_level_enum_descriptors_offboard_2foffboard_2eproto, file_level_service_descriptors_offboard_2foffboard_2eproto,
 };
+PROTOBUF_ATTRIBUTE_WEAK ::PROTOBUF_NAMESPACE_ID::Metadata
+descriptor_table_offboard_2foffboard_2eproto_metadata_getter(int index) {
+  ::PROTOBUF_NAMESPACE_ID::internal::AssignDescriptors(&descriptor_table_offboard_2foffboard_2eproto);
+  return descriptor_table_offboard_2foffboard_2eproto.file_level_metadata[index];
+}
 
 // Force running AddDescriptors() at dynamic initialization time.
-static bool dynamic_init_dummy_offboard_2foffboard_2eproto = (static_cast<void>(::PROTOBUF_NAMESPACE_ID::internal::AddDescriptors(&descriptor_table_offboard_2foffboard_2eproto)), true);
+PROTOBUF_ATTRIBUTE_INIT_PRIORITY static ::PROTOBUF_NAMESPACE_ID::internal::AddDescriptorsRunner dynamic_init_dummy_offboard_2foffboard_2eproto(&descriptor_table_offboard_2foffboard_2eproto);
 namespace mavsdk {
 namespace rpc {
 namespace offboard {
@@ -976,8 +775,6 @@ constexpr int OffboardResult::Result_ARRAYSIZE;
 
 // ===================================================================
 
-void StartRequest::InitAsDefaultInstance() {
-}
 class StartRequest::_Internal {
  public:
 };
@@ -1016,11 +813,6 @@ void StartRequest::RegisterArenaDtor(::PROTOBUF_NAMESPACE_ID::Arena*) {
 void StartRequest::SetCachedSize(int size) const {
   _cached_size_.Set(size);
 }
-const StartRequest& StartRequest::default_instance() {
-  ::PROTOBUF_NAMESPACE_ID::internal::InitSCC(&::scc_info_StartRequest_offboard_2foffboard_2eproto.base);
-  return *internal_default_instance();
-}
-
 
 void StartRequest::Clear() {
 // @@protoc_insertion_point(message_clear_start:mavsdk.rpc.offboard.StartRequest)
@@ -1033,7 +825,6 @@ void StartRequest::Clear() {
 
 const char* StartRequest::_InternalParse(const char* ptr, ::PROTOBUF_NAMESPACE_ID::internal::ParseContext* ctx) {
 #define CHK_(x) if (PROTOBUF_PREDICT_FALSE(!(x))) goto failure
-  ::PROTOBUF_NAMESPACE_ID::Arena* arena = GetArena(); (void)arena;
   while (!ctx->Done(&ptr)) {
     ::PROTOBUF_NAMESPACE_ID::uint32 tag;
     ptr = ::PROTOBUF_NAMESPACE_ID::internal::ReadTag(ptr, &tag);
@@ -1141,10 +932,6 @@ void StartRequest::InternalSwap(StartRequest* other) {
 
 // ===================================================================
 
-void StartResponse::InitAsDefaultInstance() {
-  ::mavsdk::rpc::offboard::_StartResponse_default_instance_._instance.get_mutable()->offboard_result_ = const_cast< ::mavsdk::rpc::offboard::OffboardResult*>(
-      ::mavsdk::rpc::offboard::OffboardResult::internal_default_instance());
-}
 class StartResponse::_Internal {
  public:
   static const ::mavsdk::rpc::offboard::OffboardResult& offboard_result(const StartResponse* msg);
@@ -1172,8 +959,7 @@ StartResponse::StartResponse(const StartResponse& from)
 }
 
 void StartResponse::SharedCtor() {
-  ::PROTOBUF_NAMESPACE_ID::internal::InitSCC(&scc_info_StartResponse_offboard_2foffboard_2eproto.base);
-  offboard_result_ = nullptr;
+offboard_result_ = nullptr;
 }
 
 StartResponse::~StartResponse() {
@@ -1196,11 +982,6 @@ void StartResponse::RegisterArenaDtor(::PROTOBUF_NAMESPACE_ID::Arena*) {
 void StartResponse::SetCachedSize(int size) const {
   _cached_size_.Set(size);
 }
-const StartResponse& StartResponse::default_instance() {
-  ::PROTOBUF_NAMESPACE_ID::internal::InitSCC(&::scc_info_StartResponse_offboard_2foffboard_2eproto.base);
-  return *internal_default_instance();
-}
-
 
 void StartResponse::Clear() {
 // @@protoc_insertion_point(message_clear_start:mavsdk.rpc.offboard.StartResponse)
@@ -1217,7 +998,6 @@ void StartResponse::Clear() {
 
 const char* StartResponse::_InternalParse(const char* ptr, ::PROTOBUF_NAMESPACE_ID::internal::ParseContext* ctx) {
 #define CHK_(x) if (PROTOBUF_PREDICT_FALSE(!(x))) goto failure
-  ::PROTOBUF_NAMESPACE_ID::Arena* arena = GetArena(); (void)arena;
   while (!ctx->Done(&ptr)) {
     ::PROTOBUF_NAMESPACE_ID::uint32 tag;
     ptr = ::PROTOBUF_NAMESPACE_ID::internal::ReadTag(ptr, &tag);
@@ -1356,8 +1136,6 @@ void StartResponse::InternalSwap(StartResponse* other) {
 
 // ===================================================================
 
-void StopRequest::InitAsDefaultInstance() {
-}
 class StopRequest::_Internal {
  public:
 };
@@ -1396,11 +1174,6 @@ void StopRequest::RegisterArenaDtor(::PROTOBUF_NAMESPACE_ID::Arena*) {
 void StopRequest::SetCachedSize(int size) const {
   _cached_size_.Set(size);
 }
-const StopRequest& StopRequest::default_instance() {
-  ::PROTOBUF_NAMESPACE_ID::internal::InitSCC(&::scc_info_StopRequest_offboard_2foffboard_2eproto.base);
-  return *internal_default_instance();
-}
-
 
 void StopRequest::Clear() {
 // @@protoc_insertion_point(message_clear_start:mavsdk.rpc.offboard.StopRequest)
@@ -1413,7 +1186,6 @@ void StopRequest::Clear() {
 
 const char* StopRequest::_InternalParse(const char* ptr, ::PROTOBUF_NAMESPACE_ID::internal::ParseContext* ctx) {
 #define CHK_(x) if (PROTOBUF_PREDICT_FALSE(!(x))) goto failure
-  ::PROTOBUF_NAMESPACE_ID::Arena* arena = GetArena(); (void)arena;
   while (!ctx->Done(&ptr)) {
     ::PROTOBUF_NAMESPACE_ID::uint32 tag;
     ptr = ::PROTOBUF_NAMESPACE_ID::internal::ReadTag(ptr, &tag);
@@ -1521,10 +1293,6 @@ void StopRequest::InternalSwap(StopRequest* other) {
 
 // ===================================================================
 
-void StopResponse::InitAsDefaultInstance() {
-  ::mavsdk::rpc::offboard::_StopResponse_default_instance_._instance.get_mutable()->offboard_result_ = const_cast< ::mavsdk::rpc::offboard::OffboardResult*>(
-      ::mavsdk::rpc::offboard::OffboardResult::internal_default_instance());
-}
 class StopResponse::_Internal {
  public:
   static const ::mavsdk::rpc::offboard::OffboardResult& offboard_result(const StopResponse* msg);
@@ -1552,8 +1320,7 @@ StopResponse::StopResponse(const StopResponse& from)
 }
 
 void StopResponse::SharedCtor() {
-  ::PROTOBUF_NAMESPACE_ID::internal::InitSCC(&scc_info_StopResponse_offboard_2foffboard_2eproto.base);
-  offboard_result_ = nullptr;
+offboard_result_ = nullptr;
 }
 
 StopResponse::~StopResponse() {
@@ -1576,11 +1343,6 @@ void StopResponse::RegisterArenaDtor(::PROTOBUF_NAMESPACE_ID::Arena*) {
 void StopResponse::SetCachedSize(int size) const {
   _cached_size_.Set(size);
 }
-const StopResponse& StopResponse::default_instance() {
-  ::PROTOBUF_NAMESPACE_ID::internal::InitSCC(&::scc_info_StopResponse_offboard_2foffboard_2eproto.base);
-  return *internal_default_instance();
-}
-
 
 void StopResponse::Clear() {
 // @@protoc_insertion_point(message_clear_start:mavsdk.rpc.offboard.StopResponse)
@@ -1597,7 +1359,6 @@ void StopResponse::Clear() {
 
 const char* StopResponse::_InternalParse(const char* ptr, ::PROTOBUF_NAMESPACE_ID::internal::ParseContext* ctx) {
 #define CHK_(x) if (PROTOBUF_PREDICT_FALSE(!(x))) goto failure
-  ::PROTOBUF_NAMESPACE_ID::Arena* arena = GetArena(); (void)arena;
   while (!ctx->Done(&ptr)) {
     ::PROTOBUF_NAMESPACE_ID::uint32 tag;
     ptr = ::PROTOBUF_NAMESPACE_ID::internal::ReadTag(ptr, &tag);
@@ -1736,8 +1497,6 @@ void StopResponse::InternalSwap(StopResponse* other) {
 
 // ===================================================================
 
-void IsActiveRequest::InitAsDefaultInstance() {
-}
 class IsActiveRequest::_Internal {
  public:
 };
@@ -1776,11 +1535,6 @@ void IsActiveRequest::RegisterArenaDtor(::PROTOBUF_NAMESPACE_ID::Arena*) {
 void IsActiveRequest::SetCachedSize(int size) const {
   _cached_size_.Set(size);
 }
-const IsActiveRequest& IsActiveRequest::default_instance() {
-  ::PROTOBUF_NAMESPACE_ID::internal::InitSCC(&::scc_info_IsActiveRequest_offboard_2foffboard_2eproto.base);
-  return *internal_default_instance();
-}
-
 
 void IsActiveRequest::Clear() {
 // @@protoc_insertion_point(message_clear_start:mavsdk.rpc.offboard.IsActiveRequest)
@@ -1793,7 +1547,6 @@ void IsActiveRequest::Clear() {
 
 const char* IsActiveRequest::_InternalParse(const char* ptr, ::PROTOBUF_NAMESPACE_ID::internal::ParseContext* ctx) {
 #define CHK_(x) if (PROTOBUF_PREDICT_FALSE(!(x))) goto failure
-  ::PROTOBUF_NAMESPACE_ID::Arena* arena = GetArena(); (void)arena;
   while (!ctx->Done(&ptr)) {
     ::PROTOBUF_NAMESPACE_ID::uint32 tag;
     ptr = ::PROTOBUF_NAMESPACE_ID::internal::ReadTag(ptr, &tag);
@@ -1901,8 +1654,6 @@ void IsActiveRequest::InternalSwap(IsActiveRequest* other) {
 
 // ===================================================================
 
-void IsActiveResponse::InitAsDefaultInstance() {
-}
 class IsActiveResponse::_Internal {
  public:
 };
@@ -1921,7 +1672,7 @@ IsActiveResponse::IsActiveResponse(const IsActiveResponse& from)
 }
 
 void IsActiveResponse::SharedCtor() {
-  is_active_ = false;
+is_active_ = false;
 }
 
 IsActiveResponse::~IsActiveResponse() {
@@ -1943,11 +1694,6 @@ void IsActiveResponse::RegisterArenaDtor(::PROTOBUF_NAMESPACE_ID::Arena*) {
 void IsActiveResponse::SetCachedSize(int size) const {
   _cached_size_.Set(size);
 }
-const IsActiveResponse& IsActiveResponse::default_instance() {
-  ::PROTOBUF_NAMESPACE_ID::internal::InitSCC(&::scc_info_IsActiveResponse_offboard_2foffboard_2eproto.base);
-  return *internal_default_instance();
-}
-
 
 void IsActiveResponse::Clear() {
 // @@protoc_insertion_point(message_clear_start:mavsdk.rpc.offboard.IsActiveResponse)
@@ -1961,7 +1707,6 @@ void IsActiveResponse::Clear() {
 
 const char* IsActiveResponse::_InternalParse(const char* ptr, ::PROTOBUF_NAMESPACE_ID::internal::ParseContext* ctx) {
 #define CHK_(x) if (PROTOBUF_PREDICT_FALSE(!(x))) goto failure
-  ::PROTOBUF_NAMESPACE_ID::Arena* arena = GetArena(); (void)arena;
   while (!ctx->Done(&ptr)) {
     ::PROTOBUF_NAMESPACE_ID::uint32 tag;
     ptr = ::PROTOBUF_NAMESPACE_ID::internal::ReadTag(ptr, &tag);
@@ -2096,10 +1841,6 @@ void IsActiveResponse::InternalSwap(IsActiveResponse* other) {
 
 // ===================================================================
 
-void SetAttitudeRequest::InitAsDefaultInstance() {
-  ::mavsdk::rpc::offboard::_SetAttitudeRequest_default_instance_._instance.get_mutable()->attitude_ = const_cast< ::mavsdk::rpc::offboard::Attitude*>(
-      ::mavsdk::rpc::offboard::Attitude::internal_default_instance());
-}
 class SetAttitudeRequest::_Internal {
  public:
   static const ::mavsdk::rpc::offboard::Attitude& attitude(const SetAttitudeRequest* msg);
@@ -2127,8 +1868,7 @@ SetAttitudeRequest::SetAttitudeRequest(const SetAttitudeRequest& from)
 }
 
 void SetAttitudeRequest::SharedCtor() {
-  ::PROTOBUF_NAMESPACE_ID::internal::InitSCC(&scc_info_SetAttitudeRequest_offboard_2foffboard_2eproto.base);
-  attitude_ = nullptr;
+attitude_ = nullptr;
 }
 
 SetAttitudeRequest::~SetAttitudeRequest() {
@@ -2151,11 +1891,6 @@ void SetAttitudeRequest::RegisterArenaDtor(::PROTOBUF_NAMESPACE_ID::Arena*) {
 void SetAttitudeRequest::SetCachedSize(int size) const {
   _cached_size_.Set(size);
 }
-const SetAttitudeRequest& SetAttitudeRequest::default_instance() {
-  ::PROTOBUF_NAMESPACE_ID::internal::InitSCC(&::scc_info_SetAttitudeRequest_offboard_2foffboard_2eproto.base);
-  return *internal_default_instance();
-}
-
 
 void SetAttitudeRequest::Clear() {
 // @@protoc_insertion_point(message_clear_start:mavsdk.rpc.offboard.SetAttitudeRequest)
@@ -2172,7 +1907,6 @@ void SetAttitudeRequest::Clear() {
 
 const char* SetAttitudeRequest::_InternalParse(const char* ptr, ::PROTOBUF_NAMESPACE_ID::internal::ParseContext* ctx) {
 #define CHK_(x) if (PROTOBUF_PREDICT_FALSE(!(x))) goto failure
-  ::PROTOBUF_NAMESPACE_ID::Arena* arena = GetArena(); (void)arena;
   while (!ctx->Done(&ptr)) {
     ::PROTOBUF_NAMESPACE_ID::uint32 tag;
     ptr = ::PROTOBUF_NAMESPACE_ID::internal::ReadTag(ptr, &tag);
@@ -2311,10 +2045,6 @@ void SetAttitudeRequest::InternalSwap(SetAttitudeRequest* other) {
 
 // ===================================================================
 
-void SetAttitudeResponse::InitAsDefaultInstance() {
-  ::mavsdk::rpc::offboard::_SetAttitudeResponse_default_instance_._instance.get_mutable()->offboard_result_ = const_cast< ::mavsdk::rpc::offboard::OffboardResult*>(
-      ::mavsdk::rpc::offboard::OffboardResult::internal_default_instance());
-}
 class SetAttitudeResponse::_Internal {
  public:
   static const ::mavsdk::rpc::offboard::OffboardResult& offboard_result(const SetAttitudeResponse* msg);
@@ -2342,8 +2072,7 @@ SetAttitudeResponse::SetAttitudeResponse(const SetAttitudeResponse& from)
 }
 
 void SetAttitudeResponse::SharedCtor() {
-  ::PROTOBUF_NAMESPACE_ID::internal::InitSCC(&scc_info_SetAttitudeResponse_offboard_2foffboard_2eproto.base);
-  offboard_result_ = nullptr;
+offboard_result_ = nullptr;
 }
 
 SetAttitudeResponse::~SetAttitudeResponse() {
@@ -2366,11 +2095,6 @@ void SetAttitudeResponse::RegisterArenaDtor(::PROTOBUF_NAMESPACE_ID::Arena*) {
 void SetAttitudeResponse::SetCachedSize(int size) const {
   _cached_size_.Set(size);
 }
-const SetAttitudeResponse& SetAttitudeResponse::default_instance() {
-  ::PROTOBUF_NAMESPACE_ID::internal::InitSCC(&::scc_info_SetAttitudeResponse_offboard_2foffboard_2eproto.base);
-  return *internal_default_instance();
-}
-
 
 void SetAttitudeResponse::Clear() {
 // @@protoc_insertion_point(message_clear_start:mavsdk.rpc.offboard.SetAttitudeResponse)
@@ -2387,7 +2111,6 @@ void SetAttitudeResponse::Clear() {
 
 const char* SetAttitudeResponse::_InternalParse(const char* ptr, ::PROTOBUF_NAMESPACE_ID::internal::ParseContext* ctx) {
 #define CHK_(x) if (PROTOBUF_PREDICT_FALSE(!(x))) goto failure
-  ::PROTOBUF_NAMESPACE_ID::Arena* arena = GetArena(); (void)arena;
   while (!ctx->Done(&ptr)) {
     ::PROTOBUF_NAMESPACE_ID::uint32 tag;
     ptr = ::PROTOBUF_NAMESPACE_ID::internal::ReadTag(ptr, &tag);
@@ -2526,10 +2249,6 @@ void SetAttitudeResponse::InternalSwap(SetAttitudeResponse* other) {
 
 // ===================================================================
 
-void SetActuatorControlRequest::InitAsDefaultInstance() {
-  ::mavsdk::rpc::offboard::_SetActuatorControlRequest_default_instance_._instance.get_mutable()->actuator_control_ = const_cast< ::mavsdk::rpc::offboard::ActuatorControl*>(
-      ::mavsdk::rpc::offboard::ActuatorControl::internal_default_instance());
-}
 class SetActuatorControlRequest::_Internal {
  public:
   static const ::mavsdk::rpc::offboard::ActuatorControl& actuator_control(const SetActuatorControlRequest* msg);
@@ -2557,8 +2276,7 @@ SetActuatorControlRequest::SetActuatorControlRequest(const SetActuatorControlReq
 }
 
 void SetActuatorControlRequest::SharedCtor() {
-  ::PROTOBUF_NAMESPACE_ID::internal::InitSCC(&scc_info_SetActuatorControlRequest_offboard_2foffboard_2eproto.base);
-  actuator_control_ = nullptr;
+actuator_control_ = nullptr;
 }
 
 SetActuatorControlRequest::~SetActuatorControlRequest() {
@@ -2581,11 +2299,6 @@ void SetActuatorControlRequest::RegisterArenaDtor(::PROTOBUF_NAMESPACE_ID::Arena
 void SetActuatorControlRequest::SetCachedSize(int size) const {
   _cached_size_.Set(size);
 }
-const SetActuatorControlRequest& SetActuatorControlRequest::default_instance() {
-  ::PROTOBUF_NAMESPACE_ID::internal::InitSCC(&::scc_info_SetActuatorControlRequest_offboard_2foffboard_2eproto.base);
-  return *internal_default_instance();
-}
-
 
 void SetActuatorControlRequest::Clear() {
 // @@protoc_insertion_point(message_clear_start:mavsdk.rpc.offboard.SetActuatorControlRequest)
@@ -2602,7 +2315,6 @@ void SetActuatorControlRequest::Clear() {
 
 const char* SetActuatorControlRequest::_InternalParse(const char* ptr, ::PROTOBUF_NAMESPACE_ID::internal::ParseContext* ctx) {
 #define CHK_(x) if (PROTOBUF_PREDICT_FALSE(!(x))) goto failure
-  ::PROTOBUF_NAMESPACE_ID::Arena* arena = GetArena(); (void)arena;
   while (!ctx->Done(&ptr)) {
     ::PROTOBUF_NAMESPACE_ID::uint32 tag;
     ptr = ::PROTOBUF_NAMESPACE_ID::internal::ReadTag(ptr, &tag);
@@ -2741,10 +2453,6 @@ void SetActuatorControlRequest::InternalSwap(SetActuatorControlRequest* other) {
 
 // ===================================================================
 
-void SetActuatorControlResponse::InitAsDefaultInstance() {
-  ::mavsdk::rpc::offboard::_SetActuatorControlResponse_default_instance_._instance.get_mutable()->offboard_result_ = const_cast< ::mavsdk::rpc::offboard::OffboardResult*>(
-      ::mavsdk::rpc::offboard::OffboardResult::internal_default_instance());
-}
 class SetActuatorControlResponse::_Internal {
  public:
   static const ::mavsdk::rpc::offboard::OffboardResult& offboard_result(const SetActuatorControlResponse* msg);
@@ -2772,8 +2480,7 @@ SetActuatorControlResponse::SetActuatorControlResponse(const SetActuatorControlR
 }
 
 void SetActuatorControlResponse::SharedCtor() {
-  ::PROTOBUF_NAMESPACE_ID::internal::InitSCC(&scc_info_SetActuatorControlResponse_offboard_2foffboard_2eproto.base);
-  offboard_result_ = nullptr;
+offboard_result_ = nullptr;
 }
 
 SetActuatorControlResponse::~SetActuatorControlResponse() {
@@ -2796,11 +2503,6 @@ void SetActuatorControlResponse::RegisterArenaDtor(::PROTOBUF_NAMESPACE_ID::Aren
 void SetActuatorControlResponse::SetCachedSize(int size) const {
   _cached_size_.Set(size);
 }
-const SetActuatorControlResponse& SetActuatorControlResponse::default_instance() {
-  ::PROTOBUF_NAMESPACE_ID::internal::InitSCC(&::scc_info_SetActuatorControlResponse_offboard_2foffboard_2eproto.base);
-  return *internal_default_instance();
-}
-
 
 void SetActuatorControlResponse::Clear() {
 // @@protoc_insertion_point(message_clear_start:mavsdk.rpc.offboard.SetActuatorControlResponse)
@@ -2817,7 +2519,6 @@ void SetActuatorControlResponse::Clear() {
 
 const char* SetActuatorControlResponse::_InternalParse(const char* ptr, ::PROTOBUF_NAMESPACE_ID::internal::ParseContext* ctx) {
 #define CHK_(x) if (PROTOBUF_PREDICT_FALSE(!(x))) goto failure
-  ::PROTOBUF_NAMESPACE_ID::Arena* arena = GetArena(); (void)arena;
   while (!ctx->Done(&ptr)) {
     ::PROTOBUF_NAMESPACE_ID::uint32 tag;
     ptr = ::PROTOBUF_NAMESPACE_ID::internal::ReadTag(ptr, &tag);
@@ -2956,10 +2657,6 @@ void SetActuatorControlResponse::InternalSwap(SetActuatorControlResponse* other)
 
 // ===================================================================
 
-void SetAttitudeRateRequest::InitAsDefaultInstance() {
-  ::mavsdk::rpc::offboard::_SetAttitudeRateRequest_default_instance_._instance.get_mutable()->attitude_rate_ = const_cast< ::mavsdk::rpc::offboard::AttitudeRate*>(
-      ::mavsdk::rpc::offboard::AttitudeRate::internal_default_instance());
-}
 class SetAttitudeRateRequest::_Internal {
  public:
   static const ::mavsdk::rpc::offboard::AttitudeRate& attitude_rate(const SetAttitudeRateRequest* msg);
@@ -2987,8 +2684,7 @@ SetAttitudeRateRequest::SetAttitudeRateRequest(const SetAttitudeRateRequest& fro
 }
 
 void SetAttitudeRateRequest::SharedCtor() {
-  ::PROTOBUF_NAMESPACE_ID::internal::InitSCC(&scc_info_SetAttitudeRateRequest_offboard_2foffboard_2eproto.base);
-  attitude_rate_ = nullptr;
+attitude_rate_ = nullptr;
 }
 
 SetAttitudeRateRequest::~SetAttitudeRateRequest() {
@@ -3011,11 +2707,6 @@ void SetAttitudeRateRequest::RegisterArenaDtor(::PROTOBUF_NAMESPACE_ID::Arena*) 
 void SetAttitudeRateRequest::SetCachedSize(int size) const {
   _cached_size_.Set(size);
 }
-const SetAttitudeRateRequest& SetAttitudeRateRequest::default_instance() {
-  ::PROTOBUF_NAMESPACE_ID::internal::InitSCC(&::scc_info_SetAttitudeRateRequest_offboard_2foffboard_2eproto.base);
-  return *internal_default_instance();
-}
-
 
 void SetAttitudeRateRequest::Clear() {
 // @@protoc_insertion_point(message_clear_start:mavsdk.rpc.offboard.SetAttitudeRateRequest)
@@ -3032,7 +2723,6 @@ void SetAttitudeRateRequest::Clear() {
 
 const char* SetAttitudeRateRequest::_InternalParse(const char* ptr, ::PROTOBUF_NAMESPACE_ID::internal::ParseContext* ctx) {
 #define CHK_(x) if (PROTOBUF_PREDICT_FALSE(!(x))) goto failure
-  ::PROTOBUF_NAMESPACE_ID::Arena* arena = GetArena(); (void)arena;
   while (!ctx->Done(&ptr)) {
     ::PROTOBUF_NAMESPACE_ID::uint32 tag;
     ptr = ::PROTOBUF_NAMESPACE_ID::internal::ReadTag(ptr, &tag);
@@ -3171,10 +2861,6 @@ void SetAttitudeRateRequest::InternalSwap(SetAttitudeRateRequest* other) {
 
 // ===================================================================
 
-void SetAttitudeRateResponse::InitAsDefaultInstance() {
-  ::mavsdk::rpc::offboard::_SetAttitudeRateResponse_default_instance_._instance.get_mutable()->offboard_result_ = const_cast< ::mavsdk::rpc::offboard::OffboardResult*>(
-      ::mavsdk::rpc::offboard::OffboardResult::internal_default_instance());
-}
 class SetAttitudeRateResponse::_Internal {
  public:
   static const ::mavsdk::rpc::offboard::OffboardResult& offboard_result(const SetAttitudeRateResponse* msg);
@@ -3202,8 +2888,7 @@ SetAttitudeRateResponse::SetAttitudeRateResponse(const SetAttitudeRateResponse& 
 }
 
 void SetAttitudeRateResponse::SharedCtor() {
-  ::PROTOBUF_NAMESPACE_ID::internal::InitSCC(&scc_info_SetAttitudeRateResponse_offboard_2foffboard_2eproto.base);
-  offboard_result_ = nullptr;
+offboard_result_ = nullptr;
 }
 
 SetAttitudeRateResponse::~SetAttitudeRateResponse() {
@@ -3226,11 +2911,6 @@ void SetAttitudeRateResponse::RegisterArenaDtor(::PROTOBUF_NAMESPACE_ID::Arena*)
 void SetAttitudeRateResponse::SetCachedSize(int size) const {
   _cached_size_.Set(size);
 }
-const SetAttitudeRateResponse& SetAttitudeRateResponse::default_instance() {
-  ::PROTOBUF_NAMESPACE_ID::internal::InitSCC(&::scc_info_SetAttitudeRateResponse_offboard_2foffboard_2eproto.base);
-  return *internal_default_instance();
-}
-
 
 void SetAttitudeRateResponse::Clear() {
 // @@protoc_insertion_point(message_clear_start:mavsdk.rpc.offboard.SetAttitudeRateResponse)
@@ -3247,7 +2927,6 @@ void SetAttitudeRateResponse::Clear() {
 
 const char* SetAttitudeRateResponse::_InternalParse(const char* ptr, ::PROTOBUF_NAMESPACE_ID::internal::ParseContext* ctx) {
 #define CHK_(x) if (PROTOBUF_PREDICT_FALSE(!(x))) goto failure
-  ::PROTOBUF_NAMESPACE_ID::Arena* arena = GetArena(); (void)arena;
   while (!ctx->Done(&ptr)) {
     ::PROTOBUF_NAMESPACE_ID::uint32 tag;
     ptr = ::PROTOBUF_NAMESPACE_ID::internal::ReadTag(ptr, &tag);
@@ -3386,10 +3065,6 @@ void SetAttitudeRateResponse::InternalSwap(SetAttitudeRateResponse* other) {
 
 // ===================================================================
 
-void SetPositionNedRequest::InitAsDefaultInstance() {
-  ::mavsdk::rpc::offboard::_SetPositionNedRequest_default_instance_._instance.get_mutable()->position_ned_yaw_ = const_cast< ::mavsdk::rpc::offboard::PositionNedYaw*>(
-      ::mavsdk::rpc::offboard::PositionNedYaw::internal_default_instance());
-}
 class SetPositionNedRequest::_Internal {
  public:
   static const ::mavsdk::rpc::offboard::PositionNedYaw& position_ned_yaw(const SetPositionNedRequest* msg);
@@ -3417,8 +3092,7 @@ SetPositionNedRequest::SetPositionNedRequest(const SetPositionNedRequest& from)
 }
 
 void SetPositionNedRequest::SharedCtor() {
-  ::PROTOBUF_NAMESPACE_ID::internal::InitSCC(&scc_info_SetPositionNedRequest_offboard_2foffboard_2eproto.base);
-  position_ned_yaw_ = nullptr;
+position_ned_yaw_ = nullptr;
 }
 
 SetPositionNedRequest::~SetPositionNedRequest() {
@@ -3441,11 +3115,6 @@ void SetPositionNedRequest::RegisterArenaDtor(::PROTOBUF_NAMESPACE_ID::Arena*) {
 void SetPositionNedRequest::SetCachedSize(int size) const {
   _cached_size_.Set(size);
 }
-const SetPositionNedRequest& SetPositionNedRequest::default_instance() {
-  ::PROTOBUF_NAMESPACE_ID::internal::InitSCC(&::scc_info_SetPositionNedRequest_offboard_2foffboard_2eproto.base);
-  return *internal_default_instance();
-}
-
 
 void SetPositionNedRequest::Clear() {
 // @@protoc_insertion_point(message_clear_start:mavsdk.rpc.offboard.SetPositionNedRequest)
@@ -3462,7 +3131,6 @@ void SetPositionNedRequest::Clear() {
 
 const char* SetPositionNedRequest::_InternalParse(const char* ptr, ::PROTOBUF_NAMESPACE_ID::internal::ParseContext* ctx) {
 #define CHK_(x) if (PROTOBUF_PREDICT_FALSE(!(x))) goto failure
-  ::PROTOBUF_NAMESPACE_ID::Arena* arena = GetArena(); (void)arena;
   while (!ctx->Done(&ptr)) {
     ::PROTOBUF_NAMESPACE_ID::uint32 tag;
     ptr = ::PROTOBUF_NAMESPACE_ID::internal::ReadTag(ptr, &tag);
@@ -3601,10 +3269,6 @@ void SetPositionNedRequest::InternalSwap(SetPositionNedRequest* other) {
 
 // ===================================================================
 
-void SetPositionNedResponse::InitAsDefaultInstance() {
-  ::mavsdk::rpc::offboard::_SetPositionNedResponse_default_instance_._instance.get_mutable()->offboard_result_ = const_cast< ::mavsdk::rpc::offboard::OffboardResult*>(
-      ::mavsdk::rpc::offboard::OffboardResult::internal_default_instance());
-}
 class SetPositionNedResponse::_Internal {
  public:
   static const ::mavsdk::rpc::offboard::OffboardResult& offboard_result(const SetPositionNedResponse* msg);
@@ -3632,8 +3296,7 @@ SetPositionNedResponse::SetPositionNedResponse(const SetPositionNedResponse& fro
 }
 
 void SetPositionNedResponse::SharedCtor() {
-  ::PROTOBUF_NAMESPACE_ID::internal::InitSCC(&scc_info_SetPositionNedResponse_offboard_2foffboard_2eproto.base);
-  offboard_result_ = nullptr;
+offboard_result_ = nullptr;
 }
 
 SetPositionNedResponse::~SetPositionNedResponse() {
@@ -3656,11 +3319,6 @@ void SetPositionNedResponse::RegisterArenaDtor(::PROTOBUF_NAMESPACE_ID::Arena*) 
 void SetPositionNedResponse::SetCachedSize(int size) const {
   _cached_size_.Set(size);
 }
-const SetPositionNedResponse& SetPositionNedResponse::default_instance() {
-  ::PROTOBUF_NAMESPACE_ID::internal::InitSCC(&::scc_info_SetPositionNedResponse_offboard_2foffboard_2eproto.base);
-  return *internal_default_instance();
-}
-
 
 void SetPositionNedResponse::Clear() {
 // @@protoc_insertion_point(message_clear_start:mavsdk.rpc.offboard.SetPositionNedResponse)
@@ -3677,7 +3335,6 @@ void SetPositionNedResponse::Clear() {
 
 const char* SetPositionNedResponse::_InternalParse(const char* ptr, ::PROTOBUF_NAMESPACE_ID::internal::ParseContext* ctx) {
 #define CHK_(x) if (PROTOBUF_PREDICT_FALSE(!(x))) goto failure
-  ::PROTOBUF_NAMESPACE_ID::Arena* arena = GetArena(); (void)arena;
   while (!ctx->Done(&ptr)) {
     ::PROTOBUF_NAMESPACE_ID::uint32 tag;
     ptr = ::PROTOBUF_NAMESPACE_ID::internal::ReadTag(ptr, &tag);
@@ -3816,10 +3473,6 @@ void SetPositionNedResponse::InternalSwap(SetPositionNedResponse* other) {
 
 // ===================================================================
 
-void SetVelocityBodyRequest::InitAsDefaultInstance() {
-  ::mavsdk::rpc::offboard::_SetVelocityBodyRequest_default_instance_._instance.get_mutable()->velocity_body_yawspeed_ = const_cast< ::mavsdk::rpc::offboard::VelocityBodyYawspeed*>(
-      ::mavsdk::rpc::offboard::VelocityBodyYawspeed::internal_default_instance());
-}
 class SetVelocityBodyRequest::_Internal {
  public:
   static const ::mavsdk::rpc::offboard::VelocityBodyYawspeed& velocity_body_yawspeed(const SetVelocityBodyRequest* msg);
@@ -3847,8 +3500,7 @@ SetVelocityBodyRequest::SetVelocityBodyRequest(const SetVelocityBodyRequest& fro
 }
 
 void SetVelocityBodyRequest::SharedCtor() {
-  ::PROTOBUF_NAMESPACE_ID::internal::InitSCC(&scc_info_SetVelocityBodyRequest_offboard_2foffboard_2eproto.base);
-  velocity_body_yawspeed_ = nullptr;
+velocity_body_yawspeed_ = nullptr;
 }
 
 SetVelocityBodyRequest::~SetVelocityBodyRequest() {
@@ -3871,11 +3523,6 @@ void SetVelocityBodyRequest::RegisterArenaDtor(::PROTOBUF_NAMESPACE_ID::Arena*) 
 void SetVelocityBodyRequest::SetCachedSize(int size) const {
   _cached_size_.Set(size);
 }
-const SetVelocityBodyRequest& SetVelocityBodyRequest::default_instance() {
-  ::PROTOBUF_NAMESPACE_ID::internal::InitSCC(&::scc_info_SetVelocityBodyRequest_offboard_2foffboard_2eproto.base);
-  return *internal_default_instance();
-}
-
 
 void SetVelocityBodyRequest::Clear() {
 // @@protoc_insertion_point(message_clear_start:mavsdk.rpc.offboard.SetVelocityBodyRequest)
@@ -3892,7 +3539,6 @@ void SetVelocityBodyRequest::Clear() {
 
 const char* SetVelocityBodyRequest::_InternalParse(const char* ptr, ::PROTOBUF_NAMESPACE_ID::internal::ParseContext* ctx) {
 #define CHK_(x) if (PROTOBUF_PREDICT_FALSE(!(x))) goto failure
-  ::PROTOBUF_NAMESPACE_ID::Arena* arena = GetArena(); (void)arena;
   while (!ctx->Done(&ptr)) {
     ::PROTOBUF_NAMESPACE_ID::uint32 tag;
     ptr = ::PROTOBUF_NAMESPACE_ID::internal::ReadTag(ptr, &tag);
@@ -4031,10 +3677,6 @@ void SetVelocityBodyRequest::InternalSwap(SetVelocityBodyRequest* other) {
 
 // ===================================================================
 
-void SetVelocityBodyResponse::InitAsDefaultInstance() {
-  ::mavsdk::rpc::offboard::_SetVelocityBodyResponse_default_instance_._instance.get_mutable()->offboard_result_ = const_cast< ::mavsdk::rpc::offboard::OffboardResult*>(
-      ::mavsdk::rpc::offboard::OffboardResult::internal_default_instance());
-}
 class SetVelocityBodyResponse::_Internal {
  public:
   static const ::mavsdk::rpc::offboard::OffboardResult& offboard_result(const SetVelocityBodyResponse* msg);
@@ -4062,8 +3704,7 @@ SetVelocityBodyResponse::SetVelocityBodyResponse(const SetVelocityBodyResponse& 
 }
 
 void SetVelocityBodyResponse::SharedCtor() {
-  ::PROTOBUF_NAMESPACE_ID::internal::InitSCC(&scc_info_SetVelocityBodyResponse_offboard_2foffboard_2eproto.base);
-  offboard_result_ = nullptr;
+offboard_result_ = nullptr;
 }
 
 SetVelocityBodyResponse::~SetVelocityBodyResponse() {
@@ -4086,11 +3727,6 @@ void SetVelocityBodyResponse::RegisterArenaDtor(::PROTOBUF_NAMESPACE_ID::Arena*)
 void SetVelocityBodyResponse::SetCachedSize(int size) const {
   _cached_size_.Set(size);
 }
-const SetVelocityBodyResponse& SetVelocityBodyResponse::default_instance() {
-  ::PROTOBUF_NAMESPACE_ID::internal::InitSCC(&::scc_info_SetVelocityBodyResponse_offboard_2foffboard_2eproto.base);
-  return *internal_default_instance();
-}
-
 
 void SetVelocityBodyResponse::Clear() {
 // @@protoc_insertion_point(message_clear_start:mavsdk.rpc.offboard.SetVelocityBodyResponse)
@@ -4107,7 +3743,6 @@ void SetVelocityBodyResponse::Clear() {
 
 const char* SetVelocityBodyResponse::_InternalParse(const char* ptr, ::PROTOBUF_NAMESPACE_ID::internal::ParseContext* ctx) {
 #define CHK_(x) if (PROTOBUF_PREDICT_FALSE(!(x))) goto failure
-  ::PROTOBUF_NAMESPACE_ID::Arena* arena = GetArena(); (void)arena;
   while (!ctx->Done(&ptr)) {
     ::PROTOBUF_NAMESPACE_ID::uint32 tag;
     ptr = ::PROTOBUF_NAMESPACE_ID::internal::ReadTag(ptr, &tag);
@@ -4246,10 +3881,6 @@ void SetVelocityBodyResponse::InternalSwap(SetVelocityBodyResponse* other) {
 
 // ===================================================================
 
-void SetVelocityNedRequest::InitAsDefaultInstance() {
-  ::mavsdk::rpc::offboard::_SetVelocityNedRequest_default_instance_._instance.get_mutable()->velocity_ned_yaw_ = const_cast< ::mavsdk::rpc::offboard::VelocityNedYaw*>(
-      ::mavsdk::rpc::offboard::VelocityNedYaw::internal_default_instance());
-}
 class SetVelocityNedRequest::_Internal {
  public:
   static const ::mavsdk::rpc::offboard::VelocityNedYaw& velocity_ned_yaw(const SetVelocityNedRequest* msg);
@@ -4277,8 +3908,7 @@ SetVelocityNedRequest::SetVelocityNedRequest(const SetVelocityNedRequest& from)
 }
 
 void SetVelocityNedRequest::SharedCtor() {
-  ::PROTOBUF_NAMESPACE_ID::internal::InitSCC(&scc_info_SetVelocityNedRequest_offboard_2foffboard_2eproto.base);
-  velocity_ned_yaw_ = nullptr;
+velocity_ned_yaw_ = nullptr;
 }
 
 SetVelocityNedRequest::~SetVelocityNedRequest() {
@@ -4301,11 +3931,6 @@ void SetVelocityNedRequest::RegisterArenaDtor(::PROTOBUF_NAMESPACE_ID::Arena*) {
 void SetVelocityNedRequest::SetCachedSize(int size) const {
   _cached_size_.Set(size);
 }
-const SetVelocityNedRequest& SetVelocityNedRequest::default_instance() {
-  ::PROTOBUF_NAMESPACE_ID::internal::InitSCC(&::scc_info_SetVelocityNedRequest_offboard_2foffboard_2eproto.base);
-  return *internal_default_instance();
-}
-
 
 void SetVelocityNedRequest::Clear() {
 // @@protoc_insertion_point(message_clear_start:mavsdk.rpc.offboard.SetVelocityNedRequest)
@@ -4322,7 +3947,6 @@ void SetVelocityNedRequest::Clear() {
 
 const char* SetVelocityNedRequest::_InternalParse(const char* ptr, ::PROTOBUF_NAMESPACE_ID::internal::ParseContext* ctx) {
 #define CHK_(x) if (PROTOBUF_PREDICT_FALSE(!(x))) goto failure
-  ::PROTOBUF_NAMESPACE_ID::Arena* arena = GetArena(); (void)arena;
   while (!ctx->Done(&ptr)) {
     ::PROTOBUF_NAMESPACE_ID::uint32 tag;
     ptr = ::PROTOBUF_NAMESPACE_ID::internal::ReadTag(ptr, &tag);
@@ -4461,10 +4085,6 @@ void SetVelocityNedRequest::InternalSwap(SetVelocityNedRequest* other) {
 
 // ===================================================================
 
-void SetVelocityNedResponse::InitAsDefaultInstance() {
-  ::mavsdk::rpc::offboard::_SetVelocityNedResponse_default_instance_._instance.get_mutable()->offboard_result_ = const_cast< ::mavsdk::rpc::offboard::OffboardResult*>(
-      ::mavsdk::rpc::offboard::OffboardResult::internal_default_instance());
-}
 class SetVelocityNedResponse::_Internal {
  public:
   static const ::mavsdk::rpc::offboard::OffboardResult& offboard_result(const SetVelocityNedResponse* msg);
@@ -4492,8 +4112,7 @@ SetVelocityNedResponse::SetVelocityNedResponse(const SetVelocityNedResponse& fro
 }
 
 void SetVelocityNedResponse::SharedCtor() {
-  ::PROTOBUF_NAMESPACE_ID::internal::InitSCC(&scc_info_SetVelocityNedResponse_offboard_2foffboard_2eproto.base);
-  offboard_result_ = nullptr;
+offboard_result_ = nullptr;
 }
 
 SetVelocityNedResponse::~SetVelocityNedResponse() {
@@ -4516,11 +4135,6 @@ void SetVelocityNedResponse::RegisterArenaDtor(::PROTOBUF_NAMESPACE_ID::Arena*) 
 void SetVelocityNedResponse::SetCachedSize(int size) const {
   _cached_size_.Set(size);
 }
-const SetVelocityNedResponse& SetVelocityNedResponse::default_instance() {
-  ::PROTOBUF_NAMESPACE_ID::internal::InitSCC(&::scc_info_SetVelocityNedResponse_offboard_2foffboard_2eproto.base);
-  return *internal_default_instance();
-}
-
 
 void SetVelocityNedResponse::Clear() {
 // @@protoc_insertion_point(message_clear_start:mavsdk.rpc.offboard.SetVelocityNedResponse)
@@ -4537,7 +4151,6 @@ void SetVelocityNedResponse::Clear() {
 
 const char* SetVelocityNedResponse::_InternalParse(const char* ptr, ::PROTOBUF_NAMESPACE_ID::internal::ParseContext* ctx) {
 #define CHK_(x) if (PROTOBUF_PREDICT_FALSE(!(x))) goto failure
-  ::PROTOBUF_NAMESPACE_ID::Arena* arena = GetArena(); (void)arena;
   while (!ctx->Done(&ptr)) {
     ::PROTOBUF_NAMESPACE_ID::uint32 tag;
     ptr = ::PROTOBUF_NAMESPACE_ID::internal::ReadTag(ptr, &tag);
@@ -4676,12 +4289,6 @@ void SetVelocityNedResponse::InternalSwap(SetVelocityNedResponse* other) {
 
 // ===================================================================
 
-void SetPositionVelocityNedRequest::InitAsDefaultInstance() {
-  ::mavsdk::rpc::offboard::_SetPositionVelocityNedRequest_default_instance_._instance.get_mutable()->position_ned_yaw_ = const_cast< ::mavsdk::rpc::offboard::PositionNedYaw*>(
-      ::mavsdk::rpc::offboard::PositionNedYaw::internal_default_instance());
-  ::mavsdk::rpc::offboard::_SetPositionVelocityNedRequest_default_instance_._instance.get_mutable()->velocity_ned_yaw_ = const_cast< ::mavsdk::rpc::offboard::VelocityNedYaw*>(
-      ::mavsdk::rpc::offboard::VelocityNedYaw::internal_default_instance());
-}
 class SetPositionVelocityNedRequest::_Internal {
  public:
   static const ::mavsdk::rpc::offboard::PositionNedYaw& position_ned_yaw(const SetPositionVelocityNedRequest* msg);
@@ -4719,10 +4326,10 @@ SetPositionVelocityNedRequest::SetPositionVelocityNedRequest(const SetPositionVe
 }
 
 void SetPositionVelocityNedRequest::SharedCtor() {
-  ::PROTOBUF_NAMESPACE_ID::internal::InitSCC(&scc_info_SetPositionVelocityNedRequest_offboard_2foffboard_2eproto.base);
-  ::memset(&position_ned_yaw_, 0, static_cast<size_t>(
-      reinterpret_cast<char*>(&velocity_ned_yaw_) -
-      reinterpret_cast<char*>(&position_ned_yaw_)) + sizeof(velocity_ned_yaw_));
+::memset(reinterpret_cast<char*>(this) + static_cast<size_t>(
+    reinterpret_cast<char*>(&position_ned_yaw_) - reinterpret_cast<char*>(this)),
+    0, static_cast<size_t>(reinterpret_cast<char*>(&velocity_ned_yaw_) -
+    reinterpret_cast<char*>(&position_ned_yaw_)) + sizeof(velocity_ned_yaw_));
 }
 
 SetPositionVelocityNedRequest::~SetPositionVelocityNedRequest() {
@@ -4746,11 +4353,6 @@ void SetPositionVelocityNedRequest::RegisterArenaDtor(::PROTOBUF_NAMESPACE_ID::A
 void SetPositionVelocityNedRequest::SetCachedSize(int size) const {
   _cached_size_.Set(size);
 }
-const SetPositionVelocityNedRequest& SetPositionVelocityNedRequest::default_instance() {
-  ::PROTOBUF_NAMESPACE_ID::internal::InitSCC(&::scc_info_SetPositionVelocityNedRequest_offboard_2foffboard_2eproto.base);
-  return *internal_default_instance();
-}
-
 
 void SetPositionVelocityNedRequest::Clear() {
 // @@protoc_insertion_point(message_clear_start:mavsdk.rpc.offboard.SetPositionVelocityNedRequest)
@@ -4771,7 +4373,6 @@ void SetPositionVelocityNedRequest::Clear() {
 
 const char* SetPositionVelocityNedRequest::_InternalParse(const char* ptr, ::PROTOBUF_NAMESPACE_ID::internal::ParseContext* ctx) {
 #define CHK_(x) if (PROTOBUF_PREDICT_FALSE(!(x))) goto failure
-  ::PROTOBUF_NAMESPACE_ID::Arena* arena = GetArena(); (void)arena;
   while (!ctx->Done(&ptr)) {
     ::PROTOBUF_NAMESPACE_ID::uint32 tag;
     ptr = ::PROTOBUF_NAMESPACE_ID::internal::ReadTag(ptr, &tag);
@@ -4940,10 +4541,6 @@ void SetPositionVelocityNedRequest::InternalSwap(SetPositionVelocityNedRequest* 
 
 // ===================================================================
 
-void SetPositionVelocityNedResponse::InitAsDefaultInstance() {
-  ::mavsdk::rpc::offboard::_SetPositionVelocityNedResponse_default_instance_._instance.get_mutable()->offboard_result_ = const_cast< ::mavsdk::rpc::offboard::OffboardResult*>(
-      ::mavsdk::rpc::offboard::OffboardResult::internal_default_instance());
-}
 class SetPositionVelocityNedResponse::_Internal {
  public:
   static const ::mavsdk::rpc::offboard::OffboardResult& offboard_result(const SetPositionVelocityNedResponse* msg);
@@ -4971,8 +4568,7 @@ SetPositionVelocityNedResponse::SetPositionVelocityNedResponse(const SetPosition
 }
 
 void SetPositionVelocityNedResponse::SharedCtor() {
-  ::PROTOBUF_NAMESPACE_ID::internal::InitSCC(&scc_info_SetPositionVelocityNedResponse_offboard_2foffboard_2eproto.base);
-  offboard_result_ = nullptr;
+offboard_result_ = nullptr;
 }
 
 SetPositionVelocityNedResponse::~SetPositionVelocityNedResponse() {
@@ -4995,11 +4591,6 @@ void SetPositionVelocityNedResponse::RegisterArenaDtor(::PROTOBUF_NAMESPACE_ID::
 void SetPositionVelocityNedResponse::SetCachedSize(int size) const {
   _cached_size_.Set(size);
 }
-const SetPositionVelocityNedResponse& SetPositionVelocityNedResponse::default_instance() {
-  ::PROTOBUF_NAMESPACE_ID::internal::InitSCC(&::scc_info_SetPositionVelocityNedResponse_offboard_2foffboard_2eproto.base);
-  return *internal_default_instance();
-}
-
 
 void SetPositionVelocityNedResponse::Clear() {
 // @@protoc_insertion_point(message_clear_start:mavsdk.rpc.offboard.SetPositionVelocityNedResponse)
@@ -5016,7 +4607,6 @@ void SetPositionVelocityNedResponse::Clear() {
 
 const char* SetPositionVelocityNedResponse::_InternalParse(const char* ptr, ::PROTOBUF_NAMESPACE_ID::internal::ParseContext* ctx) {
 #define CHK_(x) if (PROTOBUF_PREDICT_FALSE(!(x))) goto failure
-  ::PROTOBUF_NAMESPACE_ID::Arena* arena = GetArena(); (void)arena;
   while (!ctx->Done(&ptr)) {
     ::PROTOBUF_NAMESPACE_ID::uint32 tag;
     ptr = ::PROTOBUF_NAMESPACE_ID::internal::ReadTag(ptr, &tag);
@@ -5155,8 +4745,6 @@ void SetPositionVelocityNedResponse::InternalSwap(SetPositionVelocityNedResponse
 
 // ===================================================================
 
-void Attitude::InitAsDefaultInstance() {
-}
 class Attitude::_Internal {
  public:
 };
@@ -5177,9 +4765,10 @@ Attitude::Attitude(const Attitude& from)
 }
 
 void Attitude::SharedCtor() {
-  ::memset(&roll_deg_, 0, static_cast<size_t>(
-      reinterpret_cast<char*>(&thrust_value_) -
-      reinterpret_cast<char*>(&roll_deg_)) + sizeof(thrust_value_));
+::memset(reinterpret_cast<char*>(this) + static_cast<size_t>(
+    reinterpret_cast<char*>(&roll_deg_) - reinterpret_cast<char*>(this)),
+    0, static_cast<size_t>(reinterpret_cast<char*>(&thrust_value_) -
+    reinterpret_cast<char*>(&roll_deg_)) + sizeof(thrust_value_));
 }
 
 Attitude::~Attitude() {
@@ -5201,11 +4790,6 @@ void Attitude::RegisterArenaDtor(::PROTOBUF_NAMESPACE_ID::Arena*) {
 void Attitude::SetCachedSize(int size) const {
   _cached_size_.Set(size);
 }
-const Attitude& Attitude::default_instance() {
-  ::PROTOBUF_NAMESPACE_ID::internal::InitSCC(&::scc_info_Attitude_offboard_2foffboard_2eproto.base);
-  return *internal_default_instance();
-}
-
 
 void Attitude::Clear() {
 // @@protoc_insertion_point(message_clear_start:mavsdk.rpc.offboard.Attitude)
@@ -5221,7 +4805,6 @@ void Attitude::Clear() {
 
 const char* Attitude::_InternalParse(const char* ptr, ::PROTOBUF_NAMESPACE_ID::internal::ParseContext* ctx) {
 #define CHK_(x) if (PROTOBUF_PREDICT_FALSE(!(x))) goto failure
-  ::PROTOBUF_NAMESPACE_ID::Arena* arena = GetArena(); (void)arena;
   while (!ctx->Done(&ptr)) {
     ::PROTOBUF_NAMESPACE_ID::uint32 tag;
     ptr = ::PROTOBUF_NAMESPACE_ID::internal::ReadTag(ptr, &tag);
@@ -5424,8 +5007,6 @@ void Attitude::InternalSwap(Attitude* other) {
 
 // ===================================================================
 
-void ActuatorControlGroup::InitAsDefaultInstance() {
-}
 class ActuatorControlGroup::_Internal {
  public:
 };
@@ -5466,11 +5047,6 @@ void ActuatorControlGroup::RegisterArenaDtor(::PROTOBUF_NAMESPACE_ID::Arena*) {
 void ActuatorControlGroup::SetCachedSize(int size) const {
   _cached_size_.Set(size);
 }
-const ActuatorControlGroup& ActuatorControlGroup::default_instance() {
-  ::PROTOBUF_NAMESPACE_ID::internal::InitSCC(&::scc_info_ActuatorControlGroup_offboard_2foffboard_2eproto.base);
-  return *internal_default_instance();
-}
-
 
 void ActuatorControlGroup::Clear() {
 // @@protoc_insertion_point(message_clear_start:mavsdk.rpc.offboard.ActuatorControlGroup)
@@ -5484,7 +5060,6 @@ void ActuatorControlGroup::Clear() {
 
 const char* ActuatorControlGroup::_InternalParse(const char* ptr, ::PROTOBUF_NAMESPACE_ID::internal::ParseContext* ctx) {
 #define CHK_(x) if (PROTOBUF_PREDICT_FALSE(!(x))) goto failure
-  ::PROTOBUF_NAMESPACE_ID::Arena* arena = GetArena(); (void)arena;
   while (!ctx->Done(&ptr)) {
     ::PROTOBUF_NAMESPACE_ID::uint32 tag;
     ptr = ::PROTOBUF_NAMESPACE_ID::internal::ReadTag(ptr, &tag);
@@ -5629,8 +5204,6 @@ void ActuatorControlGroup::InternalSwap(ActuatorControlGroup* other) {
 
 // ===================================================================
 
-void ActuatorControl::InitAsDefaultInstance() {
-}
 class ActuatorControl::_Internal {
  public:
 };
@@ -5650,7 +5223,6 @@ ActuatorControl::ActuatorControl(const ActuatorControl& from)
 }
 
 void ActuatorControl::SharedCtor() {
-  ::PROTOBUF_NAMESPACE_ID::internal::InitSCC(&scc_info_ActuatorControl_offboard_2foffboard_2eproto.base);
 }
 
 ActuatorControl::~ActuatorControl() {
@@ -5672,11 +5244,6 @@ void ActuatorControl::RegisterArenaDtor(::PROTOBUF_NAMESPACE_ID::Arena*) {
 void ActuatorControl::SetCachedSize(int size) const {
   _cached_size_.Set(size);
 }
-const ActuatorControl& ActuatorControl::default_instance() {
-  ::PROTOBUF_NAMESPACE_ID::internal::InitSCC(&::scc_info_ActuatorControl_offboard_2foffboard_2eproto.base);
-  return *internal_default_instance();
-}
-
 
 void ActuatorControl::Clear() {
 // @@protoc_insertion_point(message_clear_start:mavsdk.rpc.offboard.ActuatorControl)
@@ -5690,7 +5257,6 @@ void ActuatorControl::Clear() {
 
 const char* ActuatorControl::_InternalParse(const char* ptr, ::PROTOBUF_NAMESPACE_ID::internal::ParseContext* ctx) {
 #define CHK_(x) if (PROTOBUF_PREDICT_FALSE(!(x))) goto failure
-  ::PROTOBUF_NAMESPACE_ID::Arena* arena = GetArena(); (void)arena;
   while (!ctx->Done(&ptr)) {
     ::PROTOBUF_NAMESPACE_ID::uint32 tag;
     ptr = ::PROTOBUF_NAMESPACE_ID::internal::ReadTag(ptr, &tag);
@@ -5832,8 +5398,6 @@ void ActuatorControl::InternalSwap(ActuatorControl* other) {
 
 // ===================================================================
 
-void AttitudeRate::InitAsDefaultInstance() {
-}
 class AttitudeRate::_Internal {
  public:
 };
@@ -5854,9 +5418,10 @@ AttitudeRate::AttitudeRate(const AttitudeRate& from)
 }
 
 void AttitudeRate::SharedCtor() {
-  ::memset(&roll_deg_s_, 0, static_cast<size_t>(
-      reinterpret_cast<char*>(&thrust_value_) -
-      reinterpret_cast<char*>(&roll_deg_s_)) + sizeof(thrust_value_));
+::memset(reinterpret_cast<char*>(this) + static_cast<size_t>(
+    reinterpret_cast<char*>(&roll_deg_s_) - reinterpret_cast<char*>(this)),
+    0, static_cast<size_t>(reinterpret_cast<char*>(&thrust_value_) -
+    reinterpret_cast<char*>(&roll_deg_s_)) + sizeof(thrust_value_));
 }
 
 AttitudeRate::~AttitudeRate() {
@@ -5878,11 +5443,6 @@ void AttitudeRate::RegisterArenaDtor(::PROTOBUF_NAMESPACE_ID::Arena*) {
 void AttitudeRate::SetCachedSize(int size) const {
   _cached_size_.Set(size);
 }
-const AttitudeRate& AttitudeRate::default_instance() {
-  ::PROTOBUF_NAMESPACE_ID::internal::InitSCC(&::scc_info_AttitudeRate_offboard_2foffboard_2eproto.base);
-  return *internal_default_instance();
-}
-
 
 void AttitudeRate::Clear() {
 // @@protoc_insertion_point(message_clear_start:mavsdk.rpc.offboard.AttitudeRate)
@@ -5898,7 +5458,6 @@ void AttitudeRate::Clear() {
 
 const char* AttitudeRate::_InternalParse(const char* ptr, ::PROTOBUF_NAMESPACE_ID::internal::ParseContext* ctx) {
 #define CHK_(x) if (PROTOBUF_PREDICT_FALSE(!(x))) goto failure
-  ::PROTOBUF_NAMESPACE_ID::Arena* arena = GetArena(); (void)arena;
   while (!ctx->Done(&ptr)) {
     ::PROTOBUF_NAMESPACE_ID::uint32 tag;
     ptr = ::PROTOBUF_NAMESPACE_ID::internal::ReadTag(ptr, &tag);
@@ -6101,8 +5660,6 @@ void AttitudeRate::InternalSwap(AttitudeRate* other) {
 
 // ===================================================================
 
-void PositionNedYaw::InitAsDefaultInstance() {
-}
 class PositionNedYaw::_Internal {
  public:
 };
@@ -6123,9 +5680,10 @@ PositionNedYaw::PositionNedYaw(const PositionNedYaw& from)
 }
 
 void PositionNedYaw::SharedCtor() {
-  ::memset(&north_m_, 0, static_cast<size_t>(
-      reinterpret_cast<char*>(&yaw_deg_) -
-      reinterpret_cast<char*>(&north_m_)) + sizeof(yaw_deg_));
+::memset(reinterpret_cast<char*>(this) + static_cast<size_t>(
+    reinterpret_cast<char*>(&north_m_) - reinterpret_cast<char*>(this)),
+    0, static_cast<size_t>(reinterpret_cast<char*>(&yaw_deg_) -
+    reinterpret_cast<char*>(&north_m_)) + sizeof(yaw_deg_));
 }
 
 PositionNedYaw::~PositionNedYaw() {
@@ -6147,11 +5705,6 @@ void PositionNedYaw::RegisterArenaDtor(::PROTOBUF_NAMESPACE_ID::Arena*) {
 void PositionNedYaw::SetCachedSize(int size) const {
   _cached_size_.Set(size);
 }
-const PositionNedYaw& PositionNedYaw::default_instance() {
-  ::PROTOBUF_NAMESPACE_ID::internal::InitSCC(&::scc_info_PositionNedYaw_offboard_2foffboard_2eproto.base);
-  return *internal_default_instance();
-}
-
 
 void PositionNedYaw::Clear() {
 // @@protoc_insertion_point(message_clear_start:mavsdk.rpc.offboard.PositionNedYaw)
@@ -6167,7 +5720,6 @@ void PositionNedYaw::Clear() {
 
 const char* PositionNedYaw::_InternalParse(const char* ptr, ::PROTOBUF_NAMESPACE_ID::internal::ParseContext* ctx) {
 #define CHK_(x) if (PROTOBUF_PREDICT_FALSE(!(x))) goto failure
-  ::PROTOBUF_NAMESPACE_ID::Arena* arena = GetArena(); (void)arena;
   while (!ctx->Done(&ptr)) {
     ::PROTOBUF_NAMESPACE_ID::uint32 tag;
     ptr = ::PROTOBUF_NAMESPACE_ID::internal::ReadTag(ptr, &tag);
@@ -6370,8 +5922,6 @@ void PositionNedYaw::InternalSwap(PositionNedYaw* other) {
 
 // ===================================================================
 
-void VelocityBodyYawspeed::InitAsDefaultInstance() {
-}
 class VelocityBodyYawspeed::_Internal {
  public:
 };
@@ -6392,9 +5942,10 @@ VelocityBodyYawspeed::VelocityBodyYawspeed(const VelocityBodyYawspeed& from)
 }
 
 void VelocityBodyYawspeed::SharedCtor() {
-  ::memset(&forward_m_s_, 0, static_cast<size_t>(
-      reinterpret_cast<char*>(&yawspeed_deg_s_) -
-      reinterpret_cast<char*>(&forward_m_s_)) + sizeof(yawspeed_deg_s_));
+::memset(reinterpret_cast<char*>(this) + static_cast<size_t>(
+    reinterpret_cast<char*>(&forward_m_s_) - reinterpret_cast<char*>(this)),
+    0, static_cast<size_t>(reinterpret_cast<char*>(&yawspeed_deg_s_) -
+    reinterpret_cast<char*>(&forward_m_s_)) + sizeof(yawspeed_deg_s_));
 }
 
 VelocityBodyYawspeed::~VelocityBodyYawspeed() {
@@ -6416,11 +5967,6 @@ void VelocityBodyYawspeed::RegisterArenaDtor(::PROTOBUF_NAMESPACE_ID::Arena*) {
 void VelocityBodyYawspeed::SetCachedSize(int size) const {
   _cached_size_.Set(size);
 }
-const VelocityBodyYawspeed& VelocityBodyYawspeed::default_instance() {
-  ::PROTOBUF_NAMESPACE_ID::internal::InitSCC(&::scc_info_VelocityBodyYawspeed_offboard_2foffboard_2eproto.base);
-  return *internal_default_instance();
-}
-
 
 void VelocityBodyYawspeed::Clear() {
 // @@protoc_insertion_point(message_clear_start:mavsdk.rpc.offboard.VelocityBodyYawspeed)
@@ -6436,7 +5982,6 @@ void VelocityBodyYawspeed::Clear() {
 
 const char* VelocityBodyYawspeed::_InternalParse(const char* ptr, ::PROTOBUF_NAMESPACE_ID::internal::ParseContext* ctx) {
 #define CHK_(x) if (PROTOBUF_PREDICT_FALSE(!(x))) goto failure
-  ::PROTOBUF_NAMESPACE_ID::Arena* arena = GetArena(); (void)arena;
   while (!ctx->Done(&ptr)) {
     ::PROTOBUF_NAMESPACE_ID::uint32 tag;
     ptr = ::PROTOBUF_NAMESPACE_ID::internal::ReadTag(ptr, &tag);
@@ -6639,8 +6184,6 @@ void VelocityBodyYawspeed::InternalSwap(VelocityBodyYawspeed* other) {
 
 // ===================================================================
 
-void VelocityNedYaw::InitAsDefaultInstance() {
-}
 class VelocityNedYaw::_Internal {
  public:
 };
@@ -6661,9 +6204,10 @@ VelocityNedYaw::VelocityNedYaw(const VelocityNedYaw& from)
 }
 
 void VelocityNedYaw::SharedCtor() {
-  ::memset(&north_m_s_, 0, static_cast<size_t>(
-      reinterpret_cast<char*>(&yaw_deg_) -
-      reinterpret_cast<char*>(&north_m_s_)) + sizeof(yaw_deg_));
+::memset(reinterpret_cast<char*>(this) + static_cast<size_t>(
+    reinterpret_cast<char*>(&north_m_s_) - reinterpret_cast<char*>(this)),
+    0, static_cast<size_t>(reinterpret_cast<char*>(&yaw_deg_) -
+    reinterpret_cast<char*>(&north_m_s_)) + sizeof(yaw_deg_));
 }
 
 VelocityNedYaw::~VelocityNedYaw() {
@@ -6685,11 +6229,6 @@ void VelocityNedYaw::RegisterArenaDtor(::PROTOBUF_NAMESPACE_ID::Arena*) {
 void VelocityNedYaw::SetCachedSize(int size) const {
   _cached_size_.Set(size);
 }
-const VelocityNedYaw& VelocityNedYaw::default_instance() {
-  ::PROTOBUF_NAMESPACE_ID::internal::InitSCC(&::scc_info_VelocityNedYaw_offboard_2foffboard_2eproto.base);
-  return *internal_default_instance();
-}
-
 
 void VelocityNedYaw::Clear() {
 // @@protoc_insertion_point(message_clear_start:mavsdk.rpc.offboard.VelocityNedYaw)
@@ -6705,7 +6244,6 @@ void VelocityNedYaw::Clear() {
 
 const char* VelocityNedYaw::_InternalParse(const char* ptr, ::PROTOBUF_NAMESPACE_ID::internal::ParseContext* ctx) {
 #define CHK_(x) if (PROTOBUF_PREDICT_FALSE(!(x))) goto failure
-  ::PROTOBUF_NAMESPACE_ID::Arena* arena = GetArena(); (void)arena;
   while (!ctx->Done(&ptr)) {
     ::PROTOBUF_NAMESPACE_ID::uint32 tag;
     ptr = ::PROTOBUF_NAMESPACE_ID::internal::ReadTag(ptr, &tag);
@@ -6908,8 +6446,6 @@ void VelocityNedYaw::InternalSwap(VelocityNedYaw* other) {
 
 // ===================================================================
 
-void OffboardResult::InitAsDefaultInstance() {
-}
 class OffboardResult::_Internal {
  public:
 };
@@ -6925,7 +6461,7 @@ OffboardResult::OffboardResult(const OffboardResult& from)
   _internal_metadata_.MergeFrom<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>(from._internal_metadata_);
   result_str_.UnsafeSetDefault(&::PROTOBUF_NAMESPACE_ID::internal::GetEmptyStringAlreadyInited());
   if (!from._internal_result_str().empty()) {
-    result_str_.Set(&::PROTOBUF_NAMESPACE_ID::internal::GetEmptyStringAlreadyInited(), from._internal_result_str(),
+    result_str_.Set(::PROTOBUF_NAMESPACE_ID::internal::ArenaStringPtr::EmptyDefault{}, from._internal_result_str(), 
       GetArena());
   }
   result_ = from.result_;
@@ -6933,9 +6469,8 @@ OffboardResult::OffboardResult(const OffboardResult& from)
 }
 
 void OffboardResult::SharedCtor() {
-  ::PROTOBUF_NAMESPACE_ID::internal::InitSCC(&scc_info_OffboardResult_offboard_2foffboard_2eproto.base);
-  result_str_.UnsafeSetDefault(&::PROTOBUF_NAMESPACE_ID::internal::GetEmptyStringAlreadyInited());
-  result_ = 0;
+result_str_.UnsafeSetDefault(&::PROTOBUF_NAMESPACE_ID::internal::GetEmptyStringAlreadyInited());
+result_ = 0;
 }
 
 OffboardResult::~OffboardResult() {
@@ -6958,11 +6493,6 @@ void OffboardResult::RegisterArenaDtor(::PROTOBUF_NAMESPACE_ID::Arena*) {
 void OffboardResult::SetCachedSize(int size) const {
   _cached_size_.Set(size);
 }
-const OffboardResult& OffboardResult::default_instance() {
-  ::PROTOBUF_NAMESPACE_ID::internal::InitSCC(&::scc_info_OffboardResult_offboard_2foffboard_2eproto.base);
-  return *internal_default_instance();
-}
-
 
 void OffboardResult::Clear() {
 // @@protoc_insertion_point(message_clear_start:mavsdk.rpc.offboard.OffboardResult)
@@ -6970,14 +6500,13 @@ void OffboardResult::Clear() {
   // Prevent compiler warnings about cached_has_bits being unused
   (void) cached_has_bits;
 
-  result_str_.ClearToEmpty(&::PROTOBUF_NAMESPACE_ID::internal::GetEmptyStringAlreadyInited(), GetArena());
+  result_str_.ClearToEmpty();
   result_ = 0;
   _internal_metadata_.Clear<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>();
 }
 
 const char* OffboardResult::_InternalParse(const char* ptr, ::PROTOBUF_NAMESPACE_ID::internal::ParseContext* ctx) {
 #define CHK_(x) if (PROTOBUF_PREDICT_FALSE(!(x))) goto failure
-  ::PROTOBUF_NAMESPACE_ID::Arena* arena = GetArena(); (void)arena;
   while (!ctx->Done(&ptr)) {
     ::PROTOBUF_NAMESPACE_ID::uint32 tag;
     ptr = ::PROTOBUF_NAMESPACE_ID::internal::ReadTag(ptr, &tag);
