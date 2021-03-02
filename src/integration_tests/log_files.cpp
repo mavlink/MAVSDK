@@ -26,9 +26,9 @@ TEST(HardwareTest, LogFiles)
 
     EXPECT_EQ(entry_result.first, LogFiles::Result::Success);
 
-    unsigned num_downloaded_files = 0;
-
     if (entry_result.first == LogFiles::Result::Success) {
+        unsigned num_downloaded_files = 0;
+
         for (auto& entry : entry_result.second) {
             float size_mib = entry.size_bytes / 1024.0f / 1024.0f;
             LogInfo() << "Entry " << entry.id << ": "

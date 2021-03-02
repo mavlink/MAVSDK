@@ -897,7 +897,7 @@ TEST(MAVLinkMissionTransfer, UploadMissionCanBeCancelled)
 
     message_handler.process_message(make_mission_request_int(MAV_MISSION_TYPE_MISSION, 0));
 
-    EXPECT_CALL(mock_sender, send_message(Truly([&items](const mavlink_message_t& message) {
+    EXPECT_CALL(mock_sender, send_message(Truly([](const mavlink_message_t& message) {
                     return is_correct_mission_ack(
                         MAV_MISSION_TYPE_MISSION, MAV_MISSION_OPERATION_CANCELLED, message);
                 })));
@@ -958,7 +958,7 @@ TEST(MAVLinkMissionTransfer, UploadMissionNacksNonIntCase)
     });
     mmt.do_work();
 
-    EXPECT_CALL(mock_sender, send_message(Truly([&items](const mavlink_message_t& message) {
+    EXPECT_CALL(mock_sender, send_message(Truly([](const mavlink_message_t& message) {
                     return is_correct_mission_ack(
                         MAV_MISSION_TYPE_FENCE, MAV_MISSION_UNSUPPORTED, message);
                 })))
@@ -1479,7 +1479,7 @@ TEST(MAVLinkMissionTransfer, DownloadMissionCanBeCancelled)
     message_handler.process_message(make_mission_count(items.size()));
     message_handler.process_message(make_mission_item(items, 0));
 
-    EXPECT_CALL(mock_sender, send_message(Truly([&items](const mavlink_message_t& message) {
+    EXPECT_CALL(mock_sender, send_message(Truly([](const mavlink_message_t& message) {
                     return is_correct_mission_ack(
                         MAV_MISSION_TYPE_MISSION, MAV_MISSION_OPERATION_CANCELLED, message);
                 })));

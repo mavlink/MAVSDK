@@ -58,7 +58,8 @@ TEST_F(SitlTest, OffboardPositionNED)
     {
         const float radius = 10.0f;
         const float step = 0.01f;
-        for (float angle = 0.0f; angle <= 2.0f * M_PI_F; angle += step) {
+        float angle = 0.0f;
+        while (angle <= 2.0f * M_PI_F) {
             float x = radius * cosf(angle);
             float y = radius * sinf(angle);
 
@@ -69,6 +70,8 @@ TEST_F(SitlTest, OffboardPositionNED)
             setpoint.yaw_deg = 90.0f;
             offboard->set_position_ned(setpoint);
             std::this_thread::sleep_for(std::chrono::milliseconds(50));
+
+            angle += step;
         }
         offboard->set_position_ned(up_and_yaw);
     }

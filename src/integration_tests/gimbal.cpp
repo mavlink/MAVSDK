@@ -13,7 +13,6 @@
 
 using namespace mavsdk;
 
-void send_new_gimbal_command(std::shared_ptr<Gimbal> gimbal, int i);
 void gimbal_pattern(std::shared_ptr<Gimbal> gimbal);
 void send_gimbal_roi_location(
     std::shared_ptr<Gimbal> gimbal, double latitude_deg, double longitude_deg, float altitude_m);
@@ -333,19 +332,6 @@ TEST(SitlTestGimbal, GimbalROIOffboard)
 
     action->land();
     std::this_thread::sleep_for(std::chrono::seconds(3));
-}
-
-void send_new_gimbal_command(std::shared_ptr<Gimbal> gimbal, int i)
-{
-    float pitch_deg = 30.0f * cosf(i / 360.0f * 2 * M_PI_F);
-    float yaw_deg = 45.0f * sinf(i / 360.0f * 2 * M_PI_F);
-
-    gimbal->set_pitch_and_yaw_async(pitch_deg, yaw_deg, &receive_gimbal_result);
-}
-
-void send_gimbal_mode_command(std::shared_ptr<Gimbal> gimbal, const Gimbal::GimbalMode gimbal_mode)
-{
-    gimbal->set_mode_async(gimbal_mode, &receive_gimbal_result);
 }
 
 void send_gimbal_roi_location(
