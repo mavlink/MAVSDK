@@ -14,296 +14,210 @@
 #include <google/protobuf/wire_format.h>
 // @@protoc_insertion_point(includes)
 #include <google/protobuf/port_def.inc>
-extern PROTOBUF_INTERNAL_EXPORT_info_2finfo_2eproto ::PROTOBUF_NAMESPACE_ID::internal::SCCInfo<0> scc_info_FlightInfo_info_2finfo_2eproto;
-extern PROTOBUF_INTERNAL_EXPORT_info_2finfo_2eproto ::PROTOBUF_NAMESPACE_ID::internal::SCCInfo<0> scc_info_Identification_info_2finfo_2eproto;
-extern PROTOBUF_INTERNAL_EXPORT_info_2finfo_2eproto ::PROTOBUF_NAMESPACE_ID::internal::SCCInfo<0> scc_info_InfoResult_info_2finfo_2eproto;
-extern PROTOBUF_INTERNAL_EXPORT_info_2finfo_2eproto ::PROTOBUF_NAMESPACE_ID::internal::SCCInfo<0> scc_info_Product_info_2finfo_2eproto;
-extern PROTOBUF_INTERNAL_EXPORT_info_2finfo_2eproto ::PROTOBUF_NAMESPACE_ID::internal::SCCInfo<0> scc_info_Version_info_2finfo_2eproto;
+
+PROTOBUF_PRAGMA_INIT_SEG
 namespace mavsdk {
 namespace rpc {
 namespace info {
-class GetFlightInformationRequestDefaultTypeInternal {
- public:
-  ::PROTOBUF_NAMESPACE_ID::internal::ExplicitlyConstructed<GetFlightInformationRequest> _instance;
-} _GetFlightInformationRequest_default_instance_;
-class GetFlightInformationResponseDefaultTypeInternal {
- public:
-  ::PROTOBUF_NAMESPACE_ID::internal::ExplicitlyConstructed<GetFlightInformationResponse> _instance;
-} _GetFlightInformationResponse_default_instance_;
-class GetIdentificationRequestDefaultTypeInternal {
- public:
-  ::PROTOBUF_NAMESPACE_ID::internal::ExplicitlyConstructed<GetIdentificationRequest> _instance;
-} _GetIdentificationRequest_default_instance_;
-class GetIdentificationResponseDefaultTypeInternal {
- public:
-  ::PROTOBUF_NAMESPACE_ID::internal::ExplicitlyConstructed<GetIdentificationResponse> _instance;
-} _GetIdentificationResponse_default_instance_;
-class GetProductRequestDefaultTypeInternal {
- public:
-  ::PROTOBUF_NAMESPACE_ID::internal::ExplicitlyConstructed<GetProductRequest> _instance;
-} _GetProductRequest_default_instance_;
-class GetProductResponseDefaultTypeInternal {
- public:
-  ::PROTOBUF_NAMESPACE_ID::internal::ExplicitlyConstructed<GetProductResponse> _instance;
-} _GetProductResponse_default_instance_;
-class GetVersionRequestDefaultTypeInternal {
- public:
-  ::PROTOBUF_NAMESPACE_ID::internal::ExplicitlyConstructed<GetVersionRequest> _instance;
-} _GetVersionRequest_default_instance_;
-class GetVersionResponseDefaultTypeInternal {
- public:
-  ::PROTOBUF_NAMESPACE_ID::internal::ExplicitlyConstructed<GetVersionResponse> _instance;
-} _GetVersionResponse_default_instance_;
-class GetSpeedFactorRequestDefaultTypeInternal {
- public:
-  ::PROTOBUF_NAMESPACE_ID::internal::ExplicitlyConstructed<GetSpeedFactorRequest> _instance;
-} _GetSpeedFactorRequest_default_instance_;
-class GetSpeedFactorResponseDefaultTypeInternal {
- public:
-  ::PROTOBUF_NAMESPACE_ID::internal::ExplicitlyConstructed<GetSpeedFactorResponse> _instance;
-} _GetSpeedFactorResponse_default_instance_;
-class FlightInfoDefaultTypeInternal {
- public:
-  ::PROTOBUF_NAMESPACE_ID::internal::ExplicitlyConstructed<FlightInfo> _instance;
-} _FlightInfo_default_instance_;
-class IdentificationDefaultTypeInternal {
- public:
-  ::PROTOBUF_NAMESPACE_ID::internal::ExplicitlyConstructed<Identification> _instance;
-} _Identification_default_instance_;
-class ProductDefaultTypeInternal {
- public:
-  ::PROTOBUF_NAMESPACE_ID::internal::ExplicitlyConstructed<Product> _instance;
-} _Product_default_instance_;
-class VersionDefaultTypeInternal {
- public:
-  ::PROTOBUF_NAMESPACE_ID::internal::ExplicitlyConstructed<Version> _instance;
-} _Version_default_instance_;
-class InfoResultDefaultTypeInternal {
- public:
-  ::PROTOBUF_NAMESPACE_ID::internal::ExplicitlyConstructed<InfoResult> _instance;
-} _InfoResult_default_instance_;
+constexpr GetFlightInformationRequest::GetFlightInformationRequest(
+  ::PROTOBUF_NAMESPACE_ID::internal::ConstantInitialized){}
+struct GetFlightInformationRequestDefaultTypeInternal {
+  constexpr GetFlightInformationRequestDefaultTypeInternal()
+    : _instance(::PROTOBUF_NAMESPACE_ID::internal::ConstantInitialized{}) {}
+  ~GetFlightInformationRequestDefaultTypeInternal() {}
+  union {
+    GetFlightInformationRequest _instance;
+  };
+};
+PROTOBUF_ATTRIBUTE_NO_DESTROY PROTOBUF_CONSTINIT GetFlightInformationRequestDefaultTypeInternal _GetFlightInformationRequest_default_instance_;
+constexpr GetFlightInformationResponse::GetFlightInformationResponse(
+  ::PROTOBUF_NAMESPACE_ID::internal::ConstantInitialized)
+  : info_result_(nullptr)
+  , flight_info_(nullptr){}
+struct GetFlightInformationResponseDefaultTypeInternal {
+  constexpr GetFlightInformationResponseDefaultTypeInternal()
+    : _instance(::PROTOBUF_NAMESPACE_ID::internal::ConstantInitialized{}) {}
+  ~GetFlightInformationResponseDefaultTypeInternal() {}
+  union {
+    GetFlightInformationResponse _instance;
+  };
+};
+PROTOBUF_ATTRIBUTE_NO_DESTROY PROTOBUF_CONSTINIT GetFlightInformationResponseDefaultTypeInternal _GetFlightInformationResponse_default_instance_;
+constexpr GetIdentificationRequest::GetIdentificationRequest(
+  ::PROTOBUF_NAMESPACE_ID::internal::ConstantInitialized){}
+struct GetIdentificationRequestDefaultTypeInternal {
+  constexpr GetIdentificationRequestDefaultTypeInternal()
+    : _instance(::PROTOBUF_NAMESPACE_ID::internal::ConstantInitialized{}) {}
+  ~GetIdentificationRequestDefaultTypeInternal() {}
+  union {
+    GetIdentificationRequest _instance;
+  };
+};
+PROTOBUF_ATTRIBUTE_NO_DESTROY PROTOBUF_CONSTINIT GetIdentificationRequestDefaultTypeInternal _GetIdentificationRequest_default_instance_;
+constexpr GetIdentificationResponse::GetIdentificationResponse(
+  ::PROTOBUF_NAMESPACE_ID::internal::ConstantInitialized)
+  : info_result_(nullptr)
+  , identification_(nullptr){}
+struct GetIdentificationResponseDefaultTypeInternal {
+  constexpr GetIdentificationResponseDefaultTypeInternal()
+    : _instance(::PROTOBUF_NAMESPACE_ID::internal::ConstantInitialized{}) {}
+  ~GetIdentificationResponseDefaultTypeInternal() {}
+  union {
+    GetIdentificationResponse _instance;
+  };
+};
+PROTOBUF_ATTRIBUTE_NO_DESTROY PROTOBUF_CONSTINIT GetIdentificationResponseDefaultTypeInternal _GetIdentificationResponse_default_instance_;
+constexpr GetProductRequest::GetProductRequest(
+  ::PROTOBUF_NAMESPACE_ID::internal::ConstantInitialized){}
+struct GetProductRequestDefaultTypeInternal {
+  constexpr GetProductRequestDefaultTypeInternal()
+    : _instance(::PROTOBUF_NAMESPACE_ID::internal::ConstantInitialized{}) {}
+  ~GetProductRequestDefaultTypeInternal() {}
+  union {
+    GetProductRequest _instance;
+  };
+};
+PROTOBUF_ATTRIBUTE_NO_DESTROY PROTOBUF_CONSTINIT GetProductRequestDefaultTypeInternal _GetProductRequest_default_instance_;
+constexpr GetProductResponse::GetProductResponse(
+  ::PROTOBUF_NAMESPACE_ID::internal::ConstantInitialized)
+  : info_result_(nullptr)
+  , product_(nullptr){}
+struct GetProductResponseDefaultTypeInternal {
+  constexpr GetProductResponseDefaultTypeInternal()
+    : _instance(::PROTOBUF_NAMESPACE_ID::internal::ConstantInitialized{}) {}
+  ~GetProductResponseDefaultTypeInternal() {}
+  union {
+    GetProductResponse _instance;
+  };
+};
+PROTOBUF_ATTRIBUTE_NO_DESTROY PROTOBUF_CONSTINIT GetProductResponseDefaultTypeInternal _GetProductResponse_default_instance_;
+constexpr GetVersionRequest::GetVersionRequest(
+  ::PROTOBUF_NAMESPACE_ID::internal::ConstantInitialized){}
+struct GetVersionRequestDefaultTypeInternal {
+  constexpr GetVersionRequestDefaultTypeInternal()
+    : _instance(::PROTOBUF_NAMESPACE_ID::internal::ConstantInitialized{}) {}
+  ~GetVersionRequestDefaultTypeInternal() {}
+  union {
+    GetVersionRequest _instance;
+  };
+};
+PROTOBUF_ATTRIBUTE_NO_DESTROY PROTOBUF_CONSTINIT GetVersionRequestDefaultTypeInternal _GetVersionRequest_default_instance_;
+constexpr GetVersionResponse::GetVersionResponse(
+  ::PROTOBUF_NAMESPACE_ID::internal::ConstantInitialized)
+  : info_result_(nullptr)
+  , version_(nullptr){}
+struct GetVersionResponseDefaultTypeInternal {
+  constexpr GetVersionResponseDefaultTypeInternal()
+    : _instance(::PROTOBUF_NAMESPACE_ID::internal::ConstantInitialized{}) {}
+  ~GetVersionResponseDefaultTypeInternal() {}
+  union {
+    GetVersionResponse _instance;
+  };
+};
+PROTOBUF_ATTRIBUTE_NO_DESTROY PROTOBUF_CONSTINIT GetVersionResponseDefaultTypeInternal _GetVersionResponse_default_instance_;
+constexpr GetSpeedFactorRequest::GetSpeedFactorRequest(
+  ::PROTOBUF_NAMESPACE_ID::internal::ConstantInitialized){}
+struct GetSpeedFactorRequestDefaultTypeInternal {
+  constexpr GetSpeedFactorRequestDefaultTypeInternal()
+    : _instance(::PROTOBUF_NAMESPACE_ID::internal::ConstantInitialized{}) {}
+  ~GetSpeedFactorRequestDefaultTypeInternal() {}
+  union {
+    GetSpeedFactorRequest _instance;
+  };
+};
+PROTOBUF_ATTRIBUTE_NO_DESTROY PROTOBUF_CONSTINIT GetSpeedFactorRequestDefaultTypeInternal _GetSpeedFactorRequest_default_instance_;
+constexpr GetSpeedFactorResponse::GetSpeedFactorResponse(
+  ::PROTOBUF_NAMESPACE_ID::internal::ConstantInitialized)
+  : info_result_(nullptr)
+  , speed_factor_(0){}
+struct GetSpeedFactorResponseDefaultTypeInternal {
+  constexpr GetSpeedFactorResponseDefaultTypeInternal()
+    : _instance(::PROTOBUF_NAMESPACE_ID::internal::ConstantInitialized{}) {}
+  ~GetSpeedFactorResponseDefaultTypeInternal() {}
+  union {
+    GetSpeedFactorResponse _instance;
+  };
+};
+PROTOBUF_ATTRIBUTE_NO_DESTROY PROTOBUF_CONSTINIT GetSpeedFactorResponseDefaultTypeInternal _GetSpeedFactorResponse_default_instance_;
+constexpr FlightInfo::FlightInfo(
+  ::PROTOBUF_NAMESPACE_ID::internal::ConstantInitialized)
+  : flight_uid_(PROTOBUF_ULONGLONG(0))
+  , time_boot_ms_(0u){}
+struct FlightInfoDefaultTypeInternal {
+  constexpr FlightInfoDefaultTypeInternal()
+    : _instance(::PROTOBUF_NAMESPACE_ID::internal::ConstantInitialized{}) {}
+  ~FlightInfoDefaultTypeInternal() {}
+  union {
+    FlightInfo _instance;
+  };
+};
+PROTOBUF_ATTRIBUTE_NO_DESTROY PROTOBUF_CONSTINIT FlightInfoDefaultTypeInternal _FlightInfo_default_instance_;
+constexpr Identification::Identification(
+  ::PROTOBUF_NAMESPACE_ID::internal::ConstantInitialized)
+  : hardware_uid_(&::PROTOBUF_NAMESPACE_ID::internal::fixed_address_empty_string){}
+struct IdentificationDefaultTypeInternal {
+  constexpr IdentificationDefaultTypeInternal()
+    : _instance(::PROTOBUF_NAMESPACE_ID::internal::ConstantInitialized{}) {}
+  ~IdentificationDefaultTypeInternal() {}
+  union {
+    Identification _instance;
+  };
+};
+PROTOBUF_ATTRIBUTE_NO_DESTROY PROTOBUF_CONSTINIT IdentificationDefaultTypeInternal _Identification_default_instance_;
+constexpr Product::Product(
+  ::PROTOBUF_NAMESPACE_ID::internal::ConstantInitialized)
+  : vendor_name_(&::PROTOBUF_NAMESPACE_ID::internal::fixed_address_empty_string)
+  , product_name_(&::PROTOBUF_NAMESPACE_ID::internal::fixed_address_empty_string)
+  , vendor_id_(0)
+  , product_id_(0){}
+struct ProductDefaultTypeInternal {
+  constexpr ProductDefaultTypeInternal()
+    : _instance(::PROTOBUF_NAMESPACE_ID::internal::ConstantInitialized{}) {}
+  ~ProductDefaultTypeInternal() {}
+  union {
+    Product _instance;
+  };
+};
+PROTOBUF_ATTRIBUTE_NO_DESTROY PROTOBUF_CONSTINIT ProductDefaultTypeInternal _Product_default_instance_;
+constexpr Version::Version(
+  ::PROTOBUF_NAMESPACE_ID::internal::ConstantInitialized)
+  : flight_sw_git_hash_(&::PROTOBUF_NAMESPACE_ID::internal::fixed_address_empty_string)
+  , os_sw_git_hash_(&::PROTOBUF_NAMESPACE_ID::internal::fixed_address_empty_string)
+  , flight_sw_major_(0)
+  , flight_sw_minor_(0)
+  , flight_sw_patch_(0)
+  , flight_sw_vendor_major_(0)
+  , flight_sw_vendor_minor_(0)
+  , flight_sw_vendor_patch_(0)
+  , os_sw_major_(0)
+  , os_sw_minor_(0)
+  , os_sw_patch_(0){}
+struct VersionDefaultTypeInternal {
+  constexpr VersionDefaultTypeInternal()
+    : _instance(::PROTOBUF_NAMESPACE_ID::internal::ConstantInitialized{}) {}
+  ~VersionDefaultTypeInternal() {}
+  union {
+    Version _instance;
+  };
+};
+PROTOBUF_ATTRIBUTE_NO_DESTROY PROTOBUF_CONSTINIT VersionDefaultTypeInternal _Version_default_instance_;
+constexpr InfoResult::InfoResult(
+  ::PROTOBUF_NAMESPACE_ID::internal::ConstantInitialized)
+  : result_str_(&::PROTOBUF_NAMESPACE_ID::internal::fixed_address_empty_string)
+  , result_(0)
+{}
+struct InfoResultDefaultTypeInternal {
+  constexpr InfoResultDefaultTypeInternal()
+    : _instance(::PROTOBUF_NAMESPACE_ID::internal::ConstantInitialized{}) {}
+  ~InfoResultDefaultTypeInternal() {}
+  union {
+    InfoResult _instance;
+  };
+};
+PROTOBUF_ATTRIBUTE_NO_DESTROY PROTOBUF_CONSTINIT InfoResultDefaultTypeInternal _InfoResult_default_instance_;
 }  // namespace info
 }  // namespace rpc
 }  // namespace mavsdk
-static void InitDefaultsscc_info_FlightInfo_info_2finfo_2eproto() {
-  GOOGLE_PROTOBUF_VERIFY_VERSION;
-
-  {
-    void* ptr = &::mavsdk::rpc::info::_FlightInfo_default_instance_;
-    new (ptr) ::mavsdk::rpc::info::FlightInfo();
-    ::PROTOBUF_NAMESPACE_ID::internal::OnShutdownDestroyMessage(ptr);
-  }
-  ::mavsdk::rpc::info::FlightInfo::InitAsDefaultInstance();
-}
-
-::PROTOBUF_NAMESPACE_ID::internal::SCCInfo<0> scc_info_FlightInfo_info_2finfo_2eproto =
-    {{ATOMIC_VAR_INIT(::PROTOBUF_NAMESPACE_ID::internal::SCCInfoBase::kUninitialized), 0, 0, InitDefaultsscc_info_FlightInfo_info_2finfo_2eproto}, {}};
-
-static void InitDefaultsscc_info_GetFlightInformationRequest_info_2finfo_2eproto() {
-  GOOGLE_PROTOBUF_VERIFY_VERSION;
-
-  {
-    void* ptr = &::mavsdk::rpc::info::_GetFlightInformationRequest_default_instance_;
-    new (ptr) ::mavsdk::rpc::info::GetFlightInformationRequest();
-    ::PROTOBUF_NAMESPACE_ID::internal::OnShutdownDestroyMessage(ptr);
-  }
-  ::mavsdk::rpc::info::GetFlightInformationRequest::InitAsDefaultInstance();
-}
-
-::PROTOBUF_NAMESPACE_ID::internal::SCCInfo<0> scc_info_GetFlightInformationRequest_info_2finfo_2eproto =
-    {{ATOMIC_VAR_INIT(::PROTOBUF_NAMESPACE_ID::internal::SCCInfoBase::kUninitialized), 0, 0, InitDefaultsscc_info_GetFlightInformationRequest_info_2finfo_2eproto}, {}};
-
-static void InitDefaultsscc_info_GetFlightInformationResponse_info_2finfo_2eproto() {
-  GOOGLE_PROTOBUF_VERIFY_VERSION;
-
-  {
-    void* ptr = &::mavsdk::rpc::info::_GetFlightInformationResponse_default_instance_;
-    new (ptr) ::mavsdk::rpc::info::GetFlightInformationResponse();
-    ::PROTOBUF_NAMESPACE_ID::internal::OnShutdownDestroyMessage(ptr);
-  }
-  ::mavsdk::rpc::info::GetFlightInformationResponse::InitAsDefaultInstance();
-}
-
-::PROTOBUF_NAMESPACE_ID::internal::SCCInfo<2> scc_info_GetFlightInformationResponse_info_2finfo_2eproto =
-    {{ATOMIC_VAR_INIT(::PROTOBUF_NAMESPACE_ID::internal::SCCInfoBase::kUninitialized), 2, 0, InitDefaultsscc_info_GetFlightInformationResponse_info_2finfo_2eproto}, {
-      &scc_info_InfoResult_info_2finfo_2eproto.base,
-      &scc_info_FlightInfo_info_2finfo_2eproto.base,}};
-
-static void InitDefaultsscc_info_GetIdentificationRequest_info_2finfo_2eproto() {
-  GOOGLE_PROTOBUF_VERIFY_VERSION;
-
-  {
-    void* ptr = &::mavsdk::rpc::info::_GetIdentificationRequest_default_instance_;
-    new (ptr) ::mavsdk::rpc::info::GetIdentificationRequest();
-    ::PROTOBUF_NAMESPACE_ID::internal::OnShutdownDestroyMessage(ptr);
-  }
-  ::mavsdk::rpc::info::GetIdentificationRequest::InitAsDefaultInstance();
-}
-
-::PROTOBUF_NAMESPACE_ID::internal::SCCInfo<0> scc_info_GetIdentificationRequest_info_2finfo_2eproto =
-    {{ATOMIC_VAR_INIT(::PROTOBUF_NAMESPACE_ID::internal::SCCInfoBase::kUninitialized), 0, 0, InitDefaultsscc_info_GetIdentificationRequest_info_2finfo_2eproto}, {}};
-
-static void InitDefaultsscc_info_GetIdentificationResponse_info_2finfo_2eproto() {
-  GOOGLE_PROTOBUF_VERIFY_VERSION;
-
-  {
-    void* ptr = &::mavsdk::rpc::info::_GetIdentificationResponse_default_instance_;
-    new (ptr) ::mavsdk::rpc::info::GetIdentificationResponse();
-    ::PROTOBUF_NAMESPACE_ID::internal::OnShutdownDestroyMessage(ptr);
-  }
-  ::mavsdk::rpc::info::GetIdentificationResponse::InitAsDefaultInstance();
-}
-
-::PROTOBUF_NAMESPACE_ID::internal::SCCInfo<2> scc_info_GetIdentificationResponse_info_2finfo_2eproto =
-    {{ATOMIC_VAR_INIT(::PROTOBUF_NAMESPACE_ID::internal::SCCInfoBase::kUninitialized), 2, 0, InitDefaultsscc_info_GetIdentificationResponse_info_2finfo_2eproto}, {
-      &scc_info_InfoResult_info_2finfo_2eproto.base,
-      &scc_info_Identification_info_2finfo_2eproto.base,}};
-
-static void InitDefaultsscc_info_GetProductRequest_info_2finfo_2eproto() {
-  GOOGLE_PROTOBUF_VERIFY_VERSION;
-
-  {
-    void* ptr = &::mavsdk::rpc::info::_GetProductRequest_default_instance_;
-    new (ptr) ::mavsdk::rpc::info::GetProductRequest();
-    ::PROTOBUF_NAMESPACE_ID::internal::OnShutdownDestroyMessage(ptr);
-  }
-  ::mavsdk::rpc::info::GetProductRequest::InitAsDefaultInstance();
-}
-
-::PROTOBUF_NAMESPACE_ID::internal::SCCInfo<0> scc_info_GetProductRequest_info_2finfo_2eproto =
-    {{ATOMIC_VAR_INIT(::PROTOBUF_NAMESPACE_ID::internal::SCCInfoBase::kUninitialized), 0, 0, InitDefaultsscc_info_GetProductRequest_info_2finfo_2eproto}, {}};
-
-static void InitDefaultsscc_info_GetProductResponse_info_2finfo_2eproto() {
-  GOOGLE_PROTOBUF_VERIFY_VERSION;
-
-  {
-    void* ptr = &::mavsdk::rpc::info::_GetProductResponse_default_instance_;
-    new (ptr) ::mavsdk::rpc::info::GetProductResponse();
-    ::PROTOBUF_NAMESPACE_ID::internal::OnShutdownDestroyMessage(ptr);
-  }
-  ::mavsdk::rpc::info::GetProductResponse::InitAsDefaultInstance();
-}
-
-::PROTOBUF_NAMESPACE_ID::internal::SCCInfo<2> scc_info_GetProductResponse_info_2finfo_2eproto =
-    {{ATOMIC_VAR_INIT(::PROTOBUF_NAMESPACE_ID::internal::SCCInfoBase::kUninitialized), 2, 0, InitDefaultsscc_info_GetProductResponse_info_2finfo_2eproto}, {
-      &scc_info_InfoResult_info_2finfo_2eproto.base,
-      &scc_info_Product_info_2finfo_2eproto.base,}};
-
-static void InitDefaultsscc_info_GetSpeedFactorRequest_info_2finfo_2eproto() {
-  GOOGLE_PROTOBUF_VERIFY_VERSION;
-
-  {
-    void* ptr = &::mavsdk::rpc::info::_GetSpeedFactorRequest_default_instance_;
-    new (ptr) ::mavsdk::rpc::info::GetSpeedFactorRequest();
-    ::PROTOBUF_NAMESPACE_ID::internal::OnShutdownDestroyMessage(ptr);
-  }
-  ::mavsdk::rpc::info::GetSpeedFactorRequest::InitAsDefaultInstance();
-}
-
-::PROTOBUF_NAMESPACE_ID::internal::SCCInfo<0> scc_info_GetSpeedFactorRequest_info_2finfo_2eproto =
-    {{ATOMIC_VAR_INIT(::PROTOBUF_NAMESPACE_ID::internal::SCCInfoBase::kUninitialized), 0, 0, InitDefaultsscc_info_GetSpeedFactorRequest_info_2finfo_2eproto}, {}};
-
-static void InitDefaultsscc_info_GetSpeedFactorResponse_info_2finfo_2eproto() {
-  GOOGLE_PROTOBUF_VERIFY_VERSION;
-
-  {
-    void* ptr = &::mavsdk::rpc::info::_GetSpeedFactorResponse_default_instance_;
-    new (ptr) ::mavsdk::rpc::info::GetSpeedFactorResponse();
-    ::PROTOBUF_NAMESPACE_ID::internal::OnShutdownDestroyMessage(ptr);
-  }
-  ::mavsdk::rpc::info::GetSpeedFactorResponse::InitAsDefaultInstance();
-}
-
-::PROTOBUF_NAMESPACE_ID::internal::SCCInfo<1> scc_info_GetSpeedFactorResponse_info_2finfo_2eproto =
-    {{ATOMIC_VAR_INIT(::PROTOBUF_NAMESPACE_ID::internal::SCCInfoBase::kUninitialized), 1, 0, InitDefaultsscc_info_GetSpeedFactorResponse_info_2finfo_2eproto}, {
-      &scc_info_InfoResult_info_2finfo_2eproto.base,}};
-
-static void InitDefaultsscc_info_GetVersionRequest_info_2finfo_2eproto() {
-  GOOGLE_PROTOBUF_VERIFY_VERSION;
-
-  {
-    void* ptr = &::mavsdk::rpc::info::_GetVersionRequest_default_instance_;
-    new (ptr) ::mavsdk::rpc::info::GetVersionRequest();
-    ::PROTOBUF_NAMESPACE_ID::internal::OnShutdownDestroyMessage(ptr);
-  }
-  ::mavsdk::rpc::info::GetVersionRequest::InitAsDefaultInstance();
-}
-
-::PROTOBUF_NAMESPACE_ID::internal::SCCInfo<0> scc_info_GetVersionRequest_info_2finfo_2eproto =
-    {{ATOMIC_VAR_INIT(::PROTOBUF_NAMESPACE_ID::internal::SCCInfoBase::kUninitialized), 0, 0, InitDefaultsscc_info_GetVersionRequest_info_2finfo_2eproto}, {}};
-
-static void InitDefaultsscc_info_GetVersionResponse_info_2finfo_2eproto() {
-  GOOGLE_PROTOBUF_VERIFY_VERSION;
-
-  {
-    void* ptr = &::mavsdk::rpc::info::_GetVersionResponse_default_instance_;
-    new (ptr) ::mavsdk::rpc::info::GetVersionResponse();
-    ::PROTOBUF_NAMESPACE_ID::internal::OnShutdownDestroyMessage(ptr);
-  }
-  ::mavsdk::rpc::info::GetVersionResponse::InitAsDefaultInstance();
-}
-
-::PROTOBUF_NAMESPACE_ID::internal::SCCInfo<2> scc_info_GetVersionResponse_info_2finfo_2eproto =
-    {{ATOMIC_VAR_INIT(::PROTOBUF_NAMESPACE_ID::internal::SCCInfoBase::kUninitialized), 2, 0, InitDefaultsscc_info_GetVersionResponse_info_2finfo_2eproto}, {
-      &scc_info_InfoResult_info_2finfo_2eproto.base,
-      &scc_info_Version_info_2finfo_2eproto.base,}};
-
-static void InitDefaultsscc_info_Identification_info_2finfo_2eproto() {
-  GOOGLE_PROTOBUF_VERIFY_VERSION;
-
-  {
-    void* ptr = &::mavsdk::rpc::info::_Identification_default_instance_;
-    new (ptr) ::mavsdk::rpc::info::Identification();
-    ::PROTOBUF_NAMESPACE_ID::internal::OnShutdownDestroyMessage(ptr);
-  }
-  ::mavsdk::rpc::info::Identification::InitAsDefaultInstance();
-}
-
-::PROTOBUF_NAMESPACE_ID::internal::SCCInfo<0> scc_info_Identification_info_2finfo_2eproto =
-    {{ATOMIC_VAR_INIT(::PROTOBUF_NAMESPACE_ID::internal::SCCInfoBase::kUninitialized), 0, 0, InitDefaultsscc_info_Identification_info_2finfo_2eproto}, {}};
-
-static void InitDefaultsscc_info_InfoResult_info_2finfo_2eproto() {
-  GOOGLE_PROTOBUF_VERIFY_VERSION;
-
-  {
-    void* ptr = &::mavsdk::rpc::info::_InfoResult_default_instance_;
-    new (ptr) ::mavsdk::rpc::info::InfoResult();
-    ::PROTOBUF_NAMESPACE_ID::internal::OnShutdownDestroyMessage(ptr);
-  }
-  ::mavsdk::rpc::info::InfoResult::InitAsDefaultInstance();
-}
-
-::PROTOBUF_NAMESPACE_ID::internal::SCCInfo<0> scc_info_InfoResult_info_2finfo_2eproto =
-    {{ATOMIC_VAR_INIT(::PROTOBUF_NAMESPACE_ID::internal::SCCInfoBase::kUninitialized), 0, 0, InitDefaultsscc_info_InfoResult_info_2finfo_2eproto}, {}};
-
-static void InitDefaultsscc_info_Product_info_2finfo_2eproto() {
-  GOOGLE_PROTOBUF_VERIFY_VERSION;
-
-  {
-    void* ptr = &::mavsdk::rpc::info::_Product_default_instance_;
-    new (ptr) ::mavsdk::rpc::info::Product();
-    ::PROTOBUF_NAMESPACE_ID::internal::OnShutdownDestroyMessage(ptr);
-  }
-  ::mavsdk::rpc::info::Product::InitAsDefaultInstance();
-}
-
-::PROTOBUF_NAMESPACE_ID::internal::SCCInfo<0> scc_info_Product_info_2finfo_2eproto =
-    {{ATOMIC_VAR_INIT(::PROTOBUF_NAMESPACE_ID::internal::SCCInfoBase::kUninitialized), 0, 0, InitDefaultsscc_info_Product_info_2finfo_2eproto}, {}};
-
-static void InitDefaultsscc_info_Version_info_2finfo_2eproto() {
-  GOOGLE_PROTOBUF_VERIFY_VERSION;
-
-  {
-    void* ptr = &::mavsdk::rpc::info::_Version_default_instance_;
-    new (ptr) ::mavsdk::rpc::info::Version();
-    ::PROTOBUF_NAMESPACE_ID::internal::OnShutdownDestroyMessage(ptr);
-  }
-  ::mavsdk::rpc::info::Version::InitAsDefaultInstance();
-}
-
-::PROTOBUF_NAMESPACE_ID::internal::SCCInfo<0> scc_info_Version_info_2finfo_2eproto =
-    {{ATOMIC_VAR_INIT(::PROTOBUF_NAMESPACE_ID::internal::SCCInfoBase::kUninitialized), 0, 0, InitDefaultsscc_info_Version_info_2finfo_2eproto}, {}};
-
 static ::PROTOBUF_NAMESPACE_ID::Metadata file_level_metadata_info_2finfo_2eproto[15];
 static const ::PROTOBUF_NAMESPACE_ID::EnumDescriptor* file_level_enum_descriptors_info_2finfo_2eproto[1];
 static constexpr ::PROTOBUF_NAMESPACE_ID::ServiceDescriptor const** file_level_service_descriptors_info_2finfo_2eproto = nullptr;
@@ -507,33 +421,21 @@ const char descriptor_table_protodef_info_2finfo_2eproto[] PROTOBUF_SECTION_VARI
 static const ::PROTOBUF_NAMESPACE_ID::internal::DescriptorTable*const descriptor_table_info_2finfo_2eproto_deps[1] = {
   &::descriptor_table_mavsdk_5foptions_2eproto,
 };
-static ::PROTOBUF_NAMESPACE_ID::internal::SCCInfoBase*const descriptor_table_info_2finfo_2eproto_sccs[15] = {
-  &scc_info_FlightInfo_info_2finfo_2eproto.base,
-  &scc_info_GetFlightInformationRequest_info_2finfo_2eproto.base,
-  &scc_info_GetFlightInformationResponse_info_2finfo_2eproto.base,
-  &scc_info_GetIdentificationRequest_info_2finfo_2eproto.base,
-  &scc_info_GetIdentificationResponse_info_2finfo_2eproto.base,
-  &scc_info_GetProductRequest_info_2finfo_2eproto.base,
-  &scc_info_GetProductResponse_info_2finfo_2eproto.base,
-  &scc_info_GetSpeedFactorRequest_info_2finfo_2eproto.base,
-  &scc_info_GetSpeedFactorResponse_info_2finfo_2eproto.base,
-  &scc_info_GetVersionRequest_info_2finfo_2eproto.base,
-  &scc_info_GetVersionResponse_info_2finfo_2eproto.base,
-  &scc_info_Identification_info_2finfo_2eproto.base,
-  &scc_info_InfoResult_info_2finfo_2eproto.base,
-  &scc_info_Product_info_2finfo_2eproto.base,
-  &scc_info_Version_info_2finfo_2eproto.base,
-};
 static ::PROTOBUF_NAMESPACE_ID::internal::once_flag descriptor_table_info_2finfo_2eproto_once;
 const ::PROTOBUF_NAMESPACE_ID::internal::DescriptorTable descriptor_table_info_2finfo_2eproto = {
-  false, false, descriptor_table_protodef_info_2finfo_2eproto, "info/info.proto", 2026,
-  &descriptor_table_info_2finfo_2eproto_once, descriptor_table_info_2finfo_2eproto_sccs, descriptor_table_info_2finfo_2eproto_deps, 15, 1,
+  false, false, 2026, descriptor_table_protodef_info_2finfo_2eproto, "info/info.proto", 
+  &descriptor_table_info_2finfo_2eproto_once, descriptor_table_info_2finfo_2eproto_deps, 1, 15,
   schemas, file_default_instances, TableStruct_info_2finfo_2eproto::offsets,
-  file_level_metadata_info_2finfo_2eproto, 15, file_level_enum_descriptors_info_2finfo_2eproto, file_level_service_descriptors_info_2finfo_2eproto,
+  file_level_metadata_info_2finfo_2eproto, file_level_enum_descriptors_info_2finfo_2eproto, file_level_service_descriptors_info_2finfo_2eproto,
 };
+PROTOBUF_ATTRIBUTE_WEAK ::PROTOBUF_NAMESPACE_ID::Metadata
+descriptor_table_info_2finfo_2eproto_metadata_getter(int index) {
+  ::PROTOBUF_NAMESPACE_ID::internal::AssignDescriptors(&descriptor_table_info_2finfo_2eproto);
+  return descriptor_table_info_2finfo_2eproto.file_level_metadata[index];
+}
 
 // Force running AddDescriptors() at dynamic initialization time.
-static bool dynamic_init_dummy_info_2finfo_2eproto = (static_cast<void>(::PROTOBUF_NAMESPACE_ID::internal::AddDescriptors(&descriptor_table_info_2finfo_2eproto)), true);
+PROTOBUF_ATTRIBUTE_INIT_PRIORITY static ::PROTOBUF_NAMESPACE_ID::internal::AddDescriptorsRunner dynamic_init_dummy_info_2finfo_2eproto(&descriptor_table_info_2finfo_2eproto);
 namespace mavsdk {
 namespace rpc {
 namespace info {
@@ -563,8 +465,6 @@ constexpr int InfoResult::Result_ARRAYSIZE;
 
 // ===================================================================
 
-void GetFlightInformationRequest::InitAsDefaultInstance() {
-}
 class GetFlightInformationRequest::_Internal {
  public:
 };
@@ -603,11 +503,6 @@ void GetFlightInformationRequest::RegisterArenaDtor(::PROTOBUF_NAMESPACE_ID::Are
 void GetFlightInformationRequest::SetCachedSize(int size) const {
   _cached_size_.Set(size);
 }
-const GetFlightInformationRequest& GetFlightInformationRequest::default_instance() {
-  ::PROTOBUF_NAMESPACE_ID::internal::InitSCC(&::scc_info_GetFlightInformationRequest_info_2finfo_2eproto.base);
-  return *internal_default_instance();
-}
-
 
 void GetFlightInformationRequest::Clear() {
 // @@protoc_insertion_point(message_clear_start:mavsdk.rpc.info.GetFlightInformationRequest)
@@ -620,7 +515,6 @@ void GetFlightInformationRequest::Clear() {
 
 const char* GetFlightInformationRequest::_InternalParse(const char* ptr, ::PROTOBUF_NAMESPACE_ID::internal::ParseContext* ctx) {
 #define CHK_(x) if (PROTOBUF_PREDICT_FALSE(!(x))) goto failure
-  ::PROTOBUF_NAMESPACE_ID::Arena* arena = GetArena(); (void)arena;
   while (!ctx->Done(&ptr)) {
     ::PROTOBUF_NAMESPACE_ID::uint32 tag;
     ptr = ::PROTOBUF_NAMESPACE_ID::internal::ReadTag(ptr, &tag);
@@ -728,12 +622,6 @@ void GetFlightInformationRequest::InternalSwap(GetFlightInformationRequest* othe
 
 // ===================================================================
 
-void GetFlightInformationResponse::InitAsDefaultInstance() {
-  ::mavsdk::rpc::info::_GetFlightInformationResponse_default_instance_._instance.get_mutable()->info_result_ = const_cast< ::mavsdk::rpc::info::InfoResult*>(
-      ::mavsdk::rpc::info::InfoResult::internal_default_instance());
-  ::mavsdk::rpc::info::_GetFlightInformationResponse_default_instance_._instance.get_mutable()->flight_info_ = const_cast< ::mavsdk::rpc::info::FlightInfo*>(
-      ::mavsdk::rpc::info::FlightInfo::internal_default_instance());
-}
 class GetFlightInformationResponse::_Internal {
  public:
   static const ::mavsdk::rpc::info::InfoResult& info_result(const GetFlightInformationResponse* msg);
@@ -771,10 +659,10 @@ GetFlightInformationResponse::GetFlightInformationResponse(const GetFlightInform
 }
 
 void GetFlightInformationResponse::SharedCtor() {
-  ::PROTOBUF_NAMESPACE_ID::internal::InitSCC(&scc_info_GetFlightInformationResponse_info_2finfo_2eproto.base);
-  ::memset(&info_result_, 0, static_cast<size_t>(
-      reinterpret_cast<char*>(&flight_info_) -
-      reinterpret_cast<char*>(&info_result_)) + sizeof(flight_info_));
+::memset(reinterpret_cast<char*>(this) + static_cast<size_t>(
+    reinterpret_cast<char*>(&info_result_) - reinterpret_cast<char*>(this)),
+    0, static_cast<size_t>(reinterpret_cast<char*>(&flight_info_) -
+    reinterpret_cast<char*>(&info_result_)) + sizeof(flight_info_));
 }
 
 GetFlightInformationResponse::~GetFlightInformationResponse() {
@@ -798,11 +686,6 @@ void GetFlightInformationResponse::RegisterArenaDtor(::PROTOBUF_NAMESPACE_ID::Ar
 void GetFlightInformationResponse::SetCachedSize(int size) const {
   _cached_size_.Set(size);
 }
-const GetFlightInformationResponse& GetFlightInformationResponse::default_instance() {
-  ::PROTOBUF_NAMESPACE_ID::internal::InitSCC(&::scc_info_GetFlightInformationResponse_info_2finfo_2eproto.base);
-  return *internal_default_instance();
-}
-
 
 void GetFlightInformationResponse::Clear() {
 // @@protoc_insertion_point(message_clear_start:mavsdk.rpc.info.GetFlightInformationResponse)
@@ -823,7 +706,6 @@ void GetFlightInformationResponse::Clear() {
 
 const char* GetFlightInformationResponse::_InternalParse(const char* ptr, ::PROTOBUF_NAMESPACE_ID::internal::ParseContext* ctx) {
 #define CHK_(x) if (PROTOBUF_PREDICT_FALSE(!(x))) goto failure
-  ::PROTOBUF_NAMESPACE_ID::Arena* arena = GetArena(); (void)arena;
   while (!ctx->Done(&ptr)) {
     ::PROTOBUF_NAMESPACE_ID::uint32 tag;
     ptr = ::PROTOBUF_NAMESPACE_ID::internal::ReadTag(ptr, &tag);
@@ -992,8 +874,6 @@ void GetFlightInformationResponse::InternalSwap(GetFlightInformationResponse* ot
 
 // ===================================================================
 
-void GetIdentificationRequest::InitAsDefaultInstance() {
-}
 class GetIdentificationRequest::_Internal {
  public:
 };
@@ -1032,11 +912,6 @@ void GetIdentificationRequest::RegisterArenaDtor(::PROTOBUF_NAMESPACE_ID::Arena*
 void GetIdentificationRequest::SetCachedSize(int size) const {
   _cached_size_.Set(size);
 }
-const GetIdentificationRequest& GetIdentificationRequest::default_instance() {
-  ::PROTOBUF_NAMESPACE_ID::internal::InitSCC(&::scc_info_GetIdentificationRequest_info_2finfo_2eproto.base);
-  return *internal_default_instance();
-}
-
 
 void GetIdentificationRequest::Clear() {
 // @@protoc_insertion_point(message_clear_start:mavsdk.rpc.info.GetIdentificationRequest)
@@ -1049,7 +924,6 @@ void GetIdentificationRequest::Clear() {
 
 const char* GetIdentificationRequest::_InternalParse(const char* ptr, ::PROTOBUF_NAMESPACE_ID::internal::ParseContext* ctx) {
 #define CHK_(x) if (PROTOBUF_PREDICT_FALSE(!(x))) goto failure
-  ::PROTOBUF_NAMESPACE_ID::Arena* arena = GetArena(); (void)arena;
   while (!ctx->Done(&ptr)) {
     ::PROTOBUF_NAMESPACE_ID::uint32 tag;
     ptr = ::PROTOBUF_NAMESPACE_ID::internal::ReadTag(ptr, &tag);
@@ -1157,12 +1031,6 @@ void GetIdentificationRequest::InternalSwap(GetIdentificationRequest* other) {
 
 // ===================================================================
 
-void GetIdentificationResponse::InitAsDefaultInstance() {
-  ::mavsdk::rpc::info::_GetIdentificationResponse_default_instance_._instance.get_mutable()->info_result_ = const_cast< ::mavsdk::rpc::info::InfoResult*>(
-      ::mavsdk::rpc::info::InfoResult::internal_default_instance());
-  ::mavsdk::rpc::info::_GetIdentificationResponse_default_instance_._instance.get_mutable()->identification_ = const_cast< ::mavsdk::rpc::info::Identification*>(
-      ::mavsdk::rpc::info::Identification::internal_default_instance());
-}
 class GetIdentificationResponse::_Internal {
  public:
   static const ::mavsdk::rpc::info::InfoResult& info_result(const GetIdentificationResponse* msg);
@@ -1200,10 +1068,10 @@ GetIdentificationResponse::GetIdentificationResponse(const GetIdentificationResp
 }
 
 void GetIdentificationResponse::SharedCtor() {
-  ::PROTOBUF_NAMESPACE_ID::internal::InitSCC(&scc_info_GetIdentificationResponse_info_2finfo_2eproto.base);
-  ::memset(&info_result_, 0, static_cast<size_t>(
-      reinterpret_cast<char*>(&identification_) -
-      reinterpret_cast<char*>(&info_result_)) + sizeof(identification_));
+::memset(reinterpret_cast<char*>(this) + static_cast<size_t>(
+    reinterpret_cast<char*>(&info_result_) - reinterpret_cast<char*>(this)),
+    0, static_cast<size_t>(reinterpret_cast<char*>(&identification_) -
+    reinterpret_cast<char*>(&info_result_)) + sizeof(identification_));
 }
 
 GetIdentificationResponse::~GetIdentificationResponse() {
@@ -1227,11 +1095,6 @@ void GetIdentificationResponse::RegisterArenaDtor(::PROTOBUF_NAMESPACE_ID::Arena
 void GetIdentificationResponse::SetCachedSize(int size) const {
   _cached_size_.Set(size);
 }
-const GetIdentificationResponse& GetIdentificationResponse::default_instance() {
-  ::PROTOBUF_NAMESPACE_ID::internal::InitSCC(&::scc_info_GetIdentificationResponse_info_2finfo_2eproto.base);
-  return *internal_default_instance();
-}
-
 
 void GetIdentificationResponse::Clear() {
 // @@protoc_insertion_point(message_clear_start:mavsdk.rpc.info.GetIdentificationResponse)
@@ -1252,7 +1115,6 @@ void GetIdentificationResponse::Clear() {
 
 const char* GetIdentificationResponse::_InternalParse(const char* ptr, ::PROTOBUF_NAMESPACE_ID::internal::ParseContext* ctx) {
 #define CHK_(x) if (PROTOBUF_PREDICT_FALSE(!(x))) goto failure
-  ::PROTOBUF_NAMESPACE_ID::Arena* arena = GetArena(); (void)arena;
   while (!ctx->Done(&ptr)) {
     ::PROTOBUF_NAMESPACE_ID::uint32 tag;
     ptr = ::PROTOBUF_NAMESPACE_ID::internal::ReadTag(ptr, &tag);
@@ -1421,8 +1283,6 @@ void GetIdentificationResponse::InternalSwap(GetIdentificationResponse* other) {
 
 // ===================================================================
 
-void GetProductRequest::InitAsDefaultInstance() {
-}
 class GetProductRequest::_Internal {
  public:
 };
@@ -1461,11 +1321,6 @@ void GetProductRequest::RegisterArenaDtor(::PROTOBUF_NAMESPACE_ID::Arena*) {
 void GetProductRequest::SetCachedSize(int size) const {
   _cached_size_.Set(size);
 }
-const GetProductRequest& GetProductRequest::default_instance() {
-  ::PROTOBUF_NAMESPACE_ID::internal::InitSCC(&::scc_info_GetProductRequest_info_2finfo_2eproto.base);
-  return *internal_default_instance();
-}
-
 
 void GetProductRequest::Clear() {
 // @@protoc_insertion_point(message_clear_start:mavsdk.rpc.info.GetProductRequest)
@@ -1478,7 +1333,6 @@ void GetProductRequest::Clear() {
 
 const char* GetProductRequest::_InternalParse(const char* ptr, ::PROTOBUF_NAMESPACE_ID::internal::ParseContext* ctx) {
 #define CHK_(x) if (PROTOBUF_PREDICT_FALSE(!(x))) goto failure
-  ::PROTOBUF_NAMESPACE_ID::Arena* arena = GetArena(); (void)arena;
   while (!ctx->Done(&ptr)) {
     ::PROTOBUF_NAMESPACE_ID::uint32 tag;
     ptr = ::PROTOBUF_NAMESPACE_ID::internal::ReadTag(ptr, &tag);
@@ -1586,12 +1440,6 @@ void GetProductRequest::InternalSwap(GetProductRequest* other) {
 
 // ===================================================================
 
-void GetProductResponse::InitAsDefaultInstance() {
-  ::mavsdk::rpc::info::_GetProductResponse_default_instance_._instance.get_mutable()->info_result_ = const_cast< ::mavsdk::rpc::info::InfoResult*>(
-      ::mavsdk::rpc::info::InfoResult::internal_default_instance());
-  ::mavsdk::rpc::info::_GetProductResponse_default_instance_._instance.get_mutable()->product_ = const_cast< ::mavsdk::rpc::info::Product*>(
-      ::mavsdk::rpc::info::Product::internal_default_instance());
-}
 class GetProductResponse::_Internal {
  public:
   static const ::mavsdk::rpc::info::InfoResult& info_result(const GetProductResponse* msg);
@@ -1629,10 +1477,10 @@ GetProductResponse::GetProductResponse(const GetProductResponse& from)
 }
 
 void GetProductResponse::SharedCtor() {
-  ::PROTOBUF_NAMESPACE_ID::internal::InitSCC(&scc_info_GetProductResponse_info_2finfo_2eproto.base);
-  ::memset(&info_result_, 0, static_cast<size_t>(
-      reinterpret_cast<char*>(&product_) -
-      reinterpret_cast<char*>(&info_result_)) + sizeof(product_));
+::memset(reinterpret_cast<char*>(this) + static_cast<size_t>(
+    reinterpret_cast<char*>(&info_result_) - reinterpret_cast<char*>(this)),
+    0, static_cast<size_t>(reinterpret_cast<char*>(&product_) -
+    reinterpret_cast<char*>(&info_result_)) + sizeof(product_));
 }
 
 GetProductResponse::~GetProductResponse() {
@@ -1656,11 +1504,6 @@ void GetProductResponse::RegisterArenaDtor(::PROTOBUF_NAMESPACE_ID::Arena*) {
 void GetProductResponse::SetCachedSize(int size) const {
   _cached_size_.Set(size);
 }
-const GetProductResponse& GetProductResponse::default_instance() {
-  ::PROTOBUF_NAMESPACE_ID::internal::InitSCC(&::scc_info_GetProductResponse_info_2finfo_2eproto.base);
-  return *internal_default_instance();
-}
-
 
 void GetProductResponse::Clear() {
 // @@protoc_insertion_point(message_clear_start:mavsdk.rpc.info.GetProductResponse)
@@ -1681,7 +1524,6 @@ void GetProductResponse::Clear() {
 
 const char* GetProductResponse::_InternalParse(const char* ptr, ::PROTOBUF_NAMESPACE_ID::internal::ParseContext* ctx) {
 #define CHK_(x) if (PROTOBUF_PREDICT_FALSE(!(x))) goto failure
-  ::PROTOBUF_NAMESPACE_ID::Arena* arena = GetArena(); (void)arena;
   while (!ctx->Done(&ptr)) {
     ::PROTOBUF_NAMESPACE_ID::uint32 tag;
     ptr = ::PROTOBUF_NAMESPACE_ID::internal::ReadTag(ptr, &tag);
@@ -1850,8 +1692,6 @@ void GetProductResponse::InternalSwap(GetProductResponse* other) {
 
 // ===================================================================
 
-void GetVersionRequest::InitAsDefaultInstance() {
-}
 class GetVersionRequest::_Internal {
  public:
 };
@@ -1890,11 +1730,6 @@ void GetVersionRequest::RegisterArenaDtor(::PROTOBUF_NAMESPACE_ID::Arena*) {
 void GetVersionRequest::SetCachedSize(int size) const {
   _cached_size_.Set(size);
 }
-const GetVersionRequest& GetVersionRequest::default_instance() {
-  ::PROTOBUF_NAMESPACE_ID::internal::InitSCC(&::scc_info_GetVersionRequest_info_2finfo_2eproto.base);
-  return *internal_default_instance();
-}
-
 
 void GetVersionRequest::Clear() {
 // @@protoc_insertion_point(message_clear_start:mavsdk.rpc.info.GetVersionRequest)
@@ -1907,7 +1742,6 @@ void GetVersionRequest::Clear() {
 
 const char* GetVersionRequest::_InternalParse(const char* ptr, ::PROTOBUF_NAMESPACE_ID::internal::ParseContext* ctx) {
 #define CHK_(x) if (PROTOBUF_PREDICT_FALSE(!(x))) goto failure
-  ::PROTOBUF_NAMESPACE_ID::Arena* arena = GetArena(); (void)arena;
   while (!ctx->Done(&ptr)) {
     ::PROTOBUF_NAMESPACE_ID::uint32 tag;
     ptr = ::PROTOBUF_NAMESPACE_ID::internal::ReadTag(ptr, &tag);
@@ -2015,12 +1849,6 @@ void GetVersionRequest::InternalSwap(GetVersionRequest* other) {
 
 // ===================================================================
 
-void GetVersionResponse::InitAsDefaultInstance() {
-  ::mavsdk::rpc::info::_GetVersionResponse_default_instance_._instance.get_mutable()->info_result_ = const_cast< ::mavsdk::rpc::info::InfoResult*>(
-      ::mavsdk::rpc::info::InfoResult::internal_default_instance());
-  ::mavsdk::rpc::info::_GetVersionResponse_default_instance_._instance.get_mutable()->version_ = const_cast< ::mavsdk::rpc::info::Version*>(
-      ::mavsdk::rpc::info::Version::internal_default_instance());
-}
 class GetVersionResponse::_Internal {
  public:
   static const ::mavsdk::rpc::info::InfoResult& info_result(const GetVersionResponse* msg);
@@ -2058,10 +1886,10 @@ GetVersionResponse::GetVersionResponse(const GetVersionResponse& from)
 }
 
 void GetVersionResponse::SharedCtor() {
-  ::PROTOBUF_NAMESPACE_ID::internal::InitSCC(&scc_info_GetVersionResponse_info_2finfo_2eproto.base);
-  ::memset(&info_result_, 0, static_cast<size_t>(
-      reinterpret_cast<char*>(&version_) -
-      reinterpret_cast<char*>(&info_result_)) + sizeof(version_));
+::memset(reinterpret_cast<char*>(this) + static_cast<size_t>(
+    reinterpret_cast<char*>(&info_result_) - reinterpret_cast<char*>(this)),
+    0, static_cast<size_t>(reinterpret_cast<char*>(&version_) -
+    reinterpret_cast<char*>(&info_result_)) + sizeof(version_));
 }
 
 GetVersionResponse::~GetVersionResponse() {
@@ -2085,11 +1913,6 @@ void GetVersionResponse::RegisterArenaDtor(::PROTOBUF_NAMESPACE_ID::Arena*) {
 void GetVersionResponse::SetCachedSize(int size) const {
   _cached_size_.Set(size);
 }
-const GetVersionResponse& GetVersionResponse::default_instance() {
-  ::PROTOBUF_NAMESPACE_ID::internal::InitSCC(&::scc_info_GetVersionResponse_info_2finfo_2eproto.base);
-  return *internal_default_instance();
-}
-
 
 void GetVersionResponse::Clear() {
 // @@protoc_insertion_point(message_clear_start:mavsdk.rpc.info.GetVersionResponse)
@@ -2110,7 +1933,6 @@ void GetVersionResponse::Clear() {
 
 const char* GetVersionResponse::_InternalParse(const char* ptr, ::PROTOBUF_NAMESPACE_ID::internal::ParseContext* ctx) {
 #define CHK_(x) if (PROTOBUF_PREDICT_FALSE(!(x))) goto failure
-  ::PROTOBUF_NAMESPACE_ID::Arena* arena = GetArena(); (void)arena;
   while (!ctx->Done(&ptr)) {
     ::PROTOBUF_NAMESPACE_ID::uint32 tag;
     ptr = ::PROTOBUF_NAMESPACE_ID::internal::ReadTag(ptr, &tag);
@@ -2279,8 +2101,6 @@ void GetVersionResponse::InternalSwap(GetVersionResponse* other) {
 
 // ===================================================================
 
-void GetSpeedFactorRequest::InitAsDefaultInstance() {
-}
 class GetSpeedFactorRequest::_Internal {
  public:
 };
@@ -2319,11 +2139,6 @@ void GetSpeedFactorRequest::RegisterArenaDtor(::PROTOBUF_NAMESPACE_ID::Arena*) {
 void GetSpeedFactorRequest::SetCachedSize(int size) const {
   _cached_size_.Set(size);
 }
-const GetSpeedFactorRequest& GetSpeedFactorRequest::default_instance() {
-  ::PROTOBUF_NAMESPACE_ID::internal::InitSCC(&::scc_info_GetSpeedFactorRequest_info_2finfo_2eproto.base);
-  return *internal_default_instance();
-}
-
 
 void GetSpeedFactorRequest::Clear() {
 // @@protoc_insertion_point(message_clear_start:mavsdk.rpc.info.GetSpeedFactorRequest)
@@ -2336,7 +2151,6 @@ void GetSpeedFactorRequest::Clear() {
 
 const char* GetSpeedFactorRequest::_InternalParse(const char* ptr, ::PROTOBUF_NAMESPACE_ID::internal::ParseContext* ctx) {
 #define CHK_(x) if (PROTOBUF_PREDICT_FALSE(!(x))) goto failure
-  ::PROTOBUF_NAMESPACE_ID::Arena* arena = GetArena(); (void)arena;
   while (!ctx->Done(&ptr)) {
     ::PROTOBUF_NAMESPACE_ID::uint32 tag;
     ptr = ::PROTOBUF_NAMESPACE_ID::internal::ReadTag(ptr, &tag);
@@ -2444,10 +2258,6 @@ void GetSpeedFactorRequest::InternalSwap(GetSpeedFactorRequest* other) {
 
 // ===================================================================
 
-void GetSpeedFactorResponse::InitAsDefaultInstance() {
-  ::mavsdk::rpc::info::_GetSpeedFactorResponse_default_instance_._instance.get_mutable()->info_result_ = const_cast< ::mavsdk::rpc::info::InfoResult*>(
-      ::mavsdk::rpc::info::InfoResult::internal_default_instance());
-}
 class GetSpeedFactorResponse::_Internal {
  public:
   static const ::mavsdk::rpc::info::InfoResult& info_result(const GetSpeedFactorResponse* msg);
@@ -2476,10 +2286,10 @@ GetSpeedFactorResponse::GetSpeedFactorResponse(const GetSpeedFactorResponse& fro
 }
 
 void GetSpeedFactorResponse::SharedCtor() {
-  ::PROTOBUF_NAMESPACE_ID::internal::InitSCC(&scc_info_GetSpeedFactorResponse_info_2finfo_2eproto.base);
-  ::memset(&info_result_, 0, static_cast<size_t>(
-      reinterpret_cast<char*>(&speed_factor_) -
-      reinterpret_cast<char*>(&info_result_)) + sizeof(speed_factor_));
+::memset(reinterpret_cast<char*>(this) + static_cast<size_t>(
+    reinterpret_cast<char*>(&info_result_) - reinterpret_cast<char*>(this)),
+    0, static_cast<size_t>(reinterpret_cast<char*>(&speed_factor_) -
+    reinterpret_cast<char*>(&info_result_)) + sizeof(speed_factor_));
 }
 
 GetSpeedFactorResponse::~GetSpeedFactorResponse() {
@@ -2502,11 +2312,6 @@ void GetSpeedFactorResponse::RegisterArenaDtor(::PROTOBUF_NAMESPACE_ID::Arena*) 
 void GetSpeedFactorResponse::SetCachedSize(int size) const {
   _cached_size_.Set(size);
 }
-const GetSpeedFactorResponse& GetSpeedFactorResponse::default_instance() {
-  ::PROTOBUF_NAMESPACE_ID::internal::InitSCC(&::scc_info_GetSpeedFactorResponse_info_2finfo_2eproto.base);
-  return *internal_default_instance();
-}
-
 
 void GetSpeedFactorResponse::Clear() {
 // @@protoc_insertion_point(message_clear_start:mavsdk.rpc.info.GetSpeedFactorResponse)
@@ -2524,7 +2329,6 @@ void GetSpeedFactorResponse::Clear() {
 
 const char* GetSpeedFactorResponse::_InternalParse(const char* ptr, ::PROTOBUF_NAMESPACE_ID::internal::ParseContext* ctx) {
 #define CHK_(x) if (PROTOBUF_PREDICT_FALSE(!(x))) goto failure
-  ::PROTOBUF_NAMESPACE_ID::Arena* arena = GetArena(); (void)arena;
   while (!ctx->Done(&ptr)) {
     ::PROTOBUF_NAMESPACE_ID::uint32 tag;
     ptr = ::PROTOBUF_NAMESPACE_ID::internal::ReadTag(ptr, &tag);
@@ -2689,8 +2493,6 @@ void GetSpeedFactorResponse::InternalSwap(GetSpeedFactorResponse* other) {
 
 // ===================================================================
 
-void FlightInfo::InitAsDefaultInstance() {
-}
 class FlightInfo::_Internal {
  public:
 };
@@ -2711,9 +2513,10 @@ FlightInfo::FlightInfo(const FlightInfo& from)
 }
 
 void FlightInfo::SharedCtor() {
-  ::memset(&flight_uid_, 0, static_cast<size_t>(
-      reinterpret_cast<char*>(&time_boot_ms_) -
-      reinterpret_cast<char*>(&flight_uid_)) + sizeof(time_boot_ms_));
+::memset(reinterpret_cast<char*>(this) + static_cast<size_t>(
+    reinterpret_cast<char*>(&flight_uid_) - reinterpret_cast<char*>(this)),
+    0, static_cast<size_t>(reinterpret_cast<char*>(&time_boot_ms_) -
+    reinterpret_cast<char*>(&flight_uid_)) + sizeof(time_boot_ms_));
 }
 
 FlightInfo::~FlightInfo() {
@@ -2735,11 +2538,6 @@ void FlightInfo::RegisterArenaDtor(::PROTOBUF_NAMESPACE_ID::Arena*) {
 void FlightInfo::SetCachedSize(int size) const {
   _cached_size_.Set(size);
 }
-const FlightInfo& FlightInfo::default_instance() {
-  ::PROTOBUF_NAMESPACE_ID::internal::InitSCC(&::scc_info_FlightInfo_info_2finfo_2eproto.base);
-  return *internal_default_instance();
-}
-
 
 void FlightInfo::Clear() {
 // @@protoc_insertion_point(message_clear_start:mavsdk.rpc.info.FlightInfo)
@@ -2755,7 +2553,6 @@ void FlightInfo::Clear() {
 
 const char* FlightInfo::_InternalParse(const char* ptr, ::PROTOBUF_NAMESPACE_ID::internal::ParseContext* ctx) {
 #define CHK_(x) if (PROTOBUF_PREDICT_FALSE(!(x))) goto failure
-  ::PROTOBUF_NAMESPACE_ID::Arena* arena = GetArena(); (void)arena;
   while (!ctx->Done(&ptr)) {
     ::PROTOBUF_NAMESPACE_ID::uint32 tag;
     ptr = ::PROTOBUF_NAMESPACE_ID::internal::ReadTag(ptr, &tag);
@@ -2920,8 +2717,6 @@ void FlightInfo::InternalSwap(FlightInfo* other) {
 
 // ===================================================================
 
-void Identification::InitAsDefaultInstance() {
-}
 class Identification::_Internal {
  public:
 };
@@ -2937,15 +2732,14 @@ Identification::Identification(const Identification& from)
   _internal_metadata_.MergeFrom<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>(from._internal_metadata_);
   hardware_uid_.UnsafeSetDefault(&::PROTOBUF_NAMESPACE_ID::internal::GetEmptyStringAlreadyInited());
   if (!from._internal_hardware_uid().empty()) {
-    hardware_uid_.Set(&::PROTOBUF_NAMESPACE_ID::internal::GetEmptyStringAlreadyInited(), from._internal_hardware_uid(),
+    hardware_uid_.Set(::PROTOBUF_NAMESPACE_ID::internal::ArenaStringPtr::EmptyDefault{}, from._internal_hardware_uid(), 
       GetArena());
   }
   // @@protoc_insertion_point(copy_constructor:mavsdk.rpc.info.Identification)
 }
 
 void Identification::SharedCtor() {
-  ::PROTOBUF_NAMESPACE_ID::internal::InitSCC(&scc_info_Identification_info_2finfo_2eproto.base);
-  hardware_uid_.UnsafeSetDefault(&::PROTOBUF_NAMESPACE_ID::internal::GetEmptyStringAlreadyInited());
+hardware_uid_.UnsafeSetDefault(&::PROTOBUF_NAMESPACE_ID::internal::GetEmptyStringAlreadyInited());
 }
 
 Identification::~Identification() {
@@ -2968,11 +2762,6 @@ void Identification::RegisterArenaDtor(::PROTOBUF_NAMESPACE_ID::Arena*) {
 void Identification::SetCachedSize(int size) const {
   _cached_size_.Set(size);
 }
-const Identification& Identification::default_instance() {
-  ::PROTOBUF_NAMESPACE_ID::internal::InitSCC(&::scc_info_Identification_info_2finfo_2eproto.base);
-  return *internal_default_instance();
-}
-
 
 void Identification::Clear() {
 // @@protoc_insertion_point(message_clear_start:mavsdk.rpc.info.Identification)
@@ -2980,13 +2769,12 @@ void Identification::Clear() {
   // Prevent compiler warnings about cached_has_bits being unused
   (void) cached_has_bits;
 
-  hardware_uid_.ClearToEmpty(&::PROTOBUF_NAMESPACE_ID::internal::GetEmptyStringAlreadyInited(), GetArena());
+  hardware_uid_.ClearToEmpty();
   _internal_metadata_.Clear<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>();
 }
 
 const char* Identification::_InternalParse(const char* ptr, ::PROTOBUF_NAMESPACE_ID::internal::ParseContext* ctx) {
 #define CHK_(x) if (PROTOBUF_PREDICT_FALSE(!(x))) goto failure
-  ::PROTOBUF_NAMESPACE_ID::Arena* arena = GetArena(); (void)arena;
   while (!ctx->Done(&ptr)) {
     ::PROTOBUF_NAMESPACE_ID::uint32 tag;
     ptr = ::PROTOBUF_NAMESPACE_ID::internal::ReadTag(ptr, &tag);
@@ -3129,8 +2917,6 @@ void Identification::InternalSwap(Identification* other) {
 
 // ===================================================================
 
-void Product::InitAsDefaultInstance() {
-}
 class Product::_Internal {
  public:
 };
@@ -3146,12 +2932,12 @@ Product::Product(const Product& from)
   _internal_metadata_.MergeFrom<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>(from._internal_metadata_);
   vendor_name_.UnsafeSetDefault(&::PROTOBUF_NAMESPACE_ID::internal::GetEmptyStringAlreadyInited());
   if (!from._internal_vendor_name().empty()) {
-    vendor_name_.Set(&::PROTOBUF_NAMESPACE_ID::internal::GetEmptyStringAlreadyInited(), from._internal_vendor_name(),
+    vendor_name_.Set(::PROTOBUF_NAMESPACE_ID::internal::ArenaStringPtr::EmptyDefault{}, from._internal_vendor_name(), 
       GetArena());
   }
   product_name_.UnsafeSetDefault(&::PROTOBUF_NAMESPACE_ID::internal::GetEmptyStringAlreadyInited());
   if (!from._internal_product_name().empty()) {
-    product_name_.Set(&::PROTOBUF_NAMESPACE_ID::internal::GetEmptyStringAlreadyInited(), from._internal_product_name(),
+    product_name_.Set(::PROTOBUF_NAMESPACE_ID::internal::ArenaStringPtr::EmptyDefault{}, from._internal_product_name(), 
       GetArena());
   }
   ::memcpy(&vendor_id_, &from.vendor_id_,
@@ -3161,12 +2947,12 @@ Product::Product(const Product& from)
 }
 
 void Product::SharedCtor() {
-  ::PROTOBUF_NAMESPACE_ID::internal::InitSCC(&scc_info_Product_info_2finfo_2eproto.base);
-  vendor_name_.UnsafeSetDefault(&::PROTOBUF_NAMESPACE_ID::internal::GetEmptyStringAlreadyInited());
-  product_name_.UnsafeSetDefault(&::PROTOBUF_NAMESPACE_ID::internal::GetEmptyStringAlreadyInited());
-  ::memset(&vendor_id_, 0, static_cast<size_t>(
-      reinterpret_cast<char*>(&product_id_) -
-      reinterpret_cast<char*>(&vendor_id_)) + sizeof(product_id_));
+vendor_name_.UnsafeSetDefault(&::PROTOBUF_NAMESPACE_ID::internal::GetEmptyStringAlreadyInited());
+product_name_.UnsafeSetDefault(&::PROTOBUF_NAMESPACE_ID::internal::GetEmptyStringAlreadyInited());
+::memset(reinterpret_cast<char*>(this) + static_cast<size_t>(
+    reinterpret_cast<char*>(&vendor_id_) - reinterpret_cast<char*>(this)),
+    0, static_cast<size_t>(reinterpret_cast<char*>(&product_id_) -
+    reinterpret_cast<char*>(&vendor_id_)) + sizeof(product_id_));
 }
 
 Product::~Product() {
@@ -3190,11 +2976,6 @@ void Product::RegisterArenaDtor(::PROTOBUF_NAMESPACE_ID::Arena*) {
 void Product::SetCachedSize(int size) const {
   _cached_size_.Set(size);
 }
-const Product& Product::default_instance() {
-  ::PROTOBUF_NAMESPACE_ID::internal::InitSCC(&::scc_info_Product_info_2finfo_2eproto.base);
-  return *internal_default_instance();
-}
-
 
 void Product::Clear() {
 // @@protoc_insertion_point(message_clear_start:mavsdk.rpc.info.Product)
@@ -3202,8 +2983,8 @@ void Product::Clear() {
   // Prevent compiler warnings about cached_has_bits being unused
   (void) cached_has_bits;
 
-  vendor_name_.ClearToEmpty(&::PROTOBUF_NAMESPACE_ID::internal::GetEmptyStringAlreadyInited(), GetArena());
-  product_name_.ClearToEmpty(&::PROTOBUF_NAMESPACE_ID::internal::GetEmptyStringAlreadyInited(), GetArena());
+  vendor_name_.ClearToEmpty();
+  product_name_.ClearToEmpty();
   ::memset(&vendor_id_, 0, static_cast<size_t>(
       reinterpret_cast<char*>(&product_id_) -
       reinterpret_cast<char*>(&vendor_id_)) + sizeof(product_id_));
@@ -3212,7 +2993,6 @@ void Product::Clear() {
 
 const char* Product::_InternalParse(const char* ptr, ::PROTOBUF_NAMESPACE_ID::internal::ParseContext* ctx) {
 #define CHK_(x) if (PROTOBUF_PREDICT_FALSE(!(x))) goto failure
-  ::PROTOBUF_NAMESPACE_ID::Arena* arena = GetArena(); (void)arena;
   while (!ctx->Done(&ptr)) {
     ::PROTOBUF_NAMESPACE_ID::uint32 tag;
     ptr = ::PROTOBUF_NAMESPACE_ID::internal::ReadTag(ptr, &tag);
@@ -3437,8 +3217,6 @@ void Product::InternalSwap(Product* other) {
 
 // ===================================================================
 
-void Version::InitAsDefaultInstance() {
-}
 class Version::_Internal {
  public:
 };
@@ -3454,12 +3232,12 @@ Version::Version(const Version& from)
   _internal_metadata_.MergeFrom<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>(from._internal_metadata_);
   flight_sw_git_hash_.UnsafeSetDefault(&::PROTOBUF_NAMESPACE_ID::internal::GetEmptyStringAlreadyInited());
   if (!from._internal_flight_sw_git_hash().empty()) {
-    flight_sw_git_hash_.Set(&::PROTOBUF_NAMESPACE_ID::internal::GetEmptyStringAlreadyInited(), from._internal_flight_sw_git_hash(),
+    flight_sw_git_hash_.Set(::PROTOBUF_NAMESPACE_ID::internal::ArenaStringPtr::EmptyDefault{}, from._internal_flight_sw_git_hash(), 
       GetArena());
   }
   os_sw_git_hash_.UnsafeSetDefault(&::PROTOBUF_NAMESPACE_ID::internal::GetEmptyStringAlreadyInited());
   if (!from._internal_os_sw_git_hash().empty()) {
-    os_sw_git_hash_.Set(&::PROTOBUF_NAMESPACE_ID::internal::GetEmptyStringAlreadyInited(), from._internal_os_sw_git_hash(),
+    os_sw_git_hash_.Set(::PROTOBUF_NAMESPACE_ID::internal::ArenaStringPtr::EmptyDefault{}, from._internal_os_sw_git_hash(), 
       GetArena());
   }
   ::memcpy(&flight_sw_major_, &from.flight_sw_major_,
@@ -3469,12 +3247,12 @@ Version::Version(const Version& from)
 }
 
 void Version::SharedCtor() {
-  ::PROTOBUF_NAMESPACE_ID::internal::InitSCC(&scc_info_Version_info_2finfo_2eproto.base);
-  flight_sw_git_hash_.UnsafeSetDefault(&::PROTOBUF_NAMESPACE_ID::internal::GetEmptyStringAlreadyInited());
-  os_sw_git_hash_.UnsafeSetDefault(&::PROTOBUF_NAMESPACE_ID::internal::GetEmptyStringAlreadyInited());
-  ::memset(&flight_sw_major_, 0, static_cast<size_t>(
-      reinterpret_cast<char*>(&os_sw_patch_) -
-      reinterpret_cast<char*>(&flight_sw_major_)) + sizeof(os_sw_patch_));
+flight_sw_git_hash_.UnsafeSetDefault(&::PROTOBUF_NAMESPACE_ID::internal::GetEmptyStringAlreadyInited());
+os_sw_git_hash_.UnsafeSetDefault(&::PROTOBUF_NAMESPACE_ID::internal::GetEmptyStringAlreadyInited());
+::memset(reinterpret_cast<char*>(this) + static_cast<size_t>(
+    reinterpret_cast<char*>(&flight_sw_major_) - reinterpret_cast<char*>(this)),
+    0, static_cast<size_t>(reinterpret_cast<char*>(&os_sw_patch_) -
+    reinterpret_cast<char*>(&flight_sw_major_)) + sizeof(os_sw_patch_));
 }
 
 Version::~Version() {
@@ -3498,11 +3276,6 @@ void Version::RegisterArenaDtor(::PROTOBUF_NAMESPACE_ID::Arena*) {
 void Version::SetCachedSize(int size) const {
   _cached_size_.Set(size);
 }
-const Version& Version::default_instance() {
-  ::PROTOBUF_NAMESPACE_ID::internal::InitSCC(&::scc_info_Version_info_2finfo_2eproto.base);
-  return *internal_default_instance();
-}
-
 
 void Version::Clear() {
 // @@protoc_insertion_point(message_clear_start:mavsdk.rpc.info.Version)
@@ -3510,8 +3283,8 @@ void Version::Clear() {
   // Prevent compiler warnings about cached_has_bits being unused
   (void) cached_has_bits;
 
-  flight_sw_git_hash_.ClearToEmpty(&::PROTOBUF_NAMESPACE_ID::internal::GetEmptyStringAlreadyInited(), GetArena());
-  os_sw_git_hash_.ClearToEmpty(&::PROTOBUF_NAMESPACE_ID::internal::GetEmptyStringAlreadyInited(), GetArena());
+  flight_sw_git_hash_.ClearToEmpty();
+  os_sw_git_hash_.ClearToEmpty();
   ::memset(&flight_sw_major_, 0, static_cast<size_t>(
       reinterpret_cast<char*>(&os_sw_patch_) -
       reinterpret_cast<char*>(&flight_sw_major_)) + sizeof(os_sw_patch_));
@@ -3520,7 +3293,6 @@ void Version::Clear() {
 
 const char* Version::_InternalParse(const char* ptr, ::PROTOBUF_NAMESPACE_ID::internal::ParseContext* ctx) {
 #define CHK_(x) if (PROTOBUF_PREDICT_FALSE(!(x))) goto failure
-  ::PROTOBUF_NAMESPACE_ID::Arena* arena = GetArena(); (void)arena;
   while (!ctx->Done(&ptr)) {
     ::PROTOBUF_NAMESPACE_ID::uint32 tag;
     ptr = ::PROTOBUF_NAMESPACE_ID::internal::ReadTag(ptr, &tag);
@@ -3906,8 +3678,6 @@ void Version::InternalSwap(Version* other) {
 
 // ===================================================================
 
-void InfoResult::InitAsDefaultInstance() {
-}
 class InfoResult::_Internal {
  public:
 };
@@ -3923,7 +3693,7 @@ InfoResult::InfoResult(const InfoResult& from)
   _internal_metadata_.MergeFrom<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>(from._internal_metadata_);
   result_str_.UnsafeSetDefault(&::PROTOBUF_NAMESPACE_ID::internal::GetEmptyStringAlreadyInited());
   if (!from._internal_result_str().empty()) {
-    result_str_.Set(&::PROTOBUF_NAMESPACE_ID::internal::GetEmptyStringAlreadyInited(), from._internal_result_str(),
+    result_str_.Set(::PROTOBUF_NAMESPACE_ID::internal::ArenaStringPtr::EmptyDefault{}, from._internal_result_str(), 
       GetArena());
   }
   result_ = from.result_;
@@ -3931,9 +3701,8 @@ InfoResult::InfoResult(const InfoResult& from)
 }
 
 void InfoResult::SharedCtor() {
-  ::PROTOBUF_NAMESPACE_ID::internal::InitSCC(&scc_info_InfoResult_info_2finfo_2eproto.base);
-  result_str_.UnsafeSetDefault(&::PROTOBUF_NAMESPACE_ID::internal::GetEmptyStringAlreadyInited());
-  result_ = 0;
+result_str_.UnsafeSetDefault(&::PROTOBUF_NAMESPACE_ID::internal::GetEmptyStringAlreadyInited());
+result_ = 0;
 }
 
 InfoResult::~InfoResult() {
@@ -3956,11 +3725,6 @@ void InfoResult::RegisterArenaDtor(::PROTOBUF_NAMESPACE_ID::Arena*) {
 void InfoResult::SetCachedSize(int size) const {
   _cached_size_.Set(size);
 }
-const InfoResult& InfoResult::default_instance() {
-  ::PROTOBUF_NAMESPACE_ID::internal::InitSCC(&::scc_info_InfoResult_info_2finfo_2eproto.base);
-  return *internal_default_instance();
-}
-
 
 void InfoResult::Clear() {
 // @@protoc_insertion_point(message_clear_start:mavsdk.rpc.info.InfoResult)
@@ -3968,14 +3732,13 @@ void InfoResult::Clear() {
   // Prevent compiler warnings about cached_has_bits being unused
   (void) cached_has_bits;
 
-  result_str_.ClearToEmpty(&::PROTOBUF_NAMESPACE_ID::internal::GetEmptyStringAlreadyInited(), GetArena());
+  result_str_.ClearToEmpty();
   result_ = 0;
   _internal_metadata_.Clear<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>();
 }
 
 const char* InfoResult::_InternalParse(const char* ptr, ::PROTOBUF_NAMESPACE_ID::internal::ParseContext* ctx) {
 #define CHK_(x) if (PROTOBUF_PREDICT_FALSE(!(x))) goto failure
-  ::PROTOBUF_NAMESPACE_ID::Arena* arena = GetArena(); (void)arena;
   while (!ctx->Done(&ptr)) {
     ::PROTOBUF_NAMESPACE_ID::uint32 tag;
     ptr = ::PROTOBUF_NAMESPACE_ID::internal::ReadTag(ptr, &tag);

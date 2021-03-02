@@ -14,104 +14,75 @@
 #include <google/protobuf/wire_format.h>
 // @@protoc_insertion_point(includes)
 #include <google/protobuf/port_def.inc>
-extern PROTOBUF_INTERNAL_EXPORT_shell_2fshell_2eproto ::PROTOBUF_NAMESPACE_ID::internal::SCCInfo<0> scc_info_ShellResult_shell_2fshell_2eproto;
+
+PROTOBUF_PRAGMA_INIT_SEG
 namespace mavsdk {
 namespace rpc {
 namespace shell {
-class SendRequestDefaultTypeInternal {
- public:
-  ::PROTOBUF_NAMESPACE_ID::internal::ExplicitlyConstructed<SendRequest> _instance;
-} _SendRequest_default_instance_;
-class SendResponseDefaultTypeInternal {
- public:
-  ::PROTOBUF_NAMESPACE_ID::internal::ExplicitlyConstructed<SendResponse> _instance;
-} _SendResponse_default_instance_;
-class SubscribeReceiveRequestDefaultTypeInternal {
- public:
-  ::PROTOBUF_NAMESPACE_ID::internal::ExplicitlyConstructed<SubscribeReceiveRequest> _instance;
-} _SubscribeReceiveRequest_default_instance_;
-class ReceiveResponseDefaultTypeInternal {
- public:
-  ::PROTOBUF_NAMESPACE_ID::internal::ExplicitlyConstructed<ReceiveResponse> _instance;
-} _ReceiveResponse_default_instance_;
-class ShellResultDefaultTypeInternal {
- public:
-  ::PROTOBUF_NAMESPACE_ID::internal::ExplicitlyConstructed<ShellResult> _instance;
-} _ShellResult_default_instance_;
+constexpr SendRequest::SendRequest(
+  ::PROTOBUF_NAMESPACE_ID::internal::ConstantInitialized)
+  : command_(&::PROTOBUF_NAMESPACE_ID::internal::fixed_address_empty_string){}
+struct SendRequestDefaultTypeInternal {
+  constexpr SendRequestDefaultTypeInternal()
+    : _instance(::PROTOBUF_NAMESPACE_ID::internal::ConstantInitialized{}) {}
+  ~SendRequestDefaultTypeInternal() {}
+  union {
+    SendRequest _instance;
+  };
+};
+PROTOBUF_ATTRIBUTE_NO_DESTROY PROTOBUF_CONSTINIT SendRequestDefaultTypeInternal _SendRequest_default_instance_;
+constexpr SendResponse::SendResponse(
+  ::PROTOBUF_NAMESPACE_ID::internal::ConstantInitialized)
+  : shell_result_(nullptr){}
+struct SendResponseDefaultTypeInternal {
+  constexpr SendResponseDefaultTypeInternal()
+    : _instance(::PROTOBUF_NAMESPACE_ID::internal::ConstantInitialized{}) {}
+  ~SendResponseDefaultTypeInternal() {}
+  union {
+    SendResponse _instance;
+  };
+};
+PROTOBUF_ATTRIBUTE_NO_DESTROY PROTOBUF_CONSTINIT SendResponseDefaultTypeInternal _SendResponse_default_instance_;
+constexpr SubscribeReceiveRequest::SubscribeReceiveRequest(
+  ::PROTOBUF_NAMESPACE_ID::internal::ConstantInitialized){}
+struct SubscribeReceiveRequestDefaultTypeInternal {
+  constexpr SubscribeReceiveRequestDefaultTypeInternal()
+    : _instance(::PROTOBUF_NAMESPACE_ID::internal::ConstantInitialized{}) {}
+  ~SubscribeReceiveRequestDefaultTypeInternal() {}
+  union {
+    SubscribeReceiveRequest _instance;
+  };
+};
+PROTOBUF_ATTRIBUTE_NO_DESTROY PROTOBUF_CONSTINIT SubscribeReceiveRequestDefaultTypeInternal _SubscribeReceiveRequest_default_instance_;
+constexpr ReceiveResponse::ReceiveResponse(
+  ::PROTOBUF_NAMESPACE_ID::internal::ConstantInitialized)
+  : data_(&::PROTOBUF_NAMESPACE_ID::internal::fixed_address_empty_string){}
+struct ReceiveResponseDefaultTypeInternal {
+  constexpr ReceiveResponseDefaultTypeInternal()
+    : _instance(::PROTOBUF_NAMESPACE_ID::internal::ConstantInitialized{}) {}
+  ~ReceiveResponseDefaultTypeInternal() {}
+  union {
+    ReceiveResponse _instance;
+  };
+};
+PROTOBUF_ATTRIBUTE_NO_DESTROY PROTOBUF_CONSTINIT ReceiveResponseDefaultTypeInternal _ReceiveResponse_default_instance_;
+constexpr ShellResult::ShellResult(
+  ::PROTOBUF_NAMESPACE_ID::internal::ConstantInitialized)
+  : result_str_(&::PROTOBUF_NAMESPACE_ID::internal::fixed_address_empty_string)
+  , result_(0)
+{}
+struct ShellResultDefaultTypeInternal {
+  constexpr ShellResultDefaultTypeInternal()
+    : _instance(::PROTOBUF_NAMESPACE_ID::internal::ConstantInitialized{}) {}
+  ~ShellResultDefaultTypeInternal() {}
+  union {
+    ShellResult _instance;
+  };
+};
+PROTOBUF_ATTRIBUTE_NO_DESTROY PROTOBUF_CONSTINIT ShellResultDefaultTypeInternal _ShellResult_default_instance_;
 }  // namespace shell
 }  // namespace rpc
 }  // namespace mavsdk
-static void InitDefaultsscc_info_ReceiveResponse_shell_2fshell_2eproto() {
-  GOOGLE_PROTOBUF_VERIFY_VERSION;
-
-  {
-    void* ptr = &::mavsdk::rpc::shell::_ReceiveResponse_default_instance_;
-    new (ptr) ::mavsdk::rpc::shell::ReceiveResponse();
-    ::PROTOBUF_NAMESPACE_ID::internal::OnShutdownDestroyMessage(ptr);
-  }
-  ::mavsdk::rpc::shell::ReceiveResponse::InitAsDefaultInstance();
-}
-
-::PROTOBUF_NAMESPACE_ID::internal::SCCInfo<0> scc_info_ReceiveResponse_shell_2fshell_2eproto =
-    {{ATOMIC_VAR_INIT(::PROTOBUF_NAMESPACE_ID::internal::SCCInfoBase::kUninitialized), 0, 0, InitDefaultsscc_info_ReceiveResponse_shell_2fshell_2eproto}, {}};
-
-static void InitDefaultsscc_info_SendRequest_shell_2fshell_2eproto() {
-  GOOGLE_PROTOBUF_VERIFY_VERSION;
-
-  {
-    void* ptr = &::mavsdk::rpc::shell::_SendRequest_default_instance_;
-    new (ptr) ::mavsdk::rpc::shell::SendRequest();
-    ::PROTOBUF_NAMESPACE_ID::internal::OnShutdownDestroyMessage(ptr);
-  }
-  ::mavsdk::rpc::shell::SendRequest::InitAsDefaultInstance();
-}
-
-::PROTOBUF_NAMESPACE_ID::internal::SCCInfo<0> scc_info_SendRequest_shell_2fshell_2eproto =
-    {{ATOMIC_VAR_INIT(::PROTOBUF_NAMESPACE_ID::internal::SCCInfoBase::kUninitialized), 0, 0, InitDefaultsscc_info_SendRequest_shell_2fshell_2eproto}, {}};
-
-static void InitDefaultsscc_info_SendResponse_shell_2fshell_2eproto() {
-  GOOGLE_PROTOBUF_VERIFY_VERSION;
-
-  {
-    void* ptr = &::mavsdk::rpc::shell::_SendResponse_default_instance_;
-    new (ptr) ::mavsdk::rpc::shell::SendResponse();
-    ::PROTOBUF_NAMESPACE_ID::internal::OnShutdownDestroyMessage(ptr);
-  }
-  ::mavsdk::rpc::shell::SendResponse::InitAsDefaultInstance();
-}
-
-::PROTOBUF_NAMESPACE_ID::internal::SCCInfo<1> scc_info_SendResponse_shell_2fshell_2eproto =
-    {{ATOMIC_VAR_INIT(::PROTOBUF_NAMESPACE_ID::internal::SCCInfoBase::kUninitialized), 1, 0, InitDefaultsscc_info_SendResponse_shell_2fshell_2eproto}, {
-      &scc_info_ShellResult_shell_2fshell_2eproto.base,}};
-
-static void InitDefaultsscc_info_ShellResult_shell_2fshell_2eproto() {
-  GOOGLE_PROTOBUF_VERIFY_VERSION;
-
-  {
-    void* ptr = &::mavsdk::rpc::shell::_ShellResult_default_instance_;
-    new (ptr) ::mavsdk::rpc::shell::ShellResult();
-    ::PROTOBUF_NAMESPACE_ID::internal::OnShutdownDestroyMessage(ptr);
-  }
-  ::mavsdk::rpc::shell::ShellResult::InitAsDefaultInstance();
-}
-
-::PROTOBUF_NAMESPACE_ID::internal::SCCInfo<0> scc_info_ShellResult_shell_2fshell_2eproto =
-    {{ATOMIC_VAR_INIT(::PROTOBUF_NAMESPACE_ID::internal::SCCInfoBase::kUninitialized), 0, 0, InitDefaultsscc_info_ShellResult_shell_2fshell_2eproto}, {}};
-
-static void InitDefaultsscc_info_SubscribeReceiveRequest_shell_2fshell_2eproto() {
-  GOOGLE_PROTOBUF_VERIFY_VERSION;
-
-  {
-    void* ptr = &::mavsdk::rpc::shell::_SubscribeReceiveRequest_default_instance_;
-    new (ptr) ::mavsdk::rpc::shell::SubscribeReceiveRequest();
-    ::PROTOBUF_NAMESPACE_ID::internal::OnShutdownDestroyMessage(ptr);
-  }
-  ::mavsdk::rpc::shell::SubscribeReceiveRequest::InitAsDefaultInstance();
-}
-
-::PROTOBUF_NAMESPACE_ID::internal::SCCInfo<0> scc_info_SubscribeReceiveRequest_shell_2fshell_2eproto =
-    {{ATOMIC_VAR_INIT(::PROTOBUF_NAMESPACE_ID::internal::SCCInfoBase::kUninitialized), 0, 0, InitDefaultsscc_info_SubscribeReceiveRequest_shell_2fshell_2eproto}, {}};
-
 static ::PROTOBUF_NAMESPACE_ID::Metadata file_level_metadata_shell_2fshell_2eproto[5];
 static const ::PROTOBUF_NAMESPACE_ID::EnumDescriptor* file_level_enum_descriptors_shell_2fshell_2eproto[1];
 static constexpr ::PROTOBUF_NAMESPACE_ID::ServiceDescriptor const** file_level_service_descriptors_shell_2fshell_2eproto = nullptr;
@@ -187,23 +158,21 @@ const char descriptor_table_protodef_shell_2fshell_2eproto[] PROTOBUF_SECTION_VA
 static const ::PROTOBUF_NAMESPACE_ID::internal::DescriptorTable*const descriptor_table_shell_2fshell_2eproto_deps[1] = {
   &::descriptor_table_mavsdk_5foptions_2eproto,
 };
-static ::PROTOBUF_NAMESPACE_ID::internal::SCCInfoBase*const descriptor_table_shell_2fshell_2eproto_sccs[5] = {
-  &scc_info_ReceiveResponse_shell_2fshell_2eproto.base,
-  &scc_info_SendRequest_shell_2fshell_2eproto.base,
-  &scc_info_SendResponse_shell_2fshell_2eproto.base,
-  &scc_info_ShellResult_shell_2fshell_2eproto.base,
-  &scc_info_SubscribeReceiveRequest_shell_2fshell_2eproto.base,
-};
 static ::PROTOBUF_NAMESPACE_ID::internal::once_flag descriptor_table_shell_2fshell_2eproto_once;
 const ::PROTOBUF_NAMESPACE_ID::internal::DescriptorTable descriptor_table_shell_2fshell_2eproto = {
-  false, false, descriptor_table_protodef_shell_2fshell_2eproto, "shell/shell.proto", 692,
-  &descriptor_table_shell_2fshell_2eproto_once, descriptor_table_shell_2fshell_2eproto_sccs, descriptor_table_shell_2fshell_2eproto_deps, 5, 1,
+  false, false, 692, descriptor_table_protodef_shell_2fshell_2eproto, "shell/shell.proto", 
+  &descriptor_table_shell_2fshell_2eproto_once, descriptor_table_shell_2fshell_2eproto_deps, 1, 5,
   schemas, file_default_instances, TableStruct_shell_2fshell_2eproto::offsets,
-  file_level_metadata_shell_2fshell_2eproto, 5, file_level_enum_descriptors_shell_2fshell_2eproto, file_level_service_descriptors_shell_2fshell_2eproto,
+  file_level_metadata_shell_2fshell_2eproto, file_level_enum_descriptors_shell_2fshell_2eproto, file_level_service_descriptors_shell_2fshell_2eproto,
 };
+PROTOBUF_ATTRIBUTE_WEAK ::PROTOBUF_NAMESPACE_ID::Metadata
+descriptor_table_shell_2fshell_2eproto_metadata_getter(int index) {
+  ::PROTOBUF_NAMESPACE_ID::internal::AssignDescriptors(&descriptor_table_shell_2fshell_2eproto);
+  return descriptor_table_shell_2fshell_2eproto.file_level_metadata[index];
+}
 
 // Force running AddDescriptors() at dynamic initialization time.
-static bool dynamic_init_dummy_shell_2fshell_2eproto = (static_cast<void>(::PROTOBUF_NAMESPACE_ID::internal::AddDescriptors(&descriptor_table_shell_2fshell_2eproto)), true);
+PROTOBUF_ATTRIBUTE_INIT_PRIORITY static ::PROTOBUF_NAMESPACE_ID::internal::AddDescriptorsRunner dynamic_init_dummy_shell_2fshell_2eproto(&descriptor_table_shell_2fshell_2eproto);
 namespace mavsdk {
 namespace rpc {
 namespace shell {
@@ -239,8 +208,6 @@ constexpr int ShellResult::Result_ARRAYSIZE;
 
 // ===================================================================
 
-void SendRequest::InitAsDefaultInstance() {
-}
 class SendRequest::_Internal {
  public:
 };
@@ -256,15 +223,14 @@ SendRequest::SendRequest(const SendRequest& from)
   _internal_metadata_.MergeFrom<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>(from._internal_metadata_);
   command_.UnsafeSetDefault(&::PROTOBUF_NAMESPACE_ID::internal::GetEmptyStringAlreadyInited());
   if (!from._internal_command().empty()) {
-    command_.Set(&::PROTOBUF_NAMESPACE_ID::internal::GetEmptyStringAlreadyInited(), from._internal_command(),
+    command_.Set(::PROTOBUF_NAMESPACE_ID::internal::ArenaStringPtr::EmptyDefault{}, from._internal_command(), 
       GetArena());
   }
   // @@protoc_insertion_point(copy_constructor:mavsdk.rpc.shell.SendRequest)
 }
 
 void SendRequest::SharedCtor() {
-  ::PROTOBUF_NAMESPACE_ID::internal::InitSCC(&scc_info_SendRequest_shell_2fshell_2eproto.base);
-  command_.UnsafeSetDefault(&::PROTOBUF_NAMESPACE_ID::internal::GetEmptyStringAlreadyInited());
+command_.UnsafeSetDefault(&::PROTOBUF_NAMESPACE_ID::internal::GetEmptyStringAlreadyInited());
 }
 
 SendRequest::~SendRequest() {
@@ -287,11 +253,6 @@ void SendRequest::RegisterArenaDtor(::PROTOBUF_NAMESPACE_ID::Arena*) {
 void SendRequest::SetCachedSize(int size) const {
   _cached_size_.Set(size);
 }
-const SendRequest& SendRequest::default_instance() {
-  ::PROTOBUF_NAMESPACE_ID::internal::InitSCC(&::scc_info_SendRequest_shell_2fshell_2eproto.base);
-  return *internal_default_instance();
-}
-
 
 void SendRequest::Clear() {
 // @@protoc_insertion_point(message_clear_start:mavsdk.rpc.shell.SendRequest)
@@ -299,13 +260,12 @@ void SendRequest::Clear() {
   // Prevent compiler warnings about cached_has_bits being unused
   (void) cached_has_bits;
 
-  command_.ClearToEmpty(&::PROTOBUF_NAMESPACE_ID::internal::GetEmptyStringAlreadyInited(), GetArena());
+  command_.ClearToEmpty();
   _internal_metadata_.Clear<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>();
 }
 
 const char* SendRequest::_InternalParse(const char* ptr, ::PROTOBUF_NAMESPACE_ID::internal::ParseContext* ctx) {
 #define CHK_(x) if (PROTOBUF_PREDICT_FALSE(!(x))) goto failure
-  ::PROTOBUF_NAMESPACE_ID::Arena* arena = GetArena(); (void)arena;
   while (!ctx->Done(&ptr)) {
     ::PROTOBUF_NAMESPACE_ID::uint32 tag;
     ptr = ::PROTOBUF_NAMESPACE_ID::internal::ReadTag(ptr, &tag);
@@ -448,10 +408,6 @@ void SendRequest::InternalSwap(SendRequest* other) {
 
 // ===================================================================
 
-void SendResponse::InitAsDefaultInstance() {
-  ::mavsdk::rpc::shell::_SendResponse_default_instance_._instance.get_mutable()->shell_result_ = const_cast< ::mavsdk::rpc::shell::ShellResult*>(
-      ::mavsdk::rpc::shell::ShellResult::internal_default_instance());
-}
 class SendResponse::_Internal {
  public:
   static const ::mavsdk::rpc::shell::ShellResult& shell_result(const SendResponse* msg);
@@ -479,8 +435,7 @@ SendResponse::SendResponse(const SendResponse& from)
 }
 
 void SendResponse::SharedCtor() {
-  ::PROTOBUF_NAMESPACE_ID::internal::InitSCC(&scc_info_SendResponse_shell_2fshell_2eproto.base);
-  shell_result_ = nullptr;
+shell_result_ = nullptr;
 }
 
 SendResponse::~SendResponse() {
@@ -503,11 +458,6 @@ void SendResponse::RegisterArenaDtor(::PROTOBUF_NAMESPACE_ID::Arena*) {
 void SendResponse::SetCachedSize(int size) const {
   _cached_size_.Set(size);
 }
-const SendResponse& SendResponse::default_instance() {
-  ::PROTOBUF_NAMESPACE_ID::internal::InitSCC(&::scc_info_SendResponse_shell_2fshell_2eproto.base);
-  return *internal_default_instance();
-}
-
 
 void SendResponse::Clear() {
 // @@protoc_insertion_point(message_clear_start:mavsdk.rpc.shell.SendResponse)
@@ -524,7 +474,6 @@ void SendResponse::Clear() {
 
 const char* SendResponse::_InternalParse(const char* ptr, ::PROTOBUF_NAMESPACE_ID::internal::ParseContext* ctx) {
 #define CHK_(x) if (PROTOBUF_PREDICT_FALSE(!(x))) goto failure
-  ::PROTOBUF_NAMESPACE_ID::Arena* arena = GetArena(); (void)arena;
   while (!ctx->Done(&ptr)) {
     ::PROTOBUF_NAMESPACE_ID::uint32 tag;
     ptr = ::PROTOBUF_NAMESPACE_ID::internal::ReadTag(ptr, &tag);
@@ -663,8 +612,6 @@ void SendResponse::InternalSwap(SendResponse* other) {
 
 // ===================================================================
 
-void SubscribeReceiveRequest::InitAsDefaultInstance() {
-}
 class SubscribeReceiveRequest::_Internal {
  public:
 };
@@ -703,11 +650,6 @@ void SubscribeReceiveRequest::RegisterArenaDtor(::PROTOBUF_NAMESPACE_ID::Arena*)
 void SubscribeReceiveRequest::SetCachedSize(int size) const {
   _cached_size_.Set(size);
 }
-const SubscribeReceiveRequest& SubscribeReceiveRequest::default_instance() {
-  ::PROTOBUF_NAMESPACE_ID::internal::InitSCC(&::scc_info_SubscribeReceiveRequest_shell_2fshell_2eproto.base);
-  return *internal_default_instance();
-}
-
 
 void SubscribeReceiveRequest::Clear() {
 // @@protoc_insertion_point(message_clear_start:mavsdk.rpc.shell.SubscribeReceiveRequest)
@@ -720,7 +662,6 @@ void SubscribeReceiveRequest::Clear() {
 
 const char* SubscribeReceiveRequest::_InternalParse(const char* ptr, ::PROTOBUF_NAMESPACE_ID::internal::ParseContext* ctx) {
 #define CHK_(x) if (PROTOBUF_PREDICT_FALSE(!(x))) goto failure
-  ::PROTOBUF_NAMESPACE_ID::Arena* arena = GetArena(); (void)arena;
   while (!ctx->Done(&ptr)) {
     ::PROTOBUF_NAMESPACE_ID::uint32 tag;
     ptr = ::PROTOBUF_NAMESPACE_ID::internal::ReadTag(ptr, &tag);
@@ -828,8 +769,6 @@ void SubscribeReceiveRequest::InternalSwap(SubscribeReceiveRequest* other) {
 
 // ===================================================================
 
-void ReceiveResponse::InitAsDefaultInstance() {
-}
 class ReceiveResponse::_Internal {
  public:
 };
@@ -845,15 +784,14 @@ ReceiveResponse::ReceiveResponse(const ReceiveResponse& from)
   _internal_metadata_.MergeFrom<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>(from._internal_metadata_);
   data_.UnsafeSetDefault(&::PROTOBUF_NAMESPACE_ID::internal::GetEmptyStringAlreadyInited());
   if (!from._internal_data().empty()) {
-    data_.Set(&::PROTOBUF_NAMESPACE_ID::internal::GetEmptyStringAlreadyInited(), from._internal_data(),
+    data_.Set(::PROTOBUF_NAMESPACE_ID::internal::ArenaStringPtr::EmptyDefault{}, from._internal_data(), 
       GetArena());
   }
   // @@protoc_insertion_point(copy_constructor:mavsdk.rpc.shell.ReceiveResponse)
 }
 
 void ReceiveResponse::SharedCtor() {
-  ::PROTOBUF_NAMESPACE_ID::internal::InitSCC(&scc_info_ReceiveResponse_shell_2fshell_2eproto.base);
-  data_.UnsafeSetDefault(&::PROTOBUF_NAMESPACE_ID::internal::GetEmptyStringAlreadyInited());
+data_.UnsafeSetDefault(&::PROTOBUF_NAMESPACE_ID::internal::GetEmptyStringAlreadyInited());
 }
 
 ReceiveResponse::~ReceiveResponse() {
@@ -876,11 +814,6 @@ void ReceiveResponse::RegisterArenaDtor(::PROTOBUF_NAMESPACE_ID::Arena*) {
 void ReceiveResponse::SetCachedSize(int size) const {
   _cached_size_.Set(size);
 }
-const ReceiveResponse& ReceiveResponse::default_instance() {
-  ::PROTOBUF_NAMESPACE_ID::internal::InitSCC(&::scc_info_ReceiveResponse_shell_2fshell_2eproto.base);
-  return *internal_default_instance();
-}
-
 
 void ReceiveResponse::Clear() {
 // @@protoc_insertion_point(message_clear_start:mavsdk.rpc.shell.ReceiveResponse)
@@ -888,13 +821,12 @@ void ReceiveResponse::Clear() {
   // Prevent compiler warnings about cached_has_bits being unused
   (void) cached_has_bits;
 
-  data_.ClearToEmpty(&::PROTOBUF_NAMESPACE_ID::internal::GetEmptyStringAlreadyInited(), GetArena());
+  data_.ClearToEmpty();
   _internal_metadata_.Clear<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>();
 }
 
 const char* ReceiveResponse::_InternalParse(const char* ptr, ::PROTOBUF_NAMESPACE_ID::internal::ParseContext* ctx) {
 #define CHK_(x) if (PROTOBUF_PREDICT_FALSE(!(x))) goto failure
-  ::PROTOBUF_NAMESPACE_ID::Arena* arena = GetArena(); (void)arena;
   while (!ctx->Done(&ptr)) {
     ::PROTOBUF_NAMESPACE_ID::uint32 tag;
     ptr = ::PROTOBUF_NAMESPACE_ID::internal::ReadTag(ptr, &tag);
@@ -1037,8 +969,6 @@ void ReceiveResponse::InternalSwap(ReceiveResponse* other) {
 
 // ===================================================================
 
-void ShellResult::InitAsDefaultInstance() {
-}
 class ShellResult::_Internal {
  public:
 };
@@ -1054,7 +984,7 @@ ShellResult::ShellResult(const ShellResult& from)
   _internal_metadata_.MergeFrom<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>(from._internal_metadata_);
   result_str_.UnsafeSetDefault(&::PROTOBUF_NAMESPACE_ID::internal::GetEmptyStringAlreadyInited());
   if (!from._internal_result_str().empty()) {
-    result_str_.Set(&::PROTOBUF_NAMESPACE_ID::internal::GetEmptyStringAlreadyInited(), from._internal_result_str(),
+    result_str_.Set(::PROTOBUF_NAMESPACE_ID::internal::ArenaStringPtr::EmptyDefault{}, from._internal_result_str(), 
       GetArena());
   }
   result_ = from.result_;
@@ -1062,9 +992,8 @@ ShellResult::ShellResult(const ShellResult& from)
 }
 
 void ShellResult::SharedCtor() {
-  ::PROTOBUF_NAMESPACE_ID::internal::InitSCC(&scc_info_ShellResult_shell_2fshell_2eproto.base);
-  result_str_.UnsafeSetDefault(&::PROTOBUF_NAMESPACE_ID::internal::GetEmptyStringAlreadyInited());
-  result_ = 0;
+result_str_.UnsafeSetDefault(&::PROTOBUF_NAMESPACE_ID::internal::GetEmptyStringAlreadyInited());
+result_ = 0;
 }
 
 ShellResult::~ShellResult() {
@@ -1087,11 +1016,6 @@ void ShellResult::RegisterArenaDtor(::PROTOBUF_NAMESPACE_ID::Arena*) {
 void ShellResult::SetCachedSize(int size) const {
   _cached_size_.Set(size);
 }
-const ShellResult& ShellResult::default_instance() {
-  ::PROTOBUF_NAMESPACE_ID::internal::InitSCC(&::scc_info_ShellResult_shell_2fshell_2eproto.base);
-  return *internal_default_instance();
-}
-
 
 void ShellResult::Clear() {
 // @@protoc_insertion_point(message_clear_start:mavsdk.rpc.shell.ShellResult)
@@ -1099,14 +1023,13 @@ void ShellResult::Clear() {
   // Prevent compiler warnings about cached_has_bits being unused
   (void) cached_has_bits;
 
-  result_str_.ClearToEmpty(&::PROTOBUF_NAMESPACE_ID::internal::GetEmptyStringAlreadyInited(), GetArena());
+  result_str_.ClearToEmpty();
   result_ = 0;
   _internal_metadata_.Clear<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>();
 }
 
 const char* ShellResult::_InternalParse(const char* ptr, ::PROTOBUF_NAMESPACE_ID::internal::ParseContext* ctx) {
 #define CHK_(x) if (PROTOBUF_PREDICT_FALSE(!(x))) goto failure
-  ::PROTOBUF_NAMESPACE_ID::Arena* arena = GetArena(); (void)arena;
   while (!ctx->Done(&ptr)) {
     ::PROTOBUF_NAMESPACE_ID::uint32 tag;
     ptr = ::PROTOBUF_NAMESPACE_ID::internal::ReadTag(ptr, &tag);

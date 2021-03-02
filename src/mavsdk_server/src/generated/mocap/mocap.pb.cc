@@ -14,327 +14,234 @@
 #include <google/protobuf/wire_format.h>
 // @@protoc_insertion_point(includes)
 #include <google/protobuf/port_def.inc>
-extern PROTOBUF_INTERNAL_EXPORT_mocap_2fmocap_2eproto ::PROTOBUF_NAMESPACE_ID::internal::SCCInfo<0> scc_info_AngleBody_mocap_2fmocap_2eproto;
-extern PROTOBUF_INTERNAL_EXPORT_mocap_2fmocap_2eproto ::PROTOBUF_NAMESPACE_ID::internal::SCCInfo<0> scc_info_AngularVelocityBody_mocap_2fmocap_2eproto;
-extern PROTOBUF_INTERNAL_EXPORT_mocap_2fmocap_2eproto ::PROTOBUF_NAMESPACE_ID::internal::SCCInfo<3> scc_info_AttitudePositionMocap_mocap_2fmocap_2eproto;
-extern PROTOBUF_INTERNAL_EXPORT_mocap_2fmocap_2eproto ::PROTOBUF_NAMESPACE_ID::internal::SCCInfo<0> scc_info_Covariance_mocap_2fmocap_2eproto;
-extern PROTOBUF_INTERNAL_EXPORT_mocap_2fmocap_2eproto ::PROTOBUF_NAMESPACE_ID::internal::SCCInfo<0> scc_info_MocapResult_mocap_2fmocap_2eproto;
-extern PROTOBUF_INTERNAL_EXPORT_mocap_2fmocap_2eproto ::PROTOBUF_NAMESPACE_ID::internal::SCCInfo<5> scc_info_Odometry_mocap_2fmocap_2eproto;
-extern PROTOBUF_INTERNAL_EXPORT_mocap_2fmocap_2eproto ::PROTOBUF_NAMESPACE_ID::internal::SCCInfo<0> scc_info_PositionBody_mocap_2fmocap_2eproto;
-extern PROTOBUF_INTERNAL_EXPORT_mocap_2fmocap_2eproto ::PROTOBUF_NAMESPACE_ID::internal::SCCInfo<0> scc_info_Quaternion_mocap_2fmocap_2eproto;
-extern PROTOBUF_INTERNAL_EXPORT_mocap_2fmocap_2eproto ::PROTOBUF_NAMESPACE_ID::internal::SCCInfo<0> scc_info_SpeedBody_mocap_2fmocap_2eproto;
-extern PROTOBUF_INTERNAL_EXPORT_mocap_2fmocap_2eproto ::PROTOBUF_NAMESPACE_ID::internal::SCCInfo<3> scc_info_VisionPositionEstimate_mocap_2fmocap_2eproto;
+
+PROTOBUF_PRAGMA_INIT_SEG
 namespace mavsdk {
 namespace rpc {
 namespace mocap {
-class SetVisionPositionEstimateRequestDefaultTypeInternal {
- public:
-  ::PROTOBUF_NAMESPACE_ID::internal::ExplicitlyConstructed<SetVisionPositionEstimateRequest> _instance;
-} _SetVisionPositionEstimateRequest_default_instance_;
-class SetVisionPositionEstimateResponseDefaultTypeInternal {
- public:
-  ::PROTOBUF_NAMESPACE_ID::internal::ExplicitlyConstructed<SetVisionPositionEstimateResponse> _instance;
-} _SetVisionPositionEstimateResponse_default_instance_;
-class SetAttitudePositionMocapRequestDefaultTypeInternal {
- public:
-  ::PROTOBUF_NAMESPACE_ID::internal::ExplicitlyConstructed<SetAttitudePositionMocapRequest> _instance;
-} _SetAttitudePositionMocapRequest_default_instance_;
-class SetAttitudePositionMocapResponseDefaultTypeInternal {
- public:
-  ::PROTOBUF_NAMESPACE_ID::internal::ExplicitlyConstructed<SetAttitudePositionMocapResponse> _instance;
-} _SetAttitudePositionMocapResponse_default_instance_;
-class SetOdometryRequestDefaultTypeInternal {
- public:
-  ::PROTOBUF_NAMESPACE_ID::internal::ExplicitlyConstructed<SetOdometryRequest> _instance;
-} _SetOdometryRequest_default_instance_;
-class SetOdometryResponseDefaultTypeInternal {
- public:
-  ::PROTOBUF_NAMESPACE_ID::internal::ExplicitlyConstructed<SetOdometryResponse> _instance;
-} _SetOdometryResponse_default_instance_;
-class PositionBodyDefaultTypeInternal {
- public:
-  ::PROTOBUF_NAMESPACE_ID::internal::ExplicitlyConstructed<PositionBody> _instance;
-} _PositionBody_default_instance_;
-class AngleBodyDefaultTypeInternal {
- public:
-  ::PROTOBUF_NAMESPACE_ID::internal::ExplicitlyConstructed<AngleBody> _instance;
-} _AngleBody_default_instance_;
-class SpeedBodyDefaultTypeInternal {
- public:
-  ::PROTOBUF_NAMESPACE_ID::internal::ExplicitlyConstructed<SpeedBody> _instance;
-} _SpeedBody_default_instance_;
-class AngularVelocityBodyDefaultTypeInternal {
- public:
-  ::PROTOBUF_NAMESPACE_ID::internal::ExplicitlyConstructed<AngularVelocityBody> _instance;
-} _AngularVelocityBody_default_instance_;
-class CovarianceDefaultTypeInternal {
- public:
-  ::PROTOBUF_NAMESPACE_ID::internal::ExplicitlyConstructed<Covariance> _instance;
-} _Covariance_default_instance_;
-class QuaternionDefaultTypeInternal {
- public:
-  ::PROTOBUF_NAMESPACE_ID::internal::ExplicitlyConstructed<Quaternion> _instance;
-} _Quaternion_default_instance_;
-class VisionPositionEstimateDefaultTypeInternal {
- public:
-  ::PROTOBUF_NAMESPACE_ID::internal::ExplicitlyConstructed<VisionPositionEstimate> _instance;
-} _VisionPositionEstimate_default_instance_;
-class AttitudePositionMocapDefaultTypeInternal {
- public:
-  ::PROTOBUF_NAMESPACE_ID::internal::ExplicitlyConstructed<AttitudePositionMocap> _instance;
-} _AttitudePositionMocap_default_instance_;
-class OdometryDefaultTypeInternal {
- public:
-  ::PROTOBUF_NAMESPACE_ID::internal::ExplicitlyConstructed<Odometry> _instance;
-} _Odometry_default_instance_;
-class MocapResultDefaultTypeInternal {
- public:
-  ::PROTOBUF_NAMESPACE_ID::internal::ExplicitlyConstructed<MocapResult> _instance;
-} _MocapResult_default_instance_;
+constexpr SetVisionPositionEstimateRequest::SetVisionPositionEstimateRequest(
+  ::PROTOBUF_NAMESPACE_ID::internal::ConstantInitialized)
+  : vision_position_estimate_(nullptr){}
+struct SetVisionPositionEstimateRequestDefaultTypeInternal {
+  constexpr SetVisionPositionEstimateRequestDefaultTypeInternal()
+    : _instance(::PROTOBUF_NAMESPACE_ID::internal::ConstantInitialized{}) {}
+  ~SetVisionPositionEstimateRequestDefaultTypeInternal() {}
+  union {
+    SetVisionPositionEstimateRequest _instance;
+  };
+};
+PROTOBUF_ATTRIBUTE_NO_DESTROY PROTOBUF_CONSTINIT SetVisionPositionEstimateRequestDefaultTypeInternal _SetVisionPositionEstimateRequest_default_instance_;
+constexpr SetVisionPositionEstimateResponse::SetVisionPositionEstimateResponse(
+  ::PROTOBUF_NAMESPACE_ID::internal::ConstantInitialized)
+  : mocap_result_(nullptr){}
+struct SetVisionPositionEstimateResponseDefaultTypeInternal {
+  constexpr SetVisionPositionEstimateResponseDefaultTypeInternal()
+    : _instance(::PROTOBUF_NAMESPACE_ID::internal::ConstantInitialized{}) {}
+  ~SetVisionPositionEstimateResponseDefaultTypeInternal() {}
+  union {
+    SetVisionPositionEstimateResponse _instance;
+  };
+};
+PROTOBUF_ATTRIBUTE_NO_DESTROY PROTOBUF_CONSTINIT SetVisionPositionEstimateResponseDefaultTypeInternal _SetVisionPositionEstimateResponse_default_instance_;
+constexpr SetAttitudePositionMocapRequest::SetAttitudePositionMocapRequest(
+  ::PROTOBUF_NAMESPACE_ID::internal::ConstantInitialized)
+  : attitude_position_mocap_(nullptr){}
+struct SetAttitudePositionMocapRequestDefaultTypeInternal {
+  constexpr SetAttitudePositionMocapRequestDefaultTypeInternal()
+    : _instance(::PROTOBUF_NAMESPACE_ID::internal::ConstantInitialized{}) {}
+  ~SetAttitudePositionMocapRequestDefaultTypeInternal() {}
+  union {
+    SetAttitudePositionMocapRequest _instance;
+  };
+};
+PROTOBUF_ATTRIBUTE_NO_DESTROY PROTOBUF_CONSTINIT SetAttitudePositionMocapRequestDefaultTypeInternal _SetAttitudePositionMocapRequest_default_instance_;
+constexpr SetAttitudePositionMocapResponse::SetAttitudePositionMocapResponse(
+  ::PROTOBUF_NAMESPACE_ID::internal::ConstantInitialized)
+  : mocap_result_(nullptr){}
+struct SetAttitudePositionMocapResponseDefaultTypeInternal {
+  constexpr SetAttitudePositionMocapResponseDefaultTypeInternal()
+    : _instance(::PROTOBUF_NAMESPACE_ID::internal::ConstantInitialized{}) {}
+  ~SetAttitudePositionMocapResponseDefaultTypeInternal() {}
+  union {
+    SetAttitudePositionMocapResponse _instance;
+  };
+};
+PROTOBUF_ATTRIBUTE_NO_DESTROY PROTOBUF_CONSTINIT SetAttitudePositionMocapResponseDefaultTypeInternal _SetAttitudePositionMocapResponse_default_instance_;
+constexpr SetOdometryRequest::SetOdometryRequest(
+  ::PROTOBUF_NAMESPACE_ID::internal::ConstantInitialized)
+  : odometry_(nullptr){}
+struct SetOdometryRequestDefaultTypeInternal {
+  constexpr SetOdometryRequestDefaultTypeInternal()
+    : _instance(::PROTOBUF_NAMESPACE_ID::internal::ConstantInitialized{}) {}
+  ~SetOdometryRequestDefaultTypeInternal() {}
+  union {
+    SetOdometryRequest _instance;
+  };
+};
+PROTOBUF_ATTRIBUTE_NO_DESTROY PROTOBUF_CONSTINIT SetOdometryRequestDefaultTypeInternal _SetOdometryRequest_default_instance_;
+constexpr SetOdometryResponse::SetOdometryResponse(
+  ::PROTOBUF_NAMESPACE_ID::internal::ConstantInitialized)
+  : mocap_result_(nullptr){}
+struct SetOdometryResponseDefaultTypeInternal {
+  constexpr SetOdometryResponseDefaultTypeInternal()
+    : _instance(::PROTOBUF_NAMESPACE_ID::internal::ConstantInitialized{}) {}
+  ~SetOdometryResponseDefaultTypeInternal() {}
+  union {
+    SetOdometryResponse _instance;
+  };
+};
+PROTOBUF_ATTRIBUTE_NO_DESTROY PROTOBUF_CONSTINIT SetOdometryResponseDefaultTypeInternal _SetOdometryResponse_default_instance_;
+constexpr PositionBody::PositionBody(
+  ::PROTOBUF_NAMESPACE_ID::internal::ConstantInitialized)
+  : x_m_(0)
+  , y_m_(0)
+  , z_m_(0){}
+struct PositionBodyDefaultTypeInternal {
+  constexpr PositionBodyDefaultTypeInternal()
+    : _instance(::PROTOBUF_NAMESPACE_ID::internal::ConstantInitialized{}) {}
+  ~PositionBodyDefaultTypeInternal() {}
+  union {
+    PositionBody _instance;
+  };
+};
+PROTOBUF_ATTRIBUTE_NO_DESTROY PROTOBUF_CONSTINIT PositionBodyDefaultTypeInternal _PositionBody_default_instance_;
+constexpr AngleBody::AngleBody(
+  ::PROTOBUF_NAMESPACE_ID::internal::ConstantInitialized)
+  : roll_rad_(0)
+  , pitch_rad_(0)
+  , yaw_rad_(0){}
+struct AngleBodyDefaultTypeInternal {
+  constexpr AngleBodyDefaultTypeInternal()
+    : _instance(::PROTOBUF_NAMESPACE_ID::internal::ConstantInitialized{}) {}
+  ~AngleBodyDefaultTypeInternal() {}
+  union {
+    AngleBody _instance;
+  };
+};
+PROTOBUF_ATTRIBUTE_NO_DESTROY PROTOBUF_CONSTINIT AngleBodyDefaultTypeInternal _AngleBody_default_instance_;
+constexpr SpeedBody::SpeedBody(
+  ::PROTOBUF_NAMESPACE_ID::internal::ConstantInitialized)
+  : x_m_s_(0)
+  , y_m_s_(0)
+  , z_m_s_(0){}
+struct SpeedBodyDefaultTypeInternal {
+  constexpr SpeedBodyDefaultTypeInternal()
+    : _instance(::PROTOBUF_NAMESPACE_ID::internal::ConstantInitialized{}) {}
+  ~SpeedBodyDefaultTypeInternal() {}
+  union {
+    SpeedBody _instance;
+  };
+};
+PROTOBUF_ATTRIBUTE_NO_DESTROY PROTOBUF_CONSTINIT SpeedBodyDefaultTypeInternal _SpeedBody_default_instance_;
+constexpr AngularVelocityBody::AngularVelocityBody(
+  ::PROTOBUF_NAMESPACE_ID::internal::ConstantInitialized)
+  : roll_rad_s_(0)
+  , pitch_rad_s_(0)
+  , yaw_rad_s_(0){}
+struct AngularVelocityBodyDefaultTypeInternal {
+  constexpr AngularVelocityBodyDefaultTypeInternal()
+    : _instance(::PROTOBUF_NAMESPACE_ID::internal::ConstantInitialized{}) {}
+  ~AngularVelocityBodyDefaultTypeInternal() {}
+  union {
+    AngularVelocityBody _instance;
+  };
+};
+PROTOBUF_ATTRIBUTE_NO_DESTROY PROTOBUF_CONSTINIT AngularVelocityBodyDefaultTypeInternal _AngularVelocityBody_default_instance_;
+constexpr Covariance::Covariance(
+  ::PROTOBUF_NAMESPACE_ID::internal::ConstantInitialized)
+  : covariance_matrix_()
+  , _covariance_matrix_cached_byte_size_(){}
+struct CovarianceDefaultTypeInternal {
+  constexpr CovarianceDefaultTypeInternal()
+    : _instance(::PROTOBUF_NAMESPACE_ID::internal::ConstantInitialized{}) {}
+  ~CovarianceDefaultTypeInternal() {}
+  union {
+    Covariance _instance;
+  };
+};
+PROTOBUF_ATTRIBUTE_NO_DESTROY PROTOBUF_CONSTINIT CovarianceDefaultTypeInternal _Covariance_default_instance_;
+constexpr Quaternion::Quaternion(
+  ::PROTOBUF_NAMESPACE_ID::internal::ConstantInitialized)
+  : w_(0)
+  , x_(0)
+  , y_(0)
+  , z_(0){}
+struct QuaternionDefaultTypeInternal {
+  constexpr QuaternionDefaultTypeInternal()
+    : _instance(::PROTOBUF_NAMESPACE_ID::internal::ConstantInitialized{}) {}
+  ~QuaternionDefaultTypeInternal() {}
+  union {
+    Quaternion _instance;
+  };
+};
+PROTOBUF_ATTRIBUTE_NO_DESTROY PROTOBUF_CONSTINIT QuaternionDefaultTypeInternal _Quaternion_default_instance_;
+constexpr VisionPositionEstimate::VisionPositionEstimate(
+  ::PROTOBUF_NAMESPACE_ID::internal::ConstantInitialized)
+  : position_body_(nullptr)
+  , angle_body_(nullptr)
+  , pose_covariance_(nullptr)
+  , time_usec_(PROTOBUF_ULONGLONG(0)){}
+struct VisionPositionEstimateDefaultTypeInternal {
+  constexpr VisionPositionEstimateDefaultTypeInternal()
+    : _instance(::PROTOBUF_NAMESPACE_ID::internal::ConstantInitialized{}) {}
+  ~VisionPositionEstimateDefaultTypeInternal() {}
+  union {
+    VisionPositionEstimate _instance;
+  };
+};
+PROTOBUF_ATTRIBUTE_NO_DESTROY PROTOBUF_CONSTINIT VisionPositionEstimateDefaultTypeInternal _VisionPositionEstimate_default_instance_;
+constexpr AttitudePositionMocap::AttitudePositionMocap(
+  ::PROTOBUF_NAMESPACE_ID::internal::ConstantInitialized)
+  : q_(nullptr)
+  , position_body_(nullptr)
+  , pose_covariance_(nullptr)
+  , time_usec_(PROTOBUF_ULONGLONG(0)){}
+struct AttitudePositionMocapDefaultTypeInternal {
+  constexpr AttitudePositionMocapDefaultTypeInternal()
+    : _instance(::PROTOBUF_NAMESPACE_ID::internal::ConstantInitialized{}) {}
+  ~AttitudePositionMocapDefaultTypeInternal() {}
+  union {
+    AttitudePositionMocap _instance;
+  };
+};
+PROTOBUF_ATTRIBUTE_NO_DESTROY PROTOBUF_CONSTINIT AttitudePositionMocapDefaultTypeInternal _AttitudePositionMocap_default_instance_;
+constexpr Odometry::Odometry(
+  ::PROTOBUF_NAMESPACE_ID::internal::ConstantInitialized)
+  : position_body_(nullptr)
+  , q_(nullptr)
+  , speed_body_(nullptr)
+  , angular_velocity_body_(nullptr)
+  , pose_covariance_(nullptr)
+  , velocity_covariance_(nullptr)
+  , time_usec_(PROTOBUF_ULONGLONG(0))
+  , frame_id_(0)
+{}
+struct OdometryDefaultTypeInternal {
+  constexpr OdometryDefaultTypeInternal()
+    : _instance(::PROTOBUF_NAMESPACE_ID::internal::ConstantInitialized{}) {}
+  ~OdometryDefaultTypeInternal() {}
+  union {
+    Odometry _instance;
+  };
+};
+PROTOBUF_ATTRIBUTE_NO_DESTROY PROTOBUF_CONSTINIT OdometryDefaultTypeInternal _Odometry_default_instance_;
+constexpr MocapResult::MocapResult(
+  ::PROTOBUF_NAMESPACE_ID::internal::ConstantInitialized)
+  : result_str_(&::PROTOBUF_NAMESPACE_ID::internal::fixed_address_empty_string)
+  , result_(0)
+{}
+struct MocapResultDefaultTypeInternal {
+  constexpr MocapResultDefaultTypeInternal()
+    : _instance(::PROTOBUF_NAMESPACE_ID::internal::ConstantInitialized{}) {}
+  ~MocapResultDefaultTypeInternal() {}
+  union {
+    MocapResult _instance;
+  };
+};
+PROTOBUF_ATTRIBUTE_NO_DESTROY PROTOBUF_CONSTINIT MocapResultDefaultTypeInternal _MocapResult_default_instance_;
 }  // namespace mocap
 }  // namespace rpc
 }  // namespace mavsdk
-static void InitDefaultsscc_info_AngleBody_mocap_2fmocap_2eproto() {
-  GOOGLE_PROTOBUF_VERIFY_VERSION;
-
-  {
-    void* ptr = &::mavsdk::rpc::mocap::_AngleBody_default_instance_;
-    new (ptr) ::mavsdk::rpc::mocap::AngleBody();
-    ::PROTOBUF_NAMESPACE_ID::internal::OnShutdownDestroyMessage(ptr);
-  }
-  ::mavsdk::rpc::mocap::AngleBody::InitAsDefaultInstance();
-}
-
-::PROTOBUF_NAMESPACE_ID::internal::SCCInfo<0> scc_info_AngleBody_mocap_2fmocap_2eproto =
-    {{ATOMIC_VAR_INIT(::PROTOBUF_NAMESPACE_ID::internal::SCCInfoBase::kUninitialized), 0, 0, InitDefaultsscc_info_AngleBody_mocap_2fmocap_2eproto}, {}};
-
-static void InitDefaultsscc_info_AngularVelocityBody_mocap_2fmocap_2eproto() {
-  GOOGLE_PROTOBUF_VERIFY_VERSION;
-
-  {
-    void* ptr = &::mavsdk::rpc::mocap::_AngularVelocityBody_default_instance_;
-    new (ptr) ::mavsdk::rpc::mocap::AngularVelocityBody();
-    ::PROTOBUF_NAMESPACE_ID::internal::OnShutdownDestroyMessage(ptr);
-  }
-  ::mavsdk::rpc::mocap::AngularVelocityBody::InitAsDefaultInstance();
-}
-
-::PROTOBUF_NAMESPACE_ID::internal::SCCInfo<0> scc_info_AngularVelocityBody_mocap_2fmocap_2eproto =
-    {{ATOMIC_VAR_INIT(::PROTOBUF_NAMESPACE_ID::internal::SCCInfoBase::kUninitialized), 0, 0, InitDefaultsscc_info_AngularVelocityBody_mocap_2fmocap_2eproto}, {}};
-
-static void InitDefaultsscc_info_AttitudePositionMocap_mocap_2fmocap_2eproto() {
-  GOOGLE_PROTOBUF_VERIFY_VERSION;
-
-  {
-    void* ptr = &::mavsdk::rpc::mocap::_AttitudePositionMocap_default_instance_;
-    new (ptr) ::mavsdk::rpc::mocap::AttitudePositionMocap();
-    ::PROTOBUF_NAMESPACE_ID::internal::OnShutdownDestroyMessage(ptr);
-  }
-  ::mavsdk::rpc::mocap::AttitudePositionMocap::InitAsDefaultInstance();
-}
-
-::PROTOBUF_NAMESPACE_ID::internal::SCCInfo<3> scc_info_AttitudePositionMocap_mocap_2fmocap_2eproto =
-    {{ATOMIC_VAR_INIT(::PROTOBUF_NAMESPACE_ID::internal::SCCInfoBase::kUninitialized), 3, 0, InitDefaultsscc_info_AttitudePositionMocap_mocap_2fmocap_2eproto}, {
-      &scc_info_Quaternion_mocap_2fmocap_2eproto.base,
-      &scc_info_PositionBody_mocap_2fmocap_2eproto.base,
-      &scc_info_Covariance_mocap_2fmocap_2eproto.base,}};
-
-static void InitDefaultsscc_info_Covariance_mocap_2fmocap_2eproto() {
-  GOOGLE_PROTOBUF_VERIFY_VERSION;
-
-  {
-    void* ptr = &::mavsdk::rpc::mocap::_Covariance_default_instance_;
-    new (ptr) ::mavsdk::rpc::mocap::Covariance();
-    ::PROTOBUF_NAMESPACE_ID::internal::OnShutdownDestroyMessage(ptr);
-  }
-  ::mavsdk::rpc::mocap::Covariance::InitAsDefaultInstance();
-}
-
-::PROTOBUF_NAMESPACE_ID::internal::SCCInfo<0> scc_info_Covariance_mocap_2fmocap_2eproto =
-    {{ATOMIC_VAR_INIT(::PROTOBUF_NAMESPACE_ID::internal::SCCInfoBase::kUninitialized), 0, 0, InitDefaultsscc_info_Covariance_mocap_2fmocap_2eproto}, {}};
-
-static void InitDefaultsscc_info_MocapResult_mocap_2fmocap_2eproto() {
-  GOOGLE_PROTOBUF_VERIFY_VERSION;
-
-  {
-    void* ptr = &::mavsdk::rpc::mocap::_MocapResult_default_instance_;
-    new (ptr) ::mavsdk::rpc::mocap::MocapResult();
-    ::PROTOBUF_NAMESPACE_ID::internal::OnShutdownDestroyMessage(ptr);
-  }
-  ::mavsdk::rpc::mocap::MocapResult::InitAsDefaultInstance();
-}
-
-::PROTOBUF_NAMESPACE_ID::internal::SCCInfo<0> scc_info_MocapResult_mocap_2fmocap_2eproto =
-    {{ATOMIC_VAR_INIT(::PROTOBUF_NAMESPACE_ID::internal::SCCInfoBase::kUninitialized), 0, 0, InitDefaultsscc_info_MocapResult_mocap_2fmocap_2eproto}, {}};
-
-static void InitDefaultsscc_info_Odometry_mocap_2fmocap_2eproto() {
-  GOOGLE_PROTOBUF_VERIFY_VERSION;
-
-  {
-    void* ptr = &::mavsdk::rpc::mocap::_Odometry_default_instance_;
-    new (ptr) ::mavsdk::rpc::mocap::Odometry();
-    ::PROTOBUF_NAMESPACE_ID::internal::OnShutdownDestroyMessage(ptr);
-  }
-  ::mavsdk::rpc::mocap::Odometry::InitAsDefaultInstance();
-}
-
-::PROTOBUF_NAMESPACE_ID::internal::SCCInfo<5> scc_info_Odometry_mocap_2fmocap_2eproto =
-    {{ATOMIC_VAR_INIT(::PROTOBUF_NAMESPACE_ID::internal::SCCInfoBase::kUninitialized), 5, 0, InitDefaultsscc_info_Odometry_mocap_2fmocap_2eproto}, {
-      &scc_info_PositionBody_mocap_2fmocap_2eproto.base,
-      &scc_info_Quaternion_mocap_2fmocap_2eproto.base,
-      &scc_info_SpeedBody_mocap_2fmocap_2eproto.base,
-      &scc_info_AngularVelocityBody_mocap_2fmocap_2eproto.base,
-      &scc_info_Covariance_mocap_2fmocap_2eproto.base,}};
-
-static void InitDefaultsscc_info_PositionBody_mocap_2fmocap_2eproto() {
-  GOOGLE_PROTOBUF_VERIFY_VERSION;
-
-  {
-    void* ptr = &::mavsdk::rpc::mocap::_PositionBody_default_instance_;
-    new (ptr) ::mavsdk::rpc::mocap::PositionBody();
-    ::PROTOBUF_NAMESPACE_ID::internal::OnShutdownDestroyMessage(ptr);
-  }
-  ::mavsdk::rpc::mocap::PositionBody::InitAsDefaultInstance();
-}
-
-::PROTOBUF_NAMESPACE_ID::internal::SCCInfo<0> scc_info_PositionBody_mocap_2fmocap_2eproto =
-    {{ATOMIC_VAR_INIT(::PROTOBUF_NAMESPACE_ID::internal::SCCInfoBase::kUninitialized), 0, 0, InitDefaultsscc_info_PositionBody_mocap_2fmocap_2eproto}, {}};
-
-static void InitDefaultsscc_info_Quaternion_mocap_2fmocap_2eproto() {
-  GOOGLE_PROTOBUF_VERIFY_VERSION;
-
-  {
-    void* ptr = &::mavsdk::rpc::mocap::_Quaternion_default_instance_;
-    new (ptr) ::mavsdk::rpc::mocap::Quaternion();
-    ::PROTOBUF_NAMESPACE_ID::internal::OnShutdownDestroyMessage(ptr);
-  }
-  ::mavsdk::rpc::mocap::Quaternion::InitAsDefaultInstance();
-}
-
-::PROTOBUF_NAMESPACE_ID::internal::SCCInfo<0> scc_info_Quaternion_mocap_2fmocap_2eproto =
-    {{ATOMIC_VAR_INIT(::PROTOBUF_NAMESPACE_ID::internal::SCCInfoBase::kUninitialized), 0, 0, InitDefaultsscc_info_Quaternion_mocap_2fmocap_2eproto}, {}};
-
-static void InitDefaultsscc_info_SetAttitudePositionMocapRequest_mocap_2fmocap_2eproto() {
-  GOOGLE_PROTOBUF_VERIFY_VERSION;
-
-  {
-    void* ptr = &::mavsdk::rpc::mocap::_SetAttitudePositionMocapRequest_default_instance_;
-    new (ptr) ::mavsdk::rpc::mocap::SetAttitudePositionMocapRequest();
-    ::PROTOBUF_NAMESPACE_ID::internal::OnShutdownDestroyMessage(ptr);
-  }
-  ::mavsdk::rpc::mocap::SetAttitudePositionMocapRequest::InitAsDefaultInstance();
-}
-
-::PROTOBUF_NAMESPACE_ID::internal::SCCInfo<1> scc_info_SetAttitudePositionMocapRequest_mocap_2fmocap_2eproto =
-    {{ATOMIC_VAR_INIT(::PROTOBUF_NAMESPACE_ID::internal::SCCInfoBase::kUninitialized), 1, 0, InitDefaultsscc_info_SetAttitudePositionMocapRequest_mocap_2fmocap_2eproto}, {
-      &scc_info_AttitudePositionMocap_mocap_2fmocap_2eproto.base,}};
-
-static void InitDefaultsscc_info_SetAttitudePositionMocapResponse_mocap_2fmocap_2eproto() {
-  GOOGLE_PROTOBUF_VERIFY_VERSION;
-
-  {
-    void* ptr = &::mavsdk::rpc::mocap::_SetAttitudePositionMocapResponse_default_instance_;
-    new (ptr) ::mavsdk::rpc::mocap::SetAttitudePositionMocapResponse();
-    ::PROTOBUF_NAMESPACE_ID::internal::OnShutdownDestroyMessage(ptr);
-  }
-  ::mavsdk::rpc::mocap::SetAttitudePositionMocapResponse::InitAsDefaultInstance();
-}
-
-::PROTOBUF_NAMESPACE_ID::internal::SCCInfo<1> scc_info_SetAttitudePositionMocapResponse_mocap_2fmocap_2eproto =
-    {{ATOMIC_VAR_INIT(::PROTOBUF_NAMESPACE_ID::internal::SCCInfoBase::kUninitialized), 1, 0, InitDefaultsscc_info_SetAttitudePositionMocapResponse_mocap_2fmocap_2eproto}, {
-      &scc_info_MocapResult_mocap_2fmocap_2eproto.base,}};
-
-static void InitDefaultsscc_info_SetOdometryRequest_mocap_2fmocap_2eproto() {
-  GOOGLE_PROTOBUF_VERIFY_VERSION;
-
-  {
-    void* ptr = &::mavsdk::rpc::mocap::_SetOdometryRequest_default_instance_;
-    new (ptr) ::mavsdk::rpc::mocap::SetOdometryRequest();
-    ::PROTOBUF_NAMESPACE_ID::internal::OnShutdownDestroyMessage(ptr);
-  }
-  ::mavsdk::rpc::mocap::SetOdometryRequest::InitAsDefaultInstance();
-}
-
-::PROTOBUF_NAMESPACE_ID::internal::SCCInfo<1> scc_info_SetOdometryRequest_mocap_2fmocap_2eproto =
-    {{ATOMIC_VAR_INIT(::PROTOBUF_NAMESPACE_ID::internal::SCCInfoBase::kUninitialized), 1, 0, InitDefaultsscc_info_SetOdometryRequest_mocap_2fmocap_2eproto}, {
-      &scc_info_Odometry_mocap_2fmocap_2eproto.base,}};
-
-static void InitDefaultsscc_info_SetOdometryResponse_mocap_2fmocap_2eproto() {
-  GOOGLE_PROTOBUF_VERIFY_VERSION;
-
-  {
-    void* ptr = &::mavsdk::rpc::mocap::_SetOdometryResponse_default_instance_;
-    new (ptr) ::mavsdk::rpc::mocap::SetOdometryResponse();
-    ::PROTOBUF_NAMESPACE_ID::internal::OnShutdownDestroyMessage(ptr);
-  }
-  ::mavsdk::rpc::mocap::SetOdometryResponse::InitAsDefaultInstance();
-}
-
-::PROTOBUF_NAMESPACE_ID::internal::SCCInfo<1> scc_info_SetOdometryResponse_mocap_2fmocap_2eproto =
-    {{ATOMIC_VAR_INIT(::PROTOBUF_NAMESPACE_ID::internal::SCCInfoBase::kUninitialized), 1, 0, InitDefaultsscc_info_SetOdometryResponse_mocap_2fmocap_2eproto}, {
-      &scc_info_MocapResult_mocap_2fmocap_2eproto.base,}};
-
-static void InitDefaultsscc_info_SetVisionPositionEstimateRequest_mocap_2fmocap_2eproto() {
-  GOOGLE_PROTOBUF_VERIFY_VERSION;
-
-  {
-    void* ptr = &::mavsdk::rpc::mocap::_SetVisionPositionEstimateRequest_default_instance_;
-    new (ptr) ::mavsdk::rpc::mocap::SetVisionPositionEstimateRequest();
-    ::PROTOBUF_NAMESPACE_ID::internal::OnShutdownDestroyMessage(ptr);
-  }
-  ::mavsdk::rpc::mocap::SetVisionPositionEstimateRequest::InitAsDefaultInstance();
-}
-
-::PROTOBUF_NAMESPACE_ID::internal::SCCInfo<1> scc_info_SetVisionPositionEstimateRequest_mocap_2fmocap_2eproto =
-    {{ATOMIC_VAR_INIT(::PROTOBUF_NAMESPACE_ID::internal::SCCInfoBase::kUninitialized), 1, 0, InitDefaultsscc_info_SetVisionPositionEstimateRequest_mocap_2fmocap_2eproto}, {
-      &scc_info_VisionPositionEstimate_mocap_2fmocap_2eproto.base,}};
-
-static void InitDefaultsscc_info_SetVisionPositionEstimateResponse_mocap_2fmocap_2eproto() {
-  GOOGLE_PROTOBUF_VERIFY_VERSION;
-
-  {
-    void* ptr = &::mavsdk::rpc::mocap::_SetVisionPositionEstimateResponse_default_instance_;
-    new (ptr) ::mavsdk::rpc::mocap::SetVisionPositionEstimateResponse();
-    ::PROTOBUF_NAMESPACE_ID::internal::OnShutdownDestroyMessage(ptr);
-  }
-  ::mavsdk::rpc::mocap::SetVisionPositionEstimateResponse::InitAsDefaultInstance();
-}
-
-::PROTOBUF_NAMESPACE_ID::internal::SCCInfo<1> scc_info_SetVisionPositionEstimateResponse_mocap_2fmocap_2eproto =
-    {{ATOMIC_VAR_INIT(::PROTOBUF_NAMESPACE_ID::internal::SCCInfoBase::kUninitialized), 1, 0, InitDefaultsscc_info_SetVisionPositionEstimateResponse_mocap_2fmocap_2eproto}, {
-      &scc_info_MocapResult_mocap_2fmocap_2eproto.base,}};
-
-static void InitDefaultsscc_info_SpeedBody_mocap_2fmocap_2eproto() {
-  GOOGLE_PROTOBUF_VERIFY_VERSION;
-
-  {
-    void* ptr = &::mavsdk::rpc::mocap::_SpeedBody_default_instance_;
-    new (ptr) ::mavsdk::rpc::mocap::SpeedBody();
-    ::PROTOBUF_NAMESPACE_ID::internal::OnShutdownDestroyMessage(ptr);
-  }
-  ::mavsdk::rpc::mocap::SpeedBody::InitAsDefaultInstance();
-}
-
-::PROTOBUF_NAMESPACE_ID::internal::SCCInfo<0> scc_info_SpeedBody_mocap_2fmocap_2eproto =
-    {{ATOMIC_VAR_INIT(::PROTOBUF_NAMESPACE_ID::internal::SCCInfoBase::kUninitialized), 0, 0, InitDefaultsscc_info_SpeedBody_mocap_2fmocap_2eproto}, {}};
-
-static void InitDefaultsscc_info_VisionPositionEstimate_mocap_2fmocap_2eproto() {
-  GOOGLE_PROTOBUF_VERIFY_VERSION;
-
-  {
-    void* ptr = &::mavsdk::rpc::mocap::_VisionPositionEstimate_default_instance_;
-    new (ptr) ::mavsdk::rpc::mocap::VisionPositionEstimate();
-    ::PROTOBUF_NAMESPACE_ID::internal::OnShutdownDestroyMessage(ptr);
-  }
-  ::mavsdk::rpc::mocap::VisionPositionEstimate::InitAsDefaultInstance();
-}
-
-::PROTOBUF_NAMESPACE_ID::internal::SCCInfo<3> scc_info_VisionPositionEstimate_mocap_2fmocap_2eproto =
-    {{ATOMIC_VAR_INIT(::PROTOBUF_NAMESPACE_ID::internal::SCCInfoBase::kUninitialized), 3, 0, InitDefaultsscc_info_VisionPositionEstimate_mocap_2fmocap_2eproto}, {
-      &scc_info_PositionBody_mocap_2fmocap_2eproto.base,
-      &scc_info_AngleBody_mocap_2fmocap_2eproto.base,
-      &scc_info_Covariance_mocap_2fmocap_2eproto.base,}};
-
 static ::PROTOBUF_NAMESPACE_ID::Metadata file_level_metadata_mocap_2fmocap_2eproto[16];
 static const ::PROTOBUF_NAMESPACE_ID::EnumDescriptor* file_level_enum_descriptors_mocap_2fmocap_2eproto[2];
 static constexpr ::PROTOBUF_NAMESPACE_ID::ServiceDescriptor const** file_level_service_descriptors_mocap_2fmocap_2eproto = nullptr;
@@ -568,34 +475,21 @@ const char descriptor_table_protodef_mocap_2fmocap_2eproto[] PROTOBUF_SECTION_VA
 static const ::PROTOBUF_NAMESPACE_ID::internal::DescriptorTable*const descriptor_table_mocap_2fmocap_2eproto_deps[1] = {
   &::descriptor_table_mavsdk_5foptions_2eproto,
 };
-static ::PROTOBUF_NAMESPACE_ID::internal::SCCInfoBase*const descriptor_table_mocap_2fmocap_2eproto_sccs[16] = {
-  &scc_info_AngleBody_mocap_2fmocap_2eproto.base,
-  &scc_info_AngularVelocityBody_mocap_2fmocap_2eproto.base,
-  &scc_info_AttitudePositionMocap_mocap_2fmocap_2eproto.base,
-  &scc_info_Covariance_mocap_2fmocap_2eproto.base,
-  &scc_info_MocapResult_mocap_2fmocap_2eproto.base,
-  &scc_info_Odometry_mocap_2fmocap_2eproto.base,
-  &scc_info_PositionBody_mocap_2fmocap_2eproto.base,
-  &scc_info_Quaternion_mocap_2fmocap_2eproto.base,
-  &scc_info_SetAttitudePositionMocapRequest_mocap_2fmocap_2eproto.base,
-  &scc_info_SetAttitudePositionMocapResponse_mocap_2fmocap_2eproto.base,
-  &scc_info_SetOdometryRequest_mocap_2fmocap_2eproto.base,
-  &scc_info_SetOdometryResponse_mocap_2fmocap_2eproto.base,
-  &scc_info_SetVisionPositionEstimateRequest_mocap_2fmocap_2eproto.base,
-  &scc_info_SetVisionPositionEstimateResponse_mocap_2fmocap_2eproto.base,
-  &scc_info_SpeedBody_mocap_2fmocap_2eproto.base,
-  &scc_info_VisionPositionEstimate_mocap_2fmocap_2eproto.base,
-};
 static ::PROTOBUF_NAMESPACE_ID::internal::once_flag descriptor_table_mocap_2fmocap_2eproto_once;
 const ::PROTOBUF_NAMESPACE_ID::internal::DescriptorTable descriptor_table_mocap_2fmocap_2eproto = {
-  false, false, descriptor_table_protodef_mocap_2fmocap_2eproto, "mocap/mocap.proto", 2502,
-  &descriptor_table_mocap_2fmocap_2eproto_once, descriptor_table_mocap_2fmocap_2eproto_sccs, descriptor_table_mocap_2fmocap_2eproto_deps, 16, 1,
+  false, false, 2502, descriptor_table_protodef_mocap_2fmocap_2eproto, "mocap/mocap.proto", 
+  &descriptor_table_mocap_2fmocap_2eproto_once, descriptor_table_mocap_2fmocap_2eproto_deps, 1, 16,
   schemas, file_default_instances, TableStruct_mocap_2fmocap_2eproto::offsets,
-  file_level_metadata_mocap_2fmocap_2eproto, 16, file_level_enum_descriptors_mocap_2fmocap_2eproto, file_level_service_descriptors_mocap_2fmocap_2eproto,
+  file_level_metadata_mocap_2fmocap_2eproto, file_level_enum_descriptors_mocap_2fmocap_2eproto, file_level_service_descriptors_mocap_2fmocap_2eproto,
 };
+PROTOBUF_ATTRIBUTE_WEAK ::PROTOBUF_NAMESPACE_ID::Metadata
+descriptor_table_mocap_2fmocap_2eproto_metadata_getter(int index) {
+  ::PROTOBUF_NAMESPACE_ID::internal::AssignDescriptors(&descriptor_table_mocap_2fmocap_2eproto);
+  return descriptor_table_mocap_2fmocap_2eproto.file_level_metadata[index];
+}
 
 // Force running AddDescriptors() at dynamic initialization time.
-static bool dynamic_init_dummy_mocap_2fmocap_2eproto = (static_cast<void>(::PROTOBUF_NAMESPACE_ID::internal::AddDescriptors(&descriptor_table_mocap_2fmocap_2eproto)), true);
+PROTOBUF_ATTRIBUTE_INIT_PRIORITY static ::PROTOBUF_NAMESPACE_ID::internal::AddDescriptorsRunner dynamic_init_dummy_mocap_2fmocap_2eproto(&descriptor_table_mocap_2fmocap_2eproto);
 namespace mavsdk {
 namespace rpc {
 namespace mocap {
@@ -650,10 +544,6 @@ constexpr int MocapResult::Result_ARRAYSIZE;
 
 // ===================================================================
 
-void SetVisionPositionEstimateRequest::InitAsDefaultInstance() {
-  ::mavsdk::rpc::mocap::_SetVisionPositionEstimateRequest_default_instance_._instance.get_mutable()->vision_position_estimate_ = const_cast< ::mavsdk::rpc::mocap::VisionPositionEstimate*>(
-      ::mavsdk::rpc::mocap::VisionPositionEstimate::internal_default_instance());
-}
 class SetVisionPositionEstimateRequest::_Internal {
  public:
   static const ::mavsdk::rpc::mocap::VisionPositionEstimate& vision_position_estimate(const SetVisionPositionEstimateRequest* msg);
@@ -681,8 +571,7 @@ SetVisionPositionEstimateRequest::SetVisionPositionEstimateRequest(const SetVisi
 }
 
 void SetVisionPositionEstimateRequest::SharedCtor() {
-  ::PROTOBUF_NAMESPACE_ID::internal::InitSCC(&scc_info_SetVisionPositionEstimateRequest_mocap_2fmocap_2eproto.base);
-  vision_position_estimate_ = nullptr;
+vision_position_estimate_ = nullptr;
 }
 
 SetVisionPositionEstimateRequest::~SetVisionPositionEstimateRequest() {
@@ -705,11 +594,6 @@ void SetVisionPositionEstimateRequest::RegisterArenaDtor(::PROTOBUF_NAMESPACE_ID
 void SetVisionPositionEstimateRequest::SetCachedSize(int size) const {
   _cached_size_.Set(size);
 }
-const SetVisionPositionEstimateRequest& SetVisionPositionEstimateRequest::default_instance() {
-  ::PROTOBUF_NAMESPACE_ID::internal::InitSCC(&::scc_info_SetVisionPositionEstimateRequest_mocap_2fmocap_2eproto.base);
-  return *internal_default_instance();
-}
-
 
 void SetVisionPositionEstimateRequest::Clear() {
 // @@protoc_insertion_point(message_clear_start:mavsdk.rpc.mocap.SetVisionPositionEstimateRequest)
@@ -726,7 +610,6 @@ void SetVisionPositionEstimateRequest::Clear() {
 
 const char* SetVisionPositionEstimateRequest::_InternalParse(const char* ptr, ::PROTOBUF_NAMESPACE_ID::internal::ParseContext* ctx) {
 #define CHK_(x) if (PROTOBUF_PREDICT_FALSE(!(x))) goto failure
-  ::PROTOBUF_NAMESPACE_ID::Arena* arena = GetArena(); (void)arena;
   while (!ctx->Done(&ptr)) {
     ::PROTOBUF_NAMESPACE_ID::uint32 tag;
     ptr = ::PROTOBUF_NAMESPACE_ID::internal::ReadTag(ptr, &tag);
@@ -865,10 +748,6 @@ void SetVisionPositionEstimateRequest::InternalSwap(SetVisionPositionEstimateReq
 
 // ===================================================================
 
-void SetVisionPositionEstimateResponse::InitAsDefaultInstance() {
-  ::mavsdk::rpc::mocap::_SetVisionPositionEstimateResponse_default_instance_._instance.get_mutable()->mocap_result_ = const_cast< ::mavsdk::rpc::mocap::MocapResult*>(
-      ::mavsdk::rpc::mocap::MocapResult::internal_default_instance());
-}
 class SetVisionPositionEstimateResponse::_Internal {
  public:
   static const ::mavsdk::rpc::mocap::MocapResult& mocap_result(const SetVisionPositionEstimateResponse* msg);
@@ -896,8 +775,7 @@ SetVisionPositionEstimateResponse::SetVisionPositionEstimateResponse(const SetVi
 }
 
 void SetVisionPositionEstimateResponse::SharedCtor() {
-  ::PROTOBUF_NAMESPACE_ID::internal::InitSCC(&scc_info_SetVisionPositionEstimateResponse_mocap_2fmocap_2eproto.base);
-  mocap_result_ = nullptr;
+mocap_result_ = nullptr;
 }
 
 SetVisionPositionEstimateResponse::~SetVisionPositionEstimateResponse() {
@@ -920,11 +798,6 @@ void SetVisionPositionEstimateResponse::RegisterArenaDtor(::PROTOBUF_NAMESPACE_I
 void SetVisionPositionEstimateResponse::SetCachedSize(int size) const {
   _cached_size_.Set(size);
 }
-const SetVisionPositionEstimateResponse& SetVisionPositionEstimateResponse::default_instance() {
-  ::PROTOBUF_NAMESPACE_ID::internal::InitSCC(&::scc_info_SetVisionPositionEstimateResponse_mocap_2fmocap_2eproto.base);
-  return *internal_default_instance();
-}
-
 
 void SetVisionPositionEstimateResponse::Clear() {
 // @@protoc_insertion_point(message_clear_start:mavsdk.rpc.mocap.SetVisionPositionEstimateResponse)
@@ -941,7 +814,6 @@ void SetVisionPositionEstimateResponse::Clear() {
 
 const char* SetVisionPositionEstimateResponse::_InternalParse(const char* ptr, ::PROTOBUF_NAMESPACE_ID::internal::ParseContext* ctx) {
 #define CHK_(x) if (PROTOBUF_PREDICT_FALSE(!(x))) goto failure
-  ::PROTOBUF_NAMESPACE_ID::Arena* arena = GetArena(); (void)arena;
   while (!ctx->Done(&ptr)) {
     ::PROTOBUF_NAMESPACE_ID::uint32 tag;
     ptr = ::PROTOBUF_NAMESPACE_ID::internal::ReadTag(ptr, &tag);
@@ -1080,10 +952,6 @@ void SetVisionPositionEstimateResponse::InternalSwap(SetVisionPositionEstimateRe
 
 // ===================================================================
 
-void SetAttitudePositionMocapRequest::InitAsDefaultInstance() {
-  ::mavsdk::rpc::mocap::_SetAttitudePositionMocapRequest_default_instance_._instance.get_mutable()->attitude_position_mocap_ = const_cast< ::mavsdk::rpc::mocap::AttitudePositionMocap*>(
-      ::mavsdk::rpc::mocap::AttitudePositionMocap::internal_default_instance());
-}
 class SetAttitudePositionMocapRequest::_Internal {
  public:
   static const ::mavsdk::rpc::mocap::AttitudePositionMocap& attitude_position_mocap(const SetAttitudePositionMocapRequest* msg);
@@ -1111,8 +979,7 @@ SetAttitudePositionMocapRequest::SetAttitudePositionMocapRequest(const SetAttitu
 }
 
 void SetAttitudePositionMocapRequest::SharedCtor() {
-  ::PROTOBUF_NAMESPACE_ID::internal::InitSCC(&scc_info_SetAttitudePositionMocapRequest_mocap_2fmocap_2eproto.base);
-  attitude_position_mocap_ = nullptr;
+attitude_position_mocap_ = nullptr;
 }
 
 SetAttitudePositionMocapRequest::~SetAttitudePositionMocapRequest() {
@@ -1135,11 +1002,6 @@ void SetAttitudePositionMocapRequest::RegisterArenaDtor(::PROTOBUF_NAMESPACE_ID:
 void SetAttitudePositionMocapRequest::SetCachedSize(int size) const {
   _cached_size_.Set(size);
 }
-const SetAttitudePositionMocapRequest& SetAttitudePositionMocapRequest::default_instance() {
-  ::PROTOBUF_NAMESPACE_ID::internal::InitSCC(&::scc_info_SetAttitudePositionMocapRequest_mocap_2fmocap_2eproto.base);
-  return *internal_default_instance();
-}
-
 
 void SetAttitudePositionMocapRequest::Clear() {
 // @@protoc_insertion_point(message_clear_start:mavsdk.rpc.mocap.SetAttitudePositionMocapRequest)
@@ -1156,7 +1018,6 @@ void SetAttitudePositionMocapRequest::Clear() {
 
 const char* SetAttitudePositionMocapRequest::_InternalParse(const char* ptr, ::PROTOBUF_NAMESPACE_ID::internal::ParseContext* ctx) {
 #define CHK_(x) if (PROTOBUF_PREDICT_FALSE(!(x))) goto failure
-  ::PROTOBUF_NAMESPACE_ID::Arena* arena = GetArena(); (void)arena;
   while (!ctx->Done(&ptr)) {
     ::PROTOBUF_NAMESPACE_ID::uint32 tag;
     ptr = ::PROTOBUF_NAMESPACE_ID::internal::ReadTag(ptr, &tag);
@@ -1295,10 +1156,6 @@ void SetAttitudePositionMocapRequest::InternalSwap(SetAttitudePositionMocapReque
 
 // ===================================================================
 
-void SetAttitudePositionMocapResponse::InitAsDefaultInstance() {
-  ::mavsdk::rpc::mocap::_SetAttitudePositionMocapResponse_default_instance_._instance.get_mutable()->mocap_result_ = const_cast< ::mavsdk::rpc::mocap::MocapResult*>(
-      ::mavsdk::rpc::mocap::MocapResult::internal_default_instance());
-}
 class SetAttitudePositionMocapResponse::_Internal {
  public:
   static const ::mavsdk::rpc::mocap::MocapResult& mocap_result(const SetAttitudePositionMocapResponse* msg);
@@ -1326,8 +1183,7 @@ SetAttitudePositionMocapResponse::SetAttitudePositionMocapResponse(const SetAtti
 }
 
 void SetAttitudePositionMocapResponse::SharedCtor() {
-  ::PROTOBUF_NAMESPACE_ID::internal::InitSCC(&scc_info_SetAttitudePositionMocapResponse_mocap_2fmocap_2eproto.base);
-  mocap_result_ = nullptr;
+mocap_result_ = nullptr;
 }
 
 SetAttitudePositionMocapResponse::~SetAttitudePositionMocapResponse() {
@@ -1350,11 +1206,6 @@ void SetAttitudePositionMocapResponse::RegisterArenaDtor(::PROTOBUF_NAMESPACE_ID
 void SetAttitudePositionMocapResponse::SetCachedSize(int size) const {
   _cached_size_.Set(size);
 }
-const SetAttitudePositionMocapResponse& SetAttitudePositionMocapResponse::default_instance() {
-  ::PROTOBUF_NAMESPACE_ID::internal::InitSCC(&::scc_info_SetAttitudePositionMocapResponse_mocap_2fmocap_2eproto.base);
-  return *internal_default_instance();
-}
-
 
 void SetAttitudePositionMocapResponse::Clear() {
 // @@protoc_insertion_point(message_clear_start:mavsdk.rpc.mocap.SetAttitudePositionMocapResponse)
@@ -1371,7 +1222,6 @@ void SetAttitudePositionMocapResponse::Clear() {
 
 const char* SetAttitudePositionMocapResponse::_InternalParse(const char* ptr, ::PROTOBUF_NAMESPACE_ID::internal::ParseContext* ctx) {
 #define CHK_(x) if (PROTOBUF_PREDICT_FALSE(!(x))) goto failure
-  ::PROTOBUF_NAMESPACE_ID::Arena* arena = GetArena(); (void)arena;
   while (!ctx->Done(&ptr)) {
     ::PROTOBUF_NAMESPACE_ID::uint32 tag;
     ptr = ::PROTOBUF_NAMESPACE_ID::internal::ReadTag(ptr, &tag);
@@ -1510,10 +1360,6 @@ void SetAttitudePositionMocapResponse::InternalSwap(SetAttitudePositionMocapResp
 
 // ===================================================================
 
-void SetOdometryRequest::InitAsDefaultInstance() {
-  ::mavsdk::rpc::mocap::_SetOdometryRequest_default_instance_._instance.get_mutable()->odometry_ = const_cast< ::mavsdk::rpc::mocap::Odometry*>(
-      ::mavsdk::rpc::mocap::Odometry::internal_default_instance());
-}
 class SetOdometryRequest::_Internal {
  public:
   static const ::mavsdk::rpc::mocap::Odometry& odometry(const SetOdometryRequest* msg);
@@ -1541,8 +1387,7 @@ SetOdometryRequest::SetOdometryRequest(const SetOdometryRequest& from)
 }
 
 void SetOdometryRequest::SharedCtor() {
-  ::PROTOBUF_NAMESPACE_ID::internal::InitSCC(&scc_info_SetOdometryRequest_mocap_2fmocap_2eproto.base);
-  odometry_ = nullptr;
+odometry_ = nullptr;
 }
 
 SetOdometryRequest::~SetOdometryRequest() {
@@ -1565,11 +1410,6 @@ void SetOdometryRequest::RegisterArenaDtor(::PROTOBUF_NAMESPACE_ID::Arena*) {
 void SetOdometryRequest::SetCachedSize(int size) const {
   _cached_size_.Set(size);
 }
-const SetOdometryRequest& SetOdometryRequest::default_instance() {
-  ::PROTOBUF_NAMESPACE_ID::internal::InitSCC(&::scc_info_SetOdometryRequest_mocap_2fmocap_2eproto.base);
-  return *internal_default_instance();
-}
-
 
 void SetOdometryRequest::Clear() {
 // @@protoc_insertion_point(message_clear_start:mavsdk.rpc.mocap.SetOdometryRequest)
@@ -1586,7 +1426,6 @@ void SetOdometryRequest::Clear() {
 
 const char* SetOdometryRequest::_InternalParse(const char* ptr, ::PROTOBUF_NAMESPACE_ID::internal::ParseContext* ctx) {
 #define CHK_(x) if (PROTOBUF_PREDICT_FALSE(!(x))) goto failure
-  ::PROTOBUF_NAMESPACE_ID::Arena* arena = GetArena(); (void)arena;
   while (!ctx->Done(&ptr)) {
     ::PROTOBUF_NAMESPACE_ID::uint32 tag;
     ptr = ::PROTOBUF_NAMESPACE_ID::internal::ReadTag(ptr, &tag);
@@ -1725,10 +1564,6 @@ void SetOdometryRequest::InternalSwap(SetOdometryRequest* other) {
 
 // ===================================================================
 
-void SetOdometryResponse::InitAsDefaultInstance() {
-  ::mavsdk::rpc::mocap::_SetOdometryResponse_default_instance_._instance.get_mutable()->mocap_result_ = const_cast< ::mavsdk::rpc::mocap::MocapResult*>(
-      ::mavsdk::rpc::mocap::MocapResult::internal_default_instance());
-}
 class SetOdometryResponse::_Internal {
  public:
   static const ::mavsdk::rpc::mocap::MocapResult& mocap_result(const SetOdometryResponse* msg);
@@ -1756,8 +1591,7 @@ SetOdometryResponse::SetOdometryResponse(const SetOdometryResponse& from)
 }
 
 void SetOdometryResponse::SharedCtor() {
-  ::PROTOBUF_NAMESPACE_ID::internal::InitSCC(&scc_info_SetOdometryResponse_mocap_2fmocap_2eproto.base);
-  mocap_result_ = nullptr;
+mocap_result_ = nullptr;
 }
 
 SetOdometryResponse::~SetOdometryResponse() {
@@ -1780,11 +1614,6 @@ void SetOdometryResponse::RegisterArenaDtor(::PROTOBUF_NAMESPACE_ID::Arena*) {
 void SetOdometryResponse::SetCachedSize(int size) const {
   _cached_size_.Set(size);
 }
-const SetOdometryResponse& SetOdometryResponse::default_instance() {
-  ::PROTOBUF_NAMESPACE_ID::internal::InitSCC(&::scc_info_SetOdometryResponse_mocap_2fmocap_2eproto.base);
-  return *internal_default_instance();
-}
-
 
 void SetOdometryResponse::Clear() {
 // @@protoc_insertion_point(message_clear_start:mavsdk.rpc.mocap.SetOdometryResponse)
@@ -1801,7 +1630,6 @@ void SetOdometryResponse::Clear() {
 
 const char* SetOdometryResponse::_InternalParse(const char* ptr, ::PROTOBUF_NAMESPACE_ID::internal::ParseContext* ctx) {
 #define CHK_(x) if (PROTOBUF_PREDICT_FALSE(!(x))) goto failure
-  ::PROTOBUF_NAMESPACE_ID::Arena* arena = GetArena(); (void)arena;
   while (!ctx->Done(&ptr)) {
     ::PROTOBUF_NAMESPACE_ID::uint32 tag;
     ptr = ::PROTOBUF_NAMESPACE_ID::internal::ReadTag(ptr, &tag);
@@ -1940,8 +1768,6 @@ void SetOdometryResponse::InternalSwap(SetOdometryResponse* other) {
 
 // ===================================================================
 
-void PositionBody::InitAsDefaultInstance() {
-}
 class PositionBody::_Internal {
  public:
 };
@@ -1962,9 +1788,10 @@ PositionBody::PositionBody(const PositionBody& from)
 }
 
 void PositionBody::SharedCtor() {
-  ::memset(&x_m_, 0, static_cast<size_t>(
-      reinterpret_cast<char*>(&z_m_) -
-      reinterpret_cast<char*>(&x_m_)) + sizeof(z_m_));
+::memset(reinterpret_cast<char*>(this) + static_cast<size_t>(
+    reinterpret_cast<char*>(&x_m_) - reinterpret_cast<char*>(this)),
+    0, static_cast<size_t>(reinterpret_cast<char*>(&z_m_) -
+    reinterpret_cast<char*>(&x_m_)) + sizeof(z_m_));
 }
 
 PositionBody::~PositionBody() {
@@ -1986,11 +1813,6 @@ void PositionBody::RegisterArenaDtor(::PROTOBUF_NAMESPACE_ID::Arena*) {
 void PositionBody::SetCachedSize(int size) const {
   _cached_size_.Set(size);
 }
-const PositionBody& PositionBody::default_instance() {
-  ::PROTOBUF_NAMESPACE_ID::internal::InitSCC(&::scc_info_PositionBody_mocap_2fmocap_2eproto.base);
-  return *internal_default_instance();
-}
-
 
 void PositionBody::Clear() {
 // @@protoc_insertion_point(message_clear_start:mavsdk.rpc.mocap.PositionBody)
@@ -2006,7 +1828,6 @@ void PositionBody::Clear() {
 
 const char* PositionBody::_InternalParse(const char* ptr, ::PROTOBUF_NAMESPACE_ID::internal::ParseContext* ctx) {
 #define CHK_(x) if (PROTOBUF_PREDICT_FALSE(!(x))) goto failure
-  ::PROTOBUF_NAMESPACE_ID::Arena* arena = GetArena(); (void)arena;
   while (!ctx->Done(&ptr)) {
     ::PROTOBUF_NAMESPACE_ID::uint32 tag;
     ptr = ::PROTOBUF_NAMESPACE_ID::internal::ReadTag(ptr, &tag);
@@ -2188,8 +2009,6 @@ void PositionBody::InternalSwap(PositionBody* other) {
 
 // ===================================================================
 
-void AngleBody::InitAsDefaultInstance() {
-}
 class AngleBody::_Internal {
  public:
 };
@@ -2210,9 +2029,10 @@ AngleBody::AngleBody(const AngleBody& from)
 }
 
 void AngleBody::SharedCtor() {
-  ::memset(&roll_rad_, 0, static_cast<size_t>(
-      reinterpret_cast<char*>(&yaw_rad_) -
-      reinterpret_cast<char*>(&roll_rad_)) + sizeof(yaw_rad_));
+::memset(reinterpret_cast<char*>(this) + static_cast<size_t>(
+    reinterpret_cast<char*>(&roll_rad_) - reinterpret_cast<char*>(this)),
+    0, static_cast<size_t>(reinterpret_cast<char*>(&yaw_rad_) -
+    reinterpret_cast<char*>(&roll_rad_)) + sizeof(yaw_rad_));
 }
 
 AngleBody::~AngleBody() {
@@ -2234,11 +2054,6 @@ void AngleBody::RegisterArenaDtor(::PROTOBUF_NAMESPACE_ID::Arena*) {
 void AngleBody::SetCachedSize(int size) const {
   _cached_size_.Set(size);
 }
-const AngleBody& AngleBody::default_instance() {
-  ::PROTOBUF_NAMESPACE_ID::internal::InitSCC(&::scc_info_AngleBody_mocap_2fmocap_2eproto.base);
-  return *internal_default_instance();
-}
-
 
 void AngleBody::Clear() {
 // @@protoc_insertion_point(message_clear_start:mavsdk.rpc.mocap.AngleBody)
@@ -2254,7 +2069,6 @@ void AngleBody::Clear() {
 
 const char* AngleBody::_InternalParse(const char* ptr, ::PROTOBUF_NAMESPACE_ID::internal::ParseContext* ctx) {
 #define CHK_(x) if (PROTOBUF_PREDICT_FALSE(!(x))) goto failure
-  ::PROTOBUF_NAMESPACE_ID::Arena* arena = GetArena(); (void)arena;
   while (!ctx->Done(&ptr)) {
     ::PROTOBUF_NAMESPACE_ID::uint32 tag;
     ptr = ::PROTOBUF_NAMESPACE_ID::internal::ReadTag(ptr, &tag);
@@ -2436,8 +2250,6 @@ void AngleBody::InternalSwap(AngleBody* other) {
 
 // ===================================================================
 
-void SpeedBody::InitAsDefaultInstance() {
-}
 class SpeedBody::_Internal {
  public:
 };
@@ -2458,9 +2270,10 @@ SpeedBody::SpeedBody(const SpeedBody& from)
 }
 
 void SpeedBody::SharedCtor() {
-  ::memset(&x_m_s_, 0, static_cast<size_t>(
-      reinterpret_cast<char*>(&z_m_s_) -
-      reinterpret_cast<char*>(&x_m_s_)) + sizeof(z_m_s_));
+::memset(reinterpret_cast<char*>(this) + static_cast<size_t>(
+    reinterpret_cast<char*>(&x_m_s_) - reinterpret_cast<char*>(this)),
+    0, static_cast<size_t>(reinterpret_cast<char*>(&z_m_s_) -
+    reinterpret_cast<char*>(&x_m_s_)) + sizeof(z_m_s_));
 }
 
 SpeedBody::~SpeedBody() {
@@ -2482,11 +2295,6 @@ void SpeedBody::RegisterArenaDtor(::PROTOBUF_NAMESPACE_ID::Arena*) {
 void SpeedBody::SetCachedSize(int size) const {
   _cached_size_.Set(size);
 }
-const SpeedBody& SpeedBody::default_instance() {
-  ::PROTOBUF_NAMESPACE_ID::internal::InitSCC(&::scc_info_SpeedBody_mocap_2fmocap_2eproto.base);
-  return *internal_default_instance();
-}
-
 
 void SpeedBody::Clear() {
 // @@protoc_insertion_point(message_clear_start:mavsdk.rpc.mocap.SpeedBody)
@@ -2502,7 +2310,6 @@ void SpeedBody::Clear() {
 
 const char* SpeedBody::_InternalParse(const char* ptr, ::PROTOBUF_NAMESPACE_ID::internal::ParseContext* ctx) {
 #define CHK_(x) if (PROTOBUF_PREDICT_FALSE(!(x))) goto failure
-  ::PROTOBUF_NAMESPACE_ID::Arena* arena = GetArena(); (void)arena;
   while (!ctx->Done(&ptr)) {
     ::PROTOBUF_NAMESPACE_ID::uint32 tag;
     ptr = ::PROTOBUF_NAMESPACE_ID::internal::ReadTag(ptr, &tag);
@@ -2684,8 +2491,6 @@ void SpeedBody::InternalSwap(SpeedBody* other) {
 
 // ===================================================================
 
-void AngularVelocityBody::InitAsDefaultInstance() {
-}
 class AngularVelocityBody::_Internal {
  public:
 };
@@ -2706,9 +2511,10 @@ AngularVelocityBody::AngularVelocityBody(const AngularVelocityBody& from)
 }
 
 void AngularVelocityBody::SharedCtor() {
-  ::memset(&roll_rad_s_, 0, static_cast<size_t>(
-      reinterpret_cast<char*>(&yaw_rad_s_) -
-      reinterpret_cast<char*>(&roll_rad_s_)) + sizeof(yaw_rad_s_));
+::memset(reinterpret_cast<char*>(this) + static_cast<size_t>(
+    reinterpret_cast<char*>(&roll_rad_s_) - reinterpret_cast<char*>(this)),
+    0, static_cast<size_t>(reinterpret_cast<char*>(&yaw_rad_s_) -
+    reinterpret_cast<char*>(&roll_rad_s_)) + sizeof(yaw_rad_s_));
 }
 
 AngularVelocityBody::~AngularVelocityBody() {
@@ -2730,11 +2536,6 @@ void AngularVelocityBody::RegisterArenaDtor(::PROTOBUF_NAMESPACE_ID::Arena*) {
 void AngularVelocityBody::SetCachedSize(int size) const {
   _cached_size_.Set(size);
 }
-const AngularVelocityBody& AngularVelocityBody::default_instance() {
-  ::PROTOBUF_NAMESPACE_ID::internal::InitSCC(&::scc_info_AngularVelocityBody_mocap_2fmocap_2eproto.base);
-  return *internal_default_instance();
-}
-
 
 void AngularVelocityBody::Clear() {
 // @@protoc_insertion_point(message_clear_start:mavsdk.rpc.mocap.AngularVelocityBody)
@@ -2750,7 +2551,6 @@ void AngularVelocityBody::Clear() {
 
 const char* AngularVelocityBody::_InternalParse(const char* ptr, ::PROTOBUF_NAMESPACE_ID::internal::ParseContext* ctx) {
 #define CHK_(x) if (PROTOBUF_PREDICT_FALSE(!(x))) goto failure
-  ::PROTOBUF_NAMESPACE_ID::Arena* arena = GetArena(); (void)arena;
   while (!ctx->Done(&ptr)) {
     ::PROTOBUF_NAMESPACE_ID::uint32 tag;
     ptr = ::PROTOBUF_NAMESPACE_ID::internal::ReadTag(ptr, &tag);
@@ -2932,8 +2732,6 @@ void AngularVelocityBody::InternalSwap(AngularVelocityBody* other) {
 
 // ===================================================================
 
-void Covariance::InitAsDefaultInstance() {
-}
 class Covariance::_Internal {
  public:
 };
@@ -2974,11 +2772,6 @@ void Covariance::RegisterArenaDtor(::PROTOBUF_NAMESPACE_ID::Arena*) {
 void Covariance::SetCachedSize(int size) const {
   _cached_size_.Set(size);
 }
-const Covariance& Covariance::default_instance() {
-  ::PROTOBUF_NAMESPACE_ID::internal::InitSCC(&::scc_info_Covariance_mocap_2fmocap_2eproto.base);
-  return *internal_default_instance();
-}
-
 
 void Covariance::Clear() {
 // @@protoc_insertion_point(message_clear_start:mavsdk.rpc.mocap.Covariance)
@@ -2992,7 +2785,6 @@ void Covariance::Clear() {
 
 const char* Covariance::_InternalParse(const char* ptr, ::PROTOBUF_NAMESPACE_ID::internal::ParseContext* ctx) {
 #define CHK_(x) if (PROTOBUF_PREDICT_FALSE(!(x))) goto failure
-  ::PROTOBUF_NAMESPACE_ID::Arena* arena = GetArena(); (void)arena;
   while (!ctx->Done(&ptr)) {
     ::PROTOBUF_NAMESPACE_ID::uint32 tag;
     ptr = ::PROTOBUF_NAMESPACE_ID::internal::ReadTag(ptr, &tag);
@@ -3137,8 +2929,6 @@ void Covariance::InternalSwap(Covariance* other) {
 
 // ===================================================================
 
-void Quaternion::InitAsDefaultInstance() {
-}
 class Quaternion::_Internal {
  public:
 };
@@ -3159,9 +2949,10 @@ Quaternion::Quaternion(const Quaternion& from)
 }
 
 void Quaternion::SharedCtor() {
-  ::memset(&w_, 0, static_cast<size_t>(
-      reinterpret_cast<char*>(&z_) -
-      reinterpret_cast<char*>(&w_)) + sizeof(z_));
+::memset(reinterpret_cast<char*>(this) + static_cast<size_t>(
+    reinterpret_cast<char*>(&w_) - reinterpret_cast<char*>(this)),
+    0, static_cast<size_t>(reinterpret_cast<char*>(&z_) -
+    reinterpret_cast<char*>(&w_)) + sizeof(z_));
 }
 
 Quaternion::~Quaternion() {
@@ -3183,11 +2974,6 @@ void Quaternion::RegisterArenaDtor(::PROTOBUF_NAMESPACE_ID::Arena*) {
 void Quaternion::SetCachedSize(int size) const {
   _cached_size_.Set(size);
 }
-const Quaternion& Quaternion::default_instance() {
-  ::PROTOBUF_NAMESPACE_ID::internal::InitSCC(&::scc_info_Quaternion_mocap_2fmocap_2eproto.base);
-  return *internal_default_instance();
-}
-
 
 void Quaternion::Clear() {
 // @@protoc_insertion_point(message_clear_start:mavsdk.rpc.mocap.Quaternion)
@@ -3203,7 +2989,6 @@ void Quaternion::Clear() {
 
 const char* Quaternion::_InternalParse(const char* ptr, ::PROTOBUF_NAMESPACE_ID::internal::ParseContext* ctx) {
 #define CHK_(x) if (PROTOBUF_PREDICT_FALSE(!(x))) goto failure
-  ::PROTOBUF_NAMESPACE_ID::Arena* arena = GetArena(); (void)arena;
   while (!ctx->Done(&ptr)) {
     ::PROTOBUF_NAMESPACE_ID::uint32 tag;
     ptr = ::PROTOBUF_NAMESPACE_ID::internal::ReadTag(ptr, &tag);
@@ -3406,14 +3191,6 @@ void Quaternion::InternalSwap(Quaternion* other) {
 
 // ===================================================================
 
-void VisionPositionEstimate::InitAsDefaultInstance() {
-  ::mavsdk::rpc::mocap::_VisionPositionEstimate_default_instance_._instance.get_mutable()->position_body_ = const_cast< ::mavsdk::rpc::mocap::PositionBody*>(
-      ::mavsdk::rpc::mocap::PositionBody::internal_default_instance());
-  ::mavsdk::rpc::mocap::_VisionPositionEstimate_default_instance_._instance.get_mutable()->angle_body_ = const_cast< ::mavsdk::rpc::mocap::AngleBody*>(
-      ::mavsdk::rpc::mocap::AngleBody::internal_default_instance());
-  ::mavsdk::rpc::mocap::_VisionPositionEstimate_default_instance_._instance.get_mutable()->pose_covariance_ = const_cast< ::mavsdk::rpc::mocap::Covariance*>(
-      ::mavsdk::rpc::mocap::Covariance::internal_default_instance());
-}
 class VisionPositionEstimate::_Internal {
  public:
   static const ::mavsdk::rpc::mocap::PositionBody& position_body(const VisionPositionEstimate* msg);
@@ -3462,10 +3239,10 @@ VisionPositionEstimate::VisionPositionEstimate(const VisionPositionEstimate& fro
 }
 
 void VisionPositionEstimate::SharedCtor() {
-  ::PROTOBUF_NAMESPACE_ID::internal::InitSCC(&scc_info_VisionPositionEstimate_mocap_2fmocap_2eproto.base);
-  ::memset(&position_body_, 0, static_cast<size_t>(
-      reinterpret_cast<char*>(&time_usec_) -
-      reinterpret_cast<char*>(&position_body_)) + sizeof(time_usec_));
+::memset(reinterpret_cast<char*>(this) + static_cast<size_t>(
+    reinterpret_cast<char*>(&position_body_) - reinterpret_cast<char*>(this)),
+    0, static_cast<size_t>(reinterpret_cast<char*>(&time_usec_) -
+    reinterpret_cast<char*>(&position_body_)) + sizeof(time_usec_));
 }
 
 VisionPositionEstimate::~VisionPositionEstimate() {
@@ -3490,11 +3267,6 @@ void VisionPositionEstimate::RegisterArenaDtor(::PROTOBUF_NAMESPACE_ID::Arena*) 
 void VisionPositionEstimate::SetCachedSize(int size) const {
   _cached_size_.Set(size);
 }
-const VisionPositionEstimate& VisionPositionEstimate::default_instance() {
-  ::PROTOBUF_NAMESPACE_ID::internal::InitSCC(&::scc_info_VisionPositionEstimate_mocap_2fmocap_2eproto.base);
-  return *internal_default_instance();
-}
-
 
 void VisionPositionEstimate::Clear() {
 // @@protoc_insertion_point(message_clear_start:mavsdk.rpc.mocap.VisionPositionEstimate)
@@ -3520,7 +3292,6 @@ void VisionPositionEstimate::Clear() {
 
 const char* VisionPositionEstimate::_InternalParse(const char* ptr, ::PROTOBUF_NAMESPACE_ID::internal::ParseContext* ctx) {
 #define CHK_(x) if (PROTOBUF_PREDICT_FALSE(!(x))) goto failure
-  ::PROTOBUF_NAMESPACE_ID::Arena* arena = GetArena(); (void)arena;
   while (!ctx->Done(&ptr)) {
     ::PROTOBUF_NAMESPACE_ID::uint32 tag;
     ptr = ::PROTOBUF_NAMESPACE_ID::internal::ReadTag(ptr, &tag);
@@ -3737,14 +3508,6 @@ void VisionPositionEstimate::InternalSwap(VisionPositionEstimate* other) {
 
 // ===================================================================
 
-void AttitudePositionMocap::InitAsDefaultInstance() {
-  ::mavsdk::rpc::mocap::_AttitudePositionMocap_default_instance_._instance.get_mutable()->q_ = const_cast< ::mavsdk::rpc::mocap::Quaternion*>(
-      ::mavsdk::rpc::mocap::Quaternion::internal_default_instance());
-  ::mavsdk::rpc::mocap::_AttitudePositionMocap_default_instance_._instance.get_mutable()->position_body_ = const_cast< ::mavsdk::rpc::mocap::PositionBody*>(
-      ::mavsdk::rpc::mocap::PositionBody::internal_default_instance());
-  ::mavsdk::rpc::mocap::_AttitudePositionMocap_default_instance_._instance.get_mutable()->pose_covariance_ = const_cast< ::mavsdk::rpc::mocap::Covariance*>(
-      ::mavsdk::rpc::mocap::Covariance::internal_default_instance());
-}
 class AttitudePositionMocap::_Internal {
  public:
   static const ::mavsdk::rpc::mocap::Quaternion& q(const AttitudePositionMocap* msg);
@@ -3793,10 +3556,10 @@ AttitudePositionMocap::AttitudePositionMocap(const AttitudePositionMocap& from)
 }
 
 void AttitudePositionMocap::SharedCtor() {
-  ::PROTOBUF_NAMESPACE_ID::internal::InitSCC(&scc_info_AttitudePositionMocap_mocap_2fmocap_2eproto.base);
-  ::memset(&q_, 0, static_cast<size_t>(
-      reinterpret_cast<char*>(&time_usec_) -
-      reinterpret_cast<char*>(&q_)) + sizeof(time_usec_));
+::memset(reinterpret_cast<char*>(this) + static_cast<size_t>(
+    reinterpret_cast<char*>(&q_) - reinterpret_cast<char*>(this)),
+    0, static_cast<size_t>(reinterpret_cast<char*>(&time_usec_) -
+    reinterpret_cast<char*>(&q_)) + sizeof(time_usec_));
 }
 
 AttitudePositionMocap::~AttitudePositionMocap() {
@@ -3821,11 +3584,6 @@ void AttitudePositionMocap::RegisterArenaDtor(::PROTOBUF_NAMESPACE_ID::Arena*) {
 void AttitudePositionMocap::SetCachedSize(int size) const {
   _cached_size_.Set(size);
 }
-const AttitudePositionMocap& AttitudePositionMocap::default_instance() {
-  ::PROTOBUF_NAMESPACE_ID::internal::InitSCC(&::scc_info_AttitudePositionMocap_mocap_2fmocap_2eproto.base);
-  return *internal_default_instance();
-}
-
 
 void AttitudePositionMocap::Clear() {
 // @@protoc_insertion_point(message_clear_start:mavsdk.rpc.mocap.AttitudePositionMocap)
@@ -3851,7 +3609,6 @@ void AttitudePositionMocap::Clear() {
 
 const char* AttitudePositionMocap::_InternalParse(const char* ptr, ::PROTOBUF_NAMESPACE_ID::internal::ParseContext* ctx) {
 #define CHK_(x) if (PROTOBUF_PREDICT_FALSE(!(x))) goto failure
-  ::PROTOBUF_NAMESPACE_ID::Arena* arena = GetArena(); (void)arena;
   while (!ctx->Done(&ptr)) {
     ::PROTOBUF_NAMESPACE_ID::uint32 tag;
     ptr = ::PROTOBUF_NAMESPACE_ID::internal::ReadTag(ptr, &tag);
@@ -4068,20 +3825,6 @@ void AttitudePositionMocap::InternalSwap(AttitudePositionMocap* other) {
 
 // ===================================================================
 
-void Odometry::InitAsDefaultInstance() {
-  ::mavsdk::rpc::mocap::_Odometry_default_instance_._instance.get_mutable()->position_body_ = const_cast< ::mavsdk::rpc::mocap::PositionBody*>(
-      ::mavsdk::rpc::mocap::PositionBody::internal_default_instance());
-  ::mavsdk::rpc::mocap::_Odometry_default_instance_._instance.get_mutable()->q_ = const_cast< ::mavsdk::rpc::mocap::Quaternion*>(
-      ::mavsdk::rpc::mocap::Quaternion::internal_default_instance());
-  ::mavsdk::rpc::mocap::_Odometry_default_instance_._instance.get_mutable()->speed_body_ = const_cast< ::mavsdk::rpc::mocap::SpeedBody*>(
-      ::mavsdk::rpc::mocap::SpeedBody::internal_default_instance());
-  ::mavsdk::rpc::mocap::_Odometry_default_instance_._instance.get_mutable()->angular_velocity_body_ = const_cast< ::mavsdk::rpc::mocap::AngularVelocityBody*>(
-      ::mavsdk::rpc::mocap::AngularVelocityBody::internal_default_instance());
-  ::mavsdk::rpc::mocap::_Odometry_default_instance_._instance.get_mutable()->pose_covariance_ = const_cast< ::mavsdk::rpc::mocap::Covariance*>(
-      ::mavsdk::rpc::mocap::Covariance::internal_default_instance());
-  ::mavsdk::rpc::mocap::_Odometry_default_instance_._instance.get_mutable()->velocity_covariance_ = const_cast< ::mavsdk::rpc::mocap::Covariance*>(
-      ::mavsdk::rpc::mocap::Covariance::internal_default_instance());
-}
 class Odometry::_Internal {
  public:
   static const ::mavsdk::rpc::mocap::PositionBody& position_body(const Odometry* msg);
@@ -4162,10 +3905,10 @@ Odometry::Odometry(const Odometry& from)
 }
 
 void Odometry::SharedCtor() {
-  ::PROTOBUF_NAMESPACE_ID::internal::InitSCC(&scc_info_Odometry_mocap_2fmocap_2eproto.base);
-  ::memset(&position_body_, 0, static_cast<size_t>(
-      reinterpret_cast<char*>(&frame_id_) -
-      reinterpret_cast<char*>(&position_body_)) + sizeof(frame_id_));
+::memset(reinterpret_cast<char*>(this) + static_cast<size_t>(
+    reinterpret_cast<char*>(&position_body_) - reinterpret_cast<char*>(this)),
+    0, static_cast<size_t>(reinterpret_cast<char*>(&frame_id_) -
+    reinterpret_cast<char*>(&position_body_)) + sizeof(frame_id_));
 }
 
 Odometry::~Odometry() {
@@ -4193,11 +3936,6 @@ void Odometry::RegisterArenaDtor(::PROTOBUF_NAMESPACE_ID::Arena*) {
 void Odometry::SetCachedSize(int size) const {
   _cached_size_.Set(size);
 }
-const Odometry& Odometry::default_instance() {
-  ::PROTOBUF_NAMESPACE_ID::internal::InitSCC(&::scc_info_Odometry_mocap_2fmocap_2eproto.base);
-  return *internal_default_instance();
-}
-
 
 void Odometry::Clear() {
 // @@protoc_insertion_point(message_clear_start:mavsdk.rpc.mocap.Odometry)
@@ -4237,7 +3975,6 @@ void Odometry::Clear() {
 
 const char* Odometry::_InternalParse(const char* ptr, ::PROTOBUF_NAMESPACE_ID::internal::ParseContext* ctx) {
 #define CHK_(x) if (PROTOBUF_PREDICT_FALSE(!(x))) goto failure
-  ::PROTOBUF_NAMESPACE_ID::Arena* arena = GetArena(); (void)arena;
   while (!ctx->Done(&ptr)) {
     ::PROTOBUF_NAMESPACE_ID::uint32 tag;
     ptr = ::PROTOBUF_NAMESPACE_ID::internal::ReadTag(ptr, &tag);
@@ -4553,8 +4290,6 @@ void Odometry::InternalSwap(Odometry* other) {
 
 // ===================================================================
 
-void MocapResult::InitAsDefaultInstance() {
-}
 class MocapResult::_Internal {
  public:
 };
@@ -4570,7 +4305,7 @@ MocapResult::MocapResult(const MocapResult& from)
   _internal_metadata_.MergeFrom<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>(from._internal_metadata_);
   result_str_.UnsafeSetDefault(&::PROTOBUF_NAMESPACE_ID::internal::GetEmptyStringAlreadyInited());
   if (!from._internal_result_str().empty()) {
-    result_str_.Set(&::PROTOBUF_NAMESPACE_ID::internal::GetEmptyStringAlreadyInited(), from._internal_result_str(),
+    result_str_.Set(::PROTOBUF_NAMESPACE_ID::internal::ArenaStringPtr::EmptyDefault{}, from._internal_result_str(), 
       GetArena());
   }
   result_ = from.result_;
@@ -4578,9 +4313,8 @@ MocapResult::MocapResult(const MocapResult& from)
 }
 
 void MocapResult::SharedCtor() {
-  ::PROTOBUF_NAMESPACE_ID::internal::InitSCC(&scc_info_MocapResult_mocap_2fmocap_2eproto.base);
-  result_str_.UnsafeSetDefault(&::PROTOBUF_NAMESPACE_ID::internal::GetEmptyStringAlreadyInited());
-  result_ = 0;
+result_str_.UnsafeSetDefault(&::PROTOBUF_NAMESPACE_ID::internal::GetEmptyStringAlreadyInited());
+result_ = 0;
 }
 
 MocapResult::~MocapResult() {
@@ -4603,11 +4337,6 @@ void MocapResult::RegisterArenaDtor(::PROTOBUF_NAMESPACE_ID::Arena*) {
 void MocapResult::SetCachedSize(int size) const {
   _cached_size_.Set(size);
 }
-const MocapResult& MocapResult::default_instance() {
-  ::PROTOBUF_NAMESPACE_ID::internal::InitSCC(&::scc_info_MocapResult_mocap_2fmocap_2eproto.base);
-  return *internal_default_instance();
-}
-
 
 void MocapResult::Clear() {
 // @@protoc_insertion_point(message_clear_start:mavsdk.rpc.mocap.MocapResult)
@@ -4615,14 +4344,13 @@ void MocapResult::Clear() {
   // Prevent compiler warnings about cached_has_bits being unused
   (void) cached_has_bits;
 
-  result_str_.ClearToEmpty(&::PROTOBUF_NAMESPACE_ID::internal::GetEmptyStringAlreadyInited(), GetArena());
+  result_str_.ClearToEmpty();
   result_ = 0;
   _internal_metadata_.Clear<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>();
 }
 
 const char* MocapResult::_InternalParse(const char* ptr, ::PROTOBUF_NAMESPACE_ID::internal::ParseContext* ctx) {
 #define CHK_(x) if (PROTOBUF_PREDICT_FALSE(!(x))) goto failure
-  ::PROTOBUF_NAMESPACE_ID::Arena* arena = GetArena(); (void)arena;
   while (!ctx->Done(&ptr)) {
     ::PROTOBUF_NAMESPACE_ID::uint32 tag;
     ptr = ::PROTOBUF_NAMESPACE_ID::internal::ReadTag(ptr, &tag);

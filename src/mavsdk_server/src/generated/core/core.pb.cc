@@ -14,124 +14,87 @@
 #include <google/protobuf/wire_format.h>
 // @@protoc_insertion_point(includes)
 #include <google/protobuf/port_def.inc>
-extern PROTOBUF_INTERNAL_EXPORT_core_2fcore_2eproto ::PROTOBUF_NAMESPACE_ID::internal::SCCInfo<0> scc_info_ConnectionState_core_2fcore_2eproto;
-extern PROTOBUF_INTERNAL_EXPORT_core_2fcore_2eproto ::PROTOBUF_NAMESPACE_ID::internal::SCCInfo<0> scc_info_PluginInfo_core_2fcore_2eproto;
+
+PROTOBUF_PRAGMA_INIT_SEG
 namespace mavsdk {
 namespace rpc {
 namespace core {
-class SubscribeConnectionStateRequestDefaultTypeInternal {
- public:
-  ::PROTOBUF_NAMESPACE_ID::internal::ExplicitlyConstructed<SubscribeConnectionStateRequest> _instance;
-} _SubscribeConnectionStateRequest_default_instance_;
-class ConnectionStateResponseDefaultTypeInternal {
- public:
-  ::PROTOBUF_NAMESPACE_ID::internal::ExplicitlyConstructed<ConnectionStateResponse> _instance;
-} _ConnectionStateResponse_default_instance_;
-class ListRunningPluginsRequestDefaultTypeInternal {
- public:
-  ::PROTOBUF_NAMESPACE_ID::internal::ExplicitlyConstructed<ListRunningPluginsRequest> _instance;
-} _ListRunningPluginsRequest_default_instance_;
-class ListRunningPluginsResponseDefaultTypeInternal {
- public:
-  ::PROTOBUF_NAMESPACE_ID::internal::ExplicitlyConstructed<ListRunningPluginsResponse> _instance;
-} _ListRunningPluginsResponse_default_instance_;
-class ConnectionStateDefaultTypeInternal {
- public:
-  ::PROTOBUF_NAMESPACE_ID::internal::ExplicitlyConstructed<ConnectionState> _instance;
-} _ConnectionState_default_instance_;
-class PluginInfoDefaultTypeInternal {
- public:
-  ::PROTOBUF_NAMESPACE_ID::internal::ExplicitlyConstructed<PluginInfo> _instance;
-} _PluginInfo_default_instance_;
+constexpr SubscribeConnectionStateRequest::SubscribeConnectionStateRequest(
+  ::PROTOBUF_NAMESPACE_ID::internal::ConstantInitialized){}
+struct SubscribeConnectionStateRequestDefaultTypeInternal {
+  constexpr SubscribeConnectionStateRequestDefaultTypeInternal()
+    : _instance(::PROTOBUF_NAMESPACE_ID::internal::ConstantInitialized{}) {}
+  ~SubscribeConnectionStateRequestDefaultTypeInternal() {}
+  union {
+    SubscribeConnectionStateRequest _instance;
+  };
+};
+PROTOBUF_ATTRIBUTE_NO_DESTROY PROTOBUF_CONSTINIT SubscribeConnectionStateRequestDefaultTypeInternal _SubscribeConnectionStateRequest_default_instance_;
+constexpr ConnectionStateResponse::ConnectionStateResponse(
+  ::PROTOBUF_NAMESPACE_ID::internal::ConstantInitialized)
+  : connection_state_(nullptr){}
+struct ConnectionStateResponseDefaultTypeInternal {
+  constexpr ConnectionStateResponseDefaultTypeInternal()
+    : _instance(::PROTOBUF_NAMESPACE_ID::internal::ConstantInitialized{}) {}
+  ~ConnectionStateResponseDefaultTypeInternal() {}
+  union {
+    ConnectionStateResponse _instance;
+  };
+};
+PROTOBUF_ATTRIBUTE_NO_DESTROY PROTOBUF_CONSTINIT ConnectionStateResponseDefaultTypeInternal _ConnectionStateResponse_default_instance_;
+constexpr ListRunningPluginsRequest::ListRunningPluginsRequest(
+  ::PROTOBUF_NAMESPACE_ID::internal::ConstantInitialized){}
+struct ListRunningPluginsRequestDefaultTypeInternal {
+  constexpr ListRunningPluginsRequestDefaultTypeInternal()
+    : _instance(::PROTOBUF_NAMESPACE_ID::internal::ConstantInitialized{}) {}
+  ~ListRunningPluginsRequestDefaultTypeInternal() {}
+  union {
+    ListRunningPluginsRequest _instance;
+  };
+};
+PROTOBUF_ATTRIBUTE_NO_DESTROY PROTOBUF_CONSTINIT ListRunningPluginsRequestDefaultTypeInternal _ListRunningPluginsRequest_default_instance_;
+constexpr ListRunningPluginsResponse::ListRunningPluginsResponse(
+  ::PROTOBUF_NAMESPACE_ID::internal::ConstantInitialized)
+  : plugin_info_(){}
+struct ListRunningPluginsResponseDefaultTypeInternal {
+  constexpr ListRunningPluginsResponseDefaultTypeInternal()
+    : _instance(::PROTOBUF_NAMESPACE_ID::internal::ConstantInitialized{}) {}
+  ~ListRunningPluginsResponseDefaultTypeInternal() {}
+  union {
+    ListRunningPluginsResponse _instance;
+  };
+};
+PROTOBUF_ATTRIBUTE_NO_DESTROY PROTOBUF_CONSTINIT ListRunningPluginsResponseDefaultTypeInternal _ListRunningPluginsResponse_default_instance_;
+constexpr ConnectionState::ConnectionState(
+  ::PROTOBUF_NAMESPACE_ID::internal::ConstantInitialized)
+  : uuid_(PROTOBUF_ULONGLONG(0))
+  , is_connected_(false){}
+struct ConnectionStateDefaultTypeInternal {
+  constexpr ConnectionStateDefaultTypeInternal()
+    : _instance(::PROTOBUF_NAMESPACE_ID::internal::ConstantInitialized{}) {}
+  ~ConnectionStateDefaultTypeInternal() {}
+  union {
+    ConnectionState _instance;
+  };
+};
+PROTOBUF_ATTRIBUTE_NO_DESTROY PROTOBUF_CONSTINIT ConnectionStateDefaultTypeInternal _ConnectionState_default_instance_;
+constexpr PluginInfo::PluginInfo(
+  ::PROTOBUF_NAMESPACE_ID::internal::ConstantInitialized)
+  : name_(&::PROTOBUF_NAMESPACE_ID::internal::fixed_address_empty_string)
+  , address_(&::PROTOBUF_NAMESPACE_ID::internal::fixed_address_empty_string)
+  , port_(0){}
+struct PluginInfoDefaultTypeInternal {
+  constexpr PluginInfoDefaultTypeInternal()
+    : _instance(::PROTOBUF_NAMESPACE_ID::internal::ConstantInitialized{}) {}
+  ~PluginInfoDefaultTypeInternal() {}
+  union {
+    PluginInfo _instance;
+  };
+};
+PROTOBUF_ATTRIBUTE_NO_DESTROY PROTOBUF_CONSTINIT PluginInfoDefaultTypeInternal _PluginInfo_default_instance_;
 }  // namespace core
 }  // namespace rpc
 }  // namespace mavsdk
-static void InitDefaultsscc_info_ConnectionState_core_2fcore_2eproto() {
-  GOOGLE_PROTOBUF_VERIFY_VERSION;
-
-  {
-    void* ptr = &::mavsdk::rpc::core::_ConnectionState_default_instance_;
-    new (ptr) ::mavsdk::rpc::core::ConnectionState();
-    ::PROTOBUF_NAMESPACE_ID::internal::OnShutdownDestroyMessage(ptr);
-  }
-  ::mavsdk::rpc::core::ConnectionState::InitAsDefaultInstance();
-}
-
-::PROTOBUF_NAMESPACE_ID::internal::SCCInfo<0> scc_info_ConnectionState_core_2fcore_2eproto =
-    {{ATOMIC_VAR_INIT(::PROTOBUF_NAMESPACE_ID::internal::SCCInfoBase::kUninitialized), 0, 0, InitDefaultsscc_info_ConnectionState_core_2fcore_2eproto}, {}};
-
-static void InitDefaultsscc_info_ConnectionStateResponse_core_2fcore_2eproto() {
-  GOOGLE_PROTOBUF_VERIFY_VERSION;
-
-  {
-    void* ptr = &::mavsdk::rpc::core::_ConnectionStateResponse_default_instance_;
-    new (ptr) ::mavsdk::rpc::core::ConnectionStateResponse();
-    ::PROTOBUF_NAMESPACE_ID::internal::OnShutdownDestroyMessage(ptr);
-  }
-  ::mavsdk::rpc::core::ConnectionStateResponse::InitAsDefaultInstance();
-}
-
-::PROTOBUF_NAMESPACE_ID::internal::SCCInfo<1> scc_info_ConnectionStateResponse_core_2fcore_2eproto =
-    {{ATOMIC_VAR_INIT(::PROTOBUF_NAMESPACE_ID::internal::SCCInfoBase::kUninitialized), 1, 0, InitDefaultsscc_info_ConnectionStateResponse_core_2fcore_2eproto}, {
-      &scc_info_ConnectionState_core_2fcore_2eproto.base,}};
-
-static void InitDefaultsscc_info_ListRunningPluginsRequest_core_2fcore_2eproto() {
-  GOOGLE_PROTOBUF_VERIFY_VERSION;
-
-  {
-    void* ptr = &::mavsdk::rpc::core::_ListRunningPluginsRequest_default_instance_;
-    new (ptr) ::mavsdk::rpc::core::ListRunningPluginsRequest();
-    ::PROTOBUF_NAMESPACE_ID::internal::OnShutdownDestroyMessage(ptr);
-  }
-  ::mavsdk::rpc::core::ListRunningPluginsRequest::InitAsDefaultInstance();
-}
-
-::PROTOBUF_NAMESPACE_ID::internal::SCCInfo<0> scc_info_ListRunningPluginsRequest_core_2fcore_2eproto =
-    {{ATOMIC_VAR_INIT(::PROTOBUF_NAMESPACE_ID::internal::SCCInfoBase::kUninitialized), 0, 0, InitDefaultsscc_info_ListRunningPluginsRequest_core_2fcore_2eproto}, {}};
-
-static void InitDefaultsscc_info_ListRunningPluginsResponse_core_2fcore_2eproto() {
-  GOOGLE_PROTOBUF_VERIFY_VERSION;
-
-  {
-    void* ptr = &::mavsdk::rpc::core::_ListRunningPluginsResponse_default_instance_;
-    new (ptr) ::mavsdk::rpc::core::ListRunningPluginsResponse();
-    ::PROTOBUF_NAMESPACE_ID::internal::OnShutdownDestroyMessage(ptr);
-  }
-  ::mavsdk::rpc::core::ListRunningPluginsResponse::InitAsDefaultInstance();
-}
-
-::PROTOBUF_NAMESPACE_ID::internal::SCCInfo<1> scc_info_ListRunningPluginsResponse_core_2fcore_2eproto =
-    {{ATOMIC_VAR_INIT(::PROTOBUF_NAMESPACE_ID::internal::SCCInfoBase::kUninitialized), 1, 0, InitDefaultsscc_info_ListRunningPluginsResponse_core_2fcore_2eproto}, {
-      &scc_info_PluginInfo_core_2fcore_2eproto.base,}};
-
-static void InitDefaultsscc_info_PluginInfo_core_2fcore_2eproto() {
-  GOOGLE_PROTOBUF_VERIFY_VERSION;
-
-  {
-    void* ptr = &::mavsdk::rpc::core::_PluginInfo_default_instance_;
-    new (ptr) ::mavsdk::rpc::core::PluginInfo();
-    ::PROTOBUF_NAMESPACE_ID::internal::OnShutdownDestroyMessage(ptr);
-  }
-  ::mavsdk::rpc::core::PluginInfo::InitAsDefaultInstance();
-}
-
-::PROTOBUF_NAMESPACE_ID::internal::SCCInfo<0> scc_info_PluginInfo_core_2fcore_2eproto =
-    {{ATOMIC_VAR_INIT(::PROTOBUF_NAMESPACE_ID::internal::SCCInfoBase::kUninitialized), 0, 0, InitDefaultsscc_info_PluginInfo_core_2fcore_2eproto}, {}};
-
-static void InitDefaultsscc_info_SubscribeConnectionStateRequest_core_2fcore_2eproto() {
-  GOOGLE_PROTOBUF_VERIFY_VERSION;
-
-  {
-    void* ptr = &::mavsdk::rpc::core::_SubscribeConnectionStateRequest_default_instance_;
-    new (ptr) ::mavsdk::rpc::core::SubscribeConnectionStateRequest();
-    ::PROTOBUF_NAMESPACE_ID::internal::OnShutdownDestroyMessage(ptr);
-  }
-  ::mavsdk::rpc::core::SubscribeConnectionStateRequest::InitAsDefaultInstance();
-}
-
-::PROTOBUF_NAMESPACE_ID::internal::SCCInfo<0> scc_info_SubscribeConnectionStateRequest_core_2fcore_2eproto =
-    {{ATOMIC_VAR_INIT(::PROTOBUF_NAMESPACE_ID::internal::SCCInfoBase::kUninitialized), 0, 0, InitDefaultsscc_info_SubscribeConnectionStateRequest_core_2fcore_2eproto}, {}};
-
 static ::PROTOBUF_NAMESPACE_ID::Metadata file_level_metadata_core_2fcore_2eproto[6];
 static constexpr ::PROTOBUF_NAMESPACE_ID::EnumDescriptor const** file_level_enum_descriptors_core_2fcore_2eproto = nullptr;
 static constexpr ::PROTOBUF_NAMESPACE_ID::ServiceDescriptor const** file_level_service_descriptors_core_2fcore_2eproto = nullptr;
@@ -212,34 +175,27 @@ const char descriptor_table_protodef_core_2fcore_2eproto[] PROTOBUF_SECTION_VARI
   "ore.ListRunningPluginsResponse\"\000B\033\n\016io.m"
   "avsdk.coreB\tCoreProtob\006proto3"
   ;
-static const ::PROTOBUF_NAMESPACE_ID::internal::DescriptorTable*const descriptor_table_core_2fcore_2eproto_deps[1] = {
-};
-static ::PROTOBUF_NAMESPACE_ID::internal::SCCInfoBase*const descriptor_table_core_2fcore_2eproto_sccs[6] = {
-  &scc_info_ConnectionState_core_2fcore_2eproto.base,
-  &scc_info_ConnectionStateResponse_core_2fcore_2eproto.base,
-  &scc_info_ListRunningPluginsRequest_core_2fcore_2eproto.base,
-  &scc_info_ListRunningPluginsResponse_core_2fcore_2eproto.base,
-  &scc_info_PluginInfo_core_2fcore_2eproto.base,
-  &scc_info_SubscribeConnectionStateRequest_core_2fcore_2eproto.base,
-};
 static ::PROTOBUF_NAMESPACE_ID::internal::once_flag descriptor_table_core_2fcore_2eproto_once;
 const ::PROTOBUF_NAMESPACE_ID::internal::DescriptorTable descriptor_table_core_2fcore_2eproto = {
-  false, false, descriptor_table_protodef_core_2fcore_2eproto, "core/core.proto", 669,
-  &descriptor_table_core_2fcore_2eproto_once, descriptor_table_core_2fcore_2eproto_sccs, descriptor_table_core_2fcore_2eproto_deps, 6, 0,
+  false, false, 669, descriptor_table_protodef_core_2fcore_2eproto, "core/core.proto", 
+  &descriptor_table_core_2fcore_2eproto_once, nullptr, 0, 6,
   schemas, file_default_instances, TableStruct_core_2fcore_2eproto::offsets,
-  file_level_metadata_core_2fcore_2eproto, 6, file_level_enum_descriptors_core_2fcore_2eproto, file_level_service_descriptors_core_2fcore_2eproto,
+  file_level_metadata_core_2fcore_2eproto, file_level_enum_descriptors_core_2fcore_2eproto, file_level_service_descriptors_core_2fcore_2eproto,
 };
+PROTOBUF_ATTRIBUTE_WEAK ::PROTOBUF_NAMESPACE_ID::Metadata
+descriptor_table_core_2fcore_2eproto_metadata_getter(int index) {
+  ::PROTOBUF_NAMESPACE_ID::internal::AssignDescriptors(&descriptor_table_core_2fcore_2eproto);
+  return descriptor_table_core_2fcore_2eproto.file_level_metadata[index];
+}
 
 // Force running AddDescriptors() at dynamic initialization time.
-static bool dynamic_init_dummy_core_2fcore_2eproto = (static_cast<void>(::PROTOBUF_NAMESPACE_ID::internal::AddDescriptors(&descriptor_table_core_2fcore_2eproto)), true);
+PROTOBUF_ATTRIBUTE_INIT_PRIORITY static ::PROTOBUF_NAMESPACE_ID::internal::AddDescriptorsRunner dynamic_init_dummy_core_2fcore_2eproto(&descriptor_table_core_2fcore_2eproto);
 namespace mavsdk {
 namespace rpc {
 namespace core {
 
 // ===================================================================
 
-void SubscribeConnectionStateRequest::InitAsDefaultInstance() {
-}
 class SubscribeConnectionStateRequest::_Internal {
  public:
 };
@@ -278,11 +234,6 @@ void SubscribeConnectionStateRequest::RegisterArenaDtor(::PROTOBUF_NAMESPACE_ID:
 void SubscribeConnectionStateRequest::SetCachedSize(int size) const {
   _cached_size_.Set(size);
 }
-const SubscribeConnectionStateRequest& SubscribeConnectionStateRequest::default_instance() {
-  ::PROTOBUF_NAMESPACE_ID::internal::InitSCC(&::scc_info_SubscribeConnectionStateRequest_core_2fcore_2eproto.base);
-  return *internal_default_instance();
-}
-
 
 void SubscribeConnectionStateRequest::Clear() {
 // @@protoc_insertion_point(message_clear_start:mavsdk.rpc.core.SubscribeConnectionStateRequest)
@@ -295,7 +246,6 @@ void SubscribeConnectionStateRequest::Clear() {
 
 const char* SubscribeConnectionStateRequest::_InternalParse(const char* ptr, ::PROTOBUF_NAMESPACE_ID::internal::ParseContext* ctx) {
 #define CHK_(x) if (PROTOBUF_PREDICT_FALSE(!(x))) goto failure
-  ::PROTOBUF_NAMESPACE_ID::Arena* arena = GetArena(); (void)arena;
   while (!ctx->Done(&ptr)) {
     ::PROTOBUF_NAMESPACE_ID::uint32 tag;
     ptr = ::PROTOBUF_NAMESPACE_ID::internal::ReadTag(ptr, &tag);
@@ -403,10 +353,6 @@ void SubscribeConnectionStateRequest::InternalSwap(SubscribeConnectionStateReque
 
 // ===================================================================
 
-void ConnectionStateResponse::InitAsDefaultInstance() {
-  ::mavsdk::rpc::core::_ConnectionStateResponse_default_instance_._instance.get_mutable()->connection_state_ = const_cast< ::mavsdk::rpc::core::ConnectionState*>(
-      ::mavsdk::rpc::core::ConnectionState::internal_default_instance());
-}
 class ConnectionStateResponse::_Internal {
  public:
   static const ::mavsdk::rpc::core::ConnectionState& connection_state(const ConnectionStateResponse* msg);
@@ -434,8 +380,7 @@ ConnectionStateResponse::ConnectionStateResponse(const ConnectionStateResponse& 
 }
 
 void ConnectionStateResponse::SharedCtor() {
-  ::PROTOBUF_NAMESPACE_ID::internal::InitSCC(&scc_info_ConnectionStateResponse_core_2fcore_2eproto.base);
-  connection_state_ = nullptr;
+connection_state_ = nullptr;
 }
 
 ConnectionStateResponse::~ConnectionStateResponse() {
@@ -458,11 +403,6 @@ void ConnectionStateResponse::RegisterArenaDtor(::PROTOBUF_NAMESPACE_ID::Arena*)
 void ConnectionStateResponse::SetCachedSize(int size) const {
   _cached_size_.Set(size);
 }
-const ConnectionStateResponse& ConnectionStateResponse::default_instance() {
-  ::PROTOBUF_NAMESPACE_ID::internal::InitSCC(&::scc_info_ConnectionStateResponse_core_2fcore_2eproto.base);
-  return *internal_default_instance();
-}
-
 
 void ConnectionStateResponse::Clear() {
 // @@protoc_insertion_point(message_clear_start:mavsdk.rpc.core.ConnectionStateResponse)
@@ -479,7 +419,6 @@ void ConnectionStateResponse::Clear() {
 
 const char* ConnectionStateResponse::_InternalParse(const char* ptr, ::PROTOBUF_NAMESPACE_ID::internal::ParseContext* ctx) {
 #define CHK_(x) if (PROTOBUF_PREDICT_FALSE(!(x))) goto failure
-  ::PROTOBUF_NAMESPACE_ID::Arena* arena = GetArena(); (void)arena;
   while (!ctx->Done(&ptr)) {
     ::PROTOBUF_NAMESPACE_ID::uint32 tag;
     ptr = ::PROTOBUF_NAMESPACE_ID::internal::ReadTag(ptr, &tag);
@@ -618,8 +557,6 @@ void ConnectionStateResponse::InternalSwap(ConnectionStateResponse* other) {
 
 // ===================================================================
 
-void ListRunningPluginsRequest::InitAsDefaultInstance() {
-}
 class ListRunningPluginsRequest::_Internal {
  public:
 };
@@ -658,11 +595,6 @@ void ListRunningPluginsRequest::RegisterArenaDtor(::PROTOBUF_NAMESPACE_ID::Arena
 void ListRunningPluginsRequest::SetCachedSize(int size) const {
   _cached_size_.Set(size);
 }
-const ListRunningPluginsRequest& ListRunningPluginsRequest::default_instance() {
-  ::PROTOBUF_NAMESPACE_ID::internal::InitSCC(&::scc_info_ListRunningPluginsRequest_core_2fcore_2eproto.base);
-  return *internal_default_instance();
-}
-
 
 void ListRunningPluginsRequest::Clear() {
 // @@protoc_insertion_point(message_clear_start:mavsdk.rpc.core.ListRunningPluginsRequest)
@@ -675,7 +607,6 @@ void ListRunningPluginsRequest::Clear() {
 
 const char* ListRunningPluginsRequest::_InternalParse(const char* ptr, ::PROTOBUF_NAMESPACE_ID::internal::ParseContext* ctx) {
 #define CHK_(x) if (PROTOBUF_PREDICT_FALSE(!(x))) goto failure
-  ::PROTOBUF_NAMESPACE_ID::Arena* arena = GetArena(); (void)arena;
   while (!ctx->Done(&ptr)) {
     ::PROTOBUF_NAMESPACE_ID::uint32 tag;
     ptr = ::PROTOBUF_NAMESPACE_ID::internal::ReadTag(ptr, &tag);
@@ -783,8 +714,6 @@ void ListRunningPluginsRequest::InternalSwap(ListRunningPluginsRequest* other) {
 
 // ===================================================================
 
-void ListRunningPluginsResponse::InitAsDefaultInstance() {
-}
 class ListRunningPluginsResponse::_Internal {
  public:
 };
@@ -804,7 +733,6 @@ ListRunningPluginsResponse::ListRunningPluginsResponse(const ListRunningPluginsR
 }
 
 void ListRunningPluginsResponse::SharedCtor() {
-  ::PROTOBUF_NAMESPACE_ID::internal::InitSCC(&scc_info_ListRunningPluginsResponse_core_2fcore_2eproto.base);
 }
 
 ListRunningPluginsResponse::~ListRunningPluginsResponse() {
@@ -826,11 +754,6 @@ void ListRunningPluginsResponse::RegisterArenaDtor(::PROTOBUF_NAMESPACE_ID::Aren
 void ListRunningPluginsResponse::SetCachedSize(int size) const {
   _cached_size_.Set(size);
 }
-const ListRunningPluginsResponse& ListRunningPluginsResponse::default_instance() {
-  ::PROTOBUF_NAMESPACE_ID::internal::InitSCC(&::scc_info_ListRunningPluginsResponse_core_2fcore_2eproto.base);
-  return *internal_default_instance();
-}
-
 
 void ListRunningPluginsResponse::Clear() {
 // @@protoc_insertion_point(message_clear_start:mavsdk.rpc.core.ListRunningPluginsResponse)
@@ -844,7 +767,6 @@ void ListRunningPluginsResponse::Clear() {
 
 const char* ListRunningPluginsResponse::_InternalParse(const char* ptr, ::PROTOBUF_NAMESPACE_ID::internal::ParseContext* ctx) {
 #define CHK_(x) if (PROTOBUF_PREDICT_FALSE(!(x))) goto failure
-  ::PROTOBUF_NAMESPACE_ID::Arena* arena = GetArena(); (void)arena;
   while (!ctx->Done(&ptr)) {
     ::PROTOBUF_NAMESPACE_ID::uint32 tag;
     ptr = ::PROTOBUF_NAMESPACE_ID::internal::ReadTag(ptr, &tag);
@@ -986,8 +908,6 @@ void ListRunningPluginsResponse::InternalSwap(ListRunningPluginsResponse* other)
 
 // ===================================================================
 
-void ConnectionState::InitAsDefaultInstance() {
-}
 class ConnectionState::_Internal {
  public:
 };
@@ -1008,9 +928,10 @@ ConnectionState::ConnectionState(const ConnectionState& from)
 }
 
 void ConnectionState::SharedCtor() {
-  ::memset(&uuid_, 0, static_cast<size_t>(
-      reinterpret_cast<char*>(&is_connected_) -
-      reinterpret_cast<char*>(&uuid_)) + sizeof(is_connected_));
+::memset(reinterpret_cast<char*>(this) + static_cast<size_t>(
+    reinterpret_cast<char*>(&uuid_) - reinterpret_cast<char*>(this)),
+    0, static_cast<size_t>(reinterpret_cast<char*>(&is_connected_) -
+    reinterpret_cast<char*>(&uuid_)) + sizeof(is_connected_));
 }
 
 ConnectionState::~ConnectionState() {
@@ -1032,11 +953,6 @@ void ConnectionState::RegisterArenaDtor(::PROTOBUF_NAMESPACE_ID::Arena*) {
 void ConnectionState::SetCachedSize(int size) const {
   _cached_size_.Set(size);
 }
-const ConnectionState& ConnectionState::default_instance() {
-  ::PROTOBUF_NAMESPACE_ID::internal::InitSCC(&::scc_info_ConnectionState_core_2fcore_2eproto.base);
-  return *internal_default_instance();
-}
-
 
 void ConnectionState::Clear() {
 // @@protoc_insertion_point(message_clear_start:mavsdk.rpc.core.ConnectionState)
@@ -1052,7 +968,6 @@ void ConnectionState::Clear() {
 
 const char* ConnectionState::_InternalParse(const char* ptr, ::PROTOBUF_NAMESPACE_ID::internal::ParseContext* ctx) {
 #define CHK_(x) if (PROTOBUF_PREDICT_FALSE(!(x))) goto failure
-  ::PROTOBUF_NAMESPACE_ID::Arena* arena = GetArena(); (void)arena;
   while (!ctx->Done(&ptr)) {
     ::PROTOBUF_NAMESPACE_ID::uint32 tag;
     ptr = ::PROTOBUF_NAMESPACE_ID::internal::ReadTag(ptr, &tag);
@@ -1215,8 +1130,6 @@ void ConnectionState::InternalSwap(ConnectionState* other) {
 
 // ===================================================================
 
-void PluginInfo::InitAsDefaultInstance() {
-}
 class PluginInfo::_Internal {
  public:
 };
@@ -1232,12 +1145,12 @@ PluginInfo::PluginInfo(const PluginInfo& from)
   _internal_metadata_.MergeFrom<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>(from._internal_metadata_);
   name_.UnsafeSetDefault(&::PROTOBUF_NAMESPACE_ID::internal::GetEmptyStringAlreadyInited());
   if (!from._internal_name().empty()) {
-    name_.Set(&::PROTOBUF_NAMESPACE_ID::internal::GetEmptyStringAlreadyInited(), from._internal_name(),
+    name_.Set(::PROTOBUF_NAMESPACE_ID::internal::ArenaStringPtr::EmptyDefault{}, from._internal_name(), 
       GetArena());
   }
   address_.UnsafeSetDefault(&::PROTOBUF_NAMESPACE_ID::internal::GetEmptyStringAlreadyInited());
   if (!from._internal_address().empty()) {
-    address_.Set(&::PROTOBUF_NAMESPACE_ID::internal::GetEmptyStringAlreadyInited(), from._internal_address(),
+    address_.Set(::PROTOBUF_NAMESPACE_ID::internal::ArenaStringPtr::EmptyDefault{}, from._internal_address(), 
       GetArena());
   }
   port_ = from.port_;
@@ -1245,10 +1158,9 @@ PluginInfo::PluginInfo(const PluginInfo& from)
 }
 
 void PluginInfo::SharedCtor() {
-  ::PROTOBUF_NAMESPACE_ID::internal::InitSCC(&scc_info_PluginInfo_core_2fcore_2eproto.base);
-  name_.UnsafeSetDefault(&::PROTOBUF_NAMESPACE_ID::internal::GetEmptyStringAlreadyInited());
-  address_.UnsafeSetDefault(&::PROTOBUF_NAMESPACE_ID::internal::GetEmptyStringAlreadyInited());
-  port_ = 0;
+name_.UnsafeSetDefault(&::PROTOBUF_NAMESPACE_ID::internal::GetEmptyStringAlreadyInited());
+address_.UnsafeSetDefault(&::PROTOBUF_NAMESPACE_ID::internal::GetEmptyStringAlreadyInited());
+port_ = 0;
 }
 
 PluginInfo::~PluginInfo() {
@@ -1272,11 +1184,6 @@ void PluginInfo::RegisterArenaDtor(::PROTOBUF_NAMESPACE_ID::Arena*) {
 void PluginInfo::SetCachedSize(int size) const {
   _cached_size_.Set(size);
 }
-const PluginInfo& PluginInfo::default_instance() {
-  ::PROTOBUF_NAMESPACE_ID::internal::InitSCC(&::scc_info_PluginInfo_core_2fcore_2eproto.base);
-  return *internal_default_instance();
-}
-
 
 void PluginInfo::Clear() {
 // @@protoc_insertion_point(message_clear_start:mavsdk.rpc.core.PluginInfo)
@@ -1284,15 +1191,14 @@ void PluginInfo::Clear() {
   // Prevent compiler warnings about cached_has_bits being unused
   (void) cached_has_bits;
 
-  name_.ClearToEmpty(&::PROTOBUF_NAMESPACE_ID::internal::GetEmptyStringAlreadyInited(), GetArena());
-  address_.ClearToEmpty(&::PROTOBUF_NAMESPACE_ID::internal::GetEmptyStringAlreadyInited(), GetArena());
+  name_.ClearToEmpty();
+  address_.ClearToEmpty();
   port_ = 0;
   _internal_metadata_.Clear<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>();
 }
 
 const char* PluginInfo::_InternalParse(const char* ptr, ::PROTOBUF_NAMESPACE_ID::internal::ParseContext* ctx) {
 #define CHK_(x) if (PROTOBUF_PREDICT_FALSE(!(x))) goto failure
-  ::PROTOBUF_NAMESPACE_ID::Arena* arena = GetArena(); (void)arena;
   while (!ctx->Done(&ptr)) {
     ::PROTOBUF_NAMESPACE_ID::uint32 tag;
     ptr = ::PROTOBUF_NAMESPACE_ID::internal::ReadTag(ptr, &tag);
