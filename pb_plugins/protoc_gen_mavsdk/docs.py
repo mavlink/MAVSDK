@@ -52,7 +52,9 @@ class Docs():
                         nested_enum_id = path[3]
 
                         if len(path) == 4:  # Top-level location of this nested enum
-                            docs['structs'][struct_id]['enums'] = []
+                            if 'enums' not in docs['structs'][struct_id]:
+                                docs['structs'][struct_id]['enums'] = []
+
                             docs['structs'][struct_id]['enums'].append(
                                 {'description': location.leading_comments, 'params': []})
                         # A value of this nested message
