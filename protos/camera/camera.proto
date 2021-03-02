@@ -303,21 +303,21 @@ message VideoStreamSettings {
 // Information about the video stream.
 message VideoStreamInfo {
     // Video stream status type.
-    enum Status {
-        STATUS_NOT_RUNNING = 0; // Video stream is not running
-        STATUS_IN_PROGRESS = 1; // Video stream is running
+    enum VideoStreamStatus {
+        VIDEO_STREAM_STATUS_NOT_RUNNING = 0; // Video stream is not running
+        VIDEO_STREAM_STATUS_IN_PROGRESS = 1; // Video stream is running
     }
 
     // Video stream light spectrum type
-    enum Spectrum {
-        SPECTRUM_UNKNOWN = 0; // Unknown
-        SPECTRUM_VISIBLE_LIGHT = 1; // Visible light
-        SPECTRUM_INFRARED = 2; // Infrared
+    enum VideoStreamSpectrum {
+        VIDEO_STREAM_SPECTRUM_UNKNOWN = 0; // Unknown
+        VIDEO_STREAM_SPECTRUM_VISIBLE_LIGHT = 1; // Visible light
+        VIDEO_STREAM_SPECTRUM_INFRARED = 2; // Infrared
     }
 
     VideoStreamSettings settings = 1; // Video stream settings
-    Status status = 2; // Current status of video streaming
-    Spectrum spectrum = 3; // Light-spectrum of the video stream
+    VideoStreamStatus status = 2; // Current status of video streaming
+    VideoStreamSpectrum spectrum = 3; // Light-spectrum of the video stream
 }
 
 // Information about the camera status.
