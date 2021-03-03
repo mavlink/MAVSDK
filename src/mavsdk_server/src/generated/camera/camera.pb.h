@@ -324,6 +324,32 @@ inline bool VideoStreamInfo_VideoStreamStatus_Parse(
   return ::PROTOBUF_NAMESPACE_ID::internal::ParseNamedEnum<VideoStreamInfo_VideoStreamStatus>(
     VideoStreamInfo_VideoStreamStatus_descriptor(), name, value);
 }
+enum VideoStreamInfo_VideoStreamSpectrum : int {
+  VideoStreamInfo_VideoStreamSpectrum_VIDEO_STREAM_SPECTRUM_UNKNOWN = 0,
+  VideoStreamInfo_VideoStreamSpectrum_VIDEO_STREAM_SPECTRUM_VISIBLE_LIGHT = 1,
+  VideoStreamInfo_VideoStreamSpectrum_VIDEO_STREAM_SPECTRUM_INFRARED = 2,
+  VideoStreamInfo_VideoStreamSpectrum_VideoStreamInfo_VideoStreamSpectrum_INT_MIN_SENTINEL_DO_NOT_USE_ = std::numeric_limits<::PROTOBUF_NAMESPACE_ID::int32>::min(),
+  VideoStreamInfo_VideoStreamSpectrum_VideoStreamInfo_VideoStreamSpectrum_INT_MAX_SENTINEL_DO_NOT_USE_ = std::numeric_limits<::PROTOBUF_NAMESPACE_ID::int32>::max()
+};
+bool VideoStreamInfo_VideoStreamSpectrum_IsValid(int value);
+constexpr VideoStreamInfo_VideoStreamSpectrum VideoStreamInfo_VideoStreamSpectrum_VideoStreamSpectrum_MIN = VideoStreamInfo_VideoStreamSpectrum_VIDEO_STREAM_SPECTRUM_UNKNOWN;
+constexpr VideoStreamInfo_VideoStreamSpectrum VideoStreamInfo_VideoStreamSpectrum_VideoStreamSpectrum_MAX = VideoStreamInfo_VideoStreamSpectrum_VIDEO_STREAM_SPECTRUM_INFRARED;
+constexpr int VideoStreamInfo_VideoStreamSpectrum_VideoStreamSpectrum_ARRAYSIZE = VideoStreamInfo_VideoStreamSpectrum_VideoStreamSpectrum_MAX + 1;
+
+const ::PROTOBUF_NAMESPACE_ID::EnumDescriptor* VideoStreamInfo_VideoStreamSpectrum_descriptor();
+template<typename T>
+inline const std::string& VideoStreamInfo_VideoStreamSpectrum_Name(T enum_t_value) {
+  static_assert(::std::is_same<T, VideoStreamInfo_VideoStreamSpectrum>::value ||
+    ::std::is_integral<T>::value,
+    "Incorrect type passed to function VideoStreamInfo_VideoStreamSpectrum_Name.");
+  return ::PROTOBUF_NAMESPACE_ID::internal::NameOfEnum(
+    VideoStreamInfo_VideoStreamSpectrum_descriptor(), enum_t_value);
+}
+inline bool VideoStreamInfo_VideoStreamSpectrum_Parse(
+    ::PROTOBUF_NAMESPACE_ID::ConstStringParam name, VideoStreamInfo_VideoStreamSpectrum* value) {
+  return ::PROTOBUF_NAMESPACE_ID::internal::ParseNamedEnum<VideoStreamInfo_VideoStreamSpectrum>(
+    VideoStreamInfo_VideoStreamSpectrum_descriptor(), name, value);
+}
 enum Status_StorageStatus : int {
   Status_StorageStatus_STORAGE_STATUS_NOT_AVAILABLE = 0,
   Status_StorageStatus_STORAGE_STATUS_UNFORMATTED = 1,
@@ -6699,6 +6725,7 @@ class VideoStreamSettings PROTOBUF_FINAL :
     kVerticalResolutionPixFieldNumber = 3,
     kBitRateBSFieldNumber = 4,
     kRotationDegFieldNumber = 5,
+    kHorizontalFovDegFieldNumber = 7,
   };
   // string uri = 6;
   void clear_uri();
@@ -6761,6 +6788,15 @@ class VideoStreamSettings PROTOBUF_FINAL :
   void _internal_set_rotation_deg(::PROTOBUF_NAMESPACE_ID::uint32 value);
   public:
 
+  // float horizontal_fov_deg = 7;
+  void clear_horizontal_fov_deg();
+  float horizontal_fov_deg() const;
+  void set_horizontal_fov_deg(float value);
+  private:
+  float _internal_horizontal_fov_deg() const;
+  void _internal_set_horizontal_fov_deg(float value);
+  public:
+
   // @@protoc_insertion_point(class_scope:mavsdk.rpc.camera.VideoStreamSettings)
  private:
   class _Internal;
@@ -6774,6 +6810,7 @@ class VideoStreamSettings PROTOBUF_FINAL :
   ::PROTOBUF_NAMESPACE_ID::uint32 vertical_resolution_pix_;
   ::PROTOBUF_NAMESPACE_ID::uint32 bit_rate_b_s_;
   ::PROTOBUF_NAMESPACE_ID::uint32 rotation_deg_;
+  float horizontal_fov_deg_;
   mutable ::PROTOBUF_NAMESPACE_ID::internal::CachedSize _cached_size_;
   friend struct ::TableStruct_camera_2fcamera_2eproto;
 };
@@ -6919,11 +6956,44 @@ class VideoStreamInfo PROTOBUF_FINAL :
     return VideoStreamInfo_VideoStreamStatus_Parse(name, value);
   }
 
+  typedef VideoStreamInfo_VideoStreamSpectrum VideoStreamSpectrum;
+  static constexpr VideoStreamSpectrum VIDEO_STREAM_SPECTRUM_UNKNOWN =
+    VideoStreamInfo_VideoStreamSpectrum_VIDEO_STREAM_SPECTRUM_UNKNOWN;
+  static constexpr VideoStreamSpectrum VIDEO_STREAM_SPECTRUM_VISIBLE_LIGHT =
+    VideoStreamInfo_VideoStreamSpectrum_VIDEO_STREAM_SPECTRUM_VISIBLE_LIGHT;
+  static constexpr VideoStreamSpectrum VIDEO_STREAM_SPECTRUM_INFRARED =
+    VideoStreamInfo_VideoStreamSpectrum_VIDEO_STREAM_SPECTRUM_INFRARED;
+  static inline bool VideoStreamSpectrum_IsValid(int value) {
+    return VideoStreamInfo_VideoStreamSpectrum_IsValid(value);
+  }
+  static constexpr VideoStreamSpectrum VideoStreamSpectrum_MIN =
+    VideoStreamInfo_VideoStreamSpectrum_VideoStreamSpectrum_MIN;
+  static constexpr VideoStreamSpectrum VideoStreamSpectrum_MAX =
+    VideoStreamInfo_VideoStreamSpectrum_VideoStreamSpectrum_MAX;
+  static constexpr int VideoStreamSpectrum_ARRAYSIZE =
+    VideoStreamInfo_VideoStreamSpectrum_VideoStreamSpectrum_ARRAYSIZE;
+  static inline const ::PROTOBUF_NAMESPACE_ID::EnumDescriptor*
+  VideoStreamSpectrum_descriptor() {
+    return VideoStreamInfo_VideoStreamSpectrum_descriptor();
+  }
+  template<typename T>
+  static inline const std::string& VideoStreamSpectrum_Name(T enum_t_value) {
+    static_assert(::std::is_same<T, VideoStreamSpectrum>::value ||
+      ::std::is_integral<T>::value,
+      "Incorrect type passed to function VideoStreamSpectrum_Name.");
+    return VideoStreamInfo_VideoStreamSpectrum_Name(enum_t_value);
+  }
+  static inline bool VideoStreamSpectrum_Parse(::PROTOBUF_NAMESPACE_ID::ConstStringParam name,
+      VideoStreamSpectrum* value) {
+    return VideoStreamInfo_VideoStreamSpectrum_Parse(name, value);
+  }
+
   // accessors -------------------------------------------------------
 
   enum : int {
     kSettingsFieldNumber = 1,
     kStatusFieldNumber = 2,
+    kSpectrumFieldNumber = 3,
   };
   // .mavsdk.rpc.camera.VideoStreamSettings settings = 1;
   bool has_settings() const;
@@ -6952,6 +7022,15 @@ class VideoStreamInfo PROTOBUF_FINAL :
   void _internal_set_status(::mavsdk::rpc::camera::VideoStreamInfo_VideoStreamStatus value);
   public:
 
+  // .mavsdk.rpc.camera.VideoStreamInfo.VideoStreamSpectrum spectrum = 3;
+  void clear_spectrum();
+  ::mavsdk::rpc::camera::VideoStreamInfo_VideoStreamSpectrum spectrum() const;
+  void set_spectrum(::mavsdk::rpc::camera::VideoStreamInfo_VideoStreamSpectrum value);
+  private:
+  ::mavsdk::rpc::camera::VideoStreamInfo_VideoStreamSpectrum _internal_spectrum() const;
+  void _internal_set_spectrum(::mavsdk::rpc::camera::VideoStreamInfo_VideoStreamSpectrum value);
+  public:
+
   // @@protoc_insertion_point(class_scope:mavsdk.rpc.camera.VideoStreamInfo)
  private:
   class _Internal;
@@ -6961,6 +7040,7 @@ class VideoStreamInfo PROTOBUF_FINAL :
   typedef void DestructorSkippable_;
   ::mavsdk::rpc::camera::VideoStreamSettings* settings_;
   int status_;
+  int spectrum_;
   mutable ::PROTOBUF_NAMESPACE_ID::internal::CachedSize _cached_size_;
   friend struct ::TableStruct_camera_2fcamera_2eproto;
 };
@@ -10716,6 +10796,26 @@ inline void VideoStreamSettings::set_allocated_uri(std::string* uri) {
   // @@protoc_insertion_point(field_set_allocated:mavsdk.rpc.camera.VideoStreamSettings.uri)
 }
 
+// float horizontal_fov_deg = 7;
+inline void VideoStreamSettings::clear_horizontal_fov_deg() {
+  horizontal_fov_deg_ = 0;
+}
+inline float VideoStreamSettings::_internal_horizontal_fov_deg() const {
+  return horizontal_fov_deg_;
+}
+inline float VideoStreamSettings::horizontal_fov_deg() const {
+  // @@protoc_insertion_point(field_get:mavsdk.rpc.camera.VideoStreamSettings.horizontal_fov_deg)
+  return _internal_horizontal_fov_deg();
+}
+inline void VideoStreamSettings::_internal_set_horizontal_fov_deg(float value) {
+  
+  horizontal_fov_deg_ = value;
+}
+inline void VideoStreamSettings::set_horizontal_fov_deg(float value) {
+  _internal_set_horizontal_fov_deg(value);
+  // @@protoc_insertion_point(field_set:mavsdk.rpc.camera.VideoStreamSettings.horizontal_fov_deg)
+}
+
 // -------------------------------------------------------------------
 
 // VideoStreamInfo
@@ -10821,6 +10921,26 @@ inline void VideoStreamInfo::_internal_set_status(::mavsdk::rpc::camera::VideoSt
 inline void VideoStreamInfo::set_status(::mavsdk::rpc::camera::VideoStreamInfo_VideoStreamStatus value) {
   _internal_set_status(value);
   // @@protoc_insertion_point(field_set:mavsdk.rpc.camera.VideoStreamInfo.status)
+}
+
+// .mavsdk.rpc.camera.VideoStreamInfo.VideoStreamSpectrum spectrum = 3;
+inline void VideoStreamInfo::clear_spectrum() {
+  spectrum_ = 0;
+}
+inline ::mavsdk::rpc::camera::VideoStreamInfo_VideoStreamSpectrum VideoStreamInfo::_internal_spectrum() const {
+  return static_cast< ::mavsdk::rpc::camera::VideoStreamInfo_VideoStreamSpectrum >(spectrum_);
+}
+inline ::mavsdk::rpc::camera::VideoStreamInfo_VideoStreamSpectrum VideoStreamInfo::spectrum() const {
+  // @@protoc_insertion_point(field_get:mavsdk.rpc.camera.VideoStreamInfo.spectrum)
+  return _internal_spectrum();
+}
+inline void VideoStreamInfo::_internal_set_spectrum(::mavsdk::rpc::camera::VideoStreamInfo_VideoStreamSpectrum value) {
+  
+  spectrum_ = value;
+}
+inline void VideoStreamInfo::set_spectrum(::mavsdk::rpc::camera::VideoStreamInfo_VideoStreamSpectrum value) {
+  _internal_set_spectrum(value);
+  // @@protoc_insertion_point(field_set:mavsdk.rpc.camera.VideoStreamInfo.spectrum)
 }
 
 // -------------------------------------------------------------------
@@ -11813,6 +11933,11 @@ template <> struct is_proto_enum< ::mavsdk::rpc::camera::VideoStreamInfo_VideoSt
 template <>
 inline const EnumDescriptor* GetEnumDescriptor< ::mavsdk::rpc::camera::VideoStreamInfo_VideoStreamStatus>() {
   return ::mavsdk::rpc::camera::VideoStreamInfo_VideoStreamStatus_descriptor();
+}
+template <> struct is_proto_enum< ::mavsdk::rpc::camera::VideoStreamInfo_VideoStreamSpectrum> : ::std::true_type {};
+template <>
+inline const EnumDescriptor* GetEnumDescriptor< ::mavsdk::rpc::camera::VideoStreamInfo_VideoStreamSpectrum>() {
+  return ::mavsdk::rpc::camera::VideoStreamInfo_VideoStreamSpectrum_descriptor();
 }
 template <> struct is_proto_enum< ::mavsdk::rpc::camera::Status_StorageStatus> : ::std::true_type {};
 template <>

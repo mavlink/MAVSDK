@@ -236,6 +236,7 @@ public:
         uint32_t bit_rate_b_s{}; /**< @brief Bit rate (in bits per second) */
         uint32_t rotation_deg{}; /**< @brief Video image rotation (clockwise, 0-359 degrees) */
         std::string uri{}; /**< @brief Video stream URI */
+        float horizontal_fov_deg{}; /**< @brief Horizontal fov in degrees */
     };
 
     /**
@@ -275,8 +276,27 @@ public:
             std::ostream& str,
             Camera::VideoStreamInfo::VideoStreamStatus const& video_stream_status);
 
+        /**
+         * @brief Video stream light spectrum type
+         */
+        enum class VideoStreamSpectrum {
+            Unknown, /**< @brief Unknown. */
+            VisibleLight, /**< @brief Visible light. */
+            Infrared, /**< @brief Infrared. */
+        };
+
+        /**
+         * @brief Stream operator to print information about a `Camera::VideoStreamSpectrum`.
+         *
+         * @return A reference to the stream.
+         */
+        friend std::ostream& operator<<(
+            std::ostream& str,
+            Camera::VideoStreamInfo::VideoStreamSpectrum const& video_stream_spectrum);
+
         VideoStreamSettings settings{}; /**< @brief Video stream settings */
         VideoStreamStatus status{}; /**< @brief Current status of video streaming */
+        VideoStreamSpectrum spectrum{}; /**< @brief Light-spectrum of the video stream */
     };
 
     /**
