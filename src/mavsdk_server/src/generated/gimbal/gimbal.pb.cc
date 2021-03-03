@@ -14,309 +14,217 @@
 #include <google/protobuf/wire_format.h>
 // @@protoc_insertion_point(includes)
 #include <google/protobuf/port_def.inc>
-extern PROTOBUF_INTERNAL_EXPORT_gimbal_2fgimbal_2eproto ::PROTOBUF_NAMESPACE_ID::internal::SCCInfo<0> scc_info_ControlStatus_gimbal_2fgimbal_2eproto;
-extern PROTOBUF_INTERNAL_EXPORT_gimbal_2fgimbal_2eproto ::PROTOBUF_NAMESPACE_ID::internal::SCCInfo<0> scc_info_GimbalResult_gimbal_2fgimbal_2eproto;
+
+PROTOBUF_PRAGMA_INIT_SEG
 namespace mavsdk {
 namespace rpc {
 namespace gimbal {
-class SetPitchAndYawRequestDefaultTypeInternal {
- public:
-  ::PROTOBUF_NAMESPACE_ID::internal::ExplicitlyConstructed<SetPitchAndYawRequest> _instance;
-} _SetPitchAndYawRequest_default_instance_;
-class SetPitchAndYawResponseDefaultTypeInternal {
- public:
-  ::PROTOBUF_NAMESPACE_ID::internal::ExplicitlyConstructed<SetPitchAndYawResponse> _instance;
-} _SetPitchAndYawResponse_default_instance_;
-class SetPitchRateAndYawRateRequestDefaultTypeInternal {
- public:
-  ::PROTOBUF_NAMESPACE_ID::internal::ExplicitlyConstructed<SetPitchRateAndYawRateRequest> _instance;
-} _SetPitchRateAndYawRateRequest_default_instance_;
-class SetPitchRateAndYawRateResponseDefaultTypeInternal {
- public:
-  ::PROTOBUF_NAMESPACE_ID::internal::ExplicitlyConstructed<SetPitchRateAndYawRateResponse> _instance;
-} _SetPitchRateAndYawRateResponse_default_instance_;
-class SetModeRequestDefaultTypeInternal {
- public:
-  ::PROTOBUF_NAMESPACE_ID::internal::ExplicitlyConstructed<SetModeRequest> _instance;
-} _SetModeRequest_default_instance_;
-class SetModeResponseDefaultTypeInternal {
- public:
-  ::PROTOBUF_NAMESPACE_ID::internal::ExplicitlyConstructed<SetModeResponse> _instance;
-} _SetModeResponse_default_instance_;
-class SetRoiLocationRequestDefaultTypeInternal {
- public:
-  ::PROTOBUF_NAMESPACE_ID::internal::ExplicitlyConstructed<SetRoiLocationRequest> _instance;
-} _SetRoiLocationRequest_default_instance_;
-class SetRoiLocationResponseDefaultTypeInternal {
- public:
-  ::PROTOBUF_NAMESPACE_ID::internal::ExplicitlyConstructed<SetRoiLocationResponse> _instance;
-} _SetRoiLocationResponse_default_instance_;
-class TakeControlRequestDefaultTypeInternal {
- public:
-  ::PROTOBUF_NAMESPACE_ID::internal::ExplicitlyConstructed<TakeControlRequest> _instance;
-} _TakeControlRequest_default_instance_;
-class TakeControlResponseDefaultTypeInternal {
- public:
-  ::PROTOBUF_NAMESPACE_ID::internal::ExplicitlyConstructed<TakeControlResponse> _instance;
-} _TakeControlResponse_default_instance_;
-class ReleaseControlRequestDefaultTypeInternal {
- public:
-  ::PROTOBUF_NAMESPACE_ID::internal::ExplicitlyConstructed<ReleaseControlRequest> _instance;
-} _ReleaseControlRequest_default_instance_;
-class ReleaseControlResponseDefaultTypeInternal {
- public:
-  ::PROTOBUF_NAMESPACE_ID::internal::ExplicitlyConstructed<ReleaseControlResponse> _instance;
-} _ReleaseControlResponse_default_instance_;
-class SubscribeControlRequestDefaultTypeInternal {
- public:
-  ::PROTOBUF_NAMESPACE_ID::internal::ExplicitlyConstructed<SubscribeControlRequest> _instance;
-} _SubscribeControlRequest_default_instance_;
-class ControlResponseDefaultTypeInternal {
- public:
-  ::PROTOBUF_NAMESPACE_ID::internal::ExplicitlyConstructed<ControlResponse> _instance;
-} _ControlResponse_default_instance_;
-class ControlStatusDefaultTypeInternal {
- public:
-  ::PROTOBUF_NAMESPACE_ID::internal::ExplicitlyConstructed<ControlStatus> _instance;
-} _ControlStatus_default_instance_;
-class GimbalResultDefaultTypeInternal {
- public:
-  ::PROTOBUF_NAMESPACE_ID::internal::ExplicitlyConstructed<GimbalResult> _instance;
-} _GimbalResult_default_instance_;
+constexpr SetPitchAndYawRequest::SetPitchAndYawRequest(
+  ::PROTOBUF_NAMESPACE_ID::internal::ConstantInitialized)
+  : pitch_deg_(0)
+  , yaw_deg_(0){}
+struct SetPitchAndYawRequestDefaultTypeInternal {
+  constexpr SetPitchAndYawRequestDefaultTypeInternal()
+    : _instance(::PROTOBUF_NAMESPACE_ID::internal::ConstantInitialized{}) {}
+  ~SetPitchAndYawRequestDefaultTypeInternal() {}
+  union {
+    SetPitchAndYawRequest _instance;
+  };
+};
+PROTOBUF_ATTRIBUTE_NO_DESTROY PROTOBUF_CONSTINIT SetPitchAndYawRequestDefaultTypeInternal _SetPitchAndYawRequest_default_instance_;
+constexpr SetPitchAndYawResponse::SetPitchAndYawResponse(
+  ::PROTOBUF_NAMESPACE_ID::internal::ConstantInitialized)
+  : gimbal_result_(nullptr){}
+struct SetPitchAndYawResponseDefaultTypeInternal {
+  constexpr SetPitchAndYawResponseDefaultTypeInternal()
+    : _instance(::PROTOBUF_NAMESPACE_ID::internal::ConstantInitialized{}) {}
+  ~SetPitchAndYawResponseDefaultTypeInternal() {}
+  union {
+    SetPitchAndYawResponse _instance;
+  };
+};
+PROTOBUF_ATTRIBUTE_NO_DESTROY PROTOBUF_CONSTINIT SetPitchAndYawResponseDefaultTypeInternal _SetPitchAndYawResponse_default_instance_;
+constexpr SetPitchRateAndYawRateRequest::SetPitchRateAndYawRateRequest(
+  ::PROTOBUF_NAMESPACE_ID::internal::ConstantInitialized)
+  : pitch_rate_deg_s_(0)
+  , yaw_rate_deg_s_(0){}
+struct SetPitchRateAndYawRateRequestDefaultTypeInternal {
+  constexpr SetPitchRateAndYawRateRequestDefaultTypeInternal()
+    : _instance(::PROTOBUF_NAMESPACE_ID::internal::ConstantInitialized{}) {}
+  ~SetPitchRateAndYawRateRequestDefaultTypeInternal() {}
+  union {
+    SetPitchRateAndYawRateRequest _instance;
+  };
+};
+PROTOBUF_ATTRIBUTE_NO_DESTROY PROTOBUF_CONSTINIT SetPitchRateAndYawRateRequestDefaultTypeInternal _SetPitchRateAndYawRateRequest_default_instance_;
+constexpr SetPitchRateAndYawRateResponse::SetPitchRateAndYawRateResponse(
+  ::PROTOBUF_NAMESPACE_ID::internal::ConstantInitialized)
+  : gimbal_result_(nullptr){}
+struct SetPitchRateAndYawRateResponseDefaultTypeInternal {
+  constexpr SetPitchRateAndYawRateResponseDefaultTypeInternal()
+    : _instance(::PROTOBUF_NAMESPACE_ID::internal::ConstantInitialized{}) {}
+  ~SetPitchRateAndYawRateResponseDefaultTypeInternal() {}
+  union {
+    SetPitchRateAndYawRateResponse _instance;
+  };
+};
+PROTOBUF_ATTRIBUTE_NO_DESTROY PROTOBUF_CONSTINIT SetPitchRateAndYawRateResponseDefaultTypeInternal _SetPitchRateAndYawRateResponse_default_instance_;
+constexpr SetModeRequest::SetModeRequest(
+  ::PROTOBUF_NAMESPACE_ID::internal::ConstantInitialized)
+  : gimbal_mode_(0)
+{}
+struct SetModeRequestDefaultTypeInternal {
+  constexpr SetModeRequestDefaultTypeInternal()
+    : _instance(::PROTOBUF_NAMESPACE_ID::internal::ConstantInitialized{}) {}
+  ~SetModeRequestDefaultTypeInternal() {}
+  union {
+    SetModeRequest _instance;
+  };
+};
+PROTOBUF_ATTRIBUTE_NO_DESTROY PROTOBUF_CONSTINIT SetModeRequestDefaultTypeInternal _SetModeRequest_default_instance_;
+constexpr SetModeResponse::SetModeResponse(
+  ::PROTOBUF_NAMESPACE_ID::internal::ConstantInitialized)
+  : gimbal_result_(nullptr){}
+struct SetModeResponseDefaultTypeInternal {
+  constexpr SetModeResponseDefaultTypeInternal()
+    : _instance(::PROTOBUF_NAMESPACE_ID::internal::ConstantInitialized{}) {}
+  ~SetModeResponseDefaultTypeInternal() {}
+  union {
+    SetModeResponse _instance;
+  };
+};
+PROTOBUF_ATTRIBUTE_NO_DESTROY PROTOBUF_CONSTINIT SetModeResponseDefaultTypeInternal _SetModeResponse_default_instance_;
+constexpr SetRoiLocationRequest::SetRoiLocationRequest(
+  ::PROTOBUF_NAMESPACE_ID::internal::ConstantInitialized)
+  : latitude_deg_(0)
+  , longitude_deg_(0)
+  , altitude_m_(0){}
+struct SetRoiLocationRequestDefaultTypeInternal {
+  constexpr SetRoiLocationRequestDefaultTypeInternal()
+    : _instance(::PROTOBUF_NAMESPACE_ID::internal::ConstantInitialized{}) {}
+  ~SetRoiLocationRequestDefaultTypeInternal() {}
+  union {
+    SetRoiLocationRequest _instance;
+  };
+};
+PROTOBUF_ATTRIBUTE_NO_DESTROY PROTOBUF_CONSTINIT SetRoiLocationRequestDefaultTypeInternal _SetRoiLocationRequest_default_instance_;
+constexpr SetRoiLocationResponse::SetRoiLocationResponse(
+  ::PROTOBUF_NAMESPACE_ID::internal::ConstantInitialized)
+  : gimbal_result_(nullptr){}
+struct SetRoiLocationResponseDefaultTypeInternal {
+  constexpr SetRoiLocationResponseDefaultTypeInternal()
+    : _instance(::PROTOBUF_NAMESPACE_ID::internal::ConstantInitialized{}) {}
+  ~SetRoiLocationResponseDefaultTypeInternal() {}
+  union {
+    SetRoiLocationResponse _instance;
+  };
+};
+PROTOBUF_ATTRIBUTE_NO_DESTROY PROTOBUF_CONSTINIT SetRoiLocationResponseDefaultTypeInternal _SetRoiLocationResponse_default_instance_;
+constexpr TakeControlRequest::TakeControlRequest(
+  ::PROTOBUF_NAMESPACE_ID::internal::ConstantInitialized)
+  : control_mode_(0)
+{}
+struct TakeControlRequestDefaultTypeInternal {
+  constexpr TakeControlRequestDefaultTypeInternal()
+    : _instance(::PROTOBUF_NAMESPACE_ID::internal::ConstantInitialized{}) {}
+  ~TakeControlRequestDefaultTypeInternal() {}
+  union {
+    TakeControlRequest _instance;
+  };
+};
+PROTOBUF_ATTRIBUTE_NO_DESTROY PROTOBUF_CONSTINIT TakeControlRequestDefaultTypeInternal _TakeControlRequest_default_instance_;
+constexpr TakeControlResponse::TakeControlResponse(
+  ::PROTOBUF_NAMESPACE_ID::internal::ConstantInitialized)
+  : gimbal_result_(nullptr){}
+struct TakeControlResponseDefaultTypeInternal {
+  constexpr TakeControlResponseDefaultTypeInternal()
+    : _instance(::PROTOBUF_NAMESPACE_ID::internal::ConstantInitialized{}) {}
+  ~TakeControlResponseDefaultTypeInternal() {}
+  union {
+    TakeControlResponse _instance;
+  };
+};
+PROTOBUF_ATTRIBUTE_NO_DESTROY PROTOBUF_CONSTINIT TakeControlResponseDefaultTypeInternal _TakeControlResponse_default_instance_;
+constexpr ReleaseControlRequest::ReleaseControlRequest(
+  ::PROTOBUF_NAMESPACE_ID::internal::ConstantInitialized){}
+struct ReleaseControlRequestDefaultTypeInternal {
+  constexpr ReleaseControlRequestDefaultTypeInternal()
+    : _instance(::PROTOBUF_NAMESPACE_ID::internal::ConstantInitialized{}) {}
+  ~ReleaseControlRequestDefaultTypeInternal() {}
+  union {
+    ReleaseControlRequest _instance;
+  };
+};
+PROTOBUF_ATTRIBUTE_NO_DESTROY PROTOBUF_CONSTINIT ReleaseControlRequestDefaultTypeInternal _ReleaseControlRequest_default_instance_;
+constexpr ReleaseControlResponse::ReleaseControlResponse(
+  ::PROTOBUF_NAMESPACE_ID::internal::ConstantInitialized)
+  : gimbal_result_(nullptr){}
+struct ReleaseControlResponseDefaultTypeInternal {
+  constexpr ReleaseControlResponseDefaultTypeInternal()
+    : _instance(::PROTOBUF_NAMESPACE_ID::internal::ConstantInitialized{}) {}
+  ~ReleaseControlResponseDefaultTypeInternal() {}
+  union {
+    ReleaseControlResponse _instance;
+  };
+};
+PROTOBUF_ATTRIBUTE_NO_DESTROY PROTOBUF_CONSTINIT ReleaseControlResponseDefaultTypeInternal _ReleaseControlResponse_default_instance_;
+constexpr SubscribeControlRequest::SubscribeControlRequest(
+  ::PROTOBUF_NAMESPACE_ID::internal::ConstantInitialized){}
+struct SubscribeControlRequestDefaultTypeInternal {
+  constexpr SubscribeControlRequestDefaultTypeInternal()
+    : _instance(::PROTOBUF_NAMESPACE_ID::internal::ConstantInitialized{}) {}
+  ~SubscribeControlRequestDefaultTypeInternal() {}
+  union {
+    SubscribeControlRequest _instance;
+  };
+};
+PROTOBUF_ATTRIBUTE_NO_DESTROY PROTOBUF_CONSTINIT SubscribeControlRequestDefaultTypeInternal _SubscribeControlRequest_default_instance_;
+constexpr ControlResponse::ControlResponse(
+  ::PROTOBUF_NAMESPACE_ID::internal::ConstantInitialized)
+  : control_status_(nullptr){}
+struct ControlResponseDefaultTypeInternal {
+  constexpr ControlResponseDefaultTypeInternal()
+    : _instance(::PROTOBUF_NAMESPACE_ID::internal::ConstantInitialized{}) {}
+  ~ControlResponseDefaultTypeInternal() {}
+  union {
+    ControlResponse _instance;
+  };
+};
+PROTOBUF_ATTRIBUTE_NO_DESTROY PROTOBUF_CONSTINIT ControlResponseDefaultTypeInternal _ControlResponse_default_instance_;
+constexpr ControlStatus::ControlStatus(
+  ::PROTOBUF_NAMESPACE_ID::internal::ConstantInitialized)
+  : control_mode_(0)
+
+  , sysid_primary_control_(0)
+  , compid_primary_control_(0)
+  , sysid_secondary_control_(0)
+  , compid_secondary_control_(0){}
+struct ControlStatusDefaultTypeInternal {
+  constexpr ControlStatusDefaultTypeInternal()
+    : _instance(::PROTOBUF_NAMESPACE_ID::internal::ConstantInitialized{}) {}
+  ~ControlStatusDefaultTypeInternal() {}
+  union {
+    ControlStatus _instance;
+  };
+};
+PROTOBUF_ATTRIBUTE_NO_DESTROY PROTOBUF_CONSTINIT ControlStatusDefaultTypeInternal _ControlStatus_default_instance_;
+constexpr GimbalResult::GimbalResult(
+  ::PROTOBUF_NAMESPACE_ID::internal::ConstantInitialized)
+  : result_str_(&::PROTOBUF_NAMESPACE_ID::internal::fixed_address_empty_string)
+  , result_(0)
+{}
+struct GimbalResultDefaultTypeInternal {
+  constexpr GimbalResultDefaultTypeInternal()
+    : _instance(::PROTOBUF_NAMESPACE_ID::internal::ConstantInitialized{}) {}
+  ~GimbalResultDefaultTypeInternal() {}
+  union {
+    GimbalResult _instance;
+  };
+};
+PROTOBUF_ATTRIBUTE_NO_DESTROY PROTOBUF_CONSTINIT GimbalResultDefaultTypeInternal _GimbalResult_default_instance_;
 }  // namespace gimbal
 }  // namespace rpc
 }  // namespace mavsdk
-static void InitDefaultsscc_info_ControlResponse_gimbal_2fgimbal_2eproto() {
-  GOOGLE_PROTOBUF_VERIFY_VERSION;
-
-  {
-    void* ptr = &::mavsdk::rpc::gimbal::_ControlResponse_default_instance_;
-    new (ptr) ::mavsdk::rpc::gimbal::ControlResponse();
-    ::PROTOBUF_NAMESPACE_ID::internal::OnShutdownDestroyMessage(ptr);
-  }
-  ::mavsdk::rpc::gimbal::ControlResponse::InitAsDefaultInstance();
-}
-
-::PROTOBUF_NAMESPACE_ID::internal::SCCInfo<1> scc_info_ControlResponse_gimbal_2fgimbal_2eproto =
-    {{ATOMIC_VAR_INIT(::PROTOBUF_NAMESPACE_ID::internal::SCCInfoBase::kUninitialized), 1, 0, InitDefaultsscc_info_ControlResponse_gimbal_2fgimbal_2eproto}, {
-      &scc_info_ControlStatus_gimbal_2fgimbal_2eproto.base,}};
-
-static void InitDefaultsscc_info_ControlStatus_gimbal_2fgimbal_2eproto() {
-  GOOGLE_PROTOBUF_VERIFY_VERSION;
-
-  {
-    void* ptr = &::mavsdk::rpc::gimbal::_ControlStatus_default_instance_;
-    new (ptr) ::mavsdk::rpc::gimbal::ControlStatus();
-    ::PROTOBUF_NAMESPACE_ID::internal::OnShutdownDestroyMessage(ptr);
-  }
-  ::mavsdk::rpc::gimbal::ControlStatus::InitAsDefaultInstance();
-}
-
-::PROTOBUF_NAMESPACE_ID::internal::SCCInfo<0> scc_info_ControlStatus_gimbal_2fgimbal_2eproto =
-    {{ATOMIC_VAR_INIT(::PROTOBUF_NAMESPACE_ID::internal::SCCInfoBase::kUninitialized), 0, 0, InitDefaultsscc_info_ControlStatus_gimbal_2fgimbal_2eproto}, {}};
-
-static void InitDefaultsscc_info_GimbalResult_gimbal_2fgimbal_2eproto() {
-  GOOGLE_PROTOBUF_VERIFY_VERSION;
-
-  {
-    void* ptr = &::mavsdk::rpc::gimbal::_GimbalResult_default_instance_;
-    new (ptr) ::mavsdk::rpc::gimbal::GimbalResult();
-    ::PROTOBUF_NAMESPACE_ID::internal::OnShutdownDestroyMessage(ptr);
-  }
-  ::mavsdk::rpc::gimbal::GimbalResult::InitAsDefaultInstance();
-}
-
-::PROTOBUF_NAMESPACE_ID::internal::SCCInfo<0> scc_info_GimbalResult_gimbal_2fgimbal_2eproto =
-    {{ATOMIC_VAR_INIT(::PROTOBUF_NAMESPACE_ID::internal::SCCInfoBase::kUninitialized), 0, 0, InitDefaultsscc_info_GimbalResult_gimbal_2fgimbal_2eproto}, {}};
-
-static void InitDefaultsscc_info_ReleaseControlRequest_gimbal_2fgimbal_2eproto() {
-  GOOGLE_PROTOBUF_VERIFY_VERSION;
-
-  {
-    void* ptr = &::mavsdk::rpc::gimbal::_ReleaseControlRequest_default_instance_;
-    new (ptr) ::mavsdk::rpc::gimbal::ReleaseControlRequest();
-    ::PROTOBUF_NAMESPACE_ID::internal::OnShutdownDestroyMessage(ptr);
-  }
-  ::mavsdk::rpc::gimbal::ReleaseControlRequest::InitAsDefaultInstance();
-}
-
-::PROTOBUF_NAMESPACE_ID::internal::SCCInfo<0> scc_info_ReleaseControlRequest_gimbal_2fgimbal_2eproto =
-    {{ATOMIC_VAR_INIT(::PROTOBUF_NAMESPACE_ID::internal::SCCInfoBase::kUninitialized), 0, 0, InitDefaultsscc_info_ReleaseControlRequest_gimbal_2fgimbal_2eproto}, {}};
-
-static void InitDefaultsscc_info_ReleaseControlResponse_gimbal_2fgimbal_2eproto() {
-  GOOGLE_PROTOBUF_VERIFY_VERSION;
-
-  {
-    void* ptr = &::mavsdk::rpc::gimbal::_ReleaseControlResponse_default_instance_;
-    new (ptr) ::mavsdk::rpc::gimbal::ReleaseControlResponse();
-    ::PROTOBUF_NAMESPACE_ID::internal::OnShutdownDestroyMessage(ptr);
-  }
-  ::mavsdk::rpc::gimbal::ReleaseControlResponse::InitAsDefaultInstance();
-}
-
-::PROTOBUF_NAMESPACE_ID::internal::SCCInfo<1> scc_info_ReleaseControlResponse_gimbal_2fgimbal_2eproto =
-    {{ATOMIC_VAR_INIT(::PROTOBUF_NAMESPACE_ID::internal::SCCInfoBase::kUninitialized), 1, 0, InitDefaultsscc_info_ReleaseControlResponse_gimbal_2fgimbal_2eproto}, {
-      &scc_info_GimbalResult_gimbal_2fgimbal_2eproto.base,}};
-
-static void InitDefaultsscc_info_SetModeRequest_gimbal_2fgimbal_2eproto() {
-  GOOGLE_PROTOBUF_VERIFY_VERSION;
-
-  {
-    void* ptr = &::mavsdk::rpc::gimbal::_SetModeRequest_default_instance_;
-    new (ptr) ::mavsdk::rpc::gimbal::SetModeRequest();
-    ::PROTOBUF_NAMESPACE_ID::internal::OnShutdownDestroyMessage(ptr);
-  }
-  ::mavsdk::rpc::gimbal::SetModeRequest::InitAsDefaultInstance();
-}
-
-::PROTOBUF_NAMESPACE_ID::internal::SCCInfo<0> scc_info_SetModeRequest_gimbal_2fgimbal_2eproto =
-    {{ATOMIC_VAR_INIT(::PROTOBUF_NAMESPACE_ID::internal::SCCInfoBase::kUninitialized), 0, 0, InitDefaultsscc_info_SetModeRequest_gimbal_2fgimbal_2eproto}, {}};
-
-static void InitDefaultsscc_info_SetModeResponse_gimbal_2fgimbal_2eproto() {
-  GOOGLE_PROTOBUF_VERIFY_VERSION;
-
-  {
-    void* ptr = &::mavsdk::rpc::gimbal::_SetModeResponse_default_instance_;
-    new (ptr) ::mavsdk::rpc::gimbal::SetModeResponse();
-    ::PROTOBUF_NAMESPACE_ID::internal::OnShutdownDestroyMessage(ptr);
-  }
-  ::mavsdk::rpc::gimbal::SetModeResponse::InitAsDefaultInstance();
-}
-
-::PROTOBUF_NAMESPACE_ID::internal::SCCInfo<1> scc_info_SetModeResponse_gimbal_2fgimbal_2eproto =
-    {{ATOMIC_VAR_INIT(::PROTOBUF_NAMESPACE_ID::internal::SCCInfoBase::kUninitialized), 1, 0, InitDefaultsscc_info_SetModeResponse_gimbal_2fgimbal_2eproto}, {
-      &scc_info_GimbalResult_gimbal_2fgimbal_2eproto.base,}};
-
-static void InitDefaultsscc_info_SetPitchAndYawRequest_gimbal_2fgimbal_2eproto() {
-  GOOGLE_PROTOBUF_VERIFY_VERSION;
-
-  {
-    void* ptr = &::mavsdk::rpc::gimbal::_SetPitchAndYawRequest_default_instance_;
-    new (ptr) ::mavsdk::rpc::gimbal::SetPitchAndYawRequest();
-    ::PROTOBUF_NAMESPACE_ID::internal::OnShutdownDestroyMessage(ptr);
-  }
-  ::mavsdk::rpc::gimbal::SetPitchAndYawRequest::InitAsDefaultInstance();
-}
-
-::PROTOBUF_NAMESPACE_ID::internal::SCCInfo<0> scc_info_SetPitchAndYawRequest_gimbal_2fgimbal_2eproto =
-    {{ATOMIC_VAR_INIT(::PROTOBUF_NAMESPACE_ID::internal::SCCInfoBase::kUninitialized), 0, 0, InitDefaultsscc_info_SetPitchAndYawRequest_gimbal_2fgimbal_2eproto}, {}};
-
-static void InitDefaultsscc_info_SetPitchAndYawResponse_gimbal_2fgimbal_2eproto() {
-  GOOGLE_PROTOBUF_VERIFY_VERSION;
-
-  {
-    void* ptr = &::mavsdk::rpc::gimbal::_SetPitchAndYawResponse_default_instance_;
-    new (ptr) ::mavsdk::rpc::gimbal::SetPitchAndYawResponse();
-    ::PROTOBUF_NAMESPACE_ID::internal::OnShutdownDestroyMessage(ptr);
-  }
-  ::mavsdk::rpc::gimbal::SetPitchAndYawResponse::InitAsDefaultInstance();
-}
-
-::PROTOBUF_NAMESPACE_ID::internal::SCCInfo<1> scc_info_SetPitchAndYawResponse_gimbal_2fgimbal_2eproto =
-    {{ATOMIC_VAR_INIT(::PROTOBUF_NAMESPACE_ID::internal::SCCInfoBase::kUninitialized), 1, 0, InitDefaultsscc_info_SetPitchAndYawResponse_gimbal_2fgimbal_2eproto}, {
-      &scc_info_GimbalResult_gimbal_2fgimbal_2eproto.base,}};
-
-static void InitDefaultsscc_info_SetPitchRateAndYawRateRequest_gimbal_2fgimbal_2eproto() {
-  GOOGLE_PROTOBUF_VERIFY_VERSION;
-
-  {
-    void* ptr = &::mavsdk::rpc::gimbal::_SetPitchRateAndYawRateRequest_default_instance_;
-    new (ptr) ::mavsdk::rpc::gimbal::SetPitchRateAndYawRateRequest();
-    ::PROTOBUF_NAMESPACE_ID::internal::OnShutdownDestroyMessage(ptr);
-  }
-  ::mavsdk::rpc::gimbal::SetPitchRateAndYawRateRequest::InitAsDefaultInstance();
-}
-
-::PROTOBUF_NAMESPACE_ID::internal::SCCInfo<0> scc_info_SetPitchRateAndYawRateRequest_gimbal_2fgimbal_2eproto =
-    {{ATOMIC_VAR_INIT(::PROTOBUF_NAMESPACE_ID::internal::SCCInfoBase::kUninitialized), 0, 0, InitDefaultsscc_info_SetPitchRateAndYawRateRequest_gimbal_2fgimbal_2eproto}, {}};
-
-static void InitDefaultsscc_info_SetPitchRateAndYawRateResponse_gimbal_2fgimbal_2eproto() {
-  GOOGLE_PROTOBUF_VERIFY_VERSION;
-
-  {
-    void* ptr = &::mavsdk::rpc::gimbal::_SetPitchRateAndYawRateResponse_default_instance_;
-    new (ptr) ::mavsdk::rpc::gimbal::SetPitchRateAndYawRateResponse();
-    ::PROTOBUF_NAMESPACE_ID::internal::OnShutdownDestroyMessage(ptr);
-  }
-  ::mavsdk::rpc::gimbal::SetPitchRateAndYawRateResponse::InitAsDefaultInstance();
-}
-
-::PROTOBUF_NAMESPACE_ID::internal::SCCInfo<1> scc_info_SetPitchRateAndYawRateResponse_gimbal_2fgimbal_2eproto =
-    {{ATOMIC_VAR_INIT(::PROTOBUF_NAMESPACE_ID::internal::SCCInfoBase::kUninitialized), 1, 0, InitDefaultsscc_info_SetPitchRateAndYawRateResponse_gimbal_2fgimbal_2eproto}, {
-      &scc_info_GimbalResult_gimbal_2fgimbal_2eproto.base,}};
-
-static void InitDefaultsscc_info_SetRoiLocationRequest_gimbal_2fgimbal_2eproto() {
-  GOOGLE_PROTOBUF_VERIFY_VERSION;
-
-  {
-    void* ptr = &::mavsdk::rpc::gimbal::_SetRoiLocationRequest_default_instance_;
-    new (ptr) ::mavsdk::rpc::gimbal::SetRoiLocationRequest();
-    ::PROTOBUF_NAMESPACE_ID::internal::OnShutdownDestroyMessage(ptr);
-  }
-  ::mavsdk::rpc::gimbal::SetRoiLocationRequest::InitAsDefaultInstance();
-}
-
-::PROTOBUF_NAMESPACE_ID::internal::SCCInfo<0> scc_info_SetRoiLocationRequest_gimbal_2fgimbal_2eproto =
-    {{ATOMIC_VAR_INIT(::PROTOBUF_NAMESPACE_ID::internal::SCCInfoBase::kUninitialized), 0, 0, InitDefaultsscc_info_SetRoiLocationRequest_gimbal_2fgimbal_2eproto}, {}};
-
-static void InitDefaultsscc_info_SetRoiLocationResponse_gimbal_2fgimbal_2eproto() {
-  GOOGLE_PROTOBUF_VERIFY_VERSION;
-
-  {
-    void* ptr = &::mavsdk::rpc::gimbal::_SetRoiLocationResponse_default_instance_;
-    new (ptr) ::mavsdk::rpc::gimbal::SetRoiLocationResponse();
-    ::PROTOBUF_NAMESPACE_ID::internal::OnShutdownDestroyMessage(ptr);
-  }
-  ::mavsdk::rpc::gimbal::SetRoiLocationResponse::InitAsDefaultInstance();
-}
-
-::PROTOBUF_NAMESPACE_ID::internal::SCCInfo<1> scc_info_SetRoiLocationResponse_gimbal_2fgimbal_2eproto =
-    {{ATOMIC_VAR_INIT(::PROTOBUF_NAMESPACE_ID::internal::SCCInfoBase::kUninitialized), 1, 0, InitDefaultsscc_info_SetRoiLocationResponse_gimbal_2fgimbal_2eproto}, {
-      &scc_info_GimbalResult_gimbal_2fgimbal_2eproto.base,}};
-
-static void InitDefaultsscc_info_SubscribeControlRequest_gimbal_2fgimbal_2eproto() {
-  GOOGLE_PROTOBUF_VERIFY_VERSION;
-
-  {
-    void* ptr = &::mavsdk::rpc::gimbal::_SubscribeControlRequest_default_instance_;
-    new (ptr) ::mavsdk::rpc::gimbal::SubscribeControlRequest();
-    ::PROTOBUF_NAMESPACE_ID::internal::OnShutdownDestroyMessage(ptr);
-  }
-  ::mavsdk::rpc::gimbal::SubscribeControlRequest::InitAsDefaultInstance();
-}
-
-::PROTOBUF_NAMESPACE_ID::internal::SCCInfo<0> scc_info_SubscribeControlRequest_gimbal_2fgimbal_2eproto =
-    {{ATOMIC_VAR_INIT(::PROTOBUF_NAMESPACE_ID::internal::SCCInfoBase::kUninitialized), 0, 0, InitDefaultsscc_info_SubscribeControlRequest_gimbal_2fgimbal_2eproto}, {}};
-
-static void InitDefaultsscc_info_TakeControlRequest_gimbal_2fgimbal_2eproto() {
-  GOOGLE_PROTOBUF_VERIFY_VERSION;
-
-  {
-    void* ptr = &::mavsdk::rpc::gimbal::_TakeControlRequest_default_instance_;
-    new (ptr) ::mavsdk::rpc::gimbal::TakeControlRequest();
-    ::PROTOBUF_NAMESPACE_ID::internal::OnShutdownDestroyMessage(ptr);
-  }
-  ::mavsdk::rpc::gimbal::TakeControlRequest::InitAsDefaultInstance();
-}
-
-::PROTOBUF_NAMESPACE_ID::internal::SCCInfo<0> scc_info_TakeControlRequest_gimbal_2fgimbal_2eproto =
-    {{ATOMIC_VAR_INIT(::PROTOBUF_NAMESPACE_ID::internal::SCCInfoBase::kUninitialized), 0, 0, InitDefaultsscc_info_TakeControlRequest_gimbal_2fgimbal_2eproto}, {}};
-
-static void InitDefaultsscc_info_TakeControlResponse_gimbal_2fgimbal_2eproto() {
-  GOOGLE_PROTOBUF_VERIFY_VERSION;
-
-  {
-    void* ptr = &::mavsdk::rpc::gimbal::_TakeControlResponse_default_instance_;
-    new (ptr) ::mavsdk::rpc::gimbal::TakeControlResponse();
-    ::PROTOBUF_NAMESPACE_ID::internal::OnShutdownDestroyMessage(ptr);
-  }
-  ::mavsdk::rpc::gimbal::TakeControlResponse::InitAsDefaultInstance();
-}
-
-::PROTOBUF_NAMESPACE_ID::internal::SCCInfo<1> scc_info_TakeControlResponse_gimbal_2fgimbal_2eproto =
-    {{ATOMIC_VAR_INIT(::PROTOBUF_NAMESPACE_ID::internal::SCCInfoBase::kUninitialized), 1, 0, InitDefaultsscc_info_TakeControlResponse_gimbal_2fgimbal_2eproto}, {
-      &scc_info_GimbalResult_gimbal_2fgimbal_2eproto.base,}};
-
 static ::PROTOBUF_NAMESPACE_ID::Metadata file_level_metadata_gimbal_2fgimbal_2eproto[16];
 static const ::PROTOBUF_NAMESPACE_ID::EnumDescriptor* file_level_enum_descriptors_gimbal_2fgimbal_2eproto[3];
 static constexpr ::PROTOBUF_NAMESPACE_ID::ServiceDescriptor const** file_level_service_descriptors_gimbal_2fgimbal_2eproto = nullptr;
@@ -526,36 +434,21 @@ const char descriptor_table_protodef_gimbal_2fgimbal_2eproto[] PROTOBUF_SECTION_
   "k.rpc.gimbal.ControlResponse\"\0000\001B\037\n\020io.m"
   "avsdk.gimbalB\013GimbalProtob\006proto3"
   ;
-static const ::PROTOBUF_NAMESPACE_ID::internal::DescriptorTable*const descriptor_table_gimbal_2fgimbal_2eproto_deps[1] = {
-};
-static ::PROTOBUF_NAMESPACE_ID::internal::SCCInfoBase*const descriptor_table_gimbal_2fgimbal_2eproto_sccs[16] = {
-  &scc_info_ControlResponse_gimbal_2fgimbal_2eproto.base,
-  &scc_info_ControlStatus_gimbal_2fgimbal_2eproto.base,
-  &scc_info_GimbalResult_gimbal_2fgimbal_2eproto.base,
-  &scc_info_ReleaseControlRequest_gimbal_2fgimbal_2eproto.base,
-  &scc_info_ReleaseControlResponse_gimbal_2fgimbal_2eproto.base,
-  &scc_info_SetModeRequest_gimbal_2fgimbal_2eproto.base,
-  &scc_info_SetModeResponse_gimbal_2fgimbal_2eproto.base,
-  &scc_info_SetPitchAndYawRequest_gimbal_2fgimbal_2eproto.base,
-  &scc_info_SetPitchAndYawResponse_gimbal_2fgimbal_2eproto.base,
-  &scc_info_SetPitchRateAndYawRateRequest_gimbal_2fgimbal_2eproto.base,
-  &scc_info_SetPitchRateAndYawRateResponse_gimbal_2fgimbal_2eproto.base,
-  &scc_info_SetRoiLocationRequest_gimbal_2fgimbal_2eproto.base,
-  &scc_info_SetRoiLocationResponse_gimbal_2fgimbal_2eproto.base,
-  &scc_info_SubscribeControlRequest_gimbal_2fgimbal_2eproto.base,
-  &scc_info_TakeControlRequest_gimbal_2fgimbal_2eproto.base,
-  &scc_info_TakeControlResponse_gimbal_2fgimbal_2eproto.base,
-};
 static ::PROTOBUF_NAMESPACE_ID::internal::once_flag descriptor_table_gimbal_2fgimbal_2eproto_once;
 const ::PROTOBUF_NAMESPACE_ID::internal::DescriptorTable descriptor_table_gimbal_2fgimbal_2eproto = {
-  false, false, descriptor_table_protodef_gimbal_2fgimbal_2eproto, "gimbal/gimbal.proto", 2393,
-  &descriptor_table_gimbal_2fgimbal_2eproto_once, descriptor_table_gimbal_2fgimbal_2eproto_sccs, descriptor_table_gimbal_2fgimbal_2eproto_deps, 16, 0,
+  false, false, 2393, descriptor_table_protodef_gimbal_2fgimbal_2eproto, "gimbal/gimbal.proto", 
+  &descriptor_table_gimbal_2fgimbal_2eproto_once, nullptr, 0, 16,
   schemas, file_default_instances, TableStruct_gimbal_2fgimbal_2eproto::offsets,
-  file_level_metadata_gimbal_2fgimbal_2eproto, 16, file_level_enum_descriptors_gimbal_2fgimbal_2eproto, file_level_service_descriptors_gimbal_2fgimbal_2eproto,
+  file_level_metadata_gimbal_2fgimbal_2eproto, file_level_enum_descriptors_gimbal_2fgimbal_2eproto, file_level_service_descriptors_gimbal_2fgimbal_2eproto,
 };
+PROTOBUF_ATTRIBUTE_WEAK ::PROTOBUF_NAMESPACE_ID::Metadata
+descriptor_table_gimbal_2fgimbal_2eproto_metadata_getter(int index) {
+  ::PROTOBUF_NAMESPACE_ID::internal::AssignDescriptors(&descriptor_table_gimbal_2fgimbal_2eproto);
+  return descriptor_table_gimbal_2fgimbal_2eproto.file_level_metadata[index];
+}
 
 // Force running AddDescriptors() at dynamic initialization time.
-static bool dynamic_init_dummy_gimbal_2fgimbal_2eproto = (static_cast<void>(::PROTOBUF_NAMESPACE_ID::internal::AddDescriptors(&descriptor_table_gimbal_2fgimbal_2eproto)), true);
+PROTOBUF_ATTRIBUTE_INIT_PRIORITY static ::PROTOBUF_NAMESPACE_ID::internal::AddDescriptorsRunner dynamic_init_dummy_gimbal_2fgimbal_2eproto(&descriptor_table_gimbal_2fgimbal_2eproto);
 namespace mavsdk {
 namespace rpc {
 namespace gimbal {
@@ -618,8 +511,6 @@ bool ControlMode_IsValid(int value) {
 
 // ===================================================================
 
-void SetPitchAndYawRequest::InitAsDefaultInstance() {
-}
 class SetPitchAndYawRequest::_Internal {
  public:
 };
@@ -640,9 +531,10 @@ SetPitchAndYawRequest::SetPitchAndYawRequest(const SetPitchAndYawRequest& from)
 }
 
 void SetPitchAndYawRequest::SharedCtor() {
-  ::memset(&pitch_deg_, 0, static_cast<size_t>(
-      reinterpret_cast<char*>(&yaw_deg_) -
-      reinterpret_cast<char*>(&pitch_deg_)) + sizeof(yaw_deg_));
+::memset(reinterpret_cast<char*>(this) + static_cast<size_t>(
+    reinterpret_cast<char*>(&pitch_deg_) - reinterpret_cast<char*>(this)),
+    0, static_cast<size_t>(reinterpret_cast<char*>(&yaw_deg_) -
+    reinterpret_cast<char*>(&pitch_deg_)) + sizeof(yaw_deg_));
 }
 
 SetPitchAndYawRequest::~SetPitchAndYawRequest() {
@@ -664,11 +556,6 @@ void SetPitchAndYawRequest::RegisterArenaDtor(::PROTOBUF_NAMESPACE_ID::Arena*) {
 void SetPitchAndYawRequest::SetCachedSize(int size) const {
   _cached_size_.Set(size);
 }
-const SetPitchAndYawRequest& SetPitchAndYawRequest::default_instance() {
-  ::PROTOBUF_NAMESPACE_ID::internal::InitSCC(&::scc_info_SetPitchAndYawRequest_gimbal_2fgimbal_2eproto.base);
-  return *internal_default_instance();
-}
-
 
 void SetPitchAndYawRequest::Clear() {
 // @@protoc_insertion_point(message_clear_start:mavsdk.rpc.gimbal.SetPitchAndYawRequest)
@@ -684,7 +571,6 @@ void SetPitchAndYawRequest::Clear() {
 
 const char* SetPitchAndYawRequest::_InternalParse(const char* ptr, ::PROTOBUF_NAMESPACE_ID::internal::ParseContext* ctx) {
 #define CHK_(x) if (PROTOBUF_PREDICT_FALSE(!(x))) goto failure
-  ::PROTOBUF_NAMESPACE_ID::Arena* arena = GetArena(); (void)arena;
   while (!ctx->Done(&ptr)) {
     ::PROTOBUF_NAMESPACE_ID::uint32 tag;
     ptr = ::PROTOBUF_NAMESPACE_ID::internal::ReadTag(ptr, &tag);
@@ -845,10 +731,6 @@ void SetPitchAndYawRequest::InternalSwap(SetPitchAndYawRequest* other) {
 
 // ===================================================================
 
-void SetPitchAndYawResponse::InitAsDefaultInstance() {
-  ::mavsdk::rpc::gimbal::_SetPitchAndYawResponse_default_instance_._instance.get_mutable()->gimbal_result_ = const_cast< ::mavsdk::rpc::gimbal::GimbalResult*>(
-      ::mavsdk::rpc::gimbal::GimbalResult::internal_default_instance());
-}
 class SetPitchAndYawResponse::_Internal {
  public:
   static const ::mavsdk::rpc::gimbal::GimbalResult& gimbal_result(const SetPitchAndYawResponse* msg);
@@ -876,8 +758,7 @@ SetPitchAndYawResponse::SetPitchAndYawResponse(const SetPitchAndYawResponse& fro
 }
 
 void SetPitchAndYawResponse::SharedCtor() {
-  ::PROTOBUF_NAMESPACE_ID::internal::InitSCC(&scc_info_SetPitchAndYawResponse_gimbal_2fgimbal_2eproto.base);
-  gimbal_result_ = nullptr;
+gimbal_result_ = nullptr;
 }
 
 SetPitchAndYawResponse::~SetPitchAndYawResponse() {
@@ -900,11 +781,6 @@ void SetPitchAndYawResponse::RegisterArenaDtor(::PROTOBUF_NAMESPACE_ID::Arena*) 
 void SetPitchAndYawResponse::SetCachedSize(int size) const {
   _cached_size_.Set(size);
 }
-const SetPitchAndYawResponse& SetPitchAndYawResponse::default_instance() {
-  ::PROTOBUF_NAMESPACE_ID::internal::InitSCC(&::scc_info_SetPitchAndYawResponse_gimbal_2fgimbal_2eproto.base);
-  return *internal_default_instance();
-}
-
 
 void SetPitchAndYawResponse::Clear() {
 // @@protoc_insertion_point(message_clear_start:mavsdk.rpc.gimbal.SetPitchAndYawResponse)
@@ -921,7 +797,6 @@ void SetPitchAndYawResponse::Clear() {
 
 const char* SetPitchAndYawResponse::_InternalParse(const char* ptr, ::PROTOBUF_NAMESPACE_ID::internal::ParseContext* ctx) {
 #define CHK_(x) if (PROTOBUF_PREDICT_FALSE(!(x))) goto failure
-  ::PROTOBUF_NAMESPACE_ID::Arena* arena = GetArena(); (void)arena;
   while (!ctx->Done(&ptr)) {
     ::PROTOBUF_NAMESPACE_ID::uint32 tag;
     ptr = ::PROTOBUF_NAMESPACE_ID::internal::ReadTag(ptr, &tag);
@@ -1060,8 +935,6 @@ void SetPitchAndYawResponse::InternalSwap(SetPitchAndYawResponse* other) {
 
 // ===================================================================
 
-void SetPitchRateAndYawRateRequest::InitAsDefaultInstance() {
-}
 class SetPitchRateAndYawRateRequest::_Internal {
  public:
 };
@@ -1082,9 +955,10 @@ SetPitchRateAndYawRateRequest::SetPitchRateAndYawRateRequest(const SetPitchRateA
 }
 
 void SetPitchRateAndYawRateRequest::SharedCtor() {
-  ::memset(&pitch_rate_deg_s_, 0, static_cast<size_t>(
-      reinterpret_cast<char*>(&yaw_rate_deg_s_) -
-      reinterpret_cast<char*>(&pitch_rate_deg_s_)) + sizeof(yaw_rate_deg_s_));
+::memset(reinterpret_cast<char*>(this) + static_cast<size_t>(
+    reinterpret_cast<char*>(&pitch_rate_deg_s_) - reinterpret_cast<char*>(this)),
+    0, static_cast<size_t>(reinterpret_cast<char*>(&yaw_rate_deg_s_) -
+    reinterpret_cast<char*>(&pitch_rate_deg_s_)) + sizeof(yaw_rate_deg_s_));
 }
 
 SetPitchRateAndYawRateRequest::~SetPitchRateAndYawRateRequest() {
@@ -1106,11 +980,6 @@ void SetPitchRateAndYawRateRequest::RegisterArenaDtor(::PROTOBUF_NAMESPACE_ID::A
 void SetPitchRateAndYawRateRequest::SetCachedSize(int size) const {
   _cached_size_.Set(size);
 }
-const SetPitchRateAndYawRateRequest& SetPitchRateAndYawRateRequest::default_instance() {
-  ::PROTOBUF_NAMESPACE_ID::internal::InitSCC(&::scc_info_SetPitchRateAndYawRateRequest_gimbal_2fgimbal_2eproto.base);
-  return *internal_default_instance();
-}
-
 
 void SetPitchRateAndYawRateRequest::Clear() {
 // @@protoc_insertion_point(message_clear_start:mavsdk.rpc.gimbal.SetPitchRateAndYawRateRequest)
@@ -1126,7 +995,6 @@ void SetPitchRateAndYawRateRequest::Clear() {
 
 const char* SetPitchRateAndYawRateRequest::_InternalParse(const char* ptr, ::PROTOBUF_NAMESPACE_ID::internal::ParseContext* ctx) {
 #define CHK_(x) if (PROTOBUF_PREDICT_FALSE(!(x))) goto failure
-  ::PROTOBUF_NAMESPACE_ID::Arena* arena = GetArena(); (void)arena;
   while (!ctx->Done(&ptr)) {
     ::PROTOBUF_NAMESPACE_ID::uint32 tag;
     ptr = ::PROTOBUF_NAMESPACE_ID::internal::ReadTag(ptr, &tag);
@@ -1287,10 +1155,6 @@ void SetPitchRateAndYawRateRequest::InternalSwap(SetPitchRateAndYawRateRequest* 
 
 // ===================================================================
 
-void SetPitchRateAndYawRateResponse::InitAsDefaultInstance() {
-  ::mavsdk::rpc::gimbal::_SetPitchRateAndYawRateResponse_default_instance_._instance.get_mutable()->gimbal_result_ = const_cast< ::mavsdk::rpc::gimbal::GimbalResult*>(
-      ::mavsdk::rpc::gimbal::GimbalResult::internal_default_instance());
-}
 class SetPitchRateAndYawRateResponse::_Internal {
  public:
   static const ::mavsdk::rpc::gimbal::GimbalResult& gimbal_result(const SetPitchRateAndYawRateResponse* msg);
@@ -1318,8 +1182,7 @@ SetPitchRateAndYawRateResponse::SetPitchRateAndYawRateResponse(const SetPitchRat
 }
 
 void SetPitchRateAndYawRateResponse::SharedCtor() {
-  ::PROTOBUF_NAMESPACE_ID::internal::InitSCC(&scc_info_SetPitchRateAndYawRateResponse_gimbal_2fgimbal_2eproto.base);
-  gimbal_result_ = nullptr;
+gimbal_result_ = nullptr;
 }
 
 SetPitchRateAndYawRateResponse::~SetPitchRateAndYawRateResponse() {
@@ -1342,11 +1205,6 @@ void SetPitchRateAndYawRateResponse::RegisterArenaDtor(::PROTOBUF_NAMESPACE_ID::
 void SetPitchRateAndYawRateResponse::SetCachedSize(int size) const {
   _cached_size_.Set(size);
 }
-const SetPitchRateAndYawRateResponse& SetPitchRateAndYawRateResponse::default_instance() {
-  ::PROTOBUF_NAMESPACE_ID::internal::InitSCC(&::scc_info_SetPitchRateAndYawRateResponse_gimbal_2fgimbal_2eproto.base);
-  return *internal_default_instance();
-}
-
 
 void SetPitchRateAndYawRateResponse::Clear() {
 // @@protoc_insertion_point(message_clear_start:mavsdk.rpc.gimbal.SetPitchRateAndYawRateResponse)
@@ -1363,7 +1221,6 @@ void SetPitchRateAndYawRateResponse::Clear() {
 
 const char* SetPitchRateAndYawRateResponse::_InternalParse(const char* ptr, ::PROTOBUF_NAMESPACE_ID::internal::ParseContext* ctx) {
 #define CHK_(x) if (PROTOBUF_PREDICT_FALSE(!(x))) goto failure
-  ::PROTOBUF_NAMESPACE_ID::Arena* arena = GetArena(); (void)arena;
   while (!ctx->Done(&ptr)) {
     ::PROTOBUF_NAMESPACE_ID::uint32 tag;
     ptr = ::PROTOBUF_NAMESPACE_ID::internal::ReadTag(ptr, &tag);
@@ -1502,8 +1359,6 @@ void SetPitchRateAndYawRateResponse::InternalSwap(SetPitchRateAndYawRateResponse
 
 // ===================================================================
 
-void SetModeRequest::InitAsDefaultInstance() {
-}
 class SetModeRequest::_Internal {
  public:
 };
@@ -1522,7 +1377,7 @@ SetModeRequest::SetModeRequest(const SetModeRequest& from)
 }
 
 void SetModeRequest::SharedCtor() {
-  gimbal_mode_ = 0;
+gimbal_mode_ = 0;
 }
 
 SetModeRequest::~SetModeRequest() {
@@ -1544,11 +1399,6 @@ void SetModeRequest::RegisterArenaDtor(::PROTOBUF_NAMESPACE_ID::Arena*) {
 void SetModeRequest::SetCachedSize(int size) const {
   _cached_size_.Set(size);
 }
-const SetModeRequest& SetModeRequest::default_instance() {
-  ::PROTOBUF_NAMESPACE_ID::internal::InitSCC(&::scc_info_SetModeRequest_gimbal_2fgimbal_2eproto.base);
-  return *internal_default_instance();
-}
-
 
 void SetModeRequest::Clear() {
 // @@protoc_insertion_point(message_clear_start:mavsdk.rpc.gimbal.SetModeRequest)
@@ -1562,7 +1412,6 @@ void SetModeRequest::Clear() {
 
 const char* SetModeRequest::_InternalParse(const char* ptr, ::PROTOBUF_NAMESPACE_ID::internal::ParseContext* ctx) {
 #define CHK_(x) if (PROTOBUF_PREDICT_FALSE(!(x))) goto failure
-  ::PROTOBUF_NAMESPACE_ID::Arena* arena = GetArena(); (void)arena;
   while (!ctx->Done(&ptr)) {
     ::PROTOBUF_NAMESPACE_ID::uint32 tag;
     ptr = ::PROTOBUF_NAMESPACE_ID::internal::ReadTag(ptr, &tag);
@@ -1700,10 +1549,6 @@ void SetModeRequest::InternalSwap(SetModeRequest* other) {
 
 // ===================================================================
 
-void SetModeResponse::InitAsDefaultInstance() {
-  ::mavsdk::rpc::gimbal::_SetModeResponse_default_instance_._instance.get_mutable()->gimbal_result_ = const_cast< ::mavsdk::rpc::gimbal::GimbalResult*>(
-      ::mavsdk::rpc::gimbal::GimbalResult::internal_default_instance());
-}
 class SetModeResponse::_Internal {
  public:
   static const ::mavsdk::rpc::gimbal::GimbalResult& gimbal_result(const SetModeResponse* msg);
@@ -1731,8 +1576,7 @@ SetModeResponse::SetModeResponse(const SetModeResponse& from)
 }
 
 void SetModeResponse::SharedCtor() {
-  ::PROTOBUF_NAMESPACE_ID::internal::InitSCC(&scc_info_SetModeResponse_gimbal_2fgimbal_2eproto.base);
-  gimbal_result_ = nullptr;
+gimbal_result_ = nullptr;
 }
 
 SetModeResponse::~SetModeResponse() {
@@ -1755,11 +1599,6 @@ void SetModeResponse::RegisterArenaDtor(::PROTOBUF_NAMESPACE_ID::Arena*) {
 void SetModeResponse::SetCachedSize(int size) const {
   _cached_size_.Set(size);
 }
-const SetModeResponse& SetModeResponse::default_instance() {
-  ::PROTOBUF_NAMESPACE_ID::internal::InitSCC(&::scc_info_SetModeResponse_gimbal_2fgimbal_2eproto.base);
-  return *internal_default_instance();
-}
-
 
 void SetModeResponse::Clear() {
 // @@protoc_insertion_point(message_clear_start:mavsdk.rpc.gimbal.SetModeResponse)
@@ -1776,7 +1615,6 @@ void SetModeResponse::Clear() {
 
 const char* SetModeResponse::_InternalParse(const char* ptr, ::PROTOBUF_NAMESPACE_ID::internal::ParseContext* ctx) {
 #define CHK_(x) if (PROTOBUF_PREDICT_FALSE(!(x))) goto failure
-  ::PROTOBUF_NAMESPACE_ID::Arena* arena = GetArena(); (void)arena;
   while (!ctx->Done(&ptr)) {
     ::PROTOBUF_NAMESPACE_ID::uint32 tag;
     ptr = ::PROTOBUF_NAMESPACE_ID::internal::ReadTag(ptr, &tag);
@@ -1915,8 +1753,6 @@ void SetModeResponse::InternalSwap(SetModeResponse* other) {
 
 // ===================================================================
 
-void SetRoiLocationRequest::InitAsDefaultInstance() {
-}
 class SetRoiLocationRequest::_Internal {
  public:
 };
@@ -1937,9 +1773,10 @@ SetRoiLocationRequest::SetRoiLocationRequest(const SetRoiLocationRequest& from)
 }
 
 void SetRoiLocationRequest::SharedCtor() {
-  ::memset(&latitude_deg_, 0, static_cast<size_t>(
-      reinterpret_cast<char*>(&altitude_m_) -
-      reinterpret_cast<char*>(&latitude_deg_)) + sizeof(altitude_m_));
+::memset(reinterpret_cast<char*>(this) + static_cast<size_t>(
+    reinterpret_cast<char*>(&latitude_deg_) - reinterpret_cast<char*>(this)),
+    0, static_cast<size_t>(reinterpret_cast<char*>(&altitude_m_) -
+    reinterpret_cast<char*>(&latitude_deg_)) + sizeof(altitude_m_));
 }
 
 SetRoiLocationRequest::~SetRoiLocationRequest() {
@@ -1961,11 +1798,6 @@ void SetRoiLocationRequest::RegisterArenaDtor(::PROTOBUF_NAMESPACE_ID::Arena*) {
 void SetRoiLocationRequest::SetCachedSize(int size) const {
   _cached_size_.Set(size);
 }
-const SetRoiLocationRequest& SetRoiLocationRequest::default_instance() {
-  ::PROTOBUF_NAMESPACE_ID::internal::InitSCC(&::scc_info_SetRoiLocationRequest_gimbal_2fgimbal_2eproto.base);
-  return *internal_default_instance();
-}
-
 
 void SetRoiLocationRequest::Clear() {
 // @@protoc_insertion_point(message_clear_start:mavsdk.rpc.gimbal.SetRoiLocationRequest)
@@ -1981,7 +1813,6 @@ void SetRoiLocationRequest::Clear() {
 
 const char* SetRoiLocationRequest::_InternalParse(const char* ptr, ::PROTOBUF_NAMESPACE_ID::internal::ParseContext* ctx) {
 #define CHK_(x) if (PROTOBUF_PREDICT_FALSE(!(x))) goto failure
-  ::PROTOBUF_NAMESPACE_ID::Arena* arena = GetArena(); (void)arena;
   while (!ctx->Done(&ptr)) {
     ::PROTOBUF_NAMESPACE_ID::uint32 tag;
     ptr = ::PROTOBUF_NAMESPACE_ID::internal::ReadTag(ptr, &tag);
@@ -2163,10 +1994,6 @@ void SetRoiLocationRequest::InternalSwap(SetRoiLocationRequest* other) {
 
 // ===================================================================
 
-void SetRoiLocationResponse::InitAsDefaultInstance() {
-  ::mavsdk::rpc::gimbal::_SetRoiLocationResponse_default_instance_._instance.get_mutable()->gimbal_result_ = const_cast< ::mavsdk::rpc::gimbal::GimbalResult*>(
-      ::mavsdk::rpc::gimbal::GimbalResult::internal_default_instance());
-}
 class SetRoiLocationResponse::_Internal {
  public:
   static const ::mavsdk::rpc::gimbal::GimbalResult& gimbal_result(const SetRoiLocationResponse* msg);
@@ -2194,8 +2021,7 @@ SetRoiLocationResponse::SetRoiLocationResponse(const SetRoiLocationResponse& fro
 }
 
 void SetRoiLocationResponse::SharedCtor() {
-  ::PROTOBUF_NAMESPACE_ID::internal::InitSCC(&scc_info_SetRoiLocationResponse_gimbal_2fgimbal_2eproto.base);
-  gimbal_result_ = nullptr;
+gimbal_result_ = nullptr;
 }
 
 SetRoiLocationResponse::~SetRoiLocationResponse() {
@@ -2218,11 +2044,6 @@ void SetRoiLocationResponse::RegisterArenaDtor(::PROTOBUF_NAMESPACE_ID::Arena*) 
 void SetRoiLocationResponse::SetCachedSize(int size) const {
   _cached_size_.Set(size);
 }
-const SetRoiLocationResponse& SetRoiLocationResponse::default_instance() {
-  ::PROTOBUF_NAMESPACE_ID::internal::InitSCC(&::scc_info_SetRoiLocationResponse_gimbal_2fgimbal_2eproto.base);
-  return *internal_default_instance();
-}
-
 
 void SetRoiLocationResponse::Clear() {
 // @@protoc_insertion_point(message_clear_start:mavsdk.rpc.gimbal.SetRoiLocationResponse)
@@ -2239,7 +2060,6 @@ void SetRoiLocationResponse::Clear() {
 
 const char* SetRoiLocationResponse::_InternalParse(const char* ptr, ::PROTOBUF_NAMESPACE_ID::internal::ParseContext* ctx) {
 #define CHK_(x) if (PROTOBUF_PREDICT_FALSE(!(x))) goto failure
-  ::PROTOBUF_NAMESPACE_ID::Arena* arena = GetArena(); (void)arena;
   while (!ctx->Done(&ptr)) {
     ::PROTOBUF_NAMESPACE_ID::uint32 tag;
     ptr = ::PROTOBUF_NAMESPACE_ID::internal::ReadTag(ptr, &tag);
@@ -2378,8 +2198,6 @@ void SetRoiLocationResponse::InternalSwap(SetRoiLocationResponse* other) {
 
 // ===================================================================
 
-void TakeControlRequest::InitAsDefaultInstance() {
-}
 class TakeControlRequest::_Internal {
  public:
 };
@@ -2398,7 +2216,7 @@ TakeControlRequest::TakeControlRequest(const TakeControlRequest& from)
 }
 
 void TakeControlRequest::SharedCtor() {
-  control_mode_ = 0;
+control_mode_ = 0;
 }
 
 TakeControlRequest::~TakeControlRequest() {
@@ -2420,11 +2238,6 @@ void TakeControlRequest::RegisterArenaDtor(::PROTOBUF_NAMESPACE_ID::Arena*) {
 void TakeControlRequest::SetCachedSize(int size) const {
   _cached_size_.Set(size);
 }
-const TakeControlRequest& TakeControlRequest::default_instance() {
-  ::PROTOBUF_NAMESPACE_ID::internal::InitSCC(&::scc_info_TakeControlRequest_gimbal_2fgimbal_2eproto.base);
-  return *internal_default_instance();
-}
-
 
 void TakeControlRequest::Clear() {
 // @@protoc_insertion_point(message_clear_start:mavsdk.rpc.gimbal.TakeControlRequest)
@@ -2438,7 +2251,6 @@ void TakeControlRequest::Clear() {
 
 const char* TakeControlRequest::_InternalParse(const char* ptr, ::PROTOBUF_NAMESPACE_ID::internal::ParseContext* ctx) {
 #define CHK_(x) if (PROTOBUF_PREDICT_FALSE(!(x))) goto failure
-  ::PROTOBUF_NAMESPACE_ID::Arena* arena = GetArena(); (void)arena;
   while (!ctx->Done(&ptr)) {
     ::PROTOBUF_NAMESPACE_ID::uint32 tag;
     ptr = ::PROTOBUF_NAMESPACE_ID::internal::ReadTag(ptr, &tag);
@@ -2576,10 +2388,6 @@ void TakeControlRequest::InternalSwap(TakeControlRequest* other) {
 
 // ===================================================================
 
-void TakeControlResponse::InitAsDefaultInstance() {
-  ::mavsdk::rpc::gimbal::_TakeControlResponse_default_instance_._instance.get_mutable()->gimbal_result_ = const_cast< ::mavsdk::rpc::gimbal::GimbalResult*>(
-      ::mavsdk::rpc::gimbal::GimbalResult::internal_default_instance());
-}
 class TakeControlResponse::_Internal {
  public:
   static const ::mavsdk::rpc::gimbal::GimbalResult& gimbal_result(const TakeControlResponse* msg);
@@ -2607,8 +2415,7 @@ TakeControlResponse::TakeControlResponse(const TakeControlResponse& from)
 }
 
 void TakeControlResponse::SharedCtor() {
-  ::PROTOBUF_NAMESPACE_ID::internal::InitSCC(&scc_info_TakeControlResponse_gimbal_2fgimbal_2eproto.base);
-  gimbal_result_ = nullptr;
+gimbal_result_ = nullptr;
 }
 
 TakeControlResponse::~TakeControlResponse() {
@@ -2631,11 +2438,6 @@ void TakeControlResponse::RegisterArenaDtor(::PROTOBUF_NAMESPACE_ID::Arena*) {
 void TakeControlResponse::SetCachedSize(int size) const {
   _cached_size_.Set(size);
 }
-const TakeControlResponse& TakeControlResponse::default_instance() {
-  ::PROTOBUF_NAMESPACE_ID::internal::InitSCC(&::scc_info_TakeControlResponse_gimbal_2fgimbal_2eproto.base);
-  return *internal_default_instance();
-}
-
 
 void TakeControlResponse::Clear() {
 // @@protoc_insertion_point(message_clear_start:mavsdk.rpc.gimbal.TakeControlResponse)
@@ -2652,7 +2454,6 @@ void TakeControlResponse::Clear() {
 
 const char* TakeControlResponse::_InternalParse(const char* ptr, ::PROTOBUF_NAMESPACE_ID::internal::ParseContext* ctx) {
 #define CHK_(x) if (PROTOBUF_PREDICT_FALSE(!(x))) goto failure
-  ::PROTOBUF_NAMESPACE_ID::Arena* arena = GetArena(); (void)arena;
   while (!ctx->Done(&ptr)) {
     ::PROTOBUF_NAMESPACE_ID::uint32 tag;
     ptr = ::PROTOBUF_NAMESPACE_ID::internal::ReadTag(ptr, &tag);
@@ -2791,8 +2592,6 @@ void TakeControlResponse::InternalSwap(TakeControlResponse* other) {
 
 // ===================================================================
 
-void ReleaseControlRequest::InitAsDefaultInstance() {
-}
 class ReleaseControlRequest::_Internal {
  public:
 };
@@ -2831,11 +2630,6 @@ void ReleaseControlRequest::RegisterArenaDtor(::PROTOBUF_NAMESPACE_ID::Arena*) {
 void ReleaseControlRequest::SetCachedSize(int size) const {
   _cached_size_.Set(size);
 }
-const ReleaseControlRequest& ReleaseControlRequest::default_instance() {
-  ::PROTOBUF_NAMESPACE_ID::internal::InitSCC(&::scc_info_ReleaseControlRequest_gimbal_2fgimbal_2eproto.base);
-  return *internal_default_instance();
-}
-
 
 void ReleaseControlRequest::Clear() {
 // @@protoc_insertion_point(message_clear_start:mavsdk.rpc.gimbal.ReleaseControlRequest)
@@ -2848,7 +2642,6 @@ void ReleaseControlRequest::Clear() {
 
 const char* ReleaseControlRequest::_InternalParse(const char* ptr, ::PROTOBUF_NAMESPACE_ID::internal::ParseContext* ctx) {
 #define CHK_(x) if (PROTOBUF_PREDICT_FALSE(!(x))) goto failure
-  ::PROTOBUF_NAMESPACE_ID::Arena* arena = GetArena(); (void)arena;
   while (!ctx->Done(&ptr)) {
     ::PROTOBUF_NAMESPACE_ID::uint32 tag;
     ptr = ::PROTOBUF_NAMESPACE_ID::internal::ReadTag(ptr, &tag);
@@ -2956,10 +2749,6 @@ void ReleaseControlRequest::InternalSwap(ReleaseControlRequest* other) {
 
 // ===================================================================
 
-void ReleaseControlResponse::InitAsDefaultInstance() {
-  ::mavsdk::rpc::gimbal::_ReleaseControlResponse_default_instance_._instance.get_mutable()->gimbal_result_ = const_cast< ::mavsdk::rpc::gimbal::GimbalResult*>(
-      ::mavsdk::rpc::gimbal::GimbalResult::internal_default_instance());
-}
 class ReleaseControlResponse::_Internal {
  public:
   static const ::mavsdk::rpc::gimbal::GimbalResult& gimbal_result(const ReleaseControlResponse* msg);
@@ -2987,8 +2776,7 @@ ReleaseControlResponse::ReleaseControlResponse(const ReleaseControlResponse& fro
 }
 
 void ReleaseControlResponse::SharedCtor() {
-  ::PROTOBUF_NAMESPACE_ID::internal::InitSCC(&scc_info_ReleaseControlResponse_gimbal_2fgimbal_2eproto.base);
-  gimbal_result_ = nullptr;
+gimbal_result_ = nullptr;
 }
 
 ReleaseControlResponse::~ReleaseControlResponse() {
@@ -3011,11 +2799,6 @@ void ReleaseControlResponse::RegisterArenaDtor(::PROTOBUF_NAMESPACE_ID::Arena*) 
 void ReleaseControlResponse::SetCachedSize(int size) const {
   _cached_size_.Set(size);
 }
-const ReleaseControlResponse& ReleaseControlResponse::default_instance() {
-  ::PROTOBUF_NAMESPACE_ID::internal::InitSCC(&::scc_info_ReleaseControlResponse_gimbal_2fgimbal_2eproto.base);
-  return *internal_default_instance();
-}
-
 
 void ReleaseControlResponse::Clear() {
 // @@protoc_insertion_point(message_clear_start:mavsdk.rpc.gimbal.ReleaseControlResponse)
@@ -3032,7 +2815,6 @@ void ReleaseControlResponse::Clear() {
 
 const char* ReleaseControlResponse::_InternalParse(const char* ptr, ::PROTOBUF_NAMESPACE_ID::internal::ParseContext* ctx) {
 #define CHK_(x) if (PROTOBUF_PREDICT_FALSE(!(x))) goto failure
-  ::PROTOBUF_NAMESPACE_ID::Arena* arena = GetArena(); (void)arena;
   while (!ctx->Done(&ptr)) {
     ::PROTOBUF_NAMESPACE_ID::uint32 tag;
     ptr = ::PROTOBUF_NAMESPACE_ID::internal::ReadTag(ptr, &tag);
@@ -3171,8 +2953,6 @@ void ReleaseControlResponse::InternalSwap(ReleaseControlResponse* other) {
 
 // ===================================================================
 
-void SubscribeControlRequest::InitAsDefaultInstance() {
-}
 class SubscribeControlRequest::_Internal {
  public:
 };
@@ -3211,11 +2991,6 @@ void SubscribeControlRequest::RegisterArenaDtor(::PROTOBUF_NAMESPACE_ID::Arena*)
 void SubscribeControlRequest::SetCachedSize(int size) const {
   _cached_size_.Set(size);
 }
-const SubscribeControlRequest& SubscribeControlRequest::default_instance() {
-  ::PROTOBUF_NAMESPACE_ID::internal::InitSCC(&::scc_info_SubscribeControlRequest_gimbal_2fgimbal_2eproto.base);
-  return *internal_default_instance();
-}
-
 
 void SubscribeControlRequest::Clear() {
 // @@protoc_insertion_point(message_clear_start:mavsdk.rpc.gimbal.SubscribeControlRequest)
@@ -3228,7 +3003,6 @@ void SubscribeControlRequest::Clear() {
 
 const char* SubscribeControlRequest::_InternalParse(const char* ptr, ::PROTOBUF_NAMESPACE_ID::internal::ParseContext* ctx) {
 #define CHK_(x) if (PROTOBUF_PREDICT_FALSE(!(x))) goto failure
-  ::PROTOBUF_NAMESPACE_ID::Arena* arena = GetArena(); (void)arena;
   while (!ctx->Done(&ptr)) {
     ::PROTOBUF_NAMESPACE_ID::uint32 tag;
     ptr = ::PROTOBUF_NAMESPACE_ID::internal::ReadTag(ptr, &tag);
@@ -3336,10 +3110,6 @@ void SubscribeControlRequest::InternalSwap(SubscribeControlRequest* other) {
 
 // ===================================================================
 
-void ControlResponse::InitAsDefaultInstance() {
-  ::mavsdk::rpc::gimbal::_ControlResponse_default_instance_._instance.get_mutable()->control_status_ = const_cast< ::mavsdk::rpc::gimbal::ControlStatus*>(
-      ::mavsdk::rpc::gimbal::ControlStatus::internal_default_instance());
-}
 class ControlResponse::_Internal {
  public:
   static const ::mavsdk::rpc::gimbal::ControlStatus& control_status(const ControlResponse* msg);
@@ -3367,8 +3137,7 @@ ControlResponse::ControlResponse(const ControlResponse& from)
 }
 
 void ControlResponse::SharedCtor() {
-  ::PROTOBUF_NAMESPACE_ID::internal::InitSCC(&scc_info_ControlResponse_gimbal_2fgimbal_2eproto.base);
-  control_status_ = nullptr;
+control_status_ = nullptr;
 }
 
 ControlResponse::~ControlResponse() {
@@ -3391,11 +3160,6 @@ void ControlResponse::RegisterArenaDtor(::PROTOBUF_NAMESPACE_ID::Arena*) {
 void ControlResponse::SetCachedSize(int size) const {
   _cached_size_.Set(size);
 }
-const ControlResponse& ControlResponse::default_instance() {
-  ::PROTOBUF_NAMESPACE_ID::internal::InitSCC(&::scc_info_ControlResponse_gimbal_2fgimbal_2eproto.base);
-  return *internal_default_instance();
-}
-
 
 void ControlResponse::Clear() {
 // @@protoc_insertion_point(message_clear_start:mavsdk.rpc.gimbal.ControlResponse)
@@ -3412,7 +3176,6 @@ void ControlResponse::Clear() {
 
 const char* ControlResponse::_InternalParse(const char* ptr, ::PROTOBUF_NAMESPACE_ID::internal::ParseContext* ctx) {
 #define CHK_(x) if (PROTOBUF_PREDICT_FALSE(!(x))) goto failure
-  ::PROTOBUF_NAMESPACE_ID::Arena* arena = GetArena(); (void)arena;
   while (!ctx->Done(&ptr)) {
     ::PROTOBUF_NAMESPACE_ID::uint32 tag;
     ptr = ::PROTOBUF_NAMESPACE_ID::internal::ReadTag(ptr, &tag);
@@ -3551,8 +3314,6 @@ void ControlResponse::InternalSwap(ControlResponse* other) {
 
 // ===================================================================
 
-void ControlStatus::InitAsDefaultInstance() {
-}
 class ControlStatus::_Internal {
  public:
 };
@@ -3573,9 +3334,10 @@ ControlStatus::ControlStatus(const ControlStatus& from)
 }
 
 void ControlStatus::SharedCtor() {
-  ::memset(&control_mode_, 0, static_cast<size_t>(
-      reinterpret_cast<char*>(&compid_secondary_control_) -
-      reinterpret_cast<char*>(&control_mode_)) + sizeof(compid_secondary_control_));
+::memset(reinterpret_cast<char*>(this) + static_cast<size_t>(
+    reinterpret_cast<char*>(&control_mode_) - reinterpret_cast<char*>(this)),
+    0, static_cast<size_t>(reinterpret_cast<char*>(&compid_secondary_control_) -
+    reinterpret_cast<char*>(&control_mode_)) + sizeof(compid_secondary_control_));
 }
 
 ControlStatus::~ControlStatus() {
@@ -3597,11 +3359,6 @@ void ControlStatus::RegisterArenaDtor(::PROTOBUF_NAMESPACE_ID::Arena*) {
 void ControlStatus::SetCachedSize(int size) const {
   _cached_size_.Set(size);
 }
-const ControlStatus& ControlStatus::default_instance() {
-  ::PROTOBUF_NAMESPACE_ID::internal::InitSCC(&::scc_info_ControlStatus_gimbal_2fgimbal_2eproto.base);
-  return *internal_default_instance();
-}
-
 
 void ControlStatus::Clear() {
 // @@protoc_insertion_point(message_clear_start:mavsdk.rpc.gimbal.ControlStatus)
@@ -3617,7 +3374,6 @@ void ControlStatus::Clear() {
 
 const char* ControlStatus::_InternalParse(const char* ptr, ::PROTOBUF_NAMESPACE_ID::internal::ParseContext* ctx) {
 #define CHK_(x) if (PROTOBUF_PREDICT_FALSE(!(x))) goto failure
-  ::PROTOBUF_NAMESPACE_ID::Arena* arena = GetArena(); (void)arena;
   while (!ctx->Done(&ptr)) {
     ::PROTOBUF_NAMESPACE_ID::uint32 tag;
     ptr = ::PROTOBUF_NAMESPACE_ID::internal::ReadTag(ptr, &tag);
@@ -3852,8 +3608,6 @@ void ControlStatus::InternalSwap(ControlStatus* other) {
 
 // ===================================================================
 
-void GimbalResult::InitAsDefaultInstance() {
-}
 class GimbalResult::_Internal {
  public:
 };
@@ -3869,7 +3623,7 @@ GimbalResult::GimbalResult(const GimbalResult& from)
   _internal_metadata_.MergeFrom<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>(from._internal_metadata_);
   result_str_.UnsafeSetDefault(&::PROTOBUF_NAMESPACE_ID::internal::GetEmptyStringAlreadyInited());
   if (!from._internal_result_str().empty()) {
-    result_str_.Set(&::PROTOBUF_NAMESPACE_ID::internal::GetEmptyStringAlreadyInited(), from._internal_result_str(),
+    result_str_.Set(::PROTOBUF_NAMESPACE_ID::internal::ArenaStringPtr::EmptyDefault{}, from._internal_result_str(), 
       GetArena());
   }
   result_ = from.result_;
@@ -3877,9 +3631,8 @@ GimbalResult::GimbalResult(const GimbalResult& from)
 }
 
 void GimbalResult::SharedCtor() {
-  ::PROTOBUF_NAMESPACE_ID::internal::InitSCC(&scc_info_GimbalResult_gimbal_2fgimbal_2eproto.base);
-  result_str_.UnsafeSetDefault(&::PROTOBUF_NAMESPACE_ID::internal::GetEmptyStringAlreadyInited());
-  result_ = 0;
+result_str_.UnsafeSetDefault(&::PROTOBUF_NAMESPACE_ID::internal::GetEmptyStringAlreadyInited());
+result_ = 0;
 }
 
 GimbalResult::~GimbalResult() {
@@ -3902,11 +3655,6 @@ void GimbalResult::RegisterArenaDtor(::PROTOBUF_NAMESPACE_ID::Arena*) {
 void GimbalResult::SetCachedSize(int size) const {
   _cached_size_.Set(size);
 }
-const GimbalResult& GimbalResult::default_instance() {
-  ::PROTOBUF_NAMESPACE_ID::internal::InitSCC(&::scc_info_GimbalResult_gimbal_2fgimbal_2eproto.base);
-  return *internal_default_instance();
-}
-
 
 void GimbalResult::Clear() {
 // @@protoc_insertion_point(message_clear_start:mavsdk.rpc.gimbal.GimbalResult)
@@ -3914,14 +3662,13 @@ void GimbalResult::Clear() {
   // Prevent compiler warnings about cached_has_bits being unused
   (void) cached_has_bits;
 
-  result_str_.ClearToEmpty(&::PROTOBUF_NAMESPACE_ID::internal::GetEmptyStringAlreadyInited(), GetArena());
+  result_str_.ClearToEmpty();
   result_ = 0;
   _internal_metadata_.Clear<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>();
 }
 
 const char* GimbalResult::_InternalParse(const char* ptr, ::PROTOBUF_NAMESPACE_ID::internal::ParseContext* ctx) {
 #define CHK_(x) if (PROTOBUF_PREDICT_FALSE(!(x))) goto failure
-  ::PROTOBUF_NAMESPACE_ID::Arena* arena = GetArena(); (void)arena;
   while (!ctx->Done(&ptr)) {
     ::PROTOBUF_NAMESPACE_ID::uint32 tag;
     ptr = ::PROTOBUF_NAMESPACE_ID::internal::ReadTag(ptr, &tag);

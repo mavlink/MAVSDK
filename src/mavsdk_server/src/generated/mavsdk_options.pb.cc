@@ -14,6 +14,8 @@
 #include <google/protobuf/wire_format.h>
 // @@protoc_insertion_point(includes)
 #include <google/protobuf/port_def.inc>
+
+PROTOBUF_PRAGMA_INIT_SEG
 namespace mavsdk {
 namespace options {
 }  // namespace options
@@ -40,18 +42,21 @@ const char descriptor_table_protodef_mavsdk_5foptions_2eproto[] PROTOBUF_SECTION
 static const ::PROTOBUF_NAMESPACE_ID::internal::DescriptorTable*const descriptor_table_mavsdk_5foptions_2eproto_deps[1] = {
   &::descriptor_table_google_2fprotobuf_2fdescriptor_2eproto,
 };
-static ::PROTOBUF_NAMESPACE_ID::internal::SCCInfoBase*const descriptor_table_mavsdk_5foptions_2eproto_sccs[1] = {
-};
 static ::PROTOBUF_NAMESPACE_ID::internal::once_flag descriptor_table_mavsdk_5foptions_2eproto_once;
 const ::PROTOBUF_NAMESPACE_ID::internal::DescriptorTable descriptor_table_mavsdk_5foptions_2eproto = {
-  false, false, descriptor_table_protodef_mavsdk_5foptions_2eproto, "mavsdk_options.proto", 382,
-  &descriptor_table_mavsdk_5foptions_2eproto_once, descriptor_table_mavsdk_5foptions_2eproto_sccs, descriptor_table_mavsdk_5foptions_2eproto_deps, 0, 1,
+  false, false, 382, descriptor_table_protodef_mavsdk_5foptions_2eproto, "mavsdk_options.proto", 
+  &descriptor_table_mavsdk_5foptions_2eproto_once, descriptor_table_mavsdk_5foptions_2eproto_deps, 1, 0,
   schemas, file_default_instances, TableStruct_mavsdk_5foptions_2eproto::offsets,
-  file_level_metadata_mavsdk_5foptions_2eproto, 0, file_level_enum_descriptors_mavsdk_5foptions_2eproto, file_level_service_descriptors_mavsdk_5foptions_2eproto,
+  file_level_metadata_mavsdk_5foptions_2eproto, file_level_enum_descriptors_mavsdk_5foptions_2eproto, file_level_service_descriptors_mavsdk_5foptions_2eproto,
 };
+PROTOBUF_ATTRIBUTE_WEAK ::PROTOBUF_NAMESPACE_ID::Metadata
+descriptor_table_mavsdk_5foptions_2eproto_metadata_getter(int index) {
+  ::PROTOBUF_NAMESPACE_ID::internal::AssignDescriptors(&descriptor_table_mavsdk_5foptions_2eproto);
+  return descriptor_table_mavsdk_5foptions_2eproto.file_level_metadata[index];
+}
 
 // Force running AddDescriptors() at dynamic initialization time.
-static bool dynamic_init_dummy_mavsdk_5foptions_2eproto = (static_cast<void>(::PROTOBUF_NAMESPACE_ID::internal::AddDescriptors(&descriptor_table_mavsdk_5foptions_2eproto)), true);
+PROTOBUF_ATTRIBUTE_INIT_PRIORITY static ::PROTOBUF_NAMESPACE_ID::internal::AddDescriptorsRunner dynamic_init_dummy_mavsdk_5foptions_2eproto(&descriptor_table_mavsdk_5foptions_2eproto);
 namespace mavsdk {
 namespace options {
 const ::PROTOBUF_NAMESPACE_ID::EnumDescriptor* AsyncType_descriptor() {
@@ -70,16 +75,16 @@ bool AsyncType_IsValid(int value) {
 }
 
 const std::string default_value_default("");
-::PROTOBUF_NAMESPACE_ID::internal::ExtensionIdentifier< ::google::protobuf::FieldOptions,
+PROTOBUF_ATTRIBUTE_INIT_PRIORITY ::PROTOBUF_NAMESPACE_ID::internal::ExtensionIdentifier< ::google::protobuf::FieldOptions,
     ::PROTOBUF_NAMESPACE_ID::internal::StringTypeTraits, 9, false >
   default_value(kDefaultValueFieldNumber, default_value_default);
-::PROTOBUF_NAMESPACE_ID::internal::ExtensionIdentifier< ::google::protobuf::FieldOptions,
+PROTOBUF_ATTRIBUTE_INIT_PRIORITY ::PROTOBUF_NAMESPACE_ID::internal::ExtensionIdentifier< ::google::protobuf::FieldOptions,
     ::PROTOBUF_NAMESPACE_ID::internal::PrimitiveTypeTraits< double >, 1, false >
   epsilon(kEpsilonFieldNumber, 0);
-::PROTOBUF_NAMESPACE_ID::internal::ExtensionIdentifier< ::google::protobuf::MethodOptions,
+PROTOBUF_ATTRIBUTE_INIT_PRIORITY ::PROTOBUF_NAMESPACE_ID::internal::ExtensionIdentifier< ::google::protobuf::MethodOptions,
     ::PROTOBUF_NAMESPACE_ID::internal::EnumTypeTraits< ::mavsdk::options::AsyncType, ::mavsdk::options::AsyncType_IsValid>, 14, false >
   async_type(kAsyncTypeFieldNumber, static_cast< ::mavsdk::options::AsyncType >(0));
-::PROTOBUF_NAMESPACE_ID::internal::ExtensionIdentifier< ::google::protobuf::MethodOptions,
+PROTOBUF_ATTRIBUTE_INIT_PRIORITY ::PROTOBUF_NAMESPACE_ID::internal::ExtensionIdentifier< ::google::protobuf::MethodOptions,
     ::PROTOBUF_NAMESPACE_ID::internal::PrimitiveTypeTraits< bool >, 8, false >
   is_finite(kIsFiniteFieldNumber, false);
 
