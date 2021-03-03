@@ -82,13 +82,6 @@ service MissionService {
      * the mission may have to be uploaded again.
      */
     rpc SetReturnToLaunchAfterMission(SetReturnToLaunchAfterMissionRequest) returns(SetReturnToLaunchAfterMissionResponse) { option (mavsdk.options.async_type) = SYNC; }
-    /*
-     * Import a QGroundControl (QGC) mission plan.
-     *
-     * The method will fail if any of the imported mission items are not supported
-     * by the MAVSDK API.
-     */
-    rpc ImportQgroundcontrolMission(ImportQgroundcontrolMissionRequest) returns(ImportQgroundcontrolMissionResponse) {}
 }
 
 message UploadMissionRequest {
@@ -160,14 +153,6 @@ message SetReturnToLaunchAfterMissionResponse {
     MissionResult mission_result = 1;
 }
 
-message ImportQgroundcontrolMissionRequest {
-    string qgc_plan_path = 1; // File path of the QGC plan
-}
-message ImportQgroundcontrolMissionResponse {
-    MissionResult mission_result = 1;
-    MissionPlan mission_plan = 2; // The mission plan
-}
-
 /*
  * Type representing a mission item.
  *
@@ -223,8 +208,6 @@ message MissionResult {
         RESULT_INVALID_ARGUMENT = 6; // Invalid argument
         RESULT_UNSUPPORTED = 7; // Mission downloaded from the system is not supported
         RESULT_NO_MISSION_AVAILABLE = 8; // No mission available on the system
-        RESULT_FAILED_TO_OPEN_QGC_PLAN = 9; // Failed to open the QGroundControl plan
-        RESULT_FAILED_TO_PARSE_QGC_PLAN = 10; // Failed to parse the QGroundControl plan
         RESULT_UNSUPPORTED_MISSION_CMD = 11; // Unsupported mission command
         RESULT_TRANSFER_CANCELLED = 12; // Mission transfer (upload or download) has been cancelled
     }

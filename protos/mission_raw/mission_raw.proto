@@ -67,6 +67,16 @@ service MissionRawService {
      * @param callback Callback to notify about change.
      */
     rpc SubscribeMissionChanged(SubscribeMissionChangedRequest) returns(stream MissionChangedResponse) { option (mavsdk.options.async_type) = ASYNC; }
+    /*
+     * Import a QGroundControl missions in JSON .plan format.
+     *
+     * Supported:
+     * - Waypoints
+     * - Survey
+     * Not supported:
+     * - Structure Scan
+     */
+    rpc ImportQgroundcontrolMission(ImportQgroundcontrolMissionRequest) returns(ImportQgroundcontrolMissionResponse) { option (mavsdk.options.async_type) = SYNC; }
 }
 
 message UploadMissionRequest {
@@ -124,6 +134,14 @@ message MissionChangedResponse {
     bool mission_changed = 1; // Mission has changed
 }
 
+message ImportQgroundcontrolMissionRequest {
+    string qgc_plan_path = 1; // File path of the QGC plan
+}
+message ImportQgroundcontrolMissionResponse {
+    MissionRawResult mission_raw_result = 1;
+    MissionImportData mission_import_data = 2; // The imported mission data
+}
+
 // Mission progress type.
 message MissionProgress {
     int32 current = 1; // Current mission item index (0-based)
@@ -147,6 +165,13 @@ message MissionItem {
     uint32 mission_type = 13; // Mission type (actually uint8_t)
 }
 
+// Mission import data
+message MissionImportData {
+    repeated MissionItem mission_items = 1; // Mission items
+    repeated MissionItem geofence_items = 2; // Geofence items
+    repeated MissionItem rally_items = 3; // Rally items
+}
+
 // Result type.
 message MissionRawResult {
     // Possible results returned for action requests.
@@ -161,6 +186,8 @@ message MissionRawResult {
         RESULT_UNSUPPORTED = 7; // Mission downloaded from the system is not supported
         RESULT_NO_MISSION_AVAILABLE = 8; // No mission available on the system
         RESULT_TRANSFER_CANCELLED = 9; // Mission transfer (upload or download) has been cancelled
+        RESULT_FAILED_TO_OPEN_QGC_PLAN = 10; // Failed to open the QGroundControl plan
+        RESULT_FAILED_TO_PARSE_QGC_PLAN = 11; // Failed to parse the QGroundControl plan
     }
 
     Result result = 1; // Result enum value
