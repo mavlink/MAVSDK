@@ -48,7 +48,6 @@ public:
     Telemetry::Result set_rate_actuator_output_status(double rate_hz);
     Telemetry::Result set_rate_odometry(double rate_hz);
     Telemetry::Result set_rate_distance_sensor(double rate_hz);
-    Telemetry::Result set_rate_raw_pressure(double rate_hz);
     Telemetry::Result set_rate_scaled_pressure(double rate_hz);
     Telemetry::Result set_rate_unix_epoch_time(double rate_hz);
 
@@ -72,7 +71,6 @@ public:
     void set_rate_actuator_output_status_async(double rate_hz, Telemetry::ResultCallback callback);
     void set_rate_odometry_async(double rate_hz, Telemetry::ResultCallback callback);
     void set_rate_distance_sensor_async(double rate_hz, Telemetry::ResultCallback callback);
-    void set_rate_raw_pressure_async(double rate_hz, Telemetry::ResultCallback callback);
     void set_rate_scaled_pressure_async(double rate_hz, Telemetry::ResultCallback callback);
     void set_rate_unix_epoch_time_async(double rate_hz, Telemetry::ResultCallback callback);
 
@@ -108,7 +106,6 @@ public:
     Telemetry::ActuatorOutputStatus actuator_output_status() const;
     Telemetry::Odometry odometry() const;
     Telemetry::DistanceSensor distance_sensor() const;
-    Telemetry::RawPressure raw_pressure() const;
     Telemetry::ScaledPressure scaled_pressure() const;
     uint64_t unix_epoch_time() const;
 
@@ -143,7 +140,6 @@ public:
     void subscribe_actuator_output_status(Telemetry::ActuatorOutputStatusCallback& callback);
     void subscribe_odometry(Telemetry::OdometryCallback& callback);
     void subscribe_distance_sensor(Telemetry::DistanceSensorCallback& callback);
-    void subscribe_raw_pressure(Telemetry::RawPressureCallback& callback);
     void subscribe_scaled_pressure(Telemetry::ScaledPressureCallback& callback);
 
     TelemetryImpl(const TelemetryImpl&) = delete;
@@ -182,7 +178,6 @@ private:
     void set_actuator_output_status(uint32_t active, const std::vector<float>& actuators);
     void set_odometry(Telemetry::Odometry& odometry);
     void set_distance_sensor(Telemetry::DistanceSensor& distance_sensor);
-    void set_raw_pressure(Telemetry::RawPressure& raw_pressure);
     void set_scaled_pressure(Telemetry::ScaledPressure& scaled_pressure);
 
     void process_position_velocity_ned(const mavlink_message_t& message);
@@ -208,7 +203,6 @@ private:
     void process_actuator_output_status(const mavlink_message_t& message);
     void process_odometry(const mavlink_message_t& message);
     void process_distance_sensor(const mavlink_message_t& message);
-    void process_raw_pressure(const mavlink_message_t& message);
     void process_scaled_pressure(const mavlink_message_t& message);
     void receive_param_cal_gyro(MAVLinkParameters::Result result, int value);
     void receive_param_cal_accel(MAVLinkParameters::Result result, int value);
@@ -314,9 +308,6 @@ private:
     mutable std::mutex _distance_sensor_mutex{};
     Telemetry::DistanceSensor _distance_sensor{};
 
-    mutable std::mutex _raw_pressure_mutex{};
-    Telemetry::RawPressure _raw_pressure{};
-
     mutable std::mutex _scaled_pressure_mutex{};
     Telemetry::ScaledPressure _scaled_pressure{};
 
@@ -354,7 +345,6 @@ private:
     Telemetry::ActuatorOutputStatusCallback _actuator_output_status_subscription{nullptr};
     Telemetry::OdometryCallback _odometry_subscription{nullptr};
     Telemetry::DistanceSensorCallback _distance_sensor_subscription{nullptr};
-    Telemetry::RawPressureCallback _raw_pressure_subscription{nullptr};
     Telemetry::ScaledPressureCallback _scaled_pressure_subscription{nullptr};
 
     // The velocity (former ground speed) and position are coupled to the same message, therefore,

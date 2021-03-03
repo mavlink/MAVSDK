@@ -26,7 +26,6 @@ using VelocityBody = Telemetry::VelocityBody;
 using PositionBody = Telemetry::PositionBody;
 using Odometry = Telemetry::Odometry;
 using DistanceSensor = Telemetry::DistanceSensor;
-using RawPressure = Telemetry::RawPressure;
 using ScaledPressure = Telemetry::ScaledPressure;
 using PositionNed = Telemetry::PositionNed;
 using VelocityNed = Telemetry::VelocityNed;
@@ -347,16 +346,6 @@ void Telemetry::subscribe_distance_sensor(DistanceSensorCallback callback)
 Telemetry::DistanceSensor Telemetry::distance_sensor() const
 {
     return _impl->distance_sensor();
-}
-
-void Telemetry::subscribe_raw_pressure(RawPressureCallback callback)
-{
-    _impl->subscribe_raw_pressure(callback);
-}
-
-Telemetry::RawPressure Telemetry::raw_pressure() const
-{
-    return _impl->raw_pressure();
 }
 
 void Telemetry::subscribe_scaled_pressure(ScaledPressureCallback callback)
@@ -986,29 +975,6 @@ std::ostream& operator<<(std::ostream& str, Telemetry::DistanceSensor const& dis
     str << "    minimum_distance_m: " << distance_sensor.minimum_distance_m << '\n';
     str << "    maximum_distance_m: " << distance_sensor.maximum_distance_m << '\n';
     str << "    current_distance_m: " << distance_sensor.current_distance_m << '\n';
-    str << '}';
-    return str;
-}
-
-bool operator==(const Telemetry::RawPressure& lhs, const Telemetry::RawPressure& rhs)
-{
-    return (rhs.timestamp_us == lhs.timestamp_us) &&
-           (rhs.absolute_pressure == lhs.absolute_pressure) &&
-           (rhs.differential_pressure_first == lhs.differential_pressure_first) &&
-           (rhs.differential_pressure_second == lhs.differential_pressure_second) &&
-           (rhs.temperature == lhs.temperature);
-}
-
-std::ostream& operator<<(std::ostream& str, Telemetry::RawPressure const& raw_pressure)
-{
-    str << std::setprecision(15);
-    str << "raw_pressure:" << '\n' << "{\n";
-    str << "    timestamp_us: " << raw_pressure.timestamp_us << '\n';
-    str << "    absolute_pressure: " << raw_pressure.absolute_pressure << '\n';
-    str << "    differential_pressure_first: " << raw_pressure.differential_pressure_first << '\n';
-    str << "    differential_pressure_second: " << raw_pressure.differential_pressure_second
-        << '\n';
-    str << "    temperature: " << raw_pressure.temperature << '\n';
     str << '}';
     return str;
 }

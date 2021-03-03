@@ -634,34 +634,6 @@ public:
     operator<<(std::ostream& str, Telemetry::DistanceSensor const& distance_sensor);
 
     /**
-     * @brief Raw Pressure message type.
-     */
-    struct RawPressure {
-        uint64_t timestamp_us{}; /**< @brief Timestamp in microseconds (UNIX Epoch time or time
-                                    since system boot, to be inferred) */
-        int32_t absolute_pressure{}; /**< @brief Absolute pressure (raw) */
-        int32_t differential_pressure_first{}; /**< @brief Differential pressure 1 (raw, 0 if
-                                                  non-existent) */
-        int32_t differential_pressure_second{}; /**< @brief Differential pressure 2 (raw, 0 if
-                                                   non-existent) */
-        int32_t temperature{}; /**< @brief Raw temperature measurement (raw) */
-    };
-
-    /**
-     * @brief Equal operator to compare two `Telemetry::RawPressure` objects.
-     *
-     * @return `true` if items are equal.
-     */
-    friend bool operator==(const Telemetry::RawPressure& lhs, const Telemetry::RawPressure& rhs);
-
-    /**
-     * @brief Stream operator to print information about a `Telemetry::RawPressure`.
-     *
-     * @return A reference to the stream.
-     */
-    friend std::ostream& operator<<(std::ostream& str, Telemetry::RawPressure const& raw_pressure);
-
-    /**
      * @brief Scaled Pressure message type.
      */
     struct ScaledPressure {
@@ -1508,24 +1480,6 @@ public:
      * @return One DistanceSensor update.
      */
     DistanceSensor distance_sensor() const;
-
-    /**
-     * @brief Callback type for subscribe_raw_pressure.
-     */
-
-    using RawPressureCallback = std::function<void(RawPressure)>;
-
-    /**
-     * @brief Subscribe to 'Raw Pressure' updates.
-     */
-    void subscribe_raw_pressure(RawPressureCallback callback);
-
-    /**
-     * @brief Poll for 'RawPressure' (blocking).
-     *
-     * @return One RawPressure update.
-     */
-    RawPressure raw_pressure() const;
 
     /**
      * @brief Callback type for subscribe_scaled_pressure.
