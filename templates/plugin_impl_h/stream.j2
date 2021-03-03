@@ -3,5 +3,5 @@ void {% if not is_finite %}subscribe_{% endif %}{{ name.lower_snake_case }}{% if
 {% endif %}
 
 {% if is_sync %}
-{{ return_type.name }} {{ name.lower_snake_case }}({% for param in params %}{{ param.type_info.name }} {{ param.name.lower_snake_case }}{% if not loop.last %}, {% endif %}{% endfor %});
+{{ plugin_name.upper_camel_case }}::{{ return_type.name }} {{ name.lower_snake_case }}({% for param in params %}{{ param.type_info.name }} {{ param.name.lower_snake_case }}{% if not loop.last %}, {% endif %}{% endfor %}) const;
 {% endif %}

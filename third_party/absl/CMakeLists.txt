@@ -26,7 +26,7 @@ endforeach()
 ExternalProject_add(
     absl
     GIT_REPOSITORY https://github.com/abseil/abseil-cpp.git
-    GIT_TAG 20200923.2
+    GIT_TAG 20200923.3
     PREFIX absl
     PATCH_COMMAND git apply ${PROJECT_SOURCE_DIR}/absl_c++11.patch
     CMAKE_ARGS "${CMAKE_ARGS}"

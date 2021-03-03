@@ -10,7 +10,7 @@ namespace mavsdk {
 
 class CallEveryHandler {
 public:
-    CallEveryHandler(Time& time);
+    explicit CallEveryHandler(Time& time);
     ~CallEveryHandler();
 
     // delete copy and move constructors and assign operators
@@ -30,7 +30,7 @@ private:
     struct Entry {
         std::function<void()> callback{nullptr};
         dl_time_t last_time{};
-        double interval_s{0.0f};
+        double interval_s{0.0};
     };
 
     std::unordered_map<void*, std::shared_ptr<Entry>> _entries{};

@@ -60,6 +60,11 @@ void CameraImpl::init()
         this);
 
     _parent->register_mavlink_message_handler(
+        MAVLINK_MSG_ID_VIDEO_STREAM_STATUS,
+        std::bind(&CameraImpl::process_video_stream_status, this, _1),
+        this);
+
+    _parent->register_mavlink_message_handler(
         MAVLINK_MSG_ID_FLIGHT_INFORMATION,
         std::bind(&CameraImpl::process_flight_information, this, _1),
         this);
@@ -345,6 +350,17 @@ MavlinkCommandSender::CommandLong CameraImpl::make_command_request_video_stream_
     return cmd_req_video_stream_info;
 }
 
+MavlinkCommandSender::CommandLong CameraImpl::make_command_request_video_stream_status()
+{
+    MavlinkCommandSender::CommandLong cmd_req_video_stream_status{};
+
+    cmd_req_video_stream_status.command = MAV_CMD_REQUEST_VIDEO_STREAM_STATUS;
+    cmd_req_video_stream_status.params.param2 = 1.0f;
+    cmd_req_video_stream_status.target_component_id = _camera_id + MAV_COMP_ID_CAMERA;
+
+    return cmd_req_video_stream_status;
+}
+
 Camera::Result CameraImpl::take_photo()
 {
     // TODO: check whether we are in photo mode.
@@ -524,6 +540,7 @@ Camera::Result CameraImpl::stop_video_streaming()
 void CameraImpl::request_video_stream_info()
 {
     _parent->send_command_async(make_command_request_video_stream_info(), nullptr);
+    _parent->send_command_async(make_command_request_video_stream_status(), nullptr);
 }
 
 Camera::VideoStreamInfo CameraImpl::video_stream_info()
@@ -967,13 +984,48 @@ void CameraImpl::process_video_information(const mavlink_message_t& message)
             (received_video_info.flags & VIDEO_STREAM_STATUS_FLAGS_RUNNING ?
                  Camera::VideoStreamInfo::VideoStreamStatus::InProgress :
                  Camera::VideoStreamInfo::VideoStreamStatus::NotRunning);
+        _video_stream_info.data.spectrum =
+            (received_video_info.flags & VIDEO_STREAM_STATUS_FLAGS_THERMAL ?
+                 Camera::VideoStreamInfo::VideoStreamSpectrum::Infrared :
+                 Camera::VideoStreamInfo::VideoStreamSpectrum::VisibleLight);
+
         auto& video_stream_info = _video_stream_info.data.settings;
         video_stream_info.frame_rate_hz = received_video_info.framerate;
         video_stream_info.horizontal_resolution_pix = received_video_info.resolution_h;
         video_stream_info.vertical_resolution_pix = received_video_info.resolution_v;
         video_stream_info.bit_rate_b_s = received_video_info.bitrate;
         video_stream_info.rotation_deg = received_video_info.rotation;
+        video_stream_info.horizontal_fov_deg = static_cast<float>(received_video_info.hfov);
         video_stream_info.uri = received_video_info.uri;
+        _video_stream_info.available = true;
+    }
+
+    notify_video_stream_info();
+}
+
+void CameraImpl::process_video_stream_status(const mavlink_message_t& message)
+{
+    mavlink_video_stream_status_t received_video_stream_status;
+    mavlink_msg_video_stream_status_decode(&message, &received_video_stream_status);
+    {
+        std::lock_guard<std::mutex> lock(_video_stream_info.mutex);
+        _video_stream_info.data.status =
+            (received_video_stream_status.flags & VIDEO_STREAM_STATUS_FLAGS_RUNNING ?
+                 Camera::VideoStreamInfo::VideoStreamStatus::InProgress :
+                 Camera::VideoStreamInfo::VideoStreamStatus::NotRunning);
+        _video_stream_info.data.spectrum =
+            (received_video_stream_status.flags & VIDEO_STREAM_STATUS_FLAGS_THERMAL ?
+                 Camera::VideoStreamInfo::VideoStreamSpectrum::Infrared :
+                 Camera::VideoStreamInfo::VideoStreamSpectrum::VisibleLight);
+
+        auto& video_stream_info = _video_stream_info.data.settings;
+        video_stream_info.frame_rate_hz = received_video_stream_status.framerate;
+        video_stream_info.horizontal_resolution_pix = received_video_stream_status.resolution_h;
+        video_stream_info.vertical_resolution_pix = received_video_stream_status.resolution_v;
+        video_stream_info.bit_rate_b_s = received_video_stream_status.bitrate;
+        video_stream_info.rotation_deg = received_video_stream_status.rotation;
+        video_stream_info.horizontal_fov_deg =
+            static_cast<float>(received_video_stream_status.hfov);
         _video_stream_info.available = true;
     }
 

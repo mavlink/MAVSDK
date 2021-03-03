@@ -20,7 +20,7 @@ TEST_F(SitlTest, SystemConnectionAsync)
 
     ASSERT_EQ(mavsdk.add_udp_connection(), ConnectionResult::Success);
 
-    mavsdk.subscribe_on_new_system([this, &mavsdk]() {
+    mavsdk.subscribe_on_new_system([&mavsdk]() {
         const auto system = mavsdk.systems().at(0);
         const auto sysid = system->get_system_id();
 

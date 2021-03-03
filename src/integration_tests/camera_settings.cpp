@@ -197,7 +197,7 @@ TEST(CameraTest, SetSettings)
 
         EXPECT_EQ(camera->set_mode(Camera::Mode::Video), Camera::Result::Success);
 
-        settings = camera->possible_setting_options();
+        UNUSED(camera->possible_setting_options());
 
         // This should fail in video mode.
         EXPECT_EQ(set_setting(camera, "CAM_PHOTOQUAL", "1"), Camera::Result::Error);

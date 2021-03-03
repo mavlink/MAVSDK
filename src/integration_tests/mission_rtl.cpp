@@ -16,7 +16,7 @@ using namespace std::placeholders; // for `_1`
 
 // TODO: add checks that verify the return altitude
 
-void do_mission_with_rtl(float mission_altitude_m, float rtl_altitude_m);
+void do_mission_with_rtl(float mission_altitude_m, float return_altitude_m);
 
 TEST_F(SitlTest, MissionWithRTLHigh)
 {
@@ -118,7 +118,7 @@ void do_mission_with_rtl(float mission_altitude_m, float return_altitude_m)
     LogInfo() << "Armed.";
 
     // Before starting the mission, we want to be sure to subscribe to the mission progress.
-    mission->subscribe_mission_progress([&mission](Mission::MissionProgress progress) {
+    mission->subscribe_mission_progress([](Mission::MissionProgress progress) {
         LogInfo() << "Mission status update: " << progress.current << " / " << progress.total;
     });
 

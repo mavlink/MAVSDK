@@ -39,7 +39,7 @@ public:
      */
     void checkin_used_channel(uint8_t used_channel);
 
-    uint8_t get_max_channels() { return MAX_CHANNELS; }
+    static constexpr uint8_t get_max_channels() { return MAX_CHANNELS; }
 
 private:
     // It is not clear what the limit of the number of channels is, except UINT8_MAX.
