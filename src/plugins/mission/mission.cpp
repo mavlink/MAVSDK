@@ -114,18 +114,6 @@ Mission::Result Mission::set_return_to_launch_after_mission(bool enable) const
     return _impl->set_return_to_launch_after_mission(enable);
 }
 
-void Mission::import_qgroundcontrol_mission_async(
-    std::string qgc_plan_path, const ImportQgroundcontrolMissionCallback callback)
-{
-    _impl->import_qgroundcontrol_mission_async(qgc_plan_path, callback);
-}
-
-std::pair<Mission::Result, Mission::MissionPlan>
-Mission::import_qgroundcontrol_mission(std::string qgc_plan_path) const
-{
-    return _impl->import_qgroundcontrol_mission(qgc_plan_path);
-}
-
 std::ostream& operator<<(std::ostream& str, Mission::MissionItem::CameraAction const& camera_action)
 {
     switch (camera_action) {
@@ -240,10 +228,6 @@ std::ostream& operator<<(std::ostream& str, Mission::Result const& result)
             return str << "Unsupported";
         case Mission::Result::NoMissionAvailable:
             return str << "No Mission Available";
-        case Mission::Result::FailedToOpenQgcPlan:
-            return str << "Failed To Open Qgc Plan";
-        case Mission::Result::FailedToParseQgcPlan:
-            return str << "Failed To Parse Qgc Plan";
         case Mission::Result::UnsupportedMissionCmd:
             return str << "Unsupported Mission Cmd";
         case Mission::Result::TransferCancelled:

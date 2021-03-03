@@ -174,8 +174,6 @@ public:
         InvalidArgument, /**< @brief Invalid argument. */
         Unsupported, /**< @brief Mission downloaded from the system is not supported. */
         NoMissionAvailable, /**< @brief No mission available on the system. */
-        FailedToOpenQgcPlan, /**< @brief Failed to open the QGroundControl plan. */
-        FailedToParseQgcPlan, /**< @brief Failed to parse the QGroundControl plan. */
         UnsupportedMissionCmd, /**< @brief Unsupported mission command. */
         TransferCancelled, /**< @brief Mission transfer (upload or download) has been cancelled. */
     };
@@ -400,37 +398,6 @@ public:
      * @return Result of request.
      */
     Result set_return_to_launch_after_mission(bool enable) const;
-
-    /**
-     * @brief Callback type for import_qgroundcontrol_mission_async.
-     */
-    using ImportQgroundcontrolMissionCallback = std::function<void(Result, MissionPlan)>;
-
-    /**
-     * @brief Import a QGroundControl (QGC) mission plan.
-     *
-     * The method will fail if any of the imported mission items are not supported
-     * by the MAVSDK API.
-     *
-     * This function is non-blocking. See 'import_qgroundcontrol_mission' for the blocking
-     * counterpart.
-     */
-    void import_qgroundcontrol_mission_async(
-        std::string qgc_plan_path, const ImportQgroundcontrolMissionCallback callback);
-
-    /**
-     * @brief Import a QGroundControl (QGC) mission plan.
-     *
-     * The method will fail if any of the imported mission items are not supported
-     * by the MAVSDK API.
-     *
-     * This function is blocking. See 'import_qgroundcontrol_mission_async' for the non-blocking
-     * counterpart.
-     *
-     * @return Result of request.
-     */
-    std::pair<Result, Mission::MissionPlan>
-    import_qgroundcontrol_mission(std::string qgc_plan_path) const;
 
     /**
      * @brief Copy constructor.

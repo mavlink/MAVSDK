@@ -128,6 +128,52 @@ public:
         return obj;
     }
 
+    static std::unique_ptr<rpc::mission_raw::MissionImportData> translateToRpcMissionImportData(
+        const mavsdk::MissionRaw::MissionImportData& mission_import_data)
+    {
+        auto rpc_obj = std::make_unique<rpc::mission_raw::MissionImportData>();
+
+        for (const auto& elem : mission_import_data.mission_items) {
+            auto* ptr = rpc_obj->add_mission_items();
+            ptr->CopyFrom(*translateToRpcMissionItem(elem).release());
+        }
+
+        for (const auto& elem : mission_import_data.geofence_items) {
+            auto* ptr = rpc_obj->add_geofence_items();
+            ptr->CopyFrom(*translateToRpcMissionItem(elem).release());
+        }
+
+        for (const auto& elem : mission_import_data.rally_items) {
+            auto* ptr = rpc_obj->add_rally_items();
+            ptr->CopyFrom(*translateToRpcMissionItem(elem).release());
+        }
+
+        return rpc_obj;
+    }
+
+    static mavsdk::MissionRaw::MissionImportData translateFromRpcMissionImportData(
+        const rpc::mission_raw::MissionImportData& mission_import_data)
+    {
+        mavsdk::MissionRaw::MissionImportData obj;
+
+        for (const auto& elem : mission_import_data.mission_items()) {
+            obj.mission_items.push_back(translateFromRpcMissionItem(
+                static_cast<mavsdk::rpc::mission_raw::MissionItem>(elem)));
+        }
+
+        for (const auto& elem : mission_import_data.geofence_items()) {
+            obj.geofence_items.push_back(translateFromRpcMissionItem(
+                static_cast<mavsdk::rpc::mission_raw::MissionItem>(elem)));
+        }
+
+        for (const auto& elem : mission_import_data.rally_items()) {
+            obj.rally_items.push_back(translateFromRpcMissionItem(
+                static_cast<mavsdk::rpc::mission_raw::MissionItem>(elem)));
+        }
+
+        return obj;
+    }
+
     static rpc::mission_raw::MissionRawResult::Result
     translateToRpcResult(const mavsdk::MissionRaw::Result& result)
     {
@@ -155,6 +201,10 @@ public:
                 return rpc::mission_raw::MissionRawResult_Result_RESULT_NO_MISSION_AVAILABLE;
             case mavsdk::MissionRaw::Result::TransferCancelled:
                 return rpc::mission_raw::MissionRawResult_Result_RESULT_TRANSFER_CANCELLED;
+            case mavsdk::MissionRaw::Result::FailedToOpenQgcPlan:
+                return rpc::mission_raw::MissionRawResult_Result_RESULT_FAILED_TO_OPEN_QGC_PLAN;
+            case mavsdk::MissionRaw::Result::FailedToParseQgcPlan:
+                return rpc::mission_raw::MissionRawResult_Result_RESULT_FAILED_TO_PARSE_QGC_PLAN;
         }
     }
 
@@ -185,6 +235,10 @@ public:
                 return mavsdk::MissionRaw::Result::NoMissionAvailable;
             case rpc::mission_raw::MissionRawResult_Result_RESULT_TRANSFER_CANCELLED:
                 return mavsdk::MissionRaw::Result::TransferCancelled;
+            case rpc::mission_raw::MissionRawResult_Result_RESULT_FAILED_TO_OPEN_QGC_PLAN:
+                return mavsdk::MissionRaw::Result::FailedToOpenQgcPlan;
+            case rpc::mission_raw::MissionRawResult_Result_RESULT_FAILED_TO_PARSE_QGC_PLAN:
+                return mavsdk::MissionRaw::Result::FailedToParseQgcPlan;
         }
     }
 
@@ -388,6 +442,28 @@ public:
             });
 
         stream_closed_future.wait();
+        return grpc::Status::OK;
+    }
+
+    grpc::Status ImportQgroundcontrolMission(
+        grpc::ServerContext* /* context */,
+        const rpc::mission_raw::ImportQgroundcontrolMissionRequest* request,
+        rpc::mission_raw::ImportQgroundcontrolMissionResponse* response) override
+    {
+        if (request == nullptr) {
+            LogWarn() << "ImportQgroundcontrolMission sent with a null request! Ignoring...";
+            return grpc::Status::OK;
+        }
+
+        auto result = _mission_raw.import_qgroundcontrol_mission(request->qgc_plan_path());
+
+        if (response != nullptr) {
+            fillResponseWithResult(response, result.first);
+
+            response->set_allocated_mission_import_data(
+                translateToRpcMissionImportData(result.second).release());
+        }
+
         return grpc::Status::OK;
     }
 

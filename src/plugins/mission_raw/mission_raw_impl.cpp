@@ -1,6 +1,10 @@
 #include "mission_raw_impl.h"
+#include "mission_import.h"
 #include "system.h"
 #include "global_include.h"
+
+#include <fstream> // for `std::ifstream`
+#include <sstream> // for `std::stringstream`
 
 namespace mavsdk {
 
@@ -462,6 +466,22 @@ void MissionRawImpl::subscribe_mission_changed(MissionRaw::MissionChangedCallbac
 {
     std::lock_guard<std::mutex> lock(_mission_changed.mutex);
     _mission_changed.callback = callback;
+}
+
+std::pair<MissionRaw::Result, MissionRaw::MissionImportData>
+MissionRawImpl::import_qgroundcontrol_mission(std::string qgc_plan_path)
+{
+    std::ifstream file(qgc_plan_path);
+    if (!file) {
+        return std::make_pair<MissionRaw::Result, MissionRaw::MissionImportData>(
+            MissionRaw::Result::FailedToOpenQgcPlan, {});
+    }
+
+    std::stringstream buf;
+    buf << file.rdbuf();
+    file.close();
+
+    return MissionImport::parse_json(buf.str());
 }
 
 MissionRaw::Result MissionRawImpl::convert_result(MAVLinkMissionTransfer::Result result)

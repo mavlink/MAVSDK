@@ -37,9 +37,3 @@ install(FILES
     include/plugins/mission/mission.h
     DESTINATION ${CMAKE_INSTALL_INCLUDEDIR}/mavsdk/plugins/mission
 )
-
-list(APPEND UNIT_TEST_SOURCES
-    ${CMAKE_CURRENT_SOURCE_DIR}/mission_import_qgc_test.cpp
-    ${CMAKE_CURRENT_SOURCE_DIR}/mission_equality_operator_test.cpp
-)
-set(UNIT_TEST_SOURCES ${UNIT_TEST_SOURCES} PARENT_SCOPE)

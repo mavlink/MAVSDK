@@ -11,6 +11,7 @@ namespace mavsdk {
 
 using MissionProgress = MissionRaw::MissionProgress;
 using MissionItem = MissionRaw::MissionItem;
+using MissionImportData = MissionRaw::MissionImportData;
 
 MissionRaw::MissionRaw(System& system) : PluginBase(), _impl{new MissionRawImpl(system)} {}
 
@@ -108,6 +109,12 @@ void MissionRaw::subscribe_mission_changed(MissionChangedCallback callback)
     _impl->subscribe_mission_changed(callback);
 }
 
+std::pair<MissionRaw::Result, MissionRaw::MissionImportData>
+MissionRaw::import_qgroundcontrol_mission(std::string qgc_plan_path) const
+{
+    return _impl->import_qgroundcontrol_mission(qgc_plan_path);
+}
+
 bool operator==(const MissionRaw::MissionProgress& lhs, const MissionRaw::MissionProgress& rhs)
 {
     return (rhs.current == lhs.current) && (rhs.total == lhs.total);
@@ -157,6 +164,42 @@ std::ostream& operator<<(std::ostream& str, MissionRaw::MissionItem const& missi
     return str;
 }
 
+bool operator==(const MissionRaw::MissionImportData& lhs, const MissionRaw::MissionImportData& rhs)
+{
+    return (rhs.mission_items == lhs.mission_items) && (rhs.geofence_items == lhs.geofence_items) &&
+           (rhs.rally_items == lhs.rally_items);
+}
+
+std::ostream&
+operator<<(std::ostream& str, MissionRaw::MissionImportData const& mission_import_data)
+{
+    str << std::setprecision(15);
+    str << "mission_import_data:" << '\n' << "{\n";
+    str << "    mission_items: [";
+    for (auto it = mission_import_data.mission_items.begin();
+         it != mission_import_data.mission_items.end();
+         ++it) {
+        str << *it;
+        str << (it + 1 != mission_import_data.mission_items.end() ? ", " : "]\n");
+    }
+    str << "    geofence_items: [";
+    for (auto it = mission_import_data.geofence_items.begin();
+         it != mission_import_data.geofence_items.end();
+         ++it) {
+        str << *it;
+        str << (it + 1 != mission_import_data.geofence_items.end() ? ", " : "]\n");
+    }
+    str << "    rally_items: [";
+    for (auto it = mission_import_data.rally_items.begin();
+         it != mission_import_data.rally_items.end();
+         ++it) {
+        str << *it;
+        str << (it + 1 != mission_import_data.rally_items.end() ? ", " : "]\n");
+    }
+    str << '}';
+    return str;
+}
+
 std::ostream& operator<<(std::ostream& str, MissionRaw::Result const& result)
 {
     switch (result) {
@@ -180,6 +223,10 @@ std::ostream& operator<<(std::ostream& str, MissionRaw::Result const& result)
             return str << "No Mission Available";
         case MissionRaw::Result::TransferCancelled:
             return str << "Transfer Cancelled";
+        case MissionRaw::Result::FailedToOpenQgcPlan:
+            return str << "Failed To Open Qgc Plan";
+        case MissionRaw::Result::FailedToParseQgcPlan:
+            return str << "Failed To Parse Qgc Plan";
         default:
             return str << "Unknown";
     }

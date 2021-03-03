@@ -36,7 +36,6 @@ static const char* MissionService_method_names[] = {
   "/mavsdk.rpc.mission.MissionService/SubscribeMissionProgress",
   "/mavsdk.rpc.mission.MissionService/GetReturnToLaunchAfterMission",
   "/mavsdk.rpc.mission.MissionService/SetReturnToLaunchAfterMission",
-  "/mavsdk.rpc.mission.MissionService/ImportQgroundcontrolMission",
 };
 
 std::unique_ptr< MissionService::Stub> MissionService::NewStub(const std::shared_ptr< ::grpc::ChannelInterface>& channel, const ::grpc::StubOptions& options) {
@@ -58,7 +57,6 @@ MissionService::Stub::Stub(const std::shared_ptr< ::grpc::ChannelInterface>& cha
   , rpcmethod_SubscribeMissionProgress_(MissionService_method_names[9], ::grpc::internal::RpcMethod::SERVER_STREAMING, channel)
   , rpcmethod_GetReturnToLaunchAfterMission_(MissionService_method_names[10], ::grpc::internal::RpcMethod::NORMAL_RPC, channel)
   , rpcmethod_SetReturnToLaunchAfterMission_(MissionService_method_names[11], ::grpc::internal::RpcMethod::NORMAL_RPC, channel)
-  , rpcmethod_ImportQgroundcontrolMission_(MissionService_method_names[12], ::grpc::internal::RpcMethod::NORMAL_RPC, channel)
   {}
 
 ::grpc::Status MissionService::Stub::UploadMission(::grpc::ClientContext* context, const ::mavsdk::rpc::mission::UploadMissionRequest& request, ::mavsdk::rpc::mission::UploadMissionResponse* response) {
@@ -330,29 +328,6 @@ void MissionService::Stub::experimental_async::SetReturnToLaunchAfterMission(::g
   return result;
 }
 
-::grpc::Status MissionService::Stub::ImportQgroundcontrolMission(::grpc::ClientContext* context, const ::mavsdk::rpc::mission::ImportQgroundcontrolMissionRequest& request, ::mavsdk::rpc::mission::ImportQgroundcontrolMissionResponse* response) {
-  return ::grpc::internal::BlockingUnaryCall< ::mavsdk::rpc::mission::ImportQgroundcontrolMissionRequest, ::mavsdk::rpc::mission::ImportQgroundcontrolMissionResponse, ::grpc::protobuf::MessageLite, ::grpc::protobuf::MessageLite>(channel_.get(), rpcmethod_ImportQgroundcontrolMission_, context, request, response);
-}
-
-void MissionService::Stub::experimental_async::ImportQgroundcontrolMission(::grpc::ClientContext* context, const ::mavsdk::rpc::mission::ImportQgroundcontrolMissionRequest* request, ::mavsdk::rpc::mission::ImportQgroundcontrolMissionResponse* response, std::function<void(::grpc::Status)> f) {
-  ::grpc::internal::CallbackUnaryCall< ::mavsdk::rpc::mission::ImportQgroundcontrolMissionRequest, ::mavsdk::rpc::mission::ImportQgroundcontrolMissionResponse, ::grpc::protobuf::MessageLite, ::grpc::protobuf::MessageLite>(stub_->channel_.get(), stub_->rpcmethod_ImportQgroundcontrolMission_, context, request, response, std::move(f));
-}
-
-void MissionService::Stub::experimental_async::ImportQgroundcontrolMission(::grpc::ClientContext* context, const ::mavsdk::rpc::mission::ImportQgroundcontrolMissionRequest* request, ::mavsdk::rpc::mission::ImportQgroundcontrolMissionResponse* response, ::grpc::experimental::ClientUnaryReactor* reactor) {
-  ::grpc::internal::ClientCallbackUnaryFactory::Create< ::grpc::protobuf::MessageLite, ::grpc::protobuf::MessageLite>(stub_->channel_.get(), stub_->rpcmethod_ImportQgroundcontrolMission_, context, request, response, reactor);
-}
-
-::grpc::ClientAsyncResponseReader< ::mavsdk::rpc::mission::ImportQgroundcontrolMissionResponse>* MissionService::Stub::PrepareAsyncImportQgroundcontrolMissionRaw(::grpc::ClientContext* context, const ::mavsdk::rpc::mission::ImportQgroundcontrolMissionRequest& request, ::grpc::CompletionQueue* cq) {
-  return ::grpc::internal::ClientAsyncResponseReaderHelper::Create< ::mavsdk::rpc::mission::ImportQgroundcontrolMissionResponse, ::mavsdk::rpc::mission::ImportQgroundcontrolMissionRequest, ::grpc::protobuf::MessageLite, ::grpc::protobuf::MessageLite>(channel_.get(), cq, rpcmethod_ImportQgroundcontrolMission_, context, request);
-}
-
-::grpc::ClientAsyncResponseReader< ::mavsdk::rpc::mission::ImportQgroundcontrolMissionResponse>* MissionService::Stub::AsyncImportQgroundcontrolMissionRaw(::grpc::ClientContext* context, const ::mavsdk::rpc::mission::ImportQgroundcontrolMissionRequest& request, ::grpc::CompletionQueue* cq) {
-  auto* result =
-    this->PrepareAsyncImportQgroundcontrolMissionRaw(context, request, cq);
-  result->StartCall();
-  return result;
-}
-
 MissionService::Service::Service() {
   AddMethod(new ::grpc::internal::RpcServiceMethod(
       MissionService_method_names[0],
@@ -474,16 +449,6 @@ MissionService::Service::Service() {
              ::mavsdk::rpc::mission::SetReturnToLaunchAfterMissionResponse* resp) {
                return service->SetReturnToLaunchAfterMission(ctx, req, resp);
              }, this)));
-  AddMethod(new ::grpc::internal::RpcServiceMethod(
-      MissionService_method_names[12],
-      ::grpc::internal::RpcMethod::NORMAL_RPC,
-      new ::grpc::internal::RpcMethodHandler< MissionService::Service, ::mavsdk::rpc::mission::ImportQgroundcontrolMissionRequest, ::mavsdk::rpc::mission::ImportQgroundcontrolMissionResponse, ::grpc::protobuf::MessageLite, ::grpc::protobuf::MessageLite>(
-          [](MissionService::Service* service,
-             ::grpc::ServerContext* ctx,
-             const ::mavsdk::rpc::mission::ImportQgroundcontrolMissionRequest* req,
-             ::mavsdk::rpc::mission::ImportQgroundcontrolMissionResponse* resp) {
-               return service->ImportQgroundcontrolMission(ctx, req, resp);
-             }, this)));
 }
 
 MissionService::Service::~Service() {
@@ -567,13 +532,6 @@ MissionService::Service::~Service() {
 }
 
 ::grpc::Status MissionService::Service::SetReturnToLaunchAfterMission(::grpc::ServerContext* context, const ::mavsdk::rpc::mission::SetReturnToLaunchAfterMissionRequest* request, ::mavsdk::rpc::mission::SetReturnToLaunchAfterMissionResponse* response) {
-  (void) context;
-  (void) request;
-  (void) response;
-  return ::grpc::Status(::grpc::StatusCode::UNIMPLEMENTED, "");
-}
-
-::grpc::Status MissionService::Service::ImportQgroundcontrolMission(::grpc::ServerContext* context, const ::mavsdk::rpc::mission::ImportQgroundcontrolMissionRequest* request, ::mavsdk::rpc::mission::ImportQgroundcontrolMissionResponse* response) {
   (void) context;
   (void) request;
   (void) response;

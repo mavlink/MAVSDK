@@ -2,8 +2,6 @@
 #include "system.h"
 #include "global_include.h"
 #include <algorithm>
-#include <fstream> // for `std::ifstream`
-#include <sstream> // for `std::stringstream`
 #include <cmath>
 
 namespace mavsdk {
@@ -933,6 +931,7 @@ Mission::Result MissionImpl::convert_result(MAVLinkMissionTransfer::Result resul
     }
 }
 
+#if 0
 std::pair<Mission::Result, Mission::MissionPlan>
 MissionImpl::import_qgroundcontrol_mission(const std::string& qgc_plan_file)
 {
@@ -981,6 +980,7 @@ void MissionImpl::import_qgroundcontrol_mission_async(
 
     UNUSED(fut);
 }
+#endif
 
 // Build a mission item out of command, params and add them to the mission vector.
 Mission::Result MissionImpl::build_mission_items(
@@ -1068,85 +1068,6 @@ Mission::Result MissionImpl::build_mission_items(
     } while (false); // Executed once per method invokation.
 
     return result;
-}
-
-Mission::Result MissionImpl::import_simple_mission_item(
-    std::vector<Mission::MissionItem>& all_mission_items,
-    const Json::Value& json_mission_item,
-    MissionItem& new_mission_item)
-{
-    // Parameters of Mission item & MAV command of it.
-    MAV_CMD command = static_cast<MAV_CMD>(json_mission_item["command"].asInt());
-
-    // Extract parameters of each mission item
-    std::vector<double> params;
-    for (auto& p : json_mission_item["params"]) {
-        if (p.type() == Json::nullValue) {
-            // QGC sets params as `null` if they should be unchanged.
-            params.push_back(double(NAN));
-        } else {
-            params.push_back(p.asDouble());
-        }
-    }
-    return build_mission_items(command, params, new_mission_item, all_mission_items);
-}
-
-Mission::Result MissionImpl::import_complex_mission_item(
-    std::vector<Mission::MissionItem>& all_mission_items,
-    const Json::Value& json_complex_mission_item,
-    MissionItem& new_mission_item)
-{
-    if (json_complex_mission_item["TransectStyleComplexItem"].isNull()) {
-        LogWarn() << "Unknown complex item type (" << json_complex_mission_item["complexItemType"]
-                  << ")";
-        return Mission::Result::UnsupportedMissionCmd;
-    }
-
-    // QGC supports more complex mission items than simple waypoints.
-    // Surveys and coridor scans (NOT structure scans) are stored in a so called
-    // "TransectStyleComplexItem" item inside the mission_items array. These ComplexItems also
-    // contain an array ("Items") which contains waypoints. It is used by GQC to keep survey
-    // parameters so one can edit it as a survey after importing. Structure scans are not supported
-    // as thes do not contain simple mission items.
-    Json::Value complex_item = json_complex_mission_item["TransectStyleComplexItem"];
-    for (auto& json_mission_item : complex_item["Items"]) {
-        Mission::Result result =
-            import_simple_mission_item(all_mission_items, json_mission_item, new_mission_item);
-        if (result != Mission::Result::Success) {
-            return result;
-        }
-    }
-    return Mission::Result::Success;
-}
-
-Mission::Result MissionImpl::import_mission_items(
-    std::vector<Mission::MissionItem>& all_mission_items, const Json::Value& qgc_plan_json)
-{
-    const auto json_mission_items = qgc_plan_json["mission"];
-    MissionItem new_mission_item{};
-
-    // Iterate mission items and build Mavsdk mission items.
-    for (auto& json_mission_item : json_mission_items["items"]) {
-        Mission::Result result;
-
-        // Check if mission item is complex (like a survey from qgc) or a simple item
-        Json::Value type = json_mission_item["type"];
-
-        if (!type.isNull() && type.asString() == "ComplexItem") {
-            result =
-                import_complex_mission_item(all_mission_items, json_mission_item, new_mission_item);
-        } else {
-            result =
-                import_simple_mission_item(all_mission_items, json_mission_item, new_mission_item);
-        }
-
-        if (result != Mission::Result::Success) {
-            break;
-        }
-    }
-    // Don't forget to add the last mission which possibly didn't have position set.
-    all_mission_items.push_back(new_mission_item);
-    return Mission::Result::Success;
 }
 
 void MissionImpl::add_gimbal_items_v1(
