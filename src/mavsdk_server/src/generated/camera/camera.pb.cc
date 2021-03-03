@@ -931,8 +931,8 @@ const ::PROTOBUF_NAMESPACE_ID::uint32 TableStruct_camera_2fcamera_2eproto::offse
   PROTOBUF_FIELD_OFFSET(::mavsdk::rpc::camera::VideoStreamSettings, vertical_resolution_pix_),
   PROTOBUF_FIELD_OFFSET(::mavsdk::rpc::camera::VideoStreamSettings, bit_rate_b_s_),
   PROTOBUF_FIELD_OFFSET(::mavsdk::rpc::camera::VideoStreamSettings, rotation_deg_),
-  PROTOBUF_FIELD_OFFSET(::mavsdk::rpc::camera::VideoStreamSettings, horizontal_fov_deg_),
   PROTOBUF_FIELD_OFFSET(::mavsdk::rpc::camera::VideoStreamSettings, uri_),
+  PROTOBUF_FIELD_OFFSET(::mavsdk::rpc::camera::VideoStreamSettings, horizontal_fov_deg_),
   ~0u,  // no _has_bits_
   PROTOBUF_FIELD_OFFSET(::mavsdk::rpc::camera::VideoStreamInfo, _internal_metadata_),
   ~0u,  // no _extensions_
@@ -1176,8 +1176,8 @@ const char descriptor_table_protodef_camera_2fcamera_2eproto[] PROTOBUF_SECTION_
   "eamSettings\022\025\n\rframe_rate_hz\030\001 \001(\002\022!\n\031ho"
   "rizontal_resolution_pix\030\002 \001(\r\022\037\n\027vertica"
   "l_resolution_pix\030\003 \001(\r\022\024\n\014bit_rate_b_s\030\004"
-  " \001(\r\022\024\n\014rotation_deg\030\005 \001(\r\022\032\n\022horizontal"
-  "_fov_deg\030\007 \001(\002\022\013\n\003uri\030\006 \001(\t\"\302\003\n\017VideoStr"
+  " \001(\r\022\024\n\014rotation_deg\030\005 \001(\r\022\013\n\003uri\030\006 \001(\t\022"
+  "\032\n\022horizontal_fov_deg\030\007 \001(\002\"\302\003\n\017VideoStr"
   "eamInfo\0228\n\010settings\030\001 \001(\0132&.mavsdk.rpc.c"
   "amera.VideoStreamSettings\022D\n\006status\030\002 \001("
   "\01624.mavsdk.rpc.camera.VideoStreamInfo.Vi"

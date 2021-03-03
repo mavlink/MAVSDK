@@ -298,9 +298,9 @@ public:
 
         rpc_obj->set_rotation_deg(video_stream_settings.rotation_deg);
 
-        rpc_obj->set_horizontal_fov_deg(video_stream_settings.horizontal_fov_deg);
-
         rpc_obj->set_uri(video_stream_settings.uri);
+
+        rpc_obj->set_horizontal_fov_deg(video_stream_settings.horizontal_fov_deg);
 
         return rpc_obj;
     }
@@ -320,9 +320,9 @@ public:
 
         obj.rotation_deg = video_stream_settings.rotation_deg();
 
-        obj.horizontal_fov_deg = video_stream_settings.horizontal_fov_deg();
-
         obj.uri = video_stream_settings.uri();
+
+        obj.horizontal_fov_deg = video_stream_settings.horizontal_fov_deg();
 
         return obj;
     }

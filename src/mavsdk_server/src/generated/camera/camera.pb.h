@@ -10735,26 +10735,6 @@ inline void VideoStreamSettings::set_rotation_deg(::PROTOBUF_NAMESPACE_ID::uint3
   // @@protoc_insertion_point(field_set:mavsdk.rpc.camera.VideoStreamSettings.rotation_deg)
 }
 
-// float horizontal_fov_deg = 7;
-inline void VideoStreamSettings::clear_horizontal_fov_deg() {
-  horizontal_fov_deg_ = 0;
-}
-inline float VideoStreamSettings::_internal_horizontal_fov_deg() const {
-  return horizontal_fov_deg_;
-}
-inline float VideoStreamSettings::horizontal_fov_deg() const {
-  // @@protoc_insertion_point(field_get:mavsdk.rpc.camera.VideoStreamSettings.horizontal_fov_deg)
-  return _internal_horizontal_fov_deg();
-}
-inline void VideoStreamSettings::_internal_set_horizontal_fov_deg(float value) {
-  
-  horizontal_fov_deg_ = value;
-}
-inline void VideoStreamSettings::set_horizontal_fov_deg(float value) {
-  _internal_set_horizontal_fov_deg(value);
-  // @@protoc_insertion_point(field_set:mavsdk.rpc.camera.VideoStreamSettings.horizontal_fov_deg)
-}
-
 // string uri = 6;
 inline void VideoStreamSettings::clear_uri() {
   uri_.ClearToEmpty();
@@ -10814,6 +10794,26 @@ inline void VideoStreamSettings::set_allocated_uri(std::string* uri) {
   uri_.SetAllocated(&::PROTOBUF_NAMESPACE_ID::internal::GetEmptyStringAlreadyInited(), uri,
       GetArena());
   // @@protoc_insertion_point(field_set_allocated:mavsdk.rpc.camera.VideoStreamSettings.uri)
+}
+
+// float horizontal_fov_deg = 7;
+inline void VideoStreamSettings::clear_horizontal_fov_deg() {
+  horizontal_fov_deg_ = 0;
+}
+inline float VideoStreamSettings::_internal_horizontal_fov_deg() const {
+  return horizontal_fov_deg_;
+}
+inline float VideoStreamSettings::horizontal_fov_deg() const {
+  // @@protoc_insertion_point(field_get:mavsdk.rpc.camera.VideoStreamSettings.horizontal_fov_deg)
+  return _internal_horizontal_fov_deg();
+}
+inline void VideoStreamSettings::_internal_set_horizontal_fov_deg(float value) {
+  
+  horizontal_fov_deg_ = value;
+}
+inline void VideoStreamSettings::set_horizontal_fov_deg(float value) {
+  _internal_set_horizontal_fov_deg(value);
+  // @@protoc_insertion_point(field_set:mavsdk.rpc.camera.VideoStreamSettings.horizontal_fov_deg)
 }
 
 // -------------------------------------------------------------------

@@ -235,8 +235,8 @@ public:
         uint32_t vertical_resolution_pix{}; /**< @brief Vertical resolution (in pixels) */
         uint32_t bit_rate_b_s{}; /**< @brief Bit rate (in bits per second) */
         uint32_t rotation_deg{}; /**< @brief Video image rotation (clockwise, 0-359 degrees) */
-        float horizontal_fov_deg{}; /**< @brief Horizontal fov in degrees */
         std::string uri{}; /**< @brief Video stream URI */
+        float horizontal_fov_deg{}; /**< @brief Horizontal fov in degrees */
     };
 
     /**

@@ -316,9 +316,9 @@ bool operator==(const Camera::VideoStreamSettings& lhs, const Camera::VideoStrea
            (rhs.horizontal_resolution_pix == lhs.horizontal_resolution_pix) &&
            (rhs.vertical_resolution_pix == lhs.vertical_resolution_pix) &&
            (rhs.bit_rate_b_s == lhs.bit_rate_b_s) && (rhs.rotation_deg == lhs.rotation_deg) &&
+           (rhs.uri == lhs.uri) &&
            ((std::isnan(rhs.horizontal_fov_deg) && std::isnan(lhs.horizontal_fov_deg)) ||
-            rhs.horizontal_fov_deg == lhs.horizontal_fov_deg) &&
-           (rhs.uri == lhs.uri);
+            rhs.horizontal_fov_deg == lhs.horizontal_fov_deg);
 }
 
 std::ostream&
@@ -332,8 +332,8 @@ operator<<(std::ostream& str, Camera::VideoStreamSettings const& video_stream_se
     str << "    vertical_resolution_pix: " << video_stream_settings.vertical_resolution_pix << '\n';
     str << "    bit_rate_b_s: " << video_stream_settings.bit_rate_b_s << '\n';
     str << "    rotation_deg: " << video_stream_settings.rotation_deg << '\n';
-    str << "    horizontal_fov_deg: " << video_stream_settings.horizontal_fov_deg << '\n';
     str << "    uri: " << video_stream_settings.uri << '\n';
+    str << "    horizontal_fov_deg: " << video_stream_settings.horizontal_fov_deg << '\n';
     str << '}';
     return str;
 }
