@@ -36,6 +36,8 @@ service TelemetryService {
     rpc SubscribeVelocityNed(SubscribeVelocityNedRequest) returns(stream VelocityNedResponse) {}
     // Subscribe to 'GPS info' updates.
     rpc SubscribeGpsInfo(SubscribeGpsInfoRequest) returns(stream GpsInfoResponse) {}
+    // Subscribe to 'Raw GPS' updates.
+    rpc SubscribeRawGps(SubscribeRawGpsRequest) returns(stream RawGpsResponse) {}
     // Subscribe to 'battery' updates.
     rpc SubscribeBattery(SubscribeBatteryRequest) returns(stream BatteryResponse) {}
     // Subscribe to 'flight mode' updates.
@@ -58,14 +60,20 @@ service TelemetryService {
     rpc SubscribeGroundTruth(SubscribeGroundTruthRequest) returns(stream GroundTruthResponse) {}
     // Subscribe to 'fixedwing metrics' updates.
     rpc SubscribeFixedwingMetrics(SubscribeFixedwingMetricsRequest) returns(stream FixedwingMetricsResponse) {}
-    // Subscribe to 'IMU' updates.
+    // Subscribe to 'IMU' updates (in SI units in NED body frame).
     rpc SubscribeImu(SubscribeImuRequest) returns(stream ImuResponse) {}
+    // Subscribe to 'Scaled IMU' updates.
+    rpc SubscribeScaledImu(SubscribeScaledImuRequest) returns(stream ScaledImuResponse) {}
+    // Subscribe to 'Raw IMU' updates.
+    rpc SubscribeRawImu(SubscribeRawImuRequest) returns(stream RawImuResponse) {}
     // Subscribe to 'HealthAllOk' updates.
     rpc SubscribeHealthAllOk(SubscribeHealthAllOkRequest) returns(stream HealthAllOkResponse) {}
     // Subscribe to 'unix epoch time' updates.
     rpc SubscribeUnixEpochTime(SubscribeUnixEpochTimeRequest) returns(stream UnixEpochTimeResponse) {}
-        // Subscribe to 'Distance Sensor' updates.
+    // Subscribe to 'Distance Sensor' updates.
     rpc SubscribeDistanceSensor(SubscribeDistanceSensorRequest) returns(stream DistanceSensorResponse) {}
+    // Subscribe to 'Scaled Pressure' updates.
+    rpc SubscribeScaledPressure(SubscribeScaledPressureRequest) returns(stream ScaledPressureResponse) {}
 
     // Set rate to 'position' updates.
     rpc SetRatePosition(SetRatePositionRequest) returns(SetRatePositionResponse) {}
@@ -101,6 +109,10 @@ service TelemetryService {
     rpc SetRateFixedwingMetrics(SetRateFixedwingMetricsRequest) returns(SetRateFixedwingMetricsResponse) {}
     // Set rate to 'IMU' updates.
     rpc SetRateImu(SetRateImuRequest) returns(SetRateImuResponse) {}
+    // Set rate to 'Scaled IMU' updates.
+    rpc SetRateScaledImu(SetRateScaledImuRequest) returns(SetRateScaledImuResponse) {}
+    // Set rate to 'Raw IMU' updates.
+    rpc SetRateRawImu(SetRateRawImuRequest) returns(SetRateRawImuResponse) {}
     // Set rate to 'unix epoch time' updates.
     rpc SetRateUnixEpochTime(SetRateUnixEpochTimeRequest) returns(SetRateUnixEpochTimeResponse) {}
     // Set rate to 'Distance Sensor' updates.
@@ -170,6 +182,11 @@ message GpsInfoResponse {
     GpsInfo gps_info = 1; // The next 'GPS info' state
 }
 
+message SubscribeRawGpsRequest {}
+message RawGpsResponse {
+    RawGps raw_gps = 1; // The next 'Raw GPS' state. Warning: this is an advanced feature, use `Position` updates to get the location of the drone!
+}
+
 message SubscribeBatteryRequest {}
 message BatteryResponse {
     Battery battery = 1; // The next 'battery' state
@@ -230,6 +247,16 @@ message ImuResponse {
     Imu imu = 1; // The next IMU status
 }
 
+message SubscribeScaledImuRequest {}
+message ScaledImuResponse {
+    Imu imu = 1; // The next scaled IMU status
+}
+
+message SubscribeRawImuRequest {}
+message RawImuResponse {
+    Imu imu = 1; // The next raw IMU status
+}
+
 message SubscribeHealthAllOkRequest {}
 message HealthAllOkResponse {
     bool is_health_all_ok = 1; // The next 'health all ok' status
@@ -243,6 +270,11 @@ message UnixEpochTimeResponse {
 message SubscribeDistanceSensorRequest {}
 message DistanceSensorResponse {
     DistanceSensor distance_sensor = 1; // The next Distance Sensor status
+}
+
+message SubscribeScaledPressureRequest {}
+message ScaledPressureResponse {
+    ScaledPressure scaled_pressure = 1; // The next Scaled Pressure status
 }
 
 message SetRatePositionRequest {
@@ -315,6 +347,10 @@ message SetRateGpsInfoResponse {
     TelemetryResult telemetry_result = 1;
 }
 
+message SetRateRawGpsRequest {
+    double rate_hz = 1; // The requested rate (in Hertz)
+}
+
 message SetRateBatteryRequest {
     double rate_hz = 1; // The requested rate (in Hertz)
 }
@@ -375,6 +411,20 @@ message SetRateImuRequest {
     double rate_hz = 1; // The requested rate (in Hertz)
 }
 message SetRateImuResponse {
+    TelemetryResult telemetry_result = 1;
+}
+
+message SetRateScaledImuRequest {
+    double rate_hz = 1; // The requested rate (in Hertz)
+}
+message SetRateScaledImuResponse {
+    TelemetryResult telemetry_result = 1;
+}
+
+message SetRateRawImuRequest {
+    double rate_hz = 1; // The requested rate (in Hertz)
+}
+message SetRateRawImuResponse {
     TelemetryResult telemetry_result = 1;
 }
 
@@ -451,6 +501,29 @@ message GpsInfo {
     int32 num_satellites = 1 [(mavsdk.options.default_value)="0"]; // Number of visible satellites in use
     FixType fix_type = 2; // Fix type
 }
+
+/*
+ * Raw GPS information type.
+ *
+ * Warning: this is an advanced type! If you want the location of the drone, use
+ * the position instead. This message exposes the raw values of the GNSS sensor.
+ */
+ message RawGps {
+     uint64 timestamp_us = 1; // Timestamp in microseconds (UNIX Epoch time or time since system boot, to be inferred)
+     double latitude_deg = 2; // Latitude in degrees (WGS84, EGM96 ellipsoid)
+     double longitude_deg = 3; // Longitude in degrees (WGS84, EGM96 ellipsoid)
+     float absolute_altitude_m = 4; // Altitude AMSL (above mean sea level) in metres
+     float hdop = 5; // GPS HDOP horizontal dilution of position (unitless). If unknown, set to NaN
+     float vdop = 6; // GPS VDOP vertical dilution of position (unitless). If unknown, set to NaN
+     float velocity_m_s = 7; // Ground velocity in metres per second
+     float cog_deg = 8; // Course over ground (NOT heading, but direction of movement) in degrees. If unknown, set to NaN
+     float altitude_ellipsoid_m = 9; // Altitude in metres (above WGS84, EGM96 ellipsoid)
+     float horizontal_uncertainty_m = 10; // Position uncertainty in metres
+     float vertical_uncertainty_m = 11; // Altitude uncertainty in metres
+     float velocity_uncertainty_m_s = 12; // Velocity uncertainty in metres per second
+     float heading_uncertainty_deg = 13; // Heading uncertainty in degrees
+     float yaw_deg = 14; // Yaw in earth frame from north.
+ }
 
 // GPS fix type.
 enum FixType {
@@ -603,6 +676,15 @@ message DistanceSensor {
     float current_distance_m = 3 [(mavsdk.options.default_value)="NaN"]; // Current distance reading, NaN if unknown.
 }
 
+// Scaled Pressure message type.
+message ScaledPressure {
+    uint64 timestamp_us = 1; // Timestamp (time since system boot)
+    float absolute_pressure_hpa = 2; // Absolute pressure in hPa
+    float differential_pressure_hpa = 3; // Differential pressure 1 in hPa
+    int32 temperature_deg = 4; // Absolute pressure temperature (in celcius)
+    int32 differential_pressure_temperature_deg = 5; // Differential pressure temperature (in celcius, 0 if not available)
+}
+
 // PositionNed message type.
 message PositionNed {
     float north_m = 1 [(mavsdk.options.default_value)="NaN"]; // Position along north direction in metres
@@ -664,6 +746,7 @@ message Imu {
     AngularVelocityFrd angular_velocity_frd = 2; // Angular velocity
     MagneticFieldFrd magnetic_field_frd = 3; // Magnetic field
     float temperature_degc = 4 [(mavsdk.options.default_value)="NaN"]; // Temperature
+    uint64 timestamp_us = 5; // Timestamp in microseconds
 }
 
 // Gps global origin type.
