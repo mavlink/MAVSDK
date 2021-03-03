@@ -297,6 +297,7 @@ message VideoStreamSettings {
     uint32 bit_rate_b_s = 4; // Bit rate (in bits per second)
     uint32 rotation_deg = 5; // Video image rotation (clockwise, 0-359 degrees)
     string uri = 6; // Video stream URI
+    float horizontal_fov_deg = 7; // Horizontal fov in degrees
 }
 
 // Information about the video stream.
@@ -307,8 +308,16 @@ message VideoStreamInfo {
         VIDEO_STREAM_STATUS_IN_PROGRESS = 1; // Video stream is running
     }
 
+    // Video stream light spectrum type
+    enum VideoStreamSpectrum {
+        VIDEO_STREAM_SPECTRUM_UNKNOWN = 0; // Unknown
+        VIDEO_STREAM_SPECTRUM_VISIBLE_LIGHT = 1; // Visible light
+        VIDEO_STREAM_SPECTRUM_INFRARED = 2; // Infrared
+    }
+
     VideoStreamSettings settings = 1; // Video stream settings
     VideoStreamStatus status = 2; // Current status of video streaming
+    VideoStreamSpectrum spectrum = 3; // Light-spectrum of the video stream
 }
 
 // Information about the camera status.
