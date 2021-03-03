@@ -29,10 +29,16 @@ jobs:
       - name: Create wheel
         working-directory: ./pb_plugins
         run: python setup.py bdist_wheel
+      - name: Upload as CI artefact
+        uses: actions/upload-artifact@v2
+        with:
+          name: protoc-gen-mavsdk.whl
+          path: ./pb_plugins/dist/*.whl
+          retention-days: 2
       - name: Deploy to PyPi
         env:
           TWINE_USERNAME: ${{ secrets.TWINE_USERNAME }}
           TWINE_PASSWORD: ${{ secrets.TWINE_PASSWORD }}
           TWINE_NON_INTERACTIVE: 1
         if: startsWith(github.ref, 'refs/tags/')
-        run: twine upload dist/*.whl
+        run: twine upload ./pb_plugins/dist/*.whl
