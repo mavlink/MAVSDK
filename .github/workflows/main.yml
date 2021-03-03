@@ -41,4 +41,6 @@ jobs:
           TWINE_PASSWORD: ${{ secrets.TWINE_PASSWORD }}
           TWINE_NON_INTERACTIVE: 1
         if: startsWith(github.ref, 'refs/tags/')
-        run: twine upload ./pb_plugins/dist/*.whl
+        run: |
+          export PATH=$PATH:$HOME/.local/bin
+          twine upload ./pb_plugins/dist/*.whl
