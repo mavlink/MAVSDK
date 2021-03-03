@@ -296,8 +296,8 @@ message VideoStreamSettings {
     uint32 vertical_resolution_pix = 3; // Vertical resolution (in pixels)
     uint32 bit_rate_b_s = 4; // Bit rate (in bits per second)
     uint32 rotation_deg = 5; // Video image rotation (clockwise, 0-359 degrees)
-    float horizontal_fov_deg = 7; // Horizontal fov in degrees
     string uri = 6; // Video stream URI
+    float horizontal_fov_deg = 7; // Horizontal fov in degrees
 }
 
 // Information about the video stream.
