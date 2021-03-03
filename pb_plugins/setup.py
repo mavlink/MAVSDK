@@ -32,7 +32,7 @@ setup(
     description="Protoc plugin used to generate MAVSDK bindings",
     url="https://github.com/mavlink/MAVSDK-Proto",
     maintainer="Jonas Vautherin, Julian Oes",
-    maintainer_email="jonas.vautherin@gmail.com, julian.oes@auterion.com",
+    maintainer_email="jonas.vautherin@gmail.com, julian@oes.ch",
 
     classifiers=[
         "Development Status :: 5 - Production/Stable",
