@@ -151,23 +151,34 @@ void GimbalProtocolV2::set_mode_async(
 Gimbal::Result
 GimbalProtocolV2::set_roi_location(double latitude_deg, double longitude_deg, float altitude_m)
 {
-    UNUSED(latitude_deg);
-    UNUSED(longitude_deg);
-    UNUSED(altitude_m);
+    MavlinkCommandSender::CommandInt command{};
 
-    return Gimbal::Result::Unsupported;
+    command.command = MAV_CMD_DO_SET_ROI_LOCATION;
+    command.params.x = static_cast<int32_t>(std::round(latitude_deg * 1e7));
+    command.params.y = static_cast<int32_t>(std::round(longitude_deg * 1e7));
+    command.params.z = altitude_m;
+    command.target_system_id = _gimbal_manager_sysid;
+    command.target_component_id = _gimbal_manager_compid;
+
+    return GimbalImpl::gimbal_result_from_command_result(_system_impl.send_command(command));
 }
 
 void GimbalProtocolV2::set_roi_location_async(
     double latitude_deg, double longitude_deg, float altitude_m, Gimbal::ResultCallback callback)
 {
-    UNUSED(latitude_deg);
-    UNUSED(longitude_deg);
-    UNUSED(altitude_m);
+    MavlinkCommandSender::CommandInt command{};
 
-    if (callback) {
-        _system_impl.call_user_callback([callback]() { callback(Gimbal::Result::Unsupported); });
-    }
+    command.command = MAV_CMD_DO_SET_ROI_LOCATION;
+    command.params.x = static_cast<int32_t>(std::round(latitude_deg * 1e7));
+    command.params.y = static_cast<int32_t>(std::round(longitude_deg * 1e7));
+    command.params.z = altitude_m;
+    command.target_system_id = _gimbal_manager_sysid;
+    command.target_component_id = _gimbal_manager_compid;
+
+    _system_impl.send_command_async(
+        command, [this, callback](MavlinkCommandSender::Result result, float) {
+            GimbalImpl::receive_command_result(result, callback);
+        });
 }
 
 Gimbal::Result GimbalProtocolV2::take_control(Gimbal::ControlMode control_mode)
