@@ -1307,7 +1307,7 @@ void TelemetryImpl::process_scaled_pressure(const mavlink_message_t& message)
     Telemetry::ScaledPressure scaled_pressure_struct{};
 
     scaled_pressure_struct.timestamp_us =
-        static_cast<uint64_t>(scaled_pressure_msg.time_boot_ms) * 1e3;
+        static_cast<uint64_t>(scaled_pressure_msg.time_boot_ms) * 1000;
     scaled_pressure_struct.absolute_pressure_hpa = scaled_pressure_msg.press_abs;
     scaled_pressure_struct.differential_pressure_hpa = scaled_pressure_msg.press_diff;
     scaled_pressure_struct.temperature_deg =
