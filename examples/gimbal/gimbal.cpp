@@ -163,6 +163,14 @@ int main(int argc, char** argv)
     gimbal.set_pitch_and_yaw(0.0f, 0.0f);
     sleep_for(seconds(2));
 
+    std::cout << "Set ROI (region of interested) location...\n";
+    gimbal.set_roi_location(47.39743832, 8.5463316, 488.0f);
+    sleep_for(seconds(3));
+
+    std::cout << "Back to the center...\n";
+    gimbal.set_pitch_and_yaw(0.0f, 0.0f);
+    sleep_for(seconds(2));
+
     std::cout << "Stop controlling gimbal...\n";
     gimbal_result = gimbal.release_control();
     if (gimbal_result != Gimbal::Result::Success) {
