@@ -3180,8 +3180,8 @@ const char descriptor_table_protodef_telemetry_2ftelemetry_2eproto[] PROTOBUF_SE
   "Pressure\022\024\n\014timestamp_us\030\001 \001(\004\022\035\n\025absolu"
   "te_pressure_hpa\030\002 \001(\002\022!\n\031differential_pr"
   "essure_hpa\030\003 \001(\002\022\027\n\017temperature_deg\030\004 \001("
-  "\005\022-\n%differential_pressure_temperature_d"
-  "eg\030\005 \001(\005\"Y\n\013PositionNed\022\030\n\007north_m\030\001 \001(\002"
+  "\002\022-\n%differential_pressure_temperature_d"
+  "eg\030\005 \001(\002\"Y\n\013PositionNed\022\030\n\007north_m\030\001 \001(\002"
   "B\007\202\265\030\003NaN\022\027\n\006east_m\030\002 \001(\002B\007\202\265\030\003NaN\022\027\n\006do"
   "wn_m\030\003 \001(\002B\007\202\265\030\003NaN\"D\n\013VelocityNed\022\021\n\tno"
   "rth_m_s\030\001 \001(\002\022\020\n\010east_m_s\030\002 \001(\002\022\020\n\010down_"
@@ -28967,18 +28967,18 @@ const char* ScaledPressure::_InternalParse(const char* ptr, ::PROTOBUF_NAMESPACE
           ptr += sizeof(float);
         } else goto handle_unusual;
         continue;
-      // int32 temperature_deg = 4;
+      // float temperature_deg = 4;
       case 4:
-        if (PROTOBUF_PREDICT_TRUE(static_cast<::PROTOBUF_NAMESPACE_ID::uint8>(tag) == 32)) {
-          temperature_deg_ = ::PROTOBUF_NAMESPACE_ID::internal::ReadVarint64(&ptr);
-          CHK_(ptr);
+        if (PROTOBUF_PREDICT_TRUE(static_cast<::PROTOBUF_NAMESPACE_ID::uint8>(tag) == 37)) {
+          temperature_deg_ = ::PROTOBUF_NAMESPACE_ID::internal::UnalignedLoad<float>(ptr);
+          ptr += sizeof(float);
         } else goto handle_unusual;
         continue;
-      // int32 differential_pressure_temperature_deg = 5;
+      // float differential_pressure_temperature_deg = 5;
       case 5:
-        if (PROTOBUF_PREDICT_TRUE(static_cast<::PROTOBUF_NAMESPACE_ID::uint8>(tag) == 40)) {
-          differential_pressure_temperature_deg_ = ::PROTOBUF_NAMESPACE_ID::internal::ReadVarint64(&ptr);
-          CHK_(ptr);
+        if (PROTOBUF_PREDICT_TRUE(static_cast<::PROTOBUF_NAMESPACE_ID::uint8>(tag) == 45)) {
+          differential_pressure_temperature_deg_ = ::PROTOBUF_NAMESPACE_ID::internal::UnalignedLoad<float>(ptr);
+          ptr += sizeof(float);
         } else goto handle_unusual;
         continue;
       default: {
@@ -29027,16 +29027,16 @@ failure:
     target = ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::WriteFloatToArray(3, this->_internal_differential_pressure_hpa(), target);
   }
 
-  // int32 temperature_deg = 4;
-  if (this->temperature_deg() != 0) {
+  // float temperature_deg = 4;
+  if (!(this->temperature_deg() <= 0 && this->temperature_deg() >= 0)) {
     target = stream->EnsureSpace(target);
-    target = ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::WriteInt32ToArray(4, this->_internal_temperature_deg(), target);
+    target = ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::WriteFloatToArray(4, this->_internal_temperature_deg(), target);
   }
 
-  // int32 differential_pressure_temperature_deg = 5;
-  if (this->differential_pressure_temperature_deg() != 0) {
+  // float differential_pressure_temperature_deg = 5;
+  if (!(this->differential_pressure_temperature_deg() <= 0 && this->differential_pressure_temperature_deg() >= 0)) {
     target = stream->EnsureSpace(target);
-    target = ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::WriteInt32ToArray(5, this->_internal_differential_pressure_temperature_deg(), target);
+    target = ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::WriteFloatToArray(5, this->_internal_differential_pressure_temperature_deg(), target);
   }
 
   if (PROTOBUF_PREDICT_FALSE(_internal_metadata_.have_unknown_fields())) {
@@ -29072,18 +29072,14 @@ size_t ScaledPressure::ByteSizeLong() const {
     total_size += 1 + 4;
   }
 
-  // int32 temperature_deg = 4;
-  if (this->temperature_deg() != 0) {
-    total_size += 1 +
-      ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::Int32Size(
-        this->_internal_temperature_deg());
+  // float temperature_deg = 4;
+  if (!(this->temperature_deg() <= 0 && this->temperature_deg() >= 0)) {
+    total_size += 1 + 4;
   }
 
-  // int32 differential_pressure_temperature_deg = 5;
-  if (this->differential_pressure_temperature_deg() != 0) {
-    total_size += 1 +
-      ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::Int32Size(
-        this->_internal_differential_pressure_temperature_deg());
+  // float differential_pressure_temperature_deg = 5;
+  if (!(this->differential_pressure_temperature_deg() <= 0 && this->differential_pressure_temperature_deg() >= 0)) {
+    total_size += 1 + 4;
   }
 
   if (PROTOBUF_PREDICT_FALSE(_internal_metadata_.have_unknown_fields())) {
@@ -29126,10 +29122,10 @@ void ScaledPressure::MergeFrom(const ScaledPressure& from) {
   if (!(from.differential_pressure_hpa() <= 0 && from.differential_pressure_hpa() >= 0)) {
     _internal_set_differential_pressure_hpa(from._internal_differential_pressure_hpa());
   }
-  if (from.temperature_deg() != 0) {
+  if (!(from.temperature_deg() <= 0 && from.temperature_deg() >= 0)) {
     _internal_set_temperature_deg(from._internal_temperature_deg());
   }
-  if (from.differential_pressure_temperature_deg() != 0) {
+  if (!(from.differential_pressure_temperature_deg() <= 0 && from.differential_pressure_temperature_deg() >= 0)) {
     _internal_set_differential_pressure_temperature_deg(from._internal_differential_pressure_temperature_deg());
   }
 }

@@ -987,8 +987,11 @@ bool operator==(const Telemetry::ScaledPressure& lhs, const Telemetry::ScaledPre
            ((std::isnan(rhs.differential_pressure_hpa) &&
              std::isnan(lhs.differential_pressure_hpa)) ||
             rhs.differential_pressure_hpa == lhs.differential_pressure_hpa) &&
-           (rhs.temperature_deg == lhs.temperature_deg) &&
-           (rhs.differential_pressure_temperature_deg == lhs.differential_pressure_temperature_deg);
+           ((std::isnan(rhs.temperature_deg) && std::isnan(lhs.temperature_deg)) ||
+            rhs.temperature_deg == lhs.temperature_deg) &&
+           ((std::isnan(rhs.differential_pressure_temperature_deg) &&
+             std::isnan(lhs.differential_pressure_temperature_deg)) ||
+            rhs.differential_pressure_temperature_deg == lhs.differential_pressure_temperature_deg);
 }
 
 std::ostream& operator<<(std::ostream& str, Telemetry::ScaledPressure const& scaled_pressure)

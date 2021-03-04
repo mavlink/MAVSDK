@@ -835,7 +835,7 @@ void TelemetryImpl::process_scaled_imu(const mavlink_message_t& message)
     new_imu.magnetic_field_frd.forward_gauss = scaled_imu_reading.xmag;
     new_imu.magnetic_field_frd.right_gauss = scaled_imu_reading.ymag;
     new_imu.magnetic_field_frd.down_gauss = scaled_imu_reading.zmag;
-    new_imu.temperature_degc = scaled_imu_reading.temperature;
+    new_imu.temperature_degc = static_cast<float>(scaled_imu_reading.temperature) * 1e-2;
     new_imu.timestamp_us = static_cast<uint64_t>(scaled_imu_reading.time_boot_ms) * 1000;
 
     set_scaled_imu(new_imu);
@@ -862,7 +862,7 @@ void TelemetryImpl::process_raw_imu(const mavlink_message_t& message)
     new_imu.magnetic_field_frd.forward_gauss = raw_imu_reading.xmag;
     new_imu.magnetic_field_frd.right_gauss = raw_imu_reading.ymag;
     new_imu.magnetic_field_frd.down_gauss = raw_imu_reading.zmag;
-    new_imu.temperature_degc = raw_imu_reading.temperature;
+    new_imu.temperature_degc = static_cast<float>(raw_imu_reading.temperature) * 1e-2;
     new_imu.timestamp_us = raw_imu_reading.time_usec;
 
     set_raw_imu(new_imu);
@@ -1306,12 +1306,14 @@ void TelemetryImpl::process_scaled_pressure(const mavlink_message_t& message)
 
     Telemetry::ScaledPressure scaled_pressure_struct{};
 
-    scaled_pressure_struct.timestamp_us = static_cast<uint64_t>(scaled_pressure_msg.time_boot_ms);
+    scaled_pressure_struct.timestamp_us =
+        static_cast<uint64_t>(scaled_pressure_msg.time_boot_ms) * 1e3;
     scaled_pressure_struct.absolute_pressure_hpa = scaled_pressure_msg.press_abs;
     scaled_pressure_struct.differential_pressure_hpa = scaled_pressure_msg.press_diff;
-    scaled_pressure_struct.temperature_deg = static_cast<uint32_t>(scaled_pressure_msg.temperature);
+    scaled_pressure_struct.temperature_deg =
+        static_cast<float>(scaled_pressure_msg.temperature) * 1e-2;
     scaled_pressure_struct.differential_pressure_temperature_deg =
-        static_cast<uint32_t>(scaled_pressure_msg.temperature_press_diff);
+        static_cast<float>(scaled_pressure_msg.temperature_press_diff) * 1e-2;
 
     set_scaled_pressure(scaled_pressure_struct);
 

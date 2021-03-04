@@ -19250,22 +19250,22 @@ class ScaledPressure PROTOBUF_FINAL :
   void _internal_set_differential_pressure_hpa(float value);
   public:
 
-  // int32 temperature_deg = 4;
+  // float temperature_deg = 4;
   void clear_temperature_deg();
-  ::PROTOBUF_NAMESPACE_ID::int32 temperature_deg() const;
-  void set_temperature_deg(::PROTOBUF_NAMESPACE_ID::int32 value);
+  float temperature_deg() const;
+  void set_temperature_deg(float value);
   private:
-  ::PROTOBUF_NAMESPACE_ID::int32 _internal_temperature_deg() const;
-  void _internal_set_temperature_deg(::PROTOBUF_NAMESPACE_ID::int32 value);
+  float _internal_temperature_deg() const;
+  void _internal_set_temperature_deg(float value);
   public:
 
-  // int32 differential_pressure_temperature_deg = 5;
+  // float differential_pressure_temperature_deg = 5;
   void clear_differential_pressure_temperature_deg();
-  ::PROTOBUF_NAMESPACE_ID::int32 differential_pressure_temperature_deg() const;
-  void set_differential_pressure_temperature_deg(::PROTOBUF_NAMESPACE_ID::int32 value);
+  float differential_pressure_temperature_deg() const;
+  void set_differential_pressure_temperature_deg(float value);
   private:
-  ::PROTOBUF_NAMESPACE_ID::int32 _internal_differential_pressure_temperature_deg() const;
-  void _internal_set_differential_pressure_temperature_deg(::PROTOBUF_NAMESPACE_ID::int32 value);
+  float _internal_differential_pressure_temperature_deg() const;
+  void _internal_set_differential_pressure_temperature_deg(float value);
   public:
 
   // @@protoc_insertion_point(class_scope:mavsdk.rpc.telemetry.ScaledPressure)
@@ -19278,8 +19278,8 @@ class ScaledPressure PROTOBUF_FINAL :
   ::PROTOBUF_NAMESPACE_ID::uint64 timestamp_us_;
   float absolute_pressure_hpa_;
   float differential_pressure_hpa_;
-  ::PROTOBUF_NAMESPACE_ID::int32 temperature_deg_;
-  ::PROTOBUF_NAMESPACE_ID::int32 differential_pressure_temperature_deg_;
+  float temperature_deg_;
+  float differential_pressure_temperature_deg_;
   mutable ::PROTOBUF_NAMESPACE_ID::internal::CachedSize _cached_size_;
   friend struct ::TableStruct_telemetry_2ftelemetry_2eproto;
 };
@@ -28337,42 +28337,42 @@ inline void ScaledPressure::set_differential_pressure_hpa(float value) {
   // @@protoc_insertion_point(field_set:mavsdk.rpc.telemetry.ScaledPressure.differential_pressure_hpa)
 }
 
-// int32 temperature_deg = 4;
+// float temperature_deg = 4;
 inline void ScaledPressure::clear_temperature_deg() {
   temperature_deg_ = 0;
 }
-inline ::PROTOBUF_NAMESPACE_ID::int32 ScaledPressure::_internal_temperature_deg() const {
+inline float ScaledPressure::_internal_temperature_deg() const {
   return temperature_deg_;
 }
-inline ::PROTOBUF_NAMESPACE_ID::int32 ScaledPressure::temperature_deg() const {
+inline float ScaledPressure::temperature_deg() const {
   // @@protoc_insertion_point(field_get:mavsdk.rpc.telemetry.ScaledPressure.temperature_deg)
   return _internal_temperature_deg();
 }
-inline void ScaledPressure::_internal_set_temperature_deg(::PROTOBUF_NAMESPACE_ID::int32 value) {
+inline void ScaledPressure::_internal_set_temperature_deg(float value) {
   
   temperature_deg_ = value;
 }
-inline void ScaledPressure::set_temperature_deg(::PROTOBUF_NAMESPACE_ID::int32 value) {
+inline void ScaledPressure::set_temperature_deg(float value) {
   _internal_set_temperature_deg(value);
   // @@protoc_insertion_point(field_set:mavsdk.rpc.telemetry.ScaledPressure.temperature_deg)
 }
 
-// int32 differential_pressure_temperature_deg = 5;
+// float differential_pressure_temperature_deg = 5;
 inline void ScaledPressure::clear_differential_pressure_temperature_deg() {
   differential_pressure_temperature_deg_ = 0;
 }
-inline ::PROTOBUF_NAMESPACE_ID::int32 ScaledPressure::_internal_differential_pressure_temperature_deg() const {
+inline float ScaledPressure::_internal_differential_pressure_temperature_deg() const {
   return differential_pressure_temperature_deg_;
 }
-inline ::PROTOBUF_NAMESPACE_ID::int32 ScaledPressure::differential_pressure_temperature_deg() const {
+inline float ScaledPressure::differential_pressure_temperature_deg() const {
   // @@protoc_insertion_point(field_get:mavsdk.rpc.telemetry.ScaledPressure.differential_pressure_temperature_deg)
   return _internal_differential_pressure_temperature_deg();
 }
-inline void ScaledPressure::_internal_set_differential_pressure_temperature_deg(::PROTOBUF_NAMESPACE_ID::int32 value) {
+inline void ScaledPressure::_internal_set_differential_pressure_temperature_deg(float value) {
   
   differential_pressure_temperature_deg_ = value;
 }
-inline void ScaledPressure::set_differential_pressure_temperature_deg(::PROTOBUF_NAMESPACE_ID::int32 value) {
+inline void ScaledPressure::set_differential_pressure_temperature_deg(float value) {
   _internal_set_differential_pressure_temperature_deg(value);
   // @@protoc_insertion_point(field_set:mavsdk.rpc.telemetry.ScaledPressure.differential_pressure_temperature_deg)
 }
