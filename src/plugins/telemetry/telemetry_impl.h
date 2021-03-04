@@ -37,6 +37,8 @@ public:
     Telemetry::Result set_rate_camera_attitude(double rate_hz);
     Telemetry::Result set_rate_velocity_ned(double rate_hz);
     Telemetry::Result set_rate_imu(double rate_hz);
+    Telemetry::Result set_rate_scaled_imu(double rate_hz);
+    Telemetry::Result set_rate_raw_imu(double rate_hz);
     Telemetry::Result set_rate_fixedwing_metrics(double rate_hz);
     Telemetry::Result set_rate_ground_truth(double rate_hz);
     Telemetry::Result set_rate_gps_info(double rate_hz);
@@ -46,6 +48,7 @@ public:
     Telemetry::Result set_rate_actuator_output_status(double rate_hz);
     Telemetry::Result set_rate_odometry(double rate_hz);
     Telemetry::Result set_rate_distance_sensor(double rate_hz);
+    Telemetry::Result set_rate_scaled_pressure(double rate_hz);
     Telemetry::Result set_rate_unix_epoch_time(double rate_hz);
 
     void set_rate_position_velocity_ned_async(double rate_hz, Telemetry::ResultCallback callback);
@@ -57,6 +60,8 @@ public:
     void set_rate_camera_attitude_async(double rate_hz, Telemetry::ResultCallback callback);
     void set_rate_velocity_ned_async(double rate_hz, Telemetry::ResultCallback callback);
     void set_rate_imu_async(double rate_hz, Telemetry::ResultCallback callback);
+    void set_rate_scaled_imu_async(double rate_hz, Telemetry::ResultCallback callback);
+    void set_rate_raw_imu_async(double rate_hz, Telemetry::ResultCallback callback);
     void set_rate_fixedwing_metrics_async(double rate_hz, Telemetry::ResultCallback callback);
     void set_rate_ground_truth_async(double rate_hz, Telemetry::ResultCallback callback);
     void set_rate_gps_info_async(double rate_hz, Telemetry::ResultCallback callback);
@@ -66,6 +71,7 @@ public:
     void set_rate_actuator_output_status_async(double rate_hz, Telemetry::ResultCallback callback);
     void set_rate_odometry_async(double rate_hz, Telemetry::ResultCallback callback);
     void set_rate_distance_sensor_async(double rate_hz, Telemetry::ResultCallback callback);
+    void set_rate_scaled_pressure_async(double rate_hz, Telemetry::ResultCallback callback);
     void set_rate_unix_epoch_time_async(double rate_hz, Telemetry::ResultCallback callback);
 
     void get_gps_global_origin_async(const Telemetry::GetGpsGlobalOriginCallback callback);
@@ -87,7 +93,10 @@ public:
     Telemetry::Quaternion camera_attitude_quaternion() const;
     Telemetry::VelocityNed velocity_ned() const;
     Telemetry::Imu imu() const;
+    Telemetry::Imu scaled_imu() const;
+    Telemetry::Imu raw_imu() const;
     Telemetry::GpsInfo gps_info() const;
+    Telemetry::RawGps raw_gps() const;
     Telemetry::Battery battery() const;
     Telemetry::FlightMode flight_mode() const;
     Telemetry::Health health() const;
@@ -97,6 +106,7 @@ public:
     Telemetry::ActuatorOutputStatus actuator_output_status() const;
     Telemetry::Odometry odometry() const;
     Telemetry::DistanceSensor distance_sensor() const;
+    Telemetry::ScaledPressure scaled_pressure() const;
     uint64_t unix_epoch_time() const;
 
     void subscribe_position_velocity_ned(Telemetry::PositionVelocityNedCallback& callback);
@@ -115,7 +125,10 @@ public:
     void subscribe_camera_attitude_euler(Telemetry::AttitudeEulerCallback& callback);
     void subscribe_velocity_ned(Telemetry::VelocityNedCallback& callback);
     void subscribe_imu(Telemetry::ImuCallback& callback);
+    void subscribe_scaled_imu(Telemetry::ScaledImuCallback& callback);
+    void subscribe_raw_imu(Telemetry::RawImuCallback& callback);
     void subscribe_gps_info(Telemetry::GpsInfoCallback& callback);
+    void subscribe_raw_gps(Telemetry::RawGpsCallback& callback);
     void subscribe_battery(Telemetry::BatteryCallback& callback);
     void subscribe_flight_mode(Telemetry::FlightModeCallback& callback);
     void subscribe_health(Telemetry::HealthCallback& callback);
@@ -127,6 +140,7 @@ public:
     void subscribe_actuator_output_status(Telemetry::ActuatorOutputStatusCallback& callback);
     void subscribe_odometry(Telemetry::OdometryCallback& callback);
     void subscribe_distance_sensor(Telemetry::DistanceSensorCallback& callback);
+    void subscribe_scaled_pressure(Telemetry::ScaledPressureCallback& callback);
 
     TelemetryImpl(const TelemetryImpl&) = delete;
     TelemetryImpl& operator=(const TelemetryImpl&) = delete;
@@ -146,7 +160,10 @@ private:
     void set_camera_attitude_euler_angle(Telemetry::EulerAngle euler_angle);
     void set_velocity_ned(Telemetry::VelocityNed velocity_ned);
     void set_imu_reading_ned(Telemetry::Imu imu);
+    void set_scaled_imu(Telemetry::Imu imu);
+    void set_raw_imu(Telemetry::Imu imu);
     void set_gps_info(Telemetry::GpsInfo gps_info);
+    void set_raw_gps(Telemetry::RawGps raw_gps);
     void set_battery(Telemetry::Battery battery);
     void set_health_local_position(bool ok);
     void set_health_global_position(bool ok);
@@ -161,6 +178,7 @@ private:
     void set_actuator_output_status(uint32_t active, const std::vector<float>& actuators);
     void set_odometry(Telemetry::Odometry& odometry);
     void set_distance_sensor(Telemetry::DistanceSensor& distance_sensor);
+    void set_scaled_pressure(Telemetry::ScaledPressure& scaled_pressure);
 
     void process_position_velocity_ned(const mavlink_message_t& message);
     void process_global_position_int(const mavlink_message_t& message);
@@ -170,6 +188,8 @@ private:
     void process_gimbal_device_attitude_status(const mavlink_message_t& message);
     void process_mount_orientation(const mavlink_message_t& message);
     void process_imu_reading_ned(const mavlink_message_t& message);
+    void process_scaled_imu(const mavlink_message_t& message);
+    void process_raw_imu(const mavlink_message_t& message);
     void process_gps_raw_int(const mavlink_message_t& message);
     void process_ground_truth(const mavlink_message_t& message);
     void process_extended_sys_state(const mavlink_message_t& message);
@@ -183,6 +203,7 @@ private:
     void process_actuator_output_status(const mavlink_message_t& message);
     void process_odometry(const mavlink_message_t& message);
     void process_distance_sensor(const mavlink_message_t& message);
+    void process_scaled_pressure(const mavlink_message_t& message);
     void receive_param_cal_gyro(MAVLinkParameters::Result result, int value);
     void receive_param_cal_accel(MAVLinkParameters::Result result, int value);
     void receive_param_cal_mag(MAVLinkParameters::Result result, int value);
@@ -248,8 +269,17 @@ private:
     mutable std::mutex _imu_reading_ned_mutex{};
     Telemetry::Imu _imu_reading_ned{};
 
+    mutable std::mutex _scaled_imu_mutex{};
+    Telemetry::Imu _scaled_imu{};
+
+    mutable std::mutex _raw_imu_mutex{};
+    Telemetry::Imu _raw_imu{};
+
     mutable std::mutex _gps_info_mutex{};
     Telemetry::GpsInfo _gps_info{};
+
+    mutable std::mutex _raw_gps_mutex{};
+    Telemetry::RawGps _raw_gps{};
 
     mutable std::mutex _battery_mutex{};
     Telemetry::Battery _battery{};
@@ -278,6 +308,9 @@ private:
     mutable std::mutex _distance_sensor_mutex{};
     Telemetry::DistanceSensor _distance_sensor{};
 
+    mutable std::mutex _scaled_pressure_mutex{};
+    Telemetry::ScaledPressure _scaled_pressure{};
+
     std::atomic<bool> _hitl_enabled{false};
 
     std::mutex _subscription_mutex{};
@@ -297,7 +330,10 @@ private:
     Telemetry::AttitudeEulerCallback _camera_attitude_euler_angle_subscription{nullptr};
     Telemetry::VelocityNedCallback _velocity_ned_subscription{nullptr};
     Telemetry::ImuCallback _imu_reading_ned_subscription{nullptr};
+    Telemetry::ScaledImuCallback _scaled_imu_subscription{nullptr};
+    Telemetry::RawImuCallback _raw_imu_subscription{nullptr};
     Telemetry::GpsInfoCallback _gps_info_subscription{nullptr};
+    Telemetry::RawGpsCallback _raw_gps_subscription{nullptr};
     Telemetry::BatteryCallback _battery_subscription{nullptr};
     Telemetry::FlightModeCallback _flight_mode_subscription{nullptr};
     Telemetry::HealthCallback _health_subscription{nullptr};
@@ -309,6 +345,7 @@ private:
     Telemetry::ActuatorOutputStatusCallback _actuator_output_status_subscription{nullptr};
     Telemetry::OdometryCallback _odometry_subscription{nullptr};
     Telemetry::DistanceSensorCallback _distance_sensor_subscription{nullptr};
+    Telemetry::ScaledPressureCallback _scaled_pressure_subscription{nullptr};
 
     // The velocity (former ground speed) and position are coupled to the same message, therefore,
     // we just use the faster between the two.

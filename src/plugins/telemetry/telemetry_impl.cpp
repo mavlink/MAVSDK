@@ -101,6 +101,11 @@ void TelemetryImpl::init()
         this);
 
     _parent->register_mavlink_message_handler(
+        MAVLINK_MSG_ID_SCALED_PRESSURE,
+        std::bind(&TelemetryImpl::process_scaled_pressure, this, _1),
+        this);
+
+    _parent->register_mavlink_message_handler(
         MAVLINK_MSG_ID_UTM_GLOBAL_POSITION,
         std::bind(&TelemetryImpl::process_unix_epoch_time, this, _1),
         this);
@@ -109,6 +114,12 @@ void TelemetryImpl::init()
         MAVLINK_MSG_ID_HIGHRES_IMU,
         std::bind(&TelemetryImpl::process_imu_reading_ned, this, _1),
         this);
+
+    _parent->register_mavlink_message_handler(
+        MAVLINK_MSG_ID_SCALED_IMU, std::bind(&TelemetryImpl::process_scaled_imu, this, _1), this);
+
+    _parent->register_mavlink_message_handler(
+        MAVLINK_MSG_ID_RAW_IMU, std::bind(&TelemetryImpl::process_raw_imu, this, _1), this);
 
     _parent->register_mavlink_message_handler(
         MAVLINK_MSG_ID_VFR_HUD,
@@ -265,6 +276,18 @@ Telemetry::Result TelemetryImpl::set_rate_imu(double rate_hz)
         _parent->set_msg_rate(MAVLINK_MSG_ID_HIGHRES_IMU, rate_hz));
 }
 
+Telemetry::Result TelemetryImpl::set_rate_scaled_imu(double rate_hz)
+{
+    return telemetry_result_from_command_result(
+        _parent->set_msg_rate(MAVLINK_MSG_ID_SCALED_IMU, rate_hz));
+}
+
+Telemetry::Result TelemetryImpl::set_rate_raw_imu(double rate_hz)
+{
+    return telemetry_result_from_command_result(
+        _parent->set_msg_rate(MAVLINK_MSG_ID_RAW_IMU, rate_hz));
+}
+
 Telemetry::Result TelemetryImpl::set_rate_fixedwing_metrics(double rate_hz)
 {
     return telemetry_result_from_command_result(
@@ -317,6 +340,12 @@ Telemetry::Result TelemetryImpl::set_rate_distance_sensor(double rate_hz)
 {
     return telemetry_result_from_command_result(
         _parent->set_msg_rate(MAVLINK_MSG_ID_DISTANCE_SENSOR, rate_hz));
+}
+
+Telemetry::Result TelemetryImpl::set_rate_scaled_pressure(double rate_hz)
+{
+    return telemetry_result_from_command_result(
+        _parent->set_msg_rate(MAVLINK_MSG_ID_SCALED_PRESSURE, rate_hz));
 }
 
 Telemetry::Result TelemetryImpl::set_rate_unix_epoch_time(double rate_hz)
@@ -402,6 +431,22 @@ void TelemetryImpl::set_rate_imu_async(double rate_hz, Telemetry::ResultCallback
         std::bind(&TelemetryImpl::command_result_callback, std::placeholders::_1, callback));
 }
 
+void TelemetryImpl::set_rate_scaled_imu_async(double rate_hz, Telemetry::ResultCallback callback)
+{
+    _parent->set_msg_rate_async(
+        MAVLINK_MSG_ID_SCALED_IMU,
+        rate_hz,
+        std::bind(&TelemetryImpl::command_result_callback, std::placeholders::_1, callback));
+}
+
+void TelemetryImpl::set_rate_raw_imu_async(double rate_hz, Telemetry::ResultCallback callback)
+{
+    _parent->set_msg_rate_async(
+        MAVLINK_MSG_ID_RAW_IMU,
+        rate_hz,
+        std::bind(&TelemetryImpl::command_result_callback, std::placeholders::_1, callback));
+}
+
 void TelemetryImpl::set_rate_fixedwing_metrics_async(
     double rate_hz, Telemetry::ResultCallback callback)
 {
@@ -483,6 +528,15 @@ void TelemetryImpl::set_rate_distance_sensor_async(
 {
     _parent->set_msg_rate_async(
         MAVLINK_MSG_ID_DISTANCE_SENSOR,
+        rate_hz,
+        std::bind(&TelemetryImpl::command_result_callback, std::placeholders::_1, callback));
+}
+
+void TelemetryImpl::set_rate_scaled_pressure_async(
+    double rate_hz, Telemetry::ResultCallback callback)
+{
+    _parent->set_msg_rate_async(
+        MAVLINK_MSG_ID_SCALED_PRESSURE,
         rate_hz,
         std::bind(&TelemetryImpl::command_result_callback, std::placeholders::_1, callback));
 }
@@ -755,6 +809,7 @@ void TelemetryImpl::process_imu_reading_ned(const mavlink_message_t& message)
     new_imu.magnetic_field_frd.right_gauss = highres_imu.ymag;
     new_imu.magnetic_field_frd.down_gauss = highres_imu.zmag;
     new_imu.temperature_degc = highres_imu.temperature;
+    new_imu.timestamp_us = highres_imu.time_usec;
 
     set_imu_reading_ned(new_imu);
 
@@ -762,6 +817,60 @@ void TelemetryImpl::process_imu_reading_ned(const mavlink_message_t& message)
     if (_imu_reading_ned_subscription) {
         auto callback = _imu_reading_ned_subscription;
         auto arg = imu();
+        _parent->call_user_callback([callback, arg]() { callback(arg); });
+    }
+}
+
+void TelemetryImpl::process_scaled_imu(const mavlink_message_t& message)
+{
+    mavlink_scaled_imu_t scaled_imu_reading;
+    mavlink_msg_scaled_imu_decode(&message, &scaled_imu_reading);
+    Telemetry::Imu new_imu;
+    new_imu.acceleration_frd.forward_m_s2 = scaled_imu_reading.xacc;
+    new_imu.acceleration_frd.right_m_s2 = scaled_imu_reading.yacc;
+    new_imu.acceleration_frd.down_m_s2 = scaled_imu_reading.zacc;
+    new_imu.angular_velocity_frd.forward_rad_s = scaled_imu_reading.xgyro;
+    new_imu.angular_velocity_frd.right_rad_s = scaled_imu_reading.ygyro;
+    new_imu.angular_velocity_frd.down_rad_s = scaled_imu_reading.zgyro;
+    new_imu.magnetic_field_frd.forward_gauss = scaled_imu_reading.xmag;
+    new_imu.magnetic_field_frd.right_gauss = scaled_imu_reading.ymag;
+    new_imu.magnetic_field_frd.down_gauss = scaled_imu_reading.zmag;
+    new_imu.temperature_degc = static_cast<float>(scaled_imu_reading.temperature) * 1e-2;
+    new_imu.timestamp_us = static_cast<uint64_t>(scaled_imu_reading.time_boot_ms) * 1000;
+
+    set_scaled_imu(new_imu);
+
+    std::lock_guard<std::mutex> lock(_subscription_mutex);
+    if (_scaled_imu_subscription) {
+        auto callback = _scaled_imu_subscription;
+        auto arg = scaled_imu();
+        _parent->call_user_callback([callback, arg]() { callback(arg); });
+    }
+}
+
+void TelemetryImpl::process_raw_imu(const mavlink_message_t& message)
+{
+    mavlink_raw_imu_t raw_imu_reading;
+    mavlink_msg_raw_imu_decode(&message, &raw_imu_reading);
+    Telemetry::Imu new_imu;
+    new_imu.acceleration_frd.forward_m_s2 = raw_imu_reading.xacc;
+    new_imu.acceleration_frd.right_m_s2 = raw_imu_reading.yacc;
+    new_imu.acceleration_frd.down_m_s2 = raw_imu_reading.zacc;
+    new_imu.angular_velocity_frd.forward_rad_s = raw_imu_reading.xgyro;
+    new_imu.angular_velocity_frd.right_rad_s = raw_imu_reading.ygyro;
+    new_imu.angular_velocity_frd.down_rad_s = raw_imu_reading.zgyro;
+    new_imu.magnetic_field_frd.forward_gauss = raw_imu_reading.xmag;
+    new_imu.magnetic_field_frd.right_gauss = raw_imu_reading.ymag;
+    new_imu.magnetic_field_frd.down_gauss = raw_imu_reading.zmag;
+    new_imu.temperature_degc = static_cast<float>(raw_imu_reading.temperature) * 1e-2;
+    new_imu.timestamp_us = raw_imu_reading.time_usec;
+
+    set_raw_imu(new_imu);
+
+    std::lock_guard<std::mutex> lock(_subscription_mutex);
+    if (_raw_imu_subscription) {
+        auto callback = _raw_imu_subscription;
+        auto arg = raw_imu();
         _parent->call_user_callback([callback, arg]() { callback(arg); });
     }
 }
@@ -806,6 +915,23 @@ void TelemetryImpl::process_gps_raw_int(const mavlink_message_t& message)
     new_gps_info.fix_type = fix_type;
     set_gps_info(new_gps_info);
 
+    Telemetry::RawGps raw_gps_info;
+    raw_gps_info.timestamp_us = gps_raw_int.time_usec;
+    raw_gps_info.latitude_deg = gps_raw_int.lat * 1e-7;
+    raw_gps_info.longitude_deg = gps_raw_int.lon * 1e-7;
+    raw_gps_info.absolute_altitude_m = gps_raw_int.alt * 1e-3f;
+    raw_gps_info.hdop = static_cast<float>(gps_raw_int.eph) * 1e-2f;
+    raw_gps_info.vdop = static_cast<float>(gps_raw_int.epv) * 1e-2f;
+    raw_gps_info.velocity_m_s = static_cast<float>(gps_raw_int.vel) * 1e-2f;
+    raw_gps_info.cog_deg = static_cast<float>(gps_raw_int.cog) * 1e-2f;
+    raw_gps_info.altitude_ellipsoid_m = static_cast<float>(gps_raw_int.alt_ellipsoid) * 1e-3f;
+    raw_gps_info.horizontal_uncertainty_m = static_cast<float>(gps_raw_int.h_acc) * 1e-3f;
+    raw_gps_info.vertical_uncertainty_m = static_cast<float>(gps_raw_int.v_acc) * 1e-3f;
+    raw_gps_info.velocity_uncertainty_m_s = static_cast<float>(gps_raw_int.vel_acc) * 1e-3f;
+    raw_gps_info.heading_uncertainty_deg = static_cast<float>(gps_raw_int.hdg_acc) * 1e-5f;
+    raw_gps_info.yaw_deg = static_cast<float>(gps_raw_int.yaw) * 1e-2f;
+    set_raw_gps(raw_gps_info);
+
     // TODO: This is just an interim hack, we will have to look at
     //       estimator flags in order to decide if the position
     //       estimate is good enough.
@@ -818,6 +944,11 @@ void TelemetryImpl::process_gps_raw_int(const mavlink_message_t& message)
         if (_gps_info_subscription) {
             auto callback = _gps_info_subscription;
             auto arg = gps_info();
+            _parent->call_user_callback([callback, arg]() { callback(arg); });
+        }
+        if (_raw_gps_subscription) {
+            auto callback = _raw_gps_subscription;
+            auto arg = raw_gps();
             _parent->call_user_callback([callback, arg]() { callback(arg); });
         }
     }
@@ -1168,6 +1299,32 @@ void TelemetryImpl::process_distance_sensor(const mavlink_message_t& message)
     }
 }
 
+void TelemetryImpl::process_scaled_pressure(const mavlink_message_t& message)
+{
+    mavlink_scaled_pressure_t scaled_pressure_msg;
+    mavlink_msg_scaled_pressure_decode(&message, &scaled_pressure_msg);
+
+    Telemetry::ScaledPressure scaled_pressure_struct{};
+
+    scaled_pressure_struct.timestamp_us =
+        static_cast<uint64_t>(scaled_pressure_msg.time_boot_ms) * 1000;
+    scaled_pressure_struct.absolute_pressure_hpa = scaled_pressure_msg.press_abs;
+    scaled_pressure_struct.differential_pressure_hpa = scaled_pressure_msg.press_diff;
+    scaled_pressure_struct.temperature_deg =
+        static_cast<float>(scaled_pressure_msg.temperature) * 1e-2f;
+    scaled_pressure_struct.differential_pressure_temperature_deg =
+        static_cast<float>(scaled_pressure_msg.temperature_press_diff) * 1e-2f;
+
+    set_scaled_pressure(scaled_pressure_struct);
+
+    std::lock_guard<std::mutex> lock(_subscription_mutex);
+    if (_scaled_pressure_subscription) {
+        auto callback = _scaled_pressure_subscription;
+        auto arg = scaled_pressure();
+        _parent->call_user_callback([callback, arg]() { callback(arg); });
+    }
+}
+
 Telemetry::LandedState
 TelemetryImpl::to_landed_state(mavlink_extended_sys_state_t extended_sys_state)
 {
@@ -1477,6 +1634,30 @@ void TelemetryImpl::set_imu_reading_ned(Telemetry::Imu imu_reading_ned)
     _imu_reading_ned = imu_reading_ned;
 }
 
+Telemetry::Imu TelemetryImpl::scaled_imu() const
+{
+    std::lock_guard<std::mutex> lock(_scaled_imu_mutex);
+    return _scaled_imu;
+}
+
+void TelemetryImpl::set_scaled_imu(Telemetry::Imu scaled_imu)
+{
+    std::lock_guard<std::mutex> lock(_scaled_imu_mutex);
+    _scaled_imu = scaled_imu;
+}
+
+Telemetry::Imu TelemetryImpl::raw_imu() const
+{
+    std::lock_guard<std::mutex> lock(_raw_imu_mutex);
+    return _raw_imu;
+}
+
+void TelemetryImpl::set_raw_imu(Telemetry::Imu raw_imu)
+{
+    std::lock_guard<std::mutex> lock(_raw_imu_mutex);
+    _raw_imu = raw_imu;
+}
+
 Telemetry::GpsInfo TelemetryImpl::gps_info() const
 {
     std::lock_guard<std::mutex> lock(_gps_info_mutex);
@@ -1487,6 +1668,18 @@ void TelemetryImpl::set_gps_info(Telemetry::GpsInfo gps_info)
 {
     std::lock_guard<std::mutex> lock(_gps_info_mutex);
     _gps_info = gps_info;
+}
+
+Telemetry::RawGps TelemetryImpl::raw_gps() const
+{
+    std::lock_guard<std::mutex> lock(_raw_gps_mutex);
+    return _raw_gps;
+}
+
+void TelemetryImpl::set_raw_gps(Telemetry::RawGps raw_gps)
+{
+    std::lock_guard<std::mutex> lock(_raw_gps_mutex);
+    _raw_gps = raw_gps;
 }
 
 Telemetry::Battery TelemetryImpl::battery() const
@@ -1559,6 +1752,12 @@ Telemetry::DistanceSensor TelemetryImpl::distance_sensor() const
 {
     std::lock_guard<std::mutex> lock(_distance_sensor_mutex);
     return _distance_sensor;
+}
+
+Telemetry::ScaledPressure TelemetryImpl::scaled_pressure() const
+{
+    std::lock_guard<std::mutex> lock(_scaled_pressure_mutex);
+    return _scaled_pressure;
 }
 
 void TelemetryImpl::set_health_local_position(bool ok)
@@ -1651,14 +1850,20 @@ void TelemetryImpl::set_actuator_output_status(uint32_t active, const std::vecto
 
 void TelemetryImpl::set_odometry(Telemetry::Odometry& odometry)
 {
-    std::lock_guard<std::mutex> lock(_actuator_output_status_mutex);
+    std::lock_guard<std::mutex> lock(_odometry_mutex);
     _odometry = odometry;
 }
 
 void TelemetryImpl::set_distance_sensor(Telemetry::DistanceSensor& distance_sensor)
 {
-    std::lock_guard<std::mutex> lock(_actuator_output_status_mutex);
+    std::lock_guard<std::mutex> lock(_distance_sensor_mutex);
     _distance_sensor = distance_sensor;
+}
+
+void TelemetryImpl::set_scaled_pressure(Telemetry::ScaledPressure& scaled_pressure)
+{
+    std::lock_guard<std::mutex> lock(_scaled_pressure_mutex);
+    _scaled_pressure = scaled_pressure;
 }
 
 void TelemetryImpl::subscribe_position_velocity_ned(
@@ -1754,10 +1959,28 @@ void TelemetryImpl::subscribe_imu(Telemetry::ImuCallback& callback)
     _imu_reading_ned_subscription = callback;
 }
 
+void TelemetryImpl::subscribe_scaled_imu(Telemetry::ScaledImuCallback& callback)
+{
+    std::lock_guard<std::mutex> lock(_subscription_mutex);
+    _scaled_imu_subscription = callback;
+}
+
+void TelemetryImpl::subscribe_raw_imu(Telemetry::RawImuCallback& callback)
+{
+    std::lock_guard<std::mutex> lock(_subscription_mutex);
+    _raw_imu_subscription = callback;
+}
+
 void TelemetryImpl::subscribe_gps_info(Telemetry::GpsInfoCallback& callback)
 {
     std::lock_guard<std::mutex> lock(_subscription_mutex);
     _gps_info_subscription = callback;
+}
+
+void TelemetryImpl::subscribe_raw_gps(Telemetry::RawGpsCallback& callback)
+{
+    std::lock_guard<std::mutex> lock(_subscription_mutex);
+    _raw_gps_subscription = callback;
 }
 
 void TelemetryImpl::subscribe_battery(Telemetry::BatteryCallback& callback)
@@ -1826,6 +2049,12 @@ void TelemetryImpl::subscribe_distance_sensor(Telemetry::DistanceSensorCallback&
 {
     std::lock_guard<std::mutex> lock(_subscription_mutex);
     _distance_sensor_subscription = callback;
+}
+
+void TelemetryImpl::subscribe_scaled_pressure(Telemetry::ScaledPressureCallback& callback)
+{
+    std::lock_guard<std::mutex> lock(_subscription_mutex);
+    _scaled_pressure_subscription = callback;
 }
 
 void TelemetryImpl::get_gps_global_origin_async(

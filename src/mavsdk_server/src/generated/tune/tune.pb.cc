@@ -121,45 +121,42 @@ static ::PROTOBUF_NAMESPACE_ID::Message const * const file_default_instances[] =
 };
 
 const char descriptor_table_protodef_tune_2ftune_2eproto[] PROTOBUF_SECTION_VARIABLE(protodesc_cold) =
-  "\n\017tune/tune.proto\022\017mavsdk.rpc.tune\032\024mavs"
-  "dk_options.proto\"M\n\017PlayTuneRequest\022:\n\020t"
-  "une_description\030\001 \001(\0132 .mavsdk.rpc.tune."
-  "TuneDescription\"D\n\020PlayTuneResponse\0220\n\013t"
-  "une_result\030\001 \001(\0132\033.mavsdk.rpc.tune.TuneR"
-  "esult\"U\n\017TuneDescription\0223\n\rsong_element"
-  "s\030\001 \003(\0162\034.mavsdk.rpc.tune.SongElement\022\r\n"
-  "\005tempo\030\002 \001(\005\"\314\001\n\nTuneResult\0222\n\006result\030\001 "
-  "\001(\0162\".mavsdk.rpc.tune.TuneResult.Result\022"
-  "\022\n\nresult_str\030\002 \001(\t\"v\n\006Result\022\022\n\016RESULT_"
-  "UNKNOWN\020\000\022\022\n\016RESULT_SUCCESS\020\001\022\030\n\024RESULT_"
-  "INVALID_TEMPO\020\002\022\030\n\024RESULT_TUNE_TOO_LONG\020"
-  "\003\022\020\n\014RESULT_ERROR\020\004*\321\004\n\013SongElement\022\035\n\031S"
-  "ONG_ELEMENT_STYLE_LEGATO\020\000\022\035\n\031SONG_ELEME"
-  "NT_STYLE_NORMAL\020\001\022\037\n\033SONG_ELEMENT_STYLE_"
-  "STACCATO\020\002\022\033\n\027SONG_ELEMENT_DURATION_1\020\003\022"
-  "\033\n\027SONG_ELEMENT_DURATION_2\020\004\022\033\n\027SONG_ELE"
-  "MENT_DURATION_4\020\005\022\033\n\027SONG_ELEMENT_DURATI"
-  "ON_8\020\006\022\034\n\030SONG_ELEMENT_DURATION_16\020\007\022\034\n\030"
-  "SONG_ELEMENT_DURATION_32\020\010\022\027\n\023SONG_ELEME"
-  "NT_NOTE_A\020\t\022\027\n\023SONG_ELEMENT_NOTE_B\020\n\022\027\n\023"
-  "SONG_ELEMENT_NOTE_C\020\013\022\027\n\023SONG_ELEMENT_NO"
-  "TE_D\020\014\022\027\n\023SONG_ELEMENT_NOTE_E\020\r\022\027\n\023SONG_"
-  "ELEMENT_NOTE_F\020\016\022\027\n\023SONG_ELEMENT_NOTE_G\020"
-  "\017\022\033\n\027SONG_ELEMENT_NOTE_PAUSE\020\020\022\026\n\022SONG_E"
-  "LEMENT_SHARP\020\021\022\025\n\021SONG_ELEMENT_FLAT\020\022\022\032\n"
-  "\026SONG_ELEMENT_OCTAVE_UP\020\023\022\034\n\030SONG_ELEMEN"
-  "T_OCTAVE_DOWN\020\0242`\n\013TuneService\022Q\n\010PlayTu"
-  "ne\022 .mavsdk.rpc.tune.PlayTuneRequest\032!.m"
-  "avsdk.rpc.tune.PlayTuneResponse\"\000B\033\n\016io."
-  "mavsdk.tuneB\tTuneProtob\006proto3"
+  "\n\017tune/tune.proto\022\017mavsdk.rpc.tune\"M\n\017Pl"
+  "ayTuneRequest\022:\n\020tune_description\030\001 \001(\0132"
+  " .mavsdk.rpc.tune.TuneDescription\"D\n\020Pla"
+  "yTuneResponse\0220\n\013tune_result\030\001 \001(\0132\033.mav"
+  "sdk.rpc.tune.TuneResult\"U\n\017TuneDescripti"
+  "on\0223\n\rsong_elements\030\001 \003(\0162\034.mavsdk.rpc.t"
+  "une.SongElement\022\r\n\005tempo\030\002 \001(\005\"\314\001\n\nTuneR"
+  "esult\0222\n\006result\030\001 \001(\0162\".mavsdk.rpc.tune."
+  "TuneResult.Result\022\022\n\nresult_str\030\002 \001(\t\"v\n"
+  "\006Result\022\022\n\016RESULT_UNKNOWN\020\000\022\022\n\016RESULT_SU"
+  "CCESS\020\001\022\030\n\024RESULT_INVALID_TEMPO\020\002\022\030\n\024RES"
+  "ULT_TUNE_TOO_LONG\020\003\022\020\n\014RESULT_ERROR\020\004*\321\004"
+  "\n\013SongElement\022\035\n\031SONG_ELEMENT_STYLE_LEGA"
+  "TO\020\000\022\035\n\031SONG_ELEMENT_STYLE_NORMAL\020\001\022\037\n\033S"
+  "ONG_ELEMENT_STYLE_STACCATO\020\002\022\033\n\027SONG_ELE"
+  "MENT_DURATION_1\020\003\022\033\n\027SONG_ELEMENT_DURATI"
+  "ON_2\020\004\022\033\n\027SONG_ELEMENT_DURATION_4\020\005\022\033\n\027S"
+  "ONG_ELEMENT_DURATION_8\020\006\022\034\n\030SONG_ELEMENT"
+  "_DURATION_16\020\007\022\034\n\030SONG_ELEMENT_DURATION_"
+  "32\020\010\022\027\n\023SONG_ELEMENT_NOTE_A\020\t\022\027\n\023SONG_EL"
+  "EMENT_NOTE_B\020\n\022\027\n\023SONG_ELEMENT_NOTE_C\020\013\022"
+  "\027\n\023SONG_ELEMENT_NOTE_D\020\014\022\027\n\023SONG_ELEMENT"
+  "_NOTE_E\020\r\022\027\n\023SONG_ELEMENT_NOTE_F\020\016\022\027\n\023SO"
+  "NG_ELEMENT_NOTE_G\020\017\022\033\n\027SONG_ELEMENT_NOTE"
+  "_PAUSE\020\020\022\026\n\022SONG_ELEMENT_SHARP\020\021\022\025\n\021SONG"
+  "_ELEMENT_FLAT\020\022\022\032\n\026SONG_ELEMENT_OCTAVE_U"
+  "P\020\023\022\034\n\030SONG_ELEMENT_OCTAVE_DOWN\020\0242`\n\013Tun"
+  "eService\022Q\n\010PlayTune\022 .mavsdk.rpc.tune.P"
+  "layTuneRequest\032!.mavsdk.rpc.tune.PlayTun"
+  "eResponse\"\000B\033\n\016io.mavsdk.tuneB\tTuneProto"
+  "b\006proto3"
   ;
-static const ::PROTOBUF_NAMESPACE_ID::internal::DescriptorTable*const descriptor_table_tune_2ftune_2eproto_deps[1] = {
-  &::descriptor_table_mavsdk_5foptions_2eproto,
-};
 static ::PROTOBUF_NAMESPACE_ID::internal::once_flag descriptor_table_tune_2ftune_2eproto_once;
 const ::PROTOBUF_NAMESPACE_ID::internal::DescriptorTable descriptor_table_tune_2ftune_2eproto = {
-  false, false, 1230, descriptor_table_protodef_tune_2ftune_2eproto, "tune/tune.proto", 
-  &descriptor_table_tune_2ftune_2eproto_once, descriptor_table_tune_2ftune_2eproto_deps, 1, 4,
+  false, false, 1208, descriptor_table_protodef_tune_2ftune_2eproto, "tune/tune.proto", 
+  &descriptor_table_tune_2ftune_2eproto_once, nullptr, 0, 4,
   schemas, file_default_instances, TableStruct_tune_2ftune_2eproto::offsets,
   file_level_metadata_tune_2ftune_2eproto, file_level_enum_descriptors_tune_2ftune_2eproto, file_level_service_descriptors_tune_2ftune_2eproto,
 };
