@@ -86,8 +86,8 @@ int main(int argc, char** argv)
 
     // Set up callback to monitor camera/gimbal angle
     telemetry.subscribe_camera_attitude_euler([](Telemetry::EulerAngle angle) {
-        std::cout << "Gimbal angle pitch: " << angle.pitch_deg << " deg, yaw: "
-                  << angle.yaw_deg << " yaw\n";
+        std::cout << "Gimbal angle pitch: " << angle.pitch_deg << " deg, yaw: " << angle.yaw_deg
+                  << " yaw\n";
     });
 
     std::cout << "Start controlling gimbal...\n";
