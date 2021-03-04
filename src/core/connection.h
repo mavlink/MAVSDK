@@ -21,8 +21,8 @@ public:
 
     virtual bool send_message(const mavlink_message_t& message) = 0;
 
-    bool do_forward_messages() const;
-    uint8_t forwarding_connections_count() const;
+    bool should_forward_messages() const;
+    unsigned forwarding_connections_count() const;
 
     // Non-copyable
     Connection(const Connection&) = delete;
@@ -37,7 +37,7 @@ protected:
     std::unique_ptr<MAVLinkReceiver> _mavlink_receiver;
     ForwardingOption _forwarding_option;
 
-    static uint8_t _forwarding_connections_count;
+    static std::atomic<unsigned> _forwarding_connections_count;
 
     // void received_mavlink_message(mavlink_message_t &);
 };

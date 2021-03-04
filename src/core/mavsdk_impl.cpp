@@ -117,11 +117,11 @@ void MavsdkImpl::forward_message(mavlink_message_t& message, Connection* connect
      * See https://mavlink.io/en/guide/routing.html
      *
      * This function was adapted from PX4 Firmware v1.11.3
-     * https://github.com/PX4/PX4-Autopilot/blob/v1.11.3/src/modules/mavlink/mavlink_main.cpp
+     * https://github.com/PX4/PX4-Autopilot/blob/v1.11.3/src/modules/mavlink/mavlink_main.cpp#L460
      */
     const mavlink_msg_entry_t* meta = mavlink_get_msg_entry(message.msgid);
 
-    bool forward_heartbeats_enabled = false;
+    bool forward_heartbeats_enabled = true;
     int target_system_id = 0;
     int target_component_id = 0;
 
@@ -148,9 +148,11 @@ void MavsdkImpl::forward_message(mavlink_message_t& message, Connection* connect
     if (!targeted_only_at_us && heartbeat_check_ok) {
         std::lock_guard<std::mutex> lock(_connections_mutex);
 
-        uint8_t successful_emissions = 0;
+        unsigned successful_emissions = 0;
         for (auto it = _connections.begin(); it != _connections.end(); ++it) {
-            if ((*it).get() == connection || !(**it).do_forward_messages()) {
+            // Check whether the connection is not the one from which we received the message.
+            // And also check if the connection was set to forward messages.
+            if ((*it).get() == connection || !(**it).should_forward_messages()) {
                 continue;
             }
             if ((**it).send_message(message)) {
@@ -158,7 +160,7 @@ void MavsdkImpl::forward_message(mavlink_message_t& message, Connection* connect
             }
         }
         if (successful_emissions == 0) {
-            LogErr() << "forward fail";
+            LogErr() << "Message forwarding failed";
         }
     }
 }
@@ -169,9 +171,15 @@ void MavsdkImpl::receive_message(mavlink_message_t& message, Connection* connect
      *  Performs message forwarding checks for every messages if message forwarding
      *  is enabled on at least one connection, and in case of a single forwarding connection,
      *  we check that it is not the one which received the current message.
+     *
+     * Conditions:
+     * 1. At least 2 connections.
+     * 2. At least 1 forwarding connection.
+     * 3. At least 2 forwarding connections or current connection is not forwarding.
      */
     if (_connections.size() > 1 && connection->forwarding_connections_count() > 0 &&
-        (connection->forwarding_connections_count() && connection->do_forward_messages())) {
+        (connection->forwarding_connections_count() > 1 ||
+         !connection->should_forward_messages())) {
         forward_message(message, connection);
     }
 
