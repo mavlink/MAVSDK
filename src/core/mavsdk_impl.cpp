@@ -117,6 +117,19 @@ void MavsdkImpl::receive_message(mavlink_message_t& message)
         return;
     }
 
+    // Filter out messages by QGroundControl, however, only do that if MAVSDK
+    // is also implementing a ground station and not if it is used in another
+    // configuration, e.g. on a companion.
+    //
+    // This is a workaround because PX4 started forwarding messages between
+    // mavlink instances which leads to existing implementations (including
+    // examples and integration tests) to connect to QGroundControl by accident
+    // instead of PX4 because the check `has_autopilot()` is not used.
+    if (_configuration.get_usage_type() == Mavsdk::Configuration::UsageType::GroundStation &&
+        message.sysid == 255 && message.compid == MAV_COMP_ID_MISSIONPLANNER) {
+        return;
+    }
+
     std::lock_guard<std::recursive_mutex> lock(_systems_mutex);
 
     // Change system id of null system
