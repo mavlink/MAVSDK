@@ -681,8 +681,8 @@ message ScaledPressure {
     uint64 timestamp_us = 1; // Timestamp (time since system boot)
     float absolute_pressure_hpa = 2; // Absolute pressure in hPa
     float differential_pressure_hpa = 3; // Differential pressure 1 in hPa
-    int32 temperature_deg = 4; // Absolute pressure temperature (in celcius)
-    int32 differential_pressure_temperature_deg = 5; // Differential pressure temperature (in celcius, 0 if not available)
+    float temperature_deg = 4; // Absolute pressure temperature (in celcius)
+    float differential_pressure_temperature_deg = 5; // Differential pressure temperature (in celcius, 0 if not available)
 }
 
 // PositionNed message type.
