@@ -5,7 +5,7 @@
 #include <string>
 
 static auto constexpr default_connection = "udp://:14540";
-static auto default_mavsdk_server_port = 0;
+static auto constexpr default_mavsdk_server_port = 50051;
 
 static void usage(const char* bin_name);
 static bool is_integer(const std::string& tested_integer);
@@ -59,7 +59,9 @@ void usage(const char* bin_name)
               << '\n'
               << "Options:" << '\n'
               << "  -h | --help : show this help" << '\n'
-              << "  -p          : set the port on which to run the gRPC server" << '\n';
+              << "  -p          : set the port on which to run the gRPC server,\n"
+              << "                set to 0 to choose a free port automatically\n"
+              << "                (default is " << default_mavsdk_server_port << ")\n";
 }
 
 bool is_integer(const std::string& tested_integer)
