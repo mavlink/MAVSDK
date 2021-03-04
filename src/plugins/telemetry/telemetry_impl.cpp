@@ -922,14 +922,14 @@ void TelemetryImpl::process_gps_raw_int(const mavlink_message_t& message)
     raw_gps_info.absolute_altitude_m = gps_raw_int.alt * 1e-3f;
     raw_gps_info.hdop = static_cast<float>(gps_raw_int.eph) * 1e-2f;
     raw_gps_info.vdop = static_cast<float>(gps_raw_int.epv) * 1e-2f;
-    raw_gps_info.velocity_m_s = static_cast<float>(gps_raw_int.vel) * 1e2f;
+    raw_gps_info.velocity_m_s = static_cast<float>(gps_raw_int.vel) * 1e-2f;
     raw_gps_info.cog_deg = static_cast<float>(gps_raw_int.cog) * 1e-2f;
-    raw_gps_info.altitude_ellipsoid_m = static_cast<float>(gps_raw_int.alt_ellipsoid) * 1e3f;
-    raw_gps_info.horizontal_uncertainty_m = static_cast<float>(gps_raw_int.h_acc) * 1e3f;
-    raw_gps_info.vertical_uncertainty_m = static_cast<float>(gps_raw_int.v_acc) * 1e3f;
-    raw_gps_info.velocity_uncertainty_m_s = static_cast<float>(gps_raw_int.vel_acc) * 1e3f;
+    raw_gps_info.altitude_ellipsoid_m = static_cast<float>(gps_raw_int.alt_ellipsoid) * 1e-3f;
+    raw_gps_info.horizontal_uncertainty_m = static_cast<float>(gps_raw_int.h_acc) * 1e-3f;
+    raw_gps_info.vertical_uncertainty_m = static_cast<float>(gps_raw_int.v_acc) * 1e-3f;
+    raw_gps_info.velocity_uncertainty_m_s = static_cast<float>(gps_raw_int.vel_acc) * 1e-3f;
     raw_gps_info.heading_uncertainty_deg = static_cast<float>(gps_raw_int.hdg_acc) * 1e-5f;
-    raw_gps_info.yaw_deg = static_cast<uint32_t>(gps_raw_int.yaw) * 1e-2f;
+    raw_gps_info.yaw_deg = static_cast<float>(gps_raw_int.yaw) * 1e-2f;
     set_raw_gps(raw_gps_info);
 
     // TODO: This is just an interim hack, we will have to look at
@@ -1311,9 +1311,9 @@ void TelemetryImpl::process_scaled_pressure(const mavlink_message_t& message)
     scaled_pressure_struct.absolute_pressure_hpa = scaled_pressure_msg.press_abs;
     scaled_pressure_struct.differential_pressure_hpa = scaled_pressure_msg.press_diff;
     scaled_pressure_struct.temperature_deg =
-        static_cast<float>(scaled_pressure_msg.temperature) * 1e-2;
+        static_cast<float>(scaled_pressure_msg.temperature) * 1e-2f;
     scaled_pressure_struct.differential_pressure_temperature_deg =
-        static_cast<float>(scaled_pressure_msg.temperature_press_diff) * 1e-2;
+        static_cast<float>(scaled_pressure_msg.temperature_press_diff) * 1e-2f;
 
     set_scaled_pressure(scaled_pressure_struct);
 
