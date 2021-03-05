@@ -64,12 +64,6 @@ public:
     Mission::MissionProgress mission_progress();
     void subscribe_mission_progress(Mission::MissionProgressCallback callback);
 
-    void import_qgroundcontrol_mission_async(
-        std::string qgc_plan_path, const Mission::ImportQgroundcontrolMissionCallback callback);
-
-    static std::pair<Mission::Result, Mission::MissionPlan>
-    import_qgroundcontrol_mission(const std::string& qgc_plan_path);
-
     // Non-copyable
     MissionImpl(const MissionImpl&) = delete;
     const MissionImpl& operator=(const MissionImpl&) = delete;

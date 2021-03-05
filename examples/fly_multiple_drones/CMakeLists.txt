@@ -22,7 +22,7 @@ add_executable(fly_multiple_drones
 target_link_libraries(fly_multiple_drones
     MAVSDK::mavsdk
     MAVSDK::mavsdk_telemetry
-    MAVSDK::mavsdk_mission
+    MAVSDK::mavsdk_mission_raw
     MAVSDK::mavsdk_action
     ${CMAKE_THREAD_LIBS_INIT}
 )

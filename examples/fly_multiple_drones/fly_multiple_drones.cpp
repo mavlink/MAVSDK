@@ -1,17 +1,12 @@
-/*
-Example to connect multiple vehicles and make them follow their own separate plan file. Also
-saves the telemetry information to csv files
-./fly_multiple_drones udp://:14540 udp://:14541 ../../../plugins/mission/test.plan
-../../../plugins/mission/test2.plan
-
-Author: Julian Oes <julian@oes.ch>
-Author: Shayaan Haider (via Slack)
-Author: Shusil Shapkota (Air Matrix)
-*/
+/**
+ * Example to connect multiple vehicles and make them follow their own separate
+ * plan file. Also saves the telemetry information to csv files
+ * ./fly_multiple_drones udp://:14540 udp://:14541 test1.plan test2.plan
+ */
 
 #include <mavsdk/mavsdk.h>
 #include <mavsdk/plugins/action/action.h>
-#include <mavsdk/plugins/mission/mission.h>
+#include <mavsdk/plugins/mission_raw/mission_raw.h>
 #include <mavsdk/plugins/telemetry/telemetry.h>
 
 #include <cstdint>
@@ -30,43 +25,44 @@ using namespace std::this_thread;
 using namespace std::chrono;
 
 /*
-How to Start Multiple Instances (for jMAVSim)
-
-Note: The following instructions to start multiple vehicles in simulations are for Firmware
-Version 1.9.0. If you have other versions running on your machine, please visit this site and select
-appropriate version for the instructions:
---> https://dev.px4.io/en/simulation/multi_vehicle_jmavsim.html
-
-To start multiple instances (on separate ports):
-
-Build PX4
-    make px4_sitl_default
-
-Run sitl_multiple_run.sh, specifying the number of instances to start (e.g. 2):
-    ./Tools/sitl_multiple_run.sh 2
-
-Start the first instance:
-    ./Tools/jmavsim_run.sh -l
-
-Start subsequent instances, specifying the simulation TCP port for the instance:
-    ./Tools/jmavsim_run.sh -p 4561 -l
-
-The port should be set to 4560+i for i in [0, N-1].
-
-
-Steps to run this example:
-1. Run multiple simulations with different drones following the steps explained above
-2. build the executable
-3. (a) Create a Mission in QGroundControl and save them to a file (.plan) (OR)
-   (b) Use a pre-created sample mission plan.
-4. Run the executable by passing the connection urls (ex. udp://:14540) and path of QGC mission plan
-as arguments Example: If you have test.plan and test2.plan in "../../../plugins/mission/" and you
-are running two drones in udp://:14540 and udp://:14541 then you run the example as:
-
-./fly_multiple_drones udp://:14540 udp://:14541 ../../../src/plugins/mission/test.plan
-../../../src/plugins/mission/test2.plan
-
-*/
+ * How to Start Multiple Instances (for jMAVSim)
+ *
+ * Note: The following instructions to start multiple vehicles in simulations
+ * are last tested for Firmware Version 1.9.0.
+ *
+ * To start multiple instances (on separate ports):
+ *
+ * Build PX4
+ *     make px4_sitl_default
+ *
+ * Run sitl_multiple_run.sh, specifying the number of instances to start (e.g. 2):
+ *     ./Tools/sitl_multiple_run.sh 2
+ *
+ * Start the first instance:
+ *     ./Tools/jmavsim_run.sh -l
+ *
+ * Start subsequent instances, specifying the simulation TCP port for the instance:
+ *     ./Tools/jmavsim_run.sh -p 4561 -l
+ *
+ * The port should be set to 4560+i for i in [0, N-1].
+ *
+ *
+ * Steps to run this example:
+ * 1. Run multiple simulations with different drones following the steps above
+ * 2. Build the executable
+ * 3. (a) Create a Mission in QGroundControl and save them to a file (.plan), or
+ *    (b) Use a pre-created sample mission plan.
+ * 4. Run the executable by passing the connection urls (ex. udp://:14540) and
+ *    path of QGC mission plan as arguments Example: If you have test1.plan and
+ *    test2.plan in "../../../plugins/mission/" and you are running two drones
+ *    in udp://:14540 and udp://:14541 then you run the example as:
+ *
+ *   ./fly_multiple_drones udp://:14540 udp://:14541 test1.plan test2.plan
+ *
+ *
+ * Note: The mission needs to end with RTL or land, otherwise it will get stuck
+ *       waiting for the system to be disarmed.
+ */
 
 #define ERROR_CONSOLE_TEXT "\033[31m" // Turn text on console red
 #define TELEMETRY_CONSOLE_TEXT "\033[34m" // Turn text on console blue
@@ -76,7 +72,7 @@ static void complete_mission(std::string qgc_plan, std::shared_ptr<System> syste
 
 static void handle_action_err_exit(Action::Result result, const std::string& message);
 
-static void handle_mission_err_exit(Mission::Result result, const std::string& message);
+static void handle_mission_err_exit(MissionRaw::Result result, const std::string& message);
 
 std::string getCurrentTimeString()
 {
@@ -159,7 +155,7 @@ void complete_mission(std::string qgc_plan, std::shared_ptr<System> system)
 {
     auto telemetry = Telemetry{system};
     auto action = Action{system};
-    auto mission = Mission{system};
+    auto mission_raw = MissionRaw{system};
 
     // We want to listen to the telemetry data at 1 Hz.
     const Telemetry::Result set_rate_result = telemetry.set_rate_position(1.0);
@@ -192,8 +188,8 @@ void complete_mission(std::string qgc_plan, std::shared_ptr<System> system)
     }
 
     // Import Mission items from QGC plan
-    std::pair<Mission::Result, Mission::MissionPlan> import_res =
-        mission.import_qgroundcontrol_mission(qgc_plan);
+    std::pair<MissionRaw::Result, MissionRaw::MissionImportData> import_res =
+        mission_raw.import_qgroundcontrol_mission(qgc_plan);
     handle_mission_err_exit(import_res.first, "Failed to import mission items: ");
 
     if (import_res.second.mission_items.size() == 0) {
@@ -203,18 +199,11 @@ void complete_mission(std::string qgc_plan, std::shared_ptr<System> system)
     std::cout << "Found " << import_res.second.mission_items.size()
               << " mission items in the given QGC plan." << std::endl;
 
-    {
-        std::cout << "Uploading mission..." << std::endl;
-        // Wrap the asynchronous upload_mission function using std::future.
-        auto prom = std::make_shared<std::promise<Mission::Result>>();
-        auto future_result = prom->get_future();
-        mission.upload_mission_async(
-            import_res.second, [prom](Mission::Result result) { prom->set_value(result); });
-
-        const Mission::Result result = future_result.get();
-        handle_mission_err_exit(result, "Mission upload failed: ");
-        std::cout << "Mission uploaded." << std::endl;
-    }
+    std::cout << "Uploading mission..." << std::endl;
+    const MissionRaw::Result upload_result =
+        mission_raw.upload_mission(import_res.second.mission_items);
+    handle_mission_err_exit(upload_result, "MissionRaw upload failed: ");
+    std::cout << "MissionRaw uploaded." << std::endl;
 
     std::cout << "Arming..." << std::endl;
     const Action::Result arm_result = action.arm();
@@ -222,40 +211,19 @@ void complete_mission(std::string qgc_plan, std::shared_ptr<System> system)
     std::cout << "Armed." << std::endl;
 
     // Before starting the mission subscribe to the mission progress.
-    mission.subscribe_mission_progress([&](Mission::MissionProgress mission_progress) {
-        std::cout << "Mission status update, VehicleID: " << system->get_system_id() << " --> "
+    mission_raw.subscribe_mission_progress([&](MissionRaw::MissionProgress mission_progress) {
+        std::cout << "Mission progress update, VehicleID: " << system->get_system_id() << " --> "
                   << mission_progress.current << " / " << mission_progress.total << std::endl;
     });
 
-    {
-        std::cout << "Starting mission." << std::endl;
-        auto prom = std::make_shared<std::promise<Mission::Result>>();
-        auto future_result = prom->get_future();
-        mission.start_mission_async([prom](Mission::Result result) {
-            prom->set_value(result);
-            std::cout << "Started mission." << std::endl;
-        });
+    std::cout << "Starting mission." << std::endl;
+    const MissionRaw::Result start_result = mission_raw.start_mission();
+    handle_mission_err_exit(start_result, "Mission start failed: ");
+    std::cout << "Started mission." << std::endl;
 
-        const Mission::Result result = future_result.get();
-        handle_mission_err_exit(result, "Mission start failed: ");
-    }
-
-    while (!mission.is_mission_finished().second) {
+    // This only works if the mission ends with an automatic RTL.
+    while (telemetry.armed()) {
         sleep_for(seconds(1));
-    }
-
-    // Wait for some time.
-    sleep_for(seconds(5));
-
-    {
-        // Mission complete. Command RTL to go home.
-        std::cout << "Commanding RTL..." << std::endl;
-        const Action::Result result = action.return_to_launch();
-        if (result != Action::Result::Success) {
-            std::cout << "Failed to command RTL (" << result << ")" << std::endl;
-        } else {
-            std::cout << "Commanded RTL." << std::endl;
-        }
     }
 }
 
@@ -267,9 +235,9 @@ static void handle_action_err_exit(Action::Result result, const std::string& mes
     }
 }
 
-static void handle_mission_err_exit(Mission::Result result, const std::string& message)
+static void handle_mission_err_exit(MissionRaw::Result result, const std::string& message)
 {
-    if (result != Mission::Result::Success) {
+    if (result != MissionRaw::Result::Success) {
         std::cerr << ERROR_CONSOLE_TEXT << message << result << NORMAL_CONSOLE_TEXT << std::endl;
         exit(EXIT_FAILURE);
     }

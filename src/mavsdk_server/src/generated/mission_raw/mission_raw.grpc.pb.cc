@@ -34,6 +34,7 @@ static const char* MissionRawService_method_names[] = {
   "/mavsdk.rpc.mission_raw.MissionRawService/SetCurrentMissionItem",
   "/mavsdk.rpc.mission_raw.MissionRawService/SubscribeMissionProgress",
   "/mavsdk.rpc.mission_raw.MissionRawService/SubscribeMissionChanged",
+  "/mavsdk.rpc.mission_raw.MissionRawService/ImportQgroundcontrolMission",
 };
 
 std::unique_ptr< MissionRawService::Stub> MissionRawService::NewStub(const std::shared_ptr< ::grpc::ChannelInterface>& channel, const ::grpc::StubOptions& options) {
@@ -53,6 +54,7 @@ MissionRawService::Stub::Stub(const std::shared_ptr< ::grpc::ChannelInterface>& 
   , rpcmethod_SetCurrentMissionItem_(MissionRawService_method_names[7], ::grpc::internal::RpcMethod::NORMAL_RPC, channel)
   , rpcmethod_SubscribeMissionProgress_(MissionRawService_method_names[8], ::grpc::internal::RpcMethod::SERVER_STREAMING, channel)
   , rpcmethod_SubscribeMissionChanged_(MissionRawService_method_names[9], ::grpc::internal::RpcMethod::SERVER_STREAMING, channel)
+  , rpcmethod_ImportQgroundcontrolMission_(MissionRawService_method_names[10], ::grpc::internal::RpcMethod::NORMAL_RPC, channel)
   {}
 
 ::grpc::Status MissionRawService::Stub::UploadMission(::grpc::ClientContext* context, const ::mavsdk::rpc::mission_raw::UploadMissionRequest& request, ::mavsdk::rpc::mission_raw::UploadMissionResponse* response) {
@@ -271,6 +273,29 @@ void MissionRawService::Stub::experimental_async::SubscribeMissionChanged(::grpc
   return ::grpc::internal::ClientAsyncReaderFactory< ::mavsdk::rpc::mission_raw::MissionChangedResponse>::Create(channel_.get(), cq, rpcmethod_SubscribeMissionChanged_, context, request, false, nullptr);
 }
 
+::grpc::Status MissionRawService::Stub::ImportQgroundcontrolMission(::grpc::ClientContext* context, const ::mavsdk::rpc::mission_raw::ImportQgroundcontrolMissionRequest& request, ::mavsdk::rpc::mission_raw::ImportQgroundcontrolMissionResponse* response) {
+  return ::grpc::internal::BlockingUnaryCall< ::mavsdk::rpc::mission_raw::ImportQgroundcontrolMissionRequest, ::mavsdk::rpc::mission_raw::ImportQgroundcontrolMissionResponse, ::grpc::protobuf::MessageLite, ::grpc::protobuf::MessageLite>(channel_.get(), rpcmethod_ImportQgroundcontrolMission_, context, request, response);
+}
+
+void MissionRawService::Stub::experimental_async::ImportQgroundcontrolMission(::grpc::ClientContext* context, const ::mavsdk::rpc::mission_raw::ImportQgroundcontrolMissionRequest* request, ::mavsdk::rpc::mission_raw::ImportQgroundcontrolMissionResponse* response, std::function<void(::grpc::Status)> f) {
+  ::grpc::internal::CallbackUnaryCall< ::mavsdk::rpc::mission_raw::ImportQgroundcontrolMissionRequest, ::mavsdk::rpc::mission_raw::ImportQgroundcontrolMissionResponse, ::grpc::protobuf::MessageLite, ::grpc::protobuf::MessageLite>(stub_->channel_.get(), stub_->rpcmethod_ImportQgroundcontrolMission_, context, request, response, std::move(f));
+}
+
+void MissionRawService::Stub::experimental_async::ImportQgroundcontrolMission(::grpc::ClientContext* context, const ::mavsdk::rpc::mission_raw::ImportQgroundcontrolMissionRequest* request, ::mavsdk::rpc::mission_raw::ImportQgroundcontrolMissionResponse* response, ::grpc::experimental::ClientUnaryReactor* reactor) {
+  ::grpc::internal::ClientCallbackUnaryFactory::Create< ::grpc::protobuf::MessageLite, ::grpc::protobuf::MessageLite>(stub_->channel_.get(), stub_->rpcmethod_ImportQgroundcontrolMission_, context, request, response, reactor);
+}
+
+::grpc::ClientAsyncResponseReader< ::mavsdk::rpc::mission_raw::ImportQgroundcontrolMissionResponse>* MissionRawService::Stub::PrepareAsyncImportQgroundcontrolMissionRaw(::grpc::ClientContext* context, const ::mavsdk::rpc::mission_raw::ImportQgroundcontrolMissionRequest& request, ::grpc::CompletionQueue* cq) {
+  return ::grpc::internal::ClientAsyncResponseReaderHelper::Create< ::mavsdk::rpc::mission_raw::ImportQgroundcontrolMissionResponse, ::mavsdk::rpc::mission_raw::ImportQgroundcontrolMissionRequest, ::grpc::protobuf::MessageLite, ::grpc::protobuf::MessageLite>(channel_.get(), cq, rpcmethod_ImportQgroundcontrolMission_, context, request);
+}
+
+::grpc::ClientAsyncResponseReader< ::mavsdk::rpc::mission_raw::ImportQgroundcontrolMissionResponse>* MissionRawService::Stub::AsyncImportQgroundcontrolMissionRaw(::grpc::ClientContext* context, const ::mavsdk::rpc::mission_raw::ImportQgroundcontrolMissionRequest& request, ::grpc::CompletionQueue* cq) {
+  auto* result =
+    this->PrepareAsyncImportQgroundcontrolMissionRaw(context, request, cq);
+  result->StartCall();
+  return result;
+}
+
 MissionRawService::Service::Service() {
   AddMethod(new ::grpc::internal::RpcServiceMethod(
       MissionRawService_method_names[0],
@@ -372,6 +397,16 @@ MissionRawService::Service::Service() {
              ::grpc::ServerWriter<::mavsdk::rpc::mission_raw::MissionChangedResponse>* writer) {
                return service->SubscribeMissionChanged(ctx, req, writer);
              }, this)));
+  AddMethod(new ::grpc::internal::RpcServiceMethod(
+      MissionRawService_method_names[10],
+      ::grpc::internal::RpcMethod::NORMAL_RPC,
+      new ::grpc::internal::RpcMethodHandler< MissionRawService::Service, ::mavsdk::rpc::mission_raw::ImportQgroundcontrolMissionRequest, ::mavsdk::rpc::mission_raw::ImportQgroundcontrolMissionResponse, ::grpc::protobuf::MessageLite, ::grpc::protobuf::MessageLite>(
+          [](MissionRawService::Service* service,
+             ::grpc::ServerContext* ctx,
+             const ::mavsdk::rpc::mission_raw::ImportQgroundcontrolMissionRequest* req,
+             ::mavsdk::rpc::mission_raw::ImportQgroundcontrolMissionResponse* resp) {
+               return service->ImportQgroundcontrolMission(ctx, req, resp);
+             }, this)));
 }
 
 MissionRawService::Service::~Service() {
@@ -444,6 +479,13 @@ MissionRawService::Service::~Service() {
   (void) context;
   (void) request;
   (void) writer;
+  return ::grpc::Status(::grpc::StatusCode::UNIMPLEMENTED, "");
+}
+
+::grpc::Status MissionRawService::Service::ImportQgroundcontrolMission(::grpc::ServerContext* context, const ::mavsdk::rpc::mission_raw::ImportQgroundcontrolMissionRequest* request, ::mavsdk::rpc::mission_raw::ImportQgroundcontrolMissionResponse* response) {
+  (void) context;
+  (void) request;
+  (void) response;
   return ::grpc::Status(::grpc::StatusCode::UNIMPLEMENTED, "");
 }
 

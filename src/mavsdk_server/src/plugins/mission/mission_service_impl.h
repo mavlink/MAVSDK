@@ -211,10 +211,6 @@ public:
                 return rpc::mission::MissionResult_Result_RESULT_UNSUPPORTED;
             case mavsdk::Mission::Result::NoMissionAvailable:
                 return rpc::mission::MissionResult_Result_RESULT_NO_MISSION_AVAILABLE;
-            case mavsdk::Mission::Result::FailedToOpenQgcPlan:
-                return rpc::mission::MissionResult_Result_RESULT_FAILED_TO_OPEN_QGC_PLAN;
-            case mavsdk::Mission::Result::FailedToParseQgcPlan:
-                return rpc::mission::MissionResult_Result_RESULT_FAILED_TO_PARSE_QGC_PLAN;
             case mavsdk::Mission::Result::UnsupportedMissionCmd:
                 return rpc::mission::MissionResult_Result_RESULT_UNSUPPORTED_MISSION_CMD;
             case mavsdk::Mission::Result::TransferCancelled:
@@ -247,10 +243,6 @@ public:
                 return mavsdk::Mission::Result::Unsupported;
             case rpc::mission::MissionResult_Result_RESULT_NO_MISSION_AVAILABLE:
                 return mavsdk::Mission::Result::NoMissionAvailable;
-            case rpc::mission::MissionResult_Result_RESULT_FAILED_TO_OPEN_QGC_PLAN:
-                return mavsdk::Mission::Result::FailedToOpenQgcPlan;
-            case rpc::mission::MissionResult_Result_RESULT_FAILED_TO_PARSE_QGC_PLAN:
-                return mavsdk::Mission::Result::FailedToParseQgcPlan;
             case rpc::mission::MissionResult_Result_RESULT_UNSUPPORTED_MISSION_CMD:
                 return mavsdk::Mission::Result::UnsupportedMissionCmd;
             case rpc::mission::MissionResult_Result_RESULT_TRANSFER_CANCELLED:
@@ -465,28 +457,6 @@ public:
 
         if (response != nullptr) {
             fillResponseWithResult(response, result);
-        }
-
-        return grpc::Status::OK;
-    }
-
-    grpc::Status ImportQgroundcontrolMission(
-        grpc::ServerContext* /* context */,
-        const rpc::mission::ImportQgroundcontrolMissionRequest* request,
-        rpc::mission::ImportQgroundcontrolMissionResponse* response) override
-    {
-        if (request == nullptr) {
-            LogWarn() << "ImportQgroundcontrolMission sent with a null request! Ignoring...";
-            return grpc::Status::OK;
-        }
-
-        auto result = _mission.import_qgroundcontrol_mission(request->qgc_plan_path());
-
-        if (response != nullptr) {
-            fillResponseWithResult(response, result.first);
-
-            response->set_allocated_mission_plan(
-                translateToRpcMissionPlan(result.second).release());
         }
 
         return grpc::Status::OK;

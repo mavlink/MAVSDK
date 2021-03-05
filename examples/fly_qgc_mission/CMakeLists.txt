@@ -19,7 +19,7 @@ add_executable(fly_qgc_mission
 
 target_link_libraries(fly_qgc_mission
     MAVSDK::mavsdk_action
-    MAVSDK::mavsdk_mission
+    MAVSDK::mavsdk_mission_raw
     MAVSDK::mavsdk_telemetry
     MAVSDK::mavsdk
 )

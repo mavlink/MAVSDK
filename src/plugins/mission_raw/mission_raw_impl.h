@@ -49,6 +49,17 @@ public:
     MissionRaw::MissionProgress mission_progress();
     void subscribe_mission_progress(MissionRaw::MissionProgressCallback callback);
 
+    std::pair<MissionRaw::Result, MissionRaw::MissionImportData>
+    import_qgroundcontrol_mission(std::string qgc_plan_path);
+
+#if 0
+    void import_qgroundcontrol_mission_async(
+        std::string qgc_plan_path, const MissionRaw::ImportQgroundcontrolMissionCallback callback);
+
+    static std::pair<MissionRaw::Result, MissionRaw::MissionImportData>
+    import_qgroundcontrol_mission(const std::string& qgc_plan_path);
+#endif
+
     MissionRawImpl(const MissionRawImpl&) = delete;
     const MissionRawImpl& operator=(const MissionRawImpl&) = delete;
 
