@@ -391,6 +391,8 @@ std::ostream& operator<<(std::ostream& str, Camera::Status::StorageStatus const&
             return str << "Unformatted";
         case Camera::Status::StorageStatus::Formatted:
             return str << "Formatted";
+        case Camera::Status::StorageStatus::NotSupported:
+            return str << "Not Supported";
         default:
             return str << "Unknown";
     }

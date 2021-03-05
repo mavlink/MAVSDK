@@ -326,6 +326,7 @@ public:
             Unformatted, /**< @brief Storage is not formatted (i.e. has no recognized file system).
                           */
             Formatted, /**< @brief Storage is formatted (i.e. has recognized a file system). */
+            NotSupported, /**< @brief Storage status is not supported. */
         };
 
         /**
