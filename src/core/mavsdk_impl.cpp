@@ -167,7 +167,7 @@ bool MavsdkImpl::send_message(mavlink_message_t& message)
     }
 
     if (successful_emissions == 0) {
-        LogErr() << "send fail";
+        LogErr() << "Sending message failed";
         return false;
     }
 
