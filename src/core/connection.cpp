@@ -43,7 +43,7 @@ void Connection::stop_mavlink_receiver()
 
 void Connection::receive_message(mavlink_message_t& message)
 {
-    if (_system_ids.find(message.sysid) != _system_ids.end()) {
+    if (_system_ids.find(message.sysid) == _system_ids.end()) {
         _system_ids.insert(message.sysid);
     }
     _receiver_callback(message);

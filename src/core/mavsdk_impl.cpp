@@ -151,8 +151,7 @@ bool MavsdkImpl::send_message(mavlink_message_t& message)
     uint8_t successful_emissions = 0;
     for (auto it = _connections.begin(); it != _connections.end(); ++it) {
         // Checks whether connection knows target system ID by extracting target system if set.
-        // ref:
-        // https://github.com/PX4/PX4-Autopilot/blob/v1.11.3/src/modules/mavlink/mavlink_main.cpp#L460
+        // https://github.com/PX4/PX4-Autopilot/blob/v1.11.3/src/modules/mavlink/mavlink_main.cpp#L472
         const mavlink_msg_entry_t* meta = mavlink_get_msg_entry(message.msgid);
 
         if (meta && meta->flags & MAV_MSG_ENTRY_FLAG_HAVE_TARGET_SYSTEM) {
