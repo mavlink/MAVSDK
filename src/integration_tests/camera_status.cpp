@@ -50,6 +50,9 @@ static void print_camera_status(const Camera::Status& status)
         case Camera::Status::StorageStatus::Formatted:
             storage_status_str = "formatted";
             break;
+        case Camera::Status::StorageStatus::NotSupported:
+            storage_status_str = "not supported";
+            break;
     }
 
     LogDebug() << "Status";

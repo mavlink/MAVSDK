@@ -440,6 +440,8 @@ public:
                 return rpc::camera::Status_StorageStatus_STORAGE_STATUS_UNFORMATTED;
             case mavsdk::Camera::Status::StorageStatus::Formatted:
                 return rpc::camera::Status_StorageStatus_STORAGE_STATUS_FORMATTED;
+            case mavsdk::Camera::Status::StorageStatus::NotSupported:
+                return rpc::camera::Status_StorageStatus_STORAGE_STATUS_NOT_SUPPORTED;
         }
     }
 
@@ -457,6 +459,8 @@ public:
                 return mavsdk::Camera::Status::StorageStatus::Unformatted;
             case rpc::camera::Status_StorageStatus_STORAGE_STATUS_FORMATTED:
                 return mavsdk::Camera::Status::StorageStatus::Formatted;
+            case rpc::camera::Status_StorageStatus_STORAGE_STATUS_NOT_SUPPORTED:
+                return mavsdk::Camera::Status::StorageStatus::NotSupported;
         }
     }
 

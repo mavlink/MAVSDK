@@ -354,12 +354,13 @@ enum Status_StorageStatus : int {
   Status_StorageStatus_STORAGE_STATUS_NOT_AVAILABLE = 0,
   Status_StorageStatus_STORAGE_STATUS_UNFORMATTED = 1,
   Status_StorageStatus_STORAGE_STATUS_FORMATTED = 2,
+  Status_StorageStatus_STORAGE_STATUS_NOT_SUPPORTED = 3,
   Status_StorageStatus_Status_StorageStatus_INT_MIN_SENTINEL_DO_NOT_USE_ = std::numeric_limits<::PROTOBUF_NAMESPACE_ID::int32>::min(),
   Status_StorageStatus_Status_StorageStatus_INT_MAX_SENTINEL_DO_NOT_USE_ = std::numeric_limits<::PROTOBUF_NAMESPACE_ID::int32>::max()
 };
 bool Status_StorageStatus_IsValid(int value);
 constexpr Status_StorageStatus Status_StorageStatus_StorageStatus_MIN = Status_StorageStatus_STORAGE_STATUS_NOT_AVAILABLE;
-constexpr Status_StorageStatus Status_StorageStatus_StorageStatus_MAX = Status_StorageStatus_STORAGE_STATUS_FORMATTED;
+constexpr Status_StorageStatus Status_StorageStatus_StorageStatus_MAX = Status_StorageStatus_STORAGE_STATUS_NOT_SUPPORTED;
 constexpr int Status_StorageStatus_StorageStatus_ARRAYSIZE = Status_StorageStatus_StorageStatus_MAX + 1;
 
 const ::PROTOBUF_NAMESPACE_ID::EnumDescriptor* Status_StorageStatus_descriptor();
@@ -7163,6 +7164,8 @@ class Status PROTOBUF_FINAL :
     Status_StorageStatus_STORAGE_STATUS_UNFORMATTED;
   static constexpr StorageStatus STORAGE_STATUS_FORMATTED =
     Status_StorageStatus_STORAGE_STATUS_FORMATTED;
+  static constexpr StorageStatus STORAGE_STATUS_NOT_SUPPORTED =
+    Status_StorageStatus_STORAGE_STATUS_NOT_SUPPORTED;
   static inline bool StorageStatus_IsValid(int value) {
     return Status_StorageStatus_IsValid(value);
   }

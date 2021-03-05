@@ -783,13 +783,25 @@ void CameraImpl::process_storage_information(const mavlink_message_t& message)
 
     {
         std::lock_guard<std::mutex> lock(_status.mutex);
-        if (storage_information.status == 0) {
-            _status.data.storage_status = Camera::Status::StorageStatus::NotAvailable;
-        } else if (storage_information.status == 1) {
-            _status.data.storage_status = Camera::Status::StorageStatus::Unformatted;
-        } else if (storage_information.status == 2) {
-            _status.data.storage_status = Camera::Status::StorageStatus::Formatted;
+        switch (storage_information.status) {
+            case STORAGE_STATUS_EMPTY:
+                _status.data.storage_status = Camera::Status::StorageStatus::NotAvailable;
+                break;
+            case STORAGE_STATUS_UNFORMATTED:
+                _status.data.storage_status = Camera::Status::StorageStatus::Unformatted;
+                break;
+            case STORAGE_STATUS_READY:
+                _status.data.storage_status = Camera::Status::StorageStatus::Formatted;
+                break;
+            case STORAGE_STATUS_NOT_SUPPORTED:
+                _status.data.storage_status = Camera::Status::StorageStatus::NotSupported;
+                break;
+            default:
+                _status.data.storage_status = Camera::Status::StorageStatus::NotSupported;
+                LogErr() << "Unknown storage status received.";
+                break;
         }
+
         _status.data.available_storage_mib = storage_information.available_capacity;
         _status.data.used_storage_mib = storage_information.used_capacity;
         _status.data.total_storage_mib = storage_information.total_capacity;
