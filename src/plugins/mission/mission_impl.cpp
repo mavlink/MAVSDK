@@ -931,57 +931,6 @@ Mission::Result MissionImpl::convert_result(MAVLinkMissionTransfer::Result resul
     }
 }
 
-#if 0
-std::pair<Mission::Result, Mission::MissionPlan>
-MissionImpl::import_qgroundcontrol_mission(const std::string& qgc_plan_file)
-{
-    Mission::MissionPlan mission_plan;
-    auto result =
-        std::pair<Mission::Result, Mission::MissionPlan>(Mission::Result::Unknown, mission_plan);
-
-    std::ifstream file(qgc_plan_file);
-    if (!file) {
-        result.first = Mission::Result::FailedToOpenQgcPlan;
-        return result;
-    }
-
-    std::stringstream ss;
-    ss << file.rdbuf();
-    file.close();
-    const auto raw_json = ss.str();
-
-    Json::CharReaderBuilder builder;
-    const std::unique_ptr<Json::CharReader> reader(builder.newCharReader());
-    Json::Value root;
-    JSONCPP_STRING err;
-    const bool ok =
-        reader->parse(raw_json.c_str(), raw_json.c_str() + raw_json.length(), &root, &err);
-    if (!ok) {
-        LogErr() << "Parse error: " << err;
-        result.first = Mission::Result::FailedToParseQgcPlan;
-        return result;
-    }
-
-    result.first = import_mission_items(result.second.mission_items, root);
-    return result;
-}
-
-void MissionImpl::import_qgroundcontrol_mission_async(
-    std::string qgc_plan_path, const Mission::ImportQgroundcontrolMissionCallback callback)
-{
-    auto fut = std::async([this, callback, qgc_plan_path]() {
-        auto result = MissionImpl::import_qgroundcontrol_mission(qgc_plan_path);
-        _parent->call_user_callback([&result, callback]() {
-            if (callback) {
-                callback(result.first, result.second);
-            }
-        });
-    });
-
-    UNUSED(fut);
-}
-#endif
-
 // Build a mission item out of command, params and add them to the mission vector.
 Mission::Result MissionImpl::build_mission_items(
     MAV_CMD command,
