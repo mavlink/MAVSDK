@@ -327,6 +327,7 @@ message Status {
         STORAGE_STATUS_NOT_AVAILABLE = 0; // Status not available
         STORAGE_STATUS_UNFORMATTED = 1; // Storage is not formatted (i.e. has no recognized file system)
         STORAGE_STATUS_FORMATTED = 2; // Storage is formatted (i.e. has recognized a file system)
+        STORAGE_STATUS_NOT_SUPPORTED = 3; // Storage status is not supported
     }
 
     bool video_on = 1; // Whether video recording is currently in process
