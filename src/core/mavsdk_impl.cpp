@@ -110,8 +110,79 @@ std::vector<std::shared_ptr<System>> MavsdkImpl::systems() const
     return systems_result;
 }
 
-void MavsdkImpl::receive_message(mavlink_message_t& message)
+void MavsdkImpl::forward_message(mavlink_message_t& message, Connection* connection)
 {
+    /**
+     * @brief forward_message Function implementing Mavlink routing rules.
+     * See https://mavlink.io/en/guide/routing.html
+     *
+     * This function was adapted from PX4 Firmware v1.11.3
+     * https://github.com/PX4/PX4-Autopilot/blob/v1.11.3/src/modules/mavlink/mavlink_main.cpp#L460
+     */
+    const mavlink_msg_entry_t* meta = mavlink_get_msg_entry(message.msgid);
+
+    bool forward_heartbeats_enabled = true;
+    int target_system_id = 0;
+    int target_component_id = 0;
+
+    // might be nullptr if message is unknown
+    if (meta) {
+        // Extract target system and target component if set
+        if (meta->flags & MAV_MSG_ENTRY_FLAG_HAVE_TARGET_SYSTEM) {
+            target_system_id = (_MAV_PAYLOAD(&message))[meta->target_system_ofs];
+        }
+
+        if (meta->flags & MAV_MSG_ENTRY_FLAG_HAVE_TARGET_COMPONENT) {
+            target_component_id = (_MAV_PAYLOAD(&message))[meta->target_component_ofs];
+        }
+    }
+
+    // If it's a message only for us, we keep it, otherwise, we forward it.
+    const bool targeted_only_at_us =
+        (target_system_id == get_own_system_id() && target_component_id == get_own_component_id());
+
+    // We don't forward heartbeats unless it's specifically enabled.
+    const bool heartbeat_check_ok =
+        (message.msgid != MAVLINK_MSG_ID_HEARTBEAT || forward_heartbeats_enabled);
+
+    if (!targeted_only_at_us && heartbeat_check_ok) {
+        std::lock_guard<std::mutex> lock(_connections_mutex);
+
+        unsigned successful_emissions = 0;
+        for (auto it = _connections.begin(); it != _connections.end(); ++it) {
+            // Check whether the connection is not the one from which we received the message.
+            // And also check if the connection was set to forward messages.
+            if ((*it).get() == connection || !(**it).should_forward_messages()) {
+                continue;
+            }
+            if ((**it).send_message(message)) {
+                successful_emissions++;
+            }
+        }
+        if (successful_emissions == 0) {
+            LogErr() << "Message forwarding failed";
+        }
+    }
+}
+
+void MavsdkImpl::receive_message(mavlink_message_t& message, Connection* connection)
+{
+    /** @note: Forward message if option is enabled and multiple interfaces are connected.
+     *  Performs message forwarding checks for every messages if message forwarding
+     *  is enabled on at least one connection, and in case of a single forwarding connection,
+     *  we check that it is not the one which received the current message.
+     *
+     * Conditions:
+     * 1. At least 2 connections.
+     * 2. At least 1 forwarding connection.
+     * 3. At least 2 forwarding connections or current connection is not forwarding.
+     */
+    if (_connections.size() > 1 && connection->forwarding_connections_count() > 0 &&
+        (connection->forwarding_connections_count() > 1 ||
+         !connection->should_forward_messages())) {
+        forward_message(message, connection);
+    }
+
     // Don't ever create a system with sysid 0.
     if (message.sysid == 0) {
         return;
@@ -178,7 +249,8 @@ bool MavsdkImpl::send_message(mavlink_message_t& message)
     return true;
 }
 
-ConnectionResult MavsdkImpl::add_any_connection(const std::string& connection_url)
+ConnectionResult MavsdkImpl::add_any_connection(
+    const std::string& connection_url, ForwardingOption forwarding_option)
 {
     CliArg cli_arg;
     if (!cli_arg.parse(connection_url)) {
@@ -195,7 +267,7 @@ ConnectionResult MavsdkImpl::add_any_connection(const std::string& connection_ur
             if (cli_arg.get_port()) {
                 port = cli_arg.get_port();
             }
-            return add_udp_connection(path, port);
+            return add_udp_connection(path, port, forwarding_option);
         }
 
         case CliArg::Protocol::Tcp: {
@@ -207,7 +279,7 @@ ConnectionResult MavsdkImpl::add_any_connection(const std::string& connection_ur
             if (cli_arg.get_port()) {
                 port = cli_arg.get_port();
             }
-            return add_tcp_connection(path, port);
+            return add_tcp_connection(path, port, forwarding_option);
         }
 
         case CliArg::Protocol::Serial: {
@@ -216,7 +288,8 @@ ConnectionResult MavsdkImpl::add_any_connection(const std::string& connection_ur
                 baudrate = cli_arg.get_baudrate();
             }
             bool flow_control = cli_arg.get_flow_control();
-            return add_serial_connection(cli_arg.get_path(), baudrate, flow_control);
+            return add_serial_connection(
+                cli_arg.get_path(), baudrate, flow_control, forwarding_option);
         }
 
         default:
@@ -224,10 +297,14 @@ ConnectionResult MavsdkImpl::add_any_connection(const std::string& connection_ur
     }
 }
 
-ConnectionResult MavsdkImpl::add_udp_connection(const std::string& local_ip, const int local_port)
+ConnectionResult MavsdkImpl::add_udp_connection(
+    const std::string& local_ip, const int local_port, ForwardingOption forwarding_option)
 {
     auto new_conn = std::make_shared<UdpConnection>(
-        std::bind(&MavsdkImpl::receive_message, this, std::placeholders::_1), local_ip, local_port);
+        std::bind(&MavsdkImpl::receive_message, this, std::placeholders::_1, std::placeholders::_2),
+        local_ip,
+        local_port,
+        forwarding_option);
     if (!new_conn) {
         return ConnectionResult::ConnectionError;
     }
@@ -238,10 +315,14 @@ ConnectionResult MavsdkImpl::add_udp_connection(const std::string& local_ip, con
     return ret;
 }
 
-ConnectionResult MavsdkImpl::setup_udp_remote(const std::string& remote_ip, int remote_port)
+ConnectionResult MavsdkImpl::setup_udp_remote(
+    const std::string& remote_ip, int remote_port, ForwardingOption forwarding_option)
 {
     auto new_conn = std::make_shared<UdpConnection>(
-        std::bind(&MavsdkImpl::receive_message, this, std::placeholders::_1), "0.0.0.0", 0);
+        std::bind(&MavsdkImpl::receive_message, this, std::placeholders::_1, std::placeholders::_2),
+        "0.0.0.0",
+        0,
+        forwarding_option);
     if (!new_conn) {
         return ConnectionResult::ConnectionError;
     }
@@ -255,12 +336,14 @@ ConnectionResult MavsdkImpl::setup_udp_remote(const std::string& remote_ip, int 
     return ret;
 }
 
-ConnectionResult MavsdkImpl::add_tcp_connection(const std::string& remote_ip, int remote_port)
+ConnectionResult MavsdkImpl::add_tcp_connection(
+    const std::string& remote_ip, int remote_port, ForwardingOption forwarding_option)
 {
     auto new_conn = std::make_shared<TcpConnection>(
-        std::bind(&MavsdkImpl::receive_message, this, std::placeholders::_1),
+        std::bind(&MavsdkImpl::receive_message, this, std::placeholders::_1, std::placeholders::_2),
         remote_ip,
-        remote_port);
+        remote_port,
+        forwarding_option);
     if (!new_conn) {
         return ConnectionResult::ConnectionError;
     }
@@ -271,14 +354,18 @@ ConnectionResult MavsdkImpl::add_tcp_connection(const std::string& remote_ip, in
     return ret;
 }
 
-ConnectionResult
-MavsdkImpl::add_serial_connection(const std::string& dev_path, int baudrate, bool flow_control)
+ConnectionResult MavsdkImpl::add_serial_connection(
+    const std::string& dev_path,
+    int baudrate,
+    bool flow_control,
+    ForwardingOption forwarding_option)
 {
     auto new_conn = std::make_shared<SerialConnection>(
-        std::bind(&MavsdkImpl::receive_message, this, std::placeholders::_1),
+        std::bind(&MavsdkImpl::receive_message, this, std::placeholders::_1, std::placeholders::_2),
         dev_path,
         baudrate,
-        flow_control);
+        flow_control,
+        forwarding_option);
     if (!new_conn) {
         return ConnectionResult::ConnectionError;
     }

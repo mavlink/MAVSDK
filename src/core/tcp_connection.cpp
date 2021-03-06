@@ -28,8 +28,9 @@ namespace mavsdk {
 TcpConnection::TcpConnection(
     Connection::receiver_callback_t receiver_callback,
     const std::string& remote_ip,
-    int remote_port) :
-    Connection(receiver_callback),
+    int remote_port,
+    ForwardingOption forwarding_option) :
+    Connection(receiver_callback, forwarding_option),
     _remote_ip(remote_ip),
     _remote_port_number(remote_port),
     _should_exit(false)
@@ -213,7 +214,7 @@ void TcpConnection::receive()
 
         // Parse all mavlink messages in one data packet. Once exhausted, we'll exit while.
         while (_mavlink_receiver->parse_message()) {
-            receive_message(_mavlink_receiver->get_last_message());
+            receive_message(_mavlink_receiver->get_last_message(), this);
         }
     }
 }
