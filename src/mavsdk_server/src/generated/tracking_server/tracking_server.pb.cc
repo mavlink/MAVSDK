@@ -14,400 +14,269 @@
 #include <google/protobuf/wire_format.h>
 // @@protoc_insertion_point(includes)
 #include <google/protobuf/port_def.inc>
-extern PROTOBUF_INTERNAL_EXPORT_tracking_5fserver_2ftracking_5fserver_2eproto ::PROTOBUF_NAMESPACE_ID::internal::SCCInfo<0> scc_info_TrackPoint_tracking_5fserver_2ftracking_5fserver_2eproto;
-extern PROTOBUF_INTERNAL_EXPORT_tracking_5fserver_2ftracking_5fserver_2eproto ::PROTOBUF_NAMESPACE_ID::internal::SCCInfo<0> scc_info_TrackRectangle_tracking_5fserver_2ftracking_5fserver_2eproto;
-extern PROTOBUF_INTERNAL_EXPORT_tracking_5fserver_2ftracking_5fserver_2eproto ::PROTOBUF_NAMESPACE_ID::internal::SCCInfo<0> scc_info_TrackingServerResult_tracking_5fserver_2ftracking_5fserver_2eproto;
+
+PROTOBUF_PRAGMA_INIT_SEG
 namespace mavsdk {
 namespace rpc {
 namespace tracking_server {
-class SetTrackingPointStatusRequestDefaultTypeInternal {
- public:
-  ::PROTOBUF_NAMESPACE_ID::internal::ExplicitlyConstructed<SetTrackingPointStatusRequest> _instance;
-} _SetTrackingPointStatusRequest_default_instance_;
-class SetTrackingPointStatusResponseDefaultTypeInternal {
- public:
-  ::PROTOBUF_NAMESPACE_ID::internal::ExplicitlyConstructed<SetTrackingPointStatusResponse> _instance;
-} _SetTrackingPointStatusResponse_default_instance_;
-class SetTrackingRectangleStatusRequestDefaultTypeInternal {
- public:
-  ::PROTOBUF_NAMESPACE_ID::internal::ExplicitlyConstructed<SetTrackingRectangleStatusRequest> _instance;
-} _SetTrackingRectangleStatusRequest_default_instance_;
-class SetTrackingRectangleStatusResponseDefaultTypeInternal {
- public:
-  ::PROTOBUF_NAMESPACE_ID::internal::ExplicitlyConstructed<SetTrackingRectangleStatusResponse> _instance;
-} _SetTrackingRectangleStatusResponse_default_instance_;
-class SetTrackingOffStatusRequestDefaultTypeInternal {
- public:
-  ::PROTOBUF_NAMESPACE_ID::internal::ExplicitlyConstructed<SetTrackingOffStatusRequest> _instance;
-} _SetTrackingOffStatusRequest_default_instance_;
-class SetTrackingOffStatusResponseDefaultTypeInternal {
- public:
-  ::PROTOBUF_NAMESPACE_ID::internal::ExplicitlyConstructed<SetTrackingOffStatusResponse> _instance;
-} _SetTrackingOffStatusResponse_default_instance_;
-class SubscribeTrackingPointCommandRequestDefaultTypeInternal {
- public:
-  ::PROTOBUF_NAMESPACE_ID::internal::ExplicitlyConstructed<SubscribeTrackingPointCommandRequest> _instance;
-} _SubscribeTrackingPointCommandRequest_default_instance_;
-class TrackingPointCommandResponseDefaultTypeInternal {
- public:
-  ::PROTOBUF_NAMESPACE_ID::internal::ExplicitlyConstructed<TrackingPointCommandResponse> _instance;
-} _TrackingPointCommandResponse_default_instance_;
-class SubscribeTrackingRectangleCommandRequestDefaultTypeInternal {
- public:
-  ::PROTOBUF_NAMESPACE_ID::internal::ExplicitlyConstructed<SubscribeTrackingRectangleCommandRequest> _instance;
-} _SubscribeTrackingRectangleCommandRequest_default_instance_;
-class TrackingRectangleCommandResponseDefaultTypeInternal {
- public:
-  ::PROTOBUF_NAMESPACE_ID::internal::ExplicitlyConstructed<TrackingRectangleCommandResponse> _instance;
-} _TrackingRectangleCommandResponse_default_instance_;
-class SubscribeTrackingOffCommandRequestDefaultTypeInternal {
- public:
-  ::PROTOBUF_NAMESPACE_ID::internal::ExplicitlyConstructed<SubscribeTrackingOffCommandRequest> _instance;
-} _SubscribeTrackingOffCommandRequest_default_instance_;
-class TrackingOffCommandResponseDefaultTypeInternal {
- public:
-  ::PROTOBUF_NAMESPACE_ID::internal::ExplicitlyConstructed<TrackingOffCommandResponse> _instance;
-} _TrackingOffCommandResponse_default_instance_;
-class RespondTrackingPointCommandRequestDefaultTypeInternal {
- public:
-  ::PROTOBUF_NAMESPACE_ID::internal::ExplicitlyConstructed<RespondTrackingPointCommandRequest> _instance;
-} _RespondTrackingPointCommandRequest_default_instance_;
-class RespondTrackingPointCommandResponseDefaultTypeInternal {
- public:
-  ::PROTOBUF_NAMESPACE_ID::internal::ExplicitlyConstructed<RespondTrackingPointCommandResponse> _instance;
-} _RespondTrackingPointCommandResponse_default_instance_;
-class RespondTrackingRectangleCommandRequestDefaultTypeInternal {
- public:
-  ::PROTOBUF_NAMESPACE_ID::internal::ExplicitlyConstructed<RespondTrackingRectangleCommandRequest> _instance;
-} _RespondTrackingRectangleCommandRequest_default_instance_;
-class RespondTrackingRectangleCommandResponseDefaultTypeInternal {
- public:
-  ::PROTOBUF_NAMESPACE_ID::internal::ExplicitlyConstructed<RespondTrackingRectangleCommandResponse> _instance;
-} _RespondTrackingRectangleCommandResponse_default_instance_;
-class RespondTrackingOffCommandRequestDefaultTypeInternal {
- public:
-  ::PROTOBUF_NAMESPACE_ID::internal::ExplicitlyConstructed<RespondTrackingOffCommandRequest> _instance;
-} _RespondTrackingOffCommandRequest_default_instance_;
-class RespondTrackingOffCommandResponseDefaultTypeInternal {
- public:
-  ::PROTOBUF_NAMESPACE_ID::internal::ExplicitlyConstructed<RespondTrackingOffCommandResponse> _instance;
-} _RespondTrackingOffCommandResponse_default_instance_;
-class TrackPointDefaultTypeInternal {
- public:
-  ::PROTOBUF_NAMESPACE_ID::internal::ExplicitlyConstructed<TrackPoint> _instance;
-} _TrackPoint_default_instance_;
-class TrackRectangleDefaultTypeInternal {
- public:
-  ::PROTOBUF_NAMESPACE_ID::internal::ExplicitlyConstructed<TrackRectangle> _instance;
-} _TrackRectangle_default_instance_;
-class TrackingServerResultDefaultTypeInternal {
- public:
-  ::PROTOBUF_NAMESPACE_ID::internal::ExplicitlyConstructed<TrackingServerResult> _instance;
-} _TrackingServerResult_default_instance_;
+constexpr SetTrackingPointStatusRequest::SetTrackingPointStatusRequest(
+  ::PROTOBUF_NAMESPACE_ID::internal::ConstantInitialized)
+  : tracked_point_(nullptr){}
+struct SetTrackingPointStatusRequestDefaultTypeInternal {
+  constexpr SetTrackingPointStatusRequestDefaultTypeInternal()
+    : _instance(::PROTOBUF_NAMESPACE_ID::internal::ConstantInitialized{}) {}
+  ~SetTrackingPointStatusRequestDefaultTypeInternal() {}
+  union {
+    SetTrackingPointStatusRequest _instance;
+  };
+};
+PROTOBUF_ATTRIBUTE_NO_DESTROY PROTOBUF_CONSTINIT SetTrackingPointStatusRequestDefaultTypeInternal _SetTrackingPointStatusRequest_default_instance_;
+constexpr SetTrackingPointStatusResponse::SetTrackingPointStatusResponse(
+  ::PROTOBUF_NAMESPACE_ID::internal::ConstantInitialized){}
+struct SetTrackingPointStatusResponseDefaultTypeInternal {
+  constexpr SetTrackingPointStatusResponseDefaultTypeInternal()
+    : _instance(::PROTOBUF_NAMESPACE_ID::internal::ConstantInitialized{}) {}
+  ~SetTrackingPointStatusResponseDefaultTypeInternal() {}
+  union {
+    SetTrackingPointStatusResponse _instance;
+  };
+};
+PROTOBUF_ATTRIBUTE_NO_DESTROY PROTOBUF_CONSTINIT SetTrackingPointStatusResponseDefaultTypeInternal _SetTrackingPointStatusResponse_default_instance_;
+constexpr SetTrackingRectangleStatusRequest::SetTrackingRectangleStatusRequest(
+  ::PROTOBUF_NAMESPACE_ID::internal::ConstantInitialized)
+  : tracked_rectangle_(nullptr){}
+struct SetTrackingRectangleStatusRequestDefaultTypeInternal {
+  constexpr SetTrackingRectangleStatusRequestDefaultTypeInternal()
+    : _instance(::PROTOBUF_NAMESPACE_ID::internal::ConstantInitialized{}) {}
+  ~SetTrackingRectangleStatusRequestDefaultTypeInternal() {}
+  union {
+    SetTrackingRectangleStatusRequest _instance;
+  };
+};
+PROTOBUF_ATTRIBUTE_NO_DESTROY PROTOBUF_CONSTINIT SetTrackingRectangleStatusRequestDefaultTypeInternal _SetTrackingRectangleStatusRequest_default_instance_;
+constexpr SetTrackingRectangleStatusResponse::SetTrackingRectangleStatusResponse(
+  ::PROTOBUF_NAMESPACE_ID::internal::ConstantInitialized){}
+struct SetTrackingRectangleStatusResponseDefaultTypeInternal {
+  constexpr SetTrackingRectangleStatusResponseDefaultTypeInternal()
+    : _instance(::PROTOBUF_NAMESPACE_ID::internal::ConstantInitialized{}) {}
+  ~SetTrackingRectangleStatusResponseDefaultTypeInternal() {}
+  union {
+    SetTrackingRectangleStatusResponse _instance;
+  };
+};
+PROTOBUF_ATTRIBUTE_NO_DESTROY PROTOBUF_CONSTINIT SetTrackingRectangleStatusResponseDefaultTypeInternal _SetTrackingRectangleStatusResponse_default_instance_;
+constexpr SetTrackingOffStatusRequest::SetTrackingOffStatusRequest(
+  ::PROTOBUF_NAMESPACE_ID::internal::ConstantInitialized){}
+struct SetTrackingOffStatusRequestDefaultTypeInternal {
+  constexpr SetTrackingOffStatusRequestDefaultTypeInternal()
+    : _instance(::PROTOBUF_NAMESPACE_ID::internal::ConstantInitialized{}) {}
+  ~SetTrackingOffStatusRequestDefaultTypeInternal() {}
+  union {
+    SetTrackingOffStatusRequest _instance;
+  };
+};
+PROTOBUF_ATTRIBUTE_NO_DESTROY PROTOBUF_CONSTINIT SetTrackingOffStatusRequestDefaultTypeInternal _SetTrackingOffStatusRequest_default_instance_;
+constexpr SetTrackingOffStatusResponse::SetTrackingOffStatusResponse(
+  ::PROTOBUF_NAMESPACE_ID::internal::ConstantInitialized){}
+struct SetTrackingOffStatusResponseDefaultTypeInternal {
+  constexpr SetTrackingOffStatusResponseDefaultTypeInternal()
+    : _instance(::PROTOBUF_NAMESPACE_ID::internal::ConstantInitialized{}) {}
+  ~SetTrackingOffStatusResponseDefaultTypeInternal() {}
+  union {
+    SetTrackingOffStatusResponse _instance;
+  };
+};
+PROTOBUF_ATTRIBUTE_NO_DESTROY PROTOBUF_CONSTINIT SetTrackingOffStatusResponseDefaultTypeInternal _SetTrackingOffStatusResponse_default_instance_;
+constexpr SubscribeTrackingPointCommandRequest::SubscribeTrackingPointCommandRequest(
+  ::PROTOBUF_NAMESPACE_ID::internal::ConstantInitialized){}
+struct SubscribeTrackingPointCommandRequestDefaultTypeInternal {
+  constexpr SubscribeTrackingPointCommandRequestDefaultTypeInternal()
+    : _instance(::PROTOBUF_NAMESPACE_ID::internal::ConstantInitialized{}) {}
+  ~SubscribeTrackingPointCommandRequestDefaultTypeInternal() {}
+  union {
+    SubscribeTrackingPointCommandRequest _instance;
+  };
+};
+PROTOBUF_ATTRIBUTE_NO_DESTROY PROTOBUF_CONSTINIT SubscribeTrackingPointCommandRequestDefaultTypeInternal _SubscribeTrackingPointCommandRequest_default_instance_;
+constexpr TrackingPointCommandResponse::TrackingPointCommandResponse(
+  ::PROTOBUF_NAMESPACE_ID::internal::ConstantInitialized)
+  : track_point_(nullptr){}
+struct TrackingPointCommandResponseDefaultTypeInternal {
+  constexpr TrackingPointCommandResponseDefaultTypeInternal()
+    : _instance(::PROTOBUF_NAMESPACE_ID::internal::ConstantInitialized{}) {}
+  ~TrackingPointCommandResponseDefaultTypeInternal() {}
+  union {
+    TrackingPointCommandResponse _instance;
+  };
+};
+PROTOBUF_ATTRIBUTE_NO_DESTROY PROTOBUF_CONSTINIT TrackingPointCommandResponseDefaultTypeInternal _TrackingPointCommandResponse_default_instance_;
+constexpr SubscribeTrackingRectangleCommandRequest::SubscribeTrackingRectangleCommandRequest(
+  ::PROTOBUF_NAMESPACE_ID::internal::ConstantInitialized){}
+struct SubscribeTrackingRectangleCommandRequestDefaultTypeInternal {
+  constexpr SubscribeTrackingRectangleCommandRequestDefaultTypeInternal()
+    : _instance(::PROTOBUF_NAMESPACE_ID::internal::ConstantInitialized{}) {}
+  ~SubscribeTrackingRectangleCommandRequestDefaultTypeInternal() {}
+  union {
+    SubscribeTrackingRectangleCommandRequest _instance;
+  };
+};
+PROTOBUF_ATTRIBUTE_NO_DESTROY PROTOBUF_CONSTINIT SubscribeTrackingRectangleCommandRequestDefaultTypeInternal _SubscribeTrackingRectangleCommandRequest_default_instance_;
+constexpr TrackingRectangleCommandResponse::TrackingRectangleCommandResponse(
+  ::PROTOBUF_NAMESPACE_ID::internal::ConstantInitialized)
+  : track_rectangle_(nullptr){}
+struct TrackingRectangleCommandResponseDefaultTypeInternal {
+  constexpr TrackingRectangleCommandResponseDefaultTypeInternal()
+    : _instance(::PROTOBUF_NAMESPACE_ID::internal::ConstantInitialized{}) {}
+  ~TrackingRectangleCommandResponseDefaultTypeInternal() {}
+  union {
+    TrackingRectangleCommandResponse _instance;
+  };
+};
+PROTOBUF_ATTRIBUTE_NO_DESTROY PROTOBUF_CONSTINIT TrackingRectangleCommandResponseDefaultTypeInternal _TrackingRectangleCommandResponse_default_instance_;
+constexpr SubscribeTrackingOffCommandRequest::SubscribeTrackingOffCommandRequest(
+  ::PROTOBUF_NAMESPACE_ID::internal::ConstantInitialized){}
+struct SubscribeTrackingOffCommandRequestDefaultTypeInternal {
+  constexpr SubscribeTrackingOffCommandRequestDefaultTypeInternal()
+    : _instance(::PROTOBUF_NAMESPACE_ID::internal::ConstantInitialized{}) {}
+  ~SubscribeTrackingOffCommandRequestDefaultTypeInternal() {}
+  union {
+    SubscribeTrackingOffCommandRequest _instance;
+  };
+};
+PROTOBUF_ATTRIBUTE_NO_DESTROY PROTOBUF_CONSTINIT SubscribeTrackingOffCommandRequestDefaultTypeInternal _SubscribeTrackingOffCommandRequest_default_instance_;
+constexpr TrackingOffCommandResponse::TrackingOffCommandResponse(
+  ::PROTOBUF_NAMESPACE_ID::internal::ConstantInitialized)
+  : dummy_(0){}
+struct TrackingOffCommandResponseDefaultTypeInternal {
+  constexpr TrackingOffCommandResponseDefaultTypeInternal()
+    : _instance(::PROTOBUF_NAMESPACE_ID::internal::ConstantInitialized{}) {}
+  ~TrackingOffCommandResponseDefaultTypeInternal() {}
+  union {
+    TrackingOffCommandResponse _instance;
+  };
+};
+PROTOBUF_ATTRIBUTE_NO_DESTROY PROTOBUF_CONSTINIT TrackingOffCommandResponseDefaultTypeInternal _TrackingOffCommandResponse_default_instance_;
+constexpr RespondTrackingPointCommandRequest::RespondTrackingPointCommandRequest(
+  ::PROTOBUF_NAMESPACE_ID::internal::ConstantInitialized)
+  : command_answer_(0)
+{}
+struct RespondTrackingPointCommandRequestDefaultTypeInternal {
+  constexpr RespondTrackingPointCommandRequestDefaultTypeInternal()
+    : _instance(::PROTOBUF_NAMESPACE_ID::internal::ConstantInitialized{}) {}
+  ~RespondTrackingPointCommandRequestDefaultTypeInternal() {}
+  union {
+    RespondTrackingPointCommandRequest _instance;
+  };
+};
+PROTOBUF_ATTRIBUTE_NO_DESTROY PROTOBUF_CONSTINIT RespondTrackingPointCommandRequestDefaultTypeInternal _RespondTrackingPointCommandRequest_default_instance_;
+constexpr RespondTrackingPointCommandResponse::RespondTrackingPointCommandResponse(
+  ::PROTOBUF_NAMESPACE_ID::internal::ConstantInitialized)
+  : tracking_server_result_(nullptr){}
+struct RespondTrackingPointCommandResponseDefaultTypeInternal {
+  constexpr RespondTrackingPointCommandResponseDefaultTypeInternal()
+    : _instance(::PROTOBUF_NAMESPACE_ID::internal::ConstantInitialized{}) {}
+  ~RespondTrackingPointCommandResponseDefaultTypeInternal() {}
+  union {
+    RespondTrackingPointCommandResponse _instance;
+  };
+};
+PROTOBUF_ATTRIBUTE_NO_DESTROY PROTOBUF_CONSTINIT RespondTrackingPointCommandResponseDefaultTypeInternal _RespondTrackingPointCommandResponse_default_instance_;
+constexpr RespondTrackingRectangleCommandRequest::RespondTrackingRectangleCommandRequest(
+  ::PROTOBUF_NAMESPACE_ID::internal::ConstantInitialized)
+  : command_answer_(0)
+{}
+struct RespondTrackingRectangleCommandRequestDefaultTypeInternal {
+  constexpr RespondTrackingRectangleCommandRequestDefaultTypeInternal()
+    : _instance(::PROTOBUF_NAMESPACE_ID::internal::ConstantInitialized{}) {}
+  ~RespondTrackingRectangleCommandRequestDefaultTypeInternal() {}
+  union {
+    RespondTrackingRectangleCommandRequest _instance;
+  };
+};
+PROTOBUF_ATTRIBUTE_NO_DESTROY PROTOBUF_CONSTINIT RespondTrackingRectangleCommandRequestDefaultTypeInternal _RespondTrackingRectangleCommandRequest_default_instance_;
+constexpr RespondTrackingRectangleCommandResponse::RespondTrackingRectangleCommandResponse(
+  ::PROTOBUF_NAMESPACE_ID::internal::ConstantInitialized)
+  : tracking_server_result_(nullptr){}
+struct RespondTrackingRectangleCommandResponseDefaultTypeInternal {
+  constexpr RespondTrackingRectangleCommandResponseDefaultTypeInternal()
+    : _instance(::PROTOBUF_NAMESPACE_ID::internal::ConstantInitialized{}) {}
+  ~RespondTrackingRectangleCommandResponseDefaultTypeInternal() {}
+  union {
+    RespondTrackingRectangleCommandResponse _instance;
+  };
+};
+PROTOBUF_ATTRIBUTE_NO_DESTROY PROTOBUF_CONSTINIT RespondTrackingRectangleCommandResponseDefaultTypeInternal _RespondTrackingRectangleCommandResponse_default_instance_;
+constexpr RespondTrackingOffCommandRequest::RespondTrackingOffCommandRequest(
+  ::PROTOBUF_NAMESPACE_ID::internal::ConstantInitialized)
+  : command_answer_(0)
+{}
+struct RespondTrackingOffCommandRequestDefaultTypeInternal {
+  constexpr RespondTrackingOffCommandRequestDefaultTypeInternal()
+    : _instance(::PROTOBUF_NAMESPACE_ID::internal::ConstantInitialized{}) {}
+  ~RespondTrackingOffCommandRequestDefaultTypeInternal() {}
+  union {
+    RespondTrackingOffCommandRequest _instance;
+  };
+};
+PROTOBUF_ATTRIBUTE_NO_DESTROY PROTOBUF_CONSTINIT RespondTrackingOffCommandRequestDefaultTypeInternal _RespondTrackingOffCommandRequest_default_instance_;
+constexpr RespondTrackingOffCommandResponse::RespondTrackingOffCommandResponse(
+  ::PROTOBUF_NAMESPACE_ID::internal::ConstantInitialized)
+  : tracking_server_result_(nullptr){}
+struct RespondTrackingOffCommandResponseDefaultTypeInternal {
+  constexpr RespondTrackingOffCommandResponseDefaultTypeInternal()
+    : _instance(::PROTOBUF_NAMESPACE_ID::internal::ConstantInitialized{}) {}
+  ~RespondTrackingOffCommandResponseDefaultTypeInternal() {}
+  union {
+    RespondTrackingOffCommandResponse _instance;
+  };
+};
+PROTOBUF_ATTRIBUTE_NO_DESTROY PROTOBUF_CONSTINIT RespondTrackingOffCommandResponseDefaultTypeInternal _RespondTrackingOffCommandResponse_default_instance_;
+constexpr TrackPoint::TrackPoint(
+  ::PROTOBUF_NAMESPACE_ID::internal::ConstantInitialized)
+  : point_x_(0)
+  , point_y_(0)
+  , radius_(0){}
+struct TrackPointDefaultTypeInternal {
+  constexpr TrackPointDefaultTypeInternal()
+    : _instance(::PROTOBUF_NAMESPACE_ID::internal::ConstantInitialized{}) {}
+  ~TrackPointDefaultTypeInternal() {}
+  union {
+    TrackPoint _instance;
+  };
+};
+PROTOBUF_ATTRIBUTE_NO_DESTROY PROTOBUF_CONSTINIT TrackPointDefaultTypeInternal _TrackPoint_default_instance_;
+constexpr TrackRectangle::TrackRectangle(
+  ::PROTOBUF_NAMESPACE_ID::internal::ConstantInitialized)
+  : top_left_corner_x_(0)
+  , top_left_corner_y_(0)
+  , bottom_right_corner_x_(0)
+  , bottom_right_corner_y_(0){}
+struct TrackRectangleDefaultTypeInternal {
+  constexpr TrackRectangleDefaultTypeInternal()
+    : _instance(::PROTOBUF_NAMESPACE_ID::internal::ConstantInitialized{}) {}
+  ~TrackRectangleDefaultTypeInternal() {}
+  union {
+    TrackRectangle _instance;
+  };
+};
+PROTOBUF_ATTRIBUTE_NO_DESTROY PROTOBUF_CONSTINIT TrackRectangleDefaultTypeInternal _TrackRectangle_default_instance_;
+constexpr TrackingServerResult::TrackingServerResult(
+  ::PROTOBUF_NAMESPACE_ID::internal::ConstantInitialized)
+  : result_str_(&::PROTOBUF_NAMESPACE_ID::internal::fixed_address_empty_string)
+  , result_(0)
+{}
+struct TrackingServerResultDefaultTypeInternal {
+  constexpr TrackingServerResultDefaultTypeInternal()
+    : _instance(::PROTOBUF_NAMESPACE_ID::internal::ConstantInitialized{}) {}
+  ~TrackingServerResultDefaultTypeInternal() {}
+  union {
+    TrackingServerResult _instance;
+  };
+};
+PROTOBUF_ATTRIBUTE_NO_DESTROY PROTOBUF_CONSTINIT TrackingServerResultDefaultTypeInternal _TrackingServerResult_default_instance_;
 }  // namespace tracking_server
 }  // namespace rpc
 }  // namespace mavsdk
-static void InitDefaultsscc_info_RespondTrackingOffCommandRequest_tracking_5fserver_2ftracking_5fserver_2eproto() {
-  GOOGLE_PROTOBUF_VERIFY_VERSION;
-
-  {
-    void* ptr = &::mavsdk::rpc::tracking_server::_RespondTrackingOffCommandRequest_default_instance_;
-    new (ptr) ::mavsdk::rpc::tracking_server::RespondTrackingOffCommandRequest();
-    ::PROTOBUF_NAMESPACE_ID::internal::OnShutdownDestroyMessage(ptr);
-  }
-  ::mavsdk::rpc::tracking_server::RespondTrackingOffCommandRequest::InitAsDefaultInstance();
-}
-
-::PROTOBUF_NAMESPACE_ID::internal::SCCInfo<0> scc_info_RespondTrackingOffCommandRequest_tracking_5fserver_2ftracking_5fserver_2eproto =
-    {{ATOMIC_VAR_INIT(::PROTOBUF_NAMESPACE_ID::internal::SCCInfoBase::kUninitialized), 0, 0, InitDefaultsscc_info_RespondTrackingOffCommandRequest_tracking_5fserver_2ftracking_5fserver_2eproto}, {}};
-
-static void InitDefaultsscc_info_RespondTrackingOffCommandResponse_tracking_5fserver_2ftracking_5fserver_2eproto() {
-  GOOGLE_PROTOBUF_VERIFY_VERSION;
-
-  {
-    void* ptr = &::mavsdk::rpc::tracking_server::_RespondTrackingOffCommandResponse_default_instance_;
-    new (ptr) ::mavsdk::rpc::tracking_server::RespondTrackingOffCommandResponse();
-    ::PROTOBUF_NAMESPACE_ID::internal::OnShutdownDestroyMessage(ptr);
-  }
-  ::mavsdk::rpc::tracking_server::RespondTrackingOffCommandResponse::InitAsDefaultInstance();
-}
-
-::PROTOBUF_NAMESPACE_ID::internal::SCCInfo<1> scc_info_RespondTrackingOffCommandResponse_tracking_5fserver_2ftracking_5fserver_2eproto =
-    {{ATOMIC_VAR_INIT(::PROTOBUF_NAMESPACE_ID::internal::SCCInfoBase::kUninitialized), 1, 0, InitDefaultsscc_info_RespondTrackingOffCommandResponse_tracking_5fserver_2ftracking_5fserver_2eproto}, {
-      &scc_info_TrackingServerResult_tracking_5fserver_2ftracking_5fserver_2eproto.base,}};
-
-static void InitDefaultsscc_info_RespondTrackingPointCommandRequest_tracking_5fserver_2ftracking_5fserver_2eproto() {
-  GOOGLE_PROTOBUF_VERIFY_VERSION;
-
-  {
-    void* ptr = &::mavsdk::rpc::tracking_server::_RespondTrackingPointCommandRequest_default_instance_;
-    new (ptr) ::mavsdk::rpc::tracking_server::RespondTrackingPointCommandRequest();
-    ::PROTOBUF_NAMESPACE_ID::internal::OnShutdownDestroyMessage(ptr);
-  }
-  ::mavsdk::rpc::tracking_server::RespondTrackingPointCommandRequest::InitAsDefaultInstance();
-}
-
-::PROTOBUF_NAMESPACE_ID::internal::SCCInfo<0> scc_info_RespondTrackingPointCommandRequest_tracking_5fserver_2ftracking_5fserver_2eproto =
-    {{ATOMIC_VAR_INIT(::PROTOBUF_NAMESPACE_ID::internal::SCCInfoBase::kUninitialized), 0, 0, InitDefaultsscc_info_RespondTrackingPointCommandRequest_tracking_5fserver_2ftracking_5fserver_2eproto}, {}};
-
-static void InitDefaultsscc_info_RespondTrackingPointCommandResponse_tracking_5fserver_2ftracking_5fserver_2eproto() {
-  GOOGLE_PROTOBUF_VERIFY_VERSION;
-
-  {
-    void* ptr = &::mavsdk::rpc::tracking_server::_RespondTrackingPointCommandResponse_default_instance_;
-    new (ptr) ::mavsdk::rpc::tracking_server::RespondTrackingPointCommandResponse();
-    ::PROTOBUF_NAMESPACE_ID::internal::OnShutdownDestroyMessage(ptr);
-  }
-  ::mavsdk::rpc::tracking_server::RespondTrackingPointCommandResponse::InitAsDefaultInstance();
-}
-
-::PROTOBUF_NAMESPACE_ID::internal::SCCInfo<1> scc_info_RespondTrackingPointCommandResponse_tracking_5fserver_2ftracking_5fserver_2eproto =
-    {{ATOMIC_VAR_INIT(::PROTOBUF_NAMESPACE_ID::internal::SCCInfoBase::kUninitialized), 1, 0, InitDefaultsscc_info_RespondTrackingPointCommandResponse_tracking_5fserver_2ftracking_5fserver_2eproto}, {
-      &scc_info_TrackingServerResult_tracking_5fserver_2ftracking_5fserver_2eproto.base,}};
-
-static void InitDefaultsscc_info_RespondTrackingRectangleCommandRequest_tracking_5fserver_2ftracking_5fserver_2eproto() {
-  GOOGLE_PROTOBUF_VERIFY_VERSION;
-
-  {
-    void* ptr = &::mavsdk::rpc::tracking_server::_RespondTrackingRectangleCommandRequest_default_instance_;
-    new (ptr) ::mavsdk::rpc::tracking_server::RespondTrackingRectangleCommandRequest();
-    ::PROTOBUF_NAMESPACE_ID::internal::OnShutdownDestroyMessage(ptr);
-  }
-  ::mavsdk::rpc::tracking_server::RespondTrackingRectangleCommandRequest::InitAsDefaultInstance();
-}
-
-::PROTOBUF_NAMESPACE_ID::internal::SCCInfo<0> scc_info_RespondTrackingRectangleCommandRequest_tracking_5fserver_2ftracking_5fserver_2eproto =
-    {{ATOMIC_VAR_INIT(::PROTOBUF_NAMESPACE_ID::internal::SCCInfoBase::kUninitialized), 0, 0, InitDefaultsscc_info_RespondTrackingRectangleCommandRequest_tracking_5fserver_2ftracking_5fserver_2eproto}, {}};
-
-static void InitDefaultsscc_info_RespondTrackingRectangleCommandResponse_tracking_5fserver_2ftracking_5fserver_2eproto() {
-  GOOGLE_PROTOBUF_VERIFY_VERSION;
-
-  {
-    void* ptr = &::mavsdk::rpc::tracking_server::_RespondTrackingRectangleCommandResponse_default_instance_;
-    new (ptr) ::mavsdk::rpc::tracking_server::RespondTrackingRectangleCommandResponse();
-    ::PROTOBUF_NAMESPACE_ID::internal::OnShutdownDestroyMessage(ptr);
-  }
-  ::mavsdk::rpc::tracking_server::RespondTrackingRectangleCommandResponse::InitAsDefaultInstance();
-}
-
-::PROTOBUF_NAMESPACE_ID::internal::SCCInfo<1> scc_info_RespondTrackingRectangleCommandResponse_tracking_5fserver_2ftracking_5fserver_2eproto =
-    {{ATOMIC_VAR_INIT(::PROTOBUF_NAMESPACE_ID::internal::SCCInfoBase::kUninitialized), 1, 0, InitDefaultsscc_info_RespondTrackingRectangleCommandResponse_tracking_5fserver_2ftracking_5fserver_2eproto}, {
-      &scc_info_TrackingServerResult_tracking_5fserver_2ftracking_5fserver_2eproto.base,}};
-
-static void InitDefaultsscc_info_SetTrackingOffStatusRequest_tracking_5fserver_2ftracking_5fserver_2eproto() {
-  GOOGLE_PROTOBUF_VERIFY_VERSION;
-
-  {
-    void* ptr = &::mavsdk::rpc::tracking_server::_SetTrackingOffStatusRequest_default_instance_;
-    new (ptr) ::mavsdk::rpc::tracking_server::SetTrackingOffStatusRequest();
-    ::PROTOBUF_NAMESPACE_ID::internal::OnShutdownDestroyMessage(ptr);
-  }
-  ::mavsdk::rpc::tracking_server::SetTrackingOffStatusRequest::InitAsDefaultInstance();
-}
-
-::PROTOBUF_NAMESPACE_ID::internal::SCCInfo<0> scc_info_SetTrackingOffStatusRequest_tracking_5fserver_2ftracking_5fserver_2eproto =
-    {{ATOMIC_VAR_INIT(::PROTOBUF_NAMESPACE_ID::internal::SCCInfoBase::kUninitialized), 0, 0, InitDefaultsscc_info_SetTrackingOffStatusRequest_tracking_5fserver_2ftracking_5fserver_2eproto}, {}};
-
-static void InitDefaultsscc_info_SetTrackingOffStatusResponse_tracking_5fserver_2ftracking_5fserver_2eproto() {
-  GOOGLE_PROTOBUF_VERIFY_VERSION;
-
-  {
-    void* ptr = &::mavsdk::rpc::tracking_server::_SetTrackingOffStatusResponse_default_instance_;
-    new (ptr) ::mavsdk::rpc::tracking_server::SetTrackingOffStatusResponse();
-    ::PROTOBUF_NAMESPACE_ID::internal::OnShutdownDestroyMessage(ptr);
-  }
-  ::mavsdk::rpc::tracking_server::SetTrackingOffStatusResponse::InitAsDefaultInstance();
-}
-
-::PROTOBUF_NAMESPACE_ID::internal::SCCInfo<0> scc_info_SetTrackingOffStatusResponse_tracking_5fserver_2ftracking_5fserver_2eproto =
-    {{ATOMIC_VAR_INIT(::PROTOBUF_NAMESPACE_ID::internal::SCCInfoBase::kUninitialized), 0, 0, InitDefaultsscc_info_SetTrackingOffStatusResponse_tracking_5fserver_2ftracking_5fserver_2eproto}, {}};
-
-static void InitDefaultsscc_info_SetTrackingPointStatusRequest_tracking_5fserver_2ftracking_5fserver_2eproto() {
-  GOOGLE_PROTOBUF_VERIFY_VERSION;
-
-  {
-    void* ptr = &::mavsdk::rpc::tracking_server::_SetTrackingPointStatusRequest_default_instance_;
-    new (ptr) ::mavsdk::rpc::tracking_server::SetTrackingPointStatusRequest();
-    ::PROTOBUF_NAMESPACE_ID::internal::OnShutdownDestroyMessage(ptr);
-  }
-  ::mavsdk::rpc::tracking_server::SetTrackingPointStatusRequest::InitAsDefaultInstance();
-}
-
-::PROTOBUF_NAMESPACE_ID::internal::SCCInfo<1> scc_info_SetTrackingPointStatusRequest_tracking_5fserver_2ftracking_5fserver_2eproto =
-    {{ATOMIC_VAR_INIT(::PROTOBUF_NAMESPACE_ID::internal::SCCInfoBase::kUninitialized), 1, 0, InitDefaultsscc_info_SetTrackingPointStatusRequest_tracking_5fserver_2ftracking_5fserver_2eproto}, {
-      &scc_info_TrackPoint_tracking_5fserver_2ftracking_5fserver_2eproto.base,}};
-
-static void InitDefaultsscc_info_SetTrackingPointStatusResponse_tracking_5fserver_2ftracking_5fserver_2eproto() {
-  GOOGLE_PROTOBUF_VERIFY_VERSION;
-
-  {
-    void* ptr = &::mavsdk::rpc::tracking_server::_SetTrackingPointStatusResponse_default_instance_;
-    new (ptr) ::mavsdk::rpc::tracking_server::SetTrackingPointStatusResponse();
-    ::PROTOBUF_NAMESPACE_ID::internal::OnShutdownDestroyMessage(ptr);
-  }
-  ::mavsdk::rpc::tracking_server::SetTrackingPointStatusResponse::InitAsDefaultInstance();
-}
-
-::PROTOBUF_NAMESPACE_ID::internal::SCCInfo<0> scc_info_SetTrackingPointStatusResponse_tracking_5fserver_2ftracking_5fserver_2eproto =
-    {{ATOMIC_VAR_INIT(::PROTOBUF_NAMESPACE_ID::internal::SCCInfoBase::kUninitialized), 0, 0, InitDefaultsscc_info_SetTrackingPointStatusResponse_tracking_5fserver_2ftracking_5fserver_2eproto}, {}};
-
-static void InitDefaultsscc_info_SetTrackingRectangleStatusRequest_tracking_5fserver_2ftracking_5fserver_2eproto() {
-  GOOGLE_PROTOBUF_VERIFY_VERSION;
-
-  {
-    void* ptr = &::mavsdk::rpc::tracking_server::_SetTrackingRectangleStatusRequest_default_instance_;
-    new (ptr) ::mavsdk::rpc::tracking_server::SetTrackingRectangleStatusRequest();
-    ::PROTOBUF_NAMESPACE_ID::internal::OnShutdownDestroyMessage(ptr);
-  }
-  ::mavsdk::rpc::tracking_server::SetTrackingRectangleStatusRequest::InitAsDefaultInstance();
-}
-
-::PROTOBUF_NAMESPACE_ID::internal::SCCInfo<1> scc_info_SetTrackingRectangleStatusRequest_tracking_5fserver_2ftracking_5fserver_2eproto =
-    {{ATOMIC_VAR_INIT(::PROTOBUF_NAMESPACE_ID::internal::SCCInfoBase::kUninitialized), 1, 0, InitDefaultsscc_info_SetTrackingRectangleStatusRequest_tracking_5fserver_2ftracking_5fserver_2eproto}, {
-      &scc_info_TrackRectangle_tracking_5fserver_2ftracking_5fserver_2eproto.base,}};
-
-static void InitDefaultsscc_info_SetTrackingRectangleStatusResponse_tracking_5fserver_2ftracking_5fserver_2eproto() {
-  GOOGLE_PROTOBUF_VERIFY_VERSION;
-
-  {
-    void* ptr = &::mavsdk::rpc::tracking_server::_SetTrackingRectangleStatusResponse_default_instance_;
-    new (ptr) ::mavsdk::rpc::tracking_server::SetTrackingRectangleStatusResponse();
-    ::PROTOBUF_NAMESPACE_ID::internal::OnShutdownDestroyMessage(ptr);
-  }
-  ::mavsdk::rpc::tracking_server::SetTrackingRectangleStatusResponse::InitAsDefaultInstance();
-}
-
-::PROTOBUF_NAMESPACE_ID::internal::SCCInfo<0> scc_info_SetTrackingRectangleStatusResponse_tracking_5fserver_2ftracking_5fserver_2eproto =
-    {{ATOMIC_VAR_INIT(::PROTOBUF_NAMESPACE_ID::internal::SCCInfoBase::kUninitialized), 0, 0, InitDefaultsscc_info_SetTrackingRectangleStatusResponse_tracking_5fserver_2ftracking_5fserver_2eproto}, {}};
-
-static void InitDefaultsscc_info_SubscribeTrackingOffCommandRequest_tracking_5fserver_2ftracking_5fserver_2eproto() {
-  GOOGLE_PROTOBUF_VERIFY_VERSION;
-
-  {
-    void* ptr = &::mavsdk::rpc::tracking_server::_SubscribeTrackingOffCommandRequest_default_instance_;
-    new (ptr) ::mavsdk::rpc::tracking_server::SubscribeTrackingOffCommandRequest();
-    ::PROTOBUF_NAMESPACE_ID::internal::OnShutdownDestroyMessage(ptr);
-  }
-  ::mavsdk::rpc::tracking_server::SubscribeTrackingOffCommandRequest::InitAsDefaultInstance();
-}
-
-::PROTOBUF_NAMESPACE_ID::internal::SCCInfo<0> scc_info_SubscribeTrackingOffCommandRequest_tracking_5fserver_2ftracking_5fserver_2eproto =
-    {{ATOMIC_VAR_INIT(::PROTOBUF_NAMESPACE_ID::internal::SCCInfoBase::kUninitialized), 0, 0, InitDefaultsscc_info_SubscribeTrackingOffCommandRequest_tracking_5fserver_2ftracking_5fserver_2eproto}, {}};
-
-static void InitDefaultsscc_info_SubscribeTrackingPointCommandRequest_tracking_5fserver_2ftracking_5fserver_2eproto() {
-  GOOGLE_PROTOBUF_VERIFY_VERSION;
-
-  {
-    void* ptr = &::mavsdk::rpc::tracking_server::_SubscribeTrackingPointCommandRequest_default_instance_;
-    new (ptr) ::mavsdk::rpc::tracking_server::SubscribeTrackingPointCommandRequest();
-    ::PROTOBUF_NAMESPACE_ID::internal::OnShutdownDestroyMessage(ptr);
-  }
-  ::mavsdk::rpc::tracking_server::SubscribeTrackingPointCommandRequest::InitAsDefaultInstance();
-}
-
-::PROTOBUF_NAMESPACE_ID::internal::SCCInfo<0> scc_info_SubscribeTrackingPointCommandRequest_tracking_5fserver_2ftracking_5fserver_2eproto =
-    {{ATOMIC_VAR_INIT(::PROTOBUF_NAMESPACE_ID::internal::SCCInfoBase::kUninitialized), 0, 0, InitDefaultsscc_info_SubscribeTrackingPointCommandRequest_tracking_5fserver_2ftracking_5fserver_2eproto}, {}};
-
-static void InitDefaultsscc_info_SubscribeTrackingRectangleCommandRequest_tracking_5fserver_2ftracking_5fserver_2eproto() {
-  GOOGLE_PROTOBUF_VERIFY_VERSION;
-
-  {
-    void* ptr = &::mavsdk::rpc::tracking_server::_SubscribeTrackingRectangleCommandRequest_default_instance_;
-    new (ptr) ::mavsdk::rpc::tracking_server::SubscribeTrackingRectangleCommandRequest();
-    ::PROTOBUF_NAMESPACE_ID::internal::OnShutdownDestroyMessage(ptr);
-  }
-  ::mavsdk::rpc::tracking_server::SubscribeTrackingRectangleCommandRequest::InitAsDefaultInstance();
-}
-
-::PROTOBUF_NAMESPACE_ID::internal::SCCInfo<0> scc_info_SubscribeTrackingRectangleCommandRequest_tracking_5fserver_2ftracking_5fserver_2eproto =
-    {{ATOMIC_VAR_INIT(::PROTOBUF_NAMESPACE_ID::internal::SCCInfoBase::kUninitialized), 0, 0, InitDefaultsscc_info_SubscribeTrackingRectangleCommandRequest_tracking_5fserver_2ftracking_5fserver_2eproto}, {}};
-
-static void InitDefaultsscc_info_TrackPoint_tracking_5fserver_2ftracking_5fserver_2eproto() {
-  GOOGLE_PROTOBUF_VERIFY_VERSION;
-
-  {
-    void* ptr = &::mavsdk::rpc::tracking_server::_TrackPoint_default_instance_;
-    new (ptr) ::mavsdk::rpc::tracking_server::TrackPoint();
-    ::PROTOBUF_NAMESPACE_ID::internal::OnShutdownDestroyMessage(ptr);
-  }
-  ::mavsdk::rpc::tracking_server::TrackPoint::InitAsDefaultInstance();
-}
-
-::PROTOBUF_NAMESPACE_ID::internal::SCCInfo<0> scc_info_TrackPoint_tracking_5fserver_2ftracking_5fserver_2eproto =
-    {{ATOMIC_VAR_INIT(::PROTOBUF_NAMESPACE_ID::internal::SCCInfoBase::kUninitialized), 0, 0, InitDefaultsscc_info_TrackPoint_tracking_5fserver_2ftracking_5fserver_2eproto}, {}};
-
-static void InitDefaultsscc_info_TrackRectangle_tracking_5fserver_2ftracking_5fserver_2eproto() {
-  GOOGLE_PROTOBUF_VERIFY_VERSION;
-
-  {
-    void* ptr = &::mavsdk::rpc::tracking_server::_TrackRectangle_default_instance_;
-    new (ptr) ::mavsdk::rpc::tracking_server::TrackRectangle();
-    ::PROTOBUF_NAMESPACE_ID::internal::OnShutdownDestroyMessage(ptr);
-  }
-  ::mavsdk::rpc::tracking_server::TrackRectangle::InitAsDefaultInstance();
-}
-
-::PROTOBUF_NAMESPACE_ID::internal::SCCInfo<0> scc_info_TrackRectangle_tracking_5fserver_2ftracking_5fserver_2eproto =
-    {{ATOMIC_VAR_INIT(::PROTOBUF_NAMESPACE_ID::internal::SCCInfoBase::kUninitialized), 0, 0, InitDefaultsscc_info_TrackRectangle_tracking_5fserver_2ftracking_5fserver_2eproto}, {}};
-
-static void InitDefaultsscc_info_TrackingOffCommandResponse_tracking_5fserver_2ftracking_5fserver_2eproto() {
-  GOOGLE_PROTOBUF_VERIFY_VERSION;
-
-  {
-    void* ptr = &::mavsdk::rpc::tracking_server::_TrackingOffCommandResponse_default_instance_;
-    new (ptr) ::mavsdk::rpc::tracking_server::TrackingOffCommandResponse();
-    ::PROTOBUF_NAMESPACE_ID::internal::OnShutdownDestroyMessage(ptr);
-  }
-  ::mavsdk::rpc::tracking_server::TrackingOffCommandResponse::InitAsDefaultInstance();
-}
-
-::PROTOBUF_NAMESPACE_ID::internal::SCCInfo<0> scc_info_TrackingOffCommandResponse_tracking_5fserver_2ftracking_5fserver_2eproto =
-    {{ATOMIC_VAR_INIT(::PROTOBUF_NAMESPACE_ID::internal::SCCInfoBase::kUninitialized), 0, 0, InitDefaultsscc_info_TrackingOffCommandResponse_tracking_5fserver_2ftracking_5fserver_2eproto}, {}};
-
-static void InitDefaultsscc_info_TrackingPointCommandResponse_tracking_5fserver_2ftracking_5fserver_2eproto() {
-  GOOGLE_PROTOBUF_VERIFY_VERSION;
-
-  {
-    void* ptr = &::mavsdk::rpc::tracking_server::_TrackingPointCommandResponse_default_instance_;
-    new (ptr) ::mavsdk::rpc::tracking_server::TrackingPointCommandResponse();
-    ::PROTOBUF_NAMESPACE_ID::internal::OnShutdownDestroyMessage(ptr);
-  }
-  ::mavsdk::rpc::tracking_server::TrackingPointCommandResponse::InitAsDefaultInstance();
-}
-
-::PROTOBUF_NAMESPACE_ID::internal::SCCInfo<1> scc_info_TrackingPointCommandResponse_tracking_5fserver_2ftracking_5fserver_2eproto =
-    {{ATOMIC_VAR_INIT(::PROTOBUF_NAMESPACE_ID::internal::SCCInfoBase::kUninitialized), 1, 0, InitDefaultsscc_info_TrackingPointCommandResponse_tracking_5fserver_2ftracking_5fserver_2eproto}, {
-      &scc_info_TrackPoint_tracking_5fserver_2ftracking_5fserver_2eproto.base,}};
-
-static void InitDefaultsscc_info_TrackingRectangleCommandResponse_tracking_5fserver_2ftracking_5fserver_2eproto() {
-  GOOGLE_PROTOBUF_VERIFY_VERSION;
-
-  {
-    void* ptr = &::mavsdk::rpc::tracking_server::_TrackingRectangleCommandResponse_default_instance_;
-    new (ptr) ::mavsdk::rpc::tracking_server::TrackingRectangleCommandResponse();
-    ::PROTOBUF_NAMESPACE_ID::internal::OnShutdownDestroyMessage(ptr);
-  }
-  ::mavsdk::rpc::tracking_server::TrackingRectangleCommandResponse::InitAsDefaultInstance();
-}
-
-::PROTOBUF_NAMESPACE_ID::internal::SCCInfo<1> scc_info_TrackingRectangleCommandResponse_tracking_5fserver_2ftracking_5fserver_2eproto =
-    {{ATOMIC_VAR_INIT(::PROTOBUF_NAMESPACE_ID::internal::SCCInfoBase::kUninitialized), 1, 0, InitDefaultsscc_info_TrackingRectangleCommandResponse_tracking_5fserver_2ftracking_5fserver_2eproto}, {
-      &scc_info_TrackRectangle_tracking_5fserver_2ftracking_5fserver_2eproto.base,}};
-
-static void InitDefaultsscc_info_TrackingServerResult_tracking_5fserver_2ftracking_5fserver_2eproto() {
-  GOOGLE_PROTOBUF_VERIFY_VERSION;
-
-  {
-    void* ptr = &::mavsdk::rpc::tracking_server::_TrackingServerResult_default_instance_;
-    new (ptr) ::mavsdk::rpc::tracking_server::TrackingServerResult();
-    ::PROTOBUF_NAMESPACE_ID::internal::OnShutdownDestroyMessage(ptr);
-  }
-  ::mavsdk::rpc::tracking_server::TrackingServerResult::InitAsDefaultInstance();
-}
-
-::PROTOBUF_NAMESPACE_ID::internal::SCCInfo<0> scc_info_TrackingServerResult_tracking_5fserver_2ftracking_5fserver_2eproto =
-    {{ATOMIC_VAR_INIT(::PROTOBUF_NAMESPACE_ID::internal::SCCInfoBase::kUninitialized), 0, 0, InitDefaultsscc_info_TrackingServerResult_tracking_5fserver_2ftracking_5fserver_2eproto}, {}};
-
 static ::PROTOBUF_NAMESPACE_ID::Metadata file_level_metadata_tracking_5fserver_2ftracking_5fserver_2eproto[21];
 static const ::PROTOBUF_NAMESPACE_ID::EnumDescriptor* file_level_enum_descriptors_tracking_5fserver_2ftracking_5fserver_2eproto[2];
 static constexpr ::PROTOBUF_NAMESPACE_ID::ServiceDescriptor const** file_level_service_descriptors_tracking_5fserver_2ftracking_5fserver_2eproto = nullptr;
@@ -489,7 +358,7 @@ const ::PROTOBUF_NAMESPACE_ID::uint32 TableStruct_tracking_5fserver_2ftracking_5
   ~0u,  // no _extensions_
   ~0u,  // no _oneof_case_
   ~0u,  // no _weak_field_map_
-  PROTOBUF_FIELD_OFFSET(::mavsdk::rpc::tracking_server::RespondTrackingPointCommandResponse, result_),
+  PROTOBUF_FIELD_OFFSET(::mavsdk::rpc::tracking_server::RespondTrackingPointCommandResponse, tracking_server_result_),
   ~0u,  // no _has_bits_
   PROTOBUF_FIELD_OFFSET(::mavsdk::rpc::tracking_server::RespondTrackingRectangleCommandRequest, _internal_metadata_),
   ~0u,  // no _extensions_
@@ -501,7 +370,7 @@ const ::PROTOBUF_NAMESPACE_ID::uint32 TableStruct_tracking_5fserver_2ftracking_5
   ~0u,  // no _extensions_
   ~0u,  // no _oneof_case_
   ~0u,  // no _weak_field_map_
-  PROTOBUF_FIELD_OFFSET(::mavsdk::rpc::tracking_server::RespondTrackingRectangleCommandResponse, result_),
+  PROTOBUF_FIELD_OFFSET(::mavsdk::rpc::tracking_server::RespondTrackingRectangleCommandResponse, tracking_server_result_),
   ~0u,  // no _has_bits_
   PROTOBUF_FIELD_OFFSET(::mavsdk::rpc::tracking_server::RespondTrackingOffCommandRequest, _internal_metadata_),
   ~0u,  // no _extensions_
@@ -513,7 +382,7 @@ const ::PROTOBUF_NAMESPACE_ID::uint32 TableStruct_tracking_5fserver_2ftracking_5
   ~0u,  // no _extensions_
   ~0u,  // no _oneof_case_
   ~0u,  // no _weak_field_map_
-  PROTOBUF_FIELD_OFFSET(::mavsdk::rpc::tracking_server::RespondTrackingOffCommandResponse, result_),
+  PROTOBUF_FIELD_OFFSET(::mavsdk::rpc::tracking_server::RespondTrackingOffCommandResponse, tracking_server_result_),
   ~0u,  // no _has_bits_
   PROTOBUF_FIELD_OFFSET(::mavsdk::rpc::tracking_server::TrackPoint, _internal_metadata_),
   ~0u,  // no _extensions_
@@ -610,111 +479,94 @@ const char descriptor_table_protodef_tracking_5fserver_2ftracking_5fserver_2epro
   "OffCommandResponse\022\r\n\005dummy\030\001 \001(\005\"g\n\"Res"
   "pondTrackingPointCommandRequest\022A\n\016comma"
   "nd_answer\030\001 \001(\0162).mavsdk.rpc.tracking_se"
-  "rver.CommandAnswer\"g\n#RespondTrackingPoi"
-  "ntCommandResponse\022@\n\006result\030\001 \001(\01320.mavs"
-  "dk.rpc.tracking_server.TrackingServerRes"
-  "ult\"k\n&RespondTrackingRectangleCommandRe"
-  "quest\022A\n\016command_answer\030\001 \001(\0162).mavsdk.r"
-  "pc.tracking_server.CommandAnswer\"k\n\'Resp"
-  "ondTrackingRectangleCommandResponse\022@\n\006r"
-  "esult\030\001 \001(\01320.mavsdk.rpc.tracking_server"
-  ".TrackingServerResult\"e\n RespondTracking"
-  "OffCommandRequest\022A\n\016command_answer\030\001 \001("
-  "\0162).mavsdk.rpc.tracking_server.CommandAn"
-  "swer\"e\n!RespondTrackingOffCommandRespons"
-  "e\022@\n\006result\030\001 \001(\01320.mavsdk.rpc.tracking_"
-  "server.TrackingServerResult\">\n\nTrackPoin"
-  "t\022\017\n\007point_x\030\001 \001(\002\022\017\n\007point_y\030\002 \001(\002\022\016\n\006r"
-  "adius\030\003 \001(\002\"\204\001\n\016TrackRectangle\022\031\n\021top_le"
-  "ft_corner_x\030\001 \001(\002\022\031\n\021top_left_corner_y\030\002"
-  " \001(\002\022\035\n\025bottom_right_corner_x\030\003 \001(\002\022\035\n\025b"
-  "ottom_right_corner_y\030\004 \001(\002\"\330\001\n\024TrackingS"
-  "erverResult\022G\n\006result\030\001 \001(\01627.mavsdk.rpc"
-  ".tracking_server.TrackingServerResult.Re"
-  "sult\022\022\n\nresult_str\030\002 \001(\t\"c\n\006Result\022\022\n\016RE"
-  "SULT_UNKNOWN\020\000\022\022\n\016RESULT_SUCCESS\020\001\022\024\n\020RE"
-  "SULT_NO_SYSTEM\020\002\022\033\n\027RESULT_CONNECTION_ER"
-  "ROR\020\003*\253\001\n\rCommandAnswer\022\033\n\027COMMAND_ANSWE"
-  "R_ACCEPTED\020\000\022\'\n#COMMAND_ANSWER_TEMPORARI"
-  "LY_REJECTED\020\001\022\031\n\025COMMAND_ANSWER_DENIED\020\002"
-  "\022\036\n\032COMMAND_ANSWER_UNSUPPORTED\020\003\022\031\n\025COMM"
-  "AND_ANSWER_FAILED\020\0042\330\013\n\025TrackingServerSe"
-  "rvice\022\225\001\n\026SetTrackingPointStatus\0229.mavsd"
-  "k.rpc.tracking_server.SetTrackingPointSt"
-  "atusRequest\032:.mavsdk.rpc.tracking_server"
-  ".SetTrackingPointStatusResponse\"\004\200\265\030\001\022\241\001"
-  "\n\032SetTrackingRectangleStatus\022=.mavsdk.rp"
-  "c.tracking_server.SetTrackingRectangleSt"
-  "atusRequest\032>.mavsdk.rpc.tracking_server"
-  ".SetTrackingRectangleStatusResponse\"\004\200\265\030"
-  "\001\022\217\001\n\024SetTrackingOffStatus\0227.mavsdk.rpc."
-  "tracking_server.SetTrackingOffStatusRequ"
-  "est\0328.mavsdk.rpc.tracking_server.SetTrac"
-  "kingOffStatusResponse\"\004\200\265\030\001\022\243\001\n\035Subscrib"
-  "eTrackingPointCommand\022@.mavsdk.rpc.track"
-  "ing_server.SubscribeTrackingPointCommand"
-  "Request\0328.mavsdk.rpc.tracking_server.Tra"
-  "ckingPointCommandResponse\"\004\200\265\030\0000\001\022\257\001\n!Su"
-  "bscribeTrackingRectangleCommand\022D.mavsdk"
-  ".rpc.tracking_server.SubscribeTrackingRe"
-  "ctangleCommandRequest\032<.mavsdk.rpc.track"
-  "ing_server.TrackingRectangleCommandRespo"
-  "nse\"\004\200\265\030\0000\001\022\235\001\n\033SubscribeTrackingOffComm"
-  "and\022>.mavsdk.rpc.tracking_server.Subscri"
-  "beTrackingOffCommandRequest\0326.mavsdk.rpc"
-  ".tracking_server.TrackingOffCommandRespo"
-  "nse\"\004\200\265\030\0000\001\022\244\001\n\033RespondTrackingPointComm"
-  "and\022>.mavsdk.rpc.tracking_server.Respond"
-  "TrackingPointCommandRequest\032\?.mavsdk.rpc"
-  ".tracking_server.RespondTrackingPointCom"
-  "mandResponse\"\004\200\265\030\001\022\260\001\n\037RespondTrackingRe"
-  "ctangleCommand\022B.mavsdk.rpc.tracking_ser"
-  "ver.RespondTrackingRectangleCommandReque"
-  "st\032C.mavsdk.rpc.tracking_server.RespondT"
-  "rackingRectangleCommandResponse\"\004\200\265\030\001\022\236\001"
-  "\n\031RespondTrackingOffCommand\022<.mavsdk.rpc"
-  ".tracking_server.RespondTrackingOffComma"
-  "ndRequest\032=.mavsdk.rpc.tracking_server.R"
-  "espondTrackingOffCommandResponse\"\004\200\265\030\001B0"
-  "\n\031io.mavsdk.tracking_serverB\023TrackingSer"
-  "verProtob\006proto3"
+  "rver.CommandAnswer\"w\n#RespondTrackingPoi"
+  "ntCommandResponse\022P\n\026tracking_server_res"
+  "ult\030\001 \001(\01320.mavsdk.rpc.tracking_server.T"
+  "rackingServerResult\"k\n&RespondTrackingRe"
+  "ctangleCommandRequest\022A\n\016command_answer\030"
+  "\001 \001(\0162).mavsdk.rpc.tracking_server.Comma"
+  "ndAnswer\"{\n\'RespondTrackingRectangleComm"
+  "andResponse\022P\n\026tracking_server_result\030\001 "
+  "\001(\01320.mavsdk.rpc.tracking_server.Trackin"
+  "gServerResult\"e\n RespondTrackingOffComma"
+  "ndRequest\022A\n\016command_answer\030\001 \001(\0162).mavs"
+  "dk.rpc.tracking_server.CommandAnswer\"u\n!"
+  "RespondTrackingOffCommandResponse\022P\n\026tra"
+  "cking_server_result\030\001 \001(\01320.mavsdk.rpc.t"
+  "racking_server.TrackingServerResult\">\n\nT"
+  "rackPoint\022\017\n\007point_x\030\001 \001(\002\022\017\n\007point_y\030\002 "
+  "\001(\002\022\016\n\006radius\030\003 \001(\002\"\204\001\n\016TrackRectangle\022\031"
+  "\n\021top_left_corner_x\030\001 \001(\002\022\031\n\021top_left_co"
+  "rner_y\030\002 \001(\002\022\035\n\025bottom_right_corner_x\030\003 "
+  "\001(\002\022\035\n\025bottom_right_corner_y\030\004 \001(\002\"\330\001\n\024T"
+  "rackingServerResult\022G\n\006result\030\001 \001(\01627.ma"
+  "vsdk.rpc.tracking_server.TrackingServerR"
+  "esult.Result\022\022\n\nresult_str\030\002 \001(\t\"c\n\006Resu"
+  "lt\022\022\n\016RESULT_UNKNOWN\020\000\022\022\n\016RESULT_SUCCESS"
+  "\020\001\022\024\n\020RESULT_NO_SYSTEM\020\002\022\033\n\027RESULT_CONNE"
+  "CTION_ERROR\020\003*\253\001\n\rCommandAnswer\022\033\n\027COMMA"
+  "ND_ANSWER_ACCEPTED\020\000\022\'\n#COMMAND_ANSWER_T"
+  "EMPORARILY_REJECTED\020\001\022\031\n\025COMMAND_ANSWER_"
+  "DENIED\020\002\022\036\n\032COMMAND_ANSWER_UNSUPPORTED\020\003"
+  "\022\031\n\025COMMAND_ANSWER_FAILED\020\0042\330\013\n\025Tracking"
+  "ServerService\022\225\001\n\026SetTrackingPointStatus"
+  "\0229.mavsdk.rpc.tracking_server.SetTrackin"
+  "gPointStatusRequest\032:.mavsdk.rpc.trackin"
+  "g_server.SetTrackingPointStatusResponse\""
+  "\004\200\265\030\001\022\241\001\n\032SetTrackingRectangleStatus\022=.m"
+  "avsdk.rpc.tracking_server.SetTrackingRec"
+  "tangleStatusRequest\032>.mavsdk.rpc.trackin"
+  "g_server.SetTrackingRectangleStatusRespo"
+  "nse\"\004\200\265\030\001\022\217\001\n\024SetTrackingOffStatus\0227.mav"
+  "sdk.rpc.tracking_server.SetTrackingOffSt"
+  "atusRequest\0328.mavsdk.rpc.tracking_server"
+  ".SetTrackingOffStatusResponse\"\004\200\265\030\001\022\243\001\n\035"
+  "SubscribeTrackingPointCommand\022@.mavsdk.r"
+  "pc.tracking_server.SubscribeTrackingPoin"
+  "tCommandRequest\0328.mavsdk.rpc.tracking_se"
+  "rver.TrackingPointCommandResponse\"\004\200\265\030\0000"
+  "\001\022\257\001\n!SubscribeTrackingRectangleCommand\022"
+  "D.mavsdk.rpc.tracking_server.SubscribeTr"
+  "ackingRectangleCommandRequest\032<.mavsdk.r"
+  "pc.tracking_server.TrackingRectangleComm"
+  "andResponse\"\004\200\265\030\0000\001\022\235\001\n\033SubscribeTrackin"
+  "gOffCommand\022>.mavsdk.rpc.tracking_server"
+  ".SubscribeTrackingOffCommandRequest\0326.ma"
+  "vsdk.rpc.tracking_server.TrackingOffComm"
+  "andResponse\"\004\200\265\030\0000\001\022\244\001\n\033RespondTrackingP"
+  "ointCommand\022>.mavsdk.rpc.tracking_server"
+  ".RespondTrackingPointCommandRequest\032\?.ma"
+  "vsdk.rpc.tracking_server.RespondTracking"
+  "PointCommandResponse\"\004\200\265\030\001\022\260\001\n\037RespondTr"
+  "ackingRectangleCommand\022B.mavsdk.rpc.trac"
+  "king_server.RespondTrackingRectangleComm"
+  "andRequest\032C.mavsdk.rpc.tracking_server."
+  "RespondTrackingRectangleCommandResponse\""
+  "\004\200\265\030\001\022\236\001\n\031RespondTrackingOffCommand\022<.ma"
+  "vsdk.rpc.tracking_server.RespondTracking"
+  "OffCommandRequest\032=.mavsdk.rpc.tracking_"
+  "server.RespondTrackingOffCommandResponse"
+  "\"\004\200\265\030\001B0\n\031io.mavsdk.tracking_serverB\023Tra"
+  "ckingServerProtob\006proto3"
   ;
 static const ::PROTOBUF_NAMESPACE_ID::internal::DescriptorTable*const descriptor_table_tracking_5fserver_2ftracking_5fserver_2eproto_deps[1] = {
   &::descriptor_table_mavsdk_5foptions_2eproto,
 };
-static ::PROTOBUF_NAMESPACE_ID::internal::SCCInfoBase*const descriptor_table_tracking_5fserver_2ftracking_5fserver_2eproto_sccs[21] = {
-  &scc_info_RespondTrackingOffCommandRequest_tracking_5fserver_2ftracking_5fserver_2eproto.base,
-  &scc_info_RespondTrackingOffCommandResponse_tracking_5fserver_2ftracking_5fserver_2eproto.base,
-  &scc_info_RespondTrackingPointCommandRequest_tracking_5fserver_2ftracking_5fserver_2eproto.base,
-  &scc_info_RespondTrackingPointCommandResponse_tracking_5fserver_2ftracking_5fserver_2eproto.base,
-  &scc_info_RespondTrackingRectangleCommandRequest_tracking_5fserver_2ftracking_5fserver_2eproto.base,
-  &scc_info_RespondTrackingRectangleCommandResponse_tracking_5fserver_2ftracking_5fserver_2eproto.base,
-  &scc_info_SetTrackingOffStatusRequest_tracking_5fserver_2ftracking_5fserver_2eproto.base,
-  &scc_info_SetTrackingOffStatusResponse_tracking_5fserver_2ftracking_5fserver_2eproto.base,
-  &scc_info_SetTrackingPointStatusRequest_tracking_5fserver_2ftracking_5fserver_2eproto.base,
-  &scc_info_SetTrackingPointStatusResponse_tracking_5fserver_2ftracking_5fserver_2eproto.base,
-  &scc_info_SetTrackingRectangleStatusRequest_tracking_5fserver_2ftracking_5fserver_2eproto.base,
-  &scc_info_SetTrackingRectangleStatusResponse_tracking_5fserver_2ftracking_5fserver_2eproto.base,
-  &scc_info_SubscribeTrackingOffCommandRequest_tracking_5fserver_2ftracking_5fserver_2eproto.base,
-  &scc_info_SubscribeTrackingPointCommandRequest_tracking_5fserver_2ftracking_5fserver_2eproto.base,
-  &scc_info_SubscribeTrackingRectangleCommandRequest_tracking_5fserver_2ftracking_5fserver_2eproto.base,
-  &scc_info_TrackPoint_tracking_5fserver_2ftracking_5fserver_2eproto.base,
-  &scc_info_TrackRectangle_tracking_5fserver_2ftracking_5fserver_2eproto.base,
-  &scc_info_TrackingOffCommandResponse_tracking_5fserver_2ftracking_5fserver_2eproto.base,
-  &scc_info_TrackingPointCommandResponse_tracking_5fserver_2ftracking_5fserver_2eproto.base,
-  &scc_info_TrackingRectangleCommandResponse_tracking_5fserver_2ftracking_5fserver_2eproto.base,
-  &scc_info_TrackingServerResult_tracking_5fserver_2ftracking_5fserver_2eproto.base,
-};
 static ::PROTOBUF_NAMESPACE_ID::internal::once_flag descriptor_table_tracking_5fserver_2ftracking_5fserver_2eproto_once;
 const ::PROTOBUF_NAMESPACE_ID::internal::DescriptorTable descriptor_table_tracking_5fserver_2ftracking_5fserver_2eproto = {
-  false, false, descriptor_table_protodef_tracking_5fserver_2ftracking_5fserver_2eproto, "tracking_server/tracking_server.proto", 3576,
-  &descriptor_table_tracking_5fserver_2ftracking_5fserver_2eproto_once, descriptor_table_tracking_5fserver_2ftracking_5fserver_2eproto_sccs, descriptor_table_tracking_5fserver_2ftracking_5fserver_2eproto_deps, 21, 1,
+  false, false, 3624, descriptor_table_protodef_tracking_5fserver_2ftracking_5fserver_2eproto, "tracking_server/tracking_server.proto", 
+  &descriptor_table_tracking_5fserver_2ftracking_5fserver_2eproto_once, descriptor_table_tracking_5fserver_2ftracking_5fserver_2eproto_deps, 1, 21,
   schemas, file_default_instances, TableStruct_tracking_5fserver_2ftracking_5fserver_2eproto::offsets,
-  file_level_metadata_tracking_5fserver_2ftracking_5fserver_2eproto, 21, file_level_enum_descriptors_tracking_5fserver_2ftracking_5fserver_2eproto, file_level_service_descriptors_tracking_5fserver_2ftracking_5fserver_2eproto,
+  file_level_metadata_tracking_5fserver_2ftracking_5fserver_2eproto, file_level_enum_descriptors_tracking_5fserver_2ftracking_5fserver_2eproto, file_level_service_descriptors_tracking_5fserver_2ftracking_5fserver_2eproto,
 };
+PROTOBUF_ATTRIBUTE_WEAK ::PROTOBUF_NAMESPACE_ID::Metadata
+descriptor_table_tracking_5fserver_2ftracking_5fserver_2eproto_metadata_getter(int index) {
+  ::PROTOBUF_NAMESPACE_ID::internal::AssignDescriptors(&descriptor_table_tracking_5fserver_2ftracking_5fserver_2eproto);
+  return descriptor_table_tracking_5fserver_2ftracking_5fserver_2eproto.file_level_metadata[index];
+}
 
 // Force running AddDescriptors() at dynamic initialization time.
-static bool dynamic_init_dummy_tracking_5fserver_2ftracking_5fserver_2eproto = (static_cast<void>(::PROTOBUF_NAMESPACE_ID::internal::AddDescriptors(&descriptor_table_tracking_5fserver_2ftracking_5fserver_2eproto)), true);
+PROTOBUF_ATTRIBUTE_INIT_PRIORITY static ::PROTOBUF_NAMESPACE_ID::internal::AddDescriptorsRunner dynamic_init_dummy_tracking_5fserver_2ftracking_5fserver_2eproto(&descriptor_table_tracking_5fserver_2ftracking_5fserver_2eproto);
 namespace mavsdk {
 namespace rpc {
 namespace tracking_server {
@@ -763,10 +615,6 @@ bool CommandAnswer_IsValid(int value) {
 
 // ===================================================================
 
-void SetTrackingPointStatusRequest::InitAsDefaultInstance() {
-  ::mavsdk::rpc::tracking_server::_SetTrackingPointStatusRequest_default_instance_._instance.get_mutable()->tracked_point_ = const_cast< ::mavsdk::rpc::tracking_server::TrackPoint*>(
-      ::mavsdk::rpc::tracking_server::TrackPoint::internal_default_instance());
-}
 class SetTrackingPointStatusRequest::_Internal {
  public:
   static const ::mavsdk::rpc::tracking_server::TrackPoint& tracked_point(const SetTrackingPointStatusRequest* msg);
@@ -794,8 +642,7 @@ SetTrackingPointStatusRequest::SetTrackingPointStatusRequest(const SetTrackingPo
 }
 
 void SetTrackingPointStatusRequest::SharedCtor() {
-  ::PROTOBUF_NAMESPACE_ID::internal::InitSCC(&scc_info_SetTrackingPointStatusRequest_tracking_5fserver_2ftracking_5fserver_2eproto.base);
-  tracked_point_ = nullptr;
+tracked_point_ = nullptr;
 }
 
 SetTrackingPointStatusRequest::~SetTrackingPointStatusRequest() {
@@ -818,11 +665,6 @@ void SetTrackingPointStatusRequest::RegisterArenaDtor(::PROTOBUF_NAMESPACE_ID::A
 void SetTrackingPointStatusRequest::SetCachedSize(int size) const {
   _cached_size_.Set(size);
 }
-const SetTrackingPointStatusRequest& SetTrackingPointStatusRequest::default_instance() {
-  ::PROTOBUF_NAMESPACE_ID::internal::InitSCC(&::scc_info_SetTrackingPointStatusRequest_tracking_5fserver_2ftracking_5fserver_2eproto.base);
-  return *internal_default_instance();
-}
-
 
 void SetTrackingPointStatusRequest::Clear() {
 // @@protoc_insertion_point(message_clear_start:mavsdk.rpc.tracking_server.SetTrackingPointStatusRequest)
@@ -839,7 +681,6 @@ void SetTrackingPointStatusRequest::Clear() {
 
 const char* SetTrackingPointStatusRequest::_InternalParse(const char* ptr, ::PROTOBUF_NAMESPACE_ID::internal::ParseContext* ctx) {
 #define CHK_(x) if (PROTOBUF_PREDICT_FALSE(!(x))) goto failure
-  ::PROTOBUF_NAMESPACE_ID::Arena* arena = GetArena(); (void)arena;
   while (!ctx->Done(&ptr)) {
     ::PROTOBUF_NAMESPACE_ID::uint32 tag;
     ptr = ::PROTOBUF_NAMESPACE_ID::internal::ReadTag(ptr, &tag);
@@ -978,8 +819,6 @@ void SetTrackingPointStatusRequest::InternalSwap(SetTrackingPointStatusRequest* 
 
 // ===================================================================
 
-void SetTrackingPointStatusResponse::InitAsDefaultInstance() {
-}
 class SetTrackingPointStatusResponse::_Internal {
  public:
 };
@@ -1018,11 +857,6 @@ void SetTrackingPointStatusResponse::RegisterArenaDtor(::PROTOBUF_NAMESPACE_ID::
 void SetTrackingPointStatusResponse::SetCachedSize(int size) const {
   _cached_size_.Set(size);
 }
-const SetTrackingPointStatusResponse& SetTrackingPointStatusResponse::default_instance() {
-  ::PROTOBUF_NAMESPACE_ID::internal::InitSCC(&::scc_info_SetTrackingPointStatusResponse_tracking_5fserver_2ftracking_5fserver_2eproto.base);
-  return *internal_default_instance();
-}
-
 
 void SetTrackingPointStatusResponse::Clear() {
 // @@protoc_insertion_point(message_clear_start:mavsdk.rpc.tracking_server.SetTrackingPointStatusResponse)
@@ -1035,7 +869,6 @@ void SetTrackingPointStatusResponse::Clear() {
 
 const char* SetTrackingPointStatusResponse::_InternalParse(const char* ptr, ::PROTOBUF_NAMESPACE_ID::internal::ParseContext* ctx) {
 #define CHK_(x) if (PROTOBUF_PREDICT_FALSE(!(x))) goto failure
-  ::PROTOBUF_NAMESPACE_ID::Arena* arena = GetArena(); (void)arena;
   while (!ctx->Done(&ptr)) {
     ::PROTOBUF_NAMESPACE_ID::uint32 tag;
     ptr = ::PROTOBUF_NAMESPACE_ID::internal::ReadTag(ptr, &tag);
@@ -1143,10 +976,6 @@ void SetTrackingPointStatusResponse::InternalSwap(SetTrackingPointStatusResponse
 
 // ===================================================================
 
-void SetTrackingRectangleStatusRequest::InitAsDefaultInstance() {
-  ::mavsdk::rpc::tracking_server::_SetTrackingRectangleStatusRequest_default_instance_._instance.get_mutable()->tracked_rectangle_ = const_cast< ::mavsdk::rpc::tracking_server::TrackRectangle*>(
-      ::mavsdk::rpc::tracking_server::TrackRectangle::internal_default_instance());
-}
 class SetTrackingRectangleStatusRequest::_Internal {
  public:
   static const ::mavsdk::rpc::tracking_server::TrackRectangle& tracked_rectangle(const SetTrackingRectangleStatusRequest* msg);
@@ -1174,8 +1003,7 @@ SetTrackingRectangleStatusRequest::SetTrackingRectangleStatusRequest(const SetTr
 }
 
 void SetTrackingRectangleStatusRequest::SharedCtor() {
-  ::PROTOBUF_NAMESPACE_ID::internal::InitSCC(&scc_info_SetTrackingRectangleStatusRequest_tracking_5fserver_2ftracking_5fserver_2eproto.base);
-  tracked_rectangle_ = nullptr;
+tracked_rectangle_ = nullptr;
 }
 
 SetTrackingRectangleStatusRequest::~SetTrackingRectangleStatusRequest() {
@@ -1198,11 +1026,6 @@ void SetTrackingRectangleStatusRequest::RegisterArenaDtor(::PROTOBUF_NAMESPACE_I
 void SetTrackingRectangleStatusRequest::SetCachedSize(int size) const {
   _cached_size_.Set(size);
 }
-const SetTrackingRectangleStatusRequest& SetTrackingRectangleStatusRequest::default_instance() {
-  ::PROTOBUF_NAMESPACE_ID::internal::InitSCC(&::scc_info_SetTrackingRectangleStatusRequest_tracking_5fserver_2ftracking_5fserver_2eproto.base);
-  return *internal_default_instance();
-}
-
 
 void SetTrackingRectangleStatusRequest::Clear() {
 // @@protoc_insertion_point(message_clear_start:mavsdk.rpc.tracking_server.SetTrackingRectangleStatusRequest)
@@ -1219,7 +1042,6 @@ void SetTrackingRectangleStatusRequest::Clear() {
 
 const char* SetTrackingRectangleStatusRequest::_InternalParse(const char* ptr, ::PROTOBUF_NAMESPACE_ID::internal::ParseContext* ctx) {
 #define CHK_(x) if (PROTOBUF_PREDICT_FALSE(!(x))) goto failure
-  ::PROTOBUF_NAMESPACE_ID::Arena* arena = GetArena(); (void)arena;
   while (!ctx->Done(&ptr)) {
     ::PROTOBUF_NAMESPACE_ID::uint32 tag;
     ptr = ::PROTOBUF_NAMESPACE_ID::internal::ReadTag(ptr, &tag);
@@ -1358,8 +1180,6 @@ void SetTrackingRectangleStatusRequest::InternalSwap(SetTrackingRectangleStatusR
 
 // ===================================================================
 
-void SetTrackingRectangleStatusResponse::InitAsDefaultInstance() {
-}
 class SetTrackingRectangleStatusResponse::_Internal {
  public:
 };
@@ -1398,11 +1218,6 @@ void SetTrackingRectangleStatusResponse::RegisterArenaDtor(::PROTOBUF_NAMESPACE_
 void SetTrackingRectangleStatusResponse::SetCachedSize(int size) const {
   _cached_size_.Set(size);
 }
-const SetTrackingRectangleStatusResponse& SetTrackingRectangleStatusResponse::default_instance() {
-  ::PROTOBUF_NAMESPACE_ID::internal::InitSCC(&::scc_info_SetTrackingRectangleStatusResponse_tracking_5fserver_2ftracking_5fserver_2eproto.base);
-  return *internal_default_instance();
-}
-
 
 void SetTrackingRectangleStatusResponse::Clear() {
 // @@protoc_insertion_point(message_clear_start:mavsdk.rpc.tracking_server.SetTrackingRectangleStatusResponse)
@@ -1415,7 +1230,6 @@ void SetTrackingRectangleStatusResponse::Clear() {
 
 const char* SetTrackingRectangleStatusResponse::_InternalParse(const char* ptr, ::PROTOBUF_NAMESPACE_ID::internal::ParseContext* ctx) {
 #define CHK_(x) if (PROTOBUF_PREDICT_FALSE(!(x))) goto failure
-  ::PROTOBUF_NAMESPACE_ID::Arena* arena = GetArena(); (void)arena;
   while (!ctx->Done(&ptr)) {
     ::PROTOBUF_NAMESPACE_ID::uint32 tag;
     ptr = ::PROTOBUF_NAMESPACE_ID::internal::ReadTag(ptr, &tag);
@@ -1523,8 +1337,6 @@ void SetTrackingRectangleStatusResponse::InternalSwap(SetTrackingRectangleStatus
 
 // ===================================================================
 
-void SetTrackingOffStatusRequest::InitAsDefaultInstance() {
-}
 class SetTrackingOffStatusRequest::_Internal {
  public:
 };
@@ -1563,11 +1375,6 @@ void SetTrackingOffStatusRequest::RegisterArenaDtor(::PROTOBUF_NAMESPACE_ID::Are
 void SetTrackingOffStatusRequest::SetCachedSize(int size) const {
   _cached_size_.Set(size);
 }
-const SetTrackingOffStatusRequest& SetTrackingOffStatusRequest::default_instance() {
-  ::PROTOBUF_NAMESPACE_ID::internal::InitSCC(&::scc_info_SetTrackingOffStatusRequest_tracking_5fserver_2ftracking_5fserver_2eproto.base);
-  return *internal_default_instance();
-}
-
 
 void SetTrackingOffStatusRequest::Clear() {
 // @@protoc_insertion_point(message_clear_start:mavsdk.rpc.tracking_server.SetTrackingOffStatusRequest)
@@ -1580,7 +1387,6 @@ void SetTrackingOffStatusRequest::Clear() {
 
 const char* SetTrackingOffStatusRequest::_InternalParse(const char* ptr, ::PROTOBUF_NAMESPACE_ID::internal::ParseContext* ctx) {
 #define CHK_(x) if (PROTOBUF_PREDICT_FALSE(!(x))) goto failure
-  ::PROTOBUF_NAMESPACE_ID::Arena* arena = GetArena(); (void)arena;
   while (!ctx->Done(&ptr)) {
     ::PROTOBUF_NAMESPACE_ID::uint32 tag;
     ptr = ::PROTOBUF_NAMESPACE_ID::internal::ReadTag(ptr, &tag);
@@ -1688,8 +1494,6 @@ void SetTrackingOffStatusRequest::InternalSwap(SetTrackingOffStatusRequest* othe
 
 // ===================================================================
 
-void SetTrackingOffStatusResponse::InitAsDefaultInstance() {
-}
 class SetTrackingOffStatusResponse::_Internal {
  public:
 };
@@ -1728,11 +1532,6 @@ void SetTrackingOffStatusResponse::RegisterArenaDtor(::PROTOBUF_NAMESPACE_ID::Ar
 void SetTrackingOffStatusResponse::SetCachedSize(int size) const {
   _cached_size_.Set(size);
 }
-const SetTrackingOffStatusResponse& SetTrackingOffStatusResponse::default_instance() {
-  ::PROTOBUF_NAMESPACE_ID::internal::InitSCC(&::scc_info_SetTrackingOffStatusResponse_tracking_5fserver_2ftracking_5fserver_2eproto.base);
-  return *internal_default_instance();
-}
-
 
 void SetTrackingOffStatusResponse::Clear() {
 // @@protoc_insertion_point(message_clear_start:mavsdk.rpc.tracking_server.SetTrackingOffStatusResponse)
@@ -1745,7 +1544,6 @@ void SetTrackingOffStatusResponse::Clear() {
 
 const char* SetTrackingOffStatusResponse::_InternalParse(const char* ptr, ::PROTOBUF_NAMESPACE_ID::internal::ParseContext* ctx) {
 #define CHK_(x) if (PROTOBUF_PREDICT_FALSE(!(x))) goto failure
-  ::PROTOBUF_NAMESPACE_ID::Arena* arena = GetArena(); (void)arena;
   while (!ctx->Done(&ptr)) {
     ::PROTOBUF_NAMESPACE_ID::uint32 tag;
     ptr = ::PROTOBUF_NAMESPACE_ID::internal::ReadTag(ptr, &tag);
@@ -1853,8 +1651,6 @@ void SetTrackingOffStatusResponse::InternalSwap(SetTrackingOffStatusResponse* ot
 
 // ===================================================================
 
-void SubscribeTrackingPointCommandRequest::InitAsDefaultInstance() {
-}
 class SubscribeTrackingPointCommandRequest::_Internal {
  public:
 };
@@ -1893,11 +1689,6 @@ void SubscribeTrackingPointCommandRequest::RegisterArenaDtor(::PROTOBUF_NAMESPAC
 void SubscribeTrackingPointCommandRequest::SetCachedSize(int size) const {
   _cached_size_.Set(size);
 }
-const SubscribeTrackingPointCommandRequest& SubscribeTrackingPointCommandRequest::default_instance() {
-  ::PROTOBUF_NAMESPACE_ID::internal::InitSCC(&::scc_info_SubscribeTrackingPointCommandRequest_tracking_5fserver_2ftracking_5fserver_2eproto.base);
-  return *internal_default_instance();
-}
-
 
 void SubscribeTrackingPointCommandRequest::Clear() {
 // @@protoc_insertion_point(message_clear_start:mavsdk.rpc.tracking_server.SubscribeTrackingPointCommandRequest)
@@ -1910,7 +1701,6 @@ void SubscribeTrackingPointCommandRequest::Clear() {
 
 const char* SubscribeTrackingPointCommandRequest::_InternalParse(const char* ptr, ::PROTOBUF_NAMESPACE_ID::internal::ParseContext* ctx) {
 #define CHK_(x) if (PROTOBUF_PREDICT_FALSE(!(x))) goto failure
-  ::PROTOBUF_NAMESPACE_ID::Arena* arena = GetArena(); (void)arena;
   while (!ctx->Done(&ptr)) {
     ::PROTOBUF_NAMESPACE_ID::uint32 tag;
     ptr = ::PROTOBUF_NAMESPACE_ID::internal::ReadTag(ptr, &tag);
@@ -2018,10 +1808,6 @@ void SubscribeTrackingPointCommandRequest::InternalSwap(SubscribeTrackingPointCo
 
 // ===================================================================
 
-void TrackingPointCommandResponse::InitAsDefaultInstance() {
-  ::mavsdk::rpc::tracking_server::_TrackingPointCommandResponse_default_instance_._instance.get_mutable()->track_point_ = const_cast< ::mavsdk::rpc::tracking_server::TrackPoint*>(
-      ::mavsdk::rpc::tracking_server::TrackPoint::internal_default_instance());
-}
 class TrackingPointCommandResponse::_Internal {
  public:
   static const ::mavsdk::rpc::tracking_server::TrackPoint& track_point(const TrackingPointCommandResponse* msg);
@@ -2049,8 +1835,7 @@ TrackingPointCommandResponse::TrackingPointCommandResponse(const TrackingPointCo
 }
 
 void TrackingPointCommandResponse::SharedCtor() {
-  ::PROTOBUF_NAMESPACE_ID::internal::InitSCC(&scc_info_TrackingPointCommandResponse_tracking_5fserver_2ftracking_5fserver_2eproto.base);
-  track_point_ = nullptr;
+track_point_ = nullptr;
 }
 
 TrackingPointCommandResponse::~TrackingPointCommandResponse() {
@@ -2073,11 +1858,6 @@ void TrackingPointCommandResponse::RegisterArenaDtor(::PROTOBUF_NAMESPACE_ID::Ar
 void TrackingPointCommandResponse::SetCachedSize(int size) const {
   _cached_size_.Set(size);
 }
-const TrackingPointCommandResponse& TrackingPointCommandResponse::default_instance() {
-  ::PROTOBUF_NAMESPACE_ID::internal::InitSCC(&::scc_info_TrackingPointCommandResponse_tracking_5fserver_2ftracking_5fserver_2eproto.base);
-  return *internal_default_instance();
-}
-
 
 void TrackingPointCommandResponse::Clear() {
 // @@protoc_insertion_point(message_clear_start:mavsdk.rpc.tracking_server.TrackingPointCommandResponse)
@@ -2094,7 +1874,6 @@ void TrackingPointCommandResponse::Clear() {
 
 const char* TrackingPointCommandResponse::_InternalParse(const char* ptr, ::PROTOBUF_NAMESPACE_ID::internal::ParseContext* ctx) {
 #define CHK_(x) if (PROTOBUF_PREDICT_FALSE(!(x))) goto failure
-  ::PROTOBUF_NAMESPACE_ID::Arena* arena = GetArena(); (void)arena;
   while (!ctx->Done(&ptr)) {
     ::PROTOBUF_NAMESPACE_ID::uint32 tag;
     ptr = ::PROTOBUF_NAMESPACE_ID::internal::ReadTag(ptr, &tag);
@@ -2233,8 +2012,6 @@ void TrackingPointCommandResponse::InternalSwap(TrackingPointCommandResponse* ot
 
 // ===================================================================
 
-void SubscribeTrackingRectangleCommandRequest::InitAsDefaultInstance() {
-}
 class SubscribeTrackingRectangleCommandRequest::_Internal {
  public:
 };
@@ -2273,11 +2050,6 @@ void SubscribeTrackingRectangleCommandRequest::RegisterArenaDtor(::PROTOBUF_NAME
 void SubscribeTrackingRectangleCommandRequest::SetCachedSize(int size) const {
   _cached_size_.Set(size);
 }
-const SubscribeTrackingRectangleCommandRequest& SubscribeTrackingRectangleCommandRequest::default_instance() {
-  ::PROTOBUF_NAMESPACE_ID::internal::InitSCC(&::scc_info_SubscribeTrackingRectangleCommandRequest_tracking_5fserver_2ftracking_5fserver_2eproto.base);
-  return *internal_default_instance();
-}
-
 
 void SubscribeTrackingRectangleCommandRequest::Clear() {
 // @@protoc_insertion_point(message_clear_start:mavsdk.rpc.tracking_server.SubscribeTrackingRectangleCommandRequest)
@@ -2290,7 +2062,6 @@ void SubscribeTrackingRectangleCommandRequest::Clear() {
 
 const char* SubscribeTrackingRectangleCommandRequest::_InternalParse(const char* ptr, ::PROTOBUF_NAMESPACE_ID::internal::ParseContext* ctx) {
 #define CHK_(x) if (PROTOBUF_PREDICT_FALSE(!(x))) goto failure
-  ::PROTOBUF_NAMESPACE_ID::Arena* arena = GetArena(); (void)arena;
   while (!ctx->Done(&ptr)) {
     ::PROTOBUF_NAMESPACE_ID::uint32 tag;
     ptr = ::PROTOBUF_NAMESPACE_ID::internal::ReadTag(ptr, &tag);
@@ -2398,10 +2169,6 @@ void SubscribeTrackingRectangleCommandRequest::InternalSwap(SubscribeTrackingRec
 
 // ===================================================================
 
-void TrackingRectangleCommandResponse::InitAsDefaultInstance() {
-  ::mavsdk::rpc::tracking_server::_TrackingRectangleCommandResponse_default_instance_._instance.get_mutable()->track_rectangle_ = const_cast< ::mavsdk::rpc::tracking_server::TrackRectangle*>(
-      ::mavsdk::rpc::tracking_server::TrackRectangle::internal_default_instance());
-}
 class TrackingRectangleCommandResponse::_Internal {
  public:
   static const ::mavsdk::rpc::tracking_server::TrackRectangle& track_rectangle(const TrackingRectangleCommandResponse* msg);
@@ -2429,8 +2196,7 @@ TrackingRectangleCommandResponse::TrackingRectangleCommandResponse(const Trackin
 }
 
 void TrackingRectangleCommandResponse::SharedCtor() {
-  ::PROTOBUF_NAMESPACE_ID::internal::InitSCC(&scc_info_TrackingRectangleCommandResponse_tracking_5fserver_2ftracking_5fserver_2eproto.base);
-  track_rectangle_ = nullptr;
+track_rectangle_ = nullptr;
 }
 
 TrackingRectangleCommandResponse::~TrackingRectangleCommandResponse() {
@@ -2453,11 +2219,6 @@ void TrackingRectangleCommandResponse::RegisterArenaDtor(::PROTOBUF_NAMESPACE_ID
 void TrackingRectangleCommandResponse::SetCachedSize(int size) const {
   _cached_size_.Set(size);
 }
-const TrackingRectangleCommandResponse& TrackingRectangleCommandResponse::default_instance() {
-  ::PROTOBUF_NAMESPACE_ID::internal::InitSCC(&::scc_info_TrackingRectangleCommandResponse_tracking_5fserver_2ftracking_5fserver_2eproto.base);
-  return *internal_default_instance();
-}
-
 
 void TrackingRectangleCommandResponse::Clear() {
 // @@protoc_insertion_point(message_clear_start:mavsdk.rpc.tracking_server.TrackingRectangleCommandResponse)
@@ -2474,7 +2235,6 @@ void TrackingRectangleCommandResponse::Clear() {
 
 const char* TrackingRectangleCommandResponse::_InternalParse(const char* ptr, ::PROTOBUF_NAMESPACE_ID::internal::ParseContext* ctx) {
 #define CHK_(x) if (PROTOBUF_PREDICT_FALSE(!(x))) goto failure
-  ::PROTOBUF_NAMESPACE_ID::Arena* arena = GetArena(); (void)arena;
   while (!ctx->Done(&ptr)) {
     ::PROTOBUF_NAMESPACE_ID::uint32 tag;
     ptr = ::PROTOBUF_NAMESPACE_ID::internal::ReadTag(ptr, &tag);
@@ -2613,8 +2373,6 @@ void TrackingRectangleCommandResponse::InternalSwap(TrackingRectangleCommandResp
 
 // ===================================================================
 
-void SubscribeTrackingOffCommandRequest::InitAsDefaultInstance() {
-}
 class SubscribeTrackingOffCommandRequest::_Internal {
  public:
 };
@@ -2653,11 +2411,6 @@ void SubscribeTrackingOffCommandRequest::RegisterArenaDtor(::PROTOBUF_NAMESPACE_
 void SubscribeTrackingOffCommandRequest::SetCachedSize(int size) const {
   _cached_size_.Set(size);
 }
-const SubscribeTrackingOffCommandRequest& SubscribeTrackingOffCommandRequest::default_instance() {
-  ::PROTOBUF_NAMESPACE_ID::internal::InitSCC(&::scc_info_SubscribeTrackingOffCommandRequest_tracking_5fserver_2ftracking_5fserver_2eproto.base);
-  return *internal_default_instance();
-}
-
 
 void SubscribeTrackingOffCommandRequest::Clear() {
 // @@protoc_insertion_point(message_clear_start:mavsdk.rpc.tracking_server.SubscribeTrackingOffCommandRequest)
@@ -2670,7 +2423,6 @@ void SubscribeTrackingOffCommandRequest::Clear() {
 
 const char* SubscribeTrackingOffCommandRequest::_InternalParse(const char* ptr, ::PROTOBUF_NAMESPACE_ID::internal::ParseContext* ctx) {
 #define CHK_(x) if (PROTOBUF_PREDICT_FALSE(!(x))) goto failure
-  ::PROTOBUF_NAMESPACE_ID::Arena* arena = GetArena(); (void)arena;
   while (!ctx->Done(&ptr)) {
     ::PROTOBUF_NAMESPACE_ID::uint32 tag;
     ptr = ::PROTOBUF_NAMESPACE_ID::internal::ReadTag(ptr, &tag);
@@ -2778,8 +2530,6 @@ void SubscribeTrackingOffCommandRequest::InternalSwap(SubscribeTrackingOffComman
 
 // ===================================================================
 
-void TrackingOffCommandResponse::InitAsDefaultInstance() {
-}
 class TrackingOffCommandResponse::_Internal {
  public:
 };
@@ -2798,7 +2548,7 @@ TrackingOffCommandResponse::TrackingOffCommandResponse(const TrackingOffCommandR
 }
 
 void TrackingOffCommandResponse::SharedCtor() {
-  dummy_ = 0;
+dummy_ = 0;
 }
 
 TrackingOffCommandResponse::~TrackingOffCommandResponse() {
@@ -2820,11 +2570,6 @@ void TrackingOffCommandResponse::RegisterArenaDtor(::PROTOBUF_NAMESPACE_ID::Aren
 void TrackingOffCommandResponse::SetCachedSize(int size) const {
   _cached_size_.Set(size);
 }
-const TrackingOffCommandResponse& TrackingOffCommandResponse::default_instance() {
-  ::PROTOBUF_NAMESPACE_ID::internal::InitSCC(&::scc_info_TrackingOffCommandResponse_tracking_5fserver_2ftracking_5fserver_2eproto.base);
-  return *internal_default_instance();
-}
-
 
 void TrackingOffCommandResponse::Clear() {
 // @@protoc_insertion_point(message_clear_start:mavsdk.rpc.tracking_server.TrackingOffCommandResponse)
@@ -2838,7 +2583,6 @@ void TrackingOffCommandResponse::Clear() {
 
 const char* TrackingOffCommandResponse::_InternalParse(const char* ptr, ::PROTOBUF_NAMESPACE_ID::internal::ParseContext* ctx) {
 #define CHK_(x) if (PROTOBUF_PREDICT_FALSE(!(x))) goto failure
-  ::PROTOBUF_NAMESPACE_ID::Arena* arena = GetArena(); (void)arena;
   while (!ctx->Done(&ptr)) {
     ::PROTOBUF_NAMESPACE_ID::uint32 tag;
     ptr = ::PROTOBUF_NAMESPACE_ID::internal::ReadTag(ptr, &tag);
@@ -2975,8 +2719,6 @@ void TrackingOffCommandResponse::InternalSwap(TrackingOffCommandResponse* other)
 
 // ===================================================================
 
-void RespondTrackingPointCommandRequest::InitAsDefaultInstance() {
-}
 class RespondTrackingPointCommandRequest::_Internal {
  public:
 };
@@ -2995,7 +2737,7 @@ RespondTrackingPointCommandRequest::RespondTrackingPointCommandRequest(const Res
 }
 
 void RespondTrackingPointCommandRequest::SharedCtor() {
-  command_answer_ = 0;
+command_answer_ = 0;
 }
 
 RespondTrackingPointCommandRequest::~RespondTrackingPointCommandRequest() {
@@ -3017,11 +2759,6 @@ void RespondTrackingPointCommandRequest::RegisterArenaDtor(::PROTOBUF_NAMESPACE_
 void RespondTrackingPointCommandRequest::SetCachedSize(int size) const {
   _cached_size_.Set(size);
 }
-const RespondTrackingPointCommandRequest& RespondTrackingPointCommandRequest::default_instance() {
-  ::PROTOBUF_NAMESPACE_ID::internal::InitSCC(&::scc_info_RespondTrackingPointCommandRequest_tracking_5fserver_2ftracking_5fserver_2eproto.base);
-  return *internal_default_instance();
-}
-
 
 void RespondTrackingPointCommandRequest::Clear() {
 // @@protoc_insertion_point(message_clear_start:mavsdk.rpc.tracking_server.RespondTrackingPointCommandRequest)
@@ -3035,7 +2772,6 @@ void RespondTrackingPointCommandRequest::Clear() {
 
 const char* RespondTrackingPointCommandRequest::_InternalParse(const char* ptr, ::PROTOBUF_NAMESPACE_ID::internal::ParseContext* ctx) {
 #define CHK_(x) if (PROTOBUF_PREDICT_FALSE(!(x))) goto failure
-  ::PROTOBUF_NAMESPACE_ID::Arena* arena = GetArena(); (void)arena;
   while (!ctx->Done(&ptr)) {
     ::PROTOBUF_NAMESPACE_ID::uint32 tag;
     ptr = ::PROTOBUF_NAMESPACE_ID::internal::ReadTag(ptr, &tag);
@@ -3173,18 +2909,14 @@ void RespondTrackingPointCommandRequest::InternalSwap(RespondTrackingPointComman
 
 // ===================================================================
 
-void RespondTrackingPointCommandResponse::InitAsDefaultInstance() {
-  ::mavsdk::rpc::tracking_server::_RespondTrackingPointCommandResponse_default_instance_._instance.get_mutable()->result_ = const_cast< ::mavsdk::rpc::tracking_server::TrackingServerResult*>(
-      ::mavsdk::rpc::tracking_server::TrackingServerResult::internal_default_instance());
-}
 class RespondTrackingPointCommandResponse::_Internal {
  public:
-  static const ::mavsdk::rpc::tracking_server::TrackingServerResult& result(const RespondTrackingPointCommandResponse* msg);
+  static const ::mavsdk::rpc::tracking_server::TrackingServerResult& tracking_server_result(const RespondTrackingPointCommandResponse* msg);
 };
 
 const ::mavsdk::rpc::tracking_server::TrackingServerResult&
-RespondTrackingPointCommandResponse::_Internal::result(const RespondTrackingPointCommandResponse* msg) {
-  return *msg->result_;
+RespondTrackingPointCommandResponse::_Internal::tracking_server_result(const RespondTrackingPointCommandResponse* msg) {
+  return *msg->tracking_server_result_;
 }
 RespondTrackingPointCommandResponse::RespondTrackingPointCommandResponse(::PROTOBUF_NAMESPACE_ID::Arena* arena)
   : ::PROTOBUF_NAMESPACE_ID::Message(arena) {
@@ -3195,17 +2927,16 @@ RespondTrackingPointCommandResponse::RespondTrackingPointCommandResponse(::PROTO
 RespondTrackingPointCommandResponse::RespondTrackingPointCommandResponse(const RespondTrackingPointCommandResponse& from)
   : ::PROTOBUF_NAMESPACE_ID::Message() {
   _internal_metadata_.MergeFrom<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>(from._internal_metadata_);
-  if (from._internal_has_result()) {
-    result_ = new ::mavsdk::rpc::tracking_server::TrackingServerResult(*from.result_);
+  if (from._internal_has_tracking_server_result()) {
+    tracking_server_result_ = new ::mavsdk::rpc::tracking_server::TrackingServerResult(*from.tracking_server_result_);
   } else {
-    result_ = nullptr;
+    tracking_server_result_ = nullptr;
   }
   // @@protoc_insertion_point(copy_constructor:mavsdk.rpc.tracking_server.RespondTrackingPointCommandResponse)
 }
 
 void RespondTrackingPointCommandResponse::SharedCtor() {
-  ::PROTOBUF_NAMESPACE_ID::internal::InitSCC(&scc_info_RespondTrackingPointCommandResponse_tracking_5fserver_2ftracking_5fserver_2eproto.base);
-  result_ = nullptr;
+tracking_server_result_ = nullptr;
 }
 
 RespondTrackingPointCommandResponse::~RespondTrackingPointCommandResponse() {
@@ -3216,7 +2947,7 @@ RespondTrackingPointCommandResponse::~RespondTrackingPointCommandResponse() {
 
 void RespondTrackingPointCommandResponse::SharedDtor() {
   GOOGLE_DCHECK(GetArena() == nullptr);
-  if (this != internal_default_instance()) delete result_;
+  if (this != internal_default_instance()) delete tracking_server_result_;
 }
 
 void RespondTrackingPointCommandResponse::ArenaDtor(void* object) {
@@ -3228,11 +2959,6 @@ void RespondTrackingPointCommandResponse::RegisterArenaDtor(::PROTOBUF_NAMESPACE
 void RespondTrackingPointCommandResponse::SetCachedSize(int size) const {
   _cached_size_.Set(size);
 }
-const RespondTrackingPointCommandResponse& RespondTrackingPointCommandResponse::default_instance() {
-  ::PROTOBUF_NAMESPACE_ID::internal::InitSCC(&::scc_info_RespondTrackingPointCommandResponse_tracking_5fserver_2ftracking_5fserver_2eproto.base);
-  return *internal_default_instance();
-}
-
 
 void RespondTrackingPointCommandResponse::Clear() {
 // @@protoc_insertion_point(message_clear_start:mavsdk.rpc.tracking_server.RespondTrackingPointCommandResponse)
@@ -3240,25 +2966,24 @@ void RespondTrackingPointCommandResponse::Clear() {
   // Prevent compiler warnings about cached_has_bits being unused
   (void) cached_has_bits;
 
-  if (GetArena() == nullptr && result_ != nullptr) {
-    delete result_;
+  if (GetArena() == nullptr && tracking_server_result_ != nullptr) {
+    delete tracking_server_result_;
   }
-  result_ = nullptr;
+  tracking_server_result_ = nullptr;
   _internal_metadata_.Clear<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>();
 }
 
 const char* RespondTrackingPointCommandResponse::_InternalParse(const char* ptr, ::PROTOBUF_NAMESPACE_ID::internal::ParseContext* ctx) {
 #define CHK_(x) if (PROTOBUF_PREDICT_FALSE(!(x))) goto failure
-  ::PROTOBUF_NAMESPACE_ID::Arena* arena = GetArena(); (void)arena;
   while (!ctx->Done(&ptr)) {
     ::PROTOBUF_NAMESPACE_ID::uint32 tag;
     ptr = ::PROTOBUF_NAMESPACE_ID::internal::ReadTag(ptr, &tag);
     CHK_(ptr);
     switch (tag >> 3) {
-      // .mavsdk.rpc.tracking_server.TrackingServerResult result = 1;
+      // .mavsdk.rpc.tracking_server.TrackingServerResult tracking_server_result = 1;
       case 1:
         if (PROTOBUF_PREDICT_TRUE(static_cast<::PROTOBUF_NAMESPACE_ID::uint8>(tag) == 10)) {
-          ptr = ctx->ParseMessage(_internal_mutable_result(), ptr);
+          ptr = ctx->ParseMessage(_internal_mutable_tracking_server_result(), ptr);
           CHK_(ptr);
         } else goto handle_unusual;
         continue;
@@ -3290,12 +3015,12 @@ failure:
   ::PROTOBUF_NAMESPACE_ID::uint32 cached_has_bits = 0;
   (void) cached_has_bits;
 
-  // .mavsdk.rpc.tracking_server.TrackingServerResult result = 1;
-  if (this->has_result()) {
+  // .mavsdk.rpc.tracking_server.TrackingServerResult tracking_server_result = 1;
+  if (this->has_tracking_server_result()) {
     target = stream->EnsureSpace(target);
     target = ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::
       InternalWriteMessage(
-        1, _Internal::result(this), target, stream);
+        1, _Internal::tracking_server_result(this), target, stream);
   }
 
   if (PROTOBUF_PREDICT_FALSE(_internal_metadata_.have_unknown_fields())) {
@@ -3314,11 +3039,11 @@ size_t RespondTrackingPointCommandResponse::ByteSizeLong() const {
   // Prevent compiler warnings about cached_has_bits being unused
   (void) cached_has_bits;
 
-  // .mavsdk.rpc.tracking_server.TrackingServerResult result = 1;
-  if (this->has_result()) {
+  // .mavsdk.rpc.tracking_server.TrackingServerResult tracking_server_result = 1;
+  if (this->has_tracking_server_result()) {
     total_size += 1 +
       ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::MessageSize(
-        *result_);
+        *tracking_server_result_);
   }
 
   if (PROTOBUF_PREDICT_FALSE(_internal_metadata_.have_unknown_fields())) {
@@ -3352,8 +3077,8 @@ void RespondTrackingPointCommandResponse::MergeFrom(const RespondTrackingPointCo
   ::PROTOBUF_NAMESPACE_ID::uint32 cached_has_bits = 0;
   (void) cached_has_bits;
 
-  if (from.has_result()) {
-    _internal_mutable_result()->::mavsdk::rpc::tracking_server::TrackingServerResult::MergeFrom(from._internal_result());
+  if (from.has_tracking_server_result()) {
+    _internal_mutable_tracking_server_result()->::mavsdk::rpc::tracking_server::TrackingServerResult::MergeFrom(from._internal_tracking_server_result());
   }
 }
 
@@ -3378,7 +3103,7 @@ bool RespondTrackingPointCommandResponse::IsInitialized() const {
 void RespondTrackingPointCommandResponse::InternalSwap(RespondTrackingPointCommandResponse* other) {
   using std::swap;
   _internal_metadata_.Swap<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>(&other->_internal_metadata_);
-  swap(result_, other->result_);
+  swap(tracking_server_result_, other->tracking_server_result_);
 }
 
 ::PROTOBUF_NAMESPACE_ID::Metadata RespondTrackingPointCommandResponse::GetMetadata() const {
@@ -3388,8 +3113,6 @@ void RespondTrackingPointCommandResponse::InternalSwap(RespondTrackingPointComma
 
 // ===================================================================
 
-void RespondTrackingRectangleCommandRequest::InitAsDefaultInstance() {
-}
 class RespondTrackingRectangleCommandRequest::_Internal {
  public:
 };
@@ -3408,7 +3131,7 @@ RespondTrackingRectangleCommandRequest::RespondTrackingRectangleCommandRequest(c
 }
 
 void RespondTrackingRectangleCommandRequest::SharedCtor() {
-  command_answer_ = 0;
+command_answer_ = 0;
 }
 
 RespondTrackingRectangleCommandRequest::~RespondTrackingRectangleCommandRequest() {
@@ -3430,11 +3153,6 @@ void RespondTrackingRectangleCommandRequest::RegisterArenaDtor(::PROTOBUF_NAMESP
 void RespondTrackingRectangleCommandRequest::SetCachedSize(int size) const {
   _cached_size_.Set(size);
 }
-const RespondTrackingRectangleCommandRequest& RespondTrackingRectangleCommandRequest::default_instance() {
-  ::PROTOBUF_NAMESPACE_ID::internal::InitSCC(&::scc_info_RespondTrackingRectangleCommandRequest_tracking_5fserver_2ftracking_5fserver_2eproto.base);
-  return *internal_default_instance();
-}
-
 
 void RespondTrackingRectangleCommandRequest::Clear() {
 // @@protoc_insertion_point(message_clear_start:mavsdk.rpc.tracking_server.RespondTrackingRectangleCommandRequest)
@@ -3448,7 +3166,6 @@ void RespondTrackingRectangleCommandRequest::Clear() {
 
 const char* RespondTrackingRectangleCommandRequest::_InternalParse(const char* ptr, ::PROTOBUF_NAMESPACE_ID::internal::ParseContext* ctx) {
 #define CHK_(x) if (PROTOBUF_PREDICT_FALSE(!(x))) goto failure
-  ::PROTOBUF_NAMESPACE_ID::Arena* arena = GetArena(); (void)arena;
   while (!ctx->Done(&ptr)) {
     ::PROTOBUF_NAMESPACE_ID::uint32 tag;
     ptr = ::PROTOBUF_NAMESPACE_ID::internal::ReadTag(ptr, &tag);
@@ -3586,18 +3303,14 @@ void RespondTrackingRectangleCommandRequest::InternalSwap(RespondTrackingRectang
 
 // ===================================================================
 
-void RespondTrackingRectangleCommandResponse::InitAsDefaultInstance() {
-  ::mavsdk::rpc::tracking_server::_RespondTrackingRectangleCommandResponse_default_instance_._instance.get_mutable()->result_ = const_cast< ::mavsdk::rpc::tracking_server::TrackingServerResult*>(
-      ::mavsdk::rpc::tracking_server::TrackingServerResult::internal_default_instance());
-}
 class RespondTrackingRectangleCommandResponse::_Internal {
  public:
-  static const ::mavsdk::rpc::tracking_server::TrackingServerResult& result(const RespondTrackingRectangleCommandResponse* msg);
+  static const ::mavsdk::rpc::tracking_server::TrackingServerResult& tracking_server_result(const RespondTrackingRectangleCommandResponse* msg);
 };
 
 const ::mavsdk::rpc::tracking_server::TrackingServerResult&
-RespondTrackingRectangleCommandResponse::_Internal::result(const RespondTrackingRectangleCommandResponse* msg) {
-  return *msg->result_;
+RespondTrackingRectangleCommandResponse::_Internal::tracking_server_result(const RespondTrackingRectangleCommandResponse* msg) {
+  return *msg->tracking_server_result_;
 }
 RespondTrackingRectangleCommandResponse::RespondTrackingRectangleCommandResponse(::PROTOBUF_NAMESPACE_ID::Arena* arena)
   : ::PROTOBUF_NAMESPACE_ID::Message(arena) {
@@ -3608,17 +3321,16 @@ RespondTrackingRectangleCommandResponse::RespondTrackingRectangleCommandResponse
 RespondTrackingRectangleCommandResponse::RespondTrackingRectangleCommandResponse(const RespondTrackingRectangleCommandResponse& from)
   : ::PROTOBUF_NAMESPACE_ID::Message() {
   _internal_metadata_.MergeFrom<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>(from._internal_metadata_);
-  if (from._internal_has_result()) {
-    result_ = new ::mavsdk::rpc::tracking_server::TrackingServerResult(*from.result_);
+  if (from._internal_has_tracking_server_result()) {
+    tracking_server_result_ = new ::mavsdk::rpc::tracking_server::TrackingServerResult(*from.tracking_server_result_);
   } else {
-    result_ = nullptr;
+    tracking_server_result_ = nullptr;
   }
   // @@protoc_insertion_point(copy_constructor:mavsdk.rpc.tracking_server.RespondTrackingRectangleCommandResponse)
 }
 
 void RespondTrackingRectangleCommandResponse::SharedCtor() {
-  ::PROTOBUF_NAMESPACE_ID::internal::InitSCC(&scc_info_RespondTrackingRectangleCommandResponse_tracking_5fserver_2ftracking_5fserver_2eproto.base);
-  result_ = nullptr;
+tracking_server_result_ = nullptr;
 }
 
 RespondTrackingRectangleCommandResponse::~RespondTrackingRectangleCommandResponse() {
@@ -3629,7 +3341,7 @@ RespondTrackingRectangleCommandResponse::~RespondTrackingRectangleCommandRespons
 
 void RespondTrackingRectangleCommandResponse::SharedDtor() {
   GOOGLE_DCHECK(GetArena() == nullptr);
-  if (this != internal_default_instance()) delete result_;
+  if (this != internal_default_instance()) delete tracking_server_result_;
 }
 
 void RespondTrackingRectangleCommandResponse::ArenaDtor(void* object) {
@@ -3641,11 +3353,6 @@ void RespondTrackingRectangleCommandResponse::RegisterArenaDtor(::PROTOBUF_NAMES
 void RespondTrackingRectangleCommandResponse::SetCachedSize(int size) const {
   _cached_size_.Set(size);
 }
-const RespondTrackingRectangleCommandResponse& RespondTrackingRectangleCommandResponse::default_instance() {
-  ::PROTOBUF_NAMESPACE_ID::internal::InitSCC(&::scc_info_RespondTrackingRectangleCommandResponse_tracking_5fserver_2ftracking_5fserver_2eproto.base);
-  return *internal_default_instance();
-}
-
 
 void RespondTrackingRectangleCommandResponse::Clear() {
 // @@protoc_insertion_point(message_clear_start:mavsdk.rpc.tracking_server.RespondTrackingRectangleCommandResponse)
@@ -3653,25 +3360,24 @@ void RespondTrackingRectangleCommandResponse::Clear() {
   // Prevent compiler warnings about cached_has_bits being unused
   (void) cached_has_bits;
 
-  if (GetArena() == nullptr && result_ != nullptr) {
-    delete result_;
+  if (GetArena() == nullptr && tracking_server_result_ != nullptr) {
+    delete tracking_server_result_;
   }
-  result_ = nullptr;
+  tracking_server_result_ = nullptr;
   _internal_metadata_.Clear<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>();
 }
 
 const char* RespondTrackingRectangleCommandResponse::_InternalParse(const char* ptr, ::PROTOBUF_NAMESPACE_ID::internal::ParseContext* ctx) {
 #define CHK_(x) if (PROTOBUF_PREDICT_FALSE(!(x))) goto failure
-  ::PROTOBUF_NAMESPACE_ID::Arena* arena = GetArena(); (void)arena;
   while (!ctx->Done(&ptr)) {
     ::PROTOBUF_NAMESPACE_ID::uint32 tag;
     ptr = ::PROTOBUF_NAMESPACE_ID::internal::ReadTag(ptr, &tag);
     CHK_(ptr);
     switch (tag >> 3) {
-      // .mavsdk.rpc.tracking_server.TrackingServerResult result = 1;
+      // .mavsdk.rpc.tracking_server.TrackingServerResult tracking_server_result = 1;
       case 1:
         if (PROTOBUF_PREDICT_TRUE(static_cast<::PROTOBUF_NAMESPACE_ID::uint8>(tag) == 10)) {
-          ptr = ctx->ParseMessage(_internal_mutable_result(), ptr);
+          ptr = ctx->ParseMessage(_internal_mutable_tracking_server_result(), ptr);
           CHK_(ptr);
         } else goto handle_unusual;
         continue;
@@ -3703,12 +3409,12 @@ failure:
   ::PROTOBUF_NAMESPACE_ID::uint32 cached_has_bits = 0;
   (void) cached_has_bits;
 
-  // .mavsdk.rpc.tracking_server.TrackingServerResult result = 1;
-  if (this->has_result()) {
+  // .mavsdk.rpc.tracking_server.TrackingServerResult tracking_server_result = 1;
+  if (this->has_tracking_server_result()) {
     target = stream->EnsureSpace(target);
     target = ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::
       InternalWriteMessage(
-        1, _Internal::result(this), target, stream);
+        1, _Internal::tracking_server_result(this), target, stream);
   }
 
   if (PROTOBUF_PREDICT_FALSE(_internal_metadata_.have_unknown_fields())) {
@@ -3727,11 +3433,11 @@ size_t RespondTrackingRectangleCommandResponse::ByteSizeLong() const {
   // Prevent compiler warnings about cached_has_bits being unused
   (void) cached_has_bits;
 
-  // .mavsdk.rpc.tracking_server.TrackingServerResult result = 1;
-  if (this->has_result()) {
+  // .mavsdk.rpc.tracking_server.TrackingServerResult tracking_server_result = 1;
+  if (this->has_tracking_server_result()) {
     total_size += 1 +
       ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::MessageSize(
-        *result_);
+        *tracking_server_result_);
   }
 
   if (PROTOBUF_PREDICT_FALSE(_internal_metadata_.have_unknown_fields())) {
@@ -3765,8 +3471,8 @@ void RespondTrackingRectangleCommandResponse::MergeFrom(const RespondTrackingRec
   ::PROTOBUF_NAMESPACE_ID::uint32 cached_has_bits = 0;
   (void) cached_has_bits;
 
-  if (from.has_result()) {
-    _internal_mutable_result()->::mavsdk::rpc::tracking_server::TrackingServerResult::MergeFrom(from._internal_result());
+  if (from.has_tracking_server_result()) {
+    _internal_mutable_tracking_server_result()->::mavsdk::rpc::tracking_server::TrackingServerResult::MergeFrom(from._internal_tracking_server_result());
   }
 }
 
@@ -3791,7 +3497,7 @@ bool RespondTrackingRectangleCommandResponse::IsInitialized() const {
 void RespondTrackingRectangleCommandResponse::InternalSwap(RespondTrackingRectangleCommandResponse* other) {
   using std::swap;
   _internal_metadata_.Swap<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>(&other->_internal_metadata_);
-  swap(result_, other->result_);
+  swap(tracking_server_result_, other->tracking_server_result_);
 }
 
 ::PROTOBUF_NAMESPACE_ID::Metadata RespondTrackingRectangleCommandResponse::GetMetadata() const {
@@ -3801,8 +3507,6 @@ void RespondTrackingRectangleCommandResponse::InternalSwap(RespondTrackingRectan
 
 // ===================================================================
 
-void RespondTrackingOffCommandRequest::InitAsDefaultInstance() {
-}
 class RespondTrackingOffCommandRequest::_Internal {
  public:
 };
@@ -3821,7 +3525,7 @@ RespondTrackingOffCommandRequest::RespondTrackingOffCommandRequest(const Respond
 }
 
 void RespondTrackingOffCommandRequest::SharedCtor() {
-  command_answer_ = 0;
+command_answer_ = 0;
 }
 
 RespondTrackingOffCommandRequest::~RespondTrackingOffCommandRequest() {
@@ -3843,11 +3547,6 @@ void RespondTrackingOffCommandRequest::RegisterArenaDtor(::PROTOBUF_NAMESPACE_ID
 void RespondTrackingOffCommandRequest::SetCachedSize(int size) const {
   _cached_size_.Set(size);
 }
-const RespondTrackingOffCommandRequest& RespondTrackingOffCommandRequest::default_instance() {
-  ::PROTOBUF_NAMESPACE_ID::internal::InitSCC(&::scc_info_RespondTrackingOffCommandRequest_tracking_5fserver_2ftracking_5fserver_2eproto.base);
-  return *internal_default_instance();
-}
-
 
 void RespondTrackingOffCommandRequest::Clear() {
 // @@protoc_insertion_point(message_clear_start:mavsdk.rpc.tracking_server.RespondTrackingOffCommandRequest)
@@ -3861,7 +3560,6 @@ void RespondTrackingOffCommandRequest::Clear() {
 
 const char* RespondTrackingOffCommandRequest::_InternalParse(const char* ptr, ::PROTOBUF_NAMESPACE_ID::internal::ParseContext* ctx) {
 #define CHK_(x) if (PROTOBUF_PREDICT_FALSE(!(x))) goto failure
-  ::PROTOBUF_NAMESPACE_ID::Arena* arena = GetArena(); (void)arena;
   while (!ctx->Done(&ptr)) {
     ::PROTOBUF_NAMESPACE_ID::uint32 tag;
     ptr = ::PROTOBUF_NAMESPACE_ID::internal::ReadTag(ptr, &tag);
@@ -3999,18 +3697,14 @@ void RespondTrackingOffCommandRequest::InternalSwap(RespondTrackingOffCommandReq
 
 // ===================================================================
 
-void RespondTrackingOffCommandResponse::InitAsDefaultInstance() {
-  ::mavsdk::rpc::tracking_server::_RespondTrackingOffCommandResponse_default_instance_._instance.get_mutable()->result_ = const_cast< ::mavsdk::rpc::tracking_server::TrackingServerResult*>(
-      ::mavsdk::rpc::tracking_server::TrackingServerResult::internal_default_instance());
-}
 class RespondTrackingOffCommandResponse::_Internal {
  public:
-  static const ::mavsdk::rpc::tracking_server::TrackingServerResult& result(const RespondTrackingOffCommandResponse* msg);
+  static const ::mavsdk::rpc::tracking_server::TrackingServerResult& tracking_server_result(const RespondTrackingOffCommandResponse* msg);
 };
 
 const ::mavsdk::rpc::tracking_server::TrackingServerResult&
-RespondTrackingOffCommandResponse::_Internal::result(const RespondTrackingOffCommandResponse* msg) {
-  return *msg->result_;
+RespondTrackingOffCommandResponse::_Internal::tracking_server_result(const RespondTrackingOffCommandResponse* msg) {
+  return *msg->tracking_server_result_;
 }
 RespondTrackingOffCommandResponse::RespondTrackingOffCommandResponse(::PROTOBUF_NAMESPACE_ID::Arena* arena)
   : ::PROTOBUF_NAMESPACE_ID::Message(arena) {
@@ -4021,17 +3715,16 @@ RespondTrackingOffCommandResponse::RespondTrackingOffCommandResponse(::PROTOBUF_
 RespondTrackingOffCommandResponse::RespondTrackingOffCommandResponse(const RespondTrackingOffCommandResponse& from)
   : ::PROTOBUF_NAMESPACE_ID::Message() {
   _internal_metadata_.MergeFrom<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>(from._internal_metadata_);
-  if (from._internal_has_result()) {
-    result_ = new ::mavsdk::rpc::tracking_server::TrackingServerResult(*from.result_);
+  if (from._internal_has_tracking_server_result()) {
+    tracking_server_result_ = new ::mavsdk::rpc::tracking_server::TrackingServerResult(*from.tracking_server_result_);
   } else {
-    result_ = nullptr;
+    tracking_server_result_ = nullptr;
   }
   // @@protoc_insertion_point(copy_constructor:mavsdk.rpc.tracking_server.RespondTrackingOffCommandResponse)
 }
 
 void RespondTrackingOffCommandResponse::SharedCtor() {
-  ::PROTOBUF_NAMESPACE_ID::internal::InitSCC(&scc_info_RespondTrackingOffCommandResponse_tracking_5fserver_2ftracking_5fserver_2eproto.base);
-  result_ = nullptr;
+tracking_server_result_ = nullptr;
 }
 
 RespondTrackingOffCommandResponse::~RespondTrackingOffCommandResponse() {
@@ -4042,7 +3735,7 @@ RespondTrackingOffCommandResponse::~RespondTrackingOffCommandResponse() {
 
 void RespondTrackingOffCommandResponse::SharedDtor() {
   GOOGLE_DCHECK(GetArena() == nullptr);
-  if (this != internal_default_instance()) delete result_;
+  if (this != internal_default_instance()) delete tracking_server_result_;
 }
 
 void RespondTrackingOffCommandResponse::ArenaDtor(void* object) {
@@ -4054,11 +3747,6 @@ void RespondTrackingOffCommandResponse::RegisterArenaDtor(::PROTOBUF_NAMESPACE_I
 void RespondTrackingOffCommandResponse::SetCachedSize(int size) const {
   _cached_size_.Set(size);
 }
-const RespondTrackingOffCommandResponse& RespondTrackingOffCommandResponse::default_instance() {
-  ::PROTOBUF_NAMESPACE_ID::internal::InitSCC(&::scc_info_RespondTrackingOffCommandResponse_tracking_5fserver_2ftracking_5fserver_2eproto.base);
-  return *internal_default_instance();
-}
-
 
 void RespondTrackingOffCommandResponse::Clear() {
 // @@protoc_insertion_point(message_clear_start:mavsdk.rpc.tracking_server.RespondTrackingOffCommandResponse)
@@ -4066,25 +3754,24 @@ void RespondTrackingOffCommandResponse::Clear() {
   // Prevent compiler warnings about cached_has_bits being unused
   (void) cached_has_bits;
 
-  if (GetArena() == nullptr && result_ != nullptr) {
-    delete result_;
+  if (GetArena() == nullptr && tracking_server_result_ != nullptr) {
+    delete tracking_server_result_;
   }
-  result_ = nullptr;
+  tracking_server_result_ = nullptr;
   _internal_metadata_.Clear<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>();
 }
 
 const char* RespondTrackingOffCommandResponse::_InternalParse(const char* ptr, ::PROTOBUF_NAMESPACE_ID::internal::ParseContext* ctx) {
 #define CHK_(x) if (PROTOBUF_PREDICT_FALSE(!(x))) goto failure
-  ::PROTOBUF_NAMESPACE_ID::Arena* arena = GetArena(); (void)arena;
   while (!ctx->Done(&ptr)) {
     ::PROTOBUF_NAMESPACE_ID::uint32 tag;
     ptr = ::PROTOBUF_NAMESPACE_ID::internal::ReadTag(ptr, &tag);
     CHK_(ptr);
     switch (tag >> 3) {
-      // .mavsdk.rpc.tracking_server.TrackingServerResult result = 1;
+      // .mavsdk.rpc.tracking_server.TrackingServerResult tracking_server_result = 1;
       case 1:
         if (PROTOBUF_PREDICT_TRUE(static_cast<::PROTOBUF_NAMESPACE_ID::uint8>(tag) == 10)) {
-          ptr = ctx->ParseMessage(_internal_mutable_result(), ptr);
+          ptr = ctx->ParseMessage(_internal_mutable_tracking_server_result(), ptr);
           CHK_(ptr);
         } else goto handle_unusual;
         continue;
@@ -4116,12 +3803,12 @@ failure:
   ::PROTOBUF_NAMESPACE_ID::uint32 cached_has_bits = 0;
   (void) cached_has_bits;
 
-  // .mavsdk.rpc.tracking_server.TrackingServerResult result = 1;
-  if (this->has_result()) {
+  // .mavsdk.rpc.tracking_server.TrackingServerResult tracking_server_result = 1;
+  if (this->has_tracking_server_result()) {
     target = stream->EnsureSpace(target);
     target = ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::
       InternalWriteMessage(
-        1, _Internal::result(this), target, stream);
+        1, _Internal::tracking_server_result(this), target, stream);
   }
 
   if (PROTOBUF_PREDICT_FALSE(_internal_metadata_.have_unknown_fields())) {
@@ -4140,11 +3827,11 @@ size_t RespondTrackingOffCommandResponse::ByteSizeLong() const {
   // Prevent compiler warnings about cached_has_bits being unused
   (void) cached_has_bits;
 
-  // .mavsdk.rpc.tracking_server.TrackingServerResult result = 1;
-  if (this->has_result()) {
+  // .mavsdk.rpc.tracking_server.TrackingServerResult tracking_server_result = 1;
+  if (this->has_tracking_server_result()) {
     total_size += 1 +
       ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::MessageSize(
-        *result_);
+        *tracking_server_result_);
   }
 
   if (PROTOBUF_PREDICT_FALSE(_internal_metadata_.have_unknown_fields())) {
@@ -4178,8 +3865,8 @@ void RespondTrackingOffCommandResponse::MergeFrom(const RespondTrackingOffComman
   ::PROTOBUF_NAMESPACE_ID::uint32 cached_has_bits = 0;
   (void) cached_has_bits;
 
-  if (from.has_result()) {
-    _internal_mutable_result()->::mavsdk::rpc::tracking_server::TrackingServerResult::MergeFrom(from._internal_result());
+  if (from.has_tracking_server_result()) {
+    _internal_mutable_tracking_server_result()->::mavsdk::rpc::tracking_server::TrackingServerResult::MergeFrom(from._internal_tracking_server_result());
   }
 }
 
@@ -4204,7 +3891,7 @@ bool RespondTrackingOffCommandResponse::IsInitialized() const {
 void RespondTrackingOffCommandResponse::InternalSwap(RespondTrackingOffCommandResponse* other) {
   using std::swap;
   _internal_metadata_.Swap<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>(&other->_internal_metadata_);
-  swap(result_, other->result_);
+  swap(tracking_server_result_, other->tracking_server_result_);
 }
 
 ::PROTOBUF_NAMESPACE_ID::Metadata RespondTrackingOffCommandResponse::GetMetadata() const {
@@ -4214,8 +3901,6 @@ void RespondTrackingOffCommandResponse::InternalSwap(RespondTrackingOffCommandRe
 
 // ===================================================================
 
-void TrackPoint::InitAsDefaultInstance() {
-}
 class TrackPoint::_Internal {
  public:
 };
@@ -4236,9 +3921,10 @@ TrackPoint::TrackPoint(const TrackPoint& from)
 }
 
 void TrackPoint::SharedCtor() {
-  ::memset(&point_x_, 0, static_cast<size_t>(
-      reinterpret_cast<char*>(&radius_) -
-      reinterpret_cast<char*>(&point_x_)) + sizeof(radius_));
+::memset(reinterpret_cast<char*>(this) + static_cast<size_t>(
+    reinterpret_cast<char*>(&point_x_) - reinterpret_cast<char*>(this)),
+    0, static_cast<size_t>(reinterpret_cast<char*>(&radius_) -
+    reinterpret_cast<char*>(&point_x_)) + sizeof(radius_));
 }
 
 TrackPoint::~TrackPoint() {
@@ -4260,11 +3946,6 @@ void TrackPoint::RegisterArenaDtor(::PROTOBUF_NAMESPACE_ID::Arena*) {
 void TrackPoint::SetCachedSize(int size) const {
   _cached_size_.Set(size);
 }
-const TrackPoint& TrackPoint::default_instance() {
-  ::PROTOBUF_NAMESPACE_ID::internal::InitSCC(&::scc_info_TrackPoint_tracking_5fserver_2ftracking_5fserver_2eproto.base);
-  return *internal_default_instance();
-}
-
 
 void TrackPoint::Clear() {
 // @@protoc_insertion_point(message_clear_start:mavsdk.rpc.tracking_server.TrackPoint)
@@ -4280,7 +3961,6 @@ void TrackPoint::Clear() {
 
 const char* TrackPoint::_InternalParse(const char* ptr, ::PROTOBUF_NAMESPACE_ID::internal::ParseContext* ctx) {
 #define CHK_(x) if (PROTOBUF_PREDICT_FALSE(!(x))) goto failure
-  ::PROTOBUF_NAMESPACE_ID::Arena* arena = GetArena(); (void)arena;
   while (!ctx->Done(&ptr)) {
     ::PROTOBUF_NAMESPACE_ID::uint32 tag;
     ptr = ::PROTOBUF_NAMESPACE_ID::internal::ReadTag(ptr, &tag);
@@ -4462,8 +4142,6 @@ void TrackPoint::InternalSwap(TrackPoint* other) {
 
 // ===================================================================
 
-void TrackRectangle::InitAsDefaultInstance() {
-}
 class TrackRectangle::_Internal {
  public:
 };
@@ -4484,9 +4162,10 @@ TrackRectangle::TrackRectangle(const TrackRectangle& from)
 }
 
 void TrackRectangle::SharedCtor() {
-  ::memset(&top_left_corner_x_, 0, static_cast<size_t>(
-      reinterpret_cast<char*>(&bottom_right_corner_y_) -
-      reinterpret_cast<char*>(&top_left_corner_x_)) + sizeof(bottom_right_corner_y_));
+::memset(reinterpret_cast<char*>(this) + static_cast<size_t>(
+    reinterpret_cast<char*>(&top_left_corner_x_) - reinterpret_cast<char*>(this)),
+    0, static_cast<size_t>(reinterpret_cast<char*>(&bottom_right_corner_y_) -
+    reinterpret_cast<char*>(&top_left_corner_x_)) + sizeof(bottom_right_corner_y_));
 }
 
 TrackRectangle::~TrackRectangle() {
@@ -4508,11 +4187,6 @@ void TrackRectangle::RegisterArenaDtor(::PROTOBUF_NAMESPACE_ID::Arena*) {
 void TrackRectangle::SetCachedSize(int size) const {
   _cached_size_.Set(size);
 }
-const TrackRectangle& TrackRectangle::default_instance() {
-  ::PROTOBUF_NAMESPACE_ID::internal::InitSCC(&::scc_info_TrackRectangle_tracking_5fserver_2ftracking_5fserver_2eproto.base);
-  return *internal_default_instance();
-}
-
 
 void TrackRectangle::Clear() {
 // @@protoc_insertion_point(message_clear_start:mavsdk.rpc.tracking_server.TrackRectangle)
@@ -4528,7 +4202,6 @@ void TrackRectangle::Clear() {
 
 const char* TrackRectangle::_InternalParse(const char* ptr, ::PROTOBUF_NAMESPACE_ID::internal::ParseContext* ctx) {
 #define CHK_(x) if (PROTOBUF_PREDICT_FALSE(!(x))) goto failure
-  ::PROTOBUF_NAMESPACE_ID::Arena* arena = GetArena(); (void)arena;
   while (!ctx->Done(&ptr)) {
     ::PROTOBUF_NAMESPACE_ID::uint32 tag;
     ptr = ::PROTOBUF_NAMESPACE_ID::internal::ReadTag(ptr, &tag);
@@ -4731,8 +4404,6 @@ void TrackRectangle::InternalSwap(TrackRectangle* other) {
 
 // ===================================================================
 
-void TrackingServerResult::InitAsDefaultInstance() {
-}
 class TrackingServerResult::_Internal {
  public:
 };
@@ -4748,7 +4419,7 @@ TrackingServerResult::TrackingServerResult(const TrackingServerResult& from)
   _internal_metadata_.MergeFrom<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>(from._internal_metadata_);
   result_str_.UnsafeSetDefault(&::PROTOBUF_NAMESPACE_ID::internal::GetEmptyStringAlreadyInited());
   if (!from._internal_result_str().empty()) {
-    result_str_.Set(&::PROTOBUF_NAMESPACE_ID::internal::GetEmptyStringAlreadyInited(), from._internal_result_str(),
+    result_str_.Set(::PROTOBUF_NAMESPACE_ID::internal::ArenaStringPtr::EmptyDefault{}, from._internal_result_str(), 
       GetArena());
   }
   result_ = from.result_;
@@ -4756,9 +4427,8 @@ TrackingServerResult::TrackingServerResult(const TrackingServerResult& from)
 }
 
 void TrackingServerResult::SharedCtor() {
-  ::PROTOBUF_NAMESPACE_ID::internal::InitSCC(&scc_info_TrackingServerResult_tracking_5fserver_2ftracking_5fserver_2eproto.base);
-  result_str_.UnsafeSetDefault(&::PROTOBUF_NAMESPACE_ID::internal::GetEmptyStringAlreadyInited());
-  result_ = 0;
+result_str_.UnsafeSetDefault(&::PROTOBUF_NAMESPACE_ID::internal::GetEmptyStringAlreadyInited());
+result_ = 0;
 }
 
 TrackingServerResult::~TrackingServerResult() {
@@ -4781,11 +4451,6 @@ void TrackingServerResult::RegisterArenaDtor(::PROTOBUF_NAMESPACE_ID::Arena*) {
 void TrackingServerResult::SetCachedSize(int size) const {
   _cached_size_.Set(size);
 }
-const TrackingServerResult& TrackingServerResult::default_instance() {
-  ::PROTOBUF_NAMESPACE_ID::internal::InitSCC(&::scc_info_TrackingServerResult_tracking_5fserver_2ftracking_5fserver_2eproto.base);
-  return *internal_default_instance();
-}
-
 
 void TrackingServerResult::Clear() {
 // @@protoc_insertion_point(message_clear_start:mavsdk.rpc.tracking_server.TrackingServerResult)
@@ -4793,14 +4458,13 @@ void TrackingServerResult::Clear() {
   // Prevent compiler warnings about cached_has_bits being unused
   (void) cached_has_bits;
 
-  result_str_.ClearToEmpty(&::PROTOBUF_NAMESPACE_ID::internal::GetEmptyStringAlreadyInited(), GetArena());
+  result_str_.ClearToEmpty();
   result_ = 0;
   _internal_metadata_.Clear<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>();
 }
 
 const char* TrackingServerResult::_InternalParse(const char* ptr, ::PROTOBUF_NAMESPACE_ID::internal::ParseContext* ctx) {
 #define CHK_(x) if (PROTOBUF_PREDICT_FALSE(!(x))) goto failure
-  ::PROTOBUF_NAMESPACE_ID::Arena* arena = GetArena(); (void)arena;
   while (!ctx->Done(&ptr)) {
     ::PROTOBUF_NAMESPACE_ID::uint32 tag;
     ptr = ::PROTOBUF_NAMESPACE_ID::internal::ReadTag(ptr, &tag);

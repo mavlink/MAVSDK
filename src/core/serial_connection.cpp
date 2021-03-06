@@ -48,8 +48,9 @@ SerialConnection::SerialConnection(
     Connection::receiver_callback_t receiver_callback,
     const std::string& path,
     int baudrate,
-    bool flow_control) :
-    Connection(receiver_callback),
+    bool flow_control,
+    ForwardingOption forwarding_option) :
+    Connection(receiver_callback, forwarding_option),
     _serial_node(path),
     _baudrate(baudrate),
     _flow_control(flow_control)
@@ -318,7 +319,7 @@ void SerialConnection::receive()
         _mavlink_receiver->set_new_datagram(buffer, recv_len);
         // Parse all mavlink messages in one data packet. Once exhausted, we'll exit while.
         while (_mavlink_receiver->parse_message()) {
-            receive_message(_mavlink_receiver->get_last_message());
+            receive_message(_mavlink_receiver->get_last_message(), this);
         }
     }
 }

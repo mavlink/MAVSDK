@@ -1,0 +1,183 @@
+//
+// Simple example to demonstrate how to control a gimbal.
+//
+// Can be tested against PX4 SITL with Typhoon H480:
+//     make px4_sitl gazebo_typhoon_h480
+//
+// Author: Julian Oes <julian@oes.ch>
+
+#include <chrono>
+#include <cstdint>
+#include <mavsdk/mavsdk.h>
+#include <mavsdk/plugins/gimbal/gimbal.h>
+#include <mavsdk/plugins/telemetry/telemetry.h>
+#include <iostream>
+#include <future>
+#include <memory>
+#include <thread>
+
+using namespace mavsdk;
+using std::chrono::seconds;
+using std::this_thread::sleep_for;
+
+void usage(std::string bin_name)
+{
+    std::cerr << "Usage : " << bin_name << " <connection_url>\n"
+              << "Connection URL format should be :\n"
+              << " For TCP : tcp://[server_host][:server_port]\n"
+              << " For UDP : udp://[bind_host][:bind_port]\n"
+              << " For Serial : serial:///path/to/serial/dev[:baudrate]\n"
+              << "For example, to connect to the simulator use URL: udp://:14540\n";
+}
+
+int main(int argc, char** argv)
+{
+    if (argc != 2) {
+        usage(argv[0]);
+        return 1;
+    }
+
+    Mavsdk mavsdk;
+    ConnectionResult connection_result = mavsdk.add_any_connection(argv[1]);
+
+    if (connection_result != ConnectionResult::Success) {
+        std::cerr << "Connection failed: " << connection_result << '\n';
+        return 1;
+    }
+
+    std::cout << "Waiting to discover system...\n";
+    auto prom = std::promise<std::shared_ptr<System>>{};
+    auto fut = prom.get_future();
+
+    // We wait for new systems to be discovered, once we find one that has an
+    // autopilot, we decide to use it.
+    mavsdk.subscribe_on_new_system([&mavsdk, &prom]() {
+        auto system = mavsdk.systems().back();
+
+        if (system->has_autopilot()) {
+            std::cout << "Discovered autopilot\n";
+
+            // Unsubscribe again as we only want to find one system.
+            mavsdk.subscribe_on_new_system(nullptr);
+            prom.set_value(system);
+        }
+    });
+
+    // We usually receive heartbeats at 1Hz, therefore we should find a
+    // system after around 3 seconds max, surely.
+    if (fut.wait_for(seconds(3)) == std::future_status::timeout) {
+        std::cerr << "No autopilot found, exiting.\n";
+        return 1;
+    }
+
+    // Get discovered system now.
+    auto system = fut.get();
+
+    // Instantiate plugins.
+    auto telemetry = Telemetry{system};
+    auto gimbal = Gimbal{system};
+
+    // We want to listen to the camera/gimbal angle of the drone at 5 Hz.
+    const Telemetry::Result set_rate_result = telemetry.set_rate_camera_attitude(5.0);
+    if (set_rate_result != Telemetry::Result::Success) {
+        std::cerr << "Setting rate failed:" << set_rate_result << '\n';
+        return 1;
+    }
+
+    // Set up callback to monitor camera/gimbal angle
+    telemetry.subscribe_camera_attitude_euler([](Telemetry::EulerAngle angle) {
+        std::cout << "Gimbal angle pitch: " << angle.pitch_deg << " deg, yaw: " << angle.yaw_deg
+                  << " yaw\n";
+    });
+
+    std::cout << "Start controlling gimbal...\n";
+    Gimbal::Result gimbal_result = gimbal.take_control(Gimbal::ControlMode::Primary);
+    if (gimbal_result != Gimbal::Result::Success) {
+        std::cerr << "Could not take gimbal control: " << gimbal_result << '\n';
+        return 1;
+    }
+
+    std::cout << "Set yaw mode to lock to a specific direction...\n";
+    gimbal_result = gimbal.set_mode(Gimbal::GimbalMode::YawLock);
+    if (gimbal_result != Gimbal::Result::Success) {
+        std::cerr << "Could not set to lock mode: " << gimbal_result << '\n';
+        return 1;
+    }
+
+    std::cout << "Look North...\n";
+    gimbal.set_pitch_and_yaw(0.0f, 0.0f);
+    sleep_for(seconds(2));
+
+    std::cout << "Look East...\n";
+    gimbal.set_pitch_and_yaw(0.0f, 90.0f);
+    sleep_for(seconds(2));
+
+    std::cout << "Look South...\n";
+    gimbal.set_pitch_and_yaw(0.0f, 180.0f);
+    sleep_for(seconds(2));
+
+    std::cout << "Look West...\n";
+    gimbal.set_pitch_and_yaw(0.0f, -90.0f);
+    sleep_for(seconds(2));
+
+    std::cout << "Set yaw mode to follow...\n";
+    gimbal_result = gimbal.set_mode(Gimbal::GimbalMode::YawFollow);
+    if (gimbal_result != Gimbal::Result::Success) {
+        std::cerr << "Could not set to follow mode: " << gimbal_result << '\n';
+        return 1;
+    }
+
+    std::cout << "And center first...\n";
+    gimbal.set_pitch_and_yaw(0.0f, 0.0f);
+    sleep_for(seconds(2));
+
+    std::cout << "Tilt gimbal down...\n";
+    gimbal.set_pitch_and_yaw(-90.0f, 0.0f);
+    sleep_for(seconds(2));
+
+    std::cout << "Tilt gimbal back up...\n";
+    gimbal.set_pitch_and_yaw(0.0f, 0.0f);
+    sleep_for(seconds(2));
+
+    std::cout << "Slowly tilt up ...\n";
+    gimbal.set_pitch_rate_and_yaw_rate(10.0f, 0.0f);
+    sleep_for(seconds(4));
+
+    std::cout << "Back to horizontal...\n";
+    gimbal.set_pitch_and_yaw(0.0f, 0.0f);
+    sleep_for(seconds(2));
+
+    std::cout << "Pan to the right...\n";
+    gimbal.set_pitch_and_yaw(0.0f, 90.0f);
+    sleep_for(seconds(2));
+
+    std::cout << "Back to the center...\n";
+    gimbal.set_pitch_and_yaw(0.0f, 0.0f);
+    sleep_for(seconds(2));
+
+    std::cout << "Pan slowly to the left...\n";
+    gimbal.set_pitch_rate_and_yaw_rate(0.0f, -10.0f);
+    sleep_for(seconds(4));
+
+    std::cout << "Back to the center...\n";
+    gimbal.set_pitch_and_yaw(0.0f, 0.0f);
+    sleep_for(seconds(2));
+
+    std::cout << "Set ROI (region of interested) location...\n";
+    gimbal.set_roi_location(47.39743832, 8.5463316, 488.0f);
+    sleep_for(seconds(3));
+
+    std::cout << "Back to the center...\n";
+    gimbal.set_pitch_and_yaw(0.0f, 0.0f);
+    sleep_for(seconds(2));
+
+    std::cout << "Stop controlling gimbal...\n";
+    gimbal_result = gimbal.release_control();
+    if (gimbal_result != Gimbal::Result::Success) {
+        std::cerr << "Could not take gimbal control: " << gimbal_result << '\n';
+        return 1;
+    }
+
+    std::cout << "Finished.\n";
+    return 0;
+}

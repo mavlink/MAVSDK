@@ -17,35 +17,42 @@ std::string Mavsdk::version() const
     return _impl->version();
 }
 
-ConnectionResult Mavsdk::add_any_connection(const std::string& connection_url)
-{
-    return _impl->add_any_connection(connection_url);
-}
-
-ConnectionResult Mavsdk::add_udp_connection(int local_port)
-{
-    return Mavsdk::add_udp_connection(DEFAULT_UDP_BIND_IP, local_port);
-}
-
-ConnectionResult Mavsdk::add_udp_connection(const std::string& local_bind_ip, const int local_port)
-{
-    return _impl->add_udp_connection(local_bind_ip, local_port);
-}
-
-ConnectionResult Mavsdk::setup_udp_remote(const std::string& remote_ip, int remote_port)
-{
-    return _impl->setup_udp_remote(remote_ip, remote_port);
-}
-
-ConnectionResult Mavsdk::add_tcp_connection(const std::string& remote_ip, const int remote_port)
-{
-    return _impl->add_tcp_connection(remote_ip, remote_port);
-}
-
 ConnectionResult
-Mavsdk::add_serial_connection(const std::string& dev_path, const int baudrate, bool flow_control)
+Mavsdk::add_any_connection(const std::string& connection_url, ForwardingOption forwarding_option)
 {
-    return _impl->add_serial_connection(dev_path, baudrate, flow_control);
+    return _impl->add_any_connection(connection_url, forwarding_option);
+}
+
+ConnectionResult Mavsdk::add_udp_connection(int local_port, ForwardingOption forwarding_option)
+{
+    return Mavsdk::add_udp_connection(DEFAULT_UDP_BIND_IP, local_port, forwarding_option);
+}
+
+ConnectionResult Mavsdk::add_udp_connection(
+    const std::string& local_bind_ip, const int local_port, ForwardingOption forwarding_option)
+{
+    return _impl->add_udp_connection(local_bind_ip, local_port, forwarding_option);
+}
+
+ConnectionResult Mavsdk::setup_udp_remote(
+    const std::string& remote_ip, int remote_port, ForwardingOption forwarding_option)
+{
+    return _impl->setup_udp_remote(remote_ip, remote_port, forwarding_option);
+}
+
+ConnectionResult Mavsdk::add_tcp_connection(
+    const std::string& remote_ip, const int remote_port, ForwardingOption forwarding_option)
+{
+    return _impl->add_tcp_connection(remote_ip, remote_port, forwarding_option);
+}
+
+ConnectionResult Mavsdk::add_serial_connection(
+    const std::string& dev_path,
+    const int baudrate,
+    bool flow_control,
+    ForwardingOption forwarding_option)
+{
+    return _impl->add_serial_connection(dev_path, baudrate, flow_control, forwarding_option);
 }
 
 std::vector<std::shared_ptr<System>> Mavsdk::systems() const

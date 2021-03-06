@@ -14,6 +14,7 @@ using Quaternion = Telemetry::Quaternion;
 using EulerAngle = Telemetry::EulerAngle;
 using AngularVelocityBody = Telemetry::AngularVelocityBody;
 using GpsInfo = Telemetry::GpsInfo;
+using RawGps = Telemetry::RawGps;
 using Battery = Telemetry::Battery;
 using Health = Telemetry::Health;
 using RcStatus = Telemetry::RcStatus;
@@ -25,6 +26,7 @@ using VelocityBody = Telemetry::VelocityBody;
 using PositionBody = Telemetry::PositionBody;
 using Odometry = Telemetry::Odometry;
 using DistanceSensor = Telemetry::DistanceSensor;
+using ScaledPressure = Telemetry::ScaledPressure;
 using PositionNed = Telemetry::PositionNed;
 using VelocityNed = Telemetry::VelocityNed;
 using PositionVelocityNed = Telemetry::PositionVelocityNed;
@@ -166,6 +168,16 @@ Telemetry::GpsInfo Telemetry::gps_info() const
     return _impl->gps_info();
 }
 
+void Telemetry::subscribe_raw_gps(RawGpsCallback callback)
+{
+    _impl->subscribe_raw_gps(callback);
+}
+
+Telemetry::RawGps Telemetry::raw_gps() const
+{
+    return _impl->raw_gps();
+}
+
 void Telemetry::subscribe_battery(BatteryCallback callback)
 {
     _impl->subscribe_battery(callback);
@@ -286,6 +298,26 @@ Telemetry::Imu Telemetry::imu() const
     return _impl->imu();
 }
 
+void Telemetry::subscribe_scaled_imu(ScaledImuCallback callback)
+{
+    _impl->subscribe_scaled_imu(callback);
+}
+
+Telemetry::Imu Telemetry::scaled_imu() const
+{
+    return _impl->scaled_imu();
+}
+
+void Telemetry::subscribe_raw_imu(RawImuCallback callback)
+{
+    _impl->subscribe_raw_imu(callback);
+}
+
+Telemetry::Imu Telemetry::raw_imu() const
+{
+    return _impl->raw_imu();
+}
+
 void Telemetry::subscribe_health_all_ok(HealthAllOkCallback callback)
 {
     _impl->subscribe_health_all_ok(callback);
@@ -314,6 +346,16 @@ void Telemetry::subscribe_distance_sensor(DistanceSensorCallback callback)
 Telemetry::DistanceSensor Telemetry::distance_sensor() const
 {
     return _impl->distance_sensor();
+}
+
+void Telemetry::subscribe_scaled_pressure(ScaledPressureCallback callback)
+{
+    _impl->subscribe_scaled_pressure(callback);
+}
+
+Telemetry::ScaledPressure Telemetry::scaled_pressure() const
+{
+    return _impl->scaled_pressure();
 }
 
 void Telemetry::set_rate_position_async(double rate_hz, const ResultCallback callback)
@@ -487,6 +529,26 @@ Telemetry::Result Telemetry::set_rate_imu(double rate_hz) const
     return _impl->set_rate_imu(rate_hz);
 }
 
+void Telemetry::set_rate_scaled_imu_async(double rate_hz, const ResultCallback callback)
+{
+    _impl->set_rate_scaled_imu_async(rate_hz, callback);
+}
+
+Telemetry::Result Telemetry::set_rate_scaled_imu(double rate_hz) const
+{
+    return _impl->set_rate_scaled_imu(rate_hz);
+}
+
+void Telemetry::set_rate_raw_imu_async(double rate_hz, const ResultCallback callback)
+{
+    _impl->set_rate_raw_imu_async(rate_hz, callback);
+}
+
+Telemetry::Result Telemetry::set_rate_raw_imu(double rate_hz) const
+{
+    return _impl->set_rate_raw_imu(rate_hz);
+}
+
 void Telemetry::set_rate_unix_epoch_time_async(double rate_hz, const ResultCallback callback)
 {
     _impl->set_rate_unix_epoch_time_async(rate_hz, callback);
@@ -619,6 +681,57 @@ std::ostream& operator<<(std::ostream& str, Telemetry::GpsInfo const& gps_info)
     str << "gps_info:" << '\n' << "{\n";
     str << "    num_satellites: " << gps_info.num_satellites << '\n';
     str << "    fix_type: " << gps_info.fix_type << '\n';
+    str << '}';
+    return str;
+}
+
+bool operator==(const Telemetry::RawGps& lhs, const Telemetry::RawGps& rhs)
+{
+    return (rhs.timestamp_us == lhs.timestamp_us) &&
+           ((std::isnan(rhs.latitude_deg) && std::isnan(lhs.latitude_deg)) ||
+            rhs.latitude_deg == lhs.latitude_deg) &&
+           ((std::isnan(rhs.longitude_deg) && std::isnan(lhs.longitude_deg)) ||
+            rhs.longitude_deg == lhs.longitude_deg) &&
+           ((std::isnan(rhs.absolute_altitude_m) && std::isnan(lhs.absolute_altitude_m)) ||
+            rhs.absolute_altitude_m == lhs.absolute_altitude_m) &&
+           ((std::isnan(rhs.hdop) && std::isnan(lhs.hdop)) || rhs.hdop == lhs.hdop) &&
+           ((std::isnan(rhs.vdop) && std::isnan(lhs.vdop)) || rhs.vdop == lhs.vdop) &&
+           ((std::isnan(rhs.velocity_m_s) && std::isnan(lhs.velocity_m_s)) ||
+            rhs.velocity_m_s == lhs.velocity_m_s) &&
+           ((std::isnan(rhs.cog_deg) && std::isnan(lhs.cog_deg)) || rhs.cog_deg == lhs.cog_deg) &&
+           ((std::isnan(rhs.altitude_ellipsoid_m) && std::isnan(lhs.altitude_ellipsoid_m)) ||
+            rhs.altitude_ellipsoid_m == lhs.altitude_ellipsoid_m) &&
+           ((std::isnan(rhs.horizontal_uncertainty_m) &&
+             std::isnan(lhs.horizontal_uncertainty_m)) ||
+            rhs.horizontal_uncertainty_m == lhs.horizontal_uncertainty_m) &&
+           ((std::isnan(rhs.vertical_uncertainty_m) && std::isnan(lhs.vertical_uncertainty_m)) ||
+            rhs.vertical_uncertainty_m == lhs.vertical_uncertainty_m) &&
+           ((std::isnan(rhs.velocity_uncertainty_m_s) &&
+             std::isnan(lhs.velocity_uncertainty_m_s)) ||
+            rhs.velocity_uncertainty_m_s == lhs.velocity_uncertainty_m_s) &&
+           ((std::isnan(rhs.heading_uncertainty_deg) && std::isnan(lhs.heading_uncertainty_deg)) ||
+            rhs.heading_uncertainty_deg == lhs.heading_uncertainty_deg) &&
+           ((std::isnan(rhs.yaw_deg) && std::isnan(lhs.yaw_deg)) || rhs.yaw_deg == lhs.yaw_deg);
+}
+
+std::ostream& operator<<(std::ostream& str, Telemetry::RawGps const& raw_gps)
+{
+    str << std::setprecision(15);
+    str << "raw_gps:" << '\n' << "{\n";
+    str << "    timestamp_us: " << raw_gps.timestamp_us << '\n';
+    str << "    latitude_deg: " << raw_gps.latitude_deg << '\n';
+    str << "    longitude_deg: " << raw_gps.longitude_deg << '\n';
+    str << "    absolute_altitude_m: " << raw_gps.absolute_altitude_m << '\n';
+    str << "    hdop: " << raw_gps.hdop << '\n';
+    str << "    vdop: " << raw_gps.vdop << '\n';
+    str << "    velocity_m_s: " << raw_gps.velocity_m_s << '\n';
+    str << "    cog_deg: " << raw_gps.cog_deg << '\n';
+    str << "    altitude_ellipsoid_m: " << raw_gps.altitude_ellipsoid_m << '\n';
+    str << "    horizontal_uncertainty_m: " << raw_gps.horizontal_uncertainty_m << '\n';
+    str << "    vertical_uncertainty_m: " << raw_gps.vertical_uncertainty_m << '\n';
+    str << "    velocity_uncertainty_m_s: " << raw_gps.velocity_uncertainty_m_s << '\n';
+    str << "    heading_uncertainty_deg: " << raw_gps.heading_uncertainty_deg << '\n';
+    str << "    yaw_deg: " << raw_gps.yaw_deg << '\n';
     str << '}';
     return str;
 }
@@ -866,6 +979,35 @@ std::ostream& operator<<(std::ostream& str, Telemetry::DistanceSensor const& dis
     return str;
 }
 
+bool operator==(const Telemetry::ScaledPressure& lhs, const Telemetry::ScaledPressure& rhs)
+{
+    return (rhs.timestamp_us == lhs.timestamp_us) &&
+           ((std::isnan(rhs.absolute_pressure_hpa) && std::isnan(lhs.absolute_pressure_hpa)) ||
+            rhs.absolute_pressure_hpa == lhs.absolute_pressure_hpa) &&
+           ((std::isnan(rhs.differential_pressure_hpa) &&
+             std::isnan(lhs.differential_pressure_hpa)) ||
+            rhs.differential_pressure_hpa == lhs.differential_pressure_hpa) &&
+           ((std::isnan(rhs.temperature_deg) && std::isnan(lhs.temperature_deg)) ||
+            rhs.temperature_deg == lhs.temperature_deg) &&
+           ((std::isnan(rhs.differential_pressure_temperature_deg) &&
+             std::isnan(lhs.differential_pressure_temperature_deg)) ||
+            rhs.differential_pressure_temperature_deg == lhs.differential_pressure_temperature_deg);
+}
+
+std::ostream& operator<<(std::ostream& str, Telemetry::ScaledPressure const& scaled_pressure)
+{
+    str << std::setprecision(15);
+    str << "scaled_pressure:" << '\n' << "{\n";
+    str << "    timestamp_us: " << scaled_pressure.timestamp_us << '\n';
+    str << "    absolute_pressure_hpa: " << scaled_pressure.absolute_pressure_hpa << '\n';
+    str << "    differential_pressure_hpa: " << scaled_pressure.differential_pressure_hpa << '\n';
+    str << "    temperature_deg: " << scaled_pressure.temperature_deg << '\n';
+    str << "    differential_pressure_temperature_deg: "
+        << scaled_pressure.differential_pressure_temperature_deg << '\n';
+    str << '}';
+    return str;
+}
+
 bool operator==(const Telemetry::PositionNed& lhs, const Telemetry::PositionNed& rhs)
 {
     return ((std::isnan(rhs.north_m) && std::isnan(lhs.north_m)) || rhs.north_m == lhs.north_m) &&
@@ -1033,7 +1175,8 @@ bool operator==(const Telemetry::Imu& lhs, const Telemetry::Imu& rhs)
            (rhs.angular_velocity_frd == lhs.angular_velocity_frd) &&
            (rhs.magnetic_field_frd == lhs.magnetic_field_frd) &&
            ((std::isnan(rhs.temperature_degc) && std::isnan(lhs.temperature_degc)) ||
-            rhs.temperature_degc == lhs.temperature_degc);
+            rhs.temperature_degc == lhs.temperature_degc) &&
+           (rhs.timestamp_us == lhs.timestamp_us);
 }
 
 std::ostream& operator<<(std::ostream& str, Telemetry::Imu const& imu)
@@ -1044,6 +1187,7 @@ std::ostream& operator<<(std::ostream& str, Telemetry::Imu const& imu)
     str << "    angular_velocity_frd: " << imu.angular_velocity_frd << '\n';
     str << "    magnetic_field_frd: " << imu.magnetic_field_frd << '\n';
     str << "    temperature_degc: " << imu.temperature_degc << '\n';
+    str << "    timestamp_us: " << imu.timestamp_us << '\n';
     str << '}';
     return str;
 }

@@ -14,108 +14,79 @@
 #include <google/protobuf/wire_format.h>
 // @@protoc_insertion_point(includes)
 #include <google/protobuf/port_def.inc>
-extern PROTOBUF_INTERNAL_EXPORT_geofence_2fgeofence_2eproto ::PROTOBUF_NAMESPACE_ID::internal::SCCInfo<0> scc_info_GeofenceResult_geofence_2fgeofence_2eproto;
-extern PROTOBUF_INTERNAL_EXPORT_geofence_2fgeofence_2eproto ::PROTOBUF_NAMESPACE_ID::internal::SCCInfo<0> scc_info_Point_geofence_2fgeofence_2eproto;
-extern PROTOBUF_INTERNAL_EXPORT_geofence_2fgeofence_2eproto ::PROTOBUF_NAMESPACE_ID::internal::SCCInfo<1> scc_info_Polygon_geofence_2fgeofence_2eproto;
+
+PROTOBUF_PRAGMA_INIT_SEG
 namespace mavsdk {
 namespace rpc {
 namespace geofence {
-class PointDefaultTypeInternal {
- public:
-  ::PROTOBUF_NAMESPACE_ID::internal::ExplicitlyConstructed<Point> _instance;
-} _Point_default_instance_;
-class PolygonDefaultTypeInternal {
- public:
-  ::PROTOBUF_NAMESPACE_ID::internal::ExplicitlyConstructed<Polygon> _instance;
-} _Polygon_default_instance_;
-class UploadGeofenceRequestDefaultTypeInternal {
- public:
-  ::PROTOBUF_NAMESPACE_ID::internal::ExplicitlyConstructed<UploadGeofenceRequest> _instance;
-} _UploadGeofenceRequest_default_instance_;
-class UploadGeofenceResponseDefaultTypeInternal {
- public:
-  ::PROTOBUF_NAMESPACE_ID::internal::ExplicitlyConstructed<UploadGeofenceResponse> _instance;
-} _UploadGeofenceResponse_default_instance_;
-class GeofenceResultDefaultTypeInternal {
- public:
-  ::PROTOBUF_NAMESPACE_ID::internal::ExplicitlyConstructed<GeofenceResult> _instance;
-} _GeofenceResult_default_instance_;
+constexpr Point::Point(
+  ::PROTOBUF_NAMESPACE_ID::internal::ConstantInitialized)
+  : latitude_deg_(0)
+  , longitude_deg_(0){}
+struct PointDefaultTypeInternal {
+  constexpr PointDefaultTypeInternal()
+    : _instance(::PROTOBUF_NAMESPACE_ID::internal::ConstantInitialized{}) {}
+  ~PointDefaultTypeInternal() {}
+  union {
+    Point _instance;
+  };
+};
+PROTOBUF_ATTRIBUTE_NO_DESTROY PROTOBUF_CONSTINIT PointDefaultTypeInternal _Point_default_instance_;
+constexpr Polygon::Polygon(
+  ::PROTOBUF_NAMESPACE_ID::internal::ConstantInitialized)
+  : points_()
+  , fence_type_(0)
+{}
+struct PolygonDefaultTypeInternal {
+  constexpr PolygonDefaultTypeInternal()
+    : _instance(::PROTOBUF_NAMESPACE_ID::internal::ConstantInitialized{}) {}
+  ~PolygonDefaultTypeInternal() {}
+  union {
+    Polygon _instance;
+  };
+};
+PROTOBUF_ATTRIBUTE_NO_DESTROY PROTOBUF_CONSTINIT PolygonDefaultTypeInternal _Polygon_default_instance_;
+constexpr UploadGeofenceRequest::UploadGeofenceRequest(
+  ::PROTOBUF_NAMESPACE_ID::internal::ConstantInitialized)
+  : polygons_(){}
+struct UploadGeofenceRequestDefaultTypeInternal {
+  constexpr UploadGeofenceRequestDefaultTypeInternal()
+    : _instance(::PROTOBUF_NAMESPACE_ID::internal::ConstantInitialized{}) {}
+  ~UploadGeofenceRequestDefaultTypeInternal() {}
+  union {
+    UploadGeofenceRequest _instance;
+  };
+};
+PROTOBUF_ATTRIBUTE_NO_DESTROY PROTOBUF_CONSTINIT UploadGeofenceRequestDefaultTypeInternal _UploadGeofenceRequest_default_instance_;
+constexpr UploadGeofenceResponse::UploadGeofenceResponse(
+  ::PROTOBUF_NAMESPACE_ID::internal::ConstantInitialized)
+  : geofence_result_(nullptr){}
+struct UploadGeofenceResponseDefaultTypeInternal {
+  constexpr UploadGeofenceResponseDefaultTypeInternal()
+    : _instance(::PROTOBUF_NAMESPACE_ID::internal::ConstantInitialized{}) {}
+  ~UploadGeofenceResponseDefaultTypeInternal() {}
+  union {
+    UploadGeofenceResponse _instance;
+  };
+};
+PROTOBUF_ATTRIBUTE_NO_DESTROY PROTOBUF_CONSTINIT UploadGeofenceResponseDefaultTypeInternal _UploadGeofenceResponse_default_instance_;
+constexpr GeofenceResult::GeofenceResult(
+  ::PROTOBUF_NAMESPACE_ID::internal::ConstantInitialized)
+  : result_str_(&::PROTOBUF_NAMESPACE_ID::internal::fixed_address_empty_string)
+  , result_(0)
+{}
+struct GeofenceResultDefaultTypeInternal {
+  constexpr GeofenceResultDefaultTypeInternal()
+    : _instance(::PROTOBUF_NAMESPACE_ID::internal::ConstantInitialized{}) {}
+  ~GeofenceResultDefaultTypeInternal() {}
+  union {
+    GeofenceResult _instance;
+  };
+};
+PROTOBUF_ATTRIBUTE_NO_DESTROY PROTOBUF_CONSTINIT GeofenceResultDefaultTypeInternal _GeofenceResult_default_instance_;
 }  // namespace geofence
 }  // namespace rpc
 }  // namespace mavsdk
-static void InitDefaultsscc_info_GeofenceResult_geofence_2fgeofence_2eproto() {
-  GOOGLE_PROTOBUF_VERIFY_VERSION;
-
-  {
-    void* ptr = &::mavsdk::rpc::geofence::_GeofenceResult_default_instance_;
-    new (ptr) ::mavsdk::rpc::geofence::GeofenceResult();
-    ::PROTOBUF_NAMESPACE_ID::internal::OnShutdownDestroyMessage(ptr);
-  }
-  ::mavsdk::rpc::geofence::GeofenceResult::InitAsDefaultInstance();
-}
-
-::PROTOBUF_NAMESPACE_ID::internal::SCCInfo<0> scc_info_GeofenceResult_geofence_2fgeofence_2eproto =
-    {{ATOMIC_VAR_INIT(::PROTOBUF_NAMESPACE_ID::internal::SCCInfoBase::kUninitialized), 0, 0, InitDefaultsscc_info_GeofenceResult_geofence_2fgeofence_2eproto}, {}};
-
-static void InitDefaultsscc_info_Point_geofence_2fgeofence_2eproto() {
-  GOOGLE_PROTOBUF_VERIFY_VERSION;
-
-  {
-    void* ptr = &::mavsdk::rpc::geofence::_Point_default_instance_;
-    new (ptr) ::mavsdk::rpc::geofence::Point();
-    ::PROTOBUF_NAMESPACE_ID::internal::OnShutdownDestroyMessage(ptr);
-  }
-  ::mavsdk::rpc::geofence::Point::InitAsDefaultInstance();
-}
-
-::PROTOBUF_NAMESPACE_ID::internal::SCCInfo<0> scc_info_Point_geofence_2fgeofence_2eproto =
-    {{ATOMIC_VAR_INIT(::PROTOBUF_NAMESPACE_ID::internal::SCCInfoBase::kUninitialized), 0, 0, InitDefaultsscc_info_Point_geofence_2fgeofence_2eproto}, {}};
-
-static void InitDefaultsscc_info_Polygon_geofence_2fgeofence_2eproto() {
-  GOOGLE_PROTOBUF_VERIFY_VERSION;
-
-  {
-    void* ptr = &::mavsdk::rpc::geofence::_Polygon_default_instance_;
-    new (ptr) ::mavsdk::rpc::geofence::Polygon();
-    ::PROTOBUF_NAMESPACE_ID::internal::OnShutdownDestroyMessage(ptr);
-  }
-  ::mavsdk::rpc::geofence::Polygon::InitAsDefaultInstance();
-}
-
-::PROTOBUF_NAMESPACE_ID::internal::SCCInfo<1> scc_info_Polygon_geofence_2fgeofence_2eproto =
-    {{ATOMIC_VAR_INIT(::PROTOBUF_NAMESPACE_ID::internal::SCCInfoBase::kUninitialized), 1, 0, InitDefaultsscc_info_Polygon_geofence_2fgeofence_2eproto}, {
-      &scc_info_Point_geofence_2fgeofence_2eproto.base,}};
-
-static void InitDefaultsscc_info_UploadGeofenceRequest_geofence_2fgeofence_2eproto() {
-  GOOGLE_PROTOBUF_VERIFY_VERSION;
-
-  {
-    void* ptr = &::mavsdk::rpc::geofence::_UploadGeofenceRequest_default_instance_;
-    new (ptr) ::mavsdk::rpc::geofence::UploadGeofenceRequest();
-    ::PROTOBUF_NAMESPACE_ID::internal::OnShutdownDestroyMessage(ptr);
-  }
-  ::mavsdk::rpc::geofence::UploadGeofenceRequest::InitAsDefaultInstance();
-}
-
-::PROTOBUF_NAMESPACE_ID::internal::SCCInfo<1> scc_info_UploadGeofenceRequest_geofence_2fgeofence_2eproto =
-    {{ATOMIC_VAR_INIT(::PROTOBUF_NAMESPACE_ID::internal::SCCInfoBase::kUninitialized), 1, 0, InitDefaultsscc_info_UploadGeofenceRequest_geofence_2fgeofence_2eproto}, {
-      &scc_info_Polygon_geofence_2fgeofence_2eproto.base,}};
-
-static void InitDefaultsscc_info_UploadGeofenceResponse_geofence_2fgeofence_2eproto() {
-  GOOGLE_PROTOBUF_VERIFY_VERSION;
-
-  {
-    void* ptr = &::mavsdk::rpc::geofence::_UploadGeofenceResponse_default_instance_;
-    new (ptr) ::mavsdk::rpc::geofence::UploadGeofenceResponse();
-    ::PROTOBUF_NAMESPACE_ID::internal::OnShutdownDestroyMessage(ptr);
-  }
-  ::mavsdk::rpc::geofence::UploadGeofenceResponse::InitAsDefaultInstance();
-}
-
-::PROTOBUF_NAMESPACE_ID::internal::SCCInfo<1> scc_info_UploadGeofenceResponse_geofence_2fgeofence_2eproto =
-    {{ATOMIC_VAR_INIT(::PROTOBUF_NAMESPACE_ID::internal::SCCInfoBase::kUninitialized), 1, 0, InitDefaultsscc_info_UploadGeofenceResponse_geofence_2fgeofence_2eproto}, {
-      &scc_info_GeofenceResult_geofence_2fgeofence_2eproto.base,}};
-
 static ::PROTOBUF_NAMESPACE_ID::Metadata file_level_metadata_geofence_2fgeofence_2eproto[5];
 static const ::PROTOBUF_NAMESPACE_ID::EnumDescriptor* file_level_enum_descriptors_geofence_2fgeofence_2eproto[2];
 static constexpr ::PROTOBUF_NAMESPACE_ID::ServiceDescriptor const** file_level_service_descriptors_geofence_2fgeofence_2eproto = nullptr;
@@ -196,25 +167,21 @@ const char descriptor_table_protodef_geofence_2fgeofence_2eproto[] PROTOBUF_SECT
   "B#\n\022io.mavsdk.geofenceB\rGeofenceProtob\006p"
   "roto3"
   ;
-static const ::PROTOBUF_NAMESPACE_ID::internal::DescriptorTable*const descriptor_table_geofence_2fgeofence_2eproto_deps[1] = {
-};
-static ::PROTOBUF_NAMESPACE_ID::internal::SCCInfoBase*const descriptor_table_geofence_2fgeofence_2eproto_sccs[5] = {
-  &scc_info_GeofenceResult_geofence_2fgeofence_2eproto.base,
-  &scc_info_Point_geofence_2fgeofence_2eproto.base,
-  &scc_info_Polygon_geofence_2fgeofence_2eproto.base,
-  &scc_info_UploadGeofenceRequest_geofence_2fgeofence_2eproto.base,
-  &scc_info_UploadGeofenceResponse_geofence_2fgeofence_2eproto.base,
-};
 static ::PROTOBUF_NAMESPACE_ID::internal::once_flag descriptor_table_geofence_2fgeofence_2eproto_once;
 const ::PROTOBUF_NAMESPACE_ID::internal::DescriptorTable descriptor_table_geofence_2fgeofence_2eproto = {
-  false, false, descriptor_table_protodef_geofence_2fgeofence_2eproto, "geofence/geofence.proto", 885,
-  &descriptor_table_geofence_2fgeofence_2eproto_once, descriptor_table_geofence_2fgeofence_2eproto_sccs, descriptor_table_geofence_2fgeofence_2eproto_deps, 5, 0,
+  false, false, 885, descriptor_table_protodef_geofence_2fgeofence_2eproto, "geofence/geofence.proto", 
+  &descriptor_table_geofence_2fgeofence_2eproto_once, nullptr, 0, 5,
   schemas, file_default_instances, TableStruct_geofence_2fgeofence_2eproto::offsets,
-  file_level_metadata_geofence_2fgeofence_2eproto, 5, file_level_enum_descriptors_geofence_2fgeofence_2eproto, file_level_service_descriptors_geofence_2fgeofence_2eproto,
+  file_level_metadata_geofence_2fgeofence_2eproto, file_level_enum_descriptors_geofence_2fgeofence_2eproto, file_level_service_descriptors_geofence_2fgeofence_2eproto,
 };
+PROTOBUF_ATTRIBUTE_WEAK ::PROTOBUF_NAMESPACE_ID::Metadata
+descriptor_table_geofence_2fgeofence_2eproto_metadata_getter(int index) {
+  ::PROTOBUF_NAMESPACE_ID::internal::AssignDescriptors(&descriptor_table_geofence_2fgeofence_2eproto);
+  return descriptor_table_geofence_2fgeofence_2eproto.file_level_metadata[index];
+}
 
 // Force running AddDescriptors() at dynamic initialization time.
-static bool dynamic_init_dummy_geofence_2fgeofence_2eproto = (static_cast<void>(::PROTOBUF_NAMESPACE_ID::internal::AddDescriptors(&descriptor_table_geofence_2fgeofence_2eproto)), true);
+PROTOBUF_ATTRIBUTE_INIT_PRIORITY static ::PROTOBUF_NAMESPACE_ID::internal::AddDescriptorsRunner dynamic_init_dummy_geofence_2fgeofence_2eproto(&descriptor_table_geofence_2fgeofence_2eproto);
 namespace mavsdk {
 namespace rpc {
 namespace geofence {
@@ -273,8 +240,6 @@ constexpr int GeofenceResult::Result_ARRAYSIZE;
 
 // ===================================================================
 
-void Point::InitAsDefaultInstance() {
-}
 class Point::_Internal {
  public:
 };
@@ -295,9 +260,10 @@ Point::Point(const Point& from)
 }
 
 void Point::SharedCtor() {
-  ::memset(&latitude_deg_, 0, static_cast<size_t>(
-      reinterpret_cast<char*>(&longitude_deg_) -
-      reinterpret_cast<char*>(&latitude_deg_)) + sizeof(longitude_deg_));
+::memset(reinterpret_cast<char*>(this) + static_cast<size_t>(
+    reinterpret_cast<char*>(&latitude_deg_) - reinterpret_cast<char*>(this)),
+    0, static_cast<size_t>(reinterpret_cast<char*>(&longitude_deg_) -
+    reinterpret_cast<char*>(&latitude_deg_)) + sizeof(longitude_deg_));
 }
 
 Point::~Point() {
@@ -319,11 +285,6 @@ void Point::RegisterArenaDtor(::PROTOBUF_NAMESPACE_ID::Arena*) {
 void Point::SetCachedSize(int size) const {
   _cached_size_.Set(size);
 }
-const Point& Point::default_instance() {
-  ::PROTOBUF_NAMESPACE_ID::internal::InitSCC(&::scc_info_Point_geofence_2fgeofence_2eproto.base);
-  return *internal_default_instance();
-}
-
 
 void Point::Clear() {
 // @@protoc_insertion_point(message_clear_start:mavsdk.rpc.geofence.Point)
@@ -339,7 +300,6 @@ void Point::Clear() {
 
 const char* Point::_InternalParse(const char* ptr, ::PROTOBUF_NAMESPACE_ID::internal::ParseContext* ctx) {
 #define CHK_(x) if (PROTOBUF_PREDICT_FALSE(!(x))) goto failure
-  ::PROTOBUF_NAMESPACE_ID::Arena* arena = GetArena(); (void)arena;
   while (!ctx->Done(&ptr)) {
     ::PROTOBUF_NAMESPACE_ID::uint32 tag;
     ptr = ::PROTOBUF_NAMESPACE_ID::internal::ReadTag(ptr, &tag);
@@ -500,8 +460,6 @@ void Point::InternalSwap(Point* other) {
 
 // ===================================================================
 
-void Polygon::InitAsDefaultInstance() {
-}
 class Polygon::_Internal {
  public:
 };
@@ -522,8 +480,7 @@ Polygon::Polygon(const Polygon& from)
 }
 
 void Polygon::SharedCtor() {
-  ::PROTOBUF_NAMESPACE_ID::internal::InitSCC(&scc_info_Polygon_geofence_2fgeofence_2eproto.base);
-  fence_type_ = 0;
+fence_type_ = 0;
 }
 
 Polygon::~Polygon() {
@@ -545,11 +502,6 @@ void Polygon::RegisterArenaDtor(::PROTOBUF_NAMESPACE_ID::Arena*) {
 void Polygon::SetCachedSize(int size) const {
   _cached_size_.Set(size);
 }
-const Polygon& Polygon::default_instance() {
-  ::PROTOBUF_NAMESPACE_ID::internal::InitSCC(&::scc_info_Polygon_geofence_2fgeofence_2eproto.base);
-  return *internal_default_instance();
-}
-
 
 void Polygon::Clear() {
 // @@protoc_insertion_point(message_clear_start:mavsdk.rpc.geofence.Polygon)
@@ -564,7 +516,6 @@ void Polygon::Clear() {
 
 const char* Polygon::_InternalParse(const char* ptr, ::PROTOBUF_NAMESPACE_ID::internal::ParseContext* ctx) {
 #define CHK_(x) if (PROTOBUF_PREDICT_FALSE(!(x))) goto failure
-  ::PROTOBUF_NAMESPACE_ID::Arena* arena = GetArena(); (void)arena;
   while (!ctx->Done(&ptr)) {
     ::PROTOBUF_NAMESPACE_ID::uint32 tag;
     ptr = ::PROTOBUF_NAMESPACE_ID::internal::ReadTag(ptr, &tag);
@@ -731,8 +682,6 @@ void Polygon::InternalSwap(Polygon* other) {
 
 // ===================================================================
 
-void UploadGeofenceRequest::InitAsDefaultInstance() {
-}
 class UploadGeofenceRequest::_Internal {
  public:
 };
@@ -752,7 +701,6 @@ UploadGeofenceRequest::UploadGeofenceRequest(const UploadGeofenceRequest& from)
 }
 
 void UploadGeofenceRequest::SharedCtor() {
-  ::PROTOBUF_NAMESPACE_ID::internal::InitSCC(&scc_info_UploadGeofenceRequest_geofence_2fgeofence_2eproto.base);
 }
 
 UploadGeofenceRequest::~UploadGeofenceRequest() {
@@ -774,11 +722,6 @@ void UploadGeofenceRequest::RegisterArenaDtor(::PROTOBUF_NAMESPACE_ID::Arena*) {
 void UploadGeofenceRequest::SetCachedSize(int size) const {
   _cached_size_.Set(size);
 }
-const UploadGeofenceRequest& UploadGeofenceRequest::default_instance() {
-  ::PROTOBUF_NAMESPACE_ID::internal::InitSCC(&::scc_info_UploadGeofenceRequest_geofence_2fgeofence_2eproto.base);
-  return *internal_default_instance();
-}
-
 
 void UploadGeofenceRequest::Clear() {
 // @@protoc_insertion_point(message_clear_start:mavsdk.rpc.geofence.UploadGeofenceRequest)
@@ -792,7 +735,6 @@ void UploadGeofenceRequest::Clear() {
 
 const char* UploadGeofenceRequest::_InternalParse(const char* ptr, ::PROTOBUF_NAMESPACE_ID::internal::ParseContext* ctx) {
 #define CHK_(x) if (PROTOBUF_PREDICT_FALSE(!(x))) goto failure
-  ::PROTOBUF_NAMESPACE_ID::Arena* arena = GetArena(); (void)arena;
   while (!ctx->Done(&ptr)) {
     ::PROTOBUF_NAMESPACE_ID::uint32 tag;
     ptr = ::PROTOBUF_NAMESPACE_ID::internal::ReadTag(ptr, &tag);
@@ -934,10 +876,6 @@ void UploadGeofenceRequest::InternalSwap(UploadGeofenceRequest* other) {
 
 // ===================================================================
 
-void UploadGeofenceResponse::InitAsDefaultInstance() {
-  ::mavsdk::rpc::geofence::_UploadGeofenceResponse_default_instance_._instance.get_mutable()->geofence_result_ = const_cast< ::mavsdk::rpc::geofence::GeofenceResult*>(
-      ::mavsdk::rpc::geofence::GeofenceResult::internal_default_instance());
-}
 class UploadGeofenceResponse::_Internal {
  public:
   static const ::mavsdk::rpc::geofence::GeofenceResult& geofence_result(const UploadGeofenceResponse* msg);
@@ -965,8 +903,7 @@ UploadGeofenceResponse::UploadGeofenceResponse(const UploadGeofenceResponse& fro
 }
 
 void UploadGeofenceResponse::SharedCtor() {
-  ::PROTOBUF_NAMESPACE_ID::internal::InitSCC(&scc_info_UploadGeofenceResponse_geofence_2fgeofence_2eproto.base);
-  geofence_result_ = nullptr;
+geofence_result_ = nullptr;
 }
 
 UploadGeofenceResponse::~UploadGeofenceResponse() {
@@ -989,11 +926,6 @@ void UploadGeofenceResponse::RegisterArenaDtor(::PROTOBUF_NAMESPACE_ID::Arena*) 
 void UploadGeofenceResponse::SetCachedSize(int size) const {
   _cached_size_.Set(size);
 }
-const UploadGeofenceResponse& UploadGeofenceResponse::default_instance() {
-  ::PROTOBUF_NAMESPACE_ID::internal::InitSCC(&::scc_info_UploadGeofenceResponse_geofence_2fgeofence_2eproto.base);
-  return *internal_default_instance();
-}
-
 
 void UploadGeofenceResponse::Clear() {
 // @@protoc_insertion_point(message_clear_start:mavsdk.rpc.geofence.UploadGeofenceResponse)
@@ -1010,7 +942,6 @@ void UploadGeofenceResponse::Clear() {
 
 const char* UploadGeofenceResponse::_InternalParse(const char* ptr, ::PROTOBUF_NAMESPACE_ID::internal::ParseContext* ctx) {
 #define CHK_(x) if (PROTOBUF_PREDICT_FALSE(!(x))) goto failure
-  ::PROTOBUF_NAMESPACE_ID::Arena* arena = GetArena(); (void)arena;
   while (!ctx->Done(&ptr)) {
     ::PROTOBUF_NAMESPACE_ID::uint32 tag;
     ptr = ::PROTOBUF_NAMESPACE_ID::internal::ReadTag(ptr, &tag);
@@ -1149,8 +1080,6 @@ void UploadGeofenceResponse::InternalSwap(UploadGeofenceResponse* other) {
 
 // ===================================================================
 
-void GeofenceResult::InitAsDefaultInstance() {
-}
 class GeofenceResult::_Internal {
  public:
 };
@@ -1166,7 +1095,7 @@ GeofenceResult::GeofenceResult(const GeofenceResult& from)
   _internal_metadata_.MergeFrom<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>(from._internal_metadata_);
   result_str_.UnsafeSetDefault(&::PROTOBUF_NAMESPACE_ID::internal::GetEmptyStringAlreadyInited());
   if (!from._internal_result_str().empty()) {
-    result_str_.Set(&::PROTOBUF_NAMESPACE_ID::internal::GetEmptyStringAlreadyInited(), from._internal_result_str(),
+    result_str_.Set(::PROTOBUF_NAMESPACE_ID::internal::ArenaStringPtr::EmptyDefault{}, from._internal_result_str(), 
       GetArena());
   }
   result_ = from.result_;
@@ -1174,9 +1103,8 @@ GeofenceResult::GeofenceResult(const GeofenceResult& from)
 }
 
 void GeofenceResult::SharedCtor() {
-  ::PROTOBUF_NAMESPACE_ID::internal::InitSCC(&scc_info_GeofenceResult_geofence_2fgeofence_2eproto.base);
-  result_str_.UnsafeSetDefault(&::PROTOBUF_NAMESPACE_ID::internal::GetEmptyStringAlreadyInited());
-  result_ = 0;
+result_str_.UnsafeSetDefault(&::PROTOBUF_NAMESPACE_ID::internal::GetEmptyStringAlreadyInited());
+result_ = 0;
 }
 
 GeofenceResult::~GeofenceResult() {
@@ -1199,11 +1127,6 @@ void GeofenceResult::RegisterArenaDtor(::PROTOBUF_NAMESPACE_ID::Arena*) {
 void GeofenceResult::SetCachedSize(int size) const {
   _cached_size_.Set(size);
 }
-const GeofenceResult& GeofenceResult::default_instance() {
-  ::PROTOBUF_NAMESPACE_ID::internal::InitSCC(&::scc_info_GeofenceResult_geofence_2fgeofence_2eproto.base);
-  return *internal_default_instance();
-}
-
 
 void GeofenceResult::Clear() {
 // @@protoc_insertion_point(message_clear_start:mavsdk.rpc.geofence.GeofenceResult)
@@ -1211,14 +1134,13 @@ void GeofenceResult::Clear() {
   // Prevent compiler warnings about cached_has_bits being unused
   (void) cached_has_bits;
 
-  result_str_.ClearToEmpty(&::PROTOBUF_NAMESPACE_ID::internal::GetEmptyStringAlreadyInited(), GetArena());
+  result_str_.ClearToEmpty();
   result_ = 0;
   _internal_metadata_.Clear<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>();
 }
 
 const char* GeofenceResult::_InternalParse(const char* ptr, ::PROTOBUF_NAMESPACE_ID::internal::ParseContext* ctx) {
 #define CHK_(x) if (PROTOBUF_PREDICT_FALSE(!(x))) goto failure
-  ::PROTOBUF_NAMESPACE_ID::Arena* arena = GetArena(); (void)arena;
   while (!ctx->Done(&ptr)) {
     ::PROTOBUF_NAMESPACE_ID::uint32 tag;
     ptr = ::PROTOBUF_NAMESPACE_ID::internal::ReadTag(ptr, &tag);

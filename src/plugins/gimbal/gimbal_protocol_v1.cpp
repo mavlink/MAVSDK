@@ -130,8 +130,8 @@ GimbalProtocolV1::set_roi_location(double latitude_deg, double longitude_deg, fl
     MavlinkCommandSender::CommandInt command{};
 
     command.command = MAV_CMD_DO_SET_ROI_LOCATION;
-    command.params.x = int32_t(std::round(latitude_deg * 1e7));
-    command.params.y = int32_t(std::round(longitude_deg * 1e7));
+    command.params.x = static_cast<int32_t>(std::round(latitude_deg * 1e7));
+    command.params.y = static_cast<int32_t>(std::round(longitude_deg * 1e7));
     command.params.z = altitude_m;
     command.target_component_id = _system_impl.get_autopilot_id();
 
@@ -144,8 +144,8 @@ void GimbalProtocolV1::set_roi_location_async(
     MavlinkCommandSender::CommandInt command{};
 
     command.command = MAV_CMD_DO_SET_ROI_LOCATION;
-    command.params.x = int32_t(std::round(latitude_deg * 1e7));
-    command.params.y = int32_t(std::round(longitude_deg * 1e7));
+    command.params.x = static_cast<int32_t>(std::round(latitude_deg * 1e7));
+    command.params.y = static_cast<int32_t>(std::round(longitude_deg * 1e7));
     command.params.z = altitude_m;
     command.target_component_id = _system_impl.get_autopilot_id();
 

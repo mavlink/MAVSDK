@@ -60,6 +60,11 @@ void CameraImpl::init()
         this);
 
     _parent->register_mavlink_message_handler(
+        MAVLINK_MSG_ID_VIDEO_STREAM_STATUS,
+        std::bind(&CameraImpl::process_video_stream_status, this, _1),
+        this);
+
+    _parent->register_mavlink_message_handler(
         MAVLINK_MSG_ID_FLIGHT_INFORMATION,
         std::bind(&CameraImpl::process_flight_information, this, _1),
         this);
@@ -345,6 +350,17 @@ MavlinkCommandSender::CommandLong CameraImpl::make_command_request_video_stream_
     return cmd_req_video_stream_info;
 }
 
+MavlinkCommandSender::CommandLong CameraImpl::make_command_request_video_stream_status()
+{
+    MavlinkCommandSender::CommandLong cmd_req_video_stream_status{};
+
+    cmd_req_video_stream_status.command = MAV_CMD_REQUEST_VIDEO_STREAM_STATUS;
+    cmd_req_video_stream_status.params.param2 = 1.0f;
+    cmd_req_video_stream_status.target_component_id = _camera_id + MAV_COMP_ID_CAMERA;
+
+    return cmd_req_video_stream_status;
+}
+
 Camera::Result CameraImpl::take_photo()
 {
     // TODO: check whether we are in photo mode.
@@ -396,7 +412,7 @@ Camera::Result CameraImpl::stop_video()
 
     {
         std::lock_guard<std::mutex> lock(_video_stream_info.mutex);
-        _video_stream_info.data.status = Camera::VideoStreamInfo::Status::NotRunning;
+        _video_stream_info.data.status = Camera::VideoStreamInfo::VideoStreamStatus::NotRunning;
     }
 
     return camera_result_from_command_result(_parent->send_command(cmd_stop_video));
@@ -489,7 +505,7 @@ Camera::Result CameraImpl::start_video_streaming()
     std::lock_guard<std::mutex> lock(_video_stream_info.mutex);
 
     if (_video_stream_info.available &&
-        _video_stream_info.data.status == Camera::VideoStreamInfo::Status::InProgress) {
+        _video_stream_info.data.status == Camera::VideoStreamInfo::VideoStreamStatus::InProgress) {
         return Camera::Result::InProgress;
     }
 
@@ -516,7 +532,7 @@ Camera::Result CameraImpl::stop_video_streaming()
     {
         std::lock_guard<std::mutex> lock(_video_stream_info.mutex);
         // TODO: check if we can/should do that.
-        _video_stream_info.data.status = Camera::VideoStreamInfo::Status::NotRunning;
+        _video_stream_info.data.status = Camera::VideoStreamInfo::VideoStreamStatus::NotRunning;
     }
     return result;
 }
@@ -524,6 +540,7 @@ Camera::Result CameraImpl::stop_video_streaming()
 void CameraImpl::request_video_stream_info()
 {
     _parent->send_command_async(make_command_request_video_stream_info(), nullptr);
+    _parent->send_command_async(make_command_request_video_stream_status(), nullptr);
 }
 
 Camera::VideoStreamInfo CameraImpl::video_stream_info()
@@ -766,13 +783,25 @@ void CameraImpl::process_storage_information(const mavlink_message_t& message)
 
     {
         std::lock_guard<std::mutex> lock(_status.mutex);
-        if (storage_information.status == 0) {
-            _status.data.storage_status = Camera::Status::StorageStatus::NotAvailable;
-        } else if (storage_information.status == 1) {
-            _status.data.storage_status = Camera::Status::StorageStatus::Unformatted;
-        } else if (storage_information.status == 2) {
-            _status.data.storage_status = Camera::Status::StorageStatus::Formatted;
+        switch (storage_information.status) {
+            case STORAGE_STATUS_EMPTY:
+                _status.data.storage_status = Camera::Status::StorageStatus::NotAvailable;
+                break;
+            case STORAGE_STATUS_UNFORMATTED:
+                _status.data.storage_status = Camera::Status::StorageStatus::Unformatted;
+                break;
+            case STORAGE_STATUS_READY:
+                _status.data.storage_status = Camera::Status::StorageStatus::Formatted;
+                break;
+            case STORAGE_STATUS_NOT_SUPPORTED:
+                _status.data.storage_status = Camera::Status::StorageStatus::NotSupported;
+                break;
+            default:
+                _status.data.storage_status = Camera::Status::StorageStatus::NotSupported;
+                LogErr() << "Unknown storage status received.";
+                break;
         }
+
         _status.data.available_storage_mib = storage_information.available_capacity;
         _status.data.used_storage_mib = storage_information.used_capacity;
         _status.data.total_storage_mib = storage_information.total_capacity;
@@ -965,15 +994,50 @@ void CameraImpl::process_video_information(const mavlink_message_t& message)
         // TODO: use stream_id and count
         _video_stream_info.data.status =
             (received_video_info.flags & VIDEO_STREAM_STATUS_FLAGS_RUNNING ?
-                 Camera::VideoStreamInfo::Status::InProgress :
-                 Camera::VideoStreamInfo::Status::NotRunning);
+                 Camera::VideoStreamInfo::VideoStreamStatus::InProgress :
+                 Camera::VideoStreamInfo::VideoStreamStatus::NotRunning);
+        _video_stream_info.data.spectrum =
+            (received_video_info.flags & VIDEO_STREAM_STATUS_FLAGS_THERMAL ?
+                 Camera::VideoStreamInfo::VideoStreamSpectrum::Infrared :
+                 Camera::VideoStreamInfo::VideoStreamSpectrum::VisibleLight);
+
         auto& video_stream_info = _video_stream_info.data.settings;
         video_stream_info.frame_rate_hz = received_video_info.framerate;
         video_stream_info.horizontal_resolution_pix = received_video_info.resolution_h;
         video_stream_info.vertical_resolution_pix = received_video_info.resolution_v;
         video_stream_info.bit_rate_b_s = received_video_info.bitrate;
         video_stream_info.rotation_deg = received_video_info.rotation;
+        video_stream_info.horizontal_fov_deg = static_cast<float>(received_video_info.hfov);
         video_stream_info.uri = received_video_info.uri;
+        _video_stream_info.available = true;
+    }
+
+    notify_video_stream_info();
+}
+
+void CameraImpl::process_video_stream_status(const mavlink_message_t& message)
+{
+    mavlink_video_stream_status_t received_video_stream_status;
+    mavlink_msg_video_stream_status_decode(&message, &received_video_stream_status);
+    {
+        std::lock_guard<std::mutex> lock(_video_stream_info.mutex);
+        _video_stream_info.data.status =
+            (received_video_stream_status.flags & VIDEO_STREAM_STATUS_FLAGS_RUNNING ?
+                 Camera::VideoStreamInfo::VideoStreamStatus::InProgress :
+                 Camera::VideoStreamInfo::VideoStreamStatus::NotRunning);
+        _video_stream_info.data.spectrum =
+            (received_video_stream_status.flags & VIDEO_STREAM_STATUS_FLAGS_THERMAL ?
+                 Camera::VideoStreamInfo::VideoStreamSpectrum::Infrared :
+                 Camera::VideoStreamInfo::VideoStreamSpectrum::VisibleLight);
+
+        auto& video_stream_info = _video_stream_info.data.settings;
+        video_stream_info.frame_rate_hz = received_video_stream_status.framerate;
+        video_stream_info.horizontal_resolution_pix = received_video_stream_status.resolution_h;
+        video_stream_info.vertical_resolution_pix = received_video_stream_status.resolution_v;
+        video_stream_info.bit_rate_b_s = received_video_stream_status.bitrate;
+        video_stream_info.rotation_deg = received_video_stream_status.rotation;
+        video_stream_info.horizontal_fov_deg =
+            static_cast<float>(received_video_stream_status.hfov);
         _video_stream_info.available = true;
     }
 

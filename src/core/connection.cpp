@@ -5,12 +5,19 @@
 
 namespace mavsdk {
 
-Connection::Connection(receiver_callback_t receiver_callback) :
+std::atomic<unsigned> Connection::_forwarding_connections_count = 0;
+
+Connection::Connection(receiver_callback_t receiver_callback, ForwardingOption forwarding_option) :
     _receiver_callback(receiver_callback),
-    _mavlink_receiver()
+    _mavlink_receiver(),
+    _forwarding_option(forwarding_option)
 {
     // Insert system ID 0 in all connections for broadcast.
     _system_ids.insert(0);
+
+    if (forwarding_option == ForwardingOption::ForwardingOn) {
+        _forwarding_connections_count++;
+    }
 }
 
 Connection::~Connection()
@@ -41,12 +48,23 @@ void Connection::stop_mavlink_receiver()
     }
 }
 
-void Connection::receive_message(mavlink_message_t& message)
+void Connection::receive_message(mavlink_message_t& message, Connection* connection)
 {
+    // Register system ID when receiving a message from a new system.
     if (_system_ids.find(message.sysid) == _system_ids.end()) {
         _system_ids.insert(message.sysid);
     }
-    _receiver_callback(message);
+    _receiver_callback(message, connection);
+}
+
+bool Connection::should_forward_messages() const
+{
+    return _forwarding_option == ForwardingOption::ForwardingOn;
+}
+
+unsigned Connection::forwarding_connections_count() const
+{
+    return _forwarding_connections_count;
 }
 
 bool Connection::has_system_id(uint8_t system_id)

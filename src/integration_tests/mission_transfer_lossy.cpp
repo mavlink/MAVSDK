@@ -54,10 +54,10 @@ TEST_F(SitlTest, MissionTransferLossy)
 void set_link_lossy(std::shared_ptr<MavlinkPassthrough> mavlink_passthrough)
 {
     mavlink_passthrough->intercept_outgoing_messages_async(
-        [](mavlink_message_t& message) { return should_keep_message(message); });
+        [](const mavlink_message_t& message) { return should_keep_message(message); });
 
     mavlink_passthrough->intercept_incoming_messages_async(
-        [](mavlink_message_t& message) { return should_keep_message(message); });
+        [](const mavlink_message_t& message) { return should_keep_message(message); });
 }
 
 bool should_keep_message(const mavlink_message_t& message)

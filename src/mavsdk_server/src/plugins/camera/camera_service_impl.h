@@ -300,6 +300,8 @@ public:
 
         rpc_obj->set_uri(video_stream_settings.uri);
 
+        rpc_obj->set_horizontal_fov_deg(video_stream_settings.horizontal_fov_deg);
+
         return rpc_obj;
     }
 
@@ -320,34 +322,78 @@ public:
 
         obj.uri = video_stream_settings.uri();
 
+        obj.horizontal_fov_deg = video_stream_settings.horizontal_fov_deg();
+
         return obj;
     }
 
-    static rpc::camera::VideoStreamInfo::Status
-    translateToRpcStatus(const mavsdk::Camera::VideoStreamInfo::Status& status)
+    static rpc::camera::VideoStreamInfo::VideoStreamStatus translateToRpcVideoStreamStatus(
+        const mavsdk::Camera::VideoStreamInfo::VideoStreamStatus& video_stream_status)
     {
-        switch (status) {
+        switch (video_stream_status) {
             default:
-                LogErr() << "Unknown status enum value: " << static_cast<int>(status);
+                LogErr() << "Unknown video_stream_status enum value: "
+                         << static_cast<int>(video_stream_status);
             // FALLTHROUGH
-            case mavsdk::Camera::VideoStreamInfo::Status::NotRunning:
-                return rpc::camera::VideoStreamInfo_Status_STATUS_NOT_RUNNING;
-            case mavsdk::Camera::VideoStreamInfo::Status::InProgress:
-                return rpc::camera::VideoStreamInfo_Status_STATUS_IN_PROGRESS;
+            case mavsdk::Camera::VideoStreamInfo::VideoStreamStatus::NotRunning:
+                return rpc::camera::
+                    VideoStreamInfo_VideoStreamStatus_VIDEO_STREAM_STATUS_NOT_RUNNING;
+            case mavsdk::Camera::VideoStreamInfo::VideoStreamStatus::InProgress:
+                return rpc::camera::
+                    VideoStreamInfo_VideoStreamStatus_VIDEO_STREAM_STATUS_IN_PROGRESS;
         }
     }
 
-    static mavsdk::Camera::VideoStreamInfo::Status
-    translateFromRpcStatus(const rpc::camera::VideoStreamInfo::Status status)
+    static mavsdk::Camera::VideoStreamInfo::VideoStreamStatus translateFromRpcVideoStreamStatus(
+        const rpc::camera::VideoStreamInfo::VideoStreamStatus video_stream_status)
     {
-        switch (status) {
+        switch (video_stream_status) {
             default:
-                LogErr() << "Unknown status enum value: " << static_cast<int>(status);
+                LogErr() << "Unknown video_stream_status enum value: "
+                         << static_cast<int>(video_stream_status);
             // FALLTHROUGH
-            case rpc::camera::VideoStreamInfo_Status_STATUS_NOT_RUNNING:
-                return mavsdk::Camera::VideoStreamInfo::Status::NotRunning;
-            case rpc::camera::VideoStreamInfo_Status_STATUS_IN_PROGRESS:
-                return mavsdk::Camera::VideoStreamInfo::Status::InProgress;
+            case rpc::camera::VideoStreamInfo_VideoStreamStatus_VIDEO_STREAM_STATUS_NOT_RUNNING:
+                return mavsdk::Camera::VideoStreamInfo::VideoStreamStatus::NotRunning;
+            case rpc::camera::VideoStreamInfo_VideoStreamStatus_VIDEO_STREAM_STATUS_IN_PROGRESS:
+                return mavsdk::Camera::VideoStreamInfo::VideoStreamStatus::InProgress;
+        }
+    }
+
+    static rpc::camera::VideoStreamInfo::VideoStreamSpectrum translateToRpcVideoStreamSpectrum(
+        const mavsdk::Camera::VideoStreamInfo::VideoStreamSpectrum& video_stream_spectrum)
+    {
+        switch (video_stream_spectrum) {
+            default:
+                LogErr() << "Unknown video_stream_spectrum enum value: "
+                         << static_cast<int>(video_stream_spectrum);
+            // FALLTHROUGH
+            case mavsdk::Camera::VideoStreamInfo::VideoStreamSpectrum::Unknown:
+                return rpc::camera::
+                    VideoStreamInfo_VideoStreamSpectrum_VIDEO_STREAM_SPECTRUM_UNKNOWN;
+            case mavsdk::Camera::VideoStreamInfo::VideoStreamSpectrum::VisibleLight:
+                return rpc::camera::
+                    VideoStreamInfo_VideoStreamSpectrum_VIDEO_STREAM_SPECTRUM_VISIBLE_LIGHT;
+            case mavsdk::Camera::VideoStreamInfo::VideoStreamSpectrum::Infrared:
+                return rpc::camera::
+                    VideoStreamInfo_VideoStreamSpectrum_VIDEO_STREAM_SPECTRUM_INFRARED;
+        }
+    }
+
+    static mavsdk::Camera::VideoStreamInfo::VideoStreamSpectrum translateFromRpcVideoStreamSpectrum(
+        const rpc::camera::VideoStreamInfo::VideoStreamSpectrum video_stream_spectrum)
+    {
+        switch (video_stream_spectrum) {
+            default:
+                LogErr() << "Unknown video_stream_spectrum enum value: "
+                         << static_cast<int>(video_stream_spectrum);
+            // FALLTHROUGH
+            case rpc::camera::VideoStreamInfo_VideoStreamSpectrum_VIDEO_STREAM_SPECTRUM_UNKNOWN:
+                return mavsdk::Camera::VideoStreamInfo::VideoStreamSpectrum::Unknown;
+            case rpc::camera::
+                VideoStreamInfo_VideoStreamSpectrum_VIDEO_STREAM_SPECTRUM_VISIBLE_LIGHT:
+                return mavsdk::Camera::VideoStreamInfo::VideoStreamSpectrum::VisibleLight;
+            case rpc::camera::VideoStreamInfo_VideoStreamSpectrum_VIDEO_STREAM_SPECTRUM_INFRARED:
+                return mavsdk::Camera::VideoStreamInfo::VideoStreamSpectrum::Infrared;
         }
     }
 
@@ -359,7 +405,9 @@ public:
         rpc_obj->set_allocated_settings(
             translateToRpcVideoStreamSettings(video_stream_info.settings).release());
 
-        rpc_obj->set_status(translateToRpcStatus(video_stream_info.status));
+        rpc_obj->set_status(translateToRpcVideoStreamStatus(video_stream_info.status));
+
+        rpc_obj->set_spectrum(translateToRpcVideoStreamSpectrum(video_stream_info.spectrum));
 
         return rpc_obj;
     }
@@ -371,7 +419,9 @@ public:
 
         obj.settings = translateFromRpcVideoStreamSettings(video_stream_info.settings());
 
-        obj.status = translateFromRpcStatus(video_stream_info.status());
+        obj.status = translateFromRpcVideoStreamStatus(video_stream_info.status());
+
+        obj.spectrum = translateFromRpcVideoStreamSpectrum(video_stream_info.spectrum());
 
         return obj;
     }
@@ -390,6 +440,8 @@ public:
                 return rpc::camera::Status_StorageStatus_STORAGE_STATUS_UNFORMATTED;
             case mavsdk::Camera::Status::StorageStatus::Formatted:
                 return rpc::camera::Status_StorageStatus_STORAGE_STATUS_FORMATTED;
+            case mavsdk::Camera::Status::StorageStatus::NotSupported:
+                return rpc::camera::Status_StorageStatus_STORAGE_STATUS_NOT_SUPPORTED;
         }
     }
 
@@ -407,6 +459,8 @@ public:
                 return mavsdk::Camera::Status::StorageStatus::Unformatted;
             case rpc::camera::Status_StorageStatus_STORAGE_STATUS_FORMATTED:
                 return mavsdk::Camera::Status::StorageStatus::Formatted;
+            case rpc::camera::Status_StorageStatus_STORAGE_STATUS_NOT_SUPPORTED:
+                return mavsdk::Camera::Status::StorageStatus::NotSupported;
         }
     }
 

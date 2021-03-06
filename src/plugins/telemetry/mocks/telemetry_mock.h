@@ -14,6 +14,7 @@ public:
     MOCK_CONST_METHOD1(subscribe_status_text, void(Telemetry::StatusTextCallback)){};
     MOCK_CONST_METHOD1(subscribe_armed, void(Telemetry::ArmedCallback)){};
     MOCK_CONST_METHOD1(subscribe_gps_info, void(Telemetry::GpsInfoCallback)){};
+    MOCK_CONST_METHOD1(subscribe_raw_gps, void(Telemetry::RawGpsCallback)){};
     MOCK_CONST_METHOD1(subscribe_battery, void(Telemetry::BatteryCallback)){};
     MOCK_CONST_METHOD1(subscribe_flight_mode, void(Telemetry::FlightModeCallback)){};
     MOCK_CONST_METHOD1(subscribe_landed_state, void(Telemetry::LandedStateCallback)){};
@@ -34,11 +35,14 @@ public:
         subscribe_actuator_output_status, void(Telemetry::ActuatorOutputStatusCallback)){};
     MOCK_CONST_METHOD1(subscribe_odometry, void(Telemetry::OdometryCallback)){};
     MOCK_CONST_METHOD1(subscribe_distance_sensor, void(Telemetry::DistanceSensorCallback)){};
+    MOCK_CONST_METHOD1(subscribe_scaled_pressure, void(Telemetry::ScaledPressureCallback)){};
     MOCK_CONST_METHOD1(
         subscribe_position_velocity_ned, void(Telemetry::PositionVelocityNedCallback)){};
     MOCK_CONST_METHOD1(subscribe_ground_truth, void(Telemetry::GroundTruthCallback)){};
     MOCK_CONST_METHOD1(subscribe_fixedwing_metrics, void(Telemetry::FixedwingMetricsCallback)){};
     MOCK_CONST_METHOD1(subscribe_imu, void(Telemetry::ImuCallback)){};
+    MOCK_CONST_METHOD1(subscribe_scaled_imu, void(Telemetry::ScaledImuCallback)){};
+    MOCK_CONST_METHOD1(subscribe_raw_imu, void(Telemetry::RawImuCallback)){};
     MOCK_CONST_METHOD1(subscribe_health_all_ok, void(Telemetry::HealthAllOkCallback)){};
     MOCK_CONST_METHOD1(subscribe_unix_epoch_time, void(Telemetry::UnixEpochTimeCallback)){};
 
@@ -50,16 +54,20 @@ public:
     MOCK_METHOD1(set_rate_camera_attitude, Telemetry::Result(double)){};
     MOCK_METHOD1(set_rate_velocity_ned, Telemetry::Result(double)){};
     MOCK_METHOD1(set_rate_gps_info, Telemetry::Result(double)){};
+    MOCK_METHOD1(set_rate_raw_gps, Telemetry::Result(double)){};
     MOCK_METHOD1(set_rate_battery, Telemetry::Result(double)){};
     MOCK_METHOD1(set_rate_rc_status, Telemetry::Result(double)){};
     MOCK_METHOD1(set_rate_actuator_control_target, Telemetry::Result(double)){};
     MOCK_METHOD1(set_rate_actuator_output_status, Telemetry::Result(double)){};
     MOCK_METHOD1(set_rate_odometry, Telemetry::Result(double)){};
     MOCK_METHOD1(set_rate_distance_sensor, Telemetry::Result(double)){};
+    MOCK_METHOD1(set_rate_scaled_pressure, Telemetry::Result(double)){};
     MOCK_METHOD1(set_rate_position_velocity_ned, Telemetry::Result(double)){};
     MOCK_METHOD1(set_rate_ground_truth, Telemetry::Result(double)){};
     MOCK_METHOD1(set_rate_fixedwing_metrics, Telemetry::Result(double)){};
     MOCK_METHOD1(set_rate_imu, Telemetry::Result(double)){};
+    MOCK_METHOD1(set_rate_scaled_imu, Telemetry::Result(double)){};
+    MOCK_METHOD1(set_rate_raw_imu, Telemetry::Result(double)){};
     MOCK_METHOD1(set_rate_unix_epoch_time, Telemetry::Result(double)){};
 
     MOCK_CONST_METHOD2(set_rate_position_async, void(double, Telemetry::ResultCallback)){};
@@ -79,10 +87,14 @@ public:
     MOCK_CONST_METHOD2(set_rate_odometry_async, void(double, Telemetry::ResultCallback)){};
     MOCK_CONST_METHOD2(set_rate_distance_sensor_async, void(double, Telemetry::ResultCallback)){};
     MOCK_CONST_METHOD2(
+        set_rate_scaled_pressure_async, void(double, Telemetry::ScaledPressureCallback)){};
+    MOCK_CONST_METHOD2(
         set_rate_position_velocity_ned_async, void(double, Telemetry::ResultCallback)){};
     MOCK_CONST_METHOD2(set_rate_ground_truth_async, void(double, Telemetry::ResultCallback)){};
     MOCK_CONST_METHOD2(set_rate_fixedwing_metrics_async, void(double, Telemetry::ResultCallback)){};
     MOCK_CONST_METHOD2(set_rate_imu_async, void(double, Telemetry::ResultCallback)){};
+    MOCK_CONST_METHOD2(set_rate_scaled_imu_async, void(double, Telemetry::ResultCallback)){};
+    MOCK_CONST_METHOD2(set_rate_raw_imu_async, void(double, Telemetry::ResultCallback)){};
     MOCK_CONST_METHOD2(set_rate_unix_epoch_time_async, void(double, Telemetry::ResultCallback)){};
 
     MOCK_METHOD0(

@@ -1,0 +1,85 @@
+{
+    "fileType": "Plan",
+    "geoFence": {
+        "circles": [
+        ],
+        "polygons": [
+        ],
+        "version": 2
+    },
+    "groundStation": "QGroundControl",
+    "mission": {
+        "cruiseSpeed": 15,
+        "firmwareType": 12,
+        "globalPlanAltitudeMode": 1,
+        "hoverSpeed": 5,
+        "items": [
+            {
+                "autoContinue": true,
+                "command": 530,
+                "doJumpId": 1,
+                "frame": 2,
+                "params": [
+                    0,
+                    2,
+                    null,
+                    null,
+                    null,
+                    null,
+                    null
+                ],
+                "type": "SimpleItem"
+            },
+            {
+                "CameraCalc": {
+                    "AdjustedFootprintFrontal": 25,
+                    "AdjustedFootprintSide": 25,
+                    "CameraName": "Manual (no camera specs)",
+                    "DistanceToSurface": 50,
+                    "DistanceToSurfaceRelative": true,
+                    "version": 1
+                },
+                "EntranceAltitude": 50,
+                "GimbalPitch": 0,
+                "Layers": 2,
+                "ScanBottomAlt": 50,
+                "StartFromTop": true,
+                "StructureHeight": 100,
+                "complexItemType": "StructureScan",
+                "polygon": [
+                    [
+                        47.39817545923646,
+                        8.546361558007561
+                    ],
+                    [
+                        47.398093903224094,
+                        8.546896356125728
+                    ],
+                    [
+                        47.39753072646259,
+                        8.546657108174259
+                    ],
+                    [
+                        47.39763558527823,
+                        8.546187715955966
+                    ]
+                ],
+                "type": "ComplexItem",
+                "version": 3
+            }
+        ],
+        "plannedHomePosition": [
+            47.39802707617687,
+            8.54612034,
+            488.2445356057833
+        ],
+        "vehicleType": 2,
+        "version": 2
+    },
+    "rallyPoints": {
+        "points": [
+        ],
+        "version": 2
+    },
+    "version": 1
+}

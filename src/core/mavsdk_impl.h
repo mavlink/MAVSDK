@@ -38,17 +38,25 @@ public:
 
     std::string version() const;
 
-    void receive_message(mavlink_message_t& message);
+    void forward_message(mavlink_message_t& message, Connection* connection);
+    void receive_message(mavlink_message_t& message, Connection* connection);
     bool send_message(mavlink_message_t& message);
 
-    ConnectionResult add_any_connection(const std::string& connection_url);
+    ConnectionResult
+    add_any_connection(const std::string& connection_url, ForwardingOption forwarding_option);
     ConnectionResult
     add_link_connection(const std::string& protocol, const std::string& ip, int port);
-    ConnectionResult add_udp_connection(const std::string& local_ip, int local_port_number);
-    ConnectionResult add_tcp_connection(const std::string& remote_ip, int remote_port);
-    ConnectionResult
-    add_serial_connection(const std::string& dev_path, int baudrate, bool flow_control);
-    ConnectionResult setup_udp_remote(const std::string& remote_ip, int remote_port);
+    ConnectionResult add_udp_connection(
+        const std::string& local_ip, int local_port_number, ForwardingOption forwarding_option);
+    ConnectionResult add_tcp_connection(
+        const std::string& remote_ip, int remote_port, ForwardingOption forwarding_option);
+    ConnectionResult add_serial_connection(
+        const std::string& dev_path,
+        int baudrate,
+        bool flow_control,
+        ForwardingOption forwarding_option);
+    ConnectionResult setup_udp_remote(
+        const std::string& remote_ip, int remote_port, ForwardingOption forwarding_option);
 
     std::vector<std::shared_ptr<System>> systems() const;
 

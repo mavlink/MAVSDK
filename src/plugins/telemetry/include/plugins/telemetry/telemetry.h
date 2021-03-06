@@ -286,6 +286,48 @@ public:
     friend std::ostream& operator<<(std::ostream& str, Telemetry::GpsInfo const& gps_info);
 
     /**
+     * @brief Raw GPS information type.
+     *
+     * Warning: this is an advanced type! If you want the location of the drone, use
+     * the position instead. This message exposes the raw values of the GNSS sensor.
+     */
+    struct RawGps {
+        uint64_t timestamp_us{}; /**< @brief Timestamp in microseconds (UNIX Epoch time or time
+                                    since system boot, to be inferred) */
+        double latitude_deg{}; /**< @brief Latitude in degrees (WGS84, EGM96 ellipsoid) */
+        double longitude_deg{}; /**< @brief Longitude in degrees (WGS84, EGM96 ellipsoid) */
+        float absolute_altitude_m{}; /**< @brief Altitude AMSL (above mean sea level) in metres */
+        float hdop{}; /**< @brief GPS HDOP horizontal dilution of position (unitless). If unknown,
+                         set to NaN */
+        float vdop{}; /**< @brief GPS VDOP vertical dilution of position (unitless). If unknown, set
+                         to NaN */
+        float velocity_m_s{}; /**< @brief Ground velocity in metres per second */
+        float cog_deg{}; /**< @brief Course over ground (NOT heading, but direction of movement) in
+                            degrees. If unknown, set to NaN */
+        float
+            altitude_ellipsoid_m{}; /**< @brief Altitude in metres (above WGS84, EGM96 ellipsoid) */
+        float horizontal_uncertainty_m{}; /**< @brief Position uncertainty in metres */
+        float vertical_uncertainty_m{}; /**< @brief Altitude uncertainty in metres */
+        float velocity_uncertainty_m_s{}; /**< @brief Velocity uncertainty in metres per second */
+        float heading_uncertainty_deg{}; /**< @brief Heading uncertainty in degrees */
+        float yaw_deg{}; /**< @brief Yaw in earth frame from north. */
+    };
+
+    /**
+     * @brief Equal operator to compare two `Telemetry::RawGps` objects.
+     *
+     * @return `true` if items are equal.
+     */
+    friend bool operator==(const Telemetry::RawGps& lhs, const Telemetry::RawGps& rhs);
+
+    /**
+     * @brief Stream operator to print information about a `Telemetry::RawGps`.
+     *
+     * @return A reference to the stream.
+     */
+    friend std::ostream& operator<<(std::ostream& str, Telemetry::RawGps const& raw_gps);
+
+    /**
      * @brief Battery type.
      */
     struct Battery {
@@ -592,6 +634,34 @@ public:
     operator<<(std::ostream& str, Telemetry::DistanceSensor const& distance_sensor);
 
     /**
+     * @brief Scaled Pressure message type.
+     */
+    struct ScaledPressure {
+        uint64_t timestamp_us{}; /**< @brief Timestamp (time since system boot) */
+        float absolute_pressure_hpa{}; /**< @brief Absolute pressure in hPa */
+        float differential_pressure_hpa{}; /**< @brief Differential pressure 1 in hPa */
+        float temperature_deg{}; /**< @brief Absolute pressure temperature (in celcius) */
+        float differential_pressure_temperature_deg{}; /**< @brief Differential pressure temperature
+                                                          (in celcius, 0 if not available) */
+    };
+
+    /**
+     * @brief Equal operator to compare two `Telemetry::ScaledPressure` objects.
+     *
+     * @return `true` if items are equal.
+     */
+    friend bool
+    operator==(const Telemetry::ScaledPressure& lhs, const Telemetry::ScaledPressure& rhs);
+
+    /**
+     * @brief Stream operator to print information about a `Telemetry::ScaledPressure`.
+     *
+     * @return A reference to the stream.
+     */
+    friend std::ostream&
+    operator<<(std::ostream& str, Telemetry::ScaledPressure const& scaled_pressure);
+
+    /**
      * @brief PositionNed message type.
      */
     struct PositionNed {
@@ -803,6 +873,7 @@ public:
         AngularVelocityFrd angular_velocity_frd{}; /**< @brief Angular velocity */
         MagneticFieldFrd magnetic_field_frd{}; /**< @brief Magnetic field */
         float temperature_degc{float(NAN)}; /**< @brief Temperature */
+        uint64_t timestamp_us{}; /**< @brief Timestamp in microseconds */
     };
 
     /**
@@ -1086,6 +1157,24 @@ public:
     GpsInfo gps_info() const;
 
     /**
+     * @brief Callback type for subscribe_raw_gps.
+     */
+
+    using RawGpsCallback = std::function<void(RawGps)>;
+
+    /**
+     * @brief Subscribe to 'Raw GPS' updates.
+     */
+    void subscribe_raw_gps(RawGpsCallback callback);
+
+    /**
+     * @brief Poll for 'RawGps' (blocking).
+     *
+     * @return One RawGps update.
+     */
+    RawGps raw_gps() const;
+
+    /**
      * @brief Callback type for subscribe_battery.
      */
 
@@ -1290,7 +1379,7 @@ public:
     using ImuCallback = std::function<void(Imu)>;
 
     /**
-     * @brief Subscribe to 'IMU' updates.
+     * @brief Subscribe to 'IMU' updates (in SI units in NED body frame).
      */
     void subscribe_imu(ImuCallback callback);
 
@@ -1300,6 +1389,42 @@ public:
      * @return One Imu update.
      */
     Imu imu() const;
+
+    /**
+     * @brief Callback type for subscribe_scaled_imu.
+     */
+
+    using ScaledImuCallback = std::function<void(Imu)>;
+
+    /**
+     * @brief Subscribe to 'Scaled IMU' updates.
+     */
+    void subscribe_scaled_imu(ScaledImuCallback callback);
+
+    /**
+     * @brief Poll for 'Imu' (blocking).
+     *
+     * @return One Imu update.
+     */
+    Imu scaled_imu() const;
+
+    /**
+     * @brief Callback type for subscribe_raw_imu.
+     */
+
+    using RawImuCallback = std::function<void(Imu)>;
+
+    /**
+     * @brief Subscribe to 'Raw IMU' updates.
+     */
+    void subscribe_raw_imu(RawImuCallback callback);
+
+    /**
+     * @brief Poll for 'Imu' (blocking).
+     *
+     * @return One Imu update.
+     */
+    Imu raw_imu() const;
 
     /**
      * @brief Callback type for subscribe_health_all_ok.
@@ -1354,6 +1479,24 @@ public:
      * @return One DistanceSensor update.
      */
     DistanceSensor distance_sensor() const;
+
+    /**
+     * @brief Callback type for subscribe_scaled_pressure.
+     */
+
+    using ScaledPressureCallback = std::function<void(ScaledPressure)>;
+
+    /**
+     * @brief Subscribe to 'Scaled Pressure' updates.
+     */
+    void subscribe_scaled_pressure(ScaledPressureCallback callback);
+
+    /**
+     * @brief Poll for 'ScaledPressure' (blocking).
+     *
+     * @return One ScaledPressure update.
+     */
+    ScaledPressure scaled_pressure() const;
 
     /**
      * @brief Set rate to 'position' updates.
@@ -1637,6 +1780,38 @@ public:
      * @return Result of request.
      */
     Result set_rate_imu(double rate_hz) const;
+
+    /**
+     * @brief Set rate to 'Scaled IMU' updates.
+     *
+     * This function is non-blocking. See 'set_rate_scaled_imu' for the blocking counterpart.
+     */
+    void set_rate_scaled_imu_async(double rate_hz, const ResultCallback callback);
+
+    /**
+     * @brief Set rate to 'Scaled IMU' updates.
+     *
+     * This function is blocking. See 'set_rate_scaled_imu_async' for the non-blocking counterpart.
+     *
+     * @return Result of request.
+     */
+    Result set_rate_scaled_imu(double rate_hz) const;
+
+    /**
+     * @brief Set rate to 'Raw IMU' updates.
+     *
+     * This function is non-blocking. See 'set_rate_raw_imu' for the blocking counterpart.
+     */
+    void set_rate_raw_imu_async(double rate_hz, const ResultCallback callback);
+
+    /**
+     * @brief Set rate to 'Raw IMU' updates.
+     *
+     * This function is blocking. See 'set_rate_raw_imu_async' for the non-blocking counterpart.
+     *
+     * @return Result of request.
+     */
+    Result set_rate_raw_imu(double rate_hz) const;
 
     /**
      * @brief Set rate to 'unix epoch time' updates.

@@ -99,7 +99,7 @@ public:
                         longitude in degrees *10^7 */
         float z{}; /**< @brief PARAM7 / local: Z coordinate, global: altitude (relative or absolute,
                       depending on frame) */
-        uint32_t mission_type{}; /**< @brief @brief Mission type (actually uint8_t) */
+        uint32_t mission_type{}; /**< @brief Mission type (actually uint8_t) */
     };
 
     /**
@@ -117,6 +117,31 @@ public:
     friend std::ostream& operator<<(std::ostream& str, MissionRaw::MissionItem const& mission_item);
 
     /**
+     * @brief Mission import data
+     */
+    struct MissionImportData {
+        std::vector<MissionItem> mission_items{}; /**< @brief Mission items */
+        std::vector<MissionItem> geofence_items{}; /**< @brief Geofence items */
+        std::vector<MissionItem> rally_items{}; /**< @brief Rally items */
+    };
+
+    /**
+     * @brief Equal operator to compare two `MissionRaw::MissionImportData` objects.
+     *
+     * @return `true` if items are equal.
+     */
+    friend bool
+    operator==(const MissionRaw::MissionImportData& lhs, const MissionRaw::MissionImportData& rhs);
+
+    /**
+     * @brief Stream operator to print information about a `MissionRaw::MissionImportData`.
+     *
+     * @return A reference to the stream.
+     */
+    friend std::ostream&
+    operator<<(std::ostream& str, MissionRaw::MissionImportData const& mission_import_data);
+
+    /**
      * @brief Possible results returned for action requests.
      */
     enum class Result {
@@ -130,6 +155,8 @@ public:
         Unsupported, /**< @brief Mission downloaded from the system is not supported. */
         NoMissionAvailable, /**< @brief No mission available on the system. */
         TransferCancelled, /**< @brief Mission transfer (upload or download) has been cancelled. */
+        FailedToOpenQgcPlan, /**< @brief Failed to open the QGroundControl plan. */
+        FailedToParseQgcPlan, /**< @brief Failed to parse the QGroundControl plan. */
     };
 
     /**
@@ -325,6 +352,22 @@ public:
      * @param callback Callback to notify about change.
      */
     void subscribe_mission_changed(MissionChangedCallback callback);
+
+    /**
+     * @brief Import a QGroundControl missions in JSON .plan format.
+     *
+     * Supported:
+     * - Waypoints
+     * - Survey
+     * Not supported:
+     * - Structure Scan
+     *
+     * This function is blocking.
+     *
+     * @return Result of request.
+     */
+    std::pair<Result, MissionRaw::MissionImportData>
+    import_qgroundcontrol_mission(std::string qgc_plan_path) const;
 
     /**
      * @brief Copy constructor.

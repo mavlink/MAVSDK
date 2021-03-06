@@ -14,329 +14,224 @@
 #include <google/protobuf/wire_format.h>
 // @@protoc_insertion_point(includes)
 #include <google/protobuf/port_def.inc>
-extern PROTOBUF_INTERNAL_EXPORT_follow_5fme_2ffollow_5fme_2eproto ::PROTOBUF_NAMESPACE_ID::internal::SCCInfo<0> scc_info_Config_follow_5fme_2ffollow_5fme_2eproto;
-extern PROTOBUF_INTERNAL_EXPORT_follow_5fme_2ffollow_5fme_2eproto ::PROTOBUF_NAMESPACE_ID::internal::SCCInfo<0> scc_info_FollowMeResult_follow_5fme_2ffollow_5fme_2eproto;
-extern PROTOBUF_INTERNAL_EXPORT_follow_5fme_2ffollow_5fme_2eproto ::PROTOBUF_NAMESPACE_ID::internal::SCCInfo<0> scc_info_TargetLocation_follow_5fme_2ffollow_5fme_2eproto;
+
+PROTOBUF_PRAGMA_INIT_SEG
 namespace mavsdk {
 namespace rpc {
 namespace follow_me {
-class ConfigDefaultTypeInternal {
- public:
-  ::PROTOBUF_NAMESPACE_ID::internal::ExplicitlyConstructed<Config> _instance;
-} _Config_default_instance_;
-class TargetLocationDefaultTypeInternal {
- public:
-  ::PROTOBUF_NAMESPACE_ID::internal::ExplicitlyConstructed<TargetLocation> _instance;
-} _TargetLocation_default_instance_;
-class GetConfigRequestDefaultTypeInternal {
- public:
-  ::PROTOBUF_NAMESPACE_ID::internal::ExplicitlyConstructed<GetConfigRequest> _instance;
-} _GetConfigRequest_default_instance_;
-class GetConfigResponseDefaultTypeInternal {
- public:
-  ::PROTOBUF_NAMESPACE_ID::internal::ExplicitlyConstructed<GetConfigResponse> _instance;
-} _GetConfigResponse_default_instance_;
-class SetConfigRequestDefaultTypeInternal {
- public:
-  ::PROTOBUF_NAMESPACE_ID::internal::ExplicitlyConstructed<SetConfigRequest> _instance;
-} _SetConfigRequest_default_instance_;
-class SetConfigResponseDefaultTypeInternal {
- public:
-  ::PROTOBUF_NAMESPACE_ID::internal::ExplicitlyConstructed<SetConfigResponse> _instance;
-} _SetConfigResponse_default_instance_;
-class IsActiveRequestDefaultTypeInternal {
- public:
-  ::PROTOBUF_NAMESPACE_ID::internal::ExplicitlyConstructed<IsActiveRequest> _instance;
-} _IsActiveRequest_default_instance_;
-class IsActiveResponseDefaultTypeInternal {
- public:
-  ::PROTOBUF_NAMESPACE_ID::internal::ExplicitlyConstructed<IsActiveResponse> _instance;
-} _IsActiveResponse_default_instance_;
-class SetTargetLocationRequestDefaultTypeInternal {
- public:
-  ::PROTOBUF_NAMESPACE_ID::internal::ExplicitlyConstructed<SetTargetLocationRequest> _instance;
-} _SetTargetLocationRequest_default_instance_;
-class SetTargetLocationResponseDefaultTypeInternal {
- public:
-  ::PROTOBUF_NAMESPACE_ID::internal::ExplicitlyConstructed<SetTargetLocationResponse> _instance;
-} _SetTargetLocationResponse_default_instance_;
-class GetLastLocationRequestDefaultTypeInternal {
- public:
-  ::PROTOBUF_NAMESPACE_ID::internal::ExplicitlyConstructed<GetLastLocationRequest> _instance;
-} _GetLastLocationRequest_default_instance_;
-class GetLastLocationResponseDefaultTypeInternal {
- public:
-  ::PROTOBUF_NAMESPACE_ID::internal::ExplicitlyConstructed<GetLastLocationResponse> _instance;
-} _GetLastLocationResponse_default_instance_;
-class StartRequestDefaultTypeInternal {
- public:
-  ::PROTOBUF_NAMESPACE_ID::internal::ExplicitlyConstructed<StartRequest> _instance;
-} _StartRequest_default_instance_;
-class StartResponseDefaultTypeInternal {
- public:
-  ::PROTOBUF_NAMESPACE_ID::internal::ExplicitlyConstructed<StartResponse> _instance;
-} _StartResponse_default_instance_;
-class StopRequestDefaultTypeInternal {
- public:
-  ::PROTOBUF_NAMESPACE_ID::internal::ExplicitlyConstructed<StopRequest> _instance;
-} _StopRequest_default_instance_;
-class StopResponseDefaultTypeInternal {
- public:
-  ::PROTOBUF_NAMESPACE_ID::internal::ExplicitlyConstructed<StopResponse> _instance;
-} _StopResponse_default_instance_;
-class FollowMeResultDefaultTypeInternal {
- public:
-  ::PROTOBUF_NAMESPACE_ID::internal::ExplicitlyConstructed<FollowMeResult> _instance;
-} _FollowMeResult_default_instance_;
+constexpr Config::Config(
+  ::PROTOBUF_NAMESPACE_ID::internal::ConstantInitialized)
+  : min_height_m_(0)
+  , follow_distance_m_(0)
+  , follow_direction_(0)
+
+  , responsiveness_(0){}
+struct ConfigDefaultTypeInternal {
+  constexpr ConfigDefaultTypeInternal()
+    : _instance(::PROTOBUF_NAMESPACE_ID::internal::ConstantInitialized{}) {}
+  ~ConfigDefaultTypeInternal() {}
+  union {
+    Config _instance;
+  };
+};
+PROTOBUF_ATTRIBUTE_NO_DESTROY PROTOBUF_CONSTINIT ConfigDefaultTypeInternal _Config_default_instance_;
+constexpr TargetLocation::TargetLocation(
+  ::PROTOBUF_NAMESPACE_ID::internal::ConstantInitialized)
+  : latitude_deg_(0)
+  , longitude_deg_(0)
+  , absolute_altitude_m_(0)
+  , velocity_x_m_s_(0)
+  , velocity_y_m_s_(0)
+  , velocity_z_m_s_(0){}
+struct TargetLocationDefaultTypeInternal {
+  constexpr TargetLocationDefaultTypeInternal()
+    : _instance(::PROTOBUF_NAMESPACE_ID::internal::ConstantInitialized{}) {}
+  ~TargetLocationDefaultTypeInternal() {}
+  union {
+    TargetLocation _instance;
+  };
+};
+PROTOBUF_ATTRIBUTE_NO_DESTROY PROTOBUF_CONSTINIT TargetLocationDefaultTypeInternal _TargetLocation_default_instance_;
+constexpr GetConfigRequest::GetConfigRequest(
+  ::PROTOBUF_NAMESPACE_ID::internal::ConstantInitialized){}
+struct GetConfigRequestDefaultTypeInternal {
+  constexpr GetConfigRequestDefaultTypeInternal()
+    : _instance(::PROTOBUF_NAMESPACE_ID::internal::ConstantInitialized{}) {}
+  ~GetConfigRequestDefaultTypeInternal() {}
+  union {
+    GetConfigRequest _instance;
+  };
+};
+PROTOBUF_ATTRIBUTE_NO_DESTROY PROTOBUF_CONSTINIT GetConfigRequestDefaultTypeInternal _GetConfigRequest_default_instance_;
+constexpr GetConfigResponse::GetConfigResponse(
+  ::PROTOBUF_NAMESPACE_ID::internal::ConstantInitialized)
+  : config_(nullptr){}
+struct GetConfigResponseDefaultTypeInternal {
+  constexpr GetConfigResponseDefaultTypeInternal()
+    : _instance(::PROTOBUF_NAMESPACE_ID::internal::ConstantInitialized{}) {}
+  ~GetConfigResponseDefaultTypeInternal() {}
+  union {
+    GetConfigResponse _instance;
+  };
+};
+PROTOBUF_ATTRIBUTE_NO_DESTROY PROTOBUF_CONSTINIT GetConfigResponseDefaultTypeInternal _GetConfigResponse_default_instance_;
+constexpr SetConfigRequest::SetConfigRequest(
+  ::PROTOBUF_NAMESPACE_ID::internal::ConstantInitialized)
+  : config_(nullptr){}
+struct SetConfigRequestDefaultTypeInternal {
+  constexpr SetConfigRequestDefaultTypeInternal()
+    : _instance(::PROTOBUF_NAMESPACE_ID::internal::ConstantInitialized{}) {}
+  ~SetConfigRequestDefaultTypeInternal() {}
+  union {
+    SetConfigRequest _instance;
+  };
+};
+PROTOBUF_ATTRIBUTE_NO_DESTROY PROTOBUF_CONSTINIT SetConfigRequestDefaultTypeInternal _SetConfigRequest_default_instance_;
+constexpr SetConfigResponse::SetConfigResponse(
+  ::PROTOBUF_NAMESPACE_ID::internal::ConstantInitialized)
+  : follow_me_result_(nullptr){}
+struct SetConfigResponseDefaultTypeInternal {
+  constexpr SetConfigResponseDefaultTypeInternal()
+    : _instance(::PROTOBUF_NAMESPACE_ID::internal::ConstantInitialized{}) {}
+  ~SetConfigResponseDefaultTypeInternal() {}
+  union {
+    SetConfigResponse _instance;
+  };
+};
+PROTOBUF_ATTRIBUTE_NO_DESTROY PROTOBUF_CONSTINIT SetConfigResponseDefaultTypeInternal _SetConfigResponse_default_instance_;
+constexpr IsActiveRequest::IsActiveRequest(
+  ::PROTOBUF_NAMESPACE_ID::internal::ConstantInitialized){}
+struct IsActiveRequestDefaultTypeInternal {
+  constexpr IsActiveRequestDefaultTypeInternal()
+    : _instance(::PROTOBUF_NAMESPACE_ID::internal::ConstantInitialized{}) {}
+  ~IsActiveRequestDefaultTypeInternal() {}
+  union {
+    IsActiveRequest _instance;
+  };
+};
+PROTOBUF_ATTRIBUTE_NO_DESTROY PROTOBUF_CONSTINIT IsActiveRequestDefaultTypeInternal _IsActiveRequest_default_instance_;
+constexpr IsActiveResponse::IsActiveResponse(
+  ::PROTOBUF_NAMESPACE_ID::internal::ConstantInitialized)
+  : is_active_(false){}
+struct IsActiveResponseDefaultTypeInternal {
+  constexpr IsActiveResponseDefaultTypeInternal()
+    : _instance(::PROTOBUF_NAMESPACE_ID::internal::ConstantInitialized{}) {}
+  ~IsActiveResponseDefaultTypeInternal() {}
+  union {
+    IsActiveResponse _instance;
+  };
+};
+PROTOBUF_ATTRIBUTE_NO_DESTROY PROTOBUF_CONSTINIT IsActiveResponseDefaultTypeInternal _IsActiveResponse_default_instance_;
+constexpr SetTargetLocationRequest::SetTargetLocationRequest(
+  ::PROTOBUF_NAMESPACE_ID::internal::ConstantInitialized)
+  : location_(nullptr){}
+struct SetTargetLocationRequestDefaultTypeInternal {
+  constexpr SetTargetLocationRequestDefaultTypeInternal()
+    : _instance(::PROTOBUF_NAMESPACE_ID::internal::ConstantInitialized{}) {}
+  ~SetTargetLocationRequestDefaultTypeInternal() {}
+  union {
+    SetTargetLocationRequest _instance;
+  };
+};
+PROTOBUF_ATTRIBUTE_NO_DESTROY PROTOBUF_CONSTINIT SetTargetLocationRequestDefaultTypeInternal _SetTargetLocationRequest_default_instance_;
+constexpr SetTargetLocationResponse::SetTargetLocationResponse(
+  ::PROTOBUF_NAMESPACE_ID::internal::ConstantInitialized)
+  : follow_me_result_(nullptr){}
+struct SetTargetLocationResponseDefaultTypeInternal {
+  constexpr SetTargetLocationResponseDefaultTypeInternal()
+    : _instance(::PROTOBUF_NAMESPACE_ID::internal::ConstantInitialized{}) {}
+  ~SetTargetLocationResponseDefaultTypeInternal() {}
+  union {
+    SetTargetLocationResponse _instance;
+  };
+};
+PROTOBUF_ATTRIBUTE_NO_DESTROY PROTOBUF_CONSTINIT SetTargetLocationResponseDefaultTypeInternal _SetTargetLocationResponse_default_instance_;
+constexpr GetLastLocationRequest::GetLastLocationRequest(
+  ::PROTOBUF_NAMESPACE_ID::internal::ConstantInitialized){}
+struct GetLastLocationRequestDefaultTypeInternal {
+  constexpr GetLastLocationRequestDefaultTypeInternal()
+    : _instance(::PROTOBUF_NAMESPACE_ID::internal::ConstantInitialized{}) {}
+  ~GetLastLocationRequestDefaultTypeInternal() {}
+  union {
+    GetLastLocationRequest _instance;
+  };
+};
+PROTOBUF_ATTRIBUTE_NO_DESTROY PROTOBUF_CONSTINIT GetLastLocationRequestDefaultTypeInternal _GetLastLocationRequest_default_instance_;
+constexpr GetLastLocationResponse::GetLastLocationResponse(
+  ::PROTOBUF_NAMESPACE_ID::internal::ConstantInitialized)
+  : location_(nullptr){}
+struct GetLastLocationResponseDefaultTypeInternal {
+  constexpr GetLastLocationResponseDefaultTypeInternal()
+    : _instance(::PROTOBUF_NAMESPACE_ID::internal::ConstantInitialized{}) {}
+  ~GetLastLocationResponseDefaultTypeInternal() {}
+  union {
+    GetLastLocationResponse _instance;
+  };
+};
+PROTOBUF_ATTRIBUTE_NO_DESTROY PROTOBUF_CONSTINIT GetLastLocationResponseDefaultTypeInternal _GetLastLocationResponse_default_instance_;
+constexpr StartRequest::StartRequest(
+  ::PROTOBUF_NAMESPACE_ID::internal::ConstantInitialized){}
+struct StartRequestDefaultTypeInternal {
+  constexpr StartRequestDefaultTypeInternal()
+    : _instance(::PROTOBUF_NAMESPACE_ID::internal::ConstantInitialized{}) {}
+  ~StartRequestDefaultTypeInternal() {}
+  union {
+    StartRequest _instance;
+  };
+};
+PROTOBUF_ATTRIBUTE_NO_DESTROY PROTOBUF_CONSTINIT StartRequestDefaultTypeInternal _StartRequest_default_instance_;
+constexpr StartResponse::StartResponse(
+  ::PROTOBUF_NAMESPACE_ID::internal::ConstantInitialized)
+  : follow_me_result_(nullptr){}
+struct StartResponseDefaultTypeInternal {
+  constexpr StartResponseDefaultTypeInternal()
+    : _instance(::PROTOBUF_NAMESPACE_ID::internal::ConstantInitialized{}) {}
+  ~StartResponseDefaultTypeInternal() {}
+  union {
+    StartResponse _instance;
+  };
+};
+PROTOBUF_ATTRIBUTE_NO_DESTROY PROTOBUF_CONSTINIT StartResponseDefaultTypeInternal _StartResponse_default_instance_;
+constexpr StopRequest::StopRequest(
+  ::PROTOBUF_NAMESPACE_ID::internal::ConstantInitialized){}
+struct StopRequestDefaultTypeInternal {
+  constexpr StopRequestDefaultTypeInternal()
+    : _instance(::PROTOBUF_NAMESPACE_ID::internal::ConstantInitialized{}) {}
+  ~StopRequestDefaultTypeInternal() {}
+  union {
+    StopRequest _instance;
+  };
+};
+PROTOBUF_ATTRIBUTE_NO_DESTROY PROTOBUF_CONSTINIT StopRequestDefaultTypeInternal _StopRequest_default_instance_;
+constexpr StopResponse::StopResponse(
+  ::PROTOBUF_NAMESPACE_ID::internal::ConstantInitialized)
+  : follow_me_result_(nullptr){}
+struct StopResponseDefaultTypeInternal {
+  constexpr StopResponseDefaultTypeInternal()
+    : _instance(::PROTOBUF_NAMESPACE_ID::internal::ConstantInitialized{}) {}
+  ~StopResponseDefaultTypeInternal() {}
+  union {
+    StopResponse _instance;
+  };
+};
+PROTOBUF_ATTRIBUTE_NO_DESTROY PROTOBUF_CONSTINIT StopResponseDefaultTypeInternal _StopResponse_default_instance_;
+constexpr FollowMeResult::FollowMeResult(
+  ::PROTOBUF_NAMESPACE_ID::internal::ConstantInitialized)
+  : result_str_(&::PROTOBUF_NAMESPACE_ID::internal::fixed_address_empty_string)
+  , result_(0)
+{}
+struct FollowMeResultDefaultTypeInternal {
+  constexpr FollowMeResultDefaultTypeInternal()
+    : _instance(::PROTOBUF_NAMESPACE_ID::internal::ConstantInitialized{}) {}
+  ~FollowMeResultDefaultTypeInternal() {}
+  union {
+    FollowMeResult _instance;
+  };
+};
+PROTOBUF_ATTRIBUTE_NO_DESTROY PROTOBUF_CONSTINIT FollowMeResultDefaultTypeInternal _FollowMeResult_default_instance_;
 }  // namespace follow_me
 }  // namespace rpc
 }  // namespace mavsdk
-static void InitDefaultsscc_info_Config_follow_5fme_2ffollow_5fme_2eproto() {
-  GOOGLE_PROTOBUF_VERIFY_VERSION;
-
-  {
-    void* ptr = &::mavsdk::rpc::follow_me::_Config_default_instance_;
-    new (ptr) ::mavsdk::rpc::follow_me::Config();
-    ::PROTOBUF_NAMESPACE_ID::internal::OnShutdownDestroyMessage(ptr);
-  }
-  ::mavsdk::rpc::follow_me::Config::InitAsDefaultInstance();
-}
-
-::PROTOBUF_NAMESPACE_ID::internal::SCCInfo<0> scc_info_Config_follow_5fme_2ffollow_5fme_2eproto =
-    {{ATOMIC_VAR_INIT(::PROTOBUF_NAMESPACE_ID::internal::SCCInfoBase::kUninitialized), 0, 0, InitDefaultsscc_info_Config_follow_5fme_2ffollow_5fme_2eproto}, {}};
-
-static void InitDefaultsscc_info_FollowMeResult_follow_5fme_2ffollow_5fme_2eproto() {
-  GOOGLE_PROTOBUF_VERIFY_VERSION;
-
-  {
-    void* ptr = &::mavsdk::rpc::follow_me::_FollowMeResult_default_instance_;
-    new (ptr) ::mavsdk::rpc::follow_me::FollowMeResult();
-    ::PROTOBUF_NAMESPACE_ID::internal::OnShutdownDestroyMessage(ptr);
-  }
-  ::mavsdk::rpc::follow_me::FollowMeResult::InitAsDefaultInstance();
-}
-
-::PROTOBUF_NAMESPACE_ID::internal::SCCInfo<0> scc_info_FollowMeResult_follow_5fme_2ffollow_5fme_2eproto =
-    {{ATOMIC_VAR_INIT(::PROTOBUF_NAMESPACE_ID::internal::SCCInfoBase::kUninitialized), 0, 0, InitDefaultsscc_info_FollowMeResult_follow_5fme_2ffollow_5fme_2eproto}, {}};
-
-static void InitDefaultsscc_info_GetConfigRequest_follow_5fme_2ffollow_5fme_2eproto() {
-  GOOGLE_PROTOBUF_VERIFY_VERSION;
-
-  {
-    void* ptr = &::mavsdk::rpc::follow_me::_GetConfigRequest_default_instance_;
-    new (ptr) ::mavsdk::rpc::follow_me::GetConfigRequest();
-    ::PROTOBUF_NAMESPACE_ID::internal::OnShutdownDestroyMessage(ptr);
-  }
-  ::mavsdk::rpc::follow_me::GetConfigRequest::InitAsDefaultInstance();
-}
-
-::PROTOBUF_NAMESPACE_ID::internal::SCCInfo<0> scc_info_GetConfigRequest_follow_5fme_2ffollow_5fme_2eproto =
-    {{ATOMIC_VAR_INIT(::PROTOBUF_NAMESPACE_ID::internal::SCCInfoBase::kUninitialized), 0, 0, InitDefaultsscc_info_GetConfigRequest_follow_5fme_2ffollow_5fme_2eproto}, {}};
-
-static void InitDefaultsscc_info_GetConfigResponse_follow_5fme_2ffollow_5fme_2eproto() {
-  GOOGLE_PROTOBUF_VERIFY_VERSION;
-
-  {
-    void* ptr = &::mavsdk::rpc::follow_me::_GetConfigResponse_default_instance_;
-    new (ptr) ::mavsdk::rpc::follow_me::GetConfigResponse();
-    ::PROTOBUF_NAMESPACE_ID::internal::OnShutdownDestroyMessage(ptr);
-  }
-  ::mavsdk::rpc::follow_me::GetConfigResponse::InitAsDefaultInstance();
-}
-
-::PROTOBUF_NAMESPACE_ID::internal::SCCInfo<1> scc_info_GetConfigResponse_follow_5fme_2ffollow_5fme_2eproto =
-    {{ATOMIC_VAR_INIT(::PROTOBUF_NAMESPACE_ID::internal::SCCInfoBase::kUninitialized), 1, 0, InitDefaultsscc_info_GetConfigResponse_follow_5fme_2ffollow_5fme_2eproto}, {
-      &scc_info_Config_follow_5fme_2ffollow_5fme_2eproto.base,}};
-
-static void InitDefaultsscc_info_GetLastLocationRequest_follow_5fme_2ffollow_5fme_2eproto() {
-  GOOGLE_PROTOBUF_VERIFY_VERSION;
-
-  {
-    void* ptr = &::mavsdk::rpc::follow_me::_GetLastLocationRequest_default_instance_;
-    new (ptr) ::mavsdk::rpc::follow_me::GetLastLocationRequest();
-    ::PROTOBUF_NAMESPACE_ID::internal::OnShutdownDestroyMessage(ptr);
-  }
-  ::mavsdk::rpc::follow_me::GetLastLocationRequest::InitAsDefaultInstance();
-}
-
-::PROTOBUF_NAMESPACE_ID::internal::SCCInfo<0> scc_info_GetLastLocationRequest_follow_5fme_2ffollow_5fme_2eproto =
-    {{ATOMIC_VAR_INIT(::PROTOBUF_NAMESPACE_ID::internal::SCCInfoBase::kUninitialized), 0, 0, InitDefaultsscc_info_GetLastLocationRequest_follow_5fme_2ffollow_5fme_2eproto}, {}};
-
-static void InitDefaultsscc_info_GetLastLocationResponse_follow_5fme_2ffollow_5fme_2eproto() {
-  GOOGLE_PROTOBUF_VERIFY_VERSION;
-
-  {
-    void* ptr = &::mavsdk::rpc::follow_me::_GetLastLocationResponse_default_instance_;
-    new (ptr) ::mavsdk::rpc::follow_me::GetLastLocationResponse();
-    ::PROTOBUF_NAMESPACE_ID::internal::OnShutdownDestroyMessage(ptr);
-  }
-  ::mavsdk::rpc::follow_me::GetLastLocationResponse::InitAsDefaultInstance();
-}
-
-::PROTOBUF_NAMESPACE_ID::internal::SCCInfo<1> scc_info_GetLastLocationResponse_follow_5fme_2ffollow_5fme_2eproto =
-    {{ATOMIC_VAR_INIT(::PROTOBUF_NAMESPACE_ID::internal::SCCInfoBase::kUninitialized), 1, 0, InitDefaultsscc_info_GetLastLocationResponse_follow_5fme_2ffollow_5fme_2eproto}, {
-      &scc_info_TargetLocation_follow_5fme_2ffollow_5fme_2eproto.base,}};
-
-static void InitDefaultsscc_info_IsActiveRequest_follow_5fme_2ffollow_5fme_2eproto() {
-  GOOGLE_PROTOBUF_VERIFY_VERSION;
-
-  {
-    void* ptr = &::mavsdk::rpc::follow_me::_IsActiveRequest_default_instance_;
-    new (ptr) ::mavsdk::rpc::follow_me::IsActiveRequest();
-    ::PROTOBUF_NAMESPACE_ID::internal::OnShutdownDestroyMessage(ptr);
-  }
-  ::mavsdk::rpc::follow_me::IsActiveRequest::InitAsDefaultInstance();
-}
-
-::PROTOBUF_NAMESPACE_ID::internal::SCCInfo<0> scc_info_IsActiveRequest_follow_5fme_2ffollow_5fme_2eproto =
-    {{ATOMIC_VAR_INIT(::PROTOBUF_NAMESPACE_ID::internal::SCCInfoBase::kUninitialized), 0, 0, InitDefaultsscc_info_IsActiveRequest_follow_5fme_2ffollow_5fme_2eproto}, {}};
-
-static void InitDefaultsscc_info_IsActiveResponse_follow_5fme_2ffollow_5fme_2eproto() {
-  GOOGLE_PROTOBUF_VERIFY_VERSION;
-
-  {
-    void* ptr = &::mavsdk::rpc::follow_me::_IsActiveResponse_default_instance_;
-    new (ptr) ::mavsdk::rpc::follow_me::IsActiveResponse();
-    ::PROTOBUF_NAMESPACE_ID::internal::OnShutdownDestroyMessage(ptr);
-  }
-  ::mavsdk::rpc::follow_me::IsActiveResponse::InitAsDefaultInstance();
-}
-
-::PROTOBUF_NAMESPACE_ID::internal::SCCInfo<0> scc_info_IsActiveResponse_follow_5fme_2ffollow_5fme_2eproto =
-    {{ATOMIC_VAR_INIT(::PROTOBUF_NAMESPACE_ID::internal::SCCInfoBase::kUninitialized), 0, 0, InitDefaultsscc_info_IsActiveResponse_follow_5fme_2ffollow_5fme_2eproto}, {}};
-
-static void InitDefaultsscc_info_SetConfigRequest_follow_5fme_2ffollow_5fme_2eproto() {
-  GOOGLE_PROTOBUF_VERIFY_VERSION;
-
-  {
-    void* ptr = &::mavsdk::rpc::follow_me::_SetConfigRequest_default_instance_;
-    new (ptr) ::mavsdk::rpc::follow_me::SetConfigRequest();
-    ::PROTOBUF_NAMESPACE_ID::internal::OnShutdownDestroyMessage(ptr);
-  }
-  ::mavsdk::rpc::follow_me::SetConfigRequest::InitAsDefaultInstance();
-}
-
-::PROTOBUF_NAMESPACE_ID::internal::SCCInfo<1> scc_info_SetConfigRequest_follow_5fme_2ffollow_5fme_2eproto =
-    {{ATOMIC_VAR_INIT(::PROTOBUF_NAMESPACE_ID::internal::SCCInfoBase::kUninitialized), 1, 0, InitDefaultsscc_info_SetConfigRequest_follow_5fme_2ffollow_5fme_2eproto}, {
-      &scc_info_Config_follow_5fme_2ffollow_5fme_2eproto.base,}};
-
-static void InitDefaultsscc_info_SetConfigResponse_follow_5fme_2ffollow_5fme_2eproto() {
-  GOOGLE_PROTOBUF_VERIFY_VERSION;
-
-  {
-    void* ptr = &::mavsdk::rpc::follow_me::_SetConfigResponse_default_instance_;
-    new (ptr) ::mavsdk::rpc::follow_me::SetConfigResponse();
-    ::PROTOBUF_NAMESPACE_ID::internal::OnShutdownDestroyMessage(ptr);
-  }
-  ::mavsdk::rpc::follow_me::SetConfigResponse::InitAsDefaultInstance();
-}
-
-::PROTOBUF_NAMESPACE_ID::internal::SCCInfo<1> scc_info_SetConfigResponse_follow_5fme_2ffollow_5fme_2eproto =
-    {{ATOMIC_VAR_INIT(::PROTOBUF_NAMESPACE_ID::internal::SCCInfoBase::kUninitialized), 1, 0, InitDefaultsscc_info_SetConfigResponse_follow_5fme_2ffollow_5fme_2eproto}, {
-      &scc_info_FollowMeResult_follow_5fme_2ffollow_5fme_2eproto.base,}};
-
-static void InitDefaultsscc_info_SetTargetLocationRequest_follow_5fme_2ffollow_5fme_2eproto() {
-  GOOGLE_PROTOBUF_VERIFY_VERSION;
-
-  {
-    void* ptr = &::mavsdk::rpc::follow_me::_SetTargetLocationRequest_default_instance_;
-    new (ptr) ::mavsdk::rpc::follow_me::SetTargetLocationRequest();
-    ::PROTOBUF_NAMESPACE_ID::internal::OnShutdownDestroyMessage(ptr);
-  }
-  ::mavsdk::rpc::follow_me::SetTargetLocationRequest::InitAsDefaultInstance();
-}
-
-::PROTOBUF_NAMESPACE_ID::internal::SCCInfo<1> scc_info_SetTargetLocationRequest_follow_5fme_2ffollow_5fme_2eproto =
-    {{ATOMIC_VAR_INIT(::PROTOBUF_NAMESPACE_ID::internal::SCCInfoBase::kUninitialized), 1, 0, InitDefaultsscc_info_SetTargetLocationRequest_follow_5fme_2ffollow_5fme_2eproto}, {
-      &scc_info_TargetLocation_follow_5fme_2ffollow_5fme_2eproto.base,}};
-
-static void InitDefaultsscc_info_SetTargetLocationResponse_follow_5fme_2ffollow_5fme_2eproto() {
-  GOOGLE_PROTOBUF_VERIFY_VERSION;
-
-  {
-    void* ptr = &::mavsdk::rpc::follow_me::_SetTargetLocationResponse_default_instance_;
-    new (ptr) ::mavsdk::rpc::follow_me::SetTargetLocationResponse();
-    ::PROTOBUF_NAMESPACE_ID::internal::OnShutdownDestroyMessage(ptr);
-  }
-  ::mavsdk::rpc::follow_me::SetTargetLocationResponse::InitAsDefaultInstance();
-}
-
-::PROTOBUF_NAMESPACE_ID::internal::SCCInfo<1> scc_info_SetTargetLocationResponse_follow_5fme_2ffollow_5fme_2eproto =
-    {{ATOMIC_VAR_INIT(::PROTOBUF_NAMESPACE_ID::internal::SCCInfoBase::kUninitialized), 1, 0, InitDefaultsscc_info_SetTargetLocationResponse_follow_5fme_2ffollow_5fme_2eproto}, {
-      &scc_info_FollowMeResult_follow_5fme_2ffollow_5fme_2eproto.base,}};
-
-static void InitDefaultsscc_info_StartRequest_follow_5fme_2ffollow_5fme_2eproto() {
-  GOOGLE_PROTOBUF_VERIFY_VERSION;
-
-  {
-    void* ptr = &::mavsdk::rpc::follow_me::_StartRequest_default_instance_;
-    new (ptr) ::mavsdk::rpc::follow_me::StartRequest();
-    ::PROTOBUF_NAMESPACE_ID::internal::OnShutdownDestroyMessage(ptr);
-  }
-  ::mavsdk::rpc::follow_me::StartRequest::InitAsDefaultInstance();
-}
-
-::PROTOBUF_NAMESPACE_ID::internal::SCCInfo<0> scc_info_StartRequest_follow_5fme_2ffollow_5fme_2eproto =
-    {{ATOMIC_VAR_INIT(::PROTOBUF_NAMESPACE_ID::internal::SCCInfoBase::kUninitialized), 0, 0, InitDefaultsscc_info_StartRequest_follow_5fme_2ffollow_5fme_2eproto}, {}};
-
-static void InitDefaultsscc_info_StartResponse_follow_5fme_2ffollow_5fme_2eproto() {
-  GOOGLE_PROTOBUF_VERIFY_VERSION;
-
-  {
-    void* ptr = &::mavsdk::rpc::follow_me::_StartResponse_default_instance_;
-    new (ptr) ::mavsdk::rpc::follow_me::StartResponse();
-    ::PROTOBUF_NAMESPACE_ID::internal::OnShutdownDestroyMessage(ptr);
-  }
-  ::mavsdk::rpc::follow_me::StartResponse::InitAsDefaultInstance();
-}
-
-::PROTOBUF_NAMESPACE_ID::internal::SCCInfo<1> scc_info_StartResponse_follow_5fme_2ffollow_5fme_2eproto =
-    {{ATOMIC_VAR_INIT(::PROTOBUF_NAMESPACE_ID::internal::SCCInfoBase::kUninitialized), 1, 0, InitDefaultsscc_info_StartResponse_follow_5fme_2ffollow_5fme_2eproto}, {
-      &scc_info_FollowMeResult_follow_5fme_2ffollow_5fme_2eproto.base,}};
-
-static void InitDefaultsscc_info_StopRequest_follow_5fme_2ffollow_5fme_2eproto() {
-  GOOGLE_PROTOBUF_VERIFY_VERSION;
-
-  {
-    void* ptr = &::mavsdk::rpc::follow_me::_StopRequest_default_instance_;
-    new (ptr) ::mavsdk::rpc::follow_me::StopRequest();
-    ::PROTOBUF_NAMESPACE_ID::internal::OnShutdownDestroyMessage(ptr);
-  }
-  ::mavsdk::rpc::follow_me::StopRequest::InitAsDefaultInstance();
-}
-
-::PROTOBUF_NAMESPACE_ID::internal::SCCInfo<0> scc_info_StopRequest_follow_5fme_2ffollow_5fme_2eproto =
-    {{ATOMIC_VAR_INIT(::PROTOBUF_NAMESPACE_ID::internal::SCCInfoBase::kUninitialized), 0, 0, InitDefaultsscc_info_StopRequest_follow_5fme_2ffollow_5fme_2eproto}, {}};
-
-static void InitDefaultsscc_info_StopResponse_follow_5fme_2ffollow_5fme_2eproto() {
-  GOOGLE_PROTOBUF_VERIFY_VERSION;
-
-  {
-    void* ptr = &::mavsdk::rpc::follow_me::_StopResponse_default_instance_;
-    new (ptr) ::mavsdk::rpc::follow_me::StopResponse();
-    ::PROTOBUF_NAMESPACE_ID::internal::OnShutdownDestroyMessage(ptr);
-  }
-  ::mavsdk::rpc::follow_me::StopResponse::InitAsDefaultInstance();
-}
-
-::PROTOBUF_NAMESPACE_ID::internal::SCCInfo<1> scc_info_StopResponse_follow_5fme_2ffollow_5fme_2eproto =
-    {{ATOMIC_VAR_INIT(::PROTOBUF_NAMESPACE_ID::internal::SCCInfoBase::kUninitialized), 1, 0, InitDefaultsscc_info_StopResponse_follow_5fme_2ffollow_5fme_2eproto}, {
-      &scc_info_FollowMeResult_follow_5fme_2ffollow_5fme_2eproto.base,}};
-
-static void InitDefaultsscc_info_TargetLocation_follow_5fme_2ffollow_5fme_2eproto() {
-  GOOGLE_PROTOBUF_VERIFY_VERSION;
-
-  {
-    void* ptr = &::mavsdk::rpc::follow_me::_TargetLocation_default_instance_;
-    new (ptr) ::mavsdk::rpc::follow_me::TargetLocation();
-    ::PROTOBUF_NAMESPACE_ID::internal::OnShutdownDestroyMessage(ptr);
-  }
-  ::mavsdk::rpc::follow_me::TargetLocation::InitAsDefaultInstance();
-}
-
-::PROTOBUF_NAMESPACE_ID::internal::SCCInfo<0> scc_info_TargetLocation_follow_5fme_2ffollow_5fme_2eproto =
-    {{ATOMIC_VAR_INIT(::PROTOBUF_NAMESPACE_ID::internal::SCCInfoBase::kUninitialized), 0, 0, InitDefaultsscc_info_TargetLocation_follow_5fme_2ffollow_5fme_2eproto}, {}};
-
 static ::PROTOBUF_NAMESPACE_ID::Metadata file_level_metadata_follow_5fme_2ffollow_5fme_2eproto[17];
 static const ::PROTOBUF_NAMESPACE_ID::EnumDescriptor* file_level_enum_descriptors_follow_5fme_2ffollow_5fme_2eproto[2];
 static constexpr ::PROTOBUF_NAMESPACE_ID::ServiceDescriptor const** file_level_service_descriptors_follow_5fme_2ffollow_5fme_2eproto = nullptr;
@@ -557,35 +452,21 @@ const char descriptor_table_protodef_follow_5fme_2ffollow_5fme_2eproto[] PROTOBU
 static const ::PROTOBUF_NAMESPACE_ID::internal::DescriptorTable*const descriptor_table_follow_5fme_2ffollow_5fme_2eproto_deps[1] = {
   &::descriptor_table_mavsdk_5foptions_2eproto,
 };
-static ::PROTOBUF_NAMESPACE_ID::internal::SCCInfoBase*const descriptor_table_follow_5fme_2ffollow_5fme_2eproto_sccs[17] = {
-  &scc_info_Config_follow_5fme_2ffollow_5fme_2eproto.base,
-  &scc_info_FollowMeResult_follow_5fme_2ffollow_5fme_2eproto.base,
-  &scc_info_GetConfigRequest_follow_5fme_2ffollow_5fme_2eproto.base,
-  &scc_info_GetConfigResponse_follow_5fme_2ffollow_5fme_2eproto.base,
-  &scc_info_GetLastLocationRequest_follow_5fme_2ffollow_5fme_2eproto.base,
-  &scc_info_GetLastLocationResponse_follow_5fme_2ffollow_5fme_2eproto.base,
-  &scc_info_IsActiveRequest_follow_5fme_2ffollow_5fme_2eproto.base,
-  &scc_info_IsActiveResponse_follow_5fme_2ffollow_5fme_2eproto.base,
-  &scc_info_SetConfigRequest_follow_5fme_2ffollow_5fme_2eproto.base,
-  &scc_info_SetConfigResponse_follow_5fme_2ffollow_5fme_2eproto.base,
-  &scc_info_SetTargetLocationRequest_follow_5fme_2ffollow_5fme_2eproto.base,
-  &scc_info_SetTargetLocationResponse_follow_5fme_2ffollow_5fme_2eproto.base,
-  &scc_info_StartRequest_follow_5fme_2ffollow_5fme_2eproto.base,
-  &scc_info_StartResponse_follow_5fme_2ffollow_5fme_2eproto.base,
-  &scc_info_StopRequest_follow_5fme_2ffollow_5fme_2eproto.base,
-  &scc_info_StopResponse_follow_5fme_2ffollow_5fme_2eproto.base,
-  &scc_info_TargetLocation_follow_5fme_2ffollow_5fme_2eproto.base,
-};
 static ::PROTOBUF_NAMESPACE_ID::internal::once_flag descriptor_table_follow_5fme_2ffollow_5fme_2eproto_once;
 const ::PROTOBUF_NAMESPACE_ID::internal::DescriptorTable descriptor_table_follow_5fme_2ffollow_5fme_2eproto = {
-  false, false, descriptor_table_protodef_follow_5fme_2ffollow_5fme_2eproto, "follow_me/follow_me.proto", 2515,
-  &descriptor_table_follow_5fme_2ffollow_5fme_2eproto_once, descriptor_table_follow_5fme_2ffollow_5fme_2eproto_sccs, descriptor_table_follow_5fme_2ffollow_5fme_2eproto_deps, 17, 1,
+  false, false, 2515, descriptor_table_protodef_follow_5fme_2ffollow_5fme_2eproto, "follow_me/follow_me.proto", 
+  &descriptor_table_follow_5fme_2ffollow_5fme_2eproto_once, descriptor_table_follow_5fme_2ffollow_5fme_2eproto_deps, 1, 17,
   schemas, file_default_instances, TableStruct_follow_5fme_2ffollow_5fme_2eproto::offsets,
-  file_level_metadata_follow_5fme_2ffollow_5fme_2eproto, 17, file_level_enum_descriptors_follow_5fme_2ffollow_5fme_2eproto, file_level_service_descriptors_follow_5fme_2ffollow_5fme_2eproto,
+  file_level_metadata_follow_5fme_2ffollow_5fme_2eproto, file_level_enum_descriptors_follow_5fme_2ffollow_5fme_2eproto, file_level_service_descriptors_follow_5fme_2ffollow_5fme_2eproto,
 };
+PROTOBUF_ATTRIBUTE_WEAK ::PROTOBUF_NAMESPACE_ID::Metadata
+descriptor_table_follow_5fme_2ffollow_5fme_2eproto_metadata_getter(int index) {
+  ::PROTOBUF_NAMESPACE_ID::internal::AssignDescriptors(&descriptor_table_follow_5fme_2ffollow_5fme_2eproto);
+  return descriptor_table_follow_5fme_2ffollow_5fme_2eproto.file_level_metadata[index];
+}
 
 // Force running AddDescriptors() at dynamic initialization time.
-static bool dynamic_init_dummy_follow_5fme_2ffollow_5fme_2eproto = (static_cast<void>(::PROTOBUF_NAMESPACE_ID::internal::AddDescriptors(&descriptor_table_follow_5fme_2ffollow_5fme_2eproto)), true);
+PROTOBUF_ATTRIBUTE_INIT_PRIORITY static ::PROTOBUF_NAMESPACE_ID::internal::AddDescriptorsRunner dynamic_init_dummy_follow_5fme_2ffollow_5fme_2eproto(&descriptor_table_follow_5fme_2ffollow_5fme_2eproto);
 namespace mavsdk {
 namespace rpc {
 namespace follow_me {
@@ -654,8 +535,6 @@ constexpr int FollowMeResult::Result_ARRAYSIZE;
 
 // ===================================================================
 
-void Config::InitAsDefaultInstance() {
-}
 class Config::_Internal {
  public:
 };
@@ -676,9 +555,10 @@ Config::Config(const Config& from)
 }
 
 void Config::SharedCtor() {
-  ::memset(&min_height_m_, 0, static_cast<size_t>(
-      reinterpret_cast<char*>(&responsiveness_) -
-      reinterpret_cast<char*>(&min_height_m_)) + sizeof(responsiveness_));
+::memset(reinterpret_cast<char*>(this) + static_cast<size_t>(
+    reinterpret_cast<char*>(&min_height_m_) - reinterpret_cast<char*>(this)),
+    0, static_cast<size_t>(reinterpret_cast<char*>(&responsiveness_) -
+    reinterpret_cast<char*>(&min_height_m_)) + sizeof(responsiveness_));
 }
 
 Config::~Config() {
@@ -700,11 +580,6 @@ void Config::RegisterArenaDtor(::PROTOBUF_NAMESPACE_ID::Arena*) {
 void Config::SetCachedSize(int size) const {
   _cached_size_.Set(size);
 }
-const Config& Config::default_instance() {
-  ::PROTOBUF_NAMESPACE_ID::internal::InitSCC(&::scc_info_Config_follow_5fme_2ffollow_5fme_2eproto.base);
-  return *internal_default_instance();
-}
-
 
 void Config::Clear() {
 // @@protoc_insertion_point(message_clear_start:mavsdk.rpc.follow_me.Config)
@@ -720,7 +595,6 @@ void Config::Clear() {
 
 const char* Config::_InternalParse(const char* ptr, ::PROTOBUF_NAMESPACE_ID::internal::ParseContext* ctx) {
 #define CHK_(x) if (PROTOBUF_PREDICT_FALSE(!(x))) goto failure
-  ::PROTOBUF_NAMESPACE_ID::Arena* arena = GetArena(); (void)arena;
   while (!ctx->Done(&ptr)) {
     ::PROTOBUF_NAMESPACE_ID::uint32 tag;
     ptr = ::PROTOBUF_NAMESPACE_ID::internal::ReadTag(ptr, &tag);
@@ -926,8 +800,6 @@ void Config::InternalSwap(Config* other) {
 
 // ===================================================================
 
-void TargetLocation::InitAsDefaultInstance() {
-}
 class TargetLocation::_Internal {
  public:
 };
@@ -948,9 +820,10 @@ TargetLocation::TargetLocation(const TargetLocation& from)
 }
 
 void TargetLocation::SharedCtor() {
-  ::memset(&latitude_deg_, 0, static_cast<size_t>(
-      reinterpret_cast<char*>(&velocity_z_m_s_) -
-      reinterpret_cast<char*>(&latitude_deg_)) + sizeof(velocity_z_m_s_));
+::memset(reinterpret_cast<char*>(this) + static_cast<size_t>(
+    reinterpret_cast<char*>(&latitude_deg_) - reinterpret_cast<char*>(this)),
+    0, static_cast<size_t>(reinterpret_cast<char*>(&velocity_z_m_s_) -
+    reinterpret_cast<char*>(&latitude_deg_)) + sizeof(velocity_z_m_s_));
 }
 
 TargetLocation::~TargetLocation() {
@@ -972,11 +845,6 @@ void TargetLocation::RegisterArenaDtor(::PROTOBUF_NAMESPACE_ID::Arena*) {
 void TargetLocation::SetCachedSize(int size) const {
   _cached_size_.Set(size);
 }
-const TargetLocation& TargetLocation::default_instance() {
-  ::PROTOBUF_NAMESPACE_ID::internal::InitSCC(&::scc_info_TargetLocation_follow_5fme_2ffollow_5fme_2eproto.base);
-  return *internal_default_instance();
-}
-
 
 void TargetLocation::Clear() {
 // @@protoc_insertion_point(message_clear_start:mavsdk.rpc.follow_me.TargetLocation)
@@ -992,7 +860,6 @@ void TargetLocation::Clear() {
 
 const char* TargetLocation::_InternalParse(const char* ptr, ::PROTOBUF_NAMESPACE_ID::internal::ParseContext* ctx) {
 #define CHK_(x) if (PROTOBUF_PREDICT_FALSE(!(x))) goto failure
-  ::PROTOBUF_NAMESPACE_ID::Arena* arena = GetArena(); (void)arena;
   while (!ctx->Done(&ptr)) {
     ::PROTOBUF_NAMESPACE_ID::uint32 tag;
     ptr = ::PROTOBUF_NAMESPACE_ID::internal::ReadTag(ptr, &tag);
@@ -1237,8 +1104,6 @@ void TargetLocation::InternalSwap(TargetLocation* other) {
 
 // ===================================================================
 
-void GetConfigRequest::InitAsDefaultInstance() {
-}
 class GetConfigRequest::_Internal {
  public:
 };
@@ -1277,11 +1142,6 @@ void GetConfigRequest::RegisterArenaDtor(::PROTOBUF_NAMESPACE_ID::Arena*) {
 void GetConfigRequest::SetCachedSize(int size) const {
   _cached_size_.Set(size);
 }
-const GetConfigRequest& GetConfigRequest::default_instance() {
-  ::PROTOBUF_NAMESPACE_ID::internal::InitSCC(&::scc_info_GetConfigRequest_follow_5fme_2ffollow_5fme_2eproto.base);
-  return *internal_default_instance();
-}
-
 
 void GetConfigRequest::Clear() {
 // @@protoc_insertion_point(message_clear_start:mavsdk.rpc.follow_me.GetConfigRequest)
@@ -1294,7 +1154,6 @@ void GetConfigRequest::Clear() {
 
 const char* GetConfigRequest::_InternalParse(const char* ptr, ::PROTOBUF_NAMESPACE_ID::internal::ParseContext* ctx) {
 #define CHK_(x) if (PROTOBUF_PREDICT_FALSE(!(x))) goto failure
-  ::PROTOBUF_NAMESPACE_ID::Arena* arena = GetArena(); (void)arena;
   while (!ctx->Done(&ptr)) {
     ::PROTOBUF_NAMESPACE_ID::uint32 tag;
     ptr = ::PROTOBUF_NAMESPACE_ID::internal::ReadTag(ptr, &tag);
@@ -1402,10 +1261,6 @@ void GetConfigRequest::InternalSwap(GetConfigRequest* other) {
 
 // ===================================================================
 
-void GetConfigResponse::InitAsDefaultInstance() {
-  ::mavsdk::rpc::follow_me::_GetConfigResponse_default_instance_._instance.get_mutable()->config_ = const_cast< ::mavsdk::rpc::follow_me::Config*>(
-      ::mavsdk::rpc::follow_me::Config::internal_default_instance());
-}
 class GetConfigResponse::_Internal {
  public:
   static const ::mavsdk::rpc::follow_me::Config& config(const GetConfigResponse* msg);
@@ -1433,8 +1288,7 @@ GetConfigResponse::GetConfigResponse(const GetConfigResponse& from)
 }
 
 void GetConfigResponse::SharedCtor() {
-  ::PROTOBUF_NAMESPACE_ID::internal::InitSCC(&scc_info_GetConfigResponse_follow_5fme_2ffollow_5fme_2eproto.base);
-  config_ = nullptr;
+config_ = nullptr;
 }
 
 GetConfigResponse::~GetConfigResponse() {
@@ -1457,11 +1311,6 @@ void GetConfigResponse::RegisterArenaDtor(::PROTOBUF_NAMESPACE_ID::Arena*) {
 void GetConfigResponse::SetCachedSize(int size) const {
   _cached_size_.Set(size);
 }
-const GetConfigResponse& GetConfigResponse::default_instance() {
-  ::PROTOBUF_NAMESPACE_ID::internal::InitSCC(&::scc_info_GetConfigResponse_follow_5fme_2ffollow_5fme_2eproto.base);
-  return *internal_default_instance();
-}
-
 
 void GetConfigResponse::Clear() {
 // @@protoc_insertion_point(message_clear_start:mavsdk.rpc.follow_me.GetConfigResponse)
@@ -1478,7 +1327,6 @@ void GetConfigResponse::Clear() {
 
 const char* GetConfigResponse::_InternalParse(const char* ptr, ::PROTOBUF_NAMESPACE_ID::internal::ParseContext* ctx) {
 #define CHK_(x) if (PROTOBUF_PREDICT_FALSE(!(x))) goto failure
-  ::PROTOBUF_NAMESPACE_ID::Arena* arena = GetArena(); (void)arena;
   while (!ctx->Done(&ptr)) {
     ::PROTOBUF_NAMESPACE_ID::uint32 tag;
     ptr = ::PROTOBUF_NAMESPACE_ID::internal::ReadTag(ptr, &tag);
@@ -1617,10 +1465,6 @@ void GetConfigResponse::InternalSwap(GetConfigResponse* other) {
 
 // ===================================================================
 
-void SetConfigRequest::InitAsDefaultInstance() {
-  ::mavsdk::rpc::follow_me::_SetConfigRequest_default_instance_._instance.get_mutable()->config_ = const_cast< ::mavsdk::rpc::follow_me::Config*>(
-      ::mavsdk::rpc::follow_me::Config::internal_default_instance());
-}
 class SetConfigRequest::_Internal {
  public:
   static const ::mavsdk::rpc::follow_me::Config& config(const SetConfigRequest* msg);
@@ -1648,8 +1492,7 @@ SetConfigRequest::SetConfigRequest(const SetConfigRequest& from)
 }
 
 void SetConfigRequest::SharedCtor() {
-  ::PROTOBUF_NAMESPACE_ID::internal::InitSCC(&scc_info_SetConfigRequest_follow_5fme_2ffollow_5fme_2eproto.base);
-  config_ = nullptr;
+config_ = nullptr;
 }
 
 SetConfigRequest::~SetConfigRequest() {
@@ -1672,11 +1515,6 @@ void SetConfigRequest::RegisterArenaDtor(::PROTOBUF_NAMESPACE_ID::Arena*) {
 void SetConfigRequest::SetCachedSize(int size) const {
   _cached_size_.Set(size);
 }
-const SetConfigRequest& SetConfigRequest::default_instance() {
-  ::PROTOBUF_NAMESPACE_ID::internal::InitSCC(&::scc_info_SetConfigRequest_follow_5fme_2ffollow_5fme_2eproto.base);
-  return *internal_default_instance();
-}
-
 
 void SetConfigRequest::Clear() {
 // @@protoc_insertion_point(message_clear_start:mavsdk.rpc.follow_me.SetConfigRequest)
@@ -1693,7 +1531,6 @@ void SetConfigRequest::Clear() {
 
 const char* SetConfigRequest::_InternalParse(const char* ptr, ::PROTOBUF_NAMESPACE_ID::internal::ParseContext* ctx) {
 #define CHK_(x) if (PROTOBUF_PREDICT_FALSE(!(x))) goto failure
-  ::PROTOBUF_NAMESPACE_ID::Arena* arena = GetArena(); (void)arena;
   while (!ctx->Done(&ptr)) {
     ::PROTOBUF_NAMESPACE_ID::uint32 tag;
     ptr = ::PROTOBUF_NAMESPACE_ID::internal::ReadTag(ptr, &tag);
@@ -1832,10 +1669,6 @@ void SetConfigRequest::InternalSwap(SetConfigRequest* other) {
 
 // ===================================================================
 
-void SetConfigResponse::InitAsDefaultInstance() {
-  ::mavsdk::rpc::follow_me::_SetConfigResponse_default_instance_._instance.get_mutable()->follow_me_result_ = const_cast< ::mavsdk::rpc::follow_me::FollowMeResult*>(
-      ::mavsdk::rpc::follow_me::FollowMeResult::internal_default_instance());
-}
 class SetConfigResponse::_Internal {
  public:
   static const ::mavsdk::rpc::follow_me::FollowMeResult& follow_me_result(const SetConfigResponse* msg);
@@ -1863,8 +1696,7 @@ SetConfigResponse::SetConfigResponse(const SetConfigResponse& from)
 }
 
 void SetConfigResponse::SharedCtor() {
-  ::PROTOBUF_NAMESPACE_ID::internal::InitSCC(&scc_info_SetConfigResponse_follow_5fme_2ffollow_5fme_2eproto.base);
-  follow_me_result_ = nullptr;
+follow_me_result_ = nullptr;
 }
 
 SetConfigResponse::~SetConfigResponse() {
@@ -1887,11 +1719,6 @@ void SetConfigResponse::RegisterArenaDtor(::PROTOBUF_NAMESPACE_ID::Arena*) {
 void SetConfigResponse::SetCachedSize(int size) const {
   _cached_size_.Set(size);
 }
-const SetConfigResponse& SetConfigResponse::default_instance() {
-  ::PROTOBUF_NAMESPACE_ID::internal::InitSCC(&::scc_info_SetConfigResponse_follow_5fme_2ffollow_5fme_2eproto.base);
-  return *internal_default_instance();
-}
-
 
 void SetConfigResponse::Clear() {
 // @@protoc_insertion_point(message_clear_start:mavsdk.rpc.follow_me.SetConfigResponse)
@@ -1908,7 +1735,6 @@ void SetConfigResponse::Clear() {
 
 const char* SetConfigResponse::_InternalParse(const char* ptr, ::PROTOBUF_NAMESPACE_ID::internal::ParseContext* ctx) {
 #define CHK_(x) if (PROTOBUF_PREDICT_FALSE(!(x))) goto failure
-  ::PROTOBUF_NAMESPACE_ID::Arena* arena = GetArena(); (void)arena;
   while (!ctx->Done(&ptr)) {
     ::PROTOBUF_NAMESPACE_ID::uint32 tag;
     ptr = ::PROTOBUF_NAMESPACE_ID::internal::ReadTag(ptr, &tag);
@@ -2047,8 +1873,6 @@ void SetConfigResponse::InternalSwap(SetConfigResponse* other) {
 
 // ===================================================================
 
-void IsActiveRequest::InitAsDefaultInstance() {
-}
 class IsActiveRequest::_Internal {
  public:
 };
@@ -2087,11 +1911,6 @@ void IsActiveRequest::RegisterArenaDtor(::PROTOBUF_NAMESPACE_ID::Arena*) {
 void IsActiveRequest::SetCachedSize(int size) const {
   _cached_size_.Set(size);
 }
-const IsActiveRequest& IsActiveRequest::default_instance() {
-  ::PROTOBUF_NAMESPACE_ID::internal::InitSCC(&::scc_info_IsActiveRequest_follow_5fme_2ffollow_5fme_2eproto.base);
-  return *internal_default_instance();
-}
-
 
 void IsActiveRequest::Clear() {
 // @@protoc_insertion_point(message_clear_start:mavsdk.rpc.follow_me.IsActiveRequest)
@@ -2104,7 +1923,6 @@ void IsActiveRequest::Clear() {
 
 const char* IsActiveRequest::_InternalParse(const char* ptr, ::PROTOBUF_NAMESPACE_ID::internal::ParseContext* ctx) {
 #define CHK_(x) if (PROTOBUF_PREDICT_FALSE(!(x))) goto failure
-  ::PROTOBUF_NAMESPACE_ID::Arena* arena = GetArena(); (void)arena;
   while (!ctx->Done(&ptr)) {
     ::PROTOBUF_NAMESPACE_ID::uint32 tag;
     ptr = ::PROTOBUF_NAMESPACE_ID::internal::ReadTag(ptr, &tag);
@@ -2212,8 +2030,6 @@ void IsActiveRequest::InternalSwap(IsActiveRequest* other) {
 
 // ===================================================================
 
-void IsActiveResponse::InitAsDefaultInstance() {
-}
 class IsActiveResponse::_Internal {
  public:
 };
@@ -2232,7 +2048,7 @@ IsActiveResponse::IsActiveResponse(const IsActiveResponse& from)
 }
 
 void IsActiveResponse::SharedCtor() {
-  is_active_ = false;
+is_active_ = false;
 }
 
 IsActiveResponse::~IsActiveResponse() {
@@ -2254,11 +2070,6 @@ void IsActiveResponse::RegisterArenaDtor(::PROTOBUF_NAMESPACE_ID::Arena*) {
 void IsActiveResponse::SetCachedSize(int size) const {
   _cached_size_.Set(size);
 }
-const IsActiveResponse& IsActiveResponse::default_instance() {
-  ::PROTOBUF_NAMESPACE_ID::internal::InitSCC(&::scc_info_IsActiveResponse_follow_5fme_2ffollow_5fme_2eproto.base);
-  return *internal_default_instance();
-}
-
 
 void IsActiveResponse::Clear() {
 // @@protoc_insertion_point(message_clear_start:mavsdk.rpc.follow_me.IsActiveResponse)
@@ -2272,7 +2083,6 @@ void IsActiveResponse::Clear() {
 
 const char* IsActiveResponse::_InternalParse(const char* ptr, ::PROTOBUF_NAMESPACE_ID::internal::ParseContext* ctx) {
 #define CHK_(x) if (PROTOBUF_PREDICT_FALSE(!(x))) goto failure
-  ::PROTOBUF_NAMESPACE_ID::Arena* arena = GetArena(); (void)arena;
   while (!ctx->Done(&ptr)) {
     ::PROTOBUF_NAMESPACE_ID::uint32 tag;
     ptr = ::PROTOBUF_NAMESPACE_ID::internal::ReadTag(ptr, &tag);
@@ -2407,10 +2217,6 @@ void IsActiveResponse::InternalSwap(IsActiveResponse* other) {
 
 // ===================================================================
 
-void SetTargetLocationRequest::InitAsDefaultInstance() {
-  ::mavsdk::rpc::follow_me::_SetTargetLocationRequest_default_instance_._instance.get_mutable()->location_ = const_cast< ::mavsdk::rpc::follow_me::TargetLocation*>(
-      ::mavsdk::rpc::follow_me::TargetLocation::internal_default_instance());
-}
 class SetTargetLocationRequest::_Internal {
  public:
   static const ::mavsdk::rpc::follow_me::TargetLocation& location(const SetTargetLocationRequest* msg);
@@ -2438,8 +2244,7 @@ SetTargetLocationRequest::SetTargetLocationRequest(const SetTargetLocationReques
 }
 
 void SetTargetLocationRequest::SharedCtor() {
-  ::PROTOBUF_NAMESPACE_ID::internal::InitSCC(&scc_info_SetTargetLocationRequest_follow_5fme_2ffollow_5fme_2eproto.base);
-  location_ = nullptr;
+location_ = nullptr;
 }
 
 SetTargetLocationRequest::~SetTargetLocationRequest() {
@@ -2462,11 +2267,6 @@ void SetTargetLocationRequest::RegisterArenaDtor(::PROTOBUF_NAMESPACE_ID::Arena*
 void SetTargetLocationRequest::SetCachedSize(int size) const {
   _cached_size_.Set(size);
 }
-const SetTargetLocationRequest& SetTargetLocationRequest::default_instance() {
-  ::PROTOBUF_NAMESPACE_ID::internal::InitSCC(&::scc_info_SetTargetLocationRequest_follow_5fme_2ffollow_5fme_2eproto.base);
-  return *internal_default_instance();
-}
-
 
 void SetTargetLocationRequest::Clear() {
 // @@protoc_insertion_point(message_clear_start:mavsdk.rpc.follow_me.SetTargetLocationRequest)
@@ -2483,7 +2283,6 @@ void SetTargetLocationRequest::Clear() {
 
 const char* SetTargetLocationRequest::_InternalParse(const char* ptr, ::PROTOBUF_NAMESPACE_ID::internal::ParseContext* ctx) {
 #define CHK_(x) if (PROTOBUF_PREDICT_FALSE(!(x))) goto failure
-  ::PROTOBUF_NAMESPACE_ID::Arena* arena = GetArena(); (void)arena;
   while (!ctx->Done(&ptr)) {
     ::PROTOBUF_NAMESPACE_ID::uint32 tag;
     ptr = ::PROTOBUF_NAMESPACE_ID::internal::ReadTag(ptr, &tag);
@@ -2622,10 +2421,6 @@ void SetTargetLocationRequest::InternalSwap(SetTargetLocationRequest* other) {
 
 // ===================================================================
 
-void SetTargetLocationResponse::InitAsDefaultInstance() {
-  ::mavsdk::rpc::follow_me::_SetTargetLocationResponse_default_instance_._instance.get_mutable()->follow_me_result_ = const_cast< ::mavsdk::rpc::follow_me::FollowMeResult*>(
-      ::mavsdk::rpc::follow_me::FollowMeResult::internal_default_instance());
-}
 class SetTargetLocationResponse::_Internal {
  public:
   static const ::mavsdk::rpc::follow_me::FollowMeResult& follow_me_result(const SetTargetLocationResponse* msg);
@@ -2653,8 +2448,7 @@ SetTargetLocationResponse::SetTargetLocationResponse(const SetTargetLocationResp
 }
 
 void SetTargetLocationResponse::SharedCtor() {
-  ::PROTOBUF_NAMESPACE_ID::internal::InitSCC(&scc_info_SetTargetLocationResponse_follow_5fme_2ffollow_5fme_2eproto.base);
-  follow_me_result_ = nullptr;
+follow_me_result_ = nullptr;
 }
 
 SetTargetLocationResponse::~SetTargetLocationResponse() {
@@ -2677,11 +2471,6 @@ void SetTargetLocationResponse::RegisterArenaDtor(::PROTOBUF_NAMESPACE_ID::Arena
 void SetTargetLocationResponse::SetCachedSize(int size) const {
   _cached_size_.Set(size);
 }
-const SetTargetLocationResponse& SetTargetLocationResponse::default_instance() {
-  ::PROTOBUF_NAMESPACE_ID::internal::InitSCC(&::scc_info_SetTargetLocationResponse_follow_5fme_2ffollow_5fme_2eproto.base);
-  return *internal_default_instance();
-}
-
 
 void SetTargetLocationResponse::Clear() {
 // @@protoc_insertion_point(message_clear_start:mavsdk.rpc.follow_me.SetTargetLocationResponse)
@@ -2698,7 +2487,6 @@ void SetTargetLocationResponse::Clear() {
 
 const char* SetTargetLocationResponse::_InternalParse(const char* ptr, ::PROTOBUF_NAMESPACE_ID::internal::ParseContext* ctx) {
 #define CHK_(x) if (PROTOBUF_PREDICT_FALSE(!(x))) goto failure
-  ::PROTOBUF_NAMESPACE_ID::Arena* arena = GetArena(); (void)arena;
   while (!ctx->Done(&ptr)) {
     ::PROTOBUF_NAMESPACE_ID::uint32 tag;
     ptr = ::PROTOBUF_NAMESPACE_ID::internal::ReadTag(ptr, &tag);
@@ -2837,8 +2625,6 @@ void SetTargetLocationResponse::InternalSwap(SetTargetLocationResponse* other) {
 
 // ===================================================================
 
-void GetLastLocationRequest::InitAsDefaultInstance() {
-}
 class GetLastLocationRequest::_Internal {
  public:
 };
@@ -2877,11 +2663,6 @@ void GetLastLocationRequest::RegisterArenaDtor(::PROTOBUF_NAMESPACE_ID::Arena*) 
 void GetLastLocationRequest::SetCachedSize(int size) const {
   _cached_size_.Set(size);
 }
-const GetLastLocationRequest& GetLastLocationRequest::default_instance() {
-  ::PROTOBUF_NAMESPACE_ID::internal::InitSCC(&::scc_info_GetLastLocationRequest_follow_5fme_2ffollow_5fme_2eproto.base);
-  return *internal_default_instance();
-}
-
 
 void GetLastLocationRequest::Clear() {
 // @@protoc_insertion_point(message_clear_start:mavsdk.rpc.follow_me.GetLastLocationRequest)
@@ -2894,7 +2675,6 @@ void GetLastLocationRequest::Clear() {
 
 const char* GetLastLocationRequest::_InternalParse(const char* ptr, ::PROTOBUF_NAMESPACE_ID::internal::ParseContext* ctx) {
 #define CHK_(x) if (PROTOBUF_PREDICT_FALSE(!(x))) goto failure
-  ::PROTOBUF_NAMESPACE_ID::Arena* arena = GetArena(); (void)arena;
   while (!ctx->Done(&ptr)) {
     ::PROTOBUF_NAMESPACE_ID::uint32 tag;
     ptr = ::PROTOBUF_NAMESPACE_ID::internal::ReadTag(ptr, &tag);
@@ -3002,10 +2782,6 @@ void GetLastLocationRequest::InternalSwap(GetLastLocationRequest* other) {
 
 // ===================================================================
 
-void GetLastLocationResponse::InitAsDefaultInstance() {
-  ::mavsdk::rpc::follow_me::_GetLastLocationResponse_default_instance_._instance.get_mutable()->location_ = const_cast< ::mavsdk::rpc::follow_me::TargetLocation*>(
-      ::mavsdk::rpc::follow_me::TargetLocation::internal_default_instance());
-}
 class GetLastLocationResponse::_Internal {
  public:
   static const ::mavsdk::rpc::follow_me::TargetLocation& location(const GetLastLocationResponse* msg);
@@ -3033,8 +2809,7 @@ GetLastLocationResponse::GetLastLocationResponse(const GetLastLocationResponse& 
 }
 
 void GetLastLocationResponse::SharedCtor() {
-  ::PROTOBUF_NAMESPACE_ID::internal::InitSCC(&scc_info_GetLastLocationResponse_follow_5fme_2ffollow_5fme_2eproto.base);
-  location_ = nullptr;
+location_ = nullptr;
 }
 
 GetLastLocationResponse::~GetLastLocationResponse() {
@@ -3057,11 +2832,6 @@ void GetLastLocationResponse::RegisterArenaDtor(::PROTOBUF_NAMESPACE_ID::Arena*)
 void GetLastLocationResponse::SetCachedSize(int size) const {
   _cached_size_.Set(size);
 }
-const GetLastLocationResponse& GetLastLocationResponse::default_instance() {
-  ::PROTOBUF_NAMESPACE_ID::internal::InitSCC(&::scc_info_GetLastLocationResponse_follow_5fme_2ffollow_5fme_2eproto.base);
-  return *internal_default_instance();
-}
-
 
 void GetLastLocationResponse::Clear() {
 // @@protoc_insertion_point(message_clear_start:mavsdk.rpc.follow_me.GetLastLocationResponse)
@@ -3078,7 +2848,6 @@ void GetLastLocationResponse::Clear() {
 
 const char* GetLastLocationResponse::_InternalParse(const char* ptr, ::PROTOBUF_NAMESPACE_ID::internal::ParseContext* ctx) {
 #define CHK_(x) if (PROTOBUF_PREDICT_FALSE(!(x))) goto failure
-  ::PROTOBUF_NAMESPACE_ID::Arena* arena = GetArena(); (void)arena;
   while (!ctx->Done(&ptr)) {
     ::PROTOBUF_NAMESPACE_ID::uint32 tag;
     ptr = ::PROTOBUF_NAMESPACE_ID::internal::ReadTag(ptr, &tag);
@@ -3217,8 +2986,6 @@ void GetLastLocationResponse::InternalSwap(GetLastLocationResponse* other) {
 
 // ===================================================================
 
-void StartRequest::InitAsDefaultInstance() {
-}
 class StartRequest::_Internal {
  public:
 };
@@ -3257,11 +3024,6 @@ void StartRequest::RegisterArenaDtor(::PROTOBUF_NAMESPACE_ID::Arena*) {
 void StartRequest::SetCachedSize(int size) const {
   _cached_size_.Set(size);
 }
-const StartRequest& StartRequest::default_instance() {
-  ::PROTOBUF_NAMESPACE_ID::internal::InitSCC(&::scc_info_StartRequest_follow_5fme_2ffollow_5fme_2eproto.base);
-  return *internal_default_instance();
-}
-
 
 void StartRequest::Clear() {
 // @@protoc_insertion_point(message_clear_start:mavsdk.rpc.follow_me.StartRequest)
@@ -3274,7 +3036,6 @@ void StartRequest::Clear() {
 
 const char* StartRequest::_InternalParse(const char* ptr, ::PROTOBUF_NAMESPACE_ID::internal::ParseContext* ctx) {
 #define CHK_(x) if (PROTOBUF_PREDICT_FALSE(!(x))) goto failure
-  ::PROTOBUF_NAMESPACE_ID::Arena* arena = GetArena(); (void)arena;
   while (!ctx->Done(&ptr)) {
     ::PROTOBUF_NAMESPACE_ID::uint32 tag;
     ptr = ::PROTOBUF_NAMESPACE_ID::internal::ReadTag(ptr, &tag);
@@ -3382,10 +3143,6 @@ void StartRequest::InternalSwap(StartRequest* other) {
 
 // ===================================================================
 
-void StartResponse::InitAsDefaultInstance() {
-  ::mavsdk::rpc::follow_me::_StartResponse_default_instance_._instance.get_mutable()->follow_me_result_ = const_cast< ::mavsdk::rpc::follow_me::FollowMeResult*>(
-      ::mavsdk::rpc::follow_me::FollowMeResult::internal_default_instance());
-}
 class StartResponse::_Internal {
  public:
   static const ::mavsdk::rpc::follow_me::FollowMeResult& follow_me_result(const StartResponse* msg);
@@ -3413,8 +3170,7 @@ StartResponse::StartResponse(const StartResponse& from)
 }
 
 void StartResponse::SharedCtor() {
-  ::PROTOBUF_NAMESPACE_ID::internal::InitSCC(&scc_info_StartResponse_follow_5fme_2ffollow_5fme_2eproto.base);
-  follow_me_result_ = nullptr;
+follow_me_result_ = nullptr;
 }
 
 StartResponse::~StartResponse() {
@@ -3437,11 +3193,6 @@ void StartResponse::RegisterArenaDtor(::PROTOBUF_NAMESPACE_ID::Arena*) {
 void StartResponse::SetCachedSize(int size) const {
   _cached_size_.Set(size);
 }
-const StartResponse& StartResponse::default_instance() {
-  ::PROTOBUF_NAMESPACE_ID::internal::InitSCC(&::scc_info_StartResponse_follow_5fme_2ffollow_5fme_2eproto.base);
-  return *internal_default_instance();
-}
-
 
 void StartResponse::Clear() {
 // @@protoc_insertion_point(message_clear_start:mavsdk.rpc.follow_me.StartResponse)
@@ -3458,7 +3209,6 @@ void StartResponse::Clear() {
 
 const char* StartResponse::_InternalParse(const char* ptr, ::PROTOBUF_NAMESPACE_ID::internal::ParseContext* ctx) {
 #define CHK_(x) if (PROTOBUF_PREDICT_FALSE(!(x))) goto failure
-  ::PROTOBUF_NAMESPACE_ID::Arena* arena = GetArena(); (void)arena;
   while (!ctx->Done(&ptr)) {
     ::PROTOBUF_NAMESPACE_ID::uint32 tag;
     ptr = ::PROTOBUF_NAMESPACE_ID::internal::ReadTag(ptr, &tag);
@@ -3597,8 +3347,6 @@ void StartResponse::InternalSwap(StartResponse* other) {
 
 // ===================================================================
 
-void StopRequest::InitAsDefaultInstance() {
-}
 class StopRequest::_Internal {
  public:
 };
@@ -3637,11 +3385,6 @@ void StopRequest::RegisterArenaDtor(::PROTOBUF_NAMESPACE_ID::Arena*) {
 void StopRequest::SetCachedSize(int size) const {
   _cached_size_.Set(size);
 }
-const StopRequest& StopRequest::default_instance() {
-  ::PROTOBUF_NAMESPACE_ID::internal::InitSCC(&::scc_info_StopRequest_follow_5fme_2ffollow_5fme_2eproto.base);
-  return *internal_default_instance();
-}
-
 
 void StopRequest::Clear() {
 // @@protoc_insertion_point(message_clear_start:mavsdk.rpc.follow_me.StopRequest)
@@ -3654,7 +3397,6 @@ void StopRequest::Clear() {
 
 const char* StopRequest::_InternalParse(const char* ptr, ::PROTOBUF_NAMESPACE_ID::internal::ParseContext* ctx) {
 #define CHK_(x) if (PROTOBUF_PREDICT_FALSE(!(x))) goto failure
-  ::PROTOBUF_NAMESPACE_ID::Arena* arena = GetArena(); (void)arena;
   while (!ctx->Done(&ptr)) {
     ::PROTOBUF_NAMESPACE_ID::uint32 tag;
     ptr = ::PROTOBUF_NAMESPACE_ID::internal::ReadTag(ptr, &tag);
@@ -3762,10 +3504,6 @@ void StopRequest::InternalSwap(StopRequest* other) {
 
 // ===================================================================
 
-void StopResponse::InitAsDefaultInstance() {
-  ::mavsdk::rpc::follow_me::_StopResponse_default_instance_._instance.get_mutable()->follow_me_result_ = const_cast< ::mavsdk::rpc::follow_me::FollowMeResult*>(
-      ::mavsdk::rpc::follow_me::FollowMeResult::internal_default_instance());
-}
 class StopResponse::_Internal {
  public:
   static const ::mavsdk::rpc::follow_me::FollowMeResult& follow_me_result(const StopResponse* msg);
@@ -3793,8 +3531,7 @@ StopResponse::StopResponse(const StopResponse& from)
 }
 
 void StopResponse::SharedCtor() {
-  ::PROTOBUF_NAMESPACE_ID::internal::InitSCC(&scc_info_StopResponse_follow_5fme_2ffollow_5fme_2eproto.base);
-  follow_me_result_ = nullptr;
+follow_me_result_ = nullptr;
 }
 
 StopResponse::~StopResponse() {
@@ -3817,11 +3554,6 @@ void StopResponse::RegisterArenaDtor(::PROTOBUF_NAMESPACE_ID::Arena*) {
 void StopResponse::SetCachedSize(int size) const {
   _cached_size_.Set(size);
 }
-const StopResponse& StopResponse::default_instance() {
-  ::PROTOBUF_NAMESPACE_ID::internal::InitSCC(&::scc_info_StopResponse_follow_5fme_2ffollow_5fme_2eproto.base);
-  return *internal_default_instance();
-}
-
 
 void StopResponse::Clear() {
 // @@protoc_insertion_point(message_clear_start:mavsdk.rpc.follow_me.StopResponse)
@@ -3838,7 +3570,6 @@ void StopResponse::Clear() {
 
 const char* StopResponse::_InternalParse(const char* ptr, ::PROTOBUF_NAMESPACE_ID::internal::ParseContext* ctx) {
 #define CHK_(x) if (PROTOBUF_PREDICT_FALSE(!(x))) goto failure
-  ::PROTOBUF_NAMESPACE_ID::Arena* arena = GetArena(); (void)arena;
   while (!ctx->Done(&ptr)) {
     ::PROTOBUF_NAMESPACE_ID::uint32 tag;
     ptr = ::PROTOBUF_NAMESPACE_ID::internal::ReadTag(ptr, &tag);
@@ -3977,8 +3708,6 @@ void StopResponse::InternalSwap(StopResponse* other) {
 
 // ===================================================================
 
-void FollowMeResult::InitAsDefaultInstance() {
-}
 class FollowMeResult::_Internal {
  public:
 };
@@ -3994,7 +3723,7 @@ FollowMeResult::FollowMeResult(const FollowMeResult& from)
   _internal_metadata_.MergeFrom<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>(from._internal_metadata_);
   result_str_.UnsafeSetDefault(&::PROTOBUF_NAMESPACE_ID::internal::GetEmptyStringAlreadyInited());
   if (!from._internal_result_str().empty()) {
-    result_str_.Set(&::PROTOBUF_NAMESPACE_ID::internal::GetEmptyStringAlreadyInited(), from._internal_result_str(),
+    result_str_.Set(::PROTOBUF_NAMESPACE_ID::internal::ArenaStringPtr::EmptyDefault{}, from._internal_result_str(), 
       GetArena());
   }
   result_ = from.result_;
@@ -4002,9 +3731,8 @@ FollowMeResult::FollowMeResult(const FollowMeResult& from)
 }
 
 void FollowMeResult::SharedCtor() {
-  ::PROTOBUF_NAMESPACE_ID::internal::InitSCC(&scc_info_FollowMeResult_follow_5fme_2ffollow_5fme_2eproto.base);
-  result_str_.UnsafeSetDefault(&::PROTOBUF_NAMESPACE_ID::internal::GetEmptyStringAlreadyInited());
-  result_ = 0;
+result_str_.UnsafeSetDefault(&::PROTOBUF_NAMESPACE_ID::internal::GetEmptyStringAlreadyInited());
+result_ = 0;
 }
 
 FollowMeResult::~FollowMeResult() {
@@ -4027,11 +3755,6 @@ void FollowMeResult::RegisterArenaDtor(::PROTOBUF_NAMESPACE_ID::Arena*) {
 void FollowMeResult::SetCachedSize(int size) const {
   _cached_size_.Set(size);
 }
-const FollowMeResult& FollowMeResult::default_instance() {
-  ::PROTOBUF_NAMESPACE_ID::internal::InitSCC(&::scc_info_FollowMeResult_follow_5fme_2ffollow_5fme_2eproto.base);
-  return *internal_default_instance();
-}
-
 
 void FollowMeResult::Clear() {
 // @@protoc_insertion_point(message_clear_start:mavsdk.rpc.follow_me.FollowMeResult)
@@ -4039,14 +3762,13 @@ void FollowMeResult::Clear() {
   // Prevent compiler warnings about cached_has_bits being unused
   (void) cached_has_bits;
 
-  result_str_.ClearToEmpty(&::PROTOBUF_NAMESPACE_ID::internal::GetEmptyStringAlreadyInited(), GetArena());
+  result_str_.ClearToEmpty();
   result_ = 0;
   _internal_metadata_.Clear<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>();
 }
 
 const char* FollowMeResult::_InternalParse(const char* ptr, ::PROTOBUF_NAMESPACE_ID::internal::ParseContext* ctx) {
 #define CHK_(x) if (PROTOBUF_PREDICT_FALSE(!(x))) goto failure
-  ::PROTOBUF_NAMESPACE_ID::Arena* arena = GetArena(); (void)arena;
   while (!ctx->Done(&ptr)) {
     ::PROTOBUF_NAMESPACE_ID::uint32 tag;
     ptr = ::PROTOBUF_NAMESPACE_ID::internal::ReadTag(ptr, &tag);

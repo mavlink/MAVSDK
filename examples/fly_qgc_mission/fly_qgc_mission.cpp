@@ -5,28 +5,22 @@
  * and fly them using the MAVSDK.
  *
  * Steps to run this example:
- * 1. (a) Create a Mission in QGroundControl and save them to a file (.plan) (OR)
- *    (b) Use a pre-created sample mission plan in "plugins/mission/qgroundcontrol_sample.plan".
- *    Click
- * [here](https://user-images.githubusercontent.com/26615772/31763673-972c5bb6-b4dc-11e7-8ff0-f8b39b6b88c3.png)
- * to see what sample mission plan in QGroundControl looks like.
- * 2. Run the example by passing path of the QGC mission plan as argument (By default, sample
- * mission plan is imported).
+ * 1.(a) Create a Mission in QGroundControl and save them to a file (.plan), or
+ *   (b) Use a pre-created sample mission plan in
+ *       "src/plugins/mission_raw/test_plans/qgroundcontrol_sample.plan".
+ * 2. Run the example by passing the path of the QGC mission plan as argument
+ *   (By default, sample mission plan is imported).
  *
  * Example description:
  * 1. Imports QGC mission items from .plan file.
  * 2. Uploads mission items to vehicle.
  * 3. Starts mission from first mission item.
  * 4. Commands RTL once QGC Mission is accomplished.
- *
- * @author Shakthi Prashanth M <shakthi.prashanth.m@intel.com>,
- *         Julian Oes <julian@oes.ch>
- * @date 2018-02-04
  */
 
 #include <mavsdk/mavsdk.h>
 #include <mavsdk/plugins/action/action.h>
-#include <mavsdk/plugins/mission/mission.h>
+#include <mavsdk/plugins/mission_raw/mission_raw.h>
 #include <mavsdk/plugins/telemetry/telemetry.h>
 
 #include <functional>
@@ -43,11 +37,11 @@ using namespace std::chrono; // for seconds(), milliseconds()
 using namespace std::this_thread; // for sleep_for()
 
 // Handles Action's result
-inline void handle_action_err_exit(Action::Result result, const std::string& message);
+static void handle_action_err_exit(Action::Result result, const std::string& message);
 // Handles Mission's result
-inline void handle_mission_err_exit(Mission::Result result, const std::string& message);
+static void handle_mission_err_exit(MissionRaw::Result result, const std::string& message);
 // Handles Connection result
-inline void handle_connection_err_exit(ConnectionResult result, const std::string& message);
+static void handle_connection_err_exit(ConnectionResult result, const std::string& message);
 
 void usage(std::string bin_name)
 {
@@ -67,7 +61,7 @@ int main(int argc, char** argv)
     ConnectionResult connection_result;
 
     // Locate path of QGC Sample plan
-    std::string qgc_plan = "../../../plugins/mission/qgroundcontrol_sample.plan";
+    std::string qgc_plan = "src/plugins/mission_raw/test_plans/qgroundcontrol_sample.plan";
 
     if (argc != 2 && argc != 3) {
         usage(argv[0]);
@@ -108,7 +102,7 @@ int main(int argc, char** argv)
 
     auto system = mavsdk.systems().at(0);
     auto action = Action{system};
-    auto mission = Mission{system};
+    auto mission_raw = MissionRaw{system};
     auto telemetry = Telemetry{system};
 
     while (!telemetry.health_all_ok()) {
@@ -119,8 +113,8 @@ int main(int argc, char** argv)
     std::cout << "System ready" << std::endl;
 
     // Import Mission items from QGC plan
-    std::pair<Mission::Result, Mission::MissionPlan> import_res =
-        mission.import_qgroundcontrol_mission(qgc_plan);
+    std::pair<MissionRaw::Result, MissionRaw::MissionImportData> import_res =
+        mission_raw.import_qgroundcontrol_mission(qgc_plan);
     handle_mission_err_exit(import_res.first, "Failed to import mission items: ");
 
     if (import_res.second.mission_items.size() == 0) {
@@ -130,18 +124,10 @@ int main(int argc, char** argv)
     std::cout << "Found " << import_res.second.mission_items.size()
               << " mission items in the given QGC plan." << std::endl;
 
-    {
-        std::cout << "Uploading mission..." << std::endl;
-        // Wrap the asynchronous upload_mission function using std::future.
-        auto prom = std::make_shared<std::promise<Mission::Result>>();
-        auto future_result = prom->get_future();
-        mission.upload_mission_async(
-            import_res.second, [prom](Mission::Result result) { prom->set_value(result); });
-
-        const Mission::Result result = future_result.get();
-        handle_mission_err_exit(result, "Mission upload failed: ");
-        std::cout << "Mission uploaded." << std::endl;
-    }
+    std::cout << "Uploading mission..." << std::endl;
+    MissionRaw::Result result = mission_raw.upload_mission(import_res.second.mission_items);
+    handle_mission_err_exit(result, "Mission upload failed: ");
+    std::cout << "Mission uploaded." << std::endl;
 
     std::cout << "Arming..." << std::endl;
     const Action::Result arm_result = action.arm();
@@ -149,25 +135,15 @@ int main(int argc, char** argv)
     std::cout << "Armed." << std::endl;
 
     // Before starting the mission subscribe to the mission progress.
-    mission.subscribe_mission_progress([](Mission::MissionProgress mission_progress) {
-        std::cout << "Mission status update: " << mission_progress.current << " / "
+    mission_raw.subscribe_mission_progress([](MissionRaw::MissionProgress mission_progress) {
+        std::cout << "Mission progress update: " << mission_progress.current << " / "
                   << mission_progress.total << std::endl;
     });
 
-    {
-        std::cout << "Starting mission." << std::endl;
-        auto prom = std::make_shared<std::promise<Mission::Result>>();
-        auto future_result = prom->get_future();
-        mission.start_mission_async([prom](Mission::Result result) {
-            prom->set_value(result);
-            std::cout << "Started mission." << std::endl;
-        });
+    result = mission_raw.start_mission();
+    handle_mission_err_exit(result, "Mission start failed: ");
 
-        const Mission::Result result = future_result.get();
-        handle_mission_err_exit(result, "Mission start failed: ");
-    }
-
-    while (!mission.is_mission_finished().second) {
+    while (telemetry.armed()) {
         sleep_for(seconds(1));
     }
 
@@ -188,7 +164,7 @@ int main(int argc, char** argv)
     return 0;
 }
 
-inline void handle_action_err_exit(Action::Result result, const std::string& message)
+void handle_action_err_exit(Action::Result result, const std::string& message)
 {
     if (result != Action::Result::Success) {
         std::cerr << ERROR_CONSOLE_TEXT << message << result << NORMAL_CONSOLE_TEXT << std::endl;
@@ -196,16 +172,16 @@ inline void handle_action_err_exit(Action::Result result, const std::string& mes
     }
 }
 
-inline void handle_mission_err_exit(Mission::Result result, const std::string& message)
+void handle_mission_err_exit(MissionRaw::Result result, const std::string& message)
 {
-    if (result != Mission::Result::Success) {
+    if (result != MissionRaw::Result::Success) {
         std::cerr << ERROR_CONSOLE_TEXT << message << result << NORMAL_CONSOLE_TEXT << std::endl;
         exit(EXIT_FAILURE);
     }
 }
 
 // Handles connection result
-inline void handle_connection_err_exit(ConnectionResult result, const std::string& message)
+void handle_connection_err_exit(ConnectionResult result, const std::string& message)
 {
     if (result != ConnectionResult::Success) {
         std::cerr << ERROR_CONSOLE_TEXT << message << result << NORMAL_CONSOLE_TEXT << std::endl;

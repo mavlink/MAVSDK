@@ -8,8 +8,8 @@
 using namespace mavsdk;
 using namespace std::placeholders; // for `_1`
 
-static void receive_camera_status(const Camera::Status status);
-static void print_camera_status(const Camera::Status status);
+static void receive_camera_status(const Camera::Status& status);
+static void print_camera_status(const Camera::Status& status);
 
 static std::atomic<bool> _received_status{false};
 
@@ -31,13 +31,13 @@ TEST(CameraTest, Status)
     EXPECT_TRUE(_received_status);
 }
 
-static void receive_camera_status(const Camera::Status status)
+static void receive_camera_status(const Camera::Status& status)
 {
     _received_status = true;
     print_camera_status(status);
 }
 
-static void print_camera_status(const Camera::Status status)
+static void print_camera_status(const Camera::Status& status)
 {
     std::string storage_status_str = "";
     switch (status.storage_status) {
@@ -49,6 +49,9 @@ static void print_camera_status(const Camera::Status status)
             break;
         case Camera::Status::StorageStatus::Formatted:
             storage_status_str = "formatted";
+            break;
+        case Camera::Status::StorageStatus::NotSupported:
+            storage_status_str = "not supported";
             break;
     }
 

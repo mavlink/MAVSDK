@@ -31,8 +31,9 @@ namespace mavsdk {
 UdpConnection::UdpConnection(
     Connection::receiver_callback_t receiver_callback,
     const std::string& local_ip,
-    int local_port_number) :
-    Connection(receiver_callback),
+    int local_port_number,
+    ForwardingOption forwarding_option) :
+    Connection(receiver_callback, forwarding_option),
     _local_ip(local_ip),
     _local_port_number(local_port_number)
 {}
@@ -236,7 +237,7 @@ void UdpConnection::receive()
                     inet_ntoa(src_addr.sin_addr), ntohs(src_addr.sin_port), sysid);
             }
 
-            receive_message(_mavlink_receiver->get_last_message());
+            receive_message(_mavlink_receiver->get_last_message(), this);
         }
     }
 }

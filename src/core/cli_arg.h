@@ -10,7 +10,7 @@ public:
 
     bool parse(const std::string& uri);
 
-    Protocol get_protocol() { return _protocol; }
+    Protocol get_protocol() const { return _protocol; }
 
     int get_port() const { return _port; }
 
