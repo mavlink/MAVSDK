@@ -9,6 +9,7 @@ endif()
 
 add_subdirectory(battery)
 add_subdirectory(calibrate)
+add_subdirectory(camera_settings)
 add_subdirectory(fly_mission)
 add_subdirectory(fly_multiple_drones)
 add_subdirectory(fly_qgc_mission)
