@@ -42,6 +42,8 @@
 #include "shell/shell_service_impl.h"
 #include "plugins/telemetry/telemetry.h"
 #include "telemetry/telemetry_service_impl.h"
+#include "plugins/tracking_server/tracking_server.h"
+#include "tracking_server/tracking_server_service_impl.h"
 #include "plugins/tune/tune.h"
 #include "tune/tune_service_impl.h"
 
@@ -89,6 +91,8 @@ public:
         _shell_service(_shell),
         _telemetry(_mavsdk.system()),
         _telemetry_service(_telemetry),
+        _tracking_server(_mavsdk.system()),
+        _tracking_server_service(_tracking_server),
         _tune(_mavsdk.system()),
         _tune_service(_tune)
     {}
@@ -139,6 +143,8 @@ private:
     ShellServiceImpl<> _shell_service;
     Telemetry _telemetry;
     TelemetryServiceImpl<> _telemetry_service;
+    TrackingServer _tracking_server;
+    TrackingServerServiceImpl<> _tracking_server_service;
     Tune _tune;
     TuneServiceImpl<> _tune_service;
 
