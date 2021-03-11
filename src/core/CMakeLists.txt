@@ -70,7 +70,7 @@ if(ANDROID)
     )
 endif()
 
-if( (BUILD_STATIC_MAVSDK_SERVER AND ("${CMAKE_C_COMPILER_ID}" STREQUAL "GNU")) 
+if( (BUILD_STATIC_MAVSDK_SERVER AND ("${CMAKE_C_COMPILER_ID}" STREQUAL "GNU"))
     OR (${CMAKE_HOST_SYSTEM_PROCESSOR} MATCHES "(armv6|armv7)") )
     target_link_libraries(mavsdk PRIVATE atomic)
 endif()
@@ -119,5 +119,6 @@ list(APPEND UNIT_TEST_SOURCES
     ${PROJECT_SOURCE_DIR}/core/mavlink_mission_transfer_test.cpp
     ${PROJECT_SOURCE_DIR}/core/mavlink_statustext_handler_test.cpp
     ${PROJECT_SOURCE_DIR}/core/geometry_test.cpp
+    ${PROJECT_SOURCE_DIR}/core/ringbuffer_test.cpp
 )
 set(UNIT_TEST_SOURCES ${UNIT_TEST_SOURCES} PARENT_SCOPE)
