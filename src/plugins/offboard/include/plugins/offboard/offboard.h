@@ -259,6 +259,31 @@ public:
     operator<<(std::ostream& str, Offboard::VelocityNedYaw const& velocity_ned_yaw);
 
     /**
+     * @brief Type for acceleration commands in NED (North East Down) coordinates.
+     */
+    struct AccelerationNed {
+        float north_m_s2{}; /**< @brief Acceleration North (in metres/second^2) */
+        float east_m_s2{}; /**< @brief Acceleration East (in metres/second^2) */
+        float down_m_s2{}; /**< @brief Acceleration Down (in metres/second^2) */
+    };
+
+    /**
+     * @brief Equal operator to compare two `Offboard::AccelerationNed` objects.
+     *
+     * @return `true` if items are equal.
+     */
+    friend bool
+    operator==(const Offboard::AccelerationNed& lhs, const Offboard::AccelerationNed& rhs);
+
+    /**
+     * @brief Stream operator to print information about a `Offboard::AccelerationNed`.
+     *
+     * @return A reference to the stream.
+     */
+    friend std::ostream&
+    operator<<(std::ostream& str, Offboard::AccelerationNed const& acceleration_ned);
+
+    /**
      * @brief Possible results returned for offboard requests
      */
     enum class Result {
@@ -399,6 +424,15 @@ public:
      */
     Result set_position_velocity_ned(
         PositionNedYaw position_ned_yaw, VelocityNedYaw velocity_ned_yaw) const;
+
+    /**
+     * @brief Set the acceleration in NED coordinates.
+     *
+     * This function is blocking.
+     *
+     * @return Result of request.
+     */
+    Result set_acceleration_ned(AccelerationNed acceleration_ned) const;
 
     /**
      * @brief Copy constructor.

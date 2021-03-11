@@ -18,6 +18,7 @@ public:
     MOCK_CONST_METHOD2(
         set_position_velocity_ned,
         Offboard::Result(Offboard::PositionNedYaw, Offboard::VelocityNedYaw)){};
+    MOCK_CONST_METHOD1(set_acceleration_ned, Offboard::Result(Offboard::AccelerationNed)){};
     MOCK_CONST_METHOD1(set_actuator_control, Offboard::Result(Offboard::ActuatorControl)){};
 };
 
