@@ -205,7 +205,7 @@ void GimbalProtocolV1::control_async(Gimbal::ControlCallback callback)
                 [this, callback]() { callback(_current_control_status); });
             _control_thread_cv.wait_for(lock, std::chrono::seconds(1));
         }
-    });
+    }).detach();
 }
 
 } // namespace mavsdk
