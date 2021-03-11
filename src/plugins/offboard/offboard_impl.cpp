@@ -473,6 +473,7 @@ Offboard::Result OffboardImpl::send_acceleration_ned()
     const static uint16_t IGNORE_VX = (1 << 3);
     const static uint16_t IGNORE_VY = (1 << 4);
     const static uint16_t IGNORE_VZ = (1 << 5);
+    const static uint16_t IGNORE_YAW = (1 << 10);
     const static uint16_t IGNORE_YAW_RATE = (1 << 11);
 
     const auto acceleration_ned = [this]() {
@@ -489,7 +490,8 @@ Offboard::Result OffboardImpl::send_acceleration_ned()
         _parent->get_system_id(),
         _parent->get_autopilot_id(),
         MAV_FRAME_LOCAL_NED,
-        IGNORE_X | IGNORE_Y | IGNORE_Z | IGNORE_VX | IGNORE_VY | IGNORE_VZ | IGNORE_YAW_RATE,
+        IGNORE_X | IGNORE_Y | IGNORE_Z | IGNORE_VX | IGNORE_VY | IGNORE_VZ | IGNORE_YAW |
+            IGNORE_YAW_RATE,
         0.0f, // x,
         0.0f, // y,
         0.0f, // z,
