@@ -411,7 +411,7 @@ jobs:
       matrix:
         include:
           - name: ios
-            platform: OS
+            platform: OS64
             sdk: iphoneos
           - name: ios_simulator
             platform: SIMULATOR64
