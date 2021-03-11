@@ -1,5 +1,6 @@
 #include <functional>
 #include <cstring>
+#include <numeric>
 #include "info_impl.h"
 #include "system.h"
 #include "global_include.h"
@@ -254,15 +255,9 @@ void InfoImpl::process_attitude(const mavlink_message_t& message)
     std::lock_guard<std::mutex> lock(_mutex);
 
     if (_last_time_boot_ms != 0) {
-        const double new_factor = (attitude.time_boot_ms - _last_time_boot_ms) /
-                                  (_time.elapsed_since_s(_last_time_attitude_arrived) * 1000.0);
-
-        if (std::isfinite(_speed_factor)) {
-            // Do some filtering.
-            _speed_factor = _speed_factor * 0.9 + new_factor * 0.1;
-        } else {
-            _speed_factor = new_factor;
-        }
+        _speed_factor_measurements.push(SpeedFactorMeasurement{
+            static_cast<double>(attitude.time_boot_ms - _last_time_boot_ms) * 1e-3,
+            _time.elapsed_since_s(_last_time_attitude_arrived)});
     }
 
     _last_time_boot_ms = attitude.time_boot_ms;
@@ -272,10 +267,20 @@ void InfoImpl::process_attitude(const mavlink_message_t& message)
 std::pair<Info::Result, double> InfoImpl::get_speed_factor() const
 {
     std::lock_guard<std::mutex> lock(_mutex);
-    return std::make_pair<>(
-        (std::isfinite(_speed_factor) ? Info::Result::Success :
-                                        Info::Result::InformationNotReceivedYet),
-        _speed_factor);
+
+    if (_speed_factor_measurements.size() == 0) {
+        return std::make_pair<>(Info::Result::InformationNotReceivedYet, NAN);
+    }
+
+    const auto sum = std::accumulate(
+        _speed_factor_measurements.begin(),
+        _speed_factor_measurements.end(),
+        SpeedFactorMeasurement{},
+        [](SpeedFactorMeasurement a, SpeedFactorMeasurement b) { return a + b; });
+
+    const double speed_factor = sum.simulated_duration_s / sum.real_time_s;
+
+    return std::make_pair<>(Info::Result::Success, speed_factor);
 }
 
 } // namespace mavsdk

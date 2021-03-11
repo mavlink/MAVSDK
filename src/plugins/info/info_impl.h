@@ -6,6 +6,7 @@
 #include "mavlink_include.h"
 #include "plugins/info/info.h"
 #include "plugin_impl_base.h"
+#include "ringbuffer.h"
 
 namespace mavsdk {
 
@@ -51,7 +52,19 @@ private:
     void* _call_every_cookie{nullptr};
     void* _flight_info_call_every_cookie{nullptr};
 
-    double _speed_factor{double(NAN)};
+    struct SpeedFactorMeasurement {
+        double simulated_duration_s{0.0};
+        double real_time_s{0.0};
+
+        SpeedFactorMeasurement operator+(SpeedFactorMeasurement& rhs) const
+        {
+            return {
+                this->simulated_duration_s + rhs.simulated_duration_s,
+                this->real_time_s + rhs.real_time_s};
+        }
+    };
+    Ringbuffer<SpeedFactorMeasurement, 50> _speed_factor_measurements;
+
     Time _time{};
     dl_time_t _last_time_attitude_arrived{};
     uint32_t _last_time_boot_ms{0};
