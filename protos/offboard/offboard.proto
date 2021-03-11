@@ -66,6 +66,10 @@ service OffboardService {
     * Set the position in NED coordinates, with the velocity to be used as feed-forward.
     */
     rpc SetPositionVelocityNed(SetPositionVelocityNedRequest) returns(SetPositionVelocityNedResponse) { option (mavsdk.options.async_type) = SYNC; }
+    /*
+    * Set the acceleration in NED coordinates.
+    */
+    rpc SetAccelerationNed(SetAccelerationNedRequest) returns(SetAccelerationNedResponse) { option (mavsdk.options.async_type) = SYNC; }
 }
 
 message StartRequest {}
@@ -130,6 +134,13 @@ message SetPositionVelocityNedRequest {
     VelocityNedYaw velocity_ned_yaw = 2; // Velocity and yaw
 }
 message SetPositionVelocityNedResponse {
+    OffboardResult offboard_result = 1;
+}
+
+message SetAccelerationNedRequest {
+    AccelerationNed acceleration_ned = 1; // Acceleration
+}
+message SetAccelerationNedResponse {
     OffboardResult offboard_result = 1;
 }
 
@@ -200,6 +211,13 @@ message VelocityNedYaw {
     float east_m_s = 2; // Velocity East (in metres/second)
     float down_m_s = 3; // Velocity Down (in metres/second)
     float yaw_deg = 4; // Yaw in degrees (0 North, positive is clock-wise looking from above)
+}
+
+// Type for acceleration commands in NED (North East Down) coordinates.
+message AccelerationNed {
+    float north_m_s2 = 1; // Acceleration North (in metres/second^2)
+    float east_m_s2 = 2; // Acceleration East (in metres/second^2)
+    float down_m_s2 = 3; // Acceleration Down (in metres/second^2)
 }
 
 // Result type.
