@@ -31,7 +31,7 @@ if(ANDROID)
         BUILD_COMMAND make
         )
 elseif(IOS)
-    if(${PLATFORM} STREQUAL "OS")
+    if(${PLATFORM} STREQUAL "OS64")
         set(OPENSSL_PLATFORM "ios64-xcrun")
     elseif(${PLATFORM} STREQUAL "SIMULATOR64")
         set(OPENSSL_PLATFORM "iossimulator-xcrun")
