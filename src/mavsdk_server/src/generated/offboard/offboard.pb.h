@@ -48,7 +48,7 @@ struct TableStruct_offboard_2foffboard_2eproto {
     PROTOBUF_SECTION_VARIABLE(protodesc_cold);
   static const ::PROTOBUF_NAMESPACE_ID::internal::AuxiliaryParseTableField aux[]
     PROTOBUF_SECTION_VARIABLE(protodesc_cold);
-  static const ::PROTOBUF_NAMESPACE_ID::internal::ParseTable schema[28]
+  static const ::PROTOBUF_NAMESPACE_ID::internal::ParseTable schema[31]
     PROTOBUF_SECTION_VARIABLE(protodesc_cold);
   static const ::PROTOBUF_NAMESPACE_ID::internal::FieldMetadata field_metadata[];
   static const ::PROTOBUF_NAMESPACE_ID::internal::SerializationTable serialization_table[];
@@ -59,6 +59,9 @@ extern const ::PROTOBUF_NAMESPACE_ID::internal::DescriptorTable descriptor_table
 namespace mavsdk {
 namespace rpc {
 namespace offboard {
+class AccelerationNed;
+struct AccelerationNedDefaultTypeInternal;
+extern AccelerationNedDefaultTypeInternal _AccelerationNed_default_instance_;
 class ActuatorControl;
 struct ActuatorControlDefaultTypeInternal;
 extern ActuatorControlDefaultTypeInternal _ActuatorControl_default_instance_;
@@ -83,6 +86,12 @@ extern OffboardResultDefaultTypeInternal _OffboardResult_default_instance_;
 class PositionNedYaw;
 struct PositionNedYawDefaultTypeInternal;
 extern PositionNedYawDefaultTypeInternal _PositionNedYaw_default_instance_;
+class SetAccelerationNedRequest;
+struct SetAccelerationNedRequestDefaultTypeInternal;
+extern SetAccelerationNedRequestDefaultTypeInternal _SetAccelerationNedRequest_default_instance_;
+class SetAccelerationNedResponse;
+struct SetAccelerationNedResponseDefaultTypeInternal;
+extern SetAccelerationNedResponseDefaultTypeInternal _SetAccelerationNedResponse_default_instance_;
 class SetActuatorControlRequest;
 struct SetActuatorControlRequestDefaultTypeInternal;
 extern SetActuatorControlRequestDefaultTypeInternal _SetActuatorControlRequest_default_instance_;
@@ -147,6 +156,7 @@ extern VelocityNedYawDefaultTypeInternal _VelocityNedYaw_default_instance_;
 }  // namespace rpc
 }  // namespace mavsdk
 PROTOBUF_NAMESPACE_OPEN
+template<> ::mavsdk::rpc::offboard::AccelerationNed* Arena::CreateMaybeMessage<::mavsdk::rpc::offboard::AccelerationNed>(Arena*);
 template<> ::mavsdk::rpc::offboard::ActuatorControl* Arena::CreateMaybeMessage<::mavsdk::rpc::offboard::ActuatorControl>(Arena*);
 template<> ::mavsdk::rpc::offboard::ActuatorControlGroup* Arena::CreateMaybeMessage<::mavsdk::rpc::offboard::ActuatorControlGroup>(Arena*);
 template<> ::mavsdk::rpc::offboard::Attitude* Arena::CreateMaybeMessage<::mavsdk::rpc::offboard::Attitude>(Arena*);
@@ -155,6 +165,8 @@ template<> ::mavsdk::rpc::offboard::IsActiveRequest* Arena::CreateMaybeMessage<:
 template<> ::mavsdk::rpc::offboard::IsActiveResponse* Arena::CreateMaybeMessage<::mavsdk::rpc::offboard::IsActiveResponse>(Arena*);
 template<> ::mavsdk::rpc::offboard::OffboardResult* Arena::CreateMaybeMessage<::mavsdk::rpc::offboard::OffboardResult>(Arena*);
 template<> ::mavsdk::rpc::offboard::PositionNedYaw* Arena::CreateMaybeMessage<::mavsdk::rpc::offboard::PositionNedYaw>(Arena*);
+template<> ::mavsdk::rpc::offboard::SetAccelerationNedRequest* Arena::CreateMaybeMessage<::mavsdk::rpc::offboard::SetAccelerationNedRequest>(Arena*);
+template<> ::mavsdk::rpc::offboard::SetAccelerationNedResponse* Arena::CreateMaybeMessage<::mavsdk::rpc::offboard::SetAccelerationNedResponse>(Arena*);
 template<> ::mavsdk::rpc::offboard::SetActuatorControlRequest* Arena::CreateMaybeMessage<::mavsdk::rpc::offboard::SetActuatorControlRequest>(Arena*);
 template<> ::mavsdk::rpc::offboard::SetActuatorControlResponse* Arena::CreateMaybeMessage<::mavsdk::rpc::offboard::SetActuatorControlResponse>(Arena*);
 template<> ::mavsdk::rpc::offboard::SetAttitudeRateRequest* Arena::CreateMaybeMessage<::mavsdk::rpc::offboard::SetAttitudeRateRequest>(Arena*);
@@ -3078,6 +3090,298 @@ class SetPositionVelocityNedResponse PROTOBUF_FINAL :
 };
 // -------------------------------------------------------------------
 
+class SetAccelerationNedRequest PROTOBUF_FINAL :
+    public ::PROTOBUF_NAMESPACE_ID::Message /* @@protoc_insertion_point(class_definition:mavsdk.rpc.offboard.SetAccelerationNedRequest) */ {
+ public:
+  inline SetAccelerationNedRequest() : SetAccelerationNedRequest(nullptr) {}
+  virtual ~SetAccelerationNedRequest();
+  explicit constexpr SetAccelerationNedRequest(::PROTOBUF_NAMESPACE_ID::internal::ConstantInitialized);
+
+  SetAccelerationNedRequest(const SetAccelerationNedRequest& from);
+  SetAccelerationNedRequest(SetAccelerationNedRequest&& from) noexcept
+    : SetAccelerationNedRequest() {
+    *this = ::std::move(from);
+  }
+
+  inline SetAccelerationNedRequest& operator=(const SetAccelerationNedRequest& from) {
+    CopyFrom(from);
+    return *this;
+  }
+  inline SetAccelerationNedRequest& operator=(SetAccelerationNedRequest&& from) noexcept {
+    if (GetArena() == from.GetArena()) {
+      if (this != &from) InternalSwap(&from);
+    } else {
+      CopyFrom(from);
+    }
+    return *this;
+  }
+
+  static const ::PROTOBUF_NAMESPACE_ID::Descriptor* descriptor() {
+    return GetDescriptor();
+  }
+  static const ::PROTOBUF_NAMESPACE_ID::Descriptor* GetDescriptor() {
+    return GetMetadataStatic().descriptor;
+  }
+  static const ::PROTOBUF_NAMESPACE_ID::Reflection* GetReflection() {
+    return GetMetadataStatic().reflection;
+  }
+  static const SetAccelerationNedRequest& default_instance() {
+    return *internal_default_instance();
+  }
+  static inline const SetAccelerationNedRequest* internal_default_instance() {
+    return reinterpret_cast<const SetAccelerationNedRequest*>(
+               &_SetAccelerationNedRequest_default_instance_);
+  }
+  static constexpr int kIndexInFileMessages =
+    20;
+
+  friend void swap(SetAccelerationNedRequest& a, SetAccelerationNedRequest& b) {
+    a.Swap(&b);
+  }
+  inline void Swap(SetAccelerationNedRequest* other) {
+    if (other == this) return;
+    if (GetArena() == other->GetArena()) {
+      InternalSwap(other);
+    } else {
+      ::PROTOBUF_NAMESPACE_ID::internal::GenericSwap(this, other);
+    }
+  }
+  void UnsafeArenaSwap(SetAccelerationNedRequest* other) {
+    if (other == this) return;
+    GOOGLE_DCHECK(GetArena() == other->GetArena());
+    InternalSwap(other);
+  }
+
+  // implements Message ----------------------------------------------
+
+  inline SetAccelerationNedRequest* New() const final {
+    return CreateMaybeMessage<SetAccelerationNedRequest>(nullptr);
+  }
+
+  SetAccelerationNedRequest* New(::PROTOBUF_NAMESPACE_ID::Arena* arena) const final {
+    return CreateMaybeMessage<SetAccelerationNedRequest>(arena);
+  }
+  void CopyFrom(const ::PROTOBUF_NAMESPACE_ID::Message& from) final;
+  void MergeFrom(const ::PROTOBUF_NAMESPACE_ID::Message& from) final;
+  void CopyFrom(const SetAccelerationNedRequest& from);
+  void MergeFrom(const SetAccelerationNedRequest& from);
+  PROTOBUF_ATTRIBUTE_REINITIALIZES void Clear() final;
+  bool IsInitialized() const final;
+
+  size_t ByteSizeLong() const final;
+  const char* _InternalParse(const char* ptr, ::PROTOBUF_NAMESPACE_ID::internal::ParseContext* ctx) final;
+  ::PROTOBUF_NAMESPACE_ID::uint8* _InternalSerialize(
+      ::PROTOBUF_NAMESPACE_ID::uint8* target, ::PROTOBUF_NAMESPACE_ID::io::EpsCopyOutputStream* stream) const final;
+  int GetCachedSize() const final { return _cached_size_.Get(); }
+
+  private:
+  inline void SharedCtor();
+  inline void SharedDtor();
+  void SetCachedSize(int size) const final;
+  void InternalSwap(SetAccelerationNedRequest* other);
+  friend class ::PROTOBUF_NAMESPACE_ID::internal::AnyMetadata;
+  static ::PROTOBUF_NAMESPACE_ID::StringPiece FullMessageName() {
+    return "mavsdk.rpc.offboard.SetAccelerationNedRequest";
+  }
+  protected:
+  explicit SetAccelerationNedRequest(::PROTOBUF_NAMESPACE_ID::Arena* arena);
+  private:
+  static void ArenaDtor(void* object);
+  inline void RegisterArenaDtor(::PROTOBUF_NAMESPACE_ID::Arena* arena);
+  public:
+
+  ::PROTOBUF_NAMESPACE_ID::Metadata GetMetadata() const final;
+  private:
+  static ::PROTOBUF_NAMESPACE_ID::Metadata GetMetadataStatic() {
+    return ::descriptor_table_offboard_2foffboard_2eproto_metadata_getter(kIndexInFileMessages);
+  }
+
+  public:
+
+  // nested types ----------------------------------------------------
+
+  // accessors -------------------------------------------------------
+
+  enum : int {
+    kAccelerationNedFieldNumber = 1,
+  };
+  // .mavsdk.rpc.offboard.AccelerationNed acceleration_ned = 1;
+  bool has_acceleration_ned() const;
+  private:
+  bool _internal_has_acceleration_ned() const;
+  public:
+  void clear_acceleration_ned();
+  const ::mavsdk::rpc::offboard::AccelerationNed& acceleration_ned() const;
+  ::mavsdk::rpc::offboard::AccelerationNed* release_acceleration_ned();
+  ::mavsdk::rpc::offboard::AccelerationNed* mutable_acceleration_ned();
+  void set_allocated_acceleration_ned(::mavsdk::rpc::offboard::AccelerationNed* acceleration_ned);
+  private:
+  const ::mavsdk::rpc::offboard::AccelerationNed& _internal_acceleration_ned() const;
+  ::mavsdk::rpc::offboard::AccelerationNed* _internal_mutable_acceleration_ned();
+  public:
+  void unsafe_arena_set_allocated_acceleration_ned(
+      ::mavsdk::rpc::offboard::AccelerationNed* acceleration_ned);
+  ::mavsdk::rpc::offboard::AccelerationNed* unsafe_arena_release_acceleration_ned();
+
+  // @@protoc_insertion_point(class_scope:mavsdk.rpc.offboard.SetAccelerationNedRequest)
+ private:
+  class _Internal;
+
+  template <typename T> friend class ::PROTOBUF_NAMESPACE_ID::Arena::InternalHelper;
+  typedef void InternalArenaConstructable_;
+  typedef void DestructorSkippable_;
+  ::mavsdk::rpc::offboard::AccelerationNed* acceleration_ned_;
+  mutable ::PROTOBUF_NAMESPACE_ID::internal::CachedSize _cached_size_;
+  friend struct ::TableStruct_offboard_2foffboard_2eproto;
+};
+// -------------------------------------------------------------------
+
+class SetAccelerationNedResponse PROTOBUF_FINAL :
+    public ::PROTOBUF_NAMESPACE_ID::Message /* @@protoc_insertion_point(class_definition:mavsdk.rpc.offboard.SetAccelerationNedResponse) */ {
+ public:
+  inline SetAccelerationNedResponse() : SetAccelerationNedResponse(nullptr) {}
+  virtual ~SetAccelerationNedResponse();
+  explicit constexpr SetAccelerationNedResponse(::PROTOBUF_NAMESPACE_ID::internal::ConstantInitialized);
+
+  SetAccelerationNedResponse(const SetAccelerationNedResponse& from);
+  SetAccelerationNedResponse(SetAccelerationNedResponse&& from) noexcept
+    : SetAccelerationNedResponse() {
+    *this = ::std::move(from);
+  }
+
+  inline SetAccelerationNedResponse& operator=(const SetAccelerationNedResponse& from) {
+    CopyFrom(from);
+    return *this;
+  }
+  inline SetAccelerationNedResponse& operator=(SetAccelerationNedResponse&& from) noexcept {
+    if (GetArena() == from.GetArena()) {
+      if (this != &from) InternalSwap(&from);
+    } else {
+      CopyFrom(from);
+    }
+    return *this;
+  }
+
+  static const ::PROTOBUF_NAMESPACE_ID::Descriptor* descriptor() {
+    return GetDescriptor();
+  }
+  static const ::PROTOBUF_NAMESPACE_ID::Descriptor* GetDescriptor() {
+    return GetMetadataStatic().descriptor;
+  }
+  static const ::PROTOBUF_NAMESPACE_ID::Reflection* GetReflection() {
+    return GetMetadataStatic().reflection;
+  }
+  static const SetAccelerationNedResponse& default_instance() {
+    return *internal_default_instance();
+  }
+  static inline const SetAccelerationNedResponse* internal_default_instance() {
+    return reinterpret_cast<const SetAccelerationNedResponse*>(
+               &_SetAccelerationNedResponse_default_instance_);
+  }
+  static constexpr int kIndexInFileMessages =
+    21;
+
+  friend void swap(SetAccelerationNedResponse& a, SetAccelerationNedResponse& b) {
+    a.Swap(&b);
+  }
+  inline void Swap(SetAccelerationNedResponse* other) {
+    if (other == this) return;
+    if (GetArena() == other->GetArena()) {
+      InternalSwap(other);
+    } else {
+      ::PROTOBUF_NAMESPACE_ID::internal::GenericSwap(this, other);
+    }
+  }
+  void UnsafeArenaSwap(SetAccelerationNedResponse* other) {
+    if (other == this) return;
+    GOOGLE_DCHECK(GetArena() == other->GetArena());
+    InternalSwap(other);
+  }
+
+  // implements Message ----------------------------------------------
+
+  inline SetAccelerationNedResponse* New() const final {
+    return CreateMaybeMessage<SetAccelerationNedResponse>(nullptr);
+  }
+
+  SetAccelerationNedResponse* New(::PROTOBUF_NAMESPACE_ID::Arena* arena) const final {
+    return CreateMaybeMessage<SetAccelerationNedResponse>(arena);
+  }
+  void CopyFrom(const ::PROTOBUF_NAMESPACE_ID::Message& from) final;
+  void MergeFrom(const ::PROTOBUF_NAMESPACE_ID::Message& from) final;
+  void CopyFrom(const SetAccelerationNedResponse& from);
+  void MergeFrom(const SetAccelerationNedResponse& from);
+  PROTOBUF_ATTRIBUTE_REINITIALIZES void Clear() final;
+  bool IsInitialized() const final;
+
+  size_t ByteSizeLong() const final;
+  const char* _InternalParse(const char* ptr, ::PROTOBUF_NAMESPACE_ID::internal::ParseContext* ctx) final;
+  ::PROTOBUF_NAMESPACE_ID::uint8* _InternalSerialize(
+      ::PROTOBUF_NAMESPACE_ID::uint8* target, ::PROTOBUF_NAMESPACE_ID::io::EpsCopyOutputStream* stream) const final;
+  int GetCachedSize() const final { return _cached_size_.Get(); }
+
+  private:
+  inline void SharedCtor();
+  inline void SharedDtor();
+  void SetCachedSize(int size) const final;
+  void InternalSwap(SetAccelerationNedResponse* other);
+  friend class ::PROTOBUF_NAMESPACE_ID::internal::AnyMetadata;
+  static ::PROTOBUF_NAMESPACE_ID::StringPiece FullMessageName() {
+    return "mavsdk.rpc.offboard.SetAccelerationNedResponse";
+  }
+  protected:
+  explicit SetAccelerationNedResponse(::PROTOBUF_NAMESPACE_ID::Arena* arena);
+  private:
+  static void ArenaDtor(void* object);
+  inline void RegisterArenaDtor(::PROTOBUF_NAMESPACE_ID::Arena* arena);
+  public:
+
+  ::PROTOBUF_NAMESPACE_ID::Metadata GetMetadata() const final;
+  private:
+  static ::PROTOBUF_NAMESPACE_ID::Metadata GetMetadataStatic() {
+    return ::descriptor_table_offboard_2foffboard_2eproto_metadata_getter(kIndexInFileMessages);
+  }
+
+  public:
+
+  // nested types ----------------------------------------------------
+
+  // accessors -------------------------------------------------------
+
+  enum : int {
+    kOffboardResultFieldNumber = 1,
+  };
+  // .mavsdk.rpc.offboard.OffboardResult offboard_result = 1;
+  bool has_offboard_result() const;
+  private:
+  bool _internal_has_offboard_result() const;
+  public:
+  void clear_offboard_result();
+  const ::mavsdk::rpc::offboard::OffboardResult& offboard_result() const;
+  ::mavsdk::rpc::offboard::OffboardResult* release_offboard_result();
+  ::mavsdk::rpc::offboard::OffboardResult* mutable_offboard_result();
+  void set_allocated_offboard_result(::mavsdk::rpc::offboard::OffboardResult* offboard_result);
+  private:
+  const ::mavsdk::rpc::offboard::OffboardResult& _internal_offboard_result() const;
+  ::mavsdk::rpc::offboard::OffboardResult* _internal_mutable_offboard_result();
+  public:
+  void unsafe_arena_set_allocated_offboard_result(
+      ::mavsdk::rpc::offboard::OffboardResult* offboard_result);
+  ::mavsdk::rpc::offboard::OffboardResult* unsafe_arena_release_offboard_result();
+
+  // @@protoc_insertion_point(class_scope:mavsdk.rpc.offboard.SetAccelerationNedResponse)
+ private:
+  class _Internal;
+
+  template <typename T> friend class ::PROTOBUF_NAMESPACE_ID::Arena::InternalHelper;
+  typedef void InternalArenaConstructable_;
+  typedef void DestructorSkippable_;
+  ::mavsdk::rpc::offboard::OffboardResult* offboard_result_;
+  mutable ::PROTOBUF_NAMESPACE_ID::internal::CachedSize _cached_size_;
+  friend struct ::TableStruct_offboard_2foffboard_2eproto;
+};
+// -------------------------------------------------------------------
+
 class Attitude PROTOBUF_FINAL :
     public ::PROTOBUF_NAMESPACE_ID::Message /* @@protoc_insertion_point(class_definition:mavsdk.rpc.offboard.Attitude) */ {
  public:
@@ -3121,7 +3425,7 @@ class Attitude PROTOBUF_FINAL :
                &_Attitude_default_instance_);
   }
   static constexpr int kIndexInFileMessages =
-    20;
+    22;
 
   friend void swap(Attitude& a, Attitude& b) {
     a.Swap(&b);
@@ -3291,7 +3595,7 @@ class ActuatorControlGroup PROTOBUF_FINAL :
                &_ActuatorControlGroup_default_instance_);
   }
   static constexpr int kIndexInFileMessages =
-    21;
+    23;
 
   friend void swap(ActuatorControlGroup& a, ActuatorControlGroup& b) {
     a.Swap(&b);
@@ -3442,7 +3746,7 @@ class ActuatorControl PROTOBUF_FINAL :
                &_ActuatorControl_default_instance_);
   }
   static constexpr int kIndexInFileMessages =
-    22;
+    24;
 
   friend void swap(ActuatorControl& a, ActuatorControl& b) {
     a.Swap(&b);
@@ -3588,7 +3892,7 @@ class AttitudeRate PROTOBUF_FINAL :
                &_AttitudeRate_default_instance_);
   }
   static constexpr int kIndexInFileMessages =
-    23;
+    25;
 
   friend void swap(AttitudeRate& a, AttitudeRate& b) {
     a.Swap(&b);
@@ -3758,7 +4062,7 @@ class PositionNedYaw PROTOBUF_FINAL :
                &_PositionNedYaw_default_instance_);
   }
   static constexpr int kIndexInFileMessages =
-    24;
+    26;
 
   friend void swap(PositionNedYaw& a, PositionNedYaw& b) {
     a.Swap(&b);
@@ -3928,7 +4232,7 @@ class VelocityBodyYawspeed PROTOBUF_FINAL :
                &_VelocityBodyYawspeed_default_instance_);
   }
   static constexpr int kIndexInFileMessages =
-    25;
+    27;
 
   friend void swap(VelocityBodyYawspeed& a, VelocityBodyYawspeed& b) {
     a.Swap(&b);
@@ -4098,7 +4402,7 @@ class VelocityNedYaw PROTOBUF_FINAL :
                &_VelocityNedYaw_default_instance_);
   }
   static constexpr int kIndexInFileMessages =
-    26;
+    28;
 
   friend void swap(VelocityNedYaw& a, VelocityNedYaw& b) {
     a.Swap(&b);
@@ -4225,6 +4529,165 @@ class VelocityNedYaw PROTOBUF_FINAL :
 };
 // -------------------------------------------------------------------
 
+class AccelerationNed PROTOBUF_FINAL :
+    public ::PROTOBUF_NAMESPACE_ID::Message /* @@protoc_insertion_point(class_definition:mavsdk.rpc.offboard.AccelerationNed) */ {
+ public:
+  inline AccelerationNed() : AccelerationNed(nullptr) {}
+  virtual ~AccelerationNed();
+  explicit constexpr AccelerationNed(::PROTOBUF_NAMESPACE_ID::internal::ConstantInitialized);
+
+  AccelerationNed(const AccelerationNed& from);
+  AccelerationNed(AccelerationNed&& from) noexcept
+    : AccelerationNed() {
+    *this = ::std::move(from);
+  }
+
+  inline AccelerationNed& operator=(const AccelerationNed& from) {
+    CopyFrom(from);
+    return *this;
+  }
+  inline AccelerationNed& operator=(AccelerationNed&& from) noexcept {
+    if (GetArena() == from.GetArena()) {
+      if (this != &from) InternalSwap(&from);
+    } else {
+      CopyFrom(from);
+    }
+    return *this;
+  }
+
+  static const ::PROTOBUF_NAMESPACE_ID::Descriptor* descriptor() {
+    return GetDescriptor();
+  }
+  static const ::PROTOBUF_NAMESPACE_ID::Descriptor* GetDescriptor() {
+    return GetMetadataStatic().descriptor;
+  }
+  static const ::PROTOBUF_NAMESPACE_ID::Reflection* GetReflection() {
+    return GetMetadataStatic().reflection;
+  }
+  static const AccelerationNed& default_instance() {
+    return *internal_default_instance();
+  }
+  static inline const AccelerationNed* internal_default_instance() {
+    return reinterpret_cast<const AccelerationNed*>(
+               &_AccelerationNed_default_instance_);
+  }
+  static constexpr int kIndexInFileMessages =
+    29;
+
+  friend void swap(AccelerationNed& a, AccelerationNed& b) {
+    a.Swap(&b);
+  }
+  inline void Swap(AccelerationNed* other) {
+    if (other == this) return;
+    if (GetArena() == other->GetArena()) {
+      InternalSwap(other);
+    } else {
+      ::PROTOBUF_NAMESPACE_ID::internal::GenericSwap(this, other);
+    }
+  }
+  void UnsafeArenaSwap(AccelerationNed* other) {
+    if (other == this) return;
+    GOOGLE_DCHECK(GetArena() == other->GetArena());
+    InternalSwap(other);
+  }
+
+  // implements Message ----------------------------------------------
+
+  inline AccelerationNed* New() const final {
+    return CreateMaybeMessage<AccelerationNed>(nullptr);
+  }
+
+  AccelerationNed* New(::PROTOBUF_NAMESPACE_ID::Arena* arena) const final {
+    return CreateMaybeMessage<AccelerationNed>(arena);
+  }
+  void CopyFrom(const ::PROTOBUF_NAMESPACE_ID::Message& from) final;
+  void MergeFrom(const ::PROTOBUF_NAMESPACE_ID::Message& from) final;
+  void CopyFrom(const AccelerationNed& from);
+  void MergeFrom(const AccelerationNed& from);
+  PROTOBUF_ATTRIBUTE_REINITIALIZES void Clear() final;
+  bool IsInitialized() const final;
+
+  size_t ByteSizeLong() const final;
+  const char* _InternalParse(const char* ptr, ::PROTOBUF_NAMESPACE_ID::internal::ParseContext* ctx) final;
+  ::PROTOBUF_NAMESPACE_ID::uint8* _InternalSerialize(
+      ::PROTOBUF_NAMESPACE_ID::uint8* target, ::PROTOBUF_NAMESPACE_ID::io::EpsCopyOutputStream* stream) const final;
+  int GetCachedSize() const final { return _cached_size_.Get(); }
+
+  private:
+  inline void SharedCtor();
+  inline void SharedDtor();
+  void SetCachedSize(int size) const final;
+  void InternalSwap(AccelerationNed* other);
+  friend class ::PROTOBUF_NAMESPACE_ID::internal::AnyMetadata;
+  static ::PROTOBUF_NAMESPACE_ID::StringPiece FullMessageName() {
+    return "mavsdk.rpc.offboard.AccelerationNed";
+  }
+  protected:
+  explicit AccelerationNed(::PROTOBUF_NAMESPACE_ID::Arena* arena);
+  private:
+  static void ArenaDtor(void* object);
+  inline void RegisterArenaDtor(::PROTOBUF_NAMESPACE_ID::Arena* arena);
+  public:
+
+  ::PROTOBUF_NAMESPACE_ID::Metadata GetMetadata() const final;
+  private:
+  static ::PROTOBUF_NAMESPACE_ID::Metadata GetMetadataStatic() {
+    return ::descriptor_table_offboard_2foffboard_2eproto_metadata_getter(kIndexInFileMessages);
+  }
+
+  public:
+
+  // nested types ----------------------------------------------------
+
+  // accessors -------------------------------------------------------
+
+  enum : int {
+    kNorthMS2FieldNumber = 1,
+    kEastMS2FieldNumber = 2,
+    kDownMS2FieldNumber = 3,
+  };
+  // float north_m_s2 = 1;
+  void clear_north_m_s2();
+  float north_m_s2() const;
+  void set_north_m_s2(float value);
+  private:
+  float _internal_north_m_s2() const;
+  void _internal_set_north_m_s2(float value);
+  public:
+
+  // float east_m_s2 = 2;
+  void clear_east_m_s2();
+  float east_m_s2() const;
+  void set_east_m_s2(float value);
+  private:
+  float _internal_east_m_s2() const;
+  void _internal_set_east_m_s2(float value);
+  public:
+
+  // float down_m_s2 = 3;
+  void clear_down_m_s2();
+  float down_m_s2() const;
+  void set_down_m_s2(float value);
+  private:
+  float _internal_down_m_s2() const;
+  void _internal_set_down_m_s2(float value);
+  public:
+
+  // @@protoc_insertion_point(class_scope:mavsdk.rpc.offboard.AccelerationNed)
+ private:
+  class _Internal;
+
+  template <typename T> friend class ::PROTOBUF_NAMESPACE_ID::Arena::InternalHelper;
+  typedef void InternalArenaConstructable_;
+  typedef void DestructorSkippable_;
+  float north_m_s2_;
+  float east_m_s2_;
+  float down_m_s2_;
+  mutable ::PROTOBUF_NAMESPACE_ID::internal::CachedSize _cached_size_;
+  friend struct ::TableStruct_offboard_2foffboard_2eproto;
+};
+// -------------------------------------------------------------------
+
 class OffboardResult PROTOBUF_FINAL :
     public ::PROTOBUF_NAMESPACE_ID::Message /* @@protoc_insertion_point(class_definition:mavsdk.rpc.offboard.OffboardResult) */ {
  public:
@@ -4268,7 +4731,7 @@ class OffboardResult PROTOBUF_FINAL :
                &_OffboardResult_default_instance_);
   }
   static constexpr int kIndexInFileMessages =
-    27;
+    30;
 
   friend void swap(OffboardResult& a, OffboardResult& b) {
     a.Swap(&b);
@@ -5940,6 +6403,180 @@ inline void SetPositionVelocityNedResponse::set_allocated_offboard_result(::mavs
 
 // -------------------------------------------------------------------
 
+// SetAccelerationNedRequest
+
+// .mavsdk.rpc.offboard.AccelerationNed acceleration_ned = 1;
+inline bool SetAccelerationNedRequest::_internal_has_acceleration_ned() const {
+  return this != internal_default_instance() && acceleration_ned_ != nullptr;
+}
+inline bool SetAccelerationNedRequest::has_acceleration_ned() const {
+  return _internal_has_acceleration_ned();
+}
+inline void SetAccelerationNedRequest::clear_acceleration_ned() {
+  if (GetArena() == nullptr && acceleration_ned_ != nullptr) {
+    delete acceleration_ned_;
+  }
+  acceleration_ned_ = nullptr;
+}
+inline const ::mavsdk::rpc::offboard::AccelerationNed& SetAccelerationNedRequest::_internal_acceleration_ned() const {
+  const ::mavsdk::rpc::offboard::AccelerationNed* p = acceleration_ned_;
+  return p != nullptr ? *p : reinterpret_cast<const ::mavsdk::rpc::offboard::AccelerationNed&>(
+      ::mavsdk::rpc::offboard::_AccelerationNed_default_instance_);
+}
+inline const ::mavsdk::rpc::offboard::AccelerationNed& SetAccelerationNedRequest::acceleration_ned() const {
+  // @@protoc_insertion_point(field_get:mavsdk.rpc.offboard.SetAccelerationNedRequest.acceleration_ned)
+  return _internal_acceleration_ned();
+}
+inline void SetAccelerationNedRequest::unsafe_arena_set_allocated_acceleration_ned(
+    ::mavsdk::rpc::offboard::AccelerationNed* acceleration_ned) {
+  if (GetArena() == nullptr) {
+    delete reinterpret_cast<::PROTOBUF_NAMESPACE_ID::MessageLite*>(acceleration_ned_);
+  }
+  acceleration_ned_ = acceleration_ned;
+  if (acceleration_ned) {
+    
+  } else {
+    
+  }
+  // @@protoc_insertion_point(field_unsafe_arena_set_allocated:mavsdk.rpc.offboard.SetAccelerationNedRequest.acceleration_ned)
+}
+inline ::mavsdk::rpc::offboard::AccelerationNed* SetAccelerationNedRequest::release_acceleration_ned() {
+  
+  ::mavsdk::rpc::offboard::AccelerationNed* temp = acceleration_ned_;
+  acceleration_ned_ = nullptr;
+  if (GetArena() != nullptr) {
+    temp = ::PROTOBUF_NAMESPACE_ID::internal::DuplicateIfNonNull(temp);
+  }
+  return temp;
+}
+inline ::mavsdk::rpc::offboard::AccelerationNed* SetAccelerationNedRequest::unsafe_arena_release_acceleration_ned() {
+  // @@protoc_insertion_point(field_release:mavsdk.rpc.offboard.SetAccelerationNedRequest.acceleration_ned)
+  
+  ::mavsdk::rpc::offboard::AccelerationNed* temp = acceleration_ned_;
+  acceleration_ned_ = nullptr;
+  return temp;
+}
+inline ::mavsdk::rpc::offboard::AccelerationNed* SetAccelerationNedRequest::_internal_mutable_acceleration_ned() {
+  
+  if (acceleration_ned_ == nullptr) {
+    auto* p = CreateMaybeMessage<::mavsdk::rpc::offboard::AccelerationNed>(GetArena());
+    acceleration_ned_ = p;
+  }
+  return acceleration_ned_;
+}
+inline ::mavsdk::rpc::offboard::AccelerationNed* SetAccelerationNedRequest::mutable_acceleration_ned() {
+  // @@protoc_insertion_point(field_mutable:mavsdk.rpc.offboard.SetAccelerationNedRequest.acceleration_ned)
+  return _internal_mutable_acceleration_ned();
+}
+inline void SetAccelerationNedRequest::set_allocated_acceleration_ned(::mavsdk::rpc::offboard::AccelerationNed* acceleration_ned) {
+  ::PROTOBUF_NAMESPACE_ID::Arena* message_arena = GetArena();
+  if (message_arena == nullptr) {
+    delete acceleration_ned_;
+  }
+  if (acceleration_ned) {
+    ::PROTOBUF_NAMESPACE_ID::Arena* submessage_arena =
+      ::PROTOBUF_NAMESPACE_ID::Arena::GetArena(acceleration_ned);
+    if (message_arena != submessage_arena) {
+      acceleration_ned = ::PROTOBUF_NAMESPACE_ID::internal::GetOwnedMessage(
+          message_arena, acceleration_ned, submessage_arena);
+    }
+    
+  } else {
+    
+  }
+  acceleration_ned_ = acceleration_ned;
+  // @@protoc_insertion_point(field_set_allocated:mavsdk.rpc.offboard.SetAccelerationNedRequest.acceleration_ned)
+}
+
+// -------------------------------------------------------------------
+
+// SetAccelerationNedResponse
+
+// .mavsdk.rpc.offboard.OffboardResult offboard_result = 1;
+inline bool SetAccelerationNedResponse::_internal_has_offboard_result() const {
+  return this != internal_default_instance() && offboard_result_ != nullptr;
+}
+inline bool SetAccelerationNedResponse::has_offboard_result() const {
+  return _internal_has_offboard_result();
+}
+inline void SetAccelerationNedResponse::clear_offboard_result() {
+  if (GetArena() == nullptr && offboard_result_ != nullptr) {
+    delete offboard_result_;
+  }
+  offboard_result_ = nullptr;
+}
+inline const ::mavsdk::rpc::offboard::OffboardResult& SetAccelerationNedResponse::_internal_offboard_result() const {
+  const ::mavsdk::rpc::offboard::OffboardResult* p = offboard_result_;
+  return p != nullptr ? *p : reinterpret_cast<const ::mavsdk::rpc::offboard::OffboardResult&>(
+      ::mavsdk::rpc::offboard::_OffboardResult_default_instance_);
+}
+inline const ::mavsdk::rpc::offboard::OffboardResult& SetAccelerationNedResponse::offboard_result() const {
+  // @@protoc_insertion_point(field_get:mavsdk.rpc.offboard.SetAccelerationNedResponse.offboard_result)
+  return _internal_offboard_result();
+}
+inline void SetAccelerationNedResponse::unsafe_arena_set_allocated_offboard_result(
+    ::mavsdk::rpc::offboard::OffboardResult* offboard_result) {
+  if (GetArena() == nullptr) {
+    delete reinterpret_cast<::PROTOBUF_NAMESPACE_ID::MessageLite*>(offboard_result_);
+  }
+  offboard_result_ = offboard_result;
+  if (offboard_result) {
+    
+  } else {
+    
+  }
+  // @@protoc_insertion_point(field_unsafe_arena_set_allocated:mavsdk.rpc.offboard.SetAccelerationNedResponse.offboard_result)
+}
+inline ::mavsdk::rpc::offboard::OffboardResult* SetAccelerationNedResponse::release_offboard_result() {
+  
+  ::mavsdk::rpc::offboard::OffboardResult* temp = offboard_result_;
+  offboard_result_ = nullptr;
+  if (GetArena() != nullptr) {
+    temp = ::PROTOBUF_NAMESPACE_ID::internal::DuplicateIfNonNull(temp);
+  }
+  return temp;
+}
+inline ::mavsdk::rpc::offboard::OffboardResult* SetAccelerationNedResponse::unsafe_arena_release_offboard_result() {
+  // @@protoc_insertion_point(field_release:mavsdk.rpc.offboard.SetAccelerationNedResponse.offboard_result)
+  
+  ::mavsdk::rpc::offboard::OffboardResult* temp = offboard_result_;
+  offboard_result_ = nullptr;
+  return temp;
+}
+inline ::mavsdk::rpc::offboard::OffboardResult* SetAccelerationNedResponse::_internal_mutable_offboard_result() {
+  
+  if (offboard_result_ == nullptr) {
+    auto* p = CreateMaybeMessage<::mavsdk::rpc::offboard::OffboardResult>(GetArena());
+    offboard_result_ = p;
+  }
+  return offboard_result_;
+}
+inline ::mavsdk::rpc::offboard::OffboardResult* SetAccelerationNedResponse::mutable_offboard_result() {
+  // @@protoc_insertion_point(field_mutable:mavsdk.rpc.offboard.SetAccelerationNedResponse.offboard_result)
+  return _internal_mutable_offboard_result();
+}
+inline void SetAccelerationNedResponse::set_allocated_offboard_result(::mavsdk::rpc::offboard::OffboardResult* offboard_result) {
+  ::PROTOBUF_NAMESPACE_ID::Arena* message_arena = GetArena();
+  if (message_arena == nullptr) {
+    delete offboard_result_;
+  }
+  if (offboard_result) {
+    ::PROTOBUF_NAMESPACE_ID::Arena* submessage_arena =
+      ::PROTOBUF_NAMESPACE_ID::Arena::GetArena(offboard_result);
+    if (message_arena != submessage_arena) {
+      offboard_result = ::PROTOBUF_NAMESPACE_ID::internal::GetOwnedMessage(
+          message_arena, offboard_result, submessage_arena);
+    }
+    
+  } else {
+    
+  }
+  offboard_result_ = offboard_result;
+  // @@protoc_insertion_point(field_set_allocated:mavsdk.rpc.offboard.SetAccelerationNedResponse.offboard_result)
+}
+
+// -------------------------------------------------------------------
+
 // Attitude
 
 // float roll_deg = 1;
@@ -6454,6 +7091,70 @@ inline void VelocityNedYaw::set_yaw_deg(float value) {
 
 // -------------------------------------------------------------------
 
+// AccelerationNed
+
+// float north_m_s2 = 1;
+inline void AccelerationNed::clear_north_m_s2() {
+  north_m_s2_ = 0;
+}
+inline float AccelerationNed::_internal_north_m_s2() const {
+  return north_m_s2_;
+}
+inline float AccelerationNed::north_m_s2() const {
+  // @@protoc_insertion_point(field_get:mavsdk.rpc.offboard.AccelerationNed.north_m_s2)
+  return _internal_north_m_s2();
+}
+inline void AccelerationNed::_internal_set_north_m_s2(float value) {
+  
+  north_m_s2_ = value;
+}
+inline void AccelerationNed::set_north_m_s2(float value) {
+  _internal_set_north_m_s2(value);
+  // @@protoc_insertion_point(field_set:mavsdk.rpc.offboard.AccelerationNed.north_m_s2)
+}
+
+// float east_m_s2 = 2;
+inline void AccelerationNed::clear_east_m_s2() {
+  east_m_s2_ = 0;
+}
+inline float AccelerationNed::_internal_east_m_s2() const {
+  return east_m_s2_;
+}
+inline float AccelerationNed::east_m_s2() const {
+  // @@protoc_insertion_point(field_get:mavsdk.rpc.offboard.AccelerationNed.east_m_s2)
+  return _internal_east_m_s2();
+}
+inline void AccelerationNed::_internal_set_east_m_s2(float value) {
+  
+  east_m_s2_ = value;
+}
+inline void AccelerationNed::set_east_m_s2(float value) {
+  _internal_set_east_m_s2(value);
+  // @@protoc_insertion_point(field_set:mavsdk.rpc.offboard.AccelerationNed.east_m_s2)
+}
+
+// float down_m_s2 = 3;
+inline void AccelerationNed::clear_down_m_s2() {
+  down_m_s2_ = 0;
+}
+inline float AccelerationNed::_internal_down_m_s2() const {
+  return down_m_s2_;
+}
+inline float AccelerationNed::down_m_s2() const {
+  // @@protoc_insertion_point(field_get:mavsdk.rpc.offboard.AccelerationNed.down_m_s2)
+  return _internal_down_m_s2();
+}
+inline void AccelerationNed::_internal_set_down_m_s2(float value) {
+  
+  down_m_s2_ = value;
+}
+inline void AccelerationNed::set_down_m_s2(float value) {
+  _internal_set_down_m_s2(value);
+  // @@protoc_insertion_point(field_set:mavsdk.rpc.offboard.AccelerationNed.down_m_s2)
+}
+
+// -------------------------------------------------------------------
+
 // OffboardResult
 
 // .mavsdk.rpc.offboard.OffboardResult.Result result = 1;
@@ -6540,6 +7241,12 @@ inline void OffboardResult::set_allocated_result_str(std::string* result_str) {
 #ifdef __GNUC__
   #pragma GCC diagnostic pop
 #endif  // __GNUC__
+// -------------------------------------------------------------------
+
+// -------------------------------------------------------------------
+
+// -------------------------------------------------------------------
+
 // -------------------------------------------------------------------
 
 // -------------------------------------------------------------------

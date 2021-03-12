@@ -246,6 +246,34 @@ public:
         return obj;
     }
 
+    static std::unique_ptr<rpc::offboard::AccelerationNed>
+    translateToRpcAccelerationNed(const mavsdk::Offboard::AccelerationNed& acceleration_ned)
+    {
+        auto rpc_obj = std::make_unique<rpc::offboard::AccelerationNed>();
+
+        rpc_obj->set_north_m_s2(acceleration_ned.north_m_s2);
+
+        rpc_obj->set_east_m_s2(acceleration_ned.east_m_s2);
+
+        rpc_obj->set_down_m_s2(acceleration_ned.down_m_s2);
+
+        return rpc_obj;
+    }
+
+    static mavsdk::Offboard::AccelerationNed
+    translateFromRpcAccelerationNed(const rpc::offboard::AccelerationNed& acceleration_ned)
+    {
+        mavsdk::Offboard::AccelerationNed obj;
+
+        obj.north_m_s2 = acceleration_ned.north_m_s2();
+
+        obj.east_m_s2 = acceleration_ned.east_m_s2();
+
+        obj.down_m_s2 = acceleration_ned.down_m_s2();
+
+        return obj;
+    }
+
     static rpc::offboard::OffboardResult::Result
     translateToRpcResult(const mavsdk::Offboard::Result& result)
     {
@@ -472,6 +500,26 @@ public:
         auto result = _offboard.set_position_velocity_ned(
             translateFromRpcPositionNedYaw(request->position_ned_yaw()),
             translateFromRpcVelocityNedYaw(request->velocity_ned_yaw()));
+
+        if (response != nullptr) {
+            fillResponseWithResult(response, result);
+        }
+
+        return grpc::Status::OK;
+    }
+
+    grpc::Status SetAccelerationNed(
+        grpc::ServerContext* /* context */,
+        const rpc::offboard::SetAccelerationNedRequest* request,
+        rpc::offboard::SetAccelerationNedResponse* response) override
+    {
+        if (request == nullptr) {
+            LogWarn() << "SetAccelerationNed sent with a null request! Ignoring...";
+            return grpc::Status::OK;
+        }
+
+        auto result = _offboard.set_acceleration_ned(
+            translateFromRpcAccelerationNed(request->acceleration_ned()));
 
         if (response != nullptr) {
             fillResponseWithResult(response, result);

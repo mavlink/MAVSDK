@@ -16,6 +16,7 @@ using AttitudeRate = Offboard::AttitudeRate;
 using PositionNedYaw = Offboard::PositionNedYaw;
 using VelocityBodyYawspeed = Offboard::VelocityBodyYawspeed;
 using VelocityNedYaw = Offboard::VelocityNedYaw;
+using AccelerationNed = Offboard::AccelerationNed;
 
 Offboard::Offboard(System& system) : PluginBase(), _impl{new OffboardImpl(system)} {}
 
@@ -83,6 +84,11 @@ Offboard::Result Offboard::set_position_velocity_ned(
     PositionNedYaw position_ned_yaw, VelocityNedYaw velocity_ned_yaw) const
 {
     return _impl->set_position_velocity_ned(position_ned_yaw, velocity_ned_yaw);
+}
+
+Offboard::Result Offboard::set_acceleration_ned(AccelerationNed acceleration_ned) const
+{
+    return _impl->set_acceleration_ned(acceleration_ned);
 }
 
 bool operator==(const Offboard::Attitude& lhs, const Offboard::Attitude& rhs)
@@ -237,6 +243,27 @@ std::ostream& operator<<(std::ostream& str, Offboard::VelocityNedYaw const& velo
     str << "    east_m_s: " << velocity_ned_yaw.east_m_s << '\n';
     str << "    down_m_s: " << velocity_ned_yaw.down_m_s << '\n';
     str << "    yaw_deg: " << velocity_ned_yaw.yaw_deg << '\n';
+    str << '}';
+    return str;
+}
+
+bool operator==(const Offboard::AccelerationNed& lhs, const Offboard::AccelerationNed& rhs)
+{
+    return ((std::isnan(rhs.north_m_s2) && std::isnan(lhs.north_m_s2)) ||
+            rhs.north_m_s2 == lhs.north_m_s2) &&
+           ((std::isnan(rhs.east_m_s2) && std::isnan(lhs.east_m_s2)) ||
+            rhs.east_m_s2 == lhs.east_m_s2) &&
+           ((std::isnan(rhs.down_m_s2) && std::isnan(lhs.down_m_s2)) ||
+            rhs.down_m_s2 == lhs.down_m_s2);
+}
+
+std::ostream& operator<<(std::ostream& str, Offboard::AccelerationNed const& acceleration_ned)
+{
+    str << std::setprecision(15);
+    str << "acceleration_ned:" << '\n' << "{\n";
+    str << "    north_m_s2: " << acceleration_ned.north_m_s2 << '\n';
+    str << "    east_m_s2: " << acceleration_ned.east_m_s2 << '\n';
+    str << "    down_m_s2: " << acceleration_ned.down_m_s2 << '\n';
     str << '}';
     return str;
 }

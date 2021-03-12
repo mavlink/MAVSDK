@@ -207,6 +207,34 @@ Offboard::Result OffboardImpl::set_position_velocity_ned(
     return send_position_velocity_ned();
 }
 
+Offboard::Result OffboardImpl::set_acceleration_ned(Offboard::AccelerationNed acceleration_ned)
+{
+    {
+        std::lock_guard<std::mutex> lock(_mutex);
+        _acceleration_ned = acceleration_ned;
+
+        if (_mode != Mode::AccelerationNed) {
+            if (_call_every_cookie) {
+                // If we're already sending other setpoints, stop that now.
+                _parent->remove_call_every(_call_every_cookie);
+                _call_every_cookie = nullptr;
+            }
+            // We automatically send Ned setpoints from now on.
+            _parent->add_call_every(
+                [this]() { send_acceleration_ned(); }, SEND_INTERVAL_S, &_call_every_cookie);
+
+            _mode = Mode::AccelerationNed;
+        } else {
+            // We're already sending these kind of setpoints. Since the setpoint change, let's
+            // reschedule the next call, so we don't send setpoints too often.
+            _parent->reset_call_every(_call_every_cookie);
+        }
+    }
+
+    // also send it right now to reduce latency
+    return send_acceleration_ned();
+}
+
 Offboard::Result
 OffboardImpl::set_velocity_body(Offboard::VelocityBodyYawspeed velocity_body_yawspeed)
 {
@@ -432,6 +460,48 @@ Offboard::Result OffboardImpl::send_position_velocity_ned()
         0.0f, // afy
         0.0f, // afz
         to_rad_from_deg(position_and_velocity.first.yaw_deg), // yaw
+        0.0f); // yaw_rate
+    return _parent->send_message(message) ? Offboard::Result::Success :
+                                            Offboard::Result::ConnectionError;
+}
+
+Offboard::Result OffboardImpl::send_acceleration_ned()
+{
+    const static uint16_t IGNORE_X = (1 << 0);
+    const static uint16_t IGNORE_Y = (1 << 1);
+    const static uint16_t IGNORE_Z = (1 << 2);
+    const static uint16_t IGNORE_VX = (1 << 3);
+    const static uint16_t IGNORE_VY = (1 << 4);
+    const static uint16_t IGNORE_VZ = (1 << 5);
+    const static uint16_t IGNORE_YAW = (1 << 10);
+    const static uint16_t IGNORE_YAW_RATE = (1 << 11);
+
+    const auto acceleration_ned = [this]() {
+        std::lock_guard<std::mutex> lock(_mutex);
+        return _acceleration_ned;
+    }();
+
+    mavlink_message_t message;
+    mavlink_msg_set_position_target_local_ned_pack(
+        _parent->get_own_system_id(),
+        _parent->get_own_component_id(),
+        &message,
+        static_cast<uint32_t>(_parent->get_time().elapsed_s() * 1e3),
+        _parent->get_system_id(),
+        _parent->get_autopilot_id(),
+        MAV_FRAME_LOCAL_NED,
+        IGNORE_X | IGNORE_Y | IGNORE_Z | IGNORE_VX | IGNORE_VY | IGNORE_VZ | IGNORE_YAW |
+            IGNORE_YAW_RATE,
+        0.0f, // x,
+        0.0f, // y,
+        0.0f, // z,
+        0.0f, // vfx
+        0.0f, // vfy
+        0.0f, // vfz
+        acceleration_ned.north_m_s2,
+        acceleration_ned.east_m_s2,
+        acceleration_ned.down_m_s2,
+        0.0f, // yaw
         0.0f); // yaw_rate
     return _parent->send_message(message) ? Offboard::Result::Success :
                                             Offboard::Result::ConnectionError;

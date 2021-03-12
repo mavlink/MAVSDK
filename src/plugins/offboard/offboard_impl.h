@@ -33,6 +33,7 @@ public:
     Offboard::Result set_velocity_ned(Offboard::VelocityNedYaw velocity_ned_yaw);
     Offboard::Result set_position_velocity_ned(
         Offboard::PositionNedYaw position_ned_yaw, Offboard::VelocityNedYaw velocity_ned_yaw);
+    Offboard::Result set_acceleration_ned(Offboard::AccelerationNed acceleration_ned);
     Offboard::Result set_velocity_body(Offboard::VelocityBodyYawspeed velocity_body_yawspeed);
     Offboard::Result set_attitude(Offboard::Attitude attitude);
     Offboard::Result set_attitude_rate(Offboard::AttitudeRate attitude_rate);
@@ -45,6 +46,7 @@ private:
     Offboard::Result send_position_ned();
     Offboard::Result send_velocity_ned();
     Offboard::Result send_position_velocity_ned();
+    Offboard::Result send_acceleration_ned();
     Offboard::Result send_velocity_body();
     Offboard::Result send_attitude_rate();
     Offboard::Result send_attitude();
@@ -68,6 +70,7 @@ private:
         PositionNed,
         VelocityNed,
         PositionVelocityNed,
+        AccelerationNed,
         VelocityBody,
         Attitude,
         AttitudeRate,
@@ -75,6 +78,7 @@ private:
     } _mode = Mode::NotActive;
     Offboard::PositionNedYaw _position_ned_yaw{};
     Offboard::VelocityNedYaw _velocity_ned_yaw{};
+    Offboard::AccelerationNed _acceleration_ned{};
     Offboard::VelocityBodyYawspeed _velocity_body_yawspeed{};
     Offboard::Attitude _attitude{};
     Offboard::AttitudeRate _attitude_rate{};
