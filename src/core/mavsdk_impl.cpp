@@ -209,13 +209,6 @@ void MavsdkImpl::receive_message(mavlink_message_t& message, Connection* connect
         std::swap(_systems[message.sysid], it->second);
         _systems[message.sysid]->system_impl()->set_system_id(message.sysid);
         _systems.erase(it);
-    } else if (_is_single_system) {
-        auto it_begin = _systems.begin();
-        if (it_begin->first != message.sysid) {
-            std::swap(_systems[message.sysid], it_begin->second);
-            _systems[message.sysid]->system_impl()->set_system_id(message.sysid);
-            _systems.erase(it_begin);
-        }
     }
 
     if (!does_system_exist(message.sysid)) {
@@ -239,11 +232,27 @@ bool MavsdkImpl::send_message(mavlink_message_t& message)
 {
     std::lock_guard<std::mutex> lock(_connections_mutex);
 
+    uint8_t successful_emissions = 0;
     for (auto it = _connections.begin(); it != _connections.end(); ++it) {
-        if (!(**it).send_message(message)) {
-            LogErr() << "send fail";
-            return false;
+        // Checks whether connection knows target system ID by extracting target system if set.
+        // https://github.com/PX4/PX4-Autopilot/blob/v1.11.3/src/modules/mavlink/mavlink_main.cpp#L472
+        const mavlink_msg_entry_t* meta = mavlink_get_msg_entry(message.msgid);
+
+        if (meta && meta->flags & MAV_MSG_ENTRY_FLAG_HAVE_TARGET_SYSTEM) {
+            int target_system_id = (_MAV_PAYLOAD(&message))[meta->target_system_ofs];
+            if (!(**it).has_system_id(target_system_id)) {
+                continue;
+            }
         }
+
+        if ((**it).send_message(message)) {
+            successful_emissions++;
+        }
+    }
+
+    if (successful_emissions == 0) {
+        LogErr() << "Sending message failed";
+        return false;
     }
 
     return true;
@@ -327,11 +336,10 @@ ConnectionResult MavsdkImpl::setup_udp_remote(
         return ConnectionResult::ConnectionError;
     }
     ConnectionResult ret = new_conn->start();
-    _is_single_system = true;
     if (ret == ConnectionResult::Success) {
         new_conn->add_remote(remote_ip, remote_port);
         add_connection(new_conn);
-        make_system_with_component(get_own_system_id(), get_own_component_id());
+        make_system_with_component(get_own_system_id(), get_own_component_id(), true);
     }
     return ret;
 }
@@ -506,7 +514,8 @@ bool MavsdkImpl::is_connected(const uint64_t uuid) const
     return false;
 }
 
-void MavsdkImpl::make_system_with_component(uint8_t system_id, uint8_t comp_id)
+void MavsdkImpl::make_system_with_component(
+    uint8_t system_id, uint8_t comp_id, bool always_connected)
 {
     std::lock_guard<std::recursive_mutex> lock(_systems_mutex);
 
@@ -517,7 +526,7 @@ void MavsdkImpl::make_system_with_component(uint8_t system_id, uint8_t comp_id)
 
     LogDebug() << "New: System ID: " << int(system_id) << " Comp ID: " << int(comp_id);
     // Make a system with its first component
-    auto new_system = std::make_shared<System>(*this, system_id, comp_id, _is_single_system);
+    auto new_system = std::make_shared<System>(*this, system_id, comp_id, always_connected);
 
     _systems.insert(std::pair<uint8_t, std::shared_ptr<System>>(system_id, new_system));
 }

@@ -3,6 +3,7 @@
 #include "mavsdk.h"
 #include "mavlink_receiver.h"
 #include <memory>
+#include <unordered_set>
 
 namespace mavsdk {
 
@@ -21,6 +22,7 @@ public:
 
     virtual bool send_message(const mavlink_message_t& message) = 0;
 
+    bool has_system_id(uint8_t system_id);
     bool should_forward_messages() const;
     unsigned forwarding_connections_count() const;
 
@@ -36,6 +38,7 @@ protected:
     receiver_callback_t _receiver_callback{};
     std::unique_ptr<MAVLinkReceiver> _mavlink_receiver;
     ForwardingOption _forwarding_option;
+    std::unordered_set<uint8_t> _system_ids;
 
     static std::atomic<unsigned> _forwarding_connections_count;
 
