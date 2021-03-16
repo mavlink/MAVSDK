@@ -39,6 +39,8 @@ private:
     void request_log_data(unsigned id, unsigned start, unsigned count);
     void data_timeout();
 
+    bool is_directory(const std::string& path) const;
+    bool file_exists(const std::string& path) const;
     bool start_logfile(const std::string& path);
     void write_part_to_disk();
     void finish_logfile();
