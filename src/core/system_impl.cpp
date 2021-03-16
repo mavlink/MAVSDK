@@ -137,12 +137,12 @@ void SystemImpl::process_mavlink_message(mavlink_message_t& message)
 
 void SystemImpl::add_call_every(std::function<void()> callback, float interval_s, void** cookie)
 {
-    _parent.call_every_handler.add(callback, interval_s, cookie);
+    _parent.call_every_handler.add(callback, static_cast<double>(interval_s), cookie);
 }
 
 void SystemImpl::change_call_every(float interval_s, const void* cookie)
 {
-    _parent.call_every_handler.change(interval_s, cookie);
+    _parent.call_every_handler.change(static_cast<double>(interval_s), cookie);
 }
 
 void SystemImpl::reset_call_every(const void* cookie)
