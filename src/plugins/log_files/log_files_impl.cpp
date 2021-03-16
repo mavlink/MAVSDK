@@ -6,7 +6,16 @@
 #include <cmath>
 #include <ctime>
 #include <cstring>
-#include <filesystem>
+
+#if __has_include(<filesystem>)
+  #include <filesystem>
+  namespace fs = std::filesystem;
+#elif __has_include(<experimental/filesystem>)
+  #include <experimental/filesystem>
+  namespace fs = std::experimental::filesystem;
+#else
+  error "Missing the <filesystem> header."
+#endif
 
 namespace mavsdk {
 
@@ -451,16 +460,16 @@ void LogFilesImpl::data_timeout()
 
 bool LogFilesImpl::is_directory(const std::string& path) const
 {
-    std::filesystem::path file_path(path);
+    fs::path file_path(path);
     std::error_code ignored;
-    return std::filesystem::is_directory(file_path, ignored);
+    return fs::is_directory(file_path, ignored);
 }
 
 bool LogFilesImpl::file_exists(const std::string& path) const
 {
-    std::filesystem::path file_path(path);
+    fs::path file_path(path);
     std::error_code ignored;
-    return std::filesystem::exists(file_path, ignored);
+    return fs::exists(file_path, ignored);
 }
 
 bool LogFilesImpl::start_logfile(const std::string& path)
