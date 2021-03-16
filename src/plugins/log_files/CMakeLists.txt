@@ -7,6 +7,12 @@ target_link_libraries(mavsdk_log_files
     mavsdk
 )
 
+if (NOT APPLE AND NOT ANDROID AND NOT MSVC)
+    target_link_libraries(mavsdk_log_files
+        stdc++fs
+    )
+endif()
+
 set_target_properties(mavsdk_log_files
     PROPERTIES COMPILE_FLAGS ${warnings}
     VERSION ${MAVSDK_VERSION_STRING}

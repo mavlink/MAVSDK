@@ -1,10 +1,21 @@
 #include "global_include.h"
 #include "log_files_impl.h"
 #include "mavsdk_impl.h"
+
 #include <algorithm>
 #include <cmath>
 #include <ctime>
 #include <cstring>
+
+#if __has_include(<filesystem>)
+#include <filesystem>
+namespace fs = std::filesystem;
+#elif __has_include(<experimental/filesystem>)
+#include <experimental/filesystem>
+namespace fs = std::experimental::filesystem;
+#else
+#error "Missing the <filesystem> header."
+#endif
 
 namespace mavsdk {
 
@@ -228,6 +239,33 @@ void LogFilesImpl::download_log_file_async(
     {
         std::lock_guard<std::mutex> lock(_data.mutex);
 
+        if (is_directory(file_path)) {
+            if (callback) {
+                const auto tmp_callback = callback;
+                _parent->call_user_callback([tmp_callback]() {
+                    LogFiles::ProgressData progress;
+                    progress.progress = NAN;
+                    LogErr()
+                        << "Invalid path! The path must point to an unexisting file, and it points to a directory!";
+                    tmp_callback(LogFiles::Result::InvalidArgument, progress);
+                });
+            }
+            return;
+        }
+
+        if (file_exists(file_path)) {
+            if (callback) {
+                const auto tmp_callback = callback;
+                _parent->call_user_callback([tmp_callback]() {
+                    LogFiles::ProgressData progress;
+                    progress.progress = NAN;
+                    LogErr() << "Target log file already exists!";
+                    tmp_callback(LogFiles::Result::InvalidArgument, progress);
+                });
+            }
+            return;
+        }
+
         if (!start_logfile(file_path)) {
             if (callback) {
                 const auto tmp_callback = callback;
@@ -420,9 +458,24 @@ void LogFilesImpl::data_timeout()
     }
 }
 
+bool LogFilesImpl::is_directory(const std::string& path) const
+{
+    fs::path file_path(path);
+    std::error_code ignored;
+    return fs::is_directory(file_path, ignored);
+}
+
+bool LogFilesImpl::file_exists(const std::string& path) const
+{
+    fs::path file_path(path);
+    std::error_code ignored;
+    return fs::exists(file_path, ignored);
+}
+
 bool LogFilesImpl::start_logfile(const std::string& path)
 {
     // Assumes to have the lock for _data.mutex.
+    // Assumes that the path is valid and points to a file (not a directory)
 
     _data.file.open(path, std::ios::out | std::ios::binary);
 
