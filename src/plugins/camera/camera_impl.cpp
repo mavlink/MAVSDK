@@ -979,6 +979,12 @@ bool CameraImpl::load_stored_definition(
             camera_definition_out = e30zxml;
             return true;
         }
+    } else if (strcmp((const char*)(camera_information.vendor_name), "Sony") == 0) {
+        if (strcmp((const char*)(camera_information.model_name), "ILCE-7RM4") == 0) {
+            LogInfo() << "Using cached file for Sony ILCE-7RM4.";
+            camera_definition_out = ILCE7RM4xml;
+            return true;
+        }
     }
 
     return false;

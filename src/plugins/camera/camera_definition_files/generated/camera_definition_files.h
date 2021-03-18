@@ -26,4 +26,8 @@
   
   const int e90xml_size = 63539; 
 
+  extern const char ILCE7RM4xml[];
+  
+  const int ILCE7RM4xml_size = 16816; 
+
 #endif /*CAMERA_DEFINITION_FILES_H */
