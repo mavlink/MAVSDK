@@ -466,7 +466,8 @@ void MavsdkImpl::subscribe_on_new_system(Mavsdk::NewSystemCallback callback)
     _new_system_callback = callback;
 
     const auto is_any_system_connected = [this]() {
-        return std::any_of(systems().cbegin(), systems().cend(), [](auto& system) {
+        std::vector<std::shared_ptr<System>> connected_systems = systems();
+        return std::any_of(connected_systems.cbegin(), connected_systems.cend(), [](auto& system) {
             return system->is_connected();
         });
     };
