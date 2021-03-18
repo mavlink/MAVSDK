@@ -518,8 +518,10 @@ private:
         bool already_requested{false};
         const void* cookie{nullptr};
         int retries_to_do{3};
-        double timeout_s{1.0};
+        double timeout_s;
         mavlink_message_t mavlink_message{};
+
+        explicit WorkItem(double new_timeout_s) : timeout_s(new_timeout_s){};
     };
     LockedQueue<WorkItem> _work_queue{};
 

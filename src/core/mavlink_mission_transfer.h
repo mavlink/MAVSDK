@@ -76,11 +76,12 @@ public:
 
     class WorkItem {
     public:
-        WorkItem(
+        explicit WorkItem(
             Sender& sender,
             MAVLinkMessageHandler& message_handler,
             TimeoutHandler& timeout_handler,
-            uint8_t type);
+            uint8_t type,
+            double timeout_s);
         virtual ~WorkItem();
         virtual void start() = 0;
         virtual void cancel() = 0;
@@ -97,6 +98,7 @@ public:
         MAVLinkMessageHandler& _message_handler;
         TimeoutHandler& _timeout_handler;
         uint8_t _type;
+        double _timeout_s;
         bool _started{false};
         bool _done{false};
         std::mutex _mutex{};
@@ -104,12 +106,13 @@ public:
 
     class UploadWorkItem : public WorkItem {
     public:
-        UploadWorkItem(
+        explicit UploadWorkItem(
             Sender& sender,
             MAVLinkMessageHandler& message_handler,
             TimeoutHandler& timeout_handler,
             uint8_t type,
             const std::vector<ItemInt>& items,
+            double timeout_s,
             ResultCallback callback);
 
         virtual ~UploadWorkItem();
@@ -146,11 +149,12 @@ public:
 
     class DownloadWorkItem : public WorkItem {
     public:
-        DownloadWorkItem(
+        explicit DownloadWorkItem(
             Sender& sender,
             MAVLinkMessageHandler& message_handler,
             TimeoutHandler& timeout_handler,
             uint8_t type,
+            double timeout_s,
             ResultAndItemsCallback callback);
 
         virtual ~DownloadWorkItem();
@@ -192,6 +196,7 @@ public:
             MAVLinkMessageHandler& message_handler,
             TimeoutHandler& timeout_handler,
             uint8_t type,
+            double timeout_s,
             ResultCallback callback);
 
         virtual ~ClearWorkItem();
@@ -221,6 +226,7 @@ public:
             MAVLinkMessageHandler& message_handler,
             TimeoutHandler& timeout_handler,
             int current,
+            double timeout_s,
             ResultCallback callback);
 
         virtual ~SetCurrentWorkItem();
@@ -245,11 +251,15 @@ public:
         unsigned _retries_done{0};
     };
 
-    static constexpr double timeout_s = 0.5;
     static constexpr unsigned retries = 4;
 
-    MAVLinkMissionTransfer(
-        Sender& sender, MAVLinkMessageHandler& message_handler, TimeoutHandler& timeout_handler);
+    using TimeoutSCallback = std::function<double()>;
+
+    explicit MAVLinkMissionTransfer(
+        Sender& sender,
+        MAVLinkMessageHandler& message_handler,
+        TimeoutHandler& timeout_handler,
+        TimeoutSCallback get_timeout_s_callback);
 
     ~MAVLinkMissionTransfer();
 
@@ -273,6 +283,7 @@ private:
     Sender& _sender;
     MAVLinkMessageHandler& _message_handler;
     TimeoutHandler& _timeout_handler;
+    TimeoutSCallback _timeout_s_callback;
 
     LockedQueue<WorkItem> _work_queue{};
 };

@@ -88,6 +88,10 @@ public:
     void call_user_callback_located(
         const std::string& filename, const int linenumber, const std::function<void()>& func);
 
+    void set_timeout_s(double timeout_s) { _timeout_s = timeout_s; }
+
+    double timeout_s() const { return _timeout_s; };
+
     MAVLinkAddress own_address{};
 
 private:
@@ -140,6 +144,8 @@ private:
     std::thread* _process_user_callbacks_thread{nullptr};
     SafeQueue<UserCallback> _user_callback_queue{};
     bool _callback_debugging{false};
+
+    std::atomic<double> _timeout_s{Mavsdk::DEFAULT_TIMEOUT_S};
 
     static constexpr double _HEARTBEAT_SEND_INTERVAL_S = 1.0;
     std::atomic<bool> _sending_heartbeats{false};
