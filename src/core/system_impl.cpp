@@ -25,7 +25,8 @@ SystemImpl::SystemImpl(MavsdkImpl& parent, uint8_t system_id, uint8_t comp_id, b
     _receive_commands(*this),
     _timesync(*this),
     _ping(*this),
-    _mission_transfer(*this, _message_handler, _parent.timeout_handler)
+    _mission_transfer(
+        *this, _message_handler, _parent.timeout_handler, [this]() { return timeout_s(); })
 {
     _target_address.system_id = system_id;
     // FIXME: for now use this as a default.
@@ -107,6 +108,11 @@ void SystemImpl::refresh_timeout_handler(const void* cookie)
 void SystemImpl::unregister_timeout_handler(const void* cookie)
 {
     _parent.timeout_handler.remove(cookie);
+}
+
+double SystemImpl::timeout_s() const
+{
+    return _parent.timeout_s();
 }
 
 void SystemImpl::enable_timesync()

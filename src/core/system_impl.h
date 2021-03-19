@@ -249,6 +249,8 @@ public:
     void unregister_mavlink_command_handler(uint16_t cmd_id, const void* cookie);
     void unregister_all_mavlink_command_handlers(const void* cookie);
 
+    double timeout_s() const;
+
 private:
     static bool is_autopilot(uint8_t comp_id);
     static bool is_camera(uint8_t comp_id);

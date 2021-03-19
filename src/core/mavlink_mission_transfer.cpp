@@ -5,10 +5,14 @@
 namespace mavsdk {
 
 MAVLinkMissionTransfer::MAVLinkMissionTransfer(
-    Sender& sender, MAVLinkMessageHandler& message_handler, TimeoutHandler& timeout_handler) :
+    Sender& sender,
+    MAVLinkMessageHandler& message_handler,
+    TimeoutHandler& timeout_handler,
+    TimeoutSCallback timeout_s_callback) :
     _sender(sender),
     _message_handler(message_handler),
-    _timeout_handler(timeout_handler)
+    _timeout_handler(timeout_handler),
+    _timeout_s_callback(timeout_s_callback)
 {}
 
 MAVLinkMissionTransfer::~MAVLinkMissionTransfer() {}
@@ -17,7 +21,7 @@ std::weak_ptr<MAVLinkMissionTransfer::WorkItem> MAVLinkMissionTransfer::upload_i
     uint8_t type, const std::vector<ItemInt>& items, ResultCallback callback)
 {
     auto ptr = std::make_shared<UploadWorkItem>(
-        _sender, _message_handler, _timeout_handler, type, items, callback);
+        _sender, _message_handler, _timeout_handler, type, items, _timeout_s_callback(), callback);
 
     _work_queue.push_back(ptr);
 
@@ -28,7 +32,7 @@ std::weak_ptr<MAVLinkMissionTransfer::WorkItem>
 MAVLinkMissionTransfer::download_items_async(uint8_t type, ResultAndItemsCallback callback)
 {
     auto ptr = std::make_shared<DownloadWorkItem>(
-        _sender, _message_handler, _timeout_handler, type, callback);
+        _sender, _message_handler, _timeout_handler, type, _timeout_s_callback(), callback);
 
     _work_queue.push_back(ptr);
 
@@ -38,7 +42,7 @@ MAVLinkMissionTransfer::download_items_async(uint8_t type, ResultAndItemsCallbac
 void MAVLinkMissionTransfer::clear_items_async(uint8_t type, ResultCallback callback)
 {
     auto ptr = std::make_shared<ClearWorkItem>(
-        _sender, _message_handler, _timeout_handler, type, callback);
+        _sender, _message_handler, _timeout_handler, type, _timeout_s_callback(), callback);
 
     _work_queue.push_back(ptr);
 }
@@ -46,7 +50,7 @@ void MAVLinkMissionTransfer::clear_items_async(uint8_t type, ResultCallback call
 void MAVLinkMissionTransfer::set_current_item_async(int current, ResultCallback callback)
 {
     auto ptr = std::make_shared<SetCurrentWorkItem>(
-        _sender, _message_handler, _timeout_handler, current, callback);
+        _sender, _message_handler, _timeout_handler, current, _timeout_s_callback(), callback);
 
     _work_queue.push_back(ptr);
 }
@@ -78,11 +82,13 @@ MAVLinkMissionTransfer::WorkItem::WorkItem(
     Sender& sender,
     MAVLinkMessageHandler& message_handler,
     TimeoutHandler& timeout_handler,
-    uint8_t type) :
+    uint8_t type,
+    double timeout_s) :
     _sender(sender),
     _message_handler(message_handler),
     _timeout_handler(timeout_handler),
-    _type(type)
+    _type(type),
+    _timeout_s(timeout_s)
 {}
 
 MAVLinkMissionTransfer::WorkItem::~WorkItem() {}
@@ -105,8 +111,9 @@ MAVLinkMissionTransfer::UploadWorkItem::UploadWorkItem(
     TimeoutHandler& timeout_handler,
     uint8_t type,
     const std::vector<ItemInt>& items,
+    double timeout_s,
     ResultCallback callback) :
-    WorkItem(sender, message_handler, timeout_handler, type),
+    WorkItem(sender, message_handler, timeout_handler, type, timeout_s),
     _items(items),
     _callback(callback)
 {
@@ -171,7 +178,7 @@ void MAVLinkMissionTransfer::UploadWorkItem::start()
 
     _retries_done = 0;
     _step = Step::SendCount;
-    _timeout_handler.add([this]() { process_timeout(); }, timeout_s, &_cookie);
+    _timeout_handler.add([this]() { process_timeout(); }, _timeout_s, &_cookie);
 
     _next_sequence = 0;
 
@@ -397,7 +404,7 @@ void MAVLinkMissionTransfer::UploadWorkItem::process_timeout()
 
     switch (_step) {
         case Step::SendCount:
-            _timeout_handler.add([this]() { process_timeout(); }, timeout_s, &_cookie);
+            _timeout_handler.add([this]() { process_timeout(); }, _timeout_s, &_cookie);
             send_count();
             break;
 
@@ -421,8 +428,9 @@ MAVLinkMissionTransfer::DownloadWorkItem::DownloadWorkItem(
     MAVLinkMessageHandler& message_handler,
     TimeoutHandler& timeout_handler,
     uint8_t type,
+    double timeout_s,
     ResultAndItemsCallback callback) :
-    WorkItem(sender, message_handler, timeout_handler, type),
+    WorkItem(sender, message_handler, timeout_handler, type, timeout_s),
     _callback(callback)
 {
     std::lock_guard<std::mutex> lock(_mutex);
@@ -453,7 +461,7 @@ void MAVLinkMissionTransfer::DownloadWorkItem::start()
     _items.clear();
     _started = true;
     _retries_done = 0;
-    _timeout_handler.add([this]() { process_timeout(); }, timeout_s, &_cookie);
+    _timeout_handler.add([this]() { process_timeout(); }, _timeout_s, &_cookie);
     request_list();
 }
 
@@ -617,12 +625,12 @@ void MAVLinkMissionTransfer::DownloadWorkItem::process_timeout()
 
     switch (_step) {
         case Step::RequestList:
-            _timeout_handler.add([this]() { process_timeout(); }, timeout_s, &_cookie);
+            _timeout_handler.add([this]() { process_timeout(); }, _timeout_s, &_cookie);
             request_list();
             break;
 
         case Step::RequestItem:
-            _timeout_handler.add([this]() { process_timeout(); }, timeout_s, &_cookie);
+            _timeout_handler.add([this]() { process_timeout(); }, _timeout_s, &_cookie);
             request_item();
             break;
     }
@@ -642,8 +650,9 @@ MAVLinkMissionTransfer::ClearWorkItem::ClearWorkItem(
     MAVLinkMessageHandler& message_handler,
     TimeoutHandler& timeout_handler,
     uint8_t type,
+    double timeout_s,
     ResultCallback callback) :
-    WorkItem(sender, message_handler, timeout_handler, type),
+    WorkItem(sender, message_handler, timeout_handler, type, timeout_s),
     _callback(callback)
 {
     std::lock_guard<std::mutex> lock(_mutex);
@@ -668,7 +677,7 @@ void MAVLinkMissionTransfer::ClearWorkItem::start()
 
     _started = true;
     _retries_done = 0;
-    _timeout_handler.add([this]() { process_timeout(); }, timeout_s, &_cookie);
+    _timeout_handler.add([this]() { process_timeout(); }, _timeout_s, &_cookie);
     send_clear();
 }
 
@@ -709,7 +718,7 @@ void MAVLinkMissionTransfer::ClearWorkItem::process_timeout()
         return;
     }
 
-    _timeout_handler.add([this]() { process_timeout(); }, timeout_s, &_cookie);
+    _timeout_handler.add([this]() { process_timeout(); }, _timeout_s, &_cookie);
     send_clear();
 }
 
@@ -781,8 +790,9 @@ MAVLinkMissionTransfer::SetCurrentWorkItem::SetCurrentWorkItem(
     MAVLinkMessageHandler& message_handler,
     TimeoutHandler& timeout_handler,
     int current,
+    double timeout_s,
     ResultCallback callback) :
-    WorkItem(sender, message_handler, timeout_handler, MAV_MISSION_TYPE_MISSION),
+    WorkItem(sender, message_handler, timeout_handler, MAV_MISSION_TYPE_MISSION, timeout_s),
     _current(current),
     _callback(callback)
 {
@@ -814,7 +824,7 @@ void MAVLinkMissionTransfer::SetCurrentWorkItem::start()
     }
 
     _retries_done = 0;
-    _timeout_handler.add([this]() { process_timeout(); }, timeout_s, &_cookie);
+    _timeout_handler.add([this]() { process_timeout(); }, _timeout_s, &_cookie);
     send_current_mission_item();
 }
 
@@ -876,7 +886,7 @@ void MAVLinkMissionTransfer::SetCurrentWorkItem::process_timeout()
         return;
     }
 
-    _timeout_handler.add([this]() { process_timeout(); }, timeout_s, &_cookie);
+    _timeout_handler.add([this]() { process_timeout(); }, _timeout_s, &_cookie);
     send_current_mission_item();
 }
 

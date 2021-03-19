@@ -43,6 +43,9 @@ public:
     /** @brief Default serial baudrate. */
     static constexpr int DEFAULT_SERIAL_BAUDRATE = 57600;
 
+    /** @brief Default internal timeout in seconds. */
+    static constexpr double DEFAULT_TIMEOUT_S = 0.5;
+
     /**
      * @brief Constructor.
      */
@@ -264,6 +267,16 @@ public:
      * @param configuration Configuration chosen.
      */
     void set_configuration(Configuration configuration);
+
+    /**
+     * @brief Set timeout of MAVLink transfers.
+     *
+     * The default timeout used is generally DEFAULT_SERIAL_BAUDRATE (0.5 seconds) seconds.
+     * If MAVSDK is used on the same host this timeout can be reduced, while
+     * if MAVSDK has to communicate over links with high latency it might
+     * need to be increased to prevent timeouts.
+     */
+    void set_timeout_s(double timeout_s);
 
     /**
      * @brief Get vector of system UUIDs (deprecated).

@@ -49,7 +49,7 @@ void MAVLinkParameters::set_param_async(
         return;
     }
 
-    auto new_work = std::make_shared<WorkItem>();
+    auto new_work = std::make_shared<WorkItem>(_parent.timeout_s());
     new_work->type = WorkItem::Type::Set;
     new_work->set_param_callback = callback;
     new_work->param_name = name;
@@ -91,7 +91,7 @@ void MAVLinkParameters::get_param_async(
     }
 
     // Otherwise push work onto queue.
-    auto new_work = std::make_shared<WorkItem>();
+    auto new_work = std::make_shared<WorkItem>(_parent.timeout_s());
     new_work->type = WorkItem::Type::Get;
     new_work->get_param_callback = callback;
     new_work->param_name = name;

@@ -65,6 +65,11 @@ void Mavsdk::set_configuration(Configuration configuration)
     _impl->set_configuration(configuration);
 }
 
+void Mavsdk::set_timeout_s(double timeout_s)
+{
+    _impl->set_timeout_s(timeout_s);
+}
+
 std::vector<uint64_t> Mavsdk::system_uuids() const
 {
     return _impl->get_system_uuids();

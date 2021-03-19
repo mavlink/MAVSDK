@@ -74,7 +74,7 @@ void MavlinkCommandSender::queue_command_async(
     // LogDebug() << "Command " << (int)(command.command) << " to send to "
     //  << (int)(command.target_system_id)<< ", " << (int)(command.target_component_id);
 
-    auto new_work = std::make_shared<Work>();
+    auto new_work = std::make_shared<Work>(_parent.timeout_s());
 
     mavlink_msg_command_int_pack(
         _parent.get_own_system_id(),
@@ -105,7 +105,7 @@ void MavlinkCommandSender::queue_command_async(
     // LogDebug() << "Command " << (int)(command.command) << " to send to "
     //  << (int)(command.target_system_id)<< ", " << (int)(command.target_component_id);
 
-    auto new_work = std::make_shared<Work>();
+    auto new_work = std::make_shared<Work>(_parent.timeout_s());
     mavlink_msg_command_long_pack(
         _parent.get_own_system_id(),
         _parent.get_own_component_id(),
