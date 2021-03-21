@@ -36,15 +36,14 @@ TEST(HardwareTest, LogFiles)
             LogInfo() << "Entry " << entry.id << ": "
                       << " at " << entry.date << ", " << size_mib
                       << " MiB, bytes: " << entry.size_bytes;
-            std::stringstream file_path_stream;
-            file_path_stream << "/tmp/logfile_" << entry.id << ".ulog";
+            std::string file_path = std::tmpnam(nullptr);
 
             auto prom = std::promise<void>();
             auto fut = prom.get_future();
 
             log_files->download_log_file_async(
-                entry.id,
-                file_path_stream.str(),
+                entry,
+                file_path,
                 [&prom](LogFiles::Result result, LogFiles::ProgressData progress_data) {
                     if (result == LogFiles::Result::Next) {
                         LogInfo() << "Download progress: " << 100.0f * progress_data.progress;
@@ -90,15 +89,15 @@ TEST(HardwareTest, LogFilesDownloadFailsIfPathIsDirectory)
             LogInfo() << "Entry " << entry.id << ": "
                       << " at " << entry.date << ", " << size_mib
                       << " MiB, bytes: " << entry.size_bytes;
-            std::stringstream file_path_stream;
-            file_path_stream << "/tmp";
+
+            std::string file_path = std::tmpnam(nullptr);
 
             auto prom = std::promise<void>();
             auto fut = prom.get_future();
 
             log_files->download_log_file_async(
-                entry.id,
-                file_path_stream.str(),
+                entry,
+                file_path,
                 [&prom](LogFiles::Result result, LogFiles::ProgressData progress_data) {
                     if (result == LogFiles::Result::Next) {
                         LogInfo() << "Download progress: " << 100.0f * progress_data.progress;
@@ -144,10 +143,9 @@ TEST(HardwareTest, LogFilesDownloadFailsIfFileAlreadyExists)
             LogInfo() << "Entry " << entry.id << ": "
                       << " at " << entry.date << ", " << size_mib
                       << " MiB, bytes: " << entry.size_bytes;
-            std::stringstream file_path_stream;
-            file_path_stream << "/tmp/logfile_" << entry.id << ".ulog";
+            std::string file_path = std::tmpnam(nullptr);
 
-            std::ofstream ofs(file_path_stream.str());
+            std::ofstream ofs(file_path);
             ofs << "This file should not be erased by the download\n";
             ofs.close();
 
@@ -155,8 +153,8 @@ TEST(HardwareTest, LogFilesDownloadFailsIfFileAlreadyExists)
             auto fut = prom.get_future();
 
             log_files->download_log_file_async(
-                entry.id,
-                file_path_stream.str(),
+                entry,
+                file_path,
                 [&prom](LogFiles::Result result, LogFiles::ProgressData progress_data) {
                     if (result == LogFiles::Result::Next) {
                         LogInfo() << "Download progress: " << 100.0f * progress_data.progress;

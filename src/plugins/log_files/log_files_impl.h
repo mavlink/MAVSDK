@@ -24,7 +24,9 @@ public:
     void get_entries_async(LogFiles::GetEntriesCallback callback);
 
     void download_log_file_async(
-        unsigned id, const std::string& file_path, LogFiles::DownloadLogFileCallback callback);
+        LogFiles::Entry entry,
+        const std::string& file_path,
+        LogFiles::DownloadLogFileCallback callback);
 
 private:
     void request_end();
