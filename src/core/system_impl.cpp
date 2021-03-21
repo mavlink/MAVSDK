@@ -180,11 +180,6 @@ void SystemImpl::process_heartbeat(const mavlink_message_t& message)
     // If the component is an autopilot and we don't know its UUID, then try to find out.
     if (is_autopilot(message.compid) && !have_uuid()) {
         request_autopilot_version();
-
-    } else if (!is_autopilot(message.compid) && !have_uuid()) {
-        // We've received heartbeat from a non-autopilot system!
-        _uuid = message.sysid;
-        _uuid_initialized = true;
     }
 
     set_connected();
@@ -205,16 +200,20 @@ void SystemImpl::process_autopilot_version(const mavlink_message_t& message)
 
     if (_uuid == 0 && autopilot_version.uid != 0) {
         // This is the best case. The system has a UUID and we were able to get it.
+        LogDebug() << "Setting UUID to: " << autopilot_version.uid;
         _uuid = autopilot_version.uid;
 
     } else if (_uuid == 0 && autopilot_version.uid == 0) {
         // This is not ideal because the system has no valid UUID.
         // In this case we use the mavlink system ID as the UUID.
+        LogWarn() << "Fall back to MAVLink system ID " << static_cast<int>(target_address.system_id)
+                  << " because autopilot_version.uid was not set";
         _uuid = target_address.system_id;
 
     } else if (_uuid != autopilot_version.uid) {
         // TODO: this is bad, we should raise a flag to invalidate system.
-        LogErr() << "Error: UUID changed";
+        LogErr() << "Error: UUID changed from: " << _uuid << " to " << autopilot_version.uid;
+        _uuid = autopilot_version.uid;
     }
 
     _uuid_initialized = true;
@@ -427,7 +426,7 @@ void SystemImpl::request_autopilot_version()
     if (!_autopilot_version_pending && _uuid_retries >= 3) {
         // We give up getting a UUID and use the system ID.
 
-        LogWarn() << "No UUID received, using system ID instead.";
+        LogWarn() << "No autopilot_version.uid received, using MAVLink system ID instead.";
         _uuid = target_address.system_id;
         _uuid_initialized = true;
         set_connected();
