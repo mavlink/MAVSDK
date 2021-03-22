@@ -19,6 +19,7 @@ TEST(HardwareTest, LogFiles)
 
     std::this_thread::sleep_for(std::chrono::seconds(2));
 
+    ASSERT_EQ(mavsdk.systems().size(), 1);
     auto system = mavsdk.systems().at(0);
     ASSERT_TRUE(system->has_autopilot());
     auto log_files = std::make_shared<LogFiles>(system);
@@ -72,6 +73,7 @@ TEST(HardwareTest, LogFilesDownloadFailsIfPathIsDirectory)
 
     std::this_thread::sleep_for(std::chrono::seconds(2));
 
+    ASSERT_EQ(mavsdk.systems().size(), 1);
     auto system = mavsdk.systems().at(0);
     ASSERT_TRUE(system->has_autopilot());
     auto log_files = std::make_shared<LogFiles>(system);
@@ -126,6 +128,7 @@ TEST(HardwareTest, LogFilesDownloadFailsIfFileAlreadyExists)
 
     std::this_thread::sleep_for(std::chrono::seconds(2));
 
+    ASSERT_EQ(mavsdk.systems().size(), 1);
     auto system = mavsdk.systems().at(0);
     ASSERT_TRUE(system->has_autopilot());
     auto log_files = std::make_shared<LogFiles>(system);
