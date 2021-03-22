@@ -6,7 +6,7 @@ include(ExternalProject)
 list(APPEND CMAKE_ARGS
     "-DCMAKE_INSTALL_PREFIX:PATH=${CMAKE_INSTALL_PREFIX}"
     "-DCMAKE_TOOLCHAIN_FILE:PATH=${CMAKE_TOOLCHAIN_FILE}"
-    "-DCMAKE_BUILD_TYPE=Release"
+    "-DCMAKE_BUILD_TYPE=${CMAKE_BUILD_TYPE}"
     "-DCARES_STATIC=ON"
     "-DCARES_SHARED=OFF"
     "-DCARES_STATIC_PIC=ON"
@@ -31,4 +31,5 @@ ExternalProject_add(
     URL https://github.com/c-ares/c-ares/releases/download/cares-1_17_1/c-ares-1.17.1.tar.gz
     PREFIX cares
     CMAKE_ARGS "${CMAKE_ARGS}"
+    BUILD_COMMAND "${CMAKE_COMMAND}" --build . --config ${CMAKE_BUILD_TYPE}
     )
