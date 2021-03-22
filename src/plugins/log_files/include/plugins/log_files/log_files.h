@@ -157,7 +157,7 @@ public:
     /**
      * @brief Download log file.
      */
-    void download_log_file_async(uint32_t id, std::string path, DownloadLogFileCallback callback);
+    void download_log_file_async(Entry entry, std::string path, DownloadLogFileCallback callback);
 
     /**
      * @brief Copy constructor.

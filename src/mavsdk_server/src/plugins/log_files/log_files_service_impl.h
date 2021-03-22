@@ -164,7 +164,7 @@ public:
         std::mutex subscribe_mutex{};
 
         _log_files.download_log_file_async(
-            request->id(),
+            translateFromRpcEntry(request->entry()),
             request->path(),
             [this, &writer, &stream_closed_promise, is_finished, &subscribe_mutex](
                 mavsdk::LogFiles::Result result,

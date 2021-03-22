@@ -213,15 +213,15 @@ void LogFilesImpl::list_timeout()
 }
 
 void LogFilesImpl::download_log_file_async(
-    unsigned id, const std::string& file_path, LogFiles::DownloadLogFileCallback callback)
+    LogFiles::Entry entry, const std::string& file_path, LogFiles::DownloadLogFileCallback callback)
 {
     unsigned bytes_to_get;
     {
         std::lock_guard<std::mutex> lock(_entries.mutex);
 
-        auto it = _entries.entry_map.find(id);
+        auto it = _entries.entry_map.find(entry.id);
         if (it == _entries.entry_map.end()) {
-            LogErr() << "Log entry id " << id << " not found";
+            LogErr() << "Log entry id " << entry.id << " not found";
             if (callback) {
                 const auto tmp_callback = callback;
                 _parent->call_user_callback([tmp_callback]() {
@@ -233,7 +233,7 @@ void LogFilesImpl::download_log_file_async(
             return;
         }
 
-        bytes_to_get = _entries.entry_map[id].size_bytes;
+        bytes_to_get = _entries.entry_map[entry.id].size_bytes;
     }
 
     {
@@ -278,7 +278,7 @@ void LogFilesImpl::download_log_file_async(
             return;
         }
 
-        _data.id = id;
+        _data.id = entry.id;
         _data.callback = callback;
         _data.time_started = _time.steady_time();
         _data.bytes_to_get = bytes_to_get;

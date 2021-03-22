@@ -46,7 +46,7 @@ PROTOBUF_ATTRIBUTE_NO_DESTROY PROTOBUF_CONSTINIT GetEntriesResponseDefaultTypeIn
 constexpr SubscribeDownloadLogFileRequest::SubscribeDownloadLogFileRequest(
   ::PROTOBUF_NAMESPACE_ID::internal::ConstantInitialized)
   : path_(&::PROTOBUF_NAMESPACE_ID::internal::fixed_address_empty_string)
-  , id_(0u){}
+  , entry_(nullptr){}
 struct SubscribeDownloadLogFileRequestDefaultTypeInternal {
   constexpr SubscribeDownloadLogFileRequestDefaultTypeInternal()
     : _instance(::PROTOBUF_NAMESPACE_ID::internal::ConstantInitialized{}) {}
@@ -134,7 +134,7 @@ const ::PROTOBUF_NAMESPACE_ID::uint32 TableStruct_log_5ffiles_2flog_5ffiles_2epr
   ~0u,  // no _extensions_
   ~0u,  // no _oneof_case_
   ~0u,  // no _weak_field_map_
-  PROTOBUF_FIELD_OFFSET(::mavsdk::rpc::log_files::SubscribeDownloadLogFileRequest, id_),
+  PROTOBUF_FIELD_OFFSET(::mavsdk::rpc::log_files::SubscribeDownloadLogFileRequest, entry_),
   PROTOBUF_FIELD_OFFSET(::mavsdk::rpc::log_files::SubscribeDownloadLogFileRequest, path_),
   ~0u,  // no _has_bits_
   PROTOBUF_FIELD_OFFSET(::mavsdk::rpc::log_files::DownloadLogFileResponse, _internal_metadata_),
@@ -191,36 +191,37 @@ const char descriptor_table_protodef_log_5ffiles_2flog_5ffiles_2eproto[] PROTOBU
   "triesRequest\"\202\001\n\022GetEntriesResponse\022>\n\020l"
   "og_files_result\030\001 \001(\0132$.mavsdk.rpc.log_f"
   "iles.LogFilesResult\022,\n\007entries\030\002 \003(\0132\033.m"
-  "avsdk.rpc.log_files.Entry\";\n\037SubscribeDo"
-  "wnloadLogFileRequest\022\n\n\002id\030\001 \001(\r\022\014\n\004path"
-  "\030\002 \001(\t\"\217\001\n\027DownloadLogFileResponse\022>\n\020lo"
-  "g_files_result\030\001 \001(\0132$.mavsdk.rpc.log_fi"
-  "les.LogFilesResult\0224\n\010progress\030\002 \001(\0132\".m"
-  "avsdk.rpc.log_files.ProgressData\")\n\014Prog"
-  "ressData\022\031\n\010progress\030\001 \001(\002B\007\202\265\030\003NaN\"5\n\005E"
-  "ntry\022\n\n\002id\030\001 \001(\r\022\014\n\004date\030\002 \001(\t\022\022\n\nsize_b"
-  "ytes\030\003 \001(\r\"\213\002\n\016LogFilesResult\022;\n\006result\030"
-  "\001 \001(\0162+.mavsdk.rpc.log_files.LogFilesRes"
-  "ult.Result\022\022\n\nresult_str\030\002 \001(\t\"\247\001\n\006Resul"
-  "t\022\022\n\016RESULT_UNKNOWN\020\000\022\022\n\016RESULT_SUCCESS\020"
-  "\001\022\017\n\013RESULT_NEXT\020\002\022\026\n\022RESULT_NO_LOGFILES"
-  "\020\003\022\022\n\016RESULT_TIMEOUT\020\004\022\033\n\027RESULT_INVALID"
-  "_ARGUMENT\020\005\022\033\n\027RESULT_FILE_OPEN_FAILED\020\006"
-  "2\203\002\n\017LogFilesService\022a\n\nGetEntries\022\'.mav"
-  "sdk.rpc.log_files.GetEntriesRequest\032(.ma"
-  "vsdk.rpc.log_files.GetEntriesResponse\"\000\022"
-  "\214\001\n\030SubscribeDownloadLogFile\0225.mavsdk.rp"
-  "c.log_files.SubscribeDownloadLogFileRequ"
-  "est\032-.mavsdk.rpc.log_files.DownloadLogFi"
-  "leResponse\"\010\200\265\030\000\210\265\030\0010\001B$\n\023io.mavsdk.log_"
-  "filesB\rLogFilesProtob\006proto3"
+  "avsdk.rpc.log_files.Entry\"[\n\037SubscribeDo"
+  "wnloadLogFileRequest\022*\n\005entry\030\001 \001(\0132\033.ma"
+  "vsdk.rpc.log_files.Entry\022\014\n\004path\030\002 \001(\t\"\217"
+  "\001\n\027DownloadLogFileResponse\022>\n\020log_files_"
+  "result\030\001 \001(\0132$.mavsdk.rpc.log_files.LogF"
+  "ilesResult\0224\n\010progress\030\002 \001(\0132\".mavsdk.rp"
+  "c.log_files.ProgressData\")\n\014ProgressData"
+  "\022\031\n\010progress\030\001 \001(\002B\007\202\265\030\003NaN\"5\n\005Entry\022\n\n\002"
+  "id\030\001 \001(\r\022\014\n\004date\030\002 \001(\t\022\022\n\nsize_bytes\030\003 \001"
+  "(\r\"\213\002\n\016LogFilesResult\022;\n\006result\030\001 \001(\0162+."
+  "mavsdk.rpc.log_files.LogFilesResult.Resu"
+  "lt\022\022\n\nresult_str\030\002 \001(\t\"\247\001\n\006Result\022\022\n\016RES"
+  "ULT_UNKNOWN\020\000\022\022\n\016RESULT_SUCCESS\020\001\022\017\n\013RES"
+  "ULT_NEXT\020\002\022\026\n\022RESULT_NO_LOGFILES\020\003\022\022\n\016RE"
+  "SULT_TIMEOUT\020\004\022\033\n\027RESULT_INVALID_ARGUMEN"
+  "T\020\005\022\033\n\027RESULT_FILE_OPEN_FAILED\020\0062\203\002\n\017Log"
+  "FilesService\022a\n\nGetEntries\022\'.mavsdk.rpc."
+  "log_files.GetEntriesRequest\032(.mavsdk.rpc"
+  ".log_files.GetEntriesResponse\"\000\022\214\001\n\030Subs"
+  "cribeDownloadLogFile\0225.mavsdk.rpc.log_fi"
+  "les.SubscribeDownloadLogFileRequest\032-.ma"
+  "vsdk.rpc.log_files.DownloadLogFileRespon"
+  "se\"\010\200\265\030\000\210\265\030\0010\001B$\n\023io.mavsdk.log_filesB\rL"
+  "ogFilesProtob\006proto3"
   ;
 static const ::PROTOBUF_NAMESPACE_ID::internal::DescriptorTable*const descriptor_table_log_5ffiles_2flog_5ffiles_2eproto_deps[1] = {
   &::descriptor_table_mavsdk_5foptions_2eproto,
 };
 static ::PROTOBUF_NAMESPACE_ID::internal::once_flag descriptor_table_log_5ffiles_2flog_5ffiles_2eproto_once;
 const ::PROTOBUF_NAMESPACE_ID::internal::DescriptorTable descriptor_table_log_5ffiles_2flog_5ffiles_2eproto = {
-  false, false, 1108, descriptor_table_protodef_log_5ffiles_2flog_5ffiles_2eproto, "log_files/log_files.proto", 
+  false, false, 1140, descriptor_table_protodef_log_5ffiles_2flog_5ffiles_2eproto, "log_files/log_files.proto", 
   &descriptor_table_log_5ffiles_2flog_5ffiles_2eproto_once, descriptor_table_log_5ffiles_2flog_5ffiles_2eproto_deps, 1, 7,
   schemas, file_default_instances, TableStruct_log_5ffiles_2flog_5ffiles_2eproto::offsets,
   file_level_metadata_log_5ffiles_2flog_5ffiles_2eproto, file_level_enum_descriptors_log_5ffiles_2flog_5ffiles_2eproto, file_level_service_descriptors_log_5ffiles_2flog_5ffiles_2eproto,
@@ -665,8 +666,13 @@ void GetEntriesResponse::InternalSwap(GetEntriesResponse* other) {
 
 class SubscribeDownloadLogFileRequest::_Internal {
  public:
+  static const ::mavsdk::rpc::log_files::Entry& entry(const SubscribeDownloadLogFileRequest* msg);
 };
 
+const ::mavsdk::rpc::log_files::Entry&
+SubscribeDownloadLogFileRequest::_Internal::entry(const SubscribeDownloadLogFileRequest* msg) {
+  return *msg->entry_;
+}
 SubscribeDownloadLogFileRequest::SubscribeDownloadLogFileRequest(::PROTOBUF_NAMESPACE_ID::Arena* arena)
   : ::PROTOBUF_NAMESPACE_ID::Message(arena) {
   SharedCtor();
@@ -681,13 +687,17 @@ SubscribeDownloadLogFileRequest::SubscribeDownloadLogFileRequest(const Subscribe
     path_.Set(::PROTOBUF_NAMESPACE_ID::internal::ArenaStringPtr::EmptyDefault{}, from._internal_path(), 
       GetArena());
   }
-  id_ = from.id_;
+  if (from._internal_has_entry()) {
+    entry_ = new ::mavsdk::rpc::log_files::Entry(*from.entry_);
+  } else {
+    entry_ = nullptr;
+  }
   // @@protoc_insertion_point(copy_constructor:mavsdk.rpc.log_files.SubscribeDownloadLogFileRequest)
 }
 
 void SubscribeDownloadLogFileRequest::SharedCtor() {
 path_.UnsafeSetDefault(&::PROTOBUF_NAMESPACE_ID::internal::GetEmptyStringAlreadyInited());
-id_ = 0u;
+entry_ = nullptr;
 }
 
 SubscribeDownloadLogFileRequest::~SubscribeDownloadLogFileRequest() {
@@ -699,6 +709,7 @@ SubscribeDownloadLogFileRequest::~SubscribeDownloadLogFileRequest() {
 void SubscribeDownloadLogFileRequest::SharedDtor() {
   GOOGLE_DCHECK(GetArena() == nullptr);
   path_.DestroyNoArena(&::PROTOBUF_NAMESPACE_ID::internal::GetEmptyStringAlreadyInited());
+  if (this != internal_default_instance()) delete entry_;
 }
 
 void SubscribeDownloadLogFileRequest::ArenaDtor(void* object) {
@@ -718,7 +729,10 @@ void SubscribeDownloadLogFileRequest::Clear() {
   (void) cached_has_bits;
 
   path_.ClearToEmpty();
-  id_ = 0u;
+  if (GetArena() == nullptr && entry_ != nullptr) {
+    delete entry_;
+  }
+  entry_ = nullptr;
   _internal_metadata_.Clear<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>();
 }
 
@@ -729,10 +743,10 @@ const char* SubscribeDownloadLogFileRequest::_InternalParse(const char* ptr, ::P
     ptr = ::PROTOBUF_NAMESPACE_ID::internal::ReadTag(ptr, &tag);
     CHK_(ptr);
     switch (tag >> 3) {
-      // uint32 id = 1;
+      // .mavsdk.rpc.log_files.Entry entry = 1;
       case 1:
-        if (PROTOBUF_PREDICT_TRUE(static_cast<::PROTOBUF_NAMESPACE_ID::uint8>(tag) == 8)) {
-          id_ = ::PROTOBUF_NAMESPACE_ID::internal::ReadVarint32(&ptr);
+        if (PROTOBUF_PREDICT_TRUE(static_cast<::PROTOBUF_NAMESPACE_ID::uint8>(tag) == 10)) {
+          ptr = ctx->ParseMessage(_internal_mutable_entry(), ptr);
           CHK_(ptr);
         } else goto handle_unusual;
         continue;
@@ -773,10 +787,12 @@ failure:
   ::PROTOBUF_NAMESPACE_ID::uint32 cached_has_bits = 0;
   (void) cached_has_bits;
 
-  // uint32 id = 1;
-  if (this->id() != 0) {
+  // .mavsdk.rpc.log_files.Entry entry = 1;
+  if (this->has_entry()) {
     target = stream->EnsureSpace(target);
-    target = ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::WriteUInt32ToArray(1, this->_internal_id(), target);
+    target = ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::
+      InternalWriteMessage(
+        1, _Internal::entry(this), target, stream);
   }
 
   // string path = 2;
@@ -812,11 +828,11 @@ size_t SubscribeDownloadLogFileRequest::ByteSizeLong() const {
         this->_internal_path());
   }
 
-  // uint32 id = 1;
-  if (this->id() != 0) {
+  // .mavsdk.rpc.log_files.Entry entry = 1;
+  if (this->has_entry()) {
     total_size += 1 +
-      ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::UInt32Size(
-        this->_internal_id());
+      ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::MessageSize(
+        *entry_);
   }
 
   if (PROTOBUF_PREDICT_FALSE(_internal_metadata_.have_unknown_fields())) {
@@ -853,8 +869,8 @@ void SubscribeDownloadLogFileRequest::MergeFrom(const SubscribeDownloadLogFileRe
   if (from.path().size() > 0) {
     _internal_set_path(from._internal_path());
   }
-  if (from.id() != 0) {
-    _internal_set_id(from._internal_id());
+  if (from.has_entry()) {
+    _internal_mutable_entry()->::mavsdk::rpc::log_files::Entry::MergeFrom(from._internal_entry());
   }
 }
 
@@ -880,7 +896,7 @@ void SubscribeDownloadLogFileRequest::InternalSwap(SubscribeDownloadLogFileReque
   using std::swap;
   _internal_metadata_.Swap<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>(&other->_internal_metadata_);
   path_.Swap(&other->path_, &::PROTOBUF_NAMESPACE_ID::internal::GetEmptyStringAlreadyInited(), GetArena());
-  swap(id_, other->id_);
+  swap(entry_, other->entry_);
 }
 
 ::PROTOBUF_NAMESPACE_ID::Metadata SubscribeDownloadLogFileRequest::GetMetadata() const {

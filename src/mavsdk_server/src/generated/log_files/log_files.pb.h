@@ -532,7 +532,7 @@ class SubscribeDownloadLogFileRequest PROTOBUF_FINAL :
 
   enum : int {
     kPathFieldNumber = 2,
-    kIdFieldNumber = 1,
+    kEntryFieldNumber = 1,
   };
   // string path = 2;
   void clear_path();
@@ -550,14 +550,23 @@ class SubscribeDownloadLogFileRequest PROTOBUF_FINAL :
   std::string* _internal_mutable_path();
   public:
 
-  // uint32 id = 1;
-  void clear_id();
-  ::PROTOBUF_NAMESPACE_ID::uint32 id() const;
-  void set_id(::PROTOBUF_NAMESPACE_ID::uint32 value);
+  // .mavsdk.rpc.log_files.Entry entry = 1;
+  bool has_entry() const;
   private:
-  ::PROTOBUF_NAMESPACE_ID::uint32 _internal_id() const;
-  void _internal_set_id(::PROTOBUF_NAMESPACE_ID::uint32 value);
+  bool _internal_has_entry() const;
   public:
+  void clear_entry();
+  const ::mavsdk::rpc::log_files::Entry& entry() const;
+  ::mavsdk::rpc::log_files::Entry* release_entry();
+  ::mavsdk::rpc::log_files::Entry* mutable_entry();
+  void set_allocated_entry(::mavsdk::rpc::log_files::Entry* entry);
+  private:
+  const ::mavsdk::rpc::log_files::Entry& _internal_entry() const;
+  ::mavsdk::rpc::log_files::Entry* _internal_mutable_entry();
+  public:
+  void unsafe_arena_set_allocated_entry(
+      ::mavsdk::rpc::log_files::Entry* entry);
+  ::mavsdk::rpc::log_files::Entry* unsafe_arena_release_entry();
 
   // @@protoc_insertion_point(class_scope:mavsdk.rpc.log_files.SubscribeDownloadLogFileRequest)
  private:
@@ -567,7 +576,7 @@ class SubscribeDownloadLogFileRequest PROTOBUF_FINAL :
   typedef void InternalArenaConstructable_;
   typedef void DestructorSkippable_;
   ::PROTOBUF_NAMESPACE_ID::internal::ArenaStringPtr path_;
-  ::PROTOBUF_NAMESPACE_ID::uint32 id_;
+  ::mavsdk::rpc::log_files::Entry* entry_;
   mutable ::PROTOBUF_NAMESPACE_ID::internal::CachedSize _cached_size_;
   friend struct ::TableStruct_log_5ffiles_2flog_5ffiles_2eproto;
 };
@@ -1376,24 +1385,87 @@ GetEntriesResponse::entries() const {
 
 // SubscribeDownloadLogFileRequest
 
-// uint32 id = 1;
-inline void SubscribeDownloadLogFileRequest::clear_id() {
-  id_ = 0u;
+// .mavsdk.rpc.log_files.Entry entry = 1;
+inline bool SubscribeDownloadLogFileRequest::_internal_has_entry() const {
+  return this != internal_default_instance() && entry_ != nullptr;
 }
-inline ::PROTOBUF_NAMESPACE_ID::uint32 SubscribeDownloadLogFileRequest::_internal_id() const {
-  return id_;
+inline bool SubscribeDownloadLogFileRequest::has_entry() const {
+  return _internal_has_entry();
 }
-inline ::PROTOBUF_NAMESPACE_ID::uint32 SubscribeDownloadLogFileRequest::id() const {
-  // @@protoc_insertion_point(field_get:mavsdk.rpc.log_files.SubscribeDownloadLogFileRequest.id)
-  return _internal_id();
+inline void SubscribeDownloadLogFileRequest::clear_entry() {
+  if (GetArena() == nullptr && entry_ != nullptr) {
+    delete entry_;
+  }
+  entry_ = nullptr;
 }
-inline void SubscribeDownloadLogFileRequest::_internal_set_id(::PROTOBUF_NAMESPACE_ID::uint32 value) {
+inline const ::mavsdk::rpc::log_files::Entry& SubscribeDownloadLogFileRequest::_internal_entry() const {
+  const ::mavsdk::rpc::log_files::Entry* p = entry_;
+  return p != nullptr ? *p : reinterpret_cast<const ::mavsdk::rpc::log_files::Entry&>(
+      ::mavsdk::rpc::log_files::_Entry_default_instance_);
+}
+inline const ::mavsdk::rpc::log_files::Entry& SubscribeDownloadLogFileRequest::entry() const {
+  // @@protoc_insertion_point(field_get:mavsdk.rpc.log_files.SubscribeDownloadLogFileRequest.entry)
+  return _internal_entry();
+}
+inline void SubscribeDownloadLogFileRequest::unsafe_arena_set_allocated_entry(
+    ::mavsdk::rpc::log_files::Entry* entry) {
+  if (GetArena() == nullptr) {
+    delete reinterpret_cast<::PROTOBUF_NAMESPACE_ID::MessageLite*>(entry_);
+  }
+  entry_ = entry;
+  if (entry) {
+    
+  } else {
+    
+  }
+  // @@protoc_insertion_point(field_unsafe_arena_set_allocated:mavsdk.rpc.log_files.SubscribeDownloadLogFileRequest.entry)
+}
+inline ::mavsdk::rpc::log_files::Entry* SubscribeDownloadLogFileRequest::release_entry() {
   
-  id_ = value;
+  ::mavsdk::rpc::log_files::Entry* temp = entry_;
+  entry_ = nullptr;
+  if (GetArena() != nullptr) {
+    temp = ::PROTOBUF_NAMESPACE_ID::internal::DuplicateIfNonNull(temp);
+  }
+  return temp;
 }
-inline void SubscribeDownloadLogFileRequest::set_id(::PROTOBUF_NAMESPACE_ID::uint32 value) {
-  _internal_set_id(value);
-  // @@protoc_insertion_point(field_set:mavsdk.rpc.log_files.SubscribeDownloadLogFileRequest.id)
+inline ::mavsdk::rpc::log_files::Entry* SubscribeDownloadLogFileRequest::unsafe_arena_release_entry() {
+  // @@protoc_insertion_point(field_release:mavsdk.rpc.log_files.SubscribeDownloadLogFileRequest.entry)
+  
+  ::mavsdk::rpc::log_files::Entry* temp = entry_;
+  entry_ = nullptr;
+  return temp;
+}
+inline ::mavsdk::rpc::log_files::Entry* SubscribeDownloadLogFileRequest::_internal_mutable_entry() {
+  
+  if (entry_ == nullptr) {
+    auto* p = CreateMaybeMessage<::mavsdk::rpc::log_files::Entry>(GetArena());
+    entry_ = p;
+  }
+  return entry_;
+}
+inline ::mavsdk::rpc::log_files::Entry* SubscribeDownloadLogFileRequest::mutable_entry() {
+  // @@protoc_insertion_point(field_mutable:mavsdk.rpc.log_files.SubscribeDownloadLogFileRequest.entry)
+  return _internal_mutable_entry();
+}
+inline void SubscribeDownloadLogFileRequest::set_allocated_entry(::mavsdk::rpc::log_files::Entry* entry) {
+  ::PROTOBUF_NAMESPACE_ID::Arena* message_arena = GetArena();
+  if (message_arena == nullptr) {
+    delete entry_;
+  }
+  if (entry) {
+    ::PROTOBUF_NAMESPACE_ID::Arena* submessage_arena =
+      ::PROTOBUF_NAMESPACE_ID::Arena::GetArena(entry);
+    if (message_arena != submessage_arena) {
+      entry = ::PROTOBUF_NAMESPACE_ID::internal::GetOwnedMessage(
+          message_arena, entry, submessage_arena);
+    }
+    
+  } else {
+    
+  }
+  entry_ = entry;
+  // @@protoc_insertion_point(field_set_allocated:mavsdk.rpc.log_files.SubscribeDownloadLogFileRequest.entry)
 }
 
 // string path = 2;
