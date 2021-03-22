@@ -1,7 +1,7 @@
 <img alt="MAVSDK" src="https://mavsdk.mavlink.io/develop/assets/site/sdk_logo_full.png" width="400">
 
-[![GitHub Actions Status](https://github.com/mavlink/MAVSDK/workflows/Build%20and%20Test/badge.svg?branch=develop)](https://github.com/mavlink/MAVSDK/actions?query=branch%3Adevelop)
-[![Coverage Status](https://coveralls.io/repos/github/mavlink/MAVSDK/badge.svg?branch=develop)](https://coveralls.io/github/mavlink/MAVSDK?branch=develop)
+[![GitHub Actions Status](https://github.com/mavlink/MAVSDK/workflows/Build%20and%20Test/badge.svg?branch=main)](https://github.com/mavlink/MAVSDK/actions?query=branch%3Amain)
+[![Coverage Status](https://coveralls.io/repos/github/mavlink/MAVSDK/badge.svg?branch=main)](https://coveralls.io/github/mavlink/MAVSDK?branch=main)
 
 ## Description
 
@@ -17,9 +17,9 @@ In order to support multiple programming languages, MAVSDK implements a gRPC ser
 This architecture allows the clients to be implemented in idiomatic patterns, so using the tooling and syntax expected by end users. For example, the Python library can be installed from PyPi using `pip`.
 
 The MAVSDK C++ part consists of:
-- The [core library](https://github.com/mavlink/MAVSDK/tree/develop/src/core) implementing the basic MAVLink communication.
-- The [plugin libraries](https://github.com/mavlink/MAVSDK/tree/develop/src/plugins) implementing the MAVLink communication specific to a feature.
-- The [mavsdk_server](https://github.com/mavlink/MAVSDK/tree/develop/src/mavsdk_server) implementing the gRPC server for the language clients.
+- The [core library](https://github.com/mavlink/MAVSDK/tree/main/src/core) implementing the basic MAVLink communication.
+- The [plugin libraries](https://github.com/mavlink/MAVSDK/tree/main/src/plugins) implementing the MAVLink communication specific to a feature.
+- The [mavsdk_server](https://github.com/mavlink/MAVSDK/tree/main/src/mavsdk_server) implementing the gRPC server for the language clients.
 
 ## Repos
 
