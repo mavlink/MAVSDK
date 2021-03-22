@@ -22,12 +22,20 @@ if(ANDROID)
 
     message("OPENSSL_PLATFORM set to ${OPENSSL_PLATFORM}")
 
+    if("${CMAKE_BUILD_TYPE}" STREQUAL "Debug")
+        set(OPENSSL_BUILD_TYPE "--debug")
+    else()
+        set(OPENSSL_BUILD_TYPE "--release")
+    endif()
+
+    message("OPENSSL_BUILD_TYPE set to ${OPENSSL_BUILD_TYPE}")
+
     ExternalProject_add(
         openssl
         URL https://www.openssl.org/source/openssl-${OPENSSL_VERSION}.tar.gz
         PREFIX openssl
         PATCH_COMMAND patch -p 0 < ${PROJECT_SOURCE_DIR}/dockcross-android.patch
-        CONFIGURE_COMMAND ${CMAKE_COMMAND} -E env ANDROID_NDK=$ENV{CROSS_ROOT} <SOURCE_DIR>/Configure --sysroot=$ENV{CROSS_ROOT}/sysroot ${OPENSSL_PLATFORM} --prefix=${CMAKE_INSTALL_PREFIX} no-shared
+        CONFIGURE_COMMAND ${CMAKE_COMMAND} -E env ANDROID_NDK=$ENV{CROSS_ROOT} <SOURCE_DIR>/Configure --sysroot=$ENV{CROSS_ROOT}/sysroot ${OPENSSL_PLATFORM} --prefix=${CMAKE_INSTALL_PREFIX} ${OPENSSL_BUILD_TYPE} no-shared
         BUILD_COMMAND make
         )
 elseif(IOS)
@@ -41,6 +49,14 @@ elseif(IOS)
 
     message("OPENSSL_PLATFORM set to ${OPENSSL_PLATFORM}")
 
+    if("${CMAKE_BUILD_TYPE}" STREQUAL "Debug")
+        set(OPENSSL_BUILD_TYPE "--debug")
+    else()
+        set(OPENSSL_BUILD_TYPE "--release")
+    endif()
+
+    message("OPENSSL_BUILD_TYPE set to ${OPENSSL_BUILD_TYPE}")
+
     if(${ENABLE_BITCODE})
         set(CFLAGS "-fembed-bitcode")
     endif()
@@ -49,7 +65,7 @@ elseif(IOS)
         openssl
         URL https://www.openssl.org/source/openssl-${OPENSSL_VERSION}.tar.gz
         PREFIX openssl
-        CONFIGURE_COMMAND ${CMAKE_COMMAND} -E env CFLAGS=${CFLAGS} <SOURCE_DIR>/Configure ${OPENSSL_PLATFORM} --prefix=${CMAKE_INSTALL_PREFIX} no-shared
+        CONFIGURE_COMMAND ${CMAKE_COMMAND} -E env CFLAGS=${CFLAGS} <SOURCE_DIR>/Configure ${OPENSSL_PLATFORM} --prefix=${CMAKE_INSTALL_PREFIX} ${OPENSSL_BUILD_TYPE} no-shared
         )
 elseif(CMAKE_CROSSCOMPILING) # This assumes we use dockcross
     if(${CMAKE_SYSTEM_PROCESSOR} STREQUAL "arm")
@@ -62,27 +78,51 @@ elseif(CMAKE_CROSSCOMPILING) # This assumes we use dockcross
 
     message("OPENSSL_PLATFORM set to ${OPENSSL_PLATFORM}")
 
+    if("${CMAKE_BUILD_TYPE}" STREQUAL "Debug")
+        set(OPENSSL_BUILD_TYPE "--debug")
+    else()
+        set(OPENSSL_BUILD_TYPE "--release")
+    endif()
+
+    message("OPENSSL_BUILD_TYPE set to ${OPENSSL_BUILD_TYPE}")
+
     ExternalProject_add(
         openssl
         URL https://www.openssl.org/source/openssl-${OPENSSL_VERSION}.tar.gz
         PREFIX openssl
-        CONFIGURE_COMMAND ${CMAKE_COMMAND} -E env CROSS_COMPILE="" <SOURCE_DIR>/Configure ${OPENSSL_PLATFORM} --prefix=${CMAKE_INSTALL_PREFIX} no-shared
+        CONFIGURE_COMMAND ${CMAKE_COMMAND} -E env CROSS_COMPILE="" <SOURCE_DIR>/Configure ${OPENSSL_PLATFORM} --prefix=${CMAKE_INSTALL_PREFIX} ${OPENSSL_BUILD_TYPE} no-shared
         BUILD_COMMAND make
         )
 elseif(MSVC)
+    if("${CMAKE_BUILD_TYPE}" STREQUAL "Debug")
+        set(OPENSSL_BUILD_TYPE "--debug")
+    else()
+        set(OPENSSL_BUILD_TYPE "--release")
+    endif()
+
+    message("OPENSSL_BUILD_TYPE set to ${OPENSSL_BUILD_TYPE}")
+
     ExternalProject_add(
         openssl
         URL https://www.openssl.org/source/openssl-${OPENSSL_VERSION}.tar.gz
         PREFIX openssl
-        CONFIGURE_COMMAND perl <SOURCE_DIR>/Configure VC-WIN64A --prefix=${CMAKE_INSTALL_PREFIX} no-shared
+        CONFIGURE_COMMAND perl <SOURCE_DIR>/Configure VC-WIN64A --prefix=${CMAKE_INSTALL_PREFIX} ${OPENSSL_BUILD_TYPE} no-shared
         BUILD_COMMAND set MAKEFLAGS= && nmake
         INSTALL_COMMAND set MAKEFLAGS= && nmake install
         )
 else()
+    if("${CMAKE_BUILD_TYPE}" STREQUAL "Debug")
+        set(OPENSSL_BUILD_TYPE "-d")
+    else()
+        set(OPENSSL_BUILD_TYPE "")
+    endif()
+
+    message("OPENSSL_BUILD_TYPE set to ${OPENSSL_BUILD_TYPE}")
+
     ExternalProject_add(
         openssl
         URL https://www.openssl.org/source/openssl-${OPENSSL_VERSION}.tar.gz
         PREFIX openssl
-        CONFIGURE_COMMAND <SOURCE_DIR>/config --prefix=${CMAKE_INSTALL_PREFIX} no-shared
+        CONFIGURE_COMMAND <SOURCE_DIR>/config ${OPENSSL_BUILD_TYPE} --prefix=${CMAKE_INSTALL_PREFIX} no-shared
         )
 endif()
