@@ -31,5 +31,4 @@ ExternalProject_add(
     URL https://github.com/c-ares/c-ares/releases/download/cares-1_17_1/c-ares-1.17.1.tar.gz
     PREFIX cares
     CMAKE_ARGS "${CMAKE_ARGS}"
-    BUILD_COMMAND "${CMAKE_COMMAND}" --build . --config ${CMAKE_BUILD_TYPE}
     )

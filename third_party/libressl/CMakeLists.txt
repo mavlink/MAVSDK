@@ -33,5 +33,4 @@ ExternalProject_add(
     URL https://ftp.openbsd.org/pub/OpenBSD/LibreSSL/libressl-${LIBRESSL_VERSION}.tar.gz
     PREFIX libressl
     CMAKE_ARGS "${CMAKE_ARGS}"
-    BUILD_COMMAND "${CMAKE_COMMAND}" --build . --config ${CMAKE_BUILD_TYPE}
     )

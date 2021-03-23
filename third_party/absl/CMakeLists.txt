@@ -30,5 +30,4 @@ ExternalProject_add(
     PREFIX absl
     PATCH_COMMAND git apply ${PROJECT_SOURCE_DIR}/absl_c++11.patch
     CMAKE_ARGS "${CMAKE_ARGS}"
-    BUILD_COMMAND "${CMAKE_COMMAND}" --build . --config ${CMAKE_BUILD_TYPE}
     )

@@ -55,5 +55,4 @@ ExternalProject_add(
     URL https://github.com/grpc/grpc/archive/v1.36.0.tar.gz
     PREFIX grpc
     CMAKE_ARGS "${CMAKE_ARGS}"
-    BUILD_COMMAND "${CMAKE_COMMAND}" --build . --config ${CMAKE_BUILD_TYPE}
     )

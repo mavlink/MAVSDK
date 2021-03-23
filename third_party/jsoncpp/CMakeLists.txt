@@ -33,5 +33,4 @@ ExternalProject_Add(
     PREFIX jsoncpp
     PATCH_COMMAND git apply ${PROJECT_SOURCE_DIR}/fixlibname.patch
     CMAKE_ARGS "${CMAKE_ARGS}"
-    BUILD_COMMAND "${CMAKE_COMMAND}" --build . --config ${CMAKE_BUILD_TYPE}
     )

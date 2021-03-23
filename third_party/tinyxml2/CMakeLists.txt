@@ -30,5 +30,4 @@ ExternalProject_add(
     URL https://github.com/leethomason/tinyxml2/archive/7.1.0.tar.gz
     PREFIX tinyxml2
     CMAKE_ARGS "${CMAKE_ARGS}"
-    BUILD_COMMAND "${CMAKE_COMMAND}" --build . --config ${CMAKE_BUILD_TYPE}
     )

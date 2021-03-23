@@ -40,5 +40,4 @@ ExternalProject_add(
     PREFIX protobuf
     CMAKE_ARGS "${CMAKE_ARGS}"
     SOURCE_SUBDIR cmake
-    BUILD_COMMAND "${CMAKE_COMMAND}" --build . --config ${CMAKE_BUILD_TYPE}
     )

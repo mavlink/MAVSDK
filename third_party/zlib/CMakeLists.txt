@@ -30,5 +30,4 @@ ExternalProject_add(
     PREFIX zlib
     PATCH_COMMAND git apply ${PROJECT_SOURCE_DIR}/build_shared_libs.patch
     CMAKE_ARGS "${CMAKE_ARGS}"
-    BUILD_COMMAND "${CMAKE_COMMAND}" --build . --config ${CMAKE_BUILD_TYPE}
     )
