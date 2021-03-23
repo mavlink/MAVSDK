@@ -102,11 +102,15 @@ elseif(MSVC)
 
     message("OPENSSL_BUILD_TYPE set to ${OPENSSL_BUILD_TYPE}")
 
+    message("CMAKE_INSTALL_PREFIX: ${CMAKE_INSTALL_PREFIX}")
+    cmake_path(NATIVE_PATH CMAKE_INSTALL_PREFIX NORMALIZE NATIVE_INSTALL_PREFIX)
+    message("NATIVE_INSTALL_PREFIX: ${NATIVE_INSTALL_PREFIX}")
+
     ExternalProject_add(
         openssl
         URL https://www.openssl.org/source/openssl-${OPENSSL_VERSION}.tar.gz
         PREFIX openssl
-        CONFIGURE_COMMAND perl <SOURCE_DIR>/Configure VC-WIN64A --prefix=${CMAKE_INSTALL_PREFIX} ${OPENSSL_BUILD_TYPE} no-shared
+        CONFIGURE_COMMAND perl <SOURCE_DIR>/Configure VC-WIN64A --prefix=${NATIVE_INSTALL_PREFIX} --openssldir=${NATIVE_INSTALL_PREFIX} ${OPENSSL_BUILD_TYPE} no-shared no-asm
         BUILD_COMMAND set MAKEFLAGS= && nmake
         INSTALL_COMMAND set MAKEFLAGS= && nmake install
         )
