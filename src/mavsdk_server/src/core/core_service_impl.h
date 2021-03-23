@@ -55,7 +55,7 @@ public:
             "shell",
             "telemetry"};
 
-        for (const auto plugin_name : plugin_names) {
+        for (const auto& plugin_name : plugin_names) {
             auto plugin_info = response->add_plugin_info();
             plugin_info->set_name(plugin_name);
             plugin_info->set_address("localhost");
