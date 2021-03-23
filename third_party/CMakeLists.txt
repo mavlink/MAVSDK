@@ -11,7 +11,7 @@ build_target(jsoncpp)
 build_target(tinyxml2)
 
 if(NOT IOS)
-build_target(zlib)
+    build_target(zlib)
 endif()
 
 build_target(curl)
