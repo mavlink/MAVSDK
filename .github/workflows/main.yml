@@ -508,7 +508,19 @@ jobs:
         run: cmake -G "Visual Studio 16 2019" $env:superbuild $env:cmake_prefix_path -DCMAKE_BUILD_TYPE=Release -DCMAKE_INSTALL_PREFIX=build/release/install -DBUILD_MAVSDK_SERVER=ON -DBUILD_SHARED_LIBS=OFF -DWERROR=OFF -j 2 -Bbuild/release -S.
       - name: build
         run: cmake --build build/release -j 2 --config Release --target install
-      - name: Publish artefacts
+      - name: Create zip file mavsdk libraries
+        if: startsWith(github.ref, 'refs/tags/v')
+        run: cd build/release/install && 7z.exe a -tzip ../../../mavsdk-release.zip . && cd ../../..
+      - name: Publish mavsdk libraries
+        if: startsWith(github.ref, 'refs/tags/v')
+        uses: svenstaro/upload-release-action@v1-release
+        with:
+          repo_token: ${{ secrets.GITHUB_TOKEN }}
+          file: 'mavsdk-release.zip'
+          asset_name: 'mavsdk-release.zip'
+          tag: ${{ github.ref }}
+          overwrite: true
+      - name: Publish mavsdk_server binary
         if: startsWith(github.ref, 'refs/tags/v')
         uses: svenstaro/upload-release-action@v1-release
         with:
