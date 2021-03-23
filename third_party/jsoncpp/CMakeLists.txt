@@ -31,6 +31,6 @@ ExternalProject_Add(
     GIT_REPOSITORY https://github.com/open-source-parsers/jsoncpp
     GIT_TAG 1.8.4
     PREFIX jsoncpp
-    PATCH_COMMAND git apply ${PROJECT_SOURCE_DIR}/fixlibname.patch
+    PATCH_COMMAND git checkout . && git apply ${PROJECT_SOURCE_DIR}/fixlibname.patch
     CMAKE_ARGS "${CMAKE_ARGS}"
     )
