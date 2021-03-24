@@ -628,12 +628,12 @@ void MavsdkImpl::call_user_callback_located(
     if (callback_size == 10) {
         LogWarn()
             << "User callback queue too slow.\n"
-               "See: https://mavsdk.mavlink.io/develop/en/cpp/troubleshooting.html#user_callbacks";
+               "See: https://mavsdk.mavlink.io/main/en/cpp/troubleshooting.html#user_callbacks";
 
     } else if (callback_size == 99) {
         LogErr()
             << "User callback queue overflown\n"
-               "See: https://mavsdk.mavlink.io/develop/en/cpp/troubleshooting.html#user_callbacks";
+               "See: https://mavsdk.mavlink.io/main/en/cpp/troubleshooting.html#user_callbacks";
 
     } else if (callback_size == 100) {
         return;
@@ -669,7 +669,7 @@ void MavsdkImpl::process_user_callbacks_thread()
                 } else {
                     LogWarn()
                         << "Callback took more than " << timeout_s << " second to run.\n"
-                        << "See: https://mavsdk.mavlink.io/develop/en/cpp/troubleshooting.html#user_callbacks";
+                        << "See: https://mavsdk.mavlink.io/main/en/cpp/troubleshooting.html#user_callbacks";
                 }
             },
             timeout_s,

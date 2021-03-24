@@ -1,11 +1,11 @@
-<img alt="MAVSDK" src="https://mavsdk.mavlink.io/develop/assets/site/sdk_logo_full.png" width="400">
+<img alt="MAVSDK" src="https://mavsdk.mavlink.io/main/assets/site/sdk_logo_full.png" width="400">
 
 [![GitHub Actions Status](https://github.com/mavlink/MAVSDK/workflows/Build%20and%20Test/badge.svg?branch=main)](https://github.com/mavlink/MAVSDK/actions?query=branch%3Amain)
 [![Coverage Status](https://coveralls.io/repos/github/mavlink/MAVSDK/badge.svg?branch=main)](https://coveralls.io/github/mavlink/MAVSDK?branch=main)
 
 ## Description
 
-[MAVSDK](https://mavsdk.mavlink.io/develop/en/) is a set of libraries providing a high-level API to [MAVLink](https://mavlink.io/en/).
+[MAVSDK](https://mavsdk.mavlink.io/main/en/) is a set of libraries providing a high-level API to [MAVLink](https://mavlink.io/en/).
 It aims to be:
 - Easy to use with a simple API supporting both synchronous (blocking) API calls and asynchronous API calls using callbacks.
 - Fast and lightweight.
@@ -35,16 +35,16 @@ The MAVSDK C++ part consists of:
 
 ## Docs (Build instructions etc.)
 
-Instructions for how to use the C++ library can be found in the [MAVSDK docs](https://mavsdk.mavlink.io/develop/en/) (links to other programming languages can be found from the documentation sidebar).
+Instructions for how to use the C++ library can be found in the [MAVSDK docs](https://mavsdk.mavlink.io/main/en/) (links to other programming languages can be found from the documentation sidebar).
 
 Quick Links:
 
-- [QuickStart](https://mavsdk.mavlink.io/develop/en/cpp/#getting-started)
-- [C++ API Overview](https://mavsdk.mavlink.io/develop/en/cpp/#api-overview)
-- [API Reference](https://mavsdk.mavlink.io/develop/en/api_reference/)
-- [Building the Library](https://mavsdk.mavlink.io/develop/en/contributing/build.html)
-- [Examples](https://mavsdk.mavlink.io/develop/en/examples/)
-- [FAQ](https://mavsdk.mavlink.io/develop/en/getting_started/faq.html)
+- [QuickStart](https://mavsdk.mavlink.io/main/en/cpp/#getting-started)
+- [C++ API Overview](https://mavsdk.mavlink.io/main/en/cpp/#api-overview)
+- [API Reference](https://mavsdk.mavlink.io/main/en/api_reference/)
+- [Building the Library](https://mavsdk.mavlink.io/main/en/contributing/build.html)
+- [Examples](https://mavsdk.mavlink.io/main/en/examples/)
+- [FAQ](https://mavsdk.mavlink.io/main/en/getting_started/faq.html)
 
 ## License
 
