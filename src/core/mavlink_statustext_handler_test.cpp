@@ -34,7 +34,7 @@ TEST(MavlinkStatustextHandler, Severities)
 TEST(MavlinkStatustextHandler, WrongSeverity)
 {
     auto result = MavlinkStatustextHandler::severity_str(static_cast<MAV_SEVERITY>(255));
-    EXPECT_FALSE("unknown severity");
+    EXPECT_EQ(result, "unknown severity");
 }
 
 TEST(MavlinkStatustextHandler, SingleStatustextWithNull)
