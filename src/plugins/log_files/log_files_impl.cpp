@@ -1,21 +1,12 @@
 #include "global_include.h"
 #include "log_files_impl.h"
 #include "mavsdk_impl.h"
+#include "filesystem_include.h"
 
 #include <algorithm>
 #include <cmath>
 #include <ctime>
 #include <cstring>
-
-#if __has_include(<filesystem>)
-#include <filesystem>
-namespace fs = std::filesystem;
-#elif __has_include(<experimental/filesystem>)
-#include <experimental/filesystem>
-namespace fs = std::experimental::filesystem;
-#else
-#error "Missing the <filesystem> header."
-#endif
 
 namespace mavsdk {
 
