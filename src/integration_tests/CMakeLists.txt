@@ -60,6 +60,7 @@ add_executable(integration_tests_runner
     path_checker.h
     system_connection_async.cpp
     system_multi_components.cpp
+    statustext.cpp
     telemetry_async.cpp
     telemetry_health.cpp
     telemetry_modes.cpp
@@ -94,6 +95,7 @@ target_link_libraries(integration_tests_runner
     mavsdk_param
     mavsdk_ftp
     mavsdk_mavlink_passthrough
+    mavsdk_server_utility
     gtest
     gtest_main
     gmock

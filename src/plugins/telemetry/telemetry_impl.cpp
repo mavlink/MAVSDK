@@ -77,9 +77,6 @@ void TelemetryImpl::init()
         MAVLINK_MSG_ID_HEARTBEAT, std::bind(&TelemetryImpl::process_heartbeat, this, _1), this);
 
     _parent->register_mavlink_message_handler(
-        MAVLINK_MSG_ID_STATUSTEXT, std::bind(&TelemetryImpl::process_statustext, this, _1), this);
-
-    _parent->register_mavlink_message_handler(
         MAVLINK_MSG_ID_RC_CHANNELS, std::bind(&TelemetryImpl::process_rc_channels, this, _1), this);
 
     _parent->register_mavlink_message_handler(
@@ -133,10 +130,17 @@ void TelemetryImpl::init()
 
     _parent->register_param_changed_handler(
         std::bind(&TelemetryImpl::process_parameter_update, this, _1), this);
+
+    _parent->register_statustext_handler(
+        [this](const MavlinkStatustextHandler::Statustext& statustext) {
+            receive_statustext(statustext);
+        },
+        this);
 }
 
 void TelemetryImpl::deinit()
 {
+    _parent->unregister_statustext_handler(this);
     _parent->unregister_timeout_handler(_rc_channels_timeout_cookie);
     _parent->unregister_timeout_handler(_gps_raw_timeout_cookie);
     _parent->unregister_timeout_handler(_unix_epoch_timeout_cookie);
@@ -1087,58 +1091,50 @@ void TelemetryImpl::process_heartbeat(const mavlink_message_t& message)
     }
 }
 
-void TelemetryImpl::process_statustext(const mavlink_message_t& message)
+void TelemetryImpl::receive_statustext(const MavlinkStatustextHandler::Statustext& statustext)
 {
-    mavlink_statustext_t statustext;
-    mavlink_msg_statustext_decode(&message, &statustext);
-
-    Telemetry::StatusTextType type;
+    Telemetry::StatusText new_status_text;
 
     switch (statustext.severity) {
         case MAV_SEVERITY_EMERGENCY:
-            type = Telemetry::StatusTextType::Emergency;
+            new_status_text.type = Telemetry::StatusTextType::Emergency;
             break;
         case MAV_SEVERITY_ALERT:
-            type = Telemetry::StatusTextType::Alert;
+            new_status_text.type = Telemetry::StatusTextType::Alert;
             break;
         case MAV_SEVERITY_CRITICAL:
-            type = Telemetry::StatusTextType::Critical;
+            new_status_text.type = Telemetry::StatusTextType::Critical;
             break;
         case MAV_SEVERITY_ERROR:
-            type = Telemetry::StatusTextType::Error;
+            new_status_text.type = Telemetry::StatusTextType::Error;
             break;
         case MAV_SEVERITY_WARNING:
-            type = Telemetry::StatusTextType::Warning;
+            new_status_text.type = Telemetry::StatusTextType::Warning;
             break;
         case MAV_SEVERITY_NOTICE:
-            type = Telemetry::StatusTextType::Notice;
+            new_status_text.type = Telemetry::StatusTextType::Notice;
             break;
         case MAV_SEVERITY_INFO:
-            type = Telemetry::StatusTextType::Info;
+            new_status_text.type = Telemetry::StatusTextType::Info;
             break;
         case MAV_SEVERITY_DEBUG:
-            type = Telemetry::StatusTextType::Debug;
+            new_status_text.type = Telemetry::StatusTextType::Debug;
             break;
         default:
             LogWarn() << "Unknown StatusText severity";
-            type = Telemetry::StatusTextType::Info;
+            new_status_text.type = Telemetry::StatusTextType::Info;
             break;
     }
 
-    // statustext.text is not null terminated, therefore we copy it first to
-    // an array big enough that is zeroed.
-    char text_with_null[sizeof(statustext.text) + 1]{};
-    memcpy(text_with_null, statustext.text, sizeof(statustext.text));
-
-    Telemetry::StatusText new_status_text;
-    new_status_text.type = type;
-    new_status_text.text = text_with_null;
+    new_status_text.text = statustext.text;
 
     set_status_text(new_status_text);
 
     std::lock_guard<std::mutex> lock(_subscription_mutex);
     if (_status_text_subscription) {
-        _status_text_subscription(status_text());
+        auto callback = _status_text_subscription;
+        auto arg = status_text();
+        _parent->call_user_callback([callback, arg]() { callback(arg); });
     }
 }
 

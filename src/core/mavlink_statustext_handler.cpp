@@ -3,33 +3,8 @@
 
 namespace mavsdk {
 
-std::optional<std::string>
-MavlinkStatustextHandler::process_severity(const mavlink_statustext_t& statustext)
-{
-    switch (statustext.severity) {
-        case MAV_SEVERITY_EMERGENCY:
-            return {"emergency"};
-        case MAV_SEVERITY_ALERT:
-            return {"alert"};
-        case MAV_SEVERITY_CRITICAL:
-            return {"critical"};
-        case MAV_SEVERITY_ERROR:
-            return {"error"};
-        case MAV_SEVERITY_WARNING:
-            return {"warning"};
-        case MAV_SEVERITY_NOTICE:
-            return {"notice"};
-        case MAV_SEVERITY_INFO:
-            return {"info"};
-        case MAV_SEVERITY_DEBUG:
-            return {"debug"};
-        default:
-            return std::nullopt;
-    }
-}
-
-std::optional<std::string>
-MavlinkStatustextHandler::process_text(const mavlink_statustext_t& statustext)
+std::optional<MavlinkStatustextHandler::Statustext>
+MavlinkStatustextHandler::process(const mavlink_statustext_t& statustext)
 {
     char text_with_null[sizeof(statustext.text) + 1]{};
     strncpy(text_with_null, statustext.text, sizeof(text_with_null) - 1);
@@ -39,6 +14,7 @@ MavlinkStatustextHandler::process_text(const mavlink_statustext_t& statustext)
             _temp_multi_str = "";
             _last_chunk_seq = 0;
             _last_id = statustext.id;
+            _last_severity = static_cast<MAV_SEVERITY>(statustext.severity);
         }
 
         // We can recover from missing chunks in-between but not if the first or last one is lost.
@@ -54,11 +30,35 @@ MavlinkStatustextHandler::process_text(const mavlink_statustext_t& statustext)
             // No zero termination yet, keep going.
             return std::nullopt;
         } else {
-            return {_temp_multi_str};
+            return Statustext{_temp_multi_str, _last_severity};
         }
     }
 
-    return {text_with_null};
+    return Statustext{text_with_null, _last_severity};
+}
+
+std::string MavlinkStatustextHandler::severity_str(MAV_SEVERITY severity)
+{
+    switch (severity) {
+        case MAV_SEVERITY_EMERGENCY:
+            return "emergency";
+        case MAV_SEVERITY_ALERT:
+            return "alert";
+        case MAV_SEVERITY_CRITICAL:
+            return "critical";
+        case MAV_SEVERITY_ERROR:
+            return "error";
+        case MAV_SEVERITY_WARNING:
+            return "warning";
+        case MAV_SEVERITY_NOTICE:
+            return "notice";
+        case MAV_SEVERITY_INFO:
+            return "info";
+        case MAV_SEVERITY_DEBUG:
+            return "debug";
+        default:
+            return "unknown severity";
+    }
 }
 
 } // namespace mavsdk

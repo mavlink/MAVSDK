@@ -15,7 +15,7 @@ using namespace mavsdk;
 
 TEST(MavlinkStatustextHandler, Severities)
 {
-    const std::vector<std::pair<uint8_t, std::string>> severities{
+    const std::vector<std::pair<MAV_SEVERITY, std::string>> severities{
         {MAV_SEVERITY_DEBUG, "debug"},
         {MAV_SEVERITY_INFO, "info"},
         {MAV_SEVERITY_NOTICE, "notice"},
@@ -26,24 +26,15 @@ TEST(MavlinkStatustextHandler, Severities)
         {MAV_SEVERITY_EMERGENCY, "emergency"}};
 
     for (const auto& severity : severities) {
-        mavlink_statustext_t statustext{};
-        statustext.severity = severity.first;
-
-        MavlinkStatustextHandler handler;
-        auto result = handler.process_severity(statustext);
-        ASSERT_TRUE(result);
-        EXPECT_EQ(severity.second, result.value());
+        auto result = MavlinkStatustextHandler::severity_str(severity.first);
+        EXPECT_EQ(severity.second, result);
     }
 }
 
 TEST(MavlinkStatustextHandler, WrongSeverity)
 {
-    mavlink_statustext_t statustext{};
-    statustext.severity = 255;
-
-    MavlinkStatustextHandler handler;
-    auto result = handler.process_severity(statustext);
-    EXPECT_FALSE(result);
+    auto result = MavlinkStatustextHandler::severity_str(static_cast<MAV_SEVERITY>(255));
+    EXPECT_EQ(result, "unknown severity");
 }
 
 TEST(MavlinkStatustextHandler, SingleStatustextWithNull)
@@ -53,9 +44,9 @@ TEST(MavlinkStatustextHandler, SingleStatustextWithNull)
     strncpy(statustext.text, str.c_str(), sizeof(statustext.text) - 1);
 
     MavlinkStatustextHandler handler;
-    auto result = handler.process_text(statustext);
+    auto result = handler.process(statustext);
     ASSERT_TRUE(result);
-    EXPECT_EQ(str, result.value());
+    EXPECT_EQ(str, result.value().text);
 }
 
 TEST(MavlinkStatustextHandler, SingleStatustextWithoutNull)
@@ -65,9 +56,9 @@ TEST(MavlinkStatustextHandler, SingleStatustextWithoutNull)
     strncpy(statustext.text, str.c_str(), sizeof(statustext.text));
 
     MavlinkStatustextHandler handler;
-    auto result = handler.process_text(statustext);
+    auto result = handler.process(statustext);
     ASSERT_TRUE(result);
-    EXPECT_EQ(str, result.value());
+    EXPECT_EQ(str, result.value().text);
 }
 
 TEST(MavlinkStatustextHandler, MultiStatustext)
@@ -97,11 +88,11 @@ TEST(MavlinkStatustextHandler, MultiStatustext)
         statustext.id = 42;
         statustext.chunk_seq = chunk_seq;
 
-        const auto result = handler.process_text(statustext);
+        const auto result = handler.process(statustext);
 
         if (is_last) {
             ASSERT_TRUE(result);
-            EXPECT_EQ(result.value(), str);
+            EXPECT_EQ(result.value().text, str);
         } else {
             EXPECT_FALSE(result);
         }
@@ -136,11 +127,11 @@ TEST(MavlinkStatustextHandler, MultiStatustextDivisibleByChunkLen)
         statustext.id = 42;
         statustext.chunk_seq = chunk_seq;
 
-        const auto result = handler.process_text(statustext);
+        const auto result = handler.process(statustext);
 
         if (is_last) {
             ASSERT_TRUE(result);
-            EXPECT_EQ(result.value(), str);
+            EXPECT_EQ(result.value().text, str);
         } else {
             EXPECT_FALSE(result);
         }
@@ -185,11 +176,11 @@ TEST(MavlinkStatustextHandler, MultiStatustextMissingPart)
         statustext.chunk_seq = chunk_seq;
 
         if (chunk_seq != 3) {
-            const auto result = handler.process_text(statustext);
+            const auto result = handler.process(statustext);
 
             if (is_last) {
                 ASSERT_TRUE(result);
-                EXPECT_EQ(result.value(), str_missing);
+                EXPECT_EQ(result.value().text, str_missing);
             } else {
                 EXPECT_FALSE(result);
             }
@@ -226,11 +217,11 @@ TEST(MavlinkStatustextHandler, MultiStatustextConsecutive)
             statustext.id = 42;
             statustext.chunk_seq = chunk_seq;
 
-            const auto result = handler.process_text(statustext);
+            const auto result = handler.process(statustext);
 
             if (is_last) {
                 ASSERT_TRUE(result);
-                EXPECT_EQ(result.value(), str);
+                EXPECT_EQ(result.value().text, str);
             } else {
                 EXPECT_FALSE(result);
             }
@@ -256,11 +247,11 @@ TEST(MavlinkStatustextHandler, MultiStatustextConsecutive)
             statustext.id = 43;
             statustext.chunk_seq = chunk_seq;
 
-            const auto result = handler.process_text(statustext);
+            const auto result = handler.process(statustext);
 
             if (is_last) {
                 ASSERT_TRUE(result);
-                EXPECT_EQ(result.value(), str);
+                EXPECT_EQ(result.value().text, str);
             } else {
                 EXPECT_FALSE(result);
             }

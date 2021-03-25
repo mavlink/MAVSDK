@@ -161,6 +161,22 @@ void SystemImpl::remove_call_every(const void* cookie)
     _parent.call_every_handler.remove(cookie);
 }
 
+void SystemImpl::register_statustext_handler(
+    std::function<void(const MavlinkStatustextHandler::Statustext&)> callback, void* cookie)
+{
+    std::lock_guard<std::mutex> lock(_statustext_handler_callbacks_mutex);
+    _statustext_handler_callbacks.push_back(StatustextCallback{callback, cookie});
+}
+
+void SystemImpl::unregister_statustext_handler(void* cookie)
+{
+    std::lock_guard<std::mutex> lock(_statustext_handler_callbacks_mutex);
+    _statustext_handler_callbacks.erase(std::remove_if(
+        _statustext_handler_callbacks.begin(),
+        _statustext_handler_callbacks.end(),
+        [&](const auto& entry) { return entry.cookie == cookie; }));
+}
+
 void SystemImpl::process_heartbeat(const mavlink_message_t& message)
 {
     mavlink_heartbeat_t heartbeat;
@@ -228,11 +244,17 @@ void SystemImpl::process_statustext(const mavlink_message_t& message)
     mavlink_statustext_t statustext;
     mavlink_msg_statustext_decode(&message, &statustext);
 
-    const auto result_severity = _statustext_handler.process_severity(statustext);
-    const auto result_text = _statustext_handler.process_text(statustext);
+    const auto maybe_result = _statustext_handler.process(statustext);
 
-    if (result_severity && result_text) {
-        LogDebug() << "MAVLink: " << result_severity.value() << ": " << result_text.value();
+    if (maybe_result.has_value()) {
+        LogDebug() << "MAVLink: "
+                   << MavlinkStatustextHandler::severity_str(maybe_result.value().severity) << ": "
+                   << maybe_result.value().text;
+
+        std::lock_guard<std::mutex> lock(_statustext_handler_callbacks_mutex);
+        for (const auto& entry : _statustext_handler_callbacks) {
+            entry.callback(maybe_result.value());
+        }
     }
 }
 

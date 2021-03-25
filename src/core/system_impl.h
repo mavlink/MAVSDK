@@ -78,6 +78,10 @@ public:
     void reset_call_every(const void* cookie);
     void remove_call_every(const void* cookie);
 
+    void register_statustext_handler(
+        std::function<void(const MavlinkStatustextHandler::Statustext&)>, void* cookie);
+    void unregister_statustext_handler(void* cookie);
+
     bool send_message(mavlink_message_t& message) override;
 
     static FlightMode to_flight_mode_from_custom_mode(uint32_t custom_mode);
@@ -299,6 +303,13 @@ private:
     MAVLinkMessageHandler _message_handler{};
 
     MavlinkStatustextHandler _statustext_handler{};
+
+    struct StatustextCallback {
+        std::function<void(const MavlinkStatustextHandler::Statustext&)> callback;
+        void* cookie;
+    };
+    std::mutex _statustext_handler_callbacks_mutex{};
+    std::vector<StatustextCallback> _statustext_handler_callbacks;
 
     uint64_t _uuid{0};
 
