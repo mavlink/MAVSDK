@@ -642,7 +642,12 @@ PROTOBUF_ATTRIBUTE_NO_DESTROY PROTOBUF_CONSTINIT SettingOptionsDefaultTypeIntern
 constexpr Information::Information(
   ::PROTOBUF_NAMESPACE_ID::internal::ConstantInitialized)
   : vendor_name_(&::PROTOBUF_NAMESPACE_ID::internal::fixed_address_empty_string)
-  , model_name_(&::PROTOBUF_NAMESPACE_ID::internal::fixed_address_empty_string){}
+  , model_name_(&::PROTOBUF_NAMESPACE_ID::internal::fixed_address_empty_string)
+  , focal_length_mm_(0)
+  , horizontal_sensor_size_mm_(0)
+  , vertical_sensor_size_mm_(0)
+  , horizontal_resolution_px_(0u)
+  , vertical_resolution_px_(0u){}
 struct InformationDefaultTypeInternal {
   constexpr InformationDefaultTypeInternal()
     : _instance(::PROTOBUF_NAMESPACE_ID::internal::ConstantInitialized{}) {}
@@ -986,6 +991,11 @@ const ::PROTOBUF_NAMESPACE_ID::uint32 TableStruct_camera_2fcamera_2eproto::offse
   ~0u,  // no _weak_field_map_
   PROTOBUF_FIELD_OFFSET(::mavsdk::rpc::camera::Information, vendor_name_),
   PROTOBUF_FIELD_OFFSET(::mavsdk::rpc::camera::Information, model_name_),
+  PROTOBUF_FIELD_OFFSET(::mavsdk::rpc::camera::Information, focal_length_mm_),
+  PROTOBUF_FIELD_OFFSET(::mavsdk::rpc::camera::Information, horizontal_sensor_size_mm_),
+  PROTOBUF_FIELD_OFFSET(::mavsdk::rpc::camera::Information, vertical_sensor_size_mm_),
+  PROTOBUF_FIELD_OFFSET(::mavsdk::rpc::camera::Information, horizontal_resolution_px_),
+  PROTOBUF_FIELD_OFFSET(::mavsdk::rpc::camera::Information, vertical_resolution_px_),
 };
 static const ::PROTOBUF_NAMESPACE_ID::internal::MigrationSchema schemas[] PROTOBUF_SECTION_VARIABLE(protodesc_cold) = {
   { 0, -1, sizeof(::mavsdk::rpc::camera::TakePhotoRequest)},
@@ -1206,9 +1216,13 @@ const char descriptor_table_protodef_camera_2fcamera_2eproto[] PROTOBUF_SECTION_
   "Option\022\020\n\010is_range\030\004 \001(\010\"\177\n\016SettingOptio"
   "ns\022\022\n\nsetting_id\030\001 \001(\t\022\033\n\023setting_descri"
   "ption\030\002 \001(\t\022*\n\007options\030\003 \003(\0132\031.mavsdk.rp"
-  "c.camera.Option\022\020\n\010is_range\030\004 \001(\010\"6\n\013Inf"
-  "ormation\022\023\n\013vendor_name\030\001 \001(\t\022\022\n\nmodel_n"
-  "ame\030\002 \001(\t*8\n\004Mode\022\020\n\014MODE_UNKNOWN\020\000\022\016\n\nM"
+  "c.camera.Option\022\020\n\010is_range\030\004 \001(\010\"\325\001\n\013In"
+  "formation\022\023\n\013vendor_name\030\001 \001(\t\022\022\n\nmodel_"
+  "name\030\002 \001(\t\022\027\n\017focal_length_mm\030\003 \001(\002\022!\n\031h"
+  "orizontal_sensor_size_mm\030\004 \001(\002\022\037\n\027vertic"
+  "al_sensor_size_mm\030\005 \001(\002\022 \n\030horizontal_re"
+  "solution_px\030\006 \001(\r\022\036\n\026vertical_resolution"
+  "_px\030\007 \001(\r*8\n\004Mode\022\020\n\014MODE_UNKNOWN\020\000\022\016\n\nM"
   "ODE_PHOTO\020\001\022\016\n\nMODE_VIDEO\020\002*F\n\013PhotosRan"
   "ge\022\024\n\020PHOTOS_RANGE_ALL\020\000\022!\n\035PHOTOS_RANGE"
   "_SINCE_CONNECTION\020\0012\230\020\n\rCameraService\022X\n"
@@ -1271,7 +1285,7 @@ static const ::PROTOBUF_NAMESPACE_ID::internal::DescriptorTable*const descriptor
 };
 static ::PROTOBUF_NAMESPACE_ID::internal::once_flag descriptor_table_camera_2fcamera_2eproto_once;
 const ::PROTOBUF_NAMESPACE_ID::internal::DescriptorTable descriptor_table_camera_2fcamera_2eproto = {
-  false, false, 6815, descriptor_table_protodef_camera_2fcamera_2eproto, "camera/camera.proto", 
+  false, false, 6975, descriptor_table_protodef_camera_2fcamera_2eproto, "camera/camera.proto", 
   &descriptor_table_camera_2fcamera_2eproto_once, descriptor_table_camera_2fcamera_2eproto_deps, 1, 50,
   schemas, file_default_instances, TableStruct_camera_2fcamera_2eproto::offsets,
   file_level_metadata_camera_2fcamera_2eproto, file_level_enum_descriptors_camera_2fcamera_2eproto, file_level_service_descriptors_camera_2fcamera_2eproto,
@@ -11761,12 +11775,19 @@ Information::Information(const Information& from)
     model_name_.Set(::PROTOBUF_NAMESPACE_ID::internal::ArenaStringPtr::EmptyDefault{}, from._internal_model_name(), 
       GetArena());
   }
+  ::memcpy(&focal_length_mm_, &from.focal_length_mm_,
+    static_cast<size_t>(reinterpret_cast<char*>(&vertical_resolution_px_) -
+    reinterpret_cast<char*>(&focal_length_mm_)) + sizeof(vertical_resolution_px_));
   // @@protoc_insertion_point(copy_constructor:mavsdk.rpc.camera.Information)
 }
 
 void Information::SharedCtor() {
 vendor_name_.UnsafeSetDefault(&::PROTOBUF_NAMESPACE_ID::internal::GetEmptyStringAlreadyInited());
 model_name_.UnsafeSetDefault(&::PROTOBUF_NAMESPACE_ID::internal::GetEmptyStringAlreadyInited());
+::memset(reinterpret_cast<char*>(this) + static_cast<size_t>(
+    reinterpret_cast<char*>(&focal_length_mm_) - reinterpret_cast<char*>(this)),
+    0, static_cast<size_t>(reinterpret_cast<char*>(&vertical_resolution_px_) -
+    reinterpret_cast<char*>(&focal_length_mm_)) + sizeof(vertical_resolution_px_));
 }
 
 Information::~Information() {
@@ -11799,6 +11820,9 @@ void Information::Clear() {
 
   vendor_name_.ClearToEmpty();
   model_name_.ClearToEmpty();
+  ::memset(&focal_length_mm_, 0, static_cast<size_t>(
+      reinterpret_cast<char*>(&vertical_resolution_px_) -
+      reinterpret_cast<char*>(&focal_length_mm_)) + sizeof(vertical_resolution_px_));
   _internal_metadata_.Clear<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>();
 }
 
@@ -11824,6 +11848,41 @@ const char* Information::_InternalParse(const char* ptr, ::PROTOBUF_NAMESPACE_ID
           auto str = _internal_mutable_model_name();
           ptr = ::PROTOBUF_NAMESPACE_ID::internal::InlineGreedyStringParser(str, ptr, ctx);
           CHK_(::PROTOBUF_NAMESPACE_ID::internal::VerifyUTF8(str, "mavsdk.rpc.camera.Information.model_name"));
+          CHK_(ptr);
+        } else goto handle_unusual;
+        continue;
+      // float focal_length_mm = 3;
+      case 3:
+        if (PROTOBUF_PREDICT_TRUE(static_cast<::PROTOBUF_NAMESPACE_ID::uint8>(tag) == 29)) {
+          focal_length_mm_ = ::PROTOBUF_NAMESPACE_ID::internal::UnalignedLoad<float>(ptr);
+          ptr += sizeof(float);
+        } else goto handle_unusual;
+        continue;
+      // float horizontal_sensor_size_mm = 4;
+      case 4:
+        if (PROTOBUF_PREDICT_TRUE(static_cast<::PROTOBUF_NAMESPACE_ID::uint8>(tag) == 37)) {
+          horizontal_sensor_size_mm_ = ::PROTOBUF_NAMESPACE_ID::internal::UnalignedLoad<float>(ptr);
+          ptr += sizeof(float);
+        } else goto handle_unusual;
+        continue;
+      // float vertical_sensor_size_mm = 5;
+      case 5:
+        if (PROTOBUF_PREDICT_TRUE(static_cast<::PROTOBUF_NAMESPACE_ID::uint8>(tag) == 45)) {
+          vertical_sensor_size_mm_ = ::PROTOBUF_NAMESPACE_ID::internal::UnalignedLoad<float>(ptr);
+          ptr += sizeof(float);
+        } else goto handle_unusual;
+        continue;
+      // uint32 horizontal_resolution_px = 6;
+      case 6:
+        if (PROTOBUF_PREDICT_TRUE(static_cast<::PROTOBUF_NAMESPACE_ID::uint8>(tag) == 48)) {
+          horizontal_resolution_px_ = ::PROTOBUF_NAMESPACE_ID::internal::ReadVarint32(&ptr);
+          CHK_(ptr);
+        } else goto handle_unusual;
+        continue;
+      // uint32 vertical_resolution_px = 7;
+      case 7:
+        if (PROTOBUF_PREDICT_TRUE(static_cast<::PROTOBUF_NAMESPACE_ID::uint8>(tag) == 56)) {
+          vertical_resolution_px_ = ::PROTOBUF_NAMESPACE_ID::internal::ReadVarint32(&ptr);
           CHK_(ptr);
         } else goto handle_unusual;
         continue;
@@ -11875,6 +11934,36 @@ failure:
         2, this->_internal_model_name(), target);
   }
 
+  // float focal_length_mm = 3;
+  if (!(this->focal_length_mm() <= 0 && this->focal_length_mm() >= 0)) {
+    target = stream->EnsureSpace(target);
+    target = ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::WriteFloatToArray(3, this->_internal_focal_length_mm(), target);
+  }
+
+  // float horizontal_sensor_size_mm = 4;
+  if (!(this->horizontal_sensor_size_mm() <= 0 && this->horizontal_sensor_size_mm() >= 0)) {
+    target = stream->EnsureSpace(target);
+    target = ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::WriteFloatToArray(4, this->_internal_horizontal_sensor_size_mm(), target);
+  }
+
+  // float vertical_sensor_size_mm = 5;
+  if (!(this->vertical_sensor_size_mm() <= 0 && this->vertical_sensor_size_mm() >= 0)) {
+    target = stream->EnsureSpace(target);
+    target = ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::WriteFloatToArray(5, this->_internal_vertical_sensor_size_mm(), target);
+  }
+
+  // uint32 horizontal_resolution_px = 6;
+  if (this->horizontal_resolution_px() != 0) {
+    target = stream->EnsureSpace(target);
+    target = ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::WriteUInt32ToArray(6, this->_internal_horizontal_resolution_px(), target);
+  }
+
+  // uint32 vertical_resolution_px = 7;
+  if (this->vertical_resolution_px() != 0) {
+    target = stream->EnsureSpace(target);
+    target = ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::WriteUInt32ToArray(7, this->_internal_vertical_resolution_px(), target);
+  }
+
   if (PROTOBUF_PREDICT_FALSE(_internal_metadata_.have_unknown_fields())) {
     target = ::PROTOBUF_NAMESPACE_ID::internal::WireFormat::InternalSerializeUnknownFieldsToArray(
         _internal_metadata_.unknown_fields<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>(::PROTOBUF_NAMESPACE_ID::UnknownFieldSet::default_instance), target, stream);
@@ -11903,6 +11992,35 @@ size_t Information::ByteSizeLong() const {
     total_size += 1 +
       ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::StringSize(
         this->_internal_model_name());
+  }
+
+  // float focal_length_mm = 3;
+  if (!(this->focal_length_mm() <= 0 && this->focal_length_mm() >= 0)) {
+    total_size += 1 + 4;
+  }
+
+  // float horizontal_sensor_size_mm = 4;
+  if (!(this->horizontal_sensor_size_mm() <= 0 && this->horizontal_sensor_size_mm() >= 0)) {
+    total_size += 1 + 4;
+  }
+
+  // float vertical_sensor_size_mm = 5;
+  if (!(this->vertical_sensor_size_mm() <= 0 && this->vertical_sensor_size_mm() >= 0)) {
+    total_size += 1 + 4;
+  }
+
+  // uint32 horizontal_resolution_px = 6;
+  if (this->horizontal_resolution_px() != 0) {
+    total_size += 1 +
+      ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::UInt32Size(
+        this->_internal_horizontal_resolution_px());
+  }
+
+  // uint32 vertical_resolution_px = 7;
+  if (this->vertical_resolution_px() != 0) {
+    total_size += 1 +
+      ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::UInt32Size(
+        this->_internal_vertical_resolution_px());
   }
 
   if (PROTOBUF_PREDICT_FALSE(_internal_metadata_.have_unknown_fields())) {
@@ -11942,6 +12060,21 @@ void Information::MergeFrom(const Information& from) {
   if (from.model_name().size() > 0) {
     _internal_set_model_name(from._internal_model_name());
   }
+  if (!(from.focal_length_mm() <= 0 && from.focal_length_mm() >= 0)) {
+    _internal_set_focal_length_mm(from._internal_focal_length_mm());
+  }
+  if (!(from.horizontal_sensor_size_mm() <= 0 && from.horizontal_sensor_size_mm() >= 0)) {
+    _internal_set_horizontal_sensor_size_mm(from._internal_horizontal_sensor_size_mm());
+  }
+  if (!(from.vertical_sensor_size_mm() <= 0 && from.vertical_sensor_size_mm() >= 0)) {
+    _internal_set_vertical_sensor_size_mm(from._internal_vertical_sensor_size_mm());
+  }
+  if (from.horizontal_resolution_px() != 0) {
+    _internal_set_horizontal_resolution_px(from._internal_horizontal_resolution_px());
+  }
+  if (from.vertical_resolution_px() != 0) {
+    _internal_set_vertical_resolution_px(from._internal_vertical_resolution_px());
+  }
 }
 
 void Information::CopyFrom(const ::PROTOBUF_NAMESPACE_ID::Message& from) {
@@ -11967,6 +12100,12 @@ void Information::InternalSwap(Information* other) {
   _internal_metadata_.Swap<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>(&other->_internal_metadata_);
   vendor_name_.Swap(&other->vendor_name_, &::PROTOBUF_NAMESPACE_ID::internal::GetEmptyStringAlreadyInited(), GetArena());
   model_name_.Swap(&other->model_name_, &::PROTOBUF_NAMESPACE_ID::internal::GetEmptyStringAlreadyInited(), GetArena());
+  ::PROTOBUF_NAMESPACE_ID::internal::memswap<
+      PROTOBUF_FIELD_OFFSET(Information, vertical_resolution_px_)
+      + sizeof(Information::vertical_resolution_px_)
+      - PROTOBUF_FIELD_OFFSET(Information, focal_length_mm_)>(
+          reinterpret_cast<char*>(&focal_length_mm_),
+          reinterpret_cast<char*>(&other->focal_length_mm_));
 }
 
 ::PROTOBUF_NAMESPACE_ID::Metadata Information::GetMetadata() const {

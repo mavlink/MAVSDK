@@ -7965,6 +7965,11 @@ class Information PROTOBUF_FINAL :
   enum : int {
     kVendorNameFieldNumber = 1,
     kModelNameFieldNumber = 2,
+    kFocalLengthMmFieldNumber = 3,
+    kHorizontalSensorSizeMmFieldNumber = 4,
+    kVerticalSensorSizeMmFieldNumber = 5,
+    kHorizontalResolutionPxFieldNumber = 6,
+    kVerticalResolutionPxFieldNumber = 7,
   };
   // string vendor_name = 1;
   void clear_vendor_name();
@@ -7998,6 +8003,51 @@ class Information PROTOBUF_FINAL :
   std::string* _internal_mutable_model_name();
   public:
 
+  // float focal_length_mm = 3;
+  void clear_focal_length_mm();
+  float focal_length_mm() const;
+  void set_focal_length_mm(float value);
+  private:
+  float _internal_focal_length_mm() const;
+  void _internal_set_focal_length_mm(float value);
+  public:
+
+  // float horizontal_sensor_size_mm = 4;
+  void clear_horizontal_sensor_size_mm();
+  float horizontal_sensor_size_mm() const;
+  void set_horizontal_sensor_size_mm(float value);
+  private:
+  float _internal_horizontal_sensor_size_mm() const;
+  void _internal_set_horizontal_sensor_size_mm(float value);
+  public:
+
+  // float vertical_sensor_size_mm = 5;
+  void clear_vertical_sensor_size_mm();
+  float vertical_sensor_size_mm() const;
+  void set_vertical_sensor_size_mm(float value);
+  private:
+  float _internal_vertical_sensor_size_mm() const;
+  void _internal_set_vertical_sensor_size_mm(float value);
+  public:
+
+  // uint32 horizontal_resolution_px = 6;
+  void clear_horizontal_resolution_px();
+  ::PROTOBUF_NAMESPACE_ID::uint32 horizontal_resolution_px() const;
+  void set_horizontal_resolution_px(::PROTOBUF_NAMESPACE_ID::uint32 value);
+  private:
+  ::PROTOBUF_NAMESPACE_ID::uint32 _internal_horizontal_resolution_px() const;
+  void _internal_set_horizontal_resolution_px(::PROTOBUF_NAMESPACE_ID::uint32 value);
+  public:
+
+  // uint32 vertical_resolution_px = 7;
+  void clear_vertical_resolution_px();
+  ::PROTOBUF_NAMESPACE_ID::uint32 vertical_resolution_px() const;
+  void set_vertical_resolution_px(::PROTOBUF_NAMESPACE_ID::uint32 value);
+  private:
+  ::PROTOBUF_NAMESPACE_ID::uint32 _internal_vertical_resolution_px() const;
+  void _internal_set_vertical_resolution_px(::PROTOBUF_NAMESPACE_ID::uint32 value);
+  public:
+
   // @@protoc_insertion_point(class_scope:mavsdk.rpc.camera.Information)
  private:
   class _Internal;
@@ -8007,6 +8057,11 @@ class Information PROTOBUF_FINAL :
   typedef void DestructorSkippable_;
   ::PROTOBUF_NAMESPACE_ID::internal::ArenaStringPtr vendor_name_;
   ::PROTOBUF_NAMESPACE_ID::internal::ArenaStringPtr model_name_;
+  float focal_length_mm_;
+  float horizontal_sensor_size_mm_;
+  float vertical_sensor_size_mm_;
+  ::PROTOBUF_NAMESPACE_ID::uint32 horizontal_resolution_px_;
+  ::PROTOBUF_NAMESPACE_ID::uint32 vertical_resolution_px_;
   mutable ::PROTOBUF_NAMESPACE_ID::internal::CachedSize _cached_size_;
   friend struct ::TableStruct_camera_2fcamera_2eproto;
 };
@@ -11815,6 +11870,106 @@ inline void Information::set_allocated_model_name(std::string* model_name) {
   model_name_.SetAllocated(&::PROTOBUF_NAMESPACE_ID::internal::GetEmptyStringAlreadyInited(), model_name,
       GetArena());
   // @@protoc_insertion_point(field_set_allocated:mavsdk.rpc.camera.Information.model_name)
+}
+
+// float focal_length_mm = 3;
+inline void Information::clear_focal_length_mm() {
+  focal_length_mm_ = 0;
+}
+inline float Information::_internal_focal_length_mm() const {
+  return focal_length_mm_;
+}
+inline float Information::focal_length_mm() const {
+  // @@protoc_insertion_point(field_get:mavsdk.rpc.camera.Information.focal_length_mm)
+  return _internal_focal_length_mm();
+}
+inline void Information::_internal_set_focal_length_mm(float value) {
+  
+  focal_length_mm_ = value;
+}
+inline void Information::set_focal_length_mm(float value) {
+  _internal_set_focal_length_mm(value);
+  // @@protoc_insertion_point(field_set:mavsdk.rpc.camera.Information.focal_length_mm)
+}
+
+// float horizontal_sensor_size_mm = 4;
+inline void Information::clear_horizontal_sensor_size_mm() {
+  horizontal_sensor_size_mm_ = 0;
+}
+inline float Information::_internal_horizontal_sensor_size_mm() const {
+  return horizontal_sensor_size_mm_;
+}
+inline float Information::horizontal_sensor_size_mm() const {
+  // @@protoc_insertion_point(field_get:mavsdk.rpc.camera.Information.horizontal_sensor_size_mm)
+  return _internal_horizontal_sensor_size_mm();
+}
+inline void Information::_internal_set_horizontal_sensor_size_mm(float value) {
+  
+  horizontal_sensor_size_mm_ = value;
+}
+inline void Information::set_horizontal_sensor_size_mm(float value) {
+  _internal_set_horizontal_sensor_size_mm(value);
+  // @@protoc_insertion_point(field_set:mavsdk.rpc.camera.Information.horizontal_sensor_size_mm)
+}
+
+// float vertical_sensor_size_mm = 5;
+inline void Information::clear_vertical_sensor_size_mm() {
+  vertical_sensor_size_mm_ = 0;
+}
+inline float Information::_internal_vertical_sensor_size_mm() const {
+  return vertical_sensor_size_mm_;
+}
+inline float Information::vertical_sensor_size_mm() const {
+  // @@protoc_insertion_point(field_get:mavsdk.rpc.camera.Information.vertical_sensor_size_mm)
+  return _internal_vertical_sensor_size_mm();
+}
+inline void Information::_internal_set_vertical_sensor_size_mm(float value) {
+  
+  vertical_sensor_size_mm_ = value;
+}
+inline void Information::set_vertical_sensor_size_mm(float value) {
+  _internal_set_vertical_sensor_size_mm(value);
+  // @@protoc_insertion_point(field_set:mavsdk.rpc.camera.Information.vertical_sensor_size_mm)
+}
+
+// uint32 horizontal_resolution_px = 6;
+inline void Information::clear_horizontal_resolution_px() {
+  horizontal_resolution_px_ = 0u;
+}
+inline ::PROTOBUF_NAMESPACE_ID::uint32 Information::_internal_horizontal_resolution_px() const {
+  return horizontal_resolution_px_;
+}
+inline ::PROTOBUF_NAMESPACE_ID::uint32 Information::horizontal_resolution_px() const {
+  // @@protoc_insertion_point(field_get:mavsdk.rpc.camera.Information.horizontal_resolution_px)
+  return _internal_horizontal_resolution_px();
+}
+inline void Information::_internal_set_horizontal_resolution_px(::PROTOBUF_NAMESPACE_ID::uint32 value) {
+  
+  horizontal_resolution_px_ = value;
+}
+inline void Information::set_horizontal_resolution_px(::PROTOBUF_NAMESPACE_ID::uint32 value) {
+  _internal_set_horizontal_resolution_px(value);
+  // @@protoc_insertion_point(field_set:mavsdk.rpc.camera.Information.horizontal_resolution_px)
+}
+
+// uint32 vertical_resolution_px = 7;
+inline void Information::clear_vertical_resolution_px() {
+  vertical_resolution_px_ = 0u;
+}
+inline ::PROTOBUF_NAMESPACE_ID::uint32 Information::_internal_vertical_resolution_px() const {
+  return vertical_resolution_px_;
+}
+inline ::PROTOBUF_NAMESPACE_ID::uint32 Information::vertical_resolution_px() const {
+  // @@protoc_insertion_point(field_get:mavsdk.rpc.camera.Information.vertical_resolution_px)
+  return _internal_vertical_resolution_px();
+}
+inline void Information::_internal_set_vertical_resolution_px(::PROTOBUF_NAMESPACE_ID::uint32 value) {
+  
+  vertical_resolution_px_ = value;
+}
+inline void Information::set_vertical_resolution_px(::PROTOBUF_NAMESPACE_ID::uint32 value) {
+  _internal_set_vertical_resolution_px(value);
+  // @@protoc_insertion_point(field_set:mavsdk.rpc.camera.Information.vertical_resolution_px)
 }
 
 #ifdef __GNUC__

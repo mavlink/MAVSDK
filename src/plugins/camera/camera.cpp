@@ -487,7 +487,16 @@ std::ostream& operator<<(std::ostream& str, Camera::SettingOptions const& settin
 
 bool operator==(const Camera::Information& lhs, const Camera::Information& rhs)
 {
-    return (rhs.vendor_name == lhs.vendor_name) && (rhs.model_name == lhs.model_name);
+    return (rhs.vendor_name == lhs.vendor_name) && (rhs.model_name == lhs.model_name) &&
+           ((std::isnan(rhs.focal_length_mm) && std::isnan(lhs.focal_length_mm)) ||
+            rhs.focal_length_mm == lhs.focal_length_mm) &&
+           ((std::isnan(rhs.horizontal_sensor_size_mm) &&
+             std::isnan(lhs.horizontal_sensor_size_mm)) ||
+            rhs.horizontal_sensor_size_mm == lhs.horizontal_sensor_size_mm) &&
+           ((std::isnan(rhs.vertical_sensor_size_mm) && std::isnan(lhs.vertical_sensor_size_mm)) ||
+            rhs.vertical_sensor_size_mm == lhs.vertical_sensor_size_mm) &&
+           (rhs.horizontal_resolution_px == lhs.horizontal_resolution_px) &&
+           (rhs.vertical_resolution_px == lhs.vertical_resolution_px);
 }
 
 std::ostream& operator<<(std::ostream& str, Camera::Information const& information)
@@ -496,6 +505,11 @@ std::ostream& operator<<(std::ostream& str, Camera::Information const& informati
     str << "information:" << '\n' << "{\n";
     str << "    vendor_name: " << information.vendor_name << '\n';
     str << "    model_name: " << information.model_name << '\n';
+    str << "    focal_length_mm: " << information.focal_length_mm << '\n';
+    str << "    horizontal_sensor_size_mm: " << information.horizontal_sensor_size_mm << '\n';
+    str << "    vertical_sensor_size_mm: " << information.vertical_sensor_size_mm << '\n';
+    str << "    horizontal_resolution_px: " << information.horizontal_resolution_px << '\n';
+    str << "    vertical_resolution_px: " << information.vertical_resolution_px << '\n';
     str << '}';
     return str;
 }

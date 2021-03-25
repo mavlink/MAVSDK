@@ -903,6 +903,11 @@ void CameraImpl::process_camera_information(const mavlink_message_t& message)
         std::lock_guard<std::mutex> lock(_information.mutex);
         _information.data.vendor_name = (char*)(camera_information.vendor_name);
         _information.data.model_name = (char*)(camera_information.model_name);
+        _information.data.focal_length_mm = camera_information.focal_length;
+        _information.data.horizontal_sensor_size_mm = camera_information.sensor_size_h;
+        _information.data.vertical_sensor_size_mm = camera_information.sensor_size_v;
+        _information.data.horizontal_resolution_px = camera_information.resolution_h;
+        _information.data.vertical_resolution_px = camera_information.resolution_v;
 
         if (_information.subscription_callback) {
             const auto temp_callback = _information.subscription_callback;
