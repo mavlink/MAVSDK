@@ -612,6 +612,16 @@ public:
 
         rpc_obj->set_model_name(information.model_name);
 
+        rpc_obj->set_focal_length_mm(information.focal_length_mm);
+
+        rpc_obj->set_horizontal_sensor_size_mm(information.horizontal_sensor_size_mm);
+
+        rpc_obj->set_vertical_sensor_size_mm(information.vertical_sensor_size_mm);
+
+        rpc_obj->set_horizontal_resolution_px(information.horizontal_resolution_px);
+
+        rpc_obj->set_vertical_resolution_px(information.vertical_resolution_px);
+
         return rpc_obj;
     }
 
@@ -623,6 +633,16 @@ public:
         obj.vendor_name = information.vendor_name();
 
         obj.model_name = information.model_name();
+
+        obj.focal_length_mm = information.focal_length_mm();
+
+        obj.horizontal_sensor_size_mm = information.horizontal_sensor_size_mm();
+
+        obj.vertical_sensor_size_mm = information.vertical_sensor_size_mm();
+
+        obj.horizontal_resolution_px = information.horizontal_resolution_px();
+
+        obj.vertical_resolution_px = information.vertical_resolution_px();
 
         return obj;
     }

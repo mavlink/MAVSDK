@@ -444,6 +444,11 @@ public:
     struct Information {
         std::string vendor_name{}; /**< @brief Name of the camera vendor */
         std::string model_name{}; /**< @brief Name of the camera model */
+        float focal_length_mm{}; /**< @brief Focal length */
+        float horizontal_sensor_size_mm{}; /**< @brief Horizontal sensor size */
+        float vertical_sensor_size_mm{}; /**< @brief Vertical sensor size */
+        uint32_t horizontal_resolution_px{}; /**< @brief Horizontal image resolution in pixels */
+        uint32_t vertical_resolution_px{}; /**< @brief Vertical image resolution in pixels */
     };
 
     /**
