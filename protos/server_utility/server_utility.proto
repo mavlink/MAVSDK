@@ -1,0 +1,50 @@
+syntax = "proto3";
+
+package mavsdk.rpc.server_utility;
+
+import "mavsdk_options.proto";
+
+option java_package = "io.mavsdk.server_utility";
+option java_outer_classname = "ServerUtilityProto";
+
+/*
+ * Utility for onboard MAVSDK instances for common "server" tasks.
+ */
+service ServerUtilityService {
+  // Sends a statustext.
+  rpc SendStatusText(SendStatusTextRequest) returns(SendStatusTextResponse) { option (mavsdk.options.async_type) = SYNC; }
+}
+
+// Status types.
+enum StatusTextType {
+    STATUS_TEXT_TYPE_DEBUG = 0; // Debug
+    STATUS_TEXT_TYPE_INFO = 1; // Information
+    STATUS_TEXT_TYPE_NOTICE = 2; // Notice
+    STATUS_TEXT_TYPE_WARNING = 3; // Warning
+    STATUS_TEXT_TYPE_ERROR = 4; // Error
+    STATUS_TEXT_TYPE_CRITICAL = 5; // Critical
+    STATUS_TEXT_TYPE_ALERT = 6; // Alert
+    STATUS_TEXT_TYPE_EMERGENCY = 7; // Emergency
+}
+
+message SendStatusTextRequest {
+    StatusTextType type = 1; // The text to send
+    string text = 2; // Text message
+}
+message SendStatusTextResponse {
+    ServerUtilityResult server_utility_result = 1;
+}
+
+message ServerUtilityResult {
+    // Possible results returned for server utility requests.
+    enum Result {
+        RESULT_UNKNOWN = 0; // Unknown result
+        RESULT_SUCCESS = 1; // Request succeeded
+        RESULT_NO_SYSTEM = 2; // No system is connected
+        RESULT_CONNECTION_ERROR = 3; // Connection error
+        RESULT_INVALID_ARGUMENT = 4; // Invalid argument
+    }
+
+    Result result = 1; // Result enum value
+    string result_str = 2; // Human-readable English string describing the result
+}
