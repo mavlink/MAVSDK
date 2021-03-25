@@ -37,7 +37,8 @@ private:
         const CalibrationCallback& callback,
         const Calibration::Result& result,
         const Calibration::ProgressData progress_data);
-    void process_statustext(const mavlink_message_t& message);
+
+    void receive_statustext(const MavlinkStatustextHandler::Statustext&);
 
     void command_result_callback(MavlinkCommandSender::Result command_result, float progress);
 

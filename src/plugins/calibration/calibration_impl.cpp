@@ -28,13 +28,16 @@ CalibrationImpl::~CalibrationImpl()
 
 void CalibrationImpl::init()
 {
-    _parent->register_mavlink_message_handler(
-        MAVLINK_MSG_ID_STATUSTEXT, std::bind(&CalibrationImpl::process_statustext, this, _1), this);
+    _parent->register_statustext_handler(
+        [this](const MavlinkStatustextHandler::Statustext& statustext) {
+            receive_statustext(statustext);
+        },
+        this);
 }
 
 void CalibrationImpl::deinit()
 {
-    _parent->unregister_all_mavlink_message_handlers(this);
+    _parent->unregister_statustext_handler(this);
 }
 
 void CalibrationImpl::enable() {}
@@ -311,21 +314,16 @@ CalibrationImpl::calibration_result_from_command_result(MavlinkCommandSender::Re
     }
 }
 
-void CalibrationImpl::process_statustext(const mavlink_message_t& message)
+void CalibrationImpl::receive_statustext(const MavlinkStatustextHandler::Statustext& statustext)
 {
     std::lock_guard<std::mutex> lock(_calibration_mutex);
     if (_state == State::None) {
         return;
     }
 
-    mavlink_statustext_t statustext;
-    mavlink_msg_statustext_decode(&message, &statustext);
-
     _parser.reset();
 
-    char text_with_null[sizeof(statustext.text) + 1]{};
-    strncpy(text_with_null, statustext.text, sizeof(text_with_null) - 1);
-    _parser.parse(text_with_null);
+    _parser.parse(statustext.text);
 
     switch (_parser.get_status()) {
         case CalibrationStatustextParser::Status::None:
