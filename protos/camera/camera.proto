@@ -368,4 +368,9 @@ message SettingOptions {
 message Information {
     string vendor_name = 1; // Name of the camera vendor
     string model_name = 2; // Name of the camera model
+    float focal_length_mm = 3; // Focal length
+    float horizontal_sensor_size_mm = 4; // Horizontal sensor size
+    float vertical_sensor_size_mm = 5; // Vertical sensor size
+    uint32 horizontal_resolution_px = 6; // Horizontal image resolution in pixels
+    uint32 vertical_resolution_px = 7; // Vertical image resolution in pixels
 }
