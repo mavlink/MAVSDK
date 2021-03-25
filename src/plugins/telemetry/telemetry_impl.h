@@ -196,7 +196,6 @@ private:
     void process_fixedwing_metrics(const mavlink_message_t& message);
     void process_sys_status(const mavlink_message_t& message);
     void process_heartbeat(const mavlink_message_t& message);
-    void process_statustext(const mavlink_message_t& message);
     void process_rc_channels(const mavlink_message_t& message);
     void process_unix_epoch_time(const mavlink_message_t& message);
     void process_actuator_control_target(const mavlink_message_t& message);
@@ -217,6 +216,8 @@ private:
     void receive_rc_channels_timeout();
     void receive_gps_raw_timeout();
     void receive_unix_epoch_timeout();
+
+    void receive_statustext(const MavlinkStatustextHandler::Statustext&);
 
     static Telemetry::Result
     telemetry_result_from_command_result(MavlinkCommandSender::Result command_result);

@@ -11,13 +11,20 @@ public:
     MavlinkStatustextHandler() = default;
     ~MavlinkStatustextHandler() = default;
 
-    std::optional<std::string> process_severity(const mavlink_statustext_t& statustext);
-    std::optional<std::string> process_text(const mavlink_statustext_t& statustext);
+    struct Statustext {
+        std::string text;
+        MAV_SEVERITY severity;
+    };
+
+    std::optional<Statustext> process(const mavlink_statustext_t& statustext);
+
+    static std::string severity_str(MAV_SEVERITY severity);
 
 private:
     std::string _temp_multi_str{};
     uint16_t _last_id{0};
     uint8_t _last_chunk_seq{0};
+    MAV_SEVERITY _last_severity{MAV_SEVERITY_DEBUG};
 };
 
 } // namespace mavsdk
