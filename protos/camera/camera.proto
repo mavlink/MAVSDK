@@ -371,6 +371,6 @@ message Information {
     float focal_length_mm = 3; // Focal length
     float horizontal_sensor_size_mm = 4; // Horizontal sensor size
     float vertical_sensor_size_mm = 5; // Vertical sensor size
-    uint32 horizontal_resolution_px = 6; Horizontal image resolution in pixels
-    uint32 vertical_resolution_px = 7; Vertical image resolution in pixels
+    uint32 horizontal_resolution_px = 6; // Horizontal image resolution in pixels
+    uint32 vertical_resolution_px = 7; // Vertical image resolution in pixels
 }
