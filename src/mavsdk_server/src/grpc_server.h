@@ -3,15 +3,15 @@
 #include <grpcpp/server.h>
 #include <grpcpp/server_builder.h>
 #include <memory>
-#include "mavsdk.h"
 
+#include "mavsdk.h"
+#include "core/core_service_impl.h"
 #include "plugins/action/action.h"
 #include "action/action_service_impl.h"
 #include "plugins/calibration/calibration.h"
 #include "calibration/calibration_service_impl.h"
 #include "plugins/camera/camera.h"
 #include "camera/camera_service_impl.h"
-#include "core/core_service_impl.h"
 #include "plugins/failure/failure.h"
 #include "failure/failure_service_impl.h"
 #include "plugins/follow_me/follow_me.h"
@@ -38,6 +38,8 @@
 #include "offboard/offboard_service_impl.h"
 #include "plugins/param/param.h"
 #include "param/param_service_impl.h"
+#include "plugins/server_utility/server_utility.h"
+#include "server_utility/server_utility_service_impl.h"
 #include "plugins/shell/shell.h"
 #include "shell/shell_service_impl.h"
 #include "plugins/telemetry/telemetry.h"
@@ -87,6 +89,8 @@ public:
         _offboard_service(_offboard),
         _param(_mavsdk.system()),
         _param_service(_param),
+        _server_utility(_mavsdk.system()),
+        _server_utility_service(_server_utility),
         _shell(_mavsdk.system()),
         _shell_service(_shell),
         _telemetry(_mavsdk.system()),
@@ -139,6 +143,8 @@ private:
     OffboardServiceImpl<> _offboard_service;
     Param _param;
     ParamServiceImpl<> _param_service;
+    ServerUtility _server_utility;
+    ServerUtilityServiceImpl<> _server_utility_service;
     Shell _shell;
     ShellServiceImpl<> _shell_service;
     Telemetry _telemetry;
