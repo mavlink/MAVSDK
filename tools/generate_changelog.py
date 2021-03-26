@@ -4,6 +4,8 @@ from gql import gql, Client
 from gql.transport.requests import RequestsHTTPTransport
 
 import argparse
+import dateutil.parser
+import datetime
 import json
 
 debug = False
@@ -41,6 +43,11 @@ def query_releases(gql_client, debug=False):
 
     return releases
 
+def plus_one_minute(date_str):
+    date = dateutil.parser.parse(date_str)
+    date += datetime.timedelta(minutes=1)
+    return date.isoformat().replace('+00:00', 'Z')
+
 def query_pull_requests(gql_client, releases, release_tag, debug=False):
     previous_wanted_release = None
     wanted_release = None
@@ -61,7 +68,9 @@ def query_pull_requests(gql_client, releases, release_tag, debug=False):
     if previous_wanted_release is None:
         merged_predicate = f"<={wanted_release['createdAt']}"
     else:
-        merged_predicate = f"{previous_wanted_release['createdAt'][:-4]}..{wanted_release['createdAt'][:-4]}"
+        # We add one minute because otherwise the last PR of the previous release
+        # tends to get included as well.
+        merged_predicate = f"{plus_one_minute(previous_wanted_release['createdAt'])[:-4]}..{wanted_release['createdAt'][:-4]}"
 
     query_pull_requests_str = '''
             {{
