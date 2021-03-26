@@ -158,7 +158,7 @@ bool TcpConnection::send_message(const mavlink_message_t& message)
     // TODO: remove this assert again
     assert(buffer_len <= MAVLINK_MAX_PACKET_LEN);
 
-#if defined(WINDOWS)
+#if !defined(MSG_NOSIGNAL)
     auto flags = 0;
 #else
     auto flags = MSG_NOSIGNAL;
