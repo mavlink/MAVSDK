@@ -31,7 +31,7 @@ message SetRateTransponderRequest {
 
 // Result type.
 message TransponderResult {
-    // Possible results returned for telemetry requests.
+    // Possible results returned for transponder requests.
     enum Result {
         RESULT_UNKNOWN = 0; // Unknown result
         RESULT_SUCCESS = 1; // Success: the telemetry command was accepted by the vehicle
