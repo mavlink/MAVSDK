@@ -89,6 +89,16 @@ service ActionService {
      */
     rpc DoOrbit(DoOrbitRequest) returns(DoOrbitResponse) {}
     /*
+     * Send command to hold position (a.k.a. "Loiter").
+     *
+     * Sends a command to drone to change to Hold flight mode, causing the
+     * vehicle to stop and maintain its current GPS position and altitude.
+     *
+     * Note: this command is specific to the PX4 Autopilot flight stack as
+     * it implies a change to a PX4-specific mode.
+     */
+    rpc Hold(HoldRequest) returns(HoldResponse) {}
+    /*
      * Send command to transition the drone to fixedwing.
      *
      * The associated action will only be executed for VTOL vehicles (on other vehicle types the
@@ -193,8 +203,8 @@ enum OrbitYawBehavior {
     ORBIT_YAW_BEHAVIOR_HOLD_FRONT_TANGENT_TO_CIRCLE = 3; // Vehicle front follows flight path (tangential to circle)
     ORBIT_YAW_BEHAVIOR_RC_CONTROLLED = 4; // Yaw controlled by RC input
 }
-    
-message DoOrbitRequest {    
+
+message DoOrbitRequest {
     float radius_m = 1; // Radius of circle (in meters)
     float velocity_ms = 2; // Tangential velocity (in m/s)
     OrbitYawBehavior yaw_behavior = 3; // Yaw behavior of vehicle (ORBIT_YAW_BEHAVIOUR)
@@ -203,6 +213,11 @@ message DoOrbitRequest {
     double absolute_altitude_m = 7 [(mavsdk.options.default_value)="NaN"]; // Center point altitude in meters. NAN: use current altitude for center
 }
 message DoOrbitResponse {
+    ActionResult action_result = 1;
+}
+
+message HoldRequest {}
+message HoldResponse {
     ActionResult action_result = 1;
 }
 
