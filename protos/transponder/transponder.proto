@@ -15,7 +15,7 @@ service TransponderService {
     // Subscribe to 'transponder' updates.
     rpc SubscribeTransponder(SubscribeTransponderRequest) returns(stream TransponderResponse) {}
     
-    // Set rate to 'position' updates.
+    // Set rate to 'transponder' updates.
     rpc SetRateTransponder(SetRateTransponderRequest) returns(SetRateTrasponderResponse) {}
     
 }
