@@ -63,6 +63,7 @@ enum AdsbEmitterType {
 
 // These flags indicate status such as data validity of each data source. Set = data valid.
 enum AdsbFlags {
+    ADSB_UNUSED = 0;
     ADSB_FLAGS_VALID_COORDS = 1;
     ADSB_FLAGS_VALID_ALTITUDE = 2;
     ADSB_FLAGS_VALID_HEADING = 4;
