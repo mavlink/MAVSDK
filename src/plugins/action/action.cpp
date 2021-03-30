@@ -152,6 +152,16 @@ Action::Result Action::do_orbit(
         radius_m, velocity_ms, yaw_behavior, latitude_deg, longitude_deg, absolute_altitude_m);
 }
 
+void Action::hold_async(const ResultCallback callback)
+{
+    _impl->hold_async(callback);
+}
+
+Action::Result Action::hold() const
+{
+    return _impl->hold();
+}
+
 void Action::transition_to_fixedwing_async(const ResultCallback callback)
 {
     _impl->transition_to_fixedwing_async(callback);

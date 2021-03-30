@@ -183,6 +183,16 @@ Action::Result ActionImpl::do_orbit(
     return fut.get();
 }
 
+Action::Result ActionImpl::hold() const
+{
+    auto prom = std::promise<Action::Result>();
+    auto fut = prom.get_future();
+
+    hold_async([&prom](Action::Result result) { prom.set_value(result); });
+
+    return fut.get();
+}
+
 Action::Result ActionImpl::transition_to_fixedwing() const
 {
     auto prom = std::promise<Action::Result>();
@@ -402,6 +412,14 @@ void ActionImpl::do_orbit_async(
 
     _parent->send_command_async(
         command, [this, callback](MavlinkCommandSender::Result result, float) {
+            command_result_callback(result, callback);
+        });
+}
+
+void ActionImpl::hold_async(const Action::ResultCallback& callback) const
+{
+    _parent->set_flight_mode_async(
+        SystemImpl::FlightMode::Hold, [this, callback](MavlinkCommandSender::Result result, float) {
             command_result_callback(result, callback);
         });
 }
