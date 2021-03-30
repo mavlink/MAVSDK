@@ -21,7 +21,7 @@ service TransponderService {
 
 message SubscribeTransponderRequest {}
 message TransponderResponse {
-    ADSB_VEHICLE transponder = 1; // The next detection 
+    AdsbVehicle transponder = 1; // The next detection 
 }
 
 message SetRateTransponderRequest {
@@ -29,6 +29,67 @@ message SetRateTransponderRequest {
 }
 message SetRateTrasponderResponse {
     TransponderResult transpoder_result = 1;
+}
+
+// ADSB altimeter types.
+enum AdsbAltitudeType {
+    ADSB_ALTITUDE_TYPE_PRESSURE_QNH = 0; // Altitude reported from a Baro source using QNH reference
+    ADSB_ALTITUDE_TYPE_GEOMETRIC = 1; // Altitude reported from a GNSS source
+}
+
+// ADSB classification for the type of vehicle emitting the transponder signal.
+enum AdsbEmitterType {
+    ADSB_EMITTER_TYPE_NO_INFO = 0; 
+    ADSB_EMITTER_TYPE_LIGHT = 1;
+    ADSB_EMITTER_TYPE_SMALL = 2;
+    ADSB_EMITTER_TYPE_LARGE = 3;
+    ADSB_EMITTER_TYPE_HIGH_VORTEX_LARGE = 4;
+    ADSB_EMITTER_TYPE_HEAVY = 5;
+    ADSB_EMITTER_TYPE_HIGHLY_MANUV = 6;
+    ADSB_EMITTER_TYPE_ROTOCRAFT = 7;
+    ADSB_EMITTER_TYPE_UNASSIGNED = 8;
+    ADSB_EMITTER_TYPE_GLIDER = 9;
+    ADSB_EMITTER_TYPE_LIGHTER_AIR = 10;
+    ADSB_EMITTER_TYPE_PARACHUTE = 11;
+    ADSB_EMITTER_TYPE_ULTRA_LIGHT = 12;
+    ADSB_EMITTER_TYPE_UNASSIGNED2 = 13;
+    ADSB_EMITTER_TYPE_UAV = 14;
+    ADSB_EMITTER_TYPE_SPACE = 15;
+    ADSB_EMITTER_TYPE_UNASSGINED3 = 16;
+    ADSB_EMITTER_TYPE_EMERGENCY_SURFACE = 17;
+    ADSB_EMITTER_TYPE_SERVICE_SURFACE = 18;
+    ADSB_EMITTER_TYPE_POINT_OBSTACLE = 19;
+}
+
+// These flags indicate status such as data validity of each data source. Set = data valid.
+enum AdsbFlags {
+    ADSB_FLAGS_VALID_COORDS = 1;
+    ADSB_FLAGS_VALID_ALTITUDE = 2;
+    ADSB_FLAGS_VALID_HEADING = 4;
+    ADSB_FLAGS_VALID_VELOCITY = 8;
+    ADSB_FLAGS_VALID_CALLSIGN = 16;
+    ADSB_FLAGS_VALID_SQUAWK = 32;
+    ADSB_FLAGS_SIMULATED = 64;
+    ADSB_FLAGS_VERTICAL_VELOCITY_VALID = 128;
+    ADSB_FLAGS_BARO_VALID = 256;
+    ADSB_FLAGS_SOURCE_UAT = 32768;
+}
+
+// ADSB Vehicle type.
+message AdsbVehicle {
+    uint32 ICAO_address = 1; // ICAO address.
+    int32 lat_deg = 2; // Latitude (degE7).
+    int32 lon_deg = 3; // Longitude (degE7).
+    AdsbAltitudeType altitude_type = 4; // ADSB altitude type.
+    int32 altitude = 5; // Altitude(ASL) (mm).
+    uint32 heading = 6; // Course over ground.
+    uint32 hor_velocity = 7; // The horizontal velocity.
+    int32 ver_velocity = 8; // The vertical velocity. Positive is up.
+    string callsign = 9 ; // The callsign, 8+null.
+    AdsbEmitterType emitter_type = 10; // ADSB emitter type.
+    uint32 tslc = 11; // Time since last communication in seconds.
+    AdsbFlags flags = 12; // Bitmap to indicate various statuses including valid data fields.
+    uint32 squawk = 13; // Squawk code.
 }
 
 // Result type.
