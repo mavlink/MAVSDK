@@ -320,6 +320,20 @@ public:
         return grpc::Status::OK;
     }
 
+    grpc::Status Hold(
+        grpc::ServerContext* /* context */,
+        const rpc::action::HoldRequest* /* request */,
+        rpc::action::HoldResponse* response) override
+    {
+        auto result = _action.hold();
+
+        if (response != nullptr) {
+            fillResponseWithResult(response, result);
+        }
+
+        return grpc::Status::OK;
+    }
+
     grpc::Status TransitionToFixedwing(
         grpc::ServerContext* /* context */,
         const rpc::action::TransitionToFixedwingRequest* /* request */,

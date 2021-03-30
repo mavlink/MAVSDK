@@ -28,6 +28,7 @@ add_executable(integration_tests_runner
     action_takeoff_and_kill.cpp
     action_transition_multicopter_fixedwing.cpp
     action_goto.cpp
+    action_hold.cpp
     calibration.cpp
     camera_mode.cpp
     camera_settings.cpp

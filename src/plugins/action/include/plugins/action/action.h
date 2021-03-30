@@ -377,6 +377,34 @@ public:
         double absolute_altitude_m) const;
 
     /**
+     * @brief Send command to hold position (a.k.a. "Loiter").
+     *
+     * Sends a command to drone to change to Hold flight mode, causing the
+     * vehicle to stop and maintain its current GPS position and altitude.
+     *
+     * Note: this command is specific to the PX4 Autopilot flight stack as
+     * it implies a change to a PX4-specific mode.
+     *
+     * This function is non-blocking. See 'hold' for the blocking counterpart.
+     */
+    void hold_async(const ResultCallback callback);
+
+    /**
+     * @brief Send command to hold position (a.k.a. "Loiter").
+     *
+     * Sends a command to drone to change to Hold flight mode, causing the
+     * vehicle to stop and maintain its current GPS position and altitude.
+     *
+     * Note: this command is specific to the PX4 Autopilot flight stack as
+     * it implies a change to a PX4-specific mode.
+     *
+     * This function is blocking. See 'hold_async' for the non-blocking counterpart.
+     *
+     * @return Result of request.
+     */
+    Result hold() const;
+
+    /**
      * @brief Send command to transition the drone to fixedwing.
      *
      * The associated action will only be executed for VTOL vehicles (on other vehicle types the

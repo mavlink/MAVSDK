@@ -19,6 +19,7 @@ public:
     MOCK_CONST_METHOD0(terminate, Action::Result()){};
     MOCK_CONST_METHOD0(kill, Action::Result()){};
     MOCK_CONST_METHOD0(return_to_launch, Action::Result()){};
+    MOCK_CONST_METHOD0(hold, Action::Result()){};
     MOCK_CONST_METHOD0(transition_to_fixedwing, Action::Result()){};
     MOCK_CONST_METHOD0(transition_to_multicopter, Action::Result()){};
     MOCK_CONST_METHOD0(get_takeoff_altitude, std::pair<Action::Result, float>()){};
