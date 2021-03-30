@@ -22,7 +22,7 @@ service TransponderService {
 
 message SubscribeTransponderRequest {}
 message TransponderResponse {
-    Transponder transponder = 1; // The next detection 
+    ADSB_VEHICLE transponder = 1; // The next detection 
 }
 
 message SetRateTransponderRequest {
