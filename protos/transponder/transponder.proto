@@ -66,7 +66,6 @@ message AdsbVehicle {
     float vertical_velocity_m_s = 8; // The vertical velocity in metres/second. Positive is up.
     string callsign = 9 ; // The callsign
     AdsbEmitterType emitter_type = 10; // ADSB emitter type.
-    uint32 tslc = 11; // Time since last communication in seconds.
     uint32 squawk = 13; // Squawk code.
 }
 
