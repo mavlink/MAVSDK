@@ -27,7 +27,7 @@ message TransponderResponse {
 message SetRateTransponderRequest {
     double rate_hz = 1; // The requested rate (in Hertz)
 }
-message SetRateTrasponderResponse {
+message SetRateTransponderResponse {
     TransponderResult transponder_result = 1;
 }
 
