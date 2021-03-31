@@ -33,26 +33,26 @@ message SetRateTransponderResponse {
 
 // ADSB classification for the type of vehicle emitting the transponder signal.
 enum AdsbEmitterType {
-    ADSB_EMITTER_TYPE_NO_INFO = 0; 
-    ADSB_EMITTER_TYPE_LIGHT = 1;
-    ADSB_EMITTER_TYPE_SMALL = 2;
-    ADSB_EMITTER_TYPE_LARGE = 3;
-    ADSB_EMITTER_TYPE_HIGH_VORTEX_LARGE = 4;
-    ADSB_EMITTER_TYPE_HEAVY = 5;
-    ADSB_EMITTER_TYPE_HIGHLY_MANUV = 6;
-    ADSB_EMITTER_TYPE_ROTOCRAFT = 7;
-    ADSB_EMITTER_TYPE_UNASSIGNED = 8;
-    ADSB_EMITTER_TYPE_GLIDER = 9;
-    ADSB_EMITTER_TYPE_LIGHTER_AIR = 10;
-    ADSB_EMITTER_TYPE_PARACHUTE = 11;
-    ADSB_EMITTER_TYPE_ULTRA_LIGHT = 12;
-    ADSB_EMITTER_TYPE_UNASSIGNED2 = 13;
-    ADSB_EMITTER_TYPE_UAV = 14;
-    ADSB_EMITTER_TYPE_SPACE = 15;
-    ADSB_EMITTER_TYPE_UNASSGINED3 = 16;
-    ADSB_EMITTER_TYPE_EMERGENCY_SURFACE = 17;
-    ADSB_EMITTER_TYPE_SERVICE_SURFACE = 18;
-    ADSB_EMITTER_TYPE_POINT_OBSTACLE = 19;
+    ADSB_EMITTER_TYPE_NO_INFO = 0; // No emitter info.
+    ADSB_EMITTER_TYPE_LIGHT = 1; // Light emitter.
+    ADSB_EMITTER_TYPE_SMALL = 2; // Small emitter.
+    ADSB_EMITTER_TYPE_LARGE = 3; // Large emitter.
+    ADSB_EMITTER_TYPE_HIGH_VORTEX_LARGE = 4; // High vortex emitter.
+    ADSB_EMITTER_TYPE_HEAVY = 5; // Heavy emitter.
+    ADSB_EMITTER_TYPE_HIGHLY_MANUV = 6; // Highly maneuverable emitter.
+    ADSB_EMITTER_TYPE_ROTOCRAFT = 7; // Rotorcraft emitter.
+    ADSB_EMITTER_TYPE_UNASSIGNED = 8; // Unassigned emitter.
+    ADSB_EMITTER_TYPE_GLIDER = 9; // Glider emitter.
+    ADSB_EMITTER_TYPE_LIGHTER_AIR = 10; // Lighter air emitter.
+    ADSB_EMITTER_TYPE_PARACHUTE = 11; // Parachute emitter.
+    ADSB_EMITTER_TYPE_ULTRA_LIGHT = 12; // Ultra light emitter.
+    ADSB_EMITTER_TYPE_UNASSIGNED2 = 13; // Unassigned2 emitter.
+    ADSB_EMITTER_TYPE_UAV = 14; // UAV emitter.
+    ADSB_EMITTER_TYPE_SPACE = 15; // Space emitter.
+    ADSB_EMITTER_TYPE_UNASSGINED3 = 16; // Unassigned3 emitter.
+    ADSB_EMITTER_TYPE_EMERGENCY_SURFACE = 17; // Emergency emitter.
+    ADSB_EMITTER_TYPE_SERVICE_SURFACE = 18; // Service surface emitter.
+    ADSB_EMITTER_TYPE_POINT_OBSTACLE = 19; // Point obstacle emitter.
 }
 
 // ADSB Vehicle type.
