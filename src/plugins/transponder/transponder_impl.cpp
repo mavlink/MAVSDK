@@ -31,16 +31,16 @@ Transponder::Result TransponderImpl::set_rate_transponder(double rate_hz)
         _parent->set_msg_rate(MAVLINK_MSG_ID_ADSB_VEHICLE, rate_hz));
 }
 
-void TransponderImpl::set_rate_transponder_async(double rate_hz, const Transponder::ResultCallback callback)
+void TransponderImpl::set_rate_transponder_async(
+    double rate_hz, const Transponder::ResultCallback callback)
 {
     _parent->set_msg_rate_async(
-    MAVLINK_MSG_ID_ADSB_VEHICLE,
-    rate_hz,
-    std::bind(&TransponderImpl::command_result_callback, std::placeholders::_1, callback));
+        MAVLINK_MSG_ID_ADSB_VEHICLE,
+        rate_hz,
+        std::bind(&TransponderImpl::command_result_callback, std::placeholders::_1, callback));
 }
 
-Transponder::AdsbVehicle
-TransponderImpl::transponder() const
+Transponder::AdsbVehicle TransponderImpl::transponder() const
 {
     std::lock_guard<std::mutex> lock(_transponder_mutex);
     return _transponder;
@@ -65,12 +65,12 @@ void TransponderImpl::process_transponder(const mavlink_message_t& message)
 
     Transponder::AdsbVehicle adsbVehicle;
     adsbVehicle.icao_address = local_adsb_vehicle.ICAO_address;
-    adsbVehicle.latitude_deg = local_adsb_vehicle.lat * 1e-7;
-    adsbVehicle.longitude_deg = local_adsb_vehicle.lon * 1e-7;
-    adsbVehicle.absolute_altitude_m = local_adsb_vehicle.altitude * 1e-3f;
-    adsbVehicle.heading_deg = local_adsb_vehicle.heading * 1e-2f;
-    adsbVehicle.horizontal_velocity_m_s = local_adsb_vehicle.hor_velocity * 1e-2f;
-    adsbVehicle.vertical_velocity_m_s = local_adsb_vehicle.ver_velocity * 1e-2f;
+    adsbVehicle.latitude_deg = local_adsb_vehicle.lat;
+    adsbVehicle.longitude_deg = local_adsb_vehicle.lon;
+    adsbVehicle.absolute_altitude_m = local_adsb_vehicle.altitude;
+    adsbVehicle.heading_deg = local_adsb_vehicle.heading;
+    adsbVehicle.horizontal_velocity_m_s = local_adsb_vehicle.hor_velocity;
+    adsbVehicle.vertical_velocity_m_s = local_adsb_vehicle.ver_velocity;
     adsbVehicle.callsign = local_adsb_vehicle.callsign;
     adsbVehicle.emitter_type = Transponder::AdsbEmitterType(local_adsb_vehicle.emitter_type);
     adsbVehicle.squawk = local_adsb_vehicle.squawk;
