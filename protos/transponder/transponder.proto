@@ -62,7 +62,7 @@ message AdsbVehicle {
     double longitude_deg = 3; // Longitude in degrees (range: -180 to +180).
     float absolute_altitude_m = 5; // Altitude AMSL (above mean sea level) in metres
     float heading_deg = 6; // Course over ground, in degrees
-    uint32 hor_velocity = 7; // The horizontal velocity.
+    float horizontal_velocity_m_s = 7; // The horizontal velocity in metres/second
     float vertical_velocity_m_s = 8; // The vertical velocity in metres/second. Positive is up.
     string callsign = 9 ; // The callsign, 8+null.
     AdsbEmitterType emitter_type = 10; // ADSB emitter type.
