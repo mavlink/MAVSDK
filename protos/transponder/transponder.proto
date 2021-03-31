@@ -80,7 +80,7 @@ enum AdsbFlags {
 message AdsbVehicle {
     uint32 icao_address = 1; // ICAO address.
     double latitude_deg = 2; // Latitude in degrees (range: -90 to +90)
-    int32 lon_deg = 3; // Longitude (degE7).
+    double longitude_deg = 3; // Longitude in degrees (range: -180 to +180).
     AdsbAltitudeType altitude_type = 4; // ADSB altitude type.
     int32 altitude = 5; // Altitude(ASL) (mm).
     uint32 heading = 6; // Course over ground.
