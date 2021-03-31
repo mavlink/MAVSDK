@@ -60,7 +60,7 @@ message AdsbVehicle {
     uint32 icao_address = 1; // ICAO address.
     double latitude_deg = 2; // Latitude in degrees (range: -90 to +90)
     double longitude_deg = 3; // Longitude in degrees (range: -180 to +180).
-    int32 altitude = 5; // Altitude(ASL) (mm).
+    float absolute_altitude_m = 5; // Altitude AMSL (above mean sea level) in metres
     uint32 heading = 6; // Course over ground.
     uint32 hor_velocity = 7; // The horizontal velocity.
     float vertical_velocity_m_s = 8; // The vertical velocity in metres/second. Positive is up.
