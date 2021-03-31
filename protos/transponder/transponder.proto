@@ -16,7 +16,7 @@ service TransponderService {
     rpc SubscribeTransponder(SubscribeTransponderRequest) returns(stream TransponderResponse) {}
     
     // Set rate to 'transponder' updates.
-    rpc SetRateTransponder(SetRateTransponderRequest) returns(SetRateTrasponderResponse) {}
+    rpc SetRateTransponder(SetRateTransponderRequest) returns(SetRateTransponderResponse) {}
 }
 
 message SubscribeTransponderRequest {}
