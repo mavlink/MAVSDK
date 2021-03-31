@@ -85,7 +85,7 @@ message AdsbVehicle {
     int32 altitude = 5; // Altitude(ASL) (mm).
     uint32 heading = 6; // Course over ground.
     uint32 hor_velocity = 7; // The horizontal velocity.
-    int32 ver_velocity = 8; // The vertical velocity. Positive is up.
+    float vertical_velocity_m_s = 8; // The vertical velocity in metres/second. Positive is up.
     string callsign = 9 ; // The callsign, 8+null.
     AdsbEmitterType emitter_type = 10; // ADSB emitter type.
     uint32 tslc = 11; // Time since last communication in seconds.
