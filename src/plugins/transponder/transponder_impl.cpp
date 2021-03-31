@@ -65,8 +65,8 @@ void TransponderImpl::process_transponder(const mavlink_message_t& message)
 
     Transponder::AdsbVehicle adsbVehicle;
     adsbVehicle.icao_address = local_adsb_vehicle.ICAO_address;
-    adsbVehicle.latitude_deg = local_adsb_vehicle.lat;
-    adsbVehicle.longitude_deg = local_adsb_vehicle.lon;
+    adsbVehicle.latitude_deg = local_adsb_vehicle.lat * 1e-7;
+    adsbVehicle.longitude_deg = local_adsb_vehicle.lon * 1e-7;
     adsbVehicle.absolute_altitude_m = local_adsb_vehicle.altitude;
     adsbVehicle.heading_deg = local_adsb_vehicle.heading;
     adsbVehicle.horizontal_velocity_m_s = local_adsb_vehicle.hor_velocity;
