@@ -30,9 +30,9 @@ jobs:
       - name: Install lcov
         run: sudo apt-get update && sudo apt-get install -y lcov
       - name: configure
-        run: cmake $superbuild $cmake_prefix_path -DCMAKE_BUILD_TYPE=Coverage -DASAN=ON -DUBSAN=ON -DLSAN=ON -DWERROR=OFF -j 2 -Bbuild -H.
+        run: cmake $superbuild $cmake_prefix_path -DCMAKE_BUILD_TYPE=Coverage -DASAN=ON -DUBSAN=ON -DLSAN=ON -DWERROR=OFF -Bbuild -H.
       - name: build
-        run: cmake --build build -j 2
+        run: cmake --build build -j2
       - name: test
         run: ./build/src/unit_tests_runner
       - name: run lcov
@@ -53,9 +53,9 @@ jobs:
       - name: install
         run: sudo apt-get update && sudo apt-get install -y libjsoncpp-dev libcurl4-openssl-dev libtinyxml2-dev
       - name: configure
-        run: cmake -DCMAKE_BUILD_TYPE=Release -DSUPERBUILD=OFF -DWERROR=OFF -j 2 -Bbuild/release -H.
+        run: cmake -DCMAKE_BUILD_TYPE=Release -DSUPERBUILD=OFF -DWERROR=OFF -Bbuild/release -H.
       - name: build
-        run: cmake --build build/release -j 2
+        run: cmake --build build/release -j2
       - name: test
         run: ./build/release/src/unit_tests_runner
 
@@ -75,17 +75,17 @@ jobs:
         if: steps.cache.outputs.cache-hit == 'true'
         run: echo "superbuild=-DSUPERBUILD=OFF" >> $GITHUB_ENV && echo "cmake_prefix_path=-DCMAKE_PREFIX_PATH=$(pwd)/build/release/third_party/install" >> $GITHUB_ENV
       - name: configure
-        run: cmake $superbuild $cmake_prefix_path -DCMAKE_BUILD_TYPE=Release -DBUILD_MAVSDK_SERVER=ON -DWERROR=OFF -j 2 -Bbuild/release -H.
+        run: cmake $superbuild $cmake_prefix_path -DCMAKE_BUILD_TYPE=Release -DBUILD_MAVSDK_SERVER=ON -DWERROR=OFF -Bbuild/release -H.
       - name: build
-        run: cmake --build build/release -j 2
+        run: cmake --build build/release -j2
       - name: install
         run: sudo cmake --build build/release --target install
       - name: install examples dependencies
         run: sudo apt-get update && sudo apt-get install -y libsdl2-dev
       - name: configure examples
-        run: (cd examples && cmake -DCMAKE_BUILD_TYPE=Release -DWERROR=OFF -j 2 -Bbuild -H.)
+        run: (cd examples && cmake -DCMAKE_BUILD_TYPE=Release -DWERROR=OFF -Bbuild -H.)
       - name: build examples
-        run: (cd examples && cmake --build build -j 2)
+        run: (cd examples && cmake --build build -j2)
       - name: test
         run: ./build/release/src/unit_tests_runner
       - name: test (mavsdk_server)
@@ -148,7 +148,7 @@ jobs:
         with:
           submodules: recursive
       - name: configure
-        run: cmake -DCMAKE_BUILD_TYPE=Release -DBUILD_MAVSDK_SERVER=OFF -DBUILD_SHARED_LIBS=ON -DCMAKE_INSTALL_PREFIX=install -DWERROR=OFF -j 2 -Bbuild/release -H.
+        run: cmake -DCMAKE_BUILD_TYPE=Release -DBUILD_MAVSDK_SERVER=OFF -DBUILD_SHARED_LIBS=ON -DCMAKE_INSTALL_PREFIX=install -DWERROR=OFF -Bbuild/release -H.
       - name: build
         run: cmake --build build/release --target install -- -j2
       - name: Package
@@ -193,7 +193,7 @@ jobs:
       - name: install packages
         run: dnf install -y perl-FindBin
       - name: configure
-        run: cmake -DCMAKE_BUILD_TYPE=Release -DBUILD_MAVSDK_SERVER=OFF -DBUILD_SHARED_LIBS=ON -DCMAKE_INSTALL_PREFIX=install -DWERROR=OFF  -j 2 -Bbuild/release -H.
+        run: cmake -DCMAKE_BUILD_TYPE=Release -DBUILD_MAVSDK_SERVER=OFF -DBUILD_SHARED_LIBS=ON -DCMAKE_INSTALL_PREFIX=install -DWERROR=OFF  -Bbuild/release -H.
       - name: build
         run: cmake --build build/release --target install -- -j2
       - name: Package
@@ -227,9 +227,9 @@ jobs:
       - name: setup dockcross
         run: docker run --rm dockcross/manylinux2010-x64 > ./dockcross-manylinux2010-x64; chmod +x ./dockcross-manylinux2010-x64
       - name: configure
-        run: ./dockcross-manylinux2010-x64 cmake $superbuild $cmake_prefix_path -DCMAKE_BUILD_TYPE=Release -DCMAKE_INSTALL_PREFIX=build/manylinux2010-x64/install -DBUILD_MAVSDK_SERVER=ON -DBUILD_SHARED_LIBS=OFF -DWERROR=OFF -j 2 -Bbuild/manylinux2010-x64 -H.
+        run: ./dockcross-manylinux2010-x64 cmake $superbuild $cmake_prefix_path -DCMAKE_BUILD_TYPE=Release -DCMAKE_INSTALL_PREFIX=build/manylinux2010-x64/install -DBUILD_MAVSDK_SERVER=ON -DBUILD_SHARED_LIBS=OFF -DWERROR=OFF -Bbuild/manylinux2010-x64 -H.
       - name: build
-        run: ./dockcross-manylinux2010-x64 cmake --build build/manylinux2010-x64 -j 2 --target install
+        run: ./dockcross-manylinux2010-x64 cmake --build build/manylinux2010-x64 -j2 --target install
       - name: Publish artefacts
         if: startsWith(github.ref, 'refs/tags/v')
         uses: svenstaro/upload-release-action@v1-release
@@ -259,7 +259,7 @@ jobs:
         if: steps.cache.outputs.cache-hit == 'true'
         run: echo "superbuild=-DSUPERBUILD=OFF" >> $GITHUB_ENV && echo "cmake_prefix_path=-DCMAKE_PREFIX_PATH=$(pwd)/build/release/third_party/install" >> $GITHUB_ENV
       - name: configure
-        run: cmake $superbuild $cmake_prefix_path -DCMAKE_BUILD_TYPE=Release -DBUILD_MAVSDK_SERVER=ON -DBUILD_SHARED_LIBS=OFF -DBUILD_STATIC_MAVSDK_SERVER=ON -DCMAKE_INSTALL_PREFIX=install -DWERROR=OFF -j 2 -Bbuild/release -H.
+        run: cmake $superbuild $cmake_prefix_path -DCMAKE_BUILD_TYPE=Release -DBUILD_MAVSDK_SERVER=ON -DBUILD_SHARED_LIBS=OFF -DBUILD_STATIC_MAVSDK_SERVER=ON -DCMAKE_INSTALL_PREFIX=install -DWERROR=OFF -Bbuild/release -H.
       - name: build
         run: cmake --build build/release --target install -- -j2
       - name: test
@@ -303,9 +303,9 @@ jobs:
         if: steps.cache.outputs.cache-hit == 'true'
         run: echo "superbuild=-DSUPERBUILD=OFF" >> $GITHUB_ENV && echo "cmake_prefix_path=-DCMAKE_PREFIX_PATH=/work/build/${{ matrix.arch_name }}/third_party/install" >> $GITHUB_ENV
       - name: configure
-        run: ./dockcross-${{ matrix.arch_name }} /bin/bash -c "cmake $superbuild $cmake_prefix_path -DCMAKE_BUILD_TYPE=Release -DCMAKE_INSTALL_PREFIX=build/${{ matrix.arch_name }}/install -DBUILD_MAVSDK_SERVER=ON -DBUILD_SHARED_LIBS=OFF -DBUILD_STATIC_MAVSDK_SERVER=ON -DWERROR=OFF -j 2 -Bbuild/${{ matrix.arch_name }} -H."
+        run: ./dockcross-${{ matrix.arch_name }} /bin/bash -c "cmake $superbuild $cmake_prefix_path -DCMAKE_BUILD_TYPE=Release -DCMAKE_INSTALL_PREFIX=build/${{ matrix.arch_name }}/install -DBUILD_MAVSDK_SERVER=ON -DBUILD_SHARED_LIBS=OFF -DBUILD_STATIC_MAVSDK_SERVER=ON -DWERROR=OFF -Bbuild/${{ matrix.arch_name }} -H."
       - name: build
-        run: ./dockcross-${{ matrix.arch_name }} cmake --build build/${{ matrix.arch_name }} -j 2 --target install
+        run: ./dockcross-${{ matrix.arch_name }} cmake --build build/${{ matrix.arch_name }} -j2 --target install
       - name: Publish artefacts
         if: startsWith(github.ref, 'refs/tags/v')
         uses: svenstaro/upload-release-action@v1-release
@@ -345,9 +345,9 @@ jobs:
         if: steps.cache.outputs.cache-hit == 'true'
         run: echo "superbuild=-DSUPERBUILD=OFF" >> $GITHUB_ENV && echo "cmake_prefix_path=-DCMAKE_PREFIX_PATH=/work/build/${{ matrix.name }}/third_party/install" >> $GITHUB_ENV
       - name: configure
-        run: ./dockcross-${{ matrix.name }} /bin/bash -c "cmake $superbuild $cmake_prefix_path -DCMAKE_BUILD_TYPE=Release -DCMAKE_INSTALL_PREFIX=build/${{ matrix.name }}/install -DBUILD_MAVSDK_SERVER=ON -DBUILD_SHARED_LIBS=OFF -DWERROR=OFF -j 2 -Bbuild/${{ matrix.name }} -H."
+        run: ./dockcross-${{ matrix.name }} /bin/bash -c "cmake $superbuild $cmake_prefix_path -DCMAKE_BUILD_TYPE=Release -DCMAKE_INSTALL_PREFIX=build/${{ matrix.name }}/install -DBUILD_MAVSDK_SERVER=ON -DBUILD_SHARED_LIBS=OFF -DWERROR=OFF -Bbuild/${{ matrix.name }} -H."
       - name: build
-        run: ./dockcross-${{ matrix.name }} cmake --build build/${{ matrix.name }} -j 2 --target install
+        run: ./dockcross-${{ matrix.name }} cmake --build build/${{ matrix.name }} -j2 --target install
       - name: create tar with header and library
         run: mkdir -p build/${{ matrix.name }}/export/include; cp build/${{ matrix.name }}/install/include/mavsdk/mavsdk_server/mavsdk_server_api.h build/${{ matrix.name }}/export/include; mkdir -p build/${{ matrix.name }}/export/${{ matrix.arch }}; cp build/${{ matrix.name }}/install/lib/libmavsdk_server.so build/${{ matrix.name }}/export/${{ matrix.arch }}; tar -C build/${{ matrix.name }}/export -cf build/${{ matrix.name }}/export/mavsdk_server_${{ matrix.name }}.tar ${{ matrix.arch }} include;
       - name: Publish artefacts
@@ -385,9 +385,9 @@ jobs:
       - name: set SDKROOT value
         run: echo "SDKROOT=$(xcrun --sdk macosx --show-sdk-path)" >> $GITHUB_ENV
       - name: configure
-        run: cmake $superbuild $cmake_prefix_path -DCMAKE_BUILD_TYPE=Release -DCMAKE_INSTALL_PREFIX=build/macos/install -DBUILD_MAVSDK_SERVER=ON -DBUILD_SHARED_LIBS=OFF -DMACOS_FRAMEWORK=${{ matrix.build-framework }} -DWERROR=OFF -j 2 -Bbuild/macos -H.
+        run: cmake $superbuild $cmake_prefix_path -DCMAKE_BUILD_TYPE=Release -DCMAKE_INSTALL_PREFIX=build/macos/install -DBUILD_MAVSDK_SERVER=ON -DBUILD_SHARED_LIBS=OFF -DMACOS_FRAMEWORK=${{ matrix.build-framework }} -DWERROR=OFF -Bbuild/macos -H.
       - name: build
-        run: cmake --build build/macos -j 2 --target install
+        run: cmake --build build/macos -j2 --target install
       - name: test (core)
         run: ./build/macos/src/unit_tests_runner
       - name: test (mavsdk_server)
@@ -437,9 +437,9 @@ jobs:
         run: |
           echo "SDKROOT=$(xcrun --sdk ${{ matrix.sdk }} --show-sdk-path)" >> $GITHUB_ENV
       - name: configure
-        run: cmake $superbuild $cmake_prefix_path -DENABLE_STRICT_TRY_COMPILE=ON -DCMAKE_BUILD_TYPE=Release -DCMAKE_TOOLCHAIN_FILE=$(pwd)/tools/ios.toolchain.cmake -DPLATFORM=${{ matrix.platform }} -DDEPLOYMENT_TARGET=13.0 -DBUILD_MAVSDK_SERVER=ON -DBUILD_SHARED_LIBS=OFF -DWERROR=OFF -j 2 -Bbuild/${{ matrix.name }} -H.
+        run: cmake $superbuild $cmake_prefix_path -DENABLE_STRICT_TRY_COMPILE=ON -DCMAKE_BUILD_TYPE=Release -DCMAKE_TOOLCHAIN_FILE=$(pwd)/tools/ios.toolchain.cmake -DPLATFORM=${{ matrix.platform }} -DDEPLOYMENT_TARGET=13.0 -DBUILD_MAVSDK_SERVER=ON -DBUILD_SHARED_LIBS=OFF -DWERROR=OFF -Bbuild/${{ matrix.name }} -H.
       - name: build
-        run: cmake --build build/${{ matrix.name }} -j 2
+        run: cmake --build build/${{ matrix.name }} -j2
       - uses: actions/upload-artifact@v2
         with:
           name: mavsdk_server_${{ matrix.name }}.framework
@@ -505,9 +505,9 @@ jobs:
             choco install nasm
             echo "C:\Program Files\NASM" | Out-File -FilePath $env:GITHUB_PATH -Encoding utf8 -Append
       - name: configure
-        run: cmake -G "Visual Studio 16 2019" $env:superbuild $env:cmake_prefix_path -DCMAKE_BUILD_TYPE=Release -DCMAKE_INSTALL_PREFIX=build/release/install -DBUILD_MAVSDK_SERVER=ON -DBUILD_SHARED_LIBS=OFF -DWERROR=OFF -j 2 -Bbuild/release -S.
+        run: cmake -G "Visual Studio 16 2019" $env:superbuild $env:cmake_prefix_path -DCMAKE_BUILD_TYPE=Release -DCMAKE_INSTALL_PREFIX=build/release/install -DBUILD_MAVSDK_SERVER=ON -DBUILD_SHARED_LIBS=OFF -DWERROR=OFF -Bbuild/release -S.
       - name: build
-        run: cmake --build build/release -j 2 --config Release --target install
+        run: cmake --build build/release -j2 --config Release --target install
       - name: Create zip file mavsdk libraries
         if: startsWith(github.ref, 'refs/tags/v')
         run: cd build/release/install && 7z.exe a -tzip ../../../mavsdk-windows-x64-release.zip . && cd ../../..
