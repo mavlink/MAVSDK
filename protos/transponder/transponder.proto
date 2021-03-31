@@ -28,7 +28,7 @@ message SetRateTransponderRequest {
     double rate_hz = 1; // The requested rate (in Hertz)
 }
 message SetRateTrasponderResponse {
-    TransponderResult transpoder_result = 1;
+    TransponderResult transponder_result = 1;
 }
 
 // ADSB altimeter types.
