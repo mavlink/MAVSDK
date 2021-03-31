@@ -61,26 +61,26 @@ public:
      * @brief ADSB classification for the type of vehicle emitting the transponder signal.
      */
     enum class AdsbEmitterType {
-        NoInfo, /**< @brief. */
-        Light, /**< @brief. */
-        Small, /**< @brief. */
-        Large, /**< @brief. */
-        HighVortexLarge, /**< @brief. */
-        Heavy, /**< @brief. */
-        HighlyManuv, /**< @brief. */
-        Rotocraft, /**< @brief. */
-        Unassigned, /**< @brief. */
-        Glider, /**< @brief. */
-        LighterAir, /**< @brief. */
-        Parachute, /**< @brief. */
-        UltraLight, /**< @brief. */
-        Unassigned2, /**< @brief. */
-        Uav, /**< @brief. */
-        Space, /**< @brief. */
-        Unassgined3, /**< @brief. */
-        EmergencySurface, /**< @brief. */
-        ServiceSurface, /**< @brief. */
-        PointObstacle, /**< @brief. */
+        NoInfo, /**< @brief No emitter info.. */
+        Light, /**< @brief Light emitter.. */
+        Small, /**< @brief Small emitter.. */
+        Large, /**< @brief Large emitter.. */
+        HighVortexLarge, /**< @brief High vortex emitter.. */
+        Heavy, /**< @brief Heavy emitter.. */
+        HighlyManuv, /**< @brief Highly maneuverable emitter.. */
+        Rotocraft, /**< @brief Rotorcraft emitter.. */
+        Unassigned, /**< @brief Unassigned emitter.. */
+        Glider, /**< @brief Glider emitter.. */
+        LighterAir, /**< @brief Lighter air emitter.. */
+        Parachute, /**< @brief Parachute emitter.. */
+        UltraLight, /**< @brief Ultra light emitter.. */
+        Unassigned2, /**< @brief Unassigned2 emitter.. */
+        Uav, /**< @brief UAV emitter.. */
+        Space, /**< @brief Space emitter.. */
+        Unassgined3, /**< @brief Unassigned3 emitter.. */
+        EmergencySurface, /**< @brief Emergency emitter.. */
+        ServiceSurface, /**< @brief Service surface emitter.. */
+        PointObstacle, /**< @brief Point obstacle emitter.. */
     };
 
     /**
@@ -95,7 +95,8 @@ public:
      * @brief ADSB Vehicle type.
      */
     struct AdsbVehicle {
-        uint32_t icao_address{}; /**< @brief ICAO address. */
+        uint32_t icao_address{}; /**< @brief ICAO (International Civil Aviation Organization) unique
+                                    worldwide identifier */
         double latitude_deg{}; /**< @brief Latitude in degrees (range: -90 to +90) */
         double longitude_deg{}; /**< @brief Longitude in degrees (range: -180 to +180). */
         float absolute_altitude_m{}; /**< @brief Altitude AMSL (above mean sea level) in metres */
