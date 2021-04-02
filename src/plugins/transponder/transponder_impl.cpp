@@ -17,7 +17,7 @@ TransponderImpl::~TransponderImpl()
     _parent->unregister_plugin(this);
 }
 
-void TransponderImpl::init() 
+void TransponderImpl::init()
 {
     using namespace std::placeholders; // for `_1`
 
@@ -27,10 +27,8 @@ void TransponderImpl::init()
         this);
 }
 
-void TransponderImpl::deinit() 
+void TransponderImpl::deinit()
 {
-    _parent->unregister_statustext_handler(this);
-    _parent->unregister_param_changed_handler(this);
     _parent->unregister_all_mavlink_message_handlers(this);
 }
 
