@@ -1,13 +1,13 @@
 find_package(jsoncpp CONFIG QUIET)
 
-if(NOT TARGET JsonCpp::jsoncpp)
+if(NOT TARGET JsonCpp::JsonCpp)
     if(JsonCpp_FOUND)
         message(STATUS "Found jsoncpp via config file: ${JsonCpp_DIR}")
         if(NOT JsonCpp_LIBRARY)
-            if(TARGET JsonCpp)
-                set(JsonCpp_LIBRARY JsonCpp)
-            elseif(TARGET JsonCpp::jsoncpp)
-                set(JsonCpp_LIBRARY JsonCpp::jsoncpp)
+            if(TARGET jsoncpp)
+                set(JsonCpp_LIBRARY jsoncpp)
+            elseif(TARGET JsonCpp::JsonCpp)
+                set(JsonCpp_LIBRARY JsonCpp::JsonCpp)
             endif()
         endif()
     else()
@@ -18,7 +18,7 @@ if(NOT TARGET JsonCpp::jsoncpp)
         if(PKG_CONFIG_FOUND)
             pkg_check_modules(PC_JSONCPP QUIET IMPORTED_TARGET GLOBAL jsoncpp)
             if(PC_JSONCPP_FOUND)
-                add_library(JsonCpp::jsoncpp ALIAS PkgConfig::PC_JSONCPP)
+                add_library(JsonCpp::JsonCpp ALIAS PkgConfig::PC_JSONCPP)
             endif()
         endif()
 
@@ -38,8 +38,8 @@ if(NOT TARGET JsonCpp::jsoncpp)
     endif()
 
     if (JsonCpp_FOUND)
-        add_library(JsonCpp::jsoncpp INTERFACE IMPORTED)
-        set_target_properties(JsonCpp::jsoncpp PROPERTIES
+        add_library(JsonCpp::JsonCpp INTERFACE IMPORTED)
+        set_target_properties(JsonCpp::JsonCpp PROPERTIES
             INTERFACE_INCLUDE_DIRECTORIES "${JsonCpp_INCLUDE_DIR}"
             INTERFACE_LINK_LIBRARIES "${JsonCpp_LIBRARY}")
         if(NOT JsonCpp_LIBRARY)
