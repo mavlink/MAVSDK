@@ -17,9 +17,22 @@ TransponderImpl::~TransponderImpl()
     _parent->unregister_plugin(this);
 }
 
-void TransponderImpl::init() {}
+void TransponderImpl::init() 
+{
+    using namespace std::placeholders; // for `_1`
 
-void TransponderImpl::deinit() {}
+    _parent->register_mavlink_message_handler(
+        MAVLINK_MSG_ID_ADSB_VEHICLE,
+        std::bind(&TransponderImpl::process_transponder, this, _1),
+        this);
+}
+
+void TransponderImpl::deinit() 
+{
+    _parent->unregister_statustext_handler(this);
+    _parent->unregister_param_changed_handler(this);
+    _parent->unregister_all_mavlink_message_handlers(this);
+}
 
 void TransponderImpl::enable() {}
 
