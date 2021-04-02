@@ -1,5 +1,11 @@
 cmake_minimum_required(VERSION 3.10.2)
 
+include("src/cmake/HunterGate.cmake")
+HunterGate(
+    URL "https://github.com/cpp-pm/hunter/archive/v0.23.315.tar.gz"
+    SHA1 "ea5d72afc0df67f2126e7fd069f20c5f723709e1"
+)
+
 execute_process(
     COMMAND git describe --abbrev=8 --dirty --always --tags
     WORKING_DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR}
