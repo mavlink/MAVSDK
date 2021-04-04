@@ -1,7 +1,7 @@
 //
 // Simple example to demonstrate how to use the MAVSDK.
 //
-// Author: Richard Beasley <richard.beasley@fractureddynamics.com>
+// Author: 
 
 #include <chrono>
 #include <cstdint>
