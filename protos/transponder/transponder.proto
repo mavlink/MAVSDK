@@ -1,0 +1,87 @@
+syntax = "proto3";
+
+package mavsdk.rpc.transponder;
+
+import "mavsdk_options.proto";
+
+option java_package = "io.mavsdk.transponder";
+option java_outer_classname = "TransponderProto";
+
+/*
+ * Allow users to get ADS-B information
+ * and set ADS-B update rates.
+ */
+service TransponderService {
+    // Subscribe to 'transponder' updates.
+    rpc SubscribeTransponder(SubscribeTransponderRequest) returns(stream TransponderResponse) {}
+    
+    // Set rate to 'transponder' updates.
+    rpc SetRateTransponder(SetRateTransponderRequest) returns(SetRateTransponderResponse) {}
+}
+
+message SubscribeTransponderRequest {}
+message TransponderResponse {
+    AdsbVehicle transponder = 1; // The next detection 
+}
+
+message SetRateTransponderRequest {
+    double rate_hz = 1; // The requested rate (in Hertz)
+}
+message SetRateTransponderResponse {
+    TransponderResult transponder_result = 1;
+}
+
+// ADSB classification for the type of vehicle emitting the transponder signal.
+enum AdsbEmitterType {
+    ADSB_EMITTER_TYPE_NO_INFO = 0; // No emitter info.
+    ADSB_EMITTER_TYPE_LIGHT = 1; // Light emitter.
+    ADSB_EMITTER_TYPE_SMALL = 2; // Small emitter.
+    ADSB_EMITTER_TYPE_LARGE = 3; // Large emitter.
+    ADSB_EMITTER_TYPE_HIGH_VORTEX_LARGE = 4; // High vortex emitter.
+    ADSB_EMITTER_TYPE_HEAVY = 5; // Heavy emitter.
+    ADSB_EMITTER_TYPE_HIGHLY_MANUV = 6; // Highly maneuverable emitter.
+    ADSB_EMITTER_TYPE_ROTOCRAFT = 7; // Rotorcraft emitter.
+    ADSB_EMITTER_TYPE_UNASSIGNED = 8; // Unassigned emitter.
+    ADSB_EMITTER_TYPE_GLIDER = 9; // Glider emitter.
+    ADSB_EMITTER_TYPE_LIGHTER_AIR = 10; // Lighter air emitter.
+    ADSB_EMITTER_TYPE_PARACHUTE = 11; // Parachute emitter.
+    ADSB_EMITTER_TYPE_ULTRA_LIGHT = 12; // Ultra light emitter.
+    ADSB_EMITTER_TYPE_UNASSIGNED2 = 13; // Unassigned2 emitter.
+    ADSB_EMITTER_TYPE_UAV = 14; // UAV emitter.
+    ADSB_EMITTER_TYPE_SPACE = 15; // Space emitter.
+    ADSB_EMITTER_TYPE_UNASSGINED3 = 16; // Unassigned3 emitter.
+    ADSB_EMITTER_TYPE_EMERGENCY_SURFACE = 17; // Emergency emitter.
+    ADSB_EMITTER_TYPE_SERVICE_SURFACE = 18; // Service surface emitter.
+    ADSB_EMITTER_TYPE_POINT_OBSTACLE = 19; // Point obstacle emitter.
+}
+
+// ADSB Vehicle type.
+message AdsbVehicle {
+    uint32 icao_address = 1; // ICAO (International Civil Aviation Organization) unique worldwide identifier
+    double latitude_deg = 2; // Latitude in degrees (range: -90 to +90)
+    double longitude_deg = 3; // Longitude in degrees (range: -180 to +180).
+    float absolute_altitude_m = 5; // Altitude AMSL (above mean sea level) in metres
+    float heading_deg = 6; // Course over ground, in degrees
+    float horizontal_velocity_m_s = 7; // The horizontal velocity in metres/second
+    float vertical_velocity_m_s = 8; // The vertical velocity in metres/second. Positive is up.
+    string callsign = 9 ; // The callsign
+    AdsbEmitterType emitter_type = 10; // ADSB emitter type.
+    uint32 squawk = 13; // Squawk code.
+}
+
+// Result type.
+message TransponderResult {
+    // Possible results returned for transponder requests.
+    enum Result {
+        RESULT_UNKNOWN = 0; // Unknown result
+        RESULT_SUCCESS = 1; // Success: the transponder command was accepted by the vehicle
+        RESULT_NO_SYSTEM = 2; // No system connected
+        RESULT_CONNECTION_ERROR = 3; // Connection error
+        RESULT_BUSY = 4; // Vehicle is busy
+        RESULT_COMMAND_DENIED = 5; // Command refused by vehicle
+        RESULT_TIMEOUT = 6; // Request timed out
+    }
+
+    Result result = 1; // Result enum value
+    string result_str = 2; // Human-readable English string describing the result
+}
