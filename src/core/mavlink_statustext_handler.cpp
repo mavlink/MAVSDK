@@ -8,13 +8,13 @@ MavlinkStatustextHandler::process(const mavlink_statustext_t& statustext)
 {
     char text_with_null[sizeof(statustext.text) + 1]{};
     strncpy(text_with_null, statustext.text, sizeof(text_with_null) - 1);
+    MAV_SEVERITY severity = static_cast<MAV_SEVERITY>(statustext.severity);
 
     if (statustext.id > 0) {
         if (statustext.id != _last_id) {
             _temp_multi_str = "";
             _last_chunk_seq = 0;
             _last_id = statustext.id;
-            _last_severity = static_cast<MAV_SEVERITY>(statustext.severity);
         }
 
         // We can recover from missing chunks in-between but not if the first or last one is lost.
@@ -30,11 +30,11 @@ MavlinkStatustextHandler::process(const mavlink_statustext_t& statustext)
             // No zero termination yet, keep going.
             return std::nullopt;
         } else {
-            return Statustext{_temp_multi_str, _last_severity};
+            return Statustext{_temp_multi_str, severity};
         }
     }
 
-    return Statustext{text_with_null, _last_severity};
+    return Statustext{text_with_null, severity};
 }
 
 std::string MavlinkStatustextHandler::severity_str(MAV_SEVERITY severity)

@@ -24,7 +24,6 @@ private:
     std::string _temp_multi_str{};
     uint16_t _last_id{0};
     uint8_t _last_chunk_seq{0};
-    MAV_SEVERITY _last_severity{MAV_SEVERITY_DEBUG};
 };
 
 } // namespace mavsdk
