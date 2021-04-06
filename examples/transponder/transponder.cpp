@@ -1,7 +1,7 @@
 //
 // Simple example to demonstrate how to use the MAVSDK.
 //
-// Author: 
+// Author:
 
 #include <chrono>
 #include <cstdint>
@@ -96,8 +96,10 @@ int main(int argc, char** argv)
                   << "Longitude: " << adsbVehicle.longitude_deg << " deg" << std::endl
                   << "Absolute Altitude: " << adsbVehicle.absolute_altitude_m << " m" << std::endl
                   << "Heading: " << adsbVehicle.heading_deg << " deg" << std::endl
-                  << "Horizontal Velocity: " << adsbVehicle.horizontal_velocity_m_s << " m/s" << std::endl
-                  << "Vertical Velocity: " << adsbVehicle.vertical_velocity_m_s << " m/s" << std::endl
+                  << "Horizontal Velocity: " << adsbVehicle.horizontal_velocity_m_s << " m/s"
+                  << std::endl
+                  << "Vertical Velocity: " << adsbVehicle.vertical_velocity_m_s << " m/s"
+                  << std::endl
                   << "Call Sign: " << adsbVehicle.callsign << std::endl
                   << "Emitter Type: " << adsbVehicle.emitter_type << std::endl
                   << "Squawk: " << adsbVehicle.squawk << std::endl
