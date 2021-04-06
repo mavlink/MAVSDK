@@ -24,6 +24,7 @@ add_subdirectory(shell)
 add_subdirectory(telemetry)
 add_subdirectory(tracking_server)
 add_subdirectory(server_utility)
+add_subdirectory(transponder)
 add_subdirectory(tune)
 
 set(UNIT_TEST_SOURCES ${UNIT_TEST_SOURCES} PARENT_SCOPE)
