@@ -48,6 +48,8 @@
 #include "tracking_server/tracking_server_service_impl.h"
 #include "plugins/tune/tune.h"
 #include "tune/tune_service_impl.h"
+#include "plugins/transponder/transponder.h"
+#include "transponder/transponder_service_impl.h"
 
 namespace mavsdk {
 namespace mavsdk_server {
@@ -98,7 +100,9 @@ public:
         _tracking_server(_mavsdk.system()),
         _tracking_server_service(_tracking_server),
         _tune(_mavsdk.system()),
-        _tune_service(_tune)
+        _tune_service(_tune),
+        _transponder(_mavsdk.system()),
+        _transponder_service(_transponder)
     {}
 
     int run();
@@ -153,6 +157,8 @@ private:
     TrackingServerServiceImpl<> _tracking_server_service;
     Tune _tune;
     TuneServiceImpl<> _tune_service;
+    Transponder _transponder;
+    TransponderServiceImpl<> _transponder_service;
 
     std::unique_ptr<grpc::Server> _server;
 
