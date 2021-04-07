@@ -101,7 +101,7 @@ public:
         _tracking_server_service(_tracking_server),
         _tune(_mavsdk.system()),
         _tune_service(_tune),
-        _trasnponder(_mavsdk.system()),
+        _transponder(_mavsdk.system()),
         _transponder_service(_transponder)
     {}
 
