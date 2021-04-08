@@ -156,14 +156,11 @@ FollowMe::Result FollowMeImpl::set_target_location(const FollowMe::TargetLocatio
         if (_target_location_cookie) {
             _parent->reset_call_every(_target_location_cookie);
         } else {
-            // Register now for sending in the next cycle.
+            // Register to send it immediately as well as in the next cycle.
             _parent->add_call_every(
                 [this]() { send_target_location(); }, SENDER_RATE, &_target_location_cookie);
         }
     }
-
-    // Send it immediately for now.
-    send_target_location();
 
     return FollowMe::Result::Success;
 }
