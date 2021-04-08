@@ -36,16 +36,24 @@ public:
      * This constructor is not (and should not be) directly called by application code.
      *
      * @param parent `MavsdkImpl` dependency.
-     * @param system_id System id.
-     * @param comp_id Component id.
-     * @param connected If true then the system doesn't wait for heartbeat to go into connected
-     * state
      */
-    explicit System(MavsdkImpl& parent, uint8_t system_id, uint8_t comp_id, bool connected);
+    explicit System(MavsdkImpl& parent);
     /**
      * @brief Destructor.
      */
     ~System();
+
+    /**
+     * @brief Initialize the system.
+     *
+     * This is not (and should not be) directly called by application code.
+     *
+     * @param system_id System id.
+     * @param component_id Component id.
+     * @param connected If true then the system doesn't wait for heartbeat to go into connected
+     * state
+     */
+    void init(uint8_t system_id, uint8_t component_id, bool connected) const;
 
     /**
      * @brief Checks whether the system has an autopilot.

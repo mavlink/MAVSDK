@@ -50,9 +50,10 @@ public:
         Stabilized,
     };
 
-    explicit SystemImpl(
-        MavsdkImpl& parent, uint8_t system_id, uint8_t component_id, bool connected);
+    explicit SystemImpl(MavsdkImpl& parent);
     ~SystemImpl();
+
+    void init(uint8_t system_id, uint8_t comp_id, bool connected);
 
     void enable_timesync();
 

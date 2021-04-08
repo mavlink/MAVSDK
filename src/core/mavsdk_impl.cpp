@@ -526,7 +526,8 @@ void MavsdkImpl::make_system_with_component(
 
     LogDebug() << "New: System ID: " << int(system_id) << " Comp ID: " << int(comp_id);
     // Make a system with its first component
-    auto new_system = std::make_shared<System>(*this, system_id, comp_id, always_connected);
+    auto new_system = std::make_shared<System>(*this);
+    new_system->init(system_id, comp_id, always_connected);
 
     _systems.insert(std::pair<uint8_t, std::shared_ptr<System>>(system_id, new_system));
 }
