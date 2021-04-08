@@ -17,7 +17,7 @@ using namespace std::placeholders;
 
 void print(const FollowMe::Config& config);
 void send_location_updates(
-    std::shared_ptr<FollowMe> follow_me, size_t count = 25ul, float rate = 1.f);
+    std::shared_ptr<FollowMe> follow_me, size_t count = 25ul, float rate = 2.f);
 
 const size_t N_LOCATIONS = 100ul;
 
