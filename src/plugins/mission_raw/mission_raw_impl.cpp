@@ -62,6 +62,8 @@ void MissionRawImpl::reset_mission_progress()
     _mission_progress.last.total = -1;
     _mission_progress.last_reported.current = -1;
     _mission_progress.last_reported.total = -1;
+    _mission_progress.last.reached = -1;
+    _mission_progress.last_reported.reached = -1;
 }
 
 void MissionRawImpl::process_mission_ack(const mavlink_message_t& message)
@@ -103,7 +105,7 @@ void MissionRawImpl::process_mission_item_reached(const mavlink_message_t& messa
 
     {
         std::lock_guard<std::mutex> lock(_mission_progress.mutex);
-        _mission_progress.last.current = mission_item_reached.seq + 1;
+        _mission_progress.last.reached = mission_item_reached.seq;
     }
 
     report_progress_current();
@@ -439,6 +441,10 @@ void MissionRawImpl::report_progress_current()
         }
         if (_mission_progress.last_reported.total != _mission_progress.last.total) {
             _mission_progress.last_reported.total = _mission_progress.last.total;
+            should_report = true;
+        }
+        if (_mission_progress.last_reported.reached != _mission_progress.last.reached) {
+            _mission_progress.last_reported.reached = _mission_progress.last.reached;
             should_report = true;
         }
     }

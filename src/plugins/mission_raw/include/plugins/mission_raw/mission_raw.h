@@ -62,6 +62,7 @@ public:
     struct MissionProgress {
         int32_t current{}; /**< @brief Current mission item index (0-based) */
         int32_t total{}; /**< @brief Total number of mission items */
+        int32_t reached{}; /**< @brief Last mission item reached (0-based) */
     };
 
     /**
