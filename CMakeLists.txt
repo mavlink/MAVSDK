@@ -53,6 +53,14 @@ configure_file(MAVSDKConfig.cmake.in
 configure_file(MAVSDKConfig.cmake.in
     "${PROJECT_BINARY_DIR}${CMAKE_FILES_DIRECTORY}/MAVSDKConfig.cmake" @ONLY)
 
+include(CMakePackageConfigHelpers)
+# Supply version to config
+write_basic_package_version_file(
+    ${CMAKE_CURRENT_BINARY_DIR}/MAVSDKConfigVersion.cmake
+    VERSION ${MAVSDK_VERSION_MAJOR}.${MAVSDK_VERSION_MINOR}.${MAVSDK_VERSION_PATCH}
+    COMPATIBILITY SameMajorVersion )
+
 install(FILES
     "${PROJECT_BINARY_DIR}${CMAKE_FILES_DIRECTORY}/MAVSDKConfig.cmake"
+    "${CMAKE_CURRENT_BINARY_DIR}/MAVSDKConfigVersion.cmake"
     DESTINATION ${CMAKE_INSTALL_LIBDIR}/cmake/MAVSDK)
