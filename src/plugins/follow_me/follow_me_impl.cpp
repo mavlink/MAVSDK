@@ -143,6 +143,7 @@ FollowMe::Result FollowMeImpl::set_config(const FollowMe::Config& config)
 
 FollowMe::Result FollowMeImpl::set_target_location(const FollowMe::TargetLocation& location)
 {
+    bool schedule_now = false;
     {
         std::lock_guard<std::mutex> lock(_mutex);
         _target_location = location;
@@ -155,11 +156,18 @@ FollowMe::Result FollowMeImpl::set_target_location(const FollowMe::TargetLocatio
         // If set already, reschedule it.
         if (_target_location_cookie) {
             _parent->reset_call_every(_target_location_cookie);
+            // We also need to send it right now.
+            schedule_now = true;
+
         } else {
-            // Register to send it immediately as well as in the next cycle.
+            // Register now for sending now and in the next cycle.
             _parent->add_call_every(
                 [this]() { send_target_location(); }, SENDER_RATE, &_target_location_cookie);
         }
+    }
+
+    if (schedule_now) {
+        send_target_location();
     }
 
     return FollowMe::Result::Success;
