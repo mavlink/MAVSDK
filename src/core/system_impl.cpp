@@ -315,22 +315,22 @@ std::string SystemImpl::component_name(uint8_t component_id)
     }
 }
 
-ComponentType SystemImpl::component_type(uint8_t component_id)
+System::ComponentType SystemImpl::component_type(uint8_t component_id)
 {
     switch (component_id) {
         case MAV_COMP_ID_AUTOPILOT1:
-            return ComponentType::AUTOPILOT;
+            return System::ComponentType::AUTOPILOT;
         case MAV_COMP_ID_CAMERA:
         case MAV_COMP_ID_CAMERA2:
         case MAV_COMP_ID_CAMERA3:
         case MAV_COMP_ID_CAMERA4:
         case MAV_COMP_ID_CAMERA5:
         case MAV_COMP_ID_CAMERA6:
-            return ComponentType::CAMERA;
+            return System::ComponentType::CAMERA;
         case MAV_COMP_ID_GIMBAL:
-            return ComponentType::GIMBAL;
+            return System::ComponentType::GIMBAL;
         default:
-            return ComponentType::UNKNOWN;
+            return System::ComponentType::UNKNOWN;
     }
 }
 
@@ -344,7 +344,7 @@ void SystemImpl::add_new_component(uint8_t component_id)
     if (res_pair.second) {
         std::lock_guard<std::mutex> lock(_component_discovered_callback_mutex);
         if (_component_discovered_callback != nullptr) {
-            const ComponentType type = component_type(component_id);
+            const System::ComponentType type = component_type(component_id);
             auto temp_callback = _component_discovered_callback;
             call_user_callback([temp_callback, type]() { temp_callback(type); });
         }
@@ -358,14 +358,14 @@ size_t SystemImpl::total_components() const
     return _components.size();
 }
 
-void SystemImpl::register_component_discovered_callback(discover_callback_t callback)
+void SystemImpl::register_component_discovered_callback(System::DiscoverCallback callback)
 {
     std::lock_guard<std::mutex> lock(_component_discovered_callback_mutex);
     _component_discovered_callback = callback;
 
     if (total_components() > 0) {
         for (const auto& elem : _components) {
-            const ComponentType type = component_type(elem);
+            const System::ComponentType type = component_type(elem);
             if (_component_discovered_callback) {
                 auto temp_callback = _component_discovered_callback;
                 call_user_callback([temp_callback, type]() { temp_callback(type); });
