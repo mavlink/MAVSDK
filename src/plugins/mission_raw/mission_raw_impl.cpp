@@ -62,6 +62,7 @@ void MissionRawImpl::reset_mission_progress()
     _mission_progress.last.total = -1;
     _mission_progress.last_reported.current = -1;
     _mission_progress.last_reported.total = -1;
+    _mission_progress.last_reached = -1;
 }
 
 void MissionRawImpl::process_mission_ack(const mavlink_message_t& message)
@@ -90,7 +91,12 @@ void MissionRawImpl::process_mission_current(const mavlink_message_t& message)
 
     {
         std::lock_guard<std::mutex> lock(_mission_progress.mutex);
-        _mission_progress.last.current = mission_current.seq;
+
+        // When the last waypoint is reached mission_current_seq does not increase
+        // so we need to ignore that case.
+        if (mission_current.seq != _mission_progress.last_reached) {
+            _mission_progress.last.current = mission_current.seq;
+        }
     }
 
     report_progress_current();
@@ -104,6 +110,7 @@ void MissionRawImpl::process_mission_item_reached(const mavlink_message_t& messa
     {
         std::lock_guard<std::mutex> lock(_mission_progress.mutex);
         _mission_progress.last.current = mission_item_reached.seq + 1;
+        _mission_progress.last_reached = mission_item_reached.seq;
     }
 
     report_progress_current();

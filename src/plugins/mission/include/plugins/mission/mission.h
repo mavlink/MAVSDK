@@ -141,7 +141,8 @@ public:
      * @brief Mission progress type.
      */
     struct MissionProgress {
-        int32_t current{}; /**< @brief Current mission item index (0-based) */
+        int32_t current{}; /**< @brief Current mission item index (0-based), if equal to total, the
+                              mission is finished */
         int32_t total{}; /**< @brief Total number of mission items */
     };
 

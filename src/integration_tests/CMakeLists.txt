@@ -52,6 +52,7 @@ add_executable(integration_tests_runner
     mission.cpp
     mission_rtl.cpp
     mission_raw_mission_changed.cpp
+    mission_raw_import_and_fly.cpp
     mission_set_current.cpp
     offboard_acceleration.cpp
     offboard_velocity.cpp
