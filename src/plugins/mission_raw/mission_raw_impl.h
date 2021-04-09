@@ -97,6 +97,7 @@ private:
         MissionRaw::MissionProgress last{};
         MissionRaw::MissionProgress last_reported{};
         MissionRaw::MissionProgressCallback callback{nullptr};
+        int32_t last_reached{};
     } _mission_progress{};
 
     struct {
