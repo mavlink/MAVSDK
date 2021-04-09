@@ -2,8 +2,6 @@ syntax = "proto3";
 
 package mavsdk.rpc.transponder;
 
-import "mavsdk_options.proto";
-
 option java_package = "io.mavsdk.transponder";
 option java_outer_classname = "TransponderProto";
 
@@ -14,14 +12,14 @@ option java_outer_classname = "TransponderProto";
 service TransponderService {
     // Subscribe to 'transponder' updates.
     rpc SubscribeTransponder(SubscribeTransponderRequest) returns(stream TransponderResponse) {}
-    
+
     // Set rate to 'transponder' updates.
     rpc SetRateTransponder(SetRateTransponderRequest) returns(SetRateTransponderResponse) {}
 }
 
 message SubscribeTransponderRequest {}
 message TransponderResponse {
-    AdsbVehicle transponder = 1; // The next detection 
+    AdsbVehicle transponder = 1; // The next detection
 }
 
 message SetRateTransponderRequest {
