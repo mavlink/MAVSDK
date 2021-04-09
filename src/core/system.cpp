@@ -62,7 +62,7 @@ void System::subscribe_is_connected(IsConnectedCallback callback)
     return _system_impl->subscribe_is_connected(callback);
 }
 
-void System::register_component_discovered_callback(discover_callback_t callback) const
+void System::register_component_discovered_callback(DiscoverCallback callback) const
 {
     return _system_impl->register_component_discovered_callback(callback);
 }

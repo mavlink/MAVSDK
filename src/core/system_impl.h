@@ -109,7 +109,7 @@ public:
     void add_new_component(uint8_t component_id);
     size_t total_components() const;
 
-    void register_component_discovered_callback(discover_callback_t callback);
+    void register_component_discovered_callback(System::DiscoverCallback callback);
 
     uint8_t get_autopilot_id() const;
     std::vector<uint8_t> get_camera_ids() const;
@@ -271,7 +271,7 @@ private:
     void set_disconnected();
 
     static std::string component_name(uint8_t component_id);
-    static ComponentType component_type(uint8_t component_id);
+    static System::ComponentType component_type(uint8_t component_id);
 
     void system_thread();
 
@@ -292,7 +292,7 @@ private:
         get_param_int_callback_t callback);
 
     std::mutex _component_discovered_callback_mutex{};
-    discover_callback_t _component_discovered_callback{nullptr};
+    System::DiscoverCallback _component_discovered_callback{nullptr};
 
     MAVLinkAddress _target_address{};
 

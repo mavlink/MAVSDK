@@ -7,16 +7,6 @@
 
 namespace mavsdk {
 
-/**
- * @brief Component Types
- */
-enum class ComponentType { UNKNOWN, AUTOPILOT, CAMERA, GIMBAL };
-
-/**
- * @brief type for component discovery callback
- */
-typedef std::function<void(ComponentType)> discover_callback_t;
-
 class SystemImpl;
 class MavsdkImpl;
 class PluginImplBase;
@@ -116,12 +106,22 @@ public:
     void subscribe_is_connected(IsConnectedCallback callback);
 
     /**
+     * @brief Component Types
+     */
+    enum class ComponentType { UNKNOWN, AUTOPILOT, CAMERA, GIMBAL };
+
+    /**
+     * @brief type for component discovery callback
+     */
+    using DiscoverCallback = std::function<void(ComponentType)>;
+
+    /**
      * @brief Register a callback to be called when a component is discovered.
      *
      * @param callback a function of type void(ComponentType) which will be called with the
      * component type of the new component.
      */
-    void register_component_discovered_callback(discover_callback_t callback) const;
+    void register_component_discovered_callback(DiscoverCallback callback) const;
 
     /**
      * @brief Enable time synchronization using the TIMESYNC messages.
