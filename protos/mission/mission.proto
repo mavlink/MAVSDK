@@ -191,7 +191,7 @@ message MissionPlan {
 
 // Mission progress type.
 message MissionProgress {
-    int32 current = 1; // Current mission item index (0-based)
+    int32 current = 1; // Current mission item index (0-based), if equal to total, the mission is finished
     int32 total = 2; // Total number of mission items
 }
 
