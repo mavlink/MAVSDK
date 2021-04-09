@@ -17,7 +17,7 @@ namespace mavsdk {
 
 using namespace std::placeholders; // for `_1`
 
-SystemImpl::SystemImpl(MavsdkImpl& parent, uint8_t system_id, uint8_t comp_id, bool connected) :
+SystemImpl::SystemImpl(MavsdkImpl& parent) :
     Sender(parent.own_address, _target_address),
     _parent(parent),
     _params(*this),
@@ -28,32 +28,7 @@ SystemImpl::SystemImpl(MavsdkImpl& parent, uint8_t system_id, uint8_t comp_id, b
     _mission_transfer(
         *this, _message_handler, _parent.timeout_handler, [this]() { return timeout_s(); })
 {
-    _target_address.system_id = system_id;
-    // FIXME: for now use this as a default.
-    _target_address.component_id = MAV_COMP_ID_AUTOPILOT1;
-
-    if (connected) {
-        _always_connected = true;
-        _uuid = system_id;
-        _uuid_initialized = true;
-        set_connected();
-    }
     _system_thread = new std::thread(&SystemImpl::system_thread, this);
-
-    _message_handler.register_one(
-        MAVLINK_MSG_ID_HEARTBEAT, std::bind(&SystemImpl::process_heartbeat, this, _1), this);
-
-    // We're registering for Autopilot version because it is a good time do so,
-    // regardless whether we deal with Autopilot.
-    _message_handler.register_one(
-        MAVLINK_MSG_ID_AUTOPILOT_VERSION,
-        std::bind(&SystemImpl::process_autopilot_version, this, _1),
-        this);
-
-    _message_handler.register_one(
-        MAVLINK_MSG_ID_STATUSTEXT, std::bind(&SystemImpl::process_statustext, this, _1), this);
-
-    add_new_component(comp_id);
 }
 
 SystemImpl::~SystemImpl()
@@ -71,6 +46,35 @@ SystemImpl::~SystemImpl()
         delete _system_thread;
         _system_thread = nullptr;
     }
+}
+
+void SystemImpl::init(uint8_t system_id, uint8_t comp_id, bool connected)
+{
+    _target_address.system_id = system_id;
+    // FIXME: for now use this as a default.
+    _target_address.component_id = MAV_COMP_ID_AUTOPILOT1;
+
+    if (connected) {
+        _always_connected = true;
+        _uuid = system_id;
+        _uuid_initialized = true;
+        set_connected();
+    }
+
+    _message_handler.register_one(
+        MAVLINK_MSG_ID_HEARTBEAT, std::bind(&SystemImpl::process_heartbeat, this, _1), this);
+
+    // We're registering for Autopilot version because it is a good time do so,
+    // regardless whether we deal with Autopilot.
+    _message_handler.register_one(
+        MAVLINK_MSG_ID_AUTOPILOT_VERSION,
+        std::bind(&SystemImpl::process_autopilot_version, this, _1),
+        this);
+
+    _message_handler.register_one(
+        MAVLINK_MSG_ID_STATUSTEXT, std::bind(&SystemImpl::process_statustext, this, _1), this);
+
+    add_new_component(comp_id);
 }
 
 bool SystemImpl::is_connected() const
