@@ -25,7 +25,6 @@ message ListRunningPluginsResponse {
 
 // Connection state type.
 message ConnectionState {
-    uint64 uuid = 1; // UUID of the vehicle
     bool is_connected = 2; // Whether the vehicle got connected or disconnected
 }
 
