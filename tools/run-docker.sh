@@ -8,7 +8,7 @@ then
     echo "sudo needed to repair file ownership after podman ran: sudo chown -R $USER:$USER ."
     sudo chown -R $USER:$USER .
 
-elif type docker 2> /dev/null
+elif type docker > /dev/null 2> /dev/null
 then
     docker run -it --rm -v $(pwd):/home/user/MAVSDK:z -e LOCAL_USER_ID=`id -u` $dockerimage "$@"
 
