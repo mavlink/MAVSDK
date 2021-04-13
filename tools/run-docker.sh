@@ -2,7 +2,7 @@
 
 dockerimage=mavsdk/mavsdk-ubuntu-20.04-px4-sitl-v1.11
 
-if type podman 2> /dev/null
+if type podman > /dev/null 2> /dev/null
 then
     podman run -it --rm -v $(pwd):/home/user/MAVSDK:z $dockerimage "$@"
     echo "sudo needed to repair file ownership after podman ran: sudo chown -R $USER:$USER ."
