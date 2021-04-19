@@ -279,7 +279,10 @@ void FollowMeImpl::send_target_location()
     const float alt = static_cast<float>(_target_location.absolute_altitude_m);
 
     const float pos_std_dev[] = {NAN, NAN, NAN};
-    const float vel[] = {static_cast<float>(_target_location.velocity_x_m_s), static_cast<float>(_target_location.velocity_y_m_s), static_cast<float>(_target_location.velocity_z_m_s)};
+    const float vel[] = {
+        static_cast<float>(_target_location.velocity_x_m_s),
+        static_cast<float>(_target_location.velocity_y_m_s),
+        static_cast<float>(_target_location.velocity_z_m_s)};
     const float accel_unknown[] = {NAN, NAN, NAN};
     const float attitude_q_unknown[] = {1.f, NAN, NAN, NAN};
     const float rates_unknown[] = {NAN, NAN, NAN};
