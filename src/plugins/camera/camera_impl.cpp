@@ -899,37 +899,57 @@ void CameraImpl::process_camera_information(const mavlink_message_t& message)
     mavlink_camera_information_t camera_information;
     mavlink_msg_camera_information_decode(&message, &camera_information);
 
-    {
-        std::lock_guard<std::mutex> lock(_information.mutex);
-        _information.data.vendor_name = (char*)(camera_information.vendor_name);
-        _information.data.model_name = (char*)(camera_information.model_name);
-        _information.data.focal_length_mm = camera_information.focal_length;
-        _information.data.horizontal_sensor_size_mm = camera_information.sensor_size_h;
-        _information.data.vertical_sensor_size_mm = camera_information.sensor_size_v;
-        _information.data.horizontal_resolution_px = camera_information.resolution_h;
-        _information.data.vertical_resolution_px = camera_information.resolution_v;
+    std::lock_guard<std::mutex> lock(_information.mutex);
 
-        if (_information.subscription_callback) {
-            const auto temp_callback = _information.subscription_callback;
-            const auto temp_information = _information.data;
-            _parent->call_user_callback(
-                [temp_callback, temp_information]() { temp_callback(temp_information); });
-        }
+    _information.data.vendor_name = (char*)(camera_information.vendor_name);
+    _information.data.model_name = (char*)(camera_information.model_name);
+    _information.data.focal_length_mm = camera_information.focal_length;
+    _information.data.horizontal_sensor_size_mm = camera_information.sensor_size_h;
+    _information.data.vertical_sensor_size_mm = camera_information.sensor_size_v;
+    _information.data.horizontal_resolution_px = camera_information.resolution_h;
+    _information.data.vertical_resolution_px = camera_information.resolution_v;
+
+    if (_information.subscription_callback) {
+        const auto temp_callback = _information.subscription_callback;
+        const auto temp_information = _information.data;
+        _parent->call_user_callback(
+            [temp_callback, temp_information]() { temp_callback(temp_information); });
     }
 
-    if (!_camera_definition) {
-        std::string content{};
-        auto succeeded = fetch_camera_definition(camera_information, content);
+    if (should_fetch_camera_definition()) {
+        _is_fetching_camera_definition = true;
 
-        if (succeeded) {
-            _camera_definition.reset(new CameraDefinition());
-            _camera_definition->load_string(content);
-            refresh_params();
-            LogDebug() << "Successfully loaded camera definition";
-        } else {
-            LogDebug() << "Failed to fetch camera definition!";
-        }
+        std::thread([this, camera_information]() {
+            std::string content{};
+            const auto has_succeeded = fetch_camera_definition(camera_information, content);
+
+            if (has_succeeded) {
+                LogDebug() << "Successfully loaded camera definition";
+
+                _camera_definition.reset(new CameraDefinition());
+                _camera_definition->load_string(content);
+                refresh_params();
+            } else {
+                LogDebug() << "Failed to fetch camera definition!";
+
+                if (++_camera_definition_fetch_count >= 3) {
+                    LogWarn() << "Failed to fetch camera definition 3 times, giving up";
+
+                    std::lock_guard<std::mutex> thread_lock(_information.mutex);
+                    _has_camera_definition_timed_out = true;
+                }
+            }
+
+            std::lock_guard<std::mutex> thread_lock(_information.mutex);
+            _is_fetching_camera_definition = false;
+        }).detach();
     }
+}
+
+bool CameraImpl::should_fetch_camera_definition() const
+{
+    return !_camera_definition && !_is_fetching_camera_definition &&
+           !_has_camera_definition_timed_out;
 }
 
 bool CameraImpl::fetch_camera_definition(
