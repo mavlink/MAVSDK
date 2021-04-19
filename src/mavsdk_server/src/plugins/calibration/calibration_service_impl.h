@@ -142,11 +142,10 @@ public:
         register_stream_stop_promise(stream_closed_promise);
 
         auto is_finished = std::make_shared<bool>(false);
-
-        std::mutex subscribe_mutex{};
+        auto subscribe_mutex = std::make_shared<std::mutex>();
 
         _calibration.calibrate_gyro_async(
-            [this, &writer, &stream_closed_promise, is_finished, &subscribe_mutex](
+            [this, &writer, &stream_closed_promise, is_finished, subscribe_mutex](
                 mavsdk::Calibration::Result result,
                 const mavsdk::Calibration::ProgressData calibrate_gyro) {
                 rpc::calibration::CalibrateGyroResponse rpc_response;
@@ -162,16 +161,18 @@ public:
                 rpc_calibration_result->set_result_str(ss.str());
                 rpc_response.set_allocated_calibration_result(rpc_calibration_result);
 
-                std::unique_lock<std::mutex> lock(subscribe_mutex);
+                std::unique_lock<std::mutex> lock(*subscribe_mutex);
                 if (!*is_finished && !writer->Write(rpc_response)) {
                     *is_finished = true;
                     unregister_stream_stop_promise(stream_closed_promise);
-                    lock.unlock();
                     stream_closed_promise->set_value();
                 }
             });
 
         stream_closed_future.wait();
+        std::unique_lock<std::mutex> lock(*subscribe_mutex);
+        *is_finished = true;
+
         return grpc::Status::OK;
     }
 
@@ -185,11 +186,10 @@ public:
         register_stream_stop_promise(stream_closed_promise);
 
         auto is_finished = std::make_shared<bool>(false);
-
-        std::mutex subscribe_mutex{};
+        auto subscribe_mutex = std::make_shared<std::mutex>();
 
         _calibration.calibrate_accelerometer_async(
-            [this, &writer, &stream_closed_promise, is_finished, &subscribe_mutex](
+            [this, &writer, &stream_closed_promise, is_finished, subscribe_mutex](
                 mavsdk::Calibration::Result result,
                 const mavsdk::Calibration::ProgressData calibrate_accelerometer) {
                 rpc::calibration::CalibrateAccelerometerResponse rpc_response;
@@ -205,16 +205,18 @@ public:
                 rpc_calibration_result->set_result_str(ss.str());
                 rpc_response.set_allocated_calibration_result(rpc_calibration_result);
 
-                std::unique_lock<std::mutex> lock(subscribe_mutex);
+                std::unique_lock<std::mutex> lock(*subscribe_mutex);
                 if (!*is_finished && !writer->Write(rpc_response)) {
                     *is_finished = true;
                     unregister_stream_stop_promise(stream_closed_promise);
-                    lock.unlock();
                     stream_closed_promise->set_value();
                 }
             });
 
         stream_closed_future.wait();
+        std::unique_lock<std::mutex> lock(*subscribe_mutex);
+        *is_finished = true;
+
         return grpc::Status::OK;
     }
 
@@ -228,11 +230,10 @@ public:
         register_stream_stop_promise(stream_closed_promise);
 
         auto is_finished = std::make_shared<bool>(false);
-
-        std::mutex subscribe_mutex{};
+        auto subscribe_mutex = std::make_shared<std::mutex>();
 
         _calibration.calibrate_magnetometer_async(
-            [this, &writer, &stream_closed_promise, is_finished, &subscribe_mutex](
+            [this, &writer, &stream_closed_promise, is_finished, subscribe_mutex](
                 mavsdk::Calibration::Result result,
                 const mavsdk::Calibration::ProgressData calibrate_magnetometer) {
                 rpc::calibration::CalibrateMagnetometerResponse rpc_response;
@@ -248,16 +249,18 @@ public:
                 rpc_calibration_result->set_result_str(ss.str());
                 rpc_response.set_allocated_calibration_result(rpc_calibration_result);
 
-                std::unique_lock<std::mutex> lock(subscribe_mutex);
+                std::unique_lock<std::mutex> lock(*subscribe_mutex);
                 if (!*is_finished && !writer->Write(rpc_response)) {
                     *is_finished = true;
                     unregister_stream_stop_promise(stream_closed_promise);
-                    lock.unlock();
                     stream_closed_promise->set_value();
                 }
             });
 
         stream_closed_future.wait();
+        std::unique_lock<std::mutex> lock(*subscribe_mutex);
+        *is_finished = true;
+
         return grpc::Status::OK;
     }
 
@@ -271,11 +274,10 @@ public:
         register_stream_stop_promise(stream_closed_promise);
 
         auto is_finished = std::make_shared<bool>(false);
-
-        std::mutex subscribe_mutex{};
+        auto subscribe_mutex = std::make_shared<std::mutex>();
 
         _calibration.calibrate_level_horizon_async(
-            [this, &writer, &stream_closed_promise, is_finished, &subscribe_mutex](
+            [this, &writer, &stream_closed_promise, is_finished, subscribe_mutex](
                 mavsdk::Calibration::Result result,
                 const mavsdk::Calibration::ProgressData calibrate_level_horizon) {
                 rpc::calibration::CalibrateLevelHorizonResponse rpc_response;
@@ -291,16 +293,18 @@ public:
                 rpc_calibration_result->set_result_str(ss.str());
                 rpc_response.set_allocated_calibration_result(rpc_calibration_result);
 
-                std::unique_lock<std::mutex> lock(subscribe_mutex);
+                std::unique_lock<std::mutex> lock(*subscribe_mutex);
                 if (!*is_finished && !writer->Write(rpc_response)) {
                     *is_finished = true;
                     unregister_stream_stop_promise(stream_closed_promise);
-                    lock.unlock();
                     stream_closed_promise->set_value();
                 }
             });
 
         stream_closed_future.wait();
+        std::unique_lock<std::mutex> lock(*subscribe_mutex);
+        *is_finished = true;
+
         return grpc::Status::OK;
     }
 
@@ -314,11 +318,10 @@ public:
         register_stream_stop_promise(stream_closed_promise);
 
         auto is_finished = std::make_shared<bool>(false);
-
-        std::mutex subscribe_mutex{};
+        auto subscribe_mutex = std::make_shared<std::mutex>();
 
         _calibration.calibrate_gimbal_accelerometer_async(
-            [this, &writer, &stream_closed_promise, is_finished, &subscribe_mutex](
+            [this, &writer, &stream_closed_promise, is_finished, subscribe_mutex](
                 mavsdk::Calibration::Result result,
                 const mavsdk::Calibration::ProgressData calibrate_gimbal_accelerometer) {
                 rpc::calibration::CalibrateGimbalAccelerometerResponse rpc_response;
@@ -334,16 +337,18 @@ public:
                 rpc_calibration_result->set_result_str(ss.str());
                 rpc_response.set_allocated_calibration_result(rpc_calibration_result);
 
-                std::unique_lock<std::mutex> lock(subscribe_mutex);
+                std::unique_lock<std::mutex> lock(*subscribe_mutex);
                 if (!*is_finished && !writer->Write(rpc_response)) {
                     *is_finished = true;
                     unregister_stream_stop_promise(stream_closed_promise);
-                    lock.unlock();
                     stream_closed_promise->set_value();
                 }
             });
 
         stream_closed_future.wait();
+        std::unique_lock<std::mutex> lock(*subscribe_mutex);
+        *is_finished = true;
+
         return grpc::Status::OK;
     }
 
