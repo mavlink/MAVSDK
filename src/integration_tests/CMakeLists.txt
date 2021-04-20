@@ -37,8 +37,6 @@ add_executable(integration_tests_runner
     camera_take_photo_interval.cpp
     camera_format.cpp
     camera_test_helpers.cpp
-    camera_test_helpers.h
-    CMakeLists.txt
     follow_me.cpp
     geofence_inclusion.cpp
     gimbal.cpp
@@ -59,7 +57,6 @@ add_executable(integration_tests_runner
     offboard_position.cpp
     param.cpp
     path_checker.cpp
-    path_checker.h
     system_connection_async.cpp
     system_multi_components.cpp
     statustext.cpp
