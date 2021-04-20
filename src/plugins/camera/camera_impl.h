@@ -137,6 +137,7 @@ private:
 
     void check_status();
 
+    bool should_fetch_camera_definition() const;
     bool fetch_camera_definition(
         const mavlink_camera_information_t& camera_information, std::string& camera_definition_out);
     bool download_definition_file(const std::string& uri, std::string& camera_definition_out);
@@ -182,6 +183,9 @@ private:
     MavlinkCommandSender::CommandLong make_command_request_video_stream_status();
 
     std::unique_ptr<CameraDefinition> _camera_definition{};
+    bool _is_fetching_camera_definition{false};
+    bool _has_camera_definition_timed_out{false};
+    size_t _camera_definition_fetch_count{0};
 
     std::atomic<size_t> _camera_id{0};
     std::atomic<bool> _camera_found{false};
