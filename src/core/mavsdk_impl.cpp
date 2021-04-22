@@ -339,7 +339,7 @@ ConnectionResult MavsdkImpl::setup_udp_remote(
     if (ret == ConnectionResult::Success) {
         new_conn->add_remote(remote_ip, remote_port);
         add_connection(new_conn);
-        make_system_with_component(get_own_system_id(), get_own_component_id(), true);
+        make_system_with_component(0, 0, true);
     }
     return ret;
 }
