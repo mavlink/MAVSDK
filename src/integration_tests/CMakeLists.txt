@@ -37,6 +37,7 @@ add_executable(integration_tests_runner
     camera_take_photo_interval.cpp
     camera_format.cpp
     camera_test_helpers.cpp
+    connection.cpp
     follow_me.cpp
     geofence_inclusion.cpp
     gimbal.cpp
