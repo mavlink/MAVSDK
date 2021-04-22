@@ -153,13 +153,12 @@ public:
         register_stream_stop_promise(stream_closed_promise);
 
         auto is_finished = std::make_shared<bool>(false);
-
-        std::mutex subscribe_mutex{};
+        auto subscribe_mutex = std::make_shared<std::mutex>();
 
         _ftp.download_async(
             request->remote_file_path(),
             request->local_dir(),
-            [this, &writer, &stream_closed_promise, is_finished, &subscribe_mutex](
+            [this, &writer, &stream_closed_promise, is_finished, subscribe_mutex](
                 mavsdk::Ftp::Result result, const mavsdk::Ftp::ProgressData download) {
                 rpc::ftp::DownloadResponse rpc_response;
 
@@ -174,16 +173,18 @@ public:
                 rpc_ftp_result->set_result_str(ss.str());
                 rpc_response.set_allocated_ftp_result(rpc_ftp_result);
 
-                std::unique_lock<std::mutex> lock(subscribe_mutex);
+                std::unique_lock<std::mutex> lock(*subscribe_mutex);
                 if (!*is_finished && !writer->Write(rpc_response)) {
                     *is_finished = true;
                     unregister_stream_stop_promise(stream_closed_promise);
-                    lock.unlock();
                     stream_closed_promise->set_value();
                 }
             });
 
         stream_closed_future.wait();
+        std::unique_lock<std::mutex> lock(*subscribe_mutex);
+        *is_finished = true;
+
         return grpc::Status::OK;
     }
 
@@ -197,13 +198,12 @@ public:
         register_stream_stop_promise(stream_closed_promise);
 
         auto is_finished = std::make_shared<bool>(false);
-
-        std::mutex subscribe_mutex{};
+        auto subscribe_mutex = std::make_shared<std::mutex>();
 
         _ftp.upload_async(
             request->local_file_path(),
             request->remote_dir(),
-            [this, &writer, &stream_closed_promise, is_finished, &subscribe_mutex](
+            [this, &writer, &stream_closed_promise, is_finished, subscribe_mutex](
                 mavsdk::Ftp::Result result, const mavsdk::Ftp::ProgressData upload) {
                 rpc::ftp::UploadResponse rpc_response;
 
@@ -218,16 +218,18 @@ public:
                 rpc_ftp_result->set_result_str(ss.str());
                 rpc_response.set_allocated_ftp_result(rpc_ftp_result);
 
-                std::unique_lock<std::mutex> lock(subscribe_mutex);
+                std::unique_lock<std::mutex> lock(*subscribe_mutex);
                 if (!*is_finished && !writer->Write(rpc_response)) {
                     *is_finished = true;
                     unregister_stream_stop_promise(stream_closed_promise);
-                    lock.unlock();
                     stream_closed_promise->set_value();
                 }
             });
 
         stream_closed_future.wait();
+        std::unique_lock<std::mutex> lock(*subscribe_mutex);
+        *is_finished = true;
+
         return grpc::Status::OK;
     }
 

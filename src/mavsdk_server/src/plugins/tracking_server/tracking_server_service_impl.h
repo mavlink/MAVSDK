@@ -230,29 +230,30 @@ public:
         register_stream_stop_promise(stream_closed_promise);
 
         auto is_finished = std::make_shared<bool>(false);
-
-        std::mutex subscribe_mutex{};
+        auto subscribe_mutex = std::make_shared<std::mutex>();
 
         _tracking_server.subscribe_tracking_point_command(
-            [this, &writer, &stream_closed_promise, is_finished, &subscribe_mutex](
+            [this, &writer, &stream_closed_promise, is_finished, subscribe_mutex](
                 const mavsdk::TrackingServer::TrackPoint tracking_point_command) {
                 rpc::tracking_server::TrackingPointCommandResponse rpc_response;
 
                 rpc_response.set_allocated_track_point(
                     translateToRpcTrackPoint(tracking_point_command).release());
 
-                std::unique_lock<std::mutex> lock(subscribe_mutex);
+                std::unique_lock<std::mutex> lock(*subscribe_mutex);
                 if (!*is_finished && !writer->Write(rpc_response)) {
                     _tracking_server.subscribe_tracking_point_command(nullptr);
 
                     *is_finished = true;
                     unregister_stream_stop_promise(stream_closed_promise);
-                    lock.unlock();
                     stream_closed_promise->set_value();
                 }
             });
 
         stream_closed_future.wait();
+        std::unique_lock<std::mutex> lock(*subscribe_mutex);
+        *is_finished = true;
+
         return grpc::Status::OK;
     }
 
@@ -266,29 +267,30 @@ public:
         register_stream_stop_promise(stream_closed_promise);
 
         auto is_finished = std::make_shared<bool>(false);
-
-        std::mutex subscribe_mutex{};
+        auto subscribe_mutex = std::make_shared<std::mutex>();
 
         _tracking_server.subscribe_tracking_rectangle_command(
-            [this, &writer, &stream_closed_promise, is_finished, &subscribe_mutex](
+            [this, &writer, &stream_closed_promise, is_finished, subscribe_mutex](
                 const mavsdk::TrackingServer::TrackRectangle tracking_rectangle_command) {
                 rpc::tracking_server::TrackingRectangleCommandResponse rpc_response;
 
                 rpc_response.set_allocated_track_rectangle(
                     translateToRpcTrackRectangle(tracking_rectangle_command).release());
 
-                std::unique_lock<std::mutex> lock(subscribe_mutex);
+                std::unique_lock<std::mutex> lock(*subscribe_mutex);
                 if (!*is_finished && !writer->Write(rpc_response)) {
                     _tracking_server.subscribe_tracking_rectangle_command(nullptr);
 
                     *is_finished = true;
                     unregister_stream_stop_promise(stream_closed_promise);
-                    lock.unlock();
                     stream_closed_promise->set_value();
                 }
             });
 
         stream_closed_future.wait();
+        std::unique_lock<std::mutex> lock(*subscribe_mutex);
+        *is_finished = true;
+
         return grpc::Status::OK;
     }
 
@@ -302,28 +304,29 @@ public:
         register_stream_stop_promise(stream_closed_promise);
 
         auto is_finished = std::make_shared<bool>(false);
-
-        std::mutex subscribe_mutex{};
+        auto subscribe_mutex = std::make_shared<std::mutex>();
 
         _tracking_server.subscribe_tracking_off_command(
-            [this, &writer, &stream_closed_promise, is_finished, &subscribe_mutex](
+            [this, &writer, &stream_closed_promise, is_finished, subscribe_mutex](
                 const int32_t tracking_off_command) {
                 rpc::tracking_server::TrackingOffCommandResponse rpc_response;
 
                 rpc_response.set_dummy(tracking_off_command);
 
-                std::unique_lock<std::mutex> lock(subscribe_mutex);
+                std::unique_lock<std::mutex> lock(*subscribe_mutex);
                 if (!*is_finished && !writer->Write(rpc_response)) {
                     _tracking_server.subscribe_tracking_off_command(nullptr);
 
                     *is_finished = true;
                     unregister_stream_stop_promise(stream_closed_promise);
-                    lock.unlock();
                     stream_closed_promise->set_value();
                 }
             });
 
         stream_closed_future.wait();
+        std::unique_lock<std::mutex> lock(*subscribe_mutex);
+        *is_finished = true;
+
         return grpc::Status::OK;
     }
 

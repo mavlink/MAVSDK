@@ -384,29 +384,30 @@ public:
         register_stream_stop_promise(stream_closed_promise);
 
         auto is_finished = std::make_shared<bool>(false);
-
-        std::mutex subscribe_mutex{};
+        auto subscribe_mutex = std::make_shared<std::mutex>();
 
         _mission_raw.subscribe_mission_progress(
-            [this, &writer, &stream_closed_promise, is_finished, &subscribe_mutex](
+            [this, &writer, &stream_closed_promise, is_finished, subscribe_mutex](
                 const mavsdk::MissionRaw::MissionProgress mission_progress) {
                 rpc::mission_raw::MissionProgressResponse rpc_response;
 
                 rpc_response.set_allocated_mission_progress(
                     translateToRpcMissionProgress(mission_progress).release());
 
-                std::unique_lock<std::mutex> lock(subscribe_mutex);
+                std::unique_lock<std::mutex> lock(*subscribe_mutex);
                 if (!*is_finished && !writer->Write(rpc_response)) {
                     _mission_raw.subscribe_mission_progress(nullptr);
 
                     *is_finished = true;
                     unregister_stream_stop_promise(stream_closed_promise);
-                    lock.unlock();
                     stream_closed_promise->set_value();
                 }
             });
 
         stream_closed_future.wait();
+        std::unique_lock<std::mutex> lock(*subscribe_mutex);
+        *is_finished = true;
+
         return grpc::Status::OK;
     }
 
@@ -420,28 +421,29 @@ public:
         register_stream_stop_promise(stream_closed_promise);
 
         auto is_finished = std::make_shared<bool>(false);
-
-        std::mutex subscribe_mutex{};
+        auto subscribe_mutex = std::make_shared<std::mutex>();
 
         _mission_raw.subscribe_mission_changed(
-            [this, &writer, &stream_closed_promise, is_finished, &subscribe_mutex](
+            [this, &writer, &stream_closed_promise, is_finished, subscribe_mutex](
                 const bool mission_changed) {
                 rpc::mission_raw::MissionChangedResponse rpc_response;
 
                 rpc_response.set_mission_changed(mission_changed);
 
-                std::unique_lock<std::mutex> lock(subscribe_mutex);
+                std::unique_lock<std::mutex> lock(*subscribe_mutex);
                 if (!*is_finished && !writer->Write(rpc_response)) {
                     _mission_raw.subscribe_mission_changed(nullptr);
 
                     *is_finished = true;
                     unregister_stream_stop_promise(stream_closed_promise);
-                    lock.unlock();
                     stream_closed_promise->set_value();
                 }
             });
 
         stream_closed_future.wait();
+        std::unique_lock<std::mutex> lock(*subscribe_mutex);
+        *is_finished = true;
+
         return grpc::Status::OK;
     }
 

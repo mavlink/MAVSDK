@@ -803,28 +803,29 @@ public:
         register_stream_stop_promise(stream_closed_promise);
 
         auto is_finished = std::make_shared<bool>(false);
-
-        std::mutex subscribe_mutex{};
+        auto subscribe_mutex = std::make_shared<std::mutex>();
 
         _camera.subscribe_mode(
-            [this, &writer, &stream_closed_promise, is_finished, &subscribe_mutex](
+            [this, &writer, &stream_closed_promise, is_finished, subscribe_mutex](
                 const mavsdk::Camera::Mode mode) {
                 rpc::camera::ModeResponse rpc_response;
 
                 rpc_response.set_mode(translateToRpcMode(mode));
 
-                std::unique_lock<std::mutex> lock(subscribe_mutex);
+                std::unique_lock<std::mutex> lock(*subscribe_mutex);
                 if (!*is_finished && !writer->Write(rpc_response)) {
                     _camera.subscribe_mode(nullptr);
 
                     *is_finished = true;
                     unregister_stream_stop_promise(stream_closed_promise);
-                    lock.unlock();
                     stream_closed_promise->set_value();
                 }
             });
 
         stream_closed_future.wait();
+        std::unique_lock<std::mutex> lock(*subscribe_mutex);
+        *is_finished = true;
+
         return grpc::Status::OK;
     }
 
@@ -838,29 +839,30 @@ public:
         register_stream_stop_promise(stream_closed_promise);
 
         auto is_finished = std::make_shared<bool>(false);
-
-        std::mutex subscribe_mutex{};
+        auto subscribe_mutex = std::make_shared<std::mutex>();
 
         _camera.subscribe_information(
-            [this, &writer, &stream_closed_promise, is_finished, &subscribe_mutex](
+            [this, &writer, &stream_closed_promise, is_finished, subscribe_mutex](
                 const mavsdk::Camera::Information information) {
                 rpc::camera::InformationResponse rpc_response;
 
                 rpc_response.set_allocated_information(
                     translateToRpcInformation(information).release());
 
-                std::unique_lock<std::mutex> lock(subscribe_mutex);
+                std::unique_lock<std::mutex> lock(*subscribe_mutex);
                 if (!*is_finished && !writer->Write(rpc_response)) {
                     _camera.subscribe_information(nullptr);
 
                     *is_finished = true;
                     unregister_stream_stop_promise(stream_closed_promise);
-                    lock.unlock();
                     stream_closed_promise->set_value();
                 }
             });
 
         stream_closed_future.wait();
+        std::unique_lock<std::mutex> lock(*subscribe_mutex);
+        *is_finished = true;
+
         return grpc::Status::OK;
     }
 
@@ -874,29 +876,30 @@ public:
         register_stream_stop_promise(stream_closed_promise);
 
         auto is_finished = std::make_shared<bool>(false);
-
-        std::mutex subscribe_mutex{};
+        auto subscribe_mutex = std::make_shared<std::mutex>();
 
         _camera.subscribe_video_stream_info(
-            [this, &writer, &stream_closed_promise, is_finished, &subscribe_mutex](
+            [this, &writer, &stream_closed_promise, is_finished, subscribe_mutex](
                 const mavsdk::Camera::VideoStreamInfo video_stream_info) {
                 rpc::camera::VideoStreamInfoResponse rpc_response;
 
                 rpc_response.set_allocated_video_stream_info(
                     translateToRpcVideoStreamInfo(video_stream_info).release());
 
-                std::unique_lock<std::mutex> lock(subscribe_mutex);
+                std::unique_lock<std::mutex> lock(*subscribe_mutex);
                 if (!*is_finished && !writer->Write(rpc_response)) {
                     _camera.subscribe_video_stream_info(nullptr);
 
                     *is_finished = true;
                     unregister_stream_stop_promise(stream_closed_promise);
-                    lock.unlock();
                     stream_closed_promise->set_value();
                 }
             });
 
         stream_closed_future.wait();
+        std::unique_lock<std::mutex> lock(*subscribe_mutex);
+        *is_finished = true;
+
         return grpc::Status::OK;
     }
 
@@ -910,29 +913,30 @@ public:
         register_stream_stop_promise(stream_closed_promise);
 
         auto is_finished = std::make_shared<bool>(false);
-
-        std::mutex subscribe_mutex{};
+        auto subscribe_mutex = std::make_shared<std::mutex>();
 
         _camera.subscribe_capture_info(
-            [this, &writer, &stream_closed_promise, is_finished, &subscribe_mutex](
+            [this, &writer, &stream_closed_promise, is_finished, subscribe_mutex](
                 const mavsdk::Camera::CaptureInfo capture_info) {
                 rpc::camera::CaptureInfoResponse rpc_response;
 
                 rpc_response.set_allocated_capture_info(
                     translateToRpcCaptureInfo(capture_info).release());
 
-                std::unique_lock<std::mutex> lock(subscribe_mutex);
+                std::unique_lock<std::mutex> lock(*subscribe_mutex);
                 if (!*is_finished && !writer->Write(rpc_response)) {
                     _camera.subscribe_capture_info(nullptr);
 
                     *is_finished = true;
                     unregister_stream_stop_promise(stream_closed_promise);
-                    lock.unlock();
                     stream_closed_promise->set_value();
                 }
             });
 
         stream_closed_future.wait();
+        std::unique_lock<std::mutex> lock(*subscribe_mutex);
+        *is_finished = true;
+
         return grpc::Status::OK;
     }
 
@@ -946,28 +950,29 @@ public:
         register_stream_stop_promise(stream_closed_promise);
 
         auto is_finished = std::make_shared<bool>(false);
-
-        std::mutex subscribe_mutex{};
+        auto subscribe_mutex = std::make_shared<std::mutex>();
 
         _camera.subscribe_status(
-            [this, &writer, &stream_closed_promise, is_finished, &subscribe_mutex](
+            [this, &writer, &stream_closed_promise, is_finished, subscribe_mutex](
                 const mavsdk::Camera::Status status) {
                 rpc::camera::StatusResponse rpc_response;
 
                 rpc_response.set_allocated_camera_status(translateToRpcStatus(status).release());
 
-                std::unique_lock<std::mutex> lock(subscribe_mutex);
+                std::unique_lock<std::mutex> lock(*subscribe_mutex);
                 if (!*is_finished && !writer->Write(rpc_response)) {
                     _camera.subscribe_status(nullptr);
 
                     *is_finished = true;
                     unregister_stream_stop_promise(stream_closed_promise);
-                    lock.unlock();
                     stream_closed_promise->set_value();
                 }
             });
 
         stream_closed_future.wait();
+        std::unique_lock<std::mutex> lock(*subscribe_mutex);
+        *is_finished = true;
+
         return grpc::Status::OK;
     }
 
@@ -981,11 +986,10 @@ public:
         register_stream_stop_promise(stream_closed_promise);
 
         auto is_finished = std::make_shared<bool>(false);
-
-        std::mutex subscribe_mutex{};
+        auto subscribe_mutex = std::make_shared<std::mutex>();
 
         _camera.subscribe_current_settings(
-            [this, &writer, &stream_closed_promise, is_finished, &subscribe_mutex](
+            [this, &writer, &stream_closed_promise, is_finished, subscribe_mutex](
                 const std::vector<mavsdk::Camera::Setting> current_settings) {
                 rpc::camera::CurrentSettingsResponse rpc_response;
 
@@ -994,18 +998,20 @@ public:
                     ptr->CopyFrom(*translateToRpcSetting(elem).release());
                 }
 
-                std::unique_lock<std::mutex> lock(subscribe_mutex);
+                std::unique_lock<std::mutex> lock(*subscribe_mutex);
                 if (!*is_finished && !writer->Write(rpc_response)) {
                     _camera.subscribe_current_settings(nullptr);
 
                     *is_finished = true;
                     unregister_stream_stop_promise(stream_closed_promise);
-                    lock.unlock();
                     stream_closed_promise->set_value();
                 }
             });
 
         stream_closed_future.wait();
+        std::unique_lock<std::mutex> lock(*subscribe_mutex);
+        *is_finished = true;
+
         return grpc::Status::OK;
     }
 
@@ -1019,11 +1025,10 @@ public:
         register_stream_stop_promise(stream_closed_promise);
 
         auto is_finished = std::make_shared<bool>(false);
-
-        std::mutex subscribe_mutex{};
+        auto subscribe_mutex = std::make_shared<std::mutex>();
 
         _camera.subscribe_possible_setting_options(
-            [this, &writer, &stream_closed_promise, is_finished, &subscribe_mutex](
+            [this, &writer, &stream_closed_promise, is_finished, subscribe_mutex](
                 const std::vector<mavsdk::Camera::SettingOptions> possible_setting_options) {
                 rpc::camera::PossibleSettingOptionsResponse rpc_response;
 
@@ -1032,18 +1037,20 @@ public:
                     ptr->CopyFrom(*translateToRpcSettingOptions(elem).release());
                 }
 
-                std::unique_lock<std::mutex> lock(subscribe_mutex);
+                std::unique_lock<std::mutex> lock(*subscribe_mutex);
                 if (!*is_finished && !writer->Write(rpc_response)) {
                     _camera.subscribe_possible_setting_options(nullptr);
 
                     *is_finished = true;
                     unregister_stream_stop_promise(stream_closed_promise);
-                    lock.unlock();
                     stream_closed_promise->set_value();
                 }
             });
 
         stream_closed_future.wait();
+        std::unique_lock<std::mutex> lock(*subscribe_mutex);
+        *is_finished = true;
+
         return grpc::Status::OK;
     }
 
