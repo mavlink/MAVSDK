@@ -195,14 +195,13 @@ void SystemImpl::process_heartbeat(const mavlink_message_t& message)
         }
     }
 
-    // We do not call on_discovery here but wait with the notification until we know the UUID.
-
     // If the component is an autopilot and we don't know its UUID, then try to find out.
-    if (is_autopilot(message.compid) && !have_uuid()) {
+    // If it's an autopilot, set_connected() will be called in process_autopilot_version().
+    if (is_autopilot(message.compid) && !_uuid_initialized) {
         request_autopilot_version();
+    } else {
+        set_connected();
     }
-
-    set_connected();
 }
 
 void SystemImpl::process_autopilot_version(const mavlink_message_t& message)
@@ -508,7 +507,7 @@ void SystemImpl::set_connected()
     {
         std::lock_guard<std::mutex> lock(_connection_mutex);
 
-        if (!_connected && _uuid_initialized) {
+        if (!_connected) {
             LogDebug() << "Discovered " << _components.size() << " component(s) "
                        << "(UUID: " << _uuid << ")";
 
