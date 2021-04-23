@@ -60,7 +60,7 @@ public:
 
     std::vector<std::shared_ptr<System>> systems() const;
 
-    void set_configuration(Mavsdk::Configuration configuration);
+    void set_configuration(Mavsdk::Configuration new_configuration);
 
     std::vector<uint64_t> get_system_uuids() const;
     System& get_system();
@@ -80,7 +80,8 @@ public:
     void notify_on_discover(uint64_t uuid);
     void notify_on_timeout(uint64_t uuid);
 
-    void start_sending_heartbeat();
+    void start_sending_heartbeats();
+    void stop_sending_heartbeats();
 
     TimeoutHandler timeout_handler;
     CallEveryHandler call_every_handler;
@@ -148,8 +149,7 @@ private:
     std::atomic<double> _timeout_s{Mavsdk::DEFAULT_TIMEOUT_S};
 
     static constexpr double _HEARTBEAT_SEND_INTERVAL_S = 1.0;
-    std::atomic<bool> _sending_heartbeats{false};
-    void* _heartbeat_send_cookie = nullptr;
+    void* _heartbeat_send_cookie{nullptr};
 
     std::atomic<bool> _should_exit = {false};
 };

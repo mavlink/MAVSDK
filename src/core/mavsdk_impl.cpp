@@ -390,12 +390,17 @@ void MavsdkImpl::add_connection(std::shared_ptr<Connection> new_connection)
     _connections.push_back(new_connection);
 }
 
-void MavsdkImpl::set_configuration(Mavsdk::Configuration configuration)
+void MavsdkImpl::set_configuration(Mavsdk::Configuration new_configuration)
 {
-    _configuration = configuration;
-
-    if (configuration.get_always_send_heartbeats()) {
-        start_sending_heartbeat();
+    if (new_configuration.get_always_send_heartbeats() &&
+        !_configuration.get_always_send_heartbeats()) {
+        _configuration = new_configuration;
+        start_sending_heartbeats();
+    } else if (
+        !new_configuration.get_always_send_heartbeats() &&
+        _configuration.get_always_send_heartbeats() && !is_connected()) {
+        _configuration = new_configuration;
+        stop_sending_heartbeats();
     }
 }
 
@@ -680,10 +685,20 @@ void MavsdkImpl::process_user_callbacks_thread()
     }
 }
 
-void MavsdkImpl::start_sending_heartbeat()
+void MavsdkImpl::start_sending_heartbeats()
 {
-    call_every_handler.add(
-        [this]() { send_heartbeat(); }, _HEARTBEAT_SEND_INTERVAL_S, &_heartbeat_send_cookie);
+    if (_heartbeat_send_cookie == nullptr) {
+        call_every_handler.add(
+            [this]() { send_heartbeat(); }, _HEARTBEAT_SEND_INTERVAL_S, &_heartbeat_send_cookie);
+    }
+}
+
+void MavsdkImpl::stop_sending_heartbeats()
+{
+    if (!_configuration.get_always_send_heartbeats()) {
+        call_every_handler.remove(_heartbeat_send_cookie);
+        _heartbeat_send_cookie = nullptr;
+    }
 }
 
 void MavsdkImpl::send_heartbeat()
