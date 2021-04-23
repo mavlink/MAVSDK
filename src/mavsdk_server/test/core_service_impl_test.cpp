@@ -42,7 +42,7 @@ protected:
     virtual void TearDown() { _server->Shutdown(); }
 
     void checkPluginIsRunning(const std::string plugin_name);
-    std::future<void> subscribeConnectionStateAsync(std::vector<std::pair<uint64_t, bool>>& events);
+    std::future<void> subscribeConnectionStateAsync(std::vector<bool>& events);
 
     std::unique_ptr<CoreServiceImpl> _core_service{};
     std::unique_ptr<MockMavsdk> _mavsdk{};
@@ -121,7 +121,7 @@ TEST_F(CoreServiceImplTest, subscribeConnectionStateSubscribesToChange)
 
 TEST_F(CoreServiceImplTest, connectionStateStreamEmptyIfCallbackNotCalled)
 {
-    std::vector<std::pair<uint64_t, bool>> events;
+    std::vector<bool> events;
     auto events_stream_future = subscribeConnectionStateAsync(events);
 
     _core_service->stop();
@@ -130,8 +130,7 @@ TEST_F(CoreServiceImplTest, connectionStateStreamEmptyIfCallbackNotCalled)
     EXPECT_EQ(0, events.size());
 }
 
-std::future<void>
-CoreServiceImplTest::subscribeConnectionStateAsync(std::vector<std::pair<uint64_t, bool>>& events)
+std::future<void> CoreServiceImplTest::subscribeConnectionStateAsync(std::vector<bool>& events)
 {
     return std::async(std::launch::async, [&]() {
         grpc::ClientContext context;
@@ -140,8 +139,7 @@ CoreServiceImplTest::subscribeConnectionStateAsync(std::vector<std::pair<uint64_
 
         mavsdk::rpc::core::ConnectionStateResponse response;
         while (response_reader->Read(&response)) {
-            events.push_back(std::make_pair(
-                response.connection_state().uuid(), response.connection_state().is_connected()));
+            events.push_back(response.connection_state().is_connected());
         }
     });
 }
