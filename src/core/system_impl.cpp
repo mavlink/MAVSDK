@@ -421,6 +421,11 @@ bool SystemImpl::has_gimbal() const
     return get_gimbal_id() == MAV_COMP_ID_GIMBAL;
 }
 
+bool SystemImpl::has_ground_station() const
+{
+    return get_ground_station_id() != uint8_t(0);
+}
+
 bool SystemImpl::send_message(mavlink_message_t& message)
 {
     // This is a low level interface where incoming messages can be tampered
@@ -1072,6 +1077,15 @@ uint8_t SystemImpl::get_gimbal_id() const
 {
     for (auto compid : _components)
         if (compid == MAV_COMP_ID_GIMBAL) {
+            return compid;
+        }
+    return uint8_t(0);
+}
+
+uint8_t SystemImpl::get_ground_station_id() const
+{
+    for (auto compid : _components)
+        if (compid == MAV_COMP_ID_MISSIONPLANNER) {
             return compid;
         }
     return uint8_t(0);

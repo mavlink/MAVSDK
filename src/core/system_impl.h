@@ -115,11 +115,13 @@ public:
     uint8_t get_autopilot_id() const;
     std::vector<uint8_t> get_camera_ids() const;
     uint8_t get_gimbal_id() const;
+    uint8_t get_ground_station_id() const;
 
     bool is_standalone() const;
     bool has_autopilot() const;
     bool has_camera(int camera_id = -1) const;
     bool has_gimbal() const;
+    bool has_ground_station() const;
 
     uint64_t get_uuid() const;
     uint8_t get_system_id() const;
