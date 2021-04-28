@@ -44,6 +44,11 @@ bool System::has_gimbal() const
     return _system_impl->has_gimbal();
 }
 
+bool System::has_ground_station() const
+{
+    return _system_impl->has_ground_station();
+}
+
 bool System::is_connected() const
 {
     return _system_impl->is_connected();

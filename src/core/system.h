@@ -75,6 +75,12 @@ public:
     bool has_gimbal() const;
 
     /**
+     * @brief Checks whether the system has a ground station.
+     * @return `true` if it has a ground station, `false` otherwise.
+     */
+    bool has_ground_station() const;
+
+    /**
      * @brief Checks if the system is connected.
      *
      * A system is connected when heartbeats are arriving (discovered and not timed out).
