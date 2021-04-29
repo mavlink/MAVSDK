@@ -9,6 +9,7 @@ namespace mavsdk {
 using namespace std::placeholders; // for `_1`
 using MissionItem = Mission::MissionItem;
 using CameraAction = Mission::MissionItem::CameraAction;
+using VehicleAction = Mission::MissionItem::VehicleAction;
 
 MissionImpl::MissionImpl(System& system) : PluginImplBase(system)
 {
@@ -446,6 +447,64 @@ MissionImpl::convert_to_int_items(const std::vector<MissionItem>& mission_items)
                     command = MAV_CMD_VIDEO_STOP_CAPTURE;
                     param1 = 0.0f; // all camera IDs
                     break;
+                default:
+                    LogErr() << "Error: camera action not supported";
+                    break;
+            }
+
+            MAVLinkMissionTransfer::ItemInt next_item{
+                static_cast<uint16_t>(int_items.size()),
+                MAV_FRAME_MISSION,
+                command,
+                current,
+                autocontinue,
+                param1,
+                param2,
+                param3,
+                NAN,
+                0,
+                0,
+                NAN,
+                MAV_MISSION_TYPE_MISSION};
+
+            _mission_data.mavlink_mission_item_to_mission_item_indices.push_back(item_i);
+            int_items.push_back(next_item);
+        }
+
+        if (item.vehicle_action != VehicleAction::None) {
+            // There is a camera action that we need to send.
+
+            // Current is the 0th waypoint
+            uint8_t current = ((int_items.size() == 0) ? 1 : 0);
+
+            uint8_t autocontinue = 1;
+
+            uint16_t command = 0;
+            float param1 = NAN;
+            float param2 = NAN;
+            float param3 = NAN;
+            switch (item.vehicle_action) {
+                case VehicleAction::TAKEOFF:
+                    // MAV_CMD_NAV_TAKEOFF_LOCAL ???
+                    // MAV_CMD_NAV_VTOL_TAKEOFF ???
+                    command = MAV_CMD_NAV_TAKEOFF;
+                    // param1 = 0.0f; // Which parameters should be added
+                    break;
+                case VehicleAction::LAND:
+                    // MAV_CMD_NAV_LAND
+                    // MAV_CMD_NAV_LAND_LOCAL
+                    // MAV_CMD_NAV_VTOL_LAND
+                    command = MAV_CMD_NAV_LAND;
+                    // param1 = 0.0f; // Which parameters should be added
+                    break;
+                case VehicleAction::TRANSITION_TO_FW:
+                    command = MAV_CMD_DO_VTOL_TRANSITION;
+                    param1 = MAV_VTOL_STATE_FW param2 = 0
+                        // param1 = 0.0f; // Which parameters should be added
+                        break;
+                case VehicleAction::TRANSITION_TO_MC:
+                    command = MAV_CMD_DO_VTOL_TRANSITION;
+                    param1 = MAV_VTOL_STATE_MC break;
                 default:
                     LogErr() << "Error: camera action not supported";
                     break;
