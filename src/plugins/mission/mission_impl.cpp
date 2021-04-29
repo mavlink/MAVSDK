@@ -485,26 +485,23 @@ MissionImpl::convert_to_int_items(const std::vector<MissionItem>& mission_items)
             float param3 = NAN;
             switch (item.vehicle_action) {
                 case VehicleAction::TAKEOFF:
-                    // MAV_CMD_NAV_TAKEOFF_LOCAL ???
-                    // MAV_CMD_NAV_VTOL_TAKEOFF ???
-                    command = MAV_CMD_NAV_TAKEOFF;
-                    // param1 = 0.0f; // Which parameters should be added
+                    command =
+                        MAV_CMD_NAV_TAKEOFF_LOCAL; // Takeoff at current position with same heading
                     break;
                 case VehicleAction::LAND:
-                    // MAV_CMD_NAV_LAND
-                    // MAV_CMD_NAV_LAND_LOCAL
-                    // MAV_CMD_NAV_VTOL_LAND
-                    command = MAV_CMD_NAV_LAND;
-                    // param1 = 0.0f; // Which parameters should be added
+                    command = MAV_CMD_NAV_LAND_LOCAL;
                     break;
                 case VehicleAction::TRANSITION_TO_FW:
                     command = MAV_CMD_DO_VTOL_TRANSITION;
-                    param1 = MAV_VTOL_STATE_FW param2 = 0
-                        // param1 = 0.0f; // Which parameters should be added
-                        break;
+                    param1 = MAV_VTOL_STATE_FW;
+                    param2 = 0; // Normal transition
+                    // param1 = 0.0f; // Which parameters should be added
+                    break;
                 case VehicleAction::TRANSITION_TO_MC:
                     command = MAV_CMD_DO_VTOL_TRANSITION;
-                    param1 = MAV_VTOL_STATE_MC break;
+                    param1 = MAV_VTOL_STATE_MC;
+                    param2 = 0 // Normal transition
+                        break;
                 default:
                     LogErr() << "Error: camera action not supported";
                     break;
