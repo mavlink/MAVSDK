@@ -489,17 +489,16 @@ MissionImpl::convert_to_int_items(const std::vector<MissionItem>& mission_items)
                         MAV_CMD_NAV_TAKEOFF_LOCAL; // Takeoff at current position with same heading
                     break;
                 case VehicleAction::LAND:
-                    command = MAV_CMD_NAV_LAND_LOCAL;
+                    command = MAV_CMD_NAV_LAND_LOCAL; // Land at current position with same heading
                     break;
                 case VehicleAction::TRANSITION_TO_FW:
-                    command = MAV_CMD_DO_VTOL_TRANSITION;
-                    param1 = MAV_VTOL_STATE_FW;
+                    command = MAV_CMD_DO_VTOL_TRANSITION; // Do transition
+                    param1 = MAV_VTOL_STATE_FW; // Target state is Fixed-Wing
                     param2 = 0; // Normal transition
-                    // param1 = 0.0f; // Which parameters should be added
                     break;
                 case VehicleAction::TRANSITION_TO_MC:
                     command = MAV_CMD_DO_VTOL_TRANSITION;
-                    param1 = MAV_VTOL_STATE_MC;
+                    param1 = MAV_VTOL_STATE_MC; // Target state is Multi-Copter
                     param2 = 0 // Normal transition
                         break;
                 default:
