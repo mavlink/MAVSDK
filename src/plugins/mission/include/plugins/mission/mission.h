@@ -77,6 +77,14 @@ public:
             StopVideo, /**< @brief Stop capturing video. */
         };
 
+        enum class VehicleAction {
+            None, /**< @brief No action. */
+            Takeoff, /**< @brief Takeoff at current position. */
+            Land, /**< @brief Land at current position. */
+            TransitionToFW, /**< @brief Transition to Fixed-wing. */
+            TransitionToMC, /**< @brief Transition to Multi-copter. */
+        };
+
         /**
          * @brief Stream operator to print information about a `Mission::CameraAction`.
          *
@@ -84,6 +92,7 @@ public:
          */
         friend std::ostream&
         operator<<(std::ostream& str, Mission::MissionItem::CameraAction const& camera_action);
+        operator<<(std::ostream& str, Mission::MissionItem::VehicleAction const& vehicle_action);
 
         double latitude_deg{double(NAN)}; /**< @brief Latitude in degrees (range: -90 to +90) */
         double longitude_deg{double(NAN)}; /**< @brief Longitude in degrees (range: -180 to +180) */
@@ -100,8 +109,13 @@ public:
         float loiter_time_s{float(NAN)}; /**< @brief Loiter time (in seconds) */
         double camera_photo_interval_s{
             1.0}; /**< @brief Camera photo interval to use after this mission item (in seconds) */
+<<<<<<< HEAD
         float acceptance_radius_m{
             float(NAN)}; /**< @brief Radius for completing a mission item (in metres) */
+=======
+        VehicleAction vehicle_action {
+        } /**< @brief Vehicle action to trigger at this mission item */
+>>>>>>> Addition changes based on current implementation of cameraAction
     };
 
     /**

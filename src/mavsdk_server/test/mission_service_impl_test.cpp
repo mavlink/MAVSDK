@@ -77,6 +77,7 @@ mavsdk::Mission::MissionPlan generateListOfMultipleItems()
     mission_item0.gimbal_yaw_deg = 90.3f;
     mission_item0.camera_action = CameraAction::None;
     mission_item0.loiter_time_s = 1.1f;
+    mission_item0.vehicle_action = VehicleAction::None;
 
     mavsdk::Mission::MissionItem mission_item1{};
     mission_item1.latitude_deg = 46.522626;
@@ -87,6 +88,7 @@ mavsdk::Mission::MissionPlan generateListOfMultipleItems()
     mission_item1.gimbal_pitch_deg = 41.2f;
     mission_item1.gimbal_yaw_deg = 70.3f;
     mission_item1.camera_action = CameraAction::TakePhoto;
+    mission_item1.vehicle_action = VehicleAction::None;
 
     mavsdk::Mission::MissionItem mission_item2{};
     mission_item2.latitude_deg = -50.995944711358824;
@@ -97,6 +99,7 @@ mavsdk::Mission::MissionPlan generateListOfMultipleItems()
     mission_item2.gimbal_pitch_deg = 55.0f;
     mission_item2.gimbal_yaw_deg = 68.8f;
     mission_item2.camera_action = CameraAction::StartPhotoInterval;
+    mission_item2.vehicle_action = VehicleAction::Takeoff;
 
     mavsdk::Mission::MissionItem mission_item3{};
     mission_item3.latitude_deg = 46.522652;
@@ -107,6 +110,7 @@ mavsdk::Mission::MissionPlan generateListOfMultipleItems()
     mission_item3.gimbal_pitch_deg = 11.2f;
     mission_item3.gimbal_yaw_deg = 20.3f;
     mission_item3.camera_action = CameraAction::StopPhotoInterval;
+    mission_item3.vehicle_action = VehicleAction::Land;
     mission_item3.loiter_time_s = 4.4f;
 
     mavsdk::Mission::MissionItem mission_item4{};
@@ -118,6 +122,7 @@ mavsdk::Mission::MissionPlan generateListOfMultipleItems()
     mission_item4.gimbal_pitch_deg = 14.6f;
     mission_item4.gimbal_yaw_deg = 31.5f;
     mission_item4.camera_action = CameraAction::StartVideo;
+    mission_item4.vehicle_action = VehicleAction::TransitionToFW;
 
     mavsdk::Mission::MissionItem mission_item5{};
     mission_item5.latitude_deg = 11.142334;
@@ -128,6 +133,7 @@ mavsdk::Mission::MissionPlan generateListOfMultipleItems()
     mission_item5.gimbal_pitch_deg = 17.2f;
     mission_item5.gimbal_yaw_deg = 90.0f;
     mission_item5.camera_action = CameraAction::StopVideo;
+    mission_item5.vehicle_action = VehicleAction::TransitionToMC;
 
     mission_plan.mission_items.push_back(mission_item0);
     mission_plan.mission_items.push_back(mission_item1);

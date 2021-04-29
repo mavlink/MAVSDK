@@ -502,7 +502,7 @@ MissionImpl::convert_to_int_items(const std::vector<MissionItem>& mission_items)
                     param2 = 0 // Normal transition
                         break;
                 default:
-                    LogErr() << "Error: camera action not supported";
+                    LogErr() << "Error: vehicle action not supported";
                     break;
             }
 
@@ -661,6 +661,17 @@ std::pair<Mission::Result, Mission::MissionPlan> MissionImpl::convert_to_result_
 
             } else if (int_item.command == MAV_CMD_VIDEO_STOP_CAPTURE) {
                 new_mission_item.camera_action = CameraAction::StopVideo;
+
+            } else if (command == MAV_CMD_NAV_TAKEOFF_LOCAL) {
+                new_mission_item.vehicle_action = VehicleAction::Takeoff;
+            } else if (command == MAV_CMD_NAV_LAND_LOCAL) {
+                new_mission_item.vehicle_action = VehicleAction::Land;
+            } else if (command == MAV_CMD_DO_VTOL_TRANSITION) {
+                if (param[0] == MAV_VTOL_STATE_FW) {
+                    new_mission_item.vehicle_action = VehicleAction::TransitionToFW;
+                } else {
+                    new_mission_item.vehicle_action = VehicleAction::TransitionToMC;
+                }
 
             } else if (int_item.command == MAV_CMD_DO_CHANGE_SPEED) {
                 if (int(int_item.param1) == 1 && int_item.param3 < 0 && int(int_item.param4) == 0) {
@@ -1065,6 +1076,16 @@ Mission::Result MissionImpl::build_mission_items(
         } else if (command == MAV_CMD_VIDEO_STOP_CAPTURE) {
             new_mission_item.camera_action = CameraAction::StopVideo;
 
+        } else if (command == MAV_CMD_NAV_TAKEOFF_LOCAL) {
+            new_mission_item.vehicle_action = VehicleAction::Takeoff;
+        } else if (command == MAV_CMD_NAV_LAND_LOCAL) {
+            new_mission_item.vehicle_action = VehicleAction::Land;
+        } else if (command == MAV_CMD_DO_VTOL_TRANSITION) {
+            if (param[0] == MAV_VTOL_STATE_FW) {
+                new_mission_item.vehicle_action = VehicleAction::TransitionToFW;
+            } else {
+                new_mission_item.vehicle_action = VehicleAction::TransitionToMC;
+            }
         } else if (command == MAV_CMD_DO_CHANGE_SPEED) {
             enum { AirSpeed = 0, GroundSpeed = 1 };
             auto speed_type = int(params[0]);
