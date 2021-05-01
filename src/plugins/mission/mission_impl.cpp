@@ -472,7 +472,7 @@ MissionImpl::convert_to_int_items(const std::vector<MissionItem>& mission_items)
         }
 
         if (item.vehicle_action != VehicleAction::None) {
-            // There is a camera action that we need to send.
+            // There is a vehicle action that we need to send.
 
             // Current is the 0th waypoint
             uint8_t current = ((int_items.size() == 0) ? 1 : 0);
