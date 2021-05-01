@@ -147,15 +147,14 @@ operator<<(std::ostream& str, Mission::MissionItem::VehicleAction const& vehicle
             return str << "Takeoff";
         case Mission::MissionItem::VehicleAction::Land:
             return str << "Land";
-        case Mission::MissionItem::VehicleAction::TransitionToFW:
-            return str << "Transition to Fixed-wing";
-        case Mission::MissionItem::VehicleAction::TransitionToMC:
-            return str << "Transition to Multi-copter";
+        case Mission::MissionItem::VehicleAction::TransitionToFw:
+            return str << "Transition To Fw";
+        case Mission::MissionItem::VehicleAction::TransitionToMc:
+            return str << "Transition To Mc";
         default:
             return str << "Unknown";
     }
 }
-
 bool operator==(const Mission::MissionItem& lhs, const Mission::MissionItem& rhs)
 {
     return ((std::isnan(rhs.latitude_deg) && std::isnan(lhs.latitude_deg)) ||
@@ -199,10 +198,14 @@ std::ostream& operator<<(std::ostream& str, Mission::MissionItem const& mission_
     str << "    loiter_time_s: " << mission_item.loiter_time_s << '\n';
     str << "    camera_photo_interval_s: " << mission_item.camera_photo_interval_s << '\n';
 <<<<<<< HEAD
+<<<<<<< HEAD
     str << "    acceptance_radius_m: " << mission_item.acceptance_radius_m << '\n';
 =======
     str << "    vehicle_action " << mission_item.vehicle_action << '\n';
 >>>>>>> Addition changes based on current implementation of cameraAction
+=======
+    str << "    vehicle_action: " << mission_item.vehicle_action << '\n';
+>>>>>>> Generated mission files based on modified proto
     str << '}';
     return str;
 }

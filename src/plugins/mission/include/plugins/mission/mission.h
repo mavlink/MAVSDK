@@ -77,14 +77,6 @@ public:
             StopVideo, /**< @brief Stop capturing video. */
         };
 
-        enum class VehicleAction {
-            None, /**< @brief No action. */
-            Takeoff, /**< @brief Takeoff at current position. */
-            Land, /**< @brief Land at current position. */
-            TransitionToFW, /**< @brief Transition to Fixed-wing. */
-            TransitionToMC, /**< @brief Transition to Multi-copter. */
-        };
-
         /**
          * @brief Stream operator to print information about a `Mission::CameraAction`.
          *
@@ -92,6 +84,26 @@ public:
          */
         friend std::ostream&
         operator<<(std::ostream& str, Mission::MissionItem::CameraAction const& camera_action);
+
+        /**
+         * @brief
+         */
+        enum class VehicleAction {
+            None, /**< @brief No action. */
+            Takeoff, /**< @brief Vehicle will takeoff and go to defined waypoint. */
+            Land, /**< @brief When a waypoint is reached vehicle will land at current position. */
+            TransitionToFw, /**< @brief When a waypoint is reached vehicle will transition to
+                               fixed-wing mode. */
+            TransitionToMc, /**< @brief When a waypoint is reached vehicle will transition to
+                               multi-copter mode. */
+        };
+
+        /**
+         * @brief Stream operator to print information about a `Mission::VehicleAction`.
+         *
+         * @return A reference to the stream.
+         */
+        friend std::ostream&
         operator<<(std::ostream& str, Mission::MissionItem::VehicleAction const& vehicle_action);
 
         double latitude_deg{double(NAN)}; /**< @brief Latitude in degrees (range: -90 to +90) */
@@ -110,12 +122,17 @@ public:
         double camera_photo_interval_s{
             1.0}; /**< @brief Camera photo interval to use after this mission item (in seconds) */
 <<<<<<< HEAD
+<<<<<<< HEAD
         float acceptance_radius_m{
             float(NAN)}; /**< @brief Radius for completing a mission item (in metres) */
 =======
         VehicleAction vehicle_action {
         } /**< @brief Vehicle action to trigger at this mission item */
 >>>>>>> Addition changes based on current implementation of cameraAction
+=======
+        VehicleAction
+            vehicle_action{}; /**< @brief Vehicle action to trigger at this mission item. */
+>>>>>>> Generated mission files based on modified proto
     };
 
     /**
