@@ -31,6 +31,7 @@ using UploadMissionRequest = mavsdk::rpc::mission::UploadMissionRequest;
 using UploadMissionResponse = mavsdk::rpc::mission::UploadMissionResponse;
 
 using CameraAction = mavsdk::Mission::MissionItem::CameraAction;
+using VehicleAction = mavsdk::Mission::MissionItem::VehicleAction;
 using RPCCameraAction = mavsdk::rpc::mission::MissionItem::CameraAction;
 
 using DownloadMissionResponse = mavsdk::rpc::mission::DownloadMissionResponse;
@@ -122,7 +123,7 @@ mavsdk::Mission::MissionPlan generateListOfMultipleItems()
     mission_item4.gimbal_pitch_deg = 14.6f;
     mission_item4.gimbal_yaw_deg = 31.5f;
     mission_item4.camera_action = CameraAction::StartVideo;
-    mission_item4.vehicle_action = VehicleAction::TransitionToFW;
+    mission_item4.vehicle_action = VehicleAction::TransitionToFw;
 
     mavsdk::Mission::MissionItem mission_item5{};
     mission_item5.latitude_deg = 11.142334;
@@ -133,7 +134,7 @@ mavsdk::Mission::MissionPlan generateListOfMultipleItems()
     mission_item5.gimbal_pitch_deg = 17.2f;
     mission_item5.gimbal_yaw_deg = 90.0f;
     mission_item5.camera_action = CameraAction::StopVideo;
-    mission_item5.vehicle_action = VehicleAction::TransitionToMC;
+    mission_item5.vehicle_action = VehicleAction::TransitionToMc;
 
     mission_plan.mission_items.push_back(mission_item0);
     mission_plan.mission_items.push_back(mission_item1);

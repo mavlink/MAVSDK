@@ -484,22 +484,22 @@ MissionImpl::convert_to_int_items(const std::vector<MissionItem>& mission_items)
             float param2 = NAN;
             float param3 = NAN;
             switch (item.vehicle_action) {
-                case VehicleAction::TAKEOFF:
+                case VehicleAction::Takeoff:
                     command =
                         MAV_CMD_NAV_TAKEOFF_LOCAL; // Takeoff at current position with same heading
                     break;
-                case VehicleAction::LAND:
+                case VehicleAction::Land:
                     command = MAV_CMD_NAV_LAND_LOCAL; // Land at current position with same heading
                     break;
-                case VehicleAction::TRANSITION_TO_FW:
+                case VehicleAction::TransitionToFw:
                     command = MAV_CMD_DO_VTOL_TRANSITION; // Do transition
                     param1 = MAV_VTOL_STATE_FW; // Target state is Fixed-Wing
                     param2 = 0; // Normal transition
                     break;
-                case VehicleAction::TRANSITION_TO_MC:
+                case VehicleAction::TransitionToMc:
                     command = MAV_CMD_DO_VTOL_TRANSITION;
                     param1 = MAV_VTOL_STATE_MC; // Target state is Multi-Copter
-                    param2 = 0 // Normal transition
+                    param2 = 0; // Normal transition
                         break;
                 default:
                     LogErr() << "Error: vehicle action not supported";
@@ -662,15 +662,15 @@ std::pair<Mission::Result, Mission::MissionPlan> MissionImpl::convert_to_result_
             } else if (int_item.command == MAV_CMD_VIDEO_STOP_CAPTURE) {
                 new_mission_item.camera_action = CameraAction::StopVideo;
 
-            } else if (command == MAV_CMD_NAV_TAKEOFF_LOCAL) {
+            } else if (int_item.command == MAV_CMD_NAV_TAKEOFF_LOCAL) {
                 new_mission_item.vehicle_action = VehicleAction::Takeoff;
-            } else if (command == MAV_CMD_NAV_LAND_LOCAL) {
+            } else if (int_item.command == MAV_CMD_NAV_LAND_LOCAL) {
                 new_mission_item.vehicle_action = VehicleAction::Land;
-            } else if (command == MAV_CMD_DO_VTOL_TRANSITION) {
-                if (param[0] == MAV_VTOL_STATE_FW) {
-                    new_mission_item.vehicle_action = VehicleAction::TransitionToFW;
+            } else if (int_item.command == MAV_CMD_DO_VTOL_TRANSITION) {
+                if (int_item.param1 == MAV_VTOL_STATE_FW) {
+                    new_mission_item.vehicle_action = VehicleAction::TransitionToFw;
                 } else {
-                    new_mission_item.vehicle_action = VehicleAction::TransitionToMC;
+                    new_mission_item.vehicle_action = VehicleAction::TransitionToMc;
                 }
 
             } else if (int_item.command == MAV_CMD_DO_CHANGE_SPEED) {
@@ -1081,10 +1081,10 @@ Mission::Result MissionImpl::build_mission_items(
         } else if (command == MAV_CMD_NAV_LAND_LOCAL) {
             new_mission_item.vehicle_action = VehicleAction::Land;
         } else if (command == MAV_CMD_DO_VTOL_TRANSITION) {
-            if (param[0] == MAV_VTOL_STATE_FW) {
-                new_mission_item.vehicle_action = VehicleAction::TransitionToFW;
+            if (params[0] == MAV_VTOL_STATE_FW) {
+                new_mission_item.vehicle_action = VehicleAction::TransitionToFw;
             } else {
-                new_mission_item.vehicle_action = VehicleAction::TransitionToMC;
+                new_mission_item.vehicle_action = VehicleAction::TransitionToMc;
             }
         } else if (command == MAV_CMD_DO_CHANGE_SPEED) {
             enum { AirSpeed = 0, GroundSpeed = 1 };
