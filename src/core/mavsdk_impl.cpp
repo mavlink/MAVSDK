@@ -104,7 +104,7 @@ std::vector<std::shared_ptr<System>> MavsdkImpl::systems() const
         if (system.first == 0) {
             continue;
         }
-        systems_result.push_back(std::shared_ptr<System>(system.second));
+        systems_result.push_back(system.second);
     }
 
     return systems_result;
@@ -203,18 +203,22 @@ void MavsdkImpl::receive_message(mavlink_message_t& message, Connection* connect
 
     std::lock_guard<std::recursive_mutex> lock(_systems_mutex);
 
-    // Change system id of null system
-    const auto it = _systems.find(0);
-    if (it != _systems.end()) {
-        std::swap(_systems[message.sysid], it->second);
-        _systems[message.sysid]->system_impl()->set_system_id(message.sysid);
-        _systems.erase(it);
+    if (_systems.size() == 1 && _systems[0].first == 0) {
+        _systems[0].first = message.sysid;
+        _systems[0].second->system_impl()->set_system_id(message.sysid);
     }
 
-    if (!does_system_exist(message.sysid)) {
+    bool found_system = false;
+    for (auto& system : _systems) {
+        if (system.first == message.sysid) {
+            system.second->system_impl()->add_new_component(message.compid);
+            found_system = true;
+            break;
+        }
+    }
+
+    if (!found_system) {
         make_system_with_component(message.sysid, message.compid);
-    } else {
-        _systems.at(message.sysid)->system_impl()->add_new_component(message.compid);
     }
 
     if (_should_exit) {
@@ -223,8 +227,11 @@ void MavsdkImpl::receive_message(mavlink_message_t& message, Connection* connect
         return;
     }
 
-    if (_systems.find(message.sysid) != _systems.end()) {
-        _systems.at(message.sysid)->system_impl()->process_mavlink_message(message);
+    for (auto& system : _systems) {
+        if (system.first == message.sysid) {
+            system.second->system_impl()->process_mavlink_message(message);
+            break;
+        }
     }
 }
 
@@ -420,26 +427,25 @@ std::vector<uint64_t> MavsdkImpl::get_system_uuids() const
 
 System& MavsdkImpl::get_system()
 {
-    {
-        std::lock_guard<std::recursive_mutex> lock(_systems_mutex);
-        // In get_system without uuid, we expect to have only
-        // one system connected.
-        if (_systems.size() == 1) {
-            return *(_systems.at(_systems.begin()->first));
-        }
+    std::lock_guard<std::recursive_mutex> lock(_systems_mutex);
 
-        if (_systems.size() > 1) {
-            LogWarn()
-                << "More than one system found. You should be using `get_system(uuid)` instead of `get_system()`!";
+    // In get_system without uuid, we expect to have only
+    // one system connected.
 
-            // Just return first system instead of failing.
-            return *_systems.begin()->second;
-        } else {
-            uint8_t system_id = 0, comp_id = 0;
-            make_system_with_component(system_id, comp_id);
-            return *_systems[system_id];
-        }
+    if (_systems.size() == 1) {
+        // Expected case.
+
+    } else if (_systems.size() > 1) {
+        LogWarn()
+            << "More than one system found. You should be using `get_system(uuid)` instead of `get_system()`!";
+        // Just return first system instead of failing.
+
+    } else {
+        uint8_t system_id = 0, comp_id = 0;
+        make_system_with_component(system_id, comp_id);
     }
+
+    return *(_systems[0].second);
 }
 
 System& MavsdkImpl::get_system(const uint64_t uuid)
@@ -462,7 +468,7 @@ System& MavsdkImpl::get_system(const uint64_t uuid)
     uint8_t system_id = 0, comp_id = 0;
     make_system_with_component(system_id, comp_id);
 
-    return *_systems[system_id];
+    return *_systems[0].second;
 }
 
 uint8_t MavsdkImpl::get_own_system_id() const
@@ -534,18 +540,7 @@ void MavsdkImpl::make_system_with_component(
     auto new_system = std::make_shared<System>(*this);
     new_system->init(system_id, comp_id, always_connected);
 
-    _systems.insert(std::pair<uint8_t, std::shared_ptr<System>>(system_id, new_system));
-}
-
-bool MavsdkImpl::does_system_exist(uint8_t system_id)
-{
-    std::lock_guard<std::recursive_mutex> lock(_systems_mutex);
-
-    if (!_should_exit) {
-        return (_systems.find(system_id) != _systems.end());
-    }
-    // When the system got destroyed in the destructor, we have to give up.
-    return false;
+    _systems.push_back(std::pair<uint8_t, std::shared_ptr<System>>(system_id, new_system));
 }
 
 void MavsdkImpl::notify_on_discover(const uint64_t uuid)
