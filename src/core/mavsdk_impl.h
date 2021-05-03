@@ -1,6 +1,5 @@
 #pragma once
 
-#include <unordered_map>
 #include <mutex>
 #include <vector>
 #include <atomic>
@@ -99,20 +98,18 @@ private:
     void add_connection(std::shared_ptr<Connection>);
     void make_system_with_component(
         uint8_t system_id, uint8_t component_id, bool always_connected = false);
-    bool does_system_exist(uint8_t system_id);
 
     void work_thread();
     void process_user_callbacks_thread();
 
     void send_heartbeat();
 
-    using system_entry_t = std::pair<uint8_t, std::shared_ptr<System>>;
-
     std::mutex _connections_mutex{};
     std::vector<std::shared_ptr<Connection>> _connections{};
 
     mutable std::recursive_mutex _systems_mutex{};
-    std::unordered_map<uint8_t, std::shared_ptr<System>> _systems{};
+
+    std::vector<std::pair<uint8_t, std::shared_ptr<System>>> _systems{};
 
     std::mutex _new_system_callback_mutex{};
     Mavsdk::NewSystemCallback _new_system_callback{nullptr};
