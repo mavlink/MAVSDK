@@ -275,20 +275,19 @@ TEST(FtpTest, UploadFiles)
 
 TEST(FtpTest, TestServer)
 {
-    ConnectionResult ret;
-
     Mavsdk mavsdk_gcs;
     Mavsdk::Configuration config_gcs(Mavsdk::Configuration::UsageType::GroundStation);
     mavsdk_gcs.set_configuration(config_gcs);
-    ret = mavsdk_gcs.add_udp_connection(24550);
-    ASSERT_EQ(ret, ConnectionResult::Success);
-    auto system_gcs = mavsdk_gcs.systems().at(0);
+    ASSERT_EQ(mavsdk_gcs.add_any_connection("udp://:24550"), ConnectionResult::Success);
 
     Mavsdk mavsdk_cc;
     Mavsdk::Configuration config_cc(Mavsdk::Configuration::UsageType::GroundStation);
     mavsdk_cc.set_configuration(config_cc);
-    ret = mavsdk_cc.setup_udp_remote("127.0.0.1", 24550);
-    ASSERT_EQ(ret, ConnectionResult::Success);
+    ASSERT_EQ(mavsdk_cc.add_any_connection("udp://127.0.0.1:24550"), ConnectionResult::Success);
+
+    std::this_thread::sleep_for(std::chrono::seconds(1));
+
+    auto system_gcs = mavsdk_gcs.systems().at(0);
     auto system_cc = mavsdk_cc.systems().at(0);
 
     auto mavlink_passthrough_cc = std::make_shared<MavlinkPassthrough>(system_cc);
