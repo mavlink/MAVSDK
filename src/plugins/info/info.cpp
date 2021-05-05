@@ -62,7 +62,7 @@ std::ostream& operator<<(std::ostream& str, Info::FlightInfo const& flight_info)
 
 bool operator==(const Info::Identification& lhs, const Info::Identification& rhs)
 {
-    return (rhs.hardware_uid == lhs.hardware_uid);
+    return (rhs.hardware_uid == lhs.hardware_uid) && (rhs.legacy_uid == lhs.legacy_uid);
 }
 
 std::ostream& operator<<(std::ostream& str, Info::Identification const& identification)
@@ -70,6 +70,7 @@ std::ostream& operator<<(std::ostream& str, Info::Identification const& identifi
     str << std::setprecision(15);
     str << "identification:" << '\n' << "{\n";
     str << "    hardware_uid: " << identification.hardware_uid << '\n';
+    str << "    legacy_uid: " << identification.legacy_uid << '\n';
     str << '}';
     return str;
 }

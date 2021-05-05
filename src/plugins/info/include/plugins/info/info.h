@@ -86,6 +86,8 @@ public:
         std::string
             hardware_uid{}; /**< @brief UID of the hardware. This refers to uid2 of MAVLink. If the
                                system does not support uid2 yet, this is all zeros. */
+        uint64_t legacy_uid{}; /**< @brief Legacy UID of the hardware, referred to as uid in MAVLink
+                                  (formerly exposed during system discovery as UUID). */
     };
 
     /**

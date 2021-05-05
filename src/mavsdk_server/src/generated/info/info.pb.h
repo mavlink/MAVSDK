@@ -1859,6 +1859,7 @@ class Identification PROTOBUF_FINAL :
 
   enum : int {
     kHardwareUidFieldNumber = 1,
+    kLegacyUidFieldNumber = 2,
   };
   // string hardware_uid = 1;
   void clear_hardware_uid();
@@ -1876,6 +1877,15 @@ class Identification PROTOBUF_FINAL :
   std::string* _internal_mutable_hardware_uid();
   public:
 
+  // uint64 legacy_uid = 2;
+  void clear_legacy_uid();
+  ::PROTOBUF_NAMESPACE_ID::uint64 legacy_uid() const;
+  void set_legacy_uid(::PROTOBUF_NAMESPACE_ID::uint64 value);
+  private:
+  ::PROTOBUF_NAMESPACE_ID::uint64 _internal_legacy_uid() const;
+  void _internal_set_legacy_uid(::PROTOBUF_NAMESPACE_ID::uint64 value);
+  public:
+
   // @@protoc_insertion_point(class_scope:mavsdk.rpc.info.Identification)
  private:
   class _Internal;
@@ -1884,6 +1894,7 @@ class Identification PROTOBUF_FINAL :
   typedef void InternalArenaConstructable_;
   typedef void DestructorSkippable_;
   ::PROTOBUF_NAMESPACE_ID::internal::ArenaStringPtr hardware_uid_;
+  ::PROTOBUF_NAMESPACE_ID::uint64 legacy_uid_;
   mutable ::PROTOBUF_NAMESPACE_ID::internal::CachedSize _cached_size_;
   friend struct ::TableStruct_info_2finfo_2eproto;
 };
@@ -3440,6 +3451,26 @@ inline void Identification::set_allocated_hardware_uid(std::string* hardware_uid
   hardware_uid_.SetAllocated(&::PROTOBUF_NAMESPACE_ID::internal::GetEmptyStringAlreadyInited(), hardware_uid,
       GetArena());
   // @@protoc_insertion_point(field_set_allocated:mavsdk.rpc.info.Identification.hardware_uid)
+}
+
+// uint64 legacy_uid = 2;
+inline void Identification::clear_legacy_uid() {
+  legacy_uid_ = PROTOBUF_ULONGLONG(0);
+}
+inline ::PROTOBUF_NAMESPACE_ID::uint64 Identification::_internal_legacy_uid() const {
+  return legacy_uid_;
+}
+inline ::PROTOBUF_NAMESPACE_ID::uint64 Identification::legacy_uid() const {
+  // @@protoc_insertion_point(field_get:mavsdk.rpc.info.Identification.legacy_uid)
+  return _internal_legacy_uid();
+}
+inline void Identification::_internal_set_legacy_uid(::PROTOBUF_NAMESPACE_ID::uint64 value) {
+  
+  legacy_uid_ = value;
+}
+inline void Identification::set_legacy_uid(::PROTOBUF_NAMESPACE_ID::uint64 value) {
+  _internal_set_legacy_uid(value);
+  // @@protoc_insertion_point(field_set:mavsdk.rpc.info.Identification.legacy_uid)
 }
 
 // -------------------------------------------------------------------
