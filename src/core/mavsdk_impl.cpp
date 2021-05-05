@@ -275,15 +275,15 @@ ConnectionResult MavsdkImpl::add_any_connection(
 
     switch (cli_arg.get_protocol()) {
         case CliArg::Protocol::Udp: {
-            std::string path = Mavsdk::DEFAULT_UDP_BIND_IP;
-            int port = Mavsdk::DEFAULT_UDP_PORT;
-            if (!cli_arg.get_path().empty()) {
-                path = cli_arg.get_path();
+            int port = cli_arg.get_port() ? cli_arg.get_port() : Mavsdk::DEFAULT_UDP_PORT;
+
+            if (cli_arg.get_path().empty() || cli_arg.get_path() == Mavsdk::DEFAULT_UDP_BIND_IP) {
+                std::string path = Mavsdk::DEFAULT_UDP_BIND_IP;
+                return add_udp_connection(path, port, forwarding_option);
+            } else {
+                std::string path = cli_arg.get_path();
+                return setup_udp_remote(path, port, forwarding_option);
             }
-            if (cli_arg.get_port()) {
-                port = cli_arg.get_port();
-            }
-            return add_udp_connection(path, port, forwarding_option);
         }
 
         case CliArg::Protocol::Tcp: {
@@ -346,7 +346,7 @@ ConnectionResult MavsdkImpl::setup_udp_remote(
     if (ret == ConnectionResult::Success) {
         new_conn->add_remote(remote_ip, remote_port);
         add_connection(new_conn);
-        make_system_with_component(get_own_system_id(), get_own_component_id(), true);
+        make_system_with_component(0, 0, true);
     }
     return ret;
 }

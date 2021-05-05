@@ -90,6 +90,8 @@ jobs:
         run: ./build/release/src/unit_tests_runner
       - name: test (mavsdk_server)
         run: ./build/release/src/mavsdk_server/test/unit_tests_mavsdk_server
+      - name: test FTP server
+        run: ./build/release/src/integration_tests/integration_tests_runner --gtest_filter="FtpTest.TestServer"
 
   ubuntu20-proto-check:
     name: ubuntu-20.04 (proto check)
