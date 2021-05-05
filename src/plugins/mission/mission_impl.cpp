@@ -500,7 +500,7 @@ MissionImpl::convert_to_int_items(const std::vector<MissionItem>& mission_items)
                     command = MAV_CMD_DO_VTOL_TRANSITION;
                     param1 = MAV_VTOL_STATE_MC; // Target state is Multi-Copter
                     param2 = 0; // Normal transition
-                        break;
+                    break;
                 default:
                     LogErr() << "Error: vehicle action not supported";
                     break;
