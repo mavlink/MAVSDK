@@ -60,6 +60,7 @@ message FlightInfo {
 // System identification.
 message Identification {
     string hardware_uid = 1; // UID of the hardware. This refers to uid2 of MAVLink. If the system does not support uid2 yet, this is all zeros.
+    uint64 legacy_uid = 2; // Legacy UID of the hardware, referred to as uid in MAVLink (formerly exposed during system discovery as UUID).
 }
 
 // System product information.
