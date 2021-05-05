@@ -67,6 +67,8 @@ public:
 
         rpc_obj->set_hardware_uid(identification.hardware_uid);
 
+        rpc_obj->set_legacy_uid(identification.legacy_uid);
+
         return rpc_obj;
     }
 
@@ -76,6 +78,8 @@ public:
         mavsdk::Info::Identification obj;
 
         obj.hardware_uid = identification.hardware_uid();
+
+        obj.legacy_uid = identification.legacy_uid();
 
         return obj;
     }

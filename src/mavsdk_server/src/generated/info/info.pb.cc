@@ -154,7 +154,8 @@ struct FlightInfoDefaultTypeInternal {
 PROTOBUF_ATTRIBUTE_NO_DESTROY PROTOBUF_CONSTINIT FlightInfoDefaultTypeInternal _FlightInfo_default_instance_;
 constexpr Identification::Identification(
   ::PROTOBUF_NAMESPACE_ID::internal::ConstantInitialized)
-  : hardware_uid_(&::PROTOBUF_NAMESPACE_ID::internal::fixed_address_empty_string){}
+  : hardware_uid_(&::PROTOBUF_NAMESPACE_ID::internal::fixed_address_empty_string)
+  , legacy_uid_(PROTOBUF_ULONGLONG(0)){}
 struct IdentificationDefaultTypeInternal {
   constexpr IdentificationDefaultTypeInternal()
     : _instance(::PROTOBUF_NAMESPACE_ID::internal::ConstantInitialized{}) {}
@@ -296,6 +297,7 @@ const ::PROTOBUF_NAMESPACE_ID::uint32 TableStruct_info_2finfo_2eproto::offsets[]
   ~0u,  // no _oneof_case_
   ~0u,  // no _weak_field_map_
   PROTOBUF_FIELD_OFFSET(::mavsdk::rpc::info::Identification, hardware_uid_),
+  PROTOBUF_FIELD_OFFSET(::mavsdk::rpc::info::Identification, legacy_uid_),
   ~0u,  // no _has_bits_
   PROTOBUF_FIELD_OFFSET(::mavsdk::rpc::info::Product, _internal_metadata_),
   ~0u,  // no _extensions_
@@ -342,9 +344,9 @@ static const ::PROTOBUF_NAMESPACE_ID::internal::MigrationSchema schemas[] PROTOB
   { 53, -1, sizeof(::mavsdk::rpc::info::GetSpeedFactorResponse)},
   { 60, -1, sizeof(::mavsdk::rpc::info::FlightInfo)},
   { 67, -1, sizeof(::mavsdk::rpc::info::Identification)},
-  { 73, -1, sizeof(::mavsdk::rpc::info::Product)},
-  { 82, -1, sizeof(::mavsdk::rpc::info::Version)},
-  { 98, -1, sizeof(::mavsdk::rpc::info::InfoResult)},
+  { 74, -1, sizeof(::mavsdk::rpc::info::Product)},
+  { 83, -1, sizeof(::mavsdk::rpc::info::Version)},
+  { 99, -1, sizeof(::mavsdk::rpc::info::InfoResult)},
 };
 
 static ::PROTOBUF_NAMESPACE_ID::Message const * const file_default_instances[] = {
@@ -386,44 +388,45 @@ const char descriptor_table_protodef_info_2finfo_2eproto[] PROTOBUF_SECTION_VARI
   "st\"`\n\026GetSpeedFactorResponse\0220\n\013info_res"
   "ult\030\001 \001(\0132\033.mavsdk.rpc.info.InfoResult\022\024"
   "\n\014speed_factor\030\002 \001(\001\"6\n\nFlightInfo\022\024\n\014ti"
-  "me_boot_ms\030\001 \001(\r\022\022\n\nflight_uid\030\002 \001(\004\"&\n\016"
-  "Identification\022\024\n\014hardware_uid\030\001 \001(\t\"[\n\007"
-  "Product\022\021\n\tvendor_id\030\001 \001(\005\022\023\n\013vendor_nam"
-  "e\030\002 \001(\t\022\022\n\nproduct_id\030\003 \001(\005\022\024\n\014product_n"
-  "ame\030\004 \001(\t\"\247\002\n\007Version\022\027\n\017flight_sw_major"
-  "\030\001 \001(\005\022\027\n\017flight_sw_minor\030\002 \001(\005\022\027\n\017fligh"
-  "t_sw_patch\030\003 \001(\005\022\036\n\026flight_sw_vendor_maj"
-  "or\030\004 \001(\005\022\036\n\026flight_sw_vendor_minor\030\005 \001(\005"
-  "\022\036\n\026flight_sw_vendor_patch\030\006 \001(\005\022\023\n\013os_s"
-  "w_major\030\007 \001(\005\022\023\n\013os_sw_minor\030\010 \001(\005\022\023\n\013os"
-  "_sw_patch\030\t \001(\005\022\032\n\022flight_sw_git_hash\030\n "
-  "\001(\t\022\026\n\016os_sw_git_hash\030\013 \001(\t\"\257\001\n\nInfoResu"
-  "lt\0222\n\006result\030\001 \001(\0162\".mavsdk.rpc.info.Inf"
-  "oResult.Result\022\022\n\nresult_str\030\002 \001(\t\"Y\n\006Re"
-  "sult\022\022\n\016RESULT_UNKNOWN\020\000\022\022\n\016RESULT_SUCCE"
-  "SS\020\001\022\'\n#RESULT_INFORMATION_NOT_RECEIVED_"
-  "YET\020\0022\235\004\n\013InfoService\022y\n\024GetFlightInform"
-  "ation\022,.mavsdk.rpc.info.GetFlightInforma"
-  "tionRequest\032-.mavsdk.rpc.info.GetFlightI"
-  "nformationResponse\"\004\200\265\030\001\022p\n\021GetIdentific"
-  "ation\022).mavsdk.rpc.info.GetIdentificatio"
-  "nRequest\032*.mavsdk.rpc.info.GetIdentifica"
-  "tionResponse\"\004\200\265\030\001\022[\n\nGetProduct\022\".mavsd"
-  "k.rpc.info.GetProductRequest\032#.mavsdk.rp"
-  "c.info.GetProductResponse\"\004\200\265\030\001\022[\n\nGetVe"
-  "rsion\022\".mavsdk.rpc.info.GetVersionReques"
-  "t\032#.mavsdk.rpc.info.GetVersionResponse\"\004"
-  "\200\265\030\001\022g\n\016GetSpeedFactor\022&.mavsdk.rpc.info"
-  ".GetSpeedFactorRequest\032\'.mavsdk.rpc.info"
-  ".GetSpeedFactorResponse\"\004\200\265\030\001B\033\n\016io.mavs"
-  "dk.infoB\tInfoProtob\006proto3"
+  "me_boot_ms\030\001 \001(\r\022\022\n\nflight_uid\030\002 \001(\004\":\n\016"
+  "Identification\022\024\n\014hardware_uid\030\001 \001(\t\022\022\n\n"
+  "legacy_uid\030\002 \001(\004\"[\n\007Product\022\021\n\tvendor_id"
+  "\030\001 \001(\005\022\023\n\013vendor_name\030\002 \001(\t\022\022\n\nproduct_i"
+  "d\030\003 \001(\005\022\024\n\014product_name\030\004 \001(\t\"\247\002\n\007Versio"
+  "n\022\027\n\017flight_sw_major\030\001 \001(\005\022\027\n\017flight_sw_"
+  "minor\030\002 \001(\005\022\027\n\017flight_sw_patch\030\003 \001(\005\022\036\n\026"
+  "flight_sw_vendor_major\030\004 \001(\005\022\036\n\026flight_s"
+  "w_vendor_minor\030\005 \001(\005\022\036\n\026flight_sw_vendor"
+  "_patch\030\006 \001(\005\022\023\n\013os_sw_major\030\007 \001(\005\022\023\n\013os_"
+  "sw_minor\030\010 \001(\005\022\023\n\013os_sw_patch\030\t \001(\005\022\032\n\022f"
+  "light_sw_git_hash\030\n \001(\t\022\026\n\016os_sw_git_has"
+  "h\030\013 \001(\t\"\257\001\n\nInfoResult\0222\n\006result\030\001 \001(\0162\""
+  ".mavsdk.rpc.info.InfoResult.Result\022\022\n\nre"
+  "sult_str\030\002 \001(\t\"Y\n\006Result\022\022\n\016RESULT_UNKNO"
+  "WN\020\000\022\022\n\016RESULT_SUCCESS\020\001\022\'\n#RESULT_INFOR"
+  "MATION_NOT_RECEIVED_YET\020\0022\235\004\n\013InfoServic"
+  "e\022y\n\024GetFlightInformation\022,.mavsdk.rpc.i"
+  "nfo.GetFlightInformationRequest\032-.mavsdk"
+  ".rpc.info.GetFlightInformationResponse\"\004"
+  "\200\265\030\001\022p\n\021GetIdentification\022).mavsdk.rpc.i"
+  "nfo.GetIdentificationRequest\032*.mavsdk.rp"
+  "c.info.GetIdentificationResponse\"\004\200\265\030\001\022["
+  "\n\nGetProduct\022\".mavsdk.rpc.info.GetProduc"
+  "tRequest\032#.mavsdk.rpc.info.GetProductRes"
+  "ponse\"\004\200\265\030\001\022[\n\nGetVersion\022\".mavsdk.rpc.i"
+  "nfo.GetVersionRequest\032#.mavsdk.rpc.info."
+  "GetVersionResponse\"\004\200\265\030\001\022g\n\016GetSpeedFact"
+  "or\022&.mavsdk.rpc.info.GetSpeedFactorReque"
+  "st\032\'.mavsdk.rpc.info.GetSpeedFactorRespo"
+  "nse\"\004\200\265\030\001B\033\n\016io.mavsdk.infoB\tInfoProtob\006"
+  "proto3"
   ;
 static const ::PROTOBUF_NAMESPACE_ID::internal::DescriptorTable*const descriptor_table_info_2finfo_2eproto_deps[1] = {
   &::descriptor_table_mavsdk_5foptions_2eproto,
 };
 static ::PROTOBUF_NAMESPACE_ID::internal::once_flag descriptor_table_info_2finfo_2eproto_once;
 const ::PROTOBUF_NAMESPACE_ID::internal::DescriptorTable descriptor_table_info_2finfo_2eproto = {
-  false, false, 2026, descriptor_table_protodef_info_2finfo_2eproto, "info/info.proto", 
+  false, false, 2046, descriptor_table_protodef_info_2finfo_2eproto, "info/info.proto", 
   &descriptor_table_info_2finfo_2eproto_once, descriptor_table_info_2finfo_2eproto_deps, 1, 15,
   schemas, file_default_instances, TableStruct_info_2finfo_2eproto::offsets,
   file_level_metadata_info_2finfo_2eproto, file_level_enum_descriptors_info_2finfo_2eproto, file_level_service_descriptors_info_2finfo_2eproto,
@@ -2735,11 +2738,13 @@ Identification::Identification(const Identification& from)
     hardware_uid_.Set(::PROTOBUF_NAMESPACE_ID::internal::ArenaStringPtr::EmptyDefault{}, from._internal_hardware_uid(), 
       GetArena());
   }
+  legacy_uid_ = from.legacy_uid_;
   // @@protoc_insertion_point(copy_constructor:mavsdk.rpc.info.Identification)
 }
 
 void Identification::SharedCtor() {
 hardware_uid_.UnsafeSetDefault(&::PROTOBUF_NAMESPACE_ID::internal::GetEmptyStringAlreadyInited());
+legacy_uid_ = PROTOBUF_ULONGLONG(0);
 }
 
 Identification::~Identification() {
@@ -2770,6 +2775,7 @@ void Identification::Clear() {
   (void) cached_has_bits;
 
   hardware_uid_.ClearToEmpty();
+  legacy_uid_ = PROTOBUF_ULONGLONG(0);
   _internal_metadata_.Clear<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>();
 }
 
@@ -2786,6 +2792,13 @@ const char* Identification::_InternalParse(const char* ptr, ::PROTOBUF_NAMESPACE
           auto str = _internal_mutable_hardware_uid();
           ptr = ::PROTOBUF_NAMESPACE_ID::internal::InlineGreedyStringParser(str, ptr, ctx);
           CHK_(::PROTOBUF_NAMESPACE_ID::internal::VerifyUTF8(str, "mavsdk.rpc.info.Identification.hardware_uid"));
+          CHK_(ptr);
+        } else goto handle_unusual;
+        continue;
+      // uint64 legacy_uid = 2;
+      case 2:
+        if (PROTOBUF_PREDICT_TRUE(static_cast<::PROTOBUF_NAMESPACE_ID::uint8>(tag) == 16)) {
+          legacy_uid_ = ::PROTOBUF_NAMESPACE_ID::internal::ReadVarint64(&ptr);
           CHK_(ptr);
         } else goto handle_unusual;
         continue;
@@ -2827,6 +2840,12 @@ failure:
         1, this->_internal_hardware_uid(), target);
   }
 
+  // uint64 legacy_uid = 2;
+  if (this->legacy_uid() != 0) {
+    target = stream->EnsureSpace(target);
+    target = ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::WriteUInt64ToArray(2, this->_internal_legacy_uid(), target);
+  }
+
   if (PROTOBUF_PREDICT_FALSE(_internal_metadata_.have_unknown_fields())) {
     target = ::PROTOBUF_NAMESPACE_ID::internal::WireFormat::InternalSerializeUnknownFieldsToArray(
         _internal_metadata_.unknown_fields<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>(::PROTOBUF_NAMESPACE_ID::UnknownFieldSet::default_instance), target, stream);
@@ -2848,6 +2867,13 @@ size_t Identification::ByteSizeLong() const {
     total_size += 1 +
       ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::StringSize(
         this->_internal_hardware_uid());
+  }
+
+  // uint64 legacy_uid = 2;
+  if (this->legacy_uid() != 0) {
+    total_size += 1 +
+      ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::UInt64Size(
+        this->_internal_legacy_uid());
   }
 
   if (PROTOBUF_PREDICT_FALSE(_internal_metadata_.have_unknown_fields())) {
@@ -2884,6 +2910,9 @@ void Identification::MergeFrom(const Identification& from) {
   if (from.hardware_uid().size() > 0) {
     _internal_set_hardware_uid(from._internal_hardware_uid());
   }
+  if (from.legacy_uid() != 0) {
+    _internal_set_legacy_uid(from._internal_legacy_uid());
+  }
 }
 
 void Identification::CopyFrom(const ::PROTOBUF_NAMESPACE_ID::Message& from) {
@@ -2908,6 +2937,7 @@ void Identification::InternalSwap(Identification* other) {
   using std::swap;
   _internal_metadata_.Swap<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>(&other->_internal_metadata_);
   hardware_uid_.Swap(&other->hardware_uid_, &::PROTOBUF_NAMESPACE_ID::internal::GetEmptyStringAlreadyInited(), GetArena());
+  swap(legacy_uid_, other->legacy_uid_);
 }
 
 ::PROTOBUF_NAMESPACE_ID::Metadata Identification::GetMetadata() const {
