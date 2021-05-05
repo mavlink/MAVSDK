@@ -1,7 +1,7 @@
 include_directories(${PROJECT_SOURCE_DIR}/core)
 include_directories(${PROJECT_SOURCE_DIR}/third_party/mavlink/include)
 
-find_package(JsonCpp REQUIRED)
+find_package(jsoncpp REQUIRED)
 
 add_executable(unit_tests_runner
     ${UNIT_TEST_SOURCES}
@@ -20,7 +20,7 @@ target_link_libraries(unit_tests_runner
     mavsdk_calibration
     mavsdk_telemetry
     CURL::libcurl
-    JsonCpp::jsoncpp
+    JsonCpp::JsonCpp
     gtest
     gtest_main
     gmock
