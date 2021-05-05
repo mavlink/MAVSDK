@@ -405,6 +405,22 @@ public:
     Result hold() const;
 
     /**
+     * @brief Send command to set the value of an actuator.
+     *
+     * This function is non-blocking. See 'set_actuator' for the blocking counterpart.
+     */
+    void set_actuator_async(int32_t index, float value, const ResultCallback callback);
+
+    /**
+     * @brief Send command to set the value of an actuator.
+     *
+     * This function is blocking. See 'set_actuator_async' for the non-blocking counterpart.
+     *
+     * @return Result of request.
+     */
+    Result set_actuator(int32_t index, float value) const;
+
+    /**
      * @brief Send command to transition the drone to fixedwing.
      *
      * The associated action will only be executed for VTOL vehicles (on other vehicle types the

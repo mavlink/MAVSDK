@@ -745,18 +745,8 @@ class ConnectionState PROTOBUF_FINAL :
   // accessors -------------------------------------------------------
 
   enum : int {
-    kUuidFieldNumber = 1,
     kIsConnectedFieldNumber = 2,
   };
-  // uint64 uuid = 1;
-  void clear_uuid();
-  ::PROTOBUF_NAMESPACE_ID::uint64 uuid() const;
-  void set_uuid(::PROTOBUF_NAMESPACE_ID::uint64 value);
-  private:
-  ::PROTOBUF_NAMESPACE_ID::uint64 _internal_uuid() const;
-  void _internal_set_uuid(::PROTOBUF_NAMESPACE_ID::uint64 value);
-  public:
-
   // bool is_connected = 2;
   void clear_is_connected();
   bool is_connected() const;
@@ -773,7 +763,6 @@ class ConnectionState PROTOBUF_FINAL :
   template <typename T> friend class ::PROTOBUF_NAMESPACE_ID::Arena::InternalHelper;
   typedef void InternalArenaConstructable_;
   typedef void DestructorSkippable_;
-  ::PROTOBUF_NAMESPACE_ID::uint64 uuid_;
   bool is_connected_;
   mutable ::PROTOBUF_NAMESPACE_ID::internal::CachedSize _cached_size_;
   friend struct ::TableStruct_core_2fcore_2eproto;
@@ -1099,26 +1088,6 @@ ListRunningPluginsResponse::plugin_info() const {
 // -------------------------------------------------------------------
 
 // ConnectionState
-
-// uint64 uuid = 1;
-inline void ConnectionState::clear_uuid() {
-  uuid_ = PROTOBUF_ULONGLONG(0);
-}
-inline ::PROTOBUF_NAMESPACE_ID::uint64 ConnectionState::_internal_uuid() const {
-  return uuid_;
-}
-inline ::PROTOBUF_NAMESPACE_ID::uint64 ConnectionState::uuid() const {
-  // @@protoc_insertion_point(field_get:mavsdk.rpc.core.ConnectionState.uuid)
-  return _internal_uuid();
-}
-inline void ConnectionState::_internal_set_uuid(::PROTOBUF_NAMESPACE_ID::uint64 value) {
-  
-  uuid_ = value;
-}
-inline void ConnectionState::set_uuid(::PROTOBUF_NAMESPACE_ID::uint64 value) {
-  _internal_set_uuid(value);
-  // @@protoc_insertion_point(field_set:mavsdk.rpc.core.ConnectionState.uuid)
-}
 
 // bool is_connected = 2;
 inline void ConnectionState::clear_is_connected() {
