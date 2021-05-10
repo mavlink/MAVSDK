@@ -39,7 +39,7 @@ private:
     int _grpc_port;
 };
 
-MavsdkServer::MavsdkServer() : _impl(new Impl()) {}
+MavsdkServer::MavsdkServer() : _impl(std::make_unique<Impl>()) {}
 MavsdkServer::~MavsdkServer() = default;
 
 int MavsdkServer::startGRPCServer(const int port)

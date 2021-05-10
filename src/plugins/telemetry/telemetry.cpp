@@ -38,11 +38,12 @@ using MagneticFieldFrd = Telemetry::MagneticFieldFrd;
 using Imu = Telemetry::Imu;
 using GpsGlobalOrigin = Telemetry::GpsGlobalOrigin;
 
-Telemetry::Telemetry(System& system) : PluginBase(), _impl{new TelemetryImpl(system)} {}
+Telemetry::Telemetry(System& system) : PluginBase(), _impl{std::make_unique<TelemetryImpl>(system)}
+{}
 
 Telemetry::Telemetry(std::shared_ptr<System> system) :
     PluginBase(),
-    _impl{new TelemetryImpl(system)}
+    _impl{std::make_unique<TelemetryImpl>(system)}
 {}
 
 Telemetry::~Telemetry() {}

@@ -11,9 +11,9 @@ namespace mavsdk {
 
 using ProgressData = Ftp::ProgressData;
 
-Ftp::Ftp(System& system) : PluginBase(), _impl{new FtpImpl(system)} {}
+Ftp::Ftp(System& system) : PluginBase(), _impl{std::make_unique<FtpImpl>(system)} {}
 
-Ftp::Ftp(std::shared_ptr<System> system) : PluginBase(), _impl{new FtpImpl(system)} {}
+Ftp::Ftp(std::shared_ptr<System> system) : PluginBase(), _impl{std::make_unique<FtpImpl>(system)} {}
 
 Ftp::~Ftp() {}
 

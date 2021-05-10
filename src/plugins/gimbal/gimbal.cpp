@@ -11,9 +11,12 @@ namespace mavsdk {
 
 using ControlStatus = Gimbal::ControlStatus;
 
-Gimbal::Gimbal(System& system) : PluginBase(), _impl{new GimbalImpl(system)} {}
+Gimbal::Gimbal(System& system) : PluginBase(), _impl{std::make_unique<GimbalImpl>(system)} {}
 
-Gimbal::Gimbal(std::shared_ptr<System> system) : PluginBase(), _impl{new GimbalImpl(system)} {}
+Gimbal::Gimbal(std::shared_ptr<System> system) :
+    PluginBase(),
+    _impl{std::make_unique<GimbalImpl>(system)}
+{}
 
 Gimbal::~Gimbal() {}
 

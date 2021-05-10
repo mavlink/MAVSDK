@@ -13,9 +13,12 @@ using IntParam = Param::IntParam;
 using FloatParam = Param::FloatParam;
 using AllParams = Param::AllParams;
 
-Param::Param(System& system) : PluginBase(), _impl{new ParamImpl(system)} {}
+Param::Param(System& system) : PluginBase(), _impl{std::make_unique<ParamImpl>(system)} {}
 
-Param::Param(std::shared_ptr<System> system) : PluginBase(), _impl{new ParamImpl(system)} {}
+Param::Param(std::shared_ptr<System> system) :
+    PluginBase(),
+    _impl{std::make_unique<ParamImpl>(system)}
+{}
 
 Param::~Param() {}
 

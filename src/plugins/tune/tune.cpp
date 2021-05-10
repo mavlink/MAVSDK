@@ -11,9 +11,10 @@ namespace mavsdk {
 
 using TuneDescription = Tune::TuneDescription;
 
-Tune::Tune(System& system) : PluginBase(), _impl{new TuneImpl(system)} {}
+Tune::Tune(System& system) : PluginBase(), _impl{std::make_unique<TuneImpl>(system)} {}
 
-Tune::Tune(std::shared_ptr<System> system) : PluginBase(), _impl{new TuneImpl(system)} {}
+Tune::Tune(std::shared_ptr<System> system) : PluginBase(), _impl{std::make_unique<TuneImpl>(system)}
+{}
 
 Tune::~Tune() {}
 

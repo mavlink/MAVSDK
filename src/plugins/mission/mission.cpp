@@ -13,9 +13,12 @@ using MissionItem = Mission::MissionItem;
 using MissionPlan = Mission::MissionPlan;
 using MissionProgress = Mission::MissionProgress;
 
-Mission::Mission(System& system) : PluginBase(), _impl{new MissionImpl(system)} {}
+Mission::Mission(System& system) : PluginBase(), _impl{std::make_unique<MissionImpl>(system)} {}
 
-Mission::Mission(std::shared_ptr<System> system) : PluginBase(), _impl{new MissionImpl(system)} {}
+Mission::Mission(std::shared_ptr<System> system) :
+    PluginBase(),
+    _impl{std::make_unique<MissionImpl>(system)}
+{}
 
 Mission::~Mission() {}
 

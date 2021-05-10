@@ -12,9 +12,11 @@ namespace mavsdk {
 using ProgressData = LogFiles::ProgressData;
 using Entry = LogFiles::Entry;
 
-LogFiles::LogFiles(System& system) : PluginBase(), _impl{new LogFilesImpl(system)} {}
+LogFiles::LogFiles(System& system) : PluginBase(), _impl{std::make_unique<LogFilesImpl>(system)} {}
 
-LogFiles::LogFiles(std::shared_ptr<System> system) : PluginBase(), _impl{new LogFilesImpl(system)}
+LogFiles::LogFiles(std::shared_ptr<System> system) :
+    PluginBase(),
+    _impl{std::make_unique<LogFilesImpl>(system)}
 {}
 
 LogFiles::~LogFiles() {}

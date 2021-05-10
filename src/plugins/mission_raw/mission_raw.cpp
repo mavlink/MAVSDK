@@ -13,11 +13,14 @@ using MissionProgress = MissionRaw::MissionProgress;
 using MissionItem = MissionRaw::MissionItem;
 using MissionImportData = MissionRaw::MissionImportData;
 
-MissionRaw::MissionRaw(System& system) : PluginBase(), _impl{new MissionRawImpl(system)} {}
+MissionRaw::MissionRaw(System& system) :
+    PluginBase(),
+    _impl{std::make_unique<MissionRawImpl>(system)}
+{}
 
 MissionRaw::MissionRaw(std::shared_ptr<System> system) :
     PluginBase(),
-    _impl{new MissionRawImpl(system)}
+    _impl{std::make_unique<MissionRawImpl>(system)}
 {}
 
 MissionRaw::~MissionRaw() {}

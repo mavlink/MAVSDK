@@ -11,11 +11,14 @@ namespace mavsdk {
 
 using ProgressData = Calibration::ProgressData;
 
-Calibration::Calibration(System& system) : PluginBase(), _impl{new CalibrationImpl(system)} {}
+Calibration::Calibration(System& system) :
+    PluginBase(),
+    _impl{std::make_unique<CalibrationImpl>(system)}
+{}
 
 Calibration::Calibration(std::shared_ptr<System> system) :
     PluginBase(),
-    _impl{new CalibrationImpl(system)}
+    _impl{std::make_unique<CalibrationImpl>(system)}
 {}
 
 Calibration::~Calibration() {}

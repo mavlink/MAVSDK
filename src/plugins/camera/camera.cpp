@@ -21,9 +21,12 @@ using Setting = Camera::Setting;
 using SettingOptions = Camera::SettingOptions;
 using Information = Camera::Information;
 
-Camera::Camera(System& system) : PluginBase(), _impl{new CameraImpl(system)} {}
+Camera::Camera(System& system) : PluginBase(), _impl{std::make_unique<CameraImpl>(system)} {}
 
-Camera::Camera(std::shared_ptr<System> system) : PluginBase(), _impl{new CameraImpl(system)} {}
+Camera::Camera(std::shared_ptr<System> system) :
+    PluginBase(),
+    _impl{std::make_unique<CameraImpl>(system)}
+{}
 
 Camera::~Camera() {}
 

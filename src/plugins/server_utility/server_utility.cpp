@@ -10,11 +10,14 @@
 
 namespace mavsdk {
 
-ServerUtility::ServerUtility(System& system) : PluginBase(), _impl{new ServerUtilityImpl(system)} {}
+ServerUtility::ServerUtility(System& system) :
+    PluginBase(),
+    _impl{std::make_unique<ServerUtilityImpl>(system)}
+{}
 
 ServerUtility::ServerUtility(std::shared_ptr<System> system) :
     PluginBase(),
-    _impl{new ServerUtilityImpl(system)}
+    _impl{std::make_unique<ServerUtilityImpl>(system)}
 {}
 
 ServerUtility::~ServerUtility() {}
