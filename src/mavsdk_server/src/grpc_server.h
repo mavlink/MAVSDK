@@ -54,9 +54,9 @@
 namespace mavsdk {
 namespace mavsdk_server {
 
-class GRPCServer {
+class GrpcServer {
 public:
-    GRPCServer(Mavsdk& mavsdk) :
+    GrpcServer(Mavsdk& mavsdk) :
         _mavsdk(mavsdk),
         _core(_mavsdk),
         _action(_mavsdk.system()),
