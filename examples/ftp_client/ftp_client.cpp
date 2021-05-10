@@ -191,19 +191,6 @@ int main(int argc, char** argv)
 {
     Mavsdk mavsdk;
 
-    auto prom = std::make_shared<std::promise<void>>();
-    auto future_result = prom->get_future();
-
-    std::cout << NORMAL_CONSOLE_TEXT << "Waiting to discover system..." << std::endl;
-    mavsdk.subscribe_on_new_system([&mavsdk, prom]() {
-        const auto system = mavsdk.systems().at(0);
-
-        if (system->is_connected()) {
-            std::cout << "Discovered system" << std::endl;
-            prom->set_value();
-        }
-    });
-
     std::string connection_url;
     ConnectionResult connection_result;
 
@@ -220,6 +207,19 @@ int main(int argc, char** argv)
                   << NORMAL_CONSOLE_TEXT << std::endl;
         return 1;
     }
+
+    auto prom = std::make_shared<std::promise<void>>();
+    auto future_result = prom->get_future();
+
+    std::cout << NORMAL_CONSOLE_TEXT << "Waiting to discover system..." << std::endl;
+    mavsdk.subscribe_on_new_system([&mavsdk, prom]() {
+        const auto system = mavsdk.systems().at(0);
+
+        if (system->is_connected()) {
+            std::cout << "Discovered system" << std::endl;
+            prom->set_value();
+        }
+    });
 
     auto status = future_result.wait_for(std::chrono::seconds(5));
     if (status == std::future_status::timeout) {
