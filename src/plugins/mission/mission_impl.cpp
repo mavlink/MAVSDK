@@ -555,8 +555,8 @@ std::pair<Mission::Result, Mission::MissionPlan> MissionImpl::convert_to_result_
                     break;
                 }
 
-                new_mission_item.gimbal_pitch_deg = to_deg_from_rad(int_item.param1);
-                new_mission_item.gimbal_yaw_deg = to_deg_from_rad(int_item.param2);
+                new_mission_item.gimbal_pitch_deg = int_item.param1;
+                new_mission_item.gimbal_yaw_deg = int_item.param2;
 
             } else if (int_item.command == MAV_CMD_DO_MOUNT_CONFIGURE) {
                 if (int(int_item.param1) != MAV_MOUNT_MODE_MAVLINK_TARGETING) {
@@ -1092,14 +1092,22 @@ void MissionImpl::add_gimbal_items_v2(
     // We don't set YAW_LOCK because we probably just want to face forward.
     uint32_t flags = GIMBAL_MANAGER_FLAGS_ROLL_LOCK | GIMBAL_MANAGER_FLAGS_PITCH_LOCK;
 
+    // Pitch should be between -180 and 180 degrees
+    pitch_deg = fmod(pitch_deg, 360.f);
+    pitch_deg = pitch_deg > 180.f ? pitch_deg - 360.f : pitch_deg;
+
+    // Yaw should be between -180 and 180 degrees
+    yaw_deg = fmod(yaw_deg, 360.f);
+    yaw_deg = yaw_deg > 180.f ? yaw_deg - 360.f : yaw_deg;
+
     MAVLinkMissionTransfer::ItemInt next_item{
         static_cast<uint16_t>(int_items.size()),
         MAV_FRAME_MISSION,
         MAV_CMD_DO_GIMBAL_MANAGER_PITCHYAW,
         current,
         autocontinue,
-        to_rad_from_deg(pitch_deg), // pitch
-        to_rad_from_deg(yaw_deg), // yaw
+        pitch_deg, // pitch
+        yaw_deg, // yaw
         NAN, // pitch rate
         NAN, // yaw rate
         static_cast<int32_t>(flags),
