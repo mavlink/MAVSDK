@@ -112,6 +112,7 @@ message ParamResult {
         RESULT_CONNECTION_ERROR = 3; // Connection error
         RESULT_WRONG_TYPE = 4; // Wrong type
         RESULT_PARAM_NAME_TOO_LONG = 5; // Parameter name too long (> 16)
+        RESULT_NO_SYSTEM = 6; // No system connected
     }
 
     Result result = 1; // Result enum value

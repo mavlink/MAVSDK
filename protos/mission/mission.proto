@@ -210,6 +210,7 @@ message MissionResult {
         RESULT_NO_MISSION_AVAILABLE = 8; // No mission available on the system
         RESULT_UNSUPPORTED_MISSION_CMD = 11; // Unsupported mission command
         RESULT_TRANSFER_CANCELLED = 12; // Mission transfer (upload or download) has been cancelled
+        RESULT_NO_SYSTEM = 13; // No system connected
     }
 
     Result result = 1; // Result enum value

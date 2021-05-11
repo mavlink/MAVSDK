@@ -188,6 +188,7 @@ message MissionRawResult {
         RESULT_TRANSFER_CANCELLED = 9; // Mission transfer (upload or download) has been cancelled
         RESULT_FAILED_TO_OPEN_QGC_PLAN = 10; // Failed to open the QGroundControl plan
         RESULT_FAILED_TO_PARSE_QGC_PLAN = 11; // Failed to parse the QGroundControl plan
+        RESULT_NO_SYSTEM = 12; // No system connected
     }
 
     Result result = 1; // Result enum value

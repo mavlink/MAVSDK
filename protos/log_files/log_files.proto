@@ -59,6 +59,7 @@ message LogFilesResult {
         RESULT_TIMEOUT = 4; // A timeout happened
         RESULT_INVALID_ARGUMENT = 5; // Invalid argument
         RESULT_FILE_OPEN_FAILED = 6; // File open failed
+        RESULT_NO_SYSTEM = 7; // No system is connected
     }
 
     Result result = 1; // Result enum value
