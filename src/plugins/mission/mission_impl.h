@@ -128,6 +128,12 @@ private:
         float pitch_deg,
         float yaw_deg);
 
+    void acquire_gimbal_control_v2(
+        std::vector<MAVLinkMissionTransfer::ItemInt>& int_items, unsigned item_i);
+
+    void release_gimbal_control_v2(
+        std::vector<MAVLinkMissionTransfer::ItemInt>& int_items, unsigned item_i);
+
     struct MissionData {
         mutable std::recursive_mutex mutex{};
         int last_current_mavlink_mission_item{-1};
@@ -143,6 +149,7 @@ private:
         int last_total_reported_mission_item{-1};
         std::weak_ptr<MAVLinkMissionTransfer::WorkItem> last_upload{};
         std::weak_ptr<MAVLinkMissionTransfer::WorkItem> last_download{};
+        bool gimbal_v2_in_control{false};
     } _mission_data{};
 
     void* _timeout_cookie{nullptr};
