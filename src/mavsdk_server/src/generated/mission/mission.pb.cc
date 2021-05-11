@@ -668,61 +668,62 @@ const char descriptor_table_protodef_mission_2fmission_2eproto[] PROTOBUF_SECTIO
   "\013MissionPlan\0226\n\rmission_items\030\001 \003(\0132\037.ma"
   "vsdk.rpc.mission.MissionItem\"1\n\017MissionP"
   "rogress\022\017\n\007current\030\001 \001(\005\022\r\n\005total\030\002 \001(\005\""
-  "\203\003\n\rMissionResult\0228\n\006result\030\001 \001(\0162(.mavs"
+  "\231\003\n\rMissionResult\0228\n\006result\030\001 \001(\0162(.mavs"
   "dk.rpc.mission.MissionResult.Result\022\022\n\nr"
-  "esult_str\030\002 \001(\t\"\243\002\n\006Result\022\022\n\016RESULT_UNK"
+  "esult_str\030\002 \001(\t\"\271\002\n\006Result\022\022\n\016RESULT_UNK"
   "NOWN\020\000\022\022\n\016RESULT_SUCCESS\020\001\022\020\n\014RESULT_ERR"
   "OR\020\002\022!\n\035RESULT_TOO_MANY_MISSION_ITEMS\020\003\022"
   "\017\n\013RESULT_BUSY\020\004\022\022\n\016RESULT_TIMEOUT\020\005\022\033\n\027"
   "RESULT_INVALID_ARGUMENT\020\006\022\026\n\022RESULT_UNSU"
   "PPORTED\020\007\022\037\n\033RESULT_NO_MISSION_AVAILABLE"
   "\020\010\022\"\n\036RESULT_UNSUPPORTED_MISSION_CMD\020\013\022\035"
-  "\n\031RESULT_TRANSFER_CANCELLED\020\0142\315\013\n\016Missio"
-  "nService\022f\n\rUploadMission\022(.mavsdk.rpc.m"
-  "ission.UploadMissionRequest\032).mavsdk.rpc"
-  ".mission.UploadMissionResponse\"\000\022|\n\023Canc"
-  "elMissionUpload\022..mavsdk.rpc.mission.Can"
-  "celMissionUploadRequest\032/.mavsdk.rpc.mis"
-  "sion.CancelMissionUploadResponse\"\004\200\265\030\001\022l"
-  "\n\017DownloadMission\022*.mavsdk.rpc.mission.D"
-  "ownloadMissionRequest\032+.mavsdk.rpc.missi"
-  "on.DownloadMissionResponse\"\000\022\202\001\n\025CancelM"
-  "issionDownload\0220.mavsdk.rpc.mission.Canc"
-  "elMissionDownloadRequest\0321.mavsdk.rpc.mi"
-  "ssion.CancelMissionDownloadResponse\"\004\200\265\030"
-  "\001\022c\n\014StartMission\022\'.mavsdk.rpc.mission.S"
-  "tartMissionRequest\032(.mavsdk.rpc.mission."
-  "StartMissionResponse\"\000\022c\n\014PauseMission\022\'"
-  ".mavsdk.rpc.mission.PauseMissionRequest\032"
-  "(.mavsdk.rpc.mission.PauseMissionRespons"
-  "e\"\000\022c\n\014ClearMission\022\'.mavsdk.rpc.mission"
-  ".ClearMissionRequest\032(.mavsdk.rpc.missio"
-  "n.ClearMissionResponse\"\000\022~\n\025SetCurrentMi"
-  "ssionItem\0220.mavsdk.rpc.mission.SetCurren"
-  "tMissionItemRequest\0321.mavsdk.rpc.mission"
-  ".SetCurrentMissionItemResponse\"\000\022v\n\021IsMi"
-  "ssionFinished\022,.mavsdk.rpc.mission.IsMis"
-  "sionFinishedRequest\032-.mavsdk.rpc.mission"
-  ".IsMissionFinishedResponse\"\004\200\265\030\001\022\200\001\n\030Sub"
-  "scribeMissionProgress\0223.mavsdk.rpc.missi"
-  "on.SubscribeMissionProgressRequest\032+.mav"
-  "sdk.rpc.mission.MissionProgressResponse\""
-  "\0000\001\022\232\001\n\035GetReturnToLaunchAfterMission\0228."
+  "\n\031RESULT_TRANSFER_CANCELLED\020\014\022\024\n\020RESULT_"
+  "NO_SYSTEM\020\r2\315\013\n\016MissionService\022f\n\rUpload"
+  "Mission\022(.mavsdk.rpc.mission.UploadMissi"
+  "onRequest\032).mavsdk.rpc.mission.UploadMis"
+  "sionResponse\"\000\022|\n\023CancelMissionUpload\022.."
+  "mavsdk.rpc.mission.CancelMissionUploadRe"
+  "quest\032/.mavsdk.rpc.mission.CancelMission"
+  "UploadResponse\"\004\200\265\030\001\022l\n\017DownloadMission\022"
+  "*.mavsdk.rpc.mission.DownloadMissionRequ"
+  "est\032+.mavsdk.rpc.mission.DownloadMission"
+  "Response\"\000\022\202\001\n\025CancelMissionDownload\0220.m"
+  "avsdk.rpc.mission.CancelMissionDownloadR"
+  "equest\0321.mavsdk.rpc.mission.CancelMissio"
+  "nDownloadResponse\"\004\200\265\030\001\022c\n\014StartMission\022"
+  "\'.mavsdk.rpc.mission.StartMissionRequest"
+  "\032(.mavsdk.rpc.mission.StartMissionRespon"
+  "se\"\000\022c\n\014PauseMission\022\'.mavsdk.rpc.missio"
+  "n.PauseMissionRequest\032(.mavsdk.rpc.missi"
+  "on.PauseMissionResponse\"\000\022c\n\014ClearMissio"
+  "n\022\'.mavsdk.rpc.mission.ClearMissionReque"
+  "st\032(.mavsdk.rpc.mission.ClearMissionResp"
+  "onse\"\000\022~\n\025SetCurrentMissionItem\0220.mavsdk"
+  ".rpc.mission.SetCurrentMissionItemReques"
+  "t\0321.mavsdk.rpc.mission.SetCurrentMission"
+  "ItemResponse\"\000\022v\n\021IsMissionFinished\022,.ma"
+  "vsdk.rpc.mission.IsMissionFinishedReques"
+  "t\032-.mavsdk.rpc.mission.IsMissionFinished"
+  "Response\"\004\200\265\030\001\022\200\001\n\030SubscribeMissionProgr"
+  "ess\0223.mavsdk.rpc.mission.SubscribeMissio"
+  "nProgressRequest\032+.mavsdk.rpc.mission.Mi"
+  "ssionProgressResponse\"\0000\001\022\232\001\n\035GetReturnT"
+  "oLaunchAfterMission\0228.mavsdk.rpc.mission"
+  ".GetReturnToLaunchAfterMissionRequest\0329."
   "mavsdk.rpc.mission.GetReturnToLaunchAfte"
-  "rMissionRequest\0329.mavsdk.rpc.mission.Get"
-  "ReturnToLaunchAfterMissionResponse\"\004\200\265\030\001"
-  "\022\232\001\n\035SetReturnToLaunchAfterMission\0228.mav"
+  "rMissionResponse\"\004\200\265\030\001\022\232\001\n\035SetReturnToLa"
+  "unchAfterMission\0228.mavsdk.rpc.mission.Se"
+  "tReturnToLaunchAfterMissionRequest\0329.mav"
   "sdk.rpc.mission.SetReturnToLaunchAfterMi"
-  "ssionRequest\0329.mavsdk.rpc.mission.SetRet"
-  "urnToLaunchAfterMissionResponse\"\004\200\265\030\001B!\n"
-  "\021io.mavsdk.missionB\014MissionProtob\006proto3"
+  "ssionResponse\"\004\200\265\030\001B!\n\021io.mavsdk.mission"
+  "B\014MissionProtob\006proto3"
   ;
 static const ::PROTOBUF_NAMESPACE_ID::internal::DescriptorTable*const descriptor_table_mission_2fmission_2eproto_deps[1] = {
   &::descriptor_table_mavsdk_5foptions_2eproto,
 };
 static ::PROTOBUF_NAMESPACE_ID::internal::once_flag descriptor_table_mission_2fmission_2eproto_once;
 const ::PROTOBUF_NAMESPACE_ID::internal::DescriptorTable descriptor_table_mission_2fmission_2eproto = {
-  false, false, 4360, descriptor_table_protodef_mission_2fmission_2eproto, "mission/mission.proto", 
+  false, false, 4382, descriptor_table_protodef_mission_2fmission_2eproto, "mission/mission.proto", 
   &descriptor_table_mission_2fmission_2eproto_once, descriptor_table_mission_2fmission_2eproto_deps, 1, 28,
   schemas, file_default_instances, TableStruct_mission_2fmission_2eproto::offsets,
   file_level_metadata_mission_2fmission_2eproto, file_level_enum_descriptors_mission_2fmission_2eproto, file_level_service_descriptors_mission_2fmission_2eproto,
@@ -784,6 +785,7 @@ bool MissionResult_Result_IsValid(int value) {
     case 8:
     case 11:
     case 12:
+    case 13:
       return true;
     default:
       return false;
@@ -802,6 +804,7 @@ constexpr MissionResult_Result MissionResult::RESULT_UNSUPPORTED;
 constexpr MissionResult_Result MissionResult::RESULT_NO_MISSION_AVAILABLE;
 constexpr MissionResult_Result MissionResult::RESULT_UNSUPPORTED_MISSION_CMD;
 constexpr MissionResult_Result MissionResult::RESULT_TRANSFER_CANCELLED;
+constexpr MissionResult_Result MissionResult::RESULT_NO_SYSTEM;
 constexpr MissionResult_Result MissionResult::Result_MIN;
 constexpr MissionResult_Result MissionResult::Result_MAX;
 constexpr int MissionResult::Result_ARRAYSIZE;

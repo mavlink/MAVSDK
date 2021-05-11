@@ -20,7 +20,7 @@ namespace mavsdk_server {
 template<typename Failure = Failure>
 class FailureServiceImpl final : public rpc::failure::FailureService::Service {
 public:
-    FailureServiceImpl(Failure& failure) : _failure(failure) {}
+    FailureServiceImpl(Mavsdk& mavsdk) : _mavsdk(mavsdk) {}
 
     template<typename ResponseType>
     void fillResponseWithResult(ResponseType* response, mavsdk::Failure::Result& result) const
@@ -225,12 +225,21 @@ public:
         const rpc::failure::InjectRequest* request,
         rpc::failure::InjectResponse* response) override
     {
+        if (!init_plugin()) {
+            if (response != nullptr) {
+                auto result = mavsdk::Failure::Result::NoSystem;
+                fillResponseWithResult(response, result);
+            }
+
+            return grpc::Status::OK;
+        }
+
         if (request == nullptr) {
             LogWarn() << "Inject sent with a null request! Ignoring...";
             return grpc::Status::OK;
         }
 
-        auto result = _failure.inject(
+        auto result = _failure->inject(
             translateFromRpcFailureUnit(request->failure_unit()),
             translateFromRpcFailureType(request->failure_type()),
             request->instance());
@@ -277,7 +286,19 @@ private:
         }
     }
 
-    Failure& _failure;
+    bool init_plugin()
+    {
+        if (_failure == nullptr) {
+            if (_mavsdk.systems().size() == 0) {
+                return false;
+            }
+            _failure = std::make_unique<Failure>(_mavsdk.systems()[0]);
+        }
+        return true;
+    }
+
+    Mavsdk& _mavsdk;
+    std::unique_ptr<Failure> _failure;
     std::atomic<bool> _stopped{false};
     std::vector<std::weak_ptr<std::promise<void>>> _stream_stop_promises{};
 };

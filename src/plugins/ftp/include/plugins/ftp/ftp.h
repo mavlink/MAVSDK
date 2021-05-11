@@ -94,6 +94,7 @@ public:
         InvalidParameter, /**< @brief Invalid parameter. */
         Unsupported, /**< @brief Unsupported command. */
         ProtocolError, /**< @brief General protocol error. */
+        NoSystem, /**< @brief No system connected. */
     };
 
     /**

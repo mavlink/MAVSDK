@@ -200,28 +200,29 @@ const char descriptor_table_protodef_log_5ffiles_2flog_5ffiles_2eproto[] PROTOBU
   "c.log_files.ProgressData\")\n\014ProgressData"
   "\022\031\n\010progress\030\001 \001(\002B\007\202\265\030\003NaN\"5\n\005Entry\022\n\n\002"
   "id\030\001 \001(\r\022\014\n\004date\030\002 \001(\t\022\022\n\nsize_bytes\030\003 \001"
-  "(\r\"\213\002\n\016LogFilesResult\022;\n\006result\030\001 \001(\0162+."
+  "(\r\"\241\002\n\016LogFilesResult\022;\n\006result\030\001 \001(\0162+."
   "mavsdk.rpc.log_files.LogFilesResult.Resu"
-  "lt\022\022\n\nresult_str\030\002 \001(\t\"\247\001\n\006Result\022\022\n\016RES"
+  "lt\022\022\n\nresult_str\030\002 \001(\t\"\275\001\n\006Result\022\022\n\016RES"
   "ULT_UNKNOWN\020\000\022\022\n\016RESULT_SUCCESS\020\001\022\017\n\013RES"
   "ULT_NEXT\020\002\022\026\n\022RESULT_NO_LOGFILES\020\003\022\022\n\016RE"
   "SULT_TIMEOUT\020\004\022\033\n\027RESULT_INVALID_ARGUMEN"
-  "T\020\005\022\033\n\027RESULT_FILE_OPEN_FAILED\020\0062\203\002\n\017Log"
-  "FilesService\022a\n\nGetEntries\022\'.mavsdk.rpc."
-  "log_files.GetEntriesRequest\032(.mavsdk.rpc"
-  ".log_files.GetEntriesResponse\"\000\022\214\001\n\030Subs"
-  "cribeDownloadLogFile\0225.mavsdk.rpc.log_fi"
-  "les.SubscribeDownloadLogFileRequest\032-.ma"
-  "vsdk.rpc.log_files.DownloadLogFileRespon"
-  "se\"\010\200\265\030\000\210\265\030\0010\001B$\n\023io.mavsdk.log_filesB\rL"
-  "ogFilesProtob\006proto3"
+  "T\020\005\022\033\n\027RESULT_FILE_OPEN_FAILED\020\006\022\024\n\020RESU"
+  "LT_NO_SYSTEM\020\0072\203\002\n\017LogFilesService\022a\n\nGe"
+  "tEntries\022\'.mavsdk.rpc.log_files.GetEntri"
+  "esRequest\032(.mavsdk.rpc.log_files.GetEntr"
+  "iesResponse\"\000\022\214\001\n\030SubscribeDownloadLogFi"
+  "le\0225.mavsdk.rpc.log_files.SubscribeDownl"
+  "oadLogFileRequest\032-.mavsdk.rpc.log_files"
+  ".DownloadLogFileResponse\"\010\200\265\030\000\210\265\030\0010\001B$\n\023"
+  "io.mavsdk.log_filesB\rLogFilesProtob\006prot"
+  "o3"
   ;
 static const ::PROTOBUF_NAMESPACE_ID::internal::DescriptorTable*const descriptor_table_log_5ffiles_2flog_5ffiles_2eproto_deps[1] = {
   &::descriptor_table_mavsdk_5foptions_2eproto,
 };
 static ::PROTOBUF_NAMESPACE_ID::internal::once_flag descriptor_table_log_5ffiles_2flog_5ffiles_2eproto_once;
 const ::PROTOBUF_NAMESPACE_ID::internal::DescriptorTable descriptor_table_log_5ffiles_2flog_5ffiles_2eproto = {
-  false, false, 1140, descriptor_table_protodef_log_5ffiles_2flog_5ffiles_2eproto, "log_files/log_files.proto", 
+  false, false, 1162, descriptor_table_protodef_log_5ffiles_2flog_5ffiles_2eproto, "log_files/log_files.proto", 
   &descriptor_table_log_5ffiles_2flog_5ffiles_2eproto_once, descriptor_table_log_5ffiles_2flog_5ffiles_2eproto_deps, 1, 7,
   schemas, file_default_instances, TableStruct_log_5ffiles_2flog_5ffiles_2eproto::offsets,
   file_level_metadata_log_5ffiles_2flog_5ffiles_2eproto, file_level_enum_descriptors_log_5ffiles_2flog_5ffiles_2eproto, file_level_service_descriptors_log_5ffiles_2flog_5ffiles_2eproto,
@@ -250,6 +251,7 @@ bool LogFilesResult_Result_IsValid(int value) {
     case 4:
     case 5:
     case 6:
+    case 7:
       return true;
     default:
       return false;
@@ -264,6 +266,7 @@ constexpr LogFilesResult_Result LogFilesResult::RESULT_NO_LOGFILES;
 constexpr LogFilesResult_Result LogFilesResult::RESULT_TIMEOUT;
 constexpr LogFilesResult_Result LogFilesResult::RESULT_INVALID_ARGUMENT;
 constexpr LogFilesResult_Result LogFilesResult::RESULT_FILE_OPEN_FAILED;
+constexpr LogFilesResult_Result LogFilesResult::RESULT_NO_SYSTEM;
 constexpr LogFilesResult_Result LogFilesResult::Result_MIN;
 constexpr LogFilesResult_Result LogFilesResult::Result_MAX;
 constexpr int LogFilesResult::Result_ARRAYSIZE;

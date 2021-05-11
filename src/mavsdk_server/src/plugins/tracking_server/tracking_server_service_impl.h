@@ -22,8 +22,7 @@ template<typename TrackingServer = TrackingServer>
 class TrackingServerServiceImpl final
     : public rpc::tracking_server::TrackingServerService::Service {
 public:
-    TrackingServerServiceImpl(TrackingServer& tracking_server) : _tracking_server(tracking_server)
-    {}
+    TrackingServerServiceImpl(Mavsdk& mavsdk) : _mavsdk(mavsdk) {}
 
     template<typename ResponseType>
     void
@@ -183,12 +182,16 @@ public:
         const rpc::tracking_server::SetTrackingPointStatusRequest* request,
         rpc::tracking_server::SetTrackingPointStatusResponse* /* response */) override
     {
+        if (!init_plugin()) {
+            return grpc::Status::OK;
+        }
+
         if (request == nullptr) {
             LogWarn() << "SetTrackingPointStatus sent with a null request! Ignoring...";
             return grpc::Status::OK;
         }
 
-        _tracking_server.set_tracking_point_status(
+        _tracking_server->set_tracking_point_status(
             translateFromRpcTrackPoint(request->tracked_point()));
 
         return grpc::Status::OK;
@@ -199,12 +202,16 @@ public:
         const rpc::tracking_server::SetTrackingRectangleStatusRequest* request,
         rpc::tracking_server::SetTrackingRectangleStatusResponse* /* response */) override
     {
+        if (!init_plugin()) {
+            return grpc::Status::OK;
+        }
+
         if (request == nullptr) {
             LogWarn() << "SetTrackingRectangleStatus sent with a null request! Ignoring...";
             return grpc::Status::OK;
         }
 
-        _tracking_server.set_tracking_rectangle_status(
+        _tracking_server->set_tracking_rectangle_status(
             translateFromRpcTrackRectangle(request->tracked_rectangle()));
 
         return grpc::Status::OK;
@@ -215,7 +222,11 @@ public:
         const rpc::tracking_server::SetTrackingOffStatusRequest* /* request */,
         rpc::tracking_server::SetTrackingOffStatusResponse* /* response */) override
     {
-        _tracking_server.set_tracking_off_status();
+        if (!init_plugin()) {
+            return grpc::Status::OK;
+        }
+
+        _tracking_server->set_tracking_off_status();
 
         return grpc::Status::OK;
     }
@@ -225,6 +236,10 @@ public:
         const mavsdk::rpc::tracking_server::SubscribeTrackingPointCommandRequest* /* request */,
         grpc::ServerWriter<rpc::tracking_server::TrackingPointCommandResponse>* writer) override
     {
+        if (!init_plugin()) {
+            return grpc::Status::OK;
+        }
+
         auto stream_closed_promise = std::make_shared<std::promise<void>>();
         auto stream_closed_future = stream_closed_promise->get_future();
         register_stream_stop_promise(stream_closed_promise);
@@ -232,7 +247,7 @@ public:
         auto is_finished = std::make_shared<bool>(false);
         auto subscribe_mutex = std::make_shared<std::mutex>();
 
-        _tracking_server.subscribe_tracking_point_command(
+        _tracking_server->subscribe_tracking_point_command(
             [this, &writer, &stream_closed_promise, is_finished, subscribe_mutex](
                 const mavsdk::TrackingServer::TrackPoint tracking_point_command) {
                 rpc::tracking_server::TrackingPointCommandResponse rpc_response;
@@ -242,7 +257,7 @@ public:
 
                 std::unique_lock<std::mutex> lock(*subscribe_mutex);
                 if (!*is_finished && !writer->Write(rpc_response)) {
-                    _tracking_server.subscribe_tracking_point_command(nullptr);
+                    _tracking_server->subscribe_tracking_point_command(nullptr);
 
                     *is_finished = true;
                     unregister_stream_stop_promise(stream_closed_promise);
@@ -262,6 +277,10 @@ public:
         const mavsdk::rpc::tracking_server::SubscribeTrackingRectangleCommandRequest* /* request */,
         grpc::ServerWriter<rpc::tracking_server::TrackingRectangleCommandResponse>* writer) override
     {
+        if (!init_plugin()) {
+            return grpc::Status::OK;
+        }
+
         auto stream_closed_promise = std::make_shared<std::promise<void>>();
         auto stream_closed_future = stream_closed_promise->get_future();
         register_stream_stop_promise(stream_closed_promise);
@@ -269,7 +288,7 @@ public:
         auto is_finished = std::make_shared<bool>(false);
         auto subscribe_mutex = std::make_shared<std::mutex>();
 
-        _tracking_server.subscribe_tracking_rectangle_command(
+        _tracking_server->subscribe_tracking_rectangle_command(
             [this, &writer, &stream_closed_promise, is_finished, subscribe_mutex](
                 const mavsdk::TrackingServer::TrackRectangle tracking_rectangle_command) {
                 rpc::tracking_server::TrackingRectangleCommandResponse rpc_response;
@@ -279,7 +298,7 @@ public:
 
                 std::unique_lock<std::mutex> lock(*subscribe_mutex);
                 if (!*is_finished && !writer->Write(rpc_response)) {
-                    _tracking_server.subscribe_tracking_rectangle_command(nullptr);
+                    _tracking_server->subscribe_tracking_rectangle_command(nullptr);
 
                     *is_finished = true;
                     unregister_stream_stop_promise(stream_closed_promise);
@@ -299,6 +318,10 @@ public:
         const mavsdk::rpc::tracking_server::SubscribeTrackingOffCommandRequest* /* request */,
         grpc::ServerWriter<rpc::tracking_server::TrackingOffCommandResponse>* writer) override
     {
+        if (!init_plugin()) {
+            return grpc::Status::OK;
+        }
+
         auto stream_closed_promise = std::make_shared<std::promise<void>>();
         auto stream_closed_future = stream_closed_promise->get_future();
         register_stream_stop_promise(stream_closed_promise);
@@ -306,7 +329,7 @@ public:
         auto is_finished = std::make_shared<bool>(false);
         auto subscribe_mutex = std::make_shared<std::mutex>();
 
-        _tracking_server.subscribe_tracking_off_command(
+        _tracking_server->subscribe_tracking_off_command(
             [this, &writer, &stream_closed_promise, is_finished, subscribe_mutex](
                 const int32_t tracking_off_command) {
                 rpc::tracking_server::TrackingOffCommandResponse rpc_response;
@@ -315,7 +338,7 @@ public:
 
                 std::unique_lock<std::mutex> lock(*subscribe_mutex);
                 if (!*is_finished && !writer->Write(rpc_response)) {
-                    _tracking_server.subscribe_tracking_off_command(nullptr);
+                    _tracking_server->subscribe_tracking_off_command(nullptr);
 
                     *is_finished = true;
                     unregister_stream_stop_promise(stream_closed_promise);
@@ -335,12 +358,21 @@ public:
         const rpc::tracking_server::RespondTrackingPointCommandRequest* request,
         rpc::tracking_server::RespondTrackingPointCommandResponse* response) override
     {
+        if (!init_plugin()) {
+            if (response != nullptr) {
+                auto result = mavsdk::TrackingServer::Result::NoSystem;
+                fillResponseWithResult(response, result);
+            }
+
+            return grpc::Status::OK;
+        }
+
         if (request == nullptr) {
             LogWarn() << "RespondTrackingPointCommand sent with a null request! Ignoring...";
             return grpc::Status::OK;
         }
 
-        auto result = _tracking_server.respond_tracking_point_command(
+        auto result = _tracking_server->respond_tracking_point_command(
             translateFromRpcCommandAnswer(request->command_answer()));
 
         if (response != nullptr) {
@@ -355,12 +387,21 @@ public:
         const rpc::tracking_server::RespondTrackingRectangleCommandRequest* request,
         rpc::tracking_server::RespondTrackingRectangleCommandResponse* response) override
     {
+        if (!init_plugin()) {
+            if (response != nullptr) {
+                auto result = mavsdk::TrackingServer::Result::NoSystem;
+                fillResponseWithResult(response, result);
+            }
+
+            return grpc::Status::OK;
+        }
+
         if (request == nullptr) {
             LogWarn() << "RespondTrackingRectangleCommand sent with a null request! Ignoring...";
             return grpc::Status::OK;
         }
 
-        auto result = _tracking_server.respond_tracking_rectangle_command(
+        auto result = _tracking_server->respond_tracking_rectangle_command(
             translateFromRpcCommandAnswer(request->command_answer()));
 
         if (response != nullptr) {
@@ -375,12 +416,21 @@ public:
         const rpc::tracking_server::RespondTrackingOffCommandRequest* request,
         rpc::tracking_server::RespondTrackingOffCommandResponse* response) override
     {
+        if (!init_plugin()) {
+            if (response != nullptr) {
+                auto result = mavsdk::TrackingServer::Result::NoSystem;
+                fillResponseWithResult(response, result);
+            }
+
+            return grpc::Status::OK;
+        }
+
         if (request == nullptr) {
             LogWarn() << "RespondTrackingOffCommand sent with a null request! Ignoring...";
             return grpc::Status::OK;
         }
 
-        auto result = _tracking_server.respond_tracking_off_command(
+        auto result = _tracking_server->respond_tracking_off_command(
             translateFromRpcCommandAnswer(request->command_answer()));
 
         if (response != nullptr) {
@@ -425,7 +475,19 @@ private:
         }
     }
 
-    TrackingServer& _tracking_server;
+    bool init_plugin()
+    {
+        if (_tracking_server == nullptr) {
+            if (_mavsdk.systems().size() == 0) {
+                return false;
+            }
+            _tracking_server = std::make_unique<TrackingServer>(_mavsdk.systems()[0]);
+        }
+        return true;
+    }
+
+    Mavsdk& _mavsdk;
+    std::unique_ptr<TrackingServer> _tracking_server;
     std::atomic<bool> _stopped{false};
     std::vector<std::weak_ptr<std::promise<void>>> _stream_stop_promises{};
 };

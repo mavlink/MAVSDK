@@ -134,6 +134,7 @@ public:
         ConnectionError, /**< @brief Connection error. */
         WrongType, /**< @brief Wrong type. */
         ParamNameTooLong, /**< @brief Parameter name too long (> 16). */
+        NoSystem, /**< @brief No system connected. */
     };
 
     /**

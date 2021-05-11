@@ -129,6 +129,8 @@ std::ostream& operator<<(std::ostream& str, Gimbal::Result const& result)
             return str << "Timeout";
         case Gimbal::Result::Unsupported:
             return str << "Unsupported";
+        case Gimbal::Result::NoSystem:
+            return str << "No System";
         default:
             return str << "Unknown";
     }

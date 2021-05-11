@@ -20,7 +20,7 @@ namespace mavsdk_server {
 template<typename Action = Action>
 class ActionServiceImpl final : public rpc::action::ActionService::Service {
 public:
-    ActionServiceImpl(Action& action) : _action(action) {}
+    ActionServiceImpl(Mavsdk& mavsdk) : _mavsdk(mavsdk) {}
 
     template<typename ResponseType>
     void fillResponseWithResult(ResponseType* response, mavsdk::Action::Result& result) const
@@ -151,7 +151,16 @@ public:
         const rpc::action::ArmRequest* /* request */,
         rpc::action::ArmResponse* response) override
     {
-        auto result = _action.arm();
+        if (!init_plugin()) {
+            if (response != nullptr) {
+                auto result = mavsdk::Action::Result::NoSystem;
+                fillResponseWithResult(response, result);
+            }
+
+            return grpc::Status::OK;
+        }
+
+        auto result = _action->arm();
 
         if (response != nullptr) {
             fillResponseWithResult(response, result);
@@ -165,7 +174,16 @@ public:
         const rpc::action::DisarmRequest* /* request */,
         rpc::action::DisarmResponse* response) override
     {
-        auto result = _action.disarm();
+        if (!init_plugin()) {
+            if (response != nullptr) {
+                auto result = mavsdk::Action::Result::NoSystem;
+                fillResponseWithResult(response, result);
+            }
+
+            return grpc::Status::OK;
+        }
+
+        auto result = _action->disarm();
 
         if (response != nullptr) {
             fillResponseWithResult(response, result);
@@ -179,7 +197,16 @@ public:
         const rpc::action::TakeoffRequest* /* request */,
         rpc::action::TakeoffResponse* response) override
     {
-        auto result = _action.takeoff();
+        if (!init_plugin()) {
+            if (response != nullptr) {
+                auto result = mavsdk::Action::Result::NoSystem;
+                fillResponseWithResult(response, result);
+            }
+
+            return grpc::Status::OK;
+        }
+
+        auto result = _action->takeoff();
 
         if (response != nullptr) {
             fillResponseWithResult(response, result);
@@ -193,7 +220,16 @@ public:
         const rpc::action::LandRequest* /* request */,
         rpc::action::LandResponse* response) override
     {
-        auto result = _action.land();
+        if (!init_plugin()) {
+            if (response != nullptr) {
+                auto result = mavsdk::Action::Result::NoSystem;
+                fillResponseWithResult(response, result);
+            }
+
+            return grpc::Status::OK;
+        }
+
+        auto result = _action->land();
 
         if (response != nullptr) {
             fillResponseWithResult(response, result);
@@ -207,7 +243,16 @@ public:
         const rpc::action::RebootRequest* /* request */,
         rpc::action::RebootResponse* response) override
     {
-        auto result = _action.reboot();
+        if (!init_plugin()) {
+            if (response != nullptr) {
+                auto result = mavsdk::Action::Result::NoSystem;
+                fillResponseWithResult(response, result);
+            }
+
+            return grpc::Status::OK;
+        }
+
+        auto result = _action->reboot();
 
         if (response != nullptr) {
             fillResponseWithResult(response, result);
@@ -221,7 +266,16 @@ public:
         const rpc::action::ShutdownRequest* /* request */,
         rpc::action::ShutdownResponse* response) override
     {
-        auto result = _action.shutdown();
+        if (!init_plugin()) {
+            if (response != nullptr) {
+                auto result = mavsdk::Action::Result::NoSystem;
+                fillResponseWithResult(response, result);
+            }
+
+            return grpc::Status::OK;
+        }
+
+        auto result = _action->shutdown();
 
         if (response != nullptr) {
             fillResponseWithResult(response, result);
@@ -235,7 +289,16 @@ public:
         const rpc::action::TerminateRequest* /* request */,
         rpc::action::TerminateResponse* response) override
     {
-        auto result = _action.terminate();
+        if (!init_plugin()) {
+            if (response != nullptr) {
+                auto result = mavsdk::Action::Result::NoSystem;
+                fillResponseWithResult(response, result);
+            }
+
+            return grpc::Status::OK;
+        }
+
+        auto result = _action->terminate();
 
         if (response != nullptr) {
             fillResponseWithResult(response, result);
@@ -249,7 +312,16 @@ public:
         const rpc::action::KillRequest* /* request */,
         rpc::action::KillResponse* response) override
     {
-        auto result = _action.kill();
+        if (!init_plugin()) {
+            if (response != nullptr) {
+                auto result = mavsdk::Action::Result::NoSystem;
+                fillResponseWithResult(response, result);
+            }
+
+            return grpc::Status::OK;
+        }
+
+        auto result = _action->kill();
 
         if (response != nullptr) {
             fillResponseWithResult(response, result);
@@ -263,7 +335,16 @@ public:
         const rpc::action::ReturnToLaunchRequest* /* request */,
         rpc::action::ReturnToLaunchResponse* response) override
     {
-        auto result = _action.return_to_launch();
+        if (!init_plugin()) {
+            if (response != nullptr) {
+                auto result = mavsdk::Action::Result::NoSystem;
+                fillResponseWithResult(response, result);
+            }
+
+            return grpc::Status::OK;
+        }
+
+        auto result = _action->return_to_launch();
 
         if (response != nullptr) {
             fillResponseWithResult(response, result);
@@ -277,12 +358,21 @@ public:
         const rpc::action::GotoLocationRequest* request,
         rpc::action::GotoLocationResponse* response) override
     {
+        if (!init_plugin()) {
+            if (response != nullptr) {
+                auto result = mavsdk::Action::Result::NoSystem;
+                fillResponseWithResult(response, result);
+            }
+
+            return grpc::Status::OK;
+        }
+
         if (request == nullptr) {
             LogWarn() << "GotoLocation sent with a null request! Ignoring...";
             return grpc::Status::OK;
         }
 
-        auto result = _action.goto_location(
+        auto result = _action->goto_location(
             request->latitude_deg(),
             request->longitude_deg(),
             request->absolute_altitude_m(),
@@ -300,12 +390,21 @@ public:
         const rpc::action::DoOrbitRequest* request,
         rpc::action::DoOrbitResponse* response) override
     {
+        if (!init_plugin()) {
+            if (response != nullptr) {
+                auto result = mavsdk::Action::Result::NoSystem;
+                fillResponseWithResult(response, result);
+            }
+
+            return grpc::Status::OK;
+        }
+
         if (request == nullptr) {
             LogWarn() << "DoOrbit sent with a null request! Ignoring...";
             return grpc::Status::OK;
         }
 
-        auto result = _action.do_orbit(
+        auto result = _action->do_orbit(
             request->radius_m(),
             request->velocity_ms(),
             translateFromRpcOrbitYawBehavior(request->yaw_behavior()),
@@ -325,7 +424,16 @@ public:
         const rpc::action::HoldRequest* /* request */,
         rpc::action::HoldResponse* response) override
     {
-        auto result = _action.hold();
+        if (!init_plugin()) {
+            if (response != nullptr) {
+                auto result = mavsdk::Action::Result::NoSystem;
+                fillResponseWithResult(response, result);
+            }
+
+            return grpc::Status::OK;
+        }
+
+        auto result = _action->hold();
 
         if (response != nullptr) {
             fillResponseWithResult(response, result);
@@ -339,12 +447,21 @@ public:
         const rpc::action::SetActuatorRequest* request,
         rpc::action::SetActuatorResponse* response) override
     {
+        if (!init_plugin()) {
+            if (response != nullptr) {
+                auto result = mavsdk::Action::Result::NoSystem;
+                fillResponseWithResult(response, result);
+            }
+
+            return grpc::Status::OK;
+        }
+
         if (request == nullptr) {
             LogWarn() << "SetActuator sent with a null request! Ignoring...";
             return grpc::Status::OK;
         }
 
-        auto result = _action.set_actuator(request->index(), request->value());
+        auto result = _action->set_actuator(request->index(), request->value());
 
         if (response != nullptr) {
             fillResponseWithResult(response, result);
@@ -358,7 +475,16 @@ public:
         const rpc::action::TransitionToFixedwingRequest* /* request */,
         rpc::action::TransitionToFixedwingResponse* response) override
     {
-        auto result = _action.transition_to_fixedwing();
+        if (!init_plugin()) {
+            if (response != nullptr) {
+                auto result = mavsdk::Action::Result::NoSystem;
+                fillResponseWithResult(response, result);
+            }
+
+            return grpc::Status::OK;
+        }
+
+        auto result = _action->transition_to_fixedwing();
 
         if (response != nullptr) {
             fillResponseWithResult(response, result);
@@ -372,7 +498,16 @@ public:
         const rpc::action::TransitionToMulticopterRequest* /* request */,
         rpc::action::TransitionToMulticopterResponse* response) override
     {
-        auto result = _action.transition_to_multicopter();
+        if (!init_plugin()) {
+            if (response != nullptr) {
+                auto result = mavsdk::Action::Result::NoSystem;
+                fillResponseWithResult(response, result);
+            }
+
+            return grpc::Status::OK;
+        }
+
+        auto result = _action->transition_to_multicopter();
 
         if (response != nullptr) {
             fillResponseWithResult(response, result);
@@ -386,7 +521,16 @@ public:
         const rpc::action::GetTakeoffAltitudeRequest* /* request */,
         rpc::action::GetTakeoffAltitudeResponse* response) override
     {
-        auto result = _action.get_takeoff_altitude();
+        if (!init_plugin()) {
+            if (response != nullptr) {
+                auto result = mavsdk::Action::Result::NoSystem;
+                fillResponseWithResult(response, result);
+            }
+
+            return grpc::Status::OK;
+        }
+
+        auto result = _action->get_takeoff_altitude();
 
         if (response != nullptr) {
             fillResponseWithResult(response, result.first);
@@ -402,12 +546,21 @@ public:
         const rpc::action::SetTakeoffAltitudeRequest* request,
         rpc::action::SetTakeoffAltitudeResponse* response) override
     {
+        if (!init_plugin()) {
+            if (response != nullptr) {
+                auto result = mavsdk::Action::Result::NoSystem;
+                fillResponseWithResult(response, result);
+            }
+
+            return grpc::Status::OK;
+        }
+
         if (request == nullptr) {
             LogWarn() << "SetTakeoffAltitude sent with a null request! Ignoring...";
             return grpc::Status::OK;
         }
 
-        auto result = _action.set_takeoff_altitude(request->altitude());
+        auto result = _action->set_takeoff_altitude(request->altitude());
 
         if (response != nullptr) {
             fillResponseWithResult(response, result);
@@ -421,7 +574,16 @@ public:
         const rpc::action::GetMaximumSpeedRequest* /* request */,
         rpc::action::GetMaximumSpeedResponse* response) override
     {
-        auto result = _action.get_maximum_speed();
+        if (!init_plugin()) {
+            if (response != nullptr) {
+                auto result = mavsdk::Action::Result::NoSystem;
+                fillResponseWithResult(response, result);
+            }
+
+            return grpc::Status::OK;
+        }
+
+        auto result = _action->get_maximum_speed();
 
         if (response != nullptr) {
             fillResponseWithResult(response, result.first);
@@ -437,12 +599,21 @@ public:
         const rpc::action::SetMaximumSpeedRequest* request,
         rpc::action::SetMaximumSpeedResponse* response) override
     {
+        if (!init_plugin()) {
+            if (response != nullptr) {
+                auto result = mavsdk::Action::Result::NoSystem;
+                fillResponseWithResult(response, result);
+            }
+
+            return grpc::Status::OK;
+        }
+
         if (request == nullptr) {
             LogWarn() << "SetMaximumSpeed sent with a null request! Ignoring...";
             return grpc::Status::OK;
         }
 
-        auto result = _action.set_maximum_speed(request->speed());
+        auto result = _action->set_maximum_speed(request->speed());
 
         if (response != nullptr) {
             fillResponseWithResult(response, result);
@@ -456,7 +627,16 @@ public:
         const rpc::action::GetReturnToLaunchAltitudeRequest* /* request */,
         rpc::action::GetReturnToLaunchAltitudeResponse* response) override
     {
-        auto result = _action.get_return_to_launch_altitude();
+        if (!init_plugin()) {
+            if (response != nullptr) {
+                auto result = mavsdk::Action::Result::NoSystem;
+                fillResponseWithResult(response, result);
+            }
+
+            return grpc::Status::OK;
+        }
+
+        auto result = _action->get_return_to_launch_altitude();
 
         if (response != nullptr) {
             fillResponseWithResult(response, result.first);
@@ -472,12 +652,21 @@ public:
         const rpc::action::SetReturnToLaunchAltitudeRequest* request,
         rpc::action::SetReturnToLaunchAltitudeResponse* response) override
     {
+        if (!init_plugin()) {
+            if (response != nullptr) {
+                auto result = mavsdk::Action::Result::NoSystem;
+                fillResponseWithResult(response, result);
+            }
+
+            return grpc::Status::OK;
+        }
+
         if (request == nullptr) {
             LogWarn() << "SetReturnToLaunchAltitude sent with a null request! Ignoring...";
             return grpc::Status::OK;
         }
 
-        auto result = _action.set_return_to_launch_altitude(request->relative_altitude_m());
+        auto result = _action->set_return_to_launch_altitude(request->relative_altitude_m());
 
         if (response != nullptr) {
             fillResponseWithResult(response, result);
@@ -521,7 +710,19 @@ private:
         }
     }
 
-    Action& _action;
+    bool init_plugin()
+    {
+        if (_action == nullptr) {
+            if (_mavsdk.systems().size() == 0) {
+                return false;
+            }
+            _action = std::make_unique<Action>(_mavsdk.systems()[0]);
+        }
+        return true;
+    }
+
+    Mavsdk& _mavsdk;
+    std::unique_ptr<Action> _action;
     std::atomic<bool> _stopped{false};
     std::vector<std::weak_ptr<std::promise<void>>> _stream_stop_promises{};
 };

@@ -136,6 +136,8 @@ std::ostream& operator<<(std::ostream& str, Info::Result const& result)
             return str << "Success";
         case Info::Result::InformationNotReceivedYet:
             return str << "Information Not Received Yet";
+        case Info::Result::NoSystem:
+            return str << "No System";
         default:
             return str << "Unknown";
     }

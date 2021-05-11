@@ -220,6 +220,8 @@ std::ostream& operator<<(std::ostream& str, Camera::Result const& result)
             return str << "Timeout";
         case Camera::Result::WrongArgument:
             return str << "Wrong Argument";
+        case Camera::Result::NoSystem:
+            return str << "No System";
         default:
             return str << "Unknown";
     }

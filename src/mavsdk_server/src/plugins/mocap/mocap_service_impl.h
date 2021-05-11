@@ -20,7 +20,7 @@ namespace mavsdk_server {
 template<typename Mocap = Mocap>
 class MocapServiceImpl final : public rpc::mocap::MocapService::Service {
 public:
-    MocapServiceImpl(Mocap& mocap) : _mocap(mocap) {}
+    MocapServiceImpl(Mavsdk& mavsdk) : _mavsdk(mavsdk) {}
 
     template<typename ResponseType>
     void fillResponseWithResult(ResponseType* response, mavsdk::Mocap::Result& result) const
@@ -398,12 +398,21 @@ public:
         const rpc::mocap::SetVisionPositionEstimateRequest* request,
         rpc::mocap::SetVisionPositionEstimateResponse* response) override
     {
+        if (!init_plugin()) {
+            if (response != nullptr) {
+                auto result = mavsdk::Mocap::Result::NoSystem;
+                fillResponseWithResult(response, result);
+            }
+
+            return grpc::Status::OK;
+        }
+
         if (request == nullptr) {
             LogWarn() << "SetVisionPositionEstimate sent with a null request! Ignoring...";
             return grpc::Status::OK;
         }
 
-        auto result = _mocap.set_vision_position_estimate(
+        auto result = _mocap->set_vision_position_estimate(
             translateFromRpcVisionPositionEstimate(request->vision_position_estimate()));
 
         if (response != nullptr) {
@@ -418,12 +427,21 @@ public:
         const rpc::mocap::SetAttitudePositionMocapRequest* request,
         rpc::mocap::SetAttitudePositionMocapResponse* response) override
     {
+        if (!init_plugin()) {
+            if (response != nullptr) {
+                auto result = mavsdk::Mocap::Result::NoSystem;
+                fillResponseWithResult(response, result);
+            }
+
+            return grpc::Status::OK;
+        }
+
         if (request == nullptr) {
             LogWarn() << "SetAttitudePositionMocap sent with a null request! Ignoring...";
             return grpc::Status::OK;
         }
 
-        auto result = _mocap.set_attitude_position_mocap(
+        auto result = _mocap->set_attitude_position_mocap(
             translateFromRpcAttitudePositionMocap(request->attitude_position_mocap()));
 
         if (response != nullptr) {
@@ -438,12 +456,21 @@ public:
         const rpc::mocap::SetOdometryRequest* request,
         rpc::mocap::SetOdometryResponse* response) override
     {
+        if (!init_plugin()) {
+            if (response != nullptr) {
+                auto result = mavsdk::Mocap::Result::NoSystem;
+                fillResponseWithResult(response, result);
+            }
+
+            return grpc::Status::OK;
+        }
+
         if (request == nullptr) {
             LogWarn() << "SetOdometry sent with a null request! Ignoring...";
             return grpc::Status::OK;
         }
 
-        auto result = _mocap.set_odometry(translateFromRpcOdometry(request->odometry()));
+        auto result = _mocap->set_odometry(translateFromRpcOdometry(request->odometry()));
 
         if (response != nullptr) {
             fillResponseWithResult(response, result);
@@ -487,7 +514,19 @@ private:
         }
     }
 
-    Mocap& _mocap;
+    bool init_plugin()
+    {
+        if (_mocap == nullptr) {
+            if (_mavsdk.systems().size() == 0) {
+                return false;
+            }
+            _mocap = std::make_unique<Mocap>(_mavsdk.systems()[0]);
+        }
+        return true;
+    }
+
+    Mavsdk& _mavsdk;
+    std::unique_ptr<Mocap> _mocap;
     std::atomic<bool> _stopped{false};
     std::vector<std::weak_ptr<std::promise<void>>> _stream_stop_promises{};
 };

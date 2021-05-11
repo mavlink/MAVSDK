@@ -105,6 +105,7 @@ public:
         Error, /**< @brief An error has occured while executing the command. */
         Timeout, /**< @brief Command timed out. */
         WrongArgument, /**< @brief Command has wrong argument(s). */
+        NoSystem, /**< @brief No system connected. */
     };
 
     /**

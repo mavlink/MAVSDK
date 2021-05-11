@@ -20,7 +20,7 @@ namespace mavsdk_server {
 template<typename Offboard = Offboard>
 class OffboardServiceImpl final : public rpc::offboard::OffboardService::Service {
 public:
-    OffboardServiceImpl(Offboard& offboard) : _offboard(offboard) {}
+    OffboardServiceImpl(Mavsdk& mavsdk) : _mavsdk(mavsdk) {}
 
     template<typename ResponseType>
     void fillResponseWithResult(ResponseType* response, mavsdk::Offboard::Result& result) const
@@ -331,7 +331,16 @@ public:
         const rpc::offboard::StartRequest* /* request */,
         rpc::offboard::StartResponse* response) override
     {
-        auto result = _offboard.start();
+        if (!init_plugin()) {
+            if (response != nullptr) {
+                auto result = mavsdk::Offboard::Result::NoSystem;
+                fillResponseWithResult(response, result);
+            }
+
+            return grpc::Status::OK;
+        }
+
+        auto result = _offboard->start();
 
         if (response != nullptr) {
             fillResponseWithResult(response, result);
@@ -345,7 +354,16 @@ public:
         const rpc::offboard::StopRequest* /* request */,
         rpc::offboard::StopResponse* response) override
     {
-        auto result = _offboard.stop();
+        if (!init_plugin()) {
+            if (response != nullptr) {
+                auto result = mavsdk::Offboard::Result::NoSystem;
+                fillResponseWithResult(response, result);
+            }
+
+            return grpc::Status::OK;
+        }
+
+        auto result = _offboard->stop();
 
         if (response != nullptr) {
             fillResponseWithResult(response, result);
@@ -359,7 +377,11 @@ public:
         const rpc::offboard::IsActiveRequest* /* request */,
         rpc::offboard::IsActiveResponse* response) override
     {
-        auto result = _offboard.is_active();
+        if (!init_plugin()) {
+            return grpc::Status::OK;
+        }
+
+        auto result = _offboard->is_active();
 
         if (response != nullptr) {
             response->set_is_active(result);
@@ -373,12 +395,21 @@ public:
         const rpc::offboard::SetAttitudeRequest* request,
         rpc::offboard::SetAttitudeResponse* response) override
     {
+        if (!init_plugin()) {
+            if (response != nullptr) {
+                auto result = mavsdk::Offboard::Result::NoSystem;
+                fillResponseWithResult(response, result);
+            }
+
+            return grpc::Status::OK;
+        }
+
         if (request == nullptr) {
             LogWarn() << "SetAttitude sent with a null request! Ignoring...";
             return grpc::Status::OK;
         }
 
-        auto result = _offboard.set_attitude(translateFromRpcAttitude(request->attitude()));
+        auto result = _offboard->set_attitude(translateFromRpcAttitude(request->attitude()));
 
         if (response != nullptr) {
             fillResponseWithResult(response, result);
@@ -392,12 +423,21 @@ public:
         const rpc::offboard::SetActuatorControlRequest* request,
         rpc::offboard::SetActuatorControlResponse* response) override
     {
+        if (!init_plugin()) {
+            if (response != nullptr) {
+                auto result = mavsdk::Offboard::Result::NoSystem;
+                fillResponseWithResult(response, result);
+            }
+
+            return grpc::Status::OK;
+        }
+
         if (request == nullptr) {
             LogWarn() << "SetActuatorControl sent with a null request! Ignoring...";
             return grpc::Status::OK;
         }
 
-        auto result = _offboard.set_actuator_control(
+        auto result = _offboard->set_actuator_control(
             translateFromRpcActuatorControl(request->actuator_control()));
 
         if (response != nullptr) {
@@ -412,13 +452,22 @@ public:
         const rpc::offboard::SetAttitudeRateRequest* request,
         rpc::offboard::SetAttitudeRateResponse* response) override
     {
+        if (!init_plugin()) {
+            if (response != nullptr) {
+                auto result = mavsdk::Offboard::Result::NoSystem;
+                fillResponseWithResult(response, result);
+            }
+
+            return grpc::Status::OK;
+        }
+
         if (request == nullptr) {
             LogWarn() << "SetAttitudeRate sent with a null request! Ignoring...";
             return grpc::Status::OK;
         }
 
         auto result =
-            _offboard.set_attitude_rate(translateFromRpcAttitudeRate(request->attitude_rate()));
+            _offboard->set_attitude_rate(translateFromRpcAttitudeRate(request->attitude_rate()));
 
         if (response != nullptr) {
             fillResponseWithResult(response, result);
@@ -432,13 +481,22 @@ public:
         const rpc::offboard::SetPositionNedRequest* request,
         rpc::offboard::SetPositionNedResponse* response) override
     {
+        if (!init_plugin()) {
+            if (response != nullptr) {
+                auto result = mavsdk::Offboard::Result::NoSystem;
+                fillResponseWithResult(response, result);
+            }
+
+            return grpc::Status::OK;
+        }
+
         if (request == nullptr) {
             LogWarn() << "SetPositionNed sent with a null request! Ignoring...";
             return grpc::Status::OK;
         }
 
-        auto result =
-            _offboard.set_position_ned(translateFromRpcPositionNedYaw(request->position_ned_yaw()));
+        auto result = _offboard->set_position_ned(
+            translateFromRpcPositionNedYaw(request->position_ned_yaw()));
 
         if (response != nullptr) {
             fillResponseWithResult(response, result);
@@ -452,12 +510,21 @@ public:
         const rpc::offboard::SetVelocityBodyRequest* request,
         rpc::offboard::SetVelocityBodyResponse* response) override
     {
+        if (!init_plugin()) {
+            if (response != nullptr) {
+                auto result = mavsdk::Offboard::Result::NoSystem;
+                fillResponseWithResult(response, result);
+            }
+
+            return grpc::Status::OK;
+        }
+
         if (request == nullptr) {
             LogWarn() << "SetVelocityBody sent with a null request! Ignoring...";
             return grpc::Status::OK;
         }
 
-        auto result = _offboard.set_velocity_body(
+        auto result = _offboard->set_velocity_body(
             translateFromRpcVelocityBodyYawspeed(request->velocity_body_yawspeed()));
 
         if (response != nullptr) {
@@ -472,13 +539,22 @@ public:
         const rpc::offboard::SetVelocityNedRequest* request,
         rpc::offboard::SetVelocityNedResponse* response) override
     {
+        if (!init_plugin()) {
+            if (response != nullptr) {
+                auto result = mavsdk::Offboard::Result::NoSystem;
+                fillResponseWithResult(response, result);
+            }
+
+            return grpc::Status::OK;
+        }
+
         if (request == nullptr) {
             LogWarn() << "SetVelocityNed sent with a null request! Ignoring...";
             return grpc::Status::OK;
         }
 
-        auto result =
-            _offboard.set_velocity_ned(translateFromRpcVelocityNedYaw(request->velocity_ned_yaw()));
+        auto result = _offboard->set_velocity_ned(
+            translateFromRpcVelocityNedYaw(request->velocity_ned_yaw()));
 
         if (response != nullptr) {
             fillResponseWithResult(response, result);
@@ -492,12 +568,21 @@ public:
         const rpc::offboard::SetPositionVelocityNedRequest* request,
         rpc::offboard::SetPositionVelocityNedResponse* response) override
     {
+        if (!init_plugin()) {
+            if (response != nullptr) {
+                auto result = mavsdk::Offboard::Result::NoSystem;
+                fillResponseWithResult(response, result);
+            }
+
+            return grpc::Status::OK;
+        }
+
         if (request == nullptr) {
             LogWarn() << "SetPositionVelocityNed sent with a null request! Ignoring...";
             return grpc::Status::OK;
         }
 
-        auto result = _offboard.set_position_velocity_ned(
+        auto result = _offboard->set_position_velocity_ned(
             translateFromRpcPositionNedYaw(request->position_ned_yaw()),
             translateFromRpcVelocityNedYaw(request->velocity_ned_yaw()));
 
@@ -513,12 +598,21 @@ public:
         const rpc::offboard::SetAccelerationNedRequest* request,
         rpc::offboard::SetAccelerationNedResponse* response) override
     {
+        if (!init_plugin()) {
+            if (response != nullptr) {
+                auto result = mavsdk::Offboard::Result::NoSystem;
+                fillResponseWithResult(response, result);
+            }
+
+            return grpc::Status::OK;
+        }
+
         if (request == nullptr) {
             LogWarn() << "SetAccelerationNed sent with a null request! Ignoring...";
             return grpc::Status::OK;
         }
 
-        auto result = _offboard.set_acceleration_ned(
+        auto result = _offboard->set_acceleration_ned(
             translateFromRpcAccelerationNed(request->acceleration_ned()));
 
         if (response != nullptr) {
@@ -563,7 +657,19 @@ private:
         }
     }
 
-    Offboard& _offboard;
+    bool init_plugin()
+    {
+        if (_offboard == nullptr) {
+            if (_mavsdk.systems().size() == 0) {
+                return false;
+            }
+            _offboard = std::make_unique<Offboard>(_mavsdk.systems()[0]);
+        }
+        return true;
+    }
+
+    Mavsdk& _mavsdk;
+    std::unique_ptr<Offboard> _offboard;
     std::atomic<bool> _stopped{false};
     std::vector<std::weak_ptr<std::promise<void>>> _stream_stop_promises{};
 };

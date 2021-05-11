@@ -84,6 +84,8 @@ std::ostream& operator<<(std::ostream& str, LogFiles::Result const& result)
             return str << "Invalid Argument";
         case LogFiles::Result::FileOpenFailed:
             return str << "File Open Failed";
+        case LogFiles::Result::NoSystem:
+            return str << "No System";
         default:
             return str << "Unknown";
     }

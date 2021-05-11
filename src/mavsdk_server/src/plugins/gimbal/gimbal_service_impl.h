@@ -20,7 +20,7 @@ namespace mavsdk_server {
 template<typename Gimbal = Gimbal>
 class GimbalServiceImpl final : public rpc::gimbal::GimbalService::Service {
 public:
-    GimbalServiceImpl(Gimbal& gimbal) : _gimbal(gimbal) {}
+    GimbalServiceImpl(Mavsdk& mavsdk) : _mavsdk(mavsdk) {}
 
     template<typename ResponseType>
     void fillResponseWithResult(ResponseType* response, mavsdk::Gimbal::Result& result) const
@@ -149,6 +149,8 @@ public:
                 return rpc::gimbal::GimbalResult_Result_RESULT_TIMEOUT;
             case mavsdk::Gimbal::Result::Unsupported:
                 return rpc::gimbal::GimbalResult_Result_RESULT_UNSUPPORTED;
+            case mavsdk::Gimbal::Result::NoSystem:
+                return rpc::gimbal::GimbalResult_Result_RESULT_NO_SYSTEM;
         }
     }
 
@@ -169,6 +171,8 @@ public:
                 return mavsdk::Gimbal::Result::Timeout;
             case rpc::gimbal::GimbalResult_Result_RESULT_UNSUPPORTED:
                 return mavsdk::Gimbal::Result::Unsupported;
+            case rpc::gimbal::GimbalResult_Result_RESULT_NO_SYSTEM:
+                return mavsdk::Gimbal::Result::NoSystem;
         }
     }
 
@@ -177,12 +181,21 @@ public:
         const rpc::gimbal::SetPitchAndYawRequest* request,
         rpc::gimbal::SetPitchAndYawResponse* response) override
     {
+        if (!init_plugin()) {
+            if (response != nullptr) {
+                auto result = mavsdk::Gimbal::Result::NoSystem;
+                fillResponseWithResult(response, result);
+            }
+
+            return grpc::Status::OK;
+        }
+
         if (request == nullptr) {
             LogWarn() << "SetPitchAndYaw sent with a null request! Ignoring...";
             return grpc::Status::OK;
         }
 
-        auto result = _gimbal.set_pitch_and_yaw(request->pitch_deg(), request->yaw_deg());
+        auto result = _gimbal->set_pitch_and_yaw(request->pitch_deg(), request->yaw_deg());
 
         if (response != nullptr) {
             fillResponseWithResult(response, result);
@@ -196,12 +209,21 @@ public:
         const rpc::gimbal::SetPitchRateAndYawRateRequest* request,
         rpc::gimbal::SetPitchRateAndYawRateResponse* response) override
     {
+        if (!init_plugin()) {
+            if (response != nullptr) {
+                auto result = mavsdk::Gimbal::Result::NoSystem;
+                fillResponseWithResult(response, result);
+            }
+
+            return grpc::Status::OK;
+        }
+
         if (request == nullptr) {
             LogWarn() << "SetPitchRateAndYawRate sent with a null request! Ignoring...";
             return grpc::Status::OK;
         }
 
-        auto result = _gimbal.set_pitch_rate_and_yaw_rate(
+        auto result = _gimbal->set_pitch_rate_and_yaw_rate(
             request->pitch_rate_deg_s(), request->yaw_rate_deg_s());
 
         if (response != nullptr) {
@@ -216,12 +238,21 @@ public:
         const rpc::gimbal::SetModeRequest* request,
         rpc::gimbal::SetModeResponse* response) override
     {
+        if (!init_plugin()) {
+            if (response != nullptr) {
+                auto result = mavsdk::Gimbal::Result::NoSystem;
+                fillResponseWithResult(response, result);
+            }
+
+            return grpc::Status::OK;
+        }
+
         if (request == nullptr) {
             LogWarn() << "SetMode sent with a null request! Ignoring...";
             return grpc::Status::OK;
         }
 
-        auto result = _gimbal.set_mode(translateFromRpcGimbalMode(request->gimbal_mode()));
+        auto result = _gimbal->set_mode(translateFromRpcGimbalMode(request->gimbal_mode()));
 
         if (response != nullptr) {
             fillResponseWithResult(response, result);
@@ -235,12 +266,21 @@ public:
         const rpc::gimbal::SetRoiLocationRequest* request,
         rpc::gimbal::SetRoiLocationResponse* response) override
     {
+        if (!init_plugin()) {
+            if (response != nullptr) {
+                auto result = mavsdk::Gimbal::Result::NoSystem;
+                fillResponseWithResult(response, result);
+            }
+
+            return grpc::Status::OK;
+        }
+
         if (request == nullptr) {
             LogWarn() << "SetRoiLocation sent with a null request! Ignoring...";
             return grpc::Status::OK;
         }
 
-        auto result = _gimbal.set_roi_location(
+        auto result = _gimbal->set_roi_location(
             request->latitude_deg(), request->longitude_deg(), request->altitude_m());
 
         if (response != nullptr) {
@@ -255,12 +295,21 @@ public:
         const rpc::gimbal::TakeControlRequest* request,
         rpc::gimbal::TakeControlResponse* response) override
     {
+        if (!init_plugin()) {
+            if (response != nullptr) {
+                auto result = mavsdk::Gimbal::Result::NoSystem;
+                fillResponseWithResult(response, result);
+            }
+
+            return grpc::Status::OK;
+        }
+
         if (request == nullptr) {
             LogWarn() << "TakeControl sent with a null request! Ignoring...";
             return grpc::Status::OK;
         }
 
-        auto result = _gimbal.take_control(translateFromRpcControlMode(request->control_mode()));
+        auto result = _gimbal->take_control(translateFromRpcControlMode(request->control_mode()));
 
         if (response != nullptr) {
             fillResponseWithResult(response, result);
@@ -274,7 +323,16 @@ public:
         const rpc::gimbal::ReleaseControlRequest* /* request */,
         rpc::gimbal::ReleaseControlResponse* response) override
     {
-        auto result = _gimbal.release_control();
+        if (!init_plugin()) {
+            if (response != nullptr) {
+                auto result = mavsdk::Gimbal::Result::NoSystem;
+                fillResponseWithResult(response, result);
+            }
+
+            return grpc::Status::OK;
+        }
+
+        auto result = _gimbal->release_control();
 
         if (response != nullptr) {
             fillResponseWithResult(response, result);
@@ -288,6 +346,10 @@ public:
         const mavsdk::rpc::gimbal::SubscribeControlRequest* /* request */,
         grpc::ServerWriter<rpc::gimbal::ControlResponse>* writer) override
     {
+        if (!init_plugin()) {
+            return grpc::Status::OK;
+        }
+
         auto stream_closed_promise = std::make_shared<std::promise<void>>();
         auto stream_closed_future = stream_closed_promise->get_future();
         register_stream_stop_promise(stream_closed_promise);
@@ -295,7 +357,7 @@ public:
         auto is_finished = std::make_shared<bool>(false);
         auto subscribe_mutex = std::make_shared<std::mutex>();
 
-        _gimbal.subscribe_control(
+        _gimbal->subscribe_control(
             [this, &writer, &stream_closed_promise, is_finished, subscribe_mutex](
                 const mavsdk::Gimbal::ControlStatus control) {
                 rpc::gimbal::ControlResponse rpc_response;
@@ -305,7 +367,7 @@ public:
 
                 std::unique_lock<std::mutex> lock(*subscribe_mutex);
                 if (!*is_finished && !writer->Write(rpc_response)) {
-                    _gimbal.subscribe_control(nullptr);
+                    _gimbal->subscribe_control(nullptr);
 
                     *is_finished = true;
                     unregister_stream_stop_promise(stream_closed_promise);
@@ -355,7 +417,19 @@ private:
         }
     }
 
-    Gimbal& _gimbal;
+    bool init_plugin()
+    {
+        if (_gimbal == nullptr) {
+            if (_mavsdk.systems().size() == 0) {
+                return false;
+            }
+            _gimbal = std::make_unique<Gimbal>(_mavsdk.systems()[0]);
+        }
+        return true;
+    }
+
+    Mavsdk& _mavsdk;
+    std::unique_ptr<Gimbal> _gimbal;
     std::atomic<bool> _stopped{false};
     std::vector<std::weak_ptr<std::promise<void>>> _stream_stop_promises{};
 };

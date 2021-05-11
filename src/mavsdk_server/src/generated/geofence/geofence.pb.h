@@ -120,12 +120,13 @@ enum GeofenceResult_Result : int {
   GeofenceResult_Result_RESULT_BUSY = 4,
   GeofenceResult_Result_RESULT_TIMEOUT = 5,
   GeofenceResult_Result_RESULT_INVALID_ARGUMENT = 6,
+  GeofenceResult_Result_RESULT_NO_SYSTEM = 7,
   GeofenceResult_Result_GeofenceResult_Result_INT_MIN_SENTINEL_DO_NOT_USE_ = std::numeric_limits<::PROTOBUF_NAMESPACE_ID::int32>::min(),
   GeofenceResult_Result_GeofenceResult_Result_INT_MAX_SENTINEL_DO_NOT_USE_ = std::numeric_limits<::PROTOBUF_NAMESPACE_ID::int32>::max()
 };
 bool GeofenceResult_Result_IsValid(int value);
 constexpr GeofenceResult_Result GeofenceResult_Result_Result_MIN = GeofenceResult_Result_RESULT_UNKNOWN;
-constexpr GeofenceResult_Result GeofenceResult_Result_Result_MAX = GeofenceResult_Result_RESULT_INVALID_ARGUMENT;
+constexpr GeofenceResult_Result GeofenceResult_Result_Result_MAX = GeofenceResult_Result_RESULT_NO_SYSTEM;
 constexpr int GeofenceResult_Result_Result_ARRAYSIZE = GeofenceResult_Result_Result_MAX + 1;
 
 const ::PROTOBUF_NAMESPACE_ID::EnumDescriptor* GeofenceResult_Result_descriptor();
@@ -896,6 +897,8 @@ class GeofenceResult PROTOBUF_FINAL :
     GeofenceResult_Result_RESULT_TIMEOUT;
   static constexpr Result RESULT_INVALID_ARGUMENT =
     GeofenceResult_Result_RESULT_INVALID_ARGUMENT;
+  static constexpr Result RESULT_NO_SYSTEM =
+    GeofenceResult_Result_RESULT_NO_SYSTEM;
   static inline bool Result_IsValid(int value) {
     return GeofenceResult_Result_IsValid(value);
   }

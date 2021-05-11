@@ -132,12 +132,13 @@ enum InfoResult_Result : int {
   InfoResult_Result_RESULT_UNKNOWN = 0,
   InfoResult_Result_RESULT_SUCCESS = 1,
   InfoResult_Result_RESULT_INFORMATION_NOT_RECEIVED_YET = 2,
+  InfoResult_Result_RESULT_NO_SYSTEM = 3,
   InfoResult_Result_InfoResult_Result_INT_MIN_SENTINEL_DO_NOT_USE_ = std::numeric_limits<::PROTOBUF_NAMESPACE_ID::int32>::min(),
   InfoResult_Result_InfoResult_Result_INT_MAX_SENTINEL_DO_NOT_USE_ = std::numeric_limits<::PROTOBUF_NAMESPACE_ID::int32>::max()
 };
 bool InfoResult_Result_IsValid(int value);
 constexpr InfoResult_Result InfoResult_Result_Result_MIN = InfoResult_Result_RESULT_UNKNOWN;
-constexpr InfoResult_Result InfoResult_Result_Result_MAX = InfoResult_Result_RESULT_INFORMATION_NOT_RECEIVED_YET;
+constexpr InfoResult_Result InfoResult_Result_Result_MAX = InfoResult_Result_RESULT_NO_SYSTEM;
 constexpr int InfoResult_Result_Result_ARRAYSIZE = InfoResult_Result_Result_MAX + 1;
 
 const ::PROTOBUF_NAMESPACE_ID::EnumDescriptor* InfoResult_Result_descriptor();
@@ -2462,6 +2463,8 @@ class InfoResult PROTOBUF_FINAL :
     InfoResult_Result_RESULT_SUCCESS;
   static constexpr Result RESULT_INFORMATION_NOT_RECEIVED_YET =
     InfoResult_Result_RESULT_INFORMATION_NOT_RECEIVED_YET;
+  static constexpr Result RESULT_NO_SYSTEM =
+    InfoResult_Result_RESULT_NO_SYSTEM;
   static inline bool Result_IsValid(int value) {
     return InfoResult_Result_IsValid(value);
   }

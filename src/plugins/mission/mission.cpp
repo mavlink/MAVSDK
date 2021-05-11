@@ -235,6 +235,8 @@ std::ostream& operator<<(std::ostream& str, Mission::Result const& result)
             return str << "Unsupported Mission Cmd";
         case Mission::Result::TransferCancelled:
             return str << "Transfer Cancelled";
+        case Mission::Result::NoSystem:
+            return str << "No System";
         default:
             return str << "Unknown";
     }

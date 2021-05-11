@@ -20,7 +20,7 @@ namespace mavsdk_server {
 template<typename {{ plugin_name.upper_camel_case }} = {{ plugin_name.upper_camel_case }}>
 class {{ plugin_name.upper_camel_case }}ServiceImpl final : public rpc::{{ plugin_name.lower_snake_case }}::{{ plugin_name.upper_camel_case }}Service::Service {
 public:
-    {{ plugin_name.upper_camel_case }}ServiceImpl({{ plugin_name.upper_camel_case }}& {{ plugin_name.lower_snake_case }}) : _{{ plugin_name.lower_snake_case }}({{ plugin_name.lower_snake_case }}) {}
+    {{ plugin_name.upper_camel_case }}ServiceImpl(Mavsdk& mavsdk) : _mavsdk(mavsdk) {}
 
 {% if has_result %}
     template<typename ResponseType>
@@ -83,7 +83,18 @@ private:
         }
     }
 
-    {{ plugin_name.upper_camel_case }} &_{{ plugin_name.lower_snake_case }};
+    bool init_plugin() {
+        if (_{{ plugin_name.lower_snake_case }} == nullptr) {
+            if (_mavsdk.systems().size() == 0) {
+                return false;
+            }
+            _{{ plugin_name.lower_snake_case }} = std::make_unique<{{ plugin_name.upper_camel_case }}>(_mavsdk.systems()[0]);
+        }
+        return true;
+    }
+
+    Mavsdk& _mavsdk;
+    std::unique_ptr<{{ plugin_name.upper_camel_case }}> _{{ plugin_name.lower_snake_case }};
     std::atomic<bool> _stopped{false};
     std::vector<std::weak_ptr<std::promise<void>>> _stream_stop_promises {};
 };

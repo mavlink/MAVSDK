@@ -19,7 +19,7 @@ namespace mavsdk_server {
 
 template<typename Ftp = Ftp> class FtpServiceImpl final : public rpc::ftp::FtpService::Service {
 public:
-    FtpServiceImpl(Ftp& ftp) : _ftp(ftp) {}
+    FtpServiceImpl(Mavsdk& mavsdk) : _mavsdk(mavsdk) {}
 
     template<typename ResponseType>
     void fillResponseWithResult(ResponseType* response, mavsdk::Ftp::Result& result) const
@@ -89,6 +89,8 @@ public:
                 return rpc::ftp::FtpResult_Result_RESULT_UNSUPPORTED;
             case mavsdk::Ftp::Result::ProtocolError:
                 return rpc::ftp::FtpResult_Result_RESULT_PROTOCOL_ERROR;
+            case mavsdk::Ftp::Result::NoSystem:
+                return rpc::ftp::FtpResult_Result_RESULT_NO_SYSTEM;
         }
     }
 
@@ -122,6 +124,8 @@ public:
                 return mavsdk::Ftp::Result::Unsupported;
             case rpc::ftp::FtpResult_Result_RESULT_PROTOCOL_ERROR:
                 return mavsdk::Ftp::Result::ProtocolError;
+            case rpc::ftp::FtpResult_Result_RESULT_NO_SYSTEM:
+                return mavsdk::Ftp::Result::NoSystem;
         }
     }
 
@@ -130,10 +134,19 @@ public:
         const rpc::ftp::ResetRequest* /* request */,
         rpc::ftp::ResetResponse* response) override
     {
+        if (!init_plugin()) {
+            if (response != nullptr) {
+                auto result = mavsdk::Ftp::Result::NoSystem;
+                fillResponseWithResult(response, result);
+            }
+
+            return grpc::Status::OK;
+        }
+
         std::promise<mavsdk::Ftp::Result> prom;
         std::future<mavsdk::Ftp::Result> fut = prom.get_future();
 
-        _ftp.reset_async([&prom](const mavsdk::Ftp::Result result) { prom.set_value(result); });
+        _ftp->reset_async([&prom](const mavsdk::Ftp::Result result) { prom.set_value(result); });
         auto result = fut.get();
 
         if (response != nullptr) {
@@ -148,6 +161,15 @@ public:
         const mavsdk::rpc::ftp::SubscribeDownloadRequest* request,
         grpc::ServerWriter<rpc::ftp::DownloadResponse>* writer) override
     {
+        if (!init_plugin()) {
+            rpc::ftp::DownloadResponse rpc_response;
+            auto result = mavsdk::Ftp::Result::NoSystem;
+            fillResponseWithResult(&rpc_response, result);
+            writer->Write(rpc_response);
+
+            return grpc::Status::OK;
+        }
+
         auto stream_closed_promise = std::make_shared<std::promise<void>>();
         auto stream_closed_future = stream_closed_promise->get_future();
         register_stream_stop_promise(stream_closed_promise);
@@ -155,7 +177,7 @@ public:
         auto is_finished = std::make_shared<bool>(false);
         auto subscribe_mutex = std::make_shared<std::mutex>();
 
-        _ftp.download_async(
+        _ftp->download_async(
             request->remote_file_path(),
             request->local_dir(),
             [this, &writer, &stream_closed_promise, is_finished, subscribe_mutex](
@@ -193,6 +215,15 @@ public:
         const mavsdk::rpc::ftp::SubscribeUploadRequest* request,
         grpc::ServerWriter<rpc::ftp::UploadResponse>* writer) override
     {
+        if (!init_plugin()) {
+            rpc::ftp::UploadResponse rpc_response;
+            auto result = mavsdk::Ftp::Result::NoSystem;
+            fillResponseWithResult(&rpc_response, result);
+            writer->Write(rpc_response);
+
+            return grpc::Status::OK;
+        }
+
         auto stream_closed_promise = std::make_shared<std::promise<void>>();
         auto stream_closed_future = stream_closed_promise->get_future();
         register_stream_stop_promise(stream_closed_promise);
@@ -200,7 +231,7 @@ public:
         auto is_finished = std::make_shared<bool>(false);
         auto subscribe_mutex = std::make_shared<std::mutex>();
 
-        _ftp.upload_async(
+        _ftp->upload_async(
             request->local_file_path(),
             request->remote_dir(),
             [this, &writer, &stream_closed_promise, is_finished, subscribe_mutex](
@@ -238,12 +269,21 @@ public:
         const rpc::ftp::ListDirectoryRequest* request,
         rpc::ftp::ListDirectoryResponse* response) override
     {
+        if (!init_plugin()) {
+            if (response != nullptr) {
+                auto result = mavsdk::Ftp::Result::NoSystem;
+                fillResponseWithResult(response, result);
+            }
+
+            return grpc::Status::OK;
+        }
+
         if (request == nullptr) {
             LogWarn() << "ListDirectory sent with a null request! Ignoring...";
             return grpc::Status::OK;
         }
 
-        auto result = _ftp.list_directory(request->remote_dir());
+        auto result = _ftp->list_directory(request->remote_dir());
 
         if (response != nullptr) {
             fillResponseWithResult(response, result.first);
@@ -261,12 +301,21 @@ public:
         const rpc::ftp::CreateDirectoryRequest* request,
         rpc::ftp::CreateDirectoryResponse* response) override
     {
+        if (!init_plugin()) {
+            if (response != nullptr) {
+                auto result = mavsdk::Ftp::Result::NoSystem;
+                fillResponseWithResult(response, result);
+            }
+
+            return grpc::Status::OK;
+        }
+
         if (request == nullptr) {
             LogWarn() << "CreateDirectory sent with a null request! Ignoring...";
             return grpc::Status::OK;
         }
 
-        auto result = _ftp.create_directory(request->remote_dir());
+        auto result = _ftp->create_directory(request->remote_dir());
 
         if (response != nullptr) {
             fillResponseWithResult(response, result);
@@ -280,12 +329,21 @@ public:
         const rpc::ftp::RemoveDirectoryRequest* request,
         rpc::ftp::RemoveDirectoryResponse* response) override
     {
+        if (!init_plugin()) {
+            if (response != nullptr) {
+                auto result = mavsdk::Ftp::Result::NoSystem;
+                fillResponseWithResult(response, result);
+            }
+
+            return grpc::Status::OK;
+        }
+
         if (request == nullptr) {
             LogWarn() << "RemoveDirectory sent with a null request! Ignoring...";
             return grpc::Status::OK;
         }
 
-        auto result = _ftp.remove_directory(request->remote_dir());
+        auto result = _ftp->remove_directory(request->remote_dir());
 
         if (response != nullptr) {
             fillResponseWithResult(response, result);
@@ -299,12 +357,21 @@ public:
         const rpc::ftp::RemoveFileRequest* request,
         rpc::ftp::RemoveFileResponse* response) override
     {
+        if (!init_plugin()) {
+            if (response != nullptr) {
+                auto result = mavsdk::Ftp::Result::NoSystem;
+                fillResponseWithResult(response, result);
+            }
+
+            return grpc::Status::OK;
+        }
+
         if (request == nullptr) {
             LogWarn() << "RemoveFile sent with a null request! Ignoring...";
             return grpc::Status::OK;
         }
 
-        auto result = _ftp.remove_file(request->remote_file_path());
+        auto result = _ftp->remove_file(request->remote_file_path());
 
         if (response != nullptr) {
             fillResponseWithResult(response, result);
@@ -318,12 +385,21 @@ public:
         const rpc::ftp::RenameRequest* request,
         rpc::ftp::RenameResponse* response) override
     {
+        if (!init_plugin()) {
+            if (response != nullptr) {
+                auto result = mavsdk::Ftp::Result::NoSystem;
+                fillResponseWithResult(response, result);
+            }
+
+            return grpc::Status::OK;
+        }
+
         if (request == nullptr) {
             LogWarn() << "Rename sent with a null request! Ignoring...";
             return grpc::Status::OK;
         }
 
-        auto result = _ftp.rename(request->remote_from_path(), request->remote_to_path());
+        auto result = _ftp->rename(request->remote_from_path(), request->remote_to_path());
 
         if (response != nullptr) {
             fillResponseWithResult(response, result);
@@ -337,13 +413,22 @@ public:
         const rpc::ftp::AreFilesIdenticalRequest* request,
         rpc::ftp::AreFilesIdenticalResponse* response) override
     {
+        if (!init_plugin()) {
+            if (response != nullptr) {
+                auto result = mavsdk::Ftp::Result::NoSystem;
+                fillResponseWithResult(response, result);
+            }
+
+            return grpc::Status::OK;
+        }
+
         if (request == nullptr) {
             LogWarn() << "AreFilesIdentical sent with a null request! Ignoring...";
             return grpc::Status::OK;
         }
 
         auto result =
-            _ftp.are_files_identical(request->local_file_path(), request->remote_file_path());
+            _ftp->are_files_identical(request->local_file_path(), request->remote_file_path());
 
         if (response != nullptr) {
             fillResponseWithResult(response, result.first);
@@ -359,12 +444,21 @@ public:
         const rpc::ftp::SetRootDirectoryRequest* request,
         rpc::ftp::SetRootDirectoryResponse* response) override
     {
+        if (!init_plugin()) {
+            if (response != nullptr) {
+                auto result = mavsdk::Ftp::Result::NoSystem;
+                fillResponseWithResult(response, result);
+            }
+
+            return grpc::Status::OK;
+        }
+
         if (request == nullptr) {
             LogWarn() << "SetRootDirectory sent with a null request! Ignoring...";
             return grpc::Status::OK;
         }
 
-        auto result = _ftp.set_root_directory(request->root_dir());
+        auto result = _ftp->set_root_directory(request->root_dir());
 
         if (response != nullptr) {
             fillResponseWithResult(response, result);
@@ -378,12 +472,21 @@ public:
         const rpc::ftp::SetTargetCompidRequest* request,
         rpc::ftp::SetTargetCompidResponse* response) override
     {
+        if (!init_plugin()) {
+            if (response != nullptr) {
+                auto result = mavsdk::Ftp::Result::NoSystem;
+                fillResponseWithResult(response, result);
+            }
+
+            return grpc::Status::OK;
+        }
+
         if (request == nullptr) {
             LogWarn() << "SetTargetCompid sent with a null request! Ignoring...";
             return grpc::Status::OK;
         }
 
-        auto result = _ftp.set_target_compid(request->compid());
+        auto result = _ftp->set_target_compid(request->compid());
 
         if (response != nullptr) {
             fillResponseWithResult(response, result);
@@ -397,7 +500,11 @@ public:
         const rpc::ftp::GetOurCompidRequest* /* request */,
         rpc::ftp::GetOurCompidResponse* response) override
     {
-        auto result = _ftp.get_our_compid();
+        if (!init_plugin()) {
+            return grpc::Status::OK;
+        }
+
+        auto result = _ftp->get_our_compid();
 
         if (response != nullptr) {
             response->set_compid(result);
@@ -441,7 +548,19 @@ private:
         }
     }
 
-    Ftp& _ftp;
+    bool init_plugin()
+    {
+        if (_ftp == nullptr) {
+            if (_mavsdk.systems().size() == 0) {
+                return false;
+            }
+            _ftp = std::make_unique<Ftp>(_mavsdk.systems()[0]);
+        }
+        return true;
+    }
+
+    Mavsdk& _mavsdk;
+    std::unique_ptr<Ftp> _ftp;
     std::atomic<bool> _stopped{false};
     std::vector<std::weak_ptr<std::promise<void>>> _stream_stop_promises{};
 };

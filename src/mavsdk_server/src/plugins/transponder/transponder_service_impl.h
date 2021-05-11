@@ -20,7 +20,7 @@ namespace mavsdk_server {
 template<typename Transponder = Transponder>
 class TransponderServiceImpl final : public rpc::transponder::TransponderService::Service {
 public:
-    TransponderServiceImpl(Transponder& transponder) : _transponder(transponder) {}
+    TransponderServiceImpl(Mavsdk& mavsdk) : _mavsdk(mavsdk) {}
 
     template<typename ResponseType>
     void fillResponseWithResult(ResponseType* response, mavsdk::Transponder::Result& result) const
@@ -247,6 +247,10 @@ public:
         const mavsdk::rpc::transponder::SubscribeTransponderRequest* /* request */,
         grpc::ServerWriter<rpc::transponder::TransponderResponse>* writer) override
     {
+        if (!init_plugin()) {
+            return grpc::Status::OK;
+        }
+
         auto stream_closed_promise = std::make_shared<std::promise<void>>();
         auto stream_closed_future = stream_closed_promise->get_future();
         register_stream_stop_promise(stream_closed_promise);
@@ -254,7 +258,7 @@ public:
         auto is_finished = std::make_shared<bool>(false);
         auto subscribe_mutex = std::make_shared<std::mutex>();
 
-        _transponder.subscribe_transponder(
+        _transponder->subscribe_transponder(
             [this, &writer, &stream_closed_promise, is_finished, subscribe_mutex](
                 const mavsdk::Transponder::AdsbVehicle transponder) {
                 rpc::transponder::TransponderResponse rpc_response;
@@ -264,7 +268,7 @@ public:
 
                 std::unique_lock<std::mutex> lock(*subscribe_mutex);
                 if (!*is_finished && !writer->Write(rpc_response)) {
-                    _transponder.subscribe_transponder(nullptr);
+                    _transponder->subscribe_transponder(nullptr);
 
                     *is_finished = true;
                     unregister_stream_stop_promise(stream_closed_promise);
@@ -284,12 +288,21 @@ public:
         const rpc::transponder::SetRateTransponderRequest* request,
         rpc::transponder::SetRateTransponderResponse* response) override
     {
+        if (!init_plugin()) {
+            if (response != nullptr) {
+                auto result = mavsdk::Transponder::Result::NoSystem;
+                fillResponseWithResult(response, result);
+            }
+
+            return grpc::Status::OK;
+        }
+
         if (request == nullptr) {
             LogWarn() << "SetRateTransponder sent with a null request! Ignoring...";
             return grpc::Status::OK;
         }
 
-        auto result = _transponder.set_rate_transponder(request->rate_hz());
+        auto result = _transponder->set_rate_transponder(request->rate_hz());
 
         if (response != nullptr) {
             fillResponseWithResult(response, result);
@@ -333,7 +346,19 @@ private:
         }
     }
 
-    Transponder& _transponder;
+    bool init_plugin()
+    {
+        if (_transponder == nullptr) {
+            if (_mavsdk.systems().size() == 0) {
+                return false;
+            }
+            _transponder = std::make_unique<Transponder>(_mavsdk.systems()[0]);
+        }
+        return true;
+    }
+
+    Mavsdk& _mavsdk;
+    std::unique_ptr<Transponder> _transponder;
     std::atomic<bool> _stopped{false};
     std::vector<std::weak_ptr<std::promise<void>>> _stream_stop_promises{};
 };

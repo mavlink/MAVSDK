@@ -20,7 +20,7 @@ namespace mavsdk_server {
 template<typename Param = Param>
 class ParamServiceImpl final : public rpc::param::ParamService::Service {
 public:
-    ParamServiceImpl(Param& param) : _param(param) {}
+    ParamServiceImpl(Mavsdk& mavsdk) : _mavsdk(mavsdk) {}
 
     template<typename ResponseType>
     void fillResponseWithResult(ResponseType* response, mavsdk::Param::Result& result) const
@@ -137,6 +137,8 @@ public:
                 return rpc::param::ParamResult_Result_RESULT_WRONG_TYPE;
             case mavsdk::Param::Result::ParamNameTooLong:
                 return rpc::param::ParamResult_Result_RESULT_PARAM_NAME_TOO_LONG;
+            case mavsdk::Param::Result::NoSystem:
+                return rpc::param::ParamResult_Result_RESULT_NO_SYSTEM;
         }
     }
 
@@ -159,6 +161,8 @@ public:
                 return mavsdk::Param::Result::WrongType;
             case rpc::param::ParamResult_Result_RESULT_PARAM_NAME_TOO_LONG:
                 return mavsdk::Param::Result::ParamNameTooLong;
+            case rpc::param::ParamResult_Result_RESULT_NO_SYSTEM:
+                return mavsdk::Param::Result::NoSystem;
         }
     }
 
@@ -167,12 +171,21 @@ public:
         const rpc::param::GetParamIntRequest* request,
         rpc::param::GetParamIntResponse* response) override
     {
+        if (!init_plugin()) {
+            if (response != nullptr) {
+                auto result = mavsdk::Param::Result::NoSystem;
+                fillResponseWithResult(response, result);
+            }
+
+            return grpc::Status::OK;
+        }
+
         if (request == nullptr) {
             LogWarn() << "GetParamInt sent with a null request! Ignoring...";
             return grpc::Status::OK;
         }
 
-        auto result = _param.get_param_int(request->name());
+        auto result = _param->get_param_int(request->name());
 
         if (response != nullptr) {
             fillResponseWithResult(response, result.first);
@@ -188,12 +201,21 @@ public:
         const rpc::param::SetParamIntRequest* request,
         rpc::param::SetParamIntResponse* response) override
     {
+        if (!init_plugin()) {
+            if (response != nullptr) {
+                auto result = mavsdk::Param::Result::NoSystem;
+                fillResponseWithResult(response, result);
+            }
+
+            return grpc::Status::OK;
+        }
+
         if (request == nullptr) {
             LogWarn() << "SetParamInt sent with a null request! Ignoring...";
             return grpc::Status::OK;
         }
 
-        auto result = _param.set_param_int(request->name(), request->value());
+        auto result = _param->set_param_int(request->name(), request->value());
 
         if (response != nullptr) {
             fillResponseWithResult(response, result);
@@ -207,12 +229,21 @@ public:
         const rpc::param::GetParamFloatRequest* request,
         rpc::param::GetParamFloatResponse* response) override
     {
+        if (!init_plugin()) {
+            if (response != nullptr) {
+                auto result = mavsdk::Param::Result::NoSystem;
+                fillResponseWithResult(response, result);
+            }
+
+            return grpc::Status::OK;
+        }
+
         if (request == nullptr) {
             LogWarn() << "GetParamFloat sent with a null request! Ignoring...";
             return grpc::Status::OK;
         }
 
-        auto result = _param.get_param_float(request->name());
+        auto result = _param->get_param_float(request->name());
 
         if (response != nullptr) {
             fillResponseWithResult(response, result.first);
@@ -228,12 +259,21 @@ public:
         const rpc::param::SetParamFloatRequest* request,
         rpc::param::SetParamFloatResponse* response) override
     {
+        if (!init_plugin()) {
+            if (response != nullptr) {
+                auto result = mavsdk::Param::Result::NoSystem;
+                fillResponseWithResult(response, result);
+            }
+
+            return grpc::Status::OK;
+        }
+
         if (request == nullptr) {
             LogWarn() << "SetParamFloat sent with a null request! Ignoring...";
             return grpc::Status::OK;
         }
 
-        auto result = _param.set_param_float(request->name(), request->value());
+        auto result = _param->set_param_float(request->name(), request->value());
 
         if (response != nullptr) {
             fillResponseWithResult(response, result);
@@ -247,7 +287,11 @@ public:
         const rpc::param::GetAllParamsRequest* /* request */,
         rpc::param::GetAllParamsResponse* response) override
     {
-        auto result = _param.get_all_params();
+        if (!init_plugin()) {
+            return grpc::Status::OK;
+        }
+
+        auto result = _param->get_all_params();
 
         if (response != nullptr) {
             response->set_allocated_params(translateToRpcAllParams(result).release());
@@ -291,7 +335,19 @@ private:
         }
     }
 
-    Param& _param;
+    bool init_plugin()
+    {
+        if (_param == nullptr) {
+            if (_mavsdk.systems().size() == 0) {
+                return false;
+            }
+            _param = std::make_unique<Param>(_mavsdk.systems()[0]);
+        }
+        return true;
+    }
+
+    Mavsdk& _mavsdk;
+    std::unique_ptr<Param> _param;
     std::atomic<bool> _stopped{false};
     std::vector<std::weak_ptr<std::promise<void>>> _stream_stop_promises{};
 };

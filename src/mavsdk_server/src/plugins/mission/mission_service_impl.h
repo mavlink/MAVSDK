@@ -20,7 +20,7 @@ namespace mavsdk_server {
 template<typename Mission = Mission>
 class MissionServiceImpl final : public rpc::mission::MissionService::Service {
 public:
-    MissionServiceImpl(Mission& mission) : _mission(mission) {}
+    MissionServiceImpl(Mavsdk& mavsdk) : _mavsdk(mavsdk) {}
 
     template<typename ResponseType>
     void fillResponseWithResult(ResponseType* response, mavsdk::Mission::Result& result) const
@@ -215,6 +215,8 @@ public:
                 return rpc::mission::MissionResult_Result_RESULT_UNSUPPORTED_MISSION_CMD;
             case mavsdk::Mission::Result::TransferCancelled:
                 return rpc::mission::MissionResult_Result_RESULT_TRANSFER_CANCELLED;
+            case mavsdk::Mission::Result::NoSystem:
+                return rpc::mission::MissionResult_Result_RESULT_NO_SYSTEM;
         }
     }
 
@@ -247,6 +249,8 @@ public:
                 return mavsdk::Mission::Result::UnsupportedMissionCmd;
             case rpc::mission::MissionResult_Result_RESULT_TRANSFER_CANCELLED:
                 return mavsdk::Mission::Result::TransferCancelled;
+            case rpc::mission::MissionResult_Result_RESULT_NO_SYSTEM:
+                return mavsdk::Mission::Result::NoSystem;
         }
     }
 
@@ -255,12 +259,22 @@ public:
         const rpc::mission::UploadMissionRequest* request,
         rpc::mission::UploadMissionResponse* response) override
     {
+        if (!init_plugin()) {
+            if (response != nullptr) {
+                auto result = mavsdk::Mission::Result::NoSystem;
+                fillResponseWithResult(response, result);
+            }
+
+            return grpc::Status::OK;
+        }
+
         if (request == nullptr) {
             LogWarn() << "UploadMission sent with a null request! Ignoring...";
             return grpc::Status::OK;
         }
 
-        auto result = _mission.upload_mission(translateFromRpcMissionPlan(request->mission_plan()));
+        auto result =
+            _mission->upload_mission(translateFromRpcMissionPlan(request->mission_plan()));
 
         if (response != nullptr) {
             fillResponseWithResult(response, result);
@@ -274,7 +288,16 @@ public:
         const rpc::mission::CancelMissionUploadRequest* /* request */,
         rpc::mission::CancelMissionUploadResponse* response) override
     {
-        auto result = _mission.cancel_mission_upload();
+        if (!init_plugin()) {
+            if (response != nullptr) {
+                auto result = mavsdk::Mission::Result::NoSystem;
+                fillResponseWithResult(response, result);
+            }
+
+            return grpc::Status::OK;
+        }
+
+        auto result = _mission->cancel_mission_upload();
 
         if (response != nullptr) {
             fillResponseWithResult(response, result);
@@ -288,7 +311,16 @@ public:
         const rpc::mission::DownloadMissionRequest* /* request */,
         rpc::mission::DownloadMissionResponse* response) override
     {
-        auto result = _mission.download_mission();
+        if (!init_plugin()) {
+            if (response != nullptr) {
+                auto result = mavsdk::Mission::Result::NoSystem;
+                fillResponseWithResult(response, result);
+            }
+
+            return grpc::Status::OK;
+        }
+
+        auto result = _mission->download_mission();
 
         if (response != nullptr) {
             fillResponseWithResult(response, result.first);
@@ -305,7 +337,16 @@ public:
         const rpc::mission::CancelMissionDownloadRequest* /* request */,
         rpc::mission::CancelMissionDownloadResponse* response) override
     {
-        auto result = _mission.cancel_mission_download();
+        if (!init_plugin()) {
+            if (response != nullptr) {
+                auto result = mavsdk::Mission::Result::NoSystem;
+                fillResponseWithResult(response, result);
+            }
+
+            return grpc::Status::OK;
+        }
+
+        auto result = _mission->cancel_mission_download();
 
         if (response != nullptr) {
             fillResponseWithResult(response, result);
@@ -319,7 +360,16 @@ public:
         const rpc::mission::StartMissionRequest* /* request */,
         rpc::mission::StartMissionResponse* response) override
     {
-        auto result = _mission.start_mission();
+        if (!init_plugin()) {
+            if (response != nullptr) {
+                auto result = mavsdk::Mission::Result::NoSystem;
+                fillResponseWithResult(response, result);
+            }
+
+            return grpc::Status::OK;
+        }
+
+        auto result = _mission->start_mission();
 
         if (response != nullptr) {
             fillResponseWithResult(response, result);
@@ -333,7 +383,16 @@ public:
         const rpc::mission::PauseMissionRequest* /* request */,
         rpc::mission::PauseMissionResponse* response) override
     {
-        auto result = _mission.pause_mission();
+        if (!init_plugin()) {
+            if (response != nullptr) {
+                auto result = mavsdk::Mission::Result::NoSystem;
+                fillResponseWithResult(response, result);
+            }
+
+            return grpc::Status::OK;
+        }
+
+        auto result = _mission->pause_mission();
 
         if (response != nullptr) {
             fillResponseWithResult(response, result);
@@ -347,7 +406,16 @@ public:
         const rpc::mission::ClearMissionRequest* /* request */,
         rpc::mission::ClearMissionResponse* response) override
     {
-        auto result = _mission.clear_mission();
+        if (!init_plugin()) {
+            if (response != nullptr) {
+                auto result = mavsdk::Mission::Result::NoSystem;
+                fillResponseWithResult(response, result);
+            }
+
+            return grpc::Status::OK;
+        }
+
+        auto result = _mission->clear_mission();
 
         if (response != nullptr) {
             fillResponseWithResult(response, result);
@@ -361,12 +429,21 @@ public:
         const rpc::mission::SetCurrentMissionItemRequest* request,
         rpc::mission::SetCurrentMissionItemResponse* response) override
     {
+        if (!init_plugin()) {
+            if (response != nullptr) {
+                auto result = mavsdk::Mission::Result::NoSystem;
+                fillResponseWithResult(response, result);
+            }
+
+            return grpc::Status::OK;
+        }
+
         if (request == nullptr) {
             LogWarn() << "SetCurrentMissionItem sent with a null request! Ignoring...";
             return grpc::Status::OK;
         }
 
-        auto result = _mission.set_current_mission_item(request->index());
+        auto result = _mission->set_current_mission_item(request->index());
 
         if (response != nullptr) {
             fillResponseWithResult(response, result);
@@ -380,7 +457,16 @@ public:
         const rpc::mission::IsMissionFinishedRequest* /* request */,
         rpc::mission::IsMissionFinishedResponse* response) override
     {
-        auto result = _mission.is_mission_finished();
+        if (!init_plugin()) {
+            if (response != nullptr) {
+                auto result = mavsdk::Mission::Result::NoSystem;
+                fillResponseWithResult(response, result);
+            }
+
+            return grpc::Status::OK;
+        }
+
+        auto result = _mission->is_mission_finished();
 
         if (response != nullptr) {
             fillResponseWithResult(response, result.first);
@@ -396,6 +482,10 @@ public:
         const mavsdk::rpc::mission::SubscribeMissionProgressRequest* /* request */,
         grpc::ServerWriter<rpc::mission::MissionProgressResponse>* writer) override
     {
+        if (!init_plugin()) {
+            return grpc::Status::OK;
+        }
+
         auto stream_closed_promise = std::make_shared<std::promise<void>>();
         auto stream_closed_future = stream_closed_promise->get_future();
         register_stream_stop_promise(stream_closed_promise);
@@ -403,7 +493,7 @@ public:
         auto is_finished = std::make_shared<bool>(false);
         auto subscribe_mutex = std::make_shared<std::mutex>();
 
-        _mission.subscribe_mission_progress(
+        _mission->subscribe_mission_progress(
             [this, &writer, &stream_closed_promise, is_finished, subscribe_mutex](
                 const mavsdk::Mission::MissionProgress mission_progress) {
                 rpc::mission::MissionProgressResponse rpc_response;
@@ -413,7 +503,7 @@ public:
 
                 std::unique_lock<std::mutex> lock(*subscribe_mutex);
                 if (!*is_finished && !writer->Write(rpc_response)) {
-                    _mission.subscribe_mission_progress(nullptr);
+                    _mission->subscribe_mission_progress(nullptr);
 
                     *is_finished = true;
                     unregister_stream_stop_promise(stream_closed_promise);
@@ -433,7 +523,16 @@ public:
         const rpc::mission::GetReturnToLaunchAfterMissionRequest* /* request */,
         rpc::mission::GetReturnToLaunchAfterMissionResponse* response) override
     {
-        auto result = _mission.get_return_to_launch_after_mission();
+        if (!init_plugin()) {
+            if (response != nullptr) {
+                auto result = mavsdk::Mission::Result::NoSystem;
+                fillResponseWithResult(response, result);
+            }
+
+            return grpc::Status::OK;
+        }
+
+        auto result = _mission->get_return_to_launch_after_mission();
 
         if (response != nullptr) {
             fillResponseWithResult(response, result.first);
@@ -449,12 +548,21 @@ public:
         const rpc::mission::SetReturnToLaunchAfterMissionRequest* request,
         rpc::mission::SetReturnToLaunchAfterMissionResponse* response) override
     {
+        if (!init_plugin()) {
+            if (response != nullptr) {
+                auto result = mavsdk::Mission::Result::NoSystem;
+                fillResponseWithResult(response, result);
+            }
+
+            return grpc::Status::OK;
+        }
+
         if (request == nullptr) {
             LogWarn() << "SetReturnToLaunchAfterMission sent with a null request! Ignoring...";
             return grpc::Status::OK;
         }
 
-        auto result = _mission.set_return_to_launch_after_mission(request->enable());
+        auto result = _mission->set_return_to_launch_after_mission(request->enable());
 
         if (response != nullptr) {
             fillResponseWithResult(response, result);
@@ -498,7 +606,19 @@ private:
         }
     }
 
-    Mission& _mission;
+    bool init_plugin()
+    {
+        if (_mission == nullptr) {
+            if (_mavsdk.systems().size() == 0) {
+                return false;
+            }
+            _mission = std::make_unique<Mission>(_mavsdk.systems()[0]);
+        }
+        return true;
+    }
+
+    Mavsdk& _mavsdk;
+    std::unique_ptr<Mission> _mission;
     std::atomic<bool> _stopped{false};
     std::vector<std::weak_ptr<std::promise<void>>> _stream_stop_promises{};
 };

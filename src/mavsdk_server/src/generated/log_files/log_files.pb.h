@@ -104,12 +104,13 @@ enum LogFilesResult_Result : int {
   LogFilesResult_Result_RESULT_TIMEOUT = 4,
   LogFilesResult_Result_RESULT_INVALID_ARGUMENT = 5,
   LogFilesResult_Result_RESULT_FILE_OPEN_FAILED = 6,
+  LogFilesResult_Result_RESULT_NO_SYSTEM = 7,
   LogFilesResult_Result_LogFilesResult_Result_INT_MIN_SENTINEL_DO_NOT_USE_ = std::numeric_limits<::PROTOBUF_NAMESPACE_ID::int32>::min(),
   LogFilesResult_Result_LogFilesResult_Result_INT_MAX_SENTINEL_DO_NOT_USE_ = std::numeric_limits<::PROTOBUF_NAMESPACE_ID::int32>::max()
 };
 bool LogFilesResult_Result_IsValid(int value);
 constexpr LogFilesResult_Result LogFilesResult_Result_Result_MIN = LogFilesResult_Result_RESULT_UNKNOWN;
-constexpr LogFilesResult_Result LogFilesResult_Result_Result_MAX = LogFilesResult_Result_RESULT_FILE_OPEN_FAILED;
+constexpr LogFilesResult_Result LogFilesResult_Result_Result_MAX = LogFilesResult_Result_RESULT_NO_SYSTEM;
 constexpr int LogFilesResult_Result_Result_ARRAYSIZE = LogFilesResult_Result_Result_MAX + 1;
 
 const ::PROTOBUF_NAMESPACE_ID::EnumDescriptor* LogFilesResult_Result_descriptor();
@@ -1176,6 +1177,8 @@ class LogFilesResult PROTOBUF_FINAL :
     LogFilesResult_Result_RESULT_INVALID_ARGUMENT;
   static constexpr Result RESULT_FILE_OPEN_FAILED =
     LogFilesResult_Result_RESULT_FILE_OPEN_FAILED;
+  static constexpr Result RESULT_NO_SYSTEM =
+    LogFilesResult_Result_RESULT_NO_SYSTEM;
   static inline bool Result_IsValid(int value) {
     return LogFilesResult_Result_IsValid(value);
   }

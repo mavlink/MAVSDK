@@ -21,7 +21,7 @@ namespace mavsdk_server {
 template<typename ManualControl = ManualControl>
 class ManualControlServiceImpl final : public rpc::manual_control::ManualControlService::Service {
 public:
-    ManualControlServiceImpl(ManualControl& manual_control) : _manual_control(manual_control) {}
+    ManualControlServiceImpl(Mavsdk& mavsdk) : _mavsdk(mavsdk) {}
 
     template<typename ResponseType>
     void fillResponseWithResult(ResponseType* response, mavsdk::ManualControl::Result& result) const
@@ -98,7 +98,16 @@ public:
         const rpc::manual_control::StartPositionControlRequest* /* request */,
         rpc::manual_control::StartPositionControlResponse* response) override
     {
-        auto result = _manual_control.start_position_control();
+        if (!init_plugin()) {
+            if (response != nullptr) {
+                auto result = mavsdk::ManualControl::Result::NoSystem;
+                fillResponseWithResult(response, result);
+            }
+
+            return grpc::Status::OK;
+        }
+
+        auto result = _manual_control->start_position_control();
 
         if (response != nullptr) {
             fillResponseWithResult(response, result);
@@ -112,7 +121,16 @@ public:
         const rpc::manual_control::StartAltitudeControlRequest* /* request */,
         rpc::manual_control::StartAltitudeControlResponse* response) override
     {
-        auto result = _manual_control.start_altitude_control();
+        if (!init_plugin()) {
+            if (response != nullptr) {
+                auto result = mavsdk::ManualControl::Result::NoSystem;
+                fillResponseWithResult(response, result);
+            }
+
+            return grpc::Status::OK;
+        }
+
+        auto result = _manual_control->start_altitude_control();
 
         if (response != nullptr) {
             fillResponseWithResult(response, result);
@@ -126,12 +144,21 @@ public:
         const rpc::manual_control::SetManualControlInputRequest* request,
         rpc::manual_control::SetManualControlInputResponse* response) override
     {
+        if (!init_plugin()) {
+            if (response != nullptr) {
+                auto result = mavsdk::ManualControl::Result::NoSystem;
+                fillResponseWithResult(response, result);
+            }
+
+            return grpc::Status::OK;
+        }
+
         if (request == nullptr) {
             LogWarn() << "SetManualControlInput sent with a null request! Ignoring...";
             return grpc::Status::OK;
         }
 
-        auto result = _manual_control.set_manual_control_input(
+        auto result = _manual_control->set_manual_control_input(
             request->x(), request->y(), request->z(), request->r());
 
         if (response != nullptr) {
@@ -176,7 +203,19 @@ private:
         }
     }
 
-    ManualControl& _manual_control;
+    bool init_plugin()
+    {
+        if (_manual_control == nullptr) {
+            if (_mavsdk.systems().size() == 0) {
+                return false;
+            }
+            _manual_control = std::make_unique<ManualControl>(_mavsdk.systems()[0]);
+        }
+        return true;
+    }
+
+    Mavsdk& _mavsdk;
+    std::unique_ptr<ManualControl> _manual_control;
     std::atomic<bool> _stopped{false};
     std::vector<std::weak_ptr<std::promise<void>>> _stream_stop_promises{};
 };

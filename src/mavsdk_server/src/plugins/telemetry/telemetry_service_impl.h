@@ -20,7 +20,7 @@ namespace mavsdk_server {
 template<typename Telemetry = Telemetry>
 class TelemetryServiceImpl final : public rpc::telemetry::TelemetryService::Service {
 public:
-    TelemetryServiceImpl(Telemetry& telemetry) : _telemetry(telemetry) {}
+    TelemetryServiceImpl(Mavsdk& mavsdk) : _mavsdk(mavsdk) {}
 
     template<typename ResponseType>
     void fillResponseWithResult(ResponseType* response, mavsdk::Telemetry::Result& result) const
@@ -1236,6 +1236,10 @@ public:
         const mavsdk::rpc::telemetry::SubscribePositionRequest* /* request */,
         grpc::ServerWriter<rpc::telemetry::PositionResponse>* writer) override
     {
+        if (!init_plugin()) {
+            return grpc::Status::OK;
+        }
+
         auto stream_closed_promise = std::make_shared<std::promise<void>>();
         auto stream_closed_future = stream_closed_promise->get_future();
         register_stream_stop_promise(stream_closed_promise);
@@ -1243,7 +1247,7 @@ public:
         auto is_finished = std::make_shared<bool>(false);
         auto subscribe_mutex = std::make_shared<std::mutex>();
 
-        _telemetry.subscribe_position(
+        _telemetry->subscribe_position(
             [this, &writer, &stream_closed_promise, is_finished, subscribe_mutex](
                 const mavsdk::Telemetry::Position position) {
                 rpc::telemetry::PositionResponse rpc_response;
@@ -1252,7 +1256,7 @@ public:
 
                 std::unique_lock<std::mutex> lock(*subscribe_mutex);
                 if (!*is_finished && !writer->Write(rpc_response)) {
-                    _telemetry.subscribe_position(nullptr);
+                    _telemetry->subscribe_position(nullptr);
 
                     *is_finished = true;
                     unregister_stream_stop_promise(stream_closed_promise);
@@ -1272,6 +1276,10 @@ public:
         const mavsdk::rpc::telemetry::SubscribeHomeRequest* /* request */,
         grpc::ServerWriter<rpc::telemetry::HomeResponse>* writer) override
     {
+        if (!init_plugin()) {
+            return grpc::Status::OK;
+        }
+
         auto stream_closed_promise = std::make_shared<std::promise<void>>();
         auto stream_closed_future = stream_closed_promise->get_future();
         register_stream_stop_promise(stream_closed_promise);
@@ -1279,7 +1287,7 @@ public:
         auto is_finished = std::make_shared<bool>(false);
         auto subscribe_mutex = std::make_shared<std::mutex>();
 
-        _telemetry.subscribe_home(
+        _telemetry->subscribe_home(
             [this, &writer, &stream_closed_promise, is_finished, subscribe_mutex](
                 const mavsdk::Telemetry::Position home) {
                 rpc::telemetry::HomeResponse rpc_response;
@@ -1288,7 +1296,7 @@ public:
 
                 std::unique_lock<std::mutex> lock(*subscribe_mutex);
                 if (!*is_finished && !writer->Write(rpc_response)) {
-                    _telemetry.subscribe_home(nullptr);
+                    _telemetry->subscribe_home(nullptr);
 
                     *is_finished = true;
                     unregister_stream_stop_promise(stream_closed_promise);
@@ -1308,6 +1316,10 @@ public:
         const mavsdk::rpc::telemetry::SubscribeInAirRequest* /* request */,
         grpc::ServerWriter<rpc::telemetry::InAirResponse>* writer) override
     {
+        if (!init_plugin()) {
+            return grpc::Status::OK;
+        }
+
         auto stream_closed_promise = std::make_shared<std::promise<void>>();
         auto stream_closed_future = stream_closed_promise->get_future();
         register_stream_stop_promise(stream_closed_promise);
@@ -1315,7 +1327,7 @@ public:
         auto is_finished = std::make_shared<bool>(false);
         auto subscribe_mutex = std::make_shared<std::mutex>();
 
-        _telemetry.subscribe_in_air(
+        _telemetry->subscribe_in_air(
             [this, &writer, &stream_closed_promise, is_finished, subscribe_mutex](
                 const bool in_air) {
                 rpc::telemetry::InAirResponse rpc_response;
@@ -1324,7 +1336,7 @@ public:
 
                 std::unique_lock<std::mutex> lock(*subscribe_mutex);
                 if (!*is_finished && !writer->Write(rpc_response)) {
-                    _telemetry.subscribe_in_air(nullptr);
+                    _telemetry->subscribe_in_air(nullptr);
 
                     *is_finished = true;
                     unregister_stream_stop_promise(stream_closed_promise);
@@ -1344,6 +1356,10 @@ public:
         const mavsdk::rpc::telemetry::SubscribeLandedStateRequest* /* request */,
         grpc::ServerWriter<rpc::telemetry::LandedStateResponse>* writer) override
     {
+        if (!init_plugin()) {
+            return grpc::Status::OK;
+        }
+
         auto stream_closed_promise = std::make_shared<std::promise<void>>();
         auto stream_closed_future = stream_closed_promise->get_future();
         register_stream_stop_promise(stream_closed_promise);
@@ -1351,7 +1367,7 @@ public:
         auto is_finished = std::make_shared<bool>(false);
         auto subscribe_mutex = std::make_shared<std::mutex>();
 
-        _telemetry.subscribe_landed_state(
+        _telemetry->subscribe_landed_state(
             [this, &writer, &stream_closed_promise, is_finished, subscribe_mutex](
                 const mavsdk::Telemetry::LandedState landed_state) {
                 rpc::telemetry::LandedStateResponse rpc_response;
@@ -1360,7 +1376,7 @@ public:
 
                 std::unique_lock<std::mutex> lock(*subscribe_mutex);
                 if (!*is_finished && !writer->Write(rpc_response)) {
-                    _telemetry.subscribe_landed_state(nullptr);
+                    _telemetry->subscribe_landed_state(nullptr);
 
                     *is_finished = true;
                     unregister_stream_stop_promise(stream_closed_promise);
@@ -1380,6 +1396,10 @@ public:
         const mavsdk::rpc::telemetry::SubscribeArmedRequest* /* request */,
         grpc::ServerWriter<rpc::telemetry::ArmedResponse>* writer) override
     {
+        if (!init_plugin()) {
+            return grpc::Status::OK;
+        }
+
         auto stream_closed_promise = std::make_shared<std::promise<void>>();
         auto stream_closed_future = stream_closed_promise->get_future();
         register_stream_stop_promise(stream_closed_promise);
@@ -1387,7 +1407,7 @@ public:
         auto is_finished = std::make_shared<bool>(false);
         auto subscribe_mutex = std::make_shared<std::mutex>();
 
-        _telemetry.subscribe_armed(
+        _telemetry->subscribe_armed(
             [this, &writer, &stream_closed_promise, is_finished, subscribe_mutex](
                 const bool armed) {
                 rpc::telemetry::ArmedResponse rpc_response;
@@ -1396,7 +1416,7 @@ public:
 
                 std::unique_lock<std::mutex> lock(*subscribe_mutex);
                 if (!*is_finished && !writer->Write(rpc_response)) {
-                    _telemetry.subscribe_armed(nullptr);
+                    _telemetry->subscribe_armed(nullptr);
 
                     *is_finished = true;
                     unregister_stream_stop_promise(stream_closed_promise);
@@ -1416,6 +1436,10 @@ public:
         const mavsdk::rpc::telemetry::SubscribeAttitudeQuaternionRequest* /* request */,
         grpc::ServerWriter<rpc::telemetry::AttitudeQuaternionResponse>* writer) override
     {
+        if (!init_plugin()) {
+            return grpc::Status::OK;
+        }
+
         auto stream_closed_promise = std::make_shared<std::promise<void>>();
         auto stream_closed_future = stream_closed_promise->get_future();
         register_stream_stop_promise(stream_closed_promise);
@@ -1423,7 +1447,7 @@ public:
         auto is_finished = std::make_shared<bool>(false);
         auto subscribe_mutex = std::make_shared<std::mutex>();
 
-        _telemetry.subscribe_attitude_quaternion(
+        _telemetry->subscribe_attitude_quaternion(
             [this, &writer, &stream_closed_promise, is_finished, subscribe_mutex](
                 const mavsdk::Telemetry::Quaternion attitude_quaternion) {
                 rpc::telemetry::AttitudeQuaternionResponse rpc_response;
@@ -1433,7 +1457,7 @@ public:
 
                 std::unique_lock<std::mutex> lock(*subscribe_mutex);
                 if (!*is_finished && !writer->Write(rpc_response)) {
-                    _telemetry.subscribe_attitude_quaternion(nullptr);
+                    _telemetry->subscribe_attitude_quaternion(nullptr);
 
                     *is_finished = true;
                     unregister_stream_stop_promise(stream_closed_promise);
@@ -1453,6 +1477,10 @@ public:
         const mavsdk::rpc::telemetry::SubscribeAttitudeEulerRequest* /* request */,
         grpc::ServerWriter<rpc::telemetry::AttitudeEulerResponse>* writer) override
     {
+        if (!init_plugin()) {
+            return grpc::Status::OK;
+        }
+
         auto stream_closed_promise = std::make_shared<std::promise<void>>();
         auto stream_closed_future = stream_closed_promise->get_future();
         register_stream_stop_promise(stream_closed_promise);
@@ -1460,7 +1488,7 @@ public:
         auto is_finished = std::make_shared<bool>(false);
         auto subscribe_mutex = std::make_shared<std::mutex>();
 
-        _telemetry.subscribe_attitude_euler(
+        _telemetry->subscribe_attitude_euler(
             [this, &writer, &stream_closed_promise, is_finished, subscribe_mutex](
                 const mavsdk::Telemetry::EulerAngle attitude_euler) {
                 rpc::telemetry::AttitudeEulerResponse rpc_response;
@@ -1470,7 +1498,7 @@ public:
 
                 std::unique_lock<std::mutex> lock(*subscribe_mutex);
                 if (!*is_finished && !writer->Write(rpc_response)) {
-                    _telemetry.subscribe_attitude_euler(nullptr);
+                    _telemetry->subscribe_attitude_euler(nullptr);
 
                     *is_finished = true;
                     unregister_stream_stop_promise(stream_closed_promise);
@@ -1490,6 +1518,10 @@ public:
         const mavsdk::rpc::telemetry::SubscribeAttitudeAngularVelocityBodyRequest* /* request */,
         grpc::ServerWriter<rpc::telemetry::AttitudeAngularVelocityBodyResponse>* writer) override
     {
+        if (!init_plugin()) {
+            return grpc::Status::OK;
+        }
+
         auto stream_closed_promise = std::make_shared<std::promise<void>>();
         auto stream_closed_future = stream_closed_promise->get_future();
         register_stream_stop_promise(stream_closed_promise);
@@ -1497,7 +1529,7 @@ public:
         auto is_finished = std::make_shared<bool>(false);
         auto subscribe_mutex = std::make_shared<std::mutex>();
 
-        _telemetry.subscribe_attitude_angular_velocity_body(
+        _telemetry->subscribe_attitude_angular_velocity_body(
             [this, &writer, &stream_closed_promise, is_finished, subscribe_mutex](
                 const mavsdk::Telemetry::AngularVelocityBody attitude_angular_velocity_body) {
                 rpc::telemetry::AttitudeAngularVelocityBodyResponse rpc_response;
@@ -1507,7 +1539,7 @@ public:
 
                 std::unique_lock<std::mutex> lock(*subscribe_mutex);
                 if (!*is_finished && !writer->Write(rpc_response)) {
-                    _telemetry.subscribe_attitude_angular_velocity_body(nullptr);
+                    _telemetry->subscribe_attitude_angular_velocity_body(nullptr);
 
                     *is_finished = true;
                     unregister_stream_stop_promise(stream_closed_promise);
@@ -1527,6 +1559,10 @@ public:
         const mavsdk::rpc::telemetry::SubscribeCameraAttitudeQuaternionRequest* /* request */,
         grpc::ServerWriter<rpc::telemetry::CameraAttitudeQuaternionResponse>* writer) override
     {
+        if (!init_plugin()) {
+            return grpc::Status::OK;
+        }
+
         auto stream_closed_promise = std::make_shared<std::promise<void>>();
         auto stream_closed_future = stream_closed_promise->get_future();
         register_stream_stop_promise(stream_closed_promise);
@@ -1534,7 +1570,7 @@ public:
         auto is_finished = std::make_shared<bool>(false);
         auto subscribe_mutex = std::make_shared<std::mutex>();
 
-        _telemetry.subscribe_camera_attitude_quaternion(
+        _telemetry->subscribe_camera_attitude_quaternion(
             [this, &writer, &stream_closed_promise, is_finished, subscribe_mutex](
                 const mavsdk::Telemetry::Quaternion camera_attitude_quaternion) {
                 rpc::telemetry::CameraAttitudeQuaternionResponse rpc_response;
@@ -1544,7 +1580,7 @@ public:
 
                 std::unique_lock<std::mutex> lock(*subscribe_mutex);
                 if (!*is_finished && !writer->Write(rpc_response)) {
-                    _telemetry.subscribe_camera_attitude_quaternion(nullptr);
+                    _telemetry->subscribe_camera_attitude_quaternion(nullptr);
 
                     *is_finished = true;
                     unregister_stream_stop_promise(stream_closed_promise);
@@ -1564,6 +1600,10 @@ public:
         const mavsdk::rpc::telemetry::SubscribeCameraAttitudeEulerRequest* /* request */,
         grpc::ServerWriter<rpc::telemetry::CameraAttitudeEulerResponse>* writer) override
     {
+        if (!init_plugin()) {
+            return grpc::Status::OK;
+        }
+
         auto stream_closed_promise = std::make_shared<std::promise<void>>();
         auto stream_closed_future = stream_closed_promise->get_future();
         register_stream_stop_promise(stream_closed_promise);
@@ -1571,7 +1611,7 @@ public:
         auto is_finished = std::make_shared<bool>(false);
         auto subscribe_mutex = std::make_shared<std::mutex>();
 
-        _telemetry.subscribe_camera_attitude_euler(
+        _telemetry->subscribe_camera_attitude_euler(
             [this, &writer, &stream_closed_promise, is_finished, subscribe_mutex](
                 const mavsdk::Telemetry::EulerAngle camera_attitude_euler) {
                 rpc::telemetry::CameraAttitudeEulerResponse rpc_response;
@@ -1581,7 +1621,7 @@ public:
 
                 std::unique_lock<std::mutex> lock(*subscribe_mutex);
                 if (!*is_finished && !writer->Write(rpc_response)) {
-                    _telemetry.subscribe_camera_attitude_euler(nullptr);
+                    _telemetry->subscribe_camera_attitude_euler(nullptr);
 
                     *is_finished = true;
                     unregister_stream_stop_promise(stream_closed_promise);
@@ -1601,6 +1641,10 @@ public:
         const mavsdk::rpc::telemetry::SubscribeVelocityNedRequest* /* request */,
         grpc::ServerWriter<rpc::telemetry::VelocityNedResponse>* writer) override
     {
+        if (!init_plugin()) {
+            return grpc::Status::OK;
+        }
+
         auto stream_closed_promise = std::make_shared<std::promise<void>>();
         auto stream_closed_future = stream_closed_promise->get_future();
         register_stream_stop_promise(stream_closed_promise);
@@ -1608,7 +1652,7 @@ public:
         auto is_finished = std::make_shared<bool>(false);
         auto subscribe_mutex = std::make_shared<std::mutex>();
 
-        _telemetry.subscribe_velocity_ned(
+        _telemetry->subscribe_velocity_ned(
             [this, &writer, &stream_closed_promise, is_finished, subscribe_mutex](
                 const mavsdk::Telemetry::VelocityNed velocity_ned) {
                 rpc::telemetry::VelocityNedResponse rpc_response;
@@ -1618,7 +1662,7 @@ public:
 
                 std::unique_lock<std::mutex> lock(*subscribe_mutex);
                 if (!*is_finished && !writer->Write(rpc_response)) {
-                    _telemetry.subscribe_velocity_ned(nullptr);
+                    _telemetry->subscribe_velocity_ned(nullptr);
 
                     *is_finished = true;
                     unregister_stream_stop_promise(stream_closed_promise);
@@ -1638,6 +1682,10 @@ public:
         const mavsdk::rpc::telemetry::SubscribeGpsInfoRequest* /* request */,
         grpc::ServerWriter<rpc::telemetry::GpsInfoResponse>* writer) override
     {
+        if (!init_plugin()) {
+            return grpc::Status::OK;
+        }
+
         auto stream_closed_promise = std::make_shared<std::promise<void>>();
         auto stream_closed_future = stream_closed_promise->get_future();
         register_stream_stop_promise(stream_closed_promise);
@@ -1645,7 +1693,7 @@ public:
         auto is_finished = std::make_shared<bool>(false);
         auto subscribe_mutex = std::make_shared<std::mutex>();
 
-        _telemetry.subscribe_gps_info(
+        _telemetry->subscribe_gps_info(
             [this, &writer, &stream_closed_promise, is_finished, subscribe_mutex](
                 const mavsdk::Telemetry::GpsInfo gps_info) {
                 rpc::telemetry::GpsInfoResponse rpc_response;
@@ -1654,7 +1702,7 @@ public:
 
                 std::unique_lock<std::mutex> lock(*subscribe_mutex);
                 if (!*is_finished && !writer->Write(rpc_response)) {
-                    _telemetry.subscribe_gps_info(nullptr);
+                    _telemetry->subscribe_gps_info(nullptr);
 
                     *is_finished = true;
                     unregister_stream_stop_promise(stream_closed_promise);
@@ -1674,6 +1722,10 @@ public:
         const mavsdk::rpc::telemetry::SubscribeRawGpsRequest* /* request */,
         grpc::ServerWriter<rpc::telemetry::RawGpsResponse>* writer) override
     {
+        if (!init_plugin()) {
+            return grpc::Status::OK;
+        }
+
         auto stream_closed_promise = std::make_shared<std::promise<void>>();
         auto stream_closed_future = stream_closed_promise->get_future();
         register_stream_stop_promise(stream_closed_promise);
@@ -1681,7 +1733,7 @@ public:
         auto is_finished = std::make_shared<bool>(false);
         auto subscribe_mutex = std::make_shared<std::mutex>();
 
-        _telemetry.subscribe_raw_gps(
+        _telemetry->subscribe_raw_gps(
             [this, &writer, &stream_closed_promise, is_finished, subscribe_mutex](
                 const mavsdk::Telemetry::RawGps raw_gps) {
                 rpc::telemetry::RawGpsResponse rpc_response;
@@ -1690,7 +1742,7 @@ public:
 
                 std::unique_lock<std::mutex> lock(*subscribe_mutex);
                 if (!*is_finished && !writer->Write(rpc_response)) {
-                    _telemetry.subscribe_raw_gps(nullptr);
+                    _telemetry->subscribe_raw_gps(nullptr);
 
                     *is_finished = true;
                     unregister_stream_stop_promise(stream_closed_promise);
@@ -1710,6 +1762,10 @@ public:
         const mavsdk::rpc::telemetry::SubscribeBatteryRequest* /* request */,
         grpc::ServerWriter<rpc::telemetry::BatteryResponse>* writer) override
     {
+        if (!init_plugin()) {
+            return grpc::Status::OK;
+        }
+
         auto stream_closed_promise = std::make_shared<std::promise<void>>();
         auto stream_closed_future = stream_closed_promise->get_future();
         register_stream_stop_promise(stream_closed_promise);
@@ -1717,7 +1773,7 @@ public:
         auto is_finished = std::make_shared<bool>(false);
         auto subscribe_mutex = std::make_shared<std::mutex>();
 
-        _telemetry.subscribe_battery(
+        _telemetry->subscribe_battery(
             [this, &writer, &stream_closed_promise, is_finished, subscribe_mutex](
                 const mavsdk::Telemetry::Battery battery) {
                 rpc::telemetry::BatteryResponse rpc_response;
@@ -1726,7 +1782,7 @@ public:
 
                 std::unique_lock<std::mutex> lock(*subscribe_mutex);
                 if (!*is_finished && !writer->Write(rpc_response)) {
-                    _telemetry.subscribe_battery(nullptr);
+                    _telemetry->subscribe_battery(nullptr);
 
                     *is_finished = true;
                     unregister_stream_stop_promise(stream_closed_promise);
@@ -1746,6 +1802,10 @@ public:
         const mavsdk::rpc::telemetry::SubscribeFlightModeRequest* /* request */,
         grpc::ServerWriter<rpc::telemetry::FlightModeResponse>* writer) override
     {
+        if (!init_plugin()) {
+            return grpc::Status::OK;
+        }
+
         auto stream_closed_promise = std::make_shared<std::promise<void>>();
         auto stream_closed_future = stream_closed_promise->get_future();
         register_stream_stop_promise(stream_closed_promise);
@@ -1753,7 +1813,7 @@ public:
         auto is_finished = std::make_shared<bool>(false);
         auto subscribe_mutex = std::make_shared<std::mutex>();
 
-        _telemetry.subscribe_flight_mode(
+        _telemetry->subscribe_flight_mode(
             [this, &writer, &stream_closed_promise, is_finished, subscribe_mutex](
                 const mavsdk::Telemetry::FlightMode flight_mode) {
                 rpc::telemetry::FlightModeResponse rpc_response;
@@ -1762,7 +1822,7 @@ public:
 
                 std::unique_lock<std::mutex> lock(*subscribe_mutex);
                 if (!*is_finished && !writer->Write(rpc_response)) {
-                    _telemetry.subscribe_flight_mode(nullptr);
+                    _telemetry->subscribe_flight_mode(nullptr);
 
                     *is_finished = true;
                     unregister_stream_stop_promise(stream_closed_promise);
@@ -1782,6 +1842,10 @@ public:
         const mavsdk::rpc::telemetry::SubscribeHealthRequest* /* request */,
         grpc::ServerWriter<rpc::telemetry::HealthResponse>* writer) override
     {
+        if (!init_plugin()) {
+            return grpc::Status::OK;
+        }
+
         auto stream_closed_promise = std::make_shared<std::promise<void>>();
         auto stream_closed_future = stream_closed_promise->get_future();
         register_stream_stop_promise(stream_closed_promise);
@@ -1789,7 +1853,7 @@ public:
         auto is_finished = std::make_shared<bool>(false);
         auto subscribe_mutex = std::make_shared<std::mutex>();
 
-        _telemetry.subscribe_health(
+        _telemetry->subscribe_health(
             [this, &writer, &stream_closed_promise, is_finished, subscribe_mutex](
                 const mavsdk::Telemetry::Health health) {
                 rpc::telemetry::HealthResponse rpc_response;
@@ -1798,7 +1862,7 @@ public:
 
                 std::unique_lock<std::mutex> lock(*subscribe_mutex);
                 if (!*is_finished && !writer->Write(rpc_response)) {
-                    _telemetry.subscribe_health(nullptr);
+                    _telemetry->subscribe_health(nullptr);
 
                     *is_finished = true;
                     unregister_stream_stop_promise(stream_closed_promise);
@@ -1818,6 +1882,10 @@ public:
         const mavsdk::rpc::telemetry::SubscribeRcStatusRequest* /* request */,
         grpc::ServerWriter<rpc::telemetry::RcStatusResponse>* writer) override
     {
+        if (!init_plugin()) {
+            return grpc::Status::OK;
+        }
+
         auto stream_closed_promise = std::make_shared<std::promise<void>>();
         auto stream_closed_future = stream_closed_promise->get_future();
         register_stream_stop_promise(stream_closed_promise);
@@ -1825,7 +1893,7 @@ public:
         auto is_finished = std::make_shared<bool>(false);
         auto subscribe_mutex = std::make_shared<std::mutex>();
 
-        _telemetry.subscribe_rc_status(
+        _telemetry->subscribe_rc_status(
             [this, &writer, &stream_closed_promise, is_finished, subscribe_mutex](
                 const mavsdk::Telemetry::RcStatus rc_status) {
                 rpc::telemetry::RcStatusResponse rpc_response;
@@ -1834,7 +1902,7 @@ public:
 
                 std::unique_lock<std::mutex> lock(*subscribe_mutex);
                 if (!*is_finished && !writer->Write(rpc_response)) {
-                    _telemetry.subscribe_rc_status(nullptr);
+                    _telemetry->subscribe_rc_status(nullptr);
 
                     *is_finished = true;
                     unregister_stream_stop_promise(stream_closed_promise);
@@ -1854,6 +1922,10 @@ public:
         const mavsdk::rpc::telemetry::SubscribeStatusTextRequest* /* request */,
         grpc::ServerWriter<rpc::telemetry::StatusTextResponse>* writer) override
     {
+        if (!init_plugin()) {
+            return grpc::Status::OK;
+        }
+
         auto stream_closed_promise = std::make_shared<std::promise<void>>();
         auto stream_closed_future = stream_closed_promise->get_future();
         register_stream_stop_promise(stream_closed_promise);
@@ -1861,7 +1933,7 @@ public:
         auto is_finished = std::make_shared<bool>(false);
         auto subscribe_mutex = std::make_shared<std::mutex>();
 
-        _telemetry.subscribe_status_text(
+        _telemetry->subscribe_status_text(
             [this, &writer, &stream_closed_promise, is_finished, subscribe_mutex](
                 const mavsdk::Telemetry::StatusText status_text) {
                 rpc::telemetry::StatusTextResponse rpc_response;
@@ -1871,7 +1943,7 @@ public:
 
                 std::unique_lock<std::mutex> lock(*subscribe_mutex);
                 if (!*is_finished && !writer->Write(rpc_response)) {
-                    _telemetry.subscribe_status_text(nullptr);
+                    _telemetry->subscribe_status_text(nullptr);
 
                     *is_finished = true;
                     unregister_stream_stop_promise(stream_closed_promise);
@@ -1891,6 +1963,10 @@ public:
         const mavsdk::rpc::telemetry::SubscribeActuatorControlTargetRequest* /* request */,
         grpc::ServerWriter<rpc::telemetry::ActuatorControlTargetResponse>* writer) override
     {
+        if (!init_plugin()) {
+            return grpc::Status::OK;
+        }
+
         auto stream_closed_promise = std::make_shared<std::promise<void>>();
         auto stream_closed_future = stream_closed_promise->get_future();
         register_stream_stop_promise(stream_closed_promise);
@@ -1898,7 +1974,7 @@ public:
         auto is_finished = std::make_shared<bool>(false);
         auto subscribe_mutex = std::make_shared<std::mutex>();
 
-        _telemetry.subscribe_actuator_control_target(
+        _telemetry->subscribe_actuator_control_target(
             [this, &writer, &stream_closed_promise, is_finished, subscribe_mutex](
                 const mavsdk::Telemetry::ActuatorControlTarget actuator_control_target) {
                 rpc::telemetry::ActuatorControlTargetResponse rpc_response;
@@ -1908,7 +1984,7 @@ public:
 
                 std::unique_lock<std::mutex> lock(*subscribe_mutex);
                 if (!*is_finished && !writer->Write(rpc_response)) {
-                    _telemetry.subscribe_actuator_control_target(nullptr);
+                    _telemetry->subscribe_actuator_control_target(nullptr);
 
                     *is_finished = true;
                     unregister_stream_stop_promise(stream_closed_promise);
@@ -1928,6 +2004,10 @@ public:
         const mavsdk::rpc::telemetry::SubscribeActuatorOutputStatusRequest* /* request */,
         grpc::ServerWriter<rpc::telemetry::ActuatorOutputStatusResponse>* writer) override
     {
+        if (!init_plugin()) {
+            return grpc::Status::OK;
+        }
+
         auto stream_closed_promise = std::make_shared<std::promise<void>>();
         auto stream_closed_future = stream_closed_promise->get_future();
         register_stream_stop_promise(stream_closed_promise);
@@ -1935,7 +2015,7 @@ public:
         auto is_finished = std::make_shared<bool>(false);
         auto subscribe_mutex = std::make_shared<std::mutex>();
 
-        _telemetry.subscribe_actuator_output_status(
+        _telemetry->subscribe_actuator_output_status(
             [this, &writer, &stream_closed_promise, is_finished, subscribe_mutex](
                 const mavsdk::Telemetry::ActuatorOutputStatus actuator_output_status) {
                 rpc::telemetry::ActuatorOutputStatusResponse rpc_response;
@@ -1945,7 +2025,7 @@ public:
 
                 std::unique_lock<std::mutex> lock(*subscribe_mutex);
                 if (!*is_finished && !writer->Write(rpc_response)) {
-                    _telemetry.subscribe_actuator_output_status(nullptr);
+                    _telemetry->subscribe_actuator_output_status(nullptr);
 
                     *is_finished = true;
                     unregister_stream_stop_promise(stream_closed_promise);
@@ -1965,6 +2045,10 @@ public:
         const mavsdk::rpc::telemetry::SubscribeOdometryRequest* /* request */,
         grpc::ServerWriter<rpc::telemetry::OdometryResponse>* writer) override
     {
+        if (!init_plugin()) {
+            return grpc::Status::OK;
+        }
+
         auto stream_closed_promise = std::make_shared<std::promise<void>>();
         auto stream_closed_future = stream_closed_promise->get_future();
         register_stream_stop_promise(stream_closed_promise);
@@ -1972,7 +2056,7 @@ public:
         auto is_finished = std::make_shared<bool>(false);
         auto subscribe_mutex = std::make_shared<std::mutex>();
 
-        _telemetry.subscribe_odometry(
+        _telemetry->subscribe_odometry(
             [this, &writer, &stream_closed_promise, is_finished, subscribe_mutex](
                 const mavsdk::Telemetry::Odometry odometry) {
                 rpc::telemetry::OdometryResponse rpc_response;
@@ -1981,7 +2065,7 @@ public:
 
                 std::unique_lock<std::mutex> lock(*subscribe_mutex);
                 if (!*is_finished && !writer->Write(rpc_response)) {
-                    _telemetry.subscribe_odometry(nullptr);
+                    _telemetry->subscribe_odometry(nullptr);
 
                     *is_finished = true;
                     unregister_stream_stop_promise(stream_closed_promise);
@@ -2001,6 +2085,10 @@ public:
         const mavsdk::rpc::telemetry::SubscribePositionVelocityNedRequest* /* request */,
         grpc::ServerWriter<rpc::telemetry::PositionVelocityNedResponse>* writer) override
     {
+        if (!init_plugin()) {
+            return grpc::Status::OK;
+        }
+
         auto stream_closed_promise = std::make_shared<std::promise<void>>();
         auto stream_closed_future = stream_closed_promise->get_future();
         register_stream_stop_promise(stream_closed_promise);
@@ -2008,7 +2096,7 @@ public:
         auto is_finished = std::make_shared<bool>(false);
         auto subscribe_mutex = std::make_shared<std::mutex>();
 
-        _telemetry.subscribe_position_velocity_ned(
+        _telemetry->subscribe_position_velocity_ned(
             [this, &writer, &stream_closed_promise, is_finished, subscribe_mutex](
                 const mavsdk::Telemetry::PositionVelocityNed position_velocity_ned) {
                 rpc::telemetry::PositionVelocityNedResponse rpc_response;
@@ -2018,7 +2106,7 @@ public:
 
                 std::unique_lock<std::mutex> lock(*subscribe_mutex);
                 if (!*is_finished && !writer->Write(rpc_response)) {
-                    _telemetry.subscribe_position_velocity_ned(nullptr);
+                    _telemetry->subscribe_position_velocity_ned(nullptr);
 
                     *is_finished = true;
                     unregister_stream_stop_promise(stream_closed_promise);
@@ -2038,6 +2126,10 @@ public:
         const mavsdk::rpc::telemetry::SubscribeGroundTruthRequest* /* request */,
         grpc::ServerWriter<rpc::telemetry::GroundTruthResponse>* writer) override
     {
+        if (!init_plugin()) {
+            return grpc::Status::OK;
+        }
+
         auto stream_closed_promise = std::make_shared<std::promise<void>>();
         auto stream_closed_future = stream_closed_promise->get_future();
         register_stream_stop_promise(stream_closed_promise);
@@ -2045,7 +2137,7 @@ public:
         auto is_finished = std::make_shared<bool>(false);
         auto subscribe_mutex = std::make_shared<std::mutex>();
 
-        _telemetry.subscribe_ground_truth(
+        _telemetry->subscribe_ground_truth(
             [this, &writer, &stream_closed_promise, is_finished, subscribe_mutex](
                 const mavsdk::Telemetry::GroundTruth ground_truth) {
                 rpc::telemetry::GroundTruthResponse rpc_response;
@@ -2055,7 +2147,7 @@ public:
 
                 std::unique_lock<std::mutex> lock(*subscribe_mutex);
                 if (!*is_finished && !writer->Write(rpc_response)) {
-                    _telemetry.subscribe_ground_truth(nullptr);
+                    _telemetry->subscribe_ground_truth(nullptr);
 
                     *is_finished = true;
                     unregister_stream_stop_promise(stream_closed_promise);
@@ -2075,6 +2167,10 @@ public:
         const mavsdk::rpc::telemetry::SubscribeFixedwingMetricsRequest* /* request */,
         grpc::ServerWriter<rpc::telemetry::FixedwingMetricsResponse>* writer) override
     {
+        if (!init_plugin()) {
+            return grpc::Status::OK;
+        }
+
         auto stream_closed_promise = std::make_shared<std::promise<void>>();
         auto stream_closed_future = stream_closed_promise->get_future();
         register_stream_stop_promise(stream_closed_promise);
@@ -2082,7 +2178,7 @@ public:
         auto is_finished = std::make_shared<bool>(false);
         auto subscribe_mutex = std::make_shared<std::mutex>();
 
-        _telemetry.subscribe_fixedwing_metrics(
+        _telemetry->subscribe_fixedwing_metrics(
             [this, &writer, &stream_closed_promise, is_finished, subscribe_mutex](
                 const mavsdk::Telemetry::FixedwingMetrics fixedwing_metrics) {
                 rpc::telemetry::FixedwingMetricsResponse rpc_response;
@@ -2092,7 +2188,7 @@ public:
 
                 std::unique_lock<std::mutex> lock(*subscribe_mutex);
                 if (!*is_finished && !writer->Write(rpc_response)) {
-                    _telemetry.subscribe_fixedwing_metrics(nullptr);
+                    _telemetry->subscribe_fixedwing_metrics(nullptr);
 
                     *is_finished = true;
                     unregister_stream_stop_promise(stream_closed_promise);
@@ -2112,6 +2208,10 @@ public:
         const mavsdk::rpc::telemetry::SubscribeImuRequest* /* request */,
         grpc::ServerWriter<rpc::telemetry::ImuResponse>* writer) override
     {
+        if (!init_plugin()) {
+            return grpc::Status::OK;
+        }
+
         auto stream_closed_promise = std::make_shared<std::promise<void>>();
         auto stream_closed_future = stream_closed_promise->get_future();
         register_stream_stop_promise(stream_closed_promise);
@@ -2119,7 +2219,7 @@ public:
         auto is_finished = std::make_shared<bool>(false);
         auto subscribe_mutex = std::make_shared<std::mutex>();
 
-        _telemetry.subscribe_imu(
+        _telemetry->subscribe_imu(
             [this, &writer, &stream_closed_promise, is_finished, subscribe_mutex](
                 const mavsdk::Telemetry::Imu imu) {
                 rpc::telemetry::ImuResponse rpc_response;
@@ -2128,7 +2228,7 @@ public:
 
                 std::unique_lock<std::mutex> lock(*subscribe_mutex);
                 if (!*is_finished && !writer->Write(rpc_response)) {
-                    _telemetry.subscribe_imu(nullptr);
+                    _telemetry->subscribe_imu(nullptr);
 
                     *is_finished = true;
                     unregister_stream_stop_promise(stream_closed_promise);
@@ -2148,6 +2248,10 @@ public:
         const mavsdk::rpc::telemetry::SubscribeScaledImuRequest* /* request */,
         grpc::ServerWriter<rpc::telemetry::ScaledImuResponse>* writer) override
     {
+        if (!init_plugin()) {
+            return grpc::Status::OK;
+        }
+
         auto stream_closed_promise = std::make_shared<std::promise<void>>();
         auto stream_closed_future = stream_closed_promise->get_future();
         register_stream_stop_promise(stream_closed_promise);
@@ -2155,7 +2259,7 @@ public:
         auto is_finished = std::make_shared<bool>(false);
         auto subscribe_mutex = std::make_shared<std::mutex>();
 
-        _telemetry.subscribe_scaled_imu(
+        _telemetry->subscribe_scaled_imu(
             [this, &writer, &stream_closed_promise, is_finished, subscribe_mutex](
                 const mavsdk::Telemetry::Imu scaled_imu) {
                 rpc::telemetry::ScaledImuResponse rpc_response;
@@ -2164,7 +2268,7 @@ public:
 
                 std::unique_lock<std::mutex> lock(*subscribe_mutex);
                 if (!*is_finished && !writer->Write(rpc_response)) {
-                    _telemetry.subscribe_scaled_imu(nullptr);
+                    _telemetry->subscribe_scaled_imu(nullptr);
 
                     *is_finished = true;
                     unregister_stream_stop_promise(stream_closed_promise);
@@ -2184,6 +2288,10 @@ public:
         const mavsdk::rpc::telemetry::SubscribeRawImuRequest* /* request */,
         grpc::ServerWriter<rpc::telemetry::RawImuResponse>* writer) override
     {
+        if (!init_plugin()) {
+            return grpc::Status::OK;
+        }
+
         auto stream_closed_promise = std::make_shared<std::promise<void>>();
         auto stream_closed_future = stream_closed_promise->get_future();
         register_stream_stop_promise(stream_closed_promise);
@@ -2191,7 +2299,7 @@ public:
         auto is_finished = std::make_shared<bool>(false);
         auto subscribe_mutex = std::make_shared<std::mutex>();
 
-        _telemetry.subscribe_raw_imu(
+        _telemetry->subscribe_raw_imu(
             [this, &writer, &stream_closed_promise, is_finished, subscribe_mutex](
                 const mavsdk::Telemetry::Imu raw_imu) {
                 rpc::telemetry::RawImuResponse rpc_response;
@@ -2200,7 +2308,7 @@ public:
 
                 std::unique_lock<std::mutex> lock(*subscribe_mutex);
                 if (!*is_finished && !writer->Write(rpc_response)) {
-                    _telemetry.subscribe_raw_imu(nullptr);
+                    _telemetry->subscribe_raw_imu(nullptr);
 
                     *is_finished = true;
                     unregister_stream_stop_promise(stream_closed_promise);
@@ -2220,6 +2328,10 @@ public:
         const mavsdk::rpc::telemetry::SubscribeHealthAllOkRequest* /* request */,
         grpc::ServerWriter<rpc::telemetry::HealthAllOkResponse>* writer) override
     {
+        if (!init_plugin()) {
+            return grpc::Status::OK;
+        }
+
         auto stream_closed_promise = std::make_shared<std::promise<void>>();
         auto stream_closed_future = stream_closed_promise->get_future();
         register_stream_stop_promise(stream_closed_promise);
@@ -2227,7 +2339,7 @@ public:
         auto is_finished = std::make_shared<bool>(false);
         auto subscribe_mutex = std::make_shared<std::mutex>();
 
-        _telemetry.subscribe_health_all_ok(
+        _telemetry->subscribe_health_all_ok(
             [this, &writer, &stream_closed_promise, is_finished, subscribe_mutex](
                 const bool health_all_ok) {
                 rpc::telemetry::HealthAllOkResponse rpc_response;
@@ -2236,7 +2348,7 @@ public:
 
                 std::unique_lock<std::mutex> lock(*subscribe_mutex);
                 if (!*is_finished && !writer->Write(rpc_response)) {
-                    _telemetry.subscribe_health_all_ok(nullptr);
+                    _telemetry->subscribe_health_all_ok(nullptr);
 
                     *is_finished = true;
                     unregister_stream_stop_promise(stream_closed_promise);
@@ -2256,6 +2368,10 @@ public:
         const mavsdk::rpc::telemetry::SubscribeUnixEpochTimeRequest* /* request */,
         grpc::ServerWriter<rpc::telemetry::UnixEpochTimeResponse>* writer) override
     {
+        if (!init_plugin()) {
+            return grpc::Status::OK;
+        }
+
         auto stream_closed_promise = std::make_shared<std::promise<void>>();
         auto stream_closed_future = stream_closed_promise->get_future();
         register_stream_stop_promise(stream_closed_promise);
@@ -2263,7 +2379,7 @@ public:
         auto is_finished = std::make_shared<bool>(false);
         auto subscribe_mutex = std::make_shared<std::mutex>();
 
-        _telemetry.subscribe_unix_epoch_time(
+        _telemetry->subscribe_unix_epoch_time(
             [this, &writer, &stream_closed_promise, is_finished, subscribe_mutex](
                 const uint64_t unix_epoch_time) {
                 rpc::telemetry::UnixEpochTimeResponse rpc_response;
@@ -2272,7 +2388,7 @@ public:
 
                 std::unique_lock<std::mutex> lock(*subscribe_mutex);
                 if (!*is_finished && !writer->Write(rpc_response)) {
-                    _telemetry.subscribe_unix_epoch_time(nullptr);
+                    _telemetry->subscribe_unix_epoch_time(nullptr);
 
                     *is_finished = true;
                     unregister_stream_stop_promise(stream_closed_promise);
@@ -2292,6 +2408,10 @@ public:
         const mavsdk::rpc::telemetry::SubscribeDistanceSensorRequest* /* request */,
         grpc::ServerWriter<rpc::telemetry::DistanceSensorResponse>* writer) override
     {
+        if (!init_plugin()) {
+            return grpc::Status::OK;
+        }
+
         auto stream_closed_promise = std::make_shared<std::promise<void>>();
         auto stream_closed_future = stream_closed_promise->get_future();
         register_stream_stop_promise(stream_closed_promise);
@@ -2299,7 +2419,7 @@ public:
         auto is_finished = std::make_shared<bool>(false);
         auto subscribe_mutex = std::make_shared<std::mutex>();
 
-        _telemetry.subscribe_distance_sensor(
+        _telemetry->subscribe_distance_sensor(
             [this, &writer, &stream_closed_promise, is_finished, subscribe_mutex](
                 const mavsdk::Telemetry::DistanceSensor distance_sensor) {
                 rpc::telemetry::DistanceSensorResponse rpc_response;
@@ -2309,7 +2429,7 @@ public:
 
                 std::unique_lock<std::mutex> lock(*subscribe_mutex);
                 if (!*is_finished && !writer->Write(rpc_response)) {
-                    _telemetry.subscribe_distance_sensor(nullptr);
+                    _telemetry->subscribe_distance_sensor(nullptr);
 
                     *is_finished = true;
                     unregister_stream_stop_promise(stream_closed_promise);
@@ -2329,6 +2449,10 @@ public:
         const mavsdk::rpc::telemetry::SubscribeScaledPressureRequest* /* request */,
         grpc::ServerWriter<rpc::telemetry::ScaledPressureResponse>* writer) override
     {
+        if (!init_plugin()) {
+            return grpc::Status::OK;
+        }
+
         auto stream_closed_promise = std::make_shared<std::promise<void>>();
         auto stream_closed_future = stream_closed_promise->get_future();
         register_stream_stop_promise(stream_closed_promise);
@@ -2336,7 +2460,7 @@ public:
         auto is_finished = std::make_shared<bool>(false);
         auto subscribe_mutex = std::make_shared<std::mutex>();
 
-        _telemetry.subscribe_scaled_pressure(
+        _telemetry->subscribe_scaled_pressure(
             [this, &writer, &stream_closed_promise, is_finished, subscribe_mutex](
                 const mavsdk::Telemetry::ScaledPressure scaled_pressure) {
                 rpc::telemetry::ScaledPressureResponse rpc_response;
@@ -2346,7 +2470,7 @@ public:
 
                 std::unique_lock<std::mutex> lock(*subscribe_mutex);
                 if (!*is_finished && !writer->Write(rpc_response)) {
-                    _telemetry.subscribe_scaled_pressure(nullptr);
+                    _telemetry->subscribe_scaled_pressure(nullptr);
 
                     *is_finished = true;
                     unregister_stream_stop_promise(stream_closed_promise);
@@ -2366,12 +2490,21 @@ public:
         const rpc::telemetry::SetRatePositionRequest* request,
         rpc::telemetry::SetRatePositionResponse* response) override
     {
+        if (!init_plugin()) {
+            if (response != nullptr) {
+                auto result = mavsdk::Telemetry::Result::NoSystem;
+                fillResponseWithResult(response, result);
+            }
+
+            return grpc::Status::OK;
+        }
+
         if (request == nullptr) {
             LogWarn() << "SetRatePosition sent with a null request! Ignoring...";
             return grpc::Status::OK;
         }
 
-        auto result = _telemetry.set_rate_position(request->rate_hz());
+        auto result = _telemetry->set_rate_position(request->rate_hz());
 
         if (response != nullptr) {
             fillResponseWithResult(response, result);
@@ -2385,12 +2518,21 @@ public:
         const rpc::telemetry::SetRateHomeRequest* request,
         rpc::telemetry::SetRateHomeResponse* response) override
     {
+        if (!init_plugin()) {
+            if (response != nullptr) {
+                auto result = mavsdk::Telemetry::Result::NoSystem;
+                fillResponseWithResult(response, result);
+            }
+
+            return grpc::Status::OK;
+        }
+
         if (request == nullptr) {
             LogWarn() << "SetRateHome sent with a null request! Ignoring...";
             return grpc::Status::OK;
         }
 
-        auto result = _telemetry.set_rate_home(request->rate_hz());
+        auto result = _telemetry->set_rate_home(request->rate_hz());
 
         if (response != nullptr) {
             fillResponseWithResult(response, result);
@@ -2404,12 +2546,21 @@ public:
         const rpc::telemetry::SetRateInAirRequest* request,
         rpc::telemetry::SetRateInAirResponse* response) override
     {
+        if (!init_plugin()) {
+            if (response != nullptr) {
+                auto result = mavsdk::Telemetry::Result::NoSystem;
+                fillResponseWithResult(response, result);
+            }
+
+            return grpc::Status::OK;
+        }
+
         if (request == nullptr) {
             LogWarn() << "SetRateInAir sent with a null request! Ignoring...";
             return grpc::Status::OK;
         }
 
-        auto result = _telemetry.set_rate_in_air(request->rate_hz());
+        auto result = _telemetry->set_rate_in_air(request->rate_hz());
 
         if (response != nullptr) {
             fillResponseWithResult(response, result);
@@ -2423,12 +2574,21 @@ public:
         const rpc::telemetry::SetRateLandedStateRequest* request,
         rpc::telemetry::SetRateLandedStateResponse* response) override
     {
+        if (!init_plugin()) {
+            if (response != nullptr) {
+                auto result = mavsdk::Telemetry::Result::NoSystem;
+                fillResponseWithResult(response, result);
+            }
+
+            return grpc::Status::OK;
+        }
+
         if (request == nullptr) {
             LogWarn() << "SetRateLandedState sent with a null request! Ignoring...";
             return grpc::Status::OK;
         }
 
-        auto result = _telemetry.set_rate_landed_state(request->rate_hz());
+        auto result = _telemetry->set_rate_landed_state(request->rate_hz());
 
         if (response != nullptr) {
             fillResponseWithResult(response, result);
@@ -2442,12 +2602,21 @@ public:
         const rpc::telemetry::SetRateAttitudeRequest* request,
         rpc::telemetry::SetRateAttitudeResponse* response) override
     {
+        if (!init_plugin()) {
+            if (response != nullptr) {
+                auto result = mavsdk::Telemetry::Result::NoSystem;
+                fillResponseWithResult(response, result);
+            }
+
+            return grpc::Status::OK;
+        }
+
         if (request == nullptr) {
             LogWarn() << "SetRateAttitude sent with a null request! Ignoring...";
             return grpc::Status::OK;
         }
 
-        auto result = _telemetry.set_rate_attitude(request->rate_hz());
+        auto result = _telemetry->set_rate_attitude(request->rate_hz());
 
         if (response != nullptr) {
             fillResponseWithResult(response, result);
@@ -2461,12 +2630,21 @@ public:
         const rpc::telemetry::SetRateCameraAttitudeRequest* request,
         rpc::telemetry::SetRateCameraAttitudeResponse* response) override
     {
+        if (!init_plugin()) {
+            if (response != nullptr) {
+                auto result = mavsdk::Telemetry::Result::NoSystem;
+                fillResponseWithResult(response, result);
+            }
+
+            return grpc::Status::OK;
+        }
+
         if (request == nullptr) {
             LogWarn() << "SetRateCameraAttitude sent with a null request! Ignoring...";
             return grpc::Status::OK;
         }
 
-        auto result = _telemetry.set_rate_camera_attitude(request->rate_hz());
+        auto result = _telemetry->set_rate_camera_attitude(request->rate_hz());
 
         if (response != nullptr) {
             fillResponseWithResult(response, result);
@@ -2480,12 +2658,21 @@ public:
         const rpc::telemetry::SetRateVelocityNedRequest* request,
         rpc::telemetry::SetRateVelocityNedResponse* response) override
     {
+        if (!init_plugin()) {
+            if (response != nullptr) {
+                auto result = mavsdk::Telemetry::Result::NoSystem;
+                fillResponseWithResult(response, result);
+            }
+
+            return grpc::Status::OK;
+        }
+
         if (request == nullptr) {
             LogWarn() << "SetRateVelocityNed sent with a null request! Ignoring...";
             return grpc::Status::OK;
         }
 
-        auto result = _telemetry.set_rate_velocity_ned(request->rate_hz());
+        auto result = _telemetry->set_rate_velocity_ned(request->rate_hz());
 
         if (response != nullptr) {
             fillResponseWithResult(response, result);
@@ -2499,12 +2686,21 @@ public:
         const rpc::telemetry::SetRateGpsInfoRequest* request,
         rpc::telemetry::SetRateGpsInfoResponse* response) override
     {
+        if (!init_plugin()) {
+            if (response != nullptr) {
+                auto result = mavsdk::Telemetry::Result::NoSystem;
+                fillResponseWithResult(response, result);
+            }
+
+            return grpc::Status::OK;
+        }
+
         if (request == nullptr) {
             LogWarn() << "SetRateGpsInfo sent with a null request! Ignoring...";
             return grpc::Status::OK;
         }
 
-        auto result = _telemetry.set_rate_gps_info(request->rate_hz());
+        auto result = _telemetry->set_rate_gps_info(request->rate_hz());
 
         if (response != nullptr) {
             fillResponseWithResult(response, result);
@@ -2518,12 +2714,21 @@ public:
         const rpc::telemetry::SetRateBatteryRequest* request,
         rpc::telemetry::SetRateBatteryResponse* response) override
     {
+        if (!init_plugin()) {
+            if (response != nullptr) {
+                auto result = mavsdk::Telemetry::Result::NoSystem;
+                fillResponseWithResult(response, result);
+            }
+
+            return grpc::Status::OK;
+        }
+
         if (request == nullptr) {
             LogWarn() << "SetRateBattery sent with a null request! Ignoring...";
             return grpc::Status::OK;
         }
 
-        auto result = _telemetry.set_rate_battery(request->rate_hz());
+        auto result = _telemetry->set_rate_battery(request->rate_hz());
 
         if (response != nullptr) {
             fillResponseWithResult(response, result);
@@ -2537,12 +2742,21 @@ public:
         const rpc::telemetry::SetRateRcStatusRequest* request,
         rpc::telemetry::SetRateRcStatusResponse* response) override
     {
+        if (!init_plugin()) {
+            if (response != nullptr) {
+                auto result = mavsdk::Telemetry::Result::NoSystem;
+                fillResponseWithResult(response, result);
+            }
+
+            return grpc::Status::OK;
+        }
+
         if (request == nullptr) {
             LogWarn() << "SetRateRcStatus sent with a null request! Ignoring...";
             return grpc::Status::OK;
         }
 
-        auto result = _telemetry.set_rate_rc_status(request->rate_hz());
+        auto result = _telemetry->set_rate_rc_status(request->rate_hz());
 
         if (response != nullptr) {
             fillResponseWithResult(response, result);
@@ -2556,12 +2770,21 @@ public:
         const rpc::telemetry::SetRateActuatorControlTargetRequest* request,
         rpc::telemetry::SetRateActuatorControlTargetResponse* response) override
     {
+        if (!init_plugin()) {
+            if (response != nullptr) {
+                auto result = mavsdk::Telemetry::Result::NoSystem;
+                fillResponseWithResult(response, result);
+            }
+
+            return grpc::Status::OK;
+        }
+
         if (request == nullptr) {
             LogWarn() << "SetRateActuatorControlTarget sent with a null request! Ignoring...";
             return grpc::Status::OK;
         }
 
-        auto result = _telemetry.set_rate_actuator_control_target(request->rate_hz());
+        auto result = _telemetry->set_rate_actuator_control_target(request->rate_hz());
 
         if (response != nullptr) {
             fillResponseWithResult(response, result);
@@ -2575,12 +2798,21 @@ public:
         const rpc::telemetry::SetRateActuatorOutputStatusRequest* request,
         rpc::telemetry::SetRateActuatorOutputStatusResponse* response) override
     {
+        if (!init_plugin()) {
+            if (response != nullptr) {
+                auto result = mavsdk::Telemetry::Result::NoSystem;
+                fillResponseWithResult(response, result);
+            }
+
+            return grpc::Status::OK;
+        }
+
         if (request == nullptr) {
             LogWarn() << "SetRateActuatorOutputStatus sent with a null request! Ignoring...";
             return grpc::Status::OK;
         }
 
-        auto result = _telemetry.set_rate_actuator_output_status(request->rate_hz());
+        auto result = _telemetry->set_rate_actuator_output_status(request->rate_hz());
 
         if (response != nullptr) {
             fillResponseWithResult(response, result);
@@ -2594,12 +2826,21 @@ public:
         const rpc::telemetry::SetRateOdometryRequest* request,
         rpc::telemetry::SetRateOdometryResponse* response) override
     {
+        if (!init_plugin()) {
+            if (response != nullptr) {
+                auto result = mavsdk::Telemetry::Result::NoSystem;
+                fillResponseWithResult(response, result);
+            }
+
+            return grpc::Status::OK;
+        }
+
         if (request == nullptr) {
             LogWarn() << "SetRateOdometry sent with a null request! Ignoring...";
             return grpc::Status::OK;
         }
 
-        auto result = _telemetry.set_rate_odometry(request->rate_hz());
+        auto result = _telemetry->set_rate_odometry(request->rate_hz());
 
         if (response != nullptr) {
             fillResponseWithResult(response, result);
@@ -2613,12 +2854,21 @@ public:
         const rpc::telemetry::SetRatePositionVelocityNedRequest* request,
         rpc::telemetry::SetRatePositionVelocityNedResponse* response) override
     {
+        if (!init_plugin()) {
+            if (response != nullptr) {
+                auto result = mavsdk::Telemetry::Result::NoSystem;
+                fillResponseWithResult(response, result);
+            }
+
+            return grpc::Status::OK;
+        }
+
         if (request == nullptr) {
             LogWarn() << "SetRatePositionVelocityNed sent with a null request! Ignoring...";
             return grpc::Status::OK;
         }
 
-        auto result = _telemetry.set_rate_position_velocity_ned(request->rate_hz());
+        auto result = _telemetry->set_rate_position_velocity_ned(request->rate_hz());
 
         if (response != nullptr) {
             fillResponseWithResult(response, result);
@@ -2632,12 +2882,21 @@ public:
         const rpc::telemetry::SetRateGroundTruthRequest* request,
         rpc::telemetry::SetRateGroundTruthResponse* response) override
     {
+        if (!init_plugin()) {
+            if (response != nullptr) {
+                auto result = mavsdk::Telemetry::Result::NoSystem;
+                fillResponseWithResult(response, result);
+            }
+
+            return grpc::Status::OK;
+        }
+
         if (request == nullptr) {
             LogWarn() << "SetRateGroundTruth sent with a null request! Ignoring...";
             return grpc::Status::OK;
         }
 
-        auto result = _telemetry.set_rate_ground_truth(request->rate_hz());
+        auto result = _telemetry->set_rate_ground_truth(request->rate_hz());
 
         if (response != nullptr) {
             fillResponseWithResult(response, result);
@@ -2651,12 +2910,21 @@ public:
         const rpc::telemetry::SetRateFixedwingMetricsRequest* request,
         rpc::telemetry::SetRateFixedwingMetricsResponse* response) override
     {
+        if (!init_plugin()) {
+            if (response != nullptr) {
+                auto result = mavsdk::Telemetry::Result::NoSystem;
+                fillResponseWithResult(response, result);
+            }
+
+            return grpc::Status::OK;
+        }
+
         if (request == nullptr) {
             LogWarn() << "SetRateFixedwingMetrics sent with a null request! Ignoring...";
             return grpc::Status::OK;
         }
 
-        auto result = _telemetry.set_rate_fixedwing_metrics(request->rate_hz());
+        auto result = _telemetry->set_rate_fixedwing_metrics(request->rate_hz());
 
         if (response != nullptr) {
             fillResponseWithResult(response, result);
@@ -2670,12 +2938,21 @@ public:
         const rpc::telemetry::SetRateImuRequest* request,
         rpc::telemetry::SetRateImuResponse* response) override
     {
+        if (!init_plugin()) {
+            if (response != nullptr) {
+                auto result = mavsdk::Telemetry::Result::NoSystem;
+                fillResponseWithResult(response, result);
+            }
+
+            return grpc::Status::OK;
+        }
+
         if (request == nullptr) {
             LogWarn() << "SetRateImu sent with a null request! Ignoring...";
             return grpc::Status::OK;
         }
 
-        auto result = _telemetry.set_rate_imu(request->rate_hz());
+        auto result = _telemetry->set_rate_imu(request->rate_hz());
 
         if (response != nullptr) {
             fillResponseWithResult(response, result);
@@ -2689,12 +2966,21 @@ public:
         const rpc::telemetry::SetRateScaledImuRequest* request,
         rpc::telemetry::SetRateScaledImuResponse* response) override
     {
+        if (!init_plugin()) {
+            if (response != nullptr) {
+                auto result = mavsdk::Telemetry::Result::NoSystem;
+                fillResponseWithResult(response, result);
+            }
+
+            return grpc::Status::OK;
+        }
+
         if (request == nullptr) {
             LogWarn() << "SetRateScaledImu sent with a null request! Ignoring...";
             return grpc::Status::OK;
         }
 
-        auto result = _telemetry.set_rate_scaled_imu(request->rate_hz());
+        auto result = _telemetry->set_rate_scaled_imu(request->rate_hz());
 
         if (response != nullptr) {
             fillResponseWithResult(response, result);
@@ -2708,12 +2994,21 @@ public:
         const rpc::telemetry::SetRateRawImuRequest* request,
         rpc::telemetry::SetRateRawImuResponse* response) override
     {
+        if (!init_plugin()) {
+            if (response != nullptr) {
+                auto result = mavsdk::Telemetry::Result::NoSystem;
+                fillResponseWithResult(response, result);
+            }
+
+            return grpc::Status::OK;
+        }
+
         if (request == nullptr) {
             LogWarn() << "SetRateRawImu sent with a null request! Ignoring...";
             return grpc::Status::OK;
         }
 
-        auto result = _telemetry.set_rate_raw_imu(request->rate_hz());
+        auto result = _telemetry->set_rate_raw_imu(request->rate_hz());
 
         if (response != nullptr) {
             fillResponseWithResult(response, result);
@@ -2727,12 +3022,21 @@ public:
         const rpc::telemetry::SetRateUnixEpochTimeRequest* request,
         rpc::telemetry::SetRateUnixEpochTimeResponse* response) override
     {
+        if (!init_plugin()) {
+            if (response != nullptr) {
+                auto result = mavsdk::Telemetry::Result::NoSystem;
+                fillResponseWithResult(response, result);
+            }
+
+            return grpc::Status::OK;
+        }
+
         if (request == nullptr) {
             LogWarn() << "SetRateUnixEpochTime sent with a null request! Ignoring...";
             return grpc::Status::OK;
         }
 
-        auto result = _telemetry.set_rate_unix_epoch_time(request->rate_hz());
+        auto result = _telemetry->set_rate_unix_epoch_time(request->rate_hz());
 
         if (response != nullptr) {
             fillResponseWithResult(response, result);
@@ -2746,12 +3050,21 @@ public:
         const rpc::telemetry::SetRateDistanceSensorRequest* request,
         rpc::telemetry::SetRateDistanceSensorResponse* response) override
     {
+        if (!init_plugin()) {
+            if (response != nullptr) {
+                auto result = mavsdk::Telemetry::Result::NoSystem;
+                fillResponseWithResult(response, result);
+            }
+
+            return grpc::Status::OK;
+        }
+
         if (request == nullptr) {
             LogWarn() << "SetRateDistanceSensor sent with a null request! Ignoring...";
             return grpc::Status::OK;
         }
 
-        auto result = _telemetry.set_rate_distance_sensor(request->rate_hz());
+        auto result = _telemetry->set_rate_distance_sensor(request->rate_hz());
 
         if (response != nullptr) {
             fillResponseWithResult(response, result);
@@ -2765,7 +3078,16 @@ public:
         const rpc::telemetry::GetGpsGlobalOriginRequest* /* request */,
         rpc::telemetry::GetGpsGlobalOriginResponse* response) override
     {
-        auto result = _telemetry.get_gps_global_origin();
+        if (!init_plugin()) {
+            if (response != nullptr) {
+                auto result = mavsdk::Telemetry::Result::NoSystem;
+                fillResponseWithResult(response, result);
+            }
+
+            return grpc::Status::OK;
+        }
+
+        auto result = _telemetry->get_gps_global_origin();
 
         if (response != nullptr) {
             fillResponseWithResult(response, result.first);
@@ -2812,7 +3134,19 @@ private:
         }
     }
 
-    Telemetry& _telemetry;
+    bool init_plugin()
+    {
+        if (_telemetry == nullptr) {
+            if (_mavsdk.systems().size() == 0) {
+                return false;
+            }
+            _telemetry = std::make_unique<Telemetry>(_mavsdk.systems()[0]);
+        }
+        return true;
+    }
+
+    Mavsdk& _mavsdk;
+    std::unique_ptr<Telemetry> _telemetry;
     std::atomic<bool> _stopped{false};
     std::vector<std::weak_ptr<std::promise<void>>> _stream_stop_promises{};
 };

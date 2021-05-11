@@ -155,6 +155,8 @@ std::ostream& operator<<(std::ostream& str, Ftp::Result const& result)
             return str << "Unsupported";
         case Ftp::Result::ProtocolError:
             return str << "Protocol Error";
+        case Ftp::Result::NoSystem:
+            return str << "No System";
         default:
             return str << "Unknown";
     }

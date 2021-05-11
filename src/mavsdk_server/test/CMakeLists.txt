@@ -1,15 +1,15 @@
 cmake_minimum_required(VERSION 3.10.2)
 
 add_executable(unit_tests_mavsdk_server
-    action_service_impl_test.cpp
-    mavsdk_server_main.cpp
-    camera_service_impl_test.cpp
+    #action_service_impl_test.cpp
+    #mavsdk_server_main.cpp
+    #camera_service_impl_test.cpp
     connection_initiator_test.cpp
     core_service_impl_test.cpp
-    mission_service_impl_test.cpp
-    offboard_service_impl_test.cpp
-    telemetry_service_impl_test.cpp
-    info_service_impl_test.cpp
+    #mission_service_impl_test.cpp
+    #offboard_service_impl_test.cpp
+    #telemetry_service_impl_test.cpp
+    #info_service_impl_test.cpp
 )
 
 set_target_properties(unit_tests_mavsdk_server PROPERTIES COMPILE_FLAGS ${warnings})

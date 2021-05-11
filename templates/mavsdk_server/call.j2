@@ -3,6 +3,16 @@ grpc::Status {{ name.upper_camel_case }}(
     const rpc::{{ plugin_name.lower_snake_case }}::{{ name.upper_camel_case }}Request* {% if not params -%} /* request */ {%- else -%} request {%- endif -%},
     rpc::{{ plugin_name.lower_snake_case }}::{{ name.upper_camel_case }}Response* {% if has_result %}response{% else %}/* response */{% endif %}) override
 {
+    if (!init_plugin()) {
+        {% if has_result %}
+        if (response != nullptr) {
+            auto result = mavsdk::{{ plugin_name.upper_camel_case }}::Result::NoSystem;
+            fillResponseWithResult(response, result);
+        }
+        {% endif %}
+        return grpc::Status::OK;
+    }
+
     {% if params -%}
     if (request == nullptr) {
         LogWarn() << "{{ name.upper_camel_case }} sent with a null request! Ignoring...";
@@ -20,16 +30,16 @@ grpc::Status {{ name.upper_camel_case }}(
     {% endfor -%}
 
     {% if is_sync %}
-    {% if has_result %}auto result = {% endif %}_{{ plugin_name.lower_snake_case }}.{{ name.lower_snake_case }}({% for param in params %}{% if param.type_info.is_repeated %}{{ param.name.lower_snake_case }}_vec{% else %}{% if param.type_info.is_primitive %}request->{{ param.name.lower_snake_case }}(){% else %}translateFromRpc{{ param.type_info.inner_name }}(request->{{ param.name.lower_snake_case }}()){% endif %}{% endif %}{{ ", " if not loop.last }}{% endfor %});
+    {% if has_result %}auto result = {% endif %}_{{ plugin_name.lower_snake_case }}->{{ name.lower_snake_case }}({% for param in params %}{% if param.type_info.is_repeated %}{{ param.name.lower_snake_case }}_vec{% else %}{% if param.type_info.is_primitive %}request->{{ param.name.lower_snake_case }}(){% else %}translateFromRpc{{ param.type_info.inner_name }}(request->{{ param.name.lower_snake_case }}()){% endif %}{% endif %}{{ ", " if not loop.last }}{% endfor %});
     {% else %}
     std::promise<{% if has_result %}mavsdk::{{ plugin_name.upper_camel_case }}::Result{% else %}void{% endif %}> prom;
     std::future<{% if has_result %}mavsdk::{{ plugin_name.upper_camel_case }}::Result{% else %}void{% endif %}> fut = prom.get_future();
 
         {% if has_result %}
-    _{{ plugin_name.lower_snake_case }}.{{ name.lower_snake_case }}_async([&prom](const mavsdk::{{ plugin_name.upper_camel_case }}::Result result){ prom.set_value(result); });
+    _{{ plugin_name.lower_snake_case }}->{{ name.lower_snake_case }}_async([&prom](const mavsdk::{{ plugin_name.upper_camel_case }}::Result result){ prom.set_value(result); });
     auto result = fut.get();
         {% else %}
-    _{{ plugin_name.lower_snake_case }}.{{ name.lower_snake_case }}_async([&prom](){ prom.set_value(); });
+    _{{ plugin_name.lower_snake_case }}->{{ name.lower_snake_case }}_async([&prom](){ prom.set_value(); });
     fut.get();
         {% endif %}
     {% endif %}

@@ -62,6 +62,8 @@ std::ostream& operator<<(std::ostream& str, Tune::Result const& result)
             return str << "Tune Too Long";
         case Tune::Result::Error:
             return str << "Error";
+        case Tune::Result::NoSystem:
+            return str << "No System";
         default:
             return str << "Unknown";
     }

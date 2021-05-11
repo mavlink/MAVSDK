@@ -21,7 +21,7 @@ namespace mavsdk_server {
 template<typename ServerUtility = ServerUtility>
 class ServerUtilityServiceImpl final : public rpc::server_utility::ServerUtilityService::Service {
 public:
-    ServerUtilityServiceImpl(ServerUtility& server_utility) : _server_utility(server_utility) {}
+    ServerUtilityServiceImpl(Mavsdk& mavsdk) : _mavsdk(mavsdk) {}
 
     template<typename ResponseType>
     void fillResponseWithResult(ResponseType* response, mavsdk::ServerUtility::Result& result) const
@@ -136,12 +136,21 @@ public:
         const rpc::server_utility::SendStatusTextRequest* request,
         rpc::server_utility::SendStatusTextResponse* response) override
     {
+        if (!init_plugin()) {
+            if (response != nullptr) {
+                auto result = mavsdk::ServerUtility::Result::NoSystem;
+                fillResponseWithResult(response, result);
+            }
+
+            return grpc::Status::OK;
+        }
+
         if (request == nullptr) {
             LogWarn() << "SendStatusText sent with a null request! Ignoring...";
             return grpc::Status::OK;
         }
 
-        auto result = _server_utility.send_status_text(
+        auto result = _server_utility->send_status_text(
             translateFromRpcStatusTextType(request->type()), request->text());
 
         if (response != nullptr) {
@@ -186,7 +195,19 @@ private:
         }
     }
 
-    ServerUtility& _server_utility;
+    bool init_plugin()
+    {
+        if (_server_utility == nullptr) {
+            if (_mavsdk.systems().size() == 0) {
+                return false;
+            }
+            _server_utility = std::make_unique<ServerUtility>(_mavsdk.systems()[0]);
+        }
+        return true;
+    }
+
+    Mavsdk& _mavsdk;
+    std::unique_ptr<ServerUtility> _server_utility;
     std::atomic<bool> _stopped{false};
     std::vector<std::weak_ptr<std::promise<void>>> _stream_stop_promises{};
 };

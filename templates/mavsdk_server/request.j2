@@ -3,6 +3,16 @@ grpc::Status {{ name.upper_camel_case }}(
     const rpc::{{ plugin_name.lower_snake_case }}::{{ name.upper_camel_case }}Request* {% if not params -%} /* request */ {%- else -%} request {%- endif -%},
     rpc::{{ plugin_name.lower_snake_case }}::{{ name.upper_camel_case }}Response* response) override
 {
+    if (!init_plugin()) {
+        {% if has_result %}
+        if (response != nullptr) {
+            auto result = mavsdk::{{ plugin_name.upper_camel_case }}::Result::NoSystem;
+            fillResponseWithResult(response, result);
+        }
+        {% endif %}
+        return grpc::Status::OK;
+    }
+
     {% if params -%}
     if (request == nullptr) {
         LogWarn() << "{{ name.upper_camel_case }} sent with a null request! Ignoring...";
@@ -10,7 +20,7 @@ grpc::Status {{ name.upper_camel_case }}(
     }
     {%- endif %}
 
-    auto result = _{{ plugin_name.lower_snake_case }}.{{ name.lower_snake_case }}({% for param in params %}{% if not param.type_info.is_primitive %}translateFromRpc{{ param.name.upper_camel_case }}({% endif %}request->{{ param.name.lower_snake_case }}(){% if not param.type_info.is_primitive %}){% endif %}{{ ", " if not loop.last }}{% endfor %});
+    auto result = _{{ plugin_name.lower_snake_case }}->{{ name.lower_snake_case }}({% for param in params %}{% if not param.type_info.is_primitive %}translateFromRpc{{ param.name.upper_camel_case }}({% endif %}request->{{ param.name.lower_snake_case }}(){% if not param.type_info.is_primitive %}){% endif %}{{ ", " if not loop.last }}{% endfor %});
 
     if (response != nullptr) {
         {% if has_result %}fillResponseWithResult(response, result.first);{% endif %}

@@ -96,6 +96,8 @@ std::ostream& operator<<(std::ostream& str, Geofence::Result const& result)
             return str << "Timeout";
         case Geofence::Result::InvalidArgument:
             return str << "Invalid Argument";
+        case Geofence::Result::NoSystem:
+            return str << "No System";
         default:
             return str << "Unknown";
     }

@@ -58,51 +58,29 @@ class GrpcServer {
 public:
     GrpcServer(Mavsdk& mavsdk) :
         _mavsdk(mavsdk),
-        _core(_mavsdk),
-        _action(_mavsdk.system()),
-        _action_service(_action),
-        _calibration(_mavsdk.system()),
-        _calibration_service(_calibration),
-        _camera(_mavsdk.system()),
-        _camera_service(_camera),
-        _failure(_mavsdk.system()),
-        _failure_service(_failure),
-        _follow_me(_mavsdk.system()),
-        _follow_me_service(_follow_me),
-        _ftp(_mavsdk.system()),
-        _ftp_service(_ftp),
-        _geofence(_mavsdk.system()),
-        _geofence_service(_geofence),
-        _gimbal(_mavsdk.system()),
-        _gimbal_service(_gimbal),
-        _info(_mavsdk.system()),
-        _info_service(_info),
-        _log_files(_mavsdk.system()),
-        _log_files_service(_log_files),
-        _manual_control(_mavsdk.system()),
-        _manual_control_service(_manual_control),
-        _mission(_mavsdk.system()),
-        _mission_service(_mission),
-        _mission_raw(_mavsdk.system()),
-        _mission_raw_service(_mission_raw),
-        _mocap(_mavsdk.system()),
-        _mocap_service(_mocap),
-        _offboard(_mavsdk.system()),
-        _offboard_service(_offboard),
-        _param(_mavsdk.system()),
-        _param_service(_param),
-        _server_utility(_mavsdk.system()),
-        _server_utility_service(_server_utility),
-        _shell(_mavsdk.system()),
-        _shell_service(_shell),
-        _telemetry(_mavsdk.system()),
-        _telemetry_service(_telemetry),
-        _tracking_server(_mavsdk.system()),
-        _tracking_server_service(_tracking_server),
-        _tune(_mavsdk.system()),
-        _tune_service(_tune),
-        _transponder(_mavsdk.system()),
-        _transponder_service(_transponder)
+        _core(mavsdk),
+        _action_service(mavsdk),
+        _calibration_service(mavsdk),
+        _camera_service(mavsdk),
+        _failure_service(mavsdk),
+        _follow_me_service(mavsdk),
+        _ftp_service(mavsdk),
+        _geofence_service(mavsdk),
+        _gimbal_service(mavsdk),
+        _info_service(mavsdk),
+        _log_files_service(mavsdk),
+        _manual_control_service(mavsdk),
+        _mission_service(mavsdk),
+        _mission_raw_service(mavsdk),
+        _mocap_service(mavsdk),
+        _offboard_service(mavsdk),
+        _param_service(mavsdk),
+        _server_utility_service(mavsdk),
+        _shell_service(mavsdk),
+        _telemetry_service(mavsdk),
+        _tracking_server_service(mavsdk),
+        _tune_service(mavsdk),
+        _transponder_service(mavsdk)
     {}
 
     int run();
@@ -115,49 +93,27 @@ private:
 
     Mavsdk& _mavsdk;
     CoreServiceImpl<> _core;
-    Action _action;
     ActionServiceImpl<> _action_service;
-    Calibration _calibration;
     CalibrationServiceImpl<> _calibration_service;
-    Camera _camera;
     CameraServiceImpl<> _camera_service;
-    Failure _failure;
     FailureServiceImpl<> _failure_service;
-    FollowMe _follow_me;
     FollowMeServiceImpl<> _follow_me_service;
-    Ftp _ftp;
     FtpServiceImpl<> _ftp_service;
-    Geofence _geofence;
     GeofenceServiceImpl<> _geofence_service;
-    Gimbal _gimbal;
     GimbalServiceImpl<> _gimbal_service;
-    Info _info;
     InfoServiceImpl<> _info_service;
-    LogFiles _log_files;
     LogFilesServiceImpl<> _log_files_service;
-    ManualControl _manual_control;
     ManualControlServiceImpl<> _manual_control_service;
-    Mission _mission;
     MissionServiceImpl<> _mission_service;
-    MissionRaw _mission_raw;
     MissionRawServiceImpl<> _mission_raw_service;
-    Mocap _mocap;
     MocapServiceImpl<> _mocap_service;
-    Offboard _offboard;
     OffboardServiceImpl<> _offboard_service;
-    Param _param;
     ParamServiceImpl<> _param_service;
-    ServerUtility _server_utility;
     ServerUtilityServiceImpl<> _server_utility_service;
-    Shell _shell;
     ShellServiceImpl<> _shell_service;
-    Telemetry _telemetry;
     TelemetryServiceImpl<> _telemetry_service;
-    TrackingServer _tracking_server;
     TrackingServerServiceImpl<> _tracking_server_service;
-    Tune _tune;
     TuneServiceImpl<> _tune_service;
-    Transponder _transponder;
     TransponderServiceImpl<> _transponder_service;
 
     std::unique_ptr<grpc::Server> _server;

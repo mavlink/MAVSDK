@@ -20,7 +20,7 @@ namespace mavsdk_server {
 template<typename FollowMe = FollowMe>
 class FollowMeServiceImpl final : public rpc::follow_me::FollowMeService::Service {
 public:
-    FollowMeServiceImpl(FollowMe& follow_me) : _follow_me(follow_me) {}
+    FollowMeServiceImpl(Mavsdk& mavsdk) : _mavsdk(mavsdk) {}
 
     template<typename ResponseType>
     void fillResponseWithResult(ResponseType* response, mavsdk::FollowMe::Result& result) const
@@ -210,7 +210,11 @@ public:
         const rpc::follow_me::GetConfigRequest* /* request */,
         rpc::follow_me::GetConfigResponse* response) override
     {
-        auto result = _follow_me.get_config();
+        if (!init_plugin()) {
+            return grpc::Status::OK;
+        }
+
+        auto result = _follow_me->get_config();
 
         if (response != nullptr) {
             response->set_allocated_config(translateToRpcConfig(result).release());
@@ -224,12 +228,21 @@ public:
         const rpc::follow_me::SetConfigRequest* request,
         rpc::follow_me::SetConfigResponse* response) override
     {
+        if (!init_plugin()) {
+            if (response != nullptr) {
+                auto result = mavsdk::FollowMe::Result::NoSystem;
+                fillResponseWithResult(response, result);
+            }
+
+            return grpc::Status::OK;
+        }
+
         if (request == nullptr) {
             LogWarn() << "SetConfig sent with a null request! Ignoring...";
             return grpc::Status::OK;
         }
 
-        auto result = _follow_me.set_config(translateFromRpcConfig(request->config()));
+        auto result = _follow_me->set_config(translateFromRpcConfig(request->config()));
 
         if (response != nullptr) {
             fillResponseWithResult(response, result);
@@ -243,7 +256,11 @@ public:
         const rpc::follow_me::IsActiveRequest* /* request */,
         rpc::follow_me::IsActiveResponse* response) override
     {
-        auto result = _follow_me.is_active();
+        if (!init_plugin()) {
+            return grpc::Status::OK;
+        }
+
+        auto result = _follow_me->is_active();
 
         if (response != nullptr) {
             response->set_is_active(result);
@@ -257,13 +274,22 @@ public:
         const rpc::follow_me::SetTargetLocationRequest* request,
         rpc::follow_me::SetTargetLocationResponse* response) override
     {
+        if (!init_plugin()) {
+            if (response != nullptr) {
+                auto result = mavsdk::FollowMe::Result::NoSystem;
+                fillResponseWithResult(response, result);
+            }
+
+            return grpc::Status::OK;
+        }
+
         if (request == nullptr) {
             LogWarn() << "SetTargetLocation sent with a null request! Ignoring...";
             return grpc::Status::OK;
         }
 
         auto result =
-            _follow_me.set_target_location(translateFromRpcTargetLocation(request->location()));
+            _follow_me->set_target_location(translateFromRpcTargetLocation(request->location()));
 
         if (response != nullptr) {
             fillResponseWithResult(response, result);
@@ -277,7 +303,11 @@ public:
         const rpc::follow_me::GetLastLocationRequest* /* request */,
         rpc::follow_me::GetLastLocationResponse* response) override
     {
-        auto result = _follow_me.get_last_location();
+        if (!init_plugin()) {
+            return grpc::Status::OK;
+        }
+
+        auto result = _follow_me->get_last_location();
 
         if (response != nullptr) {
             response->set_allocated_location(translateToRpcTargetLocation(result).release());
@@ -291,7 +321,16 @@ public:
         const rpc::follow_me::StartRequest* /* request */,
         rpc::follow_me::StartResponse* response) override
     {
-        auto result = _follow_me.start();
+        if (!init_plugin()) {
+            if (response != nullptr) {
+                auto result = mavsdk::FollowMe::Result::NoSystem;
+                fillResponseWithResult(response, result);
+            }
+
+            return grpc::Status::OK;
+        }
+
+        auto result = _follow_me->start();
 
         if (response != nullptr) {
             fillResponseWithResult(response, result);
@@ -305,7 +344,16 @@ public:
         const rpc::follow_me::StopRequest* /* request */,
         rpc::follow_me::StopResponse* response) override
     {
-        auto result = _follow_me.stop();
+        if (!init_plugin()) {
+            if (response != nullptr) {
+                auto result = mavsdk::FollowMe::Result::NoSystem;
+                fillResponseWithResult(response, result);
+            }
+
+            return grpc::Status::OK;
+        }
+
+        auto result = _follow_me->stop();
 
         if (response != nullptr) {
             fillResponseWithResult(response, result);
@@ -349,7 +397,19 @@ private:
         }
     }
 
-    FollowMe& _follow_me;
+    bool init_plugin()
+    {
+        if (_follow_me == nullptr) {
+            if (_mavsdk.systems().size() == 0) {
+                return false;
+            }
+            _follow_me = std::make_unique<FollowMe>(_mavsdk.systems()[0]);
+        }
+        return true;
+    }
+
+    Mavsdk& _mavsdk;
+    std::unique_ptr<FollowMe> _follow_me;
     std::atomic<bool> _stopped{false};
     std::vector<std::weak_ptr<std::promise<void>>> _stream_stop_promises{};
 };

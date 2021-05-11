@@ -20,7 +20,7 @@ namespace mavsdk_server {
 template<typename Info = Info>
 class InfoServiceImpl final : public rpc::info::InfoService::Service {
 public:
-    InfoServiceImpl(Info& info) : _info(info) {}
+    InfoServiceImpl(Mavsdk& mavsdk) : _mavsdk(mavsdk) {}
 
     template<typename ResponseType>
     void fillResponseWithResult(ResponseType* response, mavsdk::Info::Result& result) const
@@ -186,6 +186,8 @@ public:
                 return rpc::info::InfoResult_Result_RESULT_SUCCESS;
             case mavsdk::Info::Result::InformationNotReceivedYet:
                 return rpc::info::InfoResult_Result_RESULT_INFORMATION_NOT_RECEIVED_YET;
+            case mavsdk::Info::Result::NoSystem:
+                return rpc::info::InfoResult_Result_RESULT_NO_SYSTEM;
         }
     }
 
@@ -201,6 +203,8 @@ public:
                 return mavsdk::Info::Result::Success;
             case rpc::info::InfoResult_Result_RESULT_INFORMATION_NOT_RECEIVED_YET:
                 return mavsdk::Info::Result::InformationNotReceivedYet;
+            case rpc::info::InfoResult_Result_RESULT_NO_SYSTEM:
+                return mavsdk::Info::Result::NoSystem;
         }
     }
 
@@ -209,7 +213,16 @@ public:
         const rpc::info::GetFlightInformationRequest* /* request */,
         rpc::info::GetFlightInformationResponse* response) override
     {
-        auto result = _info.get_flight_information();
+        if (!init_plugin()) {
+            if (response != nullptr) {
+                auto result = mavsdk::Info::Result::NoSystem;
+                fillResponseWithResult(response, result);
+            }
+
+            return grpc::Status::OK;
+        }
+
+        auto result = _info->get_flight_information();
 
         if (response != nullptr) {
             fillResponseWithResult(response, result.first);
@@ -225,7 +238,16 @@ public:
         const rpc::info::GetIdentificationRequest* /* request */,
         rpc::info::GetIdentificationResponse* response) override
     {
-        auto result = _info.get_identification();
+        if (!init_plugin()) {
+            if (response != nullptr) {
+                auto result = mavsdk::Info::Result::NoSystem;
+                fillResponseWithResult(response, result);
+            }
+
+            return grpc::Status::OK;
+        }
+
+        auto result = _info->get_identification();
 
         if (response != nullptr) {
             fillResponseWithResult(response, result.first);
@@ -242,7 +264,16 @@ public:
         const rpc::info::GetProductRequest* /* request */,
         rpc::info::GetProductResponse* response) override
     {
-        auto result = _info.get_product();
+        if (!init_plugin()) {
+            if (response != nullptr) {
+                auto result = mavsdk::Info::Result::NoSystem;
+                fillResponseWithResult(response, result);
+            }
+
+            return grpc::Status::OK;
+        }
+
+        auto result = _info->get_product();
 
         if (response != nullptr) {
             fillResponseWithResult(response, result.first);
@@ -258,7 +289,16 @@ public:
         const rpc::info::GetVersionRequest* /* request */,
         rpc::info::GetVersionResponse* response) override
     {
-        auto result = _info.get_version();
+        if (!init_plugin()) {
+            if (response != nullptr) {
+                auto result = mavsdk::Info::Result::NoSystem;
+                fillResponseWithResult(response, result);
+            }
+
+            return grpc::Status::OK;
+        }
+
+        auto result = _info->get_version();
 
         if (response != nullptr) {
             fillResponseWithResult(response, result.first);
@@ -274,7 +314,16 @@ public:
         const rpc::info::GetSpeedFactorRequest* /* request */,
         rpc::info::GetSpeedFactorResponse* response) override
     {
-        auto result = _info.get_speed_factor();
+        if (!init_plugin()) {
+            if (response != nullptr) {
+                auto result = mavsdk::Info::Result::NoSystem;
+                fillResponseWithResult(response, result);
+            }
+
+            return grpc::Status::OK;
+        }
+
+        auto result = _info->get_speed_factor();
 
         if (response != nullptr) {
             fillResponseWithResult(response, result.first);
@@ -320,7 +369,19 @@ private:
         }
     }
 
-    Info& _info;
+    bool init_plugin()
+    {
+        if (_info == nullptr) {
+            if (_mavsdk.systems().size() == 0) {
+                return false;
+            }
+            _info = std::make_unique<Info>(_mavsdk.systems()[0]);
+        }
+        return true;
+    }
+
+    Mavsdk& _mavsdk;
+    std::unique_ptr<Info> _info;
     std::atomic<bool> _stopped{false};
     std::vector<std::weak_ptr<std::promise<void>>> _stream_stop_promises{};
 };

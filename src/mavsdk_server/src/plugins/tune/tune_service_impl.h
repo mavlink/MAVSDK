@@ -20,7 +20,7 @@ namespace mavsdk_server {
 template<typename Tune = Tune>
 class TuneServiceImpl final : public rpc::tune::TuneService::Service {
 public:
-    TuneServiceImpl(Tune& tune) : _tune(tune) {}
+    TuneServiceImpl(Mavsdk& mavsdk) : _mavsdk(mavsdk) {}
 
     template<typename ResponseType>
     void fillResponseWithResult(ResponseType* response, mavsdk::Tune::Result& result) const
@@ -185,6 +185,8 @@ public:
                 return rpc::tune::TuneResult_Result_RESULT_TUNE_TOO_LONG;
             case mavsdk::Tune::Result::Error:
                 return rpc::tune::TuneResult_Result_RESULT_ERROR;
+            case mavsdk::Tune::Result::NoSystem:
+                return rpc::tune::TuneResult_Result_RESULT_NO_SYSTEM;
         }
     }
 
@@ -204,6 +206,8 @@ public:
                 return mavsdk::Tune::Result::TuneTooLong;
             case rpc::tune::TuneResult_Result_RESULT_ERROR:
                 return mavsdk::Tune::Result::Error;
+            case rpc::tune::TuneResult_Result_RESULT_NO_SYSTEM:
+                return mavsdk::Tune::Result::NoSystem;
         }
     }
 
@@ -212,12 +216,22 @@ public:
         const rpc::tune::PlayTuneRequest* request,
         rpc::tune::PlayTuneResponse* response) override
     {
+        if (!init_plugin()) {
+            if (response != nullptr) {
+                auto result = mavsdk::Tune::Result::NoSystem;
+                fillResponseWithResult(response, result);
+            }
+
+            return grpc::Status::OK;
+        }
+
         if (request == nullptr) {
             LogWarn() << "PlayTune sent with a null request! Ignoring...";
             return grpc::Status::OK;
         }
 
-        auto result = _tune.play_tune(translateFromRpcTuneDescription(request->tune_description()));
+        auto result =
+            _tune->play_tune(translateFromRpcTuneDescription(request->tune_description()));
 
         if (response != nullptr) {
             fillResponseWithResult(response, result);
@@ -261,7 +275,19 @@ private:
         }
     }
 
-    Tune& _tune;
+    bool init_plugin()
+    {
+        if (_tune == nullptr) {
+            if (_mavsdk.systems().size() == 0) {
+                return false;
+            }
+            _tune = std::make_unique<Tune>(_mavsdk.systems()[0]);
+        }
+        return true;
+    }
+
+    Mavsdk& _mavsdk;
+    std::unique_ptr<Tune> _tune;
     std::atomic<bool> _stopped{false};
     std::vector<std::weak_ptr<std::promise<void>>> _stream_stop_promises{};
 };

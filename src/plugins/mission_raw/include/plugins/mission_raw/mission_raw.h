@@ -158,6 +158,7 @@ public:
         TransferCancelled, /**< @brief Mission transfer (upload or download) has been cancelled. */
         FailedToOpenQgcPlan, /**< @brief Failed to open the QGroundControl plan. */
         FailedToParseQgcPlan, /**< @brief Failed to parse the QGroundControl plan. */
+        NoSystem, /**< @brief No system connected. */
     };
 
     /**
