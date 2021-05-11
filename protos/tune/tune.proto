@@ -57,6 +57,7 @@ message TuneResult {
     RESULT_INVALID_TEMPO = 2; // Invalid tempo (range: 32 - 255)
     RESULT_TUNE_TOO_LONG = 3; // Invalid tune: encoded string must be at most 247 chars
     RESULT_ERROR = 4; // Failed to send the request
+    RESULT_NO_SYSTEM = 5; // No system connected
   }
 
   Result result = 1; // Result enum value

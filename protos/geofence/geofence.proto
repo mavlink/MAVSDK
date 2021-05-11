@@ -53,6 +53,7 @@ message GeofenceResult {
         RESULT_BUSY = 4; // Vehicle is busy
         RESULT_TIMEOUT = 5; // Request timed out
         RESULT_INVALID_ARGUMENT = 6; // Invalid argument
+        RESULT_NO_SYSTEM = 7; // No system connected
     }
 
     Result result = 1; // Result enum value

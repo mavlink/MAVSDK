@@ -177,6 +177,7 @@ message FtpResult {
         RESULT_INVALID_PARAMETER = 9; // Invalid parameter
         RESULT_UNSUPPORTED = 10; // Unsupported command
         RESULT_PROTOCOL_ERROR = 11; // General protocol error
+        RESULT_NO_SYSTEM = 12; // No system connected
     }
 
     Result result = 1; // Result enum value

@@ -220,6 +220,7 @@ message CameraResult {
         RESULT_ERROR = 5; // An error has occured while executing the command
         RESULT_TIMEOUT = 6; // Command timed out
         RESULT_WRONG_ARGUMENT = 7; // Command has wrong argument(s)
+        RESULT_NO_SYSTEM = 8; // No system connected
     }
 
     Result result = 1; // Result enum value

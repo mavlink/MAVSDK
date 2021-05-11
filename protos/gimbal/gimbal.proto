@@ -151,6 +151,7 @@ message GimbalResult {
         RESULT_ERROR = 2; // Error occurred sending the command
         RESULT_TIMEOUT = 3; // Command timed out
         RESULT_UNSUPPORTED = 4; // Functionality not supported
+        RESULT_NO_SYSTEM = 5; // No system connected
     }
 
     Result result = 1; // Result enum value
