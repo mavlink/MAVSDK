@@ -1093,12 +1093,12 @@ void MissionImpl::add_gimbal_items_v2(
     uint32_t flags = GIMBAL_MANAGER_FLAGS_ROLL_LOCK | GIMBAL_MANAGER_FLAGS_PITCH_LOCK;
 
     // Pitch should be between -180 and 180 degrees
-    pitch_deg = fmod(pitch_deg, 360);
-    pitch_deg = pitch_deg > 180 ? pitch_deg - 360 : pitch_deg;
+    pitch_deg = fmod(pitch_deg, 360.f);
+    pitch_deg = pitch_deg > 180.f ? pitch_deg - 360.f : pitch_deg;
 
     // Yaw should be between -180 and 180 degrees
-    yaw_deg = fmod(yaw_deg, 360);
-    yaw_deg = yaw_deg > 180 ? yaw_deg - 360 : yaw_deg;
+    yaw_deg = fmod(yaw_deg, 360.f);
+    yaw_deg = yaw_deg > 180.f ? yaw_deg - 360.f : yaw_deg;
 
     MAVLinkMissionTransfer::ItemInt next_item{
         static_cast<uint16_t>(int_items.size()),
