@@ -287,6 +287,7 @@ MissionImpl::convert_to_int_items(const std::vector<MissionItem>& mission_items)
 
     unsigned item_i = 0;
     _mission_data.mavlink_mission_item_to_mission_item_indices.clear();
+    _mission_data.gimbal_v2_in_control = false;
 
     for (const auto& item : mission_items) {
         if (has_valid_position(item)) {
@@ -354,6 +355,10 @@ MissionImpl::convert_to_int_items(const std::vector<MissionItem>& mission_items)
                     break;
 
                 case GimbalProtocol::V2:
+                    if (!_mission_data.gimbal_v2_in_control) {
+                        acquire_gimbal_control_v2(int_items, item_i);
+                        _mission_data.gimbal_v2_in_control = true;
+                    }
                     add_gimbal_items_v2(
                         int_items, item_i, item.gimbal_pitch_deg, item.gimbal_yaw_deg);
                     break;
@@ -467,8 +472,13 @@ MissionImpl::convert_to_int_items(const std::vector<MissionItem>& mission_items)
     }
 
     // We need to decrement the item_i again because it was increased in the loop above
-    // but the RTL item below still belongs to the last mission item.
+    // but the last items below still belong to the last mission item.
     --item_i;
+
+    if (_mission_data.gimbal_v2_in_control) {
+        release_gimbal_control_v2(int_items, item_i);
+        _mission_data.gimbal_v2_in_control = false;
+    }
 
     if (_enable_return_to_launch_after_mission) {
         MAVLinkMissionTransfer::ItemInt next_item{
@@ -1111,6 +1121,58 @@ void MissionImpl::add_gimbal_items_v2(
         NAN, // pitch rate
         NAN, // yaw rate
         static_cast<int32_t>(flags),
+        0, // reserved
+        0, // all devices
+        MAV_MISSION_TYPE_MISSION};
+
+    _mission_data.mavlink_mission_item_to_mission_item_indices.push_back(item_i);
+    int_items.push_back(next_item);
+}
+
+void MissionImpl::acquire_gimbal_control_v2(
+    std::vector<MAVLinkMissionTransfer::ItemInt>& int_items, unsigned item_i)
+{
+    uint8_t current = ((int_items.size() == 0) ? 1 : 0);
+
+    uint8_t autocontinue = 1;
+
+    MAVLinkMissionTransfer::ItemInt next_item{
+        static_cast<uint16_t>(int_items.size()),
+        MAV_FRAME_MISSION,
+        MAV_CMD_DO_GIMBAL_MANAGER_CONFIGURE,
+        current,
+        autocontinue,
+        -2.0f, // primary control sysid: set itself (autopilot) when running mission
+        -2.0f, // primary control compid: itself (autopilot) when running mission
+        -1.0f, // secondary control sysid: unchanged
+        -1.0f, // secondary control compid: unchanged
+        0, // reserved
+        0, // reserved
+        0, // all devices
+        MAV_MISSION_TYPE_MISSION};
+
+    _mission_data.mavlink_mission_item_to_mission_item_indices.push_back(item_i);
+    int_items.push_back(next_item);
+}
+
+void MissionImpl::release_gimbal_control_v2(
+    std::vector<MAVLinkMissionTransfer::ItemInt>& int_items, unsigned item_i)
+{
+    uint8_t current = ((int_items.size() == 0) ? 1 : 0);
+
+    uint8_t autocontinue = 1;
+
+    MAVLinkMissionTransfer::ItemInt next_item{
+        static_cast<uint16_t>(int_items.size()),
+        MAV_FRAME_MISSION,
+        MAV_CMD_DO_GIMBAL_MANAGER_CONFIGURE,
+        current,
+        autocontinue,
+        -3.0f, // primary control sysid: remove itself (autopilot) if in control
+        -3.0f, // primary control compid: remove itself (autopilot) if in control
+        -1.0f, // secondary control sysid: unchanged
+        -1.0f, // secondary control compid: unchanged
+        0, // reserved
         0, // reserved
         0, // all devices
         MAV_MISSION_TYPE_MISSION};
