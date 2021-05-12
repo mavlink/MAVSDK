@@ -11,6 +11,7 @@ template class CallbackList<Mission::MissionProgress>;
 
 using MissionItem = Mission::MissionItem;
 using CameraAction = Mission::MissionItem::CameraAction;
+using VehicleAction = Mission::MissionItem::VehicleAction;
 
 MissionImpl::MissionImpl(System& system) : PluginImplBase(system)
 {
@@ -367,33 +368,65 @@ MissionImpl::convert_to_int_items(const std::vector<MissionItem>& mission_items)
     _mission_data.gimbal_v2_in_control = false;
 
     for (const auto& item : mission_items) {
-        if (has_valid_position(item)) {
+        if (item.vehicle_action == VehicleAction::Takeoff) {
+            // There is a vehicle action that we need to send.
+
             // Current is the 0th waypoint
-            const uint8_t current = ((int_items.size() == 0) ? 1 : 0);
+            uint8_t current = ((int_items.size() == 0) ? 1 : 0);
+
+            uint8_t autocontinue = 1;
 
             const int32_t x = int32_t(std::round(item.latitude_deg * 1e7));
             const int32_t y = int32_t(std::round(item.longitude_deg * 1e7));
-            const float z = item.relative_altitude_m;
+            float z = item.relative_altitude_m;
+            MAV_FRAME frame = MAV_FRAME_GLOBAL_RELATIVE_ALT_INT;
 
             MavlinkMissionTransfer::ItemInt next_item{
                 static_cast<uint16_t>(int_items.size()),
-                static_cast<uint8_t>(MAV_FRAME_GLOBAL_RELATIVE_ALT_INT),
-                static_cast<uint8_t>(MAV_CMD_NAV_WAYPOINT),
+                (uint8_t)frame,
+                MAV_CMD_NAV_TAKEOFF,
                 current,
-                1, // autocontinue
-                hold_time(item),
-                acceptance_radius(item),
-                0.0f,
-                item.yaw_deg,
+                autocontinue,
+                NAN,
+                NAN,
+                NAN,
+                NAN,
                 x,
                 y,
                 z,
                 MAV_MISSION_TYPE_MISSION};
 
-            last_position_valid = true; // because we checked has_valid_position
-
             _mission_data.mavlink_mission_item_to_mission_item_indices.push_back(item_i);
             int_items.push_back(next_item);
+        } else {
+            if (has_valid_position(item)) {
+                // Current is the 0th waypoint
+                const uint8_t current = ((int_items.size() == 0) ? 1 : 0);
+
+                const int32_t x = int32_t(std::round(item.latitude_deg * 1e7));
+                const int32_t y = int32_t(std::round(item.longitude_deg * 1e7));
+                const float z = item.relative_altitude_m;
+
+                MavlinkMissionTransfer::ItemInt next_item{
+                    static_cast<uint16_t>(int_items.size()),
+                    static_cast<uint8_t>(MAV_FRAME_GLOBAL_RELATIVE_ALT_INT),
+                    static_cast<uint8_t>(MAV_CMD_NAV_WAYPOINT),
+                    current,
+                    1, // autocontinue
+                    hold_time(item),
+                    acceptance_radius(item),
+                    0.0f,
+                    item.yaw_deg,
+                    x,
+                    y,
+                    z,
+                    MAV_MISSION_TYPE_MISSION};
+
+                last_position_valid = true; // because we checked has_valid_position
+
+                _mission_data.mavlink_mission_item_to_mission_item_indices.push_back(item_i);
+                int_items.push_back(next_item);
+            }
         }
 
         if (std::isfinite(item.speed_m_s)) {
@@ -557,6 +590,70 @@ MissionImpl::convert_to_int_items(const std::vector<MissionItem>& mission_items)
             int_items.push_back(next_item);
         }
 
+        if (item.vehicle_action != VehicleAction::None &&
+            item.vehicle_action != VehicleAction::Takeoff) {
+            // There is a vehicle action that we need to send.
+
+            // Current is the 0th waypoint
+            uint8_t current = ((int_items.size() == 0) ? 1 : 0);
+
+            uint8_t autocontinue = 1;
+
+            uint16_t command = 0;
+            float param1 = NAN;
+            float param2 = NAN;
+            float param3 = NAN;
+            switch (item.vehicle_action) {
+                case VehicleAction::Land:
+                    command = MAV_CMD_NAV_LAND; // Land at current position with same heading
+                    break;
+                case VehicleAction::TransitionToFw:
+                    command = MAV_CMD_DO_VTOL_TRANSITION; // Do transition
+                    param1 = MAV_VTOL_STATE_FW; // Target state is Fixed-Wing
+                    param2 = 0; // Normal transition
+                    break;
+                case VehicleAction::TransitionToMc:
+                    command = MAV_CMD_DO_VTOL_TRANSITION;
+                    param1 = MAV_VTOL_STATE_MC; // Target state is Multi-Copter
+                    param2 = 0; // Normal transition
+                    break;
+                default:
+                    LogErr() << "Error: vehicle action not supported";
+                    break;
+            }
+
+            const int32_t x = int32_t(std::round(item.latitude_deg * 1e7));
+            const int32_t y = int32_t(std::round(item.longitude_deg * 1e7));
+            float z = item.relative_altitude_m;
+            MAV_FRAME frame = MAV_FRAME_GLOBAL_RELATIVE_ALT_INT;
+
+            if (command == MAV_CMD_NAV_LAND) {
+                z = 0;
+            }
+
+            if (command == MAV_CMD_DO_VTOL_TRANSITION) {
+                frame = MAV_FRAME_MISSION;
+            }
+
+            MavlinkMissionTransfer::ItemInt next_item{
+                static_cast<uint16_t>(int_items.size()),
+                (uint8_t)frame,
+                command,
+                current,
+                autocontinue,
+                param1,
+                param2,
+                param3,
+                NAN,
+                x,
+                y,
+                z,
+                MAV_MISSION_TYPE_MISSION};
+
+            _mission_data.mavlink_mission_item_to_mission_item_indices.push_back(item_i);
+            int_items.push_back(next_item);
+        }
+
         ++item_i;
     }
 
@@ -614,7 +711,8 @@ std::pair<Mission::Result, Mission::MissionPlan> MissionImpl::convert_to_result_
         for (const auto& int_item : int_items) {
             LogDebug() << "Assembling Message: " << int(int_item.seq);
 
-            if (int_item.command == MAV_CMD_NAV_WAYPOINT) {
+            if (int_item.command == MAV_CMD_NAV_WAYPOINT ||
+                int_item.command == MAV_CMD_NAV_TAKEOFF) {
                 if (int_item.frame != MAV_FRAME_GLOBAL_RELATIVE_ALT_INT) {
                     LogErr() << "Waypoint frame not supported unsupported";
                     result_pair.first = Mission::Result::Unsupported;
@@ -633,8 +731,14 @@ std::pair<Mission::Result, Mission::MissionPlan> MissionImpl::convert_to_result_
                 new_mission_item.relative_altitude_m = int_item.z;
                 new_mission_item.yaw_deg = int_item.param4;
 
-                new_mission_item.is_fly_through = !(int_item.param1 > 0);
-                new_mission_item.acceptance_radius_m = int_item.param2;
+                if (int_item.command == MAV_CMD_NAV_TAKEOFF) {
+                    new_mission_item.acceptance_radius_m = 1;
+                    new_mission_item.is_fly_through = false;
+                    new_mission_item.vehicle_action = VehicleAction::Takeoff;
+                } else {
+                    new_mission_item.acceptance_radius_m = int_item.param2;
+                    new_mission_item.is_fly_through = !(int_item.param1 > 0);
+                }
 
                 have_set_position = true;
 
@@ -709,6 +813,17 @@ std::pair<Mission::Result, Mission::MissionPlan> MissionImpl::convert_to_result_
                     new_mission_item.camera_photo_distance_m = int_item.param1;
                 } else {
                     new_mission_item.camera_action = CameraAction::StopPhotoDistance;
+                }
+
+            } else if (int_item.command == MAV_CMD_NAV_TAKEOFF) {
+                new_mission_item.vehicle_action = VehicleAction::Takeoff;
+            } else if (int_item.command == MAV_CMD_NAV_LAND) {
+                new_mission_item.vehicle_action = VehicleAction::Land;
+            } else if (int_item.command == MAV_CMD_DO_VTOL_TRANSITION) {
+                if (int_item.param1 == MAV_VTOL_STATE_FW) {
+                    new_mission_item.vehicle_action = VehicleAction::TransitionToFw;
+                } else {
+                    new_mission_item.vehicle_action = VehicleAction::TransitionToMc;
                 }
 
             } else if (int_item.command == MAV_CMD_DO_CHANGE_SPEED) {

@@ -89,6 +89,27 @@ public:
         friend std::ostream&
         operator<<(std::ostream& str, Mission::MissionItem::CameraAction const& camera_action);
 
+        /**
+         * @brief Possible vehicle actions at a mission item
+         */
+        enum class VehicleAction {
+            None, /**< @brief No action. */
+            Takeoff, /**< @brief Vehicle will takeoff and go to defined waypoint. */
+            Land, /**< @brief When a waypoint is reached vehicle will land at current position. */
+            TransitionToFw, /**< @brief When a waypoint is reached vehicle will transition to
+                               fixed-wing mode. */
+            TransitionToMc, /**< @brief When a waypoint is reached vehicle will transition to
+                               multi-copter mode. */
+        };
+
+        /**
+         * @brief Stream operator to print information about a `Mission::VehicleAction`.
+         *
+         * @return A reference to the stream.
+         */
+        friend std::ostream&
+        operator<<(std::ostream& str, Mission::MissionItem::VehicleAction const& vehicle_action);
+
         double latitude_deg{double(NAN)}; /**< @brief Latitude in degrees (range: -90 to +90) */
         double longitude_deg{double(NAN)}; /**< @brief Longitude in degrees (range: -180 to +180) */
         float relative_altitude_m{
@@ -109,6 +130,8 @@ public:
         float yaw_deg{float(NAN)}; /**< @brief Absolute yaw angle (in degrees) */
         float camera_photo_distance_m{
             NAN}; /**< @brief Camera photo distance to use after this mission item (in meters) */
+        VehicleAction
+            vehicle_action{}; /**< @brief Vehicle action to trigger at this mission item. */
     };
 
     /**
