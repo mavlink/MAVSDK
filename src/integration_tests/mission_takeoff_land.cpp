@@ -76,12 +76,10 @@ void do_mission_with_takeoff_and_land(float mission_altitude_m)
         Telemetry::LandedState::OnGround};
 
     std::vector<Telemetry::LandedState> landed_states;
-    int index = 0;
-    telemetry->subscribe_landed_state(
-        [&index, &landed_states](Telemetry::LandedState landed_state) {
-            LogInfo() << landed_state;
-            landed_states.push_back(landed_state);
-        });
+    telemetry->subscribe_landed_state([&landed_states](Telemetry::LandedState landed_state) {
+        LogInfo() << landed_state;
+        landed_states.push_back(landed_state);
+    });
 
     while (!telemetry->health_all_ok()) {
         LogInfo() << "Waiting for system to be ready";
