@@ -65,7 +65,26 @@ void do_mission_with_takeoff_and_land(float mission_altitude_m)
         pc.check_current_alitude(position.relative_altitude_m);
     });
 
-    while (!telemetry->health_all_ok()) {
+    Telemetry::LandedState landed_states_template[] = {
+        Telemetry::LandedState::OnGround,
+        Telemetry::LandedState::TakingOff,
+        Telemetry::LandedState::InAir,
+        Telemetry::LandedState::Landing,
+        Telemetry::LandedState::TakingOff,
+        Telemetry::LandedState::InAir,
+        Telemetry::LandedState::Landing,
+        Telemetry::LandedState::OnGroud};
+
+    Telemetry::LandedState landed_states[8];
+    int index = 0;
+    telemetry->subscribe_landed_state([](Telemetry::LandedState landed_state) {
+        LogInfo() << landed_state;
+        landed_states[index] = landed_state;
+        index++
+    })
+
+        while (!telemetry->health_all_ok())
+    {
         LogInfo() << "Waiting for system to be ready";
         LogDebug() << "Health: " << telemetry->health();
         std::this_thread::sleep_for(std::chrono::seconds(1));
@@ -75,15 +94,23 @@ void do_mission_with_takeoff_and_land(float mission_altitude_m)
     LogInfo() << "Creating and uploading mission";
 
     Mission::MissionItem new_item{};
+    Mission::MissionPlan mission_plan{};
 
     new_item.latitude_deg = 47.398170327054473;
     new_item.longitude_deg = 8.5456490218639658;
     new_item.relative_altitude_m = mission_altitude_m;
     new_item.vehicle_action = Mission::MissionItem::VehicleAction::Takeoff;
-
-    Mission::MissionPlan mission_plan{};
     mission_plan.mission_items.push_back(new_item);
 
+    new_item.latitude_deg = 47.398370327054473;
+    new_item.vehicle_action = Mission::MissionItem::VehicleAction::Land;
+    mission_plan.mission_items.push_back(new_item);
+
+    new_item.latitude_deg = 47.398570327054473;
+    new_item.vehicle_action = Mission::MissionItem::VehicleAction::Takeoff;
+    mission_plan.mission_items.push_back(new_item);
+
+    new_item.latitude_deg = 47.398770327054473;
     new_item.vehicle_action = Mission::MissionItem::VehicleAction::Land;
     mission_plan.mission_items.push_back(new_item);
 
@@ -139,5 +166,9 @@ void do_mission_with_takeoff_and_land(float mission_altitude_m)
         // Wait until we're done.
         std::this_thread::sleep_for(std::chrono::seconds(1));
     }
+    for (int i = 0; i < 8; i++) {
+        ASSERT_EQ(landed_states_template[i], landed_states[i]);
+    }
+
     LogInfo() << "Disarmed, exiting.";
 }
