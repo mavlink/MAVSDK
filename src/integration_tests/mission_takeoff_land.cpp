@@ -164,7 +164,7 @@ void do_mission_with_takeoff_and_land(float mission_altitude_m)
         std::this_thread::sleep_for(std::chrono::seconds(1));
     }
     for (int i = 0; i < 8; i++) {
-        ASSERT_EQ(landed_states_template, landed_states);
+        ASSERT_EQ(landed_states_template.at(i), landed_states.at(i));
     }
 
     LogInfo() << "Disarmed, exiting.";
