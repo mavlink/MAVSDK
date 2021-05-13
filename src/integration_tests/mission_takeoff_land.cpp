@@ -65,7 +65,7 @@ void do_mission_with_takeoff_and_land(float mission_altitude_m)
         pc.check_current_alitude(position.relative_altitude_m);
     });
 
-    Telemetry::LandedState landed_states_template[] = {
+    std::vector<Telemetry::LandedState> landed_states_template = {
         Telemetry::LandedState::OnGround,
         Telemetry::LandedState::TakingOff,
         Telemetry::LandedState::InAir,
@@ -75,13 +75,12 @@ void do_mission_with_takeoff_and_land(float mission_altitude_m)
         Telemetry::LandedState::Landing,
         Telemetry::LandedState::OnGround};
 
-    Telemetry::LandedState landed_states[8];
+    std::vector<Telemetry::LandedState> landed_states;
     int index = 0;
     telemetry->subscribe_landed_state(
         [&index, &landed_states](Telemetry::LandedState landed_state) {
             LogInfo() << landed_state;
-            landed_states[index] = landed_state;
-            index++;
+            landed_states.push_back(landed_state);
         });
 
     while (!telemetry->health_all_ok()) {
@@ -167,7 +166,7 @@ void do_mission_with_takeoff_and_land(float mission_altitude_m)
         std::this_thread::sleep_for(std::chrono::seconds(1));
     }
     for (int i = 0; i < 8; i++) {
-        ASSERT_EQ(landed_states_template[i], landed_states[i]);
+        ASSERT_EQ(landed_states_template, landed_states);
     }
 
     LogInfo() << "Disarmed, exiting.";
