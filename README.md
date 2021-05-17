@@ -41,10 +41,10 @@ Quick Links:
 
 - [QuickStart](https://mavsdk.mavlink.io/main/en/cpp/#getting-started)
 - [C++ API Overview](https://mavsdk.mavlink.io/main/en/cpp/#api-overview)
-- [API Reference](https://mavsdk.mavlink.io/main/en/api_reference/)
+- [API Reference](https://mavsdk.mavlink.io/main/en/cpp/api_reference/)
 - [Building the Library](https://mavsdk.mavlink.io/main/en/cpp/guide/build.html)
-- [Examples](https://mavsdk.mavlink.io/main/en/examples/)
-- [FAQ](https://mavsdk.mavlink.io/main/en/getting_started/faq.html)
+- [Examples](https://mavsdk.mavlink.io/main/en/cpp/examples/)
+- [FAQ](https://mavsdk.mavlink.io/main/en/faq.html)
 
 ## License
 
