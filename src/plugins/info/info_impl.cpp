@@ -150,7 +150,10 @@ void InfoImpl::process_autopilot_version(const mavlink_message_t& message)
     _identification.hardware_uid =
         translate_binary_to_str(autopilot_version.uid2, sizeof(autopilot_version.uid2));
 
-    _identification.legacy_uid = autopilot_version.uid;
+    std::memcpy(
+        _identification.legacy_uid,
+        reinterpret_cast<uint8_t*>(&autopilot_version.uid),
+        sizeof(autopilot_version.uid));
 
     _information_received = true;
 }
