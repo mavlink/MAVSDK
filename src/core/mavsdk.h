@@ -1,13 +1,14 @@
 #pragma once
 
-#include <string>
-#include <memory>
-#include <vector>
 #include <functional>
+#include <memory>
+#include <optional>
+#include <string>
+#include <vector>
 
+#include "connection_result.h"
 #include "deprecated.h"
 #include "system.h"
-#include "connection_result.h"
 
 namespace mavsdk {
 
@@ -185,9 +186,12 @@ public:
         enum class UsageType {
             Autopilot, /**< @brief SDK is used as an autopilot. */
             GroundStation, /**< @brief SDK is used as a ground station. */
-            CompanionComputer, /**< @brief SDK is used as a companion computer on board the MAV. */
-            Custom /**< @brief the SDK is used in a custom configuration, no automatic ID will be
+            CompanionComputer, /**< @brief SDK is used as a companion computer element 1 on board the MAV. */
+            Custom, /**< @brief the SDK is used in a custom configuration, no automatic ID will be
                       provided */
+            CompanionComputer2, /**< @brief SDK is used as a companion computer element 2 on board the MAV. */
+            CompanionComputer3, /**< @brief SDK is used as a companion computer element 3 on board the MAV. */
+            CompanionComputer4 /**< @brief SDK is used as a companion computer element 4 on board the MAV. */
         };
 
         /**
@@ -250,11 +254,24 @@ public:
          */
         void set_usage_type(UsageType usage_type);
 
+        /**
+         * @brief Retrieve the component's description of this configuration if it has one
+         * UUseful to set a more custom name than the eventually too generic component_id
+         */
+        std::optional<std::string const> get_component_description() const;
+
+        /**
+         * @brief Set the component's description of this configuration
+         * Useful to set a more custom name than the eventually too generic component_id
+         */
+        void set_component_description(std::string const & component_description);
+
     private:
         uint8_t _system_id;
         uint8_t _component_id;
         bool _always_send_heartbeats;
         UsageType _usage_type;
+        std::optional<std::string> _component_description;
     };
 
     /**

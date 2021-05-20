@@ -136,6 +136,21 @@ Mavsdk::Configuration::Configuration(UsageType usage_type) :
             _component_id = MavsdkImpl::DEFAULT_COMPONENT_ID_CC;
             _always_send_heartbeats = true;
             break;
+        case Mavsdk::Configuration::UsageType::CompanionComputer2:
+            _system_id = MavsdkImpl::DEFAULT_SYSTEM_ID_CC;
+            _component_id = MAV_COMPONENT::MAV_COMP_ID_ONBOARD_COMPUTER2;
+            _always_send_heartbeats = true;
+            break;
+        case Mavsdk::Configuration::UsageType::CompanionComputer3:
+            _system_id = MavsdkImpl::DEFAULT_SYSTEM_ID_CC;
+            _component_id = MAV_COMPONENT::MAV_COMP_ID_ONBOARD_COMPUTER3;
+            _always_send_heartbeats = true;
+            break;
+        case Mavsdk::Configuration::UsageType::CompanionComputer4:
+            _system_id = MavsdkImpl::DEFAULT_SYSTEM_ID_CC;
+            _component_id = MAV_COMPONENT::MAV_COMP_ID_ONBOARD_COMPUTER4;
+            _always_send_heartbeats = true;
+            break;
         case Mavsdk::Configuration::UsageType::Autopilot:
             _system_id = MavsdkImpl::DEFAULT_SYSTEM_ID_AUTOPILOT;
             _component_id = MavsdkImpl::DEFAULT_COMPONENT_ID_AUTOPILOT;
@@ -184,6 +199,16 @@ Mavsdk::Configuration::UsageType Mavsdk::Configuration::get_usage_type() const
 void Mavsdk::Configuration::set_usage_type(Mavsdk::Configuration::UsageType usage_type)
 {
     _usage_type = usage_type;
+}
+
+std::optional<std::string const> Mavsdk::Configuration::get_component_description() const
+{
+    return _component_description;
+}
+
+void Mavsdk::Configuration::set_component_description(std::string const & component_description)
+{
+    _component_description = component_description;
 }
 
 } // namespace mavsdk
