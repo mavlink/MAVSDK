@@ -9,6 +9,7 @@
 
 #include "telemetry/mocks/telemetry_mock.h"
 #include "telemetry/telemetry_service_impl.h"
+#include "mocks/lazy_plugin_mock.h"
 
 namespace {
 
@@ -16,7 +17,10 @@ using testing::_;
 using testing::NiceMock;
 
 using MockTelemetry = NiceMock<mavsdk::testing::MockTelemetry>;
-using TelemetryServiceImpl = mavsdk::mavsdk_server::TelemetryServiceImpl<MockTelemetry>;
+using MockLazyPlugin =
+    testing::NiceMock<mavsdk::mavsdk_server::testing::MockLazyPlugin<MockTelemetry>>;
+using TelemetryServiceImpl =
+    mavsdk::mavsdk_server::TelemetryServiceImpl<MockTelemetry, MockLazyPlugin>;
 using TelemetryService = mavsdk::rpc::telemetry::TelemetryService;
 
 using PositionResponse = mavsdk::rpc::telemetry::PositionResponse;
@@ -52,8 +56,11 @@ class TelemetryServiceImplTest : public ::testing::Test {
 protected:
     virtual void SetUp()
     {
+        _lazy_plugin = std::make_unique<MockLazyPlugin>();
         _telemetry = std::make_unique<MockTelemetry>();
-        _telemetry_service = std::make_unique<TelemetryServiceImpl>(*_telemetry);
+        _telemetry_service = std::make_unique<TelemetryServiceImpl>(*_lazy_plugin);
+
+        ON_CALL(*_lazy_plugin, maybe_plugin()).WillByDefault(Return(_telemetry.get()));
 
         grpc::ServerBuilder builder;
         builder.RegisterService(_telemetry_service.get());
@@ -150,6 +157,7 @@ protected:
     std::future<void> subscribeActuatorOutputStatusAsync(
         std::vector<ActuatorOutputStatus>& actuator_output_status_events) const;
 
+    std::unique_ptr<MockLazyPlugin> _lazy_plugin{};
     std::unique_ptr<grpc::Server> _server{};
     std::unique_ptr<TelemetryService::Stub> _stub{};
     std::unique_ptr<MockTelemetry> _telemetry{};

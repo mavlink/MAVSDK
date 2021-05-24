@@ -5,6 +5,8 @@
 #include "ftp/ftp.grpc.pb.h"
 #include "plugins/ftp/ftp.h"
 
+#include "mavsdk.h"
+#include "lazy_plugin.h"
 #include "log.h"
 #include <atomic>
 #include <cmath>
@@ -17,9 +19,10 @@
 namespace mavsdk {
 namespace mavsdk_server {
 
-template<typename Ftp = Ftp> class FtpServiceImpl final : public rpc::ftp::FtpService::Service {
+template<typename Ftp = Ftp, typename LazyPlugin = LazyPlugin<Ftp>>
+class FtpServiceImpl final : public rpc::ftp::FtpService::Service {
 public:
-    FtpServiceImpl(Mavsdk& mavsdk) : _mavsdk(mavsdk) {}
+    FtpServiceImpl(LazyPlugin& lazy_plugin) : _lazy_plugin(lazy_plugin) {}
 
     template<typename ResponseType>
     void fillResponseWithResult(ResponseType* response, mavsdk::Ftp::Result& result) const
@@ -134,7 +137,7 @@ public:
         const rpc::ftp::ResetRequest* /* request */,
         rpc::ftp::ResetResponse* response) override
     {
-        if (!init_plugin()) {
+        if (_lazy_plugin.maybe_plugin() == nullptr) {
             if (response != nullptr) {
                 auto result = mavsdk::Ftp::Result::NoSystem;
                 fillResponseWithResult(response, result);
@@ -146,7 +149,8 @@ public:
         std::promise<mavsdk::Ftp::Result> prom;
         std::future<mavsdk::Ftp::Result> fut = prom.get_future();
 
-        _ftp->reset_async([&prom](const mavsdk::Ftp::Result result) { prom.set_value(result); });
+        _lazy_plugin.maybe_plugin()->reset_async(
+            [&prom](const mavsdk::Ftp::Result result) { prom.set_value(result); });
         auto result = fut.get();
 
         if (response != nullptr) {
@@ -161,7 +165,7 @@ public:
         const mavsdk::rpc::ftp::SubscribeDownloadRequest* request,
         grpc::ServerWriter<rpc::ftp::DownloadResponse>* writer) override
     {
-        if (!init_plugin()) {
+        if (_lazy_plugin.maybe_plugin() == nullptr) {
             rpc::ftp::DownloadResponse rpc_response;
             auto result = mavsdk::Ftp::Result::NoSystem;
             fillResponseWithResult(&rpc_response, result);
@@ -177,7 +181,7 @@ public:
         auto is_finished = std::make_shared<bool>(false);
         auto subscribe_mutex = std::make_shared<std::mutex>();
 
-        _ftp->download_async(
+        _lazy_plugin.maybe_plugin()->download_async(
             request->remote_file_path(),
             request->local_dir(),
             [this, &writer, &stream_closed_promise, is_finished, subscribe_mutex](
@@ -215,7 +219,7 @@ public:
         const mavsdk::rpc::ftp::SubscribeUploadRequest* request,
         grpc::ServerWriter<rpc::ftp::UploadResponse>* writer) override
     {
-        if (!init_plugin()) {
+        if (_lazy_plugin.maybe_plugin() == nullptr) {
             rpc::ftp::UploadResponse rpc_response;
             auto result = mavsdk::Ftp::Result::NoSystem;
             fillResponseWithResult(&rpc_response, result);
@@ -231,7 +235,7 @@ public:
         auto is_finished = std::make_shared<bool>(false);
         auto subscribe_mutex = std::make_shared<std::mutex>();
 
-        _ftp->upload_async(
+        _lazy_plugin.maybe_plugin()->upload_async(
             request->local_file_path(),
             request->remote_dir(),
             [this, &writer, &stream_closed_promise, is_finished, subscribe_mutex](
@@ -269,7 +273,7 @@ public:
         const rpc::ftp::ListDirectoryRequest* request,
         rpc::ftp::ListDirectoryResponse* response) override
     {
-        if (!init_plugin()) {
+        if (_lazy_plugin.maybe_plugin() == nullptr) {
             if (response != nullptr) {
                 auto result = mavsdk::Ftp::Result::NoSystem;
                 fillResponseWithResult(response, result);
@@ -283,7 +287,7 @@ public:
             return grpc::Status::OK;
         }
 
-        auto result = _ftp->list_directory(request->remote_dir());
+        auto result = _lazy_plugin.maybe_plugin()->list_directory(request->remote_dir());
 
         if (response != nullptr) {
             fillResponseWithResult(response, result.first);
@@ -301,7 +305,7 @@ public:
         const rpc::ftp::CreateDirectoryRequest* request,
         rpc::ftp::CreateDirectoryResponse* response) override
     {
-        if (!init_plugin()) {
+        if (_lazy_plugin.maybe_plugin() == nullptr) {
             if (response != nullptr) {
                 auto result = mavsdk::Ftp::Result::NoSystem;
                 fillResponseWithResult(response, result);
@@ -315,7 +319,7 @@ public:
             return grpc::Status::OK;
         }
 
-        auto result = _ftp->create_directory(request->remote_dir());
+        auto result = _lazy_plugin.maybe_plugin()->create_directory(request->remote_dir());
 
         if (response != nullptr) {
             fillResponseWithResult(response, result);
@@ -329,7 +333,7 @@ public:
         const rpc::ftp::RemoveDirectoryRequest* request,
         rpc::ftp::RemoveDirectoryResponse* response) override
     {
-        if (!init_plugin()) {
+        if (_lazy_plugin.maybe_plugin() == nullptr) {
             if (response != nullptr) {
                 auto result = mavsdk::Ftp::Result::NoSystem;
                 fillResponseWithResult(response, result);
@@ -343,7 +347,7 @@ public:
             return grpc::Status::OK;
         }
 
-        auto result = _ftp->remove_directory(request->remote_dir());
+        auto result = _lazy_plugin.maybe_plugin()->remove_directory(request->remote_dir());
 
         if (response != nullptr) {
             fillResponseWithResult(response, result);
@@ -357,7 +361,7 @@ public:
         const rpc::ftp::RemoveFileRequest* request,
         rpc::ftp::RemoveFileResponse* response) override
     {
-        if (!init_plugin()) {
+        if (_lazy_plugin.maybe_plugin() == nullptr) {
             if (response != nullptr) {
                 auto result = mavsdk::Ftp::Result::NoSystem;
                 fillResponseWithResult(response, result);
@@ -371,7 +375,7 @@ public:
             return grpc::Status::OK;
         }
 
-        auto result = _ftp->remove_file(request->remote_file_path());
+        auto result = _lazy_plugin.maybe_plugin()->remove_file(request->remote_file_path());
 
         if (response != nullptr) {
             fillResponseWithResult(response, result);
@@ -385,7 +389,7 @@ public:
         const rpc::ftp::RenameRequest* request,
         rpc::ftp::RenameResponse* response) override
     {
-        if (!init_plugin()) {
+        if (_lazy_plugin.maybe_plugin() == nullptr) {
             if (response != nullptr) {
                 auto result = mavsdk::Ftp::Result::NoSystem;
                 fillResponseWithResult(response, result);
@@ -399,7 +403,8 @@ public:
             return grpc::Status::OK;
         }
 
-        auto result = _ftp->rename(request->remote_from_path(), request->remote_to_path());
+        auto result = _lazy_plugin.maybe_plugin()->rename(
+            request->remote_from_path(), request->remote_to_path());
 
         if (response != nullptr) {
             fillResponseWithResult(response, result);
@@ -413,7 +418,7 @@ public:
         const rpc::ftp::AreFilesIdenticalRequest* request,
         rpc::ftp::AreFilesIdenticalResponse* response) override
     {
-        if (!init_plugin()) {
+        if (_lazy_plugin.maybe_plugin() == nullptr) {
             if (response != nullptr) {
                 auto result = mavsdk::Ftp::Result::NoSystem;
                 fillResponseWithResult(response, result);
@@ -427,8 +432,8 @@ public:
             return grpc::Status::OK;
         }
 
-        auto result =
-            _ftp->are_files_identical(request->local_file_path(), request->remote_file_path());
+        auto result = _lazy_plugin.maybe_plugin()->are_files_identical(
+            request->local_file_path(), request->remote_file_path());
 
         if (response != nullptr) {
             fillResponseWithResult(response, result.first);
@@ -444,7 +449,7 @@ public:
         const rpc::ftp::SetRootDirectoryRequest* request,
         rpc::ftp::SetRootDirectoryResponse* response) override
     {
-        if (!init_plugin()) {
+        if (_lazy_plugin.maybe_plugin() == nullptr) {
             if (response != nullptr) {
                 auto result = mavsdk::Ftp::Result::NoSystem;
                 fillResponseWithResult(response, result);
@@ -458,7 +463,7 @@ public:
             return grpc::Status::OK;
         }
 
-        auto result = _ftp->set_root_directory(request->root_dir());
+        auto result = _lazy_plugin.maybe_plugin()->set_root_directory(request->root_dir());
 
         if (response != nullptr) {
             fillResponseWithResult(response, result);
@@ -472,7 +477,7 @@ public:
         const rpc::ftp::SetTargetCompidRequest* request,
         rpc::ftp::SetTargetCompidResponse* response) override
     {
-        if (!init_plugin()) {
+        if (_lazy_plugin.maybe_plugin() == nullptr) {
             if (response != nullptr) {
                 auto result = mavsdk::Ftp::Result::NoSystem;
                 fillResponseWithResult(response, result);
@@ -486,7 +491,7 @@ public:
             return grpc::Status::OK;
         }
 
-        auto result = _ftp->set_target_compid(request->compid());
+        auto result = _lazy_plugin.maybe_plugin()->set_target_compid(request->compid());
 
         if (response != nullptr) {
             fillResponseWithResult(response, result);
@@ -500,11 +505,11 @@ public:
         const rpc::ftp::GetOurCompidRequest* /* request */,
         rpc::ftp::GetOurCompidResponse* response) override
     {
-        if (!init_plugin()) {
+        if (_lazy_plugin.maybe_plugin() == nullptr) {
             return grpc::Status::OK;
         }
 
-        auto result = _ftp->get_our_compid();
+        auto result = _lazy_plugin.maybe_plugin()->get_our_compid();
 
         if (response != nullptr) {
             response->set_compid(result);
@@ -548,19 +553,7 @@ private:
         }
     }
 
-    bool init_plugin()
-    {
-        if (_ftp == nullptr) {
-            if (_mavsdk.systems().size() == 0) {
-                return false;
-            }
-            _ftp = std::make_unique<Ftp>(_mavsdk.systems()[0]);
-        }
-        return true;
-    }
-
-    Mavsdk& _mavsdk;
-    std::unique_ptr<Ftp> _ftp;
+    LazyPlugin& _lazy_plugin;
     std::atomic<bool> _stopped{false};
     std::vector<std::weak_ptr<std::promise<void>>> _stream_stop_promises{};
 };

@@ -5,6 +5,8 @@
 #include "camera/camera.grpc.pb.h"
 #include "plugins/camera/camera.h"
 
+#include "mavsdk.h"
+#include "lazy_plugin.h"
 #include "log.h"
 #include <atomic>
 #include <cmath>
@@ -17,10 +19,10 @@
 namespace mavsdk {
 namespace mavsdk_server {
 
-template<typename Camera = Camera>
+template<typename Camera = Camera, typename LazyPlugin = LazyPlugin<Camera>>
 class CameraServiceImpl final : public rpc::camera::CameraService::Service {
 public:
-    CameraServiceImpl(Mavsdk& mavsdk) : _mavsdk(mavsdk) {}
+    CameraServiceImpl(LazyPlugin& lazy_plugin) : _lazy_plugin(lazy_plugin) {}
 
     template<typename ResponseType>
     void fillResponseWithResult(ResponseType* response, mavsdk::Camera::Result& result) const
@@ -656,7 +658,7 @@ public:
         const rpc::camera::TakePhotoRequest* /* request */,
         rpc::camera::TakePhotoResponse* response) override
     {
-        if (!init_plugin()) {
+        if (_lazy_plugin.maybe_plugin() == nullptr) {
             if (response != nullptr) {
                 auto result = mavsdk::Camera::Result::NoSystem;
                 fillResponseWithResult(response, result);
@@ -665,7 +667,7 @@ public:
             return grpc::Status::OK;
         }
 
-        auto result = _camera->take_photo();
+        auto result = _lazy_plugin.maybe_plugin()->take_photo();
 
         if (response != nullptr) {
             fillResponseWithResult(response, result);
@@ -679,7 +681,7 @@ public:
         const rpc::camera::StartPhotoIntervalRequest* request,
         rpc::camera::StartPhotoIntervalResponse* response) override
     {
-        if (!init_plugin()) {
+        if (_lazy_plugin.maybe_plugin() == nullptr) {
             if (response != nullptr) {
                 auto result = mavsdk::Camera::Result::NoSystem;
                 fillResponseWithResult(response, result);
@@ -693,7 +695,7 @@ public:
             return grpc::Status::OK;
         }
 
-        auto result = _camera->start_photo_interval(request->interval_s());
+        auto result = _lazy_plugin.maybe_plugin()->start_photo_interval(request->interval_s());
 
         if (response != nullptr) {
             fillResponseWithResult(response, result);
@@ -707,7 +709,7 @@ public:
         const rpc::camera::StopPhotoIntervalRequest* /* request */,
         rpc::camera::StopPhotoIntervalResponse* response) override
     {
-        if (!init_plugin()) {
+        if (_lazy_plugin.maybe_plugin() == nullptr) {
             if (response != nullptr) {
                 auto result = mavsdk::Camera::Result::NoSystem;
                 fillResponseWithResult(response, result);
@@ -716,7 +718,7 @@ public:
             return grpc::Status::OK;
         }
 
-        auto result = _camera->stop_photo_interval();
+        auto result = _lazy_plugin.maybe_plugin()->stop_photo_interval();
 
         if (response != nullptr) {
             fillResponseWithResult(response, result);
@@ -730,7 +732,7 @@ public:
         const rpc::camera::StartVideoRequest* /* request */,
         rpc::camera::StartVideoResponse* response) override
     {
-        if (!init_plugin()) {
+        if (_lazy_plugin.maybe_plugin() == nullptr) {
             if (response != nullptr) {
                 auto result = mavsdk::Camera::Result::NoSystem;
                 fillResponseWithResult(response, result);
@@ -739,7 +741,7 @@ public:
             return grpc::Status::OK;
         }
 
-        auto result = _camera->start_video();
+        auto result = _lazy_plugin.maybe_plugin()->start_video();
 
         if (response != nullptr) {
             fillResponseWithResult(response, result);
@@ -753,7 +755,7 @@ public:
         const rpc::camera::StopVideoRequest* /* request */,
         rpc::camera::StopVideoResponse* response) override
     {
-        if (!init_plugin()) {
+        if (_lazy_plugin.maybe_plugin() == nullptr) {
             if (response != nullptr) {
                 auto result = mavsdk::Camera::Result::NoSystem;
                 fillResponseWithResult(response, result);
@@ -762,7 +764,7 @@ public:
             return grpc::Status::OK;
         }
 
-        auto result = _camera->stop_video();
+        auto result = _lazy_plugin.maybe_plugin()->stop_video();
 
         if (response != nullptr) {
             fillResponseWithResult(response, result);
@@ -776,7 +778,7 @@ public:
         const rpc::camera::StartVideoStreamingRequest* /* request */,
         rpc::camera::StartVideoStreamingResponse* response) override
     {
-        if (!init_plugin()) {
+        if (_lazy_plugin.maybe_plugin() == nullptr) {
             if (response != nullptr) {
                 auto result = mavsdk::Camera::Result::NoSystem;
                 fillResponseWithResult(response, result);
@@ -785,7 +787,7 @@ public:
             return grpc::Status::OK;
         }
 
-        auto result = _camera->start_video_streaming();
+        auto result = _lazy_plugin.maybe_plugin()->start_video_streaming();
 
         if (response != nullptr) {
             fillResponseWithResult(response, result);
@@ -799,7 +801,7 @@ public:
         const rpc::camera::StopVideoStreamingRequest* /* request */,
         rpc::camera::StopVideoStreamingResponse* response) override
     {
-        if (!init_plugin()) {
+        if (_lazy_plugin.maybe_plugin() == nullptr) {
             if (response != nullptr) {
                 auto result = mavsdk::Camera::Result::NoSystem;
                 fillResponseWithResult(response, result);
@@ -808,7 +810,7 @@ public:
             return grpc::Status::OK;
         }
 
-        auto result = _camera->stop_video_streaming();
+        auto result = _lazy_plugin.maybe_plugin()->stop_video_streaming();
 
         if (response != nullptr) {
             fillResponseWithResult(response, result);
@@ -822,7 +824,7 @@ public:
         const rpc::camera::SetModeRequest* request,
         rpc::camera::SetModeResponse* response) override
     {
-        if (!init_plugin()) {
+        if (_lazy_plugin.maybe_plugin() == nullptr) {
             if (response != nullptr) {
                 auto result = mavsdk::Camera::Result::NoSystem;
                 fillResponseWithResult(response, result);
@@ -836,7 +838,7 @@ public:
             return grpc::Status::OK;
         }
 
-        auto result = _camera->set_mode(translateFromRpcMode(request->mode()));
+        auto result = _lazy_plugin.maybe_plugin()->set_mode(translateFromRpcMode(request->mode()));
 
         if (response != nullptr) {
             fillResponseWithResult(response, result);
@@ -850,7 +852,7 @@ public:
         const rpc::camera::ListPhotosRequest* request,
         rpc::camera::ListPhotosResponse* response) override
     {
-        if (!init_plugin()) {
+        if (_lazy_plugin.maybe_plugin() == nullptr) {
             if (response != nullptr) {
                 auto result = mavsdk::Camera::Result::NoSystem;
                 fillResponseWithResult(response, result);
@@ -864,7 +866,8 @@ public:
             return grpc::Status::OK;
         }
 
-        auto result = _camera->list_photos(translateFromRpcPhotosRange(request->photos_range()));
+        auto result = _lazy_plugin.maybe_plugin()->list_photos(
+            translateFromRpcPhotosRange(request->photos_range()));
 
         if (response != nullptr) {
             fillResponseWithResult(response, result.first);
@@ -883,7 +886,7 @@ public:
         const mavsdk::rpc::camera::SubscribeModeRequest* /* request */,
         grpc::ServerWriter<rpc::camera::ModeResponse>* writer) override
     {
-        if (!init_plugin()) {
+        if (_lazy_plugin.maybe_plugin() == nullptr) {
             return grpc::Status::OK;
         }
 
@@ -894,7 +897,7 @@ public:
         auto is_finished = std::make_shared<bool>(false);
         auto subscribe_mutex = std::make_shared<std::mutex>();
 
-        _camera->subscribe_mode(
+        _lazy_plugin.maybe_plugin()->subscribe_mode(
             [this, &writer, &stream_closed_promise, is_finished, subscribe_mutex](
                 const mavsdk::Camera::Mode mode) {
                 rpc::camera::ModeResponse rpc_response;
@@ -903,7 +906,7 @@ public:
 
                 std::unique_lock<std::mutex> lock(*subscribe_mutex);
                 if (!*is_finished && !writer->Write(rpc_response)) {
-                    _camera->subscribe_mode(nullptr);
+                    _lazy_plugin.maybe_plugin()->subscribe_mode(nullptr);
 
                     *is_finished = true;
                     unregister_stream_stop_promise(stream_closed_promise);
@@ -923,7 +926,7 @@ public:
         const mavsdk::rpc::camera::SubscribeInformationRequest* /* request */,
         grpc::ServerWriter<rpc::camera::InformationResponse>* writer) override
     {
-        if (!init_plugin()) {
+        if (_lazy_plugin.maybe_plugin() == nullptr) {
             return grpc::Status::OK;
         }
 
@@ -934,7 +937,7 @@ public:
         auto is_finished = std::make_shared<bool>(false);
         auto subscribe_mutex = std::make_shared<std::mutex>();
 
-        _camera->subscribe_information(
+        _lazy_plugin.maybe_plugin()->subscribe_information(
             [this, &writer, &stream_closed_promise, is_finished, subscribe_mutex](
                 const mavsdk::Camera::Information information) {
                 rpc::camera::InformationResponse rpc_response;
@@ -944,7 +947,7 @@ public:
 
                 std::unique_lock<std::mutex> lock(*subscribe_mutex);
                 if (!*is_finished && !writer->Write(rpc_response)) {
-                    _camera->subscribe_information(nullptr);
+                    _lazy_plugin.maybe_plugin()->subscribe_information(nullptr);
 
                     *is_finished = true;
                     unregister_stream_stop_promise(stream_closed_promise);
@@ -964,7 +967,7 @@ public:
         const mavsdk::rpc::camera::SubscribeVideoStreamInfoRequest* /* request */,
         grpc::ServerWriter<rpc::camera::VideoStreamInfoResponse>* writer) override
     {
-        if (!init_plugin()) {
+        if (_lazy_plugin.maybe_plugin() == nullptr) {
             return grpc::Status::OK;
         }
 
@@ -975,7 +978,7 @@ public:
         auto is_finished = std::make_shared<bool>(false);
         auto subscribe_mutex = std::make_shared<std::mutex>();
 
-        _camera->subscribe_video_stream_info(
+        _lazy_plugin.maybe_plugin()->subscribe_video_stream_info(
             [this, &writer, &stream_closed_promise, is_finished, subscribe_mutex](
                 const mavsdk::Camera::VideoStreamInfo video_stream_info) {
                 rpc::camera::VideoStreamInfoResponse rpc_response;
@@ -985,7 +988,7 @@ public:
 
                 std::unique_lock<std::mutex> lock(*subscribe_mutex);
                 if (!*is_finished && !writer->Write(rpc_response)) {
-                    _camera->subscribe_video_stream_info(nullptr);
+                    _lazy_plugin.maybe_plugin()->subscribe_video_stream_info(nullptr);
 
                     *is_finished = true;
                     unregister_stream_stop_promise(stream_closed_promise);
@@ -1005,7 +1008,7 @@ public:
         const mavsdk::rpc::camera::SubscribeCaptureInfoRequest* /* request */,
         grpc::ServerWriter<rpc::camera::CaptureInfoResponse>* writer) override
     {
-        if (!init_plugin()) {
+        if (_lazy_plugin.maybe_plugin() == nullptr) {
             return grpc::Status::OK;
         }
 
@@ -1016,7 +1019,7 @@ public:
         auto is_finished = std::make_shared<bool>(false);
         auto subscribe_mutex = std::make_shared<std::mutex>();
 
-        _camera->subscribe_capture_info(
+        _lazy_plugin.maybe_plugin()->subscribe_capture_info(
             [this, &writer, &stream_closed_promise, is_finished, subscribe_mutex](
                 const mavsdk::Camera::CaptureInfo capture_info) {
                 rpc::camera::CaptureInfoResponse rpc_response;
@@ -1026,7 +1029,7 @@ public:
 
                 std::unique_lock<std::mutex> lock(*subscribe_mutex);
                 if (!*is_finished && !writer->Write(rpc_response)) {
-                    _camera->subscribe_capture_info(nullptr);
+                    _lazy_plugin.maybe_plugin()->subscribe_capture_info(nullptr);
 
                     *is_finished = true;
                     unregister_stream_stop_promise(stream_closed_promise);
@@ -1046,7 +1049,7 @@ public:
         const mavsdk::rpc::camera::SubscribeStatusRequest* /* request */,
         grpc::ServerWriter<rpc::camera::StatusResponse>* writer) override
     {
-        if (!init_plugin()) {
+        if (_lazy_plugin.maybe_plugin() == nullptr) {
             return grpc::Status::OK;
         }
 
@@ -1057,7 +1060,7 @@ public:
         auto is_finished = std::make_shared<bool>(false);
         auto subscribe_mutex = std::make_shared<std::mutex>();
 
-        _camera->subscribe_status(
+        _lazy_plugin.maybe_plugin()->subscribe_status(
             [this, &writer, &stream_closed_promise, is_finished, subscribe_mutex](
                 const mavsdk::Camera::Status status) {
                 rpc::camera::StatusResponse rpc_response;
@@ -1066,7 +1069,7 @@ public:
 
                 std::unique_lock<std::mutex> lock(*subscribe_mutex);
                 if (!*is_finished && !writer->Write(rpc_response)) {
-                    _camera->subscribe_status(nullptr);
+                    _lazy_plugin.maybe_plugin()->subscribe_status(nullptr);
 
                     *is_finished = true;
                     unregister_stream_stop_promise(stream_closed_promise);
@@ -1086,7 +1089,7 @@ public:
         const mavsdk::rpc::camera::SubscribeCurrentSettingsRequest* /* request */,
         grpc::ServerWriter<rpc::camera::CurrentSettingsResponse>* writer) override
     {
-        if (!init_plugin()) {
+        if (_lazy_plugin.maybe_plugin() == nullptr) {
             return grpc::Status::OK;
         }
 
@@ -1097,7 +1100,7 @@ public:
         auto is_finished = std::make_shared<bool>(false);
         auto subscribe_mutex = std::make_shared<std::mutex>();
 
-        _camera->subscribe_current_settings(
+        _lazy_plugin.maybe_plugin()->subscribe_current_settings(
             [this, &writer, &stream_closed_promise, is_finished, subscribe_mutex](
                 const std::vector<mavsdk::Camera::Setting> current_settings) {
                 rpc::camera::CurrentSettingsResponse rpc_response;
@@ -1109,7 +1112,7 @@ public:
 
                 std::unique_lock<std::mutex> lock(*subscribe_mutex);
                 if (!*is_finished && !writer->Write(rpc_response)) {
-                    _camera->subscribe_current_settings(nullptr);
+                    _lazy_plugin.maybe_plugin()->subscribe_current_settings(nullptr);
 
                     *is_finished = true;
                     unregister_stream_stop_promise(stream_closed_promise);
@@ -1129,7 +1132,7 @@ public:
         const mavsdk::rpc::camera::SubscribePossibleSettingOptionsRequest* /* request */,
         grpc::ServerWriter<rpc::camera::PossibleSettingOptionsResponse>* writer) override
     {
-        if (!init_plugin()) {
+        if (_lazy_plugin.maybe_plugin() == nullptr) {
             return grpc::Status::OK;
         }
 
@@ -1140,7 +1143,7 @@ public:
         auto is_finished = std::make_shared<bool>(false);
         auto subscribe_mutex = std::make_shared<std::mutex>();
 
-        _camera->subscribe_possible_setting_options(
+        _lazy_plugin.maybe_plugin()->subscribe_possible_setting_options(
             [this, &writer, &stream_closed_promise, is_finished, subscribe_mutex](
                 const std::vector<mavsdk::Camera::SettingOptions> possible_setting_options) {
                 rpc::camera::PossibleSettingOptionsResponse rpc_response;
@@ -1152,7 +1155,7 @@ public:
 
                 std::unique_lock<std::mutex> lock(*subscribe_mutex);
                 if (!*is_finished && !writer->Write(rpc_response)) {
-                    _camera->subscribe_possible_setting_options(nullptr);
+                    _lazy_plugin.maybe_plugin()->subscribe_possible_setting_options(nullptr);
 
                     *is_finished = true;
                     unregister_stream_stop_promise(stream_closed_promise);
@@ -1172,7 +1175,7 @@ public:
         const rpc::camera::SetSettingRequest* request,
         rpc::camera::SetSettingResponse* response) override
     {
-        if (!init_plugin()) {
+        if (_lazy_plugin.maybe_plugin() == nullptr) {
             if (response != nullptr) {
                 auto result = mavsdk::Camera::Result::NoSystem;
                 fillResponseWithResult(response, result);
@@ -1186,7 +1189,8 @@ public:
             return grpc::Status::OK;
         }
 
-        auto result = _camera->set_setting(translateFromRpcSetting(request->setting()));
+        auto result =
+            _lazy_plugin.maybe_plugin()->set_setting(translateFromRpcSetting(request->setting()));
 
         if (response != nullptr) {
             fillResponseWithResult(response, result);
@@ -1200,7 +1204,7 @@ public:
         const rpc::camera::GetSettingRequest* request,
         rpc::camera::GetSettingResponse* response) override
     {
-        if (!init_plugin()) {
+        if (_lazy_plugin.maybe_plugin() == nullptr) {
             if (response != nullptr) {
                 auto result = mavsdk::Camera::Result::NoSystem;
                 fillResponseWithResult(response, result);
@@ -1214,7 +1218,8 @@ public:
             return grpc::Status::OK;
         }
 
-        auto result = _camera->get_setting(translateFromRpcSetting(request->setting()));
+        auto result =
+            _lazy_plugin.maybe_plugin()->get_setting(translateFromRpcSetting(request->setting()));
 
         if (response != nullptr) {
             fillResponseWithResult(response, result.first);
@@ -1230,7 +1235,7 @@ public:
         const rpc::camera::FormatStorageRequest* /* request */,
         rpc::camera::FormatStorageResponse* response) override
     {
-        if (!init_plugin()) {
+        if (_lazy_plugin.maybe_plugin() == nullptr) {
             if (response != nullptr) {
                 auto result = mavsdk::Camera::Result::NoSystem;
                 fillResponseWithResult(response, result);
@@ -1239,7 +1244,7 @@ public:
             return grpc::Status::OK;
         }
 
-        auto result = _camera->format_storage();
+        auto result = _lazy_plugin.maybe_plugin()->format_storage();
 
         if (response != nullptr) {
             fillResponseWithResult(response, result);
@@ -1283,19 +1288,7 @@ private:
         }
     }
 
-    bool init_plugin()
-    {
-        if (_camera == nullptr) {
-            if (_mavsdk.systems().size() == 0) {
-                return false;
-            }
-            _camera = std::make_unique<Camera>(_mavsdk.systems()[0]);
-        }
-        return true;
-    }
-
-    Mavsdk& _mavsdk;
-    std::unique_ptr<Camera> _camera;
+    LazyPlugin& _lazy_plugin;
     std::atomic<bool> _stopped{false};
     std::vector<std::weak_ptr<std::promise<void>>> _stream_stop_promises{};
 };

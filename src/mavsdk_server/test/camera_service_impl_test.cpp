@@ -8,6 +8,7 @@
 
 #include "camera/camera_service_impl.h"
 #include "camera/mocks/camera_mock.h"
+#include "mocks/lazy_plugin_mock.h"
 
 namespace {
 
@@ -17,7 +18,9 @@ using testing::NiceMock;
 using testing::Return;
 
 using MockCamera = NiceMock<mavsdk::testing::MockCamera>;
-using CameraServiceImpl = mavsdk::mavsdk_server::CameraServiceImpl<MockCamera>;
+using MockLazyPlugin =
+    testing::NiceMock<mavsdk::mavsdk_server::testing::MockLazyPlugin<MockCamera>>;
+using CameraServiceImpl = mavsdk::mavsdk_server::CameraServiceImpl<MockCamera, MockLazyPlugin>;
 using CameraService = mavsdk::rpc::camera::CameraService;
 
 using CameraResult = mavsdk::rpc::camera::CameraResult;
@@ -47,8 +50,10 @@ std::vector<InputPair> generateInputPairs();
 
 class CameraServiceImplTest : public ::testing::TestWithParam<InputPair> {
 protected:
-    CameraServiceImplTest() : _camera_service(_camera)
+    CameraServiceImplTest() : _camera_service(_lazy_plugin)
     {
+        ON_CALL(_lazy_plugin, maybe_plugin()).WillByDefault(Return(&_camera));
+
         _callback_saved_future = _callback_saved_promise.get_future();
     }
 
@@ -144,6 +149,7 @@ protected:
         std::shared_ptr<mavsdk::rpc::camera::SetSettingResponse> response,
         mavsdk::Camera::Result result);
 
+    MockLazyPlugin _lazy_plugin{};
     MockCamera _camera{};
     CameraServiceImpl _camera_service;
     std::unique_ptr<grpc::Server> _server{};

@@ -5,6 +5,8 @@
 #include "log_files/log_files.grpc.pb.h"
 #include "plugins/log_files/log_files.h"
 
+#include "mavsdk.h"
+#include "lazy_plugin.h"
 #include "log.h"
 #include <atomic>
 #include <cmath>
@@ -17,10 +19,10 @@
 namespace mavsdk {
 namespace mavsdk_server {
 
-template<typename LogFiles = LogFiles>
+template<typename LogFiles = LogFiles, typename LazyPlugin = LazyPlugin<LogFiles>>
 class LogFilesServiceImpl final : public rpc::log_files::LogFilesService::Service {
 public:
-    LogFilesServiceImpl(Mavsdk& mavsdk) : _mavsdk(mavsdk) {}
+    LogFilesServiceImpl(LazyPlugin& lazy_plugin) : _lazy_plugin(lazy_plugin) {}
 
     template<typename ResponseType>
     void fillResponseWithResult(ResponseType* response, mavsdk::LogFiles::Result& result) const
@@ -140,7 +142,7 @@ public:
         const rpc::log_files::GetEntriesRequest* /* request */,
         rpc::log_files::GetEntriesResponse* response) override
     {
-        if (!init_plugin()) {
+        if (_lazy_plugin.maybe_plugin() == nullptr) {
             if (response != nullptr) {
                 auto result = mavsdk::LogFiles::Result::NoSystem;
                 fillResponseWithResult(response, result);
@@ -149,7 +151,7 @@ public:
             return grpc::Status::OK;
         }
 
-        auto result = _log_files->get_entries();
+        auto result = _lazy_plugin.maybe_plugin()->get_entries();
 
         if (response != nullptr) {
             fillResponseWithResult(response, result.first);
@@ -168,7 +170,7 @@ public:
         const mavsdk::rpc::log_files::SubscribeDownloadLogFileRequest* request,
         grpc::ServerWriter<rpc::log_files::DownloadLogFileResponse>* writer) override
     {
-        if (!init_plugin()) {
+        if (_lazy_plugin.maybe_plugin() == nullptr) {
             rpc::log_files::DownloadLogFileResponse rpc_response;
             auto result = mavsdk::LogFiles::Result::NoSystem;
             fillResponseWithResult(&rpc_response, result);
@@ -184,7 +186,7 @@ public:
         auto is_finished = std::make_shared<bool>(false);
         auto subscribe_mutex = std::make_shared<std::mutex>();
 
-        _log_files->download_log_file_async(
+        _lazy_plugin.maybe_plugin()->download_log_file_async(
             translateFromRpcEntry(request->entry()),
             request->path(),
             [this, &writer, &stream_closed_promise, is_finished, subscribe_mutex](
@@ -253,19 +255,7 @@ private:
         }
     }
 
-    bool init_plugin()
-    {
-        if (_log_files == nullptr) {
-            if (_mavsdk.systems().size() == 0) {
-                return false;
-            }
-            _log_files = std::make_unique<LogFiles>(_mavsdk.systems()[0]);
-        }
-        return true;
-    }
-
-    Mavsdk& _mavsdk;
-    std::unique_ptr<LogFiles> _log_files;
+    LazyPlugin& _lazy_plugin;
     std::atomic<bool> _stopped{false};
     std::vector<std::weak_ptr<std::promise<void>>> _stream_stop_promises{};
 };

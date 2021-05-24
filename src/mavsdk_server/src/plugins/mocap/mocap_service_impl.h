@@ -5,6 +5,8 @@
 #include "mocap/mocap.grpc.pb.h"
 #include "plugins/mocap/mocap.h"
 
+#include "mavsdk.h"
+#include "lazy_plugin.h"
 #include "log.h"
 #include <atomic>
 #include <cmath>
@@ -17,10 +19,10 @@
 namespace mavsdk {
 namespace mavsdk_server {
 
-template<typename Mocap = Mocap>
+template<typename Mocap = Mocap, typename LazyPlugin = LazyPlugin<Mocap>>
 class MocapServiceImpl final : public rpc::mocap::MocapService::Service {
 public:
-    MocapServiceImpl(Mavsdk& mavsdk) : _mavsdk(mavsdk) {}
+    MocapServiceImpl(LazyPlugin& lazy_plugin) : _lazy_plugin(lazy_plugin) {}
 
     template<typename ResponseType>
     void fillResponseWithResult(ResponseType* response, mavsdk::Mocap::Result& result) const
@@ -398,7 +400,7 @@ public:
         const rpc::mocap::SetVisionPositionEstimateRequest* request,
         rpc::mocap::SetVisionPositionEstimateResponse* response) override
     {
-        if (!init_plugin()) {
+        if (_lazy_plugin.maybe_plugin() == nullptr) {
             if (response != nullptr) {
                 auto result = mavsdk::Mocap::Result::NoSystem;
                 fillResponseWithResult(response, result);
@@ -412,7 +414,7 @@ public:
             return grpc::Status::OK;
         }
 
-        auto result = _mocap->set_vision_position_estimate(
+        auto result = _lazy_plugin.maybe_plugin()->set_vision_position_estimate(
             translateFromRpcVisionPositionEstimate(request->vision_position_estimate()));
 
         if (response != nullptr) {
@@ -427,7 +429,7 @@ public:
         const rpc::mocap::SetAttitudePositionMocapRequest* request,
         rpc::mocap::SetAttitudePositionMocapResponse* response) override
     {
-        if (!init_plugin()) {
+        if (_lazy_plugin.maybe_plugin() == nullptr) {
             if (response != nullptr) {
                 auto result = mavsdk::Mocap::Result::NoSystem;
                 fillResponseWithResult(response, result);
@@ -441,7 +443,7 @@ public:
             return grpc::Status::OK;
         }
 
-        auto result = _mocap->set_attitude_position_mocap(
+        auto result = _lazy_plugin.maybe_plugin()->set_attitude_position_mocap(
             translateFromRpcAttitudePositionMocap(request->attitude_position_mocap()));
 
         if (response != nullptr) {
@@ -456,7 +458,7 @@ public:
         const rpc::mocap::SetOdometryRequest* request,
         rpc::mocap::SetOdometryResponse* response) override
     {
-        if (!init_plugin()) {
+        if (_lazy_plugin.maybe_plugin() == nullptr) {
             if (response != nullptr) {
                 auto result = mavsdk::Mocap::Result::NoSystem;
                 fillResponseWithResult(response, result);
@@ -470,7 +472,8 @@ public:
             return grpc::Status::OK;
         }
 
-        auto result = _mocap->set_odometry(translateFromRpcOdometry(request->odometry()));
+        auto result = _lazy_plugin.maybe_plugin()->set_odometry(
+            translateFromRpcOdometry(request->odometry()));
 
         if (response != nullptr) {
             fillResponseWithResult(response, result);
@@ -514,19 +517,7 @@ private:
         }
     }
 
-    bool init_plugin()
-    {
-        if (_mocap == nullptr) {
-            if (_mavsdk.systems().size() == 0) {
-                return false;
-            }
-            _mocap = std::make_unique<Mocap>(_mavsdk.systems()[0]);
-        }
-        return true;
-    }
-
-    Mavsdk& _mavsdk;
-    std::unique_ptr<Mocap> _mocap;
+    LazyPlugin& _lazy_plugin;
     std::atomic<bool> _stopped{false};
     std::vector<std::weak_ptr<std::promise<void>>> _stream_stop_promises{};
 };

@@ -5,6 +5,8 @@
 #include "shell/shell.grpc.pb.h"
 #include "plugins/shell/shell.h"
 
+#include "mavsdk.h"
+#include "lazy_plugin.h"
 #include "log.h"
 #include <atomic>
 #include <cmath>
@@ -17,10 +19,10 @@
 namespace mavsdk {
 namespace mavsdk_server {
 
-template<typename Shell = Shell>
+template<typename Shell = Shell, typename LazyPlugin = LazyPlugin<Shell>>
 class ShellServiceImpl final : public rpc::shell::ShellService::Service {
 public:
-    ShellServiceImpl(Mavsdk& mavsdk) : _mavsdk(mavsdk) {}
+    ShellServiceImpl(LazyPlugin& lazy_plugin) : _lazy_plugin(lazy_plugin) {}
 
     template<typename ResponseType>
     void fillResponseWithResult(ResponseType* response, mavsdk::Shell::Result& result) const
@@ -84,7 +86,7 @@ public:
         const rpc::shell::SendRequest* request,
         rpc::shell::SendResponse* response) override
     {
-        if (!init_plugin()) {
+        if (_lazy_plugin.maybe_plugin() == nullptr) {
             if (response != nullptr) {
                 auto result = mavsdk::Shell::Result::NoSystem;
                 fillResponseWithResult(response, result);
@@ -98,7 +100,7 @@ public:
             return grpc::Status::OK;
         }
 
-        auto result = _shell->send(request->command());
+        auto result = _lazy_plugin.maybe_plugin()->send(request->command());
 
         if (response != nullptr) {
             fillResponseWithResult(response, result);
@@ -112,7 +114,7 @@ public:
         const mavsdk::rpc::shell::SubscribeReceiveRequest* /* request */,
         grpc::ServerWriter<rpc::shell::ReceiveResponse>* writer) override
     {
-        if (!init_plugin()) {
+        if (_lazy_plugin.maybe_plugin() == nullptr) {
             return grpc::Status::OK;
         }
 
@@ -123,7 +125,7 @@ public:
         auto is_finished = std::make_shared<bool>(false);
         auto subscribe_mutex = std::make_shared<std::mutex>();
 
-        _shell->subscribe_receive(
+        _lazy_plugin.maybe_plugin()->subscribe_receive(
             [this, &writer, &stream_closed_promise, is_finished, subscribe_mutex](
                 const std::string receive) {
                 rpc::shell::ReceiveResponse rpc_response;
@@ -132,7 +134,7 @@ public:
 
                 std::unique_lock<std::mutex> lock(*subscribe_mutex);
                 if (!*is_finished && !writer->Write(rpc_response)) {
-                    _shell->subscribe_receive(nullptr);
+                    _lazy_plugin.maybe_plugin()->subscribe_receive(nullptr);
 
                     *is_finished = true;
                     unregister_stream_stop_promise(stream_closed_promise);
@@ -182,19 +184,7 @@ private:
         }
     }
 
-    bool init_plugin()
-    {
-        if (_shell == nullptr) {
-            if (_mavsdk.systems().size() == 0) {
-                return false;
-            }
-            _shell = std::make_unique<Shell>(_mavsdk.systems()[0]);
-        }
-        return true;
-    }
-
-    Mavsdk& _mavsdk;
-    std::unique_ptr<Shell> _shell;
+    LazyPlugin& _lazy_plugin;
     std::atomic<bool> _stopped{false};
     std::vector<std::weak_ptr<std::promise<void>>> _stream_stop_promises{};
 };

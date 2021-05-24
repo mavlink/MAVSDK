@@ -5,6 +5,8 @@
 #include "tune/tune.grpc.pb.h"
 #include "plugins/tune/tune.h"
 
+#include "mavsdk.h"
+#include "lazy_plugin.h"
 #include "log.h"
 #include <atomic>
 #include <cmath>
@@ -17,10 +19,10 @@
 namespace mavsdk {
 namespace mavsdk_server {
 
-template<typename Tune = Tune>
+template<typename Tune = Tune, typename LazyPlugin = LazyPlugin<Tune>>
 class TuneServiceImpl final : public rpc::tune::TuneService::Service {
 public:
-    TuneServiceImpl(Mavsdk& mavsdk) : _mavsdk(mavsdk) {}
+    TuneServiceImpl(LazyPlugin& lazy_plugin) : _lazy_plugin(lazy_plugin) {}
 
     template<typename ResponseType>
     void fillResponseWithResult(ResponseType* response, mavsdk::Tune::Result& result) const
@@ -216,7 +218,7 @@ public:
         const rpc::tune::PlayTuneRequest* request,
         rpc::tune::PlayTuneResponse* response) override
     {
-        if (!init_plugin()) {
+        if (_lazy_plugin.maybe_plugin() == nullptr) {
             if (response != nullptr) {
                 auto result = mavsdk::Tune::Result::NoSystem;
                 fillResponseWithResult(response, result);
@@ -230,8 +232,8 @@ public:
             return grpc::Status::OK;
         }
 
-        auto result =
-            _tune->play_tune(translateFromRpcTuneDescription(request->tune_description()));
+        auto result = _lazy_plugin.maybe_plugin()->play_tune(
+            translateFromRpcTuneDescription(request->tune_description()));
 
         if (response != nullptr) {
             fillResponseWithResult(response, result);
@@ -275,19 +277,7 @@ private:
         }
     }
 
-    bool init_plugin()
-    {
-        if (_tune == nullptr) {
-            if (_mavsdk.systems().size() == 0) {
-                return false;
-            }
-            _tune = std::make_unique<Tune>(_mavsdk.systems()[0]);
-        }
-        return true;
-    }
-
-    Mavsdk& _mavsdk;
-    std::unique_ptr<Tune> _tune;
+    LazyPlugin& _lazy_plugin;
     std::atomic<bool> _stopped{false};
     std::vector<std::weak_ptr<std::promise<void>>> _stream_stop_promises{};
 };

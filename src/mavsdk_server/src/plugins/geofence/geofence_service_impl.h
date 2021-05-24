@@ -5,6 +5,8 @@
 #include "geofence/geofence.grpc.pb.h"
 #include "plugins/geofence/geofence.h"
 
+#include "mavsdk.h"
+#include "lazy_plugin.h"
 #include "log.h"
 #include <atomic>
 #include <cmath>
@@ -17,10 +19,10 @@
 namespace mavsdk {
 namespace mavsdk_server {
 
-template<typename Geofence = Geofence>
+template<typename Geofence = Geofence, typename LazyPlugin = LazyPlugin<Geofence>>
 class GeofenceServiceImpl final : public rpc::geofence::GeofenceService::Service {
 public:
-    GeofenceServiceImpl(Mavsdk& mavsdk) : _mavsdk(mavsdk) {}
+    GeofenceServiceImpl(LazyPlugin& lazy_plugin) : _lazy_plugin(lazy_plugin) {}
 
     template<typename ResponseType>
     void fillResponseWithResult(ResponseType* response, mavsdk::Geofence::Result& result) const
@@ -173,7 +175,7 @@ public:
         const rpc::geofence::UploadGeofenceRequest* request,
         rpc::geofence::UploadGeofenceResponse* response) override
     {
-        if (!init_plugin()) {
+        if (_lazy_plugin.maybe_plugin() == nullptr) {
             if (response != nullptr) {
                 auto result = mavsdk::Geofence::Result::NoSystem;
                 fillResponseWithResult(response, result);
@@ -192,7 +194,7 @@ public:
             polygons_vec.push_back(translateFromRpcPolygon(elem));
         }
 
-        auto result = _geofence->upload_geofence(polygons_vec);
+        auto result = _lazy_plugin.maybe_plugin()->upload_geofence(polygons_vec);
 
         if (response != nullptr) {
             fillResponseWithResult(response, result);
@@ -236,19 +238,7 @@ private:
         }
     }
 
-    bool init_plugin()
-    {
-        if (_geofence == nullptr) {
-            if (_mavsdk.systems().size() == 0) {
-                return false;
-            }
-            _geofence = std::make_unique<Geofence>(_mavsdk.systems()[0]);
-        }
-        return true;
-    }
-
-    Mavsdk& _mavsdk;
-    std::unique_ptr<Geofence> _geofence;
+    LazyPlugin& _lazy_plugin;
     std::atomic<bool> _stopped{false};
     std::vector<std::weak_ptr<std::promise<void>>> _stream_stop_promises{};
 };

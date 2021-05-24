@@ -5,6 +5,8 @@
 #include "info/info.grpc.pb.h"
 #include "plugins/info/info.h"
 
+#include "mavsdk.h"
+#include "lazy_plugin.h"
 #include "log.h"
 #include <atomic>
 #include <cmath>
@@ -17,10 +19,10 @@
 namespace mavsdk {
 namespace mavsdk_server {
 
-template<typename Info = Info>
+template<typename Info = Info, typename LazyPlugin = LazyPlugin<Info>>
 class InfoServiceImpl final : public rpc::info::InfoService::Service {
 public:
-    InfoServiceImpl(Mavsdk& mavsdk) : _mavsdk(mavsdk) {}
+    InfoServiceImpl(LazyPlugin& lazy_plugin) : _lazy_plugin(lazy_plugin) {}
 
     template<typename ResponseType>
     void fillResponseWithResult(ResponseType* response, mavsdk::Info::Result& result) const
@@ -213,7 +215,7 @@ public:
         const rpc::info::GetFlightInformationRequest* /* request */,
         rpc::info::GetFlightInformationResponse* response) override
     {
-        if (!init_plugin()) {
+        if (_lazy_plugin.maybe_plugin() == nullptr) {
             if (response != nullptr) {
                 auto result = mavsdk::Info::Result::NoSystem;
                 fillResponseWithResult(response, result);
@@ -222,7 +224,7 @@ public:
             return grpc::Status::OK;
         }
 
-        auto result = _info->get_flight_information();
+        auto result = _lazy_plugin.maybe_plugin()->get_flight_information();
 
         if (response != nullptr) {
             fillResponseWithResult(response, result.first);
@@ -238,7 +240,7 @@ public:
         const rpc::info::GetIdentificationRequest* /* request */,
         rpc::info::GetIdentificationResponse* response) override
     {
-        if (!init_plugin()) {
+        if (_lazy_plugin.maybe_plugin() == nullptr) {
             if (response != nullptr) {
                 auto result = mavsdk::Info::Result::NoSystem;
                 fillResponseWithResult(response, result);
@@ -247,7 +249,7 @@ public:
             return grpc::Status::OK;
         }
 
-        auto result = _info->get_identification();
+        auto result = _lazy_plugin.maybe_plugin()->get_identification();
 
         if (response != nullptr) {
             fillResponseWithResult(response, result.first);
@@ -264,7 +266,7 @@ public:
         const rpc::info::GetProductRequest* /* request */,
         rpc::info::GetProductResponse* response) override
     {
-        if (!init_plugin()) {
+        if (_lazy_plugin.maybe_plugin() == nullptr) {
             if (response != nullptr) {
                 auto result = mavsdk::Info::Result::NoSystem;
                 fillResponseWithResult(response, result);
@@ -273,7 +275,7 @@ public:
             return grpc::Status::OK;
         }
 
-        auto result = _info->get_product();
+        auto result = _lazy_plugin.maybe_plugin()->get_product();
 
         if (response != nullptr) {
             fillResponseWithResult(response, result.first);
@@ -289,7 +291,7 @@ public:
         const rpc::info::GetVersionRequest* /* request */,
         rpc::info::GetVersionResponse* response) override
     {
-        if (!init_plugin()) {
+        if (_lazy_plugin.maybe_plugin() == nullptr) {
             if (response != nullptr) {
                 auto result = mavsdk::Info::Result::NoSystem;
                 fillResponseWithResult(response, result);
@@ -298,7 +300,7 @@ public:
             return grpc::Status::OK;
         }
 
-        auto result = _info->get_version();
+        auto result = _lazy_plugin.maybe_plugin()->get_version();
 
         if (response != nullptr) {
             fillResponseWithResult(response, result.first);
@@ -314,7 +316,7 @@ public:
         const rpc::info::GetSpeedFactorRequest* /* request */,
         rpc::info::GetSpeedFactorResponse* response) override
     {
-        if (!init_plugin()) {
+        if (_lazy_plugin.maybe_plugin() == nullptr) {
             if (response != nullptr) {
                 auto result = mavsdk::Info::Result::NoSystem;
                 fillResponseWithResult(response, result);
@@ -323,7 +325,7 @@ public:
             return grpc::Status::OK;
         }
 
-        auto result = _info->get_speed_factor();
+        auto result = _lazy_plugin.maybe_plugin()->get_speed_factor();
 
         if (response != nullptr) {
             fillResponseWithResult(response, result.first);
@@ -369,19 +371,7 @@ private:
         }
     }
 
-    bool init_plugin()
-    {
-        if (_info == nullptr) {
-            if (_mavsdk.systems().size() == 0) {
-                return false;
-            }
-            _info = std::make_unique<Info>(_mavsdk.systems()[0]);
-        }
-        return true;
-    }
-
-    Mavsdk& _mavsdk;
-    std::unique_ptr<Info> _info;
+    LazyPlugin& _lazy_plugin;
     std::atomic<bool> _stopped{false};
     std::vector<std::weak_ptr<std::promise<void>>> _stream_stop_promises{};
 };
