@@ -286,8 +286,8 @@ Mission::MissionItem add_mission_item(
     float gimbal_pitch_deg,
     float gimbal_yaw_deg,
     float loiter_time_s,
-    float acceptance_radius_m,
-    Mission::MissionItem::CameraAction camera_action)
+    Mission::MissionItem::CameraAction camera_action,
+    float acceptance_radius_m)
 {
     Mission::MissionItem new_item{};
     new_item.latitude_deg = latitude_deg;
