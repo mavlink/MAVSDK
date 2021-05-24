@@ -547,6 +547,7 @@ std::pair<Mission::Result, Mission::MissionPlan> MissionImpl::convert_to_result_
                 new_mission_item.relative_altitude_m = int_item.z;
 
                 new_mission_item.is_fly_through = !(int_item.param1 > 0);
+                new_mission_item.acceptance_radius_m = int_item.param2;
 
                 have_set_position = true;
 
