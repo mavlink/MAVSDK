@@ -177,6 +177,7 @@ public:
         NoMissionAvailable, /**< @brief No mission available on the system. */
         UnsupportedMissionCmd, /**< @brief Unsupported mission command. */
         TransferCancelled, /**< @brief Mission transfer (upload or download) has been cancelled. */
+        NoSystem, /**< @brief No system connected. */
     };
 
     /**

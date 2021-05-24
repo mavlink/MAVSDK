@@ -11,7 +11,7 @@ public:
     MavsdkServer(MavsdkServer&&) = delete;
     MavsdkServer& operator=(MavsdkServer&&) = delete;
 
-    int startGRPCServer(int port);
+    int startGrpcServer(int port);
     void connect(const std::string& connection_url = "udp://");
     void wait();
     void stop();

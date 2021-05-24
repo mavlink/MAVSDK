@@ -131,12 +131,13 @@ enum ParamResult_Result : int {
   ParamResult_Result_RESULT_CONNECTION_ERROR = 3,
   ParamResult_Result_RESULT_WRONG_TYPE = 4,
   ParamResult_Result_RESULT_PARAM_NAME_TOO_LONG = 5,
+  ParamResult_Result_RESULT_NO_SYSTEM = 6,
   ParamResult_Result_ParamResult_Result_INT_MIN_SENTINEL_DO_NOT_USE_ = std::numeric_limits<::PROTOBUF_NAMESPACE_ID::int32>::min(),
   ParamResult_Result_ParamResult_Result_INT_MAX_SENTINEL_DO_NOT_USE_ = std::numeric_limits<::PROTOBUF_NAMESPACE_ID::int32>::max()
 };
 bool ParamResult_Result_IsValid(int value);
 constexpr ParamResult_Result ParamResult_Result_Result_MIN = ParamResult_Result_RESULT_UNKNOWN;
-constexpr ParamResult_Result ParamResult_Result_Result_MAX = ParamResult_Result_RESULT_PARAM_NAME_TOO_LONG;
+constexpr ParamResult_Result ParamResult_Result_Result_MAX = ParamResult_Result_RESULT_NO_SYSTEM;
 constexpr int ParamResult_Result_Result_ARRAYSIZE = ParamResult_Result_Result_MAX + 1;
 
 const ::PROTOBUF_NAMESPACE_ID::EnumDescriptor* ParamResult_Result_descriptor();
@@ -2228,6 +2229,8 @@ class ParamResult PROTOBUF_FINAL :
     ParamResult_Result_RESULT_WRONG_TYPE;
   static constexpr Result RESULT_PARAM_NAME_TOO_LONG =
     ParamResult_Result_RESULT_PARAM_NAME_TOO_LONG;
+  static constexpr Result RESULT_NO_SYSTEM =
+    ParamResult_Result_RESULT_NO_SYSTEM;
   static inline bool Result_IsValid(int value) {
     return ParamResult_Result_IsValid(value);
   }

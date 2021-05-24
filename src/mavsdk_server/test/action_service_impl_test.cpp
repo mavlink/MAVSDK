@@ -5,15 +5,17 @@
 
 #include "action/action_service_impl.h"
 #include "action/mocks/action_mock.h"
+#include "mocks/lazy_plugin_mock.h"
 
 namespace {
 
 using testing::_;
-using testing::NiceMock;
 using testing::Return;
 
-using MockAction = NiceMock<mavsdk::testing::MockAction>;
-using ActionServiceImpl = mavsdk::mavsdk_server::ActionServiceImpl<MockAction>;
+using MockAction = testing::NiceMock<mavsdk::testing::MockAction>;
+using MockLazyPlugin =
+    testing::NiceMock<mavsdk::mavsdk_server::testing::MockLazyPlugin<MockAction>>;
+using ActionServiceImpl = mavsdk::mavsdk_server::ActionServiceImpl<MockAction, MockLazyPlugin>;
 
 using ActionResult = mavsdk::rpc::action::ActionResult;
 
@@ -52,9 +54,11 @@ TEST_P(ActionServiceImplTest, armResultIsTranslatedCorrectly)
 
 mavsdk::Action::Result armAndGetTranslatedResult(const mavsdk::Action::Result arm_result)
 {
+    MockLazyPlugin lazy_plugin;
     MockAction action;
+    ON_CALL(lazy_plugin, maybe_plugin()).WillByDefault(Return(&action));
     ON_CALL(action, arm()).WillByDefault(Return(arm_result));
-    ActionServiceImpl actionService(action);
+    ActionServiceImpl actionService(lazy_plugin);
     mavsdk::rpc::action::ArmResponse response;
 
     actionService.Arm(nullptr, nullptr, &response);
@@ -64,8 +68,10 @@ mavsdk::Action::Result armAndGetTranslatedResult(const mavsdk::Action::Result ar
 
 TEST_F(ActionServiceImplTest, armsEvenWhenArgsAreNull)
 {
+    MockLazyPlugin lazy_plugin;
     MockAction action;
-    ActionServiceImpl actionService(action);
+    ON_CALL(lazy_plugin, maybe_plugin()).WillByDefault(Return(&action));
+    ActionServiceImpl actionService(lazy_plugin);
     EXPECT_CALL(action, arm()).Times(1);
 
     actionService.Arm(nullptr, nullptr, nullptr);
@@ -79,9 +85,11 @@ TEST_P(ActionServiceImplTest, disarmResultIsTranslatedCorrectly)
 
 mavsdk::Action::Result disarmAndGetTranslatedResult(mavsdk::Action::Result disarm_result)
 {
+    MockLazyPlugin lazy_plugin;
     MockAction action;
+    ON_CALL(lazy_plugin, maybe_plugin()).WillByDefault(Return(&action));
     ON_CALL(action, disarm()).WillByDefault(Return(disarm_result));
-    ActionServiceImpl actionService(action);
+    ActionServiceImpl actionService(lazy_plugin);
     mavsdk::rpc::action::DisarmResponse response;
 
     actionService.Disarm(nullptr, nullptr, &response);
@@ -91,8 +99,10 @@ mavsdk::Action::Result disarmAndGetTranslatedResult(mavsdk::Action::Result disar
 
 TEST_F(ActionServiceImplTest, disarmsEvenWhenArgsAreNull)
 {
+    MockLazyPlugin lazy_plugin;
     MockAction action;
-    ActionServiceImpl actionService(action);
+    ON_CALL(lazy_plugin, maybe_plugin()).WillByDefault(Return(&action));
+    ActionServiceImpl actionService(lazy_plugin);
     EXPECT_CALL(action, disarm()).Times(1);
 
     actionService.Disarm(nullptr, nullptr, nullptr);
@@ -106,9 +116,11 @@ TEST_P(ActionServiceImplTest, takeoffResultIsTranslatedCorrectly)
 
 mavsdk::Action::Result takeoffAndGetTranslatedResult(const mavsdk::Action::Result takeoff_result)
 {
+    MockLazyPlugin lazy_plugin;
     MockAction action;
+    ON_CALL(lazy_plugin, maybe_plugin()).WillByDefault(Return(&action));
     ON_CALL(action, takeoff()).WillByDefault(Return(takeoff_result));
-    ActionServiceImpl actionService(action);
+    ActionServiceImpl actionService(lazy_plugin);
     mavsdk::rpc::action::TakeoffResponse response;
 
     actionService.Takeoff(nullptr, nullptr, &response);
@@ -118,8 +130,10 @@ mavsdk::Action::Result takeoffAndGetTranslatedResult(const mavsdk::Action::Resul
 
 TEST_F(ActionServiceImplTest, takeoffEvenWhenArgsAreNull)
 {
+    MockLazyPlugin lazy_plugin;
     MockAction action;
-    ActionServiceImpl actionService(action);
+    ON_CALL(lazy_plugin, maybe_plugin()).WillByDefault(Return(&action));
+    ActionServiceImpl actionService(lazy_plugin);
     EXPECT_CALL(action, takeoff()).Times(1);
 
     actionService.Takeoff(nullptr, nullptr, nullptr);
@@ -133,9 +147,11 @@ TEST_P(ActionServiceImplTest, landResultIsTranslatedCorrectly)
 
 mavsdk::Action::Result landAndGetTranslatedResult(const mavsdk::Action::Result land_result)
 {
+    MockLazyPlugin lazy_plugin;
     MockAction action;
+    ON_CALL(lazy_plugin, maybe_plugin()).WillByDefault(Return(&action));
     ON_CALL(action, land()).WillByDefault(Return(land_result));
-    ActionServiceImpl actionService(action);
+    ActionServiceImpl actionService(lazy_plugin);
     mavsdk::rpc::action::LandResponse response;
 
     actionService.Land(nullptr, nullptr, &response);
@@ -145,8 +161,10 @@ mavsdk::Action::Result landAndGetTranslatedResult(const mavsdk::Action::Result l
 
 TEST_F(ActionServiceImplTest, landsEvenWhenArgsAreNull)
 {
+    MockLazyPlugin lazy_plugin;
     MockAction action;
-    ActionServiceImpl actionService(action);
+    ON_CALL(lazy_plugin, maybe_plugin()).WillByDefault(Return(&action));
+    ActionServiceImpl actionService(lazy_plugin);
     EXPECT_CALL(action, land()).Times(1);
 
     actionService.Land(nullptr, nullptr, nullptr);
@@ -160,9 +178,11 @@ TEST_P(ActionServiceImplTest, killResultIsTranslatedCorrectly)
 
 mavsdk::Action::Result killAndGetTranslatedResult(const mavsdk::Action::Result kill_result)
 {
+    MockLazyPlugin lazy_plugin;
     MockAction action;
+    ON_CALL(lazy_plugin, maybe_plugin()).WillByDefault(Return(&action));
     ON_CALL(action, kill()).WillByDefault(Return(kill_result));
-    ActionServiceImpl actionService(action);
+    ActionServiceImpl actionService(lazy_plugin);
     mavsdk::rpc::action::KillResponse response;
 
     actionService.Kill(nullptr, nullptr, &response);
@@ -172,8 +192,10 @@ mavsdk::Action::Result killAndGetTranslatedResult(const mavsdk::Action::Result k
 
 TEST_F(ActionServiceImplTest, killsEvenWhenArgsAreNull)
 {
+    MockLazyPlugin lazy_plugin;
     MockAction action;
-    ActionServiceImpl actionService(action);
+    ON_CALL(lazy_plugin, maybe_plugin()).WillByDefault(Return(&action));
+    ActionServiceImpl actionService(lazy_plugin);
     EXPECT_CALL(action, kill()).Times(1);
 
     actionService.Kill(nullptr, nullptr, nullptr);
@@ -187,9 +209,11 @@ TEST_P(ActionServiceImplTest, rtlResultIsTranslatedCorrectly)
 
 mavsdk::Action::Result returnToLaunchAndGetTranslatedResult(const mavsdk::Action::Result rtl_result)
 {
+    MockLazyPlugin lazy_plugin;
     MockAction action;
+    ON_CALL(lazy_plugin, maybe_plugin()).WillByDefault(Return(&action));
     ON_CALL(action, return_to_launch()).WillByDefault(Return(rtl_result));
-    ActionServiceImpl actionService(action);
+    ActionServiceImpl actionService(lazy_plugin);
     mavsdk::rpc::action::ReturnToLaunchResponse response;
 
     actionService.ReturnToLaunch(nullptr, nullptr, &response);
@@ -199,8 +223,10 @@ mavsdk::Action::Result returnToLaunchAndGetTranslatedResult(const mavsdk::Action
 
 TEST_F(ActionServiceImplTest, rtlsEvenWhenArgsAreNull)
 {
+    MockLazyPlugin lazy_plugin;
     MockAction action;
-    ActionServiceImpl actionService(action);
+    ON_CALL(lazy_plugin, maybe_plugin()).WillByDefault(Return(&action));
+    ActionServiceImpl actionService(lazy_plugin);
     EXPECT_CALL(action, return_to_launch()).Times(1);
 
     actionService.ReturnToLaunch(nullptr, nullptr, nullptr);
@@ -215,9 +241,11 @@ TEST_P(ActionServiceImplTest, transition2fwResultIsTranslatedCorrectly)
 mavsdk::Action::Result
 transitionToFWAndGetTranslatedResult(const mavsdk::Action::Result transition_to_fw_result)
 {
+    MockLazyPlugin lazy_plugin;
     MockAction action;
+    ON_CALL(lazy_plugin, maybe_plugin()).WillByDefault(Return(&action));
     ON_CALL(action, transition_to_fixedwing()).WillByDefault(Return(transition_to_fw_result));
-    ActionServiceImpl actionService(action);
+    ActionServiceImpl actionService(lazy_plugin);
     mavsdk::rpc::action::TransitionToFixedwingResponse response;
 
     actionService.TransitionToFixedwing(nullptr, nullptr, &response);
@@ -227,8 +255,10 @@ transitionToFWAndGetTranslatedResult(const mavsdk::Action::Result transition_to_
 
 TEST_F(ActionServiceImplTest, transitions2fwEvenWhenArgsAreNull)
 {
+    MockLazyPlugin lazy_plugin;
     MockAction action;
-    ActionServiceImpl actionService(action);
+    ON_CALL(lazy_plugin, maybe_plugin()).WillByDefault(Return(&action));
+    ActionServiceImpl actionService(lazy_plugin);
     EXPECT_CALL(action, transition_to_fixedwing()).Times(1);
 
     actionService.TransitionToFixedwing(nullptr, nullptr, nullptr);
@@ -243,9 +273,11 @@ TEST_P(ActionServiceImplTest, transition2mcResultIsTranslatedCorrectly)
 mavsdk::Action::Result
 transitionToMCAndGetTranslatedResult(const mavsdk::Action::Result transition_to_mc_result)
 {
+    MockLazyPlugin lazy_plugin;
     MockAction action;
+    ON_CALL(lazy_plugin, maybe_plugin()).WillByDefault(Return(&action));
     ON_CALL(action, transition_to_multicopter()).WillByDefault(Return(transition_to_mc_result));
-    ActionServiceImpl actionService(action);
+    ActionServiceImpl actionService(lazy_plugin);
     mavsdk::rpc::action::TransitionToMulticopterResponse response;
 
     actionService.TransitionToMulticopter(nullptr, nullptr, &response);
@@ -255,8 +287,10 @@ transitionToMCAndGetTranslatedResult(const mavsdk::Action::Result transition_to_
 
 TEST_F(ActionServiceImplTest, transitions2mcEvenWhenArgsAreNull)
 {
+    MockLazyPlugin lazy_plugin;
     MockAction action;
-    ActionServiceImpl actionService(action);
+    ON_CALL(lazy_plugin, maybe_plugin()).WillByDefault(Return(&action));
+    ActionServiceImpl actionService(lazy_plugin);
     EXPECT_CALL(action, transition_to_multicopter()).Times(1);
 
     actionService.TransitionToMulticopter(nullptr, nullptr, nullptr);
@@ -264,8 +298,10 @@ TEST_F(ActionServiceImplTest, transitions2mcEvenWhenArgsAreNull)
 
 TEST_F(ActionServiceImplTest, getTakeoffAltitudeCallsGetter)
 {
+    MockLazyPlugin lazy_plugin;
     MockAction action;
-    ActionServiceImpl actionService(action);
+    ON_CALL(lazy_plugin, maybe_plugin()).WillByDefault(Return(&action));
+    ActionServiceImpl actionService(lazy_plugin);
     EXPECT_CALL(action, get_takeoff_altitude()).Times(1);
     mavsdk::rpc::action::GetTakeoffAltitudeResponse response;
 
@@ -274,8 +310,10 @@ TEST_F(ActionServiceImplTest, getTakeoffAltitudeCallsGetter)
 
 TEST_P(ActionServiceImplTest, getsCorrectTakeoffAltitude)
 {
+    MockLazyPlugin lazy_plugin;
     MockAction action;
-    ActionServiceImpl actionService(action);
+    ON_CALL(lazy_plugin, maybe_plugin()).WillByDefault(Return(&action));
+    ActionServiceImpl actionService(lazy_plugin);
     const auto expected_pair = std::make_pair<>(GetParam(), ARBITRARY_ALTITUDE);
     ON_CALL(action, get_takeoff_altitude()).WillByDefault(Return(expected_pair));
     mavsdk::rpc::action::GetTakeoffAltitudeResponse response;
@@ -288,8 +326,10 @@ TEST_P(ActionServiceImplTest, getsCorrectTakeoffAltitude)
 
 TEST_F(ActionServiceImplTest, getTakeoffAltitudeDoesNotCrashWithNullResponse)
 {
+    MockLazyPlugin lazy_plugin;
     MockAction action;
-    ActionServiceImpl actionService(action);
+    ON_CALL(lazy_plugin, maybe_plugin()).WillByDefault(Return(&action));
+    ActionServiceImpl actionService(lazy_plugin);
 
     actionService.GetTakeoffAltitude(nullptr, nullptr, nullptr);
 }
@@ -303,10 +343,12 @@ TEST_P(ActionServiceImplTest, getTakeoffAltitudeResultIsTranslatedCorrectly)
 mavsdk::Action::Result
 getTakeoffAltitudeAndGetTranslatedResult(const mavsdk::Action::Result action_result)
 {
+    MockLazyPlugin lazy_plugin;
     MockAction action;
+    ON_CALL(lazy_plugin, maybe_plugin()).WillByDefault(Return(&action));
     const auto return_pair = std::make_pair<>(action_result, ARBITRARY_ALTITUDE);
     ON_CALL(action, get_takeoff_altitude()).WillByDefault(Return(return_pair));
-    ActionServiceImpl actionService(action);
+    ActionServiceImpl actionService(lazy_plugin);
     mavsdk::rpc::action::GetTakeoffAltitudeResponse response;
 
     actionService.GetTakeoffAltitude(nullptr, nullptr, &response);
@@ -316,16 +358,20 @@ getTakeoffAltitudeAndGetTranslatedResult(const mavsdk::Action::Result action_res
 
 TEST_F(ActionServiceImplTest, setTakeoffAltitudeDoesNotCrashWithNullRequest)
 {
+    MockLazyPlugin lazy_plugin;
     MockAction action;
-    ActionServiceImpl actionService(action);
+    ON_CALL(lazy_plugin, maybe_plugin()).WillByDefault(Return(&action));
+    ActionServiceImpl actionService(lazy_plugin);
 
     actionService.SetTakeoffAltitude(nullptr, nullptr, nullptr);
 }
 
 TEST_F(ActionServiceImplTest, setTakeoffAltitudeCallsSetter)
 {
+    MockLazyPlugin lazy_plugin;
     MockAction action;
-    ActionServiceImpl actionService(action);
+    ON_CALL(lazy_plugin, maybe_plugin()).WillByDefault(Return(&action));
+    ActionServiceImpl actionService(lazy_plugin);
     EXPECT_CALL(action, set_takeoff_altitude(_)).Times(1);
     mavsdk::rpc::action::SetTakeoffAltitudeRequest request;
 
@@ -334,8 +380,10 @@ TEST_F(ActionServiceImplTest, setTakeoffAltitudeCallsSetter)
 
 TEST_P(ActionServiceImplTest, setTakeoffAltitudeSetsRightValue)
 {
+    MockLazyPlugin lazy_plugin;
     MockAction action;
-    ActionServiceImpl actionService(action);
+    ON_CALL(lazy_plugin, maybe_plugin()).WillByDefault(Return(&action));
+    ActionServiceImpl actionService(lazy_plugin);
     float expected_altitude = ARBITRARY_ALTITUDE;
     EXPECT_CALL(action, set_takeoff_altitude(expected_altitude)).Times(1);
     mavsdk::rpc::action::SetTakeoffAltitudeRequest request;
@@ -353,9 +401,11 @@ TEST_P(ActionServiceImplTest, setTakeoffAltitudeResultIsTranslatedCorrectly)
 mavsdk::Action::Result
 setTakeoffAltitudeAndGetTranslatedResult(const mavsdk::Action::Result action_result)
 {
+    MockLazyPlugin lazy_plugin;
     MockAction action;
+    ON_CALL(lazy_plugin, maybe_plugin()).WillByDefault(Return(&action));
     ON_CALL(action, set_takeoff_altitude(_)).WillByDefault(Return(action_result));
-    ActionServiceImpl actionService(action);
+    ActionServiceImpl actionService(lazy_plugin);
     mavsdk::rpc::action::SetTakeoffAltitudeRequest request;
     request.set_altitude(ARBITRARY_ALTITUDE);
     mavsdk::rpc::action::SetTakeoffAltitudeResponse response;
@@ -367,16 +417,20 @@ setTakeoffAltitudeAndGetTranslatedResult(const mavsdk::Action::Result action_res
 
 TEST_F(ActionServiceImplTest, getMaxSpeedDoesNotCrashWithNullResponse)
 {
+    MockLazyPlugin lazy_plugin;
     MockAction action;
-    ActionServiceImpl actionService(action);
+    ON_CALL(lazy_plugin, maybe_plugin()).WillByDefault(Return(&action));
+    ActionServiceImpl actionService(lazy_plugin);
 
     actionService.GetMaximumSpeed(nullptr, nullptr, nullptr);
 }
 
 TEST_F(ActionServiceImplTest, getMaxSpeedCallsGetter)
 {
+    MockLazyPlugin lazy_plugin;
     MockAction action;
-    ActionServiceImpl actionService(action);
+    ON_CALL(lazy_plugin, maybe_plugin()).WillByDefault(Return(&action));
+    ActionServiceImpl actionService(lazy_plugin);
     EXPECT_CALL(action, get_maximum_speed()).Times(1);
     mavsdk::rpc::action::GetMaximumSpeedResponse response;
 
@@ -385,8 +439,10 @@ TEST_F(ActionServiceImplTest, getMaxSpeedCallsGetter)
 
 TEST_P(ActionServiceImplTest, getMaxSpeedGetsRightValue)
 {
+    MockLazyPlugin lazy_plugin;
     MockAction action;
-    ActionServiceImpl actionService(action);
+    ON_CALL(lazy_plugin, maybe_plugin()).WillByDefault(Return(&action));
+    ActionServiceImpl actionService(lazy_plugin);
     const auto expected_pair = std::make_pair<>(GetParam(), ARBITRARY_SPEED);
     ON_CALL(action, get_maximum_speed()).WillByDefault(Return(expected_pair));
     mavsdk::rpc::action::GetMaximumSpeedResponse response;
@@ -399,8 +455,10 @@ TEST_P(ActionServiceImplTest, getMaxSpeedGetsRightValue)
 
 TEST_F(ActionServiceImplTest, setMaxSpeedDoesNotCrashWithNullRequest)
 {
+    MockLazyPlugin lazy_plugin;
     MockAction action;
-    ActionServiceImpl actionService(action);
+    ON_CALL(lazy_plugin, maybe_plugin()).WillByDefault(Return(&action));
+    ActionServiceImpl actionService(lazy_plugin);
     mavsdk::rpc::action::SetMaximumSpeedResponse response;
 
     actionService.SetMaximumSpeed(nullptr, nullptr, &response);
@@ -408,8 +466,10 @@ TEST_F(ActionServiceImplTest, setMaxSpeedDoesNotCrashWithNullRequest)
 
 TEST_F(ActionServiceImplTest, setMaxSpeedDoesNotCrashWithNullResponse)
 {
+    MockLazyPlugin lazy_plugin;
     MockAction action;
-    ActionServiceImpl actionService(action);
+    ON_CALL(lazy_plugin, maybe_plugin()).WillByDefault(Return(&action));
+    ActionServiceImpl actionService(lazy_plugin);
     mavsdk::rpc::action::SetMaximumSpeedRequest request;
     request.set_speed(ARBITRARY_SPEED);
 
@@ -418,8 +478,10 @@ TEST_F(ActionServiceImplTest, setMaxSpeedDoesNotCrashWithNullResponse)
 
 TEST_F(ActionServiceImplTest, setMaxSpeedCallsSetter)
 {
+    MockLazyPlugin lazy_plugin;
     MockAction action;
-    ActionServiceImpl actionService(action);
+    ON_CALL(lazy_plugin, maybe_plugin()).WillByDefault(Return(&action));
+    ActionServiceImpl actionService(lazy_plugin);
     EXPECT_CALL(action, set_maximum_speed(_)).Times(1);
     mavsdk::rpc::action::SetMaximumSpeedRequest request;
 
@@ -428,8 +490,10 @@ TEST_F(ActionServiceImplTest, setMaxSpeedCallsSetter)
 
 TEST_F(ActionServiceImplTest, setMaxSpeedSetsRightValue)
 {
+    MockLazyPlugin lazy_plugin;
     MockAction action;
-    ActionServiceImpl actionService(action);
+    ON_CALL(lazy_plugin, maybe_plugin()).WillByDefault(Return(&action));
+    ActionServiceImpl actionService(lazy_plugin);
     const auto expected_speed = ARBITRARY_SPEED;
     EXPECT_CALL(action, set_maximum_speed(expected_speed)).Times(1);
     mavsdk::rpc::action::SetMaximumSpeedRequest request;
@@ -447,10 +511,12 @@ TEST_P(ActionServiceImplTest, getReturnToLaunchAltitudeResultIsTranslatedCorrect
 mavsdk::Action::Result
 getReturnToLaunchAltitudeAndGetTranslatedResult(const mavsdk::Action::Result action_result)
 {
+    MockLazyPlugin lazy_plugin;
     MockAction action;
+    ON_CALL(lazy_plugin, maybe_plugin()).WillByDefault(Return(&action));
     const auto return_pair = std::make_pair<>(action_result, ARBITRARY_ALTITUDE);
     ON_CALL(action, get_return_to_launch_altitude()).WillByDefault(Return(return_pair));
-    ActionServiceImpl actionService(action);
+    ActionServiceImpl actionService(lazy_plugin);
     mavsdk::rpc::action::GetReturnToLaunchAltitudeResponse response;
 
     actionService.GetReturnToLaunchAltitude(nullptr, nullptr, &response);
@@ -460,8 +526,10 @@ getReturnToLaunchAltitudeAndGetTranslatedResult(const mavsdk::Action::Result act
 
 TEST_F(ActionServiceImplTest, getReturnToLaunchAltitudeCallsGetter)
 {
+    MockLazyPlugin lazy_plugin;
     MockAction action;
-    ActionServiceImpl actionService(action);
+    ON_CALL(lazy_plugin, maybe_plugin()).WillByDefault(Return(&action));
+    ActionServiceImpl actionService(lazy_plugin);
     EXPECT_CALL(action, get_return_to_launch_altitude()).Times(1);
     mavsdk::rpc::action::GetReturnToLaunchAltitudeResponse response;
 
@@ -470,8 +538,10 @@ TEST_F(ActionServiceImplTest, getReturnToLaunchAltitudeCallsGetter)
 
 TEST_P(ActionServiceImplTest, getsCorrectReturnToLaunchAltitude)
 {
+    MockLazyPlugin lazy_plugin;
     MockAction action;
-    ActionServiceImpl actionService(action);
+    ON_CALL(lazy_plugin, maybe_plugin()).WillByDefault(Return(&action));
+    ActionServiceImpl actionService(lazy_plugin);
     const auto expected_pair = std::make_pair<>(GetParam(), ARBITRARY_ALTITUDE);
     ON_CALL(action, get_return_to_launch_altitude()).WillByDefault(Return(expected_pair));
     mavsdk::rpc::action::GetReturnToLaunchAltitudeResponse response;
@@ -484,8 +554,10 @@ TEST_P(ActionServiceImplTest, getsCorrectReturnToLaunchAltitude)
 
 TEST_F(ActionServiceImplTest, getReturnToLaunchAltitudeDoesNotCrashWithNullResponse)
 {
+    MockLazyPlugin lazy_plugin;
     MockAction action;
-    ActionServiceImpl actionService(action);
+    ON_CALL(lazy_plugin, maybe_plugin()).WillByDefault(Return(&action));
+    ActionServiceImpl actionService(lazy_plugin);
 
     actionService.GetReturnToLaunchAltitude(nullptr, nullptr, nullptr);
 }
@@ -499,9 +571,11 @@ TEST_P(ActionServiceImplTest, setReturnToLaunchAltitudeResultIsTranslatedCorrect
 mavsdk::Action::Result
 setReturnToLaunchAltitudeAndGetTranslatedResult(const mavsdk::Action::Result action_result)
 {
+    MockLazyPlugin lazy_plugin;
     MockAction action;
+    ON_CALL(lazy_plugin, maybe_plugin()).WillByDefault(Return(&action));
     ON_CALL(action, set_return_to_launch_altitude(_)).WillByDefault(Return(action_result));
-    ActionServiceImpl actionService(action);
+    ActionServiceImpl actionService(lazy_plugin);
     mavsdk::rpc::action::SetReturnToLaunchAltitudeRequest request;
     request.set_relative_altitude_m(ARBITRARY_ALTITUDE);
     mavsdk::rpc::action::SetReturnToLaunchAltitudeResponse response;
@@ -513,16 +587,20 @@ setReturnToLaunchAltitudeAndGetTranslatedResult(const mavsdk::Action::Result act
 
 TEST_F(ActionServiceImplTest, setReturnToLaunchAltitudeDoesNotCrashWithNullParams)
 {
+    MockLazyPlugin lazy_plugin;
     MockAction action;
-    ActionServiceImpl actionService(action);
+    ON_CALL(lazy_plugin, maybe_plugin()).WillByDefault(Return(&action));
+    ActionServiceImpl actionService(lazy_plugin);
 
     actionService.SetReturnToLaunchAltitude(nullptr, nullptr, nullptr);
 }
 
 TEST_F(ActionServiceImplTest, setReturnToLaunchAltitudeCallsSetter)
 {
+    MockLazyPlugin lazy_plugin;
     MockAction action;
-    ActionServiceImpl actionService(action);
+    ON_CALL(lazy_plugin, maybe_plugin()).WillByDefault(Return(&action));
+    ActionServiceImpl actionService(lazy_plugin);
     EXPECT_CALL(action, set_return_to_launch_altitude(_)).Times(1);
     mavsdk::rpc::action::SetReturnToLaunchAltitudeRequest request;
 
@@ -531,8 +609,10 @@ TEST_F(ActionServiceImplTest, setReturnToLaunchAltitudeCallsSetter)
 
 TEST_P(ActionServiceImplTest, setReturnToLaunchAltitudeSetsRightValue)
 {
+    MockLazyPlugin lazy_plugin;
     MockAction action;
-    ActionServiceImpl actionService(action);
+    ON_CALL(lazy_plugin, maybe_plugin()).WillByDefault(Return(&action));
+    ActionServiceImpl actionService(lazy_plugin);
     float expected_altitude = ARBITRARY_ALTITUDE;
     EXPECT_CALL(action, set_return_to_launch_altitude(expected_altitude)).Times(1);
     mavsdk::rpc::action::SetReturnToLaunchAltitudeRequest request;

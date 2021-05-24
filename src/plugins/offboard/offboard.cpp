@@ -18,9 +18,11 @@ using VelocityBodyYawspeed = Offboard::VelocityBodyYawspeed;
 using VelocityNedYaw = Offboard::VelocityNedYaw;
 using AccelerationNed = Offboard::AccelerationNed;
 
-Offboard::Offboard(System& system) : PluginBase(), _impl{new OffboardImpl(system)} {}
+Offboard::Offboard(System& system) : PluginBase(), _impl{std::make_unique<OffboardImpl>(system)} {}
 
-Offboard::Offboard(std::shared_ptr<System> system) : PluginBase(), _impl{new OffboardImpl(system)}
+Offboard::Offboard(std::shared_ptr<System> system) :
+    PluginBase(),
+    _impl{std::make_unique<OffboardImpl>(system)}
 {}
 
 Offboard::~Offboard() {}

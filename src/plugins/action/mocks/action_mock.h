@@ -1,6 +1,9 @@
+#pragma once
+
 #include <gmock/gmock.h>
 
 #include "plugins/action/action.h"
+#include "mocks/system_mock.h"
 
 namespace mavsdk {
 namespace testing {

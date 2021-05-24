@@ -9,9 +9,12 @@
 
 namespace mavsdk {
 
-Failure::Failure(System& system) : PluginBase(), _impl{new FailureImpl(system)} {}
+Failure::Failure(System& system) : PluginBase(), _impl{std::make_unique<FailureImpl>(system)} {}
 
-Failure::Failure(std::shared_ptr<System> system) : PluginBase(), _impl{new FailureImpl(system)} {}
+Failure::Failure(std::shared_ptr<System> system) :
+    PluginBase(),
+    _impl{std::make_unique<FailureImpl>(system)}
+{}
 
 Failure::~Failure() {}
 

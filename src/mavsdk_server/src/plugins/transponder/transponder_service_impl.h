@@ -5,6 +5,8 @@
 #include "transponder/transponder.grpc.pb.h"
 #include "plugins/transponder/transponder.h"
 
+#include "mavsdk.h"
+#include "lazy_plugin.h"
 #include "log.h"
 #include <atomic>
 #include <cmath>
@@ -17,10 +19,10 @@
 namespace mavsdk {
 namespace mavsdk_server {
 
-template<typename Transponder = Transponder>
+template<typename Transponder = Transponder, typename LazyPlugin = LazyPlugin<Transponder>>
 class TransponderServiceImpl final : public rpc::transponder::TransponderService::Service {
 public:
-    TransponderServiceImpl(Transponder& transponder) : _transponder(transponder) {}
+    TransponderServiceImpl(LazyPlugin& lazy_plugin) : _lazy_plugin(lazy_plugin) {}
 
     template<typename ResponseType>
     void fillResponseWithResult(ResponseType* response, mavsdk::Transponder::Result& result) const
@@ -247,6 +249,10 @@ public:
         const mavsdk::rpc::transponder::SubscribeTransponderRequest* /* request */,
         grpc::ServerWriter<rpc::transponder::TransponderResponse>* writer) override
     {
+        if (_lazy_plugin.maybe_plugin() == nullptr) {
+            return grpc::Status::OK;
+        }
+
         auto stream_closed_promise = std::make_shared<std::promise<void>>();
         auto stream_closed_future = stream_closed_promise->get_future();
         register_stream_stop_promise(stream_closed_promise);
@@ -254,7 +260,7 @@ public:
         auto is_finished = std::make_shared<bool>(false);
         auto subscribe_mutex = std::make_shared<std::mutex>();
 
-        _transponder.subscribe_transponder(
+        _lazy_plugin.maybe_plugin()->subscribe_transponder(
             [this, &writer, &stream_closed_promise, is_finished, subscribe_mutex](
                 const mavsdk::Transponder::AdsbVehicle transponder) {
                 rpc::transponder::TransponderResponse rpc_response;
@@ -264,7 +270,7 @@ public:
 
                 std::unique_lock<std::mutex> lock(*subscribe_mutex);
                 if (!*is_finished && !writer->Write(rpc_response)) {
-                    _transponder.subscribe_transponder(nullptr);
+                    _lazy_plugin.maybe_plugin()->subscribe_transponder(nullptr);
 
                     *is_finished = true;
                     unregister_stream_stop_promise(stream_closed_promise);
@@ -284,12 +290,21 @@ public:
         const rpc::transponder::SetRateTransponderRequest* request,
         rpc::transponder::SetRateTransponderResponse* response) override
     {
+        if (_lazy_plugin.maybe_plugin() == nullptr) {
+            if (response != nullptr) {
+                auto result = mavsdk::Transponder::Result::NoSystem;
+                fillResponseWithResult(response, result);
+            }
+
+            return grpc::Status::OK;
+        }
+
         if (request == nullptr) {
             LogWarn() << "SetRateTransponder sent with a null request! Ignoring...";
             return grpc::Status::OK;
         }
 
-        auto result = _transponder.set_rate_transponder(request->rate_hz());
+        auto result = _lazy_plugin.maybe_plugin()->set_rate_transponder(request->rate_hz());
 
         if (response != nullptr) {
             fillResponseWithResult(response, result);
@@ -333,7 +348,7 @@ private:
         }
     }
 
-    Transponder& _transponder;
+    LazyPlugin& _lazy_plugin;
     std::atomic<bool> _stopped{false};
     std::vector<std::weak_ptr<std::promise<void>>> _stream_stop_promises{};
 };

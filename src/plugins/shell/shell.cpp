@@ -9,9 +9,12 @@
 
 namespace mavsdk {
 
-Shell::Shell(System& system) : PluginBase(), _impl{new ShellImpl(system)} {}
+Shell::Shell(System& system) : PluginBase(), _impl{std::make_unique<ShellImpl>(system)} {}
 
-Shell::Shell(std::shared_ptr<System> system) : PluginBase(), _impl{new ShellImpl(system)} {}
+Shell::Shell(std::shared_ptr<System> system) :
+    PluginBase(),
+    _impl{std::make_unique<ShellImpl>(system)}
+{}
 
 Shell::~Shell() {}
 

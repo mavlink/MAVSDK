@@ -123,6 +123,7 @@ public:
         InvalidTempo, /**< @brief Invalid tempo (range: 32 - 255). */
         TuneTooLong, /**< @brief Invalid tune: encoded string must be at most 247 chars. */
         Error, /**< @brief Failed to send the request. */
+        NoSystem, /**< @brief No system connected. */
     };
 
     /**

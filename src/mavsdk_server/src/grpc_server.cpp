@@ -8,12 +8,12 @@
 namespace mavsdk {
 namespace mavsdk_server {
 
-void GRPCServer::set_port(const int port)
+void GrpcServer::set_port(const int port)
 {
     _port = port;
 }
 
-int GRPCServer::run()
+int GrpcServer::run()
 {
     grpc::ServerBuilder builder;
     setup_port(builder);
@@ -54,7 +54,7 @@ int GRPCServer::run()
     return _bound_port;
 }
 
-void GRPCServer::wait()
+void GrpcServer::wait()
 {
     if (_server != nullptr) {
         _server->Wait();
@@ -63,7 +63,7 @@ void GRPCServer::wait()
     }
 }
 
-void GRPCServer::stop()
+void GrpcServer::stop()
 {
     if (_server != nullptr) {
         _core.stop();
@@ -95,7 +95,7 @@ void GRPCServer::stop()
     }
 }
 
-void GRPCServer::setup_port(grpc::ServerBuilder& builder)
+void GrpcServer::setup_port(grpc::ServerBuilder& builder)
 {
     const std::string server_address("0.0.0.0:" + std::to_string(_port));
     builder.AddListeningPort(server_address, grpc::InsecureServerCredentials(), &_bound_port);

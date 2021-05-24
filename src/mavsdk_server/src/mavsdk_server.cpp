@@ -18,9 +18,9 @@ public:
         _connection_initiator.start(_mavsdk, connection_url);
     }
 
-    int startGRPCServer(const int port)
+    int startGrpcServer(const int port)
     {
-        _server = std::make_unique<GRPCServer>(_mavsdk);
+        _server = std::make_unique<GrpcServer>(_mavsdk);
         _server->set_port(port);
         _grpc_port = _server->run();
         return _grpc_port;
@@ -35,16 +35,16 @@ public:
 private:
     mavsdk::Mavsdk _mavsdk;
     ConnectionInitiator<mavsdk::Mavsdk> _connection_initiator;
-    std::unique_ptr<GRPCServer> _server;
+    std::unique_ptr<GrpcServer> _server;
     int _grpc_port;
 };
 
-MavsdkServer::MavsdkServer() : _impl(new Impl()) {}
+MavsdkServer::MavsdkServer() : _impl(std::make_unique<Impl>()) {}
 MavsdkServer::~MavsdkServer() = default;
 
-int MavsdkServer::startGRPCServer(const int port)
+int MavsdkServer::startGrpcServer(const int port)
 {
-    return _impl->startGRPCServer(port);
+    return _impl->startGrpcServer(port);
 }
 void MavsdkServer::connect(const std::string& connection_url)
 {

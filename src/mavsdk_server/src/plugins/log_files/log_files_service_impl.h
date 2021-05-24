@@ -5,6 +5,8 @@
 #include "log_files/log_files.grpc.pb.h"
 #include "plugins/log_files/log_files.h"
 
+#include "mavsdk.h"
+#include "lazy_plugin.h"
 #include "log.h"
 #include <atomic>
 #include <cmath>
@@ -17,10 +19,10 @@
 namespace mavsdk {
 namespace mavsdk_server {
 
-template<typename LogFiles = LogFiles>
+template<typename LogFiles = LogFiles, typename LazyPlugin = LazyPlugin<LogFiles>>
 class LogFilesServiceImpl final : public rpc::log_files::LogFilesService::Service {
 public:
-    LogFilesServiceImpl(LogFiles& log_files) : _log_files(log_files) {}
+    LogFilesServiceImpl(LazyPlugin& lazy_plugin) : _lazy_plugin(lazy_plugin) {}
 
     template<typename ResponseType>
     void fillResponseWithResult(ResponseType* response, mavsdk::LogFiles::Result& result) const
@@ -104,6 +106,8 @@ public:
                 return rpc::log_files::LogFilesResult_Result_RESULT_INVALID_ARGUMENT;
             case mavsdk::LogFiles::Result::FileOpenFailed:
                 return rpc::log_files::LogFilesResult_Result_RESULT_FILE_OPEN_FAILED;
+            case mavsdk::LogFiles::Result::NoSystem:
+                return rpc::log_files::LogFilesResult_Result_RESULT_NO_SYSTEM;
         }
     }
 
@@ -128,6 +132,8 @@ public:
                 return mavsdk::LogFiles::Result::InvalidArgument;
             case rpc::log_files::LogFilesResult_Result_RESULT_FILE_OPEN_FAILED:
                 return mavsdk::LogFiles::Result::FileOpenFailed;
+            case rpc::log_files::LogFilesResult_Result_RESULT_NO_SYSTEM:
+                return mavsdk::LogFiles::Result::NoSystem;
         }
     }
 
@@ -136,7 +142,16 @@ public:
         const rpc::log_files::GetEntriesRequest* /* request */,
         rpc::log_files::GetEntriesResponse* response) override
     {
-        auto result = _log_files.get_entries();
+        if (_lazy_plugin.maybe_plugin() == nullptr) {
+            if (response != nullptr) {
+                auto result = mavsdk::LogFiles::Result::NoSystem;
+                fillResponseWithResult(response, result);
+            }
+
+            return grpc::Status::OK;
+        }
+
+        auto result = _lazy_plugin.maybe_plugin()->get_entries();
 
         if (response != nullptr) {
             fillResponseWithResult(response, result.first);
@@ -155,6 +170,15 @@ public:
         const mavsdk::rpc::log_files::SubscribeDownloadLogFileRequest* request,
         grpc::ServerWriter<rpc::log_files::DownloadLogFileResponse>* writer) override
     {
+        if (_lazy_plugin.maybe_plugin() == nullptr) {
+            rpc::log_files::DownloadLogFileResponse rpc_response;
+            auto result = mavsdk::LogFiles::Result::NoSystem;
+            fillResponseWithResult(&rpc_response, result);
+            writer->Write(rpc_response);
+
+            return grpc::Status::OK;
+        }
+
         auto stream_closed_promise = std::make_shared<std::promise<void>>();
         auto stream_closed_future = stream_closed_promise->get_future();
         register_stream_stop_promise(stream_closed_promise);
@@ -162,7 +186,7 @@ public:
         auto is_finished = std::make_shared<bool>(false);
         auto subscribe_mutex = std::make_shared<std::mutex>();
 
-        _log_files.download_log_file_async(
+        _lazy_plugin.maybe_plugin()->download_log_file_async(
             translateFromRpcEntry(request->entry()),
             request->path(),
             [this, &writer, &stream_closed_promise, is_finished, subscribe_mutex](
@@ -231,7 +255,7 @@ private:
         }
     }
 
-    LogFiles& _log_files;
+    LazyPlugin& _lazy_plugin;
     std::atomic<bool> _stopped{false};
     std::vector<std::weak_ptr<std::promise<void>>> _stream_stop_promises{};
 };

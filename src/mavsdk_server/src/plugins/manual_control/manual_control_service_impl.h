@@ -6,6 +6,8 @@
 #include "manual_control/manual_control.grpc.pb.h"
 #include "plugins/manual_control/manual_control.h"
 
+#include "mavsdk.h"
+#include "lazy_plugin.h"
 #include "log.h"
 #include <atomic>
 #include <cmath>
@@ -18,10 +20,10 @@
 namespace mavsdk {
 namespace mavsdk_server {
 
-template<typename ManualControl = ManualControl>
+template<typename ManualControl = ManualControl, typename LazyPlugin = LazyPlugin<ManualControl>>
 class ManualControlServiceImpl final : public rpc::manual_control::ManualControlService::Service {
 public:
-    ManualControlServiceImpl(ManualControl& manual_control) : _manual_control(manual_control) {}
+    ManualControlServiceImpl(LazyPlugin& lazy_plugin) : _lazy_plugin(lazy_plugin) {}
 
     template<typename ResponseType>
     void fillResponseWithResult(ResponseType* response, mavsdk::ManualControl::Result& result) const
@@ -98,7 +100,16 @@ public:
         const rpc::manual_control::StartPositionControlRequest* /* request */,
         rpc::manual_control::StartPositionControlResponse* response) override
     {
-        auto result = _manual_control.start_position_control();
+        if (_lazy_plugin.maybe_plugin() == nullptr) {
+            if (response != nullptr) {
+                auto result = mavsdk::ManualControl::Result::NoSystem;
+                fillResponseWithResult(response, result);
+            }
+
+            return grpc::Status::OK;
+        }
+
+        auto result = _lazy_plugin.maybe_plugin()->start_position_control();
 
         if (response != nullptr) {
             fillResponseWithResult(response, result);
@@ -112,7 +123,16 @@ public:
         const rpc::manual_control::StartAltitudeControlRequest* /* request */,
         rpc::manual_control::StartAltitudeControlResponse* response) override
     {
-        auto result = _manual_control.start_altitude_control();
+        if (_lazy_plugin.maybe_plugin() == nullptr) {
+            if (response != nullptr) {
+                auto result = mavsdk::ManualControl::Result::NoSystem;
+                fillResponseWithResult(response, result);
+            }
+
+            return grpc::Status::OK;
+        }
+
+        auto result = _lazy_plugin.maybe_plugin()->start_altitude_control();
 
         if (response != nullptr) {
             fillResponseWithResult(response, result);
@@ -126,12 +146,21 @@ public:
         const rpc::manual_control::SetManualControlInputRequest* request,
         rpc::manual_control::SetManualControlInputResponse* response) override
     {
+        if (_lazy_plugin.maybe_plugin() == nullptr) {
+            if (response != nullptr) {
+                auto result = mavsdk::ManualControl::Result::NoSystem;
+                fillResponseWithResult(response, result);
+            }
+
+            return grpc::Status::OK;
+        }
+
         if (request == nullptr) {
             LogWarn() << "SetManualControlInput sent with a null request! Ignoring...";
             return grpc::Status::OK;
         }
 
-        auto result = _manual_control.set_manual_control_input(
+        auto result = _lazy_plugin.maybe_plugin()->set_manual_control_input(
             request->x(), request->y(), request->z(), request->r());
 
         if (response != nullptr) {
@@ -176,7 +205,7 @@ private:
         }
     }
 
-    ManualControl& _manual_control;
+    LazyPlugin& _lazy_plugin;
     std::atomic<bool> _stopped{false};
     std::vector<std::weak_ptr<std::promise<void>>> _stream_stop_promises{};
 };

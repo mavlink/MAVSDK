@@ -5,6 +5,8 @@
 #include "tune/tune.grpc.pb.h"
 #include "plugins/tune/tune.h"
 
+#include "mavsdk.h"
+#include "lazy_plugin.h"
 #include "log.h"
 #include <atomic>
 #include <cmath>
@@ -17,10 +19,10 @@
 namespace mavsdk {
 namespace mavsdk_server {
 
-template<typename Tune = Tune>
+template<typename Tune = Tune, typename LazyPlugin = LazyPlugin<Tune>>
 class TuneServiceImpl final : public rpc::tune::TuneService::Service {
 public:
-    TuneServiceImpl(Tune& tune) : _tune(tune) {}
+    TuneServiceImpl(LazyPlugin& lazy_plugin) : _lazy_plugin(lazy_plugin) {}
 
     template<typename ResponseType>
     void fillResponseWithResult(ResponseType* response, mavsdk::Tune::Result& result) const
@@ -185,6 +187,8 @@ public:
                 return rpc::tune::TuneResult_Result_RESULT_TUNE_TOO_LONG;
             case mavsdk::Tune::Result::Error:
                 return rpc::tune::TuneResult_Result_RESULT_ERROR;
+            case mavsdk::Tune::Result::NoSystem:
+                return rpc::tune::TuneResult_Result_RESULT_NO_SYSTEM;
         }
     }
 
@@ -204,6 +208,8 @@ public:
                 return mavsdk::Tune::Result::TuneTooLong;
             case rpc::tune::TuneResult_Result_RESULT_ERROR:
                 return mavsdk::Tune::Result::Error;
+            case rpc::tune::TuneResult_Result_RESULT_NO_SYSTEM:
+                return mavsdk::Tune::Result::NoSystem;
         }
     }
 
@@ -212,12 +218,22 @@ public:
         const rpc::tune::PlayTuneRequest* request,
         rpc::tune::PlayTuneResponse* response) override
     {
+        if (_lazy_plugin.maybe_plugin() == nullptr) {
+            if (response != nullptr) {
+                auto result = mavsdk::Tune::Result::NoSystem;
+                fillResponseWithResult(response, result);
+            }
+
+            return grpc::Status::OK;
+        }
+
         if (request == nullptr) {
             LogWarn() << "PlayTune sent with a null request! Ignoring...";
             return grpc::Status::OK;
         }
 
-        auto result = _tune.play_tune(translateFromRpcTuneDescription(request->tune_description()));
+        auto result = _lazy_plugin.maybe_plugin()->play_tune(
+            translateFromRpcTuneDescription(request->tune_description()));
 
         if (response != nullptr) {
             fillResponseWithResult(response, result);
@@ -261,7 +277,7 @@ private:
         }
     }
 
-    Tune& _tune;
+    LazyPlugin& _lazy_plugin;
     std::atomic<bool> _stopped{false};
     std::vector<std::weak_ptr<std::promise<void>>> _stream_stop_promises{};
 };

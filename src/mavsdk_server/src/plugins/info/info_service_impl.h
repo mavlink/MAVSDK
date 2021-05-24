@@ -5,6 +5,8 @@
 #include "info/info.grpc.pb.h"
 #include "plugins/info/info.h"
 
+#include "mavsdk.h"
+#include "lazy_plugin.h"
 #include "log.h"
 #include <atomic>
 #include <cmath>
@@ -17,10 +19,10 @@
 namespace mavsdk {
 namespace mavsdk_server {
 
-template<typename Info = Info>
+template<typename Info = Info, typename LazyPlugin = LazyPlugin<Info>>
 class InfoServiceImpl final : public rpc::info::InfoService::Service {
 public:
-    InfoServiceImpl(Info& info) : _info(info) {}
+    InfoServiceImpl(LazyPlugin& lazy_plugin) : _lazy_plugin(lazy_plugin) {}
 
     template<typename ResponseType>
     void fillResponseWithResult(ResponseType* response, mavsdk::Info::Result& result) const
@@ -186,6 +188,8 @@ public:
                 return rpc::info::InfoResult_Result_RESULT_SUCCESS;
             case mavsdk::Info::Result::InformationNotReceivedYet:
                 return rpc::info::InfoResult_Result_RESULT_INFORMATION_NOT_RECEIVED_YET;
+            case mavsdk::Info::Result::NoSystem:
+                return rpc::info::InfoResult_Result_RESULT_NO_SYSTEM;
         }
     }
 
@@ -201,6 +205,8 @@ public:
                 return mavsdk::Info::Result::Success;
             case rpc::info::InfoResult_Result_RESULT_INFORMATION_NOT_RECEIVED_YET:
                 return mavsdk::Info::Result::InformationNotReceivedYet;
+            case rpc::info::InfoResult_Result_RESULT_NO_SYSTEM:
+                return mavsdk::Info::Result::NoSystem;
         }
     }
 
@@ -209,7 +215,16 @@ public:
         const rpc::info::GetFlightInformationRequest* /* request */,
         rpc::info::GetFlightInformationResponse* response) override
     {
-        auto result = _info.get_flight_information();
+        if (_lazy_plugin.maybe_plugin() == nullptr) {
+            if (response != nullptr) {
+                auto result = mavsdk::Info::Result::NoSystem;
+                fillResponseWithResult(response, result);
+            }
+
+            return grpc::Status::OK;
+        }
+
+        auto result = _lazy_plugin.maybe_plugin()->get_flight_information();
 
         if (response != nullptr) {
             fillResponseWithResult(response, result.first);
@@ -225,7 +240,16 @@ public:
         const rpc::info::GetIdentificationRequest* /* request */,
         rpc::info::GetIdentificationResponse* response) override
     {
-        auto result = _info.get_identification();
+        if (_lazy_plugin.maybe_plugin() == nullptr) {
+            if (response != nullptr) {
+                auto result = mavsdk::Info::Result::NoSystem;
+                fillResponseWithResult(response, result);
+            }
+
+            return grpc::Status::OK;
+        }
+
+        auto result = _lazy_plugin.maybe_plugin()->get_identification();
 
         if (response != nullptr) {
             fillResponseWithResult(response, result.first);
@@ -242,7 +266,16 @@ public:
         const rpc::info::GetProductRequest* /* request */,
         rpc::info::GetProductResponse* response) override
     {
-        auto result = _info.get_product();
+        if (_lazy_plugin.maybe_plugin() == nullptr) {
+            if (response != nullptr) {
+                auto result = mavsdk::Info::Result::NoSystem;
+                fillResponseWithResult(response, result);
+            }
+
+            return grpc::Status::OK;
+        }
+
+        auto result = _lazy_plugin.maybe_plugin()->get_product();
 
         if (response != nullptr) {
             fillResponseWithResult(response, result.first);
@@ -258,7 +291,16 @@ public:
         const rpc::info::GetVersionRequest* /* request */,
         rpc::info::GetVersionResponse* response) override
     {
-        auto result = _info.get_version();
+        if (_lazy_plugin.maybe_plugin() == nullptr) {
+            if (response != nullptr) {
+                auto result = mavsdk::Info::Result::NoSystem;
+                fillResponseWithResult(response, result);
+            }
+
+            return grpc::Status::OK;
+        }
+
+        auto result = _lazy_plugin.maybe_plugin()->get_version();
 
         if (response != nullptr) {
             fillResponseWithResult(response, result.first);
@@ -274,7 +316,16 @@ public:
         const rpc::info::GetSpeedFactorRequest* /* request */,
         rpc::info::GetSpeedFactorResponse* response) override
     {
-        auto result = _info.get_speed_factor();
+        if (_lazy_plugin.maybe_plugin() == nullptr) {
+            if (response != nullptr) {
+                auto result = mavsdk::Info::Result::NoSystem;
+                fillResponseWithResult(response, result);
+            }
+
+            return grpc::Status::OK;
+        }
+
+        auto result = _lazy_plugin.maybe_plugin()->get_speed_factor();
 
         if (response != nullptr) {
             fillResponseWithResult(response, result.first);
@@ -320,7 +371,7 @@ private:
         }
     }
 
-    Info& _info;
+    LazyPlugin& _lazy_plugin;
     std::atomic<bool> _stopped{false};
     std::vector<std::weak_ptr<std::promise<void>>> _stream_stop_promises{};
 };

@@ -221,12 +221,13 @@ enum MissionResult_Result : int {
   MissionResult_Result_RESULT_NO_MISSION_AVAILABLE = 8,
   MissionResult_Result_RESULT_UNSUPPORTED_MISSION_CMD = 11,
   MissionResult_Result_RESULT_TRANSFER_CANCELLED = 12,
+  MissionResult_Result_RESULT_NO_SYSTEM = 13,
   MissionResult_Result_MissionResult_Result_INT_MIN_SENTINEL_DO_NOT_USE_ = std::numeric_limits<::PROTOBUF_NAMESPACE_ID::int32>::min(),
   MissionResult_Result_MissionResult_Result_INT_MAX_SENTINEL_DO_NOT_USE_ = std::numeric_limits<::PROTOBUF_NAMESPACE_ID::int32>::max()
 };
 bool MissionResult_Result_IsValid(int value);
 constexpr MissionResult_Result MissionResult_Result_Result_MIN = MissionResult_Result_RESULT_UNKNOWN;
-constexpr MissionResult_Result MissionResult_Result_Result_MAX = MissionResult_Result_RESULT_TRANSFER_CANCELLED;
+constexpr MissionResult_Result MissionResult_Result_Result_MAX = MissionResult_Result_RESULT_NO_SYSTEM;
 constexpr int MissionResult_Result_Result_ARRAYSIZE = MissionResult_Result_Result_MAX + 1;
 
 const ::PROTOBUF_NAMESPACE_ID::EnumDescriptor* MissionResult_Result_descriptor();
@@ -4276,6 +4277,8 @@ class MissionResult PROTOBUF_FINAL :
     MissionResult_Result_RESULT_UNSUPPORTED_MISSION_CMD;
   static constexpr Result RESULT_TRANSFER_CANCELLED =
     MissionResult_Result_RESULT_TRANSFER_CANCELLED;
+  static constexpr Result RESULT_NO_SYSTEM =
+    MissionResult_Result_RESULT_NO_SYSTEM;
   static inline bool Result_IsValid(int value) {
     return MissionResult_Result_IsValid(value);
   }

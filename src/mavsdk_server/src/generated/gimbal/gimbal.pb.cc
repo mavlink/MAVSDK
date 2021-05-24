@@ -404,39 +404,40 @@ const char descriptor_table_protodef_gimbal_2fgimbal_2eproto[] PROTOBUF_SECTION_
   "_primary_control\030\002 \001(\005\022\036\n\026compid_primary"
   "_control\030\003 \001(\005\022\037\n\027sysid_secondary_contro"
   "l\030\004 \001(\005\022 \n\030compid_secondary_control\030\005 \001("
-  "\005\"\312\001\n\014GimbalResult\0226\n\006result\030\001 \001(\0162&.mav"
+  "\005\"\341\001\n\014GimbalResult\0226\n\006result\030\001 \001(\0162&.mav"
   "sdk.rpc.gimbal.GimbalResult.Result\022\022\n\nre"
-  "sult_str\030\002 \001(\t\"n\n\006Result\022\022\n\016RESULT_UNKNO"
-  "WN\020\000\022\022\n\016RESULT_SUCCESS\020\001\022\020\n\014RESULT_ERROR"
-  "\020\002\022\022\n\016RESULT_TIMEOUT\020\003\022\026\n\022RESULT_UNSUPPO"
-  "RTED\020\004*B\n\nGimbalMode\022\032\n\026GIMBAL_MODE_YAW_"
-  "FOLLOW\020\000\022\030\n\024GIMBAL_MODE_YAW_LOCK\020\001*Z\n\013Co"
-  "ntrolMode\022\025\n\021CONTROL_MODE_NONE\020\000\022\030\n\024CONT"
-  "ROL_MODE_PRIMARY\020\001\022\032\n\026CONTROL_MODE_SECON"
-  "DARY\020\0022\347\005\n\rGimbalService\022g\n\016SetPitchAndY"
-  "aw\022(.mavsdk.rpc.gimbal.SetPitchAndYawReq"
-  "uest\032).mavsdk.rpc.gimbal.SetPitchAndYawR"
-  "esponse\"\000\022\177\n\026SetPitchRateAndYawRate\0220.ma"
-  "vsdk.rpc.gimbal.SetPitchRateAndYawRateRe"
-  "quest\0321.mavsdk.rpc.gimbal.SetPitchRateAn"
-  "dYawRateResponse\"\000\022R\n\007SetMode\022!.mavsdk.r"
-  "pc.gimbal.SetModeRequest\032\".mavsdk.rpc.gi"
-  "mbal.SetModeResponse\"\000\022g\n\016SetRoiLocation"
-  "\022(.mavsdk.rpc.gimbal.SetRoiLocationReque"
-  "st\032).mavsdk.rpc.gimbal.SetRoiLocationRes"
-  "ponse\"\000\022^\n\013TakeControl\022%.mavsdk.rpc.gimb"
-  "al.TakeControlRequest\032&.mavsdk.rpc.gimba"
-  "l.TakeControlResponse\"\000\022g\n\016ReleaseContro"
-  "l\022(.mavsdk.rpc.gimbal.ReleaseControlRequ"
-  "est\032).mavsdk.rpc.gimbal.ReleaseControlRe"
-  "sponse\"\000\022f\n\020SubscribeControl\022*.mavsdk.rp"
-  "c.gimbal.SubscribeControlRequest\032\".mavsd"
-  "k.rpc.gimbal.ControlResponse\"\0000\001B\037\n\020io.m"
-  "avsdk.gimbalB\013GimbalProtob\006proto3"
+  "sult_str\030\002 \001(\t\"\204\001\n\006Result\022\022\n\016RESULT_UNKN"
+  "OWN\020\000\022\022\n\016RESULT_SUCCESS\020\001\022\020\n\014RESULT_ERRO"
+  "R\020\002\022\022\n\016RESULT_TIMEOUT\020\003\022\026\n\022RESULT_UNSUPP"
+  "ORTED\020\004\022\024\n\020RESULT_NO_SYSTEM\020\005*B\n\nGimbalM"
+  "ode\022\032\n\026GIMBAL_MODE_YAW_FOLLOW\020\000\022\030\n\024GIMBA"
+  "L_MODE_YAW_LOCK\020\001*Z\n\013ControlMode\022\025\n\021CONT"
+  "ROL_MODE_NONE\020\000\022\030\n\024CONTROL_MODE_PRIMARY\020"
+  "\001\022\032\n\026CONTROL_MODE_SECONDARY\020\0022\347\005\n\rGimbal"
+  "Service\022g\n\016SetPitchAndYaw\022(.mavsdk.rpc.g"
+  "imbal.SetPitchAndYawRequest\032).mavsdk.rpc"
+  ".gimbal.SetPitchAndYawResponse\"\000\022\177\n\026SetP"
+  "itchRateAndYawRate\0220.mavsdk.rpc.gimbal.S"
+  "etPitchRateAndYawRateRequest\0321.mavsdk.rp"
+  "c.gimbal.SetPitchRateAndYawRateResponse\""
+  "\000\022R\n\007SetMode\022!.mavsdk.rpc.gimbal.SetMode"
+  "Request\032\".mavsdk.rpc.gimbal.SetModeRespo"
+  "nse\"\000\022g\n\016SetRoiLocation\022(.mavsdk.rpc.gim"
+  "bal.SetRoiLocationRequest\032).mavsdk.rpc.g"
+  "imbal.SetRoiLocationResponse\"\000\022^\n\013TakeCo"
+  "ntrol\022%.mavsdk.rpc.gimbal.TakeControlReq"
+  "uest\032&.mavsdk.rpc.gimbal.TakeControlResp"
+  "onse\"\000\022g\n\016ReleaseControl\022(.mavsdk.rpc.gi"
+  "mbal.ReleaseControlRequest\032).mavsdk.rpc."
+  "gimbal.ReleaseControlResponse\"\000\022f\n\020Subsc"
+  "ribeControl\022*.mavsdk.rpc.gimbal.Subscrib"
+  "eControlRequest\032\".mavsdk.rpc.gimbal.Cont"
+  "rolResponse\"\0000\001B\037\n\020io.mavsdk.gimbalB\013Gim"
+  "balProtob\006proto3"
   ;
 static ::PROTOBUF_NAMESPACE_ID::internal::once_flag descriptor_table_gimbal_2fgimbal_2eproto_once;
 const ::PROTOBUF_NAMESPACE_ID::internal::DescriptorTable descriptor_table_gimbal_2fgimbal_2eproto = {
-  false, false, 2393, descriptor_table_protodef_gimbal_2fgimbal_2eproto, "gimbal/gimbal.proto", 
+  false, false, 2416, descriptor_table_protodef_gimbal_2fgimbal_2eproto, "gimbal/gimbal.proto", 
   &descriptor_table_gimbal_2fgimbal_2eproto_once, nullptr, 0, 16,
   schemas, file_default_instances, TableStruct_gimbal_2fgimbal_2eproto::offsets,
   file_level_metadata_gimbal_2fgimbal_2eproto, file_level_enum_descriptors_gimbal_2fgimbal_2eproto, file_level_service_descriptors_gimbal_2fgimbal_2eproto,
@@ -463,6 +464,7 @@ bool GimbalResult_Result_IsValid(int value) {
     case 2:
     case 3:
     case 4:
+    case 5:
       return true;
     default:
       return false;
@@ -475,6 +477,7 @@ constexpr GimbalResult_Result GimbalResult::RESULT_SUCCESS;
 constexpr GimbalResult_Result GimbalResult::RESULT_ERROR;
 constexpr GimbalResult_Result GimbalResult::RESULT_TIMEOUT;
 constexpr GimbalResult_Result GimbalResult::RESULT_UNSUPPORTED;
+constexpr GimbalResult_Result GimbalResult::RESULT_NO_SYSTEM;
 constexpr GimbalResult_Result GimbalResult::Result_MIN;
 constexpr GimbalResult_Result GimbalResult::Result_MAX;
 constexpr int GimbalResult::Result_ARRAYSIZE;

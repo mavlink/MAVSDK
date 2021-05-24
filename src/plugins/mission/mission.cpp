@@ -13,9 +13,12 @@ using MissionItem = Mission::MissionItem;
 using MissionPlan = Mission::MissionPlan;
 using MissionProgress = Mission::MissionProgress;
 
-Mission::Mission(System& system) : PluginBase(), _impl{new MissionImpl(system)} {}
+Mission::Mission(System& system) : PluginBase(), _impl{std::make_unique<MissionImpl>(system)} {}
 
-Mission::Mission(std::shared_ptr<System> system) : PluginBase(), _impl{new MissionImpl(system)} {}
+Mission::Mission(std::shared_ptr<System> system) :
+    PluginBase(),
+    _impl{std::make_unique<MissionImpl>(system)}
+{}
 
 Mission::~Mission() {}
 
@@ -232,6 +235,8 @@ std::ostream& operator<<(std::ostream& str, Mission::Result const& result)
             return str << "Unsupported Mission Cmd";
         case Mission::Result::TransferCancelled:
             return str << "Transfer Cancelled";
+        case Mission::Result::NoSystem:
+            return str << "No System";
         default:
             return str << "Unknown";
     }

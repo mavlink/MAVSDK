@@ -12,9 +12,11 @@ namespace mavsdk {
 using Point = Geofence::Point;
 using Polygon = Geofence::Polygon;
 
-Geofence::Geofence(System& system) : PluginBase(), _impl{new GeofenceImpl(system)} {}
+Geofence::Geofence(System& system) : PluginBase(), _impl{std::make_unique<GeofenceImpl>(system)} {}
 
-Geofence::Geofence(std::shared_ptr<System> system) : PluginBase(), _impl{new GeofenceImpl(system)}
+Geofence::Geofence(std::shared_ptr<System> system) :
+    PluginBase(),
+    _impl{std::make_unique<GeofenceImpl>(system)}
 {}
 
 Geofence::~Geofence() {}
@@ -94,6 +96,8 @@ std::ostream& operator<<(std::ostream& str, Geofence::Result const& result)
             return str << "Timeout";
         case Geofence::Result::InvalidArgument:
             return str << "Invalid Argument";
+        case Geofence::Result::NoSystem:
+            return str << "No System";
         default:
             return str << "Unknown";
     }

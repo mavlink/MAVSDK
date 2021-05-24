@@ -89,12 +89,13 @@ enum TuneResult_Result : int {
   TuneResult_Result_RESULT_INVALID_TEMPO = 2,
   TuneResult_Result_RESULT_TUNE_TOO_LONG = 3,
   TuneResult_Result_RESULT_ERROR = 4,
+  TuneResult_Result_RESULT_NO_SYSTEM = 5,
   TuneResult_Result_TuneResult_Result_INT_MIN_SENTINEL_DO_NOT_USE_ = std::numeric_limits<::PROTOBUF_NAMESPACE_ID::int32>::min(),
   TuneResult_Result_TuneResult_Result_INT_MAX_SENTINEL_DO_NOT_USE_ = std::numeric_limits<::PROTOBUF_NAMESPACE_ID::int32>::max()
 };
 bool TuneResult_Result_IsValid(int value);
 constexpr TuneResult_Result TuneResult_Result_Result_MIN = TuneResult_Result_RESULT_UNKNOWN;
-constexpr TuneResult_Result TuneResult_Result_Result_MAX = TuneResult_Result_RESULT_ERROR;
+constexpr TuneResult_Result TuneResult_Result_Result_MAX = TuneResult_Result_RESULT_NO_SYSTEM;
 constexpr int TuneResult_Result_Result_ARRAYSIZE = TuneResult_Result_Result_MAX + 1;
 
 const ::PROTOBUF_NAMESPACE_ID::EnumDescriptor* TuneResult_Result_descriptor();
@@ -727,6 +728,8 @@ class TuneResult PROTOBUF_FINAL :
     TuneResult_Result_RESULT_TUNE_TOO_LONG;
   static constexpr Result RESULT_ERROR =
     TuneResult_Result_RESULT_ERROR;
+  static constexpr Result RESULT_NO_SYSTEM =
+    TuneResult_Result_RESULT_NO_SYSTEM;
   static inline bool Result_IsValid(int value) {
     return TuneResult_Result_IsValid(value);
   }

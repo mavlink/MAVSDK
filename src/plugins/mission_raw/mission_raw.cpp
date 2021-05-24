@@ -13,11 +13,14 @@ using MissionProgress = MissionRaw::MissionProgress;
 using MissionItem = MissionRaw::MissionItem;
 using MissionImportData = MissionRaw::MissionImportData;
 
-MissionRaw::MissionRaw(System& system) : PluginBase(), _impl{new MissionRawImpl(system)} {}
+MissionRaw::MissionRaw(System& system) :
+    PluginBase(),
+    _impl{std::make_unique<MissionRawImpl>(system)}
+{}
 
 MissionRaw::MissionRaw(std::shared_ptr<System> system) :
     PluginBase(),
-    _impl{new MissionRawImpl(system)}
+    _impl{std::make_unique<MissionRawImpl>(system)}
 {}
 
 MissionRaw::~MissionRaw() {}
@@ -227,6 +230,8 @@ std::ostream& operator<<(std::ostream& str, MissionRaw::Result const& result)
             return str << "Failed To Open Qgc Plan";
         case MissionRaw::Result::FailedToParseQgcPlan:
             return str << "Failed To Parse Qgc Plan";
+        case MissionRaw::Result::NoSystem:
+            return str << "No System";
         default:
             return str << "Unknown";
     }

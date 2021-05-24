@@ -21,9 +21,12 @@ using Setting = Camera::Setting;
 using SettingOptions = Camera::SettingOptions;
 using Information = Camera::Information;
 
-Camera::Camera(System& system) : PluginBase(), _impl{new CameraImpl(system)} {}
+Camera::Camera(System& system) : PluginBase(), _impl{std::make_unique<CameraImpl>(system)} {}
 
-Camera::Camera(std::shared_ptr<System> system) : PluginBase(), _impl{new CameraImpl(system)} {}
+Camera::Camera(std::shared_ptr<System> system) :
+    PluginBase(),
+    _impl{std::make_unique<CameraImpl>(system)}
+{}
 
 Camera::~Camera() {}
 
@@ -217,6 +220,8 @@ std::ostream& operator<<(std::ostream& str, Camera::Result const& result)
             return str << "Timeout";
         case Camera::Result::WrongArgument:
             return str << "Wrong Argument";
+        case Camera::Result::NoSystem:
+            return str << "No System";
         default:
             return str << "Unknown";
     }

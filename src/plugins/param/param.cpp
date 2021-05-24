@@ -13,9 +13,12 @@ using IntParam = Param::IntParam;
 using FloatParam = Param::FloatParam;
 using AllParams = Param::AllParams;
 
-Param::Param(System& system) : PluginBase(), _impl{new ParamImpl(system)} {}
+Param::Param(System& system) : PluginBase(), _impl{std::make_unique<ParamImpl>(system)} {}
 
-Param::Param(std::shared_ptr<System> system) : PluginBase(), _impl{new ParamImpl(system)} {}
+Param::Param(std::shared_ptr<System> system) :
+    PluginBase(),
+    _impl{std::make_unique<ParamImpl>(system)}
+{}
 
 Param::~Param() {}
 
@@ -113,6 +116,8 @@ std::ostream& operator<<(std::ostream& str, Param::Result const& result)
             return str << "Wrong Type";
         case Param::Result::ParamNameTooLong:
             return str << "Param Name Too Long";
+        case Param::Result::NoSystem:
+            return str << "No System";
         default:
             return str << "Unknown";
     }

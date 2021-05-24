@@ -154,22 +154,22 @@ const char descriptor_table_protodef_geofence_2fgeofence_2eproto[] PROTOBUF_SECT
   " \003(\0132\034.mavsdk.rpc.geofence.Polygon\"V\n\026Up"
   "loadGeofenceResponse\022<\n\017geofence_result\030"
   "\001 \001(\0132#.mavsdk.rpc.geofence.GeofenceResu"
-  "lt\"\213\002\n\016GeofenceResult\022:\n\006result\030\001 \001(\0162*."
+  "lt\"\241\002\n\016GeofenceResult\022:\n\006result\030\001 \001(\0162*."
   "mavsdk.rpc.geofence.GeofenceResult.Resul"
-  "t\022\022\n\nresult_str\030\002 \001(\t\"\250\001\n\006Result\022\022\n\016RESU"
+  "t\022\022\n\nresult_str\030\002 \001(\t\"\276\001\n\006Result\022\022\n\016RESU"
   "LT_UNKNOWN\020\000\022\022\n\016RESULT_SUCCESS\020\001\022\020\n\014RESU"
   "LT_ERROR\020\002\022\"\n\036RESULT_TOO_MANY_GEOFENCE_I"
   "TEMS\020\003\022\017\n\013RESULT_BUSY\020\004\022\022\n\016RESULT_TIMEOU"
-  "T\020\005\022\033\n\027RESULT_INVALID_ARGUMENT\020\0062~\n\017Geof"
-  "enceService\022k\n\016UploadGeofence\022*.mavsdk.r"
-  "pc.geofence.UploadGeofenceRequest\032+.mavs"
-  "dk.rpc.geofence.UploadGeofenceResponse\"\000"
-  "B#\n\022io.mavsdk.geofenceB\rGeofenceProtob\006p"
-  "roto3"
+  "T\020\005\022\033\n\027RESULT_INVALID_ARGUMENT\020\006\022\024\n\020RESU"
+  "LT_NO_SYSTEM\020\0072~\n\017GeofenceService\022k\n\016Upl"
+  "oadGeofence\022*.mavsdk.rpc.geofence.Upload"
+  "GeofenceRequest\032+.mavsdk.rpc.geofence.Up"
+  "loadGeofenceResponse\"\000B#\n\022io.mavsdk.geof"
+  "enceB\rGeofenceProtob\006proto3"
   ;
 static ::PROTOBUF_NAMESPACE_ID::internal::once_flag descriptor_table_geofence_2fgeofence_2eproto_once;
 const ::PROTOBUF_NAMESPACE_ID::internal::DescriptorTable descriptor_table_geofence_2fgeofence_2eproto = {
-  false, false, 885, descriptor_table_protodef_geofence_2fgeofence_2eproto, "geofence/geofence.proto", 
+  false, false, 907, descriptor_table_protodef_geofence_2fgeofence_2eproto, "geofence/geofence.proto", 
   &descriptor_table_geofence_2fgeofence_2eproto_once, nullptr, 0, 5,
   schemas, file_default_instances, TableStruct_geofence_2fgeofence_2eproto::offsets,
   file_level_metadata_geofence_2fgeofence_2eproto, file_level_enum_descriptors_geofence_2fgeofence_2eproto, file_level_service_descriptors_geofence_2fgeofence_2eproto,
@@ -219,6 +219,7 @@ bool GeofenceResult_Result_IsValid(int value) {
     case 4:
     case 5:
     case 6:
+    case 7:
       return true;
     default:
       return false;
@@ -233,6 +234,7 @@ constexpr GeofenceResult_Result GeofenceResult::RESULT_TOO_MANY_GEOFENCE_ITEMS;
 constexpr GeofenceResult_Result GeofenceResult::RESULT_BUSY;
 constexpr GeofenceResult_Result GeofenceResult::RESULT_TIMEOUT;
 constexpr GeofenceResult_Result GeofenceResult::RESULT_INVALID_ARGUMENT;
+constexpr GeofenceResult_Result GeofenceResult::RESULT_NO_SYSTEM;
 constexpr GeofenceResult_Result GeofenceResult::Result_MIN;
 constexpr GeofenceResult_Result GeofenceResult::Result_MAX;
 constexpr int GeofenceResult::Result_ARRAYSIZE;

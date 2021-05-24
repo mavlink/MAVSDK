@@ -4,6 +4,7 @@
 
 #include "offboard/offboard_service_impl.h"
 #include "offboard/mocks/offboard_mock.h"
+#include "mocks/lazy_plugin_mock.h"
 
 namespace {
 
@@ -12,7 +13,10 @@ using testing::NiceMock;
 using testing::Return;
 
 using MockOffboard = NiceMock<mavsdk::testing::MockOffboard>;
-using OffboardServiceImpl = mavsdk::mavsdk_server::OffboardServiceImpl<MockOffboard>;
+using MockLazyPlugin =
+    testing::NiceMock<mavsdk::mavsdk_server::testing::MockLazyPlugin<MockOffboard>>;
+using OffboardServiceImpl =
+    mavsdk::mavsdk_server::OffboardServiceImpl<MockOffboard, MockLazyPlugin>;
 using OffboardResult = mavsdk::rpc::offboard::OffboardResult;
 using InputPair = std::pair<std::string, mavsdk::Offboard::Result>;
 
@@ -66,9 +70,11 @@ TEST_P(OffboardServiceImplTest, startResultIsTranslatedCorrectly)
 
 std::string startAndGetTranslatedResult(const mavsdk::Offboard::Result start_result)
 {
+    MockLazyPlugin lazy_plugin;
     MockOffboard offboard;
+    ON_CALL(lazy_plugin, maybe_plugin()).WillByDefault(Return(&offboard));
     ON_CALL(offboard, start()).WillByDefault(Return(start_result));
-    OffboardServiceImpl offboardService(offboard);
+    OffboardServiceImpl offboardService(lazy_plugin);
     mavsdk::rpc::offboard::StartResponse response;
 
     offboardService.Start(nullptr, nullptr, &response);
@@ -78,8 +84,10 @@ std::string startAndGetTranslatedResult(const mavsdk::Offboard::Result start_res
 
 TEST_F(OffboardServiceImplTest, startsEvenWhenArgsAreNull)
 {
+    MockLazyPlugin lazy_plugin;
     MockOffboard offboard;
-    OffboardServiceImpl offboardService(offboard);
+    ON_CALL(lazy_plugin, maybe_plugin()).WillByDefault(Return(&offboard));
+    OffboardServiceImpl offboardService(lazy_plugin);
     EXPECT_CALL(offboard, start()).Times(1);
 
     offboardService.Start(nullptr, nullptr, nullptr);
@@ -93,9 +101,11 @@ TEST_P(OffboardServiceImplTest, stopResultIsTranslatedCorrectly)
 
 std::string stopAndGetTranslatedResult(const mavsdk::Offboard::Result stop_result)
 {
+    MockLazyPlugin lazy_plugin;
     MockOffboard offboard;
+    ON_CALL(lazy_plugin, maybe_plugin()).WillByDefault(Return(&offboard));
     ON_CALL(offboard, stop()).WillByDefault(Return(stop_result));
-    OffboardServiceImpl offboardService(offboard);
+    OffboardServiceImpl offboardService(lazy_plugin);
     mavsdk::rpc::offboard::StopResponse response;
 
     offboardService.Stop(nullptr, nullptr, &response);
@@ -105,8 +115,10 @@ std::string stopAndGetTranslatedResult(const mavsdk::Offboard::Result stop_resul
 
 TEST_F(OffboardServiceImplTest, stopsEvenWhenArgsAreNull)
 {
+    MockLazyPlugin lazy_plugin;
     MockOffboard offboard;
-    OffboardServiceImpl offboardService(offboard);
+    ON_CALL(lazy_plugin, maybe_plugin()).WillByDefault(Return(&offboard));
+    OffboardServiceImpl offboardService(lazy_plugin);
     EXPECT_CALL(offboard, stop()).Times(1);
 
     offboardService.Stop(nullptr, nullptr, nullptr);
@@ -114,8 +126,10 @@ TEST_F(OffboardServiceImplTest, stopsEvenWhenArgsAreNull)
 
 TEST_F(OffboardServiceImplTest, isActiveCallsGetter)
 {
+    MockLazyPlugin lazy_plugin;
     MockOffboard offboard;
-    OffboardServiceImpl offboardService(offboard);
+    ON_CALL(lazy_plugin, maybe_plugin()).WillByDefault(Return(&offboard));
+    OffboardServiceImpl offboardService(lazy_plugin);
     EXPECT_CALL(offboard, is_active()).Times(1);
     mavsdk::rpc::offboard::IsActiveResponse response;
 
@@ -131,8 +145,10 @@ TEST_F(OffboardServiceImplTest, isActiveGetsCorrectValue)
 void OffboardServiceImplTest::checkReturnsCorrectIsActiveStatus(
     const bool expected_is_active_status)
 {
+    MockLazyPlugin lazy_plugin;
     MockOffboard offboard;
-    OffboardServiceImpl offboardService(offboard);
+    ON_CALL(lazy_plugin, maybe_plugin()).WillByDefault(Return(&offboard));
+    OffboardServiceImpl offboardService(lazy_plugin);
     ON_CALL(offboard, is_active()).WillByDefault(Return(expected_is_active_status));
     mavsdk::rpc::offboard::IsActiveResponse response;
 
@@ -142,40 +158,50 @@ void OffboardServiceImplTest::checkReturnsCorrectIsActiveStatus(
 
 TEST_F(OffboardServiceImplTest, isActiveDoesNotCrashWithNullResponse)
 {
+    MockLazyPlugin lazy_plugin;
     MockOffboard offboard;
-    OffboardServiceImpl offboardService(offboard);
+    ON_CALL(lazy_plugin, maybe_plugin()).WillByDefault(Return(&offboard));
+    OffboardServiceImpl offboardService(lazy_plugin);
 
     offboardService.IsActive(nullptr, nullptr, nullptr);
 }
 
 TEST_F(OffboardServiceImplTest, setAttitudeDoesNotFailWithAllNullParams)
 {
+    MockLazyPlugin lazy_plugin;
     MockOffboard offboard;
-    OffboardServiceImpl offboardService(offboard);
+    ON_CALL(lazy_plugin, maybe_plugin()).WillByDefault(Return(&offboard));
+    OffboardServiceImpl offboardService(lazy_plugin);
 
     offboardService.SetAttitude(nullptr, nullptr, nullptr);
 }
 
 TEST_F(OffboardServiceImplTest, setAttitudeRateDoesNotFailWithAllNullParams)
 {
+    MockLazyPlugin lazy_plugin;
     MockOffboard offboard;
-    OffboardServiceImpl offboardService(offboard);
+    ON_CALL(lazy_plugin, maybe_plugin()).WillByDefault(Return(&offboard));
+    OffboardServiceImpl offboardService(lazy_plugin);
 
     offboardService.SetAttitudeRate(nullptr, nullptr, nullptr);
 }
 
 TEST_F(OffboardServiceImplTest, setActuatorControlDoesNotFailWithAllNullParams)
 {
+    MockLazyPlugin lazy_plugin;
     MockOffboard offboard;
-    OffboardServiceImpl offboardService(offboard);
+    ON_CALL(lazy_plugin, maybe_plugin()).WillByDefault(Return(&offboard));
+    OffboardServiceImpl offboardService(lazy_plugin);
 
     offboardService.SetActuatorControl(nullptr, nullptr, nullptr);
 }
 
 TEST_F(OffboardServiceImplTest, setActuatorControlDoesNotFailWithNullResponse)
 {
+    MockLazyPlugin lazy_plugin;
     MockOffboard offboard;
-    OffboardServiceImpl offboardService(offboard);
+    ON_CALL(lazy_plugin, maybe_plugin()).WillByDefault(Return(&offboard));
+    OffboardServiceImpl offboardService(lazy_plugin);
     mavsdk::rpc::offboard::SetActuatorControlRequest request;
 
     auto rpc_actuator_control = createArbitraryRPCActuatorControl();
@@ -186,8 +212,10 @@ TEST_F(OffboardServiceImplTest, setActuatorControlDoesNotFailWithNullResponse)
 
 TEST_F(OffboardServiceImplTest, setsActuatorControlCorrectly)
 {
+    MockLazyPlugin lazy_plugin;
     MockOffboard offboard;
-    OffboardServiceImpl offboardService(offboard);
+    ON_CALL(lazy_plugin, maybe_plugin()).WillByDefault(Return(&offboard));
+    OffboardServiceImpl offboardService(lazy_plugin);
     mavsdk::rpc::offboard::SetActuatorControlRequest request;
 
     auto rpc_actuator_control = createArbitraryRPCActuatorControl();
@@ -232,8 +260,10 @@ OffboardServiceImplTest::createArbitraryRPCActuatorControl() const
 
 TEST_F(OffboardServiceImplTest, setAttitudeDoesNotFailWithNullResponse)
 {
+    MockLazyPlugin lazy_plugin;
     MockOffboard offboard;
-    OffboardServiceImpl offboardService(offboard);
+    ON_CALL(lazy_plugin, maybe_plugin()).WillByDefault(Return(&offboard));
+    OffboardServiceImpl offboardService(lazy_plugin);
     mavsdk::rpc::offboard::SetAttitudeRequest request;
 
     auto rpc_attitude = createArbitraryRPCAttitude();
@@ -244,8 +274,10 @@ TEST_F(OffboardServiceImplTest, setAttitudeDoesNotFailWithNullResponse)
 
 TEST_F(OffboardServiceImplTest, setAttitudeRateDoesNotFailWithNullResponse)
 {
+    MockLazyPlugin lazy_plugin;
     MockOffboard offboard;
-    OffboardServiceImpl offboardService(offboard);
+    ON_CALL(lazy_plugin, maybe_plugin()).WillByDefault(Return(&offboard));
+    OffboardServiceImpl offboardService(lazy_plugin);
     mavsdk::rpc::offboard::SetAttitudeRateRequest request;
 
     auto rpc_attitude_rate = createArbitraryRPCAttitudeRate();
@@ -279,8 +311,10 @@ OffboardServiceImplTest::createArbitraryRPCAttitudeRate() const
 
 TEST_F(OffboardServiceImplTest, setsAttitudeCorrectly)
 {
+    MockLazyPlugin lazy_plugin;
     MockOffboard offboard;
-    OffboardServiceImpl offboardService(offboard);
+    ON_CALL(lazy_plugin, maybe_plugin()).WillByDefault(Return(&offboard));
+    OffboardServiceImpl offboardService(lazy_plugin);
     mavsdk::rpc::offboard::SetAttitudeRequest request;
 
     auto rpc_attitude = createArbitraryRPCAttitude();
@@ -294,8 +328,10 @@ TEST_F(OffboardServiceImplTest, setsAttitudeCorrectly)
 
 TEST_F(OffboardServiceImplTest, setsAttitudeRateCorrectly)
 {
+    MockLazyPlugin lazy_plugin;
     MockOffboard offboard;
-    OffboardServiceImpl offboardService(offboard);
+    ON_CALL(lazy_plugin, maybe_plugin()).WillByDefault(Return(&offboard));
+    OffboardServiceImpl offboardService(lazy_plugin);
     mavsdk::rpc::offboard::SetAttitudeRateRequest request;
 
     auto rpc_attitude_rate = createArbitraryRPCAttitudeRate();
@@ -310,16 +346,20 @@ TEST_F(OffboardServiceImplTest, setsAttitudeRateCorrectly)
 
 TEST_F(OffboardServiceImplTest, setPositionNedYawDoesNotFailWithAllNullParams)
 {
+    MockLazyPlugin lazy_plugin;
     MockOffboard offboard;
-    OffboardServiceImpl offboardService(offboard);
+    ON_CALL(lazy_plugin, maybe_plugin()).WillByDefault(Return(&offboard));
+    OffboardServiceImpl offboardService(lazy_plugin);
 
     offboardService.SetPositionNed(nullptr, nullptr, nullptr);
 }
 
 TEST_F(OffboardServiceImplTest, setPositionNedYawDoesNotFailWithNullResponse)
 {
+    MockLazyPlugin lazy_plugin;
     MockOffboard offboard;
-    OffboardServiceImpl offboardService(offboard);
+    ON_CALL(lazy_plugin, maybe_plugin()).WillByDefault(Return(&offboard));
+    OffboardServiceImpl offboardService(lazy_plugin);
     mavsdk::rpc::offboard::SetPositionNedRequest request;
 
     auto rpc_position_ned_yaw = createArbitraryRPCPositionNedYaw();
@@ -342,8 +382,10 @@ OffboardServiceImplTest::createArbitraryRPCPositionNedYaw() const
 
 TEST_F(OffboardServiceImplTest, setsPositionNedYawCorrectly)
 {
+    MockLazyPlugin lazy_plugin;
     MockOffboard offboard;
-    OffboardServiceImpl offboardService(offboard);
+    ON_CALL(lazy_plugin, maybe_plugin()).WillByDefault(Return(&offboard));
+    OffboardServiceImpl offboardService(lazy_plugin);
     mavsdk::rpc::offboard::SetPositionNedRequest request;
 
     auto rpc_position_ned_yaw = createArbitraryRPCPositionNedYaw();
@@ -358,16 +400,20 @@ TEST_F(OffboardServiceImplTest, setsPositionNedYawCorrectly)
 
 TEST_F(OffboardServiceImplTest, setVelocityBodyDoesNotFailWithAllNullParams)
 {
+    MockLazyPlugin lazy_plugin;
     MockOffboard offboard;
-    OffboardServiceImpl offboardService(offboard);
+    ON_CALL(lazy_plugin, maybe_plugin()).WillByDefault(Return(&offboard));
+    OffboardServiceImpl offboardService(lazy_plugin);
 
     offboardService.SetVelocityBody(nullptr, nullptr, nullptr);
 }
 
 TEST_F(OffboardServiceImplTest, setVelocityBodyDoesNotFailWithNullResponse)
 {
+    MockLazyPlugin lazy_plugin;
     MockOffboard offboard;
-    OffboardServiceImpl offboardService(offboard);
+    ON_CALL(lazy_plugin, maybe_plugin()).WillByDefault(Return(&offboard));
+    OffboardServiceImpl offboardService(lazy_plugin);
     mavsdk::rpc::offboard::SetVelocityBodyRequest request;
 
     auto rpc_velocity_body = createArbitraryRPCVelocityBodyYawspeed();
@@ -390,8 +436,10 @@ OffboardServiceImplTest::createArbitraryRPCVelocityBodyYawspeed() const
 
 TEST_F(OffboardServiceImplTest, setsVelocityBodyCorrectly)
 {
+    MockLazyPlugin lazy_plugin;
     MockOffboard offboard;
-    OffboardServiceImpl offboardService(offboard);
+    ON_CALL(lazy_plugin, maybe_plugin()).WillByDefault(Return(&offboard));
+    OffboardServiceImpl offboardService(lazy_plugin);
     mavsdk::rpc::offboard::SetVelocityBodyRequest request;
 
     auto rpc_velocity_body = createArbitraryRPCVelocityBodyYawspeed();
@@ -406,16 +454,20 @@ TEST_F(OffboardServiceImplTest, setsVelocityBodyCorrectly)
 
 TEST_F(OffboardServiceImplTest, setVelocityNedDoesNotFailWithAllNullParams)
 {
+    MockLazyPlugin lazy_plugin;
     MockOffboard offboard;
-    OffboardServiceImpl offboardService(offboard);
+    ON_CALL(lazy_plugin, maybe_plugin()).WillByDefault(Return(&offboard));
+    OffboardServiceImpl offboardService(lazy_plugin);
 
     offboardService.SetVelocityNed(nullptr, nullptr, nullptr);
 }
 
 TEST_F(OffboardServiceImplTest, setVelocityNedDoesNotFailWithNullResponse)
 {
+    MockLazyPlugin lazy_plugin;
     MockOffboard offboard;
-    OffboardServiceImpl offboardService(offboard);
+    ON_CALL(lazy_plugin, maybe_plugin()).WillByDefault(Return(&offboard));
+    OffboardServiceImpl offboardService(lazy_plugin);
     mavsdk::rpc::offboard::SetVelocityNedRequest request;
 
     auto rpc_velocity_ned = createArbitraryRPCVelocityNedYaw();
@@ -438,8 +490,10 @@ OffboardServiceImplTest::createArbitraryRPCVelocityNedYaw() const
 
 TEST_F(OffboardServiceImplTest, setsVelocityNedCorrectly)
 {
+    MockLazyPlugin lazy_plugin;
     MockOffboard offboard;
-    OffboardServiceImpl offboardService(offboard);
+    ON_CALL(lazy_plugin, maybe_plugin()).WillByDefault(Return(&offboard));
+    OffboardServiceImpl offboardService(lazy_plugin);
     mavsdk::rpc::offboard::SetVelocityNedRequest request;
 
     auto rpc_velocity_ned = createArbitraryRPCVelocityNedYaw();

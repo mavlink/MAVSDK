@@ -127,6 +127,7 @@ public:
         Busy, /**< @brief Vehicle is busy. */
         Timeout, /**< @brief Request timed out. */
         InvalidArgument, /**< @brief Invalid argument. */
+        NoSystem, /**< @brief No system connected. */
     };
 
     /**

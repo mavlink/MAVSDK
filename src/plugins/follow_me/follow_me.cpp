@@ -12,9 +12,11 @@ namespace mavsdk {
 using Config = FollowMe::Config;
 using TargetLocation = FollowMe::TargetLocation;
 
-FollowMe::FollowMe(System& system) : PluginBase(), _impl{new FollowMeImpl(system)} {}
+FollowMe::FollowMe(System& system) : PluginBase(), _impl{std::make_unique<FollowMeImpl>(system)} {}
 
-FollowMe::FollowMe(std::shared_ptr<System> system) : PluginBase(), _impl{new FollowMeImpl(system)}
+FollowMe::FollowMe(std::shared_ptr<System> system) :
+    PluginBase(),
+    _impl{std::make_unique<FollowMeImpl>(system)}
 {}
 
 FollowMe::~FollowMe() {}

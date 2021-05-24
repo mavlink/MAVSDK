@@ -400,33 +400,33 @@ const char descriptor_table_protodef_info_2finfo_2eproto[] PROTOBUF_SECTION_VARI
   "_patch\030\006 \001(\005\022\023\n\013os_sw_major\030\007 \001(\005\022\023\n\013os_"
   "sw_minor\030\010 \001(\005\022\023\n\013os_sw_patch\030\t \001(\005\022\032\n\022f"
   "light_sw_git_hash\030\n \001(\t\022\026\n\016os_sw_git_has"
-  "h\030\013 \001(\t\"\257\001\n\nInfoResult\0222\n\006result\030\001 \001(\0162\""
+  "h\030\013 \001(\t\"\305\001\n\nInfoResult\0222\n\006result\030\001 \001(\0162\""
   ".mavsdk.rpc.info.InfoResult.Result\022\022\n\nre"
-  "sult_str\030\002 \001(\t\"Y\n\006Result\022\022\n\016RESULT_UNKNO"
+  "sult_str\030\002 \001(\t\"o\n\006Result\022\022\n\016RESULT_UNKNO"
   "WN\020\000\022\022\n\016RESULT_SUCCESS\020\001\022\'\n#RESULT_INFOR"
-  "MATION_NOT_RECEIVED_YET\020\0022\235\004\n\013InfoServic"
-  "e\022y\n\024GetFlightInformation\022,.mavsdk.rpc.i"
-  "nfo.GetFlightInformationRequest\032-.mavsdk"
-  ".rpc.info.GetFlightInformationResponse\"\004"
-  "\200\265\030\001\022p\n\021GetIdentification\022).mavsdk.rpc.i"
-  "nfo.GetIdentificationRequest\032*.mavsdk.rp"
-  "c.info.GetIdentificationResponse\"\004\200\265\030\001\022["
-  "\n\nGetProduct\022\".mavsdk.rpc.info.GetProduc"
-  "tRequest\032#.mavsdk.rpc.info.GetProductRes"
-  "ponse\"\004\200\265\030\001\022[\n\nGetVersion\022\".mavsdk.rpc.i"
-  "nfo.GetVersionRequest\032#.mavsdk.rpc.info."
-  "GetVersionResponse\"\004\200\265\030\001\022g\n\016GetSpeedFact"
-  "or\022&.mavsdk.rpc.info.GetSpeedFactorReque"
-  "st\032\'.mavsdk.rpc.info.GetSpeedFactorRespo"
-  "nse\"\004\200\265\030\001B\033\n\016io.mavsdk.infoB\tInfoProtob\006"
-  "proto3"
+  "MATION_NOT_RECEIVED_YET\020\002\022\024\n\020RESULT_NO_S"
+  "YSTEM\020\0032\235\004\n\013InfoService\022y\n\024GetFlightInfo"
+  "rmation\022,.mavsdk.rpc.info.GetFlightInfor"
+  "mationRequest\032-.mavsdk.rpc.info.GetFligh"
+  "tInformationResponse\"\004\200\265\030\001\022p\n\021GetIdentif"
+  "ication\022).mavsdk.rpc.info.GetIdentificat"
+  "ionRequest\032*.mavsdk.rpc.info.GetIdentifi"
+  "cationResponse\"\004\200\265\030\001\022[\n\nGetProduct\022\".mav"
+  "sdk.rpc.info.GetProductRequest\032#.mavsdk."
+  "rpc.info.GetProductResponse\"\004\200\265\030\001\022[\n\nGet"
+  "Version\022\".mavsdk.rpc.info.GetVersionRequ"
+  "est\032#.mavsdk.rpc.info.GetVersionResponse"
+  "\"\004\200\265\030\001\022g\n\016GetSpeedFactor\022&.mavsdk.rpc.in"
+  "fo.GetSpeedFactorRequest\032\'.mavsdk.rpc.in"
+  "fo.GetSpeedFactorResponse\"\004\200\265\030\001B\033\n\016io.ma"
+  "vsdk.infoB\tInfoProtob\006proto3"
   ;
 static const ::PROTOBUF_NAMESPACE_ID::internal::DescriptorTable*const descriptor_table_info_2finfo_2eproto_deps[1] = {
   &::descriptor_table_mavsdk_5foptions_2eproto,
 };
 static ::PROTOBUF_NAMESPACE_ID::internal::once_flag descriptor_table_info_2finfo_2eproto_once;
 const ::PROTOBUF_NAMESPACE_ID::internal::DescriptorTable descriptor_table_info_2finfo_2eproto = {
-  false, false, 2046, descriptor_table_protodef_info_2finfo_2eproto, "info/info.proto", 
+  false, false, 2068, descriptor_table_protodef_info_2finfo_2eproto, "info/info.proto", 
   &descriptor_table_info_2finfo_2eproto_once, descriptor_table_info_2finfo_2eproto_deps, 1, 15,
   schemas, file_default_instances, TableStruct_info_2finfo_2eproto::offsets,
   file_level_metadata_info_2finfo_2eproto, file_level_enum_descriptors_info_2finfo_2eproto, file_level_service_descriptors_info_2finfo_2eproto,
@@ -451,6 +451,7 @@ bool InfoResult_Result_IsValid(int value) {
     case 0:
     case 1:
     case 2:
+    case 3:
       return true;
     default:
       return false;
@@ -461,6 +462,7 @@ bool InfoResult_Result_IsValid(int value) {
 constexpr InfoResult_Result InfoResult::RESULT_UNKNOWN;
 constexpr InfoResult_Result InfoResult::RESULT_SUCCESS;
 constexpr InfoResult_Result InfoResult::RESULT_INFORMATION_NOT_RECEIVED_YET;
+constexpr InfoResult_Result InfoResult::RESULT_NO_SYSTEM;
 constexpr InfoResult_Result InfoResult::Result_MIN;
 constexpr InfoResult_Result InfoResult::Result_MAX;
 constexpr int InfoResult::Result_ARRAYSIZE;

@@ -113,6 +113,7 @@ public:
         Timeout, /**< @brief A timeout happened. */
         InvalidArgument, /**< @brief Invalid argument. */
         FileOpenFailed, /**< @brief File open failed. */
+        NoSystem, /**< @brief No system is connected. */
     };
 
     /**

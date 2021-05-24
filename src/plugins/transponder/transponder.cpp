@@ -11,11 +11,14 @@ namespace mavsdk {
 
 using AdsbVehicle = Transponder::AdsbVehicle;
 
-Transponder::Transponder(System& system) : PluginBase(), _impl{new TransponderImpl(system)} {}
+Transponder::Transponder(System& system) :
+    PluginBase(),
+    _impl{std::make_unique<TransponderImpl>(system)}
+{}
 
 Transponder::Transponder(std::shared_ptr<System> system) :
     PluginBase(),
-    _impl{new TransponderImpl(system)}
+    _impl{std::make_unique<TransponderImpl>(system)}
 {}
 
 Transponder::~Transponder() {}

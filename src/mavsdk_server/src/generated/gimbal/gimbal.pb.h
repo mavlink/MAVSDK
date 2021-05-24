@@ -137,12 +137,13 @@ enum GimbalResult_Result : int {
   GimbalResult_Result_RESULT_ERROR = 2,
   GimbalResult_Result_RESULT_TIMEOUT = 3,
   GimbalResult_Result_RESULT_UNSUPPORTED = 4,
+  GimbalResult_Result_RESULT_NO_SYSTEM = 5,
   GimbalResult_Result_GimbalResult_Result_INT_MIN_SENTINEL_DO_NOT_USE_ = std::numeric_limits<::PROTOBUF_NAMESPACE_ID::int32>::min(),
   GimbalResult_Result_GimbalResult_Result_INT_MAX_SENTINEL_DO_NOT_USE_ = std::numeric_limits<::PROTOBUF_NAMESPACE_ID::int32>::max()
 };
 bool GimbalResult_Result_IsValid(int value);
 constexpr GimbalResult_Result GimbalResult_Result_Result_MIN = GimbalResult_Result_RESULT_UNKNOWN;
-constexpr GimbalResult_Result GimbalResult_Result_Result_MAX = GimbalResult_Result_RESULT_UNSUPPORTED;
+constexpr GimbalResult_Result GimbalResult_Result_Result_MAX = GimbalResult_Result_RESULT_NO_SYSTEM;
 constexpr int GimbalResult_Result_Result_ARRAYSIZE = GimbalResult_Result_Result_MAX + 1;
 
 const ::PROTOBUF_NAMESPACE_ID::EnumDescriptor* GimbalResult_Result_descriptor();
@@ -2513,6 +2514,8 @@ class GimbalResult PROTOBUF_FINAL :
     GimbalResult_Result_RESULT_TIMEOUT;
   static constexpr Result RESULT_UNSUPPORTED =
     GimbalResult_Result_RESULT_UNSUPPORTED;
+  static constexpr Result RESULT_NO_SYSTEM =
+    GimbalResult_Result_RESULT_NO_SYSTEM;
   static inline bool Result_IsValid(int value) {
     return GimbalResult_Result_IsValid(value);
   }

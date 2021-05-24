@@ -5,6 +5,8 @@
 #include "calibration/calibration.grpc.pb.h"
 #include "plugins/calibration/calibration.h"
 
+#include "mavsdk.h"
+#include "lazy_plugin.h"
 #include "log.h"
 #include <atomic>
 #include <cmath>
@@ -17,10 +19,10 @@
 namespace mavsdk {
 namespace mavsdk_server {
 
-template<typename Calibration = Calibration>
+template<typename Calibration = Calibration, typename LazyPlugin = LazyPlugin<Calibration>>
 class CalibrationServiceImpl final : public rpc::calibration::CalibrationService::Service {
 public:
-    CalibrationServiceImpl(Calibration& calibration) : _calibration(calibration) {}
+    CalibrationServiceImpl(LazyPlugin& lazy_plugin) : _lazy_plugin(lazy_plugin) {}
 
     template<typename ResponseType>
     void fillResponseWithResult(ResponseType* response, mavsdk::Calibration::Result& result) const
@@ -137,6 +139,15 @@ public:
         const mavsdk::rpc::calibration::SubscribeCalibrateGyroRequest* /* request */,
         grpc::ServerWriter<rpc::calibration::CalibrateGyroResponse>* writer) override
     {
+        if (_lazy_plugin.maybe_plugin() == nullptr) {
+            rpc::calibration::CalibrateGyroResponse rpc_response;
+            auto result = mavsdk::Calibration::Result::NoSystem;
+            fillResponseWithResult(&rpc_response, result);
+            writer->Write(rpc_response);
+
+            return grpc::Status::OK;
+        }
+
         auto stream_closed_promise = std::make_shared<std::promise<void>>();
         auto stream_closed_future = stream_closed_promise->get_future();
         register_stream_stop_promise(stream_closed_promise);
@@ -144,7 +155,7 @@ public:
         auto is_finished = std::make_shared<bool>(false);
         auto subscribe_mutex = std::make_shared<std::mutex>();
 
-        _calibration.calibrate_gyro_async(
+        _lazy_plugin.maybe_plugin()->calibrate_gyro_async(
             [this, &writer, &stream_closed_promise, is_finished, subscribe_mutex](
                 mavsdk::Calibration::Result result,
                 const mavsdk::Calibration::ProgressData calibrate_gyro) {
@@ -181,6 +192,15 @@ public:
         const mavsdk::rpc::calibration::SubscribeCalibrateAccelerometerRequest* /* request */,
         grpc::ServerWriter<rpc::calibration::CalibrateAccelerometerResponse>* writer) override
     {
+        if (_lazy_plugin.maybe_plugin() == nullptr) {
+            rpc::calibration::CalibrateAccelerometerResponse rpc_response;
+            auto result = mavsdk::Calibration::Result::NoSystem;
+            fillResponseWithResult(&rpc_response, result);
+            writer->Write(rpc_response);
+
+            return grpc::Status::OK;
+        }
+
         auto stream_closed_promise = std::make_shared<std::promise<void>>();
         auto stream_closed_future = stream_closed_promise->get_future();
         register_stream_stop_promise(stream_closed_promise);
@@ -188,7 +208,7 @@ public:
         auto is_finished = std::make_shared<bool>(false);
         auto subscribe_mutex = std::make_shared<std::mutex>();
 
-        _calibration.calibrate_accelerometer_async(
+        _lazy_plugin.maybe_plugin()->calibrate_accelerometer_async(
             [this, &writer, &stream_closed_promise, is_finished, subscribe_mutex](
                 mavsdk::Calibration::Result result,
                 const mavsdk::Calibration::ProgressData calibrate_accelerometer) {
@@ -225,6 +245,15 @@ public:
         const mavsdk::rpc::calibration::SubscribeCalibrateMagnetometerRequest* /* request */,
         grpc::ServerWriter<rpc::calibration::CalibrateMagnetometerResponse>* writer) override
     {
+        if (_lazy_plugin.maybe_plugin() == nullptr) {
+            rpc::calibration::CalibrateMagnetometerResponse rpc_response;
+            auto result = mavsdk::Calibration::Result::NoSystem;
+            fillResponseWithResult(&rpc_response, result);
+            writer->Write(rpc_response);
+
+            return grpc::Status::OK;
+        }
+
         auto stream_closed_promise = std::make_shared<std::promise<void>>();
         auto stream_closed_future = stream_closed_promise->get_future();
         register_stream_stop_promise(stream_closed_promise);
@@ -232,7 +261,7 @@ public:
         auto is_finished = std::make_shared<bool>(false);
         auto subscribe_mutex = std::make_shared<std::mutex>();
 
-        _calibration.calibrate_magnetometer_async(
+        _lazy_plugin.maybe_plugin()->calibrate_magnetometer_async(
             [this, &writer, &stream_closed_promise, is_finished, subscribe_mutex](
                 mavsdk::Calibration::Result result,
                 const mavsdk::Calibration::ProgressData calibrate_magnetometer) {
@@ -269,6 +298,15 @@ public:
         const mavsdk::rpc::calibration::SubscribeCalibrateLevelHorizonRequest* /* request */,
         grpc::ServerWriter<rpc::calibration::CalibrateLevelHorizonResponse>* writer) override
     {
+        if (_lazy_plugin.maybe_plugin() == nullptr) {
+            rpc::calibration::CalibrateLevelHorizonResponse rpc_response;
+            auto result = mavsdk::Calibration::Result::NoSystem;
+            fillResponseWithResult(&rpc_response, result);
+            writer->Write(rpc_response);
+
+            return grpc::Status::OK;
+        }
+
         auto stream_closed_promise = std::make_shared<std::promise<void>>();
         auto stream_closed_future = stream_closed_promise->get_future();
         register_stream_stop_promise(stream_closed_promise);
@@ -276,7 +314,7 @@ public:
         auto is_finished = std::make_shared<bool>(false);
         auto subscribe_mutex = std::make_shared<std::mutex>();
 
-        _calibration.calibrate_level_horizon_async(
+        _lazy_plugin.maybe_plugin()->calibrate_level_horizon_async(
             [this, &writer, &stream_closed_promise, is_finished, subscribe_mutex](
                 mavsdk::Calibration::Result result,
                 const mavsdk::Calibration::ProgressData calibrate_level_horizon) {
@@ -313,6 +351,15 @@ public:
         const mavsdk::rpc::calibration::SubscribeCalibrateGimbalAccelerometerRequest* /* request */,
         grpc::ServerWriter<rpc::calibration::CalibrateGimbalAccelerometerResponse>* writer) override
     {
+        if (_lazy_plugin.maybe_plugin() == nullptr) {
+            rpc::calibration::CalibrateGimbalAccelerometerResponse rpc_response;
+            auto result = mavsdk::Calibration::Result::NoSystem;
+            fillResponseWithResult(&rpc_response, result);
+            writer->Write(rpc_response);
+
+            return grpc::Status::OK;
+        }
+
         auto stream_closed_promise = std::make_shared<std::promise<void>>();
         auto stream_closed_future = stream_closed_promise->get_future();
         register_stream_stop_promise(stream_closed_promise);
@@ -320,7 +367,7 @@ public:
         auto is_finished = std::make_shared<bool>(false);
         auto subscribe_mutex = std::make_shared<std::mutex>();
 
-        _calibration.calibrate_gimbal_accelerometer_async(
+        _lazy_plugin.maybe_plugin()->calibrate_gimbal_accelerometer_async(
             [this, &writer, &stream_closed_promise, is_finished, subscribe_mutex](
                 mavsdk::Calibration::Result result,
                 const mavsdk::Calibration::ProgressData calibrate_gimbal_accelerometer) {
@@ -357,7 +404,16 @@ public:
         const rpc::calibration::CancelRequest* /* request */,
         rpc::calibration::CancelResponse* response) override
     {
-        auto result = _calibration.cancel();
+        if (_lazy_plugin.maybe_plugin() == nullptr) {
+            if (response != nullptr) {
+                auto result = mavsdk::Calibration::Result::NoSystem;
+                fillResponseWithResult(response, result);
+            }
+
+            return grpc::Status::OK;
+        }
+
+        auto result = _lazy_plugin.maybe_plugin()->cancel();
 
         if (response != nullptr) {
             fillResponseWithResult(response, result);
@@ -401,7 +457,7 @@ private:
         }
     }
 
-    Calibration& _calibration;
+    LazyPlugin& _lazy_plugin;
     std::atomic<bool> _stopped{false};
     std::vector<std::weak_ptr<std::promise<void>>> _stream_stop_promises{};
 };

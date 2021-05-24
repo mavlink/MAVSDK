@@ -11,9 +11,10 @@ namespace mavsdk {
 
 using TuneDescription = Tune::TuneDescription;
 
-Tune::Tune(System& system) : PluginBase(), _impl{new TuneImpl(system)} {}
+Tune::Tune(System& system) : PluginBase(), _impl{std::make_unique<TuneImpl>(system)} {}
 
-Tune::Tune(std::shared_ptr<System> system) : PluginBase(), _impl{new TuneImpl(system)} {}
+Tune::Tune(std::shared_ptr<System> system) : PluginBase(), _impl{std::make_unique<TuneImpl>(system)}
+{}
 
 Tune::~Tune() {}
 
@@ -61,6 +62,8 @@ std::ostream& operator<<(std::ostream& str, Tune::Result const& result)
             return str << "Tune Too Long";
         case Tune::Result::Error:
             return str << "Error";
+        case Tune::Result::NoSystem:
+            return str << "No System";
         default:
             return str << "Unknown";
     }

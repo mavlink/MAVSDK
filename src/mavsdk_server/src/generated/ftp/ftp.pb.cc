@@ -613,54 +613,55 @@ const char descriptor_table_protodef_ftp_2fftp_2eproto[] PROTOBUF_SECTION_VARIAB
   "\0132\031.mavsdk.rpc.ftp.FtpResult\"\025\n\023GetOurCo"
   "mpidRequest\"&\n\024GetOurCompidResponse\022\016\n\006c"
   "ompid\030\001 \001(\r\">\n\014ProgressData\022\031\n\021bytes_tra"
-  "nsferred\030\001 \001(\r\022\023\n\013total_bytes\030\002 \001(\r\"\370\002\n\t"
+  "nsferred\030\001 \001(\r\022\023\n\013total_bytes\030\002 \001(\r\"\216\003\n\t"
   "FtpResult\0220\n\006result\030\001 \001(\0162 .mavsdk.rpc.f"
   "tp.FtpResult.Result\022\022\n\nresult_str\030\002 \001(\t\""
-  "\244\002\n\006Result\022\022\n\016RESULT_UNKNOWN\020\000\022\022\n\016RESULT"
+  "\272\002\n\006Result\022\022\n\016RESULT_UNKNOWN\020\000\022\022\n\016RESULT"
   "_SUCCESS\020\001\022\017\n\013RESULT_NEXT\020\002\022\022\n\016RESULT_TI"
   "MEOUT\020\003\022\017\n\013RESULT_BUSY\020\004\022\030\n\024RESULT_FILE_"
   "IO_ERROR\020\005\022\026\n\022RESULT_FILE_EXISTS\020\006\022\036\n\032RE"
   "SULT_FILE_DOES_NOT_EXIST\020\007\022\031\n\025RESULT_FIL"
   "E_PROTECTED\020\010\022\034\n\030RESULT_INVALID_PARAMETE"
   "R\020\t\022\026\n\022RESULT_UNSUPPORTED\020\n\022\031\n\025RESULT_PR"
-  "OTOCOL_ERROR\020\0132\236\t\n\nFtpService\022J\n\005Reset\022\034"
-  ".mavsdk.rpc.ftp.ResetRequest\032\035.mavsdk.rp"
-  "c.ftp.ResetResponse\"\004\200\265\030\000\022k\n\021SubscribeDo"
-  "wnload\022(.mavsdk.rpc.ftp.SubscribeDownloa"
-  "dRequest\032 .mavsdk.rpc.ftp.DownloadRespon"
-  "se\"\010\200\265\030\000\210\265\030\0010\001\022e\n\017SubscribeUpload\022&.mavs"
-  "dk.rpc.ftp.SubscribeUploadRequest\032\036.mavs"
-  "dk.rpc.ftp.UploadResponse\"\010\200\265\030\000\210\265\030\0010\001\022^\n"
-  "\rListDirectory\022$.mavsdk.rpc.ftp.ListDire"
-  "ctoryRequest\032%.mavsdk.rpc.ftp.ListDirect"
-  "oryResponse\"\000\022d\n\017CreateDirectory\022&.mavsd"
-  "k.rpc.ftp.CreateDirectoryRequest\032\'.mavsd"
-  "k.rpc.ftp.CreateDirectoryResponse\"\000\022d\n\017R"
-  "emoveDirectory\022&.mavsdk.rpc.ftp.RemoveDi"
-  "rectoryRequest\032\'.mavsdk.rpc.ftp.RemoveDi"
-  "rectoryResponse\"\000\022U\n\nRemoveFile\022!.mavsdk"
-  ".rpc.ftp.RemoveFileRequest\032\".mavsdk.rpc."
-  "ftp.RemoveFileResponse\"\000\022I\n\006Rename\022\035.mav"
-  "sdk.rpc.ftp.RenameRequest\032\036.mavsdk.rpc.f"
-  "tp.RenameResponse\"\000\022j\n\021AreFilesIdentical"
-  "\022(.mavsdk.rpc.ftp.AreFilesIdenticalReque"
-  "st\032).mavsdk.rpc.ftp.AreFilesIdenticalRes"
-  "ponse\"\000\022k\n\020SetRootDirectory\022\'.mavsdk.rpc"
-  ".ftp.SetRootDirectoryRequest\032(.mavsdk.rp"
-  "c.ftp.SetRootDirectoryResponse\"\004\200\265\030\001\022h\n\017"
-  "SetTargetCompid\022&.mavsdk.rpc.ftp.SetTarg"
-  "etCompidRequest\032\'.mavsdk.rpc.ftp.SetTarg"
-  "etCompidResponse\"\004\200\265\030\001\022_\n\014GetOurCompid\022#"
-  ".mavsdk.rpc.ftp.GetOurCompidRequest\032$.ma"
-  "vsdk.rpc.ftp.GetOurCompidResponse\"\004\200\265\030\001B"
-  "\031\n\rio.mavsdk.ftpB\010FtpProtob\006proto3"
+  "OTOCOL_ERROR\020\013\022\024\n\020RESULT_NO_SYSTEM\020\0142\236\t\n"
+  "\nFtpService\022J\n\005Reset\022\034.mavsdk.rpc.ftp.Re"
+  "setRequest\032\035.mavsdk.rpc.ftp.ResetRespons"
+  "e\"\004\200\265\030\000\022k\n\021SubscribeDownload\022(.mavsdk.rp"
+  "c.ftp.SubscribeDownloadRequest\032 .mavsdk."
+  "rpc.ftp.DownloadResponse\"\010\200\265\030\000\210\265\030\0010\001\022e\n\017"
+  "SubscribeUpload\022&.mavsdk.rpc.ftp.Subscri"
+  "beUploadRequest\032\036.mavsdk.rpc.ftp.UploadR"
+  "esponse\"\010\200\265\030\000\210\265\030\0010\001\022^\n\rListDirectory\022$.m"
+  "avsdk.rpc.ftp.ListDirectoryRequest\032%.mav"
+  "sdk.rpc.ftp.ListDirectoryResponse\"\000\022d\n\017C"
+  "reateDirectory\022&.mavsdk.rpc.ftp.CreateDi"
+  "rectoryRequest\032\'.mavsdk.rpc.ftp.CreateDi"
+  "rectoryResponse\"\000\022d\n\017RemoveDirectory\022&.m"
+  "avsdk.rpc.ftp.RemoveDirectoryRequest\032\'.m"
+  "avsdk.rpc.ftp.RemoveDirectoryResponse\"\000\022"
+  "U\n\nRemoveFile\022!.mavsdk.rpc.ftp.RemoveFil"
+  "eRequest\032\".mavsdk.rpc.ftp.RemoveFileResp"
+  "onse\"\000\022I\n\006Rename\022\035.mavsdk.rpc.ftp.Rename"
+  "Request\032\036.mavsdk.rpc.ftp.RenameResponse\""
+  "\000\022j\n\021AreFilesIdentical\022(.mavsdk.rpc.ftp."
+  "AreFilesIdenticalRequest\032).mavsdk.rpc.ft"
+  "p.AreFilesIdenticalResponse\"\000\022k\n\020SetRoot"
+  "Directory\022\'.mavsdk.rpc.ftp.SetRootDirect"
+  "oryRequest\032(.mavsdk.rpc.ftp.SetRootDirec"
+  "toryResponse\"\004\200\265\030\001\022h\n\017SetTargetCompid\022&."
+  "mavsdk.rpc.ftp.SetTargetCompidRequest\032\'."
+  "mavsdk.rpc.ftp.SetTargetCompidResponse\"\004"
+  "\200\265\030\001\022_\n\014GetOurCompid\022#.mavsdk.rpc.ftp.Ge"
+  "tOurCompidRequest\032$.mavsdk.rpc.ftp.GetOu"
+  "rCompidResponse\"\004\200\265\030\001B\031\n\rio.mavsdk.ftpB\010"
+  "FtpProtob\006proto3"
   ;
 static const ::PROTOBUF_NAMESPACE_ID::internal::DescriptorTable*const descriptor_table_ftp_2fftp_2eproto_deps[1] = {
   &::descriptor_table_mavsdk_5foptions_2eproto,
 };
 static ::PROTOBUF_NAMESPACE_ID::internal::once_flag descriptor_table_ftp_2fftp_2eproto_once;
 const ::PROTOBUF_NAMESPACE_ID::internal::DescriptorTable descriptor_table_ftp_2fftp_2eproto = {
-  false, false, 3274, descriptor_table_protodef_ftp_2fftp_2eproto, "ftp/ftp.proto", 
+  false, false, 3296, descriptor_table_protodef_ftp_2fftp_2eproto, "ftp/ftp.proto", 
   &descriptor_table_ftp_2fftp_2eproto_once, descriptor_table_ftp_2fftp_2eproto_deps, 1, 26,
   schemas, file_default_instances, TableStruct_ftp_2fftp_2eproto::offsets,
   file_level_metadata_ftp_2fftp_2eproto, file_level_enum_descriptors_ftp_2fftp_2eproto, file_level_service_descriptors_ftp_2fftp_2eproto,
@@ -694,6 +695,7 @@ bool FtpResult_Result_IsValid(int value) {
     case 9:
     case 10:
     case 11:
+    case 12:
       return true;
     default:
       return false;
@@ -713,6 +715,7 @@ constexpr FtpResult_Result FtpResult::RESULT_FILE_PROTECTED;
 constexpr FtpResult_Result FtpResult::RESULT_INVALID_PARAMETER;
 constexpr FtpResult_Result FtpResult::RESULT_UNSUPPORTED;
 constexpr FtpResult_Result FtpResult::RESULT_PROTOCOL_ERROR;
+constexpr FtpResult_Result FtpResult::RESULT_NO_SYSTEM;
 constexpr FtpResult_Result FtpResult::Result_MIN;
 constexpr FtpResult_Result FtpResult::Result_MAX;
 constexpr int FtpResult::Result_ARRAYSIZE;
