@@ -286,7 +286,7 @@ Mission::MissionItem add_mission_item(
     float gimbal_pitch_deg,
     float gimbal_yaw_deg,
     float loiter_time_s,
-    float acceptance_radius_m
+    float acceptance_radius_m,
     Mission::MissionItem::CameraAction camera_action)
 {
     Mission::MissionItem new_item{};
@@ -299,7 +299,7 @@ Mission::MissionItem add_mission_item(
     new_item.gimbal_yaw_deg = gimbal_yaw_deg;
     new_item.loiter_time_s = loiter_time_s;
     new_item.camera_action = camera_action;
-    new_item.acceptance_radius_m = camera_action;
+    new_item.acceptance_radius_m = acceptance_radius_m;
 
     // In order to test setting the interval, add it here.
     if (camera_action == Mission::MissionItem::CameraAction::StartPhotoInterval) {

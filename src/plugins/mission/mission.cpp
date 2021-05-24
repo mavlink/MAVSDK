@@ -155,7 +155,9 @@ bool operator==(const Mission::MissionItem& lhs, const Mission::MissionItem& rhs
            ((std::isnan(rhs.loiter_time_s) && std::isnan(lhs.loiter_time_s)) ||
             rhs.loiter_time_s == lhs.loiter_time_s) &&
            ((std::isnan(rhs.camera_photo_interval_s) && std::isnan(lhs.camera_photo_interval_s)) ||
-            rhs.camera_photo_interval_s == lhs.camera_photo_interval_s);
+            rhs.camera_photo_interval_s == lhs.camera_photo_interval_s) &&
+           ((std::isnan(rhs.acceptance_radius_m) && std::isnan(lhs.acceptance_radius_m)) ||
+            rhs.acceptance_radius_m == lhs.acceptance_radius_m);
 }
 
 std::ostream& operator<<(std::ostream& str, Mission::MissionItem const& mission_item)
@@ -172,6 +174,7 @@ std::ostream& operator<<(std::ostream& str, Mission::MissionItem const& mission_
     str << "    camera_action: " << mission_item.camera_action << '\n';
     str << "    loiter_time_s: " << mission_item.loiter_time_s << '\n';
     str << "    camera_photo_interval_s: " << mission_item.camera_photo_interval_s << '\n';
+    str << "    acceptance_radius_m: " << mission_item.acceptance_radius_m << '\n';
     str << '}';
     return str;
 }
