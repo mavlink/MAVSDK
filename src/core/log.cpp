@@ -20,6 +20,10 @@
 
 namespace mavsdk {
 
+namespace log {
+  Callback callback = nullptr;
+}
+
 void set_color(Color color)
 {
 #if defined(WINDOWS)
