@@ -100,6 +100,7 @@ public:
         float loiter_time_s{float(NAN)}; /**< @brief Loiter time (in seconds) */
         double camera_photo_interval_s{
             1.0}; /**< @brief Camera photo interval to use after this mission item (in seconds) */
+        float acceptance_radius_m{float(NAN)}; /**< @brief Radius for completing a mission item (in metres) */
     };
 
     /**

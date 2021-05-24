@@ -267,7 +267,10 @@ float MissionImpl::hold_time(const MissionItem& item)
 float MissionImpl::acceptance_radius(const MissionItem& item)
 {
     float acceptance_radius_m;
-    if (item.is_fly_through) {
+    if (std::isfinite(item.acceptance_radius_m)) {
+        acceptance_radius_m = item.acceptance_radius_m;
+    }
+    else if (item.is_fly_through) {
         // _acceptance_radius_m is 0, determine the radius using fly_through
         acceptance_radius_m = 3.0f;
     } else {
