@@ -38,10 +38,8 @@ public:
 
     virtual ~LogDetailed()
     {
-        if (log::callback &&
-            log::callback(_log_level, _s.str(), _caller_filename, _caller_filenumber))
-        {
-          return;
+        if (callback && callback(_log_level, _s.str(), _caller_filename, _caller_filenumber)) {
+            return;
         }
 
 #if ANDROID
@@ -115,8 +113,10 @@ public:
     LogDetailed(const mavsdk::LogDetailed&) = delete;
     void operator=(const mavsdk::LogDetailed&) = delete;
 
+    static log::Callback callback;
+
 protected:
-  log::Level _log_level = log::Level::Debug;
+    log::Level _log_level = log::Level::Debug;
 
 private:
     std::stringstream _s;
