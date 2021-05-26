@@ -544,7 +544,7 @@ void CameraServiceImplTest::checkSendsVideoStreamInfo(
     auto video_info_events_future =
         subscribeVideoStreamInfoAsync(received_video_info_events, context);
     subscription_future.wait();
-    for (const auto video_info_event : video_info_events) {
+    for (const auto& video_info_event : video_info_events) {
         video_info_callback(video_info_event);
     }
     context->TryCancel();
@@ -679,7 +679,7 @@ void CameraServiceImplTest::checkSendsCaptureInfo(
     auto capture_info_events_future =
         subscribeCaptureInfoAsync(received_capture_info_events, context);
     subscription_future.wait();
-    for (const auto capture_info_event : capture_info_events) {
+    for (const auto& capture_info_event : capture_info_events) {
         capture_info_callback(capture_info_event);
     }
     context->TryCancel();
@@ -822,7 +822,7 @@ void CameraServiceImplTest::checkSendsStatus(
     std::vector<mavsdk::Camera::Status> received_camera_status_events;
     auto camera_status_events_future = subscribeStatusAsync(received_camera_status_events, context);
     subscription_future.wait();
-    for (const auto camera_status_event : camera_status_events) {
+    for (const auto& camera_status_event : camera_status_events) {
         camera_status_callback(camera_status_event);
     }
     context->TryCancel();
@@ -971,7 +971,7 @@ void CameraServiceImplTest::checkSendsCurrentSettings(
     auto current_settings_events_future =
         subscribeCurrentSettingsAsync(received_current_settings_events, context);
     subscription_future.wait();
-    for (const auto current_settings_event : current_settings_events) {
+    for (const auto& current_settings_event : current_settings_events) {
         current_settings_callback(current_settings_event);
     }
     context->TryCancel();
@@ -1123,7 +1123,7 @@ void CameraServiceImplTest::checkSendsPossibleSettingOptions(
     auto possible_setting_options_events_future =
         subscribePossibleSettingOptionsAsync(received_possible_setting_options_events, context);
     subscription_future.wait();
-    for (const auto possible_setting_options_event : possible_setting_options_events) {
+    for (const auto& possible_setting_options_event : possible_setting_options_events) {
         possible_setting_options_callback(possible_setting_options_event);
     }
     context->TryCancel();
