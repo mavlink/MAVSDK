@@ -98,6 +98,7 @@ install(FILES
     deprecated.h
     system.h
     mavsdk.h
+    log_callback.h
     plugin_base.h
     geometry.h
     DESTINATION "${CMAKE_INSTALL_INCLUDEDIR}/mavsdk"
