@@ -1763,7 +1763,7 @@ void TelemetryServiceImplTest::checkSendsActuatorControlTargetEvents(
         subscribeActuatorControlTargetAsync(received_actuator_control_target_events);
     subscription_future.wait();
 
-    for (const auto actuator_control_target : actuator_control_target_events) {
+    for (const auto& actuator_control_target : actuator_control_target_events) {
         actuator_control_target_callback(actuator_control_target);
     }
     _telemetry_service->stop();
@@ -1790,7 +1790,7 @@ void TelemetryServiceImplTest::checkSendsActuatorOutputStatusEvents(
     auto actuator_output_status_stream_future =
         subscribeActuatorOutputStatusAsync(received_actuator_output_status_events);
     subscription_future.wait();
-    for (const auto actuator_output_status : actuator_output_status_events) {
+    for (const auto& actuator_output_status : actuator_output_status_events) {
         actuator_output_status_callback(actuator_output_status);
     }
     _telemetry_service->stop();
