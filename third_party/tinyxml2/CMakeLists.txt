@@ -27,7 +27,9 @@ endforeach()
 
 ExternalProject_add(
     tinyxml2
-    URL https://github.com/leethomason/tinyxml2/archive/7.1.0.tar.gz
+    #URL https://github.com/leethomason/tinyxml2/archive/8.1.0.tar.gz
+    GIT_REPOSITORY https://github.com/jonasvautherin/tinyxml2
+    GIT_TAG 87b1aac716f009df95c97bd1c365dc395ec4da19
     PREFIX tinyxml2
     CMAKE_ARGS "${CMAKE_ARGS}"
     )
