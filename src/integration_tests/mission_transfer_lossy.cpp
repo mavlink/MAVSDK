@@ -84,6 +84,7 @@ std::vector<Mission::MissionItem> create_mission_items()
         new_item.longitude_deg = 8.5456490218639658 + (i * 1e-6);
         new_item.relative_altitude_m = 10.0f + (i * 0.2f);
         new_item.speed_m_s = 5.0f + (i * 0.1f);
+        new_item.acceptance_radius_m = 2.0f;
         mission_items.push_back(new_item);
     }
     return mission_items;
