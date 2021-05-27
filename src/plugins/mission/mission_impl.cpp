@@ -266,7 +266,18 @@ float MissionImpl::hold_time(const MissionItem& item)
 
 float MissionImpl::acceptance_radius(const MissionItem& item)
 {
-    return item.acceptance_radius_m;
+    float acceptance_radius_m;
+    if (std::isfinite(item.acceptance_radius_m)) {
+        acceptance_radius_m = item.acceptance_radius_m;
+    } else if (item.is_fly_through) {
+        // _acceptance_radius_m is 0, determine the radius using fly_through
+        acceptance_radius_m = 3.0f;
+    } else {
+        // _acceptance_radius_m is 0, determine the radius using fly_through
+        acceptance_radius_m = 1.0f;
+    }
+
+    return acceptance_radius_m;
 }
 
 std::vector<MAVLinkMissionTransfer::ItemInt>
