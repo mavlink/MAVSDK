@@ -86,7 +86,7 @@ public:
         operator<<(std::ostream& str, Mission::MissionItem::CameraAction const& camera_action);
 
         /**
-         * @brief
+         * @brief Possible vehicle actions at a mission item
          */
         enum class VehicleAction {
             None, /**< @brief No action. */
@@ -121,18 +121,10 @@ public:
         float loiter_time_s{float(NAN)}; /**< @brief Loiter time (in seconds) */
         double camera_photo_interval_s{
             1.0}; /**< @brief Camera photo interval to use after this mission item (in seconds) */
-<<<<<<< HEAD
-<<<<<<< HEAD
         float acceptance_radius_m{
             float(NAN)}; /**< @brief Radius for completing a mission item (in metres) */
-=======
-        VehicleAction vehicle_action {
-        } /**< @brief Vehicle action to trigger at this mission item */
->>>>>>> Addition changes based on current implementation of cameraAction
-=======
         VehicleAction
             vehicle_action{}; /**< @brief Vehicle action to trigger at this mission item. */
->>>>>>> Generated mission files based on modified proto
     };
 
     /**

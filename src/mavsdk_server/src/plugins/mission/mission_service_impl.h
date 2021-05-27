@@ -149,11 +149,9 @@ public:
 
         rpc_obj->set_camera_photo_interval_s(mission_item.camera_photo_interval_s);
 
-<<<<<<< HEAD
         rpc_obj->set_acceptance_radius_m(mission_item.acceptance_radius_m);
-=======
+
         rpc_obj->set_vehicle_action(translateToRpcVehicleAction(mission_item.vehicle_action));
->>>>>>> Generated mission files based on modified proto
 
         return rpc_obj;
     }
@@ -183,11 +181,9 @@ public:
 
         obj.camera_photo_interval_s = mission_item.camera_photo_interval_s();
 
-<<<<<<< HEAD
         obj.acceptance_radius_m = mission_item.acceptance_radius_m();
-=======
+
         obj.vehicle_action = translateFromRpcVehicleAction(mission_item.vehicle_action());
->>>>>>> Generated mission files based on modified proto
 
         return obj;
     }

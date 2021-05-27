@@ -3801,11 +3801,8 @@ class MissionItem PROTOBUF_FINAL :
     kCameraActionFieldNumber = 8,
     kCameraPhotoIntervalSFieldNumber = 10,
     kLoiterTimeSFieldNumber = 9,
-<<<<<<< HEAD
     kAcceptanceRadiusMFieldNumber = 11,
-=======
-    kVehicleActionFieldNumber = 11,
->>>>>>> Generated mission files based on modified proto
+    kVehicleActionFieldNumber = 12,
   };
   // double latitude_deg = 1 [(.mavsdk.options.default_value) = "NaN", (.mavsdk.options.epsilon) = 1e-07];
   void clear_latitude_deg();
@@ -3897,7 +3894,6 @@ class MissionItem PROTOBUF_FINAL :
   void _internal_set_loiter_time_s(float value);
   public:
 
-<<<<<<< HEAD
   // float acceptance_radius_m = 11 [(.mavsdk.options.default_value) = "NaN"];
   void clear_acceptance_radius_m();
   float acceptance_radius_m() const;
@@ -3905,15 +3901,15 @@ class MissionItem PROTOBUF_FINAL :
   private:
   float _internal_acceptance_radius_m() const;
   void _internal_set_acceptance_radius_m(float value);
-=======
-  // .mavsdk.rpc.mission.MissionItem.VehicleAction vehicle_action = 11;
+  public:
+
+  // .mavsdk.rpc.mission.MissionItem.VehicleAction vehicle_action = 12;
   void clear_vehicle_action();
   ::mavsdk::rpc::mission::MissionItem_VehicleAction vehicle_action() const;
   void set_vehicle_action(::mavsdk::rpc::mission::MissionItem_VehicleAction value);
   private:
   ::mavsdk::rpc::mission::MissionItem_VehicleAction _internal_vehicle_action() const;
   void _internal_set_vehicle_action(::mavsdk::rpc::mission::MissionItem_VehicleAction value);
->>>>>>> Generated mission files based on modified proto
   public:
 
   // @@protoc_insertion_point(class_scope:mavsdk.rpc.mission.MissionItem)
@@ -3933,11 +3929,8 @@ class MissionItem PROTOBUF_FINAL :
   int camera_action_;
   double camera_photo_interval_s_;
   float loiter_time_s_;
-<<<<<<< HEAD
   float acceptance_radius_m_;
-=======
   int vehicle_action_;
->>>>>>> Generated mission files based on modified proto
   mutable ::PROTOBUF_NAMESPACE_ID::internal::CachedSize _cached_size_;
   friend struct ::TableStruct_mission_2fmission_2eproto;
 };
@@ -5989,7 +5982,6 @@ inline void MissionItem::set_camera_photo_interval_s(double value) {
   // @@protoc_insertion_point(field_set:mavsdk.rpc.mission.MissionItem.camera_photo_interval_s)
 }
 
-<<<<<<< HEAD
 // float acceptance_radius_m = 11 [(.mavsdk.options.default_value) = "NaN"];
 inline void MissionItem::clear_acceptance_radius_m() {
   acceptance_radius_m_ = 0;
@@ -6008,8 +6000,9 @@ inline void MissionItem::_internal_set_acceptance_radius_m(float value) {
 inline void MissionItem::set_acceptance_radius_m(float value) {
   _internal_set_acceptance_radius_m(value);
   // @@protoc_insertion_point(field_set:mavsdk.rpc.mission.MissionItem.acceptance_radius_m)
-=======
-// .mavsdk.rpc.mission.MissionItem.VehicleAction vehicle_action = 11;
+}
+
+// .mavsdk.rpc.mission.MissionItem.VehicleAction vehicle_action = 12;
 inline void MissionItem::clear_vehicle_action() {
   vehicle_action_ = 0;
 }
@@ -6027,7 +6020,6 @@ inline void MissionItem::_internal_set_vehicle_action(::mavsdk::rpc::mission::Mi
 inline void MissionItem::set_vehicle_action(::mavsdk::rpc::mission::MissionItem_VehicleAction value) {
   _internal_set_vehicle_action(value);
   // @@protoc_insertion_point(field_set:mavsdk.rpc.mission.MissionItem.vehicle_action)
->>>>>>> Generated mission files based on modified proto
 }
 
 // -------------------------------------------------------------------
