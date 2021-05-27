@@ -18,18 +18,20 @@
 #include <mavsdk/plugins/mission/mission.h>
 #include <mavsdk/plugins/telemetry/telemetry.h>
 
+#include <chrono>
 #include <functional>
 #include <future>
 #include <iostream>
+#include <thread>
 
 #define ERROR_CONSOLE_TEXT "\033[31m" // Turn text on console red
 #define TELEMETRY_CONSOLE_TEXT "\033[34m" // Turn text on console blue
 #define NORMAL_CONSOLE_TEXT "\033[0m" // Restore normal console colour
 
 using namespace mavsdk;
-using namespace std::placeholders; // for `_1`
-using namespace std::chrono; // for seconds(), milliseconds()
-using namespace std::this_thread; // for sleep_for()
+using std::chrono::seconds;
+using std::chrono::milliseconds;
+using std::this_thread::sleep_for;
 
 // Handles Action's result
 inline void handle_action_err_exit(Action::Result result, const std::string& message);

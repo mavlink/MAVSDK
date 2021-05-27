@@ -11,6 +11,7 @@
 #include <iostream>
 #include <future>
 #include <memory>
+#include <thread>
 
 using namespace mavsdk;
 
