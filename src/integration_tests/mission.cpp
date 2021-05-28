@@ -103,7 +103,7 @@ void test_mission(
             60.0f,
             NAN,
             Mission::MissionItem::CameraAction::None,
-            NAN));
+            0.5f));
 
         mission_plan.mission_items.push_back(add_mission_item(
             47.398241338125118,
@@ -115,7 +115,7 @@ void test_mission(
             -60.0f,
             5.0f,
             Mission::MissionItem::CameraAction::TakePhoto,
-            NAN));
+            4.0f));
 
         mission_plan.mission_items.push_back(add_mission_item(
             47.398139363821485,
@@ -127,7 +127,7 @@ void test_mission(
             0.0f,
             NAN,
             Mission::MissionItem::CameraAction::StartVideo,
-            NAN));
+            4.0f));
 
         mission_plan.mission_items.push_back(add_mission_item(
             47.398058617228855,
@@ -139,7 +139,7 @@ void test_mission(
             30.0f,
             NAN,
             Mission::MissionItem::CameraAction::StopVideo,
-            NAN));
+            0.5f));
 
         mission_plan.mission_items.push_back(add_mission_item(
             47.398100366082858,
@@ -151,7 +151,7 @@ void test_mission(
             -30.0f,
             NAN,
             Mission::MissionItem::CameraAction::StartPhotoInterval,
-            NAN));
+            0.5f));
 
         mission_plan.mission_items.push_back(add_mission_item(
             47.398001890458097,
@@ -163,7 +163,7 @@ void test_mission(
             0.0f,
             NAN,
             Mission::MissionItem::CameraAction::StopPhotoInterval,
-            NAN));
+            0.5f));
     }
 
     mission->set_return_to_launch_after_mission(true);
