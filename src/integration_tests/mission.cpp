@@ -27,7 +27,8 @@ static Mission::MissionItem add_mission_item(
     float gimbal_pitch_deg,
     float gimbal_yaw_deg,
     float loiter_time_s,
-    Mission::MissionItem::CameraAction camera_action);
+    Mission::MissionItem::CameraAction camera_action,
+    float acceptance_radius_m);
 
 static void pause_and_resume(std::shared_ptr<Mission> mission);
 
@@ -101,7 +102,8 @@ void test_mission(
             20.0f,
             60.0f,
             NAN,
-            Mission::MissionItem::CameraAction::None));
+            Mission::MissionItem::CameraAction::None,
+            0.5f));
 
         mission_plan.mission_items.push_back(add_mission_item(
             47.398241338125118,
@@ -112,7 +114,8 @@ void test_mission(
             0.0f,
             -60.0f,
             5.0f,
-            Mission::MissionItem::CameraAction::TakePhoto));
+            Mission::MissionItem::CameraAction::TakePhoto,
+            4.0f));
 
         mission_plan.mission_items.push_back(add_mission_item(
             47.398139363821485,
@@ -123,7 +126,8 @@ void test_mission(
             -46.0f,
             0.0f,
             NAN,
-            Mission::MissionItem::CameraAction::StartVideo));
+            Mission::MissionItem::CameraAction::StartVideo,
+            4.0f));
 
         mission_plan.mission_items.push_back(add_mission_item(
             47.398058617228855,
@@ -134,7 +138,8 @@ void test_mission(
             -90.0f,
             30.0f,
             NAN,
-            Mission::MissionItem::CameraAction::StopVideo));
+            Mission::MissionItem::CameraAction::StopVideo,
+            0.5f));
 
         mission_plan.mission_items.push_back(add_mission_item(
             47.398100366082858,
@@ -145,7 +150,8 @@ void test_mission(
             -45.0f,
             -30.0f,
             NAN,
-            Mission::MissionItem::CameraAction::StartPhotoInterval));
+            Mission::MissionItem::CameraAction::StartPhotoInterval,
+            0.5f));
 
         mission_plan.mission_items.push_back(add_mission_item(
             47.398001890458097,
@@ -156,7 +162,8 @@ void test_mission(
             0.0f,
             0.0f,
             NAN,
-            Mission::MissionItem::CameraAction::StopPhotoInterval));
+            Mission::MissionItem::CameraAction::StopPhotoInterval,
+            0.5f));
     }
 
     mission->set_return_to_launch_after_mission(true);
@@ -279,7 +286,8 @@ Mission::MissionItem add_mission_item(
     float gimbal_pitch_deg,
     float gimbal_yaw_deg,
     float loiter_time_s,
-    Mission::MissionItem::CameraAction camera_action)
+    Mission::MissionItem::CameraAction camera_action,
+    float acceptance_radius_m)
 {
     Mission::MissionItem new_item{};
     new_item.latitude_deg = latitude_deg;
@@ -291,6 +299,7 @@ Mission::MissionItem add_mission_item(
     new_item.gimbal_yaw_deg = gimbal_yaw_deg;
     new_item.loiter_time_s = loiter_time_s;
     new_item.camera_action = camera_action;
+    new_item.acceptance_radius_m = acceptance_radius_m;
 
     // In order to test setting the interval, add it here.
     if (camera_action == Mission::MissionItem::CameraAction::StartPhotoInterval) {

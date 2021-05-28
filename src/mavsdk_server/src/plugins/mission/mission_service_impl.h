@@ -107,6 +107,8 @@ public:
 
         rpc_obj->set_camera_photo_interval_s(mission_item.camera_photo_interval_s);
 
+        rpc_obj->set_acceptance_radius_m(mission_item.acceptance_radius_m);
+
         return rpc_obj;
     }
 
@@ -134,6 +136,8 @@ public:
         obj.loiter_time_s = mission_item.loiter_time_s();
 
         obj.camera_photo_interval_s = mission_item.camera_photo_interval_s();
+
+        obj.acceptance_radius_m = mission_item.acceptance_radius_m();
 
         return obj;
     }
