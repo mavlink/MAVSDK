@@ -1,6 +1,6 @@
 
 #include "fake_location_provider.h"
-#include <chrono> // for seonds()
+#include <chrono> // for seconds()
 #include <thread> // for sleep_for()
 
 using std::this_thread::sleep_for;
@@ -13,7 +13,7 @@ FakeLocationProvider::~FakeLocationProvider()
     stop();
 }
 
-void FakeLocationProvider::request_location_updates(location_callback_t callback)
+void FakeLocationProvider::request_location_updates(LocationCallback callback)
 {
     location_callback_ = callback;
     stop();
@@ -36,9 +36,10 @@ void FakeLocationProvider::stop()
     }
 }
 
-// Rudimentary location provider to draw a square.
 void FakeLocationProvider::compute_locations()
 {
+    // Draws a square.
+
     while (!should_exit_) {
         if (count_ < 10) {
             location_callback_(latitude_deg_, longitude_deg_);
@@ -60,6 +61,3 @@ void FakeLocationProvider::compute_locations()
         ++count_;
     }
 }
-
-const double FakeLocationProvider::LATITUDE_DEG_PER_METER = 0.000009044;
-const double FakeLocationProvider::LONGITUDE_DEG_PER_METER = 0.000008985;

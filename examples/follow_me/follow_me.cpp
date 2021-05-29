@@ -1,20 +1,14 @@
-/**
- * @file follow_me.cpp
- *
- * @brief Example that demonstrates the usage of Follow Me plugin.
- * The example registers with FakeLocationProvider for location updates
- * and sends them to the Follow Me plugin which are sent to drone. You can observe
- * drone following you. We print last location of the drone in flight mode callback.
- *
- * @author Shakthi Prashanth <shakthi.prashanth.m@intel.com>
- * @date 2018-01-03
- */
+//
+// Example that demonstrates the usage of the FollowMe plugin.
+// The example registers with FakeLocationProvider for location updates and
+// sends them to the Follow Me plugin which are sent to drone.
+//
 
-#include <chrono>
 #include <mavsdk/mavsdk.h>
 #include <mavsdk/plugins/action/action.h>
 #include <mavsdk/plugins/follow_me/follow_me.h>
 #include <mavsdk/plugins/telemetry/telemetry.h>
+#include <chrono>
 #include <future>
 #include <iostream>
 #include <memory>
@@ -23,97 +17,115 @@
 #include "fake_location_provider.h"
 
 using namespace mavsdk;
-using namespace std::placeholders; // for `_1`
-using namespace std::chrono; // for seconds(), milliseconds(), etc
-using namespace std::this_thread; // for sleep_for()
+using std::this_thread::sleep_for;
+using std::chrono::seconds;
 
-// For coloring output
-#define ERROR_CONSOLE_TEXT "\033[31m" // Turn text on console red
-#define TELEMETRY_CONSOLE_TEXT "\033[34m" // Turn text on console blue
-#define NORMAL_CONSOLE_TEXT "\033[0m" // Restore normal console colour
-
-inline void action_error_exit(Action::Result result, const std::string& message);
-inline void follow_me_error_exit(FollowMe::Result result, const std::string& message);
-inline void connection_error_exit(ConnectionResult result, const std::string& message);
-inline void wait_until_discover(Mavsdk& mavsdk);
-
-void usage(std::string bin_name)
+void usage(const std::string& bin_name)
 {
-    std::cout << NORMAL_CONSOLE_TEXT << "Usage : " << bin_name << " <connection_url>" << std::endl
-              << "Connection URL format should be :" << std::endl
-              << " For TCP : tcp://[server_host][:server_port]" << std::endl
-              << " For UDP : udp://[bind_host][:bind_port]" << std::endl
-              << " For Serial : serial:///path/to/serial/dev[:baudrate]" << std::endl
-              << "For example, to connect to the simulator use URL: udp://:14540" << std::endl;
+    std::cerr << "Usage : " << bin_name << " <connection_url>\n"
+              << "Connection URL format should be :\n"
+              << " For TCP : tcp://[server_host][:server_port]\n"
+              << " For UDP : udp://[bind_host][:bind_port]\n"
+              << " For Serial : serial:///path/to/serial/dev[:baudrate]\n"
+              << "For example, to connect to the simulator use URL: udp://:14540\n";
+}
+
+std::shared_ptr<System> get_system(Mavsdk& mavsdk)
+{
+    std::cout << "Waiting to discover system...\n";
+    auto prom = std::promise<std::shared_ptr<System>>{};
+    auto fut = prom.get_future();
+
+    // We wait for new systems to be discovered, once we find one that has an
+    // autopilot, we decide to use it.
+    mavsdk.subscribe_on_new_system([&mavsdk, &prom]() {
+        auto system = mavsdk.systems().back();
+
+        if (system->has_autopilot()) {
+            std::cout << "Discovered autopilot\n";
+
+            // Unsubscribe again as we only want to find one system.
+            mavsdk.subscribe_on_new_system(nullptr);
+            prom.set_value(system);
+        }
+    });
+
+    // We usually receive heartbeats at 1Hz, therefore we should find a
+    // system after around 3 seconds max, surely.
+    if (fut.wait_for(seconds(3)) == std::future_status::timeout) {
+        std::cerr << "No autopilot found.\n";
+        return {};
+    }
+
+    // Get discovered system now.
+    return fut.get();
 }
 
 int main(int argc, char** argv)
 {
-    Mavsdk mavsdk;
-    std::string connection_url;
-    ConnectionResult connection_result;
-
-    if (argc == 2) {
-        connection_url = argv[1];
-        connection_result = mavsdk.add_any_connection(connection_url);
-    } else {
+    if (argc != 2) {
         usage(argv[0]);
         return 1;
     }
 
+    Mavsdk mavsdk;
+    ConnectionResult connection_result = mavsdk.add_any_connection(argv[1]);
+
     if (connection_result != ConnectionResult::Success) {
-        std::cout << ERROR_CONSOLE_TEXT << "Connection failed: " << connection_result
-                  << NORMAL_CONSOLE_TEXT << std::endl;
+        std::cerr << "Connection failed: " << connection_result << '\n';
         return 1;
     }
 
-    wait_until_discover(mavsdk);
+    auto system = get_system(mavsdk);
+    if (!system) {
+        return 1;
+    }
 
-    // System got discovered.
-    auto system = mavsdk.systems().at(0);
+    // Instantiate plugins.
     auto action = Action{system};
     auto follow_me = FollowMe{system};
     auto telemetry = Telemetry{system};
 
     while (!telemetry.health_all_ok()) {
-        std::cout << "Waiting for system to be ready" << std::endl;
+        std::cout << "Waiting for system to be ready\n";
         sleep_for(seconds(1));
     }
-    std::cout << "System is ready" << std::endl;
+    std::cout << "System is ready\n";
 
     // Arm
     Action::Result arm_result = action.arm();
-    action_error_exit(arm_result, "Arming failed");
-    std::cout << "Armed" << std::endl;
+    if (arm_result != Action::Result::Success) {
+        std::cerr << "Arming failed: " << arm_result << '\n';
+        return 1;
+    }
+    std::cout << "Armed\n";
 
     const Telemetry::Result set_rate_result = telemetry.set_rate_position(1.0);
     if (set_rate_result != Telemetry::Result::Success) {
-        std::cout << ERROR_CONSOLE_TEXT << "Setting rate failed:" << set_rate_result
-                  << NORMAL_CONSOLE_TEXT << std::endl;
+        std::cerr << "Setting rate failed:" << set_rate_result << '\n';
         return 1;
     }
 
     telemetry.subscribe_position([](Telemetry::Position position) {
-        std::cout << TELEMETRY_CONSOLE_TEXT // set to blue
-                  << "Vehicle is at: " << position.latitude_deg << ", " << position.longitude_deg
-                  << " degrees" << NORMAL_CONSOLE_TEXT // set to default color again
-                  << std::endl;
+        std::cout << "Vehicle is at: " << position.latitude_deg << ", " << position.longitude_deg
+                  << " degrees\n";
     });
 
     // Subscribe to receive updates on flight mode. You can find out whether FollowMe is active.
-    telemetry.subscribe_flight_mode(std::bind(
-        [&](Telemetry::FlightMode flight_mode) {
-            const FollowMe::TargetLocation last_location = follow_me.get_last_location();
-            std::cout << "[FlightMode: " << flight_mode
-                      << "] Target is at: " << last_location.latitude_deg << ", "
-                      << last_location.longitude_deg << " degrees." << std::endl;
-        },
-        std::placeholders::_1));
+    telemetry.subscribe_flight_mode([&](Telemetry::FlightMode flight_mode) {
+        const FollowMe::TargetLocation last_location = follow_me.get_last_location();
+        std::cout << "[FlightMode: " << flight_mode
+                  << "] Target is at: " << last_location.latitude_deg << ", "
+                  << last_location.longitude_deg << " degrees.\n";
+    });
 
     // Takeoff
     Action::Result takeoff_result = action.takeoff();
-    action_error_exit(takeoff_result, "Takeoff failed");
-    std::cout << "In Air..." << std::endl;
+    if (takeoff_result != Action::Result::Success) {
+        std::cerr << "Arming failed: " << takeoff_result << '\n';
+        return 1;
+    }
+    std::cout << "In Air...\n";
     sleep_for(seconds(5)); // Wait for drone to reach takeoff altitude
 
     // Configure Min height of the drone to be "20 meters" above home & Follow direction as "Front
@@ -123,9 +135,17 @@ int main(int argc, char** argv)
     config.follow_direction = FollowMe::Config::FollowDirection::Behind;
     FollowMe::Result follow_me_result = follow_me.set_config(config);
 
+    if (follow_me_result != FollowMe::Result::Success) {
+        std::cerr << "Setting follow me config failed: " << follow_me_result << '\n';
+        return 1;
+    }
+
     // Start Follow Me
     follow_me_result = follow_me.start();
-    follow_me_error_exit(follow_me_result, "Failed to start FollowMe mode");
+    if (follow_me_result != FollowMe::Result::Success) {
+        std::cerr << "Starting follow me config failed: " << follow_me_result << '\n';
+        return 1;
+    }
 
     FakeLocationProvider location_provider;
     // Register for platform-specific Location provider. We're using FakeLocationProvider for the
@@ -143,61 +163,31 @@ int main(int argc, char** argv)
 
     // Stop Follow Me
     follow_me_result = follow_me.stop();
-    follow_me_error_exit(follow_me_result, "Failed to stop FollowMe mode");
+    if (follow_me_result != FollowMe::Result::Success) {
+        std::cerr << "Stopping follow me config failed: " << follow_me_result << '\n';
+        return 1;
+    }
 
     // Stop flight mode updates.
     telemetry.subscribe_flight_mode(nullptr);
 
     // Land
     const Action::Result land_result = action.land();
-    action_error_exit(land_result, "Landing failed");
+    if (land_result != Action::Result::Success) {
+        std::cerr << "Arming failed: " << land_result << '\n';
+        return 1;
+    }
+
     while (telemetry.in_air()) {
-        std::cout << "waiting until landed" << std::endl;
+        std::cout << "waiting until landed\n";
         sleep_for(seconds(1));
     }
-    std::cout << "Landed..." << std::endl;
+    std::cout << "Landed...\n";
+
+    while (telemetry.armed()) {
+        std::cout << "waiting until disarmed\n";
+        sleep_for(seconds(1));
+    }
+
     return 0;
-}
-
-void wait_until_discover(Mavsdk& mavsdk)
-{
-    std::cout << "Waiting to discover system..." << std::endl;
-    std::promise<void> discover_promise;
-    auto discover_future = discover_promise.get_future();
-
-    mavsdk.subscribe_on_new_system([&mavsdk, &discover_promise]() {
-        const auto system = mavsdk.systems().at(0);
-
-        if (system->is_connected()) {
-            std::cout << "Discovered system" << std::endl;
-            discover_promise.set_value();
-        }
-    });
-
-    discover_future.wait();
-}
-
-// Handles Action's result
-inline void action_error_exit(Action::Result result, const std::string& message)
-{
-    if (result != Action::Result::Success) {
-        std::cerr << ERROR_CONSOLE_TEXT << message << result << NORMAL_CONSOLE_TEXT << std::endl;
-        exit(EXIT_FAILURE);
-    }
-}
-// Handles FollowMe's result
-inline void follow_me_error_exit(FollowMe::Result result, const std::string& message)
-{
-    if (result != FollowMe::Result::Success) {
-        std::cerr << ERROR_CONSOLE_TEXT << message << result << NORMAL_CONSOLE_TEXT << std::endl;
-        exit(EXIT_FAILURE);
-    }
-}
-// Handles connection result
-inline void connection_error_exit(ConnectionResult result, const std::string& message)
-{
-    if (result != ConnectionResult::Success) {
-        std::cerr << ERROR_CONSOLE_TEXT << message << result << NORMAL_CONSOLE_TEXT << std::endl;
-        exit(EXIT_FAILURE);
-    }
 }
