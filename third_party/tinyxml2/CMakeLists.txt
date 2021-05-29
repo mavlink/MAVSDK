@@ -27,9 +27,9 @@ endforeach()
 
 ExternalProject_add(
     tinyxml2
-    #URL https://github.com/leethomason/tinyxml2/archive/8.1.0.tar.gz
-    GIT_REPOSITORY https://github.com/jonasvautherin/tinyxml2
-    GIT_TAG 87b1aac716f009df95c97bd1c365dc395ec4da19
+    GIT_REPOSITORY https://github.com/leethomason/tinyxml2
+    GIT_TAG 55716da04f2de307e01d84ed695bed86114f9136
     PREFIX tinyxml2
+    PATCH_COMMAND git checkout . && git apply ${PROJECT_SOURCE_DIR}/cmake-3.10.2.patch
     CMAKE_ARGS "${CMAKE_ARGS}"
     )
