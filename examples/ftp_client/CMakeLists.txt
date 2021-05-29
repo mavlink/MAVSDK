@@ -5,22 +5,19 @@ set(CMAKE_CXX_STANDARD_REQUIRED ON)
 
 project(ftp_client)
 
-find_package(Threads REQUIRED)
-
-if(NOT MSVC)
-    add_definitions("-Wall -Wextra")
-else()
-    add_definitions("-WX -W2")
-endif()
-
-find_package(MAVSDK REQUIRED)
-
 add_executable(ftp_client
     ftp_client.cpp
 )
 
+find_package(MAVSDK REQUIRED)
+
 target_link_libraries(ftp_client
     MAVSDK::mavsdk_ftp
     MAVSDK::mavsdk
-    ${CMAKE_THREAD_LIBS_INIT}
 )
+
+if(NOT MSVC)
+    add_compile_options(ftp_client PRIVATE -Wall -Wextra)
+else()
+    add_compile_options(ftp_client PRIVATE -WX -W2)
+endif()

@@ -5,19 +5,19 @@ set(CMAKE_CXX_STANDARD_REQUIRED ON)
 
 project(tune)
 
-if(NOT MSVC)
-    add_definitions("-Wall -Wextra")
-else()
-    add_definitions("-WX -W2")
-endif()
-
-find_package(MAVSDK REQUIRED)
-
 add_executable(tune
     tune.cpp
 )
+
+find_package(MAVSDK REQUIRED)
 
 target_link_libraries(tune
     MAVSDK::mavsdk_tune
     MAVSDK::mavsdk
 )
+
+if(NOT MSVC)
+    add_compile_options(tune PRIVATE -Wall -Wextra)
+else()
+    add_compile_options(tune PRIVATE -WX -W2)
+endif()

@@ -5,17 +5,11 @@ set(CMAKE_CXX_STANDARD_REQUIRED ON)
 
 project(geofence_inclusion)
 
-if(MSVC)
-    add_definitions("-WX -W2")
-else()
-    add_definitions("-Wall -Wextra")
-endif()
-
-find_package(MAVSDK REQUIRED)
-
 add_executable(geofence_inclusion
     geofence_inclusion.cpp
 )
+
+find_package(MAVSDK REQUIRED)
 
 target_link_libraries(geofence_inclusion
     MAVSDK::mavsdk_action
@@ -24,3 +18,9 @@ target_link_libraries(geofence_inclusion
     MAVSDK::mavsdk_geofence
     MAVSDK::mavsdk
 )
+
+if(NOT MSVC)
+    add_compile_options(geofence_inclusion PRIVATE -Wall -Wextra)
+else()
+    add_compile_options(geofence_inclusion PRIVATE -WX -W2)
+endif()

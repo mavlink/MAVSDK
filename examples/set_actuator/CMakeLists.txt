@@ -5,19 +5,19 @@ set(CMAKE_CXX_STANDARD_REQUIRED ON)
 
 project(set_actuator)
 
-if(MSVC)
-    add_definitions("-WX -W2")
-else()
-    add_definitions("-Wall -Wextra")
-endif()
-
-find_package(MAVSDK REQUIRED)
-
 add_executable(set_actuator
     set_actuator.cpp
 )
+
+find_package(MAVSDK REQUIRED)
 
 target_link_libraries(set_actuator
     MAVSDK::mavsdk_action
     MAVSDK::mavsdk
 )
+
+if(NOT MSVC)
+    add_compile_options(set_actuator PRIVATE -Wall -Wextra)
+else()
+    add_compile_options(set_actuator PRIVATE -WX -W2)
+endif()

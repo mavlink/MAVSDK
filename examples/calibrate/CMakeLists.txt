@@ -5,23 +5,19 @@ set(CMAKE_CXX_STANDARD_REQUIRED ON)
 
 project(calibrate)
 
-find_package(Threads REQUIRED)
-
-if(NOT MSVC)
-    add_definitions("-Wall -Wextra")
-else()
-    add_definitions("-WX -W2")
-endif()
-
-find_package(MAVSDK REQUIRED)
-
 add_executable(calibrate
     calibrate.cpp
 )
 
+find_package(MAVSDK REQUIRED)
+
 target_link_libraries(calibrate
     MAVSDK::mavsdk_calibration
     MAVSDK::mavsdk
-    ${CMAKE_THREAD_LIBS_INIT}
 )
 
+if(NOT MSVC)
+    add_compile_options(calibrate PRIVATE -Wall -Wextra)
+else()
+    add_compile_options(calibrate PRIVATE -WX -W2)
+endif()
