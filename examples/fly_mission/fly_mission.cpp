@@ -65,16 +65,16 @@ int main(int argc, char** argv)
     Mavsdk mavsdk;
 
     {
-        auto prom = std::make_shared<std::promise<void>>();
-        auto future_result = prom->get_future();
+        auto prom = std::promise<void>{};
+        auto future_result = prom.get_future();
 
         std::cout << "Waiting to discover system..." << std::endl;
-        mavsdk.subscribe_on_new_system([&mavsdk, prom]() {
+        mavsdk.subscribe_on_new_system([&mavsdk, &prom]() {
             const auto system = mavsdk.systems().at(0);
 
             if (system->is_connected()) {
                 std::cout << "Discovered system" << std::endl;
-                prom->set_value();
+                prom.set_value();
             } else {
                 std::cout << "System timed out" << std::endl;
                 std::cout << "Exiting." << std::endl;
@@ -181,12 +181,12 @@ int main(int argc, char** argv)
         std::cout << "Uploading mission..." << std::endl;
         // We only have the upload_mission function asynchronous for now, so we wrap it using
         // std::future.
-        auto prom = std::make_shared<std::promise<Mission::Result>>();
-        auto future_result = prom->get_future();
+        auto prom = std::promise<Mission::Result>{};
+        auto future_result = prom.get_future();
         Mission::MissionPlan mission_plan{};
         mission_plan.mission_items = mission_items;
         mission.upload_mission_async(
-            mission_plan, [prom](Mission::Result result) { prom->set_value(result); });
+            mission_plan, [&prom](Mission::Result result) { prom.set_value(result); });
 
         const Mission::Result result = future_result.get();
         if (result != Mission::Result::Success) {
@@ -216,10 +216,10 @@ int main(int argc, char** argv)
 
     {
         std::cout << "Starting mission." << std::endl;
-        auto prom = std::make_shared<std::promise<Mission::Result>>();
-        auto future_result = prom->get_future();
-        mission.start_mission_async([prom](Mission::Result result) {
-            prom->set_value(result);
+        auto prom = std::promise<Mission::Result>{};
+        auto future_result = prom.get_future();
+        mission.start_mission_async([&prom](Mission::Result result) {
+            prom.set_value(result);
             std::cout << "Started mission." << std::endl;
         });
 
@@ -232,11 +232,11 @@ int main(int argc, char** argv)
     }
 
     {
-        auto prom = std::make_shared<std::promise<Mission::Result>>();
-        auto future_result = prom->get_future();
+        auto prom = std::promise<Mission::Result>{};
+        auto future_result = prom.get_future();
 
         std::cout << "Pausing mission..." << std::endl;
-        mission.pause_mission_async([prom](Mission::Result result) { prom->set_value(result); });
+        mission.pause_mission_async([&prom](Mission::Result result) { prom.set_value(result); });
 
         const Mission::Result result = future_result.get();
         if (result != Mission::Result::Success) {
@@ -251,11 +251,11 @@ int main(int argc, char** argv)
 
     // Then continue.
     {
-        auto prom = std::make_shared<std::promise<Mission::Result>>();
-        auto future_result = prom->get_future();
+        auto prom = std::promise<Mission::Result>{};
+        auto future_result = prom.get_future();
 
         std::cout << "Resuming mission..." << std::endl;
-        mission.start_mission_async([prom](Mission::Result result) { prom->set_value(result); });
+        mission.start_mission_async([&prom](Mission::Result result) { prom.set_value(result); });
 
         const Mission::Result result = future_result.get();
         if (result != Mission::Result::Success) {

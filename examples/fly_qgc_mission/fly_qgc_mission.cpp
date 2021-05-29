@@ -80,16 +80,16 @@ int main(int argc, char** argv)
     std::cout << "Importing mission from mission plan: " << qgc_plan << std::endl;
 
     {
-        auto prom = std::make_shared<std::promise<void>>();
-        auto future_result = prom->get_future();
+        auto prom = std::promise<void>{};
+        auto future_result = prom.get_future();
 
         std::cout << "Waiting to discover system..." << std::endl;
-        mavsdk.subscribe_on_new_system([&mavsdk, prom]() {
+        mavsdk.subscribe_on_new_system([&mavsdk, &prom]() {
             const auto system = mavsdk.systems().at(0);
 
             if (system->is_connected()) {
                 std::cout << "Discovered system" << std::endl;
-                prom->set_value();
+                prom.set_value();
             } else {
                 std::cout << "System timed out" << std::endl;
                 std::cout << "Exiting." << std::endl;
