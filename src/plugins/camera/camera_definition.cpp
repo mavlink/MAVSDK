@@ -525,7 +525,7 @@ bool CameraDefinition::set_setting(
     std::lock_guard<std::recursive_mutex> lock(_mutex);
 
     if (_parameter_map.find(name) == _parameter_map.end()) {
-        LogErr() << "Unknown setting to set";
+        LogErr() << "Unknown setting to set: " << name;
         return false;
     }
 
@@ -567,7 +567,7 @@ bool CameraDefinition::get_setting(const std::string& name, MAVLinkParameters::P
     std::lock_guard<std::recursive_mutex> lock(_mutex);
 
     if (_current_settings.find(name) == _current_settings.end()) {
-        LogErr() << "Unknown setting to get";
+        LogErr() << "Unknown setting to get: " << name;
         return false;
     }
 
