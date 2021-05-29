@@ -1,7 +1,8 @@
 #pragma once
 
-#include <functional>
 #include <atomic>
+#include <functional>
+#include <memory>
 #include <thread>
 
 /**
@@ -24,7 +25,7 @@ private:
     void stop();
     void compute_locations();
 
-    std::thread* thread_{nullptr};
+    std::unique_ptr<std::thread> thread_{};
     std::atomic<bool> should_exit_{false};
 
     location_callback_t location_callback_ = nullptr;

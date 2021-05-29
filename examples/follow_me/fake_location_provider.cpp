@@ -23,7 +23,7 @@ void FakeLocationProvider::request_location_updates(location_callback_t callback
 void FakeLocationProvider::start()
 {
     should_exit_ = false;
-    thread_ = new std::thread(&FakeLocationProvider::compute_locations, this);
+    thread_ = std::make_unique<std::thread>(&FakeLocationProvider::compute_locations, this);
 }
 
 void FakeLocationProvider::stop()
@@ -32,8 +32,7 @@ void FakeLocationProvider::stop()
 
     if (thread_) {
         thread_->join();
-        delete thread_;
-        thread_ = nullptr;
+        thread_.reset();
     }
 }
 
