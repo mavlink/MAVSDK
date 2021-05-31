@@ -151,8 +151,8 @@ void MavlinkCommandSender::receive_command_ack(mavlink_message_t message)
             return;
         }
 
-        // LogDebug() << "We got an ack: " << command_ack.command << " after: "
-        //     << _parent.get_time().elapsed_since_s(work->time_started) << " s";
+        LogDebug() << "We got an ack: " << command_ack.command << " after: "
+            << _parent.get_time().elapsed_since_s(work->time_started) << " s";
         temp_callback = work->callback;
 
         switch (command_ack.result) {
