@@ -34,6 +34,18 @@ public:
         return grpc::Status::OK;
     }
 
+    grpc::Status SetMavlinkTimeout(
+        grpc::ServerContext* /* context */,
+        const rpc::core::SetMavlinkTimeoutRequest* request,
+        rpc::core::SetMavlinkTimeoutResponse* /* response */) override
+    {
+        if (request != nullptr) {
+            _mavsdk.set_timeout_s(request->timeout_s());
+        }
+
+        return grpc::Status::OK;
+    }
+
     void stop() { _stop_promise.set_value(); }
 
 private:

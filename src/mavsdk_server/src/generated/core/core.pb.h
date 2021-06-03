@@ -46,7 +46,7 @@ struct TableStruct_core_2fcore_2eproto {
     PROTOBUF_SECTION_VARIABLE(protodesc_cold);
   static const ::PROTOBUF_NAMESPACE_ID::internal::AuxiliaryParseTableField aux[]
     PROTOBUF_SECTION_VARIABLE(protodesc_cold);
-  static const ::PROTOBUF_NAMESPACE_ID::internal::ParseTable schema[3]
+  static const ::PROTOBUF_NAMESPACE_ID::internal::ParseTable schema[5]
     PROTOBUF_SECTION_VARIABLE(protodesc_cold);
   static const ::PROTOBUF_NAMESPACE_ID::internal::FieldMetadata field_metadata[];
   static const ::PROTOBUF_NAMESPACE_ID::internal::SerializationTable serialization_table[];
@@ -63,6 +63,12 @@ extern ConnectionStateDefaultTypeInternal _ConnectionState_default_instance_;
 class ConnectionStateResponse;
 struct ConnectionStateResponseDefaultTypeInternal;
 extern ConnectionStateResponseDefaultTypeInternal _ConnectionStateResponse_default_instance_;
+class SetMavlinkTimeoutRequest;
+struct SetMavlinkTimeoutRequestDefaultTypeInternal;
+extern SetMavlinkTimeoutRequestDefaultTypeInternal _SetMavlinkTimeoutRequest_default_instance_;
+class SetMavlinkTimeoutResponse;
+struct SetMavlinkTimeoutResponseDefaultTypeInternal;
+extern SetMavlinkTimeoutResponseDefaultTypeInternal _SetMavlinkTimeoutResponse_default_instance_;
 class SubscribeConnectionStateRequest;
 struct SubscribeConnectionStateRequestDefaultTypeInternal;
 extern SubscribeConnectionStateRequestDefaultTypeInternal _SubscribeConnectionStateRequest_default_instance_;
@@ -72,6 +78,8 @@ extern SubscribeConnectionStateRequestDefaultTypeInternal _SubscribeConnectionSt
 PROTOBUF_NAMESPACE_OPEN
 template<> ::mavsdk::rpc::core::ConnectionState* Arena::CreateMaybeMessage<::mavsdk::rpc::core::ConnectionState>(Arena*);
 template<> ::mavsdk::rpc::core::ConnectionStateResponse* Arena::CreateMaybeMessage<::mavsdk::rpc::core::ConnectionStateResponse>(Arena*);
+template<> ::mavsdk::rpc::core::SetMavlinkTimeoutRequest* Arena::CreateMaybeMessage<::mavsdk::rpc::core::SetMavlinkTimeoutRequest>(Arena*);
+template<> ::mavsdk::rpc::core::SetMavlinkTimeoutResponse* Arena::CreateMaybeMessage<::mavsdk::rpc::core::SetMavlinkTimeoutResponse>(Arena*);
 template<> ::mavsdk::rpc::core::SubscribeConnectionStateRequest* Arena::CreateMaybeMessage<::mavsdk::rpc::core::SubscribeConnectionStateRequest>(Arena*);
 PROTOBUF_NAMESPACE_CLOSE
 namespace mavsdk {
@@ -350,6 +358,267 @@ class ConnectionStateResponse PROTOBUF_FINAL :
 };
 // -------------------------------------------------------------------
 
+class SetMavlinkTimeoutRequest PROTOBUF_FINAL :
+    public ::PROTOBUF_NAMESPACE_ID::Message /* @@protoc_insertion_point(class_definition:mavsdk.rpc.core.SetMavlinkTimeoutRequest) */ {
+ public:
+  inline SetMavlinkTimeoutRequest() : SetMavlinkTimeoutRequest(nullptr) {}
+  virtual ~SetMavlinkTimeoutRequest();
+  explicit constexpr SetMavlinkTimeoutRequest(::PROTOBUF_NAMESPACE_ID::internal::ConstantInitialized);
+
+  SetMavlinkTimeoutRequest(const SetMavlinkTimeoutRequest& from);
+  SetMavlinkTimeoutRequest(SetMavlinkTimeoutRequest&& from) noexcept
+    : SetMavlinkTimeoutRequest() {
+    *this = ::std::move(from);
+  }
+
+  inline SetMavlinkTimeoutRequest& operator=(const SetMavlinkTimeoutRequest& from) {
+    CopyFrom(from);
+    return *this;
+  }
+  inline SetMavlinkTimeoutRequest& operator=(SetMavlinkTimeoutRequest&& from) noexcept {
+    if (GetArena() == from.GetArena()) {
+      if (this != &from) InternalSwap(&from);
+    } else {
+      CopyFrom(from);
+    }
+    return *this;
+  }
+
+  static const ::PROTOBUF_NAMESPACE_ID::Descriptor* descriptor() {
+    return GetDescriptor();
+  }
+  static const ::PROTOBUF_NAMESPACE_ID::Descriptor* GetDescriptor() {
+    return GetMetadataStatic().descriptor;
+  }
+  static const ::PROTOBUF_NAMESPACE_ID::Reflection* GetReflection() {
+    return GetMetadataStatic().reflection;
+  }
+  static const SetMavlinkTimeoutRequest& default_instance() {
+    return *internal_default_instance();
+  }
+  static inline const SetMavlinkTimeoutRequest* internal_default_instance() {
+    return reinterpret_cast<const SetMavlinkTimeoutRequest*>(
+               &_SetMavlinkTimeoutRequest_default_instance_);
+  }
+  static constexpr int kIndexInFileMessages =
+    2;
+
+  friend void swap(SetMavlinkTimeoutRequest& a, SetMavlinkTimeoutRequest& b) {
+    a.Swap(&b);
+  }
+  inline void Swap(SetMavlinkTimeoutRequest* other) {
+    if (other == this) return;
+    if (GetArena() == other->GetArena()) {
+      InternalSwap(other);
+    } else {
+      ::PROTOBUF_NAMESPACE_ID::internal::GenericSwap(this, other);
+    }
+  }
+  void UnsafeArenaSwap(SetMavlinkTimeoutRequest* other) {
+    if (other == this) return;
+    GOOGLE_DCHECK(GetArena() == other->GetArena());
+    InternalSwap(other);
+  }
+
+  // implements Message ----------------------------------------------
+
+  inline SetMavlinkTimeoutRequest* New() const final {
+    return CreateMaybeMessage<SetMavlinkTimeoutRequest>(nullptr);
+  }
+
+  SetMavlinkTimeoutRequest* New(::PROTOBUF_NAMESPACE_ID::Arena* arena) const final {
+    return CreateMaybeMessage<SetMavlinkTimeoutRequest>(arena);
+  }
+  void CopyFrom(const ::PROTOBUF_NAMESPACE_ID::Message& from) final;
+  void MergeFrom(const ::PROTOBUF_NAMESPACE_ID::Message& from) final;
+  void CopyFrom(const SetMavlinkTimeoutRequest& from);
+  void MergeFrom(const SetMavlinkTimeoutRequest& from);
+  PROTOBUF_ATTRIBUTE_REINITIALIZES void Clear() final;
+  bool IsInitialized() const final;
+
+  size_t ByteSizeLong() const final;
+  const char* _InternalParse(const char* ptr, ::PROTOBUF_NAMESPACE_ID::internal::ParseContext* ctx) final;
+  ::PROTOBUF_NAMESPACE_ID::uint8* _InternalSerialize(
+      ::PROTOBUF_NAMESPACE_ID::uint8* target, ::PROTOBUF_NAMESPACE_ID::io::EpsCopyOutputStream* stream) const final;
+  int GetCachedSize() const final { return _cached_size_.Get(); }
+
+  private:
+  inline void SharedCtor();
+  inline void SharedDtor();
+  void SetCachedSize(int size) const final;
+  void InternalSwap(SetMavlinkTimeoutRequest* other);
+  friend class ::PROTOBUF_NAMESPACE_ID::internal::AnyMetadata;
+  static ::PROTOBUF_NAMESPACE_ID::StringPiece FullMessageName() {
+    return "mavsdk.rpc.core.SetMavlinkTimeoutRequest";
+  }
+  protected:
+  explicit SetMavlinkTimeoutRequest(::PROTOBUF_NAMESPACE_ID::Arena* arena);
+  private:
+  static void ArenaDtor(void* object);
+  inline void RegisterArenaDtor(::PROTOBUF_NAMESPACE_ID::Arena* arena);
+  public:
+
+  ::PROTOBUF_NAMESPACE_ID::Metadata GetMetadata() const final;
+  private:
+  static ::PROTOBUF_NAMESPACE_ID::Metadata GetMetadataStatic() {
+    return ::descriptor_table_core_2fcore_2eproto_metadata_getter(kIndexInFileMessages);
+  }
+
+  public:
+
+  // nested types ----------------------------------------------------
+
+  // accessors -------------------------------------------------------
+
+  enum : int {
+    kTimeoutSFieldNumber = 1,
+  };
+  // double timeout_s = 1;
+  void clear_timeout_s();
+  double timeout_s() const;
+  void set_timeout_s(double value);
+  private:
+  double _internal_timeout_s() const;
+  void _internal_set_timeout_s(double value);
+  public:
+
+  // @@protoc_insertion_point(class_scope:mavsdk.rpc.core.SetMavlinkTimeoutRequest)
+ private:
+  class _Internal;
+
+  template <typename T> friend class ::PROTOBUF_NAMESPACE_ID::Arena::InternalHelper;
+  typedef void InternalArenaConstructable_;
+  typedef void DestructorSkippable_;
+  double timeout_s_;
+  mutable ::PROTOBUF_NAMESPACE_ID::internal::CachedSize _cached_size_;
+  friend struct ::TableStruct_core_2fcore_2eproto;
+};
+// -------------------------------------------------------------------
+
+class SetMavlinkTimeoutResponse PROTOBUF_FINAL :
+    public ::PROTOBUF_NAMESPACE_ID::Message /* @@protoc_insertion_point(class_definition:mavsdk.rpc.core.SetMavlinkTimeoutResponse) */ {
+ public:
+  inline SetMavlinkTimeoutResponse() : SetMavlinkTimeoutResponse(nullptr) {}
+  virtual ~SetMavlinkTimeoutResponse();
+  explicit constexpr SetMavlinkTimeoutResponse(::PROTOBUF_NAMESPACE_ID::internal::ConstantInitialized);
+
+  SetMavlinkTimeoutResponse(const SetMavlinkTimeoutResponse& from);
+  SetMavlinkTimeoutResponse(SetMavlinkTimeoutResponse&& from) noexcept
+    : SetMavlinkTimeoutResponse() {
+    *this = ::std::move(from);
+  }
+
+  inline SetMavlinkTimeoutResponse& operator=(const SetMavlinkTimeoutResponse& from) {
+    CopyFrom(from);
+    return *this;
+  }
+  inline SetMavlinkTimeoutResponse& operator=(SetMavlinkTimeoutResponse&& from) noexcept {
+    if (GetArena() == from.GetArena()) {
+      if (this != &from) InternalSwap(&from);
+    } else {
+      CopyFrom(from);
+    }
+    return *this;
+  }
+
+  static const ::PROTOBUF_NAMESPACE_ID::Descriptor* descriptor() {
+    return GetDescriptor();
+  }
+  static const ::PROTOBUF_NAMESPACE_ID::Descriptor* GetDescriptor() {
+    return GetMetadataStatic().descriptor;
+  }
+  static const ::PROTOBUF_NAMESPACE_ID::Reflection* GetReflection() {
+    return GetMetadataStatic().reflection;
+  }
+  static const SetMavlinkTimeoutResponse& default_instance() {
+    return *internal_default_instance();
+  }
+  static inline const SetMavlinkTimeoutResponse* internal_default_instance() {
+    return reinterpret_cast<const SetMavlinkTimeoutResponse*>(
+               &_SetMavlinkTimeoutResponse_default_instance_);
+  }
+  static constexpr int kIndexInFileMessages =
+    3;
+
+  friend void swap(SetMavlinkTimeoutResponse& a, SetMavlinkTimeoutResponse& b) {
+    a.Swap(&b);
+  }
+  inline void Swap(SetMavlinkTimeoutResponse* other) {
+    if (other == this) return;
+    if (GetArena() == other->GetArena()) {
+      InternalSwap(other);
+    } else {
+      ::PROTOBUF_NAMESPACE_ID::internal::GenericSwap(this, other);
+    }
+  }
+  void UnsafeArenaSwap(SetMavlinkTimeoutResponse* other) {
+    if (other == this) return;
+    GOOGLE_DCHECK(GetArena() == other->GetArena());
+    InternalSwap(other);
+  }
+
+  // implements Message ----------------------------------------------
+
+  inline SetMavlinkTimeoutResponse* New() const final {
+    return CreateMaybeMessage<SetMavlinkTimeoutResponse>(nullptr);
+  }
+
+  SetMavlinkTimeoutResponse* New(::PROTOBUF_NAMESPACE_ID::Arena* arena) const final {
+    return CreateMaybeMessage<SetMavlinkTimeoutResponse>(arena);
+  }
+  void CopyFrom(const ::PROTOBUF_NAMESPACE_ID::Message& from) final;
+  void MergeFrom(const ::PROTOBUF_NAMESPACE_ID::Message& from) final;
+  void CopyFrom(const SetMavlinkTimeoutResponse& from);
+  void MergeFrom(const SetMavlinkTimeoutResponse& from);
+  PROTOBUF_ATTRIBUTE_REINITIALIZES void Clear() final;
+  bool IsInitialized() const final;
+
+  size_t ByteSizeLong() const final;
+  const char* _InternalParse(const char* ptr, ::PROTOBUF_NAMESPACE_ID::internal::ParseContext* ctx) final;
+  ::PROTOBUF_NAMESPACE_ID::uint8* _InternalSerialize(
+      ::PROTOBUF_NAMESPACE_ID::uint8* target, ::PROTOBUF_NAMESPACE_ID::io::EpsCopyOutputStream* stream) const final;
+  int GetCachedSize() const final { return _cached_size_.Get(); }
+
+  private:
+  inline void SharedCtor();
+  inline void SharedDtor();
+  void SetCachedSize(int size) const final;
+  void InternalSwap(SetMavlinkTimeoutResponse* other);
+  friend class ::PROTOBUF_NAMESPACE_ID::internal::AnyMetadata;
+  static ::PROTOBUF_NAMESPACE_ID::StringPiece FullMessageName() {
+    return "mavsdk.rpc.core.SetMavlinkTimeoutResponse";
+  }
+  protected:
+  explicit SetMavlinkTimeoutResponse(::PROTOBUF_NAMESPACE_ID::Arena* arena);
+  private:
+  static void ArenaDtor(void* object);
+  inline void RegisterArenaDtor(::PROTOBUF_NAMESPACE_ID::Arena* arena);
+  public:
+
+  ::PROTOBUF_NAMESPACE_ID::Metadata GetMetadata() const final;
+  private:
+  static ::PROTOBUF_NAMESPACE_ID::Metadata GetMetadataStatic() {
+    return ::descriptor_table_core_2fcore_2eproto_metadata_getter(kIndexInFileMessages);
+  }
+
+  public:
+
+  // nested types ----------------------------------------------------
+
+  // accessors -------------------------------------------------------
+
+  // @@protoc_insertion_point(class_scope:mavsdk.rpc.core.SetMavlinkTimeoutResponse)
+ private:
+  class _Internal;
+
+  template <typename T> friend class ::PROTOBUF_NAMESPACE_ID::Arena::InternalHelper;
+  typedef void InternalArenaConstructable_;
+  typedef void DestructorSkippable_;
+  mutable ::PROTOBUF_NAMESPACE_ID::internal::CachedSize _cached_size_;
+  friend struct ::TableStruct_core_2fcore_2eproto;
+};
+// -------------------------------------------------------------------
+
 class ConnectionState PROTOBUF_FINAL :
     public ::PROTOBUF_NAMESPACE_ID::Message /* @@protoc_insertion_point(class_definition:mavsdk.rpc.core.ConnectionState) */ {
  public:
@@ -393,7 +662,7 @@ class ConnectionState PROTOBUF_FINAL :
                &_ConnectionState_default_instance_);
   }
   static constexpr int kIndexInFileMessages =
-    2;
+    4;
 
   friend void swap(ConnectionState& a, ConnectionState& b) {
     a.Swap(&b);
@@ -585,6 +854,34 @@ inline void ConnectionStateResponse::set_allocated_connection_state(::mavsdk::rp
 
 // -------------------------------------------------------------------
 
+// SetMavlinkTimeoutRequest
+
+// double timeout_s = 1;
+inline void SetMavlinkTimeoutRequest::clear_timeout_s() {
+  timeout_s_ = 0;
+}
+inline double SetMavlinkTimeoutRequest::_internal_timeout_s() const {
+  return timeout_s_;
+}
+inline double SetMavlinkTimeoutRequest::timeout_s() const {
+  // @@protoc_insertion_point(field_get:mavsdk.rpc.core.SetMavlinkTimeoutRequest.timeout_s)
+  return _internal_timeout_s();
+}
+inline void SetMavlinkTimeoutRequest::_internal_set_timeout_s(double value) {
+  
+  timeout_s_ = value;
+}
+inline void SetMavlinkTimeoutRequest::set_timeout_s(double value) {
+  _internal_set_timeout_s(value);
+  // @@protoc_insertion_point(field_set:mavsdk.rpc.core.SetMavlinkTimeoutRequest.timeout_s)
+}
+
+// -------------------------------------------------------------------
+
+// SetMavlinkTimeoutResponse
+
+// -------------------------------------------------------------------
+
 // ConnectionState
 
 // bool is_connected = 2;
@@ -610,6 +907,10 @@ inline void ConnectionState::set_is_connected(bool value) {
 #ifdef __GNUC__
   #pragma GCC diagnostic pop
 #endif  // __GNUC__
+// -------------------------------------------------------------------
+
+// -------------------------------------------------------------------
+
 // -------------------------------------------------------------------
 
 // -------------------------------------------------------------------
