@@ -41,7 +41,6 @@ protected:
 
     virtual void TearDown() { _server->Shutdown(); }
 
-    void checkPluginIsRunning(const std::string plugin_name);
     std::future<void> subscribeConnectionStateAsync(std::vector<bool>& events);
 
     std::unique_ptr<CoreServiceImpl> _core_service{};
@@ -54,59 +53,6 @@ ACTION_P2(SaveCallback, callback, callback_promise)
 {
     *callback = arg0;
     callback_promise->set_value();
-}
-
-TEST_F(CoreServiceImplTest, actionPluginIsRunning)
-{
-    checkPluginIsRunning("action");
-}
-
-void CoreServiceImplTest::checkPluginIsRunning(const std::string plugin_name)
-{
-    mavsdk::rpc::core::ListRunningPluginsResponse response;
-
-    _core_service->ListRunningPlugins(nullptr, nullptr, &response);
-
-    bool exists = false;
-    for (int i = 0; i < response.plugin_info_size(); i++) {
-        if (response.plugin_info(i).name() == plugin_name) {
-            exists = true;
-        }
-    }
-
-    EXPECT_TRUE(exists);
-}
-
-TEST_F(CoreServiceImplTest, missionPluginIsRunning)
-{
-    checkPluginIsRunning("mission");
-}
-
-TEST_F(CoreServiceImplTest, telemetryPluginIsRunning)
-{
-    checkPluginIsRunning("telemetry");
-}
-
-TEST_F(CoreServiceImplTest, addressIsLocalhostInPluginInfos)
-{
-    mavsdk::rpc::core::ListRunningPluginsResponse response;
-
-    _core_service->ListRunningPlugins(nullptr, nullptr, &response);
-
-    for (int i = 0; i < response.plugin_info_size(); i++) {
-        EXPECT_EQ(response.plugin_info(i).address(), DEFAULT_MAVSDK_SERVER_ADDRESS);
-    }
-}
-
-TEST_F(CoreServiceImplTest, portIsDefaultInPluginInfos)
-{
-    mavsdk::rpc::core::ListRunningPluginsResponse response;
-
-    _core_service->ListRunningPlugins(nullptr, nullptr, &response);
-
-    for (int i = 0; i < response.plugin_info_size(); i++) {
-        EXPECT_EQ(response.plugin_info(i).port(), DEFAULT_MAVSDK_SERVER_PORT);
-    }
 }
 
 TEST_F(CoreServiceImplTest, subscribeConnectionStateSubscribesToChange)
