@@ -42,29 +42,29 @@ struct ConnectionStateResponseDefaultTypeInternal {
   };
 };
 PROTOBUF_ATTRIBUTE_NO_DESTROY PROTOBUF_CONSTINIT ConnectionStateResponseDefaultTypeInternal _ConnectionStateResponse_default_instance_;
-constexpr ListRunningPluginsRequest::ListRunningPluginsRequest(
-  ::PROTOBUF_NAMESPACE_ID::internal::ConstantInitialized){}
-struct ListRunningPluginsRequestDefaultTypeInternal {
-  constexpr ListRunningPluginsRequestDefaultTypeInternal()
-    : _instance(::PROTOBUF_NAMESPACE_ID::internal::ConstantInitialized{}) {}
-  ~ListRunningPluginsRequestDefaultTypeInternal() {}
-  union {
-    ListRunningPluginsRequest _instance;
-  };
-};
-PROTOBUF_ATTRIBUTE_NO_DESTROY PROTOBUF_CONSTINIT ListRunningPluginsRequestDefaultTypeInternal _ListRunningPluginsRequest_default_instance_;
-constexpr ListRunningPluginsResponse::ListRunningPluginsResponse(
+constexpr SetMavlinkTimeoutRequest::SetMavlinkTimeoutRequest(
   ::PROTOBUF_NAMESPACE_ID::internal::ConstantInitialized)
-  : plugin_info_(){}
-struct ListRunningPluginsResponseDefaultTypeInternal {
-  constexpr ListRunningPluginsResponseDefaultTypeInternal()
+  : timeout_s_(0){}
+struct SetMavlinkTimeoutRequestDefaultTypeInternal {
+  constexpr SetMavlinkTimeoutRequestDefaultTypeInternal()
     : _instance(::PROTOBUF_NAMESPACE_ID::internal::ConstantInitialized{}) {}
-  ~ListRunningPluginsResponseDefaultTypeInternal() {}
+  ~SetMavlinkTimeoutRequestDefaultTypeInternal() {}
   union {
-    ListRunningPluginsResponse _instance;
+    SetMavlinkTimeoutRequest _instance;
   };
 };
-PROTOBUF_ATTRIBUTE_NO_DESTROY PROTOBUF_CONSTINIT ListRunningPluginsResponseDefaultTypeInternal _ListRunningPluginsResponse_default_instance_;
+PROTOBUF_ATTRIBUTE_NO_DESTROY PROTOBUF_CONSTINIT SetMavlinkTimeoutRequestDefaultTypeInternal _SetMavlinkTimeoutRequest_default_instance_;
+constexpr SetMavlinkTimeoutResponse::SetMavlinkTimeoutResponse(
+  ::PROTOBUF_NAMESPACE_ID::internal::ConstantInitialized){}
+struct SetMavlinkTimeoutResponseDefaultTypeInternal {
+  constexpr SetMavlinkTimeoutResponseDefaultTypeInternal()
+    : _instance(::PROTOBUF_NAMESPACE_ID::internal::ConstantInitialized{}) {}
+  ~SetMavlinkTimeoutResponseDefaultTypeInternal() {}
+  union {
+    SetMavlinkTimeoutResponse _instance;
+  };
+};
+PROTOBUF_ATTRIBUTE_NO_DESTROY PROTOBUF_CONSTINIT SetMavlinkTimeoutResponseDefaultTypeInternal _SetMavlinkTimeoutResponse_default_instance_;
 constexpr ConnectionState::ConnectionState(
   ::PROTOBUF_NAMESPACE_ID::internal::ConstantInitialized)
   : is_connected_(false){}
@@ -77,24 +77,10 @@ struct ConnectionStateDefaultTypeInternal {
   };
 };
 PROTOBUF_ATTRIBUTE_NO_DESTROY PROTOBUF_CONSTINIT ConnectionStateDefaultTypeInternal _ConnectionState_default_instance_;
-constexpr PluginInfo::PluginInfo(
-  ::PROTOBUF_NAMESPACE_ID::internal::ConstantInitialized)
-  : name_(&::PROTOBUF_NAMESPACE_ID::internal::fixed_address_empty_string)
-  , address_(&::PROTOBUF_NAMESPACE_ID::internal::fixed_address_empty_string)
-  , port_(0){}
-struct PluginInfoDefaultTypeInternal {
-  constexpr PluginInfoDefaultTypeInternal()
-    : _instance(::PROTOBUF_NAMESPACE_ID::internal::ConstantInitialized{}) {}
-  ~PluginInfoDefaultTypeInternal() {}
-  union {
-    PluginInfo _instance;
-  };
-};
-PROTOBUF_ATTRIBUTE_NO_DESTROY PROTOBUF_CONSTINIT PluginInfoDefaultTypeInternal _PluginInfo_default_instance_;
 }  // namespace core
 }  // namespace rpc
 }  // namespace mavsdk
-static ::PROTOBUF_NAMESPACE_ID::Metadata file_level_metadata_core_2fcore_2eproto[6];
+static ::PROTOBUF_NAMESPACE_ID::Metadata file_level_metadata_core_2fcore_2eproto[5];
 static constexpr ::PROTOBUF_NAMESPACE_ID::EnumDescriptor const** file_level_enum_descriptors_core_2fcore_2eproto = nullptr;
 static constexpr ::PROTOBUF_NAMESPACE_ID::ServiceDescriptor const** file_level_service_descriptors_core_2fcore_2eproto = nullptr;
 
@@ -111,72 +97,59 @@ const ::PROTOBUF_NAMESPACE_ID::uint32 TableStruct_core_2fcore_2eproto::offsets[]
   ~0u,  // no _weak_field_map_
   PROTOBUF_FIELD_OFFSET(::mavsdk::rpc::core::ConnectionStateResponse, connection_state_),
   ~0u,  // no _has_bits_
-  PROTOBUF_FIELD_OFFSET(::mavsdk::rpc::core::ListRunningPluginsRequest, _internal_metadata_),
+  PROTOBUF_FIELD_OFFSET(::mavsdk::rpc::core::SetMavlinkTimeoutRequest, _internal_metadata_),
   ~0u,  // no _extensions_
   ~0u,  // no _oneof_case_
   ~0u,  // no _weak_field_map_
+  PROTOBUF_FIELD_OFFSET(::mavsdk::rpc::core::SetMavlinkTimeoutRequest, timeout_s_),
   ~0u,  // no _has_bits_
-  PROTOBUF_FIELD_OFFSET(::mavsdk::rpc::core::ListRunningPluginsResponse, _internal_metadata_),
+  PROTOBUF_FIELD_OFFSET(::mavsdk::rpc::core::SetMavlinkTimeoutResponse, _internal_metadata_),
   ~0u,  // no _extensions_
   ~0u,  // no _oneof_case_
   ~0u,  // no _weak_field_map_
-  PROTOBUF_FIELD_OFFSET(::mavsdk::rpc::core::ListRunningPluginsResponse, plugin_info_),
   ~0u,  // no _has_bits_
   PROTOBUF_FIELD_OFFSET(::mavsdk::rpc::core::ConnectionState, _internal_metadata_),
   ~0u,  // no _extensions_
   ~0u,  // no _oneof_case_
   ~0u,  // no _weak_field_map_
   PROTOBUF_FIELD_OFFSET(::mavsdk::rpc::core::ConnectionState, is_connected_),
-  ~0u,  // no _has_bits_
-  PROTOBUF_FIELD_OFFSET(::mavsdk::rpc::core::PluginInfo, _internal_metadata_),
-  ~0u,  // no _extensions_
-  ~0u,  // no _oneof_case_
-  ~0u,  // no _weak_field_map_
-  PROTOBUF_FIELD_OFFSET(::mavsdk::rpc::core::PluginInfo, name_),
-  PROTOBUF_FIELD_OFFSET(::mavsdk::rpc::core::PluginInfo, address_),
-  PROTOBUF_FIELD_OFFSET(::mavsdk::rpc::core::PluginInfo, port_),
 };
 static const ::PROTOBUF_NAMESPACE_ID::internal::MigrationSchema schemas[] PROTOBUF_SECTION_VARIABLE(protodesc_cold) = {
   { 0, -1, sizeof(::mavsdk::rpc::core::SubscribeConnectionStateRequest)},
   { 5, -1, sizeof(::mavsdk::rpc::core::ConnectionStateResponse)},
-  { 11, -1, sizeof(::mavsdk::rpc::core::ListRunningPluginsRequest)},
-  { 16, -1, sizeof(::mavsdk::rpc::core::ListRunningPluginsResponse)},
+  { 11, -1, sizeof(::mavsdk::rpc::core::SetMavlinkTimeoutRequest)},
+  { 17, -1, sizeof(::mavsdk::rpc::core::SetMavlinkTimeoutResponse)},
   { 22, -1, sizeof(::mavsdk::rpc::core::ConnectionState)},
-  { 28, -1, sizeof(::mavsdk::rpc::core::PluginInfo)},
 };
 
 static ::PROTOBUF_NAMESPACE_ID::Message const * const file_default_instances[] = {
   reinterpret_cast<const ::PROTOBUF_NAMESPACE_ID::Message*>(&::mavsdk::rpc::core::_SubscribeConnectionStateRequest_default_instance_),
   reinterpret_cast<const ::PROTOBUF_NAMESPACE_ID::Message*>(&::mavsdk::rpc::core::_ConnectionStateResponse_default_instance_),
-  reinterpret_cast<const ::PROTOBUF_NAMESPACE_ID::Message*>(&::mavsdk::rpc::core::_ListRunningPluginsRequest_default_instance_),
-  reinterpret_cast<const ::PROTOBUF_NAMESPACE_ID::Message*>(&::mavsdk::rpc::core::_ListRunningPluginsResponse_default_instance_),
+  reinterpret_cast<const ::PROTOBUF_NAMESPACE_ID::Message*>(&::mavsdk::rpc::core::_SetMavlinkTimeoutRequest_default_instance_),
+  reinterpret_cast<const ::PROTOBUF_NAMESPACE_ID::Message*>(&::mavsdk::rpc::core::_SetMavlinkTimeoutResponse_default_instance_),
   reinterpret_cast<const ::PROTOBUF_NAMESPACE_ID::Message*>(&::mavsdk::rpc::core::_ConnectionState_default_instance_),
-  reinterpret_cast<const ::PROTOBUF_NAMESPACE_ID::Message*>(&::mavsdk::rpc::core::_PluginInfo_default_instance_),
 };
 
 const char descriptor_table_protodef_core_2fcore_2eproto[] PROTOBUF_SECTION_VARIABLE(protodesc_cold) =
   "\n\017core/core.proto\022\017mavsdk.rpc.core\"!\n\037Su"
   "bscribeConnectionStateRequest\"U\n\027Connect"
   "ionStateResponse\022:\n\020connection_state\030\001 \001"
-  "(\0132 .mavsdk.rpc.core.ConnectionState\"\033\n\031"
-  "ListRunningPluginsRequest\"N\n\032ListRunning"
-  "PluginsResponse\0220\n\013plugin_info\030\001 \003(\0132\033.m"
-  "avsdk.rpc.core.PluginInfo\"\'\n\017ConnectionS"
-  "tate\022\024\n\014is_connected\030\002 \001(\010\"9\n\nPluginInfo"
-  "\022\014\n\004name\030\001 \001(\t\022\017\n\007address\030\002 \001(\t\022\014\n\004port\030"
-  "\003 \001(\0052\372\001\n\013CoreService\022z\n\030SubscribeConnec"
-  "tionState\0220.mavsdk.rpc.core.SubscribeCon"
-  "nectionStateRequest\032(.mavsdk.rpc.core.Co"
-  "nnectionStateResponse\"\0000\001\022o\n\022ListRunning"
-  "Plugins\022*.mavsdk.rpc.core.ListRunningPlu"
-  "ginsRequest\032+.mavsdk.rpc.core.ListRunnin"
-  "gPluginsResponse\"\000B\033\n\016io.mavsdk.coreB\tCo"
-  "reProtob\006proto3"
+  "(\0132 .mavsdk.rpc.core.ConnectionState\"-\n\030"
+  "SetMavlinkTimeoutRequest\022\021\n\ttimeout_s\030\001 "
+  "\001(\001\"\033\n\031SetMavlinkTimeoutResponse\"\'\n\017Conn"
+  "ectionState\022\024\n\014is_connected\030\002 \001(\0102\367\001\n\013Co"
+  "reService\022z\n\030SubscribeConnectionState\0220."
+  "mavsdk.rpc.core.SubscribeConnectionState"
+  "Request\032(.mavsdk.rpc.core.ConnectionStat"
+  "eResponse\"\0000\001\022l\n\021SetMavlinkTimeout\022).mav"
+  "sdk.rpc.core.SetMavlinkTimeoutRequest\032*."
+  "mavsdk.rpc.core.SetMavlinkTimeoutRespons"
+  "e\"\000B\033\n\016io.mavsdk.coreB\tCoreProtob\006proto3"
   ;
 static ::PROTOBUF_NAMESPACE_ID::internal::once_flag descriptor_table_core_2fcore_2eproto_once;
 const ::PROTOBUF_NAMESPACE_ID::internal::DescriptorTable descriptor_table_core_2fcore_2eproto = {
-  false, false, 655, descriptor_table_protodef_core_2fcore_2eproto, "core/core.proto", 
-  &descriptor_table_core_2fcore_2eproto_once, nullptr, 0, 6,
+  false, false, 560, descriptor_table_protodef_core_2fcore_2eproto, "core/core.proto", 
+  &descriptor_table_core_2fcore_2eproto_once, nullptr, 0, 5,
   schemas, file_default_instances, TableStruct_core_2fcore_2eproto::offsets,
   file_level_metadata_core_2fcore_2eproto, file_level_enum_descriptors_core_2fcore_2eproto, file_level_service_descriptors_core_2fcore_2eproto,
 };
@@ -555,231 +528,69 @@ void ConnectionStateResponse::InternalSwap(ConnectionStateResponse* other) {
 
 // ===================================================================
 
-class ListRunningPluginsRequest::_Internal {
+class SetMavlinkTimeoutRequest::_Internal {
  public:
 };
 
-ListRunningPluginsRequest::ListRunningPluginsRequest(::PROTOBUF_NAMESPACE_ID::Arena* arena)
+SetMavlinkTimeoutRequest::SetMavlinkTimeoutRequest(::PROTOBUF_NAMESPACE_ID::Arena* arena)
   : ::PROTOBUF_NAMESPACE_ID::Message(arena) {
   SharedCtor();
   RegisterArenaDtor(arena);
-  // @@protoc_insertion_point(arena_constructor:mavsdk.rpc.core.ListRunningPluginsRequest)
+  // @@protoc_insertion_point(arena_constructor:mavsdk.rpc.core.SetMavlinkTimeoutRequest)
 }
-ListRunningPluginsRequest::ListRunningPluginsRequest(const ListRunningPluginsRequest& from)
+SetMavlinkTimeoutRequest::SetMavlinkTimeoutRequest(const SetMavlinkTimeoutRequest& from)
   : ::PROTOBUF_NAMESPACE_ID::Message() {
   _internal_metadata_.MergeFrom<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>(from._internal_metadata_);
-  // @@protoc_insertion_point(copy_constructor:mavsdk.rpc.core.ListRunningPluginsRequest)
+  timeout_s_ = from.timeout_s_;
+  // @@protoc_insertion_point(copy_constructor:mavsdk.rpc.core.SetMavlinkTimeoutRequest)
 }
 
-void ListRunningPluginsRequest::SharedCtor() {
+void SetMavlinkTimeoutRequest::SharedCtor() {
+timeout_s_ = 0;
 }
 
-ListRunningPluginsRequest::~ListRunningPluginsRequest() {
-  // @@protoc_insertion_point(destructor:mavsdk.rpc.core.ListRunningPluginsRequest)
+SetMavlinkTimeoutRequest::~SetMavlinkTimeoutRequest() {
+  // @@protoc_insertion_point(destructor:mavsdk.rpc.core.SetMavlinkTimeoutRequest)
   SharedDtor();
   _internal_metadata_.Delete<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>();
 }
 
-void ListRunningPluginsRequest::SharedDtor() {
+void SetMavlinkTimeoutRequest::SharedDtor() {
   GOOGLE_DCHECK(GetArena() == nullptr);
 }
 
-void ListRunningPluginsRequest::ArenaDtor(void* object) {
-  ListRunningPluginsRequest* _this = reinterpret_cast< ListRunningPluginsRequest* >(object);
+void SetMavlinkTimeoutRequest::ArenaDtor(void* object) {
+  SetMavlinkTimeoutRequest* _this = reinterpret_cast< SetMavlinkTimeoutRequest* >(object);
   (void)_this;
 }
-void ListRunningPluginsRequest::RegisterArenaDtor(::PROTOBUF_NAMESPACE_ID::Arena*) {
+void SetMavlinkTimeoutRequest::RegisterArenaDtor(::PROTOBUF_NAMESPACE_ID::Arena*) {
 }
-void ListRunningPluginsRequest::SetCachedSize(int size) const {
+void SetMavlinkTimeoutRequest::SetCachedSize(int size) const {
   _cached_size_.Set(size);
 }
 
-void ListRunningPluginsRequest::Clear() {
-// @@protoc_insertion_point(message_clear_start:mavsdk.rpc.core.ListRunningPluginsRequest)
+void SetMavlinkTimeoutRequest::Clear() {
+// @@protoc_insertion_point(message_clear_start:mavsdk.rpc.core.SetMavlinkTimeoutRequest)
   ::PROTOBUF_NAMESPACE_ID::uint32 cached_has_bits = 0;
   // Prevent compiler warnings about cached_has_bits being unused
   (void) cached_has_bits;
 
+  timeout_s_ = 0;
   _internal_metadata_.Clear<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>();
 }
 
-const char* ListRunningPluginsRequest::_InternalParse(const char* ptr, ::PROTOBUF_NAMESPACE_ID::internal::ParseContext* ctx) {
-#define CHK_(x) if (PROTOBUF_PREDICT_FALSE(!(x))) goto failure
-  while (!ctx->Done(&ptr)) {
-    ::PROTOBUF_NAMESPACE_ID::uint32 tag;
-    ptr = ::PROTOBUF_NAMESPACE_ID::internal::ReadTag(ptr, &tag);
-    CHK_(ptr);
-        if ((tag & 7) == 4 || tag == 0) {
-          ctx->SetLastTag(tag);
-          goto success;
-        }
-        ptr = UnknownFieldParse(tag,
-            _internal_metadata_.mutable_unknown_fields<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>(),
-            ptr, ctx);
-        CHK_(ptr != nullptr);
-        continue;
-  }  // while
-success:
-  return ptr;
-failure:
-  ptr = nullptr;
-  goto success;
-#undef CHK_
-}
-
-::PROTOBUF_NAMESPACE_ID::uint8* ListRunningPluginsRequest::_InternalSerialize(
-    ::PROTOBUF_NAMESPACE_ID::uint8* target, ::PROTOBUF_NAMESPACE_ID::io::EpsCopyOutputStream* stream) const {
-  // @@protoc_insertion_point(serialize_to_array_start:mavsdk.rpc.core.ListRunningPluginsRequest)
-  ::PROTOBUF_NAMESPACE_ID::uint32 cached_has_bits = 0;
-  (void) cached_has_bits;
-
-  if (PROTOBUF_PREDICT_FALSE(_internal_metadata_.have_unknown_fields())) {
-    target = ::PROTOBUF_NAMESPACE_ID::internal::WireFormat::InternalSerializeUnknownFieldsToArray(
-        _internal_metadata_.unknown_fields<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>(::PROTOBUF_NAMESPACE_ID::UnknownFieldSet::default_instance), target, stream);
-  }
-  // @@protoc_insertion_point(serialize_to_array_end:mavsdk.rpc.core.ListRunningPluginsRequest)
-  return target;
-}
-
-size_t ListRunningPluginsRequest::ByteSizeLong() const {
-// @@protoc_insertion_point(message_byte_size_start:mavsdk.rpc.core.ListRunningPluginsRequest)
-  size_t total_size = 0;
-
-  ::PROTOBUF_NAMESPACE_ID::uint32 cached_has_bits = 0;
-  // Prevent compiler warnings about cached_has_bits being unused
-  (void) cached_has_bits;
-
-  if (PROTOBUF_PREDICT_FALSE(_internal_metadata_.have_unknown_fields())) {
-    return ::PROTOBUF_NAMESPACE_ID::internal::ComputeUnknownFieldsSize(
-        _internal_metadata_, total_size, &_cached_size_);
-  }
-  int cached_size = ::PROTOBUF_NAMESPACE_ID::internal::ToCachedSize(total_size);
-  SetCachedSize(cached_size);
-  return total_size;
-}
-
-void ListRunningPluginsRequest::MergeFrom(const ::PROTOBUF_NAMESPACE_ID::Message& from) {
-// @@protoc_insertion_point(generalized_merge_from_start:mavsdk.rpc.core.ListRunningPluginsRequest)
-  GOOGLE_DCHECK_NE(&from, this);
-  const ListRunningPluginsRequest* source =
-      ::PROTOBUF_NAMESPACE_ID::DynamicCastToGenerated<ListRunningPluginsRequest>(
-          &from);
-  if (source == nullptr) {
-  // @@protoc_insertion_point(generalized_merge_from_cast_fail:mavsdk.rpc.core.ListRunningPluginsRequest)
-    ::PROTOBUF_NAMESPACE_ID::internal::ReflectionOps::Merge(from, this);
-  } else {
-  // @@protoc_insertion_point(generalized_merge_from_cast_success:mavsdk.rpc.core.ListRunningPluginsRequest)
-    MergeFrom(*source);
-  }
-}
-
-void ListRunningPluginsRequest::MergeFrom(const ListRunningPluginsRequest& from) {
-// @@protoc_insertion_point(class_specific_merge_from_start:mavsdk.rpc.core.ListRunningPluginsRequest)
-  GOOGLE_DCHECK_NE(&from, this);
-  _internal_metadata_.MergeFrom<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>(from._internal_metadata_);
-  ::PROTOBUF_NAMESPACE_ID::uint32 cached_has_bits = 0;
-  (void) cached_has_bits;
-
-}
-
-void ListRunningPluginsRequest::CopyFrom(const ::PROTOBUF_NAMESPACE_ID::Message& from) {
-// @@protoc_insertion_point(generalized_copy_from_start:mavsdk.rpc.core.ListRunningPluginsRequest)
-  if (&from == this) return;
-  Clear();
-  MergeFrom(from);
-}
-
-void ListRunningPluginsRequest::CopyFrom(const ListRunningPluginsRequest& from) {
-// @@protoc_insertion_point(class_specific_copy_from_start:mavsdk.rpc.core.ListRunningPluginsRequest)
-  if (&from == this) return;
-  Clear();
-  MergeFrom(from);
-}
-
-bool ListRunningPluginsRequest::IsInitialized() const {
-  return true;
-}
-
-void ListRunningPluginsRequest::InternalSwap(ListRunningPluginsRequest* other) {
-  using std::swap;
-  _internal_metadata_.Swap<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>(&other->_internal_metadata_);
-}
-
-::PROTOBUF_NAMESPACE_ID::Metadata ListRunningPluginsRequest::GetMetadata() const {
-  return GetMetadataStatic();
-}
-
-
-// ===================================================================
-
-class ListRunningPluginsResponse::_Internal {
- public:
-};
-
-ListRunningPluginsResponse::ListRunningPluginsResponse(::PROTOBUF_NAMESPACE_ID::Arena* arena)
-  : ::PROTOBUF_NAMESPACE_ID::Message(arena),
-  plugin_info_(arena) {
-  SharedCtor();
-  RegisterArenaDtor(arena);
-  // @@protoc_insertion_point(arena_constructor:mavsdk.rpc.core.ListRunningPluginsResponse)
-}
-ListRunningPluginsResponse::ListRunningPluginsResponse(const ListRunningPluginsResponse& from)
-  : ::PROTOBUF_NAMESPACE_ID::Message(),
-      plugin_info_(from.plugin_info_) {
-  _internal_metadata_.MergeFrom<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>(from._internal_metadata_);
-  // @@protoc_insertion_point(copy_constructor:mavsdk.rpc.core.ListRunningPluginsResponse)
-}
-
-void ListRunningPluginsResponse::SharedCtor() {
-}
-
-ListRunningPluginsResponse::~ListRunningPluginsResponse() {
-  // @@protoc_insertion_point(destructor:mavsdk.rpc.core.ListRunningPluginsResponse)
-  SharedDtor();
-  _internal_metadata_.Delete<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>();
-}
-
-void ListRunningPluginsResponse::SharedDtor() {
-  GOOGLE_DCHECK(GetArena() == nullptr);
-}
-
-void ListRunningPluginsResponse::ArenaDtor(void* object) {
-  ListRunningPluginsResponse* _this = reinterpret_cast< ListRunningPluginsResponse* >(object);
-  (void)_this;
-}
-void ListRunningPluginsResponse::RegisterArenaDtor(::PROTOBUF_NAMESPACE_ID::Arena*) {
-}
-void ListRunningPluginsResponse::SetCachedSize(int size) const {
-  _cached_size_.Set(size);
-}
-
-void ListRunningPluginsResponse::Clear() {
-// @@protoc_insertion_point(message_clear_start:mavsdk.rpc.core.ListRunningPluginsResponse)
-  ::PROTOBUF_NAMESPACE_ID::uint32 cached_has_bits = 0;
-  // Prevent compiler warnings about cached_has_bits being unused
-  (void) cached_has_bits;
-
-  plugin_info_.Clear();
-  _internal_metadata_.Clear<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>();
-}
-
-const char* ListRunningPluginsResponse::_InternalParse(const char* ptr, ::PROTOBUF_NAMESPACE_ID::internal::ParseContext* ctx) {
+const char* SetMavlinkTimeoutRequest::_InternalParse(const char* ptr, ::PROTOBUF_NAMESPACE_ID::internal::ParseContext* ctx) {
 #define CHK_(x) if (PROTOBUF_PREDICT_FALSE(!(x))) goto failure
   while (!ctx->Done(&ptr)) {
     ::PROTOBUF_NAMESPACE_ID::uint32 tag;
     ptr = ::PROTOBUF_NAMESPACE_ID::internal::ReadTag(ptr, &tag);
     CHK_(ptr);
     switch (tag >> 3) {
-      // repeated .mavsdk.rpc.core.PluginInfo plugin_info = 1;
+      // double timeout_s = 1;
       case 1:
-        if (PROTOBUF_PREDICT_TRUE(static_cast<::PROTOBUF_NAMESPACE_ID::uint8>(tag) == 10)) {
-          ptr -= 1;
-          do {
-            ptr += 1;
-            ptr = ctx->ParseMessage(_internal_add_plugin_info(), ptr);
-            CHK_(ptr);
-            if (!ctx->DataAvailable(ptr)) break;
-          } while (::PROTOBUF_NAMESPACE_ID::internal::ExpectTag<10>(ptr));
+        if (PROTOBUF_PREDICT_TRUE(static_cast<::PROTOBUF_NAMESPACE_ID::uint8>(tag) == 9)) {
+          timeout_s_ = ::PROTOBUF_NAMESPACE_ID::internal::UnalignedLoad<double>(ptr);
+          ptr += sizeof(double);
         } else goto handle_unusual;
         continue;
       default: {
@@ -804,41 +615,37 @@ failure:
 #undef CHK_
 }
 
-::PROTOBUF_NAMESPACE_ID::uint8* ListRunningPluginsResponse::_InternalSerialize(
+::PROTOBUF_NAMESPACE_ID::uint8* SetMavlinkTimeoutRequest::_InternalSerialize(
     ::PROTOBUF_NAMESPACE_ID::uint8* target, ::PROTOBUF_NAMESPACE_ID::io::EpsCopyOutputStream* stream) const {
-  // @@protoc_insertion_point(serialize_to_array_start:mavsdk.rpc.core.ListRunningPluginsResponse)
+  // @@protoc_insertion_point(serialize_to_array_start:mavsdk.rpc.core.SetMavlinkTimeoutRequest)
   ::PROTOBUF_NAMESPACE_ID::uint32 cached_has_bits = 0;
   (void) cached_has_bits;
 
-  // repeated .mavsdk.rpc.core.PluginInfo plugin_info = 1;
-  for (unsigned int i = 0,
-      n = static_cast<unsigned int>(this->_internal_plugin_info_size()); i < n; i++) {
+  // double timeout_s = 1;
+  if (!(this->timeout_s() <= 0 && this->timeout_s() >= 0)) {
     target = stream->EnsureSpace(target);
-    target = ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::
-      InternalWriteMessage(1, this->_internal_plugin_info(i), target, stream);
+    target = ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::WriteDoubleToArray(1, this->_internal_timeout_s(), target);
   }
 
   if (PROTOBUF_PREDICT_FALSE(_internal_metadata_.have_unknown_fields())) {
     target = ::PROTOBUF_NAMESPACE_ID::internal::WireFormat::InternalSerializeUnknownFieldsToArray(
         _internal_metadata_.unknown_fields<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>(::PROTOBUF_NAMESPACE_ID::UnknownFieldSet::default_instance), target, stream);
   }
-  // @@protoc_insertion_point(serialize_to_array_end:mavsdk.rpc.core.ListRunningPluginsResponse)
+  // @@protoc_insertion_point(serialize_to_array_end:mavsdk.rpc.core.SetMavlinkTimeoutRequest)
   return target;
 }
 
-size_t ListRunningPluginsResponse::ByteSizeLong() const {
-// @@protoc_insertion_point(message_byte_size_start:mavsdk.rpc.core.ListRunningPluginsResponse)
+size_t SetMavlinkTimeoutRequest::ByteSizeLong() const {
+// @@protoc_insertion_point(message_byte_size_start:mavsdk.rpc.core.SetMavlinkTimeoutRequest)
   size_t total_size = 0;
 
   ::PROTOBUF_NAMESPACE_ID::uint32 cached_has_bits = 0;
   // Prevent compiler warnings about cached_has_bits being unused
   (void) cached_has_bits;
 
-  // repeated .mavsdk.rpc.core.PluginInfo plugin_info = 1;
-  total_size += 1UL * this->_internal_plugin_info_size();
-  for (const auto& msg : this->plugin_info_) {
-    total_size +=
-      ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::MessageSize(msg);
+  // double timeout_s = 1;
+  if (!(this->timeout_s() <= 0 && this->timeout_s() >= 0)) {
+    total_size += 1 + 8;
   }
 
   if (PROTOBUF_PREDICT_FALSE(_internal_metadata_.have_unknown_fields())) {
@@ -850,56 +657,215 @@ size_t ListRunningPluginsResponse::ByteSizeLong() const {
   return total_size;
 }
 
-void ListRunningPluginsResponse::MergeFrom(const ::PROTOBUF_NAMESPACE_ID::Message& from) {
-// @@protoc_insertion_point(generalized_merge_from_start:mavsdk.rpc.core.ListRunningPluginsResponse)
+void SetMavlinkTimeoutRequest::MergeFrom(const ::PROTOBUF_NAMESPACE_ID::Message& from) {
+// @@protoc_insertion_point(generalized_merge_from_start:mavsdk.rpc.core.SetMavlinkTimeoutRequest)
   GOOGLE_DCHECK_NE(&from, this);
-  const ListRunningPluginsResponse* source =
-      ::PROTOBUF_NAMESPACE_ID::DynamicCastToGenerated<ListRunningPluginsResponse>(
+  const SetMavlinkTimeoutRequest* source =
+      ::PROTOBUF_NAMESPACE_ID::DynamicCastToGenerated<SetMavlinkTimeoutRequest>(
           &from);
   if (source == nullptr) {
-  // @@protoc_insertion_point(generalized_merge_from_cast_fail:mavsdk.rpc.core.ListRunningPluginsResponse)
+  // @@protoc_insertion_point(generalized_merge_from_cast_fail:mavsdk.rpc.core.SetMavlinkTimeoutRequest)
     ::PROTOBUF_NAMESPACE_ID::internal::ReflectionOps::Merge(from, this);
   } else {
-  // @@protoc_insertion_point(generalized_merge_from_cast_success:mavsdk.rpc.core.ListRunningPluginsResponse)
+  // @@protoc_insertion_point(generalized_merge_from_cast_success:mavsdk.rpc.core.SetMavlinkTimeoutRequest)
     MergeFrom(*source);
   }
 }
 
-void ListRunningPluginsResponse::MergeFrom(const ListRunningPluginsResponse& from) {
-// @@protoc_insertion_point(class_specific_merge_from_start:mavsdk.rpc.core.ListRunningPluginsResponse)
+void SetMavlinkTimeoutRequest::MergeFrom(const SetMavlinkTimeoutRequest& from) {
+// @@protoc_insertion_point(class_specific_merge_from_start:mavsdk.rpc.core.SetMavlinkTimeoutRequest)
   GOOGLE_DCHECK_NE(&from, this);
   _internal_metadata_.MergeFrom<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>(from._internal_metadata_);
   ::PROTOBUF_NAMESPACE_ID::uint32 cached_has_bits = 0;
   (void) cached_has_bits;
 
-  plugin_info_.MergeFrom(from.plugin_info_);
+  if (!(from.timeout_s() <= 0 && from.timeout_s() >= 0)) {
+    _internal_set_timeout_s(from._internal_timeout_s());
+  }
 }
 
-void ListRunningPluginsResponse::CopyFrom(const ::PROTOBUF_NAMESPACE_ID::Message& from) {
-// @@protoc_insertion_point(generalized_copy_from_start:mavsdk.rpc.core.ListRunningPluginsResponse)
+void SetMavlinkTimeoutRequest::CopyFrom(const ::PROTOBUF_NAMESPACE_ID::Message& from) {
+// @@protoc_insertion_point(generalized_copy_from_start:mavsdk.rpc.core.SetMavlinkTimeoutRequest)
   if (&from == this) return;
   Clear();
   MergeFrom(from);
 }
 
-void ListRunningPluginsResponse::CopyFrom(const ListRunningPluginsResponse& from) {
-// @@protoc_insertion_point(class_specific_copy_from_start:mavsdk.rpc.core.ListRunningPluginsResponse)
+void SetMavlinkTimeoutRequest::CopyFrom(const SetMavlinkTimeoutRequest& from) {
+// @@protoc_insertion_point(class_specific_copy_from_start:mavsdk.rpc.core.SetMavlinkTimeoutRequest)
   if (&from == this) return;
   Clear();
   MergeFrom(from);
 }
 
-bool ListRunningPluginsResponse::IsInitialized() const {
+bool SetMavlinkTimeoutRequest::IsInitialized() const {
   return true;
 }
 
-void ListRunningPluginsResponse::InternalSwap(ListRunningPluginsResponse* other) {
+void SetMavlinkTimeoutRequest::InternalSwap(SetMavlinkTimeoutRequest* other) {
   using std::swap;
   _internal_metadata_.Swap<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>(&other->_internal_metadata_);
-  plugin_info_.InternalSwap(&other->plugin_info_);
+  swap(timeout_s_, other->timeout_s_);
 }
 
-::PROTOBUF_NAMESPACE_ID::Metadata ListRunningPluginsResponse::GetMetadata() const {
+::PROTOBUF_NAMESPACE_ID::Metadata SetMavlinkTimeoutRequest::GetMetadata() const {
+  return GetMetadataStatic();
+}
+
+
+// ===================================================================
+
+class SetMavlinkTimeoutResponse::_Internal {
+ public:
+};
+
+SetMavlinkTimeoutResponse::SetMavlinkTimeoutResponse(::PROTOBUF_NAMESPACE_ID::Arena* arena)
+  : ::PROTOBUF_NAMESPACE_ID::Message(arena) {
+  SharedCtor();
+  RegisterArenaDtor(arena);
+  // @@protoc_insertion_point(arena_constructor:mavsdk.rpc.core.SetMavlinkTimeoutResponse)
+}
+SetMavlinkTimeoutResponse::SetMavlinkTimeoutResponse(const SetMavlinkTimeoutResponse& from)
+  : ::PROTOBUF_NAMESPACE_ID::Message() {
+  _internal_metadata_.MergeFrom<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>(from._internal_metadata_);
+  // @@protoc_insertion_point(copy_constructor:mavsdk.rpc.core.SetMavlinkTimeoutResponse)
+}
+
+void SetMavlinkTimeoutResponse::SharedCtor() {
+}
+
+SetMavlinkTimeoutResponse::~SetMavlinkTimeoutResponse() {
+  // @@protoc_insertion_point(destructor:mavsdk.rpc.core.SetMavlinkTimeoutResponse)
+  SharedDtor();
+  _internal_metadata_.Delete<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>();
+}
+
+void SetMavlinkTimeoutResponse::SharedDtor() {
+  GOOGLE_DCHECK(GetArena() == nullptr);
+}
+
+void SetMavlinkTimeoutResponse::ArenaDtor(void* object) {
+  SetMavlinkTimeoutResponse* _this = reinterpret_cast< SetMavlinkTimeoutResponse* >(object);
+  (void)_this;
+}
+void SetMavlinkTimeoutResponse::RegisterArenaDtor(::PROTOBUF_NAMESPACE_ID::Arena*) {
+}
+void SetMavlinkTimeoutResponse::SetCachedSize(int size) const {
+  _cached_size_.Set(size);
+}
+
+void SetMavlinkTimeoutResponse::Clear() {
+// @@protoc_insertion_point(message_clear_start:mavsdk.rpc.core.SetMavlinkTimeoutResponse)
+  ::PROTOBUF_NAMESPACE_ID::uint32 cached_has_bits = 0;
+  // Prevent compiler warnings about cached_has_bits being unused
+  (void) cached_has_bits;
+
+  _internal_metadata_.Clear<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>();
+}
+
+const char* SetMavlinkTimeoutResponse::_InternalParse(const char* ptr, ::PROTOBUF_NAMESPACE_ID::internal::ParseContext* ctx) {
+#define CHK_(x) if (PROTOBUF_PREDICT_FALSE(!(x))) goto failure
+  while (!ctx->Done(&ptr)) {
+    ::PROTOBUF_NAMESPACE_ID::uint32 tag;
+    ptr = ::PROTOBUF_NAMESPACE_ID::internal::ReadTag(ptr, &tag);
+    CHK_(ptr);
+        if ((tag & 7) == 4 || tag == 0) {
+          ctx->SetLastTag(tag);
+          goto success;
+        }
+        ptr = UnknownFieldParse(tag,
+            _internal_metadata_.mutable_unknown_fields<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>(),
+            ptr, ctx);
+        CHK_(ptr != nullptr);
+        continue;
+  }  // while
+success:
+  return ptr;
+failure:
+  ptr = nullptr;
+  goto success;
+#undef CHK_
+}
+
+::PROTOBUF_NAMESPACE_ID::uint8* SetMavlinkTimeoutResponse::_InternalSerialize(
+    ::PROTOBUF_NAMESPACE_ID::uint8* target, ::PROTOBUF_NAMESPACE_ID::io::EpsCopyOutputStream* stream) const {
+  // @@protoc_insertion_point(serialize_to_array_start:mavsdk.rpc.core.SetMavlinkTimeoutResponse)
+  ::PROTOBUF_NAMESPACE_ID::uint32 cached_has_bits = 0;
+  (void) cached_has_bits;
+
+  if (PROTOBUF_PREDICT_FALSE(_internal_metadata_.have_unknown_fields())) {
+    target = ::PROTOBUF_NAMESPACE_ID::internal::WireFormat::InternalSerializeUnknownFieldsToArray(
+        _internal_metadata_.unknown_fields<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>(::PROTOBUF_NAMESPACE_ID::UnknownFieldSet::default_instance), target, stream);
+  }
+  // @@protoc_insertion_point(serialize_to_array_end:mavsdk.rpc.core.SetMavlinkTimeoutResponse)
+  return target;
+}
+
+size_t SetMavlinkTimeoutResponse::ByteSizeLong() const {
+// @@protoc_insertion_point(message_byte_size_start:mavsdk.rpc.core.SetMavlinkTimeoutResponse)
+  size_t total_size = 0;
+
+  ::PROTOBUF_NAMESPACE_ID::uint32 cached_has_bits = 0;
+  // Prevent compiler warnings about cached_has_bits being unused
+  (void) cached_has_bits;
+
+  if (PROTOBUF_PREDICT_FALSE(_internal_metadata_.have_unknown_fields())) {
+    return ::PROTOBUF_NAMESPACE_ID::internal::ComputeUnknownFieldsSize(
+        _internal_metadata_, total_size, &_cached_size_);
+  }
+  int cached_size = ::PROTOBUF_NAMESPACE_ID::internal::ToCachedSize(total_size);
+  SetCachedSize(cached_size);
+  return total_size;
+}
+
+void SetMavlinkTimeoutResponse::MergeFrom(const ::PROTOBUF_NAMESPACE_ID::Message& from) {
+// @@protoc_insertion_point(generalized_merge_from_start:mavsdk.rpc.core.SetMavlinkTimeoutResponse)
+  GOOGLE_DCHECK_NE(&from, this);
+  const SetMavlinkTimeoutResponse* source =
+      ::PROTOBUF_NAMESPACE_ID::DynamicCastToGenerated<SetMavlinkTimeoutResponse>(
+          &from);
+  if (source == nullptr) {
+  // @@protoc_insertion_point(generalized_merge_from_cast_fail:mavsdk.rpc.core.SetMavlinkTimeoutResponse)
+    ::PROTOBUF_NAMESPACE_ID::internal::ReflectionOps::Merge(from, this);
+  } else {
+  // @@protoc_insertion_point(generalized_merge_from_cast_success:mavsdk.rpc.core.SetMavlinkTimeoutResponse)
+    MergeFrom(*source);
+  }
+}
+
+void SetMavlinkTimeoutResponse::MergeFrom(const SetMavlinkTimeoutResponse& from) {
+// @@protoc_insertion_point(class_specific_merge_from_start:mavsdk.rpc.core.SetMavlinkTimeoutResponse)
+  GOOGLE_DCHECK_NE(&from, this);
+  _internal_metadata_.MergeFrom<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>(from._internal_metadata_);
+  ::PROTOBUF_NAMESPACE_ID::uint32 cached_has_bits = 0;
+  (void) cached_has_bits;
+
+}
+
+void SetMavlinkTimeoutResponse::CopyFrom(const ::PROTOBUF_NAMESPACE_ID::Message& from) {
+// @@protoc_insertion_point(generalized_copy_from_start:mavsdk.rpc.core.SetMavlinkTimeoutResponse)
+  if (&from == this) return;
+  Clear();
+  MergeFrom(from);
+}
+
+void SetMavlinkTimeoutResponse::CopyFrom(const SetMavlinkTimeoutResponse& from) {
+// @@protoc_insertion_point(class_specific_copy_from_start:mavsdk.rpc.core.SetMavlinkTimeoutResponse)
+  if (&from == this) return;
+  Clear();
+  MergeFrom(from);
+}
+
+bool SetMavlinkTimeoutResponse::IsInitialized() const {
+  return true;
+}
+
+void SetMavlinkTimeoutResponse::InternalSwap(SetMavlinkTimeoutResponse* other) {
+  using std::swap;
+  _internal_metadata_.Swap<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>(&other->_internal_metadata_);
+}
+
+::PROTOBUF_NAMESPACE_ID::Metadata SetMavlinkTimeoutResponse::GetMetadata() const {
   return GetMetadataStatic();
 }
 
@@ -1091,271 +1057,6 @@ void ConnectionState::InternalSwap(ConnectionState* other) {
 }
 
 
-// ===================================================================
-
-class PluginInfo::_Internal {
- public:
-};
-
-PluginInfo::PluginInfo(::PROTOBUF_NAMESPACE_ID::Arena* arena)
-  : ::PROTOBUF_NAMESPACE_ID::Message(arena) {
-  SharedCtor();
-  RegisterArenaDtor(arena);
-  // @@protoc_insertion_point(arena_constructor:mavsdk.rpc.core.PluginInfo)
-}
-PluginInfo::PluginInfo(const PluginInfo& from)
-  : ::PROTOBUF_NAMESPACE_ID::Message() {
-  _internal_metadata_.MergeFrom<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>(from._internal_metadata_);
-  name_.UnsafeSetDefault(&::PROTOBUF_NAMESPACE_ID::internal::GetEmptyStringAlreadyInited());
-  if (!from._internal_name().empty()) {
-    name_.Set(::PROTOBUF_NAMESPACE_ID::internal::ArenaStringPtr::EmptyDefault{}, from._internal_name(), 
-      GetArena());
-  }
-  address_.UnsafeSetDefault(&::PROTOBUF_NAMESPACE_ID::internal::GetEmptyStringAlreadyInited());
-  if (!from._internal_address().empty()) {
-    address_.Set(::PROTOBUF_NAMESPACE_ID::internal::ArenaStringPtr::EmptyDefault{}, from._internal_address(), 
-      GetArena());
-  }
-  port_ = from.port_;
-  // @@protoc_insertion_point(copy_constructor:mavsdk.rpc.core.PluginInfo)
-}
-
-void PluginInfo::SharedCtor() {
-name_.UnsafeSetDefault(&::PROTOBUF_NAMESPACE_ID::internal::GetEmptyStringAlreadyInited());
-address_.UnsafeSetDefault(&::PROTOBUF_NAMESPACE_ID::internal::GetEmptyStringAlreadyInited());
-port_ = 0;
-}
-
-PluginInfo::~PluginInfo() {
-  // @@protoc_insertion_point(destructor:mavsdk.rpc.core.PluginInfo)
-  SharedDtor();
-  _internal_metadata_.Delete<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>();
-}
-
-void PluginInfo::SharedDtor() {
-  GOOGLE_DCHECK(GetArena() == nullptr);
-  name_.DestroyNoArena(&::PROTOBUF_NAMESPACE_ID::internal::GetEmptyStringAlreadyInited());
-  address_.DestroyNoArena(&::PROTOBUF_NAMESPACE_ID::internal::GetEmptyStringAlreadyInited());
-}
-
-void PluginInfo::ArenaDtor(void* object) {
-  PluginInfo* _this = reinterpret_cast< PluginInfo* >(object);
-  (void)_this;
-}
-void PluginInfo::RegisterArenaDtor(::PROTOBUF_NAMESPACE_ID::Arena*) {
-}
-void PluginInfo::SetCachedSize(int size) const {
-  _cached_size_.Set(size);
-}
-
-void PluginInfo::Clear() {
-// @@protoc_insertion_point(message_clear_start:mavsdk.rpc.core.PluginInfo)
-  ::PROTOBUF_NAMESPACE_ID::uint32 cached_has_bits = 0;
-  // Prevent compiler warnings about cached_has_bits being unused
-  (void) cached_has_bits;
-
-  name_.ClearToEmpty();
-  address_.ClearToEmpty();
-  port_ = 0;
-  _internal_metadata_.Clear<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>();
-}
-
-const char* PluginInfo::_InternalParse(const char* ptr, ::PROTOBUF_NAMESPACE_ID::internal::ParseContext* ctx) {
-#define CHK_(x) if (PROTOBUF_PREDICT_FALSE(!(x))) goto failure
-  while (!ctx->Done(&ptr)) {
-    ::PROTOBUF_NAMESPACE_ID::uint32 tag;
-    ptr = ::PROTOBUF_NAMESPACE_ID::internal::ReadTag(ptr, &tag);
-    CHK_(ptr);
-    switch (tag >> 3) {
-      // string name = 1;
-      case 1:
-        if (PROTOBUF_PREDICT_TRUE(static_cast<::PROTOBUF_NAMESPACE_ID::uint8>(tag) == 10)) {
-          auto str = _internal_mutable_name();
-          ptr = ::PROTOBUF_NAMESPACE_ID::internal::InlineGreedyStringParser(str, ptr, ctx);
-          CHK_(::PROTOBUF_NAMESPACE_ID::internal::VerifyUTF8(str, "mavsdk.rpc.core.PluginInfo.name"));
-          CHK_(ptr);
-        } else goto handle_unusual;
-        continue;
-      // string address = 2;
-      case 2:
-        if (PROTOBUF_PREDICT_TRUE(static_cast<::PROTOBUF_NAMESPACE_ID::uint8>(tag) == 18)) {
-          auto str = _internal_mutable_address();
-          ptr = ::PROTOBUF_NAMESPACE_ID::internal::InlineGreedyStringParser(str, ptr, ctx);
-          CHK_(::PROTOBUF_NAMESPACE_ID::internal::VerifyUTF8(str, "mavsdk.rpc.core.PluginInfo.address"));
-          CHK_(ptr);
-        } else goto handle_unusual;
-        continue;
-      // int32 port = 3;
-      case 3:
-        if (PROTOBUF_PREDICT_TRUE(static_cast<::PROTOBUF_NAMESPACE_ID::uint8>(tag) == 24)) {
-          port_ = ::PROTOBUF_NAMESPACE_ID::internal::ReadVarint64(&ptr);
-          CHK_(ptr);
-        } else goto handle_unusual;
-        continue;
-      default: {
-      handle_unusual:
-        if ((tag & 7) == 4 || tag == 0) {
-          ctx->SetLastTag(tag);
-          goto success;
-        }
-        ptr = UnknownFieldParse(tag,
-            _internal_metadata_.mutable_unknown_fields<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>(),
-            ptr, ctx);
-        CHK_(ptr != nullptr);
-        continue;
-      }
-    }  // switch
-  }  // while
-success:
-  return ptr;
-failure:
-  ptr = nullptr;
-  goto success;
-#undef CHK_
-}
-
-::PROTOBUF_NAMESPACE_ID::uint8* PluginInfo::_InternalSerialize(
-    ::PROTOBUF_NAMESPACE_ID::uint8* target, ::PROTOBUF_NAMESPACE_ID::io::EpsCopyOutputStream* stream) const {
-  // @@protoc_insertion_point(serialize_to_array_start:mavsdk.rpc.core.PluginInfo)
-  ::PROTOBUF_NAMESPACE_ID::uint32 cached_has_bits = 0;
-  (void) cached_has_bits;
-
-  // string name = 1;
-  if (this->name().size() > 0) {
-    ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::VerifyUtf8String(
-      this->_internal_name().data(), static_cast<int>(this->_internal_name().length()),
-      ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::SERIALIZE,
-      "mavsdk.rpc.core.PluginInfo.name");
-    target = stream->WriteStringMaybeAliased(
-        1, this->_internal_name(), target);
-  }
-
-  // string address = 2;
-  if (this->address().size() > 0) {
-    ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::VerifyUtf8String(
-      this->_internal_address().data(), static_cast<int>(this->_internal_address().length()),
-      ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::SERIALIZE,
-      "mavsdk.rpc.core.PluginInfo.address");
-    target = stream->WriteStringMaybeAliased(
-        2, this->_internal_address(), target);
-  }
-
-  // int32 port = 3;
-  if (this->port() != 0) {
-    target = stream->EnsureSpace(target);
-    target = ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::WriteInt32ToArray(3, this->_internal_port(), target);
-  }
-
-  if (PROTOBUF_PREDICT_FALSE(_internal_metadata_.have_unknown_fields())) {
-    target = ::PROTOBUF_NAMESPACE_ID::internal::WireFormat::InternalSerializeUnknownFieldsToArray(
-        _internal_metadata_.unknown_fields<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>(::PROTOBUF_NAMESPACE_ID::UnknownFieldSet::default_instance), target, stream);
-  }
-  // @@protoc_insertion_point(serialize_to_array_end:mavsdk.rpc.core.PluginInfo)
-  return target;
-}
-
-size_t PluginInfo::ByteSizeLong() const {
-// @@protoc_insertion_point(message_byte_size_start:mavsdk.rpc.core.PluginInfo)
-  size_t total_size = 0;
-
-  ::PROTOBUF_NAMESPACE_ID::uint32 cached_has_bits = 0;
-  // Prevent compiler warnings about cached_has_bits being unused
-  (void) cached_has_bits;
-
-  // string name = 1;
-  if (this->name().size() > 0) {
-    total_size += 1 +
-      ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::StringSize(
-        this->_internal_name());
-  }
-
-  // string address = 2;
-  if (this->address().size() > 0) {
-    total_size += 1 +
-      ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::StringSize(
-        this->_internal_address());
-  }
-
-  // int32 port = 3;
-  if (this->port() != 0) {
-    total_size += 1 +
-      ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::Int32Size(
-        this->_internal_port());
-  }
-
-  if (PROTOBUF_PREDICT_FALSE(_internal_metadata_.have_unknown_fields())) {
-    return ::PROTOBUF_NAMESPACE_ID::internal::ComputeUnknownFieldsSize(
-        _internal_metadata_, total_size, &_cached_size_);
-  }
-  int cached_size = ::PROTOBUF_NAMESPACE_ID::internal::ToCachedSize(total_size);
-  SetCachedSize(cached_size);
-  return total_size;
-}
-
-void PluginInfo::MergeFrom(const ::PROTOBUF_NAMESPACE_ID::Message& from) {
-// @@protoc_insertion_point(generalized_merge_from_start:mavsdk.rpc.core.PluginInfo)
-  GOOGLE_DCHECK_NE(&from, this);
-  const PluginInfo* source =
-      ::PROTOBUF_NAMESPACE_ID::DynamicCastToGenerated<PluginInfo>(
-          &from);
-  if (source == nullptr) {
-  // @@protoc_insertion_point(generalized_merge_from_cast_fail:mavsdk.rpc.core.PluginInfo)
-    ::PROTOBUF_NAMESPACE_ID::internal::ReflectionOps::Merge(from, this);
-  } else {
-  // @@protoc_insertion_point(generalized_merge_from_cast_success:mavsdk.rpc.core.PluginInfo)
-    MergeFrom(*source);
-  }
-}
-
-void PluginInfo::MergeFrom(const PluginInfo& from) {
-// @@protoc_insertion_point(class_specific_merge_from_start:mavsdk.rpc.core.PluginInfo)
-  GOOGLE_DCHECK_NE(&from, this);
-  _internal_metadata_.MergeFrom<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>(from._internal_metadata_);
-  ::PROTOBUF_NAMESPACE_ID::uint32 cached_has_bits = 0;
-  (void) cached_has_bits;
-
-  if (from.name().size() > 0) {
-    _internal_set_name(from._internal_name());
-  }
-  if (from.address().size() > 0) {
-    _internal_set_address(from._internal_address());
-  }
-  if (from.port() != 0) {
-    _internal_set_port(from._internal_port());
-  }
-}
-
-void PluginInfo::CopyFrom(const ::PROTOBUF_NAMESPACE_ID::Message& from) {
-// @@protoc_insertion_point(generalized_copy_from_start:mavsdk.rpc.core.PluginInfo)
-  if (&from == this) return;
-  Clear();
-  MergeFrom(from);
-}
-
-void PluginInfo::CopyFrom(const PluginInfo& from) {
-// @@protoc_insertion_point(class_specific_copy_from_start:mavsdk.rpc.core.PluginInfo)
-  if (&from == this) return;
-  Clear();
-  MergeFrom(from);
-}
-
-bool PluginInfo::IsInitialized() const {
-  return true;
-}
-
-void PluginInfo::InternalSwap(PluginInfo* other) {
-  using std::swap;
-  _internal_metadata_.Swap<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>(&other->_internal_metadata_);
-  name_.Swap(&other->name_, &::PROTOBUF_NAMESPACE_ID::internal::GetEmptyStringAlreadyInited(), GetArena());
-  address_.Swap(&other->address_, &::PROTOBUF_NAMESPACE_ID::internal::GetEmptyStringAlreadyInited(), GetArena());
-  swap(port_, other->port_);
-}
-
-::PROTOBUF_NAMESPACE_ID::Metadata PluginInfo::GetMetadata() const {
-  return GetMetadataStatic();
-}
-
-
 // @@protoc_insertion_point(namespace_scope)
 }  // namespace core
 }  // namespace rpc
@@ -1367,17 +1068,14 @@ template<> PROTOBUF_NOINLINE ::mavsdk::rpc::core::SubscribeConnectionStateReques
 template<> PROTOBUF_NOINLINE ::mavsdk::rpc::core::ConnectionStateResponse* Arena::CreateMaybeMessage< ::mavsdk::rpc::core::ConnectionStateResponse >(Arena* arena) {
   return Arena::CreateMessageInternal< ::mavsdk::rpc::core::ConnectionStateResponse >(arena);
 }
-template<> PROTOBUF_NOINLINE ::mavsdk::rpc::core::ListRunningPluginsRequest* Arena::CreateMaybeMessage< ::mavsdk::rpc::core::ListRunningPluginsRequest >(Arena* arena) {
-  return Arena::CreateMessageInternal< ::mavsdk::rpc::core::ListRunningPluginsRequest >(arena);
+template<> PROTOBUF_NOINLINE ::mavsdk::rpc::core::SetMavlinkTimeoutRequest* Arena::CreateMaybeMessage< ::mavsdk::rpc::core::SetMavlinkTimeoutRequest >(Arena* arena) {
+  return Arena::CreateMessageInternal< ::mavsdk::rpc::core::SetMavlinkTimeoutRequest >(arena);
 }
-template<> PROTOBUF_NOINLINE ::mavsdk::rpc::core::ListRunningPluginsResponse* Arena::CreateMaybeMessage< ::mavsdk::rpc::core::ListRunningPluginsResponse >(Arena* arena) {
-  return Arena::CreateMessageInternal< ::mavsdk::rpc::core::ListRunningPluginsResponse >(arena);
+template<> PROTOBUF_NOINLINE ::mavsdk::rpc::core::SetMavlinkTimeoutResponse* Arena::CreateMaybeMessage< ::mavsdk::rpc::core::SetMavlinkTimeoutResponse >(Arena* arena) {
+  return Arena::CreateMessageInternal< ::mavsdk::rpc::core::SetMavlinkTimeoutResponse >(arena);
 }
 template<> PROTOBUF_NOINLINE ::mavsdk::rpc::core::ConnectionState* Arena::CreateMaybeMessage< ::mavsdk::rpc::core::ConnectionState >(Arena* arena) {
   return Arena::CreateMessageInternal< ::mavsdk::rpc::core::ConnectionState >(arena);
-}
-template<> PROTOBUF_NOINLINE ::mavsdk::rpc::core::PluginInfo* Arena::CreateMaybeMessage< ::mavsdk::rpc::core::PluginInfo >(Arena* arena) {
-  return Arena::CreateMessageInternal< ::mavsdk::rpc::core::PluginInfo >(arena);
 }
 PROTOBUF_NAMESPACE_CLOSE
 
