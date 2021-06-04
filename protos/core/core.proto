@@ -5,12 +5,21 @@ package mavsdk.rpc.core;
 option java_package = "io.mavsdk.core";
 option java_outer_classname = "CoreProto";
 
-// Access to the connection state and running plugins.
+// Access to the connection state and core configurations
 service CoreService {
-    // Subscribe to 'connection state' updates.
+    /*
+     * Subscribe to 'connection state' updates.
+     */
     rpc SubscribeConnectionState(SubscribeConnectionStateRequest) returns(stream ConnectionStateResponse) {}
-    // Get a list of currently running plugins.
-    rpc ListRunningPlugins(ListRunningPluginsRequest) returns(ListRunningPluginsResponse) {}
+    /*
+     * Set timeout of MAVLink transfers.
+     *
+     * The default timeout used is generally (0.5 seconds) seconds.
+     * If MAVSDK is used on the same host this timeout can be reduced, while
+     * if MAVSDK has to communicate over links with high latency it might
+     * need to be increased to prevent timeouts.
+     */
+    rpc SetMavlinkTimeout(SetMavlinkTimeoutRequest) returns(SetMavlinkTimeoutResponse) {}
 }
 
 message SubscribeConnectionStateRequest {}
@@ -18,19 +27,12 @@ message ConnectionStateResponse {
     ConnectionState connection_state = 1; // Connection state
 }
 
-message ListRunningPluginsRequest {}
-message ListRunningPluginsResponse {
-    repeated PluginInfo plugin_info = 1; // Plugin info
+message SetMavlinkTimeoutRequest {
+    double timeout_s = 1; // Timeout in seconds
 }
+message SetMavlinkTimeoutResponse {}
 
 // Connection state type.
 message ConnectionState {
     bool is_connected = 2; // Whether the vehicle got connected or disconnected
-}
-
-// Plugin info type.
-message PluginInfo {
-    string name = 1; // Name of the plugin
-    string address = 2; // Address where the plugin is running
-    int32 port = 3; // Port where the plugin is running
 }
