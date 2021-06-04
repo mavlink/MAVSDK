@@ -133,6 +133,11 @@ void MavlinkCommandSender::receive_command_ack(mavlink_message_t message)
     mavlink_command_ack_t command_ack;
     mavlink_msg_command_ack_decode(&message, &command_ack);
 
+    if (command_ack.target_system != _parent.get_own_system_id() &&
+        command_ack.target_component != _parent.get_own_component_id()) {
+        return;
+    }
+
     CommandResultCallback temp_callback = nullptr;
     std::pair<Result, float> temp_result{Result::UnknownError, NAN};
 
