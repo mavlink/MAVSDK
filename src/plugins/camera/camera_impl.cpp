@@ -781,6 +781,18 @@ void CameraImpl::process_storage_information(const mavlink_message_t& message)
     mavlink_storage_information_t storage_information;
     mavlink_msg_storage_information_decode(&message, &storage_information);
 
+    if (storage_information.total_capacity == 0.0f) {
+        // Some MAVLink systems happen to send the STORAGE_INFORMATION message
+        // to indicate that the camera has a slot for a storage even if there
+        // is no way to know anything about that storage (e.g. whether or not
+        // there is an sdcard in the slot).
+        //
+        // We consider that a total capacity of 0 means that this is such a
+        // message, and we don't expect MAVSDK users to leverage it, which is
+        // why it is ignored.
+        return;
+    }
+
     {
         std::lock_guard<std::mutex> lock(_status.mutex);
         switch (storage_information.status) {
