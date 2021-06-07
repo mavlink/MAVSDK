@@ -112,6 +112,8 @@ int main(int argc, char** argv)
         return 1;
     }
 
+    action.set_takeoff_altitude(10.0);
+
     // Take off
     std::cout << "Taking off..." << std::endl;
     const Action::Result takeoff_result = action.takeoff();

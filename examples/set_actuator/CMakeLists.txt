@@ -19,5 +19,6 @@ add_executable(set_actuator
 
 target_link_libraries(set_actuator
     MAVSDK::mavsdk_action
+    MAVSDK::mavsdk_telemetry
     MAVSDK::mavsdk
 )

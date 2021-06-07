@@ -61,7 +61,7 @@ int main(int argc, char** argv)
     ConnectionResult connection_result;
 
     // Locate path of QGC Sample plan
-    std::string qgc_plan = "src/plugins/mission_raw/test_plans/qgroundcontrol_sample.plan";
+    std::string qgc_plan = "qgroundcontrol_sample.plan";
 
     if (argc != 2 && argc != 3) {
         usage(argv[0]);
