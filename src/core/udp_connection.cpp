@@ -225,14 +225,11 @@ void UdpConnection::receive()
 
         _mavlink_receiver->set_new_datagram(buffer, static_cast<int>(recv_len));
 
-        bool saved_remote = false;
-
         // Parse all mavlink messages in one datagram. Once exhausted, we'll exit while.
         while (_mavlink_receiver->parse_message()) {
             const uint8_t sysid = _mavlink_receiver->get_last_message().sysid;
 
-            if (!saved_remote && sysid != 0) {
-                saved_remote = true;
+            if (sysid != 0) {
                 add_remote_with_remote_sysid(
                     inet_ntoa(src_addr.sin_addr), ntohs(src_addr.sin_port), sysid);
             }
