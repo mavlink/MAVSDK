@@ -141,6 +141,8 @@ private:
     std::thread* _work_thread{nullptr};
     std::thread* _process_user_callbacks_thread{nullptr};
     SafeQueue<UserCallback> _user_callback_queue{};
+
+    bool _message_logging_on{false};
     bool _callback_debugging{false};
 
     std::atomic<double> _timeout_s{Mavsdk::DEFAULT_TIMEOUT_S};
