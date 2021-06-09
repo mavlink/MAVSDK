@@ -119,30 +119,12 @@ std::vector<std::shared_ptr<System>> MavsdkImpl::systems() const
 
 void MavsdkImpl::forward_message(mavlink_message_t& message, Connection* connection)
 {
-    /**
-     * @brief forward_message Function implementing Mavlink routing rules.
-     * See https://mavlink.io/en/guide/routing.html
-     *
-     * This function was adapted from PX4 Firmware v1.11.3
-     * https://github.com/PX4/PX4-Autopilot/blob/v1.11.3/src/modules/mavlink/mavlink_main.cpp#L460
-     */
-    const mavlink_msg_entry_t* meta = mavlink_get_msg_entry(message.msgid);
+    // Forward_message Function implementing Mavlink routing rules.
+    // See https://mavlink.io/en/guide/routing.html
 
     bool forward_heartbeats_enabled = true;
-    int target_system_id = 0;
-    int target_component_id = 0;
-
-    // might be nullptr if message is unknown
-    if (meta) {
-        // Extract target system and target component if set
-        if (meta->flags & MAV_MSG_ENTRY_FLAG_HAVE_TARGET_SYSTEM) {
-            target_system_id = (_MAV_PAYLOAD(&message))[meta->target_system_ofs];
-        }
-
-        if (meta->flags & MAV_MSG_ENTRY_FLAG_HAVE_TARGET_COMPONENT) {
-            target_component_id = (_MAV_PAYLOAD(&message))[meta->target_component_ofs];
-        }
-    }
+    const uint8_t target_system_id = get_target_system_id(message);
+    const uint8_t target_component_id = get_target_component_id(message);
 
     // If it's a message only for us, we keep it, otherwise, we forward it.
     const bool targeted_only_at_us =
@@ -269,15 +251,10 @@ bool MavsdkImpl::send_message(mavlink_message_t& message)
 
     uint8_t successful_emissions = 0;
     for (auto it = _connections.begin(); it != _connections.end(); ++it) {
-        // Checks whether connection knows target system ID by extracting target system if set.
-        // https://github.com/PX4/PX4-Autopilot/blob/v1.11.3/src/modules/mavlink/mavlink_main.cpp#L472
-        const mavlink_msg_entry_t* meta = mavlink_get_msg_entry(message.msgid);
+        const uint8_t target_system_id = get_target_system_id(message);
 
-        if (meta && meta->flags & MAV_MSG_ENTRY_FLAG_HAVE_TARGET_SYSTEM) {
-            int target_system_id = (_MAV_PAYLOAD(&message))[meta->target_system_ofs];
-            if (!(**it).has_system_id(target_system_id)) {
-                continue;
-            }
+        if (target_system_id != 0 && !(**it).has_system_id(target_system_id)) {
+            continue;
         }
 
         if ((**it).send_message(message)) {
@@ -738,6 +715,42 @@ void MavsdkImpl::send_heartbeat()
         0,
         0);
     send_message(message);
+}
+
+uint8_t MavsdkImpl::get_target_system_id(const mavlink_message_t& message)
+{
+    // Checks whether connection knows target system ID by extracting target system if set.
+    const mavlink_msg_entry_t* meta = mavlink_get_msg_entry(message.msgid);
+
+    if (meta == nullptr || !(meta->flags & MAV_MSG_ENTRY_FLAG_HAVE_TARGET_SYSTEM)) {
+        return 0;
+    }
+
+    // Don't look at the target system offset if it is outside of the payload length.
+    // This can happen if the fields are trimmed.
+    if (meta->target_system_ofs >= message.len) {
+        return 0;
+    }
+
+    return (_MAV_PAYLOAD(&message))[meta->target_system_ofs];
+}
+
+uint8_t MavsdkImpl::get_target_component_id(const mavlink_message_t& message)
+{
+    // Checks whether connection knows target system ID by extracting target system if set.
+    const mavlink_msg_entry_t* meta = mavlink_get_msg_entry(message.msgid);
+
+    if (meta == nullptr || !(meta->flags & MAV_MSG_ENTRY_FLAG_HAVE_TARGET_COMPONENT)) {
+        return 0;
+    }
+
+    // Don't look at the target component offset if it is outside of the payload length.
+    // This can happen if the fields are trimmed.
+    if (meta->target_component_ofs >= message.len) {
+        return 0;
+    }
+
+    return (_MAV_PAYLOAD(&message))[meta->target_system_ofs];
 }
 
 } // namespace mavsdk
