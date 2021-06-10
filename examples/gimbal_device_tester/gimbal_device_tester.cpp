@@ -684,7 +684,7 @@ bool sysid_compid_correct()
 
 bool request_gimbal_device_information(MavlinkPassthrough& mavlink_passthrough)
 {
-    MavlinkPassthrough::CommandLong command;
+    MavlinkPassthrough::CommandLong command{};
     command.command = MAV_CMD_REQUEST_MESSAGE;
     command.param1 = static_cast<float>(MAVLINK_MSG_ID_GIMBAL_DEVICE_INFORMATION);
     command.target_sysid = mavlink_passthrough.get_target_sysid();
