@@ -104,6 +104,9 @@ private:
 
     void send_heartbeat();
 
+    static uint8_t get_target_system_id(const mavlink_message_t& message);
+    static uint8_t get_target_component_id(const mavlink_message_t& message);
+
     std::mutex _connections_mutex{};
     std::vector<std::shared_ptr<Connection>> _connections{};
 
