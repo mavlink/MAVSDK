@@ -581,7 +581,7 @@ message Health {
 message RcStatus {
     bool was_available_once = 1 [(mavsdk.options.default_value)="false"]; // True if an RC signal has been available once
     bool is_available = 2 [(mavsdk.options.default_value)="false"]; // True if the RC signal is available now
-    float signal_strength_percent = 3 [(mavsdk.options.default_value)="0"]; // Signal strength (range: 0 to 100)
+    float signal_strength_percent = 3 [(mavsdk.options.default_value)="NaN"]; // Signal strength (range: 0 to 100, NaN if unknown)
 }
 
 // Status types.
@@ -767,6 +767,7 @@ message TelemetryResult {
         RESULT_BUSY = 4; // Vehicle is busy
         RESULT_COMMAND_DENIED = 5; // Command refused by vehicle
         RESULT_TIMEOUT = 6; // Request timed out
+        RESULT_UNSUPPORTED = 7; // Request not supported
     }
 
     Result result = 1; // Result enum value
