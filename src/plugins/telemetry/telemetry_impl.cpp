@@ -141,7 +141,6 @@ void TelemetryImpl::init()
 void TelemetryImpl::deinit()
 {
     _parent->unregister_statustext_handler(this);
-    _parent->unregister_timeout_handler(_rc_channels_timeout_cookie);
     _parent->unregister_timeout_handler(_gps_raw_timeout_cookie);
     _parent->unregister_timeout_handler(_unix_epoch_timeout_cookie);
     _parent->unregister_param_changed_handler(this);
@@ -150,11 +149,6 @@ void TelemetryImpl::deinit()
 
 void TelemetryImpl::enable()
 {
-    _parent->register_timeout_handler(
-        std::bind(&TelemetryImpl::receive_rc_channels_timeout, this),
-        1.0,
-        &_rc_channels_timeout_cookie);
-
     _parent->register_timeout_handler(
         std::bind(&TelemetryImpl::receive_gps_raw_timeout, this), 2.0, &_gps_raw_timeout_cookie);
 
@@ -318,8 +312,9 @@ Telemetry::Result TelemetryImpl::set_rate_battery(double rate_hz)
 
 Telemetry::Result TelemetryImpl::set_rate_rc_status(double rate_hz)
 {
-    return telemetry_result_from_command_result(
-        _parent->set_msg_rate(MAVLINK_MSG_ID_RC_CHANNELS, rate_hz));
+    UNUSED(rate_hz);
+    LogWarn() << "System status is usually fixed at 1 Hz";
+    return Telemetry::Result::Unsupported;
 }
 
 Telemetry::Result TelemetryImpl::set_rate_actuator_control_target(double rate_hz)
@@ -486,10 +481,9 @@ void TelemetryImpl::set_rate_battery_async(double rate_hz, Telemetry::ResultCall
 
 void TelemetryImpl::set_rate_rc_status_async(double rate_hz, Telemetry::ResultCallback callback)
 {
-    _parent->set_msg_rate_async(
-        MAVLINK_MSG_ID_RC_CHANNELS,
-        rate_hz,
-        std::bind(&TelemetryImpl::command_result_callback, std::placeholders::_1, callback));
+    UNUSED(rate_hz);
+    LogWarn() << "System status is usually fixed at 1 Hz";
+    _parent->call_user_callback([callback]() { callback(Telemetry::Result::Unsupported); });
 }
 
 void TelemetryImpl::set_rate_unix_epoch_time_async(
@@ -561,6 +555,8 @@ TelemetryImpl::telemetry_result_from_command_result(MavlinkCommandSender::Result
             return Telemetry::Result::CommandDenied;
         case MavlinkCommandSender::Result::Timeout:
             return Telemetry::Result::Timeout;
+        case MavlinkCommandSender::Result::Unsupported:
+            return Telemetry::Result::Unsupported;
         default:
             return Telemetry::Result::Unknown;
     }
@@ -1044,11 +1040,27 @@ void TelemetryImpl::process_sys_status(const mavlink_message_t& message)
 
     set_battery(new_battery);
 
-    std::lock_guard<std::mutex> lock(_subscription_mutex);
-    if (_battery_subscription) {
-        auto callback = _battery_subscription;
-        auto arg = battery();
-        _parent->call_user_callback([callback, arg]() { callback(arg); });
+    {
+        std::lock_guard<std::mutex> lock(_subscription_mutex);
+        if (_battery_subscription) {
+            auto callback = _battery_subscription;
+            auto arg = battery();
+            _parent->call_user_callback([callback, arg]() { callback(arg); });
+        }
+    }
+
+    const bool rc_ok =
+        sys_status.onboard_control_sensors_health & MAV_SYS_STATUS_SENSOR_RC_RECEIVER;
+
+    set_rc_status({rc_ok}, std::nullopt);
+
+    {
+        std::lock_guard<std::mutex> lock(_subscription_mutex);
+        if (_rc_status_subscription) {
+            auto callback = _rc_status_subscription;
+            auto arg = rc_status();
+            _parent->call_user_callback([callback, arg]() { callback(arg); });
+        }
     }
 }
 
@@ -1143,8 +1155,16 @@ void TelemetryImpl::process_rc_channels(const mavlink_message_t& message)
     mavlink_rc_channels_t rc_channels;
     mavlink_msg_rc_channels_decode(&message, &rc_channels);
 
-    bool rc_ok = (rc_channels.chancount > 0);
-    set_rc_status(rc_ok, rc_channels.rssi);
+    if (rc_channels.rssi != UINT8_MAX) {
+        set_rc_status(std::nullopt, {rc_channels.rssi});
+
+        std::lock_guard<std::mutex> lock(_subscription_mutex);
+        if (_rc_status_subscription) {
+            auto callback = _rc_status_subscription;
+            auto arg = rc_status();
+            _parent->call_user_callback([callback, arg]() { callback(arg); });
+        }
+    }
 
     std::lock_guard<std::mutex> lock(_subscription_mutex);
     if (_rc_status_subscription) {
@@ -1439,12 +1459,6 @@ void TelemetryImpl::receive_param_hitl(MAVLinkParameters::Result result, int val
 #ifdef LEVEL_CALIBRATION
     set_health_level_calibration(ok);
 #endif
-}
-
-void TelemetryImpl::receive_rc_channels_timeout()
-{
-    const bool rc_ok = false;
-    set_rc_status(rc_ok, 0.0f);
 }
 
 void TelemetryImpl::receive_gps_raw_timeout()
@@ -1810,18 +1824,21 @@ void TelemetryImpl::set_landed_state(Telemetry::LandedState landed_state)
     _landed_state = landed_state;
 }
 
-void TelemetryImpl::set_rc_status(bool available, float signal_strength_percent)
+void TelemetryImpl::set_rc_status(
+    std::optional<bool> maybe_available, std::optional<float> maybe_signal_strength_percent)
 {
     std::lock_guard<std::mutex> lock(_rc_status_mutex);
 
-    if (available) {
-        _rc_status.was_available_once = true;
-        _rc_status.signal_strength_percent = signal_strength_percent;
-    } else {
-        _rc_status.signal_strength_percent = 0.0f;
+    if (maybe_available) {
+        _rc_status.is_available = maybe_available.value();
+        if (maybe_available.value()) {
+            _rc_status.was_available_once = true;
+        }
     }
 
-    _rc_status.is_available = available;
+    if (maybe_signal_strength_percent) {
+        _rc_status.signal_strength_percent = maybe_signal_strength_percent.value();
+    }
 }
 
 void TelemetryImpl::set_unix_epoch_time_us(uint64_t time_us)

@@ -2,6 +2,7 @@
 
 #include <atomic>
 #include <mutex>
+#include <optional>
 
 #include "plugins/telemetry/telemetry.h"
 #include "mavlink_include.h"
@@ -172,7 +173,7 @@ private:
     void set_health_accelerometer_calibration(bool ok);
     void set_health_magnetometer_calibration(bool ok);
     void set_health_level_calibration(bool ok);
-    void set_rc_status(bool available, float signal_strength_percent);
+    void set_rc_status(std::optional<bool> available, std::optional<float> signal_strength_percent);
     void set_unix_epoch_time_us(uint64_t time_us);
     void set_actuator_control_target(uint8_t group, const std::vector<float>& controls);
     void set_actuator_output_status(uint32_t active, const std::vector<float>& actuators);
