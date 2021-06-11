@@ -767,6 +767,7 @@ message TelemetryResult {
         RESULT_BUSY = 4; // Vehicle is busy
         RESULT_COMMAND_DENIED = 5; // Command refused by vehicle
         RESULT_TIMEOUT = 6; // Request timed out
+        RESULT_UNSUPPORTED = 7; // Request not supported
     }
 
     Result result = 1; // Result enum value
