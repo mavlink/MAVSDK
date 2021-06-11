@@ -1231,6 +1231,8 @@ std::ostream& operator<<(std::ostream& str, Telemetry::Result const& result)
             return str << "Command Denied";
         case Telemetry::Result::Timeout:
             return str << "Timeout";
+        case Telemetry::Result::Unsupported:
+            return str << "Unsupported";
         default:
             return str << "Unknown";
     }

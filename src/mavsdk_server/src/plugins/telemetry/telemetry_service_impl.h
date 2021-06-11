@@ -1206,6 +1206,8 @@ public:
                 return rpc::telemetry::TelemetryResult_Result_RESULT_COMMAND_DENIED;
             case mavsdk::Telemetry::Result::Timeout:
                 return rpc::telemetry::TelemetryResult_Result_RESULT_TIMEOUT;
+            case mavsdk::Telemetry::Result::Unsupported:
+                return rpc::telemetry::TelemetryResult_Result_RESULT_UNSUPPORTED;
         }
     }
 
@@ -1230,6 +1232,8 @@ public:
                 return mavsdk::Telemetry::Result::CommandDenied;
             case rpc::telemetry::TelemetryResult_Result_RESULT_TIMEOUT:
                 return mavsdk::Telemetry::Result::Timeout;
+            case rpc::telemetry::TelemetryResult_Result_RESULT_UNSUPPORTED:
+                return mavsdk::Telemetry::Result::Unsupported;
         }
     }
 
