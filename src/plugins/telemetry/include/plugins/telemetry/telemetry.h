@@ -389,7 +389,8 @@ public:
     struct RcStatus {
         bool was_available_once{false}; /**< @brief True if an RC signal has been available once */
         bool is_available{false}; /**< @brief True if the RC signal is available now */
-        float signal_strength_percent{0}; /**< @brief Signal strength (range: 0 to 100) */
+        float signal_strength_percent{
+            float(NAN)}; /**< @brief Signal strength (range: 0 to 100, NaN if unknown) */
     };
 
     /**
@@ -926,6 +927,7 @@ public:
         Busy, /**< @brief Vehicle is busy. */
         CommandDenied, /**< @brief Command refused by vehicle. */
         Timeout, /**< @brief Request timed out. */
+        Unsupported, /**< @brief Request not supported. */
     };
 
     /**

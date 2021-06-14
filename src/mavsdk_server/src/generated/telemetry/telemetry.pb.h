@@ -663,12 +663,13 @@ enum TelemetryResult_Result : int {
   TelemetryResult_Result_RESULT_BUSY = 4,
   TelemetryResult_Result_RESULT_COMMAND_DENIED = 5,
   TelemetryResult_Result_RESULT_TIMEOUT = 6,
+  TelemetryResult_Result_RESULT_UNSUPPORTED = 7,
   TelemetryResult_Result_TelemetryResult_Result_INT_MIN_SENTINEL_DO_NOT_USE_ = std::numeric_limits<::PROTOBUF_NAMESPACE_ID::int32>::min(),
   TelemetryResult_Result_TelemetryResult_Result_INT_MAX_SENTINEL_DO_NOT_USE_ = std::numeric_limits<::PROTOBUF_NAMESPACE_ID::int32>::max()
 };
 bool TelemetryResult_Result_IsValid(int value);
 constexpr TelemetryResult_Result TelemetryResult_Result_Result_MIN = TelemetryResult_Result_RESULT_UNKNOWN;
-constexpr TelemetryResult_Result TelemetryResult_Result_Result_MAX = TelemetryResult_Result_RESULT_TIMEOUT;
+constexpr TelemetryResult_Result TelemetryResult_Result_Result_MAX = TelemetryResult_Result_RESULT_UNSUPPORTED;
 constexpr int TelemetryResult_Result_Result_ARRAYSIZE = TelemetryResult_Result_Result_MAX + 1;
 
 const ::PROTOBUF_NAMESPACE_ID::EnumDescriptor* TelemetryResult_Result_descriptor();
@@ -17660,7 +17661,7 @@ class RcStatus PROTOBUF_FINAL :
   void _internal_set_is_available(bool value);
   public:
 
-  // float signal_strength_percent = 3 [(.mavsdk.options.default_value) = "0"];
+  // float signal_strength_percent = 3 [(.mavsdk.options.default_value) = "NaN"];
   void clear_signal_strength_percent();
   float signal_strength_percent() const;
   void set_signal_strength_percent(float value);
@@ -21056,6 +21057,8 @@ class TelemetryResult PROTOBUF_FINAL :
     TelemetryResult_Result_RESULT_COMMAND_DENIED;
   static constexpr Result RESULT_TIMEOUT =
     TelemetryResult_Result_RESULT_TIMEOUT;
+  static constexpr Result RESULT_UNSUPPORTED =
+    TelemetryResult_Result_RESULT_UNSUPPORTED;
   static inline bool Result_IsValid(int value) {
     return TelemetryResult_Result_IsValid(value);
   }
@@ -27221,7 +27224,7 @@ inline void RcStatus::set_is_available(bool value) {
   // @@protoc_insertion_point(field_set:mavsdk.rpc.telemetry.RcStatus.is_available)
 }
 
-// float signal_strength_percent = 3 [(.mavsdk.options.default_value) = "0"];
+// float signal_strength_percent = 3 [(.mavsdk.options.default_value) = "NaN"];
 inline void RcStatus::clear_signal_strength_percent() {
   signal_strength_percent_ = 0;
 }
