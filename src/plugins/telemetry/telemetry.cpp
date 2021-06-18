@@ -760,7 +760,6 @@ bool operator==(const Telemetry::Health& lhs, const Telemetry::Health& rhs)
     return (rhs.is_gyrometer_calibration_ok == lhs.is_gyrometer_calibration_ok) &&
            (rhs.is_accelerometer_calibration_ok == lhs.is_accelerometer_calibration_ok) &&
            (rhs.is_magnetometer_calibration_ok == lhs.is_magnetometer_calibration_ok) &&
-           (rhs.is_level_calibration_ok == lhs.is_level_calibration_ok) &&
            (rhs.is_local_position_ok == lhs.is_local_position_ok) &&
            (rhs.is_global_position_ok == lhs.is_global_position_ok) &&
            (rhs.is_home_position_ok == lhs.is_home_position_ok);
@@ -774,7 +773,6 @@ std::ostream& operator<<(std::ostream& str, Telemetry::Health const& health)
     str << "    is_accelerometer_calibration_ok: " << health.is_accelerometer_calibration_ok
         << '\n';
     str << "    is_magnetometer_calibration_ok: " << health.is_magnetometer_calibration_ok << '\n';
-    str << "    is_level_calibration_ok: " << health.is_level_calibration_ok << '\n';
     str << "    is_local_position_ok: " << health.is_local_position_ok << '\n';
     str << "    is_global_position_ok: " << health.is_global_position_ok << '\n';
     str << "    is_home_position_ok: " << health.is_home_position_ok << '\n';

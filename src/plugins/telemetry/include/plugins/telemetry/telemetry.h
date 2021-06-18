@@ -359,8 +359,6 @@ public:
             false}; /**< @brief True if the accelerometer is calibrated */
         bool is_magnetometer_calibration_ok{
             false}; /**< @brief True if the magnetometer is calibrated */
-        bool is_level_calibration_ok{
-            false}; /**< @brief True if the vehicle has a valid level calibration */
         bool is_local_position_ok{false}; /**< @brief True if the local position estimate is good
                                              enough to fly in 'position control' mode */
         bool is_global_position_ok{false}; /**< @brief True if the global position estimate is good
