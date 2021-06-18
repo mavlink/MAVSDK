@@ -52,6 +52,7 @@ public:
         const std::string& local_file_path,
         const std::string& remote_folder,
         Ftp::UploadCallback callback);
+    void register_file_uploaded_callback(Ftp::FileUploadedCallback callback);
     void list_directory_async(
         const std::string& path, Ftp::ListDirectoryCallback callback, uint32_t offset = 0);
     void create_directory_async(const std::string& path, Ftp::ResultCallback callback);
@@ -145,6 +146,7 @@ private:
 
     struct SessionInfo {
         int fd{-1};
+        std::string file_path{};
         uint32_t file_size{0};
         bool stream_download{false};
         uint32_t stream_offset{0};
@@ -182,6 +184,7 @@ private:
     uint32_t _bytes_transferred = 0;
     uint32_t _file_size = 0;
     std::vector<std::string> _curr_directory_list{};
+    Ftp::FileUploadedCallback _file_uploaded_callback{};
 
     Ftp::ResultCallback _curr_op_result_callback{};
     // _curr_op_progress_callback is used for download_callback_t as well as upload_callback_t

@@ -408,6 +408,11 @@ void FtpImpl::upload_async(
     _generic_command_async(CMD_OPEN_FILE_WO, 0, remote_file_path, result_callback);
 }
 
+void FtpImpl::register_file_uploaded_callback(Ftp::FileUploadedCallback callback)
+{
+    _file_uploaded_callback = callback;
+}
+
 void FtpImpl::_end_write_session()
 {
     _curr_op = CMD_NONE;
@@ -1064,6 +1069,7 @@ FtpImpl::ServerResult FtpImpl::_work_open(PayloadHeader* payload, int oflag)
     }
 
     _session_info.fd = fd;
+    _session_info.file_path = path;
     _session_info.file_size = file_size;
     _session_info.stream_download = false;
 
@@ -1147,8 +1153,13 @@ FtpImpl::ServerResult FtpImpl::_work_terminate(PayloadHeader* payload)
         return ServerResult::ERR_INVALID_SESSION;
     }
 
+    if (_file_uploaded_callback && !_session_info.file_path.empty()) {
+        _file_uploaded_callback(_session_info.file_path);
+    }
+
     close(_session_info.fd);
     _session_info.fd = -1;
+    _session_info.file_path = {};
     _session_info.stream_download = false;
 
     payload->size = 0;
@@ -1161,6 +1172,7 @@ FtpImpl::ServerResult FtpImpl::_work_reset(PayloadHeader* payload)
     if (_session_info.fd != -1) {
         close(_session_info.fd);
         _session_info.fd = -1;
+        _session_info.file_path = {};
         _session_info.stream_download = false;
     }
 

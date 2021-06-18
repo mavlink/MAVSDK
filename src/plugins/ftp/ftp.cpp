@@ -33,6 +33,11 @@ void Ftp::upload_async(std::string local_file_path, std::string remote_dir, Uplo
     _impl->upload_async(local_file_path, remote_dir, callback);
 }
 
+void Ftp::register_file_uploaded_callback(FileUploadedCallback callback)
+{
+    _impl->register_file_uploaded_callback(callback);
+}
+
 void Ftp::list_directory_async(std::string remote_dir, const ListDirectoryCallback callback)
 {
     _impl->list_directory_async(remote_dir, callback);

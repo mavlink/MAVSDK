@@ -50,6 +50,9 @@ int main(int argc, char** argv)
 
     auto ftp_server = Ftp{system_cc};
     ftp_server.set_root_directory(argv[3]);
+    ftp_server.register_file_uploaded_callback([](std::string file_path) {
+        std::cout << "New file uploaded to server: " << file_path << std::endl;
+    });
 
     std::cout << NORMAL_CONSOLE_TEXT << "Mavlink FTP server running." << std::endl
               << "Remote:       " << argv[1] << ":" << argv[2] << std::endl

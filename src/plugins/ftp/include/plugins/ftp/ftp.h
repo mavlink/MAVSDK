@@ -140,6 +140,17 @@ public:
     void upload_async(std::string local_file_path, std::string remote_dir, UploadCallback callback);
 
     /**
+     * @brief Callback type for new file uploaded by remote.
+     */
+
+    using FileUploadedCallback = std::function<void(std::string)>;
+
+    /**
+     * @brief Register a callback to be triggered when remote uploads a file to FTP server
+     */
+    void register_file_uploaded_callback(FileUploadedCallback callback);
+
+    /**
      * @brief Callback type for list_directory_async.
      */
     using ListDirectoryCallback = std::function<void(Result, std::vector<std::string>)>;
