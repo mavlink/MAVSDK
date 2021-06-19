@@ -217,7 +217,7 @@ message CameraResult {
         RESULT_IN_PROGRESS = 2; // Command in progress
         RESULT_BUSY = 3; // Camera is busy and rejected command
         RESULT_DENIED = 4; // Camera denied the command
-        RESULT_ERROR = 5; // An error has occured while executing the command
+        RESULT_ERROR = 5; // An error has occurred while executing the command
         RESULT_TIMEOUT = 6; // Command timed out
         RESULT_WRONG_ARGUMENT = 7; // Command has wrong argument(s)
         RESULT_NO_SYSTEM = 8; // No system connected

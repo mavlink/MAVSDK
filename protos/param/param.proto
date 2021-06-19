@@ -87,7 +87,7 @@ message IntParam {
 }
 
 /*
- * Type for float paramters.
+ * Type for float parameters.
  */
 message FloatParam {
     string name = 1; // Name of the parameter
