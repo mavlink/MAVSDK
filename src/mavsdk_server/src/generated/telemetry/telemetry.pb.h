@@ -17439,10 +17439,10 @@ class Health PROTOBUF_FINAL :
     kIsGyrometerCalibrationOkFieldNumber = 1,
     kIsAccelerometerCalibrationOkFieldNumber = 2,
     kIsMagnetometerCalibrationOkFieldNumber = 3,
-    kIsLevelCalibrationOkFieldNumber = 4,
     kIsLocalPositionOkFieldNumber = 5,
     kIsGlobalPositionOkFieldNumber = 6,
     kIsHomePositionOkFieldNumber = 7,
+    kIsArmableFieldNumber = 8,
   };
   // bool is_gyrometer_calibration_ok = 1 [(.mavsdk.options.default_value) = "false"];
   void clear_is_gyrometer_calibration_ok();
@@ -17469,15 +17469,6 @@ class Health PROTOBUF_FINAL :
   private:
   bool _internal_is_magnetometer_calibration_ok() const;
   void _internal_set_is_magnetometer_calibration_ok(bool value);
-  public:
-
-  // bool is_level_calibration_ok = 4 [(.mavsdk.options.default_value) = "false"];
-  void clear_is_level_calibration_ok();
-  bool is_level_calibration_ok() const;
-  void set_is_level_calibration_ok(bool value);
-  private:
-  bool _internal_is_level_calibration_ok() const;
-  void _internal_set_is_level_calibration_ok(bool value);
   public:
 
   // bool is_local_position_ok = 5 [(.mavsdk.options.default_value) = "false"];
@@ -17507,6 +17498,15 @@ class Health PROTOBUF_FINAL :
   void _internal_set_is_home_position_ok(bool value);
   public:
 
+  // bool is_armable = 8 [(.mavsdk.options.default_value) = "false"];
+  void clear_is_armable();
+  bool is_armable() const;
+  void set_is_armable(bool value);
+  private:
+  bool _internal_is_armable() const;
+  void _internal_set_is_armable(bool value);
+  public:
+
   // @@protoc_insertion_point(class_scope:mavsdk.rpc.telemetry.Health)
  private:
   class _Internal;
@@ -17517,10 +17517,10 @@ class Health PROTOBUF_FINAL :
   bool is_gyrometer_calibration_ok_;
   bool is_accelerometer_calibration_ok_;
   bool is_magnetometer_calibration_ok_;
-  bool is_level_calibration_ok_;
   bool is_local_position_ok_;
   bool is_global_position_ok_;
   bool is_home_position_ok_;
+  bool is_armable_;
   mutable ::PROTOBUF_NAMESPACE_ID::internal::CachedSize _cached_size_;
   friend struct ::TableStruct_telemetry_2ftelemetry_2eproto;
 };
@@ -27100,26 +27100,6 @@ inline void Health::set_is_magnetometer_calibration_ok(bool value) {
   // @@protoc_insertion_point(field_set:mavsdk.rpc.telemetry.Health.is_magnetometer_calibration_ok)
 }
 
-// bool is_level_calibration_ok = 4 [(.mavsdk.options.default_value) = "false"];
-inline void Health::clear_is_level_calibration_ok() {
-  is_level_calibration_ok_ = false;
-}
-inline bool Health::_internal_is_level_calibration_ok() const {
-  return is_level_calibration_ok_;
-}
-inline bool Health::is_level_calibration_ok() const {
-  // @@protoc_insertion_point(field_get:mavsdk.rpc.telemetry.Health.is_level_calibration_ok)
-  return _internal_is_level_calibration_ok();
-}
-inline void Health::_internal_set_is_level_calibration_ok(bool value) {
-  
-  is_level_calibration_ok_ = value;
-}
-inline void Health::set_is_level_calibration_ok(bool value) {
-  _internal_set_is_level_calibration_ok(value);
-  // @@protoc_insertion_point(field_set:mavsdk.rpc.telemetry.Health.is_level_calibration_ok)
-}
-
 // bool is_local_position_ok = 5 [(.mavsdk.options.default_value) = "false"];
 inline void Health::clear_is_local_position_ok() {
   is_local_position_ok_ = false;
@@ -27178,6 +27158,26 @@ inline void Health::_internal_set_is_home_position_ok(bool value) {
 inline void Health::set_is_home_position_ok(bool value) {
   _internal_set_is_home_position_ok(value);
   // @@protoc_insertion_point(field_set:mavsdk.rpc.telemetry.Health.is_home_position_ok)
+}
+
+// bool is_armable = 8 [(.mavsdk.options.default_value) = "false"];
+inline void Health::clear_is_armable() {
+  is_armable_ = false;
+}
+inline bool Health::_internal_is_armable() const {
+  return is_armable_;
+}
+inline bool Health::is_armable() const {
+  // @@protoc_insertion_point(field_get:mavsdk.rpc.telemetry.Health.is_armable)
+  return _internal_is_armable();
+}
+inline void Health::_internal_set_is_armable(bool value) {
+  
+  is_armable_ = value;
+}
+inline void Health::set_is_armable(bool value) {
+  _internal_set_is_armable(value);
+  // @@protoc_insertion_point(field_set:mavsdk.rpc.telemetry.Health.is_armable)
 }
 
 // -------------------------------------------------------------------

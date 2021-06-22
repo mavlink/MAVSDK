@@ -188,20 +188,6 @@ void TelemetryImpl::enable()
                 std::placeholders::_2),
             this);
 
-#ifdef LEVEL_CALIBRATION
-        _parent->param_float_async(
-            std::string("SENS_BOARD_X_OFF"),
-            std::bind(
-                &TelemetryImpl::receive_param_cal_level,
-                this,
-                std::placeholders::_1,
-                std::placeholders::_2),
-            this);
-#else
-        // If not available, just hardcode it to true.
-        set_health_level_calibration(true);
-#endif
-
         _parent->get_param_int_async(
             std::string("SYS_HITL"),
             std::bind(
@@ -1062,6 +1048,15 @@ void TelemetryImpl::process_sys_status(const mavlink_message_t& message)
             _parent->call_user_callback([callback, arg]() { callback(arg); });
         }
     }
+
+    const bool armable = sys_status.onboard_control_sensors_health & MAV_SYS_STATUS_PREARM_CHECK;
+
+    set_health_armable(armable);
+    if (_health_all_ok_subscription) {
+        auto callback = _health_all_ok_subscription;
+        auto arg = health_all_ok();
+        _parent->call_user_callback([callback, arg]() { callback(arg); });
+    }
 }
 
 void TelemetryImpl::process_heartbeat(const mavlink_message_t& message)
@@ -1428,19 +1423,6 @@ void TelemetryImpl::receive_param_cal_mag(MAVLinkParameters::Result result, int 
     set_health_magnetometer_calibration(ok);
 }
 
-#ifdef LEVEL_CALIBRATION
-void TelemetryImpl::receive_param_cal_level(MAVLinkParameters::Result result, float value)
-{
-    if (result != MAVLinkParameters::Result::Success) {
-        LogErr() << "Error: Param for level cal failed.";
-        return;
-    }
-
-    bool ok = (value != 0);
-    set_health_level_calibration(ok);
-}
-#endif
-
 void TelemetryImpl::receive_param_hitl(MAVLinkParameters::Result result, int value)
 {
     if (result != MAVLinkParameters::Result::Success) {
@@ -1452,13 +1434,10 @@ void TelemetryImpl::receive_param_hitl(MAVLinkParameters::Result result, int val
 
     // assume sensor calibration ok in hitl
     if (_hitl_enabled) {
-        set_health_accelerometer_calibration(_hitl_enabled);
-        set_health_gyrometer_calibration(_hitl_enabled);
-        set_health_magnetometer_calibration(_hitl_enabled);
+        set_health_accelerometer_calibration(true);
+        set_health_gyrometer_calibration(true);
+        set_health_magnetometer_calibration(true);
     }
-#ifdef LEVEL_CALIBRATION
-    set_health_level_calibration(ok);
-#endif
 }
 
 void TelemetryImpl::receive_gps_raw_timeout()
@@ -1719,9 +1698,8 @@ bool TelemetryImpl::health_all_ok() const
 {
     std::lock_guard<std::mutex> lock(_health_mutex);
     if (_health.is_gyrometer_calibration_ok && _health.is_accelerometer_calibration_ok &&
-        _health.is_magnetometer_calibration_ok && _health.is_level_calibration_ok &&
-        _health.is_local_position_ok && _health.is_global_position_ok &&
-        _health.is_home_position_ok) {
+        _health.is_magnetometer_calibration_ok && _health.is_local_position_ok &&
+        _health.is_global_position_ok && _health.is_home_position_ok) {
         return true;
     } else {
         return false;
@@ -1806,10 +1784,10 @@ void TelemetryImpl::set_health_magnetometer_calibration(bool ok)
     _health.is_magnetometer_calibration_ok = (ok || _hitl_enabled);
 }
 
-void TelemetryImpl::set_health_level_calibration(bool ok)
+void TelemetryImpl::set_health_armable(bool ok)
 {
     std::lock_guard<std::mutex> lock(_health_mutex);
-    _health.is_level_calibration_ok = (ok || _hitl_enabled);
+    _health.is_armable = ok;
 }
 
 Telemetry::LandedState TelemetryImpl::landed_state() const
@@ -2169,17 +2147,6 @@ void TelemetryImpl::process_parameter_update(const std::string& name)
                 std::placeholders::_2),
             this);
 
-#ifdef LEVEL_CALIBRATION
-    } else if (name.compare("SENS_BOARD_X_OFF") == 0) {
-        _parent->get_param_float_async(
-            std::string("SENS_BOARD_X_OFF"),
-            std::bind(
-                &TelemetryImpl::receive_param_cal_level,
-                this,
-                std::placeholders::_1,
-                std::placeholders::_2),
-            this);
-#endif
     } else if (name.compare("SYS_HITL") == 0) {
         _parent->get_param_int_async(
             std::string("SYS_HITL"),

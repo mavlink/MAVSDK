@@ -359,14 +359,13 @@ public:
             false}; /**< @brief True if the accelerometer is calibrated */
         bool is_magnetometer_calibration_ok{
             false}; /**< @brief True if the magnetometer is calibrated */
-        bool is_level_calibration_ok{
-            false}; /**< @brief True if the vehicle has a valid level calibration */
         bool is_local_position_ok{false}; /**< @brief True if the local position estimate is good
                                              enough to fly in 'position control' mode */
         bool is_global_position_ok{false}; /**< @brief True if the global position estimate is good
                                               enough to fly in 'position control' mode */
         bool is_home_position_ok{
             false}; /**< @brief True if the home position has been initialized properly */
+        bool is_armable{false}; /**< @brief True if system can be armed */
     };
 
     /**
@@ -641,9 +640,9 @@ public:
         uint64_t timestamp_us{}; /**< @brief Timestamp (time since system boot) */
         float absolute_pressure_hpa{}; /**< @brief Absolute pressure in hPa */
         float differential_pressure_hpa{}; /**< @brief Differential pressure 1 in hPa */
-        float temperature_deg{}; /**< @brief Absolute pressure temperature (in celcius) */
+        float temperature_deg{}; /**< @brief Absolute pressure temperature (in celsius) */
         float differential_pressure_temperature_deg{}; /**< @brief Differential pressure temperature
-                                                          (in celcius, 0 if not available) */
+                                                          (in celsius, 0 if not available) */
     };
 
     /**

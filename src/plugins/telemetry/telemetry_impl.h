@@ -9,10 +9,6 @@
 #include "plugin_impl_base.h"
 #include "system.h"
 
-// Since not all vehicles support/require level calibration, this
-// is disabled for now.
-//#define LEVEL_CALIBRATION
-
 namespace mavsdk {
 
 class System;
@@ -172,7 +168,7 @@ private:
     void set_health_gyrometer_calibration(bool ok);
     void set_health_accelerometer_calibration(bool ok);
     void set_health_magnetometer_calibration(bool ok);
-    void set_health_level_calibration(bool ok);
+    void set_health_armable(bool ok);
     void set_rc_status(std::optional<bool> available, std::optional<float> signal_strength_percent);
     void set_unix_epoch_time_us(uint64_t time_us);
     void set_actuator_control_target(uint8_t group, const std::vector<float>& controls);
@@ -209,9 +205,6 @@ private:
     void receive_param_cal_mag(MAVLinkParameters::Result result, int value);
 
     void process_parameter_update(const std::string& name);
-#ifdef LEVEL_CALIBRATION
-    void receive_param_cal_level(MAVLinkParameters::Result result, float value);
-#endif
     void receive_param_hitl(MAVLinkParameters::Result result, int value);
 
     void receive_rc_channels_timeout();

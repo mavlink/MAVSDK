@@ -35,8 +35,6 @@ void print_health(Telemetry::Health health)
               << '\n';
     std::cout << "Mag calibration:   " << (health.is_magnetometer_calibration_ok ? "ok" : "not ok")
               << '\n';
-    std::cout << "Level calibration: " << (health.is_level_calibration_ok ? "ok" : "not ok")
-              << '\n';
     std::cout << "Local position:    " << (health.is_local_position_ok ? "ok" : "not ok") << '\n';
     std::cout << "Global position:   " << (health.is_global_position_ok ? "ok" : "not ok") << '\n';
     std::cout << "Home position:     " << (health.is_home_position_ok ? "ok" : "not ok") << '\n';

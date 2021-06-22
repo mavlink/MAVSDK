@@ -309,7 +309,6 @@ std::future<void> TelemetryServiceImplTest::subscribeHealthAsync(std::vector<Hea
             health.is_gyrometer_calibration_ok = health_rpc.is_gyrometer_calibration_ok();
             health.is_accelerometer_calibration_ok = health_rpc.is_accelerometer_calibration_ok();
             health.is_magnetometer_calibration_ok = health_rpc.is_magnetometer_calibration_ok();
-            health.is_level_calibration_ok = health_rpc.is_level_calibration_ok();
             health.is_local_position_ok = health_rpc.is_local_position_ok();
             health.is_global_position_ok = health_rpc.is_global_position_ok();
             health.is_home_position_ok = health_rpc.is_home_position_ok();
@@ -378,7 +377,6 @@ Health TelemetryServiceImplTest::createRandomHealth()
     health.is_gyrometer_calibration_ok = generateRandomBool();
     health.is_accelerometer_calibration_ok = generateRandomBool();
     health.is_magnetometer_calibration_ok = generateRandomBool();
-    health.is_level_calibration_ok = generateRandomBool();
     health.is_local_position_ok = generateRandomBool();
     health.is_global_position_ok = generateRandomBool();
     health.is_home_position_ok = generateRandomBool();

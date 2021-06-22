@@ -517,13 +517,13 @@ public:
 
         rpc_obj->set_is_magnetometer_calibration_ok(health.is_magnetometer_calibration_ok);
 
-        rpc_obj->set_is_level_calibration_ok(health.is_level_calibration_ok);
-
         rpc_obj->set_is_local_position_ok(health.is_local_position_ok);
 
         rpc_obj->set_is_global_position_ok(health.is_global_position_ok);
 
         rpc_obj->set_is_home_position_ok(health.is_home_position_ok);
+
+        rpc_obj->set_is_armable(health.is_armable);
 
         return rpc_obj;
     }
@@ -538,13 +538,13 @@ public:
 
         obj.is_magnetometer_calibration_ok = health.is_magnetometer_calibration_ok();
 
-        obj.is_level_calibration_ok = health.is_level_calibration_ok();
-
         obj.is_local_position_ok = health.is_local_position_ok();
 
         obj.is_global_position_ok = health.is_global_position_ok();
 
         obj.is_home_position_ok = health.is_home_position_ok();
+
+        obj.is_armable = health.is_armable();
 
         return obj;
     }
