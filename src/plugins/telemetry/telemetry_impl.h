@@ -168,6 +168,7 @@ private:
     void set_health_gyrometer_calibration(bool ok);
     void set_health_accelerometer_calibration(bool ok);
     void set_health_magnetometer_calibration(bool ok);
+    void set_health_armable(bool ok);
     void set_rc_status(std::optional<bool> available, std::optional<float> signal_strength_percent);
     void set_unix_epoch_time_us(uint64_t time_us);
     void set_actuator_control_target(uint8_t group, const std::vector<float>& controls);

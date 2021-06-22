@@ -523,6 +523,8 @@ public:
 
         rpc_obj->set_is_home_position_ok(health.is_home_position_ok);
 
+        rpc_obj->set_is_armable(health.is_armable);
+
         return rpc_obj;
     }
 
@@ -541,6 +543,8 @@ public:
         obj.is_global_position_ok = health.is_global_position_ok();
 
         obj.is_home_position_ok = health.is_home_position_ok();
+
+        obj.is_armable = health.is_armable();
 
         return obj;
     }

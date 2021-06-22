@@ -365,6 +365,7 @@ public:
                                               enough to fly in 'position control' mode */
         bool is_home_position_ok{
             false}; /**< @brief True if the home position has been initialized properly */
+        bool is_armable{false}; /**< @brief True if system can be armed */
     };
 
     /**

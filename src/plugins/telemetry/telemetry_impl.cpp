@@ -1048,6 +1048,15 @@ void TelemetryImpl::process_sys_status(const mavlink_message_t& message)
             _parent->call_user_callback([callback, arg]() { callback(arg); });
         }
     }
+
+    const bool armable = sys_status.onboard_control_sensors_health & MAV_SYS_STATUS_PREARM_CHECK;
+
+    set_health_armable(armable);
+    if (_health_all_ok_subscription) {
+        auto callback = _health_all_ok_subscription;
+        auto arg = health_all_ok();
+        _parent->call_user_callback([callback, arg]() { callback(arg); });
+    }
 }
 
 void TelemetryImpl::process_heartbeat(const mavlink_message_t& message)
@@ -1773,6 +1782,12 @@ void TelemetryImpl::set_health_magnetometer_calibration(bool ok)
 {
     std::lock_guard<std::mutex> lock(_health_mutex);
     _health.is_magnetometer_calibration_ok = (ok || _hitl_enabled);
+}
+
+void TelemetryImpl::set_health_armable(bool ok)
+{
+    std::lock_guard<std::mutex> lock(_health_mutex);
+    _health.is_armable = ok;
 }
 
 Telemetry::LandedState TelemetryImpl::landed_state() const

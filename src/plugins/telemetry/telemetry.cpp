@@ -762,7 +762,8 @@ bool operator==(const Telemetry::Health& lhs, const Telemetry::Health& rhs)
            (rhs.is_magnetometer_calibration_ok == lhs.is_magnetometer_calibration_ok) &&
            (rhs.is_local_position_ok == lhs.is_local_position_ok) &&
            (rhs.is_global_position_ok == lhs.is_global_position_ok) &&
-           (rhs.is_home_position_ok == lhs.is_home_position_ok);
+           (rhs.is_home_position_ok == lhs.is_home_position_ok) &&
+           (rhs.is_armable == lhs.is_armable);
 }
 
 std::ostream& operator<<(std::ostream& str, Telemetry::Health const& health)
@@ -776,6 +777,7 @@ std::ostream& operator<<(std::ostream& str, Telemetry::Health const& health)
     str << "    is_local_position_ok: " << health.is_local_position_ok << '\n';
     str << "    is_global_position_ok: " << health.is_global_position_ok << '\n';
     str << "    is_home_position_ok: " << health.is_home_position_ok << '\n';
+    str << "    is_armable: " << health.is_armable << '\n';
     str << '}';
     return str;
 }
