@@ -102,7 +102,7 @@ public:
         InProgress, /**< @brief Command in progress. */
         Busy, /**< @brief Camera is busy and rejected command. */
         Denied, /**< @brief Camera denied the command. */
-        Error, /**< @brief An error has occured while executing the command. */
+        Error, /**< @brief An error has occurred while executing the command. */
         Timeout, /**< @brief Command timed out. */
         WrongArgument, /**< @brief Command has wrong argument(s). */
         NoSystem, /**< @brief No system connected. */

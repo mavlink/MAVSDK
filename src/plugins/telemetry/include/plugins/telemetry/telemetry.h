@@ -639,9 +639,9 @@ public:
         uint64_t timestamp_us{}; /**< @brief Timestamp (time since system boot) */
         float absolute_pressure_hpa{}; /**< @brief Absolute pressure in hPa */
         float differential_pressure_hpa{}; /**< @brief Differential pressure 1 in hPa */
-        float temperature_deg{}; /**< @brief Absolute pressure temperature (in celcius) */
+        float temperature_deg{}; /**< @brief Absolute pressure temperature (in celsius) */
         float differential_pressure_temperature_deg{}; /**< @brief Differential pressure temperature
-                                                          (in celcius, 0 if not available) */
+                                                          (in celsius, 0 if not available) */
     };
 
     /**
