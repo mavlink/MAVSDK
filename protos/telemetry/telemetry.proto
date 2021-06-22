@@ -574,6 +574,7 @@ message Health {
     bool is_local_position_ok = 5 [(mavsdk.options.default_value)="false"]; // True if the local position estimate is good enough to fly in 'position control' mode
     bool is_global_position_ok = 6 [(mavsdk.options.default_value)="false"]; // True if the global position estimate is good enough to fly in 'position control' mode
     bool is_home_position_ok = 7 [(mavsdk.options.default_value)="false"]; // True if the home position has been initialized properly
+    bool is_armable = 8 [(mavsdk.options.default_value)="false"]; // True if system can be armed
 }
 
 // Remote control status type.
