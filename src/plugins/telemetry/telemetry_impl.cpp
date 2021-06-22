@@ -199,7 +199,7 @@ void TelemetryImpl::enable()
                 std::placeholders::_2),
             this);
 #else // ifdef LEVEL_CALIBRATION
-        // If not available, just hardcode it to true.
+      // If not available, just hardcode it to true.
         set_health_level_calibration(true);
 #endif // ifdef LEVEL_CALIBRATION
 

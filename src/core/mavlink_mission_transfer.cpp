@@ -236,12 +236,29 @@ void MAVLinkMissionTransfer::UploadWorkItem::send_cancel_and_finish()
 }
 
 void MAVLinkMissionTransfer::UploadWorkItem::process_mission_request(
-    const mavlink_message_t& unused)
+    const mavlink_message_t& request_message)
 {
+#ifdef ARDUPILOT
+    // ArduCopter 3.6 sends MISSION_REQUEST (not _INT) but actually accepts ITEM_INT in reply
+    mavlink_mission_request_t request;
+    mavlink_msg_mission_request_decode(&request_message, &request);
+
+    mavlink_mission_request_int_t request_int{
+        .seq = request.seq,
+        .target_system = request.target_system,
+        .target_component = request.target_component,
+        .mission_type = request.mission_type};
+
+    mavlink_message_t request_int_message;
+    mavlink_msg_mission_request_int_encode(
+        request_int.target_system, request_int.target_component, request_int_message, &request_int);
+
+    process_mission_request_int(request_int_message);
+#else // ifdef ARDUPILOT
     std::lock_guard<std::mutex> lock(_mutex);
 
     // We only support int, so we nack this and thus tell the autopilot to use int.
-    UNUSED(unused);
+    UNUSED(request_message);
 
     mavlink_message_t message;
     mavlink_msg_mission_ack_pack(
@@ -260,6 +277,7 @@ void MAVLinkMissionTransfer::UploadWorkItem::process_mission_request(
     }
 
     _timeout_handler.refresh(_cookie);
+#endif // ifdef ARDUPILOT
 }
 
 void MAVLinkMissionTransfer::UploadWorkItem::process_mission_request_int(
