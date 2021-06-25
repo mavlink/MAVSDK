@@ -21,11 +21,25 @@ MAVLinkParameters::MAVLinkParameters(SystemImpl& parent) : _parent(parent)
         MAVLINK_MSG_ID_PARAM_EXT_ACK,
         std::bind(&MAVLinkParameters::process_param_ext_ack, this, std::placeholders::_1),
         this);
+
+    _parent.register_mavlink_message_handler(
+        MAVLINK_MSG_ID_PARAM_REQUEST_READ,
+        std::bind(&MAVLinkParameters::process_param_request_read, this, std::placeholders::_1),
+        this);
 }
 
 MAVLinkParameters::~MAVLinkParameters()
 {
     _parent.unregister_all_mavlink_message_handlers(this);
+}
+
+void MAVLinkParameters::set_server_param(
+    const std::string& name,
+    const ParamValue& value,
+    const void* cookie,
+    bool extended)
+{
+    _param_server_store.insert_or_assign(name, value);
 }
 
 void MAVLinkParameters::set_param_async(
@@ -317,6 +331,23 @@ void MAVLinkParameters::do_work()
                 work->timeout_s,
                 &_timeout_cookie);
 
+        } break;
+        
+        case WorkItem::Type::Value: {
+            mavlink_msg_param_value_pack(
+                    _parent.get_own_system_id(),
+                    _parent.get_own_component_id(),
+                    &work->mavlink_message,
+                    param_id,
+                    work->param_value.get_4_float_bytes(),
+                    work->param_value.get_mav_param_type(),
+                    1, 0);
+
+            if (!_parent.send_message(work->mavlink_message)) {
+                LogErr() << "Error: Send message failed";
+                work_queue_guard.pop_front();
+                return;
+            }
         } break;
     }
 }
@@ -625,6 +656,33 @@ std::ostream& operator<<(std::ostream& strm, const MAVLinkParameters::ParamValue
 {
     strm << obj.get_string();
     return strm;
+}
+
+void MAVLinkParameters::process_param_request_read(const mavlink_message_t& message)
+{
+    mavlink_param_request_read_t read_request{};
+    mavlink_msg_param_request_read_decode(&message, &read_request);
+
+    std::string param_id = extract_safe_param_id(read_request.param_id);
+
+    if (read_request.param_index == -1)
+    {
+        auto safe_param_id = extract_safe_param_id(read_request.param_id);
+        LogDebug() << "Request Param" << safe_param_id;
+        // Use the ID
+        if (_param_server_store.find(safe_param_id) != _param_server_store.end())
+        {
+            auto new_work = std::make_shared<WorkItem>();
+            new_work->type = WorkItem::Type::Value;
+            new_work->param_name = safe_param_id;
+            new_work->param_value = _param_server_store.at(safe_param_id);
+            _work_queue.push_back(new_work);
+        }
+        else
+        {
+            LogDebug() << "Missing Param" << safe_param_id;
+        }
+    }
 }
 
 } // namespace mavsdk

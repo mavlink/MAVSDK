@@ -647,6 +647,22 @@ void SystemImpl::set_param_float_async(
     _params.set_param_async(name, param_value, callback, cookie);
 }
 
+void SystemImpl::set_server_param_int(
+    const std::string& name, int32_t value, const void* cookie)
+{
+    MAVLinkParameters::ParamValue param_value;
+    param_value.set<int32_t>(value);
+    _params.set_server_param(name, param_value, cookie);
+}
+
+void SystemImpl::set_server_param_float(
+    const std::string& name, float value, const void* cookie)
+{
+    MAVLinkParameters::ParamValue param_value;
+    param_value.set<float>(value);
+    _params.set_server_param(name, param_value, cookie);
+}
+
 void SystemImpl::set_param_int_async(
     const std::string& name, int32_t value, success_t callback, const void* cookie)
 {

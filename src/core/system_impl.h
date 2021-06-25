@@ -150,6 +150,11 @@ public:
     void set_param_ext_int_async(
         const std::string& name, int32_t value, success_t callback, const void* cookie);
 
+    void set_server_param_float(
+        const std::string& name, float value, const void* cookie);
+    void set_server_param_int(
+        const std::string& name, int32_t value, const void* cookie);
+
     using SubscribeParamIntCallback = std::function<void(int)>;
     void subscribe_param_int(
         const std::string& name, SubscribeParamIntCallback callback, const void* cookie);

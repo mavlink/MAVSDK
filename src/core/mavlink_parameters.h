@@ -459,6 +459,13 @@ public:
         const void* cookie = nullptr,
         bool extended = false);
 
+    void set_server_param(
+        const std::string& name,
+        const ParamValue& value,
+        const void* cookie = nullptr,
+        bool extended = false);
+
+
     std::pair<Result, ParamValue>
     get_param(const std::string& name, ParamValue value_type, bool extended);
     typedef std::function<void(Result, ParamValue value)> get_param_callback_t;
@@ -507,7 +514,7 @@ private:
     static constexpr size_t PARAM_ID_LEN = 16;
 
     struct WorkItem {
-        enum class Type { Get, Set } type{Type::Get};
+        enum class Type { Get, Set, Value } type{Type::Get};
         // TODO: a union would be nicer for the callback
         get_param_callback_t get_param_callback{nullptr};
         set_param_callback_t set_param_callback{nullptr};
@@ -546,6 +553,12 @@ private:
     std::mutex _all_param_mutex{};
 
     // dl_time_t _last_request_time = {};
+
+    std::map<std::string, ParamValue> _param_server_store;
+    void process_param_request_read(const mavlink_message_t& message);
+    void process_param_request_list(const mavlink_message_t& message);
+    void process_param_set(const mavlink_message_t& message);
+
 };
 
 } // namespace mavsdk
