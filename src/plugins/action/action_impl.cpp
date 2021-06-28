@@ -349,6 +349,10 @@ void ActionImpl::takeoff_async(const Action::ResultCallback& callback) const
     command.command = MAV_CMD_NAV_TAKEOFF;
     command.target_component_id = _parent->get_autopilot_id();
 
+#ifdef ARDUPILOT
+    command.params.param7 = 1.0; // Ardupilot doesn't take off without altitude set
+#endif
+
     _parent->send_command_async(
         command, [this, callback](MavlinkCommandSender::Result result, float) {
             command_result_callback(result, callback);
