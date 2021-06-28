@@ -251,7 +251,10 @@ void MAVLinkMissionTransfer::UploadWorkItem::process_mission_request(
 
     mavlink_message_t request_int_message;
     mavlink_msg_mission_request_int_encode(
-        request_int.target_system, request_int.target_component, request_int_message, &request_int);
+        request_int.target_system,
+        request_int.target_component,
+        &request_int_message,
+        &request_int);
 
     process_mission_request_int(request_int_message);
 #else // ifdef ARDUPILOT
