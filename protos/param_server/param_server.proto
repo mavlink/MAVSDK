@@ -1,0 +1,118 @@
+syntax = "proto3";
+
+package mavsdk.rpc.param_server;
+
+import "mavsdk_options.proto";
+
+option java_package = "io.mavsdk.param_server";
+option java_outer_classname = "ParamServerProto";
+
+// Provide raw access to get and set parameters.
+service ParamServerService {
+    /*
+     * Get an int parameter.
+     *
+     * If the type is wrong, the result will be `WRONG_TYPE`.
+     */
+    rpc GetParamInt(GetParamIntRequest) returns(GetParamIntResponse) { option (mavsdk.options.async_type) = SYNC; }
+    /*
+     * Set an int parameter.
+     *
+     * If the type is wrong, the result will be `WRONG_TYPE`.
+     */
+    rpc SetParamInt(SetParamIntRequest) returns(SetParamIntResponse) { option (mavsdk.options.async_type) = SYNC; }
+    /*
+     * Get a float parameter.
+     *
+     * If the type is wrong, the result will be `WRONG_TYPE`.
+     */
+    rpc GetParamFloat(GetParamFloatRequest) returns(GetParamFloatResponse) { option (mavsdk.options.async_type) = SYNC; }
+    /*
+     * Set a float parameter.
+     *
+     * If the type is wrong, the result will be `WRONG_TYPE`.
+     */
+    rpc SetParamFloat(SetParamFloatRequest) returns(SetParamFloatResponse) { option (mavsdk.options.async_type) = SYNC; }
+    /*
+     * Get all parameters.
+     */
+    rpc GetAllParams(GetAllParamsRequest) returns(GetAllParamsResponse) { option (mavsdk.options.async_type) = SYNC; }
+}
+
+message GetParamIntRequest {
+    string name = 1; // Name of the parameter
+}
+
+message GetParamIntResponse {
+    ParamServerResult param_result = 1;
+    int32 value = 2; // Value of the requested parameter
+}
+
+message SetParamIntRequest {
+    string name = 1; // Name of the parameter to set
+    int32 value = 2; // Value the parameter should be set to
+}
+message SetParamIntResponse {
+    ParamServerResult param_result = 1;
+}
+
+message GetParamFloatRequest {
+    string name = 1; // Name of the parameter
+}
+message GetParamFloatResponse {
+    ParamServerResult param_result = 1;
+    float value = 2; // Value of the requested parameter
+}
+
+message SetParamFloatRequest {
+    string name = 1; // Name of the parameter to set
+    float value = 2; // Value the parameter should be set to
+}
+message SetParamFloatResponse {
+    ParamServerResult param_result = 1;
+}
+
+message GetAllParamsRequest {}
+
+message GetAllParamsResponse {
+    AllParams params = 1; // Collection of all parameters
+}
+
+/*
+ * Type for integer parameters.
+ */
+message IntParam {
+    string name = 1; // Name of the parameter
+    int32 value = 2; // Value of the parameter
+}
+
+/*
+ * Type for float paramters.
+ */
+message FloatParam {
+    string name = 1; // Name of the parameter
+    float value = 2; // Value of the parameter
+}
+
+/*
+ * Type collecting all integer and float parameters.
+ */
+message AllParams {
+    repeated IntParam int_params = 1; // Collection of all parameter names and values of type int
+    repeated FloatParam float_params = 2; // Collection of all parameter names and values of type float
+}
+
+// Result type.
+message ParamServerResult {
+    // Possible results returned for param requests.
+    enum Result {
+        RESULT_UNKNOWN = 0; // Unknown result
+        RESULT_SUCCESS = 1; // Request succeeded
+        RESULT_NOT_FOUND = 2; // Not Found
+        RESULT_WRONG_TYPE = 3; // Wrong type
+        RESULT_PARAM_NAME_TOO_LONG = 4; // Parameter name too long (> 16)
+    }
+
+    Result result = 1; // Result enum value
+    string result_str = 2; // Human-readable English string describing the result
+}
