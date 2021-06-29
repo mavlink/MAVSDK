@@ -349,6 +349,10 @@ void ActionImpl::takeoff_async(const Action::ResultCallback& callback) const
     command.command = MAV_CMD_NAV_TAKEOFF;
     command.target_component_id = _parent->get_autopilot_id();
 
+#ifdef ARDUPILOT
+    command.params.param7 = get_takeoff_altitude().second;
+#endif
+
     _parent->send_command_async(
         command, [this, callback](MavlinkCommandSender::Result result, float) {
             command_result_callback(result, callback);
@@ -573,13 +577,14 @@ void ActionImpl::process_extended_sys_state(const mavlink_message_t& message)
 }
 
 void ActionImpl::set_takeoff_altitude_async(
-    const float relative_altitude_m, const Action::ResultCallback& callback) const
+    const float relative_altitude_m, const Action::ResultCallback& callback)
 {
     callback(set_takeoff_altitude(relative_altitude_m));
 }
 
-Action::Result ActionImpl::set_takeoff_altitude(float relative_altitude_m) const
+Action::Result ActionImpl::set_takeoff_altitude(float relative_altitude_m)
 {
+    _takeoff_altitude = relative_altitude_m;
     const MAVLinkParameters::Result result =
         _parent->set_param_float(TAKEOFF_ALT_PARAM, relative_altitude_m);
     return (result == MAVLinkParameters::Result::Success) ? Action::Result::Success :
@@ -595,11 +600,15 @@ void ActionImpl::get_takeoff_altitude_async(
 
 std::pair<Action::Result, float> ActionImpl::get_takeoff_altitude() const
 {
+#ifdef ARDUPILOT
+    return std::make_pair<>(Action::Result::Success, _takeoff_altitude);
+#else
     auto result = _parent->get_param_float(TAKEOFF_ALT_PARAM);
     return std::make_pair<>(
         (result.first == MAVLinkParameters::Result::Success) ? Action::Result::Success :
                                                                Action::Result::ParameterError,
         result.second);
+#endif
 }
 
 void ActionImpl::set_maximum_speed_async(
