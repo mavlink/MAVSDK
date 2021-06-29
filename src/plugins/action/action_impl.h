@@ -76,10 +76,10 @@ public:
     void transition_to_multicopter_async(const Action::ResultCallback& callback) const;
 
     void set_takeoff_altitude_async(
-        const float relative_altitude_m, const Action::ResultCallback& callback) const;
+        const float relative_altitude_m, const Action::ResultCallback& callback);
     void get_takeoff_altitude_async(const Action::GetTakeoffAltitudeCallback& callback) const;
 
-    Action::Result set_takeoff_altitude(float relative_altitude_m) const;
+    Action::Result set_takeoff_altitude(float relative_altitude_m);
     std::pair<Action::Result, float> get_takeoff_altitude() const;
 
     void
@@ -113,6 +113,8 @@ private:
 
     std::atomic<bool> _vtol_transition_support_known{false};
     std::atomic<bool> _vtol_transition_possible{false};
+
+    float _takeoff_altitude{2.0};
 
     static constexpr uint8_t VEHICLE_MODE_FLAG_CUSTOM_MODE_ENABLED = 1;
     static constexpr auto TAKEOFF_ALT_PARAM = "MIS_TAKEOFF_ALT";
