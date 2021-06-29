@@ -465,7 +465,8 @@ public:
         const void* cookie = nullptr,
         bool extended = false);
 
-
+    std::pair<Result, ParamValue>
+    get_server_param(const std::string& name, ParamValue value_type, bool extended = false);
     std::pair<Result, ParamValue>
     get_param(const std::string& name, ParamValue value_type, bool extended);
     typedef std::function<void(Result, ParamValue value)> get_param_callback_t;
@@ -558,7 +559,6 @@ private:
     void process_param_request_read(const mavlink_message_t& message);
     void process_param_request_list(const mavlink_message_t& message);
     void process_param_set(const mavlink_message_t& message);
-
 };
 
 } // namespace mavsdk

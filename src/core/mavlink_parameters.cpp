@@ -34,10 +34,7 @@ MAVLinkParameters::~MAVLinkParameters()
 }
 
 void MAVLinkParameters::set_server_param(
-    const std::string& name,
-    const ParamValue& value,
-    const void* cookie,
-    bool extended)
+    const std::string& name, const ParamValue& value, const void* cookie, bool extended)
 {
     _param_server_store.insert_or_assign(name, value);
 }
@@ -114,6 +111,17 @@ void MAVLinkParameters::get_param_async(
     new_work->cookie = cookie;
 
     _work_queue.push_back(new_work);
+}
+
+std::pair<MAVLinkParameters::Result, MAVLinkParameters::ParamValue>
+MAVLinkParameters::get_server_param(const std::string& name, ParamValue value_type, bool extended)
+{
+    if (_param_server_store.find(name) != _param_server_store.end())
+    {
+        auto value = _param_server_store.at(name);
+        return {MAVLinkParameters::Result::Success, value};
+    }
+    return {MAVLinkParameters::Result::WrongType, {}};
 }
 
 std::pair<MAVLinkParameters::Result, MAVLinkParameters::ParamValue>
@@ -332,16 +340,17 @@ void MAVLinkParameters::do_work()
                 &_timeout_cookie);
 
         } break;
-        
+
         case WorkItem::Type::Value: {
             mavlink_msg_param_value_pack(
-                    _parent.get_own_system_id(),
-                    _parent.get_own_component_id(),
-                    &work->mavlink_message,
-                    param_id,
-                    work->param_value.get_4_float_bytes(),
-                    work->param_value.get_mav_param_type(),
-                    1, 0);
+                _parent.get_own_system_id(),
+                _parent.get_own_component_id(),
+                &work->mavlink_message,
+                param_id,
+                work->param_value.get_4_float_bytes(),
+                work->param_value.get_mav_param_type(),
+                1,
+                0);
 
             if (!_parent.send_message(work->mavlink_message)) {
                 LogErr() << "Error: Send message failed";
@@ -665,21 +674,17 @@ void MAVLinkParameters::process_param_request_read(const mavlink_message_t& mess
 
     std::string param_id = extract_safe_param_id(read_request.param_id);
 
-    if (read_request.param_index == -1)
-    {
+    if (read_request.param_index == -1) {
         auto safe_param_id = extract_safe_param_id(read_request.param_id);
         LogDebug() << "Request Param" << safe_param_id;
         // Use the ID
-        if (_param_server_store.find(safe_param_id) != _param_server_store.end())
-        {
+        if (_param_server_store.find(safe_param_id) != _param_server_store.end()) {
             auto new_work = std::make_shared<WorkItem>();
             new_work->type = WorkItem::Type::Value;
             new_work->param_name = safe_param_id;
             new_work->param_value = _param_server_store.at(safe_param_id);
             _work_queue.push_back(new_work);
-        }
-        else
-        {
+        } else {
             LogDebug() << "Missing Param" << safe_param_id;
         }
     }
