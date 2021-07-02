@@ -461,12 +461,11 @@ public:
 
     void set_server_param(
         const std::string& name,
-        const ParamValue& value,
-        const void* cookie = nullptr,
-        bool extended = false);
+        const ParamValue& value);
+    std::map<std::string, MAVLinkParameters::ParamValue> get_all_server_params();
 
     std::pair<Result, ParamValue>
-    get_server_param(const std::string& name, ParamValue value_type, bool extended = false);
+    get_server_param(const std::string& name, ParamValue value_type);
     std::pair<Result, ParamValue>
     get_param(const std::string& name, ParamValue value_type, bool extended);
     typedef std::function<void(Result, ParamValue value)> get_param_callback_t;
@@ -527,6 +526,8 @@ private:
         const void* cookie{nullptr};
         int retries_to_do{3};
         double timeout_s;
+        int param_count{1};
+        int param_index{0};
         mavlink_message_t mavlink_message{};
 
         explicit WorkItem(double new_timeout_s) : timeout_s(new_timeout_s){};
@@ -557,6 +558,7 @@ private:
 
     std::map<std::string, ParamValue> _param_server_store;
     void process_param_request_read(const mavlink_message_t& message);
+    void process_param_ext_request_read(const mavlink_message_t& message);
     void process_param_request_list(const mavlink_message_t& message);
     void process_param_set(const mavlink_message_t& message);
 };

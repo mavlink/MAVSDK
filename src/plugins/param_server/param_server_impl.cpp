@@ -25,9 +25,9 @@ void ParamServerImpl::enable() {}
 
 void ParamServerImpl::disable() {}
 
-std::pair<ParamServer::Result, int32_t> ParamServer::get_param_int(std::string name) const
+std::pair<ParamServer::Result, int32_t> ParamServerImpl::get_param_int(std::string name) const
 {
-    std::pair<MAVLinkParameters::Result, int32_t> result = _parent->get_server_param_int(name);
+    std::pair<MAVLinkParameters::Result, int> result = _parent->get_server_param_int(name);
 
     if (result.first == MAVLinkParameters::Result::Success)
         return {ParamServer::Result::Success, result.second};
@@ -37,11 +37,11 @@ std::pair<ParamServer::Result, int32_t> ParamServer::get_param_int(std::string n
 
 ParamServer::Result ParamServerImpl::set_param_int(std::string name, int32_t value)
 {
-    MAVLinkParameters::Result result = _parent->set_server_param_int(name, value);
-    return result_from_mavlink_parameters_result(result);
+    _parent->set_server_param_int(name, value);
+    return ParamServer::Result::Success;
 }
 
-std::pair<ParamServer::Result, float> ParamServer::get_param_float(std::string name) const
+std::pair<ParamServer::Result, float> ParamServerImpl::get_param_float(std::string name) const
 {
     std::pair<MAVLinkParameters::Result, float> result = _parent->get_server_param_float(name);
 
@@ -53,18 +53,35 @@ std::pair<ParamServer::Result, float> ParamServer::get_param_float(std::string n
 
 ParamServer::Result ParamServerImpl::set_param_float(std::string name, float value)
 {
-    MAVLinkParameters::Result result = _parent->set_server_param_float(name, value);
-    return result_from_mavlink_parameters_result(result);
+    _parent->set_server_param_float(name, value);
+    return ParamServer::Result::Success;
 }
 
-ParamServer::AllParams ParamServer::get_all_params() const
+ParamServer::AllParams ParamServerImpl::get_all_params() const
 {
-    // TODO :)
-    return {};
+    auto tmp = _parent->get_all_server_params();
+
+    ParamServer::AllParams res{};
+
+    for (auto const& parampair : tmp) {
+        if (parampair.second.is<float>()) {
+            ParamServer::FloatParam tmp_param;
+            tmp_param.name = parampair.first;
+            tmp_param.value = parampair.second.get<float>();
+            res.float_params.push_back(tmp_param);
+        } else if (parampair.second.is<int32_t>()) {
+            ParamServer::IntParam tmp_param;
+            tmp_param.name = parampair.first;
+            tmp_param.value = parampair.second.get<int32_t>();
+            res.int_params.push_back(tmp_param);
+        }
+    }
+
+    return res;
 }
 
 ParamServer::Result
-ParamImpl::result_from_mavlink_parameters_result(MAVLinkParameters::Result result)
+ParamServerImpl::result_from_mavlink_parameters_result(MAVLinkParameters::Result result)
 {
     switch (result) {
         case MAVLinkParameters::Result::Success:
