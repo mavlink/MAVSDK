@@ -22,7 +22,6 @@ class ParamServerServiceImpl final : public rpc::param_server::ParamServerServic
 public:
     ParamServerServiceImpl(ParamServer& param_server) : _param_server(param_server) {}
 
-
     template<typename ResponseType>
     void fillResponseWithResult(ResponseType* response, mavsdk::ParamServer::Result& result) const
     {
@@ -37,134 +36,92 @@ public:
         response->set_allocated_param_server_result(rpc_param_server_result);
     }
 
-
-
-
-    static std::unique_ptr<rpc::param_server::IntParam> translateToRpcIntParam(const mavsdk::ParamServer::IntParam &int_param)
+    static std::unique_ptr<rpc::param_server::IntParam>
+    translateToRpcIntParam(const mavsdk::ParamServer::IntParam& int_param)
     {
         auto rpc_obj = std::make_unique<rpc::param_server::IntParam>();
 
-
-            
         rpc_obj->set_name(int_param.name);
-            
-        
-            
+
         rpc_obj->set_value(int_param.value);
-            
-        
 
         return rpc_obj;
     }
 
-    static mavsdk::ParamServer::IntParam translateFromRpcIntParam(const rpc::param_server::IntParam& int_param)
+    static mavsdk::ParamServer::IntParam
+    translateFromRpcIntParam(const rpc::param_server::IntParam& int_param)
     {
         mavsdk::ParamServer::IntParam obj;
 
-
-            
         obj.name = int_param.name();
-            
-        
-            
+
         obj.value = int_param.value();
-            
-        
+
         return obj;
     }
 
-
-
-
-
-    static std::unique_ptr<rpc::param_server::FloatParam> translateToRpcFloatParam(const mavsdk::ParamServer::FloatParam &float_param)
+    static std::unique_ptr<rpc::param_server::FloatParam>
+    translateToRpcFloatParam(const mavsdk::ParamServer::FloatParam& float_param)
     {
         auto rpc_obj = std::make_unique<rpc::param_server::FloatParam>();
 
-
-            
         rpc_obj->set_name(float_param.name);
-            
-        
-            
+
         rpc_obj->set_value(float_param.value);
-            
-        
 
         return rpc_obj;
     }
 
-    static mavsdk::ParamServer::FloatParam translateFromRpcFloatParam(const rpc::param_server::FloatParam& float_param)
+    static mavsdk::ParamServer::FloatParam
+    translateFromRpcFloatParam(const rpc::param_server::FloatParam& float_param)
     {
         mavsdk::ParamServer::FloatParam obj;
 
-
-            
         obj.name = float_param.name();
-            
-        
-            
+
         obj.value = float_param.value();
-            
-        
+
         return obj;
     }
 
-
-
-
-
-    static std::unique_ptr<rpc::param_server::AllParams> translateToRpcAllParams(const mavsdk::ParamServer::AllParams &all_params)
+    static std::unique_ptr<rpc::param_server::AllParams>
+    translateToRpcAllParams(const mavsdk::ParamServer::AllParams& all_params)
     {
         auto rpc_obj = std::make_unique<rpc::param_server::AllParams>();
 
-
-            
-                
         for (const auto& elem : all_params.int_params) {
             auto* ptr = rpc_obj->add_int_params();
             ptr->CopyFrom(*translateToRpcIntParam(elem).release());
         }
-                
-            
-        
-            
-                
+
         for (const auto& elem : all_params.float_params) {
             auto* ptr = rpc_obj->add_float_params();
             ptr->CopyFrom(*translateToRpcFloatParam(elem).release());
         }
-                
-            
-        
 
         return rpc_obj;
     }
 
-    static mavsdk::ParamServer::AllParams translateFromRpcAllParams(const rpc::param_server::AllParams& all_params)
+    static mavsdk::ParamServer::AllParams
+    translateFromRpcAllParams(const rpc::param_server::AllParams& all_params)
     {
         mavsdk::ParamServer::AllParams obj;
 
+        for (const auto& elem : all_params.int_params()) {
+            obj.int_params.push_back(
+                translateFromRpcIntParam(static_cast<mavsdk::rpc::param_server::IntParam>(elem)));
+        }
 
-            
-                for (const auto& elem : all_params.int_params()) {
-                    obj.int_params.push_back(translateFromRpcIntParam(static_cast<mavsdk::rpc::param_server::IntParam>(elem)));
-                }
-            
-        
-            
-                for (const auto& elem : all_params.float_params()) {
-                    obj.float_params.push_back(translateFromRpcFloatParam(static_cast<mavsdk::rpc::param_server::FloatParam>(elem)));
-                }
-            
-        
+        for (const auto& elem : all_params.float_params()) {
+            obj.float_params.push_back(translateFromRpcFloatParam(
+                static_cast<mavsdk::rpc::param_server::FloatParam>(elem)));
+        }
+
         return obj;
     }
 
-
-
-
-    static rpc::param_server::ParamServerResult::Result translateToRpcResult(const mavsdk::ParamServer::Result& result)
+    static rpc::param_server::ParamServerResult::Result
+    translateToRpcResult(const mavsdk::ParamServer::Result& result)
     {
         switch (result) {
             default:
@@ -183,7 +140,8 @@ public:
         }
     }
 
-    static mavsdk::ParamServer::Result translateFromRpcResult(const rpc::param_server::ParamServerResult::Result result)
+    static mavsdk::ParamServer::Result
+    translateFromRpcResult(const rpc::param_server::ParamServerResult::Result result)
     {
         switch (result) {
             default:
@@ -202,9 +160,6 @@ public:
         }
     }
 
-
-
-
     grpc::Status GetParamInt(
         grpc::ServerContext* /* context */,
         const rpc::param_server::GetParamIntRequest* request,
@@ -219,11 +174,9 @@ public:
 
         if (response != nullptr) {
             fillResponseWithResult(response, result.first);
-            
-            response->set_value(result.second);
-            
-        }
 
+            response->set_value(result.second);
+        }
 
         return grpc::Status::OK;
     }
@@ -237,18 +190,12 @@ public:
             LogWarn() << "SetParamInt sent with a null request! Ignoring...";
             return grpc::Status::OK;
         }
-            
-        
-            
-        
-        auto result = _param_server.set_param_int(request->name(), request->value());
-        
 
-        
+        auto result = _param_server.set_param_int(request->name(), request->value());
+
         if (response != nullptr) {
             fillResponseWithResult(response, result);
         }
-        
 
         return grpc::Status::OK;
     }
@@ -267,11 +214,9 @@ public:
 
         if (response != nullptr) {
             fillResponseWithResult(response, result.first);
-            
-            response->set_value(result.second);
-            
-        }
 
+            response->set_value(result.second);
+        }
 
         return grpc::Status::OK;
     }
@@ -285,18 +230,12 @@ public:
             LogWarn() << "SetParamFloat sent with a null request! Ignoring...";
             return grpc::Status::OK;
         }
-            
-        
-            
-        
-        auto result = _param_server.set_param_float(request->name(), request->value());
-        
 
-        
+        auto result = _param_server.set_param_float(request->name(), request->value());
+
         if (response != nullptr) {
             fillResponseWithResult(response, result);
         }
-        
 
         return grpc::Status::OK;
     }
@@ -306,23 +245,17 @@ public:
         const rpc::param_server::GetAllParamsRequest* /* request */,
         rpc::param_server::GetAllParamsResponse* response) override
     {
-        
-
         auto result = _param_server.get_all_params();
 
         if (response != nullptr) {
-            
-            
             response->set_allocated_params(translateToRpcAllParams(result).release());
-            
         }
-
 
         return grpc::Status::OK;
     }
 
-
-    void stop() {
+    void stop()
+    {
         _stopped.store(true);
         for (auto& prom : _stream_stop_promises) {
             if (auto handle = prom.lock()) {
@@ -332,7 +265,8 @@ public:
     }
 
 private:
-    void register_stream_stop_promise(std::weak_ptr<std::promise<void>> prom) {
+    void register_stream_stop_promise(std::weak_ptr<std::promise<void>> prom)
+    {
         // If we have already stopped, set promise immediately and don't add it to list.
         if (_stopped.load()) {
             if (auto handle = prom.lock()) {
@@ -343,8 +277,10 @@ private:
         }
     }
 
-    void unregister_stream_stop_promise(std::shared_ptr<std::promise<void>> prom) {
-        for (auto it = _stream_stop_promises.begin(); it != _stream_stop_promises.end(); /* ++it */) {
+    void unregister_stream_stop_promise(std::shared_ptr<std::promise<void>> prom)
+    {
+        for (auto it = _stream_stop_promises.begin(); it != _stream_stop_promises.end();
+             /* ++it */) {
             if (it->lock() == prom) {
                 it = _stream_stop_promises.erase(it);
             } else {
@@ -353,9 +289,9 @@ private:
         }
     }
 
-    ParamServer &_param_server;
+    ParamServer& _param_server;
     std::atomic<bool> _stopped{false};
-    std::vector<std::weak_ptr<std::promise<void>>> _stream_stop_promises {};
+    std::vector<std::weak_ptr<std::promise<void>>> _stream_stop_promises{};
 };
 
 } // namespace mavsdk_server

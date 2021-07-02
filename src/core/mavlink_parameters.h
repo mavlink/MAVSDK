@@ -459,13 +459,10 @@ public:
         const void* cookie = nullptr,
         bool extended = false);
 
-    void set_server_param(
-        const std::string& name,
-        const ParamValue& value);
+    void set_server_param(const std::string& name, const ParamValue& value);
     std::map<std::string, MAVLinkParameters::ParamValue> get_all_server_params();
 
-    std::pair<Result, ParamValue>
-    get_server_param(const std::string& name, ParamValue value_type);
+    std::pair<Result, ParamValue> get_server_param(const std::string& name, ParamValue value_type);
     std::pair<Result, ParamValue>
     get_param(const std::string& name, ParamValue value_type, bool extended);
     typedef std::function<void(Result, ParamValue value)> get_param_callback_t;

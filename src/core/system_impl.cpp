@@ -693,7 +693,8 @@ std::pair<MAVLinkParameters::Result, int> SystemImpl::get_server_param_int(const
     return {res.first, res.second.get<int32_t>()};
 }
 
-std::pair<MAVLinkParameters::Result, float> SystemImpl::get_server_param_float(const std::string& name)
+std::pair<MAVLinkParameters::Result, float>
+SystemImpl::get_server_param_float(const std::string& name)
 {
     MAVLinkParameters::ParamValue param_value;
     param_value.set<float>(0.0f);

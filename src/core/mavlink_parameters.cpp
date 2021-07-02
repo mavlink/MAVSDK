@@ -22,7 +22,7 @@ MAVLinkParameters::MAVLinkParameters(SystemImpl& parent) : _parent(parent)
         std::bind(&MAVLinkParameters::process_param_ext_ack, this, std::placeholders::_1),
         this);
 
-    // Parameter Server Callbacks 
+    // Parameter Server Callbacks
     _parent.register_mavlink_message_handler(
         MAVLINK_MSG_ID_PARAM_REQUEST_READ,
         std::bind(&MAVLinkParameters::process_param_request_read, this, std::placeholders::_1),
@@ -44,8 +44,7 @@ MAVLinkParameters::~MAVLinkParameters()
     _parent.unregister_all_mavlink_message_handlers(this);
 }
 
-void MAVLinkParameters::set_server_param(
-    const std::string& name, const ParamValue& value)
+void MAVLinkParameters::set_server_param(const std::string& name, const ParamValue& value)
 {
     _param_server_store.insert_or_assign(name, value);
 }
@@ -132,8 +131,7 @@ std::map<std::string, MAVLinkParameters::ParamValue> MAVLinkParameters::get_all_
 std::pair<MAVLinkParameters::Result, MAVLinkParameters::ParamValue>
 MAVLinkParameters::get_server_param(const std::string& name, ParamValue value_type)
 {
-    if (_param_server_store.find(name) != _param_server_store.end())
-    {
+    if (_param_server_store.find(name) != _param_server_store.end()) {
         auto value = _param_server_store.at(name);
         return {MAVLinkParameters::Result::Success, value};
     }
@@ -370,9 +368,7 @@ void MAVLinkParameters::do_work()
                     work->param_value.get_mav_param_type(),
                     work->param_count,
                     work->param_index);
-            }
-            else
-            {
+            } else {
                 mavlink_msg_param_value_pack(
                     _parent.get_own_system_id(),
                     _parent.get_own_component_id(),
@@ -732,8 +728,7 @@ void MAVLinkParameters::process_param_request_list(const mavlink_message_t& mess
     mavlink_msg_param_request_list_decode(&message, &list_request);
 
     auto idx = 0;
-    for(auto pair : _param_server_store)
-    {
+    for (auto pair : _param_server_store) {
         auto new_work = std::make_shared<WorkItem>(_parent.timeout_s());
         new_work->type = WorkItem::Type::Value;
         new_work->param_name = pair.first;
