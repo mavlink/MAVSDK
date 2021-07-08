@@ -493,6 +493,11 @@ void CameraImpl::subscribe_information(const Camera::InformationCallback& callba
     std::lock_guard<std::mutex> lock(_information.mutex);
     _information.subscription_callback = callback;
 
+    // If there was already a subscription, cancel the call
+    if (_status.call_every_cookie) {
+        _parent->remove_call_every(_status.call_every_cookie);
+    }
+
     if (callback) {
         _parent->add_call_every([this]() { request_status(); }, 1.0, &_status.call_every_cookie);
     } else {

@@ -56,6 +56,7 @@ void CallEveryHandler::remove(const void* cookie)
     auto it = _entries.find(const_cast<void*>(cookie));
     if (it != _entries.end()) {
         _entries.erase(const_cast<void*>(cookie));
+        cookie = nullptr;
         _iterator_invalidated = true;
     }
 }
