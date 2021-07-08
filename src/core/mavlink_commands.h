@@ -8,6 +8,7 @@
 #include <functional>
 #include <mutex>
 #include <optional>
+#include <unordered_map>
 
 namespace mavsdk {
 
@@ -122,19 +123,20 @@ private:
         mavlink_message_t mavlink_message{};
         CommandResultCallback callback{};
         dl_time_t time_started{};
+        void* timeout_cookie = nullptr;
 
         explicit Work(double new_timeout_s) : timeout_s(new_timeout_s) {}
     };
 
     void receive_command_ack(mavlink_message_t message);
-    void receive_timeout();
+    void receive_timeout(const uint16_t command);
 
     void call_callback(const CommandResultCallback& callback, Result result, float progress);
 
     SystemImpl& _parent;
     LockedQueue<Work> _work_queue{};
-
-    void* _timeout_cookie = nullptr;
+    std::unordered_map<uint16_t, std::shared_ptr<Work>> _sent_commands{};
+    std::mutex _sent_commands_mutex{};
 };
 
 class MavlinkCommandReceiver {
