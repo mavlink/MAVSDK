@@ -11,12 +11,22 @@ fi
 
 # Silently shutdown all leftover stuff.
 
-if [[ "$unamestr" == 'Linux' ]]; then
-    killall -q gzviewer
-    killall -q gzserver
-    killall -q px4
+UNAMESTR=$(uname)
+
+if [[ "$UNAMESTR" == 'Linux' ]]; then
+    QUIET="-q"
 else
-    killall gzviewer &
-    killall gzserver &
-    killall px4 &
+    QUIET=""
 fi
+
+killall $QUIET gzviewer
+killall $QUIET gzserver
+killall $QUIET px4
+
+sleep 3
+
+killall $QUIET -SIGKILL gzviewer
+killall $QUIET -SIGKILL gzserver
+killall $QUIET -SIGKILL px4
+
+exit 0
