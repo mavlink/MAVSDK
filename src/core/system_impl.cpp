@@ -36,7 +36,6 @@ SystemImpl::~SystemImpl()
     _should_exit = true;
     _message_handler.unregister_all(this);
 
-    unregister_timeout_handler(_autopilot_version_timed_out_cookie);
     if (!_always_connected) {
         unregister_timeout_handler(_heartbeat_timeout_cookie);
     }
@@ -56,20 +55,11 @@ void SystemImpl::init(uint8_t system_id, uint8_t comp_id, bool connected)
 
     if (connected) {
         _always_connected = true;
-        _uuid = system_id;
-        _uuid_initialized = true;
         set_connected();
     }
 
     _message_handler.register_one(
         MAVLINK_MSG_ID_HEARTBEAT, std::bind(&SystemImpl::process_heartbeat, this, _1), this);
-
-    // We're registering for Autopilot version because it is a good time do so,
-    // regardless whether we deal with Autopilot.
-    _message_handler.register_one(
-        MAVLINK_MSG_ID_AUTOPILOT_VERSION,
-        std::bind(&SystemImpl::process_autopilot_version, this, _1),
-        this);
 
     _message_handler.register_one(
         MAVLINK_MSG_ID_STATUSTEXT, std::bind(&SystemImpl::process_statustext, this, _1), this);
@@ -195,51 +185,7 @@ void SystemImpl::process_heartbeat(const mavlink_message_t& message)
         }
     }
 
-    // If the component is an autopilot and we don't know its UUID, then try to find out.
-    // If it's an autopilot, set_connected() will be called in process_autopilot_version().
-    if (is_autopilot(message.compid) && !_uuid_initialized) {
-        request_autopilot_version();
-    } else {
-        set_connected();
-    }
-}
-
-void SystemImpl::process_autopilot_version(const mavlink_message_t& message)
-{
-    // Ignore if they don't come from the autopilot component
-    if (message.compid != MavlinkCommandSender::DEFAULT_COMPONENT_ID_AUTOPILOT) {
-        return;
-    }
-
-    mavlink_autopilot_version_t autopilot_version;
-    mavlink_msg_autopilot_version_decode(&message, &autopilot_version);
-
-    _supports_mission_int =
-        ((autopilot_version.capabilities & MAV_PROTOCOL_CAPABILITY_MISSION_INT) ? true : false);
-
-    if (_uuid == 0 && autopilot_version.uid != 0) {
-        // This is the best case. The system has a UUID and we were able to get it.
-        LogDebug() << "Setting UUID to: " << autopilot_version.uid;
-        _uuid = autopilot_version.uid;
-
-    } else if (_uuid == 0 && autopilot_version.uid == 0) {
-        // This is not ideal because the system has no valid UUID.
-        // In this case we use the mavlink system ID as the UUID.
-        LogWarn() << "Fall back to MAVLink system ID " << static_cast<int>(target_address.system_id)
-                  << " because autopilot_version.uid was not set";
-        _uuid = target_address.system_id;
-
-    } else if (_uuid != autopilot_version.uid) {
-        // TODO: this is bad, we should raise a flag to invalidate system.
-        LogErr() << "Error: UUID changed from: " << _uuid << " to " << autopilot_version.uid;
-        _uuid = autopilot_version.uid;
-    }
-
-    _uuid_initialized = true;
     set_connected();
-
-    _autopilot_version_pending = false;
-    unregister_timeout_handler(_autopilot_version_timed_out_cookie);
 }
 
 void SystemImpl::process_statustext(const mavlink_message_t& message)
@@ -441,42 +387,6 @@ bool SystemImpl::send_message(mavlink_message_t& message)
     return _parent.send_message(message);
 }
 
-void SystemImpl::request_autopilot_version()
-{
-    if (_uuid_initialized) {
-        // Already initialized, we can exit.
-        return;
-    }
-
-    if (!_autopilot_version_pending && _uuid_retries >= 3) {
-        // We give up getting a UUID and use the system ID.
-
-        LogWarn() << "No autopilot_version.uid received, using MAVLink system ID instead.";
-        _uuid = target_address.system_id;
-        _uuid_initialized = true;
-        set_connected();
-        return;
-    }
-
-    if (!_autopilot_version_pending) {
-        _autopilot_version_pending = true;
-        send_autopilot_version_request();
-
-        ++_uuid_retries;
-
-        // We set a timeout to stay "pending" for half a second. This way, we
-        // don't give up too early e.g. because multiple components might send
-        // heartbeats and we receive them all at once and run out of retries.
-        // Also, with simulation sped up we might get too many heartbeats in
-        // fast succession.
-
-        register_timeout_handler(
-            [this]() { _autopilot_version_pending = false; },
-            0.5,
-            &_autopilot_version_timed_out_cookie);
-    }
-}
-
 void SystemImpl::send_autopilot_version_request()
 {
     // We don't care about an answer, we mostly care about receiving AUTOPILOT_VERSION.
@@ -508,11 +418,10 @@ void SystemImpl::set_connected()
         std::lock_guard<std::mutex> lock(_connection_mutex);
 
         if (!_connected) {
-            LogDebug() << "Discovered " << _components.size() << " component(s) "
-                       << "(UUID: " << _uuid << ")";
+            LogDebug() << "Discovered " << _components.size() << " component(s)";
 
             _connected = true;
-            _parent.notify_on_discover(_uuid);
+            _parent.notify_on_discover();
 
             // Send a heartbeat back immediately.
             _parent.start_sending_heartbeats();
@@ -554,7 +463,7 @@ void SystemImpl::set_disconnected()
         //_heartbeat_timeout_cookie = nullptr;
 
         _connected = false;
-        _parent.notify_on_timeout(_uuid);
+        _parent.notify_on_timeout();
         if (_is_connected_callback) {
             const auto temp_callback = _is_connected_callback;
             _parent.call_user_callback([temp_callback]() { temp_callback(false); });
@@ -569,12 +478,6 @@ void SystemImpl::set_disconnected()
             plugin_impl->disable();
         }
     }
-}
-
-uint64_t SystemImpl::get_uuid() const
-{
-    // We want to support UUIDs if the autopilot tells us.
-    return _uuid;
 }
 
 uint8_t SystemImpl::get_system_id() const

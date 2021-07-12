@@ -49,12 +49,6 @@ bool System::is_connected() const
     return _system_impl->is_connected();
 }
 
-uint64_t System::get_uuid() const
-{
-    // We want to support UUIDs if the autopilot tells us.
-    return _system_impl->get_uuid();
-}
-
 uint8_t System::get_system_id() const
 {
     return _system_impl->get_system_id();
