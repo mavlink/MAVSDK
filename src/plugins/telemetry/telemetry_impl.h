@@ -352,7 +352,7 @@ private:
     void* _gps_raw_timeout_cookie{nullptr};
     void* _unix_epoch_timeout_cookie{nullptr};
 
-    // Battery info can be extracted form SYS_STATUS or from BATTERY_STATUS.
+    // Battery info can be extracted from SYS_STATUS or from BATTERY_STATUS.
     // If no BATTERY_STATUS messages are received, use info from SYS_STATUS.
     bool _has_bat_status{false};
 };
