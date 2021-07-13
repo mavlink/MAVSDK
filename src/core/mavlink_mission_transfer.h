@@ -43,6 +43,7 @@ public:
         CurrentInvalid,
         ProtocolError,
         InvalidParam,
+        IntMessagesNotSupported
     };
 
     struct ItemInt {
@@ -275,6 +276,8 @@ public:
     void do_work();
     bool is_idle();
 
+    void set_int_messages_supported(bool supported);
+
     // Non-copyable
     MAVLinkMissionTransfer(const MAVLinkMissionTransfer&) = delete;
     const MAVLinkMissionTransfer& operator=(const MAVLinkMissionTransfer&) = delete;
@@ -286,6 +289,8 @@ private:
     TimeoutSCallback _timeout_s_callback;
 
     LockedQueue<WorkItem> _work_queue{};
+
+    bool _int_messages_supported{true};
 };
 
 } // namespace mavsdk

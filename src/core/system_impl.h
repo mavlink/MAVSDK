@@ -129,8 +129,6 @@ public:
     uint8_t get_own_component_id() const;
     uint8_t get_own_mav_type() const;
 
-    bool does_support_mission_int() const { return _supports_mission_int; }
-
     bool is_armed() const { return _armed; }
 
     MAVLinkParameters::Result set_param_float(const std::string& name, float value);
@@ -309,7 +307,6 @@ private:
     std::mutex _statustext_handler_callbacks_mutex{};
     std::vector<StatustextCallback> _statustext_handler_callbacks;
 
-    bool _supports_mission_int{false};
     std::atomic<bool> _armed{false};
     std::atomic<bool> _hitl_enabled{false};
     bool _always_connected{false};

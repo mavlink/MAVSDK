@@ -1758,3 +1758,53 @@ TEST(MAVLinkMissionTransfer, SetCurrentWithRetransmissionWhenWrong)
     mmt.do_work();
     EXPECT_TRUE(mmt.is_idle());
 }
+
+TEST(MAVLinkMissionTransfer, IntMessagesNotSupported)
+{
+    MockSender mock_sender(own_address, target_address);
+    MAVLinkMessageHandler message_handler;
+    FakeTime time;
+    TimeoutHandler timeout_handler(time);
+
+    MAVLinkMissionTransfer mmt(
+        mock_sender, message_handler, timeout_handler, []() { return timeout_s; });
+
+    mmt.set_int_messages_supported(false);
+
+    {
+        std::vector<ItemInt> items;
+        std::promise<void> prom;
+        auto fut = prom.get_future();
+
+        mmt.upload_items_async(MAV_MISSION_TYPE_MISSION, items, [&prom](Result result) {
+            EXPECT_EQ(result, Result::IntMessagesNotSupported);
+            ONCE_ONLY;
+            prom.set_value();
+        });
+        mmt.do_work();
+
+        EXPECT_EQ(fut.wait_for(std::chrono::seconds(1)), std::future_status::ready);
+    }
+
+    mmt.do_work();
+    EXPECT_TRUE(mmt.is_idle());
+
+    {
+        std::promise<void> prom;
+        auto fut = prom.get_future();
+
+        mmt.download_items_async(
+            MAV_MISSION_TYPE_MISSION, [&prom](Result result, std::vector<ItemInt> items) {
+                EXPECT_EQ(result, Result::IntMessagesNotSupported);
+                UNUSED(items);
+                ONCE_ONLY;
+                prom.set_value();
+            });
+        mmt.do_work();
+
+        EXPECT_EQ(fut.wait_for(std::chrono::seconds(1)), std::future_status::ready);
+    }
+
+    mmt.do_work();
+    EXPECT_TRUE(mmt.is_idle());
+}

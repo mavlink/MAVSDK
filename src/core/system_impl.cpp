@@ -64,6 +64,11 @@ void SystemImpl::init(uint8_t system_id, uint8_t comp_id, bool connected)
     _message_handler.register_one(
         MAVLINK_MSG_ID_STATUSTEXT, std::bind(&SystemImpl::process_statustext, this, _1), this);
 
+    _message_handler.register_one(
+        MAVLINK_MSG_ID_AUTOPILOT_VERSION,
+        std::bind(&SystemImpl::process_autopilot_version, this, _1),
+        this);
+
     add_new_component(comp_id);
 }
 
@@ -205,6 +210,15 @@ void SystemImpl::process_statustext(const mavlink_message_t& message)
             entry.callback(maybe_result.value());
         }
     }
+}
+
+void SystemImpl::process_autopilot_version(const mavlink_message_t& message)
+{
+    mavlink_autopilot_version_t autopilot_version;
+    mavlink_msg_autopilot_version_decode(&message, &autopilot_version);
+
+    _mission_transfer.set_int_messages_supported(
+        autopilot_version.capabilities & MAV_PROTOCOL_CAPABILITY_MISSION_INT);
 }
 
 void SystemImpl::heartbeats_timed_out()
@@ -445,6 +459,8 @@ void SystemImpl::set_connected()
         // If not yet connected there is nothing to do/
     }
     if (enable_needed) {
+        send_autopilot_version_request();
+
         std::lock_guard<std::mutex> lock(_plugin_impls_mutex);
         for (auto plugin_impl : _plugin_impls) {
             plugin_impl->enable();
