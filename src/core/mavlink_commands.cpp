@@ -292,7 +292,7 @@ void MavlinkCommandSender::do_work()
 
     {
         std::lock_guard<std::mutex> lock(_sent_commands_mutex);
-        auto was_inserted =
+        const auto was_inserted =
             _sent_commands.insert(std::make_pair(work->mavlink_command, work)).second;
 
         // The command is inserted in the list only if another command with the same id does
