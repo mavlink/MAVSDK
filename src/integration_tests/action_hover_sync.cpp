@@ -92,7 +92,7 @@ void takeoff_and_hover_at_altitude(float altitude_m)
     EXPECT_EQ(action_ret, Action::Result::Success);
 
     EXPECT_TRUE(poll_condition_with_timeout(
-        [telemetry]() { return !telemetry->in_air(); }, std::chrono::seconds(10)));
+        [telemetry]() { return !telemetry->in_air(); }, std::chrono::seconds(20)));
 
     action_ret = action->disarm();
     EXPECT_EQ(action_ret, Action::Result::Success);

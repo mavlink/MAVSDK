@@ -84,7 +84,7 @@ TEST_F(SitlTest, ActionHold)
         std::this_thread::sleep_for(std::chrono::seconds(1));
 
         // TODO: currently we need to wait a long time until landed is detected.
-        ASSERT_LT(++iteration, 20);
+        ASSERT_LT(++iteration, 30);
     }
 
     action_ret = action->disarm();

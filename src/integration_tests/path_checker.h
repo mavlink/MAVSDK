@@ -19,7 +19,7 @@ private:
     float _next_reach_altitude = NAN;
     float _last_altitude_m = NAN;
     bool _reached_altitude = false;
-    float _margin_m = 1.0f;
+    float _margin_m = 2.0f; // FIXME: high margin for filter faults happening on landing
 };
 
 } // namespace mavsdk
