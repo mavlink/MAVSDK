@@ -74,6 +74,11 @@ void TelemetryImpl::init()
         MAVLINK_MSG_ID_SYS_STATUS, std::bind(&TelemetryImpl::process_sys_status, this, _1), this);
 
     _parent->register_mavlink_message_handler(
+        MAVLINK_MSG_ID_BATTERY_STATUS,
+        std::bind(&TelemetryImpl::process_battery_status, this, _1),
+        this);
+
+    _parent->register_mavlink_message_handler(
         MAVLINK_MSG_ID_HEARTBEAT, std::bind(&TelemetryImpl::process_heartbeat, this, _1), this);
 
     _parent->register_mavlink_message_handler(
@@ -1021,6 +1026,7 @@ void TelemetryImpl::process_sys_status(const mavlink_message_t& message)
     mavlink_sys_status_t sys_status;
     mavlink_msg_sys_status_decode(&message, &sys_status);
 
+    if (!_has_bat_status) {
     Telemetry::Battery new_battery;
     new_battery.voltage_v = sys_status.voltage_battery * 1e-3f;
     // FIXME: it is strange calling it percent when the range goes from 0 to 1.
@@ -1035,6 +1041,7 @@ void TelemetryImpl::process_sys_status(const mavlink_message_t& message)
             auto arg = battery();
             _parent->call_user_callback([callback, arg]() { callback(arg); });
         }
+    }
     }
 
     const bool rc_ok =
@@ -1057,6 +1064,29 @@ void TelemetryImpl::process_sys_status(const mavlink_message_t& message)
     if (_health_all_ok_subscription) {
         auto callback = _health_all_ok_subscription;
         auto arg = health_all_ok();
+        _parent->call_user_callback([callback, arg]() { callback(arg); });
+    }
+}
+
+void TelemetryImpl::process_battery_status(const mavlink_message_t& message)
+{
+    mavlink_battery_status_t bat_status;
+    mavlink_msg_battery_status_decode(&message, &bat_status);
+
+    _has_bat_status = true;
+
+    Telemetry::Battery new_battery;
+    new_battery.id = bat_status.id;
+    new_battery.voltage_v = bat_status.voltages[0] * 1e-3f;
+    // FIXME: it is strange calling it percent when the range goes from 0 to 1.
+    new_battery.remaining_percent = bat_status.battery_remaining * 1e-2f;
+
+    set_battery(new_battery);
+
+    std::lock_guard<std::mutex> lock(_subscription_mutex);
+    if (_battery_subscription) {
+        auto callback = _battery_subscription;
+        auto arg = battery();
         _parent->call_user_callback([callback, arg]() { callback(arg); });
     }
 }

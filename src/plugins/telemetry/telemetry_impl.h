@@ -192,6 +192,7 @@ private:
     void process_extended_sys_state(const mavlink_message_t& message);
     void process_fixedwing_metrics(const mavlink_message_t& message);
     void process_sys_status(const mavlink_message_t& message);
+    void process_battery_status(const mavlink_message_t& message);
     void process_heartbeat(const mavlink_message_t& message);
     void process_rc_channels(const mavlink_message_t& message);
     void process_unix_epoch_time(const mavlink_message_t& message);
@@ -350,5 +351,9 @@ private:
     void* _rc_channels_timeout_cookie{nullptr};
     void* _gps_raw_timeout_cookie{nullptr};
     void* _unix_epoch_timeout_cookie{nullptr};
+
+    // Battery info can be extracted form SYS_STATUS or from BATTERY_STATUS.
+    // If no BATTERY_STATUS messages are received, use info from SYS_STATUS.
+    bool _has_bat_status{false};
 };
 } // namespace mavsdk
