@@ -121,7 +121,6 @@ public:
     bool has_camera(int camera_id = -1) const;
     bool has_gimbal() const;
 
-    uint64_t get_uuid() const;
     uint8_t get_system_id() const;
 
     void set_system_id(uint8_t system_id);
@@ -129,8 +128,6 @@ public:
     uint8_t get_own_system_id() const;
     uint8_t get_own_component_id() const;
     uint8_t get_own_mav_type() const;
-
-    bool does_support_mission_int() const { return _supports_mission_int; }
 
     bool is_armed() const { return _armed; }
 
@@ -262,8 +259,6 @@ private:
 
     void request_autopilot_version();
 
-    bool have_uuid() const { return _uuid != 0 && _uuid_initialized; }
-
     void process_heartbeat(const mavlink_message_t& message);
     void process_autopilot_version(const mavlink_message_t& message);
     void process_statustext(const mavlink_message_t& message);
@@ -312,12 +307,6 @@ private:
     std::mutex _statustext_handler_callbacks_mutex{};
     std::vector<StatustextCallback> _statustext_handler_callbacks;
 
-    uint64_t _uuid{0};
-
-    int _uuid_retries = 0;
-    std::atomic<bool> _uuid_initialized{false};
-
-    bool _supports_mission_int{false};
     std::atomic<bool> _armed{false};
     std::atomic<bool> _hitl_enabled{false};
     bool _always_connected{false};

@@ -20,6 +20,13 @@ MAVLinkMissionTransfer::~MAVLinkMissionTransfer() {}
 std::weak_ptr<MAVLinkMissionTransfer::WorkItem> MAVLinkMissionTransfer::upload_items_async(
     uint8_t type, const std::vector<ItemInt>& items, ResultCallback callback)
 {
+    if (!_int_messages_supported) {
+        if (callback) {
+            callback(Result::IntMessagesNotSupported);
+        }
+        return {};
+    }
+
     auto ptr = std::make_shared<UploadWorkItem>(
         _sender, _message_handler, _timeout_handler, type, items, _timeout_s_callback(), callback);
 
@@ -31,6 +38,13 @@ std::weak_ptr<MAVLinkMissionTransfer::WorkItem> MAVLinkMissionTransfer::upload_i
 std::weak_ptr<MAVLinkMissionTransfer::WorkItem>
 MAVLinkMissionTransfer::download_items_async(uint8_t type, ResultAndItemsCallback callback)
 {
+    if (!_int_messages_supported) {
+        if (callback) {
+            callback(Result::IntMessagesNotSupported, {});
+        }
+        return {};
+    }
+
     auto ptr = std::make_shared<DownloadWorkItem>(
         _sender, _message_handler, _timeout_handler, type, _timeout_s_callback(), callback);
 
@@ -804,6 +818,11 @@ void MAVLinkMissionTransfer::ClearWorkItem::callback_and_reset(Result result)
     }
     _callback = nullptr;
     _done = true;
+}
+
+void MAVLinkMissionTransfer::set_int_messages_supported(bool supported)
+{
+    _int_messages_supported = supported;
 }
 
 MAVLinkMissionTransfer::SetCurrentWorkItem::SetCurrentWorkItem(

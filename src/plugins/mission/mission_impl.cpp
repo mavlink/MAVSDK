@@ -151,12 +151,6 @@ void MissionImpl::upload_mission_async(
         return;
     }
 
-    if (!_parent->does_support_mission_int()) {
-        LogWarn() << "Mission int messages not supported";
-        // report_mission_result(callback, Mission::Result::Error);
-        return;
-    }
-
     reset_mission_progress();
 
     wait_for_protocol_async([callback, mission_plan, this]() {
@@ -939,6 +933,8 @@ Mission::Result MissionImpl::convert_result(MAVLinkMissionTransfer::Result resul
             return Mission::Result::Error; // FIXME
         case MAVLinkMissionTransfer::Result::InvalidParam:
             return Mission::Result::InvalidArgument; // FIXME
+        case MAVLinkMissionTransfer::Result::IntMessagesNotSupported:
+            return Mission::Result::Unsupported; // FIXME
         default:
             return Mission::Result::Unknown;
     }
