@@ -7,74 +7,74 @@ import "mavsdk_options.proto";
 option java_package = "io.mavsdk.param_server";
 option java_outer_classname = "ParamServerProto";
 
-// Provide raw access to get and set parameters.
+// Provide raw access to retrieve and provide server parameters.
 service ParamServerService {
     /*
-     * Get an int parameter.
+     * Retrieve an int parameter.
      *
      * If the type is wrong, the result will be `WRONG_TYPE`.
      */
-    rpc GetParamInt(GetParamIntRequest) returns(GetParamIntResponse) { option (mavsdk.options.async_type) = SYNC; }
+    rpc RetrieveParamInt(RetrieveParamIntRequest) returns(RetrieveParamIntResponse) { option (mavsdk.options.async_type) = SYNC; }
     /*
-     * Set an int parameter.
+     * Provide an int parameter.
      *
      * If the type is wrong, the result will be `WRONG_TYPE`.
      */
-    rpc SetParamInt(SetParamIntRequest) returns(SetParamIntResponse) { option (mavsdk.options.async_type) = SYNC; }
+    rpc ProvideParamInt(ProvideParamIntRequest) returns(ProvideParamIntResponse) { option (mavsdk.options.async_type) = SYNC; }
     /*
-     * Get a float parameter.
+     * Retrieve a float parameter.
      *
      * If the type is wrong, the result will be `WRONG_TYPE`.
      */
-    rpc GetParamFloat(GetParamFloatRequest) returns(GetParamFloatResponse) { option (mavsdk.options.async_type) = SYNC; }
+    rpc RetrieveParamFloat(RetrieveParamFloatRequest) returns(RetrieveParamFloatResponse) { option (mavsdk.options.async_type) = SYNC; }
     /*
-     * Set a float parameter.
+     * Provide a float parameter.
      *
      * If the type is wrong, the result will be `WRONG_TYPE`.
      */
-    rpc SetParamFloat(SetParamFloatRequest) returns(SetParamFloatResponse) { option (mavsdk.options.async_type) = SYNC; }
+    rpc ProvideParamFloat(ProvideParamFloatRequest) returns(ProvideParamFloatResponse) { option (mavsdk.options.async_type) = SYNC; }
     /*
-     * Get all parameters.
+     * Retrieve all parameters.
      */
-    rpc GetAllParams(GetAllParamsRequest) returns(GetAllParamsResponse) { option (mavsdk.options.async_type) = SYNC; }
+    rpc RetrieveAllParams(RetrieveAllParamsRequest) returns(RetrieveAllParamsResponse) { option (mavsdk.options.async_type) = SYNC; }
 }
 
-message GetParamIntRequest {
+message RetrieveParamIntRequest {
     string name = 1; // Name of the parameter
 }
 
-message GetParamIntResponse {
+message RetrieveParamIntResponse {
     ParamServerResult param_result = 1;
     int32 value = 2; // Value of the requested parameter
 }
 
-message SetParamIntRequest {
-    string name = 1; // Name of the parameter to set
+message ProvideParamIntRequest {
+    string name = 1; // Name of the parameter to provide
     int32 value = 2; // Value the parameter should be set to
 }
-message SetParamIntResponse {
+message ProvideParamIntResponse {
     ParamServerResult param_result = 1;
 }
 
-message GetParamFloatRequest {
+message RetrieveParamFloatRequest {
     string name = 1; // Name of the parameter
 }
-message GetParamFloatResponse {
+message RetrieveParamFloatResponse {
     ParamServerResult param_result = 1;
     float value = 2; // Value of the requested parameter
 }
 
-message SetParamFloatRequest {
-    string name = 1; // Name of the parameter to set
+message ProvideParamFloatRequest {
+    string name = 1; // Name of the parameter to provide
     float value = 2; // Value the parameter should be set to
 }
-message SetParamFloatResponse {
+message ProvideParamFloatResponse {
     ParamServerResult param_result = 1;
 }
 
-message GetAllParamsRequest {}
+message RetrieveAllParamsRequest {}
 
-message GetAllParamsResponse {
+message RetrieveAllParamsResponse {
     AllParams params = 1; // Collection of all parameters
 }
 
