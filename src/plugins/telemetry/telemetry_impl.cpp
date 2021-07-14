@@ -1082,7 +1082,7 @@ void TelemetryImpl::process_battery_status(const mavlink_message_t& message)
     new_battery.remaining_percent = bat_status.battery_remaining * 1e-2f;
 
     set_battery(new_battery);
-    
+
     {
         std::lock_guard<std::mutex> lock(_subscription_mutex);
         if (_battery_subscription) {
