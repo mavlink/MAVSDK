@@ -147,6 +147,10 @@ public:
     void set_param_ext_int_async(
         const std::string& name, int32_t value, success_t callback, const void* cookie);
 
+    void provide_server_param_float(const std::string& name, float value);
+    void provide_server_param_int(const std::string& name, int32_t value);
+    std::map<std::string, MAVLinkParameters::ParamValue> retrieve_all_server_params();
+
     using SubscribeParamIntCallback = std::function<void(int)>;
     void subscribe_param_int(
         const std::string& name, SubscribeParamIntCallback callback, const void* cookie);
@@ -168,6 +172,10 @@ public:
         get_param_float_callback_t;
     typedef std::function<void(MAVLinkParameters::Result result, int32_t value)>
         get_param_int_callback_t;
+
+    std::pair<MAVLinkParameters::Result, float>
+    retrieve_server_param_float(const std::string& name);
+    std::pair<MAVLinkParameters::Result, int> retrieve_server_param_int(const std::string& name);
 
     std::pair<MAVLinkParameters::Result, float> get_param_float(const std::string& name);
     std::pair<MAVLinkParameters::Result, int> get_param_int(const std::string& name);
