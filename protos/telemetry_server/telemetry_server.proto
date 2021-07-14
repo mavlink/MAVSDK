@@ -1,0 +1,464 @@
+syntax = "proto3";
+
+package mavsdk.rpc.telemetry_server;
+
+import "mavsdk_options.proto";
+
+option java_package = "io.mavsdk.telemetry_server";
+option java_outer_classname = "TelemetryServerProto";
+
+/*
+ * Allow users to provide vehicle telemetry and state information
+ * (e.g. battery, GPS, RC connection, flight mode etc.) and set telemetry update rates.
+ */
+service TelemetryServerService {
+    // Publish to 'position' updates.
+    rpc PublishPosition(PublishPositionRequest) returns(PublishTelemetryResponse) {}
+    // Publish to 'home position' updates.
+    rpc PublishHome(PublishHomeRequest) returns(PublishTelemetryResponse) {}
+    // Publish to armed updates.
+    rpc PublishArmed(PublishArmedRequest) returns(PublishTelemetryResponse) {}
+    // Publish to 'Raw GPS' updates.
+    rpc PublishRawGps(PublishRawGpsRequest) returns(PublishTelemetryResponse) {}
+    // Publish to 'battery' updates.
+    rpc PublishBattery(PublishBatteryRequest) returns(PublishTelemetryResponse) {}
+    // Publish to 'flight mode' updates.
+    rpc PublishFlightMode(PublishFlightModeRequest) returns(PublishTelemetryResponse) {}
+    // Publish to 'health' updates.
+    rpc PublishHealth(PublishHealthRequest) returns(PublishTelemetryResponse) {}
+    // Publish to 'status text' updates.
+    rpc PublishStatusText(PublishStatusTextRequest) returns(PublishTelemetryResponse) {}
+    // Publish to 'odometry' updates.
+    rpc PublishOdometry(PublishOdometryRequest) returns(PublishTelemetryResponse) {}
+    // Publish to 'position velocity' updates.
+    rpc PublishPositionVelocityNed(PublishPositionVelocityNedRequest) returns(PublishTelemetryResponse) {}
+    // Publish to 'ground truth' updates.
+    rpc PublishGroundTruth(PublishGroundTruthRequest) returns(PublishTelemetryResponse) {}
+    // Publish to 'IMU' updates (in SI units in NED body frame).
+    rpc PublishImu(PublishImuRequest) returns(PublishTelemetryResponse) {}
+    // Publish to 'Scaled IMU' updates.
+    rpc PublishScaledImu(PublishScaledImuRequest) returns(PublishTelemetryResponse) {}
+    // Publish to 'Raw IMU' updates.
+    rpc PublishRawImu(PublishRawImuRequest) returns(PublishTelemetryResponse) {}
+    // Publish to 'HealthAllOk' updates.
+    rpc PublishHealthAllOk(PublishHealthAllOkRequest) returns(PublishTelemetryResponse) {}
+    // Publish to 'unix epoch time' updates.
+    rpc PublishUnixEpochTime(PublishUnixEpochTimeRequest) returns(PublishTelemetryResponse) {}
+
+    // Get the GPS location of where the estimator has been initialized.
+    rpc GetGpsGlobalOrigin(GetGpsGlobalOriginRequest) returns(GetGpsGlobalOriginResponse) {}
+}
+
+message PublishTelemetryResponse {
+    TelemetryServerResult telemetry_server_result = 1;
+}
+
+message PublishPositionRequest {
+    Position position = 1; // The next position
+    VelocityNed velocity_ned = 2; // The next velocity (NED)
+}
+
+message PublishHomeRequest {
+    Position home = 1; // The next home position
+}
+
+message PublishInAirRequest {
+    bool is_in_air = 1; // The next 'in-air' state
+}
+
+message PublishLandedStateRequest {
+    LandedState landed_state = 1; // The next 'landed' state
+}
+
+message PublishArmedRequest {
+   bool is_armed = 1; // The next 'armed' state
+}
+
+message PublishRawGpsRequest {
+    RawGps raw_gps = 1; // The next 'Raw GPS' state. Warning: this is an advanced feature, use `Position` updates to get the location of the drone!
+    GpsInfo gps_info = 2; // The next 'GPS info' state
+}
+
+message PublishBatteryRequest {
+    Battery battery = 1; // The next 'battery' state
+}
+
+message PublishFlightModeRequest {
+    FlightMode flight_mode = 1; // The next flight mode
+}
+
+message PublishHealthRequest {
+    Health health = 1; // The next 'health' state
+}
+
+message PublishRcStatusRequest {
+    RcStatus rc_status = 1; // The next RC status
+}
+
+message PublishStatusTextRequest {
+    StatusText status_text = 1; // The next 'status text'
+}
+
+message PublishOdometryRequest {
+    Odometry odometry = 1; // The next odometry status
+}
+
+message PublishPositionVelocityNedRequest {
+    PositionVelocityNed position_velocity_ned = 1; // The next position and velocity status
+}
+
+message PublishGroundTruthRequest {
+    GroundTruth ground_truth = 1; // Ground truth position information available in simulation
+}
+
+message PublishImuRequest {
+    Imu imu = 1; // The next IMU status
+}
+
+message PublishScaledImuRequest {
+    Imu imu = 1; // The next scaled IMU status
+}
+
+message PublishRawImuRequest {
+    Imu imu = 1; // The next raw IMU status
+}
+
+message PublishHealthAllOkRequest {
+    bool is_health_all_ok = 1; // The next 'health all ok' status
+}
+
+message PublishUnixEpochTimeRequest {
+    uint64 time_us = 1; // The next 'unix epoch time' status
+}
+
+message GetGpsGlobalOriginRequest {}
+message GetGpsGlobalOriginResponse {
+    TelemetryServerResult telemetry_result = 1;
+    GpsGlobalOrigin gps_global_origin = 2;
+}
+
+// Position type in global coordinates.
+message Position {
+    double latitude_deg = 1 [(mavsdk.options.default_value)="NaN"]; // Latitude in degrees (range: -90 to +90)
+    double longitude_deg = 2 [(mavsdk.options.default_value)="NaN"]; // Longitude in degrees (range: -180 to +180)
+    float absolute_altitude_m = 3 [(mavsdk.options.default_value)="NaN"]; // Altitude AMSL (above mean sea level) in metres
+    float relative_altitude_m = 4 [(mavsdk.options.default_value)="NaN"]; // Altitude relative to takeoff altitude in metres
+}
+
+/*
+ * Quaternion type.
+ *
+ * All rotations and axis systems follow the right-hand rule.
+ * The Hamilton quaternion product definition is used.
+ * A zero-rotation quaternion is represented by (1,0,0,0).
+ * The quaternion could also be written as w + xi + yj + zk.
+ *
+ * For more info see: https://en.wikipedia.org/wiki/Quaternion
+ */
+message Quaternion {
+    float w = 1 [(mavsdk.options.default_value)="NaN"]; // Quaternion entry 0, also denoted as a
+    float x = 2 [(mavsdk.options.default_value)="NaN"]; // Quaternion entry 1, also denoted as b
+    float y = 3 [(mavsdk.options.default_value)="NaN"]; // Quaternion entry 2, also denoted as c
+    float z = 4 [(mavsdk.options.default_value)="NaN"]; // Quaternion entry 3, also denoted as d
+    uint64 timestamp_us = 5; // Timestamp in microseconds
+}
+
+/*
+ * Euler angle type.
+ *
+ * All rotations and axis systems follow the right-hand rule.
+ * The Euler angles follow the convention of a 3-2-1 intrinsic Tait-Bryan rotation sequence.
+ *
+ * For more info see https://en.wikipedia.org/wiki/Euler_angles
+ */
+message EulerAngle {
+    float roll_deg = 1 [(mavsdk.options.default_value)="NaN"]; // Roll angle in degrees, positive is banking to the right
+    float pitch_deg = 2 [(mavsdk.options.default_value)="NaN"]; // Pitch angle in degrees, positive is pitching nose up
+    float yaw_deg = 3 [(mavsdk.options.default_value)="NaN"]; // Yaw angle in degrees, positive is clock-wise seen from above
+    uint64 timestamp_us = 4; // Timestamp in microseconds
+}
+
+// Angular velocity type.
+message AngularVelocityBody {
+    float roll_rad_s = 1 [(mavsdk.options.default_value)="NaN"]; // Roll angular velocity
+    float pitch_rad_s = 2 [(mavsdk.options.default_value)="NaN"]; // Pitch angular velocity
+    float yaw_rad_s = 3 [(mavsdk.options.default_value)="NaN"]; // Yaw angular velocity
+}
+
+// GPS information type.
+message GpsInfo {
+    int32 num_satellites = 1 [(mavsdk.options.default_value)="0"]; // Number of visible satellites in use
+    FixType fix_type = 2; // Fix type
+}
+
+/*
+ * Raw GPS information type.
+ *
+ * Warning: this is an advanced type! If you want the location of the drone, use
+ * the position instead. This message exposes the raw values of the GNSS sensor.
+ */
+ message RawGps {
+     uint64 timestamp_us = 1; // Timestamp in microseconds (UNIX Epoch time or time since system boot, to be inferred)
+     double latitude_deg = 2; // Latitude in degrees (WGS84, EGM96 ellipsoid)
+     double longitude_deg = 3; // Longitude in degrees (WGS84, EGM96 ellipsoid)
+     float absolute_altitude_m = 4; // Altitude AMSL (above mean sea level) in metres
+     float hdop = 5; // GPS HDOP horizontal dilution of position (unitless). If unknown, set to NaN
+     float vdop = 6; // GPS VDOP vertical dilution of position (unitless). If unknown, set to NaN
+     float velocity_m_s = 7; // Ground velocity in metres per second
+     float cog_deg = 8; // Course over ground (NOT heading, but direction of movement) in degrees. If unknown, set to NaN
+     float altitude_ellipsoid_m = 9; // Altitude in metres (above WGS84, EGM96 ellipsoid)
+     float horizontal_uncertainty_m = 10; // Position uncertainty in metres
+     float vertical_uncertainty_m = 11; // Altitude uncertainty in metres
+     float velocity_uncertainty_m_s = 12; // Velocity uncertainty in metres per second
+     float heading_uncertainty_deg = 13; // Heading uncertainty in degrees
+     float yaw_deg = 14; // Yaw in earth frame from north.
+ }
+
+// GPS fix type.
+enum FixType {
+    FIX_TYPE_NO_GPS = 0; // No GPS connected
+    FIX_TYPE_NO_FIX = 1; // No position information, GPS is connected
+    FIX_TYPE_FIX_2D = 2; // 2D position
+    FIX_TYPE_FIX_3D = 3; // 3D position
+    FIX_TYPE_FIX_DGPS = 4; // DGPS/SBAS aided 3D position
+    FIX_TYPE_RTK_FLOAT = 5; // RTK float, 3D position
+    FIX_TYPE_RTK_FIXED = 6; // RTK Fixed, 3D position
+}
+
+// Battery type.
+message Battery {
+    float voltage_v = 1 [(mavsdk.options.default_value)="NaN"]; // Voltage in volts
+    float remaining_percent = 2 [(mavsdk.options.default_value)="NaN"]; // Estimated battery remaining (range: 0.0 to 1.0)
+}
+
+/*
+ * Flight modes.
+ *
+ * For more information about flight modes, check out
+ * https://docs.px4.io/master/en/config/flight_mode.html.
+ */
+enum FlightMode {
+    FLIGHT_MODE_UNKNOWN = 0; // Mode not known
+    FLIGHT_MODE_READY = 1; // Armed and ready to take off
+    FLIGHT_MODE_TAKEOFF = 2; // Taking off
+    FLIGHT_MODE_HOLD = 3; // Holding (hovering in place (or circling for fixed-wing vehicles)
+    FLIGHT_MODE_MISSION = 4; // In mission
+    FLIGHT_MODE_RETURN_TO_LAUNCH = 5; // Returning to launch position (then landing)
+    FLIGHT_MODE_LAND = 6; // Landing
+    FLIGHT_MODE_OFFBOARD = 7; // In 'offboard' mode
+    FLIGHT_MODE_FOLLOW_ME = 8; // In 'follow-me' mode
+    FLIGHT_MODE_MANUAL = 9; // In 'Manual' mode
+    FLIGHT_MODE_ALTCTL = 10; // In 'Altitude Control' mode
+    FLIGHT_MODE_POSCTL = 11; // In 'Position Control' mode
+    FLIGHT_MODE_ACRO = 12; // In 'Acro' mode
+    FLIGHT_MODE_STABILIZED = 13; // In 'Stabilize' mode
+    FLIGHT_MODE_RATTITUDE = 14; // In 'Rattitude' mode
+}
+
+// Health type.
+message Health {
+    bool is_gyrometer_calibration_ok = 1 [(mavsdk.options.default_value)="false"]; // True if the gyrometer is calibrated
+    bool is_accelerometer_calibration_ok = 2 [(mavsdk.options.default_value)="false"]; // True if the accelerometer is calibrated
+    bool is_magnetometer_calibration_ok = 3 [(mavsdk.options.default_value)="false"]; // True if the magnetometer is calibrated
+    bool is_local_position_ok = 5 [(mavsdk.options.default_value)="false"]; // True if the local position estimate is good enough to fly in 'position control' mode
+    bool is_global_position_ok = 6 [(mavsdk.options.default_value)="false"]; // True if the global position estimate is good enough to fly in 'position control' mode
+    bool is_home_position_ok = 7 [(mavsdk.options.default_value)="false"]; // True if the home position has been initialized properly
+    bool is_armable = 8 [(mavsdk.options.default_value)="false"]; // True if system can be armed
+}
+
+// Remote control status type.
+message RcStatus {
+    bool was_available_once = 1 [(mavsdk.options.default_value)="false"]; // True if an RC signal has been available once
+    bool is_available = 2 [(mavsdk.options.default_value)="false"]; // True if the RC signal is available now
+    float signal_strength_percent = 3 [(mavsdk.options.default_value)="NaN"]; // Signal strength (range: 0 to 100, NaN if unknown)
+}
+
+// Status types.
+enum StatusTextType {
+    STATUS_TEXT_TYPE_DEBUG = 0; // Debug
+    STATUS_TEXT_TYPE_INFO = 1; // Information
+    STATUS_TEXT_TYPE_NOTICE = 2; // Notice
+    STATUS_TEXT_TYPE_WARNING = 3; // Warning
+    STATUS_TEXT_TYPE_ERROR = 4; // Error
+    STATUS_TEXT_TYPE_CRITICAL = 5; // Critical
+    STATUS_TEXT_TYPE_ALERT = 6; // Alert
+    STATUS_TEXT_TYPE_EMERGENCY = 7; // Emergency
+}
+
+// StatusText information type.
+message StatusText {
+    StatusTextType type = 1; // Message type
+    string text = 2; // MAVLink status message
+}
+
+// Actuator control target type.
+message ActuatorControlTarget {
+    int32 group = 1 [(mavsdk.options.default_value)="0"]; // An actuator control group is e.g. 'attitude' for the core flight controls, or 'gimbal' for a payload.
+    repeated float controls = 2; // Controls normed from -1 to 1, where 0 is neutral position.
+}
+
+// Actuator output status type.
+message ActuatorOutputStatus {
+    uint32 active = 1 [(mavsdk.options.default_value)="0"]; // Active outputs
+    repeated float actuator = 2; // Servo/motor output values
+}
+
+// Landed State enumeration.
+enum LandedState {
+    LANDED_STATE_UNKNOWN = 0; // Landed state is unknown
+    LANDED_STATE_ON_GROUND = 1; // The vehicle is on the ground
+    LANDED_STATE_IN_AIR = 2; // The vehicle is in the air
+    LANDED_STATE_TAKING_OFF = 3; // The vehicle is taking off
+    LANDED_STATE_LANDING = 4; // The vehicle is landing
+}
+
+/*
+ * Covariance type.
+ *
+ * Row-major representation of a 6x6 cross-covariance matrix
+ * upper right triangle.
+ * Set first to NaN if unknown.
+ */
+message Covariance {
+    repeated float covariance_matrix = 1; // Representation of a covariance matrix.
+}
+
+// Velocity type, represented in the Body (X Y Z) frame and in metres/second.
+message VelocityBody {
+    float x_m_s = 1; // Velocity in X in metres/second
+    float y_m_s = 2; // Velocity in Y in metres/second
+    float z_m_s = 3; // Velocity in Z in metres/second
+}
+
+// Position type, represented in the Body (X Y Z) frame
+message PositionBody {
+    float x_m = 1; // X Position in metres.
+    float y_m = 2; // Y Position in metres.
+    float z_m = 3; // Z Position in metres.
+}
+
+// Odometry message type.
+message Odometry {
+    // Mavlink frame id
+    enum MavFrame {
+        MAV_FRAME_UNDEF = 0; // Frame is undefined.
+        MAV_FRAME_BODY_NED = 8; // Setpoint in body NED frame. This makes sense if all position control is externalized - e.g. useful to command 2 m/s^2 acceleration to the right.
+        MAV_FRAME_VISION_NED = 16; // Odometry local coordinate frame of data given by a vision estimation system, Z-down (x: north, y: east, z: down).
+        MAV_FRAME_ESTIM_NED = 18; // Odometry local coordinate frame of data given by an estimator running onboard the vehicle, Z-down (x: north, y: east, z: down).
+    }
+
+    uint64 time_usec = 1; // Timestamp (0 to use Backend timestamp).
+    MavFrame frame_id = 2; // Coordinate frame of reference for the pose data.
+    MavFrame child_frame_id = 3;  // Coordinate frame of reference for the velocity in free space (twist) data.
+    PositionBody position_body = 4; // Position.
+    Quaternion q = 5; // Quaternion components, w, x, y, z (1 0 0 0 is the null-rotation).
+    VelocityBody velocity_body = 6; // Linear velocity (m/s).
+    AngularVelocityBody angular_velocity_body = 7; // Angular velocity (rad/s).
+    Covariance pose_covariance = 8; // Pose cross-covariance matrix.
+    Covariance velocity_covariance = 9; // Velocity cross-covariance matrix.
+}
+
+// DistanceSensor message type.
+message DistanceSensor {
+    float minimum_distance_m = 1 [(mavsdk.options.default_value)="NaN"]; // Minimum distance the sensor can measure, NaN if unknown.
+    float maximum_distance_m = 2 [(mavsdk.options.default_value)="NaN"]; // Maximum distance the sensor can measure, NaN if unknown.
+    float current_distance_m = 3 [(mavsdk.options.default_value)="NaN"]; // Current distance reading, NaN if unknown.
+}
+
+// Scaled Pressure message type.
+message ScaledPressure {
+    uint64 timestamp_us = 1; // Timestamp (time since system boot)
+    float absolute_pressure_hpa = 2; // Absolute pressure in hPa
+    float differential_pressure_hpa = 3; // Differential pressure 1 in hPa
+    float temperature_deg = 4; // Absolute pressure temperature (in celsius)
+    float differential_pressure_temperature_deg = 5; // Differential pressure temperature (in celsius, 0 if not available)
+}
+
+// PositionNed message type.
+message PositionNed {
+    float north_m = 1 [(mavsdk.options.default_value)="NaN"]; // Position along north direction in metres
+    float east_m = 2 [(mavsdk.options.default_value)="NaN"]; // Position along east direction in metres
+    float down_m = 3 [(mavsdk.options.default_value)="NaN"]; // Position along down direction in metres
+}
+
+// VelocityNed message type.
+message VelocityNed {
+    float north_m_s = 1; // Velocity along north direction in metres per second
+    float east_m_s = 2; // Velocity along east direction in metres per second
+    float down_m_s = 3; // Velocity along down direction in metres per second
+}
+
+// PositionVelocityNed message type.
+message PositionVelocityNed {
+    PositionNed position = 1; // Position (NED)
+    VelocityNed velocity = 2; // Velocity (NED)
+}
+
+// GroundTruth message type.
+message GroundTruth {
+    double latitude_deg = 1 [(mavsdk.options.default_value)="NaN"]; // Latitude in degrees (range: -90 to +90)
+    double longitude_deg = 2 [(mavsdk.options.default_value)="NaN"]; // Longitude in degrees (range: -180 to 180)
+    float absolute_altitude_m = 3 [(mavsdk.options.default_value)="NaN"]; // Altitude AMSL (above mean sea level) in metres
+}
+
+// FixedwingMetrics message type.
+message FixedwingMetrics {
+    float airspeed_m_s = 1 [(mavsdk.options.default_value)="NaN"]; // Current indicated airspeed (IAS) in metres per second
+    float throttle_percentage = 2 [(mavsdk.options.default_value)="NaN"]; // Current throttle setting (0 to 100)
+    float climb_rate_m_s = 3 [(mavsdk.options.default_value)="NaN"]; // Current climb rate in metres per second
+}
+
+// AccelerationFrd message type.
+message AccelerationFrd {
+    float forward_m_s2 = 1 [(mavsdk.options.default_value)="NaN"]; // Acceleration in forward direction in metres per second^2
+    float right_m_s2 = 2 [(mavsdk.options.default_value)="NaN"]; // Acceleration in right direction in metres per second^2
+    float down_m_s2 = 3 [(mavsdk.options.default_value)="NaN"]; // Acceleration in down direction in metres per second^2
+}
+
+// AngularVelocityFrd message type.
+message AngularVelocityFrd {
+    float forward_rad_s = 1 [(mavsdk.options.default_value)="NaN"]; // Angular velocity in forward direction in radians per second
+    float right_rad_s = 2 [(mavsdk.options.default_value)="NaN"]; // Angular velocity in right direction in radians per second
+    float down_rad_s = 3 [(mavsdk.options.default_value)="NaN"]; // Angular velocity in Down direction in radians per second
+}
+
+// MagneticFieldFrd message type.
+message MagneticFieldFrd {
+    float forward_gauss = 1 [(mavsdk.options.default_value)="NaN"]; // Magnetic field in forward direction measured in Gauss
+    float right_gauss = 2 [(mavsdk.options.default_value)="NaN"]; // Magnetic field in East direction measured in Gauss
+    float down_gauss = 3 [(mavsdk.options.default_value)="NaN"]; // Magnetic field in Down direction measured in Gauss
+}
+
+// Imu message type.
+message Imu {
+    AccelerationFrd acceleration_frd = 1; // Acceleration
+    AngularVelocityFrd angular_velocity_frd = 2; // Angular velocity
+    MagneticFieldFrd magnetic_field_frd = 3; // Magnetic field
+    float temperature_degc = 4 [(mavsdk.options.default_value)="NaN"]; // Temperature
+    uint64 timestamp_us = 5; // Timestamp in microseconds
+}
+
+// Gps global origin type.
+message GpsGlobalOrigin {
+    double latitude_deg = 1 [(mavsdk.options.default_value)="NaN"]; // Latitude of the origin
+    double longitude_deg = 2 [(mavsdk.options.default_value)="NaN"]; // Longitude of the origin
+    float altitude_m = 3 [(mavsdk.options.default_value)="NaN"]; // Altitude AMSL (above mean sea level) in metres
+}
+
+// Result type.
+message TelemetryServerResult {
+    // Possible results returned for telemetry requests.
+    enum Result {
+        RESULT_UNKNOWN = 0; // Unknown result
+        RESULT_SUCCESS = 1; // Success: the telemetry command was accepted by the vehicle
+        RESULT_NO_SYSTEM = 2; // No system connected
+        RESULT_CONNECTION_ERROR = 3; // Connection error
+        RESULT_BUSY = 4; // Vehicle is busy
+        RESULT_COMMAND_DENIED = 5; // Command refused by vehicle
+        RESULT_TIMEOUT = 6; // Request timed out
+        RESULT_UNSUPPORTED = 7; // Request not supported
+    }
+
+    Result result = 1; // Result enum value
+    string result_str = 2; // Human-readable English string describing the result
+}
