@@ -86,7 +86,7 @@ ParamServerImpl::result_from_mavlink_parameters_result(MAVLinkParameters::Result
     switch (result) {
         case MAVLinkParameters::Result::Success:
             return ParamServer::Result::Success;
-        case MAVLinkParameters::Result::Timeout:
+        case MAVLinkParameters::Result::NotFound:
             return ParamServer::Result::NotFound;
         case MAVLinkParameters::Result::ParamNameTooLong:
             return ParamServer::Result::ParamNameTooLong;
