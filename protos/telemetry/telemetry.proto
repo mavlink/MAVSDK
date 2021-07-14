@@ -538,6 +538,7 @@ enum FixType {
 
 // Battery type.
 message Battery {
+    uint32 id = 3 [(mavsdk.options.default_value)="0"]; // Battery ID, for systems with multiple batteries
     float voltage_v = 1 [(mavsdk.options.default_value)="NaN"]; // Voltage in volts
     float remaining_percent = 2 [(mavsdk.options.default_value)="NaN"]; // Estimated battery remaining (range: 0.0 to 1.0)
 }
