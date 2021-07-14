@@ -487,6 +487,8 @@ public:
     {
         auto rpc_obj = std::make_unique<rpc::telemetry::Battery>();
 
+        rpc_obj->set_id(battery.id);
+
         rpc_obj->set_voltage_v(battery.voltage_v);
 
         rpc_obj->set_remaining_percent(battery.remaining_percent);
@@ -498,6 +500,8 @@ public:
     translateFromRpcBattery(const rpc::telemetry::Battery& battery)
     {
         mavsdk::Telemetry::Battery obj;
+
+        obj.id = battery.id();
 
         obj.voltage_v = battery.voltage_v();
 

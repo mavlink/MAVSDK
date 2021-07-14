@@ -739,7 +739,8 @@ std::ostream& operator<<(std::ostream& str, Telemetry::RawGps const& raw_gps)
 
 bool operator==(const Telemetry::Battery& lhs, const Telemetry::Battery& rhs)
 {
-    return ((std::isnan(rhs.voltage_v) && std::isnan(lhs.voltage_v)) ||
+    return (rhs.id == lhs.id) &&
+           ((std::isnan(rhs.voltage_v) && std::isnan(lhs.voltage_v)) ||
             rhs.voltage_v == lhs.voltage_v) &&
            ((std::isnan(rhs.remaining_percent) && std::isnan(lhs.remaining_percent)) ||
             rhs.remaining_percent == lhs.remaining_percent);
@@ -749,6 +750,7 @@ std::ostream& operator<<(std::ostream& str, Telemetry::Battery const& battery)
 {
     str << std::setprecision(15);
     str << "battery:" << '\n' << "{\n";
+    str << "    id: " << battery.id << '\n';
     str << "    voltage_v: " << battery.voltage_v << '\n';
     str << "    remaining_percent: " << battery.remaining_percent << '\n';
     str << '}';
