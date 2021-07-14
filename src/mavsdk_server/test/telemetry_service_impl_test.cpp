@@ -101,7 +101,8 @@ protected:
     FixType translateRPCGpsFixType(RPCFixType fixType) const;
 
     void checkSendsBatteryEvents(const std::vector<Battery>& battery_events) const;
-    Battery createBattery(const uint32_t id, const float voltage_v, const float remaining_percent) const;
+    Battery
+    createBattery(const uint32_t id, const float voltage_v, const float remaining_percent) const;
     std::future<void> subscribeBatteryAsync(std::vector<Battery>& battery_events) const;
 
     void checkSendsFlightModeEvents(const std::vector<FlightMode>& flight_mode_events) const;
@@ -827,8 +828,8 @@ TEST_F(TelemetryServiceImplTest, sendsOneBatteryEvent)
     checkSendsBatteryEvents(battery_events);
 }
 
-Battery
-TelemetryServiceImplTest::createBattery(const uint32_t id, const float voltage_v, const float remaining_percent) const
+Battery TelemetryServiceImplTest::createBattery(
+    const uint32_t id, const float voltage_v, const float remaining_percent) const
 {
     Battery battery;
     battery.id = id;
