@@ -17,15 +17,15 @@ public:
     void enable() override;
     void disable() override;
 
-    std::pair<ParamServer::Result, int32_t> get_param_int(std::string name) const;
+    std::pair<ParamServer::Result, int32_t> retrieve_param_int(std::string name) const;
 
-    ParamServer::Result set_param_int(std::string name, int32_t value);
+    ParamServer::Result provide_param_int(std::string name, int32_t value);
 
-    std::pair<ParamServer::Result, float> get_param_float(std::string name) const;
+    std::pair<ParamServer::Result, float> retrieve_param_float(std::string name) const;
 
-    ParamServer::Result set_param_float(std::string name, float value);
+    ParamServer::Result provide_param_float(std::string name, float value);
 
-    ParamServer::AllParams get_all_params() const;
+    ParamServer::AllParams retrieve_all_params() const;
 
     ParamServer::Result result_from_mavlink_parameters_result(MAVLinkParameters::Result result);
 

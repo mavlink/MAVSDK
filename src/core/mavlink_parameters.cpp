@@ -44,7 +44,7 @@ MAVLinkParameters::~MAVLinkParameters()
     _parent.unregister_all_mavlink_message_handlers(this);
 }
 
-void MAVLinkParameters::set_server_param(const std::string& name, const ParamValue& value)
+void MAVLinkParameters::provide_server_param(const std::string& name, const ParamValue& value)
 {
     _param_server_store.insert_or_assign(name, value);
 }
@@ -123,19 +123,22 @@ void MAVLinkParameters::get_param_async(
     _work_queue.push_back(new_work);
 }
 
-std::map<std::string, MAVLinkParameters::ParamValue> MAVLinkParameters::get_all_server_params()
+std::map<std::string, MAVLinkParameters::ParamValue> MAVLinkParameters::retrieve_all_server_params()
 {
     return _param_server_store;
 }
 
 std::pair<MAVLinkParameters::Result, MAVLinkParameters::ParamValue>
-MAVLinkParameters::get_server_param(const std::string& name, ParamValue value_type)
+MAVLinkParameters::retrieve_server_param(const std::string& name, ParamValue value_type)
 {
     if (_param_server_store.find(name) != _param_server_store.end()) {
         auto value = _param_server_store.at(name);
-        return {MAVLinkParameters::Result::Success, value};
+        if (value.is_same_type(value_type))
+            return {MAVLinkParameters::Result::Success, value};
+        else
+            return {MAVLinkParameters::Result::WrongType, {}};
     }
-    return {MAVLinkParameters::Result::WrongType, {}};
+    return {MAVLinkParameters::Result::NotFound, {}};
 }
 
 std::pair<MAVLinkParameters::Result, MAVLinkParameters::ParamValue>
@@ -472,6 +475,8 @@ void MAVLinkParameters::process_param_value(const mavlink_message_t& message)
             // _parent.get_time().elapsed_since_s(_last_request_time);
             work_queue_guard.pop_front();
         } break;
+        default:
+            break;
     }
 }
 
@@ -543,6 +548,8 @@ void MAVLinkParameters::process_param_ext_value(const mavlink_message_t& message
         case WorkItem::Type::Set:
             LogWarn() << "Unexpected ParamExtValue response";
             break;
+        default:
+            break;
     }
 }
 
@@ -604,6 +611,8 @@ void MAVLinkParameters::process_param_ext_ack(const mavlink_message_t& message)
                 work_queue_guard.pop_front();
             }
         } break;
+        default:
+            break;
     }
 }
 
@@ -680,6 +689,8 @@ void MAVLinkParameters::receive_timeout()
                 work->set_param_callback(MAVLinkParameters::Result::Timeout);
             }
         } break;
+        default:
+            break;
     }
 }
 

@@ -647,18 +647,18 @@ void SystemImpl::set_param_float_async(
     _params.set_param_async(name, param_value, callback, cookie);
 }
 
-void SystemImpl::set_server_param_int(const std::string& name, int32_t value)
+void SystemImpl::provide_server_param_int(const std::string& name, int32_t value)
 {
     MAVLinkParameters::ParamValue param_value;
     param_value.set<int32_t>(value);
-    _params.set_server_param(name, param_value);
+    _params.provide_server_param(name, param_value);
 }
 
-void SystemImpl::set_server_param_float(const std::string& name, float value)
+void SystemImpl::provide_server_param_float(const std::string& name, float value)
 {
     MAVLinkParameters::ParamValue param_value;
     param_value.set<float>(value);
-    _params.set_server_param(name, param_value);
+    _params.provide_server_param(name, param_value);
 }
 
 void SystemImpl::set_param_int_async(
@@ -685,26 +685,27 @@ void SystemImpl::set_param_ext_int_async(
     _params.set_param_async(name, param_value, callback, cookie, true);
 }
 
-std::pair<MAVLinkParameters::Result, int> SystemImpl::get_server_param_int(const std::string& name)
+std::pair<MAVLinkParameters::Result, int>
+SystemImpl::retrieve_server_param_int(const std::string& name)
 {
     MAVLinkParameters::ParamValue param_value;
     param_value.set<int32_t>(0);
-    auto res = _params.get_server_param(name, param_value);
+    auto res = _params.retrieve_server_param(name, param_value);
     return {res.first, res.second.get<int32_t>()};
 }
 
 std::pair<MAVLinkParameters::Result, float>
-SystemImpl::get_server_param_float(const std::string& name)
+SystemImpl::retrieve_server_param_float(const std::string& name)
 {
     MAVLinkParameters::ParamValue param_value;
     param_value.set<float>(0.0f);
-    auto res = _params.get_server_param(name, param_value);
+    auto res = _params.retrieve_server_param(name, param_value);
     return {res.first, res.second.get<float>()};
 }
 
-std::map<std::string, MAVLinkParameters::ParamValue> SystemImpl::get_all_server_params()
+std::map<std::string, MAVLinkParameters::ParamValue> SystemImpl::retrieve_all_server_params()
 {
-    return _params.get_all_server_params();
+    return _params.retrieve_all_server_params();
 }
 
 std::pair<MAVLinkParameters::Result, float> SystemImpl::get_param_float(const std::string& name)

@@ -30,7 +30,7 @@ namespace mavsdk {
 namespace rpc {
 namespace param_server {
 
-// Provide raw access to get and set parameters.
+// Provide raw access to retrieve and provide server parameters.
 class ParamServerService final {
  public:
   static constexpr char const* service_full_name() {
@@ -40,108 +40,108 @@ class ParamServerService final {
    public:
     virtual ~StubInterface() {}
     //
-    // Get an int parameter.
+    // Retrieve an int parameter.
     //
     // If the type is wrong, the result will be `WRONG_TYPE`.
-    virtual ::grpc::Status GetParamInt(::grpc::ClientContext* context, const ::mavsdk::rpc::param_server::GetParamIntRequest& request, ::mavsdk::rpc::param_server::GetParamIntResponse* response) = 0;
-    std::unique_ptr< ::grpc::ClientAsyncResponseReaderInterface< ::mavsdk::rpc::param_server::GetParamIntResponse>> AsyncGetParamInt(::grpc::ClientContext* context, const ::mavsdk::rpc::param_server::GetParamIntRequest& request, ::grpc::CompletionQueue* cq) {
-      return std::unique_ptr< ::grpc::ClientAsyncResponseReaderInterface< ::mavsdk::rpc::param_server::GetParamIntResponse>>(AsyncGetParamIntRaw(context, request, cq));
+    virtual ::grpc::Status RetrieveParamInt(::grpc::ClientContext* context, const ::mavsdk::rpc::param_server::RetrieveParamIntRequest& request, ::mavsdk::rpc::param_server::RetrieveParamIntResponse* response) = 0;
+    std::unique_ptr< ::grpc::ClientAsyncResponseReaderInterface< ::mavsdk::rpc::param_server::RetrieveParamIntResponse>> AsyncRetrieveParamInt(::grpc::ClientContext* context, const ::mavsdk::rpc::param_server::RetrieveParamIntRequest& request, ::grpc::CompletionQueue* cq) {
+      return std::unique_ptr< ::grpc::ClientAsyncResponseReaderInterface< ::mavsdk::rpc::param_server::RetrieveParamIntResponse>>(AsyncRetrieveParamIntRaw(context, request, cq));
     }
-    std::unique_ptr< ::grpc::ClientAsyncResponseReaderInterface< ::mavsdk::rpc::param_server::GetParamIntResponse>> PrepareAsyncGetParamInt(::grpc::ClientContext* context, const ::mavsdk::rpc::param_server::GetParamIntRequest& request, ::grpc::CompletionQueue* cq) {
-      return std::unique_ptr< ::grpc::ClientAsyncResponseReaderInterface< ::mavsdk::rpc::param_server::GetParamIntResponse>>(PrepareAsyncGetParamIntRaw(context, request, cq));
-    }
-    //
-    // Set an int parameter.
-    //
-    // If the type is wrong, the result will be `WRONG_TYPE`.
-    virtual ::grpc::Status SetParamInt(::grpc::ClientContext* context, const ::mavsdk::rpc::param_server::SetParamIntRequest& request, ::mavsdk::rpc::param_server::SetParamIntResponse* response) = 0;
-    std::unique_ptr< ::grpc::ClientAsyncResponseReaderInterface< ::mavsdk::rpc::param_server::SetParamIntResponse>> AsyncSetParamInt(::grpc::ClientContext* context, const ::mavsdk::rpc::param_server::SetParamIntRequest& request, ::grpc::CompletionQueue* cq) {
-      return std::unique_ptr< ::grpc::ClientAsyncResponseReaderInterface< ::mavsdk::rpc::param_server::SetParamIntResponse>>(AsyncSetParamIntRaw(context, request, cq));
-    }
-    std::unique_ptr< ::grpc::ClientAsyncResponseReaderInterface< ::mavsdk::rpc::param_server::SetParamIntResponse>> PrepareAsyncSetParamInt(::grpc::ClientContext* context, const ::mavsdk::rpc::param_server::SetParamIntRequest& request, ::grpc::CompletionQueue* cq) {
-      return std::unique_ptr< ::grpc::ClientAsyncResponseReaderInterface< ::mavsdk::rpc::param_server::SetParamIntResponse>>(PrepareAsyncSetParamIntRaw(context, request, cq));
+    std::unique_ptr< ::grpc::ClientAsyncResponseReaderInterface< ::mavsdk::rpc::param_server::RetrieveParamIntResponse>> PrepareAsyncRetrieveParamInt(::grpc::ClientContext* context, const ::mavsdk::rpc::param_server::RetrieveParamIntRequest& request, ::grpc::CompletionQueue* cq) {
+      return std::unique_ptr< ::grpc::ClientAsyncResponseReaderInterface< ::mavsdk::rpc::param_server::RetrieveParamIntResponse>>(PrepareAsyncRetrieveParamIntRaw(context, request, cq));
     }
     //
-    // Get a float parameter.
+    // Provide an int parameter.
     //
     // If the type is wrong, the result will be `WRONG_TYPE`.
-    virtual ::grpc::Status GetParamFloat(::grpc::ClientContext* context, const ::mavsdk::rpc::param_server::GetParamFloatRequest& request, ::mavsdk::rpc::param_server::GetParamFloatResponse* response) = 0;
-    std::unique_ptr< ::grpc::ClientAsyncResponseReaderInterface< ::mavsdk::rpc::param_server::GetParamFloatResponse>> AsyncGetParamFloat(::grpc::ClientContext* context, const ::mavsdk::rpc::param_server::GetParamFloatRequest& request, ::grpc::CompletionQueue* cq) {
-      return std::unique_ptr< ::grpc::ClientAsyncResponseReaderInterface< ::mavsdk::rpc::param_server::GetParamFloatResponse>>(AsyncGetParamFloatRaw(context, request, cq));
+    virtual ::grpc::Status ProvideParamInt(::grpc::ClientContext* context, const ::mavsdk::rpc::param_server::ProvideParamIntRequest& request, ::mavsdk::rpc::param_server::ProvideParamIntResponse* response) = 0;
+    std::unique_ptr< ::grpc::ClientAsyncResponseReaderInterface< ::mavsdk::rpc::param_server::ProvideParamIntResponse>> AsyncProvideParamInt(::grpc::ClientContext* context, const ::mavsdk::rpc::param_server::ProvideParamIntRequest& request, ::grpc::CompletionQueue* cq) {
+      return std::unique_ptr< ::grpc::ClientAsyncResponseReaderInterface< ::mavsdk::rpc::param_server::ProvideParamIntResponse>>(AsyncProvideParamIntRaw(context, request, cq));
     }
-    std::unique_ptr< ::grpc::ClientAsyncResponseReaderInterface< ::mavsdk::rpc::param_server::GetParamFloatResponse>> PrepareAsyncGetParamFloat(::grpc::ClientContext* context, const ::mavsdk::rpc::param_server::GetParamFloatRequest& request, ::grpc::CompletionQueue* cq) {
-      return std::unique_ptr< ::grpc::ClientAsyncResponseReaderInterface< ::mavsdk::rpc::param_server::GetParamFloatResponse>>(PrepareAsyncGetParamFloatRaw(context, request, cq));
+    std::unique_ptr< ::grpc::ClientAsyncResponseReaderInterface< ::mavsdk::rpc::param_server::ProvideParamIntResponse>> PrepareAsyncProvideParamInt(::grpc::ClientContext* context, const ::mavsdk::rpc::param_server::ProvideParamIntRequest& request, ::grpc::CompletionQueue* cq) {
+      return std::unique_ptr< ::grpc::ClientAsyncResponseReaderInterface< ::mavsdk::rpc::param_server::ProvideParamIntResponse>>(PrepareAsyncProvideParamIntRaw(context, request, cq));
     }
     //
-    // Set a float parameter.
+    // Retrieve a float parameter.
     //
     // If the type is wrong, the result will be `WRONG_TYPE`.
-    virtual ::grpc::Status SetParamFloat(::grpc::ClientContext* context, const ::mavsdk::rpc::param_server::SetParamFloatRequest& request, ::mavsdk::rpc::param_server::SetParamFloatResponse* response) = 0;
-    std::unique_ptr< ::grpc::ClientAsyncResponseReaderInterface< ::mavsdk::rpc::param_server::SetParamFloatResponse>> AsyncSetParamFloat(::grpc::ClientContext* context, const ::mavsdk::rpc::param_server::SetParamFloatRequest& request, ::grpc::CompletionQueue* cq) {
-      return std::unique_ptr< ::grpc::ClientAsyncResponseReaderInterface< ::mavsdk::rpc::param_server::SetParamFloatResponse>>(AsyncSetParamFloatRaw(context, request, cq));
+    virtual ::grpc::Status RetrieveParamFloat(::grpc::ClientContext* context, const ::mavsdk::rpc::param_server::RetrieveParamFloatRequest& request, ::mavsdk::rpc::param_server::RetrieveParamFloatResponse* response) = 0;
+    std::unique_ptr< ::grpc::ClientAsyncResponseReaderInterface< ::mavsdk::rpc::param_server::RetrieveParamFloatResponse>> AsyncRetrieveParamFloat(::grpc::ClientContext* context, const ::mavsdk::rpc::param_server::RetrieveParamFloatRequest& request, ::grpc::CompletionQueue* cq) {
+      return std::unique_ptr< ::grpc::ClientAsyncResponseReaderInterface< ::mavsdk::rpc::param_server::RetrieveParamFloatResponse>>(AsyncRetrieveParamFloatRaw(context, request, cq));
     }
-    std::unique_ptr< ::grpc::ClientAsyncResponseReaderInterface< ::mavsdk::rpc::param_server::SetParamFloatResponse>> PrepareAsyncSetParamFloat(::grpc::ClientContext* context, const ::mavsdk::rpc::param_server::SetParamFloatRequest& request, ::grpc::CompletionQueue* cq) {
-      return std::unique_ptr< ::grpc::ClientAsyncResponseReaderInterface< ::mavsdk::rpc::param_server::SetParamFloatResponse>>(PrepareAsyncSetParamFloatRaw(context, request, cq));
+    std::unique_ptr< ::grpc::ClientAsyncResponseReaderInterface< ::mavsdk::rpc::param_server::RetrieveParamFloatResponse>> PrepareAsyncRetrieveParamFloat(::grpc::ClientContext* context, const ::mavsdk::rpc::param_server::RetrieveParamFloatRequest& request, ::grpc::CompletionQueue* cq) {
+      return std::unique_ptr< ::grpc::ClientAsyncResponseReaderInterface< ::mavsdk::rpc::param_server::RetrieveParamFloatResponse>>(PrepareAsyncRetrieveParamFloatRaw(context, request, cq));
     }
     //
-    // Get all parameters.
-    virtual ::grpc::Status GetAllParams(::grpc::ClientContext* context, const ::mavsdk::rpc::param_server::GetAllParamsRequest& request, ::mavsdk::rpc::param_server::GetAllParamsResponse* response) = 0;
-    std::unique_ptr< ::grpc::ClientAsyncResponseReaderInterface< ::mavsdk::rpc::param_server::GetAllParamsResponse>> AsyncGetAllParams(::grpc::ClientContext* context, const ::mavsdk::rpc::param_server::GetAllParamsRequest& request, ::grpc::CompletionQueue* cq) {
-      return std::unique_ptr< ::grpc::ClientAsyncResponseReaderInterface< ::mavsdk::rpc::param_server::GetAllParamsResponse>>(AsyncGetAllParamsRaw(context, request, cq));
+    // Provide a float parameter.
+    //
+    // If the type is wrong, the result will be `WRONG_TYPE`.
+    virtual ::grpc::Status ProvideParamFloat(::grpc::ClientContext* context, const ::mavsdk::rpc::param_server::ProvideParamFloatRequest& request, ::mavsdk::rpc::param_server::ProvideParamFloatResponse* response) = 0;
+    std::unique_ptr< ::grpc::ClientAsyncResponseReaderInterface< ::mavsdk::rpc::param_server::ProvideParamFloatResponse>> AsyncProvideParamFloat(::grpc::ClientContext* context, const ::mavsdk::rpc::param_server::ProvideParamFloatRequest& request, ::grpc::CompletionQueue* cq) {
+      return std::unique_ptr< ::grpc::ClientAsyncResponseReaderInterface< ::mavsdk::rpc::param_server::ProvideParamFloatResponse>>(AsyncProvideParamFloatRaw(context, request, cq));
     }
-    std::unique_ptr< ::grpc::ClientAsyncResponseReaderInterface< ::mavsdk::rpc::param_server::GetAllParamsResponse>> PrepareAsyncGetAllParams(::grpc::ClientContext* context, const ::mavsdk::rpc::param_server::GetAllParamsRequest& request, ::grpc::CompletionQueue* cq) {
-      return std::unique_ptr< ::grpc::ClientAsyncResponseReaderInterface< ::mavsdk::rpc::param_server::GetAllParamsResponse>>(PrepareAsyncGetAllParamsRaw(context, request, cq));
+    std::unique_ptr< ::grpc::ClientAsyncResponseReaderInterface< ::mavsdk::rpc::param_server::ProvideParamFloatResponse>> PrepareAsyncProvideParamFloat(::grpc::ClientContext* context, const ::mavsdk::rpc::param_server::ProvideParamFloatRequest& request, ::grpc::CompletionQueue* cq) {
+      return std::unique_ptr< ::grpc::ClientAsyncResponseReaderInterface< ::mavsdk::rpc::param_server::ProvideParamFloatResponse>>(PrepareAsyncProvideParamFloatRaw(context, request, cq));
+    }
+    //
+    // Retrieve all parameters.
+    virtual ::grpc::Status RetrieveAllParams(::grpc::ClientContext* context, const ::mavsdk::rpc::param_server::RetrieveAllParamsRequest& request, ::mavsdk::rpc::param_server::RetrieveAllParamsResponse* response) = 0;
+    std::unique_ptr< ::grpc::ClientAsyncResponseReaderInterface< ::mavsdk::rpc::param_server::RetrieveAllParamsResponse>> AsyncRetrieveAllParams(::grpc::ClientContext* context, const ::mavsdk::rpc::param_server::RetrieveAllParamsRequest& request, ::grpc::CompletionQueue* cq) {
+      return std::unique_ptr< ::grpc::ClientAsyncResponseReaderInterface< ::mavsdk::rpc::param_server::RetrieveAllParamsResponse>>(AsyncRetrieveAllParamsRaw(context, request, cq));
+    }
+    std::unique_ptr< ::grpc::ClientAsyncResponseReaderInterface< ::mavsdk::rpc::param_server::RetrieveAllParamsResponse>> PrepareAsyncRetrieveAllParams(::grpc::ClientContext* context, const ::mavsdk::rpc::param_server::RetrieveAllParamsRequest& request, ::grpc::CompletionQueue* cq) {
+      return std::unique_ptr< ::grpc::ClientAsyncResponseReaderInterface< ::mavsdk::rpc::param_server::RetrieveAllParamsResponse>>(PrepareAsyncRetrieveAllParamsRaw(context, request, cq));
     }
     class experimental_async_interface {
      public:
       virtual ~experimental_async_interface() {}
       //
-      // Get an int parameter.
+      // Retrieve an int parameter.
       //
       // If the type is wrong, the result will be `WRONG_TYPE`.
-      virtual void GetParamInt(::grpc::ClientContext* context, const ::mavsdk::rpc::param_server::GetParamIntRequest* request, ::mavsdk::rpc::param_server::GetParamIntResponse* response, std::function<void(::grpc::Status)>) = 0;
+      virtual void RetrieveParamInt(::grpc::ClientContext* context, const ::mavsdk::rpc::param_server::RetrieveParamIntRequest* request, ::mavsdk::rpc::param_server::RetrieveParamIntResponse* response, std::function<void(::grpc::Status)>) = 0;
       #ifdef GRPC_CALLBACK_API_NONEXPERIMENTAL
-      virtual void GetParamInt(::grpc::ClientContext* context, const ::mavsdk::rpc::param_server::GetParamIntRequest* request, ::mavsdk::rpc::param_server::GetParamIntResponse* response, ::grpc::ClientUnaryReactor* reactor) = 0;
+      virtual void RetrieveParamInt(::grpc::ClientContext* context, const ::mavsdk::rpc::param_server::RetrieveParamIntRequest* request, ::mavsdk::rpc::param_server::RetrieveParamIntResponse* response, ::grpc::ClientUnaryReactor* reactor) = 0;
       #else
-      virtual void GetParamInt(::grpc::ClientContext* context, const ::mavsdk::rpc::param_server::GetParamIntRequest* request, ::mavsdk::rpc::param_server::GetParamIntResponse* response, ::grpc::experimental::ClientUnaryReactor* reactor) = 0;
+      virtual void RetrieveParamInt(::grpc::ClientContext* context, const ::mavsdk::rpc::param_server::RetrieveParamIntRequest* request, ::mavsdk::rpc::param_server::RetrieveParamIntResponse* response, ::grpc::experimental::ClientUnaryReactor* reactor) = 0;
       #endif
       //
-      // Set an int parameter.
+      // Provide an int parameter.
       //
       // If the type is wrong, the result will be `WRONG_TYPE`.
-      virtual void SetParamInt(::grpc::ClientContext* context, const ::mavsdk::rpc::param_server::SetParamIntRequest* request, ::mavsdk::rpc::param_server::SetParamIntResponse* response, std::function<void(::grpc::Status)>) = 0;
+      virtual void ProvideParamInt(::grpc::ClientContext* context, const ::mavsdk::rpc::param_server::ProvideParamIntRequest* request, ::mavsdk::rpc::param_server::ProvideParamIntResponse* response, std::function<void(::grpc::Status)>) = 0;
       #ifdef GRPC_CALLBACK_API_NONEXPERIMENTAL
-      virtual void SetParamInt(::grpc::ClientContext* context, const ::mavsdk::rpc::param_server::SetParamIntRequest* request, ::mavsdk::rpc::param_server::SetParamIntResponse* response, ::grpc::ClientUnaryReactor* reactor) = 0;
+      virtual void ProvideParamInt(::grpc::ClientContext* context, const ::mavsdk::rpc::param_server::ProvideParamIntRequest* request, ::mavsdk::rpc::param_server::ProvideParamIntResponse* response, ::grpc::ClientUnaryReactor* reactor) = 0;
       #else
-      virtual void SetParamInt(::grpc::ClientContext* context, const ::mavsdk::rpc::param_server::SetParamIntRequest* request, ::mavsdk::rpc::param_server::SetParamIntResponse* response, ::grpc::experimental::ClientUnaryReactor* reactor) = 0;
+      virtual void ProvideParamInt(::grpc::ClientContext* context, const ::mavsdk::rpc::param_server::ProvideParamIntRequest* request, ::mavsdk::rpc::param_server::ProvideParamIntResponse* response, ::grpc::experimental::ClientUnaryReactor* reactor) = 0;
       #endif
       //
-      // Get a float parameter.
+      // Retrieve a float parameter.
       //
       // If the type is wrong, the result will be `WRONG_TYPE`.
-      virtual void GetParamFloat(::grpc::ClientContext* context, const ::mavsdk::rpc::param_server::GetParamFloatRequest* request, ::mavsdk::rpc::param_server::GetParamFloatResponse* response, std::function<void(::grpc::Status)>) = 0;
+      virtual void RetrieveParamFloat(::grpc::ClientContext* context, const ::mavsdk::rpc::param_server::RetrieveParamFloatRequest* request, ::mavsdk::rpc::param_server::RetrieveParamFloatResponse* response, std::function<void(::grpc::Status)>) = 0;
       #ifdef GRPC_CALLBACK_API_NONEXPERIMENTAL
-      virtual void GetParamFloat(::grpc::ClientContext* context, const ::mavsdk::rpc::param_server::GetParamFloatRequest* request, ::mavsdk::rpc::param_server::GetParamFloatResponse* response, ::grpc::ClientUnaryReactor* reactor) = 0;
+      virtual void RetrieveParamFloat(::grpc::ClientContext* context, const ::mavsdk::rpc::param_server::RetrieveParamFloatRequest* request, ::mavsdk::rpc::param_server::RetrieveParamFloatResponse* response, ::grpc::ClientUnaryReactor* reactor) = 0;
       #else
-      virtual void GetParamFloat(::grpc::ClientContext* context, const ::mavsdk::rpc::param_server::GetParamFloatRequest* request, ::mavsdk::rpc::param_server::GetParamFloatResponse* response, ::grpc::experimental::ClientUnaryReactor* reactor) = 0;
+      virtual void RetrieveParamFloat(::grpc::ClientContext* context, const ::mavsdk::rpc::param_server::RetrieveParamFloatRequest* request, ::mavsdk::rpc::param_server::RetrieveParamFloatResponse* response, ::grpc::experimental::ClientUnaryReactor* reactor) = 0;
       #endif
       //
-      // Set a float parameter.
+      // Provide a float parameter.
       //
       // If the type is wrong, the result will be `WRONG_TYPE`.
-      virtual void SetParamFloat(::grpc::ClientContext* context, const ::mavsdk::rpc::param_server::SetParamFloatRequest* request, ::mavsdk::rpc::param_server::SetParamFloatResponse* response, std::function<void(::grpc::Status)>) = 0;
+      virtual void ProvideParamFloat(::grpc::ClientContext* context, const ::mavsdk::rpc::param_server::ProvideParamFloatRequest* request, ::mavsdk::rpc::param_server::ProvideParamFloatResponse* response, std::function<void(::grpc::Status)>) = 0;
       #ifdef GRPC_CALLBACK_API_NONEXPERIMENTAL
-      virtual void SetParamFloat(::grpc::ClientContext* context, const ::mavsdk::rpc::param_server::SetParamFloatRequest* request, ::mavsdk::rpc::param_server::SetParamFloatResponse* response, ::grpc::ClientUnaryReactor* reactor) = 0;
+      virtual void ProvideParamFloat(::grpc::ClientContext* context, const ::mavsdk::rpc::param_server::ProvideParamFloatRequest* request, ::mavsdk::rpc::param_server::ProvideParamFloatResponse* response, ::grpc::ClientUnaryReactor* reactor) = 0;
       #else
-      virtual void SetParamFloat(::grpc::ClientContext* context, const ::mavsdk::rpc::param_server::SetParamFloatRequest* request, ::mavsdk::rpc::param_server::SetParamFloatResponse* response, ::grpc::experimental::ClientUnaryReactor* reactor) = 0;
+      virtual void ProvideParamFloat(::grpc::ClientContext* context, const ::mavsdk::rpc::param_server::ProvideParamFloatRequest* request, ::mavsdk::rpc::param_server::ProvideParamFloatResponse* response, ::grpc::experimental::ClientUnaryReactor* reactor) = 0;
       #endif
       //
-      // Get all parameters.
-      virtual void GetAllParams(::grpc::ClientContext* context, const ::mavsdk::rpc::param_server::GetAllParamsRequest* request, ::mavsdk::rpc::param_server::GetAllParamsResponse* response, std::function<void(::grpc::Status)>) = 0;
+      // Retrieve all parameters.
+      virtual void RetrieveAllParams(::grpc::ClientContext* context, const ::mavsdk::rpc::param_server::RetrieveAllParamsRequest* request, ::mavsdk::rpc::param_server::RetrieveAllParamsResponse* response, std::function<void(::grpc::Status)>) = 0;
       #ifdef GRPC_CALLBACK_API_NONEXPERIMENTAL
-      virtual void GetAllParams(::grpc::ClientContext* context, const ::mavsdk::rpc::param_server::GetAllParamsRequest* request, ::mavsdk::rpc::param_server::GetAllParamsResponse* response, ::grpc::ClientUnaryReactor* reactor) = 0;
+      virtual void RetrieveAllParams(::grpc::ClientContext* context, const ::mavsdk::rpc::param_server::RetrieveAllParamsRequest* request, ::mavsdk::rpc::param_server::RetrieveAllParamsResponse* response, ::grpc::ClientUnaryReactor* reactor) = 0;
       #else
-      virtual void GetAllParams(::grpc::ClientContext* context, const ::mavsdk::rpc::param_server::GetAllParamsRequest* request, ::mavsdk::rpc::param_server::GetAllParamsResponse* response, ::grpc::experimental::ClientUnaryReactor* reactor) = 0;
+      virtual void RetrieveAllParams(::grpc::ClientContext* context, const ::mavsdk::rpc::param_server::RetrieveAllParamsRequest* request, ::mavsdk::rpc::param_server::RetrieveAllParamsResponse* response, ::grpc::experimental::ClientUnaryReactor* reactor) = 0;
       #endif
     };
     #ifdef GRPC_CALLBACK_API_NONEXPERIMENTAL
@@ -152,87 +152,87 @@ class ParamServerService final {
     #endif
     virtual class experimental_async_interface* experimental_async() { return nullptr; }
   private:
-    virtual ::grpc::ClientAsyncResponseReaderInterface< ::mavsdk::rpc::param_server::GetParamIntResponse>* AsyncGetParamIntRaw(::grpc::ClientContext* context, const ::mavsdk::rpc::param_server::GetParamIntRequest& request, ::grpc::CompletionQueue* cq) = 0;
-    virtual ::grpc::ClientAsyncResponseReaderInterface< ::mavsdk::rpc::param_server::GetParamIntResponse>* PrepareAsyncGetParamIntRaw(::grpc::ClientContext* context, const ::mavsdk::rpc::param_server::GetParamIntRequest& request, ::grpc::CompletionQueue* cq) = 0;
-    virtual ::grpc::ClientAsyncResponseReaderInterface< ::mavsdk::rpc::param_server::SetParamIntResponse>* AsyncSetParamIntRaw(::grpc::ClientContext* context, const ::mavsdk::rpc::param_server::SetParamIntRequest& request, ::grpc::CompletionQueue* cq) = 0;
-    virtual ::grpc::ClientAsyncResponseReaderInterface< ::mavsdk::rpc::param_server::SetParamIntResponse>* PrepareAsyncSetParamIntRaw(::grpc::ClientContext* context, const ::mavsdk::rpc::param_server::SetParamIntRequest& request, ::grpc::CompletionQueue* cq) = 0;
-    virtual ::grpc::ClientAsyncResponseReaderInterface< ::mavsdk::rpc::param_server::GetParamFloatResponse>* AsyncGetParamFloatRaw(::grpc::ClientContext* context, const ::mavsdk::rpc::param_server::GetParamFloatRequest& request, ::grpc::CompletionQueue* cq) = 0;
-    virtual ::grpc::ClientAsyncResponseReaderInterface< ::mavsdk::rpc::param_server::GetParamFloatResponse>* PrepareAsyncGetParamFloatRaw(::grpc::ClientContext* context, const ::mavsdk::rpc::param_server::GetParamFloatRequest& request, ::grpc::CompletionQueue* cq) = 0;
-    virtual ::grpc::ClientAsyncResponseReaderInterface< ::mavsdk::rpc::param_server::SetParamFloatResponse>* AsyncSetParamFloatRaw(::grpc::ClientContext* context, const ::mavsdk::rpc::param_server::SetParamFloatRequest& request, ::grpc::CompletionQueue* cq) = 0;
-    virtual ::grpc::ClientAsyncResponseReaderInterface< ::mavsdk::rpc::param_server::SetParamFloatResponse>* PrepareAsyncSetParamFloatRaw(::grpc::ClientContext* context, const ::mavsdk::rpc::param_server::SetParamFloatRequest& request, ::grpc::CompletionQueue* cq) = 0;
-    virtual ::grpc::ClientAsyncResponseReaderInterface< ::mavsdk::rpc::param_server::GetAllParamsResponse>* AsyncGetAllParamsRaw(::grpc::ClientContext* context, const ::mavsdk::rpc::param_server::GetAllParamsRequest& request, ::grpc::CompletionQueue* cq) = 0;
-    virtual ::grpc::ClientAsyncResponseReaderInterface< ::mavsdk::rpc::param_server::GetAllParamsResponse>* PrepareAsyncGetAllParamsRaw(::grpc::ClientContext* context, const ::mavsdk::rpc::param_server::GetAllParamsRequest& request, ::grpc::CompletionQueue* cq) = 0;
+    virtual ::grpc::ClientAsyncResponseReaderInterface< ::mavsdk::rpc::param_server::RetrieveParamIntResponse>* AsyncRetrieveParamIntRaw(::grpc::ClientContext* context, const ::mavsdk::rpc::param_server::RetrieveParamIntRequest& request, ::grpc::CompletionQueue* cq) = 0;
+    virtual ::grpc::ClientAsyncResponseReaderInterface< ::mavsdk::rpc::param_server::RetrieveParamIntResponse>* PrepareAsyncRetrieveParamIntRaw(::grpc::ClientContext* context, const ::mavsdk::rpc::param_server::RetrieveParamIntRequest& request, ::grpc::CompletionQueue* cq) = 0;
+    virtual ::grpc::ClientAsyncResponseReaderInterface< ::mavsdk::rpc::param_server::ProvideParamIntResponse>* AsyncProvideParamIntRaw(::grpc::ClientContext* context, const ::mavsdk::rpc::param_server::ProvideParamIntRequest& request, ::grpc::CompletionQueue* cq) = 0;
+    virtual ::grpc::ClientAsyncResponseReaderInterface< ::mavsdk::rpc::param_server::ProvideParamIntResponse>* PrepareAsyncProvideParamIntRaw(::grpc::ClientContext* context, const ::mavsdk::rpc::param_server::ProvideParamIntRequest& request, ::grpc::CompletionQueue* cq) = 0;
+    virtual ::grpc::ClientAsyncResponseReaderInterface< ::mavsdk::rpc::param_server::RetrieveParamFloatResponse>* AsyncRetrieveParamFloatRaw(::grpc::ClientContext* context, const ::mavsdk::rpc::param_server::RetrieveParamFloatRequest& request, ::grpc::CompletionQueue* cq) = 0;
+    virtual ::grpc::ClientAsyncResponseReaderInterface< ::mavsdk::rpc::param_server::RetrieveParamFloatResponse>* PrepareAsyncRetrieveParamFloatRaw(::grpc::ClientContext* context, const ::mavsdk::rpc::param_server::RetrieveParamFloatRequest& request, ::grpc::CompletionQueue* cq) = 0;
+    virtual ::grpc::ClientAsyncResponseReaderInterface< ::mavsdk::rpc::param_server::ProvideParamFloatResponse>* AsyncProvideParamFloatRaw(::grpc::ClientContext* context, const ::mavsdk::rpc::param_server::ProvideParamFloatRequest& request, ::grpc::CompletionQueue* cq) = 0;
+    virtual ::grpc::ClientAsyncResponseReaderInterface< ::mavsdk::rpc::param_server::ProvideParamFloatResponse>* PrepareAsyncProvideParamFloatRaw(::grpc::ClientContext* context, const ::mavsdk::rpc::param_server::ProvideParamFloatRequest& request, ::grpc::CompletionQueue* cq) = 0;
+    virtual ::grpc::ClientAsyncResponseReaderInterface< ::mavsdk::rpc::param_server::RetrieveAllParamsResponse>* AsyncRetrieveAllParamsRaw(::grpc::ClientContext* context, const ::mavsdk::rpc::param_server::RetrieveAllParamsRequest& request, ::grpc::CompletionQueue* cq) = 0;
+    virtual ::grpc::ClientAsyncResponseReaderInterface< ::mavsdk::rpc::param_server::RetrieveAllParamsResponse>* PrepareAsyncRetrieveAllParamsRaw(::grpc::ClientContext* context, const ::mavsdk::rpc::param_server::RetrieveAllParamsRequest& request, ::grpc::CompletionQueue* cq) = 0;
   };
   class Stub final : public StubInterface {
    public:
     Stub(const std::shared_ptr< ::grpc::ChannelInterface>& channel);
-    ::grpc::Status GetParamInt(::grpc::ClientContext* context, const ::mavsdk::rpc::param_server::GetParamIntRequest& request, ::mavsdk::rpc::param_server::GetParamIntResponse* response) override;
-    std::unique_ptr< ::grpc::ClientAsyncResponseReader< ::mavsdk::rpc::param_server::GetParamIntResponse>> AsyncGetParamInt(::grpc::ClientContext* context, const ::mavsdk::rpc::param_server::GetParamIntRequest& request, ::grpc::CompletionQueue* cq) {
-      return std::unique_ptr< ::grpc::ClientAsyncResponseReader< ::mavsdk::rpc::param_server::GetParamIntResponse>>(AsyncGetParamIntRaw(context, request, cq));
+    ::grpc::Status RetrieveParamInt(::grpc::ClientContext* context, const ::mavsdk::rpc::param_server::RetrieveParamIntRequest& request, ::mavsdk::rpc::param_server::RetrieveParamIntResponse* response) override;
+    std::unique_ptr< ::grpc::ClientAsyncResponseReader< ::mavsdk::rpc::param_server::RetrieveParamIntResponse>> AsyncRetrieveParamInt(::grpc::ClientContext* context, const ::mavsdk::rpc::param_server::RetrieveParamIntRequest& request, ::grpc::CompletionQueue* cq) {
+      return std::unique_ptr< ::grpc::ClientAsyncResponseReader< ::mavsdk::rpc::param_server::RetrieveParamIntResponse>>(AsyncRetrieveParamIntRaw(context, request, cq));
     }
-    std::unique_ptr< ::grpc::ClientAsyncResponseReader< ::mavsdk::rpc::param_server::GetParamIntResponse>> PrepareAsyncGetParamInt(::grpc::ClientContext* context, const ::mavsdk::rpc::param_server::GetParamIntRequest& request, ::grpc::CompletionQueue* cq) {
-      return std::unique_ptr< ::grpc::ClientAsyncResponseReader< ::mavsdk::rpc::param_server::GetParamIntResponse>>(PrepareAsyncGetParamIntRaw(context, request, cq));
+    std::unique_ptr< ::grpc::ClientAsyncResponseReader< ::mavsdk::rpc::param_server::RetrieveParamIntResponse>> PrepareAsyncRetrieveParamInt(::grpc::ClientContext* context, const ::mavsdk::rpc::param_server::RetrieveParamIntRequest& request, ::grpc::CompletionQueue* cq) {
+      return std::unique_ptr< ::grpc::ClientAsyncResponseReader< ::mavsdk::rpc::param_server::RetrieveParamIntResponse>>(PrepareAsyncRetrieveParamIntRaw(context, request, cq));
     }
-    ::grpc::Status SetParamInt(::grpc::ClientContext* context, const ::mavsdk::rpc::param_server::SetParamIntRequest& request, ::mavsdk::rpc::param_server::SetParamIntResponse* response) override;
-    std::unique_ptr< ::grpc::ClientAsyncResponseReader< ::mavsdk::rpc::param_server::SetParamIntResponse>> AsyncSetParamInt(::grpc::ClientContext* context, const ::mavsdk::rpc::param_server::SetParamIntRequest& request, ::grpc::CompletionQueue* cq) {
-      return std::unique_ptr< ::grpc::ClientAsyncResponseReader< ::mavsdk::rpc::param_server::SetParamIntResponse>>(AsyncSetParamIntRaw(context, request, cq));
+    ::grpc::Status ProvideParamInt(::grpc::ClientContext* context, const ::mavsdk::rpc::param_server::ProvideParamIntRequest& request, ::mavsdk::rpc::param_server::ProvideParamIntResponse* response) override;
+    std::unique_ptr< ::grpc::ClientAsyncResponseReader< ::mavsdk::rpc::param_server::ProvideParamIntResponse>> AsyncProvideParamInt(::grpc::ClientContext* context, const ::mavsdk::rpc::param_server::ProvideParamIntRequest& request, ::grpc::CompletionQueue* cq) {
+      return std::unique_ptr< ::grpc::ClientAsyncResponseReader< ::mavsdk::rpc::param_server::ProvideParamIntResponse>>(AsyncProvideParamIntRaw(context, request, cq));
     }
-    std::unique_ptr< ::grpc::ClientAsyncResponseReader< ::mavsdk::rpc::param_server::SetParamIntResponse>> PrepareAsyncSetParamInt(::grpc::ClientContext* context, const ::mavsdk::rpc::param_server::SetParamIntRequest& request, ::grpc::CompletionQueue* cq) {
-      return std::unique_ptr< ::grpc::ClientAsyncResponseReader< ::mavsdk::rpc::param_server::SetParamIntResponse>>(PrepareAsyncSetParamIntRaw(context, request, cq));
+    std::unique_ptr< ::grpc::ClientAsyncResponseReader< ::mavsdk::rpc::param_server::ProvideParamIntResponse>> PrepareAsyncProvideParamInt(::grpc::ClientContext* context, const ::mavsdk::rpc::param_server::ProvideParamIntRequest& request, ::grpc::CompletionQueue* cq) {
+      return std::unique_ptr< ::grpc::ClientAsyncResponseReader< ::mavsdk::rpc::param_server::ProvideParamIntResponse>>(PrepareAsyncProvideParamIntRaw(context, request, cq));
     }
-    ::grpc::Status GetParamFloat(::grpc::ClientContext* context, const ::mavsdk::rpc::param_server::GetParamFloatRequest& request, ::mavsdk::rpc::param_server::GetParamFloatResponse* response) override;
-    std::unique_ptr< ::grpc::ClientAsyncResponseReader< ::mavsdk::rpc::param_server::GetParamFloatResponse>> AsyncGetParamFloat(::grpc::ClientContext* context, const ::mavsdk::rpc::param_server::GetParamFloatRequest& request, ::grpc::CompletionQueue* cq) {
-      return std::unique_ptr< ::grpc::ClientAsyncResponseReader< ::mavsdk::rpc::param_server::GetParamFloatResponse>>(AsyncGetParamFloatRaw(context, request, cq));
+    ::grpc::Status RetrieveParamFloat(::grpc::ClientContext* context, const ::mavsdk::rpc::param_server::RetrieveParamFloatRequest& request, ::mavsdk::rpc::param_server::RetrieveParamFloatResponse* response) override;
+    std::unique_ptr< ::grpc::ClientAsyncResponseReader< ::mavsdk::rpc::param_server::RetrieveParamFloatResponse>> AsyncRetrieveParamFloat(::grpc::ClientContext* context, const ::mavsdk::rpc::param_server::RetrieveParamFloatRequest& request, ::grpc::CompletionQueue* cq) {
+      return std::unique_ptr< ::grpc::ClientAsyncResponseReader< ::mavsdk::rpc::param_server::RetrieveParamFloatResponse>>(AsyncRetrieveParamFloatRaw(context, request, cq));
     }
-    std::unique_ptr< ::grpc::ClientAsyncResponseReader< ::mavsdk::rpc::param_server::GetParamFloatResponse>> PrepareAsyncGetParamFloat(::grpc::ClientContext* context, const ::mavsdk::rpc::param_server::GetParamFloatRequest& request, ::grpc::CompletionQueue* cq) {
-      return std::unique_ptr< ::grpc::ClientAsyncResponseReader< ::mavsdk::rpc::param_server::GetParamFloatResponse>>(PrepareAsyncGetParamFloatRaw(context, request, cq));
+    std::unique_ptr< ::grpc::ClientAsyncResponseReader< ::mavsdk::rpc::param_server::RetrieveParamFloatResponse>> PrepareAsyncRetrieveParamFloat(::grpc::ClientContext* context, const ::mavsdk::rpc::param_server::RetrieveParamFloatRequest& request, ::grpc::CompletionQueue* cq) {
+      return std::unique_ptr< ::grpc::ClientAsyncResponseReader< ::mavsdk::rpc::param_server::RetrieveParamFloatResponse>>(PrepareAsyncRetrieveParamFloatRaw(context, request, cq));
     }
-    ::grpc::Status SetParamFloat(::grpc::ClientContext* context, const ::mavsdk::rpc::param_server::SetParamFloatRequest& request, ::mavsdk::rpc::param_server::SetParamFloatResponse* response) override;
-    std::unique_ptr< ::grpc::ClientAsyncResponseReader< ::mavsdk::rpc::param_server::SetParamFloatResponse>> AsyncSetParamFloat(::grpc::ClientContext* context, const ::mavsdk::rpc::param_server::SetParamFloatRequest& request, ::grpc::CompletionQueue* cq) {
-      return std::unique_ptr< ::grpc::ClientAsyncResponseReader< ::mavsdk::rpc::param_server::SetParamFloatResponse>>(AsyncSetParamFloatRaw(context, request, cq));
+    ::grpc::Status ProvideParamFloat(::grpc::ClientContext* context, const ::mavsdk::rpc::param_server::ProvideParamFloatRequest& request, ::mavsdk::rpc::param_server::ProvideParamFloatResponse* response) override;
+    std::unique_ptr< ::grpc::ClientAsyncResponseReader< ::mavsdk::rpc::param_server::ProvideParamFloatResponse>> AsyncProvideParamFloat(::grpc::ClientContext* context, const ::mavsdk::rpc::param_server::ProvideParamFloatRequest& request, ::grpc::CompletionQueue* cq) {
+      return std::unique_ptr< ::grpc::ClientAsyncResponseReader< ::mavsdk::rpc::param_server::ProvideParamFloatResponse>>(AsyncProvideParamFloatRaw(context, request, cq));
     }
-    std::unique_ptr< ::grpc::ClientAsyncResponseReader< ::mavsdk::rpc::param_server::SetParamFloatResponse>> PrepareAsyncSetParamFloat(::grpc::ClientContext* context, const ::mavsdk::rpc::param_server::SetParamFloatRequest& request, ::grpc::CompletionQueue* cq) {
-      return std::unique_ptr< ::grpc::ClientAsyncResponseReader< ::mavsdk::rpc::param_server::SetParamFloatResponse>>(PrepareAsyncSetParamFloatRaw(context, request, cq));
+    std::unique_ptr< ::grpc::ClientAsyncResponseReader< ::mavsdk::rpc::param_server::ProvideParamFloatResponse>> PrepareAsyncProvideParamFloat(::grpc::ClientContext* context, const ::mavsdk::rpc::param_server::ProvideParamFloatRequest& request, ::grpc::CompletionQueue* cq) {
+      return std::unique_ptr< ::grpc::ClientAsyncResponseReader< ::mavsdk::rpc::param_server::ProvideParamFloatResponse>>(PrepareAsyncProvideParamFloatRaw(context, request, cq));
     }
-    ::grpc::Status GetAllParams(::grpc::ClientContext* context, const ::mavsdk::rpc::param_server::GetAllParamsRequest& request, ::mavsdk::rpc::param_server::GetAllParamsResponse* response) override;
-    std::unique_ptr< ::grpc::ClientAsyncResponseReader< ::mavsdk::rpc::param_server::GetAllParamsResponse>> AsyncGetAllParams(::grpc::ClientContext* context, const ::mavsdk::rpc::param_server::GetAllParamsRequest& request, ::grpc::CompletionQueue* cq) {
-      return std::unique_ptr< ::grpc::ClientAsyncResponseReader< ::mavsdk::rpc::param_server::GetAllParamsResponse>>(AsyncGetAllParamsRaw(context, request, cq));
+    ::grpc::Status RetrieveAllParams(::grpc::ClientContext* context, const ::mavsdk::rpc::param_server::RetrieveAllParamsRequest& request, ::mavsdk::rpc::param_server::RetrieveAllParamsResponse* response) override;
+    std::unique_ptr< ::grpc::ClientAsyncResponseReader< ::mavsdk::rpc::param_server::RetrieveAllParamsResponse>> AsyncRetrieveAllParams(::grpc::ClientContext* context, const ::mavsdk::rpc::param_server::RetrieveAllParamsRequest& request, ::grpc::CompletionQueue* cq) {
+      return std::unique_ptr< ::grpc::ClientAsyncResponseReader< ::mavsdk::rpc::param_server::RetrieveAllParamsResponse>>(AsyncRetrieveAllParamsRaw(context, request, cq));
     }
-    std::unique_ptr< ::grpc::ClientAsyncResponseReader< ::mavsdk::rpc::param_server::GetAllParamsResponse>> PrepareAsyncGetAllParams(::grpc::ClientContext* context, const ::mavsdk::rpc::param_server::GetAllParamsRequest& request, ::grpc::CompletionQueue* cq) {
-      return std::unique_ptr< ::grpc::ClientAsyncResponseReader< ::mavsdk::rpc::param_server::GetAllParamsResponse>>(PrepareAsyncGetAllParamsRaw(context, request, cq));
+    std::unique_ptr< ::grpc::ClientAsyncResponseReader< ::mavsdk::rpc::param_server::RetrieveAllParamsResponse>> PrepareAsyncRetrieveAllParams(::grpc::ClientContext* context, const ::mavsdk::rpc::param_server::RetrieveAllParamsRequest& request, ::grpc::CompletionQueue* cq) {
+      return std::unique_ptr< ::grpc::ClientAsyncResponseReader< ::mavsdk::rpc::param_server::RetrieveAllParamsResponse>>(PrepareAsyncRetrieveAllParamsRaw(context, request, cq));
     }
     class experimental_async final :
       public StubInterface::experimental_async_interface {
      public:
-      void GetParamInt(::grpc::ClientContext* context, const ::mavsdk::rpc::param_server::GetParamIntRequest* request, ::mavsdk::rpc::param_server::GetParamIntResponse* response, std::function<void(::grpc::Status)>) override;
+      void RetrieveParamInt(::grpc::ClientContext* context, const ::mavsdk::rpc::param_server::RetrieveParamIntRequest* request, ::mavsdk::rpc::param_server::RetrieveParamIntResponse* response, std::function<void(::grpc::Status)>) override;
       #ifdef GRPC_CALLBACK_API_NONEXPERIMENTAL
-      void GetParamInt(::grpc::ClientContext* context, const ::mavsdk::rpc::param_server::GetParamIntRequest* request, ::mavsdk::rpc::param_server::GetParamIntResponse* response, ::grpc::ClientUnaryReactor* reactor) override;
+      void RetrieveParamInt(::grpc::ClientContext* context, const ::mavsdk::rpc::param_server::RetrieveParamIntRequest* request, ::mavsdk::rpc::param_server::RetrieveParamIntResponse* response, ::grpc::ClientUnaryReactor* reactor) override;
       #else
-      void GetParamInt(::grpc::ClientContext* context, const ::mavsdk::rpc::param_server::GetParamIntRequest* request, ::mavsdk::rpc::param_server::GetParamIntResponse* response, ::grpc::experimental::ClientUnaryReactor* reactor) override;
+      void RetrieveParamInt(::grpc::ClientContext* context, const ::mavsdk::rpc::param_server::RetrieveParamIntRequest* request, ::mavsdk::rpc::param_server::RetrieveParamIntResponse* response, ::grpc::experimental::ClientUnaryReactor* reactor) override;
       #endif
-      void SetParamInt(::grpc::ClientContext* context, const ::mavsdk::rpc::param_server::SetParamIntRequest* request, ::mavsdk::rpc::param_server::SetParamIntResponse* response, std::function<void(::grpc::Status)>) override;
+      void ProvideParamInt(::grpc::ClientContext* context, const ::mavsdk::rpc::param_server::ProvideParamIntRequest* request, ::mavsdk::rpc::param_server::ProvideParamIntResponse* response, std::function<void(::grpc::Status)>) override;
       #ifdef GRPC_CALLBACK_API_NONEXPERIMENTAL
-      void SetParamInt(::grpc::ClientContext* context, const ::mavsdk::rpc::param_server::SetParamIntRequest* request, ::mavsdk::rpc::param_server::SetParamIntResponse* response, ::grpc::ClientUnaryReactor* reactor) override;
+      void ProvideParamInt(::grpc::ClientContext* context, const ::mavsdk::rpc::param_server::ProvideParamIntRequest* request, ::mavsdk::rpc::param_server::ProvideParamIntResponse* response, ::grpc::ClientUnaryReactor* reactor) override;
       #else
-      void SetParamInt(::grpc::ClientContext* context, const ::mavsdk::rpc::param_server::SetParamIntRequest* request, ::mavsdk::rpc::param_server::SetParamIntResponse* response, ::grpc::experimental::ClientUnaryReactor* reactor) override;
+      void ProvideParamInt(::grpc::ClientContext* context, const ::mavsdk::rpc::param_server::ProvideParamIntRequest* request, ::mavsdk::rpc::param_server::ProvideParamIntResponse* response, ::grpc::experimental::ClientUnaryReactor* reactor) override;
       #endif
-      void GetParamFloat(::grpc::ClientContext* context, const ::mavsdk::rpc::param_server::GetParamFloatRequest* request, ::mavsdk::rpc::param_server::GetParamFloatResponse* response, std::function<void(::grpc::Status)>) override;
+      void RetrieveParamFloat(::grpc::ClientContext* context, const ::mavsdk::rpc::param_server::RetrieveParamFloatRequest* request, ::mavsdk::rpc::param_server::RetrieveParamFloatResponse* response, std::function<void(::grpc::Status)>) override;
       #ifdef GRPC_CALLBACK_API_NONEXPERIMENTAL
-      void GetParamFloat(::grpc::ClientContext* context, const ::mavsdk::rpc::param_server::GetParamFloatRequest* request, ::mavsdk::rpc::param_server::GetParamFloatResponse* response, ::grpc::ClientUnaryReactor* reactor) override;
+      void RetrieveParamFloat(::grpc::ClientContext* context, const ::mavsdk::rpc::param_server::RetrieveParamFloatRequest* request, ::mavsdk::rpc::param_server::RetrieveParamFloatResponse* response, ::grpc::ClientUnaryReactor* reactor) override;
       #else
-      void GetParamFloat(::grpc::ClientContext* context, const ::mavsdk::rpc::param_server::GetParamFloatRequest* request, ::mavsdk::rpc::param_server::GetParamFloatResponse* response, ::grpc::experimental::ClientUnaryReactor* reactor) override;
+      void RetrieveParamFloat(::grpc::ClientContext* context, const ::mavsdk::rpc::param_server::RetrieveParamFloatRequest* request, ::mavsdk::rpc::param_server::RetrieveParamFloatResponse* response, ::grpc::experimental::ClientUnaryReactor* reactor) override;
       #endif
-      void SetParamFloat(::grpc::ClientContext* context, const ::mavsdk::rpc::param_server::SetParamFloatRequest* request, ::mavsdk::rpc::param_server::SetParamFloatResponse* response, std::function<void(::grpc::Status)>) override;
+      void ProvideParamFloat(::grpc::ClientContext* context, const ::mavsdk::rpc::param_server::ProvideParamFloatRequest* request, ::mavsdk::rpc::param_server::ProvideParamFloatResponse* response, std::function<void(::grpc::Status)>) override;
       #ifdef GRPC_CALLBACK_API_NONEXPERIMENTAL
-      void SetParamFloat(::grpc::ClientContext* context, const ::mavsdk::rpc::param_server::SetParamFloatRequest* request, ::mavsdk::rpc::param_server::SetParamFloatResponse* response, ::grpc::ClientUnaryReactor* reactor) override;
+      void ProvideParamFloat(::grpc::ClientContext* context, const ::mavsdk::rpc::param_server::ProvideParamFloatRequest* request, ::mavsdk::rpc::param_server::ProvideParamFloatResponse* response, ::grpc::ClientUnaryReactor* reactor) override;
       #else
-      void SetParamFloat(::grpc::ClientContext* context, const ::mavsdk::rpc::param_server::SetParamFloatRequest* request, ::mavsdk::rpc::param_server::SetParamFloatResponse* response, ::grpc::experimental::ClientUnaryReactor* reactor) override;
+      void ProvideParamFloat(::grpc::ClientContext* context, const ::mavsdk::rpc::param_server::ProvideParamFloatRequest* request, ::mavsdk::rpc::param_server::ProvideParamFloatResponse* response, ::grpc::experimental::ClientUnaryReactor* reactor) override;
       #endif
-      void GetAllParams(::grpc::ClientContext* context, const ::mavsdk::rpc::param_server::GetAllParamsRequest* request, ::mavsdk::rpc::param_server::GetAllParamsResponse* response, std::function<void(::grpc::Status)>) override;
+      void RetrieveAllParams(::grpc::ClientContext* context, const ::mavsdk::rpc::param_server::RetrieveAllParamsRequest* request, ::mavsdk::rpc::param_server::RetrieveAllParamsResponse* response, std::function<void(::grpc::Status)>) override;
       #ifdef GRPC_CALLBACK_API_NONEXPERIMENTAL
-      void GetAllParams(::grpc::ClientContext* context, const ::mavsdk::rpc::param_server::GetAllParamsRequest* request, ::mavsdk::rpc::param_server::GetAllParamsResponse* response, ::grpc::ClientUnaryReactor* reactor) override;
+      void RetrieveAllParams(::grpc::ClientContext* context, const ::mavsdk::rpc::param_server::RetrieveAllParamsRequest* request, ::mavsdk::rpc::param_server::RetrieveAllParamsResponse* response, ::grpc::ClientUnaryReactor* reactor) override;
       #else
-      void GetAllParams(::grpc::ClientContext* context, const ::mavsdk::rpc::param_server::GetAllParamsRequest* request, ::mavsdk::rpc::param_server::GetAllParamsResponse* response, ::grpc::experimental::ClientUnaryReactor* reactor) override;
+      void RetrieveAllParams(::grpc::ClientContext* context, const ::mavsdk::rpc::param_server::RetrieveAllParamsRequest* request, ::mavsdk::rpc::param_server::RetrieveAllParamsResponse* response, ::grpc::experimental::ClientUnaryReactor* reactor) override;
       #endif
      private:
       friend class Stub;
@@ -245,21 +245,21 @@ class ParamServerService final {
    private:
     std::shared_ptr< ::grpc::ChannelInterface> channel_;
     class experimental_async async_stub_{this};
-    ::grpc::ClientAsyncResponseReader< ::mavsdk::rpc::param_server::GetParamIntResponse>* AsyncGetParamIntRaw(::grpc::ClientContext* context, const ::mavsdk::rpc::param_server::GetParamIntRequest& request, ::grpc::CompletionQueue* cq) override;
-    ::grpc::ClientAsyncResponseReader< ::mavsdk::rpc::param_server::GetParamIntResponse>* PrepareAsyncGetParamIntRaw(::grpc::ClientContext* context, const ::mavsdk::rpc::param_server::GetParamIntRequest& request, ::grpc::CompletionQueue* cq) override;
-    ::grpc::ClientAsyncResponseReader< ::mavsdk::rpc::param_server::SetParamIntResponse>* AsyncSetParamIntRaw(::grpc::ClientContext* context, const ::mavsdk::rpc::param_server::SetParamIntRequest& request, ::grpc::CompletionQueue* cq) override;
-    ::grpc::ClientAsyncResponseReader< ::mavsdk::rpc::param_server::SetParamIntResponse>* PrepareAsyncSetParamIntRaw(::grpc::ClientContext* context, const ::mavsdk::rpc::param_server::SetParamIntRequest& request, ::grpc::CompletionQueue* cq) override;
-    ::grpc::ClientAsyncResponseReader< ::mavsdk::rpc::param_server::GetParamFloatResponse>* AsyncGetParamFloatRaw(::grpc::ClientContext* context, const ::mavsdk::rpc::param_server::GetParamFloatRequest& request, ::grpc::CompletionQueue* cq) override;
-    ::grpc::ClientAsyncResponseReader< ::mavsdk::rpc::param_server::GetParamFloatResponse>* PrepareAsyncGetParamFloatRaw(::grpc::ClientContext* context, const ::mavsdk::rpc::param_server::GetParamFloatRequest& request, ::grpc::CompletionQueue* cq) override;
-    ::grpc::ClientAsyncResponseReader< ::mavsdk::rpc::param_server::SetParamFloatResponse>* AsyncSetParamFloatRaw(::grpc::ClientContext* context, const ::mavsdk::rpc::param_server::SetParamFloatRequest& request, ::grpc::CompletionQueue* cq) override;
-    ::grpc::ClientAsyncResponseReader< ::mavsdk::rpc::param_server::SetParamFloatResponse>* PrepareAsyncSetParamFloatRaw(::grpc::ClientContext* context, const ::mavsdk::rpc::param_server::SetParamFloatRequest& request, ::grpc::CompletionQueue* cq) override;
-    ::grpc::ClientAsyncResponseReader< ::mavsdk::rpc::param_server::GetAllParamsResponse>* AsyncGetAllParamsRaw(::grpc::ClientContext* context, const ::mavsdk::rpc::param_server::GetAllParamsRequest& request, ::grpc::CompletionQueue* cq) override;
-    ::grpc::ClientAsyncResponseReader< ::mavsdk::rpc::param_server::GetAllParamsResponse>* PrepareAsyncGetAllParamsRaw(::grpc::ClientContext* context, const ::mavsdk::rpc::param_server::GetAllParamsRequest& request, ::grpc::CompletionQueue* cq) override;
-    const ::grpc::internal::RpcMethod rpcmethod_GetParamInt_;
-    const ::grpc::internal::RpcMethod rpcmethod_SetParamInt_;
-    const ::grpc::internal::RpcMethod rpcmethod_GetParamFloat_;
-    const ::grpc::internal::RpcMethod rpcmethod_SetParamFloat_;
-    const ::grpc::internal::RpcMethod rpcmethod_GetAllParams_;
+    ::grpc::ClientAsyncResponseReader< ::mavsdk::rpc::param_server::RetrieveParamIntResponse>* AsyncRetrieveParamIntRaw(::grpc::ClientContext* context, const ::mavsdk::rpc::param_server::RetrieveParamIntRequest& request, ::grpc::CompletionQueue* cq) override;
+    ::grpc::ClientAsyncResponseReader< ::mavsdk::rpc::param_server::RetrieveParamIntResponse>* PrepareAsyncRetrieveParamIntRaw(::grpc::ClientContext* context, const ::mavsdk::rpc::param_server::RetrieveParamIntRequest& request, ::grpc::CompletionQueue* cq) override;
+    ::grpc::ClientAsyncResponseReader< ::mavsdk::rpc::param_server::ProvideParamIntResponse>* AsyncProvideParamIntRaw(::grpc::ClientContext* context, const ::mavsdk::rpc::param_server::ProvideParamIntRequest& request, ::grpc::CompletionQueue* cq) override;
+    ::grpc::ClientAsyncResponseReader< ::mavsdk::rpc::param_server::ProvideParamIntResponse>* PrepareAsyncProvideParamIntRaw(::grpc::ClientContext* context, const ::mavsdk::rpc::param_server::ProvideParamIntRequest& request, ::grpc::CompletionQueue* cq) override;
+    ::grpc::ClientAsyncResponseReader< ::mavsdk::rpc::param_server::RetrieveParamFloatResponse>* AsyncRetrieveParamFloatRaw(::grpc::ClientContext* context, const ::mavsdk::rpc::param_server::RetrieveParamFloatRequest& request, ::grpc::CompletionQueue* cq) override;
+    ::grpc::ClientAsyncResponseReader< ::mavsdk::rpc::param_server::RetrieveParamFloatResponse>* PrepareAsyncRetrieveParamFloatRaw(::grpc::ClientContext* context, const ::mavsdk::rpc::param_server::RetrieveParamFloatRequest& request, ::grpc::CompletionQueue* cq) override;
+    ::grpc::ClientAsyncResponseReader< ::mavsdk::rpc::param_server::ProvideParamFloatResponse>* AsyncProvideParamFloatRaw(::grpc::ClientContext* context, const ::mavsdk::rpc::param_server::ProvideParamFloatRequest& request, ::grpc::CompletionQueue* cq) override;
+    ::grpc::ClientAsyncResponseReader< ::mavsdk::rpc::param_server::ProvideParamFloatResponse>* PrepareAsyncProvideParamFloatRaw(::grpc::ClientContext* context, const ::mavsdk::rpc::param_server::ProvideParamFloatRequest& request, ::grpc::CompletionQueue* cq) override;
+    ::grpc::ClientAsyncResponseReader< ::mavsdk::rpc::param_server::RetrieveAllParamsResponse>* AsyncRetrieveAllParamsRaw(::grpc::ClientContext* context, const ::mavsdk::rpc::param_server::RetrieveAllParamsRequest& request, ::grpc::CompletionQueue* cq) override;
+    ::grpc::ClientAsyncResponseReader< ::mavsdk::rpc::param_server::RetrieveAllParamsResponse>* PrepareAsyncRetrieveAllParamsRaw(::grpc::ClientContext* context, const ::mavsdk::rpc::param_server::RetrieveAllParamsRequest& request, ::grpc::CompletionQueue* cq) override;
+    const ::grpc::internal::RpcMethod rpcmethod_RetrieveParamInt_;
+    const ::grpc::internal::RpcMethod rpcmethod_ProvideParamInt_;
+    const ::grpc::internal::RpcMethod rpcmethod_RetrieveParamFloat_;
+    const ::grpc::internal::RpcMethod rpcmethod_ProvideParamFloat_;
+    const ::grpc::internal::RpcMethod rpcmethod_RetrieveAllParams_;
   };
   static std::unique_ptr<Stub> NewStub(const std::shared_ptr< ::grpc::ChannelInterface>& channel, const ::grpc::StubOptions& options = ::grpc::StubOptions());
 
@@ -268,561 +268,561 @@ class ParamServerService final {
     Service();
     virtual ~Service();
     //
-    // Get an int parameter.
+    // Retrieve an int parameter.
     //
     // If the type is wrong, the result will be `WRONG_TYPE`.
-    virtual ::grpc::Status GetParamInt(::grpc::ServerContext* context, const ::mavsdk::rpc::param_server::GetParamIntRequest* request, ::mavsdk::rpc::param_server::GetParamIntResponse* response);
+    virtual ::grpc::Status RetrieveParamInt(::grpc::ServerContext* context, const ::mavsdk::rpc::param_server::RetrieveParamIntRequest* request, ::mavsdk::rpc::param_server::RetrieveParamIntResponse* response);
     //
-    // Set an int parameter.
-    //
-    // If the type is wrong, the result will be `WRONG_TYPE`.
-    virtual ::grpc::Status SetParamInt(::grpc::ServerContext* context, const ::mavsdk::rpc::param_server::SetParamIntRequest* request, ::mavsdk::rpc::param_server::SetParamIntResponse* response);
-    //
-    // Get a float parameter.
+    // Provide an int parameter.
     //
     // If the type is wrong, the result will be `WRONG_TYPE`.
-    virtual ::grpc::Status GetParamFloat(::grpc::ServerContext* context, const ::mavsdk::rpc::param_server::GetParamFloatRequest* request, ::mavsdk::rpc::param_server::GetParamFloatResponse* response);
+    virtual ::grpc::Status ProvideParamInt(::grpc::ServerContext* context, const ::mavsdk::rpc::param_server::ProvideParamIntRequest* request, ::mavsdk::rpc::param_server::ProvideParamIntResponse* response);
     //
-    // Set a float parameter.
+    // Retrieve a float parameter.
     //
     // If the type is wrong, the result will be `WRONG_TYPE`.
-    virtual ::grpc::Status SetParamFloat(::grpc::ServerContext* context, const ::mavsdk::rpc::param_server::SetParamFloatRequest* request, ::mavsdk::rpc::param_server::SetParamFloatResponse* response);
+    virtual ::grpc::Status RetrieveParamFloat(::grpc::ServerContext* context, const ::mavsdk::rpc::param_server::RetrieveParamFloatRequest* request, ::mavsdk::rpc::param_server::RetrieveParamFloatResponse* response);
     //
-    // Get all parameters.
-    virtual ::grpc::Status GetAllParams(::grpc::ServerContext* context, const ::mavsdk::rpc::param_server::GetAllParamsRequest* request, ::mavsdk::rpc::param_server::GetAllParamsResponse* response);
+    // Provide a float parameter.
+    //
+    // If the type is wrong, the result will be `WRONG_TYPE`.
+    virtual ::grpc::Status ProvideParamFloat(::grpc::ServerContext* context, const ::mavsdk::rpc::param_server::ProvideParamFloatRequest* request, ::mavsdk::rpc::param_server::ProvideParamFloatResponse* response);
+    //
+    // Retrieve all parameters.
+    virtual ::grpc::Status RetrieveAllParams(::grpc::ServerContext* context, const ::mavsdk::rpc::param_server::RetrieveAllParamsRequest* request, ::mavsdk::rpc::param_server::RetrieveAllParamsResponse* response);
   };
   template <class BaseClass>
-  class WithAsyncMethod_GetParamInt : public BaseClass {
+  class WithAsyncMethod_RetrieveParamInt : public BaseClass {
    private:
     void BaseClassMustBeDerivedFromService(const Service* /*service*/) {}
    public:
-    WithAsyncMethod_GetParamInt() {
+    WithAsyncMethod_RetrieveParamInt() {
       ::grpc::Service::MarkMethodAsync(0);
     }
-    ~WithAsyncMethod_GetParamInt() override {
+    ~WithAsyncMethod_RetrieveParamInt() override {
       BaseClassMustBeDerivedFromService(this);
     }
     // disable synchronous version of this method
-    ::grpc::Status GetParamInt(::grpc::ServerContext* /*context*/, const ::mavsdk::rpc::param_server::GetParamIntRequest* /*request*/, ::mavsdk::rpc::param_server::GetParamIntResponse* /*response*/) override {
+    ::grpc::Status RetrieveParamInt(::grpc::ServerContext* /*context*/, const ::mavsdk::rpc::param_server::RetrieveParamIntRequest* /*request*/, ::mavsdk::rpc::param_server::RetrieveParamIntResponse* /*response*/) override {
       abort();
       return ::grpc::Status(::grpc::StatusCode::UNIMPLEMENTED, "");
     }
-    void RequestGetParamInt(::grpc::ServerContext* context, ::mavsdk::rpc::param_server::GetParamIntRequest* request, ::grpc::ServerAsyncResponseWriter< ::mavsdk::rpc::param_server::GetParamIntResponse>* response, ::grpc::CompletionQueue* new_call_cq, ::grpc::ServerCompletionQueue* notification_cq, void *tag) {
+    void RequestRetrieveParamInt(::grpc::ServerContext* context, ::mavsdk::rpc::param_server::RetrieveParamIntRequest* request, ::grpc::ServerAsyncResponseWriter< ::mavsdk::rpc::param_server::RetrieveParamIntResponse>* response, ::grpc::CompletionQueue* new_call_cq, ::grpc::ServerCompletionQueue* notification_cq, void *tag) {
       ::grpc::Service::RequestAsyncUnary(0, context, request, response, new_call_cq, notification_cq, tag);
     }
   };
   template <class BaseClass>
-  class WithAsyncMethod_SetParamInt : public BaseClass {
+  class WithAsyncMethod_ProvideParamInt : public BaseClass {
    private:
     void BaseClassMustBeDerivedFromService(const Service* /*service*/) {}
    public:
-    WithAsyncMethod_SetParamInt() {
+    WithAsyncMethod_ProvideParamInt() {
       ::grpc::Service::MarkMethodAsync(1);
     }
-    ~WithAsyncMethod_SetParamInt() override {
+    ~WithAsyncMethod_ProvideParamInt() override {
       BaseClassMustBeDerivedFromService(this);
     }
     // disable synchronous version of this method
-    ::grpc::Status SetParamInt(::grpc::ServerContext* /*context*/, const ::mavsdk::rpc::param_server::SetParamIntRequest* /*request*/, ::mavsdk::rpc::param_server::SetParamIntResponse* /*response*/) override {
+    ::grpc::Status ProvideParamInt(::grpc::ServerContext* /*context*/, const ::mavsdk::rpc::param_server::ProvideParamIntRequest* /*request*/, ::mavsdk::rpc::param_server::ProvideParamIntResponse* /*response*/) override {
       abort();
       return ::grpc::Status(::grpc::StatusCode::UNIMPLEMENTED, "");
     }
-    void RequestSetParamInt(::grpc::ServerContext* context, ::mavsdk::rpc::param_server::SetParamIntRequest* request, ::grpc::ServerAsyncResponseWriter< ::mavsdk::rpc::param_server::SetParamIntResponse>* response, ::grpc::CompletionQueue* new_call_cq, ::grpc::ServerCompletionQueue* notification_cq, void *tag) {
+    void RequestProvideParamInt(::grpc::ServerContext* context, ::mavsdk::rpc::param_server::ProvideParamIntRequest* request, ::grpc::ServerAsyncResponseWriter< ::mavsdk::rpc::param_server::ProvideParamIntResponse>* response, ::grpc::CompletionQueue* new_call_cq, ::grpc::ServerCompletionQueue* notification_cq, void *tag) {
       ::grpc::Service::RequestAsyncUnary(1, context, request, response, new_call_cq, notification_cq, tag);
     }
   };
   template <class BaseClass>
-  class WithAsyncMethod_GetParamFloat : public BaseClass {
+  class WithAsyncMethod_RetrieveParamFloat : public BaseClass {
    private:
     void BaseClassMustBeDerivedFromService(const Service* /*service*/) {}
    public:
-    WithAsyncMethod_GetParamFloat() {
+    WithAsyncMethod_RetrieveParamFloat() {
       ::grpc::Service::MarkMethodAsync(2);
     }
-    ~WithAsyncMethod_GetParamFloat() override {
+    ~WithAsyncMethod_RetrieveParamFloat() override {
       BaseClassMustBeDerivedFromService(this);
     }
     // disable synchronous version of this method
-    ::grpc::Status GetParamFloat(::grpc::ServerContext* /*context*/, const ::mavsdk::rpc::param_server::GetParamFloatRequest* /*request*/, ::mavsdk::rpc::param_server::GetParamFloatResponse* /*response*/) override {
+    ::grpc::Status RetrieveParamFloat(::grpc::ServerContext* /*context*/, const ::mavsdk::rpc::param_server::RetrieveParamFloatRequest* /*request*/, ::mavsdk::rpc::param_server::RetrieveParamFloatResponse* /*response*/) override {
       abort();
       return ::grpc::Status(::grpc::StatusCode::UNIMPLEMENTED, "");
     }
-    void RequestGetParamFloat(::grpc::ServerContext* context, ::mavsdk::rpc::param_server::GetParamFloatRequest* request, ::grpc::ServerAsyncResponseWriter< ::mavsdk::rpc::param_server::GetParamFloatResponse>* response, ::grpc::CompletionQueue* new_call_cq, ::grpc::ServerCompletionQueue* notification_cq, void *tag) {
+    void RequestRetrieveParamFloat(::grpc::ServerContext* context, ::mavsdk::rpc::param_server::RetrieveParamFloatRequest* request, ::grpc::ServerAsyncResponseWriter< ::mavsdk::rpc::param_server::RetrieveParamFloatResponse>* response, ::grpc::CompletionQueue* new_call_cq, ::grpc::ServerCompletionQueue* notification_cq, void *tag) {
       ::grpc::Service::RequestAsyncUnary(2, context, request, response, new_call_cq, notification_cq, tag);
     }
   };
   template <class BaseClass>
-  class WithAsyncMethod_SetParamFloat : public BaseClass {
+  class WithAsyncMethod_ProvideParamFloat : public BaseClass {
    private:
     void BaseClassMustBeDerivedFromService(const Service* /*service*/) {}
    public:
-    WithAsyncMethod_SetParamFloat() {
+    WithAsyncMethod_ProvideParamFloat() {
       ::grpc::Service::MarkMethodAsync(3);
     }
-    ~WithAsyncMethod_SetParamFloat() override {
+    ~WithAsyncMethod_ProvideParamFloat() override {
       BaseClassMustBeDerivedFromService(this);
     }
     // disable synchronous version of this method
-    ::grpc::Status SetParamFloat(::grpc::ServerContext* /*context*/, const ::mavsdk::rpc::param_server::SetParamFloatRequest* /*request*/, ::mavsdk::rpc::param_server::SetParamFloatResponse* /*response*/) override {
+    ::grpc::Status ProvideParamFloat(::grpc::ServerContext* /*context*/, const ::mavsdk::rpc::param_server::ProvideParamFloatRequest* /*request*/, ::mavsdk::rpc::param_server::ProvideParamFloatResponse* /*response*/) override {
       abort();
       return ::grpc::Status(::grpc::StatusCode::UNIMPLEMENTED, "");
     }
-    void RequestSetParamFloat(::grpc::ServerContext* context, ::mavsdk::rpc::param_server::SetParamFloatRequest* request, ::grpc::ServerAsyncResponseWriter< ::mavsdk::rpc::param_server::SetParamFloatResponse>* response, ::grpc::CompletionQueue* new_call_cq, ::grpc::ServerCompletionQueue* notification_cq, void *tag) {
+    void RequestProvideParamFloat(::grpc::ServerContext* context, ::mavsdk::rpc::param_server::ProvideParamFloatRequest* request, ::grpc::ServerAsyncResponseWriter< ::mavsdk::rpc::param_server::ProvideParamFloatResponse>* response, ::grpc::CompletionQueue* new_call_cq, ::grpc::ServerCompletionQueue* notification_cq, void *tag) {
       ::grpc::Service::RequestAsyncUnary(3, context, request, response, new_call_cq, notification_cq, tag);
     }
   };
   template <class BaseClass>
-  class WithAsyncMethod_GetAllParams : public BaseClass {
+  class WithAsyncMethod_RetrieveAllParams : public BaseClass {
    private:
     void BaseClassMustBeDerivedFromService(const Service* /*service*/) {}
    public:
-    WithAsyncMethod_GetAllParams() {
+    WithAsyncMethod_RetrieveAllParams() {
       ::grpc::Service::MarkMethodAsync(4);
     }
-    ~WithAsyncMethod_GetAllParams() override {
+    ~WithAsyncMethod_RetrieveAllParams() override {
       BaseClassMustBeDerivedFromService(this);
     }
     // disable synchronous version of this method
-    ::grpc::Status GetAllParams(::grpc::ServerContext* /*context*/, const ::mavsdk::rpc::param_server::GetAllParamsRequest* /*request*/, ::mavsdk::rpc::param_server::GetAllParamsResponse* /*response*/) override {
+    ::grpc::Status RetrieveAllParams(::grpc::ServerContext* /*context*/, const ::mavsdk::rpc::param_server::RetrieveAllParamsRequest* /*request*/, ::mavsdk::rpc::param_server::RetrieveAllParamsResponse* /*response*/) override {
       abort();
       return ::grpc::Status(::grpc::StatusCode::UNIMPLEMENTED, "");
     }
-    void RequestGetAllParams(::grpc::ServerContext* context, ::mavsdk::rpc::param_server::GetAllParamsRequest* request, ::grpc::ServerAsyncResponseWriter< ::mavsdk::rpc::param_server::GetAllParamsResponse>* response, ::grpc::CompletionQueue* new_call_cq, ::grpc::ServerCompletionQueue* notification_cq, void *tag) {
+    void RequestRetrieveAllParams(::grpc::ServerContext* context, ::mavsdk::rpc::param_server::RetrieveAllParamsRequest* request, ::grpc::ServerAsyncResponseWriter< ::mavsdk::rpc::param_server::RetrieveAllParamsResponse>* response, ::grpc::CompletionQueue* new_call_cq, ::grpc::ServerCompletionQueue* notification_cq, void *tag) {
       ::grpc::Service::RequestAsyncUnary(4, context, request, response, new_call_cq, notification_cq, tag);
     }
   };
-  typedef WithAsyncMethod_GetParamInt<WithAsyncMethod_SetParamInt<WithAsyncMethod_GetParamFloat<WithAsyncMethod_SetParamFloat<WithAsyncMethod_GetAllParams<Service > > > > > AsyncService;
+  typedef WithAsyncMethod_RetrieveParamInt<WithAsyncMethod_ProvideParamInt<WithAsyncMethod_RetrieveParamFloat<WithAsyncMethod_ProvideParamFloat<WithAsyncMethod_RetrieveAllParams<Service > > > > > AsyncService;
   template <class BaseClass>
-  class ExperimentalWithCallbackMethod_GetParamInt : public BaseClass {
+  class ExperimentalWithCallbackMethod_RetrieveParamInt : public BaseClass {
    private:
     void BaseClassMustBeDerivedFromService(const Service* /*service*/) {}
    public:
-    ExperimentalWithCallbackMethod_GetParamInt() {
+    ExperimentalWithCallbackMethod_RetrieveParamInt() {
     #ifdef GRPC_CALLBACK_API_NONEXPERIMENTAL
       ::grpc::Service::
     #else
       ::grpc::Service::experimental().
     #endif
         MarkMethodCallback(0,
-          new ::grpc::internal::CallbackUnaryHandler< ::mavsdk::rpc::param_server::GetParamIntRequest, ::mavsdk::rpc::param_server::GetParamIntResponse>(
+          new ::grpc::internal::CallbackUnaryHandler< ::mavsdk::rpc::param_server::RetrieveParamIntRequest, ::mavsdk::rpc::param_server::RetrieveParamIntResponse>(
             [this](
     #ifdef GRPC_CALLBACK_API_NONEXPERIMENTAL
                    ::grpc::CallbackServerContext*
     #else
                    ::grpc::experimental::CallbackServerContext*
     #endif
-                     context, const ::mavsdk::rpc::param_server::GetParamIntRequest* request, ::mavsdk::rpc::param_server::GetParamIntResponse* response) { return this->GetParamInt(context, request, response); }));}
-    void SetMessageAllocatorFor_GetParamInt(
-        ::grpc::experimental::MessageAllocator< ::mavsdk::rpc::param_server::GetParamIntRequest, ::mavsdk::rpc::param_server::GetParamIntResponse>* allocator) {
+                     context, const ::mavsdk::rpc::param_server::RetrieveParamIntRequest* request, ::mavsdk::rpc::param_server::RetrieveParamIntResponse* response) { return this->RetrieveParamInt(context, request, response); }));}
+    void SetMessageAllocatorFor_RetrieveParamInt(
+        ::grpc::experimental::MessageAllocator< ::mavsdk::rpc::param_server::RetrieveParamIntRequest, ::mavsdk::rpc::param_server::RetrieveParamIntResponse>* allocator) {
     #ifdef GRPC_CALLBACK_API_NONEXPERIMENTAL
       ::grpc::internal::MethodHandler* const handler = ::grpc::Service::GetHandler(0);
     #else
       ::grpc::internal::MethodHandler* const handler = ::grpc::Service::experimental().GetHandler(0);
     #endif
-      static_cast<::grpc::internal::CallbackUnaryHandler< ::mavsdk::rpc::param_server::GetParamIntRequest, ::mavsdk::rpc::param_server::GetParamIntResponse>*>(handler)
+      static_cast<::grpc::internal::CallbackUnaryHandler< ::mavsdk::rpc::param_server::RetrieveParamIntRequest, ::mavsdk::rpc::param_server::RetrieveParamIntResponse>*>(handler)
               ->SetMessageAllocator(allocator);
     }
-    ~ExperimentalWithCallbackMethod_GetParamInt() override {
+    ~ExperimentalWithCallbackMethod_RetrieveParamInt() override {
       BaseClassMustBeDerivedFromService(this);
     }
     // disable synchronous version of this method
-    ::grpc::Status GetParamInt(::grpc::ServerContext* /*context*/, const ::mavsdk::rpc::param_server::GetParamIntRequest* /*request*/, ::mavsdk::rpc::param_server::GetParamIntResponse* /*response*/) override {
+    ::grpc::Status RetrieveParamInt(::grpc::ServerContext* /*context*/, const ::mavsdk::rpc::param_server::RetrieveParamIntRequest* /*request*/, ::mavsdk::rpc::param_server::RetrieveParamIntResponse* /*response*/) override {
       abort();
       return ::grpc::Status(::grpc::StatusCode::UNIMPLEMENTED, "");
     }
     #ifdef GRPC_CALLBACK_API_NONEXPERIMENTAL
-    virtual ::grpc::ServerUnaryReactor* GetParamInt(
-      ::grpc::CallbackServerContext* /*context*/, const ::mavsdk::rpc::param_server::GetParamIntRequest* /*request*/, ::mavsdk::rpc::param_server::GetParamIntResponse* /*response*/)
+    virtual ::grpc::ServerUnaryReactor* RetrieveParamInt(
+      ::grpc::CallbackServerContext* /*context*/, const ::mavsdk::rpc::param_server::RetrieveParamIntRequest* /*request*/, ::mavsdk::rpc::param_server::RetrieveParamIntResponse* /*response*/)
     #else
-    virtual ::grpc::experimental::ServerUnaryReactor* GetParamInt(
-      ::grpc::experimental::CallbackServerContext* /*context*/, const ::mavsdk::rpc::param_server::GetParamIntRequest* /*request*/, ::mavsdk::rpc::param_server::GetParamIntResponse* /*response*/)
+    virtual ::grpc::experimental::ServerUnaryReactor* RetrieveParamInt(
+      ::grpc::experimental::CallbackServerContext* /*context*/, const ::mavsdk::rpc::param_server::RetrieveParamIntRequest* /*request*/, ::mavsdk::rpc::param_server::RetrieveParamIntResponse* /*response*/)
     #endif
       { return nullptr; }
   };
   template <class BaseClass>
-  class ExperimentalWithCallbackMethod_SetParamInt : public BaseClass {
+  class ExperimentalWithCallbackMethod_ProvideParamInt : public BaseClass {
    private:
     void BaseClassMustBeDerivedFromService(const Service* /*service*/) {}
    public:
-    ExperimentalWithCallbackMethod_SetParamInt() {
+    ExperimentalWithCallbackMethod_ProvideParamInt() {
     #ifdef GRPC_CALLBACK_API_NONEXPERIMENTAL
       ::grpc::Service::
     #else
       ::grpc::Service::experimental().
     #endif
         MarkMethodCallback(1,
-          new ::grpc::internal::CallbackUnaryHandler< ::mavsdk::rpc::param_server::SetParamIntRequest, ::mavsdk::rpc::param_server::SetParamIntResponse>(
+          new ::grpc::internal::CallbackUnaryHandler< ::mavsdk::rpc::param_server::ProvideParamIntRequest, ::mavsdk::rpc::param_server::ProvideParamIntResponse>(
             [this](
     #ifdef GRPC_CALLBACK_API_NONEXPERIMENTAL
                    ::grpc::CallbackServerContext*
     #else
                    ::grpc::experimental::CallbackServerContext*
     #endif
-                     context, const ::mavsdk::rpc::param_server::SetParamIntRequest* request, ::mavsdk::rpc::param_server::SetParamIntResponse* response) { return this->SetParamInt(context, request, response); }));}
-    void SetMessageAllocatorFor_SetParamInt(
-        ::grpc::experimental::MessageAllocator< ::mavsdk::rpc::param_server::SetParamIntRequest, ::mavsdk::rpc::param_server::SetParamIntResponse>* allocator) {
+                     context, const ::mavsdk::rpc::param_server::ProvideParamIntRequest* request, ::mavsdk::rpc::param_server::ProvideParamIntResponse* response) { return this->ProvideParamInt(context, request, response); }));}
+    void SetMessageAllocatorFor_ProvideParamInt(
+        ::grpc::experimental::MessageAllocator< ::mavsdk::rpc::param_server::ProvideParamIntRequest, ::mavsdk::rpc::param_server::ProvideParamIntResponse>* allocator) {
     #ifdef GRPC_CALLBACK_API_NONEXPERIMENTAL
       ::grpc::internal::MethodHandler* const handler = ::grpc::Service::GetHandler(1);
     #else
       ::grpc::internal::MethodHandler* const handler = ::grpc::Service::experimental().GetHandler(1);
     #endif
-      static_cast<::grpc::internal::CallbackUnaryHandler< ::mavsdk::rpc::param_server::SetParamIntRequest, ::mavsdk::rpc::param_server::SetParamIntResponse>*>(handler)
+      static_cast<::grpc::internal::CallbackUnaryHandler< ::mavsdk::rpc::param_server::ProvideParamIntRequest, ::mavsdk::rpc::param_server::ProvideParamIntResponse>*>(handler)
               ->SetMessageAllocator(allocator);
     }
-    ~ExperimentalWithCallbackMethod_SetParamInt() override {
+    ~ExperimentalWithCallbackMethod_ProvideParamInt() override {
       BaseClassMustBeDerivedFromService(this);
     }
     // disable synchronous version of this method
-    ::grpc::Status SetParamInt(::grpc::ServerContext* /*context*/, const ::mavsdk::rpc::param_server::SetParamIntRequest* /*request*/, ::mavsdk::rpc::param_server::SetParamIntResponse* /*response*/) override {
+    ::grpc::Status ProvideParamInt(::grpc::ServerContext* /*context*/, const ::mavsdk::rpc::param_server::ProvideParamIntRequest* /*request*/, ::mavsdk::rpc::param_server::ProvideParamIntResponse* /*response*/) override {
       abort();
       return ::grpc::Status(::grpc::StatusCode::UNIMPLEMENTED, "");
     }
     #ifdef GRPC_CALLBACK_API_NONEXPERIMENTAL
-    virtual ::grpc::ServerUnaryReactor* SetParamInt(
-      ::grpc::CallbackServerContext* /*context*/, const ::mavsdk::rpc::param_server::SetParamIntRequest* /*request*/, ::mavsdk::rpc::param_server::SetParamIntResponse* /*response*/)
+    virtual ::grpc::ServerUnaryReactor* ProvideParamInt(
+      ::grpc::CallbackServerContext* /*context*/, const ::mavsdk::rpc::param_server::ProvideParamIntRequest* /*request*/, ::mavsdk::rpc::param_server::ProvideParamIntResponse* /*response*/)
     #else
-    virtual ::grpc::experimental::ServerUnaryReactor* SetParamInt(
-      ::grpc::experimental::CallbackServerContext* /*context*/, const ::mavsdk::rpc::param_server::SetParamIntRequest* /*request*/, ::mavsdk::rpc::param_server::SetParamIntResponse* /*response*/)
+    virtual ::grpc::experimental::ServerUnaryReactor* ProvideParamInt(
+      ::grpc::experimental::CallbackServerContext* /*context*/, const ::mavsdk::rpc::param_server::ProvideParamIntRequest* /*request*/, ::mavsdk::rpc::param_server::ProvideParamIntResponse* /*response*/)
     #endif
       { return nullptr; }
   };
   template <class BaseClass>
-  class ExperimentalWithCallbackMethod_GetParamFloat : public BaseClass {
+  class ExperimentalWithCallbackMethod_RetrieveParamFloat : public BaseClass {
    private:
     void BaseClassMustBeDerivedFromService(const Service* /*service*/) {}
    public:
-    ExperimentalWithCallbackMethod_GetParamFloat() {
+    ExperimentalWithCallbackMethod_RetrieveParamFloat() {
     #ifdef GRPC_CALLBACK_API_NONEXPERIMENTAL
       ::grpc::Service::
     #else
       ::grpc::Service::experimental().
     #endif
         MarkMethodCallback(2,
-          new ::grpc::internal::CallbackUnaryHandler< ::mavsdk::rpc::param_server::GetParamFloatRequest, ::mavsdk::rpc::param_server::GetParamFloatResponse>(
+          new ::grpc::internal::CallbackUnaryHandler< ::mavsdk::rpc::param_server::RetrieveParamFloatRequest, ::mavsdk::rpc::param_server::RetrieveParamFloatResponse>(
             [this](
     #ifdef GRPC_CALLBACK_API_NONEXPERIMENTAL
                    ::grpc::CallbackServerContext*
     #else
                    ::grpc::experimental::CallbackServerContext*
     #endif
-                     context, const ::mavsdk::rpc::param_server::GetParamFloatRequest* request, ::mavsdk::rpc::param_server::GetParamFloatResponse* response) { return this->GetParamFloat(context, request, response); }));}
-    void SetMessageAllocatorFor_GetParamFloat(
-        ::grpc::experimental::MessageAllocator< ::mavsdk::rpc::param_server::GetParamFloatRequest, ::mavsdk::rpc::param_server::GetParamFloatResponse>* allocator) {
+                     context, const ::mavsdk::rpc::param_server::RetrieveParamFloatRequest* request, ::mavsdk::rpc::param_server::RetrieveParamFloatResponse* response) { return this->RetrieveParamFloat(context, request, response); }));}
+    void SetMessageAllocatorFor_RetrieveParamFloat(
+        ::grpc::experimental::MessageAllocator< ::mavsdk::rpc::param_server::RetrieveParamFloatRequest, ::mavsdk::rpc::param_server::RetrieveParamFloatResponse>* allocator) {
     #ifdef GRPC_CALLBACK_API_NONEXPERIMENTAL
       ::grpc::internal::MethodHandler* const handler = ::grpc::Service::GetHandler(2);
     #else
       ::grpc::internal::MethodHandler* const handler = ::grpc::Service::experimental().GetHandler(2);
     #endif
-      static_cast<::grpc::internal::CallbackUnaryHandler< ::mavsdk::rpc::param_server::GetParamFloatRequest, ::mavsdk::rpc::param_server::GetParamFloatResponse>*>(handler)
+      static_cast<::grpc::internal::CallbackUnaryHandler< ::mavsdk::rpc::param_server::RetrieveParamFloatRequest, ::mavsdk::rpc::param_server::RetrieveParamFloatResponse>*>(handler)
               ->SetMessageAllocator(allocator);
     }
-    ~ExperimentalWithCallbackMethod_GetParamFloat() override {
+    ~ExperimentalWithCallbackMethod_RetrieveParamFloat() override {
       BaseClassMustBeDerivedFromService(this);
     }
     // disable synchronous version of this method
-    ::grpc::Status GetParamFloat(::grpc::ServerContext* /*context*/, const ::mavsdk::rpc::param_server::GetParamFloatRequest* /*request*/, ::mavsdk::rpc::param_server::GetParamFloatResponse* /*response*/) override {
+    ::grpc::Status RetrieveParamFloat(::grpc::ServerContext* /*context*/, const ::mavsdk::rpc::param_server::RetrieveParamFloatRequest* /*request*/, ::mavsdk::rpc::param_server::RetrieveParamFloatResponse* /*response*/) override {
       abort();
       return ::grpc::Status(::grpc::StatusCode::UNIMPLEMENTED, "");
     }
     #ifdef GRPC_CALLBACK_API_NONEXPERIMENTAL
-    virtual ::grpc::ServerUnaryReactor* GetParamFloat(
-      ::grpc::CallbackServerContext* /*context*/, const ::mavsdk::rpc::param_server::GetParamFloatRequest* /*request*/, ::mavsdk::rpc::param_server::GetParamFloatResponse* /*response*/)
+    virtual ::grpc::ServerUnaryReactor* RetrieveParamFloat(
+      ::grpc::CallbackServerContext* /*context*/, const ::mavsdk::rpc::param_server::RetrieveParamFloatRequest* /*request*/, ::mavsdk::rpc::param_server::RetrieveParamFloatResponse* /*response*/)
     #else
-    virtual ::grpc::experimental::ServerUnaryReactor* GetParamFloat(
-      ::grpc::experimental::CallbackServerContext* /*context*/, const ::mavsdk::rpc::param_server::GetParamFloatRequest* /*request*/, ::mavsdk::rpc::param_server::GetParamFloatResponse* /*response*/)
+    virtual ::grpc::experimental::ServerUnaryReactor* RetrieveParamFloat(
+      ::grpc::experimental::CallbackServerContext* /*context*/, const ::mavsdk::rpc::param_server::RetrieveParamFloatRequest* /*request*/, ::mavsdk::rpc::param_server::RetrieveParamFloatResponse* /*response*/)
     #endif
       { return nullptr; }
   };
   template <class BaseClass>
-  class ExperimentalWithCallbackMethod_SetParamFloat : public BaseClass {
+  class ExperimentalWithCallbackMethod_ProvideParamFloat : public BaseClass {
    private:
     void BaseClassMustBeDerivedFromService(const Service* /*service*/) {}
    public:
-    ExperimentalWithCallbackMethod_SetParamFloat() {
+    ExperimentalWithCallbackMethod_ProvideParamFloat() {
     #ifdef GRPC_CALLBACK_API_NONEXPERIMENTAL
       ::grpc::Service::
     #else
       ::grpc::Service::experimental().
     #endif
         MarkMethodCallback(3,
-          new ::grpc::internal::CallbackUnaryHandler< ::mavsdk::rpc::param_server::SetParamFloatRequest, ::mavsdk::rpc::param_server::SetParamFloatResponse>(
+          new ::grpc::internal::CallbackUnaryHandler< ::mavsdk::rpc::param_server::ProvideParamFloatRequest, ::mavsdk::rpc::param_server::ProvideParamFloatResponse>(
             [this](
     #ifdef GRPC_CALLBACK_API_NONEXPERIMENTAL
                    ::grpc::CallbackServerContext*
     #else
                    ::grpc::experimental::CallbackServerContext*
     #endif
-                     context, const ::mavsdk::rpc::param_server::SetParamFloatRequest* request, ::mavsdk::rpc::param_server::SetParamFloatResponse* response) { return this->SetParamFloat(context, request, response); }));}
-    void SetMessageAllocatorFor_SetParamFloat(
-        ::grpc::experimental::MessageAllocator< ::mavsdk::rpc::param_server::SetParamFloatRequest, ::mavsdk::rpc::param_server::SetParamFloatResponse>* allocator) {
+                     context, const ::mavsdk::rpc::param_server::ProvideParamFloatRequest* request, ::mavsdk::rpc::param_server::ProvideParamFloatResponse* response) { return this->ProvideParamFloat(context, request, response); }));}
+    void SetMessageAllocatorFor_ProvideParamFloat(
+        ::grpc::experimental::MessageAllocator< ::mavsdk::rpc::param_server::ProvideParamFloatRequest, ::mavsdk::rpc::param_server::ProvideParamFloatResponse>* allocator) {
     #ifdef GRPC_CALLBACK_API_NONEXPERIMENTAL
       ::grpc::internal::MethodHandler* const handler = ::grpc::Service::GetHandler(3);
     #else
       ::grpc::internal::MethodHandler* const handler = ::grpc::Service::experimental().GetHandler(3);
     #endif
-      static_cast<::grpc::internal::CallbackUnaryHandler< ::mavsdk::rpc::param_server::SetParamFloatRequest, ::mavsdk::rpc::param_server::SetParamFloatResponse>*>(handler)
+      static_cast<::grpc::internal::CallbackUnaryHandler< ::mavsdk::rpc::param_server::ProvideParamFloatRequest, ::mavsdk::rpc::param_server::ProvideParamFloatResponse>*>(handler)
               ->SetMessageAllocator(allocator);
     }
-    ~ExperimentalWithCallbackMethod_SetParamFloat() override {
+    ~ExperimentalWithCallbackMethod_ProvideParamFloat() override {
       BaseClassMustBeDerivedFromService(this);
     }
     // disable synchronous version of this method
-    ::grpc::Status SetParamFloat(::grpc::ServerContext* /*context*/, const ::mavsdk::rpc::param_server::SetParamFloatRequest* /*request*/, ::mavsdk::rpc::param_server::SetParamFloatResponse* /*response*/) override {
+    ::grpc::Status ProvideParamFloat(::grpc::ServerContext* /*context*/, const ::mavsdk::rpc::param_server::ProvideParamFloatRequest* /*request*/, ::mavsdk::rpc::param_server::ProvideParamFloatResponse* /*response*/) override {
       abort();
       return ::grpc::Status(::grpc::StatusCode::UNIMPLEMENTED, "");
     }
     #ifdef GRPC_CALLBACK_API_NONEXPERIMENTAL
-    virtual ::grpc::ServerUnaryReactor* SetParamFloat(
-      ::grpc::CallbackServerContext* /*context*/, const ::mavsdk::rpc::param_server::SetParamFloatRequest* /*request*/, ::mavsdk::rpc::param_server::SetParamFloatResponse* /*response*/)
+    virtual ::grpc::ServerUnaryReactor* ProvideParamFloat(
+      ::grpc::CallbackServerContext* /*context*/, const ::mavsdk::rpc::param_server::ProvideParamFloatRequest* /*request*/, ::mavsdk::rpc::param_server::ProvideParamFloatResponse* /*response*/)
     #else
-    virtual ::grpc::experimental::ServerUnaryReactor* SetParamFloat(
-      ::grpc::experimental::CallbackServerContext* /*context*/, const ::mavsdk::rpc::param_server::SetParamFloatRequest* /*request*/, ::mavsdk::rpc::param_server::SetParamFloatResponse* /*response*/)
+    virtual ::grpc::experimental::ServerUnaryReactor* ProvideParamFloat(
+      ::grpc::experimental::CallbackServerContext* /*context*/, const ::mavsdk::rpc::param_server::ProvideParamFloatRequest* /*request*/, ::mavsdk::rpc::param_server::ProvideParamFloatResponse* /*response*/)
     #endif
       { return nullptr; }
   };
   template <class BaseClass>
-  class ExperimentalWithCallbackMethod_GetAllParams : public BaseClass {
+  class ExperimentalWithCallbackMethod_RetrieveAllParams : public BaseClass {
    private:
     void BaseClassMustBeDerivedFromService(const Service* /*service*/) {}
    public:
-    ExperimentalWithCallbackMethod_GetAllParams() {
+    ExperimentalWithCallbackMethod_RetrieveAllParams() {
     #ifdef GRPC_CALLBACK_API_NONEXPERIMENTAL
       ::grpc::Service::
     #else
       ::grpc::Service::experimental().
     #endif
         MarkMethodCallback(4,
-          new ::grpc::internal::CallbackUnaryHandler< ::mavsdk::rpc::param_server::GetAllParamsRequest, ::mavsdk::rpc::param_server::GetAllParamsResponse>(
+          new ::grpc::internal::CallbackUnaryHandler< ::mavsdk::rpc::param_server::RetrieveAllParamsRequest, ::mavsdk::rpc::param_server::RetrieveAllParamsResponse>(
             [this](
     #ifdef GRPC_CALLBACK_API_NONEXPERIMENTAL
                    ::grpc::CallbackServerContext*
     #else
                    ::grpc::experimental::CallbackServerContext*
     #endif
-                     context, const ::mavsdk::rpc::param_server::GetAllParamsRequest* request, ::mavsdk::rpc::param_server::GetAllParamsResponse* response) { return this->GetAllParams(context, request, response); }));}
-    void SetMessageAllocatorFor_GetAllParams(
-        ::grpc::experimental::MessageAllocator< ::mavsdk::rpc::param_server::GetAllParamsRequest, ::mavsdk::rpc::param_server::GetAllParamsResponse>* allocator) {
+                     context, const ::mavsdk::rpc::param_server::RetrieveAllParamsRequest* request, ::mavsdk::rpc::param_server::RetrieveAllParamsResponse* response) { return this->RetrieveAllParams(context, request, response); }));}
+    void SetMessageAllocatorFor_RetrieveAllParams(
+        ::grpc::experimental::MessageAllocator< ::mavsdk::rpc::param_server::RetrieveAllParamsRequest, ::mavsdk::rpc::param_server::RetrieveAllParamsResponse>* allocator) {
     #ifdef GRPC_CALLBACK_API_NONEXPERIMENTAL
       ::grpc::internal::MethodHandler* const handler = ::grpc::Service::GetHandler(4);
     #else
       ::grpc::internal::MethodHandler* const handler = ::grpc::Service::experimental().GetHandler(4);
     #endif
-      static_cast<::grpc::internal::CallbackUnaryHandler< ::mavsdk::rpc::param_server::GetAllParamsRequest, ::mavsdk::rpc::param_server::GetAllParamsResponse>*>(handler)
+      static_cast<::grpc::internal::CallbackUnaryHandler< ::mavsdk::rpc::param_server::RetrieveAllParamsRequest, ::mavsdk::rpc::param_server::RetrieveAllParamsResponse>*>(handler)
               ->SetMessageAllocator(allocator);
     }
-    ~ExperimentalWithCallbackMethod_GetAllParams() override {
+    ~ExperimentalWithCallbackMethod_RetrieveAllParams() override {
       BaseClassMustBeDerivedFromService(this);
     }
     // disable synchronous version of this method
-    ::grpc::Status GetAllParams(::grpc::ServerContext* /*context*/, const ::mavsdk::rpc::param_server::GetAllParamsRequest* /*request*/, ::mavsdk::rpc::param_server::GetAllParamsResponse* /*response*/) override {
+    ::grpc::Status RetrieveAllParams(::grpc::ServerContext* /*context*/, const ::mavsdk::rpc::param_server::RetrieveAllParamsRequest* /*request*/, ::mavsdk::rpc::param_server::RetrieveAllParamsResponse* /*response*/) override {
       abort();
       return ::grpc::Status(::grpc::StatusCode::UNIMPLEMENTED, "");
     }
     #ifdef GRPC_CALLBACK_API_NONEXPERIMENTAL
-    virtual ::grpc::ServerUnaryReactor* GetAllParams(
-      ::grpc::CallbackServerContext* /*context*/, const ::mavsdk::rpc::param_server::GetAllParamsRequest* /*request*/, ::mavsdk::rpc::param_server::GetAllParamsResponse* /*response*/)
+    virtual ::grpc::ServerUnaryReactor* RetrieveAllParams(
+      ::grpc::CallbackServerContext* /*context*/, const ::mavsdk::rpc::param_server::RetrieveAllParamsRequest* /*request*/, ::mavsdk::rpc::param_server::RetrieveAllParamsResponse* /*response*/)
     #else
-    virtual ::grpc::experimental::ServerUnaryReactor* GetAllParams(
-      ::grpc::experimental::CallbackServerContext* /*context*/, const ::mavsdk::rpc::param_server::GetAllParamsRequest* /*request*/, ::mavsdk::rpc::param_server::GetAllParamsResponse* /*response*/)
+    virtual ::grpc::experimental::ServerUnaryReactor* RetrieveAllParams(
+      ::grpc::experimental::CallbackServerContext* /*context*/, const ::mavsdk::rpc::param_server::RetrieveAllParamsRequest* /*request*/, ::mavsdk::rpc::param_server::RetrieveAllParamsResponse* /*response*/)
     #endif
       { return nullptr; }
   };
   #ifdef GRPC_CALLBACK_API_NONEXPERIMENTAL
-  typedef ExperimentalWithCallbackMethod_GetParamInt<ExperimentalWithCallbackMethod_SetParamInt<ExperimentalWithCallbackMethod_GetParamFloat<ExperimentalWithCallbackMethod_SetParamFloat<ExperimentalWithCallbackMethod_GetAllParams<Service > > > > > CallbackService;
+  typedef ExperimentalWithCallbackMethod_RetrieveParamInt<ExperimentalWithCallbackMethod_ProvideParamInt<ExperimentalWithCallbackMethod_RetrieveParamFloat<ExperimentalWithCallbackMethod_ProvideParamFloat<ExperimentalWithCallbackMethod_RetrieveAllParams<Service > > > > > CallbackService;
   #endif
 
-  typedef ExperimentalWithCallbackMethod_GetParamInt<ExperimentalWithCallbackMethod_SetParamInt<ExperimentalWithCallbackMethod_GetParamFloat<ExperimentalWithCallbackMethod_SetParamFloat<ExperimentalWithCallbackMethod_GetAllParams<Service > > > > > ExperimentalCallbackService;
+  typedef ExperimentalWithCallbackMethod_RetrieveParamInt<ExperimentalWithCallbackMethod_ProvideParamInt<ExperimentalWithCallbackMethod_RetrieveParamFloat<ExperimentalWithCallbackMethod_ProvideParamFloat<ExperimentalWithCallbackMethod_RetrieveAllParams<Service > > > > > ExperimentalCallbackService;
   template <class BaseClass>
-  class WithGenericMethod_GetParamInt : public BaseClass {
+  class WithGenericMethod_RetrieveParamInt : public BaseClass {
    private:
     void BaseClassMustBeDerivedFromService(const Service* /*service*/) {}
    public:
-    WithGenericMethod_GetParamInt() {
+    WithGenericMethod_RetrieveParamInt() {
       ::grpc::Service::MarkMethodGeneric(0);
     }
-    ~WithGenericMethod_GetParamInt() override {
+    ~WithGenericMethod_RetrieveParamInt() override {
       BaseClassMustBeDerivedFromService(this);
     }
     // disable synchronous version of this method
-    ::grpc::Status GetParamInt(::grpc::ServerContext* /*context*/, const ::mavsdk::rpc::param_server::GetParamIntRequest* /*request*/, ::mavsdk::rpc::param_server::GetParamIntResponse* /*response*/) override {
+    ::grpc::Status RetrieveParamInt(::grpc::ServerContext* /*context*/, const ::mavsdk::rpc::param_server::RetrieveParamIntRequest* /*request*/, ::mavsdk::rpc::param_server::RetrieveParamIntResponse* /*response*/) override {
       abort();
       return ::grpc::Status(::grpc::StatusCode::UNIMPLEMENTED, "");
     }
   };
   template <class BaseClass>
-  class WithGenericMethod_SetParamInt : public BaseClass {
+  class WithGenericMethod_ProvideParamInt : public BaseClass {
    private:
     void BaseClassMustBeDerivedFromService(const Service* /*service*/) {}
    public:
-    WithGenericMethod_SetParamInt() {
+    WithGenericMethod_ProvideParamInt() {
       ::grpc::Service::MarkMethodGeneric(1);
     }
-    ~WithGenericMethod_SetParamInt() override {
+    ~WithGenericMethod_ProvideParamInt() override {
       BaseClassMustBeDerivedFromService(this);
     }
     // disable synchronous version of this method
-    ::grpc::Status SetParamInt(::grpc::ServerContext* /*context*/, const ::mavsdk::rpc::param_server::SetParamIntRequest* /*request*/, ::mavsdk::rpc::param_server::SetParamIntResponse* /*response*/) override {
+    ::grpc::Status ProvideParamInt(::grpc::ServerContext* /*context*/, const ::mavsdk::rpc::param_server::ProvideParamIntRequest* /*request*/, ::mavsdk::rpc::param_server::ProvideParamIntResponse* /*response*/) override {
       abort();
       return ::grpc::Status(::grpc::StatusCode::UNIMPLEMENTED, "");
     }
   };
   template <class BaseClass>
-  class WithGenericMethod_GetParamFloat : public BaseClass {
+  class WithGenericMethod_RetrieveParamFloat : public BaseClass {
    private:
     void BaseClassMustBeDerivedFromService(const Service* /*service*/) {}
    public:
-    WithGenericMethod_GetParamFloat() {
+    WithGenericMethod_RetrieveParamFloat() {
       ::grpc::Service::MarkMethodGeneric(2);
     }
-    ~WithGenericMethod_GetParamFloat() override {
+    ~WithGenericMethod_RetrieveParamFloat() override {
       BaseClassMustBeDerivedFromService(this);
     }
     // disable synchronous version of this method
-    ::grpc::Status GetParamFloat(::grpc::ServerContext* /*context*/, const ::mavsdk::rpc::param_server::GetParamFloatRequest* /*request*/, ::mavsdk::rpc::param_server::GetParamFloatResponse* /*response*/) override {
+    ::grpc::Status RetrieveParamFloat(::grpc::ServerContext* /*context*/, const ::mavsdk::rpc::param_server::RetrieveParamFloatRequest* /*request*/, ::mavsdk::rpc::param_server::RetrieveParamFloatResponse* /*response*/) override {
       abort();
       return ::grpc::Status(::grpc::StatusCode::UNIMPLEMENTED, "");
     }
   };
   template <class BaseClass>
-  class WithGenericMethod_SetParamFloat : public BaseClass {
+  class WithGenericMethod_ProvideParamFloat : public BaseClass {
    private:
     void BaseClassMustBeDerivedFromService(const Service* /*service*/) {}
    public:
-    WithGenericMethod_SetParamFloat() {
+    WithGenericMethod_ProvideParamFloat() {
       ::grpc::Service::MarkMethodGeneric(3);
     }
-    ~WithGenericMethod_SetParamFloat() override {
+    ~WithGenericMethod_ProvideParamFloat() override {
       BaseClassMustBeDerivedFromService(this);
     }
     // disable synchronous version of this method
-    ::grpc::Status SetParamFloat(::grpc::ServerContext* /*context*/, const ::mavsdk::rpc::param_server::SetParamFloatRequest* /*request*/, ::mavsdk::rpc::param_server::SetParamFloatResponse* /*response*/) override {
+    ::grpc::Status ProvideParamFloat(::grpc::ServerContext* /*context*/, const ::mavsdk::rpc::param_server::ProvideParamFloatRequest* /*request*/, ::mavsdk::rpc::param_server::ProvideParamFloatResponse* /*response*/) override {
       abort();
       return ::grpc::Status(::grpc::StatusCode::UNIMPLEMENTED, "");
     }
   };
   template <class BaseClass>
-  class WithGenericMethod_GetAllParams : public BaseClass {
+  class WithGenericMethod_RetrieveAllParams : public BaseClass {
    private:
     void BaseClassMustBeDerivedFromService(const Service* /*service*/) {}
    public:
-    WithGenericMethod_GetAllParams() {
+    WithGenericMethod_RetrieveAllParams() {
       ::grpc::Service::MarkMethodGeneric(4);
     }
-    ~WithGenericMethod_GetAllParams() override {
+    ~WithGenericMethod_RetrieveAllParams() override {
       BaseClassMustBeDerivedFromService(this);
     }
     // disable synchronous version of this method
-    ::grpc::Status GetAllParams(::grpc::ServerContext* /*context*/, const ::mavsdk::rpc::param_server::GetAllParamsRequest* /*request*/, ::mavsdk::rpc::param_server::GetAllParamsResponse* /*response*/) override {
+    ::grpc::Status RetrieveAllParams(::grpc::ServerContext* /*context*/, const ::mavsdk::rpc::param_server::RetrieveAllParamsRequest* /*request*/, ::mavsdk::rpc::param_server::RetrieveAllParamsResponse* /*response*/) override {
       abort();
       return ::grpc::Status(::grpc::StatusCode::UNIMPLEMENTED, "");
     }
   };
   template <class BaseClass>
-  class WithRawMethod_GetParamInt : public BaseClass {
+  class WithRawMethod_RetrieveParamInt : public BaseClass {
    private:
     void BaseClassMustBeDerivedFromService(const Service* /*service*/) {}
    public:
-    WithRawMethod_GetParamInt() {
+    WithRawMethod_RetrieveParamInt() {
       ::grpc::Service::MarkMethodRaw(0);
     }
-    ~WithRawMethod_GetParamInt() override {
+    ~WithRawMethod_RetrieveParamInt() override {
       BaseClassMustBeDerivedFromService(this);
     }
     // disable synchronous version of this method
-    ::grpc::Status GetParamInt(::grpc::ServerContext* /*context*/, const ::mavsdk::rpc::param_server::GetParamIntRequest* /*request*/, ::mavsdk::rpc::param_server::GetParamIntResponse* /*response*/) override {
+    ::grpc::Status RetrieveParamInt(::grpc::ServerContext* /*context*/, const ::mavsdk::rpc::param_server::RetrieveParamIntRequest* /*request*/, ::mavsdk::rpc::param_server::RetrieveParamIntResponse* /*response*/) override {
       abort();
       return ::grpc::Status(::grpc::StatusCode::UNIMPLEMENTED, "");
     }
-    void RequestGetParamInt(::grpc::ServerContext* context, ::grpc::ByteBuffer* request, ::grpc::ServerAsyncResponseWriter< ::grpc::ByteBuffer>* response, ::grpc::CompletionQueue* new_call_cq, ::grpc::ServerCompletionQueue* notification_cq, void *tag) {
+    void RequestRetrieveParamInt(::grpc::ServerContext* context, ::grpc::ByteBuffer* request, ::grpc::ServerAsyncResponseWriter< ::grpc::ByteBuffer>* response, ::grpc::CompletionQueue* new_call_cq, ::grpc::ServerCompletionQueue* notification_cq, void *tag) {
       ::grpc::Service::RequestAsyncUnary(0, context, request, response, new_call_cq, notification_cq, tag);
     }
   };
   template <class BaseClass>
-  class WithRawMethod_SetParamInt : public BaseClass {
+  class WithRawMethod_ProvideParamInt : public BaseClass {
    private:
     void BaseClassMustBeDerivedFromService(const Service* /*service*/) {}
    public:
-    WithRawMethod_SetParamInt() {
+    WithRawMethod_ProvideParamInt() {
       ::grpc::Service::MarkMethodRaw(1);
     }
-    ~WithRawMethod_SetParamInt() override {
+    ~WithRawMethod_ProvideParamInt() override {
       BaseClassMustBeDerivedFromService(this);
     }
     // disable synchronous version of this method
-    ::grpc::Status SetParamInt(::grpc::ServerContext* /*context*/, const ::mavsdk::rpc::param_server::SetParamIntRequest* /*request*/, ::mavsdk::rpc::param_server::SetParamIntResponse* /*response*/) override {
+    ::grpc::Status ProvideParamInt(::grpc::ServerContext* /*context*/, const ::mavsdk::rpc::param_server::ProvideParamIntRequest* /*request*/, ::mavsdk::rpc::param_server::ProvideParamIntResponse* /*response*/) override {
       abort();
       return ::grpc::Status(::grpc::StatusCode::UNIMPLEMENTED, "");
     }
-    void RequestSetParamInt(::grpc::ServerContext* context, ::grpc::ByteBuffer* request, ::grpc::ServerAsyncResponseWriter< ::grpc::ByteBuffer>* response, ::grpc::CompletionQueue* new_call_cq, ::grpc::ServerCompletionQueue* notification_cq, void *tag) {
+    void RequestProvideParamInt(::grpc::ServerContext* context, ::grpc::ByteBuffer* request, ::grpc::ServerAsyncResponseWriter< ::grpc::ByteBuffer>* response, ::grpc::CompletionQueue* new_call_cq, ::grpc::ServerCompletionQueue* notification_cq, void *tag) {
       ::grpc::Service::RequestAsyncUnary(1, context, request, response, new_call_cq, notification_cq, tag);
     }
   };
   template <class BaseClass>
-  class WithRawMethod_GetParamFloat : public BaseClass {
+  class WithRawMethod_RetrieveParamFloat : public BaseClass {
    private:
     void BaseClassMustBeDerivedFromService(const Service* /*service*/) {}
    public:
-    WithRawMethod_GetParamFloat() {
+    WithRawMethod_RetrieveParamFloat() {
       ::grpc::Service::MarkMethodRaw(2);
     }
-    ~WithRawMethod_GetParamFloat() override {
+    ~WithRawMethod_RetrieveParamFloat() override {
       BaseClassMustBeDerivedFromService(this);
     }
     // disable synchronous version of this method
-    ::grpc::Status GetParamFloat(::grpc::ServerContext* /*context*/, const ::mavsdk::rpc::param_server::GetParamFloatRequest* /*request*/, ::mavsdk::rpc::param_server::GetParamFloatResponse* /*response*/) override {
+    ::grpc::Status RetrieveParamFloat(::grpc::ServerContext* /*context*/, const ::mavsdk::rpc::param_server::RetrieveParamFloatRequest* /*request*/, ::mavsdk::rpc::param_server::RetrieveParamFloatResponse* /*response*/) override {
       abort();
       return ::grpc::Status(::grpc::StatusCode::UNIMPLEMENTED, "");
     }
-    void RequestGetParamFloat(::grpc::ServerContext* context, ::grpc::ByteBuffer* request, ::grpc::ServerAsyncResponseWriter< ::grpc::ByteBuffer>* response, ::grpc::CompletionQueue* new_call_cq, ::grpc::ServerCompletionQueue* notification_cq, void *tag) {
+    void RequestRetrieveParamFloat(::grpc::ServerContext* context, ::grpc::ByteBuffer* request, ::grpc::ServerAsyncResponseWriter< ::grpc::ByteBuffer>* response, ::grpc::CompletionQueue* new_call_cq, ::grpc::ServerCompletionQueue* notification_cq, void *tag) {
       ::grpc::Service::RequestAsyncUnary(2, context, request, response, new_call_cq, notification_cq, tag);
     }
   };
   template <class BaseClass>
-  class WithRawMethod_SetParamFloat : public BaseClass {
+  class WithRawMethod_ProvideParamFloat : public BaseClass {
    private:
     void BaseClassMustBeDerivedFromService(const Service* /*service*/) {}
    public:
-    WithRawMethod_SetParamFloat() {
+    WithRawMethod_ProvideParamFloat() {
       ::grpc::Service::MarkMethodRaw(3);
     }
-    ~WithRawMethod_SetParamFloat() override {
+    ~WithRawMethod_ProvideParamFloat() override {
       BaseClassMustBeDerivedFromService(this);
     }
     // disable synchronous version of this method
-    ::grpc::Status SetParamFloat(::grpc::ServerContext* /*context*/, const ::mavsdk::rpc::param_server::SetParamFloatRequest* /*request*/, ::mavsdk::rpc::param_server::SetParamFloatResponse* /*response*/) override {
+    ::grpc::Status ProvideParamFloat(::grpc::ServerContext* /*context*/, const ::mavsdk::rpc::param_server::ProvideParamFloatRequest* /*request*/, ::mavsdk::rpc::param_server::ProvideParamFloatResponse* /*response*/) override {
       abort();
       return ::grpc::Status(::grpc::StatusCode::UNIMPLEMENTED, "");
     }
-    void RequestSetParamFloat(::grpc::ServerContext* context, ::grpc::ByteBuffer* request, ::grpc::ServerAsyncResponseWriter< ::grpc::ByteBuffer>* response, ::grpc::CompletionQueue* new_call_cq, ::grpc::ServerCompletionQueue* notification_cq, void *tag) {
+    void RequestProvideParamFloat(::grpc::ServerContext* context, ::grpc::ByteBuffer* request, ::grpc::ServerAsyncResponseWriter< ::grpc::ByteBuffer>* response, ::grpc::CompletionQueue* new_call_cq, ::grpc::ServerCompletionQueue* notification_cq, void *tag) {
       ::grpc::Service::RequestAsyncUnary(3, context, request, response, new_call_cq, notification_cq, tag);
     }
   };
   template <class BaseClass>
-  class WithRawMethod_GetAllParams : public BaseClass {
+  class WithRawMethod_RetrieveAllParams : public BaseClass {
    private:
     void BaseClassMustBeDerivedFromService(const Service* /*service*/) {}
    public:
-    WithRawMethod_GetAllParams() {
+    WithRawMethod_RetrieveAllParams() {
       ::grpc::Service::MarkMethodRaw(4);
     }
-    ~WithRawMethod_GetAllParams() override {
+    ~WithRawMethod_RetrieveAllParams() override {
       BaseClassMustBeDerivedFromService(this);
     }
     // disable synchronous version of this method
-    ::grpc::Status GetAllParams(::grpc::ServerContext* /*context*/, const ::mavsdk::rpc::param_server::GetAllParamsRequest* /*request*/, ::mavsdk::rpc::param_server::GetAllParamsResponse* /*response*/) override {
+    ::grpc::Status RetrieveAllParams(::grpc::ServerContext* /*context*/, const ::mavsdk::rpc::param_server::RetrieveAllParamsRequest* /*request*/, ::mavsdk::rpc::param_server::RetrieveAllParamsResponse* /*response*/) override {
       abort();
       return ::grpc::Status(::grpc::StatusCode::UNIMPLEMENTED, "");
     }
-    void RequestGetAllParams(::grpc::ServerContext* context, ::grpc::ByteBuffer* request, ::grpc::ServerAsyncResponseWriter< ::grpc::ByteBuffer>* response, ::grpc::CompletionQueue* new_call_cq, ::grpc::ServerCompletionQueue* notification_cq, void *tag) {
+    void RequestRetrieveAllParams(::grpc::ServerContext* context, ::grpc::ByteBuffer* request, ::grpc::ServerAsyncResponseWriter< ::grpc::ByteBuffer>* response, ::grpc::CompletionQueue* new_call_cq, ::grpc::ServerCompletionQueue* notification_cq, void *tag) {
       ::grpc::Service::RequestAsyncUnary(4, context, request, response, new_call_cq, notification_cq, tag);
     }
   };
   template <class BaseClass>
-  class ExperimentalWithRawCallbackMethod_GetParamInt : public BaseClass {
+  class ExperimentalWithRawCallbackMethod_RetrieveParamInt : public BaseClass {
    private:
     void BaseClassMustBeDerivedFromService(const Service* /*service*/) {}
    public:
-    ExperimentalWithRawCallbackMethod_GetParamInt() {
+    ExperimentalWithRawCallbackMethod_RetrieveParamInt() {
     #ifdef GRPC_CALLBACK_API_NONEXPERIMENTAL
       ::grpc::Service::
     #else
@@ -836,31 +836,31 @@ class ParamServerService final {
     #else
                    ::grpc::experimental::CallbackServerContext*
     #endif
-                     context, const ::grpc::ByteBuffer* request, ::grpc::ByteBuffer* response) { return this->GetParamInt(context, request, response); }));
+                     context, const ::grpc::ByteBuffer* request, ::grpc::ByteBuffer* response) { return this->RetrieveParamInt(context, request, response); }));
     }
-    ~ExperimentalWithRawCallbackMethod_GetParamInt() override {
+    ~ExperimentalWithRawCallbackMethod_RetrieveParamInt() override {
       BaseClassMustBeDerivedFromService(this);
     }
     // disable synchronous version of this method
-    ::grpc::Status GetParamInt(::grpc::ServerContext* /*context*/, const ::mavsdk::rpc::param_server::GetParamIntRequest* /*request*/, ::mavsdk::rpc::param_server::GetParamIntResponse* /*response*/) override {
+    ::grpc::Status RetrieveParamInt(::grpc::ServerContext* /*context*/, const ::mavsdk::rpc::param_server::RetrieveParamIntRequest* /*request*/, ::mavsdk::rpc::param_server::RetrieveParamIntResponse* /*response*/) override {
       abort();
       return ::grpc::Status(::grpc::StatusCode::UNIMPLEMENTED, "");
     }
     #ifdef GRPC_CALLBACK_API_NONEXPERIMENTAL
-    virtual ::grpc::ServerUnaryReactor* GetParamInt(
+    virtual ::grpc::ServerUnaryReactor* RetrieveParamInt(
       ::grpc::CallbackServerContext* /*context*/, const ::grpc::ByteBuffer* /*request*/, ::grpc::ByteBuffer* /*response*/)
     #else
-    virtual ::grpc::experimental::ServerUnaryReactor* GetParamInt(
+    virtual ::grpc::experimental::ServerUnaryReactor* RetrieveParamInt(
       ::grpc::experimental::CallbackServerContext* /*context*/, const ::grpc::ByteBuffer* /*request*/, ::grpc::ByteBuffer* /*response*/)
     #endif
       { return nullptr; }
   };
   template <class BaseClass>
-  class ExperimentalWithRawCallbackMethod_SetParamInt : public BaseClass {
+  class ExperimentalWithRawCallbackMethod_ProvideParamInt : public BaseClass {
    private:
     void BaseClassMustBeDerivedFromService(const Service* /*service*/) {}
    public:
-    ExperimentalWithRawCallbackMethod_SetParamInt() {
+    ExperimentalWithRawCallbackMethod_ProvideParamInt() {
     #ifdef GRPC_CALLBACK_API_NONEXPERIMENTAL
       ::grpc::Service::
     #else
@@ -874,31 +874,31 @@ class ParamServerService final {
     #else
                    ::grpc::experimental::CallbackServerContext*
     #endif
-                     context, const ::grpc::ByteBuffer* request, ::grpc::ByteBuffer* response) { return this->SetParamInt(context, request, response); }));
+                     context, const ::grpc::ByteBuffer* request, ::grpc::ByteBuffer* response) { return this->ProvideParamInt(context, request, response); }));
     }
-    ~ExperimentalWithRawCallbackMethod_SetParamInt() override {
+    ~ExperimentalWithRawCallbackMethod_ProvideParamInt() override {
       BaseClassMustBeDerivedFromService(this);
     }
     // disable synchronous version of this method
-    ::grpc::Status SetParamInt(::grpc::ServerContext* /*context*/, const ::mavsdk::rpc::param_server::SetParamIntRequest* /*request*/, ::mavsdk::rpc::param_server::SetParamIntResponse* /*response*/) override {
+    ::grpc::Status ProvideParamInt(::grpc::ServerContext* /*context*/, const ::mavsdk::rpc::param_server::ProvideParamIntRequest* /*request*/, ::mavsdk::rpc::param_server::ProvideParamIntResponse* /*response*/) override {
       abort();
       return ::grpc::Status(::grpc::StatusCode::UNIMPLEMENTED, "");
     }
     #ifdef GRPC_CALLBACK_API_NONEXPERIMENTAL
-    virtual ::grpc::ServerUnaryReactor* SetParamInt(
+    virtual ::grpc::ServerUnaryReactor* ProvideParamInt(
       ::grpc::CallbackServerContext* /*context*/, const ::grpc::ByteBuffer* /*request*/, ::grpc::ByteBuffer* /*response*/)
     #else
-    virtual ::grpc::experimental::ServerUnaryReactor* SetParamInt(
+    virtual ::grpc::experimental::ServerUnaryReactor* ProvideParamInt(
       ::grpc::experimental::CallbackServerContext* /*context*/, const ::grpc::ByteBuffer* /*request*/, ::grpc::ByteBuffer* /*response*/)
     #endif
       { return nullptr; }
   };
   template <class BaseClass>
-  class ExperimentalWithRawCallbackMethod_GetParamFloat : public BaseClass {
+  class ExperimentalWithRawCallbackMethod_RetrieveParamFloat : public BaseClass {
    private:
     void BaseClassMustBeDerivedFromService(const Service* /*service*/) {}
    public:
-    ExperimentalWithRawCallbackMethod_GetParamFloat() {
+    ExperimentalWithRawCallbackMethod_RetrieveParamFloat() {
     #ifdef GRPC_CALLBACK_API_NONEXPERIMENTAL
       ::grpc::Service::
     #else
@@ -912,31 +912,31 @@ class ParamServerService final {
     #else
                    ::grpc::experimental::CallbackServerContext*
     #endif
-                     context, const ::grpc::ByteBuffer* request, ::grpc::ByteBuffer* response) { return this->GetParamFloat(context, request, response); }));
+                     context, const ::grpc::ByteBuffer* request, ::grpc::ByteBuffer* response) { return this->RetrieveParamFloat(context, request, response); }));
     }
-    ~ExperimentalWithRawCallbackMethod_GetParamFloat() override {
+    ~ExperimentalWithRawCallbackMethod_RetrieveParamFloat() override {
       BaseClassMustBeDerivedFromService(this);
     }
     // disable synchronous version of this method
-    ::grpc::Status GetParamFloat(::grpc::ServerContext* /*context*/, const ::mavsdk::rpc::param_server::GetParamFloatRequest* /*request*/, ::mavsdk::rpc::param_server::GetParamFloatResponse* /*response*/) override {
+    ::grpc::Status RetrieveParamFloat(::grpc::ServerContext* /*context*/, const ::mavsdk::rpc::param_server::RetrieveParamFloatRequest* /*request*/, ::mavsdk::rpc::param_server::RetrieveParamFloatResponse* /*response*/) override {
       abort();
       return ::grpc::Status(::grpc::StatusCode::UNIMPLEMENTED, "");
     }
     #ifdef GRPC_CALLBACK_API_NONEXPERIMENTAL
-    virtual ::grpc::ServerUnaryReactor* GetParamFloat(
+    virtual ::grpc::ServerUnaryReactor* RetrieveParamFloat(
       ::grpc::CallbackServerContext* /*context*/, const ::grpc::ByteBuffer* /*request*/, ::grpc::ByteBuffer* /*response*/)
     #else
-    virtual ::grpc::experimental::ServerUnaryReactor* GetParamFloat(
+    virtual ::grpc::experimental::ServerUnaryReactor* RetrieveParamFloat(
       ::grpc::experimental::CallbackServerContext* /*context*/, const ::grpc::ByteBuffer* /*request*/, ::grpc::ByteBuffer* /*response*/)
     #endif
       { return nullptr; }
   };
   template <class BaseClass>
-  class ExperimentalWithRawCallbackMethod_SetParamFloat : public BaseClass {
+  class ExperimentalWithRawCallbackMethod_ProvideParamFloat : public BaseClass {
    private:
     void BaseClassMustBeDerivedFromService(const Service* /*service*/) {}
    public:
-    ExperimentalWithRawCallbackMethod_SetParamFloat() {
+    ExperimentalWithRawCallbackMethod_ProvideParamFloat() {
     #ifdef GRPC_CALLBACK_API_NONEXPERIMENTAL
       ::grpc::Service::
     #else
@@ -950,31 +950,31 @@ class ParamServerService final {
     #else
                    ::grpc::experimental::CallbackServerContext*
     #endif
-                     context, const ::grpc::ByteBuffer* request, ::grpc::ByteBuffer* response) { return this->SetParamFloat(context, request, response); }));
+                     context, const ::grpc::ByteBuffer* request, ::grpc::ByteBuffer* response) { return this->ProvideParamFloat(context, request, response); }));
     }
-    ~ExperimentalWithRawCallbackMethod_SetParamFloat() override {
+    ~ExperimentalWithRawCallbackMethod_ProvideParamFloat() override {
       BaseClassMustBeDerivedFromService(this);
     }
     // disable synchronous version of this method
-    ::grpc::Status SetParamFloat(::grpc::ServerContext* /*context*/, const ::mavsdk::rpc::param_server::SetParamFloatRequest* /*request*/, ::mavsdk::rpc::param_server::SetParamFloatResponse* /*response*/) override {
+    ::grpc::Status ProvideParamFloat(::grpc::ServerContext* /*context*/, const ::mavsdk::rpc::param_server::ProvideParamFloatRequest* /*request*/, ::mavsdk::rpc::param_server::ProvideParamFloatResponse* /*response*/) override {
       abort();
       return ::grpc::Status(::grpc::StatusCode::UNIMPLEMENTED, "");
     }
     #ifdef GRPC_CALLBACK_API_NONEXPERIMENTAL
-    virtual ::grpc::ServerUnaryReactor* SetParamFloat(
+    virtual ::grpc::ServerUnaryReactor* ProvideParamFloat(
       ::grpc::CallbackServerContext* /*context*/, const ::grpc::ByteBuffer* /*request*/, ::grpc::ByteBuffer* /*response*/)
     #else
-    virtual ::grpc::experimental::ServerUnaryReactor* SetParamFloat(
+    virtual ::grpc::experimental::ServerUnaryReactor* ProvideParamFloat(
       ::grpc::experimental::CallbackServerContext* /*context*/, const ::grpc::ByteBuffer* /*request*/, ::grpc::ByteBuffer* /*response*/)
     #endif
       { return nullptr; }
   };
   template <class BaseClass>
-  class ExperimentalWithRawCallbackMethod_GetAllParams : public BaseClass {
+  class ExperimentalWithRawCallbackMethod_RetrieveAllParams : public BaseClass {
    private:
     void BaseClassMustBeDerivedFromService(const Service* /*service*/) {}
    public:
-    ExperimentalWithRawCallbackMethod_GetAllParams() {
+    ExperimentalWithRawCallbackMethod_RetrieveAllParams() {
     #ifdef GRPC_CALLBACK_API_NONEXPERIMENTAL
       ::grpc::Service::
     #else
@@ -988,163 +988,163 @@ class ParamServerService final {
     #else
                    ::grpc::experimental::CallbackServerContext*
     #endif
-                     context, const ::grpc::ByteBuffer* request, ::grpc::ByteBuffer* response) { return this->GetAllParams(context, request, response); }));
+                     context, const ::grpc::ByteBuffer* request, ::grpc::ByteBuffer* response) { return this->RetrieveAllParams(context, request, response); }));
     }
-    ~ExperimentalWithRawCallbackMethod_GetAllParams() override {
+    ~ExperimentalWithRawCallbackMethod_RetrieveAllParams() override {
       BaseClassMustBeDerivedFromService(this);
     }
     // disable synchronous version of this method
-    ::grpc::Status GetAllParams(::grpc::ServerContext* /*context*/, const ::mavsdk::rpc::param_server::GetAllParamsRequest* /*request*/, ::mavsdk::rpc::param_server::GetAllParamsResponse* /*response*/) override {
+    ::grpc::Status RetrieveAllParams(::grpc::ServerContext* /*context*/, const ::mavsdk::rpc::param_server::RetrieveAllParamsRequest* /*request*/, ::mavsdk::rpc::param_server::RetrieveAllParamsResponse* /*response*/) override {
       abort();
       return ::grpc::Status(::grpc::StatusCode::UNIMPLEMENTED, "");
     }
     #ifdef GRPC_CALLBACK_API_NONEXPERIMENTAL
-    virtual ::grpc::ServerUnaryReactor* GetAllParams(
+    virtual ::grpc::ServerUnaryReactor* RetrieveAllParams(
       ::grpc::CallbackServerContext* /*context*/, const ::grpc::ByteBuffer* /*request*/, ::grpc::ByteBuffer* /*response*/)
     #else
-    virtual ::grpc::experimental::ServerUnaryReactor* GetAllParams(
+    virtual ::grpc::experimental::ServerUnaryReactor* RetrieveAllParams(
       ::grpc::experimental::CallbackServerContext* /*context*/, const ::grpc::ByteBuffer* /*request*/, ::grpc::ByteBuffer* /*response*/)
     #endif
       { return nullptr; }
   };
   template <class BaseClass>
-  class WithStreamedUnaryMethod_GetParamInt : public BaseClass {
+  class WithStreamedUnaryMethod_RetrieveParamInt : public BaseClass {
    private:
     void BaseClassMustBeDerivedFromService(const Service* /*service*/) {}
    public:
-    WithStreamedUnaryMethod_GetParamInt() {
+    WithStreamedUnaryMethod_RetrieveParamInt() {
       ::grpc::Service::MarkMethodStreamed(0,
         new ::grpc::internal::StreamedUnaryHandler<
-          ::mavsdk::rpc::param_server::GetParamIntRequest, ::mavsdk::rpc::param_server::GetParamIntResponse>(
+          ::mavsdk::rpc::param_server::RetrieveParamIntRequest, ::mavsdk::rpc::param_server::RetrieveParamIntResponse>(
             [this](::grpc::ServerContext* context,
                    ::grpc::ServerUnaryStreamer<
-                     ::mavsdk::rpc::param_server::GetParamIntRequest, ::mavsdk::rpc::param_server::GetParamIntResponse>* streamer) {
-                       return this->StreamedGetParamInt(context,
+                     ::mavsdk::rpc::param_server::RetrieveParamIntRequest, ::mavsdk::rpc::param_server::RetrieveParamIntResponse>* streamer) {
+                       return this->StreamedRetrieveParamInt(context,
                          streamer);
                   }));
     }
-    ~WithStreamedUnaryMethod_GetParamInt() override {
+    ~WithStreamedUnaryMethod_RetrieveParamInt() override {
       BaseClassMustBeDerivedFromService(this);
     }
     // disable regular version of this method
-    ::grpc::Status GetParamInt(::grpc::ServerContext* /*context*/, const ::mavsdk::rpc::param_server::GetParamIntRequest* /*request*/, ::mavsdk::rpc::param_server::GetParamIntResponse* /*response*/) override {
+    ::grpc::Status RetrieveParamInt(::grpc::ServerContext* /*context*/, const ::mavsdk::rpc::param_server::RetrieveParamIntRequest* /*request*/, ::mavsdk::rpc::param_server::RetrieveParamIntResponse* /*response*/) override {
       abort();
       return ::grpc::Status(::grpc::StatusCode::UNIMPLEMENTED, "");
     }
     // replace default version of method with streamed unary
-    virtual ::grpc::Status StreamedGetParamInt(::grpc::ServerContext* context, ::grpc::ServerUnaryStreamer< ::mavsdk::rpc::param_server::GetParamIntRequest,::mavsdk::rpc::param_server::GetParamIntResponse>* server_unary_streamer) = 0;
+    virtual ::grpc::Status StreamedRetrieveParamInt(::grpc::ServerContext* context, ::grpc::ServerUnaryStreamer< ::mavsdk::rpc::param_server::RetrieveParamIntRequest,::mavsdk::rpc::param_server::RetrieveParamIntResponse>* server_unary_streamer) = 0;
   };
   template <class BaseClass>
-  class WithStreamedUnaryMethod_SetParamInt : public BaseClass {
+  class WithStreamedUnaryMethod_ProvideParamInt : public BaseClass {
    private:
     void BaseClassMustBeDerivedFromService(const Service* /*service*/) {}
    public:
-    WithStreamedUnaryMethod_SetParamInt() {
+    WithStreamedUnaryMethod_ProvideParamInt() {
       ::grpc::Service::MarkMethodStreamed(1,
         new ::grpc::internal::StreamedUnaryHandler<
-          ::mavsdk::rpc::param_server::SetParamIntRequest, ::mavsdk::rpc::param_server::SetParamIntResponse>(
+          ::mavsdk::rpc::param_server::ProvideParamIntRequest, ::mavsdk::rpc::param_server::ProvideParamIntResponse>(
             [this](::grpc::ServerContext* context,
                    ::grpc::ServerUnaryStreamer<
-                     ::mavsdk::rpc::param_server::SetParamIntRequest, ::mavsdk::rpc::param_server::SetParamIntResponse>* streamer) {
-                       return this->StreamedSetParamInt(context,
+                     ::mavsdk::rpc::param_server::ProvideParamIntRequest, ::mavsdk::rpc::param_server::ProvideParamIntResponse>* streamer) {
+                       return this->StreamedProvideParamInt(context,
                          streamer);
                   }));
     }
-    ~WithStreamedUnaryMethod_SetParamInt() override {
+    ~WithStreamedUnaryMethod_ProvideParamInt() override {
       BaseClassMustBeDerivedFromService(this);
     }
     // disable regular version of this method
-    ::grpc::Status SetParamInt(::grpc::ServerContext* /*context*/, const ::mavsdk::rpc::param_server::SetParamIntRequest* /*request*/, ::mavsdk::rpc::param_server::SetParamIntResponse* /*response*/) override {
+    ::grpc::Status ProvideParamInt(::grpc::ServerContext* /*context*/, const ::mavsdk::rpc::param_server::ProvideParamIntRequest* /*request*/, ::mavsdk::rpc::param_server::ProvideParamIntResponse* /*response*/) override {
       abort();
       return ::grpc::Status(::grpc::StatusCode::UNIMPLEMENTED, "");
     }
     // replace default version of method with streamed unary
-    virtual ::grpc::Status StreamedSetParamInt(::grpc::ServerContext* context, ::grpc::ServerUnaryStreamer< ::mavsdk::rpc::param_server::SetParamIntRequest,::mavsdk::rpc::param_server::SetParamIntResponse>* server_unary_streamer) = 0;
+    virtual ::grpc::Status StreamedProvideParamInt(::grpc::ServerContext* context, ::grpc::ServerUnaryStreamer< ::mavsdk::rpc::param_server::ProvideParamIntRequest,::mavsdk::rpc::param_server::ProvideParamIntResponse>* server_unary_streamer) = 0;
   };
   template <class BaseClass>
-  class WithStreamedUnaryMethod_GetParamFloat : public BaseClass {
+  class WithStreamedUnaryMethod_RetrieveParamFloat : public BaseClass {
    private:
     void BaseClassMustBeDerivedFromService(const Service* /*service*/) {}
    public:
-    WithStreamedUnaryMethod_GetParamFloat() {
+    WithStreamedUnaryMethod_RetrieveParamFloat() {
       ::grpc::Service::MarkMethodStreamed(2,
         new ::grpc::internal::StreamedUnaryHandler<
-          ::mavsdk::rpc::param_server::GetParamFloatRequest, ::mavsdk::rpc::param_server::GetParamFloatResponse>(
+          ::mavsdk::rpc::param_server::RetrieveParamFloatRequest, ::mavsdk::rpc::param_server::RetrieveParamFloatResponse>(
             [this](::grpc::ServerContext* context,
                    ::grpc::ServerUnaryStreamer<
-                     ::mavsdk::rpc::param_server::GetParamFloatRequest, ::mavsdk::rpc::param_server::GetParamFloatResponse>* streamer) {
-                       return this->StreamedGetParamFloat(context,
+                     ::mavsdk::rpc::param_server::RetrieveParamFloatRequest, ::mavsdk::rpc::param_server::RetrieveParamFloatResponse>* streamer) {
+                       return this->StreamedRetrieveParamFloat(context,
                          streamer);
                   }));
     }
-    ~WithStreamedUnaryMethod_GetParamFloat() override {
+    ~WithStreamedUnaryMethod_RetrieveParamFloat() override {
       BaseClassMustBeDerivedFromService(this);
     }
     // disable regular version of this method
-    ::grpc::Status GetParamFloat(::grpc::ServerContext* /*context*/, const ::mavsdk::rpc::param_server::GetParamFloatRequest* /*request*/, ::mavsdk::rpc::param_server::GetParamFloatResponse* /*response*/) override {
+    ::grpc::Status RetrieveParamFloat(::grpc::ServerContext* /*context*/, const ::mavsdk::rpc::param_server::RetrieveParamFloatRequest* /*request*/, ::mavsdk::rpc::param_server::RetrieveParamFloatResponse* /*response*/) override {
       abort();
       return ::grpc::Status(::grpc::StatusCode::UNIMPLEMENTED, "");
     }
     // replace default version of method with streamed unary
-    virtual ::grpc::Status StreamedGetParamFloat(::grpc::ServerContext* context, ::grpc::ServerUnaryStreamer< ::mavsdk::rpc::param_server::GetParamFloatRequest,::mavsdk::rpc::param_server::GetParamFloatResponse>* server_unary_streamer) = 0;
+    virtual ::grpc::Status StreamedRetrieveParamFloat(::grpc::ServerContext* context, ::grpc::ServerUnaryStreamer< ::mavsdk::rpc::param_server::RetrieveParamFloatRequest,::mavsdk::rpc::param_server::RetrieveParamFloatResponse>* server_unary_streamer) = 0;
   };
   template <class BaseClass>
-  class WithStreamedUnaryMethod_SetParamFloat : public BaseClass {
+  class WithStreamedUnaryMethod_ProvideParamFloat : public BaseClass {
    private:
     void BaseClassMustBeDerivedFromService(const Service* /*service*/) {}
    public:
-    WithStreamedUnaryMethod_SetParamFloat() {
+    WithStreamedUnaryMethod_ProvideParamFloat() {
       ::grpc::Service::MarkMethodStreamed(3,
         new ::grpc::internal::StreamedUnaryHandler<
-          ::mavsdk::rpc::param_server::SetParamFloatRequest, ::mavsdk::rpc::param_server::SetParamFloatResponse>(
+          ::mavsdk::rpc::param_server::ProvideParamFloatRequest, ::mavsdk::rpc::param_server::ProvideParamFloatResponse>(
             [this](::grpc::ServerContext* context,
                    ::grpc::ServerUnaryStreamer<
-                     ::mavsdk::rpc::param_server::SetParamFloatRequest, ::mavsdk::rpc::param_server::SetParamFloatResponse>* streamer) {
-                       return this->StreamedSetParamFloat(context,
+                     ::mavsdk::rpc::param_server::ProvideParamFloatRequest, ::mavsdk::rpc::param_server::ProvideParamFloatResponse>* streamer) {
+                       return this->StreamedProvideParamFloat(context,
                          streamer);
                   }));
     }
-    ~WithStreamedUnaryMethod_SetParamFloat() override {
+    ~WithStreamedUnaryMethod_ProvideParamFloat() override {
       BaseClassMustBeDerivedFromService(this);
     }
     // disable regular version of this method
-    ::grpc::Status SetParamFloat(::grpc::ServerContext* /*context*/, const ::mavsdk::rpc::param_server::SetParamFloatRequest* /*request*/, ::mavsdk::rpc::param_server::SetParamFloatResponse* /*response*/) override {
+    ::grpc::Status ProvideParamFloat(::grpc::ServerContext* /*context*/, const ::mavsdk::rpc::param_server::ProvideParamFloatRequest* /*request*/, ::mavsdk::rpc::param_server::ProvideParamFloatResponse* /*response*/) override {
       abort();
       return ::grpc::Status(::grpc::StatusCode::UNIMPLEMENTED, "");
     }
     // replace default version of method with streamed unary
-    virtual ::grpc::Status StreamedSetParamFloat(::grpc::ServerContext* context, ::grpc::ServerUnaryStreamer< ::mavsdk::rpc::param_server::SetParamFloatRequest,::mavsdk::rpc::param_server::SetParamFloatResponse>* server_unary_streamer) = 0;
+    virtual ::grpc::Status StreamedProvideParamFloat(::grpc::ServerContext* context, ::grpc::ServerUnaryStreamer< ::mavsdk::rpc::param_server::ProvideParamFloatRequest,::mavsdk::rpc::param_server::ProvideParamFloatResponse>* server_unary_streamer) = 0;
   };
   template <class BaseClass>
-  class WithStreamedUnaryMethod_GetAllParams : public BaseClass {
+  class WithStreamedUnaryMethod_RetrieveAllParams : public BaseClass {
    private:
     void BaseClassMustBeDerivedFromService(const Service* /*service*/) {}
    public:
-    WithStreamedUnaryMethod_GetAllParams() {
+    WithStreamedUnaryMethod_RetrieveAllParams() {
       ::grpc::Service::MarkMethodStreamed(4,
         new ::grpc::internal::StreamedUnaryHandler<
-          ::mavsdk::rpc::param_server::GetAllParamsRequest, ::mavsdk::rpc::param_server::GetAllParamsResponse>(
+          ::mavsdk::rpc::param_server::RetrieveAllParamsRequest, ::mavsdk::rpc::param_server::RetrieveAllParamsResponse>(
             [this](::grpc::ServerContext* context,
                    ::grpc::ServerUnaryStreamer<
-                     ::mavsdk::rpc::param_server::GetAllParamsRequest, ::mavsdk::rpc::param_server::GetAllParamsResponse>* streamer) {
-                       return this->StreamedGetAllParams(context,
+                     ::mavsdk::rpc::param_server::RetrieveAllParamsRequest, ::mavsdk::rpc::param_server::RetrieveAllParamsResponse>* streamer) {
+                       return this->StreamedRetrieveAllParams(context,
                          streamer);
                   }));
     }
-    ~WithStreamedUnaryMethod_GetAllParams() override {
+    ~WithStreamedUnaryMethod_RetrieveAllParams() override {
       BaseClassMustBeDerivedFromService(this);
     }
     // disable regular version of this method
-    ::grpc::Status GetAllParams(::grpc::ServerContext* /*context*/, const ::mavsdk::rpc::param_server::GetAllParamsRequest* /*request*/, ::mavsdk::rpc::param_server::GetAllParamsResponse* /*response*/) override {
+    ::grpc::Status RetrieveAllParams(::grpc::ServerContext* /*context*/, const ::mavsdk::rpc::param_server::RetrieveAllParamsRequest* /*request*/, ::mavsdk::rpc::param_server::RetrieveAllParamsResponse* /*response*/) override {
       abort();
       return ::grpc::Status(::grpc::StatusCode::UNIMPLEMENTED, "");
     }
     // replace default version of method with streamed unary
-    virtual ::grpc::Status StreamedGetAllParams(::grpc::ServerContext* context, ::grpc::ServerUnaryStreamer< ::mavsdk::rpc::param_server::GetAllParamsRequest,::mavsdk::rpc::param_server::GetAllParamsResponse>* server_unary_streamer) = 0;
+    virtual ::grpc::Status StreamedRetrieveAllParams(::grpc::ServerContext* context, ::grpc::ServerUnaryStreamer< ::mavsdk::rpc::param_server::RetrieveAllParamsRequest,::mavsdk::rpc::param_server::RetrieveAllParamsResponse>* server_unary_streamer) = 0;
   };
-  typedef WithStreamedUnaryMethod_GetParamInt<WithStreamedUnaryMethod_SetParamInt<WithStreamedUnaryMethod_GetParamFloat<WithStreamedUnaryMethod_SetParamFloat<WithStreamedUnaryMethod_GetAllParams<Service > > > > > StreamedUnaryService;
+  typedef WithStreamedUnaryMethod_RetrieveParamInt<WithStreamedUnaryMethod_ProvideParamInt<WithStreamedUnaryMethod_RetrieveParamFloat<WithStreamedUnaryMethod_ProvideParamFloat<WithStreamedUnaryMethod_RetrieveAllParams<Service > > > > > StreamedUnaryService;
   typedef Service SplitStreamedService;
-  typedef WithStreamedUnaryMethod_GetParamInt<WithStreamedUnaryMethod_SetParamInt<WithStreamedUnaryMethod_GetParamFloat<WithStreamedUnaryMethod_SetParamFloat<WithStreamedUnaryMethod_GetAllParams<Service > > > > > StreamedService;
+  typedef WithStreamedUnaryMethod_RetrieveParamInt<WithStreamedUnaryMethod_ProvideParamInt<WithStreamedUnaryMethod_RetrieveParamFloat<WithStreamedUnaryMethod_ProvideParamFloat<WithStreamedUnaryMethod_RetrieveAllParams<Service > > > > > StreamedService;
 };
 
 }  // namespace param_server

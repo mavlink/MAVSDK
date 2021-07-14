@@ -13,38 +13,41 @@ using IntParam = ParamServer::IntParam;
 using FloatParam = ParamServer::FloatParam;
 using AllParams = ParamServer::AllParams;
 
-ParamServer::ParamServer(System& system) : PluginBase(), _impl{new ParamServerImpl(system)} {}
+ParamServer::ParamServer(System& system) :
+    PluginBase(),
+    _impl{std::make_unique<ParamServerImpl>(system)}
+{}
 
 ParamServer::ParamServer(std::shared_ptr<System> system) :
     PluginBase(),
-    _impl{new ParamServerImpl(system)}
+    _impl{std::make_unique<ParamServerImpl>(system)}
 {}
 
 ParamServer::~ParamServer() {}
 
-std::pair<ParamServer::Result, int32_t> ParamServer::get_param_int(std::string name) const
+std::pair<ParamServer::Result, int32_t> ParamServer::retrieve_param_int(std::string name) const
 {
-    return _impl->get_param_int(name);
+    return _impl->retrieve_param_int(name);
 }
 
-ParamServer::Result ParamServer::set_param_int(std::string name, int32_t value) const
+ParamServer::Result ParamServer::provide_param_int(std::string name, int32_t value) const
 {
-    return _impl->set_param_int(name, value);
+    return _impl->provide_param_int(name, value);
 }
 
-std::pair<ParamServer::Result, float> ParamServer::get_param_float(std::string name) const
+std::pair<ParamServer::Result, float> ParamServer::retrieve_param_float(std::string name) const
 {
-    return _impl->get_param_float(name);
+    return _impl->retrieve_param_float(name);
 }
 
-ParamServer::Result ParamServer::set_param_float(std::string name, float value) const
+ParamServer::Result ParamServer::provide_param_float(std::string name, float value) const
 {
-    return _impl->set_param_float(name, value);
+    return _impl->provide_param_float(name, value);
 }
 
-ParamServer::AllParams ParamServer::get_all_params() const
+ParamServer::AllParams ParamServer::retrieve_all_params() const
 {
-    return _impl->get_all_params();
+    return _impl->retrieve_all_params();
 }
 
 bool operator==(const ParamServer::IntParam& lhs, const ParamServer::IntParam& rhs)
@@ -108,6 +111,8 @@ std::ostream& operator<<(std::ostream& str, ParamServer::Result const& result)
             return str << "Unknown";
         case ParamServer::Result::Success:
             return str << "Success";
+        case ParamServer::Result::NotFound:
+            return str << "Not Found";
         case ParamServer::Result::WrongType:
             return str << "Wrong Type";
         case ParamServer::Result::ParamNameTooLong:

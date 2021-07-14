@@ -21,7 +21,7 @@ class System;
 class ParamServerImpl;
 
 /**
- * @brief Provide raw access to get and set parameters.
+ * @brief Provide raw access to retrieve and provide server parameters.
  */
 class ParamServer : public PluginBase {
 public:
@@ -79,7 +79,7 @@ public:
     friend std::ostream& operator<<(std::ostream& str, ParamServer::IntParam const& int_param);
 
     /**
-     * @brief Type for float paramters.
+     * @brief Type for float parameters.
      */
     struct FloatParam {
         std::string name{}; /**< @brief Name of the parameter */
@@ -148,7 +148,7 @@ public:
     using ResultCallback = std::function<void(Result)>;
 
     /**
-     * @brief Get an int parameter.
+     * @brief Retrieve an int parameter.
      *
      * If the type is wrong, the result will be `WRONG_TYPE`.
      *
@@ -156,10 +156,10 @@ public:
      *
      * @return Result of request.
      */
-    std::pair<Result, int32_t> get_param_int(std::string name) const;
+    std::pair<Result, int32_t> retrieve_param_int(std::string name) const;
 
     /**
-     * @brief Set an int parameter.
+     * @brief Provide an int parameter.
      *
      * If the type is wrong, the result will be `WRONG_TYPE`.
      *
@@ -167,10 +167,10 @@ public:
      *
      * @return Result of request.
      */
-    Result set_param_int(std::string name, int32_t value) const;
+    Result provide_param_int(std::string name, int32_t value) const;
 
     /**
-     * @brief Get a float parameter.
+     * @brief Retrieve a float parameter.
      *
      * If the type is wrong, the result will be `WRONG_TYPE`.
      *
@@ -178,10 +178,10 @@ public:
      *
      * @return Result of request.
      */
-    std::pair<Result, float> get_param_float(std::string name) const;
+    std::pair<Result, float> retrieve_param_float(std::string name) const;
 
     /**
-     * @brief Set a float parameter.
+     * @brief Provide a float parameter.
      *
      * If the type is wrong, the result will be `WRONG_TYPE`.
      *
@@ -189,16 +189,16 @@ public:
      *
      * @return Result of request.
      */
-    Result set_param_float(std::string name, float value) const;
+    Result provide_param_float(std::string name, float value) const;
 
     /**
-     * @brief Get all parameters.
+     * @brief Retrieve all parameters.
      *
      * This function is blocking.
      *
      * @return Result of request.
      */
-    ParamServer::AllParams get_all_params() const;
+    ParamServer::AllParams retrieve_all_params() const;
 
     /**
      * @brief Copy constructor.

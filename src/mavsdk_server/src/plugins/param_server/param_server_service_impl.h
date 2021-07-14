@@ -5,6 +5,8 @@
 #include "param_server/param_server.grpc.pb.h"
 #include "plugins/param_server/param_server.h"
 
+#include "mavsdk.h"
+#include "lazy_plugin.h"
 #include "log.h"
 #include <atomic>
 #include <cmath>
@@ -17,10 +19,10 @@
 namespace mavsdk {
 namespace mavsdk_server {
 
-template<typename ParamServer = ParamServer>
+template<typename ParamServer = ParamServer, typename LazyPlugin = LazyPlugin<ParamServer>>
 class ParamServerServiceImpl final : public rpc::param_server::ParamServerService::Service {
 public:
-    ParamServerServiceImpl(ParamServer& param_server) : _param_server(param_server) {}
+    ParamServerServiceImpl(LazyPlugin& lazy_plugin) : _lazy_plugin(lazy_plugin) {}
 
     template<typename ResponseType>
     void fillResponseWithResult(ResponseType* response, mavsdk::ParamServer::Result& result) const
@@ -160,17 +162,26 @@ public:
         }
     }
 
-    grpc::Status GetParamInt(
+    grpc::Status RetrieveParamInt(
         grpc::ServerContext* /* context */,
-        const rpc::param_server::GetParamIntRequest* request,
-        rpc::param_server::GetParamIntResponse* response) override
+        const rpc::param_server::RetrieveParamIntRequest* request,
+        rpc::param_server::RetrieveParamIntResponse* response) override
     {
-        if (request == nullptr) {
-            LogWarn() << "GetParamInt sent with a null request! Ignoring...";
+        if (_lazy_plugin.maybe_plugin() == nullptr) {
+            if (response != nullptr) {
+                auto result = mavsdk::ParamServer::Result::NoSystem;
+                fillResponseWithResult(response, result);
+            }
+
             return grpc::Status::OK;
         }
 
-        auto result = _param_server.get_param_int(request->name());
+        if (request == nullptr) {
+            LogWarn() << "RetrieveParamInt sent with a null request! Ignoring...";
+            return grpc::Status::OK;
+        }
+
+        auto result = _lazy_plugin.maybe_plugin()->retrieve_param_int(request->name());
 
         if (response != nullptr) {
             fillResponseWithResult(response, result.first);
@@ -181,17 +192,27 @@ public:
         return grpc::Status::OK;
     }
 
-    grpc::Status SetParamInt(
+    grpc::Status ProvideParamInt(
         grpc::ServerContext* /* context */,
-        const rpc::param_server::SetParamIntRequest* request,
-        rpc::param_server::SetParamIntResponse* response) override
+        const rpc::param_server::ProvideParamIntRequest* request,
+        rpc::param_server::ProvideParamIntResponse* response) override
     {
-        if (request == nullptr) {
-            LogWarn() << "SetParamInt sent with a null request! Ignoring...";
+        if (_lazy_plugin.maybe_plugin() == nullptr) {
+            if (response != nullptr) {
+                auto result = mavsdk::ParamServer::Result::NoSystem;
+                fillResponseWithResult(response, result);
+            }
+
             return grpc::Status::OK;
         }
 
-        auto result = _param_server.set_param_int(request->name(), request->value());
+        if (request == nullptr) {
+            LogWarn() << "ProvideParamInt sent with a null request! Ignoring...";
+            return grpc::Status::OK;
+        }
+
+        auto result =
+            _lazy_plugin.maybe_plugin()->provide_param_int(request->name(), request->value());
 
         if (response != nullptr) {
             fillResponseWithResult(response, result);
@@ -200,17 +221,26 @@ public:
         return grpc::Status::OK;
     }
 
-    grpc::Status GetParamFloat(
+    grpc::Status RetrieveParamFloat(
         grpc::ServerContext* /* context */,
-        const rpc::param_server::GetParamFloatRequest* request,
-        rpc::param_server::GetParamFloatResponse* response) override
+        const rpc::param_server::RetrieveParamFloatRequest* request,
+        rpc::param_server::RetrieveParamFloatResponse* response) override
     {
-        if (request == nullptr) {
-            LogWarn() << "GetParamFloat sent with a null request! Ignoring...";
+        if (_lazy_plugin.maybe_plugin() == nullptr) {
+            if (response != nullptr) {
+                auto result = mavsdk::ParamServer::Result::NoSystem;
+                fillResponseWithResult(response, result);
+            }
+
             return grpc::Status::OK;
         }
 
-        auto result = _param_server.get_param_float(request->name());
+        if (request == nullptr) {
+            LogWarn() << "RetrieveParamFloat sent with a null request! Ignoring...";
+            return grpc::Status::OK;
+        }
+
+        auto result = _lazy_plugin.maybe_plugin()->retrieve_param_float(request->name());
 
         if (response != nullptr) {
             fillResponseWithResult(response, result.first);
@@ -221,17 +251,27 @@ public:
         return grpc::Status::OK;
     }
 
-    grpc::Status SetParamFloat(
+    grpc::Status ProvideParamFloat(
         grpc::ServerContext* /* context */,
-        const rpc::param_server::SetParamFloatRequest* request,
-        rpc::param_server::SetParamFloatResponse* response) override
+        const rpc::param_server::ProvideParamFloatRequest* request,
+        rpc::param_server::ProvideParamFloatResponse* response) override
     {
-        if (request == nullptr) {
-            LogWarn() << "SetParamFloat sent with a null request! Ignoring...";
+        if (_lazy_plugin.maybe_plugin() == nullptr) {
+            if (response != nullptr) {
+                auto result = mavsdk::ParamServer::Result::NoSystem;
+                fillResponseWithResult(response, result);
+            }
+
             return grpc::Status::OK;
         }
 
-        auto result = _param_server.set_param_float(request->name(), request->value());
+        if (request == nullptr) {
+            LogWarn() << "ProvideParamFloat sent with a null request! Ignoring...";
+            return grpc::Status::OK;
+        }
+
+        auto result =
+            _lazy_plugin.maybe_plugin()->provide_param_float(request->name(), request->value());
 
         if (response != nullptr) {
             fillResponseWithResult(response, result);
@@ -240,12 +280,16 @@ public:
         return grpc::Status::OK;
     }
 
-    grpc::Status GetAllParams(
+    grpc::Status RetrieveAllParams(
         grpc::ServerContext* /* context */,
-        const rpc::param_server::GetAllParamsRequest* /* request */,
-        rpc::param_server::GetAllParamsResponse* response) override
+        const rpc::param_server::RetrieveAllParamsRequest* /* request */,
+        rpc::param_server::RetrieveAllParamsResponse* response) override
     {
-        auto result = _param_server.get_all_params();
+        if (_lazy_plugin.maybe_plugin() == nullptr) {
+            return grpc::Status::OK;
+        }
+
+        auto result = _lazy_plugin.maybe_plugin()->retrieve_all_params();
 
         if (response != nullptr) {
             response->set_allocated_params(translateToRpcAllParams(result).release());
@@ -289,7 +333,7 @@ private:
         }
     }
 
-    ParamServer& _param_server;
+    LazyPlugin& _lazy_plugin;
     std::atomic<bool> _stopped{false};
     std::vector<std::weak_ptr<std::promise<void>>> _stream_stop_promises{};
 };
